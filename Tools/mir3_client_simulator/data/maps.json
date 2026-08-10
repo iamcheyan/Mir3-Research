@@ -4,15 +4,15 @@
     "name": "地图背景",
     "library": "FMMap.wil",
     "frame": 0,
-    "evidence_level": "candidate",
-    "note": "full-map resource candidate"
+    "evidence_level": "derived",
+    "note": "0.map 比奇县 -> server 1001 -> FMMap.wil F0 (client select 0x43D780 + MiniMap.txt)"
   },
   {
     "id": "map.minimap",
     "name": "小地图",
-    "library": "MMap.wil",
+    "library": "FMMap.wil",
     "frame": 0,
-    "evidence_level": "candidate",
-    "note": "fixed minimap 128x128 candidate"
+    "evidence_level": "derived",
+    "note": "0.map 比奇县 -> FMMap.wil F0 scaled into fixed 128x128 widget (672,0)"
   }
 ]

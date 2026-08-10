@@ -17,7 +17,8 @@ Outputs (all under Tools/mir3_client_simulator/data/):
   entities.json       scene entities: player, monsters, NPCs, drops
   equipment_slots.json  character panel equipment slots
   skills.json         skill grid entries
-  maps.json           map background / minimap candidate frames
+  maps.json           map background / minimap frames (derived bindings)
+  map_bindings.json   map stem -> library/frame crossref rows (server MiniMap.txt)
   hud.json            HUD bars + target info + chat region + minimap widget
 """
 
@@ -234,12 +235,33 @@ def main() -> None:
         })
 
     # ------------------------------------------------------------------ maps
+    # map.bg / map.minimap bind to the demo scene map (0.map = 比奇县). The
+    # library+frame follow the client's map-select rule (0x0043D780: map_id >=
+    # 1000 -> FMMap.wil frame map_id-1000, else MMap.wil frame map_id) with the
+    # original server MiniMap.txt giving 0.map -> 1001 -> FMMap.wil F0. The
+    # select rule is primary-static; the row binding is secondary-server.
     maps: list[dict] = [
         {"id": "map.bg", "name": "地图背景", "library": "FMMap.wil", "frame": 0,
-         "evidence_level": "candidate", "note": "full-map resource candidate"},
-        {"id": "map.minimap", "name": "小地图", "library": "MMap.wil", "frame": 0,
-         "evidence_level": "candidate", "note": "fixed minimap 128x128 candidate"},
+         "evidence_level": "derived",
+         "note": "0.map 比奇县 -> server 1001 -> FMMap.wil F0 (client select 0x43D780 + MiniMap.txt)"},
+        {"id": "map.minimap", "name": "小地图", "library": "FMMap.wil", "frame": 0,
+         "evidence_level": "derived",
+         "note": "0.map 比奇县 -> FMMap.wil F0 scaled into fixed 128x128 widget (672,0)"},
     ]
+
+    # map_bindings: crossref rows (client_map_exists + frame decodes) so the
+    # simulator can switch scenes through real map->library/frame pairs.
+    try:
+        xref = load("minimap-server-crossref.json")
+        map_bindings = [
+            {"map": r["map_stem"], "name": (r.get("server_map_names") or [r["map_stem"]])[0],
+             "library": r["library"], "frame": r["frame"]}
+            for r in xref.get("rows", [])
+            if r.get("client_map_exists") and r.get("frame_in_library_range")
+            and r.get("frame_nonblank_decodes")
+        ]
+    except FileNotFoundError:
+        map_bindings = []
 
     # ------------------------------------------------------------------- hud
     hud: dict = {
@@ -279,6 +301,7 @@ def main() -> None:
         "equipment_slots": equipment_slots,
         "skills": skills,
         "maps": maps,
+        "map_bindings": map_bindings,
         "hud": hud,
         "viewport": {"width": VIEW_W, "height": VIEW_H},
         "meta": {
@@ -294,12 +317,14 @@ def main() -> None:
                    "equipment_slots", "skills", "maps", "hud"):
         (OUT / f"{domain}.json").write_text(
             json.dumps(out[domain], ensure_ascii=False, indent=2), encoding="utf-8")
+    (OUT / "map_bindings.json").write_text(
+        json.dumps(out["map_bindings"], ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "layout.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"windows={len(windows)} controls={len(controls)} resources={len(resources)}")
     print(f"entities={len(entities)} equipment_slots={len(equipment_slots)} skills={len(skills)}")
-    print(f"maps={len(maps)} wrote={OUT}/layout.json")
+    print(f"maps={len(maps)} bindings={len(map_bindings)} wrote={OUT}/layout.json")
 
 
 if __name__ == "__main__":

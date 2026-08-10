@@ -2742,16 +2742,1110 @@
       "name": "地图背景",
       "library": "FMMap.wil",
       "frame": 0,
-      "evidence_level": "candidate",
-      "note": "full-map resource candidate"
+      "evidence_level": "derived",
+      "note": "0.map 比奇县 -> server 1001 -> FMMap.wil F0 (client select 0x43D780 + MiniMap.txt)"
     },
     {
       "id": "map.minimap",
       "name": "小地图",
-      "library": "MMap.wil",
+      "library": "FMMap.wil",
       "frame": 0,
-      "evidence_level": "candidate",
-      "note": "fixed minimap 128x128 candidate"
+      "evidence_level": "derived",
+      "note": "0.map 比奇县 -> FMMap.wil F0 scaled into fixed 128x128 widget (672,0)"
+    }
+  ],
+  "map_bindings": [
+    {
+      "map": "0",
+      "name": "比奇县",
+      "library": "FMMap.wil",
+      "frame": 0
+    },
+    {
+      "map": "01",
+      "name": "边境城市",
+      "library": "FMMap.wil",
+      "frame": 1
+    },
+    {
+      "map": "02",
+      "name": "银杏山谷",
+      "library": "FMMap.wil",
+      "frame": 2
+    },
+    {
+      "map": "1",
+      "name": "道馆",
+      "library": "FMMap.wil",
+      "frame": 3
+    },
+    {
+      "map": "12",
+      "name": "灌木林",
+      "library": "FMMap.wil",
+      "frame": 4
+    },
+    {
+      "map": "2",
+      "name": "毒蛇山谷",
+      "library": "FMMap.wil",
+      "frame": 5
+    },
+    {
+      "map": "4",
+      "name": "绿洲",
+      "library": "FMMap.wil",
+      "frame": 6
+    },
+    {
+      "map": "5",
+      "name": "沙漠土城",
+      "library": "FMMap.wil",
+      "frame": 7
+    },
+    {
+      "map": "6",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 8
+    },
+    {
+      "map": "71",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 9
+    },
+    {
+      "map": "72",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 10
+    },
+    {
+      "map": "73",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 11
+    },
+    {
+      "map": "74",
+      "name": "盟重县",
+      "library": "FMMap.wil",
+      "frame": 12
+    },
+    {
+      "map": "75",
+      "name": "石阁庙",
+      "library": "FMMap.wil",
+      "frame": 13
+    },
+    {
+      "map": "76",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 14
+    },
+    {
+      "map": "77",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 15
+    },
+    {
+      "map": "78",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 16
+    },
+    {
+      "map": "3",
+      "name": "沙巴克城",
+      "library": "FMMap.wil",
+      "frame": 17
+    },
+    {
+      "map": "8",
+      "name": "潘夜岛",
+      "library": "FMMap.wil",
+      "frame": 18
+    },
+    {
+      "map": "41",
+      "name": "诺玛村庄",
+      "library": "FMMap.wil",
+      "frame": 20
+    },
+    {
+      "map": "42",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 21
+    },
+    {
+      "map": "43",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 22
+    },
+    {
+      "map": "44",
+      "name": "沙漠",
+      "library": "FMMap.wil",
+      "frame": 23
+    },
+    {
+      "map": "121",
+      "name": "121",
+      "library": "FMMap.wil",
+      "frame": 24
+    },
+    {
+      "map": "122",
+      "name": "灌木林",
+      "library": "FMMap.wil",
+      "frame": 25
+    },
+    {
+      "map": "123",
+      "name": "123",
+      "library": "FMMap.wil",
+      "frame": 26
+    },
+    {
+      "map": "124",
+      "name": "124",
+      "library": "FMMap.wil",
+      "frame": 27
+    },
+    {
+      "map": "125",
+      "name": "灌木林",
+      "library": "FMMap.wil",
+      "frame": 28
+    },
+    {
+      "map": "31",
+      "name": "祖玛神殿",
+      "library": "FMMap.wil",
+      "frame": 30
+    },
+    {
+      "map": "D001",
+      "name": "半兽洞穴1层",
+      "library": "MMap.wil",
+      "frame": 1
+    },
+    {
+      "map": "D002",
+      "name": "半兽洞穴2层",
+      "library": "MMap.wil",
+      "frame": 2
+    },
+    {
+      "map": "D003",
+      "name": "半兽洞穴3层",
+      "library": "MMap.wil",
+      "frame": 3
+    },
+    {
+      "map": "D011",
+      "name": "天然洞穴1层",
+      "library": "MMap.wil",
+      "frame": 4
+    },
+    {
+      "map": "D401",
+      "name": "废矿矿山入口",
+      "library": "MMap.wil",
+      "frame": 11
+    },
+    {
+      "map": "D402",
+      "name": "废矿东部洞穴",
+      "library": "MMap.wil",
+      "frame": 12
+    },
+    {
+      "map": "D403",
+      "name": "地下1层采矿所",
+      "library": "MMap.wil",
+      "frame": 13
+    },
+    {
+      "map": "D404",
+      "name": "地下2层采矿所",
+      "library": "MMap.wil",
+      "frame": 14
+    },
+    {
+      "map": "D405",
+      "name": "矿石储藏所",
+      "library": "MMap.wil",
+      "frame": 15
+    },
+    {
+      "map": "D406",
+      "name": "废矿南部洞穴",
+      "library": "MMap.wil",
+      "frame": 16
+    },
+    {
+      "map": "D411",
+      "name": "地下1层第一间房",
+      "library": "MMap.wil",
+      "frame": 17
+    },
+    {
+      "map": "D412",
+      "name": "天桥2",
+      "library": "MMap.wil",
+      "frame": 18
+    },
+    {
+      "map": "D413",
+      "name": "地下1层第二间房",
+      "library": "MMap.wil",
+      "frame": 19
+    },
+    {
+      "map": "D414",
+      "name": "地下1层第三间房",
+      "library": "MMap.wil",
+      "frame": 20
+    },
+    {
+      "map": "D415",
+      "name": "天桥1",
+      "library": "MMap.wil",
+      "frame": 21
+    },
+    {
+      "map": "D416",
+      "name": "天桥3",
+      "library": "MMap.wil",
+      "frame": 22
+    },
+    {
+      "map": "D421",
+      "name": "矿山1层",
+      "library": "MMap.wil",
+      "frame": 23
+    },
+    {
+      "map": "D431",
+      "name": "南部矿山",
+      "library": "MMap.wil",
+      "frame": 11
+    },
+    {
+      "map": "D432",
+      "name": "北部矿山",
+      "library": "MMap.wil",
+      "frame": 12
+    },
+    {
+      "map": "D433",
+      "name": "北部地下1层采矿所",
+      "library": "MMap.wil",
+      "frame": 13
+    },
+    {
+      "map": "D434",
+      "name": "北部地下2层采矿所",
+      "library": "MMap.wil",
+      "frame": 14
+    },
+    {
+      "map": "D435",
+      "name": "北部矿石储藏所",
+      "library": "MMap.wil",
+      "frame": 15
+    },
+    {
+      "map": "D436",
+      "name": "北部废矿南面洞穴",
+      "library": "MMap.wil",
+      "frame": 16
+    },
+    {
+      "map": "D441",
+      "name": "北部地下1层第一间房",
+      "library": "MMap.wil",
+      "frame": 17
+    },
+    {
+      "map": "D442",
+      "name": "北部天桥2",
+      "library": "MMap.wil",
+      "frame": 18
+    },
+    {
+      "map": "D443",
+      "name": "北部地下1层第二间房",
+      "library": "MMap.wil",
+      "frame": 19
+    },
+    {
+      "map": "D444",
+      "name": "北部地下1层第三间房",
+      "library": "MMap.wil",
+      "frame": 20
+    },
+    {
+      "map": "D445",
+      "name": "北部天桥1",
+      "library": "MMap.wil",
+      "frame": 21
+    },
+    {
+      "map": "D446",
+      "name": "北部天桥3",
+      "library": "MMap.wil",
+      "frame": 22
+    },
+    {
+      "map": "D451",
+      "name": "南部矿山1层",
+      "library": "MMap.wil",
+      "frame": 23
+    },
+    {
+      "map": "D505",
+      "name": "祖玛神殿5层",
+      "library": "MMap.wil",
+      "frame": 35
+    },
+    {
+      "map": "D5071",
+      "name": "祖玛神殿6层大厅",
+      "library": "MMap.wil",
+      "frame": 36
+    },
+    {
+      "map": "D5072",
+      "name": "祖玛神殿6层",
+      "library": "MMap.wil",
+      "frame": 37
+    },
+    {
+      "map": "D5073",
+      "name": "祖玛神殿6层",
+      "library": "MMap.wil",
+      "frame": 38
+    },
+    {
+      "map": "D6012",
+      "name": "万年原谷",
+      "library": "MMap.wil",
+      "frame": 52
+    },
+    {
+      "map": "D60131",
+      "name": "万年谷中部",
+      "library": "MMap.wil",
+      "frame": 53
+    },
+    {
+      "map": "D60132",
+      "name": "万年谷南部",
+      "library": "MMap.wil",
+      "frame": 54
+    },
+    {
+      "map": "D60133",
+      "name": "万年谷西部",
+      "library": "MMap.wil",
+      "frame": 55
+    },
+    {
+      "map": "D60134",
+      "name": "万年谷北部",
+      "library": "MMap.wil",
+      "frame": 56
+    },
+    {
+      "map": "D60135",
+      "name": "万年谷东部",
+      "library": "MMap.wil",
+      "frame": 57
+    },
+    {
+      "map": "D6014",
+      "name": "万年独孤关",
+      "library": "MMap.wil",
+      "frame": 58
+    },
+    {
+      "map": "D6023",
+      "name": "虫峡谷3层",
+      "library": "MMap.wil",
+      "frame": 63
+    },
+    {
+      "map": "E001",
+      "name": "行会大战",
+      "library": "MMap.wil",
+      "frame": 71
+    },
+    {
+      "map": "E002",
+      "name": "行会大战",
+      "library": "MMap.wil",
+      "frame": 72
+    },
+    {
+      "map": "E401",
+      "name": "E401",
+      "library": "MMap.wil",
+      "frame": 73
+    },
+    {
+      "map": "E402",
+      "name": "连接通路",
+      "library": "MMap.wil",
+      "frame": 74
+    },
+    {
+      "map": "E403",
+      "name": "E403",
+      "library": "MMap.wil",
+      "frame": 75
+    },
+    {
+      "map": "E404",
+      "name": "E404",
+      "library": "MMap.wil",
+      "frame": 76
+    },
+    {
+      "map": "E601",
+      "name": "竞技场",
+      "library": "MMap.wil",
+      "frame": 77
+    },
+    {
+      "map": "E602",
+      "name": "竞技场",
+      "library": "MMap.wil",
+      "frame": 78
+    },
+    {
+      "map": "E603",
+      "name": "废矿秘密通路",
+      "library": "MMap.wil",
+      "frame": 79
+    },
+    {
+      "map": "E604",
+      "name": "废矿秘密通路",
+      "library": "MMap.wil",
+      "frame": 80
+    },
+    {
+      "map": "E605",
+      "name": "废矿秘密通路",
+      "library": "MMap.wil",
+      "frame": 81
+    },
+    {
+      "map": "D715",
+      "name": "石阁5层",
+      "library": "MMap.wil",
+      "frame": 95
+    },
+    {
+      "map": "D716",
+      "name": "石阁6层",
+      "library": "MMap.wil",
+      "frame": 96
+    },
+    {
+      "map": "D1001",
+      "name": "赤月山谷1层",
+      "library": "MMap.wil",
+      "frame": 101
+    },
+    {
+      "map": "D1002",
+      "name": "赤月山谷2层",
+      "library": "MMap.wil",
+      "frame": 102
+    },
+    {
+      "map": "D10031",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 103
+    },
+    {
+      "map": "D10032",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 104
+    },
+    {
+      "map": "D1004",
+      "name": "赤月山谷4层",
+      "library": "MMap.wil",
+      "frame": 105
+    },
+    {
+      "map": "D10051",
+      "name": "赤月山谷5层",
+      "library": "MMap.wil",
+      "frame": 106
+    },
+    {
+      "map": "D10052",
+      "name": "赤月山谷5层",
+      "library": "MMap.wil",
+      "frame": 107
+    },
+    {
+      "map": "D10053",
+      "name": "D10053",
+      "library": "MMap.wil",
+      "frame": 108
+    },
+    {
+      "map": "D1011",
+      "name": "赤月山谷1层",
+      "library": "MMap.wil",
+      "frame": 111
+    },
+    {
+      "map": "D1012",
+      "name": "赤月山谷2层",
+      "library": "MMap.wil",
+      "frame": 112
+    },
+    {
+      "map": "D10131",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 113
+    },
+    {
+      "map": "D10132",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 114
+    },
+    {
+      "map": "D1014",
+      "name": "赤月山谷4层",
+      "library": "MMap.wil",
+      "frame": 115
+    },
+    {
+      "map": "D10151",
+      "name": "赤月山谷5层",
+      "library": "MMap.wil",
+      "frame": 116
+    },
+    {
+      "map": "D1021",
+      "name": "赤月山谷1层",
+      "library": "MMap.wil",
+      "frame": 121
+    },
+    {
+      "map": "D1022",
+      "name": "赤月山谷2层",
+      "library": "MMap.wil",
+      "frame": 122
+    },
+    {
+      "map": "D10231",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 123
+    },
+    {
+      "map": "D10232",
+      "name": "赤月山谷3层",
+      "library": "MMap.wil",
+      "frame": 124
+    },
+    {
+      "map": "D1024",
+      "name": "赤月山谷4层",
+      "library": "MMap.wil",
+      "frame": 125
+    },
+    {
+      "map": "D10251",
+      "name": "赤月山谷5层",
+      "library": "MMap.wil",
+      "frame": 126
+    },
+    {
+      "map": "D8001",
+      "name": "南部蚂蚁洞穴1层4",
+      "library": "MMap.wil",
+      "frame": 161
+    },
+    {
+      "map": "D8002",
+      "name": "南部蚂蚁洞穴1层1",
+      "library": "MMap.wil",
+      "frame": 162
+    },
+    {
+      "map": "D8003",
+      "name": "南部蚂蚁洞穴1层2",
+      "library": "MMap.wil",
+      "frame": 163
+    },
+    {
+      "map": "D8004",
+      "name": "南部蚂蚁洞穴1层3",
+      "library": "MMap.wil",
+      "frame": 164
+    },
+    {
+      "map": "D801",
+      "name": "D801",
+      "library": "MMap.wil",
+      "frame": 165
+    },
+    {
+      "map": "D803",
+      "name": "D803",
+      "library": "MMap.wil",
+      "frame": 167
+    },
+    {
+      "map": "D804",
+      "name": "D804",
+      "library": "MMap.wil",
+      "frame": 168
+    },
+    {
+      "map": "D805",
+      "name": "D805",
+      "library": "MMap.wil",
+      "frame": 169
+    },
+    {
+      "map": "D806",
+      "name": "D806",
+      "library": "MMap.wil",
+      "frame": 170
+    },
+    {
+      "map": "D8101",
+      "name": "北部蚂蚁洞穴1层4",
+      "library": "MMap.wil",
+      "frame": 161
+    },
+    {
+      "map": "D8103",
+      "name": "北部蚂蚁洞穴1层2",
+      "library": "MMap.wil",
+      "frame": 163
+    },
+    {
+      "map": "D8104",
+      "name": "北部蚂蚁洞穴1层3",
+      "library": "MMap.wil",
+      "frame": 164
+    },
+    {
+      "map": "D811",
+      "name": "D811",
+      "library": "MMap.wil",
+      "frame": 165
+    },
+    {
+      "map": "D814",
+      "name": "D814",
+      "library": "MMap.wil",
+      "frame": 168
+    },
+    {
+      "map": "D815",
+      "name": "D815",
+      "library": "MMap.wil",
+      "frame": 169
+    },
+    {
+      "map": "D816",
+      "name": "D816",
+      "library": "MMap.wil",
+      "frame": 170
+    },
+    {
+      "map": "D8201",
+      "name": "东部蚂蚁洞穴1层4",
+      "library": "MMap.wil",
+      "frame": 161
+    },
+    {
+      "map": "D8203",
+      "name": "东部蚂蚁洞穴1层2",
+      "library": "MMap.wil",
+      "frame": 163
+    },
+    {
+      "map": "D8204",
+      "name": "东部蚂蚁洞穴1层3",
+      "library": "MMap.wil",
+      "frame": 164
+    },
+    {
+      "map": "D821",
+      "name": "D821",
+      "library": "MMap.wil",
+      "frame": 165
+    },
+    {
+      "map": "D824",
+      "name": "D824",
+      "library": "MMap.wil",
+      "frame": 168
+    },
+    {
+      "map": "D825",
+      "name": "D825",
+      "library": "MMap.wil",
+      "frame": 169
+    },
+    {
+      "map": "D826",
+      "name": "D826",
+      "library": "MMap.wil",
+      "frame": 170
+    },
+    {
+      "map": "D021",
+      "name": "沃玛神殿入口",
+      "library": "MMap.wil",
+      "frame": 191
+    },
+    {
+      "map": "D022",
+      "name": "沃玛神殿1层",
+      "library": "MMap.wil",
+      "frame": 192
+    },
+    {
+      "map": "D032",
+      "name": "沃玛神殿1层",
+      "library": "MMap.wil",
+      "frame": 193
+    },
+    {
+      "map": "D042",
+      "name": "沃玛神殿1层",
+      "library": "MMap.wil",
+      "frame": 194
+    },
+    {
+      "map": "D052",
+      "name": "沃玛神殿1层",
+      "library": "MMap.wil",
+      "frame": 195
+    },
+    {
+      "map": "D023",
+      "name": "沃玛神殿2层",
+      "library": "MMap.wil",
+      "frame": 196
+    },
+    {
+      "map": "D033",
+      "name": "沃玛神殿2层",
+      "library": "MMap.wil",
+      "frame": 197
+    },
+    {
+      "map": "D043",
+      "name": "沃玛神殿2层",
+      "library": "MMap.wil",
+      "frame": 198
+    },
+    {
+      "map": "D053",
+      "name": "沃玛神殿2层",
+      "library": "MMap.wil",
+      "frame": 199
+    },
+    {
+      "map": "D024",
+      "name": "沃玛神殿",
+      "library": "MMap.wil",
+      "frame": 200
+    },
+    {
+      "map": "D1101",
+      "name": "潘夜神殿1层",
+      "library": "MMap.wil",
+      "frame": 201
+    },
+    {
+      "map": "D1102",
+      "name": "潘夜神殿2层",
+      "library": "MMap.wil",
+      "frame": 202
+    },
+    {
+      "map": "D11031",
+      "name": "潘夜神殿3层西部",
+      "library": "MMap.wil",
+      "frame": 203
+    },
+    {
+      "map": "D11032",
+      "name": "潘夜神殿3层东部",
+      "library": "MMap.wil",
+      "frame": 204
+    },
+    {
+      "map": "D1104",
+      "name": "潘夜神殿4层",
+      "library": "MMap.wil",
+      "frame": 205
+    },
+    {
+      "map": "D1111",
+      "name": "潘夜神殿4层",
+      "library": "MMap.wil",
+      "frame": 211
+    },
+    {
+      "map": "D1112",
+      "name": "潘夜神殿5层",
+      "library": "MMap.wil",
+      "frame": 212
+    },
+    {
+      "map": "D1113",
+      "name": "潘夜神殿6层",
+      "library": "MMap.wil",
+      "frame": 213
+    },
+    {
+      "map": "D11141",
+      "name": "潘夜神殿7层西部",
+      "library": "MMap.wil",
+      "frame": 214
+    },
+    {
+      "map": "D11142",
+      "name": "潘夜神殿7层东部",
+      "library": "MMap.wil",
+      "frame": 215
+    },
+    {
+      "map": "D1115",
+      "name": "潘夜神殿8层",
+      "library": "MMap.wil",
+      "frame": 216
+    },
+    {
+      "map": "D1201",
+      "name": "罪孽洞穴1层",
+      "library": "MMap.wil",
+      "frame": 221
+    },
+    {
+      "map": "D1202",
+      "name": "罪孽洞穴2层",
+      "library": "MMap.wil",
+      "frame": 222
+    },
+    {
+      "map": "D12031",
+      "name": "罪孽洞穴3层西部",
+      "library": "MMap.wil",
+      "frame": 223
+    },
+    {
+      "map": "D12032",
+      "name": "罪孽洞穴3层东部",
+      "library": "MMap.wil",
+      "frame": 224
+    },
+    {
+      "map": "D1204",
+      "name": "罪孽洞穴4层",
+      "library": "MMap.wil",
+      "frame": 225
+    },
+    {
+      "map": "D1211",
+      "name": "潘夜石窟1层",
+      "library": "MMap.wil",
+      "frame": 231
+    },
+    {
+      "map": "D12121",
+      "name": "潘夜石窟2层西部",
+      "library": "MMap.wil",
+      "frame": 232
+    },
+    {
+      "map": "D12122",
+      "name": "D12122",
+      "library": "MMap.wil",
+      "frame": 233
+    },
+    {
+      "map": "D1213",
+      "name": "潘夜石窟3层",
+      "library": "MMap.wil",
+      "frame": 234
+    },
+    {
+      "map": "D1214",
+      "name": "潘夜石窟4层",
+      "library": "MMap.wil",
+      "frame": 235
+    },
+    {
+      "map": "D1301",
+      "name": "东部银杏废矿1层",
+      "library": "MMap.wil",
+      "frame": 241
+    },
+    {
+      "map": "D1302",
+      "name": "东部银杏废矿2层",
+      "library": "MMap.wil",
+      "frame": 242
+    },
+    {
+      "map": "D1303",
+      "name": "东部银杏废矿3层",
+      "library": "MMap.wil",
+      "frame": 243
+    },
+    {
+      "map": "D1304",
+      "name": "东部银杏废矿4层",
+      "library": "MMap.wil",
+      "frame": 244
+    },
+    {
+      "map": "D1311",
+      "name": "北部银杏废矿1层",
+      "library": "MMap.wil",
+      "frame": 241
+    },
+    {
+      "map": "D1312",
+      "name": "北部银杏废矿2层",
+      "library": "MMap.wil",
+      "frame": 242
+    },
+    {
+      "map": "D1313",
+      "name": "北部银杏废矿3层",
+      "library": "MMap.wil",
+      "frame": 243
+    },
+    {
+      "map": "D1314",
+      "name": "北部银杏废矿4层",
+      "library": "MMap.wil",
+      "frame": 244
+    },
+    {
+      "map": "D1321",
+      "name": "西部银杏废矿1层",
+      "library": "MMap.wil",
+      "frame": 241
+    },
+    {
+      "map": "D1322",
+      "name": "西部银杏废矿2层",
+      "library": "MMap.wil",
+      "frame": 242
+    },
+    {
+      "map": "D1323",
+      "name": "西部银杏废矿3层",
+      "library": "MMap.wil",
+      "frame": 243
+    },
+    {
+      "map": "D1324",
+      "name": "西部银杏废矿4层",
+      "library": "MMap.wil",
+      "frame": 244
+    },
+    {
+      "map": "D1401",
+      "name": "D1401",
+      "library": "MMap.wil",
+      "frame": 251
+    },
+    {
+      "map": "D1402",
+      "name": "D1402",
+      "library": "MMap.wil",
+      "frame": 252
+    },
+    {
+      "map": "D1403",
+      "name": "D1403",
+      "library": "MMap.wil",
+      "frame": 253
+    },
+    {
+      "map": "D1404",
+      "name": "D1404",
+      "library": "MMap.wil",
+      "frame": 254
+    },
+    {
+      "map": "D1411",
+      "name": "北部石矿1层",
+      "library": "MMap.wil",
+      "frame": 251
+    },
+    {
+      "map": "D1412",
+      "name": "北部石矿2层",
+      "library": "MMap.wil",
+      "frame": 252
+    },
+    {
+      "map": "D1413",
+      "name": "北部石矿3层",
+      "library": "MMap.wil",
+      "frame": 253
+    },
+    {
+      "map": "D1414",
+      "name": "北部石矿4层",
+      "library": "MMap.wil",
+      "frame": 254
+    },
+    {
+      "map": "D1421",
+      "name": "西部石矿1层",
+      "library": "MMap.wil",
+      "frame": 251
+    },
+    {
+      "map": "D1422",
+      "name": "西部石矿2层",
+      "library": "MMap.wil",
+      "frame": 252
+    },
+    {
+      "map": "D1423",
+      "name": "西部石矿3层",
+      "library": "MMap.wil",
+      "frame": 253
+    },
+    {
+      "map": "D1424",
+      "name": "西部石矿4层",
+      "library": "MMap.wil",
+      "frame": 254
     }
   ],
   "hud": {

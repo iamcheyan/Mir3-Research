@@ -3829,3 +3829,27 @@ el82/el83 的 WIL 文件名绑定（Equip.wil/Inventory.wil 并列）运行期 b
   语义合成，不虚构独立 WIL 帧。
 
 落盘：`RESEARCH_LOG.md`、`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）。
+
+### Finding 242：544 图逐图勘察完成（2026-08-10，Maps 阶段）
+
+- 六大类结构定型（`docs/research/mir3-map-reconstruction/MAP-SURVEY.md`）：
+  城镇（Back tilesc/tiles30c+主题瓦片、Mid cliffsc 主导、Front smobjectsc/cliffsc）、
+  室内（tiles5c 满格 + innersc/furnituresc，wood_* 木内景）、
+  半兽洞穴 D00x（tiles5c 满格 + object1c 单库无 Front）、
+  赤月山谷 D100–D102（tiles5c 满格 + object2c 单库无 Front）、
+  沃玛 D201–D203（D2011/12/D203 同洞穴结构；**D202 为唯一带 Front 层 + tilesc/tiles30c 地面 + cliffsc 的 D2xx**）、
+  沙漠/雪地（sand_* 库族于 4/5/74.map；wood_* 库族于 8.map 冰雪村 + 室内）。
+- **00.map 不存在**；最大图 0/4/6/8.map 800×800；39 图 legacy 13B（D3）；0 尺寸不符。
+- 异常分类（5723 格 / 34 图）按 8 类错误 taxonomy：**无 map-file 错误、无库表错误**；
+  frame-decode 类（3.map 3255、41.map 1619、0_003 137、D10031 62 ground OOB）、
+  特殊处理类（ground_not_drawn 670 格：D12121 171、0_003 137、74 90、5_0013 67；黑帧引用 ≈1.2M 格 C18）、
+  版本差异（39 图 13B）、offset/坐标/图层类无偏离。
+- 中文名冲突：catalog cn（幽灵森林/沙漠/失乐园森林）vs 服务端 MiniMap.txt（半兽洞穴1-3层/天然洞穴）
+  并列记录不覆盖（D001=半兽洞穴1层 MMap F1、D002=2层 F2、D003=3层 F3、D011=天然洞穴1层 F4、D012=2层 F5；
+  赤月 D1001/D1011/D1021=1层 F101 系、D1500 真天宫 F128、D1510 黑度宫 F129、D1601 诺玛遗址 F131、
+  D2001 西沙漠地洞 F135、D2002 沙漠城市 F138、D2003 地下矿山 F142、D2011 沃玛1层 F149、D2012 2层 F150、
+  D2013 3层 F151、D202 沃玛神庙 F152、D203 沃玛教堂 F153 —— 服务端映射，frame id 对应 MMap.wil 槽）。
+- 赤月系 D10011 与 D1001 引用计数完全相同（40000/25179 格）→ 副本/对称入口候选；D10031 为唯一 ground OOB。
+- 新增 C21 证据项；K2/D4（室内地面机制）维持 pending P2。
+
+落盘：`MAP-SURVEY.md`、`EVIDENCE-INVENTORY.md`（C21）、`RESEARCH_LOG.md`。

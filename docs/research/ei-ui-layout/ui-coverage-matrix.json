@@ -46,10 +46,11 @@
       "category": "地图/小地图",
       "artifacts": [
         "map-ui-resource-evidence.json",
-        "minimap-server-crossref.json"
+        "minimap-server-crossref.json",
+        "MAP-SURVEY.md (mir3-map-reconstruction)"
       ],
       "layout_ids": [],
-      "preview_mode": "map-minimap-candidate,map-candidate",
+      "preview_mode": "map-bg-derived,map-minimap-derived",
       "status": "primary-static-resource-loader-plus-paint-chain-closed",
       "pending": false,
       "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
@@ -57,7 +58,9 @@
         "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
         "no separate map dialog (single ctor main+0x6214)",
         "T key + mouse click toggle paths",
-        "object list layouts + type byte values"
+        "object list layouts + type byte values",
+        "map_bindings.json: 182 crossref-confirmed rows (client 0x0043D780 select rule + server MiniMap.txt)",
+        "simulator setCurrentMap drives bg+minimap from same binding; derived level"
       ]
     },
     {

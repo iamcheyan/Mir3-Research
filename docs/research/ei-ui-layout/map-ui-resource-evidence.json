@@ -772,5 +772,19 @@
       "minimap_draw": "green 0x64C864 outline, rect +-2px, culled when |dx| or |dy| >= half viewport (0x0043DCF5-0x0043DD8F); candidate: nearby player/party dots"
     },
     "resolution": "pending_item_4 CLOSED for layouts and type-field values; type 0x32 business name stays candidate."
-  }
+  },
+  "closed_notes": [
+    {
+      "date": "2026-08-10",
+      "phase": "Maps",
+      "closed": "Map -> library/frame binding for simulator fully wired: client primary-static select rule 0x0043D780 (map_id >= 1000 -> FMMap.wil frame map_id-1000, else MMap.wil frame map_id) + server MiniMap.txt crossref (minimap-server-crossref.json, 182 crossref-confirmed rows) -> map_bindings.json emitted by build_mir3_simulator_data.py; simulator map switching (setCurrentMap) updates BOTH map.bg and map.minimap from the same binding record. Evidence level: derived (client rule primary-static + server binding secondary).",
+      "artifacts": [
+        "minimap-server-crossref.json",
+        "map_bindings.json (Tools/mir3_client_simulator/data)",
+        "MAP-SURVEY.md",
+        "EVIDENCE-INVENTORY.md C21",
+        "RESEARCH_LOG.md Finding 242"
+      ]
+    }
+  ]
 }

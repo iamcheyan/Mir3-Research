@@ -33,6 +33,7 @@
 | C18 | 地图黑块根因 = 地图数据显式引用黑帧（约 1.2M 格），D201 类黑块为资源侧事实 | 14B 解析统计 + D1423 模拟帧 black-frac 0.204 |
 | C19 | 模拟器图层（Back/Middle/Front）可独立开关渲染，缓存键含 g/m/f；/api/cell 逐格返回三层库/帧/flag/anim；/api/strip 导出三模式对比条带 | mapviewer 实现 + 浏览器实测（图层开关即时生效、tooltip 逐格数据） |
 | C20 | Envir MonItems 掉落文件已接入模拟器：怪物点击 tooltip 显示 掉落 前5（如 半兽勇士 金币×4000 1/1） | load_drops 解析 280 个 MonItems 文件 + /api/entities 实测 |
+| C21 | 544 图逐图勘察完成：城镇/室内/半兽洞穴/赤月山谷/沃玛/沙漠雪地六大类结构定型；34 图 5723 异常按 8 类错误分类（map-file/library/frame-decode/offset/坐标/图层/版本/特殊处理），无 map-file 与库表错误 | MAP-SURVEY.md 全表 + catalog/audit 统计 |
 
 ## derived
 

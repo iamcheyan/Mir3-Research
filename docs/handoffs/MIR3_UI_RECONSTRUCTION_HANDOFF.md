@@ -289,8 +289,10 @@ simulator/style.css
 - 外层 40 项消息表 0x421E8C 未达索引（9..15/17..39）；一级分派体 0x42C1A4..0x42C30D、二级分派 0x41EDBD→0x421D5C/0x421D8C、0x41F052→0x421E50。
 - 0x41B94F（0x8AB828 静态 1011 字节正文副本）、0x41D744（按 `[model+0x30]` 门控的逐帧更新）、0x42B820 间接调用者、一级分派体 0x42C1A4..0x42C30D 上下文。
 - 聊天窗口完整绘制和输入/滚动区域。
-- 地图、小地图、地图按钮及地图资源的准确对应。
+- **地图与逐图勘察已闭合（Maps 阶段，`MAP-SURVEY.md`）**：544 图 catalog 完成；六大类结构定型（城镇/室内/半兽洞穴 D00x/赤月 D100–D102/沃玛 D201–D203/沙漠雪地），0 尺寸不符、00.map 不存在；34 图 5723 异常按 8 类错误分类（无 map-file/库表错误；frame-decode 3.map 3255 格 lib24/25、41.map 1619、D10031 唯一 ground OOB；特殊处理 ground_not_drawn 670 格；版本差异 39 图 13B）；投影/锚点/图层顺序/offset 规则引用 EVIDENCE-INVENTORY C3–C8/C16–C18。剩余：P1–P11（越界帧替换逻辑、室内地面机制、小地图留白逐图校准等）。
+- **地图资源绑定已闭合（derived）**：客户端 primary-static 选择规则 `0x0043D780`（map_id≥1000 → FMMap.wil frame map_id−1000，否则 MMap.wil frame map_id）+ 服务端 MiniMap.txt 交叉引用（`minimap-server-crossref.json`，182 条 crossref-confirmed 行）→ 构建脚本发射 `map_bindings.json`；模拟器 `setCurrentMap` 同时切换 map.bg 与 map.minimap（128×128 widget (672,0) object-fit cover），聊天显示 `[地图] 比奇县 (0) → FMMap.wil F0`。剩余 candidate：小地图帧内留白逐图校准（P6）。
 - 状态、背包、任务、NPC 窗口的全部子控件和最终坐标。
+- 场景实体资源族。
 - 商店/仓库所有状态的最终屏幕坐标、按钮命中区和状态切换。（状态图已闭合：open-all 参数表、点击打开链 0x42BB00、pre-open 0x44EF00、hit-test 0x44E910、paint 0x44E260 状态分派，见 §3；剩余：各面板控件最终坐标与具体按钮业务名。）
 - 确认框/通知框已全闭合（构造器分类、按钮状态机、hover/click、键盘/激活链、帧归属、混合编码字符串，见 §3；`RESEARCH_LOG.md` Finding 233–238）。剩余 candidate：主游戏窗 0x7EE 最终业务处理。
 - 全局窗口的实际 draw order、visibility dispatch 和 position dispatch。

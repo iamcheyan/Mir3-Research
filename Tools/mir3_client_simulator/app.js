@@ -23,6 +23,8 @@ const STATE = {
   openWindows: new Set(),
   foregroundWindow: null,
   storeState: 0,
+  currentMapIndex: 0,
+  currentMap: { name: "", map: "" },
   hp: 62, mp: 71, exp: 38,      // demo live values (bars driven by rects)
   chatLines: [],
   prompt: null,                 // {kind:'confirm'|'notice', text, cb}
@@ -81,10 +83,12 @@ function renderScene() {
   if (bg) {
     const im = makeImg(bg.library, bg.frame);
     im.className = "hud-img";
-    im.style.cssText = "left:0;top:0;width:800px;height:600px;object-fit:cover;opacity:.9";
+    // evidence C3 projection: world 48px x / 32px y -> 800x600 viewport stretch.
+    // Tile aspect is 48:32 = 3:2, matching the 800x600 viewport.
+    im.style.cssText = "left:0;top:0;width:800px;height:600px;object-fit:fill;opacity:.9";
     im.dataset.evidence = bg.evidence_level;
     im.dataset.rect = "0,0,800,600";
-    im.dataset.desc = `${bg.library} F${bg.frame}`;
+    im.dataset.desc = `${bg.library} F${bg.frame} · ${bg.note || ""}`;
     sceneEl.appendChild(im);
   }
   for (const e of STATE.data.entities || []) {
@@ -189,12 +193,14 @@ function renderHud() {
   const mmEl = document.createElement("div");
   mmEl.className = "minimap";
   mmEl.style.cssText = `left:${mm.rect[0]}px;top:${mm.rect[1]}px;width:${mm.rect[2] - mm.rect[0]}px;height:${mm.rect[3] - mm.rect[1]}px`;
-  const mmImg = makeImg("MMap.wil", 0);
+  const mapMm = STATE.data.maps.find((q) => q.id === "map.minimap");
+  const mmImg = makeImg(mapMm ? mapMm.library : "FMMap.wil", mapMm ? mapMm.frame : 0);
+  mmImg.style.cssText = "width:100%;height:100%;object-fit:cover";
   mmEl.appendChild(mmImg);
   mmEl.dataset.evidence = mm.evidence_level;
   mmEl.dataset.rect = mm.rect.join(",");
   mmEl.dataset.desc = "固定小地图 (672,0)-(800,128)";
-  mmEl.title = "小地图 · MMap.wil F0 · candidate";
+  mmEl.title = `小地图 · ${STATE.currentMap.name || ""} · ${mapMm ? mapMm.library + " F" + mapMm.frame : ""} · ${mm.evidence_level}`;
   hudEl.appendChild(mmEl);
 
   // chat region
@@ -662,14 +668,28 @@ function isOpen(id) {
   return box && !box.classList.contains("closed");
 }
 
-function cycleMinimap() {
-  const m = STATE.data.maps.find((q) => q.id === "map.minimap");
-  if (!m) return;
-  const next = (m.frame + 1) % 155;
-  m.frame = next;
+function setCurrentMap(index) {
+  const binds = STATE.data.map_bindings || [];
+  if (!binds.length) return;
+  STATE.currentMapIndex = ((index % binds.length) + binds.length) % binds.length;
+  const b = binds[STATE.currentMapIndex];
+  const mm = STATE.data.maps.find((q) => q.id === "map.minimap");
+  const bg = STATE.data.maps.find((q) => q.id === "map.bg");
+  if (mm) { mm.library = b.library; mm.frame = b.frame; }
+  if (bg) { bg.library = b.library; bg.frame = b.frame; }
+  STATE.currentMap = { name: b.name, map: b.map };
+  renderScene();
   const mmEl = hudEl.querySelector(".minimap img");
-  if (mmEl) mmEl.src = imgUrl(m.library, next);
-  pushChat(`[小地图] 切换到 MMap.wil F${next}（候选）`);
+  const mmBox = hudEl.querySelector(".minimap");
+  if (mmEl) mmEl.src = imgUrl(b.library, b.frame);
+  const t = `小地图 · ${b.name} · ${b.library} F${b.frame} · derived`;
+  if (mmEl) mmEl.title = t;
+  if (mmBox) mmBox.title = t;
+  pushChat(`[地图] ${b.name} (${b.map}) → ${b.library} F${b.frame}`);
+}
+
+function cycleMinimap() {
+  setCurrentMap((STATE.currentMapIndex || 0) + 1);
 }
 
 /* ------------------------------------------------------------ prompts */
@@ -855,7 +875,7 @@ function renderTestNav() {
     ["notice 公告", () => showPrompt("notice", "[行会公告，请自行修改公告内容.]", (ok) => pushChat("[公告] 已读"))],
     ["商店状态+1", () => { STATE.storeState = (STATE.storeState + 1) % 5; refreshWindowContent("window.store-candidate"); pushChat(`[商店] 状态 ${STATE.storeState}`); }],
     ["商店状态-1", () => { STATE.storeState = (STATE.storeState + 4) % 5; refreshWindowContent("window.store-candidate"); pushChat(`[商店] 状态 ${STATE.storeState}`); }],
-    ["随机地图", () => { const m = STATE.data.maps.find((q) => q.id === "map.bg"); m.frame = Math.floor(Math.random() * 29); renderScene(); pushChat(`[地图] FMMap F${m.frame}`); }],
+    ["切换场景", () => setCurrentMap((STATE.currentMapIndex || 0) + 1)],
   ];
   for (const [label, fn] of extra) {
     const btn = document.createElement("button");
@@ -870,6 +890,12 @@ function renderTestNav() {
 async function boot() {
   try {
     STATE.data = await loadData();
+    if ((STATE.data.map_bindings || []).length) {
+      STATE.currentMap = {
+        name: STATE.data.map_bindings[0].name,
+        map: STATE.data.map_bindings[0].map,
+      };
+    }
   } catch (e) {
     $("#status").textContent = `数据加载失败: ${e.message}`;
     return;
