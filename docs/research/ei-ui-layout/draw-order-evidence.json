@@ -74,7 +74,7 @@
     },
     "exchange": {
       "paint_va": "0x00415B10–0x0041603D",
-      "confirmed_sequence": "window/split → state-dependent 6×5 item grids → trade labels/item text/numeric status → two Frame 94 side panels",
+      "confirmed_sequence": "window/split → state-dependent 6×5 item grids → trade labels/item text/numeric status → two trade-weight gauges (frame 0x42E, max 0x5E=94, values [this+0x54/0x58] never written → empty)",
       "evidence_file": "layout.json specialized_window_evidence window.exchange-candidate"
     },
     "option": {

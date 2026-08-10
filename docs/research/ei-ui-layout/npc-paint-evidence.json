@@ -20,7 +20,9 @@
     "The method selects three consecutive dialogue-related frames from the window resource object.",
     "It calls 0x00460240 for the background/encoded image path and uses this+0x520/0x524, this+0x530/0x534 and this+0x540/0x544 coordinate/data fields.",
     "It loops over a count at this+0x51c and advances a per-entry offset by 0x12 before compositing Frame 1101-like content.",
-    "Fallback rendering uses 0x004542A0 and 0x004542F0 with alpha bytes at this+0x580/0x581."
+    "Fallback rendering uses 0x004542A0 and 0x004542F0 with alpha bytes at this+0x580/0x581.",
+    "0x0043F040 is the TEXTURE/image compositor only; the dialogue TEXT glyphs are drawn by the separate method 0x0043F460 on the same object (winmgr+0x51150, unified window id 9): white 0xFFFFFF (dword 0x47C4D8), GBK wrap, window-relative (x+0x96, y+0x28), line pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594], iterating the global node list (head 0x8B1AE4, tail 0x8B1AE8, count 0x8B1AF4; node vtable 0x47694C, line struct at node+4).",
+    "Paint of this window is dispatched by winmgr 0x4280F0 via the id-9 entry of the 0x428358 table; show/hide is a toggle on [this+0x30] through 0x42ADB0; the frame window (id 11, winmgr+0x516E8) paints its own option list via 0x447470."
   ],
   "calls": [
     {

@@ -292,8 +292,8 @@
     12,
     0
    ],
-   "role": "input-box-candidate",
-   "note": "created by a different constructor (0x00417960) than the shared 0x00417550 used for the other nine controls; argument semantics pending 0x00417960 decode on next exe access."
+   "role": "input-bar-candidate (shared bar/gauge control 0x00417960/0x004179B0)",
+   "note": "created by a different constructor (0x00417960) than the shared 0x00417550 used for the other nine controls. Decoded on this pass: it is the shared vertical bar/gauge control — sprite GameInter frame 0x17C=380 (16x502), fill area 12x260, pad 12, mode 0=vertical — drawn at paint 0x00414846 with (window.x+0x215, window.y-0xD0, value=[this+0x68], max=[this+0x6D0]). Same control family as inventory this+0x278, store this+0x5FC, exchange this+0x13648/+0x13694, guild this+0x76C, HUD this+0x61BC and NPC this+0x3C4."
   }
  ],
  "rects": [
@@ -643,12 +643,18 @@
   },
   {
    "order": 4,
+   "va": "0x00414822-0x0041484B",
+   "role": "input bar (shared bar/gauge control 0x004179B0)",
+   "evidence": "The this+0x6D4 bar draws at (window.x+0x215, window.y-0xD0) with value=[this+0x68] and max=[this+0x6D0]; sprite GameInter frame 380 (16x502), fill 12x260 vertical. This is the shared gauge/bar component, not a frame blit."
+  },
+  {
+   "order": 5,
    "va": "0x0041482B-0x00414964",
    "role": "scroll/channel control reposition and child paint",
    "evidence": "The routine writes fixed relative positions for the close, six channel and two scroll controls, then calls nine child vtable +0x04 paint slots in sequence."
   },
   {
-   "order": 5,
+   "order": 6,
    "va": "0x00414965-0x00414999",
    "role": "input-line character rectangles",
    "evidence": "The final loop builds successive input-character rectangles from the input buffer with a 14-pixel horizontal progression."
@@ -657,7 +663,6 @@
  "pending": [
   "Whether the six command strings (copied to control+0x34 by ctor 0x00417550) render as visible captions, tooltips, or both; next target: shared control paint refs 0x00417B55/0x00417BB3.",
   "Re-verify renderer 0x0045DD70 absolute x/y arg slot order and arg1/arg7 meaning on next exe access.",
-  "Decode input-box constructor 0x00417960 argument semantics (this+0x6D4).",
   "Recover close-button child vtable +0x10 handler and visibility gate 0x0042B180 wiring."
  ]
 }

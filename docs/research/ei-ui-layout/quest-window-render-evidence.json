@@ -28,15 +28,15 @@
       },
       {
         "frame_pair": [721, 722],
-        "visual_description": "X/cross operation icon with a green highlighted state and a muted/unhighlighted state",
+        "visual_description": "X/cross operation icon on a circular tan base: Frame 721 renders the cross in bright green (46 green pixels, sample RGB (152,188,56)), Frame 722 in muted gold (0 green pixels, sample RGB (112,88,72))",
         "confidence": "high",
-        "note": "Frame 721 is visibly highlighted; Frame 722 is the corresponding normal-state artwork."
+        "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); green = highlighted state, gold = normal state (iconography candidate, runtime state binding comes from the control pair)."
       },
       {
         "frame_pair": [723, 724],
-        "visual_description": "right-pointing arrow operation icon with a green highlighted state; the exported Frame 724 is empty in this client copy",
-        "confidence": "medium",
-        "note": "The constructor still binds the pair [723,724]. Treat the missing/empty 724 resource as an asset-copy or alternate-state discrepancy until the original archive is checked."
+        "visual_description": "right-pointing arrow operation icon on a circular tan base: Frame 723 renders the arrow in bright green (106 green pixels, sample RGB (192,236,72)), Frame 724 in muted gold (0 green pixels, sample RGB (112,88,72))",
+        "confidence": "high",
+        "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); earlier 'Frame 724 empty' claim came from the retired hand-rolled WIL parser and is superseded."
       }
     ],
     "evidence_level": "primary-resource-visual"
@@ -59,6 +59,12 @@
     "line_spacing": 15,
     "line_count_guard": 19,
     "evidence": "0x0044760B/0x004477EF compute window.x+0x41 and window.y+(row*15)+0x5A",
+    "scroll_semantics": {
+      "this+0x58": "list scroll offset (rows); painted row index = row - this+0x58; click in list area increments with clamp [0, this+0x5C-1] (0x0044888B-0x0044889E), wheel decrements with floor 0 (0x00448761-0x00448774)",
+      "this+0x5C": "list row count clamp; written by Paint each frame at 0x00447DED from the decoded row counter",
+      "paint_guard": "rows outside [this+0x58, this+0x58+19) are skipped (0x004475CE-0x004475E1 and 0x0044765C-0x00447670)",
+      "evidence_level": "primary-static-scroll-model"
+    },
     "entry_decode": {
       "record_text_field_candidate": "record+0x04",
       "lookup_helper": "0x0045E0C0",
@@ -83,7 +89,13 @@
       "line_spacing": 15,
       "visible_line_count": 3,
       "text_measurement_limit": 160,
+      "text_color_bgr": "0x007D0000 (dark blue; pushed at 0x00447F51/0x00447F70)",
       "draw_helper": "0x0045DD70",
+      "hit_rect": {"window_relative": [80, 310, 250, 380], "source": "SetRect via USER32 IAT [0x4762B0] at 0x004487CC with window.x+0x50, window.y+0x136, window.x+0xFA, window.y+0x17C"},
+      "scroll_semantics": {
+        "this+0x60": "detail body scroll offset (lines); click inside the body hit rect increments with clamp [0,3] (0x0044884D-0x00448860), wheel decrements with floor 0 (0x00448728-0x0044873A)",
+        "evidence_level": "primary-static-scroll-model"
+      },
       "evidence_level": "primary-static-detail-text-loop",
       "record_text_field_candidate": "detail_record+0x04",
       "long_line_threshold_bytes": 190,
@@ -127,7 +139,7 @@
           "sets this+0x68 to 1",
           "when record+0x20C is zero, sends original event/message type 0x418 through 0x00451A10"
         ],
-        "business_name": null,
+        "business_name": "candidate: abandon/delete quest (X iconography; green 721 highlighted, gold 722 normal)",
         "evidence_level": "primary-static-control-to-event-chain"
       },
       {
@@ -139,28 +151,48 @@
         "effects": [
           "when the child update reports handled, enters the same record-mark/message path as the 721/722 control"
         ],
-        "business_name": null,
+        "business_name": "candidate: next-page/advance action (right-arrow iconography; green 723 highlighted, gold 724 normal)",
         "evidence_level": "primary-static-control-to-event-chain"
       }
     ],
     "record_state_fields": {
-      "this+0x60": "visible list start row / scroll offset candidate used by the 19-row paint guard and detail line window",
+      "this+0x58": "list scroll offset (rows); painted row = row - this+0x58; click +1 clamped to [0, this+0x5C-1], wheel -1 floored at 0",
+      "this+0x5C": "list row-count clamp written by Paint each frame",
+      "this+0x60": "detail body scroll offset (lines); click +1 clamped to [0,3], wheel -1 floored at 0; read by the 3-line paint window guard",
       "this+0x68": "refresh/action state set to 1 by 0x00448580",
       "this+0x6C": "selected detail/body pointer consumed by Paint",
       "this+0x1DC": "selected record pointer consumed by 0x00448580",
       "this+0x1E8": "current list cursor / record chain head used by Paint and input",
       "this+0x1F0": "current/selected list index reset during selection processing",
       "this+0x1F4": "record count used by the input traversal",
+      "record+0x204": "row base color (RGB component branch 0x19197D / 0x1919C8)",
       "record+0x208": "selection/processed flag written by 0x00448580",
       "record+0x20C": "server/handled gate tested before event dispatch",
-      "record+0x210": "hit/selection transient flag candidate",
-      "record+0x218..+0x224": "record hit rectangle consumed by the input handler"
+      "record+0x210": "row highlight/state flag selecting the color branch",
+      "record+0x218..+0x224": "record hit rectangle consumed by the input handler",
+      "record+0x228": "per-row sub-record list head (hit-tested sub-rects at +0x204..+0x210)",
+      "record+0x220": "sub-record body text; when empty, row click sends event 0x419"
     },
+    "interaction_handlers": [
+      {"va": "0x00448640", "role": "mouse-down on operation controls / body-area hit test", "evidence": "sets child-control pressed byte flags, then SetRect + cursor hit test over the body rect"},
+      {"va": "0x00448700", "role": "mouse wheel over body/list areas", "evidence": "two register-passed rect tests; decrements this+0x60 (body) and this+0x58 (list) with floor 0"},
+      {"va": "0x00448780", "role": "mouse click over body/list areas", "evidence": "GetCursorPos [0x476240] + ScreenToClient [0x476234]; body click increments this+0x60 clamped [0,3]; list click increments this+0x58 clamped [0, this+0x5C-1]"}
+    ],
     "event_message": {
       "va": "0x00451A10",
       "type": "0x418",
-      "meaning": "original client event/message; business semantics unresolved",
-      "evidence": "0x00448580 conditionally calls 0x00451A10, which passes 0x418 into the original message/event builder before dispatching the selected record context."
+      "meaning": "quest record action event; business semantics candidate (abandon/delete is suggested by the X iconography of the 721/722 control that routes here), not provable statically",
+      "args": "1 argument: selected record's first dword (quest id candidate)",
+      "gate": "sent when record+0x20C is zero",
+      "evidence": "0x00448580 marks the selected record (+0x208=1), sets this+0x68=1, then conditionally calls 0x00451A10 which pushes 0x418 into the original message/event builder 0x00452940 before dispatch."
+    },
+    "event_message_twin": {
+      "va": "0x00451A40",
+      "type": "0x419",
+      "meaning": "quest row/sub-record event; business semantics candidate (request detail/view is suggested by the row-click trigger), not provable statically",
+      "args": "2 arguments: record first dword + sub-record object",
+      "gate": "row click inside sub-rect at record+0x228->+0x204 with empty body at +0x220",
+      "evidence": "0x00448148 (inside input handler 0x00447FA0) calls 0x00451A40 which pushes 0x419 into the same message builder."
     },
     "evidence_level": "primary-static-dispatch-and-state-chain"
   },
@@ -169,12 +201,16 @@
     "The quest list is read through 0x0045E0C0 and rendered with a 15-pixel row cadence.",
     "Both operation controls are repositioned by 0x00447470 using the same relative coordinates.",
     "Frame 705 is selected by the task refresh path for the detail/body text region.",
-    "The quest window's local paint sequence is statically ordered from base, controls, list rows, selected detail frame and body text."
+    "The quest window's local paint sequence is statically ordered from base, controls, list rows, selected detail frame and body text.",
+    "Row geometry is window.x+65, window.y+90+15*row with a 19-row paint window; the list scroll offset is this+0x58 with row-count clamp this+0x5C (written by Paint each frame).",
+    "Detail body geometry is window.x+80, window.y+310, 15px apart, 3 visible lines, hit rect (80,310)-(250,380) window-relative; body scroll offset is this+0x60 clamped to [0,3].",
+    "Mouse wheel (0x00448700) decrements both scroll offsets with floor 0; mouse click (0x00448780) increments them with the clamps above.",
+    "Frame 705 is a full-coverage 204x76 detail panel (WIL bbox (0,0,202,76)) drawn at (65,294), sized to hold the three 15px body lines.",
+    "Frame pairs are pixel-verified: 721 green X / 722 gold X; 723 green right-arrow / 724 gold right-arrow (green = highlighted, gold = normal).",
+    "Event/message twins 0x418 (mark-selected action, gated on record+0x20C==0) and 0x419 (row click with empty body at record+0x220) are built by 0x00451A10/0x00451A40 through the shared builder 0x00452940."
   ],
   "pending": [
-    "Exact quest field separators and wrapping width.",
-    "The runtime meaning of the 19-line guard and list scroll state beyond the statically observed this+0x60 window fields.",
-    "Final labels/business names for frames 721–724 and the business meaning of original event/message 0x418; the control-to-event chain is now closed but pixels and message IDs do not prove user-facing names.",
-    "Whether Frame 705 is a complete text background or only a decorative detail panel at runtime."
+    "Exact quest field separator character and any client-side pixel wrap: fields are fetched through the record vtable (0x0045E0C0: vtable +0x44 fetch, +0x68 advance) with type gates 0xA0/0xC8, and lines are emitted as discrete fields at the fixed 15px cadence, so no client wrap constant is statically visible; the separator lives in the record class and needs a runtime capture.",
+    "Business names for events 0x418 / 0x419 and for the 721-724 controls: the control-to-event chains and iconography (X = abandon/delete, arrow = next/advance) are closed, but the message IDs are not present in any local server source and user-facing names need a protocol reference or runtime capture."
   ]
 }

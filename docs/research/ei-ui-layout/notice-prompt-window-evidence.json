@@ -1,56 +1,80 @@
 {
   "source": {
-    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-    "resource_file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "resource_file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
     "constructor_va": "0x0043E260",
     "main_init_va": "0x0042797E",
-    "method": "static constructor argument and WIL visual correlation",
-    "evidence_level": "primary-static-candidate"
+    "method": "static disassembly (capstone, VA-0x400000) of ctor 0x43E260, paint 0x43E3C0, click 0x43E4BA, base ctor 0x423B30, plus push-imm32/mov-imm32 frame scan and GBK/cp949 string decode",
+    "evidence_level": "primary-static (machine code direct) + primary-resource-visual (WIL pixels); frames 603/604/605 = primary-static-absence (no reference anywhere in binary = negative evidence)"
   },
   "window": {
-    "id": "window.notice-prompt-candidate",
+    "id": 15,
+    "class_va": "0x0043E260",
+    "base_class_va": "0x00423B30",
+    "constructor": {
+      "arity": 9,
+      "ret": "0x24",
+      "parameter_reorder": "base 0x423B30 receives (res=arg1, frame=arg2, a=arg3, x=arg8, y=arg4, w=arg5, h=arg6, ...)",
+      "note": "The base-ctor parameter order differs from the wrapper's: window position x comes from wrapper arg8, y from wrapper arg4."
+    },
     "background": {
       "file": "Data/GameInter.wil",
       "frame": 602,
       "header_size": [1024, 256],
-      "visible_content_candidate": [584, 252],
-      "visual_observation": "Decorative announcement/notice board with title bar, large dark text area, close mark and confirm mark."
+      "visible_content": [584, 252],
+      "visual_observation": "Decorative announcement/notice board with title bar, large dark text area, close mark and confirm mark.",
+      "composite_rule": "painted at the window rect origin via base paint (vtable[3]) and clipped to 800x600; the 1024-wide image is NOT 800x136 HUD plate; no separate shadow pass",
+      "clip_conclusion": "the 1024x256 header is drawn with 800x600 viewport clip; anything beyond the 584x252 argument region is offscreen-clipped. No offscreen shadow/atlas band is separately composited (single composite call, clip only)."
     },
     "constructor_raw_argument_note": "main initializer at 0x00427960 pushes id=15, resource, frame=602, x=107, y=110, width=584, height=252, flags=0; the 800x600 parent origin is therefore primary-static exact.",
-    "movable": "candidate",
+    "movable": "candidate (no drag handler located)",
     "screen_coordinate": [107, 110],
     "screen_size": [584, 252],
     "evidence_level": "primary-static-exact-call-arguments"
   },
-  "related_resources": [
-    {"frame": 603, "header_size": [224, 58], "visual_observation": "Korean YES/NO confirmation prompt; the artwork contains a Korean question and YES/NO labels."},
-    {"frame": 604, "header_size": [296, 58], "visual_observation": "Narrow dark message/input panel with a white checkmark at the right."},
-    {"frame": 605, "header_size": [40, 20], "visual_observation": "Small white-check state resource."},
-    {"frame": 606, "header_size": [40, 20], "visual_observation": "Small green-check highlighted state resource used by the 0x43E260 control cluster."},
-    {"frame": 607, "header_size": [40, 20], "visual_observation": "State pair for Frame 606; exact pixels need the alternate resource copy confirmed."}
+  "frame_attribution": [
+    {"frame": 602, "referenced_by": ["0x00427970 (main init; this window)", "0x00425A46 (system-announcement banner singleton 0x777200)"], "conclusion": "dual user: notice board window AND scrolling system announcement banner (both announcement-class windows)"},
+    {"frame": 603, "referenced_by": "none (no push-imm32/mov-imm32 reference anywhere)", "conclusion": "unused Korean legacy resource; visual shows Korean YES/NO prompt artwork"},
+    {"frame": 604, "referenced_by": "none", "conclusion": "unused Korean legacy resource; narrow dark message/input panel with white checkmark"},
+    {"frame": 605, "referenced_by": "none", "conclusion": "unused Korean legacy resource; small white-check state"},
+    {"frame": 606, "referenced_by": "0x0043E2D8 only (child control 2, pressed frame)", "conclusion": "used; green-check highlighted state"},
+    {"frame": 607, "referenced_by": "0x0043E2D3 only (child control 2, hover frame)", "conclusion": "used; state pair with 606"},
+    {"frame": 161, "referenced_by": "0x0043E2D8-adjacent control-1 construction (this+0x54)", "conclusion": "used; child close/confirm control"},
+    {"frame": 162, "referenced_by": "same control-1 construction", "conclusion": "used; state pair with 161"},
+    {"frame": 950, "referenced_by": "0x0041803C only (confirmation box)", "conclusion": "confirmation box background, not notice"},
+    {"scan_method": "capstone linear sweep over whole .text for push imm32 / mov r32,imm32 whose immediate equals a frame number, excluding displacement/lea false positives"}
   ],
+  "banner_singleton": {
+    "va": "0x00425A46",
+    "object": "0x00777200",
+    "base_ctor": "0x00423E80",
+    "flag": "[0x7773D0] = 1",
+    "text_buffer": "0x4E2 dword buffer, formatted string at 0x47BB4C",
+    "role": "system announcement scrolling banner; reuses frame 602 as its backdrop"
+  },
   "child_controls": [
     {
       "call_va": "0x0043E2BB",
       "object_offset": "this+0x54",
       "frame_pair": [161, 162],
-      "position_expression": {"x": "window_arg4+0x224", "y": "window_arg8+0x10"},
+      "position_expression": {"x": "window_arg4+0x224", "y": "window_arg5+0x10"},
       "position_relative_to_parent": [548, 16],
       "screen_position_if_parent_origin": [655, 126],
       "size": [28, 26],
-      "semantic_candidate": "close/confirm control",
+      "role": "close/confirm control (button ctor 0x417550; label empty; enabled; no normal frame)",
       "evidence_level": "primary-static-expression-plus-primary-resource"
     },
     {
       "call_va": "0x0043E2E4",
       "object_offset": "this+0x108",
       "frame_pair": [606, 607],
-      "position_expression": {"x": "window_arg4+0x224+0x1F0", "y": "window_arg8+0x10+0x1B"},
-      "position_relative_to_parent": [496, 43],
-      "screen_position_if_parent_origin": [603, 153],
+      "position_expression": {"x": "window_arg4+0x1F0", "y": "window_arg5+0x1B"},
+      "position_relative_to_parent": [496, 27],
+      "screen_position_if_parent_origin": [603, 137],
       "size": [40, 20],
-      "semantic_candidate": "notice action/state button",
-      "evidence_level": "primary-static-expression-plus-primary-resource"
+      "role": "notice action/state button (button ctor 0x417550; hover=606, pressed=607, no normal frame)",
+      "evidence_level": "primary-static-expression-plus-primary-resource",
+      "y_correction": "previous JSON claimed 153 = top+0x10+0x1B (compounded offsets); correct value is window_arg5+0x1B = 110+27 = 137. The two controls anchor to the SAME window origin, not to each other."
     }
   ],
   "paint_geometry": {
@@ -60,7 +84,7 @@
     "conditional_text": [
       {
         "string_va": "0x0047C460",
-        "text_gbk_decoded": "[行会修改 请自行修改行会等级、成员排行信息]",
+        "text_gbk_decoded": "行会修改 请自行修改行会等级、成员排行信息",
         "relative_origin": [23, 94],
         "color_arg": "0x00323232",
         "branch": "this+0x1D0 == 0",
@@ -68,7 +92,7 @@
       },
       {
         "string_va": "0x0047C440",
-        "text_gbk_decoded": "[行会公告，请自行修改公告内容.]",
+        "text_gbk_decoded": "行会公告，请自行修改公告内容.",
         "relative_origin": [23, 94],
         "color_arg": "0x00323232",
         "branch": "this+0x1D0 != 0",
@@ -81,33 +105,45 @@
       "color_arg": "0x0096C8FF",
       "evidence_level": "primary-static-string-and-coordinate"
     },
-    "note": "The code directly draws original GBK guild/announcement placeholder strings through the shared text compositor. Resource Frame 602 and constructor id 15 alone do not prove whether this is a standalone notice dialog or a guild-information state."
+    "note": "The code directly draws original GBK guild/announcement placeholder strings through the shared text compositor. This window is an INDEPENDENT WM-id-15 class whose content is guild announcement display/edit."
   },
   "paint_order": [
-    {"order": 1, "va": "0x0043E3C4-0x0043E3C8", "role": "Frame 602 window background", "evidence": "The notice paint entry calls the window vtable +0x0C before selecting the state-dependent text."},
-    {"order": 2, "va": "0x0043E3C9-0x0043E432", "role": "state-dependent primary notice text", "evidence": "this+0x1D0 selects the original GBK string at 0x47C460 or 0x47C440 and emits it at window-relative (23,94) with color 0x323232."},
-    {"order": 3, "va": "0x0043E432-0x0043E459", "role": "secondary notice text", "evidence": "The second text call emits the state-selected notice string at window-relative (24,95) with the alternate color path."},
-    {"order": 4, "va": "0x0043E45E-0x0043E4AC", "role": "close/action controls", "evidence": "The close and notice-side controls are repositioned, then their two child vtable +0x04 paint slots are called."}
+    {"order": 1, "va": "0x0043E3C4", "role": "Frame 602 window background", "evidence": "base vtable[3] paint composes frame 602 at window rect origin with 800x600 clip"},
+    {"order": 2, "va": "0x0043E3C9-0x0043E432", "role": "state-dependent primary notice text", "evidence": "this+0x1D0 selects GBK string 0x47C460 or 0x47C440, emitted at window-relative (23,94), color 0x323232"},
+    {"order": 3, "va": "0x0043E432-0x0043E459", "role": "secondary notice text", "evidence": "second text call emits the notice string at window-relative (24,95) via 0x45DD70 with color 0x96C8FF"},
+    {"order": 4, "va": "0x0043E45E-0x0043E4AC", "role": "close/action controls", "evidence": "0x417830 relocates btn1 (left+0x224, top+0x10) and btn2 (left+0x1F0, top+0x1B); two child vtable[1] paint calls (stride 0xB4)"}
   ],
+  "click_handling": {
+    "va": "0x0043E4BA",
+    "ret": 8,
+    "stack_frame": "0x1F40 bytes via 0x468D10",
+    "branch_order": [
+      "btn1 (this+0x54) vtable[3] press; hit -> consume",
+      "btn2 (this+0x108) vtable[3] press; hit -> consume",
+      "else: this+0x1CC editable-text path: two rep stosd passes of 0x3E8 (1000) dwords each = guild-announcement edit buffer -> 0x43E62C",
+      "else: 0x43E62C"
+    ],
+    "conclusion": "window is interactive: close/confirm button + editable announcement text region"
+  },
   "visibility_dispatch": {
     "dispatcher_va": "0x0042ADB0",
     "id15_branch_va": "0x0042B2AD",
     "state_test": "main+0x52E8C != 0 selects the hide/remove path; zero selects the show/insert path",
     "show_path": {"list_remove_or_insert_va": "0x0042AC30", "object_visibility_slot": "vtable+0x10", "value": 1},
     "hide_path": {"list_remove_or_insert_va": "0x0042AC50", "object_visibility_slot": "vtable+0x10", "value": 0},
-    "additional_effects": "The branch also calls an external prompt/message routine with global position values before changing ID15 visibility; the caller-side business command is not named by the binary.",
     "evidence_level": "primary-static-id-dispatch"
   },
   "confirmed": [
-    "Frame 602 is a distinct large announcement/notice visual resource, not a normal 800x136 HUD plate.",
-    "The 0x43E260 code cluster constructs two child controls and uses GameInter resource frames 161/162 and 606/607.",
-    "Frame 603 visually provides an independent Korean YES/NO confirmation prompt resource in the same nearby frame family.",
-    "The notice paint entry statically orders the Frame 602 background, state text, secondary text and child-control paths.",
-    "ID15 identity is closed: main initializer 0x0042797E calls wrapper 0x0043E260, whose object is painted by 0x0043E3C0 and owns the same this+0x54/this+0x108 controls and this+0x1D0 state field.",
-    "The ID15 dispatcher branch at 0x0042B2AD is now resolved as a stateful show/hide path; it does not itself prove that the business caller is the guild page."
+    "Frame 602 is a distinct large announcement/notice visual resource (1024x256 header, drawn with 800x600 clip; no separate shadow pass).",
+    "Frame 602 has TWO users: this window (0x427970) and the system-announcement banner singleton 0x777200 (0x425A46).",
+    "Frames 603/604/605 have NO reference anywhere in the binary (negative evidence) - unused Korean legacy resources.",
+    "The 0x43E260 class constructs two child controls: 161/162 at (548,16) and 606/607 at (496,27) relative; btn2 absolute screen position is (603,137), NOT (603,153).",
+    "ID15 is an independent window class with guild-announcement display/edit content, not a guild page sub-state.",
+    "The notice paint statically orders: 602 background, state text, secondary text, child controls.",
+    "Click path: btn1/btn2 press, then editable 0x1CC announcement buffer (2x1000 dwords) -> 0x43E62C.",
+    "ID15 dispatcher branch 0x42B2AD is a stateful show/hide path (main+0x52E8C gate)."
   ],
   "pending": [
-    "Determine whether the 1024-wide header includes an offscreen shadow/atlas region beyond the visible 584×252 argument region.",
-    "Whether Frames 603/604 are drawn by this window or by a separate prompt state machine."
+    "Whether the guild-announcement edit buffer is saved to the server via a specific message id (protocol side; not needed for layout/draw conclusions)."
   ]
 }

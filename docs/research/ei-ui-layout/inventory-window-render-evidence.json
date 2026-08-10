@@ -34,7 +34,7 @@
     "evidence_level": "primary-static-plus-primary-resource"
   },
   "paint_geometry": [
-    {"va": "0x0042EB9B", "fact": "A shared draw call receives window-relative coordinates derived from x+0xF8 and y-0xA5, with GameInter frame 0x5E (94) selected by this paint path; the call is the inventory top/detail composition candidate."},
+    {"va": "0x0042EB9B", "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 — not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."},
     {"va": "0x0042EC54", "fact": "A later item/record draw path computes a horizontal coordinate x+0x19 plus an index multiplied by 36 pixels."},
     {"va": "0x0042EC64", "fact": "The corresponding vertical coordinate is y+0x29 plus a row/record difference multiplied by 36 pixels."},
     {"va": "0x0042EC8C-0x0042EE2A", "fact": "The selected item path builds source and destination rectangles, converts their integer extents through shared float helper 0x00466800, and composites with context 0x005600FC via 0x004542F0. This is the original item-icon/selection pipeline; it is not a plain 36px CSS slot fill."},
@@ -141,7 +141,7 @@
   },
   "paint_order": [
     {"order": 1, "va": "0x0042EB8C-0x0042EB90", "role": "window base/background", "evidence": "The paint entry calls the window vtable +0x0C before any inventory-specific geometry or item processing."},
-    {"order": 2, "va": "0x0042EB9B-0x0042EBB0", "role": "top/detail composition candidate", "evidence": "The first inventory-specific draw call uses GameInter frame 94 and coordinates derived from window origin x+0xF8, y-0xA5."},
+    {"order": 2, "va": "0x0042EB91-0x0042EBB0", "role": "vertical weight gauge (shared component 0x4179B0)", "evidence": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D)."},
     {"order": 3, "va": "0x0042EBBB-0x0042EE2A", "role": "selected-item hit/index and source-destination composition", "evidence": "The branch tests selection globals, resolves a 6x6 slot through 0x42F150/0x42F2A0, then builds source/destination rectangles and calls the shared float/compositor pipeline."},
     {"order": 4, "va": "0x0042EE2F-0x0042EE3A", "role": "inventory item-list/update path", "evidence": "Both selected and non-selected branches converge here and call 0x42F790 before the numeric text path."},
     {"order": 5, "va": "0x0042EE42-0x0042EEBE", "role": "primary quantity/value text", "evidence": "The runtime value at 0x7DA100 is formatted through 0x46811C using 0x47A214, with target positions based on window.x+0x41 and window.y+0x11A/0x12B."},
@@ -155,10 +155,10 @@
     "The close and 264/265 controls are tied to the GameInter path; the 267/268 child must remain associated with the Interface1c character-sprite resource path in the current export, despite nearby constructor clustering.",
     "The inventory grid is exactly 6 columns x 6 rows, not an inferred visual count.",
     "Selected-item rendering is a source/destination rectangle composition through 0x00466800 and 0x004542F0, with static text formatting call sites separately recovered.",
-    "The local inventory paint sequence is statically ordered from the base vtable call through item selection, value text, child-control positioning and state-dependent text."
+    "The local inventory paint sequence is statically ordered from the base vtable call through item selection, value text, child-control positioning and state-dependent text.",
+    "The x+0xF8/y-0xA5 draw is the shared gauge component 0x004179B0, NOT a top/detail decoration or side panel: 0x5E = 94 is the gauge max scale; the bar sprite is GameInter frame 280 (16x424) clipped to a 12x218 vertical fill area at (window.x+248, window.y-165). Fill value [this+0x58] has no write site other than the zero reset in 0x0042E970, so it renders empty. The 28x26 GameInter frame 94 image is the unrelated HUD party button."
   ],
   "pending": [
-    "The semantic meaning of the x+0xF8/y-0xA5 Frame 94 draw call and whether it is a top/detail decoration or a reusable side panel.",
     "The runtime/server semantic names of the primary value and packed +0x351/+0x353 fields; their original draw operands and branches are now recorded, but no symbol/protocol proof has been found."
   ]
 }

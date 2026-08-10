@@ -2032,7 +2032,9 @@
           "The method selects three consecutive dialogue-related frames from the window resource object.",
           "It calls 0x00460240 for the background/encoded image path and uses this+0x520/0x524, this+0x530/0x534 and this+0x540/0x544 coordinate/data fields.",
           "It loops over a count at this+0x51c and advances a per-entry offset by 0x12 before compositing Frame 1101-like content.",
-          "Fallback rendering uses 0x004542A0 and 0x004542F0 with alpha bytes at this+0x580/0x581."
+          "Fallback rendering uses 0x004542A0 and 0x004542F0 with alpha bytes at this+0x580/0x581.",
+          "0x0043F040 is the TEXTURE/image compositor only; the dialogue TEXT glyphs are drawn by the separate method 0x0043F460 on the same object (winmgr+0x51150, unified window id 9): white 0xFFFFFF (dword 0x47C4D8), GBK wrap, window-relative (x+0x96, y+0x28), line pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594], iterating the global node list (head 0x8B1AE4, tail 0x8B1AE8, count 0x8B1AF4; node vtable 0x47694C, line struct at node+4).",
+          "Paint of this window is dispatched by winmgr 0x4280F0 via the id-9 entry of the 0x428358 table; show/hide is a toggle on [this+0x30] through 0x42ADB0; the frame window (id 11, winmgr+0x516E8) paints its own option list via 0x447470."
         ]
       },
       "resource_handle": {
@@ -16437,7 +16439,7 @@
       "paint_geometry": [
         {
           "va": "0x0042EB9B",
-          "fact": "A shared draw call receives window-relative coordinates derived from x+0xF8 and y-0xA5, with GameInter frame 0x5E (94) selected by this paint path; the call is the inventory top/detail composition candidate."
+          "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 — not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."
         },
         {
           "va": "0x0042EC54",
@@ -16631,9 +16633,9 @@
         },
         {
           "order": 2,
-          "va": "0x0042EB9B-0x0042EBB0",
-          "role": "top/detail composition candidate",
-          "evidence": "The first inventory-specific draw call uses GameInter frame 94 and coordinates derived from window origin x+0xF8, y-0xA5."
+          "va": "0x0042EB91-0x0042EBB0",
+          "role": "vertical weight gauge (shared component 0x4179B0)",
+          "evidence": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D)."
         },
         {
           "order": 3,
@@ -16673,10 +16675,10 @@
         "The close and 264/265 controls are tied to the GameInter path; the 267/268 child must remain associated with the Interface1c character-sprite resource path in the current export, despite nearby constructor clustering.",
         "The inventory grid is exactly 6 columns x 6 rows, not an inferred visual count.",
         "Selected-item rendering is a source/destination rectangle composition through 0x00466800 and 0x004542F0, with static text formatting call sites separately recovered.",
-        "The local inventory paint sequence is statically ordered from the base vtable call through item selection, value text, child-control positioning and state-dependent text."
+        "The local inventory paint sequence is statically ordered from the base vtable call through item selection, value text, child-control positioning and state-dependent text.",
+        "The x+0xF8/y-0xA5 draw is the shared gauge component 0x004179B0, NOT a top/detail decoration or side panel: 0x5E = 94 is the gauge max scale; the bar sprite is GameInter frame 280 (16x424) clipped to a 12x218 vertical fill area at (window.x+248, window.y-165). Fill value [this+0x58] has no write site other than the zero reset in 0x0042E970, so it renders empty. The 28x26 GameInter frame 94 image is the unrelated HUD party button."
       ],
       "pending": [
-        "The semantic meaning of the x+0xF8/y-0xA5 Frame 94 draw call and whether it is a top/detail decoration or a reusable side panel.",
         "The runtime/server semantic names of the primary value and packed +0x351/+0x353 fields; their original draw operands and branches are now recorded, but no symbol/protocol proof has been found."
       ],
       "_artifact": "inventory-window-render-evidence.json"
@@ -18072,18 +18074,18 @@
               721,
               722
             ],
-            "visual_description": "X/cross operation icon with a green highlighted state and a muted/unhighlighted state",
+            "visual_description": "X/cross operation icon on a circular tan base: Frame 721 renders the cross in bright green (46 green pixels, sample RGB (152,188,56)), Frame 722 in muted gold (0 green pixels, sample RGB (112,88,72))",
             "confidence": "high",
-            "note": "Frame 721 is visibly highlighted; Frame 722 is the corresponding normal-state artwork."
+            "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); green = highlighted state, gold = normal state (iconography candidate, runtime state binding comes from the control pair)."
           },
           {
             "frame_pair": [
               723,
               724
             ],
-            "visual_description": "right-pointing arrow operation icon with a green highlighted state; the exported Frame 724 is empty in this client copy",
-            "confidence": "medium",
-            "note": "The constructor still binds the pair [723,724]. Treat the missing/empty 724 resource as an asset-copy or alternate-state discrepancy until the original archive is checked."
+            "visual_description": "right-pointing arrow operation icon on a circular tan base: Frame 723 renders the arrow in bright green (106 green pixels, sample RGB (192,236,72)), Frame 724 in muted gold (0 green pixels, sample RGB (112,88,72))",
+            "confidence": "high",
+            "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); earlier 'Frame 724 empty' claim came from the retired hand-rolled WIL parser and is superseded."
           }
         ],
         "evidence_level": "primary-resource-visual"
@@ -18159,6 +18161,12 @@
         "line_spacing": 15,
         "line_count_guard": 19,
         "evidence": "0x0044760B/0x004477EF compute window.x+0x41 and window.y+(row*15)+0x5A",
+        "scroll_semantics": {
+          "this+0x58": "list scroll offset (rows); painted row index = row - this+0x58; click in list area increments with clamp [0, this+0x5C-1] (0x0044888B-0x0044889E), wheel decrements with floor 0 (0x00448761-0x00448774)",
+          "this+0x5C": "list row count clamp; written by Paint each frame at 0x00447DED from the decoded row counter",
+          "paint_guard": "rows outside [this+0x58, this+0x58+19) are skipped (0x004475CE-0x004475E1 and 0x0044765C-0x00447670)",
+          "evidence_level": "primary-static-scroll-model"
+        },
         "entry_decode": {
           "record_text_field_candidate": "record+0x04",
           "lookup_helper": "0x0045E0C0",
@@ -18204,7 +18212,21 @@
           "line_spacing": 15,
           "visible_line_count": 3,
           "text_measurement_limit": 160,
+          "text_color_bgr": "0x007D0000 (dark blue; pushed at 0x00447F51/0x00447F70)",
           "draw_helper": "0x0045DD70",
+          "hit_rect": {
+            "window_relative": [
+              80,
+              310,
+              250,
+              380
+            ],
+            "source": "SetRect via USER32 IAT [0x4762B0] at 0x004487CC with window.x+0x50, window.y+0x136, window.x+0xFA, window.y+0x17C"
+          },
+          "scroll_semantics": {
+            "this+0x60": "detail body scroll offset (lines); click inside the body hit rect increments with clamp [0,3] (0x0044884D-0x00448860), wheel decrements with floor 0 (0x00448728-0x0044873A)",
+            "evidence_level": "primary-static-scroll-model"
+          },
           "evidence_level": "primary-static-detail-text-loop",
           "record_text_field_candidate": "detail_record+0x04",
           "long_line_threshold_bytes": 190,
@@ -18276,7 +18298,7 @@
               "sets this+0x68 to 1",
               "when record+0x20C is zero, sends original event/message type 0x418 through 0x00451A10"
             ],
-            "business_name": null,
+            "business_name": "candidate: abandon/delete quest (X iconography; green 721 highlighted, gold 722 normal)",
             "evidence_level": "primary-static-control-to-event-chain"
           },
           {
@@ -18291,28 +18313,60 @@
             "effects": [
               "when the child update reports handled, enters the same record-mark/message path as the 721/722 control"
             ],
-            "business_name": null,
+            "business_name": "candidate: next-page/advance action (right-arrow iconography; green 723 highlighted, gold 724 normal)",
             "evidence_level": "primary-static-control-to-event-chain"
           }
         ],
         "record_state_fields": {
-          "this+0x60": "visible list start row / scroll offset candidate used by the 19-row paint guard and detail line window",
+          "this+0x58": "list scroll offset (rows); painted row = row - this+0x58; click +1 clamped to [0, this+0x5C-1], wheel -1 floored at 0",
+          "this+0x5C": "list row-count clamp written by Paint each frame",
+          "this+0x60": "detail body scroll offset (lines); click +1 clamped to [0,3], wheel -1 floored at 0; read by the 3-line paint window guard",
           "this+0x68": "refresh/action state set to 1 by 0x00448580",
           "this+0x6C": "selected detail/body pointer consumed by Paint",
           "this+0x1DC": "selected record pointer consumed by 0x00448580",
           "this+0x1E8": "current list cursor / record chain head used by Paint and input",
           "this+0x1F0": "current/selected list index reset during selection processing",
           "this+0x1F4": "record count used by the input traversal",
+          "record+0x204": "row base color (RGB component branch 0x19197D / 0x1919C8)",
           "record+0x208": "selection/processed flag written by 0x00448580",
           "record+0x20C": "server/handled gate tested before event dispatch",
-          "record+0x210": "hit/selection transient flag candidate",
-          "record+0x218..+0x224": "record hit rectangle consumed by the input handler"
+          "record+0x210": "row highlight/state flag selecting the color branch",
+          "record+0x218..+0x224": "record hit rectangle consumed by the input handler",
+          "record+0x228": "per-row sub-record list head (hit-tested sub-rects at +0x204..+0x210)",
+          "record+0x220": "sub-record body text; when empty, row click sends event 0x419"
         },
+        "interaction_handlers": [
+          {
+            "va": "0x00448640",
+            "role": "mouse-down on operation controls / body-area hit test",
+            "evidence": "sets child-control pressed byte flags, then SetRect + cursor hit test over the body rect"
+          },
+          {
+            "va": "0x00448700",
+            "role": "mouse wheel over body/list areas",
+            "evidence": "two register-passed rect tests; decrements this+0x60 (body) and this+0x58 (list) with floor 0"
+          },
+          {
+            "va": "0x00448780",
+            "role": "mouse click over body/list areas",
+            "evidence": "GetCursorPos [0x476240] + ScreenToClient [0x476234]; body click increments this+0x60 clamped [0,3]; list click increments this+0x58 clamped [0, this+0x5C-1]"
+          }
+        ],
         "event_message": {
           "va": "0x00451A10",
           "type": "0x418",
-          "meaning": "original client event/message; business semantics unresolved",
-          "evidence": "0x00448580 conditionally calls 0x00451A10, which passes 0x418 into the original message/event builder before dispatching the selected record context."
+          "meaning": "quest record action event; business semantics candidate (abandon/delete is suggested by the X iconography of the 721/722 control that routes here), not provable statically",
+          "args": "1 argument: selected record's first dword (quest id candidate)",
+          "gate": "sent when record+0x20C is zero",
+          "evidence": "0x00448580 marks the selected record (+0x208=1), sets this+0x68=1, then conditionally calls 0x00451A10 which pushes 0x418 into the original message/event builder 0x00452940 before dispatch."
+        },
+        "event_message_twin": {
+          "va": "0x00451A40",
+          "type": "0x419",
+          "meaning": "quest row/sub-record event; business semantics candidate (request detail/view is suggested by the row-click trigger), not provable statically",
+          "args": "2 arguments: record first dword + sub-record object",
+          "gate": "row click inside sub-rect at record+0x228->+0x204 with empty body at +0x220",
+          "evidence": "0x00448148 (inside input handler 0x00447FA0) calls 0x00451A40 which pushes 0x419 into the same message builder."
         },
         "evidence_level": "primary-static-dispatch-and-state-chain"
       },
@@ -18321,13 +18375,17 @@
         "The quest list is read through 0x0045E0C0 and rendered with a 15-pixel row cadence.",
         "Both operation controls are repositioned by 0x00447470 using the same relative coordinates.",
         "Frame 705 is selected by the task refresh path for the detail/body text region.",
-        "The quest window's local paint sequence is statically ordered from base, controls, list rows, selected detail frame and body text."
+        "The quest window's local paint sequence is statically ordered from base, controls, list rows, selected detail frame and body text.",
+        "Row geometry is window.x+65, window.y+90+15*row with a 19-row paint window; the list scroll offset is this+0x58 with row-count clamp this+0x5C (written by Paint each frame).",
+        "Detail body geometry is window.x+80, window.y+310, 15px apart, 3 visible lines, hit rect (80,310)-(250,380) window-relative; body scroll offset is this+0x60 clamped to [0,3].",
+        "Mouse wheel (0x00448700) decrements both scroll offsets with floor 0; mouse click (0x00448780) increments them with the clamps above.",
+        "Frame 705 is a full-coverage 204x76 detail panel (WIL bbox (0,0,202,76)) drawn at (65,294), sized to hold the three 15px body lines.",
+        "Frame pairs are pixel-verified: 721 green X / 722 gold X; 723 green right-arrow / 724 gold right-arrow (green = highlighted, gold = normal).",
+        "Event/message twins 0x418 (mark-selected action, gated on record+0x20C==0) and 0x419 (row click with empty body at record+0x220) are built by 0x00451A10/0x00451A40 through the shared builder 0x00452940."
       ],
       "pending": [
-        "Exact quest field separators and wrapping width.",
-        "The runtime meaning of the 19-line guard and list scroll state beyond the statically observed this+0x60 window fields.",
-        "Final labels/business names for frames 721–724 and the business meaning of original event/message 0x418; the control-to-event chain is now closed but pixels and message IDs do not prove user-facing names.",
-        "Whether Frame 705 is a complete text background or only a decorative detail panel at runtime."
+        "Exact quest field separator character and any client-side pixel wrap: fields are fetched through the record vtable (0x0045E0C0: vtable +0x44 fetch, +0x68 advance) with type gates 0xA0/0xC8, and lines are emitted as discrete fields at the fixed 15px cadence, so no client wrap constant is statically visible; the separator lives in the record class and needs a runtime capture.",
+        "Business names for events 0x418 / 0x419 and for the 721-724 controls: the control-to-event chains and iconography (X = abandon/delete, arrow = next/advance) are closed, but the message IDs are not present in any local server source and user-facing names need a protocol reference or runtime capture."
       ],
       "_artifact": "quest-window-render-evidence.json"
     },
@@ -19125,7 +19183,36 @@
           "right_offset": 37,
           "bottom_offset": 37
         },
-        "item_grid_note": "These are raw SetRect constants from the binary. The right-side 4×3 grid is exact at constructor level; parent origin/meaning remains unresolved because it does not fit the currently bound 300-pixel visible background."
+        "item_grid_note": "These are raw SetRect constants from the binary. The right-side 4×3 grid is exact at constructor level; parent origin/meaning remains unresolved because it does not fit the currently bound 300-pixel visible background.",
+        "gauge": {
+          "object_offset": "this+0x5FC",
+          "ctor_va": "0x0044D4B4",
+          "draw_va": "0x0044DB3F",
+          "component": "shared gauge 0x004179B0 (ctor 0x00417960)",
+          "ctor_args": {
+            "selector": "esi (window's resource selector)",
+            "frame": 1020,
+            "frame_size": [
+              16,
+              418
+            ],
+            "arg3": 5,
+            "width": 12,
+            "height": 216,
+            "pad": 12,
+            "mode": "0=vertical"
+          },
+          "draw_args": {
+            "x": "window.x+0x107",
+            "y": "window.y-0xAA",
+            "value_field": "this+0x65C",
+            "max_field": "this+0x700"
+          },
+          "value_write_sites": 0,
+          "max_write_sites": 0,
+          "renders_empty": "both value and max fields have no static writer in .text; fill is 0 and max is 0 in this build",
+          "evidence_level": "primary-static-ctor-and-draw"
+        }
       },
       "paint_order": [
         {
@@ -19157,6 +19244,12 @@
           "va": "0x0044D9A8-0x0044DAC0",
           "role": "state-dependent auxiliary/action text",
           "evidence": "The alternate item branch repeats the record/value text path and then calls the auxiliary item-action routine when its state flags are set."
+        },
+        {
+          "order": 6,
+          "va": "0x0044DB15-0x0044DB4E",
+          "role": "vertical gauge (shared component 0x004179B0)",
+          "evidence": "After the visible-item loop, gauge object this+0x5FC draws at (window.x+0x107, window.y-0xAA, value=[this+0x65C], max=[this+0x700]). Unlike inventory/exchange (hardcoded max 0x5E=94), the store gauge's max is a runtime field; both fields have zero static write sites in .text, so it renders empty. Ctor at 0x0044D4B4: (selector, frame 0x3FC=1020, arg3=5, w=0xC=12, h=0xD8=216, pad=0xC=12, mode=0 vertical); GameInter frame 1020 is a 16x418 vertical bar sprite."
         }
       ],
       "pending": [
@@ -19550,9 +19643,21 @@
           "text_render_boundary": {
             "npc_paint_va": "0x0043F040",
             "direct_glyph_helper_seen_in_npc_paint": false,
-            "confirmed_responsibility": "NPC Paint composes Frame 1100/1101/1102 and the fallback image path.",
-            "next_trace_boundary": "The exact font, color, glyph baseline and final text draw call must be traced from the shared layout structures/callers; Frame 1101 geometry alone must not be converted into text coordinates.",
-            "evidence_level": "primary-static-boundary"
+            "text_paint_va": "0x0043F460",
+            "confirmed_responsibility": "NPC Paint 0x0043F040 composes Frame 1100/1101/1102 and the fallback image path; the dialogue TEXT is drawn by a separate method 0x0043F460 on the same object (winmgr+0x51150).",
+            "text_paint_facts": {
+              "color": "0x47C4D8 = 0xFFFFFF (white)",
+              "encoding": "GBK wrapped text through shared decoder family 0x45E0C0 (ecx=0x8AB7A8 2D graphics DC)",
+              "origin_offset": [
+                "x: window.x+0x96 (150)",
+                "y: window.y+0x28 (40)"
+              ],
+              "line_pitch": "textheight + 5",
+              "scroll_window": "[this+0x3BC] .. [this+0x3BC] + [this+0x594]",
+              "option_marker_string": "0x47C348 = GB18030 B1BC B8B2 \"奔覆\"",
+              "node_list_globals": "head 0x8B1AE4, tail 0x8B1AE8, count 0x8B1AF4; node vtable 0x47694C, line struct at node+4, 5 sub-rects line+0xC..+0x5C stride 0x10"
+            },
+            "evidence_level": "primary-static"
           },
           "interpretation": "This closes the original parser-to-layout state contract without claiming that raw segment count equals visible line count or that the image-strip compositor renders glyphs."
         },
@@ -19648,6 +19753,280 @@
           "warning": "These bottom-relative positions supersede constructor-only positions when the dialogue content changes height; they are expressions, not invented absolute screen coordinates."
         }
       },
+      "window_object_model": {
+        "root": {
+          "va": "0x0047EF18",
+          "kind": "static global object in .data/BSS (.data vsize covers VA 0x47A000..0x917FD4, raw only 0x5000 bytes; fields beyond 0x47F000 are zero-filled)",
+          "ui_init": "0x004570A0",
+          "root_ptrs": [
+            "0x8AB820",
+            "0x8B1870"
+          ],
+          "ui_state_flag": "0x8B1878 = 3"
+        },
+        "winmgr": {
+          "offset_from_root": "+0x2A548C",
+          "va": "0x0077A524",
+          "this_of": [
+            "0x4280F0 paint dispatcher",
+            "0x42AC30/0x42AC50 open-list push/pop",
+            "0x42B820 close-all",
+            "0x42ADB0 show toggle",
+            "0x42BEAA mouse handler"
+          ],
+          "input_object_table": "winmgr+0x8A7C + id*540 (stride ((id*15+0x267)*9)*4)"
+        },
+        "unified_window_ids": {
+          "evidence": "same id space used by paint 0x428358, close-all 0x42B938, show 0x42B3E4 and input dispatch 0x42C4D4; supersedes the per-table id hypothesis",
+          "model": {
+            "id": 9,
+            "winmgr_offset": "+0x51150",
+            "ctor": "0x43EA80",
+            "paint": "0x43F460 (text)",
+            "texture_paint": "0x43F040",
+            "show": "0x43F020 -> 0x423F80 (setActive)",
+            "input": "0x440290",
+            "scroll_drag": "0x43AB50",
+            "active_flag": "[+0x30] = ROOT+0x2F660C"
+          },
+          "frame": {
+            "id": 11,
+            "winmgr_offset": "+0x516E8",
+            "ctor": "0x4471D0",
+            "setup_factory": "0x4473E0 (init call 0x4278AD with args 1, 440, 340, 0, 0, 700, y=[winmgr+0x1C], 11)",
+            "paint": "0x447470",
+            "show": "0x4488B0",
+            "handler": "0x447FA0",
+            "dtor": "0x447290",
+            "vtable": "0x476A54"
+          },
+          "option_list": {
+            "frame_offset": "+0x1E0",
+            "class_vtable": "0x476A68",
+            "head": "+0x1E4",
+            "walk_cursor": "+0x1E8",
+            "count": "+0x1F4",
+            "max_painted_lines": 19,
+            "line_rect": "line+0x218 (4 dwords)",
+            "hover_flag": "line+0x210",
+            "sub_action_list": "line+0x228 (index +0x10, count +0x22C)",
+            "sub_child_rect": "child+0x204"
+          },
+          "other": [
+            {
+              "id": 8,
+              "winmgr_offset": "+0x507EC",
+              "note": "chat window; paint dispatcher rect-visibility test skips id 8, not the model"
+            },
+            {
+              "id": 12,
+              "winmgr_offset": "+0x518E0",
+              "class_vtable": "0x476950"
+            },
+            {
+              "id": 14,
+              "winmgr_offset": "+0x524F0"
+            },
+            {
+              "id": 15,
+              "winmgr_offset": "+0x52E5C",
+              "note": "confirm-style window, factory 0x43E260, laid out at 0x42797E with id 0xF"
+            }
+          ]
+        },
+        "show_toggle": {
+          "va": "0x42ADB0",
+          "semantics": "checks [window+0x30] (active): active -> 0x42AC50 remove id from open list + vtable+0x10(0) deactivate, returns 0; inactive -> 0x42AC30 append id + vtable+0x10(1) activate, returns 1",
+          "model_case": "0x42B25E",
+          "frame_case": "0x42AF2F"
+        },
+        "open_list": {
+          "object": "winmgr+0xD24",
+          "vtable": "0x476864",
+          "node_layout": "[id@0, next@4, prev@8]",
+          "push": "0x42AC30",
+          "pop_by_id": "0x42AC50",
+          "head": "+0xD2C",
+          "tail": "+0xD30",
+          "count": "+0xD38"
+        },
+        "close_all": {
+          "va": "0x42B820",
+          "per_id": "push 0; lea ecx,[winmgr+OFFSET]; call 0x423F90 (setHidden writes [window+0x34]=0)",
+          "guard": "cmp eax,0xe; ja 0x42B860"
+        },
+        "hide_all": {
+          "va": "0x41C1E0",
+          "this": "ROOT 0x47EF18",
+          "steps": [
+            "if [ROOT+0x2F660C] != 0: 0x42AC50(winmgr,9), model vtable+0x10(0), zero +0x428050/+0x42804C",
+            "if [+0x2D8644] != 0: remove id 2 + [+0x2D8614] vtable+0x10(0)",
+            "if [+0x2ABA10] != 0 and byte[+0x2ABA34] != 0: third block +0x2AB9E0"
+          ],
+          "callers": [
+            "msg table index 17 (0x41FECC)",
+            "input dispatch case 13 (0x42C18E)",
+            "0x42CFBE"
+          ]
+        },
+        "model_input": {
+          "va": "0x440290",
+          "semantics": "control +0x58 vtable+0x10 hit test (hit and [+0x274]!=0 -> handled); then if [+0x3BC]>0 and byte[+0x58C]==1 handle scrollbar [+0x1C0]; on handled, dispatch case calls mov ecx,0x47EF18; call 0x41C1E0 -> clicking the model panel closes the dialogue popups",
+          "scroll_drag": "0x43AB50 (page index byte[+0x54], offsets [+0x58+idx*4] clamped +/-6 lines, scroll control [+0x240], per-page max [+0x8A8], control array [+0x2F4])"
+        },
+        "frame_handler": {
+          "va": "0x447FA0",
+          "semantics": "control +0x128 vtable+0x10 first; then per-line hover on line+0x218 rect sets [line+0x210]=1; sub-actions when [line+0x208] and [line+0x20C] nonzero -> sub-list at [line+0x228]; child hit rect child+0x204; on hit set [+0x6C]=child+0x220 and call 0x451A40 (outbound message type 0x419, 2 args = record dword + child object; shared header builder 0x452940, send 0x451E60)",
+          "message_builders": {
+            "0x451A10": "0x418 (1 arg)",
+            "0x451A40": "0x419 (2 args)",
+            "0x451A70": "0x401",
+            "0x451AA0": "0x402",
+            "0x451AD0": "0x403",
+            "0x451B00": "0x405",
+            "0x451B30": "0x406"
+          },
+          "0x4519E0": "0x416 (frame content request, this=0x8AB828)",
+          "0x451740": "0x3F2 (1 arg, 500ms throttle at 0x41D744, gated on [model+0x30]==0)",
+          "0x4521B0": "0x3F3 (2 args, body from ROOT+0x2F6630 at 0x41B94F)",
+          "envelope": {
+            "header_builder": "0x452940 (dest+0 dword, dest+4..+0xA five words, ret 0x18)",
+            "sender": "0x451E60 (seq [this+0x14] wraps 1..9, header at +0x24, body copy 0x452740, packet 0x46811C)"
+          }
+        },
+        "option_list_fill_chain": {
+          "closure": "2026-08-10; server message 0x515 fills the frame window option list (frame+0x1E0)",
+          "dispatch": {
+            "va": "0x4218F2",
+            "ids": "0x44D..0x520",
+            "arithmetic": "lea edi,[eax-0x44d]; cmp edi,0xd3; ja 0x421d3f; mov dl,byte[edi+0x42219c]; jmp [edx*4+0x422168]",
+            "byte_table": "0x42219C (default byte 0x0C = noop index 12)",
+            "handler_table": "0x422168",
+            "id_map": {
+              "0x44D": "0x421C81",
+              "0x4B0": "0x421913 (sends 0x40C)",
+              "0x514": "0x421BBC",
+              "0x515": "0x421A45",
+              "0x516": "0x421AF5",
+              "0x517": "0x421A85",
+              "0x518": "0x4219A0 (stores ROOT+0x35A410/414/418)",
+              "0x519": "0x421BA7",
+              "0x51A..0x51D": "0x421CFC",
+              "0x51E": "0x421B5B",
+              "0x51F": "0x421955",
+              "0x520": "0x421C23"
+            },
+            "noop": "0x421D3F"
+          },
+          "handler": {
+            "va": "0x421A45",
+            "unique_caller": "0x421A7B",
+            "steps": [
+              "lea ecx,[ebx+0x2f6b74] (frame = winmgr+0x516E8 = ROOT+0x2F6B74)",
+              "0x452810 copies up to 0x2000 body bytes to stack",
+              "push [esp+0x16]&0xffff (count) + body; call 0x4488d0",
+              "jmp 0x421d3f"
+            ]
+          },
+          "fill": {
+            "va": "0x4488D0(frame, body, count)",
+            "per_line": [
+              "0x468B1A allocates 0x630-byte line descriptor",
+              "0x468BF0 strchr '/': up to 4 fields NUL-terminated in the stack body buffer",
+              "descriptor zeroed (0x18C dwords)",
+              "whole body copied to desc+4",
+              "desc+0x204 = field length, desc+0x22C = field2 length, desc+0x230 = field2 text, desc+0x214 = has-field2 flag, desc+0x208/+0x20C = action flags cleared",
+              "0x449870(list=frame+0x1E0, desc) appends"
+            ],
+            "after": [
+              "[frame+0x54] = 1 (content loaded)",
+              "[frame+0x5C] = list count",
+              "0x449060 relayout"
+            ],
+            "return": "1 on success, 0 when body empty or count<=0"
+          },
+          "list_append": {
+            "va": "0x449870",
+            "generic": true,
+            "node": "[data@0, next@4, prev@8], 12 bytes",
+            "list_header": "[vtable@0=0x476A68, head@4, walk@8, tail@0xC, count@0x14]",
+            "callers": [
+              "0x41538F",
+              "0x42AC3B (open-list append)",
+              "0x448ABA (this fill)",
+              "0x4491B6",
+              "0x44933E"
+            ],
+            "ctor": "0x4498E0"
+          },
+          "reset": {
+            "va": "0x448EF0",
+            "steps": [
+              "[frame+0x54] = 0",
+              "walk frame+0x1E0 list; per desc: free sub-list [desc+0x228] nodes then desc (0x4680F8)"
+            ]
+          },
+          "show_requests_content": {
+            "va": "0x4488B0 (vtable+0x10)",
+            "steps": [
+              "[frame+0x30] = active arg",
+              "if active and [frame+0x54]==0 -> mov ecx,0x8ab828; call 0x4519E0 (send 0x416)"
+            ]
+          },
+          "position_show": {
+            "va": "0x42B6A0(id, x, y)",
+            "steps": [
+              "0x42B820 close-all",
+              "0x42AC50 remove id from open list",
+              "0x42AC30 re-append (raise to front)",
+              "[winmgr+0xD3C] = 1",
+              "0x423F90(1) set visible ([window+0x34]=1)",
+              "0x4240C0(x,y) position"
+            ],
+            "id_offset_table": "0x42B7E0 (0->+0x6554, 1->+0x29CE4, 2->+0x33188, 3->+0x3399C, 4->+0x4707C, 6->+0x47834, 7->+0x47C28, 8->+0x507EC, 9->+0x51150, 11->+0x516E8, 12->+0x518E0, 13->+0x52118)",
+            "position_gate": "0x4240C0 only writes +0x48/+0x4C when [win+0x30] and [win+0x34] and [win+0x3C] all nonzero",
+            "frame_via": "0x42BCEF: frame key handler 0x448230 first, else position+show id 11 at (ebx,edi)",
+            "close_all_callers": [
+              "0x42ADB6",
+              "0x42B6B3",
+              "0x42BD8F"
+            ]
+          },
+          "line_paint_geometry": {
+            "va": "0x447470",
+            "x": "frame+0x18 + 0x41",
+            "y": "3*line_index + 0x12",
+            "color_base_hover": "0x1919C8",
+            "color_base_normal": "0x19197D",
+            "hover_flag": "line+0x210",
+            "max_lines": "0x13 (19)"
+          }
+        },
+        "dialogue_open": {
+          "msg_table": "0x421E8C",
+          "open_index": 16,
+          "open_va": "0x41FE31",
+          "flow": [
+            "list reset 0x440630 (this=model; [+0x3BC]=0, [+0x3C0]=[+0x594])",
+            "payload to stack via 0x452810 (max 0x2000)",
+            "header fields -> ROOT+0x42804C/+0x428050",
+            "strchr '\\' splits header/body",
+            "body parsed by 0x440750 + 0x43E9A0",
+            "if [ROOT+0x2F660C] != 0 skip; else push 9; lea ecx,[ROOT+0x2A548C]; call 0x42ADB0 (show id 9)",
+            "body pointer saved to ROOT+0x2F6630"
+          ],
+          "static_body_copy": {
+            "va": "0x41B94F",
+            "copy": "0x3F3 (1011) bytes of [ROOT+0x2F6630] into 0x8AB828 via 0x4521B0"
+          }
+        },
+        "click_buffer": {
+          "msg_table_index": 13,
+          "va": "0x41FD36",
+          "semantics": "reads [ROOT+0x2A54AC] (click buffer, ROOT-relative); if byte[ROOT+0x2A54E6]==0x33 error message box via 0x418030 (ecx=ROOT+0x3615B0, msg 0x67, title 0x565994, text 0x47B864); strcmp-style compare of 0x47ADB4 vs [ROOT+0x2A54C8] for option text matching",
+          "role": "click-buffer processing, NOT a list-fill function"
+        }
+      },
       "paint_order": [
         {
           "order": 1,
@@ -19672,6 +20051,18 @@
           "va": "0x0043F179-0x0043F240",
           "role": "fallback alpha/normalized composition",
           "evidence": "When the primary resource path is unavailable, the function enters a separate normalized/alpha composition branch using 0x4542A0; it is not proven to be business text rendering."
+        },
+        {
+          "order": 5,
+          "va": "0x0043F460",
+          "role": "dialogue text glyphs",
+          "evidence": "White (0xFFFFFF) GBK-wrapped text at window-relative (x+0x96, y+0x28), line pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594], iterating the global node list 0x8B1AE4 (vtable 0x47694C)."
+        },
+        {
+          "order": 6,
+          "va": "0x00447470",
+          "role": "frame window paint",
+          "evidence": "Frame window (id 11, +0x516E8) paints its own option list (object +0x1E0, class 0x476A68): positions controls +0x74 at (x+0x122, y+0x3B) and +0x128 at (x+0x122, y+0x59), then iterates up to 0x13=19 lines."
         }
       ],
       "confirmed": [
@@ -19680,12 +20071,26 @@
         "The paint path selects consecutive Frames 1100, 1101 and 1102.",
         "The dynamic list uses a count at this+0x51C and an 18-byte per-entry stride.",
         "All three child controls have statically recovered window-relative positions.",
-        "The NPC paint entry statically orders the primary Frame 1100 composition, repeated Frame 1101 entries, final Frame 1102 entry and fallback composition branch."
+        "The NPC paint entry statically orders the primary Frame 1100 composition, repeated Frame 1101 entries, final Frame 1102 entry and fallback composition branch.",
+        "The dialogue TEXT is drawn by 0x0043F460 on the same object (winmgr+0x51150), white 0xFFFFFF, GBK wrap, window-relative (x+0x96, y+0x28), pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594].",
+        "Unified window id space: model = id 9 (winmgr+0x51150), frame window = id 11 (winmgr+0x516E8), shared by paint 0x428358 / close-all 0x42B938 / show 0x42B3E4 / input dispatch 0x42C4D4.",
+        "Show is a toggle on [window+0x30]: active -> remove from open list + deactivate; inactive -> append to open list + activate (0x42ADB0).",
+        "Clicking the model panel (dispatch id 9, handler 0x440290 success) closes the dialogue via ROOT hide-all 0x41C1E0.",
+        "The frame window paints its OWN copy of the option list (up to 19 lines) in addition to the model's text panel.",
+        "ROOT is a static global object at 0x47EF18 (.data/BSS); winmgr = ROOT+0x2A548C; globals 0x8AB820/0x8B1870 hold the ROOT pointer; UI init 0x4570A0.",
+        "Option-line clicks on the frame dispatch outbound message type 0x419 via 0x451A40 (header builder 0x452940, send 0x451E60).",
+        "Server message 0x515 fills the frame option list: sub-protocol dispatch 0x4218F2 (byte table 0x42219C -> handler table 0x422168, index 3) -> 0x421A45 (unique call site 0x421A7B, frame=ROOT+0x2F6B74) -> 0x4488D0(frame, body, count) -> per line 0x468B1A alloc 0x630-byte descriptor + 0x468BF0 '/' split + whole body at desc+4 -> 0x449870 appends to frame+0x1E0; [frame+0x54]=1, [frame+0x5C]=count.",
+        "0x449870 is a generic linked-list append (12-byte nodes [data@0,next@4,prev@8]) shared with the winmgr open-list append 0x42AC3B; list class vtable 0x476A68; frame list header at +0x1E0 (head +0x1E4, walk +0x1E8, tail +0x1EC, count +0x1F4).",
+        "Frame show 0x4488B0 (vtable+0x10) sets [frame+0x30]=active and, when [frame+0x54]==0 (content not loaded), sends message 0x416 via 0x4519E0 (message object 0x8AB828, body at +0x18).",
+        "Winmgr position+show 0x42B6A0(id,x,y): close-all 0x42B820 -> remove 0x42AC50 -> re-append 0x42AC30 (raise) -> 0x423F90(1) visible -> 0x4240C0(x,y); 0x4240C0 positions only when [win+0x30] (active, 0x423F80) AND [win+0x34] (visible, 0x423F90) AND [win+0x3C] are all nonzero; per-id offsets @0x42B7E0 match the unified id map; frame placed at 0x42BCEF after frame key handler 0x448230.",
+        "Dialogue option-line descriptor (0x630 bytes): +0 action code, +4 whole body text, +0x204 len, +0x208/+0x20C action flags (cleared by fill), +0x210 hover flag, +0x214 has-field2 flag, +0x22C len2, +0x230 field2 text, +0x228 sub-list (index +0x10); paint draws lines at x=frame+0x18+0x41, y=3*i+0x12 with hover color base 0x1919C8 / normal 0x19197D."
       ],
       "pending": [
         "The business names and exact click semantics of Frames 161/162, 52/53 and 54/55; static GameInter hit rectangles and visual icon states are now recorded.",
         "The runtime meaning of the dynamic entry fields at this+0x520 through this+0x544.",
-        "The exact font/color/baseline draw call outside NPC Paint, including how the shared layout structures at this+0x550 through this+0x57C are consumed."
+        "The 0x416-sending family 0x448B10/0x4491xx/0x4493AF (which other windows request content) and the sibling 0x449870 fills 0x4491B6/0x44933E (store/warehouse/trade option lists, candidate).",
+        "The sub-protocol sibling handlers 0x421C81 (0x44D), 0x421BBC (0x514), 0x421AF5 (0x516), 0x421A85 (0x517), 0x421BA7 (0x519), 0x421CFC (0x51A..0x51D), 0x421B5B (0x51E), 0x421955 (0x51F), 0x421C23 (0x520) bodies; business names of outbound 0x40C / 0x416 / 0x418 / 0x419.",
+        "The first-level dispatch bodies 0x42C1A4..0x42C30D; per-frame update context 0x41D744 (gated on [model+0x30], target object [ROOT+0x364444]); second-stage dispatches 0x41EDBD->0x421D5C/0x421D8C and 0x41F052->0x421E50; unreached outer msg table 0x421E8C indices (9..15, 17..39)."
       ],
       "_artifact": "npc-window-render-evidence.json"
     },
@@ -21193,18 +21598,32 @@
               ],
               "evidence_level": "primary-static-grid-coordinate-expression"
             },
-            "side_panel_resources": [
+            "trade_weight_gauges": [
               {
                 "object_offset": "this+0x13648",
-                "frame": 94,
+                "gauge_frame": 1070,
+                "frame_size": [
+                  16,
+                  360
+                ],
+                "max_scale": 94,
                 "position": "window.x+0xD1, window.y-0x73",
-                "draw_va": "0x00416016"
+                "draw_va": "0x00416016",
+                "value_field": "this+0x54",
+                "component": "shared gauge 0x004179B0 (ctor 0x00417960)"
               },
               {
                 "object_offset": "this+0x13694",
-                "frame": 94,
+                "gauge_frame": 1070,
+                "frame_size": [
+                  16,
+                  360
+                ],
+                "max_scale": 94,
                 "position": "window.x+0x1B9, window.y-0x73",
-                "draw_va": "0x0041603D"
+                "draw_va": "0x0041603D",
+                "value_field": "this+0x58",
+                "component": "shared gauge 0x004179B0 (ctor 0x00417960)"
               }
             ],
             "text_and_status": {
@@ -21304,8 +21723,8 @@
             {
               "order": 4,
               "va": "0x00416000-0x0041603D",
-              "role": "two Frame 94 side panels",
-              "evidence": "GameInter Frame 94 is drawn at window-relative x+0xD1 and x+0x1B9, both with y-0x73, after the trade text path."
+              "role": "two trade-weight gauges (shared component 0x004179B0)",
+              "evidence": "Both draws are the gauge component, not frame blits: gauge this+0x13648 draws at window.x+0xD1 (value=[this+0x54]) and gauge this+0x13694 at window.x+0x1B9 (value=[this+0x58]), both y-0x73, max scale 0x5E=94, sprite GameInter frame 0x42E=1070 (16x360) with 12x184 vertical fill area. The 28x26 GameInter frame 94 image is the unrelated HUD party button. Value fields are never written in .text, so both bars render empty."
             }
           ],
           "pending": [
@@ -27186,8 +27605,8 @@
           12,
           0
         ],
-        "role": "input-box-candidate",
-        "note": "created by a different constructor (0x00417960) than the shared 0x00417550 used for the other nine controls; argument semantics pending 0x00417960 decode on next exe access."
+        "role": "input-bar-candidate (shared bar/gauge control 0x00417960/0x004179B0)",
+        "note": "created by a different constructor (0x00417960) than the shared 0x00417550 used for the other nine controls. Decoded on this pass: it is the shared vertical bar/gauge control — sprite GameInter frame 0x17C=380 (16x502), fill area 12x260, pad 12, mode 0=vertical — drawn at paint 0x00414846 with (window.x+0x215, window.y-0xD0, value=[this+0x68], max=[this+0x6D0]). Same control family as inventory this+0x278, store this+0x5FC, exchange this+0x13648/+0x13694, guild this+0x76C, HUD this+0x61BC and NPC this+0x3C4."
       }
     ],
     "rects": [
@@ -27537,12 +27956,18 @@
       },
       {
         "order": 4,
+        "va": "0x00414822-0x0041484B",
+        "role": "input bar (shared bar/gauge control 0x004179B0)",
+        "evidence": "The this+0x6D4 bar draws at (window.x+0x215, window.y-0xD0) with value=[this+0x68] and max=[this+0x6D0]; sprite GameInter frame 380 (16x502), fill 12x260 vertical. This is the shared gauge/bar component, not a frame blit."
+      },
+      {
+        "order": 5,
         "va": "0x0041482B-0x00414964",
         "role": "scroll/channel control reposition and child paint",
         "evidence": "The routine writes fixed relative positions for the close, six channel and two scroll controls, then calls nine child vtable +0x04 paint slots in sequence."
       },
       {
-        "order": 5,
+        "order": 6,
         "va": "0x00414965-0x00414999",
         "role": "input-line character rectangles",
         "evidence": "The final loop builds successive input-character rectangles from the input buffer with a 14-pixel horizontal progression."
@@ -27551,7 +27976,6 @@
     "pending": [
       "Whether the six command strings (copied to control+0x34 by ctor 0x00417550) render as visible captions, tooltips, or both; next target: shared control paint refs 0x00417B55/0x00417BB3.",
       "Re-verify renderer 0x0045DD70 absolute x/y arg slot order and arg1/arg7 meaning on next exe access.",
-      "Decode input-box constructor 0x00417960 argument semantics (this+0x6D4).",
       "Recover close-button child vtable +0x10 handler and visibility gate 0x0042B180 wiring."
     ]
   },
@@ -27938,9 +28362,21 @@
         "text_render_boundary": {
           "npc_paint_va": "0x0043F040",
           "direct_glyph_helper_seen_in_npc_paint": false,
-          "confirmed_responsibility": "NPC Paint composes Frame 1100/1101/1102 and the fallback image path.",
-          "next_trace_boundary": "The exact font, color, glyph baseline and final text draw call must be traced from the shared layout structures/callers; Frame 1101 geometry alone must not be converted into text coordinates.",
-          "evidence_level": "primary-static-boundary"
+          "text_paint_va": "0x0043F460",
+          "confirmed_responsibility": "NPC Paint 0x0043F040 composes Frame 1100/1101/1102 and the fallback image path; the dialogue TEXT is drawn by a separate method 0x0043F460 on the same object (winmgr+0x51150).",
+          "text_paint_facts": {
+            "color": "0x47C4D8 = 0xFFFFFF (white)",
+            "encoding": "GBK wrapped text through shared decoder family 0x45E0C0 (ecx=0x8AB7A8 2D graphics DC)",
+            "origin_offset": [
+              "x: window.x+0x96 (150)",
+              "y: window.y+0x28 (40)"
+            ],
+            "line_pitch": "textheight + 5",
+            "scroll_window": "[this+0x3BC] .. [this+0x3BC] + [this+0x594]",
+            "option_marker_string": "0x47C348 = GB18030 B1BC B8B2 \"奔覆\"",
+            "node_list_globals": "head 0x8B1AE4, tail 0x8B1AE8, count 0x8B1AF4; node vtable 0x47694C, line struct at node+4, 5 sub-rects line+0xC..+0x5C stride 0x10"
+          },
+          "evidence_level": "primary-static"
         },
         "interpretation": "This closes the original parser-to-layout state contract without claiming that raw segment count equals visible line count or that the image-strip compositor renders glyphs."
       },
@@ -28036,6 +28472,280 @@
         "warning": "These bottom-relative positions supersede constructor-only positions when the dialogue content changes height; they are expressions, not invented absolute screen coordinates."
       }
     },
+    "window_object_model": {
+      "root": {
+        "va": "0x0047EF18",
+        "kind": "static global object in .data/BSS (.data vsize covers VA 0x47A000..0x917FD4, raw only 0x5000 bytes; fields beyond 0x47F000 are zero-filled)",
+        "ui_init": "0x004570A0",
+        "root_ptrs": [
+          "0x8AB820",
+          "0x8B1870"
+        ],
+        "ui_state_flag": "0x8B1878 = 3"
+      },
+      "winmgr": {
+        "offset_from_root": "+0x2A548C",
+        "va": "0x0077A524",
+        "this_of": [
+          "0x4280F0 paint dispatcher",
+          "0x42AC30/0x42AC50 open-list push/pop",
+          "0x42B820 close-all",
+          "0x42ADB0 show toggle",
+          "0x42BEAA mouse handler"
+        ],
+        "input_object_table": "winmgr+0x8A7C + id*540 (stride ((id*15+0x267)*9)*4)"
+      },
+      "unified_window_ids": {
+        "evidence": "same id space used by paint 0x428358, close-all 0x42B938, show 0x42B3E4 and input dispatch 0x42C4D4; supersedes the per-table id hypothesis",
+        "model": {
+          "id": 9,
+          "winmgr_offset": "+0x51150",
+          "ctor": "0x43EA80",
+          "paint": "0x43F460 (text)",
+          "texture_paint": "0x43F040",
+          "show": "0x43F020 -> 0x423F80 (setActive)",
+          "input": "0x440290",
+          "scroll_drag": "0x43AB50",
+          "active_flag": "[+0x30] = ROOT+0x2F660C"
+        },
+        "frame": {
+          "id": 11,
+          "winmgr_offset": "+0x516E8",
+          "ctor": "0x4471D0",
+          "setup_factory": "0x4473E0 (init call 0x4278AD with args 1, 440, 340, 0, 0, 700, y=[winmgr+0x1C], 11)",
+          "paint": "0x447470",
+          "show": "0x4488B0",
+          "handler": "0x447FA0",
+          "dtor": "0x447290",
+          "vtable": "0x476A54"
+        },
+        "option_list": {
+          "frame_offset": "+0x1E0",
+          "class_vtable": "0x476A68",
+          "head": "+0x1E4",
+          "walk_cursor": "+0x1E8",
+          "count": "+0x1F4",
+          "max_painted_lines": 19,
+          "line_rect": "line+0x218 (4 dwords)",
+          "hover_flag": "line+0x210",
+          "sub_action_list": "line+0x228 (index +0x10, count +0x22C)",
+          "sub_child_rect": "child+0x204"
+        },
+        "other": [
+          {
+            "id": 8,
+            "winmgr_offset": "+0x507EC",
+            "note": "chat window; paint dispatcher rect-visibility test skips id 8, not the model"
+          },
+          {
+            "id": 12,
+            "winmgr_offset": "+0x518E0",
+            "class_vtable": "0x476950"
+          },
+          {
+            "id": 14,
+            "winmgr_offset": "+0x524F0"
+          },
+          {
+            "id": 15,
+            "winmgr_offset": "+0x52E5C",
+            "note": "confirm-style window, factory 0x43E260, laid out at 0x42797E with id 0xF"
+          }
+        ]
+      },
+      "show_toggle": {
+        "va": "0x42ADB0",
+        "semantics": "checks [window+0x30] (active): active -> 0x42AC50 remove id from open list + vtable+0x10(0) deactivate, returns 0; inactive -> 0x42AC30 append id + vtable+0x10(1) activate, returns 1",
+        "model_case": "0x42B25E",
+        "frame_case": "0x42AF2F"
+      },
+      "open_list": {
+        "object": "winmgr+0xD24",
+        "vtable": "0x476864",
+        "node_layout": "[id@0, next@4, prev@8]",
+        "push": "0x42AC30",
+        "pop_by_id": "0x42AC50",
+        "head": "+0xD2C",
+        "tail": "+0xD30",
+        "count": "+0xD38"
+      },
+      "close_all": {
+        "va": "0x42B820",
+        "per_id": "push 0; lea ecx,[winmgr+OFFSET]; call 0x423F90 (setHidden writes [window+0x34]=0)",
+        "guard": "cmp eax,0xe; ja 0x42B860"
+      },
+      "hide_all": {
+        "va": "0x41C1E0",
+        "this": "ROOT 0x47EF18",
+        "steps": [
+          "if [ROOT+0x2F660C] != 0: 0x42AC50(winmgr,9), model vtable+0x10(0), zero +0x428050/+0x42804C",
+          "if [+0x2D8644] != 0: remove id 2 + [+0x2D8614] vtable+0x10(0)",
+          "if [+0x2ABA10] != 0 and byte[+0x2ABA34] != 0: third block +0x2AB9E0"
+        ],
+        "callers": [
+          "msg table index 17 (0x41FECC)",
+          "input dispatch case 13 (0x42C18E)",
+          "0x42CFBE"
+        ]
+      },
+      "model_input": {
+        "va": "0x440290",
+        "semantics": "control +0x58 vtable+0x10 hit test (hit and [+0x274]!=0 -> handled); then if [+0x3BC]>0 and byte[+0x58C]==1 handle scrollbar [+0x1C0]; on handled, dispatch case calls mov ecx,0x47EF18; call 0x41C1E0 -> clicking the model panel closes the dialogue popups",
+        "scroll_drag": "0x43AB50 (page index byte[+0x54], offsets [+0x58+idx*4] clamped +/-6 lines, scroll control [+0x240], per-page max [+0x8A8], control array [+0x2F4])"
+      },
+      "frame_handler": {
+        "va": "0x447FA0",
+        "semantics": "control +0x128 vtable+0x10 first; then per-line hover on line+0x218 rect sets [line+0x210]=1; sub-actions when [line+0x208] and [line+0x20C] nonzero -> sub-list at [line+0x228]; child hit rect child+0x204; on hit set [+0x6C]=child+0x220 and call 0x451A40 (outbound message type 0x419, 2 args = record dword + child object; shared header builder 0x452940, send 0x451E60)",
+        "message_builders": {
+          "0x451A10": "0x418 (1 arg)",
+          "0x451A40": "0x419 (2 args)",
+          "0x451A70": "0x401",
+          "0x451AA0": "0x402",
+          "0x451AD0": "0x403",
+          "0x451B00": "0x405",
+          "0x451B30": "0x406"
+        },
+        "0x4519E0": "0x416 (frame content request, this=0x8AB828)",
+        "0x451740": "0x3F2 (1 arg, 500ms throttle at 0x41D744, gated on [model+0x30]==0)",
+        "0x4521B0": "0x3F3 (2 args, body from ROOT+0x2F6630 at 0x41B94F)",
+        "envelope": {
+          "header_builder": "0x452940 (dest+0 dword, dest+4..+0xA five words, ret 0x18)",
+          "sender": "0x451E60 (seq [this+0x14] wraps 1..9, header at +0x24, body copy 0x452740, packet 0x46811C)"
+        }
+      },
+      "option_list_fill_chain": {
+        "closure": "2026-08-10; server message 0x515 fills the frame window option list (frame+0x1E0)",
+        "dispatch": {
+          "va": "0x4218F2",
+          "ids": "0x44D..0x520",
+          "arithmetic": "lea edi,[eax-0x44d]; cmp edi,0xd3; ja 0x421d3f; mov dl,byte[edi+0x42219c]; jmp [edx*4+0x422168]",
+          "byte_table": "0x42219C (default byte 0x0C = noop index 12)",
+          "handler_table": "0x422168",
+          "id_map": {
+            "0x44D": "0x421C81",
+            "0x4B0": "0x421913 (sends 0x40C)",
+            "0x514": "0x421BBC",
+            "0x515": "0x421A45",
+            "0x516": "0x421AF5",
+            "0x517": "0x421A85",
+            "0x518": "0x4219A0 (stores ROOT+0x35A410/414/418)",
+            "0x519": "0x421BA7",
+            "0x51A..0x51D": "0x421CFC",
+            "0x51E": "0x421B5B",
+            "0x51F": "0x421955",
+            "0x520": "0x421C23"
+          },
+          "noop": "0x421D3F"
+        },
+        "handler": {
+          "va": "0x421A45",
+          "unique_caller": "0x421A7B",
+          "steps": [
+            "lea ecx,[ebx+0x2f6b74] (frame = winmgr+0x516E8 = ROOT+0x2F6B74)",
+            "0x452810 copies up to 0x2000 body bytes to stack",
+            "push [esp+0x16]&0xffff (count) + body; call 0x4488d0",
+            "jmp 0x421d3f"
+          ]
+        },
+        "fill": {
+          "va": "0x4488D0(frame, body, count)",
+          "per_line": [
+            "0x468B1A allocates 0x630-byte line descriptor",
+            "0x468BF0 strchr '/': up to 4 fields NUL-terminated in the stack body buffer",
+            "descriptor zeroed (0x18C dwords)",
+            "whole body copied to desc+4",
+            "desc+0x204 = field length, desc+0x22C = field2 length, desc+0x230 = field2 text, desc+0x214 = has-field2 flag, desc+0x208/+0x20C = action flags cleared",
+            "0x449870(list=frame+0x1E0, desc) appends"
+          ],
+          "after": [
+            "[frame+0x54] = 1 (content loaded)",
+            "[frame+0x5C] = list count",
+            "0x449060 relayout"
+          ],
+          "return": "1 on success, 0 when body empty or count<=0"
+        },
+        "list_append": {
+          "va": "0x449870",
+          "generic": true,
+          "node": "[data@0, next@4, prev@8], 12 bytes",
+          "list_header": "[vtable@0=0x476A68, head@4, walk@8, tail@0xC, count@0x14]",
+          "callers": [
+            "0x41538F",
+            "0x42AC3B (open-list append)",
+            "0x448ABA (this fill)",
+            "0x4491B6",
+            "0x44933E"
+          ],
+          "ctor": "0x4498E0"
+        },
+        "reset": {
+          "va": "0x448EF0",
+          "steps": [
+            "[frame+0x54] = 0",
+            "walk frame+0x1E0 list; per desc: free sub-list [desc+0x228] nodes then desc (0x4680F8)"
+          ]
+        },
+        "show_requests_content": {
+          "va": "0x4488B0 (vtable+0x10)",
+          "steps": [
+            "[frame+0x30] = active arg",
+            "if active and [frame+0x54]==0 -> mov ecx,0x8ab828; call 0x4519E0 (send 0x416)"
+          ]
+        },
+        "position_show": {
+          "va": "0x42B6A0(id, x, y)",
+          "steps": [
+            "0x42B820 close-all",
+            "0x42AC50 remove id from open list",
+            "0x42AC30 re-append (raise to front)",
+            "[winmgr+0xD3C] = 1",
+            "0x423F90(1) set visible ([window+0x34]=1)",
+            "0x4240C0(x,y) position"
+          ],
+          "id_offset_table": "0x42B7E0 (0->+0x6554, 1->+0x29CE4, 2->+0x33188, 3->+0x3399C, 4->+0x4707C, 6->+0x47834, 7->+0x47C28, 8->+0x507EC, 9->+0x51150, 11->+0x516E8, 12->+0x518E0, 13->+0x52118)",
+          "position_gate": "0x4240C0 only writes +0x48/+0x4C when [win+0x30] and [win+0x34] and [win+0x3C] all nonzero",
+          "frame_via": "0x42BCEF: frame key handler 0x448230 first, else position+show id 11 at (ebx,edi)",
+          "close_all_callers": [
+            "0x42ADB6",
+            "0x42B6B3",
+            "0x42BD8F"
+          ]
+        },
+        "line_paint_geometry": {
+          "va": "0x447470",
+          "x": "frame+0x18 + 0x41",
+          "y": "3*line_index + 0x12",
+          "color_base_hover": "0x1919C8",
+          "color_base_normal": "0x19197D",
+          "hover_flag": "line+0x210",
+          "max_lines": "0x13 (19)"
+        }
+      },
+      "dialogue_open": {
+        "msg_table": "0x421E8C",
+        "open_index": 16,
+        "open_va": "0x41FE31",
+        "flow": [
+          "list reset 0x440630 (this=model; [+0x3BC]=0, [+0x3C0]=[+0x594])",
+          "payload to stack via 0x452810 (max 0x2000)",
+          "header fields -> ROOT+0x42804C/+0x428050",
+          "strchr '\\' splits header/body",
+          "body parsed by 0x440750 + 0x43E9A0",
+          "if [ROOT+0x2F660C] != 0 skip; else push 9; lea ecx,[ROOT+0x2A548C]; call 0x42ADB0 (show id 9)",
+          "body pointer saved to ROOT+0x2F6630"
+        ],
+        "static_body_copy": {
+          "va": "0x41B94F",
+          "copy": "0x3F3 (1011) bytes of [ROOT+0x2F6630] into 0x8AB828 via 0x4521B0"
+        }
+      },
+      "click_buffer": {
+        "msg_table_index": 13,
+        "va": "0x41FD36",
+        "semantics": "reads [ROOT+0x2A54AC] (click buffer, ROOT-relative); if byte[ROOT+0x2A54E6]==0x33 error message box via 0x418030 (ecx=ROOT+0x3615B0, msg 0x67, title 0x565994, text 0x47B864); strcmp-style compare of 0x47ADB4 vs [ROOT+0x2A54C8] for option text matching",
+        "role": "click-buffer processing, NOT a list-fill function"
+      }
+    },
     "paint_order": [
       {
         "order": 1,
@@ -28060,6 +28770,18 @@
         "va": "0x0043F179-0x0043F240",
         "role": "fallback alpha/normalized composition",
         "evidence": "When the primary resource path is unavailable, the function enters a separate normalized/alpha composition branch using 0x4542A0; it is not proven to be business text rendering."
+      },
+      {
+        "order": 5,
+        "va": "0x0043F460",
+        "role": "dialogue text glyphs",
+        "evidence": "White (0xFFFFFF) GBK-wrapped text at window-relative (x+0x96, y+0x28), line pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594], iterating the global node list 0x8B1AE4 (vtable 0x47694C)."
+      },
+      {
+        "order": 6,
+        "va": "0x00447470",
+        "role": "frame window paint",
+        "evidence": "Frame window (id 11, +0x516E8) paints its own option list (object +0x1E0, class 0x476A68): positions controls +0x74 at (x+0x122, y+0x3B) and +0x128 at (x+0x122, y+0x59), then iterates up to 0x13=19 lines."
       }
     ],
     "confirmed": [
@@ -28068,12 +28790,26 @@
       "The paint path selects consecutive Frames 1100, 1101 and 1102.",
       "The dynamic list uses a count at this+0x51C and an 18-byte per-entry stride.",
       "All three child controls have statically recovered window-relative positions.",
-      "The NPC paint entry statically orders the primary Frame 1100 composition, repeated Frame 1101 entries, final Frame 1102 entry and fallback composition branch."
+      "The NPC paint entry statically orders the primary Frame 1100 composition, repeated Frame 1101 entries, final Frame 1102 entry and fallback composition branch.",
+      "The dialogue TEXT is drawn by 0x0043F460 on the same object (winmgr+0x51150), white 0xFFFFFF, GBK wrap, window-relative (x+0x96, y+0x28), pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594].",
+      "Unified window id space: model = id 9 (winmgr+0x51150), frame window = id 11 (winmgr+0x516E8), shared by paint 0x428358 / close-all 0x42B938 / show 0x42B3E4 / input dispatch 0x42C4D4.",
+      "Show is a toggle on [window+0x30]: active -> remove from open list + deactivate; inactive -> append to open list + activate (0x42ADB0).",
+      "Clicking the model panel (dispatch id 9, handler 0x440290 success) closes the dialogue via ROOT hide-all 0x41C1E0.",
+      "The frame window paints its OWN copy of the option list (up to 19 lines) in addition to the model's text panel.",
+      "ROOT is a static global object at 0x47EF18 (.data/BSS); winmgr = ROOT+0x2A548C; globals 0x8AB820/0x8B1870 hold the ROOT pointer; UI init 0x4570A0.",
+      "Option-line clicks on the frame dispatch outbound message type 0x419 via 0x451A40 (header builder 0x452940, send 0x451E60).",
+      "Server message 0x515 fills the frame option list: sub-protocol dispatch 0x4218F2 (byte table 0x42219C -> handler table 0x422168, index 3) -> 0x421A45 (unique call site 0x421A7B, frame=ROOT+0x2F6B74) -> 0x4488D0(frame, body, count) -> per line 0x468B1A alloc 0x630-byte descriptor + 0x468BF0 '/' split + whole body at desc+4 -> 0x449870 appends to frame+0x1E0; [frame+0x54]=1, [frame+0x5C]=count.",
+      "0x449870 is a generic linked-list append (12-byte nodes [data@0,next@4,prev@8]) shared with the winmgr open-list append 0x42AC3B; list class vtable 0x476A68; frame list header at +0x1E0 (head +0x1E4, walk +0x1E8, tail +0x1EC, count +0x1F4).",
+      "Frame show 0x4488B0 (vtable+0x10) sets [frame+0x30]=active and, when [frame+0x54]==0 (content not loaded), sends message 0x416 via 0x4519E0 (message object 0x8AB828, body at +0x18).",
+      "Winmgr position+show 0x42B6A0(id,x,y): close-all 0x42B820 -> remove 0x42AC50 -> re-append 0x42AC30 (raise) -> 0x423F90(1) visible -> 0x4240C0(x,y); 0x4240C0 positions only when [win+0x30] (active, 0x423F80) AND [win+0x34] (visible, 0x423F90) AND [win+0x3C] are all nonzero; per-id offsets @0x42B7E0 match the unified id map; frame placed at 0x42BCEF after frame key handler 0x448230.",
+      "Dialogue option-line descriptor (0x630 bytes): +0 action code, +4 whole body text, +0x204 len, +0x208/+0x20C action flags (cleared by fill), +0x210 hover flag, +0x214 has-field2 flag, +0x22C len2, +0x230 field2 text, +0x228 sub-list (index +0x10); paint draws lines at x=frame+0x18+0x41, y=3*i+0x12 with hover color base 0x1919C8 / normal 0x19197D."
     ],
     "pending": [
       "The business names and exact click semantics of Frames 161/162, 52/53 and 54/55; static GameInter hit rectangles and visual icon states are now recorded.",
       "The runtime meaning of the dynamic entry fields at this+0x520 through this+0x544.",
-      "The exact font/color/baseline draw call outside NPC Paint, including how the shared layout structures at this+0x550 through this+0x57C are consumed."
+      "The 0x416-sending family 0x448B10/0x4491xx/0x4493AF (which other windows request content) and the sibling 0x449870 fills 0x4491B6/0x44933E (store/warehouse/trade option lists, candidate).",
+      "The sub-protocol sibling handlers 0x421C81 (0x44D), 0x421BBC (0x514), 0x421AF5 (0x516), 0x421A85 (0x517), 0x421BA7 (0x519), 0x421CFC (0x51A..0x51D), 0x421B5B (0x51E), 0x421955 (0x51F), 0x421C23 (0x520) bodies; business names of outbound 0x40C / 0x416 / 0x418 / 0x419.",
+      "The first-level dispatch bodies 0x42C1A4..0x42C30D; per-frame update context 0x41D744 (gated on [model+0x30], target object [ROOT+0x364444]); second-stage dispatches 0x41EDBD->0x421D5C/0x421D8C and 0x41F052->0x421E50; unreached outer msg table 0x421E8C indices (9..15, 17..39)."
     ]
   },
   "social_window_evidence": {
@@ -29579,18 +30315,32 @@
             ],
             "evidence_level": "primary-static-grid-coordinate-expression"
           },
-          "side_panel_resources": [
+          "trade_weight_gauges": [
             {
               "object_offset": "this+0x13648",
-              "frame": 94,
+              "gauge_frame": 1070,
+              "frame_size": [
+                16,
+                360
+              ],
+              "max_scale": 94,
               "position": "window.x+0xD1, window.y-0x73",
-              "draw_va": "0x00416016"
+              "draw_va": "0x00416016",
+              "value_field": "this+0x54",
+              "component": "shared gauge 0x004179B0 (ctor 0x00417960)"
             },
             {
               "object_offset": "this+0x13694",
-              "frame": 94,
+              "gauge_frame": 1070,
+              "frame_size": [
+                16,
+                360
+              ],
+              "max_scale": 94,
               "position": "window.x+0x1B9, window.y-0x73",
-              "draw_va": "0x0041603D"
+              "draw_va": "0x0041603D",
+              "value_field": "this+0x58",
+              "component": "shared gauge 0x004179B0 (ctor 0x00417960)"
             }
           ],
           "text_and_status": {
@@ -29690,8 +30440,8 @@
           {
             "order": 4,
             "va": "0x00416000-0x0041603D",
-            "role": "two Frame 94 side panels",
-            "evidence": "GameInter Frame 94 is drawn at window-relative x+0xD1 and x+0x1B9, both with y-0x73, after the trade text path."
+            "role": "two trade-weight gauges (shared component 0x004179B0)",
+            "evidence": "Both draws are the gauge component, not frame blits: gauge this+0x13648 draws at window.x+0xD1 (value=[this+0x54]) and gauge this+0x13694 at window.x+0x1B9 (value=[this+0x58]), both y-0x73, max scale 0x5E=94, sprite GameInter frame 0x42E=1070 (16x360) with 12x184 vertical fill area. The 28x26 GameInter frame 94 image is the unrelated HUD party button. Value fields are never written in .text, so both bars render empty."
           }
         ],
         "pending": [
@@ -29831,7 +30581,7 @@
       },
       "exchange": {
         "paint_va": "0x00415B10–0x0041603D",
-        "confirmed_sequence": "window/split → state-dependent 6×5 item grids → trade labels/item text/numeric status → two Frame 94 side panels",
+        "confirmed_sequence": "window/split → state-dependent 6×5 item grids → trade labels/item text/numeric status → two trade-weight gauges (frame 0x42E, max 0x5E=94, values [this+0x54/0x58] never written → empty)",
         "evidence_file": "layout.json specialized_window_evidence window.exchange-candidate"
       },
       "option": {
@@ -34630,10 +35380,10 @@
     {
       "scope": "window.inventory",
       "order": 2,
-      "va": "0x0042EB9B-0x0042EBB0",
-      "role": "top/detail composition candidate",
+      "va": "0x0042EB91-0x0042EBB0",
+      "role": "vertical weight gauge (shared component 0x4179B0)",
       "resource": null,
-      "evidence_level": "The first inventory-specific draw call uses GameInter frame 94 and coordinates derived from window origin x+0xF8, y-0xA5.",
+      "evidence_level": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D).",
       "source": "inventory-window-render-evidence.json",
       "warning": null
     },
@@ -34788,6 +35538,16 @@
       "warning": null
     },
     {
+      "scope": "store-window-render-evidence.json",
+      "order": 6,
+      "va": "0x0044DB15-0x0044DB4E",
+      "role": "vertical gauge (shared component 0x004179B0)",
+      "resource": null,
+      "evidence_level": "After the visible-item loop, gauge object this+0x5FC draws at (window.x+0x107, window.y-0xAA, value=[this+0x65C], max=[this+0x700]). Unlike inventory/exchange (hardcoded max 0x5E=94), the store gauge's max is a runtime field; both fields have zero static write sites in .text, so it renders empty. Ctor at 0x0044D4B4: (selector, frame 0x3FC=1020, arg3=5, w=0xC=12, h=0xD8=216, pad=0xC=12, mode=0 vertical); GameInter frame 1020 is a 16x418 vertical bar sprite.",
+      "source": "store-window-render-evidence.json",
+      "warning": null
+    },
+    {
       "scope": "window.npc-candidate",
       "order": 1,
       "va": "0x0043F055-0x0043F0B0",
@@ -34824,6 +35584,26 @@
       "role": "fallback alpha/normalized composition",
       "resource": null,
       "evidence_level": "When the primary resource path is unavailable, the function enters a separate normalized/alpha composition branch using 0x4542A0; it is not proven to be business text rendering.",
+      "source": "npc-window-render-evidence.json",
+      "warning": null
+    },
+    {
+      "scope": "window.npc-candidate",
+      "order": 5,
+      "va": "0x0043F460",
+      "role": "dialogue text glyphs",
+      "resource": null,
+      "evidence_level": "White (0xFFFFFF) GBK-wrapped text at window-relative (x+0x96, y+0x28), line pitch textheight+5, scroll window [this+0x3BC]..[this+0x3BC]+[this+0x594], iterating the global node list 0x8B1AE4 (vtable 0x47694C).",
+      "source": "npc-window-render-evidence.json",
+      "warning": null
+    },
+    {
+      "scope": "window.npc-candidate",
+      "order": 6,
+      "va": "0x00447470",
+      "role": "frame window paint",
+      "resource": null,
+      "evidence_level": "Frame window (id 11, +0x516E8) paints its own option list (object +0x1E0, class 0x476A68): positions controls +0x74 at (x+0x122, y+0x3B) and +0x128 at (x+0x122, y+0x59), then iterates up to 0x13=19 lines.",
       "source": "npc-window-render-evidence.json",
       "warning": null
     },
@@ -34981,9 +35761,9 @@
       "scope": "window.exchange-candidate",
       "order": 4,
       "va": "0x00416000-0x0041603D",
-      "role": "two Frame 94 side panels",
+      "role": "two trade-weight gauges (shared component 0x004179B0)",
       "resource": null,
-      "evidence_level": "GameInter Frame 94 is drawn at window-relative x+0xD1 and x+0x1B9, both with y-0x73, after the trade text path.",
+      "evidence_level": "Both draws are the gauge component, not frame blits: gauge this+0x13648 draws at window.x+0xD1 (value=[this+0x54]) and gauge this+0x13694 at window.x+0x1B9 (value=[this+0x58]), both y-0x73, max scale 0x5E=94, sprite GameInter frame 0x42E=1070 (16x360) with 12x184 vertical fill area. The 28x26 GameInter frame 94 image is the unrelated HUD party button. Value fields are never written in .text, so both bars render empty.",
       "source": "system-window-render-evidence.json",
       "warning": null
     },
