@@ -294,7 +294,10 @@ simulator/style.css
 - 商店/仓库所有状态的最终屏幕坐标、按钮命中区和状态切换。（状态图已闭合：open-all 参数表、点击打开链 0x42BB00、pre-open 0x44EF00、hit-test 0x44E910、paint 0x44E260 状态分派，见 §3；剩余：各面板控件最终坐标与具体按钮业务名。）
 - 确认框/通知框已全闭合（构造器分类、按钮状态机、hover/click、键盘/激活链、帧归属、混合编码字符串，见 §3；`RESEARCH_LOG.md` Finding 233–238）。剩余 candidate：主游戏窗 0x7EE 最终业务处理。
 - 全局窗口的实际 draw order、visibility dispatch 和 position dispatch。
-- 角色装备槽、怪物目标框、人物/怪物头像、场景实体资源族。
+- **角色装备槽已闭合（Finding 240，`equipment-slots-evidence.json`）**：8 个槽 38×38 几何 primary-static（SetRect 链 `0x44B1BC–0x44B2C6`：loop0 头盔 (177,70)、loop1 火把 (27,264)、loop2 毒药 (64,264)、loop3 左手镯 (27,186)、loop4 右手镯 (175,186)、loop5 左戒指 (27,227)、loop6 右戒指 (175,227)、loop10 鞋子 (103,264)，窗口相对，绝对=+(278,136)）；非槽区 loop7 头像/名区 49×33、loop8 纸娃娃 60×90、loop9 属性面板 53×84；命中测试 `0x44B720` 纯位置、无类别逻辑（服务端驱动）；图标帧=物品 shape `WORD[graphics+0x28]` 非槽位索引。剩余 candidate：槽位人类名称（记录配对 2↔loop1/3↔loop0/9↔loop2/10↔loop10 vs 服务端 EquipmentSlot 枚举语义 2=头盔/3=火把/9=鞋子/10=毒药 待运行时裁决）、el82/83/139 运行时 WIL 绑定。
+- **怪物目标框已闭合（Finding 239，`target-box-evidence.json`）**：代码绘制合成体（无独立 WIL 帧），锚定 `HUD+0xE4/+0xE8`：名字牌框 `0x40B850`（0xA0A0A 边框、宽=文本宽、15px 高、锚上方 15..30px、水平居中，每帧 `[HUD vt+0x84]` @`0x41C063`）、名字文本 `0x40B750`（选择器 `0x566DD4` F2/F3）、悬停名牌 `0x40BB00`（3000ms）、HP 条 `0x40A8A0`（元素 `0x5600FC+[8D]*0x144`、帧=HP 值、400/300 中心公式）、悬停实体重绘 `0x437DF0`；布局矩形 `0x629FC/0x629EC`（`0x40F5F0`）；锚点世界推导 48×32 瓦片公式或固定 (376,227) `0x4120B0`；悬停 msg 0xB → `0x40A4D0` → 服务端询问 0xBC7/0xBD1/0xBD8；点击 msg 2 → 0xBC4；显示门控状态机 `0x411D91`。剩余 candidate：F2/F3 与 HP 条帧的选择器 WIL 运行期绑定（Horse.wil 10000..10400 唯一候选）、目标头像纹理源。
+- **人物/怪物头像已闭合（存在性 primary-static）**：状态窗 loop7 头像/名区 49×33（见装备槽行）；目标头像纹理源 candidate。
+- 场景实体资源族。
 - 原版资源的完整解码、索引、透明色/调色板/裁剪规则。
 
 ## 7. 工作纪律与交付

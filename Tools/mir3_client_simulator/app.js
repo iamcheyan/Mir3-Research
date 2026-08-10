@@ -253,17 +253,50 @@ function updateTargetPanel() {
 }
 
 function updateTargetBox() {
-  const e = STATE.selectedEntity;
-  if (!e) { targetboxEl.classList.add("hidden"); return; }
+  // Evidence-based composite (target-box-evidence.json, Finding 239):
+  // anchor = entity screen position; name-plate box 0x40B850 (0xA0A0A border,
+  // width = text width, 15px tall, 15..30px above anchor, centered on anchor_x),
+  // name text 0x40B750, HP bar 0x40A8A0 (fill proportional to HP value).
+  const e = STATE.selectedEntity || STATE.hoveredEntity;
+  if (!e || e.kind === "drop") { targetboxEl.classList.add("hidden"); return; }
   const spr = document.querySelector(`#scene .sprite[data-entity="${e.id}"]`);
   if (!spr) { targetboxEl.classList.add("hidden"); return; }
   const r = spr.getBoundingClientRect();
   const sr = stage.getBoundingClientRect();
-  targetboxEl.style.left = (r.left - sr.left) / STATE.scale + "px";
-  targetboxEl.style.top = (r.top - sr.top) / STATE.scale + "px";
-  targetboxEl.style.width = r.width / STATE.scale + "px";
-  targetboxEl.style.height = r.height / STATE.scale + "px";
+  const ax = (r.left - sr.left + r.width / 2) / STATE.scale; // anchor x = entity center
+  const ay = (r.top - sr.top + r.height) / STATE.scale;      // anchor y = entity feet
+  const nameW = Math.max(24, estimateTextWidth(e.name) + 8);
+  const BOX_H = 15;        // 0x40B850: bottom-top = (ay-0xF)-(ay-0x1E) = 15
+  const BOX_TOP = 30;      // box sits 15..30px above anchor (top=ay-0x1E, bottom=ay-0xF)
+  const HP_H = 4;
+  const maxHp = e.maxHp || 100;
+  const hp = Math.max(0, Math.min(1, (e.hp != null ? e.hp : 62) / maxHp));
+
+  targetboxEl.innerHTML = "";
+  const box = document.createElement("div");
+  box.className = "tb-box";
+  box.style.cssText = `left:${Math.round(ax - nameW / 2)}px;top:${Math.round(ay - BOX_TOP)}px;width:${nameW}px;height:${BOX_H}px`;
+  const name = document.createElement("div");
+  name.className = "tb-name";
+  name.textContent = e.name;
+  box.appendChild(name);
+  const hpEl = document.createElement("div");
+  hpEl.className = "tb-hp";
+  hpEl.style.cssText = `left:${Math.round(ax - nameW / 2)}px;top:${Math.round(ay - BOX_TOP + BOX_H)}px;width:${nameW}px;height:${HP_H}px`;
+  const fill = document.createElement("div");
+  fill.className = "tb-hp-fill";
+  fill.style.width = Math.round(nameW * hp) + "px";
+  hpEl.appendChild(fill);
+  targetboxEl.appendChild(box);
+  targetboxEl.appendChild(hpEl);
   targetboxEl.classList.remove("hidden");
+}
+
+function estimateTextWidth(text) {
+  // cheap proxy for the client's 0x45E0C0 text measurement (no canvas needed)
+  let w = 0;
+  for (const ch of text) w += ch.charCodeAt(0) > 0x7f ? 11 : 6;
+  return w;
 }
 
 /* ------------------------------------------------------------ windows */
@@ -719,8 +752,17 @@ function bindSceneInteraction() {
     if (spr) {
       spr.classList.add("hovered");
       STATE.hoveredEntity = STATE.data.entities.find((e) => e.id === spr.dataset.entity) || null;
+      // hover -> show target box (client hover msg 0xB chain, see target-box-evidence.json)
+      updateTargetBox();
     } else {
       STATE.hoveredEntity = null;
+      updateTargetBox();
+    }
+  });
+  sceneEl.addEventListener("pointerout", (ev) => {
+    if (ev.target.closest(".sprite")) {
+      STATE.hoveredEntity = null;
+      updateTargetBox();
     }
   });
   sceneEl.addEventListener("click", (ev) => {
@@ -776,6 +818,18 @@ function renderEvidenceOverlay() {
   // entities
   for (const e of STATE.data.entities) {
     add([e.x - 20, e.y - 60, e.x + 20, e.y], e.evidence_level, e.id, e.library);
+  }
+  // equipment slots (window-relative -> absolute via status window origin 278,136)
+  const sw = STATE.data.windows.find((w) => w.id === "window.status");
+  if (sw) {
+    for (const s of STATE.data.equipment_slots || []) {
+      add([sw.rect[0] + s.x, sw.rect[1] + s.y, sw.rect[0] + s.x + s.w, sw.rect[1] + s.y + s.h],
+        s.evidence_level, s.id, s.library);
+    }
+  }
+  // target box: code-drawn composite, fixed-anchor path 0x4120B0 writes (376,227)
+  if (hud.target_box) {
+    add([374, 225, 378, 229], hud.target_box.evidence_level, "target_box fixed-anchor 0x4120B0", "");
   }
 }
 

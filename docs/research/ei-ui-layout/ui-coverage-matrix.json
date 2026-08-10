@@ -1,283 +1,305 @@
 {
- "source": "Mir3.exe, mir3.dat, Data/*.wil, Data/*.wix",
- "viewport": {
-  "width": 800,
-  "height": 600
- },
- "evidence_policy": "primary original-client evidence first; secondary server files only cross-reference names/content",
- "records": [
-  {
-   "id": "hud",
-   "category": "主HUD/底部操作栏",
-   "artifacts": [
-    "layout.json",
-    "hud-bars-render-evidence.json",
-    "hud-label-evidence.json"
-   ],
-   "layout_ids": [
-    "hud.*"
-   ],
-   "preview_mode": "hud",
-   "status": "primary-static-resource-and-coordinate",
-   "pending": true
+  "source": "Mir3.exe, mir3.dat, Data/*.wil, Data/*.wix",
+  "viewport": {
+    "width": 800,
+    "height": 600
   },
-  {
-   "id": "map",
-   "category": "地图/小地图",
-   "artifacts": [
-    "map-ui-resource-evidence.json",
-    "minimap-server-crossref.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "map-minimap-candidate,map-candidate",
-   "status": "primary-static-resource-loader-plus-paint-chain-closed",
-   "pending": false,
-   "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
-   "closed_2026_08_10": [
-    "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
-    "no separate map dialog (single ctor main+0x6214)",
-    "T key + mouse click toggle paths",
-    "object list layouts + type byte values"
-   ]
-  },
-  {
-   "id": "status",
-   "category": "人物状态/属性/装备",
-   "artifacts": [
-    "status-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.status"
-   ],
-   "preview_mode": "window.status",
-   "status": "primary-static-render",
-   "pending": true,
-   "closed_2026_08_10": [
-    "attribute text coords closed: col1 label (winx+0xFF, winy+0x43) step 0xF; col2 label (winx+0x17F, winy+0x1E) value +0x44 (reset re-read of [ebp+0x18/0x1C], non-cumulative; old +0x27E/+0x127 model retired)",
-    "two position-field pairs documented: [this+8/0xC]=background screen pos, [this+0x18/0x1C]=attribute/equipment/hit-test base",
-    "global selector array 0x5600FC+0x144k; el82=0x5668C4 flag0 / el83=0x566A08 flag1 / el139=0x56B0E8 flag2 via 0x430A40 dispatch",
-    "selector construction loop 0x43B7B2 (map rebuild, 14 elems, mode1->mode0 fallback, covers 70..83 incl. el82/el83) + dtor loop 0x43B75B (14..79)",
-    "path slots 0x56B22C+start*0x104 are bss, runtime-filled; WIL filename binding remains runtime",
-    "equipment slot classification = server-driven (0x44B720 pure-position hit test; server EquipmentSlot enum; 2,3,5,6,7,8,9,10 -> classic 8-piece candidate)"
-   ],
-   "pending_notes": "runtime WIL filename for el82/83/139 (Equip.wil/Inventory.wil side-by-side candidates); equipment slot human names (server-enum candidate); [ebx+0x124]=4 start=70 inference; el84+/el139 ctor loop unlocated"
-  },
-  {
-   "id": "inventory",
-   "category": "背包/物品栏",
-   "artifacts": [
-    "inventory-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.inventory"
-   ],
-   "preview_mode": "window.inventory",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "skills",
-   "category": "技能/技能书",
-   "artifacts": [
-    "skill-window-render-loop-evidence.json",
-    "magic-exp-loader-evidence.json",
-    "magic-exp-records.json"
-   ],
-   "layout_ids": [
-    "window.other-14-candidate"
-   ],
-   "preview_mode": "window.other-14-candidate",
-   "status": "primary-static-render-plus-data-loader",
-   "pending": true
-  },
-  {
-   "id": "quest",
-   "category": "任务",
-   "artifacts": [
-    "quest-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.quest"
-   ],
-   "preview_mode": "window.quest",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "chat",
-   "category": "聊天/频道",
-   "artifacts": [
-    "chat-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.chat-pop"
-   ],
-   "preview_mode": "window.chat-pop",
-   "status": "primary-static-render-plus-call-flow",
-   "pending": false,
-   "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow; pending: string caption vs tooltip, renderer absolute x/y slot re-verify"
-  },
-  {
-   "id": "npc",
-   "category": "NPC对话",
-   "artifacts": [
-    "npc-window-render-evidence.json",
-    "npc-paint-evidence.json"
-   ],
-   "layout_ids": [
-    "window.npc-candidate"
-   ],
-   "preview_mode": "window.npc-candidate",
-   "status": "primary-static-render-plus-parser",
-   "pending": true
-  },
-  {
-   "id": "store",
-   "category": "商店/仓库",
-   "artifacts": [
-    "store-window-render-evidence.json",
-    "store-state-graph.json"
-   ],
-   "layout_ids": [
-    "window.store-candidate"
-   ],
-   "preview_mode": "window.store-state-0..4",
-   "status": "primary-static-state-machine",
-   "pending": true
-  },
-  {
-   "id": "exchange",
-   "category": "交易/交换",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json"
-   ],
-   "layout_ids": [
-    "window.exchange-candidate"
-   ],
-   "preview_mode": "window.exchange-candidate",
-   "status": "primary-static-composition",
-   "pending": true
-  },
-  {
-   "id": "party",
-   "category": "组队",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json"
-   ],
-   "layout_ids": [
-    "window.group",
-    "window.group-pop-candidate"
-   ],
-   "preview_mode": "window.group,window.group-pop-candidate",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "guild",
-   "category": "行会",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json"
-   ],
-   "layout_ids": [
-    "window.guild-candidate"
-   ],
-   "preview_mode": "window.guild-candidate",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "social",
-   "category": "好友/社交",
-   "artifacts": [
-    "social-window-render-evidence.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "none",
-   "status": "primary-negative-scope",
-   "pending": true
-  },
-  {
-   "id": "settings",
-   "category": "系统设置/音量",
-   "artifacts": [
-    "system-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.option"
-   ],
-   "preview_mode": "window.option",
-   "status": "primary-static-config-and-render",
-   "pending": true
-  },
-  {
-   "id": "horse",
-   "category": "坐骑",
-   "artifacts": [
-    "horse-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.horse"
-   ],
-   "preview_mode": "window.horse",
-   "status": "primary-static-render-and-command",
-   "pending": true
-  },
-  {
-   "id": "prompt",
-   "category": "确认框/提示框",
-   "artifacts": [
-    "confirmation-prompt-evidence.json",
-    "notice-prompt-window-evidence.json"
-   ],
-   "layout_ids": [
-    "window.confirmation-prompt-950",
-    "window.notice-prompt-candidate"
-   ],
-   "preview_mode": "prompt.confirmation,prompt.notice,window.notice-prompt-candidate",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "secondary",
-   "category": "角色选择/创建/登录次级界面",
-   "artifacts": [
-    "interface1c-parent-context.json",
-    "interface1c-select-screen-context.json",
-    "interface1c-cluster-456d.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "secondary-0,secondary-1",
-   "status": "primary-resource-cluster-candidate",
-   "pending": true
-  },
-  {
-   "id": "simulator",
-   "category": "交互式客户端模拟器交付",
-   "artifacts": [
-    "../../../Tools/mir3_client_simulator/app.js",
-    "../../../Tools/mir3_client_simulator/index.html",
-    "../../../Tools/mir3_client_simulator/style.css",
-    "../../../Tools/mir3_client_simulator/data/layout.json",
-    "../../../Tools/web/build_mir3_simulator_data.py"
-   ],
-   "layout_ids": [
-    "sim.*"
-   ],
-   "preview_mode": "sim",
-   "status": "delivered-candidate-geometry-explicit",
-   "pending": true
+  "evidence_policy": "primary original-client evidence first; secondary server files only cross-reference names/content",
+  "records": [
+    {
+      "id": "hud",
+      "category": "主HUD/底部操作栏",
+      "artifacts": [
+        "layout.json",
+        "hud-bars-render-evidence.json",
+        "hud-label-evidence.json",
+        "target-box-evidence.json"
+      ],
+      "layout_ids": [
+        "hud.*"
+      ],
+      "preview_mode": "hud",
+      "status": "primary-static-resource-and-coordinate",
+      "pending": true,
+      "closed_2026_08_10": [
+        "monster target box chain closed (Finding 239): code-drawn composite anchored HUD+0xE4/+0xE8 - name-plate box 0x40B850 (0xA0A0A border, width=text width, 15px tall, 15..30px above anchor, per-frame call [HUD vt+0x84] with current target @0x41C063), name text 0x40B750 (selector 0x566DD4 F2/F3), hover name tag 0x40BB00 (3000ms), HP bar 0x40A8A0 (element 0x5600FC+[8D]*0x144, frame=HP value, 400/300 center formula), entity re-render 0x437DF0; anchor world-derived 48x32 tile math 0x40F5F0 or fixed (376,227) 0x4120B0; layout rects 0x629FC/0x629EC; hover msg 0xB -> selector load 0x40A4D0 (type db 0x449B90/0x8AA5A8) -> server query 0xBC7/0xBD1/0xBD8; click target msg 2 -> 0xBC4; switch 800ms timeout + mouse delta >5 gate; show/hide state machine 0x411D91 states 0x15..0x1F; see target-box-evidence.json"
+      ],
+      "pending_notes": "; target box: selector WIL binding for name F2/F3 + HP bar frames (GameInter.wil 1103 frames, none >=10000 - primary-static absence; Horse.wil max_end=10400 sole candidate for 10000+(A%400) series), target portrait frame source (49x33 region existence primary-static, texture candidate)"
+    },
+    {
+      "id": "target-box",
+      "category": "怪物目标框/悬停目标",
+      "artifacts": [
+        "target-box-evidence.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "sim",
+      "status": "primary-static-render",
+      "pending": true,
+      "closed_2026_08_10": [
+        "full hover target box chain closed (Finding 239) - see hud record closed_2026_08_10 entry"
+      ],
+      "pending_notes": "selector WIL filename bindings (name F2/F3, HP bar element), target portrait frame source (candidate)"
+    },
+    {
+      "id": "map",
+      "category": "地图/小地图",
+      "artifacts": [
+        "map-ui-resource-evidence.json",
+        "minimap-server-crossref.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "map-minimap-candidate,map-candidate",
+      "status": "primary-static-resource-loader-plus-paint-chain-closed",
+      "pending": false,
+      "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
+      "closed_2026_08_10": [
+        "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
+        "no separate map dialog (single ctor main+0x6214)",
+        "T key + mouse click toggle paths",
+        "object list layouts + type byte values"
+      ]
+    },
+    {
+      "id": "status",
+      "category": "人物状态/属性/装备",
+      "artifacts": [
+        "status-window-render-evidence.json",
+        "equipment-slots-evidence.json"
+      ],
+      "layout_ids": [
+        "window.status"
+      ],
+      "preview_mode": "window.status",
+      "status": "primary-static-render",
+      "pending": true,
+      "closed_2026_08_10": [
+        "attribute text coords closed: col1 label (winx+0xFF, winy+0x43) step 0xF; col2 label (winx+0x17F, winy+0x1E) value +0x44 (reset re-read of [ebp+0x18/0x1C], non-cumulative; old +0x27E/+0x127 model retired)",
+        "two position-field pairs documented: [this+8/0xC]=background screen pos, [this+0x18/0x1C]=attribute/equipment/hit-test base",
+        "global selector array 0x5600FC+0x144k; el82=0x5668C4 flag0 / el83=0x566A08 flag1 / el139=0x56B0E8 flag2 via 0x430A40 dispatch",
+        "selector construction loop 0x43B7B2 (map rebuild, 14 elems, mode1->mode0 fallback, covers 70..83 incl. el82/el83) + dtor loop 0x43B75B (14..79)",
+        "path slots 0x56B22C+start*0x104 are bss, runtime-filled; WIL filename binding remains runtime",
+        "equipment slot classification = server-driven (0x44B720 pure-position hit test; server EquipmentSlot enum; 2,3,5,6,7,8,9,10 -> classic 8-piece candidate)",
+        "8 equipment slots 38x38 geometry closed (Finding 240): SetRect chain 0x44B1BC-0x44B2C6 loop0 helmet (177,70) loop1 torch (27,264) loop2 poison (64,264) loop3 braceletL (27,186) loop4 braceletR (175,186) loop5 ringL (27,227) loop6 ringR (175,227) loop10 shoes (103,264); abs = +(278,136); non-slot loop7 portrait/name 49x33, loop8 paperdoll 60x90, loop9 attribute 53x84; icon frame = item shape WORD[graphics+0x28] not slot index; see equipment-slots-evidence.json"
+      ],
+      "pending_notes": "runtime WIL filename for el82/83/139 (Equip.wil/Inventory.wil side-by-side candidates); equipment slot human names / index pairing (server-enum candidate; recorded 2<->loop1, 3<->loop0, 9<->loop2, 10<->loop10 vs enum semantics 2=helmet 3=torch 9=shoes 10=poison needs runtime adjudication); [ebx+0x124]=4 start=70 inference; el84+/el139 ctor loop unlocated"
+    },
+    {
+      "id": "inventory",
+      "category": "背包/物品栏",
+      "artifacts": [
+        "inventory-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.inventory"
+      ],
+      "preview_mode": "window.inventory",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "skills",
+      "category": "技能/技能书",
+      "artifacts": [
+        "skill-window-render-loop-evidence.json",
+        "magic-exp-loader-evidence.json",
+        "magic-exp-records.json"
+      ],
+      "layout_ids": [
+        "window.other-14-candidate"
+      ],
+      "preview_mode": "window.other-14-candidate",
+      "status": "primary-static-render-plus-data-loader",
+      "pending": true
+    },
+    {
+      "id": "quest",
+      "category": "任务",
+      "artifacts": [
+        "quest-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.quest"
+      ],
+      "preview_mode": "window.quest",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "chat",
+      "category": "聊天/频道",
+      "artifacts": [
+        "chat-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.chat-pop"
+      ],
+      "preview_mode": "window.chat-pop",
+      "status": "primary-static-render-plus-call-flow",
+      "pending": false,
+      "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow; pending: string caption vs tooltip, renderer absolute x/y slot re-verify"
+    },
+    {
+      "id": "npc",
+      "category": "NPC对话",
+      "artifacts": [
+        "npc-window-render-evidence.json",
+        "npc-paint-evidence.json"
+      ],
+      "layout_ids": [
+        "window.npc-candidate"
+      ],
+      "preview_mode": "window.npc-candidate",
+      "status": "primary-static-render-plus-parser",
+      "pending": true
+    },
+    {
+      "id": "store",
+      "category": "商店/仓库",
+      "artifacts": [
+        "store-window-render-evidence.json",
+        "store-state-graph.json"
+      ],
+      "layout_ids": [
+        "window.store-candidate"
+      ],
+      "preview_mode": "window.store-state-0..4",
+      "status": "primary-static-state-machine",
+      "pending": true
+    },
+    {
+      "id": "exchange",
+      "category": "交易/交换",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json"
+      ],
+      "layout_ids": [
+        "window.exchange-candidate"
+      ],
+      "preview_mode": "window.exchange-candidate",
+      "status": "primary-static-composition",
+      "pending": true
+    },
+    {
+      "id": "party",
+      "category": "组队",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json"
+      ],
+      "layout_ids": [
+        "window.group",
+        "window.group-pop-candidate"
+      ],
+      "preview_mode": "window.group,window.group-pop-candidate",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "guild",
+      "category": "行会",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json"
+      ],
+      "layout_ids": [
+        "window.guild-candidate"
+      ],
+      "preview_mode": "window.guild-candidate",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "social",
+      "category": "好友/社交",
+      "artifacts": [
+        "social-window-render-evidence.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "none",
+      "status": "primary-negative-scope",
+      "pending": true
+    },
+    {
+      "id": "settings",
+      "category": "系统设置/音量",
+      "artifacts": [
+        "system-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.option"
+      ],
+      "preview_mode": "window.option",
+      "status": "primary-static-config-and-render",
+      "pending": true
+    },
+    {
+      "id": "horse",
+      "category": "坐骑",
+      "artifacts": [
+        "horse-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.horse"
+      ],
+      "preview_mode": "window.horse",
+      "status": "primary-static-render-and-command",
+      "pending": true
+    },
+    {
+      "id": "prompt",
+      "category": "确认框/提示框",
+      "artifacts": [
+        "confirmation-prompt-evidence.json",
+        "notice-prompt-window-evidence.json"
+      ],
+      "layout_ids": [
+        "window.confirmation-prompt-950",
+        "window.notice-prompt-candidate"
+      ],
+      "preview_mode": "prompt.confirmation,prompt.notice,window.notice-prompt-candidate",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "secondary",
+      "category": "角色选择/创建/登录次级界面",
+      "artifacts": [
+        "interface1c-parent-context.json",
+        "interface1c-select-screen-context.json",
+        "interface1c-cluster-456d.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "secondary-0,secondary-1",
+      "status": "primary-resource-cluster-candidate",
+      "pending": true
+    },
+    {
+      "id": "simulator",
+      "category": "交互式客户端模拟器交付",
+      "artifacts": [
+        "../../../Tools/mir3_client_simulator/app.js",
+        "../../../Tools/mir3_client_simulator/index.html",
+        "../../../Tools/mir3_client_simulator/style.css",
+        "../../../Tools/mir3_client_simulator/data/layout.json",
+        "../../../Tools/web/build_mir3_simulator_data.py"
+      ],
+      "layout_ids": [
+        "sim.*"
+      ],
+      "preview_mode": "sim",
+      "status": "delivered-candidate-geometry-explicit",
+      "pending": true
+    }
+  ],
+  "verification": {
+    "required_categories": 17,
+    "all_have_original_artifact": true,
+    "all_have_preview_or_explicit_negative_scope": true,
+    "pending_is_not_completion": true
   }
- ],
- "verification": {
-  "required_categories": 17,
-  "all_have_original_artifact": true,
-  "all_have_preview_or_explicit_negative_scope": true,
-  "pending_is_not_completion": true
- }
 }

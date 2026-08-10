@@ -1,0 +1,194 @@
+{
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "hud_object": "ROOT+0x2F8780 (vtable 0x4763C0)",
+    "root_global": "0x0047EF18",
+    "va_mapping": "fileoff = VA - 0x400000 (PE section table vaddr==raddr)",
+    "evidence_level": "primary-static unless noted"
+  },
+  "conclusion": "The monster target box (怪物目标框) is a code-drawn composite of 5 draw functions plus per-frame layout computation, all anchored to HUD+0xE4/+0xE8 (screen pixels). There is no dedicated target-box WIL frame; the name-plate box is drawn with a 0xA0A0A border, the HP bar texture comes from runtime-bound selector elements, and the name text uses selector 0x566DD4 frames 2/3.",
+  "anchor": {
+    "field": "HUD+0xE4/+0xE8",
+    "semantics": "screen-pixel anchor consumed by all five components",
+    "world_derived_path": {
+      "va": "0x0040F5F0",
+      "only_direct_caller": "0x004120EE (inside fixed-anchor path 0x4120B0)",
+      "condition": "arg3 (mouse screen x) nonzero -> overwrite anchor",
+      "formulas": {
+        "anchor_x": "(([HUD+0xCC] - [obj+0x12C])*3*16) - [obj+0x134] + [HUD+0xD4] - 0xC8",
+        "anchor_y": "((([HUD+0xD0] - [obj+0x130])<<5) - [obj+0x138] + [HUD+0xD8] - 0x9D)",
+        "note": "48(width)x32(height) pixel tile world->screen; viewport consts 0xC8=200 / 0x9D=157; HUD+0xCC/0xD0 = mouse world pos (=ROOT+0x2F884C/0x2F8850); obj = [esp+0x24] hovered object; obj+0x12C/+0x130 world x/y; +0x134/+0x138 sprite pixel offsets"
+      }
+    },
+    "fixed_path": {
+      "va": "0x004120B0",
+      "fixed_values": [376, 227],
+      "note": "writes [HUD+0xE4]=0x178, [HUD+0xE8]=0xE3 then calls 0x40F5F0 which keeps them when arg3==0; no direct E8 callers (indirect dispatch); gate byte [HUD+0x62A48]"
+    }
+  },
+  "components": [
+    {
+      "name": "name-plate box (名字牌框)",
+      "va": "0x0040B850",
+      "vtable_entry": "HUD vtable+0x84, called per-frame @0x41C063 with ecx = [ROOT+0x364444] current target",
+      "gate": "byte[this+8]",
+      "geometry": {
+        "text_measure": "0x45E0C0 (0x8AB7A8) -> w",
+        "SetRect": "0x4762B0",
+        "left": "anchor_x + (48 - w)/2 (signed)",
+        "top": "anchor_y - 0x1E",
+        "right": "anchor_x + (w + 48)/2 (signed)",
+        "bottom": "anchor_y - 0xF",
+        "note": "box hugs text width w, height 15px, fully above anchor (15..30px), horizontally centered on anchor"
+      },
+      "draw": "0x45DE50(0x8AB7A8, 0, color=0xA0A0A, 0, &name, 0, rect) x3 (outer -1/+1 border, inner +1, text rect)",
+      "evidence_level": "primary-static; no dedicated WIL frame (code-drawn)"
+    },
+    {
+      "name": "floating name text (悬浮名字)",
+      "va": "0x0040B750",
+      "vtable_entry": "HUD vtable+0x80 @0x41BF29/0x41BF5D/0x41BF7C",
+      "gates": "[this+0x61BD0] / [this+0x61C74]",
+      "blink": "byte[0x61BC8] * 0.01f * 36.0f -> 0x468520",
+      "selector": "0x566DD4 frame 2 via 0x466130",
+      "text_draw": "0x45FD50 (ecx=0x8AB7A8) with dims [0x566E0C]/[0x566E10], 0xFFFF/0xFFFF",
+      "position_default": "anchor + (+7, -0x38) when args == -1,-1",
+      "followup": "frame 3 via 0x45F2D0"
+    },
+    {
+      "name": "hover name tag (3000ms timeout)",
+      "va": "0x0040BB00",
+      "direct_callers": ["0x41BF1C", "0x41BF6F"],
+      "gate": "byte[this+0x620A0]",
+      "timeout": "[+0x6209C] > 0xBB8 (3000ms) -> clear [+0x620A0..] (0x41 dwords) + [+0x621A4..] (0x208 dwords name buffer)",
+      "position": "anchor - (0x2C, 0x37)",
+      "mode": "[+0x61C8C]==1 -> center x = anchor_x - width/2 (0x45E0C0 measure)"
+    },
+    {
+      "name": "HP bar (HP 条)",
+      "va": "0x0040A8A0",
+      "direct_callers": ["0x41BF14", "0x41BF50", "0x41BF67"],
+      "gates": "[this+0x61BB8] OR [this+0x61BBC], and [0x8AB7BC]",
+      "type_byte": "[this+0x8D] (0x51/0x89 -> flag 0; 0x81/0x8A -> flag 1)",
+      "hp_value": "[0x61B9C] = [0x61BA0] - [this+0xB4] + [this+0xC4]",
+      "registry": "0x4542A0 (ecx=0x5600FC, flag, type, value) -> cached handle (registry array 0x57405C)",
+      "element": "0x5600FC + type*0x144 (selector element by type byte)",
+      "frame": "0x466130(ecx=element, frame=[0x61B9C]) -> frame record [edi+0x38]: word[0]=w, word[2]=h, word[4]=fx, word[6]=fy",
+      "position": "x = anchor_x + fx + w/2 - 400 (0x476474); y = 300 (0x476470) - anchor_y - fy - h/2; bar frames fx=fy=0 -> bar right of anchor center by w/2, above by h/2",
+      "draw_api": "0x8AB7BC vtable+0x14/0x30/0x64 (push 5, 0x112, 4)/0x8C (handle)"
+    },
+    {
+      "name": "hovered entity re-render (悬停实体重绘)",
+      "va": "0x00437DF0",
+      "vtable_entry": "HUD vtable+0xA8 @0x41C753 (ecx = lea [esi+0x2F8780])",
+      "gate": "word[this+0x13C] vs [this+0xE4]",
+      "world_to_screen": "0x43CFD0 (ecx=0x574118 camera): [this+0xCC]/[+0xC8]/[+0xD4]/[+0xD0] -> writes [+0xA0]/[+0xA4], stores [+0xB0]/[+0xB4]",
+      "type_branches": "word[this+0x10] == 9 (player) / 0x35",
+      "position_adjust": "[+0x140] half-size * 24 added to x",
+      "tail_call": "0x435DD0"
+    }
+  ],
+  "layout_rects": {
+    "va": "0x0040F5F0 (same function as world anchor path)",
+    "hp_bar_rect": {
+      "field": "HUD+0x629FC",
+      "gates": "byte[+0x629C8], selector [+0x62A14], [+0xC0] >= 0x1D",
+      "value_a": "[629C8]*400 - [8A]*3000 - 0xAA0",
+      "quotient": "-> [+0x62A20]",
+      "frame": "0x2710 (10000) + (A % 400)",
+      "frame_lookup": "0x466130 (ecx=[+0x62A14])",
+      "rect_formula": "SetRect: left=anchor_x+fx+w, top=anchor_x+fx, right=anchor_x+fx+w+h, bottom=anchor_y+fy"
+    },
+    "state_rect": {
+      "field": "HUD+0x629EC",
+      "gates": "byte[+0x89], selector [+0x62A10], [+0xC0] < 0x19",
+      "frame": "3000*(([89]-1)%10) - 3000*[8A] + [C4]",
+      "stored": "[+0x62A1C]",
+      "frame_lookup": "0x466130 (ecx=[+0x62A10])"
+    },
+    "third_rect": {
+      "gate": "[+0x90] selector element, frame [+0xC4]"
+    },
+    "selector_assignment": {
+      "va": "0x0040F4E6",
+      "index_formulas": {
+        "629CE": "(([8B]-1)/10) - 0x7B (magic div 0x66666667)",
+        "629CD": "(([89]-1)/10) + 0x4D"
+      },
+      "elements": {
+        "62A0C": "0x5600FC + [629CE]*0x144",
+        "62A10": "0x5600FC + [629CD]*0x144",
+        "62A14": "0x5600FC + [629CF]*0x144 (third type byte, writes at 0x40F5C0/0x40F5CB)"
+      }
+    }
+  },
+  "hp_state_chain": {
+    "selector_select": {
+      "va": "0x0040A4D0",
+      "callers": ["0x405A85", "0x407CFA", "0x40A0DE", "0x40E411", "0x40E458", "0x40E4A0", "0x40E4E8", "0x40E51E", "0x40E55B", "0x40EBC9", "0x410C75", "0x410CE7", "0x410D55", "0x410DE3", "0x410E59", "0x410EDB", "0x4111F9"],
+      "type_db": {
+        "object": "0x8AA5A8",
+        "lookup": "0x449B90: linear scan, record stride 0x30, match word[record+0xC] == type",
+        "record_fields": {
+          "+0/+4": "-> [HUD+0x61BA0]/[+0x61BA4] (HP current/full)",
+          "+0xA": "-> [HUD+0x8D] (HP-bar selector type byte)",
+          "+0xE..0x1A": "-> [HUD+0x61BAA..0x61BB6] (9 config bytes; +0x16/17/18 -> 61BB2/3/4 RGB, +0x1A -> 61BB5 alpha, all x0.003922f)"
+        }
+      },
+      "offset_adjust": "dx = [8A]:[8B]; if dx==0x8D and [C0]==4 -> arg*20 else arg*10 added to 61BA0/61BA4"
+    },
+    "msg1_path": {
+      "va": "0x4111F9",
+      "call": "push 0x5600FC; push word[HUD+0x62A38]; mov ecx,esi(HUD); call 0x40A4D0",
+      "after": "sets [HUD+0x61BB8]=1 (HP bar mode); per-type [+0x61BA9]: 0x1C->0x14, 0x18->0xB, 0xB->0xD, 0x4E->0xE; then 0x45AFC0(0x8AB130, x, y, (type+0x3E8)*10, 0) ground marker"
+    }
+  },
+  "interaction_chain": {
+    "hover_msg": {
+      "msg": "0xB",
+      "va": "0x00410B6D",
+      "steps": [
+        "store world coords [+0x62AE0]/[+0x62ADC], type [+0x62AE4]",
+        "set [+0x62A50]=[+0x62A54]=[+0x61BC0]=1, [+0x61BC4]=0",
+        "[+0x89]==7 and [esp+0x2C]==-1 -> player path: 0x44A820(0x8AA5A8,7,1,id) -> vtable+0x10, send msg 0xBC7 (0x451450, 0x8AB828), [+0x62AE8]=1, [+0x62A4C]=0, return",
+        "[+0x629D3]==0 and word[+0x62A77]>7 -> send vtable+0x10(msg 0x1A, id), call 0x40A4D0(HUD, 0x5600FC, 0x1A, id), [+0x61BBC]=1, send msg 0xBD1, [+0x629D3]=2, [+0x62A4C]=0, return",
+        "[+0x629D2]==0 and word[+0x62A77]>0xB -> send vtable+0x10(msg 0x10), call 0x40A4D0(HUD, 0x5600FC, 0x23, id), [+0x61BBC]=1, send msg 0xBD8, return"
+      ]
+    },
+    "click_set_target": {
+      "msg": "2",
+      "va": "0x00411293",
+      "steps": ["[+0x62A50]=1", "send msg 0xBC4 via 0x451450 (0x8AB828)", "store 62ADC/62AE0/62AE4"]
+    },
+    "target_switch": {
+      "va": "0x41BFD9-0x41C094",
+      "fields": {
+        "current": "[ROOT+0x364444] (cleared each frame @0x41BCAD, default &HUD @0x41C72E)",
+        "last": "[ROOT+0x364448]",
+        "prev": "[ROOT+0x36444C]",
+        "switch_tick": "[ROOT+0x42803C] (GetTickCount on switch)",
+        "hovered": "[ROOT+0x364450]"
+      },
+      "per_frame": "0x41C063: call [HUD_vtable+0x84] (=0x40B850) with ecx = current target",
+      "timeout": "no target and now - [0x42803C] > 0x320 (800ms) -> clear [+0x364448]",
+      "mouse_delta": "[0x42804C]/[0x428050] vs [ROOT+0x2F884C]/[0x2F8850] > 5 -> call 0x41C1E0 (hide other windows)"
+    },
+    "show_hide_gates": {
+      "tick_state_machine": "byte[HUD+0xC0], states 0x15..0x1F dispatch @0x411D91 (type table 0x41207C [01,01,00,00,01,01,01,01,01,00,00])",
+      "timing_gate": "0x412210",
+      "ui_open_gate": "0x412270 (suppress when other UI windows open)"
+    }
+  },
+  "resource_binding": {
+    "name_plate_box": "code-drawn 0xA0A0A border, no WIL frame (primary-static)",
+    "name_text": "selector 0x566DD4 frames 2/3 (frame numbers primary-static; WIL filename runtime bss binding, candidate)",
+    "hp_bar": "selector element 0x5600FC + [HUD+0x8D]*0x144, frame = HP value (primary-static); GameInter.wil has 1103 frames and NO frames >= 10000 (primary-static-absence negative evidence for the 0x40F5F0 10000+(A%400) series); actual WIL family runtime-bound, candidate",
+    "target_portrait": "status-window portrait/name area 49x33 (loop7 this+0x200) exists (primary-static); NPCface.wil frames are ~100x122 full-body (does not match); portrait frame source runtime-bound, candidate",
+    "frame_dispatch": "0x466130 mode byte [element+4]: 0 -> 0x466640, 1/2 -> 0x466720 (both direct frame-by-index via [element+0x30] offset table; validates header w/h <= 0x1000)"
+  },
+  "pending": [
+    "Selector element WIL filename bindings (runtime bss path slots at 0x566780+/0x56B22C) - candidate",
+    "Target portrait texture frame for hover (existence primary-static, frame candidate)",
+    "Exact HP-bar fill value normalization (frame index = HP value [0x61B9C]; the 10000+(A%400) series in 0x40F5F0 references a non-GameInter library)"
+  ]
+}

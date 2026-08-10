@@ -1,0 +1,140 @@
+{
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "status_window_ctor": "0x0044B130",
+    "rect_constructor_calls": "0x0044B1BC-0x0044B2C6",
+    "rect_builder": "imported SetRect at 0x004762B0",
+    "paint_va": "0x0044B2D0",
+    "hit_test_va": "0x0044B720",
+    "index_scan_va": "0x0044B6B0",
+    "draw_va": "0x004341F0",
+    "window_object_origin": "background this+0x08/+0x0C -> absolute (278,136), size 244x328 (layout.json windows[window.status], frame 200 GameInter.wil)",
+    "sibling_evidence_file": "status-window-render-evidence.json (11 raw geometry records, item_record_and_draw_chain, equipment_candidate_indices [2,3,5,6,7,8,9,10])",
+    "va_mapping": "fileoff = VA - 0x400000",
+    "evidence_level": "primary-static-constructor-order for geometry; candidate for index/name mapping"
+  },
+  "conclusion": "The character window (人物装备) shows exactly 8 equipment slots, each a 38x38 hit rect established by SetRect in the window constructor. Hit testing (0x44B720) is a pure position scan with NO category logic - the client is server-driven and the binary contains no slot-name table. Slot icon frames are item-driven (WORD[graphics_object+0x28] = item shape), not slot-index-driven. Human slot names come from the server EquipmentSlot enum (classic Mir3 order) mapped by position/pairing: candidate indices 2,3,5,6,7,8,9,10.",
+  "slots": [
+    {
+      "candidate_index": 3,
+      "loop_record": 0,
+      "object_offset": "this+0x1F0",
+      "window_relative_rect": [177, 70, 215, 108],
+      "absolute_rect": [455, 206, 493, 244],
+      "size": "38x38",
+      "position_name": "helmet (头盔) - top center"
+    },
+    {
+      "candidate_index": 2,
+      "loop_record": 1,
+      "object_offset": "this+0x1E0",
+      "window_relative_rect": [27, 264, 65, 302],
+      "absolute_rect": [305, 400, 343, 438],
+      "size": "38x38",
+      "position_name": "torch (火把) - bottom left"
+    },
+    {
+      "candidate_index": 5,
+      "loop_record": 3,
+      "object_offset": "this+0x210",
+      "window_relative_rect": [27, 186, 65, 224],
+      "absolute_rect": [305, 322, 343, 360],
+      "size": "38x38",
+      "position_name": "left bracelet (左手镯) - waist left"
+    },
+    {
+      "candidate_index": 6,
+      "loop_record": 4,
+      "object_offset": "this+0x220",
+      "window_relative_rect": [175, 186, 213, 224],
+      "absolute_rect": [453, 322, 491, 360],
+      "size": "38x38",
+      "position_name": "right bracelet (右手镯) - waist right"
+    },
+    {
+      "candidate_index": 7,
+      "loop_record": 5,
+      "object_offset": "this+0x230",
+      "window_relative_rect": [27, 227, 65, 265],
+      "absolute_rect": [305, 363, 343, 401],
+      "size": "38x38",
+      "position_name": "left ring (左戒指) - lower left"
+    },
+    {
+      "candidate_index": 8,
+      "loop_record": 6,
+      "object_offset": "this+0x240",
+      "window_relative_rect": [175, 227, 213, 265],
+      "absolute_rect": [453, 363, 491, 401],
+      "size": "38x38",
+      "position_name": "right ring (右戒指) - lower right"
+    },
+    {
+      "candidate_index": 9,
+      "loop_record": 2,
+      "object_offset": "this+0x250",
+      "window_relative_rect": [64, 264, 102, 302],
+      "absolute_rect": [342, 400, 380, 438],
+      "size": "38x38",
+      "position_name": "poison (毒药) - bottom mid-left"
+    },
+    {
+      "candidate_index": 10,
+      "loop_record": 10,
+      "object_offset": "this+0x260",
+      "window_relative_rect": [103, 264, 141, 302],
+      "absolute_rect": [381, 400, 419, 438],
+      "size": "38x38",
+      "position_name": "shoes (鞋子) - bottom mid-right"
+    }
+  ],
+  "non_slot_regions": [
+    {
+      "loop_record": 7,
+      "object_offset": "this+0x200",
+      "window_relative_rect": [94, 71, 143, 104],
+      "size": "49x33",
+      "role": "portrait / name region (人物头像)"
+    },
+    {
+      "loop_record": 8,
+      "object_offset": "this+0x1C0",
+      "window_relative_rect": [86, 114, 146, 204],
+      "size": "60x90",
+      "role": "character image region (纸娃娃)"
+    },
+    {
+      "loop_record": 9,
+      "object_offset": "this+0x1D0",
+      "window_relative_rect": [38, 70, 91, 154],
+      "size": "53x84",
+      "role": "attribute panel"
+    }
+  ],
+  "item_draw_chain": {
+    "slot_record_base": "this+0x2F4 + index*0xC24",
+    "graphics_object": "slot_record+0x04",
+    "draw_entry": "0x004341F0 -> 0x00466130",
+    "frame_index": "WORD [graphics_object+0x28] (item's own shape, NOT slot index)",
+    "flag_dispatch": {
+      "va": "0x00430A40",
+      "flag0": "element 0x5668C4 (el82) - ordinary slots",
+      "flag1": "element 0x566A08 (el83) - special character-area indices (0,1,4)",
+      "flag2": "element 0x56B0E8 (el139)",
+      "evidence": "primary-static-dispatch-immediates"
+    },
+    "selector_dispatch": "0x466130 mode byte [element+4]: 0 -> 0x466640, 1/2 -> 0x466720 (direct frame-by-index), else 0",
+    "selector_wil_binding": "runtime bss path slots; Equip.wil vs Inventory.wil side-by-side candidates"
+  },
+  "mapping_basis": {
+    "client_fact": "0x44B720 is a pure-position hit test (index scan + PtInRect); NO category or name logic in binary",
+    "server_fact": "repo server EquipmentSlot enum, classic Mir3 order: 0=weapon 1=armor 2=helmet 3=torch 4=necklace 5=left bracelet 6=right bracelet 7=left ring 8=right ring 9=shoes 10=poison 11=amulet 12=flower 13=horse-armor 14=badge 15=shield 16=fashion",
+    "recorded_pairing_note": "sibling evidence file equipment_candidate_rects_by_index records: index 2 -> loop1 rect (torch position), index 3 -> loop0 rect (helmet position), index 9 -> loop2 rect (poison position), index 10 -> loop10 rect (shoes position). If enum semantics (2=helmet, 3=torch, 9=shoes, 10=poison) are preferred, swap the 2<->3 and 9<->10 index labels; both assignments are candidate until runtime population is observed.",
+    "confidence": "primary-static geometry; candidate index/name mapping (server-enum-driven)"
+  },
+  "pending": [
+    "Selector element 0x5668C4/0x566A08/0x56B0E8 exact WIL/WIX library filenames (runtime bss binding; Equip.wil vs Inventory.wil)",
+    "Slot-name/index mapping confirmation via runtime population observation",
+    "Element 139 (flag2) construction loop not yet located"
+  ]
+}

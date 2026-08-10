@@ -281,12 +281,43 @@ html, body {
   color: #9fd8ff;
 }
 
+/* target box = code-drawn composite (0x40B850 name-plate box 0xA0A0A border,
+   15px tall, 15..30px above anchor; 0x40B750 name text; 0x40A8A0 HP bar frame=HP value).
+   All children positioned in logical 800x600 coords; container is a full-stage layer. */
 #targetbox {
   position: absolute;
-  border: 2px solid #ffd75e;
-  background: rgba(255,215,94,.06);
+  inset: 0;
   pointer-events: none;
   z-index: 150;
+}
+#targetbox .tb-box {
+  position: absolute;
+  border: 1px solid #a0a0a0;
+  background: rgba(8, 8, 12, .82);
+  box-sizing: border-box;
+}
+#targetbox .tb-name {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#targetbox .tb-hp {
+  position: absolute;
+  background: rgba(0, 0, 0, .72);
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+#targetbox .tb-hp-fill {
+  height: 100%;
+  background: linear-gradient(180deg, #e05040, #b02018);
+  box-sizing: border-box;
 }
 
 .hidden { display: none !important; }

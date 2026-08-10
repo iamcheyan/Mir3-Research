@@ -48,6 +48,10 @@
     "evidence_level": "primary-static",
     "note": "0x004276B3 text region candidate"
   },
+  "target_box": {
+    "evidence_level": "primary-static",
+    "note": "hover target box = code-drawn composite anchored at HUD+0xE4/+0xE8: name-plate box 0x40B850 (0xA0A0A border, width=text width, 15px tall, 15..30px above anchor), name text 0x40B750 (selector 0x566DD4 F2/F3 at anchor+(7,-0x38)), HP bar 0x40A8A0 (element 0x5600FC+[8D]*0x144, frame=HP value, centered via 400/300 float pair), layout rects 0x629FC/0x629EC per-frame by 0x40F5F0; anchor world-derived 48x32 tile math or fixed (376,227) via 0x4120B0; see docs/research/ei-ui-layout/target-box-evidence.json"
+  },
   "chat_region": {
     "rect": [
       224,

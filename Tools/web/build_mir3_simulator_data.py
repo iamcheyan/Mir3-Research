@@ -188,19 +188,35 @@ def main() -> None:
     ]
 
     # -------------------------------------------------------- equipment slots
+    # 8x38x38 evidence rects (window-relative) from status-window-render-evidence.json /
+    # equipment-slots-evidence.json: SetRect chain 0x44B1BC-0x44B2C6, hit test 0x44B720.
+    # Icon frames are item-shape driven (WORD[graphics+0x28]) -> placeholder frames stay
+    # candidate; geometry is primary-static-constructor-order.
     equipment_slots: list[dict] = [
-        {"id": "slot.weapon", "name": "武器", "x": 60, "y": 100, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 0, "evidence_level": "candidate"},
-        {"id": "slot.helmet", "name": "头盔", "x": 100, "y": 60, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 1, "evidence_level": "candidate"},
-        {"id": "slot.armor", "name": "衣服", "x": 60, "y": 140, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 2, "evidence_level": "candidate"},
-        {"id": "slot.necklace", "name": "项链", "x": 140, "y": 60, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 3, "evidence_level": "candidate"},
-        {"id": "slot.belt", "name": "腰带", "x": 100, "y": 180, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 4, "evidence_level": "candidate"},
-        {"id": "slot.boots", "name": "靴子", "x": 60, "y": 220, "w": 38, "h": 38,
-         "library": "Equip.wil", "frame": 5, "evidence_level": "candidate"},
+        {"id": "slot.helmet", "name": "头盔", "x": 177, "y": 70, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 0, "evidence_level": "primary-static",
+         "note": "loop0 this+0x1F0 (177,70)-(215,108); abs (455,206); icon frame candidate"},
+        {"id": "slot.torch", "name": "火把", "x": 27, "y": 264, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 1, "evidence_level": "primary-static",
+         "note": "loop1 this+0x1E0 (27,264)-(65,302); abs (305,400); icon frame candidate"},
+        {"id": "slot.poison", "name": "毒药", "x": 64, "y": 264, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 2, "evidence_level": "primary-static",
+         "note": "loop2 this+0x250 (64,264)-(102,302); abs (342,400); icon frame candidate"},
+        {"id": "slot.braceletL", "name": "左手镯", "x": 27, "y": 186, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 3, "evidence_level": "primary-static",
+         "note": "loop3 this+0x210 (27,186)-(65,224); abs (305,322); icon frame candidate"},
+        {"id": "slot.braceletR", "name": "右手镯", "x": 175, "y": 186, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 4, "evidence_level": "primary-static",
+         "note": "loop4 this+0x220 (175,186)-(213,224); abs (453,322); icon frame candidate"},
+        {"id": "slot.ringL", "name": "左戒指", "x": 27, "y": 227, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 5, "evidence_level": "primary-static",
+         "note": "loop5 this+0x230 (27,227)-(65,265); abs (305,363); icon frame candidate"},
+        {"id": "slot.ringR", "name": "右戒指", "x": 175, "y": 227, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 6, "evidence_level": "primary-static",
+         "note": "loop6 this+0x240 (175,227)-(213,265); abs (453,363); icon frame candidate"},
+        {"id": "slot.shoes", "name": "鞋子", "x": 103, "y": 264, "w": 38, "h": 38,
+         "library": "Equip.wil", "frame": 7, "evidence_level": "primary-static",
+         "note": "loop10 this+0x260 (103,264)-(141,302); abs (381,400); icon frame candidate"},
     ]
 
     # ---------------------------------------------------------------- skills
@@ -241,6 +257,14 @@ def main() -> None:
                     "note": "0x0042770D SetRect; (经验)%d/%d formatter"},
         "target_info": {"rect": [235, 496, 400, 586], "evidence_level": "primary-static",
                         "note": "0x004276B3 text region candidate"},
+        "target_box": {"evidence_level": "primary-static",
+                       "note": "hover target box = code-drawn composite anchored at HUD+0xE4/+0xE8: "
+                               "name-plate box 0x40B850 (0xA0A0A border, width=text width, 15px tall, "
+                               "15..30px above anchor), name text 0x40B750 (selector 0x566DD4 F2/F3 at "
+                               "anchor+(7,-0x38)), HP bar 0x40A8A0 (element 0x5600FC+[8D]*0x144, frame=HP "
+                               "value, centered via 400/300 float pair), layout rects 0x629FC/0x629EC "
+                               "per-frame by 0x40F5F0; anchor world-derived 48x32 tile math or fixed "
+                               "(376,227) via 0x4120B0; see docs/research/ei-ui-layout/target-box-evidence.json"},
         "chat_region": {"rect": [224, 492, 578, 566], "evidence_level": "primary-static",
                         "note": "0x00427696 SetRect; chat/text total region"},
         "minimap": {"rect": [672, 0, 800, 128], "evidence_level": "primary-static",
