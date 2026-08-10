@@ -97,8 +97,9 @@
     "window.chat-pop"
    ],
    "preview_mode": "window.chat-pop",
-   "status": "primary-static-render",
-   "pending": true
+   "status": "primary-static-render-plus-call-flow",
+   "pending": false,
+   "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow; pending: string caption vs tooltip, renderer absolute x/y slot re-verify"
   },
   {
    "id": "npc",

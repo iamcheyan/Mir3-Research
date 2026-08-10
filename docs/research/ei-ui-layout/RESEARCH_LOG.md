@@ -2810,3 +2810,31 @@ Frame 17 与 Frame 57 虽有静态尺寸/索引记录，但在当前客户端副
 - 已确认静态窗口原点直接使用：guild `(102,22)`、group `(272,123)`、chat-pop `(114,76)`、option `(276,113)`、notice `(107,110)`；未闭合原点窗口按视口居中并标 `candidate`，永不冒充 primary。
 
 证据模式覆盖层按证据等级着色（primary 蓝 / candidate 橙 / pending 红），每矩形显示控件 ID、资源库/Frame、相对坐标与 evidence_level。冒烟测试（headless Chromium）33/35 通过，2 项为测试脚本口径问题（stage 尺寸来自 CSS var、坐骑无独立 HUD 按钮走测试导航），实际功能全部正常；117/117 贴图加载、14 窗口可开/关/拖拽/置顶、确认框/公告弹出、无 JS 错误。改动已提交为 `a041fba` 并推送。
+
+### Finding 214：聊天窗口 pending 闭合 — 关闭钮、节点字段与共享渲染器参数槽（2026-08-10）
+
+本轮把聊天窗口证据从 candidate 提升为 `primary-static` 加参数流事实，写入
+`chat-window-render-evidence.json`、`layout.json.chat_window_evidence`、`ui-coverage-matrix.json`
+与 `UI_COMPLETION_AUDIT.md`：
+
+- 构造器 VA 修正：`window_init_candidates.json` 记录 `window_id=8 / window.chat-pop` 主初始化
+  `0x00427839` 调用包装器 `0x00414060`（此前 JSON 中的 `0x00414080` 是过期值）。
+- 首个控件 `this+0x6C` 升级为 **关闭按钮**：Frame `161/162` 是全局关闭字形（圆形交叉剑/X，
+  绿色高亮 vs 常态，npc-window-render-evidence.json 像素检查 high）；同一帧对在 10+ 窗口对象
+  （状态/背包/社交好友/行会/系统/坐骑/交换/NPC/公告/聊天）中都是首控件关闭入口；聊天命中
+  分派 `0x004149A0–0x00414C56` 首测该控件且 handled 立即返回，符合通用关闭路径而非频道命令。
+- 六个频道控件 `this+0x120…0x4A4` 角色定为频道开关；滚动控件 `this+0x558/0x60C` 保留；
+  新增第 10 个控件 `this+0x6D4`（输入框候选，构造器 `0x00417960`，与共享 `0x00417550` 不同，
+  原始参数 `[0x17C,0x13,0xC,0x104,0xC,0]`）。
+- 聊天节点字段顺序确认：聊天绘制调用 `0x004147F3 → 0x0045DD70` 按
+  `node+0x00→颜色槽、node+0x04→背景槽(0=透明→SetBkMode(TRANSPARENT))、node+0x08→文本指针
+  (strlen+TextOutA)` 传递；节点链 `node+0x408/0x40C` 仍为候选。
+- 共享渲染器 `0x0045DD70`（thiscall `ecx=0x008AB7A8`，7 栈参）参数槽：颜色（其它调用点推字面
+  `0x323232/0x0A0A0A/0xB4FFB4`）、背景（`0x0045DDB1` 分支 SetBkColor vs TRANSPARENT）、文本。
+- 仍 pending：六条命令字符串在共享控件 `+0x34` 的可见标题 vs 悬浮提示；渲染器绝对 x/y 槽序
+  需下次 exe 可用时复核；输入框构造器 `0x00417960` 参数语义；关闭钮 vtable+0x10 处理器与
+  可见性门 `0x0042B180` 接线。
+
+本轮同时确认 NAS 挂载点 `/tmp/nas_mnt` 已消失且无自动恢复配置（无 fstab/autofs/crontab 条目，
+SMB 主机 192.168.3.1/.62/.110 不可达），Mir3.exe 暂时不可访问；已完成的证据更新全部来自仓库
+内保留的 primary 反汇编产物与交叉引用，未新增伪证。其余窗口 pending 项待 NAS 恢复后继续。

@@ -26470,9 +26470,12 @@
   "chat_window_evidence": {
     "source": {
       "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-      "constructor_va": "0x00414080",
+      "constructor_va": "0x00414060",
       "paint_or_refresh_va": "0x004142C0",
-      "evidence_level": "primary-static"
+      "evidence_level": "primary-static",
+      "wrapper_va": "0x00414060",
+      "main_init_call_va": "0x00427839",
+      "ctor_va_note": "Previous value 0x00414080 was stale. window_init_candidates.json records window_id=8 layout_id=window.chat-pop main_init_call=0x00427839 wrapper=0x00414060."
     },
     "window": {
       "id": "window.chat-pop",
@@ -26588,7 +26591,9 @@
           28,
           26
         ],
-        "role": "close-or-control-candidate"
+        "role": "close-button",
+        "role_evidence": "Frame 161/162 = universal close glyph (circular crossed-swords/X, green highlighted vs normal; npc-window-render-evidence.json visual inspection, high confidence). Same frame pair is the first control tested in chat hit dispatch 0x004149A0-0x00414C56 and a handled result returns immediately, matching a generic close route rather than a channel command. The pair is reused as the close/confirm control in 10+ window objects (status, inventory, social friend/guild, system options/horse/exchange, npc, notice, horse).",
+        "hit_priority": 1
       },
       {
         "object_offset": "this+0x120",
@@ -26608,7 +26613,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x1D4",
@@ -26628,7 +26634,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x288",
@@ -26648,7 +26655,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x33C",
@@ -26668,7 +26676,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x3F0",
@@ -26688,7 +26697,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x4A4",
@@ -26708,7 +26718,8 @@
           36,
           34
         ],
-        "role": "chat-channel-candidate"
+        "role": "chat-channel-toggle",
+        "hit_priority": 2
       },
       {
         "object_offset": "this+0x558",
@@ -26737,6 +26748,21 @@
           "coordinate_space": "window-relative"
         },
         "role": "scroll-control-candidate"
+      },
+      {
+        "object_offset": "this+0x6D4",
+        "constructor": "0x00417960",
+        "call_va_range": "0x00414290-0x004142B1",
+        "raw_args": [
+          380,
+          19,
+          12,
+          260,
+          12,
+          0
+        ],
+        "role": "input-box-candidate",
+        "note": "created by a different constructor (0x00417960) than the shared 0x00417550 used for the other nine controls; argument semantics pending 0x00417960 decode on next exe access."
       }
     ],
     "rects": [
@@ -26792,7 +26818,7 @@
           "this+0x6D0"
         ],
         "record_next_pointer_candidate": "node+0x408",
-        "record_text_pointer_candidate": "node+0x08",
+        "record_text_pointer_candidate": "node+0x08 (CONFIRMED inline text buffer)",
         "visible_line_loop": {
           "maximum_rows": 19,
           "loop_guard_va": "0x004143D6",
@@ -26822,7 +26848,26 @@
           "evidence_level": "primary-static-call-argument-flow"
         },
         "scroll_state_candidate": "this+0x64",
-        "evidence_level": "primary-static-exact-draw-loop"
+        "evidence_level": "primary-static-exact-draw-loop",
+        "record_fields_resolved": {
+          "node+0x00": "text color (renderer color arg)",
+          "node+0x04": "background color; 0 = transparent (renderer bg arg -> SetBkMode(TRANSPARENT) path)",
+          "node+0x08": "inline text buffer pointer (renderer text arg -> strlen + TextOutA)",
+          "node+0x408": "next record link (candidate, retained)"
+        }
+      },
+      "text_renderer": {
+        "va": "0x0045DD70",
+        "this": "0x008AB7A8 (shared text context)",
+        "stack_args": 7,
+        "arg_roles": {
+          "color": "renderer color slot; chat passes node+0x00; other call sites push literal colors 0x323232 (dark gray), 0x0A0A0A (near-black), 0xB4FFB4 (pale green) -> SetTextColor",
+          "bg": "renderer background slot; chat passes node+0x04; other call sites push 0 -> SetBkMode(TRANSPARENT) branch at 0x0045DDB1; nonzero -> SetBkColor",
+          "text": "renderer text slot; chat passes node+0x08 -> strlen at 0x0045DDFC then TextOutA"
+        },
+        "chat_call_site": "0x004147C0-0x004147F3",
+        "caveat": "color/bg/text relative order is consistent across all recovered call sites; the absolute x/y slot positions among the 7 stack args and the meaning of arg1 (0x008AB7C4) and arg7 (0) need one re-verification pass on the call site once the exe is available again.",
+        "evidence_level": "primary-static-call-argument-flow"
       }
     },
     "control_repositioned_paint": {
@@ -27079,9 +27124,10 @@
       }
     ],
     "pending": [
-      "Confirm whether the six command strings are rendered as visible captions, tooltips, or both by the shared control implementation.",
-      "Recover chat line font/color and clipping parameters from the shared text renderer.",
-      "Resolve the exact node+0x08 record text/color field order and whether the six controls expose captions or only tooltips; the first seven control hit rectangles and their input dispatch order are now statically recovered."
+      "Whether the six command strings (copied to control+0x34 by ctor 0x00417550) render as visible captions, tooltips, or both; next target: shared control paint refs 0x00417B55/0x00417BB3.",
+      "Re-verify renderer 0x0045DD70 absolute x/y arg slot order and arg1/arg7 meaning on next exe access.",
+      "Decode input-box constructor 0x00417960 argument semantics (this+0x6D4).",
+      "Recover close-button child vtable +0x10 handler and visibility gate 0x0042B180 wiring."
     ]
   },
   "npc_window_evidence": {
@@ -34802,7 +34848,7 @@
         162
       ],
       "resource_library": "GameInter.wil",
-      "role": "close-or-control-candidate",
+      "role": "close-button",
       "call_va": "0x00414144",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34822,7 +34868,7 @@
         361
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x00414170",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34842,7 +34888,7 @@
         363
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x00414196",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34862,7 +34908,7 @@
         365
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x004141BC",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34882,7 +34928,7 @@
         367
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x004141E5",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34902,7 +34948,7 @@
         369
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x0041420E",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
@@ -34922,7 +34968,7 @@
         371
       ],
       "resource_library": "GameInter.wil",
-      "role": "chat-channel-candidate",
+      "role": "chat-channel-toggle",
       "call_va": "0x00414237",
       "evidence_level": "candidate",
       "source": "chat-window-render-evidence.json",
