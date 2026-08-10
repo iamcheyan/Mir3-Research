@@ -165,11 +165,20 @@
     "The button class has a STATIC vtable 0x4763A8 (dtor/paint/hover/press/release); state byte +0x25; enabled byte +0x24.",
     "Keyboard: TAB cycles active index 0x462; Enter/Space activates 0x418520.",
     "Activation: MoveWindow/ShowWindow/GetWindowTextA/SetWindowTextA/SendMessageA(0x7EE, ((type<<8|idx)<<16)|tag, buffer) - all IAT names resolved (0x4762BC/0x4762AC/0x476304/0x4762CC/0x476290).",
+    "0x7EE receive side is closed primary-static: main WndProc 0x403E81 routes 0x7EE at 0x403FA4 to 0x404600 (chat-input buffer restore + 0x403640), second WndProc 0x459654 routes to 0x45A140 (type-gated game-object send via 0x452040/0x451F90); 0x7EE absent from message table 0x421E8C; the old candidate VAs 0x412303/0x412AAE/0x42AAB0/0x42C4D4 are the pre-0x7EE input router (click/visibility/top-window dispatch), not the receive (closed_notes 2026-08-11).",
     "Cluster 2 is the independent hidden window 0x418910, not a confirm-box state.",
     "All 7 call sites with original dialog strings identified; encodings are mixed GBK/CP949 (localization in progress)."
   ],
   "pending": [
-    "Final business processing of the 0x7EE message lives in the main game window C++ message chain (0x412303/0x412AAE -> 0x42AAB0 -> 0x42C4D4), candidate-level (protocol side); it does not affect window layout/draw/input conclusions.",
-    "Runtime (in-memory) confirmation of the payment amount flow is not possible without a live client session."
+    "Runtime (in-memory/packet) confirmation of the payment amount flow: the typed amount is carried from the confirm box (this+0x130) through SendMessageA(0x7EE) and delivered to the game object receive handlers 0x404600 / 0x45A140, whose server send path uses 0x452040 + 0x451F90 (message builders with runtime-constructed payloads). The wire packet content of those builders is not statically decodable (format data built at runtime), so only a live client session with a debugger or socket capture can confirm the exact packet. Does not affect layout/draw/input conclusions."
+  ],
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "0x7EE final business processing in the main game window chain",
+      "conclusion": "CONFIRMED primary-static, with the candidate VAs corrected: 0x7EE is NOT in the 40-entry message table 0x421E8C (only entries 0-19 are real, ids 0xf6ef..0xfb6e; 0x7EE absent) and is handled by two dedicated receive handlers. (1) Main game WndProc 0x403E81 switch at 0x403FA4: cmp ebp,0x7EE; jne 0x403FB5; push edi; push ebx; mov ecx,esi; call 0x404600. (2) Second window class WndProc switch at 0x459654: 0x7EE -> 0x45A140. 0x404600 (game object 0x8AB828): gate [obj+0x8A4]==1; zero 0x41 dwords @ obj+0xE3D; SetWindowTextA([0x8AA48C], [obj+0xD39]); [obj+0xD38]=1; call 0x403640; [0x8AA498]=0. 0x403640 = chat-input dual-buffer restore: GetWindowTextA/SetWindowTextA swap between obj+0xD39 and obj+0xE3D; MoveWindow([0x8AA48C], [0x8AB7F0]+obj+0xF44, [0x8AB7F4]+obj+0xF48, w, h, 1) with rect pair selected by [obj+0xD38] (alt rect obj+0xF54..0xF60); SendMessageA([0x8AA48C], 0xCC, 0 or 0x2A, 0); EM_SETSEL (0xB1, 0, -1) select-all when [0x8AB7E8]; SetFocus([0x8AA48C]). 0x45A140: wparam>>16 -> type byte; type==1 and idx(al) in {0,1} -> 0x452040(0x8AB828, this+0xCBF+idx*0x40) then 0x451F90(0x8AB828) (game-object server send); [this+0x930]==2 -> MoveWindow/ShowWindow(5)/SetFocus on chat input; [0x8AA498]=0. The previously cited candidate VAs are real elements of the SAME main-window input chain but NOT the 0x7EE receive: 0x412303 = confirm-box click routing (0x418400 on singleton 0x7E04C8) preceding 0x42AAB0 top-window resolution; 0x412AAE = confirm-box visibility query 0x418460 (returns [this+0x28]!=0) in the sibling mouse handler; 0x42C4D4 = window-id-indexed second-level dispatch jump table used by 'jmp dword ptr [edi*4+0x42C4D4]' at 0x42BF7E (cmp edi,0xE; ja 0x42C198; entries id0..14 = 0x42BF85..0x42C157, default 0x42C198), i.e. the per-top-window-id input router. Layout/draw/input conclusions unchanged.",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x403E81", "0x403FA4", "0x404600", "0x403640", "0x459654", "0x45A140", "0x412303", "0x412AAE", "0x418460", "0x42AAB0", "0x42BF7E", "0x42C4D4", "0x452040", "0x451F90"]
+    }
   ]
 }

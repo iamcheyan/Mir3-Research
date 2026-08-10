@@ -36055,7 +36055,7 @@
       "resource_library": "GameInter.wil",
       "role": "close-button",
       "call_va": "0x00414144",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
       "warning": null
     },
@@ -36075,9 +36075,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x00414170",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "@拒绝 ",
+      "chat_help": "拒绝和 某人 私聊(@拒绝 某人名)"
     },
     {
       "id": "window.chat-pop.specialized-control.2",
@@ -36095,9 +36097,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x00414196",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "!",
+      "chat_help": "大喊话(!喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.3",
@@ -36115,9 +36119,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x004141BC",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "!!",
+      "chat_help": "编组 喊话(!!喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.4",
@@ -36135,9 +36141,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x004141E5",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "!~",
+      "chat_help": "行会 喊话(!~喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.5",
@@ -36155,9 +36163,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x0041420E",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "@拒绝私聊",
+      "chat_help": "拒绝 私聊(@拒绝私聊"
     },
     {
       "id": "window.chat-pop.specialized-control.6",
@@ -36175,9 +36185,11 @@
       "resource_library": "GameInter.wil",
       "role": "chat-channel-toggle",
       "call_va": "0x00414237",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "source": "chat-window-render-evidence.json",
-      "warning": null
+      "warning": null,
+      "chat_command": "@拒绝行会聊天",
+      "chat_help": "拒绝 行会 聊天(@拒绝行会聊天)"
     },
     {
       "id": "window.horse.specialized-control.0",
@@ -36277,6 +36289,69 @@
       "call_va": null,
       "evidence_level": "primary-static-derived-paint-order",
       "source": "horse-window-render-evidence.json",
+      "warning": null
+    },
+    {
+      "id": "window.chat-pop.specialized-control.7",
+      "window_id": "window.chat-pop",
+      "relative_rect": [
+        539,
+        25,
+        36,
+        34
+      ],
+      "frame_pair": [
+        380,
+        381
+      ],
+      "resource_library": "GameInter.wil",
+      "role": "scroll-up",
+      "call_va": "0x00414264",
+      "paint_va": "0x0041492D",
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "warning": null
+    },
+    {
+      "id": "window.chat-pop.specialized-control.8",
+      "window_id": "window.chat-pop",
+      "relative_rect": [
+        539,
+        311,
+        36,
+        34
+      ],
+      "frame_pair": [
+        382,
+        383
+      ],
+      "resource_library": "GameInter.wil",
+      "role": "scroll-down",
+      "call_va": "0x0041428A",
+      "paint_va": "0x0041494B",
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "warning": null
+    },
+    {
+      "id": "window.chat-pop.specialized-control.9",
+      "window_id": "window.chat-pop",
+      "relative_rect": [
+        533,
+        -208,
+        16,
+        502
+      ],
+      "frame_pair": [
+        380,
+        380
+      ],
+      "resource_library": "GameInter.wil",
+      "role": "scrollbar-track (frame 380 16x502, anchored window.x+0x215/window.y-0xD0)",
+      "call_va": "0x004142A8",
+      "paint_va": "0x00414846",
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
       "warning": null
     }
   ]

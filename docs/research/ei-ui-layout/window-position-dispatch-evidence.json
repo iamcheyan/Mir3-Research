@@ -1,22 +1,100 @@
 {
   "source": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
   "routine": "0x0042B430",
+  "object_base": "main+0x2A548C (UI subsystem object; every per-window offset below is relative to this base; the old 'main+0x6554'-style addresses in earlier records are base-relative, not absolute)",
   "evidence_level": "primary-static-window-position-dispatch",
-  "purpose": "Dispatch a window position update to the object selected by the runtime window list.",
+  "purpose": "Dispatch a window position update (drag-follow) to the window object selected by the runtime window list.",
   "guards": [
-    "main+0x5081C / chat-or-window state gate",
-    "main+0xD38 != 0",
-    "selected node id <= 15"
+    "[base+0x5081C] chat-or-window state gate: if nonzero and 0x42B980(8)==0 -> [0x4762AC]([0x8AA48C], 0) hide-all",
+    "[base+0xD38] != 0 (runtime list count; zero -> no drag target)",
+    "selected node id <= 15 (ids 5/0xA have no registered object -> default target 0x42B64E)",
+    "store (id 2) additionally gated by 0x44E910(store, X, Y): zero -> position update skipped"
   ],
   "coordinate_inputs": {
     "stack_arg_a": "[esp+0x14]",
     "stack_arg_b": "[esp+0x18]",
     "dispatch_helper": "0x00423FA0",
-    "helper_call_shape": "push 0; push arg_b; push arg_a; lea ecx, window_object; call 0x00423FA0",
-    "resolved_abi": "arg_a is the X offset and arg_b is the Y offset in the normal (flag=0) branch; the helper adds this+0x40/this+0x44 and writes the resulting left/top plus the stored width/height to the window RECT.",
-    "proof": "At 0x00423FA0, original arg_a is [esp+0x18] after the prologue and is added to this+0x40; original arg_b is [esp+0x1C] and is added to this+0x44. The resulting values are passed to SetRect at 0x004762B0.",
-    "warning": "The runtime list's supplied arg_a/arg_b values and the meaning of this+0x40/this+0x44 still require tracing at each initial-registration call; the ABI itself is resolved."
+    "helper_call_shape": "push 0 (flag=0 drag-follow); push arg_b (Y); push arg_a (X); lea ecx, window_object; call 0x00423FA0",
+    "resolved_abi": "arg_a = absolute client-area mouse X, arg_b = absolute client-area mouse Y. Values are forwarded VERBATIM from WM_MOUSEMOVE lParam (LOWORD=X, HIWORD=Y) through 0x41D390 -> 0x42C510 -> 0x42C741 -> 0x42B430. They are absolute screen coords, NOT deltas and NOT window-relative.",
+    "proof": "0x41D390 unpacks lParam: X = LOWORD(lParam) stored to [main+0x35B2A8], Y = HIWORD(lParam) stored to [main+0x35B2AC]; those same values are pushed as the two args of 0x42C510 at 0x41D457 (lea ecx,[esi+0x2A548C]; push Y; push X; call 0x42C510). 0x42C510 keeps them as ebx(X)/edi(Y) and re-pushes at 0x42C741 (push edi; push ebx; mov ecx, esi; call 0x42B430). 0x42B430 then calls 0x423FA0(win, X, Y, flag=0), which computes left' = X - [win+0x48], top' = Y - [win+0x4C] and right'/bottom' by adding [win+0x40]/[win+0x44] (width/height), then SetRect(0x4762B0)."
   },
+  "coordinate_semantics": {
+    "abs_vs_delta": "ABSOLUTE 1:1 mouse-follow (client-area screen coords). The window keeps its grab point fixed under the cursor.",
+    "grab_offset": "0x4240C0(win, X, Y) at drag start stores [win+0x48] = X - [win+0x18] (mouse minus window left) and [win+0x4C] = Y - [win+0x1C] (mouse minus window top); requires [win+0x30]/[win+0x34]/[win+0x3C] all nonzero.",
+    "window_size": "[win+0x40] = width, [win+0x44] = height. Both branches of 0x423FA0 add them to left/top to form right/bottom (primary-static).",
+    "drag_equation": "SetRect(&win+0x18, X-[win+0x48], Y-[win+0x4C], X-[win+0x48]+[win+0x40], Y-[win+0x4C]+[win+0x44]). Bottom clamp: if top'+height > 0x23A (570) then top' = 0x235 (565) - height, i.e. a 30px bottom margin on the 600px client (0x423FA0 @0x423F0A-0x423F29).",
+    "second_setrect": "A second SetRect(&win+0, left'-(origW-w)/2, top'-(origH-h)/2, right', bottom') centers the outer rect; origW/origH are read from the rect at win+8 (original size, identical when widths/heights match).",
+    "setrect_target": "SetRect imported at 0x4762B0; PtInRect imported at 0x4762B4.",
+    "position_lifecycle": "win+0x18 RECT is both the hit-test target (0x42AAB0 copies it per window id) and the position/size written by drag-follow; win+0 is the outer/original rect used for centering."
+  },
+  "drag_chain": [
+    "WM_LBUTTONDOWN 0x41D470 (input gate [main+0x35B2B8]!=0): lParam -> cell coords ([main+0x35B2B0]=(X+200)/12+[0xF532C], [main+0x35B2B4]=(Y+157)/32+[0xF5330]) -> 0x42BA20(main+0x2A548C, X, Y) at 0x41D57B [drag-start dispatcher]",
+    "  0x42BA20: notice gates (0x53060 -> 0x418A50, 0x52E8C -> 0x43E640 -> return 1); 0x417D00(base+0x61BC, X, Y) -> [base+0xD08]=(int)(([base+0xD20]-1)*[base+0x61C8]) -> return 1; 16 fixed windows at base+0x567C (stride 0xB4) each vtable[3] (call [edx+0xC], X, Y) consumed -> return 1; 0x428570 global check; hit-test 0x42AAB0 -> id -1 -> 0x42BD8F -> 0x42B820 (reset all +0x34) -> return 1; id > 0xE -> return 1; switch table 0x42BDE0 -> 13 per-id cases -> 0x42B6A0(id, X, Y) at 0x42BB4E/0x42BB7E/0x42BBA6/0x42BBE7/0x42BC13/0x42BC3F/0x42BC6B/0x42BC97/0x42BCC3/0x42BCEF/0x42BD17/0x42BD3F/0x42BD67; store extra: 0x44EF00 pre-check (skip move if nonzero) + 0x44E910 post-check (return 1 if 0)",
+    "  0x42B6A0(id, X, Y) [drag-start]: [base+0xD38]==0 -> return; 0x42B820 (reset +0x34 of all list windows); 0x42AC50(remove id) then 0x42AC30(add id) -> most-recent-first; [base+0xD3C]=1 (arm drag-follow gate); switch table 0x42B7E0 -> id2 store special (0x44E910 gate); else add per-window base offset -> 0x423F90(win, 1) (mov [win+0x34], eax; ret 4) -> 0x4240C0(win, X, Y) (stores grab offsets +0x48/+0x4C)",
+    "WM_MOUSEMOVE 0x41D390 (input gate [main+0x35B2B8]!=0): per-window mousemove handlers first (0x362370 -> 0x455F60(main+0x362354, X, Y) else 0x418720(main+0x3615B0, X, Y)); cell coords -> 0x42C510(main+0x2A548C, X, Y) at 0x41D457 [input/update dispatcher]",
+    "  0x42C510: 0x417C80(base+0x61BC, X, Y) -> [base+0xD08]=(int)(([base+0xD20]-1)*[base+0x61C8]) -> return 1; notice windows 0x418AA0(base+0x53030, X, Y), 0x43E680(base+0x52E5C, X, Y); hit-test 0x42AAB0 -> table 0x42C798 per-id handlers (0 inventory 0x430650 -> if 0: status 0x44CED0 -> position dispatch; 1 status 0x44CED0; 2 store 0x44F110 -> if 0: exchange 0x416E70; 3 guild 0x425DE0; 4 group 0x424770; 6 group-pop 0x450B70; 7 chat-pop 0x414CF0; 8 npc 0x448430; 0xB quest 0x441A20; 0xC option 0x426B90; 0xD horse 0x43AC80; 0xE other 0x440560; ids 5/0xA no handler) -> 0x42C741 position dispatch",
+    "  0x42C741: push edi(Y); push ebx(X); mov ecx, esi; call 0x42B430 [drag-follow per head-of-list window]",
+    "  0x42B430 per-id switch (table 0x42B658, default 0x42B64E): all cases call 0x423FA0(win, X, Y, flag=0); id7 chat-pop also [0x4762AC]([0x8AA48C], 0); id0xE also handles notice2 +0x52E5C at 0x42B649",
+    "WM_LBUTTONUP 0x41DB80: cell coords -> 0x42BE20(main+0x2A548C, X, Y) at 0x41DC82 [drag end]: [base+0xD3C]=0; if [base+0x53060] -> 0x418A00(base+0x53030, X, Y), nonzero -> sound [0x476290]([0x8AB7B0], 2, 0, 0) -> return 1; if [base+0x52E8C] -> 0x43E640(...); else 0x417E60(base+0x61BC, X, Y)"
+  ],
+  "caller_arg_table": [
+    {
+      "caller": "0x42C741 (inside 0x42C510)",
+      "callee": "0x42B430",
+      "arg_a": "X (absolute client mouse, from WM_MOUSEMOVE lParam LOWORD)",
+      "arg_b": "Y (absolute client mouse, from WM_MOUSEMOVE lParam HIWORD)",
+      "interaction": "drag-follow: every WM_MOUSEMOVE while [base+0xD3C]==1 moves the head-of-list window to (X - grabX, Y - grabY)",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "0x41D457 (inside WM_MOUSEMOVE 0x41D390)",
+      "callee": "0x42C510",
+      "arg_a": "X (absolute client mouse)",
+      "arg_b": "Y (absolute client mouse)",
+      "interaction": "input dispatch: per-window mousemove handlers + hover-out then position dispatch (0x42C510 -> 0x42C741 -> 0x42B430)",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "0x41D57B (inside WM_LBUTTONDOWN 0x41D470)",
+      "callee": "0x42BA20",
+      "arg_a": "X (absolute client mouse)",
+      "arg_b": "Y (absolute client mouse)",
+      "interaction": "drag-start dispatcher: hit-test + per-id 0x42B6A0 (reorder list, arm [base+0xD3C]=1, record grab offsets)",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "13 cases inside 0x42BA20 (0x42BB4E, 0x42BB7E, 0x42BBA6, 0x42BBE7, 0x42BC13, 0x42BC3F, 0x42BC6B, 0x42BC97, 0x42BCC3, 0x42BCEF, 0x42BD17, 0x42BD3F, 0x42BD67)",
+      "callee": "0x42B6A0",
+      "arg_a": "X (absolute client mouse)",
+      "arg_b": "Y (absolute client mouse)",
+      "interaction": "drag-start per window id (store gated by 0x44EF00/0x44E910)",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "0x42B728/0x42B789/0x42B7AF/0x42B7D5 (inside 0x42B6A0 per-id cases)",
+      "callee": "0x4240C0",
+      "arg_a": "X (absolute client mouse)",
+      "arg_b": "Y (absolute client mouse)",
+      "interaction": "grab-offset setter: [win+0x48]=X-[win+0x18], [win+0x4C]=Y-[win+0x1C]",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "0x41FA68, 0x4204F3 (init paths)",
+      "callee": "0x423FA0",
+      "arg_a": "X = 0x207 (519) / 0x206 (518)",
+      "arg_b": "Y = 0",
+      "interaction": "flag=1 absolute set: SetRect(&win+0x18, X, Y, X+w, Y+h) + centered outer rect; used at window init (windows at 0x2CF570-region / ebx+0x2AB9E0 = base+0x6554 inventory)",
+      "certainty": "primary-static"
+    },
+    {
+      "caller": "14 cases inside 0x42B430 (0x42B4BD, 0x42B4DB, 0x42B50C, 0x42B52A, 0x42B548, 0x42B566, 0x42B584, 0x42B5A2, 0x42B5CA, 0x42B5E8, 0x42B606, 0x42B624, 0x42B63A, 0x42B649)",
+      "callee": "0x423FA0",
+      "arg_a": "X (absolute client mouse)",
+      "arg_b": "Y (absolute client mouse)",
+      "interaction": "flag=0 drag-follow: SetRect(&win+0x18, X-grabX, Y-grabY, ...+w, ...+h) with 570 bottom clamp",
+      "certainty": "primary-static"
+    }
+  ],
   "jump_table": {
     "va": "0x0042B658",
     "range": [0, 15],
@@ -25,32 +103,43 @@
   "callers": [
     {
       "va": "0x0042C745",
-      "caller_range": "0x0042C511-0x0042C78F",
-      "role": "window input/update dispatcher",
-      "argument_flow": "caller receives arg1 at [esp+0x04] and arg2 at [esp+0x08]; preserves them as edi/ebx, then pushes edi followed by ebx before calling 0x0042B430",
+      "caller_range": "0x0042C510-0x0042C78F",
+      "role": "input/update dispatcher (0x42C510: mov ebx,[esp+8] at 0x42C511; args X/Y, ret 8)",
+      "argument_flow": "0x42C510 receives arg1=[esp+4] (X) and arg2=[esp+8] (Y), keeps them as ebx/edi, then at 0x42C741 pushes edi(Y) followed by ebx(X) before calling 0x0042B430 with ecx=esi=main+0x2A548C",
       "certainty": "primary-static"
     }
   ],
   "records": [
-    {"window_id": 0, "layout_id": "window.inventory", "object": "main+0x6554", "target": "0x0042B4AB", "position_update": true},
-    {"window_id": 1, "layout_id": "window.status", "object": "main+0x29CE4", "target": "0x0042B4C9", "position_update": true},
-    {"window_id": 2, "layout_id": "window.store-candidate", "object": "main+0x33188", "target": "0x0042B4E7", "pre_update": "0x0044E910", "position_update": true},
-    {"window_id": 3, "layout_id": "window.exchange-candidate", "object": "main+0x3399C", "target": "0x0042B518", "position_update": true},
-    {"window_id": 4, "layout_id": "window.guild-candidate", "object": "main+0x4707C", "target": "0x0042B536", "position_update": true},
+    {"window_id": 0, "layout_id": "window.inventory", "object": "base+0x6554 = main+0x2AB9E0", "target": "0x0042B4AB", "position_update": true},
+    {"window_id": 1, "layout_id": "window.status", "object": "base+0x29CE4 = main+0x2CF170", "target": "0x0042B4C9", "position_update": true},
+    {"window_id": 2, "layout_id": "window.store-candidate", "object": "base+0x33188 = main+0x2D8614", "target": "0x0042B4E7", "pre_update": "0x0044E910", "position_update": true},
+    {"window_id": 3, "layout_id": "window.exchange-candidate", "object": "base+0x3399C = main+0x2D8E28", "target": "0x0042B518", "position_update": true},
+    {"window_id": 4, "layout_id": "window.guild-candidate", "object": "base+0x4707C = main+0x2EC508", "target": "0x0042B536", "position_update": true},
     {"window_id": 5, "layout_id": null, "object": null, "target": "0x0042B64E", "position_update": false, "notes": "No registered window object in this dispatch table entry."},
-    {"window_id": 6, "layout_id": "window.group", "object": "main+0x47834", "target": "0x0042B554", "position_update": true},
-    {"window_id": 7, "layout_id": "window.group-pop-candidate", "object": "main+0x47C28", "target": "0x0042B572", "position_update": true},
-    {"window_id": 8, "layout_id": "window.chat-pop", "object": "main+0x507EC", "target": "0x0042B590", "position_update": true},
-    {"window_id": 9, "layout_id": "window.npc-candidate", "object": "main+0x51150", "target": "0x0042B5B8", "position_update": true},
+    {"window_id": 6, "layout_id": "window.group", "object": "base+0x47834 = main+0x2ECCC0", "target": "0x0042B554", "position_update": true},
+    {"window_id": 7, "layout_id": "window.group-pop-candidate", "object": "base+0x47C28 = main+0x2ED0B4", "target": "0x0042B572", "position_update": true},
+    {"window_id": 8, "layout_id": "window.chat-pop", "object": "base+0x507EC = main+0x2F5C78", "target": "0x0042B590", "position_update": true},
+    {"window_id": 9, "layout_id": "window.npc-candidate", "object": "base+0x51150 = main+0x2F65DC", "target": "0x0042B5B8", "position_update": true},
     {"window_id": 10, "layout_id": null, "object": null, "target": "0x0042B64E", "position_update": false, "notes": "No registered window object in this dispatch table entry."},
-    {"window_id": 11, "layout_id": "window.quest", "object": "main+0x516E8", "target": "0x0042B5D6", "position_update": true},
-    {"window_id": 12, "layout_id": "window.option", "object": "main+0x518E0", "target": "0x0042B5F4", "position_update": true},
-    {"window_id": 13, "layout_id": "window.horse", "object": "main+0x52118", "target": "0x0042B612", "position_update": true},
-    {"window_id": 14, "layout_id": "window.other-14-candidate", "object": "main+0x524F0", "target": "0x0042B630", "position_update": true},
-    {"window_id": 15, "layout_id": "window.notice-prompt-candidate", "object": "main+0x52E5C", "target": "0x0042B63F", "position_update": true, "notes": "Frame 602 announcement/guild-notice object; business opening path remains pending."}
+    {"window_id": 11, "layout_id": "window.quest", "object": "base+0x516E8 = main+0x2F6B74", "target": "0x0042B5D6", "position_update": true},
+    {"window_id": 12, "layout_id": "window.option", "object": "base+0x518E0 = main+0x2F6D6C", "target": "0x0042B5F4", "position_update": true},
+    {"window_id": 13, "layout_id": "window.horse", "object": "base+0x52118 = main+0x2F75A4", "target": "0x0042B612", "position_update": true},
+    {"window_id": 14, "layout_id": "window.other-14-candidate", "object": "base+0x524F0 = main+0x2F797C", "target": "0x0042B630", "position_update": true},
+    {"window_id": 15, "layout_id": "window.notice-prompt-candidate", "object": "base+0x52E5C = main+0x2F82E8", "target": "0x0042B63F", "position_update": true, "notes": "Frame 602 announcement/guild-notice object; business opening path remains pending."}
   ],
-  "interpretation": "The original client does not require every movable window to have a hard-coded final screen origin. It maintains a runtime window list and dispatches position updates by window ID; initial origins are recorded independently in window-initialization-evidence.json, while later drag/state updates use this resolved X/Y ABI.",
+  "interpretation": "The original client does not require every movable window to have a hard-coded final screen origin. It maintains a runtime window list ([base+0xD38] count, head [base+0xD30]) and dispatches position updates by window ID with ABSOLUTE client-area mouse coordinates; initial origins are recorded independently in window-initialization-evidence.json, while drag updates use this resolved X/Y ABI with grab offsets +0x48/+0x4C and stored size +0x40/+0x44.",
+  "closed_2026_08_10": [
+    "pending resolved: every input/drag caller's two runtime args are the ABSOLUTE client-area mouse coordinates X/Y (lParam LOWORD/HIWORD forwarded verbatim), NOT deltas and NOT window-relative. Chain: WM_MOUSEMOVE 0x41D390 (lParam -> [main+0x35B2A8]/[+0x35B2AC]) -> 0x41D457 lea ecx,[esi+0x2A548C]; push Y; push X; call 0x42C510 -> 0x42C741 push edi(Y); push ebx(X); call 0x42B430 -> 0x423FA0(win, X, Y, flag=0).",
+    "0x42B430 E8 caller = ONLY 0x42C745; imm32/direct refs = NONE (exhaustive scan). 0x42C510 E8 caller = only 0x41D457 (WM_MOUSEMOVE). 0x42BA20 E8 caller = only 0x41D57B (WM_LBUTTONDOWN). 0x42BE20 E8 caller = only 0x41DC82 (WM_LBUTTONUP). 0x42B6A0 E8 callers = 13 cases all inside 0x42BA20 (0x42BB4E/0x42BB7E/0x42BBA6/0x42BBE7/0x42BC13/0x42BC3F/0x42BC6B/0x42BC97/0x42BCC3/0x42BCEF/0x42BD17/0x42BD3F/0x42BD67). 0x4240C0 E8 callers = 0x42B728/0x42B789/0x42B7AF/0x42B7D5 (inside 0x42B6A0). 0x423FA0 E8 callers = init 0x41FA68/0x4204F3 (flag=1) + 14 drag-follow cases inside 0x42B430 (flag=0).",
+    "0x42B6A0 (drag-start, called per id from 0x42BA20): requires [base+0xD38]!=0; resets all +0x34 via 0x42B820; removes id (0x42AC50) then re-adds to list head (0x42AC30); sets [base+0xD3C]=1 (drag-follow gate); sets [win+0x34] via 0x423F90(win,1); stores grab offsets via 0x4240C0(win, X, Y) -> [win+0x48]=X-[win+0x18], [win+0x4C]=Y-[win+0x1C].",
+    "0x423FA0(win, X, Y, flag) semantics (full disasm 0x423FA0-0x4240C0): flag=0 drag-follow computes left'=X-[win+0x48], top'=Y-[win+0x4C], right'=left'+[win+0x40], bottom'=top'+[win+0x44]; if bottom'>0x23A (570) then top'=0x235 (565)-[win+0x44] (30px bottom margin on 600px client); SetRect(0x4762B0, &win+0x18, left', top', right', bottom'); second SetRect(&win+0, left'-(origW-w)/2, top'-(origH-h)/2, right', bottom') centers the outer rect (win+8 holds original size). flag=1 absolute set: SetRect(&win+0x18, X, Y, X+w, Y+h) + same centering; used by init 0x41FA68 (X=0x207=519, Y=0) and 0x4204F3 (X=0x206=518, Y=0).",
+    "win field semantics: +0x40=width, +0x44=height (added to left/top in both branches -> primary proof, NOT offsets and NOT current/initial position); +0x48/+0x4C=grab offsets (mouse - window origin at drag start); +0x30/+0x34/+0x3C flags (+0x34 = in-drag-list/dragging); +0x18 RECT = position/size + hit-test target; +0 RECT = outer/original size.",
+    "UI object base correction: the UI subsystem object lives at main+0x2A548C; all per-window offsets (inventory +0x6554 = main+0x2AB9E0, status +0x29CE4 = main+0x2CF170, store +0x33188 = main+0x2D8614, exchange +0x3399C = main+0x2D8E28, guild +0x4707C = main+0x2EC508, group +0x47834 = main+0x2ECCC0, group-pop +0x47C28 = main+0x2ED0B4, chat-pop +0x507EC = main+0x2F5C78, npc +0x51150 = main+0x2F65DC, quest +0x516E8 = main+0x2F6B74, option +0x518E0 = main+0x2F6D6C, horse +0x52118 = main+0x2F75A4, other-14 +0x524F0 = main+0x2F797C, notice +0x52E5C = main+0x2F82E8) are relative to it; 16-window vtable array at base+0x567C (stride 0xB4); game object at base+0x61BC.",
+    "Drag lifecycle: start = WM_LBUTTONDOWN 0x41D470 -> 0x42BA20 -> 0x42B6A0 (arm [base+0xD3C]=1 + grab offsets); follow = every WM_MOUSEMOVE 0x41D390 with [main+0x35B2B8]!=0 -> 0x42C510 -> 0x42C741 -> 0x42B430 (position only, flag=0); end = WM_LBUTTONUP 0x41DB80 -> 0x42BE20 (clear [base+0xD3C]=0; notice gates 0x53060/0x52E8C; else 0x417E60(base+0x61BC, X, Y)). Per-window mousemove handlers (scroll etc.) run before position dispatch inside 0x42C510 via its per-id handler table 0x42C798.",
+    "Runtime window list: [base+0xD38]=count, head [base+0xD30], add 0x42AC30 / remove 0x42AC50 (container ops 0x449870); list = open/movable windows most-recent-first; 0x42B430 follows only the head. Reset-all 0x42B820 clears +0x34 of every list window."
+  ],
   "pending": [
-    "Correlate each input/drag caller's two runtime arguments with the corresponding window interaction; the initial positions themselves are closed by the main-initializer records."
+    "runtime visual verification of drag frame sequencing and the 570 bottom clamp (static chain closed; running the simulator/in-game is out of scope for this phase)",
+    "store id2 drag interaction under states 2/5+ (0x44E910 gate semantics vs 0x44EF00 pre-check; static gates decoded, runtime state transitions unverified)"
   ]
 }

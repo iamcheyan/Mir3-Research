@@ -71,29 +71,57 @@
   "state_field_xref": {
     "direct_branch_field": {
       "address": "0x007DA060",
-      "width": "byte-tested, also loaded as dword by the state update path",
+      "width": "byte 0 of a 5-byte mount-state block (0x007DA060..0x007DA064) at session object 0x00777698 + 0x629C8; byte-tested by click dispatch, loaded as dword by the state update path",
       "uses": [
         {"va": "0x00426ABC", "condition": "== 0", "role": "allows Frame 860/861 control to send @上马"},
         {"va": "0x00426AE1", "condition": "!= 0", "role": "allows Frame 862/863 control to send @遛马"}
       ],
-      "semantic_status": "mount-state candidate; exact enum/bit meaning remains unproven"
+      "semantic_status": "closed: 0 = not mounted; nonzero (1..3) = mounted. 2-bit clamp 0..3 proven in the state writer; per-value sub-states (1/2/3) remain candidate (see closed_notes)."
     },
     "adjacent_state_update": {
-      "writer_va": "0x0041F5BA-0x0041F5CD",
+      "writer_va": "0x0041F5BA-0x0041F5CD (packet-switch case 0x267, dispatcher 0x0041F1CF)",
       "fields": [
         {"address": "0x007DA061-0x007DA062", "write": "word from packet/input stack"},
         {"address": "0x007DA063-0x007DA064", "write": "word/byte from packet/input stack"}
       ],
-      "role": "original client state-update path copies the mount-related state block before refreshing the UI",
+      "role": "original client state-update path copies the mount-related state block, then calls session virtual 0x0040F420 (this=0x00777698) which stores the whole 5-byte block at 0x007DA060 and sends it to the server",
       "evidence_level": "primary-static-xref",
       "caution": "The writer's higher-level packet/event meaning is not named here; do not map these bytes to horse IDs or animation states without a protocol cross-reference."
     },
     "overlay_search": {
-      "result": "No additional direct reference to 0x007DA060/0x007DA064 occurs inside the horse Paint routine 0x004269C0-0x00426A74; the routine draws Frame 850 base and five child controls in fixed order.",
-      "interpretation": "Static evidence currently supports a state-dependent command branch, not a separately proven overlay layer outside Frame 850."
+      "result": "No additional direct reference to 0x007DA060/0x007DA064 occurs inside the horse Paint routine 0x004269C0-0x00426A74; the routine draws Frame 850 base and five child controls in fixed order. The window-manager paint dispatcher (0x00428252 calls horse Paint 0x004269C0 for the window at winmgr+0x52118) is a plain per-window switch with no state-dependent overlay on the horse frame.",
+      "interpretation": "Closed: no state-dependent overlay is drawn on the horse window itself. The mount-state block is additionally consumed by a main-game-window HUD draw at 0x0044B666 (reads word[0x007DA063] and passes it into draw call 0x45FD50 with this=0x008AB7A8) - a HUD/dock icon on the main window, not a horse-window overlay (see closed_notes)."
     },
-    "evidence_level": "primary-static-xref-with-runtime-semantic-caveat"
+    "evidence_level": "primary-static-xref-closed"
   },
-  "interpretation": "The base background is proven to draw before all five child controls, and the five runtime hit rectangles are statically recoverable from the shared control constructor and GameInter frame dimensions. Four visible mount controls now have direct command-literal bindings; state-dependent overlays outside Frame 850 remain separate.",
-  "pending": ["Determine the runtime enum/bit semantics of 0x007DA060 and whether an external window manager adds state-dependent overlays outside the horse Paint routine."]
+  "closed_notes": [
+    {
+      "key": "0x007DA060-mount-state-enum-and-external-overlay",
+      "date": "2026-08-10",
+      "conclusion": "0x007DA060 is byte 0 of a 5-byte mount-state block stored in the session object 0x00777698 at offset +0x629C8 (0x777698+0x629C8 == 0x7DA060). The block layout is byte0 state (0x007DA060), word (0x007DA061-62), word/byte (0x007DA063-64). The ONLY static writer of the block is session virtual 0x0040F420 (vtable slot at 0x00476508; wrapper 0x0040FED0 at 0x004765CC): lea eax,[esi+0x629C8] at 0x0040F43A, mov dword[ecx],edx + mov byte[ecx+4],dl at 0x0040F442/0x0040F448 with this=0x777698 at every call site (0x41F5DB/0x41F680). The state byte is clamped to 0..3 by cmp byte[eax],4; jb; mov byte[eax],0 at 0x0040F46D-0x0040F472 - a 2-bit enum, not a bitmask. Click dispatch 0x00426A80 uses it as a gate: ==0 allows the Frame 860/861 button (+0x108) to dispatch @上马; !=0 allows Frame 862/863 (+0x1BC) to dispatch @遛马. The packet path (dispatcher 0x0041F1CF, case 0x267 at 0x41F597 / case 0x26B at 0x41F666) reads the block and re-sends it via 0x40F420 (echo to server); case 0x267 also writes the two word fields from packet input. The state byte additionally selects a per-state animation table entry at 0x5600FC with stride 324 (lea eax,[eax+eax*8]; lea edx,[eax+eax*8]; lea eax,[edx*4+0x5600FC] at 0x40F583-0x40F590 and 0x40F5A8-0x40F5B9) stored at session +0x62A10/+0x62A14 - the mounted appearance data, outside the window. Overlay question: NO overlay exists on the horse window itself (paint 0x4269C0 has no mount-block reference; window-manager paint dispatch at 0x428252 adds none). A state-dependent HUD draw does exist OUTSIDE the horse Paint routine, on the main game window: main-window paint segment 0x44B560-0x44B6AF reads word[0x007DA063] at 0x0044B666 and passes it as an argument to draw call 0x0045FD50 with this=0x008AB7A8 (main game window), gated by byte[0x777723] (1..10) and icon index byte[0x777720] - i.e. a mount-state-dependent HUD/dock icon on the main window, not a horse-window overlay. This closes the pending item.",
+      "evidence_chain": [
+        {"va": "0x0040F43A-0x0040F448", "fact": "lea eax,[esi+0x629C8]; mov dword[ecx],edx; mov byte[ecx+4],dl - only static writer of the 5-byte block at 0x7DA060 (this=session 0x777698)"},
+        {"va": "0x0040F46D-0x0040F472", "fact": "cmp byte[eax],4; jb; mov byte[eax],0 - state byte clamped to 0..3 (2-bit enum)"},
+        {"va": "0x00426ABC-0x00426AC5", "fact": "byte[0x7DA060]==0 gate for +0x108 -> push 0x47B060 (@上马)"},
+        {"va": "0x00426AE1-0x00426B1D", "fact": "byte[0x7DA060]!=0 gate for +0x1BC -> push 0x47B068 (@遛马); +0x270 always push 0x47B058 (@收马); +0x324 always push 0x47B068 (@遛马)"},
+        {"va": "0x0041F5BA-0x0041F5E0", "fact": "packet case 0x267 writes word[0x7DA063]/word[0x7DA061] from packet input then calls 0x40F420 with this=0x777698"},
+        {"va": "0x0041F666-0x0041F685", "fact": "packet case 0x26B reads dword[0x7DA060]+byte[0x7DA064] and re-sends via 0x40F420"},
+        {"va": "0x0040F583-0x0040F590, 0x0040F5A8-0x0040F5B9", "fact": "state byte selects 0x5600FC table entry (stride 324) for mounted appearance data"},
+        {"va": "0x0044B666-0x0044B6A8", "fact": "main-window HUD draw reads word[0x007DA063] as an argument to 0x45FD50 with this=0x008AB7A8 (main game window)"},
+        {"va": "0x00428252", "fact": "window-manager paint dispatcher calls horse Paint 0x4269C0 with no state-dependent overlay on the horse frame"}
+      ],
+      "evidence_level": "primary-static",
+      "remaining_candidates": [
+        "per-value sub-state meaning of 1/2/3 at 0x007DA060 (mounted sub-states, e.g. riding vs leading) - not statically decodable from the client alone",
+        "word field 0x007DA061-62 / 0x007DA063-64 protocol meaning (server packet semantics; the HUD icon uses the latter word as a frame index)",
+        "the 0x5600FC stride-324 table entries (mounted appearance frames) are candidate until the resource binding is verified",
+        "keyboard/command path 0x41D2B0 (0x41DE03-0x41DE1E) uses a DIFFERENT gate byte[esi+0x35B148] with cooldown [esi+0x4279A4]=0x3E8 - separate from the window dispatch state; do not conflate"
+      ]
+    }
+  ],
+  "pending": [
+    "per-value sub-state semantics of mount state values 1/2/3 at 0x007DA060 (candidate)",
+    "protocol meaning of the two word fields 0x007DA061-62 / 0x007DA063-64 (server packet semantics; HUD icon frame index usage proven only)",
+    "0x5600FC stride-324 mounted-appearance table resource binding (candidate)"
+  ]
 }

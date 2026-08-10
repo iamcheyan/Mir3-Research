@@ -111,8 +111,8 @@
         28,
         26
       ],
-      "semantic_candidate": "close/confirm or generic NPC dialogue control",
-      "evidence_level": "primary-static-expression"
+      "semantic_candidate": "close X control: vtable+0x10 hit-test at 0x4402A6 gated on [this+0x274]!=0 (0x4402AD); when hit -> return 1 and dispatch case 0x42C17D hides all via 0x41C1E0 (0x42C18E-0x42C193); frames 161/162 = normal/highlight glyphs (visual only)",
+      "evidence_level": "primary-static"
     },
     {
       "object_offset": "this+0x1C0",
@@ -136,8 +136,8 @@
         12,
         8
       ],
-      "semantic_candidate": "NPC face/portrait or dialogue-side control",
-      "evidence_level": "primary-static-expression"
+      "semantic_candidate": "scroll-up arrow: vtable+0x10 hit-test at 0x4402E4 gated [this+0x3BC]>0 && byte[this+0x58C]==1 (0x4402C3/0x4402CD); when hit -> dec [this+0x3BC] clamp 0 (0x4402F1-0x4402FA) -> call 0x440C30 relayout -> return 0 (not handled); frames 52/53 = up-arrow normal/highlight glyphs (visual only)",
+      "evidence_level": "primary-static"
     },
     {
       "object_offset": "this+0x10C",
@@ -161,8 +161,8 @@
         12,
         8
       ],
-      "semantic_candidate": "NPC dialogue-side state/control",
-      "evidence_level": "primary-static-expression"
+      "semantic_candidate": "scroll-down arrow: vtable+0x10 hit-test at 0x44033B gated [this+0x3BC]<[this+0x3C0] && byte[this+0x58C]==1 (0x440314/0x440324); when hit -> inc [this+0x3BC] clamp [this+0x3C0] (0x440342-0x44035B) -> call 0x440C30 relayout -> return 0 (not handled); frames 54/55 = down-arrow normal/highlight glyphs (visual only)",
+      "evidence_level": "primary-static"
     }
   ],
   "paint_geometry": {
@@ -512,7 +512,7 @@
         "0x42ADB0 show toggle",
         "0x42BEAA mouse handler"
       ],
-      "input_object_table": "winmgr+0x8A7C + id*540 (stride ((id*15+0x267)*9)*4)"
+      "input_object_table": "winmgr+0x567C + id*0xB4 (16 fixed windows, stride 180); 0x42BEF8 event loop computes ((id*5+0x267)*9)*4 at 0x42BF0B; same array iterated by MoveWindow dispatch 0x42BA20 (see window-position-dispatch Finding 248)"
     },
     "unified_window_ids": {
       "evidence": "same id space used by paint 0x428358, close-all 0x42B938, show 0x42B3E4 and input dispatch 0x42C4D4; supersedes the per-table id hypothesis",
@@ -609,7 +609,7 @@
     },
     "model_input": {
       "va": "0x440290",
-      "semantics": "control +0x58 vtable+0x10 hit test (hit and [+0x274]!=0 -> handled); then if [+0x3BC]>0 and byte[+0x58C]==1 handle scrollbar [+0x1C0]; on handled, dispatch case calls mov ecx,0x47EF18; call 0x41C1E0 -> clicking the model panel closes the dialogue popups",
+      "semantics": "0x440290 (thiscall, ret 8, returns 0/1) three-hit input: (1) close X [+0x58] vtable+0x10 hit at 0x4402A6 AND [this+0x274]!=0 (0x4402AD) -> return 1; dispatch case 0x42C17D then hides all: mov ecx,0x47EF18; call 0x41C1E0 (0x42C18E/0x42C193) - clicking the model panel closes the dialogue; (2) scroll-up [+0x1C0] vtable+0x10 hit at 0x4402E4 gated [this+0x3BC]>0 && byte[this+0x58C]==1 (0x4402C3/0x4402CD) -> dec [this+0x3BC] clamp 0 -> call 0x440C30 (per-line 5-sub-rect clear over node list 0x8B1AE4) -> return 0; (3) scroll-down [+0x10C] hit at 0x44033B gated [this+0x3BC]<[this+0x3C0] && byte[this+0x58C]==1 (0x440314/0x440324) -> inc [this+0x3BC] clamp [this+0x3C0] -> call 0x440C30 -> return 0; scrollbar thumb drag = 0x417E60(this+0x3C4) at 0x440371-0x440379; option-click = node list 0x8B1AE4 line structs, 5 sub-rects line+0xC stride 0x10, PtInRect [0x4762B4], 1s throttle [this+0x514], '@@' (0x40 0x40) payload prefix",
       "scroll_drag": "0x43AB50 (page index byte[+0x54], offsets [+0x58+idx*4] clamped +/-6 lines, scroll control [+0x240], per-page max [+0x8A8], control array [+0x2F4])"
     },
     "frame_handler": {
@@ -625,7 +625,7 @@
         "0x451B30": "0x406"
       },
       "0x4519E0": "0x416 (frame content request, this=0x8AB828)",
-      "0x451740": "0x3F2 (1 arg, 500ms throttle at 0x41D744, gated on [model+0x30]==0)",
+      "0x451740": "0x3F2 (1 arg, 500ms throttle at 0x41D744, gated on [ROOT+0x2F660C]==0 = model inactive; target id = [obj+4] of [ROOT+0x364444])",
       "0x4521B0": "0x3F3 (2 args, body from ROOT+0x2F6630 at 0x41B94F)",
       "envelope": {
         "header_builder": "0x452940 (dest+0 dword, dest+4..+0xA five words, ret 0x18)",
@@ -756,7 +756,8 @@
       "static_body_copy": {
         "va": "0x41B94F",
         "copy": "0x3F3 (1011) bytes of [ROOT+0x2F6630] into 0x8AB828 via 0x4521B0"
-      }
+      },
+      "liveness": "statically DEAD in the shipped binary: the only reader of outer table 0x421E8C is dispatcher tail 0x41F582 (sole jump-in 0x41F269) - add eax,-0x264; cmp eax,8; ja 0x421D3F; jmp [eax*4+0x421E8C] - so only indices 0..8 (msg 0x264..0x26C) are reachable; index 16 (0x41FE31 dialogue_open), 13 (0x41FD36 click_buffer) and 17 (0x41FECC hide-all wrapper) are unreachable (no E8/imm32 refs outside the table). The flow above is dead-code analysis only. hide_all 0x41C1E0 itself stays live via direct E8 callers 0x41C0CE/0x422BAD/0x42C193/0x42CFC3."
     },
     "click_buffer": {
       "msg_table_index": 13,
@@ -832,9 +833,28 @@
     "0x427E30(winmgr, c1, c2, fmt) = chat-line printer: empty fmt -> return; calls chat window (id 8, winmgr+0x507EC) method 0x4144A0(c1, fmt, c2); text rendered via 0x45E200 on 2D DC 0x8AB7A8.",
     "The 0x47B1xx string cluster decodes as EUC-KR Korean on the original client: 0x47B15C '새로운 퀘스트가 시작 되었습니다.' (a new quest has started), 0x47B180 '퀘스트 일지가 변경되었습니다.' (the quest log has changed), 0x47B1A4 '아이템을 모두 가지고 있지 않습니다.' (you do not hold all the items); 0x47B1C8/0x47B1EC are GBK Chinese patch strings (guild). Messages 0x516/0x517 are quest-log change pushes (Korean notices + frame content update); the frame window carries both NPC dialogue options and quest-log entries."
   ],
-  "pending": [
-    "The business names and exact click semantics of Frames 161/162, 52/53 and 54/55; static GameInter hit rectangles and visual icon states are now recorded.",
-    "The runtime meaning of the dynamic entry fields at this+0x520 through this+0x544.",
-    "The first-level dispatch bodies 0x42C1A4..0x42C30D; per-frame update context 0x41D744 (gated on [model+0x30], target object [ROOT+0x364444]); second-stage dispatches 0x41EDBD->0x421D5C/0x421D8C and 0x41F052->0x421E50; unreached outer msg table 0x421E8C indices (9..15, 17..39)."
+  "pending": [],
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "child-control business semantics (close X / scroll-up / scroll-down) of Frames 161/162, 52/53, 54/55",
+      "conclusion": "CLOSED primary-static from model input 0x440290 (ret 8, returns 0/1): (1) close X = control this+0x58, vtable+0x10 hit-test at 0x4402A6 AND [this+0x274]!=0 (0x4402AD) -> return 1; the dispatch case 0x42C17D then runs mov ecx,0x47EF18; call 0x41C1E0 (0x42C18E/0x42C193) = ROOT hide-all -> clicking X closes the dialogue (frames 161/162 = normal/highlight crossed-swords glyph, visual only). (2) scroll-up = this+0x1C0, hit at 0x4402E4 gated [this+0x3BC]>0 && byte[this+0x58C]==1 (0x4402C3/0x4402CD) -> dec [this+0x3BC] clamped to 0 (0x4402F1-0x4402FA) -> call 0x440C30 -> return 0 (not handled, no close). (3) scroll-down = this+0x10C, hit at 0x44033B gated [this+0x3BC]<[this+0x3C0] && byte[this+0x58C]==1 (0x440314/0x440324) -> inc [this+0x3BC] clamped to [this+0x3C0] (0x440342-0x44035B) -> call 0x440C30 -> return 0. 0x440C30 walks node list 0x8B1AE4 and clears the 5 sub-rects per line struct (line+0xC, stride 0x10) via SetRect IAT 0x4762B0 = scroll relayout. Scrollbar thumb drag = 0x417E60(this+0x3C4) (0x440371-0x440379). Repositioned hit rects for these controls are re-derived at 0x440A43..0x440A8B: +0x58 close at (win.x+0x15B, bottom-0x24), +0x1C0 at (x+0xB8, bottom-0x1E), +0x10C at (x+0xC8, bottom-0x1E).",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x440290", "0x4402A6", "0x4402AD", "0x4402C3", "0x4402CD", "0x4402E4", "0x4402F1", "0x440314", "0x44033B", "0x440342", "0x440371", "0x440C30", "0x440A43", "0x440A52", "0x440A6A", "0x440A85", "0x42C17D", "0x42C193", "0x417E60", "0x4762B4"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "dynamic entry fields this+0x520..this+0x544 are destination RECTs, not text records",
+      "conclusion": "CLOSED primary-static: constructor 0x43EE00 builds three destination RECTs via SetRect (IAT 0x4762B0) - background target this+0x520 (dwords +0x520/+0x524/+0x528/+0x52C, full RECT), repeated-entry target this+0x530, final-entry target this+0x540; the constants 384/384/138/24 are source-dimension-derived inputs, not text. Paint consumes them directly: 0x43F06A selects Frame 1100 into the this+0x520 rect, loop 0x43F0B2 reads DWORD[this+0x530]+1+index as x and DWORD[this+0x534]+index*18 as y for the Frame 1101 strips, 0x43F120 selects Frame 1102 at this+0x540 / this+0x544+final_index*18. No glyph/string semantics live in these fields; fallback geometry at 0x43F179 also treats 0x520..0x52C as a rect. Third shared text/layout structure call at 0x440A41 uses this+0x550/0x554/0x57C - distinct from the RECT fields.",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x43EE00", "0x4762B0", "0x43F06A", "0x43F0B2", "0x43F0BC", "0x43F120", "0x43F179", "0x440A41"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "first-level dispatch bodies 0x42C1A4..0x42C30D, per-frame update 0x41D744, second-stage tables, outer-table liveness",
+      "conclusion": "CLOSED primary-static. (1) Input dispatch: winmgr mouse handler 0x42BEAA first tries 0x417E60(winmgr+0x61BC) scrollbar (return 1), then hit-test 0x42AAB0 -> edi; edi==2 -> store 0x44E910; else 0x42BF70: cmp edi,-1 -> je 0x42BEF8; cmp edi,0xE; ja 0x42C198; jmp [edi*4+0x42C4D4] (15 used: [0]0x42BF85 [1]0x42BFB3 [2]0x42BFE1 [3]0x42C00B [4]0x42C039 [5]0x42C198 [6]0x42C063 [7]0x42C08D [8]0x42C0B7 [9]0x42C17D [10]0x42C198 [11]0x42C0E1 [12]0x42C10B [13]0x42C131 [14]0x42C157; [0]=0x4300F0(winmgr+0x6554,winmgr+0x20,x,y)). Event loop 0x42BEF8 iterates the 16 fixed windows winmgr+0x567C+id*0xB4 (offset ((id*5+0x267)*9)*4 computed at 0x42BF0B), calls each [obj vtable+0x10] hit-test, then jmp [id*4+0x42C494] (16 entries: [0]0x42C1CE [1]0x42C259 [2]0x42C241 [3]0x42C2E1 [4]0x42BF37 [5]0x42C218 [6]0x42C209 [7]0x42C292 [8]0x42C302 [9]0x42C226 [10]0x42C1A4 [11]0x42C1B2 [12]0x42C359 [13]0x42C1C0 [14]0x42C234 [15]0x42C30D); the NPC model case 9 = 0x42C17D (hit-test 0x440290; handled -> hide-all 0x41C1E0). (2) Per-frame update 0x41D744: send fires only when the dialogue model is INACTIVE - mov eax,[esi+0x2F660C]; test eax,eax; jne 0x41D762 skips when active (corrects old record 'gated on [model+0x30]' - the gate is the ROOT-relative active flag [ROOT+0x2F660C], and the send is a server-content poll); target object = [ROOT+0x364444], arg = [obj+4] (the registered target's id); mov ecx,0x8AB828; call 0x451740 -> 0x452940(esi+0x18, 0x3F2, arg) header + 0x451E60 send = outbound msg 0x3F2; then GetTickCount -> [ROOT+0x428040] (500ms throttle); [ROOT+0x364450]=0; ret 8. (3) Second-stage tables: dispatcher 0x41EDBD -> jmp [edx*4+0x421D5C] (12 entries [0]0x421CFC [1]0x421497 [2]0x421BA7 [3]0x41EFC6 [4]0x41F06B [5]0x41EDE0 [6]0x41EF62 [7]0x41EF8B [8]0x41F0F0 [9]0x41EDC4 [10]0x41EE34 [11]0x421D3F) indexed by byteA 0x421D8C at msg-6 (0xC3 bytes; [23]=[24]=1 -> msgs 29/30 -> 0x421497; [34]=2 and [94..98]=2 -> msgs 40, 100..104 -> 0x421BA7; [35]=3,[36]=4,[38]=5,[39]=6,[40]=7,[47]=8,[48]=9,[194]=10 -> msgs 53 -> 0x41F0F0, 54 -> 0x41EDC4, 200 -> 0x41EE34; value 0xB noop; default 0); dispatcher 0x41F052 -> jmp [edx*4+0x421E50] (byteB 0x421E58 at obj-type byte: types 0/1/3/0x32 -> 0x41F059 (vtable+0x3C dispatch at 0x41F01E), others noop 0x421D3F; handler table 0x421E50 = [0x41F059, 0x421D3F]); dispatcher 0x42043C for msgs 0x29F..0x327: add eax,-0x29F; cmp eax,0x88; ja noop; mov dl,byte[eax+0x422080]; jmp [edx*4+0x421FBC] (49-entry table 0x421FBC: [0]0x420BE8 [31]0x421CFC [32]0x421508 [44]0x420C90 [45]0x421497 [46]0x420E36 [47]0x42121B [48]0x421D3F noop; the former '0x422050 dwords' are the tail indices 37..48 of this table, byteC 0x422080 has 0..48 with 48=noop); sub-protocol 0x4218F2 byte table 0x42219C (idx = sub_msg-0x44D, >=0xD4 bytes, default 0x0C noop): 0x44D->0, 0x4B0->1, 0x514->2, 0x515->3, 0x516->4, 0x517->5, 0x518->6, 0x519->7, 0x51A..0x51D->8, 0x51E->9, 0x51F->10, 0x520->11 -> handler table 0x422168 ([0]0x421C81 [1]0x421913 [2]0x421BBC [3]0x421A45 [4]0x421AF5 [5]0x421A85 [6]0x4219A0 [7]0x421BA7 [8]0x421CFC [9]0x421B5B [10]0x421955 [11]0x421C23 [12]0x421D3F) - consistent with the previously confirmed id_map. (4) Outer table 0x421E8C liveness: its only reader is dispatcher tail 0x41F582 (sole jump-in 0x41F269): add eax,-0x264; cmp eax,8; ja 0x421D3F; jmp [eax*4+0x421E8C] -> reachable indices 0..8 only (msg 0x264..0x26C); indices 9..39 statically dead, including 13 (0x41FD36 click_buffer), 16 (0x41FE31 dialogue_open) and 17 (0x41FECC hide-all wrapper), which have no E8/imm32 refs outside the table; hide_all 0x41C1E0 itself remains live via direct E8 callers 0x41C0CE, 0x422BAD, 0x42C193, 0x42CFC3.",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x42BEAA", "0x42BEF8", "0x42BF0B", "0x42BF70", "0x42C4D4", "0x42C494", "0x42C17D", "0x41D744", "0x451740", "0x452940", "0x451E60", "0x41EDBD", "0x421D5C", "0x421D8C", "0x41F052", "0x421E50", "0x421E58", "0x42043C", "0x422080", "0x421FBC", "0x4218F2", "0x42219C", "0x422168", "0x41F582", "0x421E8C", "0x41C1E0"]
+    }
   ]
 }

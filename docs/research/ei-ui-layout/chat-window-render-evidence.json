@@ -570,7 +570,7 @@
    "0x00417B55",
    "0x00417BB3"
   ],
-  "interpretation": "The six command strings are structurally bound to the six chat controls and are available to the shared control implementation during its draw/geometry path. The available static path does not yet prove whether the user sees them as captions, hover tooltips, or both; that display distinction remains pending.",
+  "interpretation": "The six command strings are structurally bound to the six chat controls in control+0x34 and are rendered as HOVER TOOLTIPS only (closed 2026-08-11, see closed_notes): drawn by 0x00417370 in the +0x25==1 hover branch of paint 0x00417640 at the cursor position; never as static captions (0x417830/0x460240 are frame blits; +0x34 has no other read site).",
   "evidence_level": "primary-static-field-and-call-flow"
  },
  "original_command_strings": {
@@ -620,7 +620,7 @@
     "interpretation": "guild-chat rejection toggle/command format"
    }
   ],
-  "caveat": "These are original command/tooltip strings supplied to the control constructors. They establish the six channel/command concepts and their fixed x positions, but the exact visible caption versus tooltip rendering still belongs to the shared control implementation."
+  "caveat": "These are the original help strings supplied to the control constructors (control+0x34). They establish the six channel/command concepts and their fixed x positions. Rendering is closed (2026-08-11): hover tooltip only via 0x00417370; the separate click-injected command templates (0x47AD88-family) go into the native EDIT box, not +0x34."
  },
  "paint_order": [
   {
@@ -660,9 +660,109 @@
    "evidence": "The final loop builds successive input-character rectangles from the input buffer with a 14-pixel horizontal progression."
   }
  ],
- "pending": [
-  "Whether the six command strings (copied to control+0x34 by ctor 0x00417550) render as visible captions, tooltips, or both; next target: shared control paint refs 0x00417B55/0x00417BB3.",
-  "Re-verify renderer 0x0045DD70 absolute x/y arg slot order and arg1/arg7 meaning on next exe access.",
-  "Recover close-button child vtable +0x10 handler and visibility gate 0x0042B180 wiring."
- ]
+ "closed_notes": [
+  {
+   "key": "six-channel-0x34-string-render-mode",
+   "date": "2026-08-11",
+   "conclusion": "The six channel controls' +0x34 GBK strings (0x47AD08/0x47ACF8/0x47ACE4/0x47ACD0/0x47ACB8/0x47AC98) render as HOVER TOOLTIPS (text) only - never as static captions. The strings are drawn by 0x00417370, which is called unconditionally from the hover branch (+0x25==1) of the channel-control paint 0x00417640 at 0x00417719-0x0041771B. The tooltip is drawn at the cursor position (GetCursorPos 0x476240 + ScreenToClient 0x476234) with a 0x96FFFF light-yellow background brush and 1px black frame via GDI (measure 0x45E0C0, CreateRectRgn 0x476054, CreateSolidBrush 0x476064, FillRect 0x4762F0, DrawTextA 0x476280 flags 0x25 = DT_SINGLELINE|DT_VCENTER|DT_CENTER inside 0x45DE50). The normal paint 0x00417830 and the frame blit 0x00460240 never touch text; a +0x34 read-site scan of the whole window/control region shows the ONLY reads are 0x00417373/0x00417378 inside the tooltip renderer (ctor copies the string at 0x004175CD, subobject ctor zeroes the buffer at 0x00417622). The click path is unrelated to +0x34: hit dispatch 0x004149A0 has no +0x34 reads and injects separate command-template constants (0x47AD88/0x47AD84/0x47AD80/0x47AD7C/0x47AD70/0x47AD60) into the native EDIT box (SetWindowTextA 0x4762CC, HWND 0x8AA48C).",
+   "evidence_chain": [
+    {
+     "va": "0x00413DF0-0x00413DFE",
+     "fact": "Chat window base ctor 0x413DA0 (chat obj = ROOT+0x507EC, ctor called at 0x426DBD) array-constructs 9 child controls at this+0x6C..0x60C stride 0xB4: lea eax,[esi+0x6c]; push 0xb4; push eax; call 0x4686c4 (args pushed earlier: ctor 0x404690, count 9, dtor 0x4046B0)"
+    },
+    {
+     "va": "0x00404690-0x004046A1",
+     "fact": "Array element ctor 0x404690 = mov esi,ecx; mov dword ptr [esi],0x4763a8; call 0x4175F0; mov eax,esi; ret - writes channel-control-class vtable 0x4763A8 at [obj+0] for all 9 chat controls"
+    },
+    {
+     "va": "0x004763A8-0x004763C4",
+     "fact": "Vtable 0x4763A8 slots: +0=0x4046C0 dtor, +4=0x00417640 paint/render, +8=0x00417780 hover update, +0xC=0x004177C0 pressed setter, +0x10=0x004177F0 hit test, +0x14=0x404910, +0x18=0x4049B0, +0x1C=0x404A30"
+    },
+    {
+     "va": "0x00414144-0x00414237",
+     "fact": "Chat ctor 0x414060 calls channel ctor 0x417550 six times (this+0x120/0x1D4/0x288/0x33C/0x3F0/0x4A4) with 9 args; arg6 = help string (0x47AD08/0x47ACF8/0x47ACE4/0x47ACD0/0x47ACB8/0x47AC98) -> control+0x34; +0x24=1 enabled, +0x20=-1 (no normal frame), +0x30=0, frames 0x168..0x173, x = base+0x19/0x41/0x69/0x91/0xB9/0xE1"
+    },
+    {
+     "va": "0x00417550-0x004175E5",
+     "fact": "Channel ctor 0x417550 (thiscall ret 0x24 = 9 args): arg1->+0x14, arg2->+0x18, arg3->+0x1C, arg4->+0x28, arg5->+0x2C, arg6->+0x34 (strlen+rep movsd copy at 0x4175C2-0x4175E0), arg7->+0x24, arg8->+0x20, arg9->+0x30; 0x417577 mov byte [esi+0x25],0 resets state to normal after subobject ctor set it to 1"
+    },
+    {
+     "va": "0x00414700/0x00414940-0x00414963",
+     "fact": "Refresh routine 0x414700 (main-loop call 0x428206): 9x direct 0x417830 frame paint, then loop mov ebx,9 at 0x414950: mov edx,[edi]; mov ecx,edi; call dword ptr [edx+4] (0x414955-0x414959) -> vtable+4 = 0x00417640 per control"
+    },
+    {
+     "va": "0x00417640-0x00417721",
+     "fact": "Paint 0x417640 state machine on +0x25: ==0 normal && +0x24==1 -> SelectFrame(+0x20) blit via 0x460240 unless +0x20==-1 (0x417657 je 0x41776F skips; channels have +0x20=-1 -> no normal blit); ==1 hover (0x4176A9) -> frame = +0x30!=0 ? +0x18 : +0x20 (0x4176B2-0x4176D1; channels +0x30=0/+0x20=-1 -> skip frame select) then 0x417719 mov ecx,esi; 0x41771B call 0x00417370 TOOLTIP - unconditional in hover; ==2 pressed (0x417722) -> SelectFrame(+0x1C) blit, no tooltip"
+    },
+    {
+     "va": "0x00417370-0x00417398",
+     "fact": "Tooltip renderer 0x417370 entry: 0x417373 mov al,[ecx+0x34]; 0x417378 lea ebp,[ecx+0x34]; empty string -> zero POINT cache 0x8B1880/0x8B1884 and return (0x417385-0x417398); non-empty -> GBK cache compare 0x8B1888, dirty flag 0x47ADBC, typewriter counter 0x47ADC0"
+    },
+    {
+     "va": "0x004174xx-0x0041754x",
+     "fact": "Tooltip body: GetCursorPos (0x476240) + ScreenToClient (0x476234) at hWnd [0x8AB7B0]; text measure 0x45E0C0 (GetTextExtentPoint32A 0x476078) -> box (w+12, h+4); CreateRectRgn 0x476054 + GetRgnBox 0x47604C; fill: CreateSolidBrush(0x96FFFF) 0x476064 + FillRect 0x4762F0 (light-yellow bg); frame: CreateSolidBrush(0) + FrameRect 0x4762F4 (1px black); text 0x45DE50 = SetBkMode TRANSPARENT 0x476044 + SelectObject(font=[ctx 0x8AB7A8+0x28]) 0x476048 + SetTextColor 0x476060 + DrawTextA 0x476280 flags 0x25 (DT_SINGLELINE|DT_VCENTER|DT_CENTER) + surface composite; DeleteObject x3 0x476068"
+    },
+    {
+     "va": "0x00417780/0x004177C0/0x004177F0",
+     "fact": "State byte +0x25 setters: vtable+8 0x417780 hover-update = PtInRect (0x4762B4) on [esi+4]; in-rect && +0x25!=2 -> +0x25=1, out -> 0; vtable+0xC 0x4177C0 = PtInRect -> +0x25=2 ret 1 (pressed); vtable+0x10 0x4177F0 hit test = +0x25=0, PtInRect -> 0x45AFC0(0x8AB130,0x69,0,0,0) sound, ret 1"
+    },
+    {
+     "va": "0x00414CF0/0x00414C60/0x004149A0",
+     "fact": "Input dispatch wiring: mouse-move 0x42C63B -> 0x414CF0 -> scrollbar 0x417C80 then 9x loop call [vtable+8] = 0x417780 (hover update); mouse-down 0x42BC7C -> 0x414C60 -> 0x417D00 then 9x [vtable+0xC] = 0x4177C0; hit/click 0x42C0B7 -> 0x4149A0 -> scrollbar 0x417E60, 9x [vtable+0x10] = 0x4177F0, first control (0x6C) hit closes, control 0x120 hit -> SetFocus (0x4762B8) HWND 0x8AA48C + push 5 + SetWindowTextA (0x4762CC) with command template 0x47AD88.. no +0x34 reads in this whole routine"
+    },
+    {
+     "va": "0x00460240",
+     "fact": "0x460240 = frame-surface blit, NOT text: reads surface ptr [ebp+0x1C], clip math on w/h args (0xffff mask, dec, negative x/y handling), 800x600 screen coords (0x320/0x258); no GDI text calls in head; used by normal/pressed frame draws only"
+    },
+    {
+     "va": "0x00417640-refs",
+     "fact": "E8-caller scan of 0x00417640: zero direct callers - reachable ONLY via vtable slot +4 (0x4763AC); imm32 refs of 0x417640 outside the vtable slot: none. +0x34 read-site scan: only 0x417373/0x417378 (tooltip) read; ctor writes 0x4175CD/0x417622; no other .text reference"
+    }
+   ],
+   "evidence_level": "primary-static",
+   "remaining_candidates": [
+    "0x45DE50 SetTextColor exact COLORREF (caller pushes 0; a7==0 branch sets TRANSPARENT - color source not statically resolved)",
+    "Typewriter reveal direction / hover reachability runtime verification",
+    "Renderer 0x45DD70 absolute x/y arg slot order and arg1/arg7 meaning (closed 2026-08-11, see below)",
+    "Visibility gate 0x0042B180 wiring (closed 2026-08-11, see below)"
+   ]
+  },
+  {
+   "key": "0x45DD70-slot-order-and-arg1-arg7",
+   "date": "2026-08-11",
+   "conclusion": "Renderer 0x45DD70 is a thiscall with 7 stack args (ret 0x1C). Slot order, proven by direct disassembly: arg1 = target surface/device (offscreen GDI surface; fallback this->+0x1C when 0), arg2 = X, arg3 = Y, arg4 = textcolor, arg5 = bgcolor, arg6 = text (GBK, strlen'd), arg7 = font (HFONT; fallback this->+0x28 context default font when 0; the arg7 stack slot is additionally used as the HDC out-param of device->vt+0x44 and every GDI call in the body reads the HDC back from that slot). arg1 == 0 and arg1->vt+0x44 failure both bail to 0x45DE42 (silent return). At the chat message call site 0x4147F3: arg1=[0x8AB7C4] (CWHDXGraphicWindow+0x1C offscreen surface), arg2 = this+0x6C0 + this+0x18 (X), arg3 = this+0x6C4 + this+0x1C + row (Y), arg4 = msg->+0x00 (textcolor), arg5 = msg->+0x04 (bgcolor), arg6 = msg->+0x08 (text), arg7 = 0 (default font). [0x8AB7C4] is NOT written by any static store: the surface is produced by IDirectDraw::CreateSurface via out-param (lea this+0x1C pushed as lpDDSurface at 0x45D53D/0x45D602, call [ddraw_vt+0x18] at 0x45D552/0x45D617 inside 0x45D380, sole E8 caller 0x45D140).",
+   "evidence_chain": [
+    {"va": "0x0045DD70-0x0045DD95", "fact": "Entry: push ecx; eax=[esp+8](arg1); test eax,eax; jne 0x45DD8D; fallback eax=this->+0x1C (0x45DD7E); je 0x45DE42 bail if null; esi=[esp+0x24](arg7); esi==0 -> esi=this->+0x28 (default font, 0x45DD95)"},
+    {"va": "0x0045DD98-0x0045DDA5", "fact": "HDC acquisition: ecx=[eax](surface vtable); lea edx,[esp+0x24](=&arg7 slot); push edx; push eax; call [ecx+0x44] = surface->GetDC(surface,&hdc) writing the HDC into the arg7 stack slot; result <0 -> bail 0x45DE42"},
+    {"va": "0x0045DDAB-0x0045DDC8", "fact": "arg5 = bgcolor: eax=[esp+0x1C](arg5); eax==0 -> SetBkMode(hdc,1=TRANSPARENT) via [0x476044] (0x45DDB3-0x45DDBA); eax!=0 -> SetBkColor(hdc,arg5) via [0x476050] (0x45DDC2-0x45DDC8)"},
+    {"va": "0x0045DDD2-0x0045DDEB", "fact": "Font select + textcolor: SelectObject(hdc,font=arg7-resolved) via [0x476048] (0x45DDDC-0x45DDDD, old font saved ebp); SetTextColor(hdc, arg4) via [0x476060] with ecx=[esp+0x30](HDC), eax=[esp+0x24](arg4) -> arg4 = textcolor"},
+    {"va": "0x0045DDF1-0x0045DE12", "fact": "TextOut: edx=[esp+0x2C](arg6 text); repne scasb strlen (0x45DDFC-0x45DE04, len=not ecx-1); TextOutA via [0x476074] pushed hdc,arg2,arg3,text,len (0x45DE05-0x45DE12): push len; ecx=[esp+0x34](HDC); push text; edx=[esp+0x28](arg3); push arg3; eax=[esp+0x1C](arg2); push arg2; push ecx(HDC) -> TextOutA(hdc, X=arg2, Y=arg3, text=arg6, len) - slot order proven"},
+    {"va": "0x0045DE18-0x0045DE3F", "fact": "Cleanup: SelectObject(hdc,ebp old font) via [0x476048] (0x45DE1C-0x45DE1E); 0x45DE27 cmp esi,[eax+0x28]: font==context default (this->+0x28 via eax=[esp+0x10]=saved this) -> not deleted, else DeleteObject(font) via [0x476068] (0x45DE2C-0x45DE2D); composite blit: surface->vt+0x68(surface, hdc) (0x45DE33-0x45DE3F); ret 0x1C"},
+    {"va": "0x004147C1-0x004147F3", "fact": "Chat call site: edx=msg->+0x04(bg); ecx=&msg->+0x08(text); eax=msg->+0x00(color); push 0(arg7 font); push ecx(arg6 text); ecx=this+0x6C4; push edx(arg5 bg); edx=this+0x1C; add ecx,edx; edx=this+0x6C0; add ecx,edi(row)(=Y); push eax(arg4 textcolor); eax=[0x8AB7C4]; push ecx(arg3 Y); ecx=this+0x18; add edx,ecx(=X); ecx=0x8AB7A8(this); push edx(arg2 X); push eax(arg1 surface); call 0x45DD70 -> arg2=X, arg3=Y, arg4=textcolor confirmed"},
+    {"va": "0x0045D53D-0x0045D552 / 0x0045D602-0x0045D617", "fact": "[0x8AB7C4] write site: inside surface creator 0x45D380 (sole E8 caller 0x45D140, which is called from 0x45D060): lea edx,[esi+0x1c]; push 0; push edx(lpDDSurface out-param); lea edx,[esp+0x28](DDSURFACEDESC2); push edx; push esi(ddraw); call [ecx+0x18] = IDirectDraw::CreateSurface(desc,&this->+0x1C,NULL); failure 0x80004005. this+0x1C of the 0x8AB7A8 object is written ONLY via this out-param: raw scan of disp32 0x8AB7C4 (all .text references to the object's absolute +0x1C address) finds no store instruction targeting it"},
+    {"va": "0x0045D531-0x0045D535 / 0x0045D5F6-0x0045D5FA", "fact": "Surface dims from this->+0x58 (w, word 640) and this->+0x5A (h, word 480) loaded into DDSURFACEDESC2 dwWidth/dwHeight at [esp+0x28]/[esp+0x2C], dwFlags 0x2040"},
+    {"va": "0x0045DE27-0x0045DE2D", "fact": "Ownership: explicit font (arg7, non-default) is DeleteObject'd by callee after restore; context default font this->+0x28 is NOT deleted (0x45DE27 cmp esi,[eax+0x28]; je skip)"}
+   ],
+   "evidence_level": "primary-static"
+  },
+  {
+   "key": "0x42B180-visibility-gate-wiring",
+   "date": "2026-08-11",
+   "conclusion": "The chat window visibility is a self-referential toggle: gate flag [ROOT+0x5081C] IS the chat window's own visible field this+0x30 (chat obj = ROOT+0x507EC; 0x507EC+0x30 == 0x5081C). 0x42B180 (dispatcher 0x42ADB0 jump-table[8] target for window index 8 = chat) reads it: nonzero (visible) -> HIDE: MoveWindow(edit hwnd [0x8AA48C] to x=[0x8AB7F0]+0xDF, y=[0x8AB7F4]+0x23A, w=0x162, h=0x10, TRUE), remove window 8 from the ROOT activation list (0x42AC50), then chat vtable+0x10 (0x47660C+0x10 = 0x423F80 = mov [ecx+0x30],eax) with 0 -> this+0x30=0, returns 0. zero (hidden) -> SHOW: MoveWindow(edit to x=[0x8AB7F0]+[ROOT+0x50804]+[ROOT+0x51140], y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144], w=[ROOT+0x51148]-[ROOT+0x51140], h=[ROOT+0x5114C]-[ROOT+0x51144], TRUE), ShowWindow(edit,5), add window 8 to activation list (0x42AC30 -> 0x449870), vtable+0x10 with 1 -> this+0x30=1, returns 1. Close route: close-button child (chat+0x6C, first of 9-control array, vtable 0x4763A8) hit test vtable+0x10 = 0x4177F0; chat click dispatch 0x4149A0 returns 1 on close-button hit (0x414A19); mouse-click stub 0x42C0B7 (chat) then does push 8; mov ecx,esi(=ROOT); call 0x42ADB0 -> jump table 0x42B3E4[8]=0x42B180 -> gate decides hide/show as above. Keyboard path: 'R' (0x52) key handler 0x42CBD0 does push 8; call 0x42ADB0 at 0x42CCF3-0x42CCF7 - same toggle. Dispatcher entry first deactivates all listed windows (0x42B820: for each activation-list entry, per-index jump table 0x42B938[8]=0x42B8B6 -> push 0; lea ecx,[ROOT+0x507EC]; call 0x423F90 -> this+0x34=0); indices 5/10/>15 -> common tail 0x42B3DD returns 0.",
+   "evidence_chain": [
+    {"va": "0x0042B180-0x0042B1D8", "fact": "HIDE path: eax=[esi+0x5081C]; test; jne 0x42B1DB (show) else fall through: MoveWindow [0x4762BC] hwnd=[0x8AA48C], x=[0x8AB7F0]+0xDF, y=[0x8AB7F4]+0x23A, 0x162, 0x10, TRUE (0x42B18A-0x42B1B2); push 8; ecx=esi; call 0x42AC50 (remove window 8 from activation list) (0x42B1B8-0x42B1BC); eax=[esi+0x507EC] (chat vtable 0x47660C); lea ecx,[esi+0x507EC]; push 0; call [eax+0x10] = 0x423F80 -> [chat+0x30]=0 (0x42B1C1-0x42B1CF); return 0 (edi=0)"},
+    {"va": "0x0042B1DB-0x0042B25B", "fact": "SHOW path: w=[esi+0x51148]-[esi+0x51140], h=[esi+0x5114C]-[esi+0x51144] (chat rect on ROOT); MoveWindow(hwnd=[0x8AA48C], x=[0x8AB7F0]+[esi+0x50804]+[esi+0x51140], y=[0x8AB7F4]+[esi+0x50808]+[esi+0x51144], w, h, TRUE) (0x42B1DB-0x42B223); ShowWindow(hwnd,5) via [0x4762AC] (0x42B229-0x42B232); push 8; call 0x42AC30 (add window 8 to activation list; 0x42AC30 = mov eax,[esp+4]; add ecx,0xd24; push eax; call 0x449870; ret 4) (0x42B238-0x42B23C); call [chat_vt+0x10] with 1 -> [chat+0x30]=1 (0x42B241-0x42B24F); return 1"},
+    {"va": "0x00423F80-0x00423F97", "fact": "Visible-flag setter 0x423F80 = chat vtable 0x47660C slot +0x10: mov eax,[esp+4]; mov dword ptr [ecx+0x30],eax; ret 4. Direct E8 callers: single 0x43F033; virtual dispatches at 0x42B1CF (hide, push 0) and 0x42B24F (show, push 1). Sibling 0x423F90 = mov [ecx+0x34],eax; ret 4 (activated flag)"},
+    {"va": "0x004763A8-0x004763C4 / 0x004177F0", "fact": "Close-button child class vtable 0x4763A8 (written by array-element ctor 0x404690, chat base ctor 0x413DA0 array-constructs 9 controls at this+0x6C..0x60C stride 0xB4 via 0x4686C4): +0=dtor 0x4046C0, +4=paint 0x417640, +8=hover 0x417780, +0xC=pressed 0x4177C0, +0x10=HIT TEST 0x4177F0 (= +0x25=0, PtInRect on [esi+4], sound 0x45AFC0, ret 1)"},
+    {"va": "0x004149A0-0x00414A40 / 0x0042C0B7-0x0042C0DE", "fact": "Click dispatch: chat window click handler 0x4149A0 (called from mouse-dispatch stub 0x42C0B7 with lea ecx,[esi+0x507ec]) iterates 9 controls calling [vtable+0x10] (=0x4177F0 hit test, pushed y,x); close-button (+0x6C) hit -> return 1 (0x414A19); channel-1 (+0x120) hit -> SetFocus(hwnd [0x8AA48C]) + ShowWindow(edit,5) + SetWindowTextA(template 0x47AD88). Stub 0x42C0B7: test eax,eax; je 0x42C198 (ignore); push 8; mov ecx,esi(=ROOT); call 0x42ADB0; mov eax,1; ret 8"},
+    {"va": "0x0042ADB0-0x0042ADCE / 0x0042B3E4 / 0x0042B3DD", "fact": "Dispatcher 0x42ADB0: push esi; push edi; mov esi,ecx; xor edi,edi; call 0x42B820 (deactivate-all); mov eax,[esp+0xC] (window index); cmp eax,0xF; ja 0x42B3DD; jmp [eax*4+0x42B3E4]. Jump table 0x42B3E4 (16 entries): [0]=0x42ADCF,[1]=0x42AE42,[2]=0x42AE91,[3]=0x42AEE0,[4]=0x42B06B,[5]=0x42B3DD,[6]=0x42B0BA,[7]=0x42B131,[8]=0x42B180(chat),[9]=0x42B25E,[10]=0x42B3DD,[11]=0x42AF2F,[12]=0x42AF7E,[13]=0x42AFCD,[14]=0x42B01C,[15]=0x42B2AD. Common tail 0x42B3DD = mov eax,edi(0); pop edi; pop esi; ret 4 (dword 0x42B3E0 = 0x0004C25E is padding, NOT an entry)"},
+    {"va": "0x0042B820-0x0042B8F0 / 0x0042B938", "fact": "Deactivate-all 0x42B820: walks activation list ([esi+0xD28] head, entries: [0]=window index,[4]=prev,[8]=next; count [esi+0xD38]); per-entry index jump table 0x42B938: [0]=0x42B870(+0x6554),[1]=0x42B87A(+0x29CE4),[2]=0x42B884(+0x33188),[3]=0x42B88E(+0x3399C),[4]=0x42B898(+0x4707C),[5]=0x42B8F5(skip),[6]=0x42B8A2(+0x47834),[7]=0x42B8AC(+0x47C28),[8]=0x42B8B6(+0x507EC chat),[9]=0x42B8C0(+0x51150),[10]=0x42B8F5(skip),[11]=0x42B8CA(+0x516E8),[12]=0x42B8D4(+0x518E0),[13]=0x42B8DE(+0x52118),[14]=0x42B8E8(+0x524F0); each handler: push 0; lea ecx,[esi+off]; jmp 0x42B8F0 -> call 0x423F90 -> [window+0x34]=0"},
+    {"va": "0x0042AC50-0x0042AD9F / 0x00449870-0x004498D7 / 0x0042B980-0x0042B9B5", "fact": "Activation list ops on ROOT: 0x42AC50(index) = find entry with [0]==index then unlink (fix +0xD28/+0xD2C/+0xD30/+0xD34/+0xD38) and free via 0x4680F8 - REMOVE; 0x42AC30(index) -> 0x449870(ROOT+0xD24, index) = allocate 0xC node ([0]=index,[4]=[8]=0), append to list (head [list+4], tail [list+0xC], count [list+0x14] = ROOT+0xD28/+0xD30/+0xD38) - ADD; 0x42B980(index) = returns 1 if index == last list element (top window)"},
+    {"va": "0x0042CBD0-0x0042CC57 / 0x0042CCF3-0x0042CCF7", "fact": "Keyboard handler 0x42CBD0 (WndProc-level key dispatch, ebp=ROOT): gate checks [ebp+0x53060], [ebp+0x52E8C], [ebp+0x5081C] (open-window flags); 'R' (0x52, GetAsyncKeyState ah) at 0x42CCF3: push 8; mov ecx,ebp; call 0x42ADB0; jmp 0x42CF1F - toggles chat via the same dispatcher path as the close button"},
+    {"va": "0x0042B43C / 0x0042B448 / 0x0042CC14", "fact": "All three [ROOT+0x5081C] accesses in .text are READS (raw disp32 scan: 0x42B182, 0x42B43E, 0x42CC14) - no writer exists; the flag is written only through chat vtable+0x10 (0x423F80) as [chat+0x30], confirming the gate IS the window's own visible field"}
+   ],
+   "evidence_level": "primary-static"
+  }
+ ],
+ "pending": []
 }

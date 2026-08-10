@@ -1,11 +1,13 @@
 {
   "source": {
-    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
     "constructor_va": "0x0044B130",
     "paint_va": "0x0044B2D0",
     "instance_creation_va": "0x00427776",
     "instance_object": "main+0x29CE4",
-    "instance_creation_args": "(arg1=1, context=[main+0x1C] member selector, frame=0xC8=200, 0, 0, width=0xF4=244, height=0x148=328, arg8=1)",
+    "instance_creation_args": "(arg1=1, context=[main+0x1C] member selector, frame=0xC8=200, 0, 0, width=0xF4=244, height=0x148=328, arg8=1; initial view = attribute, frame 200)",
+    "click_handler_va": "0x0044CCD0",
+    "click_handler_shape": "ret 0xC @0x44CCF6; child hit-tests via [vtable+0x10] @0x44CCE6/0x44CD09; toggle branch 0x44CD14-0x44CD9F (mode byte [this+0x54]: 1->attribute 0x423E80(frame 200), 0->equipment 0x423E80(frame 201)); after toggle, slot hit-test 0x44B720 @0x44CDB7 -> slot action 0x44BAB0 equip/use / 0x44B7A0 drag-start / 0x44BBD0 / item dialog 0x451690 (0x3EB=1003 on screen 0x8AB828); flag dispatch 0x430A40",
     "item_draw_helper": "0x00430A40",
     "global_selector_array_base": "0x005600FC",
     "global_selector_array_stride": "0x144",
@@ -17,6 +19,8 @@
     "background": {
       "file": "Data/GameInter.wil",
       "frame": 200,
+      "frame_equipment_view": 201,
+      "frame_note": "frame 200 (256x512 source) = attribute view, state byte [this+0x54]==0; frame 201 (1024x512 source) = equipment view, state byte [this+0x54]==1; both offsetX=7/offsetY=-44. Toggled by the view-toggle button click branch 0x44CD14-0x44CD9F (0x423E80 re-frames window). Initial view = attribute (window created with frame 200 at 0x427776).",
       "visible_size": [
         241,
         327
@@ -64,7 +68,11 @@
         171,
         172
       ],
-      "resource_library_candidate": "GameInter.wil"
+      "resource_library_candidate": "GameInter.wil",
+      "role": "view-toggle button: switches the window between attribute view (state byte [this+0x54]==0, frame 200, faces 171/172) and equipment view (state byte [this+0x54]==1, frame 201, faces 168/169)",
+      "click_handler_va": "0x0044CCD0",
+      "toggle_branch_va": "0x0044CD14-0x0044CD9F",
+      "evidence": "primary-static: child hit-test via [vtable+0x10] at 0x44CD09 -> toggle branch; mode byte [this+0x54]; re-frame via 0x423E80 and faces via 0x417880 (171/172 = 0xAB/0xAC in attribute mode)"
     }
   ],
   "resource_visual_inspection": {
@@ -73,7 +81,7 @@
       "The artwork contains a vertical character/status panel with empty equipment-slot silhouettes; the slot labels are not baked into Frame 200.",
       "The visible slot artwork must therefore be combined with runtime item graphics and the 11-record paint loop; a static screenshot of Frame 200 alone cannot name the equipment positions.",
       "The close control and the secondary status control are separate child resources (161/162 and 171/172), not part of the slot-record loop.",
-      "Frame 171 is a small right-pointing green/gold arrow control; Frame 172 is empty in the current export, so the pair's action name remains unresolved.",
+      "Frames 171/172 are the attribute-view face pair of the view-toggle button (see child_controls / hit_rects / closed_notes). Pixel inspection (original GameInter.wil): both 36x36 and fully opaque; 171 = dark-bordered face with a bright plus (+) core (horizontal bar rows 12-13, vertical bar near col 21); 172 = block + vertical bar composite (left block rows 3-11, horizontal mid-bar rows 12-13, vertical band cols 21-22 rows 5-26) — a plus/minus-style pair.",
       "Frame 200 also contains no baked-in attribute label artwork (pixel scan found no text-like columns); all attribute labels are drawn at runtime by 0x0044BC80 with GBK strings from .rdata (0x0047C638..0x0047C74C)."
     ],
     "confidence": "primary-static-resource-plus-pixel-inspection"
@@ -101,11 +109,11 @@
         ],
         "relative_rect": [
           176,
-          286,
+          264,
           36,
           36
         ],
-        "role": "status action candidate"
+        "role": "view-toggle button (attribute <-> equipment view); hit rect from ctor 0x44B1B7 args x=+0xB0=176, y=+0x108=264 (corrected 2026-08-11; previous 286 was a mis-transcription of the ctor argument order)"
       }
     ],
     "evidence_level": "primary-static-plus-primary-resource"
@@ -358,7 +366,7 @@
   "paint_state": {
     "state_field": "this+0x54",
     "state_dispatch_va": "0x0044B2D0",
-    "notes": "The paint path branches by state and calls shared text/image composition helpers. Equipment slot business names and exact resource families remain pending (see item_resource_selection_chain for the now-closed selector construction path).",
+    "notes": "State byte [this+0x54]: 0 = attribute view (frame 200, 256x512, faces 171/172), 1 = equipment view (frame 201, 1024x512, faces 168/169); dispatch 0x44B2D0: mode 1 -> 0x44B2ED branch (0x44B560 + SetRect at x-0xA/y+0x32..x+0xFF/y+0x1E), mode 0 -> 0x44B3DD branch; both share helpers 0x44B560/0x44BC80. View switched by the view-toggle button (click branch 0x44CD14-0x44CD9F). Equipment slot business names remain candidate (server-enum-driven); resource families resolved 2026-08-11 (el82 Inventory.wil / el83 Equip.wil / el86 ProgUse.wil; see item_resource_selection_chain).",
     "primary_disassembly_details": {
       "state_zero_branch": {
         "entry": "0x0044B2D0",
@@ -1208,6 +1216,7 @@
       "flag_2_target_element": "0x0056B0E8 (array element 139)",
       "frame_index_source": "WORD [graphics_object+0x28]",
       "status_window_usage": "ordinary equipment slots pass flag 0 -> element 0x5668C4; special character-area indices (0,1,4) pass flag 1 -> element 0x566A08",
+      "resolved_wil_bindings": "flag0 el82 = Data/Inventory.wil (path slot 0x570574); flag1 el83 = Data/Equip.wil (path slot 0x570678); flag2 el139 = EMPTY/UNSET (path slot 0x573F58 never written by the 0x452B20 table fill, which covers slots 0..91 only)",
       "evidence": "primary-static-dispatch-immediates"
     },
     "selector_dispatch": {
@@ -1261,12 +1270,12 @@
         {
           "index": 82,
           "address": "0x005668C4",
-          "note": "flag0 item context (ordinary equipment slots)"
+          "note": "flag0 item context (ordinary equipment slots); RESOLVED 2026-08-11: Data/Inventory.wil (path slot 0x570574 = owner+0x10478, store site 0x453804)"
         },
         {
           "index": 83,
           "address": "0x00566A08",
-          "note": "flag1 item context (character-area overlay)"
+          "note": "flag1 item context (character-area overlay); RESOLVED 2026-08-11: Data/Equip.wil (path slot 0x570678 = owner+0x1057C, store site 0x453829)"
         },
         {
           "index": 84,
@@ -1284,7 +1293,7 @@
         {
           "index": 139,
           "address": "0x0056B0E8",
-          "note": "flag2 item context; construction loop NOT yet located"
+          "note": "flag2 item context; construction LOCATED 2026-08-11: main-object loop2 0x452AF7 (i=69, mode 0) and map-rebuild 0x43B7B2 (start=126 when byte[map+0x124]=8, mode 1 with mode-0 fallback); path slot 0x573F58 never statically written -> EMPTY/UNSET"
         }
       ],
       "evidence_level": "primary-static-address-arithmetic"
@@ -1294,8 +1303,8 @@
       "routine_shape": ".\\Map\\%s.map format string @0x47C404 -> write [ebx+4] -> CreateFileA (IAT 0x4760DC) -> read 0x1C header to [ebx+0x110] -> allocate [ebx+0x108]/[ebx+0x10C] caches",
       "destructor_loop": {
         "va": "0x0043B75B",
-        "pattern": "esi=0x5612B4; call 0x465FE0 (base selector dtor); esi+=0x144; cmp esi,0x565994; jl",
-        "covers": "array elements 14..79"
+        "pattern": "esi=0x5612B4 (el14); call 0x465FE0 (base selector dtor); esi+=0x144; cmp esi,0x565994 (el70); jl (0x43B756-0x43B76E)",
+        "covers": "array elements 14..69 (corrected 2026-08-11; boundary is el70, not el80)"
       },
       "constructor_loop": {
         "va": "0x0043B7B2",
@@ -1305,16 +1314,17 @@
         "per_iteration": "push 1; push ebp(path slot); call 0x4660E0 (selector ctor mode dispatch); on failure call 0x465FE0 then push 0 and retry (mode1 preferred -> mode0 fallback); esi+=0x144; ebp+=0x104",
         "inferred_start": {
           "value": 70,
-          "basis": "[ebx+0x124]=4 inferred; main-object tile loader second loop (0x452AF7) iterates 0x46=70 and its second member region starts at this+0x5898 = this+0x144*70; the two 70-bases agree",
+          "basis": "[ebx+0x124]=4 inferred (start=(byte+1)*14 @0x43B770-0x43B77C); main-object tile loader second loop (0x452AF7) iterates 0x46=70 and its second member region starts at this+0x5898 = this+0x144*70; the two 70-bases agree",
           "evidence_level": "inference"
         },
         "covers_when_start_70": "array elements 70..83 (0x565994 .. 0x566A08), so element 82 (0x5668C4) is the 12th and element 83 (0x566A08) the 13th constructed element",
-        "path_slots_when_start_70": "0x56F944 + i*0x104 (slot12=0x57058C for element 82, slot13=0x570690 for element 83)"
+        "covers_when_start_126": "array elements 126..139 (0x56ABD0 .. 0x56B0E8) when byte[map+0x124]=8; el139 = 0x56B0E8 is the 14th/last of that range (also covered by loop2 as the 70th/main-object construction)",
+        "path_slots_when_start_70": "0x56F944 + i*0x104 (slot12=0x570574 for element 82, slot13=0x570678 for element 83; corrected 2026-08-11 - the earlier 0x57058C/0x570690 were slot+0x104 arithmetic slips)"
       },
       "path_slot_static_analysis": {
-        "scan": "imm32 scan for 0x56F944/0x57058C/0x570690/0x56B22C across .text: all negative except the single lea reference at 0x43B7AE; .rdata pointer-table scan (run>=5) over 0x47C878..0x47CE0C: zero hits",
-        "conclusion": "path slots are bss, filled at runtime by computed addresses; no static .text immediate writer exists",
-        "consequence": "the concrete WIL filename bound to element 82/83 remains RUNTIME-ONLY; static candidates Equip.wil / Inventory.wil stand side by side"
+        "superseded": "Earlier imm32 scans for 0x56F944/0x57058C/0x570690/0x56B22C found no immediate writers and concluded path slots were runtime-only. RESOLVED 2026-08-11: the WIL table fill routine 0x452B20 writes slot paths via owner-relative lea addresses (ebx=owner 0x5600FC), invisible to imm32 scans.",
+        "conclusion": "PRIMARY-STATIC bindings: el82 = Data/Inventory.wil ('.\\Data\\Inventory.wil' 0x47CCF8 -> slot 82 = owner+0x10478 = 0x570574, store site 0x453804); el83 = Data/Equip.wil (0x47CCE4 -> slot 83 = owner+0x1057C = 0x570678, store site 0x453829); el86 = Data/ProgUse.wil (0x47CCA8 -> slot 86 = owner+0x10888 = 0x570984, store site 0x4538A2). Slot N address = owner + 0xF848 + (N-70)*0x104 for N>=70 (loop2 grid; 0x452B20 fills slots 0..91). Slot 139 (0x573F58) has NO writer -> el139 EMPTY/UNSET.",
+        "evidence": "store blocks 0x4537F0-0x4538B0: strlen(scasb)+rep movsd/movsb copy; dest leas at 0x10478/0x1057C/0x10680/0x10784/0x10888/0x1098C (0x104 apart)"
       },
       "array_element_ctor_helper": {
         "va": "0x00468306",
@@ -1325,20 +1335,25 @@
         },
         "note": "main object allocates 140 selector member slots (inferred container semantics); map-window member stride 0x148 (+4 MMap / +0x148 FMMap) is a separate layout"
       },
-      "unlocated": "construction loop for elements 84+ and element 139 (0x56B0E8, flag2) not yet found in .text; they belong to a different loop not enumerated",
-      "evidence_level": "primary-static-loop-discovery; start=70 inference-level"
+      "located": "construction loops for elements 84+ and 139 FOUND 2026-08-11: (1) main-object element ctor 0x452AA0 loop2 @0x452AF7-0x452B0E (70 iterations, mode 0 via 0x4660E0, push 0; esi=slot owner+0xF848..+0x13E5C, edi=element owner+0x5898..+0xAFE8, stride 0x104/0x144) constructs el70..el139; (2) map-rebuild 0x43B7B2 reconstructs start..start+13 (start=(byte[map+0x124]+1)*14 @0x43B770; byte=4 -> el70..83, byte=8 -> el126..139), mode 1 preferred with mode-0 fallback (0x4660E0 fails -> 0x465FE0 dtor -> retry push 0)",
+      "evidence_level": "primary-static-loop-discovery; start=70 inference-level (runtime byte values unobserved)"
     },
     "composition_path": "0x004341F0 -> 0x004542F0 / 0x0045E570-family graphics helpers",
     "evidence_level": "primary-static-item-resource-selection",
-    "interpretation": "The binary does not draw an equipment slot from an invented generic icon atlas: it derives a per-item graphics object, selects its frame through the original selector context, reads the selected frame dimensions, and sends the result through the original composition path. The construction loop for the selector contexts is now located (0x43B7B2 covers elements 70..83 including 0x5668C4/0x566A08); only the runtime WIL filename binding remains un-resolvable statically."
+    "interpretation": "The binary does not draw an equipment slot from an invented generic icon atlas: it derives a per-item graphics object, selects its frame through the original selector context, reads the selected frame dimensions, and sends the result through the original composition path. The construction loops for the selector contexts are located (main-object 0x452AF7 el70..el139 mode 0; map-rebuild 0x43B7B2 start..start+13), and the WIL filename binding is now PRIMARY-STATIC: el82=Data/Inventory.wil / el83=Data/Equip.wil / el86=Data/ProgUse.wil via the 0x452B20 table fill (slots 0..91); el139 empty/unset (slot 139 never written)."
   },
   "pending": [
-    "Resolve selector context 0x005668C4 / 0x00566A08 / 0x0056B0E8 to exact WIL/WIX library filenames: construction loop located (0x43B7B2), but path slots are bss filled at runtime; Equip.wil vs Inventory.wil remain side-by-side candidates. Element 139 (flag2) construction loop not yet located.",
     "Equipment slot human names: server EquipmentSlot enum is the only category source; the 2,3,5,6,7,8,9,10 -> classic Mir3 eight-piece mapping stays candidate until runtime population is observed (see equipment-slots-evidence.json, closed 2026-08-10).",
-    "[ebx+0x124]=4 (start=70) is inference-level; a runtime map load would confirm the constructed element range.",
-    "Frame 172 child-control action name (empty export) and color semantics of a few value draws remain unresolved."
+    "Map-rebuild start byte [ebx+0x124] semantics: 0x43B7B2 computes start=(byte+1)*14 (primary-static formula @0x43B770-0x43B77C); byte=4 -> el70..83, byte=8 -> el126..139, both mode 1 with mode-0 fallback. The runtime byte values are unobserved, so which range a real map load rebuilds is inference-level.",
+    "el139 runtime semantics: statically constructed with an empty path slot (0x573F58 never written); which runtime condition loads a WIL into slot 139, and when the flag2 consumers (0x44D65C/0x44DBAE/0x44E05D, frame=WORD[selector+0x30]) draw real frames, is unobserved.",
+    "Color semantics of a few attribute value draws (beyond label colors 0xfae1c8/0xff) remain unresolved."
   ],
   "closed_notes": [
-    "Equipment slot geometry (8x38x38 rects) and item draw chain: primary-static, consolidated in equipment-slots-evidence.json (2026-08-10)"
+    "Equipment slot geometry (8x38x38 rects) and item draw chain: primary-static, consolidated in equipment-slots-evidence.json (2026-08-10)",
+    "el82 = Data/Inventory.wil, el83 = Data/Equip.wil, el86 = Data/ProgUse.wil: PRIMARY-STATIC (2026-08-11). Full chain: game object static global 0x47EF18 (ctor 0x418B00 via CRT thunk 0x401970) -> owner 0x5600FC = gameObj+0xE11E4 (0x418E70) -> element ctor 0x452AA0 (this=0x5600FC) -> WIL table fill 0x452B20 (92 strings, slots 0..91; store sites '.\\Data\\Inventory.wil' 0x47CCF8 -> slot 82 = 0x570574 @0x453804, '.\\Data\\Equip.wil' 0x47CCE4 -> slot 83 = 0x570678 @0x453829, '.\\Data\\ProgUse.wil' 0x47CCA8 -> slot 86 = 0x570984 @0x4538A2; slot N addr = owner + 0xF848 + (N-70)*0x104 for N>=70) -> element loop2 0x452AF7 (70 iterations mode 0: el70..el139 from slots 70..139). These are the exact runtime WIL files consumed by flag dispatch 0x430A40 (flag0 el82 ordinary slots, flag1 el83 character-area indices 0/1/4).",
+    "el139 = EMPTY/UNSET (candidate for runtime semantics): constructed mode 0 at 0x452AF7 (i=69) from zeroed path slot 0x573F58 (0x452B20 writes only slots 0..91); map-rebuild 0x43B7B2 reconstructs el126..el139 when byte[map+0x124]=8 (start=126); paint guards skip draw when the frame load (0x466130) returns 0.",
+    "Frame 172 (with 171) child-control action = status-window view-toggle button: PRIMARY-STATIC (2026-08-11). Click handler 0x44CCD0 (ret 0xC @0x44CCF6): child [this+0x10C] hit-test via [vtable+0x10] @0x44CD09 -> toggle branch 0x44CD14-0x44CD9F. Mode byte [this+0x54]==1 (equipment view) -> 0x423E80(this, frame 0xC8=200, x=[+0x18], y=[+0x1C], 0xF4=244, 0x148) + [this+0x54]=0 + faces (0xAB,0xAC)=(171,172) via 0x417880; mode==0 (attribute view) -> 0x423E80(this, frame 0xC9=201, x, y, 0x208=520, 0x148) + [this+0x54]=1 + (second 0x423E80 frame 0xC9 at x+0x118 when [this+0x20]>0x320) + faces (0xA8,0xA9)=(168,169). Initial view = attribute (window created with frame 200 at 0x427776; ctor faces 171/172). Frame sizes verified by WIL header: 200 = 256x512, 201 = 1024x512 (both offsetX=7/offsetY=-44); 168/169/171/172 = 36x36 fully opaque. Icon/face semantic correlation (171/172 attribute vs 168/169 equipment) is candidate-level.",
+    "Slot record stride 0xC24 re-confirmed PRIMARY-STATIC (2026-08-11): click handler 0x44CDCD-0x44CDD9 computes index->record = [this + 0x2F4 + idx*0xC24] (lea ecx,[eax+edx*2]; lea ecx,[ecx+ecx*2] = idx*12; [esi+ecx*4+0x2F4] = idx*48+0x2F4; 0xC24 = 0x30C*4, 777*4 = 3108); paint loop 0x44B5D3-0x44B62A walks this+0x2F8 + i*0xC24 (11 records, geometry this+0x1C0 + i*0x10). Earlier 0x40C flag was an arithmetic error; slot_record_base unchanged.",
+    "Attribute label colors PRIMARY-STATIC: first-column labels 0xfae1c8, second-column labels 0xff (immediate color operands at the 0x44BCE6-region / 0x44C407-region draws)."
   ]
 }

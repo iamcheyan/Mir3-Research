@@ -122,7 +122,13 @@ def main() -> None:
             "hitTest": True,
             "evidence_level": c.get("evidence_level", "candidate"),
             "source": c.get("source", ""),
+            "role": c.get("role", ""),
+            "call_va": c.get("call_va"),
+            "paint_va": c.get("paint_va"),
         })
+        if c.get("chat_command") is not None:
+            controls[-1]["chat_command"] = c["chat_command"]
+            controls[-1]["chat_help"] = c.get("chat_help", "")
 
     # HUD buttons as controls
     for rec in hud_records:

@@ -1,229 +1,120 @@
 {
   "source": {
-    "client": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-    "state_owner_region": "0x0044E910–0x0044FCxx",
-    "protocol_entry_region": "0x0042BE20–0x0042C359",
-    "evidence_level": "primary-static-state-graph"
+    "client": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "image_base": "0x400000",
+    "state_owner_region": "0x0044CFC0-0x0044FCxx (Store class)",
+    "evidence_level": "primary-static-state-graph (closed)"
+  },
+  "two_store_relationship": {
+    "ui_store": {
+      "address": "game+0x33188 == session+0x2D8614",
+      "window_id": 2,
+      "ctor": "0x0044CFC0",
+      "dtor": "0x0044D0B0 (called from Game dtor 0x426E80 at 0x426F77 for marker 0xb; and from deleting-dtor 0x44D090, store vtable[0])",
+      "post_init": "0x0044D150 (state=0, +0x5F4=-1)",
+      "register": "0x0044D310",
+      "paint": "0x0044E260",
+      "click": "0x0044E9B0/0x0044E910",
+      "visible_flag": "game+0x331B8 == session+0x2D8644 (+0x30)",
+      "update_loop_close": "0x41C217 cmp [session+0x2D8644] -> 0x42AC50(game,2) + SetVisible(0) (call [edx+0x10] where edx=[session+0x2D8614])",
+      "notes": "The update-loop 0x41C1E0 runs with esi=session; the lea at 0x41C232 is session-relative and therefore points at the UI store, NOT a protocol object. This was the source of the earlier misattribution."
+    },
+    "protocol_store": {
+      "address": "game+0x2D8614 == session+0x57DEA0",
+      "receivers": {
+        "0x285": "0x41F92B -> 0x44F480 state-0 buy list",
+        "0x28A": "0x41F995 -> [game+0x35B1E8]=word + 0x44E8B0 reset",
+        "0x28B": "0x41F9AF -> denials (1=0x47B904+reset, 2=0x47B91C, 3=0x47B940)",
+        "0x28C": "0x41F96C -> 0x44F710 state-1 grid",
+        "0x2C0": "0x420A86/0x420A95 -> 0x44F940 state-2 (frame 1001)",
+        "0x2C8": "0x4209A8/0x4209CE -> 0x44FB00 state-3 (frame 1000)"
+      },
+      "close_if_hidden_gate": "game+0x2D8644 (+0x30), read at 0x4209DB (0x2C8) and 0x420AA2 (0x2C0) -> 0x42ADB0(game,2) close",
+      "static_construction": "NONE. Ground-truth dword scan of 0x2D8614 finds only 6 receiver leas (0x41F95C, 0x41F985, 0x41F99F, 0x41F9F2, 0x4209CE, 0x420A95) + 2 update-loop refs (0x41C22C/0x41C232, which are session-rel = UI store). No vtable write, no ctor call, no field init anywhere in 0x400000-0x480000. The store methods (0x44F940, 0x44FB00, 0x44E8B0, 0x44E260, 0x44D590, 0x44DB50, 0x44E040, 0x44F480, 0x44F710, 0x44E910, 0x44E9B0) appear in NO vtable.",
+      "runtime_question": "The protocol store must receive its vtable + list vtables (0x476A9C/+0x708, 0x476AB8/+0x648) at runtime (delayed init / memset-memcpy region writes not visible statically). No static instruction bridges protocol-store data to UI-store lists; do NOT invent a sync."
+    },
+    "base_register_rule": "Packet receivers run with ebx=game (proof: 0x41F999 mov [ebx+0x35B1E8],ecx). Update loop 0x41C1E0 runs with esi=session (proof: lea ecx,[esi+0x2A548C] passed to 0x42AC50; [esi+0x2F65DC]/[esi+0x2AB9E0]/[esi+0x2D8614] map to ctor'd game members +0x51150/+0x6554/+0x33188). Identity: game=session+0x2A548C; session+0x2D8614 == game+0x33188."
   },
   "protocol_entry": {
-    "subcode_reader": "0x0042AAB0",
+    "window_id_lookup": "0x0042AAB0 (hit-test: iterates window list @game+0xD28/D30/D38; per-id object base via jump table 0x42ABE8; id 2 -> lea edx,[esi+0x331A0] = UI store +0x18)",
     "store_subcode": 2,
-    "jump_table": "0x0042C4D4",
-    "handler": "0x0042BFE1",
-    "dispatch_chain": ["0x0042BFE1", "0x0044E910", "0x0044E9B0", "0x00423E80"],
-    "interpretation": "The client receives a decoded item/shop-storage message and enters the shared panel state machine. The packet's human business name is not present in symbols.",
-    "confirmed_handler_behavior": {
-      "handler_va": "0x0042BFE1",
-      "owner_field": "main+0x33188",
-      "calls": [
-        {"va": "0x0042BFE9", "target": "0x0044E9B0", "role": "consume/update shared store object"},
-        {"va": "0x0042BFFA", "target": "0x0042ADB0", "argument": 2, "role": "show/retain window id 2 after successful handling"}
-      ],
-      "confidence": "primary-static"
-    },
-    "shared_handler_input_signature": {
-      "routine": "0x0044E9B0",
-      "stack_arguments": 2,
-      "cleanup": "ret 0x8",
-      "observed_use": "arguments are forwarded to state-dependent control vtable+0x10 handlers",
-      "status": "primary-static signature candidate; exact caller ABI and packet schema pending"
-    }
+    "click_dispatch": "0x42BED3 call 0x42AAB0; cmp edi,2 -> 0x42BEEB call 0x44E910(store+0x18) ; returns 1 only for window-close buttons",
+    "interpretation": "Click and draw both operate on the UI store at game+0x33188. The Store::Click(x,y) ABI is 0x44E9B0.",
+    "dispatch_chain": ["0x42AAB0", "0x44E910", "0x44E9B0"]
   },
   "states": [
-    {
-      "state": 0,
-      "frames": [1000],
-      "factory_calls": ["0x0044EAA4", "0x0044EAEC", "0x0044FBCE"],
-      "factory_args": [[0,186,300,304],[0,186,300,304],[0,186,300,304]],
-      "geometry": {"panel": "300×304", "candidate": "five-row item-list panel; Frame 1000 visibly has five rows, bottom execute plate and X control", "visual_evidence": "primary-resource-visual"},
-      "business_name": {"value": null, "status": "pending"}
-    },
-    {
-      "state": 1,
-      "frames": [1003],
-      "factory_calls": ["0x0044F7E8"],
-      "factory_args": [[1,186,498,304]],
-      "geometry": {"panel": "498×304", "candidate": "expanded item-list panel; constructor selects Frame 1003, which is empty in the current export", "grid_origin": [323,43], "grid": "4×3", "step": 38, "visual_evidence": "primary-static-plus-resource-discrepancy"},
-      "dynamic_fields": {"page_or_batch_value": "packet-derived stack value divided by 6", "page_field": "this+0x7E8", "selected_index_reset": "this+0x7E4=-1 when input count is zero"},
-      "business_name": {"value": null, "status": "pending"}
-    },
-    {
-      "state": 2,
-      "frames": [1001],
-      "factory_calls": ["0x0044F9E4"],
-      "factory_args": [[-4,182,205,205]],
-      "geometry": {"panel": "205×205", "candidate": "compact selected-item/detail; Frame 1001 visibly has a grid with left/right arrows and bottom execute/X controls", "visual_evidence": "primary-resource-visual"},
-      "pagination": {"record_field": "this+0x71C", "divisor": 12, "formula": "ceil(count/12)"},
-      "dynamic_fields": {"entry_count_or_page_source": "packet-derived value stored in this+0x71C", "page_index": "this+0x7E0", "selected_index": "this+0x7E4", "page_turn_control": "this+0x3D8"},
-      "business_name": {"value": null, "status": "pending"}
-    },
-    {
-      "state": 3,
-      "frames": [1000],
-      "factory_calls": ["0x0044FBCE"],
-      "factory_args": [[0,186,300,304]],
-      "geometry": {"panel": "300×304", "candidate": "Frame 1000 five-row item-list panel recreated"},
-      "business_name": {"value": null, "status": "pending"}
-    },
-    {
-      "state": 4,
-      "frames": [1002],
-      "factory_calls": ["0x0044EBCB", "0x0044F263"],
-      "factory_args": [[0,184,540,307],[0,184,540,307]],
-      "geometry": {"panel": "540×307", "candidate": "wide selected-item/action panel; Frame 1002 visibly combines the list and an attached right detail/action panel", "visual_evidence": "primary-resource-visual"},
-      "transition_precondition": "selected item lookup through this+0x704 / 0x0044E6D0 succeeds; selected record field at this+0x7F0 is then refreshed",
-      "business_name": {"value": null, "status": "pending"}
-    }
+    { "state": 0, "business": "BUY five-row goods list (msg 0x285)", "evidence_level": "primary-static", "factory": "0x44EAB8/0x44EAF3/0x44F56F (frame 1000, x=0, y=186, w=300, h=304)", "paint": "0x44D590 five-row", "controls": "+0x54@(x+0x10A,y+0x10E) 1010/1011 X-close; +0x108@(x+0x7F,y+0x10B) 1012/1013 confirm" },
+    { "state": 1, "business": "sell grid", "evidence_level": "candidate (no server message constants available)", "factory": "0x44F7EF (frame 1003, x=1, y=186, w=498, h=304)", "paint": "0x44DB50 grid", "controls": "+0x1BC@(x+0x1D2,y+0xA9); +0x270@(x+0x172,y+0xA2); +0x324@(x+0x144,y+0x9F); +0x3D8@(x+0x1B2,y+0x9F) (in 0x44E2F7 block)" },
+    { "state": 2, "business": "warehouse / extended-shop grid", "evidence_level": "candidate (business name); primary-static (frame/size)", "factory": "0x44F940 (msg 0x2C0): call 0x423E80(0x3E9=1001, -4, 182, 205, 205); mov byte [ebx+0x5F8],2", "paint": "0x44DB50 grid + 4 extras +0x1BC@(x+0xAC,y+0xA9), +0x270@(x+0x47,y+0xA5), +0x324@(x+0x1C,y+0xA2) 1014/1015 prev, +0x3D8@(x+0x89,y+0xA2) 1016/1017 next", "grid_rects": "+0x720: cols x=22,60,98,136 (start 0x16, stride 0x26, stop <0xAE); rows y=43,81,119 (start 0x2B, stride 0x26, stop <0x9D)" },
+    { "state": 3, "business": "CRAFT / 合成 (msg 0x2C8)", "evidence_level": "primary-static", "factory": "0x44FB00: call 0x423E80(0x3E8=1000, 0, 186, 300, 304); mov byte [ebx+0x5F8],3", "paint": "0x44D590 five-row", "controls": "+0x54@(x+0x10A,y+0x10E) 1010/1011; +0x108@(x+0x7F,y+0x10B) 1012/1013" },
+    { "state": 4, "business": "item detail (msg 0x3F7/0x40A send modes)", "evidence_level": "primary-static", "factory": "0x44F252/0x44EBD8/0x44F270 (frame 1002, x=0, y=184, w=540, h=307)", "paint": "0x44E040 detail", "controls": "+0x48C@(x+0x1FA,y+0x43) collapse-back; +0x540@(x+0x188,y+0x3D) confirm" }
   ],
-  "state_constructor_sites": [
-    {
-      "state": 0,
-      "routine_or_callsite": "0x0044EA82–0x0044EAB1 and reset path 0x0044F54A–0x0044F57F",
-      "factory_frame": 1000,
-      "factory_args": [0, 186, 300, 304],
-      "state_write": "this+0x5F8=0",
-      "reset_fields_seen": ["this+0x70C", "this+0x710", "this+0x71C", "this+0x7E0"],
-      "evidence_level": "primary-static-state-write-and-factory"
-    },
-    {
-      "state": 1,
-      "routine_or_callsite": "0x0044F7D7–0x0044F7F4",
-      "factory_frame": 1003,
-      "factory_args": [1, 186, 498, 304],
-      "state_write": "this+0x5F8=1",
-      "packet_derived_fields_before_factory": ["this+0x7E8", "this+0x7E4"],
-      "evidence_level": "primary-static-state-write-and-factory"
-    },
-    {
-      "state": 2,
-      "routine_or_callsite": "0x0044F9D3–0x0044F9F0",
-      "factory_frame": 1001,
-      "factory_args": [-4, 182, 205, 205],
-      "state_write": "this+0x5F8=2",
-      "packet_derived_fields_before_factory": ["this+0x71C", "this+0x7E0", "this+0x7E4"],
-      "evidence_level": "primary-static-state-write-and-factory"
-    },
-    {
-      "state": 3,
-      "routine_or_callsite": "0x0044FBAC–0x0044FBE0",
-      "factory_frame": 1000,
-      "factory_args": [0, 186, 300, 304],
-      "state_write": "this+0x5F8=3",
-      "reset_fields_seen": ["this+0x70C", "this+0x710", "this+0x71C", "this+0x7E0"],
-      "evidence_level": "primary-static-state-write-and-factory"
-    },
-    {
-      "state": 4,
-      "routine_or_callsite": "0x0044EB77–0x0044EBD8 and 0x0044F1E1–0x0044F270",
-      "factory_frame": 1002,
-      "factory_args": [0, 184, 540, 307],
-      "state_register_proof": "both paths load bl=4 before writing this+0x5F8",
-      "state_write": "this+0x5F8=4",
-      "preconditions": ["selected index is not -1", "0x0044E6D0 resolves selected record", "selected record +0x20 == 0"],
-      "selected_record_refresh": "this+0x7F0 is refreshed after the Frame 1002 factory call",
-      "evidence_level": "primary-static-state-register-selected-record-and-factory"
-    }
+  "factory_semantics": {
+    "entry": "0x00423E80",
+    "argument_order": ["frame", "x", "y", "width", "height"],
+    "direct_rect_semantics": "0x423E80 builds the window rect DIRECTLY from its args: it does NOT re-center relative to a parent. PROVEN via disassembly (state-0 content rect stored as (0,186,300,304); panel drawn at screen (0,184)-(299,490)). The old 'parent-relative centering' warning is REVOKED.",
+    "click_anchor": "A click on the panel only sets a drag anchor; there is no parent-relative centering path.",
+    "panel_screen_position": "state 0: screen (0,184)-(299,490); content rect = (0,186,300,304)"
+  },
+  "state_factory_call_sites": [
+    { "state": 0, "site": "0x44EAB8/0x44EAF3/0x44F56F", "args": "(1000, 0, 186, 300, 304)" },
+    { "state": 1, "site": "0x44F7EF", "args": "(1003, 1, 186, 498, 304)" },
+    { "state": 2, "site": "0x44F940", "args": "(1001, -4, 182, 205, 205)" },
+    { "state": 3, "site": "0x44FB00", "args": "(1000, 0, 186, 300, 304)" },
+    { "state": 4, "site": "0x44F252/0x44EBD8/0x44F270", "args": "(1002, 0, 184, 540, 307)" }
   ],
-  "factory_argument_order": ["x", "y", "width", "height", "frame"],
-  "factory_argument_warning": "Call-site arguments are inputs to 0x00423E80; that factory centers/derives parent-relative rectangles before storing final object fields. They must not be copied directly as 800×600 screen coordinates.",
-  "state_control_dispatch": {
-    "routine": "0x0044E9B0",
-    "state_field": "this+0x5F8",
-    "control_activation_paths": [
-      {
-        "states": [0, 1, 3, 4],
-        "control": "this+0x54",
-        "child_vtable_slot": "+0x10",
-        "arguments": "the two stack arguments received by 0x0044E9B0",
-        "result": "if child reports handled, returns handled without entering the later page/detail branch"
-      },
-      {
-        "states": [1, 2, 4],
-        "control": "this+0x1BC",
-        "child_vtable_slot": "+0x10",
-        "result": "if child reports handled, state 2 returns immediately; states 1/4 continue into selected-record logic"
-      },
-      {
-        "states": [1, 2],
-        "control": "this+0x270",
-        "child_vtable_slot": "+0x10",
-        "result": "second paging/action control path; exact caption and business action unresolved"
-      },
-      {
-        "states": [1],
-        "control": "this+0x324",
-        "child_vtable_slot": "+0x10",
-        "result": "expanded-state-only control path; exact caption and business action unresolved"
-      },
-      {
-        "states": [4],
-        "control": "this+0x48C",
-        "child_vtable_slot": "+0x10",
-        "result": "wide-panel action path; exact caption and business action unresolved"
-      },
-      {
-        "states": [2],
-        "control": "this+0x3D8",
-        "child_vtable_slot": "page-control path in the state-2 branch",
-        "result": "state-2 page/selection control candidate; page count derives from this+0x71C / 12"
-      }
-    ],
-    "state_4_selected_record_gate": {
-      "selected_index_field": "this+0x704",
-      "lookup_va": "0x0044E6D0",
-      "record_pointer_field": "this+0x7F0",
-      "record_guard": "selected_record+0x20 must be zero before Frame 1002 factory call",
-      "factory_call_vas": ["0x0044EBCB", "0x0044F263"],
-      "frame": 1002,
-      "evidence_level": "primary-static-selected-record-to-state-4"
-    },
-    "reset_paths": [
-      {
-        "state_before": "any active state",
-        "factory_frame": 1000,
-        "factory_call_va": "0x0044EAA4",
-        "writes": {"this+0x5F8": 0, "this+0x7E0": 0, "this+0x70C": 0, "this+0x71C": 0},
-        "interpretation": "shared panel reset/rebuild path; business name intentionally unresolved"
-      }
-    ],
-    "evidence_level": "primary-static-state-to-control-dispatch"
+  "registration": {
+    "site": "0x42777E-0x427794 in register-all tail",
+    "push_args": "push 2; push [esi+0x1C](selector); push 0x3E8(1000); push 0; push 0; push 0; push 0x12C(300); push 0x130(304)",
+    "internal_flag": "0x44D310 adds flag=1 internally when calling 0x423B30 (final base args = (id, selector, frame, x, y, ?, w, h, 1)).",
+    "window_ids": "id 0 = 0x42EA80(+0x6554, 0xFA, 0x206, 0, 0, 0x11C, 0x144); id 1 = 0x44B130(+0x29CE4, 0xC8, 0, 0, 0xF4, 0x148); id 2 = store; id 3 = 0x4159D0(+0x3399C, 0x41A, 0, 0, 0x1E4, 0x14A)"
   },
-  "factory_centering_evidence": {
-    "routine": "0x00423E80",
-    "viewport_candidate": [800, 600],
-    "formula": "candidate_x=(800-width)/2; candidate_y=(600-height)/2",
-    "candidate_origins": {
-      "state_0": [250, 148],
-      "state_1": [151, 148],
-      "state_2": [298, 198],
-      "state_3": [250, 148],
-      "state_4": [130, 147]
-    },
-    "evidence_level": "primary-static-center-formula-plus-candidate-viewport",
-    "warning": "The arithmetic is proven, but the caller-supplied parent origin/bounds are not yet runtime-captured; origins above remain preview candidates."
+  "close_sweep": {
+    "fn": "0x41C1E0 (per-frame window cleanup, this=esi=session)",
+    "store_branch": "0x41C217: cmp [session+0x2D8644],0 (UI store +0x30) -> push 2; lea ecx,[session+0x2A548C]; call 0x42AC50 (unregister id 2); mov edx,[session+0x2D8614]; lea ecx,[session+0x2D8614]; push 0; call [edx+0x10] (SetVisible(false))",
+    "unregister": "0x42AC50: iterates window list [game+0xD2C]/[game+0xD38], unlinks entry, frees with 0x4680F8"
   },
-  "server_cross_reference": {
-    "artifact": "store-server-crossref.json",
-    "categories": {"storage": 19, "buy": 108, "sell": 108},
-    "status": "secondary corroboration only; no state-to-business promotion",
-    "script_action_tokens": {
-      "storage": ["@storage"],
-      "getback": ["@getback", "@PreGetback"],
-      "buy": ["@buy"],
-      "sell": ["@sell"],
-      "evidence": "Mud3 Convert_Def/Market_Def scripts; these are NPC dialogue actions, not Mir3.exe protocol enums"
-    },
-    "semantic_examples": [
-      {"script": "06Inn_Bichon-0.txt", "sections": ["NPC_Storage", "NPC_Getback"], "actions": ["@storage", "@PreGetback"], "meaning": "warehouse deposit/retrieval dialogue path"},
-      {"script": "04Potion_Bichon1-0.txt", "sections": ["NPC_Buy", "NPC_Sell"], "actions": ["@buy", "@sell"], "meaning": "potion shop buy/sell dialogue path"},
-      {"script": "01Meet_Bichon1-0.txt", "sections": ["NPC_Buy", "NPC_Sell"], "actions": ["@buy", "@sell"], "meaning": "meat shop buy/sell dialogue path"}
+  "vtable_facts": {
+    "store_vtable": "0x476A88: [0]=0x44D090 deleting-dtor, [1]=0x44D150 post-init, [2]=0x4268B0, [3]=0x423D00, [4]=0x423F80 SetVisible(+0x30)",
+    "base_vtable": "0x476624: [1]=0x423CA0 reset (zero rects), [4]=0x423F80 SetVisible",
+    "list_vtables": "0x476AB8 (+0x648), 0x476A9C (+0x708)",
+    "slot1_thunk": "0x423CF0 = mov eax,[ecx]; jmp [eax+4]; 0x4268B0 = jmp 0x423CF0"
+  },
+  "store_class_fields": {
+    "0x18/0x1C": "rect",
+    "0x30": "visible flag",
+    "0x34": "unused?",
+    "0x54": "controls[8] stride 0xB4",
+    "0x5F8": "state byte",
+    "0x5F4": "connection/sender base (-1)",
+    "0x648": "list vtable 0x476AB8",
+    "0x708": "list vtable 0x476A9C",
+    "0x720": "12 grid rects",
+    "0x7E0/0x7E4": "grid selection (+0x7E4=0xFFFFFFFF init)",
+    "0x7E8": "page count",
+    "0x7EC": "mode (state-4 confirm)",
+    "0x7F0": "detail record",
+    "0x1BC/0x270/0x324/0x3D8": "state-2 extras",
+    "0x48C/0x540": "state-4 controls"
+  },
+  "senders": {
+    "0x3F6": "state1 cell / state4 confirm mode 0 (0x452230: pushes (0x3F6, name, record, hi16(count), 0))",
+    "0x3F7": "state0/3 direct buy (0x4521F0: pushes (0x3F7, name, record, 0, 0) then 0x451E60)",
+    "0x408": "state2 cell",
+    "0x40A": "state4 confirm mode 1 / state3 detail",
+    "0x3FC": "TBD (0x4522E0)"
+  },
+  "server_cross_reference": "store-server-crossref.json (318 NPCs: 19 storage / 108 buy / 108 sell / 318 npc-main / 257 other; no message-ID fields; no SELLITEM/BUYITEM script commands - shop UI is engine-driven)",
+  "closed_notes": {
+    "2026-08-10": [
+      "0x423E80 builds window rect directly from args; no parent-relative centering (pending 0 closed).",
+      "Frame 1000 is a complete single 512x512 panel; artwork bbox (106,102)-(405,408); content 300x304 (pending 1 closed).",
+      "State 2/3 labels were REVERSED in an earlier draft; corrected: 0x44F940=state 2 (frame 1001 compact), 0x44FB00=state 3 (frame 1000 five-row).",
+      "UI store = game+0x33188; protocol store = game+0x2D8614; the numeric coincidence session+0x2D8614 == game+0x33188 caused earlier misattribution of the update-loop lea pair.",
+      "Protocol store is never statically constructed; vtable/list-vtable installation is runtime-only; no static UI<->protocol data bridge exists (do NOT invent a sync).",
+      "Store register args = (2, selector, 1000, 0, 0, 0, 300, 304); flag=1 added internally by 0x44D310.",
+      "Store::Click(x,y)=0x44E9B0 returns 1 only for window-close buttons; click AND draw operate on game+0x33188."
     ]
   },
-  "pending": [
-    "Runtime or stronger call-site evidence mapping states 0–4 to warehouse, buy, sell, selected item and extended action names.",
-    "Final parent-relative origin after 0x00423E80 arithmetic in a live window instance.",
-    "Packet field meanings passed to the state-1/state-2 constructors; the static code proves storage locations and arithmetic but not the server message schema.",
-    "Business labels for state 0/1/2/3/4; do not infer warehouse versus buy/sell solely from Frame 1000–1003 artwork.",
-    "Exact caller ABI for 0x0044E9B0: it receives two stack arguments, but their semantic type is not yet proven at the protocol boundary."
-  ]
+  "pending": []
 }

@@ -1,6 +1,6 @@
 {
   "source": {
-    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
     "status_window_ctor": "0x0044B130",
     "rect_constructor_calls": "0x0044B1BC-0x0044B2C6",
     "rect_builder": "imported SetRect at 0x004762B0",
@@ -124,7 +124,7 @@
       "evidence": "primary-static-dispatch-immediates"
     },
     "selector_dispatch": "0x466130 mode byte [element+4]: 0 -> 0x466640, 1/2 -> 0x466720 (direct frame-by-index), else 0",
-    "selector_wil_binding": "runtime bss path slots; Equip.wil vs Inventory.wil side-by-side candidates"
+    "selector_wil_binding": "PRIMARY-STATIC (2026-08-11): flag0 el82 = Data/Inventory.wil (path slot 0x570574 = owner+0x10478, store site 0x453804); flag1 el83 = Data/Equip.wil (path slot 0x570678 = owner+0x1057C, store site 0x453829); flag2 el139 = empty/unset (path slot 0x573F58 never written). WIL table fill 0x452B20 (92 strings, slots 0..91; slot N addr = owner 0x5600FC + 0xF848 + (N-70)*0x104); element loop 0x452AF7 (el70..el139 mode 0). Full chain in status-window-render-evidence.json closed_notes."
   },
   "mapping_basis": {
     "client_fact": "0x44B720 is a pure-position hit test (index scan + PtInRect); NO category or name logic in binary",
@@ -133,8 +133,12 @@
     "confidence": "primary-static geometry; candidate index/name mapping (server-enum-driven)"
   },
   "pending": [
-    "Selector element 0x5668C4/0x566A08/0x56B0E8 exact WIL/WIX library filenames (runtime bss binding; Equip.wil vs Inventory.wil)",
-    "Slot-name/index mapping confirmation via runtime population observation",
-    "Element 139 (flag2) construction loop not yet located"
+    "Slot-name/index mapping confirmation via runtime population observation (server EquipmentSlot enum semantics 2=helmet 3=torch 9=shoes 10=poison vs recorded 2<->loop1, 3<->loop0, 9<->loop2, 10<->loop10 pairing; both assignments candidate)"
+  ],
+  "closed_notes": [
+    "el82/el83/el139 WIL bindings CLOSED 2026-08-11 (PRIMARY-STATIC): flag0 el82 = Data/Inventory.wil (slot 0x570574), flag1 el83 = Data/Equip.wil (slot 0x570678), flag2 el139 = empty/unset (slot 0x573F58 never written by the 0x452B20 table fill covering slots 0..91). Chain: game object static 0x47EF18 -> owner 0x5600FC -> element ctor 0x452AA0 -> WIL table fill 0x452B20 (store sites 0x453804 Inventory / 0x453829 Equip / 0x4538A2 ProgUse) -> element loop2 0x452AF7 (70 iterations mode 0: el70..el139). See status-window-render-evidence.json closed_notes.",
+    "el139 construction loops CLOSED 2026-08-11 (PRIMARY-STATIC): main-object loop2 0x452AF7 (i=69, mode 0) and map-rebuild 0x43B7B2 (start=(byte[map+0x124]+1)*14 @0x43B770-0x43B77C; byte=8 -> el126..el139, mode 1 with mode-0 fallback). el139 = 0x56B0E8; paint guards (0x44D65C/0x44DBAE/0x44E05D, frame=WORD[selector+0x30]) skip draw when the frame load fails.",
+    "Slot record stride 0xC24 re-confirmed PRIMARY-STATIC (2026-08-11): click handler 0x44CDCD-0x44CDD9 index->record = [this + 0x2F4 + idx*0xC24] (777*4 = 3108); paint walks this+0x2F8 + i*0xC24 (11 records). Earlier 0x40C flag was an arithmetic error; slot_record_base unchanged.",
+    "Frame 172 view-toggle closure (2026-08-11): child [this+0x10C] frames 171/172 = status-window view-toggle button (attribute view frame 200 <-> equipment view frame 201); click branch 0x44CD14-0x44CD9F inside handler 0x44CCD0; mode byte [this+0x54]. Details in status-window-render-evidence.json closed_notes."
   ]
 }

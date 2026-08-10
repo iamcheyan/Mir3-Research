@@ -14,7 +14,7 @@
       "position": {"x": {"base": "hud.left", "offset": 393}, "y": {"base": "hud.top", "offset": 13}},
       "size": {"width": 16, "height": 14, "source": "GameInter.wil Frame 159"},
       "evidence": {"level": "primary-static", "source": "Mir3.exe GBK string + constructor call", "addresses": ["0x00427B04", "0x00427B07", "0x00427B24"]},
-      "notes": "The binary creates this small label/control even though the dedicated belt button pair is not yet assigned in the main HUD catalog. Keep the belt association as semantic evidence, not a new button claim."
+      "notes": "channel_control_class instance at hud+0x5b68 (ctor 0x417550 @0x427B24): frame=159, state_frame=159, x=hud.left+0x189(393), y=hud.top+0xD(13), text=GBK 0x47BC68, enabled=1, normal-frame override=-1, hover flag arg=0. Normal state draws NOTHING (+0x20=-1); hover draws the cursor-anchored caption text only; pressed state draws Frame 159 art. See caption_control_class/paint_state_machine/closed_notes."
     },
     {
       "id": "hud.label.skill-book",
@@ -26,7 +26,7 @@
       "position": {"x": {"base": "hud.left", "offset": 703}, "y": {"base": "hud.top", "offset": 16}},
       "size": {"width": 40, "height": 38, "source": "GameInter.wil Frame 100"},
       "evidence": {"level": "primary-static", "source": "Mir3.exe GBK string + constructor call", "addresses": ["0x00427B40", "0x00427B4D", "0x00427B58"]},
-      "notes": "This label/string is attached to the same F100/F101 resource pair already cataloged as the HUD skill control; it records the original keyboard semantic without changing the button coordinate."
+      "notes": "channel_control_class instance at hud+0x5c1c (ctor 0x417550 @0x427B58): frame=100, state_frame=101, x=hud.left+0x2BF(703), y=hud.top+0x10(16), enabled=1, normal-frame override=-1, hover flag arg=0. Hover draws text only; pressed draws Frame 101 art. Records the original keyboard semantic without changing the button coordinate."
     },
     {
       "id": "hud.label.chat-history",
@@ -38,19 +38,108 @@
       "position": {"x": {"base": "hud.left", "offset": 718}, "y": {"base": "hud.top", "offset": 32}},
       "size": {"width": 40, "height": 38, "source": "GameInter.wil Frame 102"},
       "evidence": {"level": "primary-static", "source": "Mir3.exe GBK string + constructor call", "addresses": ["0x00427B8F", "0x00427BA1", "0x00427BAA"]},
-      "notes": "This is the original keyboard semantic for the F102/F103 HUD chat-history control; it must not be confused with the separate F350 chat window."
+      "notes": "channel_control_class instance at hud+0x5cd0 (ctor 0x417550 @0x427BAA): frame=102, state_frame=103, x=hud.left+0x2CE(718), y=hud.top+0x20(32), enabled=1, normal-frame override=-1, hover flag arg=0. Hover draws text only; pressed draws Frame 103 art. Not to be confused with the separate F350 chat window."
     }
   ],
+  "caption_control_class": {
+    "class": "channel_control_class (shared 按钮类 static vtable, same class as confirm-box buttons)",
+    "vtable": "0x4763A8",
+    "class_ctor": "0x404690",
+    "ctor": "0x417550",
+    "ctor_ret": "ret 0x24 (thiscall, 9 stack args)",
+    "paint": "0x417640",
+    "text_draw": "0x417370",
+    "mouse_hover": "0x417780",
+    "mouse_press": "0x4177C0",
+    "mouse_release": "0x4177F0",
+    "fields": {
+      "+0x04": "hit-test RECT (SetRect via IAT 0x4762B0 with parent frame dims from [parent+0x38])",
+      "+0x14": "parent control/container (for HUD captions = [hud+0x1c])",
+      "+0x18": "frame (normal-select art; used by hover when [+0x30]!=0)",
+      "+0x1C": "state_frame (pressed-state art)",
+      "+0x20": "normal frame override; -1 = never draw in normal state",
+      "+0x24": "enabled (ctor arg 1)",
+      "+0x25": "state byte {0=normal,1=hover,2=pressed} (set by mouse handlers)",
+      "+0x28": "x (hud-relative for HUD captions)",
+      "+0x2C": "y (hud-relative for HUD captions)",
+      "+0x30": "hover flag arg (0 for all 8 HUD captions)",
+      "+0x34": "caption text pointer (GBK)"
+    },
+    "ctor_args_0x417550": [
+      {"arg": 1, "slot": "+0x14", "value": "parent ([hud+0x1c])"},
+      {"arg": 2, "slot": "+0x18", "value": "frame"},
+      {"arg": 3, "slot": "+0x1C", "value": "state_frame"},
+      {"arg": 4, "slot": "+0x28", "value": "x"},
+      {"arg": 5, "slot": "+0x2C", "value": "y"},
+      {"arg": 6, "slot": "+0x34", "value": "text"},
+      {"arg": 7, "slot": "+0x24", "value": "1 (enabled)"},
+      {"arg": 8, "slot": "+0x20", "value": "-1 (normal frame override = never draw normal state)"},
+      {"arg": 9, "slot": "+0x30", "value": "0 (hover flag arg)"}
+    ]
+  },
+  "caption_ctor_table": [
+    {"slot": "hud+0x57e4", "frame": "0x54/0x55 (84/85)", "x": {"base": "hud.left", "offset": "+0xFC"}, "y": {"base": "hud.top", "offset": "+2"}, "text": "技能图鉴(Ctrl+B, B)", "text_va": "0x0047BCB8", "ctor_call": "0x00427A1A"},
+    {"slot": "hud+0x5898", "frame": "0x5A/0x5B (90/91)", "x": {"base": "hud.left", "offset": "+0xA1"}, "y": {"base": "hud.top", "offset": "+0x2E"}, "text": "退出游戏(Alt+Q)", "text_va": "0x0047BCA8", "ctor_call": "0x00427A4E"},
+    {"slot": "hud+0x594c", "frame": "0x5C/0x5D (92/93)", "x": {"base": "hud.left", "offset": "+0xA1"}, "y": {"base": "hud.top", "offset": "+0x52"}, "text": "注销人物(Alt+X)", "text_va": "0x0047BC98", "ctor_call": "0x00427A82"},
+    {"slot": "hud+0x5a00", "frame": "0x5E/0x5F (94/95)", "x": {"base": "hud.left", "offset": "+0x268"}, "y": {"base": "hud.top", "offset": "+0x2F"}, "text": "组队(Ctrl+G, G)", "text_va": "0x0047BC88", "ctor_call": "0x00427AB6"},
+    {"slot": "hud+0x5ab4", "frame": "0x60/0x61 (96/97)", "x": {"base": "hud.left", "offset": "+0x268"}, "y": {"base": "hud.top", "offset": "+0x52"}, "text": "行会(Ctrl+F, F)", "text_va": "0x0047BC78", "ctor_call": "0x00427AEA"},
+    {"slot": "hud+0x5b68", "frame": "0x9F/0x9F (159/159)", "x": {"base": "hud.left", "offset": "+0x189 (393)"}, "y": {"base": "hud.top", "offset": "+0xD (13)"}, "text": "腰带(Ctrl+Z, Z)", "text_va": "0x0047BC68", "ctor_call": "0x00427B24"},
+    {"slot": "hud+0x5c1c", "frame": "0x64/0x65 (100/101)", "x": {"base": "hud.left", "offset": "+0x2BF (703)"}, "y": {"base": "hud.top", "offset": "+0x10 (16)"}, "text": "技能书(Ctrl+E, E)", "text_va": "0x0047BC54", "ctor_call": "0x00427B58"},
+    {"slot": "hud+0x5cd0", "frame": "0x66/0x67 (102/103)", "x": {"base": "hud.left", "offset": "+0x2CE (718)"}, "y": {"base": "hud.top", "offset": "+0x20 (32)"}, "text": "聊天记录(Ctrl+R, R)", "text_va": "0x0047BC40", "ctor_call": "0x00427BAA"}
+  ],
+  "paint_state_machine": {
+    "paint": "0x417640",
+    "composite": "0x460240(0x8AB7A8, x, y, frame_w, frame_h, 0x320, 0x258, 0xFFFF, 0xFFFF) via frame header [res+0x38]",
+    "frame_select": "0x466130",
+    "states": {
+      "normal": "[+0x25]==0 && [+0x24]==1 -> frame=[+0x20]; if frame==-1 draw NOTHING (0x41776F ret); else SelectFrame+composite",
+      "hover": "[+0x25]==1 && [+0x24]==1 -> frame = [+0x30]!=0 ? [+0x18] : [+0x20]; if frame!=-1 SelectFrame+composite; ALWAYS then call 0x417370 (text draw) at 0x417719",
+      "pressed": "[+0x25]==2 -> frame=[+0x1C]; SelectFrame+composite; no text",
+      "else": "0x41776F ret (nothing)"
+    },
+    "hud_caption_result": "all 8 HUD captions: [+0x24]=1, [+0x20]=-1, [+0x30]=0 -> normal draws nothing (invisible), hover draws TEXT ONLY (cursor-anchored caption), pressed draws the state_frame art (159/101/103 etc.). Frame 159 art appears ONLY in the pressed state."
+  },
+  "text_draw_chain": {
+    "entry": "0x417370, called from hover state @0x417719 (also 0x41771B)",
+    "empty_text": "if [+0x34]==0 (empty string) -> zero the cursor POINT cache 0x8B1880/0x8B1884 and return (no draw)",
+    "cursor_anchor": "GetCursorPos (IAT 0x476240) into POINT cache 0x8B1880/0x8B1884, then ScreenToClient (IAT 0x476234) on hWnd [0x8AB7B0] (main game window; same handle as the SendMessageA target)",
+    "string_cache": "GBK string copied to 0x8B1888; byte-wise compare (2-byte GBK steps) against [+0x34] at 0x4173B2 to skip re-measure",
+    "dirty_flag": "byte 0x47ADBC set to 1 when string changed",
+    "typewriter": "dword 0x47ADC0 counter per frame; reveal rect top = cursor_y - counter (region grows 0 -> h+4 tall at cursor_y); when counter==h+4 -> dirty=0, counter=6 (full box thereafter)",
+    "measure": "0x45E0C0(0x8AB7A8, 0, &out{w,h}, 0, &text) -> box size = (w+12, h+4)",
+    "clip": "CreateRectRgn(cx, cy-counter, cx+w+12, cy) (IAT 0x476054) + GetRgnBox (IAT 0x47604C) -> text box rect",
+    "fill": "0x45E570(0x8AB7A8, &rect, 0x96FFFF, 2) = CreateSolidBrush(0x96FFFF) (IAT 0x476064) + FillRect (IAT 0x4762F0) -> light-yellow fill (COLORREF 0x96FFFF = RGB(0xFF,0xFF,0x96))",
+    "frame": "0x45E570(0x8AB7A8, &rect, 0, 1) = CreateSolidBrush(0) + FrameRect (IAT 0x4762F4) -> 1px black border",
+    "text": "0x45DE50(0x8AB7A8, &rect, text, 0, 0, 0) -> SetBkMode(TRANSPARENT) (IAT 0x476044), SelectObject(font=[ctx 0x8AB7A8 + 0x28]) (IAT 0x476048), SetTextColor (IAT 0x476060), DrawTextA (IAT 0x476280) flags 0x25 (DT_SINGLELINE|DT_VCENTER|DT_CENTER), restore font, surface composite via [vtable+0x68]",
+    "cleanup": "DeleteObject x3 per frame (IAT 0x476068): HRGN + fill brush + frame brush"
+  },
+  "dispatch_note": {
+    "evidence_level": "derived/candidate",
+    "text": "The caption class is dispatched via generic vtable+4 paint loops with stride 0xB4; same-class precedent: chat window paint loop 0x414955 (9 captions, call [edx+4]=vtable+4=0x417640, stride 0xB4) and generic base-UI dispatch 0x402E14. The exact HUD-side loop that reaches hud+0x57e4..hud+0x5cd0 was not conclusively located in this pass; HUD object paint vtable 0x4763C0 slots +0x38=0x40B2C0 / +0x3C=0x40B750 / +0x40=0x40B850 do not themselves iterate the captions, so the dispatcher is the remaining gap (candidate)."
+  },
   "resource_visual_inspection": {
-    "source": "Data/GameInter.wil direct pixel inspection",
+    "source": "Data/GameInter.wil direct pixel inspection (wilsdk decode, RGBA)",
     "observations": [
-      "Frames 100/101 and 102/103 are icon-only triangular/metal HUD controls with green/gold state art; their Chinese keyboard descriptions are supplied by Mir3.exe strings, not visibly baked into the icons.",
-      "Frame 159 has no exportable pixel content in the current client copy; the belt text string is therefore a constructor-associated runtime label/control semantic, not proof of a visible Frame 159 bitmap."
+      "Frame 159 = 16x14, 153 non-transparent pixels, 115 colors: a real heart/flame glyph (pressed-state art for the belt caption). The previous 'no exportable pixel content' observation is WRONG and superseded.",
+      "Frames 100/101 = 40x38, 920 opaque pixels each; Frames 102/103 = 40x38, 923 opaque pixels each: icon-only triangular/metal HUD controls with green/gold state art; their Chinese keyboard descriptions are supplied by Mir3.exe strings, not baked into the icons."
     ],
     "evidence_level": "primary-resource-visual-plus-primary-static"
   },
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "frame-159-belt-visible-label-vs-tooltip-vs-glyph",
+      "conclusion": "Frame 159 is the PRESSED-STATE FRAME ART of a tooltip-only hover-caption control (channel_control_class, vtable 0x4763A8, ctor 0x417550) at hud+0x5b68. Primary-static: ctor 0x417550 @0x427B24 stores frame=159->+0x18, state_frame=159->+0x1C, normal override -1->+0x20 (0x4176A9..0x4176B7 arg pushes decoded from the 9-arg thiscall, ret 0x24), paint 0x417640 state machine: normal [+0x25]==0 -> [+0x20]==-1 draws NOTHING (0x417657 je 0x41776F); hover [+0x25]==1 -> [+0x30]==0 -> frame [+0x20]==-1 skipped (0x4176D1 je 0x417719), then text drawn via 0x417370; pressed [+0x25]==2 -> SelectFrame(+0x1C)=159 composite via 0x460240. Mouse handlers: hover 0x417780 (PtInRect IAT 0x4762B4 on hit rect this+0x04), press 0x4177C0 (state=2; release-inside plays sound 0x69 via 0x45AFC0 on 0x8AB130), release 0x4177F0 resets. Therefore Frame 159 is NOT a permanently visible belt label and NOT a text glyph; it is transient pressed-state art of an otherwise-invisible caption control (the visible label is the hover-only cursor-following GBK text). Frame 159 bitmap itself is real (16x14, 153 opaque px, 115 colors)."
+    },
+    {
+      "date": "2026-08-11",
+      "key": "draw-time-font-color-path-for-caption-strings",
+      "conclusion": "Draw-time path for the constructor-associated strings (all 8 HUD captions, hover state only): 0x417370 entry @0x417719 <- 0x417640 hover branch; GetCursorPos (IAT 0x476240) -> ScreenToClient (IAT 0x476234) on hWnd [0x8AB7B0] (main game window handle - corrects the earlier 'font object 0x8AB7B0' note) -> POINT cache 0x8B1880/0x8B1884; GBK string cache 0x8B1888 with dirty flag 0x47ADBC and typewriter counter 0x47ADC0 (reveal rect top = cy - counter, region grows to (w+12) x (h+4); completion resets dirty=0, counter=6); measure via 0x45E0C0 on render context 0x8AB7A8 (font object = [ctx+0x28]); clip via CreateRectRgn (IAT 0x476054) + GetRgnBox (IAT 0x47604C); box fill 0x45E570(0, &rect, 0x96FFFF, 2) = CreateSolidBrush(0x96FFFF) (IAT 0x476064) + FillRect (IAT 0x4762F0) = light yellow RGB(255,255,150); 1px black border 0x45E570(0, &rect, 0, 1) = CreateSolidBrush(0) + FrameRect (IAT 0x4762F4); text 0x45DE50 = SetBkMode(TRANSPARENT) (IAT 0x476044) + SelectObject(font=[ctx 0x8AB7A8+0x28]) (IAT 0x476048) + SetTextColor (IAT 0x476060) + DrawTextA (IAT 0x476280) flags 0x25 = DT_SINGLELINE|DT_VCENTER|DT_CENTER + restore + surface composite [vtable+0x68]; DeleteObject x3 per frame (HRGN + 2 brushes, IAT 0x476068). Remaining gap (candidate): the exact COLORREF passed to SetTextColor at 0x45DE50 - caller pushes 0s and the a7==0 branch sets TRANSPARENT bk mode; color source unverified (likely default/white)."
+    }
+  ],
   "pending": [
-    "Whether Frame 159 is a visible belt label, a tooltip-only control, or an auxiliary text glyph in every runtime state.",
-    "The exact draw-time font/color path for these constructor-associated strings."
+    "Exact COLORREF for SetTextColor at 0x45DE50 (caller pushes 0; color source not statically resolved - likely default/white).",
+    "HUD-side dispatch loop that reaches the 8 captions at hud+0x57e4..hud+0x5cd0 (class dispatch precedent: chat paint 0x414955 / generic 0x402E14, stride 0xB4, vtable+4=0x417640; HUD paint vtable 0x4763C0 slots +0x38/+0x3C/+0x40 do not iterate them).",
+    "Runtime confirmation of hover reachability for HUD captions (mouse dispatch to child controls of [hud+0x1c]) and the typewriter reveal direction."
   ]
 }

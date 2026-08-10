@@ -240,7 +240,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "inventory-window-render-evidence.json"
+      "source": "inventory-window-render-evidence.json",
+      "role": "close/confirm candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.inventory.specialized-control.1",
@@ -270,7 +273,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "inventory-window-render-evidence.json"
+      "source": "inventory-window-render-evidence.json",
+      "role": "inventory action candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.inventory.specialized-control.2",
@@ -300,7 +306,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "inventory-window-render-evidence.json"
+      "source": "inventory-window-render-evidence.json",
+      "role": "character-sprite/appearance candidate; resource differs from GameInter",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.status.specialized-control.0",
@@ -330,7 +339,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "status-window-render-evidence.json"
+      "source": "status-window-render-evidence.json",
+      "role": "close/confirm candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.status.specialized-control.1",
@@ -360,7 +372,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "status-window-render-evidence.json"
+      "source": "status-window-render-evidence.json",
+      "role": "status action candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.quest.specialized-control.0",
@@ -390,7 +405,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "quest-window-render-evidence.json"
+      "source": "quest-window-render-evidence.json",
+      "role": "specialized control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.quest.specialized-control.1",
@@ -420,7 +438,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "candidate",
-      "source": "quest-window-render-evidence.json"
+      "source": "quest-window-render-evidence.json",
+      "role": "specialized control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.npc-candidate.specialized-control.0",
@@ -450,7 +471,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-expression",
-      "source": "npc-window-render-evidence.json"
+      "source": "npc-window-render-evidence.json",
+      "role": "close/confirm or generic NPC dialogue control",
+      "call_va": "0x0043ED65",
+      "paint_va": null
     },
     {
       "id": "window.npc-candidate.specialized-control.1",
@@ -480,7 +504,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-expression",
-      "source": "npc-window-render-evidence.json"
+      "source": "npc-window-render-evidence.json",
+      "role": "NPC face/portrait or dialogue-side control",
+      "call_va": "0x0043ED8B",
+      "paint_va": null
     },
     {
       "id": "window.npc-candidate.specialized-control.2",
@@ -510,7 +537,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-expression",
-      "source": "npc-window-render-evidence.json"
+      "source": "npc-window-render-evidence.json",
+      "role": "NPC dialogue-side state/control",
+      "call_va": "0x0043EDB1",
+      "paint_va": null
     },
     {
       "id": "window.chat-pop.specialized-control.0",
@@ -539,8 +569,11 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "close-button",
+      "call_va": "0x00414144",
+      "paint_va": null
     },
     {
       "id": "window.chat-pop.specialized-control.1",
@@ -569,8 +602,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x00414170",
+      "paint_va": null,
+      "chat_command": "@拒绝 ",
+      "chat_help": "拒绝和 某人 私聊(@拒绝 某人名)"
     },
     {
       "id": "window.chat-pop.specialized-control.2",
@@ -599,8 +637,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x00414196",
+      "paint_va": null,
+      "chat_command": "!",
+      "chat_help": "大喊话(!喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.3",
@@ -629,8 +672,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x004141BC",
+      "paint_va": null,
+      "chat_command": "!!",
+      "chat_help": "编组 喊话(!!喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.4",
@@ -659,8 +707,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x004141E5",
+      "paint_va": null,
+      "chat_command": "!~",
+      "chat_help": "行会 喊话(!~喊话)"
     },
     {
       "id": "window.chat-pop.specialized-control.5",
@@ -689,8 +742,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x0041420E",
+      "paint_va": null,
+      "chat_command": "@拒绝私聊",
+      "chat_help": "拒绝 私聊(@拒绝私聊"
     },
     {
       "id": "window.chat-pop.specialized-control.6",
@@ -719,8 +777,13 @@
       ],
       "zIndex": 40,
       "hitTest": true,
-      "evidence_level": "candidate",
-      "source": "chat-window-render-evidence.json"
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "chat-channel-toggle",
+      "call_va": "0x00414237",
+      "paint_va": null,
+      "chat_command": "@拒绝行会聊天",
+      "chat_help": "拒绝 行会 聊天(@拒绝行会聊天)"
     },
     {
       "id": "window.horse.specialized-control.0",
@@ -750,7 +813,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-derived-paint-order",
-      "source": "horse-window-render-evidence.json"
+      "source": "horse-window-render-evidence.json",
+      "role": "top/right control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.horse.specialized-control.1",
@@ -780,7 +846,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-derived-paint-order",
-      "source": "horse-window-render-evidence.json"
+      "source": "horse-window-render-evidence.json",
+      "role": "mount control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.horse.specialized-control.2",
@@ -810,7 +879,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-derived-paint-order",
-      "source": "horse-window-render-evidence.json"
+      "source": "horse-window-render-evidence.json",
+      "role": "mount control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.horse.specialized-control.3",
@@ -840,7 +912,10 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-derived-paint-order",
-      "source": "horse-window-render-evidence.json"
+      "source": "horse-window-render-evidence.json",
+      "role": "mount control candidate",
+      "call_va": null,
+      "paint_va": null
     },
     {
       "id": "window.horse.specialized-control.4",
@@ -870,7 +945,109 @@
       "zIndex": 40,
       "hitTest": true,
       "evidence_level": "primary-static-derived-paint-order",
-      "source": "horse-window-render-evidence.json"
+      "source": "horse-window-render-evidence.json",
+      "role": "mount control candidate",
+      "call_va": null,
+      "paint_va": null
+    },
+    {
+      "id": "window.chat-pop.specialized-control.7",
+      "window_id": "window.chat-pop",
+      "rect": [
+        653,
+        101,
+        36,
+        34
+      ],
+      "relative_rect": [
+        539,
+        25,
+        36,
+        34
+      ],
+      "frame_pair": [
+        380,
+        381
+      ],
+      "resource_library": "GameInter.wil",
+      "state": [
+        "normal",
+        "hover",
+        "pressed"
+      ],
+      "zIndex": 40,
+      "hitTest": true,
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "scroll-up",
+      "call_va": "0x00414264",
+      "paint_va": "0x0041492D"
+    },
+    {
+      "id": "window.chat-pop.specialized-control.8",
+      "window_id": "window.chat-pop",
+      "rect": [
+        653,
+        387,
+        36,
+        34
+      ],
+      "relative_rect": [
+        539,
+        311,
+        36,
+        34
+      ],
+      "frame_pair": [
+        382,
+        383
+      ],
+      "resource_library": "GameInter.wil",
+      "state": [
+        "normal",
+        "hover",
+        "pressed"
+      ],
+      "zIndex": 40,
+      "hitTest": true,
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "scroll-down",
+      "call_va": "0x0041428A",
+      "paint_va": "0x0041494B"
+    },
+    {
+      "id": "window.chat-pop.specialized-control.9",
+      "window_id": "window.chat-pop",
+      "rect": [
+        647,
+        -132,
+        16,
+        502
+      ],
+      "relative_rect": [
+        533,
+        -208,
+        16,
+        502
+      ],
+      "frame_pair": [
+        380,
+        380
+      ],
+      "resource_library": "GameInter.wil",
+      "state": [
+        "normal",
+        "hover",
+        "pressed"
+      ],
+      "zIndex": 40,
+      "hitTest": true,
+      "evidence_level": "primary-static",
+      "source": "chat-window-render-evidence.json",
+      "role": "scrollbar-track (frame 380 16x502, anchored window.x+0x215/window.y-0xD0)",
+      "call_va": "0x004142A8",
+      "paint_va": "0x00414846"
     },
     {
       "id": "hud.exchange",

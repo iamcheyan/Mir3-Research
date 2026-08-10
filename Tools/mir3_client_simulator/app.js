@@ -347,14 +347,18 @@ function renderWindows() {
     content.dataset.windowContent = w.id;
     box.appendChild(content);
     // close button (frame pair from evidence where available)
-    const close = document.createElement("div");
-    close.className = "close-btn";
-    close.style.cssText = `right:4px;top:4px;width:28px;height:26px`;
-    const closeImg = makeImg("GameInter.wil", 161);
-    close.appendChild(closeImg);
-    close.title = "关闭";
-    close.addEventListener("click", (ev) => { ev.stopPropagation(); setWindowOpen(w.id, false); });
-    box.appendChild(close);
+    // chat-pop has an evidence-positioned close at rel (532,350) — rendered in
+    // fillWindowContent from the specialized control, so skip the generic one.
+    if (w.id !== "window.chat-pop") {
+      const close = document.createElement("div");
+      close.className = "close-btn";
+      close.style.cssText = `right:4px;top:4px;width:28px;height:26px`;
+      const closeImg = makeImg("GameInter.wil", 161);
+      close.appendChild(closeImg);
+      close.title = "关闭";
+      close.addEventListener("click", (ev) => { ev.stopPropagation(); setWindowOpen(w.id, false); });
+      box.appendChild(close);
+    }
     winEl.appendChild(box);
     fillWindowContent(w);
     bindWindowDrag(box);
@@ -447,24 +451,69 @@ function fillWindowContent(w) {
       content.appendChild(stateLbl);
     }
   } else if (id === "window.chat-pop") {
-    // chat pop window: history + input from evidence rects
+    // chat pop window: history + channel toggles + scroll buttons + input.
+    // Geometry is window-relative from chat-window-render-evidence.json
+    // (unified model); specialized controls carry primary-static ctor/paint VAs.
     const hist = document.createElement("div");
     hist.className = "text-panel";
-    hist.style.cssText = "left:40px;top:29px;width:491px;height:279px";
+    hist.style.cssText = "left:40px;top:29px;width:491px;height:279px;overflow-y:auto;scrollbar-width:thin";
     const hl = document.createElement("div");
     hl.className = "chat-lines";
+    hl.style.cssText = "font:12px/1.35 monospace;color:#d8e4f0;white-space:pre-wrap;text-shadow:1px 1px 0 #000;padding:2px";
     hl.textContent = STATE.chatLines.join("\n");
     hist.appendChild(hl);
     content.appendChild(hist);
+
+    // specialized controls: close / 6 channel toggles / scroll up+down / track
+    const chatCtrls = (STATE.data.controls || []).filter(
+      (c) => c.window_id === "window.chat-pop" && c.relative_rect);
+    for (const c of chatCtrls) {
+      const [cx, cy, cw, ch] = c.relative_rect;
+      const btn = document.createElement("div");
+      btn.className = "slot chan-btn";
+      btn.style.cssText = `left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px`;
+      const role = c.role || "";
+      if (c.chat_command) {
+        // channel toggle: click injects the command template into the edit box
+        // (client click dispatch: SetWindowTextA + EM_SETSEL(0xB1) + ShowWindow(5))
+        btn.title = `${c.chat_help || "频道"} · ${c.id}\n点击注入命令：${c.chat_command}`;
+        btn.addEventListener("click", () => {
+          const inp = content.querySelector(".chat-input");
+          if (inp) { inp.value = c.chat_command; inp.focus(); }
+          pushChat(`[频道] 注入命令 ${c.chat_command}`);
+        });
+      } else if (role === "scroll-up") {
+        btn.title = "向上滚动 · scroll-up";
+        btn.addEventListener("click", () => { hist.scrollTop -= 266; });
+      } else if (role === "scroll-down") {
+        btn.title = "向下滚动 · scroll-down";
+        btn.addEventListener("click", () => { hist.scrollTop += 266; });
+      } else if (role.startsWith("scrollbar-track")) {
+        // frame 380 (16x502) anchored window.x+0x215 / window.y-0xD0 (0x00414846);
+        // mostly off-screen at the default origin — evidence-only, non-interactive.
+        btn.title = "滚动条轨道 · frame 380 16×502 · 0x00414846";
+        btn.style.pointerEvents = "none";
+      } else if (role === "close-button") {
+        btn.title = "关闭";
+        btn.addEventListener("click", (ev) => { ev.stopPropagation(); setWindowOpen("window.chat-pop", false); });
+      }
+      const im = makeImg(c.resource_library || "GameInter.wil", (c.frame_pair || [])[0]);
+      btn.appendChild(im);
+      btn.dataset.evidence = c.evidence_level;
+      btn.dataset.rect = `${cx},${cy},${cw},${ch}`;
+      btn.dataset.desc = `${c.id} · F${(c.frame_pair || [])[0]}/${(c.frame_pair || [])[1]} · ${c.source || ""}`;
+      content.appendChild(btn);
+    }
+
     const input = document.createElement("input");
     input.className = "chat-input";
-    input.style.cssText = "position:absolute;left:25px;top:311px;width:499px;height:15px;background:#0a0f14;color:#d8e4f0;border:1px solid #2a3a4c;font:12px monospace";
+    // input edit rect: SetRect(0x954, 0x1A, 0x137, 0x20D, 0x146) -> (26,311)-(525,326)
+    input.style.cssText = "position:absolute;left:26px;top:311px;width:499px;height:15px;background:#0a0f14;color:#d8e4f0;border:1px solid #2a3a4c;font:12px monospace";
     input.placeholder = "输入聊天内容…";
     input.addEventListener("keydown", (ev) => {
       if (ev.key === "Enter" && input.value) {
         pushChat(`[你] ${input.value}`);
         input.value = "";
-        // refresh chat-pop history
         const hl2 = content.querySelector(".chat-lines");
         if (hl2) hl2.textContent = STATE.chatLines.join("\n");
       }

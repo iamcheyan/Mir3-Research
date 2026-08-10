@@ -2,14 +2,20 @@
   "source": {
     "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
     "constructor_va": "0x0042EA80",
+    "record_array_ctor_va": "0x0042E810",
+    "record_array_dtor_va": "0x0042E8D0",
+    "base_ctor_va": "0x0042E810",
+    "vtable": "0x00476870",
     "paint_va": "0x0042EB7F",
+    "window_owner": "bag window object embedded at container main+0x6554. Ctor 0x42E810 called at 0x426D4D (container ctor body, ecx=this+0x6554); teardown path 0x426E80 (called with ecx=root+0x2A548C at 0x418E5B) destroys it via bag dtor 0x42E8D0 at 0x426F97. Open-all table 0x4276D0 entry id 0 -> 0x42EA80 (window shell: base ctor 0x423B30 + 3 child controls + gauge; does NOT construct the +0x774 record array in its body - records are built by 0x42E810, open question whether 0x42EA80 is a different class sharing control layout).",
     "evidence_level": "primary-static"
   },
   "window": {
     "id": "window.inventory",
     "background": {"file": "Data/GameInter.wil", "frame": 250, "visible_size": [281, 324]},
     "window_object_origin": {"x_field": "this+0x18", "y_field": "this+0x1c"},
-    "constructor_window_size": [284, 324]
+    "constructor_window_size": [284, 324],
+    "mode_byte": "byte this+0x54: 0=[包袱] bag, 1=[修补] repair, 2=[变卖] sell, 3=[木柴] firewood (paint dispatch 0x42EF2F jump table 0x42F13C); set by tab child controls (array at this+0x5C, 3 elements x 0xB4 stride)"
   },
   "resource_visual_inspection": {
     "source": "Direct pixel inspection of original Data/GameInter.wil and Data/Interface1c.wil",
@@ -20,7 +26,7 @@
     "evidence_level": "primary-resource-visual-plus-static-library-crosscheck"
   },
   "child_controls": [
-    {"object_offset": "this+0x5c", "call_va": "0x0042EADB", "frame_pair": [161, 162], "resource_library_candidate": "GameInter.wil", "position_expression": {"x": "arg_base+0xF9", "y": "arg_base+0x120"}},
+    {"object_offset": "this+0x5c", "call_va": "0x0042EADB", "frame_pair": [161, 162], "resource_library_candidate": "GameInter.wil", "position_expression": {"x": "arg_base+0xF9", "y": "arg_base+0x120"}, "role": "tab control array entry 0 (3 x 0xB4 stride; modes 0..2 = 包袱/修补/变卖)"},
     {"object_offset": "this+0x110", "call_va": "0x0042EB07", "frame_pair": [264, 265], "resource_library_candidate": "GameInter.wil", "position_expression": {"x": "arg_base+0xB0+0xF9", "y": "arg_base+0xB0+0x106"}},
     {"object_offset": "this+0x1C4", "call_va": "0x0042EB2D", "frame_pair": [267, 268], "resource_library_candidate": "Interface1c.wil", "position_expression": {"x": "arg_base+0xB0+0xF9", "y": "arg_base+0xB0+0x11E"}, "role": "character-sprite/appearance resource candidate, not a generic button"}
   ],
@@ -34,28 +40,31 @@
     "evidence_level": "primary-static-plus-primary-resource"
   },
   "paint_geometry": [
-    {"va": "0x0042EB9B", "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 — not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."},
+    {"va": "0x0042EB9B", "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 - not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."},
     {"va": "0x0042EC54", "fact": "A later item/record draw path computes a horizontal coordinate x+0x19 plus an index multiplied by 36 pixels."},
     {"va": "0x0042EC64", "fact": "The corresponding vertical coordinate is y+0x29 plus a row/record difference multiplied by 36 pixels."},
     {"va": "0x0042EC8C-0x0042EE2A", "fact": "The selected item path builds source and destination rectangles, converts their integer extents through shared float helper 0x00466800, and composites with context 0x005600FC via 0x004542F0. This is the original item-icon/selection pipeline; it is not a plain 36px CSS slot fill."},
-    {"va": "0x0042EE62", "fact": "The inventory paint formats a numeric text value through 0x0046811C using data string VA 0x0047A214 (the executable stores the format token '%d'); the surrounding positions are window.x+0x41 and window.y+0x11A/0x12B candidates."},
-    {"va": "0x0042EFC4-0x0042F003", "fact": "The same paint branch draws a second numeric/text pair through 0x0045DE50 with fixed text color/format arguments and rectangles derived from window.x+0x86/+0xF0 and window.y+0x18/+0x26; field names remain unresolved."},
+    {"va": "0x0042EE42-0x0042EEBE", "fact": "The primary numeric text uses runtime value 0x007DA100 (read at 0x42EE4C) and format VA 0x0047A214 ('%d') via 0x0046811C; the surrounding target rectangle is (window.x+0x41, window.y+0x11A) to (window.x+0x41, window.y+0x12B) in the original call setup. Color 0x64C8F8 via 0x45DE50. 0x7DA100 is never written anywhere in .text (only two imm32 reads: 0x41729D and 0x42EE4C), it is bss zero in this build, so the drawn value is always 0 (see content_field_draw_mapping.primary_value)."},
+    {"va": "0x0042EF97-0x0042F003", "fact": "The secondary text path reads 0x007DA11D (负重 word) and 0x007DA11F (总量 word) and formats them with 0x0047BDFC = \"负重:%d / 总量:%d\" (0x42EF9E/0x42EFB3, colors 0xA0A0A then 0xF8C8C8); drawn at top (x+0x86..x+0xF0, y+0x18..y+0x26). The byte this+0x54 mode dispatch (jump table 0x42F13C) selects one of four label branches: case 0 -> 0x47BE10 \"[包袱]\" (0x42EF5B, color 0xF8DCFA), case 1 -> 0x47BDF4 \"[修补]\" (0x42F03E, 0xF8C8C8), case 2 -> 0x47BDEC \"[变卖]\" (0x42F078, 0xF8C8C8), case 3 -> 0x47BDE4 \"[木柴]\" (0x42F0FB, 0xF8C8C8)."},
     {"va": "0x0042EBBB-0x0042EC13", "fact": "The selected-item branch is gated by globals 0x007DA1C0/0x007DA1C4 and 0x007243D8; it calls the inventory hit/index helpers before building the selected source/destination rectangles."},
     {"va": "0x0042F150", "fact": "The inventory hit-test/search loop scans both axes in 36-pixel steps from 0 through 180, proving a 6-column by 6-row, 36-slot grid."},
     {"va": "0x0042F2A0", "fact": "The item index is divided by 6; remainder selects the column and quotient selects the row. Slot rectangles are (window.x+0x19+36*column, window.y+0x29+36*row) with 36x36 size."},
     {"va": "0x0042EECD", "fact": "The three child controls are repositioned from the window origin with fixed offsets (0xF9,0x120), (0xB0,0x106), and (0xB0,0x11E) as shown by 0x00417830 calls."},
-    {"va": "0x0042EE42-0x0042EEBE", "fact": "The primary numeric text uses runtime value 0x007DA100 and format VA 0x0047A214; the surrounding target rectangle is (window.x+0x41, window.y+0x11A) to (window.x+0x41, window.y+0x12B) in the original call setup."},
-    {"va": "0x0042EF97-0x0042F003", "fact": "The secondary text path reads 0x007DA11D and 0x007DA11F, selects among four state branches from byte this+0x54, and uses format literal candidates at 0x0047BDFC, 0x0047BE10 and 0x0047BE18; exact business labels remain unresolved."}
+    {"va": "0x0042F79C-0x0042F7E2", "fact": "Grid draw: cell identity table at this+0x2C4 holds one WORD per cell (6 cells/row, row stride 12 bytes); occupied cells have word >= 0x3E8 (1000), slot = word - 0x3E8 (movsx; cmp 0x3E8; jl skip; idiv 0x3E8 -> edx = slot). Rendered row window = max(0,[this+0x58]-5) .. [this+0x58]+6 (about 11 scrollable rows)."}
   ],
   "literal_decoding": {
     "source": "Direct byte reads from Mir3.exe image-base-relative data addresses; GB18030/CP949 decoding is recorded separately where applicable.",
     "records": [
-      {"va": "0x0047A214", "bytes_text": "%d", "role": "primary numeric value formatter", "confidence": "high"},
-      {"va": "0x0047BDFC", "bytes_text": "负重:%d / 总量:%d", "encoding": "GB18030", "role": "inventory load/total format", "confidence": "high"},
-      {"va": "0x0047BE10", "bytes_text": "[包袱]", "encoding": "GB18030", "role": "inventory label candidate", "confidence": "high"},
-      {"va": "0x0047BE18", "bytes_text": "굴림체", "encoding": "CP949", "role": "Korean font-name literal candidate, not an inventory field", "confidence": "high", "warning": "The same address decodes as mojibake under GB18030; CP949 yields the recognizable Korean font name."}
+      {"va": "0x0047A214", "bytes_text": "%d", "role": "primary numeric value formatter (0x7DA100)", "confidence": "high"},
+      {"va": "0x0047BDFC", "bytes_text": "负重:%d / 总量:%d", "encoding": "GB18030", "role": "inventory load/total format (reads 0x7DA11D / 0x7DA11F at 0x42EF9E / 0x42EFB3)", "confidence": "high"},
+      {"va": "0x0047BE10", "bytes_text": "[包袱]", "encoding": "GB18030", "role": "mode-0 label (bag), drawn at 0x42EF5B color 0xF8DCFA", "confidence": "high"},
+      {"va": "0x0047BDF4", "bytes_text": "[修补]", "encoding": "GB18030", "role": "mode-1 label (repair), drawn at 0x42F03E color 0xF8C8C8", "confidence": "high"},
+      {"va": "0x0047BDEC", "bytes_text": "[变卖]", "encoding": "GB18030", "role": "mode-2 label (sell), drawn at 0x42F078 color 0xF8C8C8", "confidence": "high"},
+      {"va": "0x0047BDE4", "bytes_text": "[木柴]", "encoding": "GB18030", "role": "mode-3 label (firewood), drawn at 0x42F0FB color 0xF8C8C8", "confidence": "high"},
+      {"va": "0x0047BDA4", "bytes_text": "正在补充药水,请稍候.        ", "encoding": "GB18030", "role": "use-delay busy message pushed at 0x430177 (click handler 0x4300F0) via 0x415280(0x7243A4, msg)", "confidence": "high"},
+      {"va": "0x0047BE18", "bytes_text": "굴림체", "encoding": "CP949", "role": "shared font-name literal argument to text-helper 0x45DBA0 (ecx=0x8AB7A8, 60+ callers incl. bag paint 0x42EE8A and status-window cluster 0x44Bxxx-0x44Cxxx); NOT an inventory field label", "confidence": "high", "warning": "The same address decodes as mojibake under GB18030; CP949 yields the recognizable Korean font name. The font-name literal must not be promoted to an item/slot semantic label."}
     ],
-    "interpretation": "The secondary text branch has at least one confirmed inventory label and one confirmed load format. The font-name literal must not be promoted to an item/slot semantic label."
+    "interpretation": "The secondary text branch is fully decoded: the load/total format and all four mode labels are confirmed GB18030 literals with exact draw sites. 0x47BE18 is a shared font argument, not a label."
   },
   "resource_and_item_record_proof": {
     "window_handle": {
@@ -65,14 +74,31 @@
       "wrapper_pass_register": "EDI into all three 0x00417550 control constructors",
       "evidence_level": "primary-static-handle-flow"
     },
-    "item_record_base": "this+0x774+4*record_index",
+    "item_record_base": "this+0x774 + slot*0xC2C (contiguous array of 46 records; ctor 0x42E810 calls vector-ctor iterator 0x4686C4(this+0x774, 0xC2C, 0x2E=46, per-elem ctor 0x415730, dtor 0x415740); dtor 0x42E8D0 calls vector-dtor iterator 0x468306(this+0x774, 0xC2C, 0x2E=46, dtor 0x415740) after restoring base vtable 0x476624 -> base dtor 0x423CF0; 0xC2C = 3116 bytes = 779 dwords, lea chain slot*779. NOT a pointer array at this+0x774+4*index - corrected).",
     "item_record_fields_consumed_by_paint": {
-      "+0x00": "signed WORD item/resource identity; zero/less than 1000 branches skip or use alternate path",
-      "+0x04": "column coordinate consumed at 0x0042F829",
-      "+0x08": "row coordinate consumed at 0x0042F83B",
-      "+0x34": "WORD frame/resource selector consumed at 0x0042F84B via context 0x005668C4",
-      "+0x2E8": "type/state byte consumed at 0x0042F902; values 0x0A/0x0B enter the secondary status/icon path",
-      "+0x351/+0x352/+0x353": "packed bytes consumed at 0x0042F925-0x0042F937 to form the secondary path argument; business meaning remains unresolved"
+      "+0x00": "occupied flag dword (1 = occupied); read as [rec+0] in click handler 0x4303FD and as first dword by copy-out 0x42FCC0",
+      "+0x04": "column extent (0..5), written by place/allocate 0x42F440 at [rec+0x778] (rec+4)",
+      "+0x08": "row extent (0..5), written at [rec+0x77C] (rec+8)",
+      "data_base": "rec+0x0C = start of the 0xC20-byte item-data copy (rep movsd 0x308 = 0x308*4 = 0xC20 bytes from a source item-data block, 0x42F440); shared layout with the cursor/drag item record (data base item+0x18)",
+      "data+0x02": "slot byte (cursor record stores it at item+0x1A; 0x42FE00)",
+      "data+0x04": "name string (cursor record stores it at item+0x1C; 0x42FEC0; used as message arg at 0x4302A4 lea edi+0x1C)",
+      "data+0x22": "type byte; values 0x0A/0x0B select the tinted icon path (record+0x2E, 0x42F902-0x42F925)",
+      "data+0x28": "icon frame WORD (record+0x34; used by grid-size 0x42F6D0 and icon draw 0x466130)",
+      "data+0x3D": "quantity dword (record+0x49; sent as qty arg at 0x43029A mov edx,[edi+0x55]; also [array_elem+0x7BD])",
+      "data+0x45/+0x46/+0x47": "24-bit LE icon tint color (record+0x51..+0x53; consumed 0x42F925-0x42F937; 0x45E4E0 converts 3-byte RGB -> 16-bit 565, RLE blit fill 0x45F2D0; type not in {0x0A,0x0B} -> white 0xFFFF)"
+    },
+    "cell_identity_table": {
+      "base": "this+0x2C4, one WORD per cell, 6 cells/row, row stride 12 bytes",
+      "encoding": "occupied cell word = slot + 0x3E8 (1000); word < 0x3E8 = empty",
+      "writers": "ctor 0x42EA42 zeroes the table; clear-slot 0x42FB20 zeroes entries equal to slot or slot+0x3E8 (600 words total); place 0x42F440 fills via 0x42F6D0 free-rect scan",
+      "same_layout": "char/status window cluster (0x43870F, 0x43A524, 0x43D9F4-0x43DDE5) shares the +0x2C4 cell-table layout"
+    },
+    "record_ops": {
+      "0x42F440": "record place/allocate (only E8 caller 0x42FC90 inside 0x42FC40): scans grid via 0x42F6D0 for WxH free rect over the cell table; writes [rec]=1, [rec+4]=col, [rec+8]=row; rep movsd 0x308 copies 0xC20 bytes from source item-data block into rec+0x0C",
+      "0x42FCC0": "copy-out + clear-slot helper (callers 0x42FD69, 0x42FE40): if record occupied, copies 0xC20 bytes from rec+0x0C to caller buffer, clears via 0x42FB20, returns 1; else 0",
+      "0x42FE00": "move/pickup path (callers 0x430339, 0x4305DC): 0x430920 builds 0xC20 stack block -> 0x42FCC0 copy-out+clear source -> destination record [rec+0x00]=1, data copied to rec+0x18 (0xC20), +0x1A = slot word, +0x04/+0x08/+0x0C/+0x10/+0x14 zeroed -> 0x42E2D0(0x7243A4, rec+0x18)",
+      "0x42FD10": "carry/attach (callers 0x43036D, 0x4305FD): cursor item record +0x00=in-use, +0x04..+0x14=0, +0x18=data base, +0x1A=slot byte, +0x1C=name; 0xC20 copies via 0x42FC20",
+      "0x42FB20": "clear-slot: zeroes the whole 0xC2C record and clears identity-table entries equal to slot or slot+0x3E8"
     },
     "grid_item_draw": {
       "routine": "0x0042F790-0x0042FA68",
@@ -90,8 +116,11 @@
       "format_va": "0x0047A214",
       "format": "%d",
       "draw_helper": "0x0046811C",
+      "text_color": "0x64C8F8 via 0x45DE50",
       "target_rect_expression": "window-relative x=0x41; y=0x11A..0x12B",
-      "semantic_status": "numeric inventory value; exact server-side field name remains unresolved"
+      "semantic_status": "candidate - dead stat in this build",
+      "dead_code_proof": "0x7DA100 is the head dword of the player-stats block (neighbors 0x7DA108 等级, 0x7DA10C 攻击力, 0x7DA10D/0x7DA10F/0x7DA111 经验 words, 0x7DA11D/0x7DA11F 负重/总量). Only two imm32 reads in all of .text: 0x41729D (outbound msg 0x405 gate 0x417280) and 0x42EE4C (this paint). Never written (bss zero after raw end 0x47F000). Gate 0x417280: cmp ax,0x405; jne ret; shr eax,16; test al,al; jne ret (byte2 must be 0); eax=atoi(arg); cmp eax,[0x7DA100]; jg ret (value > cap suppresses); push eax; call 0x451B00 (sends 0x405 with one value dword). 0x405 appears in only 4 places: 0x416F7F (arg to input-dialog 0x418030), 0x417284 (gate cmp), 0x451B13 (msg ctor), 0x4650A6 (junk mid-function). Sole E8 caller 0x42D6C6 (dispatch 0x42D680 case 4) passes category byte 4 -> shr eax,16 gives al=4 -> always jne ret -> gate dead in this build. Most plausible semantics: trade/buy quantity cap (sibling gate 0x41CE86 compares atoi(arg) vs [esi+0x35B1E8] in the trade window; drop-gold prompt 0x47B028 at 0x41D626 and trade-pay prompt 0x47AD98 at 0x416F7E are adjacent) - documented as candidate.",
+      "runtime_evidence_needed": "watch 0x7DA100 in a debugger during the trade/quantity dialog and bag paint to confirm the displayed value source"
     },
     "secondary_load_text": {
       "source_addresses": ["0x007DA11D", "0x007DA11F"],
@@ -103,17 +132,20 @@
         "window-relative x=0x86..0x86+measured width, y=0x18",
         "window-relative x=0xF0..0xF0+measured width, y=0x26"
       ],
-      "state_selector": "byte this+0x54 selects one of four original formatting/color branches",
-      "evidence_level": "primary-static-plus-primary-string"
+      "state_selector": "byte this+0x54 selects one of four label branches (jump table 0x42F13C): 0=[包袱] 0x47BE10 (0xF8DCFA), 1=[修补] 0x47BDF4, 2=[变卖] 0x47BDEC, 3=[木柴] 0x47BDE4 (0xF8C8C8); the 负重/总量 format itself is drawn in the mode-agnostic branch before the mode labels",
+      "evidence_level": "primary-static-plus-primary-string",
+      "semantic_status": "closed - 负重 (carry weight) and 总量 (total capacity) words; display geometry and format primary-static (0x42EF9E/0x42EFB3, string 0x47BDFC)"
     },
     "item_record_fields": {
-      "record_stride": "owner pointer array uses 4-byte entries at this+0x774+4*record_index; the pointed record carries the fields below (do not confuse this with the status-window 0xC24 stride)",
-      "identity": "+0x00 signed WORD item/resource identity",
+      "record_stride": "contiguous records at this+0x774 + slot*0xC2C, 46 records (ctor 0x42E810 via vector-ctor 0x4686C4; dtor 0x42E8D0 via vector-dtor 0x468306); data base = rec+0x0C (0xC20 bytes)",
+      "identity": "+0x00 occupied flag dword",
       "grid_column": "+0x04",
       "grid_row": "+0x08",
-      "frame_selector": "+0x34 WORD passed to 0x0042F2A0/0x0042F6D0 and selector context 0x005668C4",
-      "type_state": "+0x2E8 byte; values 0x0A/0x0B enter the secondary status/icon branch",
-      "packed_secondary": ["+0x351", "+0x352", "+0x353"],
+      "frame_selector": "data+0x28 WORD (rec+0x34) passed to 0x0042F2A0/0x0042F6D0 and selector context 0x005668C4",
+      "type_state": "data+0x22 byte (rec+0x2E); values 0x0A/0x0B enter the tinted icon branch",
+      "icon_tint": "data+0x45..+0x47 (rec+0x51..+0x53) 24-bit LE RGB; 0x45E4E0 -> 16-bit 565, RLE blit fill 0x45F2D0; primary-static (full chain from 0x42F902 to the blit call)",
+      "quantity": "data+0x3D dword (rec+0x49)",
+      "correction": "The earlier +0x2E8/+0x351/+0x352/+0x353 offsets were wrong (confused with the status-window 0xC24-stride record family). Correct: +0x2E type, +0x34 frame WORD, +0x51..+0x53 tint, relative to record base this+0x774+slot*0xC2C.",
       "caution": "Field offsets are recorded exactly as consumed by the original code; modern item database names are intentionally not inferred."
     },
     "evidence_level": "primary-static-field-to-draw-call"
@@ -137,6 +169,19 @@
       "rect": "[window.x+0x19+36*column, window.y+0x29+36*row, +36, +36]",
       "selection_overlay": "selected source/destination rectangles are subsequently passed through 0x00466800 and 0x004542F0"
     },
+    "click_handler": {
+      "va": "0x004300F0",
+      "rate_limit": "GetTickCount ([0x47630C]) - [esi+0x23788] < 0x12C (300ms) -> skip; use-delay window: now - [esi+0x23784] > 0x7D0 (2000ms) -> skip; > 0x3E8 (1000ms) and icon frame in {0x14, 0x15, 0x46} -> skip (long-use items, e.g. potions); skip shows 0x47BDA4 '正在补充药水,请稍候.        ' via 0x415280(0x7243A4)",
+      "cursor_item_checks": "cursor item record [edi]: +0x00 in-use, +0x04 busy flag must be 0 (set to 1 on send), +0x08/+0x0C must be 0",
+      "mode_0_send": "bag mode: msg 0x3EC via 0x451690 (0x8AB828) with args slot byte [edi+0x1A], name [edi+0x1C], qty dword [edi+0x55] (0x43029A-0x4302B0); sets [edi+4]=1 (busy)",
+      "mode_1_send": "repair mode: msg via 0x451860 with (qty [esi+0x2376C], name [array_elem+0x784], qty [array_elem+0x7BD]) at 0x430456-0x430470 (name/qty offsets match data+0x04/data+0x3D)",
+      "mode_2_send": "sell mode: msg via 0x4517E0 from the 0x4304B9 branch; pending-use fields [esi+0x2375C..0x23768] hold the triggered slot/index",
+      "pending_action_fields": "[esi+0x2375C]=1 trigger flag, [esi+0x23760], [esi+0x23764]=slot, [esi+0x23768]=record index (written at 0x43040B-0x430424)"
+    },
+    "network_gap": {
+      "bag_fill_entry": "virtual 0x42FC40 (contains record place 0x42F440) has ZERO static references: no E8 callers, no imm32 refs, absent from vtable 0x476870 slots [0..10] -> dead or runtime-computed pointer. [reg+0x774] writers are all inside bag internals (0x42Exxx-0x430xxx) plus the item-DB layer 0x456AC3-0x45A112 (different struct). The outbound 0x403 send (0x451AD0 from 0x4300F0) is the bag action message; the server->client bag-list reply handler could not be located statically.",
+      "evidence_needed": "runtime packet trace pairing outbound msg 0x403 with the server reply that fills the records"
+    },
     "evidence_level": "primary-static-selection-chain"
   },
   "paint_order": [
@@ -144,9 +189,9 @@
     {"order": 2, "va": "0x0042EB91-0x0042EBB0", "role": "vertical weight gauge (shared component 0x4179B0)", "evidence": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D)."},
     {"order": 3, "va": "0x0042EBBB-0x0042EE2A", "role": "selected-item hit/index and source-destination composition", "evidence": "The branch tests selection globals, resolves a 6x6 slot through 0x42F150/0x42F2A0, then builds source/destination rectangles and calls the shared float/compositor pipeline."},
     {"order": 4, "va": "0x0042EE2F-0x0042EE3A", "role": "inventory item-list/update path", "evidence": "Both selected and non-selected branches converge here and call 0x42F790 before the numeric text path."},
-    {"order": 5, "va": "0x0042EE42-0x0042EEBE", "role": "primary quantity/value text", "evidence": "The runtime value at 0x7DA100 is formatted through 0x46811C using 0x47A214, with target positions based on window.x+0x41 and window.y+0x11A/0x12B."},
+    {"order": 5, "va": "0x0042EE42-0x0042EEBE", "role": "primary quantity/value text", "evidence": "The runtime value at 0x7DA100 is formatted through 0x46811C using 0x47A214, with target positions based on window.x+0x41 and window.y+0x11A/0x12B. Value is a never-written bss zero in this build (dead stat, see content_field_draw_mapping.primary_value)."},
     {"order": 6, "va": "0x0042EECD-0x0042EF1E", "role": "child-control reposition/update", "evidence": "Three original child-control objects receive their fixed positions through 0x417830; these calls occur after the item/value path."},
-    {"order": 7, "va": "0x0042EF2F-0x0042F003", "role": "state-dependent secondary text", "evidence": "The byte this+0x54 state dispatch selects the secondary text branch, which reads 0x7DA11D/0x7DA11F and emits text through 0x46811C/0x45DE50."}
+    {"order": 7, "va": "0x0042EF2F-0x0042F003", "role": "state-dependent text: 负重/总量 format + mode label", "evidence": "The byte this+0x54 state dispatch (jump table 0x42F13C) selects one of four label branches ([包袱]/[修补]/[变卖]/[木柴]); before the labels the branch at 0x42EF9E-0x42EFB3 reads 0x7DA11D/0x7DA11F and draws 负重:%d / 总量:%d (0x47BDFC) through 0x46811C/0x45DE50 at (x+0x86, y+0x18) color 0xA0A0A and (x+0xF0, y+0x26) color 0xF8C8C8."}
   ],
   "confirmed": [
     "Frame 250 is the inventory window background candidate with primary constructor evidence.",
@@ -156,9 +201,25 @@
     "The inventory grid is exactly 6 columns x 6 rows, not an inferred visual count.",
     "Selected-item rendering is a source/destination rectangle composition through 0x00466800 and 0x004542F0, with static text formatting call sites separately recovered.",
     "The local inventory paint sequence is statically ordered from the base vtable call through item selection, value text, child-control positioning and state-dependent text.",
-    "The x+0xF8/y-0xA5 draw is the shared gauge component 0x004179B0, NOT a top/detail decoration or side panel: 0x5E = 94 is the gauge max scale; the bar sprite is GameInter frame 280 (16x424) clipped to a 12x218 vertical fill area at (window.x+248, window.y-165). Fill value [this+0x58] has no write site other than the zero reset in 0x0042E970, so it renders empty. The 28x26 GameInter frame 94 image is the unrelated HUD party button."
+    "The x+0xF8/y-0xA5 draw is the shared gauge component 0x004179B0, NOT a top/detail decoration or side panel: 0x5E = 94 is the gauge max scale; the bar sprite is GameInter frame 280 (16x424) clipped to a 12x218 vertical fill area at (window.x+248, window.y-165). Fill value [this+0x58] has no write site other than the zero reset in 0x0042E970, so it renders empty. The 28x26 GameInter frame 94 image is the unrelated HUD party button.",
+    "Record array layout is primary-static, double-proven by ctor+dtor: ctor 0x42E810 -> vector-ctor iterator 0x4686C4(this+0x774, 0xC2C, 46, per-elem ctor 0x415730, dtor 0x415740); dtor 0x42E8D0 -> vector-dtor iterator 0x468306(this+0x774, 0xC2C, 46, dtor 0x415740); deleting-dtor thunk 0x42E8B0 (vtable 0x476870 slot [0]) calls 0x42E8D0 + conditional 0x4680F8 operator delete. 46 contiguous records, record = this+0x774 + slot*0xC2C, data base rec+0x0C (0xC20-byte item-data copy). The earlier pointer-array model (this+0x774+4*index) and offsets +0x2E8/+0x351..353 are corrected to +0x2E (type)/+0x34 (frame WORD)/+0x51..+0x53 (24-bit icon tint).",
+    "The icon tint chain is primary-static: type byte data+0x22 in {0x0A, 0x0B} -> 3-byte RGB at data+0x45..0x47 -> 0x45E4E0 16-bit 565 -> RLE blit fill 0x45F2D0; otherwise white 0xFFFF.",
+    "The secondary text is closed: 负重:%d / 总量:%d (0x47BDFC) reads words 0x7DA11D/0x7DA11F; the four mode labels [包袱]/[修补]/[变卖]/[木柴] are confirmed GB18030 literals drawn from the this+0x54 dispatch.",
+    "The primary value 0x7DA100 is a dead stat in this build: never written (bss zero), read only by the outbound 0x405 gate 0x417280 (dead: byte2 guard + sole caller 0x42D6C6 passes category byte 4) and this paint; displayed as 0. Semantic name candidate: trade/buy quantity cap.",
+    "Click/interaction chain is primary-static: 0x4300F0 rate-limited handler sends msg 0x3EC (mode 0, slot/name/qty via 0x451690), repair msg via 0x451860 (mode 1) and sell msg via 0x4517E0 (mode 2); move/pickup 0x42FE00 and carry 0x42FD10 share the 0xC20 item-data layout with cursor data base at +0x18.",
+    "0x47BE18 is the shared font-name literal argument to 0x45DBA0, not an inventory label."
   ],
+  "closed_notes": {
+    "2026-08-11": [
+      "Primary value [0x7DA100]: static side closed (primary-static + primary-static-negative). Never written in this build (bss zero; .data raw ends at VA 0x47F000, no absolute writers); only two imm32 reads: dead outbound-0x405 gate 0x41729D (gate 0x417280: cmp ax,0x405; shr eax,16; test al,al -> atoi(arg2) > [0x7DA100] suppress, else 0x451B00; sole E8 caller 0x42D6C6 passes category byte 4 -> dead) and bag paint 0x42EE4C (sprintf %d at rect (x+0x41, y+0x11A)-(x+0x8E, y+0x12B), color 0x64C8F8 via 0x45DE50). Displayed value is always 0. Semantic name remains candidate (trade/buy quantity cap); runtime watch during trade/quantity dialog required.",
+      "Packed item-record fields: the old +0x351/+0x352/+0x353 naming is corrected. Relative to item-data base (state rec base = rec+0x0C, cursor base = item+0x18): +0x02 slot byte, +0x04 name, +0x22 type byte (0x0A/0x0B -> tinted icon), +0x28 icon frame WORD, +0x3D qty dword, +0x45..+0x47 24-bit LE tint. State-record equivalents: rec+0x2E type / rec+0x34 frame WORD / rec+0x49 qty / rec+0x51..+0x53 tint. Tint chain primary-static: 0x42F902-0x42F925 selects on type, 3-byte RGB -> 0x45E4E0 16-bit 565 -> RLE blit 0x45F2D0; else white 0xFFFF.",
+      "Record array ctor/dtor chain (new, corrects prior mislabel): CONSTRUCTOR 0x42E810 (sole E8 caller 0x426D4D, ecx=container+0x6554) sets base vtable 0x476624 -> base ctor 0x423CA0 -> vector-ctor iterator 0x4686C4(esi+0x774, 0xC2C, 0x2E=46, per-elem ctor 0x415730, dtor 0x415740) -> sets derived vtable 0x476870 -> reset 0x42E970. DESTRUCTOR 0x42E8D0 (called at 0x426F97 inside teardown 0x426E80) sets vtable 0x476870 -> 0x42EA50 -> vector-dtor iterator 0x468306(esi+0x774, 0xC2C, 0x2E=46, dtor 0x415740) -> gauge dtor 0x417950 @+0x278 -> vector-dtor 0x468306(esi+0x5C, 0xB4, 3) tabs -> restores 0x476624 -> base dtor 0x423CF0. Scalar-deleting thunk 0x42E8B0 = vtable 0x476870 slot [0]: call 0x42E8D0; test byte [esp+8],1; je; push esi; call 0x4680F8 (operator delete); ret 4. Layout double-proven: 46 contiguous records x 0xC2C at this+0x774, data base rec+0x0C (0xC20 rep movsd 0x308 @0x42F440)."
+    ]
+  },
   "pending": [
-    "The runtime/server semantic names of the primary value and packed +0x351/+0x353 fields; their original draw operands and branches are now recorded, but no symbol/protocol proof has been found."
+    "Semantic name of 0x7DA100 (candidate: trade/buy quantity cap). Static side closed: never written (bss zero), read only by the dead 0x405 gate and bag paint; runtime evidence needed = watch 0x7DA100 during the trade/quantity dialog and during bag paint.",
+    "Server->client bag-list fill handler: virtual 0x42FC40 (record place 0x42F440) has zero static references (no E8, no imm32, absent from vtable 0x476870) -> dead or runtime-computed; runtime packet trace pairing outbound msg 0x403 (0x451AD0) with the reply that fills records is required.",
+    "Protocol semantics of outbound msg 0x405: only send site is the dead gate 0x417280; 0x405 also appears as an argument to input dialog 0x418030 (trade-pay/drop-gold prompts adjacent); exact server meaning unresolved.",
+    "Runtime confirmation of the mode-tab to child-control mapping (3 tabs at this+0x5C vs 4 paint modes) and of the visible bottom-left region rendering (no vision model available; geometry is statically proven)."
   ]
 }

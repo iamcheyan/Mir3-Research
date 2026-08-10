@@ -3853,3 +3853,955 @@ el82/el83 的 WIL 文件名绑定（Equip.wil/Inventory.wil 并列）运行期 b
 - 新增 C21 证据项；K2/D4（室内地面机制）维持 pending P2。
 
 落盘：`MAP-SURVEY.md`、`EVIDENCE-INVENTORY.md`（C21）、`RESEARCH_LOG.md`。
+
+### Finding 258：绘制顺序/跨窗口层级/状态分派闭合（2026-08-11，DrawOrder 阶段）
+
+闭合 `draw-order-evidence.json` 的 3 个 pending（全部 primary-static，机器码实测）：
+
+**1) hide-then-show 提升（原 pending[0]）→ 已闭合**：
+- 定位+显示分派 `0x0042B6A0`（参数 id，跳表 0x42B7E0 覆盖 id 0..0xE）在 count=main+0xD38>0 时依次调用
+  `0x42B820`（遍历可见链表对每节点 `push 0`+`0x423F90` 清可见标志=关全部）→
+  `0x42AC50`（hide：从 main+0xD28 链表摘除命中节点）→ `0x42AC30`（show：无条件追加尾节点）→
+  按 id 定位窗口对象（id2=store 特例先 `0x44E910` hit-test，命中即拒开）→ `0x423F90(1)` 置可见 → `0x4240C0` 应用位置。
+- show 经 `0x449870` 分配 12 字节节点（+0=id/+4=next/+8=prev）追加 tail（manager+0x0C，count=manager+0x14；自环节点 new->next=new @0x44989D 由 count 守卫不可达）；
+  paint 分派 `0x4280F0` 从 head=main+0xD28 沿 node+0x04 前进、count 守卫、跳表 0x428358 按 id 调专用 paint。
+- **结论**：hide(摘链)+show(追加尾) 天然使窗口成为最后绘制=最上层；`0x42B6A0` 即显式 hide-then-show 提升命令。
+  修正 window-traversal-evidence.json 的 promotion_audit（原称无调用方 BB 含无条件 hide(ID)+show(ID)；0x42B6A0 的
+  0x42B6BC-0x42B6C7 正是该序列）。残项：重复 show 边界（0x42AC30 不查重复）→ candidate。
+
+**2) HP/MP/EXP 条 vs 按钮顺序（原 pending[1]）→ 已闭合**：HUD 帧例程 `0x004294E0`（ret 0xC @0x429624）静态调用序 =
+  0x4294EB 底板帧 0x32 经 0x429630/0x460240 合成 → 0x42953F `0x4283C0` 状态图标循环 → 0x429546 `0x429740` 条
+  （唯一 E8 调用者；条内序见 hud-bars-render-evidence.json draw_sequence：动态帧 0x82-0x85@0x429819 → 62@0x4299CB →
+  60@0x429BDB → 61@0x429C53 → 63@0x429FD5 → 经验%文本@0x42A065）→ 0x429556 16 子控件循环（this+0x567C 步长 0xB4，
+  按钮族构造 0x417550）→ 0x429584 `0x4179B0` 共享量条 → 0x4295B9 `0x4280F0` 窗口列表 paint。
+  结论：条先于按钮子控件与量条；HUD 层内 = 底板→图标→条→按钮→量条→窗口列表。
+
+**3) store/exchange/option 状态分派（原 pending[2]）→ 绘制分支已闭合，业务名保留 pending**：
+- **store** `0x44E260`：状态字节 this+0x5F8∈{0..4}；0x417830 重定位集（坐标=winx/winy 相对）：state2 → 4 控件
+  (0x1BC@(+0x1D2,+0xA9)/0x270@(+0x172,+0xA2)/0x324@(+0x144,+0x9F)/0x3D8@(+0x1B2,+0x9F))；0/1/3/4 公共 2 控件
+  (0x54@(+0x10A,+0x10E)/0x108@(+0x7F,+0x10B))；0x44E32E 重读（raw `8A 86 F8 05 00 00`）==1 → 再 4 控件（共 6）、
+  ==4 → 再 2 控件 (0x48C@(+0x1FA,+0x43)/0x540@(+0x188,+0x3D))；0x44E3EA 8 子控件循环（0x54 步长 0xB4）；
+  0x44E404 分派 {0,1,3,4}→0x44D590、{1,2}→0x44DB50、{4}→0x44E040。
+- **exchange** `0x415B10`：SetRect 0x4762B0 以 center_x=winx+(right−left)/2 拆左 this+0x5C/右 this+0x6C；
+  绘制期状态=鼠标所在侧：PtInRect 0x4762B4 命中左矩形（0x415B65 读 0x7DA1C0=鼠标x/0x7DA1C4=鼠标y）→ bl=0 左网格原点
+  (winx+0x15, winy+0x30)；否则 bl=1 右 (winx+0xFD, winy+0x30)；0x415BC2 二次命中（0x7243C4≠0/0x7243D8==0 门控）→
+  0x416830 格索引 → 0x4162E0 物品映射（0x7243DC）；格高亮 x = winx+cell*9*4+(0x15|0xFD)。
+- **option** `0x441380`：无状态字节分支；9 固定重定位（0x7C 关闭/0x130/0x1E4/0x298/0x34C/0x400/0x4B4/0x568/0x61C）
+  + 2 运行时偏移控件（0x6D0 用 this+0x6C、0x784 用 this+0x74）+ 11 子控件循环（0x7C 步长 0xB4）；
+  状态由帧对（161/162、760/761、762/763）与偏移表达。残项：store 状态 0..4 业务名、exchange 业务名/量条填充源、
+  option 帧对语义 → candidate/pending。
+
+落盘：`draw-order-evidence.json`（closed_notes ×3）、`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、
+`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、`ui-coverage-matrix.json`（record id=exchange）、`RESEARCH_LOG.md`。
+
+### Finding 248：窗口位置分派（position dispatch）闭合——拖拽全链与绝对坐标 ABI（2026-08-10，WindowPosition 阶段）
+
+闭合 `window-position-dispatch-evidence.json` 的 1 个 pending（全部 primary-static，机器码实测）：
+
+**1) 调用方实参语义（原 pending）→ 已闭合**：每个输入/拖拽调用方的两个实参都是**绝对客户区鼠标坐标**
+（X=lParam LOWORD，Y=lParam HIWORD，逐字转发），**不是增量（delta）、也不是窗口相对**。
+- WM_MOUSEMOVE `0x41D390`：lParam → X=[main+0x35B2A8]、Y=[main+0x35B2AC]；`[main+0x35B2B8]!=0` 输入门控下
+  `0x41D457` `lea ecx,[esi+0x2A548C]; push Y; push X; call 0x42C510`。
+- 输入/更新分派 `0x42C510`（prologue 0x42C511 `mov ebx,[esp+8]`，签名 f(this@ecx, X@[esp+4], Y@[esp+8])，ret 8）：
+  0x417C80(base+0x61BC, X, Y) → `[base+0xD08]=(int)(([base+0xD20]-1)*[base+0x61C8])` → 返回 1；
+  通告窗 0x418AA0(base+0x53030, X, Y)、0x43E680(base+0x52E5C, X, Y)；hit-test 0x42AAB0 → 表 0x42C798
+  按 id 专用输入 handler（0→背包 0x430650（返回 0 再状态 0x44CED0→位置分派）、1→状态 0x44CED0、2→商店 0x44F110
+  （返回 0 再交换 0x416E70）、3→行会 0x425DE0、4→组队 0x424770、6→组队弹出 0x450B70、7→聊天弹出 0x414CF0、
+  8→NPC 0x448430、0xB→任务 0x441A20、0xC→选项 0x426B90、0xD→坐骑 0x43AC80、0xE→其他 0x440560；
+  **id 5/0xA 无 handler**）→ 0x42C741 位置分派。
+- `0x42C741`：`push edi(Y); push ebx(X); mov ecx, esi; call 0x42B430` —— 逐字透传 WM_MOUSEMOVE 的绝对 X/Y。
+
+**2) 0x42B430 调用方穷举（原 "should not be only 0x42C745"）→ 已闭合**：E8 rel32 全扫描 = **唯一 0x42C745**；
+imm32/dword 直接引用 = **零**。0x42C510 的 E8 调用方 = 唯一 0x41D457；0x42BA20 的 E8 调用方 = 唯一 0x41D57B
+（WM_LBUTTONDOWN）；0x42BE20 的 E8 调用方 = 唯一 0x41DC82（WM_LBUTTONUP）；0x42B6A0 的 E8 调用方 =
+13 个全部在 0x42BA20 内（0x42BB4E/0x42BB7E/0x42BBA6/0x42BBE7/0x42BC13/0x42BC3F/0x42BC6B/0x42BC97/0x42BCC3/
+0x42BCEF/0x42BD17/0x42BD3F/0x42BD67）；0x4240C0 的 E8 调用方 = 0x42B728/0x42B789/0x42B7AF/0x42B7D5（0x42B6A0 内）；
+0x423FA0 的 E8 调用方 = 初始化 0x41FA68/0x4204F3（flag=1）+ 0x42B430 内 14 个 case（flag=0）。
+
+**3) 拖拽链全链（E8 + 寄存器追踪，primary-static）**：
+- **拖拽开始** = WM_LBUTTONDOWN `0x41D470`（门控 `[main+0x35B2B8]!=0`）：lParam 拆 X/Y → 单元坐标
+  `[main+0x35B2B0]=(X+200)/12+[0xF532C]`、`[main+0x35B2B4]=(Y+157)/32+[0xF5330]` → `0x41D57B`
+  `call 0x42BA20`（ecx=main+0x2A548C）。
+- `0x42BA20`（MoveWindow 分派）：通告门控（0x53060→0x418A50、0x52E8C→0x43E640 → 返回 1）；
+  0x417D00(base+0x61BC, X, Y) → `[base+0xD08]=...` → 返回 1；base+0x567C 起 16 个固定窗口（步长 0xB4）
+  逐个 vtable[3]（`call [edx+0xC]`, X, Y）消费 → 返回 1；0x428570 全局检查；hit-test 0x42AAB0 → id=-1 →
+  0x42BD8F → 0x42B820（全清 +0x34）→ 返回 1；id>0xE → 返回 1；跳表 0x42BDE0 13 个 per-id case → `0x42B6A0(id, X, Y)`；
+  商店额外 0x44EF00 预检（非零跳过移动）+ 0x44E910 后检（零返回 1）。
+- `0x42B6A0(id, X, Y)`（拖拽开始，主表 0x42B7E0 覆盖 id 0..0xE）：`[base+0xD38]==0` → 返回；
+  0x42B820 复位全部列表窗 +0x34；0x42AC50(移除 id) 再 0x42AC30(追加 id)（最前）；**`[base+0xD3C]=1`**（拖拽跟随门控）；
+  per-id 窗口基址 → 0x423F90(win, 1)（`mov [win+0x34], eax`）→ 0x4240C0(win, X, Y)。
+- `0x4240C0(win, X, Y)`（抓取偏移记录，需 +0x30/+0x34/+0x3C 全非零）：`[win+0x48]=X-[win+0x18]`（左）、
+  `[win+0x4C]=Y-[win+0x1C]`（顶）= 拖拽开始时鼠标相对窗口原点。
+- **拖拽跟随** = 每个 WM_MOUSEMOVE（门控 `[main+0x35B2B8]!=0`）：0x41D390 先跑 per-window mousemove
+  （`[0x362370]` 非零 → 0x455F60(main+0x362354, X, Y)，否则 0x418720(main+0x3615B0, X, Y)）→ 0x42C510 →
+  0x42C741 → 0x42B430 只跟随**表头**窗口。
+- **拖拽结束** = WM_LBUTTONUP `0x41DB80` → 0x41DC82 `call 0x42BE20`：`[base+0xD3C]=0`；`[base+0x53060]` 非零 →
+  0x418A00(base+0x53030, X, Y) 非零 → 音效 `[0x476290]([0x8AB7B0], 2, 0, 0)` → 返回 1；`[base+0x52E8C]` →
+  0x43E640(...)；否则 0x417E60(base+0x61BC, X, Y)。
+
+**4) 0x423FA0 语义（win, X, Y, flag）→ +0x40/+0x44 谜题结案**：
+- flag=0（拖拽跟随）：`left'=X-[win+0x48]`、`top'=Y-[win+0x4C]`、`right'=left'+[win+0x40]`、`bottom'=top'+[win+0x44]`；
+  **若 bottom'>0x23A（570）：top'=0x235（565）-[win+0x44]**（600px 客户区 30px 底边距）；
+  SetRect([0x4762B0], &win+0x18, left', top', right', bottom')；第二个 SetRect(&win+0, left'-(origW-w)/2,
+  top'-(origH-h)/2, right', bottom') 居中外框（win+8 存原始尺寸，尺寸相等时两矩形一致）。
+- flag=1（绝对设置）：SetRect(&win+0x18, X, Y, X+w, Y+h) + 同款居中；用于初始化 0x41FA68（X=0x207=519, Y=0）与
+  0x4204F3（X=0x206=518, Y=0，窗口 0x2CF570 区 / ebx+0x2AB9E0=base+0x6554 背包）。
+- **结论**：`[win+0x40]=宽`、`[win+0x44]=高`（两分支都加出 right/bottom，primary 证明）；**不是偏移、也不是
+  当前/初始位置**（位置在 +0 RECT/+0x18 RECT）；`[win+0x48]/[win+0x4C]=抓取偏移`（0x4240C0 写入）。
+  新左上角 = (X−grabX, Y−grabY) —— **绝对 1:1 鼠标跟随**、尺寸恒定、底边距 30px。
+
+**5) 运行时列表语义**：base+0xD24 列表容器（0x449870 op）；`[base+0xD38]`=计数、`[base+0xD30]`=头；
+`[base+0xD3C]`=拖拽跟随门控（仅 0x42B6A0 @0x42B6CC 置 1、仅 0x42BE20 @0x42BE26 清 0）；
+列表 = 打开/可移动窗口、最前优先；0x42B430 只跟随表头。0x42AC30 调用方 = 0x42ADB0 的 15 个 per-window case
+（0x42ADFC..0x42B34D，表 0x42B3E4）+ 0x42B6C7；0x42AC50 调用方 = 0x41C1F6/0x41C227/0x41C254/0x42062D +
+0x42ADD0..0x42B350 + 0x42B6BF。
+
+**6) 对象基址修正**：UI 子系统对象 = **main+0x2A548C**（旧记录 "main+0x6554" 系 base 相对，非绝对）；
+背包 base+0x6554=main+0x2AB9E0、状态 +0x29CE4=main+0x2CF170、商店 +0x33188=main+0x2D8614、
+交换 +0x3399C=main+0x2D8E28、行会 +0x4707C=main+0x2EC508、组队 +0x47834=main+0x2ECCC0、
+组队弹出 +0x47C28=main+0x2ED0B4、聊天弹出 +0x507EC=main+0x2F5C78、NPC +0x51150=main+0x2F65DC、
+任务 +0x516E8=main+0x2F6B74、选项 +0x518E0=main+0x2F6D6C、坐骑 +0x52118=main+0x2F75A4、
+其他-14 +0x524F0=main+0x2F797C、通告 +0x52E5C=main+0x2F82E8；16 窗口 vtable 数组 base+0x567C（步长 0xB4）；
+游戏对象 base+0x61BC。窗口字段：+0x08 RECT（外框/原始尺寸）、+0x18 RECT（位置/尺寸=命中目标）、
++0x30/+0x34/+0x3C 标志（+0x34=在拖拽列表/拖动中，0x423F90/0x42B6A0 置位，0x42B820 复位）、+0x40 宽、
++0x44 高、+0x48/+0x4C 抓取偏移。
+
+等级：**primary-static 全链**（E8 穷举 + 寄存器追踪 + 0x423FA0/0x4240C0/0x42B6A0/0x42BA20/0x42BE20/0x42C510
+完整反汇编）。残项（candidate/pending）：商店 id2 在状态 2/5+ 下的拖拽行为（0x44E910/0x44EF00 门控静态解码、
+运行期状态转换未验证）、拖拽帧序与 570 底边距的运行期画面验证（本阶段静态范围内）。
+
+落盘：`window-position-dispatch-evidence.json`（closed_2026_08_10 ×8、caller_arg_table ×7）、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、`RESEARCH_LOG.md`。
+
+
+## Finding 256 (PromptWindows, 2026-08-11)：0x7EE 接收链闭合 + 行会公告保存链 + 公告横幅事实
+
+**A. 行会公告编辑缓冲保存链（notice-prompt-window-evidence.json closed_notes，primary-static）**
+- 通知窗 click 0x43E4BA：btn2（this+0x108）按下 → test [this+0x1CC] → GetWindowTextA([this+0x1CC], buf, 0xFA0)
+  → 0x468BF0 按 0xA 分行 → 每行 0x45DC70(0x8AB7A8, dst, line, 0x8B187C) 累积；
+  非空时 [this+0x1D0]==0 → 0x4524D0（msg 0x411，行会等级/成员修改模式）/ !=0 → 0x4524A0（msg 0x410，公告模式）。
+- 0x4524A0/0x4524D0：0x452940 在 game+0x18 写 12 字节头（+4 = msg id word：0x4524DF push 0x411 / 0x4524AF push 0x410）
+  → 0x451E60（game, header, text）：头拷到 game+0x24、seq=[game+0x14]%9、
+  sprintf '#%d%s%s!'（0x47C840）/ '#%d%s!'（0x47C800）到 game+0x2044 →
+  send([game+0x6044], buf, len) 经 0x468098 = jmp [0x476340]（WS2_32 IAT slot 0x476340 = ordinal 19 = send）。
+- GBK 原串：0x47C440「行会公告，请自行修改公告内容.」、0x47C460「行会修改 请自行修改行会等级、成员排行信息」、
+  0x47C4A4「 \r」、0x47BB4C「\r\n」、0x8B187C「」。
+
+**B. 公告横幅单例 0x777200 事实（primary-static）**
+- 文本源 = 游戏对象单向链表（show: game+0xEC / hide: game+0xBC；node+4 串、node+0xC next），
+  0x45DC70(0x8AB7A8, buf, line, 0x8B187C) 以 0x47BB4C(CR LF) 连接进 0x4E2-dword(0x1388B) 栈缓冲 →
+  SetWindowTextA([0x7773CC], buf) @0x425ABB-0x425AC4（show）/ 0x425BAC-0x425BC2（hide）。
+- 显隐分派 = 与通知窗同一 id-15 分派器 0x42ADB0(winmgr 0x7243A4, 0xF) @0x425A1F / 0x425B1E；
+  就地构造：show push 0x25A(602) @0x425A46、hide push 0x259(601) @0x425B44 → 基类 0x423E80；[0x7773D0]=1/0。
+- 持续时长/自动关闭：imm32 0x777200 仅 @0x425A48 / 0x425B46 两处引用，.text 无计时器/计数器 →
+  candidate（presumed winmgr 可见链表绘制循环驱动，运行时确认），已入 notice JSON pending（不影响布局/绘制）。
+
+**C. 0x7EE 接收链闭合（confirmation-prompt-evidence.json closed_notes，primary-static，纠正旧 candidate）**
+- 0x7EE 不在外层消息表 0x421E8C（仅条目 0–19 有效：0xf6ef→0x41f73c、0xf751→0x41f597、0xf604→0x421d3f、
+  0x1d3f→0x41f666、0xf6b0→0x41ff96、0x1497→0x421cfc、0xfc09→0x41fd36、0xfbd5→0x41fed8、
+  0xfe31→0x41fecc、0xf92b→0x41fa16、0xbe8→0x41fa72、0xfaf0→0x41f995、0xf9af→0x41f96c、
+  0xff3c→0x4202ed、0x372→0x420248、0xf8e4→0x41ffbb、0xffe4→0x42013e、0x1be→0x4201ef、
+  0x5f→0x41fb24、0xfb6e→0x421d3f）。
+- 主游戏窗 WndProc 0x403E81 @0x403FA4：cmp ebp,0x7EE; jne 0x403FB5 → push edi/ebx; mov ecx,esi;
+  call 0x404600（gate [obj+0x8A4]==1；清 obj+0xE3D 0x41 dwords；SetWindowTextA([0x8AA48C], [obj+0xD39])；
+  [obj+0xD38]=1；call 0x403640；[0x8AA498]=0）。
+- 0x403640 = 聊天输入双缓冲恢复：Get/SetWindowTextA 交换 obj+0xD39↔obj+0xE3D；
+  MoveWindow([0x8AA48C], [0x8AB7F0]+obj+0xF44, [0x8AB7F4]+obj+0xF48, w, h, 1)
+  （[obj+0xD38]!=0 时矩形 obj+0xF54..0xF60）；SendMessageA([0x8AA48C], 0xCC, 0/0x2A, 0)；
+  [0x8AB7E8] 时 EM_SETSEL(0xB1, 0, -1) 全选；SetFocus([0x8AA48C])。
+- 第二 WndProc 0x459654 → 0x45A140（wparam>>16 = type；type==1 && idx∈{0,1} →
+  0x452040(0x8AB828, this+0xCBF+idx*0x40) + 0x451F90(0x8AB828) 游戏对象发送；
+  [this+0x930]==2 → MoveWindow/ShowWindow(5)/SetFocus 聊天输入；[0x8AA498]=0）。
+- 旧 candidate VAs 是 0x7EE 之前的输入路由而非接收体：0x412303 = 确认框点击 0x418400
+  （单例 0x7E04C8）先于 0x42AAB0 顶层窗解析；0x412AAE = 兄弟鼠标处理器内确认框可见性查询
+  0x418460（[this+0x28]!=0）；0x42C4D4 = 窗口 id 二级分派跳表（jmp dword ptr [edi*4+0x42C4D4]
+  @0x42BF7E，cmp edi,0xE; ja 0x42C198，条目 id0..14 = 0x42BF85..0x42C157，默认 0x42C198）。
+  布局/绘制/输入结论不受影响。
+
+落盘：`notice-prompt-window-evidence.json` / `confirmation-prompt-evidence.json`（pending→closed_notes）、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=prompt）。
+
+### Finding 255：坐骑窗口状态字节 0x7DA060 语义与窗外覆盖层闭合（2026-08-11，HorseWindow 阶段）
+
+闭合 `horse-window-render-evidence.json` 唯一 pending：`0x007DA060` 的运行时 enum/bit 语义，
+以及“外部窗口管理器是否在坐骑 Paint 之外添加状态相关覆盖层”。全部 primary-static。
+
+**1) 0x7DA060 = 会话对象 5 字节坐骑状态块 byte0（已闭合）**
+- 块地址：session 对象 `0x777698 + 0x629C8 == 0x7DA060`，布局 byte0=state(0x7DA060)、
+  word(0x7DA061-62)、word/byte(0x7DA063-64)、byte(0x7DA064)。
+- 唯一静态写入者 = session 虚方法 `0x0040F420`（vtable 槽 `0x476508`，wrapper `0x0040FED0` @ `0x4765CC`）：
+  `lea eax,[esi+0x629c8]`（0x40F43A）、`mov dword[ecx],edx; mov byte[ecx+4],dl`（0x40F442/0x40F448），
+  所有调用点 this=0x777698（0x41F5DB/0x41F680）。
+- 状态字节 clamp：`cmp byte[eax],4; jb; mov byte[eax],0`（0x40F46D-0x40F472）→ state ∈ {0,1,2,3}，
+  是 2-bit enum 而非 bitmask。**0=未骑马，非零=骑马**：
+  点击分派 0x426ABC `==0` 放行 Frame 860/861(+0x108)→`@上马`；0x426AE1 `!=0` 放行 Frame 862/863(+0x1BC)→`@遛马`。
+  1/2/3 各自子语义无法纯静态解码 → candidate（需要协议交叉引用）。
+- 状态 != 0 时额外写 `byte[esi+0x629CF]=0x57`（0x40F47F）副作用标志。
+- 状态字节同时索引骑马外观表 `0x5600FC`（stride 324，`lea eax,[eax+eax*8]; lea edx,[eax+eax*8];
+  lea eax,[edx*4+0x5600fc]` 于 0x40F583-0x40F590 / 0x40F5A8-0x40F5B9），结果存 session+0x62A10/+0x62A14——
+  属世界渲染侧，表内容在 .data 截断之外未读，不越权声称地图绘制细节。
+
+**2) 更新路径（primary-static）**
+- 包分派器 `0x0041F1CF`（跳表 0x421E8C）：case `0x267`（0x41F597）从包输入写
+  word[0x7DA063]/word[0x7DA061]（0x41F5BA-0x41F5CD）后经 0x40F420 回发 5 字节块（0x41F5DB）；
+  case `0x26B`（0x41F666）读 dword[0x7DA060]+byte[0x7DA064] 后同样回发（0x41F680）。
+- `.text` 内无对 byte 0x7DA060 的直接 imm32 写入；0x40F420 前先调 0x405630（50 case 消息类型分派，网络/会话守卫）。
+
+**3) 覆盖层问题（已闭合：坐骑窗自身无覆盖层）**
+- 坐骑 Paint `0x4269C0-0x426A74` 内无任何 0x7DA060/0x7DA064 引用；窗口管理器绘制分派
+  （0x428252 处对 winmgr+0x52118 的坐骑窗成员调 0x4269C0）是普通逐窗口 switch，不添加状态覆盖层。
+- **状态相关绘制确实存在于坐骑窗之外——主游戏窗 HUD**：主窗绘制段 `0x44B560-0x44B6AF`
+  在 `0x0044B666` 读 `word[0x7DA063]` 并作为参数传入绘制调用 `0x45FD50`（this=0x008AB7A8），
+  且由 `byte[0x777723]`（1..10）与图标索引 `byte[0x777720]` 门控（0x44B62B-0x44B64F）——
+  即主窗 HUD/停靠栏的坐骑状态图标（帧号来自坐骑块 word），不是坐骑窗覆盖层。
+- 提示：键盘/命令路径（0x41D2B0 区域，0x41DE03-0x41DE1E）用**不同**门控
+  `byte[esi+0x35B148]` 与冷却 `dword[esi+0x4279A4]=0x3E8`，与窗口点击路径的 0x7DA060 无关，勿混淆。
+
+**4) 四个按钮点击分派终态（重验）**
+- +0x108（말타기，F860/861）：handled 且 state==0 → push 0x47B060（`@上马`）→ 0x426B22 共用分发。
+- +0x1BC（말내리기，F862/863）：handled 且 state!=0 → push 0x47B068（`@遛马`）。
+- +0x270（말숨기기，F864/865）：handled → push 0x47B058（`@收马`），无条件分发。
+- +0x324（말꺼내기，F866/867）：handled → push 0x47B068（`@遛马`），无条件分发。
+- 共用分发 0x426B22：`mov ecx,0x8AB828; call 0x4520F0`（向 this+0x18 队列投 UI 消息 0xBD6），
+  分发后写冷却 `dword[0x8A68BC]=0x12c`、`dword[0x8A68C0]=0`。
+- +0x1BC 与 +0x324 同发 `@遛马`：两个控件不可因分发串相同而合并，区分仅靠美术/位置。
+
+落盘：`horse-window-render-evidence.json`（pending→closed_notes）、`RESEARCH_LOG.md`、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=horse）。
+
+### Finding 253：主 HUD 底部操作栏 caption 控件语义与绘制文字路径闭合（2026-08-11，HudLabel 阶段）
+
+闭合 `hud-label-evidence.json` 的 2 个 pending（全部 primary-static，机器码实测）：
+
+**1) Frame 159 = 按下态帧美术，caption 控件 = 悬停 tooltip-only 控件（原 pending[0]）→ 已闭合**
+- 8 个 HUD caption 全是同一 channel_control_class（共享按钮类静态 vtable `0x4763A8`，类构造 `0x404690`，
+  控件构造器 `0x417550`，thiscall `ret 0x24`=9 实参）实例，hud+0x57e4..hud+0x5cd0 步长 0xB4：
+  构造调用 0x427A1A/0x427A4E/0x427A82/0x427AB6/0x427AEA/0x427B24/0x427B58/0x427BAA，
+  push 顺序（lea 之后）= `0, -1, 1, text, y, x, state_frame, frame, parent([hud+0x1c])` →
+  ctor 落位：a1 parent→+0x14、a2 frame→+0x18、a3 state_frame→+0x1C、a4 x→+0x28、a5 y→+0x2C、
+  a6 text→+0x34、a7=1→+0x24(enabled)、a8=-1→+0x20(normal frame override)、a9=0→+0x30(hover flag arg)；
+  SetRect（IAT 0x4762B0，parent+0x38 帧尺寸）→ 命中矩形 this+0x04。
+- paint `0x417640` 状态机：正常 `[+0x25]==0 && [+0x24]==1` → SelectFrame(+0x20)，**+0x20==-1 时 0x417657
+  je 0x41776F 什么都不画**；悬停 `[+0x25]==1 && [+0x24]==1` → 帧 = `[+0x30]!=0 ? +0x18 : +0x20`
+  （0x4176B2-0x4176D1，HUD 控件 +0x30=0 且 +0x20=-1 → 跳过帧选择）→ **0x417719 无条件 call 0x417370
+  绘制文字**；按下 `[+0x25]==2` → SelectFrame(+0x1C) 合成（0x460240），不画文字。
+- 鼠标槽：hover `0x417780`（PtInRect IAT 0x4762B4 于 this+0x04）、press `0x4177C0`（置 +0x25=2，
+  释放时音效 0x69 经 0x45AFC0 @0x8AB130）、release `0x4177F0` 复位。
+- **结论**：Frame 159 不是常显标签、也不是文字字形——是腰带 caption 控件**按下态的临时帧美术**；
+  常态不可见，悬停只显示光标旁打字机文字提示，按下才画 159 帧。Frame 159 本身是真实位图
+  （16×14、153 不透明像素、115 色，心形/火焰字形）——**修正旧记录“无导出像素内容”错误**；
+  100/101、102/103 为 40×38（920/923 不透明像素）图标对。8 个 caption 表（slot/frame/x/y/text）：
+  +0x57e4 0x54/0x55 (+0xFC,+2) 技能图鉴(Ctrl+B, B)；+0x5898 0x5A/0x5B (+0xA1,+0x2E) 退出游戏(Alt+Q)；
+  +0x594c 0x5C/0x5D (+0xA1,+0x52) 注销人物(Alt+X)；+0x5a00 0x5E/0x5F (+0x268,+0x2F) 组队(Ctrl+G, G)；
+  +0x5ab4 0x60/0x61 (+0x268,+0x52) 行会(Ctrl+F, F)；+0x5b68 0x9F/0x9F (+0x189,+0xD) 腰带(Ctrl+Z, Z)；
+  +0x5c1c 0x64/0x65 (+0x2BF,+0x10) 技能书(Ctrl+E, E)；+0x5cd0 0x66/0x67 (+0x2CE,+0x20) 聊天记录(Ctrl+R, R)。
+- 分派：同类控件经 vtable+4 paint 循环步长 0xB4 分派（聊天窗 9 控件先例 `0x414955`；通用 0x402E14）；
+  HUD 侧直达 8 captions 的循环未定位（HUD vtable 0x4763C0 槽 +0x38=0x40B2C0 / +0x3C=0x40B750 /
+  +0x40=0x40B850 均不迭代它们）→ candidate，见 JSON pending。
+
+**2) 绘制时字体/颜色路径（原 pending[1]）→ 已闭合（悬停态 0x417370 全链）**
+- 入口 0x417370（@0x417719）；空串（[+0x34]==0）→ 清 POINT 缓存 0x8B1880/0x8B1884 后返回。
+- 光标锚点：GetCursorPos（USER32 IAT 0x476240）→ ScreenToClient（0x476234）于 **hWnd [0x8AB7B0]
+  （主游戏窗口句柄——修正旧记录“字体对象 0x8AB7B0”）**；GBK 串缓存 0x8B1888（2 字节步长比较跳过重测）、
+  脏标志 byte 0x47ADBC、打字机计数器 dword 0x47ADC0（揭示矩形 top=cursor_y−counter 增长到 h+4，
+  完成时 dirty=0、counter=6）。
+- 测量：0x45E0C0(0x8AB7A8, 0, &{w,h}, 0, &text) → 框尺寸 (w+12, h+4)；
+  CreateRectRgn(cx, cy−counter, cx+w+12, cy)（GDI32 IAT 0x476054）+ GetRgnBox（0x47604C）→ 文字框 rect。
+- 底/边框：0x45E570(0x8AB7A8, &rect, 0x96FFFF, 2) = CreateSolidBrush(0x96FFFF)（0x476064）+ FillRect
+  （0x4762F0）= 淡黄底（COLORREF 0x96FFFF = RGB(255,255,150)）；0x45E570(0x8AB7A8, &rect, 0, 1) =
+  CreateSolidBrush(0) + FrameRect（0x4762F4）= 1px 黑框。
+- 文字：0x45DE50(0x8AB7A8, &rect, text, 0, 0, 0) = SetBkMode(TRANSPARENT)（0x476044）+
+  SelectObject(font=[ctx 0x8AB7A8 + 0x28])（0x476048）+ SetTextColor（0x476060）+
+  DrawTextA（0x476280）flags 0x25 = DT_SINGLELINE|DT_VCENTER|DT_CENTER + 恢复字体 +
+  表面合成 [vtable+0x68]；每帧 DeleteObject ×3（HRGN+2 笔刷，0x476068）。
+- 残项（candidate）：0x45DE50 处 SetTextColor 的精确 COLORREF（调用方压 0、a7==0 分支设 TRANSPARENT，
+  颜色源未静态解析——疑似默认/白）；HUD 侧 caption 分派循环；悬停可达性与打字机揭示方向的运行期验证。
+
+落盘：`hud-label-evidence.json`（pending→closed_notes ×2）、`RESEARCH_LOG.md`、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=hud）。
+
+## Finding 254 (MapUi, 2026-08-11)：地图 UI 三个 pending 闭合（类型 0x32 标记 / 小地图标签 / 模式表面语义）
+
+`map-ui-resource-evidence.json` 的 3 个 pending 全部移入 closed_notes（date 2026-08-10），结论如下：
+
+**1) 类型 0x32 对象业务名（原 pending[0]）→ 服务端下发的阻挡型小地图标记（业务名仍 candidate）**
+- 地图对象链表：头 `0x560070`/尾 `0x56008C`/计数 `0x560098`，双向节点 {vtable `0x476448`，+4=对象指针，+8=prev，+0xC=next}；对象 +0x88=类型字节、+0xCC/+0xD0=世界 X/Y。链表唯一填充者=网络生成/更新 handler（~0x407Fxx：pkt+0xB 类型字节→obj+0x61BD4，pkt+0xC 名称→obj+8，sprite 经 0x4014F0，pkt+6/8 的 X/Y 字；0x4350B9 按服务器 ID 查找）。
+- **无静态写入 0x32**：全量扫描所有 byte-store（24 种 `88 /r,88` 编码）与 dword-store（27 处命中均无关结构）→ +0x88 的 0x32 值零静态写入 → 类型字节只来自服务端包。
+- 绘制 `0x43DA80` @0x43DC54-0x43DCB8：`cmp byte [edi+0x88],0x32` → 在 (obj+0xCC, obj+0xD0) 以 1.5px/unit 画黄色 (0xFFFF) 小方块标记。
+- 阻挡：`0x4123E3` 当目标全局 `[0x7E335C]` 的对象类型字节==0x32 → 移动被挡（另含 PtInRect(0x724FFC) 门控 @0x412397）。选中/使用排除：0x41ECAE 只返回 0/1 型；分派点 0x408276/0x40DFF0/0x411955/0x43CD29 只处理 0/1/3（kind 字 0x1A/0x71/0x72/0x73 @+0x8A、名称 @+8）——从不 0x32。
+- 服务端 MiniMap.txt 仅 map名→帧号，无类型语义。残项：业务名（传送点 vs 阻挡点）需服务端包/运行时帧证据 → candidate 保留为传送点/阻挡点。
+
+**2) 0x54/鼠标缩放切换的用户可见标签（原 pending[1]）→ 小地图标签存在，缩放键无标签（前提部分证伪）**
+- 热键指引块 `0x47BBCC-0x47BCF4`：17 条 `名称(快捷键)` GBK 对，`小地图(Ctrl+V, V)` @**0x47BCCC**；作为按钮标签绑定 screen+0x5730（0x417550 调用点 0x4279CF，按钮 ID 0x52/0x53，坐标 (viewX+0xE4, viewY+2)；screen 对象=main+0x2A548C，17 个按钮步长 0xB4 至 +0x61BC）。
+- **0x54='T' 缩放无任何用户可见标签**：全量 GBK 扫描（放大/缩小/缩放/放大镜/帮助/热键 等）=0 命中；全二进制仅 2 处「地图」（0x47B568「此处没有可以显示的地图」@0x420C50 无图路径、0x47BCXX 标签块）与 1 处「小地图」。
+- 键盘分发 0x42CE90（GetAsyncKeyState IAT 0x476278，链 0x42CC76-0x42CF1F）：VK 0x54='T'，门控 `[screen+0x6518]==1`（地图打开）→ 翻转 `[screen+0x64A8]` → `0x43D5F0(screen+0x6214, 0x100,0x100)` @0x42CED2 / `(0x80,0x80)` @0x42CEF0。V (0x56) @0x42CDDA 开关面板（0x451770 on 0x8AB828，64ms 防抖）；鼠标 0x42C270（3s 防抖）同翻转；菜单 0x422BC5（flag `[esi+0x2AB9A4]`）。
+- **无滚轮缩放**：WM_MOUSEWHEEL (0x20A) 全编码扫描=0 命中；小地图上鼠标=命中 0x43DDB0（调用方 0x42BDC0）+ Ctrl+拖拽重定位 0x43DEB0（调用方 0x42C75C）。
+- **0x43DE40 无调用者/无引用=死代码**（活缩放内联在 T 键 handler）。
+- 地图窗口对象身份统一：screen+0x6214 == main+0x2AB6A0（screen=main+0x2A548C，0x2A548C+0x6214=0x2AB6A0），地图切换 handler 0x420C3C 以 this=main+0x2AB6A0 调 0x43D780、键盘/逐帧驱动用 screen+0x6214，同一实例。残项：T↔缩放关联仅代码证据；运行期画面确认。
+
+**3) 模式表面语义（原 pending[2]）→ 256=放大视野（覆盖语义），非 zoom-out（静态闭合）**
+- `0x43D5F0` 全链：view 宽/高无钳制存 +0x2B8/+0x2BC；`SetRect(&+0x2C0, 800−min(w,frameW), 0, 800, min(h,frameH))`（IAT 0x4762B0，帧尺寸来自 [0x2E0..0x2E8]/[0x2E4..0x2EC]，由 0x43D780 地图选择设定）；释放旧表面 +0x00 并按 w×h 新建 → 256 模式=256×256 widget @(544,0,800,256)，128 模式=128×128 @(672,0,800,128)；**表面尺寸恒等于 widget 尺寸、1:1 blit（同 1.5px/unit 比例）→ 256 模式显示 4 倍地图面积**。
+- 滚动：源/滚动矩形 +0x2D0 由世界坐标推导（SetRect x,y,x+[2B8],y+[2BC]，cdq/sar 居中，钳制 [0,frameW−viewW]/[0,frameH−viewH]，ftol 0x468520）；WIL 帧 1:1 解码（0x465560：dest col=x−x0）→ 偏移+滚动，无缩放适配。
+- 逐帧驱动 `0x4295AC`（`[screen+0x6518]≠0` 时）：0x43D850(screen+0x6214, [0x777764], [0x777768]) → 0x43DA80 paint。0x43D5F0 外部调用方仅 T 键 0x42CED2/0x42CEF0。残项（可选）：运行期帧抓取做视觉确认。
+
+落盘：`map-ui-resource-evidence.json`（pending→closed_notes ×3）、`RESEARCH_LOG.md`、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=map）。
+
+### Finding 243：聊天窗六个频道控件 +0x34 GBK 命令串 = 悬停 tooltip-only 渲染（2026-08-11，ChatTooltip 阶段）
+
+闭合 `chat-window-render-evidence.json` pending[0]：六个频道控件 `+0x34` 的 GBK 帮助串
+（0x47AD08/0x47ACF8/0x47ACE4/0x47ACD0/0x47ACB8/0x47AC98）**只作为悬停 tooltip 文字渲染，
+绝不是静态标题（caption）**。全部 primary-static 机器码实测。
+
+**1) 九个控件 vtable 链（原待查）→ 已闭合**
+- 聊天窗基类 ctor `0x413DA0`（聊天对象 = ROOT+0x507EC，调用点 0x426DBD）经数组构造助手
+  `0x4686C4` 构造 9 个子控件：`lea eax,[esi+0x6c]; push 0xb4; push eax; call 0x4686c4`
+  （0x413DF0-0x413DFE，另压入元素构造器 0x404690、计数 9、析构 0x4046B0）→
+  控件对象 this+0x6C..0x60C，步长 0xB4（0x6C 关闭 / 0x120..0x4A4 六频道 / 0x558、0x60C 滚动）。
+- 数组元素构造器 `0x404690` = `mov esi,ecx; mov dword ptr [esi],0x4763a8; call 0x4175F0;
+  mov eax,esi; ret`（0x404693-0x404699）——**9 个控件的 `[obj+0]` vtable 写入点 = 0x00404690**。
+- vtable `0x4763A8` 槽：+0=0x4046C0 dtor、+4=0x00417640 渲染（状态机）、+8=0x00417780 hover
+  更新、+0xC=0x004177C0 按下置位、+0x10=0x004177F0 命中测试、+0x14=0x404910、+0x18=0x4049B0、
+  +0x1C=0x404A30。0x404690 与嵌入变体 0x417F20（vtable 写 obj+0x04，供其他窗口嵌入用）同 vtable。
+- 聊天 ctor `0x414060` 六次调用频道 ctor `0x417550`（0x414144-0x414237）：arg6=帮助串→+0x34
+  （0x47AD08/0x47ACF8/0x47ACE4/0x47ACD0/0x47ACB8/0x47AC98）、+0x24=1 使能、+0x20=-1 无常态帧、
+  +0x30=0、帧 0x168..0x173、x=基+0x19/0x41/0x69/0x91/0xB9/0xE1；0x417577 重置 +0x25=0。
+- 刷新 `0x414700`（主循环调用点 0x428206）：先 9× 直调 0x417830 帧画，再 9 次循环
+  `mov edx,[edi]; mov ecx,edi; call dword ptr [edx+4]`（0x414950-0x414959）→ 每控件 vtable+4。
+
+**2) 渲染状态机（原 pending[0] 核心）→ 悬停 tooltip-only 已闭合**
+- `0x417640`（vtable+4）按 `+0x25` 分派：==0 常态（`+0x24==1` 且 `+0x20!=-1` 才经 0x460240
+  合帧；频道 +0x20=-1 → 0x417657 je 跳过，常态**什么都不画**）；==1 悬停（0x4176A9）：帧 =
+  `+0x30!=0 ? +0x18 : +0x20`（频道 +0x30=0/+0x20=-1 → 跳帧选择）→ **0x417719 mov ecx,esi;
+  0x41771B call 0x00417370 无条件画 tooltip**；==2 按下：SelectFrame(+0x1C) 合帧，不画文字。
+- tooltip 渲染器 `0x417370`：0x417373 `mov al,[ecx+0x34]` / 0x417378 `lea ebp,[ecx+0x34]`；
+  空串 → 清 POINT 缓存 0x8B1880/0x8B1884 返回；非空 → GBK 缓存 0x8B1888 比较、脏标志 0x47ADBC、
+  打字机计数 0x47ADC0；光标锚点 GetCursorPos(0x476240)+ScreenToClient(0x476234)@hWnd [0x8AB7B0]；
+  测量 0x45E0C0（GetTextExtentPoint32A 0x476078）→ 框 (w+12,h+4)；CreateRectRgn 0x476054 +
+  GetRgnBox 0x47604C；底 CreateSolidBrush(0x96FFFF) 0x476064 + FillRect 0x4762F0（淡黄底）；
+  框 CreateSolidBrush(0)+FrameRect 0x4762F4（1px 黑框）；文字 0x45DE50 = SetBkMode TRANSPARENT
+  0x476044 + SelectObject(font) 0x476048 + SetTextColor 0x476060 + DrawTextA 0x476280 flags 0x25
+  （DT_SINGLELINE|DT_VCENTER|DT_CENTER）；DeleteObject ×3 0x476068。
+- `+0x25` 状态来源：vtable+8 `0x417780`（PtInRect 0x4762B4 于 [obj+4]；in && +0x25!=2 → 1，
+  out → 0）由鼠标移动分派 0x42C63B→0x414CF0 9× 循环驱动；vtable+0xC `0x4177C0`（→+0x25=2，
+  ret 1）由 0x42BC7C→0x414C60 驱动；vtable+0x10 `0x4177F0`（+0x25=0、PtInRect→0x45AFC0 音效
+  0x69、ret 1）由点击 0x42C0B7→0x4149A0 驱动。
+- **+0x34 读取点全扫**：仅 0x417373/0x417378（tooltip）；ctor 写 0x4175CD、子对象清 0x417622；
+  命中分派 0x4149A0 全程无 +0x34 读取。点击频道注入的是**另一组**命令模板常量
+  （0x47AD88/0x47AD84/0x47AD80/0x47AD7C/0x47AD70/0x47AD60）到原生 EDIT 框
+  （SetFocus 0x4762B8 / SetWindowTextA 0x4762CC，HWND 0x8AA48C），与 +0x34 无关。
+- `0x460240` = 帧表面合成（surface ptr [ebp+0x1C]、裁剪数学、800×600 实参 0x320/0x258、
+  0xFFFF 掩码），头部无任何 GDI 文本调用；0x417830 亦仅帧画。E8 扫描：0x417640 零直接调用方，
+  仅 vtable 槽 +4 可达（imm32 引用仅 0x4763AC）——渲染入口唯一。
+
+**结论**：六频道 +0x34 GBK 帮助串 = 悬停 tooltip 文字（光标旁、淡黄底 0x96FFFF、DrawTextA 0x25），
+常态与按下态均为纯帧合成；点击行为走命令模板进输入框，与 +0x34 无关。残项（candidate）：
+0x45DE50 SetTextColor 精确 COLORREF（调用方压 0）；打字机揭示方向运行期验证；
+渲染器 0x45DD70 绝对 x/y 槽序（另列 pending）；visibility gate 0x42B180 接线（另列 pending）。
+
+落盘：`chat-window-render-evidence.json`（pending→closed_notes）、`chat-window-unified-model.json`
+（channel_control_class 扩展 + closed_notes）、`RESEARCH_LOG.md`、`UI_COMPLETION_AUDIT.md`、
+`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=chat）。
+
+## Finding 260 (SystemWindow, 2026-08-11)：系统设置/坐骑/交易候选窗 5 个 pending 闭合 + constructor_va 惯例修正
+
+`system-window-render-evidence.json` 的 5 个 pending 全部移入 closed_notes（date 2026-08-10），
+并对三个窗的 `constructor_va` 做了惯例修正。全部 primary-static 机器码实测（binary：
+Mir3.exe，VA=0x400000+fileoff，整文件 imm32/E8 扫描）。
+
+**0) constructor_va 惯例修正（三窗一致）**
+- 旧值 = ctor 内第一个子控件构造调用点（0x417550 this+0x7C），非 ctor 入口。
+- option `0x0044103E`→`0x00440FE0`（main_init 0x2788D 调，id=0xC，frame 750，x=276，y=113，
+  w=248，h=264，arg9=1，对象 main+0x518E0）；horse `0x0042691B`→`0x004268C0`（main_init 0x278D9 调，
+  id=0xD，frame 850，x=0，y=0，w=296，h=332，对象 main+0x52118）；
+  exchange `0x00415A71`→`0x004159D0`（main_init 0x277C2 调，id=3，frame 1050，x=0，y=0，
+  w=484，h=330，对象 main+0x3399C）。各记录加 `constructor_va_note`。
+
+**1) option pending：音频引擎是否经同一全局消费两个音量 → 否（差异闭合）**
+- **EffectSoundLevel `0x008AB14C` 播放期直读**：0x45BCE9 在 0x45BC80（每声音音量/声相应用：
+  eax=前项+level×40，钳制≥-10000，vtable+0x3C），由效果声 setup 0x45B140 与一次性播放
+  0x45B900 调用；0x45B900 六调用方：0x457BA7/0x459240/0x459476/0x459AD6/0x45B032/0x45B074
+  （游戏/UI 音效触发）。共 6 处引用全枚举：0x441BCB(save)、0x441DE3(load)、0x441E77/0x441E87
+  (clamp)、0x441F93(drag)、0x45BCE9(play)。
+- **BGMLevel `0x008AB150` 音频引擎零引用**：5 处引用全在 option 代码——0x441C26(save 读)、
+  0x441E5F/0x441E6E/0x441EA6(load 写+clamp+thumb)、0x441F68(drag 写)。音量在拖拽时一次性
+  落到 BGM 频道对象 `0x008AB658`：0x441F6C→0x45A700（频道音量 setter：+0x134/+0x13C/+0x118
+  门控，vol×40，vtable+0x1C）。播放路径（0x45B250 play-by-name 拼 "SOUND\" 0x47D88C、
+  0x45B3D0 stop→0x45A510、0x45B410 enable +0x56C、0x45B3F0 状态查询 [ch+0x130]）只读频道对象。
+- 语义修正：0x45B3D0 = **BGM STOP**（非此前标注的 play entry）；play = 0x45B250。
+- 结论：EffectSoundLevel=播放期经全局直读（YES）；BGMLevel=拖拽时经频道对象消费（NO）——
+  "同一全局" 不成立，两音量走不同模型。
+
+**2) option pending：Frame 750 之外运行期覆盖层 → 无（负闭合）**
+- paint 0x441380-0x4414E3 = 基帧(vtable+0xC, frame 750) + 11 子控件 0x417830 重定位
+  （close this+0x7C (218,238)；8 个 toggle this+0x130/0x1E4/0x298/0x34C/0x400/0x4B4/0x568/0x61C
+  于 (148/185, 43/116/190/217)；滑块 this+0x6D0/0x784）+ 子控件 paint 循环(vtable+0x4, 11 项,
+  step 0xB4, 自 this+0x7C)。唯一动态元素 = 滑块把手 x-offset [this+0x6C]/[this+0x74]
+  (0..160) 并入 0x417830 重定位（0x44149C/0x4414BC）。无文本记录、无填充条。
+- 0x417830 实参序 = (this, y, x)；[esi+0x18]=父 x、[esi+0x1C]=父 y；常量 x∈{0xDA,0x94,0xB9}、
+  y∈{0xEE,0x2B,0x74,0xBE,0xD9} 与 JSON 记录 (x,y) 全对。
+- 绝对控件坐标（窗口原点 276,113）：close (494,351)；toggle 行 (424,156)/(461,156)/(424,229)/
+  (461,229)/(424,303)/(461,303)/(424,330)/(461,330)。
+
+**3) option 附加修正：config load/save 链互换标注**
+- 0x441B30-0x441CAE = **SAVE**（全局/状态→Config.ini "Options" 0x47A2CC/0x47A2B8；
+  itoa 0x46855f + WriteINI 型 import）；0x441DA0-0x441F37 = **LOAD**
+  （GetINI→atoi 0x4681F9→全局：EffectSound 0x47C5AC→[ebx+0x58]@0x441D85、
+  EffectSoundLevel 0x47C598→[0x8AB14C]@0x441DE2、BGM 0x47C594→[ebx+0x54]@0x441E0C
+  （≠0→0x45B410，=0→0x45B3D0+0x45B430）、BGMLevel 0x47C588→[0x8AB150]@0x441E5E
+  （clamp≤-100→0 @0x441E6C）、Ambience 0x47C57C→[ebx+0x5C]@0x441EFA、
+  ShadowBlend 0x47C570→[ebx+0x60]+[0x47EF48]@0x441F23/0x441F29；thumb=(level+100)×
+  double 0x476968→ftol→[ebx+0x6C]/[0x74]）。config_state_mapping.load_or_parse_va 与
+  slider_state_mapping.configuration_read_chain 已按 LOAD 链修正（旧值指向 SAVE 链）。
+
+**4) horse pending：挂载标签 + 数据字段 → 闭合（标签为 sibling 主资源转录）**
+- 四按钮帧对全部非空 20px 高，宽度=ctor 命中矩形精确匹配（44/60/60/56px），常态/按下对
+  全帧差异；宽度与字形数相关（3/4/4/4 字）佐证 sibling `horse-window-render-evidence.json`
+  像素转录：860/861 말타기(骑马)、862/863 말내리기(下马)、864/865 말숨기기(收马)、
+  866/867 말꺼내기(取马)。命令绑定 primary-static：0x426A80-0x426B45 分派 @上马(0x47B060)
+  when [0x7DA060]==0 on this+0x108；@遛马(0x47B068) when ≠0 on this+0x1BC；@收马(0x47B058)
+  无条件 on this+0x270；@遛马(0x47B068) on this+0x324；每次分派后冷却 [0x8A68BC]=0x12C/
+  [0x8A68C0]=0。（注意 말내리기 标签 vs @遛马 命令的差异即代码实况，如实并列。）
+- 数据字段：挂载状态消息（switch 0x421E8C 项 0x41F597）写 word→[0x7DA063]/[0x7DA061]，
+  5 字节结构{dword [0x7DA060], byte [0x7DA064]}→handler 0x40F420(ecx=0x777698 全局坐骑对象)
+  复制 dword→[0x777698+0x629C8]、byte→+0x629CC、状态≠0 时置 [+0x629CF]=0x57('W')、
+  钳制 0x88/0x89/0x8B，再 0x44BC30(ecx=main+0x2CF170) 刷坐骑面板。
+
+**5) horse pending：Frame 850 外状态依赖覆盖层 → 无（负闭合）**
+- paint 0x4269C0-0x426A74 = 基帧(frame 850) + 5 控件 0x417830 重定位（this+0x54 (252,293)、
+  +0x108 (28,244)、+0x1BC (74,244)、+0x270 (133,244)、+0x324 (192,244)）+ 5 次子控件 paint 循环。
+  状态依赖行为全在 click 分派 0x426A80-0x426B45，不在 paint。
+
+**6) exchange-candidate pending：父原点/注册流不匹配 → 候选级闭合（不升级）**
+- 注册 (0,0) 484×330（main_init 0x277A1）；ctor 0x4159D0 烘焙控件 rect 越界：close (532,350)
+  28×26、trade (185,332) 48×20、第三 (225,332) 空白帧；show 分派 0x42B6A0（13 调用方
+  0x42BB4E..0x42BD67）收消息提供的 x,y，0x4240C0 算拖拽抓取偏移 [+0x48]/[+0x4C]（偏移非移动）。
+  → 显示期位置动态，无静态绝对屏幕原点；坐标保持 candidate/相对，直到运行期或消息流证明。
+- 交易网格与文本：0x4169B0 逐格循环（36px 步长，帧 [ebx+0x5EC]，堆叠数 0x0A/0x0B 色
+  [ebx+0x609..0x60B]，计数文本 0x45F2D0）；文本 4 条经 0x45DE50+0x46811C——左方名=全局缓冲
+  0x7776A0（运行期填充，非字面量）、右方名 this+0x129D8、%d 计数 this+0x12A18/0x12A1C；
+  重量条=共享组件 0x4179B0（frame 1070 16×360，max 0x5E=94，12×184 填充区），绘制于
+  window.x+0xD1/0x1B9、y-0x73，值字段 [this+0x54]/[this+0x58] 在 .text 零写入→恒空条。
+  1060/1061/1062 非空 48×20（交易 标签）；1063/1064/1065 全空（0 不透明像素）。
+
+落盘：`system-window-render-evidence.json`（pending→closed_notes ×5 + constructor_va 修正 ×3 +
+config load/save 链修正）、`RESEARCH_LOG.md`、`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、
+`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、`ui-coverage-matrix.json`（record id=settings / id=exchange）。
+
+### Finding 250：聊天窗口全闭合汇总——7 步绘制链/消息链表/9 控件坐标/输入 EDIT 链/文本渲染器槽序/可见性门（2026-08-11，ChatDocs 聚合阶段）
+
+聚合 `chat-window-render-evidence.json` 与 `chat-window-unified-model.json` 的 closed_notes
+（两文件各 3 条 closed_notes，date 2026-08-11；pending 均已清空，见 8)）。全部 primary-static
+机器码实测（Mir3.exe，VA=0x400000+fileoff）。
+
+**1) 7 步绘制链（`0x004142C0`，包装 `0x00414060`，主循环调用 0x427839）**
+1. `0x00414705` 窗口基帧/背景经 vtable+0x0C；
+2. `0x00414711` 聊天输入裁剪矩形 `SetRect(this+0x6C0, 40,29,531,308)`；
+3. `0x00414738` 历史文字循环经 `0x45DD70`（19 行、14px 步进，行 y=this+0x6C4+row，见 6)）；
+4. `0x00414846` 输入条共享量条 `0x4179B0` @ (window.x+0x215, window.y−0xD0)，值=[+0x68]、上限=[+0x6D0]；
+5. `0x0041485A` 9 子控件直调 `0x417830` 帧画（固定相对位置）；
+6. `0x00414955` 9 次循环子控件 vtable+4 paint（hover 状态机，复用 Finding 243）；
+7. `0x00414965` 输入行字符矩形 `SetRect(this+0x954, 25,311,524,326)`。
+
+**2) 消息链表模型（message_list）**：头 this+0x5C；节点 next=+0x408 / prev=+0x40C / 文字色=+0x00 /
+背景色=+0x04（0=透明）/ 内联 GBK 文本=+0x08；计数 this+0x68；滚动偏移 this+0x6D0；索引 this+0x64；
+裁剪 [35,28,520,43]；行距 14px；上限 19 行；文字原点相对 [40,29]。
+
+**3) 9 控件坐标（窗口相对，unified-model controls）**：关闭钮 this+0x6C（F161/162，`(532,350)` 28×26，
+paint 0x414863/ctor 0x414144）；六频道钮 36×34 每枚——this+0x120 `@拒绝 `(25,332)、this+0x1D4 `!`(65,332)、
+this+0x288 `!!`(105,332)、this+0x33C `!~`(145,332)、this+0x3F0 `@拒绝私聊`(185,332)、this+0x4A4
+`@拒绝行会聊天`(225,332)（命令模板 0x47AD88 族进原生 EDIT，help 串 0x47AD08 族→+0x34 tooltip，
+见 Finding 243）；滚动上 this+0x558 F380/381 `(539,25)`、滚动下 this+0x60C F382/383 `(539,311)`；
+输入条竖直量条 this+0x6D4（共享控件 0x417960，`(533,−208)` 16×502，paint 0x414846，raw args
+[380,19,12,260,12,0]，值 [+0x68]/上限 [+0x6D0]）。
+
+**4) 输入 EDIT 链（input）**：HWND 全局 `0x008AA48C`、EDIT 对象全局 `0x008AA488`；解析器
+`0x00414364–0x004144F0`（语法标记 `/` `(` `)`；token 分隔 space 0x20 / colon 0x3A；格式前缀
+0x47AD28 `/%s `；格式解析 0x47AD30 `%[^`]…`）；提交 `0x004144A0` → 逐行 `0x00414FA0`；行回忆
+`0x004142C0`（PtInRect 行区→走 this+0x58 链表→剥 `/` 或 `(`→tokenize→sprintf `/%s `→写 EDIT）；
+键 handler `0x00414E9x`（置 `!` 0x47AD84 或 0x47AD90 进 EDIT、EM_SETSEL 0xB1 到尾、ShowWindow(5)；
+`0x00414ED0` 先查 Shift GetKeyState(0x10) 才显示）。
+
+**5) 文本渲染器槽序（text_renderer，已闭合）**：`0x0045DD70` 为 thiscall、7 个栈参、ret 0x1C，
+槽序由直接反汇编证明——arg1=目标 surface（离屏 GDI surface；arg1==0 → 回退 this+0x1C；
+HDC 经 surface->vt+0x44 出参**写回 arg7 栈槽**，失败即退 0x45DE42 静默返回），arg2=X，arg3=Y，
+arg4=文字色（SetTextColor 0x476060），arg5=背景色（0→SetBkMode TRANSPARENT 0x476044，否则
+SetBkColor 0x476050），arg6=文本（strlen + TextOutA 0x476074：TextOutA(hdc,arg2,arg3,arg6,len)
+@0x45DE12），arg7=字体（0→this+0x28 默认；显式字体由被调方 DeleteObject）。聊天调用点
+`0x004147F3`：arg1=`[0x8AB7C4]`（CWHDXGraphicWindow+0x1C 离屏 surface，仅经
+IDirectDraw::CreateSurface 出参写入 0x45D53D/0x45D552、0x45D602/0x45D617 in 0x45D380，无静态
+存储），arg2=this+0x6C0+this+0x18，arg3=this+0x6C4+this+0x1C+row，arg4=msg+0x00，arg5=msg+0x04，
+arg6=msg+0x08，arg7=0。已知色字面量 0x323232 深灰 / 0x0A0A0A 近黑 / 0xB4FFB4 淡绿；渲染器调用族
+0x45DD70/0x45F2D0/0x45FD50/0x45E730/0x45E0C0/0x45DE50。
+
+**6) 六字符串定论**（Finding 243，此处汇总）：六个频道 +0x34 GBK help 串 = **悬停 tooltip-only**
+（0x417370 渲染、0x41771B 悬停分支无条件调用、光标旁 0x96FFFF 淡黄底 + 1px 黑框、DrawTextA flags
+0x25）；常态/按下纯帧合成（0x417830/0x460240 无文本）；点击注入命令模板 0x47AD88 族（0x4762CC
+SetWindowTextA，HWND 0x8AA48C）与 +0x34 无关。
+
+**7) 可见性门 `0x0042B180`（已闭合）**：`[ROOT+0x5081C]` == 聊天窗自身可见标志 **this+0x30**
+（chat 对象 = ROOT+0x507EC，0x507EC+0x30 = 0x5081C；窗口 vtable 0x47660C 存于 0x413E1A；
+setter = vtable+0x10 = `0x423F80`：mov eax,[esp+4]; mov [ecx+0x30],eax; ret 4；.text 中仅
+0x42B182/0x42B43E/0x42CC14 读取该门）。关闭路径：关闭钮子控件（chat+0x6C，vtable 0x4763A8）
+命中测试 vtable+0x10=0x4177F0 → 聊天点击分派 0x4149A0 返回 1 → mouse stub 0x42C0B7 →
+`push 8; call 0x42ADB0(ROOT)` → 跳表 `0x42B3E4[8]=0x42B180`：gate≠0 → 隐藏（编辑框
+MoveWindow 到 [0x8AB7F0]+0xDF/[0x8AB7F4]+0x23A 0x162×0x10、0x42AC50 从激活列表
+ROOT+0xD24..0xD38 移除窗口 8、0x423F80(chat,0) → +0x30=0、ret 0）；gate==0 → 显示（编辑框置
+聊天矩形：w=[ROOT+0x51148]−[ROOT+0x51140]、h=[ROOT+0x5114C]−[ROOT+0x51144]、x=[0x8AB7F0]+
+[ROOT+0x50804]+[ROOT+0x51140]、y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144]；ShowWindow(edit,5)；
+0x42AC30→0x449870 追加窗口 8；0x423F80(chat,1) → +0x30=1、ret 1）。'R' 键 `0x42CCF7` 走同一
+分派器切换；分派器入口 0x42B820 先对所有列窗口 deactivate（0x423F90 → +0x34=0；其跳表
+`0x42B938[8]=0x42B8B6`=chat）。默认索引 5/10/>15 → 0x42B3DD 返 0。兄弟门：0x42B25E idx9
+（gate [ROOT+0x51180]）、0x42B2AD idx15（gate [ROOT+0x52E8C]，额外编辑框 [ROOT+0x53028]）。
+
+**8) 收尾**：两证据文件 pending 均已清空（pending=[]，closed_notes 各 3 条：six-channel /
+0x45DD70-slot-order-and-arg1-arg7 / 0x42B180-visibility-gate-wiring，date 2026-08-11）。
+剩余 candidate（非 pending）：0x45DE50 SetTextColor 精确 COLORREF（调用点压 0；a7==0 分支设
+TRANSPARENT，色源未静态解析）；typewriter 揭示方向/hover 可达性运行期验证。
+
+落盘：`RESEARCH_LOG.md`（本 finding）、`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、
+`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、`ui-coverage-matrix.json`（record id=chat，
+closed_2026_08_11 新增）。
+
+### Finding 252 (NpcWindow, 2026-08-11)：NPC 对话窗输入/逐帧更新/二级分派/外层消息表 liveness 全闭合
+
+闭合 `npc-window-render-evidence.json` 的 3 个 pending（全部 primary-static，机器码实测）：
+
+**1) 子控件业务语义（原 pending[0]）→ 已闭合：关闭 X / 上滚 / 下滚**
+- 模型输入 `0x440290`（thiscall，ret 8，返回 0/1）三连命中：
+  - **关闭 X = this+0x58**：`call [eax+0x10]`（0x4402A6）且 `[this+0x274]!=0`（0x4402AD）→ 返回 1；
+    分派 case `0x42C17D`：`mov ecx,0x47EF18; call 0x41C1E0`（0x42C18E/0x42C193）= ROOT hide-all，
+    点击 X 关闭对话（帧 161/162 = 交叉剑 normal/highlight 字形，仅视觉）。
+  - **上滚 = this+0x1C0**：命中 `0x4402E4`，门控 `[this+0x3BC]>0 && byte[this+0x58C]==1`
+    （0x4402C3/0x4402CD）→ `dec [this+0x3BC]` clamp 0（0x4402F1-0x4402FA）→ `0x440C30` → 返回 0。
+  - **下滚 = this+0x10C**：命中 `0x44033B`，门控 `[this+0x3BC]<[this+0x3C0] && byte[this+0x58C]==1`
+    （0x440314/0x440324）→ `inc [this+0x3BC]` clamp `[this+0x3C0]`（0x440342-0x44035B）→ `0x440C30` → 返回 0。
+  - `0x440C30` = 滚动重排：遍历节点表 `0x8B1AE4`，对每个 line struct（node+4）清 5 个 sub-rect
+    （line+0xC，步长 0x10）经 SetRect IAT `0x4762B0`。
+  - 滚动条 thumb 拖拽 = `0x417E60(this+0x3C4)`（0x440371-0x440379）；选项点击 = 5 sub-rect
+    PtInRect `[0x4762B4]`、1s 节流 `[this+0x514]`、载荷前缀 `0x40 0x40`（'@@'）。
+  - 动态重定位 0x440A43..0x440A8B：+0x58 → (win.x+0x15B, bottom-0x24)；+0x1C0 → (x+0xB8, bottom-0x1E)；
+    +0x10C → (x+0xC8, bottom-0x1E)。上下箭头字形（52/53、54/55）为 medium 视觉证据，业务名来自机器码。
+
+**2) 动态字段 this+0x520..0x544（原 pending[1]）→ 已闭合：是目标 RECT，不是文本记录**
+- 构造器 `0x43EE00` 经 SetRect（IAT `0x4762B0`）建立三个目标 RECT：背景 this+0x520
+  （+0x520/+0x524/+0x528/+0x52C 四 dword）、重复条目 this+0x530、末条 this+0x540；
+  常量 384/384/138/24 是源尺寸派生输入，非文本。paint 直接消费：0x43F06A 选 Frame 1100 入 0x520 rect、
+  循环 0x43F0B2 读 `DWORD[this+0x530]+1+idx` 为 x、`DWORD[this+0x534]+idx*18` 为 y（Frame 1101 条带）、
+  0x43F120 选 Frame 1102 于 0x540/0x544+末索引*18。fallback 0x43F179 同样把 0x520..0x52C 当 rect 用。
+
+**3) 一级分派体 / 逐帧更新 / 二级分派 / 外层表 liveness（原 pending[2]）→ 已闭合**
+- **输入分派**：winmgr 鼠标处理器 `0x42BEAA` → 先 `0x417E60(winmgr+0x61BC)` 滚动条（返回 1）；
+  hit-test `0x42AAB0` → edi==2 → 商店 `0x44E910`；否则 `0x42BF70`：`cmp edi,-1; je 0x42bef8;
+  cmp edi,0xe; ja 0x42c198; jmp [edi*4+0x42c4d4]`。**表 0x42C4D4（15 项，第 16 dword=0x245c8b53 是数据）**：
+  [0]0x42bf85 [1]0x42bfb3 [2]0x42bfe1 [3]0x42c00b [4]0x42c039 [5]0x42c198 [6]0x42c063 [7]0x42c08d
+  [8]0x42c0b7 **[9]0x42c17d** [10]0x42c198 [11]0x42c0e1 [12]0x42c10b [13]0x42c131 [14]0x42c157；
+  [0]=0x4300F0(winmgr+0x6554, winmgr+0x20, x, y)。**事件循环 `0x42BEF8`**：id 0..15，
+  object = `winmgr + ((id*5+0x267)*9)*4` = **winmgr+0x567C + id*0xB4**（0x42BF0B 计算；
+  **修正旧记录 "winmgr+0x8A7C + id*540 / (id*15+0x267)*9*4"**，与 Finding 248 的 0x42BA20
+  16 固定窗口数组一致），逐窗 `call [eax+0x10]` 命中测试后 `jmp [id*4+0x42c494]`。
+  **表 0x42C494（16 项）**：[0]0x42c1ce [1]0x42c259 [2]0x42c241 [3]0x42c2e1 [4]0x42bf37 [5]0x42c218
+  [6]0x42c209 [7]0x42c292 [8]0x42c302 [9]0x42c226 [10]0x42c1a4 [11]0x42c1b2 [12]0x42c359 [13]0x42c1c0
+  [14]0x42c234 [15]0x42c30d；NPC 模型 case 9 = 0x42C17D（0x440290 命中→hide-all 0x41C1E0）。
+- **逐帧更新 `0x41D744`**：`mov eax,[esi+0x2f660c]; test eax,eax; jne 0x41d762` —— **模型非激活才发送**
+  （修正旧记录 "[model+0x30] 门控"：门控是 ROOT 相对激活标志 [ROOT+0x2F660C]，发送是服务端内容轮询）；
+  目标 = `[ROOT+0x364444]` 对象，实参 = `[obj+4]`（目标 id）；`mov ecx,0x8ab828; call 0x451740`
+  → 0x452940(esi+0x18, 0x3F2, arg) 头 + 0x451E60 发送 = **出站 msg 0x3F2**；GetTickCount →
+  `[ROOT+0x428040]`（500ms 节流）；`[ROOT+0x364450]=0; ret 8`。**`[ROOT+0x364444]` 动态目标字段语义
+  结案**：它是注册的对话目标对象指针，逐帧更新取其 +4 的 id 组装 0x3F2 轮询包。
+- **二级分派全解码**：`0x41EDBD` → `jmp [edx*4+0x421d5c]`（表 A 12 项 [0]0x421cfc [1]0x421497
+  [2]0x421ba7 [3]0x41efc6 [4]0x41f06b [5]0x41ede0 [6]0x41ef62 [7]0x41ef8b [8]0x41f0f0 [9]0x41edc4
+  [10]0x41ee34 [11]0x421d3f），byteA `0x421D8C`（0xC3 字节，idx=msg−6）：[23]=[24]=1 → msg 29/30 →
+  0x421497；[34]=2、[94..98]=2 → msg 40、100..104 → 0x421BA7；[35]=3 [36]=4 [38]=5 [39]=6 [40]=7
+  [47]=8 [48]=9 [194]=10 → msg 53→0x41F0F0、54→0x41EDC4、200→0x41EE34；值 0xB noop；默认 0。
+  `0x41F052` → `jmp [edx*4+0x421e50]`（byteB `0x421E58` 0x33 字节，idx=obj type 字节：
+  type 0/1/3/0x32 → 0x41F059（0x41F01E 处 vtable+0x3C 分派），其余 noop 0x421D3F；
+  表 0x421E50 = [0x41f059, 0x421d3f]）。`0x42043C`（msg 0x29F..0x327）：`add eax,-0x29f;
+  cmp eax,0x88; ja 0x421d3f; mov dl,byte[eax+0x422080]; jmp [edx*4+0x421fbc]`——
+  **表 0x421FBC 49 项**（旧 "0x422050 dwords" = 本表尾部索引 37..48；byteC 0x422080 值 0..48，48=noop）：
+  [0]0x420be8 [31]0x421cfc [32]0x421508 [44]0x420c90 [45]0x421497 [46]0x420e36 [47]0x42121b [48]0x421d3f。
+  子协议 0x4218F2 byte 表 `0x42219C`（idx=sub_msg−0x44D，≥0xD4 字节，默认 0x0C noop）复核：
+  0x44D→0、0x4B0→1、0x514→2、0x515→3、0x516→4、0x517→5、0x518→6、0x519→7、0x51A..0x51D→8、
+  0x51E→9、0x51F→10、0x520→11 → 表 0x422168 13 项 [0]0x421c81 [1]0x421913 [2]0x421bbc [3]0x421a45
+  [4]0x421af5 [5]0x421a85 [6]0x4219a0 [7]0x421ba7 [8]0x421cfc [9]0x421b5b [10]0x421955 [11]0x421c23
+  [12]0x421d3f —— 与已确认 id_map 一致。
+- **外层表 0x421E8C liveness（40 dword 纯跳表，非 20 对）**：唯一读者 = 分派尾 `0x41F582`
+  （唯一跳入点 0x41F269）：`add eax,-0x264; cmp eax,8; ja 0x421d3f; jmp [eax*4+0x421e8c]` →
+  **仅索引 0..8（msg 0x264..0x26C）可达；9..39 静态死代码**，含 13（0x41FD36 click_buffer）、
+  16（0x41FE31 dialogue_open）、17（0x41FECC hide-all 包装）——三者无表外 E8/imm32 引用；
+  **0x41FE31 "打开链" 静态不可达**（Finding 256 的 "0xf6ef→0x41f73c" 等配对读法系对纯跳表的误读，
+  索引即 handler 指针）。hide_all `0x41C1E0` 本体经直接 E8 调用方 0x41C0CE/0x422BAD/0x42C193/0x42CFC3
+  保持存活（0x42C193 = NPC 模型 case 9 的关闭路径）。
+
+等级：**primary-static 全链**（跳表/字节表全量 dump + 反汇编 + E8/imm32 引用穷举 + 跳入点扫描）。
+残项（candidate）：上下箭头/关闭 X 的字形归属（GameInter 帧 52/53、54/55、161/162 视觉比对，业务名已由
+机器码闭合）、0x3F2 轮询包的运行期服务端应答、以及外层表死代码索引 9..39 的历史用途。
+
+落盘：`npc-window-render-evidence.json`（pending→closed_notes ×3 + input_object_table 修正 +
+dialogue_open liveness 修正）、`RESEARCH_LOG.md`、`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、
+`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、`ui-coverage-matrix.json`（record id=npc）。
+
+### Finding 249：0x43E4B0 消息负载 = WM 0x201/0x202 lParam 坐标；Interface1c 提示窗先于 Frame 602 显示（2026-08-11，WindowVisibility 阶段）
+
+闭合 `window-visibility-dispatch-evidence.json` 唯一 pending（Finding 204 尾部"`0x0043E4B0`
+的消息字段含义及其是否先使用 Interface1c 提示资源仍保留为待解析项"现已解析）。全部 primary-static。
+
+**1) 0x43E4B0 消息负载 = 打包 lParam 鼠标坐标（已闭合）**
+- 0x43E4B0 = 通知窗（id 15）点击处理器：prologue `mov eax,0x1f40; call 0x468d10`（__chkstk）、
+  `mov ebp,ecx`（this = 通知对象 main+0x2A548C+0x52E5C）、`ret 8` → 2 个栈参
+  （arg1=edi=x、arg2=esi=y）。子控件分派 this+0x54（帧 161/162）与 this+0x108（帧 606/607），
+  携带 (x,y)；确认命中且 [this+0x1CC] 时经 0x45DC70 → 0x8AB7A8 → 0x4524A0/0x4524D0 @0x8AB828
+  保存（msg 0x410/0x411，行会公告编辑缓冲）；子控件命中返回 1 → 调用方隐藏 id 15。
+- **负载来源**：WM_LBUTTONDOWN **0x201** → 0x41D470；WM_LBUTTONUP **0x202** → 0x41E451 →
+  0x41DB80 → 0x42BE20。两处均解包 `[esp+8]` = `(y<<16)|x`：0x41D485/0x41D48E 与 0x41DB93/0x41DB99
+  → x = 低 16 位 → main+0x35B2A8、y = shr 16 → main+0x35B2AC。
+- 调用点 **0x42BE8C**（0x42BE20 内，门控 `[esi+0x52E8C]`≠0 分支）：
+  `push [esp+0x18](y); push [esp+0x14](x); lea ecx,[esi+0x52E5C]; call 0x43E4B0`；
+  返回非零 → `push 0xf; call 0x42ADB0`（显示 id 15）。LBUTTONDOWN 对应链 0x42BA20 → 0x43E640。
+
+**2) Interface1c 提示窗先于 Frame 602 显示（已闭合，模式字节 0x8B1878 强制顺序）**
+- 协议 case 0x64/sub0（0x41CE14，消息 0x7ED–0x7F0 跳表 0x41E690 经 0x41E522→0x41CDE0）：
+  门 0x419CC0 → 队列 tag 0x3F1（0x451660 @0x8AB828）→ **0x42E1F0 = .itm 文件加载器**（非公告发送；
+  sprintf 构造 `.\Data\<arg>.itm`（0x47BDC4/0x47BDCC）→ 0x8AB7A8，CreateFileA @IAT 0x4760DC
+  （GENERIC_WRITE, share=2, CREATE_ALWAYS=2, 0x80）+ 3× ReadFile @0x4760D0）→
+  `[esi+0x428208]=0; byte[esi+0x428204]=2`（0x41CE57，状态字节唯一写入者，值恒 2）。
+- 主窗口逐帧步骤 0x41C1C7 → **0x41B5D0**（唯一调用点）：`al=[esi+0x428204]`、`ebx=[esi+0x428208]+arg`；
+  状态 1 + acc>0x9C4 → 复位（0x41B61B）；状态 2 + acc>0x9C4 → **状态=0、acc=0、call 0x419BE0**
+  （0x41B65F）；状态 2 + acc≤0x9C4 → `fild(acc)*[0x476710]`；之后 ×[0x47639C] → 变换 → 0x466800 等。
+- **0x419BE0 体**（0x419BE0–0x419C36）：`[ecx+0x35b2b8]=0; call 0x419110;`
+  `mov eax,0x8a7140; mov byte [0x8b1878],2; mov [0x8ab820],eax; mov [0x8b1870],eax; call 0x456cb0`
+  （Interface1c 重初始化）→ `mov al,[0x47ee89]; push 5; test al,al; push 2 / push 1; push 0x10;
+  push 0x1e0; push 0x280; mov ecx,0x8ab7a8; call 0x45d270` →
+  **0x45D270(0x8AB7A8, 640, 480, 0x10, [1|2], 5)** 文字格式化（[0x47EE89] 选 1/2）。
+- **主循环模式开关 @0x402123**：`mov eax,[0x8b1878]; and eax,0xff; sub eax,ebx(0)` → je 0x40216c
+  （**模式 0**：0x8A9520+0x402BE0）；`sub eax,2` → je 0x40215f（**模式 2**：0x8A7140+0x4575D0 =
+  Interface1c 提示步骤）；`dec eax` → jne 0x402177（**模式 3**：`cmp [0x8ab7e8],ebx; je 0x402149`
+  → 0x41B440+0x41B500 @0x47EF18，否则 0x41BB00 @0x47EF18）。
+- Interface1c 步骤 0x4575D0（表 0x457778）：状态 2 @0x457615（门 0x45C900([esi+0x780],[0x8AB7C4]) →
+  **SetWindowTextA(0x8AA48C, 0x8B187C) + MoveWindow(0x8AA48C, [0x8AB7F0]+0x120, [0x8AB7F4]+0x195,
+  0x4B, 0xD, 1) + ShowWindow(0x8AA48C, 5) = 提示显示**）；状态 4 @0x45773C → 0x4570A0 →
+  **0x4570C0**（`[0x8ab820]=[0x8b1870]=0x47ef18; call 0x419350; byte[0x8b1878]=3` = 切模式 3）。
+- **模式 3 = Frame-602/公告横幅阶段**（0x47EF18）：0x41BB00（fild[esp+4]*[esi+0x428220] → 0x468520
+  钳制 ≥0xA → [0x8B1A94]+= → [esi+0x4279A8]+= → 回绕 [esi+0x4279A4] → [0x8B1A94]>0x5F 复位 →
+  [esi+0x428044]≠0 且 [esi+0x428048]>0x1388 → 0x45B250(0x8AB130,[esi+0xF5204],1,0)+Sleep(0x1E) →
+  0x41B440 → 0x422280 滚动文字/横幅绘制族）或 0x41B440+0x41B500（[0x8AB7E8]==0 分支）。
+- 横幅单例 0x777200（ctor 0x423E80，帧 0x25A=602 @0x425A46）显示 =
+  `push 0xf; mov ecx,0x7243A4; call 0x42ADB0`（@0x425A26/0x425B25）；id-15 分派器 0x42ADB0
+  （见本文件记录主体）负责加入/移出可见链表 main+0xD24。
+
+**结论**：0x43E4B0 的 2 个消息负载字段 = WM 0x201/0x202 打包 lParam 解出的 (x, y)（x=main+0x35B2A8、
+y=main+0x35B2AC）；**是——Interface1c 提示窗（模式 2，0x8A7140 类，编辑框 HWND 0x8AA48C）在
+Frame 602 窗口（模式 3，0x47EF18）之前显示**，模式字节 0x8B1878 经主循环开关 0x402123 强制顺序
+（0 → 2 → 3）。0x42E1F0 更正为 .itm 文件加载器（CreateFileA/ReadFile），非公告发送。残项（candidate）：
+Interface1c 提示文本 0x8B187C 的服务端/协议来源、0x45D270 文本格式的精确 COLORREF/字号（IAT 级调用，
+静态未解析颜色实参）。
+
+落盘：`window-visibility-dispatch-evidence.json`（pending→closed_notes）、`RESEARCH_LOG.md`、
+`UI_COMPLETION_AUDIT.md`、`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）、
+`ui-coverage-matrix.json`（record id=prompt）。
+
+### Finding 251 (QuestWindow, 2026-08-11)：任务窗口 2 个 pending 闭合 —— 分隔符 '/'、无客户端像素换行、控件→事件归因修正（业务名保持 candidate）
+
+**P1 分隔符 + 像素换行**
+- **线上分隔符 = '/'（0x2F，primary-static）**：msg 0x515 → 子协议分派 0x4218F2 → 0x421A45
+  （正文拷入调用方栈 [esp+0x171C]，word 计数 [esp+0x16]）→ fill `0x4488D0`(ROOT+0x2F6B74, body,
+  count) 经 **fast strchr `0x468BF0`**（`push 0x2f` @ 0x44891C/0x448932/0x448944/0x44895C/
+  0x44897A）就地切分服务器正文；行文本 → 描述符 record+4，field4 → record+0x230（has-field4
+  标志 record+0x214），字段长 record+0x204/record+0x22C，追加经 0x449870，尾设
+  `[frame+0x54]=1`、`[frame+0x1F4]=count`。
+- **无客户端像素换行（primary-static）**：`0x45DD70`（ret 0x1C，7 实参）每行恰一次 TextOutA
+  （SetBkMode TRANSPARENT 0x476044、SelectObject 0x476048、SetTextColor 0x476060、strlen、
+  单次 TextOutA 0x476074、恢复 SelectObject/DeleteObject 0x476068、vtbl+0x68 advance），
+  位置为算术坐标（列表 y = win.y + (row−scroll)*15 + out[1] + 0x5A、x = win.x + out[0] + 0x41，
+  15px 步进 `lea eax,[eax+eax*2]; lea ecx,[eax+eax*4]`）；GetTextExtentPoint32A 0x476078
+  仅在字段取用助手 `0x45E0C0`（0x45E157）内测量；paint/fill 链无任何回流/折行循环。
+- **记录类 tokenizer 保持 candidate**：字段经 `[0x8AB7A8+0x1C]`（记录类）vtable +0x44 取字段
+  （负返回 = 无字段）/+0x68 前进，类型门 0xA0/0xC8；缺记录类 vtable 地址或运行期抓包。
+
+**P2 业务名（链 primary-static，名称 candidate）**
+- 控件 ctor `0x447400`：两控件均经共享控件 ctor `0x417550`（vtable 0x4763A8）：箭头 this+0x74
+  （帧 723/724，x=+0x122，y=+0x3B）、X this+0x128（帧 721/722，x=+0x122，y=+0x59）。
+- 共享 release `0x4177F0`（vtable 0x4763A8 +0x10）：清 +0x25、PtInRect(0x4762B4) 于 rect obj+4、
+  命中 → `0x45AFC0(0x8AB130, cmd 0x69)`（50 槽命令注册表分派 @0x45B900；Finding 243 定 0x69 =
+  共享音效命令）→ ret 1。
+- **X 721/722 = 本地消费（primary-static，纠正 Finding 218 的“两控件路径均汇入 0x448580”）**：
+  点击 handler `0x447FA0` 先测 X release（0x447FCA），命中 → 0x447FD6/0x447FDA 直接 ret 1，
+  **不发 0x418/0x419**；业务名 candidate：关闭任务窗（右上角 (290,89) 关闭钮；0x69 命令链是否
+  执行关闭需运行期确认）。
+- **箭头 723/724 → 0x448580 → 0x418**：点击路径 0x4481F1 release 命中 → 0x4481FA call 0x448580
+  （record+0x208=1、this+0x68=1、this+0x1DC=record）→ record+0x20C==0 → `0x451A10` 发 **0x418**
+  （arg record+0，装配 0x452940、发送 0x451E60）；更新路径 `0x448230` → 0x44856B 同汇 0x448580。
+  业务名 candidate：前进/下一任务记录动作。
+- **子记录 → 0x419**：record 循环命中子矩形 child+0x204（0x4480F1-0x44810C）→ this+0x6C=child+0x220；
+  byte[child+0x220]==0 → push [child+0]、push [record+0]、`0x451A40` @0x448148 发 **0x419**
+  （装配 0x452940）；走马灯推进 child+0x8=next、child+0x10=min(+0x10+1, +0x14)。
+- **0x418/0x419/0x69 业务名 = candidate**：全仓 grep（docs/Tools/scripts）无协议目录命名，
+  EIServer.exe 二进制无源码；缺服务端包处理引用或 0x418/0x419 发送的运行期抓包。
+
+落盘：`quest-window-render-evidence.json`（pending→closed_notes，控件归因修正）、
+`ui-coverage-matrix.json`（record id=quest → closed）、`UI_COMPLETION_AUDIT.md`、
+`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6）。
+
+---
+
+## 2026-08-11：背包窗口记录布局与主数值/打包字段闭合（Finding 247）
+
+> 阶段目标：为 `inventory-window-render-evidence.json` 的两个 pending 项（主数值 `0x7DA100` 语义、
+> 打包字段 `+0x351..0x353` 语义）寻找 primary-static 证明。结论：打包字段 = 24 位图标着色
+> （primary-static 全链）；主数值 = 死状态字段（bss 零、0x405 发送门在本构建死），业务名维持
+> candidate（交易/购买数量上限）。同时修正记录布局（旧“指针数组 this+0x774+4*index”错误）。
+
+### 记录布局（primary-static，纠正旧模型）
+- **记录数组：ctor `0x42E810` + dtor `0x42E8D0`（vtable `0x476870`，双证）**：
+  **ctor** `0x42E810`（唯一 E8 调用者 0x426D4D，ecx=container+0x6554）→ 向量构造迭代器
+  `0x4686C4(this+0x774, 0xC2C, 0x2E=46, 每元素 ctor 0x415730, dtor 0x415740)`；
+  **dtor** `0x42E8D0`（0x426F97 于 teardown 0x426E80 内调用；另有删除性 thunk
+  `0x42E8B0` = vtable 槽[0]，`call 0x42e8d0; test [esp+8],1; je; call 0x4680f8`）
+  → 向量析构迭代器 `0x468306(this+0x774, 0xC2C, 0x2E=46, dtor 0x415740)`，随后恢复基类
+  vtable `0x476624` → 基类 dtor `0x423CF0` → **46 条连续记录，record = this+0x774 +
+  slot*0xC2C**（0xC2C=3116 字节；lea 链 slot*779 dword）。旧“指针数组
+  this+0x774+4*index”错误，已纠正。
+- **放置/分配 `0x42F440`**（唯一 E8 调用者 0x42FC90 ∈ 0x42FC40）：`lea ecx,[edx+ecx*4]`
+  （edx=this、ecx=779*slot）→ `[rec]=1、[rec+4]=col、[rec+8]=row`；`lea edi,[eax+0x780]`
+  （=rec+0x0C）；`mov esi,[esp+0x3C]`（源物品数据块）；`mov ecx,0x308; rep movsd` =
+  **0xC20 字节整体拷贝** → 数据基址 = rec+0x0C。
+- **格子身份表 `this+0x2C4`**：每格 WORD、6 格/行、行步 12 字节；占用格 = slot+0x3E8(1000)
+  （网格绘制 0x42F7CC-0x42F7E2：movsx; cmp 0x3E8; jl skip; idiv 0x3E8 → edx=slot）。
+  清格 `0x42FB20` 整条 0xC2C 归零 + 清身份表两处。绘制行窗 = max(0,[this+0x58]−5)..
+  [this+0x58]+6（约 11 行可滚动）。
+- **拷贝-出+清格 `0x42FCC0`**（调用者 0x42FD69/0x42FE40）：记录占用 → 0xC20 从 rec+0x0C
+  拷到调用者缓冲 → 0x42FB20 清格 → ret 1/0。
+- **移动/拾取 `0x42FE00`**（调用者 0x430339/0x4305DC）：0x430920 建 0xC20 栈块 →
+  0x42FCC0 拷出+清源 → 目标记录 `[rec+0x00]=1`、数据拷到 **rec+0x18**（0xC20）、
+  +0x1A=slot word、+0x04..0x14 清零 → `0x42E2D0(0x7243A4, rec+0x18)`。
+- **携带/贴附 `0x42FD10`**（调用者 0x43036D/0x4305FD）：光标物品记录 +0x00=in-use、
+  +0x04..0x14=0、**+0x18=数据基址**、+0x1A=slot byte、+0x1C=name；0xC20 经 0x42FC20 拷贝。
+  → 状态记录（数据基址 rec+0x0C）与光标记录（数据基址 rec+0x18）**共享同一物品数据布局**。
+
+### 物品数据布局（相对数据基址，状态/光标共用）
+- `+0x02` slot byte（光标记录存于 +0x1A）；`+0x04` name 字符串（光标 +0x1C）。
+- `+0x22` **type byte：0x0A/0x0B → 着色图标路径**（0x42F902-0x42F925）。
+- `+0x28` **icon frame WORD**（网格尺寸 0x42F6D0 / 图标 0x466130）。
+- `+0x3D` quantity dword（发送参数 [edi+0x55] @0x43029A；数组元素 +0x7BD）。
+- `+0x45/+0x46/+0x47` **24 位 LE 着色 RGB**（0x42F925-0x42F937 取 3 字节 →
+  `0x45E4E0` 3→16bit 565 → RLE blit fill `0x45F2D0`；非 {0x0A,0x0B} → 白 0xFFFF）。
+  状态记录偏移：+0x2E / +0x34 / +0x51..0x53。**旧 +0x2E8/+0x351..353 错误，已纠正**
+  （与状态窗 0xC24 记录族混淆）。
+
+### 主数值 0x7DA100（candidate：死状态字段）
+- 全 .text 仅两处 imm32 读：`0x41729D`（0x405 发送门 `0x417280`）与 `0x42EE4C`（本 paint，
+  绘制于 (x+0x41, y+0x11A..0x12B)、色 0x64C8F8、格式 `%d` @0x47A214）。
+- **0x7DA100 无任何写入者**（.data raw 止于 0x47F000 → bss 零）→ 显示恒 0。
+- **0x405 门 `0x417280` 本构建死**：`cmp ax,0x405; jne ret; shr eax,16; test al,al; jne ret`
+  （byte2 必须 0）；`atoi(arg) > [0x7DA100] → 抑制`；否则 push 值 → `0x451B00` 发 0x405
+  （单值 dword）。唯一 E8 调用者 `0x42D6C6`（分派 `0x42D680` case 4）传 category byte 4 →
+  al=4 → 恒 jne ret。0x405 仅 4 处出现：0x416F7F（输入对话框 `0x418030` 参数）、
+  0x417284（门比较）、0x451B13（消息构造）、0x4650A6（函数中部垃圾行）。
+- 邻近语义：0x7DA100 为玩家属性块头 dword（0x7DA108 等级、0x7DA10C 攻击力、
+  0x7DA10D/0xF/0x11 经验 word、0x7DA11D/0x1F 负重/总量）；兄弟门 `0x41CE86` 在交易窗
+  比较 atoi(arg) vs `[esi+0x35B1E8]`（jge skip → `0x451940`）；丢弃金币提示 `0x47B028`
+  （@0x41D626）与交易付款提示 `0x47AD98`（@0x416F7E）紧邻 → **candidate：交易/购买数量上限**。
+- 运行时证据需求：交易/数量对话框期间调试器观察 0x7DA100。
+
+### 负重/总量与四模式标签（闭合）
+- 「负重:%d / 总量:%d」`0x47BDFC`：读 `[0x7DA11D]`（负重 word）与 `[0x7DA11F]`（总量 word）
+  @0x42EF9E/0x42EFB3，绘制 (x+0x86, y+0x18) 色 0xA0A0A / (x+0xF0, y+0x26) 色 0xF8C8C8。
+- `byte this+0x54` 模式分派（跳表 `0x42F13C`，0..3）：**0=[包袱] `0x47BE10`**（0x42EF5B，
+  0xF8DCFA）、**1=[修补] `0x47BDF4`**（0x42F03E）、**2=[变卖] `0x47BDEC`**（0x42F078）、
+  **3=[木柴] `0x47BDE4`**（0x42F0FB），色 0xF8C8C8。模式由 `this+0x5C` 处 3×0xB4 标签页数组设置。
+- `0x47BE18` = **共享字体名字面量参数**（`0x45DBA0` ecx=0x8AB7A8，60+ 调用者含本 paint
+  0x42EE8A 与状态窗簇 0x44Bxxx-0x44Cxxx；CP949 解码 "굴림체"），**非字段标签**。
+
+### 点击链（primary-static）
+- `0x4300F0`：300ms 限速（GetTickCount−[esi+0x23788]<0x12C）；使用延迟帧 0x14/0x15/0x46
+  （>0x3E8 且 >0x7D0 延迟窗内）→ 0x415280(0x7243A4, 「正在补充药水,请稍候.        」`0x47BDA4`)。
+- mode0（背包）→ **msg 0x3EC** 经 `0x451690`（0x8AB828；slot byte [edi+0x1A]、name [edi+0x1C]、
+  qty dword [edi+0x55]；置 [edi+4]=1 busy）；mode1（修补）→ `0x451860`（[esi+0x2376C]、
+  [数组元素+0x784] name、[+0x7BD] qty）；mode2（变卖）→ `0x4517E0`；待定动作字段
+  [esi+0x2375C..0x23768]。
+
+### 网络缺口（显式记录）
+- 背包填充虚拟入口 `0x42FC40` **静态零引用**：无 E8、无 imm32、不在 vtable 0x476870 槽
+  [0..10] → 死或运行期计算指针。[reg+0x774] 写入者全在背包内部（0x42Exxx-0x430xxx）+
+  物品库层 0x456AC3-0x45A112（不同结构）。外发 **0x403**（0x451AD0 @0x4300F0）为背包动作
+  消息；服务端→客户端背包列表回包 handler 静态无法定位 → 需运行期抓包配对 0x403 回包。
+
+### 落盘
+`inventory-window-render-evidence.json`（pending→closed_notes/candidate+证据链；记录布局、
+打包字段偏移、负重/总量、四模式标签、点击链、网络缺口全写入）、`ui-coverage-matrix.json`
+（record id=inventory → pending:false + closed_2026_08_11）、`UI_COMPLETION_AUDIT.md`、
+`UI_COVERAGE_MATRIX.md`、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6 背包行）。
+
+---
+
+### Finding 259 (SocialWindow, 2026-08-11)：组队窗 4 pending + 行会窗 3 pending 全部闭合（列规则纠正 / 权限文字 x 不可证 / 无列表上限 / 运行态显隐；行会 9 控件点击分支 / ctor 寄存器陈旧值纠正 / 特殊行着色）
+
+证据：`social-window-render-evidence.json` closed_notes（window.group 4 条、window.guild-candidate 3 条），全部 primary-static。
+
+#### 组队窗（id 6，main+0x47834，paint 0x4243D0）
+- **成员行 = 单文本字段 node+0x04，无图标**；链表插入序（feeder 0x419EE4 → 容器 push_back 0x424840；容器 this+0x54 vtable 0x4767E0——旧 evidence 把该 vtable 标注为 "input-handler vtable" 是错的，实为成员列表容器；头 this+0x58 / next 字段 +0xC / count this+0x68）。
+- **两列规则纠正**：行索引从 0 起；奇行（i&1≠0）→ 左列 x=window.x+0x2D（0x424471 `push ebx`，ebx=window.x+0x2D，header 处 0x4243EC 起递增）；偶行 → 右列 x=window.x+0x91（0x424479 `lea edx,[ebx+0x64]`）；y=window.y+0x5A+20*⌊i/2⌋（0x42444A-0x424461）。**旧公式 `x=window.x+45+100*(i mod 2)` 与早前 "偶→+145/奇→+45" 均错：机器无 +45 基底，mod-2 映射颠倒**（正确：奇→+45 左、偶→+145 右）。
+- **权限文字 [允许]/[拒绝]**（this+0x3F0 → 0x47BA08/0x47BA00，分支 0x424532-0x424577，色 0xDCE6C8）：**y=window.y+0x3A PROVEN**（0x424549/0x424563 `add edi,0x3A`）；**x 静态不可证**：0x42453E-0x424551 读 `[esp+0x1C]`（帧槽 R−0xC），0x4243D0 全函数从不写该槽（只写 +0x10/+0x14/+0x18/+0x20/+0x24）→ 未初始化栈垃圾 + 0x6E；旧值 "window.x+0x6E" 与 ctor 寄存器流 P0−0x1148 均为陈旧伪影，已拒。
+- **无可见行数上限**：0x424426 test [esi+0x68] && 0x42442D 头非空后，0x42443E-0x4244A4 全链表遍历，仅 next==0 终止（0x42449B）；无行会式 0x12 cap（对比 0x4252D4/0x4254C5）。超窗行由引擎裁剪（bg 0x460240 / 文字 0x45DD70 均引擎裁剪），非列表截断。
+- **运行态显隐全链**：show-by-id 0x42AC30（登记 main+0xD24 活动表，容器函数 0x449870）/ hide-by-id 0x42AC50（main+0xD28..+0xD38 移除）；组队 id=6；切换 0x42B0BA：可见性读 main+0x47864（=组队窗 this+0x30）→ 显→0x42AC50(6)+[vtable+0x10](win,0)；隐→0x42AC30(6)+[vtable+0x10](win,1)+伴生页签帧 0x398/0x399 @main+0x47B70 重定位（0x417880，实参依 [esi+0x47C24]）（0x42B0C8-0x42B120）；显示分派 0x42B6A0(id,x,y)：0x42B820 关 tooltip→0x42AC50→0x42AC30→[main+0xD3C]=1→各窗尾部（组队 0x42B79A @main+0x47834、行会 0x42B774 @main+0x4707C；其余偏移 +0x33188/+0x3399C/+0x47C28/+0x507EC/+0x51150/+0x516E8/+0x518E0/+0x52118/+0x524F0）；尾部=push 1→0x423F90（[+0x34]=1）→0x4240C0（若 [+0x30]&&[+0x34]&&[+0x3C] 全置：[+0x48]=x−[+0x18]、[+0x4C]=y−[+0x1C]）；vtable+0x10 setter=0x423F80（mov [ecx+0x30],eax）；绘制分派 0x428100 走 main+0xD28..+0xD38，组队经 0x4281D4 lea ecx,[esi+0x47834]; call 0x4243D0。主鼠标分派：悬停 0x42C063（0x424610 hover）→ push 6 → 0x42ADB0（id 跳表 ≤0xF）；点击 0x42BC24 → 0x424730。**注意：0x42ADB0 的 id-4/id-6 个案未逐一分反汇编，勿宣称逐 id 行为**（id-0 个案与骨架已验证）。
+
+#### 行会窗（id 4，main+0x4707C，paint 包装 0x425040，状态分派 [+0x98]）
+- **9 控件数组 this+0x118 步长 0xB4**；帧对/标签（ctor 0x424E60）：0 +0x118 161/162 关闭、1 +0x1CC 610/611 会员升职、2 +0x280 612/613 成员踢出、3 +0x334 614/615 盟主转让、4 +0x3E8 616/617 邀请入会、5 +0x49C 618/619 行会公告、6 +0x550 620/621 退出行会、7 +0x604 622/623 行会解散、8 +0x6B8 624/625 关闭窗口。
+- **点击分派 0x4258F0 检查序 = 0,1,2,3,4,7,5,8,6**（非 ctor 序）；prologue `mov eax,0x148C; call 0x468D10`（栈分配），x=[esp+0x1494]、y=[esp+0x14A0]，先经 0x417E60 滚轮控件 this+0x76C；调用方=主鼠标分派 0x42C039-0x42C052（lea ecx,[esi+0x4707C]; call 0x4258F0）→ push 4 → 0x42ADB0 输入后 id-hook。
+  - ctrl0 关闭：命中→return 已消费，无分派侧状态变更。
+  - ctrl1 会员升职：[this+0x98]=0;[this+0x9C]=0; call 0x4523E0 @0x8AB828（0x42595D-0x425973）。
+  - ctrl2 成员踢出：[this+0x98]=1;[this+0x9C]=0; call 0x452410 @0x8AB828（0x42599B-0x4259B1）。
+  - ctrl3 盟主转让：raw `c7 86 9c000000 00000000 c6 86 98000000 02` @0x4259D9 = [+0x9C]=0;[+0x98]=2 → other 态绿页。
+  - ctrl4 邀请入会：守卫 [this+0x94]==0 → tooltip 0x47BAA4（0x425C71-0x425C8F）；否则 0x42ADB0(0x7243A4, 0xF) 隐藏横幅、开对话框窗 0x777200（0x423E80，帧 0x25A=602，[0x7773D0]=1）、组 list3（头 +0xEC/count +0xFC）经 0x45DC70 "%s\r\n"（0x47BB4C）→ 0x8B187C、call [0x4762CC] 提交（0x425A11-0x425AC4）。
+  - ctrl7 行会解散：守卫；[+0xB4]==0 → tooltip 0x47BB28 "请先选择行会成员名单,再点这里编辑."（0x425B05-0x425B19）；否则隐藏 0x7243A4、开对话框帧 0x259=601 且 [0x7773D0]=0、组 list1（头 +0xBC/count +0xCC）、call [0x4762CC]（0x425B2A-0x425BC2）。
+  - ctrl5 行会公告：守卫；tooltip id 0x40F、text 0x47BAF4 "%s  请输入要删除的行会成员名字"（sprintf 0x46811C，%s=[this+0x54]）（0x425BD6-0x425C1D）。
+  - ctrl8 关闭窗口：守卫；tooltip id 0x415、text 0x47BAC8 "请输入要解除联盟关系的行会的名称"（0x425C1F-0x425C50）。
+  - ctrl6 退出行会：**倒置守卫** [this+0x94]!=0（掌门）→ 直接 no-op return；成员 → tooltip 0x47BAA4 "只有行会掌门人才能使用这个功能"（0x425C52-0x425C71）。机器事实照录，不做语义"修复"。
+  - tooltip 显示 = 0x418030（ecx=0x7E04C8；实参 0x565994,4,flag,text,-1,-1,id）；tooltip 输入 handler 0x42580A-0x4258E9：id 0x415 → 0x46811C 格式化 0x47BA90 "@退出联盟 " → 0x8B187C → 编辑框 0x8AB828 经 0x4520F0+0x4523E0。
+- **ctor 寄存器流 vs paint 时间坐标**：paint 时间 SetPosition（0x425152-0x425258）为可见真相：(556,409)/(34,376)/(34,402)/(121,402)/(309,376)/(397,376)/(484,376)/(309,402)/(397,402)。ctor 时间（0x424E60 @ main_init 0x4277E8；实参 4,[main+0x1C],600,102,22,596,446,1）仅 0-3 号可用：+0x118→(260,298)、+0x1CC→(159,50)、+0x280→(567,413)、+0x334→(196,50)；调用 5-9 读陈旧复用寄存器（x=1 或 [main+0x1C]，y=600-帧 id 或 4/72/102/145）→ 垃圾：+0x3E8→(1,145)、+0x49C→([main+0x1C],4)、+0x550→(1,72)、+0x604→(1,102)、+0x6B8→(600,72)。**旧 evidence 中 +0x6B8 ctor 记录 [196,50] 错误，已纠正为 (600,72)**。
+- **特殊行着色**：state0 0x425280（守卫 count +0xE4 && head +0xD4，list2）：逐字节 strcmp 标记 0x47BA78 "[行会公告]" / 0x47BA6C "[敌对行会]" / 0x47BA60 "[联盟行会]" → 0x96FF，否则 0xFFFFFF；state1 0x425440（守卫 count +0xB4 && head +0xA4，list0）：标记 0x47BA84 "[行会成员]" → 0x96FF，否则 0xFFFFFF；other 0x425590（list4，头 +0x104/count +0x114）：**无标记逻辑**，每行双画阴影 0xA140A @(win.x+0x22, win.y+0x3B+step*row) + 绿 0xFF00 @(win.x+0x23, win.y+0x3C+step*row)，无白行。三态共享原点 (win.x+0x23, win.y+0x3C)、scroll [+0x9C]、cap 0x12、行步=文本高+5（0x45E0C0）；表头（0x425040）0x96C8FF 经 0x45DE50、字符串对象 [+0x54]，裁剪矩形 win.x+0x15E..+0x233 / win.y+0x18..+0x30。
+- 子列表布局：+0xA0/+0xB8/+0xD0/+0xE8/+0x100（counts +0xB4/+0xCC/+0xE4/+0xFC/+0x114），容器 vtable 0x476814。
+
+#### 落盘
+`social-window-render-evidence.json`（两窗 pending→closed_notes；member_list_render.formula/column_rule、visibility_guard 标签、text_origin_expression、行会 child_controls[8] 位置均就地纠正）、`ui-coverage-matrix.json`（record id=social → layout_ids=[window.group, window.guild-candidate] + pending:false + closed_2026_08_11；record id=guild → pending:false + closed_2026_08_11）、`UI_COMPLETION_AUDIT.md`（44/45 行闭合）、`UI_COVERAGE_MATRIX.md`（23/24 行闭合）、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6 组队/行会 bullet）。
+
+---
+
+## Finding 246 (StatusWindow, 2026-08-11)：人物状态窗 el82/el83/el139 WIL 绑定闭合 + 视图切换按钮（Frame 172）闭合
+
+### 1. el82/el83/el86 WIL 绑定 —— PRIMARY-STATIC（全静态链）
+- **游戏对象 = 静态全局 0x47EF18**（ctor 0x418B00 经 CRT thunk 0x401970）→ owner = 0x5600FC = gameObj+0xE11E4（0x418E70）。
+- **元素 ctor 0x452AA0**（this=0x5600FC）：loop1（ebp=14）由 slot base 0x56B22C 构造 el0..el13（mode 1，fallback 0）；loop2 @0x452AF7-0x452B0E（ebx=0x46=70 次，`push 0; push esi; mov ecx,edi; call 0x4660e0; add esi,0x104; add edi,0x144; dec ebx; jne`，ret 8 @0x452B14）由 slots 70..139 构造 **el70..el139（mode 0）**。
+- **WIL 表填充 0x452B20**（92 字符串，slots 0..91；ebx=owner；strlen(scasb)+rep movsd/movsb 拷贝块 0x4537F0-0x4538B0，dest 由上一块 lea 决定）：
+  - `.\\Data\\Inventory.wil`（0x47CCF8）→ **slot 82 = owner+0x10478 = 0x570574**（store site 0x453804）
+  - `.\\Data\\Equip.wil`（0x47CCE4）→ **slot 83 = owner+0x1057C = 0x570678**（store site 0x453829）
+  - `.\\Data\\Ground.wil` 0x47CCD0 → slot 84 = 0x57077C（0x10680）；`.\\Data\\MIcon.wil` 0x47CCBC → slot 85 = 0x570880（0x10784）
+  - `.\\Data\\ProgUse.wil`（0x47CCA8）→ **slot 86 = owner+0x10888 = 0x570984**（store site 0x4538A2）
+  - 其余：GameInter→70、M-Hum→71、M-Weapon1..4→72-75、WM-Hum→76、WM-Weapon1..4→77-80、Magic→81、Horse→87、Mon-1..4→88-91；slot N 地址 = owner + 0xF848 + (N-70)*0x104（N≥70）。
+- 消费侧：flag 分派 0x430A40（flag0 → el82=0x5668C4 Inventory.wil 普通槽；flag1 → el83=0x566A08 Equip.wil 角色区 indices 0/1/4；flag2 → el139=0x56B0E8）。
+
+### 2. el139 = EMPTY/UNSET（candidate）
+- 构造：loop2 0x452AF7（i=69，mode 0）；map-rebuild 0x43B7B2（start=(byte[map+0x124]+1)*14 @0x43B770-0x43B77C；byte=8 → **start=126 → el126..el139**，mode 1 优先、0x4660E0 失败则 0x465FE0 dtor 后 push 0 重试）。
+- path slot 139 = 0x573F58 **无任何静态写入**（0x452B20 只填 slots 0..91）→ 零路径；消费端 0x44D65C/0x44DBAE/0x44E05D（frame=WORD[selector+0x30]）在帧加载失败时跳过绘制。
+
+### 3. Frame 172（配 171）= 状态窗视图切换按钮 —— PRIMARY-STATIC
+- 子控件 this+0x10C（ctor 0x44B1B7，帧对 171/172，GameInter.wil；hit rect x=+0xB0=176、y=+0x108=**264**，纠正旧记录 286）。
+- 点击处理器 **0x44CCD0**（ret 0xC @0x44CCF6）：子控件命中经 [vtable+0x10] @0x44CD09 → toggle 分支 0x44CD14-0x44CD9F：
+  - mode byte **[this+0x54]==1**（equipment view）→ `0x423E80(this, 0xC8=200, [this+0x18], [this+0x1C], 0xF4=244, 0x148)`；[this+0x54]=0；faces (0xAB,0xAC)=(171,172) 经 0x417880。
+  - **[this+0x54]==0**（attribute view）→ `0x423E80(this, 0xC9=201, x, y, 0x208=520, 0x148)`；[this+0x54]=1；[this+0x20]>0x320 时第二块 frame 0xC9 @ (x+0x118, y)；faces (0xA8,0xA9)=(168,169)。
+  - 初始视图 = attribute（0x427776 以 frame 200 建窗；ctor faces 171/172）。
+- 帧尺寸（WIL header 实测）：200 = 256×512、201 = 1024×512（offsetX=7/offsetY=−44）；168/169/171/172 = 36×36 全不透明；171 = 亮色加号核心、172 = 方块+竖条。图标/脸面语义对应（171/172 attribute vs 168/169 equipment）= candidate。
+- **0xC24 步长重确认**：click 0x44CDCD-0x44CDD9 `lea ecx,[eax+edx*2]; lea ecx,[ecx+ecx*2]` = idx*12 → `[esi+ecx*4+0x2F4]` = idx*48+0x2F4（0xC24 = 0x30C*4 = 777*4 = 3108）；paint 走 this+0x2F8 + i*0xC24（11 records）。旧 0x40C 为算术错误，slot_record_base 不变。
+- 命中测试 0x44B720 = 纯 PtInRect 位置扫描（11 次迭代 @0x44B739-0x44B787，SetRect @0x44B761，import 0x4762B4），**无类别逻辑**（服务端驱动）。
+
+### 4. 证据级别
+el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggle、0xC24 步长 = **primary-static**；map-rebuild start byte 运行值、el139 运行期语义、槽位业务名（server EquipmentSlot enum） = **candidate/inference**。
+
+落盘：`status-window-render-evidence.json`（pending[0]/[3]→closed_notes；hit_rects y 286→264；observation[3] 帧画修正；flag_dispatch/known_elements/selector_construction 更新）、`equipment-slots-evidence.json`（pending[0]/[2]→closed_notes；selector_wil_binding 更新）、`ui-coverage-matrix.json`（record id=status → closed_2026_08_11）、`UI_COMPLETION_AUDIT.md`（36 行闭合）、`UI_COVERAGE_MATRIX.md`（16 行闭合）、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6 人物状态 bullet）。
+
+---
+
+## Finding 257 (TargetBox, 2026-08-11)：怪物目标框长尾三项闭合（WIL 绑定负证据 / 无头像 / HP 帧=HP 值 + 10000 系列元素 0x57）
+
+### 1. 选择器元素 WIL 绑定 = 静态负证据（primary-static），确切文件名 = 运行期数据（candidate）
+- **绑定 API 0x4660E0**（ecx=element，[esp+4]=path，[esp+8]=flag）：flag0 → 拷贝路径+mode0（0x466160）；flag1 → 装载 WIL（`wix` 0x47DBB4，CreateFileA GENERIC_READ，0x466300）+mode1；flag2 → 0x4664B0。帧查找 0x466130 clamp frame<count。
+- **14 个直接 E8 调用方全枚举**：0x40272A/0x40273E、0x43B7B7/0x43B7CC（**唯一触碰全局表 0x5600FC 的点 = 地图装载器 0x43B600**）、0x43D4E7/0x43D502、0x43DF64/0x43DF86、0x43EDCC、0x452ABD/0x452AD2/0x452AFC、0x456CC4/0x456CD8——其余全部绑定窗口内嵌元素，从不碰全局表。
+- **地图装载器 0x43B600 范围**：N = (header[0x14]+1)*0xE，绑定 [N, N+0xE)。**全部 544 张出货地图 header[0x14] ∈ {0,1}**（530 张=0x00、14 张=0x01）→ 只覆盖 **0x0E..0x1B 或 0x1C..0x29**；目标框元素 0x51/0x56/0x57/0x81/0x89/0x8A 全部在范围外。**旧假设 [map+0x124]=4/5/8 被拒绝**。
+- **0x47C3E0 填充格式串死亡**：`%[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c`（4 token，35 字节）全文件 0 引用——0x56B22C 路径槽的填充者未定位。
+- **元素 VA imm32 引用计数（穷举）**：0x566780（0x51）→ 仅 0x40CE96（NPC HP 条块 0x40A8A0：0x4542A0(ecx=0x5600FC,flag by type,0x51,frame=HP) @0x40CE8F → 0x466130(ecx=0x566780,frame)）；0x566DD4（0x56 名字文本）→ 11 个读者（0x40B79C/0x40B811/0x40C958/0x40C9DC/0x4199AE/0x4199F2/0x41C8B5/0x44B577/0x44B649/0x450548/0x450615；名字文本画 @0x40C900 帧 2/3）；0x566F18（0x57）/0x56AE60（0x89）/0x56A440（0x81）/0x56AFA4（0x8A）→ **0 个 imm32 引用**（总是计算 0x5600FC+type*0x144）。
+- **选择器注册表 0x4542A0/0x454DA0/0x454E50/0x454CC0**（注册表基址 0x57405C = 0x5600FC+0x13F60；key 格式 %05d%05d%05d @0x47D530）= 运行期缓存，从不打开 WIL。
+
+### 2. 悬停目标头像 = 不存在（NEGATIVE，primary-static）
+- **HUD 每帧分派 0x41BF00–0x41C0A0 全链**：0x40A8A0（HP 条）→ 0x40BB00（悬停名牌，纯文字，3000ms 超时，0x40BFE0=浮点结构初始化非绘制）→ vtable+0x80=0x40B750（悬浮名字文本，元素 0x56 帧 2/3）→ 实体扫描循环 0x41BF39–0x41BF87（每悬停对象重复上述 3 个）→ 0x41B1C0 → 0x434D40；另有 vtable+0x84=0x40B850（名字牌框，纯文字 0x45DE50 边框 0xA0A0A×3）@0x41C063。**5 个组件无一是头像**。
+- **49×33「头像/名区」= 人物状态窗 this+0x200 = 特殊索引 4**（记录链 hit_test 0x44B6B0 / index_scan 0x44B720 扫 11 条记录 this+0x1C0+idx*0x10，记录步长 0xC24 基址 this+0x2F4，绘制 0x4341F0）：特殊索引 0/1/4 **全部画在固定中央角色区目标 (window.x+0x61, window.y+0xC8)，flag=1**——是角色形象命中/绘制槽，**不是头像纹理**。
+- **NPCface.wil 实测**：440 帧、394 空/46 非空、约 100×122 全身像——与 49×33 不匹配，拒绝为头像源。
+- 状态窗唯一元素形象画 = 元素 0x46（0x565994）帧 0xA7/0xAA @(window.x+0xB0, window.y+0x109)（frame record [0x5659CC]/dims [0x5659D0]）——运行期绑定，candidate。
+
+### 3. HP 条帧 = HP 值（primary-static 闭合）+ 10000 系列 = 元素 0x57
+- **帧索引 = HP 值 [0x61B9C] = [0x61BA0] − [this+0xB4] + [this+0xC4]**，0x40A8A0：元素 = 0x5600FC + type*0x144（type byte [this+0x8D]；0x51/0x89→flag0，0x81/0x8A→flag1）；0x4542A0 注册表调用；0x466130(ecx=element, frame=[0x61B9C])；eax==0 → 跳过；float scale 0x3F800000。
+- **0x40F5F0 的 10000+(A%400) 系列是另一个矩形（字段 HUD+0x629FC）**，元素 = [0x62A14] = **0x566F18 = 0x5600FC + 0x57*0x144**（第三选择器字节 [0x629CF]，唯一写入 @0x40C79C/0x40F47F = 0x57，DB-byte 门控；门：byte[+0x629C8]、[0x62A14]!=0、byte[+0xC0]>=0x1D）：**A = [629C8]*400 − [8A]*3000 + [C4] − 0xAA0**（imul 0x190 @0x40F6A9；×3000 链 lea 3/5/5/5 + shl3 @0x40F6AF–0x40F6C0；lea [eax+edx−0xAA0] @0x40F6CB），存 [+0x62A20]，**frame = 0x2710 + (A % 400)**（div 0x190 + add 0x2710 @0x40F6D6–0x40F6DF）。
+- **库身份**：GameInter.wil = 1103 帧 < 10000 → 不能承载 10000+ 系列（primary-static 负证据）；实测 ≥10000 帧候选：Tiles5c 20000、SmTilesc 10180、object1c 33125、object2c 30000、M-SHum 32722、M-Hum 27000、M-Helmet1 24000、M-Hair 15000、Horse 10400、M-Weapon1/2/3 30000、M-Weapon4 17000——元素 0x57 具体归属 = 运行期绑定，candidate。
+- 状态矩形 0x40F743–0x40F7B1：frame = 3000*(([89]−1)%10) − 3000*[8A] + [C4]，元素 [0x62A10]（门 byte[+0x89]、[+0xC0]<0x19），存 [+0x62A1C]——同族 ≥3000 帧需求。
+
+### 4. 证据级别
+地图装载器范围、绑定调用方全集、元素引用计数、0x47C3E0 死亡、HP 帧=HP 值、10000 系列公式与元素 0x57、HUD 分派无头像、49×33=角色槽、NPCface 尺寸 = **primary-static**；确切 WIL 族/路径槽填充者/0x40C020 调用者 = **candidate/未定位**。
+
+落盘：`target-box-evidence.json`（pending 3→1 项 closed_notes 3 条；hp_bar_rect value_a 补 +[C4]、rect_formula 按 push 序修正；resource_binding hp_bar/target_portrait 更新）、`ui-coverage-matrix.json`（record id=target-box → pending:false + closed_2026_08_11）、`UI_COMPLETION_AUDIT.md`（34 行）、`UI_COVERAGE_MATRIX.md`（14 行）、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6 怪物目标框 bullet）。
+
+---
+
+## Finding 245 (StoreWindow, 2026-08-10)：商店/仓库窗口双 store 关系解清 + 状态 0–4 工厂/帧/按钮映射 + 屏幕原点闭合
+
+闭合 `store-window-render-evidence.json`（pending 0–3）与 `store-state-graph.json`（pending 全部）。全部 primary-static（机器码实测），除注明 candidate 外。
+
+### 1. 双 store 关系（最重要，纠正旧记录）
+- **UI store = game+0x33188 == session+0x2D8614**（window id 2；ctor 0x44CFC0、dtor 0x44D0B0、post-init 0x44D150、register 0x44D310、paint 0x44E260、click 0x44E9B0/0x44E910；+0x30 = game+0x331B8 = session+0x2D8644）。
+- **protocol store = game+0x2D8614 == session+0x57DEA0**：接收 msg 0x285/0x28A/0x28B/0x28C/0x2C0/0x2C8（经 0x44F480/0x44E8B0/0x44F710/0x44F940/0x44FB00）；+0x30 = game+0x2D8644（0x2C0/0x2C8 接收体 hide-if-set 门）。
+- **基址规则（证明）**：包接收体 ebx=game（0x41F999 `mov [ebx+0x35B1E8],ecx`）；更新循环 0x41C1E0 esi=session（`lea ecx,[esi+0x2A548C]` 传 0x42AC50，[esi+0x2F65DC]/[esi+0x2AB9E0]/[esi+0x2D8614] 映射 game+0x51150/+0x6554/+0x33188）。**数值巧合 session+0x2D8614 == game+0x33188 造成旧记录误把更新循环 lea 对 (0x41C22C/0x41C232) 归为 protocol store**；实为 UI store。
+- **protocol store 无静态构造**：0x2D8614 全二进制 dword 扫描仅 6 接收 lea（0x41F95C/0x41F985/0x41F99F/0x41F9F2/0x4209CE/0x420A95）+ 2 更新循环引用；无 vtable 写入、无 ctor 调用；store 方法（0x44F940/0x44FB00/0x44E8B0/0x44E260/0x44D590/0x44DB50/0x44E040/0x44F480/0x44F710/0x44E910/0x44E9B0）不出现在任何 vtable。**vtable/链表 vtable（0x476A9C/+0x708、0x476AB8/+0x648）必须运行期安装——静态不可证；无任何指令把 protocol store 数据桥接到 UI store 列表；禁止虚构同步。**
+
+### 2. Store 类对象模型
+- **ctor 0x44CFC0 / dtor 0x44D0B0**（0x44D0B0 从 Game dtor 0x426E80 @0x426F77 以 marker 0xb 调用，并从 deleting-dtor 0x44D090 = store vtable[0] 调用）。dtor：写回 vtable 0x476A88 → call 0x4268B0（=jmp 0x423CF0 = 虚槽 1 → 0x44D150）→ 恢复 +0x708 表 0x476A9C/+0x648 表 0x476AB8 → gauge dtor 0x417950(+0x5FC) → 8 控件数组 dtor 0x468306(+0x54, 0xB4, 8, EH 0x4046b0) → 基类 vtable 0x476624 → 0x423CF0（=0x423CA0 reset）→ ret。
+- **Game ctor 0x426C10 成员序**（与 dtor 0x426E80 严格逆序）：+0x6554 id0 (0x42e810)、+0x29CE4 id1 (0x44af50)、**+0x33188 id2 Store (0x44cfc0/0x44d0b0)**、+0x3399C id3 (0x415650)、+0x4707C (0x424a60)、+0x47834 (0x424120)、+0x47C28 (0x4501d0)、+0x507EC (0x413da0)、+0x51150 id9 (0x43ea80)、+0x516E8 (0x4471d0)、+0x518E0 (0x440e90)、+0x52118 (0x426780)、+0x524F0 (0x438ef0)、+0x52E5C (0x43e0e0)、+0x53030 (0x4187f0)。
+- **注册实参（register-all 尾 0x42777E–0x427794）**：`push 2; push [esi+0x1C](selector); push 0x3E8(1000); push 0; push 0; push 0; push 0x12C(300); push 0x130(304)`；**flag=1 由 0x44D310 内部加**（旧记录 "…,304,1)" 是把站点实参与内部参数混了）。
+- **窗口表**：id→对象 base：0→+0x6554、1→+0x29CE4、**2→+0x33188**、3→+0x3399C、4→+0x4707C、6→+0x47834、7→+0x47C28、8→+0x507EC、9→+0x51150…（0x42AAB0 hit-test 表 0x42ABE8；id2 → `lea edx,[esi+0x331A0]` = store+0x18）；窗口列表 head/count @game+0xD28/+0xD30/+0xD38，记录 6×0xC24 @+0xDA4。
+- **点击**：主鼠标分派 0x42BEAA→hit-test 0x42AAB0→cmp edi,2→0x42BEEB `0x44E910(store)`；`Store::Click(x,y)=0x44E9B0` 仅对窗口关闭按钮返回 1；click 与 draw 都作用于 game+0x33188。
+
+### 3. 更新循环关闭分支（0x41C1E0，this=esi=session）
+- `[session+0x2F660C]`(id9 +0x30) → 0x42AC50(game,9) + vtable+0x10([session+0x2F65DC]=game+0x51150, 0) + 清 game+0x428050/+0x42804C。
+- **`[session+0x2D8644]`(UI store+0x30) → 0x42AC50(game,2) + `mov edx,[session+0x2D8614]; lea ecx,[session+0x2D8614]; push 0; call [edx+0x10]` = UI store SetVisible(0)**（vtable 槽 4 = 0x423F80，1 参，写 [ecx+0x30]；0x423F90=Set(+0x34)；0x423FA0=3 参 Move）。
+- `[session+0x2ABA10]`(id0 +0x30) && `[session+0x2ABA34]`(id0 +0x54 页态) → 0x42AC50(game,0) + vtable+0x10([session+0x2AB9E0]=game+0x6554, 0) + 0x417880(+0x1C4, 0x10B, 0x10C, −1) + 0x42FF90(game+0x6554) + 清 session+0x2CF14C。
+- 0x42AC50 = 按 id 注销/释放窗口记录（0x4680F8 free）；0x42ADB0 = 按 id 开/关分派（跳表 0x42B3E4，id≤0xF）。
+
+### 4. 状态 0–4 最终表（含 state2/3 反转纠正）
+| state | 业务名 | 证据 | 工厂（frame,x,y,w,h） | paint |
+|---|---|---|---|---|
+| 0 | 购买五行列表（msg 0x285→0x44F480） | PROVEN | 0x44EAB8/0x44EAF3/0x44F56F (1000,0,186,300,304) | 0x44D590 |
+| 1 | 卖网格（msg 0x28C→0x44F710） | 业务名 candidate | 0x44F7EF (1003,1,186,498,304) | 0x44DB50 |
+| 2 | 仓库/扩展网格（msg 0x2C0→0x44F940） | 业务名 candidate；帧/尺寸 primary-static | 0x44F940 (1001,−4,182,205,205)，`mov byte [ebx+0x5F8],2` | 0x44DB50 + 4 侧面板 |
+| 3 | 合成（msg 0x2C8→0x44FB00） | PROVEN | 0x44FB00 (1000,0,186,300,304)，state=3 | 0x44D590 |
+| 4 | 物品详情（发送 0x3F7/0x40A 模式） | PROVEN | 0x44F252/0x44EBD8/0x44F270 (1002,0,184,540,307) | 0x44E040 |
+- **state2/3 旧标签反转纠正**：0x44F940 = state 2（frame 1001 紧凑）、0x44FB00 = state 3（frame 1000 五行）——本轮重反汇编确认。
+- state2 12 格矩形 +0x720：cols x=22,60,98,136（0x16 起 stride 0x26 <0xAE）；rows y=43,81,119（0x2B 起 stride 0x26 <0x9D）；清 +0x708 链表、[+0x7E4]=0xFFFFFFFF。
+- paint 0x44E260：先 `call [vt+0xC]`；state∈{0,4,1,3}→跳 0x44E2F7；**仅 state 2** 落体画 4 extras +0x1BC@(x+0xAC,y+0xA9)/+0x270@(x+0x47,y+0xA5)/+0x324@(x+0x1C,y+0xA2)/+0x3D8@(x+0x89,y+0xA2)（0x417830）；8 控件循环 +0x54 步长 0xB4 `call [ctl_vt+4]`；分派 {0,4,1,3}→0x44D590/{1,2}→0x44DB50/4→0x44E040。五行绘制读 UI store 自身 +0x648 链表（0x44D631 lea ebx,[edi+0x664]…[edi+0x700]）。
+
+### 5. 控件/帧映射（帧 1010–1017 尺寸 = 命中矩形，wilsdk 实测）
+- {0,3}：+0x54@(x+0x10A,y+0x10E) **1010/1011 X 关闭**；+0x108@(x+0x7F,y+0x10B) **1012/1013 确认**（48×20）。
+- state2：+0x324@(x+0x1C,y+0xA2) **1014/1015 ◀**；+0x3D8@(x+0x89,y+0xA2) **1016/1017 ▶**（28×26）。
+- state1（0x44E2F7 块）：+0x1BC@(x+0x1D2,y+0xA9)、+0x270@(x+0x172,y+0xA2)、+0x324@(x+0x144,y+0x9F)、+0x3D8@(x+0x1B2,y+0x9F)。
+- state4：+0x48C@(x+0x1FA,y+0x43) 折叠返回、+0x540@(x+0x188,y+0x3D) 确认。
+- **面板帧源**：StoreItem.wil 帧 1000–1020 是 24×22 光标，非商店面板；面板 WIL 加载于 0x4540C0 区（`.\\Data\\StoreItem.wil`=0x47C878 与 `MonMagicEx.wil`=0x47C890 拷入 +0x13E5C 相对表）。帧 1000=512×512 bbox(106,102)-(405,408)；1001=256×256 bbox(28,26)-(225,229)；1002=1024×512 bbox(242,102)-(781,408)；1003=512×512 bbox(6,102)-(503,408)；1010/1011/1014-1017=28×26；1012/1013=48×20；1020=16×418 gauge。
+
+### 6. 屏幕原点（pending[0] 闭合）
+- state0 content rect = (0,186,300,304)；面板屏幕 (0,184)–(299,490)。**0x423E80 直接按实参建矩形、无父相对居中**（旧 "factory_argument_warning" 撤销）；点击只设拖拽锚点。
+- 发送表：0x3F6=state1 格/state4 确认 mode0（0x452230）；0x3F7=state0/3 直购（0x4521F0→0x451E60）；0x408=state2 格；0x40A=state4 确认 mode1/state3 详情；0x3FC=TBD（0x4522E0）。串：0x47B904 点击速度过快/0x47B91C 太重/0x47B940 不能买（msg 0x28B sub 1/2/3）。
+
+### 7. 证据级别
+- **primary-static**：双 store 地址与基址规则、ctor/dtor、注册实参、更新循环关闭分支、状态工厂/帧/尺寸、paint 分派、控件偏移、帧尺寸、屏幕原点、msg 0x285/0x2C0/0x2C8 接收链、0x28B 子值、protocol store 无静态构造（负证据）。
+- **candidate**：state1/2 业务名（卖/仓库——无服务端消息常量源；web 搜索确认无 Mir3 EI 消息号文档）；protocol store 运行期 vtable/同步机制；state2 外矩形 (−29,157)–(227,413)（derived）。
+
+落盘：`store-window-render-evidence.json`（pending 0–3 → closed_notes 6 条，pending 空）、`store-state-graph.json`（重写：双 store 节、纠正 state2/3、注册实参、闭 0x423E80 语义）、`ui-coverage-matrix.json`（record id=store → pending:false）、`UI_COMPLETION_AUDIT.md`（42 行）、`UI_COVERAGE_MATRIX.md`（19/21 行）、`MIR3_UI_RECONSTRUCTION_HANDOFF.md`（§6 商店/仓库 bullet）。
+
+## Finding 244 (ChatRenderer, 2026-08-11)：聊天文本渲染器 0x45DD70 槽序与可见性门 0x42B180 接线闭合
+
+闭合 `chat-window-render-evidence.json` 剩余两个 pending（ChatDocs Finding 250 留下的真实 pending），全部 primary-static。
+
+**1) 渲染器 0x45DD70 槽序（thiscall ecx=0x8AB7A8，7 参数，ret 0x1C）**
+- arg1 = 目标 surface（fallback this->+0x1C；HDC 经 surface->vt+0x44 GetDC out-param 写回 arg7 栈槽）。
+- arg2 = X，arg3 = Y，arg4 = textcolor（SetTextColor 0x476060），arg5 = bgcolor（0 → SetBkMode TRANSPARENT 0x476044；非 0 → SetBkColor 0x476050），arg6 = text（strlen + TextOutA 0x476074），arg7 = font（0 → this->+0x28 默认；显式字体由被调者 DeleteObject，默认不删）。
+- 实证：TextOutA(hdc, arg2, arg3, arg6, len) @0x45DE12；聊天调用点 0x4147F3（arg1=[0x8AB7C4]、X=this+0x6C0+this+0x18、Y=this+0x6C4+this+0x1C+row、color=msg+0x00、bg=msg+0x04、text=msg+0x08、font=0）。
+- [0x8AB7C4] 无任何静态写入：仅经 IDirectDraw::CreateSurface out-param（lea this+0x1C @0x45D53D/0x45D602，call [ddraw_vt+0x18] @0x45D552/0x45D617 in 0x45D380，唯一调用者 0x45D140）；全 disp32-0x8AB7C4 扫描无 store 指令。
+
+**2) 可见性门 0x42B180 接线**
+- 门 [ROOT+0x5081C] = 聊天窗自身可见标志 this+0x30（chat=ROOT+0x507EC；0x507EC+0x30==0x5081C；vtable 0x47660C 写入 @0x413E1A；setter vtable+0x10=0x423F80 = mov [ecx+0x30],eax）。
+- 关闭路由：close 子控件 chat+0x6C（vtable 0x4763A8）命中测试 vtable+0x10=0x4177F0 → 聊天点击分派 0x4149A0 返 1 → 鼠标 stub 0x42C0B7 → push 8; call 0x42ADB0(ROOT) → 跳表 0x42B3E4[8]=0x42B180。
+- HIDE（门≠0）：MoveWindow(edit [0x8AA48C] → x=[0x8AB7F0]+0xDF, y=[0x8AB7F4]+0x23A, 0x162, 0x10, TRUE)；0x42AC50 从激活列表移除窗 8（ROOT+0xD24：head+0xD28/tail+0xD30/count+0xD38）；0x423F80(chat,0) → +0x30=0，ret 0。
+- SHOW（门==0）：MoveWindow(edit → w=[ROOT+0x51148]-[ROOT+0x51140], h=[ROOT+0x5114C]-[ROOT+0x51144], x=[0x8AB7F0]+[ROOT+0x50804]+[ROOT+0x51140], y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144])；ShowWindow(edit,5)；0x42AC30→0x449870 追加窗 8；0x423F80(chat,1) → +0x30=1，ret 1。
+- 'R' 键 @0x42CCF7 切换同一分派；0x42B820 去激活列出窗（0x423F90 → +0x34=0；其跳表 0x42B938[8]=0x42B8B6=chat）；默认索引 5/10/>15 → 0x42B3DD ret 0；兄弟门 0x42B25E（idx 9，门 [ROOT+0x51180]）与 0x42B2AD（idx 15，门 [ROOT+0x52E8C]）。
+
+落盘：`chat-window-render-evidence.json`（closed_notes ×3，pending 空）、`chat-window-unified-model.json`（visibility_gate 接线 + text_renderer 槽序，open_question 闭合）、`ui-coverage-matrix.json`（chat record pending_notes 更新）。

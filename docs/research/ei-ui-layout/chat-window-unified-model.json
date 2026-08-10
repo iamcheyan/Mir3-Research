@@ -1,0 +1,197 @@
+{
+ "schema": "mir3-ei-ui-unified-model-1",
+ "source": "Mir3.exe primary-static disassembly (0x00414060-0x00414C56, 0x00417550, 0x00417640-0x00417780, 0x00417830, 0x00417960, 0x004179B0, 0x004145DD70, 0x00414700-0x00414999) + Data/GameInter.wil primary-resource inspection",
+ "window": {
+  "id": "window.chat-pop",
+  "window_id": 8,
+  "object": "ROOT+0x507EC",
+  "vtable": "0x0047660C (final, stored at 0x413E1A in chat base ctor 0x413DA0; slots +0=0x413E40 dtor, +4=0x413F30, +8=0x414010, +0xC=0x423D00, +0x10=0x423F80 visible setter, +0x14=0x415030, +0x18=0x4150D0; secondary vtable 0x476620 at this+0x54)",
+  "visible_flag": "this+0x30 (== [ROOT+0x5081C]; 0=hidden 1=visible; set only via vtable+0x10 = 0x423F80)",
+  "activated_flag": "this+0x34 (setter 0x423F90)",
+  "background": {
+   "file": "Data/GameInter.wil",
+   "frame": 350,
+   "size": [572, 388]
+  },
+  "origin_fields": {"x": "this+0x18", "y": "this+0x1c"}
+ },
+ "draw_chain": {
+  "entry": "0x004142C0 (wrapper 0x00414060; main_init_call 0x00427839)",
+  "paint_order": [
+   {"order": 1, "va": "0x00414705", "role": "window base/background via vtable+0x0C"},
+   {"order": 2, "va": "0x00414711", "role": "chat-input clipping rect SetRect(this+0x6C0, 40,29,531,308)"},
+   {"order": 3, "va": "0x00414738", "role": "chat history text loop via 0x45DD70 (19 rows, 14px step)"},
+   {"order": 4, "va": "0x00414846", "role": "input bar shared gauge 0x4179B0 at (window.x+0x215, window.y-0xD0), value=[+0x68] max=[+0x6D0]"},
+   {"order": 5, "va": "0x0041485A", "role": "9 child controls direct-paint 0x417830 at fixed relative positions"},
+   {"order": 6, "va": "0x00414955", "role": "9-iteration child vtable+4 paint loop (hover state)"},
+   {"order": 7, "va": "0x00414965", "role": "input-line character rects SetRect(this+0x954, 25,311,524,326)"}
+  ]
+ },
+ "message_list": {
+  "head": "this+0x5C",
+  "node": {
+   "next": "+0x408",
+   "prev": "+0x40C",
+   "color": "+0x00",
+   "bg": "+0x04",
+   "text": "+0x08 (inline GBK buffer)"
+  },
+  "count": "this+0x68",
+  "scroll_offset": "this+0x6D0",
+  "index": "this+0x64",
+  "clip_rect": [35, 28, 520, 43],
+  "line_step_px": 14,
+  "max_rows": 19,
+  "text_origin_relative": [40, 29]
+ },
+ "controls": [
+  {"object": "this+0x6C",  "frames": [161, 162], "pos_rel": [532, 350], "size": [28, 26], "role": "close-button", "paint_call": "0x00414863", "ctor_call": "0x00414144"},
+  {"object": "this+0x120", "frames": [360, 361], "pos_rel": [25, 332],  "size": [36, 34], "role": "channel-1 reject-private", "paint_call": "0x00414879", "ctor_call": "0x00414170", "command_template_va": "0x0047AD88", "command_template": "@拒绝 ", "help_string_va": "0x0047AD08", "help_string": "拒绝和 某人 私聊(@拒绝 某人名)"},
+  {"object": "this+0x1D4", "frames": [362, 363], "pos_rel": [65, 332],  "size": [36, 34], "role": "channel-2 world-shout", "paint_call": "0x00414894", "ctor_call": "0x00414196", "command_template_va": "0x0047AD84", "command_template": "!", "help_string_va": "0x0047ACF8", "help_string": "大喊话(!喊话)"},
+  {"object": "this+0x288", "frames": [364, 365], "pos_rel": [105, 332], "size": [36, 34], "role": "channel-3 party-shout", "paint_call": "0x004148B0", "ctor_call": "0x004141BC", "command_template_va": "0x0047AD80", "command_template": "!!", "help_string_va": "0x0047ACE4", "help_string": "编组 喊话(!!喊话)"},
+  {"object": "this+0x33C", "frames": [366, 367], "pos_rel": [145, 332], "size": [36, 34], "role": "channel-4 guild-shout", "paint_call": "0x004148CF", "ctor_call": "0x004141E5", "command_template_va": "0x0047AD7C", "command_template": "!~", "help_string_va": "0x0047ACD0", "help_string": "行会 喊话(!~喊话)"},
+  {"object": "this+0x3F0", "frames": [368, 369], "pos_rel": [185, 332], "size": [36, 34], "role": "channel-5 reject-private-toggle", "paint_call": "0x004148EA", "ctor_call": "0x0041420E", "command_template_va": "0x0047AD70", "command_template": "@拒绝私聊", "help_string_va": "0x0047ACB8", "help_string": "拒绝 私聊(@拒绝私聊)"},
+  {"object": "this+0x4A4", "frames": [370, 371], "pos_rel": [225, 332], "size": [36, 34], "role": "channel-6 reject-guild-toggle", "paint_call": "0x00414905", "ctor_call": "0x00414237", "command_template_va": "0x0047AD60", "command_template": "@拒绝行会聊天", "help_string_va": "0x0047AC98", "help_string": "拒绝 行会 聊天(@拒绝行会聊天)"},
+  {"object": "this+0x558", "frames": [380, 381], "pos_rel": [539, 25],  "role": "scroll-up", "paint_call": "0x00414927", "ctor_call": "0x00414264"},
+  {"object": "this+0x60C", "frames": [382, 383], "pos_rel": [539, 311], "role": "scroll-down", "paint_call": "0x00414945", "ctor_call": "0x0041428A"},
+  {"object": "this+0x6D4", "constructor": "0x00417960", "pos_rel": [533, -208], "size": [16, 502], "role": "input-bar vertical gauge", "paint_call": "0x00414846", "raw_args": [380, 19, 12, 260, 12, 0], "value_field": "this+0x68", "max_field": "this+0x6D0"}
+ ],
+ "shared_control_class": {
+  "vtable": "0x00476654",
+  "ctor_shared": "0x004178E0",
+  "ctor_typed": "0x00417960",
+  "paint": "0x004179B0",
+  "fields": {
+   "+0x4": "selector (lib) object",
+   "+0x8": "frame",
+   "+0x14": "arg3",
+   "+0x1C/+0x1E/+0x20": "word geometry fields",
+   "+0x24": "RECT1",
+   "+0x34": "RECT2",
+   "+0x44": "GetTickCount",
+   "+0x48": "mode byte (0=vertical, 1=horizontal)"
+  },
+  "notes": "Shared control +0x34 is a second RECT, NOT a string buffer (SetRect at ctor 0x4178E0). The channel controls are a DIFFERENT class whose +0x34 holds a GBK string (strlen+rep movsd copy at ctor 0x00417550 tail 0x004175C2-0x004175E0). The two classes are distinct despite both being 'shared controls'."
+ },
+ "channel_control_class": {
+  "vtable": "0x004763A8",
+  "vtable_written_at": "[obj+0x00] by array element ctor 0x00404690 (mov dword ptr [esi],0x4763a8; call 0x4175F0; 0x404693-0x404699) - chat window 9 controls at this+0x6C..0x60C stride 0xB4, array-constructed by base ctor 0x413DA0 via helper 0x4686C4 (0x413DF0-0x413DFE: lea eax,[esi+0x6c]; push 0xb4; push eax; call 0x4686c4)",
+  "vtable_slots": {
+   "+0x00": "0x004046C0 dtor",
+   "+0x04": "0x00417640 paint/mode render (state machine on +0x25)",
+   "+0x08": "0x00417780 hover update (PtInRect -> +0x25=1/0)",
+   "+0x0C": "0x004177C0 pressed setter (PtInRect -> +0x25=2, ret 1)",
+   "+0x10": "0x004177F0 hit test (+0x25=0, PtInRect -> sound 0x69 via 0x45AFC0, ret 1)",
+   "+0x14": "0x00404910",
+   "+0x18": "0x004049B0",
+   "+0x1C": "0x00404A30"
+  },
+  "embedded_subobject_variant": "0x00417F20: lea ecx,[esi+4]; mov dword ptr [ecx],0x4763a8; call 0x4175F0 - writes the same vtable at obj+0x04 for embedded usage in OTHER windows (NOT the chat window, which uses 0x404690 at obj+0x00)",
+  "ctor": "0x00417550 (thiscall ret 0x24 = 9 args; arg1->+0x14, arg2->+0x18, arg3->+0x1C, arg4->+0x28, arg5->+0x2C, arg6->+0x34 help string, arg7->+0x24 enabled, arg8->+0x20 normal-frame override, arg9->+0x30 hover arg; 0x417577 resets +0x25=0)",
+  "subobject_ctor": "0x004175F0 (sets +0x24=+0x25=1, zeroes +0x14..+0x30, SetRect 0x4762B0 at +0x04, rep stosd zeroes 0x20 dwords at +0x34 = 128-byte string buffer)",
+  "paint": "0x00417830 (frame-only blit; no text)",
+  "fields": {
+   "+0x00": "vtable 0x4763A8",
+   "+0x04": "RECT hit rect (SetRect 0x4762B0; PtInRect 0x4762B4 in 0x417780/0x4177C0/0x4177F0)",
+   "+0x14": "selector object (lib)",
+   "+0x18": "frame",
+   "+0x1C": "pressed/state frame",
+   "+0x20": "normal frame override (-1 = no normal frame; all six channels have -1)",
+   "+0x24": "enabled byte (1=on)",
+   "+0x25": "state byte (0=normal,1=hover,2=pressed; set by vtable+8/+0xC/+0x10)",
+   "+0x28": "x (paint arg)",
+   "+0x2C": "y (paint arg)",
+   "+0x30": "hover arg (0 for all six channels)",
+   "+0x34": "GBK help/command string buffer (128 bytes; strlen+rep movsd copy at ctor 0x4175C2-0x4175E0)"
+  },
+  "render_mode": "0x00417640 state machine on +0x25: ==0 normal -> frame +0x20 blit via 0x460240 unless +0x20==-1 (0x417657 skips); ==1 hover -> frame = +0x30!=0 ? +0x18 : +0x20 (channels skip frame select) then UNCONDITIONAL call 0x00417370 tooltip at 0x417719-0x41771B; ==2 pressed -> frame +0x1C blit, no tooltip. Channels (+0x20=-1, +0x30=0) never blit; hover renders the tooltip only.",
+  "tooltip_renderer": "0x00417370: reads [obj+0x34] at 0x417373/0x417378; empty -> zero POINT cache 0x8B1880/0x8B1884, ret; else GBK cache 0x8B1888 + dirty 0x47ADBC + typewriter counter 0x47ADC0; GetCursorPos 0x476240 + ScreenToClient 0x476234 @hWnd [0x8AB7B0]; measure 0x45E0C0; CreateRectRgn 0x476054 + GetRgnBox 0x47604C; CreateSolidBrush(0x96FFFF) 0x476064 + FillRect 0x4762F0 bg; CreateSolidBrush(0) + FrameRect 0x4762F4 frame; 0x45DE50 = SetBkMode TRANSPARENT 0x476044 + SelectObject font 0x476048 + SetTextColor 0x476060 + DrawTextA 0x476280 flags 0x25 (DT_SINGLELINE|DT_VCENTER|DT_CENTER); DeleteObject x3 0x476068",
+  "hit_dispatch": "0x004149A0 (click dispatch 0x42C0B7): first control 0x6C hit -> handled/close; control 0x120 hit -> SetFocus 0x4762B8 HWND 0x8AA48C + push 5 + SetWindowTextA 0x4762CC with command template 0x47AD88.. (0x47AD88/0x47AD84/0x47AD80/0x47AD7C/0x47AD70/0x47AD60); NO +0x34 reads in this routine",
+  "+0x34_read_sites": {
+   "reads": ["0x00417373", "0x00417378 (tooltip renderer only)"],
+   "writes": ["0x004175CD (ctor copy)", "0x00417622 (subobject ctor zero)"],
+   "conclusion": "The +0x34 strings render as HOVER TOOLTIPS only - never static captions (closed 2026-08-11, Finding 243)"
+  }
+ },
+ "text_renderer": {
+  "helper_object": "0x008AB7A8",
+  "chat_message_draw": "0x0045DD70",
+  "chat_call_site": "0x004147F3",
+  "signature": "thiscall ecx=0x8AB7A8 (CWHDXGraphicWindow context), 7 stack args, ret 0x1C",
+  "slot_order": {
+   "arg1": "target surface (offscreen GDI surface; fallback this->+0x1C when 0; bail if null or GetDC fails)",
+   "arg2": "X",
+   "arg3": "Y",
+   "arg4": "textcolor",
+   "arg5": "bgcolor (0 -> SetBkMode TRANSPARENT, nonzero -> SetBkColor)",
+   "arg6": "text (GBK, strlen'd)",
+   "arg7": "font HFONT (0 -> this->+0x28 context default font); slot doubles as HDC out-param of surface->vt+0x44"
+  },
+  "arg_flow": "chat site 0x4147F3 pushes in program order: push 0(arg7 font); push node+0x08(arg6 text); push node+0x04(arg5 bg); push node+0x00(arg4 textcolor); push this+0x6C4+this+0x1C+row(arg3 Y); push this+0x6C0+this+0x18(arg2 X); push [0x8AB7C4](arg1 surface) -> call 0x45DD70. TextOutA(hdc, X=arg2, Y=arg3, text=arg6, len) at 0x45DE12 via [0x476074]",
+  "arg1_source": "0x008AB7C4 = CWHDXGraphicWindow(0x8AB7A8)+0x1C offscreen IDirectDrawSurface7; written only by IDirectDraw::CreateSurface out-param (lea this+0x1C at 0x45D53D/0x45D602, call [ddraw_vt+0x18] at 0x45D552/0x45D617 in 0x45D380); no static store in .text",
+  "arg7": "0 at chat call site -> fallback this->+0x28 default font; explicit font deleted by callee (0x45DE2C), context default not (0x45DE27)",
+  "known_color_literals": {"0x323232": "dark gray", "0x0A0A0A": "near-black", "0xB4FFB4": "pale green"},
+  "renderer_calls": ["0x0045DD70", "0x0045F2D0", "0x0045FD50", "0x0045E730", "0x0045E0C0", "0x0045DE50"]
+ },
+ "input": {
+  "edit_hwnd_global": "0x008AA48C",
+  "edit_object_global": "0x008AA488",
+  "parser_routine": "0x00414364-0x004144F0",
+  "syntax_markers": ["/", "(", ")"],
+  "token_delimiters": ["space 0x20", "colon 0x3A"],
+  "format_prefix": {"va": "0x0047AD28", "text": "/%s "},
+  "format_parser": {"va": "0x0047AD30", "text": "%[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c"},
+  "submit_processing": "0x004144A0 -> per-line 0x00414FA0",
+  "line_recall": "0x004142C0 (PtInRect on line area, walk this+0x58 list, strip / or (!), tokenize, sprintf '/%s ', write edit)",
+  "key_handler": "0x00414E9x: sets '!' (0x47AD84) or 0x47AD90 into edit, EM_SETSEL(0xB1) to end, ShowWindow(5); 0x00414ED0 checks shift (GetKeyState(0x10)) before showing"
+ },
+ "visibility_gate": {
+  "va": "0x0042B180",
+  "status": "CLOSED (2026-08-11)",
+  "role": "chat window visible toggle; gate [ROOT+0x5081C] == chat this+0x30 (chat obj = ROOT+0x507EC, 0x507EC+0x30 = 0x5081C)",
+  "window_vtable": "0x0047660C (stored at 0x413E1A in chat base ctor 0x413DA0)",
+  "visible_flag_field": "this+0x30 (setter = vtable+0x10 = 0x423F80: mov eax,[esp+4]; mov [ecx+0x30],eax; ret 4)",
+  "activated_flag_field": "this+0x34 (setter 0x423F90; deactivate-all 0x42B820 zeroes it per listed window)",
+  "dispatcher": {
+   "va": "0x0042ADB0",
+   "role": "window-activate switch on window index 0-15 (43 E8 callers; e.g. click stubs 0x42C0A2/0x42C0B7/0x42C0E1/0x42C10B/0x42C131, key handler 0x42CBD0)",
+   "entry": "call 0x42B820 (deactivate-all: per activation-list entry jump table 0x42B938, [8]=0x42B8B6 -> push 0; lea ecx,[ROOT+0x507EC]; call 0x423F90 -> chat+0x34=0); mov eax,[esp+0xC]; cmp eax,0xF; ja 0x42B3DD; jmp [eax*4+0x42B3E4]",
+   "jump_table": "0x0042B3E4 16 entries: [0]=0x42ADCF,[1]=0x42AE42,[2]=0x42AE91,[3]=0x42AEE0,[4]=0x42B06B,[5]=0x42B3DD,[6]=0x42B0BA,[7]=0x42B131,[8]=0x42B180(chat),[9]=0x42B25E,[10]=0x42B3DD,[11]=0x42AF2F,[12]=0x42AF7E,[13]=0x42AFCD,[14]=0x42B01C,[15]=0x42B2AD; default tail 0x42B3DD returns 0 (dword 0x42B3E0 = 0x0004C25E is padding, NOT an entry)",
+   "activation_list": "ROOT+0xD24 (list obj: +4 head / +0xC tail / +0x14 count = ROOT+0xD28/+0xD30/+0xD38; entries [0]=window index,[4]=prev,[8]=next): 0x42AC50 = remove+free, 0x42AC30 -> 0x449870 = append, 0x42B980 = is-top check"
+  },
+  "close_route": {
+   "trigger": "close-button child chat+0x6C (9-control array from chat base ctor 0x413DA0, vtable 0x4763A8, hit-test vtable+0x10 = 0x4177F0)",
+   "hit_dispatch": "chat click handler 0x4149A0: per-control call [vtable+0x10](y,x); close-button hit -> return 1 (0x414A19)",
+   "mouse_stub": "0x42C0B7: lea ecx,[esi+0x507ec]; call 0x4149A0; test eax,eax; je 0x42C198; push 8; mov ecx,esi(=ROOT); call 0x42ADB0; mov eax,1; ret 8",
+   "keyboard_stub": "'R' (0x52) in key handler 0x42CBD0: push 8; mov ecx,ebp(=ROOT); call 0x42ADB0 (0x42CCF3-0x42CCF7)",
+   "chain": "0x4177F0 (close hit) -> 0x4149A0 -> 0x42C0B7 -> 0x42ADB0(ROOT, 8) -> jump-table[8] 0x42B180 -> gate [ROOT+0x5081C] decides hide/show -> 0x423F80(chat, 0|1) -> chat+0x30"
+  },
+  "hide_path": "gate != 0: MoveWindow(edit hwnd [0x8AA48C], x=[0x8AB7F0]+0xDF, y=[0x8AB7F4]+0x23A, w=0x162, h=0x10, TRUE) @0x42B1B2; push 8; call 0x42AC50 (remove window 8 from activation list); call [chat_vt+0x10](0) -> chat+0x30=0 @0x42B1CF; return 0",
+  "show_path": "gate == 0: w=[ROOT+0x51148]-[ROOT+0x51140], h=[ROOT+0x5114C]-[ROOT+0x51144]; MoveWindow(edit, x=[0x8AB7F0]+[ROOT+0x50804]+[ROOT+0x51140], y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144], w, h, TRUE) @0x42B223; ShowWindow(edit, 5) @0x42B232; push 8; call 0x42AC30 (add window 8); call [chat_vt+0x10](1) -> chat+0x30=1 @0x42B24F; return 1",
+  "edit_hwnd": "0x008AA48C (native EDIT box; anchors 0x8AB7F0/0x8AB7F4, chat-rect ROOT+0x51140..0x5114C, offsets ROOT+0x50804/+0x50808)",
+  "sibling_gates": "0x42B25E = index 9 (gate [ROOT+0x51180]); 0x42B2AD = index 15 (gate [ROOT+0x52E8C], extra edit [ROOT+0x53028]); same hide/show shape"
+ },
+ "evidence_level": "primary-static (+ primary-resource visual for frames)",
+ "closed_notes": [
+  {
+   "key": "six-channel-0x34-string-render-mode",
+   "date": "2026-08-11",
+   "conclusion": "The six channel controls' +0x34 GBK strings are HOVER TOOLTIPS (text) only, never static captions. They are drawn by 0x00417370 (tooltip renderer), called unconditionally from the +0x25==1 hover branch of paint 0x00417640 at 0x41771B, at the cursor position with 0x96FFFF light-yellow background + 1px black frame via DrawTextA flags 0x25. Normal paint 0x417830 and frame blit 0x460240 are frame-surface only; the sole +0x34 read sites are 0x417373/0x417378 inside the tooltip renderer (ctor write 0x4175CD, subobject zero 0x417622). Click dispatch 0x4149A0 does not read +0x34; it injects separate command templates (0x47AD88-family) into the native EDIT box (SetWindowTextA 0x4762CC, HWND 0x8AA48C). Full VA evidence chain in chat-window-render-evidence.json closed_notes.",
+   "evidence_level": "primary-static"
+  },
+  {
+   "key": "0x45DD70-slot-order-and-arg1-arg7",
+   "date": "2026-08-11",
+   "conclusion": "Renderer 0x45DD70 slot order closed: arg1=target surface (offscreen GDI surface; fallback this->+0x1C; HDC obtained via surface->vt+0x44 out-param into the arg7 slot), arg2=X, arg3=Y, arg4=textcolor (SetTextColor 0x476060), arg5=bgcolor (0 -> SetBkMode TRANSPARENT 0x476044, else SetBkColor 0x476050), arg6=text (strlen + TextOutA 0x476074), arg7=font (0 -> this->+0x28 default; explicit font deleted by callee). Chat site 0x4147F3: arg1=[0x8AB7C4], arg2=this+0x6C0+this+0x18, arg3=this+0x6C4+this+0x1C+row, arg4=msg+0x00, arg5=msg+0x04, arg6=msg+0x08, arg7=0. [0x8AB7C4] written only via IDirectDraw::CreateSurface out-param (0x45D53D/0x45D552, 0x45D602/0x45D617 in 0x45D380) - no static store exists.",
+   "evidence_level": "primary-static"
+  },
+  {
+   "key": "0x42B180-visibility-gate-wiring",
+   "date": "2026-08-11",
+   "conclusion": "Visibility gate closed: [ROOT+0x5081C] IS the chat window's own visible flag this+0x30 (chat=ROOT+0x507EC, vtable 0x47660C, setter vtable+0x10=0x423F80). Close route: close-button child (chat+0x6C, vtable 0x4763A8) hit-test vtable+0x10=0x4177F0 -> chat click dispatch 0x4149A0 returns 1 -> mouse stub 0x42C0B7 -> push 8; call dispatcher 0x42ADB0 (ROOT) -> jump-table 0x42B3E4[8]=0x42B180 -> hide (park edit, remove window 8 from activation list 0x42AC50, chat+0x30=0, ret 0) or show (place edit in chat rect, ShowWindow(edit,5), add window 8 via 0x42AC30->0x449870, chat+0x30=1, ret 1). 'R' key 0x42CCF7 toggles the same way. Dispatcher deactivates all listed windows first (0x42B820: per entry 0x423F90 -> +0x34=0).",
+   "evidence_level": "primary-static"
+  }
+ ],
+ "pending": [],
+ "open_question": "CLOSED (2026-08-11, Finding 243): the six +0x34 strings render as hover tooltips only - drawn by 0x00417370 in the +0x25==1 hover branch of 0x00417640 at the cursor position (GetCursorPos/ScreenToClient) with 0x96FFFF background via DrawTextA flags 0x25; never as static captions. Clicking a channel injects a separate command-template constant (0x47AD88-family) into the native EDIT box, unrelated to +0x34."
+}

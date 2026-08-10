@@ -101,7 +101,56 @@
     "evidence_level": "primary-static"
   },
   "interpretation": "The original UI has a separate visibility state machine from its position-update dispatcher. A window object is tested at its +0x30 state gate; showing registers its window ID in the main+0xD24 linked-list manager, while hiding removes that ID node. The virtual +0x10 callback then receives 1/0. Shared construction and the main-init call scan now prove the default gate is zero and registration alone does not make a window visible.",
-  "pending": [
-    "Resolve the message payload fields passed into 0x0043E4B0 and determine whether any Interface1c prompt is displayed before the Frame 602 window."
+  "pending": [],
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "0x0043E4B0 message payload = WM 0x201/0x202 packed lParam coordinates; Interface1c prompt is displayed before the Frame 602 window (both halves primary-static)",
+      "conclusion": "PART 1 (payload): 0x43E4B0 is the notice window (id 15) click handler: prologue `mov eax,0x1f40; call 0x468d10` (__chkstk), `mov ebp,ecx` (this = notice object main+0x2A548C+0x52E5C), `ret 8` -> 2 stack args (arg1=edi=x, arg2=esi=y). It dispatches its child controls this+0x54 (frames 161/162) and this+0x108 (frames 606/607) with (x,y); on confirm-hit with [this+0x1CC] it sprintf-formats via 0x45DC70 into 0x8AB7A8 then 0x4524A0/0x4524D0 on 0x8AB828; on child-hit it returns 1 and the caller hides id 15. Payload source: WM_LBUTTONDOWN (0x201) -> 0x41D470; WM_LBUTTONUP (0x202) -> 0x41E451 -> 0x41DB80 -> 0x42BE20. Both unpack `[esp+8]` = (y<<16)|x: 0x41D485/0x41D48E and 0x41DB93/0x41DB99 -> x = low16 -> main+0x35B2A8, y = shr16 -> main+0x35B2AC. Call site 0x42BE8C inside 0x42BE20 (gate `[esi+0x52E8C]` != 0 branch): `push [esp+0x18](y); push [esp+0x14](x); lea ecx,[esi+0x52E5C]; call 0x43E4B0`; on nonzero -> `push 0xf; call 0x42ADB0` (show id 15). The LBUTTONDOWN analog is 0x42BA20 -> 0x43E640 (same notice object). PART 2 (display order): YES - the Interface1c prompt is displayed before the Frame 602 window, enforced by mode byte 0x8B1878. Protocol case 0x64/sub0 (0x41CE14, msg 0x7ED-0x7F0 jump table 0x41E690): gate 0x419CC0 -> queue tag 0x3F1 (0x451660 on 0x8AB828) -> file loader 0x42E1F0 -> `[esi+0x428208]=0; byte[esi+0x428204]=2` (0x41CE57, the only writer of the state byte, value 2). Main-window frame step 0x41C1C7 -> 0x41B5D0 (state byte 2 + acc > 0x9C4 -> 0x41B65F) -> 0x419BE0: mode byte = 2, mirrors [0x8AB820]/[0x8B1870] = 0x8A7140 (Interface1c class), call 0x456CB0 (Interface1c re-init), 0x45D270(0x8AB7A8, 0x280, 0x1E0, 0x10, [1|2], 5) text format ([0x47EE89] selects 1/2). Main-loop switch @0x402123: mode 2 -> 0x8A7140 + 0x4575D0 (Interface1c prompt step; state 2 @0x457615: gate 0x45C900 -> SetWindowTextA(0x8AA48C, 0x8B187C) + MoveWindow(0x8AA48C, [0x8AB7F0]+0x120, [0x8AB7F4]+0x195, 0x4B, 0xD, 1) + ShowWindow(0x8AA48C, 5) = prompt shown; state 4 @0x45773C -> 0x4570A0 -> 0x4570C0: mirrors = 0x47EF18, mode byte = 3). Mode 3 -> 0x47EF18 + 0x41BB00 (gate [0x8AB7E8] == 0 -> 0x41B440+0x41B500) = Frame-602/notice banner phase (banner singleton 0x777200 ctor frame 0x25A=602 @0x425A46; show `push 0xf; mov ecx,0x7243A4; call 0x42ADB0` @0x425A26/0x425B25). The mode byte 0x8B1878 ordering (0->2->3) statically guarantees Interface1c prompt (mode 2) precedes Frame 602/banner (mode 3).",
+      "evidence_level": "primary-static",
+      "key_vAs": [
+        "0x43E4B0",
+        "0x42BE8C",
+        "0x42BE20",
+        "0x41DB80",
+        "0x41DB93",
+        "0x41DB99",
+        "0x41D470",
+        "0x41D485",
+        "0x41D48E",
+        "0x41E451",
+        "0x42BA20",
+        "0x43E640",
+        "0x41CDE0",
+        "0x41CE14",
+        "0x41CE57",
+        "0x42E1F0",
+        "0x41B5D0",
+        "0x41C1C7",
+        "0x41B65F",
+        "0x419BE0",
+        "0x456CB0",
+        "0x45D270",
+        "0x402123",
+        "0x4575D0",
+        "0x457615",
+        "0x45773C",
+        "0x4570C0",
+        "0x41BB00",
+        "0x41B440",
+        "0x41B500",
+        "0x425A26",
+        "0x425A46",
+        "0x425B25",
+        "0x8B1878",
+        "0x8A7140",
+        "0x8AB820",
+        "0x8B1870",
+        "0x47EF18",
+        "0x8AB7E8",
+        "0x8AA48C",
+        "0x8B187C"
+      ]
+    }
   ]
 }

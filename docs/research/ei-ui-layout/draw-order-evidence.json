@@ -1,7 +1,7 @@
 {
   "source": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
   "method": "static call-graph and x86 disassembly correlation",
-  "evidence_level": "primary-static-draw-candidate",
+  "evidence_level": "primary-static-draw",
   "coordinate_system": {"viewport": [800, 600], "hud_origin": [0, 465], "warning": "Some window visibility/order is state-dependent and needs runtime capture."},
   "layers": [
     {
@@ -22,9 +22,9 @@
       "order": 30,
       "id": "hud-buttons-and-bars",
       "resource_families": ["GameInter.wil frames 100-115", "GameInter.wil frames 60/61", "GameInter.wil frame 63"],
-      "draw_chain": ["0x00417550 control constructor", "0x004179B0 button renderer", "0x0045F2D0 composition candidate"],
+      "draw_chain": ["HUD 帧例程 0x004294E0 (ret 0xC @0x429624)", "0x4294EB 底板帧 0x32 经 0x466130 + 0x00460240 合成", "0x004283C0 状态图标循环 [this+0xD08] 次", "0x00429740 HP/MP/EXP 条", "0x00429556 16 子控件循环 this+0x567C 步长 0xB4 call [vtable+0x04]", "0x004179B0 共享量条", "0x004280F0 可见窗口列表 paint"],
       "confidence": "primary-static-call-chain",
-      "warning": "Exact inter-control z-order is not yet runtime-confirmed; frame 50 already contains the inactive metal plate and compass art."
+      "warning": "运行时帧值/文本颜色仍未捕获；16 子控件即按钮族（构造 0x00417550），条先于按钮绘制（0x429740 在 0x429556 前），共享量条后于按钮（0x429584），详见 closed_notes[1]。"
     },
     {
       "order": 40,
@@ -32,7 +32,7 @@
       "resource_families": ["GameInter.wil", "Interface1c.wil"],
       "draw_chain": ["derived window vtable paint", "0x00423D00 shared/base paint candidate", "0x00460240 composition candidate"],
       "confidence": "primary-static-window-paint-candidate",
-    "warning": "Window visibility and stacking depend on state; 0x004280F0 now proves that the current visible-list order is consumed for painting, while insertion/promote policy remains state-dependent."
+    "warning": "可见性标志 (+0x30/+0x34) 仍为运行时状态；跨窗口叠放顺序 = 链表序（0x4280F0），提升 = 0x42B6A0 hide+show 重追加（见 closed_notes[0]）。"
     },
     {
       "order": 50,
@@ -97,7 +97,7 @@
   "cross_window_order_rule": {
     "paint_dispatch": "0x004280F0–0x00428357 consumes main+0xD28 linked-list order; each node ID is dispatched to one specialized paint VA before node+0x04 is read.",
     "consequence": "The final overlapping-window order is runtime list order, not a universal hard-coded category order. A later node paints over an earlier node when their rectangles overlap.",
-    "known_list_mutations": ["0x00449870 insertion/append path", "0x0042AC50 hide/remove path"],
+    "known_list_mutations": ["0x00449870 insertion/append path", "0x0042AC50 hide/remove path", "0x0042AC30 unconditional show/append (wrap of 0x449870)", "0x0042B6A0 position+show dispatcher: close-all 0x42B820 -> hide 0x42AC50 -> show 0x42AC30 -> visible 0x423F90(1) -> position 0x4240C0"],
     "evidence_level": "primary-static-visible-list-dispatch",
     "implementation_note": "The restoration preview should expose list order as a debug layer and keep explicit z-order data separate from each window's local paint order.",
     "normalized_draw_call_contract": {
@@ -111,8 +111,30 @@
     "source_artifacts": ["window-traversal-evidence.json", "window-visibility-dispatch-evidence.json", "window-position-dispatch-evidence.json"]
   },
   "pending": [
-    "Whether any specific UI command performs a hide-then-show promotion sequence; the base insertion and deletion policy is now recovered from 0x00449870/0x0042AC50.",
-    "Exact runtime order of HP/MP/EXP child bars relative to HUD button overlays; the internal bar resource call order is now statically recorded in hud-bars-render-evidence.json.",
-    "Runtime business/state mapping and remaining field-level text semantics for store, exchange and option; their local base/text/control ordering is now recorded in the specialized evidence files."
+    "重复 show(ID) 边界：0x42AC30/0x449870 无条件追加、不查重复，直接调用可能产生重复节点=重复 paint 边界（0x42B6A0 提升路径先 hide 后 show 不会重复，但全二进制未逐一审计所有 0x42AC30/0x449870 调用点）——candidate。",
+    "store/exchange/option 状态→业务名映射：绘制期状态分派已 primary-static（见 closed_notes[2]），但 store 状态 0..4 的业务名（买卖/仓库等）、exchange 网格/按钮业务名与量条填充值运行时来源、option 控件帧对（161/162、760/761、762/763）对应的选项语义仍为 candidate/pending。"
+  ],
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "hide-then-show promotion",
+      "conclusion": "存在专门命令执行 hide-then-show 提升：定位+显示分派 0x0042B6A0（参数 id，跳表 0x42B7E0 覆盖 id 0..0xE）在 count=main+0xD38>0 时依次调用 0x42B820（遍历可见链表对每节点 push 0 + 0x423F90 清可见标志，即关全部）、0x42AC50（hide：从 main+0xD28 链表摘除命中节点并释放）、0x42AC30（show：无条件追加尾节点），然后按 id 定位窗口对象并 0x423F90(1) 置可见 + 0x4240C0 应用位置（store id2 特殊：先 0x44E910 hit-test，命中即拒开）。show 经 0x449870 分配 12 字节节点（+0=id、+4=next、+8=prev）追加到 tail（manager+0x0C，count=manager+0x14 自增；自环节点 new->next=new @0x44989D 由 count 守卫不可达）；paint 分派 0x4280F0 从 head=main+0xD28 沿 node+0x04 前进、count 守卫、按 node id 跳表 0x428358 调专用 paint。因此 hide(摘链)+show(追加尾) 天然把窗口提升为最后一个绘制=最上层；0x42B6A0 即显式 hide-then-show 提升命令。修正 window-traversal-evidence.json 的 promotion_audit（其称无调用方 BB 含无条件 hide(ID)+show(ID)，0x42B6A0 的 0x42B6BC-0x42B6C7 正是该序列，本次实测确认）。",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x42B6A0", "0x42B820", "0x42AC50", "0x42AC30", "0x449870", "0x4280F0", "0x428358", "0x423F90", "0x4240C0", "0x44E910"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "HP/MP/EXP bars vs HUD button overlays",
+      "conclusion": "HUD 帧例程 0x004294E0（ret 0xC @0x429624）内静态调用序：0x4294EB 经 0x429630 选底板帧 0x32(50) 并由 0x460240 合成 HUD 底板（原点 this+0xC58/0xC5C，尺寸 0x320/0x258）→ 0x42953F call 0x4283C0（HUD 状态图标循环，[this+0xD08] 次调 0x415090）→ 0x429546 call 0x429740（HP/MP/EXP 条；0x429740 唯一 E8 调用者 = 0x429546）→ 0x429556 循环 16 子控件（esi+0x567C 步长 0xB4，call [vtable+0x04]，即按钮族，构造 0x417550）→ 0x429584 call 0x4179B0（共享量条，esi+0x61BC，(0x248,0x1A9,[esi+0xD08],[esi+0xD20])，内部 fild/fidiv value/max）→ 条件 0x4189A0（门控 esi+0x53030）→ 0x4295B9 call 0x4280F0（可见窗口列表 paint）→ 0x430A40/0x4153B0/0x428930/0x428F80/0x42A850。条内顺序见 hud-bars-render-evidence.json draw_sequence（动态帧 0x82-0x85 @0x429819 → 62@0x4299CB → 60@0x429BDB → 61@0x429C53 → 63@0x429FD5 → 经验% 文本 @0x42A065）。结论：条（HP/MP/EXP）先于 16 个按钮子控件与共享量条绘制；HUD 层内顺序 = 底板 → 图标 → 条 → 按钮 → 量条 → 窗口列表。",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x4294E0", "0x429740", "0x4283C0", "0x4179B0", "0x429556", "0x429584", "0x4295B9", "0x4280F0"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "store/exchange/option state dispatch",
+      "conclusion": "store paint 0x44E260：先 call [vtable+0x0C] 基类 paint；状态字节 this+0x5F8∈{0..4}。重定位集（0x417830 helper，坐标 = winx=this+0x18/winy=this+0x1C 相对）：state==2 分支 0x44E282-0x44E2F2 重定位 4 控件（this+0x1BC @(winx+0x1D2,winy+0xA9)、0x270 @(winx+0x172,winy+0xA2)、0x324 @(winx+0x144,winy+0x9F)、0x3D8 @(winx+0x1B2,winy+0x9F)）；state 0/1/3/4 公共 0x44E2F7-0x44E329 重定位 this+0x54 @(winx+0x10A,winy+0x10E)、0x108 @(winx+0x7F,winy+0x10B)；0x44E32E 重读状态（raw 8A 86 F8 05 00 00）：==1 → 0x44E338-0x44E3AD 再重定位 0x1BC/0x270/0x324/0x3D8（共 6 控件）；==4 → 0x44E3B3-0x44E3DF 再重定位 this+0x48C @(winx+0x1FA,winy+0x43)、0x540 @(winx+0x188,winy+0x3D)；0x44E3EA 循环 8 子控件（edi=this+0x54 步长 0xB4，call [vtable+0x04]）；0x44E404 再读状态分派：{0,1,3,4}→0x44D590、{1,2}→0x44DB50、{4}→0x44E040。exchange paint 0x415B10：call [vtable+0x0C] 后 SetRect(0x4762B0) 以 center_x=winx+(right−left)/2 拆左右矩形 this+0x5C/this+0x6C（0x415B21-0x415B63）；绘制期状态=鼠标所在侧：PtInRect(0x4762B4) 命中左矩形（0x415B65 读全局 0x7DA1C0=鼠标x / 0x7DA1C4=鼠标y，与 ptinrect_calls.json 全部调用点一致）→ bl=0、左网格原点 (winx+0x15,winy+0x30)、网格矩形 (winx+0x15,winy+0x30)-(winx+0xC9,winy+0x108)；否则 bl=1、右网格原点 (winx+0xFD,winy+0x30)、矩形到 (winx+0x1B1,winy+0x108)；0x415BC2 对选中网格矩形二次 PtInRect，命中且 0x7243C4!=0 / 0x7243D8==0 时经 0x416830 格索引 + 0x4162E0（用 0x7243DC）映射物品，格高亮 x = winx + cell*9*4 + (0x15|0xFD)。option paint 0x441380：call [vtable+0x0C]；无状态字节分支；9 个固定重定位（this+0x7C 关闭 / 0x130 / 0x1E4 / 0x298 / 0x34C / 0x400 / 0x4B4 / 0x568 / 0x61C，坐标见 system-window-render-evidence）+ 2 个运行时偏移控件（this+0x6D0 用 this+0x6C、this+0x784 用 this+0x74 作 x 偏移）+ 11 子控件循环（this+0x7C 步长 0xB4，call [vtable+0x04]）；状态由子控件帧对（161/162、760/761、762/763）与运行时偏移表达，绘制期无状态分派。",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x44E260", "0x417830", "0x44D590", "0x44DB50", "0x44E040", "0x415B10", "0x4762B0", "0x4762B4", "0x415B65", "0x415BC2", "0x416830", "0x4162E0", "0x7DA1C0", "0x7DA1C4", "0x441380"]
+    }
   ]
 }

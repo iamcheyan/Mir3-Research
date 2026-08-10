@@ -22,14 +22,14 @@
       "member_list_render": {
         "paint_va": "0x004243D0",
         "linked_list_head": "this+0x58",
-        "visibility_guard": "this+0x68",
+        "visibility_guard": "member-list count this+0x68 (member-list container at this+0x54, vtable 0x4767E0); window visibility flag = this+0x30 via setter 0x423F80",
         "row_index": "local counter starting at 0",
-        "column_rule": "index & 1",
+        "column_rule": "index & 1 (odd -> left column x=window.x+45, even -> right column x=window.x+145; old formula had the mod-2 mapping inverted, see closed_notes)",
         "row_rule": "floor(index / 2)",
         "screen_relative_origin": [45, 90],
         "column_step": 100,
         "row_step": 20,
-        "formula": "x = window.x + 45 + 100*(index mod 2); y = window.y + 90 + 20*floor(index/2)",
+        "formula": "x = (index odd) ? window.x+45 : window.x+145; y = window.y + 90 + 20*floor(index/2)",
         "draw_helper": "0x0045DD70",
         "evidence": "0x00424445-0x0042448E",
         "confidence": "primary-static"
@@ -42,7 +42,7 @@
           {"string_va": "0x0047BA08", "text_gbk_decoded": "[允许]", "condition": "this+0x3F0 != 0"}
         ],
         "text_compositor_va": "0x0045DD70",
-        "text_origin_expression": {"x": "window.x+0x6E candidate from register-flow base", "y": "window.y+0x3A candidate from register-flow base"},
+        "text_origin_expression": {"x": "UNPROVABLE (reads [esp+0x1C] slot R-0xC, never written in 0x4243D0 -> uninitialized stack garbage + 0x6E; old 'window.x+0x6E' and ctor register-flow P0-0x1148 rejected, see closed_notes)", "y": "window.y+0x3A (primary-static, add edi,0x3A at 0x424549/0x424563)"},
         "paint_repositioned_controls": {
           "routine": "0x004244A6-0x0042452D",
           "records": [
@@ -63,7 +63,35 @@
         {"order": 4, "va": "0x00424532-0x00424570", "role": "permission state text", "evidence": "The [允许]/[拒绝] string is selected from this+0x3F0 and drawn after control positioning."},
         {"order": 5, "va": "0x0042457C-0x00424591", "role": "child control paint sequence", "evidence": "The five group child objects are then painted by vtable +0x04 in order."}
       ],
-      "pending": ["member field text/icon ordering", "confirm exact screen origin of the permission text register-flow expression", "whether the visible linked-list count is capped by clipping", "runtime open-state transitions"]
+      "closed_notes": [
+        {
+          "key": "member field text/icon ordering",
+          "date": "2026-08-11",
+          "conclusion": "Member row = single text field node+0x04, NO icon drawn. Draw order = linked-list insertion order (head this+0x58, node next field +0x0C; feeder 0x419EE4 -> container push_back 0x424840). Row index starts at 0; index odd -> left column x=window.x+0x2D (screen 317), index even -> right column x=window.x+0x91 (screen 417); y = window.y+0x5A+20*floor(index/2) (screen 213+20k). Evidence formula x=window.x+45+100*(index mod 2) had the mod-2 column mapping INVERTED (machine: odd->left+45, even->right+145; ebx holds window.x+0x2D inside the loop, incremented at 0x4243EC for the header).",
+          "evidence": "0x4243D0 loop: 0x42444A-0x424461 floor(index/2)*20; 0x42446F je even-path; odd 0x424471-0x424476 push ebx (window.x+0x2D); even 0x424479 lea edx,[ebx+0x64] (window.x+0x91); 0x42446A push 0xFFFFFF; 0x424489 call 0x45DD70. Node shape {+0 vtable, +4 text, +0xC next} at 0x42443E/0x42449B. Feeder 0x419EE4 -> 0x424840 (container vtable 0x4767E0).",
+          "correction": "member_list_render.formula/column_rule updated in place (mod-2 mapping inverted vs evidence)"
+        },
+        {
+          "key": "confirm exact screen origin of the permission text register-flow expression",
+          "date": "2026-08-11",
+          "conclusion": "y PROVEN: window.y+0x3A (screen 181 at origin y=123). x statically UNPROVABLE: 0x42453E-0x424551 reads [esp+0x1C] (frame slot R-0xC), which is never written anywhere in 0x4243D0 (only slots +0x10/+0x14/+0x18/+0x20/+0x24 are written) -> uninitialized stack garbage + 0x6E. Old evidence value window.x+0x6E and the constructor-register flow P0-0x1148 are stale artifacts; rejected as x origin.",
+          "evidence": "0x424532-0x424577: mov eax,[esi+0x3F0]; je 0x424558 -> 0x47BA00 \"[拒绝]\", else 0x47BA08 \"[允许]\"; add edi,0x3A (0x424549/0x424563) y=window.y+0x3A; mov ecx,[esp+0x1C]; add ecx,0x6E (0x42453E-0x424551) x from never-written slot.",
+          "correction": "text_origin_expression updated: y window.y+0x3A (primary-static), x marked unprovable-stack-slot"
+        },
+        {
+          "key": "whether the visible linked-list count is capped by clipping",
+          "date": "2026-08-11",
+          "conclusion": "NO explicit cap: the group paint loop 0x42443E-0x4244A4 walks the ENTIRE linked list (terminates only on next==0); no 18-row-style cap (contrast guild 0x12). Only gates: count this+0x68 != 0 and head this+0x58 != 0. Over-window rows are clipped by the engine (bg 0x460240 and text 0x45DD70 are engine-clipped), not truncated by the list.",
+          "evidence": "0x424426 test [esi+0x68]; 0x42442D mov [esi+0x58]; 0x42449B mov eax,[eax+0xC]; test eax,eax; jne 0x42443A full traversal. Guild cap contrast: 0x4252D4 cmp eax,0x12 / 0x4254C5."
+        },
+        {
+          "key": "runtime open-state transitions",
+          "date": "2026-08-11",
+          "conclusion": "Full show/hide chain: show-by-id 0x42AC30 (registers id into active list main+0xD24, container fn 0x449870); hide-by-id 0x42AC50 (removes from main+0xD28..+0xD38). Group id=6. Toggle fn 0x42B0BA: visibility read via main+0x47864 (= group window this+0x30); shown -> 0x42AC50(6) + [vtable+0x10](win,0) (0x42B0C8-0x42B0DB); hidden -> 0x42AC30(6) + [vtable+0x10](win,1) (0x42B0E7-0x42B0FA) + companion tab frames 0x398/0x399 repositioned at main+0x47B70 via 0x417880 (args depend on [esi+0x47C24]) (0x42B0FD-0x42B120). Show dispatcher 0x42B6A0(id,x,y): 0x42B820 tooltip clear -> 0x42AC50(id) -> 0x42AC30(id) -> [main+0xD3C]=1 -> per-window tail: group 0x42B79A (window main+0x47834), guild 0x42B774 (main+0x4707C); tail = push 1 -> 0x423F90 ([+0x34]=1) -> 0x4240C0 (if [+0x30]&&[+0x34]&&[+0x3C] all set: [+0x48]=x-[+0x18], [+0x4C]=y-[+0x1C]). vtable+0x10 setter = 0x423F80 mov [ecx+0x30],eax. Paint dispatcher 0x428100 walks main+0xD28..+0xD38; group via 0x4281D4 lea ecx,[esi+0x47834]; call 0x4243D0. Main mouse dispatch: group hover 0x42C063 lea ecx,[esi+0x47834]; call 0x424610 -> push 6 -> 0x42ADB0 (id jump table <=0xF); click 0x42BC24 -> 0x424730. Instance: main+0x47834.",
+          "evidence": "0x42AC30/0x42AC50/0x42B0BA-0x42B130/0x42B6A0 + tail table 0x42B704-0x42B7DD (offsets +0x33188/+0x3399C/+0x4707C/+0x47834/+0x47C28/+0x507EC/+0x51150/+0x516E8/+0x518E0/+0x52118/+0x524F0)/0x423F80/0x423F90/0x4240C0/0x428100/0x42ADB0/0x42C063/0x42BC24"
+        }
+      ],
+      "pending": []
     },
     {
       "id": "window.guild-candidate",
@@ -81,7 +109,7 @@
         {"call_va": "0x00424FA3", "frame_pair": [618, 619], "position_expression": {"x": "window.x+196", "y": "arg8"}, "evidence_level": "primary-static-register-ambiguous"},
         {"call_va": "0x00424FC3", "frame_pair": [620, 621], "position_expression": {"x": "window.y+123", "y": "window.y+50"}, "evidence_level": "primary-static-register-ambiguous"},
         {"call_va": "0x00424FEB", "frame_pair": [622, 623], "position_expression": {"x": "arg8", "y": "ecx+1360"}, "evidence_level": "primary-static-register-ambiguous"},
-        {"call_va": "0x0042500F", "frame_pair": [624, 625], "position": [196, 50], "semantic_candidate": "guild tab/action"}
+        {"call_va": "0x0042500F", "frame_pair": [624, 625], "position": [600, 72], "semantic_candidate": "guild tab/action", "note": "ctor-time pair (600,72) from stale registers (x=600-frame-id, y=72); paint-time SetPosition truth is (397,402) — see paint_repositioned_controls and closed_notes"}
       ],
       "member_list_render": {
         "paint_va": "0x00425280",
@@ -145,7 +173,28 @@
           {"frame_pair": [624, 625], "normal_visual_text": "关闭窗口", "pressed_visual_text": "关闭窗口", "confidence": "high"}
         ]
       },
-      "pending": ["Correlate each artwork label with its exact control object and click/business branch", "reconcile constructor-time register expressions with paint-time SetPosition values", "special marker color/field styling"]
+      "closed_notes": [
+        {
+          "key": "Correlate each artwork label with its exact control object and click/business branch",
+          "date": "2026-08-11",
+          "conclusion": "9 controls, array at this+0x118, stride 0xB4. Frames/labels from ctor 0x424E60; click branch order in dispatcher 0x4258F0 is 0,1,2,3,4,7,5,8,6 (NOT ctor order). Control 0 +0x118 (frames 161/162) 关闭: hit -> consumed, no state change. Control 1 +0x1CC (610/611) 会员升职: [this+0x98]=0;[this+0x9C]=0; call 0x4523E0 on input box 0x8AB828. Control 2 +0x280 (612/613) 成员踢出: [this+0x98]=1;[this+0x9C]=0; call 0x452410 on 0x8AB828. Control 3 +0x334 (614/615) 盟主转让: [this+0x9C]=0;[this+0x98]=2 (other-state green page). Control 4 +0x3E8 (616/617) 邀请入会: leader guard [this+0x94]; if 0 -> tooltip 0x47BAA4; else hide 0x7243A4 (0x42ADB0 id 0xF), open dialog window 0x777200 frame 0x25A (602) with [0x7773D0]=1 (0x423E80), build list3 (head this+0xEC/count this+0xFC) via 0x45DC70 \"%s\\r\\n\" (0x47BB4C) into 0x8B187C, call [0x4762CC] submit. Control 7 +0x604 (622/623) 行会解散: leader guard; if [this+0xB4]==0 -> tooltip 0x47BB28 \"请先选择行会成员名单,再点这里编辑.\"; else hide 0x7243A4, open dialog frame 0x259 (601) with [0x7773D0]=0, build list1 (head this+0xBC/count this+0xCC), call [0x4762CC]. Control 5 +0x49C (618/619) 行会公告: leader guard; tooltip id 0x40F text 0x47BAF4 \"%s  请输入要删除的行会成员名字\" (sprintf 0x46811C with %s = [this+0x54]). Control 8 +0x6B8 (624/625) 关闭窗口: leader guard; tooltip id 0x415 text 0x47BAC8 \"请输入要解除联盟关系的行会的名称\". Control 6 +0x550 (620/621) 退出行会: INVERTED guard [this+0x94]!=0 (leader) -> no-op return; member -> tooltip 0x47BAA4. All guards read [this+0x94]. Tooltip display = 0x418030 (ecx=0x7E04C8; args 0x565994,4,flag,text,-1,-1,id); tooltip-input handler 0x42580A-0x4258E9: id 0x415 -> format 0x47BA90 \"@退出联盟 \" via 0x46811C into 0x8B187C -> edit box 0x8AB828 via 0x4520F0+0x4523E0. Tooltips are click-time prompts and are independent facts from artwork glyphs (关闭窗口 prompts for alliance-name input; 行会公告 prompts for member-name deletion). Dispatcher 0x4258F0 (prologue mov eax,0x148C; call 0x468D10; x=[esp+0x1494], y=[esp+0x14A0]; scroll ctrl this+0x76C via 0x417E60 first) called from main mouse dispatch 0x42C039-0x42C052 (lea ecx,[esi+0x4707C]; call 0x4258F0) then push 4 -> 0x42ADB0 post-input id-hook.",
+          "evidence": "Dispatcher 0x4258F0; branches 0x42595D-0x425973 (ctrl1), 0x42599B-0x4259B1 (ctrl2), 0x4259D9 (ctrl3 raw c7 86 9c000000 00000000 c6 86 98000000 02), 0x425A11-0x425AC4 (ctrl4), 0x425B2A-0x425BC2 (ctrl7), 0x425BD6-0x425C1D (ctrl5), 0x425C1F-0x425C50 (ctrl8), 0x425C52-0x425C71 (ctrl6), guards 0x425C71-0x425C8F; 0x42C039-0x42C052; 0x42580A-0x4258E9; 0x418030; 0x4520F0/0x4523E0/0x452410; 0x46811C; 0x45DC70; 0x423E80; 0x777200/0x7243A4; 0x4762CC"
+        },
+        {
+          "key": "reconcile constructor-time register expressions with paint-time SetPosition values",
+          "date": "2026-08-11",
+          "conclusion": "Paint-time SetPosition (0x425152-0x425258) is the visible truth: +0x118->(556,409), +0x1CC->(34,376), +0x280->(34,402), +0x334->(121,402), +0x3E8->(309,376), +0x49C->(397,376), +0x550->(484,376), +0x604->(309,402), +0x6B8->(397,402). Ctor-time (0x424E60; args 4,[main+0x1C],600,102,22,596,446,1) only meaningful for controls 0-3: +0x118->(260,298), +0x1CC->(159,50), +0x280->(567,413), +0x334->(196,50); calls 5-9 read stale recycled registers (x=1 or [main+0x1C], y=600-frame-id or 4/72/102/145) -> garbage, must be rejected: +0x3E8->(1,145), +0x49C->([main+0x1C],4), +0x550->(1,72), +0x604->(1,102), +0x6B8->(600,72). OLD +0x6B8 ctor record [196,50] in this evidence file was INCORRECT (actual ctor pair (600,72)); fixed in place.",
+          "evidence": "0x425152-0x425258 (paint reposition); 0x424E60 (ctor); ctor call sites at 0x4277E8 (args 4,[main+0x1C],600,102,22,596,446,1); SetPosition 0x417830",
+          "correction": "child_controls[8] (frame pair 624/625) position corrected to ctor (600,72) + paint (397,402) per above"
+        },
+        {
+          "key": "special marker color/field styling",
+          "date": "2026-08-11",
+          "conclusion": "State 0 paint 0x425280 (guard count this+0xE4 && head this+0xD4, list2): byte-wise strcmp markers 0x47BA78 \"[行会公告]\", 0x47BA6C \"[敌对行会]\", 0x47BA60 \"[联盟行会]\" -> color 0x96FF (highlight); else 0xFFFFFF. State 1 paint 0x425440 (guard count this+0xB4 && head this+0xA4, list0): marker 0x47BA84 \"[行会成员]\" -> 0x96FF; else 0xFFFFFF. Other-state paint 0x425590 (list4, head this+0x104/count this+0x114): NO marker logic — every row double-drawn shadow 0xA140A at (window.x+0x22, window.y+0x3B+step*row) then green 0xFF00 at (window.x+0x23, window.y+0x3C+step*row); no white row ever. All three share origin (window.x+0x23, window.y+0x3C), scroll this+0x9C, cap 0x12 (18) rows, row step = text height+5 via 0x45E0C0 metrics. Header (paint wrapper 0x425040): color 0x96C8FF via 0x45DE50, string object [this+0x54]; clip rect window.x+0x15E..+0x233 / window.y+0x18..+0x30.",
+          "evidence": "0x425280 markers 0x4252F2/0x425300/0x42530E, color 0x4253A5; 0x425440 marker 0x42546C, color 0x4254E5; 0x425590 shadow 0x4255C5/green 0x42563E; cap 0x4252D4/0x4254C5; step 0x42532D/0x4254A2 (0x45E0C0 height+5); wrapper 0x425040 header 0x42509C (0x45DE50, color 0x96C8FF), clip 0x4250C9-0x425106"
+        }
+      ],
+      "pending": []
     }
   ],
   "confirmed": [

@@ -33,7 +33,8 @@
     "evidence_level": "primary-static-exact-call-arguments"
   },
   "frame_attribution": [
-    {"frame": 602, "referenced_by": ["0x00427970 (main init; this window)", "0x00425A46 (system-announcement banner singleton 0x777200)"], "conclusion": "dual user: notice board window AND scrolling system announcement banner (both announcement-class windows)"},
+    {"frame": 601, "referenced_by": "0x00425B44 only (banner singleton 0x777200 hide path; push 0x259)", "conclusion": "used; banner hide/alt backdrop frame, state pair with 602"},
+    {"frame": 602, "referenced_by": ["0x00427970 (main init; this window)", "0x00425A46 (system-announcement banner singleton 0x777200 show path)"], "conclusion": "dual user: notice board window AND scrolling system announcement banner (both announcement-class windows)"},
     {"frame": 603, "referenced_by": "none (no push-imm32/mov-imm32 reference anywhere)", "conclusion": "unused Korean legacy resource; visual shows Korean YES/NO prompt artwork"},
     {"frame": 604, "referenced_by": "none", "conclusion": "unused Korean legacy resource; narrow dark message/input panel with white checkmark"},
     {"frame": 605, "referenced_by": "none", "conclusion": "unused Korean legacy resource; small white-check state"},
@@ -48,8 +49,13 @@
     "va": "0x00425A46",
     "object": "0x00777200",
     "base_ctor": "0x00423E80",
-    "flag": "[0x7773D0] = 1",
-    "text_buffer": "0x4E2 dword buffer, formatted string at 0x47BB4C",
+    "flag": "[0x7773D0] = 1 (show) / 0 (hide) at 0x425A50 / 0x425B4E",
+    "text_buffer": "0x4E2 dword stack buffer (0x1388 bytes, zeroed at 0x425A63); lines appended via 0x45DC70(0x8AB7A8, buf, line, 0x8B187C) with separator 0x47BB4C = CR LF",
+    "text_control": "[0x7773CC] = banner Win32 text control handle; filled by SetWindowTextA([0x7773CC], buf) at 0x425ABB-0x425AC4 (show) / 0x425BAC-0x425BC2 (hide)",
+    "text_source": "singly-linked list at game+0xEC (show path) / game+0xBC (hide path): node+4 = GBK string, node+0xC = next; iteration at 0x425A74-0x425AAC / 0x425B74-0x425BAA",
+    "dispatch_id": "0x42ADB0(winmgr 0x7243A4, id 0xF) at 0x425A1F (show) / 0x425B1E (hide) - same id-15 dispatcher that serves the notice window (id 15)",
+    "frame_pair": "602 (show; push 0x25A at 0x425A46, ctor call 0x425A57) / 601 (hide; push 0x259 at 0x425B44, ctor call 0x425B55)",
+    "duration_status": "candidate: imm32 0x777200 referenced ONLY at 0x425A48/0x425B46 - no timer/counter reference in .text; scroll/timing presumed driven by the winmgr visible-list paint loop; runtime confirmation required",
     "role": "system announcement scrolling banner; reuses frame 602 as its backdrop"
   },
   "child_controls": [
@@ -144,6 +150,29 @@
     "ID15 dispatcher branch 0x42B2AD is a stateful show/hide path (main+0x52E8C gate)."
   ],
   "pending": [
-    "Whether the guild-announcement edit buffer is saved to the server via a specific message id (protocol side; not needed for layout/draw conclusions)."
+    "Banner singleton 0x777200 display duration / auto-dismiss timing: no timer or counter reference exists (imm32 0x777200 appears only at 0x425A48 show and 0x425B46 hide; the object is constructed in place at the two guild-window button handlers and never referenced again statically). Scrolling/timing is presumed driven by the winmgr visible-list paint loop (0x4280F0) or a runtime-registered paint callback; runtime confirmation required. Does not affect layout/draw conclusions."
+  ],
+  "closed_notes": [
+    {
+      "date": "2026-08-11",
+      "key": "guild-announcement edit buffer save path",
+      "conclusion": "YES - the editable announcement text IS saved to the server via a specific message id (primary-static). Click 0x43E4BA: btn2 (this+0x108) press -> test [this+0x1CC] (Win32 edit control handle) -> GetWindowTextA([this+0x1CC], stack buf, 0xFA0) -> line-split loop 0x468BF0 (delim 0xA), each line appended via 0x45DC70(0x8AB7A8, dst, line, 0x8B187C). If accumulator non-empty: state byte [this+0x1D0]==0 -> 0x4524D0 (msg id 0x411, guild level/rank edit mode); [this+0x1D0]!=0 -> 0x4524A0 (msg id 0x410, announcement mode). Each builder: 0x452940 writes a 12-byte header at game+0x18 (dword 0, msg id word at +4; push 0x411 @0x4524DF / push 0x410 @0x4524AF, zero words), then 0x451E60(game, header, text): header copied to game+0x24, seq = [game+0x14] % 9, sprintf '#%d%s%s!' (0x47C840) / '#%d%s!' (0x47C800, null-text path) into game+0x2044, then send([game+0x6044], buf, len) via 0x468098 = jmp [0x476340] (IAT thunk; WS2_32.dll import descriptor 120, slot 0x476340 = 9th IAT entry, value 0x80000013 = ordinal 19 = send).",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x43E4BA", "0x4524A0", "0x4524D0", "0x452940", "0x451E60", "0x468098", "0x476340", "0x468BF0", "0x45DC70", "0x47C840", "0x47C800"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "banner text source",
+      "conclusion": "Banner content = guild/system announcement lines from the game object's singly-linked list (game+0xEC for the show path / game+0xBC for the hide path; node+4 string, node+0xC next), joined with CR LF (0x47BB4C) into the 0x4E2-dword stack buffer via 0x45DC70(0x8AB7A8, buf, line, 0x8B187C) at 0x425A80-0x425AAC / 0x425B7E-0x425BAA, then SetWindowTextA([0x7773CC], buf) at 0x425ABB-0x425AC4 / 0x425BAC-0x425BC2. The banner text control 0x7773CC is a Win32 window filled at show/hide time.",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x425A74", "0x425A80", "0x425ABB", "0x425B74", "0x425B7E", "0x425BAC", "0x7773CC", "0x47BB4C", "0x8AB7A8"]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "banner visibility dispatch id",
+      "conclusion": "Both guild-window banner buttons dispatch window id 0xF through the SAME visibility dispatcher 0x42ADB0(winmgr 0x7243A4, id 0xF) at 0x425A1F (show) / 0x425B1E (hide) that serves the notice window (id 15); the banner object 0x777200 is constructed with base ctor 0x423E80 at frame 602 (show, [0x7773D0]=1) / 601 (hide, [0x7773D0]=0).",
+      "evidence_level": "primary-static",
+      "key_vAs": ["0x425A1F", "0x425B1E", "0x42ADB0", "0x423E80", "0x425A46", "0x425B44", "0x7773D0"]
+    }
   ]
 }
