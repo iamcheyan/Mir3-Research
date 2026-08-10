@@ -51,7 +51,16 @@
    ],
    "preview_mode": "window.status",
    "status": "primary-static-render",
-   "pending": true
+   "pending": true,
+   "closed_2026_08_10": [
+    "attribute text coords closed: col1 label (winx+0xFF, winy+0x43) step 0xF; col2 label (winx+0x17F, winy+0x1E) value +0x44 (reset re-read of [ebp+0x18/0x1C], non-cumulative; old +0x27E/+0x127 model retired)",
+    "two position-field pairs documented: [this+8/0xC]=background screen pos, [this+0x18/0x1C]=attribute/equipment/hit-test base",
+    "global selector array 0x5600FC+0x144k; el82=0x5668C4 flag0 / el83=0x566A08 flag1 / el139=0x56B0E8 flag2 via 0x430A40 dispatch",
+    "selector construction loop 0x43B7B2 (map rebuild, 14 elems, mode1->mode0 fallback, covers 70..83 incl. el82/el83) + dtor loop 0x43B75B (14..79)",
+    "path slots 0x56B22C+start*0x104 are bss, runtime-filled; WIL filename binding remains runtime",
+    "equipment slot classification = server-driven (0x44B720 pure-position hit test; server EquipmentSlot enum; 2,3,5,6,7,8,9,10 -> classic 8-piece candidate)"
+   ],
+   "pending_notes": "runtime WIL filename for el82/83/139 (Equip.wil/Inventory.wil side-by-side candidates); equipment slot human names (server-enum candidate); [ebx+0x124]=4 start=70 inference; el84+/el139 ctor loop unlocated"
   },
   {
    "id": "inventory",

@@ -2903,3 +2903,69 @@ NAS 恢复后对 `map-ui-resource-evidence.json` 四条 pending 逐项静态闭�
 小地图边框确为代码绘制。`0x47630C`=timeGetTime（`0x408396` 动画时钟）顺带确认。
 
 剩余 pending：类型 0x32 业务名、缩放切换运行时画面、按键标签（无字符串资源）。
+
+### Finding 216：状态窗口 pending 三项处置 + 全局 selector 数组/构造循环定位（2026-08-10）
+
+状态窗口三条 pending 的调查全部完成，本轮落盘并附加两项结构性发现。
+
+1. **属性文本坐标闭合（pending_1 关闭）**。`0x0044BC80` 属性绘制链坐标模型修正：
+   第一列 label 原点 `(winx+0xFF, winy+0x43)`、行步 0x0F（13 行，y 67..247）；
+   **第二列不是累计偏移**——`0x44C3D4/0x44C3D8` 复位重读 `[ebp+0x18]/[ebp+0x1C]`
+   （窗口原点）后 `0x44C3F8 add edi,0x17F; add esi,0x1E`，即第二列 label 原点
+   `(winx+0x17F, winy+0x1E)`（11 行，y 30..180）；`0x44C44F lea ebx,[edi+0x44]`
+   → 第二列数值 x=`winx+0x1C3`。旧 JSON 的 “第二列 x=winx+0x27E / y=winy+0x127 /
+   累计模型” 废止并标注。颜色事实：第一列 label 0xfae1c8、第二列 label 0xff。
+   窗口双位置字段注记：`[this+8]/[this+0xC]`=背景屏幕位置（0x423D00/0x460240），
+   `[this+0x18]/[this+0x1C]`=属性/装备/命中测试基准（0x44B2D0/0x44BC80/0x44B720）；
+   两对均在基类 ctor `0x423B30` SetRect。
+
+2. **装备槽类别 = server-driven（pending_2 保持 candidate，客户端无类别逻辑）**。
+   `0x44B720` 为纯位置命中测试（索引扫描 + PtInRect），无任何类别分支；仓库服务端
+   EquipmentSlot 枚举（0武器/1衣服/2头盔/3火把/4项链/5左手镯/6右手镯/7左戒指/8右戒指/
+   9鞋子/10毒药/11护身符/12花/13马甲/14徽章/15盾/16时装）是唯一类别依据；状态窗 8 槽
+   索引 2,3,5,6,7,8,9,10 → 经典 Mir3 八件套仅按位置/配对记录为 candidate。
+
+3. **全局 selector 数组与构造循环定位（pending_3 结构闭合）**。0x566780/0x5668C4/
+   0x566A08/0x566B4C/0x566C90/0x566DD4 间距恰 0x144（324）→ 全局数组基址
+   **0x5600FC、步长 0x144**（元素=base+index*0x144）：el14=0x5612B4、
+   el70=0x565994、el81=0x566780、**el82=0x5668C4（flag0 item）**、
+   **el83=0x566A08（flag1 item）**、el84=0x566B4C、el85=0x566C90、
+   el86=0x566DD4、**el139=0x56B0E8（flag2 item）**。这解释了此前 imm32 扫描
+   找不到构造点：构建走“地址计算 + 等步长循环”而非 mov imm32。
+
+   构造循环位于地图进入/重建函数 **`0x43B600`**（caller 0x422B2B；格式串
+   `.\\Map\\%s.map` @0x47C404 → 写 [ebx+4] → CreateFileA IAT 0x4760DC → 读 0x1C
+   头 → 分配 [ebx+0x108]/[ebx+0x10C]）：
+   - 析构循环 `0x43B75B`：`esi=0x5612B4; call 0x465FE0; esi+=0x144;
+     cmp esi,0x565994; jl` → 覆盖元素 14..79。
+   - 构造循环 `0x43B7B2`（14 次）：`esi = 0x5600FC + start*0x144`，
+     start=`([ebx+0x124]+1)*14`；路径槽 `ebp = 0x56B22C + start*0x104`；
+     每迭代 `push 1; push ebp; call 0x4660E0`（mode1 优先），失败 `call 0x465FE0`
+     后 `push 0` 重试（mode0 回退）；`esi+=0x144; ebp+=0x104`。
+   - **[ebx+0x124]=4 推断**（推断级）：start=70 → 构造元素 70..83（0x565994..
+     0x566A08），el82 为第 12 个、el83 为第 13 个；路径槽 0x56F944+0x104i
+     （slot12=0x57058C、slot13=0x570690）。依据：主对象图块装载器第二循环
+     `0x452AF7` 恰 0x46=70 次、第二成员区起点 this+0x5898=this+0x144*70，
+     两个 “70 基数” 吻合。
+
+   路径槽静态分析：0x56F944/0x57058C/0x570690/0x56B22C 的 imm32 扫描全负
+   （唯一引用是 0x43B7AE 的 lea）；.rdata 指向 0x47C878..0x47CE0C 的指针表
+   零命中 → bss 路径槽由计算地址运行时填充 → **具体 WIL 文件名绑定仍为运行期**，
+   Equip.wil（@0x47CCE4）/ Inventory.wil（@0x47CCF8）并列 candidate 维持。
+   el139（flag2）与元素 84+ 的构造循环未在 .text 定位（另一循环，未穷举）。
+
+   附带确认：`0x468306` = 数组元素构造助手（`0x452A40` 处参数 ctor=0x465f40、
+   count=0x8C=140、size=0x144）——主对象持有 140 个 selector 成员槽（推断）；
+   map 窗口成员间距 0x148（+4 MMap/+0x148 FMMap）为独立布局。`.rdata` 每个 WIL
+   字符串在 .text 恰 1 处引用且均为主对象路径字段复制 → 静态路径仅注入主对象
+   字段（本轮修正字段偏移：Magic→+0x10374、Inventory→+0x10478、Equip→+0x1057C、
+   Ground→+0x10680、MIcon→+0x10784；M-Hum→+0xFA50、M-Weapon4→+0xFB54、
+   M-Weapon3→+0xFC58、M-Weapon2→+0xFD5C），与全局 selector 数组无静态绑定。
+
+落盘：`status-window-render-evidence.json` 新增 global_selector_array /
+selector_construction / flag_dispatch / equipment_slot_classification 小节，
+修正 coordinate_bases.second_column 与 second_column_labels y 偏移（30..180），
+pending 3 项按闭合/候选状态改写。
+
+剩余 pending：运行时 WIL 文件名绑定（el82/83/139）、装备槽人类名（server-driven
+candidate）、[ebx+0x124]=4 的运行时确认、el84+/el139 构造循环定位。

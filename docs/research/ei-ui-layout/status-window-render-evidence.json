@@ -3,13 +3,24 @@
     "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
     "constructor_va": "0x0044B130",
     "paint_va": "0x0044B2D0",
+    "instance_creation_va": "0x00427776",
+    "instance_object": "main+0x29CE4",
+    "instance_creation_args": "(arg1=1, context=[main+0x1C] member selector, frame=0xC8=200, 0, 0, width=0xF4=244, height=0x148=328, arg8=1)",
+    "item_draw_helper": "0x00430A40",
+    "global_selector_array_base": "0x005600FC",
+    "global_selector_array_stride": "0x144",
+    "map_rebuild_routine": "0x0043B600",
     "evidence_level": "primary-static"
   },
   "window": {
     "id": "window.status",
     "background": {"file": "Data/GameInter.wil", "frame": 200, "visible_size": [241, 327]},
     "constructor_window_size": [244, 328],
-    "window_object_origin": {"x_field": "this+0x18", "y_field": "this+0x1c"}
+    "window_object_origin": {
+      "position_fields_note": "Two independent position field pairs exist; both are SetRect'ed in the base window ctor 0x00423B30 but serve different consumers.",
+      "background_screen_position": {"x_field": "this+0x08", "y_field": "this+0x0C", "consumers": ["0x00423D00 (base paint)", "0x00460240"]},
+      "attribute_and_equipment_draw_base": {"x_field": "this+0x18", "y_field": "this+0x1C", "consumers": ["0x0044B2D0 (status paint)", "0x0044BC80 (attribute text)", "0x0044B720 (slot hit-test base)"]}
+    }
   },
   "child_controls": [
     {"object_offset": "this+0x58", "call_va": "0x0044B18B", "frame_pair": [161, 162], "resource_library_candidate": "GameInter.wil"},
@@ -20,8 +31,9 @@
     "observations": [
       "The artwork contains a vertical character/status panel with empty equipment-slot silhouettes; the slot labels are not baked into Frame 200.",
       "The visible slot artwork must therefore be combined with runtime item graphics and the 11-record paint loop; a static screenshot of Frame 200 alone cannot name the equipment positions.",
-      "The close control and the secondary status control are separate child resources (161/162 and 171/172), not part of the slot-record loop."
-      ,"Frame 171 is a small right-pointing green/gold arrow control; Frame 172 is empty in the current export, so the pair's action name remains unresolved."
+      "The close control and the secondary status control are separate child resources (161/162 and 171/172), not part of the slot-record loop.",
+      "Frame 171 is a small right-pointing green/gold arrow control; Frame 172 is empty in the current export, so the pair's action name remains unresolved.",
+      "Frame 200 also contains no baked-in attribute label artwork (pixel scan found no text-like columns); all attribute labels are drawn at runtime by 0x0044BC80 with GBK strings from .rdata (0x0047C638..0x0047C74C)."
     ],
     "confidence": "primary-static-resource-plus-pixel-inspection"
   },
@@ -69,7 +81,7 @@
   "paint_state": {
     "state_field": "this+0x54",
     "state_dispatch_va": "0x0044B2D0",
-    "notes": "The paint path branches by state and calls shared text/image composition helpers. Equipment slot business names and exact resource families remain pending.",
+    "notes": "The paint path branches by state and calls shared text/image composition helpers. Equipment slot business names and exact resource families remain pending (see item_resource_selection_chain for the now-closed selector construction path).",
     "primary_disassembly_details": {
       "state_zero_branch": {
         "entry": "0x0044B2D0",
@@ -77,7 +89,8 @@
         "preparation_call": "0x0044B560",
         "clip_rect_expression": "SetRect(window.x-0x0A, window.y+0x1E, window.x+0xFF, window.y+0x32)",
         "resource_or_text_calls": ["0x0045DBA0", "0x0045DE50", "0x0044BC80", "0x00466130", "0x0045FD50"],
-        "evidence_level": "primary-static-call-and-rect-expression"
+        "evidence_level": "primary-static-call-and-rect-expression",
+        "note": "The clip rect y-start window.y+0x1E equals the second attribute column's base offset (window.y+0x1E), corroborating the corrected second-column coordinate model."
       },
       "state_one_branch": {
         "entry": "0x0044B2E6",
@@ -114,7 +127,7 @@
     }
     },
     "paint_order": [
-      {"order": 1, "call_va": "0x0044B566", "target": "window_object.vtable+0x0C", "resolved_candidate": "0x00423D00", "role": "status window base/background paint"},
+      {"order": 1, "call_va": "0x0044B566", "target": "window_object.vtable+0x0C", "resolved_candidate": "0x00423D00", "role": "status window base/background paint (background drawn at [this+8]/[this+0xC])"},
       {"order": 2, "call_va": "0x0044B560-0x0044B5C3", "target": "0x0045FD50", "role": "selected equipment/character overlay when selector globals resolve"},
       {"order": 3, "call_va": "0x0044B5D9-0x0044B629", "target": "0x00430A40", "role": "11-slot equipment/item loop; ordinary slots use stored position records"},
       {"order": 4, "call_va": "0x0044BC80-0x0044CCCC", "target": "0x0045DD70", "role": "attribute labels and formatted values"}
@@ -134,10 +147,12 @@
         "note": "The constructor/helper initializes edi=window.x+0xFF and esi=window.y+0x43; each subsequent row adds 0x0F before drawing."
       },
       "second_column": {
-        "x": "window.x+0x27E",
-        "y_start": "window.y+0x127",
+        "label_x": "window.x+0x17F",
+        "label_y_start": "window.y+0x1E",
+        "value_x": "window.x+0x1C3 (= label_x+0x44, lea ebx,[edi+0x44] at 0x0044C44F)",
         "line_step": 15,
-        "note": "After the first column, the code adds edi+=0x17F and esi+=0x1E before the second column."
+        "reset_fact": "0x0044C3D4/0x0044C3D8 re-reads [ebp+0x18]/[ebp+0x1C] (window origin) before 0x0044C3F8 adds edi+=0x17F and esi+=0x1E; the second column is a window-origin-relative origin, NOT a cumulative offset from the first column.",
+        "note": "CORRECTED 2026-08-10: previous model 'x=window.x+0x27E, y_start=window.y+0x127, second column is cumulative' is retired. The second column origin is (window.x+0x17F, window.y+0x1E) with value column x = window.x+0x1C3; row step remains 0x0F."
       }
     },
     "first_column_labels": [
@@ -160,18 +175,23 @@
       {"text": "魔法恢复", "string_va": "0x0047C6B0", "draw_va": "0x0044C37F", "y_offset": 247}
     ],
     "second_column_labels": [
-      {"text": "防御", "string_va": "0x0047C6A8", "draw_va": "0x0044C407", "y_offset": 295},
-      {"text": "攻击", "string_va": "0x0047C6A0", "draw_va": "0x0044C491", "y_offset": 310},
-      {"text": "魔法", "string_va": "0x0047C698", "draw_va": "0x0044C516", "y_offset": 325},
-      {"text": "火(火焰)", "string_va": "0x0047C68C", "draw_va": "0x0044C557", "y_offset": 340},
-      {"text": "冰(冰冻)", "string_va": "0x0047C680", "draw_va": "0x0044C5DC", "y_offset": 355},
-      {"text": "电(雷电)", "string_va": "0x0047C674", "draw_va": "0x0044C661", "y_offset": 370},
-      {"text": "风(狂风)", "string_va": "0x0047C668", "draw_va": "0x0044C6E6", "y_offset": 385},
-      {"text": "治疗(神圣)", "string_va": "0x0047C65C", "draw_va": "0x0044C76B", "y_offset": 400},
-      {"text": "攻击(黑暗)", "string_va": "0x0047C650", "draw_va": "0x0044C7F0", "y_offset": 415},
-      {"text": "召唤(幻影)", "string_va": "0x0047C644", "draw_va": "0x0044C875", "y_offset": 430},
-      {"text": "魔法防御力", "string_va": "0x0047C638", "draw_va": "0x0044C8FA", "y_offset": 445}
+      {"text": "防御", "string_va": "0x0047C6A8", "draw_va": "0x0044C407", "y_offset": 30},
+      {"text": "攻击", "string_va": "0x0047C6A0", "draw_va": "0x0044C491", "y_offset": 45},
+      {"text": "魔法", "string_va": "0x0047C698", "draw_va": "0x0044C516", "y_offset": 60},
+      {"text": "火(火焰)", "string_va": "0x0047C68C", "draw_va": "0x0044C557", "y_offset": 75},
+      {"text": "冰(冰冻)", "string_va": "0x0047C680", "draw_va": "0x0044C5DC", "y_offset": 90},
+      {"text": "电(雷电)", "string_va": "0x0047C674", "draw_va": "0x0044C661", "y_offset": 105},
+      {"text": "风(狂风)", "string_va": "0x0047C668", "draw_va": "0x0044C6E6", "y_offset": 120},
+      {"text": "治疗(神圣)", "string_va": "0x0047C65C", "draw_va": "0x0044C76B", "y_offset": 135},
+      {"text": "攻击(黑暗)", "string_va": "0x0047C650", "draw_va": "0x0044C7F0", "y_offset": 150},
+      {"text": "召唤(幻影)", "string_va": "0x0047C644", "draw_va": "0x0044C875", "y_offset": 165},
+      {"text": "魔法防御力", "string_va": "0x0047C638", "draw_va": "0x0044C8FA", "y_offset": 180}
     ],
+    "label_colors": {
+      "first_column_labels": {"color": "0xfae1c8", "evidence": "color operand at first-column label draws (e.g. 0x0044BCE6 region)"},
+      "second_column_labels": {"color": "0xff", "evidence": "color operand at second-column label draws 0x0044C407/0x0044C491 region"},
+      "evidence_level": "primary-static-immediate-color-operands"
+    },
     "value_field_sources": {
       "evidence_level": "primary-static-global-loads-at-format-call-sites",
       "note": "The following entries identify the exact global memory operands loaded immediately before 0x0046811C. They are raw client fields, not yet server/database semantic names. Word/byte width and formatter argument order are preserved so a reimplementation can reproduce the original ABI without guessing.",
@@ -230,31 +250,111 @@
       "9": [64,264,102,302],
       "10": [103,264,141,302]
     },
-    "confidence": "primary-static; business item names remain unresolved"
+    "equipment_slot_classification": {
+      "evidence_level": "server-driven-cross-reference (client provides no category logic)",
+      "client_fact": "0x0044B720 is a pure-position hit test (index scan + PtInRect); it contains NO per-category branch. The client does not name the slots.",
+      "server_fact": "The repo server defines an EquipmentSlot enum with the classic Mir3 order: 0=武器, 1=衣服, 2=头盔, 3=火把, 4=项链, 5=左手镯, 6=右手镯, 7=左戒指, 8=右戒指, 9=鞋子, 10=毒药, 11=护身符, 12=花, 13=马甲, 14=徽章, 15=盾, 16=时装.",
+      "candidate_mapping": "Status window slot indices 2,3,5,6,7,8,9,10 map by position/pairing to the classic Mir3 eight equipment pieces; kept as CANDIDATE, not asserted.",
+      "candidate_pairs": [
+        {"index": 2, "rect": [27,264,65,302], "candidate": "left-ring or necklace row (bottom-left slot)"},
+        {"index": 3, "rect": [177,70,215,108], "candidate": "weapon/helm column (top-right slot)"},
+        {"index": 5, "rect": [27,186,65,224], "candidate": "left wrist/ring column"},
+        {"index": 6, "rect": [175,186,213,224], "candidate": "right wrist/ring column"},
+        {"index": 7, "rect": [27,227,65,265], "candidate": "left ring/wrist column"},
+        {"index": 8, "rect": [175,227,213,265], "candidate": "right ring/wrist column"},
+        {"index": 9, "rect": [64,264,102,302], "candidate": "bottom middle slot"},
+        {"index": 10, "rect": [103,264,141,302], "candidate": "bottom middle slot"}
+      ]
+    },
+    "confidence": "primary-static; business item names remain candidate (server-enum-driven)"
   },
   "item_resource_selection_chain": {
     "slot_record_base": "this+0x2F4+index*0xC24",
     "graphics_object_passed_to_draw": "slot_record+0x04 (this+0x2F8+index*0xC24)",
     "draw_entry": "0x004341F0",
     "frame_selector_call": "0x004341F0 -> 0x00466130",
-    "selector_owner": "ECX=0x005668C4",
-    "selector_argument": "WORD [graphics_object+0x28]",
-    "selected_frame_header": "global 0x005668FC (width/height read before composition)",
+    "selector_owner": "ECX=global selector array element (see global_selector_array)",
+    "selector_argument": "WORD [graphics_object+0x28] (frame index)",
+    "selected_frame_header": "read from selector element header fields before composition",
+    "flag_dispatch": {
+      "va": "0x00430A40",
+      "flag_0_target_element": "0x005668C4 (array element 82)",
+      "flag_1_target_element": "0x00566A08 (array element 83)",
+      "flag_2_target_element": "0x0056B0E8 (array element 139)",
+      "frame_index_source": "WORD [graphics_object+0x28]",
+      "status_window_usage": "ordinary equipment slots pass flag 0 -> element 0x5668C4; special character-area indices (0,1,4) pass flag 1 -> element 0x566A08",
+      "evidence": "primary-static-dispatch-immediates"
+    },
     "selector_dispatch": {
       "va": "0x00466130",
-      "context_mode_field": "byte [0x005668C4+0x04]",
-      "mode_0_target": "0x00466640",
+      "context_mode_field": "byte [selector_element+0x04]",
+      "mode_0_target": "0x00466640 (WIL/WIX file-backed decode)",
       "mode_1_or_2_target": "0x00466720",
       "other_mode_result": "returns zero",
+      "selector_element_layout": {"+0x04": "mode byte", "+0x08": "file handle", "+0x0C": "WIX table pointer", "+0x10": "frame count", "+0x14": "timestamp", "+0x2C": "loaded count", "+0x30": "offset table pointer", "+0x34": "base pointer", "+0x38/+0x3C": "cache", "+0x40": "path buffer"},
+      "mode0_decode_chain": {
+        "va": "0x00466640",
+        "steps": ["bounds check frame index vs [selector+0x10]", "SetFilePointer(IAT 0x4761EC, handle=[selector+0x08], offset=[offset_entry+0x04])", "ReadFile(IAT 0x4760C4, 0x11-byte frame header)", "allocate [offset_entry+0x15]<<1 bytes (word-per-pixel decode buffer)"],
+        "evidence": "primary-static-IAT-resolved-call-sequence"
+      },
       "evidence": "The shared selector reads the context mode before resolving the item frame; this is an original resource-loader dispatch, not a modern atlas assumption."
+    },
+    "global_selector_array": {
+      "base": "0x005600FC",
+      "stride": "0x144",
+      "derivation": "Element addresses 0x566780/0x5668C4/0x566A08/0x566B4C/0x566C90/0x566DD4 are spaced by exactly 0x144 (324); with base 0x5600FC each is element 81..86. Element = base + element_index*0x144.",
+      "known_elements": [
+        {"index": 14, "address": "0x005612B4"},
+        {"index": 70, "address": "0x00565994", "note": "status-window selected-overlay selector_table 0x566DD4 context region"},
+        {"index": 81, "address": "0x00566780"},
+        {"index": 82, "address": "0x005668C4", "note": "flag0 item context (ordinary equipment slots)"},
+        {"index": 83, "address": "0x00566A08", "note": "flag1 item context (character-area overlay)"},
+        {"index": 84, "address": "0x00566B4C"},
+        {"index": 85, "address": "0x00566C90"},
+        {"index": 86, "address": "0x00566DD4", "note": "selected_overlay selector_table reference"},
+        {"index": 139, "address": "0x0056B0E8", "note": "flag2 item context; construction loop NOT yet located"}
+      ],
+      "evidence_level": "primary-static-address-arithmetic"
+    },
+    "selector_construction": {
+      "routine": "0x0043B600 (map enter/rebuild; caller 0x00422B2B)",
+      "routine_shape": ".\\Map\\%s.map format string @0x47C404 -> write [ebx+4] -> CreateFileA (IAT 0x4760DC) -> read 0x1C header to [ebx+0x110] -> allocate [ebx+0x108]/[ebx+0x10C] caches",
+      "destructor_loop": {
+        "va": "0x0043B75B",
+        "pattern": "esi=0x5612B4; call 0x465FE0 (base selector dtor); esi+=0x144; cmp esi,0x565994; jl",
+        "covers": "array elements 14..79"
+      },
+      "constructor_loop": {
+        "va": "0x0043B7B2",
+        "iterations": 14,
+        "element_start_expression": "0x5600FC + start*0x144, start=([ebx+0x124]+1)*14",
+        "path_slot_start_expression": "0x56B22C + start*0x104",
+        "per_iteration": "push 1; push ebp(path slot); call 0x4660E0 (selector ctor mode dispatch); on failure call 0x465FE0 then push 0 and retry (mode1 preferred -> mode0 fallback); esi+=0x144; ebp+=0x104",
+        "inferred_start": {"value": 70, "basis": "[ebx+0x124]=4 inferred; main-object tile loader second loop (0x452AF7) iterates 0x46=70 and its second member region starts at this+0x5898 = this+0x144*70; the two 70-bases agree", "evidence_level": "inference"},
+        "covers_when_start_70": "array elements 70..83 (0x565994 .. 0x566A08), so element 82 (0x5668C4) is the 12th and element 83 (0x566A08) the 13th constructed element",
+        "path_slots_when_start_70": "0x56F944 + i*0x104 (slot12=0x57058C for element 82, slot13=0x570690 for element 83)"
+      },
+      "path_slot_static_analysis": {
+        "scan": "imm32 scan for 0x56F944/0x57058C/0x570690/0x56B22C across .text: all negative except the single lea reference at 0x43B7AE; .rdata pointer-table scan (run>=5) over 0x47C878..0x47CE0C: zero hits",
+        "conclusion": "path slots are bss, filled at runtime by computed addresses; no static .text immediate writer exists",
+        "consequence": "the concrete WIL filename bound to element 82/83 remains RUNTIME-ONLY; static candidates Equip.wil / Inventory.wil stand side by side"
+      },
+      "array_element_ctor_helper": {
+        "va": "0x00468306",
+        "args_at_0x452A40": {"ctor": "0x465F40", "count": "0x8C=140", "size": "0x144"},
+        "note": "main object allocates 140 selector member slots (inferred container semantics); map-window member stride 0x148 (+4 MMap / +0x148 FMMap) is a separate layout"
+      },
+      "unlocated": "construction loop for elements 84+ and element 139 (0x56B0E8, flag2) not yet found in .text; they belong to a different loop not enumerated",
+      "evidence_level": "primary-static-loop-discovery; start=70 inference-level"
     },
     "composition_path": "0x004341F0 -> 0x004542F0 / 0x0045E570-family graphics helpers",
     "evidence_level": "primary-static-item-resource-selection",
-    "interpretation": "The binary does not draw an equipment slot from an invented generic icon atlas: it derives a per-item graphics object, selects its frame through the original selector context, reads the selected frame dimensions, and sends the result through the original composition path. The final selector-context-to-WIL filename mapping is still separate evidence."
+    "interpretation": "The binary does not draw an equipment slot from an invented generic icon atlas: it derives a per-item graphics object, selects its frame through the original selector context, reads the selected frame dimensions, and sends the result through the original composition path. The construction loop for the selector contexts is now located (0x43B7B2 covers elements 70..83 including 0x5668C4/0x566A08); only the runtime WIL filename binding remains un-resolvable statically."
   },
   "pending": [
-    "The exact status/attribute text field coordinates and source data structures.",
-    "Mapping the eight equipment candidate indices to exact item names (weapon, helmet, necklace, rings, bracelet, boots, etc.).",
-    "Resolve selector context 0x005668C4 to the exact WIL/WIX library filename used for equipment item icons."
+    "Resolve selector context 0x005668C4 / 0x00566A08 / 0x0056B0E8 to exact WIL/WIX library filenames: construction loop located (0x43B7B2), but path slots are bss filled at runtime; Equip.wil vs Inventory.wil remain side-by-side candidates. Element 139 (flag2) construction loop not yet located.",
+    "Equipment slot human names: server EquipmentSlot enum is the only category source; the 2,3,5,6,7,8,9,10 -> classic Mir3 eight-piece mapping stays candidate until runtime population is observed.",
+    "[ebx+0x124]=4 (start=70) is inference-level; a runtime map load would confirm the constructed element range.",
+    "Frame 172 child-control action name (empty export) and color semantics of a few value draws remain unresolved."
   ]
 }
