@@ -30,8 +30,15 @@
    ],
    "layout_ids": [],
    "preview_mode": "map-minimap-candidate,map-candidate",
-   "status": "primary-static-render-plus-secondary-name-crossref",
-   "pending": true
+   "status": "primary-static-resource-loader-plus-paint-chain-closed",
+   "pending": false,
+   "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
+   "closed_2026_08_10": [
+    "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
+    "no separate map dialog (single ctor main+0x6214)",
+    "T key + mouse click toggle paths",
+    "object list layouts + type byte values"
+   ]
   },
   {
    "id": "status",

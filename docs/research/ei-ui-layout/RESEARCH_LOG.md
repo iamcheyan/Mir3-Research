@@ -2838,3 +2838,68 @@ Frame 17 与 Frame 57 虽有静态尺寸/索引记录，但在当前客户端副
 本轮同时确认 NAS 挂载点 `/tmp/nas_mnt` 已消失且无自动恢复配置（无 fstab/autofs/crontab 条目，
 SMB 主机 192.168.3.1/.62/.110 不可达），Mir3.exe 暂时不可访问；已完成的证据更新全部来自仓库
 内保留的 primary 反汇编产物与交叉引用，未新增伪证。其余窗口 pending 项待 NAS 恢复后继续。
+
+### Finding 214.5：NAS 挂载恢复（2026-08-10）
+
+NAS 网络恢复后可匿名枚举 Samba 共享（`smbclient -L 192.168.3.10 -N`：Samba 4.22.8，
+共享 NAS/print$/IPC$/nobody）；`/etc/fstab` 暴露凭据文件 `/root/.smbcredentials`
+（immich/Photos 挂载使用同一凭据），据此用
+`mount -t cifs //192.168.3.10/NAS /tmp/nas_mnt/NAS -o credentials=/root/.smbcredentials,vers=3.0,uid=1000,gid=1000,forceuid,forcegid,noperm`
+重新挂载成功。Mir3.exe（524288 字节，.text VA 0x401000–0x476000，.data 为 bss 虚拟段——
+解释文件小但 VA 高达 0x47xxxx 的疑问）、WIL/WIX、Map 数据全部恢复可达。
+wilviewer（:8765）与 mapviewer（:8899）已重新启动。EXE Investigation 阶段恢复。
+
+### Finding 215：小地图/地图证据闭合（2026-08-10）
+
+NAS 恢复后对 `map-ui-resource-evidence.json` 四条 pending 逐项静态闭合：
+
+1. **边框=程序绘制，非 GameInter 帧**（pending_1 关闭）。地图 Paint `0x0043DA80` 在合成
+   （`0x0043DB0B–0x0043DB2B` → `0x004542F0`）之后、`0x0043DBD7` 处以
+   `push 1 / push 0x646464 / push 0 / push &rect(owner+0x2C0) / call 0x0045E570`
+   绘制 1px 灰色描边。`0x0045E570` 反汇编确认机制：按 arg1&0xFF 查跳转表 `0x0045E71C`
+   （5 模式），GDI 调用链 CreatePen(style=0,width=0,color)@IAT`0x476084` →
+   SelectObject@`0x476048` → MoveToEx@`0x47606C` → LineTo@`0x476080` → DeleteObject@`0x476068`
+   （IAT 名经 .rdata 导入名 RVA 解析确认）。整条世界绘制链 `0x00429540–0x00429620`
+   （含 `0x4295B4→0x43DA80`）无任何 GameInter WIL 帧 blit——小地图无烘焙/外部边框。
+   同一辅助函数还绘制：绿色 `0x64FA64` 当前视野指示框（`0x43DBC1`）、浅灰 `0xC8C8C8`
+   `owner+0x298`（`0x43DC0D`，点击切换 alpha `owner+0x290`）、淡蓝 `0x96C8FF` `owner+0x2A8`
+   （`0x43DC40`，点击切换模式 `owner+0x294` 并重建表面）、黄色 `0xFFFF` 类型 0x32 标记
+   （`0x43DCBC`）、绿色 `0x64C864` 近距对象标记（`0x43DD79`）。
+
+2. **无独立地图对话框**（pending_2 关闭）。地图对象构造器 `0x0043D4D0` 全二进制仅一个调用点
+   `0x00427E08`（主世界构造器内，`lea ecx,[esi+0x6214]` → 地图对象为主世界子对象）；
+   主世界构造器 `0x00427D89–0x00427E1F` 同时构造：共享控件 `0x417550`（main+0x6108）、
+   输入框 `0x417960`（main+0x61BC，参数 0x44/5/0xC/0x54/0xC/0）、6 个 HUD 矩形控件
+   （帧 0x117..0x1DF 步 0x28）、地图子对象、`0x428BA0`/`0x4292B0`。T 键/点击切换的
+   “大地图”即同一表面的 128↔256 分辨率重建。
+
+3. **T 键与鼠标双输入路径**（pending_3 关闭，标签除外）。按键分发 `0x0042CC76–0x0042CF1F`
+   完整恢复（GetKeyState@IAT`0x476278`，`mov cl,ah` 取高字节）：
+   Q→`0x42ADB0`(0x10C/0x10B 确认对话框)、W/E/R/S/D→`0x42ADB0`(1/0x0E/8/0x0D/0x0B)、
+   Z→行走/跑步状态 `main+0xD40`（clamp 0x2E，`+0xD42`=2）、B→切换 `main+0x6208`、
+   G→`0x42ADB0`(6)、F→`0x4523E0`(0x8AB828)、N→`0x42ADB0`(0x0C)、
+   **T（0x54）**→门控 `main+0x6518==1` 后切换 `main+0x64A8`，两分支分别以 0x100×0x100
+   （`0x42CED2`）/0x80×0x80（`0x42CEF0`）经 `0x43D5F0` 重建 `main+0x6214` 地图表面；
+   Y（0x59）→切换 `main+0x64A4`（不重建表面）。鼠标路径：`0x43DDB0` 命中 `owner+0x2C0`
+   转世界坐标存 `+0x2F0/+0x2F4`；命中 `+0x298` 切换 alpha `+0x290`；命中 `+0x2A8`
+   切换模式 `+0x294` 并 256/128 重建（`0x43DE60`/`0x43DE84`）。用户可见标签不在二进制内
+   （.rdata 无任何地图相关 GBK/ASCII 字符串，仅有 IAT 名），标签保留为语义候选
+   “小地图缩放切换”。
+
+4. **对象链表布局与类型字节**（pending_4 关闭，业务名除外）。链表 `0x560070`（头指针，
+   节点 vtable `0x476448`，`+4`=对象 entry、`+8`=prev、`+0xC`=next；尾 `0x56008C`、
+   计数 `0x560098`，20+ 处插入点）entry 布局：`+4`=对象 id（`0x41ECAE` 按 xy 查找）、
+   `+0x88`=类型字节、`+0xCC/+0xD0`=世界坐标、`+0x61C74`=存活标志。类型字节观测值：
+   0/1（`0x41ECE1` 按坐标查找对象命中集合；`0x43CD29` 地图收集跳过）、2（`0x405F61`）、
+   3=演员（`0x4071A0` kind 字 `+0x8A`、`0x43CD3F` 子类型 `+0xC0`==4、`0x408276` 法术
+   分派）、**0x32（50）=小地图黄色标记对象**（`0x43DC65` 绘制 + `0x4123E3` 目标/阻挡检查）。
+   链表 `0x5600A0`：entry `+4/+8`=坐标，绿点，半视野裁剪（`0x43DD46` 与 `0x2B8/0x2BC`
+   比较），候选=附近玩家/队员。类型 0x32 业务名（NPC vs 传送点）无静态命名依据，保留候选。
+   绘制顺序：视野指示（绿）→ 边框（灰）→ 辅助框（浅灰/淡蓝）→ 类型 0x32 标记（黄）
+   → 近距对象（绿），全部在合成之后。
+
+视觉交叉验证：wilviewer 导出 MMap.wil 帧 0/1，wilsdk 解码为 600×400 地形图（棕/褐
+噪点地形+对角道路特征+4 个内嵌白色 ^ 标记），确认 MMap 帧是地图艺术而非边框/UI 帧；
+小地图边框确为代码绘制。`0x47630C`=timeGetTime（`0x408396` 动画时钟）顺带确认。
+
+剩余 pending：类型 0x32 业务名、缩放切换运行时画面、按键标签（无字符串资源）。

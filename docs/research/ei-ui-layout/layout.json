@@ -22273,11 +22273,190 @@
       }
     ],
     "pending": [
-      "Runtime-check whether a border is baked into another global HUD surface or added by a window layer; the map-specific Paint chain has no separate GameInter border call.",
-      "Recover the remaining full-map input/paint state and determine whether this EI build has a separate map dialog or only a world/minimap surface path; do not use notice ID 15 as map UI.",
-      "Name the user-facing command/key path that invokes the 0x0043DE40 map display-mode switch.",
-      "Resolve global object list entry layouts and type 0x32 semantics before naming markers as player, NPC, party or item."
+      "Type 0x32 object business name (NPC vs teleport marker) requires runtime/network evidence; static sites only show drawing and blocking behavior.",
+      "User-facing label of the 0x54/mouse minimap zoom toggle is not present in the binary (no string resources); remains semantic candidate.",
+      "Mode surface semantics: whether 256x256 rebuild renders the same 128x128 widget at higher source resolution (zoom-out) needs a runtime frame capture."
     ],
+    "border_evidence": {
+      "finding": "The minimap widget border is a program-drawn 1px gray rectangle outline, not a GameInter WIL frame.",
+      "draw_site": {
+        "va": "0x0043DBD7",
+        "call": "0x0045E570",
+        "arguments": [
+          "mode=1",
+          "color=0x646464 (BGR gray)",
+          "arg3=0",
+          "rect=owner+0x2C0"
+        ]
+      },
+      "rect_helper_va": "0x0045E570",
+      "rect_helper_mechanism": {
+        "mode_dispatch": "arg1 & 0xFF, jump table at 0x0045E71C (5 modes)",
+        "gdi_calls": [
+          {
+            "iat": "0x00476084",
+            "import": "CreatePen",
+            "arguments": [
+              "style=0",
+              "width=0",
+              "color"
+            ]
+          },
+          {
+            "iat": "0x00476048",
+            "import": "SelectObject"
+          },
+          {
+            "iat": "0x0047606C",
+            "import": "MoveToEx"
+          },
+          {
+            "iat": "0x00476080",
+            "import": "LineTo"
+          },
+          {
+            "iat": "0x00476068",
+            "import": "DeleteObject"
+          }
+        ],
+        "interpretation": "CreatePen+MoveToEx/LineTo rectangle outline; mode 1 used for the minimap border and all marker outlines."
+      },
+      "auxiliary_outlines": [
+        {
+          "rect": "owner+0x298",
+          "color": "0xC8C8C8",
+          "mode": 1,
+          "call_va": "0x0043DC0D",
+          "hit_test": "click toggles alpha flag owner+0x290"
+        },
+        {
+          "rect": "owner+0x2A8",
+          "color": "0x96C8FF",
+          "mode": 1,
+          "call_va": "0x0043DC40",
+          "hit_test": "click toggles mode flag owner+0x294 and rebuilds surface"
+        },
+        {
+          "rect": "computed view rect (esp+0x3C)",
+          "color": "0x64FA64",
+          "mode": 1,
+          "call_va": "0x0043DBC1",
+          "meaning": "current view/scroll window indicator over the full map"
+        }
+      ],
+      "resolution": "pending_item_1 CLOSED: no separate GameInter border frame; the border is drawn by the map paint chain itself."
+    },
+    "no_separate_map_dialog": {
+      "finding": "This EI build has no separate map dialog window. The map subsystem is a subobject of the main world object.",
+      "ctor_va": "0x0043D4D0",
+      "ctor_call_sites": [
+        {
+          "va": "0x00427E08",
+          "context": "main world constructor",
+          "object_field": "main+0x6214"
+        }
+      ],
+      "main_world_ctor_context": "0x00427D89-0x00427E1F constructs: control 0x417550 (main+0x6108), rect controls, input box 0x417960 (main+0x61BC), 6 HUD rect controls (frames 0x117..0x1DF), then the map object at main+0x6214, then 0x428BA0/0x4292B0.",
+      "toggle_paths": [
+        {
+          "kind": "keyboard",
+          "key_code": "0x54",
+          "key_label_candidate": "T",
+          "guard": "main+0x6518 == 1",
+          "state": "main+0x64A8",
+          "surface_rebuild": "0x0042CED2 256x256 / 0x0042CEF0 128x128 via 0x0043D5F0 on main+0x6214"
+        },
+        {
+          "kind": "mouse",
+          "rect": "owner+0x2A8",
+          "state": "owner+0x294",
+          "surface_rebuild": "0x0043DE60 256x256 / 0x0043DE84 128x128"
+        }
+      ],
+      "key_table_evidence": [
+        {
+          "key": "0x51 Q",
+          "action": "0x0042ADB0 frames 0x10C/0x10B (exit/confirm dialog)"
+        },
+        {
+          "key": "0x57 W",
+          "action": "0x0042ADB0(1)"
+        },
+        {
+          "key": "0x45 E",
+          "action": "0x0042ADB0(0x0E)"
+        },
+        {
+          "key": "0x52 R",
+          "action": "0x0042ADB0(8)"
+        },
+        {
+          "key": "0x53 S",
+          "action": "0x0042ADB0(0x0D)"
+        },
+        {
+          "key": "0x44 D",
+          "action": "0x0042ADB0(0x0B)"
+        },
+        {
+          "key": "0x5A Z",
+          "action": "movement step state main+0xD40 clamp 0x2E, main+0xD42=2 (walk/run toggle)"
+        },
+        {
+          "key": "0x42 B",
+          "action": "toggle main+0x6208"
+        },
+        {
+          "key": "0x47 G",
+          "action": "0x0042ADB0(6)"
+        },
+        {
+          "key": "0x46 F",
+          "action": "0x004523E0 on 0x008AB828"
+        },
+        {
+          "key": "0x4E N",
+          "action": "0x0042ADB0(0x0C)"
+        },
+        {
+          "key": "0x54 T",
+          "action": "map surface 128<->256 toggle (guarded)"
+        },
+        {
+          "key": "0x59 Y",
+          "action": "toggle main+0x64A4 (no surface rebuild)"
+        }
+      ],
+      "resolution": "pending_item_2 CLOSED: single ctor site, subobject of main world, no map dialog window."
+    },
+    "key_path_resolution": {
+      "finding": "Two independent input paths invoke the map display-mode switch: key 0x54 (T) and mouse click on auxiliary rect owner+0x2A8.",
+      "user_facing_label": "candidate: 'minimap zoom toggle'; the binary contains no hotkey name strings (no GBK/ASCII map labels in .rdata; only IAT names), so the user-facing label stays semantic.",
+      "resolution": "pending_item_3 CLOSED with label caveat."
+    },
+    "object_list_layouts": {
+      "list_0x00560070": {
+        "head_pointer": "0x00560070 (first node; node chain via +0xC next / +0x8 prev; node vtable 0x476448; node+4 = object entry)",
+        "tail_pointer": "0x0056008C",
+        "count_pointer": "0x00560098",
+        "object_entry_layout": {
+          "+0x04": "object id (compared by find-lookup 0x0041ECAE and list walkers)",
+          "+0x88": "type byte: 0/1 lookup-target entities (0x0041ECE1), 2 rare branch (0x00405F61), 3 actors with kind word +0x8A and subtype +0xC0 (0x004071A0, 0x0043CD3F), 0x32 minimap yellow markers (0x0043DC65, 0x004123E3)",
+          "+0xCC/+0xD0": "world x/y coordinates",
+          "+0x61C74": "alive/valid flag (0x0041ECCF)",
+          "type_0x32_semantics": "candidate: stationary minimap-marked object (NPC or teleport marker); drawn yellow 0xFFFF outline; excluded from the find-object-at-xy lookup (which matches 0/1); blocks in 0x00412390 target/step check. Not resolvable to a user-facing name statically."
+        },
+        "minimap_draw": "yellow 0xFFFF outline, rect +-2px, only entries with type byte 0x32 (0x0043DC54-0x0043DCD2)"
+      },
+      "list_0x005600A0": {
+        "head_pointer": "0x005600A0",
+        "object_entry_layout": {
+          "+0x04/+0x08": "world x/y"
+        },
+        "minimap_draw": "green 0x64C864 outline, rect +-2px, culled when |dx| or |dy| >= half viewport (0x0043DCF5-0x0043DD8F); candidate: nearby player/party dots"
+      },
+      "resolution": "pending_item_4 CLOSED for layouts and type-field values; type 0x32 business name stays candidate."
+    },
     "server_cross_reference_rows": [
       {
         "source_line": 3,
