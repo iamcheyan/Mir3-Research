@@ -10,6 +10,14 @@ export MIR3_MUD3_ROOT=/home/tetsuya/NAS/TMP/Mud3
 export MIR3_ZIRCON_ROOT=/home/tetsuya/development/Zircon
 ```
 
+在 82 服务器上，NAS 挂载点是 `/tmp/nas_mnt/NAS`，对应环境变量应改为：
+
+```bash
+export MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端
+export MIR3_MUD3_ROOT=/tmp/nas_mnt/NAS/TMP/Mud3
+export MIR3_ZIRCON_ROOT=/home/tetsuya/development/Zircon
+```
+
 主要目录：
 
 - `Tools/reverse-engineering/`：EXE、DAT、WIL/WIX 和 UI 证据工具
@@ -22,8 +30,7 @@ export MIR3_ZIRCON_ROOT=/home/tetsuya/development/Zircon
 常用验证：
 
 ```bash
-python3 Tools/verify_mir3_ui_evidence.py
-python3 Tools/enrich_mir3_layout_evidence.py
+python3 Tools/reverse-engineering/verify_mir3_ui_evidence.py --client "$MIR3_EI_ROOT"
+python3 Tools/reverse-engineering/enrich_mir3_layout_evidence.py
 python3 -m compileall -q Tools
 ```
-

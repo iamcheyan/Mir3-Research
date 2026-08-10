@@ -10,11 +10,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
 
 
-DEFAULT_EXE = Path("/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe")
+DEFAULT_EXE = Path(os.environ.get(
+    "MIR3_EI_ROOT",
+    "/home/tetsuya/NAS/TMP/EI传奇3.0客户端",
+)) / "Mir3.exe"
 DEFAULT_CLIENT = DEFAULT_EXE.parent
 DEFAULT_EVIDENCE = Path("docs/research/ei-ui-layout")
 ALLOWED_LEVEL_PREFIXES = ("primary", "secondary", "candidate", "pending")
