@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# goal_watchdog.sh — keep the Mir3 EI reverse-engineering goal session alive.
+# goal_watchdog.sh — keep multiple omp goal sessions alive (multi-goal version).
 #
 #   HEALTHY    process alive + transcript fresh (age <= STALL_SECONDS)
 #   RUNNING    a tool call may be in flight (last tool_execution_start within
@@ -14,10 +14,14 @@
 #   FAILED     MAX_FAILS consecutive failed recoveries — halt for HALT_AFTER,
 #              then retry one fresh round (never spams)
 #
+# Multi-goal: 每个 goal 一行配置(见 GOALS 数组),各 goal 独立 state 文件与
+# kill-switch;一个 goal 完成/禁用不影响其它 goal。全局 kill-switch
+# ~/.omp/mir3-goal-watchdog.off 仍然有效(禁用所有)。
+#
 # Goal-pane discovery: a tmux pane is "the goal pane" when
 #   ~/.omp/agent/terminal-sessions/<tty>  maps to the goal session jsonl.
 # Pane indexes shift when panes die, so we never hardcode an index; the tty
-# mapping is the primary key (pane id %0 only as fallback).
+# mapping is the primary key (first pane of the tmux session as fallback).
 #
 # Modes:
 #   --check     read-only diagnostics (no side effects)
@@ -25,28 +29,22 @@
 #   --dry-run   simulate actions; prints what would run, no side effects
 #
 # Log:   ~/.omp/logs/goal-watchdog.log
-# State: ~/.omp/goal-watchdog.state
-# Kill-switch: touch ~/.omp/mir3-goal-watchdog.off to disable entirely.
+# State: ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state (每 goal 独立)
+# Kill-switch per goal: touch ~/.omp/mir3-goal-watchdog.<前8位>.off
+# Kill-switch global:   touch ~/.omp/mir3-goal-watchdog.off
 
 set -u
 export PATH=/usr/local/bin:/usr/bin:/bin:/home/tetsuya/.bun/bin
 
-# Kill-switch: touch this file to stop the watchdog entirely (goal completed).
-OFF_FILE=/home/tetsuya/.omp/mir3-goal-watchdog.off
-if [ -f "$OFF_FILE" ]; then
+# 全局 kill-switch: touch 此文件禁用所有 goal 的 watchdog。
+GLOBAL_OFF_FILE=/home/tetsuya/.omp/mir3-goal-watchdog.off
+if [ -f "$GLOBAL_OFF_FILE" ]; then
   exit 0
 fi
 
 OMP=/home/tetsuya/.bun/bin/omp
-WORKDIR=/home/tetsuya/development/Mir3-Research
-TMUX_SESSION=zircon
-GOAL_PANE_ID="zircon:%0"                  # stable pane id of the goal pane (fallback)
 TERM_SESS_DIR=/home/tetsuya/.omp/agent/terminal-sessions
-SESSION_DIR=/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research
-GOAL_ID=019feb87-4104-7000-8548-3a0adb440578
-GOAL_SESSION_FILE="$SESSION_DIR/2026-08-10T11-55-37-604Z_$GOAL_ID.jsonl"
 LOG=/home/tetsuya/.omp/logs/goal-watchdog.log
-STATE=/home/tetsuya/.omp/goal-watchdog.state
 PY=/home/tetsuya/mir3-venv/bin/python3
 
 STALL_SECONDS=${STALL_SECONDS:-1200}      # no new transcript entry for this long => stalled
@@ -61,6 +59,16 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
                                          # 的正常 idle,不是卡死,故用短阈值快速驱动;
                                          # 仅终态 goal 才允许真正停下)
 
+# ── Goal 配置 ──────────────────────────────────────────────────────────────
+# 每行一个 goal,字段以 | 分隔:
+#   GOAL_ID | SESSION_FILE | TMUX_SESSION | WORKDIR | STATE_FILE
+# 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
+# STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
+GOALS=(
+  "019feb87-4104-7000-8548-3a0adb440578|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-10T11-55-37-604Z_019feb87-4104-7000-8548-3a0adb440578.jsonl|zircon|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019feb87.state"
+  "019ff331-5ca2-7000-869c-ab301d561150|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-11T23-38-46-306Z_019ff331-5ca2-7000-869c-ab301d561150.jsonl|dbviewer|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff331.state"
+)
+
 CHECK_ONLY=0
 DRY_RUN=0
 [ "${1:-}" = "--check" ] && CHECK_ONLY=1
@@ -69,7 +77,7 @@ DRY_RUN=0
 
 mkdir -p /home/tetsuya/.omp/logs
 
-log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >> "$LOG"; }
+log() { printf '%s [%s] %s\n' "$(date '+%F %T')" "${GOAL_TAG:-?}" "$*" >> "$LOG"; }
 st_get() { grep "^$1=" "$STATE" 2>/dev/null | cut -d= -f2-; }
 st_set() {
   local last last_ts rf nf lr rh nh
@@ -144,315 +152,335 @@ print('goal_status=' + (goal_status or ''))
 PYEOF
 }
 
-probe_out=$(probe_jsonl 2>/dev/null)
-last_tool=$(printf '%s\n' "$probe_out" | sed -n 's/^last_tool=//p')
-goal_status=$(printf '%s\n' "$probe_out" | sed -n 's/^goal_status=//p')
-
 # --- goal pane tty: pane whose terminal-sessions mapping names the goal file ---
 # ps reports the tty as "pts/1"; tmux pane_tty as "/dev/pts/1"; the
 # terminal-sessions dir names files "pts-1". Normalize to "pts-<N>".
 ttykey() { printf 'pts-%s' "${1##*/}"; }
 
-goal_ttybase=""
-# terminal-sessions/<tty> holds two lines: cwd, then the session jsonl path.
+# session_of_tty: terminal-sessions/<tty> holds two lines: cwd, then the jsonl path.
 session_of_tty() { awk 'END{print}' "$TERM_SESS_DIR/$1" 2>/dev/null; }
-if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
-  for panetty in $(tmux list-panes -t "$TMUX_SESSION" -F '#{pane_tty}' 2>/dev/null); do
-    key=$(ttykey "$(basename "$panetty")")
-    if [ -f "$TERM_SESS_DIR/$key" ] && [ "$(session_of_tty "$key")" = "$GOAL_SESSION_FILE" ]; then
-      goal_ttybase=$key; break
+
+# ── 单 goal 监测逻辑 ────────────────────────────────────────────────────────
+# 依赖全局变量(由主循环设置): GOAL_ID / GOAL_SESSION_FILE / TMUX_SESSION /
+# WORKDIR / STATE / GOAL_TAG
+watch_one_goal() {
+  local probe_out last_tool goal_status
+  local goal_ttybase="" goal_pid="" now age tool_age
+  local target_pane="" gid rf rh nf nh
+
+  probe_out=$(probe_jsonl 2>/dev/null)
+  last_tool=$(printf '%s\n' "$probe_out" | sed -n 's/^last_tool=//p')
+  goal_status=$(printf '%s\n' "$probe_out" | sed -n 's/^goal_status=//p')
+
+  goal_ttybase=""
+  if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+    for panetty in $(tmux list-panes -t "$TMUX_SESSION" -F '#{pane_tty}' 2>/dev/null); do
+      key=$(ttykey "$(basename "$panetty")")
+      if [ -f "$TERM_SESS_DIR/$key" ] && [ "$(session_of_tty "$key")" = "$GOAL_SESSION_FILE" ]; then
+        goal_ttybase=$key; break
+      fi
+    done
+  fi
+
+  # --- goal process: omp running on that tty (fallback: any omp whose tty maps ---
+  # --- to the goal session, e.g. mapping survived but pane tty query failed) -----
+  goal_pid=""
+  for p in $(pgrep -f '/home/tetsuya/\.bun/bin/omp' 2>/dev/null); do
+    t=$(ps -o tty= -p "$p" 2>/dev/null | tr -d ' ')
+    [ -z "$t" ] || [ "$t" = "?" ] && continue
+    t=$(ttykey "$t")
+    [ -z "$t" ] && continue
+    if { [ -n "$goal_ttybase" ] && [ "$t" = "$goal_ttybase" ]; } || \
+       { [ -z "$goal_ttybase" ] && [ -f "$TERM_SESS_DIR/$t" ] && [ "$(session_of_tty "$t")" = "$GOAL_SESSION_FILE" ]; }; then
+      goal_pid=$p; [ -z "$goal_ttybase" ] && goal_ttybase=$t
+      break
     fi
   done
-fi
 
-# --- goal process: omp running on that tty (fallback: any omp whose tty maps ---
-# --- to the goal session, e.g. mapping survived but pane tty query failed) -----
-goal_pid=""
-for p in $(pgrep -f '/home/tetsuya/\.bun/bin/omp' 2>/dev/null); do
-  t=$(ps -o tty= -p "$p" 2>/dev/null | tr -d ' ')
-  [ -z "$t" ] || [ "$t" = "?" ] && continue
-  t=$(ttykey "$t")
-  [ -z "$t" ] && continue
-  if { [ -n "$goal_ttybase" ] && [ "$t" = "$goal_ttybase" ]; } || \
-     { [ -z "$goal_ttybase" ] && [ -f "$TERM_SESS_DIR/$t" ] && [ "$(session_of_tty "$t")" = "$GOAL_SESSION_FILE" ]; }; then
-    goal_pid=$p; [ -z "$goal_ttybase" ] && goal_ttybase=$t
-    break
+  # --- stall age: seconds since the goal transcript file was last appended -------
+  now=$(date +%s)
+  age=""
+  if [ -f "$GOAL_SESSION_FILE" ]; then
+    mt=$(stat -c %Y "$GOAL_SESSION_FILE" 2>/dev/null || echo 0)
+    age=$(( now - mt ))
   fi
-done
 
-# --- stall age: seconds since the goal transcript file was last appended -------
-now=$(date +%s)
-age=""
-if [ -f "$GOAL_SESSION_FILE" ]; then
-  mt=$(stat -c %Y "$GOAL_SESSION_FILE" 2>/dev/null || echo 0)
-  age=$(( now - mt ))
-fi
+  # tool_age: seconds since the last tool_execution_start ('' if none ever)
+  tool_age=""
+  if [ -n "$last_tool" ]; then
+    tool_age=$(( now - last_tool ))
+  fi
 
-# tool_age: seconds since the last tool_execution_start ('' if none ever)
-tool_age=""
-if [ -n "$last_tool" ]; then
-  tool_age=$(( now - last_tool ))
-fi
-
-# --- --status / --check --------------------------------------------------------
-if [ "${1:-}" = "--status" ]; then
-  echo "=== goal watchdog status $(date '+%F %T') ==="
-  echo "goal_pid=${goal_pid:-none} goal_tty=${goal_ttybase:-none}"
-  echo "goal_status=${goal_status:-unknown}"
-  if [ -n "$goal_pid" ] && [ -n "$age" ] && [ "$age" -le "$STALL_SECONDS" ]; then
-    echo "JUDGMENT: HEALTHY (agent alive, transcript age ${age}s)"
-  elif [ -n "$goal_pid" ]; then
-    if [ -n "$tool_age" ] && [ "$tool_age" -le "$TOOL_WINDOW" ]; then
-      echo "JUDGMENT: RUNNING (tool call ${tool_age}s ago, within ${TOOL_WINDOW}s window)"
+  # --- --status / --check --------------------------------------------------------
+  if [ "${1:-}" = "--status" ]; then
+    echo "=== goal watchdog status $(date '+%F %T') goal=${GOAL_TAG} ==="
+    echo "goal_pid=${goal_pid:-none} goal_tty=${goal_ttybase:-none}"
+    echo "goal_status=${goal_status:-unknown}"
+    if [ -n "$goal_pid" ] && [ -n "$age" ] && [ "$age" -le "$STALL_SECONDS" ]; then
+      echo "JUDGMENT: HEALTHY (agent alive, transcript age ${age}s)"
+    elif [ -n "$goal_pid" ]; then
+      if [ -n "$tool_age" ] && [ "$tool_age" -le "$TOOL_WINDOW" ]; then
+        echo "JUDGMENT: RUNNING (tool call ${tool_age}s ago, within ${TOOL_WINDOW}s window)"
+      else
+        echo "JUDGMENT: STALLED (alive but transcript age ${age}s > ${STALL_SECONDS}s)"
+      fi
     else
-      echo "JUDGMENT: STALLED (alive but transcript age ${age}s > ${STALL_SECONDS}s)"
+      echo "JUDGMENT: DEAD (no goal omp process)"
     fi
-  else
-    echo "JUDGMENT: DEAD (no goal omp process)"
+    echo "last_run=$(st_get LAST_RUN) last_action=$(st_get LAST_ACTION) last_ts=$(st_get LAST_TS)"
+    echo "restart_fails=$(st_get RESTART_FAILS) nudge_fails=$(st_get NUDGE_FAILS)"
+    echo "restart_halt_until=$(st_get RESTART_HALT_UNTIL) nudge_halt_until=$(st_get NUDGE_HALT_UNTIL)"
+    echo "--- recent log ---"
+    grep "\[${GOAL_TAG}\]" "$LOG" 2>/dev/null | tail -n 8 || echo "(no log yet)"
+    return 0
   fi
-  echo "last_run=$(st_get LAST_RUN) last_action=$(st_get LAST_ACTION) last_ts=$(st_get LAST_TS)"
-  echo "restart_fails=$(st_get RESTART_FAILS) nudge_fails=$(st_get NUDGE_FAILS)"
-  echo "restart_halt_until=$(st_get RESTART_HALT_UNTIL) nudge_halt_until=$(st_get NUDGE_HALT_UNTIL)"
-  echo "--- recent log ---"
-  tail -n 8 "$LOG" 2>/dev/null || echo "(no log yet)"
-  exit 0
-fi
 
-if [ "$CHECK_ONLY" = 1 ]; then
-  echo "goal_pid=${goal_pid:-none} goal_tty=${goal_ttybase:-none} goal_status=${goal_status:-unknown}"
-  echo "goal_session_file=$GOAL_SESSION_FILE age=${age:-n/a}s tool_age=${tool_age:-n/a}s"
-  echo "threshold=${STALL_SECONDS}s tool_window=${TOOL_WINDOW}s"
-  echo "last_run=$(st_get LAST_RUN) last_action=$(st_get LAST_ACTION) last_ts=$(st_get LAST_TS)"
-  echo "restart_fails=$(st_get RESTART_FAILS) nudge_fails=$(st_get NUDGE_FAILS)"
-  exit 0
-fi
-
-# --- goal completed? then stop ourselves, never touch it again -----------------
-# Goal status is omp's own bookkeeping: "active" while running, "paused" when
-# the user (or agent) paused it. Only a *terminal* status (complete, blocked,
-# error, ...) means the goal engine stopped driving it — restarting or nudging
-# would be wrong. Auto-disable via the kill-switch.
-# "paused" is NOT terminal: process alive but idle — case 1.5 below drives it
-# with "继续" immediately (short PAUSED_NUDGE_SECONDS), so the agent never
-# stops unless the goal reaches a truly terminal status.
-if [ -n "$goal_status" ] && [ "$goal_status" != "active" ] && [ "$goal_status" != "paused" ]; then
-  log "goal status='$goal_status' (not active); disabling watchdog"
-  touch "$OFF_FILE"
-  exit 0
-fi
-
-# --- resolve the pane to act on ------------------------------------------------
-# pane_tty 形如 /dev/pts/1,ttykey 归一化为 pts-1;逐 pane 匹配拿 pane_id。
-pane_of_ttykey() {
-  tmux list-panes -t "$TMUX_SESSION" -F "#{pane_tty}|#{pane_id}" 2>/dev/null \
-    | awk -F'|' -v k="$1" '{ split($1, a, "/"); if (("pts-" a[length(a)]) == k) { print $2; exit } }'
-}
-target_pane=""
-if [ -n "$goal_ttybase" ]; then
-  target_pane=$(pane_of_ttykey "$goal_ttybase")
-fi
-# fallback: 无 tty 映射时优先命中 %0(goal pane 惯例)。注意 pane id 目标必须
-# 单独使用(-t %0),不能拼成 "session:%0"(tmux 会当 window 名解析而失败)。
-[ -z "$target_pane" ] && tmux has-session -t "$TMUX_SESSION" 2>/dev/null \
-  && tmux list-panes -t "$TMUX_SESSION" -F '#{pane_id}' 2>/dev/null | grep -qx '%0' \
-  && target_pane="%0"
-
-# --- case 0: no tmux session at all (e.g. reboot) -> recreate detached ---------
-if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
-  log "tmux session '$TMUX_SESSION' missing; recreating detached"
-  if [ "$DRY_RUN" = 1 ]; then
-    echo "TEST would run: tmux new-session -d -s $TMUX_SESSION -c $WORKDIR"
-  else
-    tmux new-session -d -s "$TMUX_SESSION" -c "$WORKDIR" 2>>"$LOG"
+  if [ "$CHECK_ONLY" = 1 ]; then
+    echo "goal=${GOAL_TAG} pid=${goal_pid:-none} tty=${goal_ttybase:-none} status=${goal_status:-unknown}"
+    echo "  session_file=$GOAL_SESSION_FILE age=${age:-n/a}s tool_age=${tool_age:-n/a}s"
+    echo "  threshold=${STALL_SECONDS}s tool_window=${TOOL_WINDOW}s state=$STATE"
+    echo "  last_run=$(st_get LAST_RUN) last_action=$(st_get LAST_ACTION) last_ts=$(st_get LAST_TS)"
+    echo "  restart_fails=$(st_get RESTART_FAILS) nudge_fails=$(st_get NUDGE_FAILS)"
+    return 0
   fi
-  sleep 2
-  target_pane="$TMUX_SESSION:0.0"
-fi
 
-# --- resume helper: kill-stuck / dead-restart both call this ---------------------
-# resume 只是把会话恢复到暂停前的状态,agent 不会自动继续执行;必须再发一条
-# 「继续」驱动它跑下去(否则看门狗下一轮又会判定 STALLED)。
- do_resume() {
-   local pane=$1 gid=$2
-   if [ "$DRY_RUN" = 1 ]; then
-     echo "TEST would run: tmux send-keys -t $pane C-c"
-     echo "TEST would run: tmux send-keys -t $pane 'cd $WORKDIR && $OMP --resume $gid --auto-approve' Enter"
-    echo "TEST would run: (wait for omp boot) tmux send-keys -t $pane '继续' Enter"
-     return
-   fi
-   tmux send-keys -t "$pane" C-c 2>/dev/null
-   tmux send-keys -t "$pane" "cd $WORKDIR && $OMP --resume $gid --auto-approve" Enter 2>>"$LOG"
-  # 等 omp 进程起来(bun 冷启动 + 加载大 transcript 需要数秒),再多等几秒让
-  # TUI 就绪,否则「继续」会被启动期吞掉或落进 shell 缓冲。
-  for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
-    sleep 2
-    pgrep -f "/home/tetsuya/.bun/bin/omp.*--resume $gid" >/dev/null 2>&1 && break
-  done
-  sleep 3
-  tmux send-keys -t "$pane" '继续' Enter 2>>"$LOG"
-  log "resumed $gid in $pane; sent '继续' to drive agent"
- }
-resolve_gid() {
-  local gid=$GOAL_ID
+  # --- goal completed? then stop ourselves, never touch it again -----------------
+  # Goal status is omp's own bookkeeping: "active" while running, "paused" when
+  # the user (or agent) paused it. Only a *terminal* status (complete, blocked,
+  # error, ...) means the goal engine stopped driving it — restarting or nudging
+  # would be wrong. Auto-disable via the per-goal kill-switch.
+  # "paused" is NOT terminal: process alive but idle — case 1.5 below drives it
+  # with "继续" immediately (short PAUSED_NUDGE_SECONDS), so the agent never
+  # stops unless the goal reaches a truly terminal status.
+  if [ -n "$goal_status" ] && [ "$goal_status" != "active" ] && [ "$goal_status" != "paused" ]; then
+    log "goal status='$goal_status' (not active); disabling watchdog for this goal"
+    touch "$GOAL_OFF_FILE"
+    return 0
+  fi
+
+  # --- resolve the pane to act on ------------------------------------------------
+  # pane_tty 形如 /dev/pts/1,ttykey 归一化为 pts-1;逐 pane 匹配拿 pane_id。
+  pane_of_ttykey() {
+    tmux list-panes -t "$TMUX_SESSION" -F "#{pane_tty}|#{pane_id}" 2>/dev/null \
+      | awk -F'|' -v k="$1" '{ split($1, a, "/"); if (("pts-" a[length(a)]) == k) { print $2; exit } }'
+  }
+  target_pane=""
   if [ -n "$goal_ttybase" ]; then
-    local b cand
-    b=$(basename "$(session_of_tty "$goal_ttybase")" .jsonl)
-    cand=${b##*_}
-    [ "${#cand}" -ge 8 ] && gid=$cand
+    target_pane=$(pane_of_ttykey "$goal_ttybase")
   fi
-  printf '%s' "$gid"
-}
+  # fallback: 无 tty 映射时优先命中该 tmux 会话的第一个 pane。
+  [ -z "$target_pane" ] && tmux has-session -t "$TMUX_SESSION" 2>/dev/null \
+    && target_pane=$(tmux list-panes -t "$TMUX_SESSION" -F '#{pane_id}' 2>/dev/null | head -1)
 
-# --- case 1: goal process dead -> relaunch by resuming its session -------------
-if [ -z "$goal_pid" ]; then
-  rf=$(st_get RESTART_FAILS); [ -z "$rf" ] && rf=0
-  rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
-  if [ "$rf" -ge "$MAX_FAILS" ]; then
-    if [ "$now" -lt "$rh" ]; then
-      log "restart halted (${rf} consecutive fails; resume $(date -d "@$rh" '+%F %T'))"
-      st_set   # heartbeat only, preserve halt state
-      exit 0
-    fi
-    log "restart freeze expired; starting a fresh round"
-    rf=0
-  fi
-  if [ -z "$target_pane" ]; then
-    log "goal dead and no goal pane found; creating window 'goal'"
+  # --- case 0: no tmux session at all (e.g. reboot) -> recreate detached ---------
+  if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+    log "tmux session '$TMUX_SESSION' missing; recreating detached"
     if [ "$DRY_RUN" = 1 ]; then
-      echo "TEST would run: tmux new-window -t $TMUX_SESSION -n goal -c $WORKDIR"
+      echo "TEST would run: tmux new-session -d -s $TMUX_SESSION -c $WORKDIR"
     else
-      tmux new-window -t "$TMUX_SESSION" -n goal -c "$WORKDIR" 2>>"$LOG"
+      tmux new-session -d -s "$TMUX_SESSION" -c "$WORKDIR" 2>>"$LOG"
     fi
-    target_pane="$TMUX_SESSION:goal.0"
+    sleep 2
+    target_pane="$TMUX_SESSION:0.0"
   fi
-  gid=$(resolve_gid)
-  log "goal process dead; relaunching: omp --resume $gid in $target_pane"
-  do_resume "$target_pane" "$gid"
-  rf=$((rf+1))
-  nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
-  [ "$rf" -ge "$MAX_FAILS" ] && rh=$((now + HALT_AFTER))
-  st_set restart "$rf" "" "$nh" "$rh"
-  exit 0
-fi
 
-# --- case 1.5: PAUSED — omp idle at end of a turn, drive it immediately -------
-# 用户要求:goal 未最终完成前绝不许停下。omp 在一个回合结束会把 goal 置为
-# "paused"(进程活着、idle 等输入)。这不是卡死,无需等 STALL_SECONDS 确认。
-# paused 是 omp 明确声明的 idle 态,故不加 RUNNING guard(tool_age 只反映停更
-# 前最后一次工具开始,paused 后无新工具,用它挡会误判);只要转录停更超过
-# PAUSED_NUDGE_SECONDS(默认 20s)立刻 nudge「继续」驱动下一轮。
-# 失败计数复用 nudge 计数器:连续 MAX_FAILS 次 nudge 后仍 paused 才进入冷却。
-if [ "$goal_status" = "paused" ] && [ -n "$age" ] && [ "$age" -gt "$PAUSED_NUDGE_SECONDS" ]; then
-  nf=$(st_get NUDGE_FAILS); [ -z "$nf" ] && nf=0
-  nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
-  if [ "$nf" -ge "$MAX_FAILS" ]; then
-    if [ "$now" -lt "$nh" ]; then
-      log "paused-nudge halted (${nf} consecutive fails; resume $(date -d "@$nh" '+%F %T'))"
-      st_set   # heartbeat only, preserve halt state
-      exit 0
+  # --- resume helper: kill-stuck / dead-restart both call this ---------------------
+  # resume 只是把会话恢复到暂停前的状态,agent 不会自动继续执行;必须再发一条
+  # 「继续」驱动它跑下去(否则看门狗下一轮又会判定 STALLED)。
+  do_resume() {
+    local pane=$1 gid=$2
+    if [ "$DRY_RUN" = 1 ]; then
+      echo "TEST would run: tmux send-keys -t $pane C-c"
+      echo "TEST would run: tmux send-keys -t $pane 'cd $WORKDIR && $OMP --resume $gid --auto-approve' Enter"
+      echo "TEST would run: (wait for omp boot) tmux send-keys -t $pane '继续' Enter"
+      return
     fi
-    log "paused-nudge freeze expired; starting a fresh round"
-    nf=0
-  fi
-  if [ -z "$target_pane" ]; then
-    log "goal paused (pid=$goal_pid age=${age}s) but no pane to nudge; skipping"
-    exit 0
-  fi
-  log "goal paused: pid=$goal_pid age=${age}s; driving with '继续' -> $target_pane"
-  if [ "$DRY_RUN" = 1 ]; then
-    echo "TEST would run: tmux send-keys -t $target_pane '继续' Enter"
-  else
-    tmux send-keys -t "$target_pane" '继续' Enter 2>>"$LOG"
-  fi
-  nf=$((nf+1))
-  rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
-  [ "$nf" -ge "$MAX_FAILS" ] && nh=$((now + HALT_AFTER))
-  st_set nudge "" "$nf" "$nh" "$rh"
-  exit 0
-fi
+    tmux send-keys -t "$pane" C-c 2>/dev/null
+    tmux send-keys -t "$pane" "cd $WORKDIR && $OMP --resume $gid --auto-approve" Enter 2>>"$LOG"
+    # 等 omp 进程起来(bun 冷启动 + 加载大 transcript 需要数秒),再多等几秒让
+    # TUI 就绪,否则「继续」会被启动期吞掉或落进 shell 缓冲。
+    for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+      sleep 2
+      pgrep -f "/home/tetsuya/.bun/bin/omp.*--resume $gid" >/dev/null 2>&1 && break
+    done
+    sleep 3
+    tmux send-keys -t "$pane" '继续' Enter 2>>"$LOG"
+    log "resumed $gid in $pane; sent '继续' to drive agent"
+  }
+  resolve_gid() {
+    local gid=$GOAL_ID b cand
+    if [ -n "$goal_ttybase" ]; then
+      b=$(basename "$(session_of_tty "$goal_ttybase")" .jsonl)
+      cand=${b##*_}
+      [ "${#cand}" -ge 8 ] && gid=$cand
+    fi
+    printf '%s' "$gid"
+  }
 
-# --- case 2: alive but stalled -> nudge with "继续" -----------------------------
-# RUNNING guard: if the last tool_execution_start is within TOOL_WINDOW a tool
-# may still be executing (single tool timeout is 300s). Never nudge then — the
-# typed "继续" would sit in the editor and block omp's own auto-continuation.
-if [ -n "$age" ] && [ "$age" -gt "$STALL_SECONDS" ] && \
-   { [ -z "$tool_age" ] || [ "$tool_age" -gt "$TOOL_WINDOW" ]; }; then
-  # 2a. 卡死升级:转录停更超过 STALL_RESTART_SECONDS(默认 30min)且 nudge 无力回天
-  #     -> 杀掉卡死进程,resume 重启(v1 只 nudge 的已知缺陷,见 GOAL_WATCHDOG.md)。
-  if [ -n "$age" ] && [ "$age" -gt "$STALL_RESTART_SECONDS" ]; then
+  # --- case 1: goal process dead -> relaunch by resuming its session -------------
+  if [ -z "$goal_pid" ]; then
     rf=$(st_get RESTART_FAILS); [ -z "$rf" ] && rf=0
     rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
     if [ "$rf" -ge "$MAX_FAILS" ]; then
       if [ "$now" -lt "$rh" ]; then
         log "restart halted (${rf} consecutive fails; resume $(date -d "@$rh" '+%F %T'))"
         st_set   # heartbeat only, preserve halt state
-        exit 0
+        return 0
       fi
       log "restart freeze expired; starting a fresh round"
       rf=0
     fi
     if [ -z "$target_pane" ]; then
-      log "goal stuck (pid=$goal_pid age=${age}s) but no pane to restart in; skipping"
-      exit 0
+      log "goal dead and no goal pane found; creating window 'goal'"
+      if [ "$DRY_RUN" = 1 ]; then
+        echo "TEST would run: tmux new-window -t $TMUX_SESSION -n goal -c $WORKDIR"
+      else
+        tmux new-window -t "$TMUX_SESSION" -n goal -c "$WORKDIR" 2>>"$LOG"
+      fi
+      target_pane="$TMUX_SESSION:goal.0"
     fi
     gid=$(resolve_gid)
-    log "goal stuck: pid=$goal_pid age=${age}s (>= ${STALL_RESTART_SECONDS}s); kill + resume $gid in $target_pane"
-    if [ "$DRY_RUN" = 1 ]; then
-      echo "TEST would kill pid $goal_pid"
-    else
-      kill "$goal_pid" 2>/dev/null
-      sleep 3
-      kill -9 "$goal_pid" 2>/dev/null
-      sleep 1
-    fi
+    log "goal process dead; relaunching: omp --resume $gid in $target_pane"
     do_resume "$target_pane" "$gid"
     rf=$((rf+1))
     nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
     [ "$rf" -ge "$MAX_FAILS" ] && rh=$((now + HALT_AFTER))
     st_set restart "$rf" "" "$nh" "$rh"
-    exit 0
+    return 0
   fi
-  # 2b. 普通 nudge
-  nf=$(st_get NUDGE_FAILS); [ -z "$nf" ] && nf=0
-  nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
-  if [ "$nf" -ge "$MAX_FAILS" ]; then
-    if [ "$now" -lt "$nh" ]; then
-      log "nudge halted (${nf} consecutive fails; resume $(date -d "@$nh" '+%F %T'))"
-      st_set   # heartbeat only, preserve halt state
-      exit 0
-    fi
-    log "nudge freeze expired; starting a fresh round"
-    nf=0
-  fi
-  if [ -z "$target_pane" ]; then
-    log "goal stalled (pid=$goal_pid age=${age}s) but no pane to nudge; skipping"
-    exit 0
-  fi
-  log "goal stalled: pid=$goal_pid age=${age}s tool_age=${tool_age:-n/a}s; sending nudge to $target_pane"
-  if [ "$DRY_RUN" = 1 ]; then
-    echo "TEST would run: tmux send-keys -t $target_pane '继续' Enter"
-  else
-    tmux send-keys -t "$target_pane" '继续' Enter 2>>"$LOG"
-  fi
-  nf=$((nf+1))
-  rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
-  [ "$nf" -ge "$MAX_FAILS" ] && nh=$((now + HALT_AFTER))
-  st_set nudge "" "$nf" "$nh" "$rh"
-  exit 0
-fi
 
-# --- case 3: healthy — agent alive and transcript growing -----------------------
-# Closed loop: a prior action succeeded only if we now see a live process and a
-# fresh transcript. Reset failure counters/halts on recovery so the next WARN
-# is meaningful.
-last=$(st_get LAST_ACTION)
-if [ "$last" = restart ] || [ "$last" = nudge ]; then
-  if [ "$(st_get RESTART_FAILS)" -gt 0 ] || [ "$(st_get NUDGE_FAILS)" -gt 0 ]; then
-    log "recovered: agent healthy again (pid=$goal_pid age=${age}s)"
+  # --- case 1.5: PAUSED — omp idle at end of a turn, drive it immediately -------
+  # 用户要求:goal 未最终完成前绝不许停下。omp 在一个回合结束会把 goal 置为
+  # "paused"(进程活着、idle 等输入)。这不是卡死,无需等 STALL_SECONDS 确认。
+  # paused 是 omp 明确声明的 idle 态,故不加 RUNNING guard(tool_age 只反映停更
+  # 前最后一次工具开始,paused 后无新工具,用它挡会误判);只要转录停更超过
+  # PAUSED_NUDGE_SECONDS(默认 20s)立刻 nudge「继续」驱动下一轮。
+  # 失败计数复用 nudge 计数器:连续 MAX_FAILS 次 nudge 后仍 paused 才进入冷却。
+  if [ "$goal_status" = "paused" ] && [ -n "$age" ] && [ "$age" -gt "$PAUSED_NUDGE_SECONDS" ]; then
+    nf=$(st_get NUDGE_FAILS); [ -z "$nf" ] && nf=0
+    nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
+    if [ "$nf" -ge "$MAX_FAILS" ]; then
+      if [ "$now" -lt "$nh" ]; then
+        log "paused-nudge halted (${nf} consecutive fails; resume $(date -d "@$nh" '+%F %T'))"
+        st_set   # heartbeat only, preserve halt state
+        return 0
+      fi
+      log "paused-nudge freeze expired; starting a fresh round"
+      nf=0
+    fi
+    if [ -z "$target_pane" ]; then
+      log "goal paused (pid=$goal_pid age=${age}s) but no pane to nudge; skipping"
+      return 0
+    fi
+    log "goal paused: pid=$goal_pid age=${age}s; driving with '继续' -> $target_pane"
+    if [ "$DRY_RUN" = 1 ]; then
+      echo "TEST would run: tmux send-keys -t $target_pane '继续' Enter"
+    else
+      tmux send-keys -t "$target_pane" '继续' Enter 2>>"$LOG"
+    fi
+    nf=$((nf+1))
+    rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
+    [ "$nf" -ge "$MAX_FAILS" ] && nh=$((now + HALT_AFTER))
+    st_set nudge "" "$nf" "$nh" "$rh"
+    return 0
   fi
-  st_set recover
-else
-  st_set   # heartbeat: refresh LAST_RUN only
-fi
+
+  # --- case 2: alive but stalled -> nudge with "继续" -----------------------------
+  # RUNNING guard: if the last tool_execution_start is within TOOL_WINDOW a tool
+  # may still be executing (single tool timeout is 300s). Never nudge then — the
+  # typed "继续" would sit in the editor and block omp's own auto-continuation.
+  if [ -n "$age" ] && [ "$age" -gt "$STALL_SECONDS" ] && \
+     { [ -z "$tool_age" ] || [ "$tool_age" -gt "$TOOL_WINDOW" ]; }; then
+    # 2a. 卡死升级:转录停更超过 STALL_RESTART_SECONDS(默认 30min)且 nudge 无力回天
+    #     -> 杀掉卡死进程,resume 重启(v1 只 nudge 的已知缺陷,见 GOAL_WATCHDOG.md)。
+    if [ -n "$age" ] && [ "$age" -gt "$STALL_RESTART_SECONDS" ]; then
+      rf=$(st_get RESTART_FAILS); [ -z "$rf" ] && rf=0
+      rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
+      if [ "$rf" -ge "$MAX_FAILS" ]; then
+        if [ "$now" -lt "$rh" ]; then
+          log "restart halted (${rf} consecutive fails; resume $(date -d "@$rh" '+%F %T'))"
+          st_set   # heartbeat only, preserve halt state
+          return 0
+        fi
+        log "restart freeze expired; starting a fresh round"
+        rf=0
+      fi
+      if [ -z "$target_pane" ]; then
+        log "goal stuck (pid=$goal_pid age=${age}s) but no pane to restart in; skipping"
+        return 0
+      fi
+      gid=$(resolve_gid)
+      log "goal stuck: pid=$goal_pid age=${age}s (>= ${STALL_RESTART_SECONDS}s); kill + resume $gid in $target_pane"
+      if [ "$DRY_RUN" = 1 ]; then
+        echo "TEST would kill pid $goal_pid"
+      else
+        kill "$goal_pid" 2>/dev/null
+        sleep 3
+        kill -9 "$goal_pid" 2>/dev/null
+        sleep 1
+      fi
+      do_resume "$target_pane" "$gid"
+      rf=$((rf+1))
+      nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
+      [ "$rf" -ge "$MAX_FAILS" ] && rh=$((now + HALT_AFTER))
+      st_set restart "$rf" "" "$nh" "$rh"
+      return 0
+    fi
+    # 2b. 普通 nudge
+    nf=$(st_get NUDGE_FAILS); [ -z "$nf" ] && nf=0
+    nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
+    if [ "$nf" -ge "$MAX_FAILS" ]; then
+      if [ "$now" -lt "$nh" ]; then
+        log "nudge halted (${nf} consecutive fails; resume $(date -d "@$nh" '+%F %T'))"
+        st_set   # heartbeat only, preserve halt state
+        return 0
+      fi
+      log "nudge freeze expired; starting a fresh round"
+      nf=0
+    fi
+    if [ -z "$target_pane" ]; then
+      log "goal stalled (pid=$goal_pid age=${age}s) but no pane to nudge; skipping"
+      return 0
+    fi
+    log "goal stalled: pid=$goal_pid age=${age}s tool_age=${tool_age:-n/a}s; sending nudge to $target_pane"
+    if [ "$DRY_RUN" = 1 ]; then
+      echo "TEST would run: tmux send-keys -t $target_pane '继续' Enter"
+    else
+      tmux send-keys -t "$target_pane" '继续' Enter 2>>"$LOG"
+    fi
+    nf=$((nf+1))
+    rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
+    [ "$nf" -ge "$MAX_FAILS" ] && nh=$((now + HALT_AFTER))
+    st_set nudge "" "$nf" "$nh" "$rh"
+    return 0
+  fi
+
+  # --- case 3: healthy — agent alive and transcript growing -----------------------
+  # Closed loop: a prior action succeeded only if we now see a live process and a
+  # fresh transcript. Reset failure counters/halts on recovery so the next WARN
+  # is meaningful.
+  last=$(st_get LAST_ACTION)
+  if [ "$last" = restart ] || [ "$last" = nudge ]; then
+    if [ "$(st_get RESTART_FAILS)" -gt 0 ] || [ "$(st_get NUDGE_FAILS)" -gt 0 ]; then
+      log "recovered: agent healthy again (pid=$goal_pid age=${age}s)"
+    fi
+    st_set recover
+  else
+    st_set   # heartbeat: refresh LAST_RUN only
+  fi
+  return 0
+}
+
+# ── 主循环:遍历所有 goal ────────────────────────────────────────────────────
+for goal_line in "${GOALS[@]}"; do
+  IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR STATE <<< "$goal_line"
+  GOAL_TAG=${GOAL_ID:0:8}
+  GOAL_OFF_FILE="/home/tetsuya/.omp/mir3-goal-watchdog.$GOAL_TAG.off"
+  # 每 goal kill-switch: touch 此文件禁用该 goal 的 watchdog。
+  if [ -f "$GOAL_OFF_FILE" ]; then
+    continue
+  fi
+  watch_one_goal "${1:-}"
+done
 
 exit 0
