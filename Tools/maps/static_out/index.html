@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mir3 地图浏览器（静态）</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1a1a1a; color: #ddd; font-family: system-ui, sans-serif; display: flex; height: 100vh; overflow: hidden; }
+#sidebar { width: 240px; min-width: 240px; background: #252525; border-right: 1px solid #333; display: flex; flex-direction: column; }
+#sidebar h2 { padding: 12px 14px; font-size: 14px; color: #8bc34a; border-bottom: 1px solid #333; }
+#search { margin: 8px 10px; padding: 6px 10px; background: #333; border: 1px solid #444; color: #eee; border-radius: 4px; font-size: 13px; }
+#list { flex: 1; overflow-y: auto; }
+#list a { display: block; padding: 5px 14px; color: #aaa; text-decoration: none; font-size: 13px; cursor: pointer; border-left: 3px solid transparent; }
+#list a:hover { background: #333; color: #fff; }
+#list a.active { background: #2a3a2a; color: #8bc34a; border-left-color: #8bc34a; }
+#main { flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; background: #111; position: relative; }
+#main img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: pixelated; }
+#info { position: absolute; top: 8px; left: 12px; background: rgba(0,0,0,.8); padding: 6px 12px; border-radius: 4px; font-size: 13px; color: #8bc34a; pointer-events: none; }
+#empty { color: #666; font-size: 15px; }
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <h2>Mir3 地图浏览器</h2>
+  <input id="search" placeholder="搜索地图名…" autofocus>
+  <div id="list"></div>
+</div>
+<div id="main">
+  <div id="empty">← 点击左侧地图名查看</div>
+  <img id="view" style="display:none">
+  <div id="info"></div>
+</div>
+<script>
+let maps = [], current = null;
+const listEl = document.getElementById('list');
+const view = document.getElementById('view');
+const empty = document.getElementById('empty');
+const info = document.getElementById('info');
+const search = document.getElementById('search');
+
+function render(filter) {
+  const f = (filter || '').toLowerCase();
+  listEl.innerHTML = maps
+    .filter(m => !f || m.name.toLowerCase().includes(f) || (m.cn && m.cn.toLowerCase().includes(f)))
+    .map(m => `<a data-name="${m.name}" class="${m.name===current?'active':''}">${m.cn ? m.cn + ' · ' : ''}${m.name}</a>`)
+    .join('');
+}
+listEl.addEventListener('click', e => {
+  const a = e.target.closest('a'); if (!a) return;
+  select(a.dataset.name);
+});
+search.addEventListener('input', () => render(search.value));
+
+function select(name) {
+  current = name;
+  const m = maps.find(x => x.name === name);
+  if (!m) return;
+  view.src = `out/${name.replace('.map','')}.jpg`;
+  view.style.display = '';
+  empty.style.display = 'none';
+  info.textContent = (m.cn ? m.cn + ' · ' : '') + name + ' · ' + m.w + '×' + m.h + ' 格';
+  render(search.value);
+  if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name);
+}
+
+// load index
+fetch('index.json').then(r => r.json()).then(d => {
+  maps = d.sort((a,b) => a.name.localeCompare(b.name, 'zh'));
+  render('');
+  // restore from hash
+  const h = location.hash.replace('#','');
+  if (h && maps.some(m => m.name === h)) select(h);
+  else if (maps.length) select(maps[0].name);
+});
+window.addEventListener('hashchange', () => {
+  const h = location.hash.replace('#','');
+  if (h && h !== current && maps.some(m => m.name === h)) select(h);
+});
+</script>
+</body>
+</html>

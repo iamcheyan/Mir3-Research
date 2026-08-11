@@ -46,6 +46,21 @@ FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
 DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
 DEFAULT_CONNECTIONS = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "../../docs/database/data/map-connections.json"))
+# Full chinese-name map: {map stem -> cn}.  Generated from DBserver/Envir
+# MapInfo.txt + System.db descriptions + mapnames rules (see gen_static_maps.py).
+MAP_CN_FILE = "/tmp/map_cn_full.json"
+
+def _load_map_cn() -> dict:
+    try:
+        with open(MAP_CN_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+MAP_CN = _load_map_cn()
+# Bump whenever map parsing/library mapping changes.  Old cached JPGs can be
+# visually valid files but represent the pre-Sabak or pre-cell-offset parser.
+CACHE_VERSION = "v3"
 
 # Layout modes.  Mir3.exe (EI 2002) renders the map grid axis-aligned:
 # every draw call projects cell (x,y) with a single-axis term (x*48, y*32)
@@ -297,6 +312,8 @@ KR_ORDER = {
     69: "forest_wallsc",
     70: "forest_smobjectsc",
     71: "forest_animationsc",
+    # Zircon client custom Sabak package; 3.map uses this slot in all layers.
+    200: "sabak",
 }
 
 
@@ -1427,6 +1444,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #map-img { display:block; background:#000; }
         #grid-canvas { position:absolute; top:40px; left:0; pointer-events:none; }
         #route-svg { position:absolute; pointer-events:none; z-index:4; overflow:visible; }
+        #ent-layer { position:absolute; pointer-events:none; z-index:5; overflow:visible; }
+        #tile-layer { position:absolute; left:0; top:0; z-index:1; pointer-events:none; }
+        #tile-layer img { position:absolute; image-rendering:pixelated; }
+        #ent-layer .ent { position:absolute; transform:translate(-50%,-100%); text-align:center; cursor:default; }
+        #ent-layer .ent .ent-icon { display:block; width:28px; height:28px; margin:0 auto; image-rendering:pixelated; }
+        #ent-layer .ent .ent-label { font-size:11px; color:#fff; text-shadow:0 1px 2px #000, 0 0 3px #000; background:rgba(0,0,0,.45); border-radius:2px; padding:0 3px; white-space:nowrap; }
+        #ent-layer .ent.npc .ent-icon { filter:drop-shadow(0 0 3px rgba(114,214,255,.8)); }
+        #ent-layer .ent.spawn .ent-icon { filter:drop-shadow(0 0 3px rgba(255,213,74,.9)); }
+        #ent-layer .ent.npc .ent-label { color:#8cf; }
+        #ent-layer .ent.spawn .ent-label { color:#ffd54a; }
         #cat-panel { position:fixed; left:10px; bottom:10px; width:330px; max-height:46vh; overflow:auto;
             background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
             font-size:12px; color:#c8c8d2; z-index:60; display:none; line-height:1.45; }
@@ -1448,6 +1475,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #mm-box { position:relative; cursor:crosshair; }
         #mm-img { display:block; width:172px; background:#000; border-radius:2px; }
         #mm-rect { position:absolute; border:1.5px solid #ffd54a; background:rgba(255,213,74,.10); pointer-events:none; }
+        #statusbar { position:fixed; right:10px; bottom:8px; background:rgba(0,0,0,.78); border:1px solid #3a3a46;
+            border-radius:5px; padding:5px 11px; font-size:12px; color:#c8c8d2; z-index:90; display:flex; gap:14px;
+            font-family:ui-monospace,monospace; pointer-events:none; }
+        #statusbar #coord-info { color:#8cf; }
+        #statusbar #zoom-info { color:#ffd54a; }
+        #statusbar #map-info { color:#9a9; }
+        #legend-panel { position:fixed; left:10px; bottom:38px; background:rgba(10,12,16,.92); border:1px solid #3a3a46;
+            border-radius:6px; padding:9px 12px; font-size:12px; color:#c8c8d2; z-index:80; line-height:1.7; }
+        #legend-panel .lg-row { display:flex; align-items:center; gap:8px; }
+        #legend-panel .lg-dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+        #port-tooltip { position:fixed; background:rgba(10,12,16,.95); border:1px solid #3de88a; border-radius:6px;
+            padding:8px 10px; font-size:12px; color:#e8e8f0; z-index:120; pointer-events:none; max-width:240px; line-height:1.5;
+            box-shadow:0 4px 16px rgba(0,0,0,.6); }
+        #port-tooltip img { display:block; max-width:200px; margin:4px auto 0; border-radius:3px; border:1px solid #333; }
+        #ent-tooltip { position:fixed; background:rgba(10,12,16,.95); border:1px solid #72d6ff; border-radius:5px;
+            padding:5px 9px; font-size:12px; color:#cfe; z-index:120; pointer-events:none; box-shadow:0 3px 12px rgba(0,0,0,.6); }
         /* custom map selector */
         .msel { position:relative; }
         #map-sel-btn { display:flex; align-items:center; gap:8px; min-width:180px; max-width:260px; background:#2b2b31;
@@ -1466,6 +1509,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .msel-item:hover, .msel-item.active { background:#3a3a44; color:#fff; }
         .msel-item.empty { color:#6a6a75; cursor:default; }
         .msel-item.empty:hover { background:none; }
+        .msel-cat { padding:5px 12px 3px; font-size:11px; color:#8bc34a; font-weight:600; border-bottom:1px solid #2e2e36; background:#1e1e24; position:sticky; top:0; }
         .msel-list::-webkit-scrollbar { width:8px; }
         .msel-list::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
 
@@ -1521,16 +1565,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
 
     <div id="toolbar">
-        <span>📁 客户端:</span>
-        <div class="msel" id="root-sel">
-            <button id="root-sel-btn" type="button" title="切换客户端资源库">
-                <span id="root-sel-label">加载中…</span><span class="msel-caret">▾</span>
-            </button>
-            <div class="msel-pop" id="root-sel-pop" hidden>
-                <div class="msel-list" id="root-sel-list"></div>
-            </div>
-        </div>
-        <span>地图:</span>
+        <span>🗺️ 地图:</span>
         <div class="msel" id="map-sel">
             <button id="map-sel-btn" type="button" title="选择地图">
                 <span id="map-sel-label">加载中…</span><span class="msel-caret">▾</span>
@@ -1543,32 +1578,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <button id="btn-zoom-in" title="放大 (+)">＋</button>
         <button id="btn-zoom-out" title="缩小 (-)">－</button>
         <button id="btn-fit" title="适配全图窗口大小">⛶ 适配</button>
-        <button id="btn-rebuild-one" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="重新生成当前地图静态图 (清空缓存并重新渲染)">🔄 重新生成</button>
-        <button id="btn-rebuild-all" style="background:#183828; border-color:#3de88a; color:#85ffc7;" title="后台批量预生成全库地图静态高清大图">⚡ 预生成全库</button>
-        <a href="/sim" style="font-size:13px; color:#8cf; text-decoration:none; background:#1c2333; border:1px solid #3a4a6a; border-radius:3px; padding:5px 9px; white-space:nowrap;" title="Mir3 EI 原版 800×600 视口模拟器">800×600 模拟</a>
+        <label><input type="checkbox" id="chk-g" checked> Back</label>
+        <label><input type="checkbox" id="chk-m" checked> Middle</label>
+        <label><input type="checkbox" id="chk-f" checked> Front</label>
+        <label><input type="checkbox" id="chk-grid"> 网格</label>
+        <label><input type="checkbox" id="chk-ents" checked title="显示 NPC/传送点"> NPC</label>
+        <button id="btn-legend" title="图例说明">❓</button>
+        <span id="status"></span>
 
         <!-- 后台预生成实时进度条 -->
         <div id="progress-box" style="display:none; background:#141d18; border:1px solid #3de88a; border-radius:6px; padding:3px 10px; font-size:12px; color:#3de88a; align-items:center; gap:8px;">
             <span>⚡ 预生成:</span>
-            <div style="width:100px; height:8px; background:#2a2e38; border-radius:4px; overflow:hidden;">
+            <div style="width:140px; height:8px; background:#2a2e38; border-radius:4px; overflow:hidden;">
                 <div id="progress-bar-fill" style="width:0%; height:100%; background:linear-gradient(90deg, #3de88a, #e8a33d); transition:width 0.3s;"></div>
             </div>
             <span id="progress-text" style="font-family:monospace;">0% (0/0)</span>
         </div>
 
-        <label><input type="checkbox" id="chk-g" checked> Back</label>
-        <label><input type="checkbox" id="chk-m" checked> Middle</label>
-        <label><input type="checkbox" id="chk-f" checked> Front</label>
-        <label><input type="checkbox" id="chk-grid"> 网格</label>
-        <span id="info"></span>
-        <span id="status"></span>
+        <button id="btn-clear-cache" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄 重新生成</button>
     </div>
-    <div id="viewport"><img id="map-img" draggable="false" alt=""><svg id="route-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas></div>
+    <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
     <div id="cat-panel"></div>
     <div id="minimap">
         <div class="mm-title">全图</div>
         <div id="mm-box"><img id="mm-img" draggable="false" alt=""><div id="mm-rect" style="display:none"></div></div>
     </div>
+    <div id="statusbar"><span id="coord-info"></span><span id="zoom-info"></span><span id="map-info"></span></div>
+    <div id="legend-panel" style="display:none"></div>
+    <div id="port-tooltip" style="display:none"></div>
+    <div id="ent-tooltip" style="display:none"></div>
 
     <script>
         // Static full-map viewer: the server pre-renders the whole map at each
@@ -1581,22 +1619,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const mselPop = document.getElementById("map-sel-pop");
         const mselFilter = document.getElementById("map-sel-filter");
         const mselList = document.getElementById("map-sel-list");
-        const infoEl = document.getElementById("info");
+        const infoEl = document.getElementById("map-info");
         const statusEl = document.getElementById("status");
         const mmImg = document.getElementById("mm-img");
         const mmBox = document.getElementById("mm-box");
         const mmRect = document.getElementById("mm-rect");
 
-        let maps = [], cur = -1, ladder = [], worldW = 0, worldH = 0;
+        let maps = [], cur = -1, scaleLadder = [0,1,2,3,4,5,6,7], worldW = 0, worldH = 0;
+        const MAP_CN = /*__MAP_CN__*/;
         let version = 0;            // render generation; ignore stale loads
         let anchorX = 0, anchorY = 0; // world px at viewport center
         let dragging = false, dragX = 0, dragY = 0, scX = 0, scY = 0;
         let miniReady = false, miniDrag = false;
+        let tileLayer = document.getElementById("tile-layer");
 
         let curName = null;
         const curMap = () => maps.find(m => m.name === curName);
-        const curZ = () => ladder[cur];
+        const curZ = () => scaleLadder[cur];
         const curScale = () => 1 << curZ();
+        const isTileMode = () => curZ() <= 1;   // 1:1 / 1:2 -> tiles; 1:4+ -> fullmap
         const gOn = () => document.getElementById("chk-g").checked ? 1 : 0;
         const mOn = () => document.getElementById("chk-m").checked ? 1 : 0;
         const fOn = () => document.getElementById("chk-f").checked ? 1 : 0;
@@ -1614,24 +1655,90 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         function applyAnchor() {
-            if (!imgEl.naturalWidth) return;
             const s = curScale();
-            const maxX = Math.max(0, imgEl.naturalWidth - vp.clientWidth);
-            const maxY = Math.max(0, imgEl.naturalHeight - vp.clientHeight);
+            const maxX = Math.max(0, worldW / s - vp.clientWidth);
+            const maxY = Math.max(0, worldH / s - vp.clientHeight);
             vp.scrollLeft = Math.max(0, Math.min(anchorX / s - vp.clientWidth / 2, maxX));
             vp.scrollTop  = Math.max(0, Math.min(anchorY / s - vp.clientHeight / 2, maxY));
         }
 
+        // ---- tile mode: dynamically load /tile images covering the viewport ----
+        function drawTiles() {
+            const mi = curMap();
+            if (!mi || !isTileMode()) { tileLayer.innerHTML = ""; return; }
+            const s = curScale();
+            const z = curZ();
+            const TILE = 512 / s;   // tile size in screen px at this zoom
+            // world px visible in viewport (scroll position is screen px at 1:1 of current scale)
+            const vx0 = vp.scrollLeft * s, vy0 = vp.scrollTop * s;
+            const vx1 = vx0 + vp.clientWidth * s, vy1 = vy0 + vp.clientHeight * s;
+            const tx0 = Math.floor(vx0 / 512), ty0 = Math.floor(vy0 / 512);
+            const tx1 = Math.floor(vx1 / 512), ty1 = Math.floor(vy1 / 512);
+            const tileH = Math.floor(worldH / 512) + 1;
+            const tileW = Math.floor(worldW / 512) + 1;
+            const v = version;
+            const layer = tileLayer;
+            layer.innerHTML = "";
+            layer.style.width = (worldW / s) + "px";
+            layer.style.height = (worldH / s) + "px";
+            // spacer: makes viewport scrollable to the full world at this zoom
+            const spacer = document.createElement("div");
+            spacer.style.width = (worldW / s) + "px";
+            spacer.style.height = (worldH / s) + "px";
+            spacer.style.position = "absolute";
+            spacer.style.left = "0"; spacer.style.top = "0";
+            layer.appendChild(spacer);
+            for (let ty = ty0; ty <= ty1; ty++) {
+                if (ty < 0 || ty >= tileH) continue;
+                for (let tx = tx0; tx <= tx1; tx++) {
+                    if (tx < 0 || tx >= tileW) continue;
+                    const img = document.createElement("img");
+                    img.style.left = (tx * 512 / s) + "px";
+                    img.style.top = (ty * 512 / s) + "px";
+                    img.style.width = TILE + "px";
+                    img.style.height = TILE + "px";
+                    img.loading = "lazy";
+                    img.onload = () => { if (v !== version) img.remove(); };
+                    img.onerror = () => {
+                        if (v !== version) { img.remove(); return; }
+                        // retry once after a delay
+                        img.removeAttribute("src");
+                        setTimeout(() => { if (v === version) img.src = "/tile?map=" + encodeURIComponent(mi.name) + "&tx=" + tx + "&ty=" + ty + "&z=" + z + "&g=" + gOn() + "&m=" + mOn() + "&f=" + fOn(); }, 800);
+                    };
+                    img.src = "/tile?map=" + encodeURIComponent(mi.name) + "&tx=" + tx + "&ty=" + ty +
+                              "&z=" + z + "&g=" + gOn() + "&m=" + mOn() + "&f=" + fOn();
+                    layer.appendChild(img);
+                }
+            }
+        }
+
         function render(keepAnchor) {
             const mi = curMap();
-            if (!mi || ladder.length === 0) return;
+            if (!mi) return;
             const z = curZ();
             const v = ++version;
             if (!keepAnchor) setAnchorFromView();
-            infoEl.textContent = fmt(mi, z);
-            statusEl.textContent = "整图生成中…(首次打开大图需等待)";
+            statusEl.textContent = "加载中…";
             document.getElementById("btn-zoom-in").disabled = cur <= 0;
-            document.getElementById("btn-zoom-out").disabled = cur >= ladder.length - 1;
+            document.getElementById("btn-zoom-out").disabled = cur >= scaleLadder.length - 1;
+            if (isTileMode()) {
+                // tile mode: hide fullmap img, show tiles
+                imgEl.style.display = "none";
+                imgEl.src = "";
+                tileLayer.style.display = "block";
+                drawTiles();
+                updateStatusBar();
+                drawMini();
+                drawGrid();
+                drawRoutes();
+                drawEntities();
+                statusEl.textContent = "就绪";
+                hideLoading();
+                return;
+            }
+            // fullmap mode
+            imgEl.style.display = "";
+            tileLayer.style.display = "none";
             const img = new Image();
             img.onload = () => {
                 if (v !== version) return;
@@ -1641,11 +1748,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 drawMini();
                 drawGrid();
                 drawRoutes();
+                drawEntities();
+                updateStatusBar();
                 hideLoading();
             };
             img.onerror = () => {
                 if (v === version) {
                     statusEl.textContent = "生成失败";
+                    showToast("地图渲染失败", `${mi.name} 无法生成整图。可能图库资源缺失或地图数据异常。<br>可尝试点击右上角「重新生成」清除缓存。`);
                     hideLoading();
                 }
             };
@@ -1656,15 +1766,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         function loadMap() {
             const mi = curMap();
             if (!mi) return;
-            ladder = mi.ladder;
-            cur = ladder.length - 1;          // default: whole map visible
             worldW = mi.world_w || (mi.w + mi.h + 3) * 24;
             worldH = mi.world_h || (mi.w + mi.h + 2) * 16;
+            // default: 100% (1:1, game view)
+            cur = 0;
             anchorX = worldW / 2; anchorY = worldH / 2;
             version++;
             imgEl.src = "";
+            tileLayer.innerHTML = "";
             loadMini();
             loadRoutes(mi);
+            loadEntities(mi);
             render(true);
         }
 
@@ -1693,6 +1805,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             anchorX = cx; anchorY = cy;
             applyAnchor();
             drawMini();
+            if (isTileMode()) drawTiles();
         }
 
         // ---- grid overlay (rect layout: cell = 48x32 world px) ----
@@ -1732,33 +1845,74 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         // ---- map connections (game-cell coordinates, not screen coordinates) ----
         const routeSvg = document.getElementById("route-svg");
+        const portTooltip = document.getElementById("port-tooltip");
         let routeCache = {};
         function drawRoutes() {
             const mi = curMap();
             const routes = routeCache[mi?.name] || [];
-            if (!mi || !imgEl.naturalWidth) { routeSvg.innerHTML = ""; return; }
+            if (!mi) { routeSvg.innerHTML = ""; return; }
             const s = curScale();
-            const rect = imgEl.getBoundingClientRect();
-            const vpRect = vp.getBoundingClientRect();
-            routeSvg.style.left = (rect.left - vpRect.left) + "px";
-            routeSvg.style.top = (rect.top - vpRect.top) + "px";
-            routeSvg.setAttribute("width", rect.width); routeSvg.setAttribute("height", rect.height);
-            const px = p => Number(p.x) * 48 / s;
-            const py = p => Number(p.y) * 32 / s;
+            // overlay is viewport-relative; world->screen: cell*48/s - scrollLeft
+            const px = p => Number(p.x) * 48 / s - vp.scrollLeft;
+            const py = p => Number(p.y) * 32 / s - vp.scrollTop;
+            routeSvg.style.left = "0px";
+            routeSvg.style.top = "0px";
+            routeSvg.setAttribute("width", vp.clientWidth);
+            routeSvg.setAttribute("height", vp.clientHeight);
+            const vw = vp.clientWidth, vh = vp.clientHeight;
             routeSvg.innerHTML = routes.map(r => {
-                const sourceHere = r.source.map.replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
-                const destHere = r.destination.map.replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
-                if ((!sourceHere && !destHere) || (sourceHere && r.source.x == null) || (destHere && r.destination.x == null)) return "";
-                const sx=sourceHere ? px(r.source) : 0, sy=sourceHere ? py(r.source) : 0;
-                const dx=destHere ? px(r.destination) : 0, dy=destHere ? py(r.destination) : 0;
-                const color = /Cave|Down/.test(r.icon) ? "#ff6b6b" : "#72d6ff";
-                const title = `${r.source.description} → ${r.destination.map} ${r.destination.description}`;
-                const line = sourceHere && destHere ? `<line x1="${sx}" y1="${sy}" x2="${dx}" y2="${dy}" stroke="${color}" stroke-width="2" stroke-dasharray="5 4" opacity=".85"/>` : "";
-                const a = sourceHere ? `<circle cx="${sx}" cy="${sy}" r="5" fill="${color}" stroke="#111" stroke-width="2"><title>${title}</title></circle>` : "";
-                const b = destHere ? `<circle cx="${dx}" cy="${dy}" r="4" fill="#ffd54a" stroke="#111" stroke-width="2"><title>入口：${title}</title></circle>` : "";
-                return line + a + b;
+                const sourceHere = String(r.source.map).replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
+                const destHere = String(r.destination.map).replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
+                if ((!sourceHere && !destHere)) return "";
+                const sx = sourceHere && r.source.x != null ? px(r.source) : null;
+                const sy = sourceHere && r.source.x != null ? py(r.source) : null;
+                const dx = destHere && r.destination.x != null ? px(r.destination) : null;
+                const dy = destHere && r.destination.x != null ? py(r.destination) : null;
+                // color by icon type: Cave/Down=red, Building=green, Exit/Up=blue, Province=yellow
+                let color = "#72d6ff";
+                if (/Cave|Down/.test(r.icon)) color = "#ff6b6b";
+                else if (/Building/.test(r.icon)) color = "#7CFF7C";
+                else if (/Province/.test(r.icon)) color = "#ffd54a";
+                const targetMap = sourceHere ? r.destination : r.source;
+                const targetName = String(targetMap.map).replace(/\\.map$/i, "");
+                const otherName = sourceHere ? String(r.destination.map) : String(r.source.map);
+                const tcn = MAP_CN[targetName] || targetName;
+                const parts = [];
+                if (sourceHere && sx != null) {
+                    const info = `${tcn} · 格 ${Math.round(targetMap.x)},${Math.round(targetMap.y)}`;
+                    parts.push(`<circle class="port" data-srcmap="${mi.name}" data-dstmap="${encodeURIComponent(otherName)}" data-dstx="${Math.round(targetMap.x)}" data-dsty="${Math.round(targetMap.y)}" data-dstcn="${encodeURIComponent(tcn)}" cx="${sx}" cy="${sy}" r="6" fill="${color}" stroke="#111" stroke-width="2"><title>${info}</title></circle>`);
+                }
+                if (destHere && dx != null) {
+                    parts.push(`<circle cx="${dx}" cy="${dy}" r="5" fill="#ffd54a" stroke="#111" stroke-width="2" opacity=".7"><title>入口</title></circle>`);
+                }
+                return parts.join("");
             }).join("");
         }
+        // hover portal -> show destination map thumbnail
+        routeSvg.addEventListener("mouseover", (e) => {
+            const c = e.target.closest("circle.port");
+            if (!c) { portTooltip.style.display = "none"; return; }
+            const dst = c.dataset.dstmap, dx = c.dataset.dstx, dy = c.dataset.dsty, cn = decodeURIComponent(c.dataset.dstcn);
+            const dstName = dst + ".map";
+            portTooltip.innerHTML = `<b>${cn}</b> · 格 ${dx},${dy}<br><img src="/thumb?map=${encodeURIComponent(dstName)}" alt="">`;
+            portTooltip.style.display = "block";
+            const r = e.clientX, b = e.clientY;
+            portTooltip.style.left = Math.min(r + 14, window.innerWidth - 260) + "px";
+            portTooltip.style.top = Math.min(b + 14, window.innerHeight - 200) + "px";
+        });
+        routeSvg.addEventListener("mouseout", (e) => {
+            if (!e.target.closest("circle.port")) portTooltip.style.display = "none";
+        });
+        // click portal -> jump to destination map
+        routeSvg.addEventListener("click", (e) => {
+            const c = e.target.closest("circle.port");
+            if (!c) return;
+            const dst = c.dataset.dstmap, dx = c.dataset.dstx, dy = c.dataset.dsty;
+            if (maps.some(m => m.name === dst + ".map")) {
+                history.replaceState(null, '', `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(dx * 48)}&y=${Math.round(dy * 32)}&g=1&m=1&f=1`);
+                init();
+            }
+        });
         async function loadRoutes(mi) {
             try {
                 const res = await fetch("/api/connections?map=" + encodeURIComponent(mi.name));
@@ -1767,25 +1921,70 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             drawRoutes();
         }
 
-        // ---- cursor cell coordinate readout (rect: world px -> cell) ----
-        vp.addEventListener("mousemove", (e) => {
+        // ---- entities (NPC / spawn / monsters) from Mud3 Envir ----
+        const entLayer = document.getElementById("ent-layer");
+        const entTooltip = document.getElementById("ent-tooltip");
+        let entCache = {};
+        function entColor(kind, name) {
+            if (kind === "spawn") return "#ffd54a";
+            if (kind === "monster") return "#ff6b6b";
+            const n = name || "";
+            // merchant / storage / function NPC -> green, else blue
+            if (/仓|商|卖|买|功能|保管|商店|铺|店/.test(n)) return "#7CFF7C";
+            return "#8cf";
+        }
+        function entShape(kind) {
+            if (kind === "monster") return "border-radius:2px;";
+            return "border-radius:50%;";
+        }
+        function drawEntities() {
             const mi = curMap();
-            if (!mi) return;
+            const ents = entCache[mi?.name] || [];
+            if (!mi) { entLayer.innerHTML = ""; return; }
+            if (!document.getElementById("chk-ents").checked) { entLayer.innerHTML = ""; return; }
             const s = curScale();
-            const rect = vp.getBoundingClientRect();
-            const wx = (vp.scrollLeft + e.clientX - rect.left) * s;
-            const wy = (vp.scrollTop + e.clientY - rect.top) * s;
-            const cx = Math.floor(wx / 48), cy = Math.floor(wy / 32);
-            let extra = "";
-            const cat = catCache[mi.name];
-            if (cat) {
-                const flag = cellFlag(cat, cx, cy);
-                if (flag) extra = " · flag=" + flag;
-            }
-            infoEl.textContent = fmt(mi, curZ()) + " · 格 " + cx + "," + cy + extra;
+            entLayer.style.left = "0px";
+            entLayer.style.top = "0px";
+            entLayer.style.width = vp.clientWidth + "px";
+            entLayer.style.height = vp.clientHeight + "px";
+            const vw = vp.clientWidth, vh = vp.clientHeight;
+            entLayer.innerHTML = ents.map(e => {
+                const px = Number(e.x) * 48 / s - vp.scrollLeft;
+                const py = Number(e.y) * 32 / s - vp.scrollTop;
+                // wide culling: entities are few, keep visible beyond viewport edges
+                if (px < -200 || py < -200 || px > vw + 200 || py > vh + 200) return "";
+                const kind = e.kind || "npc";
+                const color = entColor(kind, e.name);
+                const shape = entShape(kind);
+                const label = e.name || "";
+                const d = e.drops ? ` · 掉落 ${e.drops.length} 种` : "";
+                return `<div class="ent ${kind}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px"><span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span><span class="ent-label">${label}</span></div>`;
+            }).join("");
+        }
+        // hover entity -> tooltip
+        entLayer.addEventListener("mouseover", (e) => {
+            const d = e.target.closest(".ent");
+            if (!d) { entTooltip.style.display = "none"; return; }
+            entTooltip.textContent = `${d.dataset.name} · 格 ${d.dataset.x},${d.dataset.y}`;
+            entTooltip.style.display = "block";
+            entTooltip.style.left = Math.min(e.clientX + 12, window.innerWidth - 200) + "px";
+            entTooltip.style.top = Math.max(4, e.clientY - 28) + "px";
         });
-        vp.addEventListener("scroll", drawRoutes);
-        window.addEventListener("resize", () => { drawGrid(); drawRoutes(); });
+        entLayer.addEventListener("mouseout", (e) => {
+            if (!e.target.closest(".ent")) entTooltip.style.display = "none";
+        });
+        async function loadEntities(mi) {
+            try {
+                const res = await fetch("/api/entities?map=" + encodeURIComponent(mi.name));
+                const d = await res.json();
+                entCache[mi.name] = d.ok ? d.entities : [];
+            } catch (e) { entCache[mi.name] = []; }
+            drawEntities();
+        }
+
+        // ---- cursor cell coordinate readout (rect: world px -> cell) ----
+        vp.addEventListener("scroll", () => { drawRoutes(); drawEntities(); });
+        window.addEventListener("resize", () => { drawGrid(); drawRoutes(); drawEntities(); });
 
         // ---- catalog info panel ----
         let catCache = {};   // map_name -> catalog doc
@@ -1844,16 +2043,39 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             return maps.filter(m =>
                 m.name.toLowerCase().includes(q) || (m.cn || "").toLowerCase().includes(q));
         }
+        const CAT_LABEL = { town: "🏘️ 城镇", cave: "⛰️ 洞穴/地牢", room: "🚪 小房间/建筑", other: "📦 其他" };
         function renderMselList() {
             const items = mselFiltered();
             if (items.length === 0) {
                 mselList.innerHTML = '<div class="msel-item empty">没有匹配的地图</div>';
                 return;
             }
-            mselList.innerHTML = items.map(m =>
-                '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
-                '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>'
-            ).join("");
+            const q = mselFilter.value.trim().toLowerCase();
+            if (q) {
+                // search mode: flat list
+                mselList.innerHTML = items.map(m =>
+                    '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
+                    '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>'
+                ).join("");
+            } else {
+                // browse mode: grouped by category
+                const groups = {};
+                for (const m of items) {
+                    const c = m.cat || "other";
+                    (groups[c] = groups[c] || []).push(m);
+                }
+                let html = "";
+                for (const c of ["town", "cave", "room", "other"]) {
+                    const g = groups[c];
+                    if (!g || !g.length) continue;
+                    html += `<div class="msel-cat">${CAT_LABEL[c]} (${g.length})</div>`;
+                    html += g.map(m =>
+                        '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
+                        '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>'
+                    ).join("");
+                }
+                mselList.innerHTML = html;
+            }
             // scroll active/current item into view
             const cur = mselList.querySelector('.msel-item[data-name="' + curName + '"]');
             if (cur) { cur.classList.add("active"); cur.scrollIntoView({ block: "nearest" }); }
@@ -1908,6 +2130,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const f = document.getElementById("chk-f").checked ? 1 : 0;
             const hash = `#map=${encodeURIComponent(curMap().name)}&cur=${cur}&x=${ax}&y=${ay}&g=${g}&m=${m}&f=${f}`;
             history.replaceState(null, '', hash);
+            saveState();
         }
 
         // ---- Toast System ----
@@ -1962,78 +2185,41 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             overlay.style.display = "none";
         }
 
-        // ---- Custom Root Selector ----
-        const rselBtn = document.getElementById("root-sel-btn");
-        const rselLabel = document.getElementById("root-sel-label");
-        const rselPop = document.getElementById("root-sel-pop");
-        const rselList = document.getElementById("root-sel-list");
-        let availableRoots = [], currentRootPath = "";
-
-        function rselOpen() { rselPop.hidden = false; }
-        function rselClose() { rselPop.hidden = true; }
-
-        async function loadRoots() {
+        // ---- init ----
+        const STATE_KEY = "zircon-map-viewer-v1";
+        function saveState() {
             try {
-                const res = await fetch("/api/roots");
-                const data = await res.json();
-                availableRoots = data.roots;
-                currentRootPath = data.current;
-                const cur = availableRoots.find(r => r.path === currentRootPath) || availableRoots[0];
-                if (cur) rselLabel.textContent = cur.name;
-
-                rselList.innerHTML = availableRoots.map(r =>
-                    '<div class="msel-item' + (r.path === currentRootPath ? ' active' : '') + '" data-path="' + r.path.replace(/"/g, '&quot;') + '">' +
-                    '<span>' + r.name + '</span><span class="msel-cn" style="font-size:11px;">(' + r.path + ')</span></div>'
-                ).join("");
+                const mi = curMap();
+                if (!mi) return;
+                localStorage.setItem(STATE_KEY, JSON.stringify({
+                    map: mi.name,
+                    cur: cur,
+                    ax: Math.round(anchorX), ay: Math.round(anchorY),
+                    g: gOn(), m: mOn(), f: fOn(),
+                }));
             } catch (e) {}
         }
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STATE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) { return null; }
+        }
 
-        rselBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            if (rselPop.hidden) rselOpen(); else rselClose();
-        });
-
-        rselList.addEventListener("click", async (e) => {
-            const item = e.target.closest('.msel-item[data-path]');
-            if (!item) return;
-            const targetPath = item.dataset.path;
-            const targetRoot = availableRoots.find(r => r.path === targetPath);
-            rselClose();
-            if (!targetRoot || targetPath === currentRootPath) return;
-
-            showLoading(`正在载入客户端 [${targetRoot.name}]...`, `资源路径: ${targetPath}`);
-            imgEl.src = "";
-            mselList.innerHTML = "";
-            statusEl.textContent = "正在切换客户端资源库…";
-
-            await fetch("/api/switch_root?path=" + encodeURIComponent(targetPath), { method: "POST" });
-            location.hash = "";
-            await init();
-
-            showToast(
-                `客户端资源库已成功切换`,
-                `已成功载入 [${targetRoot.name}]！共解析到 ${maps.length} 张地图。<br>素材路径: <code style="color:#3de88a;">${targetPath}</code>`
-            );
-        });
-
-        window.addEventListener("click", (e) => {
-            if (!rselPop.hidden && !e.target.closest("#root-sel")) rselClose();
-        });
-
-        // ---- init ----
         async function init() {
-            await loadRoots();
             const res = await fetch("/api/maps");
             maps = await res.json();
             if (!maps.length) return;
 
-            // Parse Hash params: #map=0.map&cur=1&x=1200&y=800
+            // Parse Hash params: #map=0.map&cur=1&x=1200&y=800 (hash wins over saved state)
             let targetMap = maps[0].name;
             let targetCur = null;
             let targetX = null;
             let targetY = null;
+            const st = loadState();
+            const hasHash = !!location.hash;
 
-            if (location.hash) {
+            if (hasHash) {
                 const matchMap = location.hash.match(/map=([^&]+)/);
                 const matchCur = location.hash.match(/cur=(\\d+)/);
                 const matchX   = location.hash.match(/x=(\\d+)/);
@@ -2047,11 +2233,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 if (matchCur) targetCur = parseInt(matchCur[1]);
                 if (matchX) targetX = parseInt(matchX[1]);
                 if (matchY) targetY = parseInt(matchY[1]);
+            } else if (st && maps.some(m => m.name === st.map)) {
+                targetMap = st.map;
+                targetCur = st.cur;
+                targetX = st.ax;
+                targetY = st.ay;
             }
 
             mselPick(targetMap);
 
-            if (targetCur !== null && targetCur >= 0 && targetCur < ladder.length) {
+            if (targetCur !== null && targetCur >= 0 && targetCur < scaleLadder.length) {
                 cur = targetCur;
             }
             if (targetX !== null && targetY !== null) {
@@ -2060,6 +2251,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
             render(true);
             updateUrlHash();   // 立即用实际加载的地图/坐标回写 URL(自愈坏 hash)
+            saveState();
         }
         init();
 
@@ -2098,6 +2290,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         });
 
         vp.addEventListener("scroll", () => {
+            drawTiles();
             drawMini();
             drawGrid();
             setAnchorFromView();
@@ -2105,37 +2298,97 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         });
 
         document.getElementById("btn-zoom-in").addEventListener("click", () => {
-            if (cur <= 0) return; setAnchorFromView(); cur--; render(true); updateUrlHash();
+            if (cur <= 0) return; setAnchorFromView(); cur--; render(true); updateUrlHash(); saveState();
         });
         document.getElementById("btn-zoom-out").addEventListener("click", () => {
-            if (cur >= ladder.length - 1) return; setAnchorFromView(); cur++; render(true); updateUrlHash();
+            if (cur >= scaleLadder.length - 1) return; setAnchorFromView(); cur++; render(true); updateUrlHash(); saveState();
         });
         document.getElementById("btn-fit").addEventListener("click", () => {
-            cur = ladder.length - 1;
+            // fit whole map into viewport: pick smallest scale that fits
+            let fitCur = 0;
+            for (let i = 0; i < scaleLadder.length; i++) {
+                const s = 1 << scaleLadder[i];
+                if (worldW / s <= vp.clientWidth * 0.98 && worldH / s <= vp.clientHeight * 0.98) {
+                    fitCur = i; break;
+                }
+            }
+            cur = fitCur;
             anchorX = worldW / 2; anchorY = worldH / 2;
             render(true);
             updateUrlHash();
+            saveState();
         });
-        document.getElementById("btn-rebuild-one").addEventListener("click", async () => {
+        document.getElementById("btn-clear-cache").addEventListener("click", async () => {
+            const ok = await showConfirm("🔄 重新生成", `确定要清除全部缓存并重新生成全库 ${maps.length} 张地图吗？\n\n将删除磁盘 tile 缓存，后台并行重新预生成所有地图（4 线程）。\n\n生成过程约需 10-30 分钟，期间可正常浏览，顶部进度条实时更新。`);
+            if (!ok) return;
+            statusEl.textContent = "正在清除缓存并触发全库预生成…";
+            try {
+                await fetch("/api/rebuild_all", { method: "POST" });
+            } catch (e) {}
+            // force the current map to re-render from scratch
+            version++;
+            imgEl.src = "";
+            render(true);
+            showToast("缓存清除完成", `已清空全部缓存，后台正在并行重新预生成 ${maps.length} 张地图。<br>顶部进度条实时更新。`);
+            saveState();
+        });
+
+        document.getElementById("chk-g").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
+        document.getElementById("chk-m").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
+        document.getElementById("chk-f").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
+        document.getElementById("chk-grid").addEventListener("change", () => { drawGrid(); });
+        document.getElementById("chk-ents").addEventListener("change", () => { drawEntities(); drawRoutes(); });
+        document.getElementById("btn-legend").addEventListener("click", () => {
+            const panel = document.getElementById("legend-panel");
+            panel.style.display = panel.style.display === "none" ? "block" : "none";
+        });
+        document.getElementById("legend-panel").innerHTML =
+            '<div class="lg-row"><span class="lg-dot" style="background:#8cf;box-shadow:0 0 4px #8cf;"></span> 功能 NPC / 出生点</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ffd54a;box-shadow:0 0 4px #ffd54a;"></span> 出生点</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ff6b6b;box-shadow:0 0 4px #ff6b6b;"></span> 怪物刷新 / 洞穴入口</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#72d6ff;box-shadow:0 0 4px #72d6ff;"></span> 城镇 / 出口</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#7CFF7C;box-shadow:0 0 4px #7CFF7C;"></span> 小房间 / 建筑入口</div>';
+
+        // ---- right-bottom status bar: coord + zoom + map ----
+        const coordEl = document.getElementById("coord-info");
+        const zoomEl = document.getElementById("zoom-info");
+        const mapInfoEl = document.getElementById("map-info");
+        function updateStatusBar(cx, cy) {
             const mi = curMap();
             if (!mi) return;
-            statusEl.textContent = "正在强制重新生成本图静态图…";
-            await fetch("/api/rebuild?map=" + encodeURIComponent(mi.name), { method: "POST" });
-            render(true);
+            const s = curScale();
+            const pct = (100 / s).toFixed(0) + "%";
+            zoomEl.textContent = "比例 " + pct;
+            mapInfoEl.textContent = (mi.cn ? mi.cn + " · " : "") + mi.name.replace(".map", "");
+            if (cx !== undefined && cy !== undefined && cx >= 0 && cy >= 0) {
+                coordEl.textContent = "格 " + cx + "," + cy;
+            } else {
+                coordEl.textContent = "格 —,—";
+            }
+        }
+        // mouse move -> coord (game-accurate 48x32)
+        vp.addEventListener("mousemove", (e) => {
+            const mi = curMap();
+            if (!mi) return;
+            const s = curScale();
+            const rect = vp.getBoundingClientRect();
+            const wx = (vp.scrollLeft + e.clientX - rect.left) * s;
+            const wy = (vp.scrollTop + e.clientY - rect.top) * s;
+            const cx = Math.floor(wx / 48), cy = Math.floor(wy / 32);
+            updateStatusBar(cx, cy);
         });
+        vp.addEventListener("mouseleave", () => updateStatusBar(-1, -1));
+        vp.addEventListener("scroll", () => { drawTiles(); updateStatusBar(); saveState(); });
 
-        document.getElementById("btn-rebuild-all").addEventListener("click", async () => {
-            const ok = await showConfirm("⚡ 批量预生成提示", `确定要在后台批量将全库 ${maps.length} 张地图预生成为静态高清大图吗？生成过程中您仍可正常浏览其他静态图。`);
-            if (!ok) return;
-            statusEl.textContent = "已触发后台批量预生成全部地图静态图…";
-            await fetch("/api/rebuild_all", { method: "POST" });
-            showToast("批量预生成任务已启动", `后台多线程已开始合成全库 ${maps.length} 张地图静态图！顶部进度条将实时更新。`);
+        // G/M/F hotkeys toggle layers
+        window.addEventListener("keydown", (e) => {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+            const k = e.key.toLowerCase();
+            if (k === "g") { const c = document.getElementById("chk-g"); c.checked = !c.checked; c.dispatchEvent(new Event("change")); }
+            else if (k === "m") { const c = document.getElementById("chk-m"); c.checked = !c.checked; c.dispatchEvent(new Event("change")); }
+            else if (k === "f") { const c = document.getElementById("chk-f"); c.checked = !c.checked; c.dispatchEvent(new Event("change")); }
+            else if (k === "e") { const c = document.getElementById("chk-ents"); c.checked = !c.checked; c.dispatchEvent(new Event("change")); }
         });
-
-        document.getElementById("chk-g").addEventListener("change", () => { render(); updateUrlHash(); });
-        document.getElementById("chk-m").addEventListener("change", () => { render(); updateUrlHash(); });
-        document.getElementById("chk-f").addEventListener("change", () => { render(); updateUrlHash(); });
-        document.getElementById("chk-grid").addEventListener("change", () => { drawGrid(); });
 
         // Drag to pan
         vp.addEventListener("mousedown", (e) => {
@@ -2149,6 +2402,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             vp.scrollLeft = scX - (e.clientX - dragX);
             vp.scrollTop  = scY - (e.clientY - dragY);
             drawMini();
+            drawTiles();
         });
         window.addEventListener("mouseup", () => { dragging = false; vp.classList.remove("dragging"); });
 
@@ -2163,7 +2417,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             anchorY = (vp.scrollTop + my) * s;
             let changed = false;
             if (e.deltaY < 0 && cur > 0) { cur--; changed = true; }
-            else if (e.deltaY > 0 && cur < ladder.length - 1) { cur++; changed = true; }
+            else if (e.deltaY > 0 && cur < scaleLadder.length - 1) { cur++; changed = true; }
             if (changed) { render(true); updateUrlHash(); }
         }, { passive: false });
 
@@ -2265,7 +2519,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
-        elif self.path.startswith("/api/rebuild"):
+        elif self.path == "/api/rebuild":
             qs = parse_qs(urlparse(self.path).query)
             map_name = os.path.basename(qs.get("map", [""])[0])
             if map_name:
@@ -2293,31 +2547,52 @@ class ViewerHandler(BaseHTTPRequestHandler):
                     BATCH_PROGRESS["done"] = 0
                     BATCH_PROGRESS["failed"] = 0
                     BATCH_PROGRESS["percent"] = 0
-                    print(f"[*] Starting background pre-render for {len(maps)} maps...")
-
-                    for idx, m in enumerate(maps):
-                        mname = m["name"]
-                        BATCH_PROGRESS["current"] = idx + 1
-                        BATCH_PROGRESS["current_map"] = mname
-                        BATCH_PROGRESS["percent"] = int(((idx + 1) / len(maps)) * 100)
+                    # clear stale cache so every map re-renders from scratch
+                    if self.cache_dir and os.path.isdir(self.cache_dir):
                         try:
-                            w, h, _ = self.map_cache.get(mname)
-                            ladder = map_ladder(w, h, self.layout)
-                            if ladder:
-                                z = ladder[-1]
-                                key = (mname, z, True, True, True, OFFSET_NONE)
-                                dp = self._fullmap_path(key)
-                                if not os.path.exists(dp):
-                                    data = render_full_map(self.map_cache, self.pool, mname, z, True, True, True,
-                                                           layout=self.layout,
-                                                           offset_mode=OFFSET_NONE)
-                                    os.makedirs(os.path.dirname(dp), exist_ok=True)
-                                    with open(dp, "wb") as f:
-                                        f.write(data)
-                            BATCH_PROGRESS["done"] += 1
+                            for name in os.listdir(self.cache_dir):
+                                p = os.path.join(self.cache_dir, name)
+                                if os.path.isdir(p):
+                                    import shutil
+                                    shutil.rmtree(p, ignore_errors=True)
+                                else:
+                                    os.remove(p)
+                            print(f"[*] Cache cleared: {self.cache_dir}")
                         except Exception as ex:
-                            BATCH_PROGRESS["failed"] += 1
-                            print(f"[!] Pre-render map {mname} failed: {ex}")
+                            print(f"[!] Cache clear failed: {ex}")
+                    print(f"[*] Starting background pre-render for {len(maps)} maps...")
+                    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+                    def render_one(m):
+                        mname = m["name"]
+                        w, h, _ = self.map_cache.get(mname)
+                        ladder = map_ladder(w, h, self.layout)
+                        if ladder:
+                            z = ladder[-1]
+                            data = render_full_map(self.map_cache, self.pool, mname, z, True, True, True,
+                                                   layout=self.layout,
+                                                   offset_mode=OFFSET_NONE)
+                            key = (mname, z, True, True, True, OFFSET_NONE)
+                            dp = self._fullmap_path(key)
+                            os.makedirs(os.path.dirname(dp), exist_ok=True)
+                            with open(dp, "wb") as f:
+                                f.write(data)
+                        return mname, None
+
+                    done_i = [0]
+                    with ThreadPoolExecutor(max_workers=4) as ex:
+                        futs = {ex.submit(render_one, m): m for m in maps}
+                        for fut in as_completed(futs):
+                            mname = futs[fut].get("name")
+                            BATCH_PROGRESS["current"] += 1
+                            BATCH_PROGRESS["current_map"] = mname
+                            BATCH_PROGRESS["percent"] = int((BATCH_PROGRESS["current"] / len(maps)) * 100)
+                            try:
+                                fut.result()
+                                BATCH_PROGRESS["done"] += 1
+                            except Exception as ex:
+                                BATCH_PROGRESS["failed"] += 1
+                                print(f"[!] Pre-render map {mname} failed: {ex}")
 
                     BATCH_PROGRESS["running"] = False
                     BATCH_PROGRESS["current_map"] = "完成"
@@ -2337,7 +2612,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/" or self.path == "/index.html":
-            body = HTML_TEMPLATE.encode("utf-8")
+            body = HTML_TEMPLATE.replace("/*__MAP_CN__*/",
+                    json.dumps(MAP_CN, ensure_ascii=False)).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
@@ -2358,7 +2634,11 @@ class ViewerHandler(BaseHTTPRequestHandler):
             maps = scan_maps(self.map_cache.maps_dir, self.layout)
             for m in maps:
                 fid = m["name"][:-4] if m["name"].endswith(".map") else m["name"]
-                m["cn"] = map_cn(fid)
+                cn = MAP_CN.get(fid)
+                if not cn or cn.startswith("EI ") or cn == fid:
+                    cn = map_cn(fid)
+                m["cn"] = cn
+                m["cat"] = map_category(fid)
             body = json.dumps(maps).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
@@ -2715,6 +2995,24 @@ class ViewerHandler(BaseHTTPRequestHandler):
         return os.path.join(self.cache_dir, safe, f"full_{tag}_{z}_{int(g)}{int(m)}{int(f)}{omt}.jpg")
 
 
+def map_category(fid: str) -> str:
+    """Classify a map stem into town / cave / room."""
+    f = (fid or "").strip()
+    if not f:
+        return "other"
+    # sub-areas / buildings / small rooms: contains '_' (e.g. 0_000, 1_001, D404_002)
+    if "_" in f:
+        return "room"
+    up = f.upper()
+    # caves / dungeons / mines: D / ID prefixes
+    if up.startswith("D") or up.startswith("ID"):
+        return "cave"
+    # towns / overland: plain numbers, E roads, GM
+    if f.isdigit() or up.startswith("E") or up.startswith("GM"):
+        return "town"
+    return "other"
+
+
 def scan_maps(maps_dir: str, layout: str = LAYOUT_RECT) -> list[dict]:
     out = []
     for fn in os.listdir(maps_dir):
@@ -2951,7 +3249,7 @@ def main():
     print(f"[*] Maps directory: {args.maps_dir}")
     ViewerHandler.map_cache = MapCache(args.maps_dir)
     ViewerHandler.pool = FramePool(data_dir)
-    cache_dir = args.cache_dir if args.cache_dir is not None else os.path.join(args.maps_dir, ".tilecache")
+    cache_dir = args.cache_dir if args.cache_dir is not None else os.path.join(args.maps_dir, f".tilecache-{CACHE_VERSION}")
     ViewerHandler.cache_dir = cache_dir
     ViewerHandler.thumbs_dir = args.thumbs_dir
     ViewerHandler.layout = args.layout
