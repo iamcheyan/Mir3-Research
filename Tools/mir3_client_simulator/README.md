@@ -24,7 +24,7 @@ python3 Tools/web/wilviewer.py --root /home/tetsuya/NAS/TMP/EI传奇3.0客户端
 | 文件 | 内容 |
 |---|---|
 | `data/layout.json` | 全量 bundle（windows/controls/resources/entities/equipment_slots/skills/maps/hud/viewport/meta） |
-| `data/windows.json` | 14 个窗口：id、rect、frame、resource_library、evidence_level、origin 证据 |
+| `data/windows.json` | 14 个窗口：id、rect、frame、resource_library、evidence_level、origin 证据 + `visibility_dispatch` 分派块（与 layout.json 同构） |
 | `data/controls.json` | 37 个控件：22 条 `specialized_control_rects` + 15 个 HUD 按钮；frame_pair、evidence 字段原样透传 |
 | `data/hud.json` | HUD 底板 F50、HP/MP/EXP 条 rect、15 按钮 rect、聊天区、目标面板、小地图 |
 | `data/entities.json` | 场景实体（玩家/怪物/NPC/掉落，真实库真实帧，全部标 `candidate`） |

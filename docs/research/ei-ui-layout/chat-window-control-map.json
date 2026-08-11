@@ -106,7 +106,7 @@
     "slot_layout": "chat+0xDA4 + slot*0xC24; { dword valid +0, 0x308-dword item stack +4 (0xC20 bytes), byte gate +0x26 (skip time-gate), word potion type +0x2C }",
     "clear_0x42D790": "slot arg; rep stosd ecx=0x309 (0xC24 bytes) over [chat + slot*0xC24 + 0xDA4]; ret 4",
     "take_0x42D8A0": "args (slot, dst); valid -> rep movsd ecx=0x308 (0xC20 bytes) from [chat + slot*0xC24 + 0xDA8] to dst; call 0x42D790(slot); ret 1 (ret 8)",
-    "refill_0x42D7C0": "SEH 0x474FD8; args at [esp+0xC38]/[esp+0xC3C]; arg2 != 0 -> slot target; iterates 6 slots [chat+0xDA4+i*0xC24] counting filled; 0x403AC0 call; head only - full semantics not closed"
+    "refill_0x42D7C0": "CLOSED 2026-08-11 (full decode /tmp/cap_42d7c0.txt): belt-slot STORE. SEH 0x474FD8 (ret 0xC28 stack frame); args slot=[esp+0xC38], flag=[esp+0xC3C], payload=[esp+0x18]. Scans 6 slots [chat+0xDA4+i*0xC24] for first-empty (valid dword == 0); copies payload via rep movsd ecx=0x308 (0xC20 bytes); ret 1 on success / 0 when all 6 slots full. The 0x403AC0 call is a bare-ret no-op SEH-unwind stub (byte 0xC3, 35 callers all with the shape lea ecx,[esp+X]; mov [esp+Y],0xFFFFFFFF; call) - NOT a functional target. Complements clear 0x42D790 / take 0x42D8A0."
   },
   "kbd_dispatch_0x42CBD0": {
     "signature": "ret 8, 2 args: arg1 [esp+0x11C] = VK -> esi, arg2 [esp+0x120]",
@@ -156,9 +156,9 @@
       "jump_table_0x42D520_12": ["0=0x42D511", "1=0x42CF3C", "2=0x42CFF4", "3=0x42D091", "4=0x42D1B9", "5=0x42D201", "6=0x42D279", "7=0x42D280", "8=0x42D287", "9=0x42D28E", "10=0x42D14C", "11=0x42D4B4"]
     },
     "case_semantics": {
-      "case1_enter_0x42CF3C": "gate [chat+0xD38] != 0 && GetActiveWindow() == [0x8AB7B0]; walk msg list: [chat+0xD2C] = [chat+0xD30] top, [chat+0xD34] = count-1; node == 0 -> ret 1; node id == 9 && [0x513C4] == 0 -> advance current node+8 (index clamp 1..count); node id == 9 -> mov ecx, 0x47EF18; call 0x41C1E0 (close chat-log 9 + skill album 2 + trade) -> ret 1; node id != 9 -> push id; call 0x42ADB0 toggle(id) -> ret 1. Enter = close-current-window toggler.",
-      "case2_0x42CFF4_zoom_out": "gate [0x7E04F0]==0 && GetActiveWindow()==[0x8AA48C] map hwnd; GetKeyState(0x11 Ctrl) with test al,0x80 (low byte bit 7, asymmetric with letter-hotkey AH checks - literal) -> dec [chat+0x6534] clamp >= 0 + 0x428790 redraw; else GetKeyState(0x12 Alt) -> dec [chat+0x6550] clamp + 0x428E00; gate fail -> wheel 0x42C7E0 fallthrough",
-      "case3_0x42D091_zoom_in": "same gates; Ctrl -> inc [chat+0x6534] clamp < [chat+0x6530] + 0x428790; Alt -> inc [chat+0x6550] clamp < [chat+0x654C] + 0x428E00",
+      "case1_enter_0x42CF3C": "gate [chat+0xD38] != 0 && GetFocus() == [0x8AB7B0] (CORRECTED 2026-08-11: [0x476250] = GetFocus, no GetActiveWindow import exists in this PE); walk msg list: [chat+0xD2C] = [chat+0xD30] top, [chat+0xD34] = count-1; node == 0 -> ret 1; node id == 9 && [0x513C4] == 0 -> advance current node+8 (index clamp 1..count); node id == 9 -> mov ecx, 0x47EF18; call 0x41C1E0 (close chat-log 9 + skill album 2 + trade) -> ret 1; node id != 9 -> push id; call 0x42ADB0 toggle(id) -> ret 1. Enter = close-current-window toggler.",
+      "case2_0x42CFF4_zoom_out": "gate [0x7E04F0]==0 && GetFocus()==[0x8AA48C] map hwnd (CORRECTED 2026-08-11: GetFocus, see case1 note); GetKeyState(0x11 Ctrl) with test al,0x80 (low byte bit 7, asymmetric with letter-hotkey AH checks - literal) -> dec [chat+0x6534] clamp >= 0 + 0x428790 redraw; else GetKeyState(0x12 Alt) -> dec [chat+0x6550] clamp + 0x428E00; gate fail -> wheel 0x42C7E0 fallthrough",
+      "case3_0x42D091_zoom_in": "same gates (GetFocus()==[0x8AA48C], CORRECTED 2026-08-11); Ctrl -> inc [chat+0x6534] clamp < [chat+0x6530] + 0x428790; Alt -> inc [chat+0x6550] clamp < [chat+0x654C] + 0x428E00",
       "case4_right_0x42D1B9": "Shift (GetKeyState 0x10, AH) held -> byte [esp+0x10] = 0x21 '!'; 0x450C70(ecx = 0x8AA488); SetFocus([0x8AA48C]); ShowWindow([0x8AA48C], 5); SetWindowTextA([0x8AA48C], [esp+0x10]); SendMessageA([0x8AA48C], 0xB1, 1, 1); then fall into belt tail 0x42D293 with ebx=0; no Shift -> ebx=0 direct",
       "case5_up_0x42D201": "Shift -> '@' 0x40 same sequence; else ebx=1",
       "case6_left_0x42D279": "ebx=2",
@@ -228,11 +228,10 @@
     "0x45DD00 is a substring search (strchr + repe cmpsb), not plain strcmp; potion tokens 0x47BDD4/0x47BDDC are 2-byte GBK reads that are not meaningful - flagged open.",
     "Letter hotkeys are asymmetric with captions: Q(包袱栏 label) toggles id 0 (trade), D(信息窗口 label) toggles 0xb, N(设置栏 label) toggles 0xc - label/handler discrepancy flagged open."
   ],
-  "closed_notes": "VK table exact bytes in /tmp/cap_kbd.txt; jump table dwords exact. Old Round-10 session claim 'every other byte 0x00..0x7B = 0x0B' retracted by full 179-byte dump (VK 0xBF -> 0x0A). GetKeyState control checks are asymmetric: letter hotkeys use AH, map zoom uses test al,0x80 - both literal.",
+  "closed_notes": "VK table exact bytes in /tmp/cap_kbd.txt; jump table dwords exact. Old Round-10 session claim 'every other byte 0x00..0x7B = 0x0B' retracted by full 179-byte dump (VK 0xBF -> 0x0A). GetKeyState control checks are asymmetric: letter hotkeys use AH, map zoom uses test al,0x80 - both literal. 2026-08-11: [0x476250] = GetFocus (IAT resolve; NO GetActiveWindow import in this PE) - case1 Enter and zoom cases 2/3 corrected above. 0x42D7C0 = belt-slot store closed (first-empty scan of 6 slots, rep movsd 0x308, ret 1/0; see refill_0x42D7C0); 0x403AC0 = bare-ret no-op SEH-unwind stub (byte 0xC3, 35 callers all lea ecx,[esp+X]; mov [esp+Y],0xFFFFFFFF; call shape).",
   "pending": [
     "Label-vs-handler discrepancies: cap14 包袱栏(Ctrl+Q, Q) vs Q->toggle(0) trade; cap10 信息窗口(Ctrl+D, D) vs D->toggle(0xb); cap11 设置栏(Ctrl+N, N) vs N->toggle(0xc).",
     "Potion tokens 0x47BDD4/0x47BDDC GB2312 reads not meaningful; 0x45DD00 match -> msg 0x72/0x75 semantics inferred from name substring only.",
-    "0x42D7C0 (belt refill) full semantics not closed: 0x403AC0 call target unknown.",
     "0x450C70 map-text rebuild head only (0x46805C/0x468050/0x468056 string helpers)."
   ],
   "question": "none"

@@ -174,6 +174,55 @@ def frame_tables() -> dict:
     return out
 
 
+def visibility_dispatch() -> dict:
+    """Round 12 (Finding 314, primary-static): the original client's window
+    show/hide toggle dispatcher 0x42ADB0. Emitted as an additive
+    semantic/reference block (same role as frame_dispatch in frame_tables):
+    the simulator gates window visibility through windows[].visibility_va;
+    this block documents the dispatcher state machine the original runs —
+    unconditional demote-all 0x42B820 first ([obj+0x34]=0 for every listed
+    window, list nodes kept), then per-id open/close via jump table
+    0x42B3E4, single-active-window semantics (+0x30 per-window visible gate
+    setter 0x423F80 / +0x34 active slot setter 0x423F90)."""
+    ev = load("window-visibility-dispatch-evidence.json")
+    disp = ev.get("dispatch", {})
+    jump = [
+        int(s.split("=", 1)[1], 16)
+        for s in disp.get("jump_table_dwords", [])
+    ]
+    cases = []
+    for r in ev.get("records", []):
+        cases.append({
+            "id": r.get("window_id"),
+            "layout_id": r.get("layout_id"),
+            "case_va": r.get("target"),
+            "object_offset": r.get("object"),
+            "state_gate": r.get("state_gate"),
+            "close_va": r.get("close_va"),
+            "open_va": r.get("open_va"),
+            "show_hide": r.get("show_hide"),
+        })
+    return {
+        "dispatcher_va": ev.get("routine"),
+        "head": disp.get("head"),
+        "jump_table_va": disp.get("jump_table_va"),
+        "jump_table": jump,
+        "default_target": disp.get("default_target"),
+        "return_contract": disp.get("return_contract"),
+        "close_all": disp.get("close_all_first"),
+        "add_helper": disp.get("show_helper"),
+        "remove_helper": disp.get("hide_helper"),
+        "case_pattern": disp.get("case_pattern"),
+        "visible_gate_setter": "0x00423F80 (mov [obj+0x30],arg; ret 4; via class setter 0x0043F020, "
+                               "arg==0 -> [obj+0x274]=1; draw paths gate on [obj+0x30], e.g. 0x43F04A)",
+        "active_state_setter": "0x00423F90 (mov [obj+0x34],arg; ret 4; demote-all 0x42B820 writes 0)",
+        "virtual_visibility_slot": disp.get("virtual_visibility_slot"),
+        "virtual_argument": disp.get("virtual_argument"),
+        "cases": cases,
+        "source": "window-visibility-dispatch-evidence.json Finding 314 (primary-static)",
+    }
+
+
 def main() -> None:
     layout = load("layout.json")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -468,6 +517,7 @@ def main() -> None:
         "map_bindings": map_bindings,
         "hud": hud,
         "frame_tables": frame_tables(),
+        "visibility_dispatch": visibility_dispatch(),
         "viewport": {"width": VIEW_W, "height": VIEW_H},
         "meta": {
             "source": "docs/research/ei-ui-layout/layout.json + specialist evidence",
@@ -478,10 +528,16 @@ def main() -> None:
     }
 
     # Split into per-domain files (docs-required layout) plus a full bundle.
-    for domain in ("windows", "controls", "resources", "entities",
+    for domain in ("controls", "resources", "entities",
                    "equipment_slots", "skills", "maps", "hud"):
         (OUT / f"{domain}.json").write_text(
             json.dumps(out[domain], ensure_ascii=False, indent=2), encoding="utf-8")
+    # windows.json = array + additive visibility_dispatch block (Round 12,
+    # Finding 314; nothing consumes windows.json directly — layout.json bundle
+    # carries the same top-level block).
+    (OUT / "windows.json").write_text(
+        json.dumps({"windows": out["windows"], "visibility_dispatch": out["visibility_dispatch"]},
+                   ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "map_bindings.json").write_text(
         json.dumps(out["map_bindings"], ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "frame_tables.json").write_text(

@@ -1,212 +1,410 @@
-[
-  {
-    "id": "window.inventory",
-    "title": "inventory",
-    "rect": [
-      258,
-      138,
-      284,
-      324
+{
+  "windows": [
+    {
+      "id": "window.inventory",
+      "title": "inventory",
+      "rect": [
+        258,
+        138,
+        284,
+        324
+      ],
+      "frame": 250,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042ADCF"
+    },
+    {
+      "id": "window.status",
+      "title": "status",
+      "rect": [
+        278,
+        136,
+        244,
+        328
+      ],
+      "frame": 200,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE42"
+    },
+    {
+      "id": "window.store-candidate",
+      "title": "store",
+      "rect": [
+        250,
+        148,
+        300,
+        304
+      ],
+      "frame": 1000,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE91"
+    },
+    {
+      "id": "window.exchange-candidate",
+      "title": "exchange",
+      "rect": [
+        158,
+        135,
+        484,
+        330
+      ],
+      "frame": 1050,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AEE0"
+    },
+    {
+      "id": "window.guild-candidate",
+      "title": "guild",
+      "rect": [
+        102,
+        22,
+        596,
+        446
+      ],
+      "frame": 600,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B06B"
+    },
+    {
+      "id": "window.group",
+      "title": "group",
+      "rect": [
+        272,
+        123,
+        256,
+        244
+      ],
+      "frame": 900,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B0BA"
+    },
+    {
+      "id": "window.chat-pop",
+      "title": "chat-pop",
+      "rect": [
+        114,
+        76,
+        572,
+        388
+      ],
+      "frame": 350,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B180"
+    },
+    {
+      "id": "window.group-pop-candidate",
+      "title": "group-pop",
+      "rect": [
+        278,
+        136,
+        244,
+        328
+      ],
+      "frame": 200,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B131"
+    },
+    {
+      "id": "window.option",
+      "title": "option",
+      "rect": [
+        276,
+        113,
+        248,
+        264
+      ],
+      "frame": 750,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AF7E"
+    },
+    {
+      "id": "window.quest",
+      "title": "quest",
+      "rect": [
+        230,
+        80,
+        340,
+        440
+      ],
+      "frame": 700,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AF2F"
+    },
+    {
+      "id": "window.horse",
+      "title": "horse",
+      "rect": [
+        252,
+        134,
+        296,
+        332
+      ],
+      "frame": 850,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AFCD"
+    },
+    {
+      "id": "window.other-14-candidate",
+      "title": "other-14",
+      "rect": [
+        252,
+        134,
+        296,
+        332
+      ],
+      "frame": 400,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B01C"
+    },
+    {
+      "id": "window.npc-candidate",
+      "title": "npc",
+      "rect": [
+        124,
+        212,
+        552,
+        176
+      ],
+      "frame": 1100,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B25E"
+    },
+    {
+      "id": "window.notice-prompt-candidate",
+      "title": "notice-prompt",
+      "rect": [
+        107,
+        110,
+        584,
+        252
+      ],
+      "frame": 602,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B2AD"
+    }
+  ],
+  "visibility_dispatch": {
+    "dispatcher_va": "0x0042ADB0",
+    "head": "push esi; push edi; mov esi,ecx; xor edi,edi; call 0x0042B820; mov eax,[esp+0xC]; cmp eax,0xF; ja 0x0042B3DD; jmp [eax*4+0x0042B3E4]",
+    "jump_table_va": "0x0042B3E4",
+    "jump_table": [
+      4369871,
+      4369986,
+      4370065,
+      4370144,
+      4370539,
+      4371421,
+      4370618,
+      4370737,
+      4370816,
+      4371038,
+      4371421,
+      4370223,
+      4370302,
+      4370381,
+      4370460,
+      4371117
     ],
-    "frame": 250,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042ADCF"
-  },
-  {
-    "id": "window.status",
-    "title": "status",
-    "rect": [
-      278,
-      136,
-      244,
-      328
+    "default_target": "0x0042B3DD",
+    "return_contract": "eax = edi: 1 = target was OPENED (was hidden); 0 = target was CLOSED or id invalid (ids 5/10 and >0xF jump straight to the shared tail 0x42B3DD with edi=0 from the prologue xor). Callers rely on this: Q/W/E/R/S/D/N/G letters, Enter case1, FnB 0x43E4B0 notice path, caption action stubs (cap14 toggles only when return 0, cap15 double-toggle gates on return).",
+    "close_all": "0x0042B820 demote-all runs before the case: walks the visible list from [base+0xD28] head via node+4 (prev links), resets [base+0xD34]=0 and per listed node id <= 0xE executes table 0x42B938 -> 0x423F90(subwin, 0) (mov [subwin+0x34],0; ret 4); ids 5/10 -> 0x42B8F5 no-op advance, id > 0xE skipped; loop inc edi / cmp edi,[base+0xD38] / jl. This is DEACTIVATION of the +0x34 slot only - it does NOT touch the +0x30 visibility gate and does NOT unlink list nodes. 3 E8 callers: 0x42ADB6 (dispatcher head), 0x42B6B3 (drag-start 0x42B6A0), 0x42BD8F (FnA hit-test fallback).",
+    "add_helper": "0x0042AC30",
+    "remove_helper": "0x0042AC50",
+    "case_pattern": "mov eax,[esi+flagoff]; push id; test eax,eax; mov ecx,esi; je OPEN; call 0x0042AC50; vtable[0x10](0); xor edi,edi; ret | OPEN: call 0x0042AC30; vtable[0x10](1); [per-id specials]; mov edi,1; ret. flagoff = objectoff + 0x30 in every case (see records).",
+    "visible_gate_setter": "0x00423F80 (mov [obj+0x30],arg; ret 4; via class setter 0x0043F020, arg==0 -> [obj+0x274]=1; draw paths gate on [obj+0x30], e.g. 0x43F04A)",
+    "active_state_setter": "0x00423F90 (mov [obj+0x34],arg; ret 4; demote-all 0x42B820 writes 0)",
+    "virtual_visibility_slot": "+0x10",
+    "virtual_argument": "1 = show, 0 = hide",
+    "cases": [
+      {
+        "id": 0,
+        "layout_id": "window.inventory",
+        "case_va": "0x0042ADCF",
+        "object_offset": "main+0x6554",
+        "state_gate": "main+0x6584",
+        "close_va": "0x0042ADDD",
+        "open_va": "0x0042ADFC",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + byte[sub+0x54]=0 + 0x417880(lea ecx,[sub+0x1C4]; push -1; push 0x10C; push 0x10B) + 0x42FF90(sub), ret 1"
+      },
+      {
+        "id": 1,
+        "layout_id": "window.status",
+        "case_va": "0x0042AE42",
+        "object_offset": "main+0x29CE4",
+        "state_gate": "main+0x29D14",
+        "close_va": "0x0042AE50",
+        "open_va": "0x0042AE6F",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 2,
+        "layout_id": "window.store-candidate",
+        "case_va": "0x0042AE91",
+        "object_offset": "main+0x33188",
+        "state_gate": "main+0x331B8",
+        "close_va": "0x0042AE9D",
+        "open_va": "0x0042AEBE",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1; store state may be rebuilt before display"
+      },
+      {
+        "id": 3,
+        "layout_id": "window.exchange-candidate",
+        "case_va": "0x0042AEE0",
+        "object_offset": "main+0x3399C",
+        "state_gate": "main+0x339CC",
+        "close_va": "0x0042AEEC",
+        "open_va": "0x0042AF0D",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1 (CORRECTED: case 3 entry is 0x42AEE0; 0x42AEB0 is inside case 2's close body)"
+      },
+      {
+        "id": 4,
+        "layout_id": "window.guild-candidate",
+        "case_va": "0x0042B06B",
+        "object_offset": "main+0x4707C",
+        "state_gate": "main+0x470AC",
+        "close_va": "0x0042B077",
+        "open_va": "0x0042B098",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 5,
+        "layout_id": null,
+        "case_va": "0x0042B3DD",
+        "object_offset": null,
+        "state_gate": null,
+        "close_va": null,
+        "open_va": null,
+        "show_hide": "no registered object branch: jump table [5] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"
+      },
+      {
+        "id": 6,
+        "layout_id": "window.group",
+        "case_va": "0x0042B0BA",
+        "object_offset": "main+0x47834",
+        "state_gate": "main+0x47864",
+        "close_va": "0x0042B0C8",
+        "open_va": "0x0042B0E7",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + 0x417880(lea ecx,[base+0x47B70]; push 0x398 if [base+0x47C24]!=0 else -1; push 0x399; push 0x398), ret 1"
+      },
+      {
+        "id": 7,
+        "layout_id": "window.group-pop-candidate",
+        "case_va": "0x0042B131",
+        "object_offset": "main+0x47C28",
+        "state_gate": "main+0x47C58",
+        "close_va": "0x0042B13D",
+        "open_va": "0x0042B15E",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 8,
+        "layout_id": "window.chat-pop",
+        "case_va": "0x0042B180",
+        "object_offset": "main+0x507EC",
+        "state_gate": "main+0x5081C",
+        "close_va": "0x0042B188",
+        "open_va": "0x0042B1DB",
+        "show_hide": "gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0), ret 0; gate==0 (open): MoveWindow(mapBar, mainX+[base+0x50804]+[base+0x51140], mainY+[base+0x50808]+[base+0x51144], [base+0x51148]-[base+0x51140], [base+0x5114C]-[base+0x51144], 1) + ShowWindow(mapBar, 5) + 0x42AC30 + vtable[0x10](1), ret 1. mapBar = [0x8AA48C]; mainX/mainY = [0x8AB7F0]/[0x8AB7F4]. Byte-verified 0x42B1DB-0x42B25E (MoveWindow call [0x4762BC] at 0x42B223, ShowWindow at 0x42B232, 0x42AC30 at 0x42B23C, vtable[0x10](1) at 0x42B246)."
+      },
+      {
+        "id": 9,
+        "layout_id": "window.npc-candidate",
+        "case_va": "0x0042B25E",
+        "object_offset": "main+0x51150",
+        "state_gate": "main+0x51180",
+        "close_va": "0x0042B26A",
+        "open_va": "0x0042B28B",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 10,
+        "layout_id": null,
+        "case_va": "0x0042B3DD",
+        "object_offset": null,
+        "state_gate": null,
+        "close_va": null,
+        "open_va": null,
+        "show_hide": "no registered object branch: jump table [10] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"
+      },
+      {
+        "id": 11,
+        "layout_id": "window.quest",
+        "case_va": "0x0042AF2F",
+        "object_offset": "main+0x516E8",
+        "state_gate": "main+0x51718",
+        "close_va": "0x0042AF3B",
+        "open_va": "0x0042AF5C",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 12,
+        "layout_id": "window.option",
+        "case_va": "0x0042AF7E",
+        "object_offset": "main+0x518E0",
+        "state_gate": "main+0x51910",
+        "close_va": "0x0042AF8A",
+        "open_va": "0x0042AFAB",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 13,
+        "layout_id": "window.horse",
+        "case_va": "0x0042AFCD",
+        "object_offset": "main+0x52118",
+        "state_gate": "main+0x52148",
+        "close_va": "0x0042AFD9",
+        "open_va": "0x0042AFFA",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 14,
+        "layout_id": "window.other-14-candidate",
+        "case_va": "0x0042B01C",
+        "object_offset": "main+0x524F0",
+        "state_gate": "main+0x52520",
+        "close_va": "0x0042B028",
+        "open_va": "0x0042B049",
+        "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+      },
+      {
+        "id": 15,
+        "layout_id": "window.notice-prompt-candidate",
+        "case_va": "0x0042B2AD",
+        "object_offset": "main+0x52E5C",
+        "state_gate": "main+0x52E8C",
+        "close_va": "0x0042B2B5",
+        "open_va": "0x0042B349",
+        "show_hide": "big-chat/notice window (Frame 602; click handler 0x43E4B0; native chat HWND wrapper [base+0x53028], title 0x8B187C; flag [0x8AA498]). gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0) + if [base+0x53028]: ShowWindow(chatHwnd, 0) + SetWindowTextA(chatHwnd, 0x8B187C) + SetFocus([0x8AB7B0]) + [0x8AA498]=1, ret 0. gate==0 (open): 0x42AC30 + vtable[0x10](1) + if [base+0x53028]: ShowWindow(chatHwnd, 5) + UpdateWindow(chatHwnd) + MoveWindow(chatHwnd, mainX+[base+0x53018], mainY+[base+0x5301C], [base+0x53020]-[base+0x53018], [base+0x53024]-[base+0x5301C], 1) + SetFocus(chatHwnd) + [0x8AA498]=0, ret 1. Byte-verified: close tail 0x42B304-0x42B349 (ShowWindow(chat,0) at 0x42B311, SetWindowTextA at 0x42B323, SetFocus at 0x42B330, [0x8AA498]=1 at 0x42B337); open 0x42B349-0x42B3DD (ShowWindow(chat,5) at 0x42B370, UpdateWindow at 0x42B37D, MoveWindow at 0x42B3BB, SetFocus(chat) at 0x42B3C8, [0x8AA498]=0 at 0x42B3CE)."
+      }
     ],
-    "frame": 200,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE42"
-  },
-  {
-    "id": "window.store-candidate",
-    "title": "store",
-    "rect": [
-      250,
-      148,
-      300,
-      304
-    ],
-    "frame": 1000,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE91"
-  },
-  {
-    "id": "window.exchange-candidate",
-    "title": "exchange",
-    "rect": [
-      158,
-      135,
-      484,
-      330
-    ],
-    "frame": 1050,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AEE0"
-  },
-  {
-    "id": "window.guild-candidate",
-    "title": "guild",
-    "rect": [
-      102,
-      22,
-      596,
-      446
-    ],
-    "frame": 600,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "primary-static",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B06B"
-  },
-  {
-    "id": "window.group",
-    "title": "group",
-    "rect": [
-      272,
-      123,
-      256,
-      244
-    ],
-    "frame": 900,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "primary-static",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B0BA"
-  },
-  {
-    "id": "window.chat-pop",
-    "title": "chat-pop",
-    "rect": [
-      114,
-      76,
-      572,
-      388
-    ],
-    "frame": 350,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "primary-static",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B180"
-  },
-  {
-    "id": "window.group-pop-candidate",
-    "title": "group-pop",
-    "rect": [
-      278,
-      136,
-      244,
-      328
-    ],
-    "frame": 200,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B131"
-  },
-  {
-    "id": "window.option",
-    "title": "option",
-    "rect": [
-      276,
-      113,
-      248,
-      264
-    ],
-    "frame": 750,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "primary-static",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AF7E"
-  },
-  {
-    "id": "window.quest",
-    "title": "quest",
-    "rect": [
-      230,
-      80,
-      340,
-      440
-    ],
-    "frame": 700,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AF2F"
-  },
-  {
-    "id": "window.horse",
-    "title": "horse",
-    "rect": [
-      252,
-      134,
-      296,
-      332
-    ],
-    "frame": 850,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AFCD"
-  },
-  {
-    "id": "window.other-14-candidate",
-    "title": "other-14",
-    "rect": [
-      252,
-      134,
-      296,
-      332
-    ],
-    "frame": 400,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B01C"
-  },
-  {
-    "id": "window.npc-candidate",
-    "title": "npc",
-    "rect": [
-      124,
-      212,
-      552,
-      176
-    ],
-    "frame": 1100,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "candidate",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B25E"
-  },
-  {
-    "id": "window.notice-prompt-candidate",
-    "title": "notice-prompt",
-    "rect": [
-      107,
-      110,
-      584,
-      252
-    ],
-    "frame": 602,
-    "resource_library": "GameInter.wil",
-    "evidence_level": "primary-static",
-    "init_va": null,
-    "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B2AD"
+    "source": "window-visibility-dispatch-evidence.json Finding 314 (primary-static)"
   }
-]
+}
