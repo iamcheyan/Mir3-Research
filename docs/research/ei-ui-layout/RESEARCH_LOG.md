@@ -5587,3 +5587,17 @@ cross-ref：F258/F260/F263/F295/F302/F313/F316/F321。
 
 cross-ref：F239/F257/F271/F300/F315/F321/F322。
 落盘：`entity-headbar-vtable77c-callers-evidence.json`、`ui-coverage-matrix.json`（target-box closed_2026_08_12；pending_notes 修剪为 runtime WIL 部分）、`UI_COMPLETION_AUDIT.md`。
+
+## Round 18 (2026-08-12) — 选项窗 settings 长尾闭合：Ambience 死开关定案 + BGM 音量播放时重应用修正（Finding 324）
+
+- SettingsAmbienceBgmVolume（Finding 324）：settings-ambience-bgm-volume-evidence.json — **settings 记录 pending_notes 两项全闭 + F260 结论修正（primary-static）**：
+  - **Ambience 实际触发点 = primary-static negative 定案**：跳表 0x44194C idx5/6（0x441850 ON / 0x44186E OFF）= 纯换帧（+0x400 ON 单选帧 0x2F8/0x2F9/0x2F8、+0x4B4 OFF 单选 0x2FA/0x2FB/0x2FA，经帧设置器 0x417880）+ 共享尾 0x44188A → config save 0x441B30 → ret 8。**不写状态字节 [option+0x5C]、不调任何音频引擎函数**（0x45A4A0/0x45A700/0x45B250/0x45B390/0x45B900 家族零引用）。
+  - **[+0x5C] 生命周期全表**：写入恰 2 = ctor 前导清零 ~0x440FA8（函数 0x440F90：mov [esi+0x5C],ebp）+ config load 写 0x441EFA；读取恰 2 = restore-visuals 0x4412D2（恢复帧）+ save 0x441C59。→ **Ambience 选项在本客户端 = 视觉-only 死开关**（无实际音效触发点；切换不持久化，save 把 load 值原样回写）。
+  - **BGM 音量重应用时序修正（推翻 F260『BGMLevel 0x8AB150 has ZERO audio-engine references』）**：0x8AB150 == BGM 引擎对象 0x8AB130 的 +0x20 字段；两条播放路径均在播放开始时经**寄存器相对寻址**重读该全局——0x45B250 play-by-name 尾 0x45B36D `mov edx,[ebx+0x20]`、0x45B390 play-by-string 尾 0x45B3B8 `mov ecx,[esi+0x20]` → 0x45A4A0（ecx=[ebx+0x528]=0x8AB658 channel, arg=音量）→ 0x45A4E8 → 0x45A700（vol*40 → vtable+0x1C SetVolume）。**0x45A700 唯一 2 E8 callers = {0x441F6C 滑杆实时, 0x45A4E8 播放路径尾}** → 音量应用点 = 滑杆拖动（立即）+ 每次 BGM 播放开始。旧结论为绝对 4 字节扫描局限（漏基址寄存器相对寻址），已注记于 matrix closed_2026_08_11 条目（SUPERSEDED 标注）与 closed_2026_08_12 新条目。
+  - **0x45B430 语义定案**：`mov dword ptr [ecx+0x56C],0; ret` = BGM enable-flag clear；E8 唯一 caller = 0x441E29（config load BGM OFF 路径：BGM 键 !=0 → 0x45B410 enable | else → 0x45B3D0 stop + 0x45B430 清 enable）；配对 0x45B410（enable set）callers = {0x4416EC toggle ON, 0x441E18 load ON}。
+  - **选项窗 init/open 函数头**：init fn = ctor 0x440FE0（ret 0x24；唯一 caller = main init 0x42788D `lea ecx,[esi+0x518e0]`，id 0xC）：base ctor 0x423B30 @0x441015 + 11 个 0x417550 子控件（stride 0xB4 自 +0x7C）+ **0x4411ED = config load 0x441CC0 唯一调用点** + restore 帧块 0x441226-0x44137C（读 [+0x54]/[+0x58]/[+0x5C]/[+0x60]；Shadow 控件指针经 [esp+0x24]/[esp+0x20]）；open method = 0x4414F0（唯一 caller 0x42C10B，[+0x64]/[+0x68] 开合标志 + 命中测试分支）。
+  - **ShadowBlend [0x47EF48] = 零消费者死全局**：全 .text 恰 3 处引用、全在 option 代码、**全为写入点**（0x4418CB Shadow ON、0x441914 Shadow OFF、0x441F2A config load atoi→[0x47EF48]）；**零读取点** → config-only，无渲染/音频消费者。
+  - 附带收尾：0x45A700 内部 vtable+0x1C 参数 = vol*40（lea *5; shl 3）；FX 音量 0x8AB14C 不变（0x45BCE9 播放直读）；滑块公式 volume = slider*0.625−100（[0x476978]=0.625 double）；config save/load 键映射 fresh 复核（EffectSound→[+0x58]、BGM→[+0x54]、Ambience→[+0x5C]、ShadowBlend→[+0x60]+[0x47EF48]、数值→[0x8AB14C]/[0x8AB150]）。
+
+cross-ref：F260/F295/F302/F321/F322/F323。
+落盘：`settings-ambience-bgm-volume-evidence.json`、`ui-coverage-matrix.json`（settings closed_2026_08_12 五项 + pending_notes 清空 + F260 SUPERSEDED 注记）、`UI_COMPLETION_AUDIT.md`。

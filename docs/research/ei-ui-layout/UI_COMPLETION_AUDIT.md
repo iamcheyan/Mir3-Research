@@ -173,3 +173,12 @@ git diff --check
   - **类型字节 0x32=NPC 证据**：0x4123E3（mov eax,[0x7E335C]; cmp byte [eax+0x88],0x32 → ret 1 全局 NPC 检查）；0x43DC65（cmp [edi+0x88],0x32; jne; fild [edi+0xCC] 浮点取世界 x）。**[esi+0x88] 写入 = 0 命中**（0x88/0x89/C6/C7 全 mod 含 SIB disp8/disp32 穷举，primary-negative）→ [INFERENCE] 经 vtable+0xC Init 0x404FB0 家族（跳表 0x4054EC、分类字节表 0x405500 值域 0..0x32）或 F300 0x405862 外观/type 更新（跳表 0x405894）设置。
   - 解析器尾部（0x4227A6–0x4227BA）：[esi+0x61C58]=0x12C(300) HP 上限、[esi+0x61C5C]=0 HP 当前；实体入表 mov edx,[edi+0xE1154]; push esi; call [edx+4]。
   - **边界说明**：0x40C020 是第六个独立绘制路径（通用实体头部条），不在悬停目标框 5 函数（0x40B750/0x40B79C/0x40B811/0x40B850/0x40BB00）之列；F257 的 0x41C063 = call [edx+0x84]（=0x40B850 name-plate box），槽位 +0x80（0x40B750）vs +0x84（0x40B850）与本案 +0x7C 不同。
+
+## Round 18 (2026-08-12) — 选项窗 settings 长尾闭合 + F260 修正（Finding 324）
+
+- **Ambience 死开关（primary-static negative 定案）**：跳表 0x44194C idx5/6 = 纯换帧 + save，无 [+0x5C] 写、无音频调用；状态字节 [+0x5C] 生命周期 = ctor 清零（~0x440FA8）→ load 写（0x441EFA）→ 仅 2 读取（0x4412D2 restore、0x441C59 save）。选项在本客户端为视觉-only，无实际音效触发点。**matrix settings pending_notes 项『Ambience actual sound trigger point』闭合**。
+- **BGM 音量播放时重应用（修正 F260）**：0x8AB150 = 引擎 0x8AB130 + 0x20；播放路径 0x45B250 @0x45B36D / 0x45B390 @0x45B3B8 经 [reg+0x20] 重读 → 0x45A4A0 → 0x45A700（SetVolume vol*40）；0x45A700 唯一 callers = {0x441F6C 滑杆, 0x45A4E8 播放尾}。旧『ZERO audio-engine references』为绝对扫描局限，已 SUPERSEDED 注记。**pending_notes 项『BGM volume re-apply timing』闭合**。
+- 0x45B430 = BGM enable-flag clear，唯一 caller 0x441E29（load OFF 路径）；配对 0x45B410 enable callers {0x4416EC, 0x441E18}。
+- 选项窗 init fn = ctor 0x440FE0（caller 0x42788D；config load 唯一调用点 0x4411ED→0x441CC0）；open = 0x4414F0（caller 0x42C10B）。
+- ShadowBlend [0x47EF48] = 3 写入点零读取（config-only 死全局）。
+- 落盘：`settings-ambience-bgm-volume-evidence.json` + matrix settings closed_2026_08_12（5 条）+ RESEARCH_LOG。
