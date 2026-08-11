@@ -1,0 +1,100 @@
+{
+ "evidence_id": "offset-distribution",
+ "title": "EI 3.0 素材帧 offset（WIL 头 +4/+6 = offsetX/offsetY）非零分布全库扫描 — P9 闭合",
+ "date": "2026-08-11",
+ "objective": "P9（EVIDENCE-INVENTORY.md pending）：EI 素材中帧 offset（+4/+6）非零值的分布。",
+ "question": "地图层（ground/mid/front）使用的 TILE/OBJECT 库是否实际含有原版忽略的非零 offset？逐库分布如何？哪些库的 offset 有实际语义（actor C6 / 小地图 MMap -24,-16 已观测）？",
+ "method": [
+   "wilsdk.open_library 打开全部 123 个 .wil（Data/ 顶层 86 + 主题子目录 Forest/Sand/Snow/Wood 37），对每个库 Frame 0..count-1 读 lib.header(i)：header 返回 None 计 no_data，width/height<=0 计 zero_size，否则取 offsetX/offsetY（<h 有符号 16 位，位于 17B 头 +4/+6）。",
+   "每库统计：count / data_frames / no_data / zero_size / nonzero_off_x / nonzero_off_y / either（x 或 y 非零）/ min_x / max_x / min_y / max_y。",
+   "对 min/max 非统一的库做 offset 值直方图 + 帧号区间定位；对 |offset|>1000 的巨值帧做原始 17B 头 hex 复核确认非解码伪影。",
+   "抽样 5 图（0/8/41/3/D1001）的 catalog 逐层 lib+frame_min/max 与对应库帧 offset 交叉核对，确认地图实际引用帧的 offset 归属。",
+   "分类：tile=地图地面库（Tilesc/Tiles30c/Tiles5c/SmTilesc + Wood/Tilesc、Wood/Tiles5c、Sand/Tilesc）；object=地图物件库（Cliffsc/Housesc/Wallsc/SmObjectsc/Animationsc/Innersc/Furnituresc/Dungeonsc/object1c/object2c + Sand/*、Wood/* 其余）；actor=角色/怪物/特效（Mon-*/MonS-*/DMon-*/NPC/M-Hum/WM-Hum/M-SHum/WM-SHum/M-Hair/WM-Hair/M-Helmet1/WM-Helmet1/M-Weapon*/WM-Weapon*/Weapon*/Horse/ProgUse/Magic/MonMagic/MagicEx/MonMagicEx）；terrain=小地图（MMap/FMMap）；ui=GameInter/Interface1c；misc=Storeitem/Ground/Equip/inventory/MIcon/MonImg/NPCface/DMonS-1；theme-empty-stub=Forest/Snow 全部 24 个 2 帧空壳库。"
+ ],
+ "scope": {
+   "data_root": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data",
+   "libraries_total": 123,
+   "top_level_wil": 86,
+   "theme_subdirs": {"Forest": 12, "Sand": 5, "Snow": 12, "Wood": 8},
+   "frames_total": 1084929,
+   "frames_with_data": 360622,
+   "frames_no_data": 724307,
+   "frames_nonzero_either": 356402,
+   "frames_zero_offset_with_data": 4220,
+   "fraction_nonzero_of_data": 0.9883
+ },
+ "data_file": "offset-distribution.json",
+ "category_table": {
+   "tile": {
+     "libs": ["Tilesc.wil", "Tiles30c.wil", "Tiles5c.wil", "SmTilesc.wil", "Sand/Tilesc.wil", "Wood/Tilesc.wil", "Wood/Tiles5c.wil"],
+     "libs_count": 7, "frames": 49334, "data_frames": 21512, "nonzero_either": 20875,
+     "frac_nonzero_of_data": 0.9704,
+     "convention": "统一 (-24,-16)（城镇系）或 (7,-44)（洞穴系）；Tiles5c 10000+ 以 (7,-44) 为主、散点 (0,0)×637；SmTilesc 帧 0-175 巨值伪 offset"
+   },
+   "object": {
+     "libs": ["Animationsc.wil", "Cliffsc.wil", "Dungeonsc.wil", "Furnituresc.wil", "Housesc.wil", "Innersc.wil", "SmObjectsc.wil", "Wallsc.wil", "object1c.wil", "object2c.wil", "Sand/Animationsc.wil", "Sand/Housesc.wil", "Sand/SmObjectsc.wil", "Sand/Wallsc.wil", "Wood/Animationsc.wil", "Wood/Dungeonsc.wil", "Wood/Housesc.wil", "Wood/Innersc.wil", "Wood/SmObjectsc.wil", "Wood/Wallsc.wil"],
+     "libs_count": 20, "frames": 131732, "data_frames": 80634, "nonzero_either": 77313,
+     "frac_nonzero_of_data": 0.9588,
+     "convention": "城镇/主题系统一 (-24,-16)；object1c/object2c 以 (7,-44) 为主 + (0,0)×3321 散点；Dungeonsc/Furnituresc 帧 0-370 巨值伪 offset"
+   },
+   "actor": {
+     "libs_count": 60, "frames": 887140, "data_frames": 254202, "nonzero_either": 253949,
+     "frac_nonzero_of_data": 0.9990,
+     "convention": "逐帧变化（如 Mon-1 x[-79..51] y[-108..35]、M-Hum x[-109..23] y[-148..-4]、NPC x[-131..29] y[-121..-5]），几乎全帧非零；C6 应用"
+   },
+   "terrain": {
+     "libs": ["MMap.wil", "FMMap.wil"],
+     "libs_count": 2, "frames": 286, "data_frames": 183, "nonzero_either": 182,
+     "frac_nonzero_of_data": 0.9945,
+     "convention": "MMap (-24,-16)×136 + (7,-44)×18；FMMap (-24,-16)×28 + (0,0)×1"
+   },
+   "ui": {
+     "libs": ["GameInter.wil", "Interface1c.wil"],
+     "libs_count": 2, "frames": 3103, "data_frames": 1280, "nonzero_either": 1280,
+     "frac_nonzero_of_data": 1.0,
+     "convention": "GameInter (-24,-16)×231 + (7,-44)×22；Interface1c 519 种不同 offset 对（窗口/控件逐帧定位）"
+   },
+   "misc": {
+     "libs": ["Storeitem.wil", "Ground.wil", "Equip.wil", "inventory.wil", "MIcon.wil", "MonImg.wil", "NPCface.wil", "DMonS-1.wil"],
+     "libs_count": 8, "frames": 13286, "data_frames": 2811, "nonzero_either": 2803,
+     "frac_nonzero_of_data": 0.9972,
+     "convention": "物品图标以 (-24,-16) 为主；MonImg/NPCface 全帧统一 (-24,-16)"
+   },
+   "theme-empty-stub": {
+     "libs_count": 24, "frames": 48, "data_frames": 0, "nonzero_either": 0,
+     "frac_nonzero_of_data": 0.0,
+     "convention": "Forest/Snow 每库 count=2、全部 no_data（EI 空壳主题库；catalog 中 snow_*/forest_* 仅出现于微型图探针，legacy 13B 39 图 D3 相关）"
+   }
+ },
+ "offset_conventions": [
+   {"value": "(-24,-16)", "family": "城镇/主题地面与物件（Tilesc/Tiles30c/Wallsc/Cliffsc/Housesc/SmObjectsc/Animationsc/Innersc/Dungeonsc 主体/Sand/*/Wood/*/NPCface/MonImg/MMap 主体/FMMap/GameInter 主体）", "frame_count": "≈23.5 万数据帧（按 96×64 瓦片帧，内容 48×32 格居中的经典 Mir 锚定约定）"},
+   {"value": "(7,-44)", "family": "洞穴系（Tiles5c 帧 10000+/object1c/object2c/SmTilesc 帧 10000+/MMap 帧 35-38 与 70-83）", "frame_count": "≈3.0 万数据帧"},
+   {"value": "(0,0)", "family": "洞穴系散点帧（Tiles5c×637、object1c×1886、object2c×1435、FMMap×1 等）", "frame_count": 4220, "note": "少数帧为零；3.map 地面引用 tiles5c f10000 即 (0,0)"},
+   {"value": "巨值伪 offset", "family": "SmTilesc 帧 0-175 / Dungeonsc 帧 0-34 / Furnituresc 帧 1-370", "frame_count": "455（SmTilesc 168 + Dungeonsc 27 + Furnituresc 260）", "values": "(-1132,-19694)/(-1132,-22226)/(28432,21537)/(30280,21537) 等，48px 宽帧（48×32/64/96/128/160/192/224），原始 17B 头 hex 复核为文件内真实存储值", "note": "0.map mid/front 层显式引用 furnituresc 帧 87-283（巨值 offset 区间）且原版渲染正常 → 忽略 offset 是正确渲染的必需条件"}
+ ],
+ "sample_maps_verification": [
+   {"map": "0.map 比奇城", "ground": "tilesc f483-9835 / tiles30c f545-1024 全 (-24,-16)；tiles5c f6-11504 (-24,-16)→(7,-44)", "mid": "cliffsc/wallsc/smobjectsc/animationsc/wood_smobjectsc 全 (-24,-16)；object1c/object2c 全 (7,-44)；furnituresc f87-283 巨值 (30280,21537)/(-1132,-22226)", "front": "housesc/cliffsc/wallsc/smobjectsc/animationsc 全 (-24,-16)；furnituresc f13-133 巨值 (30280,-1247)/(-1132,-22226)"},
+   {"map": "D1001.map 赤月山谷1层", "ground": "tiles5c f10044-12974 全 (7,-44)", "mid": "object2c f2262-3452 全 (7,-44)"},
+   {"map": "8.map 冰雪村", "ground": "tilesc/tiles30c/tiles5c f30-34/wood_tilesc 全 (-24,-16)", "mid": "cliffsc/smobjectsc/animationsc/wood_housesc/wood_smobjectsc 全 (-24,-16)", "front": "cliffsc/smobjectsc/animationsc/wood_* 全 (-24,-16)"},
+   {"map": "41.map", "ground": "tilesc/tiles30c/sand_tilesc 全 (-24,-16)", "mid": "cliffsc/smobjectsc/sand_smobjectsc 全 (-24,-16)；object1c f1459-1487 (7,-44)", "front": "同 mid", "note": "sand_housesc/sand_animationsc 部分引用帧超库帧数（header None，41.map frame_oob 1619 格 C11 类）"},
+   {"map": "3.map 沙巴克城", "ground": "tilesc/tiles30c/wood_tilesc 全 (-24,-16)；tiles5c f10000-11504 (0,0)→(7,-44)", "mid": "cliffsc/housesc/smobjectsc/animationsc/wood_* 全 (-24,-16)；object1c (7,-44)", "front": "同 mid (-24,-16)"}
+ ],
+ "verdict_p9": {
+   "answer": "TILE/OBJECT 库确实大量携带非零 offset（有数据帧 98.8% 非零），且地图层引用帧几乎全部非零 → C5（地图层零 offset 读取）是原版的有意约定，而非素材恰好为零的平凡结果。",
+   "map_layer_libs_nonzero": true,
+   "c5_classification": "C5 从 confirmed 的‘代码事实’升级为‘与素材侧一致的有意约定’：素材定义 offset，地图层绘制路径（43bb10/43be00/43b440/43b9a0/43c330/43c4c9 全分支）零读取；若应用 offset，城镇图 96×64 帧按 -24,-16 平移、0.map furnituresc 巨值帧将抛飞数万像素，均破坏渲染（D2 none=原版、C16 三模式、D6 midfront 0.8%/all 26.6% 像素差佐证）。",
+   "offsets_that_matter": [
+     "actor 层（C6，0x430b00 +4/+6 应用）：Mon-*/MonS-*/DMon-*/DMonS-*/NPC/M-Hum/WM-Hum/M-SHum/WM-SHum/M-Hair/WM-Hair/M-Helmet1/WM-Helmet1/M-Weapon*/WM-Weapon*/Weapon*/Horse/ProgUse/Magic/MonMagic/MagicEx/MonMagicEx —— 逐帧变化（如 Mon-6 y 至 -284、M-Hum y 至 -148），锚定脚底，语义必须应用",
+     "小地图 MMap/FMMap：MMap 136 帧 (-24,-16) + 18 帧 (7,-44)；模拟器按帧尺寸/128px 线性映射绘制整帧图像，offset 不参与变换（P6 MinimapCalibration 处理校准，本结论不影响其线性映射）",
+     "地图层 TILE/OBJECT：offset 存在但原版忽略；mapviewer 的 midfront/all 模式（C16）为实验性应用，none 即原版",
+     "UI 图标（GameInter/Interface1c/Storeitem/inventory）：Interface1c 519 种 offset 对用于控件内逐图定位；GameInter 主体 (-24,-16)"
+   ],
+   "outlier_note": "SmTilesc/Dungeonsc/Furnituresc 帧 0-370 的巨值 offset（28432,21537 等）为文件内真实值（hex 复核），非解码错误；0.map 显式引用其中 furnituresc 帧并正常渲染，进一步证明地图层忽略 offset。",
+   "p9_status": "closed"
+ },
+ "evidence_level": "derived",
+ "evidence_level_note": "素材侧事实为 primary（文件二进制直读，全部 123 库可复现）；‘原版忽略 offset 因此渲染正确’的语义判断依赖 C5/C14/D2/D6 既有 confirmed/derived 链，故整体为 derived。",
+ "cross_refs": ["C5", "C6", "C16", "C17", "C18", "D2", "D6", "D3", "P9", "P6", "P10"],
+ "tool": "Tools/maps/offset_distribution.py",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/offset_distribution.py"
+}

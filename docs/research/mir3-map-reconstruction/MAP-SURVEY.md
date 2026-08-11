@@ -185,9 +185,11 @@
 
 ## 10. 逐图勘察遗留（引用 EVIDENCE-INVENTORY pending）
 
-- P1 越界帧替换逻辑（3.map 3255 格视觉缺失）→ frame-decode 类
-- P2 室内地面绘制机制（0_003/5_0013）→ 特殊处理类
-- P3 D10031 ground OOB（62 格）→ frame-decode 类
-- P6 小地图帧内留白逐图校准（FMMap/MMap）→ 坐标转换类（模拟器）
-- P9 EI 素材帧 offset 非零分布 → offset 类
-- P10 保留标记帧（0xFF00+）/幻影帧引用 → library 类
+> Round-4 闭合（2026-08-11，Findings 274–278）：P1/P2/P3/P6/P9/P10 全部闭合，见 `EVIDENCE-INVENTORY.md` C22–C27 / D7 / P6-P12。
+
+- ~~P1 越界帧替换逻辑（3.map 3255 格视觉缺失）~~ → 闭合（C22）：FetchFrame 显式边界检查，越界 = 不绘制（透明），3.map 地面透出
+- ~~P2 室内地面绘制机制（0_003/5_0013）~~ → 闭合（C23）：空地面格（file=255+frame=0xFFFF）跳过 + 黑底，非静态背景
+- ~~P3 D10031 ground OOB（62 格）~~ → 闭合 + **更正**（C22）：ground OOB 在 tiles5c（KR_ORDER[2]）帧 42756–42766，非 smtilesc；原『62 smtilesc 格 frame 9998』为 Middle 层且在界内（9998 < 10180），正常渲染非异常
+- ~~P6 小地图帧内留白逐图校准（FMMap/MMap）~~ → 闭合（C25）：painted rect=(0,0,W·1.5,H)、MMap 索引 = 值−1（off-by-one 已修，模拟器/交叉引用同步）
+- ~~P9 EI 素材帧 offset 非零分布~~ → 闭合（C24）：地图层 98.8% 非零（城镇 (−24,−16) / 洞穴 (7,−44)），C5 零读取为有意约定
+- ~~P10 保留标记帧（0xFF00+）/幻影帧引用~~ → 细化（C26/C27）：精确 0xFFFF 比较（非掩码），0xFF00+ = 普通越界不绘制；22 库引用全在 13B 探针图；『3 库全幻影』不可复现

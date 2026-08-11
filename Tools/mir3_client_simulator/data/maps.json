@@ -13,6 +13,6 @@
     "library": "FMMap.wil",
     "frame": 0,
     "evidence_level": "derived",
-    "note": "0.map 比奇县 -> FMMap.wil F0 scaled into fixed 128x128 widget (672,0)"
+    "note": "0.map 比奇县 -> FMMap.wil F0; panel (672,0)-(800,128) primary-static; placement formula (Finding 277 confirmed): painted rect (0,0,W*1.5,H), 1.5 px/tile X / 1 px/tile Y, frame = ceil4(W*1.5) x H; live client scrolls the source window with the player — static sim shows center crop (cover)"
   }
 ]

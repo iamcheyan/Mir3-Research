@@ -249,23 +249,32 @@ def main() -> None:
 
     # ------------------------------------------------------------------ maps
     # map.bg / map.minimap bind to the demo scene map (0.map = 比奇县). The
-    # library+frame follow the client's map-select rule (0x0043D780: map_id >=
-    # 1000 -> FMMap.wil frame map_id-1000, else MMap.wil frame map_id) with the
-    # original server MiniMap.txt giving 0.map -> 1001 -> FMMap.wil F0. The
-    # select rule is primary-static; the row binding is secondary-server.
+    # library+frame follow the client's map-select rule (setter 0x0043D780,
+    # caller 0x420C3A does the dec; Finding 277 primary-static): server_value
+    # >= 1001 -> FMMap.wil frame value-1001, else MMap.wil frame value-1.
+    # The original server MiniMap.txt gives 0.map -> 1001 -> FMMap.wil F0.
+    # Select rule is primary-static; the row binding is secondary-server.
     maps: list[dict] = [
         {"id": "map.bg", "name": "地图背景", "library": "FMMap.wil", "frame": 0,
          "evidence_level": "derived",
          "note": "0.map 比奇县 -> server 1001 -> FMMap.wil F0 (client select 0x43D780 + MiniMap.txt)"},
         {"id": "map.minimap", "name": "小地图", "library": "FMMap.wil", "frame": 0,
          "evidence_level": "derived",
-         "note": "0.map 比奇县 -> FMMap.wil F0 scaled into fixed 128x128 widget (672,0)"},
+         "note": "0.map 比奇县 -> FMMap.wil F0; panel (672,0)-(800,128) primary-static; "
+                 "placement formula (Finding 277 confirmed): painted rect (0,0,W*1.5,H), "
+                 "1.5 px/tile X / 1 px/tile Y, frame = ceil4(W*1.5) x H; live client scrolls "
+                 "the source window with the player — static sim shows center crop (cover)"},
     ]
 
     # map_bindings: crossref rows (client_map_exists + frame decodes) so the
     # simulator can switch scenes through real map->library/frame pairs.
     try:
         xref = load("minimap-server-crossref.json")
+        try:
+            cat = json.loads((Path("docs/research/mir3-map-reconstruction/catalog/map-catalog.json")).read_text(encoding="utf-8"))
+            cat_by_stem = {m["name"].rsplit(".", 1)[0]: m for m in cat.get("maps", [])}
+        except Exception:
+            cat_by_stem = {}
         map_bindings = [
             {"map": r["map_stem"], "name": (r.get("server_map_names") or [r["map_stem"]])[0],
              "library": r["library"], "frame": r["frame"]}
@@ -273,6 +282,11 @@ def main() -> None:
             if r.get("client_map_exists") and r.get("frame_in_library_range")
             and r.get("frame_nonblank_decodes")
         ]
+        for b in map_bindings:
+            c = cat_by_stem.get(b["map"])
+            if c:
+                b["w"] = c["w"]
+                b["h"] = c["h"]
     except FileNotFoundError:
         map_bindings = []
 

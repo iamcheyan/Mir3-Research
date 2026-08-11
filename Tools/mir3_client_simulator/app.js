@@ -195,7 +195,8 @@ function renderHud() {
   mmEl.style.cssText = `left:${mm.rect[0]}px;top:${mm.rect[1]}px;width:${mm.rect[2] - mm.rect[0]}px;height:${mm.rect[3] - mm.rect[1]}px`;
   const mapMm = STATE.data.maps.find((q) => q.id === "map.minimap");
   const mmImg = makeImg(mapMm ? mapMm.library : "FMMap.wil", mapMm ? mapMm.frame : 0);
-  mmImg.style.cssText = "width:100%;height:100%;object-fit:cover";
+  mmImg.style.cssText = "width:100%;height:100%;object-fit:cover"; // panel = 128x128 crop window over 1.5/1.0 px/tile surface (Finding 277)
+  mmEl.style.overflow = "hidden";
   mmEl.appendChild(mmImg);
   mmEl.dataset.evidence = mm.evidence_level;
   mmEl.dataset.rect = mm.rect.join(",");
@@ -781,7 +782,8 @@ function setCurrentMap(index) {
   const t = `小地图 · ${b.name} · ${b.library} F${b.frame} · derived`;
   if (mmEl) mmEl.title = t;
   if (mmBox) mmBox.title = t;
-  pushChat(`[地图] ${b.name} (${b.map}) → ${b.library} F${b.frame}`);
+  const wh = (b.w && b.h) ? ` ${b.w}×${b.h}` : "";
+  pushChat(`[地图] ${b.name} (${b.map}${wh}) → ${b.library} F${b.frame}`);
 }
 
 function cycleMinimap() {

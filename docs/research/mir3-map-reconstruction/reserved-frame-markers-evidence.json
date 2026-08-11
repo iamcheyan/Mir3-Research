@@ -1,0 +1,172 @@
+{
+ "evidence_id": "reserved-frame-markers",
+ "title": "保留标记帧（0xFF00–0xFFFE）语义定案：客户端空帧判断为精确比较 ==0xFFFF（非掩码测试），0xFF00+ 在客户端无特殊含义、仅是普通越界帧 → 不绘制；22 库『仅保留/混合引用』逐帧枚举 + 全部保留标记帧独占 39 个 13B 探针图 — P10 细化",
+ "date": "2026-08-11",
+ "objective": "P10（EVIDENCE-INVENTORY.md 第 69 行，objective §9 逐张地图调查）：『22 个库仅有保留标记帧（0xFF00+）引用、无解码帧；3 个库全部引用幻影帧（无数据）| lib_frame_stats 备注；其内容语义未查』。要求：（1）精确枚举 22 个库（帧值 + 引用图）；（2）EXE 反汇编裁决 C10（第 25 行『EI 空帧 = 0xFFFF；file 15 = 无物件（不绘制）』）：地图格帧判断是掩码测试 (frame & 0xFF00) == 0xFF00 还是精确比较 frame == 0xFFFF，给出 VA；（3）解释『幻影帧』库（帧索引存在但解码为空）的机理；（4）产出本证据 JSON + Finding 278。",
+ "question": "（1）0xFF00–0xFFFE 帧号在原版地图渲染中是什么——客户端识别的『保留标记』，还是普通越界帧？（2）C10 的空帧判断是掩码还是精确比较？（3）22 个库的逐帧/逐图清单？（4）『3 个库全部引用幻影帧』是否可复现？幻影帧（帧号在 u16 范围内但无数据）的机理与分布？（5）保留标记帧出现在哪些地图（真实 14B 图 vs 13B 探针图）？",
+ "method": [
+  "镜像约定：base 0x400000，fileoff = VA - 0x400000；Mir3.exe 0x80000 字节 → 0x400000-0x47FFFF 为真实代码，>=0x480000 仅 imm32。工具 Tools/reverse-engineering/disasm_capstone.py（capstone 反汇编，--grep 支持），/home/tetsuya/mir3-venv/bin/python 运行。",
+  "沿地图物件/地面绘制路径反汇编取原始字节：物件 func1 0x43BB10、func2 0x43BE00、地面渲染 0x43B440（含 0x43B310-0x43B337 地面格判跳段）、帧获取 0x466130 分派 → type0 WIL 0x466640；对每个空帧/越界判断指令记录 VA + 原始字节。",
+  "掩码测试裁决：对 0x43A000-0x43E000 全区域 --grep '0xff00' 与 '0xffff'，统计 imm16 出现情况。",
+  "素材全量扫描（两张独立扫描交叉验证）：(a) catalog/lib-frames/lib-frame-stats.json 的 22 库备注字段（『all references are reserved/OOB markers (0xFF00+); no decodable frames』）；(b) /tmp/reserved_phantom_scan.py 复扫全部 544 张 .map（28B 头 + 13B/14B 格），逐格解析 ground/mid/front，经 renderer 权威映射 v_lookup + kr_lib_id（v = file - floor(file/14)，r<3 地面、v>69 跳过）得到 (lib,frame) 引用后分四类：reserved=0xFF00..0xFFFE、empty=0xFFFF、phantom=(<0xFF00 且 >= lib.count)、real=其余可解码。",
+  "库帧容量/空头验证：wilsdk open_library + FramePool._get_lib(lid).header(frame)（None = wix 条目偏移 0 = 空帧占位）；探针图结构逐图逐格 dump（0_0011、0_0031、kt0018 等 13B 图）。"
+ ],
+ "evidence": {
+  "exe_empty_cell_compare": {
+   "desc": "地图格解码的空帧/越界判断全部为精确 u16 比较 == 0xFFFF（C10 confirmed），无任何 (frame & 0xFF00)==0xFF00 掩码测试。",
+   "sites": [
+    {"va": "0x43BB45", "instr": "mov ax, word ptr [eax+ecx+3]", "note": "物件格单元格字 @+3 = frontFile | (midFile<<8)"},
+    {"va": "0x43BB4A", "instr": "cmp ax, 0xffff; je 0x43bded", "note": "两个 file 字节全 0xFF → 跳过该格（'file 15 无物件'同路径：0x43BBA5 r<3 / 0x43BBB2 v>69 另判跳）"},
+    {"va": "0x43BB5B", "instr": "test cl,cl; jne 0x43bb71", "note": "图层标志 [esp+0x80]：0=mid 分支，非0=front 分支"},
+    {"va": "0x43BB5F", "instr": "and eax,0xffff; shr eax,8", "note": "mid 层 file = 字节4（midFile）"},
+    {"va": "0x43BB6B", "instr": "mov bx, word ptr [edx+5]", "note": "mid 层 frame = u16 @ 格+5"},
+    {"va": "0x43BB71", "instr": "and eax,0xff", "note": "front 层 file = 字节3（frontFile）"},
+    {"va": "0x43BB78", "instr": "mov bx, word ptr [edx+7]", "note": "front 层 frame = u16 @ 格+7"},
+    {"va": "0x43BB82", "instr": "mov eax,0x6db6db6d; imul ecx; sub edx,ecx; sar edx,3; shr eax,0x1f; add edx,eax; add ecx,edx", "note": "v 变换：v = file - floor(file/14)"},
+    {"va": "0x43BB9D", "instr": "cdq; mov ecx,0xe; idiv ecx", "note": "q = v/14, r = v%14（r<3 = 地面库，r>=3 = 物件库）"},
+    {"va": "0x43BBA5", "instr": "cmp edx,3; jl 0x43bded", "note": "r<3（地面库在物件槽）→ 跳过"},
+    {"va": "0x43BBB2", "instr": "cmp eax,0x45; jg 0x43bded", "note": "v>69 → 跳过（文件字节 > 枚举范围）"},
+    {"va": "0x43BBBB", "instr": "cmp ebx, 0xffff; je 0x43bded", "note": "C10 核心：帧号精确比较 == 0xFFFF，非掩码。原始字节 cmp bx,0xffff"},
+    {"va": "0x43BBC7", "instr": "lea eax,[eax+eax*8]; lea eax,[eax+eax*8]; lea ecx,[edx*4+0x5600fc]", "note": "槽表 0x5600FC + v*81*4 = v*324"},
+    {"va": "0x43BBDC", "instr": "call 0x466130", "note": "FetchFrame；0x43BBE1 test eax,eax; je 0x43bded → 失败即跳过（见 FrameOobSemantics 274）"},
+    {"va": "0x43BE3A", "instr": "cmp ax,0xffff; je", "note": "front func2 0x43BE00 同构：格字精确比较"},
+    {"va": "0x43BEAB", "instr": "cmp ebx,0xffff; je", "note": "front func2 帧号精确比较"},
+    {"va": "0x43B317", "instr": "cmp edx,2; jg skip", "note": "地面层：r<=2 才画（地面只走 tilesc/tiles30c/tiles5c）"},
+    {"va": "0x43B31C", "instr": "cmp ecx,0x45; jg skip", "note": "地面层 v<=69"},
+    {"va": "0x43B321", "instr": "cmp esi,0xffff; je skip", "note": "地面层帧号精确比较 == 0xFFFF"},
+    {"va": "0x43B337", "instr": "call 0x466130", "note": "地面 FetchFrame；0x43B54A 第二遍同构 cmp esi,0xffff; je skip"}
+   ]
+  },
+  "exe_no_mask_test": {
+   "desc": "0x43A000–0x43E000 全域 --grep '0xff00'：零匹配。0xFF00 不以任何形式（imm16/掩码/常量）出现在地图解码/渲染区；比较立即数只有 0xFFFF（空帧）与 0x45/0x0E/3（v/r 门限）。因此『客户端按 0xFF00 高位识别保留标记』的假设证伪——0xFF00–0xFFFE 对客户端只是普通帧号。",
+   "proof": "disasm_capstone.py --grep 0xff00 0x43A000 0x43E000 → 0 hits；--grep 0xffff 仅命中上述 cmp/je 站点。"
+  },
+  "fetchframe_bounds_relevance": {
+   "desc": "0xFF00–0xFFFE 帧号通过 0xFFFF 精确比较后进入 FetchFrame（0x466130 → type0 WIL 0x466640），在 0x46664A 边界检查处必然失败 → 返回 0 → 调用点 test eax,eax; je 跳过 → 单元格不绘制。53 库目录最大帧数 33125（tilesc 区 < 65280=0xFF00），故保留帧全部 OOB。",
+   "chain": [
+    {"va": "0x46664A", "instr": "cmp edi, dword ptr [esi+0x10]; jae 0x466714", "note": "frame >= lib.count → fail；[esi+0x10]=wix 字节 20 装载的帧数（= wilsdk lib.count，见 274）"},
+    {"va": "0x46665D", "instr": "shl edi,5", "note": "索引原样使用，无取模/掩码"},
+    {"va": "0x466667", "instr": "je 0x466714", "note": "wix 条目偏移 0（空帧占位）→ fail"},
+    {"va": "0x466714", "instr": "xor eax,eax; ret 4", "note": "fail 契约：返回 0，无回退帧"},
+    {"va": "0x46670B", "instr": "mov eax,1", "note": "success 契约"}
+   ],
+   "conclusion": "客户端对 0xFF00–0xFFFE 无任何特殊处理：效果 = 普通越界 → 透明不绘制。『保留标记』是地图数据/编辑器约定，不是客户端逻辑。"
+  },
+  "reserved_marker_distribution": {
+   "desc": "定义（audit 掩码）：mid/front/ground 帧 u16 ∈ [0xFF00, 0xFFFE]（排除 0xFFFF=EMPTY_FRAME）。全 544 图扫描：26 个不同值；raw（不过滤）41,996 格、解析过滤后（v<=69, r>=3, kr>=0，即渲染器实际读取的子集）8,286 格——两者都全部且仅出现在 39 个 13B（legacy/探针）图中；真实 14B 图保留标记格 = 0。",
+   "distinct_values_26": [
+    ["0xFF00", 65280, 90], ["0xFF01", 65281, 38], ["0xFF04", 65284, 306], ["0xFF05", 65285, 135],
+    ["0xFF11", 65297, 322], ["0xFF13", 65299, 120], ["0xFF14", 65300, 4], ["0xFF19", 65305, 183],
+    ["0xFF1A", 65306, 219], ["0xFF27", 65319, 68], ["0xFF32", 65330, 30], ["0xFF34", 65332, 24],
+    ["0xFF36", 65334, 29], ["0xFF3A", 65338, 9], ["0xFF42", 65346, 111], ["0xFF43", 65347, 223],
+    ["0xFF44", 65348, 464], ["0xFF78", 65400, 258], ["0xFF79", 65401, 397], ["0xFF7A", 65402, 13034],
+    ["0xFF7B", 65403, 8901], ["0xFF7C", 65404, 2786], ["0xFF7D", 65405, 4699], ["0xFF7E", 65406, 7824],
+    ["0xFF7F", 65407, 1689], ["0xFF80", 65408, 33]
+   ],
+   "top_maps": {"D612.map": 13860, "D618.map": 6137, "d601.map": 5256, "d602.map": 4070, "D615.map": 1789},
+   "note_audit_docstring": "audit_mir3_maps.py 注释『0xff00-0xfffe are sparse reserved markers (26 distinct values, ≤16 cells each)』：26 个不同值精确成立；『≤16 cells each』对全图原始扫描不成立（0xFF7A 单值 13,034 格）——原注释应指单库单帧子集，已更正。",
+   "note_0xffff_partial": "真实 14B 图中存在 frame=0xFFFF 的部分空格（file 字节有效、frame 清 0xFFFF → 精确比较跳过），是编辑残留物，不是保留标记；此前『4.map 1604 个保留格』的误报即源于把 0xFFFF 计入掩码，已排除。"
+  },
+  "note_lib_enumeration": {
+   "desc": "P10 的『22 库仅有保留标记帧（0xFF00+）引用、无解码帧』精确成立（两张独立扫描一致：lib-frame-stats.json 备注 + reserved_phantom_scan 复扫，全部 real_frames_used=0）。分组为 16 纯保留 + 6 保留+幻影混合。",
+   "pure_reserved_16": [
+    {"lid": 18, "lib": "wood_smtilesc", "cap": 10180, "tot": 218, "reserved": 218, "frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF79": 1, "0xFF7A": 6, "0xFF7B": 135, "0xFF7D": 12, "0xFF7E": 31, "0xFF7F": 27, "0xFF80": 1}},
+    {"lid": 20, "lib": "wood_cliffsc", "cap": 7619, "tot": 215, "reserved": 215, "frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF79": 1, "0xFF7A": 6, "0xFF7B": 132, "0xFF7D": 12, "0xFF7E": 31, "0xFF7F": 27, "0xFF80": 1}},
+    {"lid": 23, "lib": "wood_furnituresc", "cap": 1714, "tot": 202, "reserved": 202, "frames": {"0xFF00": 1, "0xFF01": 2, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 2, "0xFF79": 2, "0xFF7A": 6, "0xFF7B": 133, "0xFF7D": 12, "0xFF7E": 31, "0xFF7F": 7, "0xFF80": 1}},
+    {"lid": 35, "lib": "sand_cliffsc", "cap": 7619, "tot": 160, "reserved": 160, "frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF44": 2, "0xFF78": 1, "0xFF79": 2, "0xFF7B": 112, "0xFF7E": 31, "0xFF7F": 7}},
+    {"lid": 36, "lib": "sand_dungeonsc", "cap": 5364, "tot": 238, "reserved": 238, "frames": {"0xFF01": 1, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 2, "0xFF78": 1, "0xFF79": 2, "0xFF7B": 112, "0xFF7D": 76, "0xFF7E": 31, "0xFF7F": 8}},
+    {"lid": 38, "lib": "sand_furnituresc", "cap": 1714, "tot": 272, "reserved": 272, "frames": {"0xFF01": 1, "0xFF05": 18, "0xFF13": 1, "0xFF1A": 3, "0xFF44": 2, "0xFF78": 1, "0xFF79": 2, "0xFF7B": 112, "0xFF7C": 21, "0xFF7D": 73, "0xFF7E": 31, "0xFF7F": 7}},
+    {"lid": 51, "lib": "snow_dungeonsc", "cap": 5364, "tot": 137, "reserved": 137, "frames": {"0xFF13": 1, "0xFF1A": 3, "0xFF44": 2, "0xFF79": 1, "0xFF7B": 68, "0xFF7D": 24, "0xFF7E": 31, "0xFF7F": 7}},
+    {"lid": 52, "lib": "snow_innersc", "cap": 68, "tot": 81, "reserved": 81, "frames": {"0xFF01": 2, "0xFF13": 1, "0xFF44": 2, "0xFF78": 1, "0xFF7B": 68, "0xFF7F": 7}},
+    {"lid": 56, "lib": "snow_animationsc", "cap": 2921, "tot": 183, "reserved": 183, "frames": {"0xFF00": 2, "0xFF01": 4, "0xFF13": 1, "0xFF1A": 3, "0xFF44": 2, "0xFF78": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7D": 63, "0xFF7E": 34, "0xFF7F": 1}},
+    {"lid": 63, "lib": "forest_smtilesc", "cap": 10180, "tot": 179, "reserved": 179, "frames": {"0xFF05": 9, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 67, "0xFF7D": 50, "0xFF7E": 34, "0xFF7F": 1}},
+    {"lid": 64, "lib": "forest_housesc", "cap": 9577, "tot": 119, "reserved": 119, "frames": {"0xFF13": 2, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7E": 35, "0xFF7F": 1}},
+    {"lid": 65, "lib": "forest_cliffsc", "cap": 7619, "tot": 142, "reserved": 142, "frames": {"0xFF13": 2, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7D": 23, "0xFF7E": 35, "0xFF7F": 1}},
+    {"lid": 67, "lib": "forest_innersc", "cap": 68, "tot": 154, "reserved": 154, "frames": {"0xFF00": 3, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7D": 29, "0xFF7E": 35, "0xFF7F": 1}},
+    {"lid": 68, "lib": "forest_furnituresc", "cap": 1714, "tot": 123, "reserved": 123, "frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF44": 7, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7E": 37, "0xFF7F": 1}},
+    {"lid": 69, "lib": "forest_wallsc", "cap": 9213, "tot": 149, "reserved": 149, "frames": {"0xFF01": 1, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7D": 23, "0xFF7E": 38, "0xFF7F": 1}},
+    {"lid": 70, "lib": "forest_smobjectsc", "cap": 7569, "tot": 75, "reserved": 75, "frames": {"0xFF01": 1, "0xFF13": 2, "0xFF1A": 3, "0xFF44": 7, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7C": 21, "0xFF7E": 34, "0xFF7F": 1}}
+   ],
+   "mixed_reserved_phantom_6": [
+    {"lid": 33, "lib": "sand_smtilesc", "cap": 10180, "tot": 180, "reserved": 177, "phantom": 3, "reserved_frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF79": 2, "0xFF7A": 6, "0xFF7B": 112, "0xFF7D": 14, "0xFF7E": 31, "0xFF7F": 7}, "phantom_frames": {"0x6D01": 1, "0xCD44": 2}, "phantom_maps": ["0_0011.map", "kt0018.map", "kt00181.map"]},
+    {"lid": 37, "lib": "sand_innersc", "cap": 68, "tot": 231, "reserved": 229, "phantom": 2, "reserved_frames": {"0xFF1A": 3, "0xFF78": 1, "0xFF79": 2, "0xFF7B": 112, "0xFF7D": 73, "0xFF7E": 31, "0xFF7F": 7}, "phantom_frames": {"0xCE44": 2}, "phantom_maps": ["kt0018.map", "kt00181.map"]},
+    {"lid": 48, "lib": "snow_smtilesc", "cap": 10180, "tot": 116, "reserved": 114, "phantom": 2, "reserved_frames": {"0xFF13": 1, "0xFF1A": 3, "0xFF44": 2, "0xFF78": 1, "0xFF79": 1, "0xFF7B": 68, "0xFF7E": 31, "0xFF7F": 7}, "phantom_frames": {"0x5200": 2}, "phantom_maps": ["0_002.map", "0_0021.map"]},
+    {"lid": 53, "lib": "snow_furnituresc", "cap": 1714, "tot": 157, "reserved": 155, "phantom": 2, "reserved_frames": {"0xFF01": 4, "0xFF05": 9, "0xFF13": 1, "0xFF78": 1, "0xFF7B": 68, "0xFF7D": 39, "0xFF7E": 33}, "phantom_frames": {"0xD844": 2}, "phantom_maps": ["kt0018.map", "kt00181.map"]},
+    {"lid": 66, "lib": "forest_dungeonsc", "cap": 5364, "tot": 121, "reserved": 119, "phantom": 2, "reserved_frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF44": 5, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 68, "0xFF7E": 34, "0xFF7F": 1}, "phantom_frames": {"0x9C44": 2}, "phantom_maps": ["kt0018.map", "kt00181.map"]},
+    {"lid": 71, "lib": "forest_animationsc", "cap": 2921, "tot": 140, "reserved": 134, "phantom": 6, "reserved_frames": {"0xFF13": 2, "0xFF1A": 3, "0xFF44": 1, "0xFF78": 1, "0xFF79": 1, "0xFF7A": 4, "0xFF7B": 67, "0xFF7D": 20, "0xFF7E": 34, "0xFF7F": 1}, "phantom_frames": {"0x5544": 2, "0x7144": 2, "0xE944": 2}, "phantom_maps": ["kt0018.map", "kt00181.map"]}
+   ],
+   "note_names": "KR_ORDER 为稀疏表（62 键，跳 14/27-29/42-44/57-59）；63-71 = forest_smtilesc/housesc/cliffsc/dungeonsc/innersc/furnituresc/wallsc/smobjectsc/animationsc（mapviewer.py L288-296），cap 与同名组一致（63=10180、64=9577、65=7619、66=5364、67=68、68=1714、69=9213、70=7569、71=2921）。"
+  },
+  "phantom_frame_mechanics": {
+   "desc": "『幻影帧』= 帧号 < 0xFF00 且 >= 库帧数（scan 定义，即 OOB）或帧号在范围内但 wix 条目偏移 0（空占位）——两类在客户端都经 FetchFrame 边界检查/偏移 0 检查返回 0 → 不绘制（机制见 274）。P10 的『3 个库全部引用幻影帧』不可复现（全库扫描 all-phantom = 0）。",
+   "oob_phantom_note_libs": "6 个混合库的幻影帧全部落在 5 个 13B 探针图（0_0011、0_002、0_0021、kt0018、kt00181），低字节 0x44 常数模式（kt0018 系：0xCD44/0xCE44/0xD844/0x9C44/0x5544/0x7144/0xE944 = innersc cap 68 + 0x44..0xE9 系，编辑工具系统化扫帧测试对），非游戏内容。",
+   "blank_placeholder_inrange": {
+    "desc": "帧号在库容量范围内但 wix 条目偏移 0（wilsdk header() == None → 空帧占位）的引用，均位于 13B 探针图与少量真实图：",
+    "verified": [
+     {"lid": 3, "lib": "smtilesc", "frame": 10177, "note": "1 格，0.map（真实 14B 图；帧 >= cap 9836 → OOB 类占位）"},
+     {"lid": 5, "lib": "cliffsc", "frame": 1578, "note": "953 格，15 图（4/5/6/41/42/43/44/72-78.map）；1578 < cap 7619 在范围内，header=None 空占位"},
+     {"lid": 12, "lib": "object1c", "frame": 0, "note": "57 格，18 图（B119_001/D001/D002/D003/D011/D012/D10031/D2011/D2012/D203/D401/D411/D415/D416 等）"},
+     {"lid": 21, "lib": "wood_dungeonsc", "frame": 0, "note": "138 格，D1112/D1115"},
+     {"lid": 41, "lib": "sand_animationsc", "frame": 0, "note": "1 格；frame 16: 5 格 — 均在 41.map"},
+     {"lid": 47, "lib": "snow_tiles5c", "frame": 1792, "note": "0_0011.map 原始格 (13,14) midFile=47（地面库 r=2 在物件槽）→ 0x43BBA5 r<3 判跳，永不进入 FetchFrame，故不出现在解析引用统计中"},
+     {"lid": 49, "lib": "snow_housesc", "frame": 4608, "note": "1 格，0_0011.map；4608 < cap 9577 在范围内，header=None 空占位"},
+     {"lid": 54, "lib": "snow_wallsc", "frame": 2561, "note": "2 格，kt0018/kt00181；2561 < cap 9213，header=None 空占位"}
+    ],
+    "correction_decodable": "早前 decode_scan2『decodable=0』结论对 lid50/lid55 有误（该扫描仅按原始字节粗判）：lid50 snow_cliffsc frame 5376（1 格 0_0011）与 lid55 snow_smobjectsc frame 2817（2 格 kt0018/kt00181）均有真实数据（48×32，words=1632/212），是 13B 探针图里的可解码帧，不是幻影。"
+   },
+   "closest_three": "『3 个库全部引用幻影帧』不可复现（全库 all-phantom = 0）。最接近的『3』子集 = 范围内唯一引用全为空占位帧（wix 偏移 0，header()==None）的库：lid 41 sand_animationsc（cap=127，real 6 格 = f0×1/f16×5，全空占位）、lid 49 snow_housesc（cap=9577，real 1 格 = f4608，空占位；另 7 格 OOB 幻影 0x6400/0x6444/0x6700/0x7C00）、lid 54 snow_wallsc（cap=9213，real 2 格 = f2561，空占位）。三者同时含 0xFF00+ 保留帧，故『全部引用=幻影』不成立；且 lib_frame_stats 因 real_frames_used=1-2 未将其列入 22 备注库。真正『全部引用无解码帧』的集合即 22 备注库本身（lid 41/49/54 的范围内空占位帧属另一类，见 blank_placeholder_inrange）。"
+
+  },
+  "probe_map_sweep_structure": {
+   "desc": "39 个 13B 图（0_0011/0_002/0_0021/0_0031/0_0032/0_0033/D612-D619/d601/d602/d608-d611/kt0002-kt0015/kt0016/kt00161/kt0017/kt0018/kt00181）为系统化诊断扫描图：每个单元格 = (file, frame) 探针对，对角带逐一测试 midFile 字节与保留/幻影帧组合。",
+   "examples": [
+    "0_0011.map：midFile 8–214 对角线，帧 0xFF00/0xFF01/0xFF19/0xFF44/0xFF7A/0xFF7B 等 + 范围内幻影（lid50 f5376、lid49 f4608），frontFile=120 常数；",
+    "0_0031/0_0032/0_0033.map：midFile 184–255 与 0–90 双带扫描，帧 0xFF19/0xFF1A/0xFF3A 等，frontFile 0xCF/0xC8/0x8F/0x7F 常数（>69 不解析，绘制为空）；",
+    "kt0018/kt00181.map：midFile 36–255 带，帧 0xFF44 + 0x??44 幻影对（0xCD44/0xCE44/0xD844/0x9C44/0x5544/0x7144/0xE944/0xED44），lid33/37/53/66/71 各 2 格；",
+    "D612/D618/d601/d602：0xFF7A/0xFF7B/0xFF7E 保留帧大块（13B 图保留帧总数 8286 格中 0xFF7B=8901、0xFF7A=13034 为最大两值）"
+   ],
+   "semantics": "探针图语义 = 编辑器/工具自检数据（多主题各 1 格探针，MAP-SURVEY §7），非游戏地图内容；13B 格在渲染器/audit 中按与 14B 相同的字段偏移解析（mid file@+4、frame@+5-6，front file@+3、frame@+7-8），统计反映渲染器实际读取的字节。"
+  },
+  "real_map_zero_reserved": {
+   "desc": "正确掩码 [0xFF00, 0xFFFE] + 解析过滤（v<=69, r>=3, kr>=0）下：真实 14B 图保留标记格 = 0；解析过滤后的 8,286 格（raw 41,996 格，26 值）都在 39 个 13B 图。14B 图只有 frame=0xFFFF 的部分空格（编辑残留，精确比较跳过）。",
+   "union_maps": "引用 22 个备注库的图 = 39 个 13B 图中的 37 个（唯一缺席 kt0016/kt00161——其保留格落在不解析文件字节 0xCF 上）。"
+  },
+  "c11_annex_real_lib_phantom": {
+   "desc": "C11（真实库上的 OOB/幻影引用，供 274/275 对照）：3.map 3,255 格/470 个不同帧（lid25 wood_smobjectsc f1061-1068 ×38-39 各，cap 969，offset +92..99）；41.map 1,619 格/1,164 个（lid40 sand_smobjectsc f2807-2814 ×6 各，cap 631）；50.map 39 格（lid24 f3870-3929、lid25 f2255-2284）；50_001.map 19 格（lid22 f1801-1816）；探针图 D612 2,576/D618 1,160/d601 1,024/d602 993/0_0031-33 各 39/kt0018 61 格。这些帧在客户端全部经 0x46664A 边界检查返回 0 → 不绘制（274 已闭合）。"
+  }
+ },
+ "hypothesis_verdicts": {
+  "掩码测试 (frame & 0xFF00)==0xFF00": {
+   "verdict": "FALSE（primary-static）",
+   "proof": "0x43A000–0x43E000 全域 --grep '0xff00' 零命中；所有空帧判断为精确 cmp imm16 0xFFFF：0x43BB4A（格字）、0x43BBBB（物件帧）、0x43BE3A/0x43BEAB（func2）、0x43B321/0x43B54A（地面帧）。"
+  },
+  "精确比较 frame==0xFFFF": {
+   "verdict": "TRUE（primary-static）",
+   "proof": "物件 mid/front 帧 0x43BBBB cmp ebx,0xffff; je 0x43bded；地面 0x43B321 cmp esi,0xffff; je skip；func2 0x43BEAB。C10 成立：EI 空帧 = 精确 0xFFFF。"
+  },
+  "0xFF00+ 为客户端保留标记（特殊处理）": {
+   "verdict": "FALSE（primary-static）",
+   "proof": "0xFF00-0xFFFE 通过 0xFFFF 比较后进入 FetchFrame，因 >= 所有库帧数（max 33125 < 65280）在 0x46664A 必然失败返回 0 → 不绘制；与任何普通越界帧效果相同。『保留标记』仅是地图数据/编辑器约定。"
+  },
+  "『3 个库全部引用幻影帧』": {
+   "verdict": "不可复现（superseded）",
+   "proof": "全 53 库解析扫描 all-phantom = 0；最近似子集（范围内空占位）lid 41/49/54 见 phantom_frame_mechanics。原表述作废，替换为四类分类学。"
+  }
+ },
+ "p10_verdict": {
+  "answer": "P10 refined。三个子项：(1) 22 个『仅保留标记帧引用、无解码帧』库精确成立（16 纯保留 + 6 保留+幻影混合，全部 real=0），逐帧/逐图清单见 note_lib_enumeration；(2) C10 语义 = 精确比较 frame==0xFFFF（VA 0x43BBBB 物件 / 0x43B321 地面 / 0x43BEAB func2），无掩码测试（0x43A000-0x43E000 无 0xff00 立即数），0xFF00-0xFFFE 在客户端为普通越界 → 不绘制；(3) 『3 个库全部幻影帧』不可复现，幻影帧机理 = 帧号 >= 库帧数（OOB）或 wix 条目偏移 0（空占位），两类均经 FetchFrame 返回 0 不绘制；保留标记帧（0xFF00-0xFFFE，26 值/41,996 格）全部且仅位于 39 个 13B 探针图，真实 14B 图为 0——13B 探针图 = 编辑器系统化自检数据，非游戏内容。",
+  "evidence_level": "primary-static",
+  "next_steps": "candidate：如需视觉确认，用 mapviewer/模拟器加载 D612.map 与 0_0011.map 对比渲染（预期：D612 大量空白格/缺物件、0_0011 全空）；检查 0x5600FC 槽表装载路径（0x466160）与 wix 偏移 0 空占位条目的编辑器写入方（无服务器侧样本，止于 candidate）。"
+ },
+ "corrections_vs_inventory": {
+  "audit_docstring_26": "『26 distinct values』精确成立（0xFF00-0xFF80 共 26 值，raw 41,996 格）；『≤16 cells each』不成立（0xFF7A=13,034、0xFF7B=8,901），应指单库单帧子集。",
+  "reserved_in_real_maps": "此前『4.map 1604 个保留格』为掩码误含 0xFFFF（部分空格）所致；正确掩码 [0xFF00,0xFFFE] 下真实 14B 图保留格 = 0。",
+  "decode_scan2_decodable": "『3 库全部幻影』判断依赖的 decode_scan2 有局限（仅物件层、raw 文件字节、decodable=0 对 50/55/47 不可靠）；本项以 wilsdk header() 直查取代：lid50 f5376、lid55 f2817 实为可解码 48×32 帧。",
+  "13b_layout_nuance": "13B 格按与 14B 相同的字段偏移解析（renderer/audit 一致），统计 = 渲染器实际读取；编辑器是否以 13B 布局写入不可考（无编辑器样本），不影响客户端行为结论。"
+ },
+ "evidence_level": "primary-static",
+ "evidence_level_note": "EXE 部分（精确比较、无掩码、边界检查链）为反汇编/原始字节直接证明，零推断；22 库枚举与保留帧分布为两张独立全量扫描（lib-frame-stats.json + reserved_phantom_scan 复扫）交叉一致；空占位帧以 wilsdk header()==None 逐一验证。『13B 探针图 = 编辑器自检数据』为 derived（结构性推断）。",
+ "cross_refs": ["P10", "C10", "C11", "P1", "P3", "C1", "C17", "C18", "P6"],
+ "tool": "Tools/reverse-engineering/disasm_capstone.py; Tools/maps/audit_mir3_maps.py; Tools/maps/mapviewer.py; Tools/common/wilsdk.py; Tools/maps/lib_frame_stats.py",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 /home/tetsuya/mir3-venv/bin/python Tools/reverse-engineering/disasm_capstone.py 0x43BB10 0x43BD10（物件 func1：0x43BB4A/0x43BBBB 精确比较）; 同工具 0x43B310 0x43B390（地面判跳段 0x43B321）; 同工具 --grep 0xff00 0x43A000 0x43E000（零命中）; python3 /tmp/reserved_phantom_scan.py <Map> <Data>（53 库 res/empty/ph/real 四类表）; wilsdk open_library + header() 复核空占位"
+}

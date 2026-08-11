@@ -1,0 +1,156 @@
+{
+ "evidence_id": "frame-oob-semantics",
+ "title": "原版 Mir3.exe 地图帧越界（frame_oob）语义：FetchFrame 显式边界检查，全部绘制路径在返回 0 时跳过 blit → 单元格不绘制（透明）— P1/P3 闭合",
+ "date": "2026-08-11",
+ "objective": "P1 + P3（EVIDENCE-INVENTORY.md pending，objective §9）：原版客户端对地图格引用帧号 >= WIL 库帧数（frame_oob）的处理逻辑——空帧显示 / 首帧回退 / 取模 / 跳过不绘制 / 无检查？3.map 3255 个 OOB 格（mid/front lib24/25 wood_*）与 D10031 唯一 ground OOB 62 格实际渲染成什么？",
+ "question": "（1）0x466130 FetchFrame 分派链里是否存在帧号 vs 库帧数的比较？OOB 时函数返回什么？（2）每个调用点是否检查返回值，检查失败时是跳过绘制还是用替代帧？（3）库帧数（lib+0x10）与素材 wix/wil 计数、audit 的 lib.count 是否同源？（4）两个具体地图的 OOB 格最终渲染效果？",
+ "method": [
+   "镜像约定：base 0x400000，fileoff = VA - 0x400000；Mir3.exe 0x80000 字节 → 0x400000-0x47FFFF 为真实代码，>=0x480000 仅 imm32。工具 Tools/reverse-engineering/disasm_capstone.py（capstone 反汇编，按函数头同步）。",
+   "沿地图渲染调用链逐函数反汇编：瓦片通道 0x41C450 → mid/front 绘制 0x43BB10（func1）/0x43BE00（func2）/0x43C330（func4）与地面渲染 0x43B440、地面物件通道 0x41C860、装饰通道 0x41CA20、实体 0x41CBD0/特效 0x41CD50 → 帧获取 0x466130 分派（type0=WIL 0x466640，type1/2=ZL 0x466720）→ 库装载 0x466160。",
+   "对关键指令取原始字节（od/capstone 原始字节输出）作为 primary-static 依据：0x46623F-0x466243（count 读入 lib+0x10）、0x46664A-0x46664D（cmp/jae 边界检查）、0x466714（fail: xor eax,eax; ret 4）、0x46670B（success: mov eax,1）、各绘制路径 call 0x466130 后紧邻的 test eax,eax; je <epilogue>。",
+   "wix/wil 素材侧交叉核对：Data/Animationsc.wix、smtilesc.wix、tiles5c.wix 字节 20 处 dword（= 客户端 lib+0x10 读取位置）与 wilsdk open_library().count 逐库一致；主题库 Wood/Wallsc.wil=3791、Wood/SmObjectsc.wil=969 与 audit lib24/lib25 的 lib_frames 一致。",
+   "audit（Tools/maps/audit_mir3_maps.py）复跑 D10031.map 与 3.map，取 ground/mid/front 逐库 frame_oob 计数、frame_min/max、lib_frames，并对 D10031 ground OOB 帧值做逐块统计（唯一帧集合、区间）。"
+ ],
+ "evidence": {
+  "loader_count_source": {
+   "desc": "WIL 装载器 0x466160 从 <name>.wix 读帧数 → lib+0x10，帧索引数组 → lib+0xC。",
+   "trace": [
+    "0x46622A lea edx,[esp+0x10]（ReadFile 已读字节数输出）; push 0; push edx",
+    "0x466231 lea eax,[esp+0x1C]（此时 esp=X-8 → eax=X+0x14 = 读缓冲）; push 0x18; push eax; push esi(hFile)",
+    "0x466239 call [0x4760C4]  ; ReadFile(handle, buf, 0x18=24 字节, &read, NULL) —— 只读 24 字节文件头",
+    "0x46623F mov eax,[esp+0x28]  ; 缓冲 X+0x14 → [esp+0x28]=X+0x28=缓冲+0x14 = wix 文件字节 20",
+    "    bytes 8b 44 24 28",
+    "0x466243 mov [ebx+0x10],eax  ; lib+0x10 = 帧数（bytes 89 43 10）",
+    "0x466246 shl eax,5 ; 0x46624A call 0x468B1A(malloc count*32) ; 0x466256 mov [ebx+0xC],edi ; lib+0xC = 帧索引数组（32B/条目）"
+   ],
+   "wix_verification": {
+    "Animationsc.wix": {"byte20_dword": 2921, "wilsdk_count": 2921},
+    "smtilesc.wix": {"byte20_dword": 10180, "wilsdk_count": 10180},
+    "tiles5c.wix": {"byte20_dword": 20000, "wilsdk_count": 20000},
+    "note": "wix 字节 20 = 计数；字节 24 起为 4B 偏移索引（首条=28，与 wilsdk pos=24 读取一致）。wilsdk lib.count 即客户端 lib+0x10，audit 的 lib_frames 同源。"
+   }
+  },
+  "fetch_bounds_check": {
+   "desc": "0x466130 FetchFrame 分派：mov al,[ecx+4] 库类型字节；type0→0x466640（WIL），type1/2→0x466720（ZL），其他 xor eax,eax; ret 4。两条路径都先做帧号 vs 库帧数的比较。",
+   "type0_wil_466640": [
+    "0x466646 mov edi,[esp+0x14]       ; 帧索引（调用参数）",
+    "0x46664A cmp edi,[esi+0x10]       ; 帧号 vs 库帧数（bytes 3b 7e 10）",
+    "0x46664D jae 0x466714             ; 帧号 >= 帧数 → FAIL（bytes 0f 83）",
+    "0x466653 mov edx,[esi+0xC]        ; 帧索引数组基址（bytes 8b 56 0c）",
+    "0x46665D shl edi,5                ; 帧号*32（原始索引，无取模/掩码）",
+    "0x466662 mov eax,[edi+4]          ; 帧数据 .wil 文件偏移",
+    "0x466665 test eax,eax ; 0x466667 je 0x466714   ; 偏移 0（空帧）→ FAIL",
+    "0x46666D cmp word ptr [edi+8],0x1000 ; 0x466676 jg 0x466714  ; 宽>4096 → FAIL",
+    "0x46667C cmp word ptr [edi+0xA],0x1000 ; 0x466682 jg 0x466714  ; 高>4096 → FAIL",
+    "0x4666E7 mov [esi+0x38],ebx       ; lib+0x38 = 帧头指针（17B 头）",
+    "0x4666ED mov [esi+0x3C],ecx       ; lib+0x3C = RLE 像素数据指针",
+    "0x46670B mov eax,1                ; SUCCESS（bytes b8 01）",
+    "0x466714 xor eax,eax              ; FAIL 返回 0（bytes 33 c0）",
+    "0x46671A ret 4"
+   ],
+   "type1_2_zl_466720": [
+    "0x466720 mov eax,[esp+4]          ; 帧索引",
+    "0x466724 mov edx,[ecx+0x2C]       ; 帧数",
+    "0x466727 cmp eax,edx              ; 帧号 vs 帧数（bytes 3b c2）",
+    "0x466729 jae 0x466761             ; OOB → FAIL（bytes 73 36）",
+    "0x466735 mov eax,[edx+eax*4]      ; 帧数据偏移表（4B/条目）",
+    "0x466738 test eax,eax ; 0x46673A je 0x466761   ; 空帧 → FAIL",
+    "0x466744/0x46674B cmp word ptr [eax],0x1000 / [eax+2],0x1000 ; jg → FAIL（宽高>4096）",
+    "0x466759 mov eax,1                ; SUCCESS",
+    "0x466761 xor eax,eax ; 0x466763 ret 4   ; FAIL（bytes 33 c0 c2 04）"
+   ],
+   "fail_contract": "两路径 OOB/空帧/超尺寸统一返回 0；成功返回 1。OOB 不做任何回退帧读取（无首帧 clamp、无取模、无空白帧替换），也没有越界访问（比较在数组解引用之前）。"
+  },
+  "draw_path_guards": {
+   "desc": "地图全部绘制路径在 call 0x466130 后立即 test eax,eax，返回 0 则跳转函数 epilogue（该格/物件不绘制）。逐一验证的调用点（原始字节见 trace）：",
+   "mid_front_func1_43bb10": [
+    "0x43BB45 mov ax,[cell+3] ; 0x43BB4A cmp ax,0xFFFF ; 0x43BB4E je 0x43BDED  ; 显式空帧 0xFFFF 先行跳过（与 OOB 无关的独立检查）",
+    "flag0: frame=[cell+5]（mid）/ flag1: frame=[cell+7]（front）；file/14（magic 0x6DB6DB6D, idiv 0xE）→ v；r<3、v>0x45(69)、frame==0xFFFF 均跳过",
+    "0x43BBCE lea ecx,[edx*4+0x5600FC]  ; lib = 0x5600FC + v*324（库元素表）",
+    "0x43BBDC call 0x466130（bytes e8 4f a5 02 00）; 0x43BBE1 test eax,eax; 0x43BBE3 je 0x43BDED（bytes 85 c0 0f 84）→ 首次获取失败跳过",
+    "0x43BC05 起：帧头宽==0x30(48)/高==0x20(32) 不符也跳过（0x43BBF0/0x43BBFA cmp word ptr; jne 0x43BDED）",
+    "调色板/动画 delta：0x43BC63 mov dl,[eax+esi+0x1B01D4]; 0x43BC6A add ebx,edx（帧号+动画偏移）",
+    "0x43BC6D call 0x466130（bytes e8 be a4 02 00）; 0x43BC72 test eax,eax; 0x43BC74 je 0x43BDED → 第二次获取失败同样跳过",
+    "0x43BDED epilogue: 5f 5e 5d 5b 83 c4 64 c2 0c 00（pop edi/esi/ebp/ebx; add esp,0x64; ret 0xC）——纯收尾，无任何替代绘制"
+   ],
+   "mid_front_func2_43be00": [
+    "0x43BECC call 0x466130（bytes e8 5f a2 02 00）; 0x43BED1 test eax,eax; 0x43BED3 je 0x43C0D9",
+    "0x43BF59 call 0x466130; 0x43BF5E test eax,eax; 0x43BF60 je 0x43C0D9（动画 delta 二次获取）",
+    "0x43C0D9 = 函数 epilogue"
+   ],
+   "func4_43c330": [
+    "0x43C454 call 0x466130（bytes e8 d7 9c 02 00）; 0x43C459 test eax,eax; 0x43C45B je 0x43C4CE（bytes 74 71）→ epilogue"
+   ],
+   "ground_render_43b440": [
+    "0x43B44F lea edi,[ebp+0x1B2]; 0x43B455 mov ecx,0x6C000; 0x43B45A xor eax,eax; 0x43B45C rep stosd — 深度面清 0x6C000 dwords",
+    "地面格：file=cell 字节 0（v=file/14，r<=2 才画）、frame=[cell+1] u16；0x43B317 区 v 变换后 lib=0x5600FC+v*324",
+    "0x43B562 call 0x466130（bytes e8 c9 ab 02 00）; 0x43B567 test eax,eax; 0x43B569 je 0x43B5C7（bytes 74 5c）→ 地面格 OOB 跳过"
+   ],
+   "ground_object_pass_41c860": [
+    "0x41C8BE call 0x466130（bytes e8 6d 98 04 00）; 0x41C8C3 test eax,eax; 0x41C8C5 je 0x41C9FE → 物件跳过（frame=[esi+8] u16）"
+   ],
+   "deco_pass_41ca20": [
+    "0x41CA6D call 0x466130（bytes e8 be 96 04 00）; 0x41CA72 test eax,eax; 0x41CA74 je 0x41CB9E → 装饰跳过"
+   ],
+   "call_graph": {
+    "0x43B440": {"callers": ["0x410838", "0x43B7F5"], "role": "地面瓦片渲染（先于 mid/front；深度面清 0）"},
+    "0x43BB10": {"callers": ["0x41C59A", "0x41C5A5"], "role": "mid/front func1（48x32 格）"},
+    "0x43BE00": {"callers": ["0x41C66D", "0x41C678"], "role": "mid/front func2（跳过 48x32）"},
+    "0x41C860": {"callers": ["0x41C6C5"], "role": "地面物件通道（瓦片通道 pass2）"},
+    "0x41CA20": {"callers": ["0x41C6CE"], "role": "装饰通道（瓦片通道 pass2）"}
+   }
+  },
+  "animated_delta_note": {
+   "desc": "mid/front 绘制在首次获取成功后还会用调色板动画表 [esi+0x1B01D4] 的 nibble 索引值对帧号做加法（0x43BC63-0x43BC6C add ebx,edx）并二次获取；二次获取走同一边界检查。因此动画格在帧号+delta >= 库帧数时同样跳过——OOB 行为在动画中可瞬时出现（帧号接近 cap 的动画格）。3.map 动画格 33 个，无相关 OOB 命中（mid/front OOB 全为静态引用）。"
+  }
+ },
+ "hypothesis_verdicts": {
+  "无检查（no-check）": {"verdict": "FALSE（primary-static）", "proof": "0x46664A cmp edi,[esi+0x10]; 0x46664D jae 0x466714；type1/2 同构 0x466727 cmp eax,edx; 0x466729 jae 0x466761。边界比较真实存在且先于任何数组解引用。"},
+  "取模（modulo）": {"verdict": "FALSE（primary-static）", "proof": "索引原样使用：0x46665D shl edi,5 → 数组偏移，无 and/mask/取余；type1/2 0x466735 mov eax,[edx+eax*4] 直接 4B 索引。"},
+  "首帧回退（first-frame）": {"verdict": "FALSE（primary-static）", "proof": "fail 路径 0x466714 xor eax,eax 直接返回 0，不做任何 clamp 到 0 或回退读取；调用点 test eax,eax 后跳 epilogue。"},
+  "空帧显示（empty-frame display）": {"verdict": "FALSE（primary-static）", "proof": "OOB 时根本不获取帧（无读取、无 blit），与 0xFFFF 空帧是两条独立路径：0xFFFF 是绘制函数入口处的显式判跳（0x43BB4A-0x43BB4E），OOB 是获取函数返回 0。渲染效果同为透明，但机制不同。"},
+  "跳过不绘制（skip / transparent）": {"verdict": "TRUE（primary-static）", "proof": "OOB → FetchFrame 返回 0 → 7 个绘制路径（0x43BB10×2 次获取、0x43BE00×2、0x43C330、0x43B440、0x41C860、0x41CA20）全部 test eax,eax; je <纯 epilogue>，单元格无任何像素写入 → 透明。"}
+ },
+ "map_consequences": {
+  "3.map": {
+   "anomaly_total": 3255,
+   "per_lib": {
+    "mid_lib24": {"name": "wood_wallsc -> Data/Wood/Wallsc.wil", "lib_frames": 3791, "cells": 3384, "frame_min": 2, "frame_max": 4537, "frame_oob": 172},
+    "mid_lib25": {"name": "wood_smobjectsc -> Data/Wood/SmObjectsc.wil", "lib_frames": 969, "cells": 2765, "frame_min": 2, "frame_max": 2531, "frame_oob": 2575},
+    "front_lib24": {"name": "wood_wallsc", "lib_frames": 3791, "cells": 191, "frame_min": 45, "frame_max": 4523, "frame_oob": 8},
+    "front_lib25": {"name": "wood_smobjectsc", "lib_frames": 969, "cells": 501, "frame_min": 10, "frame_max": 2418, "frame_oob": 500}
+   },
+   "render_result": "3255 个 mid/front 格引用帧号 >= 库帧数（lib24 超至 4537 vs 3791；lib25 超至 2531 vs 969）→ 每帧获取返回 0 → 该格跳过 blit。mid/front 是地面之上的物件层（地面瓦片先由 0x43B440 渲染），故这些位置显示其下的地面瓦片（即‘缺物件、地面透出’），不是黑帧、不是首帧、不是空白帧。"
+  },
+  "D10031.map": {
+   "ground_lib2": {
+    "name": "tiles5c -> Data/tiles5c.wil",
+    "lib_frames": 20000,
+    "blocks": 22500,
+    "frame_max": 42766,
+    "frame_oob_blocks": 62,
+    "oob_frames": {"unique": 10, "values": [42756, 42758, 42759, 42760, 42761, 42762, 42763, 42764, 42765, 42766], "counts_by_frame": {"42756": 1, "42758": 5, "42759": 6, "42760": 6, "42761": 8, "42762": 9, "42763": 6, "42764": 9, "42765": 4, "42766": 8}, "note": "62 格全部集中在 u16 高值区 42756-42766（0xA704-0xA70E）的连续 11 个帧号，像地图编辑工具写出的坏引用或哨兵残留，非动画"}
+   },
+   "render_result": "62 个 2x2 地面块引用 tiles5c 帧号 42756-42766 >= 20000 → 地面获取返回 0 → 该地面块不绘制（0x43B562-0x43B569 跳过）→ 目标表面该区域保留原内容（游戏窗口背景/void 透出，即透明）。其余地面 22438 块与 mid/front 全部正常。",
+   "mid_smtilesc_clarification": "D10031 另有 62 个 mid 格引用 smtilesc（KR_ORDER[3]）帧 9998——9998 < 10180（smtilesc 库帧数），在界内，正常渲染，不是 anomaly。"
+  },
+  "correction_vs_inventory": {
+   "desc": "EVIDENCE-INVENTORY P3 与 MAP-SURVEY 将 D10031 的 ground OOB 记为「ground lib2（smtilesc）帧越界 62 格（frame 9998）」。audit 复跑与素材核对表明这是两个事实的混淆：KR_ORDER[2] = tiles5c（Libraries.cs 映射，0= tilesc/1=tiles30c/2=tiles5c/3=smtilesc），地面格（r<=2）只用 0/1/2 三库，绝不用 smtilesc（r=3）；62 个 ground OOB 格的帧号是 42756-42766（超 tiles5c 的 20000），而非 9998；帧 9998 属于 62 个 mid 格（smtilesc），在界内。正确表述：D10031 ground lib2（tiles5c）帧越界 62 格，帧号 42756-42766。",
+   "derivation": "audit_mir3_maps.py 复跑 D10031.map（ground lib2 frame_oob=62, frame_max=42766, lib_frames=20000）+ wilsdk tiles5c 计数 20000 + KR_ORDER（mapviewer.py:230-233，源自 LibraryCore/Libraries.cs）"
+  }
+ },
+ "verdict_p1": {
+  "answer": "原版对越界帧的处理 = 跳过不绘制（透明），机制为显式边界检查 + 返回值门控：FetchFrame（0x466640/0x466720）在读取帧索引前比较帧号与库帧数（lib+0x10，装载自 wix 字节 20），OOB/空帧/超尺寸统一返回 0；全部 7 个地图绘制路径（mid/front 0x43BB10 两次获取 + 0x43BE00 两次 + 0x43C330、地面 0x43B440、地面物件 0x41C860、装饰 0x41CA20）在返回 0 时跳转纯 epilogue，该格/物件不绘制。空帧/首帧/取模/无检查四个候选全部证伪。",
+  "evidence_level": "primary-static"
+ },
+ "verdict_p3": {
+  "answer": "3.map 3255 个 mid/front OOB 格（lib24 wood_wallsc 172+8、lib25 wood_smobjectsc 2575+500）渲染为不绘制 → 地面透出（缺物件）；D10031 62 个 ground OOB 块（tiles5c，帧 42756-42766）渲染为不绘制 → 背景透出（透明）。两图均无崩溃、无替代帧。",
+  "evidence_level": "primary-static",
+  "note": "‘透出/透明’的像素级后果由 skip-不写入机制 + 图层顺序（地面 0x43B440 先于 mid/front）静态推导；具体背景色属于帧管线状态，不在本证据范围内。"
+ },
+ "evidence_level": "primary-static",
+ "evidence_level_note": "核心语义全部为 EXE 反汇编直接证明（比较指令、返回契约、调用点门控、原始字节），无推断成分；地图格计数与库帧数来自 audit 复跑 + wix/wil 二进制直读，同源可复现。",
+ "cross_refs": ["P1", "P3", "C10", "C11", "C17", "C18", "C5", "C7", "C9", "D2", "D3", "D6", "P9"],
+ "tool": "Tools/reverse-engineering/disasm_capstone.py; Tools/maps/audit_mir3_maps.py; Tools/maps/mapviewer.py; Tools/common/wilsdk.py",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 /home/tetsuya/mir3-venv/bin/python Tools/reverse-engineering/disasm_capstone.py 0x466130 0x466720（分派+两条 fetch）; 同工具 0x41C450 0x41CB00（瓦片通道）; 0x43B440 0x43B610（地面渲染）; wilsdk 打开对应 wix/wil 核对字节 20 计数"
+}

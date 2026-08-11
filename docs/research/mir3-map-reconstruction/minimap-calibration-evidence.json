@@ -1,0 +1,7979 @@
+{
+ "meta": {
+  "evidence_file": "docs/research/mir3-map-reconstruction/minimap-calibration-evidence.json",
+  "task": "P6 per-map placement calibration of in-game minimap frames",
+  "date": "2026-08-11",
+  "agent": "MinimapCalibration",
+  "evidence_level": "confirmed",
+  "assets": {
+   "MMap_wil": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/MMap.wil",
+   "FMMap_wil": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/FMMap.wil",
+   "mini_map_txt": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/MiniMap.txt",
+   "map_dir": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Map"
+  }
+ },
+ "summary": {
+  "entries_total": 313,
+  "status_counts": {
+   "ok": 229,
+   "blank_frame": 12,
+   "frame_out_of_range": 0,
+   "map_absent": 72,
+   "frame_size_mismatch": 0,
+   "frame_absent": 0
+  },
+  "used_frame_size_histogram": {
+   "FMMap.wil:1200x800": 4,
+   "FMMap.wil:900x600": 4,
+   "FMMap.wil:600x500": 1,
+   "FMMap.wil:600x400": 12,
+   "FMMap.wil:600x200": 6,
+   "FMMap.wil:600x600": 1,
+   "FMMap.wil:452x300": 1,
+   "MMap.wil:600x400": 58,
+   "MMap.wil:300x200": 45,
+   "MMap.wil:152x100": 57,
+   "MMap.wil:76x50": 2,
+   "MMap.wil:376x250": 3,
+   "MMap.wil:452x300": 26,
+   "MMap.wil:168x110": 1,
+   "MMap.wil:228x150": 3,
+   "MMap.wil:316x210": 1,
+   "MMap.wil:752x500": 4
+  },
+  "blank_frames_in_libraries": {
+   "MMap.wil": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    39,
+    46,
+    47,
+    48,
+    49,
+    59,
+    65,
+    66,
+    67,
+    68,
+    69,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    97,
+    98,
+    99,
+    109,
+    117,
+    118,
+    119,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    185,
+    186,
+    187,
+    188,
+    189,
+    206,
+    207,
+    208,
+    209,
+    217,
+    218,
+    219,
+    226,
+    227,
+    228,
+    229,
+    236,
+    237,
+    238,
+    239,
+    245,
+    246,
+    247,
+    248,
+    249
+   ],
+   "FMMap.wil": [
+    19,
+    29
+   ]
+  }
+ },
+ "frame_index_rule": {
+  "rule": "client_index = server_value - 1; if client_index >= 1000 -> FMMap.wil frame = client_index - 1000 (= value - 1001); else MMap.wil frame = client_index (= value - 1)",
+  "exe_evidence": [
+   {
+    "va": "0x420c1e",
+    "note": "network map-change handler: word field at [esp+0x16] read, AND 0xffff, then dec (0x420c3a) before calling the minimap setter 0x43d780"
+   },
+   {
+    "va": "0x43d780",
+    "note": "setter stores index at [this+0x28c]; cmp eax,0x3e8 (1000); jl -> MMap branch; >= 1000 -> add eax,0xfffffc18 (-1000) and select frame in library at [this+0x148] (FMMap.wil)"
+   },
+   {
+    "va": "0x43d7f1",
+    "note": "MMap branch: selects frame in library at [this+4] (MMap.wil)"
+   },
+   {
+    "va": "0x43d4d0",
+    "note": "ctor loads MMap.wil ('\\Data\\MMap.wil' VA 0x47c428) into [this+4], FMMap.wil (VA 0x47c414) into [this+0x148]"
+   }
+  ],
+  "consequence": "The EI client renders MMap.wil frame value-1, not frame value. Existing crossref/simulator rule (frame=value for value<1001) is off by one for every MMap.wil map; FMMap rule (value-1001) is correct.",
+  "geometric_confirmation": "with frame=value-1, 229/241 maps with readable headers match frame_size==ceil4(W*1.5)xH; with frame=value only 160/241 match."
+ },
+ "placement_formula": {
+  "painted_rect_px": "(0, 0, W*1.5, H*1)",
+  "frame_w": "ceil4(W*1.5)",
+  "frame_h": "H",
+  "scale_px_per_tile": "[1.5, 1.0]  (48x32 tile -> 1.5x1 px; uniform 1/32 downscale)",
+  "origin": "(0,0) top-left of frame canvas; no per-map offset",
+  "exe_evidence": [
+   {
+    "va": "0x43d7ad",
+    "note": "after frame select, frame header width/height (movsx word [eax] / [eax+2]) set into frame rect [this+0x2e0] via SetRect-like call [0x4762b0]"
+   },
+   {
+    "va": "0x43db30",
+    "note": "player marker X: fild [this+0x2f8] * float[0x476904] = *1.5 -> frame canvas px"
+   },
+   {
+    "va": "0x43dc6e",
+    "note": "entity markers (0x560070 list): fild [ent+0xcc] * float[0x476904] = *1.5"
+   },
+   {
+    "va": "0x43dcf5",
+    "note": "object markers (0x5600a0 list): fild [ent+4] * float[0x476904] = *1.5; Y (ent+8) has no multiplier (x1.0)"
+   },
+   {
+    "va": "0x476904",
+    "note": "float constant 1.5 (bytes 0000c03f)"
+   }
+  ],
+  "asset_confirmation": "229/241 readable-header entries have frame_w==ceil4(W*1.5) and frame_h==H; painted bbox == full frame (minx=miny=0, fill=1.0) for every used frame; WIL offsetX/offsetY (-24,-16) is constant and does not shift painted content.",
+  "exceptions": [
+   {
+    "map": "31",
+    "note": "FMMap frame 30 header is 452x300 with offset (0,0); painted bbox 450x300 == exact W*1.5 (300-tile map); the +2px width is canvas padding"
+   }
+  ]
+ },
+ "panel_geometry": {
+  "screen_rect": "(672, 0) - (800, 128)",
+  "exe_evidence": [
+   {
+    "va": "0x43d518",
+    "note": "ctor SetRect(&[this+0x2c0], 0x2a0=672, 0, 0x320=800, 0x80=128)"
+   },
+   {
+    "va": "0x43d545",
+    "note": "[this+0x2b8]=[this+0x2bc]=0x80=128 panel width/height"
+   },
+   {
+    "va": "0x43d5f0",
+    "note": "update recomputes dest rect anchored to screen right edge: SetRect(&[this+0x2c0], 800-min(panel_w,frame_w), 0, 800, min(panel_h,frame_h))"
+   }
+  ],
+  "render_note": "client draws the full frame canvas scaled into the 128x128 panel; source window [this+0x2d0] tracks the player; the simulator's ~128px panel with object-fit:cover is a faithful approximation."
+ },
+ "per_map": [
+  {
+   "map_index": "0",
+   "server_value": 1001,
+   "client_index": 1000,
+   "library": "FMMap.wil",
+   "frame": 0,
+   "map_w": 800,
+   "map_h": 800,
+   "frame_w": 1200,
+   "frame_h": 800,
+   "painted_bbox": [
+    0,
+    0,
+    1200,
+    800
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "01",
+   "server_value": 1002,
+   "client_index": 1001,
+   "library": "FMMap.wil",
+   "frame": 1,
+   "map_w": 600,
+   "map_h": 600,
+   "frame_w": 900,
+   "frame_h": 600,
+   "painted_bbox": [
+    0,
+    0,
+    900,
+    600
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "02",
+   "server_value": 1003,
+   "client_index": 1002,
+   "library": "FMMap.wil",
+   "frame": 2,
+   "map_w": 600,
+   "map_h": 600,
+   "frame_w": 900,
+   "frame_h": 600,
+   "painted_bbox": [
+    0,
+    0,
+    900,
+    600
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "1",
+   "server_value": 1004,
+   "client_index": 1003,
+   "library": "FMMap.wil",
+   "frame": 3,
+   "map_w": 600,
+   "map_h": 600,
+   "frame_w": 900,
+   "frame_h": 600,
+   "painted_bbox": [
+    0,
+    0,
+    900,
+    600
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "12",
+   "server_value": 1005,
+   "client_index": 1004,
+   "library": "FMMap.wil",
+   "frame": 4,
+   "map_w": 400,
+   "map_h": 500,
+   "frame_w": 600,
+   "frame_h": 500,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    500
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "2",
+   "server_value": 1006,
+   "client_index": 1005,
+   "library": "FMMap.wil",
+   "frame": 5,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "4",
+   "server_value": 1007,
+   "client_index": 1006,
+   "library": "FMMap.wil",
+   "frame": 6,
+   "map_w": 800,
+   "map_h": 800,
+   "frame_w": 1200,
+   "frame_h": 800,
+   "painted_bbox": [
+    0,
+    0,
+    1200,
+    800
+   ],
+   "fill": 0.9998,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "5",
+   "server_value": 1008,
+   "client_index": 1007,
+   "library": "FMMap.wil",
+   "frame": 7,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "6",
+   "server_value": 1009,
+   "client_index": 1008,
+   "library": "FMMap.wil",
+   "frame": 8,
+   "map_w": 800,
+   "map_h": 800,
+   "frame_w": 1200,
+   "frame_h": 800,
+   "painted_bbox": [
+    0,
+    0,
+    1200,
+    800
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "71",
+   "server_value": 1010,
+   "client_index": 1009,
+   "library": "FMMap.wil",
+   "frame": 9,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "72",
+   "server_value": 1011,
+   "client_index": 1010,
+   "library": "FMMap.wil",
+   "frame": 10,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "73",
+   "server_value": 1012,
+   "client_index": 1011,
+   "library": "FMMap.wil",
+   "frame": 11,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "74",
+   "server_value": 1013,
+   "client_index": 1012,
+   "library": "FMMap.wil",
+   "frame": 12,
+   "map_w": 600,
+   "map_h": 600,
+   "frame_w": 900,
+   "frame_h": 600,
+   "painted_bbox": [
+    0,
+    0,
+    900,
+    600
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "75",
+   "server_value": 1014,
+   "client_index": 1013,
+   "library": "FMMap.wil",
+   "frame": 13,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "76",
+   "server_value": 1015,
+   "client_index": 1014,
+   "library": "FMMap.wil",
+   "frame": 14,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "77",
+   "server_value": 1016,
+   "client_index": 1015,
+   "library": "FMMap.wil",
+   "frame": 15,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "78",
+   "server_value": 1017,
+   "client_index": 1016,
+   "library": "FMMap.wil",
+   "frame": 16,
+   "map_w": 400,
+   "map_h": 200,
+   "frame_w": 600,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "3",
+   "server_value": 1018,
+   "client_index": 1017,
+   "library": "FMMap.wil",
+   "frame": 17,
+   "map_w": 400,
+   "map_h": 600,
+   "frame_w": 600,
+   "frame_h": 600,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    600
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "8",
+   "server_value": 1019,
+   "client_index": 1018,
+   "library": "FMMap.wil",
+   "frame": 18,
+   "map_w": 800,
+   "map_h": 800,
+   "frame_w": 1200,
+   "frame_h": 800,
+   "painted_bbox": [
+    0,
+    0,
+    1200,
+    800
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "81",
+   "server_value": 1020,
+   "client_index": 1019,
+   "library": "FMMap.wil",
+   "frame": 19,
+   "map_w": 300,
+   "map_h": 350,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "41",
+   "server_value": 1021,
+   "client_index": 1020,
+   "library": "FMMap.wil",
+   "frame": 20,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "42",
+   "server_value": 1022,
+   "client_index": 1021,
+   "library": "FMMap.wil",
+   "frame": 21,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "43",
+   "server_value": 1023,
+   "client_index": 1022,
+   "library": "FMMap.wil",
+   "frame": 22,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "44",
+   "server_value": 1024,
+   "client_index": 1023,
+   "library": "FMMap.wil",
+   "frame": 23,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "121",
+   "server_value": 1025,
+   "client_index": 1024,
+   "library": "FMMap.wil",
+   "frame": 24,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "122",
+   "server_value": 1026,
+   "client_index": 1025,
+   "library": "FMMap.wil",
+   "frame": 25,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "123",
+   "server_value": 1027,
+   "client_index": 1026,
+   "library": "FMMap.wil",
+   "frame": 26,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "124",
+   "server_value": 1028,
+   "client_index": 1027,
+   "library": "FMMap.wil",
+   "frame": 27,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "125",
+   "server_value": 1029,
+   "client_index": 1028,
+   "library": "FMMap.wil",
+   "frame": 28,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "9",
+   "server_value": 1030,
+   "client_index": 1029,
+   "library": "FMMap.wil",
+   "frame": 29,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "31",
+   "server_value": 1031,
+   "client_index": 1030,
+   "library": "FMMap.wil",
+   "frame": 30,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    450,
+    300
+   ],
+   "fill": 0.9945,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "401",
+   "server_value": 1032,
+   "client_index": 1031,
+   "library": "FMMap.wil",
+   "frame": 31,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "402",
+   "server_value": 1033,
+   "client_index": 1032,
+   "library": "FMMap.wil",
+   "frame": 32,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "403",
+   "server_value": 1034,
+   "client_index": 1033,
+   "library": "FMMap.wil",
+   "frame": 33,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "404",
+   "server_value": 1035,
+   "client_index": 1034,
+   "library": "FMMap.wil",
+   "frame": 34,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "405",
+   "server_value": 1036,
+   "client_index": 1035,
+   "library": "FMMap.wil",
+   "frame": 35,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "407",
+   "server_value": 1038,
+   "client_index": 1037,
+   "library": "FMMap.wil",
+   "frame": 37,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D001",
+   "server_value": 1,
+   "client_index": 0,
+   "library": "MMap.wil",
+   "frame": 0,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D002",
+   "server_value": 2,
+   "client_index": 1,
+   "library": "MMap.wil",
+   "frame": 1,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D003",
+   "server_value": 3,
+   "client_index": 2,
+   "library": "MMap.wil",
+   "frame": 2,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D011",
+   "server_value": 4,
+   "client_index": 3,
+   "library": "MMap.wil",
+   "frame": 3,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D012",
+   "server_value": 5,
+   "client_index": 4,
+   "library": "MMap.wil",
+   "frame": 4,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D401",
+   "server_value": 11,
+   "client_index": 10,
+   "library": "MMap.wil",
+   "frame": 10,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D402",
+   "server_value": 12,
+   "client_index": 11,
+   "library": "MMap.wil",
+   "frame": 11,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D403",
+   "server_value": 13,
+   "client_index": 12,
+   "library": "MMap.wil",
+   "frame": 12,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D404",
+   "server_value": 14,
+   "client_index": 13,
+   "library": "MMap.wil",
+   "frame": 13,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D405",
+   "server_value": 15,
+   "client_index": 14,
+   "library": "MMap.wil",
+   "frame": 14,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D406",
+   "server_value": 16,
+   "client_index": 15,
+   "library": "MMap.wil",
+   "frame": 15,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D411",
+   "server_value": 17,
+   "client_index": 16,
+   "library": "MMap.wil",
+   "frame": 16,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D412",
+   "server_value": 18,
+   "client_index": 17,
+   "library": "MMap.wil",
+   "frame": 17,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D413",
+   "server_value": 19,
+   "client_index": 18,
+   "library": "MMap.wil",
+   "frame": 18,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D414",
+   "server_value": 20,
+   "client_index": 19,
+   "library": "MMap.wil",
+   "frame": 19,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D415",
+   "server_value": 21,
+   "client_index": 20,
+   "library": "MMap.wil",
+   "frame": 20,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D416",
+   "server_value": 22,
+   "client_index": 21,
+   "library": "MMap.wil",
+   "frame": 21,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D421",
+   "server_value": 23,
+   "client_index": 22,
+   "library": "MMap.wil",
+   "frame": 22,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D422",
+   "server_value": 24,
+   "client_index": 23,
+   "library": "MMap.wil",
+   "frame": 23,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D431",
+   "server_value": 11,
+   "client_index": 10,
+   "library": "MMap.wil",
+   "frame": 10,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D432",
+   "server_value": 12,
+   "client_index": 11,
+   "library": "MMap.wil",
+   "frame": 11,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D433",
+   "server_value": 13,
+   "client_index": 12,
+   "library": "MMap.wil",
+   "frame": 12,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D434",
+   "server_value": 14,
+   "client_index": 13,
+   "library": "MMap.wil",
+   "frame": 13,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D435",
+   "server_value": 15,
+   "client_index": 14,
+   "library": "MMap.wil",
+   "frame": 14,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D436",
+   "server_value": 16,
+   "client_index": 15,
+   "library": "MMap.wil",
+   "frame": 15,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D441",
+   "server_value": 17,
+   "client_index": 16,
+   "library": "MMap.wil",
+   "frame": 16,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D442",
+   "server_value": 18,
+   "client_index": 17,
+   "library": "MMap.wil",
+   "frame": 17,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D443",
+   "server_value": 19,
+   "client_index": 18,
+   "library": "MMap.wil",
+   "frame": 18,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D444",
+   "server_value": 20,
+   "client_index": 19,
+   "library": "MMap.wil",
+   "frame": 19,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D445",
+   "server_value": 21,
+   "client_index": 20,
+   "library": "MMap.wil",
+   "frame": 20,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D446",
+   "server_value": 22,
+   "client_index": 21,
+   "library": "MMap.wil",
+   "frame": 21,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D451",
+   "server_value": 23,
+   "client_index": 22,
+   "library": "MMap.wil",
+   "frame": 22,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D452",
+   "server_value": 25,
+   "client_index": 24,
+   "library": "MMap.wil",
+   "frame": 24,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D501",
+   "server_value": 31,
+   "client_index": 30,
+   "library": "MMap.wil",
+   "frame": 30,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D502",
+   "server_value": 32,
+   "client_index": 31,
+   "library": "MMap.wil",
+   "frame": 31,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D503",
+   "server_value": 33,
+   "client_index": 32,
+   "library": "MMap.wil",
+   "frame": 32,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D504",
+   "server_value": 34,
+   "client_index": 33,
+   "library": "MMap.wil",
+   "frame": 33,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D505",
+   "server_value": 35,
+   "client_index": 34,
+   "library": "MMap.wil",
+   "frame": 34,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D5071",
+   "server_value": 36,
+   "client_index": 35,
+   "library": "MMap.wil",
+   "frame": 35,
+   "map_w": 50,
+   "map_h": 50,
+   "frame_w": 76,
+   "frame_h": 50,
+   "painted_bbox": [
+    0,
+    0,
+    76,
+    50
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D5072",
+   "server_value": 37,
+   "client_index": 36,
+   "library": "MMap.wil",
+   "frame": 36,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D5073",
+   "server_value": 38,
+   "client_index": 37,
+   "library": "MMap.wil",
+   "frame": 37,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D5074",
+   "server_value": 39,
+   "client_index": 38,
+   "library": "MMap.wil",
+   "frame": 38,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60011",
+   "server_value": 41,
+   "client_index": 40,
+   "library": "MMap.wil",
+   "frame": 40,
+   "map_w": 250,
+   "map_h": 250,
+   "frame_w": 376,
+   "frame_h": 250,
+   "painted_bbox": [
+    0,
+    0,
+    376,
+    250
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60012",
+   "server_value": 42,
+   "client_index": 41,
+   "library": "MMap.wil",
+   "frame": 41,
+   "map_w": 250,
+   "map_h": 250,
+   "frame_w": 376,
+   "frame_h": 250,
+   "painted_bbox": [
+    0,
+    0,
+    376,
+    250
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60013",
+   "server_value": 43,
+   "client_index": 42,
+   "library": "MMap.wil",
+   "frame": 42,
+   "map_w": 250,
+   "map_h": 250,
+   "frame_w": 376,
+   "frame_h": 250,
+   "painted_bbox": [
+    0,
+    0,
+    376,
+    250
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60021",
+   "server_value": 44,
+   "client_index": 43,
+   "library": "MMap.wil",
+   "frame": 43,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60022",
+   "server_value": 45,
+   "client_index": 44,
+   "library": "MMap.wil",
+   "frame": 44,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6004",
+   "server_value": 46,
+   "client_index": 45,
+   "library": "MMap.wil",
+   "frame": 45,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6011",
+   "server_value": 51,
+   "client_index": 50,
+   "library": "MMap.wil",
+   "frame": 50,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6012",
+   "server_value": 52,
+   "client_index": 51,
+   "library": "MMap.wil",
+   "frame": 51,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60131",
+   "server_value": 53,
+   "client_index": 52,
+   "library": "MMap.wil",
+   "frame": 52,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60132",
+   "server_value": 54,
+   "client_index": 53,
+   "library": "MMap.wil",
+   "frame": 53,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60133",
+   "server_value": 55,
+   "client_index": 54,
+   "library": "MMap.wil",
+   "frame": 54,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60134",
+   "server_value": 56,
+   "client_index": 55,
+   "library": "MMap.wil",
+   "frame": 55,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D60135",
+   "server_value": 57,
+   "client_index": 56,
+   "library": "MMap.wil",
+   "frame": 56,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6014",
+   "server_value": 58,
+   "client_index": 57,
+   "library": "MMap.wil",
+   "frame": 57,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6015",
+   "server_value": 59,
+   "client_index": 58,
+   "library": "MMap.wil",
+   "frame": 58,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6021",
+   "server_value": 61,
+   "client_index": 60,
+   "library": "MMap.wil",
+   "frame": 60,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6022",
+   "server_value": 62,
+   "client_index": 61,
+   "library": "MMap.wil",
+   "frame": 61,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6023",
+   "server_value": 63,
+   "client_index": 62,
+   "library": "MMap.wil",
+   "frame": 62,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6024",
+   "server_value": 64,
+   "client_index": 63,
+   "library": "MMap.wil",
+   "frame": 63,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D6025",
+   "server_value": 65,
+   "client_index": 64,
+   "library": "MMap.wil",
+   "frame": 64,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E001",
+   "server_value": 71,
+   "client_index": 70,
+   "library": "MMap.wil",
+   "frame": 70,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E002",
+   "server_value": 72,
+   "client_index": 71,
+   "library": "MMap.wil",
+   "frame": 71,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E401",
+   "server_value": 73,
+   "client_index": 72,
+   "library": "MMap.wil",
+   "frame": 72,
+   "map_w": 110,
+   "map_h": 110,
+   "frame_w": 168,
+   "frame_h": 110,
+   "painted_bbox": [
+    0,
+    0,
+    168,
+    110
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E402",
+   "server_value": 74,
+   "client_index": 73,
+   "library": "MMap.wil",
+   "frame": 73,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E403",
+   "server_value": 75,
+   "client_index": 74,
+   "library": "MMap.wil",
+   "frame": 74,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E404",
+   "server_value": 76,
+   "client_index": 75,
+   "library": "MMap.wil",
+   "frame": 75,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E601",
+   "server_value": 77,
+   "client_index": 76,
+   "library": "MMap.wil",
+   "frame": 76,
+   "map_w": 150,
+   "map_h": 150,
+   "frame_w": 228,
+   "frame_h": 150,
+   "painted_bbox": [
+    0,
+    0,
+    228,
+    150
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E602",
+   "server_value": 78,
+   "client_index": 77,
+   "library": "MMap.wil",
+   "frame": 77,
+   "map_w": 150,
+   "map_h": 150,
+   "frame_w": 228,
+   "frame_h": 150,
+   "painted_bbox": [
+    0,
+    0,
+    228,
+    150
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E603",
+   "server_value": 79,
+   "client_index": 78,
+   "library": "MMap.wil",
+   "frame": 78,
+   "map_w": 210,
+   "map_h": 210,
+   "frame_w": 316,
+   "frame_h": 210,
+   "painted_bbox": [
+    0,
+    0,
+    316,
+    210
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E604",
+   "server_value": 80,
+   "client_index": 79,
+   "library": "MMap.wil",
+   "frame": 79,
+   "map_w": 150,
+   "map_h": 150,
+   "frame_w": 228,
+   "frame_h": 150,
+   "painted_bbox": [
+    0,
+    0,
+    228,
+    150
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E605",
+   "server_value": 81,
+   "client_index": 80,
+   "library": "MMap.wil",
+   "frame": 80,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "E701",
+   "server_value": 82,
+   "client_index": 81,
+   "library": "MMap.wil",
+   "frame": 81,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "E702",
+   "server_value": 83,
+   "client_index": 82,
+   "library": "MMap.wil",
+   "frame": 82,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "E703",
+   "server_value": 84,
+   "client_index": 83,
+   "library": "MMap.wil",
+   "frame": 83,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D711",
+   "server_value": 91,
+   "client_index": 90,
+   "library": "MMap.wil",
+   "frame": 90,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D712",
+   "server_value": 92,
+   "client_index": 91,
+   "library": "MMap.wil",
+   "frame": 91,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D713",
+   "server_value": 93,
+   "client_index": 92,
+   "library": "MMap.wil",
+   "frame": 92,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D714",
+   "server_value": 94,
+   "client_index": 93,
+   "library": "MMap.wil",
+   "frame": 93,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D715",
+   "server_value": 95,
+   "client_index": 94,
+   "library": "MMap.wil",
+   "frame": 94,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D716",
+   "server_value": 96,
+   "client_index": 95,
+   "library": "MMap.wil",
+   "frame": 95,
+   "map_w": 50,
+   "map_h": 50,
+   "frame_w": 76,
+   "frame_h": 50,
+   "painted_bbox": [
+    0,
+    0,
+    76,
+    50
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D717",
+   "server_value": 97,
+   "client_index": 96,
+   "library": "MMap.wil",
+   "frame": 96,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1001",
+   "server_value": 101,
+   "client_index": 100,
+   "library": "MMap.wil",
+   "frame": 100,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1002",
+   "server_value": 102,
+   "client_index": 101,
+   "library": "MMap.wil",
+   "frame": 101,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10031",
+   "server_value": 103,
+   "client_index": 102,
+   "library": "MMap.wil",
+   "frame": 102,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10032",
+   "server_value": 104,
+   "client_index": 103,
+   "library": "MMap.wil",
+   "frame": 103,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1004",
+   "server_value": 105,
+   "client_index": 104,
+   "library": "MMap.wil",
+   "frame": 104,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10051",
+   "server_value": 106,
+   "client_index": 105,
+   "library": "MMap.wil",
+   "frame": 105,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10052",
+   "server_value": 107,
+   "client_index": 106,
+   "library": "MMap.wil",
+   "frame": 106,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10053",
+   "server_value": 108,
+   "client_index": 107,
+   "library": "MMap.wil",
+   "frame": 107,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10054",
+   "server_value": 109,
+   "client_index": 108,
+   "library": "MMap.wil",
+   "frame": 108,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1011",
+   "server_value": 111,
+   "client_index": 110,
+   "library": "MMap.wil",
+   "frame": 110,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1012",
+   "server_value": 112,
+   "client_index": 111,
+   "library": "MMap.wil",
+   "frame": 111,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10131",
+   "server_value": 113,
+   "client_index": 112,
+   "library": "MMap.wil",
+   "frame": 112,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10132",
+   "server_value": 114,
+   "client_index": 113,
+   "library": "MMap.wil",
+   "frame": 113,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1014",
+   "server_value": 115,
+   "client_index": 114,
+   "library": "MMap.wil",
+   "frame": 114,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10151",
+   "server_value": 116,
+   "client_index": 115,
+   "library": "MMap.wil",
+   "frame": 115,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10152",
+   "server_value": 117,
+   "client_index": 116,
+   "library": "MMap.wil",
+   "frame": 116,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1021",
+   "server_value": 121,
+   "client_index": 120,
+   "library": "MMap.wil",
+   "frame": 120,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1022",
+   "server_value": 122,
+   "client_index": 121,
+   "library": "MMap.wil",
+   "frame": 121,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10231",
+   "server_value": 123,
+   "client_index": 122,
+   "library": "MMap.wil",
+   "frame": 122,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10232",
+   "server_value": 124,
+   "client_index": 123,
+   "library": "MMap.wil",
+   "frame": 123,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1024",
+   "server_value": 125,
+   "client_index": 124,
+   "library": "MMap.wil",
+   "frame": 124,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10251",
+   "server_value": 126,
+   "client_index": 125,
+   "library": "MMap.wil",
+   "frame": 125,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D10252",
+   "server_value": 127,
+   "client_index": 126,
+   "library": "MMap.wil",
+   "frame": 126,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "F001",
+   "server_value": 131,
+   "client_index": 130,
+   "library": "MMap.wil",
+   "frame": 130,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F002",
+   "server_value": 132,
+   "client_index": 131,
+   "library": "MMap.wil",
+   "frame": 131,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F003",
+   "server_value": 133,
+   "client_index": 132,
+   "library": "MMap.wil",
+   "frame": 132,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F004",
+   "server_value": 134,
+   "client_index": 133,
+   "library": "MMap.wil",
+   "frame": 133,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F005",
+   "server_value": 135,
+   "client_index": 134,
+   "library": "MMap.wil",
+   "frame": 134,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F006",
+   "server_value": 136,
+   "client_index": 135,
+   "library": "MMap.wil",
+   "frame": 135,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F007",
+   "server_value": 137,
+   "client_index": 136,
+   "library": "MMap.wil",
+   "frame": 136,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F008",
+   "server_value": 138,
+   "client_index": 137,
+   "library": "MMap.wil",
+   "frame": 137,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F009",
+   "server_value": 139,
+   "client_index": 138,
+   "library": "MMap.wil",
+   "frame": 138,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "F010",
+   "server_value": 140,
+   "client_index": 139,
+   "library": "MMap.wil",
+   "frame": 139,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "R005",
+   "server_value": 141,
+   "client_index": 140,
+   "library": "MMap.wil",
+   "frame": 140,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D2011",
+   "server_value": 151,
+   "client_index": 150,
+   "library": "MMap.wil",
+   "frame": 150,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D2012",
+   "server_value": 152,
+   "client_index": 151,
+   "library": "MMap.wil",
+   "frame": 151,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D202",
+   "server_value": 153,
+   "client_index": 152,
+   "library": "MMap.wil",
+   "frame": 152,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D203",
+   "server_value": 154,
+   "client_index": 153,
+   "library": "MMap.wil",
+   "frame": 153,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D8001",
+   "server_value": 161,
+   "client_index": 160,
+   "library": "MMap.wil",
+   "frame": 160,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8002",
+   "server_value": 162,
+   "client_index": 161,
+   "library": "MMap.wil",
+   "frame": 161,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8003",
+   "server_value": 163,
+   "client_index": 162,
+   "library": "MMap.wil",
+   "frame": 162,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8004",
+   "server_value": 164,
+   "client_index": 163,
+   "library": "MMap.wil",
+   "frame": 163,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D801",
+   "server_value": 165,
+   "client_index": 164,
+   "library": "MMap.wil",
+   "frame": 164,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D802",
+   "server_value": 166,
+   "client_index": 165,
+   "library": "MMap.wil",
+   "frame": 165,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D803",
+   "server_value": 167,
+   "client_index": 166,
+   "library": "MMap.wil",
+   "frame": 166,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D804",
+   "server_value": 168,
+   "client_index": 167,
+   "library": "MMap.wil",
+   "frame": 167,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D805",
+   "server_value": 169,
+   "client_index": 168,
+   "library": "MMap.wil",
+   "frame": 168,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D806",
+   "server_value": 170,
+   "client_index": 169,
+   "library": "MMap.wil",
+   "frame": 169,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D807",
+   "server_value": 171,
+   "client_index": 170,
+   "library": "MMap.wil",
+   "frame": 170,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D808",
+   "server_value": 174,
+   "client_index": 173,
+   "library": "MMap.wil",
+   "frame": 173,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D8101",
+   "server_value": 161,
+   "client_index": 160,
+   "library": "MMap.wil",
+   "frame": 160,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8102",
+   "server_value": 173,
+   "client_index": 172,
+   "library": "MMap.wil",
+   "frame": 172,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D8103",
+   "server_value": 163,
+   "client_index": 162,
+   "library": "MMap.wil",
+   "frame": 162,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8104",
+   "server_value": 164,
+   "client_index": 163,
+   "library": "MMap.wil",
+   "frame": 163,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D811",
+   "server_value": 165,
+   "client_index": 164,
+   "library": "MMap.wil",
+   "frame": 164,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D812",
+   "server_value": 166,
+   "client_index": 165,
+   "library": "MMap.wil",
+   "frame": 165,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D813",
+   "server_value": 167,
+   "client_index": 166,
+   "library": "MMap.wil",
+   "frame": 166,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D814",
+   "server_value": 168,
+   "client_index": 167,
+   "library": "MMap.wil",
+   "frame": 167,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D815",
+   "server_value": 169,
+   "client_index": 168,
+   "library": "MMap.wil",
+   "frame": 168,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D816",
+   "server_value": 170,
+   "client_index": 169,
+   "library": "MMap.wil",
+   "frame": 169,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D817",
+   "server_value": 171,
+   "client_index": 170,
+   "library": "MMap.wil",
+   "frame": 170,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D818",
+   "server_value": 172,
+   "client_index": 171,
+   "library": "MMap.wil",
+   "frame": 171,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8201",
+   "server_value": 161,
+   "client_index": 160,
+   "library": "MMap.wil",
+   "frame": 160,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8202",
+   "server_value": 173,
+   "client_index": 172,
+   "library": "MMap.wil",
+   "frame": 172,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D8203",
+   "server_value": 163,
+   "client_index": 162,
+   "library": "MMap.wil",
+   "frame": 162,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D8204",
+   "server_value": 164,
+   "client_index": 163,
+   "library": "MMap.wil",
+   "frame": 163,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D821",
+   "server_value": 165,
+   "client_index": 164,
+   "library": "MMap.wil",
+   "frame": 164,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D822",
+   "server_value": 166,
+   "client_index": 165,
+   "library": "MMap.wil",
+   "frame": 165,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D823",
+   "server_value": 167,
+   "client_index": 166,
+   "library": "MMap.wil",
+   "frame": 166,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D824",
+   "server_value": 168,
+   "client_index": 167,
+   "library": "MMap.wil",
+   "frame": 167,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D825",
+   "server_value": 169,
+   "client_index": 168,
+   "library": "MMap.wil",
+   "frame": 168,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D826",
+   "server_value": 170,
+   "client_index": 169,
+   "library": "MMap.wil",
+   "frame": 169,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D827",
+   "server_value": 171,
+   "client_index": 170,
+   "library": "MMap.wil",
+   "frame": 170,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D828",
+   "server_value": 172,
+   "client_index": 171,
+   "library": "MMap.wil",
+   "frame": 171,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D021",
+   "server_value": 191,
+   "client_index": 190,
+   "library": "MMap.wil",
+   "frame": 190,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D022",
+   "server_value": 192,
+   "client_index": 191,
+   "library": "MMap.wil",
+   "frame": 191,
+   "map_w": 500,
+   "map_h": 500,
+   "frame_w": 752,
+   "frame_h": 500,
+   "painted_bbox": [
+    0,
+    0,
+    752,
+    500
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D032",
+   "server_value": 193,
+   "client_index": 192,
+   "library": "MMap.wil",
+   "frame": 192,
+   "map_w": 500,
+   "map_h": 500,
+   "frame_w": 752,
+   "frame_h": 500,
+   "painted_bbox": [
+    0,
+    0,
+    752,
+    500
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D042",
+   "server_value": 194,
+   "client_index": 193,
+   "library": "MMap.wil",
+   "frame": 193,
+   "map_w": 500,
+   "map_h": 500,
+   "frame_w": 752,
+   "frame_h": 500,
+   "painted_bbox": [
+    0,
+    0,
+    752,
+    500
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D052",
+   "server_value": 195,
+   "client_index": 194,
+   "library": "MMap.wil",
+   "frame": 194,
+   "map_w": 500,
+   "map_h": 500,
+   "frame_w": 752,
+   "frame_h": 500,
+   "painted_bbox": [
+    0,
+    0,
+    752,
+    500
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D023",
+   "server_value": 196,
+   "client_index": 195,
+   "library": "MMap.wil",
+   "frame": 195,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D033",
+   "server_value": 197,
+   "client_index": 196,
+   "library": "MMap.wil",
+   "frame": 196,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D043",
+   "server_value": 198,
+   "client_index": 197,
+   "library": "MMap.wil",
+   "frame": 197,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D053",
+   "server_value": 199,
+   "client_index": 198,
+   "library": "MMap.wil",
+   "frame": 198,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D024",
+   "server_value": 200,
+   "client_index": 199,
+   "library": "MMap.wil",
+   "frame": 199,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1101",
+   "server_value": 201,
+   "client_index": 200,
+   "library": "MMap.wil",
+   "frame": 200,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1102",
+   "server_value": 202,
+   "client_index": 201,
+   "library": "MMap.wil",
+   "frame": 201,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D11031",
+   "server_value": 203,
+   "client_index": 202,
+   "library": "MMap.wil",
+   "frame": 202,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D11032",
+   "server_value": 204,
+   "client_index": 203,
+   "library": "MMap.wil",
+   "frame": 203,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1104",
+   "server_value": 205,
+   "client_index": 204,
+   "library": "MMap.wil",
+   "frame": 204,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1105",
+   "server_value": 206,
+   "client_index": 205,
+   "library": "MMap.wil",
+   "frame": 205,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1111",
+   "server_value": 211,
+   "client_index": 210,
+   "library": "MMap.wil",
+   "frame": 210,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1112",
+   "server_value": 212,
+   "client_index": 211,
+   "library": "MMap.wil",
+   "frame": 211,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1113",
+   "server_value": 213,
+   "client_index": 212,
+   "library": "MMap.wil",
+   "frame": 212,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D11141",
+   "server_value": 214,
+   "client_index": 213,
+   "library": "MMap.wil",
+   "frame": 213,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D11142",
+   "server_value": 215,
+   "client_index": 214,
+   "library": "MMap.wil",
+   "frame": 214,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1115",
+   "server_value": 216,
+   "client_index": 215,
+   "library": "MMap.wil",
+   "frame": 215,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1116",
+   "server_value": 217,
+   "client_index": 216,
+   "library": "MMap.wil",
+   "frame": 216,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1201",
+   "server_value": 221,
+   "client_index": 220,
+   "library": "MMap.wil",
+   "frame": 220,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1202",
+   "server_value": 222,
+   "client_index": 221,
+   "library": "MMap.wil",
+   "frame": 221,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D12031",
+   "server_value": 223,
+   "client_index": 222,
+   "library": "MMap.wil",
+   "frame": 222,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D12032",
+   "server_value": 224,
+   "client_index": 223,
+   "library": "MMap.wil",
+   "frame": 223,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1204",
+   "server_value": 225,
+   "client_index": 224,
+   "library": "MMap.wil",
+   "frame": 224,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1205",
+   "server_value": 226,
+   "client_index": 225,
+   "library": "MMap.wil",
+   "frame": 225,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1211",
+   "server_value": 231,
+   "client_index": 230,
+   "library": "MMap.wil",
+   "frame": 230,
+   "map_w": 200,
+   "map_h": 200,
+   "frame_w": 300,
+   "frame_h": 200,
+   "painted_bbox": [
+    0,
+    0,
+    300,
+    200
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D12121",
+   "server_value": 232,
+   "client_index": 231,
+   "library": "MMap.wil",
+   "frame": 231,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D12122",
+   "server_value": 233,
+   "client_index": 232,
+   "library": "MMap.wil",
+   "frame": 232,
+   "map_w": 100,
+   "map_h": 100,
+   "frame_w": 152,
+   "frame_h": 100,
+   "painted_bbox": [
+    0,
+    0,
+    152,
+    100
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1213",
+   "server_value": 234,
+   "client_index": 233,
+   "library": "MMap.wil",
+   "frame": 233,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1214",
+   "server_value": 235,
+   "client_index": 234,
+   "library": "MMap.wil",
+   "frame": 234,
+   "map_w": 300,
+   "map_h": 300,
+   "frame_w": 452,
+   "frame_h": 300,
+   "painted_bbox": [
+    0,
+    0,
+    452,
+    300
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1215",
+   "server_value": 236,
+   "client_index": 235,
+   "library": "MMap.wil",
+   "frame": 235,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1301",
+   "server_value": 241,
+   "client_index": 240,
+   "library": "MMap.wil",
+   "frame": 240,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1302",
+   "server_value": 242,
+   "client_index": 241,
+   "library": "MMap.wil",
+   "frame": 241,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1303",
+   "server_value": 243,
+   "client_index": 242,
+   "library": "MMap.wil",
+   "frame": 242,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1304",
+   "server_value": 244,
+   "client_index": 243,
+   "library": "MMap.wil",
+   "frame": 243,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1305",
+   "server_value": 245,
+   "client_index": 244,
+   "library": "MMap.wil",
+   "frame": 244,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1311",
+   "server_value": 241,
+   "client_index": 240,
+   "library": "MMap.wil",
+   "frame": 240,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1312",
+   "server_value": 242,
+   "client_index": 241,
+   "library": "MMap.wil",
+   "frame": 241,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1313",
+   "server_value": 243,
+   "client_index": 242,
+   "library": "MMap.wil",
+   "frame": 242,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1314",
+   "server_value": 244,
+   "client_index": 243,
+   "library": "MMap.wil",
+   "frame": 243,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1315",
+   "server_value": 245,
+   "client_index": 244,
+   "library": "MMap.wil",
+   "frame": 244,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1321",
+   "server_value": 241,
+   "client_index": 240,
+   "library": "MMap.wil",
+   "frame": 240,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1322",
+   "server_value": 242,
+   "client_index": 241,
+   "library": "MMap.wil",
+   "frame": 241,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1323",
+   "server_value": 243,
+   "client_index": 242,
+   "library": "MMap.wil",
+   "frame": 242,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1324",
+   "server_value": 244,
+   "client_index": 243,
+   "library": "MMap.wil",
+   "frame": 243,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1325",
+   "server_value": 245,
+   "client_index": 244,
+   "library": "MMap.wil",
+   "frame": 244,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1401",
+   "server_value": 251,
+   "client_index": 250,
+   "library": "MMap.wil",
+   "frame": 250,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1402",
+   "server_value": 252,
+   "client_index": 251,
+   "library": "MMap.wil",
+   "frame": 251,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1403",
+   "server_value": 253,
+   "client_index": 252,
+   "library": "MMap.wil",
+   "frame": 252,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1404",
+   "server_value": 254,
+   "client_index": 253,
+   "library": "MMap.wil",
+   "frame": 253,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1405",
+   "server_value": 255,
+   "client_index": 254,
+   "library": "MMap.wil",
+   "frame": 254,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1411",
+   "server_value": 251,
+   "client_index": 250,
+   "library": "MMap.wil",
+   "frame": 250,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1412",
+   "server_value": 252,
+   "client_index": 251,
+   "library": "MMap.wil",
+   "frame": 251,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1413",
+   "server_value": 253,
+   "client_index": 252,
+   "library": "MMap.wil",
+   "frame": 252,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1414",
+   "server_value": 254,
+   "client_index": 253,
+   "library": "MMap.wil",
+   "frame": 253,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1415",
+   "server_value": 255,
+   "client_index": 254,
+   "library": "MMap.wil",
+   "frame": 254,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1421",
+   "server_value": 251,
+   "client_index": 250,
+   "library": "MMap.wil",
+   "frame": 250,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1422",
+   "server_value": 252,
+   "client_index": 251,
+   "library": "MMap.wil",
+   "frame": 251,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1423",
+   "server_value": 253,
+   "client_index": 252,
+   "library": "MMap.wil",
+   "frame": 252,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1424",
+   "server_value": 254,
+   "client_index": 253,
+   "library": "MMap.wil",
+   "frame": 253,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1425",
+   "server_value": 255,
+   "client_index": 254,
+   "library": "MMap.wil",
+   "frame": 254,
+   "map_w": 400,
+   "map_h": 400,
+   "frame_w": 600,
+   "frame_h": 400,
+   "painted_bbox": [
+    0,
+    0,
+    600,
+    400
+   ],
+   "fill": 1.0,
+   "placement_origin": [
+    0,
+    0
+   ],
+   "scale_px_per_tile": [
+    1.5,
+    1.0
+   ],
+   "status": "ok"
+  },
+  {
+   "map_index": "D1510",
+   "server_value": 281,
+   "client_index": 280,
+   "library": "MMap.wil",
+   "frame": 280,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15111",
+   "server_value": 282,
+   "client_index": 281,
+   "library": "MMap.wil",
+   "frame": 281,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15112",
+   "server_value": 283,
+   "client_index": 282,
+   "library": "MMap.wil",
+   "frame": 282,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1512",
+   "server_value": 284,
+   "client_index": 283,
+   "library": "MMap.wil",
+   "frame": 283,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1513",
+   "server_value": 285,
+   "client_index": 284,
+   "library": "MMap.wil",
+   "frame": 284,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1500",
+   "server_value": 261,
+   "client_index": 260,
+   "library": "MMap.wil",
+   "frame": 260,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15011",
+   "server_value": 262,
+   "client_index": 261,
+   "library": "MMap.wil",
+   "frame": 261,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15012",
+   "server_value": 263,
+   "client_index": 262,
+   "library": "MMap.wil",
+   "frame": 262,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15013",
+   "server_value": 264,
+   "client_index": 263,
+   "library": "MMap.wil",
+   "frame": 263,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15014",
+   "server_value": 265,
+   "client_index": 264,
+   "library": "MMap.wil",
+   "frame": 264,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15021",
+   "server_value": 266,
+   "client_index": 265,
+   "library": "MMap.wil",
+   "frame": 265,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15022",
+   "server_value": 267,
+   "client_index": 266,
+   "library": "MMap.wil",
+   "frame": 266,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15023",
+   "server_value": 268,
+   "client_index": 267,
+   "library": "MMap.wil",
+   "frame": 267,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15024",
+   "server_value": 269,
+   "client_index": 268,
+   "library": "MMap.wil",
+   "frame": 268,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15032",
+   "server_value": 270,
+   "client_index": 269,
+   "library": "MMap.wil",
+   "frame": 269,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15033",
+   "server_value": 271,
+   "client_index": 270,
+   "library": "MMap.wil",
+   "frame": 270,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15034",
+   "server_value": 272,
+   "client_index": 271,
+   "library": "MMap.wil",
+   "frame": 271,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15043",
+   "server_value": 273,
+   "client_index": 272,
+   "library": "MMap.wil",
+   "frame": 272,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15044",
+   "server_value": 274,
+   "client_index": 273,
+   "library": "MMap.wil",
+   "frame": 273,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D15054",
+   "server_value": 275,
+   "client_index": 274,
+   "library": "MMap.wil",
+   "frame": 274,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D901",
+   "server_value": 146,
+   "client_index": 145,
+   "library": "MMap.wil",
+   "frame": 145,
+   "map_w": 140,
+   "map_h": 140,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D9021",
+   "server_value": 147,
+   "client_index": 146,
+   "library": "MMap.wil",
+   "frame": 146,
+   "map_w": 140,
+   "map_h": 140,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D9022",
+   "server_value": 148,
+   "client_index": 147,
+   "library": "MMap.wil",
+   "frame": 147,
+   "map_w": 140,
+   "map_h": 140,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "blank_frame"
+  },
+  {
+   "map_index": "D903",
+   "server_value": 149,
+   "client_index": 148,
+   "library": "MMap.wil",
+   "frame": 148,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D904",
+   "server_value": 150,
+   "client_index": 149,
+   "library": "MMap.wil",
+   "frame": 149,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1601",
+   "server_value": 301,
+   "client_index": 300,
+   "library": "MMap.wil",
+   "frame": 300,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1602",
+   "server_value": 302,
+   "client_index": 301,
+   "library": "MMap.wil",
+   "frame": 301,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D16031",
+   "server_value": 303,
+   "client_index": 302,
+   "library": "MMap.wil",
+   "frame": 302,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D16032",
+   "server_value": 304,
+   "client_index": 303,
+   "library": "MMap.wil",
+   "frame": 303,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D16033",
+   "server_value": 305,
+   "client_index": 304,
+   "library": "MMap.wil",
+   "frame": 304,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D16034",
+   "server_value": 306,
+   "client_index": 305,
+   "library": "MMap.wil",
+   "frame": 305,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1604",
+   "server_value": 307,
+   "client_index": 306,
+   "library": "MMap.wil",
+   "frame": 306,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D1605",
+   "server_value": 308,
+   "client_index": 307,
+   "library": "MMap.wil",
+   "frame": 307,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D2001",
+   "server_value": 135,
+   "client_index": 134,
+   "library": "MMap.wil",
+   "frame": 134,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20011",
+   "server_value": 136,
+   "client_index": 135,
+   "library": "MMap.wil",
+   "frame": 135,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20012",
+   "server_value": 137,
+   "client_index": 136,
+   "library": "MMap.wil",
+   "frame": 136,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D2002",
+   "server_value": 138,
+   "client_index": 137,
+   "library": "MMap.wil",
+   "frame": 137,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20021",
+   "server_value": 139,
+   "client_index": 138,
+   "library": "MMap.wil",
+   "frame": 138,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20022",
+   "server_value": 140,
+   "client_index": 139,
+   "library": "MMap.wil",
+   "frame": 139,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20023",
+   "server_value": 141,
+   "client_index": 140,
+   "library": "MMap.wil",
+   "frame": 140,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D2003",
+   "server_value": 142,
+   "client_index": 141,
+   "library": "MMap.wil",
+   "frame": 141,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20031",
+   "server_value": 143,
+   "client_index": 142,
+   "library": "MMap.wil",
+   "frame": 142,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "D20032",
+   "server_value": 144,
+   "client_index": 143,
+   "library": "MMap.wil",
+   "frame": 143,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "RUSH1",
+   "server_value": 291,
+   "client_index": 290,
+   "library": "MMap.wil",
+   "frame": 290,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Island01",
+   "server_value": 292,
+   "client_index": 291,
+   "library": "MMap.wil",
+   "frame": 291,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Island02",
+   "server_value": 293,
+   "client_index": 292,
+   "library": "MMap.wil",
+   "frame": 292,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q0381",
+   "server_value": 1040,
+   "client_index": 1039,
+   "library": "FMMap.wil",
+   "frame": 39,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q0382",
+   "server_value": 1040,
+   "client_index": 1039,
+   "library": "FMMap.wil",
+   "frame": 39,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q051",
+   "server_value": 1032,
+   "client_index": 1031,
+   "library": "FMMap.wil",
+   "frame": 31,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q041",
+   "server_value": 1039,
+   "client_index": 1038,
+   "library": "FMMap.wil",
+   "frame": 38,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q039",
+   "server_value": 1040,
+   "client_index": 1039,
+   "library": "FMMap.wil",
+   "frame": 39,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q040",
+   "server_value": 1039,
+   "client_index": 1038,
+   "library": "FMMap.wil",
+   "frame": 38,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q036",
+   "server_value": 1039,
+   "client_index": 1038,
+   "library": "FMMap.wil",
+   "frame": 38,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  },
+  {
+   "map_index": "Q037",
+   "server_value": 1040,
+   "client_index": 1039,
+   "library": "FMMap.wil",
+   "frame": 39,
+   "map_w": null,
+   "map_h": null,
+   "frame_w": null,
+   "frame_h": null,
+   "painted_bbox": null,
+   "fill": null,
+   "placement_origin": null,
+   "scale_px_per_tile": null,
+   "status": "map_absent_in_client"
+  }
+ ],
+ "anomalies": {
+  "blank_frame_entries": [
+   {
+    "map_index": "81",
+    "server_value": 1020,
+    "library": "FMMap.wil",
+    "frame": 19,
+    "map_w": 300,
+    "map_h": 350
+   },
+   {
+    "map_index": "D2011",
+    "server_value": 151,
+    "library": "MMap.wil",
+    "frame": 150,
+    "map_w": 100,
+    "map_h": 100
+   },
+   {
+    "map_index": "D2012",
+    "server_value": 152,
+    "library": "MMap.wil",
+    "frame": 151,
+    "map_w": 200,
+    "map_h": 200
+   },
+   {
+    "map_index": "D202",
+    "server_value": 153,
+    "library": "MMap.wil",
+    "frame": 152,
+    "map_w": 300,
+    "map_h": 300
+   },
+   {
+    "map_index": "D203",
+    "server_value": 154,
+    "library": "MMap.wil",
+    "frame": 153,
+    "map_w": 300,
+    "map_h": 300
+   },
+   {
+    "map_index": "D452",
+    "server_value": 25,
+    "library": "MMap.wil",
+    "frame": 24,
+    "map_w": 400,
+    "map_h": 400
+   },
+   {
+    "map_index": "D808",
+    "server_value": 174,
+    "library": "MMap.wil",
+    "frame": 173,
+    "map_w": 100,
+    "map_h": 100
+   },
+   {
+    "map_index": "D8102",
+    "server_value": 173,
+    "library": "MMap.wil",
+    "frame": 172,
+    "map_w": 200,
+    "map_h": 200
+   },
+   {
+    "map_index": "D8202",
+    "server_value": 173,
+    "library": "MMap.wil",
+    "frame": 172,
+    "map_w": 200,
+    "map_h": 200
+   },
+   {
+    "map_index": "D901",
+    "server_value": 146,
+    "library": "MMap.wil",
+    "frame": 145,
+    "map_w": 140,
+    "map_h": 140
+   },
+   {
+    "map_index": "D9021",
+    "server_value": 147,
+    "library": "MMap.wil",
+    "frame": 146,
+    "map_w": 140,
+    "map_h": 140
+   },
+   {
+    "map_index": "D9022",
+    "server_value": 148,
+    "library": "MMap.wil",
+    "frame": 147,
+    "map_w": 140,
+    "map_h": 140
+   }
+  ],
+  "frame_out_of_range_entries": [],
+  "map_absent_in_client": [
+   "401",
+   "402",
+   "403",
+   "404",
+   "405",
+   "407",
+   "9",
+   "D1500",
+   "D15011",
+   "D15012",
+   "D15013",
+   "D15014",
+   "D15021",
+   "D15022",
+   "D15023",
+   "D15024",
+   "D15032",
+   "D15033",
+   "D15034",
+   "D15043",
+   "D15044",
+   "D15054",
+   "D1510",
+   "D15111",
+   "D15112",
+   "D1512",
+   "D1513",
+   "D1601",
+   "D1602",
+   "D16031",
+   "D16032",
+   "D16033",
+   "D16034",
+   "D1604",
+   "D1605",
+   "D2001",
+   "D20011",
+   "D20012",
+   "D2002",
+   "D20021",
+   "D20022",
+   "D20023",
+   "D2003",
+   "D20031",
+   "D20032",
+   "D903",
+   "D904",
+   "E701",
+   "E702",
+   "E703",
+   "F001",
+   "F002",
+   "F003",
+   "F004",
+   "F005",
+   "F006",
+   "F007",
+   "F008",
+   "F009",
+   "F010",
+   "Island01",
+   "Island02",
+   "Q036",
+   "Q037",
+   "Q0381",
+   "Q0382",
+   "Q039",
+   "Q040",
+   "Q041",
+   "Q051",
+   "R005",
+   "RUSH1"
+  ],
+  "frame_size_mismatch_entries": [],
+  "note": "FMMap frames 31-37 do not exist (FMMap.wil has 31 frames 0..30); maps 401-405/407 point there -> no overland minimap in this client build."
+ },
+ "verdict": {
+  "p6": "CLOSED (confirmed)",
+  "summary": "Minimap placement is fully determined: per-map origin (0,0), uniform scale 1.5px/tile X and 1.0px/tile Y, frame size ceil4(W*1.5) x H, drawn into a 128x128 panel at screen (672,0)-(800,128). The P6 'blank margins / per-map painted sub-rectangle' premise is FALSE for MMap/FMMap frames: every used frame is painted full-canvas with top-left origin. The real P6 defect is an off-by-one frame index: the client uses MMap frame value-1 while the current simulator/crossref uses frame value, so every MMap.wil map renders the wrong minimap image (same size block, adjacent frame). FMMap mapping (value-1001) is correct. 12 maps point at genuinely blank frames (no artwork) and 72 server-only maps are absent from the EI client Map dir.",
+  "remaining": "None blocking. If desired, visually confirm MMap frame 0 == 比奇矿区-type dungeon for D001 (value 1) in the simulator after fixing the index rule."
+ },
+ "next_steps": [
+  "Fix Tools/maps/gen_minimap_ei.py / mapviewer._minimap_index_ei MMap branch to frame = value - 1 (currently frame = value).",
+  "Optionally update docs/research/ei-ui-layout/minimap-server-crossref.json rules entry for value < 1001."
+ ]
+}

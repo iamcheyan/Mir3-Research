@@ -34,6 +34,12 @@
 | C19 | 模拟器图层（Back/Middle/Front）可独立开关渲染，缓存键含 g/m/f；/api/cell 逐格返回三层库/帧/flag/anim；/api/strip 导出三模式对比条带 | mapviewer 实现 + 浏览器实测（图层开关即时生效、tooltip 逐格数据） |
 | C20 | Envir MonItems 掉落文件已接入模拟器：怪物点击 tooltip 显示 掉落 前5（如 半兽勇士 金币×4000 1/1） | load_drops 解析 280 个 MonItems 文件 + /api/entities 实测 |
 | C21 | 544 图逐图勘察完成：城镇/室内/半兽洞穴/赤月山谷/沃玛/沙漠雪地六大类结构定型；34 图 5723 异常按 8 类错误分类（map-file/library/frame-decode/offset/坐标/图层/版本/特殊处理），无 map-file 与库表错误 | MAP-SURVEY.md 全表 + catalog/audit 统计 |
+| C22 | 帧越界语义：FetchFrame（0x466130；type0 WIL 0x466640、type1/2 ZL 0x466720）在解引用前比较帧号 vs 库帧数——`0x46664A cmp edi,[esi+0x10]; 0x46664D jae 0x466714`（type0）、`0x466727 cmp eax,[ecx+0x2C]; 0x466729 jae 0x466761`（type1/2）→ 越界/空帧(offset 0)/宽高>4096 返回 0 → 全部 7 条绘制路径 `test eax,eax; je <纯尾声>` 跳过 → **单元格不绘制（透明）**；无取模/首帧/空帧替换/无检查四假说全部排除 | frame-oob-semantics-evidence.json（Finding 274，primary-static） |
+| C23 | 空地面格跳过机制：ground 0x43b440 逐 2×2 块四重门控——`T%14<=2`（0x43b53c，T=file−⌊file/14⌋）、`T<=0x45`（0x43b545）、`frame!=0xFFFF`（0x43b54a）、lookup 非空（0x43b569）；T(255)=237 被门 A+B 拒、frame 0xFFFF 被门 C 拒；地面缓冲先清零（0x43b455 rep stosd，0x1B0000 B）→ 空档在原版渲染为**黑** | ground-not-drawn-evidence.json（Finding 275，primary-static） |
+| C24 | offset 分布定案：地图层库（tiles/object 族）98.8% 数据帧 offset 非零——城镇/主题族统一 (−24,−16)（Tilesc/Tiles30c/Wallsc/Cliffsc/Housesc/SmObjectsc/Animationsc/Innersc/Dungeonsc/Sand_*/Wood_*）、洞穴族统一 (7,−44)（Tiles5c 10000+/object1c/object2c/SmTilesc 10000+），另 4,220 帧 (0,0)；furnituresc 含巨量垃圾 offset（如 30280,21537）且 0.map 正常渲染 → **C5 零 offset 读取为有意约定而非平凡零值**；需要 offset 的库 = actor（C6）与 Interface1c 控件（519 对） | offset-distribution-evidence.json（Finding 276，derived，123 库 1,084,929 帧全扫） |
+| C25 | 小地图帧放置公式（confirmed）：painted rect=(0,0,W·1.5,H)、1.5 px/tile X / 1 px/tile Y、帧尺寸=ceil4(W·1.5)×H、原点左上；面板 128×128 @ (672,0)-(800,128)，客户端随玩家滚动源窗口；**帧索引规则：客户端索引 = server值−1（MMap.wil）或值−1001（FMMap.wil）**——EXE setter 0x43D780（调用者 0x420C3A 做 dec）、float 1.5 @0x476904、帧矩形 0x43D7AD-0x43D7C7、面板 SetRect 0x43D518/0x43D545、库串 0x47C414/0x47C428 | minimap-calibration-evidence.json（Finding 277，313 行全枚举 + 241 头可读比对，229 帧吻合公式） |
+| C26 | 保留标记帧语义：客户端**精确比较** frame==0xFFFF（0x43BB45/0x43BB4A、0x43BBBB、0x43BE3A/0x43BEAB、0x43B321），**非掩码**——0x43A000–0x43E000 区 grep `0xff00` 立即数 0 命中；0xFF00–0xFFFE 通过 0xFFFF 比较后进入 FetchFrame 边界检查（0x46664A）必然失败（库帧数最大 33,125 < 65,280）→ 返回 0 → 不绘制；『保留标记』= 地图数据/编辑器约定，客户端无特殊处理 | reserved-frame-markers-evidence.json（Finding 278，primary-static） |
+| C27 | 保留/幻影帧分布定案：22 库纯保留+混合引用全部集中在 **39 个 legacy 13B 探针图**（每主题每库 1 格自检格），真实 14B 图保留格 = 0（早前『4.map 1604』为 0xFFFF 误计）；『3 库全幻影』不可复现——最接近为 41/49/54 库仅有空占位引用（wix offset 0 = 空白）；26 个保留值 0xFF00–0xFF80，原始 41,996 格 / 解析后 8,286 格 | reserved-frame-markers-evidence.json（Finding 278，primary-static） |
 
 ## derived
 
@@ -42,9 +48,10 @@
 | D1 | EI 原版视觉 = 本项目 rect 基准（原版客户端无法本地运行） | 反汇编 C3-C8 |
 | D2 | 原版 = `om=none`（零 offset）；`midfront` 近原版、`all` 破坏观感 | 10 图条带视觉 + diff stats（0.map nonevsall 70% 像素差） |
 | D3 | 39 张 Snow/Forest 主题图 = legacy 13B，不可用 14B 解析器渲染 | catalog legacy 统计 |
-| D4 | 室内图（0_003/5_0013）地面未绘制或与 ZL `MapInfo.Background` 机制同类 | ZL 客户端机制对照 |
+| D4 | ~~室内图地面未绘制或与 ZL `MapInfo.Background` 机制同类~~ → **已反驳（C23）**：EI 室内地面为瓦片（0_003：tilesc/tiles30c 1363 块；5_0013：tiles5c/tilesc 1089 块），ground_not_drawn = 空地面格跳过 + 黑底，非静态背景图 | ground-not-drawn-evidence.json 0_003/5_0013 格级分析 |
 | D5 | 图层顺序结论可直接用于模拟器/渲染器实现（ground 先、front 后、actor 最上） | C7 + mapviewer 实现 |
 | D6 | midfront offset 对洞穴图（D1423）近无影响（0.8% 像素差），all 模式破坏地面（26.6%）→ 与原版 none 一致 | 800×1200 全图 diff：nonevsall (14.49,0.266) / nonevsmid (0.8,0.022) |
+| D7 | 室内图未绘地面带在原版渲染为黑边（0_003 绘制区 58×94/60×100、5_0013 66×66/68×68） | C23 合成（缓冲清零 + 跳过） |
 
 ## candidate（未证实，勿升格）
 
@@ -53,21 +60,21 @@
 | K1 | 越界帧替换逻辑 = 空帧显示 | 3.map 面板 EI 物件缺失；替换规则未反汇编 |
 | K2 | 室内图地面 = 静态背景图而非瓦片 | D4 候选，需 MapInfo 证据 |
 
+> Round-4 闭合：K1（越界帧替换=空帧显示）→ 排除，真机制 = 显式边界检查+跳过（C22）；K2（室内静态背景）→ 排除，真机制 = 空地面格跳过（C23）。
+
 ## pending
 
 | # | 问题 | 备注 |
 |---|---|---|
-| P1 | 原版对越界帧的替换逻辑（空帧/首帧/取模） | 3.map 相关 |
-| P2 | 0_003 / 5_0013 室内地面绘制机制 | 137/67 格未绘制 |
-| P3 | D10031 ground lib2（smtilesc）帧越界 62 格原因 | 唯一 ground OOB 案例 |
 | P4 | 实体层 NPC 外观：body 字段 → NPC.wil 帧块精确布局 | 现用 f0 统一样式 |
 | P5 | 怪物名 → Mon-1.wil 库/帧映射（monster.dat 专有格式） | 现用 f0 统一样式 |
-| P6 | 小地图 FMMap/MMap.wil 帧内地图间留白逐图校准 | 现按尺寸/128px 线性映射 |
+| P6 | ~~小地图 FMMap/MMap.wil 帧内地图间留白逐图校准~~ → **已闭合（C25）**：放置公式 + 帧索引规则（MMap=值−1）；交叉引用/模拟器已更新 | minimap-calibration-evidence.json（Finding 277） |
 | P7 | 41c5aa-41c5de 遮挡窗口细节 | 已有梗概 |
 | P8 | 0x41cbd0 actor 渲染器体、0x419d40 身份 | 未深读 |
-| P9 | EI 素材中帧 offset（+4/+6）非零值的分布 | mapviewer 保留字段默认不应用 |
-| P10 | 22 个库仅有保留标记帧（0xFF00+）引用、无解码帧；3 个库全部引用幻影帧（无数据） | lib_frame_stats 备注；其内容语义未查 |
+| P9 | ~~EI 素材中帧 offset（+4/+6）非零值的分布~~ → **已闭合（C24）**：地图层 98.8% 非零（统一常量），C5 零读取为有意约定 | offset-distribution-evidence.json（Finding 276） |
+| P10 | ~~22 个库仅有保留标记帧（0xFF00+）引用、无解码帧；3 个库全部引用幻影帧（无数据）~~ → **已细化（C26/C27）**：0xFF00+ = 普通越界不绘制（精确 0xFFFF 比较）；22 库纯保留+混合引用全在 13B 探针图；『3 库全幻影』不可复现（空占位引用） | reserved-frame-markers-evidence.json（Finding 278） |
 | P11 | 98 个 .gen 怪物名中 4 个无法匹配 MonItems（夜行鬼09/异界之门/葛贰厘面0/诺玛教主2/魔神怪8） | 无掉落信息；其余 93 个已接入 |
+| P12 | 小地图源窗口滚动（客户端随玩家滚动 128×128 面板内的源窗口）的精确 scroll 数学 | C25 面板/公式已定，scroll 偏移需运行时捕获（candidate） |
 
 ## 工具链
 
@@ -76,5 +83,7 @@
 - `Tools/maps/lib_frame_stats.py` — 全库帧直方图 + 每库抽样帧级像素统计 + 蒙太奇
 - `Tools/maps/mapviewer.py` — 渲染器 /fullmap /tile /sim /api/cell /api/strip，offset 三模式、Back/Middle/Front 独立开关、实体（含掉落）层
 - `Tools/maps/render_map_comparison.py` — EI vs ZL 面板与 offset 条带
+- `Tools/maps/offset_distribution.py` — 全 Data/*.wil 帧 offset（+4/+6）非零分布扫描（Finding 276）
+- `Tools/maps/gen_minimap_ei.py` — EI 小地图索引 dump（MMap = 值−1 修正后规则，Finding 277）
 - 产物：`docs/research/mir3-map-reconstruction/{catalog,comparisons,lib-frames}`、
   `docs/research/mapviewer-investigation.md`、`LAYER-ORDER.md`、`OFFSET-EXPERIMENT.md`

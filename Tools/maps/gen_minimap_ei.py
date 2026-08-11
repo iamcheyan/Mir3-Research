@@ -6,11 +6,12 @@ from the EI *server's* Envir/MiniMap.txt (WEMADE Mir3 layout):
 
     <map-stem>  <value>
 
-Value interpretation (verified against rendered maps, 2026-08-09):
+Value interpretation (verified against rendered maps, 2026-08-09; index rule
+corrected 2026-08-11 per Finding 277 primary-static EXE proof 0x43D780/0x420C3A):
   - value >= 1001  -> overland/city minimap in FMMap.wil, frame = value - 1001
                      (0.map Bichon -> frame 0, the walled city with SW lake + N river)
-  - value <  1001  -> dungeon/field minimap in MMap.wil, frame = value
-                     (D001 ghost forest -> frame 1, D401 maze -> frame 11)
+  - value <  1001  -> dungeon/field minimap in MMap.wil, frame = value - 1
+                     (D001 ghost forest -> frame 0, D401 maze -> frame 10)
 
 Only maps that exist in the client Map dir and whose frame actually decodes
 are emitted.  Output format (tab-separated, one per line):
@@ -74,7 +75,11 @@ def main() -> None:
         if val >= 1001:
             libname, fid = "FMMap.wil", val - 1001
         else:
-            libname, fid = "MMap.wil", val
+            # Client index rule (Finding 277, primary-static): the EXE setter
+            # 0x43D780 stores server_value - 1 for MMap.wil (caller 0x420C3A
+            # does the dec).  The old value-as-frame rule was off by one and
+            # showed each MMap map's NEIGHBOUR minimap.
+            libname, fid = "MMap.wil", val - 1
         lib = libs.get(libname)
         if lib is None or not (0 <= fid < lib.count) or not has(lib, fid):
             continue
