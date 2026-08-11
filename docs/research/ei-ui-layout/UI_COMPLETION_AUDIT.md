@@ -1,6 +1,6 @@
 # EI 3.0 原版 800×600 UI 完成审计
 
-更新时间：2026-08-12（审计移植：Round 4–21 已并入，覆盖 Findings 274–327）
+更新时间：2026-08-12（审计移植：Round 4–23 已并入，覆盖 Findings 274–329；Round 24/F330 见文末）
 第一证据：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`、`mir3.dat`、`Data/*.wil`、`Data/*.wix`
 
 这份审计不把“已经有 JSON”当成“已经还原完成”。每个条目都区分：
@@ -225,3 +225,18 @@ git diff --check
 - **坐骑窗口族**：0x423B30 基类 ctor（无 vtable）；0x4268C0 坐骑 ctor（+ 5× 0x417550 子控件工厂 +0x54..+0x324 stride 0xB4）；0x423CF0 = `jmp [eax+4]` 虚拟 thunk（slot+0x14 AddTail 别名）；0x423D00 = 家族 slot +0x18 显示/定位；paint 0x4269C0 = E8 分派槽 13（F327 归属最终化）。
 - **0x560070/0x777xxx 直接写者负结果**：全编码穷举无果 → 寄存器相对 disp32 间接写 + ctor/rep-stosd 初始化；BSS 写者搜索继续非阻塞。
 - 落盘：`scene-entity-list-and-hotkey-evidence.json`（F329）+ matrix scene-entities/horse/target-box closed_2026_08_12 + RESEARCH_LOG Round 23。
+
+## Round 24 (2026-08-12) — 六成员嵌入列表对象 + 0x421xxx 包处理函数入口 + 0x417550 图片控件（Finding 330）
+
+- **六成员嵌入列表对象定案（primary-static）**：地址算术 main(0x47EF18)+0xE1154..+0xE11CC = 0x56006C..0x5600E4 六个 stride-0x18 列表对象（vtable 0x4766F0/0x4766D4/0x4766B8/0x4766D4/0x47669C/0x476680），+0xE11E4 = 实体数组 0x5600FC（stride 0x144）。列表 {+0 vtable,+4 head,+8 tail,+0xC callback,+0x10 callback-arg,+0x14 count}；节点 {+0 vtable,+4 data,+8 prev,+0xC next}（0x42E700 ForEach 证明 callback 字段）。『BSS 零直接写者』= 嵌入字段相对寻址别名（寄存器相对 disp32 + 内联绝对地址站点），ctor 0x418B00–0x418BEE + rep stosd 清零。
+- **per-member AddTail 节点 vtable 终表**：m1 0x4230E0→0x4767C0、m2/m4 0x4232A0→0x476448、m3 0x4234D0→0x4767C4、m5 0x423690→0x4767C8、m6 0x423850→0x476454（与内联站点一致）。m3 = 计时事件表（find 0x41EB40 / 5s sweeper 0x41EB70 / AddTail 0x421C50）；m4/m6 = 实体类列表（内联 AddTail @0x421345/@0x421444，字段 0x5600B8.. / 0x5600E8..）；m5 = 数据列表（删除 case 0x41F533）；0x41EBD0 = m6 三键查找（修正旧『sweeper』表述）。
+- **0x421xxx 包处理函数入口 0x41ED33 + 分派级联（primary-static）**：SEH 序言 + 0x468D10 帧分配 + esi=[esp+0x3F28] 包字符串（唯一 caller 0x41E6FA）；`+` 前缀 → 0x41E740；否则 0x452920 解析消息码 → [esp+0x10] → 级联（>0x29E/==0x29E/0x26E..0x29D/==0x26D/>0xC9/==0xC9/6..0xC8）+ 0x41F264 再分链（>0x263/==0x263/>0xD4）+ 附加跳表 0x42210C/0x42211C/0x422130/0x422140/0x422158/0x422168；公共出口 0x421D3F。type 4/5 实体生成（0x438100 第 7 参 = entity type 0x10/0x16）、m5 删除、chat '/' 命令（strchr 0x468BF0）、0x420C1E timeGetTime → [ebx+0x2AB69C] + 0x43D780。
+- **0x417550 = 静态图片控件 ctor（9 参 ret 0x24）+ 0x466130 帧选择器**：0x417550 字段全图（+0x14 图像对象/+0x18/+0x1C/+0x28 帧 id/+0x2C/+0x24 byte/+0x34 名字）；帧验证 0x466130 → SetRect 0x4762B0（w=word[frame]/h=word[frame+2]）；0x466130 按 [obj+4] mode 分派：mode 0 → 0x466640 WIL 惰性载入（帧表 stride 0x20 + GetTickCount 15s 缓存过期 + SetFilePointer/ReadFile），mode 1/2 → 0x466720 内存精灵（索引表 [obj+0x30]/count [obj+0x2C]/base [obj+0x34]/帧 [obj+0x38]/像素 [obj+0x3C]）。
+- **坐骑窗 5 控件帧对终表**：0x4268C0 内 5× 0x417550 @+0x54/+0x108/+0x1BC/+0x270/+0x324（stride 0xB4），帧对 (0xA1,0xA2)/(0x35C,0x35D)/(0x35E,0x35F)/(0x360,0x361)/(0x362,0x363)；A3 = 坐骑资源字段 edi+0xFC/+0x1C/+0x4A/+0x85/+0xC0、A4 = ebp+0xF4、A5=0/A6=1/A7=-1/A8=0。**负闭合**：坐骑窗无 vtable 写点。
+- **IAT 补名**：0x47611C=KERNEL32!GetTickCount、0x4761EC=KERNEL32!SetFilePointer、0x4760C8=KERNEL32!lstrcpyA（+KERNEL32 块 0x4760A0–0x476174 全名）；0x4680F8 = delete wrapper → 0x468D3F（null 检查 + 0x46C405 + 释放）。
+- 落盘：`six-member-lists-and-packet-handler-evidence.json`（F330）+ matrix horse closed_2026_08_12（5 控件注记）+ layout.json version 0.7 → 0.8 + RESEARCH_LOG Round 24。
+
+## Pending（未阻塞，持续队列）
+- 0x41E6FA caller 体、0x468D10 帧分配 helper 体、0x418030 通知显示体（8 参序已知）未完整复核。
+- 0x4767C0 家族 slot +0x18 0x423D00 读 this+0x28/+0x2C 与 16 字节节点矛盾 → 待复核。
+- 0x560070/0x777xxx 寄存器相对写者全站点解码；0x4561B0（实体 +0xF0 子对象）、0x404FB0（实体 Init）、0x4529B0/0x434EF0 体。

@@ -1,5 +1,5 @@
 {
-  "version": "0.7-main-object-vtable-family",
+  "version": "0.8-six-member-lists-and-packet-handler",
   "viewport": {
     "width": 800,
     "height": 600
@@ -1536,10 +1536,13 @@
       "evidence": {
         "level": "primary-static",
         "addresses": [
+          "0x00417550",
           "0x00423B30",
-          "0x004278d9"
+          "0x004268C0",
+          "0x004278d9",
+          "0x00466130"
         ],
-        "notes": "Identity confirmed 2026-08-12 (F327): dispatch paint 0x4269C0, ctor 0x4268C0 @ main_init 0x4278D9, hitrect +0x18 = 0x52130."
+        "notes": "Identity confirmed 2026-08-12 (F327): dispatch paint 0x4269C0, ctor 0x4268C0 @ main_init 0x4278D9, hitrect +0x18 = 0x52130. F330: 5x static-image sub-controls via 0x417550 @ +0x54/+0x108/+0x1BC/+0x270/+0x324 (stride 0xB4), frame pairs 0xA1/0xA2, 0x35C/0x35D, 0x35E/0x35F, 0x360/0x361, 0x362/0x363 (GameInter.wil); ctor A3=mount-resource fields edi+0xFC/+0x1C/+0x4A/+0x85/+0xC0, A4=ebp+0xF4; no vtable write point; evidence: six-member-lists-and-packet-handler-evidence.json."
       },
       "vtable": {
         "derived_vtable": "0x00476834",
