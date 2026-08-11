@@ -43,6 +43,9 @@ CACHE_FRAMES_BYTES = 256 * 1024 * 1024  # decoded frames LRU budget (per process
 THUMBS_DIR = "/tmp/wiki_thumbs"  # pre-rendered full-map thumbnails (shared with WikiServer/thumb_gen)
 MAX_FULL_DIM = 16384   # full-map single image: longest side cap (px)
 FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
+DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
+DEFAULT_CONNECTIONS = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), "../../docs/database/data/map-connections.json"))
 
 # Layout modes.  Mir3.exe (EI 2002) renders the map grid axis-aligned:
 # every draw call projects cell (x,y) with a single-axis term (x*48, y*32)
@@ -343,11 +346,14 @@ def parse_map(path: str) -> tuple[int, int, list[list[MapCell]]]:
             cells[x * 2][y * 2].back_file = bf
             cells[x * 2][y * 2].back_img = bi
 
-    # Segment 2: Full-res Cells (14 bytes each)
-    n_cells = min(w * h, max(0, (len(data) - 28) // 14))
+    # Segment 2: Full-res Cells (14 bytes each).  This segment follows the
+    # half-resolution Back table; restarting at offset 28 would interpret
+    # Back bytes as flags/library ids and produces a mostly black map.
+    cell_base = offset
+    n_cells = min(w * h, max(0, (len(data) - cell_base) // 14))
     for i in range(n_cells):
         x, y = divmod(i, h)
-        offset = 28 + i * 14
+        offset = cell_base + i * 14
         # cell structure:
         # 0: flag, 1: midAnim, 2: frontAnim, 3: frontFile, 4: midFile
         # 5-6: midImg (uint16), 7-8: frontImg (uint16), 9+: unused/padding
@@ -1420,6 +1426,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #viewport.dragging { cursor:grabbing; }
         #map-img { display:block; background:#000; }
         #grid-canvas { position:absolute; top:40px; left:0; pointer-events:none; }
+        #route-svg { position:absolute; pointer-events:none; z-index:4; overflow:visible; }
         #cat-panel { position:fixed; left:10px; bottom:10px; width:330px; max-height:46vh; overflow:auto;
             background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
             font-size:12px; color:#c8c8d2; z-index:60; display:none; line-height:1.45; }
@@ -1556,7 +1563,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <span id="info"></span>
         <span id="status"></span>
     </div>
-    <div id="viewport"><img id="map-img" draggable="false" alt=""><canvas id="grid-canvas" width="0" height="0"></canvas></div>
+    <div id="viewport"><img id="map-img" draggable="false" alt=""><svg id="route-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas></div>
     <div id="cat-panel"></div>
     <div id="minimap">
         <div class="mm-title">全图</div>
@@ -1633,6 +1640,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 applyAnchor();
                 drawMini();
                 drawGrid();
+                drawRoutes();
                 hideLoading();
             };
             img.onerror = () => {
@@ -1656,6 +1664,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             version++;
             imgEl.src = "";
             loadMini();
+            loadRoutes(mi);
             render(true);
         }
 
@@ -1721,6 +1730,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             ctx.stroke();
         }
 
+        // ---- map connections (game-cell coordinates, not screen coordinates) ----
+        const routeSvg = document.getElementById("route-svg");
+        let routeCache = {};
+        function drawRoutes() {
+            const mi = curMap();
+            const routes = routeCache[mi?.name] || [];
+            if (!mi || !imgEl.naturalWidth) { routeSvg.innerHTML = ""; return; }
+            const s = curScale();
+            const rect = imgEl.getBoundingClientRect();
+            const vpRect = vp.getBoundingClientRect();
+            routeSvg.style.left = (rect.left - vpRect.left) + "px";
+            routeSvg.style.top = (rect.top - vpRect.top) + "px";
+            routeSvg.setAttribute("width", rect.width); routeSvg.setAttribute("height", rect.height);
+            const px = p => Number(p.x) * 48 / s;
+            const py = p => Number(p.y) * 32 / s;
+            routeSvg.innerHTML = routes.map(r => {
+                const sourceHere = r.source.map.replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
+                const destHere = r.destination.map.replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
+                if ((!sourceHere && !destHere) || (sourceHere && r.source.x == null) || (destHere && r.destination.x == null)) return "";
+                const sx=sourceHere ? px(r.source) : 0, sy=sourceHere ? py(r.source) : 0;
+                const dx=destHere ? px(r.destination) : 0, dy=destHere ? py(r.destination) : 0;
+                const color = /Cave|Down/.test(r.icon) ? "#ff6b6b" : "#72d6ff";
+                const title = `${r.source.description} → ${r.destination.map} ${r.destination.description}`;
+                const line = sourceHere && destHere ? `<line x1="${sx}" y1="${sy}" x2="${dx}" y2="${dy}" stroke="${color}" stroke-width="2" stroke-dasharray="5 4" opacity=".85"/>` : "";
+                const a = sourceHere ? `<circle cx="${sx}" cy="${sy}" r="5" fill="${color}" stroke="#111" stroke-width="2"><title>${title}</title></circle>` : "";
+                const b = destHere ? `<circle cx="${dx}" cy="${dy}" r="4" fill="#ffd54a" stroke="#111" stroke-width="2"><title>入口：${title}</title></circle>` : "";
+                return line + a + b;
+            }).join("");
+        }
+        async function loadRoutes(mi) {
+            try {
+                const res = await fetch("/api/connections?map=" + encodeURIComponent(mi.name));
+                const data = await res.json(); routeCache[mi.name] = data.links || [];
+            } catch (e) { routeCache[mi.name] = []; }
+            drawRoutes();
+        }
+
         // ---- cursor cell coordinate readout (rect: world px -> cell) ----
         vp.addEventListener("mousemove", (e) => {
             const mi = curMap();
@@ -1738,6 +1784,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
             infoEl.textContent = fmt(mi, curZ()) + " · 格 " + cx + "," + cy + extra;
         });
+        vp.addEventListener("scroll", drawRoutes);
+        window.addEventListener("resize", () => { drawGrid(); drawRoutes(); });
 
         // ---- catalog info panel ----
         let catCache = {};   // map_name -> catalog doc
@@ -2151,9 +2199,9 @@ BATCH_PROGRESS = {
 
 
 KNOWN_CANDIDATE_ROOTS = [
+    "/home/tetsuya/development/Zircon/Debug/Client",
     "/home/tetsuya/NAS/TMP/EI传奇3.0客户端",
-    "/home/tetsuya/NAS/TMP/mir3ei",
-    "/home/tetsuya/development/Zircon/Debug/Client"
+    "/home/tetsuya/NAS/TMP/mir3ei"
 ]
 
 def get_client_roots() -> list[dict]:
@@ -2186,6 +2234,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
     layout: str = LAYOUT_RECT   # axis-aligned (original Mir3.exe projection); "iso" legacy
     catalog: dict = {}          # map_name -> catalog doc (build_map_catalog.py)
     entities: list = []         # Mud3 Envir entity data (load_entities)
+    connections: list = []      # exported System.db movement records
 
     @classmethod
     def _render_lock(cls, key: tuple):
@@ -2349,6 +2398,21 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        elif self.path.startswith("/api/connections?"):
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            map_name = os.path.splitext(os.path.basename(qs.get("map", [""])[0]))[0]
+            links = [x for x in self.connections
+                     if os.path.splitext(x.get("source", {}).get("map", ""))[0] == map_name
+                     or os.path.splitext(x.get("destination", {}).get("map", ""))[0] == map_name]
+            body = json.dumps({"ok": True, "links": links}, ensure_ascii=False).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
@@ -2689,6 +2753,19 @@ def load_catalog(catalog_dir: str) -> dict:
         return {}
 
 
+def load_connections(path: str) -> list[dict]:
+    """Load exported System.db movements, keeping only renderable endpoints."""
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return [x for x in data.get("links", [])
+                if x.get("source", {}).get("map") and x.get("destination", {}).get("map")]
+    except (OSError, ValueError, TypeError):
+        return []
+
+
 _DROPS_CACHE: dict[str, list[dict]] = {}
 
 
@@ -2831,7 +2908,9 @@ def load_entities(envir_dir: str) -> list[dict]:
 def main():
 
     parser = argparse.ArgumentParser(description="Mir3 EI / Zircon Map Viewer")
-    parser.add_argument("maps_dir", help="Folder containing .map files")
+    parser.add_argument("maps_dir", nargs="?", help="Folder containing .map files (default: current Zircon client)")
+    parser.add_argument("--client-root", default=DEFAULT_CLIENT_ROOT,
+                        help="Client root containing Map/ and Data/ (default: Zircon Debug/Client)")
     parser.add_argument("--data", help="Folder containing WIL / ZL libraries", default=None)
     parser.add_argument("--port", type=int, default=8766, help="HTTP Server Port")
     parser.add_argument("--cache-dir", default=None,
@@ -2844,7 +2923,14 @@ def main():
                         help="Full-map thumbnail dir (shared with WikiServer/thumb_gen)")
     parser.add_argument("--layout", choices=[LAYOUT_RECT, LAYOUT_ISO], default=LAYOUT_RECT,
                         help="Map projection: rect (axis-aligned, original Mir3.exe) or iso (legacy diamond)")
+    parser.add_argument("--connections", default=DEFAULT_CONNECTIONS,
+                        help="JSON exported by export_map_connections.py")
     args = parser.parse_args()
+
+    if not args.maps_dir:
+        args.maps_dir = os.path.join(args.client_root, "Map")
+    if not os.path.isdir(args.maps_dir):
+        parser.error(f"maps directory not found: {args.maps_dir}")
 
     data_dir = args.data
     if not data_dir:
@@ -2870,8 +2956,10 @@ def main():
     ViewerHandler.thumbs_dir = args.thumbs_dir
     ViewerHandler.layout = args.layout
     ViewerHandler.catalog = load_catalog(args.catalog)
+    ViewerHandler.connections = load_connections(args.connections)
     if ViewerHandler.catalog:
         print(f"[*] Catalog: {len(ViewerHandler.catalog)} maps loaded")
+    print(f"[*] Connections: {len(ViewerHandler.connections)} movements loaded")
     if args.envir:
         ViewerHandler.entities = load_entities(args.envir)
         print(f"[*] Envir entities: {len(ViewerHandler.entities)} loaded")

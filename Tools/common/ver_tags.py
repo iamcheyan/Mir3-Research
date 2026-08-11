@@ -50,6 +50,11 @@ except FileNotFoundError:
 # ============ MonsterLookup: 枚举名 -> (库序号, shape) ============
 mon_lookup = {}
 lookup_path = os.path.join(ROOT, "GodotClient", "Formats", "MonsterLookup.cs")
+if not os.path.exists(lookup_path):
+    # Mir3-Research 无 GodotClient; 回退 Zircon 仓库
+    alt = "/home/tetsuya/development/Zircon/GodotClient/Formats/MonsterLookup.cs"
+    if os.path.exists(alt):
+        lookup_path = alt
 if os.path.exists(lookup_path):
     txt = read(lookup_path)
     for m in re.finditer(r"MonsterImage\.(\w+),\s*\(LibraryFile\.(\w+),\s*(\d+)\)", txt):

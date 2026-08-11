@@ -13,7 +13,7 @@ import json, os, re, sys
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DOCS = os.path.join(ROOT, "..", "docs")
+DOCS = os.path.join(ROOT, "docs")
 
 def read(p):
     with open(p, encoding="utf-8") as f:

@@ -1,0 +1,952 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EI 地图迁移对比报告</title>
+<style>
+:root{--bg:#0f1419;--card:#1a222c;--border:#2d3a47;--text:#e8eef4;--muted:#8ba0b4;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;--yellow:#f1c40f;--orange:#e67e22}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;padding:28px;line-height:1.6}
+h1{font-size:26px;margin-bottom:8px}.sub{color:var(--muted);margin-bottom:24px;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
+.card .num{font-size:34px;font-weight:700}.card .lbl{color:var(--muted);font-size:12px;margin-top:4px}
+.green .num{color:var(--green)}.red .num{color:var(--red)}.blue .num{color:var(--blue)}.yellow .num{color:var(--yellow)}
+h2{font-size:20px;margin:30px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.cat-h{font-size:15px;color:var(--yellow);margin:18px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:10px}
+th{text-align:left;padding:7px 10px;color:var(--muted);border-bottom:2px solid var(--border)}
+td{padding:5px 10px;border-bottom:1px solid var(--border)}
+tr:nth-child(even){background:rgba(255,255,255,.02)}
+.mono{font-family:'Consolas',monospace}.dim{color:var(--muted);font-size:11px}.muted{color:var(--muted)}
+.changed{color:var(--orange)}
+footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center}
+</style></head><body>
+<h1>🗺️ EI 地图迁移对比报告</h1>
+<div class="sub">Zircon 原版 258 张 → EI 544 张 · 最终 DB 544 张地图 · 生成 2026-08-11</div>
+<div class="cards">
+<div class="card blue"><div class="num">544</div><div class="lbl">最终地图总数</div></div>
+<div class="card green"><div class="num">59</div><div class="lbl">保留（原有+EI覆盖）</div></div>
+<div class="card yellow"><div class="num">485</div><div class="lbl">新增（仅EI有）</div></div>
+<div class="card red"><div class="num">199</div><div class="lbl">删除（仅Zircon有）</div></div>
+<div class="card"><div class="num">48</div><div class="lbl">尺寸变化（已修坐标）</div></div>
+</div>
+<h2>📐 尺寸变化地图（48 张，坐标已修正）</h2>
+<table class="size-table"><thead><tr><th>地图</th><th>Zircon 尺寸</th><th>EI 尺寸</th></tr></thead><tbody>
+<tr><td class="mono">0.map</td><td class="dim">350×350</td><td class="changed">800×800</td></tr>
+<tr><td class="mono">0_001.map</td><td class="dim">40×40</td><td class="changed">30×30</td></tr>
+<tr><td class="mono">0_002.map</td><td class="dim">40×40</td><td class="changed">20×20</td></tr>
+<tr><td class="mono">1.map</td><td class="dim">350×350</td><td class="changed">600×600</td></tr>
+<tr><td class="mono">12.map</td><td class="dim">400×400</td><td class="changed">400×500</td></tr>
+<tr><td class="mono">2.map</td><td class="dim">300×300</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">3.map</td><td class="dim">350×350</td><td class="changed">400×600</td></tr>
+<tr><td class="mono">4.map</td><td class="dim">350×350</td><td class="changed">800×800</td></tr>
+<tr><td class="mono">5.map</td><td class="dim">350×350</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">8.map</td><td class="dim">400×500</td><td class="changed">800×800</td></tr>
+<tr><td class="mono">d001.map</td><td class="dim">250×250</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d002.map</td><td class="dim">250×250</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d003.map</td><td class="dim">250×250</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1001.map</td><td class="dim">300×300</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d10031.map</td><td class="dim">400×400</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d10032.map</td><td class="dim">100×100</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d1004.map</td><td class="dim">200×200</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d1011.map</td><td class="dim">400×400</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d1012.map</td><td class="dim">100×100</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d1104.map</td><td class="dim">500×500</td><td class="changed">200×200</td></tr>
+<tr><td class="mono">d12031.map</td><td class="dim">300×300</td><td class="changed">200×200</td></tr>
+<tr><td class="mono">d12032.map</td><td class="dim">300×300</td><td class="changed">200×200</td></tr>
+<tr><td class="mono">d1205.map</td><td class="dim">400×400</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d1301.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1303.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1304.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1305.map</td><td class="dim">100×100</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1401.map</td><td class="dim">100×100</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1402.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1403.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1404.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d1405.map</td><td class="dim">200×200</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d203.map</td><td class="dim">350×350</td><td class="changed">300×300</td></tr>
+<tr><td class="mono">d502.map</td><td class="dim">500×500</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d503.map</td><td class="dim">500×500</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d504.map</td><td class="dim">100×100</td><td class="changed">400×400</td></tr>
+<tr><td class="mono">d601.map</td><td class="dim">200×200</td><td class="changed">250×250</td></tr>
+<tr><td class="mono">d602.map</td><td class="dim">300×300</td><td class="changed">250×250</td></tr>
+<tr><td class="mono">d603.map</td><td class="dim">300×300</td><td class="changed">50×50</td></tr>
+<tr><td class="mono">d604.map</td><td class="dim">300×300</td><td class="changed">50×50</td></tr>
+<tr><td class="mono">d605.map</td><td class="dim">400×400</td><td class="changed">50×50</td></tr>
+<tr><td class="mono">d701.map</td><td class="dim">250×250</td><td class="changed">200×200</td></tr>
+<tr><td class="mono">d801.map</td><td class="dim">260×260</td><td class="changed">100×100</td></tr>
+<tr><td class="mono">d802.map</td><td class="dim">260×260</td><td class="changed">100×100</td></tr>
+<tr><td class="mono">d803.map</td><td class="dim">250×250</td><td class="changed">100×100</td></tr>
+<tr><td class="mono">d804.map</td><td class="dim">250×250</td><td class="changed">100×100</td></tr>
+<tr><td class="mono">d805.map</td><td class="dim">250×250</td><td class="changed">100×100</td></tr>
+<tr><td class="mono">d901.map</td><td class="dim">350×350</td><td class="changed">140×140</td></tr>
+</tbody></table>
+<h2>✅ 保留地图（59 张）</h2>
+<h3 class="cat-h">赤月/潘夜（14）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d1001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d1002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d10031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d10032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d1004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d1011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d1012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d1101.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d1102.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d1104.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d1105.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d12031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d12032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d1205.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">矿区（13）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d1301.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d1303.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d1304.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d1305.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d1401.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d1402.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d1403.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d1404.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d1405.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d401.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d402.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d403.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d404.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">石阁/虫谷（6）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d601.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d602.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d603.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d604.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d605.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d701.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">蚂蚁洞（5）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d801.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d802.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d803.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d804.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d805.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇0系（4）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">0.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">0_000.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">0_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">0_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇3-9系（4）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">3.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">4.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">5.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">8.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">祖玛神殿（4）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d501.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d502.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d503.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d504.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">洞穴（3）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇1系（2）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">1.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">12.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">沙漠/冰原（2）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d202.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d203.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇2系（1）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">2.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">神舰（1）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d901.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h2>🆕 新增地图（485 张）</h2>
+<h3 class="cat-h">石阁/虫谷（73）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d60011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d60012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d60013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d60021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d60022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d6003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d6004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d6011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d6012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d60131.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d60132.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d60133.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d60134.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d60135.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d6014.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d6015.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d6021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d6022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d6023.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">d6024.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">d6025.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">d606.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">d607.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">d608.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">d609.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">d610.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">d611.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">d612.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">d613.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">d614.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">d615.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>32</td><td class="mono">d616.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>33</td><td class="mono">d617.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>34</td><td class="mono">d618.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>35</td><td class="mono">d619.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>36</td><td class="mono">d7101.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>37</td><td class="mono">d7102.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>38</td><td class="mono">d711.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>39</td><td class="mono">d712.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>40</td><td class="mono">d713.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>41</td><td class="mono">d714.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>42</td><td class="mono">d715.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>43</td><td class="mono">d716.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>44</td><td class="mono">d71601.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>45</td><td class="mono">d71602.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>46</td><td class="mono">d71603.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>47</td><td class="mono">d71604.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>48</td><td class="mono">d71605.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>49</td><td class="mono">d71606.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>50</td><td class="mono">d71607.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>51</td><td class="mono">d71608.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>52</td><td class="mono">d71609.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>53</td><td class="mono">d71610.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>54</td><td class="mono">d71611.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>55</td><td class="mono">d71612.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>56</td><td class="mono">d71613.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>57</td><td class="mono">d71614.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>58</td><td class="mono">d71615.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>59</td><td class="mono">d71616.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>60</td><td class="mono">d71617.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>61</td><td class="mono">d71618.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>62</td><td class="mono">d71619.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>63</td><td class="mono">d71620.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>64</td><td class="mono">d71621.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>65</td><td class="mono">d71622.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>66</td><td class="mono">d71623.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>67</td><td class="mono">d71624.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>68</td><td class="mono">d71625.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>69</td><td class="mono">d71650.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>70</td><td class="mono">d71651.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>71</td><td class="mono">d71652.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>72</td><td class="mono">d71653.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>73</td><td class="mono">d717.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">蚂蚁洞（64）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d8001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d8002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d8003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d8004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d8021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d8022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d8031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d8032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d8033.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d8041.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d8051.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d806.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d8061.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d8062.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d807.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d8071.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d8072.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d808.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d8101.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">d8102.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">d8103.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">d8104.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">d811.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">d812.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">d8121.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">d8122.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">d813.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">d8131.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">d8132.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">d8133.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">d814.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>32</td><td class="mono">d8141.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>33</td><td class="mono">d815.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>34</td><td class="mono">d8151.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>35</td><td class="mono">d816.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>36</td><td class="mono">d8161.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>37</td><td class="mono">d8162.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>38</td><td class="mono">d817.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>39</td><td class="mono">d8171.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>40</td><td class="mono">d8172.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>41</td><td class="mono">d818.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>42</td><td class="mono">d8201.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>43</td><td class="mono">d8202.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>44</td><td class="mono">d8203.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>45</td><td class="mono">d8204.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>46</td><td class="mono">d821.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>47</td><td class="mono">d822.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>48</td><td class="mono">d8221.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>49</td><td class="mono">d8222.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>50</td><td class="mono">d823.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>51</td><td class="mono">d8231.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>52</td><td class="mono">d8232.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>53</td><td class="mono">d8233.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>54</td><td class="mono">d824.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>55</td><td class="mono">d8241.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>56</td><td class="mono">d825.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>57</td><td class="mono">d8251.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>58</td><td class="mono">d826.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>59</td><td class="mono">d8261.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>60</td><td class="mono">d8262.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>61</td><td class="mono">d827.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>62</td><td class="mono">d8271.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>63</td><td class="mono">d8272.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>64</td><td class="mono">d828.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">B系列（61）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">b010.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">b011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">b101.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">b102.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">b103.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">b103_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">b104.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">b105.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">b105_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">b106.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">b106_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">b106_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">b106_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">b107.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">b108.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">b109.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">b109_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">b110.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">b111.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">b112.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">b113.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">b114.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">b115.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">b115_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">b116.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">b117.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">b118.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">b118_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">b119.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">b119_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">b120.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>32</td><td class="mono">b121.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>33</td><td class="mono">b122.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>34</td><td class="mono">b123.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>35</td><td class="mono">b124.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>36</td><td class="mono">b125.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>37</td><td class="mono">b125_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>38</td><td class="mono">b126.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>39</td><td class="mono">b127.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>40</td><td class="mono">b128.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>41</td><td class="mono">b129.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>42</td><td class="mono">b130.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>43</td><td class="mono">b131.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>44</td><td class="mono">b131_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>45</td><td class="mono">b132.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>46</td><td class="mono">b132_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>47</td><td class="mono">b133.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>48</td><td class="mono">b134.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>49</td><td class="mono">b134_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>50</td><td class="mono">b135.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>51</td><td class="mono">b136.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>52</td><td class="mono">b136_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>53</td><td class="mono">b136_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>54</td><td class="mono">b136_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>55</td><td class="mono">b137.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>56</td><td class="mono">b138.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>57</td><td class="mono">b138_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>58</td><td class="mono">b139.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>59</td><td class="mono">b139_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>60</td><td class="mono">b140.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>61</td><td class="mono">b140_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">赤月/潘夜（45）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d10011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d10012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d10013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d10051.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d10052.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d10053.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d10054.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d10061.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d10062.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d10071.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d10131.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d10132.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d1014.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d10151.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d10152.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d10162.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d1021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d1022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d10231.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">d10232.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">d1024.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">d10251.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">d10252.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">d10261.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">d10262.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">d10271.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">d11031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">d11032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">d1110.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">d1111.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">d1112.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>32</td><td class="mono">d1113.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>33</td><td class="mono">d11141.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>34</td><td class="mono">d11142.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>35</td><td class="mono">d1115.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>36</td><td class="mono">d1116.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>37</td><td class="mono">d1201.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>38</td><td class="mono">d1202.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>39</td><td class="mono">d1204.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>40</td><td class="mono">d1211.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>41</td><td class="mono">d12121.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>42</td><td class="mono">d12122.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>43</td><td class="mono">d1213.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>44</td><td class="mono">d1214.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>45</td><td class="mono">d1215.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">其他地牢（39）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d411.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d412.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d413.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d414.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d415.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d416.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d420_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d421.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d421_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d422.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d422_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d422_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d423.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d431.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d431_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d432.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d432_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d433.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d433_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">d434.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">d434_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">d434_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">d435.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">d435_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">d436.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">d436_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">d441.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">d442.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">d443.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">d444.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">d445.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>32</td><td class="mono">d446.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>33</td><td class="mono">d451.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>34</td><td class="mono">d451_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>35</td><td class="mono">d452.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>36</td><td class="mono">d452_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>37</td><td class="mono">dm001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>38</td><td class="mono">dm002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>39</td><td class="mono">dm011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">矿区（31）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d1302.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d1311.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d1312.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d1313.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d1314.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d1315.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d1321.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d1322.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d1323.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d1324.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d1325.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d1411.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d1412.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d1413.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d1414.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d1415.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d1421.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d1422.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d1423.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">d1424.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">d1425.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">d400_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">d401_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">d402_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">d403_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">d404_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">d404_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">d405.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">d405_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">d406.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>31</td><td class="mono">d406_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇3-9系（30）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">31.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">41.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">42.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">43.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">44.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">4_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">4_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">4_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">4_004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">4_005.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">50.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">50_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">5_0011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">5_0012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">5_0013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">5_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">5_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">5_004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">5_005.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">5_006.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">6.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">71.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">72.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">73.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">74.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">75.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">76.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">77.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>29</td><td class="mono">78.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>30</td><td class="mono">81.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇1系（28）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">121.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">122.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">123.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">124.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">125.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">1_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">1_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">1_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">1_004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">1_005.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">1_006.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">1_007.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">1_008.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">1_009.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">1_010.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">1_011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">1_012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">1_013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">1_014.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">1_015.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">1_016.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">1_017.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">1_018.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">1_019.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>25</td><td class="mono">1_020.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>26</td><td class="mono">1_021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>27</td><td class="mono">1_022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>28</td><td class="mono">1_023.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇0系（24）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">01.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">0150.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">0157.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">01_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">01_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">01_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">02.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">02_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">02_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">02_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">02_004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">02_005.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">02_006.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">02_010.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">02_011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">02_012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">02_013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">02_014.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">0_0011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">0_0021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">0_003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>22</td><td class="mono">0_0031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>23</td><td class="mono">0_0032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>24</td><td class="mono">0_0033.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">KT系列（21）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">kt0000.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">kt0001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">kt0002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">kt0003.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">kt0004.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">kt0005.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">kt0006.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">kt0007.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">kt0008.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">kt0009.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">kt0010.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">kt0011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">kt0012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">kt0013.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">kt0014.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">kt0015.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">kt0016.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">kt00161.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">kt0017.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>20</td><td class="mono">kt0018.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>21</td><td class="mono">kt00181.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">祖玛神殿（19）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d505.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d5061.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d5062.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d5063.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d5064.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d5065.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d5066.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d5067.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d5068.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d5069.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d5071.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d5072.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d5073.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d5074.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d511.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d512.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d513.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d514.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>19</td><td class="mono">d515.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">洞穴（18）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d001_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d002_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d012_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d022_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d023.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d023_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d023_002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d024.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d033.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d042.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d043.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d052.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>18</td><td class="mono">d053.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">神舰（17）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d900.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d9021.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">d90211.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">d90212.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">d90213.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">d90214.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">d90216.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">d9022.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">d90221.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">d90222.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">d90223.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">d90224.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">d9031.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>14</td><td class="mono">d9032.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>15</td><td class="mono">d90321.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>16</td><td class="mono">d90322.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>17</td><td class="mono">d90323.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">E系列（13）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">e001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">e002.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>3</td><td class="mono">e002_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>4</td><td class="mono">e401.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>5</td><td class="mono">e402.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>6</td><td class="mono">e402_001.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>7</td><td class="mono">e403.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>8</td><td class="mono">e404.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>9</td><td class="mono">e601.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>10</td><td class="mono">e602.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>11</td><td class="mono">e603.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>12</td><td class="mono">e604.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>13</td><td class="mono">e605.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h3 class="cat-h">沙漠/冰原（2）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d2011.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+<tr><td>2</td><td class="mono">d2012.map</td><td class="muted">-</td><td class="dim">?</td></tr>
+</tbody></table>
+<h2>🗑️ 删除地图（199 张）</h2>
+<h3 class="cat-h">沙漠/冰原（53）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d2001.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>2</td><td class="mono">d20011.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>3</td><td class="mono">d20012.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>4</td><td class="mono">d2002.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>5</td><td class="mono">d20021.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>6</td><td class="mono">d20022.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>7</td><td class="mono">d20023.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>8</td><td class="mono">d2003.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>9</td><td class="mono">d20031.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>10</td><td class="mono">d20032.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>11</td><td class="mono">d2004.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>12</td><td class="mono">d201.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>13</td><td class="mono">d2101.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>14</td><td class="mono">d2102.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>15</td><td class="mono">d2103.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>16</td><td class="mono">d2104.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>17</td><td class="mono">d21051.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>18</td><td class="mono">d21052.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>19</td><td class="mono">d21053.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>20</td><td class="mono">d21054.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>21</td><td class="mono">d21055.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>22</td><td class="mono">d21056.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>23</td><td class="mono">d2106.map</td><td class="muted">-</td><td class="dim">60×60</td></tr>
+<tr><td>24</td><td class="mono">d2107.map</td><td class="muted">-</td><td class="dim">60×60</td></tr>
+<tr><td>25</td><td class="mono">d2201.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>26</td><td class="mono">d22021.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>27</td><td class="mono">d22022.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>28</td><td class="mono">d22031.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>29</td><td class="mono">d22032.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>30</td><td class="mono">d2204.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>31</td><td class="mono">d2205.map</td><td class="muted">-</td><td class="dim">70×70</td></tr>
+<tr><td>32</td><td class="mono">d2301.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>33</td><td class="mono">d2302.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>34</td><td class="mono">d2303.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>35</td><td class="mono">d2304.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>36</td><td class="mono">d2401.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>37</td><td class="mono">d2402.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>38</td><td class="mono">d2403.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>39</td><td class="mono">d2404.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>40</td><td class="mono">d2501.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>41</td><td class="mono">d2502.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>42</td><td class="mono">d2503.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>43</td><td class="mono">d2601.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>44</td><td class="mono">d2900.map</td><td class="muted">-</td><td class="dim">100×150</td></tr>
+<tr><td>45</td><td class="mono">d2901.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>46</td><td class="mono">d2902.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>47</td><td class="mono">d29031.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>48</td><td class="mono">d29032.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>49</td><td class="mono">d2904.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>50</td><td class="mono">d29051.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>51</td><td class="mono">d29052.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>52</td><td class="mono">d2906.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>53</td><td class="mono">d2907.map</td><td class="muted">-</td><td class="dim">86×86</td></tr>
+</tbody></table>
+<h3 class="cat-h">赤月/潘夜（45）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d1005.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>2</td><td class="mono">d1006.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>3</td><td class="mono">d1007.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>4</td><td class="mono">d1008.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>5</td><td class="mono">d1009.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>6</td><td class="mono">d101.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>7</td><td class="mono">d10101.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>8</td><td class="mono">d10102.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>9</td><td class="mono">d102.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>10</td><td class="mono">d103.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>11</td><td class="mono">d1103.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>12</td><td class="mono">d1106.map</td><td class="muted">-</td><td class="dim">70×70</td></tr>
+<tr><td>13</td><td class="mono">d111.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>14</td><td class="mono">d112.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>15</td><td class="mono">d113.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>16</td><td class="mono">d1200.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>17</td><td class="mono">d12011.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>18</td><td class="mono">d12012.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>19</td><td class="mono">d12013.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>20</td><td class="mono">d12014.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>21</td><td class="mono">d12021.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>22</td><td class="mono">d12022.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>23</td><td class="mono">d12023.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>24</td><td class="mono">d12024.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>25</td><td class="mono">d12033.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>26</td><td class="mono">d12041.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>27</td><td class="mono">d12042.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>28</td><td class="mono">d1206.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>29</td><td class="mono">d121.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>30</td><td class="mono">d122.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>31</td><td class="mono">d123.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>32</td><td class="mono">d1501.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>33</td><td class="mono">d1502.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>34</td><td class="mono">d15031.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>35</td><td class="mono">d15032.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>36</td><td class="mono">d15033.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>37</td><td class="mono">d15034.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>38</td><td class="mono">d1504.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>39</td><td class="mono">d1505.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>40</td><td class="mono">d1506.map</td><td class="muted">-</td><td class="dim">60×80</td></tr>
+<tr><td>41</td><td class="mono">d1601.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>42</td><td class="mono">d1602.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>43</td><td class="mono">d1603.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>44</td><td class="mono">d1604.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>45</td><td class="mono">d1802.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+</tbody></table>
+<h3 class="cat-h">D3系列（25）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d3001.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>2</td><td class="mono">d3002.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>3</td><td class="mono">d3003.map</td><td class="muted">-</td><td class="dim">200×250</td></tr>
+<tr><td>4</td><td class="mono">d3004.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>5</td><td class="mono">d3005.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>6</td><td class="mono">d3005_bh.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>7</td><td class="mono">d3005_cr.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>8</td><td class="mono">d3005_hm.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>9</td><td class="mono">d3005_jj.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>10</td><td class="mono">d3006.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>11</td><td class="mono">d301.map</td><td class="muted">-</td><td class="dim">260×260</td></tr>
+<tr><td>12</td><td class="mono">d302.map</td><td class="muted">-</td><td class="dim">260×260</td></tr>
+<tr><td>13</td><td class="mono">d303.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>14</td><td class="mono">d3101.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>15</td><td class="mono">d3102.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>16</td><td class="mono">d3103.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>17</td><td class="mono">d3106.map</td><td class="muted">-</td><td class="dim">250×240</td></tr>
+<tr><td>18</td><td class="mono">d3400.map</td><td class="muted">-</td><td class="dim">600×600</td></tr>
+<tr><td>19</td><td class="mono">d3400_1.map</td><td class="muted">-</td><td class="dim">600×600</td></tr>
+<tr><td>20</td><td class="mono">d3901.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>21</td><td class="mono">d3902.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>22</td><td class="mono">d3903.map</td><td class="muted">-</td><td class="dim">400×500</td></tr>
+<tr><td>23</td><td class="mono">d3904.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>24</td><td class="mono">d3905.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>25</td><td class="mono">d3906.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇1系（22）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">10.map</td><td class="muted">-</td><td class="dim">500×500</td></tr>
+<tr><td>2</td><td class="mono">11.map</td><td class="muted">-</td><td class="dim">500×500</td></tr>
+<tr><td>3</td><td class="mono">11_001.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>4</td><td class="mono">11_002.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>5</td><td class="mono">11_003.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>6</td><td class="mono">11_004.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>7</td><td class="mono">11_005.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>8</td><td class="mono">13.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>9</td><td class="mono">14.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>10</td><td class="mono">14_000.map</td><td class="muted">-</td><td class="dim">50×50</td></tr>
+<tr><td>11</td><td class="mono">15.map</td><td class="muted">-</td><td class="dim">800×800</td></tr>
+<tr><td>12</td><td class="mono">15_001.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>13</td><td class="mono">15_002.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>14</td><td class="mono">15_003.map</td><td class="muted">-</td><td class="dim">300×400</td></tr>
+<tr><td>15</td><td class="mono">16.map</td><td class="muted">-</td><td class="dim">800×800</td></tr>
+<tr><td>16</td><td class="mono">16_001.map</td><td class="muted">-</td><td class="dim">400×200</td></tr>
+<tr><td>17</td><td class="mono">16_002.map</td><td class="muted">-</td><td class="dim">400×200</td></tr>
+<tr><td>18</td><td class="mono">16_003.map</td><td class="muted">-</td><td class="dim">400×200</td></tr>
+<tr><td>19</td><td class="mono">17.map</td><td class="muted">-</td><td class="dim">800×800</td></tr>
+<tr><td>20</td><td class="mono">18.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>21</td><td class="mono">19.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>22</td><td class="mono">19_1.map</td><td class="muted">-</td><td class="dim">200×150</td></tr>
+</tbody></table>
+<h3 class="cat-h">洞穴（12）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d004.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>2</td><td class="mono">d005.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>3</td><td class="mono">d006.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>4</td><td class="mono">d007.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>5</td><td class="mono">d008.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>6</td><td class="mono">d009.map</td><td class="muted">-</td><td class="dim">800×800</td></tr>
+<tr><td>7</td><td class="mono">d012_1.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>8</td><td class="mono">d012_2.map</td><td class="muted">-</td><td class="dim">320×300</td></tr>
+<tr><td>9</td><td class="mono">d012_3.map</td><td class="muted">-</td><td class="dim">320×320</td></tr>
+<tr><td>10</td><td class="mono">d012_4.map</td><td class="muted">-</td><td class="dim">320×320</td></tr>
+<tr><td>11</td><td class="mono">d012_5.map</td><td class="muted">-</td><td class="dim">320×320</td></tr>
+<tr><td>12</td><td class="mono">d012_6.map</td><td class="muted">-</td><td class="dim">320×320</td></tr>
+</tbody></table>
+<h3 class="cat-h">ID系列（12）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">id3_014.map</td><td class="muted">-</td><td class="dim">200×500</td></tr>
+<tr><td>2</td><td class="mono">id3_024.map</td><td class="muted">-</td><td class="dim">200×500</td></tr>
+<tr><td>3</td><td class="mono">id7_000.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>4</td><td class="mono">id7_001.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>5</td><td class="mono">id7_002.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>6</td><td class="mono">id7_003.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>7</td><td class="mono">id7_004.map</td><td class="muted">-</td><td class="dim">150×150</td></tr>
+<tr><td>8</td><td class="mono">id9_00.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>9</td><td class="mono">id9_01.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+<tr><td>10</td><td class="mono">id9_02.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>11</td><td class="mono">ithuejingot.map</td><td class="muted">-</td><td class="dim">320×320</td></tr>
+<tr><td>12</td><td class="mono">ithuejingot_waitr.map</td><td class="muted">-</td><td class="dim">40×40</td></tr>
+</tbody></table>
+<h3 class="cat-h">矿区（7）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d13021.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>2</td><td class="mono">d13022.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>3</td><td class="mono">d1406.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>4</td><td class="mono">d4000.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>5</td><td class="mono">d4001.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+<tr><td>6</td><td class="mono">d4002.map</td><td class="muted">-</td><td class="dim">400×200</td></tr>
+<tr><td>7</td><td class="mono">d4003.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇3-9系（5）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">3_000.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>2</td><td class="mono">5_000.map</td><td class="muted">-</td><td class="dim">80×80</td></tr>
+<tr><td>3</td><td class="mono">7.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>4</td><td class="mono">8_001.map</td><td class="muted">-</td><td class="dim">100×100</td></tr>
+<tr><td>5</td><td class="mono">8_002.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+</tbody></table>
+<h3 class="cat-h">E系列（5）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">e01.map</td><td class="muted">-</td><td class="dim">300×100</td></tr>
+<tr><td>2</td><td class="mono">e02.map</td><td class="muted">-</td><td class="dim">300×100</td></tr>
+<tr><td>3</td><td class="mono">e11.map</td><td class="muted">-</td><td class="dim">300×200</td></tr>
+<tr><td>4</td><td class="mono">e12.map</td><td class="muted">-</td><td class="dim">300×200</td></tr>
+<tr><td>5</td><td class="mono">er51_ice.map</td><td class="muted">-</td><td class="dim">300×300</td></tr>
+</tbody></table>
+<h3 class="cat-h">石阁/虫谷（4）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d702.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>2</td><td class="mono">d703.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>3</td><td class="mono">d704.map</td><td class="muted">-</td><td class="dim">250×250</td></tr>
+<tr><td>4</td><td class="mono">d705.map</td><td class="muted">-</td><td class="dim">60×60</td></tr>
+</tbody></table>
+<h3 class="cat-h">神舰（4）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d902.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>2</td><td class="mono">d903.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>3</td><td class="mono">d904.map</td><td class="muted">-</td><td class="dim">350×350</td></tr>
+<tr><td>4</td><td class="mono">d905.map</td><td class="muted">-</td><td class="dim">56×56</td></tr>
+</tbody></table>
+<h3 class="cat-h">其他地牢（2）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">d4101.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+<tr><td>2</td><td class="mono">d4102.map</td><td class="muted">-</td><td class="dim">200×200</td></tr>
+</tbody></table>
+<h3 class="cat-h">其他（2）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">gm.map</td><td class="muted">-</td><td class="dim">20×20</td></tr>
+<tr><td>2</td><td class="mono">gm_001.map</td><td class="muted">-</td><td class="dim">400×400</td></tr>
+</tbody></table>
+<h3 class="cat-h">城镇0系（1）</h3>
+<table><thead><tr><th>#</th><th>地图</th><th>中文名</th><th>尺寸</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">00.map</td><td class="muted">-</td><td class="dim">1360×1500</td></tr>
+</tbody></table>
+<footer>Generated by Zircon EI migration · Map comparison report</footer></body></html>
