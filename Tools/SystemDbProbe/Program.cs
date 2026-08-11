@@ -21,6 +21,7 @@ string viewDir = null;
 string imagesOut = null;
 string storesOut = null;
 string allOut = null;
+string jsonOut = null;
 string minimapOut = null;
 string bc7Lib = null, bc7Frame = null, bc7Out = null;
 
@@ -63,6 +64,11 @@ for (int i = 0; i < args.Length; i++)
         allOut = args[++i];
         continue;
     }
+    if (args[i] == "--json")
+    {
+        jsonOut = args[++i];
+        continue;
+    }
     root = args[i];
 }
 if (!Path.IsPathRooted(root)) root = Path.GetFullPath(root);
@@ -94,7 +100,7 @@ if (minimapOut != null)
     return;
 }
 
-if (dumpDir == null && viewDir == null && imagesOut == null && storesOut == null && allOut == null)
+if (dumpDir == null && viewDir == null && imagesOut == null && storesOut == null && allOut == null && jsonOut == null)
 {
     void Dump(string label, int count)
         => Console.WriteLine($"{label,-12} {count,6}");
@@ -107,6 +113,13 @@ if (dumpDir == null && viewDir == null && imagesOut == null && storesOut == null
     Dump("刷新点", session.GetCollection<RespawnInfo>().Count);
     Dump("任务", session.GetCollection<QuestInfo>().Count);
     Dump("沙巴克", session.GetCollection<CastleInfo>().Count);
+    return;
+}
+
+if (jsonOut != null)
+{
+    GenerateJson(session, jsonOut);
+    Console.WriteLine($"JSON 导出 -> {jsonOut}");
     return;
 }
 
@@ -1181,4 +1194,202 @@ static void GenerateAll(Session session, string outPath)
     });
     File.WriteAllText(outPath, json);
     Console.WriteLine($"导出集合 {all.Count} 个");
+}
+
+// ---------- 全量 JSON 导出（供 dbviewer Web 查看器消费） ----------
+// 每个集合导出一个 <Type>.json：{"count": N, "rows": [{...}, ...]}。
+// 行内字段扁平化：DBObject 引用 -> {"Index": n, "Name": 标识}；Stats -> 数组；
+// DBBindingList / 数组 -> 子项数组；枚举 -> 成员名字符串。
+// 关联关系（怪物->掉落->物品->商店、地图->刷怪/NPC/传送/守卫/安全区）通过
+// 引用字段的 Index 在 dbviewer 前端/后端建立跳转，故这里完整保留 Index。
+static void GenerateJson(Session session, string outDir)
+{
+    IList Coll(Type t) => (IList)session.GetCollection(t).GetType().GetField("Binding").GetValue(session.GetCollection(t));
+
+    static object SafeGet(PropertyInfo p, object ob)
+    {
+        try { return p.GetValue(ob); }
+        catch { return null; }
+    }
+
+    static bool ShouldSkip(PropertyInfo p)
+    {
+        if (p.GetCustomAttribute<IgnorePropertyAttribute>() != null) return true;
+        if (p.GetCustomAttribute<ObsoleteAttribute>() != null) return true;
+        if (p.GetCustomAttribute<JsonIgnoreAttribute>() != null &&
+            !(p.PropertyType.IsGenericType &&
+              p.PropertyType.GetGenericTypeDefinition() == typeof(DBBindingList<>)))
+            return true;
+        return false;
+    }
+
+    static string IdentityOf(object o)
+    {
+        var props = o.GetType().GetProperties()
+            .Where(p => p.GetCustomAttribute<IsIdentityAttribute>() != null)
+            .Select(p => SafeGet(p, o))
+            .Where(v => v != null)
+            .Select(v => v is DBObject db ? IdentityOf(db) : v.ToString())
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .ToList();
+        return props.Count == 0 ? "" : string.Join(" / ", props);
+    }
+
+    var options = new System.Text.Json.JsonSerializerOptions
+    {
+        WriteIndented = true,
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    };
+
+    var types = session.Assemblies
+        .SelectMany(a => a.GetTypes())
+        .Where(t => t.IsSubclassOf(typeof(DBObject)) && !t.IsAbstract)
+        .Where(t => t.GetCustomAttribute<UserObjectAttribute>() == null)
+        .Distinct()
+        .OrderBy(t => t.Name)
+        .ToList();
+
+    Directory.CreateDirectory(outDir);
+
+    foreach (Type type in types)
+    {
+        IList binding;
+        try { binding = Coll(type); }
+        catch { continue; }
+        int count = binding.Count;
+
+        var props = type.GetProperties()
+            .Where(p => !ShouldSkip(p))
+            .ToList();
+
+        var rows = new List<Dictionary<string, object>>(count);
+        for (int i = 0; i < count; i++)
+        {
+            DBObject ob = (DBObject)binding[i];
+            var row = new Dictionary<string, object>
+            {
+                ["Index"] = ob.Index,
+            };
+            string ident = IdentityOf(ob);
+            if (ident.Length > 0) row["_Identity"] = ident;
+
+            foreach (PropertyInfo p in props)
+            {
+                object v;
+                try { v = p.GetValue(ob); }
+                catch { continue; }
+                if (v == null) continue;
+
+                if (v is DBObject dbo)
+                {
+                    // 引用对象：保留 Index + 显示名，便于跳转
+                    string name = IdentityOf(dbo);
+                    row[p.Name] = new Dictionary<string, object>
+                    {
+                        ["Index"] = dbo.Index,
+                        ["Name"] = name.Length > 0 ? name : null,
+                    };
+                    continue;
+                }
+                if (v is Stats stats)
+                {
+                    row[p.Name] = stats.Values.Select(kv => new { Stat = kv.Key.ToString(), Value = kv.Value }).ToList();
+                    continue;
+                }
+                if (v is DateTime dt) { row[p.Name] = dt.ToString("yyyy-MM-dd HH:mm:ss"); continue; }
+                if (v is byte[] bytes)
+                {
+                    row[p.Name] = Convert.ToHexString(bytes.Take(Math.Min(bytes.Length, 16)).ToArray())
+                                  + (bytes.Length > 16 ? $"…({bytes.Length}B)" : "");
+                    continue;
+                }
+                if (p.PropertyType.IsEnum) { row[p.Name] = v.ToString(); continue; }
+                if (p.Name == "PointRegion" && v is Array pr)
+                {
+                    // 区域点阵只保留质心 + 点数，避免导出几十 MB 的逐点坐标；
+                    // dbviewer 地图联动 / 坐标展示用质心即可。
+                    long sx = 0, sy = 0; int n = 0;
+                    foreach (object pt in pr)
+                    {
+                        if (pt == null) continue;
+                        sx += Convert.ToInt64(pt.GetType().GetProperty("X")?.GetValue(pt) ?? 0);
+                        sy += Convert.ToInt64(pt.GetType().GetProperty("Y")?.GetValue(pt) ?? 0);
+                        n++;
+                    }
+                    row[p.Name] = new { PointCount = n, CenterX = n > 0 ? (int)(sx / n) : 0, CenterY = n > 0 ? (int)(sy / n) : 0 };
+                    continue;
+                }
+                if (p.PropertyType.IsArray)
+                {
+                    var arr = (Array)v;
+                    if (arr.Length == 0) continue;
+                    var items = new List<object>();
+                    foreach (object it in arr)
+                    {
+                        if (it != null && it.GetType().Name == "Point")
+                        {
+                            var x = it.GetType().GetProperty("X")?.GetValue(it);
+                            var y = it.GetType().GetProperty("Y")?.GetValue(it);
+                            items.Add(new { x, y });
+                            continue;
+                        }
+                        if (it is DBObject el)
+                        {
+                            string nm = IdentityOf(el);
+                            items.Add(new { Index = el.Index, Name = nm.Length > 0 ? nm : null });
+                            continue;
+                        }
+                        if (it is Stats st)
+                        {
+                            items.Add(st.Values.Select(kv => new { Stat = kv.Key.ToString(), Value = kv.Value }).ToList());
+                            continue;
+                        }
+                        items.Add(it?.ToString());
+                    }
+                    row[p.Name] = items;
+                    continue;
+                }
+                if (p.PropertyType.IsGenericType &&
+                    p.PropertyType.GetGenericTypeDefinition() == typeof(DBBindingList<>))
+                {
+                    IList list = (IList)v;
+                    if (list.Count == 0) continue;
+                    var items = new List<object>(list.Count);
+                    foreach (object it in list)
+                    {
+                        if (it is DBObject el)
+                        {
+                            string nm = IdentityOf(el);
+                            items.Add(new { Index = el.Index, Name = nm.Length > 0 ? nm : null });
+                        }
+                        else items.Add(it?.ToString());
+                    }
+                    row[p.Name] = items;
+                    continue;
+                }
+                if (v is System.Collections.IEnumerable && v is not string)
+                {
+                    var items = new List<object>();
+                    foreach (object it in (System.Collections.IEnumerable)v)
+                    {
+                        if (it is DBObject el)
+                        {
+                            string nm = IdentityOf(el);
+                            items.Add(new { Index = el.Index, Name = nm.Length > 0 ? nm : null });
+                        }
+                        else items.Add(it?.ToString());
+                    }
+                    row[p.Name] = items;
+                    continue;
+                }
+                row[p.Name] = v;
+            }
+            rows.Add(row);
+        }
+
+        var file = Path.Combine(outDir, type.Name + ".json");
+        var payload = new { count, rows };
+        File.WriteAllText(file, System.Text.Json.JsonSerializer.Serialize(payload, options));
+        Console.WriteLine($"{type.Name,-28} {count,6} 条 -> {Path.GetFileName(file)}");
+    }
 }
