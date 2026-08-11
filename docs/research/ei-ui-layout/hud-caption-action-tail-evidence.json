@@ -1,0 +1,108 @@
+{
+  "evidence_id": "hud-caption-action-tail",
+  "title": "HUD caption action 0x42C494 全 16 项业务映射闭合（长尾 idx3/4/7/8/9/12/13/15）+ 0x42C359 循环回边修正 + F313 字符串区错标修正（0x47BBE0=包袱栏）+ 0x419CC0 恒真补丁 + 协议消息层 opcode 表 + 0x418/0x419 单调用点定案 — F321",
+  "date": "2026-08-11",
+  "objective": "闭合 ui-coverage-matrix.json hud 记录 pending_notes 的 caption 长尾项（'per-caption click-action business mapping of 0x42C494 entries idx3/4/7/8/9/12/13/15'）：为全部 16 个 caption slot 建立 帧/文案/坐标（ctor 0x417550 调用点）↔ 点击 handler（0x42C494 表）↔ 业务动作 的三方映射；并核证 NPC/任务侧 0x418/0x419 消息的业务名候选与其唯一调用点归属。",
+  "question": "1) caption idx3/4/7/8/9/12/13/15 各自点击后的确切动作是什么（toggle 哪号窗口 / 发什么协议消息 / 走什么状态机）？2) F313 记录 cap0 文案 @0x47BBE0 与 ctor 参数 @0x47BCE0 的矛盾如何裁决？3) 0x419CC0（idx3 退出 / idx4 注销 的 gate）的真实语义？4) 0x418/0x419 消息 builder 的静态调用点全集是否只落在任务窗口？",
+  "method": [
+    "capstone 反汇编：caption release 分派循环 0x42BEF8-0x42C36B（循环头 0x42BF02、跳转表 0x42C494、回边 0x42C359）、16 个 ctor 调用点 0x4279B2..0x427D94（9-arg ctor 0x417550，逐点记录帧对/字符串 VA/x-y 偏移）、全 16 个 handler 体（0x42C1A4..0x42C380）、toggle 0x42ADB0 + 表 0x42B3E4、子窗点击表 0x42C4D4 + case 头、0x419CC0 全函数、0x423E80 头部、0x41EC10 实体选择（8 方向表 0x41ECFC）。",
+    "字符串 GBK/EUC-KR 读取：0x47BCxx（cap0-12）与 0x47BBxx（cap13-15）两套 caption 文案区；0x47AFB4 注销确认框文案。",
+    "E8 相对调用全文件扫描：0x451A10（0x418）/0x451A40（0x419）/0x4519E0（0x416）builder 的全部静态调用点（file offset = VA − 0x400000，.text raddr==vaddr==4096）。",
+    "与 F313/F316/F314/F218/F251/F252 既有结论交叉：窗口 id 表（F313）、toggle 表（F314）、hotkey 一致性（F316）、0x418/0x419 事件孪生（F218）、任务窗控件归因（F251）、NPC 模型窗输入（F252）。"
+  ],
+  "scope": {
+    "exe": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "image_base": "0x400000",
+    "text_section": {"vaddr": 4096, "raddr": 4096, "rsize": 479232, "file_offset": "VA - 0x400000"},
+    "root_obj": "0x47EF18 (ROOT, .data 静态全局)",
+    "net_obj": "0x8AB828 (全局网络/客户端对象, +0x18 消息缓冲)",
+    "table_addrs": {"caption_action": "0x42C494", "toggle_dispatch": "0x42ADB0", "toggle_table": "0x42B3E4", "subwin_click": "0x42C4D4", "caption_ctor": "0x417550"}
+  },
+  "cell_analysis": {
+    "caption_dispatch_loop": {
+      "head": "0x42BEF8 mov dword [esp+0x14],0; xor edi,edi (caption idx 初值 0, edi=0)",
+      "loop_head_0x42BF02": "mov eax,[esp+0x14] (caption idx) -> lea eax,[eax+eax*4+0x267]; lea edx,[eax+eax*8]; eax=[esi+edx*4] (=HUD+0x567C+idx*0xB4 caption 对象) -> call [eax+0x10] (vtable+0x10 press/hit, 0x4177F0 系) -> test eax,eax; je 0x42C359 (未按下 -> 下一个)",
+      "dispatch_0x42BF30": "cmp eax,0xF; ja 0x42C359; jmp [eax*4+0x42C494]",
+      "backedge_0x42C359": "mov eax,[esp+0x14]; inc eax; cmp eax,0x10; mov [esp+0x14],eax; jl 0x42BF02 -> 循环 0..15 全扫；退出后 0x42C36B -> call 0x42D720 (腰带命中, F312 ⑥ 链)",
+      "correction": "0x42C359 是 caption 循环的增址回边（下一 caption），不是 handler 的公共 no-op 返回尾；handler 经 jmp 0x42C359 收敛到回边（idx0 0x42C204 / idx6 0x42C213 等）。idx12 直接落 0x42C359 = 点击帮助窗无动作后继续循环。"
+    },
+    "ctor_table_16_slots": [
+      {"cap": 0, "ctor": "0x4279B2", "slot": "+0x567C", "frames": "0x50/0x51", "string_va": "0x47BCE0", "text": "交易栏(Ctrl+C, C)", "x_off": "+0xCC", "y_off": "+2"},
+      {"cap": 1, "ctor": "0x4279E6", "slot": "+0x5730", "frames": "0x52/0x53", "string_va": "0x47BCCC", "text": "小地图(Ctrl+V, V)", "x_off": "+0xE4", "y_off": "+2"},
+      {"cap": 2, "ctor": "0x427A1A", "slot": "+0x57E4", "frames": "0x54/0x55", "string_va": "0x47BCB8", "text": "技能图鉴(Ctrl+B, B)", "x_off": "+0xFC", "y_off": "+2"},
+      {"cap": 3, "ctor": "0x427A4E", "slot": "+0x5898", "frames": "0x5A/0x5B", "string_va": "0x47BCA8", "text": "退出游戏(Alt+Q)", "x_off": "+0xA1", "y_off": "+0x2E"},
+      {"cap": 4, "ctor": "0x427A82", "slot": "+0x594C", "frames": "0x5C/0x5D", "string_va": "0x47BC98", "text": "注销人物(Alt+X)", "x_off": "+0xA1", "y_off": "+0x52"},
+      {"cap": 5, "ctor": "0x427AB6", "slot": "+0x5A00", "frames": "0x5E/0x5F", "string_va": "0x47BC88", "text": "组队(Ctrl+G, G)", "x_off": "+0x268", "y_off": "+0x2F"},
+      {"cap": 6, "ctor": "0x427AEA", "slot": "+0x5AB4", "frames": "0x60/0x61", "string_va": "0x47BC78", "text": "行会(Ctrl+F, F)", "x_off": "+0x268", "y_off": "+0x52"},
+      {"cap": 7, "ctor": "0x427B24", "slot": "+0x5B68", "frames": "0x9F/0x9F", "string_va": "0x47BC68", "text": "腰带(Ctrl+Z, Z)", "x_off": "+0x189", "y_off": "+0xD"},
+      {"cap": 8, "ctor": "0x427B58", "slot": "+0x5C1C", "frames": "0x64/0x65", "string_va": "0x47BC54", "text": "技能书(Ctrl+E, E)", "x_off": "+0x2BF", "y_off": "+0x10"},
+      {"cap": 9, "ctor": "0x427BAA", "slot": "+0x5CD0", "frames": "0x66/0x67", "string_va": "0x47BC40", "text": "聊天记录(Ctrl+R, R)", "x_off": "+0x2CE", "y_off": "+0x20"},
+      {"cap": 10, "ctor": "0x427BFC", "slot": "+0x5D84", "frames": "0x68/0x69", "string_va": "0x47BC2C", "text": "信息窗口(Ctrl+D, D)", "x_off": "+0x2CE", "y_off": "+0x46"},
+      {"cap": 11, "ctor": "0x427C4D", "slot": "+0x5E38", "frames": "0x6A/0x6B", "string_va": "0x47BC18", "text": "设置栏(Ctrl+N, N)", "x_off": "+0x2BF", "y_off": "+0x55"},
+      {"cap": 12, "ctor": "0x427C9F", "slot": "+0x5EEC", "frames": "0x6C/0x6D", "string_va": "0x47BC04", "text": "도움말창(지원예정) [EUC-KR 韩版遗留, '帮助窗口(计划支持)']", "x_off": "+0x298", "y_off": "+0x56"},
+      {"cap": 13, "ctor": "0x427CF1", "slot": "+0x5FA0", "frames": "0x6E/0x6F", "string_va": "0x47BBF4", "text": "坐骑(Ctrl+S, S)", "x_off": "+0x288", "y_off": "+0x46"},
+      {"cap": 14, "ctor": "0x427D42", "slot": "+0x6054", "frames": "0x70/0x71", "string_va": "0x47BBE0", "text": "包袱栏(Ctrl+Q, Q)", "x_off": "+0x288", "y_off": "+0x20"},
+      {"cap": 15, "ctor": "0x427D94", "slot": "+0x6108", "frames": "0x72/0x73", "string_va": "0x47BBCC", "text": "状态栏(Ctrl+W, W)", "x_off": "+0x299", "y_off": "+0x10"}
+    ],
+    "f313_string_correction": "F313 记录 cap0 文案 @0x47BBE0 有误：0x47BBE0 = cap14 包袱栏(Ctrl+Q, Q)（ctor 0x427D42 实测 push 0x47bbe0）；cap0 交易栏(Ctrl+C, C) = 0x47BCE0（ctor 0x4279B2 实测）。两套字符串区：0x47BCxx = cap0-12（0x47BCE0 起降序），0x47BBxx = cap13-15（0x47BBF4/0x47BBE0/0x47BBCC）。cap12 = EUC-KR 도움말창(지원예정)，韩版遗留文案，与 idx12 no-op 一致。",
+    "f313_frame_correction": "F313 cap4 注销 frames 0x5C/0x5D（非 0x5E/0x5F）；cap5 组队 0x5E/0x5F、cap6 行会 0x60/0x61 依序。fresh disasm 为准。"
+  },
+  "exe_trace": {
+    "action_table_0x42C494_16": {
+      "idx0": {"target": "0x42C1CE", "action": "交易栏: 读 [0x777764]=玩家X/[0x777768]=玩家Y/[0x777759]=方向字节; push 1,dir,Y,X; ecx=0x47EF18; call 0x41EC10 (坐标处实体选择, 8 方向表 0x41ECFC) -> 非 0 -> eax+=8; push eax; ecx=0x8AB828; call 0x451A70 (msg 0x401 交易请求)"},
+      "idx1": {"target": "0x42C259", "action": "小地图: call [0x47630C] (GetTickCount IAT); sub [esi+0x6210]; cmp 0xBB8(3000ms); jbe return (3 秒冷却); [esi+0x6518]==0 -> call 0x451770 (msg 0x409 地图查询=开); !=0 -> [esi+0x6518]=0 (关)"},
+      "idx2": {"target": "0x42C241", "action": "技能图鉴: eax=[esi+0x6208]; sete cl; [esi+0x6208]=ecx (bool flag 翻转)"},
+      "idx3": {"target": "0x42C2E1", "action": "退出游戏: ecx=0x47EF18; call 0x419CC0 (恒真 gate, 见下); je return; edx=[esi+0x53030]; lea ecx,[esi+0x53030]; push 1; call [edx+0x10] (HUD+0x53030 子对象 vtable+0x10(1))"},
+      "idx4": {"target": "0x42BF37", "action": "注销人物: ecx=0x47EF18; call 0x419CC0; je return; push 0xFFFF; push -1; push -1; push edi(0); push 0x47AFB4 ('返回游戏人物选择界面？' GBK); push 1; push 0x65; push 0x565994; ecx=0x7E04C8; call 0x418030 (确认框 ctor 8 参, msgId=0x65, F304/F234 已解码)"},
+      "idx5": {"target": "0x42C218", "action": "组队: push 6; ecx=esi; call 0x42ADB0 (toggle 窗口 id 6=party +0x47834)"},
+      "idx6": {"target": "0x42C209", "action": "行会: ecx=0x8AB828; call 0x4523E0 (msg 0x40C 行会信息请求)"},
+      "idx7": {"target": "0x42C292", "action": "腰带: ax=[esi+0xD40]; >0x2E(46) -> clamp 46; <0 -> clamp 0; ==46 -> byte[esi+0xD42]=2; ==0 -> byte[esi+0xD42]=1 (腰带槽选择状态机)"},
+      "idx8": {"target": "0x42C302", "action": "技能书: push 0xE; ecx=esi; call 0x42ADB0 (toggle id 0xE=skill book +0x524F0)"},
+      "idx9": {"target": "0x42C226", "action": "聊天记录: push 8; ecx=esi; call 0x42ADB0 (toggle id 8=chat log +0x507EC)"},
+      "idx10": {"target": "0x42C1A4", "action": "信息窗口: push 0xB; ecx=esi; call 0x42ADB0 (toggle id 0xB=quest +0x516E8, 客户端自标 信息窗口)"},
+      "idx11": {"target": "0x42C1B2", "action": "设置栏: push 0xC; ecx=esi; call 0x42ADB0 (toggle id 0xC=settings +0x518E0)"},
+      "idx12": {"target": "0x42C359", "action": "帮助窗口: 无动作 (直接落循环回边; EUC-KR 도움말창(지원예정) 支持未实现)"},
+      "idx13": {"target": "0x42C1C0", "action": "坐骑: push 0xD; ecx=esi; call 0x42ADB0 (toggle id 0xD=horse +0x52118)"},
+      "idx14": {"target": "0x42C234", "action": "包袱栏: push edi(=0); ecx=esi; call 0x42ADB0 (toggle id 0=bag +0x6554); 循环头 edi=0 (0x42BF00 xor edi,edi) 实证"},
+      "idx15": {"target": "0x42C30D", "action": "状态栏: al=[esi+0x29D38]; push 1; je/调用 0x42ADB0 (toggle id 1=status +0x29CE4); 然后 push 0x148; push 0xF4; push eax([esi+0x29D00]); push edx([esi+0x29CFC]); push 0xC8; byte[ecx+0x54]=0; ecx=esi+0x29CE4; call 0x423E80 (状态窗 244x328 重定位 @ x=0xC8, SetRect 系, IAT 0x4762B0)"}
+    },
+    "toggle_0x42ADB0": "push esi/edi; mov esi,ecx; xor edi,edi; call 0x42B820 (demote-all, F314); eax=[esp+0xC]; cmp 0xF; ja 0x42B3DD; jmp [eax*4+0x42B3E4]; case 模式 flag=[obj+flagoff]; sub=[obj+flagoff-0x30]; 关 0x42AC50/vtable+0x10 show(0) / 开 0x42AC30/vtable+0x10 show(1)",
+    "toggle_table_0x42B3E4_16": "id0->0x42ADCF(+0x6554 bag) id1->0x42AE42(+0x29CE4 status) id2->0x42AE91(+0x33188 codex) id3->0x42AEE0(+0x3399C trade) id4->0x42B06B(+0x4707C guild) id5->0x42B3DD(no-op) id6->0x42B0BA(+0x47834 party) id7->0x42B131(+0x47C28) id8->0x42B180(+0x507EC chat log) id9->0x42B25E(+0x51150 NPC 模型) id10->0x42B3DD(no-op) id11->0x42AF2F(+0x516E8 quest) id12->0x42AF7E(+0x518E0 settings) id13->0x42AFCD(+0x52118 horse) id14->0x42B01C(+0x524F0 skill book) id15->0x42B2AD(+0x52E5C 确认窗)",
+    "subwin_click_0x42C4D4_15": "case0->0x42BF85(bag +0x6554 input 0x4300F0) case1->0x42BFB3(status +0x29CE4 0x44CCD0) case2->0x42BFE1(codex +0x33188 0x44E9B0) case3->0x42C00B(trade +0x3399C 0x416EF0) case4->0x42C039(guild +0x4707C 0x4258F0) case5->0x42C198(no-op 尾) case6->0x42C063(party +0x47834 0x424610) case7->0x42C08D(+0x47C28 0x450B30) case8->0x42C0B7(chat log +0x507EC 0x4149A0) case9->0x42C17D(NPC 模型 +0x51150, F252 已解码) case10->0x42C198(no-op 尾) case11->0x42C0E1(quest +0x516E8 0x447FA0) case12->0x42C10B(settings +0x518E0 0x4414F0) case13->0x42C131(horse +0x52118 0x426A80) case14->0x42C157(skill book +0x524F0)",
+    "gate_0x419CC0": {
+      "body": "push esi/edi; mov esi,ecx; call [0x47630C] (GetTickCount); 三时间戳 esi+0x35B278/0x35B274/0x35B26C 与 now 差值均 cmp 0x1F40(8000ms): jbe -> 0x419CFB; 全 >0x1F40 -> 0x419D04",
+      "patch": "0x419CFB cmp byte ptr [0x777758],0x13; 0x419D02 nop; 0x419D03 nop (两分支槽被 NOP 化) -> 无条件落到 0x419D04 pop edi; mov eax,1; pop esi; ret",
+      "verdict": "恒返回 1 —— 节流闸被中性化（补丁）。idx3 退出 / idx4 注销的 gate 恒通过。",
+      "bytes": "419CFB: 80 3d 58 77 77 00 13 90 90 5f b8 01 00 00 00 5e"
+    },
+    "protocol_msg_builders": [
+      {"opcode": "0x3F4", "builder": "0x4517E0", "args": 3, "ret": "0xC", "note": "坐标打包 (x,y,id: ecx=x>>16 独立参)"},
+      {"opcode": "0x3F5", "builder": "0x4517A0", "args": 3, "ret": "0xC", "note": "坐标打包 (x,y,id)"},
+      {"opcode": "0x401", "builder": "0x451A70", "args": 1, "ret": 4, "note": "交易/实体动作请求, arg=实体+0x8 (idx0 交易栏)"},
+      {"opcode": "0x402", "builder": "0x451AA0", "args": 2, "ret": 8},
+      {"opcode": "0x403", "builder": "0x451AD0", "args": 2, "ret": 8},
+      {"opcode": "0x409", "builder": "0x451770", "args": 0, "ret": 0, "note": "地图查询 (idx1 小地图)"},
+      {"opcode": "0x40C", "builder": "0x4523E0", "args": 0, "ret": 0, "note": "行会信息请求 (idx6 行会); 修正此前 0x4523E0=输入框发送 表述"},
+      {"opcode": "0x40D", "builder": "0x452410", "args": 0, "ret": 0},
+      {"opcode": "0x416", "builder": "0x4519E0", "args": 0, "ret": 0, "callers": ["0x4488C7", "0x448B2E", "0x4491EF", "0x4493AF"]},
+      {"opcode": "0x418", "builder": "0x451A10", "args": 1, "ret": 4, "caller_single": "0x44862B", "note": "任务窗选中记录动作 (F218/F251); 业务名 candidate"},
+      {"opcode": "0x419", "builder": "0x451A40", "args": 2, "ret": 8, "caller_single": "0x448148", "note": "任务窗子记录点击动作 (F218/F251); 业务名 candidate"}
+    ],
+    "msg_assembly": "0x452940 = 消息装配器 (ecx/header=esi+0x18, opcode, 可变 args; F306 12B 布局 {dword arg3, word msgid@+4,...}); 0x451E60 = 发送 (ecx=0x8AB828); 0x8AB828 = 全局网络对象",
+    "entity_pick_0x41EC10": "thiscall; 入口 [esp+0xC]&0xFF=方向; >7 -> 0x41ECAC; jmp [eax*4+0x41ECFC] 8 方向表; 各 case 依方向在玩家坐标 (X=[esp+4], Y=[esp+8], 步长=[esp+0x10]) 上做 +/- 组合得到目标格坐标; 0x41ECAA/0x41ECAC 尾 = 实体查找",
+    "status_reposition_0x423E80": "ecx=status+0x29CE4; args (0xC8, [0x29CFC], [0x29D00], 0xF4, 0x148); 内部 SetRect IAT [0x4762B0] 建矩形; 失败路径 0x423F71; = 状态窗 244x328 @ x=0xC8(200) 重定位 (idx15 状态栏)"
+  },
+  "audit_vs_exe": "audit (F313) 16 caption slot 表、窗口 id 表、帧对与本证据 fresh disasm 全表一致，除两处错标已修正：(1) cap0 文案 VA 0x47BBE0 -> 0x47BCE0（0x47BBE0 = cap14 包袱栏）；(2) cap4 帧对 0x5C/0x5D。F316 已映射 idx0/1/2/5/6/10/11/14 与本证据一致；本证据补全长尾 idx3/4/7/8/9/12/13/15 并给出 0x42C359=循环回边 的修正（旧『共享 no-op 返回尾』表述废弃）。",
+  "contrast_c17": "不涉及地图 OOB 黑帧语义；本证据为 UI 侧 caption 分派静态闭合。0x419CC0 的 NOP 补丁是唯一『补丁痕迹』——两分支槽 0x419D02/0x419D03 为 0x90，其余函数体完整，属正常发行版节流闸被移除（恒真），与 C17 的黑帧无关。",
+  "verdict": {
+    "summary": "0x42C494 全 16 项 caption action 静态闭合：toggle 窗口（idx5/8/9/10/11/13/14/15）、实体交互（idx0 交易请求）、协议请求（idx1 地图查询 3s 冷却、idx6 行会请求）、bool flip（idx2 图鉴）、对话框/状态机（idx3 退出、idx4 注销确认框 msgId 0x65）、腰带选择（idx7）、no-op（idx12 帮助=EUC-KR 韩版遗留）。分派结构 = 0x42BEF8 起的 16 次循环（回边 0x42C359），非单发分派。",
+    "corrections": ["F313 cap0 文案 0x47BBE0 -> 0x47BCE0（0x47BBE0=cap14 包袱栏）", "F313 cap4 帧对 -> 0x5C/0x5D", "0x42C359 = 循环回边（非 no-op 返回尾）", "0x4523E0 = 协议行会请求 0x40C（非输入框发送）", "npn 记录『0x419 also covers NPC option clicks』无静态支持：0x451A40 唯一调用点 0x448148 属任务窗输入簇"],
+    "gate": "0x419CC0 恒返回 1（0x419D02/0x419D03 NOP 补丁）——退出/注销 gate 恒通过",
+    "msg_418_419": "0x418/0x419 均只被任务窗口使用（单调用点 0x44862B/0x448148，F218/F251 已解码语义）；业务名保持 candidate（EIServer.exe 无源码）"
+  },
+  "evidence_level": "primary-static",
+  "evidence_level_note": "全部结论来自 Mir3.exe 直接反汇编 + 字节扫描（E8 相对调用全文件、表 dword 直读、字符串 GBK/EUC-KR 直读）。0x418/0x419 业务名（放弃/删除任务、请求详情）为 candidate（服务端无源码）；cap12 EUC-KR 解码为直接字节级证据。",
+  "cross_refs": ["F218", "F234", "F243", "F251", "F252", "F261", "F304", "F306", "F312", "F313", "F314", "F315", "F316"],
+  "tool": "Tools/reverse-engineering/disasm_capstone.py (PeImage + capstone 5.0.9); 手写 E8 rel32 全文件扫描; Python int.from_bytes 表/字节直读",
+  "reproduce": "MIR3=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe; python Tools/reverse-engineering/disasm_capstone.py 0x42BEE0 0x42C480 (分派循环+表); disasm 0x427960 0x427E00 (16 ctor 点); disasm 0x419CC0 0x419D10 (gate); 字节扫描: for i in range(len(data)-4): if data[i]==0xE8: va=0x400000+i+5+int.from_bytes(data[i+1:i+5],'little',signed=True); 收集 va in {0x451A10,0x451A40,0x4519E0} 得调用点集"
+}

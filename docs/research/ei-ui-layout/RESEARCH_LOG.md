@@ -5413,3 +5413,99 @@ EOF
 **F320 Class8EmptyGroundMarker**（class8-file0xff-evidence.json，derived，conf high）：**class 8 = 字面空地面格统一 file=0xFF 标记**——23 图 670 格全部 file=0xFF；0 个 valid-file+0xFFFF、0 个 valid-file+0xFF7F。位置模式 = 有规则「留空」设计：74.map 中央洞（90 格 x∈[294,326] y∈[292,330]）、D12121 左上（171）、0_003 顶部带（137）、5_0013（67）、123.map 东缘单列 x=398（34）、D1401/D1411/D1421 角落带（各 32，md5 f7a83061 同文件）、122（18）及 13 图零散少量（0.map/1.map/8.map/02_010..02_014/D1202/D1204/D6023/D9022/D9032/d6004）。原『0_003 60×100 右 2 下 6』P2 描述 = **object 层 file=255 与 ground 层 file=0xFF 混用**，以 survey 实测为准（0_003 = 100×60，地面 137 空格）。（C65）
 
 **survey 工具与产物**：`Tools/maps/survey_mir3_maps.py`（chmod +x，544 图全量：w/h/size/md5/legacy-13B/三层逐库 cells+frame 区间+OOB/8 类分类/ground 空标记统计）→ `docs/research/mir3-map-reconstruction/survey-round14.json`：**544 图 / 34 图 anomaly / 5723 格 / 79 md5 簇 / 321 唯一 md5 / 39 legacy-13B / 0 size_mismatch / anomaly_class_totals {8: 23 图 670 格, 3: 11 图 5053 格}**；md5 top 簇：980d2999 ×43（B101–B143）、c0a3ab8d ×24（D716xx）、3e43dc1e ×17、1a3fcf4e ×15（d8xxx 家族）、7b3895ed ×9、5ffb0b8a ×9（kt0002..0009）；**0_000/50_001 = 同文件（23e8088b）**、kt0018/kt00181 = e293a0b4、0_002/0_0021 = 1d2bd415。class 3 四家族：① lib/frame-space 混淆（3.map 3255、41.map 1619、50.map 39）② 真缺失 edge art（D10031 62）③ 探针残留 0x44/0x00 结尾（kt0018 13、0_0011 8、0_002 3）④ 稀疏用户痕迹超双端（0_000 19）。marker 渲染：`Tools/maps/render_oob_tiles.py` → `comparisons/<map>__oob_markers_t<tx>-<ty>.png`（z=2 tile，洋红=mid OOB、橙=ground 帧 OOB、青=ground file-0xFF）。EVIDENCE-INVENTORY 新增 C61–C65，C11 标注「被 F317 修订」。
+
+---
+
+## 2026-08-12：HUD caption action 长尾闭合 + NPC/任务 0x418/0x419 单调用点定案（Round 15，Findings 321+）
+
+> 阶段目标：闭合 ui-coverage-matrix.json hud 记录 pending_notes 的 caption 长尾项（idx3/4/7/8/9/12/13/15 业务映射），
+> 并字节级核证 0x419CC0 补丁、协议消息层 opcode 表、0x418/0x419/0x416 的静态调用点全集。
+> 产物：`hud-caption-action-tail-evidence.json`（primary-static，F321）。
+
+### Finding 321 (HUD caption action 全 16 项业务映射，2026-08-12)：0x42C494 长尾闭合 + 分派循环结构修正
+
+**caption 分派是 16 次迭代循环（非单发分派）**：
+- `0x42BEF8 mov dword [esp+0x14],0; xor edi,edi` = 循环初始化（idx=0；edi=0 供 idx14 的 `push edi`=push 0）。
+- `0x42BF02`（循环头）：`mov eax,[esp+0x14]` → `lea eax,[eax+eax*4+0x267]; lea edx,[eax+eax*8]; eax=[esi+edx*4]`
+  （= HUD+0x567C+idx*0xB4 caption 对象）→ `call [eax+0x10]`（vtable+0x10 press 命中测试，F243 0x4177F0 族）。
+- `0x42BF30`：`test eax,eax; je 0x42C359`（未按下 → 下一项）；`cmp eax,0xF; ja 0x42C359; jmp [eax*4+0x42C494]`。
+- **0x42C359 = 循环增址回边**：`mov eax,[esp+0x14]; inc eax; cmp eax,0x10; mov [esp+0x14],eax; jl 0x42BF02`。
+  **修正前轮「0x42C359 公共 no-op 返回尾 pop edi/esi/ebp/xor eax,eax/pop ebx/ret 8」为误 disasm，废弃**。
+- 退出 0x42C36B → `call 0x42D720`（F312 ⑥ 腰带命中测试链）。
+
+**16-slot ctor 权威表（0x427960–0x427E00 全量重反汇编，9-arg ctor 0x417550 ret 0x24）**
+（slot = HUD+0x567C+i*0xB4；x=[HUD+0xC58]+xoff，y=[HUD+0xC5C]+yoff；帧对 (normal, pressed)）：
+
+|cap|ctor@|slot|xoff|yoff|帧对|string VA|文案|
+|---|---|---|---|---|---|---|---|
+|0|0x4279B2|+0x567C|+0xCC|+2|0x50/0x51|0x47BCE0|交易栏(Ctrl+C, C)|
+|1|0x4279E6|+0x5730|+0xE4|+2|0x52/0x53|0x47BCCC|小地图(Ctrl+V, V)|
+|2|0x427A1A|+0x57E4|+0xFC|+2|0x54/0x55|0x47BCB8|技能图鉴(Ctrl+B, B)|
+|3|0x427A4E|+0x5898|+0xA1|+0x2E|0x5A/0x5B|0x47BCA8|退出游戏(Alt+Q)|
+|4|0x427A82|+0x594C|+0xA1|+0x52|**0x5C/0x5D**|0x47BC98|注销人物(Alt+X)|
+|5|0x427AB6|+0x5A00|+0x268|+0x2F|**0x5E/0x5F**|0x47BC88|组队(Ctrl+G, G)|
+|6|0x427AEA|+0x5AB4|+0x268|+0x52|**0x60/0x61**|0x47BC78|行会(Ctrl+F, F)|
+|7|0x427B24|+0x5B68|+0x189|+0xD|0x9F/0x9F|0x47BC68|腰带(Ctrl+Z, Z)|
+|8|0x427B58|+0x5C1C|+0x2BF|+0x10|0x64/0x65|0x47BC54|技能书(Ctrl+E, E)|
+|9|0x427BAA|+0x5CD0|+0x2CE|+0x20|0x66/0x67|0x47BC40|聊天记录(Ctrl+R, R)|
+|10|0x427BFC|+0x5D84|+0x2CE|+0x46|0x68/0x69|0x47BC2C|信息窗口(Ctrl+D, D)|
+|11|0x427C4D|+0x5E38|+0x2BF|+0x55|0x6A/0x6B|0x47BC18|设置栏(Ctrl+N, N)|
+|12|0x427C9F|+0x5EEC|+0x298|+0x56|0x6C/0x6D|0x47BC04|도움말창(지원예정) [EUC-KR]|
+|13|0x427CF1|+0x5FA0|+0x288|+0x46|0x6E/0x6F|0x47BBF4|坐骑(Ctrl+S, S)|
+|14|0x427D42|+0x6054|+0x288|+0x20|0x70/0x71|0x47BBE0|包袱栏(Ctrl+Q, Q)|
+|15|0x427D94|+0x6108|+0x299|+0x10|0x72/0x73|0x47BBCC|状态栏(Ctrl+W, W)|
+
+**F313 字符串区错标修正**：0x47BBE0 = **cap14 包袱栏(Ctrl+Q, Q)**，非 cap0 交易栏；cap0 = 0x47BCE0（ctor 0x4279B2 实测 push 0x47bce0）。
+两套文案区：0x47BCxx = cap0–12（0x47BCE0 起降序）、0x47BBxx = cap13–15。cap12 = EUC-KR 도움말창(지원예정)（韩版遗留，与 idx12 no-op 一致）。
+
+**帧号修正（cap4–6）**：cap4 注销 0x5C/0x5D、cap5 组队 0x5E/0x5F、cap6 行会 0x60/0x61（前轮表 0x5E/0x5F、0x60/0x61、0x62/0x63 作废）。
+
+**0x42C494 16 handler 完工表**：
+
+|idx|handler|业务动作（primary-static 链）|
+|---|---|---|
+|0|0x42C1CE|交易栏：读 [0x777764]=X/[0x777768]=Y/[0x777759]=方向 → push 1,dir,Y,X; ecx=0x47EF18; `0x41EC10`（8 方向实体选择，表 0x41ECFC）→ 非 -1 → +8 → ecx=0x8AB828; `0x451A70` = **msg 0x401 交易请求**|
+|1|0x42C259|小地图：GetTickCount 3s 冷却（[0x6210] 上次, 0xBB8）→ [0x6518]==0 ? `0x451770` = **msg 0x409 地图查询** : [0x6518]=0|
+|2|0x42C241|技能图鉴：bool flip [esi+0x6208]（sete cl）|
+|3|0x42C2E1|退出游戏：`0x419CC0`（恒真）→ edx=[esi+0x53030]; push 1; call [edx+0x10]|
+|4|0x42BF37|注销人物：0x419CC0 恒真 → push 0xFFFF,-1,-1,edi(0),0x47AFB4('返回游戏人物选择界面？'),1,0x65,0x565994; ecx=0x7E04C8; `0x418030` = **确认框 msgId 0x65**|
+|5|0x42C218|组队：push 6; `0x42ADB0`（toggle id6=party +0x47834）|
+|6|0x42C209|行会：ecx=0x8AB828; `0x4523E0` = **msg 0x40C 行会信息请求**|
+|7|0x42C292|腰带：ax=[esi+0xD40]; >46 clamp 46 / <0 clamp 0; ==46 → byte[+0xD42]=2; ==0 → byte[+0xD42]=1（腰带槽选择 0..46）|
+|8|0x42C302|技能书：push 0xE; `0x42ADB0`（toggle id0xE=skill book +0x524F0）|
+|9|0x42C226|聊天记录：push 8; `0x42ADB0`（toggle id8=chat log +0x507EC）|
+|10|0x42C1A4|信息窗口：push 0xB; `0x42ADB0`（toggle id0xB=quest +0x516E8，客户端自标「信息窗口」）|
+|11|0x42C1B2|设置栏：push 0xC; `0x42ADB0`（toggle id0xC=settings +0x518E0）|
+|12|0x42C359|帮助窗口：**no-op**（直接落循环回边；EUC-KR 도움말창(지원예정)）|
+|13|0x42C1C0|坐骑：push 0xD; `0x42ADB0`（toggle id0xD=horse +0x52118）|
+|14|0x42C234|包袱栏：push edi(=0); `0x42ADB0`（toggle id0=bag +0x6554）|
+|15|0x42C30D|状态栏：al=[esi+0x29D38]; push 1; toggle id1=status +0x29CE4 → push 0x148,0xF4,[0x29D00],[0x29CFC],0xC8; ecx=+0x29CE4; `0x423E80` = **状态窗 244×328 SetRect 重定位 @x=0xC8**|
+
+toggle 0x42ADB0（thiscall esi=HUD；表 0x42B3E4 16 项：id5/id10 no-op；窗口 id ↔ 偏移 = F314/F313 全表一致）。
+
+**0x419CC0 = 恒真补丁（字节级）**：`0x419CFB: cmp byte ptr [0x777758],0x13; 0x419D02 nop; 0x419D03 nop`
+→ 无条件落到 `0x419D04: pop edi; mov eax,1; pop esi; ret`。三计时器（+0x35B278/+0x35B274/+0x35B26C）8000ms
+GetTickCount 检查全部 `jbe 0x419CFB` → **恒返回 1**（节流闸被 NOP 中性化）。文件字节 `80 3d 58 77 77 00 13 90 90`。
+idx3 退出 / idx4 注销 gate 恒通过。IAT 实证：[0x4762B0]=**SetRect**、[0x4762B4]=PtInRect、[0x4762E0]=SetWindowPos、
+[0x4762F8]=PostQuitMessage、[0x47630C]=**GetTickCount**（0x419CC4 与 0x42C259 两处使用）→ 0x423E80 的 SetRect 论闭合。
+
+**协议消息层 opcode 表（push 常量逐一点验证）**：0x451A10=0x418(1 参,ret 4)、0x451A40=0x419(2 参,ret 8)、
+0x451A70=0x401(ret 4, arg=实体+0x8)、0x451AA0=0x402(ret 8)、0x451AD0=0x403(ret 8)、0x451770=0x409(地图查询,ret 0)、
+0x4523E0=0x40C(行会请求,ret 0；修正此前「输入框发送」表述)、0x452410=0x40D、0x4519E0=0x416(无参)。
+装配 `0x452940`（header=esi+0x18）、发送 `0x451E60`（ecx=0x8AB828，全局网络对象）。
+
+**0x418/0x419/0x416 E8-scan 单调用点定案**（方法：全文件 `data[i]==0xE8` → rel32 解码 → va=0x400000+i+5+rel）：
+- 0x451A10(0x418) → **唯一 caller 0x44862B**（任务窗选中记录；+0x20C==0 门）— 与 F218/F251 一致。
+- 0x451A40(0x419) → **唯一 caller 0x448148**（任务窗子记录 +0x228 点击；+0x220 空门）— **NPC 选项点击无静态调用者支持**；
+  NPC 窗 id9 输入簇 0x440290 无 0x419 发送 → **npc 记录 pending_notes 中「0x419 also covers NPC option clicks (Finding 251)」列为无静态证据的 refinement，已修正**。
+- 0x4519E0(0x416) → 4 callers 0x4488C7/0x448B2E/0x4491EF/0x4493AF（任务窗渲染/滚动链）。
+- 业务名（放弃/删除任务、请求详情）保持 **candidate**（EIServer.exe 无源码）。
+
+**0x42C4D4 子窗点击表（15 项权威，修正前轮 case 编号错位）**：case0→0x42BF85(bag)、1→0x42BFB3(status)、
+2→0x42BFE1(codex)、3→0x42C00B(trade)、4→0x42C039(guild)、5→**0x42C198(no-op)**、6→0x42C063(party)、
+7→0x42C08D(+0x47C28)、8→0x42C0B7(chat log)、9→**0x42C17D(NPC 模型 +0x51150, F252)**、10→**0x42C198(no-op)**、
+11→0x42C0E1(quest)、12→0x42C10B(settings)、13→0x42C131(horse)、14→0x42C157(skill book)。
+边界：`cmp edi,-1; je 0x42BEF8; cmp edi,0xE; ja 0x42C198`。
+
+cross-ref：F218/F234/F243/F251/F252/F261/F304/F306/F312/F313/F314/F315/F316。
+落盘：`hud-caption-action-tail-evidence.json`、`ui-coverage-matrix.json`（hud closed_2026_08_12；npc pending_notes 修正）、`UI_COMPLETION_AUDIT.md`。
