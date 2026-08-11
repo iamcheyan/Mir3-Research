@@ -208,3 +208,12 @@ git diff --check
 - **底部输入条带交叠隐藏**：IntersectRect（常量带 {223,570,577,586}）命中且非 id8 聊天 → `ShowWindow([0x8AA48C],0)` 隐藏**聊天输入 EDIT 控件**（0x8AA48C 非主游戏窗口；主 HWND = 0x8AB7B0）。语义：非聊天窗口覆盖输入条带时禁用聊天输入。
 - **记录修正**：window-traversal-evidence id14 paint 0x43E3C0 → 0x439500（+补 id15 行）；chat 文档『map hwnd』→『chat input edit hwnd』（5 处）；layout 记录 `window.other-14-candidate` → `window.skill-book`（26 文件同步，version 0.6-window-paint-dispatch-identity）。
 - 落盘：`window-paint-dispatch-identity.json`（F327）+ matrix skills/horse closed_2026_08_12 + RESEARCH_LOG Round 21。
+
+## Round 22 (2026-08-12) — 主对象 vtable 家族定案（Finding 328）
+
+- **0x476670 = 4 槽**（非 10 槽）：+0x0 0x41E6A0 状态行格式化→0x8AB828（fmt '**%s/%s/%d/%d/1' @0x47C808）、+0x4 0x41E6D0 消息解析（memchr 0x468B30 + 0x41ED20）、+0x8 0x41E260 [this+0x34] 门控 750ms 延时（timeGetTime 基）、+0xC 0x41E2B0 wndproc（F309）。写点仅 ctor 0x418D1D / dtor 0x418D6D。
+- **+0x10..+0x24 → vtable 0x476680 = 独立 7 槽链表类**（成员 main+0xE11CC）：dtor 0x423A80 / AddTail 0x423850+0x4238F0 / insertAfter 0x423990 / ForEach 0x42E700+0x4048B0 / unlink 0x423450。家族 6 成员 main+0xE1154..+0xE11CC，vtable 28 字节间隔 + 独立 dtor 链（0x423A00..0x423A80 装回各自基址）。
+- **节点类 0x476454**：12 字节 {vtable, data, prev, next}；dtor 0x413D80/0x40EA60、渲染 0x435030、no-op 0x403AC0、位置 0x4378E0/0x437DF0/0x435A20。
+- **312 站点无一经 0x476670**（4 槽方法全经 18 个 `mov ecx,0x47EF18; call 0x41..` 直接调用）。
+- **可见性分派修正**：节点 {+0=id, +4=next, +8=prev}（0x42AC50 found-path 逐字节核对）；remove-by-id free = 直调 0x4680F8 @0x42AD93；hide-all 0x42B820 跳表 0x42B938 经 0x423F90 清 [win+0x34]。
+- 落盘：`main-object-vtable-family-evidence.json`（F328）+ matrix main-object-vtable-family 新条目 + window-visibility-dispatch closed_2026_08_12 + layout.json version 0.7 + RESEARCH_LOG Round 22。

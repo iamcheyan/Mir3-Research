@@ -507,6 +507,28 @@
     "case pattern: flag=[obj+flagoff]; close = 0x42AC50 remove + vtable[0x10](0) ret 0; open = 0x42AC30 add + vtable[0x10](1) ret 1; per-record close_va/open_va pinned (14 pairs); record 3 corrected 0x42AEB0 -> 0x42AEE0",
     "record 15 identity resolved: notice/big-chat window (Frame 602, click handler 0x43E4B0, native chat HWND wrapper [base+0x53028], title 0x8B187C, flag [0x8AA498]); open/close tails byte-exact 0x42B304..0x42B3DD",
     "state semantics: +0x30 = per-window visible gate (setter 0x423F80, class setter 0x43F020, draw 0x43F040); +0x34 = active state (setter 0x423F90)"
+   ],
+   "closed_2026_08_12": [
+    "node layout CORRECTED (F328): window-list node = {+0=id, +4=next, +8=prev} (0x42AC50 found-path 0x42ACD2-0x42AD9F byte-verified; matches F327 hit-test node+4=next); remove-by-id frees via direct operator delete 0x4680F8 @0x42AD93; 0x42B820 hide-all jump table 0x42B938 ids 0-0xE via 0x423F90 [win+0x34]=0",
+    "visibility call [win+0x10] = window-class vtable slot +0x10 SetVisible (1/0); window classes: backpack 0x6554/status 0x29CE4/store 0x33188/trade 0x3399C/quest 0x516E8/options 0x518E0/horse 0x52118/skill-book 0x524F0/guild 0x4707C/party 0x47834/leader 0x47C28/chat 0x507EC/npc 0x51150"
+   ]
+  },
+  {
+   "id": "main-object-vtable-family",
+   "category": "主对象 vtable 家族（0x476670/0x476680/0x476454）",
+   "artifacts": [
+    "main-object-vtable-family-evidence.json"
+   ],
+   "layout_ids": [],
+   "preview_mode": "main-object-vtable-family",
+   "status": "primary-static-main-object-vtable-family-closed",
+   "pending": true,
+   "pending_notes": "runtime-only: 0x476680-family member consumption (which game flows call ForEach/insertAfter on each of the 6 members at main+0xE1154..+0xE11CC); 0x41E6A0 status-line format inputs under live gameplay",
+   "closed_2026_08_12": [
+    "0x476670 = 4-slot main-object vtable (0x47EF18; ctor 0x418B00 write @0x418D1D, dtor 0x418D50 @0x418D6D): +0x0 0x41E6A0 status-line format to 0x8AB828 (fmt '**%s/%s/%d/%d/1' @0x47C808, args 0x47EEF8/0x47EEE4/[0x47EF10]/[0x47EEB8]); +0x4 0x41E6D0 message parse (memchr 0x468B30 + 0x41ED20 '+' parser); +0x8 0x41E260 [this+0x34]-gated 750ms delay (0x465DD0, WINMM!timeGetTime @IAT 0x47630C); +0xC 0x41E2B0 wndproc (F309)",
+    "slots +0x10..+0x24 belong to vtable 0x476680 = separate 7-slot list class (member main+0xE11CC): dtor 0x423A80 / AddTail 0x423850 / AddTail-var 0x4238F0 / insertAfter 0x423990 / ForEach 0x42E700 / unlink 0x423450 / ForEach-var 0x4048B0; family = 6 members main+0xE1154..+0xE11CC (0x4766F0/0x4766D4/0x4766B8/0x4766D4/0x47669C/0x476680, 28-byte vtable spacing, per-member dtor restores own base 0x423A00..0x423A80)",
+    "node class 0x476454 (12-byte {+0 vtable,+4 data,+8 prev,+0xC next}): dtor 0x413D80/0x40EA60, render 0x435030, no-op 0x403AC0 (also subobject no-op dtor), position 0x4378E0/0x437DF0/0x435A20",
+    "312 sweep-verified slot-call sites: NONE route through 0x476670 (4-slot vtable, all methods via 18 direct `mov ecx,0x47EF18; call 0x41..` sites); sites dispatch through window-class vtables slot+0x10 (SetVisible) and other object families"
    ]
   }
  ],
