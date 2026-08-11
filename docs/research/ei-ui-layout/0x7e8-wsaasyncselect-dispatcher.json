@@ -34,7 +34,7 @@
     "0x4515C0": "error classifier: WSAGetLastError-based severity; fatal -> MessageBoxA + WM_CLOSE to [0x8AB7B0]",
     "0x451CC0": "FD_READ: recv 0x2000 -> '*' ack write-back -> RX append (realloc 0x468D6E) -> state==3 ? buffer : callback vtable[+4](buf, size)",
     "0x451C40": "FD_CONNECT: connect result handling, transitions the state machine",
-    "fatal_error_strings": "0x47C7E0 'socket() generated error %d\\n', 0x47C7B8 'WSAAsyncSelect() generated error %d\\n', 0x47C794 'This socket is Non-Blocking Mode', 0x47C818 '[\xb3\xd7\xc6\xae\xbf\xf6\xc5\xa9 \xbf\xc0\xb7\xf9] - Legend of Mir III'"
+    "fatal_error_strings": "0x47C7E0 'socket() generated error %d\\n', 0x47C7B8 'WSAAsyncSelect() generated error %d\\n', 0x47C794 'This socket is Non-Blocking Mode', 0x47C818 '[\ub124\ud2b8\uc6cc\ud06c \uc624\ub958] - Legend of Mir III'"
   },
   "io_functions": {
     "0x4514F0": "hello / connect-init sequence (instruction-exact)",
