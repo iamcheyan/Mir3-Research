@@ -217,3 +217,11 @@ git diff --check
 - **312 站点无一经 0x476670**（4 槽方法全经 18 个 `mov ecx,0x47EF18; call 0x41..` 直接调用）。
 - **可见性分派修正**：节点 {+0=id, +4=next, +8=prev}（0x42AC50 found-path 逐字节核对）；remove-by-id free = 直调 0x4680F8 @0x42AD93；hide-all 0x42B820 跳表 0x42B938 经 0x423F90 清 [win+0x34]。
 - 落盘：`main-object-vtable-family-evidence.json`（F328）+ matrix main-object-vtable-family 新条目 + window-visibility-dispatch closed_2026_08_12 + layout.json version 0.7 + RESEARCH_LOG Round 22。
+
+## Round 23 (2026-08-12) — 场景实体链表 + 键盘热键 + 坐骑窗口族（Finding 329）
+
+- **场景实体链表 0x560070 定案**：= 主对象列表成员 #1（base main+0xE1154 / vtable 0x4766F0 / head main+0xE1158=0x560070 / count 0x560080）；六成员 stride 0x18（0x56006C..0x5600E4，vtable 0x4766F0/0x4766D4/0x4766B8/0x4766D4/0x47669C/0x476680）；节点 {+0 vtable,+4 data,+8 prev,+0xC next}；实体 {+0 vtable,+4/+8 名字,+0x88 state,+0xC0 type,+0xCC x,+0xD0 y,+0x61C74 flag}。AddTail 写点 0x42278F（spawn 0x422580：type 0x32 → new 0x629C8 → vtable 0x47671C @0x42264E）；unlink 站点 ×12（slot+0x14）。0x41EC10 = 8 方向相邻地块实体查找（跳表 0x41ECFC）。
+- **键盘热键 0x42CBD0 全解码**：'C' → 0x41EC10（[0x777759]/[0x777768]/[0x777764]/delta=1）→ 实体名 → 状态行 0x8AB828（0x451A70）；'D' horse id13 / 'Z' 亮度 / 'V' 节流 / 'B' [ebp+0x6208] / 'G' party / 'F' 清状态行 / 'N' options / 'T' [ebp+0x64A8]。TAB 0x42CFBE = winmgr 循环（id9 → 0x41C1E0 NPC 关闭）。
+- **坐骑窗口族**：0x423B30 基类 ctor（无 vtable）；0x4268C0 坐骑 ctor（+ 5× 0x417550 子控件工厂 +0x54..+0x324 stride 0xB4）；0x423CF0 = `jmp [eax+4]` 虚拟 thunk（slot+0x14 AddTail 别名）；0x423D00 = 家族 slot +0x18 显示/定位；paint 0x4269C0 = E8 分派槽 13（F327 归属最终化）。
+- **0x560070/0x777xxx 直接写者负结果**：全编码穷举无果 → 寄存器相对 disp32 间接写 + ctor/rep-stosd 初始化；BSS 写者搜索继续非阻塞。
+- 落盘：`scene-entity-list-and-hotkey-evidence.json`（F329）+ matrix scene-entities/horse/target-box closed_2026_08_12 + RESEARCH_LOG Round 23。
