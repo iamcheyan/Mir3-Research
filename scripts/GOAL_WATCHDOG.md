@@ -23,7 +23,7 @@ cron 每 5 分钟跑一次脚本,每次运行对 goal 任务做状态判定:
 | HEALTHY | 进程存活 且 转录新鲜(age ≤ STALL_SECONDS) | 无操作,仅刷新心跳 |
 | RUNNING | 最近 TOOL_WINDOW 秒内有工具调用开始 | **绝不 nudge**(防线) |
 | STALLED | 进程存活 且 转录超过 STALL_SECONDS 未更新 且 非 RUNNING | 向 goal pane 发送「继续」;若转录停更超过 STALL_RESTART_SECONDS(默认 30min)→ **升级为 kill + resume 重启** |
-| PAUSED | goal status = "paused"(用户/agent 手动暂停,进程活着但转录停更) | **视作 STALLED 处理**:nudge → 超阈值 kill + resume + 发「继续」,把任务重新激活 |
+| PAUSED | goal status = "paused"(omp 回合结束的 idle,进程活着但等输入) | **立即驱动**:转录停更超 `PAUSED_NUDGE_SECONDS`(默认 20s)即发「继续」nudge,不等 STALL_SECONDS。失败 MAX_FAILS 次才冷却。仅终态 goal 才允许真正停下 |
 | DEAD | 找不到 goal 的 omp 进程 | `omp --resume <id> --auto-approve` 重启 |
 | COMPLETED | goal status 为**终止态**(complete/blocked/error,≠ active 且 ≠ paused) | 自动停用(kill-switch) |
 | FAILED | MAX_FAILS 次连续恢复失败 | halt 冻结 HALT_AFTER 秒,再试一轮 |
@@ -208,7 +208,7 @@ cron 条目(已安装):
 - **kill-switch**:`touch ~/.omp/mir3-goal-watchdog.off` 永久停用(任务完成后
   脚本也会在 COMPLETED 时自动 touch);删除该文件重新启用。
 - 调阈值(环境变量):`STALL_SECONDS`(默认 1200)、`TOOL_WINDOW`(默认 400)、
-  `STALL_RESTART_SECONDS`(默认 1800)、`MAX_FAILS`(默认 4)、`HALT_AFTER`(默认 3600)。
+  `STALL_RESTART_SECONDS`(默认 1800)、`PAUSED_NUDGE_SECONDS`(默认 20)、`MAX_FAILS`(默认 4)、`HALT_AFTER`(默认 3600)。
 
 ## 8. 文件与路径速查
 
@@ -234,10 +234,15 @@ cron 条目(已安装):
   阈值可调,默认值覆盖实测最长单次 bash 调用 300s 超时。
 - **COMPLETED 仅看 status 字段**:未做设计稿要求的交付验收(验证脚本/git 状态)。
   omp 若误标 complete 会提前停用——目前以 status 为准,验收靠用户。
-- **paused ≠ 完成(2026-08-11 实测)**:omp 的 `paused` 状态(用户/agent 手动暂停)
-  曾被误当「完成」→ 看门狗自杀停用。现在明确:**只有终止态才停用**,
-  paused 归入 STALLED 恢复链。若未来 omp 新增其他「非终止」status 值,
-  需要在 COMPLETED 判定处同步排除(当前白名单:active、paused)。
+- **paused ≠ 完成(2026-08-11 实测)**:omp 的 `paused` 状态(回合结束 idle)
+  曾被误当「完成」→ 看门狗自杀停用。现在明确:**只有终止态才停用**;
+  paused 走 **case 1.5 快速驱动**——转录停更超 `PAUSED_NUDGE_SECONDS`(默认 20s)
+  即发「继续」nudge,不等 STALL_SECONDS(那是 active 卡死的兜底)。
+  设计理由:paused 是 omp 明确声明的 idle(不是卡死),无需用 STALL_SECONDS 确认;
+  也不加 RUNNING guard(tool_age 只反映停更前最后一次工具开始,paused 后无新工具,
+  用它挡会误判)。实测:`tmux send-keys -t '%0' '继续'` 对 paused 的 omp 有效
+  (转录立即增长、agent 启动下一 round)。若未来 omp 新增其他「非终止」status,
+  需在 COMPLETED 判定处同步排除(当前白名单:active、paused)。
 - **resume 不自动继续(2026-08-11 实测)**:`omp --resume` 恢复会话但停在等待输入,
   必须补发「继续」。`do_resume` 已内置「等进程起来 → 等 TUI 就绪 → 发继续」,
   但等待是定时轮询(15×2s+3s),若机器极慢或 transcript 超大,可能 TUI 未就绪

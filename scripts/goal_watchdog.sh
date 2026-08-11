@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # goal_watchdog.sh — keep the Mir3 EI reverse-engineering goal session alive.
 #
-# Cron-driven (every 5 min) watchdog. State machine over the goal agent:
-#
 #   HEALTHY    process alive + transcript fresh (age <= STALL_SECONDS)
 #   RUNNING    a tool call may be in flight (last tool_execution_start within
 #              TOOL_WINDOW) — never nudge while RUNNING
-#   STALLED    alive, no new transcript entries for STALL_SECONDS, and no
-#              recent tool activity — send "继续" to the goal pane
+#   PAUSED     goal_status == "paused" (omp idle at end of a turn) — nudge
+#              "继续" immediately so the agent never idles unless the goal is
+#              truly done. Only a *terminal* goal status is allowed to stop.
+#   STALLED    alive, goal_status active but no new transcript entries for
+#              STALL_SECONDS, and no recent tool activity — send "继续"
 #   DEAD       no goal omp process — relaunch `omp --resume <id> --auto-approve`
-#   COMPLETED  goal status no longer "active" — auto-disable (kill-switch)
+#   COMPLETED  goal status terminal (complete/blocked/error/…) — auto-disable
 #   FAILED     MAX_FAILS consecutive failed recoveries — halt for HALT_AFTER,
 #              then retry one fresh round (never spams)
 #
@@ -55,6 +56,10 @@ STALL_RESTART_SECONDS=${STALL_RESTART_SECONDS:-1800}  # transcript frozen longer
                                           # (and not RUNNING) => hard restart (kill + resume)
 MAX_FAILS=${MAX_FAILS:-4}                 # consecutive failed recoveries before halting
 HALT_AFTER=${HALT_AFTER:-3600}            # freeze automatic recovery for this long when halted
+PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转录停更超过此时长
+                                         # => 立即 nudge「继续」(paused 是 omp 回合结束
+                                         # 的正常 idle,不是卡死,故用短阈值快速驱动;
+                                         # 仅终态 goal 才允许真正停下)
 
 CHECK_ONLY=0
 DRY_RUN=0
@@ -227,8 +232,9 @@ fi
 # the user (or agent) paused it. Only a *terminal* status (complete, blocked,
 # error, ...) means the goal engine stopped driving it — restarting or nudging
 # would be wrong. Auto-disable via the kill-switch.
-# "paused" is NOT terminal: the process is alive but idle; let the STALLED
-# logic below take over (nudge, then kill+resume if frozen past threshold).
+# "paused" is NOT terminal: process alive but idle — case 1.5 below drives it
+# with "继续" immediately (short PAUSED_NUDGE_SECONDS), so the agent never
+# stops unless the goal reaches a truly terminal status.
 if [ -n "$goal_status" ] && [ "$goal_status" != "active" ] && [ "$goal_status" != "paused" ]; then
   log "goal status='$goal_status' (not active); disabling watchdog"
   touch "$OFF_FILE"
@@ -326,6 +332,42 @@ if [ -z "$goal_pid" ]; then
   nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
   [ "$rf" -ge "$MAX_FAILS" ] && rh=$((now + HALT_AFTER))
   st_set restart "$rf" "" "$nh" "$rh"
+  exit 0
+fi
+
+# --- case 1.5: PAUSED — omp idle at end of a turn, drive it immediately -------
+# 用户要求:goal 未最终完成前绝不许停下。omp 在一个回合结束会把 goal 置为
+# "paused"(进程活着、idle 等输入)。这不是卡死,无需等 STALL_SECONDS 确认。
+# paused 是 omp 明确声明的 idle 态,故不加 RUNNING guard(tool_age 只反映停更
+# 前最后一次工具开始,paused 后无新工具,用它挡会误判);只要转录停更超过
+# PAUSED_NUDGE_SECONDS(默认 20s)立刻 nudge「继续」驱动下一轮。
+# 失败计数复用 nudge 计数器:连续 MAX_FAILS 次 nudge 后仍 paused 才进入冷却。
+if [ "$goal_status" = "paused" ] && [ -n "$age" ] && [ "$age" -gt "$PAUSED_NUDGE_SECONDS" ]; then
+  nf=$(st_get NUDGE_FAILS); [ -z "$nf" ] && nf=0
+  nh=$(st_get NUDGE_HALT_UNTIL); [ -z "$nh" ] && nh=0
+  if [ "$nf" -ge "$MAX_FAILS" ]; then
+    if [ "$now" -lt "$nh" ]; then
+      log "paused-nudge halted (${nf} consecutive fails; resume $(date -d "@$nh" '+%F %T'))"
+      st_set   # heartbeat only, preserve halt state
+      exit 0
+    fi
+    log "paused-nudge freeze expired; starting a fresh round"
+    nf=0
+  fi
+  if [ -z "$target_pane" ]; then
+    log "goal paused (pid=$goal_pid age=${age}s) but no pane to nudge; skipping"
+    exit 0
+  fi
+  log "goal paused: pid=$goal_pid age=${age}s; driving with '继续' -> $target_pane"
+  if [ "$DRY_RUN" = 1 ]; then
+    echo "TEST would run: tmux send-keys -t $target_pane '继续' Enter"
+  else
+    tmux send-keys -t "$target_pane" '继续' Enter 2>>"$LOG"
+  fi
+  nf=$((nf+1))
+  rh=$(st_get RESTART_HALT_UNTIL); [ -z "$rh" ] && rh=0
+  [ "$nf" -ge "$MAX_FAILS" ] && nh=$((now + HALT_AFTER))
+  st_set nudge "" "$nf" "$nh" "$rh"
   exit 0
 fi
 
