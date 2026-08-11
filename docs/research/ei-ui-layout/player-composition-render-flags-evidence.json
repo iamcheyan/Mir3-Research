@@ -1,0 +1,946 @@
+{
+  "evidence_id": "EI-284-RenderFlagsAndSlotGrid",
+  "finding": 285,
+  "date": "2026-08-11",
+  "title": "Render-mode flag bits ([e+0x61C68]) and WIL slot-grid literals (slots 62-139): bit semantics, writer provenance, mode-map, and full literal pinning",
+  "objective": "Close pending items [2] (render-mode flag bit semantics) and [4] (slot grid 82-86 / 90-127 literal names) of docs/research/ei-ui-layout/player-composition-evidence.json; refine pending item [3] (weapon/head selector 41..50 / 21..29 landings) with static proof.",
+  "question": "1) Which code paths set the bits of the render-mode dword [e+0x61C68]? Are any bits computed client-side, or do they all originate from descriptor/server data? What behavioral meaning does each reader attach to its bit? Are the 'mode words' produced by the 0x404DA0 resolver pure alpha/color-key blit constants with no other effect? 2) What literal WIL path strings occupy slot-grid slots 82-86 and 90-127 (and surrounding 62-139), and how do they map to element indexes?",
+  "method": "Exhaustive raw-byte scan of Mir3.exe .text for the disp32 0x61C68 (25 hits = 24 unique instructions: 17 writers + 8 readers + 1 misaligned false hit at 0x404B55's disp); targeted disasm of every hit; setter-family classification; reader-side semantic reconstruction with surrounding-frame analysis; resolver map extraction at 0x404DA0-0x404E0C; dispatcher walk at 0x404E10; rep-movsd block-pairing simulation over the unrolled slot-grid init 0x4534B0-0x454120 (capstone detail + skipdata; state machine on lea edx,[ebx+disp] / mov edi,edx / mov edi,imm / rep movs*); GBK/ASCII literal decode; wilsdk spot checks; cross-ref with Findings 280/282 and the element table 0x5600FC.",
+  "source": "Mir3.exe (/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe); image base 0x400000; fileoff = VA - 0x400000; code/data 0x400000-0x47FFFF",
+  "evidence_level": "primary-static",
+  "confidence": "high",
+  "addresses": [
+    4213589,
+    4214176,
+    4214275,
+    4214288,
+    4214337,
+    4214430,
+    4214627,
+    4218145,
+    4221408,
+    4221577,
+    4221820,
+    4222868,
+    4223323,
+    4223383,
+    4226994,
+    4239189,
+    4239359,
+    4241242,
+    4244331,
+    4245431,
+    4245433,
+    4245457,
+    4245466,
+    4245500,
+    4245513,
+    4245549,
+    4245558,
+    4245570,
+    4245768,
+    4247083,
+    4247853,
+    4248529,
+    4248828,
+    4249316,
+    4249428,
+    4249653,
+    4249985,
+    4250372,
+    4250612,
+    4250971,
+    4264505,
+    4300510,
+    4300530,
+    4535472,
+    4535578,
+    4535580,
+    4535589,
+    4535616,
+    4535629,
+    4538656,
+    4588096,
+    4595408,
+    4600624
+  ],
+  "verdict": "Both pending items closed with primary-static proof: (1) [e+0x61C68] bits are exclusively server/descriptor-driven (17 wholesale-copy writers, no client-side bit computation; exhaustive scan), with reader-defined semantics bit 0x1 = race 0x53-0x55 special frame-lock gate, bit 0x2 = name-tag visibility, bit 0x100000 = spawn/teleport white flash, bit 0x8000000 = half-speed, and the six mode bits acting only as blit-mode/alpha/color-key constants via the 0x404DA0 map + 0x404E10 dispatcher; (2) slot grid 62-139 literals fully pinned (82-86 = Inventory/Equip/Ground/MIcon/ProgUse, 90-107 = Mon-3..Mon-20, 108-127 = MonS-1..MonS-20, plus NPC/MonMagic/MonImg/hair/helmet/DMon/MagicEx/StoreItem), element index == slot index. Pending item [3] (weapon/head selector) refined: landings proven static (0x40C7B7-0x40C85D); only the runtime/server trigger for sel>40 remains open.",
+  "conclusions": [
+    {
+      "claim": "[e+0x61C68] bits are NEVER computed client-side: exhaustive raw-byte scan of .text for the disp32 (25 hits = 24 unique instructions + 1 misaligned false hit) yields exactly 17 writer sites and 8 reader sites. Every writer copies a descriptor dword wholesale (from [esp+X] caller frame) or assembles it from two descriptor words (0x40D6E4: flags=(word[edx+8]<<16)|word[edx+6]); the ctor zeroes it (0x404B55). Every setter that has a 'test al,2' path also mirrors bit 0x2 into [e+0x61BD0]. Bits therefore originate from descriptor/server data at runtime; no flag arithmetic exists client-side.",
+      "va": "0x40D6E4 (representative writer); all 17 writers listed in 'writers' section",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Bit 0x1 = special frame-lock gate for race 0x53-0x55 (83-85): at 0x407197/0x40AF55 `test byte [esi+0x61C68],1; je skip`; when set, type byte [e+0x88]==3 reads a 16-bit race from [e+0x8A]/[e+0x8B] else byte [e+0x8A]; race in [0x53,0x55] → call [vtable+0x10], lock flag byte [e+0xC0]=bl, and single-frame span [e+0xB8]=[e+0xB4]+1; 0x40AFAB clamps the +0x61C7C span 2→3. Crossref: Finding 280 (monster codes 83-85 have no monster.json records).",
+      "va": "0x407197, 0x40AF55, 0x40AFAB",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Bit 0x2 = name-tag visibility: every setter mirrors it with `test al,2; je; mov [esi+0x61BD0],1` (e.g. 0x4069E0, 0x40D6E4); the mirror is also written by the per-entity visibility loop 0x419EDE/0x419EF2 (call 0x424360; [e+0x61BD0] = 0 or 1); readers 0x40B75A and 0x40C908 test [e+0x61BD0] and skip the floating name-label blit when 0. Confirms bit 0x2 == 'show name tag'.",
+      "va": "0x419EDE, 0x419EF2, 0x40B75A, 0x40C908; writers 0x4069E0/0x40D6E4",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Bit 0x100000 = spawn/teleport white-flash gate: 0x40CE2B `test [esi+0x61C68],0x100000; je done; GetTickCount(0x47630C) - [e+0x62A2C] > 0x6A4 (1700ms)` → flash blits from the 0x8AB7BC icon buffer; the timer field +0x62A2C is armed at 0x411239 when state byte [e+0x62A38]==0x1F and the bit is clear (then set at runtime by the state transition).",
+      "va": "0x40CE2B, 0x411239, +0x62A2C, +0x62A38, 0x6A4=1700ms",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Bit 0x8000000 = half-speed animation: 0x405D21 (in the frame-reset family, preceded by `mov byte [esi+0x61C7D],5`) `test [esi+0x61C68],0x8000000; je; mov edx,[esi+0xBC]; shl edx,1; mov [esi+0xBC],edx` doubles the frame interval; independently 0x40AFFF/0x40D12D increment [e+0x61C84] (reset at mod 0x186A0) and `test byte [e+0x61C84],1; jne skip` — odd ticks skip the frame advance, drawing every other frame.",
+      "va": "0x405D21, 0x40AFFF, 0x40D12D, +0x61C84, +0xBC",
+      "level": "primary-static"
+    },
+    {
+      "claim": "The six mode bits have NO behavioral effect beyond blit-mode selection: resolver 0x404DA0-0x404E0C maps 0x800000→1, 0x4000000→0, 0x20000000→0xFBFF, 0x10000000→0xFFE0, 0x8000000→0x94BF, 0x40000000→0xFCB2, 0x80000000→0x7E0, default 0xFFFF (returned in eax; side-store `mov word [ecx+0x61C6C],0xFFFF` at 0x404E03; ret 0x404E0C). Dispatcher 0x404E10 consumes the word: mode 0x1 → 0x404E41 → DDraw blit 0x461ED0 (800x492 args 0x320/0x1EC); modes 0x94BF/0x0/0x7E0 → 0x404F63; default → 0x404E9E (via [e+0x61C58] selects 0x463330 or 0x460240; dsurface 0x8AB7A8; ret 0x28). Mode words are pure alpha/color-key blit constants. Note 0x8000000 is BOTH mode 0x94BF and the half-speed bit.",
+      "va": "0x404DA0, 0x404E03, 0x404E0C, 0x404E10, 0x404E41, 0x404E9E, 0x404F63, 0x461ED0, 0x463330, 0x460240",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Slot grid literals fully pinned for slots 62-139: dest = 0xB130 + slot*0x104 (140 slots total); the unrolled init block 0x4534B0-0x454120 copies each literal (rep movsd pairing: dest = previous block's `lea edx,[ebx+disp]`, source = previous tail's `mov edi,<litVA>` after strlen) — 78 copies decoded. Slots 82-86 = Inventory/Equip/Ground/MIcon/ProgUse (element 0x52-0x56); 90-107 = Mon-3..Mon-20; 108-127 = MonS-1..MonS-20; 128 = NPC; 129 MonMagic; 130 MonImg; 131-134 = M-Hair/M-Helmet1/WM-Hair/WM-Helmet1; 135/136 = DMon-1/DMonS-1; 137 MagicEx; 138 MonMagicEx; 139 StoreItem; 70 GameInter (+0xF848); 71 M-Hum; 76 WM-Hum (+0xFE60); 81 Magic (+0x10374); 62-69 = Snow tail (dungeonsc/innersc/furnituresc/wallsc/smobjectsc/animationsc/object1c/object2c). Element index == slot index (ten element==slot checks incl. 0x47=71, 0x4C=76, 0x51=81, 0x57=87, 0x58=88, 0x80=128, 0x83=131, 0x84=132, 0x85=133, 0x87=135).",
+      "va": "0x4534B0-0x454120 (init), table in 'slot_grid' section",
+      "level": "primary-static"
+    },
+    {
+      "claim": "Element==slot mapping derived (cross-check): element byte E selects slot E of the grid; verified for E in {0x47,0x4C,0x51,0x57,0x58,0x80,0x83,0x84,0x85,0x86,0x87,0x8B} against the init dest arithmetic; consistent with the source file's six original cross-checks and with Finding 280's '槽 N' numbering (280 base 0xF848 → 280-槽 N == this grid slot N+70; Mon-1 = 280-槽18 = slot 88, NPC = 280-槽58 = slot 128, DMon-1 = 280-槽65 = slot 135).",
+      "va": "slot grid init 0x4534B0-0x454120; element table 0x5600FC",
+      "level": "derived"
+    },
+    {
+      "claim": "Weapon/head selector semantics (pending item [3]) now statically proven: 0x40C7B7-0x40C85D computes element = (sel-1)/10 + bias per branch: male (type [e+0x88]==0) head bias -0x7D, weapon bias +0x48; female (type==1) head bias -0x7B, weapon bias +0x4D (magic-const division by 10, result byte [e+0x629CE]). Landings: male weapon sel 1-10→72 M-Weapon1 .. sel 41-50→0x4C=76 WM-Hum; female weapon sel 41-50→0x51=81 Magic.wil; male head sel 1-9→0x83=131 M-Hair, 11-19→0x84=132 M-Helmet1, 21-29→0x85=133 WM-Hair; female head sel 1-9→0x85=133 WM-Hair, 11-19→0x86=134 WM-Helmet1, 21-29→0x87=135 DMon-1. The landings ARE the client-side meaning (extended weapon/head sets stored in those WILs); only the runtime/server trigger (which server appearance codes map to sel>40 / head>20) remains open.",
+      "va": "0x40C7B7, 0x40C7B9, 0x40C7D1, 0x40C7DA, 0x40C7FC, 0x40C809, 0x40C82D, 0x40C836, 0x40C842, +0x629CE, +0x8B, +0x89",
+      "level": "primary-static"
+    }
+  ],
+  "writers": [
+    {
+      "va": "0x00404B55"
+    },
+    {
+      "va": "0x004069E0"
+    },
+    {
+      "va": "0x00406A89"
+    },
+    {
+      "va": "0x00406B7C"
+    },
+    {
+      "va": "0x00406F94"
+    },
+    {
+      "va": "0x0040715B"
+    },
+    {
+      "va": "0x00407FB2"
+    },
+    {
+      "va": "0x0040C36B"
+    },
+    {
+      "va": "0x0040D3D1"
+    },
+    {
+      "va": "0x0040D4FC"
+    },
+    {
+      "va": "0x0040D6E4"
+    },
+    {
+      "va": "0x0040D754"
+    },
+    {
+      "va": "0x0040D835"
+    },
+    {
+      "va": "0x0040D981"
+    },
+    {
+      "va": "0x0040DB04"
+    },
+    {
+      "va": "0x0040DBF4"
+    },
+    {
+      "va": "0x0040DD5B"
+    }
+  ],
+  "readers": [
+    {
+      "va": "0x00404DA0"
+    },
+    {
+      "va": "0x00405D21"
+    },
+    {
+      "va": "0x00407197"
+    },
+    {
+      "va": "0x0040AF55"
+    },
+    {
+      "va": "0x0040AFFF"
+    },
+    {
+      "va": "0x0040CE2B"
+    },
+    {
+      "va": "0x0040D12D"
+    },
+    {
+      "va": "0x00411239"
+    }
+  ],
+  "render_mode_map": [
+    {
+      "flag": "0x800000",
+      "mode": "0x1"
+    },
+    {
+      "flag": "0x4000000",
+      "mode": "0x0"
+    },
+    {
+      "flag": "0x20000000",
+      "mode": "0xFBFF"
+    },
+    {
+      "flag": "0x10000000",
+      "mode": "0xFFE0"
+    },
+    {
+      "flag": "0x8000000",
+      "mode": "0x94BF"
+    },
+    {
+      "flag": "0x40000000",
+      "mode": "0xFCB2"
+    },
+    {
+      "flag": "0x80000000",
+      "mode": "0x7E0"
+    },
+    {
+      "flag": "default",
+      "mode": "0xFFFF"
+    }
+  ],
+  "slot_grid": {
+    "base": "0xB130",
+    "stride": "0x104",
+    "slot_count": 140,
+    "note": "slots 62-139 decoded here (78 copies); slots 0-61 are the environment/tile set in the earlier init region (out of scope). element index == slot index. Finding 280 '槽 N' numbering uses base 0xF848, so 280-槽 N == slot N+70 here.",
+    "table": [
+      {
+        "slot": 62,
+        "element_hex": "0x3E",
+        "dest_offset": "+0x003EF8",
+        "dest_va": "0x0000F028",
+        "literal_va": "0x0047CEE0",
+        "literal": ".\\Data\\Snow\\dungeonsc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 63,
+        "element_hex": "0x3F",
+        "dest_offset": "+0x003FFC",
+        "dest_va": "0x0000F12C",
+        "literal_va": "0x0047CEC8",
+        "literal": ".\\Data\\Snow\\innersc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 64,
+        "element_hex": "0x40",
+        "dest_offset": "+0x004100",
+        "dest_va": "0x0000F230",
+        "literal_va": "0x0047CEAC",
+        "literal": ".\\Data\\Snow\\furnituresc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 65,
+        "element_hex": "0x41",
+        "dest_offset": "+0x004204",
+        "dest_va": "0x0000F334",
+        "literal_va": "0x0047CE94",
+        "literal": ".\\Data\\Snow\\wallsc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 66,
+        "element_hex": "0x42",
+        "dest_offset": "+0x004308",
+        "dest_va": "0x0000F438",
+        "literal_va": "0x0047CE78",
+        "literal": ".\\Data\\Snow\\smobjectsc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 67,
+        "element_hex": "0x43",
+        "dest_offset": "+0x00440C",
+        "dest_va": "0x0000F53C",
+        "literal_va": "0x0047CE5C",
+        "literal": ".\\Data\\Snow\\animationsc.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 68,
+        "element_hex": "0x44",
+        "dest_offset": "+0x004510",
+        "dest_va": "0x0000F640",
+        "literal_va": "0x0047CE40",
+        "literal": ".\\Data\\Snow\\object1c.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 69,
+        "element_hex": "0x45",
+        "dest_offset": "+0x004614",
+        "dest_va": "0x0000F744",
+        "literal_va": "0x0047CE24",
+        "literal": ".\\Data\\Snow\\object2c.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 70,
+        "element_hex": "0x46",
+        "dest_offset": "+0x004718",
+        "dest_va": "0x0000F848",
+        "literal_va": "0x0047CE0C",
+        "literal": ".\\Data\\GameInter.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 71,
+        "element_hex": "0x47",
+        "dest_offset": "+0x00481C",
+        "dest_va": "0x0000F94C",
+        "literal_va": "0x0047CDF8",
+        "literal": ".\\Data\\M-Hum.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 72,
+        "element_hex": "0x48",
+        "dest_offset": "+0x004920",
+        "dest_va": "0x0000FA50",
+        "literal_va": "0x0047CDE0",
+        "literal": ".\\Data\\M-Weapon1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 73,
+        "element_hex": "0x49",
+        "dest_offset": "+0x004A24",
+        "dest_va": "0x0000FB54",
+        "literal_va": "0x0047CDC8",
+        "literal": ".\\Data\\M-Weapon2.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 74,
+        "element_hex": "0x4A",
+        "dest_offset": "+0x004B28",
+        "dest_va": "0x0000FC58",
+        "literal_va": "0x0047CDB0",
+        "literal": ".\\Data\\M-Weapon3.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 75,
+        "element_hex": "0x4B",
+        "dest_offset": "+0x004C2C",
+        "dest_va": "0x0000FD5C",
+        "literal_va": "0x0047CD98",
+        "literal": ".\\Data\\M-Weapon4.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 76,
+        "element_hex": "0x4C",
+        "dest_offset": "+0x004D30",
+        "dest_va": "0x0000FE60",
+        "literal_va": "0x0047CD84",
+        "literal": ".\\Data\\WM-Hum.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 77,
+        "element_hex": "0x4D",
+        "dest_offset": "+0x004E34",
+        "dest_va": "0x0000FF64",
+        "literal_va": "0x0047CD6C",
+        "literal": ".\\Data\\WM-Weapon1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 78,
+        "element_hex": "0x4E",
+        "dest_offset": "+0x004F38",
+        "dest_va": "0x00010068",
+        "literal_va": "0x0047CD54",
+        "literal": ".\\Data\\WM-Weapon2.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 79,
+        "element_hex": "0x4F",
+        "dest_offset": "+0x00503C",
+        "dest_va": "0x0001016C",
+        "literal_va": "0x0047CD3C",
+        "literal": ".\\Data\\WM-Weapon3.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 80,
+        "element_hex": "0x50",
+        "dest_offset": "+0x005140",
+        "dest_va": "0x00010270",
+        "literal_va": "0x0047CD24",
+        "literal": ".\\Data\\WM-Weapon4.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 81,
+        "element_hex": "0x51",
+        "dest_offset": "+0x005244",
+        "dest_va": "0x00010374",
+        "literal_va": "0x0047CD10",
+        "literal": ".\\Data\\Magic.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 82,
+        "element_hex": "0x52",
+        "dest_offset": "+0x005348",
+        "dest_va": "0x00010478",
+        "literal_va": "0x0047CCF8",
+        "literal": ".\\Data\\Inventory.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 83,
+        "element_hex": "0x53",
+        "dest_offset": "+0x00544C",
+        "dest_va": "0x0001057C",
+        "literal_va": "0x0047CCE4",
+        "literal": ".\\Data\\Equip.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 84,
+        "element_hex": "0x54",
+        "dest_offset": "+0x005550",
+        "dest_va": "0x00010680",
+        "literal_va": "0x0047CCD0",
+        "literal": ".\\Data\\Ground.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 85,
+        "element_hex": "0x55",
+        "dest_offset": "+0x005654",
+        "dest_va": "0x00010784",
+        "literal_va": "0x0047CCBC",
+        "literal": ".\\Data\\MIcon.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 86,
+        "element_hex": "0x56",
+        "dest_offset": "+0x005758",
+        "dest_va": "0x00010888",
+        "literal_va": "0x0047CCA8",
+        "literal": ".\\Data\\ProgUse.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 87,
+        "element_hex": "0x57",
+        "dest_offset": "+0x00585C",
+        "dest_va": "0x0001098C",
+        "literal_va": "0x0047CC94",
+        "literal": ".\\Data\\Horse.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 88,
+        "element_hex": "0x58",
+        "dest_offset": "+0x005960",
+        "dest_va": "0x00010A90",
+        "literal_va": "0x0047CC80",
+        "literal": ".\\Data\\Mon-1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 89,
+        "element_hex": "0x59",
+        "dest_offset": "+0x005A64",
+        "dest_va": "0x00010B94",
+        "literal_va": "0x0047CC6C",
+        "literal": ".\\Data\\Mon-2.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 90,
+        "element_hex": "0x5A",
+        "dest_offset": "+0x005B68",
+        "dest_va": "0x00010C98",
+        "literal_va": "0x0047CC58",
+        "literal": ".\\Data\\Mon-3.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 91,
+        "element_hex": "0x5B",
+        "dest_offset": "+0x005C6C",
+        "dest_va": "0x00010D9C",
+        "literal_va": "0x0047CC44",
+        "literal": ".\\Data\\Mon-4.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 92,
+        "element_hex": "0x5C",
+        "dest_offset": "+0x005D70",
+        "dest_va": "0x00010EA0",
+        "literal_va": "0x0047CC30",
+        "literal": ".\\Data\\Mon-5.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 93,
+        "element_hex": "0x5D",
+        "dest_offset": "+0x005E74",
+        "dest_va": "0x00010FA4",
+        "literal_va": "0x0047CC1C",
+        "literal": ".\\Data\\Mon-6.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 94,
+        "element_hex": "0x5E",
+        "dest_offset": "+0x005F78",
+        "dest_va": "0x000110A8",
+        "literal_va": "0x0047CC08",
+        "literal": ".\\Data\\Mon-7.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 95,
+        "element_hex": "0x5F",
+        "dest_offset": "+0x00607C",
+        "dest_va": "0x000111AC",
+        "literal_va": "0x0047CBF4",
+        "literal": ".\\Data\\Mon-8.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 96,
+        "element_hex": "0x60",
+        "dest_offset": "+0x006180",
+        "dest_va": "0x000112B0",
+        "literal_va": "0x0047CBE0",
+        "literal": ".\\Data\\Mon-9.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 97,
+        "element_hex": "0x61",
+        "dest_offset": "+0x006284",
+        "dest_va": "0x000113B4",
+        "literal_va": "0x0047CBCC",
+        "literal": ".\\Data\\Mon-10.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 98,
+        "element_hex": "0x62",
+        "dest_offset": "+0x006388",
+        "dest_va": "0x000114B8",
+        "literal_va": "0x0047CBB8",
+        "literal": ".\\Data\\Mon-11.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 99,
+        "element_hex": "0x63",
+        "dest_offset": "+0x00648C",
+        "dest_va": "0x000115BC",
+        "literal_va": "0x0047CBA4",
+        "literal": ".\\Data\\Mon-12.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 100,
+        "element_hex": "0x64",
+        "dest_offset": "+0x006590",
+        "dest_va": "0x000116C0",
+        "literal_va": "0x0047CB90",
+        "literal": ".\\Data\\Mon-13.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 101,
+        "element_hex": "0x65",
+        "dest_offset": "+0x006694",
+        "dest_va": "0x000117C4",
+        "literal_va": "0x0047CB7C",
+        "literal": ".\\Data\\Mon-14.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 102,
+        "element_hex": "0x66",
+        "dest_offset": "+0x006798",
+        "dest_va": "0x000118C8",
+        "literal_va": "0x0047CB68",
+        "literal": ".\\Data\\Mon-15.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 103,
+        "element_hex": "0x67",
+        "dest_offset": "+0x00689C",
+        "dest_va": "0x000119CC",
+        "literal_va": "0x0047CB54",
+        "literal": ".\\Data\\Mon-16.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 104,
+        "element_hex": "0x68",
+        "dest_offset": "+0x0069A0",
+        "dest_va": "0x00011AD0",
+        "literal_va": "0x0047CB40",
+        "literal": ".\\Data\\Mon-17.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 105,
+        "element_hex": "0x69",
+        "dest_offset": "+0x006AA4",
+        "dest_va": "0x00011BD4",
+        "literal_va": "0x0047CB2C",
+        "literal": ".\\Data\\Mon-18.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 106,
+        "element_hex": "0x6A",
+        "dest_offset": "+0x006BA8",
+        "dest_va": "0x00011CD8",
+        "literal_va": "0x0047CB18",
+        "literal": ".\\Data\\Mon-19.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 107,
+        "element_hex": "0x6B",
+        "dest_offset": "+0x006CAC",
+        "dest_va": "0x00011DDC",
+        "literal_va": "0x0047CB04",
+        "literal": ".\\Data\\Mon-20.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 108,
+        "element_hex": "0x6C",
+        "dest_offset": "+0x006DB0",
+        "dest_va": "0x00011EE0",
+        "literal_va": "0x0047CAF0",
+        "literal": ".\\Data\\MonS-1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 109,
+        "element_hex": "0x6D",
+        "dest_offset": "+0x006EB4",
+        "dest_va": "0x00011FE4",
+        "literal_va": "0x0047CADC",
+        "literal": ".\\Data\\MonS-2.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 110,
+        "element_hex": "0x6E",
+        "dest_offset": "+0x006FB8",
+        "dest_va": "0x000120E8",
+        "literal_va": "0x0047CAC8",
+        "literal": ".\\Data\\MonS-3.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 111,
+        "element_hex": "0x6F",
+        "dest_offset": "+0x0070BC",
+        "dest_va": "0x000121EC",
+        "literal_va": "0x0047CAB4",
+        "literal": ".\\Data\\MonS-4.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 112,
+        "element_hex": "0x70",
+        "dest_offset": "+0x0071C0",
+        "dest_va": "0x000122F0",
+        "literal_va": "0x0047CAA0",
+        "literal": ".\\Data\\MonS-5.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 113,
+        "element_hex": "0x71",
+        "dest_offset": "+0x0072C4",
+        "dest_va": "0x000123F4",
+        "literal_va": "0x0047CA8C",
+        "literal": ".\\Data\\MonS-6.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 114,
+        "element_hex": "0x72",
+        "dest_offset": "+0x0073C8",
+        "dest_va": "0x000124F8",
+        "literal_va": "0x0047CA78",
+        "literal": ".\\Data\\MonS-7.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 115,
+        "element_hex": "0x73",
+        "dest_offset": "+0x0074CC",
+        "dest_va": "0x000125FC",
+        "literal_va": "0x0047CA64",
+        "literal": ".\\Data\\MonS-8.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 116,
+        "element_hex": "0x74",
+        "dest_offset": "+0x0075D0",
+        "dest_va": "0x00012700",
+        "literal_va": "0x0047CA50",
+        "literal": ".\\Data\\MonS-9.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 117,
+        "element_hex": "0x75",
+        "dest_offset": "+0x0076D4",
+        "dest_va": "0x00012804",
+        "literal_va": "0x0047CA3C",
+        "literal": ".\\Data\\MonS-10.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 118,
+        "element_hex": "0x76",
+        "dest_offset": "+0x0077D8",
+        "dest_va": "0x00012908",
+        "literal_va": "0x0047CA28",
+        "literal": ".\\Data\\MonS-11.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 119,
+        "element_hex": "0x77",
+        "dest_offset": "+0x0078DC",
+        "dest_va": "0x00012A0C",
+        "literal_va": "0x0047CA14",
+        "literal": ".\\Data\\MonS-12.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 120,
+        "element_hex": "0x78",
+        "dest_offset": "+0x0079E0",
+        "dest_va": "0x00012B10",
+        "literal_va": "0x0047CA00",
+        "literal": ".\\Data\\MonS-13.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 121,
+        "element_hex": "0x79",
+        "dest_offset": "+0x007AE4",
+        "dest_va": "0x00012C14",
+        "literal_va": "0x0047C9EC",
+        "literal": ".\\Data\\MonS-14.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 122,
+        "element_hex": "0x7A",
+        "dest_offset": "+0x007BE8",
+        "dest_va": "0x00012D18",
+        "literal_va": "0x0047C9D8",
+        "literal": ".\\Data\\MonS-15.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 123,
+        "element_hex": "0x7B",
+        "dest_offset": "+0x007CEC",
+        "dest_va": "0x00012E1C",
+        "literal_va": "0x0047C9C4",
+        "literal": ".\\Data\\MonS-16.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 124,
+        "element_hex": "0x7C",
+        "dest_offset": "+0x007DF0",
+        "dest_va": "0x00012F20",
+        "literal_va": "0x0047C9B0",
+        "literal": ".\\Data\\MonS-17.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 125,
+        "element_hex": "0x7D",
+        "dest_offset": "+0x007EF4",
+        "dest_va": "0x00013024",
+        "literal_va": "0x0047C99C",
+        "literal": ".\\Data\\MonS-18.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 126,
+        "element_hex": "0x7E",
+        "dest_offset": "+0x007FF8",
+        "dest_va": "0x00013128",
+        "literal_va": "0x0047C988",
+        "literal": ".\\Data\\MonS-19.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 127,
+        "element_hex": "0x7F",
+        "dest_offset": "+0x0080FC",
+        "dest_va": "0x0001322C",
+        "literal_va": "0x0047C974",
+        "literal": ".\\Data\\MonS-20.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 128,
+        "element_hex": "0x80",
+        "dest_offset": "+0x008200",
+        "dest_va": "0x00013330",
+        "literal_va": "0x0047C964",
+        "literal": ".\\Data\\NPC.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 129,
+        "element_hex": "0x81",
+        "dest_offset": "+0x008304",
+        "dest_va": "0x00013434",
+        "literal_va": "0x0047C950",
+        "literal": ".\\Data\\MonMagic.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 130,
+        "element_hex": "0x82",
+        "dest_offset": "+0x008408",
+        "dest_va": "0x00013538",
+        "literal_va": "0x0047C93C",
+        "literal": ".\\Data\\MonImg.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 131,
+        "element_hex": "0x83",
+        "dest_offset": "+0x00850C",
+        "dest_va": "0x0001363C",
+        "literal_va": "0x0047C928",
+        "literal": ".\\Data\\M-Hair.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 132,
+        "element_hex": "0x84",
+        "dest_offset": "+0x008610",
+        "dest_va": "0x00013740",
+        "literal_va": "0x0047C910",
+        "literal": ".\\Data\\M-Helmet1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 133,
+        "element_hex": "0x85",
+        "dest_offset": "+0x008714",
+        "dest_va": "0x00013844",
+        "literal_va": "0x0047C8FC",
+        "literal": ".\\Data\\WM-Hair.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 134,
+        "element_hex": "0x86",
+        "dest_offset": "+0x008818",
+        "dest_va": "0x00013948",
+        "literal_va": "0x0047C8E4",
+        "literal": ".\\Data\\WM-Helmet1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 135,
+        "element_hex": "0x87",
+        "dest_offset": "+0x00891C",
+        "dest_va": "0x00013A4C",
+        "literal_va": "0x0047C8D0",
+        "literal": ".\\Data\\DMon-1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 136,
+        "element_hex": "0x88",
+        "dest_offset": "+0x008A20",
+        "dest_va": "0x00013B50",
+        "literal_va": "0x0047C8BC",
+        "literal": ".\\Data\\DMonS-1.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 137,
+        "element_hex": "0x89",
+        "dest_offset": "+0x008B24",
+        "dest_va": "0x00013C54",
+        "literal_va": "0x0047C8A8",
+        "literal": ".\\Data\\MagicEx.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 138,
+        "element_hex": "0x8A",
+        "dest_offset": "+0x008C28",
+        "dest_va": "0x00013D58",
+        "literal_va": "0x0047C890",
+        "literal": ".\\Data\\MonMagicEx.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      },
+      {
+        "slot": 139,
+        "element_hex": "0x8B",
+        "dest_offset": "+0x008D2C",
+        "dest_va": "0x00013E5C",
+        "literal_va": "0x0047C878",
+        "literal": ".\\Data\\StoreItem.wil",
+        "evidence": "primary-static (string bytes at literal_va in Mir3.exe; dest arithmetic slot=(dest-0xB130)/0x104; element==slot)"
+      }
+    ]
+  },
+  "closed_notes": "Closed player-composition-evidence.json pending [2] (render-mode flag bit semantics) and [4] (slot grid 82-86/90-127 literals); refined [3] (weapon/head selector landings now statically proven, remaining trigger runtime-only). Corrections recorded: (a) GameInter.wil occupies slot 70 at +0xF848 (matches the source file's base-0xF848 note), NOT the +0xF744 pairing in docs/research/ei-ui-layout/mir3-dat-resource-path-table.json (row 'destination_lea_va 0x004527a4'); 0x4527A4 disassembles to `mov byte ptr [esi+ebp], dl` (string-encode code, not a lea) — the +0xF744 slot belongs to Snow\\object2c.wil@0x47CE24. That path-table JSON was left untouched (out of scope). (b) bit 0x1 earlier characterized as a death/type-specific frame-truncation gate is refined to a race 0x53-0x55 (83-85) special frame-lock gate (crossref Finding 280: no monster.json records for codes 83-85). (c) RESEARCH_LOG.md round-6 entry intentionally NOT written by this agent (constraint: do not touch RESEARCH_LOG.md); main agent should append the entry at commit time.",
+  "pending": [
+    "gender->type byte [e+0x88] write site (no static writer; entity build path / server packet, candidate)",
+    "element table 0x5600FC runtime contents (kind byte +0x38 frame-header ptr populated at startup by 0x4660E0-family binders; exact record fields beyond +0x04/+0x38 runtime-capture)",
+    "weapon selector 41..50 / head 21..29: landings now proven static (0x40C7B7-0x40C85D → WM-Hum(76)/Magic(81) weapon; WM-Hair(133)/DMon-1(135) head sets) — remaining: which server-side appearance codes drive sel>40 / head>20 (extended-set trigger), runtime/server-side only",
+    "preview path 0x466CE0/0x466F20 exact 7-case semantics (candidate: char-create preview only)",
+    "shadow-quad vertex buffer usage (built at [e+0x61BD8]; consumed where = runtime)"
+  ]
+}

@@ -77,9 +77,7 @@
     "cross_reference": "Finding 279 (StateFrameTables)：NPC 帧表 0x8AA6C8 为 BSS 单例 0x8AA5A8 字段、EXE 编译期常量、0x449C80 启动种子、0x44A090 NPC action 覆盖（字节表 0x44A1CC/0x44A1EC/0x44A220）。Finding 77/254：NPCFace.wil 440 帧/46 非空、NPC 对话窗口。map-ui-resource-evidence：地图物件 type 0x32（0x560070 链表）为服务端阻挡标记、与场景 NPC 实体（本发现）区分。"
   },
   "pending": [
-    "NPC body 字段 [esi+0x8a] 的写入点：服务端生成包 → 实体构建路径（0x400000-0x480000 无静态直接字节写；NPC 实体类 ctor 未定位，vtable 族 0x476500-0x4766E0 安装路径未知）——candidate 后续（网络包解析域，静态不可达）。",
-    "body 0x38/0x39（56/57）的 12 帧条带 [(0,11)] 中 4..11 帧未被公式寻址——保留帧用途不明（candidate）。",
-    "NPC→头像帧号（NPCIMG n 的 n 值）语义：服务端对话脚本定义，客户端无表——需服务端 Merchant 脚本样本实证（candidate）。",
-    "body 0x29（41）全空与 0x40CE20 标签/0x40B180 阴影等 NPC 绘制装饰的精确交错（沿用 scene-entity pending）。"
+    "NPC body 字段 [esi+0x8a] 的字节写入点：服务端生成包 → 实体构建路径（vtable 0x47671C 安装于 0x42264E、type 0x32 包经分发器 0x404FB0 读缓冲 [edi+2]，但 [esi+0x8a] 的直接字节写在网络包解析域，0x400000-0x480000 无静态字节写）——runtime（Finding 287 已补齐构建路径）。",
+    "NPCIMG n 的 n 值由服务端对话脚本选择（客户端侧已闭合：n=NPCFace.WIL 裸帧号、无映射表，见 Finding 287）——需服务端 Merchant 脚本样本实证（runtime）。"
   ]
 }

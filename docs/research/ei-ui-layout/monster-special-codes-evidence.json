@@ -1,0 +1,63 @@
+{
+  "evidence_id": "EI-286-MonsterSpecialCodes",
+  "finding": 286,
+  "date": "2026-08-11",
+  "title": "怪物特殊码 83..85 分支语义 + element 绑定/RaceImg 汇流",
+  "objective": "Finding 286：闭合 monster-dat-evidence.json（Finding 280）遗留项『code 83..85 / 0x4071A0 特殊分支语义 (无 Race 记录对应)』——解码 0x407260/0x4071A0 分派链（0x407610/0x4075F0、0x44A61C race 字节表），判定 83..85 对真实怪物是否为死分支；同时汇流 element 绑定机制（0x452AA0 静态构造 / 0x43B780 运行期批绑定 / 0x466130 无懒加载）与 RaceImg 图标寻址（MonImg.wil 无静态消费者；element 86 = ProgUse.wil 状态图标路径）。",
+  "question": "code 83..85（0x53..0x55）在怪物外观分派中的精确语义是什么？0x4071A0 门与 0x407260 表分派的关系？race 表 0x44A61C 为何无 83..85 记录？element 89+ 的绑定是懒加载还是启动期批绑定？MonImg.wil 是否有任何静态消费者（RaceImg 图标去哪了）？",
+  "method": "primary-static：Mir3.exe（0x80000 字节，fileoff=VA−0x400000，VA 0x400000–0x480000）capstone 反汇编 + 原始字节/跳转表解码 + 4 字节立即数扫描 + 字面量扫描（b'MonImg'/b'ProgUse'）+ vtable 槽扫描；与 Finding 279（帧表 0x8AA686）、280（race 公式）、282（element=slot、WIL 槽表）交叉印证。",
+  "source": "primary: /tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe (VA 0x400000-0x480000, fileoff = VA - 0x400000); art: Data/*.wil (wilsdk frame counts, Finding 280 已经验证); crossrefs: state-frame-tables-evidence.json (EI-279), monster-dat-evidence.json (EI-280), player-composition-evidence.json (EI-282)",
+  "evidence_level": "primary-static (confirmed) for all dispatch/resolver/binding claims; derived for element-86=ProgUse.wil slot mapping and 0x43D4E7/0x43DF64/0x43EDCC exact element ranges (cross-checked with Main batch context)",
+  "confidence": 0.96,
+  "addresses": [
+    "0x407197-0x4071EF (sync-flash gate inside monster sync handler 0x407180: [0x61c68]&1 + code 0x53..0x55 → 1-frame flash)",
+    "0x4071A0 (gate cmp: code from [0x88..0x8b], type-3 hi/lo byte combo; range 0x53..0x55)",
+    "0x407260-0x407294 (state-dispatch gate 0x407200: code → add eax,-3 / cmp 0x56 / ja 0x4075C5; byte table index 0x40728E-0x407294)",
+    "0x407610 (code byte table, 0x57 entries for codes 3..0x59)",
+    "0x4075F0 (dispatch jump table, 8 entries: 0x40729B,0x4072AA,0x407435,0x407398,0x407448,0x40742C,0x407534,0x4075C5)",
+    "0x40742C (case code 0x55: 0x13c FX object via ctor 0x434EF0 + register into stat list head 0x560088 / tail 0x56008C / count 0x560098; node vtable 0x476448)",
+    "0x407448 (case 0x38) / 0x407534 (case 0x59) / 0x407398 (case 0x31 → FX list 0x5600E8, node vtable 0x476454) / 0x4072AA (case 4) / 0x40729B (case 3: [0x61c64]=1)",
+    "0x4075C5 (default tail: [0x61c7c]=1, call actor vtable+0x10(8,[esp+0x20]), ret 4)",
+    "0x44A61C (race byte table, codes 0x53/0x54/0x55 → 8 = default record; race table specials only 52..55/98)",
+    "0x4050D1-0x4050E4 (monster resolver: element = 0x58 + race//10; imul 0x66666667 / sar 2 / add 0x58; gate cmp al,0x8c / jae 0x4054DE)",
+    "0x405154+ (race>=2000: element = 0x87 + (race-2000)//100)",
+    "0x40B4B7-0x40B4D4 (second resolver split: cmp ax,0x7D0; element → record 0x5600FC+e*0x144 via lea ×9×9×4)",
+    "0x405540 / 0x405534 (resolver special-code byte/jump tables: 0x1F/0x43/0x49/0x68→0 (0x4050AF), 0x6A→1 (0x4050B6))",
+    "0x452AA0-0x452B14 (element-table ctor: 0x452B20 static slot filler + 0x4660E0 loops: 14 entries flag=1 (stride 0x144 from +0xB130) + 70 entries flag=0 (stride 0x144, path source stride 0x104 from +0xF848) → elements 0..83 bound at startup)",
+    "0x43B780 (runtime batch binder: start=(byte[ebx+0x124]+1)*14, 14 elements, paths 0x56B22C+e*0x104, element entries 0x5600FC+e*0x144)",
+    "0x43D4E7 / 0x43DF64 / 0x43EDCC / 0x456CC4 (additional 0x4660E0 call sites, scene/map domain; exact ranges per batch verification)",
+    "0x4660E0 / 0x466130 / 0x466640 (WIL open dispatcher / fetch-frame kind-byte dispatch / kind-0 fetch: count [esi+0x10]==0 → jae → return 0; NO lazy binding)",
+    "0x5600FC (element table, stride 0x144, entry +4 kind byte, +0x38 resolved frame header)",
+    "0x476400 (monster render-state vtable: +00 0x406EF0, +04 0x406F60, +08 0x4070C0, +0C 0x407200, +10 0x407670)",
+    "0x44B630 / 0x44B560 (ProgUse status-icon renderers: lib 0x566DD4, element = 10*byte[0x777720] + class + 0x3B, frame word[0x7DA063])",
+    "0x41F597 / 0x41F5BA (word[0x7DA063] write = status-icon frame select, jmp table 0x421E8C dispatch)",
+    "0x47C943 (b'MonImg' literal — slot 60 path entry only, NO draw/fetch consumer)",
+    "0x47CCAF (b'ProgUse' literal)",
+    "0x8AA686 (monster frame table, obj+0xDE, Finding 279)"
+  ],
+  "verdict": "Finding 286 closed (evidence_level primary-static/confirmed)。code 83..85 是怪物渲染状态机的『特殊 FX/闪烁』码：表分派 0x407610/0x4075F0 中 code 0x53/0x54 → 字节 8 → 默认路径 0x4075C5（无特殊处理），code 0x55 → 字节 5 → 0x40742C（创建 0x13c 字节 FX 对象并登记进状态链表 0x560088/0x56008C，计数 0x560098）；同步路径 0x407197-0x4071EF 中当同步标志 [0x61c68]&1 置位且描述符码（type3 高低字节组合）落在 0x53..0x55 时强制 1 帧闪烁（[0xc0]=0、帧尾 [0xb8]=帧基 [0xb4]+1、调 actor vtable+0x10(0,8)）。race 字节表 0x44A61C 对 0x53/0x54/0x55 全部返回 8（默认记录），服务端怪物库仅 52..55/98 等特殊 race → 对真实怪物（code=race）该分支永不命中，属遗留/其它 actor 语义的死分支（与 monster-dat pending 原注一致，现已静态定案）。element 绑定机制同时闭合：启动期 0x452AA0 静态绑定元素 0..83（WIL 槽表 stride 0x104），运行期 0x43B780 按 [ebx+0x124] 派生起点批绑定 14 元素（路径表 0x56B22C+e*0x104），取帧 0x466130 对未绑定槽直接返回 0（无懒加载，绘制跳过=透明）。RaceImg：MonImg.wil 全二进制唯一字面量 0x47C943（槽 60 路径项），无任何取帧/绘制消费者；玩家状态图标走 element 86 = ProgUse.wil（0x44B630/0x44B560，库 0x566DD4，帧 word[0x7DA063]），与怪物 RaceImg 无关。",
+  "conclusions": [
+    {"claim": "表分派 0x407610（码 3..0x59，0x57 字节）→ 跳转表 0x4075F0（8 项）；code 0x53/0x54 → 字节 8 → 默认 0x4075C5（[0x61c7c]=1 + actor vtable+0x10(8,arg)，无特殊 FX）；code 0x55 → 字节 5 → 0x40742C。", "va": "0x407610/0x4075F0/0x40728E-0x407294", "level": "primary-static"},
+    {"claim": "case 0x55 (0x40742C)：alloc 0x13c → ctor 0x434EF0 → vtable+4 8 参调用（参数来自 [edi+0xcc]/[edi+0xd0] 与立即 0x11 等）→ 若全局 0x560088 空则建 0x10 节点（vtable 0x476448）存 0x560088，否则链表尾插 0x56008C、计数 0x560098++；对象指针 [node+4]=esi。即『闪烁特效对象 + 状态对象链表登记』。", "va": "0x40742C-0x407527", "level": "primary-static"},
+    {"claim": "同步闪烁门：0x407197 test byte [esi+0x61c68],1 / je 0x4071EF；code（type3 时 ah=[0x8b] al=[0x8a] 高低字节组合，否则 movzx [0x8a]）cmp 0x53 jl / cmp 0x55 jg → 命中则 [0xc0]=0、[0xb8]=[0xb4]+1、call actor vtable+0x10(0,8) —— 强制 1 帧闪烁循环（帧基不变、帧尾=基+1）。", "va": "0x407197-0x4071EF", "level": "primary-static"},
+    {"claim": "race 字节表 0x44A61C 码 0x53/0x54/0x55 全部 = 8（默认记录 0x44A5A9 尾记录 state9=(0x2D0,6,150) 之外的分派默认）；表内唯一特殊值为 52..55/98（Finding 280 已证）；∴ 真实怪物（code=race 16-bit）无 83..85 → 该分支为遗留/其它 actor 语义死分支。", "va": "0x44A61C", "level": "primary-static"},
+    {"claim": "怪物 element 公式复核成立：element = 0x58 + race//10（0x4050D1-0x4050E4：imul 0x66666667 → sar edx,2 → 加 0x58；gate cmp al,0x8c / jae → element≤0x8B=139）；race≥2000 → 0x87+(race-2000)//100（0x405154+，第二解析器 0x40B4B7 cmp ax,0x7D0 同分割）。element==WIL 槽索引（0x58=88=Mon-1 槽，Finding 282 六重互证）。", "va": "0x4050D1-0x4050E4/0x405154+/0x40B4AE", "level": "primary-static"},
+    {"claim": "element 表静态构造 0x452AA0：先 0x452B20（WIL 路径字符串槽填充器，字面量池 0x47CEB0-0x47D000 → 槽 65..77 区，stride 0x104），再 0x4660E0 双循环：14 元素（flag=1，源槽 stride 0x144）+ 70 元素（flag=0，源槽 stride 0x104 从 +0xF848）→ 启动即绑定元素 0..83。", "va": "0x452AA0-0x452B14", "level": "primary-static"},
+    {"claim": "无懒加载：取帧 0x466130 按 entry+4 kind 字节分派，未绑定槽 kind=0 → 0x466640 → 计数 [esi+0x10]=0 → jae 0x466714 返回 0 → 各绘制点 test eax,eax; je 跳过（透明，与 Finding 274 帧越界语义一致）。运行期补绑 = 0x43B780 批（起点 (byte[ebx+0x124]+1)*14、14 元素、路径 0x56B22C+e*0x104），另有 0x43D4E7/0x43DF64/0x43EDCC/0x456CC4 场景/地图域 0x4660E0 调用点。", "va": "0x466130/0x466640/0x43B780", "level": "primary-static"},
+    {"claim": "MonImg.wil 无静态消费者：全二进制唯一字面量 b'MonImg' @0x47C943（= 槽 60 路径项），无任何取帧/绘制/绑定点引用 element→MonImg；Finding 280 RaceImg 直取假设维持 rejected。", "va": "0x47C943", "level": "primary-static"},
+    {"claim": "玩家状态图标 = element 86 (0x56) = ProgUse.wil：渲染 0x44B630 用库对象 0x566DD4、element = 10*byte[0x777720] + 图标类 + 0x3B、帧号 word[0x7DA063]（0x41F5BA 写入，jmp 0x421E8C 分派）；0x44B560 同库绘制。与怪物 RaceImg 图标不同路径。", "va": "0x44B630/0x44B560/0x41F597/0x41F5BA/0x47CCAF", "level": "derived"},
+    {"claim": "怪物渲染状态 vtable 族 0x476400：+00 0x406EF0、+04 0x406F60（同步）、+08 0x4070C0（描述符构造）、+0C 0x407200（本 finding 状态分派）、+10 0x407670（循环回调状态设置器，重设 0x61C64 并调 actor vtable+0x10(8,flag)）；FX 链表节点 vtable 0x476448（0x4074B1/0x4074EB 安装）/0x476454（0x4073FF 安装）。", "va": "0x476400/0x476448/0x476454", "level": "primary-static"},
+    {"claim": "解析器特殊码表 0x405540（码 0x1F..0x7F）仅 0x1F/0x43/0x49/0x68→0、0x6A→1（跳转 0x405534 → 0x4050AF/0x4050B6），调制帧公式标志字节 [esp+0x40]——与 83..85 分派是独立机制。", "va": "0x405540/0x405534", "level": "primary-static"}
+  ],
+  "closed_notes": {
+    "monster-dat-evidence.json (EI-280) pending item": "『code 83..85 / 0x4071A0 特殊分支语义 (无 Race 记录对应)』 CLOSED —— 完整分派语义见本文件：表分派 0x407610/0x4075F0（0x53/0x54→默认、0x55→FX 对象+状态链表）、同步门 0x407197-0x4071EF 闪烁强制、race 表 0x44A61C 无 83..85（字节=8）→ 真实怪物死分支。",
+    "refined pending items": "『element 89+ 的懒加载绑定例程未静态定位』 REFINED → 无懒加载（0x466130 未绑定→0），启动批 0..83（0x452AA0）+ 运行期批 0x43B780（起点依赖 [ebx+0x124]）+ 场景域调用点 0x43D4E7/0x43DF64/0x43EDCC/0x456CC4；『RaceImg 图标寻址』 REFINED → MonImg.wil 无静态消费者（唯一字面量 0x47C943=槽60 路径），玩家状态图标为 element 86=ProgUse.wil（0x44B630/0x44B560），怪物 RaceImg 图标仍无静态路径。",
+    "evidence_level note": "本 finding 分派/绑定/解析器结论为 primary-static；element-86=ProgUse 槽映射与 0x43D4E7 等确切元素范围为 derived（与 Main 批次上下文交叉验证）。"
+  },
+  "pending": [
+    "N=race//10+1 vs +2 经验不可区分 (库稠密); 需运行时 WIL 对象绑定路径 (element→槽) 或服务端镜像确认",
+    "怪物元素 88..139 的运行期绑定批次起点依赖 [ebx+0x124] 运行值 (0x43B780 批 14 元素, 路径表 0x56B22C+e*0x104; 0x43D4E7/0x43DF64/0x43EDCC/0x456CC4 为场景/地图域其他 0x4660E0 绑定点, 确切元素范围 derived) — 无懒加载, getFrame 未绑定→0 (Finding 286)",
+    "怪物 RaceImg 图标寻址仍无静态路径: MonImg.wil 无静态消费者 (唯一字面量 0x47C943 = 槽60 路径项); 玩家状态图标为 element 86 = ProgUse.wil (0x44B630/0x44B560, 库 0x566DD4, 帧 word[0x7DA063]) — 怪物方需运行期/服务端确认 (Finding 286)",
+    "DMon-1 40..99/140..199 等空白块区间的 race 语义 (服务端数据 gap, 本客户端未带)"
+  ]
+}

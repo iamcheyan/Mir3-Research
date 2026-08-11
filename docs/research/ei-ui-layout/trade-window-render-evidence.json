@@ -155,11 +155,7 @@
     "Distinct from store: store = id 2 / +0x33188 / 0x44D310 / 0x44E260 with control render loops; trade = id 3 / +0x3399C / 0x4159D0 / 0x415B10 with zero control rendering."
   ],
   "pending": [
-    "Exact runtime cell<->slot mapping for the +0x298/+0x5B8 arrays (index math at 0x4170C2 uses row*0xC2C; the +0x54/+0x58 split weights participate in cell math at 0x416830) - runtime data, not statically resolvable.",
-    "Who populates +0x298 item-id words at runtime (network msg 0x402/0x403/0x405/0x406 handlers through 0x8AB828) - BSS runtime state, outside static scope.",
-    "Frame 1050 pixel content (buttons/gold box/bars) - could be visually verified by rendering the frame bytes (not done in this pass).",
-    "Base-ctor internals: exact meaning of fields [+0x40]/[+0x44] (derived: height-ish / frame-lib pointer, read from caller-stack slots at 0x423B8D/0x423BA9 which map through the trade ctor's pushed registers to a2/a7 - value semantics marked derived).",
-    "0x423FA0 layout/show continuation (uses +0x40/+0x44) not fully traced.",
-    "0x417C80/0x417E60 gauge hit-test internals (rect from +0x1C..+0x20 vs gauge pos) - call sites and semantics confirmed; inner rect math not dumped."
+    "Who populates +0x298 item-id words at runtime (network msg 0x402/0x403/0x405/0x406 handlers through 0x8AB828) - BSS runtime state, outside static scope (KEPT-runtime, Finding 284).",
+    "Split handle [+0x54]/[+0x58] exact dimension semantics: write path trunc(gauge_float x 94.0) reaches 0..94, read path treats it as a row offset (<=34 required by the 200-cell pane); range clamp site not located (candidate, Finding 284)."
   ]
 }

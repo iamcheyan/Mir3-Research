@@ -1,0 +1,119 @@
+{
+  "evidence_id": "status-option-names-evidence",
+  "finding": 289,
+  "date": "2026-08-11",
+  "title": "Status attribute value colors, store state business names, exchange (trade) grid/button names, option toggle frame pairs",
+  "objective": "Close the remaining pending items of status-window-render-evidence.json (attribute value draw colors) and draw-order-evidence.json (store/exchange/option state-to-business-name mapping) using the original Mir3.exe disassembly and GameInter.wil pixel analysis as primary facts.",
+  "question": "(a) What color does each attribute value draw use at each VA? (b) What are the business names of store states 0..4? (c) What are the exchange (trade) window's grid/button names and the option window's toggle frame pairs 161/162, 760/761, 762/763?",
+  "method": "Rigorous capstone walk of 0x44BC80-0x44CCCC (status attribute text) collecting only push instructions, stopping at call/ret/jmp/jcc, using the verified 0x45DD70 calling convention (exec-order pushes[0]=a7, pushes[1]=text, pushes[3]=color; ecx=0x8AB7A8). Protocol message dispatch tables (0x421f2c byte index + 0x421eb0 jump table, plus 0x422004/0x422024/0x42202c entries) traced to store state factories 0x44F480/0x44F710/0x44F940/0x44FB00. Option ctor 0x440FE0 + 0x417550 arg map + ctor tail 0x4411E0-0x4413A0 read for toggle init. GameInter.wil frame geometry decoded to PNG; pixel containment (jaccard + shift) proved UP/PRESSED pairing.",
+  "evidence_level": "primary-static + primary-resource (art pixels) + secondary (server scripts) + candidate (unproven)",
+  "addresses": [
+    "0x44BC80", "0x45DD70", "0x44BCE6", "0x44C1A7", "0x44C41C", "0x44C4A6", "0x44C52B", "0x44C90F",
+    "0x44BD37", "0x44BDB9", "0x44BE3C", "0x44BEEC", "0x44BF6F", "0x44BFEF", "0x44C072", "0x44C0EA",
+    "0x44C166", "0x44C1E3", "0x44C25F", "0x44C2DB", "0x44C353", "0x44C3CF", "0x44C465", "0x44C4EA",
+    "0x44C5B0", "0x44C635", "0x44C6BA", "0x44C73F", "0x44C7C4", "0x44C849", "0x44C8CE", "0x44C994",
+    "0x44CA19", "0x44CA9E", "0x44CB23", "0x44CBA8", "0x44CC2D", "0x44CCB2",
+    "0x41F92B", "0x41F96C", "0x4209CD", "0x420A86", "0x420A9B", "0x4209D4",
+    "0x421F2C", "0x421EB0", "0x422004", "0x422024", "0x42202C", "0x42210C",
+    "0x44F480", "0x44F710", "0x44F940", "0x44FB00", "0x423E80", "0x44CE88", "0x44BBD0",
+    "0x47B620", "0x47B634", "0x47B648", "0x47B660", "0x47B904", "0x47B91C", "0x47B940",
+    "0x440FE0", "0x417550", "0x417880", "0x417640", "0x441226", "0x441281", "0x4412D2", "0x441328",
+    "0x441DFD", "0x441D5F", "0x441EDA", "0x441F0D", "0x47C594", "0x47C5AC", "0x47C57C", "0x47C570",
+    "0x415A40", "0x415A63", "0x415A68", "0x415A8C", "0x415A91", "0x415AB2", "0x415AB7", "0x415B10"
+  ],
+  "verdict": "(a) CLOSED: all 30 attribute value draws use 0xfafafa unconditionally; label colors are 0xfae1c8 (28 labels) or 0xff (4 labels: 防御/攻击/魔法/魔法防御力). (b) CLOSED/REFINED: store states 0=BUY, 1=SELL, 2=warehouse(仓库), 3=CRAFT(合成), 4=item detail; 0/3/4 primary-static proven, 1/2 corroborated by server scripts only (candidate). (c) CLOSED: exchange = trade window: grid 24 slots (+0x5B8 stride 0xC2C), buttons close 161/162 / accept 1061/1062 / cancel 1064/1065 (frames None, invisible), gauges frame 1070 (fill runtime-only); option window: 161/162 = close, 760/761 = ON-indicator toggle pair, 762/763 = OFF-indicator toggle pair, per-row BGM/EffectSound/Ambience/ShadowBlend.",
+  "conclusions": [
+    {
+      "claim": "All 30 attribute VALUE draws in the status window call 0x45DD70 with color operand 0xfafafa unconditionally (exec-order pushes[3]); no value draw uses any other color.",
+      "va": ["0x44BD37", "0x44BDB9", "0x44BE3C", "0x44BEEC", "0x44BF6F", "0x44BFEF", "0x44C072", "0x44C0EA", "0x44C166", "0x44C1E3", "0x44C25F", "0x44C2DB", "0x44C353", "0x44C3CF", "0x44C465", "0x44C4EA", "0x44C5B0", "0x44C635", "0x44C6BA", "0x44C73F", "0x44C7C4", "0x44C849", "0x44C8CE", "0x44C994", "0x44CA19", "0x44CA9E", "0x44CB23", "0x44CBA8", "0x44CC2D", "0x44CCB2"],
+      "level": "primary-static",
+      "note": "14 first-column values (LEVEL/HP/MP/经验/包袱负重/装备负重/腕力/准确/敏捷/魔法躲避/毒物躲避/中毒恢复/生命恢复/魔法恢复) + 16 second-column values (防御/攻击 + 7 attack-element + 7 defense-element). 魔法/魔法防御力 are label-only (no value draw). 62 total calls = 30 values + 32 labels."
+    },
+    {
+      "claim": "28 label draws use 0xfae1c8: 14 first-column labels (LEVEL/HP/MP/经验/包袱负重/装备负重/腕力/准确/敏捷/魔法躲避/毒物躲避/中毒恢复/生命恢复/魔法恢复) and 14 second-column element labels (火(火焰)/冰(冰冻)/电(雷电)/风(狂风)/治疗(神圣)/攻击(黑暗)/召唤(幻影) each in attack and defense rows).",
+      "va": ["0x44BCE6", "0x44BD63", "0x44BDE5", "0x44BE91", "0x44BF18", "0x44BF9B", "0x44C01B", "0x44C09E", "0x44C116", "0x44C1A7", "0x44C20F", "0x44C28B", "0x44C307", "0x44C37F", "0x44C557", "0x44C5DC", "0x44C661", "0x44C6E6", "0x44C76B", "0x44C7F0", "0x44C875", "0x44C8FA"],
+      "level": "primary-static",
+      "note": "魔法躲避 label draw 0x44C1A7 is NEW vs the old evidence file (was missing). Second-column element labels are 0xfae1c8 like the first column."
+    },
+    {
+      "claim": "Exactly 4 label draws use 0xff (red): 防御@0x44C41C, 攻击@0x44C4A6, 魔法@0x44C52B, 魔法防御力@0x44C90F. The old evidence claim 'all second-column labels = 0xff' is FALSE.",
+      "va": ["0x44C41C", "0x44C4A6", "0x44C52B", "0x44C90F"],
+      "level": "primary-static",
+      "note": "CORRECTION to status-window-render-evidence.json label_colors.second_column_labels."
+    },
+    {
+      "claim": "魔法 and 魔法防御力 have a label draw but NO value draw in 0x44BC80-0x44CCCC (the call after each label is the next label); 防御 and 攻击 do have value draws. Counts reconcile: 14 first-col labels + 14 values, 18 second-col labels + 16 values = 62 calls.",
+      "va": ["0x44C516", "0x44C557", "0x44C8FA", "0x44C994"],
+      "level": "primary-static"
+    },
+    {
+      "claim": "Store state byte [esi+0x5F8]; protocol message dispatch: msg 0x285 -> 0x41F92B -> call 0x44F480 @0x41F962 (state 0 BUY, frame 0x3E8=1000); msg 0x28C -> 0x41F96C -> call 0x44F710 @0x41F98B (state 1 SELL, frame 0x3EB=1003, state byte set 1 @0x44F7F4); state 2 WAREHOUSE (frame 0x3E9=1001, msg 0x2C0 -> 0x44F940 @0x420A9B via table 0x422004 -> 0x420A86); state 3 CRAFT (frame 0x3E8=1000, msg 0x2C8 -> 0x44FB00 @0x4209D4 via table 0x422024 -> 0x4209A8 -> 0x4209CD); state 4 item detail (frame 1002).",
+      "va": ["0x41F962", "0x41F98B", "0x420A9B", "0x4209D4", "0x421F2C", "0x421EB0", "0x422004", "0x422024", "0x44F7E8", "0x44F263", "0x44F562", "0x44F7F4", "0x44EBCB", "0x423E80", "0x44CE88", "0x44BBD0", "0x44CEA8"],
+      "level": "primary-static",
+      "note": "Msg-id-to-factory mapping for 0x2C0/0x2C8 crossrefs store-window-render-evidence.json state_machine_evidence (proven there); the jump-table chain 0x422004/0x422024/0x42202C verified here."
+    },
+    {
+      "claim": "State 3 CRAFT is proven by the adjacent error/success message constants: 0x47B620 '您没有原材料......' (no raw materials), 0x47B634 (cp949) '돈이 부족합니다.' (not enough money), 0x47B648 (cp949) '오류가 발생했습니다.' (error occurred), 0x47B660 (cp949) '아이템이 잘 만들어 졌습니다.' (item crafted successfully); jump table 0x42210C = [0x420A3B, 0x41F9D9, 0x420A54, 0x420A6D] pushes these four from the 0x420A26 dispatch. BUY-side errors sit at 0x47B904 '您购买的速度过快.' / 0x47B91C '您的包袱太重啦！无法携带更多物品' / 0x47B940 '你不能购买这件物品.' confirming state 0 = BUY.",
+      "va": ["0x47B620", "0x47B634", "0x47B648", "0x47B660", "0x42210C", "0x420A26", "0x47B904", "0x47B91C", "0x47B940", "0x41F9AF", "0x41F9D9", "0x41F9F2", "0x41F9C0"],
+      "level": "primary-static",
+      "note": "0x47B634/0x47B648/0x47B660 are Korean (cp949), not GBK - decode accordingly."
+    },
+    {
+      "claim": "State 1 SELL grid geometry: right-side grid SetRect loop 0x44F806-0x44F833 builds rects x=0x143..<0x1DB (323..475), y=0x2B..<0x9D (43..157) on frame 0x3EB=1003 (sell grid panel, 498x304 content per store evidence). Server crossref: 105 '@NPC_Sell' + 100 '@NPC_Buy' Convert_Def sections and Merchant.txt @sell/@buy menus - business name corroboration only.",
+      "va": ["0x44F806", "0x44F833", "0x44F7E8", "0x44F7F4"],
+      "level": "secondary",
+      "note": "Client names no constant for states 1/2 (engine-driven UI; server scripts have no SELLITEM/BUYITEM message commands per store evidence warning) - business labels remain candidate."
+    },
+    {
+      "claim": "State 2 WAREHOUSE: frame 0x3E9=1001 compact panel; server crossref: 19 storage NPCs named 仓库保管员 in Merchant.txt plus @NPC_Storage/@NPC_Getback sections (寄存物品/取出/仓库密码设置, PassWord.txt) - corroboration only, candidate label.",
+      "va": ["0x420A9B", "0x44F940", "0x44F263"],
+      "level": "secondary"
+    },
+    {
+      "claim": "Option window ctor 0x440FE0 builds 9 controls via 0x417550 (arg map: a1=res lib->+0x14, a2=up frame->+0x18, a3=down frame->+0x1C, a4=x, a5=y, a6=0, a7=1->+0x24, a8=visible/current->+0x20 (-1=invisible), a9=0->+0x30): close 161/162 @(218,238); four toggle rows each with a LEFT 760/761 pair and a RIGHT 762/763 pair: BGM [0x130/0x1E4] @(148,43)/(185,43) state [0x54]; EffectSound [0x298/0x34C] @(148,116)/(185,116) state [0x58]; Ambience [0x400/0x4B4] @(148,190)/(185,190) state [0x5C]; ShadowBlend [0x568/0x61C] @(148,217)/(185,217) state [0x60]; plus two 751/751 sliders @(34,96)/(34,170).",
+      "va": ["0x440FE0", "0x417550", "0x417880", "0x417640"],
+      "level": "primary-static"
+    },
+    {
+      "claim": "Ctor tail init (0x441226 BGM, 0x441281 EffectSound, 0x4412D2 Ambience, 0x441328 ShadowBlend): when state byte == 1 the LEFT toggle (+0x130 etc.) becomes visible (760) and RIGHT (+0x1E4 etc.) hidden; when state byte == 0 the LEFT is hidden and RIGHT visible (762). So LEFT 760/761 = ON indicator (state 1), RIGHT 762/763 = OFF indicator (state 0).",
+      "va": ["0x441226", "0x441281", "0x4412D2", "0x441328"],
+      "level": "primary-static",
+      "note": "Frames pushed: 760 -> set-frame a3=0x2F8? Actually 0x417880(arg, arg, 0x2F8) sets +0x20=0x2F8=760 and -1 hides; 0x2FA=762. See config keys below."
+    },
+    {
+      "claim": "Config key mapping: BGM=0x47C594, EffectSound=0x47C5AC, Ambience=0x47C57C, ShadowBlend=0x47C570; load sites 0x441DFD-0x441E0C, 0x441D5F-0x441D85, 0x441EDA-0x441EFA, 0x441F0D-0x441F29; on=1/off=0 into state fields +0x54/+0x58/+0x5C/+0x60.",
+      "va": ["0x47C594", "0x47C5AC", "0x47C57C", "0x47C570", "0x441DFD", "0x441D5F", "0x441EDA", "0x441F0D"],
+      "level": "primary-static"
+    },
+    {
+      "claim": "760/761 and 762/763 are UP/PRESSED frame pairs of the same glyph art, NOT ON/OFF artwork: pixel containment at shift (+2,+1) - 83 of 84 (760) / 109 total (761) text pixels; 97 of 99 (762) / more (763); both frames in each pair are grayscale/dark. This REFUTES the system-window evidence vision-model note 'artwork visibly contains ON and OFF state text'.",
+      "va": ["WIL 760/761/762/763", "WIL 751", "WIL 750"],
+      "level": "primary-resource",
+      "note": "Frame sizes: 750=256x512, 751=20x16, 760/761=32x22, 762/763=40x22. Frame 750 content bands: labels at rows ~112-122 (환경설정), 128-140, 164-176, 196-208, 226-238; rows 28-80 transparent (toggles at rel y=43 float over art); no baked ON/OFF text. Glyph OCR of 760 (3 clusters 7/7/9px) and 762 (2 clusters) suggests Korean 켬/끔 or 开关 but font match is inconclusive (candidate)."
+    },
+    {
+      "claim": "Exchange (trade) window 0x415B10: buttons close=161/162 @0x415A63/0x415A68 (offset +0x7C, pos (532,350)), accept=1061/1062 @0x415A91/0x415A8C (+0x130, (185,332)), cancel=1064/1065 @0x415AB7/0x415AB2 (+0x1E4, (225,332)); cancel frames 1064/1065 DO NOT EXIST in GameInter.wil (header None) - invisible by design; frame 1060 (0x424) has zero genuine refs (unused art). Pixel-structure OCR reads 1060=交易, 1061/1062=接受 (jaccard 0.53/0.58, shift +2/+1) corroborating Finding 283.",
+      "va": ["0x415A63", "0x415A68", "0x415A91", "0x415A8C", "0x415AB7", "0x415AB2", "WIL 1060/1061/1062/1064/1065"],
+      "level": "primary-static",
+      "note": "Grid: 24 slot records at +0x5B8 stride 0xC2C (array ctor 0x4686C4), item-id words at +0x298 (400 words, empty 0xFFFF); panel frame 1050; 2 gauges frame 1070 (16x360 divider art) at +0x13648/+0x13694 - hit-test only, never blitted."
+    },
+    {
+      "claim": "Exchange gauge fill values [this+0x54]/[this+0x58] (pane split widths) have NO static writer: written only by mouse handler 0x416E70 trunc(gauge_float x 94.0) and read by paint; the runtime network source (through 0x8AB828) is outside static scope.",
+      "va": ["0x416E70", "0x415B10"],
+      "level": "primary-static",
+      "note": "KEPT-runtime per draw-order pending item (量条填充值运行时来源)."
+    }
+  ],
+  "closed_notes": {
+    "status-window-render-evidence.json": "pending[0] CLOSED: attribute value draw colors are 0xfafafa for all 30 value draws (VAs listed); label colors 0xfae1c8 (28) / 0xff (4). Evidence_level updated: label_colors.second_column_labels corrected (only 防御/攻击/魔法/魔法防御力 are 0xff; element labels 0xfae1c8); 魔法躲避 label draw 0x44C1A7 added; 魔法/魔法防御力 confirmed label-only (no value draw).",
+    "draw-order-evidence.json": "pending[0] CLOSED/REFINED: store state 0..4 business names resolved (0=BUY/1=SELL/2=仓库/3=CRAFT合成/4=item detail; 0,3,4 primary-static, 1,2 secondary server-script corroboration); exchange grid/button names resolved primary-static (trade window: close/accept/cancel frame pairs + 24-slot grid + gauges); option toggle pairs 760/761=ON indicator, 762/763=OFF indicator per option row (BGM/EffectSound/Ambience/ShadowBlend) proven primary-static + pixel containment. Remaining runtime-only items kept refined: store states 1/2 client-side label absence, exchange gauge fill runtime source, toggle glyph text candidate.",
+    "store-window-render-evidence.json": "not modified (pending already []); its state_machine_evidence business names for 0/3/4 confirmed, 1/2 remain candidate (crossref to this file).",
+    "evidence_level_notes": "No evidence_level downgrades; corrections flagged inline (label_colors.second_column_labels, system-window vision note on 760/761 ON/OFF art)."
+  },
+  "pending": [
+    "Store states 1/2 carry no client-side name constant: 'SELL'/'仓库' labels rest on server script cross-reference (@NPC_Sell/@NPC_Buy, @NPC_Storage/@NPC_Getback, Merchant.txt 仓库保管员) only; the engine opens these states without SELLITEM/BUYITEM message commands, so runtime confirmation would need a server-side trace (candidate/derived, Finding 289).",
+    "Exchange (trade) gauge fill values [this+0x54]/[this+0x58] runtime source: written only by 0x416E70 from gauge float x 94.0; the network message handler that drives them (through runtime trade state 0x8AB828) is BSS runtime state outside static scope (KEPT-runtime, Finding 289).",
+    "Option toggle glyph text on frames 760/761/762/763: pixel structure suggests Korean 켬/끔 (3-jamo clusters) or 开关, but no font match is conclusive (WQY template j=0.000, Noto Serif bold ~0.4-0.5 random overlap) - candidate pending a font-accurate match (candidate, Finding 289).",
+    "Status window 魔法/魔法防御力 value draws: no value draw exists in 0x44BC80-0x44CCCC for these two labels; whether a value is drawn elsewhere (or omitted by design) is runtime/other-region scope (candidate, Finding 289)."
+  ]
+}

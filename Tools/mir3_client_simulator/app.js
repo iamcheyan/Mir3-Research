@@ -30,6 +30,8 @@ const STATE = {
   prompt: null,                 // {kind:'confirm'|'notice'|'gold', text, cb}
   pressed: null,                // control id currently pressed
   tradeGold: 0,                 // gold box value (Finding 283, msg 0x405/0x406)
+  storeFeedback: "",            // Finding 289 CRAFT/BUY result line (0x42210C)
+  inventoryMode: 0,             // Finding 288 mode byte [bag+0x54]: 0 default / 1 修补 / 2 变卖 / 3 储存
   tradeFinalized: false,        // [+0x13644]: 0 trading, 1 finalized (accept)
   tradeSplit: [90, 90],         // pane split widths px [+0x54]/[+0x58]
 };
@@ -83,7 +85,7 @@ function entityFrame(e, now) {
 
 /* ------------------------------------------------------------ data model */
 async function loadData() {
-  const r = await fetch("/sim/data/layout.json");
+  const r = await fetch("data/layout.json");
   if (!r.ok) throw new Error(`data fetch failed: ${r.status}`);
   return r.json();
 }
@@ -462,6 +464,19 @@ function fillWindowContent(w) {
     lbl.style.cssText = "left:8px;top:256px;width:200px";
     lbl.textContent = "负重 12/30";
     content.appendChild(lbl);
+    // Finding 288 (primary-static): mode byte [bag+0x54] written ONLY by
+    // server msgs — mode0 default (reset 0x42E9A4 / show 0x42AE26), mode2 变卖
+    // msg 0x286→0x41FA16, mode1 修补 msg 0x29C→0x41FB24, mode3 储存 msg 0x2BC→
+    // 0x420AFC; paint dispatch 0x42EF2F jmp [eax*4+0x42F13C] branch labels
+    // 包袱/修补/变卖/储存. 3 tab child controls (bag+0x5C stride 0xB4) are
+    // decorative (click 0x4177F0 = sound only).
+    const INVENTORY_MODES = ["包袱 (mode0)", "修补 (mode1)", "变卖 (mode2)", "储存 (mode3)"];
+    const modeBar = document.createElement("div");
+    modeBar.className = "lbl";
+    modeBar.style.cssText = "left:8px;top:268px;width:260px;color:#9fd4ff";
+    modeBar.id = "inventory-mode-label";
+    modeBar.textContent = INVENTORY_MODES[STATE.inventoryMode] || INVENTORY_MODES[0];
+    content.appendChild(modeBar);
   } else if (id === "window.exchange-candidate") {
     // Round 5 (Finding 283, primary-static): window id 3 = PLAYER-TO-PLAYER
     // TRADE. Frame 1050 (512x512 @ (7,-44)) is the only static art; the
@@ -512,6 +527,15 @@ function fillWindowContent(w) {
       stateLbl.id = "store-state-label";
       stateLbl.textContent = STORE_STATE_NAMES[STATE.storeState] || `商店状态 ${STATE.storeState}`;
       content.appendChild(stateLbl);
+      // Finding 289: CRAFT result/error strings (cp949) via jump table 0x42210C:
+      //   돈이 부족합니다 (0x47B634, not enough money) / 아이템이 잘 만들어 졌습니다
+      //   (0x47B660, crafted ok); BUY errors 0x47B904/0x47B91C/0x47B940.
+      const fb = document.createElement("div");
+      fb.className = "lbl";
+      fb.style.cssText = "left:8px;top:294px;width:280px;color:#ffd27a";
+      fb.id = "store-feedback";
+      fb.textContent = STATE.storeFeedback || "";
+      content.appendChild(fb);
     }
   } else if (id === "window.chat-pop") {
     // chat pop window: history + channel toggles + scroll buttons + input.
@@ -611,18 +635,44 @@ function fillWindowContent(w) {
       content.appendChild(btn);
     });
   } else if (id === "window.option") {
-    const opts = ["音乐 开", "音效 开", "窗口模式", "显示名称"];
-    opts.forEach((o, i) => {
-      const btn = document.createElement("div");
-      btn.className = "slot";
-      btn.style.cssText = `left:30px;top:${30 + i * 40}px;width:180px;height:28px;border:1px solid #3a4a5c;background:rgba(0,0,0,.2)`;
-      btn.textContent = o;
-      btn.style.cssText += ";font:12px monospace;color:#e8eef5;text-align:center;line-height:28px";
-      btn.addEventListener("click", () => {
-        btn.classList.toggle("selected");
-        pushChat(`[设置] ${o} ${btn.classList.contains("selected") ? "开" : "关"}`);
+    // Finding 289 (primary-static): ctor 0x440FE0 9 controls; rows BGM [+0x130/0x1E4]
+    // y43, EffectSound [+0x298/0x34C] y116, Ambience [+0x400/0x4B4] y190, ShadowBlend
+    // [+0x568/0x61C] y217; left pair 760/761 = ON, right pair 762/763 = OFF (UP/PRESSED,
+    // not ON/OFF art); sliders 751 @(34,96)/(34,170); state bytes +0x54/+0x58/+0x5C/+0x60.
+    const OPT_ROWS = [
+      ["音乐", 43], ["音效", 116], ["环境声", 190], ["阴影混合", 217],
+    ];
+    const OPT_STATE = { "音乐": true, "音效": true, "环境声": false, "阴影混合": true };
+    OPT_ROWS.forEach(([name, y]) => {
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.style.cssText = `left:16px;top:${y + 4}px;width:90px`;
+      lbl.textContent = name;
+      content.appendChild(lbl);
+      const on = document.createElement("div");
+      on.className = "slot";
+      on.style.cssText = `left:110px;top:${y}px;width:26px;height:22px;border:1px solid ${OPT_STATE[name] ? "#7ad47a" : "#3a4a5c"};background:rgba(0,0,0,.25)`;
+      on.textContent = "ON";
+      on.style.cssText += ";font:9px monospace;color:#e8eef5;text-align:center;line-height:22px";
+      on.addEventListener("click", () => {
+        OPT_STATE[name] = true;
+        on.style.borderColor = "#7ad47a";
+        off.style.borderColor = "#3a4a5c";
+        pushChat(`[设置] ${name} ON · frame 760/761 (0x440FE0)`);
       });
-      content.appendChild(btn);
+      const off = document.createElement("div");
+      off.className = "slot";
+      off.style.cssText = `left:140px;top:${y}px;width:26px;height:22px;border:1px solid ${OPT_STATE[name] ? "#3a4a5c" : "#7ad47a"};background:rgba(0,0,0,.25)`;
+      off.textContent = "OFF";
+      off.style.cssText += ";font:9px monospace;color:#e8eef5;text-align:center;line-height:22px";
+      off.addEventListener("click", () => {
+        OPT_STATE[name] = false;
+        on.style.borderColor = "#3a4a5c";
+        off.style.borderColor = "#7ad47a";
+        pushChat(`[设置] ${name} OFF · frame 762/763 (0x440FE0)`);
+      });
+      content.appendChild(on);
+      content.appendChild(off);
     });
   } else if (id === "window.group" || id === "window.guild-candidate") {
     const members = id === "window.group" ? ["玩家", "队友·法师", "队友·道士"] : ["行会会长", "长老", "成员 1", "成员 2"];
@@ -646,10 +696,10 @@ function fillWindowContent(w) {
 }
 
 const STORE_STATE_NAMES = [
-  "购买 (state0 · msg 0x285 → 0x44F480, primary-static)",
-  "出售 (state1 · candidate)",
-  "仓库 (state2 · msg 0x2C0 → 0x44F940, frame 1001, candidate)",
-  "制作 (state3 · msg 0x2C8 → 0x44FB00, frame 1000, primary-static)",
+  "购买 (state0 · msg 0x285 → 0x41F92B → 0x44F480, primary-static)",
+  "出售 (state1 · 服务端 @NPC_Sell + Merchant.txt 佐证, secondary)",
+  "仓库 (state2 · msg 0x2BC → 二级 switch 0x42042B → 0x420A9B → 0x44F940, primary-static)",
+  "制作 (state3 · msg 0x2C8 → 0x44FB00, frame 1002, primary-static)",
   "物品详情 (state4 · primary-static)",
 ];
 
@@ -1202,8 +1252,9 @@ function renderTestNav() {
   const extra = [
     ["confirm 确认框", () => showPrompt("confirm", "确认框演示：是否继续？", (ok) => pushChat(ok ? "[确认] 继续" : "[确认] 取消"))],
     ["notice 公告", () => showPrompt("notice", "[行会公告，请自行修改公告内容.]", (ok) => pushChat("[公告] 已读"))],
-    ["商店状态+1", () => { STATE.storeState = (STATE.storeState + 1) % 5; setWindowOpen("window.store-candidate", true); pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
-    ["商店状态-1", () => { STATE.storeState = (STATE.storeState + 4) % 5; setWindowOpen("window.store-candidate", true); pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
+    ["商店状态+1", () => { STATE.storeState = (STATE.storeState + 1) % 5; setWindowOpen("window.store-candidate", true); STATE.storeFeedback = STATE.storeState === 3 ? "돈이 부족합니다 (0x47B634)" : ""; pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
+    ["商店状态-1", () => { STATE.storeState = (STATE.storeState + 4) % 5; setWindowOpen("window.store-candidate", true); STATE.storeFeedback = ""; pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
+    ["背包模式+1", () => { STATE.inventoryMode = (STATE.inventoryMode + 1) % 4; const m = document.getElementById("inventory-mode-label"); if (m) m.textContent = ["包袱 (mode0)", "修补 (mode1)", "变卖 (mode2)", "储存 (mode3)"][STATE.inventoryMode]; pushChat(`[背包] mode${STATE.inventoryMode} · 0x42EF2F`); }],
     ["切换场景", () => setCurrentMap((STATE.currentMapIndex || 0) + 1)],
   ];
   for (const [label, fn] of extra) {

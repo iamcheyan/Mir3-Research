@@ -1,0 +1,167 @@
+{
+  "evidence_id": "EI-288",
+  "finding": 288,
+  "date": "2026-08-11",
+  "title": "Inventory (bag) window mode/tab architecture: paint-mode dispatch, 3 decorative tab controls, server-message mode triggers, 0x7DA100 gold-cap semantic, outbound 0x405/0x406 send-site reconciliation",
+  "objective": "Close three pending evidence items of the EI 3.0 inventory reconstruction: (a) map the 3 tab child controls (bag this+0x5C, stride 0xB4) to the 4 paint modes and identify the 4th-mode trigger; (b) name the bss dword 0x7DA100 from its complete reference set with negative proof; (c) reconcile the outbound msg 0x405 send sites (old claim: sole send site is the dead gate 0x417280; Finding 283 claimed 0x405 is sent via 0x451B30).",
+  "question": "Which code switches the bag between its 4 paint modes (包袱/修补/变卖/储存) if the 3 tab buttons do not? What is 0x7DA100? Where is msg 0x405 really sent from, and is the 0x417280 gate dead or live?",
+  "method": "Primary-static disassembly of /tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe (VA base 0x400000, fileoff = VA - 0x400000) via Tools/reverse-engineering/disasm_capstone.py and custom capstone scans over .text. Raw LE-byte scan (00 A1 7D 00) for 0x7DA100 imm32 references across the entire file; rel32 call/jmp xref scan (--xrefs) for 0x417280 and 0x420AFC; full disassembly of the NPC-service message handler family (0x41F700-0x421D3F) including both switch dispatches (0x41F8D9/0x41F8DD byte table 0x421F2C + jump table 0x421EB0; 0x42044E/0x420454 byte table 0x422080 + jump table 0x421FBC) and the inner switch 0x420A26/0x420A34 (table 0x42210C); handler bodies 0x41FA16, 0x41FB24, 0x41FB6E, 0x420AFC, 0x420B31; send helpers 0x451B00/0x451B30/0x451E60/0x452940; gate 0x417280; trade accept click 0x417030-0x417039. Cross-check against docs/research/ei-ui-layout/trade-window-render-evidence.json and inventory-window-render-evidence.json. Strings decoded GBK (Korean font name cp949).",
+  "evidence_level": "primary-static",
+  "addresses": [
+    "0x0042EA80", "0x0042EB80", "0x0042EE30", "0x0042EE4B", "0x0042EF2F", "0x0042EF4B", "0x0042F13C",
+    "0x0042EF52", "0x0042F02E", "0x0042F068", "0x0042F0EB", "0x0042F123", "0x0042F12F",
+    "0x00417550", "0x00417880", "0x00417830", "0x0042E970", "0x0042E9A4", "0x0042AE26", "0x0042ADB0",
+    "0x0042AFC0", "0x0042FE00", "0x0042FD10", "0x0042FF30", "0x0042FF90", "0x004300F0",
+    "0x0041F8C6", "0x0041F8D9", "0x0041F8DD", "0x00421F2C", "0x00421EB0",
+    "0x0042042B", "0x0042044E", "0x00420454", "0x00422080", "0x00421FBC",
+    "0x00420A26", "0x00420A34", "0x0042210C",
+    "0x0041FA16", "0x0041FA48", "0x0041FA5B", "0x0041FB24", "0x0041FB50", "0x0041FB54", "0x0041FB6E",
+    "0x00420AFC", "0x00420B28", "0x00423FA0",
+    "0x007DA100", "0x007DA11D", "0x007DA11F", "0x007DA1C0", "0x007DA1C4",
+    "0x00417280", "0x0041729D", "0x0042D6C6", "0x0042D680", "0x0042D700",
+    "0x00451B00", "0x00451B12", "0x00451B30", "0x00451B3F", "0x00452940", "0x00451E60",
+    "0x00417000", "0x00417034", "0x004528E0",
+    "0x0041CECA", "0x0041CE00",
+    "0x00451940", "0x00452440", "0x00451660",
+    "0x004681F9", "0x0046811C", "0x0045DBA0", "0x0045DE50",
+    "0x0047BE10", "0x0047BDF4", "0x0047BDEC", "0x0047BDE4", "0x0047BDFC", "0x0047A214", "0x0047BE18",
+    "0x0047AD98",
+    "0x002AB9E0", "0x002A548C"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "bag_window": {
+      "object": "embedded at container(ROOT 0x2A548C) + 0x6554; also reached as container + 0x6554 == 0x2AB9E0",
+      "vtable": "0x476870",
+      "ctor": "0x42EA80 (window shell: base ctor 0x423B30 + 3 tab child controls via 0x417550 + weight gauge 0x278 via 0x417960)",
+      "reset": "0x42E970 (zeros +0x774 record array 0x8BFA dwords, +0x23784/88/8C/6C/70, calls 0x42FF90, builds 3 child controls loop stride 0xB4 via 0x4175F0)",
+      "paint": "0x42EB80"
+    },
+    "evidence_level": "primary-static"
+  },
+  "paint_mode_dispatch": {
+    "mode_byte": "byte [bag + 0x54]",
+    "dispatch": "0x42EF2F: xor eax,eax; mov al,[esi+0x54]; cmp eax,3; ja 0x42F12F; jmp [eax*4 + 0x42F13C]",
+    "jump_table_0x42F13C": {
+      "mode0": "0x42EF52",
+      "mode1": "0x42F02E",
+      "mode2": "0x42F068",
+      "mode3": "0x42F0EB"
+    },
+    "branch_labels": {
+      "mode0_0x42EF52": {
+        "label_va": "0x47BE10",
+        "label_text_gbk": "[包袱]",
+        "color": "0xF8DCFA",
+        "extra": "then weight line: sprintf 0x47BDFC '负重:%d / 总量:%d' with words [0x7DA11D]/[0x7DA11F] (bss, always 0); drawn at rect (x+0x86..x+0xF0)-(y+0x18..y+0x26), colors 0xA0A0A and 0xF8C8C8; also gold-cap number: sprintf '%d' (format 0x47A214) with [0x7DA100] at 0x42EE4C, rect (x+0x41,y+0x11A)-(x+0x8E,y+0x12B), color 0x64C8F8 via 0x45DE50, font 0x47BE18 = Korean '굴림체'"
+      },
+      "mode1_0x42F02E": {
+        "label_va": "0x47BDF4",
+        "label_text_gbk": "[修补]",
+        "color": "0xF8C8C8"
+      },
+      "mode2_0x42F068": {
+        "label_va": "0x47BDEC",
+        "label_text_gbk": "[变卖]",
+        "color": "0xF8C8C8"
+      },
+      "mode3_0x42F0EB": {
+        "label_va": "0x47BDE4",
+        "label_text_gbk": "[储存]",
+        "color": "0xF8C8C8"
+      }
+    },
+    "common_tail_0x42F123": "push 0; mov ecx,0x8AB7A8; call 0x45DE50 (text draw)"
+  },
+  "tab_controls": {
+    "count": 3,
+    "stride": "0xB4",
+    "ctor_site": "0x42EA80 via 0x417550 (button control ctor)",
+    "controls": [
+      {
+        "field": "bag + 0x5C",
+        "frames": "0xA1/0xA2 (161/162)",
+        "position": "(x+0xF9, y+0x120)"
+      },
+      {
+        "field": "bag + 0x110",
+        "frames": "0x108/0x109 (264/265)",
+        "position": "(x+0x1A9, y+0x106)"
+      },
+      {
+        "field": "bag + 0x1C4",
+        "frames": "0x10B/0x10C (267/268)",
+        "position": "(x+0x1A9, y+0x11E)"
+      }
+    ],
+    "paint_repositions": "0x42EEC3-0x42EF1A re-positions all 3 controls each frame via 0x417830 at (x+0xF9,y+0x120), (x+0xB0,y+0x106), (x+0xB0,y+0x11E)",
+    "click_behavior": "button vtable 0x4177F0 (index 4 of 0x4763A8) = sound only; bag click handler 0x4300F0 reads mode byte but NEVER writes it (mode reads at 0x43026D/0x43040B/0x430451/0x430526)",
+    "verdict": "tabs are DECORATIVE affordances; tab clicks play a sound and do not switch paint mode"
+  },
+  "mode_write_sites_exhaustive": [
+    { "va": "0x42E9A4", "value": "0", "context": "bag reset 0x42E970 body (mov byte [esi+0x54], bl with bl=0)" },
+    { "va": "0x42AE26", "value": "0", "context": "show dispatcher 0x42ADB0 window-id0 open branch: mov byte [esi+0x54],0 + tab2 frames 0x10B/0x10C arg3=-1 + 0x42FF90 (bag list fill request)" },
+    { "va": "0x42C350", "value": "bl", "context": "writes OTHER window instance esi+0x29CE4 (0x44B2D0 family), not the bag" },
+    { "va": "0x41C27D", "value": "bl", "context": "NPC-service handler family (different window family)" },
+    { "va": "0x41FA48", "value": "2", "context": "server msg 0x286 handler 0x41FA16 (SELL 变卖)" },
+    { "va": "0x41FB50", "value": "1", "context": "server msg 0x29C handler 0x41FB24 (REPAIR 修补)" },
+    { "va": "0x420B28", "value": "3", "context": "server msg 0x2BC handler 0x420AFC (STORAGE 储存)" }
+  ],
+  "server_mode_triggers": [
+    {
+      "msg": "0x286",
+      "mode": 2,
+      "dispatch": "first switch 0x41F8C6: lea edi,[eax-0x26E]; cmp edi,0x2F; ja default; mov dl,[edi+0x421F2C]; jmp [edx*4+0x421EB0]. msg 0x286 -> idx 0x18 -> byte 0x421F2C[0x18] = case 10 -> 0x421EB0[10] = 0x41FA16",
+      "skeleton": "0x41FA16: mov eax,[ebx+0x2ABA10]; test eax,eax; jne +0x11 -> (if 0) push 0; lea ecx,[ebx+0x2A548C]; call 0x42ADB0 (open bag window id0; resets mode 0); 0x41FA2D: lea esi,[ebx+0x2AB9E0] (bag obj = container+0x6554); push 0x10E; push 0x110; push 0x10F (tab2 frames 270/272/271); lea ecx,[esi+0x1C4]; mov byte [esi+0x54],2 (mode 2 SELL); call 0x417880 (tab2 frame set); 0x41FA51: mov edx,[esp+0x10]; mov [ebx+0x2CF14C],edx (NPC index); tail 0x41FA5B: xor ecx,ecx; mov eax,0x207; push 1; push ecx; push eax; mov ecx,esi; call 0x423FA0 (bag, 0x207, 0, 1); jmp 0x421D3F"
+    },
+    {
+      "msg": "0x29C",
+      "mode": 1,
+      "dispatch": "first switch 0x41F8C6: msg 0x29C -> idx 0x2E -> byte 0x421F2C[0x2E] = case 28 -> 0x421EB0[28] = 0x41FB24",
+      "skeleton": "0x41FB24: mov eax,[ebx+0x2ABA10]; test eax,eax; jne +0x11 -> (if 0) push 0; lea ecx,[ebx+0x2A548C]; call 0x42ADB0; 0x41FB3B: lea esi,[ebx+0x2AB9E0]; push 0x107; push 0x109; push 0x108 (tab2 frames 263/265/264); mov byte [esi+0x54],1 (mode 1 REPAIR); lea ecx,[esi+0x1C4]; call 0x417880; 0x41FB5F: mov eax,[esp+0x10]; mov [ebx+0x2CF14C],eax; jmp 0x41FA5B (shared tail)"
+    },
+    {
+      "msg": "0x29D",
+      "mode": null,
+      "dispatch": "first switch 0x41F8C6: msg 0x29D -> idx 0x2F -> byte 0x421F2C[0x2F] = case 29 -> 0x421EB0[29] = 0x41FB6E",
+      "skeleton": "0x41FB6E (repair continuation, no mode write): mov ecx,[esp+0x10]; mov [ebx+0x35B1E8],ecx; mov eax,[ebx+0x2CF13C]; test eax,eax; ..."
+    },
+    {
+      "msg": "0x2BC",
+      "mode": 3,
+      "dispatch": "second switch 0x42042B: cmp eax,0x44C; jg 0x4218F2; je 0x42186D; add eax,-0x29F; cmp eax,0x88; ja default; mov dl,[eax+0x422080]; jmp [edx*4+0x421FBC]. msg 0x2BC -> idx 0x1D -> byte 0x422080[0x1D] = case 14 -> 0x421FBC[14] = 0x420AFC",
+      "skeleton": "0x420AFC: mov eax,[ebx+0x2ABA10]; test eax,eax; jne +0x11 -> (if 0) push 0; lea ecx,[ebx+0x2A548C]; call 0x42ADB0; 0x420B13: lea esi,[ebx+0x2AB9E0]; push 0x111; push 0x113; push 0x112 (tab2 frames 273/275/274); mov byte [esi+0x54],3 (mode 3 STORAGE); jmp 0x41FB54 (lea ecx,[esi+0x1C4]; call 0x417880; then NPC index store [ebx+0x2CF14C]; jmp 0x41FA5B shared tail)"
+    }
+  ],
+  "0x405_0x406_send_reconciliation": {
+    "0x451B00": "sends msg 0x405: mov eax,[esp+4]; push 0; push 0; push 0; lea edi,[esi+0x18]; push eax; push 0x405; push edi; call 0x452940 (message build); push 0; push edi; mov ecx,esi; call 0x451E60 (transmit); ret 4. Takes one value argument.",
+    "0x451B30": "sends msg 0x406: identical shape but value slot is 0 and push 0x406 at 0x451B3F; ret (no stack cleanup). NO value argument.",
+    "gate_0x417280": "dead gate: cmp ax,0x405; shr eax,16; test al,al -> atoi(arg2) > [0x7DA100] suppress else call 0x451B00. Sole E8 caller 0x42D6C6 (rel32 xref scan total=1) passes category byte 4; jump table 0x42D680 routes category 3, so the byte2==0 guard contradicts routing -> gate unreachable in this build.",
+    "trade_accept_0x417034": "trade accept click 0x417030-0x417039: mov ecx,0x8AB828; call 0x451B30 (msg 0x406, live secondary path); then [esi+0x13644]=1 (trade finalized). Confirms trade evidence: gold-pay confirm transmits 0x406, not 0x405.",
+    "input_dialog_0x418030": "input dialog ctor receives 0x405 as WORD msg-id tag ([obj+0x460]) for the gold-amount prompt (0x47AD98='您要付给对方多少金币?'); confirm handler 0x418545/0x418648 sends via 0x417034 -> 0x451B30, i.e. 0x406. The stored 0x405 is a dialog tag, never transmitted.",
+    "verdict": "msg 0x405 has NO live sender in this build: sole send site 0x451B00 is reachable only from the dead gate 0x417280 (sole caller 0x42D6C6). Finding 283's '0x405 via 0x451B30' is a MISLABEL: 0x451B30 transmits 0x406 (live trade gold-pay accept). Dead-duplicate path for 0x405; live-secondary path is the 0x406 sibling."
+  },
+  "verdict": "The 3 tab child controls (bag this+0x5C, stride 0xB4) are decorative button affordances: their click vtable 0x4177F0 is sound-only, and the bag click handler 0x4300F0 reads the mode byte but never writes it. The 4 paint modes (0 包袱, 1 修补, 2 变卖, 3 储存) are switched exclusively by SERVER message handlers writing byte [bag+0x54]: default 0 at bag reset 0x42E9A4 and show-activate 0x42AE26; mode 2 by msg 0x286 (case 10 -> 0x41FA16), mode 1 by msg 0x29C (case 28 -> 0x41FB24), mode 3 by msg 0x2BC (second switch case 14 -> 0x420AFC); msg 0x29D (case 29 -> 0x41FB6E) is a repair continuation with no mode write. Each server trigger also sets the third tab control's frames via 0x417880 and stores the NPC index at [ebx+0x2CF14C]. 0x7DA100 is a bss dword with zero writers, painted as '%d' in mode 0 (gold-cap display, always 0) and read by the dead 0x405 gate; semantic name remains candidate. Outbound 0x405 is dead (sole sender 0x451B00 behind dead gate); the live gold-pay path sends 0x406 via 0x451B30.",
+  "conclusions": [
+    { "claim": "Byte [bag+0x54] is written ONLY by server-message handlers and window open/reset; the 3 tab child controls are decorative (click 0x4177F0 = sound only; bag click handler 0x4300F0 never writes the mode byte).", "va": ["0x42EF2F", "0x41FA48", "0x41FB50", "0x420B28", "0x42AE26", "0x42E9A4", "0x4177F0", "0x4300F0"], "level": "primary-static" },
+    { "claim": "Paint dispatch reads mode byte [bag+0x54] at 0x42EF2F, cmp eax,3 / ja 0x42F12F, jmp [eax*4+0x42F13C]; branch labels [包袱] 0x47BE10 / [修补] 0x47BDF4 / [变卖] 0x47BDEC / [储存] 0x47BDE4 (GBK).", "va": ["0x42EF2F", "0x42F13C", "0x47BE10", "0x47BDF4", "0x47BDEC", "0x47BDE4"], "level": "primary-static" },
+    { "claim": "msg 0x286 (变卖 SELL, mode 2): first switch 0x41F8C6, byte table 0x421F2C idx 0x18 -> case 10 -> jump table 0x421EB0 -> 0x41FA16; handler sets mode 2 + tab2 frames 0x10F/0x110/0x10E, stores NPC index [ebx+0x2CF14C], sends msg 0x207 via 0x423FA0.", "va": ["0x41F8C6", "0x421F2C", "0x421EB0", "0x41FA16", "0x41FA48", "0x41FA5B", "0x423FA0"], "level": "primary-static" },
+    { "claim": "msg 0x29C (修补 REPAIR, mode 1): first switch idx 0x2E -> case 28 -> 0x41FB24; sets mode 1 + tab2 frames 0x108/0x109/0x107.", "va": ["0x421F2C", "0x421EB0", "0x41FB24", "0x41FB50"], "level": "primary-static" },
+    { "claim": "msg 0x29D (case 29 -> 0x41FB6E) is the repair continuation: stores [ebx+0x35B1E8] from arg, no mode write.", "va": ["0x421F2C", "0x421EB0", "0x41FB6E"], "level": "primary-static" },
+    { "claim": "msg 0x2BC (储存 STORAGE, mode 3): second switch 0x42042B (cmp eax,0x44C; add eax,-0x29F; cmp eax,0x88; byte table 0x422080 idx 0x1D -> case 14 -> jump table 0x421FBC -> 0x420AFC); sets mode 3 + tab2 frames 0x112/0x113/0x111, jumps into shared tail 0x41FB54.", "va": ["0x42042B", "0x422080", "0x421FBC", "0x420AFC", "0x420B28", "0x41FB54"], "level": "primary-static" },
+    { "claim": "Default mode 0 is established by bag reset 0x42E9A4 and show dispatcher 0x42AE26 (window-id 0 open branch also issues the bag-list fill request 0x42FF90).", "va": ["0x42E9A4", "0x42AE26", "0x42FF90"], "level": "primary-static" },
+    { "claim": "0x7DA100: bss dword with ZERO writers in the whole binary (raw LE-byte scan 00 A1 7D 00); read at 0x41729D (dead 0x405 gate: atoi(arg2) > [0x7DA100] suppresses the 0x405 send) and at 0x42EE4C (bag paint, sprintf '%d' format 0x47A214, font 0x47BE18 '굴림체', rect (x+0x41,y+0x11A)-(x+0x8E,y+0x12B), color 0x64C8F8). Displayed value always 0. Semantic name candidate: trade/buy gold cap (runtime watch required).", "va": ["0x7DA100", "0x41729D", "0x42EE4C", "0x47A214", "0x47BE18"], "level": "primary-static-negative (writers/reads); candidate (semantic name)" },
+    { "claim": "Outbound msg 0x405: sole sender 0x451B00 (push 0x405 at 0x451B12); sole static caller is the dead gate 0x417280 (rel32 xref total=1 -> 0x42D6C6, category byte 4 contradicts 0x42D680 routing). 0x451B30 sends 0x406 (push 0x406 at 0x451B3F) and is the LIVE trade gold-pay path (accept click 0x417034 -> 0x451B30 with ecx=0x8AB828). Finding 283's '0x405 via 0x451B30' is a mislabel; the input dialog's stored 0x405 tag is never transmitted.", "va": ["0x451B00", "0x451B12", "0x451B30", "0x451B3F", "0x417280", "0x42D6C6", "0x42D680", "0x417034"], "level": "primary-static" },
+    { "claim": "Business semantics of msgs 0x286/0x29C/0x2BC (变卖 sell / 修补 repair / 储存 storage) are inferences from paint labels + handler context (0x423FA0 msg 0x207 sell-action send); exact server protocol semantics remain runtime-only.", "va": ["0x41FA5B", "0x423FA0"], "level": "candidate" }
+  ],
+  "closed_notes": {
+    "2026-08-11": [
+      "Mode-tab to child-control mapping (a): CLOSED. The 3 tab controls (bag this+0x5C/+0x110/+0x1C4, stride 0xB4, button ctor 0x417550) are decorative; the 4th paint mode is not a 4th tab - the mode byte is server-driven. Mode writers exhaustive: 0x42E9A4 (reset, 0), 0x42AE26 (show window-id0, 0), 0x41FA48 (msg 0x286, 2), 0x41FB50 (msg 0x29C, 1), 0x420B28 (msg 0x2BC, 3); 0x42C350 and 0x41C27D write other window families. Paint dispatch 0x42EF2F with jump table 0x42F13C; mode 0 is the default (bag reset + show). Server triggers also drive the third tab's frames via 0x417880, giving visual feedback without switching via click.",
+      "msg 0x405 send-site reconciliation (c): CLOSED. 0x451B00 is the sole 0x405 sender and is reachable only from the dead gate 0x417280 (xref total=1, 0x42D6C6). 0x451B30 transmits 0x406 and is the live trade gold-pay path (0x417034). Finding 283's '0x405 via 0x451B30' corrected to '0x406 via 0x451B30'; 0x405 has no live sender in this build."
+    ]
+  },
+  "pending": [
+    "0x7DA100 semantic name (candidate: trade/buy gold quantity cap): static side closed (zero writers, bss always 0, read by dead 0x405 gate 0x41729D + bag paint 0x42EE4C); runtime watch of 0x7DA100 during the trade/quantity dialog and bag paint required to confirm the semantic name.",
+    "Server protocol semantics of msgs 0x286 (mode 2), 0x29C (mode 1), 0x2BC (mode 3), 0x29D (repair continuation) - business meaning (变卖/修补/储存) is inferred from paint labels and the 0x207 sell-action send; a runtime packet trace pairing outbound requests with these server messages would confirm."
+  ]
+}

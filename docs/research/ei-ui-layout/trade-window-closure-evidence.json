@@ -1,0 +1,69 @@
+{
+  "evidence_id": "trade-window-closure",
+  "finding": 284,
+  "date": "2026-08-11",
+  "title": "交易窗口闭合：基类构造器字段 +0x40/+0x44、槽索引代数、仪表命中、帧 1050 像素目录",
+  "objective": "闭合 trade-window-render-evidence.json 的 6 项 pending：+0x40/+0x44 字段语义、0x423FA0 续体、帧 1050 像素内容、槽索引代数、仪表命中内部、+0x298 运行时填充（保留）。",
+  "question": "交易窗基类构造器 +0x40/+0x44 是什么？槽索引数学如何从点击坐标映射到记录？分割把手 +0x54/+0x58 写路径与量纲？帧 1050 内含哪些美术元素？",
+  "method": "disasm_capstone.py 反汇编 0x423B40（基类构造器）、0x423FA0/0x4240C0（布局/拖拽）、0x416830/0x416950/0x4169B0/0x4170C2（槽代数）、0x416E70/0x417C80/0x417E60/0x417D00/0x417960/0x4179B0（仪表族）、0x415B10（paint 分割）；--xrefs 0x423FA0；wilsdk 解码 GameInter.wil 帧 1050 像素分析（artifacts/trade-frame1050.png）。",
+  "evidence_level": "primary-static（反汇编/像素）；split 量纲部分 candidate",
+  "addresses": [
+    "0x00423B40", "0x00423FA0", "0x004240C0", "0x00416830", "0x00416950",
+    "0x004169B0", "0x004170C2", "0x00416E70", "0x00417C80", "0x00417E60",
+    "0x00417D00", "0x00417960", "0x004179B0", "0x00415B10", "0x00476550",
+    "0x00468520"
+  ],
+  "verdict": "6 项 pending 中 5 项 CLOSED（primary-static），1 项（+0x298 运行时填充）KEPT-runtime。split 写路径 closed、量纲 candidate。",
+  "conclusions": [
+    {
+      "claim": "基类构造器 0x423B40 的 [+0x40]/[+0x44] = 内容区宽/高（交易窗 484/330）：注册现场 push 序 (1, 330, 0x1e4=484, 0, 0, 0x41a=1050, lib, 3) → id=3、帧 1050、T6=484、T7=330；构造器尾部 content rect [+0x18]=(eax, ebp, eax+[+0x40], ebp+[+0x44])=(0,0,484,330)。",
+      "va": "0x00423B40",
+      "level": "primary-static"
+    },
+    {
+      "claim": "0x423FA0 = 窗口移动/拖拽处理器（16 个 xref），用拖拽偏移 [+0x48]/[+0x4C] 重定位 + 钳制（0x235/0x23A）；0x4240C0 = 抓取偏移存储。与 Finding 248 position-dispatch 链（0x42C510→0x42C741→0x42B430→0x423FA0）一致。",
+      "va": "0x00423FA0",
+      "level": "primary-static"
+    },
+    {
+      "claim": "槽索引代数：0x416830 返回 cell = col + 5*(split+row)，split = [+0x54 + 4*pane]（两窗格分割）；0x416950 读 +0x298[cell + 200*pane]，word % 1000 = 槽号（空 0xFFFF）；0x4170C2 槽 id → 记录 [0x5B8 + id*0xC2C]。",
+      "va": "0x00416830",
+      "level": "primary-static"
+    },
+    {
+      "claim": "0x4169B0 行迭代：+0x298[5*row + 200*pane]，row ∈ [split−5, split+6]。",
+      "va": "0x004169B0",
+      "level": "primary-static"
+    },
+    {
+      "claim": "分割写路径：鼠标处理器 0x416E70 迭代 2 个仪表 @+0x13648（stride 0x4C）→ 0x417C80（仪表命中/权重：y→float [0xC] 经边界 [0x28]/[0x30] 钳 0..1）→ [+0x54 + 4*esi] = trunc(gauge_float[+0x13654+0x4C*esi] * 94.0)；94.0 浮点 @0x476650（字节 00 00 bc 42），0x468520 = _ftol（fistp RC=truncate）。",
+      "va": "0x00416E70",
+      "level": "primary-static"
+    },
+    {
+      "claim": "仪表族其余：0x417960 = 仪表 ctor、0x4179B0 = 仪表渲染/blit、0x417D00 = 拖/滚步进器、0x417E60 = 拖结束点击（清 [+0x18] 标志）。",
+      "va": "0x00417960",
+      "level": "primary-static"
+    },
+    {
+      "claim": "paint 0x415B10：计算左右半区矩形（+0x5C/+0x6C），PtInRect 鼠标 → 选窗格标志 → 0x416830(鼠标位置) 得 cell。",
+      "va": "0x00415B10",
+      "level": "primary-static"
+    },
+    {
+      "claim": "帧 1050 像素目录（frame 坐标；frame = window − (7,−44)）：不透明木质面板 bbox (14,91)→(497,421) ≈ 483×330 与窗 484×330 吻合；双网格 pane0 frame (14,92)..(194,308)、pane1 (246,92)..(426,308)（5×6 格 36px 一致）；金币盒 frame (27,226)..(149,260)（= window (34,270)..(156,304)）；按钮区 (178,376)/(218,376)；分隔区金色竖条 x≈215-218/239-241/263-265；金币盒内金色字形簇（x 78-86 rows 222-234、x 130-137 rows 238-250）；底部文本块；右侧装饰带。",
+      "va": "GameInter.wil F1050",
+      "level": "primary-static"
+    },
+    {
+      "claim": "split 量纲 tension：写路径 trunc(f*94.0) 可达 0..94，但读路径把 split 当行偏移（200-cell 窗格要求 ≤34）——[+0x54] 具体范围语义（行数 vs 像素）未完全钉死，标 candidate；模拟器既有实现 [90,90] px 保留。",
+      "va": "0x00476550",
+      "level": "candidate"
+    }
+  ],
+  "closed_notes": "闭合 trade-window-render-evidence.json pending：①cell↔slot 代数（0x416830/0x416950/0x4170C2，primary-static）；③帧 1050 像素目录；④+0x40/+0x44=宽/高；⑤0x423FA0=拖拽移动；⑥仪表命中内部（0x417C80/0x416E70）。②+0x298 item-id 词运行时填充（网络 handler 0x402/0x403/0x405/0x406 → 0x8AB828）KEPT-runtime。",
+  "pending": [
+    "+0x298 item-id 词的运行时填充方（网络 msg 0x402/0x403/0x405/0x406 handler 经 0x8AB828）——BSS 运行时状态，静态域外（KEPT-runtime）。",
+    "split 把手 [+0x54]/[+0x58] 的精确量纲：写路径 trunc(gauge_float×94.0) 达 0..94，读路径当行偏移（≤34）；范围钳制位置未定位（candidate）。"
+  ]
+}

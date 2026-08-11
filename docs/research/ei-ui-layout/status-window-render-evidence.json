@@ -1343,7 +1343,7 @@
     "interpretation": "The binary does not draw an equipment slot from an invented generic icon atlas: it derives a per-item graphics object, selects its frame through the original selector context, reads the selected frame dimensions, and sends the result through the original composition path. The construction loops for the selector contexts are located (main-object 0x452AF7 el70..el139 mode 0; map-rebuild 0x43B7B2 start..start+13), and the WIL filename binding is now PRIMARY-STATIC: el82=Data/Inventory.wil / el83=Data/Equip.wil / el86=Data/ProgUse.wil / el139=Data/StoreItem.wil via the 0x452B20 table fill (slots 0..139; slot 139 = 0x573F58, StoreItem.wil string 0x47C878 copied @0x4540E8 into [ebx+0x13E5C] lea @0x4540D4); el139 is a functional store-item graphics selector (flag==3 branch of dispatch 0x430A40), not an empty/reserved slot (Finding 266)."
   },
   "pending": [
-    "Color semantics of a few attribute value draws (beyond label colors 0xfae1c8/0xff) remain unresolved."
+    "CLOSED (Finding 289): all 30 attribute value draws use color 0xfafafa unconditionally (VAs in status-option-names-evidence.json); label colors 0xfae1c8 (28) / 0xff (4: 防御/攻击/魔法/魔法防御力). Refined residual: 魔法 and 魔法防御力 have label draws but no value draw inside 0x44BC80-0x44CCCC - whether their values are drawn elsewhere is outside this region (candidate, Finding 289)."
   ],
   "closed_notes": [
     "Equipment slot geometry (8x38x38 rects) and item draw chain: primary-static, consolidated in equipment-slots-evidence.json (2026-08-10)",

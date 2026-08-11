@@ -98,31 +98,206 @@
     "element_is_slot": "element index == WIL path slot index (six independent cross-checks): 0x47=71 M-Hum, 0x4C=76 WM-Hum, 0x57=87 Horse, 0x58=88 Mon-1, 0x80=128 NPC.wil, 0x83=131 M-Hair",
     "literals_ascii": "single-byte ASCII strings (UTF-16LE scan finds nothing)",
     "table": [
-      {"slot": 71, "element": "0x47", "literal": ".\\Data\\M-Hum.wil", "lit_va": "0x47CDF8", "init_ref": "0x45364C", "dest": "+0xF94C"},
-      {"slot": 72, "element": "0x48", "literal": ".\\Data\\M-Weapon1.wil", "lit_va": "0x47CDE0", "init_ref": "0x453671", "dest": "+0xFA50"},
-      {"slot": 73, "element": "0x49", "literal": ".\\Data\\M-Weapon2.wil", "lit_va": "0x47CDC8", "init_ref": "0x453699", "dest": "+0xFB54"},
-      {"slot": 74, "element": "0x4A", "literal": ".\\Data\\M-Weapon3.wil", "lit_va": "0x47CDB0", "init_ref": "0x4536C1", "dest": "+0xFC58"},
-      {"slot": 75, "element": "0x4B", "literal": ".\\Data\\M-Weapon4.wil", "lit_va": "0x47CD98", "init_ref": "0x4536EA", "dest": "+0xFD5C"},
-      {"slot": 76, "element": "0x4C", "literal": ".\\Data\\WM-Hum.wil", "lit_va": "0x47CD84", "init_ref": "0x453714", "dest": "+0xFE60"},
-      {"slot": 77, "element": "0x4D", "literal": ".\\Data\\WM-Weapon1.wil", "lit_va": "0x47CD6C", "init_ref": "0x45373C", "dest": "+0xFF64"},
-      {"slot": 78, "element": "0x4E", "literal": ".\\Data\\WM-Weapon2.wil", "lit_va": "0x47CD54", "init_ref": "0x453761", "dest": "+0x10068"},
-      {"slot": 79, "element": "0x4F", "literal": ".\\Data\\WM-Weapon3.wil", "lit_va": "0x47CD3C", "init_ref": "0x453789", "dest": "+0x1016C"},
-      {"slot": 80, "element": "0x50", "literal": ".\\Data\\WM-Weapon4.wil", "lit_va": "0x47CD24", "init_ref": "0x4537B1", "dest": "+0x10270"},
-      {"slot": 81, "element": "0x51", "literal": ".\\Data\\Magic.wil", "lit_va": "0x47CD10", "init_ref": "0x4537DC", "dest": "+0x10374"},
-      {"slot": 87, "element": "0x57", "literal": ".\\Data\\Horse.wil", "lit_va": "0x47CC94", "init_ref": "0x4538CC", "dest": "+0x1098C"},
-      {"slot": 88, "element": "0x58", "literal": ".\\Data\\Mon-1.wil", "lit_va": "0x47CC80", "init_ref": "0x4538F4", "dest": "+0x10A90"},
-      {"slot": 128, "element": "0x80", "literal": ".\\Data\\NPC.wil", "lit_va": "0x47C964", "init_ref": "0x453F31", "dest": "+0x13330"},
-      {"slot": 129, "element": "0x81", "literal": ".\\Data\\MonMagic.wil", "lit_va": "0x47C950", "init_ref": "0x453F5A", "dest": "+0x13434"},
-      {"slot": 130, "element": "0x82", "literal": ".\\Data\\MonImg.wil", "lit_va": "0x47C93C", "init_ref": "0x453F84", "dest": "+0x13538"},
-      {"slot": 131, "element": "0x83", "literal": ".\\Data\\M-Hair.wil", "lit_va": "0x47C928", "init_ref": "0x453FAC", "dest": "+0x1363C"},
-      {"slot": 132, "element": "0x84", "literal": ".\\Data\\M-Helmet1.wil", "lit_va": "0x47C910", "init_ref": "0x453FD1", "dest": "+0x13740"},
-      {"slot": 133, "element": "0x85", "literal": ".\\Data\\WM-Hair.wil", "lit_va": "0x47C8FC", "init_ref": "0x453FF9", "dest": "+0x13844"},
-      {"slot": 134, "element": "0x86", "literal": ".\\Data\\WM-Helmet1.wil", "lit_va": "0x47C8E4", "init_ref": "0x454021", "dest": "+0x13948"},
-      {"slot": 135, "element": "0x87", "literal": ".\\Data\\DMon-1.wil", "lit_va": "0x47C8D0", "init_ref": "0x45404C", "dest": "+0x13A4C"},
-      {"slot": 136, "element": "0x88", "literal": ".\\Data\\DMonS-1.wil", "lit_va": "0x47C8BC", "init_ref": "0x454074", "dest": "+0x13B50"},
-      {"slot": 137, "element": "0x89", "literal": ".\\Data\\MagicEx.wil", "lit_va": "0x47C8A8", "init_ref": "0x454099", "dest": "+0x13C54"},
-      {"slot": 138, "element": "0x8A", "literal": ".\\Data\\MonMagicEx.wil", "lit_va": "0x47C890", "init_ref": "0x4540C1", "dest": "+0x13D58"},
-      {"slot": 139, "element": "0x8B", "literal": ".\\Data\\StoreItem.wil", "lit_va": "0x47C878", "init_ref": "0x4540E9", "dest": "+0x13E5C"}
+      {
+        "slot": 71,
+        "element": "0x47",
+        "literal": ".\\Data\\M-Hum.wil",
+        "lit_va": "0x47CDF8",
+        "init_ref": "0x45364C",
+        "dest": "+0xF94C"
+      },
+      {
+        "slot": 72,
+        "element": "0x48",
+        "literal": ".\\Data\\M-Weapon1.wil",
+        "lit_va": "0x47CDE0",
+        "init_ref": "0x453671",
+        "dest": "+0xFA50"
+      },
+      {
+        "slot": 73,
+        "element": "0x49",
+        "literal": ".\\Data\\M-Weapon2.wil",
+        "lit_va": "0x47CDC8",
+        "init_ref": "0x453699",
+        "dest": "+0xFB54"
+      },
+      {
+        "slot": 74,
+        "element": "0x4A",
+        "literal": ".\\Data\\M-Weapon3.wil",
+        "lit_va": "0x47CDB0",
+        "init_ref": "0x4536C1",
+        "dest": "+0xFC58"
+      },
+      {
+        "slot": 75,
+        "element": "0x4B",
+        "literal": ".\\Data\\M-Weapon4.wil",
+        "lit_va": "0x47CD98",
+        "init_ref": "0x4536EA",
+        "dest": "+0xFD5C"
+      },
+      {
+        "slot": 76,
+        "element": "0x4C",
+        "literal": ".\\Data\\WM-Hum.wil",
+        "lit_va": "0x47CD84",
+        "init_ref": "0x453714",
+        "dest": "+0xFE60"
+      },
+      {
+        "slot": 77,
+        "element": "0x4D",
+        "literal": ".\\Data\\WM-Weapon1.wil",
+        "lit_va": "0x47CD6C",
+        "init_ref": "0x45373C",
+        "dest": "+0xFF64"
+      },
+      {
+        "slot": 78,
+        "element": "0x4E",
+        "literal": ".\\Data\\WM-Weapon2.wil",
+        "lit_va": "0x47CD54",
+        "init_ref": "0x453761",
+        "dest": "+0x10068"
+      },
+      {
+        "slot": 79,
+        "element": "0x4F",
+        "literal": ".\\Data\\WM-Weapon3.wil",
+        "lit_va": "0x47CD3C",
+        "init_ref": "0x453789",
+        "dest": "+0x1016C"
+      },
+      {
+        "slot": 80,
+        "element": "0x50",
+        "literal": ".\\Data\\WM-Weapon4.wil",
+        "lit_va": "0x47CD24",
+        "init_ref": "0x4537B1",
+        "dest": "+0x10270"
+      },
+      {
+        "slot": 81,
+        "element": "0x51",
+        "literal": ".\\Data\\Magic.wil",
+        "lit_va": "0x47CD10",
+        "init_ref": "0x4537DC",
+        "dest": "+0x10374"
+      },
+      {
+        "slot": 87,
+        "element": "0x57",
+        "literal": ".\\Data\\Horse.wil",
+        "lit_va": "0x47CC94",
+        "init_ref": "0x4538CC",
+        "dest": "+0x1098C"
+      },
+      {
+        "slot": 88,
+        "element": "0x58",
+        "literal": ".\\Data\\Mon-1.wil",
+        "lit_va": "0x47CC80",
+        "init_ref": "0x4538F4",
+        "dest": "+0x10A90"
+      },
+      {
+        "slot": 128,
+        "element": "0x80",
+        "literal": ".\\Data\\NPC.wil",
+        "lit_va": "0x47C964",
+        "init_ref": "0x453F31",
+        "dest": "+0x13330"
+      },
+      {
+        "slot": 129,
+        "element": "0x81",
+        "literal": ".\\Data\\MonMagic.wil",
+        "lit_va": "0x47C950",
+        "init_ref": "0x453F5A",
+        "dest": "+0x13434"
+      },
+      {
+        "slot": 130,
+        "element": "0x82",
+        "literal": ".\\Data\\MonImg.wil",
+        "lit_va": "0x47C93C",
+        "init_ref": "0x453F84",
+        "dest": "+0x13538"
+      },
+      {
+        "slot": 131,
+        "element": "0x83",
+        "literal": ".\\Data\\M-Hair.wil",
+        "lit_va": "0x47C928",
+        "init_ref": "0x453FAC",
+        "dest": "+0x1363C"
+      },
+      {
+        "slot": 132,
+        "element": "0x84",
+        "literal": ".\\Data\\M-Helmet1.wil",
+        "lit_va": "0x47C910",
+        "init_ref": "0x453FD1",
+        "dest": "+0x13740"
+      },
+      {
+        "slot": 133,
+        "element": "0x85",
+        "literal": ".\\Data\\WM-Hair.wil",
+        "lit_va": "0x47C8FC",
+        "init_ref": "0x453FF9",
+        "dest": "+0x13844"
+      },
+      {
+        "slot": 134,
+        "element": "0x86",
+        "literal": ".\\Data\\WM-Helmet1.wil",
+        "lit_va": "0x47C8E4",
+        "init_ref": "0x454021",
+        "dest": "+0x13948"
+      },
+      {
+        "slot": 135,
+        "element": "0x87",
+        "literal": ".\\Data\\DMon-1.wil",
+        "lit_va": "0x47C8D0",
+        "init_ref": "0x45404C",
+        "dest": "+0x13A4C"
+      },
+      {
+        "slot": 136,
+        "element": "0x88",
+        "literal": ".\\Data\\DMonS-1.wil",
+        "lit_va": "0x47C8BC",
+        "init_ref": "0x454074",
+        "dest": "+0x13B50"
+      },
+      {
+        "slot": 137,
+        "element": "0x89",
+        "literal": ".\\Data\\MagicEx.wil",
+        "lit_va": "0x47C8A8",
+        "init_ref": "0x454099",
+        "dest": "+0x13C54"
+      },
+      {
+        "slot": 138,
+        "element": "0x8A",
+        "literal": ".\\Data\\MonMagicEx.wil",
+        "lit_va": "0x47C890",
+        "init_ref": "0x4540C1",
+        "dest": "+0x13D58"
+      },
+      {
+        "slot": 139,
+        "element": "0x8B",
+        "literal": ".\\Data\\StoreItem.wil",
+        "lit_va": "0x47C878",
+        "init_ref": "0x4540E9",
+        "dest": "+0x13E5C"
+      }
     ],
     "non_grid": "NPCFace.WIL literal @0x47C4EC, init ref @0x43EDC6 (dialogue window +0x278; dest +0x278 NOT on the 0x104 grid from 0xB130)",
     "note": "slots 82-86 / 90-127 / 138-140 exist in the grid (stride-0x104 dest arithmetic) but their literals are not among the pinned 26; slot grid spans dest slots 68 (0xF640) .. 139 (0x13E5C); element 0x4C..0x50 (76-80) = WM-Hum + WM-Weapon1-4 for female composition"
@@ -281,9 +456,7 @@
   "pending": [
     "gender->type byte [e+0x88] write site (no static writer; entity build path / server packet, candidate)",
     "element table 0x5600FC runtime contents (kind byte +0x38 frame-header ptr populated at startup by 0x4660E0-family binders; exact record fields beyond +0x04/+0x38 runtime-capture)",
-    "render-mode flag bit semantics (which flags set [e+0x61C68] bits; mode words are alpha/color-key constants only)",
-    "weapon selector 41..50 / head 21..29 ranges land on WM-Hum(76)/Magic(81) and WM-Hair(133)/DMon-1(135) via the documented formulas — exact client-side meaning (extended weapon sets) unproven",
-    "slot grid 82-86 / 90-127 literal names (dest arithmetic proven; strings not among pinned 26)",
+    "weapon selector 41..50 / head 21..29: landings now proven static (0x40C7B7-0x40C85D -> WM-Hum(76)/Magic(81) weapon; WM-Hair(133)/DMon-1(135) head sets) — remaining: which server-side appearance codes drive sel>40 / head>20 (extended-set trigger), runtime/server-side only",
     "preview path 0x466CE0/0x466F20 exact 7-case semantics (candidate: char-create preview only)",
     "shadow-quad vertex buffer usage (built at [e+0x61BD8]; consumed where = runtime)"
   ]

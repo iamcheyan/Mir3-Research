@@ -111,7 +111,7 @@
     "source_artifacts": ["window-traversal-evidence.json", "window-visibility-dispatch-evidence.json", "window-position-dispatch-evidence.json"]
   },
   "pending": [
-    "store/exchange/option 状态→业务名映射：绘制期状态分派已 primary-static（见 closed_notes[2]），但 store 状态 0..4 的业务名（买卖/仓库等）、exchange 网格/按钮业务名与量条填充值运行时来源、option 控件帧对（161/162、760/761、762/763）对应的选项语义仍为 candidate/pending。"
+    "CLOSED (Finding 289): store 状态 0..4 业务名 = 0=BUY / 1=SELL / 2=仓库 / 3=CRAFT(合成) / 4=item detail（0/3/4 primary-static：msg 0x285→0x44F480、0x2C8→0x44FB00、state4 frame1002；1/2 仅服务端脚本佐证 @NPC_Sell/@NPC_Storage + Merchant.txt 仓库保管员，见 status-option-names-evidence.json）；exchange 网格/按钮业务名 primary-static（trade 窗：close 161/162、accept 1061/1062、cancel 1064/1065(帧不存在→隐形)、24-slot 网格 +0x5B8、量条 frame 1070）；option 控件帧对 161/162=关闭、760/761=ON 指示、762/763=OFF 指示（BGM/EffectSound/Ambience/ShadowBlend 每行一左一右，状态字节 +0x54/+0x58/+0x5C/+0x60，primary-static + 像素包含证明）。refined residual: exchange 量条填充值 [this+0x54]/[this+0x58] 的运行时来源（网络处理器，经 0x8AB828）超出静态范围（KEPT-runtime）；option 760/761/762/763 字形文字（켬/끔 候选）无法静态定论（candidate）。"
   ],
   "closed_notes":   [
     {

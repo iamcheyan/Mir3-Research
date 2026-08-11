@@ -132,11 +132,14 @@
   "RaceImg_direct_MonImg_frame": "rejected (324/432, MonImg 93% 空白)"
  },
  "evidence_level": "primary-static (EXE 反汇编/字节, WIL 头) + derived (多源交叉评分); 目录行全部 empirical 验证 (432/432)",
+ "closed_notes": {
+  "Finding 286 (2026-08-11, EI-286-MonsterSpecialCodes)": "CLOSED pending item 『code 83..85 / 0x4071A0 特殊分支语义』——表分派 0x407610/0x4075F0: code 0x53/0x54 → 默认 0x4075C5, code 0x55 → 0x40742C (FX 对象 + 状态链表 0x560088/0x56008C/0x560098); 同步门 0x407197-0x4071EF ([0x61c68]&1 + code 0x53..0x55 → 1 帧闪烁); race 字节表 0x44A61C 无 83..85 记录 (字节=8 默认) → 真实怪物死分支. 另 REFINED: element 89+ 无懒加载 (0x466130 未绑定→0), 启动批 0..83 (0x452AA0) + 运行期批 0x43B780; RaceImg: MonImg 无静态消费者, 玩家状态图标 = element 86 ProgUse.wil (0x44B630/0x44B560).",
+  "evidence_level note": "本文件 83..85 结论原为 p11.verdict 附带推断 (race 表仅 52-55,98), 现由 EI-286 静态定案为 primary-static; RaceImg_rejected 维持."
+ },
  "pending": [
   "N=race//10+1 vs +2 经验不可区分 (库稠密); 需运行时 WIL 对象绑定路径 (element→槽) 或服务端镜像确认",
-  "element 89+ 的懒加载绑定例程 (0x4660E0 调用点 0x43B7B7/0x43D4E7 等为其它资源; 怪物元素库绑定未静态定位) — 但经验已定 Race",
-  "RaceImg 图标寻址 (MonImg.wil 空白 → 可能在其它库或运行期合成)",
-  "DMon-1 40..99/140..199 等空白块区间的 race 语义 (服务端数据 gap, 本客户端未带)",
-  "code 83..85 / 0x4071A0 特殊分支语义 (无 Race 记录对应)"
+  "怪物元素 88..139 的运行期绑定批次起点依赖 [ebx+0x124] 运行值 (0x43B780 批 14 元素, 路径表 0x56B22C+e*0x104; 0x43D4E7/0x43DF64/0x43EDCC/0x456CC4 为场景/地图域其他 0x4660E0 绑定点) — 无懒加载, getFrame 未绑定→0 (Finding 286 EI-286-MonsterSpecialCodes)",
+  "怪物 RaceImg 图标寻址仍无静态路径: MonImg.wil 无静态消费者 (唯一字面量 0x47C943 = 槽60 路径项); 玩家状态图标为 element 86 = ProgUse.wil (0x44B630/0x44B560, 库 0x566DD4, 帧 word[0x7DA063]) — 怪物方需运行期/服务端确认 (Finding 286 EI-286-MonsterSpecialCodes)",
+  "DMon-1 40..99/140..199 等空白块区间的 race 语义 (服务端数据 gap, 本客户端未带)"
  ]
 }
