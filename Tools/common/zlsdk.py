@@ -17,26 +17,36 @@ except ImportError:
 
 
 class Zl2Entry:
-    __slots__ = ('id', 'offset', 'length', 'packed_length', 'compressed', 'format')
+    """ZL2 container index entry (matches C# Zl2Entry.Read, 23 bytes).
+    Fields: Type, Id, UncompressedSize, CompressedSize, Offset, Compression, Codec."""
+    __slots__ = ('type', 'id', 'uncompressed_size', 'compressed_size', 'offset', 'compression', 'codec')
 
-    def __init__(self, entry_id: int, offset: int, length: int, packed_length: int, compressed: bool, fmt: int):
+    def __init__(self, etype: int, entry_id: int, uncompressed_size: int, compressed_size: int,
+                 offset: int, compression: int, codec: int):
+        self.type = etype
         self.id = entry_id
+        self.uncompressed_size = uncompressed_size
+        self.compressed_size = compressed_size
         self.offset = offset
-        self.length = length
-        self.packed_length = packed_length
-        self.compressed = compressed
-        self.format = fmt
+        self.compression = compression  # 0=None, 1=DeflateFast, 2=DeflateBest
+        self.codec = codec               # ZlImageCodec: 0=Dxt1,1=Dxt5,2=Bgra32,3=Bc7,4=Png
 
 
 class ZlImageHeader:
-    __slots__ = ('width', 'height', 'offset_x', 'offset_y', 'position')
+    __slots__ = ('width', 'height', 'offset_x', 'offset_y', 'position',
+                'codec', 'stored_size', 'bc7_size')
 
-    def __init__(self, width: int, height: int, offset_x: int, offset_y: int, position: int):
+    def __init__(self, width: int, height: int, offset_x: int, offset_y: int, position: int,
+                 codec: int = 4, stored_size: int = 0, bc7_size: int = 0):
         self.width = width
         self.height = height
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.position = position
+        self.codec = codec
+        self.stored_size = stored_size
+        self.bc7_size = bc7_size
+
 
 
 def _rgb565(value: int) -> tuple[int, int, int]:
@@ -106,6 +116,17 @@ def _decode_bc3(data: bytes, width: int, height: int) -> bytes:
     return bytes(out)
 
 
+def _bgra_to_rgba(data: bytes, width: int, height: int) -> bytes:
+    """Convert BGRA32 buffer to RGBA (swap R/B channels)."""
+    out = bytearray(len(data))
+    for i in range(0, len(data), 4):
+        out[i] = data[i + 2]      # R <- B
+        out[i + 1] = data[i + 1]  # G
+        out[i + 2] = data[i]      # B <- R
+        out[i + 3] = data[i + 3]  # A
+    return bytes(out)
+
+
 class ZlLibrary:
     """Python loader for Zircon .Zl libraries."""
 
@@ -132,21 +153,23 @@ class ZlLibrary:
         index_offset = struct.unpack_from("<q", self.data, 31)[0]
         index_size = struct.unpack_from("<i", self.data, 39)[0]
 
-        # 1. Parse Index Block
+        # 1. Parse Index Block — C# Zl2Entry.Read: Type(1) Id(i32) UncompressedSize(i32)
+        #    CompressedSize(i32) Offset(i64) Compression(byte) Codec(byte) = 23 bytes
         idx_data = self.data[index_offset: index_offset + index_size]
         idx_pos = 0
         entry_count = struct.unpack_from("<i", idx_data, idx_pos)[0]
         idx_pos += 4
 
         for _ in range(entry_count):
-            eid = struct.unpack_from("<i", idx_data, idx_pos)[0]
-            off = struct.unpack_from("<q", idx_data, idx_pos + 4)[0]
-            length = struct.unpack_from("<i", idx_data, idx_pos + 12)[0]
-            packed_len = struct.unpack_from("<i", idx_data, idx_pos + 16)[0]
-            comp = bool(idx_data[idx_pos + 20])
-            fmt = idx_data[idx_pos + 21]
-            idx_pos += 22
-            self.entries[eid] = Zl2Entry(eid, off, length, packed_len, comp, fmt)
+            etype = idx_data[idx_pos]
+            eid = struct.unpack_from("<i", idx_data, idx_pos + 1)[0]
+            usize = struct.unpack_from("<i", idx_data, idx_pos + 5)[0]
+            csize = struct.unpack_from("<i", idx_data, idx_pos + 9)[0]
+            off = struct.unpack_from("<q", idx_data, idx_pos + 13)[0]
+            comp = idx_data[idx_pos + 21]
+            codec = idx_data[idx_pos + 22]
+            idx_pos += 23
+            self.entries[eid] = Zl2Entry(etype, eid, usize, csize, off, comp, codec)
 
         # 2. Parse Metadata Block
         meta_data = self.data[meta_offset: meta_offset + meta_size]
@@ -154,23 +177,42 @@ class ZlLibrary:
         version = struct.unpack_from("<i", meta_data, mpos)[0]
         count = struct.unpack_from("<i", meta_data, mpos + 4)[0]
         mpos += 16 # Skip Version, count, AtlasGroupImageCount, AtlasPageSize
+        self.version = version
         self.count = count
-
         for i in range(count):
             present = meta_data[mpos] != 0
             mpos += 1
             if not present:
                 continue
-            # ZlImage.Read(reader, Version): width(h), height(h), offsetX(h), offsetY(h), shadowX(h), shadowY(h)...
-            w, h, ox, oy = struct.unpack_from("<hhhh", meta_data, mpos)
-            mpos += 12 # Skip w, h, ox, oy, sx, sy
-            if version >= 1:
-                pos = struct.unpack_from("<i", meta_data, mpos)[0]
-                mpos += 4
+            # C# ZlImage.Read: Position(i32) Width(h) Height(h) OffX(h) OffY(h)
+            # ShadowType(byte) ShadowW(h) ShadowH(h) ShadowOffX(h) ShadowOffY(h)
+            # OverlayW(h) OverlayH(h)  = 25 bytes baseline
+            pos = struct.unpack_from("<i", meta_data, mpos)[0]
+            w, h, ox, oy = struct.unpack_from("<hhhh", meta_data, mpos + 4)
+            mpos += 25
+            codec = 4  # default Png for v0/v1; overwritten for v2
+            stored_size = 0
+            bc7_size = 0
+            if version >= 2:
+                # AtlasPage(i32) SourceRect(h×4) VisibleBounds(h×4) = 20 bytes
+                mpos += 20
+                img_codec = meta_data[mpos]
+                shadow_codec = meta_data[mpos + 1]
+                overlay_codec = meta_data[mpos + 2]
+                mpos += 3
+                mpos += 3  # RuntimePreferences
+                stored_size = struct.unpack_from("<i", meta_data, mpos)[0]
+                bc7_size = struct.unpack_from("<i", meta_data, mpos + 4)[0]
+                # FallbackDataSize + Shadow×3 + Overlay×3 = 7 more i32
+                mpos += 4 + 4 + 4  # StoredImg, Bc7, Fallback
+                mpos += 12  # Shadow×3
+                mpos += 12  # Overlay×3
+                codec = img_codec
+            elif version == 1:
+                codec = 1  # Dxt5
             else:
-                pos = i
-            mpos += 4 # Skip Light/Shadow/Flags
-            self.headers[i] = ZlImageHeader(w, h, ox, oy, pos)
+                codec = 0  # Dxt1
+            self.headers[i] = ZlImageHeader(w, h, ox, oy, pos, codec, stored_size, bc7_size)
 
     def _parse_v1(self):
         # Legacy ZL container: int32 metadata size, followed by a packed
@@ -226,26 +268,47 @@ class ZlLibrary:
             if entry_id not in self.entries:
                 return None
             entry = self.entries[entry_id]
-            raw = self.data[entry.offset: entry.offset + entry.packed_length]
-            if entry.compressed:
-                raw = zlib.decompress(raw)
+            raw = self.data[entry.offset: entry.offset + entry.compressed_size]
+            if entry.compression != 0:
+                # C# DeflateStream = raw deflate (no zlib header); use negative wbits
+                raw = zlib.decompressobj(-zlib.MAX_WBITS).decompress(raw)
+            if not raw:
+                return None
+            # primary segment = StoredImageDataSize bytes (or whole raw)
+            primary_size = hdr.stored_size if hdr.stored_size > 0 else len(raw)
+            if primary_size > len(raw):
+                primary_size = len(raw)
+            segment = raw[:primary_size]
+            codec = hdr.codec
+            try:
+                if codec == 4:  # Png
+                    im = Image.open(io.BytesIO(segment))
+                    im.load()
+                    return im.convert("RGBA")
+                if codec == 2:  # Bgra32
+                    return Image.frombytes("RGBA", (hdr.width, hdr.height),
+                                           _bgra_to_rgba(segment, hdr.width, hdr.height))
+                if codec == 0:  # Dxt1
+                    return Image.frombytes("RGBA", (hdr.width, hdr.height),
+                                           _decode_bc1(segment, hdr.width, hdr.height, True))
+                if codec == 1:  # Dxt5
+                    return Image.frombytes("RGBA", (hdr.width, hdr.height),
+                                           _decode_bc3(segment, hdr.width, hdr.height))
+                if codec == 3:  # Bc7 — not implemented in pure Python; try BC7 fallback
+                    return None
+            except Exception:
+                return None
+            return None
         else:
             block_size = ((hdr.width + 3) // 4) * ((hdr.height + 3) // 4) * (8 if self.version == 0 else 16)
             raw = self.data[hdr.position:hdr.position + block_size]
-
-        try:
-            if self.is_zl2:
-                # ZL2 primary payloads are normally PNG; keep this path
-                # extensible for the newer container's codec variants.
-                im = Image.open(io.BytesIO(raw))
-                im.load()
-                return im.convert("RGBA")
-            pixels = (_decode_bc1(raw, hdr.width, hdr.height, True)
-                      if self.version == 0 else
-                      _decode_bc3(raw, hdr.width, hdr.height))
-            return Image.frombytes("RGBA", (hdr.width, hdr.height), pixels)
-        except Exception:
-            return None
+            try:
+                pixels = (_decode_bc1(raw, hdr.width, hdr.height, True)
+                          if self.version == 0 else
+                          _decode_bc3(raw, hdr.width, hdr.height))
+                return Image.frombytes("RGBA", (hdr.width, hdr.height), pixels)
+            except Exception:
+                return None
 
     def decode_scaled(self, index: int, scale: int) -> "Image.Image | None":
         """Decode -> RGBA PIL Image at 1/scale resolution, byte-identical to
@@ -279,9 +342,8 @@ class ZlLibrary:
         if self.version == 0:
             # BC1 block-sampled decode
             if self.is_zl2:
-                raw = self.data[entry.offset: entry.offset + entry.packed_length]
-                if entry.compressed:
-                    raw = zlib.decompress(raw)
+                if entry.compression != 0:
+                    raw = zlib.decompressobj(-zlib.MAX_WBITS).decompress(raw)
             else:
                 block_size = ((w + 3) // 4) * ((h + 3) // 4) * 8
                 raw = self.data[hdr.position:hdr.position + block_size]
