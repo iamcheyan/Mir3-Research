@@ -89,7 +89,16 @@ def specialized_control_rects(evidence_items: list[dict]) -> list[dict]:
         hit = evidence.get("control_hit_rects", {})
         if isinstance(hit.get("records"), list):
             candidates.extend(hit["records"])
-        for control in evidence.get("controls", []) + evidence.get("child_controls", []):
+        controls = evidence.get("controls", [])
+        child_controls = evidence.get("child_controls", [])
+        # Some artifacts group controls per state (dict of state -> list); flatten.
+        if isinstance(controls, dict):
+            controls = [c for state in controls.values()
+                        for c in (state if isinstance(state, list) else [state])]
+        if isinstance(child_controls, dict):
+            child_controls = [c for state in child_controls.values()
+                              for c in (state if isinstance(state, list) else [state])]
+        for control in controls + child_controls:
             if isinstance(control.get("hit_rect"), list):
                 candidates.append(control)
         for item in evidence.get("paint_order", []):

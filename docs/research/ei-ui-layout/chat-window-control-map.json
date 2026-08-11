@@ -1,0 +1,239 @@
+{
+  "evidence_id": "EI-313",
+  "finding": 313,
+  "date": "2026-08-11",
+  "title": "ChatWindowControlMap - control-id to subwindow map, 16 captions (ids/texts/22x22 SetRects/actions), caption ctor 0x417550 + tooltip 0x417640, belt slot layout + accessors 0x42D790/0x42D7C0/0x42D8A0, full keyboard dispatch 0x42CBD0 (gates, letter hotkeys, corrected VK byte table 0x42D550 incl. VK 0xBF '/', jump table 0x42D520, case semantics 1..11, belt tail 0x42D293), potion-use dispatch 0x42E2D0 with 0x45DD00 substring search, and kbd caller 0x41DD8A",
+  "objective": "Produce the complete control/caption/belt/keyboard map of the chat-window root so the UI-reconstruction model can (a) name every caption and its action, (b) route every key, and (c) model belt slots and potion use exactly.",
+  "method": "Linear capstone dumps of each body, byte-exact dump of the 179-byte VK table 0x42D550 (index = VK - 0x0D), dword dump of jump table 0x42D520 (12 entries), E8 rel32 byte-scan caller enumeration, GBK ('gbk','replace') decoding of string literals, and cross-reference with F312 (mouse dispatch) and Round-10 findings.",
+  "source": "Mir3.exe image base 0x400000, .text raw bytes, capstone 5.0.9 via Tools/reverse-engineering/disasm_capstone.py (PeImage)",
+  "evidence_level": "primary-static",
+  "confidence": "high",
+  "addresses": {
+    "kbd_dispatch": "0x42CBD0",
+    "vk_byte_table": "0x42D550",
+    "vk_jump_table": "0x42D520",
+    "belt_tail": "0x42D293",
+    "belt_take": "0x42D8A0",
+    "belt_clear": "0x42D790",
+    "belt_refill": "0x42D7C0",
+    "substring_search": "0x45DD00",
+    "potion_use_dispatch": "0x42E2D0",
+    "potion_index_table": "0x42E428",
+    "potion_jump_table": "0x42E404",
+    "potion_use_secondary": "0x42E450",
+    "enter_close_path": "0x41C1E0",
+    "map_text_rebuild": "0x450C70",
+    "caption_ctor": "0x417550",
+    "caption_tooltip": "0x417640",
+    "kbd_caller": "0x41DD8A",
+    "second_kbd_table": "0x41DF68"
+  },
+  "control_id_to_subwindow": {
+    "0": "0x6554",
+    "1": "0x29CE4",
+    "2": "0x33188",
+    "3": "0x3399C",
+    "4": "0x4707C",
+    "5": "no-op",
+    "6": "0x47834",
+    "7": "0x47C28",
+    "8": "0x507EC",
+    "9": "0x51150",
+    "10": "no-op",
+    "11": "0x516E8",
+    "12": "0x518E0",
+    "13": "0x52118",
+    "14": "0x524F0",
+    "15": "0x52E5C (mousemove-only)"
+  },
+  "captions": {
+    "storage": "chat+0x567C + id*0xB4; fields: RECT +4, help-frame id +0x20 (init -1), byte +0x24 (init 1), byte +0x25 (init 0), x +0x28, y +0x2C, text +0x34, window_obj +0x14, id_lo +0x18, id_hi +0x1C, +0x30 (init 0)",
+    "list": [
+      {"id": 0, "id_lo": "0x50", "id_hi": "0x51", "offset": "+0xCC,+2", "text": "交易栏(Ctrl+C, C)", "addr": "0x47BBE0"},
+      {"id": 1, "id_lo": "0x52", "id_hi": "0x53", "offset": "+0xE4,+2", "text": "小地图(Ctrl+V, V)", "addr": "0x47BBF0"},
+      {"id": 2, "id_lo": "0x54", "id_hi": "0x55", "offset": "+0xFC,+2", "text": "技能图鉴(Ctrl+B, B)", "addr": "0x47BC10"},
+      {"id": 3, "id_lo": "0x5A", "id_hi": "0x5B", "offset": "+0xA1,+0x2E", "text": "退出游戏(Alt+Q)", "addr": "0x47BC34"},
+      {"id": 4, "id_lo": "0x5C", "id_hi": "0x5D", "offset": "+0xA1,+0x52", "text": "注销人物(Alt+X)", "addr": "0x47BC48"},
+      {"id": 5, "id_lo": "0x5E", "id_hi": "0x5F", "offset": "+0x268,+0x2F", "text": "组队(Ctrl+G, G)", "addr": "0x47BC60"},
+      {"id": 6, "id_lo": "0x60", "id_hi": "0x61", "offset": "+0x268,+0x52", "text": "行会(Ctrl+F, F)", "addr": "0x47BC74"},
+      {"id": 7, "id_lo": "0x9F", "id_hi": "0x9F", "offset": "+0x189,+0xD", "text": "腰带(Ctrl+Z, Z)", "addr": "0x47BC88"},
+      {"id": 8, "id_lo": "0x64", "id_hi": "0x65", "offset": "+0x2BF,+0x10", "text": "技能书(Ctrl+E, E)", "addr": "0x47BCA0"},
+      {"id": 9, "id_lo": "0x66", "id_hi": "0x67", "offset": "+0x2CE,+0x20", "text": "聊天记录(Ctrl+R, R)", "addr": "0x47BCB8"},
+      {"id": 10, "id_lo": "0x68", "id_hi": "0x69", "offset": "+0x2CE,+0x46", "text": "信息窗口(Ctrl+D, D)", "addr": "0x47BCCC"},
+      {"id": 11, "id_lo": "0x6A", "id_hi": "0x6B", "offset": "+0x2BF,+0x55", "text": "设置栏(Ctrl+N, N)", "addr": "0x47BCE0"},
+      {"id": 12, "id_lo": "0x6C", "id_hi": "0x6D", "offset": "+0x298,+0x56", "text": "档框… (corrupt build string)", "addr": "0x47BCF4"},
+      {"id": 13, "id_lo": "0x6E", "id_hi": "0x6F", "offset": "+0x288,+0x46", "text": "坐骑(Ctrl+S, S)", "addr": "0x47BD08"},
+      {"id": 14, "id_lo": "0x70", "id_hi": "0x71", "offset": "+0x288,+0x20", "text": "包袱栏(Ctrl+Q, Q)", "addr": "0x47BD1C"},
+      {"id": 15, "id_lo": "0x72", "id_hi": "0x73", "offset": "+0x299,+0x10", "text": "状态栏(Ctrl+W, W)", "addr": "0x47BBCC"}
+    ],
+    "setrect_22x22": {
+      "pattern": "caption ctor SetRect([0x4762B0] scratch, cap_x, cap_y, cap_x + frameW, cap_y + frameH) with frame = [window_obj + 0x38]; frame 22x22 for the 8 right-column captions",
+      "entries": [
+        "cap8 (技能书): (0x2BF, 0x1E6, 0x2D5, 0x1FC)",
+        "cap9 (聊天记录): (0x2D7, 0x1FE, 0x2ED, 0x214)",
+        "cap10 (信息窗口): (0x2D7, 0x218, 0x2ED, 0x22E)",
+        "cap11 (设置栏): (0x2BF, 0x231, 0x2D5, 0x247)",
+        "cap12: (0x2A7, 0x231, 0x2BD, 0x247)",
+        "cap13 (坐骑): (0x28F, 0x218, 0x2A5, 0x22E)",
+        "cap14 (包袱栏): (0x28F, 0x1FE, 0x2A5, 0x214)",
+        "cap15 (状态栏): (0x2A7, 0x1E6, 0x2BD, 0x1FC)"
+      ]
+    },
+    "action_table": "0x42C494[16]: 0=0x42C1CE, 1=0x42C259, 2=0x42C241, 3=0x42C2E1, 4=0x42BF37, 5=0x42C218, 6=0x42C209, 7=0x42C292, 8=0x42C302, 9=0x42C226, 10=0x42C1A4, 11=0x42C1B2, 12=0x42C359, 13=0x42C1C0, 14=0x42C234, 15=0x42C30D",
+    "cap15_action": "0x42C30D = 0x42ADB0(1) double-toggle (minimap) + 0x423E80(chat+0x29CE4, 0xC8, [0x29CFC], [0x29D00], 0xF4, 0x148) big map 244x328"
+  },
+  "caption_ctor_0x417550": {
+    "signature": "ret 0x24, 9 args (ecx = caption, args on stack)",
+    "mapping": [
+      "arg1 window_obj -> +0x14",
+      "arg2 id_lo -> +0x18 (via 0x466130 FetchFrame on window_obj)",
+      "arg3 id_hi -> +0x1C",
+      "arg4 x -> +0x28",
+      "arg5 y -> +0x2C",
+      "arg6 text -> +0x34",
+      "arg7 1 -> +0x24",
+      "arg8 -1 -> +0x20 (help-frame id)",
+      "arg9 0 -> +0x30",
+      "SetRect([0x4762B0], cap+4, x, y, x+frameW, y+frameH) frame = [window_obj+0x38]"
+    ]
+  },
+  "caption_tooltip_0x417640": {
+    "signature": "ret 4; gates [cap+0x25]==0 && [cap+0x24]==1 && [cap+0x20]!=-1",
+    "body": "0x466130(window_obj, [cap+0x20]) frame -> 0x460240(0x8AB7A8, cap_x, cap_y, frameW, frameH, [frame+0x3C], 0x320, 0x258, 0xFFFF, 0xFFFF)"
+  },
+  "belt_slots": {
+    "hit_rects": "6 rects @ chat+0xD44 stride 0x10, 38x38, init loop 0x427DDE: slot i at (0x117+i*0x28, 0x1B0+i*0x10)",
+    "slot_layout": "chat+0xDA4 + slot*0xC24; { dword valid +0, 0x308-dword item stack +4 (0xC20 bytes), byte gate +0x26 (skip time-gate), word potion type +0x2C }",
+    "clear_0x42D790": "slot arg; rep stosd ecx=0x309 (0xC24 bytes) over [chat + slot*0xC24 + 0xDA4]; ret 4",
+    "take_0x42D8A0": "args (slot, dst); valid -> rep movsd ecx=0x308 (0xC20 bytes) from [chat + slot*0xC24 + 0xDA8] to dst; call 0x42D790(slot); ret 1 (ret 8)",
+    "refill_0x42D7C0": "SEH 0x474FD8; args at [esp+0xC38]/[esp+0xC3C]; arg2 != 0 -> slot target; iterates 6 slots [chat+0xDA4+i*0xC24] counting filled; 0x403AC0 call; head only - full semantics not closed"
+  },
+  "kbd_dispatch_0x42CBD0": {
+    "signature": "ret 8, 2 args: arg1 [esp+0x11C] = VK -> esi, arg2 [esp+0x120]",
+    "gates": [
+      "[chat+0x53060] != 0 -> ret 1",
+      "[chat+0x52E8C] != 0 -> ret 1",
+      "[chat+0x5081C] != 0 -> push 8; call 0x42B980; if open -> 0x414DC0(chat+0x507EC chat-log, vk, arg2) hit -> ret 1",
+      "[chat+0x20] != 0 && [chat+0x24] != 0 -> ret 1"
+    ],
+    "letter_hotkeys": {
+      "note": "GetKeyState edi = [0x476278]; control check via AH (test ah, 0x80) - unlike map-zoom's AL bit 7; document literally",
+      "map": {
+        "Q 0x51": "0x42CC7C: toggle(0) + byte[chat+0x65A8]=0 + lea ecx,[chat+0x6718] + push -1; push 0x10C; push 0x10B; call 0x417880 (UI post)",
+        "W 0x57": "0x42CCB3: toggle(1) minimap",
+        "E 0x45": "0x42CCCD: toggle(0xe) skill book",
+        "R 0x52": "0x42CCE7: toggle(8) chat-log",
+        "S 0x53": "0x42CD01: toggle(0xd) mount",
+        "D 0x44": "0x42CD1B: toggle(0xb) info window",
+        "Z 0x5A": "0x42CD35: belt clamp: word [chat+0xD40] clamped to 0..0x2E (>= 0x2E -> 0x2E; <= 0 -> 0); byte [chat+0xD42] = 2 when at max, 1 when at 0",
+        "C 0x43": "0x42CD93: trade 0x41EC10(0x47EF18, [0x777764], [0x777768], [0x777759], 1) (push order deepest-first) + net 0x451A70(0x8AB828, ret+8) when ret != 0",
+        "V 0x56": "0x42CDDA: minimap toggle, gate timeGetTime - [chat+0x6210] <= 0x64 (100ms); open -> 0x451770(0x8AB828); close -> [chat+0x6518]=0",
+        "B 0x42": "0x42CE1D: [chat+0x6208] = ![chat+0x6208]",
+        "G 0x47": "0x42CE41: toggle(6) guild",
+        "F 0x46": "0x42CE5B: guild net 0x4523E0(0x8AB828)",
+        "N 0x4E": "0x42CE76: toggle(0xc) settings",
+        "T 0x54": "0x42CE90: [chat+0x6518]==1 -> [chat+0x64A8]=![chat+0x64A8]; new value != 0 -> 0x43D5F0(lea ecx,[chat+0x6214], [0x8AB7BC], 0x100, 0x100) else (…, 0x80, 0x80) (minimap resize 256x256 <-> 128x128)",
+        "Y 0x59": "0x42CEF7: [chat+0x6518]==1 -> [chat+0x64A4]=![chat+0x64A4]"
+      }
+    },
+    "vk_table": {
+      "dispatch": "0x42CF1F: lea eax,[esi-0xD]; cmp eax,0xB2; ja 0x42D4B4 (case11); movzx ecx, byte [eax+0x42D550]; jmp [ecx*4+0x42D520]",
+      "byte_table": "0x42D550..0x42D602, 179 bytes (0xB3), index = VK - 0x0D, VK 0x0D..0xBF",
+      "mapping": {
+        "VK 0x0D (Enter)": "0x01 -> case1 (0x42CF3C)",
+        "VK 0x1A": "0x02 -> case2 (0x42CFF4)",
+        "VK 0x18": "0x03 -> case3 (0x42D091)",
+        "VK 0x24 (Home)": "0x07 -> case7 (0x42D280)",
+        "VK 0x25 (Left)": "0x06 -> case6 (0x42D279)",
+        "VK 0x26 (Up)": "0x05 -> case5 (0x42D201)",
+        "VK 0x27 (Right)": "0x04 -> case4 (0x42D1B9)",
+        "VK 0x28 (Down)": "0x08 -> case8 (0x42D287)",
+        "VK 0x29 (PgDn)": "0x09 -> case9 (0x42D28E)",
+        "VK 0xBF (/)": "0x0A -> case10 (0x42D14C)",
+        "all other 165 bytes": "0x0B -> case11 (0x42D4B4)"
+      },
+      "correction_note": "CORRECTED vs Round-10 session notes: VK 0xBF '/' maps to 0x0A -> case10, not 0x0B; case0 (0x42D511) is the shared ret-0 tail produced by NO table byte (Round-10's 'every other byte 0x00..0x7B = 0x0B' was incomplete).",
+      "jump_table_0x42D520_12": ["0=0x42D511", "1=0x42CF3C", "2=0x42CFF4", "3=0x42D091", "4=0x42D1B9", "5=0x42D201", "6=0x42D279", "7=0x42D280", "8=0x42D287", "9=0x42D28E", "10=0x42D14C", "11=0x42D4B4"]
+    },
+    "case_semantics": {
+      "case1_enter_0x42CF3C": "gate [chat+0xD38] != 0 && GetActiveWindow() == [0x8AB7B0]; walk msg list: [chat+0xD2C] = [chat+0xD30] top, [chat+0xD34] = count-1; node == 0 -> ret 1; node id == 9 && [0x513C4] == 0 -> advance current node+8 (index clamp 1..count); node id == 9 -> mov ecx, 0x47EF18; call 0x41C1E0 (close chat-log 9 + skill album 2 + trade) -> ret 1; node id != 9 -> push id; call 0x42ADB0 toggle(id) -> ret 1. Enter = close-current-window toggler.",
+      "case2_0x42CFF4_zoom_out": "gate [0x7E04F0]==0 && GetActiveWindow()==[0x8AA48C] map hwnd; GetKeyState(0x11 Ctrl) with test al,0x80 (low byte bit 7, asymmetric with letter-hotkey AH checks - literal) -> dec [chat+0x6534] clamp >= 0 + 0x428790 redraw; else GetKeyState(0x12 Alt) -> dec [chat+0x6550] clamp + 0x428E00; gate fail -> wheel 0x42C7E0 fallthrough",
+      "case3_0x42D091_zoom_in": "same gates; Ctrl -> inc [chat+0x6534] clamp < [chat+0x6530] + 0x428790; Alt -> inc [chat+0x6550] clamp < [chat+0x654C] + 0x428E00",
+      "case4_right_0x42D1B9": "Shift (GetKeyState 0x10, AH) held -> byte [esp+0x10] = 0x21 '!'; 0x450C70(ecx = 0x8AA488); SetFocus([0x8AA48C]); ShowWindow([0x8AA48C], 5); SetWindowTextA([0x8AA48C], [esp+0x10]); SendMessageA([0x8AA48C], 0xB1, 1, 1); then fall into belt tail 0x42D293 with ebx=0; no Shift -> ebx=0 direct",
+      "case5_up_0x42D201": "Shift -> '@' 0x40 same sequence; else ebx=1",
+      "case6_left_0x42D279": "ebx=2",
+      "case7_home_0x42D280": "ebx=3",
+      "case8_down_0x42D287": "ebx=4",
+      "case9_pgdn_0x42D28E": "ebx=5",
+      "belt_tail_0x42D293": {
+        "slot_base": "ebx -> edx = ebx*777 (shl 7 + lea x2 + lea x2), eax*4 = ebx*0xC24; slot = chat + ebx*0xC24; type word si = [slot + 0xDD0] (slot_base + 0x2C), byte [slot + 0xDCA] (slot_base + 0x26)",
+        "time_gate": "[slot+0x26] != 0 -> skip; timeGetTime - [chat+0x29CD8]: > 0x7D0 (2000ms) -> proceed; <= 0x3E8 (1000ms) -> 0x42D472 reject; between -> type in {0x14, 0x15, 0x46} -> proceed else reject",
+        "valid_slot_use_swap": "[slot] valid: [chat+0x20]==0 && [chat+0x24]==0 && [chat+0x28]==0 -> inline strcmp [chat+0x3C] vs 0x47ADB4 sentinel '陛傈' (loop 0x42D336/0x42D39E); text != sentinel && mode byte [chat+0x5A] in {0,3} -> 0x42D8F0 SWAP else 0x42D3E5; [chat+0x20]!=0 -> USE 0x42D9E0",
+        "empty_slot_place": "[slot] invalid: [chat+0x20]!=0 && [chat+0x24]==0 && [chat+0x28]==0 && text != sentinel && mode in {0,3} -> 0x42DAA0 PLACE",
+        "chat_send_0x42D3E5": "text != sentinel && [chat+0x20]!=0 && [chat+0x24]==0 && [chat+0x28]==0 -> mov eax,[chat+0x75] (chat channel); push text; push eax; push 0x3EE; mov ecx,0x8AB828; [chat+0x24]=1; [chat+0x34]=1; call 0x451910 (net chat msg 0x3EE); timeGetTime -> [chat+0x29CD8]; ret 1",
+        "reject_0x42D472": "[slot] valid -> 0x47BDA4 '正在补充药水,请稍候.'; else slot+1 -> 0x47BD7C '腰带上的%d号快捷药水栏已经没有药水了.'; both via 0x46811C copy + 0x415280(chat, text)"
+      },
+      "case10_slash_0x42D14C": "SetFocus + ShowWindow([0x8AA48C] map, 5); byte [chat+0x531EC]==0 -> copy 0x47AD94 '/'; SetWindowTextA(map, [chat+0x531EC]); strlen - 1 -> jmp 0x42D251 shared tail = SendMessageA([0x8AA48C], 0xB1, len, len)",
+      "case11_default_0x42D4B4": "0x42AAB0(chat, mouse [0x7DA1C4]/[0x7DA1C0]) -> -1 or != 0xe -> ret 0; == 0xe (skill book chat+0x524F0) -> 0x43A810(chat+0x524F0, arg1, arg2, y, x) hit -> ret 1"
+    }
+  },
+  "enter_close_path_0x41C1E0": {
+    "body": "game = esi; [game+0x2F660C] gate -> push 9; lea ecx,[game+0x2A548C]; call 0x42AC50 (remove window id 9 = chat-log); then [game+0x2F65DC] vtable[0x10](0) + [game+0x428050]=0 + [game+0x42804C]=0; [game+0x2D8644] gate -> push 2; call 0x42AC50 (remove id 2 = skill album) + [game+0x2D8614] vtable[0x10](0); [game+0x2ABA10] gate && byte [game+0x2ABA34]!=0 -> remove id 0 (trade) via 0x42AC50 + vtable[0x10](0) on [game+0x2AB9E0] + push -1/0x10C/0x10B post 0x417880(lea [trade+0x1C4]) + byte [trade+0x54]=0 + [game+0x2CF14C]=0 + 0x42FF90 (the push edi before 0x42AC50 is the callee-save bracket, not an arg; 0x42AC50 is ret 4 / 1 arg)"
+  },
+  "map_text_rebuild_0x450C70": {
+    "note": "string duplicate: strlen 0x46805C([esi+4]) -> alloc 0x468056(len, 1, 0x10) -> copy 0x468050([esi+4] -> dst); ecx = 0x8AA488 map text buffer; sibling 0x450CA0 = same with flag 0 (vs 1); called before SetWindowTextA in cases 4/5; 0x450CD0 (next fn) = chat-edit window proc (0x7ED submit etc.)"
+  },
+  "potion_use_0x42E2D0": {
+    "signature": "ret 4; this = chat root",
+    "dispatch": "type byte [buf+0x22] -> > 0x1F -> 0x42E3EC msg 0x76; else index = byte [type + 0x42E428] -> jmp [eax*4 + 0x42E404]",
+    "index_table_0x42E428_32B": "00 08 08 08 08 01 01 08 08 08 02 02 08 08 08 03 08 08 08 04 04 04 05 05 06 08 06 08 08 08 08 07",
+    "type_to_msg": {
+      "0": "0x6C",
+      "5, 6": "0x6F",
+      "0xA, 0xB": "0x70",
+      "0xF": "0x74",
+      "0x13..0x15": "0x73",
+      "0x16, 0x17": "0x71",
+      "0x18, 0x1A": "0x45DD00(0x8AB7A8, buf+4 name, 0x47BDDC) / (0x47BDD4) substring match -> msg 0x72 / 0x75",
+      "0x1F": "subtype [buf+0x23] >= 0x6A -> 0x76 else 0x6C",
+      "default": "0x76"
+    },
+    "tail": "push 0, 0, 0, msg; ecx = 0x8AB130; 0x45AFC0; ret 4",
+    "secondary_0x42E450": "type 0 -> 0x6C; type 1..2 -> 0x6B; > 2 -> ret 4"
+  },
+  "substring_search_0x45DD00": {
+    "signature": "this = 0x8AB7A8; arg1 = potion name (buf+4), arg2 = token",
+    "body": "strlen both; len(token) > len(name) -> ret 0; loop: movsx eax, byte [ebx]; push eax; push edx (name); call 0x468BF0 (strchr) -> found -> repe cmpsb over len(token) -> full match -> ret 1",
+    "tokens": {
+      "0x47BDD4": "C0 E5 B0 A9 00 (GBK read '厘癌' - not meaningful)",
+      "0x47BDDC": "B0 A9 B9 DA 00 (GBK read '癌冠' - not meaningful)"
+    },
+    "note": "token bytes must appear INSIDE the packet potion-name string; GB2312 read of tokens is not meaningful - likely corrupt build strings; semantics open"
+  },
+  "kbd_caller_0x41DD8A": {
+    "body": "game-window wrapper: call 0x42CBD0 first; eax != 0 -> skip rest; then [game+0x364444] chain -> 0x413A30; GetKeyState('M') -> [game+0x2F8840] gate -> 0x4520F0(0x8AB828, 0x47B060/0x47B058) + cooldown [0x4279A4]=0x3E8 / [0x4279A8]=0; second kbd table 0x41DF68 (VK 0x0D..0x68) with Ctrl combos 0x41DE5C/0x41DE85 (strings 0x47B04C/0x47B044) and 0x41DEAE (0x8AA488)"
+  },
+  "strings": {
+    "0x47ADB4": "'陛傈' input-buffer sentinel (empty marker, inline strcmp at 0x42D336/0x42D39E vs [chat+0x3C])",
+    "0x47AD94": "'/'",
+    "0x47BD7C": "'腰带上的%d号快捷药水栏已经没有药水了.'",
+    "0x47BDA4": "'正在补充药水,请稍候.'",
+    "0x47BDC0_block": "'.\\Data\\' + '.itm' + potion tokens + '[储存]' 0x47BDE4 / '[变卖]' 0x47BDEC / '[修补]' 0x47BDF4 / '负重' 0x47BDFC"
+  },
+  "conclusions": [
+    "VK byte table 0x42D550 fully verified as raw bytes (179 B): Enter/Home/arrows/PgDn/VK 0x18/VK 0x1A/'/' have dedicated cases, everything else is case11; case0 = shared ret-0 tail produced by no byte.",
+    "Enter (case1) is a close-current-window toggler, not chat selection: top msg-list node id 9 -> 0x41C1E0 closes chat-log(9) + album(2) + trade; other ids -> toggle(id).",
+    "Arrow keys with Shift build map command strings '!'/'@' and SendMessageA the map hwnd; '/' key sets map text to '/' - all through shared tail 0x42D251.",
+    "Belt slot layout closed: valid +0, 0x308-dword stack +4, byte gate +0x26, type word +0x2C; time gate 2000/1000ms with type exceptions {0x14,0x15,0x46}; chat-send path uses net msg 0x3EE via 0x451910.",
+    "0x45DD00 is a substring search (strchr + repe cmpsb), not plain strcmp; potion tokens 0x47BDD4/0x47BDDC are 2-byte GBK reads that are not meaningful - flagged open.",
+    "Letter hotkeys are asymmetric with captions: Q(包袱栏 label) toggles id 0 (trade), D(信息窗口 label) toggles 0xb, N(设置栏 label) toggles 0xc - label/handler discrepancy flagged open."
+  ],
+  "closed_notes": "VK table exact bytes in /tmp/cap_kbd.txt; jump table dwords exact. Old Round-10 session claim 'every other byte 0x00..0x7B = 0x0B' retracted by full 179-byte dump (VK 0xBF -> 0x0A). GetKeyState control checks are asymmetric: letter hotkeys use AH, map zoom uses test al,0x80 - both literal.",
+  "pending": [
+    "Label-vs-handler discrepancies: cap14 包袱栏(Ctrl+Q, Q) vs Q->toggle(0) trade; cap10 信息窗口(Ctrl+D, D) vs D->toggle(0xb); cap11 设置栏(Ctrl+N, N) vs N->toggle(0xc).",
+    "Potion tokens 0x47BDD4/0x47BDDC GB2312 reads not meaningful; 0x45DD00 match -> msg 0x72/0x75 semantics inferred from name substring only.",
+    "0x42D7C0 (belt refill) full semantics not closed: 0x403AC0 call target unknown.",
+    "0x450C70 map-text rebuild head only (0x46805C/0x468050/0x468056 string helpers)."
+  ],
+  "question": "none"
+}

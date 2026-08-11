@@ -1,0 +1,126 @@
+{
+  "evidence_id": "EI-312",
+  "finding": 312,
+  "date": "2026-08-11",
+  "title": "ChatWindowMouseDispatch - the full mouse dispatch of the chat window root (0x42BA20 FnA / 0x42BE21 FnB), all 6 jump tables (control-open 0x42BDE0, open-routing 0x42B7E0, close-all 0x42B938, mousemove 0x42B658, toggle 0x42B3E4, control-click 0x42C4D4), wheel tables 0x42C798/0x42C8A8/0x42C9B0, update-all 0x42B430, and helpers 0x42B6A0/0x42B820/0x42D720/0x42D650/0x45AFC0/0x42AAB0",
+  "objective": "Close the chat-window input side: prove which handlers run on mousedown/mouseup for every control id and background click, capture the exact dword contents of every dispatch table, and close the open-window/close-all/belt-hit/msg-0x69-poster helpers so the UI-reconstruction model can route clicks deterministically.",
+  "method": "Byte-scan of .text raw bytes for E8 rel32 call sites to each candidate target (exact caller enumeration), capstone linear dumps of each table body, full dword dumps of every jump table (12 or 16 entries), PtInRect/SetRect argument tracing, and cross-reference with the kbd dispatch 0x42CBD0 (F313) and the Round-10 control-id map.",
+  "source": "Mir3.exe image base 0x400000, .text raw bytes, capstone 5.0.9 via Tools/reverse-engineering/disasm_capstone.py (PeImage)",
+  "evidence_level": "primary-static",
+  "confidence": "high",
+  "addresses": {
+    "fnA_0x42BA20": "0x42BA20",
+    "fnB_0x42BE21": "0x42BE21",
+    "caption_loop_base": "0x567C + id*0xB4 (chat+0x567C, stride 0xB4)",
+    "caption_loop_insn": "0x42BEF8 (id*5+0x267)*9*4 = id*0xB4",
+    "caption_hit_test": "0x4177C0 (vtable+0xC)",
+    "caption_action": "0x4177F0 (vtable+0x10, re-PtInRect + UI msg 0x69)",
+    "caption_action_table": "0x42C494",
+    "control_click_table": "0x42C4D4",
+    "control_open_table": "0x42BDE0",
+    "open_routing_table": "0x42B7E0",
+    "close_all_table": "0x42B938",
+    "mousemove_table": "0x42B658",
+    "toggle_table": "0x42B3E4",
+    "wheel_fn_table": "0x42C798",
+    "wheel_up_table": "0x42C8A8",
+    "wheel_down_table": "0x42C9B0",
+    "update_all": "0x42B430",
+    "open_window_helper": "0x42B6A0",
+    "close_all_helper": "0x42B820",
+    "belt_hit_test": "0x42D720",
+    "chat_log_open_check": "0x42D650",
+    "msg_0x69_poster": "0x45AFC0",
+    "control_hit_test": "0x42AAB0",
+    "subwindow_msg_handler": "0x423F90",
+    "subwindow_mousemove": "0x423FA0"
+  },
+  "fnA_0x42BA20": {
+    "signature": "ret 4, 3 args (x [esp+8], y [esp+0xC], unused); esi = chat root",
+    "priority_chain": [
+      "1. [chat+0x53060] (big msg-list flag) != 0 -> 0x418A50(chat+0x53030, x, y) hit -> ret 1",
+      "2. [chat+0x52E8C] (side panel flag) != 0 -> 0x43E640(chat+0x52E5C, x, y) hit -> ret 1",
+      "3. scrollbar 0x417D00(chat+0x61BC, x, y) hit -> scroll set: [esp+0x14] = [chat+0xD20]-1; fild [esp+0x14]; fmul [esi+0x61C8]; call 0x468520 (ftol); mov [esi+0xD08], eax -> ret 1",
+      "4. caption loop i=0..15 at chat+0x567C+i*0xB4: call [caption vtable+0xC] = 0x4177C0 hit-test; hit -> ret 1",
+      "5. 0x428570(chat, x, y) -> ret 1",
+      "6. 0x42AAB0 control hit-test; edi = result"
+    ],
+    "control_dispatch": {
+      "result_minus_1": "0x42BD8D: close-all 0x42B820(chat) + belt 0x42D720(chat, x, y); belt hit -> ret 1; then minimap gate [esi+0x6518] != 0 -> 0x43DDB0(chat+0x6214, x, y) (minimap obj hit); > 0xe -> 0x42BD78 ret 0; else jmp [eax*4+0x42BDE0]",
+      "result_gt_0xe": "0x42BD78 -> ret 0",
+      "result_0_to_0xe": "jmp [eax*4+0x42BDE0] control-open table; each entry: subwindow open-check (e.g. id0 0x42BB30 -> 0x42FFD0(chat+0x6554, &[esi+0x20], x, y)); open-check fail -> 0x42B6A0(id, x, y) open-window helper; open-check pass -> (already open) 0x42B6A0 skipped, ret 0"
+    }
+  },
+  "fnB_0x42BE21": {
+    "signature": "ret 4, 3 args (x [esp+8], y [esp+0xC]); esi = chat root",
+    "sequence": [
+      "1. byte [esi+0xD3C] = 0",
+      "2. [chat+0x53060] != 0 -> 0x418A00(chat+0x53030, x, y) hit -> SendMessageA([0x8AB7B0] main hwnd, 2, 0, 0) (WM_CLOSE literal) -> ret 1",
+      "3. [chat+0x52E8C] != 0 -> 0x43E4B0(chat+0x52E5C, x, y) hit -> 0x42ADB0(0xf) toggle -> ret 1",
+      "4. scrollbar 0x417E60(chat+0x61BC, x, y) hit -> ret 1",
+      "5. 0x42AAB0 control hit-test -> edi; edi == 2 && 0x44E910(chat+0x33188) open-check closed -> fall to caption loop 0x42BEF8 (album closed: treat as background click)",
+      "6. edi == -1 -> caption loop 0x42BEF8 (background click)",
+      "7. edi > 0xe -> 0x42C198 ret 0",
+      "8. edi <= 0xe -> jmp [edi*4+0x42C4D4] control-click table"
+    ]
+  },
+  "dispatch_tables": {
+    "control_open_0x42BDE0_16": ["0=0x42BB30", "1=0x42BB5F", "2=0x42BB8F", "3=0x42BBCC", "4=0x42BBF8", "5=0x42BD78", "6=0x42BC24", "7=0x42BC50", "8=0x42BC7C", "9=0x42BCA8", "10=0x42BD78", "11=0x42BCD4", "12=0x42BD00", "13=0x42BD28", "14=0x42BD50", "15=0x90909090"],
+    "control_open_pattern": "each: subwindow open-check call with (&[esi+0x20], x, y); fail -> 0x42B6A0(id, x, y); 5/10 -> 0x42BD78 shared ret-0 (no-op controls); 15 -> 0x90909090 dead padding (unreachable: FnA dispatches only when 0 <= id <= 0xe)",
+    "open_routing_0x42B7E0_16": ["0=0x42B774", "1=0x42B774", "2=0x42B6FC", "3=0x42B7C0", "4=0x42B774", "5=0x42B7DA", "6=0x42B79A", "7=0x42B7C0", "8=0x42B774", "9=0x42B79A", "10=0x42B7DA", "11=0x42B7C0", "12=0x42B774", "13=0x42B79A", "14=0x42B7BA", "15=0x90909090"],
+    "open_routing_pattern": "each entry is a trampoline (add esi, suboffset; jmp stub); stub groups: {0,1,4,8,12}->0x42B774, {6,9,13}->0x42B79A, {3,7,11,14}->0x42B7C0 (three semantically identical tails: push 1; 0x423F90(subwin,1) state seed; 0x4240C0(subwin,x,y) position; ret 0xC); 2->0x42B6FC (special inline: 0x44E910(chat+0x33188,x,y) open gate; fail -> 0x42B7DA ret 0xC; pass -> push 1; 0x423F90; 0x4240C0; ret 0xC); {5,10}->0x42B7DA shared ret 0xC (no-op); 15 -> 0x90909090 dead padding. The remove/add (0x42AC50/0x42AC30) run in the helper 0x42B6A0 BEFORE this dispatch, not in the stubs. 0x42AC50 = remove-window: ret 4, 1 arg; walks doubly-linked list at [ecx+0xD24] (head node [ecx+0xD28]), unlinks node with matching id, updates [ecx+0xD2C/0xD30/0xD34/0xD38], frees via 0x4680F8. 0x42AC30 = add-window: ret 4; 0x449870([ecx+0xD24] mgr, id) append",
+    "close_all_0x42B938_16": "per-id: push 0; lea ecx,[esi+suboffset]; jmp 0x42B8F0 -> 0x423F90(subwin, 0); ids 5/10 share 0x42B8F5 (no-op). suboffsets: 0=0x6554, 1=0x29CE4, 2=0x33188, 3=0x3399C, 4=0x4707C, 6=0x47834, 7=0x47C28, 8=0x507EC, 9=0x51150, 11=0x516E8, 12=0x518E0, 13=0x52118, 14=0x524F0",
+    "mousemove_0x42B658_16": ["0=0x42B4AB", "1=0x42B4C9", "2=0x42B4E7", "3=0x42B518", "4=0x42B536", "5=0x42B64E", "6=0x42B554", "7=0x42B572", "8=0x42B590", "9=0x42B5B8", "10=0x42B64E", "11=0x42B5D6", "12=0x42B5F4", "13=0x42B612", "14=0x42B630", "15=0x42B63F"],
+    "mousemove_pattern": "push 0; push y; push x; lea ecx,[esi+suboffset]; call 0x423FA0; 5/10 -> 0x42B64E shared ret-0; 15 -> 0x42B63F (chat+0x52E5C side panel); id 8 (chat-log) additionally ShowWindow([0x8AA48C] map hwnd, 0)",
+    "toggle_0x42B3E4_16": ["0=0x42ADCF", "1=0x42AE42", "2=0x42AE91", "3=0x42AEE0", "4=0x42B06B", "5=0x42B3DD", "6=0x42B0BA", "7=0x42B131", "8=0x42B180", "9=0x42B25E", "10=0x42B3DD", "11=0x42AF2F", "12=0x42AF7E", "13=0x42AFCD", "14=0x42B01C", "15=0x42B2AD"],
+    "toggle_pattern": "5/10 -> 0x42B3DD shared ret-0; dispatcher 0x42ADB0: close-all 0x42B820 then jmp [id*4+0x42B3E4]; per-id body: flag at suboffset+0x30 (e.g. [chat+0x6584] for id 0) -> open -> 0x42AC50 remove id + subwindow vtable[0x10](0); closed -> 0x42AC30 add id + vtable[0x10](1) + push -1/0x10C/0x10B post 0x417880(lea [sub+0x1C4]) + byte [sub+0x54]=0 + 0x42FF90, ret 1; 15 -> 0x42B2AD minimap-big (0x42ADB0(1) double-toggle + 0x423E80(chat+0x29CE4, 0xC8, [0x29CFC], [0x29D00], 0xF4, 0x148) big map 244x328)",
+    "control_click_0x42C4D4_16": ["0=0x42BF85", "1=0x42BFB3", "2=0x42BFE1", "3=0x42C00B", "4=0x42C039", "5=0x42C198", "6=0x42C063", "7=0x42C08D", "8=0x42C0B7", "9=0x42C17D", "10=0x42C198", "11=0x42C0E1", "12=0x42C10B", "13=0x42C131", "14=0x42C157", "15=garbage 0x245C8B53 (unreachable: FnB gates edi>0xe before dispatch)"],
+    "wheel_fn_0x42C798_12": "12 entries: id 0..0xb per-id scroll fn (5/10 -> 0x42C741 refresh-all shared); belt ids 7 -> 0x42CA7A (0x42D720 hit -> slot select)",
+    "wheel_up_0x42C8A8_12": "per-id scroll-up; chat default: [chat+0xD08]-- clamp 0",
+    "wheel_down_0x42C9B0_12": "per-id scroll-down; chat default: [chat+0xD08]++ clamp [chat+0xD20]-1"
+  },
+  "update_all_0x42B430": {
+    "body": "[chat+0x5081C] gate != 0 -> push 8; call 0x42B980 (sibling refresh, 0x42B430's neighbor); zero -> ShowWindow([0x8AA48C] map hwnd, 0); then [chat+0xD38] count gate; loop over msg-list nodes: eax = [node] id; cmp eax, 0xf; ja -> 0x42B64E shared ret; jmp [eax*4+0x42B658] mousemove table",
+    "note": "ids 0..0xf valid, id 15 = chat+0x52E5C (mousemove-only control, no FnA/FnB entry)"
+  },
+  "helpers": {
+    "open_window_0x42B6A0": {
+      "signature": "ret 0xC, args (id, x, y); 13 call sites, all inside FnA range 0x42BB4E..0x42BD67",
+      "body": "[chat+0xD38] gate -> 0x42B820(chat) close-all -> 0x42AC50(chat+0x2A548C window list, id) remove-if-present -> 0x42AC30(chat+0x2A548C, id) add -> byte [chat+0xD3C] = 1 -> open-routing dispatch 0x42B7E0[id]"
+    },
+    "close_all_0x42B820": {
+      "signature": "ret 4; 3 call sites: 0x42ADB6 (toggle helper), 0x42B6B3 (open-window helper), 0x42BD8F (FnA result -1)",
+      "body": "walk [chat+0xD28] msg-list chain; per open node: [node+8] == 0x4C90C0 -> 0x423F90(subwin+0x14, 0) else 0x423F90(subwin, 0); node id 5/10 -> no-op; removes via window list"
+    },
+    "belt_hit_test_0x42D720": {
+      "signature": "ret 8, args (x, y); 4 call sites: 0x412377 (HUD), 0x42BD98 (FnA -1), 0x42C36F (FnB tail), 0x42CA7A (wheel)",
+      "body": "loop i=0..5: SetRect([0x4762B0] scratch, [ecx+0xD44+i*0x10], [ecx+0xD44+i*0x10+4], +0x26, +0x26) = 38x38 rects at slot diagonal (0x117+i*0x28, 0x1B0+i*0x10); PtInRect; hit -> eax = i, ret 1; miss -> ret -1"
+    },
+    "chat_log_open_check_0x42D650": {
+      "signature": "ret 0; sole caller 0x41E001",
+      "body": "[chat+0x51180] != 0 && 0x440740(chat+0x51150) != 0 -> ret 1 (chat-log open); else ret 0"
+    },
+    "msg_0x69_poster_0x45AFC0": {
+      "signature": "ret 4; this = 0x8AB130 global UI/input manager",
+      "body": "gates [edi+8] && [edi+0x14]; scan 50-entry handler table [edi+0x460]: cmp [h+0x3C], edi(id); hit -> 0x45B900 + timeGetTime -> [h+0x38]; miss -> 0x45AC00 -> 0x45BC60 + vtable[+0x48] callback"
+    },
+    "control_hit_test_0x42AAB0": {
+      "signature": "ret 4; [chat+0xD38] count gate; returns control id (0..0xe) or -1"
+    }
+  },
+  "conclusions": [
+    "FnA/FnB both gate on the big-list flag 0x53060, side-panel flag 0x52E8C, and scrollbar before control dispatch; background clicks (-1) in FnB route to the caption loop, not close-all.",
+    "Caption loop dispatch is jmp [i*4+0x42C494] with address math (id*5+0x267)*9*4 = id*0xB4, base chat+0x567C.",
+    "Control id 5 and 10 are statically no-op in every table (shared ret-0 entries); id 15 is unreachable from FnA/FnB (dispatched only when 0 <= id <= 0xe) and its slot in open/routing/close-all tables is 0x90909090 dead padding (click table slot 15 = 0x245C8B53 garbage); id 15 exists only in the mousemove table (chat+0x52E5C).",
+    "Control id 2 (skill album) has a special open gate 0x44E910 in both FnB (closed album -> background click) and open-routing (0x42B6FC).",
+    "Open-window helper 0x42B6A0 is the single funnel: 13 call sites, all within FnA; it does close-all then remove/add in the game window list chat+0x2A548C.",
+    "Belt hit rects are built inline with SetRect at runtime (0x42D720), not stored; 38x38, slot i at (0x117+i*0x28, 0x1B0+i*0x10).",
+    "0x45AFC0 is the UI msg 0x69 poster with a 50-entry handler table at [0x8AB130+0x460]."
+  ],
+  "closed_notes": "All tables dumped as exact dwords (source: /tmp/cap2.txt, /tmp/cap3.txt raw dumps). 0x42C4D4[15] = 0x245C8B53 is garbage bytes (immediate from adjacent data), unreachable because FnB tests edi > 0xe first; documented literally.",
+  "pending": [
+    "Control id 15 (chat+0x52E5C) appears only in the mousemove table and FnA gate 0x52E8C; its FnB handler 0x43E4B0 + toggle 0xf is wired, but the control is not reachable from 0x42AAB0 hit-test (id map stops at 0xe).",
+    "0x403AC0 (belt count helper inside 0x42D7C0) target not decoded; called with a subwindow arg."
+  ],
+  "question": "none"
+}
