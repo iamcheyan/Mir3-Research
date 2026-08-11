@@ -1,0 +1,101 @@
+{
+  "evidence_id": "EI-316",
+  "finding": 316,
+  "date": "2026-08-11",
+  "title": "HotkeyLabelHandlerConsistency - chat caption/hotkey pairs are pairwise consistent; F313 'Q/D/N label-vs-handler discrepancy' resolved as window-id mislabeling (id 0 = 包袱 bag, NOT trade)",
+  "objective": "Close the pending item from F313/EI-313 ('cap14 包袱栏(Ctrl+Q,Q) vs Q->toggle(0) trade; cap10 信息窗口(Ctrl+D,D) vs D->toggle(0xb); cap11 设置栏(Ctrl+N,N) vs N->toggle(0xc)') with primary-static evidence: prove each letter hotkey executes the same window action as its own caption click, and correct the mislabeling of window id 0 as trade (trade = id 3).",
+  "method": "Fresh capstone dumps this round of (a) letter-hotkey bodies in kbd dispatch 0x42CBD0 (VK Q/D/N/G/F/B/V cases), (b) toggle dispatch jump table 0x42B3E4 + case bodies 0/0xB/0xC, (c) caption click action table 0x42C494 (16 dwords) + bodies idx 0/10/11/14, cross-referenced with window-id-catalog.json (Round 10, primary-static) for window id -> object base / frame bindings.",
+  "source": "Mir3.exe image base 0x400000, .text raw bytes, capstone 5.0.9 via Tools/reverse-engineering/disasm_capstone.py (PeImage); window-id-catalog.json EI-268",
+  "evidence_level": "primary-static",
+  "confidence": "high",
+  "addresses": {
+    "kbd_dispatch": "0x42CBD0",
+    "toggle_dispatch": "0x42ADB0",
+    "toggle_jump_table": "0x42B3E4",
+    "toggle_case0_bag": "0x42ADCF",
+    "toggle_case11_quest": "0x42AF2F",
+    "toggle_case12_settings": "0x42AF7E",
+    "caption_action_table": "0x42C494",
+    "trade_request": "0x41EC10",
+    "guild_net_request": "0x4523E0",
+    "minimap_net_open": "0x451770"
+  },
+  "window_id_bindings": {
+    "0": { "name": "包袱栏/背包 inventory (bag)", "object_base": "winmgr+0x6554", "frame": "GameInter.wil F250", "ctor": "0x42EA80", "toggle_flag_offset": "winmgr+0x6584" },
+    "3": { "name": "交易/交换 exchange (trade)", "object_base": "winmgr+0x3399C", "frame": "GameInter.wil F1050", "ctor": "0x4159D0", "toggle": "game logic 0x420486 + case 3 (0x42C00B); NO caption / NO letter hotkey" },
+    "0xB": { "name": "任务 quest", "object_base": "winmgr+0x516E8", "frame": "GameInter.wil F700", "ctor": "0x4473E0", "toggle_flag_offset": "winmgr+0x51718", "caption_label": "信息窗口 (client's own label for the quest window)" },
+    "0xC": { "name": "设置 option (settings)", "object_base": "winmgr+0x518E0", "frame": "GameInter.wil F750", "ctor": "0x440FE0", "toggle_flag_offset": "winmgr+0x51910" },
+    "4": { "name": "行会 guild", "object_base": "winmgr+0x4707C", "frame": "F600" },
+    "6": { "name": "组队 party", "object_base": "winmgr+0x47834", "frame": "F900" }
+  },
+  "evidence_dumps": {
+    "toggle_jump_table_0x42B3E4": "dwords: 42adcf 42ae42 42ae91 42aee0 42b06b 42b3dd 42b0ba 42b131 42b180 42b25e 42b3dd 42af2f 42af7e 42afcd 42b01c 42b2ad",
+    "toggle_case0_bag_0x42ADCF": [
+      "0042ADCF mov eax, dword ptr [esi + 0x6584]   ; flag = bag+0x30",
+      "0042ADD5 push 0",
+      "0042ADDB je 0x42adfc                          ; flag==0 -> open path",
+      "0042ADDD call 0x42ac50                        ; close: remove window",
+      "0042ADE2 mov eax, dword ptr [esi + 0x6554]    ; sub = bag object",
+      "0042ADEE push 0",
+      "0042ADF0 call dword ptr [eax + 0x10]          ; vtable+0x10 show(0)",
+      "0042ADFC call 0x42ac30                        ; open path",
+      "0042AE01 mov edx, dword ptr [esi + 0x6554]",
+      "0042AE0D push 1",
+      "0042AE11 call dword ptr [edx + 0x10]          ; vtable+0x10 show(1)",
+      "0042AE14 push -1; push 0x10c; push 0x10b; lea ecx,[esi+0x1c4]; call 0x417880  ; UI post",
+      "0042AE2F mov ecx, esi; call 0x42ff90          ; bag input reset",
+      "0042AE36 mov edi, 1"
+    ],
+    "toggle_case11_quest_0x42AF2F": [
+      "0042AF2F mov eax, dword ptr [esi + 0x51718]   ; flag = quest+0x30",
+      "0042AF35 push 0xb",
+      "0042AF3D call 0x42ac50",
+      "0042AF42 mov eax, dword ptr [esi + 0x516e8]   ; sub = quest object winmgr+0x516E8",
+      "0042AF50 call dword ptr [eax + 0x10]          ; show(0/1)",
+      "0042AF53 xor edi, edi; ... ret 4"
+    ],
+    "toggle_case12_settings_0x42AF7E": [
+      "0042AF7E mov eax, dword ptr [esi + 0x51910]   ; flag = settings+0x30",
+      "0042AF84 push 0xc",
+      "0042AF8C call 0x42ac50",
+      "0042AF91 mov eax, dword ptr [esi + 0x518e0]   ; sub = settings object winmgr+0x518E0",
+      "0042AF9F call dword ptr [eax + 0x10]          ; show(0/1)",
+      "0042AFA2 xor edi, edi; ... ret 4"
+    ],
+    "kbd_letter_cases": {
+      "Q 0x51": "0042CC7C push 0x51; call [0x476278 GetKeyState]; test ah,ah; je next; push 0; mov ecx,ebp; call 0x42adb0  -> toggle(0) = BAG (包袱)",
+      "D 0x44": "0042CD1B push 0x44; call [0x476278]; test ah,ah; je next; push 0xb; mov ecx,ebp; call 0x42adb0  -> toggle(0xb) = QUEST (信息窗口)",
+      "N 0x4E": "0042CE76 push 0x4e; call [0x476278]; test ah,ah; je next; push 0xc; mov ecx,ebp; call 0x42adb0  -> toggle(0xc) = SETTINGS (设置)",
+      "G 0x47": "0042CE41 push 0x47; call [0x476278]; test ah,ah; je next; push 6; call 0x42adb0  -> toggle(6) = PARTY (组队); F313 note 'guild' mislabeled (guild = id 4)",
+      "F 0x46": "0042CE5B push 0x46; call [0x476278]; test ah,ah; je next; mov ecx,0x8ab828; call 0x4523e0  -> guild net request (same as caption idx6)",
+      "B 0x42": "0042CE1D push 0x42; call [0x476278]; test ah,ah; je next; [ebp+0x6208] = !([ebp+0x6208])  -> same as caption idx2 (0x42C241)",
+      "V 0x56": "0042CDDA push 0x56; call [0x476278]; test ah,ah; je next; timeGetTime-[ebp+0x6210] <= 0x64 -> skip; [ebp+0x6518]==0 -> 0x451770 open else [ebp+0x6518]=0  -> same actions as caption idx1 (0x42C259; caption gate threshold 0xbb8, letter 0x64 - different cooldown, same actions)"
+    },
+    "caption_action_table_0x42C494_16": "dwords: 42c1ce 42c259 42c241 42c2e1 42bf37 42c218 42c209 42c292 42c302 42c226 42c1a4 42c1b2 42c359 42c1c0 42c234 42c30d",
+    "caption_idx_actions": {
+      "idx0 交易栏": "0x42C1CE: trade REQUEST (push 1; [0x777759]; [0x777768]; [0x777764]; ecx=0x47EF18; call 0x41EC10; ret!=0 -> net 0x451A70(0x8AB828)) - NOT a window toggle; identical to letter C",
+      "idx10 信息窗口": "0x42C1A4: push 0xb; mov ecx,esi; call 0x42adb0  == letter D",
+      "idx11 设置栏": "0x42C1B2: push 0xc; mov ecx,esi; call 0x42adb0  == letter N",
+      "idx14 包袱栏": "0x42C234: push edi(=0); mov ecx,esi; call 0x42adb0  == letter Q (toggle(0) = bag)",
+      "idx5 组队": "0x42C218: push 6; call 0x42adb0  == letter G",
+      "idx6 行会": "0x42C209: mov ecx,0x8ab828; call 0x4523e0  == letter F",
+      "idx1 小地图": "0x42C259: timeGetTime gate 0xbb8; open 0x451770 / [0x6518]=0  == letter V actions"
+    }
+  },
+  "analysis": {
+    "pairwise_consistency": "Every letter hotkey in kbd dispatch 0x42CBD0 executes the SAME window action as clicking the caption that declares that hotkey: Q=包袱栏->toggle(0)=bag, D=信息窗口->toggle(0xb)=quest, N=设置栏->toggle(0xc)=settings, G=组队->toggle(6)=party, F=行会->0x4523E0 guild request, B=技能图鉴->[0x6208] flip, V=小地图->minimap open/close, C=交易栏->trade request 0x41EC10+0x451A70. No handler mismatch exists.",
+    "f313_mislabeling": "F313/EI-313 pending item said 'Q->toggle(0) trade'. WRONG: window id 0 = 包袱栏/背包 (bag, F250, winmgr+0x6554, ctor 0x42EA80). Trade window = id 3 (F1050, winmgr+0x3399C, ctor 0x4159D0), which has NO caption and NO letter hotkey: it opens only via game logic (0x420486 / case 3) when a trade request is accepted. The '交易栏' caption (idx0) and letter C both send a trade REQUEST (0x41EC10 + net 0x451A70), never a toggle. Same class of mislabeling: F313 said 'G->toggle(6) guild' but id 6 = 组队 party (F900); guild = id 4 (F600), reached via the F/idx6 request path, not a toggle.",
+    "quest_caption_naming": "Window id 0xB is the 任务/quest window (F700, ctor 0x4473E0). The client's own caption idx10 labels it '信息窗口'; both the caption click (0x42C1A4) and the D hotkey route to toggle(0xb). '信息窗口' is the client's chosen label for the quest window - a naming fact, not a routing mismatch.",
+    "toggle_flag_sub_offsets": "Each toggle case reads flag=[winmgr+off+0x30] and sub=[winmgr+off]: bag 0x6584/0x6554, quest 0x51718/0x516E8, settings 0x51910/0x518E0 - consistent with F314's [sub+0x30] visibility-flag / vtable+0x10 show contract."
+  },
+  "conclusions": [
+    "CLOSED (primary-static, fresh dumps): chat caption/hotkey pairs are pairwise consistent; the F313 pending 'label-vs-handler discrepancy' was caused by mislabeling window id 0 as trade. Q->toggle(0) opens the 包袱 (bag), exactly matching caption 14 包袱栏(Ctrl+Q, Q).",
+    "D->toggle(0xb) opens the quest window, which the client captions 信息窗口 (caption idx10 routes to the same id). N->toggle(0xc) opens settings, matching caption 11 设置栏(Ctrl+N, N).",
+    "Trade (id 3, F1050) has no caption/hotkey of its own; 交易栏 caption idx0 and letter C both send a trade request via 0x41EC10 (not a window toggle).",
+    "G/F letters match captions 5/6: G->toggle(6)=组队 party, F->0x4523E0=行会 guild request (F313's 'G=guild' label corrected).",
+    "V letter and caption idx1 share actions (minimap open 0x451770 / close [0x6518]=0) with different cooldown gates (letter 0x64=100ms, caption 0xbb8=3000ms) - gate difference is entry-point-specific, not a mismatch."
+  ],
+  "closed_notes": "2026-08-11 Round 13: F313 pending item #1 (label-vs-handler discrepancies) CLOSED by this finding. Remaining F313 pendings unchanged: potion tokens 0x47BDD4/0x47BDDC GBK not meaningful; 0x450C70 map-text rebuild head only.",
+  "pending": [],
+  "question": "none"
+}
