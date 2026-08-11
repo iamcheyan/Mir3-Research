@@ -1,5 +1,5 @@
 {
-  "version": "0.4-target-box-equipment-slots-evidence",
+  "version": "0.5-renderer-family-liveness-evidence",
   "viewport": {
     "width": 800,
     "height": 600
@@ -32697,7 +32697,16 @@
       "evidence_level": "primary-static-caller-and-return-gate"
     },
     "interpretation": "Construction and registration are now separated from display state. The main initializer proves that these wrappers exist in the original client and records their resource/geometry inputs; the shared constructor proves the default visibility gate is zero before any explicit show command.",
-    "pending": []
+    "pending": [],
+    "global_ui_object": {
+      "identity": "global UI object 0x47EF18 (ctor 0x418B00 / dtor 0x418D50, CRT static-init table entry 0x47A02C = thunk 0x401960 -> 0x401970/0x401980, atexit 0x468467); vtable 0x476670 installed @[0x47EF18] by ctor; slot +0xC = 0x47667C = wndproc 0x41E2B0",
+      "global_pointers": [
+        "0x8AB820",
+        "0x8B1870"
+      ],
+      "main_window_create": "0x4570A0 (caller @0x457753): stores 0x47EF18 -> 0x8AB820/0x8B1870; call 0x419350 -> 0x45D270 creates main object 0x8AB7A8 800x600",
+      "evidence": "renderer-family-liveness-evidence.json (Finding 326, primary-static)"
+    }
   },
   "window_traversal_evidence": {
     "source": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",

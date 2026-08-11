@@ -1,6 +1,6 @@
 # EI 3.0 原版 800×600 UI 完成审计
 
-更新时间：2026-08-11（审计移植：Round 4–13 已并入，覆盖 Findings 274–316）
+更新时间：2026-08-12（审计移植：Round 4–20 已并入，覆盖 Findings 274–326）
 第一证据：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`、`mir3.dat`、`Data/*.wil`、`Data/*.wix`
 
 这份审计不把“已经有 JSON”当成“已经还原完成”。每个条目都区分：
@@ -189,3 +189,14 @@ git diff --check
 - **交互语义**：0x43CD0F minimap 命中测试 0x32 不可 pick（仅 0/1 死检 0x13、3 状态 4）；0x41ECAE find-xy 仅匹配 0/1；0x4123E3 picked target [0x7E335C] 为 0x32 → 步进/动作门返回 1（NPC 交互阻挡）。『挡路』= NPC 目标锁，非静态标记。
 - **matrix map pending 项『type 0x32 marker business name』闭合**（closed_2026_08_12）；pending_notes 修剪为 runtime 两项（zoom-toggle runtime frame、key label strings absent）。
 - 落盘：`map-type0x32-marker-npc-evidence.json` + map-ui-resource-evidence.json（SUPERSEDED 注记 + 新闭合并入）+ matrix map closed_2026_08_12 + RESEARCH_LOG Finding 325。
+
+## Round 20 (2026-08-12) — 0x476600 家族 vtable 全活 + 13 渲染器死代码结论推翻（Finding 326）
+
+- **CRT 静态初始化链（0x47A000–0x47A104，64 项 ctor 表）**：entry 0x46992D → 0x46998C `call 0x46C38B`（CRT startup）→ 0x4699C5 `call 0x468204`（init runner）→ 0x468228 `call 0x4682EC` = `_initterm(0x47A000, 0x47A104)`。全局对象 ctor 表为 **.data 立即数 dword 数组**（非 .rdata 指针表）——`push imm` 传参，E8 扫描与 raw-dword 扫描均不可见。
+- **0x47A02C = 0x401960 thunk**：`call 0x401970; jmp 0x401980`；0x401970 = `mov ecx, 0x47EF18; jmp 0x418B00`（ctor thunk）；0x401980 = `push 0x401990; call 0x468467; pop ecx; ret`（**atexit 注册 dtor**）；0x401990 = `mov ecx, 0x47EF18; jmp 0x418D50`。→ **全局主 UI 对象 0x47EF18：ctor 0x418B00 / dtor 0x418D50，经 init 表 + atexit 活**——『0x418B00 无 E8 caller = 死』误判根因 = E8-only 扫描盲区（jmp-thunk 0x401975/0x401995 + init 表 dword 项）。
+- **vtable 0x476670 安装 @[0x47EF18]**（0x418D1D，SEH ctor 0x418B00 内，handler 0x4748CC）→ slot +0xC = **0x47667C = 0x41E2B0 wndproc**（F309 事件总线）。槽表：+0x0=0x41E6A0/+0x4=0x41E6D0/+0x8=0x41E260/+0xC=0x41E2B0/+0x10=0x423A80/+0x14=0x423850/+0x18=0x4238F0/+0x1C=0x423990/+0x20=0x42E700/+0x24=0x423450。
+- **wndproc → 窗口绘制分派全链（4 跳，全 call 点体内验证）**：0x41E2B0 → @0x41E53C `call 0x41DFE0` → @0x41E188 `call 0x428EF0` → @0x428F69 `call 0x429420` → @0x4295BB `call 0x4280F0`。**0x4280F0 = 窗口绘制分派，21 个 E8 直调目标**（0x42EB80/0x44B2D0/0x44E260/0x415B10/0x425040/0x4243D0/0x450530/0x414700/0x43F460/0x447470/0x441380/0x4269C0/0x439500/0x43E3C0/[0x476248 间接]/0x42AAB0/0x42FAB0/0x44B6B0/0x416790/0x450AC0/0x44E650）——**Round 20.5『13 渲染器 + 0x45DE50 = 死代码』SUPERSEDED**：13 名单中 7 个（0x42EB80/0x415B10/0x425040/0x450530/0x447470/0x44B2D0/0x44B6B0）在分派 E8 直调表内，0x437610 经 vtable 0x476528+0x10（写点 0x40E7DD/0x413656）活，0x40B850 经 vtable+0x84（F323）活；0x45DE50 早经 Round 20 核心链（E8 callers 0x40A280 等）验证。
+- **34 个 vtable 家族基础地址全部有 C7 写点**（modrm-aware 全扫；0x476448=114、0x476624=32、0x476454=19、0x4763A8=9、0x4763BC=6、0x476620=6、0x4763C0=2、0x476360=3、0x476368=2、0x476378=4、0x476480=2、0x476528=2、0x476544=2、0x4765F0=1、0x47660C=2、0x476638=4、0x47663C=2、0x476654=2、0x47665C=2、0x476670=2、0x476680/0x47669C/0x4766B8/0x4766F0 各 4、0x4766D4=2、0x47671C=1、0x4767A8=4、0x4767C0/0x4767C4/0x4767C8=5、0x4767CC/0x4767E0/0x4767FC=5）——**无死 vtable 表**。
+- **0x4570A0（fn start；0x457092–0x45709F = 14 NOP 填充）**：`call 0x457040; mov [0x8AB820],0x47EF18; mov [0x8B1870],0x47EF18; call 0x419350; mov [0x8B1878],3`；0x419350 → 0x45D270（创建 0x8AB7A8 800×600 主对象，深 0x10，模式 5/1 依 [0x47EE89]）；E8 caller @0x457753。
+- **判定标准（正式确立）**：全局对象 ctor/dtor 靠 CRT init 表 + atexit 注册（非 E8）；vtable 槽函数靠 [reg+off] 间接调用（非 E8）；**『无 E8 caller / 无 dword ref ≠ 死代码』**。E9 jmp-thunk 扫描为 E8-only 盲区补全（本轮命中 0x401975/0x401995/0x401955）。
+- 落盘：`renderer-family-liveness-evidence.json` + matrix hud closed_2026_08_12（新条目）+ RESEARCH_LOG Finding 326。

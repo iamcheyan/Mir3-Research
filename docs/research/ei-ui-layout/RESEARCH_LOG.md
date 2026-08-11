@@ -5612,3 +5612,17 @@ cross-ref：F260/F295/F302/F321/F322/F323。
 
 cross-ref：F269/F281/F287/F323 + map-ui-resource-evidence.json（closed_notes SUPERSEDED + 新闭合并入）。
 落盘：`map-type0x32-marker-npc-evidence.json`、`map-ui-resource-evidence.json`（type_0x32_semantics RESOLVED + resolution + closed_notes 5 条）、`ui-coverage-matrix.json`（map closed_2026_08_12；pending_notes 修剪为 runtime 两项）、`UI_COMPLETION_AUDIT.md`。
+
+## Round 20 (2026-08-12) — 0x476600 家族 vtable 全活定案 + 13 渲染器死代码结论推翻（Finding 326）
+
+- RendererFamilyLiveness（Finding 326）：renderer-family-liveness-evidence.json — **Round 20.5『13 渲染器 + 0x45DE50 = 死代码』结论 SUPERSEDED + 全局 UI 对象 0x47EF18 构造路径定案（primary-static）**：
+  - **CRT 静态初始化链（fresh 全链验证）**：entry 0x46992D → 0x46998C `call 0x46C38B`（CRT startup）→ 0x4699C5 `call 0x468204`（init runner）→ 0x468228 `call 0x4682EC` = `_initterm(0x47A000, 0x47A104)`——**64 项全局 ctor 表**（0x47A004 起：0x401000/0x401350/0x401760/…/0x401960/0x402260/…/0x45C940）。0x4682EC = MSVC `_initterm`（逐项解引用调用）。
+  - **表项 0x47A02C = 0x401960**：`call 0x401970; jmp 0x401980`；0x401970 = `mov ecx, 0x47EF18; jmp 0x418B00`（thiscall ctor thunk）；0x401980 = `push 0x401990; call 0x468467; pop ecx; ret`（**atexit 注册 dtor thunk**）；0x401990 = `mov ecx, 0x47EF18; jmp 0x418D50`。→ **全局对象 0x47EF18：ctor = 0x418B00（init 表），dtor = 0x418D50（atexit）**。E9 jmp-thunk 全扫命中 0x401975/0x401995（E8-only 扫描盲区被补）。
+  - **0x418B00 安装 vtable 0x476670 @[0x47EF18]**（0x418D1D `mov [esi],0x476670`）→ slot +0xC = **0x47667C = 0x41E2B0 wndproc**（槽表 fresh dump：+0x0=0x41E6A0/+0x4=0x41E6D0/+0x8=0x41E260/+0xC=0x41E2B0/+0x10=0x423A80/+0x14=0x423850/+0x18=0x4238F0/+0x1C=0x423990/+0x20=0x42E700/+0x24=0x423450）。
+  - **wndproc → 分派全链（4 个 call 点逐一体内验证 + epilogue 收尾）**：0x41E2B0 → @0x41E53C `call 0x41DFE0`（caller 集 {0x41DEDE, 0x41E541}，0x41E541 在 wndproc 体内）→ @0x41E188 `call 0x428EF0`（caller 0x41E18D，ret 8）→ @0x428F69 `call 0x429420`（caller 0x428F6E，ret 4）→ @0x4295BB `call 0x4280F0`（caller 0x4295C0，ret 4）。
+  - **0x4280F0 分派 = 21 个 E8 直调目标**：0x42EB80/0x44B2D0/0x44E260/0x415B10/0x425040/0x4243D0/0x450530/0x414700/0x43F460/0x447470/0x441380/0x4269C0/0x439500/0x43E3C0/[0x476248 间接]/0x42AAB0/0x42FAB0/0x44B6B0/0x416790/0x450AC0/0x44E650——**Round 20.5 13 渲染器名单中的 0x42EB80/0x415B10/0x425040/0x450530/0x447470/0x44B2D0/0x44B6B0 全在分派表内**；0x437610 经 vtable 0x476528+0x10 活（写点 0x40E7DD/0x413656）。
+  - **34 个 vtable 家族基础地址全部有 C7 写点**（modrm-aware 全扫，Round 20.8 定案）：0x476448=114、0x476624=32、0x476454=19、0x4763A8=9、0x4763BC=6、0x476620=6、0x4763C0=2、0x476360=3、0x476368=2、0x476378=4、0x476480=2、0x476528=2、0x476544=2、0x4765F0=1、0x47660C=2、0x476638=4、0x47663C=2、0x476654=2、0x47665C=2、0x476670=2（0x418D1D/0x418D6D）、0x476680/0x47669C/0x4766B8/0x4766F0 各 4、0x4766D4=2（+2 处 B8 两段式 0x418B51/0x418E80）、0x47671C=1、0x4767A8=4、0x4767C0/0x4767C4/0x4767C8=5、0x4767CC/0x4767E0/0x4767FC=5；0x476400=0 引用但真实家族基础从 0x476448 起。
+  - **判定标准确立**：全局对象 ctor/dtor 靠 **CRT init table（dword 指针数组）+ atexit 注册**调用，vtable 槽函数靠 **[reg+off] 间接调用**——二者均无 E8 直调；「无 E8 caller / 无 dword ref ≠ 死代码」。0x4570A0（主窗口创建，`mov [0x8AB820]/[0x8B1870],0x47EF18; call 0x419350→0x45D270 创建 0x8AB7A8 800×600 主对象`）E8 caller = 0x457753（此前 summary 误记 0x457092 = NOP 填充，真 fn 头 = 0x4570A0）。
+
+cross-ref：Round 20/20.5（SUPERSEDED）/20.6/20.7/20.8 + F309（0x7E8 事件总线 0x41E2B0）+ F323（实体侧 vtable 链）。
+落盘：`renderer-family-liveness-evidence.json`、`ui-coverage-matrix.json`（hud closed_2026_08_12 新条目）、`UI_COMPLETION_AUDIT.md`。
