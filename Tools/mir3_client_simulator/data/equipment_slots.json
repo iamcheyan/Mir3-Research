@@ -1,7 +1,7 @@
 [
   {
-    "id": "slot.helmet",
-    "name": "头盔",
+    "id": "slot.torch",
+    "name": "火把",
     "x": 177,
     "y": 70,
     "w": 38,
@@ -9,11 +9,11 @@
     "library": "Equip.wil",
     "frame": 0,
     "evidence_level": "primary-static",
-    "note": "loop0 this+0x1F0 (177,70)-(215,108); abs (455,206); icon frame candidate"
+    "note": "idx3 Torch · ctor SetRect call#0 this+0x1F0 (177,70)-(215,108); abs (455,206); Finding 265 identity mapping (client idx == EquipmentSlot enum); icon frame candidate"
   },
   {
-    "id": "slot.torch",
-    "name": "火把",
+    "id": "slot.helmet",
+    "name": "头盔",
     "x": 27,
     "y": 264,
     "w": 38,
@@ -21,11 +21,11 @@
     "library": "Equip.wil",
     "frame": 1,
     "evidence_level": "primary-static",
-    "note": "loop1 this+0x1E0 (27,264)-(65,302); abs (305,400); icon frame candidate"
+    "note": "idx2 Helmet · ctor SetRect call#1 this+0x1E0 (27,264)-(65,302); abs (305,400); Finding 265 identity mapping; icon frame candidate"
   },
   {
-    "id": "slot.poison",
-    "name": "毒药",
+    "id": "slot.shoes",
+    "name": "鞋子",
     "x": 64,
     "y": 264,
     "w": 38,
@@ -33,7 +33,7 @@
     "library": "Equip.wil",
     "frame": 2,
     "evidence_level": "primary-static",
-    "note": "loop2 this+0x250 (64,264)-(102,302); abs (342,400); icon frame candidate"
+    "note": "idx9 Shoes · ctor SetRect call#2 this+0x250 (64,264)-(102,302); abs (342,400); Finding 265 identity mapping; icon frame candidate"
   },
   {
     "id": "slot.braceletL",
@@ -45,7 +45,7 @@
     "library": "Equip.wil",
     "frame": 3,
     "evidence_level": "primary-static",
-    "note": "loop3 this+0x210 (27,186)-(65,224); abs (305,322); icon frame candidate"
+    "note": "idx5 BraceletL · ctor SetRect call#3 this+0x210 (27,186)-(65,224); abs (305,322); Finding 265 identity mapping; icon frame candidate"
   },
   {
     "id": "slot.braceletR",
@@ -57,7 +57,7 @@
     "library": "Equip.wil",
     "frame": 4,
     "evidence_level": "primary-static",
-    "note": "loop4 this+0x220 (175,186)-(213,224); abs (453,322); icon frame candidate"
+    "note": "idx6 BraceletR · ctor SetRect call#4 this+0x220 (175,186)-(213,224); abs (453,322); Finding 265 identity mapping; icon frame candidate"
   },
   {
     "id": "slot.ringL",
@@ -69,7 +69,7 @@
     "library": "Equip.wil",
     "frame": 5,
     "evidence_level": "primary-static",
-    "note": "loop5 this+0x230 (27,227)-(65,265); abs (305,363); icon frame candidate"
+    "note": "idx7 RingL · ctor SetRect call#5 this+0x230 (27,227)-(65,265); abs (305,363); Finding 265 identity mapping; icon frame candidate"
   },
   {
     "id": "slot.ringR",
@@ -81,11 +81,11 @@
     "library": "Equip.wil",
     "frame": 6,
     "evidence_level": "primary-static",
-    "note": "loop6 this+0x240 (175,227)-(213,265); abs (453,363); icon frame candidate"
+    "note": "idx8 RingR · ctor SetRect call#6 this+0x240 (175,227)-(213,265); abs (453,363); Finding 265 identity mapping; icon frame candidate"
   },
   {
-    "id": "slot.shoes",
-    "name": "鞋子",
+    "id": "slot.poison",
+    "name": "毒药",
     "x": 103,
     "y": 264,
     "w": 38,
@@ -93,6 +93,6 @@
     "library": "Equip.wil",
     "frame": 7,
     "evidence_level": "primary-static",
-    "note": "loop10 this+0x260 (103,264)-(141,302); abs (381,400); icon frame candidate"
+    "note": "idx10 Poison · ctor SetRect call#10 this+0x260 (103,264)-(141,302); abs (381,400); Finding 265 identity mapping; icon frame candidate"
   }
 ]

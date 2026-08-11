@@ -1267,6 +1267,7 @@ function selectLib(name, updateHash = true){
   const lib = STATE.all.libs.find(l=>l.name===name); if(!lib) return;
   STATE = {...STATE, lib:name, count:lib.count, loaded:0, loading:false, gen: STATE.gen + 1,
            sel:new Set(), focus:null, anchor:null, blankSet:null, ranges:[]};
+  imgQueue = [];
   $('#cur').textContent = `${lib.name} · ${lib.count} frames · ${lib.size_mb} MB`;
   $('#loadinfo').textContent = '';
   $('#anim').style.display='none';
@@ -1313,45 +1314,88 @@ function fillRangeSelect(){
 }
 // ---------------------------------------------------------------- grid (strips)
 const CHECKER = 'repeating-conic-gradient(#2a2f38 0% 25%, #232830 0% 50%)';
+const IMG_CONCURRENCY = 3;
+let imgQueue = [];
+let imgActive = 0;
 function gridCols(cell){ return Math.max(1, Math.floor(gw.clientWidth / (cell + 4))); }
+function createCell(i){
+  const d = document.createElement('div'); d.className='cell'; d.dataset.idx = i;
+  d.style.backgroundImage = CHECKER;
+  const t = document.createElement('span'); t.className='idx'; t.textContent = i; d.appendChild(t);
+  d.onclick = ev => onCellClick(i, ev);
+  d.ondblclick = ev => { ev.stopPropagation(); openDetail(i); };
+  return d;
+}
+function applyStripBg(d, img, k, cell, total){
+  d.style.backgroundImage = `url("${img.src}")` + ', ' + CHECKER;
+  d.style.backgroundSize = `${total * cell}px ${cell}px, 16px 16px`;
+  d.style.backgroundPosition = `-${k * cell}px 0, 0 0`;
+}
+function updateProgress(done){
+  const n = STATE.count, loaded = Math.min(STATE.loaded, n);
+  if (done){
+    $('#loadinfo').textContent = `共 ${n} 帧 · 全部加载完毕`;
+    $('#loadbar').style.display = 'none';
+  } else {
+    $('#loadinfo').textContent = `${loaded} / ${n} 帧`;
+    $('#loadbar').textContent = `已创建 ${loaded} / ${n} 格子 · 缩略图随滚动加载`;
+    $('#loadbar').style.display = 'block';
+  }
+}
+function enqueueStrip(start, end, cell, made){
+  imgQueue.push({start, end, cell, gen: STATE.gen, made});
+  pumpStrips();
+}
+function pumpStrips(){
+  while (imgActive < IMG_CONCURRENCY && imgQueue.length){
+    const job = imgQueue.shift();
+    imgActive++;
+    const {start, end, cell, gen, made} = job;
+    const img = new Image();
+    img.onload = () => {
+      imgActive--;
+      if (gen === STATE.gen){
+        for (const [k, i, d] of made) applyStripBg(d, img, k, cell, end - start);
+        if (STATE.loaded >= STATE.count && !imgQueue.length && !imgActive) updateProgress(true);
+        maybeLoadMore();
+      }
+      pumpStrips();
+    };
+    img.onerror = () => { imgActive--; pumpStrips(); };
+    img.src = `/api/thumbs?f=${encodeURIComponent(STATE.lib)}&start=${start}&count=${end - start}&s=${cell}`;
+  }
+}
+function maybeLoadMore(){
+  if (!STATE.lib || STATE.loaded >= STATE.count) return;
+  const g = $('#grid');
+  if (g.scrollHeight <= gw.clientHeight || gw.scrollTop + gw.clientHeight >= gw.scrollHeight - 800) loadMore();
+}
 function loadMore(){
-  if (!STATE.lib || STATE.loading || STATE.loaded >= STATE.count) return;
-  STATE.loading = true;
+  if (!STATE.lib || STATE.loaded >= STATE.count) return;
   const cell = cellSize();
   const cols = gridCols(cell);
   const strip = Math.max(cols, cols * Math.max(2, Math.ceil((gw.clientHeight + 300) / (cell + 4))));
   const start = STATE.loaded, end = Math.min(start + strip, STATE.count);
-  const gen = STATE.gen;
   const hideBlank = $('#hideblank').checked && STATE.blankSet;
-  const img = new Image();
-  img.onload = () => {
-    if (gen !== STATE.gen) return;
-    const g = $('#grid');
-    g.style.setProperty('--cell', cell + 'px');
-    const frag = document.createDocumentFragment();
-    for (let k = 0; k < end - start; k++){
-      const i = start + k;
-      if (hideBlank && STATE.blankSet.has(i)) continue;
-      const d = document.createElement('div'); d.className='cell'; d.dataset.idx = i;
-      d.style.backgroundImage = `url("${img.src}")` + ', ' + CHECKER;
-      d.style.backgroundSize = `${(end - start) * cell}px ${cell}px, 16px 16px`;
-      d.style.backgroundPosition = `-${k * cell}px 0, 0 0`;
-      const t = document.createElement('span'); t.className='idx'; t.textContent = i; d.appendChild(t);
-      d.onclick = ev => onCellClick(i, ev);
-      d.ondblclick = ev => { ev.stopPropagation(); openDetail(i); };
-      frag.appendChild(d);
-    }
-    STATE.loaded = end;
-    g.appendChild(frag);
-    STATE.loading = false;
-    refreshCellClasses();
-    $('#loadinfo').textContent = `${g.children.length} / ${STATE.count}`;
-    if (STATE.loaded >= STATE.count){ $('#loadbar').style.display='none'; return; }
-    const needMore = g.scrollHeight <= gw.clientHeight;
-    if (needMore || gw.scrollTop + gw.clientHeight >= gw.scrollHeight - 800) loadMore();
-  };
-  img.onerror = () => { STATE.loading = false; };
-  img.src = `/api/thumbs?f=${encodeURIComponent(STATE.lib)}&start=${start}&count=${end - start}&s=${cell}`;
+  const g = $('#grid');
+  g.style.setProperty('--cell', cell + 'px');
+  // 1) 占位格子先建:编号 + 棋盘格,用户立即看到素材帧数轮廓
+  const made = [];
+  const frag = document.createDocumentFragment();
+  for (let k = 0; k < end - start; k++){
+    const i = start + k;
+    if (hideBlank && STATE.blankSet.has(i)) continue;
+    const d = createCell(i);
+    made.push([k, i, d]);
+    frag.appendChild(d);
+  }
+  STATE.loaded = end;
+  g.appendChild(frag);
+  refreshCellClasses();
+  updateProgress();
+  // 2) 缩略图进队列并行加载,到达后填充对应格子
+  enqueueStrip(start, end, cell, made);
+  maybeLoadMore();
 }
 gw.addEventListener('scroll', () => {
   if (gw.scrollTop + gw.clientHeight >= gw.scrollHeight - 800) loadMore();
@@ -1371,6 +1415,7 @@ function saveScrollHash(){
 function reloadGrid(){
   if (!STATE.lib) return;
   STATE.loaded = 0; STATE.loading = false; STATE.gen++;
+  imgQueue = [];
   $('#grid').innerHTML = '';
   gw.scrollTop = 0;
   loadMore();
@@ -1419,9 +1464,7 @@ function scrollToFrame(i){
   gw.scrollTop = Math.max(0, row * cell - 40);
   const need = Math.min(STATE.count, Math.ceil((row * cell + cell) / cell) * cols + cols * 4);
   if (STATE.loaded < need){
-    const old = STATE.loaded;
     STATE.loading = false;
-    STATE.loaded = Math.max(STATE.loaded, need - STATE.loaded);
     // force-load enough strips: load in batches until loaded covers need
     const target = Math.min(STATE.count, need);
     const loop = async () => {
@@ -1447,26 +1490,25 @@ function loadBatch(start){
     const strip = Math.max(cols, cols * Math.max(2, Math.ceil((gw.clientHeight + 300) / (cell + 4))));
     const end = Math.min(start + strip, STATE.count);
     const gen = STATE.gen;
+    const hideBlank = $('#hideblank').checked && STATE.blankSet;
+    const g = $('#grid');
+    const made = [];
+    const frag = document.createDocumentFragment();
+    for (let k = 0; k < end - start; k++){
+      const i = start + k;
+      if (hideBlank && STATE.blankSet.has(i)) continue;
+      const d = createCell(i);
+      made.push([k, i, d]);
+      frag.appendChild(d);
+    }
+    STATE.loaded = Math.max(STATE.loaded, end);
+    g.appendChild(frag);
+    refreshCellClasses();
+    updateProgress();
     const img = new Image();
     img.onload = () => {
       if (gen !== STATE.gen) return res(false);
-      const g = $('#grid');
-      const frag = document.createDocumentFragment();
-      const hideBlank = $('#hideblank').checked && STATE.blankSet;
-      for (let k = 0; k < end - start; k++){
-        const i = start + k;
-        if (hideBlank && STATE.blankSet.has(i)) continue;
-        const d = document.createElement('div'); d.className='cell'; d.dataset.idx = i;
-        d.style.backgroundImage = `url("${img.src}")` + ', ' + CHECKER;
-        d.style.backgroundSize = `${(end - start) * cell}px ${cell}px, 16px 16px`;
-        d.style.backgroundPosition = `-${k * cell}px 0, 0 0`;
-        const t = document.createElement('span'); t.className='idx'; t.textContent = i; d.appendChild(t);
-        d.onclick = ev => onCellClick(i, ev);
-        d.ondblclick = ev => { ev.stopPropagation(); openDetail(i); };
-        frag.appendChild(d);
-      }
-      g.appendChild(frag);
-      STATE.loaded = end;
+      for (const [k, i, d] of made) applyStripBg(d, img, k, cell, end - start);
       res(true);
     };
     img.onerror = () => res(false);
@@ -2352,6 +2394,7 @@ load();
 def main():
     ap = argparse.ArgumentParser(description="Mir3 EI asset web viewer")
     ap.add_argument("--root", default=DEFAULT_ROOT, help=f"mir3ei directory (default: {DEFAULT_ROOT})")
+    ap.add_argument("--host", default="0.0.0.0", help="interface to bind (default: 0.0.0.0 = all interfaces)")
     ap.add_argument("--port", type=int, default=8765)
     ap.add_argument("--open", action="store_true", help="open browser automatically")
     args = ap.parse_args()
@@ -2365,13 +2408,13 @@ def main():
         n = len([f for f in os.listdir(INDEX.sound_dir) if f.lower().endswith('.wav')])
         print(f"sounds: {n} wav files")
 
-    srv = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    url = f"http://127.0.0.1:{args.port}/"
-    sim_url = f"http://127.0.0.1:{args.port}/sim"
+    srv = ThreadingHTTPServer((args.host, args.port), Handler)
+    url = f"http://{args.host}:{args.port}/"
+    sim_url = f"http://{args.host}:{args.port}/sim"
     print(f"serving on {url}  (Ctrl-C to stop)")
     print(f"client simulator: {sim_url}")
     if args.open:
-        webbrowser.open(url)
+        webbrowser.open(f"http://127.0.0.1:{args.port}/")
     try:
         srv.serve_forever()
     except KeyboardInterrupt:

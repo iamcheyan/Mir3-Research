@@ -111,30 +111,94 @@
     "source_artifacts": ["window-traversal-evidence.json", "window-visibility-dispatch-evidence.json", "window-position-dispatch-evidence.json"]
   },
   "pending": [
-    "重复 show(ID) 边界：0x42AC30/0x449870 无条件追加、不查重复，直接调用可能产生重复节点=重复 paint 边界（0x42B6A0 提升路径先 hide 后 show 不会重复，但全二进制未逐一审计所有 0x42AC30/0x449870 调用点）——candidate。",
     "store/exchange/option 状态→业务名映射：绘制期状态分派已 primary-static（见 closed_notes[2]），但 store 状态 0..4 的业务名（买卖/仓库等）、exchange 网格/按钮业务名与量条填充值运行时来源、option 控件帧对（161/162、760/761、762/763）对应的选项语义仍为 candidate/pending。"
   ],
-  "closed_notes": [
+  "closed_notes":   [
     {
       "date": "2026-08-11",
       "key": "hide-then-show promotion",
       "conclusion": "存在专门命令执行 hide-then-show 提升：定位+显示分派 0x0042B6A0（参数 id，跳表 0x42B7E0 覆盖 id 0..0xE）在 count=main+0xD38>0 时依次调用 0x42B820（遍历可见链表对每节点 push 0 + 0x423F90 清可见标志，即关全部）、0x42AC50（hide：从 main+0xD28 链表摘除命中节点并释放）、0x42AC30（show：无条件追加尾节点），然后按 id 定位窗口对象并 0x423F90(1) 置可见 + 0x4240C0 应用位置（store id2 特殊：先 0x44E910 hit-test，命中即拒开）。show 经 0x449870 分配 12 字节节点（+0=id、+4=next、+8=prev）追加到 tail（manager+0x0C，count=manager+0x14 自增；自环节点 new->next=new @0x44989D 由 count 守卫不可达）；paint 分派 0x4280F0 从 head=main+0xD28 沿 node+0x04 前进、count 守卫、按 node id 跳表 0x428358 调专用 paint。因此 hide(摘链)+show(追加尾) 天然把窗口提升为最后一个绘制=最上层；0x42B6A0 即显式 hide-then-show 提升命令。修正 window-traversal-evidence.json 的 promotion_audit（其称无调用方 BB 含无条件 hide(ID)+show(ID)，0x42B6A0 的 0x42B6BC-0x42B6C7 正是该序列，本次实测确认）。",
       "evidence_level": "primary-static",
-      "key_vAs": ["0x42B6A0", "0x42B820", "0x42AC50", "0x42AC30", "0x449870", "0x4280F0", "0x428358", "0x423F90", "0x4240C0", "0x44E910"]
+      "key_vAs": [
+        "0x42B6A0",
+        "0x42B820",
+        "0x42AC50",
+        "0x42AC30",
+        "0x449870",
+        "0x4280F0",
+        "0x428358",
+        "0x423F90",
+        "0x4240C0",
+        "0x44E910"
+      ]
     },
     {
       "date": "2026-08-11",
       "key": "HP/MP/EXP bars vs HUD button overlays",
       "conclusion": "HUD 帧例程 0x004294E0（ret 0xC @0x429624）内静态调用序：0x4294EB 经 0x429630 选底板帧 0x32(50) 并由 0x460240 合成 HUD 底板（原点 this+0xC58/0xC5C，尺寸 0x320/0x258）→ 0x42953F call 0x4283C0（HUD 状态图标循环，[this+0xD08] 次调 0x415090）→ 0x429546 call 0x429740（HP/MP/EXP 条；0x429740 唯一 E8 调用者 = 0x429546）→ 0x429556 循环 16 子控件（esi+0x567C 步长 0xB4，call [vtable+0x04]，即按钮族，构造 0x417550）→ 0x429584 call 0x4179B0（共享量条，esi+0x61BC，(0x248,0x1A9,[esi+0xD08],[esi+0xD20])，内部 fild/fidiv value/max）→ 条件 0x4189A0（门控 esi+0x53030）→ 0x4295B9 call 0x4280F0（可见窗口列表 paint）→ 0x430A40/0x4153B0/0x428930/0x428F80/0x42A850。条内顺序见 hud-bars-render-evidence.json draw_sequence（动态帧 0x82-0x85 @0x429819 → 62@0x4299CB → 60@0x429BDB → 61@0x429C53 → 63@0x429FD5 → 经验% 文本 @0x42A065）。结论：条（HP/MP/EXP）先于 16 个按钮子控件与共享量条绘制；HUD 层内顺序 = 底板 → 图标 → 条 → 按钮 → 量条 → 窗口列表。",
       "evidence_level": "primary-static",
-      "key_vAs": ["0x4294E0", "0x429740", "0x4283C0", "0x4179B0", "0x429556", "0x429584", "0x4295B9", "0x4280F0"]
+      "key_vAs": [
+        "0x4294E0",
+        "0x429740",
+        "0x4283C0",
+        "0x4179B0",
+        "0x429556",
+        "0x429584",
+        "0x4295B9",
+        "0x4280F0"
+      ]
+    },
+    {
+      "date": "2026-08-11",
+      "key": "duplicate show(ID) full-binary caller audit",
+      "conclusion": "Finding 263：全二进制审计 0x42AC30/0x449870（无条件尾追加、不查重复）的全部直接/间接调用点。(A) 0x42AC30 直接调用方=15（全 E8，无 E9 尾跳）：14 个在 toggle 分派 0x42ADB0（case id 0,1,2,3,0xB,0xC,0xD,0xE,4,6,7,8,9,0xF → 0x42ADFC/0x42AE6F/0x42AEBE/0x42AF0D/0x42AF5C/0x42AFAB/0x42AFFA/0x42B049/0x42B098/0x42B0E7/0x42B15E/0x42B23C/0x42B28B/0x42B34D）+1 个在提升 0x42B6A0（0x42B6C7）。每个 toggle show 分支先判窗口标志 this+0x30==0（[ui+0x6584]/[ui+0x29D14]/[ui+0x331B8]/[ui+0x339CC]/[ui+0x51718]/[ui+0x51910]/[ui+0x52148]/[ui+0x52520]/[ui+0x470AC]/[ui+0x47864]/[ui+0x47C58]/[ui+0x5081C]/[ui+0x51180]/[ui+0x52E8C]），追加后紧跟 vtable+0x10(1)=+0x30 setter（14 窗=0x423F80；store vtable 0x476A54 槽+0x10=0x4488B0，同样写 +0x30=arg）→ +0x30=1；hide 分支对称：0x42AC50 + vtable+0x10(0)。(B) 0x449870 直接调用方=5：0x42AC3B 在 0x42AC30 内部（唯一触及可见窗链 manager=ui+0xD24 的追加）；0x41538F 泛型集合追加（manager=[obj+4]）；0x448ABA store 物品装载循环（manager=store+0x1E0）；0x4491B6 排序数组追加（manager=esi）；0x44933E 物品装载循环（manager=obj+0x1E0）——后 4 个使用不同 manager，非可见窗链，无绘制影响。(C) 间接引用：全文件 imm32 LE dword 扫描 0x42AC30 与 0x449870 各 0 处 → 无 vtable 槽、无跳表项（分派表 0x42B3E4/0x42B7E0 指向 case 块而非 show）、无 mov reg,imm32 装载 → .text 中不存在任何间接引用。(D) 不变式：14 个列表窗 this+0x30==1 ⟺ 节点在可见链（ui+0xD24）。全部 19 个 hide 调用点（14 toggle + 4 直接 0x41C1F6/0x41C227/0x41C254/0x42062D + 提升 0x42B6BF）在 0x42AC50 后都跟 vtable+0x10(0) 清 +0x30；构造函数 0x4175F0 初始化 +0x30=0；其余 +0x30 写者仅 NPC SetActive 0x43F020（经 0x423F80，语义一致）。提升 0x42B6A0 对 0x42BAC1 raise 分派可达的窗口先 0x42AC50(ID) 再 0x42AC30(ID)：raise 入口前经窗口下光标查找器 0x42AAB0（仅遍历可见链 tail→head，window+0x18 rect PtInRect 0x4762B4）命中才进提升 → 目标必已在链内，+0x30 保持 1，不会重复追加。VERDICT：静态可达路径不存在重复节点，出厂调用图 primary-static 闭合。BOUNDARY（candidate，运行时唯一残留）：0x42AC30/0x449870 自身从不查成员；若链外调用方（脚本/服务端命令、未来代码、或运行时 +0x30 失步）对已在链的 ID 再追加，重复节点粘滞——paint 分派 0x4280F0 每帧对该 ID 重复绘制、hide 0x42AC50 只摘除首个命中节点、close-all 0x42B820 不摘链、count=ui+0xD38 虚增；该边界只能靠运行时捕获完全排除。",
+      "evidence_level": "primary-static",
+      "key_vAs": [
+        "0x42AC30",
+        "0x449870",
+        "0x42ADB0",
+        "0x42B6A0",
+        "0x42B6C7",
+        "0x42AAB0",
+        "0x42B3E4",
+        "0x42B7E0",
+        "0x423F80",
+        "0x4488B0",
+        "0x4280F0",
+        "0x42B820",
+        "0x41C1F6",
+        "0x41C227",
+        "0x41C254",
+        "0x42062D",
+        "0x41538F",
+        "0x448ABA",
+        "0x4491B6",
+        "0x44933E",
+        "0x4175F0"
+      ]
     },
     {
       "date": "2026-08-11",
       "key": "store/exchange/option state dispatch",
       "conclusion": "store paint 0x44E260：先 call [vtable+0x0C] 基类 paint；状态字节 this+0x5F8∈{0..4}。重定位集（0x417830 helper，坐标 = winx=this+0x18/winy=this+0x1C 相对）：state==2 分支 0x44E282-0x44E2F2 重定位 4 控件（this+0x1BC @(winx+0x1D2,winy+0xA9)、0x270 @(winx+0x172,winy+0xA2)、0x324 @(winx+0x144,winy+0x9F)、0x3D8 @(winx+0x1B2,winy+0x9F)）；state 0/1/3/4 公共 0x44E2F7-0x44E329 重定位 this+0x54 @(winx+0x10A,winy+0x10E)、0x108 @(winx+0x7F,winy+0x10B)；0x44E32E 重读状态（raw 8A 86 F8 05 00 00）：==1 → 0x44E338-0x44E3AD 再重定位 0x1BC/0x270/0x324/0x3D8（共 6 控件）；==4 → 0x44E3B3-0x44E3DF 再重定位 this+0x48C @(winx+0x1FA,winy+0x43)、0x540 @(winx+0x188,winy+0x3D)；0x44E3EA 循环 8 子控件（edi=this+0x54 步长 0xB4，call [vtable+0x04]）；0x44E404 再读状态分派：{0,1,3,4}→0x44D590、{1,2}→0x44DB50、{4}→0x44E040。exchange paint 0x415B10：call [vtable+0x0C] 后 SetRect(0x4762B0) 以 center_x=winx+(right−left)/2 拆左右矩形 this+0x5C/this+0x6C（0x415B21-0x415B63）；绘制期状态=鼠标所在侧：PtInRect(0x4762B4) 命中左矩形（0x415B65 读全局 0x7DA1C0=鼠标x / 0x7DA1C4=鼠标y，与 ptinrect_calls.json 全部调用点一致）→ bl=0、左网格原点 (winx+0x15,winy+0x30)、网格矩形 (winx+0x15,winy+0x30)-(winx+0xC9,winy+0x108)；否则 bl=1、右网格原点 (winx+0xFD,winy+0x30)、矩形到 (winx+0x1B1,winy+0x108)；0x415BC2 对选中网格矩形二次 PtInRect，命中且 0x7243C4!=0 / 0x7243D8==0 时经 0x416830 格索引 + 0x4162E0（用 0x7243DC）映射物品，格高亮 x = winx + cell*9*4 + (0x15|0xFD)。option paint 0x441380：call [vtable+0x0C]；无状态字节分支；9 个固定重定位（this+0x7C 关闭 / 0x130 / 0x1E4 / 0x298 / 0x34C / 0x400 / 0x4B4 / 0x568 / 0x61C，坐标见 system-window-render-evidence）+ 2 个运行时偏移控件（this+0x6D0 用 this+0x6C、this+0x784 用 this+0x74 作 x 偏移）+ 11 子控件循环（this+0x7C 步长 0xB4，call [vtable+0x04]）；状态由子控件帧对（161/162、760/761、762/763）与运行时偏移表达，绘制期无状态分派。",
       "evidence_level": "primary-static",
-      "key_vAs": ["0x44E260", "0x417830", "0x44D590", "0x44DB50", "0x44E040", "0x415B10", "0x4762B0", "0x4762B4", "0x415B65", "0x415BC2", "0x416830", "0x4162E0", "0x7DA1C0", "0x7DA1C4", "0x441380"]
+      "key_vAs": [
+        "0x44E260",
+        "0x417830",
+        "0x44D590",
+        "0x44DB50",
+        "0x44E040",
+        "0x415B10",
+        "0x4762B0",
+        "0x4762B4",
+        "0x415B65",
+        "0x415BC2",
+        "0x416830",
+        "0x4162E0",
+        "0x7DA1C0",
+        "0x7DA1C4",
+        "0x441380"
+      ]
     }
   ]
 }

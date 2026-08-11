@@ -5,110 +5,180 @@
     "rect_constructor_calls": "0x0044B1BC-0x0044B2C6",
     "rect_builder": "imported SetRect at 0x004762B0",
     "paint_va": "0x0044B2D0",
+    "paint_loop_va": "0x0044B560 (record walk 0x0044B5D9, records 0..10)",
     "hit_test_va": "0x0044B720",
     "index_scan_va": "0x0044B6B0",
     "draw_va": "0x004341F0",
-    "window_object_origin": "background this+0x08/+0x0C -> absolute (278,136), size 244x328 (layout.json windows[window.status], frame 200 GameInter.wil)",
-    "sibling_evidence_file": "status-window-render-evidence.json (11 raw geometry records, item_record_and_draw_chain, equipment_candidate_indices [2,3,5,6,7,8,9,10])",
+    "stage_pending_va": "0x0044BBD0 (this, slotIndex=arg1, cursorItemStruct=arg2; slot word -> this+0x8886, data copy -> this+0x8884)",
+    "msg_sender_va": "0x00451690 (this, opcode, slotByte, ctx, itemID) -> wire via 0x00452940",
+    "wire_builder_va": "0x00452940 (struct = {dword itemID, word opcode 0x3EB/0x3EC, word slotByte, word 0, word 0} = 12 bytes)",
+    "compat_va": "0x0044B7A0 (this, cursorItemData*, clickedSlotIndex, mouseX, mouseY)",
+    "click_handler_va": "0x0044CCD0 (branches: stage 0x44CE2C/0x44CE8C -> 0x44BBD0, direct-equip 0x44CE70 -> 0x44BB70, send 0x44CEA6 -> 0x451690 arg1=0x3EB)",
+    "bag_click_va": "0x004300F0 (msg 0x3EC: 0x451690(arg1=0x3EC, arg2=byte[edi+0x1A]=bag slot word, arg3=name, arg4=itemID))",
+    "window_object_origin": "background this+0x08/+0x0C -> absolute (278,136); attribute view 244x328 (frame 200), equipment view 520x328 (frame 201), GameInter.wil",
+    "sibling_evidence_file": "status-window-render-evidence.json (11 raw geometry records, item_record_and_draw_chain, equipment_candidate_indices [2,3,5,6,7,8,9,10]; its pending #1 conclusion reported here via closed_notes, file NOT edited)",
     "va_mapping": "fileoff = VA - 0x400000",
-    "evidence_level": "primary-static-constructor-order for geometry; candidate for index/name mapping"
+    "evidence_level": "primary-static for geometry AND client<->server slot mapping (wire chain decoded end-to-end; compat dispatch self-consistency; canonical Zircon EquipmentSlot enum)"
   },
-  "conclusion": "The character window (人物装备) shows exactly 8 equipment slots, each a 38x38 hit rect established by SetRect in the window constructor. Hit testing (0x44B720) is a pure position scan with NO category logic - the client is server-driven and the binary contains no slot-name table. Slot icon frames are item-driven (WORD[graphics_object+0x28] = item shape), not slot-index-driven. Human slot names come from the server EquipmentSlot enum (classic Mir3 order) mapped by position/pairing: candidate indices 2,3,5,6,7,8,9,10.",
+  "conclusion": "The 11 client slot records map 1:1 onto the server EquipmentSlot enum: client record index == server enum value, with NO translation at any hop (H2 confirmed, supersedes the H1 'artwork label swap' hypothesis). Hit test 0x44B720 returns the raw record index 0..10; click handler 0x44CCD0 stages it via 0x44BBD0 (pending slot word @this+0x8886), pushes it as arg2 of the wire sender 0x451690 (0x44CEA7 push ebp), and wire builder 0x452940 stores byte(arg2) as the slot byte at wire struct+6 (msg 0x3EB equip / 0x3EC bag). The server indexes equipment arrays by enum (Globals.EquipmentOffSet + EquipmentSlot), so the client index must equal the enum value. Compat dispatch 0x44B7A0 is self-consistent ONLY under enum-aligned type bytes: identity {0,1,2,3,4,10}, rings type {7,8} -> slots {7,8}, bracelets {5,6} -> {5,6}, shoes type 9 (subtype 0x19 -> {5,9} else {5,6}). Classic Mir2 numbering would make this switch nonsensical.",
   "slots": [
     {
-      "candidate_index": 3,
-      "loop_record": 0,
-      "object_offset": "this+0x1F0",
-      "window_relative_rect": [177, 70, 215, 108],
-      "absolute_rect": [455, 206, 493, 244],
-      "size": "38x38",
-      "position_name": "helmet (头盔) - top center"
+      "slot_index": 0,
+      "server_enum": "EquipmentSlot.Weapon",
+      "loop_record": 7,
+      "object_offset": "this+0x1C0",
+      "window_relative_rect": [86, 114, 146, 204],
+      "absolute_rect": [364, 250, 424, 340],
+      "size": "60x90",
+      "human_name": "武器 (Weapon)",
+      "position_name": "character paperdoll region (纸娃娃, on-character draw flag=1 @(winX+0x61, winY+0xC8))",
+      "evidence": "ctor SetRect call#7; paint loop record 0 flag=1 (0x44B5E0-0x44B614); hit index 0; wire slot byte 0"
     },
     {
-      "candidate_index": 2,
+      "slot_index": 1,
+      "server_enum": "EquipmentSlot.Armour",
+      "loop_record": 8,
+      "object_offset": "this+0x1D0",
+      "window_relative_rect": [38, 70, 91, 154],
+      "absolute_rect": [316, 206, 369, 290],
+      "size": "53x84",
+      "human_name": "衣服 (Armour)",
+      "position_name": "attribute panel region (属性面板, on-character draw flag=1)",
+      "evidence": "ctor SetRect call#8; paint loop record 1 flag=1; hit index 1; wire slot byte 1"
+    },
+    {
+      "slot_index": 2,
+      "server_enum": "EquipmentSlot.Helmet",
       "loop_record": 1,
       "object_offset": "this+0x1E0",
       "window_relative_rect": [27, 264, 65, 302],
       "absolute_rect": [305, 400, 343, 438],
       "size": "38x38",
-      "position_name": "torch (火把) - bottom left"
+      "human_name": "头盔 (Helmet)",
+      "position_name": "bottom-left slot (visual label '火把' in earlier evidence is artwork-derived and UNVERIFIED; protocol mapping = Helmet)",
+      "evidence": "ctor SetRect call#1; paint loop record 2; hit index 2; wire slot byte 2; compat identity branch"
     },
     {
-      "candidate_index": 5,
+      "slot_index": 3,
+      "server_enum": "EquipmentSlot.Torch",
+      "loop_record": 0,
+      "object_offset": "this+0x1F0",
+      "window_relative_rect": [177, 70, 215, 108],
+      "absolute_rect": [455, 206, 493, 244],
+      "size": "38x38",
+      "human_name": "火把 (Torch)",
+      "position_name": "top-center slot (visual label '头盔' in earlier evidence is artwork-derived and UNVERIFIED; protocol mapping = Torch)",
+      "evidence": "ctor SetRect call#0; paint loop record 0x... index 3; hit index 3; wire slot byte 3; compat identity branch"
+    },
+    {
+      "slot_index": 4,
+      "server_enum": "EquipmentSlot.Necklace",
+      "loop_record": 9,
+      "object_offset": "this+0x200",
+      "window_relative_rect": [94, 71, 143, 104],
+      "absolute_rect": [372, 207, 421, 240],
+      "size": "49x33",
+      "human_name": "项链 (Necklace)",
+      "position_name": "portrait / name region (人物头像, on-character draw flag=1)",
+      "evidence": "ctor SetRect call#9; paint loop record 4 flag=1; hit index 4; wire slot byte 4"
+    },
+    {
+      "slot_index": 5,
+      "server_enum": "EquipmentSlot.BraceletL",
       "loop_record": 3,
       "object_offset": "this+0x210",
       "window_relative_rect": [27, 186, 65, 224],
       "absolute_rect": [305, 322, 343, 360],
       "size": "38x38",
-      "position_name": "left bracelet (左手镯) - waist left"
+      "human_name": "左手镯 (BraceletL)",
+      "position_name": "waist-left slot",
+      "evidence": "ctor SetRect call#3; paint loop record 5; hit index 5; wire slot byte 5; compat {5,6} bracelet branch"
     },
     {
-      "candidate_index": 6,
+      "slot_index": 6,
+      "server_enum": "EquipmentSlot.BraceletR",
       "loop_record": 4,
       "object_offset": "this+0x220",
       "window_relative_rect": [175, 186, 213, 224],
       "absolute_rect": [453, 322, 491, 360],
       "size": "38x38",
-      "position_name": "right bracelet (右手镯) - waist right"
+      "human_name": "右手镯 (BraceletR)",
+      "position_name": "waist-right slot",
+      "evidence": "ctor SetRect call#4; paint loop record 6; hit index 6; wire slot byte 6; compat {5,6} bracelet branch"
     },
     {
-      "candidate_index": 7,
+      "slot_index": 7,
+      "server_enum": "EquipmentSlot.RingL",
       "loop_record": 5,
       "object_offset": "this+0x230",
       "window_relative_rect": [27, 227, 65, 265],
       "absolute_rect": [305, 363, 343, 401],
       "size": "38x38",
-      "position_name": "left ring (左戒指) - lower left"
+      "human_name": "左戒指 (RingL)",
+      "position_name": "lower-left slot",
+      "evidence": "ctor SetRect call#5; paint loop record 7; hit index 7; wire slot byte 7; compat {7,8} ring branch"
     },
     {
-      "candidate_index": 8,
+      "slot_index": 8,
+      "server_enum": "EquipmentSlot.RingR",
       "loop_record": 6,
       "object_offset": "this+0x240",
       "window_relative_rect": [175, 227, 213, 265],
       "absolute_rect": [453, 363, 491, 401],
       "size": "38x38",
-      "position_name": "right ring (右戒指) - lower right"
+      "human_name": "右戒指 (RingR)",
+      "position_name": "lower-right slot",
+      "evidence": "ctor SetRect call#6; paint loop record 8; hit index 8; wire slot byte 8; compat {7,8} ring branch"
     },
     {
-      "candidate_index": 9,
+      "slot_index": 9,
+      "server_enum": "EquipmentSlot.Shoes",
       "loop_record": 2,
       "object_offset": "this+0x250",
       "window_relative_rect": [64, 264, 102, 302],
       "absolute_rect": [342, 400, 380, 438],
       "size": "38x38",
-      "position_name": "poison (毒药) - bottom mid-left"
+      "human_name": "鞋子 (Shoes)",
+      "position_name": "bottom mid-left slot (visual label '毒药' in earlier evidence is artwork-derived and UNVERIFIED; protocol mapping = Shoes; compat type-9 quirk subtype 0x19 -> {5,9} pins shoes semantics)",
+      "evidence": "ctor SetRect call#2; paint loop record 9; hit index 9; wire slot byte 9; compat type 9 (shoes) branch"
     },
     {
-      "candidate_index": 10,
+      "slot_index": 10,
+      "server_enum": "EquipmentSlot.Poison",
       "loop_record": 10,
       "object_offset": "this+0x260",
       "window_relative_rect": [103, 264, 141, 302],
       "absolute_rect": [381, 400, 419, 438],
       "size": "38x38",
-      "position_name": "shoes (鞋子) - bottom mid-right"
+      "human_name": "毒药 (Poison)",
+      "position_name": "bottom mid-right slot (visual label '鞋子' in earlier evidence is artwork-derived and UNVERIFIED; protocol mapping = Poison)",
+      "evidence": "ctor SetRect call#10; paint loop record 10; hit index 10; wire slot byte 10; compat identity branch (type 10 == slot 10)"
     }
   ],
   "non_slot_regions": [
     {
+      "slot_index": 0,
       "loop_record": 7,
-      "object_offset": "this+0x200",
-      "window_relative_rect": [94, 71, 143, 104],
-      "size": "49x33",
-      "role": "portrait / name region (人物头像)"
-    },
-    {
-      "loop_record": 8,
       "object_offset": "this+0x1C0",
       "window_relative_rect": [86, 114, 146, 204],
       "size": "60x90",
-      "role": "character image region (纸娃娃)"
+      "role": "character paperdoll region (纸娃娃) = Weapon slot hit region"
     },
     {
+      "slot_index": 4,
       "loop_record": 9,
+      "object_offset": "this+0x200",
+      "window_relative_rect": [94, 71, 143, 104],
+      "size": "49x33",
+      "role": "portrait / name region (人物头像) = Necklace slot hit region"
+    },
+    {
+      "slot_index": 1,
+      "loop_record": 8,
       "object_offset": "this+0x1D0",
       "window_relative_rect": [38, 70, 91, 154],
       "size": "53x84",
-      "role": "attribute panel"
+      "role": "attribute panel = Armour slot hit region"
     }
   ],
   "item_draw_chain": {
@@ -124,21 +194,26 @@
       "evidence": "primary-static-dispatch-immediates"
     },
     "selector_dispatch": "0x466130 mode byte [element+4]: 0 -> 0x466640, 1/2 -> 0x466720 (direct frame-by-index), else 0",
-    "selector_wil_binding": "PRIMARY-STATIC (2026-08-11): flag0 el82 = Data/Inventory.wil (path slot 0x570574 = owner+0x10478, store site 0x453804); flag1 el83 = Data/Equip.wil (path slot 0x570678 = owner+0x1057C, store site 0x453829); flag2 el139 = empty/unset (path slot 0x573F58 never written). WIL table fill 0x452B20 (92 strings, slots 0..91; slot N addr = owner 0x5600FC + 0xF848 + (N-70)*0x104); element loop 0x452AF7 (el70..el139 mode 0). Full chain in status-window-render-evidence.json closed_notes."
+    "selector_wil_binding": "PRIMARY-STATIC (2026-08-11): flag0 el82 = Data/Inventory.wil (path slot 0x570574 = owner+0x10478, store site 0x453804); flag1 el83 = Data/Equip.wil (path slot 0x570678 = owner+0x1057C, store site 0x453829); flag2 el139 = Data/StoreItem.wil (path slot 0x573F58 = owner+0x13E5C, store site 0x4540E8, Finding 266). WIL table fill 0x452B20 (slots 0..139; slot N addr = owner 0x5600FC + 0xB130 + N*0x104); element loop 0x452AF7 (el70..el139 mode 0). Full chain in status-window-render-evidence.json closed_notes."
   },
   "mapping_basis": {
-    "client_fact": "0x44B720 is a pure-position hit test (index scan + PtInRect); NO category or name logic in binary",
-    "server_fact": "repo server EquipmentSlot enum, classic Mir3 order: 0=weapon 1=armor 2=helmet 3=torch 4=necklace 5=left bracelet 6=right bracelet 7=left ring 8=right ring 9=shoes 10=poison 11=amulet 12=flower 13=horse-armor 14=badge 15=shield 16=fashion",
-    "recorded_pairing_note": "sibling evidence file equipment_candidate_rects_by_index records: index 2 -> loop1 rect (torch position), index 3 -> loop0 rect (helmet position), index 9 -> loop2 rect (poison position), index 10 -> loop10 rect (shoes position). If enum semantics (2=helmet, 3=torch, 9=shoes, 10=poison) are preferred, swap the 2<->3 and 9<->10 index labels; both assignments are candidate until runtime population is observed.",
-    "confidence": "primary-static geometry; candidate index/name mapping (server-enum-driven)"
+    "wire_chain": "PRIMARY-STATIC end-to-end (Finding 265): hit test 0x44B720 returns raw record index 0..10 -> click handler 0x44CCD0 -> stage 0x44BBD0(this, slotIndex=arg1, cursorItemStruct=arg2) writes arg1 low word to pending slot word @this+0x8886 (data copy @this+0x8884, 0x308 dwords; cursor cleared 0x30E dwords) -> 0x44CEA7 push ebp(=index) -> 0x451690(arg1=0x3EB opcode, arg2=index, arg3=this+0x8888 pending rec, arg4=[this+0x88C1] itemID); sender: movzx ax, byte[esp+8] = byte(arg2) = THE WIRE SLOT BYTE; wire builder 0x452940 stores it at struct+6: struct = {dword itemID=arg3, word opcode=arg2 (0x3EB/0x3EC), word slotByte=arg4, word 0=arg5, word 0=arg6} (12 bytes). Bag msg 0x3EC same shape: 0x451690(arg1=0x3EC, arg2=byte[edi+0x1A]=bag slot word, arg3=name, arg4=itemID). NO translation at any hop.",
+    "client_fact": "0x44B720 is a pure-position hit test (index scan + PtInRect); NO category or name logic in binary; the only byte that reaches the wire is the clicked record index",
+    "server_fact": "Zircon server EquipmentSlot enum (LibraryCore/Enum.cs line 89): 0=weapon 1=armour 2=helmet 3=torch 4=necklace 5=braceletL 6=braceletR 7=ringL 8=ringR 9=shoes 10=poison 11=amulet 12=flower 13=horse-armour 14=emblem 15=shield 16=costume; server bag/equip arrays indexed by Globals.EquipmentOffSet + enum",
+    "compat_evidence": "0x44B7A0 (this, cursorItemData*, clickedSlotIndex byte, mouseX, mouseY): identity type==bl for {0,1,2,3,4,10}; type in {7,8} -> bl in {7,8} (rings); type in {5,6} -> bl in {5,6} (bracelets); type 9 (shoes) subtype==0x19 -> bl in {5,9} else bl in {5,6}. Self-consistent ONLY with enum-aligned client type codes; classic Mir2 numbering would yield nonsensical results (Ring(6)->{5,6}, Shoes(7)->{7,8}).",
+    "visual_labels": "Earlier evidence-file labels (火把@(27,264), 头盔@(177,70), 毒药@(64,264), 鞋子@(103,264)) are artwork-derived position guesses, NOT protocol mapping; flagged UNVERIFIED pending a vision-capable pass. Under H2 the bottom row window-relative reads [头盔(idx2)@(27,264), 鞋子(idx9)@(64,264), 毒药(idx10)@(103,264)] and the top-center box = 火把(idx3)@(177,70).",
+    "confidence": "primary-static (wire chain decoded end-to-end + compat self-consistency + canonical Zircon enum); artwork pixel labels unverified (needs vision-capable model)"
   },
-  "pending": [
-    "Slot-name/index mapping confirmation via runtime population observation (server EquipmentSlot enum semantics 2=helmet 3=torch 9=shoes 10=poison vs recorded 2<->loop1, 3<->loop0, 9<->loop2, 10<->loop10 pairing; both assignments candidate)"
-  ],
+  "pending": [],
   "closed_notes": [
-    "el82/el83/el139 WIL bindings CLOSED 2026-08-11 (PRIMARY-STATIC): flag0 el82 = Data/Inventory.wil (slot 0x570574), flag1 el83 = Data/Equip.wil (slot 0x570678), flag2 el139 = empty/unset (slot 0x573F58 never written by the 0x452B20 table fill covering slots 0..91). Chain: game object static 0x47EF18 -> owner 0x5600FC -> element ctor 0x452AA0 -> WIL table fill 0x452B20 (store sites 0x453804 Inventory / 0x453829 Equip / 0x4538A2 ProgUse) -> element loop2 0x452AF7 (70 iterations mode 0: el70..el139). See status-window-render-evidence.json closed_notes.",
-    "el139 construction loops CLOSED 2026-08-11 (PRIMARY-STATIC): main-object loop2 0x452AF7 (i=69, mode 0) and map-rebuild 0x43B7B2 (start=(byte[map+0x124]+1)*14 @0x43B770-0x43B77C; byte=8 -> el126..el139, mode 1 with mode-0 fallback). el139 = 0x56B0E8; paint guards (0x44D65C/0x44DBAE/0x44E05D, frame=WORD[selector+0x30]) skip draw when the frame load fails.",
-    "Slot record stride 0xC24 re-confirmed PRIMARY-STATIC (2026-08-11): click handler 0x44CDCD-0x44CDD9 index->record = [this + 0x2F4 + idx*0xC24] (777*4 = 3108); paint walks this+0x2F8 + i*0xC24 (11 records). Earlier 0x40C flag was an arithmetic error; slot_record_base unchanged.",
-    "Frame 172 view-toggle closure (2026-08-11): child [this+0x10C] frames 171/172 = status-window view-toggle button (attribute view frame 200 <-> equipment view frame 201); click branch 0x44CD14-0x44CD9F inside handler 0x44CCD0; mode byte [this+0x54]. Details in status-window-render-evidence.json closed_notes."
+    "Finding 265 (2026-08-11): client record index == server EquipmentSlot enum, H2 confirmed, PRIMARY-STATIC. Full wire chain: click 0x44CCD0 -> hit-test 0x44B720 (raw index) -> stage 0x44BBD0 (pending slot word @this+0x8886) -> send 0x44CEA7 push ebp -> 0x451690 arg2 -> wire builder 0x452940 struct+6 = byte(index) (msg 0x3EB equip / 0x3EC bag). Server consumes it directly as EquipmentSlot for equipment-array indexing (Globals.EquipmentOffSet + enum); no translation at any hop. Final 11-row mapping: idx0=Weapon 武器, idx1=Armour 衣服, idx2=Helmet 头盔, idx3=Torch 火把, idx4=Necklace 项链, idx5=BraceletL 左手镯, idx6=BraceletR 右手镯, idx7=RingL 左戒指, idx8=RingR 右戒指, idx9=Shoes 鞋子, idx10=Poison 毒药. Supersedes the H1 'swap 2<->3 and 9<->10' candidate (visual labels rejected as protocol mapping).",
+    "Finding 265: compat dispatch 0x44B7A0 final semantics (this, cursorItemData*, clickedSlotIndex byte bl, mouseX, mouseY): rects built via imported SetRect [0x4762B0] from this+0x1C8 + winX/winY ([this+0x18]/[this+0x1C]), 11 iterations stride 0x10; PtInRect [0x4762B4] with (mouseX=arg3, mouseY=arg4). Switch: type in {7,8} -> bl in {7,8}; type in {5,6,9}: subtype==0x19 -> bl in {5,9} else bl in {5,6}; identity al==bl covers {0,1,2,3,4,10}. Self-consistent ONLY under EquipmentSlot-aligned numbering; type-9 (Shoes) quirk pins slot 9 = shoes, slot 5 = bracelet.",
+    "Finding 265: 0x44BBD0 signature corrected to (this, slotIndex=arg1, cursorItemStruct=arg2), ret 8: guards [edx]!=0, [edx+0xC]==0, [edx+0x10]==0 (else ret); copy cursor data @edx+0x18 -> pending data @this+0x8884 (0x308 dwords = 0xC20 bytes); arg1 low word -> pending slot word @this+0x8886; flag @this+0x8880=1; clear source struct 0x30E dwords. Direct-equip path 0x44CE70: 0x44BB70(this, slotWord=cursor+0x1A, cursorStruct) then cursor cleared.",
+    "Finding 265: wire struct corrected (supersedes earlier mis-read '{0x3EB, itemID, slot, 0, 0}'): 1003/1004 wire msg = {dword itemID, word opcode 0x3EB/0x3EC, word slotByte, word 0, word 0} (12 bytes), built by 0x452940 (6 args, ret 0x18), sent by 0x451690 (4 args, ret 0x10) via 0x451E60(this, &this+0x18, arg3); slotByte = byte(arg2 of 0x451690) = raw record index (equip) or bag slot word (bag, byte[edi+0x1A]).",
+    "Finding 265: sibling status-window-render-evidence.json pending #1 ('Equipment slot human names: server EquipmentSlot enum is the only category source; the 2,3,5,6,7,8,9,10 -> classic Mir3 eight-piece mapping stays candidate until runtime population is observed') is hereby RESOLVED to CLOSED: the H2 chain (wire slot byte == record index == enum value) supplies the human-name mapping statically; the classic-eight-piece candidate pairing is replaced by the definitive 11-row table above. Sibling file NOT edited (conclusion reported here).",
+    "el82/el83/el139 WIL bindings CLOSED 2026-08-11 (PRIMARY-STATIC): flag0 el82 = Data/Inventory.wil (slot 0x570574), flag1 el83 = Data/Equip.wil (slot 0x570678), flag2 el139 = Data/StoreItem.wil (slot 0x573F58, Finding 266; earlier 'empty/unset' claim superseded). Chain: game object static 0x47EF18 -> owner 0x5600FC -> element ctor 0x452AA0 -> WIL table fill 0x452B20 (slots 0..139) -> element loop2 0x452AF7 (el70..el139 mode 0). See status-window-render-evidence.json closed_notes.",
+    "Slot record stride 0xC24 re-confirmed PRIMARY-STATIC (2026-08-11): click handler 0x44CDCD-0x44CDD9 index->record = [this + 0x2F4 + idx*0xC24] (777*4 = 3108); paint walks this+0x2F8 + i*0xC24 (11 records). Earlier 0x40C flag was an arithmetic error.",
+    "Frame 172 view-toggle closure (2026-08-11): child [this+0x10C] frames 171/172 = status-window view-toggle button (attribute view frame 200 <-> equipment view frame 201); click branch 0x44CD14-0x44CD9F inside handler 0x44CCD0; mode byte [this+0x54]. Details in status-window-render-evidence.json closed_notes.",
+    "Item/record layout unified: slot word = itemData+2 (status record+6, standalone cursor+0x1A); type byte data+0; subtype data+0x22; name data+4; itemID data+0x3D. .itm file format: NO header, 46 records x 0xC2C at i*0xC2C (name @record+0x10), then sections 0x4B0 + 0x48D8 (total 0x27D70); loader 0x42DC80."
   ]
 }

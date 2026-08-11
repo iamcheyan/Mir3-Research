@@ -428,6 +428,26 @@ function fillWindowContent(w) {
     const src = id === "window.other-14-candidate" ? STATE.data.skills
       : id === "window.store-candidate" ? storeGridSlots()
       : exchangeSlots();
+    if (id === "window.other-14-candidate") {
+      // 8 magic-category labels — primary-static redraw positions + frame pairs
+      // (skill-window-context.json: 火/冰/电/风/神圣/黑暗/幻影/剑, EXE 0x00439500)
+      const cats = [
+        ["火", 5, 21, 450], ["冰", 3, 56, 452], ["电", 4, 91, 454], ["风", 2, 126, 456],
+        ["神圣", 2, 161, 458], ["黑暗", 2, 196, 450], ["幻影", 1, 231, 452], ["剑", 2, 266, 454],
+      ];
+      for (const [txt, cx, cy, cf] of cats) {
+        const cl = document.createElement("div");
+        cl.className = "slot skill-cat";
+        cl.style.cssText = `left:${cx}px;top:${cy}px;width:40px;height:32px`;
+        const im = makeImg("GameInter.wil", cf);
+        cl.appendChild(im);
+        cl.dataset.evidence = "primary-static";
+        cl.dataset.rect = `${cx},${cy},40,32`;
+        cl.dataset.desc = `技能分类「${txt}」· GameInter F${cf}/${cf + 1} · 0x00439500`;
+        cl.title = `分类「${txt}」· F${cf}/${cf + 1} · primary-static`;
+        content.appendChild(cl);
+      }
+    }
     for (const s of src) {
       const slot = document.createElement("div");
       slot.className = "slot";
@@ -447,7 +467,7 @@ function fillWindowContent(w) {
       stateLbl.className = "lbl";
       stateLbl.style.cssText = "left:8px;top:278px;width:280px";
       stateLbl.id = "store-state-label";
-      stateLbl.textContent = `商店状态 ${STATE.storeState}`;
+      stateLbl.textContent = STORE_STATE_NAMES[STATE.storeState] || `商店状态 ${STATE.storeState}`;
       content.appendChild(stateLbl);
     }
   } else if (id === "window.chat-pop") {
@@ -582,16 +602,42 @@ function fillWindowContent(w) {
   }
 }
 
+const STORE_STATE_NAMES = [
+  "购买 (state0 · msg 0x285 → 0x44F480, primary-static)",
+  "出售 (state1 · candidate)",
+  "仓库 (state2 · msg 0x2C0 → 0x44F940, frame 1001, candidate)",
+  "制作 (state3 · msg 0x2C8 → 0x44FB00, frame 1000, primary-static)",
+  "物品详情 (state4 · primary-static)",
+];
+
 function storeGridSlots() {
-  // store states from store-state-graph evidence
+  // store states from store-state-graph evidence (Finding 245)
+  const st = STATE.storeState;
   const rows = [];
-  const cols = 5, cell = 46;
+  if (st === 2) {
+    // warehouse grid: 12 cells at +0x720, cols 22/60/98/136 x rows 43/81/119
+    const cols = [22, 60, 98, 136], rws = [43, 81, 119];
+    let n = 0;
+    for (const ry of rws) for (const cx of cols) {
+      rows.push({
+        id: `store.${n}`, name: `仓库格 ${n + 1}`,
+        x: cx, y: ry, w: 38, h: 38, library: "Equip.wil", frame: n % 124,
+        evidence_level: "candidate",
+        note: "state2 warehouse grid · +0x720 · cols 22/60/98/136 × rows 43/81/119 · 0x44F940",
+      });
+      n++;
+    }
+    return rows;
+  }
+  // state0 buy five-row list / state3 craft / state4 detail: shared 5-row grid
+  const rowsY = [40, 86, 132, 178, 224];
   for (let i = 0; i < 10; i++) {
     rows.push({
-      id: `store.${i}`, name: `商店物品 ${i + 1}`,
-      x: 12 + (i % cols) * cell, y: 40 + Math.floor(i / cols) * cell,
+      id: `store.${i}`, name: st === 3 ? `配方 ${i + 1}` : st === 4 ? `详情 ${i + 1}` : `物品 ${i + 1}`,
+      x: 12 + (i % 2) * 130, y: rowsY[Math.floor(i / 2)],
       w: 42, h: 42, library: "Equip.wil", frame: i % 124,
-      evidence_level: "candidate", note: "store item slot",
+      evidence_level: st === 3 ? "primary-static" : "candidate",
+      note: `store state${st} grid · frame ${st === 3 ? 1000 : 1001} · 0x44F480/0x44FB00`,
     });
   }
   return rows;
@@ -645,8 +691,9 @@ function bringToFront(id) {
 
 function refreshWindowContent(id) {
   if (id === "window.store-candidate") {
-    const lbl = winEl.querySelector("#store-state-label");
-    if (lbl) lbl.textContent = `商店状态 ${STATE.storeState} · 状态机证据见 store-state-graph.json`;
+    // re-fill so the grid follows the state machine (state0 buy / 2 warehouse / 3 craft)
+    const w = STATE.data.windows.find((q) => q.id === id);
+    if (w) fillWindowContent(w);
   }
 }
 
@@ -843,13 +890,22 @@ function bindSceneInteraction() {
       setTarget(e);
       setWindowOpen("window.npc-candidate", true);
       pushChat(`[NPC] 你点击了 ${e.name}`);
+    } else if (e.kind === "player") {
+      // click player -> character info (status window shows equipment)
+      setTarget(e);
+      setWindowOpen("window.status", true);
+      pushChat(`[人物] 你点击了 ${e.name}，打开人物资料`);
+    } else if (e.kind === "drop") {
+      // click drop -> pick up demo (Ground.wil item)
+      setTarget(e);
+      pushChat(`[拾取] 你捡起了 ${e.name}`);
+      const spr = sceneEl.querySelector(`.sprite[data-entity="${e.id}"]`);
+      if (spr) spr.remove();
     } else {
       setTarget(e);
-      pushChat(`[目标] ${e.kind === "monster" ? "怪物" : "玩家"}：${e.name}`);
-      if (e.kind === "monster") {
-        // demo: damage feedback
-        pushChat(`[战斗] 你对 ${e.name} 造成 8 点伤害`);
-      }
+      pushChat(`[目标] 怪物：${e.name}`);
+      // demo: damage feedback
+      pushChat(`[战斗] 你对 ${e.name} 造成 8 点伤害`);
     }
   });
 }
@@ -922,8 +978,8 @@ function renderTestNav() {
   const extra = [
     ["confirm 确认框", () => showPrompt("confirm", "确认框演示：是否继续？", (ok) => pushChat(ok ? "[确认] 继续" : "[确认] 取消"))],
     ["notice 公告", () => showPrompt("notice", "[行会公告，请自行修改公告内容.]", (ok) => pushChat("[公告] 已读"))],
-    ["商店状态+1", () => { STATE.storeState = (STATE.storeState + 1) % 5; refreshWindowContent("window.store-candidate"); pushChat(`[商店] 状态 ${STATE.storeState}`); }],
-    ["商店状态-1", () => { STATE.storeState = (STATE.storeState + 4) % 5; refreshWindowContent("window.store-candidate"); pushChat(`[商店] 状态 ${STATE.storeState}`); }],
+    ["商店状态+1", () => { STATE.storeState = (STATE.storeState + 1) % 5; setWindowOpen("window.store-candidate", true); pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
+    ["商店状态-1", () => { STATE.storeState = (STATE.storeState + 4) % 5; setWindowOpen("window.store-candidate", true); pushChat(`[商店] ${STORE_STATE_NAMES[STATE.storeState] || "状态 " + STATE.storeState}`); }],
     ["切换场景", () => setCurrentMap((STATE.currentMapIndex || 0) + 1)],
   ];
   for (const [label, fn] of extra) {

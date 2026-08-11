@@ -4805,3 +4805,173 @@ el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggl
 - 'R' 键 @0x42CCF7 切换同一分派；0x42B820 去激活列出窗（0x423F90 → +0x34=0；其跳表 0x42B938[8]=0x42B8B6=chat）；默认索引 5/10/>15 → 0x42B3DD ret 0；兄弟门 0x42B25E（idx 9，门 [ROOT+0x51180]）与 0x42B2AD（idx 15，门 [ROOT+0x52E8C]）。
 
 落盘：`chat-window-render-evidence.json`（closed_notes ×3，pending 空）、`chat-window-unified-model.json`（visibility_gate 接线 + text_renderer 槽序，open_question 闭合）、`ui-coverage-matrix.json`（chat record pending_notes 更新）。
+
+## Finding 263 (DrawOrder2, 2026-08-11)：重复 show(ID) 边界全二进制调用点审计闭合（0x42AC30/0x449870）
+
+闭合 `draw-order-evidence.json` 唯一剩余静态可闭 pending（重复 show 边界），全部 primary-static（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+
+**审计方法**：capstone E8/E9 rel32 交叉引用 + 全文件 imm32 LE dword 扫描（间接引用证据）。
+
+**(A) 0x42AC30 直接调用方 = 15**（全 E8，无 E9 尾跳）：
+- 14 个在 toggle 分派 `0x42ADB0`（跳表 `0x42B3E4`，id 0,1,2,3,0xB,0xC,0xD,0xE,4,6,7,8,9,0xF → 0x42ADFC/0x42AE6F/0x42AEBE/0x42AF0D/0x42AF5C/0x42AFAB/0x42AFFA/0x42B049/0x42B098/0x42B0E7/0x42B15E/0x42B23C/0x42B28B/0x42B34D）。每个 show 分支先判窗口标志 `this+0x30==0`（门地址 [ui+0x6584]/[ui+0x29D14]/[ui+0x331B8]/[ui+0x339CC]/[ui+0x51718]/[ui+0x51910]/[ui+0x52148]/[ui+0x52520]/[ui+0x470AC]/[ui+0x47864]/[ui+0x47C58]/[ui+0x5081C]/[ui+0x51180]/[ui+0x52E8C]），追加后紧跟 `vtable+0x10(1)` = +0x30 setter（14 窗 = `0x423F80` = `mov [ecx+0x30],eax`；store vtable `0x476A54` 槽+0x10 = `0x4488B0` 同样写 +0x30=arg）→ +0x30=1。hide 分支对称：`0x42AC50` + vtable+0x10(0)。
+- 1 个在提升 `0x42B6A0`（0x42B6C7）：count=ui+0xD38>0 → `0x42B820` 关全部 → `0x42AC50(ID)` → `0x42AC30(ID)`。
+
+**(B) 0x449870 直接调用方 = 5**：0x42AC3B（在 0x42AC30 内部，唯一触及可见窗链 manager=ui+0xD24 的追加）；0x41538F（泛型集合追加，manager=[obj+4]）；0x448ABA / 0x44933E（store 系物品装载循环，manager=obj+0x1E0）；0x4491B6（排序数组追加，manager=esi）。后 4 个 manager 均非可见窗链 → 无绘制影响。
+
+**(C) 间接引用 = 0**：全文件 imm32 LE dword 扫描 0x42AC30 与 0x449870 各 0 处 → 无 vtable 槽、无跳表项（0x42B3E4/0x42B7E0 指向 case 块）、无 mov reg,imm32 装载。
+
+**(D) 不变式**：14 个列表窗 `this+0x30==1 ⟺ 节点在可见链`（ui+0xD24）。全部 19 个 hide 调用点（14 toggle + 4 直接 0x41C1F6/0x41C227/0x41C254/0x42062D + 提升 0x42B6BF）在 0x42AC50 后均跟 vtable+0x10(0) 清 +0x30；构造函数 0x4175F0 初始化 +0x30=0；其余 +0x30 写者仅 NPC SetActive 0x43F020（经 0x423F80）。提升入口经窗口下光标查找器 `0x42AAB0`（仅遍历可见链 tail→head，window+0x18 rect PtInRect 0x4762B4）命中才可达 → 目标必已在链内，+0x30 保持 1。
+
+**VERDICT**：静态可达路径不存在重复节点，出厂调用图 **primary-static 闭合**。**BOUNDARY（candidate，运行时唯一残留）**：0x42AC30/0x449870 自身从不查成员；链外调用方（脚本/服务端命令、未来代码、运行时 +0x30 失步）对已在链 ID 再追加 → 重复节点粘滞（paint 分派 0x4280F0 每帧重复绘制该 ID；hide 0x42AC50 只摘首个命中节点；close-all 0x42B820 不摘链；count=ui+0xD38 虚增），仅能靠运行时捕获排除。
+
+落盘：`draw-order-evidence.json`（closed_notes[2] 新增 Finding 263，pending 1→1 条业务名映射保留）、`ui-coverage-matrix.json`（exchange record closed_2026_08_11 追加）、`UI_COMPLETION_AUDIT.md`（第 20 行追加）、`UI_COVERAGE_MATRIX.md`（第 33 行追加）。
+
+## Finding 264 (Horse2, 2026-08-11)：0x5600FC stride-324 骑乘外观表资源绑定闭合（element 87 = 0x566F18 ↔ Horse.wil）+ word[0x7DA063] 帧号假设修正
+
+闭合 `horse-window-render-evidence.json` 的 stride-324 骑乘外观表绑定 pending，全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+
+**1) 元素表与索引计算（primary-static）**
+- 元素表基址 0x5600FC（element 0），元素 N 地址 = 0x5600FC + N*0x144（stride 324）。
+- 骑乘元素 = element 87 = **0x566F18** = 0x5600FC + 0x57*0x144。
+- 选择方式：状态字节 `byte[0x7DA060]`（session 0x777698+0x629C8）≠0 时写入硬编码选择字节 `[esi+0x629CF]=0x57`（**0x40F47F**，同构函数 0x40C78C 内 **0x40C79C** 同样硬编码 0x57），随后 0x40F5A6-0x40F5C0 的 lea 链（`lea eax,[eax+eax*8]; lea edx,[eax+eax*8]; lea eax,[edx*4+0x5600fc]` = ×9×9×4 = ×324）把 `[esi+0x62A14] = 0x566F18`。**状态值 1/2/3 本身不索引元素表**，仅作为写入 0x57 的门控——各子状态的外观差异属运行时项。
+
+**2) Horse.wil 路径绑定（primary-static）**
+- 元素管理器构造 loop2（0x452AF7-0x452B0E）：70 次迭代，`element(70+i).bind(slot i, flag=0)`（0x4660E0 → 0x466160），element 87 = 70+17 ↔ slot 17。
+- 路径槽 N 地址 = owner+0xF848+(N−70)*0x104；slot 17 = owner+0x1098C。
+- 0x4538CB-0x4538E5 把字符串 `.\Data\Horse.wil`（0x47CC94）复制进 owner+0x1098C（copy 目标=上一次迭代预留的 edx；Magic→0x10374、Inventory→0x10478、Equip→0x1057C、Ground→0x10680、MIcon→0x10784、ProgUse→0x10888、Horse→0x1098C，即 slot 81..87，与 Finding 246 的槽表完全一致）。
+- 0x4660E0 flag=0 → 0x466160：复制路径到 element+0x40、byte[element+4]=0（mode 0 → 0x466130 → 0x466640 惰性 WIL 加载，[element+8]=WIL 句柄，帧记录 = base+frame*32）。
+
+**3) 消费路径（primary-static）**
+- 世界渲染函数 **0x40F5F0**（ret 0x14，5 参）：门控 state≠0 && `[esi+0x62A14]≠0` && `byte[esi+0xC0]≥0x1D`（0x40FA67-0x40FA96）→ `0x466130(ecx=骑乘元素, frame=0x2710+(A%400))`（0x40F6D7-0x40F6E9，A = [629C8]*400 − [8A]*3000 + [C4] − 0xAA0，A 另存 [esi+0x62A20]；0x40FB5C 用 frame=A 二次调用）→ ebp≠0 走 **0x461ED0** 3D 世界绘制（帧记录 [element+0x38] 取 w/h/fx/fy、像素数据 [element+0x3C]，arg9=0xd），ebp==0 走 0x463330/0x460240（0x40FAEE-0x40FB57）。
+- 主窗 HUD 坐骑图标（0x44B560-0x44B6AF）：元素 **0x566DD4 = element 86 = ProgUse.wil**（slot 16），帧 = `byte[0x777720]*10 + byte[0x777723] + 0x3B`，`0x466130` 后 `0x45FD50` 绘制，arg6 = `word[0x7DA063]`、arg7 = 0xffff。
+- **Finding 255 假设修正**：word[0x7DA063] **不是帧号**。0x45FD50 的 arg6/arg7 是 16 位 RLE 填充色（op 0xC2 用 arg6 填充、op 0xC3 用 arg7，经掩码 [ebx+0x6C/70/74] 与移位 [ebx+0x67/68/69] RGB 分解）；全二进制 0x45FD50 的 23 个调用点中除 HUD 坐骑图标外全部传 0xffff/0xffff，且全二进制 0x7DA063 仅 0x41F5BD（包 case 0x267 写入）与 0x44B669（HUD 读）两处引用。word[0x7DA063] 的来源是服务端包数据（0x41F5BA `mov word[0x7DA063],dx`），协议语义仍为运行时项。
+
+**4) 无关路径排除**：0x430A40 flag 分派（flag0→el82=0x5668C4、flag1→el83=0x566A08、flag2→el139=0x56B0E8）服务于状态窗 el82/83/139 家族（Finding 246），与骑乘元素无关。全 0x5600FC+0x144k (k=0..160) imm32 扫描对 0x566F18 零命中——骑乘元素只经计算指针 [esi+0x62A14] 可达，故此前 stride-324 扫描仅见 13 个槽有 imm32 引用属预期。
+
+**VERDICT**：骑乘外观元素绑定（0x566F18 ↔ Horse.wil）、HUD 图标（0x566DD4 ↔ ProgUse.wil）、帧链（0x466130 + 10000+(A%400)）与填充色用法全部 **primary-static 闭合**。剩余 pending：0x7DA060 1/2/3 子语义、word 字段协议含义（运行时）。
+
+落盤：`horse-window-render-evidence.json`（closed_notes ×2，pending 3→2）、`ui-coverage-matrix.json`（horse record closed_2026_08_11 追加）、`UI_COMPLETION_AUDIT.md`（第 47 行追加）、`UI_COVERAGE_MATRIX.md`（第 28 行追加）。
+
+---
+
+## Finding 266 (StatusWindow, 2026-08-11)：状态窗 selector 长尾闭合——map-rebuild 起始字节 [map+0x124] 语义（= .map 头第 0x14 字节）+ el139 = Data/StoreItem.wil 商店物品选择器（推翻"空槽"假设）
+
+### 1. map-rebuild 起始字节 [ebx+0x124] 语义 —— PRIMARY-STATIC：已加载地图文件头第 0x14 字节
+- **唯一调用点** = 地图进入路径：0x422B2B `lea ebp,[esi+0xF5200]`（map 对象 = gameObj+0xF5200）→ `lea edx,[esp+0x14]; mov ecx,ebp; push edx; call 0x43B600`。
+- **0x43B600 全链**：格式串 `'.\\Map\\%s.map'`（0x47C404）→ 拼路径复制到 [ebx+4] → CreateFileA（IAT 0x4760DC）→ 0x43B820 `rep stosd`（ecx=7）清零 [ebx+0x110..0x12B] → **ReadFile(hFile, [ebx+0x110], 0x1C) @0x43B68B**。
+- **[ebx+0x124] = 0x110 + 0x14** = ReadFile 读入的 0x1C 字节地图头中偏移 0x14 的字节。**全 .text 唯一的字节宽度 [mem+0x124] 访问 = 读取 @0x43B772**；其余 0x124 位点（0x41A210/0x41A2AA 实体位置标志、0x434F1C 构造器 vtable 0x476884、0x435557..0x435624 分派器、0x45A275 构造器 vtable 0x476BD4）均属其它对象类型 → **写入者唯一 = 该 ReadFile**。
+- **公式** @0x43B770-0x43B77C：`mov al,[ebx+0x124]; mov cl,0xE; inc al; imul cl` → `start = (byte+1)*14`。
+- **重建循环 0x43B7B2**：14 次迭代，元素 = 0x5600FC + start*0x144，槽 = 0x56B22C + start*0x104；`push 1; call 0x4660E0`（mode 1）失败 → 0x465FE0 析构 → `push 0` mode-0 回退。**析构循环 0x43B75B 恒定销毁 el14..el69**（esi=0x5612B4，< 0x565994=el70）。
+- **发行地图分布（544 个文件，Map/ 目录跳过）**：header[0x14] ∈ {0: 530 个, 1: 14 个}；**type=1（byte=1）= 4.map（32×32）与 41..44.map（144×144）**——此前"800×800"断言为错（那是 32 位头两个 dword 的误读）；byte=4（→el70..83）与 byte=8（→el126..139）在**任何发行地图中都不出现**（仅假设性）。打开失败默认 = 0（bss，0x43B820 清零）。
+- **运行期后果**：每个发行地图实际只重建 el14..el27（byte 0）或 el28..el41（byte 1），mode 1。
+
+### 2. el139 = Data/StoreItem.wil 商店物品选择器 —— PRIMARY-STATIC（推翻"空槽"假设）
+- **0x452B20 填充覆盖 slots 0..139（140 条 WIL 路径）**，并非 0..91：slot N = owner+0xB130+N*0x104（N≥70 等价 owner+0xF848+(N-70)*0x104，70*0x104=0x4718、0xB130+0x4718=0xF848）；**slot 139 = owner+0x13E5C = 0x573F58**，字符串 `'.\\Data\\StoreItem.wil'`（0x47C878）拷贝 @0x4540E8（`mov edi,0x47C878` → rep movsd/movsb 入 [edx]，edx=lea [ebx+0x13E5C] @0x4540D4）；前一槽 138 = MonMagicEx.wil（0x47C890）。
+- 槽带布局（全表）：0–13 基础瓦片 tilesc.wil@0x47D51C（slot0=lea 前那个 mov，配对规则：slot0=lea 前 src、slot i≥1=lea 后 src）…object2c.wil；14–27 Wood\、28–41 Sand\、42–55 Forest\、56–69 Snow\；70–81 角色（M-Hum/M-Weapon1-4/WM-Hum/WM-Weapon1-4/Magic）；82 Inventory.wil、83 Equip.wil、86 ProgUse.wil、84 Ground/85 MIcon；87–106 Mon-1..20、107–126 MonS-*、127 NPC.wil、128 MonMagic.wil、129 MonImg.wil、130 M-Hair、131 M-Helmet1、132 WM-Hair、133 WM-Helmet1、134 DMon-1、135 DMonS-1、136 MagicEx、137 MonMagicEx、138 MonImgEx/MonMagicEx.wil、**139 StoreItem.wil**。
+- **绑定**：元素 ctor 0x452AA0 loop2 0x452AF7（70 次）把 el70..el139 由 slots 70..139 以 flag0 绑定 → **el139 在 ctor 即功能可用**（mode0 绑定 0x466160：路径→[ebx+0x40]、拼 `"wix"`（0x47DBB4）急切开 .wix、24 字节头 → 帧数 [ebx+0x10]、帧表 malloc(count*0x20)→[ebx+0xC]；.wil 帧按需经 0x466640 懒加载）。
+- **分派 0x430A40 全解码**：flag（[esp+0xC] 字节）==0 → el82=0x5668C4（0x430AB9）；==1 → el83=0x566A08（0x430A83）；**==2 → 不绘制 return 1（0x430B60）**；**==3 → el139=0x56B0E8（0x430A60-0x430A75，帧查 0x466130、0 则跳过，绘制 el139+0x38=[0x56B120] 帧数据）**。flag1 绑定 0x466300（急切）、flag2 绑定 0x4664B0（byte[+4]=2）**从不使用**，全二进制无调用点传 2。
+- **直接 el139 读取者 = 恰好 4 个 imm32 0x56B0E8 引用**，全部经 0x466130 守卫 je 跳过：0x430A63（分派 flag3）、0x44D65C 与 0x44DBAE（大商店窗口函数 0x44CE8C..0x44E037 内；物品记录指针 +0x30/+0x28、槽数组 [esi+0x664]/[esi+0x7f0]、计数 [esi+0x700]/[esi+0x7e0]、11 槽 × 0xC24）、0x44E05D（0x44E040 内）。**唯一 flag==3 调用点 = 0x44DCC4**（0x44D4xx..0x44E037 尾）。全部为商店物品图标绘制路径（StoreItem.wil = 商店物品图标）。
+- **imm32 全扫描**：0x573F58（slot139）无其它写/读；0x56B22C 仅 0x43B7AE（重建循环）；0x56B0E8 即上述 4 处 → **slot139 仅 0x452B20 写入，el139 仅（假设性 byte=8 的）地图重建可重绑**。
+- 运行期语义：分派 flag3 由商店窗 0x44DCC4 在商店条目绘制路径传入 → el139 的 .wix/.wil 实际装载 = 运行期（商店打开时），静态侧全链 primary-static。
+
+### 3. 陈旧断言修正汇总（全部为本文件 2026-08-10/246 遗留）
+- "type=1 地图 800×800" → **错**：32×32（4.map）/ 144×144（41–44.map），header[0x14] 分布 {0:530, 1:14}。
+- "0x452B20 只填 slots 0..91（92 字符串）" → **错**：覆盖 slots 0..139（+8 个非网格填充：Sound\、wix、DirectX 错误文本、`[ 女`、0x14A0/0x17AC/0x1AB8/0x1DC4/0x20D0 空项）。
+- "el139 空槽 / EMPTY/UNSET（slot 139 无写入）" → **错**：slot 139 = StoreItem.wil，el139 = 商店物品选择器（模式 0，ctor 即功能）。
+- "元素 ctor 填 slots 0..91" → **错**：loop1 绑定 el0..13（flag1）、loop2 绑定 el70..139（flag0）。
+- Finding 264 表述 "flag2→el139" → 精确化：**flag==2 = 不绘制 ret 1；flag==3 = el139**。
+
+### 4. 证据级别与剩余 pending
+两项闭合均 **primary-static**（公式、写入者唯一性、140 槽填充提取、4 消费点、544 地图分布全部来自静态反汇编）。剩余 pending：装备槽人类可读名（EquipmentSlots 所有权，server enum 需运行期）、少数属性数值绘制颜色语义（超范围，保持 pending）。
+
+落盘：`status-window-render-evidence.json`（pending 4→2；closed_notes 追加 ×2：map-byte 语义 + el139 StoreItem；陈旧 el139 空槽条目标注 SUPERSEDED；selector_construction.located/evidence_level、interpretation 修正）、`ui-coverage-matrix.json`（status record closed_2026_08_11 追加 ×2 + pending_notes 缩减）、`UI_COMPLETION_AUDIT.md`（第 36 行 el139 空 → StoreItem.wil + 缺口列缩减）、`UI_COVERAGE_MATRIX.md`（第 16 行 el139 空 → StoreItem.wil）。
+
+## Finding 262 (InventoryWindow, 2026-08-11)：背包窗 0x7DA100 主数值 + 记录填充子树 + 0x405 死门 + 模式标签 GB18030 全链闭合
+
+### 1. 主数值 [0x7DA100] —— PRIMARY-STATIC + PRIMARY-STATIC-NEGATIVE：本构建从未写入
+- **写入者扫描**：0x7DA100 ∈ bss（.data raw 止于 VA 0x47F000，无绝对写入）；全二进制 imm32 `00 A1 7D 00` 扫描 = 恰好 2 个读取者：
+  - **0x41729D**（死门 0x417280 内）：`cmp ax,0x405; shr eax,16; test al,al` → `atoi(arg2) > [0x7DA100]` 则抑制，否则 0x451B00 发送。**唯一 E8 调用者 0x42D6C6 传 category byte 4**（跳表 0x42D680 实为 category 3 → 门；byte2==0 守卫与 category-3 路由矛盾）→ **门死**。
+  - **0x42EE4C**（背包 paint）：`sprintf %d` 于 rect (x+0x41, y+0x11A)-(x+0x8E, y+0x12B)，色 0x64C8F8 经 0x45DE50。
+- **显示值恒为 0**；语义名（候选：交易/购买数量上限）仍需运行期观察 → pending 保留。
+
+### 2. 记录填充子树 —— 0x42FC40 为函数中段，真实入口 0x42FC20 是活的（13 调用者）
+- **0x42FC40 是 0x42FC20 的中段**（capstone 从非序言开始反汇编的假象）；真实入口 **0x42FC20**：13 个直接 E8 调用者，其中 **10 个位于 0x41xxxx 服务器消息处理段**（各自从接收缓冲拷贝 0xC20 字节记录后调用 0x42FC20(bag, itemData)）。
+- **0x42F440** = 记录位虚函数：唯一调用者 0x42FC90（死子树内部）→ 0x42F440 确实死，但**不代表填充路径死**。
+- **单元格表算术闭合**：this+0x2C4，6 WORD/行，值 = slot+0x3E8；绘制 0x42F7CC-0x42F7E2。
+- 0x42FC20 的 10 个消息号解码需运行期包捕获 → pending 保留（措辞已修正）。
+
+### 3. 出站消息 0x405 —— PRIMARY-STATIC-NEGATIVE：唯一发送点=死门
+- 全二进制 0x405 真实引用**恰好 3 处**：门比较（0x41729D）、输入对话框 ctor **0x418030** 参数（存为 WORD [obj+0x460] 消息 id；0x47AD98 = `您要付给对方多少金币?` 交易付款提示）、死发送者 0x451AD0。
+- 对话框确认处理 0x418545/0x418648 读 [obj+0x460]，经 **0x417034 实际发送 0x406**（非 0x405）。
+- 假阳性排除：0x400137 = PE 头数据目录大小字段、0x4650A6 = jmp rel32 位移，均非代码引用。
+- 服务器侧 0x405 确切语义 = 运行期/协议级 → pending 保留。
+
+### 4. 模式标签 GB18030/GBK 全链 —— PRIMARY-STATIC（修正[木柴]为[储存]，[包袱]非[包裱]）
+- **跳表 0x42F13C**（paint 分派 0x42EF2F）：mode0 `[包袱]` 0x47BE10 @0x42EF52 色 0xF8DCFA；mode1 `[修补]` 0x47BDF4 @0x42F02E；mode2 `[变卖]` 0x47BDEC @0x42F068；mode3 `[储存]` 0x47BDE4 @0x42F0EB 色 0xF8C8C8。
+  - **修正**：旧记录 "3=[木柴] firewood" 错（`木柴` 全二进制字节扫描不存在）；0x47BDE4 经 GB18030 解码 = `[储存]`（存储）。
+  - **修正**：0x47BE10 = `[包袱]`（GBK `\xb0\xfc\xb8\xa4`），非 [包裱]。
+- **负重/总量格式 0x47BDFC = `负重:%d / 总量:%d` 是活的**：唯一 imm32 引用 0x42EFBF，读 0x7DA11D/0x7DA11F（imm32 0x42EFA1/0x42EFB5），仅 mode-0 分支绘制（0x42EF8F-0x42F029，随后 jmp 0x42F123），(x+0x86, y+0x18) 色 0xA0A0A、(x+0xF0, y+0x26) 色 0xF8C8C8。
+- 0x47BE18 = `굴림체`（cp949 Gulim 字体名，GBK 解码为乱码）→ 共享字体参数，**非标签**。
+- 同族显示：人物状态窗 0x44BF39/0x44BF40 读同一组 word，格式 0x47C740 `%d / %d`，标签 0x47C720 `包袱负重`/0x47C714 `装备负重`（0x45DD70 TextOutA 链，色 0xF8F8F8）；悬停 tooltip 0x42A277 用 0x47BD40 `(负重)%d/%d`。
+
+### 5. 证据级别与剩余 pending
+闭合均为 primary-static（imm32 扫描、跳表解码、GBK/GB18030 字节验证、13 调用者枚举）。剩余 4 项 pending：0x7DA100 语义名、10 个消息号、0x405 服务器语义、3 tab↔4 mode 运行期映射。**注意**：本文件部分改写由 Inventory2 子代理执行至中途失败，由编排器（orchestrator）依据其已验证结论补完（含 `[包裱]`→`[包袱]`、`輝重`→`负重` 字符修正与 pending 重写）。
+
+落盘：`inventory-window-render-evidence.json`（closed_notes +3：0x7DA100 主值 / 打包字段修正 / 记录数组 ctor-dtor 链；pending 重写 4 项；[木柴]→[储存]、[包裱]→[包袱] 全文件修正）、`ui-coverage-matrix.json`（inventory record closed_2026_08_11 追加 ×3）、`UI_COMPLETION_AUDIT.md`（第 37 行背包行补 Finding 262）、`UI_COVERAGE_MATRIX.md`（第 17 行背包行补 Finding 262）。
+
+## Finding 261 (HudLabel2, 2026-08-11)：HUD 底部操作栏 16 槽 caption 阵列闭合——四路分派循环（绘制/移动/按下/释放）+ tooltip SetTextColor COLORREF=0x000000
+
+闭合 `hud-label-evidence.json` 的全部 3 个 pending（caption SetTextColor 精确 COLORREF、HUD 侧 caption 分派循环、运行期悬停可达性与打字机揭示方向），全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。caption 阵列由 8 槽扩展解码为 **16 槽**（hud+0x567c..0x6108，步长 0xB4）。
+
+**1) SetTextColor 精确 COLORREF —— PRIMARY-STATIC：caption/tooltip 链固定 0x000000（纯黑）**
+- 0x45DE50 = 9 实参 thiscall 文本合成器（ecx=0x8AB7A8，ret 0x24）；颜色槽（0x45DEC2-0x45DEC8 `mov eax,[esp+0x28]; push eax; push ecx; call [0x476060]` SetTextColor）= arg6。
+- caption tooltip 渲染器 0x417370 @0x4174FF-0x417531 调用它：arg6 槽 = 字面 `push 0`（0x41750C）→ **COLORREF=0x000000 BLACK**；arg7 bg=0 → SetBkMode(TRANSPARENT 0x476044)；arg9 font=0 → 默认字体 [ctx+0x28]。
+- 聊天逐条消息走另一渲染器 0x45DD70（TextOutA 0x476074），与本链无关；caption 文字 = 黑字 + 0x96FFFF 淡黄底 + 1px 黑框。此前 closed_note 中「颜色源未验证（疑似默认白）」一句作废。
+
+**2) 16 槽 caption 阵列与构造 —— PRIMARY-STATIC**
+- HUD = gameObj 0x47EF18 + 0x2A548C；caption 阵列 = hud+0x567c..0x6108，16 槽、步长 0xB4、每槽 vtable 0x4763A8。
+- HUD ctor 链：0x426FE5 `0x468306(&+0x567c, 0xB4, 0x10, 0x4046B0)` 数组构造 → 16×0x4175F0 重置 + 16×0x417630 重置。
+- 16 个 9 实参构造调用点（imm32 槽偏移 → lea 起点 → E8 调用点规则）：0x4279B2/0x4279E6/0x427A1A/0x427A4E/0x427A82/0x427AB6/0x427AEA/0x427B24/0x427B58/0x427BAA/0x427BFC/0x427C4D/0x427C9F/0x427CF1/0x427D42/0x427D94。
+- 9 实参 ctor 0x417550（arg9..arg1 = 0,-1,1,text,y,x,state_frame,frame,parent）：+0x14=parent、+0x18=frame、+0x1C=state_frame、+0x20=-1、+0x24=1、+0x25=0（NORMAL）、+0x28=x、+0x2C=y、+0x34=text。
+- 16 槽内容（帧对 / 文字 / 相对 hud.left/top 偏移）：0x567c=交易栏(Ctrl+C, C) F80/81 (+0xCC,+2)；0x5730=任务栏(Ctrl+V, V) F82/83 (+0xE4,+2)；0x57e4=技能图鉴(Ctrl+B, B) F84/85 (+0xFC,+2)；0x5898=退出游戏(Alt+Q) F90/91 (+0xA1,+0x2E)；0x594c=注销人物(Alt+X) F92/93 (+0xA1,+0x52)；0x5a00=组队(Ctrl+G, G) F94/95 (+0x268,+0x2F)；0x5ab4=行会(Ctrl+F, F) F96/97 (+0x268,+0x52)；0x5b68=腰带(Ctrl+Z, Z) F159/159 (+0x189,+0xD)；0x5c1c=技能书(Ctrl+E, E) F100/101 (+0x2BF,+0x10)；0x5cd0=聊天记录(Ctrl+R, R) F102/103 (+0x2CE,+0x20)；0x5d84=信息窗口(Ctrl+D, D) F104/105 (+0x2CE,+0x46)；0x5e38=设置栏(Ctrl+N, N) F106/107 (+0x2BF,+0x55)；0x5eec=帮助窗口(敬请期待) F108/109 (+0x298,+0x56)；0x5fa0=坐骑(Ctrl+S, S) F110/111 (+0x288,+0x46)；0x6054=包袱栏(Ctrl+Q, Q) F112/113 (+0x288,+0x20)；0x6108=状态栏(Ctrl+W, W) F114/115 (+0x299,+0x10)。
+- **编码注记**：0x5eec 槽文字 0x47BC04 字节仅 EUC-KR 可解码 = `도움말창(지원예정)` = 帮助窗口(敬请期待)（GBK/Big5 均乱码）——中文重打包客户端里的韩版遗留字符串。
+
+**3) HUD 侧四路分派循环 —— PRIMARY-STATIC**
+- 每帧渲染 0x4294E0（主循环 @0x41C0F7）→ caption 绘制循环 **0x42954B-0x429564**：`lea edi,[esi+0x567c]; mov ebx,0x10; L: mov eax,[edi]; mov ecx,edi; call [eax+4]; add edi,0xB4; dec ebx; jne L`（16 次，vtable+4 = 0x417640）。
+- 主输入层 3 个直接调用（鼠标坐标 main+0x35B2A8/0x35B2AC）：move **@0x41D457 → 0x42C510**、press @0x41D57B → 0x42BA20、release **@0x41DC82 → 0x42BE20**。
+- 移动循环 **0x42C770**：`add esi,0x567c; mov ebp,0x10; L: mov edx,[esi]; push edi(y); push ebx(x); mov ecx,esi; call [edx+8]; add esi,0xB4; dec ebp; jne L`，xor eax,eax / ret 8（0x417780 hover-only，从不消费）。
+- 按下循环 **0x42BAC9**：`lea ebp,[esi+0x567c]; call [vtable+0xC]`（0x4177C0），首命中即消费（ret 1）。
+- 释放循环 **0x42BF02**（0x42BE20 先清 [esi+0xd3c]）：计数器 [esp+0x14] 0..0xF、slot = counter*0xB4+0x567c、`call [vtable+0x10]`（0x4177F0）；命中 → 每 caption 点击动作跳表 **0x42C494**（16 项，例 0x42BF37: `mov ecx,0x47ef18; call 0x419cc0`）；循环尾 0x42C359（inc/cmp 0x10/jl）。
+- 处理器语义：0x417780/0x4177C0 PtInRect（IAT 0x4762B4）于 this+0x04；内 && state≠2 → [0x25]=1/2（ret 8）；0x4177F0 释放内 → [0x25]=0 + 点击音 0x69（0x45AFC0(0x8AB130,0x69,0,0,0)）ret 1。
+- paint 状态机 0x417640 汇总：NORMAL && [0x20]=-1 → 不画；HOVER → 仅光标锚定黑字 tooltip（0x417370）；PRESSED → state_frame 美术（159 腰带/101 技能书/103 背包，0x460240 合成）。
+
+**VERDICT**：caption 链 3 个 pending 全部 primary-static 闭合（COLORREF=0x000000；四路分派循环 0x42954B/0x42BAC9/0x42C770/0x42BF02；悬停/按下/释放静态闭环含释放路径）。剩余：运行时血/魔/经验注入（协议级）、打字机揭示方向运行期验证（candidate）、0x42C494 各 caption 点击动作逐条业务解码（长尾，非 pending）。
+
+落盘：`hud-label-evidence.json`（pending 3→0，closed_notes +3，caption_ctor_table 8→16 行，dispatch_note 升为 primary-static）、`ui-coverage-matrix.json`（hud record closed_2026_08_11 追加）、`UI_COMPLETION_AUDIT.md`（第 33 行）、`UI_COVERAGE_MATRIX.md`（第 12 行）。
+
+## Finding 265 (EquipmentSlots, 2026-08-11)：装备槽客户端↔服务端槽位映射闭合——线上 slot 字节=记录索引==EquipmentSlot 枚举（H2 定案）
+
+闭合 `equipment-slots-evidence.json` 的唯一剩余 pending（槽位人类名称/索引映射），并将 `status-window-render-evidence.json` 的 pending #1（装备槽人类名称）结论一并落盘（sibling 文件本身未编辑）。全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+
+**1) 线上链路端到端解码 —— PRIMARY-STATIC（点击→暂存→发送→线上字节，零翻译）**
+- 命中测试 `0x44B720` 返回**原始记录索引 0..10**（纯位置 PtInRect 扫描，无类别逻辑）。
+- 暂存 `0x44BBD0(this, slotIndex=arg1, cursorItemStruct=arg2)`（ret 8）：arg1 低字 → pending 槽位字 @`this+0x8886`；arg2 源结构守卫 `[edx]!=0/[+0xC]==0/[+0x10]==0`，数据 `@edx+0x18 → @this+0x8884`（rep movsd 0x308 dwords = 0xC20 字节），标志 `@this+0x8880=1`，源结构清零 0x30E dwords。（纠正旧读法 arg2="itemData"。）
+- 发送 `0x44CEA7 push ebp(=点击索引)` → `0x451690(arg1=0x3EB, arg2=索引, arg3=this+0x8888 pending 记录, arg4=[this+0x88C1] itemID)`（4 实参 ret 0x10）；发送器内 `movzx ax, byte[esp+8]` = **byte(arg2) = 线上槽位字节**。
+- 组包 `0x452940`（6 实参 ret 0x18）：wire = **{dword itemID=arg3, word opcode=arg2(0x3EB/0x3EC), word slotByte=arg4, word 0, word 0}**（12 字节）——纠正旧误读 "{0x3EB, itemID, slot, 0, 0}"。`0x451E60(this, &this+0x18, arg3)` 发送。
+- 背包 msg 0x3EC 同构：`0x451690(arg1=0x3EC, arg2=byte[edi+0x1A]=背包槽位字, arg3=name, arg4=itemID)`。
+- **任何一跳都无翻译**：线上槽位字节 = 点击记录索引 = 服务端 EquipmentSlot 枚举（服务端按 `Globals.EquipmentOffSet + enum` 索引装备数组，客户端必须对齐）。
+
+**2) 兼容分派 0x44B7A0 —— PRIMARY-STATIC：仅枚举对齐编号自洽**
+- 签名 `(this, cursorItemData*, clickedSlotIndex(byte bl), mouseX, mouseY)`：rect 经导入 SetRect [0x4762B0] 由 `this+0x1C8` + winX/winY（`[this+0x18]/[this+0x1C]`）构造（11 次、步长 0x10），PtInRect [0x4762B4] 判 (mouseX=arg3, mouseY=arg4)。
+- 开关：类型 ∈{7,8} → bl∈{7,8}（戒指）；类型 ∈{5,6,9}：subtype==0x19 → bl∈{5,9}，否则 bl∈{5,6}（手镯/鞋子）；恒等 `al==bl` 覆盖 {0,1,2,3,4,10}。**经典 Mir2 编号会使该开关自相矛盾**（Ring(6)→{5,6}、Shoes(7)→{7,8} 荒谬）；类型 9（鞋子）怪癖进一步钉死 slot 9=鞋子、slot 5=手镯。
+
+**3) 定案映射表（11 行，客户端 idx == 服务端枚举 == 人类名称）**
+idx0=Weapon 武器（loop7/+0x1C0 纸娃娃区）、idx1=Armour 衣服（loop8/+0x1D0 属性面板）、idx2=Helmet 头盔（loop1/+0x1E0 (27,264)）、idx3=Torch 火把（loop0/+0x1F0 (177,70)）、idx4=Necklace 项链（loop9/+0x200 头像区）、idx5=BraceletL 左手镯（loop3/+0x210 (27,186)）、idx6=BraceletR 右手镯（loop4/+0x220 (175,186)）、idx7=RingL 左戒指（loop5/+0x230 (27,227)）、idx8=RingR 右戒指（loop6/+0x240 (175,227)）、idx9=Shoes 鞋子（loop2/+0x250 (64,264)）、idx10=Poison 毒药（loop10/+0x260 (103,264)）。绝对坐标 = 相对 +(278,136)。
+
+**4) 视觉标签弃置与说明**
+- 早期证据文件里的美术标签（火把@(27,264)、头盔@(177,70)、毒药@(64,264)、鞋子@(103,264)）为**美术派生位置猜测，非协议映射**，标记 UNVERIFIED（需带视觉模型的重跑；本环境 `opencode-go/deepseek-v4-flash` 不支持图像输入）。H2 下底行相对坐标读作 [头盔(idx2)@(27,264)、鞋子(idx9)@(64,264)、毒药(idx10)@(103,264)]，顶部中央盒=火把(idx3)@(177,70)。
+- `status-window-render-evidence.json` pending #1（"classic Mir3 eight-piece mapping stays candidate"）→ 经本链 CLOSED，由经典八件套候选升级为 11 行定案表。
+
+**VERDICT**：槽位映射全部 primary-static 闭合（线上链路 + 兼容开关自洽 + Zircon 规范枚举三证合一，H2 定案）。剩余非静态项：帧 201 图标级视觉标签像素验证（需视觉模型，candidate/unverified）；sibling 文件属性数值绘制颜色语义（他文件 pending，不动）。
+
+落盘：`equipment-slots-evidence.json`（pending 1→0，slots 8→11 行定案表，mapping_basis 重写为线上链路+兼容+枚举三证，conclusion/evidence_level 升级，closed_notes +5，视觉标签弃置说明）、`ui-coverage-matrix.json`（status record closed_2026_08_11 追加）、`UI_COMPLETION_AUDIT.md`（人物状态/装备行）、`UI_COVERAGE_MATRIX.md`（人物状态/装备槽行）。

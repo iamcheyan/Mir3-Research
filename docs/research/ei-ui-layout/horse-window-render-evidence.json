@@ -113,15 +113,32 @@
       "evidence_level": "primary-static",
       "remaining_candidates": [
         "per-value sub-state meaning of 1/2/3 at 0x007DA060 (mounted sub-states, e.g. riding vs leading) - not statically decodable from the client alone",
-        "word field 0x007DA061-62 / 0x007DA063-64 protocol meaning (server packet semantics; the HUD icon uses the latter word as a frame index)",
-        "the 0x5600FC stride-324 table entries (mounted appearance frames) are candidate until the resource binding is verified",
+        "word field 0x007DA061-62 / 0x007DA063-64 protocol meaning (server packet semantics; the HUD icon passes word[0x7DA063] to 0x45FD50 as 16-bit fill-color arg6 - NOT a frame index, see Finding 264)",
+        "0x5600FC stride-324 mounted-appearance table resource binding (CLOSED primary-static, Finding 264: element 87 = 0x566F18 = 0x5600FC+0x57*0x144 binds to WIL slot 17 = Horse.wil)",
         "keyboard/command path 0x41D2B0 (0x41DE03-0x41DE1E) uses a DIFFERENT gate byte[esi+0x35B148] with cooldown [esi+0x4279A4]=0x3E8 - separate from the window dispatch state; do not conflate"
       ]
+    },
+    {
+      "key": "0x5600FC-stride-324-mounted-appearance-table-resource-binding",
+      "date": "2026-08-11",
+      "conclusion": "Mounted-appearance element binding CLOSED primary-static. Element table base 0x5600FC, element N = 0x5600FC + N*0x144 (stride 324). Mount element = element 87 = 0x566F18 = 0x5600FC + 0x57*0x144, selected NOT by the state value itself but by a hardcoded selector byte: writer 0x40F420 (and sibling 0x40C78C) stores byte [esi+0x629CF]=0x57 whenever state byte [esi+0x629C8]=0x7DA060 != 0 (0x40F47F / 0x40C79C), and the lea chain at 0x40F5A6-0x40F5C0 (lea [eax+eax*8]; lea [eax+eax*8]; lea [edx*4+0x5600FC] = x9 x9 x4 = x324) stores [esi+0x62A14] = 0x566F18. Element 87 binds to WIL path slot 17 = '.\\\\Data\\\\Horse.wil' (string 0x47CC94 copied to owner+0x1098C at 0x4538CB-0x4538E5; element-manager loop2 0x452AF7-0x452B0E binds elements 70..139 to slots 0..69, element 87 = 70+17). Consumption: world-render function 0x40F5F0 (ret 0x14, 5 args) gates on state!=0 && [esi+0x62A14]!=0 && byte[esi+0xC0]>=0x1D (0x40FA67-0x40FA96), then 0x466130(ecx=mount element, frame=0x2710+(A%400), A=[629C8]*400-[8A]*3000+[C4]-0xAA0 stored [esi+0x62A20]) at 0x40F6D7-0x40F6E9, drawing the mounted sprite in 3D world space via 0x461ED0 (ebp!=0) or 0x463330/0x460240 (ebp==0) at 0x40FAEE-0x40FB57 using frame record [element+0x38] and pixel data [element+0x3C]. Separate HUD mount icon (main-window, 0x44B560-0x44B6AF) uses element 86 = 0x566DD4 (ProgUse.wil, slot 16), frame = byte[0x777720]*10 + byte[0x777723] + 0x3B, blitted via 0x45FD50 with arg6 = word[0x7DA063] and arg7 = 0xffff; CORRECTION to Finding 255's reading: 0x45FD50's arg6/arg7 are 16-bit RLE fill colors (op 0xC2 fills with arg6, op 0xC3 with arg7, RGB-decomposed via masks [ebx+0x6C/70/74] and shifts [ebx+0x67/68/69]) - word[0x7DA063] is a fill color, NOT a frame index (all 22 other 0x45FD50 callers pass 0xffff/0xffff; the only 0x7DA063 consumers in the whole binary are 0x41F5BD packet write and 0x44B669 HUD blit). 0x430A40 flag dispatch (flag0->el82=0x5668C4, flag1->el83=0x566A08, flag2->el139=0x56B0E8) is unrelated to the mount element (it serves the status-window el82/83/139 family per Finding 246).",
+      "evidence_chain": [
+        {"va": "0x0040F47F / 0x0040C79C", "fact": "byte [esi+0x629CF] = 0x57 hardcoded, written iff mount state byte [esi+0x629C8] != 0"},
+        {"va": "0x0040F5A6-0x0040F5C0", "fact": "lea chains x9 x9 x4 (=x324) -> [esi+0x62A14] = 0x5600FC + 0x57*0x144 = 0x566F18 (element 87)"},
+        {"va": "0x004538CB-0x004538E5", "fact": "'\\\\Data\\\\Horse.wil' (0x47CC94) copied to owner+0x1098C = slot 17 (owner+0xF848+17*0x104)"},
+        {"va": "0x00452AF7-0x00452B0E", "fact": "element-manager loop2: 70 iterations, element(70+i).bind(slot i, flag=0) via 0x4660E0; element 87 = 70+17 <-> slot 17 = Horse.wil"},
+        {"va": "0x0040FA67-0x0040FA96, 0x0040FAA1, 0x0040FAFD, 0x0040FB50-0x0040FB57", "fact": "world-render gate + 0x466130(mount element, frame=0x2710+(A%400)) + draw via 0x461ED0/0x463330/0x460240"},
+        {"va": "0x0040F6D7-0x0040F6E9", "fact": "A = state*400 - [esi+0x8A]*3000 + [esi+0xC4] - 0xAA0; [esi+0x62A20]=A; frame = 0x2710 + A%400"},
+        {"va": "0x0044B648, 0x0044B65D, 0x0044B666, 0x0044B678-0x0044B6A8", "fact": "HUD mount icon: element 0x566DD4 (86=ProgUse.wil), frame = byte[0x777720]*10+byte[0x777723]+0x3B, 0x45FD50 arg6 = word[0x7DA063] (fill color), arg7 = 0xffff"},
+        {"va": "0x0045FD50 RLE ops 0xC2/0xC3", "fact": "blit arg6 ([esp+0x114]) = fill color for RLE op 0xC2, arg7 ([esp+0x118]) for op 0xC3; RGB decomposition via masks [ebx+0x6C/70/74] + shifts [ebx+0x67/68/69]; all other 22 callers pass 0xffff/0xffff"},
+        {"va": "0x0041F5BA-0x0041F5C1", "fact": "packet case 0x267 writes word[0x7DA063]=dx, word[0x7DA061]=cx from packet input - word[0x7DA063] origin is server packet data, semantic remains runtime"}
+      ],
+      "evidence_level": "primary-static",
+      "notes": "imm32 scan of all 0x5600FC+0x144k (k=0..160) shows NO direct reference to 0x566F18 - the mount element is reached only through the computed [esi+0x62A14] pointer, so earlier full-VA scans of stride-324 addresses correctly found only 13 slots with imm32 refs. Element 87 itself is never an imm32 operand. The state value (1/2/3) does NOT index the element table; it only gates the hardcoded selector byte 0x57, so per-value sub-state appearance differences cannot be derived from the element binding (runtime-only)."
     }
   ],
   "pending": [
     "per-value sub-state semantics of mount state values 1/2/3 at 0x007DA060 (candidate)",
-    "protocol meaning of the two word fields 0x007DA061-62 / 0x007DA063-64 (server packet semantics; HUD icon frame index usage proven only)",
-    "0x5600FC stride-324 mounted-appearance table resource binding (candidate)"
+    "protocol meaning of the two word fields 0x007DA061-62 / 0x007DA063-64 (server packet semantics; the HUD icon passes word[0x7DA063] into 0x45FD50 as 16-bit fill-color arg6 - primary-static usage - but the protocol/semantic origin of the value is runtime-only)"
   ]
 }

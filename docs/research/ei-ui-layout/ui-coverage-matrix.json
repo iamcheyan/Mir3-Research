@@ -1,418 +1,430 @@
 {
- "source": "Mir3.exe, mir3.dat, Data/*.wil, Data/*.wix",
- "viewport": {
-  "width": 800,
-  "height": 600
- },
- "evidence_policy": "primary original-client evidence first; secondary server files only cross-reference names/content",
- "records": [
-  {
-   "id": "hud",
-   "category": "主HUD/底部操作栏",
-   "artifacts": [
-    "layout.json",
-    "hud-bars-render-evidence.json",
-    "hud-label-evidence.json",
-    "target-box-evidence.json"
-   ],
-   "layout_ids": [
-    "hud.*"
-   ],
-   "preview_mode": "hud",
-   "status": "primary-static-resource-and-coordinate",
-   "pending": true,
-   "closed_2026_08_10": [
-    "monster target box chain closed (Finding 239): code-drawn composite anchored HUD+0xE4/+0xE8 - name-plate box 0x40B850 (0xA0A0A border, width=text width, 15px tall, 15..30px above anchor, per-frame call [HUD vt+0x84] with current target @0x41C063), name text 0x40B750 (selector 0x566DD4 F2/F3), hover name tag 0x40BB00 (3000ms), HP bar 0x40A8A0 (element 0x5600FC+[8D]*0x144, frame=HP value, 400/300 center formula), entity re-render 0x437DF0; anchor world-derived 48x32 tile math 0x40F5F0 or fixed (376,227) 0x4120B0; layout rects 0x629FC/0x629EC; hover msg 0xB -> selector load 0x40A4D0 (type db 0x449B90/0x8AA5A8) -> server query 0xBC7/0xBD1/0xBD8; click target msg 2 -> 0xBC4; switch 800ms timeout + mouse delta >5 gate; show/hide state machine 0x411D91 states 0x15..0x1F; see target-box-evidence.json"
-   ],
-   "pending_notes": "; target box: all long-tail closed 2026-08-11 (Finding 257, see target-box record closed_2026_08_11): WIL bindings = static negative (runtime data), portrait = none, HP bar frame = HP value, 10000+(A%400) series = element 0x57 runtime-bound; remaining: exact WIL filenames + 0x40C020 caller"
+  "source": "Mir3.exe, mir3.dat, Data/*.wil, Data/*.wix",
+  "viewport": {
+    "width": 800,
+    "height": 600
   },
-  {
-   "id": "target-box",
-   "category": "怪物目标框/悬停目标",
-   "artifacts": [
-    "target-box-evidence.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "sim",
-   "status": "primary-static-render",
-   "pending": false,
-   "closed_2026_08_10": [
-    "full hover target box chain closed (Finding 239) - see hud record closed_2026_08_10 entry"
-   ],
-   "closed_2026_08_11": [
-    "long-tail closed (Finding 257): (1) selector WIL bindings = static NEGATIVE evidence - bind API 0x4660E0 has 14 direct callers enumerated, sole global-table binder = map loader 0x43B600 covering only 0x0E..0x1B/0x1C..0x29 (all 544 shipped maps header[0x14] in {0,1}); target-box elements 0x51/0x56/0x57/0x81/0x89/0x8A have no static binder (0x566780->only 0x40CE96, 0x566DD4->11 readers, 0x566F18/0x56AE60/0x56A440/0x56AFA4->zero imm32 refs); 0x47C3E0 filler format dead (0 refs); exact WIL filenames = runtime data candidate",
-    "(2) hover target portrait = NEGATIVE (no portrait exists): per-frame HUD dispatch 0x41BF00-0x41C0A0 = 5 text/HP-bar components only (0x40A8A0, 0x40BB00, vtable+0x80=0x40B750, entity loop, 0x41B1C0, 0x434D40; vtable+0x84=0x40B850 @0x41C063); status-window 49x33 rect (this+0x200) = special index 4 character-figure slot drawn at (window.x+0x61, window.y+0xC8) flag=1, NOT a portrait; NPCface.wil (440 frames, ~100x122) excluded by dims",
-    "(3) HP bar frame = HP value [0x61B9C] primary-static (0x40A8A0); 0x40F5F0 10000+(A%400) series = separate rect HUD+0x629FC on element 0x57 (0x566F18 = 0x5600FC+0x57*0x144, third selector byte [0x629CF]=0x57 @0x40C79C/0x40F47F), A=[629C8]*400-[8A]*3000+[C4]-0xAA0, frame=10000+(A%400); GameInter.wil 1103 frames <10000 excluded (primary-static absence); >=10000-frame WIL candidates measured (Tiles5c 20000, SmTilesc 10180, object1c 33125, object2c 30000, M-SHum 32722, M-Hum 27000, M-Helmet1 24000, M-Hair 15000, Horse 10400, M-Weapon1/2/3 30000, M-Weapon4 17000) - runtime-bound candidate"
-   ],
-   "pending_notes": "exact WIL filenames backing target-box selector elements (0x51/0x56/0x57/0x81/0x89/0x8A) and the 0x56B22C path-slot filler are runtime data - no static binder (primary-static negative); 0x40C020 caller unidentified"
-  },
-  {
-   "id": "map",
-   "category": "地图/小地图",
-   "artifacts": [
-    "map-ui-resource-evidence.json",
-    "minimap-server-crossref.json",
-    "../mir3-map-reconstruction/MAP-SURVEY.md"
-   ],
-   "layout_ids": [],
-   "preview_mode": "map-bg-derived,map-minimap-derived",
-   "status": "primary-static-resource-loader-plus-paint-chain-closed",
-   "pending": false,
-   "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
-   "closed_2026_08_10": [
-    "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
-    "no separate map dialog (single ctor main+0x6214)",
-    "T key + mouse click toggle paths",
-    "object list layouts + type byte values",
-    "map_bindings.json: 182 crossref-confirmed rows (client 0x0043D780 select rule + server MiniMap.txt)",
-    "simulator setCurrentMap drives bg+minimap from same binding; derived level"
-   ]
-  },
-  {
-   "id": "status",
-   "category": "人物状态/属性/装备",
-   "artifacts": [
-    "status-window-render-evidence.json",
-    "equipment-slots-evidence.json"
-   ],
-   "layout_ids": [
-    "window.status"
-   ],
-   "preview_mode": "window.status",
-   "status": "primary-static-render",
-   "pending": true,
-   "closed_2026_08_10": [
-    "attribute text coords closed: col1 label (winx+0xFF, winy+0x43) step 0xF; col2 label (winx+0x17F, winy+0x1E) value +0x44 (reset re-read of [ebp+0x18/0x1C], non-cumulative; old +0x27E/+0x127 model retired)",
-    "two position-field pairs documented: [this+8/0xC]=background screen pos, [this+0x18/0x1C]=attribute/equipment/hit-test base",
-    "global selector array 0x5600FC+0x144k; el82=0x5668C4 flag0 / el83=0x566A08 flag1 / el139=0x56B0E8 flag2 via 0x430A40 dispatch",
-    "selector construction loop 0x43B7B2 (map rebuild, 14 elems, mode1->mode0 fallback, covers 70..83 incl. el82/el83) + dtor loop 0x43B75B (14..69)",
-    "equipment slot classification = server-driven (0x44B720 pure-position hit test; server EquipmentSlot enum; 2,3,5,6,7,8,9,10 -> classic 8-piece candidate)",
-    "8 equipment slots 38x38 geometry closed (Finding 240): SetRect chain 0x44B1BC-0x44B2C6 loop0 helmet (177,70) loop1 torch (27,264) loop2 poison (64,264) loop3 braceletL (27,186) loop4 braceletR (175,186) loop5 ringL (27,227) loop6 ringR (175,227) loop10 shoes (103,264); abs = +(278,136); non-slot loop7 portrait/name 49x33, loop8 paperdoll 60x90, loop9 attribute 53x84; icon frame = item shape WORD[graphics+0x28] not slot index; see equipment-slots-evidence.json"
-   ],
-   "closed_2026_08_11": [
-    "el82/el83/el86 WIL bindings closed PRIMARY-STATIC (Finding 246): el82=Data/Inventory.wil (slot 0x570574 = owner+0x10478, store site 0x453804), el83=Data/Equip.wil (slot 0x570678 = owner+0x1057C, store site 0x453829), el86=Data/ProgUse.wil (slot 0x570984 = owner+0x10888, store site 0x4538A2); chain = game obj 0x47EF18 -> owner 0x5600FC -> element ctor 0x452AA0 -> WIL table fill 0x452B20 (92 strings, slots 0..91, slot N = owner+0xF848+(N-70)*0x104) -> element loop2 0x452AF7 (70 iters mode 0: el70..el139)",
-    "el139 = empty/unset candidate: constructed mode 0 at 0x452AF7 (i=69) from zeroed path slot 0x573F58 (never written by 0x452B20); map-rebuild 0x43B7B2 reconstructs el126..el139 when byte[map+0x124]=8 (start=126, formula (byte+1)*14 @0x43B770-0x43B77C, mode 1 with mode-0 fallback)",
-    "Frame 172 child-control action closed as view-toggle button (Finding 246): child this+0x10C frames 171/172; click handler 0x44CCD0 toggle branch 0x44CD14-0x44CD9F; mode byte [this+0x54]: 0=attribute view (frame 200=256x512, faces 171/172), 1=equipment view (frame 201=1024x512, faces 168/169); 0x423E80 re-frame + 0x417880 faces; hit rect corrected to (176,264) 36x36 (old 286 wrong); initial view = attribute (frame 200 at 0x427776)",
-    "slot record stride 0xC24 re-confirmed (click handler 0x44CDCD-0x44CDD9 idx*0xC24 = 777*4 = 3108; earlier 0x40C was arithmetic error)"
-   ],
-   "pending_notes": "equipment slot human names / index pairing (server-enum candidate; recorded 2<->loop1, 3<->loop0, 9<->loop2, 10<->loop10 vs enum semantics 2=helmet 3=torch 9=shoes 10=poison needs runtime adjudication); map-rebuild start byte [ebx+0x124] runtime value unobserved (formula (byte+1)*14 primary-static; byte=4 -> el70..83, byte=8 -> el126..139); el139 runtime semantics (when the empty path slot 0x573F58 gets filled); a few attribute value draw color semantics"
-  },
-  {
-   "id": "inventory",
-   "category": "背包/物品栏",
-   "artifacts": [
-    "inventory-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.inventory"
-   ],
-   "preview_mode": "window.inventory",
-   "status": "primary-static-render-plus-record-layout-closed",
-   "pending": false,
-   "closed_2026_08_11": [
-    "record layout primary-static double-proven: 46 contiguous records this+0x774+slot*0xC2C (ctor 0x42E810 -> vector-ctor iterator 0x4686C4(this+0x774,0xC2C,46,per-elem ctor 0x415740); dtor 0x42E8D0 -> vector-dtor iterator 0x468306(this+0x774,0xC2C,46,dtor 0x415740), restoring base vtable 0x476624 -> base dtor 0x423CF0; deleting-dtor thunk 0x42E8B0 = vtable 0x476870 slot[0]; corrects old pointer-array this+0x774+4*index), data base rec+0x0C (0xC20 rep movsd 0x308 @0x42F440)",
-    "packed fields = 24-bit icon tint rec+0x51..0x53 (corrects old +0x351..353): type rec+0x2E in {0x0A,0x0B} -> 0x45E4E0 3->16bit 565 -> RLE blit 0x45F2D0; else white 0xFFFF; frame WORD rec+0x34; qty dword rec+0x49",
-    "cell identity table this+0x2C4: WORD/cell, 6 cells/row, occupied word = slot+0x3E8 (1000), grid draw 0x42F7CC-0x42F7E2 idiv proof; row window max(0,[this+0x58]-5)..[this+0x58]+6",
-    "secondary text closed: 负重:%d / 总量:%d (0x47BDFC) reads 0x7DA11D/0x7DA11F @0x42EF9E/0x42EFB3; four mode labels [包袱]/[修补]/[变卖]/[木柴] from byte this+0x54 dispatch 0x42F13C (0x47BE10/0x47BDF4/0x47BDEC/0x47BDE4)",
-    "primary value 0x7DA100: never written (bss zero), read only by dead 0x405 gate 0x417280 (byte2 guard + sole E8 caller 0x42D6C6 passes category byte 4 -> always skip) and bag paint 0x42EE4C -> displayed 0; semantic candidate trade/buy quantity cap",
-    "click chain 0x4300F0 primary-static: rate-limited 300ms, use-delay frames 0x14/0x15/0x46 -> busy msg 0x47BDA4 正在补充药水; mode0 -> msg 0x3EC via 0x451690 (slot byte [edi+0x1A], name [edi+0x1C], qty [edi+0x55]); mode1 -> 0x451860 (name array_elem+0x784, qty +0x7BD); mode2 -> 0x4517E0",
-    "move/pickup 0x42FE00 and carry 0x42FD10 share the 0xC20 item-data layout with cursor data base at +0x18 (+0x1A slot, +0x1C name); 0x47BE18 = shared font-name literal arg to 0x45DBA0, not a label",
-    "network gap documented: bag-fill virtual 0x42FC40 has zero static refs (no E8/imm32/vtable slot 0..10) -> dead or runtime-computed; server->client bag-list handler needs runtime packet trace pairing outbound msg 0x403 (0x451AD0)"
-   ],
-   "pending_notes": "0x7DA100 business name candidate (trade/buy quantity cap; runtime watch during trade/quantity dialog required); server->client bag-list fill handler (0x403 reply packet trace); 0x405 protocol semantics; runtime mode-tab mapping and bottom-left region visual confirmation (no vision model)"
-  },
-  {
-   "id": "skills",
-   "category": "技能/技能书",
-   "artifacts": [
-    "skill-window-render-loop-evidence.json",
-    "magic-exp-loader-evidence.json",
-    "magic-exp-records.json"
-   ],
-   "layout_ids": [
-    "window.other-14-candidate"
-   ],
-   "preview_mode": "window.other-14-candidate",
-   "status": "primary-static-render-plus-data-loader",
-   "pending": true
-  },
-  {
-   "id": "quest",
-   "category": "任务",
-   "artifacts": [
-    "quest-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.quest"
-   ],
-   "preview_mode": "window.quest",
-   "status": "primary-static-render-plus-separator-and-event-chains-closed",
-   "pending": false,
-   "closed_2026_08_11": [
-    "wire separator '/' (0x2F) primary-static: msg 0x515 -> 0x421A45 -> fill 0x4488D0 splits body via fast strchr 0x468BF0 (push 0x2f @0x44891C/0x448932/0x448944/0x44895C/0x44897A); row text -> record+4, field4 -> record+0x230/+0x214, lens +0x204/+0x22C",
-    "no client-side pixel wrap primary-static: 0x45DD70 (ret 0x1C) one TextOutA per line at fixed 15px cadence; GetTextExtentPoint32A only inside fetch helper 0x45E0C0; no reflow loop in paint/fill",
-    "control->event chains primary-static: X 721/722 consumed locally (release 0x4177F0 -> PtInRect -> 0x45AFC0 cmd 0x69, handler returns 1 at 0x447FDA, no message; corrects Finding 218 'both controls converge'); arrow 723/724 -> 0x4481FA -> 0x448580 -> 0x418 (gate record+0x20C==0, update path 0x44856B); sub-record empty-text click -> 0x448148 -> 0x451A40 -> 0x419 ([child+0]/[record+0])",
-    "business names 0x418/0x419/0x69 and record-class tokenizer remain candidate (no local protocol catalog, EIServer.exe binary-only; needs server packet-handler reference or runtime capture); Finding 251 in RESEARCH_LOG.md"
-   ]
-  },
-  {
-   "id": "chat",
-   "category": "聊天/频道",
-   "artifacts": [
-    "chat-window-render-evidence.json",
-    "chat-window-unified-model.json"
-   ],
-   "layout_ids": [
-    "window.chat-pop"
-   ],
-   "preview_mode": "window.chat-pop",
-   "status": "primary-static-render-plus-call-flow",
-   "pending": false,
-   "pending_notes": "remaining candidates only (evidence pending=[]): 0x45DE50 SetTextColor exact COLORREF (tooltip renderer 0x45DE50 caller pushes 0; a7==0 branch sets TRANSPARENT - color source not statically resolved); typewriter reveal direction / hover reachability runtime verification",
-   "closed_2026_08_11": [
-    "six-channel +0x34 GBK strings = HOVER TOOLTIPS only, never static captions (Finding 243, chat-window-render-evidence.json closed_notes): 9-control vtable chain 0x413DA0 (chat obj ROOT+0x507EC, ctor call 0x426DBD) -> array-helper 0x4686C4 (lea [esi+0x6c]; push 0xb4; push eax; call 0x4686c4; args ctor 0x404690 count 9 dtor 0x4046B0; controls this+0x6C..0x60C stride 0xB4); element ctor 0x404690 writes [obj+0]=0x4763A8; vtable 0x4763A8 +0=0x4046C0 dtor / +4=0x417640 paint state machine on +0x25 / +8=0x417780 hover PtInRect -> +0x25 / +0xC=0x4177C0 pressed PtInRect -> +0x25=2 / +0x10=0x4177F0 hit test (+0x25=0, PtInRect -> 0x45AFC0 sound 0x69); tooltip renderer 0x417370 sole +0x34 readers 0x417373/0x417378, called unconditionally from hover branch (+0x25==1) of paint 0x417640 at 0x41771B; drawn at cursor (GetCursorPos 0x476240 + ScreenToClient 0x476234) with 0x96FFFF light-yellow bg + 1px black frame, DrawTextA 0x476280 flags 0x25 (DT_SINGLELINE|DT_VCENTER|DT_CENTER) inside 0x45DE50, measure 0x45E0C0; normal paint 0x417830 and frame blit 0x460240 are frame-surface only; click dispatch 0x4149A0 injects separate command templates 0x47AD88-family into native EDIT box (SetFocus 0x4762B8 / SetWindowTextA 0x4762CC, HWND 0x8AA48C), unrelated to +0x34",
-    "7-step draw chain + message list (Finding 250, chat-window-unified-model.json draw_chain/message_list): paint 0x4142C0 (wrapper 0x414060, main_init_call 0x427839) = (1) 0x14705 window base/background via vtable+0x0C, (2) 0x14711 chat-input clip SetRect(this+0x6C0, 40,29,531,308), (3) 0x14738 history text loop via 0x45DD70 (19 rows, 14px step), (4) 0x14846 input bar shared gauge 0x4179B0 at (window.x+0x215, window.y-0xD0) value=[+0x68] max=[+0x6D0], (5) 0x1485A 9 child controls direct-paint 0x417830 fixed relative positions, (6) 0x14955 9-iteration child vtable+4 paint loop (hover), (7) 0x14965 input-line character rects SetRect(this+0x954, 25,311,524,326); message list head=this+0x5C, node next=+0x408/prev=+0x40C/color=+0x00/bg=+0x04(0=transparent)/text=+0x08 inline GBK, count=this+0x68, scroll_offset=this+0x6D0, index=this+0x64, clip_rect [35,28,520,43], line_step_px 14, max_rows 19, text_origin_relative [40,29]",
-    "9 control coordinates window-relative (unified-model controls): close this+0x6C F161/162 (532,350) 28x26 paint 0x414863 ctor 0x414144; six channel buttons 36x34 each at x=25/65/105/145/185/225 y=332 (this+0x120 @拒绝 / +0x1D4 ! / +0x288 !! / +0x33C !~ / +0x3F0 @拒绝私聊 / +0x4A4 @拒绝行会聊天; command templates 0x47AD88-family, help strings 0x47AD08-family -> +0x34 tooltips; ctor calls 0x414170/0x414196/0x4141BC/0x4141E5/0x41420E/0x414237); scroll-up this+0x558 F380/381 (539,25) ctor 0x414264; scroll-down this+0x60C F382/383 (539,311) ctor 0x41428A; input-bar vertical gauge this+0x6D4 (shared ctor 0x417960, (533,-208) 16x502, paint 0x414846, raw args [380,19,12,260,12,0], value [+0x68]/max [+0x6D0])",
-    "input EDIT chain (unified-model input): edit HWND global 0x8AA48C, edit object global 0x8AA488; parser 0x414364-0x4144F0 with syntax markers / ( ) and token delimiters space 0x20 colon 0x3A; format prefix 0x47AD28 '/%s ', format parser 0x47AD30 '%[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c'; submit 0x4144A0 -> per-line 0x414FA0; line recall 0x4142C0 (PtInRect on line area, walk this+0x58 list, strip / or (!), tokenize, sprintf '/%s ', write edit); key handler 0x414E9x sets '!' (0x47AD84) or 0x47AD90 into edit, EM_SETSEL 0xB1 to end, ShowWindow 5, 0x414ED0 shift check GetKeyState(0x10) before showing; scroll via hit dispatch 0x4149A0 -> scrollbar 0x417E60 + 9x vtable+0x10",
-    "text renderer slot order CLOSED (unified-model text_renderer + render-evidence closed_notes): 0x45DD70 is thiscall 7 stack args ret 0x1C, order proven by direct disassembly - arg1=target surface (offscreen GDI surface; arg1==0 -> fallback this+0x1C; HDC via surface->vt+0x44 out-param written INTO the arg7 stack slot; GetDC failure -> bail 0x45DE42), arg2=X, arg3=Y, arg4=textcolor (SetTextColor 0x476060), arg5=bgcolor (0 -> SetBkMode TRANSPARENT 0x476044, else SetBkColor 0x476050), arg6=text (strlen + TextOutA 0x476074 @0x45DE12), arg7=font (0 -> this->+0x28 default; explicit font DeleteObject'd by callee); chat call site 0x4147F3: arg1=[0x8AB7C4] (window+0x1C offscreen surface; [0x8AB7C4] has NO static store - written only via IDirectDraw::CreateSurface out-param 0x45D53D/0x45D552, 0x45D602/0x45D617 in 0x45D380), arg2=this+0x6C0+this+0x18, arg3=this+0x6C4+this+0x1C+row, arg4=msg+0x00, arg5=msg+0x04, arg6=msg+0x08, arg7=0; known color literals 0x323232 dark gray / 0x0A0A0A near-black / 0xB4FFB4 pale green; renderer family 0x45DD70/0x45F2D0/0x45FD50/0x45E730/0x45E0C0/0x45DE50",
-    "visibility gate 0x42B180 wiring CLOSED (unified-model visibility_gate + render-evidence closed_notes): [ROOT+0x5081C] IS the chat window's own visible flag this+0x30 (chat obj = ROOT+0x507EC, +0x30 = 0x5081C; window vtable 0x47660C stored 0x413E1A; setter = vtable+0x10 = 0x423F80 mov [ecx+0x30],eax ret 4; only .text reads 0x42B182/0x42B43E/0x42CC14); close route: close-button child (chat+0x6C, vtable 0x4763A8) hit-test vtable+0x10=0x4177F0 -> chat click dispatch 0x4149A0 returns 1 -> mouse stub 0x42C0B7 -> push 8; call 0x42ADB0(ROOT) -> jump table 0x42B3E4[8]=0x42B180: gate!=0 hide (MoveWindow edit to [0x8AB7F0]+0xDF/[0x8AB7F4]+0x23A 0x162x0x10, 0x42AC50 remove window 8 from activation list ROOT+0xD24..0xD38, 0x423F80(chat,0) -> +0x30=0, ret 0); gate==0 show (place edit in chat rect w=[ROOT+0x51148]-[ROOT+0x51140] h=[ROOT+0x5114C]-[ROOT+0x51144] x=[0x8AB7F0]+[ROOT+0x50804]+[ROOT+0x51140] y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144], ShowWindow(edit,5), 0x42AC30->0x449870 append win 8, 0x423F80(chat,1) -> +0x30=1, ret 1); 'R' key 0x42CCF7 toggles same dispatcher; dispatcher entry 0x42B820 deactivates all listed windows first (0x423F90 -> +0x34=0; its jump table 0x42B938[8]=0x42B8B6=chat); default indices 5/10/>15 -> 0x42B3DD returns 0; sibling gates 0x42B25E idx9 (gate [ROOT+0x51180]), 0x42B2AD idx15 (gate [ROOT+0x52E8C], extra edit [ROOT+0x53028])"
-   ],
-   "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow"
-  },
-  {
-   "id": "npc",
-   "category": "NPC对话",
-   "artifacts": [
-    "npc-window-render-evidence.json",
-    "npc-paint-evidence.json"
-   ],
-   "layout_ids": [
-    "window.npc-candidate"
-   ],
-   "preview_mode": "window.npc-candidate",
-   "status": "primary-static-render-plus-parser-input-dispatch-closed",
-   "pending": false,
-   "closed_2026_08_11": [
-    "input/dispatch/per-frame/liveness chain closed (Finding 252, npc-window-render-evidence.json closed_notes): model input 0x440290 three controls (close X=+0x58 gate +0x274!=0 -> ret1 -> dispatch case 0x42C17D -> ROOT hide-all 0x41C1E0; scroll-up +0x1C0 gate [+0x3BC]>0&&byte[+0x58C]==1; scroll-down +0x10C gate [+0x3BC]<[+0x3C0]; thumb drag 0x417E60(+0x3C4), relayout 0x440C30); input dispatch 0x42BEAA->0x42AAB0->0x42BF70->table 0x42C4D4 (case 9=0x42C17D) / event loop 0x42BEF8 16 fixed windows winmgr+0x567C+id*0xB4 = ((id*5+0x267)*9)*4 @0x42BF0B (corrects old winmgr+0x8A7C+id*540), case table 0x42C494 16 entries; dynamic target [ROOT+0x364444] closed: per-frame 0x41D744 gate=[ROOT+0x2F660C] (inactive-model content poll, corrects old [model+0x30]), msg 0x3F2 send 0x8AB828->0x452940->0x451E60, 500ms throttle [ROOT+0x428040]; outer table 0x421E8C liveness: sole reader 0x41F582 (sole jump-in 0x41F269) bounds msg 0x264..0x26C -> indices 0..8 only, 9..39 statically dead incl 13/16/17; hide_all 0x41C1E0 live via E8 callers 0x41C0CE/0x422BAD/0x42C193/0x42CFC3; second-stage tables 0x421D5C+byteA 0x421D8C / 0x421E50+byteB 0x421E58 / 0x42043C->byteC 0x422080->0x421FBC (49 entries, [31]=0x421CFC [32]=0x421508) / sub-proto 0x42219C->0x422168 (13 entries) decoded; dynamic entry fields +0x520..+0x544 = destination RECTs (ctor 0x43EE00 SetRect IAT 0x4762B0), not text records"
-   ],
-   "pending_notes": "0x418/0x419 business names and option-click semantics (candidate; 0x419 also covers NPC option clicks, Finding 251); three control button business names (glyphs 52/53 up, 54/55 down, 161/162 X = visual comparison only); runtime server reply to 0x3F2 poll"
-  },
-  {
-   "id": "store",
-   "category": "商店/仓库",
-   "artifacts": [
-    "store-window-render-evidence.json",
-    "store-state-graph.json",
-    "store-server-crossref.json"
-   ],
-   "layout_ids": [
-    "window.store-candidate"
-   ],
-   "preview_mode": "window.store-state-0..4",
-   "status": "primary-static-two-store-model-closed",
-   "pending": false,
-   "closed_2026_08_10": [
-    "screen origin closed (Finding 245): state-0 content rect (0,186,300,304), panel at screen (0,184)-(299,490); 0x423E80 builds the window rect DIRECTLY from its args - no parent-relative centering (old factory_argument_warning revoked); click point only sets a drag anchor",
-    "two-store relationship closed: UI store = game+0x33188 == session+0x2D8614 (window id 2, ctor 0x44CFC0 / dtor 0x44D0B0 / register 0x44D310 / paint 0x44E260 / click 0x44E9B0) vs protocol store = game+0x2D8614 == session+0x57DEA0 (receivers 0x285/0x28A/0x28B/0x28C/0x2C0/0x2C8 via 0x44F480/0x44E8B0/0x44F710/0x44F940/0x44FB00); numeric coincidence session+0x2D8614 == game+0x33188 caused the earlier misattribution of update-loop leas 0x41C22C/0x41C232; base-register rule: receivers ebx=game, update loop 0x41C1E0 esi=session; protocol store has NO static ctor/vtable (ground-truth dword scan: 6 receiver leas + 2 session-rel update-loop refs only; store methods in NO vtable) - runtime-initialized, no static sync bridge, do NOT invent one",
-    "state 2/3 corrected (labels were reversed in an earlier draft): 0x44F940 = state 2 (msg 0x2C0, frame 1001, rect(-4,182,205,205), 12 grid rects +0x720 cols 22/60/98/136 x rows 43/81/119); 0x44FB00 = state 3 (msg 0x2C8, frame 1000, rect(0,186,300,304)); state 0 BUY (msg 0x285) / 3 CRAFT / 4 item-detail PROVEN; states 1/2 business names remain candidate (no server message-constant source exists)",
-    "store register args = (2, selector, frame 1000, 0, 0, 0, 300, 304) at 0x42777E-0x427794; flag=1 added internally by 0x44D310; Store class ctor 0x44CFC0/dtor 0x44D0B0 proven from Game dtor 0x426E80 reverse member order",
-    "frames 1010-1017 mapped statically + visually (wilsdk dims = ctor hit rects): 1010/1011 X-close 28x26, 1012/1013 confirm 48x20, 1014/1015 prev 28x26, 1016/1017 next 28x26; panel artwork lives in the WIL loaded at 0x4540C0 (StoreItem.wil string 0x47C878 + MonMagicEx.wil 0x47C890), NOT Storeitem.wil frames 1000+ (those are 24x22 cursors)",
-    "update-loop close branch 0x41C217: [session+0x2D8644] (UI store +0x30) -> 0x42AC50(game,2) unregister + vtable slot4 (0x423F80 SetVisible) call with 0 on session+0x2D8614 = hide, NOT a data sync"
-   ]
-  },
-  {
-   "id": "exchange",
-   "category": "交易/交换",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json",
-    "system-window-render-evidence.json",
-    "draw-order-evidence.json"
-   ],
-   "layout_ids": [
-    "window.exchange-candidate"
-   ],
-   "preview_mode": "window.exchange-candidate",
-   "status": "primary-static-draw-and-state",
-   "pending": true,
-   "pending_notes": "exchange button business names (1060-1062 Chinese 交易 label visible, click binding not traced), trade state transitions beyond draw-time side selection, runtime window origin (show-time x/y is dynamic message-provided -> no static absolute origin, candidate-level)",
-   "closed_2026_08_11": [
-    "grid + text draw loop closed (Finding 260): item cell loop 0x4169B0 at 36px column step (frame from [ebx+0x5EC], stackable count color 0x0A/0x0B from [ebx+0x609..0x60B], count text via 0x45F2D0); 4 text records via shared compositor 0x45DE50 + formatter 0x46811C - left trade partner name from zeroed writable global buffer 0x7776A0 (runtime-filled, not a string literal), right side name from this+0x129D8, %d count strings from this+0x12A18/this+0x12A1C; both trade-weight gauges' value fields [this+0x54]/[this+0x58] are never written in .text -> both bars always render empty (fill runtime source resolved: none)",
-    "register-flow mismatch closed at candidate level (Finding 260): registration origin (0,0) 484x330 (main_init 0x277A1) vs ctor-baked child rects (532,350)/(185,332)/(225,332) that exceed parent bounds; show dispatcher 0x42B6A0 (13 callers 0x42BB4E..0x42BD67) receives x,y from invoking message and 0x4240C0 computes a drag grab-offset from [+0x48]/[+0x4C] (offset, not a move) -> screen position is set dynamically at show time, so NO static absolute screen origin exists; coordinates stay candidate/relative until runtime or message-flow proof",
-    "constructor_va convention corrected (Finding 260): true ctor entry is 0x004159D0 (called from main_init 0x277C2 with id 3, frame 1050, x=0 y=0 w=484 h=330, object main+0x3399C); old value 0x00415A71 was the first child-control call site inside the ctor; frames 1060/1061/1062 non-blank 48x20 with visible 交易 label, 1063/1064/1065 blank (0 opaque px) matching ctor using 1061/1062 for the trade button",
-    "exchange draw-time state dispatch closed (Finding 258): paint 0x415B10 calls [vt+0xC] base paint then SetRect 0x4762B0 splits into left this+0x5C / right this+0x6C rects at center_x=winx+(right-left)/2 (0x415B21-0x415B63); draw-time state = mouse side via PtInRect 0x4762B4 on left rect (globals 0x7DA1C0=mouse x / 0x7DA1C4=mouse y) -> bl=0 left grid origin (winx+0x15, winy+0x30) / bl=1 right origin (winx+0xFD, winy+0x30); second PtInRect 0x415BC2 on chosen grid gated by globals 0x7243C4!=0 / 0x7243D8==0 -> cell index 0x416830 -> item map 0x4162E0 (0x7243DC); weight bars at 0x41601C/0x41603D"
-   ]
-  },
-  {
-   "id": "party",
-   "category": "组队",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json"
-   ],
-   "layout_ids": [
-    "window.group",
-    "window.group-pop-candidate"
-   ],
-   "preview_mode": "window.group,window.group-pop-candidate",
-   "status": "primary-static-render",
-   "pending": true
-  },
-  {
-   "id": "guild",
-   "category": "行会",
-   "artifacts": [
-    "window-draw-calls.json",
-    "window-control-resource-analysis.json",
-    "window-frame-visual-semantics.json"
-   ],
-   "layout_ids": [
-    "window.guild-candidate"
-   ],
-   "preview_mode": "window.guild-candidate",
-   "status": "primary-static-render-plus-click-branches-closed",
-   "pending": false,
-   "closed_2026_08_11": [
-    "9 controls array this+0x118 stride 0xB4 (frames 161/162, 610..625); click dispatcher 0x4258F0 check order 0,1,2,3,4,7,5,8,6 (main mouse dispatch 0x42C039-0x42C052 -> id-hook push 4 -> 0x42ADB0); branches: 会员升职->state0+0x4523E0@0x8AB828, 成员踢出->state1+0x452410, 盟主转让->state2 raw c7 86 9c 00 00 00 00 c6 86 98 00 00 00 02 @0x4259D9, 邀请入会/行会解散->leader guard [this+0x94]+dialog 602/601 (list3 this+0xEC/0xFC, list1 this+0xBC/0xCC via 0x45DC70 + [0x4762CC] submit, empty-list tooltip 0x47BB28), 行会公告->tooltip id 0x40F text 0x47BAF4 (%s=[this+0x54] via 0x46811C), 关闭窗口->tooltip id 0x415 text 0x47BAC8, 退出行会->INVERTED guard (leader no-op, member tooltip 0x47BAA4); tooltip display 0x418030 (ecx=0x7E04C8), edit input 0x8AB828 via 0x4520F0+0x4523E0 (0x47BA90 '@退出联盟 '); paint three states: state0 0x425280 markers 0x47BA78/0x47BA6C/0x47BA60, state1 0x425440 marker 0x47BA84 -> 0x96FF else 0xFFFFFF, other 0x425590 no markers every row shadow 0xA140A + green 0xFF00 double-draw (0x4255C5/0x42563E); scroll this+0x9C, cap 0x12, row step font height+5 (0x45E0C0); paint-time SetPosition truth (0x425152-0x425258): (556,409)/(34,376)/(34,402)/(121,402)/(309,376)/(397,376)/(484,376)/(309,402)/(397,402); ctor 0x424E60 only controls 0-3 usable, calls 5-9 stale register garbage; +0x6B8 ctor record [196,50] corrected to (600,72); Finding 259 in RESEARCH_LOG.md"
-   ]
-  },
-  {
-   "id": "social",
-   "category": "好友/社交",
-   "artifacts": [
-    "social-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.group",
-    "window.guild-candidate"
-   ],
-   "preview_mode": "none",
-   "status": "primary-static-render-plus-open-state-closed",
-   "pending": false,
-   "closed_2026_08_11": [
-    "group (id 6, main+0x47834, paint 0x4243D0): member row = single text field node+0x04, NO icon, linked-list insertion order (feeder 0x419EE4 -> push_back 0x424840, container this+0x54 vtable 0x4767E0, head this+0x58/next+0xC/count this+0x68); two columns odd->window.x+45 (0x424471 push ebx=window.x+0x2D) even->window.x+145 (0x424479 lea edx,[ebx+0x64]), y=window.y+0x5A+20*floor(i/2) -- old formula mod-2 column mapping was inverted, corrected in member_list_render.formula; permission text [允许]/[拒绝] (this+0x3F0 -> 0x47BA08/0x47BA00) y=window.y+0x3A proven (0x424549/0x424563 add edi,0x3A), x reads uninitialized stack slot [esp+0x1C] (0x42453E) -> statically unprovable, old 'window.x+0x6E' rejected; NO 18-row cap: full traversal (0x42449B next==0 terminator), overflow clipped by engine not truncated; runtime open-state: show 0x42AC30 / hide 0x42AC50 (active list main+0xD24/+0xD28..+0xD38), toggle 0x42B0BA (visibility main+0x47864=win+0x30, companion tab frames 0x398/0x399 @main+0x47B70 via 0x417880), show dispatcher 0x42B6A0 tail 0x42B79A; guild closure in record id=guild (Finding 259)"
-   ]
-  },
-  {
-   "id": "settings",
-   "category": "系统设置/音量",
-   "artifacts": [
-    "system-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.option"
-   ],
-   "preview_mode": "window.option",
-   "status": "primary-static-config-and-render-closed",
-   "pending": false,
-   "pending_notes": "remaining candidates: Ambience actual sound trigger point; BGM volume re-apply timing at playback (BGM volume lives on channel object 0x8AB658, applied only at slider drag 0x441F6C)",
-   "closed_2026_08_11": [
-    "audio-global-consumption closed (Finding 260): EffectSoundLevel 0x8AB14C is read directly at play time - 0x45BCE9 inside 0x45BC80 (volume/pan apply, invoked from effect-sound setup 0x45B140 and one-shot play 0x45B900; 0x45B900 has 6 callers 0x457BA7/0x459240/0x459476/0x459AD6/0x45B032/0x45B074); BGMLevel 0x8AB150 has ZERO audio-engine references (all 5 refs 0x441C26/0x441E5F/0x441E6E/0x441EA6/0x441F68 are option-window code): slider drag 0x441F67 writes it then immediately applies volume to BGM channel object 0x8AB658 via 0x441F6C->0x45A700; BGM playback paths (0x45B250 play-by-name, 0x45B3D0 stop->0x45A510, 0x45B410 enable +0x56C, 0x45B3F0 state query [ch+0x130]) read channel object only -> the two volume globals are NOT consumed through the same path",
-    "no-runtime-overlay (Finding 260, negative): option paint 0x441380-0x4414E3 = base frame 750 (vtable+0xC) + 11 child controls repositioned via 0x417830 (0x417830 arg order is (this, y, x); close (218,238), 8 toggles at x in {148,185} x y in {43,116,190,217}, two slider knobs this+0x6D0/0x784 at x=34+[this+0x6C/0x74] 0..160) + child paint loop (vtable+0x4, 11 iters, step 0xB4 from this+0x7C); no text records, no fill bars -> only dynamic element is slider knob x-offset",
-    "click dispatch + config chains closed (Finding 260): jump table 0x44194C 8 entries -> idx1 BGM ON (0x45B3F0 query / 0x45B410 enable / 0x45B250 play by name), idx2 BGM OFF (0x45B3D0 stop + [0x8AB69C]=0), idx3 EffectSound ON (0x45B1B0), idx4 EffectSound OFF (0x45B1D0 stop 50 channels + 0x45B1C0), idx5/6 Ambience (0x441850/0x44186E), idx7/8 ShadowBlend [0x47EF48] (0x4418AF/0x4418FE); config SAVE chain 0x441B30-0x441CAE (globals/state -> Config.ini 'Options' 0x47A2B8/0x47A2CC), LOAD chain 0x441DA0-0x441F37 (GetINI -> atoi 0x4681F9 -> EffectSound->[+0x58]@0x441D85, EffectSoundLevel->[0x8AB14C]@0x441DE2, BGM->[+0x54]@0x441E0C with 0x45B410/0x45B3D0+0x45B430 apply, BGMLevel->[0x8AB150]@0x441E5E clamp, Ambience->[+0x5C]@0x441EFA, ShadowBlend->[+0x60]+[0x47EF48]@0x441F23/0x441F29)",
-    "constructor_va convention corrected (Finding 260): true ctor entry is 0x00440FE0 (called from main_init 0x2788D with id 0xC, frame 750, x=276 y=113 w=248 h=264, object main+0x518E0); old value 0x0044103E was the first child-control call site inside the ctor"
-   ]
-  },
-  {
-   "id": "horse",
-   "category": "坐骑",
-   "artifacts": [
-    "horse-window-render-evidence.json"
-   ],
-   "layout_ids": [
-    "window.horse"
-   ],
-   "preview_mode": "window.horse",
-   "status": "primary-static-render-and-command-closed",
-   "pending": true,
-   "pending_notes": "per-value sub-state semantics of 0x7DA060 values 1/2/3 (protocol crossref); protocol meaning of word fields 0x7DA061-62/0x7DA063-64; final server semantics of @遛马 vs 말내리기 label; 0x5600FC stride-324 mounted-appearance table resource binding",
-   "closed_2026_08_11": [
-    "mount labels + horse data fields closed (Finding 260): frames 860-867 - 말타기 F860/861, 말내리기 F862/863, 말숨기기 F864/865, 말꺼내기 F866/867; frame widths 44/60/60/56 px vs 3/4/4/4 CJK glyphs corroborate transcription; pressed/released diffs cover full frames; horse data fields [this+0x54..0x64] block mirrored to session 0x777698+0x629C8 (dword 0x7DA060 + word 0x7DA061-62 + word 0x7DA063-64 + byte 0x7DA064='W' clamp 0x88/0x89/0x8B); label 말내리기 vs command @遛马 mismatch reported as code reality",
-    "no state overlay outside frame 850 (Finding 260, negative): horse paint 0x4269C0-0x426A74 = base frame 850 (vtable+0xC) + 5 control repositions (this+0x54 (252,293), +0x108 (28,244), +0x1BC (74,244), +0x270 (133,244), +0x324 (192,244)) + child paint loop (vtable+0x4, 5 iters, step 0xB4 from this+0x7C); no text records/overlays; state-dependent content lives only in click dispatch 0x426A80-0x426B45 (btn1+0x108 -> @上马 0x47B060 when [0x7DA060]==0, btn2+0x1BC -> @遛马 0x47B068 when !=0, btn3+0x270 -> @收马 0x47B058 unconditional, btn4+0x324 -> @遛马)",
-    "constructor_va convention corrected (Finding 260): true ctor entry is 0x004268C0 (called from main_init 0x27774 with id 2, frame 850, x=0 y=0 w=244 h=320, object main+0x17C90); old value 0x0042691B was the first child-control call site inside the ctor"
-   ]
-  },
-  {
-   "id": "prompt",
-   "category": "确认框/提示框",
-   "artifacts": [
-    "confirmation-prompt-evidence.json",
-    "notice-prompt-window-evidence.json",
-    "window-visibility-dispatch-evidence.json"
-   ],
-   "layout_ids": [
-    "window.confirmation-prompt-950",
-    "window.notice-prompt-candidate"
-   ],
-   "preview_mode": "prompt.confirmation,prompt.notice,window.notice-prompt-candidate",
-   "status": "primary-static-render-plus-0x7EE-receive-plus-visibility-closed",
-   "pending": false,
-   "pending_notes": "banner singleton 0x777200 display duration / auto-dismiss (no timer/counter reference in .text; runtime confirmation required); runtime packet content of 0x452040/0x451F90 message builders; Interface1c prompt text 0x8B187C server/protocol source (candidate); 0x45D270 text-format exact COLORREF/font size (candidate, IAT-level call with unparsed color arg)",
-   "closed_2026_08_11": [
-    "0x7EE receive closed primary-static: main WndProc 0x403E81 @0x403FA4 -> 0x404600 (chat-input dual-buffer restore 0x403640 + EM_SETSEL select-all + SetFocus); second WndProc 0x459654 -> 0x45A140 (type==1 idx 0/1 -> 0x452040 + 0x451F90 game-object send); 0x7EE absent from message table 0x421E8C (only entries 0-19 valid); 0x412303/0x412AAE/0x42AAB0/0x42C4D4 = pre-0x7EE input router (click 0x418400 / visibility query 0x418460 / top-window resolve / id-indexed dispatch table jmp [edi*4+0x42C4D4] @0x42BF7E)",
-    "guild-announcement edit buffer saved via msg 0x410/0x411: click 0x43E4BA GetWindowTextA([this+0x1CC], buf, 0xFA0) -> line-split 0x468BF0 -> state [this+0x1D0] selects 0x4524A0 (msg 0x410) / 0x4524D0 (msg 0x411) -> 0x452940 12-byte header -> 0x451E60 sprintf '#%d%s%s!' (0x47C840/0x47C800) -> send via 0x468098 = jmp [0x476340] (WS2_32 import descriptor 120, ordinal 19 = send)",
-    "banner 0x777200 text source = game object singly-linked list (game+0xEC show / game+0xBC hide; node+4 string) -> 0x45DC70 join (separator 0x47BB4C CR LF) -> SetWindowTextA([0x7773CC], buf) @0x425ABB-0x425AC4 / 0x425BAC-0x425BC2; visibility dispatch id 0xF via 0x42ADB0(winmgr 0x7243A4) @0x425A1F/0x425B1E; frames 602 (show) / 601 (hide) via base ctor 0x423E80",
-    "0x43E4B0 payload = WM 0x201/0x202 packed lParam coords (primary-static, Finding 249): 0x43E4B0 = notice window (id 15) click handler (this=main+0x2A548C+0x52E5C, 2 stack args x/y, dispatches child controls this+0x54 frames 161/162 and this+0x108 frames 606/607; confirm-hit -> 0x45DC70 -> 0x8AB7A8 -> 0x4524A0/0x4524D0; child-hit -> return 1 -> caller hides id 15). Both unpack [esp+8]=(y<<16)|x: WM_LBUTTONDOWN 0x201 -> 0x41D470 (0x41D485/0x41D48E), WM_LBUTTONUP 0x202 -> 0x41E451 -> 0x41DB80 (0x41DB93/0x41DB99) -> 0x42BE20; x=low16 -> main+0x35B2A8, y=shr16 -> main+0x35B2AC; call site 0x42BE8C push y/x, lea ecx,[esi+0x52E5C], call 0x43E4B0; nonzero -> push 0xf; call 0x42ADB0 (show id 15); LBUTTONDOWN analog 0x42BA20 -> 0x43E640",
-    "Interface1c prompt displayed BEFORE Frame 602 window, mode byte 0x8B1878 enforced (primary-static, Finding 249): protocol case 0x64/sub0 (0x41CE14, msgs 0x7ED-0x7F0 via 0x41E522 -> 0x41CDE0) -> gate 0x419CC0 -> queue tag 0x3F1 (0x451660 @0x8AB828) -> 0x42E1F0 (.itm file loader: sprintf '.\\Data\\<arg>.itm' 0x47BDC4/0x47BDCC into 0x8AB7A8, CreateFileA @IAT 0x4760DC GENERIC_WRITE/share=2/CREATE_ALWAYS=2/0x80 + 3x ReadFile @0x4760D0; NOT a notice send) -> [esi+0x428208]=0; byte[esi+0x428204]=2 (0x41CE57, only writer, value 2). Frame step 0x41C1C7 -> 0x41B5D0 (state 2 + acc>0x9C4 @0x41B65F) -> 0x419BE0: mode byte=2, mirrors [0x8AB820]/[0x8B1870]=0x8A7140, call 0x456CB0 (Interface1c re-init), 0x45D270(0x8AB7A8, 0x280, 0x1E0, 0x10, [1|2], 5) text format ([0x47EE89] picks 1/2). Main-loop switch @0x402123: mode 2 -> 0x8A7140+0x4575D0 (prompt step; state 2 @0x457615: gate 0x45C900 -> SetWindowTextA(0x8AA48C, 0x8B187C) + MoveWindow(0x8AA48C, [0x8AB7F0]+0x120, [0x8AB7F4]+0x195, 0x4B, 0xD, 1) + ShowWindow(0x8AA48C, 5)); state 4 @0x45773C -> 0x4570A0 -> 0x4570C0 (mirrors=0x47EF18, mode byte=3). Mode 3 -> 0x47EF18 + 0x41BB00 / (0x41B440+0x41B500 if [0x8AB7E8]==0) = Frame-602/notice banner phase (banner singleton 0x777200 ctor frame 0x25A=602 @0x425A46; show push 0xf; mov ecx,0x7243A4; call 0x42ADB0 @0x425A26/0x425B25). Mode order 0->2->3 statically guarantees prompt precedes Frame 602"
-   ]
-  },
-  {
-   "id": "window-position-dispatch",
-   "category": "全局窗口位置分派（拖拽/输入分派）",
-   "artifacts": [
-    "window-position-dispatch-evidence.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "window-position-dispatch",
-   "status": "primary-static-window-position-dispatch",
-   "pending": true,
-   "pending_notes": "runtime visual verification of drag frame sequencing and the 570 bottom clamp; store id2 drag interaction under states 2/5+ (0x44E910/0x44EF00 gates decoded statically, runtime state transitions unverified)",
-   "closed_2026_08_10": [
-    "pending resolved: every input/drag caller's two runtime args are ABSOLUTE client-area mouse coords X/Y (lParam LOWORD/HIWORD forwarded verbatim), NOT deltas, NOT window-relative; drag chain WM_LBUTTONDOWN 0x41D470 -> 0x42BA20 -> 0x42B6A0 (reorder list + [base+0xD3C]=1 + 0x4240C0 grab offsets +0x48/+0x4C) -> WM_MOUSEMOVE 0x41D390 -> 0x42C510 -> 0x42C741 -> 0x42B430 (E8 callers = only 0x42C745; 0x42C510 only 0x41D457; 0x42BA20 only 0x41D57B; 0x42BE20 only 0x41DC82) -> 0x423FA0(win, X, Y, flag=0)",
-    "0x423FA0 semantics: flag=0 drag-follow left'=X-[win+0x48], top'=Y-[win+0x4C], right'=left'+[win+0x40], bottom'=top'+[win+0x44]; bottom clamp >0x23A(570) -> top'=0x235(565)-height (30px bottom margin); SetRect(0x4762B0, &win+0x18, ...) + centered second SetRect(&win+0, (origW-w)/2, (origH-h)/2); flag=1 absolute set used by init 0x41FA68 (X=519)/0x4204F3 (X=518); [win+0x40]=width [win+0x44]=height (NOT offsets, NOT current/initial position); [win+0x48]/[win+0x4C]=grab offsets from 0x4240C0; new top-left = (X-grabX, Y-grabY) absolute 1:1 mouse-follow",
-    "UI object base correction: UI subsystem object = main+0x2A548C; per-window offsets base-relative (inventory +0x6554=main+0x2AB9E0, status +0x29CE4=main+0x2CF170, store +0x33188=main+0x2D8614, exchange +0x3399C=main+0x2D8E28, guild +0x4707C=main+0x2EC508, group +0x47834=main+0x2ECCC0, group-pop +0x47C28=main+0x2ED0B4, chat-pop +0x507EC=main+0x2F5C78, npc +0x51150=main+0x2F65DC, quest +0x516E8=main+0x2F6B74, option +0x518E0=main+0x2F6D6C, horse +0x52118=main+0x2F75A4, other-14 +0x524F0=main+0x2F797C, notice +0x52E5C=main+0x2F82E8); 16-window vtable array base+0x567C (stride 0xB4); game object base+0x61BC",
-    "drag lifecycle: start WM_LBUTTONDOWN (0x42B6A0 arms [base+0xD3C]=1 + records grab offsets); follow every WM_MOUSEMOVE with [main+0x35B2B8]!=0 (0x42B430 follows only head-of-list); end WM_LBUTTONUP -> 0x42BE20 ([base+0xD3C]=0, notice gates 0x53060/0x52E8C, else 0x417E60(base+0x61BC, X, Y)); runtime list [base+0xD38]=count head [base+0xD30], add 0x42AC30 / remove 0x42AC50, most-recent-first; win+0x34 flag = in-drag-list/dragging (set 0x423F90/0x42B6A0, reset 0x42B820)",
-    "per-id input handlers inside 0x42C510 (table 0x42C798): 0 inv 0x430650 -> if 0 status 0x44CED0 -> position dispatch; 1 status 0x44CED0; 2 store 0x44F110 -> if 0 exchange 0x416E70; 3 guild 0x425DE0; 4 group 0x424770; 6 group-pop 0x450B70; 7 chat-pop 0x414CF0; 8 npc 0x448430; 0xB quest 0x441A20; 0xC option 0x426B90; 0xD horse 0x43AC80; 0xE other 0x440560; ids 5/0xA no handler; hit id -1 -> 0x42C6A7 hover-out no-arg calls -> 0x42C741",
-    "hit-test 0x42AAB0: iterates runtime list from [base+0xD2C], count [base+0xD38]; node = {dword id; dword ?; dword next +8}; per-id RECT pointer (+0x18) copied to locals, PtInRect [0x4762B4](rect, X, Y) at 0x42AB95; miss -> advance [node+8]"
-   ]
-  },
-  {
-   "id": "secondary",
-   "category": "角色选择/创建/登录次级界面",
-   "artifacts": [
-    "interface1c-parent-context.json",
-    "interface1c-select-screen-context.json",
-    "interface1c-cluster-456d.json"
-   ],
-   "layout_ids": [],
-   "preview_mode": "secondary-0,secondary-1",
-   "status": "primary-resource-cluster-candidate",
-   "pending": true
-  },
-  {
-   "id": "simulator",
-   "category": "交互式客户端模拟器交付",
-   "artifacts": [
-    "../../../Tools/mir3_client_simulator/app.js",
-    "../../../Tools/mir3_client_simulator/index.html",
-    "../../../Tools/mir3_client_simulator/style.css",
-    "../../../Tools/mir3_client_simulator/data/layout.json",
-    "../../../Tools/web/build_mir3_simulator_data.py"
-   ],
-   "layout_ids": [
-    "sim.*"
-   ],
-   "preview_mode": "sim",
-   "status": "delivered-candidate-geometry-explicit",
-   "pending": true
+  "evidence_policy": "primary original-client evidence first; secondary server files only cross-reference names/content",
+  "records": [
+    {
+      "id": "hud",
+      "category": "主HUD/底部操作栏",
+      "artifacts": [
+        "layout.json",
+        "hud-bars-render-evidence.json",
+        "hud-label-evidence.json",
+        "target-box-evidence.json"
+      ],
+      "layout_ids": [
+        "hud.*"
+      ],
+      "preview_mode": "hud",
+      "status": "primary-static-resource-and-coordinate",
+      "pending": true,
+      "closed_2026_08_10": [
+        "monster target box chain closed (Finding 239): code-drawn composite anchored HUD+0xE4/+0xE8 - name-plate box 0x40B850 (0xA0A0A border, width=text width, 15px tall, 15..30px above anchor, per-frame call [HUD vt+0x84] with current target @0x41C063), name text 0x40B750 (selector 0x566DD4 F2/F3), hover name tag 0x40BB00 (3000ms), HP bar 0x40A8A0 (element 0x5600FC+[8D]*0x144, frame=HP value, 400/300 center formula), entity re-render 0x437DF0; anchor world-derived 48x32 tile math 0x40F5F0 or fixed (376,227) 0x4120B0; layout rects 0x629FC/0x629EC; hover msg 0xB -> selector load 0x40A4D0 (type db 0x449B90/0x8AA5A8) -> server query 0xBC7/0xBD1/0xBD8; click target msg 2 -> 0xBC4; switch 800ms timeout + mouse delta >5 gate; show/hide state machine 0x411D91 states 0x15..0x1F; see target-box-evidence.json"
+      ],
+      "closed_2026_08_11": [
+        "16 HUD caption controls closed PRIMARY-STATIC (Finding 261): array = hud+0x567c..0x6108 (hud = gameObj 0x47EF18+0x2A548C), 16 slots stride 0xB4, 9-arg ctor 0x417550 call sites all enumerated (0x4279B2/0x4279E6/0x427A1A/0x427A4E/0x427A82/0x427AB6/0x427AEA/0x427B24/0x427B58/0x427BAA/0x427BFC/0x427C4D/0x427C9F/0x427CF1/0x427D42/0x427D94); full 16-slot table decoded (交易栏/任务栏/技能图鉴/退出游戏/注销人物/组队/行会/腰带/技能书/聊天记录/信息窗口/设置栏/帮助窗口[EUC-KR 도움말창(지원예정) 韩版遗留]/坐骑/包袱栏/状态栏); caption tooltip text color = 0x000000 BLACK (0x45DE50 arg6 = literal push 0 @0x41750C, SetTextColor IAT 0x476060); HUD-side dispatch loops located: paint 0x42954B (16x stride 0xB4 call [vt+4]=0x417640, from render 0x4294E0 @0x41C0F7), move 0x42C770 (call [vt+8]=0x417780, from 0x42C510 @0x41D457), press 0x42BAC9 (call [vt+0xC]=0x4177C0, from 0x42BA20 @0x41D57B), release 0x42BF02 (call [vt+0x10]=0x4177F0, from 0x42BE20 @0x41DC82, per-caption click-action jump table 0x42C494)"
+      ],
+      "pending_notes": "runtime HP/MP/EXP value injection (protocol-level, runtime-only); typewriter reveal direction runtime visual confirmation (candidate); per-caption click-action business mapping of 0x42C494 entries (long tail)"
+    },
+    {
+      "id": "target-box",
+      "category": "怪物目标框/悬停目标",
+      "artifacts": [
+        "target-box-evidence.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "sim",
+      "status": "primary-static-render",
+      "pending": false,
+      "closed_2026_08_10": [
+        "full hover target box chain closed (Finding 239) - see hud record closed_2026_08_10 entry"
+      ],
+      "closed_2026_08_11": [
+        "long-tail closed (Finding 257): (1) selector WIL bindings = static NEGATIVE evidence - bind API 0x4660E0 has 14 direct callers enumerated, sole global-table binder = map loader 0x43B600 covering only 0x0E..0x1B/0x1C..0x29 (all 544 shipped maps header[0x14] in {0,1}); target-box elements 0x51/0x56/0x57/0x81/0x89/0x8A have no static binder (0x566780->only 0x40CE96, 0x566DD4->11 readers, 0x566F18/0x56AE60/0x56A440/0x56AFA4->zero imm32 refs); 0x47C3E0 filler format dead (0 refs); exact WIL filenames = runtime data candidate",
+        "(2) hover target portrait = NEGATIVE (no portrait exists): per-frame HUD dispatch 0x41BF00-0x41C0A0 = 5 text/HP-bar components only (0x40A8A0, 0x40BB00, vtable+0x80=0x40B750, entity loop, 0x41B1C0, 0x434D40; vtable+0x84=0x40B850 @0x41C063); status-window 49x33 rect (this+0x200) = special index 4 character-figure slot drawn at (window.x+0x61, window.y+0xC8) flag=1, NOT a portrait; NPCface.wil (440 frames, ~100x122) excluded by dims",
+        "(3) HP bar frame = HP value [0x61B9C] primary-static (0x40A8A0); 0x40F5F0 10000+(A%400) series = separate rect HUD+0x629FC on element 0x57 (0x566F18 = 0x5600FC+0x57*0x144, third selector byte [0x629CF]=0x57 @0x40C79C/0x40F47F), A=[629C8]*400-[8A]*3000+[C4]-0xAA0, frame=10000+(A%400); GameInter.wil 1103 frames <10000 excluded (primary-static absence); >=10000-frame WIL candidates measured (Tiles5c 20000, SmTilesc 10180, object1c 33125, object2c 30000, M-SHum 32722, M-Hum 27000, M-Helmet1 24000, M-Hair 15000, Horse 10400, M-Weapon1/2/3 30000, M-Weapon4 17000) - runtime-bound candidate"
+      ],
+      "pending_notes": "exact WIL filenames backing target-box selector elements (0x51/0x56/0x57/0x81/0x89/0x8A) and the 0x56B22C path-slot filler are runtime data - no static binder (primary-static negative); 0x40C020 caller unidentified"
+    },
+    {
+      "id": "map",
+      "category": "地图/小地图",
+      "artifacts": [
+        "map-ui-resource-evidence.json",
+        "minimap-server-crossref.json",
+        "../mir3-map-reconstruction/MAP-SURVEY.md"
+      ],
+      "layout_ids": [],
+      "preview_mode": "map-bg-derived,map-minimap-derived",
+      "status": "primary-static-resource-loader-plus-paint-chain-closed",
+      "pending": false,
+      "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
+      "closed_2026_08_10": [
+        "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
+        "no separate map dialog (single ctor main+0x6214)",
+        "T key + mouse click toggle paths",
+        "object list layouts + type byte values",
+        "map_bindings.json: 182 crossref-confirmed rows (client 0x0043D780 select rule + server MiniMap.txt)",
+        "simulator setCurrentMap drives bg+minimap from same binding; derived level"
+      ]
+    },
+    {
+      "id": "status",
+      "category": "人物状态/属性/装备",
+      "artifacts": [
+        "status-window-render-evidence.json",
+        "equipment-slots-evidence.json"
+      ],
+      "layout_ids": [
+        "window.status"
+      ],
+      "preview_mode": "window.status",
+      "status": "primary-static-render",
+      "pending": false,
+      "closed_2026_08_10": [
+        "attribute text coords closed: col1 label (winx+0xFF, winy+0x43) step 0xF; col2 label (winx+0x17F, winy+0x1E) value +0x44 (reset re-read of [ebp+0x18/0x1C], non-cumulative; old +0x27E/+0x127 model retired)",
+        "two position-field pairs documented: [this+8/0xC]=background screen pos, [this+0x18/0x1C]=attribute/equipment/hit-test base",
+        "global selector array 0x5600FC+0x144k; el82=0x5668C4 flag0 / el83=0x566A08 flag1 / el139=0x56B0E8 flag2 via 0x430A40 dispatch",
+        "selector construction loop 0x43B7B2 (map rebuild, 14 elems, mode1->mode0 fallback, covers 70..83 incl. el82/el83) + dtor loop 0x43B75B (14..69)",
+        "equipment slot classification = server-driven (0x44B720 pure-position hit test; server EquipmentSlot enum; 2,3,5,6,7,8,9,10 -> classic 8-piece candidate)",
+        "8 equipment slots 38x38 geometry closed (Finding 240): SetRect chain 0x44B1BC-0x44B2C6 loop0 helmet (177,70) loop1 torch (27,264) loop2 poison (64,264) loop3 braceletL (27,186) loop4 braceletR (175,186) loop5 ringL (27,227) loop6 ringR (175,227) loop10 shoes (103,264); abs = +(278,136); non-slot loop7 portrait/name 49x33, loop8 paperdoll 60x90, loop9 attribute 53x84; icon frame = item shape WORD[graphics+0x28] not slot index; see equipment-slots-evidence.json"
+      ],
+      "closed_2026_08_11": [
+        "el82/el83/el86 WIL bindings closed PRIMARY-STATIC (Finding 246): el82=Data/Inventory.wil (slot 0x570574 = owner+0x10478, store site 0x453804), el83=Data/Equip.wil (slot 0x570678 = owner+0x1057C, store site 0x453829), el86=Data/ProgUse.wil (slot 0x570984 = owner+0x10888, store site 0x4538A2); chain = game obj 0x47EF18 -> owner 0x5600FC -> element ctor 0x452AA0 -> WIL table fill 0x452B20 (92 strings, slots 0..91, slot N = owner+0xF848+(N-70)*0x104) -> element loop2 0x452AF7 (70 iters mode 0: el70..el139)",
+        "el139 = empty/unset candidate: constructed mode 0 at 0x452AF7 (i=69) from zeroed path slot 0x573F58 (never written by 0x452B20); map-rebuild 0x43B7B2 reconstructs el126..el139 when byte[map+0x124]=8 (start=126, formula (byte+1)*14 @0x43B770-0x43B77C, mode 1 with mode-0 fallback)",
+        "Frame 172 child-control action closed as view-toggle button (Finding 246): child this+0x10C frames 171/172; click handler 0x44CCD0 toggle branch 0x44CD14-0x44CD9F; mode byte [this+0x54]: 0=attribute view (frame 200=256x512, faces 171/172), 1=equipment view (frame 201=1024x512, faces 168/169); 0x423E80 re-frame + 0x417880 faces; hit rect corrected to (176,264) 36x36 (old 286 wrong); initial view = attribute (frame 200 at 0x427776)",
+        "slot record stride 0xC24 re-confirmed (click handler 0x44CDCD-0x44CDD9 idx*0xC24 = 777*4 = 3108; earlier 0x40C was arithmetic error)",
+        "map-rebuild start byte [map+0x124] semantics PRIMARY-STATIC (Finding 266): byte = header byte @0x14 of the loaded .\\\\Map\\\\%s.map (format 0x47C404); sole writer = ReadFile(hFile,[ebx+0x110],0x1C) @0x43B68B (0x124=0x110+0x14; only byte-sized [mem+0x124] access in .text is the read @0x43B772); formula (byte+1)*14 @0x43B770-0x43B77C; rebuild loop 0x43B7B2 (14 iters, el=0x5600FC+start*0x144, slot=0x56B22C+start*0x104, mode1 0x4660E0 w/ mode0 fallback), dtor loop 0x43B75B always destroys el14..el69; 544 shipped maps header[0x14] in {0:530, 1:14} - type1 = 4.map (32x32) + 41..44.map (144x144), byte=4/8 (el70..83 / el126..139) in NO shipped map (hypothetical); open-fail default 0",
+        "el139 = Data/StoreItem.wil store-item selector PRIMARY-STATIC (Finding 266, supersedes the stale 'empty slot' claim): 0x452B20 fills ALL slots 0..139 (slot N=owner+0xB130+N*0x104; slot 139=0x573F58=owner+0x13E5C, StoreItem.wil 0x47C878 copied @0x4540E8 w/ lea [ebx+0x13E5C] @0x4540D4; slot 138=MonMagicEx.wil); element ctor loop2 0x452AF7 binds el70..el139 flag0 -> functional at ctor (mode0 0x466160 wix-eager); dispatch 0x430A40 flag==3 -> el139 (flag==2 = no-draw ret 1 @0x430B60); only flag3 caller 0x44DCC4; direct el139 readers = 4 imm32 0x56B0E8 refs (0x430A63, 0x44D65C, 0x44DBAE, 0x44E05D) all guarded on 0x466130, all store-item icon draws; slot139 written only by 0x452B20, el139 re-bind only via hypothetical byte=8 map rebuild",
+        "equipment slot mapping CLOSED (Finding 265, PRIMARY-STATIC): client record index == server EquipmentSlot enum, zero translation — hit test 0x44B720 raw index 0..10 -> stage 0x44BBD0 (pending slot word @this+0x8886) -> 0x44CEA7 push ebp -> 0x451690 arg2 -> wire builder 0x452940 struct+6 slot byte (msg 0x3EB equip / 0x3EC bag; wire = {dword itemID, word opcode, word slotByte, word 0, word 0}); server indexes equipment arrays by Globals.EquipmentOffSet + enum; compat 0x44B7A0 self-consistent ONLY enum-aligned (identity {0..4,10}, {7,8} rings, {5,6} bracelets, type9 shoes subtype 0x19 -> {5,9} else {5,6}); 11-row table idx0=Weapon/1=Armour/2=Helmet/3=Torch/4=Necklace/5=BraceletL/6=BraceletR/7=RingL/8=RingR/9=Shoes/10=Poison (ctor loop7/8/0/9/3/4/5/6/2/10 -> +0x1C0/+0x1D0/+0x1F0/+0x200/+0x210/+0x220/+0x230/+0x240/+0x250/+0x260); H1 artwork labels (火把@(27,264) etc.) REJECTED as protocol mapping, flagged unverified (needs vision-capable pass); sibling status-window-render-evidence.json pending #1 resolved via this chain (file not edited)"
+      ],
+      "pending_notes": "a few attribute value draw color semantics (status-window-render-evidence.json pending #2, outside this file's scope)"
+    },
+    {
+      "id": "inventory",
+      "category": "背包/物品栏",
+      "artifacts": [
+        "inventory-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.inventory"
+      ],
+      "preview_mode": "window.inventory",
+      "status": "primary-static-render-plus-record-layout-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "record layout primary-static double-proven: 46 contiguous records this+0x774+slot*0xC2C (ctor 0x42E810 -> vector-ctor iterator 0x4686C4(this+0x774,0xC2C,46,per-elem ctor 0x415740); dtor 0x42E8D0 -> vector-dtor iterator 0x468306(this+0x774,0xC2C,46,dtor 0x415740), restoring base vtable 0x476624 -> base dtor 0x423CF0; deleting-dtor thunk 0x42E8B0 = vtable 0x476870 slot[0]; corrects old pointer-array this+0x774+4*index), data base rec+0x0C (0xC20 rep movsd 0x308 @0x42F440)",
+        "packed fields = 24-bit icon tint rec+0x51..0x53 (corrects old +0x351..353): type rec+0x2E in {0x0A,0x0B} -> 0x45E4E0 3->16bit 565 -> RLE blit 0x45F2D0; else white 0xFFFF; frame WORD rec+0x34; qty dword rec+0x49",
+        "cell identity table this+0x2C4: WORD/cell, 6 cells/row, occupied word = slot+0x3E8 (1000), grid draw 0x42F7CC-0x42F7E2 idiv proof; row window max(0,[this+0x58]-5)..[this+0x58]+6",
+        "secondary text closed: 负重:%d / 总量:%d (0x47BDFC) reads 0x7DA11D/0x7DA11F @0x42EF9E/0x42EFB3; four mode labels [包袱]/[修补]/[变卖]/[木柴] from byte this+0x54 dispatch 0x42F13C (0x47BE10/0x47BDF4/0x47BDEC/0x47BDE4)",
+        "primary value 0x7DA100: never written (bss zero), read only by dead 0x405 gate 0x417280 (byte2 guard + sole E8 caller 0x42D6C6 passes category byte 4 -> always skip) and bag paint 0x42EE4C -> displayed 0; semantic candidate trade/buy quantity cap",
+        "click chain 0x4300F0 primary-static: rate-limited 300ms, use-delay frames 0x14/0x15/0x46 -> busy msg 0x47BDA4 正在补充药水; mode0 -> msg 0x3EC via 0x451690 (slot byte [edi+0x1A], name [edi+0x1C], qty [edi+0x55]); mode1 -> 0x451860 (name array_elem+0x784, qty +0x7BD); mode2 -> 0x4517E0",
+        "move/pickup 0x42FE00 and carry 0x42FD10 share the 0xC20 item-data layout with cursor data base at +0x18 (+0x1A slot, +0x1C name); 0x47BE18 = shared font-name literal arg to 0x45DBA0, not a label",
+        "network gap documented: bag-fill virtual 0x42FC40 has zero static refs (no E8/imm32/vtable slot 0..10) -> dead or runtime-computed; server->client bag-list handler needs runtime packet trace pairing outbound msg 0x403 (0x451AD0)",
+        "0x7DA100 主数值静态闭合（primary-static-negative：bss 零、无写入者；读取者=死门 0x41729D + 背包 paint 0x42EE4C sprintf %d，恒显 0）",
+        "记录填充子树（primary-static）：0x42FC40=中段，真实入口 0x42FC20 活（13 E8 调用者，10 服务器消息 handler 拷 0xC20 记录）；0x42F440 虚函数死（唯一调用者 0x42FC90 死子树内）",
+        "0x405 死门（primary-static-negative）：跳表 0x42D680 category-3 路由与 byte2==0 守卫矛盾；唯一发送点 0x417280 死；对话框 0x418030 存 msg-id WORD [obj+0x460] 但确认经 0x417034 发 0x406",
+        "模式标签 GB18030 闭合（primary-static）：mode0 [包袱]/1 [修补]/2 [变卖]/3 [储存]（修正[木柴]；[包裱]→[包袱]）；负重:%d / 总量:%d (0x47BDFC) 活、仅 mode0 分支；0x47BE18=굴림체 字体非标签"
+      ],
+      "pending_notes": "0x7DA100 业务名（candidate：交易/购买数量上限，运行时观察）；0x42FC20 的 10 个服务器消息号（0x403 回包抓包）；0x405 服务器侧协议语义；运行期 3 tab↔4 mode 映射与左下区域视觉确认"
+    },
+    {
+      "id": "skills",
+      "category": "技能/技能书",
+      "artifacts": [
+        "skill-window-render-loop-evidence.json",
+        "magic-exp-loader-evidence.json",
+        "magic-exp-records.json"
+      ],
+      "layout_ids": [
+        "window.other-14-candidate"
+      ],
+      "preview_mode": "window.other-14-candidate",
+      "status": "primary-static-render-plus-data-loader",
+      "pending": true
+    },
+    {
+      "id": "quest",
+      "category": "任务",
+      "artifacts": [
+        "quest-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.quest"
+      ],
+      "preview_mode": "window.quest",
+      "status": "primary-static-render-plus-separator-and-event-chains-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "wire separator '/' (0x2F) primary-static: msg 0x515 -> 0x421A45 -> fill 0x4488D0 splits body via fast strchr 0x468BF0 (push 0x2f @0x44891C/0x448932/0x448944/0x44895C/0x44897A); row text -> record+4, field4 -> record+0x230/+0x214, lens +0x204/+0x22C",
+        "no client-side pixel wrap primary-static: 0x45DD70 (ret 0x1C) one TextOutA per line at fixed 15px cadence; GetTextExtentPoint32A only inside fetch helper 0x45E0C0; no reflow loop in paint/fill",
+        "control->event chains primary-static: X 721/722 consumed locally (release 0x4177F0 -> PtInRect -> 0x45AFC0 cmd 0x69, handler returns 1 at 0x447FDA, no message; corrects Finding 218 'both controls converge'); arrow 723/724 -> 0x4481FA -> 0x448580 -> 0x418 (gate record+0x20C==0, update path 0x44856B); sub-record empty-text click -> 0x448148 -> 0x451A40 -> 0x419 ([child+0]/[record+0])",
+        "business names 0x418/0x419/0x69 and record-class tokenizer remain candidate (no local protocol catalog, EIServer.exe binary-only; needs server packet-handler reference or runtime capture); Finding 251 in RESEARCH_LOG.md"
+      ]
+    },
+    {
+      "id": "chat",
+      "category": "聊天/频道",
+      "artifacts": [
+        "chat-window-render-evidence.json",
+        "chat-window-unified-model.json"
+      ],
+      "layout_ids": [
+        "window.chat-pop"
+      ],
+      "preview_mode": "window.chat-pop",
+      "status": "primary-static-render-plus-call-flow",
+      "pending": false,
+      "pending_notes": "remaining candidates only (evidence pending=[]): 0x45DE50 SetTextColor exact COLORREF (tooltip renderer 0x45DE50 caller pushes 0; a7==0 branch sets TRANSPARENT - color source not statically resolved); typewriter reveal direction / hover reachability runtime verification",
+      "closed_2026_08_11": [
+        "six-channel +0x34 GBK strings = HOVER TOOLTIPS only, never static captions (Finding 243, chat-window-render-evidence.json closed_notes): 9-control vtable chain 0x413DA0 (chat obj ROOT+0x507EC, ctor call 0x426DBD) -> array-helper 0x4686C4 (lea [esi+0x6c]; push 0xb4; push eax; call 0x4686c4; args ctor 0x404690 count 9 dtor 0x4046B0; controls this+0x6C..0x60C stride 0xB4); element ctor 0x404690 writes [obj+0]=0x4763A8; vtable 0x4763A8 +0=0x4046C0 dtor / +4=0x417640 paint state machine on +0x25 / +8=0x417780 hover PtInRect -> +0x25 / +0xC=0x4177C0 pressed PtInRect -> +0x25=2 / +0x10=0x4177F0 hit test (+0x25=0, PtInRect -> 0x45AFC0 sound 0x69); tooltip renderer 0x417370 sole +0x34 readers 0x417373/0x417378, called unconditionally from hover branch (+0x25==1) of paint 0x417640 at 0x41771B; drawn at cursor (GetCursorPos 0x476240 + ScreenToClient 0x476234) with 0x96FFFF light-yellow bg + 1px black frame, DrawTextA 0x476280 flags 0x25 (DT_SINGLELINE|DT_VCENTER|DT_CENTER) inside 0x45DE50, measure 0x45E0C0; normal paint 0x417830 and frame blit 0x460240 are frame-surface only; click dispatch 0x4149A0 injects separate command templates 0x47AD88-family into native EDIT box (SetFocus 0x4762B8 / SetWindowTextA 0x4762CC, HWND 0x8AA48C), unrelated to +0x34",
+        "7-step draw chain + message list (Finding 250, chat-window-unified-model.json draw_chain/message_list): paint 0x4142C0 (wrapper 0x414060, main_init_call 0x427839) = (1) 0x14705 window base/background via vtable+0x0C, (2) 0x14711 chat-input clip SetRect(this+0x6C0, 40,29,531,308), (3) 0x14738 history text loop via 0x45DD70 (19 rows, 14px step), (4) 0x14846 input bar shared gauge 0x4179B0 at (window.x+0x215, window.y-0xD0) value=[+0x68] max=[+0x6D0], (5) 0x1485A 9 child controls direct-paint 0x417830 fixed relative positions, (6) 0x14955 9-iteration child vtable+4 paint loop (hover), (7) 0x14965 input-line character rects SetRect(this+0x954, 25,311,524,326); message list head=this+0x5C, node next=+0x408/prev=+0x40C/color=+0x00/bg=+0x04(0=transparent)/text=+0x08 inline GBK, count=this+0x68, scroll_offset=this+0x6D0, index=this+0x64, clip_rect [35,28,520,43], line_step_px 14, max_rows 19, text_origin_relative [40,29]",
+        "9 control coordinates window-relative (unified-model controls): close this+0x6C F161/162 (532,350) 28x26 paint 0x414863 ctor 0x414144; six channel buttons 36x34 each at x=25/65/105/145/185/225 y=332 (this+0x120 @拒绝 / +0x1D4 ! / +0x288 !! / +0x33C !~ / +0x3F0 @拒绝私聊 / +0x4A4 @拒绝行会聊天; command templates 0x47AD88-family, help strings 0x47AD08-family -> +0x34 tooltips; ctor calls 0x414170/0x414196/0x4141BC/0x4141E5/0x41420E/0x414237); scroll-up this+0x558 F380/381 (539,25) ctor 0x414264; scroll-down this+0x60C F382/383 (539,311) ctor 0x41428A; input-bar vertical gauge this+0x6D4 (shared ctor 0x417960, (533,-208) 16x502, paint 0x414846, raw args [380,19,12,260,12,0], value [+0x68]/max [+0x6D0])",
+        "input EDIT chain (unified-model input): edit HWND global 0x8AA48C, edit object global 0x8AA488; parser 0x414364-0x4144F0 with syntax markers / ( ) and token delimiters space 0x20 colon 0x3A; format prefix 0x47AD28 '/%s ', format parser 0x47AD30 '%[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c'; submit 0x4144A0 -> per-line 0x414FA0; line recall 0x4142C0 (PtInRect on line area, walk this+0x58 list, strip / or (!), tokenize, sprintf '/%s ', write edit); key handler 0x414E9x sets '!' (0x47AD84) or 0x47AD90 into edit, EM_SETSEL 0xB1 to end, ShowWindow 5, 0x414ED0 shift check GetKeyState(0x10) before showing; scroll via hit dispatch 0x4149A0 -> scrollbar 0x417E60 + 9x vtable+0x10",
+        "text renderer slot order CLOSED (unified-model text_renderer + render-evidence closed_notes): 0x45DD70 is thiscall 7 stack args ret 0x1C, order proven by direct disassembly - arg1=target surface (offscreen GDI surface; arg1==0 -> fallback this+0x1C; HDC via surface->vt+0x44 out-param written INTO the arg7 stack slot; GetDC failure -> bail 0x45DE42), arg2=X, arg3=Y, arg4=textcolor (SetTextColor 0x476060), arg5=bgcolor (0 -> SetBkMode TRANSPARENT 0x476044, else SetBkColor 0x476050), arg6=text (strlen + TextOutA 0x476074 @0x45DE12), arg7=font (0 -> this->+0x28 default; explicit font DeleteObject'd by callee); chat call site 0x4147F3: arg1=[0x8AB7C4] (window+0x1C offscreen surface; [0x8AB7C4] has NO static store - written only via IDirectDraw::CreateSurface out-param 0x45D53D/0x45D552, 0x45D602/0x45D617 in 0x45D380), arg2=this+0x6C0+this+0x18, arg3=this+0x6C4+this+0x1C+row, arg4=msg+0x00, arg5=msg+0x04, arg6=msg+0x08, arg7=0; known color literals 0x323232 dark gray / 0x0A0A0A near-black / 0xB4FFB4 pale green; renderer family 0x45DD70/0x45F2D0/0x45FD50/0x45E730/0x45E0C0/0x45DE50",
+        "visibility gate 0x42B180 wiring CLOSED (unified-model visibility_gate + render-evidence closed_notes): [ROOT+0x5081C] IS the chat window's own visible flag this+0x30 (chat obj = ROOT+0x507EC, +0x30 = 0x5081C; window vtable 0x47660C stored 0x413E1A; setter = vtable+0x10 = 0x423F80 mov [ecx+0x30],eax ret 4; only .text reads 0x42B182/0x42B43E/0x42CC14); close route: close-button child (chat+0x6C, vtable 0x4763A8) hit-test vtable+0x10=0x4177F0 -> chat click dispatch 0x4149A0 returns 1 -> mouse stub 0x42C0B7 -> push 8; call 0x42ADB0(ROOT) -> jump table 0x42B3E4[8]=0x42B180: gate!=0 hide (MoveWindow edit to [0x8AB7F0]+0xDF/[0x8AB7F4]+0x23A 0x162x0x10, 0x42AC50 remove window 8 from activation list ROOT+0xD24..0xD38, 0x423F80(chat,0) -> +0x30=0, ret 0); gate==0 show (place edit in chat rect w=[ROOT+0x51148]-[ROOT+0x51140] h=[ROOT+0x5114C]-[ROOT+0x51144] x=[0x8AB7F0]+[ROOT+0x50804]+[ROOT+0x51140] y=[0x8AB7F4]+[ROOT+0x50808]+[ROOT+0x51144], ShowWindow(edit,5), 0x42AC30->0x449870 append win 8, 0x423F80(chat,1) -> +0x30=1, ret 1); 'R' key 0x42CCF7 toggles same dispatcher; dispatcher entry 0x42B820 deactivates all listed windows first (0x423F90 -> +0x34=0; its jump table 0x42B938[8]=0x42B8B6=chat); default indices 5/10/>15 -> 0x42B3DD returns 0; sibling gates 0x42B25E idx9 (gate [ROOT+0x51180]), 0x42B2AD idx15 (gate [ROOT+0x52E8C], extra edit [ROOT+0x53028])"
+      ],
+      "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow"
+    },
+    {
+      "id": "npc",
+      "category": "NPC对话",
+      "artifacts": [
+        "npc-window-render-evidence.json",
+        "npc-paint-evidence.json"
+      ],
+      "layout_ids": [
+        "window.npc-candidate"
+      ],
+      "preview_mode": "window.npc-candidate",
+      "status": "primary-static-render-plus-parser-input-dispatch-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "input/dispatch/per-frame/liveness chain closed (Finding 252, npc-window-render-evidence.json closed_notes): model input 0x440290 three controls (close X=+0x58 gate +0x274!=0 -> ret1 -> dispatch case 0x42C17D -> ROOT hide-all 0x41C1E0; scroll-up +0x1C0 gate [+0x3BC]>0&&byte[+0x58C]==1; scroll-down +0x10C gate [+0x3BC]<[+0x3C0]; thumb drag 0x417E60(+0x3C4), relayout 0x440C30); input dispatch 0x42BEAA->0x42AAB0->0x42BF70->table 0x42C4D4 (case 9=0x42C17D) / event loop 0x42BEF8 16 fixed windows winmgr+0x567C+id*0xB4 = ((id*5+0x267)*9)*4 @0x42BF0B (corrects old winmgr+0x8A7C+id*540), case table 0x42C494 16 entries; dynamic target [ROOT+0x364444] closed: per-frame 0x41D744 gate=[ROOT+0x2F660C] (inactive-model content poll, corrects old [model+0x30]), msg 0x3F2 send 0x8AB828->0x452940->0x451E60, 500ms throttle [ROOT+0x428040]; outer table 0x421E8C liveness: sole reader 0x41F582 (sole jump-in 0x41F269) bounds msg 0x264..0x26C -> indices 0..8 only, 9..39 statically dead incl 13/16/17; hide_all 0x41C1E0 live via E8 callers 0x41C0CE/0x422BAD/0x42C193/0x42CFC3; second-stage tables 0x421D5C+byteA 0x421D8C / 0x421E50+byteB 0x421E58 / 0x42043C->byteC 0x422080->0x421FBC (49 entries, [31]=0x421CFC [32]=0x421508) / sub-proto 0x42219C->0x422168 (13 entries) decoded; dynamic entry fields +0x520..+0x544 = destination RECTs (ctor 0x43EE00 SetRect IAT 0x4762B0), not text records"
+      ],
+      "pending_notes": "0x418/0x419 business names and option-click semantics (candidate; 0x419 also covers NPC option clicks, Finding 251); three control button business names (glyphs 52/53 up, 54/55 down, 161/162 X = visual comparison only); runtime server reply to 0x3F2 poll"
+    },
+    {
+      "id": "store",
+      "category": "商店/仓库",
+      "artifacts": [
+        "store-window-render-evidence.json",
+        "store-state-graph.json",
+        "store-server-crossref.json"
+      ],
+      "layout_ids": [
+        "window.store-candidate"
+      ],
+      "preview_mode": "window.store-state-0..4",
+      "status": "primary-static-two-store-model-closed",
+      "pending": false,
+      "closed_2026_08_10": [
+        "screen origin closed (Finding 245): state-0 content rect (0,186,300,304), panel at screen (0,184)-(299,490); 0x423E80 builds the window rect DIRECTLY from its args - no parent-relative centering (old factory_argument_warning revoked); click point only sets a drag anchor",
+        "two-store relationship closed: UI store = game+0x33188 == session+0x2D8614 (window id 2, ctor 0x44CFC0 / dtor 0x44D0B0 / register 0x44D310 / paint 0x44E260 / click 0x44E9B0) vs protocol store = game+0x2D8614 == session+0x57DEA0 (receivers 0x285/0x28A/0x28B/0x28C/0x2C0/0x2C8 via 0x44F480/0x44E8B0/0x44F710/0x44F940/0x44FB00); numeric coincidence session+0x2D8614 == game+0x33188 caused the earlier misattribution of update-loop leas 0x41C22C/0x41C232; base-register rule: receivers ebx=game, update loop 0x41C1E0 esi=session; protocol store has NO static ctor/vtable (ground-truth dword scan: 6 receiver leas + 2 session-rel update-loop refs only; store methods in NO vtable) - runtime-initialized, no static sync bridge, do NOT invent one",
+        "state 2/3 corrected (labels were reversed in an earlier draft): 0x44F940 = state 2 (msg 0x2C0, frame 1001, rect(-4,182,205,205), 12 grid rects +0x720 cols 22/60/98/136 x rows 43/81/119); 0x44FB00 = state 3 (msg 0x2C8, frame 1000, rect(0,186,300,304)); state 0 BUY (msg 0x285) / 3 CRAFT / 4 item-detail PROVEN; states 1/2 business names remain candidate (no server message-constant source exists)",
+        "store register args = (2, selector, frame 1000, 0, 0, 0, 300, 304) at 0x42777E-0x427794; flag=1 added internally by 0x44D310; Store class ctor 0x44CFC0/dtor 0x44D0B0 proven from Game dtor 0x426E80 reverse member order",
+        "frames 1010-1017 mapped statically + visually (wilsdk dims = ctor hit rects): 1010/1011 X-close 28x26, 1012/1013 confirm 48x20, 1014/1015 prev 28x26, 1016/1017 next 28x26; panel artwork lives in the WIL loaded at 0x4540C0 (StoreItem.wil string 0x47C878 + MonMagicEx.wil 0x47C890), NOT Storeitem.wil frames 1000+ (those are 24x22 cursors)",
+        "update-loop close branch 0x41C217: [session+0x2D8644] (UI store +0x30) -> 0x42AC50(game,2) unregister + vtable slot4 (0x423F80 SetVisible) call with 0 on session+0x2D8614 = hide, NOT a data sync"
+      ]
+    },
+    {
+      "id": "exchange",
+      "category": "交易/交换",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json",
+        "system-window-render-evidence.json",
+        "draw-order-evidence.json"
+      ],
+      "layout_ids": [
+        "window.exchange-candidate"
+      ],
+      "preview_mode": "window.exchange-candidate",
+      "status": "primary-static-draw-and-state",
+      "pending": true,
+      "pending_notes": "exchange button business names (1060-1062 Chinese 交易 label visible, click binding not traced), trade state transitions beyond draw-time side selection, runtime window origin (show-time x/y is dynamic message-provided -> no static absolute origin, candidate-level)",
+      "closed_2026_08_11": [
+        "grid + text draw loop closed (Finding 260): item cell loop 0x4169B0 at 36px column step (frame from [ebx+0x5EC], stackable count color 0x0A/0x0B from [ebx+0x609..0x60B], count text via 0x45F2D0); 4 text records via shared compositor 0x45DE50 + formatter 0x46811C - left trade partner name from zeroed writable global buffer 0x7776A0 (runtime-filled, not a string literal), right side name from this+0x129D8, %d count strings from this+0x12A18/this+0x12A1C; both trade-weight gauges' value fields [this+0x54]/[this+0x58] are never written in .text -> both bars always render empty (fill runtime source resolved: none)",
+        "register-flow mismatch closed at candidate level (Finding 260): registration origin (0,0) 484x330 (main_init 0x277A1) vs ctor-baked child rects (532,350)/(185,332)/(225,332) that exceed parent bounds; show dispatcher 0x42B6A0 (13 callers 0x42BB4E..0x42BD67) receives x,y from invoking message and 0x4240C0 computes a drag grab-offset from [+0x48]/[+0x4C] (offset, not a move) -> screen position is set dynamically at show time, so NO static absolute screen origin exists; coordinates stay candidate/relative until runtime or message-flow proof",
+        "constructor_va convention corrected (Finding 260): true ctor entry is 0x004159D0 (called from main_init 0x277C2 with id 3, frame 1050, x=0 y=0 w=484 h=330, object main+0x3399C); old value 0x00415A71 was the first child-control call site inside the ctor; frames 1060/1061/1062 non-blank 48x20 with visible 交易 label, 1063/1064/1065 blank (0 opaque px) matching ctor using 1061/1062 for the trade button",
+        "exchange draw-time state dispatch closed (Finding 258): paint 0x415B10 calls [vt+0xC] base paint then SetRect 0x4762B0 splits into left this+0x5C / right this+0x6C rects at center_x=winx+(right-left)/2 (0x415B21-0x415B63); draw-time state = mouse side via PtInRect 0x4762B4 on left rect (globals 0x7DA1C0=mouse x / 0x7DA1C4=mouse y) -> bl=0 left grid origin (winx+0x15, winy+0x30) / bl=1 right origin (winx+0xFD, winy+0x30); second PtInRect 0x415BC2 on chosen grid gated by globals 0x7243C4!=0 / 0x7243D8==0 -> cell index 0x416830 -> item map 0x4162E0 (0x7243DC); weight bars at 0x41601C/0x41603D",
+        "duplicate show(ID) boundary closed (Finding 263, primary-static): full-binary audit of unconditional tail-append 0x42AC30/0x449870 - all 15 direct 0x42AC30 callers = 14 toggle cases in 0x42ADB0 (each gated on window flag this+0x30==0, each followed by vtable+0x10(1) = +0x30 setter 0x423F80 / store 0x4488B0) + 1 promotion 0x42B6A0 (hide 0x42AC50 then show, only reachable for a LISTED window via 0x42AAB0 tail->head finder); 0x449870 other 4 callers (0x41538F/0x448ABA/0x4491B6/0x44933E) use different managers, not the visible-window list (ui+0xD24); whole-file imm32 LE dword scan = 0 occurrences of either address (no vtable slot/jump-table entry/imm32 load); invariant this+0x30==1 <-> node listed maintained by all 19 hide sites (+0x30=0 after 0x42AC50) and ctor 0x4175F0 (+0x30=0) -> no statically-reachable duplicate node; residual boundary (candidate, runtime-only): an out-of-graph caller re-appending an already-listed ID would create a sticky duplicate (double paint via 0x4280F0, hide removes only first match, close-all 0x42B820 does not unlink, count inflates)"
+      ]
+    },
+    {
+      "id": "party",
+      "category": "组队",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json"
+      ],
+      "layout_ids": [
+        "window.group",
+        "window.group-pop-candidate"
+      ],
+      "preview_mode": "window.group,window.group-pop-candidate",
+      "status": "primary-static-render",
+      "pending": true
+    },
+    {
+      "id": "guild",
+      "category": "行会",
+      "artifacts": [
+        "window-draw-calls.json",
+        "window-control-resource-analysis.json",
+        "window-frame-visual-semantics.json"
+      ],
+      "layout_ids": [
+        "window.guild-candidate"
+      ],
+      "preview_mode": "window.guild-candidate",
+      "status": "primary-static-render-plus-click-branches-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "9 controls array this+0x118 stride 0xB4 (frames 161/162, 610..625); click dispatcher 0x4258F0 check order 0,1,2,3,4,7,5,8,6 (main mouse dispatch 0x42C039-0x42C052 -> id-hook push 4 -> 0x42ADB0); branches: 会员升职->state0+0x4523E0@0x8AB828, 成员踢出->state1+0x452410, 盟主转让->state2 raw c7 86 9c 00 00 00 00 c6 86 98 00 00 00 02 @0x4259D9, 邀请入会/行会解散->leader guard [this+0x94]+dialog 602/601 (list3 this+0xEC/0xFC, list1 this+0xBC/0xCC via 0x45DC70 + [0x4762CC] submit, empty-list tooltip 0x47BB28), 行会公告->tooltip id 0x40F text 0x47BAF4 (%s=[this+0x54] via 0x46811C), 关闭窗口->tooltip id 0x415 text 0x47BAC8, 退出行会->INVERTED guard (leader no-op, member tooltip 0x47BAA4); tooltip display 0x418030 (ecx=0x7E04C8), edit input 0x8AB828 via 0x4520F0+0x4523E0 (0x47BA90 '@退出联盟 '); paint three states: state0 0x425280 markers 0x47BA78/0x47BA6C/0x47BA60, state1 0x425440 marker 0x47BA84 -> 0x96FF else 0xFFFFFF, other 0x425590 no markers every row shadow 0xA140A + green 0xFF00 double-draw (0x4255C5/0x42563E); scroll this+0x9C, cap 0x12, row step font height+5 (0x45E0C0); paint-time SetPosition truth (0x425152-0x425258): (556,409)/(34,376)/(34,402)/(121,402)/(309,376)/(397,376)/(484,376)/(309,402)/(397,402); ctor 0x424E60 only controls 0-3 usable, calls 5-9 stale register garbage; +0x6B8 ctor record [196,50] corrected to (600,72); Finding 259 in RESEARCH_LOG.md"
+      ]
+    },
+    {
+      "id": "social",
+      "category": "好友/社交",
+      "artifacts": [
+        "social-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.group",
+        "window.guild-candidate"
+      ],
+      "preview_mode": "none",
+      "status": "primary-static-render-plus-open-state-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "group (id 6, main+0x47834, paint 0x4243D0): member row = single text field node+0x04, NO icon, linked-list insertion order (feeder 0x419EE4 -> push_back 0x424840, container this+0x54 vtable 0x4767E0, head this+0x58/next+0xC/count this+0x68); two columns odd->window.x+45 (0x424471 push ebx=window.x+0x2D) even->window.x+145 (0x424479 lea edx,[ebx+0x64]), y=window.y+0x5A+20*floor(i/2) -- old formula mod-2 column mapping was inverted, corrected in member_list_render.formula; permission text [允许]/[拒绝] (this+0x3F0 -> 0x47BA08/0x47BA00) y=window.y+0x3A proven (0x424549/0x424563 add edi,0x3A), x reads uninitialized stack slot [esp+0x1C] (0x42453E) -> statically unprovable, old 'window.x+0x6E' rejected; NO 18-row cap: full traversal (0x42449B next==0 terminator), overflow clipped by engine not truncated; runtime open-state: show 0x42AC30 / hide 0x42AC50 (active list main+0xD24/+0xD28..+0xD38), toggle 0x42B0BA (visibility main+0x47864=win+0x30, companion tab frames 0x398/0x399 @main+0x47B70 via 0x417880), show dispatcher 0x42B6A0 tail 0x42B79A; guild closure in record id=guild (Finding 259)"
+      ]
+    },
+    {
+      "id": "settings",
+      "category": "系统设置/音量",
+      "artifacts": [
+        "system-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.option"
+      ],
+      "preview_mode": "window.option",
+      "status": "primary-static-config-and-render-closed",
+      "pending": false,
+      "pending_notes": "remaining candidates: Ambience actual sound trigger point; BGM volume re-apply timing at playback (BGM volume lives on channel object 0x8AB658, applied only at slider drag 0x441F6C)",
+      "closed_2026_08_11": [
+        "audio-global-consumption closed (Finding 260): EffectSoundLevel 0x8AB14C is read directly at play time - 0x45BCE9 inside 0x45BC80 (volume/pan apply, invoked from effect-sound setup 0x45B140 and one-shot play 0x45B900; 0x45B900 has 6 callers 0x457BA7/0x459240/0x459476/0x459AD6/0x45B032/0x45B074); BGMLevel 0x8AB150 has ZERO audio-engine references (all 5 refs 0x441C26/0x441E5F/0x441E6E/0x441EA6/0x441F68 are option-window code): slider drag 0x441F67 writes it then immediately applies volume to BGM channel object 0x8AB658 via 0x441F6C->0x45A700; BGM playback paths (0x45B250 play-by-name, 0x45B3D0 stop->0x45A510, 0x45B410 enable +0x56C, 0x45B3F0 state query [ch+0x130]) read channel object only -> the two volume globals are NOT consumed through the same path",
+        "no-runtime-overlay (Finding 260, negative): option paint 0x441380-0x4414E3 = base frame 750 (vtable+0xC) + 11 child controls repositioned via 0x417830 (0x417830 arg order is (this, y, x); close (218,238), 8 toggles at x in {148,185} x y in {43,116,190,217}, two slider knobs this+0x6D0/0x784 at x=34+[this+0x6C/0x74] 0..160) + child paint loop (vtable+0x4, 11 iters, step 0xB4 from this+0x7C); no text records, no fill bars -> only dynamic element is slider knob x-offset",
+        "click dispatch + config chains closed (Finding 260): jump table 0x44194C 8 entries -> idx1 BGM ON (0x45B3F0 query / 0x45B410 enable / 0x45B250 play by name), idx2 BGM OFF (0x45B3D0 stop + [0x8AB69C]=0), idx3 EffectSound ON (0x45B1B0), idx4 EffectSound OFF (0x45B1D0 stop 50 channels + 0x45B1C0), idx5/6 Ambience (0x441850/0x44186E), idx7/8 ShadowBlend [0x47EF48] (0x4418AF/0x4418FE); config SAVE chain 0x441B30-0x441CAE (globals/state -> Config.ini 'Options' 0x47A2B8/0x47A2CC), LOAD chain 0x441DA0-0x441F37 (GetINI -> atoi 0x4681F9 -> EffectSound->[+0x58]@0x441D85, EffectSoundLevel->[0x8AB14C]@0x441DE2, BGM->[+0x54]@0x441E0C with 0x45B410/0x45B3D0+0x45B430 apply, BGMLevel->[0x8AB150]@0x441E5E clamp, Ambience->[+0x5C]@0x441EFA, ShadowBlend->[+0x60]+[0x47EF48]@0x441F23/0x441F29)",
+        "constructor_va convention corrected (Finding 260): true ctor entry is 0x00440FE0 (called from main_init 0x2788D with id 0xC, frame 750, x=276 y=113 w=248 h=264, object main+0x518E0); old value 0x0044103E was the first child-control call site inside the ctor"
+      ]
+    },
+    {
+      "id": "horse",
+      "category": "坐骑",
+      "artifacts": [
+        "horse-window-render-evidence.json"
+      ],
+      "layout_ids": [
+        "window.horse"
+      ],
+      "preview_mode": "window.horse",
+      "status": "primary-static-render-and-command-closed",
+      "pending": true,
+      "pending_notes": "per-value sub-state semantics of 0x7DA060 values 1/2/3 (protocol crossref); protocol meaning of word fields 0x7DA061-62/0x7DA063-64 (HUD icon uses word[0x7DA063] as 0x45FD50 fill-color arg6 - primary-static - protocol origin runtime-only); final server semantics of @遛马 vs 말내리기 label",
+      "closed_2026_08_11": [
+        "mount labels + horse data fields closed (Finding 260): frames 860-867 - 말타기 F860/861, 말내리기 F862/863, 말숨기기 F864/865, 말꺼내기 F866/867; frame widths 44/60/60/56 px vs 3/4/4/4 CJK glyphs corroborate transcription; pressed/released diffs cover full frames; horse data fields [this+0x54..0x64] block mirrored to session 0x777698+0x629C8 (dword 0x7DA060 + word 0x7DA061-62 + word 0x7DA063-64 + byte 0x7DA064='W' clamp 0x88/0x89/0x8B); label 말내리기 vs command @遛马 mismatch reported as code reality",
+        "no state overlay outside frame 850 (Finding 260, negative): horse paint 0x4269C0-0x426A74 = base frame 850 (vtable+0xC) + 5 control repositions (this+0x54 (252,293), +0x108 (28,244), +0x1BC (74,244), +0x270 (133,244), +0x324 (192,244)) + child paint loop (vtable+0x4, 5 iters, step 0xB4 from this+0x7C); no text records/overlays; state-dependent content lives only in click dispatch 0x426A80-0x426B45 (btn1+0x108 -> @上马 0x47B060 when [0x7DA060]==0, btn2+0x1BC -> @遛马 0x47B068 when !=0, btn3+0x270 -> @收马 0x47B058 unconditional, btn4+0x324 -> @遛马)",
+        "constructor_va convention corrected (Finding 260): true ctor entry is 0x004268C0 (called from main_init 0x27774 with id 2, frame 850, x=0 y=0 w=244 h=320, object main+0x17C90); old value 0x0042691B was the first child-control call site inside the ctor",
+        "mounted-appearance element binding closed (Finding 264, primary-static): element table base 0x5600FC stride 0x144 (324); mount element = element 87 = 0x566F18 = 0x5600FC+0x57*0x144 selected by hardcoded selector byte [0x629CF]=0x57 (written iff state byte 0x7DA060!=0 @0x40F47F, sibling 0x40C79C; lea x9,x9,x4=x324 @0x40F5A6-0x40F5C0 -> [0x62A14]) - state value 1/2/3 does NOT index the table; binds to WIL slot 17 = '.\\Data\\Horse.wil' (0x47CC94 copied to owner+0x1098C @0x4538CB-0x4538E5; element-manager loop2 0x452AF7-0x452B0E binds element 70+i <-> slot i, element 87=70+17); world-render 0x40F5F0 gate (state!=0 && [62A14]!=0 && [0xC0]>=0x1D) frame=0x2710+(A%400) (A=[629C8]*400-[8A]*3000+[C4]-0xAA0, stored [0x62A20]) -> 0x466130 -> 0x461ED0/0x463330/0x460240; HUD mount icon = element 86 0x566DD4 (ProgUse.wil) frame byte[0x777720]*10+byte[0x777723]+0x3B, 0x45FD50 arg6=word[0x7DA063] is a 16-bit RLE fill color (op 0xC2), NOT a frame index (corrects Finding 255; all other 22 of 23 0x45FD50 callers pass 0xffff/0xffff; 0x7DA063 refs = 0x41F5BD write + 0x44B669 read only)"
+      ]
+    },
+    {
+      "id": "prompt",
+      "category": "确认框/提示框",
+      "artifacts": [
+        "confirmation-prompt-evidence.json",
+        "notice-prompt-window-evidence.json",
+        "window-visibility-dispatch-evidence.json"
+      ],
+      "layout_ids": [
+        "window.confirmation-prompt-950",
+        "window.notice-prompt-candidate"
+      ],
+      "preview_mode": "prompt.confirmation,prompt.notice,window.notice-prompt-candidate",
+      "status": "primary-static-render-plus-0x7EE-receive-plus-visibility-closed",
+      "pending": false,
+      "pending_notes": "banner singleton 0x777200 display duration / auto-dismiss (no timer/counter reference in .text; runtime confirmation required); runtime packet content of 0x452040/0x451F90 message builders; Interface1c prompt text 0x8B187C server/protocol source (candidate); 0x45D270 text-format exact COLORREF/font size (candidate, IAT-level call with unparsed color arg)",
+      "closed_2026_08_11": [
+        "0x7EE receive closed primary-static: main WndProc 0x403E81 @0x403FA4 -> 0x404600 (chat-input dual-buffer restore 0x403640 + EM_SETSEL select-all + SetFocus); second WndProc 0x459654 -> 0x45A140 (type==1 idx 0/1 -> 0x452040 + 0x451F90 game-object send); 0x7EE absent from message table 0x421E8C (only entries 0-19 valid); 0x412303/0x412AAE/0x42AAB0/0x42C4D4 = pre-0x7EE input router (click 0x418400 / visibility query 0x418460 / top-window resolve / id-indexed dispatch table jmp [edi*4+0x42C4D4] @0x42BF7E)",
+        "guild-announcement edit buffer saved via msg 0x410/0x411: click 0x43E4BA GetWindowTextA([this+0x1CC], buf, 0xFA0) -> line-split 0x468BF0 -> state [this+0x1D0] selects 0x4524A0 (msg 0x410) / 0x4524D0 (msg 0x411) -> 0x452940 12-byte header -> 0x451E60 sprintf '#%d%s%s!' (0x47C840/0x47C800) -> send via 0x468098 = jmp [0x476340] (WS2_32 import descriptor 120, ordinal 19 = send)",
+        "banner 0x777200 text source = game object singly-linked list (game+0xEC show / game+0xBC hide; node+4 string) -> 0x45DC70 join (separator 0x47BB4C CR LF) -> SetWindowTextA([0x7773CC], buf) @0x425ABB-0x425AC4 / 0x425BAC-0x425BC2; visibility dispatch id 0xF via 0x42ADB0(winmgr 0x7243A4) @0x425A1F/0x425B1E; frames 602 (show) / 601 (hide) via base ctor 0x423E80",
+        "0x43E4B0 payload = WM 0x201/0x202 packed lParam coords (primary-static, Finding 249): 0x43E4B0 = notice window (id 15) click handler (this=main+0x2A548C+0x52E5C, 2 stack args x/y, dispatches child controls this+0x54 frames 161/162 and this+0x108 frames 606/607; confirm-hit -> 0x45DC70 -> 0x8AB7A8 -> 0x4524A0/0x4524D0; child-hit -> return 1 -> caller hides id 15). Both unpack [esp+8]=(y<<16)|x: WM_LBUTTONDOWN 0x201 -> 0x41D470 (0x41D485/0x41D48E), WM_LBUTTONUP 0x202 -> 0x41E451 -> 0x41DB80 (0x41DB93/0x41DB99) -> 0x42BE20; x=low16 -> main+0x35B2A8, y=shr16 -> main+0x35B2AC; call site 0x42BE8C push y/x, lea ecx,[esi+0x52E5C], call 0x43E4B0; nonzero -> push 0xf; call 0x42ADB0 (show id 15); LBUTTONDOWN analog 0x42BA20 -> 0x43E640",
+        "Interface1c prompt displayed BEFORE Frame 602 window, mode byte 0x8B1878 enforced (primary-static, Finding 249): protocol case 0x64/sub0 (0x41CE14, msgs 0x7ED-0x7F0 via 0x41E522 -> 0x41CDE0) -> gate 0x419CC0 -> queue tag 0x3F1 (0x451660 @0x8AB828) -> 0x42E1F0 (.itm file loader: sprintf '.\\Data\\<arg>.itm' 0x47BDC4/0x47BDCC into 0x8AB7A8, CreateFileA @IAT 0x4760DC GENERIC_WRITE/share=2/CREATE_ALWAYS=2/0x80 + 3x ReadFile @0x4760D0; NOT a notice send) -> [esi+0x428208]=0; byte[esi+0x428204]=2 (0x41CE57, only writer, value 2). Frame step 0x41C1C7 -> 0x41B5D0 (state 2 + acc>0x9C4 @0x41B65F) -> 0x419BE0: mode byte=2, mirrors [0x8AB820]/[0x8B1870]=0x8A7140, call 0x456CB0 (Interface1c re-init), 0x45D270(0x8AB7A8, 0x280, 0x1E0, 0x10, [1|2], 5) text format ([0x47EE89] picks 1/2). Main-loop switch @0x402123: mode 2 -> 0x8A7140+0x4575D0 (prompt step; state 2 @0x457615: gate 0x45C900 -> SetWindowTextA(0x8AA48C, 0x8B187C) + MoveWindow(0x8AA48C, [0x8AB7F0]+0x120, [0x8AB7F4]+0x195, 0x4B, 0xD, 1) + ShowWindow(0x8AA48C, 5)); state 4 @0x45773C -> 0x4570A0 -> 0x4570C0 (mirrors=0x47EF18, mode byte=3). Mode 3 -> 0x47EF18 + 0x41BB00 / (0x41B440+0x41B500 if [0x8AB7E8]==0) = Frame-602/notice banner phase (banner singleton 0x777200 ctor frame 0x25A=602 @0x425A46; show push 0xf; mov ecx,0x7243A4; call 0x42ADB0 @0x425A26/0x425B25). Mode order 0->2->3 statically guarantees prompt precedes Frame 602"
+      ]
+    },
+    {
+      "id": "window-position-dispatch",
+      "category": "全局窗口位置分派（拖拽/输入分派）",
+      "artifacts": [
+        "window-position-dispatch-evidence.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "window-position-dispatch",
+      "status": "primary-static-window-position-dispatch",
+      "pending": true,
+      "pending_notes": "runtime visual verification of drag frame sequencing and the 570 bottom clamp; store id2 drag interaction under states 2/5+ (0x44E910/0x44EF00 gates decoded statically, runtime state transitions unverified)",
+      "closed_2026_08_10": [
+        "pending resolved: every input/drag caller's two runtime args are ABSOLUTE client-area mouse coords X/Y (lParam LOWORD/HIWORD forwarded verbatim), NOT deltas, NOT window-relative; drag chain WM_LBUTTONDOWN 0x41D470 -> 0x42BA20 -> 0x42B6A0 (reorder list + [base+0xD3C]=1 + 0x4240C0 grab offsets +0x48/+0x4C) -> WM_MOUSEMOVE 0x41D390 -> 0x42C510 -> 0x42C741 -> 0x42B430 (E8 callers = only 0x42C745; 0x42C510 only 0x41D457; 0x42BA20 only 0x41D57B; 0x42BE20 only 0x41DC82) -> 0x423FA0(win, X, Y, flag=0)",
+        "0x423FA0 semantics: flag=0 drag-follow left'=X-[win+0x48], top'=Y-[win+0x4C], right'=left'+[win+0x40], bottom'=top'+[win+0x44]; bottom clamp >0x23A(570) -> top'=0x235(565)-height (30px bottom margin); SetRect(0x4762B0, &win+0x18, ...) + centered second SetRect(&win+0, (origW-w)/2, (origH-h)/2); flag=1 absolute set used by init 0x41FA68 (X=519)/0x4204F3 (X=518); [win+0x40]=width [win+0x44]=height (NOT offsets, NOT current/initial position); [win+0x48]/[win+0x4C]=grab offsets from 0x4240C0; new top-left = (X-grabX, Y-grabY) absolute 1:1 mouse-follow",
+        "UI object base correction: UI subsystem object = main+0x2A548C; per-window offsets base-relative (inventory +0x6554=main+0x2AB9E0, status +0x29CE4=main+0x2CF170, store +0x33188=main+0x2D8614, exchange +0x3399C=main+0x2D8E28, guild +0x4707C=main+0x2EC508, group +0x47834=main+0x2ECCC0, group-pop +0x47C28=main+0x2ED0B4, chat-pop +0x507EC=main+0x2F5C78, npc +0x51150=main+0x2F65DC, quest +0x516E8=main+0x2F6B74, option +0x518E0=main+0x2F6D6C, horse +0x52118=main+0x2F75A4, other-14 +0x524F0=main+0x2F797C, notice +0x52E5C=main+0x2F82E8); 16-window vtable array base+0x567C (stride 0xB4); game object base+0x61BC",
+        "drag lifecycle: start WM_LBUTTONDOWN (0x42B6A0 arms [base+0xD3C]=1 + records grab offsets); follow every WM_MOUSEMOVE with [main+0x35B2B8]!=0 (0x42B430 follows only head-of-list); end WM_LBUTTONUP -> 0x42BE20 ([base+0xD3C]=0, notice gates 0x53060/0x52E8C, else 0x417E60(base+0x61BC, X, Y)); runtime list [base+0xD38]=count head [base+0xD30], add 0x42AC30 / remove 0x42AC50, most-recent-first; win+0x34 flag = in-drag-list/dragging (set 0x423F90/0x42B6A0, reset 0x42B820)",
+        "per-id input handlers inside 0x42C510 (table 0x42C798): 0 inv 0x430650 -> if 0 status 0x44CED0 -> position dispatch; 1 status 0x44CED0; 2 store 0x44F110 -> if 0 exchange 0x416E70; 3 guild 0x425DE0; 4 group 0x424770; 6 group-pop 0x450B70; 7 chat-pop 0x414CF0; 8 npc 0x448430; 0xB quest 0x441A20; 0xC option 0x426B90; 0xD horse 0x43AC80; 0xE other 0x440560; ids 5/0xA no handler; hit id -1 -> 0x42C6A7 hover-out no-arg calls -> 0x42C741",
+        "hit-test 0x42AAB0: iterates runtime list from [base+0xD2C], count [base+0xD38]; node = {dword id; dword ?; dword next +8}; per-id RECT pointer (+0x18) copied to locals, PtInRect [0x4762B4](rect, X, Y) at 0x42AB95; miss -> advance [node+8]"
+      ]
+    },
+    {
+      "id": "secondary",
+      "category": "角色选择/创建/登录次级界面",
+      "artifacts": [
+        "interface1c-parent-context.json",
+        "interface1c-select-screen-context.json",
+        "interface1c-cluster-456d.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "secondary-0,secondary-1",
+      "status": "primary-resource-cluster-candidate",
+      "pending": true
+    },
+    {
+      "id": "simulator",
+      "category": "交互式客户端模拟器交付",
+      "artifacts": [
+        "../../../Tools/mir3_client_simulator/app.js",
+        "../../../Tools/mir3_client_simulator/index.html",
+        "../../../Tools/mir3_client_simulator/style.css",
+        "../../../Tools/mir3_client_simulator/data/layout.json",
+        "../../../Tools/web/build_mir3_simulator_data.py"
+      ],
+      "layout_ids": [
+        "sim.*"
+      ],
+      "preview_mode": "sim",
+      "status": "delivered-candidate-geometry-explicit",
+      "pending": true
+    }
+  ],
+  "verification": {
+    "required_categories": 17,
+    "all_have_original_artifact": true,
+    "all_have_preview_or_explicit_negative_scope": true,
+    "pending_is_not_completion": true
   }
- ],
- "verification": {
-  "required_categories": 17,
-  "all_have_original_artifact": true,
-  "all_have_preview_or_explicit_negative_scope": true,
-  "pending_is_not_completion": true
- }
 }

@@ -12,59 +12,248 @@
   },
   "window": {
     "id": "window.inventory",
-    "background": {"file": "Data/GameInter.wil", "frame": 250, "visible_size": [281, 324]},
-    "window_object_origin": {"x_field": "this+0x18", "y_field": "this+0x1c"},
-    "constructor_window_size": [284, 324],
-    "mode_byte": "byte this+0x54: 0=[包袱] bag, 1=[修补] repair, 2=[变卖] sell, 3=[木柴] firewood (paint dispatch 0x42EF2F jump table 0x42F13C); set by tab child controls (array at this+0x5C, 3 elements x 0xB4 stride)"
+    "background": {
+      "file": "Data/GameInter.wil",
+      "frame": 250,
+      "visible_size": [
+        281,
+        324
+      ]
+    },
+    "window_object_origin": {
+      "x_field": "this+0x18",
+      "y_field": "this+0x1c"
+    },
+    "constructor_window_size": [
+      284,
+      324
+    ],
+    "mode_byte": "byte this+0x54: 0=[包袱] bag, 1=[修补] repair, 2=[变卖] sell, 3=[储存] storage (paint dispatch jump table 0x42F13C -> 0x42EF52/0x42F02E/0x42F068/0x42F0EB). CORRECTION: the earlier '3=[木柴] firewood' reading is wrong - the string 木柴 does not occur anywhere in the binary; label 0x47BDE4 decodes (GB18030) as [储存] storage and is drawn at 0x42F0FB. Set by tab child controls (array at this+0x5C, 3 elements x 0xB4 stride; 4 paint modes vs 3 tab controls - runtime tab->mode mapping remains open)"
   },
   "resource_visual_inspection": {
     "source": "Direct pixel inspection of original Data/GameInter.wil and Data/Interface1c.wil",
     "records": [
-      {"frame_pair": [264, 265], "library": "Data/GameInter.wil", "visual_description": "small horizontal metallic action control with a green/gold state symbol and short embedded glyph", "confidence": "medium", "business_name": null},
-      {"frame_pair": [267, 268], "library": "Data/Interface1c.wil", "visual_description": "character/action sprite resource; Frame 267 contains a full armored character with weapon, not a generic button", "confidence": "high", "note": "Frame 268 is empty in the current export. Preserve the library distinction and do not render this as a GameInter button."}
+      {
+        "frame_pair": [
+          264,
+          265
+        ],
+        "library": "Data/GameInter.wil",
+        "visual_description": "small horizontal metallic action control with a green/gold state symbol and short embedded glyph",
+        "confidence": "medium",
+        "business_name": null
+      },
+      {
+        "frame_pair": [
+          267,
+          268
+        ],
+        "library": "Data/Interface1c.wil",
+        "visual_description": "character/action sprite resource; Frame 267 contains a full armored character with weapon, not a generic button",
+        "confidence": "high",
+        "note": "Frame 268 is empty in the current export. Preserve the library distinction and do not render this as a GameInter button."
+      }
     ],
     "evidence_level": "primary-resource-visual-plus-static-library-crosscheck"
   },
   "child_controls": [
-    {"object_offset": "this+0x5c", "call_va": "0x0042EADB", "frame_pair": [161, 162], "resource_library_candidate": "GameInter.wil", "position_expression": {"x": "arg_base+0xF9", "y": "arg_base+0x120"}, "role": "tab control array entry 0 (3 x 0xB4 stride; modes 0..2 = 包袱/修补/变卖)"},
-    {"object_offset": "this+0x110", "call_va": "0x0042EB07", "frame_pair": [264, 265], "resource_library_candidate": "GameInter.wil", "position_expression": {"x": "arg_base+0xB0+0xF9", "y": "arg_base+0xB0+0x106"}},
-    {"object_offset": "this+0x1C4", "call_va": "0x0042EB2D", "frame_pair": [267, 268], "resource_library_candidate": "Interface1c.wil", "position_expression": {"x": "arg_base+0xB0+0xF9", "y": "arg_base+0xB0+0x11E"}, "role": "character-sprite/appearance resource candidate, not a generic button"}
+    {
+      "object_offset": "this+0x5c",
+      "call_va": "0x0042EADB",
+      "frame_pair": [
+        161,
+        162
+      ],
+      "resource_library_candidate": "GameInter.wil",
+      "position_expression": {
+        "x": "arg_base+0xF9",
+        "y": "arg_base+0x120"
+      },
+      "role": "tab control array entry 0 (3 x 0xB4 stride; modes 0..2 = 包袱/修补/变卖)"
+    },
+    {
+      "object_offset": "this+0x110",
+      "call_va": "0x0042EB07",
+      "frame_pair": [
+        264,
+        265
+      ],
+      "resource_library_candidate": "GameInter.wil",
+      "position_expression": {
+        "x": "arg_base+0xB0+0xF9",
+        "y": "arg_base+0xB0+0x106"
+      }
+    },
+    {
+      "object_offset": "this+0x1C4",
+      "call_va": "0x0042EB2D",
+      "frame_pair": [
+        267,
+        268
+      ],
+      "resource_library_candidate": "Interface1c.wil",
+      "position_expression": {
+        "x": "arg_base+0xB0+0xF9",
+        "y": "arg_base+0xB0+0x11E"
+      },
+      "role": "character-sprite/appearance resource candidate, not a generic button"
+    }
   ],
   "hit_rects": {
     "basis": "The shared 0x00417550 constructor creates a SetRect from the selected WIL frame dimensions; positions below are window-relative and therefore remain valid when the window is moved.",
     "records": [
-      {"frame_pair": [161, 162], "resource_library": "GameInter.wil", "relative_rect": [249, 288, 28, 26], "role": "close/confirm candidate"},
-      {"frame_pair": [264, 265], "resource_library": "GameInter.wil", "relative_rect": [176, 262, 64, 20], "role": "inventory action candidate"},
-      {"frame_pair": [267, 268], "resource_library": "Interface1c.wil", "relative_rect": [176, 286, 76, 88], "role": "character-sprite/appearance candidate; resource differs from GameInter"}
+      {
+        "frame_pair": [
+          161,
+          162
+        ],
+        "resource_library": "GameInter.wil",
+        "relative_rect": [
+          249,
+          288,
+          28,
+          26
+        ],
+        "role": "close/confirm candidate"
+      },
+      {
+        "frame_pair": [
+          264,
+          265
+        ],
+        "resource_library": "GameInter.wil",
+        "relative_rect": [
+          176,
+          262,
+          64,
+          20
+        ],
+        "role": "inventory action candidate"
+      },
+      {
+        "frame_pair": [
+          267,
+          268
+        ],
+        "resource_library": "Interface1c.wil",
+        "relative_rect": [
+          176,
+          286,
+          76,
+          88
+        ],
+        "role": "character-sprite/appearance candidate; resource differs from GameInter"
+      }
     ],
     "evidence_level": "primary-static-plus-primary-resource"
   },
   "paint_geometry": [
-    {"va": "0x0042EB9B", "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 - not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."},
-    {"va": "0x0042EC54", "fact": "A later item/record draw path computes a horizontal coordinate x+0x19 plus an index multiplied by 36 pixels."},
-    {"va": "0x0042EC64", "fact": "The corresponding vertical coordinate is y+0x29 plus a row/record difference multiplied by 36 pixels."},
-    {"va": "0x0042EC8C-0x0042EE2A", "fact": "The selected item path builds source and destination rectangles, converts their integer extents through shared float helper 0x00466800, and composites with context 0x005600FC via 0x004542F0. This is the original item-icon/selection pipeline; it is not a plain 36px CSS slot fill."},
-    {"va": "0x0042EE42-0x0042EEBE", "fact": "The primary numeric text uses runtime value 0x007DA100 (read at 0x42EE4C) and format VA 0x0047A214 ('%d') via 0x0046811C; the surrounding target rectangle is (window.x+0x41, window.y+0x11A) to (window.x+0x41, window.y+0x12B) in the original call setup. Color 0x64C8F8 via 0x45DE50. 0x7DA100 is never written anywhere in .text (only two imm32 reads: 0x41729D and 0x42EE4C), it is bss zero in this build, so the drawn value is always 0 (see content_field_draw_mapping.primary_value)."},
-    {"va": "0x0042EF97-0x0042F003", "fact": "The secondary text path reads 0x007DA11D (负重 word) and 0x007DA11F (总量 word) and formats them with 0x0047BDFC = \"负重:%d / 总量:%d\" (0x42EF9E/0x42EFB3, colors 0xA0A0A then 0xF8C8C8); drawn at top (x+0x86..x+0xF0, y+0x18..y+0x26). The byte this+0x54 mode dispatch (jump table 0x42F13C) selects one of four label branches: case 0 -> 0x47BE10 \"[包袱]\" (0x42EF5B, color 0xF8DCFA), case 1 -> 0x47BDF4 \"[修补]\" (0x42F03E, 0xF8C8C8), case 2 -> 0x47BDEC \"[变卖]\" (0x42F078, 0xF8C8C8), case 3 -> 0x47BDE4 \"[木柴]\" (0x42F0FB, 0xF8C8C8)."},
-    {"va": "0x0042EBBB-0x0042EC13", "fact": "The selected-item branch is gated by globals 0x007DA1C0/0x007DA1C4 and 0x007243D8; it calls the inventory hit/index helpers before building the selected source/destination rectangles."},
-    {"va": "0x0042F150", "fact": "The inventory hit-test/search loop scans both axes in 36-pixel steps from 0 through 180, proving a 6-column by 6-row, 36-slot grid."},
-    {"va": "0x0042F2A0", "fact": "The item index is divided by 6; remainder selects the column and quotient selects the row. Slot rectangles are (window.x+0x19+36*column, window.y+0x29+36*row) with 36x36 size."},
-    {"va": "0x0042EECD", "fact": "The three child controls are repositioned from the window origin with fixed offsets (0xF9,0x120), (0xB0,0x106), and (0xB0,0x11E) as shown by 0x00417830 calls."},
-    {"va": "0x0042F79C-0x0042F7E2", "fact": "Grid draw: cell identity table at this+0x2C4 holds one WORD per cell (6 cells/row, row stride 12 bytes); occupied cells have word >= 0x3E8 (1000), slot = word - 0x3E8 (movsx; cmp 0x3E8; jl skip; idiv 0x3E8 -> edx = slot). Rendered row window = max(0,[this+0x58]-5) .. [this+0x58]+6 (about 11 scrollable rows)."}
+    {
+      "va": "0x0042EB9B",
+      "fact": "The first inventory-specific draw call is the shared gauge/bar component 0x004179B0 (not a frame blit): args are (x = window.x+0xF8, y = window.y-0xA5, value = [this+0x58], max = 0x5E = 94). 0x5E is the gauge fill scale (max), NOT a GameInter frame id. The gauge member is this+0x278, constructed at 0x0042EB4B with (GameInter selector edi, frame 0x118 = 280, arg3 = 6, w = 0xC = 12, h = 0xDA = 218, pad = 0xC = 12, mode = 0 = vertical). GameInter.wil frame 280 is a 16x424 vertical bar sprite. The fill ratio is value/(max-1); the fill field [this+0x58] is only ever zeroed in the reset virtual 0x0042E970 (no other static write exists in .text), so the bar renders empty in this build. Draw internals: ratio float stored [gauge+0xC]; frame sprite dims read from selector->[+0x38]; RECTs built through USER32 SetRect IAT slot [0x4762B0] (import name record at VA 0x4793D8, hint 0x0244 - not a code function); fill image drawn by 0x0045F2D0 (class 0x8AB7A8, clip rect); ftol via 0x468520. Ctor stores USER32 PtInRect IAT slot [0x47630C] (name record VA 0x4797DE, hint 0x01EA) at gauge+0x44 for hit testing. The 28x26 GameInter frame 94 image belongs to the unrelated HUD party button (layout.json hud.party, ctor 0x00427A82)."
+    },
+    {
+      "va": "0x0042EC54",
+      "fact": "A later item/record draw path computes a horizontal coordinate x+0x19 plus an index multiplied by 36 pixels."
+    },
+    {
+      "va": "0x0042EC64",
+      "fact": "The corresponding vertical coordinate is y+0x29 plus a row/record difference multiplied by 36 pixels."
+    },
+    {
+      "va": "0x0042EC8C-0x0042EE2A",
+      "fact": "The selected item path builds source and destination rectangles, converts their integer extents through shared float helper 0x00466800, and composites with context 0x005600FC via 0x004542F0. This is the original item-icon/selection pipeline; it is not a plain 36px CSS slot fill."
+    },
+    {
+      "va": "0x0042EE42-0x0042EEBE",
+      "fact": "The primary numeric text reads runtime value 0x007DA100 (read at 0x42EE4C) and formats it with VA 0x0047A214 ('%d') via sprintf helper 0x0046811C (ecx=0x8AB7A8); font set via 0x45DBA0 with name 0x47BE18 ('굴림체' Gulim, size 0xA=10); drawn via 0x45DE50 text-rect into (window.x+0x41, window.y+0x11A) to (window.x+0x8E, window.y+0x12B), color 0x64C8F8. This block (0x42EE36-0x42EEBE) executes BEFORE the this+0x54 mode dispatch, so the value box is drawn in ALL four modes. 0x7DA100 is never written anywhere in .text (exactly two imm32 reads: 0x41729D and 0x42EE4C), bss zero in this build, so the drawn value is 0 (see content_field_draw_mapping.primary_value)."
+    },
+    {
+      "va": "0x0042EF97-0x0042F003",
+      "fact": "The secondary text path reads 0x007DA11D (负重 word) and 0x007DA11F (总量 word) and formats them with 0x0047BDFC = \"负重:%d / 总量:%d\" (imm32 refs at 0x42EFA1/0x42EFB5; string 0x47BDFC is LIVE - single imm32 ref 0x42EFBF; colors 0xA0A0A then 0xF8C8C8); drawn at (x+0x86..x+0xF0, y+0x18..y+0x26). IMPORTANT: this 负重/总量 block belongs to the MODE-0 branch only (0x42EF8F-0x42F029; the mode-0 label [包袱] 0x47BE10 is drawn at 0x42EF5B color 0xF8DCFA, then falls through; mode 0 jumps to the shared end 0x42F123 at 0x42F029). The byte this+0x54 mode dispatch (jump table 0x42F13C) selects one of four label branches: case 0 -> 0x47BE10 \"[包袱]\" (0x42EF52 branch, 0xF8DCFA), case 1 -> 0x47BDF4 \"[修补]\" (0x42F02E branch, 0xF8C8C8), case 2 -> 0x47BDEC \"[变卖]\" (0x42F068 branch, 0xF8C8C8), case 3 -> 0x47BDE4 \"[储存]\" (0x42F0EB branch, 0xF8C8C8; corrected from the earlier wrong [木柴] reading - 木柴 is absent from the binary). Shared end 0x42F123/0x42F12F."
+    },
+    {
+      "va": "0x0042EBBB-0x0042EC13",
+      "fact": "The selected-item branch is gated by globals 0x007DA1C0/0x007DA1C4 and 0x007243D8; it calls the inventory hit/index helpers before building the selected source/destination rectangles."
+    },
+    {
+      "va": "0x0042F150",
+      "fact": "The inventory hit-test/search loop scans both axes in 36-pixel steps from 0 through 180, proving a 6-column by 6-row, 36-slot grid."
+    },
+    {
+      "va": "0x0042F2A0",
+      "fact": "The item index is divided by 6; remainder selects the column and quotient selects the row. Slot rectangles are (window.x+0x19+36*column, window.y+0x29+36*row) with 36x36 size."
+    },
+    {
+      "va": "0x0042EECD",
+      "fact": "The three child controls are repositioned from the window origin with fixed offsets (0xF9,0x120), (0xB0,0x106), and (0xB0,0x11E) as shown by 0x00417830 calls."
+    },
+    {
+      "va": "0x0042F79C-0x0042F7E2",
+      "fact": "Grid draw: cell identity table at this+0x2C4 holds one WORD per cell (6 cells/row, row stride 12 bytes); occupied cells have word >= 0x3E8 (1000), slot = word - 0x3E8 (movsx; cmp 0x3E8; jl skip; idiv 0x3E8 -> edx = slot). Rendered row window = max(0,[this+0x58]-5) .. [this+0x58]+6 (about 11 scrollable rows)."
+    }
   ],
   "literal_decoding": {
     "source": "Direct byte reads from Mir3.exe image-base-relative data addresses; GB18030/CP949 decoding is recorded separately where applicable.",
     "records": [
-      {"va": "0x0047A214", "bytes_text": "%d", "role": "primary numeric value formatter (0x7DA100)", "confidence": "high"},
-      {"va": "0x0047BDFC", "bytes_text": "负重:%d / 总量:%d", "encoding": "GB18030", "role": "inventory load/total format (reads 0x7DA11D / 0x7DA11F at 0x42EF9E / 0x42EFB3)", "confidence": "high"},
-      {"va": "0x0047BE10", "bytes_text": "[包袱]", "encoding": "GB18030", "role": "mode-0 label (bag), drawn at 0x42EF5B color 0xF8DCFA", "confidence": "high"},
-      {"va": "0x0047BDF4", "bytes_text": "[修补]", "encoding": "GB18030", "role": "mode-1 label (repair), drawn at 0x42F03E color 0xF8C8C8", "confidence": "high"},
-      {"va": "0x0047BDEC", "bytes_text": "[变卖]", "encoding": "GB18030", "role": "mode-2 label (sell), drawn at 0x42F078 color 0xF8C8C8", "confidence": "high"},
-      {"va": "0x0047BDE4", "bytes_text": "[木柴]", "encoding": "GB18030", "role": "mode-3 label (firewood), drawn at 0x42F0FB color 0xF8C8C8", "confidence": "high"},
-      {"va": "0x0047BDA4", "bytes_text": "正在补充药水,请稍候.        ", "encoding": "GB18030", "role": "use-delay busy message pushed at 0x430177 (click handler 0x4300F0) via 0x415280(0x7243A4, msg)", "confidence": "high"},
-      {"va": "0x0047BE18", "bytes_text": "굴림체", "encoding": "CP949", "role": "shared font-name literal argument to text-helper 0x45DBA0 (ecx=0x8AB7A8, 60+ callers incl. bag paint 0x42EE8A and status-window cluster 0x44Bxxx-0x44Cxxx); NOT an inventory field label", "confidence": "high", "warning": "The same address decodes as mojibake under GB18030; CP949 yields the recognizable Korean font name. The font-name literal must not be promoted to an item/slot semantic label."}
+      {
+        "va": "0x0047A214",
+        "bytes_text": "%d",
+        "role": "primary numeric value formatter (0x7DA100)",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BDFC",
+        "bytes_text": "负重:%d / 总量:%d",
+        "encoding": "GB18030",
+        "role": "inventory load/total format (reads 0x7DA11D / 0x7DA11F at 0x42EFA1 / 0x42EFB5); LIVE - single imm32 ref 0x42EFBF inside the MODE-0 branch (0x42EF8F-0x42F029), not mode-agnostic",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BE10",
+        "bytes_text": "[包袱]",
+        "encoding": "GB18030",
+        "role": "mode-0 label (bag), drawn at 0x42EF5B color 0xF8DCFA",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BDF4",
+        "bytes_text": "[修补]",
+        "encoding": "GB18030",
+        "role": "mode-1 label (repair), drawn at 0x42F03E color 0xF8C8C8",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BDEC",
+        "bytes_text": "[变卖]",
+        "encoding": "GB18030",
+        "role": "mode-2 label (sell), drawn at 0x42F078 color 0xF8C8C8",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BDE4",
+        "bytes_text": "[储存]",
+        "encoding": "GB18030",
+        "role": "mode-3 label (storage), drawn at 0x42F0FB color 0xF8C8C8; CORRECTION: the earlier '[\\u6728\\u67f4] firewood' decoding was wrong - 木柴 occurs nowhere in the binary (full-binary byte scan)",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BDA4",
+        "bytes_text": "正在补充药水,请稍候.        ",
+        "encoding": "GB18030",
+        "role": "use-delay busy message pushed at 0x430177 (click handler 0x4300F0) via 0x415280(0x7243A4, msg)",
+        "confidence": "high"
+      },
+      {
+        "va": "0x0047BE18",
+        "bytes_text": "굴림체",
+        "encoding": "CP949",
+        "role": "shared font-name literal argument to text-helper 0x45DBA0 (ecx=0x8AB7A8, exactly 35 imm32 refs: bag paint 0x42EE8A + 34 in the char/equip/store window cluster 0x44BCA7-0x451167); NOT an inventory field label",
+        "confidence": "high",
+        "warning": "The same address decodes as mojibake under GB18030; CP949 yields the recognizable Korean font name. The font-name literal must not be promoted to an item/slot semantic label."
+      }
     ],
-    "interpretation": "The secondary text branch is fully decoded: the load/total format and all four mode labels are confirmed GB18030 literals with exact draw sites. 0x47BE18 is a shared font argument, not a label."
+    "interpretation": "The secondary text branch is fully decoded: the load/total format and all four mode labels are confirmed GB18030 literals with exact draw sites. CORRECTION (Finding 262): mode 3 label is [储存] storage (0x47BDE4), not [木柴] firewood (木柴 absent from binary); the 负重/总量 format is drawn in the mode-0 branch only (0x42EF8F-0x42F029) and 0x47BDFC is LIVE (single ref 0x42EFBF). 0x47BE18 is a shared font argument (Gulim font name, CP949), not a label."
   },
   "resource_and_item_record_proof": {
     "window_handle": {
@@ -94,7 +283,7 @@
       "same_layout": "char/status window cluster (0x43870F, 0x43A524, 0x43D9F4-0x43DDE5) shares the +0x2C4 cell-table layout"
     },
     "record_ops": {
-      "0x42F440": "record place/allocate (only E8 caller 0x42FC90 inside 0x42FC40): scans grid via 0x42F6D0 for WxH free rect over the cell table; writes [rec]=1, [rec+4]=col, [rec+8]=row; rep movsd 0x308 copies 0xC20 bytes from source item-data block into rec+0x0C",
+      "0x42F440": "record place/allocate (only E8 caller 0x42FC90, inside LIVE bag-fill handler 0x42FC20): scans grid via 0x42F6D0 for WxH free rect over the cell table; writes [rec]=1, [rec+4]=col, [rec+8]=row; rep movsd 0x308 copies 0xC20 bytes from source item-data block into rec+0x0C",
       "0x42FCC0": "copy-out + clear-slot helper (callers 0x42FD69, 0x42FE40): if record occupied, copies 0xC20 bytes from rec+0x0C to caller buffer, clears via 0x42FB20, returns 1; else 0",
       "0x42FE00": "move/pickup path (callers 0x430339, 0x4305DC): 0x430920 builds 0xC20 stack block -> 0x42FCC0 copy-out+clear source -> destination record [rec+0x00]=1, data copied to rec+0x18 (0xC20), +0x1A = slot word, +0x04/+0x08/+0x0C/+0x10/+0x14 zeroed -> 0x42E2D0(0x7243A4, rec+0x18)",
       "0x42FD10": "carry/attach (callers 0x43036D, 0x4305FD): cursor item record +0x00=in-use, +0x04..+0x14=0, +0x18=data base, +0x1A=slot byte, +0x1C=name; 0xC20 copies via 0x42FC20",
@@ -103,7 +292,10 @@
     "grid_item_draw": {
       "routine": "0x0042F790-0x0042FA68",
       "destination_origin": "window.x+0x19, window.y+0x29",
-      "destination_step": [36, 36],
+      "destination_step": [
+        36,
+        36
+      ],
       "selector_context": "0x005668C4",
       "selected_header": "0x005668FC",
       "compositor": "0x004542F0 via float/rect preparation 0x00466800"
@@ -117,24 +309,35 @@
       "format": "%d",
       "draw_helper": "0x0046811C",
       "text_color": "0x64C8F8 via 0x45DE50",
-      "target_rect_expression": "window-relative x=0x41; y=0x11A..0x12B",
-      "semantic_status": "candidate - dead stat in this build",
-      "dead_code_proof": "0x7DA100 is the head dword of the player-stats block (neighbors 0x7DA108 等级, 0x7DA10C 攻击力, 0x7DA10D/0x7DA10F/0x7DA111 经验 words, 0x7DA11D/0x7DA11F 负重/总量). Only two imm32 reads in all of .text: 0x41729D (outbound msg 0x405 gate 0x417280) and 0x42EE4C (this paint). Never written (bss zero after raw end 0x47F000). Gate 0x417280: cmp ax,0x405; jne ret; shr eax,16; test al,al; jne ret (byte2 must be 0); eax=atoi(arg); cmp eax,[0x7DA100]; jg ret (value > cap suppresses); push eax; call 0x451B00 (sends 0x405 with one value dword). 0x405 appears in only 4 places: 0x416F7F (arg to input-dialog 0x418030), 0x417284 (gate cmp), 0x451B13 (msg ctor), 0x4650A6 (junk mid-function). Sole E8 caller 0x42D6C6 (dispatch 0x42D680 case 4) passes category byte 4 -> shr eax,16 gives al=4 -> always jne ret -> gate dead in this build. Most plausible semantics: trade/buy quantity cap (sibling gate 0x41CE86 compares atoi(arg) vs [esi+0x35B1E8] in the trade window; drop-gold prompt 0x47B028 at 0x41D626 and trade-pay prompt 0x47AD98 at 0x416F7E are adjacent) - documented as candidate.",
-      "runtime_evidence_needed": "watch 0x7DA100 in a debugger during the trade/quantity dialog and bag paint to confirm the displayed value source"
+      "target_rect_expression": "window-relative x=0x41; y=0x11A..0x12B (right edge x+0x8E)",
+      "semantic_status": "candidate (closed static side 2026-08-11) - displayed LIVE in all four modes (block runs before the mode dispatch); bss zero in this build so the drawn value is 0. Also caps the dead outbound-0x405 trade-pay gate 0x417280 (qty > [0x7DA100] suppressed). Most defensible semantic: player gold/money on hand (金币/金钱) - the bag shows it as a plain %d box bottom-left and the trade-pay gate caps the paid amount at it; the older 'trade/buy quantity cap' reading stays compatible (cap = gold on hand). Runtime watch required to pin the exact value source.",
+      "dead_code_proof": "0x7DA100 = head DWORD of a server/runtime-driven player-status block: whole range 0x7DA0E0-0x7DA1F0 is client-read-only (0x7DA0FC byte, 0x7DA100 DWORD, 0x7DA108 DWORD (9 refs: 0x429747/0x42A3D7/0x431571/0x431BAD/0x43279B/0x4339F2/0x433F97/0x44BD01/0x44E48A), 0x7DA109/0x10B/0x10F/0x111/0x113/0x115/0x119 words, 0x7DA11D 负重 WORD, 0x7DA11F 总量 WORD, 0x7DA121-0x7DA124 words, 0x7DA149-0x7DA157 stat words, 0x7DA1C0/0x7DA1C4 mouse, 0x7DA1D8; 33 refs each on the mouse words, 0 stores anywhere). 0x7DA100 itself: exactly TWO imm32 readers in all of .text - 0x41729D (outbound msg 0x405 gate 0x417280) and 0x42EE4C (this paint); ZERO writers (opcode-classified A3/89 modrm-05/C7 modrm-05 store scan: 0 stores). Gate 0x417280: cmp ax,0x405; jne ret; shr eax,16; test al,al; jne ret (byte2 must be 0); eax=atoi(arg2); cmp eax,[0x7DA100]; jg ret (value > cap suppresses); push eax; mov ecx,0x8AB828; call 0x451B00 (sends 0x405 with one value dword). Gate dead chain: sole E8 caller 0x42D6C6 = dispatcher 0x42D680 case byte2=3 (jump table 0x42D700 raw dwords [0x42D6BA,0x42D6D1,0x42D6F9,0x42D6A3,0x42D6F9,0x42D6F9,0x42D6E8] for byte2-3 in 0..6: byte2=3 -> 0x42D6BA -> gate with this=base+0x3399C; byte2=4 -> 0x425820 +0x4707C; byte2=6 -> 0x4247C0 +0x47834; byte2=9 -> 0x4404E0 +0x51150; CORRECTION: the earlier 'category byte 4' claim was wrong - category 4 routes to 0x425820, the gate is category 3); dispatcher sole caller 0x41CECA (wrapper 0x41CDE0, exchange-keyed, tab packed in {0,1,2}). DOUBLY DEAD: the gate requires byte2==0 but is reachable only at byte2=3 (contradiction), AND the exchange dialog's own packed tab<<16|msg_id with tab in {0,1,2} hits the default no-op in both 0x41CDE0 (only 0x64-0x67) and 0x42D680 (only 3..9). 0x405 never sent in this build. Paint helpers (CORRECTION): 0x46811C sprintf -> 0x45DBA0 set font (0x47BE18, size 0xA) -> 0x45DE50 text rect (x+0x41,y+0x11A)-(x+0x8E,y+0x12B) color 0x64C8F8.",
+      "runtime_evidence_needed": "需运行时捕获: watch 0x7DA100 in a debugger during the trade/quantity dialog and during bag paint to confirm the displayed value source (player gold vs server trade cap)",
+      "draw_helpers": [
+        "0x0046811C sprintf (ecx=0x8AB7A8)",
+        "0x0045DBA0 set font (name 0x47BE18 굴림체 Gulim, size 0xA=10)",
+        "0x0045DE50 draw text rect"
+      ]
     },
     "secondary_load_text": {
-      "source_addresses": ["0x007DA11D", "0x007DA11F"],
+      "source_addresses": [
+        "0x007DA11D",
+        "0x007DA11F"
+      ],
       "format_va": "0x0047BDFC",
       "format": "负重:%d / 总量:%d",
       "encoding": "GB18030",
-      "draw_helpers": ["0x0046811C", "0x0045DE50"],
+      "draw_helpers": [
+        "0x0046811C",
+        "0x0045DE50"
+      ],
       "target_rect_expressions": [
         "window-relative x=0x86..0x86+measured width, y=0x18",
         "window-relative x=0xF0..0xF0+measured width, y=0x26"
       ],
-      "state_selector": "byte this+0x54 selects one of four label branches (jump table 0x42F13C): 0=[包袱] 0x47BE10 (0xF8DCFA), 1=[修补] 0x47BDF4, 2=[变卖] 0x47BDEC, 3=[木柴] 0x47BDE4 (0xF8C8C8); the 负重/总量 format itself is drawn in the mode-agnostic branch before the mode labels",
+      "state_selector": "byte this+0x54 dispatch (jump table 0x42F13C) selects one of four label branches: 0=[包袱] 0x47BE10 @0x42EF52 (0xF8DCFA), 1=[修补] 0x47BDF4 @0x42F02E, 2=[变卖] 0x47BDEC @0x42F068, 3=[储存] 0x47BDE4 @0x42F0EB (0xF8C8C8; corrected from wrong [木柴]). CORRECTION (Finding 262): the 负重/总量 format is drawn in the MODE-0 branch ONLY (0x42EF8F-0x42F029, then jmp 0x42F123), not mode-agnostic; 0x47BDFC is LIVE (single imm32 ref 0x42EFBF). Sibling weight displays: char window 0x44BF39/0x44BF40 reads the same words and formats 0x47C740 \"%d / %d\" with labels 0x47C720 包袱负重 / 0x47C714 装备负重 (draw 0x45DD70 TextOutA chain, color 0xF8F8F8); tooltip 0x42A277 formats 0x47BD40 \"(负重)%d/%d\" on mouse-over (via [0x4762B4] hit with [0x7DA1C0]/[0x7DA1C4]).",
       "evidence_level": "primary-static-plus-primary-string",
-      "semantic_status": "closed - 负重 (carry weight) and 总量 (total capacity) words; display geometry and format primary-static (0x42EF9E/0x42EFB3, string 0x47BDFC)"
+      "semantic_status": "closed - 负重 (carry weight) and 总量 (total capacity) words; display geometry and format primary-static (0x42EFA1/0x42EFB5, string 0x47BDFC live @0x42EFBF, mode-0 branch)"
     },
     "item_record_fields": {
       "record_stride": "contiguous records at this+0x774 + slot*0xC2C, 46 records (ctor 0x42E810 via vector-ctor 0x4686C4; dtor 0x42E8D0 via vector-dtor 0x468306); data base = rec+0x0C (0xC20 bytes)",
@@ -152,9 +355,18 @@
   },
   "interaction_and_selection": {
     "global_selection_fields": [
-      {"address": "0x007DA1C0", "role": "selection/input coordinate X candidate"},
-      {"address": "0x007DA1C4", "role": "selection/input coordinate Y candidate"},
-      {"address": "0x007243D8", "role": "selection branch gate"}
+      {
+        "address": "0x007DA1C0",
+        "role": "selection/input coordinate X candidate"
+      },
+      {
+        "address": "0x007DA1C4",
+        "role": "selection/input coordinate Y candidate"
+      },
+      {
+        "address": "0x007243D8",
+        "role": "selection branch gate"
+      }
     ],
     "hit_test": {
       "va": "0x0042F150",
@@ -179,19 +391,54 @@
       "pending_action_fields": "[esi+0x2375C]=1 trigger flag, [esi+0x23760], [esi+0x23764]=slot, [esi+0x23768]=record index (written at 0x43040B-0x430424)"
     },
     "network_gap": {
-      "bag_fill_entry": "virtual 0x42FC40 (contains record place 0x42F440) has ZERO static references: no E8 callers, no imm32 refs, absent from vtable 0x476870 slots [0..10] -> dead or runtime-computed pointer. [reg+0x774] writers are all inside bag internals (0x42Exxx-0x430xxx) plus the item-DB layer 0x456AC3-0x45A112 (different struct). The outbound 0x403 send (0x451AD0 from 0x4300F0) is the bag action message; the server->client bag-list reply handler could not be located statically.",
-      "evidence_needed": "runtime packet trace pairing outbound msg 0x403 with the server reply that fills the records"
+      "bag_fill_entry": "CORRECTED (Finding 262): the premise that 'virtual 0x42FC40 is a zero-ref bag-fill entry -> dead or runtime-computed' rests on a MISIDENTIFIED entry point. 0x42FC40 is MID-FUNCTION inside the LIVE bag-fill/replace handler 0x42FC20 (SEH handler 0x475168, ret 0xC28, args [esp+0xC48]=item-record ptr / [esp+0xC44]=slot index). Negative evidence holds ONLY for the exact address 0x42FC40 (0 E8 callers, 0 imm32 refs - it is not a function entry). 0x42FC20 itself has exactly 13 E8 callers: msg handlers 0x41EE9F (msg 0xC8), 0x41F20C+0x41F4DC (msg 0x35), 0x41F63F (msg 0x268), 0x41FDE2 (msg 0x376), 0x42052D+0x4205B8+0x420605 (msg 0x2A9), 0x4206AC (msg 0x2A4), 0x42074F (msg 0x2A5), plus bag-internal 0x42E0C1 (bulk-sync loop: 0x2E=46 records x 0xC2C, per non-empty record copies 0xC20 and calls 0x42FC20 with this=[eax+0x6554]), 0x42FD97 (inside SEH fn ~0x42FD10, handler 0x47518B: 0x42FCC0 get + 0x42FC20 replace = update item at slot), 0x42FF6E (inside small fn 0x42FF30-0x42FF87, ret 8 = replace item). Caller pattern: sub esp,0xC20; mov ecx,0x308; rep movsd (copies 0xC20 bytes from the receive buffer) then call 0x42FC20 with bag this. Body: 0x42F2A0 index_to_rect -> 0x42F280 find-first-free (scans this+0x774+idx*0xC2C, returns idx or -1) -> 0x42F440 record place @0x42FC90; SEH teardown 0x403AC0. Sibling helpers: 0x42FCC0 = get-record at index (reads [this+0x774+idx*0xC2C] occupied flag, rep movsd 0x308 = 0xC20 bytes from rec+0x0C, clears slot via 0x42FB20, returns 1/0; callers 0x42FD69/0x42FE40); 0x42F280 = find first free record. The server->client bag-list reply path is therefore statically RESOLVED as the 0x35/0xC8/0x268/0x376/0x2A9/0x2A4/0x2A5 message handlers feeding 0x42FC20; no runtime packet trace is required to prove the handler exists.",
+      "evidence_needed": "None for handler existence (primary-static, Finding 262). Optional runtime confirmation: which of the listed msg ids the server actually sends for a bag list (protocol semantics candidate); outbound bag action msg 0x403 (0x451AD0 from 0x4300F0) remains the send side."
     },
     "evidence_level": "primary-static-selection-chain"
   },
   "paint_order": [
-    {"order": 1, "va": "0x0042EB8C-0x0042EB90", "role": "window base/background", "evidence": "The paint entry calls the window vtable +0x0C before any inventory-specific geometry or item processing."},
-    {"order": 2, "va": "0x0042EB91-0x0042EBB0", "role": "vertical weight gauge (shared component 0x4179B0)", "evidence": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D)."},
-    {"order": 3, "va": "0x0042EBBB-0x0042EE2A", "role": "selected-item hit/index and source-destination composition", "evidence": "The branch tests selection globals, resolves a 6x6 slot through 0x42F150/0x42F2A0, then builds source/destination rectangles and calls the shared float/compositor pipeline."},
-    {"order": 4, "va": "0x0042EE2F-0x0042EE3A", "role": "inventory item-list/update path", "evidence": "Both selected and non-selected branches converge here and call 0x42F790 before the numeric text path."},
-    {"order": 5, "va": "0x0042EE42-0x0042EEBE", "role": "primary quantity/value text", "evidence": "The runtime value at 0x7DA100 is formatted through 0x46811C using 0x47A214, with target positions based on window.x+0x41 and window.y+0x11A/0x12B. Value is a never-written bss zero in this build (dead stat, see content_field_draw_mapping.primary_value)."},
-    {"order": 6, "va": "0x0042EECD-0x0042EF1E", "role": "child-control reposition/update", "evidence": "Three original child-control objects receive their fixed positions through 0x417830; these calls occur after the item/value path."},
-    {"order": 7, "va": "0x0042EF2F-0x0042F003", "role": "state-dependent text: 负重/总量 format + mode label", "evidence": "The byte this+0x54 state dispatch (jump table 0x42F13C) selects one of four label branches ([包袱]/[修补]/[变卖]/[木柴]); before the labels the branch at 0x42EF9E-0x42EFB3 reads 0x7DA11D/0x7DA11F and draws 负重:%d / 总量:%d (0x47BDFC) through 0x46811C/0x45DE50 at (x+0x86, y+0x18) color 0xA0A0A and (x+0xF0, y+0x26) color 0xF8C8C8."}
+    {
+      "order": 1,
+      "va": "0x0042EB8C-0x0042EB90",
+      "role": "window base/background",
+      "evidence": "The paint entry calls the window vtable +0x0C before any inventory-specific geometry or item processing."
+    },
+    {
+      "order": 2,
+      "va": "0x0042EB91-0x0042EBB0",
+      "role": "vertical weight gauge (shared component 0x4179B0)",
+      "evidence": "Draw args window.x+0xF8 / window.y-0xA5 / value=[this+0x58] / max=0x5E(94) for gauge member this+0x278 (GameInter frame 280, 16x424 sprite, 12x218 fill area, vertical). 0x5E is the gauge max scale, not a frame id. Same component/max used by the store window (0x44DB3F) and the exchange window's two trade gauges (0x41601C/0x41603D)."
+    },
+    {
+      "order": 3,
+      "va": "0x0042EBBB-0x0042EE2A",
+      "role": "selected-item hit/index and source-destination composition",
+      "evidence": "The branch tests selection globals, resolves a 6x6 slot through 0x42F150/0x42F2A0, then builds source/destination rectangles and calls the shared float/compositor pipeline."
+    },
+    {
+      "order": 4,
+      "va": "0x0042EE2F-0x0042EE3A",
+      "role": "inventory item-list/update path",
+      "evidence": "Both selected and non-selected branches converge here and call 0x42F790 before the numeric text path."
+    },
+    {
+      "order": 5,
+      "va": "0x0042EE42-0x0042EEBE",
+      "role": "primary quantity/value text (all four modes)",
+      "evidence": "Runtime value at 0x7DA100 -> sprintf 0x46811C with '%d' 0x47A214 -> set font 0x45DBA0 (name 0x47BE18 굴림체, size 0xA) -> draw text rect 0x45DE50 at (window.x+0x41, window.y+0x11A)-(window.x+0x8E, window.y+0x12B) color 0x64C8F8. Runs before the mode dispatch -> drawn in all 4 modes. Value is a never-written bss zero in this build -> 0 (candidate semantic: player gold / trade-pay cap; see content_field_draw_mapping.primary_value)."
+    },
+    {
+      "order": 6,
+      "va": "0x0042EECD-0x0042EF1E",
+      "role": "child-control reposition/update",
+      "evidence": "Three original child-control objects receive their fixed positions through 0x417830; these calls occur after the item/value path."
+    },
+    {
+      "order": 7,
+      "va": "0x0042EF2F-0x0042F003",
+      "role": "state-dependent text: mode label (负重/总量 only in mode 0)",
+      "evidence": "Byte this+0x54 state dispatch (jump table 0x42F13C) selects one of four label branches: [包袱] 0x47BE10 @0x42EF52 (0xF8DCFA) / [修补] 0x47BDF4 @0x42F02E / [变卖] 0x47BDEC @0x42F068 / [储存] 0x47BDE4 @0x42F0EB (0xF8C8C8; corrected from [木柴] - absent from binary). The 负重/总量 text is drawn ONLY in the mode-0 branch (0x42EF8F-0x42F029): reads 0x7DA11D/0x7DA11F (imm32 refs 0x42EFA1/0x42EFB5), format 0x47BDFC \"负重:%d / 总量:%d\" (LIVE, single ref 0x42EFBF) via 0x46811C/0x45DE50 at (x+0x86, y+0x18) color 0xA0A0A and (x+0xF0, y+0x26) color 0xF8C8C8."
+    }
   ],
   "confirmed": [
     "Frame 250 is the inventory window background candidate with primary constructor evidence.",
@@ -205,9 +452,10 @@
     "Record array layout is primary-static, double-proven by ctor+dtor: ctor 0x42E810 -> vector-ctor iterator 0x4686C4(this+0x774, 0xC2C, 46, per-elem ctor 0x415730, dtor 0x415740); dtor 0x42E8D0 -> vector-dtor iterator 0x468306(this+0x774, 0xC2C, 46, dtor 0x415740); deleting-dtor thunk 0x42E8B0 (vtable 0x476870 slot [0]) calls 0x42E8D0 + conditional 0x4680F8 operator delete. 46 contiguous records, record = this+0x774 + slot*0xC2C, data base rec+0x0C (0xC20-byte item-data copy). The earlier pointer-array model (this+0x774+4*index) and offsets +0x2E8/+0x351..353 are corrected to +0x2E (type)/+0x34 (frame WORD)/+0x51..+0x53 (24-bit icon tint).",
     "The icon tint chain is primary-static: type byte data+0x22 in {0x0A, 0x0B} -> 3-byte RGB at data+0x45..0x47 -> 0x45E4E0 16-bit 565 -> RLE blit fill 0x45F2D0; otherwise white 0xFFFF.",
     "The secondary text is closed: 负重:%d / 总量:%d (0x47BDFC) reads words 0x7DA11D/0x7DA11F; the four mode labels [包袱]/[修补]/[变卖]/[木柴] are confirmed GB18030 literals drawn from the this+0x54 dispatch.",
-    "The primary value 0x7DA100 is a dead stat in this build: never written (bss zero), read only by the outbound 0x405 gate 0x417280 (dead: byte2 guard + sole caller 0x42D6C6 passes category byte 4) and this paint; displayed as 0. Semantic name candidate: trade/buy quantity cap.",
+    "The primary value 0x7DA100 is a dead stat in this build: never written (bss zero), read only by the outbound 0x405 gate 0x417280 (dead: gate requires byte2==0 but sole caller 0x42D6C6 routes to it only at category byte 3 - contradiction; exchange dialog packed tab in {0,1,2} -> default no-op; doubly dead) and this paint; displayed as 0. Semantic name candidate: trade/buy quantity cap.",
     "Click/interaction chain is primary-static: 0x4300F0 rate-limited handler sends msg 0x3EC (mode 0, slot/name/qty via 0x451690), repair msg via 0x451860 (mode 1) and sell msg via 0x4517E0 (mode 2); move/pickup 0x42FE00 and carry 0x42FD10 share the 0xC20 item-data layout with cursor data base at +0x18.",
-    "0x47BE18 is the shared font-name literal argument to 0x45DBA0, not an inventory label."
+    "0x47BE18 is the shared font-name literal argument to 0x45DBA0, not an inventory label.",
+    "Finding 262: bag-fill entry mislabel corrected - 0x42FC40 is mid-function inside LIVE 0x42FC20 (13 E8 callers, SEH 0x475168, ret 0xC28, msg routing 0xC8/0x35/0x268/0x376/0x2A9/0x2A4/0x2A5 + bulk-sync 46-record loop 0x42E0C1 + update/replace 0x42FD97/0x42FF6E); 0x42F440 record place is live via its sole caller 0x42FC90; negative evidence (0 E8 / 0 imm32) applies only to the exact address 0x42FC40, not to a dead handler. Outbound 0x405 = trade-pay-gold candidate (prompt 0x47AD98 \"您要付给对方多少金币?\" in input dialog 0x418030 @0x416F9C, send gate 0x417280 capped at [0x7DA100], sender 0x451B00) but primary-static-negative: 0x405 is never sent in this build (gate doubly dead)."
   ],
   "closed_notes": {
     "2026-08-11": [
@@ -218,8 +466,8 @@
   },
   "pending": [
     "Semantic name of 0x7DA100 (candidate: trade/buy quantity cap). Static side closed: never written (bss zero), read only by the dead 0x405 gate and bag paint; runtime evidence needed = watch 0x7DA100 during the trade/quantity dialog and during bag paint.",
-    "Server->client bag-list fill handler: virtual 0x42FC40 (record place 0x42F440) has zero static references (no E8, no imm32, absent from vtable 0x476870) -> dead or runtime-computed; runtime packet trace pairing outbound msg 0x403 (0x451AD0) with the reply that fills records is required.",
-    "Protocol semantics of outbound msg 0x405: only send site is the dead gate 0x417280; 0x405 also appears as an argument to input dialog 0x418030 (trade-pay/drop-gold prompts adjacent); exact server meaning unresolved.",
+    "Server->client bag-list fill handler LIVE via 0x42FC20 (13 direct E8 callers, 10 from server-message handlers in the 0x41xxxx range; each copies a 0xC20-byte record from the receive buffer). CORRECTION (Finding 262): 0x42FC40 is MID-FUNCTION, not a virtual start; 0x42F440 is the record-place virtual (single E8 caller 0x42FC90 inside the dead subtree). Cell-table arithmetic: this+0x2C4, 6 WORDs/row, value=slot+0x3E8. Runtime packet trace pairing outbound msg 0x403 (0x451AD0) with the reply that fills records is still required to name the 10 message numbers.",
+    "Protocol semantics of outbound msg 0x405: only send site is the dead gate 0x417280 (primary-static-negative confirmed: jump table 0x42D680 category-3 routing contradicts the byte2==0 guard; sole E8 caller 0x42D6C6 passes category byte 4); 0x405 also appears as a WORD msg-id arg ([obj+0x460]) to input dialog ctor 0x418030 (trade-pay/drop-gold prompts adjacent, 0x47AD98='您要付给对方多少金币?'); the dialog's confirm handler 0x418545/0x418648 sends the stored msg id via 0x417034 which transmits 0x406, not 0x405. Exact server meaning of 0x405 remains runtime-only.",
     "Runtime confirmation of the mode-tab to child-control mapping (3 tabs at this+0x5C vs 4 paint modes) and of the visible bottom-left region rendering (no vision model available; geometry is statically proven)."
   ]
 }
