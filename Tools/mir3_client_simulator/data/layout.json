@@ -2609,9 +2609,15 @@
       "x": 320,
       "y": 300,
       "library": "M-Hum.wil",
-      "frame": 0,
-      "evidence_level": "derived",
-      "note": "type-0 entity -> element 71 -> M-Hum.wil (idx 68 = 139-71); frame word[0x8AA5C0+6*state]+10*flag+3000*dir = state0/dir0/flag0 -> F0"
+      "frame": 100,
+      "appearance": {
+        "table": "player",
+        "state": 1,
+        "S": 0,
+        "dir": 2
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 282/279: 玩家帧 = word[0x8AA5C0+6*state] + 3000*S + 10*dir (type-0 实体 -> element 71 -> M-Hum.wil, 槽 idx = 139-element)；S=身体类型<9 (M-Hum 27000=9×3000)，dir=方向 0..7；演示 S=0/dir=2, state1(行走) w0=0x50 w1=6 w2=100ms → 循环 F100..F105"
     },
     {
       "id": "npc.guild",
@@ -2620,9 +2626,15 @@
       "x": 380,
       "y": 340,
       "library": "NPC.wil",
-      "frame": 0,
-      "evidence_level": "derived",
-      "note": "type 0x32 -> element 128 -> NPC.wil (idx 11 = 139-128) @0x405263; frame word[0x8AA6C8+6*state]+100*dir+10*flag = state0/dir0/flag0 -> F0"
+      "frame": 30,
+      "appearance": {
+        "table": "npc",
+        "state": 1,
+        "body": 0,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 281: type 0x32 -> element 128 -> NPC.wil (槽 79)；NPC 帧 = word[0x8AA6C8+6*state] + 100*body + 10*(flag%3)，body<0x64；NPC.wil 6400 帧 = 64 body × 100；演示 body=0, state1 w0=0x1E=30 w1=10 w2=300ms → 循环 F30..F39"
     },
     {
       "id": "npc.store",
@@ -2631,9 +2643,15 @@
       "x": 440,
       "y": 360,
       "library": "NPC.wil",
-      "frame": 100,
-      "evidence_level": "derived",
-      "note": "type 0x32 -> NPC.wil; frame dir1 -> +100*dir -> F100"
+      "frame": 130,
+      "appearance": {
+        "table": "npc",
+        "state": 1,
+        "body": 1,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 281: NPC 帧 = word[0x8AA6C8+6*state] + 100*body + 10*(flag%3)；演示 body=1, state1 → 30 + 100*1 = F130 起循环"
     },
     {
       "id": "mon.scarecrow",
@@ -2642,10 +2660,16 @@
       "x": 260,
       "y": 320,
       "library": "Mon-6.wil",
-      "frame": 0,
+      "frame": 80,
       "race": 50,
-      "evidence_level": "derived",
-      "note": "server race 50 (Scarecrow) -> element 0x58+50/10=0x5D=93 -> Mon-6.wil (idx 46); frame base+10*flag = F0"
+      "appearance": {
+        "table": "monster",
+        "state": 1,
+        "race": 50,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 280: 库 = Mon-(Race//10+1).wil (50→Mon-6.wil)、element = 0x58+Race//10 (0x5D=93)；怪物帧 = word[0x8AA686+6*state] + 1000*(Race%10) + 10*flag；state1 w0=0x50 w1=6 w2=130ms, Race%10=0 → 循环 F80..F85"
     },
     {
       "id": "mon.chicken",
@@ -2654,10 +2678,16 @@
       "x": 480,
       "y": 280,
       "library": "Mon-4.wil",
-      "frame": 0,
+      "frame": 80,
       "race": 30,
-      "evidence_level": "derived",
-      "note": "server race 30 (Chicken) -> element 0x58+30/10=0x5B=91 -> Mon-4.wil (idx 48); frame F0"
+      "appearance": {
+        "table": "monster",
+        "state": 1,
+        "race": 30,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 280: Race 30 → Mon-4.wil (槽 48)、element 0x5B=91；帧 = w0 + 1000*(30%10=0) + 0 → 循环 F80..F85 (130ms)"
     },
     {
       "id": "mon.deer",
@@ -2666,10 +2696,16 @@
       "x": 540,
       "y": 330,
       "library": "Mon-4.wil",
-      "frame": 10,
+      "frame": 1080,
       "race": 31,
-      "evidence_level": "derived",
-      "note": "server race 31 (Deer) -> element 0x58+31/10=0x5B=91 -> Mon-4.wil (idx 48); frame base+10*flag = F10"
+      "appearance": {
+        "table": "monster",
+        "state": 1,
+        "race": 31,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 280: Race 31 → Mon-4.wil、帧基 = 1000*(31%10=1)=F1000 + w0 0x50 → 循环 F1080..F1085"
     },
     {
       "id": "mon.sheep",
@@ -2678,10 +2714,16 @@
       "x": 200,
       "y": 290,
       "library": "Mon-7.wil",
-      "frame": 0,
+      "frame": 8080,
       "race": 68,
-      "evidence_level": "derived",
-      "note": "server race 68 (Sheep) -> element 0x58+68/10=0x5E=94 -> Mon-7.wil (idx 45); frame F0"
+      "appearance": {
+        "table": "monster",
+        "state": 1,
+        "race": 68,
+        "flag": 0
+      },
+      "evidence_level": "primary-static",
+      "note": "Finding 280: Race 68 → Mon-7.wil (槽 45)、element 0x5E=94；帧基 = 1000*(68%10=8)=F8000 + 0x50 → 循环 F8080..F8085"
     },
     {
       "id": "drop.1",
@@ -2693,7 +2735,7 @@
       "frame": 5,
       "looks": 5,
       "evidence_level": "derived",
-      "note": "stditem.dat rec1 金创药（小） looks68=5 -> Ground.wil F5 (8x12); ground item lib [0x566DD4]"
+      "note": "stditem.dat rec1 金创药（小） looks68=5 -> Ground.wil F5 (8x12)；地面物库 [0x566DD4]；无帧公式（静态单帧）"
     }
   ],
   "equipment_slots": [
@@ -4722,6 +4764,240 @@
       "evidence_level": "primary-static",
       "note": "fixed minimap rect (672,0)-(800,128)"
     }
+  },
+  "frame_tables": {
+    "player": [
+      [
+        0,
+        4,
+        200
+      ],
+      [
+        80,
+        6,
+        100
+      ],
+      [
+        160,
+        5,
+        75
+      ],
+      [
+        240,
+        5,
+        75
+      ],
+      [
+        320,
+        1,
+        100
+      ],
+      [
+        400,
+        1,
+        100
+      ],
+      [
+        480,
+        1,
+        100
+      ],
+      [
+        560,
+        3,
+        200
+      ],
+      [
+        640,
+        2,
+        400
+      ],
+      [
+        720,
+        6,
+        85
+      ],
+      [
+        800,
+        6,
+        85
+      ],
+      [
+        880,
+        6,
+        85
+      ],
+      [
+        960,
+        6,
+        85
+      ],
+      [
+        1040,
+        6,
+        85
+      ],
+      [
+        1120,
+        6,
+        85
+      ],
+      [
+        1200,
+        3,
+        100
+      ],
+      [
+        1280,
+        10,
+        70
+      ],
+      [
+        1360,
+        10,
+        90
+      ],
+      [
+        1440,
+        10,
+        70
+      ],
+      [
+        1520,
+        10,
+        120
+      ],
+      [
+        1600,
+        10,
+        100
+      ],
+      [
+        1680,
+        6,
+        90
+      ],
+      [
+        1760,
+        6,
+        120
+      ],
+      [
+        1840,
+        6,
+        100
+      ],
+      [
+        1920,
+        10,
+        100
+      ],
+      [
+        2000,
+        4,
+        180
+      ],
+      [
+        2080,
+        3,
+        180
+      ],
+      [
+        2160,
+        8,
+        180
+      ],
+      [
+        2240,
+        8,
+        180
+      ],
+      [
+        2320,
+        4,
+        200
+      ],
+      [
+        2400,
+        6,
+        100
+      ],
+      [
+        2480,
+        6,
+        100
+      ],
+      [
+        2560,
+        3,
+        100
+      ]
+    ],
+    "monster": [
+      [
+        0,
+        4,
+        300
+      ],
+      [
+        80,
+        6,
+        130
+      ],
+      [
+        160,
+        6,
+        120
+      ],
+      [
+        240,
+        2,
+        300
+      ],
+      [
+        320,
+        10,
+        150
+      ],
+      [
+        400,
+        6,
+        150
+      ],
+      [
+        480,
+        10,
+        150
+      ],
+      [
+        560,
+        10,
+        150
+      ],
+      [
+        640,
+        6,
+        150
+      ]
+    ],
+    "npc": [
+      [
+        0,
+        4,
+        300
+      ],
+      [
+        30,
+        10,
+        300
+      ],
+      [
+        60,
+        6,
+        300
+      ]
+    ],
+    "source": "state-frame-tables-evidence.json Finding 279 (primary-static)"
   },
   "viewport": {
     "width": 800,

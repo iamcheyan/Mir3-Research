@@ -1,0 +1,290 @@
+{
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "image_base": "0x400000",
+    "va_mapping": "fileoff = VA - 0x400000 (PE section table vaddr == raddr; file size 0x80000 -> VAs 0x400000-0x47FFFF are real code/data, globals >= 0x480000 appear only as imm32 constants / BSS anchors)",
+    "evidence_level": "primary-static unless noted (every VA below disassembled from a verified function prologue; indirect-call targets resolved at call sites)",
+    "finding": "Finding 282 (PlayerComposition, 2026-08-11)",
+    "scope": "player-character composition: gender byte -> type -> element (M-Hum vs WM-Hum), descriptor struct, frame formulas, element table 0x5600FC (stride 0x144), WIL path slot table (element = slot), overlay draw order/formulas (weapon/body/hair/helmet/horse), render-mode bit semantics, per-frame animation resetter 0x4058E0, M-SHum.wil absence, CreateChr.dat AVI chain (scope-dropped)."
+  },
+  "conclusion": "Player composition is fully closed statically. The appearance descriptor is a dword+4 struct: byte0 = type (0 male / 1 female / 2 odd-reject / 3 monster / 0x32 NPC), byte2 = state/dir (players S<9) or race-lo, byte3 = race-hi, byte4 = riding style. The config dispatcher 0x404FB0 reads the type byte and binds gender to element: type 0 -> [e+0x8C]=0x47 (element 71 = M-Hum), type 1 -> [e+0x8C]=0x4C (element 76 = WM-Hum); the leaf painter 0x405630 repeats the same gender->element binding (0x405673/0x405689) and computes player frames = word[0x8AA5C0+6*flag] + 3000*S + 10*dir ([e+0xB4] base / [e+0xB8] end / [e+0xBC] interval), S = byte2 of the descriptor dword. The element table 0x5600FC (BSS, stride 0x144, entry +4 kind byte dispatching to 0x466640 / 0x466720, +0x38 resolved frame-header pointer) is addressed by element; element index == WIL path slot index (verified for 71/76/87/88/128/131). Overlay composition runs in one draw fn 0x40F5F0: (1) horse pass1 frame = ((frame_base - 3000*S - 0xAA0) mod 400) + 0x2710, (2) weapon pass1 frame = [e+0xC4] + ((sel-1)%10)*3000 - S*3000, (3) body frame = [e+0xC4] with bbox clamp, (4) hair/helmet frame = same weapon formula via [e+0x8B] sel, (5) weapon pass2 + horse pass2 in render-mode-blit passes. Render-mode resolver 0x404DA0 maps flag bits [e+0x61C68] to a mode word. No M-SHum.wil string/literal exists in the EXE (on-disk M-SHum.wil 32722 frames is NOT referenced). Gender->type byte has NO static writers in 0x400000-0x47FFFF (runtime/server-filled via entity build path).",
+  "round3": {
+    "finding": 282,
+    "agent": "PlayerComposition",
+    "date": "2026-08-11",
+    "previously_open": [
+      "P3/P6: player sprite composition (body/hair/weapon/helmet, gender M-Hum vs WM-Hum, render-mode flag semantics, frame formula 0x8AA5C0, overlay order)",
+      "old note 'element table stride 0x36' (cancelled: stride is 0x144)",
+      "old note 'M-SHum.wil player small-body slot' (cancelled: no M-SHum literal in EXE)",
+      "old note 'CreateChr.dat parsing needed' (cancelled by steering: AVI intro only, no composition data)"
+    ],
+    "runtime_only": [
+      "gender->type byte [e+0x88] value source (no static writer; server/entity-build path)",
+      "element table 0x5600FC entry contents (kind byte +0x38 frame-header ptr populated at runtime)",
+      "frame tables 0x8AA5C0/0x8AA686/0x8AA6C8 contents (owned by Finding 279 StateFrameTables)",
+      "WIL lib file-handle/header cache behind 0x466640/0x466720"
+    ]
+  },
+  "config_chain": {
+    "entry": "0x410080 (vtable slot @0x4765D0, no direct static callers)",
+    "parser": "0x40C720 (arg7): calls 0x404FB0 (0x40C745) then copies dword0 of its arg into [esi+0x629C8] and byte4 into [esi+0x629CC] (0x40C75E/0x40C765); clamps [e+0x629C8]<4 (0x40C78A, reset to 0), [e+0x8B]<0x1E (0x40C768-0x40C773), [e+0x89]<0x32 (0x40C77A-0x40C783); if riding ([e+0x629C8]!=0) sets horse element byte [e+0x629CF]=0x57 (0x40C79C)",
+    "dispatcher": "0x404FB0 (arg2 = descriptor dword)",
+    "head_weapon_elements": {
+      "male_head": "[e+0x629CE] = (sel-1)/10 - 0x7D (0x40C7B7-0x40C7D4), sel=[e+0x8B] (0x40C7AD)",
+      "female_head": "[e+0x629CE] = (sel-1)/10 - 0x7B (0x40C813-0x40C830)",
+      "male_weapon": "[e+0x629CD] = (sel-1)/10 + 0x48 (0x40C7DA-0x40C7FF), sel=[e+0x89]",
+      "female_weapon": "[e+0x629CD] = (sel-1)/10 + 0x4D (0x40C836-0x40C85A)",
+      "resolve": "[e+0x62A0C] = 0x5600FC + elem*0x144 (0x40C86B-0x40C87A, lea x9/x9/x4 = x324); [e+0x62A10] weapon lib same (0x40C88A-0x40C8A5); [e+0x62A14] horse lib = 0x5600FC + [e+0x629CF]*0x144 (0x40C8B3-0x40C8CE)"
+    }
+  },
+  "descriptor": {
+    "va": "0x404FB0",
+    "layout": {
+      "byte0": "type: 0 male / 1 female / 2 reject / 3 monster / 0x32 NPC",
+      "byte1": "unused in all verified read sites",
+      "byte2": "players: state S (<9); monsters: race-lo; NPC: body index (<0x64)",
+      "byte3": "monsters: race-hi (race = word [esp+0x12] read at 0x4056EB-0x4056F8)",
+      "byte4": "riding style -> [e+0x629C8] (clamped <4; 0x40C760/0x40C762/0x40C78A)"
+    },
+    "type_byte_source": "runtime/server-filled: byte-table searches for C6 8x 88 imm32 and C6 4x 88 imm8 writers to [e+0x88] over 0x400000-0x47FFFF return zero hits; the only writer of [e+0x88] is the painter tail 0x405854 (writes back the type it just read)"
+  },
+  "dispatcher": {
+    "va": "0x404FB0",
+    "role": "appearance config entry (scene-entity vtable slot +0x0C in vtables 0x4763C0 / 0x47648C / 0x476728; +0x00 in 0x476550)",
+    "prologue": "entry `mov al,[esp+0x10]` clamp < 8; `mov edi,[esp+0x38]` descriptor ptr",
+    "type_dispatch": "byte table @0x405500 / jump @0x4054EC: 0 -> 0x404FE5 (male player), 1 -> 0x405003 (female player), 2 -> reject 0x4054DE, 3 -> 0x40507C (monster), 0x32 -> 0x4051BB (NPC), else reject (cmp eax,0x32 ja reject)",
+    "player_case": {
+      "guards": "[edi+2] < 9 (state S), [esp+0x3C] < 0x21 (flag)",
+      "gender_binding": "type 0: `mov byte [ebp+0x8c],0x47` (element 71 M-Hum); type 1: `mov byte [ebp+0x8c],0x4c` (element 76 WM-Hum) @0x404FE5/0x405003",
+      "frame_triple": "0x40501F..0x405077: frame = word[0x8AA5C0+6*flag] + 3000*S + 10*dir -> [e+0xB4]; end = word[0x8AA5C2+6*flag] + frame -> [e+0xB8]; interval = word[0x8AA5C4+6*flag] -> [e+0xBC]",
+      "tail": "0x4052C4..0x4052F7: [e+0xC1]=[e+0xC2]=dir, [e+0xC0]=flag, [e+0xCC]/[e+0xD0]=world coords; painter arg = descriptor dword; call 0x405630"
+    },
+    "monster_case": "0x40507C: race = word from descriptor bytes 2-3; element 0x58+race/10 (race<2000) or 0x87+(race-2000)/100; frame formula word[0x8AA686+6*state]+1000*(race%10)+10*flag (race>=2000: word[0x8AA686+6*flag]+100*(race-2000)+10*flag) — details owned by Finding 280",
+    "npc_case": "0x4051BB: element 0x80 (128), frame word[0x8AA6C8+6*state]+100*body+10*(flag%3) — details owned by Finding 281",
+    "shadow_quad": "tail after painter builds D3D shadow-quad vertex buffer at [ebp+0x61BD8]/[ebp+0x61BF8] (8 dwords each; float constants -0.5/0.5/-1.0/0.0) — this is the shadow vertex buffer, NOT a composition array"
+  },
+  "second_dispatcher": {
+    "va": "0x4058E0",
+    "role": "per-frame animation resetter (vtable slot +0x10 adjacent to +0x0C config in vtables 0x4763D0/0x476490/0x47672C; ret 8, entry `mov al,[esp+8]` clamp <8)",
+    "reads": "type [esi+0x88], element [esi+0x8C]",
+    "element_ptr": "0x40590A..0x40591C: `lea eax,[eax+eax*8]` (x9) then `lea ecx,[eax*4+0x5600FC]` = element*0x144 + 0x5600FC (x324; stride 0x144 CONFIRMED — earlier 'x36' note cancelled)",
+    "type_dispatch": "byte @0x405D64 / jump @0x405D50",
+    "player_case": "0x405942: S=[esi+0x8A] <9, flag=[esp+0x14] <0x21, dir=[esp+0x18] <8; same frame formula 0x8AA5C0",
+    "tail": "0x405CDD..0x405D3B: [e+0xC0]=flag, [e+0xC1]=[e+0xC2]=dir, [e+0xC4]=[e+0xB4], [e+0xC8]=0; [e+0x61C7D]=2 if dir==7 else 5; interval doubled if [e+0x61C68]&0x8000000"
+  },
+  "painter": {
+    "va": "0x405630",
+    "guard": "0x4055B0 (byte @0x4055F8 / jump @0x4055E8): type 0/1 -> S=[esp+6]<9 check; type 3 -> pass; type 0x32 -> [esp+6]<0x64; type 2 -> reject",
+    "type_dispatch": "byte @0x4058A8 / jump @0x405894: 0 -> 0x405666, 1 -> 0x40567C, 2 -> 0x405854 (tail), 3 -> 0x4056EB (monster), 0x32 -> 0x4057EA (NPC)",
+    "gender_binding": "0x405673: `mov byte [esi+0x8c],0x47` (M-Hum); 0x405689: `mov byte [esi+0x8c],0x4c` (WM-Hum); both gate S=[esp+0x12]<9",
+    "player_formula": "0x405690..0x4056E6: frame = word[0x8AA5C0 + 6*[e+0xC0]] + 3000*S + 10*[e+0xC1]; S = byte2 of descriptor dword; [e+0xB4]/[e+0xB8]/[e+0xBC] = base/end/interval",
+    "monster_case": "0x4056EB: race = word [esp+0x12] (bytes 2-3); call 0x44A240 (race fn, db_object 0x8AA5A8); race<2000: element = 0x58 + race/10 (0x405717-0x40572E), frame = word[0x8AA686+6*state] + 1000*(race%10) + 10*flag (0x40573A-0x40576A); race>=2000: element = 0x87 + (race-2000)/100 (0x405798-0x4057BB), frame = word[0x8AA686+6*flag] + 100*(race-2000) + 10*flag (0x4057C7-0x4057E5)",
+    "npc_case": "0x4057EA: body=[esp+0x12]<0x64, element 0x80, frame = word[0x8AA6C8+6*state] + 100*body + 10*flag (0x40580D-0x40584E)",
+    "tail": "0x405854: [e+0x88]=type, [e+0xC4]=[e+0xB4], [e+0x90] = 0x5600FC + [e+0x8C]*0x144; ret 4"
+  },
+  "element_table": {
+    "va": "0x5600FC (BSS, runtime-initialized; no static contents)",
+    "stride": "0x144 (324 bytes) x 140 slots (element = WIL path slot index)",
+    "entry_layout": {
+      "+0x04": "sprite-kind byte: 0 -> 0x466640, 1/2 -> 0x466720, else 0 (0x466130 dispatcher, verified)",
+      "+0x38": "resolved frame-header pointer (world-coord words at +0/+2/+4/+6 used by all draw sites; blit sizes from words +0..+6, kind byte at +8, extra words +9/+0xB)"
+    },
+    "lib_resolver": "0x466130 (ecx = element entry): kind byte dispatch -> 0x466640 (kind 0) / 0x466720 (kind 1|2); 0x466160 = lib lookup by path-slot index (frame count via header dword at +0xC)",
+    "note": "0x5600E8/0x5600F8 are FX list globals, NOT element table"
+  },
+  "wil_slot_table": {
+    "base": "0xB130 (relative to init dest register ebx), stride 0x104, 140 slots; slot = (dest - 0xB130)/0x104",
+    "init_block_structure": "0x4535A0..0x454100: per block `mov edi, <lit VA>; repne scasb (strlen); ...; mov edi, edx; lea edx, [ebx+<next dest>]; rep movsd` — copy dest = the PREVIOUS block's tail lea; own lea is for next block",
+    "element_is_slot": "element index == WIL path slot index (six independent cross-checks): 0x47=71 M-Hum, 0x4C=76 WM-Hum, 0x57=87 Horse, 0x58=88 Mon-1, 0x80=128 NPC.wil, 0x83=131 M-Hair",
+    "literals_ascii": "single-byte ASCII strings (UTF-16LE scan finds nothing)",
+    "table": [
+      {"slot": 71, "element": "0x47", "literal": ".\\Data\\M-Hum.wil", "lit_va": "0x47CDF8", "init_ref": "0x45364C", "dest": "+0xF94C"},
+      {"slot": 72, "element": "0x48", "literal": ".\\Data\\M-Weapon1.wil", "lit_va": "0x47CDE0", "init_ref": "0x453671", "dest": "+0xFA50"},
+      {"slot": 73, "element": "0x49", "literal": ".\\Data\\M-Weapon2.wil", "lit_va": "0x47CDC8", "init_ref": "0x453699", "dest": "+0xFB54"},
+      {"slot": 74, "element": "0x4A", "literal": ".\\Data\\M-Weapon3.wil", "lit_va": "0x47CDB0", "init_ref": "0x4536C1", "dest": "+0xFC58"},
+      {"slot": 75, "element": "0x4B", "literal": ".\\Data\\M-Weapon4.wil", "lit_va": "0x47CD98", "init_ref": "0x4536EA", "dest": "+0xFD5C"},
+      {"slot": 76, "element": "0x4C", "literal": ".\\Data\\WM-Hum.wil", "lit_va": "0x47CD84", "init_ref": "0x453714", "dest": "+0xFE60"},
+      {"slot": 77, "element": "0x4D", "literal": ".\\Data\\WM-Weapon1.wil", "lit_va": "0x47CD6C", "init_ref": "0x45373C", "dest": "+0xFF64"},
+      {"slot": 78, "element": "0x4E", "literal": ".\\Data\\WM-Weapon2.wil", "lit_va": "0x47CD54", "init_ref": "0x453761", "dest": "+0x10068"},
+      {"slot": 79, "element": "0x4F", "literal": ".\\Data\\WM-Weapon3.wil", "lit_va": "0x47CD3C", "init_ref": "0x453789", "dest": "+0x1016C"},
+      {"slot": 80, "element": "0x50", "literal": ".\\Data\\WM-Weapon4.wil", "lit_va": "0x47CD24", "init_ref": "0x4537B1", "dest": "+0x10270"},
+      {"slot": 81, "element": "0x51", "literal": ".\\Data\\Magic.wil", "lit_va": "0x47CD10", "init_ref": "0x4537DC", "dest": "+0x10374"},
+      {"slot": 87, "element": "0x57", "literal": ".\\Data\\Horse.wil", "lit_va": "0x47CC94", "init_ref": "0x4538CC", "dest": "+0x1098C"},
+      {"slot": 88, "element": "0x58", "literal": ".\\Data\\Mon-1.wil", "lit_va": "0x47CC80", "init_ref": "0x4538F4", "dest": "+0x10A90"},
+      {"slot": 128, "element": "0x80", "literal": ".\\Data\\NPC.wil", "lit_va": "0x47C964", "init_ref": "0x453F31", "dest": "+0x13330"},
+      {"slot": 129, "element": "0x81", "literal": ".\\Data\\MonMagic.wil", "lit_va": "0x47C950", "init_ref": "0x453F5A", "dest": "+0x13434"},
+      {"slot": 130, "element": "0x82", "literal": ".\\Data\\MonImg.wil", "lit_va": "0x47C93C", "init_ref": "0x453F84", "dest": "+0x13538"},
+      {"slot": 131, "element": "0x83", "literal": ".\\Data\\M-Hair.wil", "lit_va": "0x47C928", "init_ref": "0x453FAC", "dest": "+0x1363C"},
+      {"slot": 132, "element": "0x84", "literal": ".\\Data\\M-Helmet1.wil", "lit_va": "0x47C910", "init_ref": "0x453FD1", "dest": "+0x13740"},
+      {"slot": 133, "element": "0x85", "literal": ".\\Data\\WM-Hair.wil", "lit_va": "0x47C8FC", "init_ref": "0x453FF9", "dest": "+0x13844"},
+      {"slot": 134, "element": "0x86", "literal": ".\\Data\\WM-Helmet1.wil", "lit_va": "0x47C8E4", "init_ref": "0x454021", "dest": "+0x13948"},
+      {"slot": 135, "element": "0x87", "literal": ".\\Data\\DMon-1.wil", "lit_va": "0x47C8D0", "init_ref": "0x45404C", "dest": "+0x13A4C"},
+      {"slot": 136, "element": "0x88", "literal": ".\\Data\\DMonS-1.wil", "lit_va": "0x47C8BC", "init_ref": "0x454074", "dest": "+0x13B50"},
+      {"slot": 137, "element": "0x89", "literal": ".\\Data\\MagicEx.wil", "lit_va": "0x47C8A8", "init_ref": "0x454099", "dest": "+0x13C54"},
+      {"slot": 138, "element": "0x8A", "literal": ".\\Data\\MonMagicEx.wil", "lit_va": "0x47C890", "init_ref": "0x4540C1", "dest": "+0x13D58"},
+      {"slot": 139, "element": "0x8B", "literal": ".\\Data\\StoreItem.wil", "lit_va": "0x47C878", "init_ref": "0x4540E9", "dest": "+0x13E5C"}
+    ],
+    "non_grid": "NPCFace.WIL literal @0x47C4EC, init ref @0x43EDC6 (dialogue window +0x278; dest +0x278 NOT on the 0x104 grid from 0xB130)",
+    "note": "slots 82-86 / 90-127 / 138-140 exist in the grid (stride-0x104 dest arithmetic) but their literals are not among the pinned 26; slot grid spans dest slots 68 (0xF640) .. 139 (0x13E5C); element 0x4C..0x50 (76-80) = WM-Hum + WM-Weapon1-4 for female composition"
+  },
+  "frame_formulas": {
+    "player": "word[0x8AA5C0 + 6*flag] + 3000*S + 10*dir (S = descriptor byte2 state <9; verified at 0x40501F-0x405077 dispatcher and 0x405690-0x4056E6 painter)",
+    "monster": "word[0x8AA686 + 6*state] + 1000*(race%10) + 10*flag; race>=2000: word[0x8AA686 + 6*flag] + 100*(race-2000) + 10*flag (0x4056EB-0x4057E5 painter; details owned by Finding 280)",
+    "npc": "word[0x8AA6C8 + 6*state] + 100*body + 10*flag, flag = [esp+0x40]%3 (0x4057EA-0x40584E painter; details owned by Finding 281)",
+    "outputs": "[e+0xB4] base / [e+0xB8] end / [e+0xBC] interval (ms tick; frame advance 0x40C4B0)",
+    "db_object": "0x8AA5A8 (state fn 0x44A820 / race fn 0x44A240)",
+    "table_ownership": "table contents + Mir3.dat role owned by Finding 279 StateFrameTables (static derivation closed there; stride 6 words per state)"
+  },
+  "overlay_draw": {
+    "va": "0x40F5F0",
+    "role": "player composition draw (one function, all overlay sites; ret 0x14)",
+    "screen_transform": "prologue 0x40F5F0-0x40F65C (skip if arg4==0): [e+0xE4] = ([e+0xCC] - [view+0x12C])*48 - [view+0x134] + [e+0xD4] - 0xC8; [e+0xE8] = ([e+0xD0] - [view+0x130])*32 - [view+0x138] + [e+0xD8] - 0x9D",
+    "order": [
+      {
+        "pass": "1. horse (0x40F681)",
+        "guards": "[e+0x629C8]!=0 (riding), [e+0x62A14]!=0 (horse lib), [e+0xC0]>=0x1D",
+        "frame": "eax = style([e+0x629C8])*0x190(400); edx = 3000*S; edi = eax - edx + [e+0xC4] - 0xAA0; [e+0x62A20]=edi; div 0x190 -> frame = remainder + 0x2710(10000); since style*400 % 400 == 0: frame = ((0xC4 - 3000*S - 0xAA0) mod 400) + 0x2710",
+        "blit": "call 0x466130; bbox = element[+0x38] words +0/+2 shifted by [e+0xE4]/[e+0xE8]; blit call [0x4762B0] rect [esi+0x629FC]"
+      },
+      {
+        "pass": "2. weapon (0x40F743)",
+        "guards": "[e+0x89]!=0 (weapon sel), [e+0x62A10]!=0 (weapon lib), [e+0x62A10]!=ebp (skip if weapon lib == body lib), [e+0xC0]<0x19",
+        "frame": "[e+0x62A1C] = [e+0xC4] + ((sel-1)%10)*3000 - S*3000 (0x40F76C-0x40F7A8)",
+        "blit": "call 0x466130; blit call [0x4762B0] rect [esi+0x629EC]",
+        "note": "drawn BEFORE body"
+      },
+      {
+        "pass": "3. body (0x40F80B)",
+        "guards": "[e+0x90]!=0 (element record)",
+        "frame": "[e+0xC4]",
+        "blit": "call 0x466130; blit call [0x4762B0] rect [esi+0x94]; bbox clamp 0x40F893-0x40F903: [e+0xA4] = mid-clamp of [e+0x9C]-[e+0x94] width cap 0x3A; [e+0xA8] = clamp of [e+0xA0]-[e+0x98] height cap 0x28; [e+0xAC]/[e+0xB0] = far edges"
+      },
+      {
+        "pass": "4. hair/helmet (0x40F909)",
+        "guards": "[e+0x8B]!=0 (head sel), [e+0x62A0C]!=0 (head lib)",
+        "frame": "[e+0x62A18] = [e+0xC4] + ((sel-1)%10)*3000 - S*3000 (0x40F925-0x40F961)",
+        "blit": "call 0x466130; blit call [0x4762B0] rect [esi+0x629DC]"
+      },
+      {
+        "pass": "5. weapon pass2 (0x40F9EF)",
+        "guards": "[e+0x89]!=0, [e+0x62A10]!=0, [e+0xC0] not in {8, 0x19..0xFF}, [esp+0x34]!=0, [e+0x61C74]==0; mode = 0x404DA0 result or 1 if [e+0x61C58]!=0",
+        "blit": "mode blit 0x462F20 (push 0xd, surfaces 0x8A68D4/0x8AB7A8, 0x320x0x1EC)"
+      },
+      {
+        "pass": "6. horse pass2 (0x40FA67)",
+        "guards": "[e+0x629C8]!=0, [e+0x62A14]!=0, [e+0xC0]>=0x1D",
+        "blit": "0x461ED0 with 0xd/0xFFFF args"
+      }
+    ],
+    "blit_family": "call [0x4762B0] = plain rect blit; 0x462F20 = render-mode blit (push 0xd); 0x461ED0 = mode-aware blit leaf (also used by 0x404E10 dispatch)"
+  },
+  "render_mode_resolver": {
+    "va": "0x404DA0",
+    "input": "[ecx+0x61C68] flag bits (read as dword)",
+    "output": "mode word RETURNED in eax (0x800000 -> 1, 0x4000000 -> 0, 0x20000000 -> 0xFBFF, 0x10000000 -> 0xFFE0, 0x8000000 -> 0x94BF, 0x40000000 -> 0xFCB2, 0x80000000 -> 0x7E0; default 0xFFFF)",
+    "side_effect": "0x404E03 `mov word [ecx+0x61C6C],0xFFFF` (side-store; mode is returned in eax)",
+    "callers": "0x40B487, 0x40C1A1, 0x40F9CB (uses `cmp ax,1`), 0x410889",
+    "mode_blit_dispatch": "0x404E10 (mode word switch -> 0x461ED0, ecx = 0x8AB7A8 dsurface, ret 0x28); callers 0x40B724, 0x40C2A4, 0x40FCD4, 0x40FD51, 0x40FD94, 0x40FDEB, 0x40FE68"
+  },
+  "mshum_absence": {
+    "finding": "M-SHum.wil is NOT referenced anywhere in Mir3.exe: byte scan for b'M-SHum' over the whole file = 0 hits; b'M-Hum.wil' = 1 hit (0x47CDF8); b'CreateChr' = 3 hits",
+    "on_disk": "M-SHum.wil exists in Data/ with 32722 frames (wilsdk count) but no EXE literal -> not part of the player composition slot table; player small-body path (if any) is NOT M-SHum"
+  },
+  "createchr_avi": {
+    "scope": "steering-dropped: CreateChr.dat is a RIFF AVI intro (1,221,572 B), no composition data; only literal refs confirmed",
+    "literal": ".\\Data\\CreateChr.dat @0x47D7E0",
+    "chain": "refs at 0x45925E / 0x459AF5 (`push 0x47d7e0`; `push 0x8ab7b8` / `[0x9135c0]`); 0x45BF30: `push 0x73646976` ('vid') -> 0x4680DA/0x4680D4 (AVI stream open); then 0x45C4C0",
+    "adjacent": "StartGame.dat @0x47D7D0; login/char-create message strings @0x47D7F8 / 0x47D818"
+  },
+  "charcreate_preview": {
+    "va": "0x466CE0 / 0x466F20 (checked, EXCLUDED)",
+    "role": "char-create UI/entity property setters via vtable slots, NOT the appearance descriptor path: 0x466CE0 does `push 1; push 0x1b; call [eax+0x50]` then `push 1; push 0x29; call [ecx+0x50]`, then `and eax,0xff; cmp eax,6; ja 0x466efa; jmp [eax*4+0x466efc]` (7-case jump @0x466EFC); 0x466F20 does four `call [..+0x94]` with args (2,2,0),(4,1,0),(0,3,0),(2,5,0)",
+    "chain": "preview path [ecx+0x2C] -> 0x466CE0 -> [ecx+0x8C] -> [eax+0x64] -> 0x466F20 is vtable-slot based -> preview gender->type byte is runtime-only, consistent with 'no static writers'"
+  },
+  "composition_state_fields": {
+    "+0x88": "type byte (0 male / 1 female / 3 monster / 0x32 NPC; 2 rejected)",
+    "+0x89": "weapon selector (1..49; clamps <0x32)",
+    "+0x8A": "state S (players <9) / monster race-lo / NPC body",
+    "+0x8B": "hair/helmet selector (clamps <0x1E)",
+    "+0x8C": "element byte (0x47 M-Hum / 0x4C WM-Hum / 0x57 Horse / 0x58.. Mon / 0x80 NPC)",
+    "+0x90": "element record ptr = 0x5600FC + [e+0x8C]*0x144",
+    "+0x94/+0x98/+0x9C/+0xA0": "body blit rect + bbox clamp inputs (width cap 0x3A, height cap 0x28)",
+    "+0xA4/+0xA8/+0xAC/+0xB0": "clamped body bbox",
+    "+0xB4/+0xB8/+0xBC": "frame base / end / interval (from frame formulas)",
+    "+0xC0": "flag/action (player formula index; overlay guards: weapon <0x19, horse >=0x1D)",
+    "+0xC1/+0xC2": "direction (8 dirs)",
+    "+0xC4": "current frame (advance 0x40C4B0, wrap to +0xB4)",
+    "+0xC8": "frame accumulator (reset 0 by 0x4058E0)",
+    "+0xCC/+0xD0": "world coords",
+    "+0xD4/+0xD8": "sprite pixel offsets",
+    "+0xE4/+0xE8": "screen px (0x40F5F0 / 0x40B2C0 / dispatcher 0x404FB0)",
+    "+0x61BD8/+0x61BF8": "D3D shadow-quad vertex buffers (built in 0x404FB0 tail)",
+    "+0x61C68": "render-mode flag bits (0x800000..0x80000000)",
+    "+0x61C6C": "mode word (side-store 0xFFFF; mode returned in eax)",
+    "+0x61C7D": "frame-wrap bias (2 if dir==7 else 5)",
+    "+0x629C8": "riding style byte (clamped <4)",
+    "+0x629CC": "riding style copy (parser writes byte4 here)",
+    "+0x629CD": "weapon element byte (male (sel-1)/10+0x48; female +0x4D)",
+    "+0x629CE": "head element byte (male (sel-1)/10-0x7D; female -0x7B)",
+    "+0x629CF": "horse element byte = 0x57 when riding",
+    "+0x629DC/+0x629EC/+0x629FC": "head/weapon/horse blit rects",
+    "+0x62A0C/+0x62A10/+0x62A14": "head/weapon/horse element-record ptrs (0x5600FC + elem*0x144)",
+    "+0x62A18/+0x62A1C/+0x62A20": "head/weapon/horse computed frame values"
+  },
+  "vtables": {
+    "0x4763C0": {
+      "role": "scene-entity render-state vtable (player/NPC family)",
+      "slots": {
+        "+0x0C": "0x404FB0 config dispatcher",
+        "+0x10": "0x4058E0 per-frame animation resetter",
+        "+0x7C": "0x40B2C0 world->screen draw"
+      }
+    },
+    "0x476480": {
+      "role": "scene-entity vtable (second family)",
+      "slots": {
+        "+0x0C": "0x404FB0",
+        "+0x10": "0x4058E0"
+      }
+    },
+    "0x476720": {
+      "role": "scene-entity vtable (third family, +0x08 config)",
+      "slots": {
+        "+0x08": "0x404FB0",
+        "+0x0C": "0x4058E0"
+      }
+    },
+    "0x476550": {
+      "role": "config at +0x00 (0x404FB0)",
+      "slots": {
+        "+0x00": "0x404FB0"
+      }
+    }
+  },
+  "wil_geometry": {
+    "M-Hum.wil": 27000,
+    "WM-Hum.wil": 27000,
+    "M-Hair.wil": 15000,
+    "M-Helmet1.wil": 24000,
+    "M-Weapon1/2/3.wil": 30000,
+    "M-Weapon4.wil": 17000,
+    "WM-Hair.wil": 15000,
+    "WM-Helmet1.wil": 24000,
+    "WM-Weapon1/2/3.wil": 30000,
+    "WM-Weapon4.wil": 17000,
+    "Horse.wil": 10400,
+    "Mon-1.wil": 10000,
+    "NPC.wil": 6400,
+    "M-SHum.wil (on disk, NOT referenced)": 32722,
+    "note": "M-Hum 27000 = 9 blocks x 3000 (S<9 => max block 8 = 24000 base + 3000 tail); player formula stride 3000*S matches; horse 10400 = 26 blocks x 400 (horse frame mod-400 stride matches 0x40F681)"
+  },
+  "pending": [
+    "gender->type byte [e+0x88] write site (no static writer; entity build path / server packet, candidate)",
+    "element table 0x5600FC runtime contents (kind byte +0x38 frame-header ptr populated at startup by 0x4660E0-family binders; exact record fields beyond +0x04/+0x38 runtime-capture)",
+    "render-mode flag bit semantics (which flags set [e+0x61C68] bits; mode words are alpha/color-key constants only)",
+    "weapon selector 41..50 / head 21..29 ranges land on WM-Hum(76)/Magic(81) and WM-Hair(133)/DMon-1(135) via the documented formulas — exact client-side meaning (extended weapon sets) unproven",
+    "slot grid 82-86 / 90-127 literal names (dest arithmetic proven; strings not among pinned 26)",
+    "preview path 0x466CE0/0x466F20 exact 7-case semantics (candidate: char-create preview only)",
+    "shadow-quad vertex buffer usage (built at [e+0x61BD8]; consumed where = runtime)"
+  ]
+}

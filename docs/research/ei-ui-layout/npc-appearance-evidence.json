@@ -1,0 +1,85 @@
+{
+  "evidence_id": "npc-appearance-evidence",
+  "title": "Finding 281 — NPC 外观体系闭合：type 0x32 实体 body 字段 → element 128 → NPC.wil 帧块布局 + NPCFace.wil 对话头像用法",
+  "date": "2026-08-11",
+  "objective": "闭合 scene-entity-render-evidence.json P4：NPC 实体外观字段（body/形象）→ NPC.wil 库/帧块的完整静态推导链——元素绑定 VA、帧公式、NPC.wil 逐 body 帧块几何、特殊 body 码语义、NPCFace.wil 对话头像用法，并校准模拟器假设（NPC 帧 = 100*body 而非 100*dir）。",
+  "question": "1) type 0x32 (NPC) 实体经哪个元素解析到哪个 WIL 库？2) NPC 帧公式 base = word[0x8AA6C8+6*state] + 100*body + 10*flag 的精确 VA 与字段语义（body 存哪、flag 如何取模）？3) NPC.wil 64 个 body × 100 帧的帧块几何是否与公式一致？4) 特殊 body 码（0x18..0x3B）的语义？5) NPCFace.wil 在对话窗口中的使用方式（帧号从哪来）？",
+  "method": "primary-static：Mir3.exe (0x80000 B, fileoff=VA−0x400000) capstone 反汇编 + 原始字节扫描（立即数/表指针）+ wilsdk 逐帧 blank 检测与运行图统计。交叉引用 RESEARCH_LOG Finding 279（NPC 帧表 0x8AA6C8 三字种子与 0x44A090 action 覆盖）与场景实体既有证据。",
+  "evidence_level": "primary-static",
+  "evidence": [
+    {
+      "id": "E1",
+      "claim": "NPC 帧分发器 0x404FB0 索引 3（jump 表 @0x4054EC → 0x4051BB）：body 字段 [edi+2]（<0x64=100）、state <3、element 强制 0x80=128、flag = [esp+0x40]%3，base = word[0x8AA6C8+6*state]+100*body+10*flag",
+      "vas": ["0x4051BB", "0x4051C5", "0x4051D2", "0x4051E0", "0x4051E7", "0x40526C", "0x40527A", "0x405294", "0x4052A0", "0x4052A6", "0x4052B7", "0x4052C4", "0x4052D0", "0x4052D6", "0x4054EC", "0x405500", "0x4052F9"],
+      "detail": "0x4051BB `cmp byte ptr [edi+2],0x64` body 越界拒绝；0x4051C9 `cmp cl,3` state 拒绝（jae 0x4054DE）；0x4051E0 `mov byte ptr [ebp+0x8c],0x80` 元素=128；0x4051E7-0x4051EA `mov esi,3; idiv esi` flag 取模 3（余数写回 [esp+0x40]）。公式链 0x40526C-0x4052A0：eax=state*6（lea eax,[eax+eax*2]; shl eax,1）、edx=body*5（lea edx,[ecx+ecx*4]）、ecx=flag+10*body（lea ecx,[ecx+edx*2]）、edx=5*(flag+10body)、ecx=word[0x8AA6C8+eax]+2*edx = w0+100*body+10*flag → [ebp+0xb4]（0x4052A0）；end=[ebp+0xb8]=base+word[eax+0x8AA6CA]（0x4052A6-0x4052AD）；interval=[ebp+0xbc]=word[eax+0x8AA6CC]（0x4052B7-0x4052BE）；flag→[ebp+0xc1] 且 flag→[ebp+0xc2]（方向槽被 NPC 复用存 flag，0x4052D0/0x4052D6）；随后 state→[0xc0]、base→[0xc4]、尾部 call 0x405630 绘制器。"
+    },
+    {
+      "id": "E2",
+      "claim": "NPC 状态变更处理器 0x405BBB（0x4058E0 分发、元素 128 设于 0x405810、记录指针存 [esi+0x90]）：body = [esi+0x8a]（<0x64），state <3，flag=[esp+0x18]%3，同一公式 + 特殊 body 码分支",
+      "vas": ["0x405BBB", "0x405BCA", "0x405C82", "0x405C88", "0x405C7D", "0x405810", "0x40586F", "0x405875", "0x405CB0", "0x405CD7"],
+      "detail": "0x405BBB 入口；0x405BCA `mov cl,[esi+0x8a]` 读 body（0x405C88 第二次读）；0x405C7D `call 0x44a090`（db_object NPC action 覆盖，arg=body）；0x405C82-0x405CD7 同 E1 公式（state*6、body*5、flag+10body → base = word[0x8AA6C8+6*state]+100*body+10*flag）。状态写出：state→[esi+0xc0]、flag→[esi+0xc1] 且 flag→[esi+0xc2]、base→[esi+0xc4]（帧计数器从 base 起）、[0xc8]=0、[esi+0x61c7d]=2 (flag==7) else 5（帧钳制）。元素记录：0x40586F-0x40587C `lea eax,[eax+eax*8]; lea edx,[eax+eax*8]; lea eax,[edx*4+0x5600fc]` → elem*0x144 记录指针 → [esi+0x90]（0x405875）。"
+    },
+    {
+      "id": "E3",
+      "claim": "NPC.wil 路径槽：WIL 路径表（stride 0x104，复制函数 ≈0x453100-0x454100）NPC.wil 字符串 @0x47C964 复制到 dest ebx+0x13330 = 槽 79；Mon-1 @0x47CC80→+0x10a90 = 槽 39 验证 stride；下一槽 MonMagic @+0x13434",
+      "vas": ["0x47C964", "0x453F30", "0x453F54", "0x47CC80", "0x47C950"],
+      "detail": "槽 k 目标偏移 = +0xe2f4 + k*0x104。NPC.wil 复制块 0x453F30-0x453F54（源串 0x47C964 '.\\Data\\NPC.wil'）；NPC 后 0x453F5x `lea edx,[ebx+0x13434]` = 槽 80 MonMagic（串 0x47C950）。Mon-1（0x47CC80）= +0x10a90 = 槽 39（39*0x104+0xe2f4 = 0x10a90 ✓）。NPC 槽 79 计算：0xe2f4+79*0x104 = 0x13330 ✓。"
+    },
+    {
+      "id": "E4",
+      "claim": "NPC.wil 经验几何（6400 帧 = 64 body × 100 帧）：标准 body 运行图 [(0,3),(10,13),(20,23),(30,59)] = 42 帧 = 公式寻址帧的精确并集（state0 三 flag 格 +0/+10/+20 各 4 帧；state1 三 flag 格 +30/+40/+50 各 10 帧）；state2（base 0x3C=60）在标准 body 中为空白（无攻击动画）",
+      "vas": ["NPC.wil header: count=6400", "wilsdk is_blank 逐帧"],
+      "detail": "64 个 body 中 42 个为标准模式。公式寻址帧（表 w0=0,len=4 / w0=0x1E=30,len=10 / w0=0x3C=60,len=6，见 Finding 279）对标准 body 恰好命中 [(0,3),(10,13),(20,23),(30,39),(40,49),(50,59)]：state0 格 4 帧（0-3,10-13,20-23 对应 flag 0/1/2），state1 格 10 帧（30-39,40-49,50-59 对应 flag 0/1/2）→ 连续 30..59 呈现为单运行段。state2 寻址 60-65/70-75/80-85 在标准 body 全空白。帧 0/800/1600/2400/3200/4000/4800/5600 锚点互异（签名距离最高 107）→ 每 800 帧块 = 8 个不同 body，非单 body 8 状态。"
+    },
+    {
+      "id": "E5",
+      "claim": "特殊 body 码（分发器 0x404FB0 与状态处理器 0x405BBB 两处一致）与经验帧块几何 1:1 对应",
+      "vas": ["0x4051F0", "0x405228", "0x40522C", "0x405237", "0x405252", "0x405254", "0x40525C", "0x405267", "0x44A1CC", "0x44A1EC", "0x44A220"],
+      "detail": "1) state==1 且 body∈{0x18,0x19,0x22,0x23,0x2B..0x32,0x3A} → state 强制 0（0x4051F0-0x405228）：这些 body 的 WIL 无行走段，实测恰好只有 3 个站立格 12 帧（body 24,25,34,35,43-50,58 运行图 [(0,3),(10,13),(20,23)]）。2) body==0x28（及 0x38,0x39）→ flag 强制 0（0x40522C-0x405233）：body 40 实测运行图 [(0,3),(30,39)] = 仅 flag0 的 state0 格(0-3)+state1 格(30-39)，无 +10/+20/+40/+50 内容 ✓；body 56/57 实测 [(0,11)] 12 帧条带（公式仅寻址 0-3）。3) body∈{0x33,0x34} 或 [esi+0x8a]∈{0x35,0x36,0x37}（+0x3B）→ state=0 且 flag=0 + call 0x44A090（0x405237-0x405267）：body 51-55,59 实测各仅 1 帧 [(0,0)] ✓（0x44A090 action 0x33..0x3B → state0 表 (0,1,300) 单帧块）。4) body 0x1B(27)/0x1C(28) 经 0x44A090 → state1 表变体 len 6/9：body 27 实测 state1 格 6 帧（30-35,40-45,50-55）+ 9 帧尾段(60-68) = 39 帧；body 28 实测 9 帧格（30-38,40-48,50-58）+ state2 6 帧格（60-65,70-75,80-85）= 57 帧 ✓。5) body 0x29(41) 实测全空（隐形 NPC）。"
+    },
+    {
+      "id": "E6",
+      "claim": "绘制链：实体 [esi+0x90] 元素记录 → 帧号 [esi+0xc4]（或尾帧回绕数学 0x40B366-0x40B37A）→ call 0x466130（库取帧）→ 记录 [ecx+0x38] → 模式字节 [eax+8]",
+      "vas": ["0x40B330", "0x40B352", "0x40B366", "0x40B383", "0x40B390", "0x40B399", "0x40B738"],
+      "detail": "0x40B330 `mov ecx,[esi+0x90]` 记录指针，null → 0x40B738 不绘制；0x40B383 `call 0x466130` 取帧；0x40B390-0x40B39C 记录 [ecx+0x38] 指向模式数据 → 字节 [eax+8]、字 [eax+6]。0x466130 另见 NPCFace 头像绘制调用点 0x440030。"
+    },
+    {
+      "id": "E7",
+      "claim": "NPCFace.wil 对话用法闭合：NPC 对话窗口（ctor 0x43ED00）在 +0x278 绑定 NPCFace.WIL（串 0x47C4EC）；窗口绘制 0x43F460（窗口管理器 0x428219 调用）按对话条目类型分发（jump @0x440158），case 3 @0x43FF92 解析对话脚本行 token：NPCIMG（0x47C50C）→ atoi 参数 → lea ecx,[ebp+0x278]; call 0x466130 绘制 NPCFace.wil 帧 n；FCOLOR（0x47C514）→ 调色板表 0x47C4A8（12 色 BGR dword）；NOTCLOSE（0x47C500）→ [ebp+0x274]=0",
+      "vas": ["0x43ED00", "0x43EDB6", "0x43EDCC", "0x47C4EC", "0x43F460", "0x440158", "0x43FF92", "0x47C50C", "0x44001D", "0x440029", "0x440030", "0x47C514", "0x47C4A8", "0x47C500", "0x440035", "0x440062", "0x8AB7A8"],
+      "detail": "0x43EDB6-0x43EDCC：`lea ebx,[esi+0x278]; mov ecx,ebx; call 0x465fa0`（库对象 ctor）+ `push 0; push 0x47c4ec; mov ecx,ebx; call 0x4660e0`（打开 NPCFace.WIL，绑定窗口+0x278）。0x43F460 dispatch [ebx]（0..3，jump 0x440158：0x43F4E7/0x43F86D/0x43F85F/0x43FF92）。case 3 @0x43FF92 内联 strcmp 对 0x47C514/'FCOLOR'、0x47C50C/'NPCIMG'、0x47C500/'NOTCLOSE'；NPCIMG 分支 0x44001D-0x440030：`call 0x4681f9`（atoi）→ `lea ecx,[ebp+0x278]; push eax; call 0x466130` 取 NPCFace.wil 帧 n；0x440035-0x440062 以帧头宽高（[hdr+0]/[hdr+2]）blit 到 0x8AB7A8 于 (0x28,0x1e)=(40,30)。NPC→头像帧号映射 = 服务端对话脚本 NPCIMG 参数，客户端无 NPC 索引→帧号表。"
+    },
+    {
+      "id": "E8",
+      "claim": "模拟器假设校准：Tools/mir3_client_simulator（data/entities.json NPC 帧 = 100*dir、README 公式 word[0x8AA6C8+6*state]+100*dir+10*flag，标注 candidate）——本发现将 dir 修正为 body（形象），NPC 无 3000*dir 项",
+      "vas": ["0x4051D2", "0x4051EA", "0x4052C4", "0x4052D6"],
+      "detail": "NPC 帧公式中的 100 倍项乘的是 [edi+2]（分发器 body 字段）/ [esi+0x8a]（状态处理器 body 字段），非方向；NPC 方向槽 [esi+0xc2] 在状态处理器中被复用为 flag 副本。与玩家公式（3000*dir，0x404FE5/0x405003 区域）形成对比。"
+    },
+    {
+      "id": "E9",
+      "claim": "NPC 实体不经通用 tick 0x40C720（type≠0/1 → return 0 @0x40C8EE），有独立类（vtable 族 ≈0x476500-0x4766E0）；实体 type 槽 [esi+0x88] 与 body 槽 [esi+0x8a] 在 0x400000-0x480000 无直接字节写（C6/88 类指令零命中）→ body 由服务端生成包经实体构建路径填充（写点 = 网络包解析，静态不可达，pending）",
+      "vas": ["0x40C8EE", "0x40C720"],
+      "detail": "0x40C720 类型分发：type 0 → 0x40C7AD、type 1 → 0x40C801、其余（含 0x32 NPC）→ 0x40C8EE 直接返回 0。对 0x400000-0x480000 全区间扫描 `mov [reg+0x88]/[reg+0x8a]`（C6/88 op、modrm 0x40-0x7f、含 SIB 形式）零命中；dword 写 89/C7 类命中均为位掩码误对齐。"
+    }
+  ],
+  "conclusion": {
+    "verdicts": [
+      {"item": "P4 body → NPC.wil 帧块布局", "status": "closed", "level": "primary-static",
+       "summary": "NPC 帧 = word[0x8AA6C8+6*state] + 100*body + 10*flag（flag=[esp+0x40]%3），body = [edi+2]/[esi+0x8a]（<0x64）。NPC.wil = 路径表槽 79（dest +0x13330），64 body × 100 帧；标准 body 布局 = state0 三格（+0/+10/+20 各 4 帧）+ state1 三格（+30/+40/+50 各 10 帧），state2（+60..）标准 body 空白。特殊 body 码（0x18,0x19,0x22,0x23,0x2B..0x32,0x3A→stand only；0x28,0x38,0x39→flag=0；0x33..0x37,0x3B→单帧+0x44A090 action 覆盖；0x1B/0x1C→state1 6/9 帧变体）与 WIL 实测几何 1:1 互证。"},
+      {"item": "type 0x32 → element 128 → WIL 槽 79", "status": "closed", "level": "primary-static",
+       "summary": "element 0x80=128 于两处强制写入（分发器 0x4051E0、状态处理器 0x405810）；记录指针 = 0x5600FC + 0x144*elem → [entity+0x90]（0x40586F-0x40587C）；绘制侧 0x40B330 取记录、0x40B383 经 0x466130 取帧。NPC.wil 槽 79 路径已证（E3）。"},
+      {"item": "NPCFace.wil 对话用法", "status": "closed", "level": "primary-static",
+       "summary": "NPCFace.WIL（0x47C4EC）绑定对话窗口 +0x278；对话脚本 token NPCIMG n → 绘制 NPCFace.wil 帧 n 于窗口 (40,30)；FCOLOR/NOTCLOSE 为文本色与关闭旗标。NPC→帧号映射由服务端对话脚本（NPCIMG 参数）决定，客户端无映射表。"},
+      {"item": "模拟器假设", "status": "corrected",
+       "summary": "entities.json/README 的 '100*dir' 应为 '100*body'（形象）；NPC 方向槽被 flag 复用（[esi+0xc2]）。NPC.wil 每 body 100 帧、42 帧标准绘制布局、64 body 总数与模拟器 100*dir 分块兼容但语义纠正。"}
+    ],
+    "formula_summary": "NPC: base = word[0x8AA6C8 + 6*state] + 100*body + 10*(flag%3); end = base + word[0x8AA6C8+6*state+2]; interval = word[0x8AA6C8+6*state+4]（表种子 (0,4,300)/(0x1E,10,300)/(0x3C,6,300) 见 Finding 279；0x44A090 按 action=body 覆盖）。状态槽 [0xC0]、flag [0xC1]&[0xC2]、帧计数器 [0xC4]（从 base 起）、钳制 [0x61c7d]=2 if flag==7 else 5。",
+    "cross_reference": "Finding 279 (StateFrameTables)：NPC 帧表 0x8AA6C8 为 BSS 单例 0x8AA5A8 字段、EXE 编译期常量、0x449C80 启动种子、0x44A090 NPC action 覆盖（字节表 0x44A1CC/0x44A1EC/0x44A220）。Finding 77/254：NPCFace.wil 440 帧/46 非空、NPC 对话窗口。map-ui-resource-evidence：地图物件 type 0x32（0x560070 链表）为服务端阻挡标记、与场景 NPC 实体（本发现）区分。"
+  },
+  "pending": [
+    "NPC body 字段 [esi+0x8a] 的写入点：服务端生成包 → 实体构建路径（0x400000-0x480000 无静态直接字节写；NPC 实体类 ctor 未定位，vtable 族 0x476500-0x4766E0 安装路径未知）——candidate 后续（网络包解析域，静态不可达）。",
+    "body 0x38/0x39（56/57）的 12 帧条带 [(0,11)] 中 4..11 帧未被公式寻址——保留帧用途不明（candidate）。",
+    "NPC→头像帧号（NPCIMG n 的 n 值）语义：服务端对话脚本定义，客户端无表——需服务端 Merchant 脚本样本实证（candidate）。",
+    "body 0x29（41）全空与 0x40CE20 标签/0x40B180 阴影等 NPC 绘制装饰的精确交错（沿用 scene-entity pending）。"
+  ]
+}

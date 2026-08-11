@@ -27,8 +27,11 @@ const STATE = {
   currentMap: { name: "", map: "" },
   hp: 62, mp: 71, exp: 38,      // demo live values (bars driven by rects)
   chatLines: [],
-  prompt: null,                 // {kind:'confirm'|'notice', text, cb}
+  prompt: null,                 // {kind:'confirm'|'notice'|'gold', text, cb}
   pressed: null,                // control id currently pressed
+  tradeGold: 0,                 // gold box value (Finding 283, msg 0x405/0x406)
+  tradeFinalized: false,        // [+0x13644]: 0 trading, 1 finalized (accept)
+  tradeSplit: [90, 90],         // pane split widths px [+0x54]/[+0x58]
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -53,6 +56,29 @@ function makeImg(lib, frame, scale = 1) {
   if (url) el.src = url;
   el.alt = `${lib} F${frame}`;
   return el;
+}
+
+/* ------------------------------------------------------------ entity frame formula */
+// Round 5 (Findings 279/280/281/282, primary-static). The three frame tables
+// are compile-time constants (0x8AA5C0 player 33 / 0x8AA686 monster 9 /
+// 0x8AA6C8 npc 3), each record (w0 start, w1 block len, w2 interval ms).
+// Anchor = w0 + formula offset, cycle advances within [w0, w0+w1) at w2 ms
+// (frame advance 0x40C4B0 wraps to [e+0xB4]).
+//   player:  + 3000*S + 10*dir   (S = body selector <9, dir 0..7)
+//   monster: + 1000*(race%10) + 10*flag
+//   npc:     + 100*body + 10*(flag%3)
+function entityFrame(e, now) {
+  const a = e.appearance;
+  if (!a) return e.frame;
+  const tab = STATE.data && STATE.data.frame_tables ? STATE.data.frame_tables[a.table] : null;
+  const rec = tab && tab[a.state] ? tab[a.state] : [0, 1, 300];
+  const w0 = rec[0], w1 = rec[1], w2 = rec[2];
+  let base = w0;
+  if (a.table === "player") base += 3000 * a.S + 10 * a.dir;
+  else if (a.table === "monster") base += 1000 * (a.race % 10) + 10 * (a.flag || 0);
+  else base += 100 * a.body + 10 * ((a.flag || 0) % 3);
+  const t = Math.floor(now / w2);
+  return base + (t % Math.max(1, w1));
 }
 
 /* ------------------------------------------------------------ data model */
@@ -97,9 +123,13 @@ function renderScene() {
     spr.dataset.entity = e.id;
     spr.style.left = e.x + "px";
     spr.style.top = e.y + "px";
-    const im = makeImg(e.library, e.frame);
+    const im = makeImg(e.library, entityFrame(e, performance.now()));
     // sprite frames are large; constrain to a plausible in-world size
     im.style.cssText = "max-width:60px;max-height:80px;width:auto;height:auto";
+    if (e.appearance) {
+      im.dataset.frame = entityFrame(e, performance.now());
+      spr.dataset.anim = 1;   // ticker advances the cycle (0x40C4B0)
+    }
     spr.appendChild(im);
     const name = document.createElement("div");
     name.className = "nameplate";
@@ -107,7 +137,8 @@ function renderScene() {
     spr.appendChild(name);
     spr.dataset.rect = `${e.x - 20},${e.y - 60},40,70`;
     spr.dataset.evidence = e.evidence_level;
-    spr.dataset.desc = `${e.library} F${e.frame} · ${e.note || ""}`;
+    const f0 = entityFrame(e, performance.now());
+    spr.dataset.desc = `${e.library} F${f0} · ${e.note || ""}`;
     sceneEl.appendChild(spr);
   }
 }
@@ -311,7 +342,7 @@ const WINDOW_TITLES = {
   "window.inventory": "背包",
   "window.status": "人物状态",
   "window.store-candidate": "商店/仓库",
-  "window.exchange-candidate": "交换",
+  "window.exchange-candidate": "交易 (玩家间)",
   "window.guild-candidate": "行会",
   "window.group": "组队",
   "window.chat-pop": "聊天",
@@ -335,7 +366,15 @@ function renderWindows() {
     // background frame
     const bg = makeImg(w.resource_library, w.frame);
     bg.className = "win-bg";
-    bg.style.objectFit = "fill";
+    if (w.id === "window.exchange-candidate") {
+      // Finding 283 (primary-static): trade frame 1050 is 512x512 drawn at
+      // (7,-44) relative to the 484x330 window — art overflows the hit rect
+      // (registered (1,330,484,0,0,F1050,src,3) @0x4277B0-0x4277C2). The
+      // client does not clip window art, so the spill is visible.
+      bg.style.cssText = "left:7px;top:-44px;width:512px;height:512px";
+    } else {
+      bg.style.objectFit = "fill";
+    }
     box.appendChild(bg);
     // title bar (drag)
     const tb = document.createElement("div");
@@ -423,12 +462,15 @@ function fillWindowContent(w) {
     lbl.style.cssText = "left:8px;top:256px;width:200px";
     lbl.textContent = "负重 12/30";
     content.appendChild(lbl);
-  } else if (id === "window.other-14-candidate" || id === "window.store-candidate" ||
-             id === "window.exchange-candidate") {
-    // skill grid (skills.json) / store slots / exchange grids
-    const src = id === "window.other-14-candidate" ? STATE.data.skills
-      : id === "window.store-candidate" ? storeGridSlots()
-      : exchangeSlots();
+  } else if (id === "window.exchange-candidate") {
+    // Round 5 (Finding 283, primary-static): window id 3 = PLAYER-TO-PLAYER
+    // TRADE. Frame 1050 (512x512 @ (7,-44)) is the only static art; the
+    // buttons are NEVER drawn (render 0x417640 has zero xrefs; cancel frames
+    // 1064/1065 don't exist in GameInter.wil count 1103) - silent hit zones.
+    tradeContent(content);
+  } else if (id === "window.other-14-candidate" || id === "window.store-candidate") {
+    // skill grid (skills.json) / store slots
+    const src = id === "window.other-14-candidate" ? STATE.data.skills : storeGridSlots();
     if (id === "window.other-14-candidate") {
       // 8 magic-category labels — primary-static redraw positions + frame pairs
       // (skill-window-context.json: 火/冰/电/风/神圣/黑暗/幻影/剑, EXE 0x00439500)
@@ -644,18 +686,145 @@ function storeGridSlots() {
   return rows;
 }
 
-function exchangeSlots() {
-  const rows = [];
-  const cols = 6, cell = 40;
-  for (let i = 0; i < 30; i++) {
-    rows.push({
-      id: `ex.${i}`, name: `交换格 ${i + 1}`,
-      x: 12 + (i % cols) * cell, y: 40 + Math.floor(i / cols) * cell,
-      w: 36, h: 36, library: "Equip.wil", frame: (i * 3) % 124,
-      evidence_level: "candidate", note: "exchange 6×5 grid",
-    });
+// Round 5 (Finding 283, primary-static): trade window (id 3) content.
+//   - 24 slots @+0x5B8 stride 0xC2C; item-id words @+0x298 (empty 0xFFFF),
+//     index = cell + pane*200 (0x416950); clicks -> 0x416830/0x416950 ->
+//     protocol 0x402/0x403 via 0x451AA0/0x451AD0 to runtime trade state 0x8AB828.
+//   - cells 36px (stride 0x24), 5 cols x 6 rows per pane (0x416830); pane0
+//     grid area (21,48)..(237,300), pane1 (253,48)..(469,300); hit zones
+//     (21,48)..(201,264) / (253,48)..(433,264) (0x415B7C-0x415BC0).
+//   - gold box (34,270)..(156,304) (0x416F05): click -> msgbox 0x405
+//     '你要给对方多少金币?' (0x418030); accept -> msg 0x406 via 0x451B30.
+//   - buttons invisible: close 161/162 @(532,350), accept 1061/1062 @(185,332),
+//     cancel 1064/1065 @(225,332) (frames MISSING in WIL); hit -> sound 0x69
+//     (0x4177F0), accept also sends 0x406 + [+0x13644]=1 finalized.
+//   - split dividers: gauges @+0x13648/+0x13694 (frame 1070 16x360, NEVER
+//     blitted); mouse 0x416E70 writes split widths [+0x54]/[+0x58].
+function tradeContent(content) {
+  const COLS = 5, ROWS = 6, CELL = 36;
+  const paneX = [21, 253];   // pane0 / pane1 origins (window-relative)
+  const paneY = 48;
+  // demo icons are candidate: real item-id words are runtime 0x8AB828 state
+  const demo = {
+    "L0": { f: 0, n: "金创药（小）" }, "L6": { f: 3, n: "魔法药（小）" },
+    "R12": { f: 6, n: "随机传送卷" },
+  };
+  for (let pane = 0; pane < 2; pane++) {
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const x = paneX[pane] + col * CELL, y = paneY + row * CELL;
+        const key = (pane ? "R" : "L") + (row * COLS + col);
+        const slot = document.createElement("div");
+        slot.className = "slot trade-cell";
+        slot.style.cssText = `left:${x}px;top:${y}px;width:${CELL}px;height:${CELL}px`;
+        slot.dataset.slot = `trade.${key}`;
+        slot.dataset.rect = `${x},${y},${CELL},${CELL}`;
+        slot.dataset.evidence = "primary-static";
+        const d = demo[key];
+        slot.dataset.desc = d
+          ? `演示物品 ${d.n} · 图标 candidate (item-id 词=运行期 0x8AB828) · 槽+0x5B8/${row * COLS + col + pane * 25}`
+          : `交易格 ${key} · item-id 词 +0x298 = 0xFFFF (空) · 槽+0x5B8/${row * COLS + col + pane * 25}`;
+        slot.title = d ? `${d.n} · 图标 candidate` : `交易格 ${key} · primary-static`;
+        if (d) slot.appendChild(makeImg("Equip.wil", d.f));
+        slot.addEventListener("click", () => {
+          if (STATE.tradeFinalized) { pushChat("[交易] 已接受/完成 — 点击无效 ([+0x13644]=1, 0x416FB4)"); return; }
+          pushChat(d
+            ? `[交易] 放入 ${d.n} → 协议 0x402 (0x451AA0 → 0x8AB828)`
+            : `[交易] 空格 (item-id 0xFFFF) 点击无动作 (0x416950)`);
+        });
+        content.appendChild(slot);
+      }
+    }
   }
-  return rows;
+  // gold box: (34,270)..(156,304) rel; '确定' click flow -> 0x405 -> 0x406
+  const gold = document.createElement("div");
+  gold.className = "trade-gold";
+  gold.style.cssText = "left:34px;top:270px;width:122px;height:34px";
+  gold.dataset.evidence = "primary-static";
+  gold.dataset.rect = "34,270,156,304";
+  gold.dataset.desc = "金币盒 (34,270)-(156,304) · 0x416F05；点击 → msgbox 0x405 '你要给对方多少金币?' (0x418030)";
+  gold.title = "金币盒 · primary-static · 点击输入金币";
+  gold.addEventListener("click", () => {
+    if (STATE.tradeFinalized) { pushChat("[交易] 已接受/完成 — 金币盒无效 (0x416FB4)"); return; }
+    showPrompt("gold", "你要给对方多少金币？", (ok, _btn, value) => {
+      if (ok) {
+        STATE.tradeGold = Math.max(0, parseInt(value || "0", 10) || 0);
+        if (STATE.tradeStateUpdater) STATE.tradeStateUpdater();
+        pushChat(`[交易] 送出金币 ${STATE.tradeGold} → msg 0x405/0x406 (0x418030 → 0x451B30)`);
+      }
+    });
+  });
+  content.appendChild(gold);
+  // invisible buttons — hit zones only (render 0x417640 never called by trade
+  // paint; cancel frames 1064/1065 missing in WIL count 1103 => invisible by design)
+  const zones = [
+    { id: "trade.close", x: 532, y: 350, w: 28, h: 26,
+      note: "关闭 (帧 161/162) → 音效 0x69 + consumed, 窗口保持 (0x4177F0/0x42ADB0 重激活)" },
+    { id: "trade.accept", x: 185, y: 332, w: 48, h: 20,
+      note: "接受 (帧 1061/1062) → 0x451B30 msg 0x406 + [+0x13644]=1 交易完成 (0x416EF0)" },
+    { id: "trade.cancel", x: 225, y: 332, w: 64, h: 20,
+      note: "取消 (帧 1064/1065 不存在) → 音效 0x69 仅命中 (0x4177F0)" },
+  ];
+  for (const z of zones) {
+    const btn = document.createElement("div");
+    btn.className = "trade-zone";
+    btn.style.cssText = `left:${z.x}px;top:${z.y}px;width:${z.w}px;height:${z.h}px`;
+    btn.dataset.evidence = "primary-static";
+    btn.dataset.rect = `${z.x},${z.y},${z.x + z.w},${z.y + z.h}`;
+    btn.dataset.desc = z.note;
+    btn.title = z.note;
+    btn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (z.id === "trade.accept") {
+        if (STATE.tradeFinalized) return;
+        STATE.tradeFinalized = true;
+        if (STATE.tradeStateUpdater) STATE.tradeStateUpdater();
+        pushChat("[交易] 接受 → msg 0x406 (0x451B30) · 交易完成 ([+0x13644]=1)");
+      } else {
+        pushChat(`[音效 0x69] ${z.id} 命中 (0x4177F0) · 窗口保持`);
+      }
+    });
+    content.appendChild(btn);
+  }
+  // split dividers: gauges @+0x13648/+0x13694, frame 1070 (16x360) never
+  // blitted; invisible draggable handles at each pane's split width [+0x54]/[+0x58]
+  for (let i = 0; i < 2; i++) {
+    const h = document.createElement("div");
+    h.className = "trade-divider";
+    const draw = () => {
+      const x = paneX[i] + STATE.tradeSplit[i];
+      h.style.cssText = `left:${x - 4}px;top:${paneY}px;width:8px;height:${ROWS * CELL}px`;
+    };
+    draw();
+    h.dataset.evidence = "primary-static";
+    h.dataset.rect = `divider ${i}`;
+    h.dataset.desc = `分割把手 gauge @+0x${(0x13648 + i * 0x4C).toString(16)} (帧 1070 16×360, 从不 blit)；鼠标 0x416E70 写 [+0x${(0x54 + i * 4).toString(16)}] 分割宽度`;
+    h.title = `分割把手 ${i + 1} · 拖拽调整面板宽度`;
+    let dragging = false;
+    h.addEventListener("pointerdown", (ev) => { ev.stopPropagation(); dragging = true; });
+    window.addEventListener("pointermove", (ev) => {
+      if (!dragging) return;
+      const cr = content.getBoundingClientRect();
+      const lx = (ev.clientX - cr.left) / STATE.scale - paneX[i];
+      STATE.tradeSplit[i] = Math.max(0, Math.min(COLS * CELL, Math.round(lx)));
+      draw();
+    });
+    window.addEventListener("pointerup", () => { dragging = false; });
+    content.appendChild(h);
+  }
+  // trade state label ([+0x13644])
+  const st = document.createElement("div");
+  st.className = "lbl";
+  st.id = "trade-state-label";
+  st.style.cssText = "left:8px;top:304px;width:300px;font:10px monospace;color:#ffd77a";
+  st.textContent = "交易中 ([+0x13644]=0) · 玩家间交易 · Finding 283";
+  content.appendChild(st);
+  const upd = () => {
+    st.textContent = STATE.tradeFinalized
+      ? "交易完成 ([+0x13644]=1) · 点击无效"
+      : `交易中 ([+0x13644]=0) · 金币 ${STATE.tradeGold}`;
+  };
+  STATE.tradeStateUpdater = upd;
 }
 
 function selectSlot(el, meta) {
@@ -811,6 +980,18 @@ const PROMPT_BUTTONS = {
     ],
     text: { rel: [23, 94, 400, 60] },
   },
+  gold: {
+    // trade gold input (Finding 283): msgbox 0x405 '你要给对方多少金币?'
+    // (0x418030) — input + 确定; 确定 -> msg 0x406 (0x451B30) finalize.
+    background: { lib: "GameInter.wil", frame: 950, w: 360, h: 190 },
+    center: [400, 246],
+    buttons: [
+      { id: "ok", rel: [51, 125, 44, 20], frames: [151, 152], label: "确定" },
+      { id: "cancel", rel: [147, 125, 64, 20], frames: [157, 158], label: "取消" },
+    ],
+    text: { rel: [20, 24, 320, 40] },
+    input: { rel: [20, 72, 320, 28] },
+  },
 };
 
 function showPrompt(kind, text, cb) {
@@ -831,6 +1012,18 @@ function showPrompt(kind, text, cb) {
   pt.style.cssText = `left:${tl}px;top:${tt}px;width:${tw}px;height:${th}px`;
   pt.textContent = text;
   box.appendChild(pt);
+  let inputEl = null;
+  if (spec.input) {
+    inputEl = document.createElement("input");
+    const [il, it, iw, ih] = spec.input.rel;
+    inputEl.className = "p-input";
+    inputEl.type = "number";
+    inputEl.min = "0";
+    inputEl.placeholder = "输入金币数量";
+    inputEl.style.cssText = `left:${il}px;top:${it}px;width:${iw}px;height:${ih}px`;
+    box.appendChild(inputEl);
+    inputEl.focus();
+  }
   const result = { ok: false };
   for (const b of spec.buttons) {
     const btn = document.createElement("div");
@@ -845,7 +1038,7 @@ function showPrompt(kind, text, cb) {
       result.ok = b.id === "ok";
       box.remove();
       STATE.prompt = null;
-      if (cb) cb(result.ok, b.id);
+      if (cb) cb(result.ok, b.id, inputEl ? inputEl.value : null);
     });
     box.appendChild(btn);
   }
@@ -959,6 +1152,30 @@ function renderEvidenceOverlay() {
         s.evidence_level, s.id, s.library);
     }
   }
+  // trade window internals (Finding 283, primary-static): cells, gold box,
+  // invisible button zones, split dividers
+  const tw = STATE.data.windows.find((w) => w.id === "window.exchange-candidate");
+  if (tw) {
+    const [wx, wy] = tw.rect;
+    for (let pane = 0; pane < 2; pane++) {
+      const px = wx + (pane ? 253 : 21);
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 5; c++) {
+          add([px + c * 36, wy + 48 + r * 36, px + c * 36 + 36, wy + 48 + r * 36 + 36],
+            "primary-static", `trade.cell ${pane ? "R" : "L"}${r * 5 + c}`, "槽+0x5B8");
+        }
+      }
+    }
+    add([wx + 34, wy + 270, wx + 156, wy + 304], "primary-static", "trade.gold", "0x416F05");
+    add([wx + 185, wy + 332, wx + 233, wy + 352], "primary-static", "trade.accept", "F1061/1062 隐形");
+    add([wx + 225, wy + 332, wx + 289, wy + 352], "primary-static", "trade.cancel", "F1064/1065 不存在");
+    add([wx + 532, wy + 350, wx + 560, wy + 376], "primary-static", "trade.close", "F161/162 隐形");
+    add([wx + 21 + 90, wy + 48, wx + 21 + 90 + 4, wy + 264], "primary-static", "trade.divider.0", "gauge +0x13648");
+    add([wx + 253 + 90, wy + 48, wx + 253 + 90 + 4, wy + 264], "primary-static", "trade.divider.1", "gauge +0x13694");
+    // frame 1050 overflow (7,-44) 512x512 — the only static art
+    add([wx + 7, wy - 44, wx + 7 + 512, wy - 44 + 512], "primary-static", "trade.frame.1050", "512×512 @(7,−44)");
+  }
+
   // target box: code-drawn composite, fixed-anchor path 0x4120B0 writes (376,227)
   if (hud.target_box) {
     add([374, 225, 378, 229], hud.target_box.evidence_level, "target_box fixed-anchor 0x4120B0", "");
@@ -1035,6 +1252,23 @@ async function boot() {
     STATE.mp = Math.max(20, (STATE.mp + 0.4) % 101);
     updateBars();
   }, 1500);
+
+  // entity sprite animation: cycles the closed state-table formulas
+  // (Findings 279-282). Each entity advances at its own w2 interval.
+  setInterval(() => {
+    const now = performance.now();
+    for (const e of STATE.data.entities || []) {
+      if (!e.appearance) continue;
+      const im = sceneEl.querySelector(`.sprite[data-entity="${e.id}"] img`);
+      if (!im) continue;
+      const f = entityFrame(e, now);
+      if (f !== im.dataset.frame) {
+        im.dataset.frame = f;
+        im.src = imgUrl(e.library, f);
+        im.alt = `${e.library} F${f}`;
+      }
+    }
+  }, 100);
 }
 
 function updateBars() {
@@ -1085,6 +1319,9 @@ function resetScene() {
   STATE.selectedEntity = null;
   STATE.hoveredEntity = null;
   STATE.storeState = 0;
+  STATE.tradeGold = 0;
+  STATE.tradeFinalized = false;
+  STATE.tradeSplit = [90, 90];
   targetboxEl.classList.add("hidden");
   const tp = $("#target-panel");
   if (tp) tp.classList.remove("visible");

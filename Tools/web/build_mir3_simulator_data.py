@@ -53,6 +53,30 @@ def rel_to_abs(pos: dict, base: tuple[int, int]) -> tuple[int, int]:
     return bx + ox, by + oy
 
 
+def frame_tables() -> dict:
+    """State-table constants from Finding 279 (primary-static): the three
+    runtime frame tables 0x8AA5C0 (player, 33) / 0x8AA686 (monster, 9) /
+    0x8AA6C8 (npc, 3) are BSS singleton fields whose contents are 100%
+    compile-time immediates (writer chain 0x449C80 -> 0x44A240 -> 0x44A090).
+    Each record = (w0 state-start frame, w1 block length, w2 frame interval ms).
+    The simulator cycles sub-frames within [w0, w0+w1) at w2 ms and offsets by
+    the closed entity formulas (player 3000*S+10*dir, monster 1000*(race%10),
+    npc 100*body+10*(flag%3))."""
+    ev = load("state-frame-tables-evidence.json")
+    def rows(key: str, sub: str | None = None) -> list[list[int]]:
+        node = ev.get(key, {})
+        if sub:
+            node = node.get(sub, {})
+        recs = node.get("records", []) if isinstance(node, dict) else node
+        return [[int(r["w0"], 16), int(r["w1"]), int(r["w2"])] for r in recs]
+    return {
+        "player": rows("player_table"),
+        "monster": rows("monster_table_default"),
+        "npc": rows("npc_table", "default_records"),
+        "source": "state-frame-tables-evidence.json Finding 279 (primary-static)",
+    }
+
+
 def main() -> None:
     layout = load("layout.json")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -330,6 +354,7 @@ def main() -> None:
         "maps": maps,
         "map_bindings": map_bindings,
         "hud": hud,
+        "frame_tables": frame_tables(),
         "viewport": {"width": VIEW_W, "height": VIEW_H},
         "meta": {
             "source": "docs/research/ei-ui-layout/layout.json + specialist evidence",
@@ -346,6 +371,8 @@ def main() -> None:
             json.dumps(out[domain], ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "map_bindings.json").write_text(
         json.dumps(out["map_bindings"], ensure_ascii=False, indent=2), encoding="utf-8")
+    (OUT / "frame_tables.json").write_text(
+        json.dumps(out["frame_tables"], ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "layout.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
 

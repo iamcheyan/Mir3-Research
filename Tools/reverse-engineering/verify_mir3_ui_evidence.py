@@ -116,6 +116,10 @@ def main() -> int:
             continue
         parsed += 1
         pending = data.get("pending", []) if isinstance(data, dict) else []
+        # round-5 evidence files may carry `pending` as one prose string
+        # (e.g. "无（静态链闭合）。候选后续: ...") — count it as a single item
+        if isinstance(pending, str):
+            pending = [pending] if pending.strip() else []
         if pending:
             pending_total += len(pending)
             warnings.append(f"{path.name}: pending={len(pending)}")

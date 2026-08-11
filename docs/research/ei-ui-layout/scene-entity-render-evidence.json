@@ -248,18 +248,47 @@
     "occlusion_flags": "[root+0x364448] / [root+0x364450]",
     "dsurface": "0x8AB7A8"
   },
+  "round5_closure": {
+    "date": "2026-08-11",
+    "scope": "P7/P8 re-verification (occlusion window + world sort pass) — closes 5 round-3 pendings; corrects 2 map readings and grid geometry",
+    "corrections": {
+      "tick_dispatch_idx_0x41A534": "fresh byte dump [0,0,2,1,2,2,...]: type 0/1 -> 0 (0x419DC6, vtable+0x1C tick); type 2 -> 2 (0x419DDD, no tick); type 3 -> 1 (0x419E46, tick); types 4..0x31 -> 2 (NO vtable+0x1C tick in sort pass); type 0x32 -> 0 (NPC ticks). Round-3 text '3..0x31 -> 1; 0x32 -> 2' was wrong.",
+      "draw_dispatch_idx_0x41A570": "fresh byte dump [0,1,0,1,1,...]: type 0/2/0x32 -> 0 (0x419E1C: 0x41B570 unlink + [root+0xE1154].vtable+0x14 + vtable+0(1)); type 1/3..0x31 -> 1 (0x419E94 window-check + grid insert). Round-3 text '0/1 -> 0; 2 -> 1' was wrong.",
+      "grid_size": "rep stosd @0x419D59 clears 0x38400 DWORDS = 0xE1000 bytes = 921600 B = 24x24 cells x 100 slots x 16 B. NOT '0x38400B = 0xE100 dwords' (round-3 text). Grid starts root+0x154, ends root+0xE1154 (921600 = 0xE1000; 0x154+0xE1000 = 0xE1154 — matches [root+0xE1158] list head placement).",
+      "cell_addressing": "insert and render both use byte offset 1600*(24*dy+dx) from root+0x154, dy = [e+0xD0]-[camY], dx = [e+0xCC]-[camX] (0x41A042-0x41A071 non-shadow path; 0x41CBE2-0x41CBF6 renderer).",
+      "cell_probe": "renderer 0x41CBD0 walks 100 consecutive dwords from cell base (0x41CCF1 add ebx,4 / cmp eax,0x64 @0x41CCF5). Shadow-flag insert (0x41A008-0x41A03E) shifts a 400-byte window: new entity at [esp+0x2C], 0x63 dwords of old cell copied after it, 0x64 dwords written back = insert-at-front over 100 dword slots.",
+      "dash_7f_semantics": "0x7F word at [e+0x8A] is a FORCE-DRAW marker, not 'transparent skip': gate @0x41CC0E-0x41CC54 — arg3==1 (tile pass): draw iff [e+0x61C74]!=0 OR ([e+0x61C74]==0 AND word[e+0x8A]==0x7F); arg3==0: inverted. Skip = flag==0 AND word!=0x7F.",
+      "player_identity_check": "0x41CC56: if esi == [root+0x364444] (camera-tile entity, typically the player) then skip draw when [root+0x30]!=0 (xor eax,eax); else always draw."
+    },
+    "occlusion_window": {
+      "va": "0x41C5AA-0x41C5DE",
+      "semantics": "tile loop (0x41C49F, bounds [camX-0xA, camX+0x22) x [camY-0xA, camY+0x22), clamped to map words [root+0xF5326]/[root+0xF5328]) calls 0x41CBD0 with RELATIVE cell coords (tileX-camX, tileY-camY) ONLY for tiles inside [camX, camX+0x18) x [camY, camY+0x18); all other tiles pass (0,0) -> grid cell 0 (camera-tile entity). The (0,0) reads are filtered by the per-entity flag gate + player identity check — a draw quirk, not a visible bug.",
+      "front_pass": "0x41C60D (after main tile loop): over the same 24x24 window, tilemap calls 0x43BE00 (0x41C66D/0x41C678) then ground items 0x41C860 (0x41C6C5) + ground deco 0x41CA20 (0x41C6CE) with tile-relative coords = the front occlusion layer (closes round-3 '遮挡 ground-deco 路径')."
+    },
+    "new_identities": {
+      "0x40B180": "shadow ellipse blit: gates [e+0x61BD4]==2, draws via 0x434A20 (ecx=0x7DA1D8) at [e+0x94]/[e+0x98]+0x18/+0x10, size 0x64x0x64, alpha 0x3F800000 (1.0). Player/NPC only.",
+      "0x40CE20": "timer-gated name/HP label (candidate): gate [e+0x61C68]&0x100000 and (GetTickCount - [e+0x62A2C]) > 0x6A4 ms, then reads [e+0xC0]/[e+0x62A24] + frame/color state. Player only.",
+      "0x41B570": "hover/selection pointer cleanup: walks node chains [root+0xE1170] and [root+0xE11A0] (node +4 target, +0xC next), clears [node+0x14]/[node+0x18] where == entity; ret 4. Called in sort case0 (0x419E1C) and type-3 hook (0x419E46) BEFORE the [root+0xE1154] hook.",
+      "0x41CBD0_type_dispatch": "0x41CD1C fresh dump [0,0,3,1,3,3,...]: type 0/1 -> case0 0x41CC8E (vtable+0x7C + 0x40B180 shadow + 0x40CE20 label); type 2 -> case3 0x41CCED SKIP (never blitted); type 3 -> case1 0x41CCD7 (vtable+0x7C sprite ONLY, no shadow/label); types 4..0x31 -> case3 SKIP; type 0x32 -> case2 0x41CCB6 (vtable+0x7C + 0x40B180 shadow, NO label)."
+    },
+    "closed_pendings": [
+      "type-0x2 semantics: grid-inserted (sort draw-dispatch case0), never ticked (tick map case2), never blitted (renderer case3 skip) = invisible spatial/trigger entity (occupancy, hover, blocking).",
+      "[root+0xE1154].vtable+0x14 role: per-frame draw-list hook — called with the entity node (0xE1154 as this, arg = node) in sort cases 0x419E1C / 0x419E46 and the ground-deco path; exact list semantics runtime-capture.",
+      "ground-deco occlusion path: front pass 0x41C60D (0x41C860 + 0x41CA20 over 24x24 window).",
+      "monster per-tile blit ordering: types 4..0x31 are grid-inserted (spatial index / occlusion / hover) but NEVER blitted by the tile pass — their blit runs via the per-entity tick chain (vtable+0x1C 0x40ADD0 -> vtable+0x20 0x40AFD0 -> state slots -> painter 0x405630); order = entity-list order (server-driven), interleaving with the tile pass = runtime. Type 3 monsters DO blit in the tile pass (0x41CCD7, sprite-only).",
+      "grid bucket/probe layout: 24x24 cells x 1600 B, cell = 100 dword slots (400 B probed), index stride 0x640 per cell-row — exact record internals beyond the 400 B window remain runtime."
+    ],
+    "evidence_level": "primary-static (all VAs disassembled from Mir3.exe, fileoff = VA - 0x400000)"
+  },
   "pending": {
     "需运行时捕获": [
-      "monster (types 4..0x31) per-tile blit ordering vs sorted pass (candidate: tick-state dispatch path 0x40ADD0 -> 0x40AFD0 -> 0x40A2B0 -> per-state slots; static facts verified, ordering unproven)",
       "entity-list head insertion into 0x560070 / 0x5600A0 / [root+0xE1158] (no writes anywhere in 0x401000-0x47FFFF -> server-driven add/remove)",
       "vtable 0x4764B0 / 0x4765B0 install path",
-      "[root+0xE1154].vtable+0x14 role (called in sort-pass cases 0x419E1C / 0x419E46 and occluded ground-deco path)",
-      "type-0x2 entity semantics (sorted in pass 1, never ticked, skipped in 0x41CBD0 case3)",
-      "type-0x3 draw path details in 0x41CCD7 (case 1; raw idx byte 0x3 -> 1)",
+      "monster (types 4..0x31) tick-chain blit interleaving vs tile pass (blit path = vtable+0x1C 0x40ADD0 -> 0x40AFD0 -> state slots; tile pass confirmed NOT their blit path; exact ordering runtime)",
       "element array 0x5600FC contents and frame tables 0x8AA5C0 / 0x8AA686 / 0x8AA6C8 runtime values (DB 0x8AA5A8 populated by server 0x44A820 / 0x44A240)",
-      "exact bucket/probe layout of the four sort arrays (0x100-byte slots x 100 probes, index stride 0x640)",
+      "grid cell internals beyond the 400-byte probe window (100 dword slots confirmed; 16-byte record aux fields unproven)",
       "hover/target-box argument semantics for 0x40B2C0 5-arg call",
-      "roles of 0x40B180 / 0x40CE20 (called beside vtable+0x7C in 0x41CC8E / 0x41CCB6)"
+      "0x40CE20 exact label rendering (candidate: name/HP plate)"
     ],
     "note": "No runtime-only item is marked confirmed; all are candidate with 需运行时捕获."
   }

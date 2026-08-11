@@ -1,0 +1,165 @@
+{
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "data_dir": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
+    "ctor_va": "0x004159D0 (TradeWindow ctor, ret 0x20, 8 args) / 0x00415B30 base ctor 0x423B30 / prector 0x415650",
+    "register_args": "(1, 330, 484, 0, 0, 1050, [esi+0x1C] shared-frame-lib, 3) at 0x4277B0-0x4277C2 (global init)",
+    "paint_va": "0x00415B10",
+    "click_va": "0x00416EF0 (ret 0xC)",
+    "mouse_va": "0x00416E70 (ret 8) + 0x00416790 (grid-move)",
+    "evidence_level": "primary-static (closed)",
+    "note": "Trade window is PLAYER-TO-PLAYER trade (window id 3). It is NOT the store (window id 2, object +0x33188, ctor 0x44D310, paint 0x44E260, closed in store-window-render-evidence.json)."
+  },
+  "window_candidate": {
+    "id": "window.trade (window id 3)",
+    "object": "ROOT+0x3399C (size 0x1369C), vtable 0x47663C",
+    "vtable_slots": {
+      "vtable_va": "0x47663C",
+      "0": "0x415710 (dtor)",
+      "4": "0x415820 (field-init/reset; also the target of the hide-forwarder)",
+      "8": "0x4268B0 -> jmp 0x423CF0 -> jmp [vtable+4] (=0x415820 reset; hide = reset-to-inert)",
+      "0xC": "0x423D00 (base frame draw, shared with base class)",
+      "0x10": "0x423F80 (show: mov [this+0x30], arg; ret 4)",
+      "0x14": "0x423F90 (mov [this+0x34], arg; ret 4)"
+    },
+    "base_vtable": "0x476624 = [0x4150D0, 0x423CA0, 0x423CF0, 0x423D00, 0x423F80]",
+    "register_proof": "global-init chain 0x427760: 0x427794 registers id2 store (+0x33188, ctor 0x44D310, frame 0x3E8=1000); 0x4277B0-0x4277C2 registers id3 trade (+0x3399C, ctor 0x4159D0, frame 0x41A=1050); 0x4277F3 registers id4 (+0x4707C, ctor 0x424E60); 0x427856 registers id6 (+0x47834, ctor 0x424250).",
+    "render_dispatch": "draw table 0x428358 (id-indexed jmp [ecx*4+0x428358], used at 0x428159): id3 -> thunk 0x4281A8 = 'lea ecx,[esi+0x3399c]; call 0x415b10'",
+    "mouse_dispatch": "jump table 0x428398 (used at 0x4282EE): id3 -> 0x428319 = 'lea ecx,[esi+0x3399c]; call 0x416790'",
+    "click_dispatch": "0x42BFFE..0x42C080 region: id3 -> 'lea ecx,[esi+0x3399c]; push [esi+0x20]; call 0x416ef0'; ret!=0 -> 'push 3; call 0x42adb0' (re-activate window 3, return 1 consumed); ret==0 -> fall to 0x42C198 (not consumed)",
+    "show_dispatcher": "0x42ADB0 = activate/open dispatcher (jump table 0x42B3E4): id3 case at 0x42AEE0: if [esi+0x339CC]!=0 -> 0x42AC50 (z-order list at +0xD28..+0xD38) + show(0) else 0x42AC30 (window registry 0x449870) + show(1)"
+  },
+  "geometry": {
+    "base_rect": "w=484 (0x1E4, arg2), h=330 (0x14A, arg3); content rect stored [+0x18..+0x24], frame pos [+8]/[+0xC]",
+    "frame_1050_art": {
+      "wil": "GameInter.wil (count 1103)",
+      "index": "1050 (0x41A)",
+      "size": "512x512",
+      "offset": "(7, -44)",
+      "role": "trade panel artwork; art (512x512 @ (7,-44)) is LARGER than the hit/UI rect (484x330 @ (0,0)) - art overflows the window rect",
+      "evidence_level": "primary-static (WIL header)"
+    },
+    "pane_split": "split positions [+0x54] (left pane width, px) / [+0x58]; recomputed each paint as mid = x + (w>>1) into split rects [+0x5C] (left) and [+0x6C] (right) at 0x415B21-0x415B63",
+    "pane_rects_paint": "hover highlight (SetRect only, hit zones): left (x+0x15, y+0x30)..(x+0xC9, y+0x108), right (x+0xFD, y+0x30)..(x+0x1B1, y+0x108) at 0x415B7C-0x415BC0",
+    "gold_box_rect": "(x+0x22, y+0x10E)..(x+0x9C, y+0x130) = (34,270)..(156,304) window-relative; built at 0x416F05-0x416F2B",
+    "grid_geometry": "per-pane cell scan in 0x416830: cell 36x36 px (stride 0x24), 5 cols (x loop 0..0xB4) x 6 rows (y loop 0..0xD8); pane0 grid area (x+0x15,y+0x30)..(x+0xED,y+0x12C), pane1 (x+0xFD,y+0x30)..(x+0x1D5,y+0x12C); item-id words at +0x298 (400 words, empty=0xFFFF) indexed pane*200+cell (0x416950: mov ax,[edi+eax*2+0x298]); 24 slot records at +0x5B8 stride 0xC2C (0x5B8+24*0xC2C=0x129D8 = name buf)"
+  },
+  "frame_draw": {
+    "va": "0x423D00 (base-class frame draw; this=[vtable+0xC])",
+    "path_normal": "0x423D5D: call 0x460240(0x8AB7A8, ...) direct blit of frame 1050",
+    "path_dim": "dim flag [0x8B1874] != 0 -> 0x423DFA: call 0x4542A0(0x5600FC) and 0x423E66: call 0x4542F0(0x5600FC) (dimmed-blit helpers)",
+    "pos": "blit position read from [this+8]/[this+0xC]"
+  },
+  "paint_0x415B10_inventory": {
+    "frame": "0x415B1E: call [vtable+0xC] = 0x423D00 (frame 1050)",
+    "split_rects": "0x415B21-0x415B63: SetRect [0x4762B0] into +0x5C / +0x6C (mid = x+(x2-x)>>1)",
+    "pane_hit": "0x415B77-0x415BC0: PtInRect [0x4762B4] (+0x5C, mouse 0x7DA1C0/0x7DA1C4); SetRect pane highlight (hit zone only)",
+    "hover_item": "0x416830 (cell) + 0x4162E0 (item under cell) + blit via [0x476248] (item-icon blit helper)",
+    "grid_items": "per populated slot: 0x466800 (item icon frame) x2 + blit [0x476248] + 0x4542F0 with src [0x8AB7BC] (item icon source)",
+    "button_render": "NOT PRESENT: no call to 0x417640 (button render) and no [vtable+4] control-render loop; trade paint has NO button drawing at all",
+    "gauge_render": "NOT PRESENT: frame 1070 (16x360 divider art) is never blitted by the paint; gauges are hit-test objects only",
+    "conclusion": "Everything except frame 1050 + runtime item icons + hover highlight is baked into the frame-1050 artwork (buttons, gold box, name/hp text, divider, grid cell backgrounds)."
+  },
+  "buttons": {
+    "ctor": "0x417550 (ret 0x24, 9 args): [+0x14]=arg1 frame-obj, [+0x18]=arg2 frame-id (up), [+0x1C]=arg3 frame-id2, [+0x28]=arg4 x, [+0x2C]=arg5 y, [+0x24]=arg7 byte, [+0x20]=arg8, [+0x30]=arg9, hit rect at +4 (SetRect from frame dims), 0x466130(ecx=arg1, arg2) frame-pair validation",
+    "vtable": "0x4763A8 = [0x4046C0 dtor, 0x417640 render, 0x417780 mouse, 0x4177C0, 0x4177F0 click]",
+    "render_va": "0x417640 (ZERO direct xrefs; reachable only via [vtable+4] indirect calls - never called by the trade paint, which has no such loop)",
+    "click_va": "0x4177F0 (ret 8): PtInRect([+4], x, y) -> hit -> 0x45AFC0(0x8AB130, 0x69, 0,0,0) sound 0x69 -> return 1; sends NO window message itself",
+    "mouse_va": "0x417780 (ret 8): button mouse-move",
+    "close": {
+      "object": "+0x7C",
+      "frames": "161/162 (0xA1/0xA2)",
+      "pos": "(x+0x214, y+0x15E) = (532, 350) rel",
+      "wil": "GameInter.wil 161 = 28x26 @ (-24,-16); 162 = 28x26 @ (-24,-16)",
+      "args": "0x417550(0, 161, 162, 532, 350, 0, 1, -1, 0) at 0x415A4D-0x415A6D (pushes: 0,-1,1,0,[ebp+0x15E],[ebx+0x214],0xA2,0xA1,edi)",
+      "behavior": "hit -> sound only + consumed (return 1); window stays open; dispatcher re-activates id 3"
+    },
+    "accept": {
+      "object": "+0x130",
+      "frames": "1061/1062 (0x425/0x426)",
+      "pos": "(x+0xB9, y+0x14C) = (185, 332) rel",
+      "wil": "GameInter.wil 1061 = 48x20 @ (-24,-16); 1062 = 48x20 @ (-24,-16)",
+      "args": "0x417550(0, 1061, 1062, 185, 332, 0, 1, -1, 0) at 0x415A76-0x415A9D",
+      "behavior": "hit -> 0x451B30(0x8AB828) [sends msg 0x406 via 0x452940(esi+0x18, 0x406, 0,0,0,0) + 0x451E60] then [this+0x13644]=1 (trade finalized); returns 0 (not consumed)"
+    },
+    "cancel": {
+      "object": "+0x1E4",
+      "frames": "1064/1065 (0x428/0x429)",
+      "pos": "(x+0xE1, y+0x14C) = (225, 332) rel",
+      "wil": "GameInter.wil 1064 = MISSING (None), 1065 = MISSING (None) -> cancel button has NO artwork in the WIL; the button is invisible by design (hit zone + sound only)",
+      "args": "0x417550(0, 1064, 1065, 225, 332, 0, 1, -1, 0) at 0x415AA4-0x415ACB",
+      "behavior": "hit -> sound + consumed (return 1)"
+    },
+    "invisible_explanation": "All three buttons are constructed with art frames that exist (close/accept) or do not exist (cancel), but the trade window paint (0x415B10) never invokes button render 0x417640 (zero direct xrefs, and no [vtable+4] render loop in the paint). Their visible appearance must be baked into frame 1050 art; at runtime the buttons act as silent hit-zones (PtInRect + sound 0x69)."
+  },
+  "gauges": {
+    "ctor": "0x417960 (ret 0x1C, 7 args): [+4]=a1 frame-obj, [+8]=a2 frame-id, [+0x14]=a3, [+0x1C]=a4, [+0x1E]=a5, [+0x20]=a6, [+0x44]=call [0x47630C] (fn ptr), [+0x48]=a7",
+    "objects": "2 gauges at +0x13648 and +0x13694 (stride 0x4C)",
+    "args": "0x417960(0, 1070, 6, 0xC, 0xB8, 0xC, 0) constructed in the trade ctor at 0x415AC8-0x415B2B (pushes: 0,0xC,0xB8,0xC,6,0x42E=1070,edi=0); gauge 2 same args at 0x415AE6+",
+    "frame": "GameInter.wil 1070 = 16x360 @ (-24,-16) -> VERTICAL divider bar art (16 wide x 360 tall)",
+    "role": "SPLIT-DIVIDER handles between the two item panes (left divider -> [+0x54], right -> [+0x58])",
+    "mouse": "0x416E70: loop gauges via 0x417C80(gauge,x,y) hit -> fld [gauge+0xC] float * [0x476650] scale -> 0x468520 f2i -> [this+0x54 + idx*4] (pane split width); miss -> close button +0x7C via [vtable+8]=0x417780",
+    "click": "0x416EF0: loop gauges via 0x417E60(gauge,x,y) hit -> return 1 (consumed)",
+    "rendered": "NEVER drawn: frame 1070 art exists in the WIL but the paint has no gauge/divider blit; divider line drawn via paint rects only (SetRect + fill at 0x415E90 region)"
+  },
+  "item_grid": {
+    "slots": "24 slot records at +0x5B8, stride 0xC2C (array ctor 0x4686C4(ptr,+0xC2C,0x18,0x415730,0x415740) at 0x415737)",
+    "item_ids": "word array at +0x298 (400 words; empty = 0xFFFF); read at 0x41697E: mov ax,[edi+eax*2+0x298] (index = cell + pane*200)",
+    "buffers": "name buffer +0x129D8 (0x40B bytes), item buffer +0x12A20 (0x309 dwords)",
+    "aux_obj": "object at +0x12A24 (ctor 0x430920) - item action helper",
+    "paint": "per populated slot icon draw: 0x466800 x2 + [0x476248] blit + 0x4542F0 src [0x8AB7BC] (0x415D35-0x415E44)",
+    "hover": "0x4162E0 (item under hovered cell) drawn via [0x476248]",
+    "click_flow": "0x416EF0: left-pane PtInRect(+0x5C) -> 0x416830 (cell) + 0x416950 (slot id % 1000, -1 if empty) -> slot record [esi + row*0xC2C + 0x5B8] present -> action 0x416C20 / 0x416D60 / 0x416DC0 -> send msgs 0x451AA0 (msg 0x402) / 0x451AD0 (msg 0x403) to 0x8AB828",
+    "state_flag": "[+0x13644]: 0 = trading, 1 = trade finalized (accept); when 1 the click handler returns 0 immediately (0x416FB4-0x416FBC)"
+  },
+  "click_handler_0x416EF0_flow": {
+    "gold_confirm": "strcmp([data+0x1C], 0x47ADB4=\"确定\")==0 (0x416F2F-0x416F5A) -> PtInRect(gold rect (x+0x22,y+0x10E)..(x+0x9C,y+0x130)) -> 0x418030(0x7E04C8, 0x565994, 3, 1, 0x47AD98=\"你要给对方多少金币?\", 1, -1, -1, 0x405) creates msgbox 0x405 (gold amount dialog) + zero-fill click-data 0x30E dwords -> return 1",
+    "state_gate": "[+0x13644]!=0 -> return 0 (no clicks after finalize)",
+    "gauges": "0x417E60 on gauge 0,1 (+0x13648/+0x13694) -> hit -> return 1",
+    "close": "close button +0x7C via [vtable+0x10]=0x4177F0 -> hit -> return 1 (sound only)",
+    "accept": "accept +0x130 via 0x4177F0 -> hit -> 0x451B30(0x8AB828) (msg 0x406) + [0x13644]=1 -> return 0",
+    "cancel": "loop counter 1..2 at 0x417057: ebx = +0x130 + (c-1)*0xB4 -> c=1 re-checks accept, c=2 checks cancel +0x1E4 via 0x4177F0 -> hit -> return 1; loop exits at c=3 (counter cmp 3, jl) - the +0x298 array is never treated as a 3rd button",
+    "grid": "left-pane PtInRect(+0x5C, mouse) -> 0x416830/0x416950 -> slot actions + msgs 0x402/0x403 (0x451AA0/0x451AD0)"
+  },
+  "strings": {
+    "0x47ADB4": "确定 (confirm caption, GBK B1 DD C0 FC)",
+    "0x47AD98": "你要给对方多少金币? (GBK C4 FA D2 AA B8 B6 B8 F8 B6 D4 B7 BD B6 E0 C9 D9 BD F1 B1 D2 3F)"
+  },
+  "runtime_globals": {
+    "mouse_x": "0x7DA1C0",
+    "mouse_y": "0x7DA1C4",
+    "dim_flag": "0x8B1874",
+    "item_icon_src": "0x8AB7BC",
+    "trade_state": "0x8AB828 (accept/put/take message hub, ecx of 0x451B30/0x451AA0/0x451AD0)",
+    "msg_send_buf": "0x7E04C8",
+    "recv_target": "0x565994",
+    "shared_frame_lib": "[ROOT+0x1C] (source arg of the trade ctor, loaded from GameInter.wil region)",
+    "blit_helpers": "0x4762B0=SetRect@0x4793D8, 0x4762B4=PtInRect@0x4793E2, 0x476248=item-icon blit@0x479476, 0x47630C, 0x476650 (float scale) - RVA-style runtime-patched pointer table at 0x4762xx (static bytes are RVAs)"
+  },
+  "contrast_with_store_window": {
+    "store": "window id 2, object ROOT+0x33188, ctor 0x44D310 (register args (2, src, frame 1000, 0,0, 0x3E8, 0x12C, 0x130) at 0x42777E-0x427794), paint 0x44E260, click 0x44E9B0; closed in store-window-render-evidence.json",
+    "trade": "window id 3, object ROOT+0x3399C, ctor 0x4159D0 (register args (1, 330, 484, 0,0, 1050, src, 3) at 0x4277B0-0x4277C2), paint 0x415B10, click 0x416EF0",
+    "render_style_difference": "store paint renders its controls through 0x417830 + [vtable+4] render loops (see store-window-render-evidence.json); the trade paint does NOT - it draws only frame 1050 + runtime item icons, leaving all controls as invisible hit-zones over baked-in art. Both use the same base frame-draw 0x423D00 and the same 0x428358 render-dispatch jump table (store thunk 0x428192, trade thunk 0x4281A8).",
+    "trade_specific": "trade-only features: gold box (0x405 dialog), accept/cancel buttons, 2 split-divider gauges, 24-slot grid, trade-finalize state [+0x13644]"
+  },
+  "evidence_level": "primary-static",
+  "conclusions": [
+    "Trade window = window id 3, object ROOT+0x3399C, vtable 0x47663C, ctor 0x4159D0 registered at 0x4277B0-0x4277C2 (frame 0x41A=1050), painted via render-dispatch thunk 0x4281A8 -> 0x415B10.",
+    "The panel art is GameInter.wil frame 1050 (512x512 @ offset (7,-44)); the UI hit rect is only 484x330, so the art overflows the rect.",
+    "Runtime-drawn: frame 1050 itself, grid item icons (0x466800/[0x476248]/0x4542F0 src [0x8AB7BC]), hovered-cell highlight (SetRect + fill). Everything else (close/accept/cancel button art, gold box, name/hp text, pane dividers, cell backgrounds) is baked into frame 1050.",
+    "Close/accept/cancel buttons are invisible hit-zones: close (frames 161/162 @ (532,350)), accept (1061/1062 @ (185,332)), cancel (1064/1065 @ (225,332)). Cancel's frames 1064/1065 DO NOT EXIST in GameInter.wil (count 1103; header returns None) - by design. Button render 0x417640 has ZERO direct xrefs and the trade paint has no [vtable+4] control loop, so buttons are never drawn.",
+    "The two gauges (+0x13648/+0x13694, frame 1070 = 16x360 divider art, ctor 0x417960) are the pane split-divider drag handles: mouse 0x416E70 writes the split widths [+0x54]/[+0x58] from gauge float weights; they are never blitted.",
+    "Item grid: 24 slot records at +0x5B8 (stride 0xC2C), item-id words at +0x298 (400 words, empty 0xFFFF), 36px cells 5x6 per pane; clicks route via 0x416830/0x416950 to slot actions (0x416C20/0x416D60/0x416DC0) and msgs 0x402/0x403 through 0x451AA0/0x451AD0 to runtime trade state 0x8AB828.",
+    "Gold box click (rect (34,270)..(156,304)) opens msgbox 0x405 '你要给对方多少金币?' (0x418030); accept click sends msg 0x406 via 0x451B30(0x8AB828) and sets finalize flag [+0x13644]=1, after which the window ignores clicks (0x416FB4).",
+    "Click handling returns: consumed (1) -> dispatcher calls 0x42ADB0(esi,3) (re-activate window 3); not consumed (0) -> dispatcher continues. The close button does NOT close the window itself (sound only); the window is closed by the runtime hide path (vtable+8 -> 0x423CF0 -> field-init reset).",
+    "Distinct from store: store = id 2 / +0x33188 / 0x44D310 / 0x44E260 with control render loops; trade = id 3 / +0x3399C / 0x4159D0 / 0x415B10 with zero control rendering."
+  ],
+  "pending": [
+    "Exact runtime cell<->slot mapping for the +0x298/+0x5B8 arrays (index math at 0x4170C2 uses row*0xC2C; the +0x54/+0x58 split weights participate in cell math at 0x416830) - runtime data, not statically resolvable.",
+    "Who populates +0x298 item-id words at runtime (network msg 0x402/0x403/0x405/0x406 handlers through 0x8AB828) - BSS runtime state, outside static scope.",
+    "Frame 1050 pixel content (buttons/gold box/bars) - could be visually verified by rendering the frame bytes (not done in this pass).",
+    "Base-ctor internals: exact meaning of fields [+0x40]/[+0x44] (derived: height-ish / frame-lib pointer, read from caller-stack slots at 0x423B8D/0x423BA9 which map through the trade ctor's pushed registers to a2/a7 - value semantics marked derived).",
+    "0x423FA0 layout/show continuation (uses +0x40/+0x44) not fully traced.",
+    "0x417C80/0x417E60 gauge hit-test internals (rect from +0x1C..+0x20 vs gauge pos) - call sites and semantics confirmed; inner rect math not dumped."
+  ]
+}

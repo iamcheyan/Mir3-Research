@@ -1,0 +1,142 @@
+{
+ "evidence_id": "monster-dat-evidence",
+ "title": "Finding 280 (MonsterDat): MInfo.dat 前提修正 + monster.dat 记录 ↔ Mon-N.wil 库/帧映射 + P5/P11 闭合",
+ "date": "2026-08-11",
+ "finding": 280,
+ "objective": "P5: 怪物名 → Mon-N.wil 库/帧; P11: 4 个未匹配 .gen 名是否存在. 前提修正: 客户端 MInfo.dat 是魔法效果数据库, monster.json 是服务端 Envir/monster.dat 的解码.",
+ "question": "monster.dat 的 Appr/Race/RaceImg 字段中哪个驱动客户端怪物渲染 (元素+帧)? 每个怪物对应哪个 Mon-N.wil 库、哪段帧? DMon-1.wil 死亡库如何索引? 夜行鬼09/异界之门/葛贰厘面0/诺玛教主2/魔神怪8 是否存在于 monster.dat 名表?",
+ "method": "EXE primary-static 反汇编 (capstone, fileoff=VA-0x400000) + 原始字节扫描 + wilsdk 逐帧 blank 运行图 + monster.json (服务端 monster.dat 解码) 逐记录交叉评分. 所有库帧数/非空范围来自 wilsdk 实际打开 Data/*.wil.",
+ "premise_correction": {
+  "client_MInfo_dat": "魔法/技能效果数据库, 非怪物库. 解密链: 字符串 'MInfo.Dat' @0x47C62C → 加载器 0x44A910; 密钥字节 f0 39 ab 8e 93 1a de 9f @0x44A925-0x44A939 → 全局 0x9135B8=0x8EAB39F0, 0x9135BC=0x9FDE1A93; 校验器 0x4525F0: header=file[0..3] XOR key1 = 0xA4A0 = 42144 = payload 长度 (42152-8); checksum = XOR 0x9FDE1A93 于 sum((payload[i]+1)*i), 实测 = 0x8CE329C1 验证通过; 4 遍 XOR 解密 (edi=3,2,1,0, 密钥字节=原文件[edi], payload[i] ^= (dl+i)&0xff). 解密产物 (CP949, /tmp/minfo_dec.bin) = 文本: 注释 '//(시작프레임, 마지막프레임+1, 지연시간, 이미파일번호(Magic:81, MonMagic:138, MonMagicEx2:140, MonMagicEx3:143), 마법번호, ...)', 节 #SPELL 109 (行18), #MAGIC 147 (行196), #EXPLOSION 39 (行374); 加载器 strcmp '#SPELL' @0x47C5EC. 0x8AA5A8 = 该魔法帧状态表 (条目 key=魔法号 @+0xc, +0 帧起始, +4 帧结束, +0xe..0x1d 16 状态帧数), 唯一写者 0x44AE40 (MInfo 节循环, 3 分支配对 #SPELL/#MAGIC/#EXPLOSION), 经 0x449AD0 写入、0x40A4D0 拷入 actor. 结论: 怪物目录数据必须来自 monster.json.",
+  "monster_json": "解码自服务端 Envir/monster.dat (原 /home/tetsuya/NAS/TMP/Mud3/Envir/, 已不在). 记录 252 B, XOR mask 0x09, 名称在 idx*4. 字段: Index raw[0]=off0, Appr raw[6]=off24, Race raw[7]=off28, RaceImg raw[8]=off32, Level raw[9]=off36, ACMin off68, ACMax off72, MAC off76, DCMin off108, DCMax off112, MC off116, HitSpeed off128, MoveSpeed off132, DropTable off152. rec0=header {HeaderCount:433, HeaderUnk36:60}; rec1=守卫武将 (Index1, Appr81, Race19, RaceImg140, Level99)."
+ },
+ "client_formulas": {
+  "resolver": "0x404FB0 (type byte[0], 16-bit code byte[2..3]; 字节表 0x405500, jump 表 0x4054EC; 输出 element→actor+0x8c, 帧起/止/三帧→actor+0xb4/0xb8/0xbc)",
+  "type3_race_lt_2000": {
+   "va_range": "0x4050C6-0x40514F",
+   "element": "element = 0x58 + race//10  (0x4050D1-0x4050E4: imul 0x66666667 除10, add al,0x58); gate cmp al,0x8c / jae 0x4054de (element<0x8C=140); 存 actor+0x8c",
+   "frame": "frame_start = word[0x8AA686 + 6*state] + 1000*(race%10) + 10*flag  (0x4050F4-0x40512B: flag=[esp+0x3c]&0xff → ecx=6*flag; idiv esi=0xa → edx=race%10; imul edx,edx,0x64; add edx,[esp+0x40]&0xff; mov ax,word[ecx+0x8aa686]; lea edx,[edx+edx*4]; lea eax,[eax+edx*2] → 10*(100*(race%10)+flag2))",
+   "frame_end": "base + word[0x8AA686+6*state+2]  (0x405131-0x405138)",
+   "third": "word[0x8AA686+6*state+4]  (0x405142-0x405149) → [ebp+0xbc]"
+  },
+  "type3_race_ge_2000": {
+   "va_range": "0x405154+",
+   "element": "element = 0x87 + (race-2000)//100  (race-0x7d0, 0x51eb851f 除100, add 0x87)",
+   "frame": "frame = word[0x8AA686 + 6*flag] + 100*((race-2000)//100) + 10*flag (jmp 0x40510C 共用)"
+  },
+  "type0_player": "element 71 (M-Hum) / type1 76 (WM-Hum) / type 0x32 NPC → element 0x80 (0x4051E0)",
+  "painter": "0x405840: element byte [esi+0x8c] → record = 0x5600FC + element*0x144 (lea eax,[eax+eax*8]x2=*81, lea eax,[edx*4+0x5600fc]=*0x144), gate al<0x8c, record ptr cached actor+0x90. WIL manager this = 0x5600FC-0x5898 = 0x55A864 (BSS). 0x5600E8/0x5600F8 为 FX 列表全局, 非元素表."
+ },
+ "wil_library_geometry": {
+  "counts": {
+   "Mon-1..15.wil": 10000,
+   "Mon-16.wil": 10000,
+   "MonS-1..16.wil": 10000,
+   "DMon-1.wil": 4340,
+   "DMonS-1.wil": 4000,
+   "MonImg.wil": 2100
+  },
+  "nonblank": {
+   "Mon-N.wil": "非空 0..9399 (Mon-16 仅 0..2479) → 每库 10 个 1000 帧怪物块",
+   "MonImg.wil": "仅 6 段: 0-86, 88-122, 124-126, 128-144, 2010-2012, 2020 (共 ~146 帧) — 大部分空白",
+   "DMon-1.wil": "非空块 (10 帧/块): 0..39, 100..139, 200..239, 300..339, 400..433 (共 194 块) → 块索引 = race//10; 40..99/140..199/240..299/340..399 空 = 这些 race 区间无死亡库条目",
+   "DMonS-1.wil": "同样块模式 0..39, 100..139, 200..239, 300..339"
+  },
+  "slot_lattice_corrected": "运行期槽偏移 = 0xf848 + slot*0x104; 字面量顺序 ⇒ slot 0=GameInter@0xf848, 1=M-Hum@0xf94c, 2..5=M-Weapon1..4, 6=WM-Hum@0xfe60, 7..10=WM-Weapon1..4, 11=Magic, 18=Mon-1@0x10a90, 19=Mon-2@0x10b94, ... 37=Mon-20@0x11ddc, 38=MonS-1@0x11ee0, ... 57=MonS-20@0x1322c, 58=NPC@0x13330, 59=MonMagic@0x13434, 60=MonImg@0x13538, 61=M-Hair@0x1363c, 62=M-Helmet1@0x13740, 63=WM-Hair@0x13844, 64=WM-Helmet1@0x13948, 65=DMon-1@0x13a4c, 66=DMonS-1@0x13b50, 67=MagicEx@0x13c54, 68=MonMagicEx@0x13d58, 69=StoreItem@0x13e5c. 旧交接编号 (Mon-1=17 等) 有误, 以此为准.",
+  "initializer": "0x452F00-0x453900 复制 .rdata 字面量到槽 (lea edx,[ebx+off]); 14 个魔法对象从 +0xb130 路径 (0x452AA0 区), 70 个对象从 +0xf848 路径 (0x452AF7-0x452B0E) 装入 this+0x5898 + slot*0x144; DMon-1/DMonS-1 字面量绑定于 0x454040/0x45405F (初始器中, 非懒加载)."
+ },
+ "empirical_race_vs_appr": {
+  "method": "对 432 条 (Index>0) 记录, 以候选 code 计算 库 N=code//10+off 与 块=1000*(code%10), 探测 state 偏移 0/80/160/200 ×10 帧的非空覆盖",
+  "code_race": {
+   "hits": 432,
+   "misses": 0,
+   "no_lib": 0,
+   "verdict": "客户端 16-bit code @actor+0x8a = monster.dat Race 字段 (非 Appr)"
+  },
+  "code_appr": {
+   "hits": 328,
+   "misses": 7,
+   "no_lib": 97,
+   "miss_examples": [
+    "骷髅战士 idx180-182 Appr=88 → Mon-9 块8",
+    "掷斧骷髅 idx198-201 Appr=87 → Mon-9 块7"
+   ],
+   "no_lib_cause": "Appr//10+1 > 16 → Mon-17..24 未随包发行"
+  },
+  "N_ambiguity": "N=race//10+1 与 N=race//10+2 均 432/432 (库稠密非空 0..9399, 任意块都过). 采用 +1 (与 element=0x58+race//10 的槽代数及交接提示一致); +2 不可经验排除, 在目录中标注.",
+  "guard_weiwu": "守卫武将 Race=19 → Mon-2.wil 块9 (帧 9000-9999): state_off 0 → 4/10 非空, 80 → 6/10, 160/200 → 0/10"
+ },
+ "death_library": {
+  "finding": "DMon-1.wil 4340 帧 ≠ 记录数×10 索引; 非空块 0..39/100..139/200..239/300..339/400..433, 块索引 = race//10 (10 帧/块; race>=1000 的块 100+ 只能由 race//10 达到 → 排除了 Race 或 Index 索引)",
+  "race_block": "block = Race//10 → 432/432; Race 直索引 → 381/432 (缺 40,41,42,43,45,47,49,52,53,54,55,98 的 51 条); Index → 192/432",
+  "death_frame": "死亡帧 = (Race//10)*10 .. +9 (通常 4-6 帧非空, 如 block1=帧10-13)"
+ },
+ "raceimg_crosscheck": {
+  "finding": "RaceImg (monster.dat 字段, 0..2090, 213 个不同值) 非 MonImg.wil 直接帧号: 仅 324/432 非空 (108 空白), MonImg.wil 本身 93% 空白. 结论: 该客户端 RaceImg 未用于 MonImg.wil 帧寻址 (candidate), 图标映射 unresolved.",
+  "note": "MonImg.wil 只有 6 段非空 (0-86, 88-122, 124-126, 128-144, 2010-2012, 2020); RaceImg 值 145-2090 大多指向空白"
+ },
+ "p5": {
+  "question": "怪物名 → (Appr, Race, 库, 帧范围) 全表",
+  "answer": "monster-dat-catalog.json: 432 条记录, 每条含 Index/Name/Appr/Race/RaceImg/Level/element_candidate/library_candidate/frame_base_candidate/state_offset_hits/death_block_candidate/evidence_level. library = Mon-(Race//10+1).wil, frame_base = 1000*(Race%10), 全部 432 条经 wilsdk 验证非空 (evidence_level=derived)."
+ },
+ "p11": {
+  "question": "夜行鬼09 / 异界之门 / 葛贰厘面0 / 诺玛教主2 / 魔神怪8 是否存在于 monster.dat 名表",
+  "matches": [
+   {
+    "name": "夜行鬼09",
+    "index": 186,
+    "appr": 81,
+    "race": 19,
+    "raceimg": 1,
+    "library": "Mon-2.wil",
+    "frame_base": 9000
+   },
+   {
+    "name": "异界之门",
+    "index": 187,
+    "appr": 227,
+    "race": 19,
+    "raceimg": 5,
+    "library": "Mon-2.wil",
+    "frame_base": 9000
+   }
+  ],
+  "non_matches": [
+   {
+    "name": "葛贰厘面0",
+    "reason": "名表中无任何含『葛』记录",
+    "nearest": null
+   },
+   {
+    "name": "诺玛教主2",
+    "reason": "只有『诺玛教主』(idx282, Appr226, Race19)",
+    "nearest": "诺玛教主 idx282 (Race 19 → Mon-2 块9)"
+   },
+   {
+    "name": "魔神怪8",
+    "reason": "有 魔神怪1/2/10/20 (idx240-244), 无 8",
+    "nearest": "魔神怪1 idx240 (Appr104/Race19) 或 魔神怪2 idx243 (Appr219/Race19)"
+   }
+  ],
+  "verdict": "2/5 存在 (夜行鬼09, 异界之门), 3/5 不存在 (葛贰厘面0 完全无姓, 诺玛教主2/魔神怪8 为变体后缀缺失). 注意 0x4071A0/0x407260 中 code 83..85 特殊分支在 race 表无对应记录 (race 表仅 52-55, 98), 属遗留/其它 actor 语义."
+ },
+ "sound_manager_dead_end": {
+  "finding": "0x45AC00 族 = 声音/页面缓存管理器: 路径模板 'Sound\\\\' @0x47D874; 0x45AD40 = 帧范围查询 (this+0x45c 条目, stride 0x10: word key + byte flag, 计数 this+0x452); 0x45ADA0 CreateFileA 读入 this+0x420; 0x50 条目缓存 this+0x460, 1000 帧 (0x3e8) 回收. 0x8AB130 为该资源实例 — 非 Mon-N WIL 元素绑定, 不再追踪."
+ },
+ "hypothesis_verdicts": {
+  "client_code_field_is_Race": "confirmed (432/432 经验覆盖, 排除 Appr 328/335+97 no_lib)",
+  "library_is_Mon_race10_plus1": "confirmed-with-ambiguity (N=+1/+2 均通过, +1 与 element 槽代数一致)",
+  "frame_base_1000_race_mod10": "confirmed (0x405100-0x40514F 公式 + 经验非空)",
+  "DMon_indexed_by_Race_10": "confirmed (432/432; 块模式唯一兼容 race//10 >=1000 组)",
+  "MInfo_dat_is_spell_db": "confirmed (解密文本 #SPELL/#MAGIC/#EXPLOSION, 加载器 0x44AE40 写 0x8AA5A8)",
+  "RaceImg_direct_MonImg_frame": "rejected (324/432, MonImg 93% 空白)"
+ },
+ "evidence_level": "primary-static (EXE 反汇编/字节, WIL 头) + derived (多源交叉评分); 目录行全部 empirical 验证 (432/432)",
+ "pending": [
+  "N=race//10+1 vs +2 经验不可区分 (库稠密); 需运行时 WIL 对象绑定路径 (element→槽) 或服务端镜像确认",
+  "element 89+ 的懒加载绑定例程 (0x4660E0 调用点 0x43B7B7/0x43D4E7 等为其它资源; 怪物元素库绑定未静态定位) — 但经验已定 Race",
+  "RaceImg 图标寻址 (MonImg.wil 空白 → 可能在其它库或运行期合成)",
+  "DMon-1 40..99/140..199 等空白块区间的 race 语义 (服务端数据 gap, 本客户端未带)",
+  "code 83..85 / 0x4071A0 特殊分支语义 (无 Race 记录对应)"
+ ]
+}
