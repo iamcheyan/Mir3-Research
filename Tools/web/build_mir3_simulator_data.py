@@ -86,6 +86,28 @@ def frame_tables() -> dict:
             out["source"] += " + Finding 290 (player state semantics)"
     except Exception:
         pass
+    # Finding 298 (MountedGaitSpecialPairs) corrects the F290 INFERENCE labels
+    # for the mounted states: frame duration is NOT gait speed. The riding
+    # machine step-threshold ladder (fx 0x1A@>7 -> 0x10@>0xB -> 0x11@>0xF)
+    # orders 0x10 = WALK (70ms) / 0x11 = RUN (90ms), and 0x1E/0x1F are the
+    # mounted channel variants of ground 0x15/0x16 (gated on [0x629C8]).
+    try:
+        ev298 = load("mounted-gait-special-pairs-evidence.json")
+        if isinstance(ev298, dict) and ev298.get("gait_pair"):
+            overrides = {
+                0x10: "骑马走 mounted WALK (steps>0xB, 70ms, fx 0x23)",
+                0x11: "骑马跑 mounted RUN (steps>0xF, 90ms, fx 0x22)",
+                0x1E: "mounted variant of 0x15 (mounted channel, fx 0x22 run-family)",
+                0x1F: "mounted variant of 0x16 (mounted channel, fx 0x23 walk-family)",
+            }
+            names = out.get("player_names")
+            if names:
+                for idx, label in overrides.items():
+                    if idx < len(names):
+                        names[idx] = label
+                out["source"] += " + Finding 298 (mounted gait pairs)"
+    except Exception:
+        pass
     return out
 
 

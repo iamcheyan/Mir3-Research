@@ -4997,7 +4997,7 @@
         300
       ]
     ],
-    "source": "state-frame-tables-evidence.json Finding 279 (primary-static) + Finding 290 (player state semantics)",
+    "source": "state-frame-tables-evidence.json Finding 279 (primary-static) + Finding 290 (player state semantics) + Finding 298 (mounted gait pairs)",
     "player_names": [
       "stand [INFERENCE: idle, 4 frames loop]",
       "walk [INFERENCE: 6-frame 100ms stride gait]",
@@ -5015,8 +5015,8 @@
       "attack E [INFERENCE]; 0x17 completion return target @0x40DEB6",
       "attack F [INFERENCE]",
       "cast [INFERENCE: 3-frame 100ms]",
-      "mounted gait A [INFERENCE: 10-frame 70ms loop, faster]; riding machine: steps>0xB, fx 0x23, msg 0xBD8, guard [0x629D2]",
-      "mounted gait B [INFERENCE: 10-frame 90ms loop, slower]; riding machine: steps>0xF, fx 0x22, msg 0xBD7, guard [0x629D1]; horse msg 0x51A",
+      "骑马走 mounted WALK (steps>0xB, 70ms, fx 0x23)",
+      "骑马跑 mounted RUN (steps>0xF, 90ms, fx 0x22)",
       "mounted stand [INFERENCE]; horse msg 0x51C",
       "mounted attack/variant [INFERENCE]",
       "mounted attack/variant [INFERENCE]",
@@ -5029,8 +5029,8 @@
       "dance/gesture [INFERENCE]",
       "dance/gesture [INFERENCE]",
       "stand variant [INFERENCE]",
-      "mining/fishing pair B member [INFERENCE]; tick-driver special",
-      "mining/fishing pair B member [INFERENCE]; tick-driver special",
+      "mounted variant of 0x15 (mounted channel, fx 0x22 run-family)",
+      "mounted variant of 0x16 (mounted channel, fx 0x23 walk-family)",
       "0x17 completion return target @0x40DEB6; also [INFERENCE: 3-frame]"
     ]
   },

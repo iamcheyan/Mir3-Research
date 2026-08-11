@@ -1,0 +1,81 @@
+{
+  "evidence_id": "EI-299",
+  "finding": 299,
+  "date": "2026-08-11",
+  "title": "QuadRenderer7Case - 0x466CE0 is the shared quad/texture renderer with 7 dispatch modes; char-create preview is one dynamic-mode caller among 11",
+  "objective": "Close player-composition-evidence.json pending item 'preview path 0x466CE0/0x466F20 exact 7-case semantics (candidate: char-create preview only)' by mapping all 7 jump-table cases, all call sites, and the role of 0x466F20/0x467000 in the draw pipeline.",
+  "question": "What do the 7 cases of 0x466CE0 (jump table 0x466EFC) draw, who calls them with which mode argument, and is 0x466CE0 really char-create-preview-only as the pending item speculated?",
+  "method": "Full disassembly of 0x466CE0-0x466F08 (jump table entries read via struct from .data since capstone decodes the table as garbage), call-site enumeration with mode-argument extraction from push order, 0x466F20/0x467000/0x466FB0/0x466FE0 sibling-function decode, cross-referenced against the char-select tick 0x402BE0 and nameplate 0x40CE20 paths.",
+  "evidence_level": "primary-static",
+  "confidence": 0.97,
+  "addresses": [
+    "0x00466CE0", "0x00466CE5", "0x00466CEF", "0x00466CF1",
+    "0x00466D0B", "0x00466EFC",
+    "0x00466D12", "0x00466D4A", "0x00466D56", "0x00466D62", "0x00466E6A", "0x00466EA3", "0x00466EDC",
+    "0x00466F20", "0x00467000", "0x00466FB0", "0x00466FE0",
+    "0x00402B62", "0x0040ABDF", "0x0040D072", "0x00436AEC", "0x0043864E",
+    "0x0044391A", "0x00445F37", "0x004470E2", "0x004544B2", "0x00457292", "0x00457530",
+    "0x004029A0", "0x004029C0", "0x00402A00"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000",
+    "family": "surface render family (0x8AB7BC scene surface + window surfaces)"
+  },
+  "interface": {
+    "signature": "void 0x466CE0(surface* esi=ecx-arg, int mode (arg2, [esp+0xC]), void* rect (arg3, [esp+0x10]))",
+    "prologue": "vtable+0x50(0x1B, 1) then vtable+0x50(0x29, 1) - enable two draw channels (state commands: (value, index))",
+    "dispatch": "mode & 0xFF; if > 6 jump 0x466EFA (return); else jmp [mode*4 + 0x466EFC]",
+    "command_slots": {
+      "v+0x50": "(value, index) state commands - 0x1B/0x29 enable, 0x13/0x14 per-quad draw/type",
+      "v+0x94": "(value, index, 0) textured-channel commands - (2,2),(4,1),(3,0),(5,2),(4,4),(6,0) style vertex/uv binds"
+    }
+  },
+  "cases": {
+    "0": "0x466D12: bounds check rect [ecx+0xC] and [ecx+0x3C] both < 1.0 (float [0x476658]=1.0) -> skip; else v+0x50(0x14, 6) single color quad, fill index 6",
+    "1": "0x466D4A: v+0x50(0x14, 2) single color quad, fill index 2",
+    "2": "0x466D56: v+0x50(0x14, 4) single color quad, fill index 4 - used by the nameplate path (0x40D072) and window backgrounds (0x445F37, 0x4470E2)",
+    "3": "0x466D62: bounds check like case 0 (skip to 0x466DFA partial path on fail). Full path: 6x v+0x94 (0x12,2),(4,1),(3,0),(5,2),(4,4),(6,0) then v+0x50(0x13,6)/(0x14,1) = full textured quad (6 uv binds). Partial path (0x466DFA): 3x v+0x94 (0x12,2),(4,1),(3,0) then v+0x50(0x13,2)/(0x14,6) = clipped textured quad",
+    "4": "0x466E6A: 3x v+0x94 (0x12,2),(0x12,5),(4,2) then v+0x50(0x14, 0xA) = 3-bind textured quad, fill 0xA",
+    "5": "0x466EA3: 3x v+0x94 (0x12,5),(4,2),(0x12,2) then v+0x50(0x14, 0xA) = same as case 4 but different bind order",
+    "6": "0x466EDC: v+0x50(0x1B,1) + v+0x50(0x13,1) + v+0x50(0x14,3) = re-enable + outline/border quad, fill 3"
+  },
+  "callers": {
+    "mode_from_arg": "call pattern: push surface; push mode; push rect; call 0x466CE0 - mode is the 2nd pushed value",
+    "0x00402B62": "char-select screen (0x8A9520) draw member 0x4029A0: mode = ebp = 3rd param (dynamic, caller-selected); this is the char-create/select preview quad path",
+    "0x0040ABDF": "scene entity draw: mode = byte [esi+0x61BB6] (entity state-dependent)",
+    "0x0040D072": "nameplate 0x40CE20: mode = 2 (case 2 color quad, fill 4)",
+    "0x00436AEC": "window control draw: mode = byte [esi+0x100] (control state)",
+    "0x0043864E": "window control draw: mode = byte [esi+0x100]",
+    "0x0044391A": "window 0x443xxx family: mode = 2; table [ebx+0x20]+ebp*4+0x68, offsets +0x1FE/+0x1F4",
+    "0x00445F37": "window draw: mode = 2",
+    "0x004470E2": "window draw: mode = 2",
+    "0x004544B2": "generic surface draw: mode = ebp (dynamic)",
+    "0x00457292": "generic surface draw: mode = ebp (dynamic)",
+    "0x00457530": "window draw (0x4575D0 parent screen family): mode = 1 (case 1, fill 2)"
+  },
+  "not_char_create_only": "11 call sites across char-select, scene entities, nameplate, window controls and window backgrounds - 0x466CE0 is the SHARED quad/texture primitive of the surface render family, NOT char-create-preview-only as the pending item speculated. The char-create preview is just the dynamic-mode caller 0x402B62 (mode passed from outside).",
+  "siblings": {
+    "0x466F20": "shadow-quad helper: 6x v+0x94 (2,2),(1,4),(3,0),(5,2),(4,2),(6,0) + v+0x50(0x1B,0)/(0x29,0)/(0x13,2)/(0x14,1) - draws the soft shadow quad under entities (called at 0x40D0AF in the nameplate path)",
+    "0x467000": "4x4 matrix multiply/identity builder: zeroes 16 dwords, then 4 rows x 4 lanes dot-product accumulation, copies to output - the matrix setup preceding every 0x466CE0 call",
+    "0x466FB0": "vec3 dot product (x*x+y*y+z*z accumulator)",
+    "0x466FE0": "vec3 pairwise dot product"
+  },
+  "verdict": "CLOSED - 0x466CE0 7-case dispatch fully mapped; shared quad/texture primitive with 11 call sites; char-create preview is one dynamic-mode caller",
+  "conclusions": [
+    "0x466CE0(surface, mode, rect) is the shared quad/texture primitive: prologue enables channels 0x1B/0x29 (v+0x50), then dispatches mode 0-6 via jump table 0x466EFC.",
+    "Modes 0-2 are single color quads (fill indices 6/2/4); mode 3 is the full textured quad (6 uv binds) with a clipped 3-bind fallback; modes 4-5 are 3-bind textured quads with different bind order; mode 6 is a re-enable + outline quad (fill 3).",
+    "11 call sites span char-select preview (0x402B62, dynamic mode), scene entities (0x40ABDF, state byte), nameplate (0x40D072, mode 2), window controls (0x436AEC/0x43864E, state byte), window backgrounds (0x44391A/0x445F37/0x4470E2, mode 2; 0x457530, mode 1), and generic surface draws (0x4544B2/0x457292, dynamic).",
+    "The player-composition pending item's '(candidate: char-create preview only)' is REFUTED: the char-create preview (0x402B62, inside 0x4029A0 draw member of screen 0x8A9520) is one caller among 11, and it uses a dynamic mode argument rather than a fixed one.",
+    "0x466F20 is the matching shadow-quad helper (same 6-bind structure as case 3 but with shadow params and channel teardown 0x1B/0x29=0); 0x467000 builds the 4x4 matrix consumed by the vtable+0x30 transform; 0x466FB0/0x466FE0 are vector dot helpers."
+  ],
+  "closed_notes": {
+    "player-composition-evidence.json": "pending item 'preview path 0x466CE0/0x466F20 exact 7-case semantics (candidate: char-create preview only)' CLOSED by EI-299: 7 cases mapped (0-2 color, 3 textured full/clip, 4-5 textured 3-bind, 6 outline), 11 callers enumerated, char-create preview is dynamic-mode caller 0x402B62 only",
+    "nameplate-label-evidence.json": "EI-296's 'quad_renderer: 0x466CE0 case 2' confirmed against full case map (case 2 = v+0x50(0x14,4))"
+  },
+  "pending": [
+    "Semantics of the v+0x50/v+0x94 index constants (0x13/0x14/0x1B/0x29 channels; 0-6 uv binds) at the Direct3D/backend level - backend API scope (KEPT-runtime)",
+    "Which WIL/texture backs each textured-quad caller - per-call texture binding, runtime"
+  ]
+}

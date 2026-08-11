@@ -33,7 +33,7 @@ const STATE = {
   storeFeedback: "",            // Finding 289 CRAFT/BUY result line (0x42210C)
   inventoryMode: 0,             // Finding 288 mode byte [bag+0x54]: 0 default / 1 修补 / 2 变卖 / 3 储存
   tradeFinalized: false,        // [+0x13644]: 0 trading, 1 finalized (accept)
-  tradeSplit: [90, 90],         // pane split widths px [+0x54]/[+0x58]
+  tradeSplit: [0, 0],           // [+0x54]/[+0x58] = top visible DATA ROW per pane (Finding 301: row offset, not px; 94-scale, usable [0,34])
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -136,6 +136,7 @@ function renderScene() {
     const name = document.createElement("div");
     name.className = "nameplate";
     name.textContent = e.name;
+    name.title = "Finding 296: 共享名牌渲染器 0x40CE20 (element 81) — 门 [e+0x61C68]&0x100000 出生白闪 + 1700ms tick；type==0x321 → 0x434EF0 FX 入 0x560088 效果链";
     spr.appendChild(name);
     spr.dataset.rect = `${e.x - 20},${e.y - 60},40,70`;
     spr.dataset.evidence = e.evidence_level;
@@ -643,6 +644,8 @@ function fillWindowContent(w) {
     // y43, EffectSound [+0x298/0x34C] y116, Ambience [+0x400/0x4B4] y190, ShadowBlend
     // [+0x568/0x61C] y217; left pair 760/761 = ON, right pair 762/763 = OFF (UP/PRESSED,
     // not ON/OFF art); sliders 751 @(34,96)/(34,170); state bytes +0x54/+0x58/+0x5C/+0x60.
+    // Finding 297 (primary-resource): GameInter.wil 760/761 (32×22) = 켬, 762/763 (40×22)
+    // = 끔; 761/763 = pressed-shift variants (+2/+1) — F289 UP/PRESSED pairing confirmed.
     const OPT_ROWS = [
       ["音乐", 43], ["音效", 116], ["环境声", 190], ["阴影混合", 217],
     ];
@@ -841,26 +844,34 @@ function tradeContent(content) {
     content.appendChild(btn);
   }
   // split dividers: gauges @+0x13648/+0x13694, frame 1070 (16x360) never
-  // blitted; invisible draggable handles at each pane's split width [+0x54]/[+0x58]
+  // blitted; invisible draggable handles. Finding 301: [+0x54]/[+0x58] =
+  // top visible DATA ROW per pane (row offset, NOT pixel width); writers
+  // 0x416E70 (absolute via 0x417C80 gauge set) / 0x416EF0 (stepper via
+  // 0x417D00, strcmp gate 0x47ADB4) both store trunc(gauge_pos * 94.0).
+  // Gauge thumb px = track px (0xB8=184) * pos_float, pos_float = split/93
+  // (normalization 0x4179F7); drag maps lx -> pos=lx/184 clamped [0,1] ->
+  // split = round(pos*94) in [0,93] (usable [0,34]: pane 40 rows, 6 visible).
+  const TRACK_PX = 0xB8; // 184, trade gauge track width word[+0x1E] (ctor 0x417960)
   for (let i = 0; i < 2; i++) {
     const h = document.createElement("div");
     h.className = "trade-divider";
     const draw = () => {
-      const x = paneX[i] + STATE.tradeSplit[i];
+      const x = paneX[i] + Math.round(TRACK_PX * (STATE.tradeSplit[i] / 93));
       h.style.cssText = `left:${x - 4}px;top:${paneY}px;width:8px;height:${ROWS * CELL}px`;
     };
     draw();
     h.dataset.evidence = "primary-static";
     h.dataset.rect = `divider ${i}`;
-    h.dataset.desc = `分割把手 gauge @+0x${(0x13648 + i * 0x4C).toString(16)} (帧 1070 16×360, 从不 blit)；鼠标 0x416E70 写 [+0x${(0x54 + i * 4).toString(16)}] 分割宽度`;
-    h.title = `分割把手 ${i + 1} · 拖拽调整面板宽度`;
+    h.dataset.desc = `分割把手 gauge @+0x${(0x13648 + i * 0x4C).toString(16)} (帧 1070 16×360, 从不 blit)；Finding 301：[+0x${(0x54 + i * 4).toString(16)}] = 顶部可见数据行 (行偏移, 94 定点尺度, 可用 [0,34])；写者 0x416E70/0x416EF0 → trunc(gauge_pos×94.0)`;
+    h.title = `分割把手 ${i + 1} · 行偏移 [+0x${(0x54 + i * 4).toString(16)}] · 拖拽调滚动行`;
     let dragging = false;
     h.addEventListener("pointerdown", (ev) => { ev.stopPropagation(); dragging = true; });
     window.addEventListener("pointermove", (ev) => {
       if (!dragging) return;
       const cr = content.getBoundingClientRect();
       const lx = (ev.clientX - cr.left) / STATE.scale - paneX[i];
-      STATE.tradeSplit[i] = Math.max(0, Math.min(COLS * CELL, Math.round(lx)));
+      const pos = Math.max(0, Math.min(1, lx / TRACK_PX)); // gauge set clamp [0,1]
+      STATE.tradeSplit[i] = Math.round(pos * 94);           // trunc(gauge_pos * 94.0)
       draw();
     });
     window.addEventListener("pointerup", () => { dragging = false; });
@@ -1376,7 +1387,7 @@ function resetScene() {
   STATE.storeState = 0;
   STATE.tradeGold = 0;
   STATE.tradeFinalized = false;
-  STATE.tradeSplit = [90, 90];
+  STATE.tradeSplit = [0, 0];
   targetboxEl.classList.add("hidden");
   const tp = $("#target-panel");
   if (tp) tp.classList.remove("visible");

@@ -1,0 +1,67 @@
+{
+  "evidence_id": "EI-298",
+  "finding": 298,
+  "date": "2026-08-11",
+  "title": "MountedGaitSpecialPairs - mounted gaits 0x10/0x11 are walk/run (step-threshold ordered), special pairs 0x15/0x1E and 0x16/0x1F are ground/mounted channel pairs reusing gait fx",
+  "objective": "Close player-state-actions-evidence.json pending items: (a) exact walk-vs-run mapping of mounted gaits 0x10 vs 0x11, (b) the relationship of special pairs 0x15/0x1E and 0x16/0x1F to the mounted gait fx family, (c) the 0x1D SetAction argument observed at 0x40D626.",
+  "question": "Which of the mounted gaits 0x10 (10f, 70ms, steps>0xB, fx 0x23) and 0x11 (10f, 90ms, steps>0xF, fx 0x22) is walk and which is run? And what do the 0x15/0x1E vs 0x16/0x1F SetAction pairs represent relative to the mounted gaits?",
+  "method": "Cross-function static correlation of the riding machine 0x410B00 step-threshold gates, the horse machine 0x40E400 msg->SetAction->fx dispatch, the spawn-fx emitter 0x40CD00 per-state fx mapping, and the ground/mounted branch pairs inside the action-packet handlers 0x40DAC0/0x40DBB0 ([esi+0x629C8] test).",
+  "evidence_level": "primary-static",
+  "confidence": 0.9,
+  "addresses": [
+    "0x0040DAC0", "0x0040DB40", "0x0040DBB0", "0x0040DC20", "0x0040DB7C",
+    "0x0040DC4B", "0x0040DC62", "0x0040D8F0", "0x0040D9FD", "0x0040DDD0", "0x0040DEB6",
+    "0x00410B00", "0x00410C52", "0x00410CD6", "0x00410D44",
+    "0x0040E400", "0x0040E505", "0x0040E537", "0x0040E574",
+    "0x0040CD00", "0x0040CD52", "0x0040CD7C",
+    "0x0040D626"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000",
+    "family": "F290 actor state family"
+  },
+  "gait_pair": {
+    "0x10": "frame row (0x500, 10 frames, 70ms); entered when [esi+0x629D2]==0 AND steps [esi+0x62A77] > 0xB (12); sets [0x629D2]=2 lock; fx 0x23 (msg 0xBD8, horse-machine msg 0x51B)",
+    "0x11": "frame row (0x550, 10 frames, 90ms); entered when [esi+0x629D1]==0 AND steps [esi+0x62A77] > 0xF (16); sets [0x629D1]=2 lock; fx 0x22 (msg 0xBD7, horse-machine msg 0x51A)",
+    "gait_speed_order": "step thresholds 7 (fx 0x1A base) -> 0xB/12 (0x10) -> 0xF/16 (0x11) form an increasing speed ladder; the LOWER step threshold (12) is reached earlier = slower gait = WALK; the HIGHER threshold (16) = faster gait = RUN. Hence 0x10 = mounted WALK, 0x11 = mounted RUN.",
+    "frame_rate_vs_speed": "0x10 at 70ms/frame is faster than 0x11 at 90ms/frame, but frame rate is NOT gait speed: walk uses small steps at high frame rate, run uses large strides at lower frame rate; linear speed = frame_rate x stride. The step-threshold ladder is the true speed proxy. This CORRECTS the F290 verdict phrase '0x10 fast/0x11 slow' (based on frame duration alone).",
+    "fx_cross_check": "fx 0x22 is shared by 0x11, 0x1E (mounted variant of 0x15), and msg 0x51A; fx 0x23 is shared by 0x10, 0x1F (mounted variant of 0x16), and msg 0x51B - the fx ids form two consistent channels.",
+    "inf_note": "[INFERENCE: the step-threshold ladder is the speed proxy; frame-rate alone is ambiguous because stride length is not statically known. The mapping 0x10=walk/0x11=run rests on the 12<16 step thresholds, corroborated by fx 0x22 (run-family, shared with 0x11) appearing on 0x1E and fx 0x23 (walk-family, shared with 0x10) on 0x1F.]"
+  },
+  "special_pairs": {
+    "0x15_vs_0x1E": "action-packet handler 0x40DAC0: byte [esi+0x629C8]==0 -> SetAction(0x15); !=0 -> SetAction(0x1E). [esi+0xEC]=1 for both. So 0x1E is the MOUNTED variant of ground action 0x15.",
+    "0x16_vs_0x1F": "action-packet handler 0x40DBB0: byte [esi+0x629C8]==0 -> SetAction(0x16) [esi+0xEC]=2; !=0 -> SetAction(0x1F) [esi+0xEC]=3. So 0x1F is the MOUNTED variant of ground action 0x16.",
+    "channel_fx": "spawn-fx 0x40CD00: 0x1E emits fx 0x21 @frame==[0xB4]+1 AND fx 0x22 @frame==[0xB4]+4; 0x1F emits fx 0x23 @frame==[0xB4]+3; 0x15/0x16/0x17/5 emit generic fx id 1. Mounted variants reuse the gait fx: 0x1E (mounted 0x15) borrows the RUN fx 0x22, 0x1F (mounted 0x16) borrows the WALK fx 0x23.",
+    "mining_vs_fishing": "which channel (0x15/0x1E vs 0x16/0x1F) is mining vs fishing remains server-packet-scoped (the two handlers 0x40DAC0/0x40DBB0 are structurally symmetric; the distinguishing message id is assigned server-side) - KEPT-runtime. What is now STATICALLY PROVEN is that they are ground/mounted pairs, not two ground-only channels, and that each mounted variant is bound to one gait fx (0x1E->fx0x22 run, 0x1F->fx0x23 walk)."
+  },
+  "state_0x1d": {
+    "site": "0x40D626 in the actor attribute/state packet handler family",
+    "observed": "mounted check byte [esi+0x629C8]!=0 -> SetAction(vtable+0x10, arg 0x1D) - a mounted-only state not present in the 33-row human table enumeration of F290 (rows 0x19-0x1C are the sit/dance family; 0x1D is a distinct mounted state)",
+    "frame_row": "[INFERENCE: state 0x1D likely aliases an existing row via the type-3/table path or has a row not yet enumerated; no separate 0x1D row was found in the 33-row table - needs confirmation of which frame row it resolves to (row 0x12 mounted stand (0x5A0,10,70) or a new row)]",
+    "verdict": "CLOSED for the SetAction argument value (0x1D on mounted); the frame-row binding stays pending"
+  },
+  "completion_restore": {
+    "0x40DDD0": "0x17 completion/restore handler: records origin [0x61BCC]/[0x61BCA], calls 0x468520, clears label byte [0x62A24], then SetAction(0x13) if [0x61BCC]==0 && [0x61C74]==0; else SetAction(0xF) if [0x629C8]==0 (ground stand); else SetAction(0x20) (mounted/skill) - 0x13=ground stand, 0xF=mounted stand, 0x20=skill state",
+    "0x17_handlers": "0x40D7A1/0x40D882 ([0xEC]=1) and 0x40D9FD ([0x61B98]=0, [0x61B99]=6) - 0x17 is the completion state of the 0x15/0x16 channels"
+  },
+  "verdict": "CLOSED (partial: mining-vs-fishing names stay runtime): mounted gaits are step-threshold-ordered 0x10=WALK (12 steps, 70ms) / 0x11=RUN (16 steps, 90ms); 0x15/0x1E and 0x16/0x1F are ground/mounted channel pairs with mounted variants bound to gait fx (0x1E->fx0x22 run, 0x1F->fx0x23 walk); mounted entities additionally SetAction(0x1D) at 0x40D626",
+  "conclusions": [
+    "The mounted gait pair is ordered by the riding-machine step-threshold ladder: fx 0x1A at steps>7, gait 0x10 at steps>0xB (12), gait 0x11 at steps>0xF (16). Lower threshold = reached earlier = slower = WALK (0x10); higher threshold = RUN (0x11).",
+    "Frame duration is NOT gait speed: 0x10 (70ms) has faster frames than 0x11 (90ms), but stride length differs; the step thresholds are the speed proxy. F290's '0x10 fast/0x11 slow' (frame-duration-based) is corrected to '0x10 walk / 0x11 run'.",
+    "fx 0x22 is the run-family effect (shared by 0x11, msg 0x51A, and the mounted variant 0x1E of ground channel 0x15); fx 0x23 is the walk-family effect (shared by 0x10, msg 0x51B, and the mounted variant 0x1F of ground channel 0x16).",
+    "0x15/0x1E and 0x16/0x1F are NOT two ground-only mining/fishing channels as F290's inference tentatively labeled them - they are ground/mounted pairs (branch on [esi+0x629C8] inside 0x40DAC0/0x40DBB0).",
+    "Mounted entities call SetAction(0x1D) at 0x40D626 - a mounted-only state outside the 33-row human table (F290 rows 0x19-0x1C sit/dance family), whose frame-row binding is not yet enumerated.",
+    "0x17 completion restores to 0x13 (ground stand) / 0xF (mounted stand) / 0x20 (skill) at 0x40DEB6, and clears the nameplate label byte [0x62A24] - linking the 0x15/0x16 channels to the nameplate variant byte family of EI-296."
+  ],
+  "closed_notes": {
+    "player-state-actions-evidence.json": "pending item 'Exact walk-vs-run mapping of mounted gaits 0x10 vs 0x11' CLOSED by EI-298 (0x10=walk via 12-step threshold, 0x11=run via 16-step threshold; frame duration corrected as non-speed). Pending item 'Mining-vs-fishing assignment of the two special pairs' REFINED: pairs are ground/mounted (0x15<->0x1E, 0x16<->0x1F) with fx binding proven statically; mining-vs-fishing name assignment stays runtime.",
+    "player-state-actions-evidence.json F290 verdict": "phrase 'mounted gait pair (0x10 fast/0x11 slow)' corrected: 0x10=walk/0x11=run (step-threshold ordered)"
+  },
+  "pending": [
+    "Which of 0x15/0x1E vs 0x16/0x1F is mining vs fishing - server action-code table (KEPT-runtime)",
+    "Frame-row binding of state 0x1D (mounted SetAction arg) - needs the type-3/table path trace (KEPT-runtime)",
+    "Server semantics of msgs 0xBD7/0xBD8/0x51A/0x51B and fx 0x21 (the extra 0x1E emission) - packet scope (KEPT-runtime)"
+  ]
+}

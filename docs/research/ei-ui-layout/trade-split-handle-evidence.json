@@ -1,0 +1,81 @@
+{
+  "evidence_id": "EI-301",
+  "finding": 301,
+  "date": "2026-08-11",
+  "title": "TradeSplitHandle - trade-window scrollbar splits [trade+0x54]/[trade+0x58] are top-visible-data-row indices per pane (row offsets, NOT fractions); written as trunc(gauge_pos x 94.0) by 2 mouse handlers (0x416E70/0x416EF0-family); 94 is a shared fixed-point scale (trade+bage), not a row count",
+  "objective": "Determine the 量纲 (dimension) and write provenance of the trade-window scrollbar split fields [trade+0x54] (pane 0) and [trade+0x58] (pane 1): what do their numeric values mean, who writes them, and what is the 94.0 constant at 0x476650 that they are scaled by.",
+  "question": "Are [trade+0x54]/[trade+0x58] fractions, row counts, or row offsets? Which instructions write them, and what does the shared constant 94.0 (0x476650) mean?",
+  "method": "Static disassembly of Mir3.exe (/tmp/mir3_full.asm, VA-to-fileoff = VA - 0x400000): decode the grid hit-test and both paint paths that consume [+0x54]/[+0x58], enumerate every writer via the complete reader set of the 94.0 constant 0x476650 (exactly 4 fmul sites), decode the Gauge class (ctor 0x417960, paint 0x4179B0 with its pos normalization, setters 0x417C80/0x417D00, vtable 0x476654) and both trade gauge construction sites, and corroborate the 94-scale against the bag window's scrollbar (+0x58, paint 0x42EB94).",
+  "evidence_level": "primary-static",
+  "confidence": 0.95,
+  "addresses": [
+    "0x00416830", "0x00416926", "0x00416945", "0x00416950", "0x004169B0", "0x00416A23",
+    "0x00415B10", "0x00415C44", "0x00415D47",
+    "0x00416016", "0x00416037",
+    "0x00416E70", "0x00416E8D", "0x00416ECC", "0x00416ED7", "0x0042C5FB",
+    "0x00416EF0", "0x00416F00", "0x00417248", "0x00417259", "0x00417264", "0x0042C017",
+    "0x004171B0", "0x0042BBD4",
+    "0x00417C80", "0x00417D00",
+    "0x004179B0", "0x004179F7", "0x00417A0B", "0x00417A31",
+    "0x00417960", "0x004178E0", "0x00417950", "0x00417930",
+    "0x00415AD1", "0x00415AE1", "0x00415AF1", "0x00415AFF",
+    "0x00430056", "0x00430696", "0x0042EB94",
+    "0x004745D1", "0x00474606",
+    "0x00417830",
+    "0x00476650", "0x00476654", "0x00476450", "0x00476658",
+    "0x0047ADB4"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "split_semantics": {
+    "quantity": "row offset (top visible data row index per pane), NOT a fraction and NOT a row count",
+    "hit_test_0x416830": "5 x 6 grid: cols 0..4 x 36px to 0xB4, rows 0..5 x 36px to 0xD8; on hit eax = col + 5 x (split + row) where split = [+0x54 + 4 x pane] (0x416926-0x416945: eax=[esi+eax*4+0x54]; add eax,esi(row); lea ecx,[ebx+eax*4]; add eax,ecx) - split adds row positions to the hit cell index, i.e. it is a row coordinate",
+    "caller_0x416950": "word = [+0x298 + 2 x (cell + 200 x pane)]; if 0xFFFF -> -1; else slot_id = word % 1000 (idiv 0x3E8)",
+    "row_paint_0x4169B0": "pane stride = 40 rows (lea eax,[edi+eax*8] with eax=5 x pane -> row + 40 x pane); word index = 5 x row + 200 x pane; iterates rows in [max(split-5,0), split+6); row r drawn at y = y0 + 0x30 + 36 x (r - split) -> split is the top visible data row, visible band = [split, split+6)",
+    "record_lookup": "record = [0x5B8 + (val%1000 + 12 x pane) x 0xC2C] (stride 779 dwords = 0xC2C via lea chain 3->96->97->389->779); 24 slots total = 12 per pane",
+    "trade_paint_0x415B10": "same row-offset math; pane0 reads [esi+0x54] (0x415C44), pane1 reads [esi+0x58] (0x415D47)"
+  },
+  "write_sites": {
+    "0x416E70_mouse_handler": "called from 0x42C5FB. Iterates both gauges (esi=0..1, edi = gauge base 0x13648 + 0x4C x esi): calls 0x417C80(gauge, x, y) absolute setter (clamps pos to [0,1]); if the set changed the pos, writes split: fld [gauge.pos + 0xC] (0x416EC5, address = [edi + ecx*4 + 0x13654] with ecx = 19 x esi -> 0x4C stride) ; fmul [0x476650] (0x416ECC = x94.0); call 0x468520 (float->int trunc); mov [edi + esi*4 + 0x54], eax (0x416ED7) -> [+0x54] = trunc(gauge_pos x 94.0)",
+    "0x416EF0_stepper_handler": "called from 0x42C017; gated by strcmp([arg+0x1C], string@0x47ADB4) == 0 at 0x416F00 (0x416F2F-0x416F5F inline strcmp). Stepping path: pos stepped via 0x417D00 repeat-step (+/-[+0x10] page-step fraction, clamps to 0.0f@0x476450 / 1.0f@0x476658). Same write tail at 0x417248-0x417264: lea eax,[esi+esi*8]; lea ecx,[esi+eax*2]; fld [edi+ecx*4+0x13654]; fmul [0x476650] (0x417259); call 0x468520; mov [edi+esi*4+0x54], eax -> trunc(pos x 94.0)",
+    "0x4171B0": "called from 0x42BBD4 (wheel/drag path into the stepper); 0x417D00 stepping with the same 94.0 write",
+    "no_other_writers": "the complete reader set of 0x476650 is exactly 4 fmul sites: 0x416ECC + 0x417259 (trade) and 0x430056 + 0x430696 (bag) - no other code scales a position by 94.0"
+  },
+  "gauge_class": {
+    "ctor_0x417960": "last-push = arg1 (cdecl): [+4] = arg1 = lib(edi); [+8] = arg2 = frame index (trade 0x42E = 1070, bag 0x118 = 280); [+0x14] = arg3 = 6 (viewport row count); word[+0x1C] = arg4 = 12; word[+0x1E] = arg5 = track px (trade 0xB8 = 184, bag 0xDA = 218); word[+0x20] = arg6 = 12; [+0x48] = arg7 = 0 (vertical). Default ctor 0x4178E0; dtor 0x417950; scalar-deleting 0x417930",
+    "trade_construction": "0x415AD1/0x415AE1 -> gauge[0] @ [trade+0x13648]; 0x415AF1/0x415AFF -> gauge[1] @ [trade+0x13694]; pushes edi(lib), 0x42E(frame), 6, 0xC, 0xB8, 0xC, 0",
+    "paint_0x4179B0": "this=ecx, args (last=arg1): arg1 = range (trade and bag both push 0x5E = 94), arg2 = pos_int (split / [bag+0x58]), arg3/arg4 = x,y. Normalizes: 0x4179F7 [+0xC] = pos_int / (range-1) = split/93 (fild [esp+0x44]; fidiv [esp+0x14]); page step 0x417A0B [+0x10] = [+0x14]/range = 6/94. Thumb offset 0x417A31 = word[+0x1E] (track px) x pos_float; thumb rect [+0x34] blitted; also draws the track via FetchFrame 0x466130 (+[8] frame, lib [+4])",
+    "set_0x417C80": "absolute set with clamp to [0,1] (0.0f@0x476450 / 1.0f@0x476658); drag logic in 0x417D00: thumb grab sets [+0x18]=1, repeat-step time-gated by [0x47630C]() - [+0x44] > 10",
+    "vtable_0x476654": "24 dwords: [0]=0x417930 [4]=0x3F800000 [8]=0x418860 [0xC]=0x4188F0 [0x10]=0x4268B0 [0x14]=0x423D00 [0x18]=0x423F80 [0x1C]=0x41E6A0 [0x20]=0x41E6D0 [0x24]=0x41E260 [0x28]=0x41E2B0 [0x2C]=0x423A80 [0x30]=0x423850 [0x34]=0x4238F0 [0x38]=0x423990 [0x3C]=0x42E700 [0x40]=0x423450 [0x44]=0x4048B0 [0x48]=0x423A60 [0x4C]=0x423690 [0x50]=0x423730 [0x54]=0x4237D0 [0x58]=0x42E700 [0x5C]=0x423450",
+    "trade_dtor_thunks": "0x4745D1/0x474606: push 0x415740; push 0x18; push 0xC2C; add eax,0x5B8 (24 slot records) and push 0x417950; push 2; push 0x4C; add eax,0x13648 (2 gauges) - confirms layout"
+  },
+  "bag_corroboration": {
+    "write": "[bag+0x58] = trunc([bag+0x284] x 94.0) at 0x430056/0x430696 (same constant, same trunc pattern)",
+    "paint": "0x42EB94 passes push 0x5E(94); push [bag+0x58] to 0x4179B0 - identical signature to the trade gauge blits 0x416016/0x416037 (push 0x5E; push [trade+0x54]/[trade+0x58]; lea ecx,[esi+0x13648]/[+0x13694])",
+    "normalization": "0x4179F7: pos_float = pos_int/(range-1) = pos_int/93, so the 94-scale cancels into pos in [0,1]; bag has 46 slots = 10 rows -> only 4 scrollable rows, far under 94 -> 94 is a shared fixed-point scale (matches the 94.0 float constant), NOT a row count"
+  },
+  "no_upper_clamp": "No static clamp anywhere forces split <= 34. split > 34 over-reads the 400-word pane map (max word index 4 + 5x99 + 200x1 = 699, still in bounds); the record[0] == 0 skip at 0x416A23 drops garbage entries, so an over-large split is benign (no crash). The only clamps are the gauge pos [0,1] clamps in 0x417C80/0x417D00; the practical usable range is [0, 40-6] = [0, 34] rows per pane from the 40-row pane stride and 6 visible rows, but that bound is not enforced statically",
+  "verdict": "CLOSED - [trade+0x54]/[trade+0x58] are row offsets (top visible data row per pane) written only by the two mouse handlers 0x416E70/0x416EF0-family as trunc(gauge_pos x 94.0); 94 is a shared fixed-point scale (trade + bag) normalized back to [0,1] at paint time via /(range-1); the split semantics are proven end-to-end by both consumers (hit test 0x416830 cell = col + 5 x (split + row); paint y = y0 + 0x30 + 36 x (row - split))",
+  "conclusions": [
+    "量纲: split is a ROW INDEX (top visible row per pane). Hit test adds it to the in-viewport row; paint subtracts it from the row to get the on-screen y. Pane stride 40 rows, 6 visible rows -> usable split range [0,34].",
+    "Both split fields are written with the identical formula trunc(gauge_pos x 94.0): 0x416E70 (absolute mouse set via 0x417C80) and 0x416EF0-family (stepper via 0x417D00, strcmp-gated) - read from gauge.pos [+0xC] through the 0x4C gauge stride.",
+    "The 94.0 float constant 0x476650 has exactly 4 readers - 2 trade (0x416ECC, 0x417259) + 2 bag (0x430056, 0x430696) - so the 94 scale is shared verbatim between the trade window and the bag window scrollbars.",
+    "94 is a fixed-point scale, NOT a row count: paint normalizes pos_float = split/93 (0x4179F7) and the bag (10 rows, 4 scrollable) can never reach 94 rows.",
+    "Gauge ctor arg3 = 6 = viewport row count; the paint range arg (94) is passed as 0x5E at both trade blits (0x416016/0x416037) and bag blit (0x42EB94); page step [+0x10] = 6/94.",
+    "No static upper clamp on split: over-large splits read past the visible band into the still-allocated 400-word pane map and are dropped by the record[0]==0 skip at 0x416A23 - benign garbage, no crash.",
+    "Layout confirmation: 24 slot records @ [trade+0x5B8] stride 0xC2C (12 per pane), 2 gauges @ [trade+0x13648] stride 0x4C (dtor thunks 0x4745D1/0x474606); trade paint positions the gauge blits at x0+0xD1/0x1B9, y0-0x73 (0x41600F/0x416030)."
+  ],
+  "closed_notes": {
+    "bag_scrollbar_correction": "bag window [+0x54] is the mode byte (F288) and [+0x58] is the scroll offset with the same 94-scale semantics as trade [+0x54]/[+0x58] - corrects any earlier identification of bag [+0x58] as a row count",
+    "shared_94_scale": "the 0x476650 94.0 constant is a fixed-point scale shared by trade and bag scrollbars; paint range arg 0x5E (=94) normalizes via /(range-1)=/93, closing any interpretation of 94 as a row count"
+  },
+  "pending": [
+    "Direct writers of the trade gauge drag-bounds [+0x28]/[+0x30] (absolute offsets 0x13670/0x13678/0x136BC/0x136C4): zero references anywhere; 0x417830 writes [+0x28]/[+0x2C] for other controls (trade paint 0x41605B/0x416077/0x416092 target +0x7C/0x130/0x1E4, ~80 callers total) but no call site with the trade gauges as target was verified - what dimensions the drag bounds (and thus the practical split range) is not statically provable; needs runtime capture",
+    "The strcmp gate at 0x416F00 compares [arg+0x1C] against the string @0x47ADB4 - which mouse-message string opens the stepper path; runtime capture",
+    "Frame 0x42E = 1070 (trade gauge track art) and frame 0x118 = 280 (bag) bitmap content - visual/runtime confirmation",
+    "Whether server packets ever write the trade split fields - only the 2 mouse-handler writers exist statically; runtime capture to confirm"
+  ]
+}

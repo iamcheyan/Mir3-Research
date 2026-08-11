@@ -1,0 +1,56 @@
+{
+  "evidence_id": "EI-297",
+  "finding": 297,
+  "date": "2026-08-11",
+  "title": "OptionToggleGlyphs - option window toggle frames 760/761/762/763 carry Korean 켬/끔 (ON/OFF) white glyphs",
+  "objective": "Close status-option-names-evidence.json pending item '像素结构提示 켬/끔 或 开关，字体匹配不确证 (candidate)' by determining exactly what glyph art frames 760/761/762/763 of GameInter.wil contain.",
+  "question": "Are frames 760/761 and 762/763 plain colored fills, or do they contain legible text? If text: is it Korean Hangul (켬/끔), Chinese (开关), or other? And is 761/763 the pressed variant of 760/762?",
+  "method": "Direct pixel decoding of GameInter.wil frames 760-763 (wilsdk.decode), alpha-threshold rendering into ASCII grids, white-pixel (brightness>140) run segmentation per row, per-character cell extraction, and cross-frame Jaccard containment at candidate shifts.",
+  "evidence_level": "primary-resource",
+  "confidence": 0.9,
+  "addresses": [
+    "WIL 760/761", "WIL 762/763",
+    "0x00440FE0", "0x004411E0", "0x00441226", "0x00441281", "0x004412D2", "0x00441328",
+    "0x00417550", "0x00417880"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
+    "frames": {
+      "760": "32x22 px, ON-state (state byte==1 -> visible, left toggle row)",
+      "761": "32x22 px, pressed variant of 760",
+      "762": "40x22 px, OFF-state (state byte==0 -> visible, right toggle row)",
+      "763": "40x22 px, pressed variant of 762"
+    },
+    "family": "F289 option window family"
+  },
+  "glyph_reading": {
+    "760": "Korean Hangul '켬' (ON): char1 = ㅋ (top horizontal + left vertical + diagonal stroke, cols 8-15), char2 = ㅕ (left vertical + dot, cols 16-24), char3 = ㅁ (box: top bar + left/right verticals + bottom, cols 24-31); white glyphs on dark background",
+    "762": "Korean Hangul '끔' (OFF): char1 = ㄲ (double vertical + top bar, cols 8-16), char2 = ㅡ (long horizontal bar, cols 16-31, 15px at row 5) + ㅣ stem, char3 = ㅁ (left/top box, cols 24-32); white glyphs on dark background; wider frame (40px) fits the longer ㄲㅡㅁ composition",
+    "color_semantics": "both frames are dark charcoal fills with white text; frame 760 center pixel (200,228,104) has a light green accent, frame 762 center (128,120,112) is plain gray - consistent with green-tinted ON vs gray OFF indicator art",
+    "alpha": "binary alpha (0 or 255) - flat button art, no gradient bevel"
+  },
+  "pair_proof": {
+    "method": "white-pixel mask Jaccard at candidate shifts",
+    "760_vs_761": "shift(2,1): jaccard=0.46 vs shift(0,0): 0.07 -> 761 is 760 pressed (right 2, down 1)",
+    "762_vs_763": "shift(2,1): jaccard=0.55 vs shift(0,0): 0.04 -> 763 is 762 pressed (right 2, down 1)"
+  },
+  "errata": {
+    "F289": "Refines the F289 note 'no baked ON/OFF text ... glyph OCR suggests 켬/끔 but font match inconclusive (candidate)': the glyphs ARE legible Korean 켬/끔 when thresholded on brightness>140 (white-on-dark); the earlier cluster count (3 clusters 7/7/9px) was computed on a dark-only mask and missed the white text. The F289 conclusion '760/761 and 762/763 are UP/PRESSED pairs of the same glyph art' is CONFIRMED.",
+    "F289_color": "F289 reported 'both frames grayscale/dark'; corrected: frames are dark fill + WHITE text, with a light-green accent pixel in the ON frame center."
+  },
+  "verdict": "CLOSED - toggle glyph art decoded: 760/761 = 켬 (ON), 762/763 = 끔 (OFF), Korean Hangul, white-on-dark, 761/763 pressed variants at shift (+2,+1)",
+  "conclusions": [
+    "GameInter.wil frames 760/761 (32x22) and 762/763 (40x22) each contain two white Hangul glyphs on a dark charcoal fill; they are NOT plain color blocks and NOT Chinese 开关.",
+    "760 = '켬' (ON): ㅋ+ㅕ+ㅁ composition; 762 = '끔' (OFF): ㄲ+ㅡ+ㅁ composition. The 40px width of 762/763 vs 32px of 760/761 is explained by the longer ㄲㅡㅁ glyph run.",
+    "White-text extraction requires brightness>140 threshold; the F289 dark-mask-only OCR (clusters 7/7/9) missed the white text, hence 'inconclusive'.",
+    "761/763 are the pressed-state variants: white-pixel masks of 760/762 shifted by (+2,+1) give Jaccard 0.46/0.55 vs 0.07/0.04 unshifted.",
+    "The option window ctor (0x440FE0 via 0x417550, rows at +0x130/+0x1E4, +0x298/+0x34C, +0x400/+0x4B4, +0x568/+0x61C; states at +0x54/+0x58/+0x5C/+0x60) shows left toggle when state==1 (켬) and right toggle when state==0 (끔) - the glyphs match their semantics."
+  ],
+  "closed_notes": {
+    "status-option-names-evidence.json": "pending item '像素结构提示 켬/끔 或 开关，字体匹配不确证 (candidate)' CLOSED by EI-297: frames carry white Korean Hangul 켬 (ON, 760/761) and 끔 (OFF, 762/763); not Chinese 开关; brightness>140 threshold required to see the text"
+  },
+  "pending": [
+    "Font family/name of the Hangul glyphs (art asset metadata only) - cosmetic, KEPT-runtime",
+    "Whether the ON/OFF state text is also localized to Chinese in the CN client build (this Korean build is the only asset available)"
+  ]
+}

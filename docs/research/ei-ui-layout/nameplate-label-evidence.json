@@ -1,0 +1,80 @@
+{
+  "evidence_id": "EI-296",
+  "finding": 296,
+  "date": "2026-08-11",
+  "title": "NameplateLabel - scene entity nameplate rendering (0x40CE20) fully decoded",
+  "objective": "Close the scene-entity-render-evidence.json pending '0x40CE20 exact label rendering (candidate: name/HP plate)' by decoding the complete nameplate draw chain: gate, element selection, projection, quad blit, and callers.",
+  "question": "What exactly does 0x40CE20 draw: which element(s), from which WIL library, under what flags/timing gates, projected how, and from which scene paths?",
+  "method": "Full-function disassembly of 0x40CE20-0x40D0E0 (mir3_full.asm), both call sites traced into their enclosing scene loops, element-getter/cache/projection/quad-render callees decoded, and the 0x100000 flag write site located in the actor packet parsers.",
+  "evidence_level": "primary-static",
+  "confidence": 0.95,
+  "addresses": [
+    "0x0040CE20", "0x0040CE2B", "0x0040CE3B", "0x0040CE52", "0x0040CE58",
+    "0x0040CE60", "0x0040CE64", "0x0040CE6C", "0x0040CE8F", "0x0040CE9C",
+    "0x0040CEC5", "0x0040CEE8", "0x0040CF53", "0x0040CF70", "0x0040CF78",
+    "0x0040D044", "0x0040D072", "0x0040D0A5", "0x0040D0AF",
+    "0x0041C76C", "0x0041CCAF", "0x0041CBD0",
+    "0x00411239", "0x0040CE41",
+    "0x004542A0", "0x00454E50", "0x00454DA0",
+    "0x00466CE0", "0x00466EFC", "0x00466D56",
+    "0x0040D420", "0x0040D3B0", "0x0040D6C0"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000",
+    "family": "F287/F290 entity scene family"
+  },
+  "gates": {
+    "flag": "[e+0x61C68] & 0x100000 (birth/teleport white-flash bit, set by server attribute packets via parsers 0x40D420/0x40D3B0/0x40D6C0; also mirrored to [e+0x61BD0])",
+    "timer": "now - [e+0x62A2C] > 0x6A4 (1700 ms); [e+0x62A2C] is stamped on entering action state 0x1F when the flag is NOT set (0x411239), i.e. a fresh spawn/teleport suppresses the nameplate for 1700 ms",
+    "surface": "[0x8AB7BC] must be non-null",
+    "element_get": "0x4542A0(0, 0x51, elem) must return non-null; bounds ax<5 && dx<0x8C"
+  },
+  "element": {
+    "base": "[e+0x62A24] (byte; NPC/actor nameplate variant selector, set by packet parsers)",
+    "offset_state_eq_0xf": "0x355",
+    "offset_state_ne_0xf": "0x352",
+    "wrapped": "element index & 0xFFFF, library index 0x51, kind 0",
+    "cache": "0x454E50 hashmap lookup keyed (0, 0x51, elem) with fallback construction 0x454DA0 -> 0x454CC0",
+    "note": "library 0x51 and element bounds ax<5, dx<0x8C are shared with 0x454DA0-family element getters; the exact WIL name bound to slot 0x51 is runtime BSS (0x5600FC table) - KEPT-runtime"
+  },
+  "projection": {
+    "world_x": "fild word[0x5667B8+0] * [0x476364] + fild word[0x5667B8+4] + [e+0xE4] - [0x476474]",
+    "world_y": "fild word[0x5667B8+2] * [0x476364] + fild word[0x5667B8+6] + [e+0xE8] - [0x476470]",
+    "note": "[0x5667B8] is a camera/offset word pair; [0x476364] a world-to-screen scale float; [0x476474]/[0x476470] viewport halves - same projection family as the shadow quad 0x40B180"
+  },
+  "draw": {
+    "surface_probe": "vtable+0x14 (returns >= 0 to proceed)",
+    "surface_matrix": "vtable+0x30 (build 4x4 from the 4 1.0f constants via 0x466800)",
+    "clip_transform": "0x40BFE0",
+    "quad_renderer": "0x466CE0 case 2 (jump table 0x466EFC; case 2 = 0x466D56 = vtable+0x50 with arg 0x14), preceded by vtable+0x2C color quad (0x3B808081 = 50% white alpha) at 0x40D05E and followed by vtable+0x8C blit at 0x40D085",
+    "order": "color quad first (soft white backing), then element quad via 0x466CE0 case 2, then vtable+0x8C composite",
+    "aftermath": "0x466F20 (shadow-quad restore helper) called at 0x40D0AF; then vtable+0x18 finalize"
+  },
+  "callers": {
+    "0x0041C76C": "scene entity loop 0x41C5F0-0x41C7B9: iterates map grid (esi+0xF5326/0xF5328, cells +0xF5200, list +0xF532C), draws each entity shadow 0x40B180 then nameplate 0x40CE20",
+    "0x0041CCAF": "0x41CBD0 (per-entity draw helper, also called at 0x41C77F) - same order: shadow then nameplate",
+    "note": "BOTH callers run for every scene entity (player, monster, NPC), so 0x40CE20 is the SHARED nameplate, not player-only - corrects the F287 label '0x40CE20 标签 = 仅玩家名牌'"
+  },
+  "errata": {
+    "F287": "0x40CE20 is the shared scene-entity nameplate (both callers iterate all entities), not player-only; the player-only aspect is the 0x100000 flag which is server-driven per-entity"
+  },
+  "verdict": "CLOSED - nameplate rendering fully decoded statically",
+  "conclusions": [
+    "0x40CE20 draws a nameplate for every scene entity: element = [e+0x62A24] + (0x355 if state==0xF else 0x352) from library slot 0x51 (kind 0), via the 0x4542A0/0x454E50 element cache.",
+    "Drawing is gated by flag [e+0x61C68]&0x100000 (birth/teleport white-flash bit) AND elapsed time > 1700ms since the [e+0x62A2C] timestamp; the timestamp is set when entering action 0x1F with the flag clear.",
+    "The quad is projected from world coords via camera [0x5667B8] + entity [e+0xE4]/[e+0xE8] - viewport halves [0x476474]/[0x476470], then drawn as a 50%-white alpha backing quad (0x3B808081) + element quad through 0x466CE0 case 2.",
+    "Both call sites (0x41C76C scene grid loop, 0x41CCAF per-entity helper) run for all entity kinds - the nameplate is shared across player/monster/NPC.",
+    "0x100000 is written by server attribute/state packet parsers (0x40D420/0x40D3B0/0x40D6C0) as part of the [e+0x61C68] descriptor dword (also mirrored to nameplate-visibility flag [e+0x61BD0])."
+  ],
+  "closed_notes": {
+    "scene-entity-render-evidence.json": "pending item '0x40CE20 exact label rendering (candidate: name/HP plate)' CLOSED by EI-296: it is the shared entity nameplate (element +0x352/0x355 variant), not an HP plate",
+    "npc-body-strip-evidence.json": "pending item '标签帧选择字节 [esi+0x62A24] 与 [esi+0x61C68]&0x100000 置位源' CLOSED for the flag write site (packet parsers 0x40D420/0x40D3B0/0x40D6C0); the [e+0x62A24] variant byte source stays runtime (server packet field)"
+  },
+  "pending": [
+    "WIL library bound to element slot 0x51 (BSS 0x5600FC runtime contents) - KEPT-runtime",
+    "Exact pixel glyphs of the nameplate frames (0x352/0x355 variants) - needs WIL decode of the slot-0x51 library, runtime",
+    "Server packet field that selects [e+0x62A24] (nameplate variant byte) - server protocol semantics"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "evidence_id": "EI-300",
+  "finding": 300,
+  "date": "2026-08-11",
+  "title": "NpcBodyWriteSite - entity appearance/type fields [e+0x88..0x8B] are written by 0x405630 (mov dword [esi+0x88], ebp) from 10 server-packet call sites; [e+0x8A] is the body byte read for special-appearance dispatch",
+  "objective": "Close player-composition-evidence.json pending item 'gender->type byte [e+0x88] write site (no static writer; entity build path / server packet, candidate)' by locating the static writer of the entity appearance fields at offset 0x88-0x8B, including the body byte 0x8A.",
+  "question": "Where is the entity appearance/body byte [e+0x8A] (and its neighbors 0x88/0x89/0x8B) written, and how does the value flow from server packets?",
+  "method": "Full byte-level scan of Mir3.exe for every write instruction touching offsets 0x85-0x8F (ModRM-complete, both disp8 and disp32 forms, byte/word/dword, immediate and register sources), eliminating false positives from non-mem operands (0x8B opcode bytes in arithmetic), then tracing the remaining real write sites and their callers to the server packet handlers.",
+  "evidence_level": "primary-static",
+  "confidence": 0.98,
+  "addresses": [
+    "0x00405630", "0x00405862",
+    "0x0040C390", "0x0040C3B0", "0x0040C3D0",
+    "0x0040F429", "0x0040F44B", "0x0040F456",
+    "0x004052F7", "0x00406A09", "0x00406B9D", "0x00406EDC", "0x00406FBD",
+    "0x00407184", "0x00407FDB", "0x004080F1",
+    "0x0040C773", "0x0040C783",
+    "0x00405A0F", "0x00405A1D"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "no_direct_byte_write": "There is NO direct single-byte write to [reg+0x8A] anywhere in the binary (byte-scan of C6/88 disp8 and disp32 forms = 0 hits; word 66 89/66 C7 = 0 hits; dword 89 = 0 hits). The field is written only as part of the 4-byte store [esi+0x88] at 0x405862.",
+  "write_site": {
+    "function": "0x405630 (entity appearance/type update; first arg ebp = appearance value, this = esi)",
+    "instruction": "0x405862: mov dword ptr [esi+0x88], ebp - writes [e+0x88]=type byte, [e+0x89], [e+0x8A]=body low byte, [e+0x8B]=body high byte in one 4-byte store",
+    "prologue": "0x405630: ebp=[esp+8] (arg), esi=ecx (this); calls 0x4055B0 validator; dispatches on ebp&0xFF via jump table 0x405894 (case index table 0x4058A8, <0x32)",
+    "case_writes": {
+      "0x405673": "[e+0x8C] = 0x47 (appearance kind G)",
+      "0x405689": "[e+0x8C] = 0x4C (appearance kind L)",
+      "0x40572E": "[e+0x8C] = computed value (bx/10*100 + c1; <0x8C gate)",
+      "0x4057BB": "[e+0x8C] = computed value (0x51EB851F scale; <0x8C gate)",
+      "0x405810": "[e+0x8C] = 0x80",
+      "0x405862": "[e+0x88] = ebp (unconditional, main line - the appearance/type+body store)"
+    },
+    "coord_writes": "[e+0xB4]/[e+0xB8]/[e+0xBC] from lookup tables 0x8AA5C0/0x8AA5C8/0x8AA686 (map coordinate offsets), [e+0xC0..0xC2]/[e+0xC4] from args"
+  },
+  "callers": [
+    "0x004052F7 (inside server entity dispatcher 0x404FB0: after writing [e+0x8C]/[e+0xB4..0xE8] and action field [e+0x629C8]; 0x405630 called with the appearance arg then coordinates)",
+    "0x00406A09", "0x00406B9D", "0x00406EDC", "0x00406FBD",
+    "0x00407184", "0x00407FDB", "0x004080F1",
+    "0x0040C390 (inside 0x40C3B0: entity appearance packet handler - packet struct at [esp+4]: word[+6]->[e+0xCC], word[+8]->[e+0xD0], byte[+0xA] stored; then 0x405630(arg=[esp+0xC]))",
+    "0x0040F429 (inside 0x40F420: server appearance/action packet handler - calls 0x405630 then writes action [e+0x629C8] from arg[+0x10]/[+0x14])"
+  ],
+  "body_read_dispatch": "0x40C3D0: mov al,[esi+0x8A]; cmp al,0x1C; jne -> else path (special appearance 0x1C=28 triggers 0x401670 equip/swap path with 3 args; else uses generic path)",
+  "clamp_sites": {
+    "0x40C76E/0x40C773": "if [e+0x8B] >= 0x1E (30) -> [e+0x8B] = 0 (body high byte clamp)",
+    "0x40C77A/0x40C783": "if [e+0x89] >= 0x32 (50) -> [e+0x89] = 0",
+    "0x40C78A/0x40C78F": "if [e+0x629C8] >= 4 -> [e+0x629C8] = 0 (action type clamp); mirrored at 0x40F44B/0x40F456 (0x8B), 0x40F45D/0x40F466 (0x89), 0x40F46D/0x40F472 (0x629C8)"
+  },
+  "verdict": "CLOSED - [e+0x88..0x8B] appearance/type+body fields have exactly one static write site 0x405862 (mov dword [esi+0x88], ebp inside 0x405630), fed by 10 server-packet call sites; the 42 byte-reads of [..+0x8A] are consumers (animation/action selection), not writers",
+  "conclusions": [
+    "The entity appearance block [e+0x88..0x8B] (type byte 0x88, unknown 0x89, body 16-bit 0x8A/0x8B) is written as one 4-byte store at 0x405862 inside 0x405630 - resolving the pending item's 'no static writer' claim.",
+    "0x405630's first argument (ebp = [esp+8]) is the appearance/body value from the server packet; the function validates it (0x4055B0, <0x32 dispatcher) and writes kind byte [e+0x8C] per case plus the unconditional 4-byte store to [e+0x88].",
+    "All 10 call sites are server-packet handlers (0x404FB0 entity dispatcher and per-packet handlers like 0x40C3B0/0x40F420), confirming the value origin is server-side appearance codes.",
+    "[e+0x8A] is consumed at 0x40C3D0 (cmp 0x1C = special appearance 28, drives 0x401670 equip/swap) and at 0x405A0F/0x405A1D (bx = [e+0x8B]<<8 | [e+0x8A] looked up in table 0x8AA5A8 for animation selection) - all reads, no writes.",
+    "The 2 single-byte writes to [e+0x8B]=0 (0x40C773/0x40F456) are clamps (if >= 0x1E), not primary writers.",
+    "42 read sites of [..+0x8A] span animation selection (0x405A0F family), appearance dispatch (0x40C3D0), and render paths - all downstream consumers of the 0x405862 store."
+  ],
+  "closed_notes": {
+    "player-composition-evidence.json": "pending item 'gender->type byte [e+0x88] write site (no static writer; entity build path / server packet, candidate)' CLOSED by EI-300: static writer is 0x405862 inside 0x405630 (mov dword [esi+0x88], ebp), 10 server-packet call sites, body 16-bit spans [e+0x8A..0x8B]"
+  },
+  "pending": [
+    "Which server-side appearance code values map to which body/type combinations (e.g. which code triggers body 28) - runtime capture only",
+    "The meaning of [e+0x89] (clamped <0x32) and the exact split of the appearance word (which bits are type vs body) - semantic, runtime"
+  ]
+}
