@@ -5626,3 +5626,35 @@ cross-ref：F269/F281/F287/F323 + map-ui-resource-evidence.json（closed_notes S
 
 cross-ref：Round 20/20.5（SUPERSEDED）/20.6/20.7/20.8 + F309（0x7E8 事件总线 0x41E2B0）+ F323（实体侧 vtable 链）。
 落盘：`renderer-family-liveness-evidence.json`、`ui-coverage-matrix.json`（hud closed_2026_08_12 新条目）、`UI_COMPLETION_AUDIT.md`。
+
+## Round 21 (2026-08-12) — 0x4280F0 分派 21 目标身份全表 + id13 坐骑/id14 技能书定案（Finding 327）
+
+- **分派身份全表（primary-static 定案）**——0x4280F0 的 21 个目标全部绑定业务身份（winbase / ctor·wrapper / paint / hitrect(+0x18) / hover / frame）：
+
+  |id|业务名|winbase|ctor/wrapper|paint|hitrect|hover|frame|
+  |---|---|---|---|---|---|---|---|
+  |0|背包|0x6554|0x42EA80|0x42EB80|0x656C|0x42FAB0|F250|
+  |1|状态|0x29CE4|—|0x44B2D0|0x29CFC|0x44B6B0|F200|
+  |2|商店|0x33188|—|0x44E260|0x331A0|0x44E650|F1000|
+  |3|交易|0x3399C|—|0x415B10|0x339B4|0x416790|F1050|
+  |4|行会|0x4707C|—|0x425040|0x47094|—|F600|
+  |5,10|unregistered|—|—|默认 0x428283|—|—|—|
+  |6|组队|0x47834|—|0x4243D0|0x4784C|—|F900|
+  |7|组长弹窗|0x47C28|0x4503B0|0x450530|0x47C40|0x450AC0|F200|
+  |8|聊天|0x507EC|—|0x414700|0x50804|—（IntersectRect 豁免）|F350|
+  |9|NPC|0x51150|0x43ED00|0x43F460|0x51168|—|F1100|
+  |11|任务|0x516E8|—|0x447470|0x51700|—|F700|
+  |12|选项|0x518E0|—|0x441380|0x518F8|—|F750|
+  |**13**|**坐骑 horse**|**0x52118**|**0x4268C0**|**0x4269C0**|**0x52130**|—|**F850**|
+  |**14**|**技能书 skill-book**|**0x524F0**|**0x439250**|**0x439500**|**0x52508**|—|**F400**|
+  |15|公告|0x52E5C|0x43E260|0x43E3C0|无 hit 槽|—|F602|
+
+  计数 = 14 paint E8 + 1 IntersectRect 间接 + 1 hit-test 0x42AAB0 E8 + 5 hover E8（id0/1/2/3/7）= 21（与 F326 分派表逐项对应；id5/10 默认槽，id15 上限 guard）。paint 跳表 0x428358（16 槽）、hover 跳表 0x428398（8 槽）、hit-test 跳表 0x42ABE8（15 槽）槽值完整 dump。
+- **main_init 双证（0x4278C0–0x4279A0 逐条核对）**：0x4278D9 `call 0x4268c0`（`lea ecx,[esi+0x52118]`、push 0xd、frame 0x352=850）→ **id13 坐骑 ctor 0x4268C0**（与 dispatch 槽 13→0x4269C0 相邻同族）；0x427904 `call 0x439250`（`lea ecx,[esi+0x524f0]`、push 0xe、frame 0x190=400）→ **id14 技能书 wrapper 0x439250**（与 dispatch 槽 14→0x439500 相邻）——**id13/id14 身份经 dispatch 槽 + main_init ctor 参数双证**。旧疑点『id13=other-14 wrapper 0x439250 frame 400』系误读：0x439250 实为 id14 skill-book 的 wrapper（RESEARCH_LOG 3128–3131 旧表『13/14 通用窗口』由此 SUPERSEDED）。
+- **hit-test 0x42AAB0 完全解码**：按可见窗口链表（[+0xd38] count / [+0xd2c] head，node+0=id、node+4=next）顺序迭代，per-window rect 指针 = win+**0x18**；`mov edx,[esp+0x24]`(x)、`mov ebp,[esp+0x28]`(y) → `call dword ptr [0x4762B4]` = **USER32!PtInRect**（非零=inside）；guard `cmp eax,0xe; ja 0x42ab8a` + 15 槽跳表；命中槽 `mov eax,[edi]; ret 8` 返回窗口 id，未命中 -1。覆盖 ids 0–4,6–9,11–14；**id13（rect 0x52130）/id14（rect 0x52508）槽位真实存在 → 均为真实可交互窗口**；id5/10 默认继续，id15 公告无 hit 槽。
+- **底部控制带交叠隐藏（行为闭合）**：paint 后 `call [0x476248]`（USER32!IntersectRect）将窗口 rect 与近屏底常量矩形 {0xdf=223, 0x23a=570, 0x241=577, 0x24a=586}（800×600 屏内 y 570–586 输入条带）求交；**id8 聊天豁免**（`cmp [edi],8; je` 跳过）；任何非聊天窗口与带相交 → 帧末 `ShowWindow([0x8AA48C], 0)`（经 [0x4762AC]）隐藏**聊天输入 EDIT 控件**（非主游戏窗口——主窗口 HWND = 0x8AB7B0；0x8AA48C 写于 0x451145 CreateWindowExA@0x451137 后，wndproc 0x450C40 经 SetWindowLongA@0x451148；chat-window-control-map case1–4 GetFocus/SetFocus/EM_SETSEL 均为聊天输入操控，与 trade-gold-flow-evidence 一致）。语义：窗口覆盖输入条带时禁用聊天输入。
+- **IAT 身份解析（pefile via venv site-packages）**：0x4762B0=USER32!SetRect、0x4762B4=USER32!PtInRect、0x4762B8=USER32!SetFocus、0x4762AC=USER32!ShowWindow、0x4762A8=USER32!PeekMessageA、0x476248=USER32!IntersectRect、0x476260=USER32!CreateWindowExA、0x476190=KERNEL32!GetVersion、0x4761B0=KERNEL32!GetFileType。
+- **陈旧记录修正（三处）**：①`window-traversal-evidence.json` window_id 14 paint `0x0043E3C0`『notice/prompt』→ **`0x00439500`『skill-book』**（0x43E3C0 实为 id15 公告 paint），并补入缺失的 id15 行（0x43E3C0 / main+0x52E5C / notice/prompt）；②chat-window-mouse-dispatch.json（2 处）+ chat-window-control-map.json（3 处）『map hwnd』→ 『chat input edit hwnd』；③layout 记录 **`window.other-14-candidate` → `window.skill-book`**（仓库 26 个文件同步改名，含 simulator 数据 title；layout.json version 0.5 → **0.6-window-paint-dispatch-identity**，skill-book/horse 记录补 hit_rect + dispatch 身份字段）。
+- 落盘：`window-paint-dispatch-identity.json`（F327）+ matrix skills/horse closed_2026_08_12（新条目）+ layout.json（缩进 2，diff 仅预期变更）+ UI_COMPLETION_AUDIT.md。
+
+cross-ref：F326（21 目标表）、F316（id0 背包）、F313（win+0x18 rect）、F272（技能书渲染链 paint 0x439500）、F260/F264（坐骑）、F309（wndproc 事件总线）、F323（实体侧链汇合点）、trade-gold-flow-evidence（0x8AA48C chat input EDIT）。

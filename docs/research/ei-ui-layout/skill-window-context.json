@@ -1,5 +1,5 @@
 {
-  "window_id": "window.other-14-candidate",
+  "window_id": "window.skill-book",
   "wrapper_va": "0x00439250",
   "main_init_call_va": "0x00427904",
   "window_frame": 400,
@@ -238,9 +238,9 @@
   ],
   "skill_control_records": [
     {
-      "id": "window.other-14-candidate.control.0x004392b6",
+      "id": "window.skill-book.control.0x004392b6",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x004392b6",
       "resource": {
@@ -300,7 +300,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x004392b6",
         "frame_pair": [
@@ -376,8 +376,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x004392b6",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x004392b6",
+        "window_id": "window.skill-book",
         "call_va": "0x004392b6",
         "frame_pair": [
           440,
@@ -394,9 +394,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x004392df",
+      "id": "window.skill-book.control.0x004392df",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x004392df",
       "resource": {
@@ -456,7 +456,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x004392df",
         "frame_pair": [
@@ -532,8 +532,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x004392df",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x004392df",
+        "window_id": "window.skill-book",
         "call_va": "0x004392df",
         "frame_pair": [
           410,
@@ -550,9 +550,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x0043930b",
+      "id": "window.skill-book.control.0x0043930b",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x0043930b",
       "resource": {
@@ -612,7 +612,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x0043930b",
         "frame_pair": [
@@ -688,8 +688,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x0043930b",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x0043930b",
+        "window_id": "window.skill-book",
         "call_va": "0x0043930b",
         "frame_pair": [
           412,
@@ -706,9 +706,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x00439334",
+      "id": "window.skill-book.control.0x00439334",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x00439334",
       "resource": {
@@ -768,7 +768,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x00439334",
         "frame_pair": [
@@ -844,8 +844,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x00439334",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x00439334",
+        "window_id": "window.skill-book",
         "call_va": "0x00439334",
         "frame_pair": [
           450,
@@ -862,9 +862,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x0043935d",
+      "id": "window.skill-book.control.0x0043935d",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x0043935d",
       "resource": {
@@ -924,7 +924,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x0043935d",
         "frame_pair": [
@@ -1000,8 +1000,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x0043935d",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x0043935d",
+        "window_id": "window.skill-book",
         "call_va": "0x0043935d",
         "frame_pair": [
           452,
@@ -1018,9 +1018,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x00439386",
+      "id": "window.skill-book.control.0x00439386",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x00439386",
       "resource": {
@@ -1080,7 +1080,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x00439386",
         "frame_pair": [
@@ -1156,8 +1156,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x00439386",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x00439386",
+        "window_id": "window.skill-book",
         "call_va": "0x00439386",
         "frame_pair": [
           454,
@@ -1174,9 +1174,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x004393b3",
+      "id": "window.skill-book.control.0x004393b3",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x004393b3",
       "resource": {
@@ -1236,7 +1236,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x004393b3",
         "frame_pair": [
@@ -1312,8 +1312,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x004393b3",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x004393b3",
+        "window_id": "window.skill-book",
         "call_va": "0x004393b3",
         "frame_pair": [
           456,
@@ -1330,9 +1330,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x004393e0",
+      "id": "window.skill-book.control.0x004393e0",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x004393e0",
       "resource": {
@@ -1392,7 +1392,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x004393e0",
         "frame_pair": [
@@ -1458,8 +1458,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x004393e0",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x004393e0",
+        "window_id": "window.skill-book",
         "call_va": "0x004393e0",
         "frame_pair": [
           458,
@@ -1476,9 +1476,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x0043940d",
+      "id": "window.skill-book.control.0x0043940d",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x0043940d",
       "resource": {
@@ -1538,7 +1538,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x0043940d",
         "frame_pair": [
@@ -1604,8 +1604,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x0043940d",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x0043940d",
+        "window_id": "window.skill-book",
         "call_va": "0x0043940d",
         "frame_pair": [
           450,
@@ -1622,9 +1622,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x00439437",
+      "id": "window.skill-book.control.0x00439437",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x00439437",
       "resource": {
@@ -1684,7 +1684,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x00439437",
         "frame_pair": [
@@ -1760,8 +1760,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x00439437",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x00439437",
+        "window_id": "window.skill-book",
         "call_va": "0x00439437",
         "frame_pair": [
           452,
@@ -1778,9 +1778,9 @@
       }
     },
     {
-      "id": "window.other-14-candidate.control.0x00439464",
+      "id": "window.skill-book.control.0x00439464",
       "kind": "control-constructor",
-      "window_id": "window.other-14-candidate",
+      "window_id": "window.skill-book",
       "wrapper_va": "0x00439250",
       "call_va": "0x00439464",
       "resource": {
@@ -1840,7 +1840,7 @@
         "calling_convention": "caller pushes arg9..arg1; callee ret 0x24"
       },
       "position_analysis": {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "call_va": "0x00439464",
         "frame_pair": [
@@ -1906,8 +1906,8 @@
         "warning": "Static register-flow record; runtime identity remains to be confirmed."
       },
       "semantic_candidate": {
-        "control_id": "window.other-14-candidate.control.0x00439464",
-        "window_id": "window.other-14-candidate",
+        "control_id": "window.skill-book.control.0x00439464",
+        "window_id": "window.skill-book",
         "call_va": "0x00439464",
         "frame_pair": [
           454,

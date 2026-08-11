@@ -153,13 +153,17 @@
     "magic-exp-records.json"
    ],
    "layout_ids": [
-    "window.other-14-candidate"
+    "window.skill-book"
    ],
-   "preview_mode": "window.other-14-candidate",
+   "preview_mode": "window.skill-book",
    "status": "primary-static-render-plus-data-loader-static-closed",
    "pending": false,
    "closed_2026_08_11": [
     "skill book right-page render loop closed primary-static (Finding 272, skill-window-render-loop-evidence.json): 0x43A440 full chain - CRLF line split (CR must be followed by LF), ';' comments, '#' section header atoi==this+0x964, 20 slots backtick sscanf (0x47C350 fmt), count恒1 (0x45E0C0 three return paths all {0,0}), geometry (winX+235, winY+30+15k), '[' name line 0x96C8FA + 4 corner shadows, selection chain 0x439134->0x43A370->0x43ACE4->paint 0x439500->0x439520 (sole caller 0x43A440); corrected origin swap typo (0x0f adds Y this+0x1c, 0xeb adds X this+0x18); 0x43A3E0 is mid-body of 0x43A370 not a function start; pending=0 within loop; magic-exp loader (0x45E0C0) count constant 1 -> book rows are per-skill single-entry, multi-page paging not supported statically"
+   ],
+   "closed_2026_08_12": [
+    "window id14 = skill book identity closed primary-static (F327, window-paint-dispatch-identity.json): 0x4280F0 dispatch slot 14 -> paint 0x439500 (E8 @0x428265), hitrect main+0x524F0+0x18 = 0x52508, hover none; wrapper ctor 0x439250 @ main_init 0x427904, frame 400; hit-test 0x42ABE8 slot 14 = 0x42ab69 -> rect 0x52508; layout record renamed window.other-14-candidate -> window.skill-book (26 files, incl. simulator data title)",
+    "dispatch identity cross-check primary-static: dispatch paint 0x439500 == F272 render-chain paint (0x43A440 selection -> paint 0x439500); skill-window-context / control-semantic-catalog layout_ids renamed in lockstep"
    ]
   },
   {
@@ -373,6 +377,9 @@
     "no state overlay outside frame 850 (Finding 260, negative): horse paint 0x4269C0-0x426A74 = base frame 850 (vtable+0xC) + 5 control repositions (this+0x54 (252,293), +0x108 (28,244), +0x1BC (74,244), +0x270 (133,244), +0x324 (192,244)) + child paint loop (vtable+0x4, 5 iters, step 0xB4 from this+0x7C); no text records/overlays; state-dependent content lives only in click dispatch 0x426A80-0x426B45 (btn1+0x108 -> @上马 0x47B060 when [0x7DA060]==0, btn2+0x1BC -> @遛马 0x47B068 when !=0, btn3+0x270 -> @收马 0x47B058 unconditional, btn4+0x324 -> @遛马)",
     "constructor_va convention corrected (Finding 260): true ctor entry is 0x004268C0 (called from main_init 0x27774 with id 2, frame 850, x=0 y=0 w=244 h=320, object main+0x17C90); old value 0x0042691B was the first child-control call site inside the ctor",
     "mounted-appearance element binding closed (Finding 264, primary-static): element table base 0x5600FC stride 0x144 (324); mount element = element 87 = 0x566F18 = 0x5600FC+0x57*0x144 selected by hardcoded selector byte [0x629CF]=0x57 (written iff state byte 0x7DA060!=0 @0x40F47F, sibling 0x40C79C; lea x9,x9,x4=x324 @0x40F5A6-0x40F5C0 -> [0x62A14]) - state value 1/2/3 does NOT index the table; binds to WIL slot 17 = '.\\Data\\Horse.wil' (0x47CC94 copied to owner+0x1098C @0x4538CB-0x4538E5; element-manager loop2 0x452AF7-0x452B0E binds element 70+i <-> slot i, element 87=70+17); world-render 0x40F5F0 gate (state!=0 && [62A14]!=0 && [0xC0]>=0x1D) frame=0x2710+(A%400) (A=[629C8]*400-[8A]*3000+[C4]-0xAA0, stored [0x62A20]) -> 0x466130 -> 0x461ED0/0x463330/0x460240; HUD mount icon = element 86 0x566DD4 (ProgUse.wil) frame byte[0x777720]*10+byte[0x777723]+0x3B, 0x45FD50 arg6=word[0x7DA063] is a 16-bit RLE fill color (op 0xC2), NOT a frame index (corrects Finding 255; all other 22 of 23 0x45FD50 callers pass 0xffff/0xffff; 0x7DA063 refs = 0x41F5BD write + 0x44B669 read only)"
+   ],
+   "closed_2026_08_12": [
+    "window id13 = horse identity closed primary-static (F327, window-paint-dispatch-identity.json): 0x4280F0 dispatch slot 13 -> paint 0x4269C0 (E8 @0x428252), hitrect main+0x52118+0x18 = 0x52130, hover none; ctor 0x4268C0 @ main_init 0x4278D9 (id 0xd, frame 850); hit-test 0x42ABE8 slot 13 = 0x42ab61 -> rect 0x52130; layout window.horse record (window.id 13) matches dispatch - no numbering offset"
    ]
   },
   {
@@ -413,7 +420,7 @@
    "closed_2026_08_10": [
     "pending resolved: every input/drag caller's two runtime args are ABSOLUTE client-area mouse coords X/Y (lParam LOWORD/HIWORD forwarded verbatim), NOT deltas, NOT window-relative; drag chain WM_LBUTTONDOWN 0x41D470 -> 0x42BA20 -> 0x42B6A0 (reorder list + [base+0xD3C]=1 + 0x4240C0 grab offsets +0x48/+0x4C) -> WM_MOUSEMOVE 0x41D390 -> 0x42C510 -> 0x42C741 -> 0x42B430 (E8 callers = only 0x42C745; 0x42C510 only 0x41D457; 0x42BA20 only 0x41D57B; 0x42BE20 only 0x41DC82) -> 0x423FA0(win, X, Y, flag=0)",
     "0x423FA0 semantics: flag=0 drag-follow left'=X-[win+0x48], top'=Y-[win+0x4C], right'=left'+[win+0x40], bottom'=top'+[win+0x44]; bottom clamp >0x23A(570) -> top'=0x235(565)-height (30px bottom margin); SetRect(0x4762B0, &win+0x18, ...) + centered second SetRect(&win+0, (origW-w)/2, (origH-h)/2); flag=1 absolute set used by init 0x41FA68 (X=519)/0x4204F3 (X=518); [win+0x40]=width [win+0x44]=height (NOT offsets, NOT current/initial position); [win+0x48]/[win+0x4C]=grab offsets from 0x4240C0; new top-left = (X-grabX, Y-grabY) absolute 1:1 mouse-follow",
-    "UI object base correction: UI subsystem object = main+0x2A548C; per-window offsets base-relative (inventory +0x6554=main+0x2AB9E0, status +0x29CE4=main+0x2CF170, store +0x33188=main+0x2D8614, exchange +0x3399C=main+0x2D8E28, guild +0x4707C=main+0x2EC508, group +0x47834=main+0x2ECCC0, group-pop +0x47C28=main+0x2ED0B4, chat-pop +0x507EC=main+0x2F5C78, npc +0x51150=main+0x2F65DC, quest +0x516E8=main+0x2F6B74, option +0x518E0=main+0x2F6D6C, horse +0x52118=main+0x2F75A4, other-14 +0x524F0=main+0x2F797C, notice +0x52E5C=main+0x2F82E8); 16-window vtable array base+0x567C (stride 0xB4); game object base+0x61BC",
+    "UI object base correction: UI subsystem object = main+0x2A548C; per-window offsets base-relative (inventory +0x6554=main+0x2AB9E0, status +0x29CE4=main+0x2CF170, store +0x33188=main+0x2D8614, exchange +0x3399C=main+0x2D8E28, guild +0x4707C=main+0x2EC508, group +0x47834=main+0x2ECCC0, group-pop +0x47C28=main+0x2ED0B4, chat-pop +0x507EC=main+0x2F5C78, npc +0x51150=main+0x2F65DC, quest +0x516E8=main+0x2F6B74, option +0x518E0=main+0x2F6D6C, horse +0x52118=main+0x2F75A4, skill-book +0x524F0=main+0x2F797C, notice +0x52E5C=main+0x2F82E8); 16-window vtable array base+0x567C (stride 0xB4); game object base+0x61BC",
     "drag lifecycle: start WM_LBUTTONDOWN (0x42B6A0 arms [base+0xD3C]=1 + records grab offsets); follow every WM_MOUSEMOVE with [main+0x35B2B8]!=0 (0x42B430 follows only head-of-list); end WM_LBUTTONUP -> 0x42BE20 ([base+0xD3C]=0, notice gates 0x53060/0x52E8C, else 0x417E60(base+0x61BC, X, Y)); runtime list [base+0xD38]=count head [base+0xD30], add 0x42AC30 / remove 0x42AC50, most-recent-first; win+0x34 flag = in-drag-list/dragging (set 0x423F90/0x42B6A0, reset 0x42B820)",
     "per-id input handlers inside 0x42C510 (table 0x42C798): 0 inv 0x430650 -> if 0 status 0x44CED0 -> position dispatch; 1 status 0x44CED0; 2 store 0x44F110 -> if 0 exchange 0x416E70; 3 guild 0x425DE0; 4 group 0x424770; 6 group-pop 0x450B70; 7 chat-pop 0x414CF0; 8 npc 0x448430; 0xB quest 0x441A20; 0xC option 0x426B90; 0xD horse 0x43AC80; 0xE other 0x440560; ids 5/0xA no handler; hit id -1 -> 0x42C6A7 hover-out no-arg calls -> 0x42C741",
     "hit-test 0x42AAB0: iterates runtime list from [base+0xD2C], count [base+0xD38]; node = {dword id; dword ?; dword next +8}; per-id RECT pointer (+0x18) copied to locals, PtInRect [0x4762B4](rect, X, Y) at 0x42AB95; miss -> advance [node+8]"

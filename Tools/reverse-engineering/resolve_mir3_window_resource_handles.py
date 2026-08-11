@@ -25,7 +25,7 @@ WINDOWS = {
     "window.option": {"wrapper": "0x00440fe0", "call": "0x0042788d"},
     "window.quest": {"wrapper": "0x004473e0", "call": "0x004278b3"},
     "window.horse": {"wrapper": "0x004268c0", "call": "0x004278d9"},
-    "window.other-14-candidate": {"wrapper": "0x00439250", "call": "0x00427904"},
+    "window.skill-book": {"wrapper": "0x00439250", "call": "0x00427904"},
     "window.npc-candidate": {"wrapper": "0x0043ed00", "call": "0x0042792a"},
 }
 

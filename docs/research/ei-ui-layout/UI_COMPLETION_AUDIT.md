@@ -1,6 +1,6 @@
 # EI 3.0 原版 800×600 UI 完成审计
 
-更新时间：2026-08-12（审计移植：Round 4–20 已并入，覆盖 Findings 274–326）
+更新时间：2026-08-12（审计移植：Round 4–21 已并入，覆盖 Findings 274–327）
 第一证据：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`、`mir3.dat`、`Data/*.wil`、`Data/*.wix`
 
 这份审计不把“已经有 JSON”当成“已经还原完成”。每个条目都区分：
@@ -200,3 +200,11 @@ git diff --check
 - **0x4570A0（fn start；0x457092–0x45709F = 14 NOP 填充）**：`call 0x457040; mov [0x8AB820],0x47EF18; mov [0x8B1870],0x47EF18; call 0x419350; mov [0x8B1878],3`；0x419350 → 0x45D270（创建 0x8AB7A8 800×600 主对象，深 0x10，模式 5/1 依 [0x47EE89]）；E8 caller @0x457753。
 - **判定标准（正式确立）**：全局对象 ctor/dtor 靠 CRT init 表 + atexit 注册（非 E8）；vtable 槽函数靠 [reg+off] 间接调用（非 E8）；**『无 E8 caller / 无 dword ref ≠ 死代码』**。E9 jmp-thunk 扫描为 E8-only 盲区补全（本轮命中 0x401975/0x401995/0x401955）。
 - 落盘：`renderer-family-liveness-evidence.json` + matrix hud closed_2026_08_12（新条目）+ RESEARCH_LOG Finding 326。
+
+## Round 21 (2026-08-12) — 0x4280F0 分派 21 目标身份全表：id13 坐骑 / id14 技能书定案（Finding 327）
+
+- **窗口分派身份全表闭合（primary-static）**：0x4280F0 的 14 个 paint E8 + 1 IntersectRect 间接 + 1 hit-test 0x42AAB0 + 5 个 hover E8 全部绑定业务身份——id0 背包 F250、id1 状态 F200、id2 商店 F1000、id3 交易 F1050、id4 行会 F600、id6 组队 F900、id7 组长弹窗 F200、id8 聊天 F350、id9 NPC F1100、id11 任务 F700、id12 选项 F750、**id13 坐骑 F850（paint 0x4269C0、ctor 0x4268C0 @main_init 0x4278D9、winbase 0x52118、hitrect 0x52130）**、**id14 技能书 F400（paint 0x439500、wrapper 0x439250 @main_init 0x427904、winbase 0x524F0、hitrect 0x52508）**、id15 公告 F602（paint 0x43E3C0、wrapper 0x43E260）；id5/10 未注册走默认槽。id13/id14 经 dispatch 槽 + main_init ctor 参数（id/frame）双证。
+- **hit-test 0x42AAB0（USER32!PtInRect @[0x4762B4]，rect = win+0x18）** 覆盖 ids 0–4,6–9,11–14；**id13/id14 为真实可交互窗口**（id15 公告无 hit 槽）。hover 仅 id0/1/2/3/7（0x42FAB0/0x44B6B0/0x44E650/0x416790/0x450AC0），其余走默认 0x42833E。
+- **底部输入条带交叠隐藏**：IntersectRect（常量带 {223,570,577,586}）命中且非 id8 聊天 → `ShowWindow([0x8AA48C],0)` 隐藏**聊天输入 EDIT 控件**（0x8AA48C 非主游戏窗口；主 HWND = 0x8AB7B0）。语义：非聊天窗口覆盖输入条带时禁用聊天输入。
+- **记录修正**：window-traversal-evidence id14 paint 0x43E3C0 → 0x439500（+补 id15 行）；chat 文档『map hwnd』→『chat input edit hwnd』（5 处）；layout 记录 `window.other-14-candidate` → `window.skill-book`（26 文件同步，version 0.6-window-paint-dispatch-identity）。
+- 落盘：`window-paint-dispatch-identity.json`（F327）+ matrix skills/horse closed_2026_08_12 + RESEARCH_LOG Round 21。

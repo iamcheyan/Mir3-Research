@@ -37,7 +37,8 @@
       {"window_id": 11, "paint_va": "0x00447470", "object": "main+0x516E8", "role": "quest"},
       {"window_id": 12, "paint_va": "0x00441380", "object": "main+0x518E0", "role": "option"},
       {"window_id": 13, "paint_va": "0x004269C0", "object": "main+0x52118", "role": "horse"},
-      {"window_id": 14, "paint_va": "0x0043E3C0", "object": "main+0x524F0", "role": "notice/prompt"}
+      {"window_id": 14, "paint_va": "0x00439500", "object": "main+0x524F0", "role": "skill-book"},
+      {"window_id": 15, "paint_va": "0x0043E3C0", "object": "main+0x52E5C", "role": "notice/prompt"}
     ],
     "evidence": "At 0x0042814B the routine reads node->id, dispatches through the ID jump table, calls the specialized entry, then advances node+0x04 at 0x004282A9–0x004282D8.",
     "caveat": "The list order is runtime state: show/hide/promote operations determine the concrete stacking order."

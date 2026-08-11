@@ -9,7 +9,7 @@ from pathlib import Path
 
 def semantic(window_id: str, pair: list[int]) -> dict | None:
     a = pair[0] if pair else None
-    if window_id == "window.other-14-candidate":
+    if window_id == "window.skill-book":
         if a in {410, 412, 414, 416, 418, 420, 422, 424, 426, 428, 430, 432, 434, 436, 438, 440, 442, 444, 446, 448, 450, 452, 454, 456, 458}:
             return {"group": "skill-book-category-or-skill-slot", "notes": "Frame 400 is a book; these repeated small paired frames form its category/slot controls."}
     if window_id == "window.horse" and a in {860, 862, 864, 866}:

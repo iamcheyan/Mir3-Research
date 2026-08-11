@@ -357,7 +357,7 @@ const WINDOW_TITLES = {
   "window.option": "系统设置",
   "window.quest": "任务",
   "window.horse": "坐骑",
-  "window.other-14-candidate": "技能",
+  "window.skill-book": "技能",
   "window.npc-candidate": "NPC 对话",
   "window.notice-prompt-candidate": "公告",
 };
@@ -488,10 +488,10 @@ function fillWindowContent(w) {
     // buttons are NEVER drawn (render 0x417640 has zero xrefs; cancel frames
     // 1064/1065 don't exist in GameInter.wil count 1103) - silent hit zones.
     tradeContent(content);
-  } else if (id === "window.other-14-candidate" || id === "window.store-candidate") {
+  } else if (id === "window.skill-book" || id === "window.store-candidate") {
     // skill grid (skills.json) / store slots
-    const src = id === "window.other-14-candidate" ? STATE.data.skills : storeGridSlots();
-    if (id === "window.other-14-candidate") {
+    const src = id === "window.skill-book" ? STATE.data.skills : storeGridSlots();
+    if (id === "window.skill-book") {
       // 8 magic-category labels — primary-static redraw positions + frame pairs
       // (skill-window-context.json: 火/冰/电/风/神圣/黑暗/幻影/剑, EXE 0x00439500)
       const cats = [
@@ -970,7 +970,7 @@ function onHudControl(id) {
     case "hud.status": setWindowOpen("window.status", !isOpen("window.status")); break;
     case "hud.inventory": setWindowOpen("window.inventory", !isOpen("window.inventory")); break;
     case "hud.skill": case "hud.skill-entry":
-      setWindowOpen("window.other-14-candidate", !isOpen("window.other-14-candidate")); break;
+      setWindowOpen("window.skill-book", !isOpen("window.skill-book")); break;
     case "hud.chat": setWindowOpen("window.chat-pop", !isOpen("window.chat-pop")); break;
     case "hud.quest": setWindowOpen("window.quest", !isOpen("window.quest")); break;
     case "hud.option": setWindowOpen("window.option", !isOpen("window.option")); break;

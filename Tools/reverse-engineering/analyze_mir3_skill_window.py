@@ -53,7 +53,7 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=Path("docs/research/ei-ui-layout/skill-window-context.json"))
     args = ap.parse_args()
     layout = json.loads(args.layout.read_text(encoding="utf-8"))
-    controls = [r for r in layout.get("control_constructors", []) if r.get("window_id") == "window.other-14-candidate"]
+    controls = [r for r in layout.get("control_constructors", []) if r.get("window_id") == "window.skill-book"]
     by_call = {r["call_va"].lower(): r for r in controls}
     labels = []
     for va, (text, key) in TEXTS.items():
@@ -72,7 +72,7 @@ def main() -> None:
             "evidence": {"level": "primary-static-redraw-position", "source": "Mir3.exe 0x00439500 redraw helper + GB18030 literal/control correlation"},
         })
     result = {
-        "window_id": "window.other-14-candidate",
+        "window_id": "window.skill-book",
         "wrapper_va": "0x00439250",
         "main_init_call_va": "0x00427904",
         "window_frame": 400,

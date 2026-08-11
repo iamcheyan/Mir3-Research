@@ -22,7 +22,7 @@ WINDOWS = {
     0x440FE0: "window.option",
     0x4473E0: "window.quest",
     0x4268C0: "window.horse",
-    0x439250: "window.other-14-candidate",
+    0x439250: "window.skill-book",
     0x43ED00: "window.npc-candidate",
 }
 
