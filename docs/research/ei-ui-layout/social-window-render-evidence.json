@@ -9,15 +9,80 @@
       "id": "window.group",
       "constructor_va": "0x004242AB",
       "main_init": "0x00427811",
-      "background": {"file": "Data/GameInter.wil", "frame": 900, "constructor_size": [256, 244]},
-      "window_origin": [272, 123],
+      "background": {
+        "file": "Data/GameInter.wil",
+        "frame": 900,
+        "constructor_size": [
+          256,
+          244
+        ]
+      },
+      "window_origin": [
+        272,
+        123
+      ],
       "can_move": true,
       "child_controls": [
-        {"call_va": "0x004242AB", "frame_pair": [161, 162], "position": [226, 214], "semantic_candidate": "close/confirm"},
-        {"call_va": "0x004242D4", "frame_pair": [910, 911], "position": [17, 197], "semantic_candidate": "member/action slot 1"},
-        {"call_va": "0x004242FD", "frame_pair": [912, 913], "position": [80, 197], "semantic_candidate": "member/action slot 2"},
-        {"call_va": "0x00424329", "frame_pair": [914, 915], "position": [159, 197], "semantic_candidate": "member/action slot 3"},
-        {"call_va": "0x0042434F", "frame_pair": [920, 921], "position": [9, 52], "semantic_candidate": "group operation/tab"}
+        {
+          "call_va": "0x004242AB",
+          "frame_pair": [
+            161,
+            162
+          ],
+          "position": [
+            226,
+            214
+          ],
+          "semantic_candidate": "close/confirm"
+        },
+        {
+          "call_va": "0x004242D4",
+          "frame_pair": [
+            910,
+            911
+          ],
+          "position": [
+            17,
+            197
+          ],
+          "semantic_candidate": "member/action slot 1"
+        },
+        {
+          "call_va": "0x004242FD",
+          "frame_pair": [
+            912,
+            913
+          ],
+          "position": [
+            80,
+            197
+          ],
+          "semantic_candidate": "member/action slot 2"
+        },
+        {
+          "call_va": "0x00424329",
+          "frame_pair": [
+            914,
+            915
+          ],
+          "position": [
+            159,
+            197
+          ],
+          "semantic_candidate": "member/action slot 3"
+        },
+        {
+          "call_va": "0x0042434F",
+          "frame_pair": [
+            920,
+            921
+          ],
+          "position": [
+            9,
+            52
+          ],
+          "semantic_candidate": "group operation/tab"
+        }
       ],
       "member_list_render": {
         "paint_va": "0x004243D0",
@@ -26,7 +91,10 @@
         "row_index": "local counter starting at 0",
         "column_rule": "index & 1 (odd -> left column x=window.x+45, even -> right column x=window.x+145; old formula had the mod-2 mapping inverted, see closed_notes)",
         "row_rule": "floor(index / 2)",
-        "screen_relative_origin": [45, 90],
+        "screen_relative_origin": [
+          45,
+          90
+        ],
         "column_step": 100,
         "row_step": 20,
         "formula": "x = (index odd) ? window.x+45 : window.x+145; y = window.y + 90 + 20*floor(index/2)",
@@ -38,30 +106,101 @@
         "permission_field": "this+0x3F0",
         "permission_branch_va": "0x00424532-0x00424570",
         "strings": [
-          {"string_va": "0x0047BA00", "text_gbk_decoded": "[拒绝]", "condition": "this+0x3F0 == 0"},
-          {"string_va": "0x0047BA08", "text_gbk_decoded": "[允许]", "condition": "this+0x3F0 != 0"}
+          {
+            "string_va": "0x0047BA00",
+            "text_gbk_decoded": "[拒绝]",
+            "condition": "this+0x3F0 == 0"
+          },
+          {
+            "string_va": "0x0047BA08",
+            "text_gbk_decoded": "[允许]",
+            "condition": "this+0x3F0 != 0"
+          }
         ],
         "text_compositor_va": "0x0045DD70",
-        "text_origin_expression": {"x": "UNPROVABLE (reads [esp+0x1C] slot R-0xC, never written in 0x4243D0 -> uninitialized stack garbage + 0x6E; old 'window.x+0x6E' and ctor register-flow P0-0x1148 rejected, see closed_notes)", "y": "window.y+0x3A (primary-static, add edi,0x3A at 0x424549/0x424563)"},
+        "text_origin_expression": {
+          "x": "UNPROVABLE (reads [esp+0x1C] slot R-0xC, never written in 0x4243D0 -> uninitialized stack garbage + 0x6E; old 'window.x+0x6E' and ctor register-flow P0-0x1148 rejected, see closed_notes)",
+          "y": "window.y+0x3A (primary-static, add edi,0x3A at 0x424549/0x424563)"
+        },
         "paint_repositioned_controls": {
           "routine": "0x004244A6-0x0042452D",
           "records": [
-            {"object_offset": "this+0x6C", "relative_position": [226,214], "call_va": "0x004244BE"},
-            {"object_offset": "this+0x120", "relative_position": [17,197], "call_va": "0x004244DA"},
-            {"object_offset": "this+0x1D4", "relative_position": [80,197], "call_va": "0x004244F6"},
-            {"object_offset": "this+0x288", "relative_position": [159,197], "call_va": "0x00424514"},
-            {"object_offset": "this+0x33C", "relative_position": [9,52], "call_va": "0x0042452D"}
+            {
+              "object_offset": "this+0x6C",
+              "relative_position": [
+                226,
+                214
+              ],
+              "call_va": "0x004244BE"
+            },
+            {
+              "object_offset": "this+0x120",
+              "relative_position": [
+                17,
+                197
+              ],
+              "call_va": "0x004244DA"
+            },
+            {
+              "object_offset": "this+0x1D4",
+              "relative_position": [
+                80,
+                197
+              ],
+              "call_va": "0x004244F6"
+            },
+            {
+              "object_offset": "this+0x288",
+              "relative_position": [
+                159,
+                197
+              ],
+              "call_va": "0x00424514"
+            },
+            {
+              "object_offset": "this+0x33C",
+              "relative_position": [
+                9,
+                52
+              ],
+              "call_va": "0x0042452D"
+            }
           ],
           "evidence_level": "primary-static-paint-position"
         },
         "evidence_level": "primary-static-string-and-position"
       },
       "paint_order": [
-        {"order": 1, "va": "0x004243E4-0x00424426", "role": "window base/background and header text", "evidence": "The group paint entry calls window vtable +0x0C, then emits the fixed header text through 0x45DD70 before traversing member records."},
-        {"order": 2, "va": "0x0042442D-0x004244A4", "role": "visible member list", "evidence": "When this+0x68 and the linked-list head are present, each member text is emitted through 0x45DD70 using the two-column, 20-pixel row formula."},
-        {"order": 3, "va": "0x004244A6-0x0042452D", "role": "close/action control reposition", "evidence": "The five child controls are assigned their fixed relative positions after member-list rendering."},
-        {"order": 4, "va": "0x00424532-0x00424570", "role": "permission state text", "evidence": "The [允许]/[拒绝] string is selected from this+0x3F0 and drawn after control positioning."},
-        {"order": 5, "va": "0x0042457C-0x00424591", "role": "child control paint sequence", "evidence": "The five group child objects are then painted by vtable +0x04 in order."}
+        {
+          "order": 1,
+          "va": "0x004243E4-0x00424426",
+          "role": "window base/background and header text",
+          "evidence": "The group paint entry calls window vtable +0x0C, then emits the fixed header text through 0x45DD70 before traversing member records."
+        },
+        {
+          "order": 2,
+          "va": "0x0042442D-0x004244A4",
+          "role": "visible member list",
+          "evidence": "When this+0x68 and the linked-list head are present, each member text is emitted through 0x45DD70 using the two-column, 20-pixel row formula."
+        },
+        {
+          "order": 3,
+          "va": "0x004244A6-0x0042452D",
+          "role": "close/action control reposition",
+          "evidence": "The five child controls are assigned their fixed relative positions after member-list rendering."
+        },
+        {
+          "order": 4,
+          "va": "0x00424532-0x00424570",
+          "role": "permission state text",
+          "evidence": "The [允许]/[拒绝] string is selected from this+0x3F0 and drawn after control positioning."
+        },
+        {
+          "order": 5,
+          "va": "0x0042457C-0x00424591",
+          "role": "child control paint sequence",
+          "evidence": "The five group child objects are then painted by vtable +0x04 in order."
+        }
       ],
       "closed_notes": [
         {
@@ -97,33 +236,155 @@
       "id": "window.guild-candidate",
       "constructor_va": "0x00424EC0",
       "main_init": "0x004277E8",
-      "background": {"file": "Data/GameInter.wil", "frame": 600, "constructor_size": [596, 446]},
-      "window_origin": [102, 22],
+      "background": {
+        "file": "Data/GameInter.wil",
+        "frame": 600,
+        "constructor_size": [
+          596,
+          446
+        ]
+      },
+      "window_origin": [
+        102,
+        22
+      ],
       "can_move": true,
       "child_controls": [
-        {"call_va": "0x00424EC6", "frame_pair": [161, 162], "position": [260, 298], "semantic_candidate": "close/confirm"},
-        {"call_va": "0x00424EF3", "frame_pair": [610, 611], "position": [159, 50], "semantic_candidate": "guild tab/action"},
-        {"call_va": "0x00424F27", "frame_pair": [612, 613], "position": [567, 413], "semantic_candidate": "bottom-right action"},
-        {"call_va": "0x00424F54", "frame_pair": [614, 615], "position": [196, 50], "semantic_candidate": "guild tab/action"},
-        {"call_va": "0x00424F7B", "frame_pair": [616, 617], "position_expression": {"x": "window.y+123", "y": "window.y+123"}, "evidence_level": "primary-static-register-ambiguous"},
-        {"call_va": "0x00424FA3", "frame_pair": [618, 619], "position_expression": {"x": "window.x+196", "y": "arg8"}, "evidence_level": "primary-static-register-ambiguous"},
-        {"call_va": "0x00424FC3", "frame_pair": [620, 621], "position_expression": {"x": "window.y+123", "y": "window.y+50"}, "evidence_level": "primary-static-register-ambiguous"},
-        {"call_va": "0x00424FEB", "frame_pair": [622, 623], "position_expression": {"x": "arg8", "y": "ecx+1360"}, "evidence_level": "primary-static-register-ambiguous"},
-        {"call_va": "0x0042500F", "frame_pair": [624, 625], "position": [600, 72], "semantic_candidate": "guild tab/action", "note": "ctor-time pair (600,72) from stale registers (x=600-frame-id, y=72); paint-time SetPosition truth is (397,402) — see paint_repositioned_controls and closed_notes"}
+        {
+          "call_va": "0x00424EC6",
+          "frame_pair": [
+            161,
+            162
+          ],
+          "position": [
+            260,
+            298
+          ],
+          "semantic_candidate": "close/confirm"
+        },
+        {
+          "call_va": "0x00424EF3",
+          "frame_pair": [
+            610,
+            611
+          ],
+          "position": [
+            159,
+            50
+          ],
+          "semantic_candidate": "guild tab/action"
+        },
+        {
+          "call_va": "0x00424F27",
+          "frame_pair": [
+            612,
+            613
+          ],
+          "position": [
+            567,
+            413
+          ],
+          "semantic_candidate": "bottom-right action"
+        },
+        {
+          "call_va": "0x00424F54",
+          "frame_pair": [
+            614,
+            615
+          ],
+          "position": [
+            196,
+            50
+          ],
+          "semantic_candidate": "guild tab/action"
+        },
+        {
+          "call_va": "0x00424F7B",
+          "frame_pair": [
+            616,
+            617
+          ],
+          "position_expression": {
+            "x": "window.y+123",
+            "y": "window.y+123"
+          },
+          "evidence_level": "primary-static-register-ambiguous"
+        },
+        {
+          "call_va": "0x00424FA3",
+          "frame_pair": [
+            618,
+            619
+          ],
+          "position_expression": {
+            "x": "window.x+196",
+            "y": "arg8"
+          },
+          "evidence_level": "primary-static-register-ambiguous"
+        },
+        {
+          "call_va": "0x00424FC3",
+          "frame_pair": [
+            620,
+            621
+          ],
+          "position_expression": {
+            "x": "window.y+123",
+            "y": "window.y+50"
+          },
+          "evidence_level": "primary-static-register-ambiguous"
+        },
+        {
+          "call_va": "0x00424FEB",
+          "frame_pair": [
+            622,
+            623
+          ],
+          "position_expression": {
+            "x": "arg8",
+            "y": "ecx+1360"
+          },
+          "evidence_level": "primary-static-register-ambiguous"
+        },
+        {
+          "call_va": "0x0042500F",
+          "frame_pair": [
+            624,
+            625
+          ],
+          "position": [
+            600,
+            72
+          ],
+          "semantic_candidate": "guild tab/action",
+          "note": "ctor-time pair (600,72) from stale registers (x=600-frame-id, y=72); paint-time SetPosition truth is (397,402) — see paint_repositioned_controls and closed_notes"
+        }
       ],
       "member_list_render": {
         "paint_va": "0x00425280",
         "linked_list_head": "this+0xD4",
         "scroll_start_field": "this+0x9C",
         "visible_count_source": "this+0xE4 - scroll_start, capped at 0x12 (18)",
-        "screen_relative_origin": [35, 60],
+        "screen_relative_origin": [
+          35,
+          60
+        ],
         "row_formula": "x = window.x + 35; y = window.y + 60 + (index - scroll_start) * (font_metric_height + 5)",
         "row_step_source": "0x00425297-0x004252C8 obtains text metric height and adds 5",
         "entry_text_field": "linked_entry+0x04",
         "recognized_original_markers": [
-          {"va": "0x0047BA60", "text": "[联盟行会]"},
-          {"va": "0x0047BA6C", "text": "[敌对行会]"},
-          {"va": "0x0047BA78", "text": "[行会公告]"}
+          {
+            "va": "0x0047BA60",
+            "text": "[联盟行会]"
+          },
+          {
+            "va": "0x0047BA6C",
+            "text": "[敌对行会]"
+          },
+          {
+            "va": "0x0047BA78",
+            "text": "[行会公告]"
+          }
         ],
         "draw_helper": "0x0045DD70",
         "evidence": "0x004252F1-0x0042541A",
@@ -140,37 +401,187 @@
         "routine": "0x00425152-0x00425258",
         "coordinate_space": "window-relative after adding this+0x18/this+0x1C",
         "records": [
-          {"object_offset": "this+0x118", "relative_position": [556,409], "call_va": "0x0042516D"},
-          {"object_offset": "this+0x1CC", "relative_position": [34,376], "call_va": "0x00425189"},
-          {"object_offset": "this+0x280", "relative_position": [34,402], "call_va": "0x004251A4"},
-          {"object_offset": "this+0x334", "relative_position": [121,402], "call_va": "0x004251C0"},
-          {"object_offset": "this+0x3E8", "relative_position": [309,376], "call_va": "0x004251DF"},
-          {"object_offset": "this+0x49C", "relative_position": [397,376], "call_va": "0x004251FD"},
-          {"object_offset": "this+0x550", "relative_position": [484,376], "call_va": "0x0042521B"},
-          {"object_offset": "this+0x604", "relative_position": [309,402], "call_va": "0x0042523A"},
-          {"object_offset": "this+0x6B8", "relative_position": [397,402], "call_va": "0x00425258"}
+          {
+            "object_offset": "this+0x118",
+            "relative_position": [
+              556,
+              409
+            ],
+            "call_va": "0x0042516D"
+          },
+          {
+            "object_offset": "this+0x1CC",
+            "relative_position": [
+              34,
+              376
+            ],
+            "call_va": "0x00425189"
+          },
+          {
+            "object_offset": "this+0x280",
+            "relative_position": [
+              34,
+              402
+            ],
+            "call_va": "0x004251A4"
+          },
+          {
+            "object_offset": "this+0x334",
+            "relative_position": [
+              121,
+              402
+            ],
+            "call_va": "0x004251C0"
+          },
+          {
+            "object_offset": "this+0x3E8",
+            "relative_position": [
+              309,
+              376
+            ],
+            "call_va": "0x004251DF"
+          },
+          {
+            "object_offset": "this+0x49C",
+            "relative_position": [
+              397,
+              376
+            ],
+            "call_va": "0x004251FD"
+          },
+          {
+            "object_offset": "this+0x550",
+            "relative_position": [
+              484,
+              376
+            ],
+            "call_va": "0x0042521B"
+          },
+          {
+            "object_offset": "this+0x604",
+            "relative_position": [
+              309,
+              402
+            ],
+            "call_va": "0x0042523A"
+          },
+          {
+            "object_offset": "this+0x6B8",
+            "relative_position": [
+              397,
+              402
+            ],
+            "call_va": "0x00425258"
+          }
         ],
         "note": "These are paint-time SetPosition arguments and are stronger for the visible state than the earlier constructor register-flow expressions; frame-pair business names remain separate.",
         "evidence_level": "primary-static-paint-position"
       },
       "paint_order": [
-        {"order": 1, "va": "0x00425047-0x004250A7", "role": "window base/background and header text", "evidence": "The guild paint wrapper calls window vtable +0x0C, writes the main clipping rectangle and emits the fixed header/status text before state dispatch."},
-        {"order": 2, "va": "0x004250AC-0x0042557D", "role": "state-specific guild list/page text", "evidence": "The state byte this+0x98 dispatches to 0x00425280, 0x00425440 or 0x00425590; each path traverses its linked list, applies scroll_start this+0x9C and draws visible rows through 0x45DD70."},
-        {"order": 3, "va": "0x0042514D-0x00425258", "role": "guild control reposition", "evidence": "After the state-specific path returns, the wrapper assigns the nine paint-time control positions recorded in the evidence."},
-        {"order": 4, "va": "0x0042525D-0x00425270", "role": "child control paint sequence", "evidence": "Nine child controls are painted through vtable +0x04 in construction order after positioning."}
+        {
+          "order": 1,
+          "va": "0x00425047-0x004250A7",
+          "role": "window base/background and header text",
+          "evidence": "The guild paint wrapper calls window vtable +0x0C, writes the main clipping rectangle and emits the fixed header/status text before state dispatch."
+        },
+        {
+          "order": 2,
+          "va": "0x004250AC-0x0042557D",
+          "role": "state-specific guild list/page text",
+          "evidence": "The state byte this+0x98 dispatches to 0x00425280, 0x00425440 or 0x00425590; each path traverses its linked list, applies scroll_start this+0x9C and draws visible rows through 0x45DD70."
+        },
+        {
+          "order": 3,
+          "va": "0x0042514D-0x00425258",
+          "role": "guild control reposition",
+          "evidence": "After the state-specific path returns, the wrapper assigns the nine paint-time control positions recorded in the evidence."
+        },
+        {
+          "order": 4,
+          "va": "0x0042525D-0x00425270",
+          "role": "child control paint sequence",
+          "evidence": "Nine child controls are painted through vtable +0x04 in construction order after positioning."
+        }
       ],
       "resource_visual_text": {
         "source": "Direct pixel inspection of original Data/GameInter.wil frames 610-625; each normal frame is paired with the following pressed frame.",
         "warning": "These are artwork labels, not by themselves proof of the click handler or current guild state.",
         "guild_control_records": [
-          {"frame_pair": [610, 611], "normal_visual_text": "会员升职", "pressed_visual_text": "会员升职", "confidence": "high"},
-          {"frame_pair": [612, 613], "normal_visual_text": "成员踢出", "pressed_visual_text": "成员踢出", "confidence": "high"},
-          {"frame_pair": [614, 615], "normal_visual_text": "盟主转让", "pressed_visual_text": "盟主转让", "confidence": "medium", "note": "The first glyph is low-resolution but is consistent with 盟主 in the original artwork."},
-          {"frame_pair": [616, 617], "normal_visual_text": "邀请入会", "pressed_visual_text": "邀请入会", "confidence": "medium", "note": "Pixel glyph reading; retain as a candidate until the string/click branch is correlated."},
-          {"frame_pair": [618, 619], "normal_visual_text": "行会公告", "pressed_visual_text": "行会公告", "confidence": "high"},
-          {"frame_pair": [620, 621], "normal_visual_text": "退出行会", "pressed_visual_text": "退出行会", "confidence": "medium", "note": "The second glyph is partially blended with the metal texture."},
-          {"frame_pair": [622, 623], "normal_visual_text": "行会解散", "pressed_visual_text": "行会解散", "confidence": "high"},
-          {"frame_pair": [624, 625], "normal_visual_text": "关闭窗口", "pressed_visual_text": "关闭窗口", "confidence": "high"}
+          {
+            "frame_pair": [
+              610,
+              611
+            ],
+            "normal_visual_text": "会员升职",
+            "pressed_visual_text": "会员升职",
+            "confidence": "high"
+          },
+          {
+            "frame_pair": [
+              612,
+              613
+            ],
+            "normal_visual_text": "成员踢出",
+            "pressed_visual_text": "成员踢出",
+            "confidence": "high"
+          },
+          {
+            "frame_pair": [
+              614,
+              615
+            ],
+            "normal_visual_text": "盟主转让",
+            "pressed_visual_text": "盟主转让",
+            "confidence": "medium",
+            "note": "The first glyph is low-resolution but is consistent with 盟主 in the original artwork."
+          },
+          {
+            "frame_pair": [
+              616,
+              617
+            ],
+            "normal_visual_text": "邀请入会",
+            "pressed_visual_text": "邀请入会",
+            "confidence": "medium",
+            "note": "Pixel glyph reading; retain as a candidate until the string/click branch is correlated."
+          },
+          {
+            "frame_pair": [
+              618,
+              619
+            ],
+            "normal_visual_text": "行会公告",
+            "pressed_visual_text": "行会公告",
+            "confidence": "high"
+          },
+          {
+            "frame_pair": [
+              620,
+              621
+            ],
+            "normal_visual_text": "退出行会",
+            "pressed_visual_text": "退出行会",
+            "confidence": "medium",
+            "note": "The second glyph is partially blended with the metal texture."
+          },
+          {
+            "frame_pair": [
+              622,
+              623
+            ],
+            "normal_visual_text": "行会解散",
+            "pressed_visual_text": "行会解散",
+            "confidence": "high"
+          },
+          {
+            "frame_pair": [
+              624,
+              625
+            ],
+            "normal_visual_text": "关闭窗口",
+            "pressed_visual_text": "关闭窗口",
+            "confidence": "high"
+          }
         ]
       },
       "closed_notes": [
@@ -209,15 +620,45 @@
       {
         "cluster": "0x004027DF–0x00402845",
         "resource": "Data/Interface1c.wil",
-        "frames": [11, 13, 15, 17],
-        "visual_labels": ["选择角色", "创建账号", "修改密码", "blank export at Frame 17"],
+        "frames": [
+          11,
+          13,
+          15,
+          17
+        ],
+        "visual_labels": [
+          "选择角色",
+          "创建账号",
+          "修改密码",
+          "blank export at Frame 17"
+        ],
         "interpretation": "startup character-selection controls; no friend-list label"
       },
       {
         "cluster": "0x00456DC1–0x00456EC8",
         "resource": "Data/Interface1c.wil",
-        "frames": [51, 53, 55, 57, 86, 87, 89, 90, 92, 93, 95, 96, 98, 99],
-        "visual_labels": ["创建角色", "删除角色", "开始游戏", "character/slot icon candidates"],
+        "frames": [
+          51,
+          53,
+          55,
+          57,
+          86,
+          87,
+          89,
+          90,
+          92,
+          93,
+          95,
+          96,
+          98,
+          99
+        ],
+        "visual_labels": [
+          "创建角色",
+          "删除角色",
+          "开始游戏",
+          "character/slot icon candidates"
+        ],
         "interpretation": "character-selection/creation family; no standalone friend-list artwork proven"
       }
     ],
@@ -239,8 +680,618 @@
       "confirmation/prompt family",
       "full-map ID 15 / F602"
     ],
-    "result": "No separate static friend-list window constructor or dedicated main-HUD friend control was found in this inventory.",
+    "result": "No separate static friend-list window constructor or dedicated main-HUD friend control was found in this inventory. Round 3 (Finding 270) 已将该负结果升级为 documented negative closure：0x8A7140 双用途对话框（LOGIN/服务器通知）触发器全图定案、好友字符串/控件/资源/WIL 全负扫描、16 窗口 id 空间全枚举，唯一社交窗口 = 组队 F900 与行会 F600。",
     "evidence_level": "primary-static-negative-scope",
-    "interpretation": "This does not prove that no friend/social functionality exists at runtime. It means the current EI build's friend-like behavior is more likely to be a page/state of the guild/social F600 family, a dynamically allocated dialog, or an unassigned Interface1c control cluster. Do not add a standalone friend panel until an entry point, resource frame or state field is found."
-  }
+    "interpretation": "This does not prove that no friend/social functionality exists at runtime. It means the current EI build's friend-like behavior is more likely to be a page/state of the guild/social F600 family, a dynamically allocated dialog, or an unassigned Interface1c control cluster. Do not add a standalone friend panel until an entry point, resource frame or state field is found.",
+    "round3_closure": "Finding 270 (FriendsSocial, 2026-08-11): documented negative closure, evidence_level=primary-static/primary-resource-negative, pending=0"
+  },
+  "round3": {
+    "section": "Findings 267-273",
+    "finding_270": {
+      "finding_id": 270,
+      "agent": "FriendsSocial",
+      "date": "2026-08-11",
+      "title": "好友/社交窗口负闭合：0x8A7140 双用途对话框（登录/服务器通知）触发器全图 + 好友字符串/资源/WIL 负扫描 + 16 窗口 id 空间全枚举",
+      "evidence_level": "primary-static",
+      "interface1c_dialog_0x8A7140": {
+        "class": {
+          "ctor": "0x456CB0",
+          "vtable": "0x476BC4",
+          "show_ctor_wiring": "0x4568F0",
+          "hide": "0x4569C0",
+          "update_dispatch": "0x402BE0",
+          "substates": {
+            "byte_esi_0x8A4": {
+              "1": "0x402D50",
+              "2": "0x4031A0",
+              "3": "0x403560"
+            },
+            "byte_esi_0x8A5": "0x402C40"
+          },
+          "frame_update": "0x4575D0",
+          "screen_state_byte": "0x8B1878",
+          "screen_state_values": {
+            "0": "login screen 0x8A9520",
+            "1": "char-select 0x47EF18",
+            "2": "this dialog"
+          },
+          "screen_dispatch": "0x402060 -> state-2 branch 0x40215F (mov ecx,0x8A7140; call 0x4575D0)",
+          "draw_geometry": "message 0x10 to 0x8AB7A8 at (0x280,0x1E0) = (640,480) on 800x600; depth 5; flag 1/2 from byte [0x47EE89]"
+        },
+        "purpose": "双用途：游戏前 = LOGIN（登录）窗口；游戏中 = 服务器/维护/断线 NOTICE 对话框。不是好友窗口。",
+        "trigger_a_pregame_login": {
+          "show": "0x402970: call 0x4028C0; [0x8AB820]=[0x8B1870]=0x8A7140; call ctor 0x456CB0; byte [0x8B1878]=2 (verified @0x40298E)",
+          "only_caller": "0x40362D (pre-game intro/logo 动画完成路径, after 0x465D50)",
+          "login_config": "path string '.\\\\Data\\\\ei_login.dat' @0x47AAD0; keys: name, %s%d%s, server, caption, Server, ServerCount, Param1, Initial, ServerAddr, 192.168.0.200",
+          "login_fields": {
+            "method": "0x403640",
+            "focus_flag": "byte [esi+0xD38] (0=field1 account, else field2 password)",
+            "account_buffer": "esi+0xD39",
+            "password_buffer": "esi+0xE3D (0x104 max, mask byte [0x476290]=0xCC=204 '*')",
+            "edit_control": "0x8AA48C; get/set text via [0x476304]/[0x4762CC]; geometry via [0x4762BC]",
+            "field_geometries": {
+              "field1": "esi+0xF44/0xF50",
+              "field2": "esi+0xF54/0xF60"
+            },
+            "enter_key_0xD": "0x451F10(0x8AB828, esi+0xD39, esi+0xE3D) submit",
+            "tab_key_0x9": "toggle focus + 0x403640"
+          },
+          "buttons": [
+            {
+              "slot": "esi+0x9E8",
+              "size": "0xB4",
+              "id": 4,
+              "created": "0x4686C4 @0x45696F",
+              "callbacks": "0x404690 / 0x4046B0"
+            },
+            {
+              "slot": "esi+0xD38",
+              "size": "0xB4",
+              "id": 5,
+              "created": "0x4686C4 @0x456991",
+              "callbacks": "0x404690 / 0x4046B0"
+            }
+          ]
+        },
+        "trigger_b_ingame_notice": {
+          "protocol_0x7ED_dispatch": "0x41E50C: lea eax,[ebp-0x7ED]; cmp eax,3; jmp [eax*4+0x41E690]; case idx0 @0x41E522 -> 0x41CDE0",
+          "subtype_0x64_case": "0x41CE14 (subtype = (msg>>16)&0xFF; lea eax,[edx-0x64]; jmp [eax*4+0x41CED8] @0x41CE01; sub-check cx==0 @0x41CE14): guard 0x419CC0 -> 0x451660(0x8AB828,0x3F1) -> 0x42E1F0(esi+0x2A548C, esi+0x2F8788) -> dword [esi+0x428208]=0 -> byte [esi+0x428204]=2 @0x41CE57",
+          "state_machine": "0x41B5D0 (called from main frame loop 0x41C1C7): state byte [esi+0x428204] 0=reset counter; 1/2: counter [esi+0x428208] += frame delta; counter > 0x9C4 -> state=0, counter=0, state==2 -> call 0x419BE0 @0x41B65F (fade-in/out)",
+          "show": "0x419BE0: [esi+0x35B2B8]=0; call 0x419110; mov eax,0x8A7140; byte [0x8B1878]=2; [0x8AB820]=[0x8B1870]=0x8A7140; call ctor 0x456CB0; draw msg 0x10 at (0x280,0x1E0) on 0x8AB7A8",
+          "notice_text": {
+            "protocol_0x4B0": "dispatcher 0x4218F2 (idx table 0x42219C; case idx3 @0x421913): alloc 0x40C via 0x468B1A, copy payload via [0x4760C8], -> 0x41B710",
+            "parse": "0x41B710: copy 0x104 bytes into main+0x428070; set [main+0x428064]=1; geometry memset 0x90 bytes @ main+0x428174; width [main+0x428068]",
+            "consumers": {
+              "0x428070": [
+                "0x419003",
+                "0x41B72F",
+                "0x41B749",
+                "0x41B93E"
+              ],
+              "0x428064": [
+                "0x419021",
+                "0x41B7B1",
+                "0x41B8DD",
+                "0x41B914",
+                "0x41D50A",
+                "0x41DC19"
+              ]
+            }
+          },
+          "text_samples": [
+            "0x47B0D0 fmt \"%s 服务器连接不稳定，请重新对...\" (with player name; connection-loss notice)",
+            "0x47AF80 cp949 '서버와의 접속이 불안합니다. 게임을 종료하겠습니다.'"
+          ],
+          "purpose": "服务器连接不稳定/维护/断线通知（NOT friends）"
+        },
+        "conclusion": "0x8A7140 = 全局固定对话框对象：游戏前承担 LOGIN 窗口（ei_login.dat 配置、账号/密码输入、Enter 提交、Tab 切换），游戏中由协议 0x7ED/0x64 + 0x4B0 触发为服务器通知对话框。该对象及其类（ctor 0x456CB0 / 0x4568F0, vtable 0x476BC4, update 0x402BE0/0x4575D0）与好友列表无任何关联。"
+      },
+      "friend_list_search": {
+        "string_scan_primary_static_negative": {
+          "method": "full 0x80000-byte binary scan (md5 264d848da377c2172ffe1444bf31e7d0), GBK-first then cp949 fallback",
+          "zero_hits": [
+            "GBK 好友",
+            "GBK 好友名单",
+            "GBK 添加好友",
+            "GBK 删除好友",
+            "GBK 黑名单",
+            "GBK 密友",
+            "GBK 陌生人",
+            "GBK 仇人",
+            "GBK 邀请",
+            "cp949 친구",
+            "ASCII friend",
+            "ASCII Friend",
+            "ASCII FRIEND",
+            "ASCII social",
+            "ASCII buddy"
+          ],
+          "present_positive_controls": [
+            {
+              "GBK 组": 10
+            },
+            {
+              "GBK 行会": 29
+            },
+            {
+              "GBK 名单": 1,
+              "note": "行会/组队相关，唯一'名单'串，位于行会窗口字符串区"
+            },
+            {
+              "GBK 查找": 1,
+              "note": "组队查找，仅组队窗"
+            },
+            {
+              "GBK 添加成员": 1,
+              "va": "0x47B104",
+              "note": "组队/行会成员添加命令串（dispatcher 0x41DFE0，发送路径 0x41E0A9 via 0x565994），非好友添加"
+            }
+          ],
+          "chat_command_strings": [
+            {
+              "va": "0x47B070",
+              "text": "'@채팅저장' (cp949)",
+              "note": "聊天记录保存命令"
+            },
+            {
+              "va": "0x47B104",
+              "text": "'@添加成员' (GBK)",
+              "note": "组队/行会成员添加"
+            }
+          ],
+          "ui_string_block": "0x47B700-0x47BD00"
+        },
+        "wil_scan_primary_resource_negative": {
+          "gameinter_wil": {
+            "frames": 1103,
+            "large_panels_w_ge_120_h_ge_80": {
+              "1024x512": [
+                201,
+                350,
+                600,
+                1002
+              ],
+              "512x512": [
+                250,
+                400,
+                700,
+                850,
+                1000,
+                1003,
+                1050
+              ],
+              "1024x256": [
+                300,
+                601,
+                602
+              ],
+              "324x462": [
+                0
+              ],
+              "256x512": [
+                200,
+                750
+              ],
+              "512x256": [
+                800,
+                1100
+              ],
+              "800x136": [
+                50
+              ],
+              "360x190": [
+                950
+              ],
+              "256x256": [
+                900,
+                1001
+              ],
+              "368x164": [
+                550
+              ],
+              "192x230": [
+                551,
+                563
+              ],
+              "276x138": [
+                562
+              ],
+              "148x94": [
+                561
+              ]
+            }
+          },
+          "interface1c_wil": {
+            "frames": 2000,
+            "large_panels": {
+              "640x480": [
+                50,
+                80
+              ],
+              "512x512": [
+                308,
+                309,
+                609,
+                610,
+                1814
+              ],
+              "640x360": [
+                0
+              ],
+              "512x256": [
+                907,
+                908,
+                909,
+                1385,
+                1386,
+                1387,
+                1388,
+                1389,
+                1390,
+                1391
+              ],
+              "256x256": [
+                310,
+                311,
+                312,
+                313,
+                316,
+                317,
+                318,
+                911,
+                1202,
+                1203
+              ],
+              "152x252": [
+                1348
+              ],
+              "152x250": [
+                1345,
+                1346,
+                1347
+              ],
+              "148x252": [
+                1349,
+                1350
+              ],
+              "148x250": [
+                1343,
+                1344,
+                1351,
+                1352,
+                1353
+              ],
+              "144x250": [
+                1340,
+                1341,
+                1342,
+                1354,
+                1355,
+                1356
+              ],
+              "132x250": [
+                1947
+              ],
+              "124x266": [
+                1047
+              ],
+              "128x256": [
+                304,
+                305,
+                608,
+                1080,
+                1081,
+                1082,
+                1083,
+                1084,
+                1085,
+                1086
+              ],
+              "256x128": [
+                306,
+                307,
+                314,
+                910,
+                1980,
+                1984
+              ],
+              "120x266": [
+                1044,
+                1045,
+                1048
+              ],
+              "124x250": [
+                1946,
+                1948
+              ],
+              "128x128": [
+                315,
+                904,
+                905,
+                1805,
+                1806,
+                1815,
+                1816,
+                1860,
+                1861,
+                1862
+              ],
+              "164x88": [
+                81
+              ]
+            }
+          },
+          "attribution": "所有大型面板帧均归入已知窗口/界面：GameInter F600/F601/F602=行会/公告板家族（F602 公告板见 notice-prompt-window-evidence.json id15 class 0x43E260），F900/F1001=组队窗，F0=登录屏背景（Interface1c 324x462/640x360），128x256/256x128 簇=登录/选人按钮与装饰；无任何好友列表风格面板，且无绘制位点引用未归因帧到好友上下文"
+        }
+      },
+      "window_id_space": {
+        "slot_formula": "hit-test loop 0x42BEF8 over id 0..0xF: slot = esi + ((id*5+0x267)*9)*4 = esi + 0x567C + id*0xB4 (lea eax,[eax+eax*4+0x267] @0x42BF08; lea edx,[eax+eax*8] @0x42BF0F); per-slot vtable+0x10 call",
+        "click_dispatch_table_0x42C494": [
+          "0x42c1ce",
+          "0x42c259",
+          "0x42c241",
+          "0x42c2e1",
+          "0x42bf37",
+          "0x42c218",
+          "0x42c209",
+          "0x42c292",
+          "0x42c302",
+          "0x42c226",
+          "0x42c1a4",
+          "0x42c1b2",
+          "0x42c359",
+          "0x42c1c0",
+          "0x42c234",
+          "0x42c30d"
+        ],
+        "hotkey_labels_16": [
+          {
+            "slot": 0,
+            "va": "0x47BCE0",
+            "label": "交易栏(Ctrl+C, C)"
+          },
+          {
+            "slot": 1,
+            "va": "0x47BCCC",
+            "label": "小地图(Ctrl+V, V)"
+          },
+          {
+            "slot": 2,
+            "va": "0x47BCB8",
+            "label": "技能图鉴(Ctrl+B, B)"
+          },
+          {
+            "slot": 3,
+            "va": "0x47BCA8",
+            "label": "退出游戏(Alt+Q)"
+          },
+          {
+            "slot": 4,
+            "va": "0x47BC98",
+            "label": "注销人物(Alt+X)"
+          },
+          {
+            "slot": 5,
+            "va": "0x47BC88",
+            "label": "组队(Ctrl+G, G)",
+            "social": "group F900"
+          },
+          {
+            "slot": 6,
+            "va": "0x47BC78",
+            "label": "行会(Ctrl+F, F)",
+            "social": "guild F600"
+          },
+          {
+            "slot": 7,
+            "va": "0x47BC68",
+            "label": "腰带(Ctrl+Z, Z)"
+          },
+          {
+            "slot": 8,
+            "va": "0x47BC54",
+            "label": "技能书(Ctrl+E, E)"
+          },
+          {
+            "slot": 9,
+            "va": "0x47BC40",
+            "label": "聊天记录(Ctrl+R, R)"
+          },
+          {
+            "slot": 10,
+            "va": "0x47BC2C",
+            "label": "信息窗口(Ctrl+D, D)"
+          },
+          {
+            "slot": 11,
+            "va": "0x47BC18",
+            "label": "设置栏(Ctrl+N, N)"
+          },
+          {
+            "slot": 12,
+            "va": "0x47BC04",
+            "label": "档框富芒(瘤盔抗沥)",
+            "note": "undecoded mojibake slot; click handler = default no-op 0x42C359; inert/title slot, not friends"
+          },
+          {
+            "slot": 13,
+            "va": "0x47BBF4",
+            "label": "坐骑(Ctrl+S, S)"
+          },
+          {
+            "slot": 14,
+            "va": "0x47BBE0",
+            "label": "包袱栏(Ctrl+Q, Q)"
+          },
+          {
+            "slot": 15,
+            "va": "0x47BBD0",
+            "label": "状态栏(Ctrl+W, W)"
+          }
+        ],
+        "window_open_dispatch_0x42ADB0": {
+          "table_0x42B3E4": [
+            "0x42adcf",
+            "0x42ae42",
+            "0x42ae91",
+            "0x42aee0",
+            "0x42b06b",
+            "0x42b3dd",
+            "0x42b0ba",
+            "0x42b131",
+            "0x42b180",
+            "0x42b25e",
+            "0x42b3dd",
+            "0x42af2f",
+            "0x42af7e",
+            "0x42afcd",
+            "0x42b01c",
+            "0x42b2ad"
+          ],
+          "social_windows": [
+            {
+              "arg": 4,
+              "window_object": "esi+0x4707C",
+              "ctor": "0x424A60",
+              "wil": "GameInter F600",
+              "note": "行会（guild）；键盘分派 0x42C4D4 edi4 -> 0x42C039 -> 0x4258F0 -> 0x42ADB0(4)"
+            },
+            {
+              "arg": 6,
+              "window_object": "esi+0x47834",
+              "ctor": "0x424120",
+              "wil": "GameInter F900",
+              "note": "组队（group）；键盘分派 0x42C4D4 edi6 -> 0x42C063 -> 0x424610 -> 0x42ADB0(6)"
+            }
+          ],
+          "empty_slots": [
+            5,
+            10
+          ],
+          "note": "该 id 体系 = 既有 finding 中 '组队 id 6 / 行会 id 4' 的出处（window-open args），与 16 热键槽 id（0x42BEF8 体系）是两套体系"
+        },
+        "game_windows_13": [
+          {
+            "id": 0,
+            "object": "esi+0x6554",
+            "ctor": "0x42E810",
+            "update": "0x4300F0"
+          },
+          {
+            "id": 1,
+            "object": "esi+0x29CE4",
+            "ctor": "0x44AF50",
+            "update": "0x44CCD0"
+          },
+          {
+            "id": 2,
+            "object": "esi+0x33188",
+            "ctor": "0x44CFC0",
+            "update": "0x44E9B0"
+          },
+          {
+            "id": 3,
+            "object": "esi+0x3399C",
+            "ctor": "0x415650",
+            "update": "0x416EF0"
+          },
+          {
+            "id": 4,
+            "object": "esi+0x4707C",
+            "ctor": "0x424A60",
+            "update": "0x4258F0",
+            "social": "guild F600"
+          },
+          {
+            "id": 6,
+            "object": "esi+0x47834",
+            "ctor": "0x424120",
+            "update": "0x424610",
+            "social": "group F900"
+          },
+          {
+            "id": 7,
+            "object": "esi+0x47C28",
+            "ctor": "0x4501D0",
+            "update": "0x450B30"
+          },
+          {
+            "id": 8,
+            "object": "esi+0x507EC",
+            "ctor": "0x413DA0",
+            "update": "0x4149A0"
+          },
+          {
+            "id": 9,
+            "object": "esi+0x51150",
+            "ctor": "0x43EA80",
+            "update": "0x440290"
+          },
+          {
+            "id": 11,
+            "object": "esi+0x516E8",
+            "ctor": "0x4471D0",
+            "update": "0x447FA0"
+          },
+          {
+            "id": 12,
+            "object": "esi+0x518E0",
+            "ctor": "0x440E90",
+            "update": "0x4414F0"
+          },
+          {
+            "id": 13,
+            "object": "esi+0x52118",
+            "ctor": "0x426780",
+            "update": "0x426A80"
+          },
+          {
+            "id": 14,
+            "object": "esi+0x524F0",
+            "ctor": "0x438EF0",
+            "update": "0x43AB10"
+          }
+        ],
+        "game_screen_hit_test": "0x42AAB0: type table 0x42ABE8 (types 0..0xC) -> window objects esi+0x656C, 0x29CFC, 0x331A0, 0x339B4, 0x47094, 0x4784C, 0x47C40, 0x50804, 0x51168, 0x51700, 0x518F8, 0x52130, 0x52508 (= the 13 windows + 0x18); hit rect via [0x4762B4]",
+        "other_objects": [
+          {
+            "object": "esi+0x52E5C",
+            "ctor": "0x43E0E0",
+            "note": "非可开窗口对象（提示/公告家族？）"
+          },
+          {
+            "object": "esi+0x53030",
+            "ctor": "0x4187F0",
+            "note": "非可开窗口对象"
+          }
+        ],
+        "conclusion": "16 窗口 id 空间（热键槽 0-15 / window-open args 0-15 / 键盘分派 15 项 / 游戏屏命中类型 0-12）已全枚举：唯一社交窗口 = 组队 F900（id6/热键5）与行会 F600（id4/热键6）；无好友窗口 id，id 5/10 为空槽，槽 12 为 inert 标题槽"
+      },
+      "verdict": "documented negative closure（文档化负闭合）：好友/社交独立窗口在本客户端不存在。0x8A7140 不是好友窗口（双用途 LOGIN/服务器通知，触发器全图见上）；好友系字符串 0 命中；16 窗口 id 空间无好友位；GameInter/Interface1c 大面板帧全部归入已知窗口，无好友列表面板。与此前 established negative（仅 F900 组队 + F600 行会两类社交窗口）一致。",
+      "pending": 0,
+      "runtime_only_items_candidate": [
+        {
+          "item": "实际通知文本负载（协议 0x4B0 payload）",
+          "level": "candidate",
+          "note": "需运行时捕获"
+        },
+        {
+          "item": "对话框淡入/淡出时序（0x41B5D0 counter 0x9C4 与 [0x476710]/[0x4763A4]/[0x47639C] 系数）",
+          "level": "candidate",
+          "note": "需运行时捕获"
+        },
+        {
+          "item": "登录提交（Enter -> 0x451F10）后的服务器握手行为",
+          "level": "candidate",
+          "note": "需运行时捕获"
+        },
+        {
+          "item": "热键槽 12 标签 '档框富芒(瘤盔抗沥)' 的原始文字",
+          "level": "candidate",
+          "note": "GBK/cp949 均无法解码，运行时截图可确认；与好友无关"
+        }
+      ]
+    }
+  },
+  "result": "Round 3 (Finding 270, FriendsSocial): 好友/社交窗口文档化负闭合 —— 0x8A7140 双用途对话框（游戏前 LOGIN 窗口：ei_login.dat 配置/账号密码字段/Enter 提交；游戏中 0x7ED/0x64 协议 -> [main+0x428204]=2 -> 0x41B5D0 淡入 -> 0x419BE0 显示，文本来自 0x4B0 -> main+0x428070，为服务器连接不稳定/维护/断线通知）全触发器静态定案；好友字符串 0 命中（GBK 好友/好友名单/添加好友/删除好友/黑名单/密友/陌生人/仇人/邀请、cp949 친구、ASCII friend/Friend/FRIEND/social/buddy 全部 0）；16 窗口 id 空间全枚举（0x42BEF8 槽公式 esi+0x567C+id*0xB4、0x42C494 点击表、0x42ADB0/0x42B3E4 开窗表、0x42C4D4 键盘表、0x42AAB0/0x42ABE8 游戏屏命中类型，13 个游戏窗口对象 + 2 个非开窗对象）；WIL 大面板帧全归因，无好友列表面板。唯一社交窗口 = 组队 F900（id6）与行会 F600（id4）。pending = 0；残余运行时项为 candidate。"
 }

@@ -2610,8 +2610,8 @@
       "y": 300,
       "library": "M-Hum.wil",
       "frame": 0,
-      "evidence_level": "candidate",
-      "note": "player sprite demo; real M-Hum.wil frame"
+      "evidence_level": "derived",
+      "note": "type-0 entity -> element 71 -> M-Hum.wil (idx 68 = 139-71); frame word[0x8AA5C0+6*state]+10*flag+3000*dir = state0/dir0/flag0 -> F0"
     },
     {
       "id": "npc.guild",
@@ -2621,8 +2621,8 @@
       "y": 340,
       "library": "NPC.wil",
       "frame": 0,
-      "evidence_level": "candidate",
-      "note": "NPC dialogue opens on click"
+      "evidence_level": "derived",
+      "note": "type 0x32 -> element 128 -> NPC.wil (idx 11 = 139-128) @0x405263; frame word[0x8AA6C8+6*state]+100*dir+10*flag = state0/dir0/flag0 -> F0"
     },
     {
       "id": "npc.store",
@@ -2631,42 +2631,69 @@
       "x": 440,
       "y": 360,
       "library": "NPC.wil",
-      "frame": 1,
-      "evidence_level": "candidate",
-      "note": "store window opens on click"
+      "frame": 100,
+      "evidence_level": "derived",
+      "note": "type 0x32 -> NPC.wil; frame dir1 -> +100*dir -> F100"
     },
     {
-      "id": "mon.1",
+      "id": "mon.scarecrow",
       "name": "稻草人",
       "kind": "monster",
       "x": 260,
       "y": 320,
-      "library": "DMon-1.wil",
+      "library": "Mon-6.wil",
       "frame": 0,
-      "evidence_level": "candidate",
-      "note": "targetable monster"
+      "race": 50,
+      "evidence_level": "derived",
+      "note": "server race 50 (Scarecrow) -> element 0x58+50/10=0x5D=93 -> Mon-6.wil (idx 46); frame base+10*flag = F0"
     },
     {
-      "id": "mon.2",
+      "id": "mon.chicken",
       "name": "鸡",
       "kind": "monster",
       "x": 480,
       "y": 280,
-      "library": "DMon-1.wil",
-      "frame": 2,
-      "evidence_level": "candidate",
-      "note": "targetable monster"
+      "library": "Mon-4.wil",
+      "frame": 0,
+      "race": 30,
+      "evidence_level": "derived",
+      "note": "server race 30 (Chicken) -> element 0x58+30/10=0x5B=91 -> Mon-4.wil (idx 48); frame F0"
+    },
+    {
+      "id": "mon.deer",
+      "name": "鹿",
+      "kind": "monster",
+      "x": 540,
+      "y": 330,
+      "library": "Mon-4.wil",
+      "frame": 10,
+      "race": 31,
+      "evidence_level": "derived",
+      "note": "server race 31 (Deer) -> element 0x58+31/10=0x5B=91 -> Mon-4.wil (idx 48); frame base+10*flag = F10"
+    },
+    {
+      "id": "mon.sheep",
+      "name": "羊",
+      "kind": "monster",
+      "x": 200,
+      "y": 290,
+      "library": "Mon-7.wil",
+      "frame": 0,
+      "race": 68,
+      "evidence_level": "derived",
+      "note": "server race 68 (Sheep) -> element 0x58+68/10=0x5E=94 -> Mon-7.wil (idx 45); frame F0"
     },
     {
       "id": "drop.1",
-      "name": "金创药",
+      "name": "金创药（小）",
       "kind": "drop",
       "x": 300,
       "y": 350,
       "library": "Ground.wil",
-      "frame": 0,
-      "evidence_level": "candidate",
-      "note": "ground drop item"
+      "frame": 5,
+      "looks": 5,
+      "evidence_level": "derived",
+      "note": "stditem.dat rec1 金创药（小） looks68=5 -> Ground.wil F5 (8x12); ground item lib [0x566DD4]"
     }
   ],
   "equipment_slots": [

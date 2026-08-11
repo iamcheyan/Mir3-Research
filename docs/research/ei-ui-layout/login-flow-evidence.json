@@ -1,0 +1,280 @@
+{
+  "source": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+  "evidence_file": "login-flow-evidence.json",
+  "finding": "Finding 267 (LoginFlow)",
+  "scope": "pre-game UI flow: mode state machine, boot screen stack, char-select screen (0x8A9520), parent/9-button screen (0x8A7140), server protocol cases driving them, decoded pre-game strings",
+  "evidence_level": "primary-static (verified bytes/disasm); derived (computed from primary); candidate (plausible, unproven); pending (runtime capture)",
+  "method": "capstone disassembly of Mir3.exe (image base 0x400000, file size 0x80000; globals >= 0x480000 appear only as imm32), ModRM-complete byte scans for field references, IAT-resolved Win32 semantics, GBK-then-cp949 string decode, WIL frame metadata from Interface1c.wil / GameInter.wil, layout.json cross-check",
+
+  "round3": "Findings 267-273",
+
+  "mode_state_machine": {
+    "description": "global mode byte 0x8B1878 selects the active screen in the main loop",
+    "dispatch": {
+      "va": "0x40211E",
+      "detail": "main-loop dispatcher: mode 0 -> mov ecx,0x8A9520; call 0x402BE0 (char-select tick); mode 2 -> mov ecx,0x8A7140; call 0x4575D0 (parent tick); mode 3 -> gate [0x8AB7E8] -> 0x41BB00(0x47EF18) or 0x41B440+0x41B500 (in-game)"
+    },
+    "readers": ["0x40211E", "0x451C73", "0x451DB5"],
+    "writers": [
+      {"value": 0, "va": "0x4020AD", "derivation": "boot: after char-select ctor 0x4026E0, enter char-select screen"},
+      {"value": 2, "va": "0x40298E", "derivation": "fade path 0x403560 -> 0x402970: parent prep 0x4028C0, ptrs 0x8AB820/0x8B1870=0x8A7140, ctor 0x456CB0"},
+      {"value": 2, "va": "0x419BF9", "derivation": "protocol-side switch 0x419BE0 (game status handler 0x41B5D0 al==2 && val>0x9C4): ptrs=0x8A7140, ctor 0x456CB0, viewport 0x45D270(0x8AB7A8,0x280,0x1E0,0x10,1|2)"},
+      {"value": 3, "va": "0x4570BE", "derivation": "enter-game 0x4570A0: 0x457040 teardown -> 0x419350 game init -> mode=3"}
+    ],
+    "table": [
+      {"mode": 0, "screen": "char-select (login/server-list/transition)", "screen_obj": "0x8A9520", "ctor": "0x4026E0", "tick": "0x402BE0", "evidence_level": "primary-static"},
+      {"mode": 2, "screen": "parent/9-button (char list + create)", "screen_obj": "0x8A7140", "ctor": "0x456CB0", "tick": "0x4575D0", "evidence_level": "primary-static"},
+      {"mode": 3, "screen": "in-game (gameObj)", "game_obj": "0x47EF18", "enter": "0x4570A0", "evidence_level": "primary-static"},
+      {"mode": 1, "screen": "unused", "note": "no writer ever sets 1; mode byte only written 0/2/3", "evidence_level": "derived"}
+    ]
+  },
+
+  "boot_screen_stack": {
+    "boot_fn": "0x401B30",
+    "order": [
+      {"step": 1, "va": "0x401F4A", "detail": "patch-check failure MessageBox(0, 0x47A320, 0x47A468, MB_ICONERROR) — '좌표 패치를 수행 할 수 없습니다.' / caption 'Legend Of Mir 3' (cp949)", "evidence_level": "primary-static"},
+      {"step": 2, "va": "0x401F87-0x401FBD", "detail": "socket connect+send 0x45CA80(0x8AB7A8, addr, msgid 0x66, mode 1|2 by flag [0x47EE89]); mode 0 first connect (args 2,0x66), reconnect (args 1,0x66)", "evidence_level": "primary-static"},
+      {"step": 3, "va": "0x401FEC", "detail": "main window ctor 0x451100 on 0x8AA488: CreateWindowExA(0, class 0x47C438 'EDIT', title 0x8B187C, style 0x90000080); SetWindowLongA(hwnd, GWL_WNDPROC=-4, 0x450C40) prev wndproc -> [0x8AA488+0x14]; font CreateFontIndirectA 0x47BE18 '굴림체' -> +0x18", "evidence_level": "primary-static"},
+      {"step": 4, "va": "0x402094-0x4020A8", "detail": "char-select screen 0x8A9520 ctor 0x4026E0; [0x8AB820]=0x8A9520", "evidence_level": "primary-static"},
+      {"step": 5, "va": "0x4020AD", "detail": "mode byte 0x8B1878 = 0 (char-select active)", "evidence_level": "primary-static"},
+      {"step": 6, "va": "0x4020CB", "detail": "PeekMessage message pump; idle 0x40210C -> mode dispatch 0x40211E", "evidence_level": "primary-static"}
+    ],
+    "message_pump": {
+      "detail": "subclass WndProc 0x450C40 (ret 0x10) forwards to hub 0x8B1B08 -> hub vtable 0x476AF0 slot[0]=0x450CD0 main pump (ret 0x14); pump switch msg-0xF range 0..0xF5 (msgs 0xF..0x104) jump 0x450F78/idx 0x450F8C; SendMessageA([0x8AB7B0], 0x7EF/0x100) for keys; default 0x450F58 = CallWindowProcA(prevWndProc=[hub+0x14], hwnd, msg, wparam, lparam)",
+      "evidence_level": "primary-static"
+    },
+    "screen_switch_back": {
+      "va": "0x419BE0",
+      "detail": "in-game -> parent switch: [+0x35B2B8]=0, 0x419110, ptrs=0x8A7140, ctor 0x456CB0, mode=2, viewport reset; entered from game status handler 0x41B5D0 (call 0x419BE0 @0x41B65F) and case-0x64 sub0 chain (0x41CE00->0x41CE14->0x41CE57 [+0x428204]=2)",
+      "evidence_level": "primary-static"
+    }
+  },
+
+  "screens": {
+    "char_select": {
+      "screen_obj": "0x8A9520",
+      "ctor": "0x4026E0",
+      "object_initializer_va": "0x4026E0 (ctor; 0x40288B-0x402884 tail creates edit control)",
+      "vtable": {"va": "0x476368", "members": ["0x403AC0", "0x403B10", "0x465DD0", "0x403E80 (WndProc)", "0x4048F0", "0x404700", "0x4047A0", "0x404840", "0x42E700", "0x423450", "0x4048B0", "0x43700000"]},
+      "resource_objects": [
+        {"expression": "owner+0x46C", "path": "Data/gameinter.wil", "load_va": "0x40272A"},
+        {"expression": "owner+0x5B0", "path": "Data/Interface1c.wil", "load_va": "0x40273E"}
+      ],
+      "background_dat": {"va": "0x40278A-0x4027BD", "detail": "load .\\Data\\wemade.dat (0x47AA8C) into busy-object +0x6F4; SetRect(+0x740, 0, 0x3C, 0x280, 0x1A4)", "evidence_level": "primary-static"},
+      "edit_control": {
+        "va": "0x402884",
+        "detail": "0x4511D0(0x8AA488, 0x14) creates the child EDIT (class 0x47C438 'EDIT'); account rect SetRect(+0xF44, 0x80, 0x1B8, 0xE3, 0x1C6)=(128,440,227,454), password rect SetRect(+0xF54, 0x146, 0x1B8, 0x1A9, 0x1C6)=(326,440,425,454); edit repositioned by login submit via MoveWindow + [0x8AB7F0]/[0x8AB7F4]",
+        "evidence_level": "primary-static"
+      },
+      "phase": {
+        "field": "+0x8A4",
+        "detail": "1 = login form (tick 0x402D50), 2 = server list (tick 0x4031A0), 3 = transition fade (0x403560, 0x7D0=2000ms) -> 0x402970 parent; sub-state +0x8A5 (2 -> draw frame 0x3C via 0x466130(+0x5B0,0) + 0x45FD50(0x8AB7A8,[+0x5E8],[+0x5EC],0x3C,0xFFFF,0xFFFF))",
+        "evidence_level": "primary-static"
+      },
+      "tick": {
+        "va": "0x402BE0",
+        "detail": "0x465D50(esi,0) DirectDraw surface op with retry (DDERR_EXCLUSIVEMODEALREADYSET 0x887601C2 / DDERR_SURFACEBUSY 0x8876021C); sub-state 0x402C40; tail 0x4182A0(&esi+8,[+0x8A8],[+0x8AC]) dialog/button-list renderer (uses IAT PtInRect 0x4762B4)",
+        "evidence_level": "primary-static"
+      },
+      "buttons": [
+        {"object": "+0xA68", "frame": 11, "hover_frame": 12, "x": 459, "y": 436, "label": "选择角色 (select character)", "label_evidence": "layout.json visual inspection of Interface1c.wil F11 (primary-resource-visual-plus-static)", "click_chain": "up 0x4177F0 (sound 105) -> button vtable 0x4763A8 dispatch -> phase-1 command handler 0x404250-region -> login/select flow", "evidence_level": "primary-static"},
+        {"object": "+0xB1C", "frame": 13, "hover_frame": 14, "x": 139, "y": 379, "label": "创建账号 (create account)", "label_evidence": "layout.json visual inspection of Interface1c.wil F13", "click_chain": "open Mir3.ini 'Initial'/'Param2' URL via GetPrivateProfileStringA + ShellExecuteA (0x404483 path) then SendMessageA(main, WM_DESTROY=2) exit", "evidence_level": "primary-static"},
+        {"object": "+0xBD0", "frame": 15, "hover_frame": 16, "x": 279, "y": 379, "label": "修改密码 (change password)", "label_evidence": "layout.json visual inspection of Interface1c.wil F15", "click_chain": "0x404429: call [btn+0x10] (0x4177F0) then GetPrivateProfileStringA('Initial','Param3',0x47ABDC 'http://www.mir2ei.com/service/Modify_pwd') -> ShellExecuteA @0x404405 -> SendMessageA(main, WM_DESTROY) exit", "evidence_level": "primary-static"},
+        {"object": "+0xC84", "frame": 17, "hover_frame": 18, "x": 439, "y": 379, "label": "(blank frame, no pixel export)", "label_evidence": "layout.json visual inspection (medium confidence)", "note": "role candidate (likely exit/option)", "evidence_level": "candidate"}
+      ],
+      "login_fields": {
+        "account": {"field": "+0xD39", "detail": "account string; 0x529 response handler 0x403CC7 copies +0xD39 -> global account 0x47EEF8", "evidence_level": "primary-static"},
+        "password": {"field": "+0xE3D", "detail": "password string", "evidence_level": "primary-static"},
+        "remember_flag": {"field": "+0xD38", "detail": "0=none, 1=remember, 2=submit-in-flight; toggled by WM_KEYDOWN Tab (0x4040A4) and Enter", "evidence_level": "primary-static"},
+        "submit": {
+          "va": "0x403640/0x40406E-0x40407C",
+          "detail": "login submit: check +0xD38, account +0xD39[0], password +0xE3D[0]; GetWindowTextA/SetWindowTextA swaps edit text between +0xD39/+0xE3D; then 0x451F10(0x8AB828, &+0xD39, &+0xE3D) sends msgid 0x7D1 (2001) with '%s/%s' (0x47C84C); second send site 0x40437A (server-select retry); then [+0xD38]=2, SetFocus(main), ShowWindow(edit,0)",
+          "evidence_level": "primary-static"
+        },
+        "key_handlers": {
+          "0x403FE0": "WM_KEYDOWN: 0x418470(+8,...) form forward; Tab(9) toggles +0xD38; Enter(0xD) when phase==1 -> toggle +0xD38 + 0x403640 submit",
+          "0x403FD0": "WM_CHAR (shared): 0x401730 nProtect heartbeat (FindWindowA 0x47A218 'TfrmNPMON' / 0x47A224 'WWW.NPROTECT.COM' + SendMessageA 0x2B1A) + 0x468068"
+        }
+      },
+      "form_parse": {
+        "va": "0x403780",
+        "detail": "called from ctor @0x4026EE; GetCurrentDirectoryA + 0x47AB68 '\\' + 0x47AB5C 'Mir3.ini'; reads 'Initial' (0x47AB38) section 'Server%' keys into server nodes +0xA50/+0xA64",
+        "evidence_level": "primary-static"
+      },
+      "wndproc": "0x403E80 (char-select WndProc, ret 0x10)"
+    },
+
+    "parent": {
+      "screen_obj": "0x8A7140",
+      "ctor": "0x456CB0",
+      "object_initializer_va": "0x456A90",
+      "vtable": {"va": "0x476BC0", "members": ["0x4562F7", "0x458F00 (re-send msgid 0x64)", "0x458F10 (packet -> 0x458F80 dispatcher)", "0x465DD0", "0x459530", "0x45A2B0", "0x45A860", "0x45A9E0", "0x45A9F0", "0x401380", "0x45AA00", "0x45AA00"]},
+      "resource_objects": [
+        {"expression": "owner+0x8", "path": "Data/gameinter.wil", "load_va": "0x456CC4"},
+        {"expression": "owner+0x14C", "path": "Data/Interface1c.wil", "load_va": "0x456CD8"}
+      ],
+      "background": {"frame": 50, "w": 640, "h": 480, "derivation": "Interface1c.wil F50 (layout.json frame dims)"},
+      "phase": {
+        "field": "+0x930",
+        "detail": "phase table raw @0x457778 = [0x4575F3, 0x457615, 0x457604, 0x4576FA, 0x45773C]; dispatch read 0x4575DD",
+        "table": [
+          {"phase": 0, "va": "0x4575F3", "detail": "4-button char list: 0x457790 (hover via 0x417640/PtInRect), 0x4570D0 3D draw, 0x458150 selected-details render; ctor writes 0 @0x456C03"},
+          {"phase": 1, "va": "0x457615", "detail": "create-char in progress: pump &+0x780 via 0x45C900(&+0x780, [0x8AB7C4]); when done: 0x45BE20(&+0x780) finalize, 0x45763D mov byte [esi+0x930],2, +0x1160=1, +0x1164=0, 0x4584C0(esi,0,0)+0x458B20(4,0) refresh, SetWindowTextA([0x8AA48C],0x8B187C), SetFocus([0x8AA48C]), MoveWindow(x+0x120,y+0x195,0x4B,0xD,1), ShowWindow(edit,5), 0x458440(esi,0,&+0x10BC,0,0,0)+0x458B20(4,0)"},
+          {"phase": 2, "va": "0x457604", "detail": "animated char list 0x457AB0 + 5 bottom buttons F92/F95/F98/F86/F89 + password edit visible"},
+          {"phase": 3, "va": "0x4576FA", "detail": "wait: 0x45770F mov [esi+0x930],al=0, refresh 0x458B20(1,+0x1168)"},
+          {"phase": 4, "va": "0x45773C", "detail": "wait -> 0x4570A0 enter-game (mode 3 @0x4570BE)"}
+        ],
+        "writers": ["0x456C03 (ctor=0)", "0x45770F (3->0)", "0x45763D (=2)", "0x459AC5 (F51 create ->1)", "0x459D48 (F89 ->3)", "0x45922F (server case 0x209 ->3)", "0x459465 (server case 0x20D ->4)"],
+        "readers": ["0x4575DD", "0x458B34", "0x459879", "0x459A29", "0x45A0C1", "0x45A186", "0x458A8E"]
+      },
+      "tick": "0x4575D0 (parent tick; mode-2 dispatch target)",
+      "buttons": [
+        {"object": "+0x9E8", "frame": 51, "x": 440, "y": 93, "label": "create", "handler": "0x459A20-0x459AC5", "detail": "scan 2 slots stride 0x40 from +0xCB8; empty -> sound, phase=1, +0x1160=0, load CreateChr.dat 0x47D7E0 into +0x780 via 0x45BF30 + 0x45C4C0; else LoadString 802 dialog", "evidence_level": "primary-static"},
+        {"object": "+0xA9C", "frame": 53, "x": 79, "y": 243, "label": "(unlabeled)", "evidence_level": "candidate"},
+        {"object": "+0xB50", "frame": 55, "x": 259, "y": 49, "label": "enter game", "handler": "0x459B16", "detail": "gate btn3 (+0xB50) mousemove; sel +0x1168 in 0..1 -> 0x452070(0x8AB828, account 0x47EEF8, charname@+0xCBF) sends msgid 0x67 '%s/%s'; returns WITHOUT phase write (phase 4 comes from server case 0x20D); else LoadString 0x44C(1100) dialog", "evidence_level": "primary-static"},
+        {"object": "+0xC04", "frame": 57, "x": 28, "y": 438, "label": "exit", "handler": "SendMessageA([0x8AB7B0], 2, 0, 0) = WM_DESTROY", "evidence_level": "primary-static"},
+        {"object": "+0xD38", "frame": 92, "x": 266, "y": 419, "label": "(scroll/page)", "evidence_level": "candidate"},
+        {"object": "+0xDEC", "frame": 95, "x": 308, "y": 419, "label": "(scroll/page)", "evidence_level": "candidate"},
+        {"object": "+0xEA0", "frame": 98, "x": 352, "y": 419, "label": "(scroll/page)", "evidence_level": "candidate"},
+        {"object": "+0xF54", "frame": 86, "x": 450, "y": 444, "label": "(toggle/delete)", "detail": "UP-gate reads 0x459879/0x459A29 on +0x930", "evidence_level": "candidate"},
+        {"object": "+0x1008", "frame": 89, "x": 491, "y": 444, "label": "confirm", "handler": "0x459D48", "detail": "phase=3 + 0x451F90(0x8AB828) send msgid 0x64 '%s/%d'", "evidence_level": "primary-static"}
+      ],
+      "char_slots": {
+        "detail": "slot base +0xCB8 (phases 0/3) and +0x10BC (phase 2), stride 0x40, idx 0..1; anim ptr [slot+0x3C], flags [slot+0x20], frame count [slot+0x22]; setup 0x458B20(slotIdx,flags) (gate idx<=2, bl<5, phase {0,3}->+0xCB8, phase 2->+0x10BC; 0x458EC0([slot+4],[slot+5],flags)); display build 0x4584C0: class strings 0x47D79C '[男' / 0x47D7A4 '[女' + 0x47D778 ' 武 士 ]' / 0x47D784 ' 法 师 ]' / 0x47D790 ' 道 士 ]'; details via Mirmg.dll LoadLibraryA+LoadStringA id (arg&0xff)+0x190 -> 0x400-buf -> FreeLibrary; 0x468CD7(buf, 0x47D6F0 format, &+0x15A4, &+0x16A8, ..., &+0x22D8) variadic parse of 12 char-detail fields",
+        "evidence_level": "primary-static"
+      },
+      "sound": {
+        "detail": "ctor 0x45B6D0 sets +0x113C='CreateChr.wav'(0x47D60C), +0x1140='SelChr.wav'(0x47D5F8), +0x1144='StartGame.wav'(0x47D5E0) (mp3 variants 0x47D690/0x47D624); play via 0x45B900(0,0,sound,0,1); 3-slot sound object table +0x1148..+0x1150",
+        "evidence_level": "primary-static"
+      },
+      "wndproc": "0x459530; WM_KEYDOWN 0x459690, WM_CHAR shared 0x403FD0, 0x7E8 handler 0x459646, WM_CTLCOLOREDIT(0x133) replies for hwnd==[0x8AA48C]"
+    }
+  },
+
+  "protocol": {
+    "network_dispatcher": {
+      "va": "0x409720",
+      "detail": "NETWORK object method (vtable 0x476420 slot[1]); arg=packet buf; reads +6/+8/+0xA -> +0xCC/+0xD0; calls vtable[2]=0x408C20; gate [esi+0x88]==3 (connection state); msg-id word at packet+0x8A; ids 5..141; selector 0x40A148 (idx=id-5) jump 0x40A104 (17 entries: [0x40983F, 0x4097B5, 0x4098CD, 0x409D4B, 0x409A77, 0x40995B, 0x409CB8, 0x409B93, 0x409C25, 0x409B05, 0x4099E5, 0x409DDE, 0x409E6C, 0x40A085, 0x409F21, 0x40A067, 0x40A0ED default]); packet id -> Win32 msg map: 0x09->501, 0x05->502, 0x2B->521, 0x2D->513, 0x4B->529, 0x55->516, 0x5A->514, 0x62/0x71/0x78/0x82/0x83/0x8B->530",
+      "evidence_level": "primary-static"
+    },
+    "char_select_dispatcher": {
+      "va": "0x403B80",
+      "detail": "range 0x1F5..0x212, selector 0x403E40 idx=msg-0x1F5, jump 0x403E24; cases: 0x1F5(501) @0x403C0A login-fail table (sub-id switch 0x403E60: LoadString 0x12D/0x12E/0x6C/0x12C/0x130 = 301/302/108/300/304 + dialogs; 0x403C57 realname dialog 0x47AB94); 0x1F6(502) @0x403BD3 LoadString 0x12C(300); 0x210(528) @0x403DEE; 0x211(529) @0x403CC7 login OK: copy +0xD39 -> account 0x47EEF8; 0x212(530) @0x403D1C server list: 0x452810 read, strtok '/', 0x47EEC0->0x47EEA8, counts 0x47EEA4/0x47EEBC, 0x403DD7 mov [0x47EF10],eax = selected server index, 0x403DE4 mov [0x47EEBC],rand(), +0x8A4=3 (transition)",
+      "evidence_level": "primary-static"
+    },
+    "parent_dispatcher": {
+      "va": "0x458F80",
+      "detail": "thiscall ret 4, prologue sub esp,0x128; entry via parent vtable[2]=0x458F10 (0x468B30 string alloc, then call 0x458F80 @0x458F3A); 0x452920 packet read -> msgid [esp+0x28] & 0xffff; selector msgid-0x208, >8 -> default 0x4594FE; jump table @0x45950C",
+      "cases": [
+        {"msgid": "0x208 (520)", "target": "0x458FBD", "detail": "char-list refresh: clear +0xCB8 (rep stosd), 0x452810 read, count capped 2, parse loop 0x45902A..0x4591C5 (strchr '/' 0x468BF0, alloc 0x468B1A, slot-anim 0x458B20 @0x459195); fills +0x10BC/+0x10FC (display '[男 战士 ]' style); empty count -> dialog 0x47D818 '请先建立至少一个角色才能进行游戏.' @0x4594EB", "evidence_level": "primary-static"},
+        {"msgid": "0x209 (521)", "target": "0x459216", "detail": "server requests create: sound 0x45B3D0(0x8AB130)+0x45B900 play +0x1140 (SelChr.wav), phase=3 @0x45922F, +0x1160=0, 0x45BF30(&+0x780,[0x8AB7B8],[0x9135C0],0x47D7E0 'CreateChr.dat',1)+0x45C4C0, SetFocus([0x8AB7B0]), ShowWindow(edit,0), send 0x451F90(0x8AB828) msgid 0x64 '%s/%d'", "evidence_level": "primary-static"},
+        {"msgid": "0x20A (522)", "target": "0x4592A4", "detail": "error dialog switch on [esp+0x24]: LoadString 0x320(800)/0x322(802)/0x2328(9000)", "evidence_level": "primary-static"},
+        {"msgid": "0x20B (523)", "target": "0x459357", "detail": "re-send 0x451F90 (msgid 0x64) retry", "evidence_level": "primary-static"},
+        {"msgid": "0x20C (524)", "target": "0x459310", "detail": "LoadString 0x384(900) dialog", "evidence_level": "primary-static"},
+        {"msgid": "0x20D (525)", "target": "0x45936D", "detail": "enter-game OK: 0x452810 read, strchr '/', copy server list 0x47EEC0->0x47EEA8, [0x47EEA4]=[0x47EEBC], payload->0x47EEC0, rand()%n -> 0x47EEBC @0x45940A; then 0x459465: [+0x930]=4, [+0x1160]=0, sound +0x1144 (StartGame.wav), 0x45BF30(&+0x780,...,0x47D7C8 'StartGame.dat',1)+0x45C4C0", "evidence_level": "primary-static"},
+        {"msgid": "0x20E (526)", "target": "0x4594B5", "detail": "dialog 0x47D7AC '게임을 시작할 수 없습니다.' (cp949)", "evidence_level": "primary-static"},
+        {"msgid": "0x20F (527)", "target": "0x4591F3", "detail": "dialog 0x47D7F8 '服务器认证已不可用,请重新登录.' (GBK)", "evidence_level": "primary-static"},
+        {"msgid": "0x210 (528)", "target": "0x4594D5", "detail": "dialog 0x47AB78 '서버와의 접속이 끊겼습니다.' (cp949, connection lost)", "evidence_level": "primary-static"}
+      ]
+    },
+    "outgoing_messages": [
+      {"msgid": "0x66 (102)", "builder": "0x45CA80", "detail": "socket connect+send at boot 0x401F87 (mode 1|2 by flag [0x47EE89]); socket obj 0x8AB7A8", "evidence_level": "primary-static"},
+      {"msgid": "0x7D1 (2001)", "builder": "0x451F10", "format": "0x47C84C '%s/%s'", "payload": "account +0xD39 + password +0xE3D (login)", "send_sites": ["0x40407C", "0x40437A"], "evidence_level": "primary-static"},
+      {"msgid": "0x68 (104)", "builder": "0x451F60", "detail": "server select", "send_sites": ["char-select server-list flow"], "evidence_level": "primary-static"},
+      {"msgid": "0x64 (100)", "builder": "0x451F90", "format": "0x47C854 '%s/%d'", "payload": "account + selected server index [0x47EF10] (create/confirm request)", "send_sites": ["0x459D48 (F89)", "0x45922F (case 0x209)", "0x459357 (case 0x20B retry)", "0x458F00 (parent vtable[1])"], "evidence_level": "primary-static"},
+      {"msgid": "0x67 (103)", "builder": "0x452070", "format": "0x47C84C '%s/%s'", "payload": "account 0x47EEF8 + charname @+0xCBF (enter game)", "send_sites": ["0x459B16 (F55)"], "evidence_level": "primary-static"}
+    ],
+    "game_side_case_0x64": {
+      "va": "0x41CE00",
+      "detail": "case-0x64 (msg 100) handler reached via computed dispatch; jump 0x41CED8 = [0x41CE14, 0x41CE60, 0x41CE86, 0x41CEAB]; sub0 -> send 0x3F1(1009) via 0x451660 + copy 0x2A548C<->0x2F8788 via 0x42E1F0 + 0x41CE57 mov byte [esi+0x428204],2; sub1 -> SendMessageA([0x8AB7B0],2)=WM_DESTROY; sub2 -> rand < [0x35B1E8] -> 0x451940; sub3 -> 0x452440",
+      "evidence_level": "primary-static"
+    }
+  },
+
+  "strings": [
+    {"va": "0x47C84C", "text": "%s/%s", "encoding": "ascii", "use": "0x451F10 login msgid 0x7D1; 0x452070 enter-game msgid 0x67", "evidence_level": "primary-static"},
+    {"va": "0x47C854", "text": "%s/%d", "encoding": "ascii", "use": "0x451F90 msgid 0x64 (account/serverIdx)", "evidence_level": "primary-static"},
+    {"va": "0x47D7E0", "text": ".\\Data\\CreateChr.dat", "encoding": "ascii", "use": "create-char dialog data (0x45BF30 arg; phase-1 and case 0x209)", "evidence_level": "primary-static"},
+    {"va": "0x47D7C8", "text": ".\\Data\\StartGame.dat", "encoding": "ascii", "use": "enter-game dialog data (case 0x20D, phase 4)", "evidence_level": "primary-static"},
+    {"va": "0x47AA8C", "text": ".\\Data\\wemade.dat", "encoding": "ascii", "use": "char-select background animation (ctor +0x6F4)", "evidence_level": "primary-static"},
+    {"va": "0x47D60C", "text": "CreateChr.wav", "encoding": "ascii", "use": "sound string -> +0x113C (ctor 0x45B6D0)", "evidence_level": "primary-static"},
+    {"va": "0x47D5F8", "text": "SelChr.wav", "encoding": "ascii", "use": "sound string -> +0x1140", "evidence_level": "primary-static"},
+    {"va": "0x47D5E0", "text": "StartGame.wav", "encoding": "ascii", "use": "sound string -> +0x1144", "evidence_level": "primary-static"},
+    {"va": "0x47D690", "text": "CreateChr.mp3", "encoding": "ascii", "use": "mp3 variant (ctor 0x45B6D0)", "evidence_level": "primary-static"},
+    {"va": "0x47D624", "text": "SelChr.mp3", "encoding": "ascii", "use": "mp3 variant (ctor 0x45B6D0)", "evidence_level": "primary-static"},
+    {"va": "0x47D818", "text": "请先建立至少一个角色才能进行游戏.", "encoding": "GBK", "use": "char-list-empty dialog (dispatcher 0x4591D8/0x4594EB)", "evidence_level": "primary-static"},
+    {"va": "0x47D7F8", "text": "服务器认证已不可用,请重新登录.", "encoding": "GBK", "use": "case 0x20F dialog", "evidence_level": "primary-static"},
+    {"va": "0x47D7AC", "text": "게임을 시작할 수 없습니다.", "encoding": "cp949", "use": "case 0x20E dialog (cannot start game)", "evidence_level": "primary-static"},
+    {"va": "0x47AB78", "text": "서버와의 접속이 끊겼습니다.", "encoding": "cp949", "use": "case 0x210 dialog (connection lost)", "evidence_level": "primary-static"},
+    {"va": "0x47AB94", "text": "본 ID는 Mir3 홈페이지에서 실명제 등록을 해야만 사용 가능합니다.", "encoding": "cp949", "use": "real-name registration dialog (char-select dispatcher 0x403C57)", "evidence_level": "primary-static"},
+    {"va": "0x47A320", "text": "좌표 패치를 수행 할 수 없습니다.", "encoding": "cp949", "use": "boot patch-error MessageBox text (0x401F4A)", "evidence_level": "primary-static"},
+    {"va": "0x47A468", "text": "Legend Of Mir 3", "encoding": "ascii", "use": "MessageBox/window caption", "evidence_level": "primary-static"},
+    {"va": "0x47D79C", "text": "[男", "encoding": "GBK", "use": "char-slot male prefix (0x4584C0)", "evidence_level": "primary-static"},
+    {"va": "0x47D7A4", "text": "[女", "encoding": "GBK", "use": "char-slot female prefix (0x4584C0)", "evidence_level": "primary-static"},
+    {"va": "0x47D778", "text": " 武 士 ]", "encoding": "GBK", "use": "char-slot warrior suffix", "evidence_level": "primary-static"},
+    {"va": "0x47D784", "text": " 法 师 ]", "encoding": "GBK", "use": "char-slot mage suffix", "evidence_level": "primary-static"},
+    {"va": "0x47D790", "text": " 道 士 ]", "encoding": "GBK", "use": "char-slot taoist suffix", "evidence_level": "primary-static"},
+    {"va": "0x47D6F0", "text": "%[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c %[^`]%*c", "encoding": "ascii", "use": "0x468CD7 char-detail parse format (12 fields incl. 10 captures, backtick-separated) -> +0x15A4..+0x22D8", "evidence_level": "primary-static"},
+    {"va": "0x47BE18", "text": "굴림체", "encoding": "cp949", "use": "main window font (CreateFontIndirectA @0x45118B)", "evidence_level": "primary-static"},
+    {"va": "0x47C348", "text": "굴림", "encoding": "cp949", "use": "font name string", "evidence_level": "primary-static"},
+    {"va": "0x47C438", "text": "EDIT", "encoding": "ascii", "use": "window class of main window AND child edit control", "evidence_level": "primary-static"},
+    {"va": "0x47AB5C", "text": "Mir3.ini", "encoding": "ascii", "use": "ini filename (0x403780 form parse)", "evidence_level": "primary-static"},
+    {"va": "0x47AB38", "text": "Initial", "encoding": "ascii", "use": "ini section", "evidence_level": "primary-static"},
+    {"va": "0x47AB68", "text": "\\", "encoding": "ascii", "use": "path join", "evidence_level": "primary-static"},
+    {"va": "0x47ABD4", "text": "Param3", "encoding": "ascii", "use": "ini key for modify-password URL (F15)", "evidence_level": "primary-static"},
+    {"va": "0x47ABDC", "text": "http://www.mir2ei.com/service/Modify_pwd", "encoding": "ascii", "use": "F15 修改密码 ShellExecuteA URL default (0x404405)", "evidence_level": "primary-static"},
+    {"va": "0x47D978", "text": "[CWHDXGraphicWindow::Create]Window create failed", "encoding": "ascii", "use": "DX window error (0x45CA80 MessageBox)", "evidence_level": "primary-static"},
+    {"va": "0x47B004", "text": "MirDXG", "encoding": "ascii", "use": "DX window error caption", "evidence_level": "primary-static"},
+    {"va": "0x47A218", "text": "TfrmNPMON", "encoding": "ascii", "use": "nProtect FindWindowA class (0x401730)", "evidence_level": "primary-static"},
+    {"va": "0x47A224", "text": "WWW.NPROTECT.COM", "encoding": "ascii", "use": "nProtect FindWindowA title (0x401730)", "evidence_level": "primary-static"},
+    {"va": "0x47D818", "note": "LoadString ids used by pre-game dialogs: 300/301/302/304/108 (login errors), 800/802/9000/900/1100 (parent); LoadStringA IAT 0x476244", "evidence_level": "derived"}
+  ],
+
+  "globals": {
+    "0x8B1878": "mode byte (0 char-select, 2 parent, 3 in-game)",
+    "0x8A9520": "char-select screen object",
+    "0x8A7140": "parent/9-button screen object",
+    "0x8AB820": "current screen ptr (mirror 0x8B1870)",
+    "0x8AB828": "socket object (msg senders use ecx=0x8AB828)",
+    "0x8AB7A8": "DirectDraw/graphic owner (WIL frame draw helpers)",
+    "0x8AB7B0": "main message handle (SendMessageA target)",
+    "0x8AA488": "window object; HWND [0x8AA48C] (main window AND login/password edit)",
+    "0x47EEF8": "account string",
+    "0x47EEC0": "server list src (0x47EEA8 copy; counts 0x47EEBC/0x47EEA4)",
+    "0x47EF10": "selected server index (writers 0x401B6A, 0x403DD7, 0x41E6A7, 0x451C8B)",
+    "0x47EF18": "game object (mode 3)",
+    "0x47EE89": "connect-mode flag (boot 0x401F87 gate)",
+    "0x9135C0": "heap obj",
+    "0x8B187C": "window title",
+    "0x560088": "wrapper queue head (0x56008C tail); wrapper vtable 0x476448 = [0x413D60 dtor, 0x42C80000=100.0f DATA, 0, 0x413D80, 0x40EA60, 0x435030, 0x403AC0, 0x4378E0]"
+  },
+
+  "vtables": {
+    "0x476368": {"owner": "char-select", "members": ["0x403AC0", "0x403B10 (string helper)", "0x465DD0", "0x403E80 (WndProc)", "0x4048F0", "0x404700", "0x4047A0", "0x404840", "0x42E700", "0x423450", "0x4048B0", "0x43700000"]},
+    "0x476420": {"owner": "network/socket", "members": ["0x408060", "0x409720 (packet dispatcher)", "0x408C20", "0x408630", "0x406A70", "0x406AB0", "0x406CC0", "0x40B2C0", "0x40B750", "0x40B850", "0x413D60", "0x42C80000 (100.0f data, not callable)"]},
+    "0x476BC0": {"owner": "parent", "members": ["0x4562F7", "0x458F00 (re-send msgid 0x64)", "0x458F10 (packet -> 0x458F80)", "0x465DD0", "0x459530 (WndProc)", "0x45A2B0", "0x45A860", "0x45A9E0", "0x45A9F0", "0x401380", "0x45AA00", "0x45AA00"]},
+    "0x4763A8": {"owner": "button/caption", "members": ["0x4046C0", "0x417640 (mousemove)", "0x417780 (down)", "0x4177C0", "0x4177F0 (up, sound 105)", "0x404910", "0x4049B0", "0x404A30"]},
+    "0x476AF0": {"owner": "hub", "members": ["0x450CD0 (main pump)", "(prev wndproc at hub+0x14)"]}
+  },
+
+  "candidates_pending": [
+    {"item": "F17 button (char-select, 439,379) role", "evidence_level": "candidate", "note": "blank frame label; likely exit/option"},
+    {"item": "F92/F95/F98/F86 (parent phase-2 bottom buttons) exact semantics", "evidence_level": "candidate", "note": "scroll/page/delete roles; UP gates at 0x459879/0x459A29, DBLCLK 0x45A0C1, MOVE 0x45A186"},
+    {"item": "F53 (parent btn2) label", "evidence_level": "candidate"},
+    {"item": "wrapper-queue drain mechanics (0x40A043-0x40A100)", "evidence_level": "candidate", "note": "vtable 0x476448 slot[0]=0x413D60 is scalar-deleting dtor; queue nodes freed on drain; screen dispatchers 0x403B80/0x458F80 are the ultimate handlers"},
+    {"item": "hub+0x14 (prev wndproc) writer site", "evidence_level": "pending", "note": "pump default 0x450F58 CallWindowProcA reads [hub+0x14]; writer not yet located"},
+    {"item": "password edit content capture", "evidence_level": "pending", "note": "需运行时捕获"},
+    {"item": "fade animation 0x403560 visual", "evidence_level": "pending", "note": "需运行时捕获"},
+    {"item": "char-slot animation rendering (0x458A70/0x458440/0x4586F0 detail semantics)", "evidence_level": "candidate"},
+    {"item": "0x47EF10 server-index semantic (int stored at 0x403DD7 from 530 handler)", "evidence_level": "candidate", "note": "payload of 0x451F90 '%s/%d' second arg; exact field source in 530 packet to confirm"},
+    {"item": "mode-1 mode byte", "evidence_level": "derived", "note": "no writer ever sets 1; unused"},
+    {"item": "login packet 0x7D1 wire format", "evidence_level": "pending", "note": "需运行时捕获"},
+    {"item": "F13 (创建账号) ini key/URL exact values", "evidence_level": "candidate", "note": "F15 Param3/Modify_pwd URL primary; F13 uses 'Param2' per code shape at 0x40446C region (key string not individually decoded)"}
+  ],
+
+  "static_interpretation": {
+    "conclusion": "complete pre-game UI flow closed from primary-static evidence: boot -> connect msg 0x66 -> char-select (mode 0) -> login submit msgid 0x7D1 (account+password) -> server response 529 (account stored 0x47EEF8) -> server-list phase -> server select msgid 0x68 -> response 530 -> 2000ms fade -> parent screen (mode 2) -> server char-list 0x208/520 -> create flow msgid 0x64 (account/serverIdx) + CreateChr.dat, or enter-game F55 msgid 0x67 (account/charname) -> server 0x20D/525 -> phase 4 + StartGame.dat -> 0x4570A0 -> mode 3 (gameObj 0x47EF18)",
+    "confidence": "closed-with-runtime-residuals",
+    "evidence_mix": "primary-static disasm/bytes for all control flow, protocol ids, ctor args, frame numbers, button rects, strings; layout.json primary-resource-visual for button labels (选择角色/创建账号/修改密码) and F50/F51-F99 frame dims"
+  }
+}

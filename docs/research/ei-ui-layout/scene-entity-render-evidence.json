@@ -1,0 +1,266 @@
+{
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "image_base": "0x400000",
+    "va_mapping": "fileoff = VA - 0x400000 (PE section table vaddr == raddr; file size 0x80000 -> VAs 0x400000-0x47FFFF are real code/data, globals >= 0x480000 appear only as imm32 constants)",
+    "evidence_level": "primary-static unless noted (every VA below disassembled from a verified function prologue; indirect-call targets resolved at call sites)",
+    "finding": "Finding 269 (SceneEntities, 2026-08-11)",
+    "scope": "in-world entity rendering: players (type 0/1), monsters (type 3..0x31), NPC (type 0x32), ground items/deco, effects. Window-relative coords; client 800x600."
+  },
+  "conclusion": "The world entity render pipeline is fully closed statically: the frame function (0x41BCB7) runs 0x419D40 (world sort pass -> four y-sorted painter arrays root+0x154 entities / +0x2E4 effects / +0x474 ground deco / +0x604 ground items) then 0x41C450 (ground/tile pass over the camera-visible tile range), which per visible tile drives ground-item draw 0x41C860, ground-deco draw 0x41CA20, per-tile entity draw 0x41CBD0 and effect draw 0x41CD50. Per-tile entity draw dispatches on the type byte [entity+0x88]: types 0/1 (players) and 0x32 (NPC) are blitted via vtable+0x7C = 0x40B2C0 (world->screen sx/sy formulas into [e+0xE4]/[e+0xE8]), which resolves the WIL lib by element and blits with render-mode flag resolution (0x404DA0) and the 0x404E10/0x461ED0 blit family. Monsters (types 3..0x31, incl. type 3 per raw 0x41CD1C table case 1) and types 2 are blitted via the per-entity tick chain: vtable+0x1C = 0x40ADD0 -> vtable+0x20 = 0x40AFD0 (frame advance) -> vtable+0x18 = 0x40A2B0 (state-machine dispatch 0x456270 state word -> per-state slots vtable+0x44..0x6C, e.g. 0x4070C0) -> painter 0x405630 (leaf; 10 direct call sites, never in a vtable). Element->WIL binding and the animation frame formulas are static (type 0 -> M-Hum slot 71, type 1 -> WM-Hum slot 76, type 3 race<2000 -> 0x58+race/10, race>=2000 -> 0x87+(race-2000)/100, type 0x32 -> NPC slot 128; horse selector byte 0x629CF=0x57 -> slot 87). Remaining unknowns are runtime-capture only (entity-list head insertion, DB frame-table contents, per-monster blit ordering).",
+  "round3": {
+    "finding": 269,
+    "agent": "SceneEntities",
+    "date": "2026-08-11",
+    "previously_open": [
+      "call [reg+0x1C] candidates: 0x419DDA / 0x419E5A resolved as world-loop per-entity ticks (vtable+0x1C = 0x40ADD0)",
+      "0x41BC1F resolved as HUD tick (HUD object [root+0x2F8780] vtable+0x1C)",
+      "world entity draw loop start VA (0x419D40) and per-tile draw path (0x41CBD0 -> vtable+0x7C = 0x40B2C0)"
+    ],
+    "runtime_only": [
+      "monster (types 4..0x31) sprite blit ordering vs the tile pass (candidate: tick-state dispatch path; needs runtime capture)",
+      "entity-list head insertion into 0x560070 / 0x5600A0 / [root+0xE1158] (no writes in scanned 0x401000-0x47FFFF range)",
+      "vtable 0x4764B0 / 0x4765B0 install path (never stored via imm32)",
+      "[root+0xE1154].vtable+0x14 role",
+      "type-0x2 entity semantics (sorted, never ticked, skipped per-tile)",
+      "element array 0x5600FC / frame tables 0x8AA5C0 / 0x8AA686 / 0x8AA6C8 runtime contents"
+    ]
+  },
+  "pipeline": {
+    "frame_entry": {
+      "va": "0x41BCB7",
+      "call": "call 0x419D40 (world sort pass); followed at 0x41BCBC by call 0x41C450 (ground/tile pass); both inside the frame function (prologue before 0x41BBBC; HUD tick [root+0x2F8780].vtable+0x1C @0x41BC1F, scene-mode updates 0x41A9D0 / 0x41A5B0 on [root+0x3C], camera/visible-rect setup 0x41BC37-0x41BCB2)"
+    },
+    "order": ["0x419D40 world sort pass", "0x41C450 ground/tile pass", "per-tile: 0x41C860 ground items -> 0x41CA20 ground deco -> 0x41CBD0 entities -> 0x41CD50 effects"]
+  },
+  "world_sort_loop": {
+    "va": "0x419D40",
+    "prologue": "push ebp; mov ebp,esp; ... lea edi,[ebp+0x154]; rep stosd (0x38400B = 0xE100 dwords) zeroes all four painter arrays; epilogue add esp,0x1AC; ret 8",
+    "callers": { "0x41BCB7": "only direct caller (frame function; xor eax,eax @0x41BCB4, mov ecx,esi; call 0x419D40)" },
+    "list": {
+      "head": "root+0xE1158 (per-frame entity list)",
+      "node": "+0x4 = entity ptr, +0xC = next (loop 0x419D9F, entity in esi)",
+      "type_byte": "[entity+0x88]"
+    },
+    "passes": {
+      "pass1_entities": {
+        "tick_dispatch": {
+          "jump": "0x41A528 JMP {0:0x419DC6, 1:0x419E46, 2:0x419DDD}",
+          "idx": "0x41A534 (51-byte byte table): 0/1 -> 0; 2 -> 2; 3..0x31 -> 1; 0x32 -> 2",
+          "case0": "0x419DC6: types 0/1 (players) tick via call [vtable+0x1C] @0x419DDA (= 0x40ADD0)",
+          "case1": "0x419E46: types 3..0x31 (monsters) tick via call [vtable+0x1C] @0x419E5A; if [entity+0x61C7C]==3 -> 0x41B570 unlink + [root+0xE1154].vtable+0x14 + call [vtable+0], push 1",
+          "case2": "0x419DDD: type 2 and 0x32 and >0x32: no tick, world->screen transform only"
+        },
+        "draw_dispatch": {
+          "jump": "0x41A568 JMP {0:0x419E1C, 1:0x419E94}",
+          "idx": "0x41A570: 0/1 -> 0; 2 -> 1; 3..0x31 -> 1",
+          "case0": "0x419E1C: types 0/1: 0x41B570 list-flag clear + [root+0xE1154].vtable+0x14 + call [vtable+0] arg 1",
+          "case1": "0x419E94: types 2, 3..0x31 (monsters/NPC-sort): frustum cull, name lookup, y-sort insert (players NOT sort-inserted here)"
+        },
+        "sort_case": {
+          "va": "0x419E94",
+          "frustum_cull": "[entity+0xCC] in [[root+0xF532C], +0x18) and [entity+0xD0] in [[root+0xF5330], +0x18)",
+          "name_lookup": "lea ecx,[entity+8]; push ecx; lea ecx,[root+0x2ECCC0]; call 0x424360 -> [entity+0x61BD0]=1",
+          "sort_index": "((([entity+0xD0] - [root+0xF5330])*3)<<3) - [root+0xF532C] + [entity+0xCC] then *5, *5, <<6 -> slot in [root+0x154] (0x100-byte slots, 100-probe linear +4 dwords, full -> skip @0x41A078)",
+          "occlusion": "[root+0x364444] = mouse/hover entity, [root+0x364448] / [root+0x364450] flags; shadow branch ([entity+0x61C74]!=0): save 0x64 dwords to [esp+0x30] then rep movsd copy-in (@0x41A031/0x41A03E); non-shadow: mov [ebp+ecx*4+0x154], esi @0x41A071"
+        }
+      },
+      "pass2_effects": {
+        "list": "root+0xE11A0; word type [effect+0x10] in {0x10, 0x16, 0x3F, 0x48, 0x09, 0x35, 0x150, 0x14A..0x14E}",
+        "tick": "call [vtable+0xC]; duplicate check ([eax+0xB0]/[eax+0xB4]); [effect+0x124] skip flag",
+        "sort_insert": "into [root+0x2E4] (probe @0x41A32E, store @0x41A349)"
+      },
+      "pass3_ground_deco": {
+        "list": "root+0xE11B8; record [esi+4]/[esi+8] = x/y",
+        "transform": "[0x4762B4] world->screen helper",
+        "occluded": "[root+0xE11B4].vtable+0x14 + free 0x4680F8",
+        "sort_insert": "into [root+0x474] (formula with -0xB0/-0xA1 offsets, loop region 0x41B200-0x41B42E)"
+      },
+      "pass4_drops": {
+        "list": "root+0xE11D0; record [ebx+0xC] time, [ebx+0x10] limit, [ebx+0x14]/[ebx+0x18] coords",
+        "sort_insert": "into [root+0x604]"
+      }
+    },
+    "arrays": {
+      "root+0x154": "entities (0x100-byte slots)",
+      "root+0x2E4": "effects",
+      "root+0x474": "ground deco",
+      "root+0x604": "ground items",
+      "note": "all four live inside one zeroed 0x38400B block cleared by rep stosd at 0x419D53 (same layout reused by scene-bg fn 0x4194D0 @0x4194EA)"
+    }
+  },
+  "ground_tile_pass": {
+    "va": "0x41C450",
+    "prologue": "ret 4; called at 0x41BCBC immediately after the sort pass",
+    "visible_range": "x tiles [root+0xF5330]-0xA .. +0x22, y tiles [root+0xF532C]-0xA .. +0x22 (clamped by words [root+0xF5326]/[root+0xF5328]; negative skipped)",
+    "tile_draw": "tile lookup 0x43CA40 / 0x43BE00, tile draw 0x434A20; per-layer arrays [root+0xA37B8+2*tl], [root+0x51BDC+tl], [root+0xF5395+tl]",
+    "per_tile_calls": {
+      "0x41C860": "ground items from array root+0x604 (call sites 0x41C6C5/0x41C6CE)",
+      "0x41CA20": "ground deco from array root+0x474",
+      "0x41CBD0": "entities from array root+0x154",
+      "0x41CD50": "effects from array root+0x2E4"
+    },
+    "mouse_entity": "[root+0x364444] hover entity -> [entity+0x61C58]=10, [entity+0x61C5C]=5 + call [vtable+0x7C] (hover/target draw) @0x41C7EB+"
+  },
+  "ground_item_draw": {
+    "va": "0x41C860",
+    "lib_id": "record word [esi+8] = 库 id -> 0x466130 WIL-lib lookup via [0x566DD4]",
+    "coords": "[esi+0x14]/[esi+0x18] render coords",
+    "blit": "[esi+0x1C] flag -> plain blit 0x460240 (dsurface 0x8AB7A8) or 3D blit 0x4542A0 + 0x4542F0",
+    "timing": "record [esi+0xC] time vs [esi+0xA] interval",
+    "sides": "[0x566E0C] / [0x566E10]"
+  },
+  "per_tile_entity_draw": {
+    "va": "0x41CBD0",
+    "prologue": "ret 0xC (3 args); lea ebx,[edx+edi+0x154] @0x41CBF6; 100-probe walk",
+    "skip": "[entity+0x61C74] flag branches; bytes [entity+0x8A]/[entity+0x8B] == 0x7F -> transparent, skip",
+    "type_dispatch": {
+      "jump": "0x41CD0C JMP {0:0x41CC8E, 1:0x41CCD7, 2:0x41CCB6, 3:0x41CCED}",
+      "idx": "0x41CD1C raw byte table: 0/1 -> 0; 2 -> 3; 3 -> 1; 4..0x31 -> 3; 0x32 -> 2; >0x32 -> 3 (skip)",
+      "case0": "0x41CC8E: types 0/1 (players) draw: call [vtable+0x7C] + 0x40B180 + 0x40CE20",
+      "case1": "0x41CCD7: type 3 draw (raw idx byte 0x3 -> 1); details of blit path runtime-captured",
+      "case2": "0x41CCB6: type 0x32 (NPC) draw: call [vtable+0x7C] + 0x40B180",
+      "case3": "0x41CCED: types 2, 4..0x31, >0x32 SKIP (monsters blit via tick-state path, see tick_chain)"
+    },
+    "draw_args": "push [root+0x30]; push 1; push eax; push ecx(node); lea ecx,[root+0xF5200]; push ecx (tilemap ptr); mov ecx,esi (entity); call [vtable+0x7C] (5 args)"
+  },
+  "entity_sprite_draw": {
+    "va": "0x40B2C0",
+    "vtable": "0x4763C0 + 0x7C",
+    "prologue": "mov esi,ecx (this = entity)",
+    "world_to_screen": {
+      "gate": "arg [esp+0x10] != 0 -> recompute (else keep [e+0xE4]/[e+0xE8])",
+      "sx": "[entity+0xE4] = (([entity+0xCC] - [cam+0x12C])*3)<<4 - [cam+0x134] + [entity+0xD4] - 0xC8",
+      "sy": "[entity+0xE8] = (([entity+0xD0] - [cam+0x130])<<5) - [cam+0x138] + [entity+0xD8] - 0x9D",
+      "cam": "tilemap object [root+0xF5200]; +0x12C/+0x130 world x/y, +0x134/+0x138 sprite pixel offsets; 48x32 pixel tiles; viewport consts 0xC8=200 / 0x9D=157",
+      "note": "identical formula family as dispatcher 0x404FB0 (sx=((x-[0x574244])*48 + [ebp+0xD4] - [0x57424C] - 0xC8), sy=(((y-[0x574248])<<5) + [ebp+0xD8] - [0x574250] - 0x9D))"
+    },
+    "body": "then [entity+0x90] element ptr, [entity+0x61C64], [entity+0x61B99], frame [entity+0xC4] (0x40B360-0x40B738); call 0x466130 (WIL lib by element @0x40B383), call [0x4762B0] (frame/SetRect helper @0x40B3EA), call 0x404DA0 (render-mode flag resolver @0x40B487); blit family 0x404E10 (mode dispatch -> 0x461ED0 on dsurface 0x8AB7A8)"
+  },
+  "render_mode_resolver": {
+    "va": "0x404DA0",
+    "input": "[ecx+0x61C68] flag bits",
+    "output": "[ecx+0x61C6C] render-mode word (0x800000 -> 1, 0x4000000 -> 0, 0x20000000 -> 0xFBFF, 0x10000000 -> 0xFFE0, 0x8000000 -> 0x94BF, 0x40000000 -> 0xFCB2, 0x80000000 -> 0x7E0)",
+    "blit_dispatch": "0x404E10: mode word switch -> 0x461ED0 blit (ecx = 0x8AB7A8 dsurface), ret 0x28"
+  },
+  "tick_chain": {
+    "entry": "vtable+0x1C = 0x40ADD0 (ret 8; slot +0x1C) @0x40AE34 calls [edx+0x20]",
+    "frame_advance": {
+      "va": "0x40AFD0 (ret 4)",
+      "gates": "[entity+0xC0]==1 alive; [entity+0x61B99] flag; [entity+0x61C68] & 0x8000000",
+      "counter": "[entity+0x61C84] inc (mod 0x186A0; odd frames skip draw)",
+      "frame": "[entity+0xC4] += 2 (via [entity+0x61B98]) or += 1 (with [entity+0x61B94] flag); wrap vs [entity+0xB8]-[entity+0x61C7D]"
+    },
+    "state_dispatch": {
+      "va": "0x40A2B0 (ret 8) called @0x40AFBF [edx+0x18]",
+      "state": "word [ebp+4] from state object 0x456270; states 0x1B, 0x09..0x17, 0x22, 0x321, ...",
+      "slots": "call [vtable+0x44/0x48/0x4C/0x50/0x58/0x5C/0x64/0x68/0x6C] = 0x406F60 / 0x4070C0 / 0x407200 / 0x407670 / 0x407EC0 / 0x407F20 / 0x409720 / 0x408C20 / 0x408630 (per-state draw slots)",
+      "entity_record_draw": "+0x48 = 0x4070C0 -> painter 0x405630"
+    },
+    "creature_effect_tick": {
+      "va": "0x40EFC0",
+      "detail": "timers [esi+0x61C5C]/[esi+0x61C58]/[esi+0x61C60], blink [esi+0x62A28] with 0x96 threshold cycling [esi+0x62A24] 0..2, [esi+0xC0]==0x13 check, [esi+0x62A34] -> DB 0x8AA5A8 via 0x44A820, message 0x14F -> effect list 0x56008C, entity-pick 0x47EF18 via 0x41EBD0, draw via [vtable+0x20] @0x40F1CA (= 0x40AFD0), frame-inc [esi+0xC8] += [ebp] >= [esi+0xBC]"
+    }
+  },
+  "dispatcher": {
+    "va": "0x404FB0",
+    "role": "world->screen + element resolution entry (vtables 0x4763C0+0x0C / 0x47648C+0x0C / 0x476550+0x00 / 0x476728+0x00)",
+    "painter_call": "0x405630 at 0x4052F7 (inside 0x404FB0 body)"
+  },
+  "painter": {
+    "va": "0x405630",
+    "role": "leaf sprite painter (never in any vtable); 10 direct call sites: 0x4052F7, 0x406A09, 0x406B9D, 0x406EDC, 0x406FBD, 0x407184, 0x407FDB, 0x4080F1, 0x40C390, 0x40F429",
+    "chain": "element index -> WIL path slot -> WIL lib -> frame -> blit"
+  },
+  "element_binding": {
+    "entry": "type byte / race word -> element index (= WIL path slot index)",
+    "table": [
+      { "type": "0", "element": "71 (M-Hum)", "va": "0x40502D", "evidence": "primary-static" },
+      { "type": "1", "element": "76 (WM-Hum)", "va": "0x40502D region", "evidence": "primary-static" },
+      { "type": "3", "race": "< 2000", "element": "0x58 + race/10 (guard race < 0x8C*10 = 0x2E20... race<520 window)", "va": "0x40502D region", "evidence": "primary-static" },
+      { "type": "3", "race": ">= 2000", "element": "0x87 + (race-2000)/100 (guard < 0x8C)", "va": "0x40502D region", "evidence": "primary-static" },
+      { "type": "0x32", "element": "128 (NPC)", "va": "0x405263", "evidence": "primary-static" },
+      { "horse": "selector byte 0x629CF = 0x57", "element": "87", "evidence": "primary-static" }
+    ],
+    "wil_path_table": "base+0xB130, stride 0x104, 140 slots (0x453600..0x45410A); slots 70-139 with strings at 0x47C878..; element array 0x5600FC stride 0x144 x 140 (runtime-initialized)",
+    "wil_lib": "selector table [0x566DD4]; lib lookup 0x466130; frame count via header dword at +0xC @0x466160"
+  },
+  "frame_formulas": {
+    "player": "word[0x8AA5C0 + 6*state] + 10*flag + 3000*dir (stride 6)",
+    "monster": "word[0x8AA686 + 6*state] + 1000*(race%10) + 10*flag; race>=2000: word[0x8AA686 + 6*flag] + 100*(race-2000) + 10*flag",
+    "npc": "word[0x8AA6C8 + 6*state] + 100*dir + 10*flag, flag = [esp+0x40]%3",
+    "outputs": "[ebp+0xB4] base / [ebp+0xB8] end / [ebp+0xBC] interval",
+    "db_object": "0x8AA5A8 (state 0x44A820 / race 0x44A240)",
+    "tables_runtime": "table contents are runtime (server) data -> 需运行时捕获; anchors/layout primary-static"
+  },
+  "entity_lists": {
+    "world_loop": { "head": "root+0xE1158", "node": "+0x4 entity, +0xC next", "entity_fields": "+0x88 type byte, +0x8A/+0x8B state bytes (0x7F = transparent), +0xCC/+0xD0 world coords, +0xD4, vtable" },
+    "global_list": { "head": "0x560070 (reads @0x408248, 0x40DFC2, 0x41ECAE, 0x4350B9, 0x43CD18, 0x43DC54; no writes in file -> head-init 需运行时捕获)", "node": "+0x4 entity, +0xC next; entity +0x4 key word, +0x6/+0x8 screen x/y, +0xC short name[8], +0x17 long name[64] 'name|guild', +0x88 type, +0xCC/+0xD0 coords, +0x61C74 flag" },
+    "global_list2": { "head": "0x5600A0 (read @0x43DCD9)" },
+    "effects": { "head": "root+0xE11A0; node word +0x10 = type {0x10,0x16,0x3F,0x48,0x09,0x35,0x150,0x14A..0x14E}; vtable +0x00 release(1 arg), +0x0C tick(1 arg), +0x10 draw(0 args)" },
+    "effect_global": { "heads": "0x560088/0x56008C/0x560098 (node insert @0x408208-0x408234, vtable 0x476448 = 0x4763C0+0x88 embedded, append via [ecx+0xC], alloc 0x468B1A) + 0x5600E8/0x5600EC/0x5600F8" },
+    "ground_deco": { "head": "root+0xE11B8", "record": "+0x4/+0x8 x/y" },
+    "drops": { "head": "root+0xE11D0", "record": "+0x8 lib id word, +0xC time, +0xA interval word, +0x14/+0x18 coords, +0x1C flag" }
+  },
+  "render_state_fields": {
+    "+0x88": "type byte (0/1 player, 2 odd, 3..0x31 monster, 0x32 NPC)",
+    "+0x8A/+0x8B": "state bytes (0x7F = transparent skip)",
+    "+0x90": "element ptr",
+    "+0xB4/+0xB8/+0xBC": "frame base / end / interval (from frame formulas)",
+    "+0xC0": "alive state (==1 check in frame advance)",
+    "+0xC4": "current frame",
+    "+0xC8": "frame accumulator",
+    "+0xCC/+0xD0": "world coords (tile pass cull window [root+0xF532C]/[root+0xF5330] +-0x18)",
+    "+0xD4/+0xD8": "sprite pixel offsets",
+    "+0xE4/+0xE8": "screen px (written by 0x40B2C0 / dispatcher 0x404FB0)",
+    "+0x61B94/+0x61B98": "frame step flags (+=1 / +=2)",
+    "+0x61B99": "animation gate",
+    "+0x61BD0": "name-found flag (set by 0x424360 lookup)",
+    "+0x61C58/+0x61C5C": "hover timers (mouse entity path)",
+    "+0x61C64": "read in 0x40B2C0",
+    "+0x61C68": "render-mode flag bits (0x800000..0x80000000)",
+    "+0x61C6C": "resolved render-mode word",
+    "+0x61C74": "shadow/name flag (0x40B2C0 branches, sort shadow copy)",
+    "+0x61C7A": "kind byte in {2, 0x43, 0x68} (paint paths 0x40DFC2 / 0x408248)",
+    "+0x61C7C": "draw flag (==3 -> unlink in sort pass)",
+    "+0x61C84": "alternate-frame counter (mod 0x186A0)",
+    "+0x61C7D": "frame-wrap bias"
+  },
+  "vtables": {
+    "0x4763C0": {
+      "role": "per-entity render-state vtable",
+      "slots": { "+0x00": "0x4049B0", "+0x04": "0x404A30", "+0x08": "0x404D60", "+0x0C": "0x404FB0 dispatcher", "+0x10": "0x4058E0", "+0x14": "0x405E20", "+0x18": "0x40A2B0 state dispatch (ret 8)", "+0x1C": "0x40ADD0 tick (ret 8)", "+0x20": "0x40AFD0 frame-advance+draw (ret 4)", "+0x24": "0x4069C0", "+0x28": "0x407010", "+0x2C": "0x406A20", "+0x30": "0x406A40", "+0x34": "0x406A50", "+0x38": "0x406A60", "+0x3C": "0x406EC0", "+0x40": "0x406EF0", "+0x44": "0x406F60", "+0x48": "0x4070C0", "+0x4C": "0x407200", "+0x50": "0x407670", "+0x54": "0x407DF0", "+0x58": "0x407EC0", "+0x5C": "0x407F20", "+0x60": "0x408060", "+0x64": "0x409720", "+0x68": "0x408C20", "+0x6C": "0x408630", "+0x70": "0x406A70", "+0x74": "0x406AB0", "+0x78": "0x406CC0", "+0x7C": "0x40B2C0 draw", "+0x80": "0x40B750 floating name", "+0x84": "0x40B850 name-plate box", "+0x88": "0x413D60", "+0x94": "0x413D80", "+0x98": "0x40EA60", "+0x9C": "0x435030" }
+    },
+    "0x476728": { "role": "HUD vtable (0x4763C0+0x00..0x14 mirrored), +0x1C tick used at 0x41BC1F" },
+    "0x476448": { "role": "effect-object vtable = 0x4763C0 + 0x88 embedded" },
+    "0x4764B0": { "role": "recognized table; install path not via imm32 -> 需运行时捕获" },
+    "0x4765B0": { "role": "recognized table; install path not via imm32 -> 需运行时捕获" }
+  },
+  "camera_globals": {
+    "root": "0x47EF18 (entity root object)",
+    "camera_px": "[root+0xF532C] x / [root+0xF5330] y",
+    "map_bounds": "words [root+0xF5326] / [root+0xF5328]",
+    "sub_offsets": "[root+0xF5334] / [root+0xF5338]",
+    "tilemap": "[root+0xF5200] (camera +0x12C/0x130/0x134/0x138; tile rect word at +0xF53B2, dims 0x320 x 0x1EC)",
+    "name_list": "[root+0x2ECCC0] (lookup 0x424360)",
+    "mode": "[root+0x3C]",
+    "mouse_entity": "[root+0x364444]",
+    "occlusion_flags": "[root+0x364448] / [root+0x364450]",
+    "dsurface": "0x8AB7A8"
+  },
+  "pending": {
+    "需运行时捕获": [
+      "monster (types 4..0x31) per-tile blit ordering vs sorted pass (candidate: tick-state dispatch path 0x40ADD0 -> 0x40AFD0 -> 0x40A2B0 -> per-state slots; static facts verified, ordering unproven)",
+      "entity-list head insertion into 0x560070 / 0x5600A0 / [root+0xE1158] (no writes anywhere in 0x401000-0x47FFFF -> server-driven add/remove)",
+      "vtable 0x4764B0 / 0x4765B0 install path",
+      "[root+0xE1154].vtable+0x14 role (called in sort-pass cases 0x419E1C / 0x419E46 and occluded ground-deco path)",
+      "type-0x2 entity semantics (sorted in pass 1, never ticked, skipped in 0x41CBD0 case3)",
+      "type-0x3 draw path details in 0x41CCD7 (case 1; raw idx byte 0x3 -> 1)",
+      "element array 0x5600FC contents and frame tables 0x8AA5C0 / 0x8AA686 / 0x8AA6C8 runtime values (DB 0x8AA5A8 populated by server 0x44A820 / 0x44A240)",
+      "exact bucket/probe layout of the four sort arrays (0x100-byte slots x 100 probes, index stride 0x640)",
+      "hover/target-box argument semantics for 0x40B2C0 5-arg call",
+      "roles of 0x40B180 / 0x40CE20 (called beside vtable+0x7C in 0x41CC8E / 0x41CCB6)"
+    ],
+    "note": "No runtime-only item is marked confirmed; all are candidate with 需运行时捕获."
+  }
+}

@@ -47,9 +47,9 @@ Tools/web/wilviewer.py
 布局记录：29
 标准化绘制调用：60
 专项控件矩形：25
-内容分类：20
-JSON 证据文件：66
-尚未完全闭合的证据项：13（全部为运行期/服务器协议/业务名级，静态链均已闭合）
+内容分类：21（新增 scene-entities 类，round 3）
+JSON 证据文件：70（round 3 新增 login-flow / window-id-catalog / scene-entity-render / server-data-crossref 4 个，扩展 social / target-box / skill-window-render-loop 3 个）
+尚未完全闭合的证据项：18（全部为运行期/服务器协议/业务名级，静态链均已闭合；round 3 后 skills=0、secondary 关闭、target-box 肖像负闭合）
 ```
 
 已经建立或完成初步证据的部分包括：
@@ -312,6 +312,15 @@ simulator/style.css
 - 场景实体资源族。
 - **组队/行会窗口已闭合（静态侧，Finding 259，`social-window-render-evidence.json` closed_notes）**：组队（id 6，main+0x47834，paint `0x4243D0`）成员行=单文本字段 node+0x04 无图标、链表插入序（0x419EE4→0x424840，容器 this+0x54 vtable 0x4767E0，头 this+0x58/count this+0x68）；两列=奇→win.x+45（0x424471 push ebx=win.x+0x2D）、偶→win.x+145（0x424479 lea edx,[ebx+0x64]），y=win.y+0x5A+20*⌊i/2⌋——**旧公式 mod-2 列映射颠倒已纠正**；允许/拒绝（this+0x3F0 → 0x47BA08/0x47BA00）y=win.y+0x3A 证明（0x424549 add edi,0x3A），x 读未初始化栈槽 [esp+0x1C]（0x42453E）=静态不可证；全链表遍历无 18 行上限（0x42449B next==0 终止，超窗引擎裁剪）；运行态显隐 0x42AC30/0x42AC50、切换 0x42B0BA（visibility=main+0x47864=win+0x30，伴生页签帧 0x398/0x399 @main+0x47B70）、显示分派 0x42B6A0 尾部 0x42B79A。行会（id 4，main+0x4707C，paint 包装 `0x425040`）9 控件数组 this+0x118 步长 0xB4（帧对 161/162、610..625）；点击分派 `0x4258F0` 检查序 0,1,2,3,4,7,5,8,6（主分派 0x42C039-0x42C052 后 id-hook push 4→0x42ADB0）；分支=会员升职→state0+0x4523E0@0x8AB828、成员踢出→state1+0x452410、盟主转让→state2（原始 c7 86 9c 00 00 00 00 c6 86 98 00 00 00 02 @0x4259D9）、邀请入会/行会解散→掌门守卫 [this+0x94]+对话框 602/601（list3/list1 经 0x45DC70 + [0x4762CC] 提交，空表 tooltip 0x47BB28）、行会公告→tooltip 0x40F/0x47BAF4（%s=[this+0x54]）、关闭窗口→tooltip 0x415/0x47BAC8、退出行会→**倒置守卫**（掌门 no-op/成员 tooltip 0x47BAA4）；tooltip 显示 0x418030（ecx=0x7E04C8），输入 0x8AB828 经 0x4520F0+0x4523E0（0x47BA90 "@退出联盟 "）；三态绘制=state0 标记 0x47BA78/0x47BA6C/0x47BA60、state1 标记 0x47BA84→0x96FF 余 0xFFFFFF，other 态全行阴影 0xA140A+绿 0xFF00 双画（0x4255C5/0x42563E），scroll this+0x9C、cap 0x12、行步=字体高+5（0x45E0C0）；9 控件 paint 真相 (556,409)/(34,376)/(34,402)/(121,402)/(309,376)/(397,376)/(484,376)/(309,402)/(397,402)，ctor 后 5 组坐标为陈旧寄存器垃圾、**+0x6B8 旧记录 [196,50] 纠正为 (600,72)**。剩余：允许/拒绝 x、组队成员文本内容来源（0x419EE4 数据链路）运行期确认。
 - 原版资源的完整解码、索引、透明色/调色板/裁剪规则。
+- **Round 3（Findings 267–273，2026-08-11）闭合摘要**：
+  - **LoginFlow（267，`login-flow-evidence.json`，primary-static）**：模式字节 0x8B1878 全写点（0/2/3，mode1 未用）+ 启动栈（0x401B30→connect 0x66→主窗 0x451100 EDIT 类 굴림체→char-select 0x4026E0→mode0 泵）；char-select 0x8A9520 四按钮（F11 选角 (459,436) / F13 建号 (139,379) Mir3.ini URL / F15 改密 / F17 退出）、提交 0x7D1 `%s/%s`；parent 0x8A7140 九按钮（F50 背景/F51 建号→CreateChr.dat/F55 进入 0x67/F57 退出/F89 确认 0x64 `%s/%d`）、阶段机 +0x930（表 0x457778）、server 分发 0x458F80（msgid 表 0x45950C：0x208 角色列表/0x209 建号/0x20D 进入 OK→StartGame.dat/0x20E cp949 提示）；36 字符串全解码。layout.json `secondary_screen_candidates` 两条目已置 closure 段。
+  - **WindowCatalog（268，`window-id-catalog.json`）**：16 固定窗全目录（winmgr+0x567C+id*0xB4 @0x42BF0B；caption vtable 0x4763A8；窗 vtable 0x476624 +0x10 show 0x423F80）；**id 0xB 修正=任务 F700**（NPC=id9）；id5/10 空槽、id15 公告仅显示、id100 退出确认框；无好友窗（与 270 一致）。
+  - **SceneEntities（269，`scene-entity-render-evidence.json`）**：世界排序通道 0x419D40（4 painter 数组）+ 瓦片通道 0x41C450（地面 0x41C860/装饰 0x41CA20/实体 0x41CBD0/特效 0x41CD50）；**element 映射 type0→71 M-Hum、type1→76 WM-Hum、type3 race<2000→0x58+race/10、≥2000→0x87+(race−2000)/100、0x32→128 NPC、马 0x629CF=0x57→87**；WIL 路径表 base+0xB130 stride 0x104（140 槽，串 @0x47C878）；**idx = 139 − element 双重验证**。
+  - **FriendsSocial（270，`social-window-render-evidence.json` 追加，pending=0 负闭合）**：0x8A7140=登录/服务通知双用途对话框（ei_login.dat @0x47AAD0；proto 0x7ED→0x41CDE0 subtype 0x64→[main+0x428204]=2→0x41B5D0→0x419BE0；文本 0x4B0→main+0x428070，样例 0x47B0D0 `服务器连接不稳定...`/0x47AF80 cp949 断线）；好友字符串 0 命中；16 id 空间全枚举（热键标签 0x47BBD0–0x47BCE0 仅行会 Ctrl+F/组队 Ctrl+G；13 窗 ctor 块 0x426C80）。**不是好友窗**。
+  - **MonsterPortrait（271，`target-box-evidence.json` 追加）**：element→WIL 文件名 primary-static（el81=Magic/el86=ProgUse/el87=Horse/el129=MonMagic/el137=MagicEx/el138=MonMagicEx.wil；0x56B22C=slot 表基址非 HP-bar 资源）；头像四区裁定（状态窗 49×33=GameInter F200 横幅无脸 / 目标框=代码合成 / 怪物无肖像 / char-select 无 2D 头像 3D 引擎+Interface1c F0）；NPCFace.WIL（0x47C4EC，440 帧/46 非空）仅供 NPC 窗。
+  - **Skills2（272，`skill-window-render-loop-evidence.json` 追加）**：技能书右页渲染循环 0x43A440 全闭合——CRLF 分行、`;` 注释、`#` 段头 atoi==this+0x964、20 槽反引号 sscanf 0x47C350、count 恒 1（0x45E0C0 三路径 {0,0}）、几何 (winX+235, winY+30+15k)、`[` 名行 0x96C8FA+4 角阴影、选择链 0x439134→0x43A370→0x43ACE4→paint 0x439500→0x439520；修正旧笔误（0x0f→Y this+0x1c、0xeb→X this+0x18）与 0x43A3E0 函数起点误判。渲染循环内 pending=0。
+  - **ServerData（273，`server-data-crossref.json` + `Tools/reverse-engineering/parse_mir3_dat.py`，derived）**：stditem 27 行/monster 15/magic 9/mapinfo 31/merchant 12；monster.dat 记录 252B/xor9、ID@248=rec+1、d20=appearance（稻草人 83/鸡 31/鹿 52/白野猪 208）、d64/d68=AC/MAC；客户端唯一 primary 交叉链=item type 0x0A/0x0B↔stditem cat36 10/11；8 冲突注明（Market_Def [Goods]=Volume/Hour 库存非价等）。
+  - **实体→WIL 绑定推导（整合）**：怪物 race→`Mon-(race/10+1).wil`（race<160）；`entities.json` 升级为证据绑定（player M-Hum.wil F0 / npc NPC.wil F0,F100 / 稻草人 Mon-6.wil F0 / 鸡 Mon-4.wil F0 / 鹿 Mon-4.wil F10 / 羊 Mon-7.wil F0 / drop Ground.wil F5=stditem looks68=5）；wilsdk 帧数验证：Mon-1..16 全 10000、NPC 6400、M-Hum 27000、DMon-1 4340、Ground 1440、Horse 10400。
 
 ## 7. 工作纪律与交付
 

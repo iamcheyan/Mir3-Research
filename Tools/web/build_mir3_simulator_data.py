@@ -165,34 +165,41 @@ def main() -> None:
         })
 
     # -------------------------------------------------------------- entities
-    # Scene composition is a demo layer; entity frames are candidate picks
-    # from real libraries so the simulator shows genuine sprites.
-    entities: list[dict] = [
-        {"id": "player", "name": "玩家", "kind": "player",
-         "x": 320, "y": 300, "library": "M-Hum.wil", "frame": 0,
-         "evidence_level": "candidate",
-         "note": "player sprite demo; real M-Hum.wil frame"},
-        {"id": "npc.guild", "name": "行会管理员", "kind": "npc",
-         "x": 380, "y": 340, "library": "NPC.wil", "frame": 0,
-         "evidence_level": "candidate",
-         "note": "NPC dialogue opens on click"},
-        {"id": "npc.store", "name": "商店老板", "kind": "npc",
-         "x": 440, "y": 360, "library": "NPC.wil", "frame": 1,
-         "evidence_level": "candidate",
-         "note": "store window opens on click"},
-        {"id": "mon.1", "name": "稻草人", "kind": "monster",
-         "x": 260, "y": 320, "library": "DMon-1.wil", "frame": 0,
-         "evidence_level": "candidate",
-         "note": "targetable monster"},
-        {"id": "mon.2", "name": "鸡", "kind": "monster",
-         "x": 480, "y": 280, "library": "DMon-1.wil", "frame": 2,
-         "evidence_level": "candidate",
-         "note": "targetable monster"},
-        {"id": "drop.1", "name": "金创药", "kind": "drop",
-         "x": 300, "y": 350, "library": "Ground.wil", "frame": 0,
-         "evidence_level": "candidate",
-         "note": "ground drop item"},
-    ]
+    # Scene entity definitions are data-driven from Tools/mir3_client_simulator/
+    # data/entities.json (evidence-derived: type byte -> element -> WIL path slot
+    # idx = 139-element, per scene-entity-render-evidence.json Finding 269; race ->
+    # Mon-(race/10+1).wil per server-data-crossref.json Finding 273 + Zircon
+    # MonsterImage enum). Fall back to the legacy demo list only if absent.
+    entities_path = OUT / "entities.json"
+    if entities_path.exists():
+        entities: list[dict] = json.loads(entities_path.read_text(encoding="utf-8"))
+    else:
+        entities: list[dict] = [
+            {"id": "player", "name": "玩家", "kind": "player",
+             "x": 320, "y": 300, "library": "M-Hum.wil", "frame": 0,
+             "evidence_level": "candidate",
+             "note": "player sprite demo; real M-Hum.wil frame"},
+            {"id": "npc.guild", "name": "行会管理员", "kind": "npc",
+             "x": 380, "y": 340, "library": "NPC.wil", "frame": 0,
+             "evidence_level": "candidate",
+             "note": "NPC dialogue opens on click"},
+            {"id": "npc.store", "name": "商店老板", "kind": "npc",
+             "x": 440, "y": 360, "library": "NPC.wil", "frame": 1,
+             "evidence_level": "candidate",
+             "note": "store window opens on click"},
+            {"id": "mon.1", "name": "稻草人", "kind": "monster",
+             "x": 260, "y": 320, "library": "DMon-1.wil", "frame": 0,
+             "evidence_level": "candidate",
+             "note": "targetable monster"},
+            {"id": "mon.2", "name": "鸡", "kind": "monster",
+             "x": 480, "y": 280, "library": "DMon-1.wil", "frame": 2,
+             "evidence_level": "candidate",
+             "note": "targetable monster"},
+            {"id": "drop.1", "name": "金创药", "kind": "drop",
+             "x": 300, "y": 350, "library": "Ground.wil", "frame": 0,
+             "evidence_level": "candidate",
+             "note": "ground drop item"},
+        ]
 
     # -------------------------------------------------------- equipment slots
     # 8x38x38 evidence rects (window-relative) from status-window-render-evidence.json /

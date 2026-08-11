@@ -901,6 +901,11 @@ function bindSceneInteraction() {
       pushChat(`[拾取] 你捡起了 ${e.name}`);
       const spr = sceneEl.querySelector(`.sprite[data-entity="${e.id}"]`);
       if (spr) spr.remove();
+      // picked-up drop is no longer a valid target (0x40B850 name-plate needs
+      // a live entity sprite); clear selection so hover takes over cleanly
+      STATE.selectedEntity = null;
+      updateTargetPanel();
+      updateTargetBox();
     } else {
       setTarget(e);
       pushChat(`[目标] 怪物：${e.name}`);

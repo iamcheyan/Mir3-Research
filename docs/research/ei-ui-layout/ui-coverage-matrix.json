@@ -45,7 +45,8 @@
       "closed_2026_08_11": [
         "long-tail closed (Finding 257): (1) selector WIL bindings = static NEGATIVE evidence - bind API 0x4660E0 has 14 direct callers enumerated, sole global-table binder = map loader 0x43B600 covering only 0x0E..0x1B/0x1C..0x29 (all 544 shipped maps header[0x14] in {0,1}); target-box elements 0x51/0x56/0x57/0x81/0x89/0x8A have no static binder (0x566780->only 0x40CE96, 0x566DD4->11 readers, 0x566F18/0x56AE60/0x56A440/0x56AFA4->zero imm32 refs); 0x47C3E0 filler format dead (0 refs); exact WIL filenames = runtime data candidate",
         "(2) hover target portrait = NEGATIVE (no portrait exists): per-frame HUD dispatch 0x41BF00-0x41C0A0 = 5 text/HP-bar components only (0x40A8A0, 0x40BB00, vtable+0x80=0x40B750, entity loop, 0x41B1C0, 0x434D40; vtable+0x84=0x40B850 @0x41C063); status-window 49x33 rect (this+0x200) = special index 4 character-figure slot drawn at (window.x+0x61, window.y+0xC8) flag=1, NOT a portrait; NPCface.wil (440 frames, ~100x122) excluded by dims",
-        "(3) HP bar frame = HP value [0x61B9C] primary-static (0x40A8A0); 0x40F5F0 10000+(A%400) series = separate rect HUD+0x629FC on element 0x57 (0x566F18 = 0x5600FC+0x57*0x144, third selector byte [0x629CF]=0x57 @0x40C79C/0x40F47F), A=[629C8]*400-[8A]*3000+[C4]-0xAA0, frame=10000+(A%400); GameInter.wil 1103 frames <10000 excluded (primary-static absence); >=10000-frame WIL candidates measured (Tiles5c 20000, SmTilesc 10180, object1c 33125, object2c 30000, M-SHum 32722, M-Hum 27000, M-Helmet1 24000, M-Hair 15000, Horse 10400, M-Weapon1/2/3 30000, M-Weapon4 17000) - runtime-bound candidate"
+        "(3) HP bar frame = HP value [0x61B9C] primary-static (0x40A8A0); 0x40F5F0 10000+(A%400) series = separate rect HUD+0x629FC on element 0x57 (0x566F18 = 0x5600FC+0x57*0x144, third selector byte [0x629CF]=0x57 @0x40C79C/0x40F47F), A=[629C8]*400-[8A]*3000+[C4]-0xAA0, frame=10000+(A%400); GameInter.wil 1103 frames <10000 excluded (primary-static absence); >=10000-frame WIL candidates measured (Tiles5c 20000, SmTilesc 10180, object1c 33125, object2c 30000, M-SHum 32722, M-Hum 27000, M-Helmet1 24000, M-Hair 15000, Horse 10400, M-Weapon1/2/3 30000, M-Weapon4 17000) - runtime-bound candidate",
+        "round-3 portrait closure (Finding 271): element->WIL filename binding PRIMARY-STATIC (el81=Magic.wil/el86=ProgUse.wil/el87=Horse.wil/el129=MonMagic.wil/el137=MagicEx.wil/el138=MonMagicEx.wil; idx=139-element; 0x56B22C is slot-table base not HP-bar resource); avatar four-way ruling: status window 49x33 (incl avatar zone)=item-chain record 4 hit-test + baked GameInter F200 banner (no face); target box = code-drawn composite, no standalone WIL frame; monsters have no portrait; NPCFace.WIL (0x47C4EC, 440 frames/46 nonblank) is NPC-window-only; char-select has no 2D avatar (3D engine + Interface1c F0 640x360)"
       ],
       "pending_notes": "exact WIL filenames backing target-box selector elements (0x51/0x56/0x57/0x81/0x89/0x8A) and the 0x56B22C path-slot filler are runtime data - no static binder (primary-static negative); 0x40C020 caller unidentified"
     },
@@ -143,8 +144,11 @@
         "window.other-14-candidate"
       ],
       "preview_mode": "window.other-14-candidate",
-      "status": "primary-static-render-plus-data-loader",
-      "pending": true
+      "status": "primary-static-render-plus-data-loader-static-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "skill book right-page render loop closed primary-static (Finding 272, skill-window-render-loop-evidence.json): 0x43A440 full chain - CRLF line split (CR must be followed by LF), ';' comments, '#' section header atoi==this+0x964, 20 slots backtick sscanf (0x47C350 fmt), count恒1 (0x45E0C0 three return paths all {0,0}), geometry (winX+235, winY+30+15k), '[' name line 0x96C8FA + 4 corner shadows, selection chain 0x439134->0x43A370->0x43ACE4->paint 0x439500->0x439520 (sole caller 0x43A440); corrected origin swap typo (0x0f adds Y this+0x1c, 0xeb adds X this+0x18); 0x43A3E0 is mid-body of 0x43A370 not a function start; pending=0 within loop; magic-exp loader (0x45E0C0) count constant 1 -> book rows are per-skill single-entry, multi-page paging not supported statically"
+      ]
     },
     {
       "id": "quest",
@@ -303,7 +307,8 @@
       "status": "primary-static-render-plus-open-state-closed",
       "pending": false,
       "closed_2026_08_11": [
-        "group (id 6, main+0x47834, paint 0x4243D0): member row = single text field node+0x04, NO icon, linked-list insertion order (feeder 0x419EE4 -> push_back 0x424840, container this+0x54 vtable 0x4767E0, head this+0x58/next+0xC/count this+0x68); two columns odd->window.x+45 (0x424471 push ebx=window.x+0x2D) even->window.x+145 (0x424479 lea edx,[ebx+0x64]), y=window.y+0x5A+20*floor(i/2) -- old formula mod-2 column mapping was inverted, corrected in member_list_render.formula; permission text [允许]/[拒绝] (this+0x3F0 -> 0x47BA08/0x47BA00) y=window.y+0x3A proven (0x424549/0x424563 add edi,0x3A), x reads uninitialized stack slot [esp+0x1C] (0x42453E) -> statically unprovable, old 'window.x+0x6E' rejected; NO 18-row cap: full traversal (0x42449B next==0 terminator), overflow clipped by engine not truncated; runtime open-state: show 0x42AC30 / hide 0x42AC50 (active list main+0xD24/+0xD28..+0xD38), toggle 0x42B0BA (visibility main+0x47864=win+0x30, companion tab frames 0x398/0x399 @main+0x47B70 via 0x417880), show dispatcher 0x42B6A0 tail 0x42B79A; guild closure in record id=guild (Finding 259)"
+        "group (id 6, main+0x47834, paint 0x4243D0): member row = single text field node+0x04, NO icon, linked-list insertion order (feeder 0x419EE4 -> push_back 0x424840, container this+0x54 vtable 0x4767E0, head this+0x58/next+0xC/count this+0x68); two columns odd->window.x+45 (0x424471 push ebx=window.x+0x2D) even->window.x+145 (0x424479 lea edx,[ebx+0x64]), y=window.y+0x5A+20*floor(i/2) -- old formula mod-2 column mapping was inverted, corrected in member_list_render.formula; permission text [允许]/[拒绝] (this+0x3F0 -> 0x47BA08/0x47BA00) y=window.y+0x3A proven (0x424549/0x424563 add edi,0x3A), x reads uninitialized stack slot [esp+0x1C] (0x42453E) -> statically unprovable, old 'window.x+0x6E' rejected; NO 18-row cap: full traversal (0x42449B next==0 terminator), overflow clipped by engine not truncated; runtime open-state: show 0x42AC30 / hide 0x42AC50 (active list main+0xD24/+0xD28..+0xD38), toggle 0x42B0BA (visibility main+0x47864=win+0x30, companion tab frames 0x398/0x399 @main+0x47B70 via 0x417880), show dispatcher 0x42B6A0 tail 0x42B79A; guild closure in record id=guild (Finding 259)",
+        "round-3 negative closure (Finding 270): NO friend window exists - 0x8A7140 is dual-purpose global dialog (pre-game LOGIN window, show 0x402970 sole caller 0x40362D, ei_login.dat @0x47AAD0, Enter->0x451F10; + in-game service/disconnect NOTICE: proto 0x7ED->0x41CDE0 subtype 0x64->[main+0x428204]=2 -> per-frame 0x41B5D0 -> show 0x419BE0, text proto 0x4B0->0x41B710->main+0x428070, samples 0x47B0D0 '服务器连接不稳定...' / 0x47AF80 cp949 disconnect); 好友/friend strings 0 hits; all 16 window ids enumerated (hotkey labels 0x47BBD0-0x47BCE0 only 行会Ctrl+F/组队Ctrl+G; 13 game windows ctor block 0x426C80)"
       ]
     },
     {
@@ -396,12 +401,18 @@
       "artifacts": [
         "interface1c-parent-context.json",
         "interface1c-select-screen-context.json",
-        "interface1c-cluster-456d.json"
+        "interface1c-cluster-456d.json",
+        "login-flow-evidence.json",
+        "window-id-catalog.json"
       ],
       "layout_ids": [],
       "preview_mode": "secondary-0,secondary-1",
-      "status": "primary-resource-cluster-candidate",
-      "pending": true
+      "status": "primary-static-login-flow-closed",
+      "pending": false,
+      "closed_2026_08_11": [
+        "login flow closed primary-static (Finding 267): mode byte 0x8B1878 (4 writers 0@0x4020AD/2@0x40298E/2@0x419BF9/3@0x4570BE, dispatch 0x40211E; mode1 unused); boot chain 0x401B30 -> patch-MB -> connect msg 0x66 -> main window 0x451100 (EDIT class, gulim체 0x47BE18) -> char-select 0x4026E0 -> mode0 PeekMessage pump; char-select screen_obj 0x8A9520 (vtable 0x476368, tick 0x402BE0): 4 buttons F11 select(459,436)/F13 create(139,379)->Mir3.ini URL ShellExecuteA+WM_DESTROY/F15 change pwd(279,379)/F17 exit(439,379); submit 0x403640->0x451F10 msgid 0x7D1 '%s/%s'; bg wemade.dat",
+        "parent/9-button screen (0x456CB0, screen_obj 0x8A7140): F50 640x480 bg / F51 create->phase1 CreateChr.dat / F55 enter->0x452070 msgid 0x67 / F57 exit / F89 confirm->msgid 0x64 '%s/%d'; phase machine this+0x930 (table 0x457778); server dispatcher 0x458F80 (msgid table 0x45950C: 0x208 char-list/0x209 create/0x20D enter-OK phase4+StartGame.dat/0x20E cp949 notice); 36 strings, 12 candidates_pending (F15/F17 runtime)"
+      ]
     },
     {
       "id": "simulator",
@@ -419,6 +430,25 @@
       "preview_mode": "sim",
       "status": "delivered-candidate-geometry-explicit",
       "pending": true
+    },
+    {
+      "id": "scene-entities",
+      "category": "场景实体渲染/实体->WIL绑定",
+      "artifacts": [
+        "scene-entity-render-evidence.json",
+        "server-data-crossref.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "sim",
+      "status": "primary-static-bind-closed",
+      "pending": true,
+      "closed_2026_08_11": [
+        "element->WIL slot binding closed primary-static (Finding 269): world sort pass 0x419D40 (4 painter arrays root+0x154/+0x2E4/+0x474/+0x604, type [e+0x88] tick/draw dispatch 0x41A528/0x41A568); tile pass 0x41C450 -> ground 0x41C860 / deco 0x41CA20 / entities 0x41CBD0 / effects 0x41CD50; element map type0->71 M-Hum / type1->76 WM-Hum / type3 race<2000->0x58+race/10 / race>=2000->0x87+(race-2000)/100 / type0x32->128 NPC / horse byte 0x629CF=0x57->87; WIL path table base+0xB130 stride 0x104 (140 slots, strings @0x47C878); idx=139-element double-verified (el71->M-Hum idx68, el87->Horse idx52, el81->Magic idx58, el128->NPC idx11, el129->MonMagic idx10, el137->MagicEx idx2, el138->MonMagicEx idx1, el86->ProgUse idx53, el82->Inventory idx57, el83->Equip idx56)",
+        "simulator entities upgraded to evidence bindings (derived): player M-Hum.wil F0 (type0), npc NPC.wil F0/F100 (type0x32), monsters Mon-(race/10+1).wil from server race (稻草人 race50->Mon-6 F0, 鸡 30->Mon-4 F0, 鹿 31->Mon-4 F10, 羊 68->Mon-7 F0), drop Ground.wil F5 (stditem looks68=5 金创药（小）); frame base word[0x8AA5C0+6*state]+10*flag+3000*dir (player) / word[0x8AA6C8+6*state]+100*dir+10*flag (npc) / word[0x8AA686+6*state]+1000*(race%10)+10*flag (monster); frame-count headers verified via wilsdk: Mon-1..16 all 10000, NPC 6400, M-Hum 27000, DMon-1 4340, Ground 1440, Horse 10400"
+      ],
+      "pending_notes": [
+        "runtime-pending (server-driven, no .text writers): entity list head insertion 0x560070/0x5600A0/[root+0xE1158], vtable install 0x4764B0/0x4765B0, [root+0xE1154] vtable+0x14 player, type-0x2 semantics, monster race word source (d20 candidate), frame table contents at 0x8AA5C0/0x8AA686/0x8AA6C8"
+      ]
     }
   ],
   "verification": {

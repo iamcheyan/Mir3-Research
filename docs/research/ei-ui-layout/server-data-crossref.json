@@ -1,0 +1,356 @@
+{
+  "finding": 273,
+  "agent": "ServerData",
+  "date": "2026-08-11",
+  "title": "Server business-data cross-reference (stditem/monster/magic/Mapinfo/Merchant) vs EI 3.0 client UI field consumption",
+  "source": {
+    "server_envir": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir",
+    "server_files": {
+      "stditem.dat": 210316,
+      "monster.dat": 109116,
+      "magic.dat": 12604,
+      "Mapinfo.txt": 109680,
+      "Merchant.txt": 33102
+    },
+    "server_binary": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/EIServer.exe",
+    "client_root": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端",
+    "encoding": "GBK/CP936 (retry cp949 on mojibake)",
+    "evidence_level": "derived",
+    "warning": "All server .dat rows are DERIVED: server business data is not client primary evidence. Server rows that contradict client facts are recorded in conflict_notes and never silently picked. Client-side byte/state evidence remains primary for rendering semantics."
+  },
+  "dat_layout_ground_truth": {
+    "stditem": {
+      "recsz": 184,
+      "xor_key": 4,
+      "name_off": 152,
+      "loader_va": "0x4957E0",
+      "loader_proof": "GetMem(0xB8=184); seek(idx*0xB8+4); xor-4 helper 0x4957A4 @ 0x4957CC; constant also 0x4953CC",
+      "evidence_level": "primary-static-from-server-binary"
+    },
+    "monster": {
+      "recsz": 252,
+      "xor_key": 9,
+      "name_off": 229,
+      "loader_va": "0x495C88",
+      "loader_proof": "read 4-byte count; GetMem(0xFC=252); seek(idx*0xFC+4); xor-9 helper 0x495C4C @ 0x495C74",
+      "id_dword_off": 248,
+      "id_proof": "ID dword @248 == rec_index+1 for all verified rows (稻草人 rec65->66, 钉耙猫 71->72, 多钩猫 80->81, 蛤蟆 93->94, 鸡 132->133, 鹿 233->235, 牛老道 246->248, 羊 401->403, 白野猪 27->28); sequential type ids",
+      "evidence_level": "primary-static-from-server-binary"
+    },
+    "magic": {
+      "recsz": 120,
+      "xor_key": 17,
+      "name_off": 104,
+      "loader_proof": "recsz 0x78=120 constant @ 0x495686; xor key 0x11 @ 0x495620",
+      "evidence_level": "primary-static-from-server-binary"
+    },
+    "decode_recipe": "leading 4-byte count dword is RAW; body bytes are XOR'd byte-wise with the per-file single-byte key; then fixed-size records; names are GBK ShortStrings (len byte + bytes)."
+  },
+  "counts": {
+    "stditem_records": 1143,
+    "stditem_body_bytes": 210312,
+    "stditem_nominal": "1143*184=210312",
+    "monster_header_count": 433,
+    "monster_body_bytes": 109112,
+    "monster_nominal": "433*252=109116",
+    "monster_tail_short": "final record truncated by exactly 4 bytes = its ID dword @248..251; 432 full records + one 248-byte record decoded",
+    "magic_records": 105,
+    "magic_body_bytes": 12600,
+    "magic_nominal": "105*120=12600",
+    "mapinfo_entries": 370,
+    "mapinfo_unique_stems": 365,
+    "merchant_npcs": 318,
+    "client_map_files": 544
+  },
+  "stditem": {
+    "layout": {
+      "record": "184 bytes; name ShortString @152; index dword @0",
+      "empirical_fields": {
+        "index_d0": "dword @0 = sequential item index (0..1142)",
+        "cat36": "byte @36; 0=potion, 5=weapon, 10=男衣(男式防具), 11=女衣(女式防具), 30=candle, 40=meat/food, 41=gold, 51=spellbook",
+        "shape40": "byte @40; weapon shape class (木剑 9, 铁剑/青铜剑/短剑 23, 凝霜 27, book 1/2, armor 1/2)",
+        "type44": "byte @44; 1=small consumable, 2=large consumable, 3=special consumable/food, 5=basic equipment, 8=armor, 9/10/12/33=sword grades, 1=book",
+        "d64": "dword @64; potion grade code (3 for all 金创药/魔法药 sizes), else 0",
+        "looks68": "dword @68 = item icon frame index (StoreItem.wil frame); 金创药小=5..特=8, 魔法药小=15..特=18, 肉=300, 布衣男/女=940/950, 轻型盔甲男/女=941/951, 木剑=1042, 铁剑=1043, 凝霜=1044, book=304, 蜡烛=290",
+        "d72": "dword @72; dual-role candidate: 1=weight/stack for consumables (potions/food), 4000-20000=durability-like for equipment, 7/8/29=spellbook coded id",
+        "b76": "byte @76 = HP restore (金创药 30/70/110/170 for 小/中/大/特)",
+        "b80": "byte @80; armor defense bonus (布衣 2, 轻型盔甲 3)",
+        "b88": "byte @88 = MP restore (魔法药 40/110/180/250 for 小/中/大/特)",
+        "b92": "byte @92; armor magic-defense bonus (布衣 1, 轻型盔甲 2)",
+        "b104": "byte @104 = weapon min attack (木剑 2, 青铜剑 3, 铁剑 4, 凝霜 10)",
+        "b108": "byte @108 = weapon max attack (木剑 5, 青铜剑 6, 铁剑 9, 短剑 11, 凝霜 16)",
+        "need140": "byte @140 = level requirement (木剑 1, 铁剑 7, 凝霜 25, 轻型盔甲 11)",
+        "price144": "dword @144 = shop price (金创药小 80, 魔法药小 80, 肉 200, 木剑 50, 铁剑 1000, 凝霜 8000, 布衣 500)",
+        "b148": "byte @148; 16=food/candle/meat stack class, 5=potion/equipment/book class"
+      },
+      "field_semantics_level": "candidate",
+      "field_semantics_note": "byte/dword positions are derived from value patterns across 20+ named rows; loader record sizes/XOR keys are primary-static. b44/b92/d64/d108/d148 dual-role meanings remain candidate."
+    },
+    "rows": [
+      {"rec": 0, "name": "金币", "index": 0, "cat36": 41, "looks68": 0, "price144": 1, "b148": 0},
+      {"rec": 1, "name": "金创药（小）", "index": 1, "cat36": 0, "type44": 1, "d64": 3, "looks68": 5, "d72": 1, "b76": 30, "price144": 80, "b148": 5, "client_role": "red HP potion (小)"},
+      {"rec": 2, "name": "魔法药（小）", "index": 2, "cat36": 0, "type44": 1, "d64": 3, "looks68": 15, "d72": 1, "b88": 40, "price144": 80, "b148": 5, "client_role": "blue MP potion (小)"},
+      {"rec": 96, "name": "金创药（中）", "index": 96, "cat36": 0, "type44": 1, "d64": 3, "looks68": 6, "d72": 1, "b76": 70, "price144": 200, "b148": 5},
+      {"rec": 97, "name": "魔法药（中）", "index": 97, "cat36": 0, "type44": 1, "d64": 3, "looks68": 16, "d72": 1, "b88": 110, "price144": 200, "b148": 5},
+      {"rec": 179, "name": "金创药（大）", "index": 179, "cat36": 0, "type44": 2, "d64": 3, "looks68": 7, "d72": 1, "b76": 110, "price144": 500, "b148": 5},
+      {"rec": 180, "name": "魔法药（大）", "index": 180, "cat36": 0, "type44": 2, "d64": 3, "looks68": 17, "d72": 1, "b88": 180, "price144": 500, "b148": 5},
+      {"rec": 785, "name": "金创药（特）", "index": 785, "cat36": 0, "type44": 3, "d64": 3, "looks68": 8, "d72": 1, "b76": 170, "price144": 1250, "b148": 5},
+      {"rec": 787, "name": "魔法药（特）", "index": 787, "cat36": 0, "type44": 3, "d64": 3, "looks68": 18, "d72": 1, "b88": 250, "price144": 1250, "b148": 5},
+      {"rec": 3, "name": "肉", "index": 3, "cat36": 40, "type44": 3, "looks68": 300, "d72": 10000, "price144": 200, "b148": 16},
+      {"rec": 11, "name": "干肉", "index": 11, "cat36": 1, "type44": 1, "looks68": 93, "d72": 1, "price144": 10, "b148": 16},
+      {"rec": 12, "name": "包子", "index": 12, "cat36": 2, "type44": 1, "looks68": 90, "d72": 1, "price144": 8, "b148": 16},
+      {"rec": 4, "name": "布衣（男）", "index": 4, "cat36": 10, "shape40": 1, "type44": 5, "looks68": 940, "d72": 5000, "b76": 2, "b80": 2, "b92": 1, "need140": 1, "price144": 500, "b148": 5, "client_role": "male armor; cat36=10 matches client item-type byte 0x0A tinted-icon branch"},
+      {"rec": 5, "name": "布衣（女）", "index": 5, "cat36": 11, "shape40": 1, "type44": 5, "looks68": 950, "d72": 5000, "b76": 2, "b80": 2, "b92": 1, "need140": 1, "price144": 500, "b148": 5, "client_role": "female armor; cat36=11 matches client item-type byte 0x0B tinted-icon branch"},
+      {"rec": 9, "name": "轻型盔甲（男）", "index": 9, "cat36": 10, "shape40": 2, "type44": 8, "looks68": 941, "d72": 8000, "b76": 3, "b80": 3, "b88": 1, "b92": 2, "need140": 11, "price144": 5000, "b148": 5},
+      {"rec": 10, "name": "轻型盔甲（女）", "index": 10, "cat36": 11, "shape40": 2, "type44": 8, "looks68": 951, "d72": 8000, "b76": 3, "b80": 3, "b88": 1, "b92": 2, "need140": 11, "price144": 5000, "b148": 5},
+      {"rec": 6, "name": "木剑", "index": 6, "cat36": 5, "shape40": 9, "type44": 5, "looks68": 1042, "d72": 4000, "b104": 2, "b108": 5, "need140": 1, "price144": 50, "b148": 5},
+      {"rec": 7, "name": "铁剑", "index": 7, "cat36": 5, "shape40": 23, "type44": 10, "looks68": 1043, "d72": 10000, "b104": 4, "b108": 9, "need140": 7, "price144": 1000, "b148": 5},
+      {"rec": 8, "name": "青铜剑", "index": 8, "cat36": 5, "shape40": 23, "type44": 9, "looks68": 1043, "d72": 8000, "b104": 3, "b108": 6, "need140": 5, "price144": 500, "b148": 5},
+      {"rec": 18, "name": "短剑", "index": 18, "cat36": 5, "shape40": 23, "type44": 12, "looks68": 1043, "d72": 12000, "b104": 3, "b108": 11, "need140": 10, "price144": 2000, "b148": 5},
+      {"rec": 13, "name": "凝霜", "index": 13, "cat36": 5, "shape40": 27, "type44": 33, "looks68": 1044, "d72": 20000, "b104": 10, "b108": 16, "need140": 25, "price144": 8000, "b148": 5},
+      {"rec": 17, "name": "蜡烛", "index": 17, "cat36": 30, "type44": 1, "looks68": 290, "d72": 8000, "price144": 10, "b148": 16},
+      {"rec": 14, "name": "火球术", "index": 14, "cat36": 51, "shape40": 1, "type44": 1, "looks68": 304, "d72": 7, "need140": 1, "price144": 1000, "b148": 5},
+      {"rec": 15, "name": "治愈术", "index": 15, "cat36": 51, "shape40": 2, "type44": 1, "looks68": 304, "d72": 7, "need140": 2, "price144": 1000, "b148": 5},
+      {"rec": 16, "name": "基本剑术", "index": 16, "cat36": 51, "shape40": 0, "type44": 1, "looks68": 304, "d72": 7, "need140": 0, "price144": 1000, "b148": 5},
+      {"rec": 19, "name": "精神力战法", "index": 19, "cat36": 51, "shape40": 2, "type44": 1, "looks68": 304, "d72": 8, "need140": 2, "price144": 1000, "b148": 5},
+      {"rec": 190, "name": "魔法盾", "index": 190, "cat36": 51, "shape40": 1, "type44": 1, "looks68": 304, "d72": 29, "need140": 1, "price144": 1000, "b148": 5}
+    ],
+    "required_rows_note": ">=10 items decoded; 金创药/魔法药 小-特 (red/blue potions) all present with HP/MP restore values."
+  },
+  "monster": {
+    "layout": {
+      "record": "252 bytes; name ShortString @229; ID dword @248 = sequential type id (rec+1)",
+      "empirical_fields": {
+        "d20": "dword @20; appearance/portrait-like value (稻草人 83, 鸡 31, 鹿 52, 白野猪 208, 赤月恶魔 115, 祖玛教主 102, 守卫武将 81)",
+        "d24": "dword @24; level-or-race candidate (稻草人 18, 鸡 11, 鹿 11, 白野猪 19, 赤月 34, 祖玛 49)",
+        "d52": "dword @52; HP-like candidate (赤月 13000, 祖玛 14000, 白野猪 4500, 稻草人 18, 鸡 5, 鹿 17) -- BROKEN by 牛老道=1 (see conflict_notes)",
+        "d56": "dword @56; secondary HP-like candidate (鸡 10, 鹿 50, 白野猪 1250, 祖玛 10500, 牛老道 1200)",
+        "d64_d68": "dwords @64/@68 = AC/MAC armor (STRONG: 白野猪 13/13, 赤月 52/52, 祖玛 65/65, 守卫武将 9/9, 牛老道 8/8)",
+        "d72": "dword @72 (白野猪 30, 赤月 100, 祖玛 120)",
+        "d104_d108": "dwords @104/@108 = attack min/max (STRONG: 鸡 0/1, 鹿 0/6, 稻草人 2/5, 蛤蟆 2/6, 钉耙猫 2/7, 食人花 2/8, 守卫武将 77/84, 蝎蛇 24/36, 七点白蛇 44/66, 白野猪 44/66, 牛老道 22/44, 赤月 90/180, 祖玛 70/175)",
+        "d48": "dword @48; 100=aggressive/boss-like (赤月/祖玛/白野猪/七点白蛇/牛老道), 10=守卫武将, 0=passive (鸡/鹿/稻草人)",
+        "d132": "dword @132 (稻草人 1500, 白野猪 1000, 赤月 0)",
+        "d144": "dword @144 (1500-3000 spread)",
+        "d124_d128": "dwords @124/@128 (白野猪 23/25, 稻草人 9/7, 鸡 5/6, 鹿 8/9)"
+      },
+      "field_semantics_level": "candidate",
+      "field_semantics_note": "d104/d108 attack min/max and d64/d68 AC/MAC are STRONG derived (consistent across all rows); others are candidate."
+    },
+    "rows": [
+      {"rec": 1, "id": 2, "name": "守卫武将", "d20": 81, "d24": 19, "d48": 10, "d52": 215, "d56": 540, "d64": 9, "d68": 9, "d72": 27, "d104": 77, "d108": 84, "d132": 700, "d144": 2500},
+      {"rec": 8, "id": 9, "name": "赤月恶魔", "d20": 115, "d24": 34, "d48": 100, "d52": 13000, "d56": 9750, "d64": 52, "d68": 52, "d72": 100, "d104": 90, "d108": 180, "d132": 0, "d144": 1500},
+      {"rec": 12, "id": 13, "name": "祖玛教主", "d20": 102, "d24": 49, "d48": 100, "d52": 14000, "d56": 10500, "d64": 65, "d68": 65, "d72": 120, "d104": 70, "d108": 175, "d132": 1000, "d144": 1500},
+      {"rec": 13, "id": 14, "name": "蝎蛇", "d20": 81, "d24": 19, "d48": 0, "d52": 1440, "d56": 280, "d104": 24, "d108": 36, "d132": 1000, "d144": 2000},
+      {"rec": 14, "id": 15, "name": "七点白蛇", "d20": 97, "d24": 19, "d48": 100, "d52": 800, "d56": 400, "d104": 44, "d108": 66, "d132": 1000, "d144": 1500},
+      {"rec": 17, "id": 18, "name": "食人花", "d20": 85, "d24": 13, "d48": 0, "d52": 21, "d56": 21, "d104": 2, "d108": 8, "d132": 0, "d144": 2500},
+      {"rec": 27, "id": 28, "name": "白野猪", "d20": 208, "d24": 19, "d48": 100, "d52": 4500, "d56": 1250, "d64": 13, "d68": 13, "d72": 30, "d104": 44, "d108": 66, "d132": 1000, "d144": 1500},
+      {"rec": 65, "id": 66, "name": "稻草人", "d20": 83, "d24": 18, "d48": 0, "d52": 18, "d56": 18, "d104": 2, "d108": 5, "d132": 1500, "d144": 2500},
+      {"rec": 71, "id": 72, "name": "钉耙猫", "d20": 81, "d24": 17, "d48": 0, "d52": 20, "d56": 20, "d104": 2, "d108": 7, "d132": 1500, "d144": 2500},
+      {"rec": 80, "id": 81, "name": "多钩猫", "d20": 81, "d24": 17, "d48": 0, "d52": 20, "d56": 20, "d104": 2, "d108": 7, "d132": 1500, "d144": 2500},
+      {"rec": 93, "id": 94, "name": "蛤蟆", "d20": 83, "d24": 19, "d48": 0, "d52": 19, "d56": 19, "d104": 2, "d108": 6, "d132": 1500, "d144": 2500},
+      {"rec": 132, "id": 133, "name": "鸡", "d20": 31, "d24": 11, "d48": 0, "d52": 5, "d56": 10, "d104": 0, "d108": 1, "d132": 1500, "d144": 3000},
+      {"rec": 233, "id": 235, "name": "鹿", "d20": 52, "d24": 11, "d48": 0, "d52": 17, "d56": 50, "d104": 0, "d108": 6, "d132": 1500, "d144": 3000},
+      {"rec": 246, "id": 248, "name": "牛老道", "d20": 97, "d24": 19, "d48": 100, "d52": 1, "d56": 1200, "d64": 8, "d68": 8, "d72": 13, "d104": 22, "d108": 44, "d132": 1000, "d144": 1500},
+      {"rec": 401, "id": 403, "name": "羊", "d20": 52, "d24": 19, "d48": 0, "d52": 14, "d56": 40, "d104": 0, "d108": 5, "d132": 1500, "d144": 3000}
+    ],
+    "required_rows_note": "稻草人/鸡/鹿/白野猪 + 11 more rows decoded (15 total); ID@248 sequential confirmed."
+  },
+  "magic": {
+    "layout": {
+      "record": "120 bytes; name ShortString @104; magic id dword @0",
+      "empirical_fields": {
+        "d0": "dword @0 = magic id (基本剑术 3, 半月弯刀 25, 爆裂火焰 23, 冰咆哮 33, 冰沙掌 53, 乾坤大挪移 107, 斗转星移 108, 冰月神掌 39, 冰月震天 40)",
+        "d20": "dword @20 = class-like (7=warrior: 基本剑术/半月弯刀/乾坤大挪移/斗转星移; 0=fire: 爆裂火焰; 1=ice: 冰咆哮/冰沙掌/冰月神掌/冰月震天)",
+        "d24": "dword @24; element-or-level candidate (爆裂火焰/冰咆哮 2, 冰沙掌/乾坤大挪移/斗转星移 5, 冰月神掌/冰月震天 1, 基本剑术/半月弯刀 0) -- inconsistent for ice spells",
+        "d28": "dword @28 = d0 - 2 for all verified rows (23, 21, 31, 51, 105, 106, 37, 38; 基本剑术 0)",
+        "per_level_stats": "dwords 60..83 = per-level spell stats (基本剑术: (60,7),(64,10),(68,9),(72,20),(76,11),(80,30))"
+      },
+      "field_semantics_level": "candidate",
+      "field_semantics_note": "d0 magic id and d20 class-like are STRONG derived; d28 = d0-2 pattern STRONG; d24 and per-level stat meaning candidate."
+    },
+    "rows": [
+      {"rec": 0, "name": "半月弯刀", "d0": 25, "d20": 7, "d24": 0, "d28": 23},
+      {"rec": 1, "name": "爆裂火焰", "d0": 23, "d20": 0, "d24": 2, "d28": 21, "d32": 15, "d36": 14, "d40": 18},
+      {"rec": 2, "name": "冰咆哮", "d0": 33, "d20": 1, "d24": 2, "d28": 31, "d32": 19, "d36": 12, "d40": 16},
+      {"rec": 3, "name": "冰沙掌", "d0": 53, "d20": 1, "d24": 5, "d28": 51, "d32": 12, "d36": 12, "d40": 16},
+      {"rec": 4, "name": "乾坤大挪移", "d0": 107, "d20": 7, "d24": 5, "d28": 105, "d40": 40},
+      {"rec": 5, "name": "斗转星移", "d0": 108, "d20": 7, "d24": 5, "d28": 106, "d32": 20},
+      {"rec": 6, "name": "冰月神掌", "d0": 39, "d20": 1, "d24": 1, "d28": 37, "d32": 4, "d36": 4, "d40": 8},
+      {"rec": 7, "name": "冰月震天", "d0": 40, "d20": 1, "d24": 1, "d28": 38, "d32": 7, "d36": 13, "d40": 17},
+      {"rec": 35, "name": "基本剑术", "d0": 3, "d20": 7, "d24": 0, "d28": 0, "per_level": [[60, 7], [64, 10], [68, 9], [72, 20], [76, 11], [80, 30]]}
+    ],
+    "required_rows_note": "基本剑术 rec35 + 8 more rows decoded (9 total)."
+  },
+  "mapinfo": {
+    "format": "[stem 中文名 flag] DAY horse KSPD ...; stems are STRINGS (map file stems: '0', '0_003', '01', 'Island01'...); ';' comment lines and 'A x,y -> B x,y' teleport-link lines skipped",
+    "required_maps": [
+      {"stem": "0", "name": "比奇县", "client_map_file": true},
+      {"stem": "0_003", "name": "比奇县", "client_map_file": true},
+      {"stem": "01", "name": "边境城市", "client_map_file": true},
+      {"stem": "1", "name": "道馆", "client_map_file": true},
+      {"stem": "02", "name": "银杏山谷", "client_map_file": true},
+      {"stem": "2", "name": "毒蛇山谷", "client_map_file": true},
+      {"stem": "3", "name": "沙巴克城", "client_map_file": true},
+      {"stem": "4", "name": "绿洲", "client_map_file": true},
+      {"stem": "5", "name": "沙漠土城", "client_map_file": true},
+      {"stem": "6", "name": "沙漠", "client_map_file": true},
+      {"stem": "8", "name": "潘夜岛", "client_map_file": true},
+      {"stem": "9", "name": "失乐园", "client_map_file": false, "note": "Mapinfo.txt 有此地图（服务器侧），但客户端 Map/ 目录无 9.map（0/4/41-44/74/75/0150/0157.map 等均在）——显式冲突记录，不静默选择"},
+      {"stem": "12", "name": "灌木林", "client_map_file": true},
+      {"stem": "31", "name": "祖玛神殿", "client_map_file": true},
+      {"stem": "41", "name": "诺玛村庄", "client_map_file": true},
+      {"stem": "42", "name": "沙漠", "client_map_file": true},
+      {"stem": "43", "name": "沙漠", "client_map_file": true},
+      {"stem": "44", "name": "沙漠", "client_map_file": true},
+      {"stem": "71", "name": "沙漠", "client_map_file": true},
+      {"stem": "72", "name": "沙漠", "client_map_file": true},
+      {"stem": "73", "name": "沙漠", "client_map_file": true},
+      {"stem": "74", "name": "盟重县", "client_map_file": true},
+      {"stem": "75", "name": "石阁庙", "client_map_file": true},
+      {"stem": "76", "name": "沙漠", "client_map_file": true},
+      {"stem": "77", "name": "沙漠", "client_map_file": true},
+      {"stem": "78", "name": "沙漠", "client_map_file": true},
+      {"stem": "81", "name": "流放岛", "client_map_file": true},
+      {"stem": "122", "name": "灌木林", "client_map_file": true},
+      {"stem": "125", "name": "灌木林", "client_map_file": true},
+      {"stem": "0150", "name": "沙巴克城堡", "client_map_file": true},
+      {"stem": "0157", "name": "沙巴克城楼", "client_map_file": true}
+    ],
+    "note_544": "NO map id 544 exists in Mapinfo.txt. 544 = number of map files in the client Map/ dir (matches survey Finding 242 '544 张出货地图'). Map files verified present for stems 0/4/41/42/43/44/74/75/0150/0157.",
+    "minimap_crossref": "reuse minimap-server-crossref.json: server MiniMap.txt values >=1001 -> FMMap.wil frame (value-1001), <1001 -> MMap.wil frame (value); 313 rows, 211 client-map-file matches; stem '0' -> FMMap frame 0.",
+    "required_rows_note": "31 required maps listed (>=20), all cross-checked against client Map/ files."
+  },
+  "merchant": {
+    "format": "'stem map x y 中文名 face body' (header: filename Map X Y Name Face Body Sabuk); face = direction 0-7; body = NPC sprite id",
+    "body_sprite_ids": {
+      "0": "啊康",
+      "1": "老张/老黄",
+      "2": "啊琨/店员",
+      "4": "肉店老板",
+      "5": "药店老板/恩英",
+      "7": "怡美/慧媛",
+      "9": "药剂师",
+      "11": "金氏",
+      "12": "生存游戏场美眉"
+    },
+    "rows": [
+      {"line": 14, "stem": "17GoldenIsland_Island", "map": "Island02", "x": 95, "y": 135, "name": "生存游戏场美眉", "face": 0, "body": 12},
+      {"line": 24, "stem": "24PR", "map": "0", "x": 459, "y": 395, "name": "啊琨", "face": 0, "body": 2},
+      {"line": 28, "stem": "01Meet_Bichon1", "map": "0", "x": 446, "y": 405, "name": "金氏", "face": 0, "body": 11},
+      {"line": 29, "stem": "01Meet_Bichon2", "map": "0", "x": 441, "y": 404, "name": "肉店老板", "face": 0, "body": 4},
+      {"line": 30, "stem": "02Weapon_Bichon1", "map": "0", "x": 402, "y": 356, "name": "啊康", "face": 0, "body": 0},
+      {"line": 31, "stem": "02Weapon_Bichon2", "map": "0", "x": 423, "y": 395, "name": "老张", "face": 0, "body": 1},
+      {"line": 32, "stem": "03Armor_Bichon", "map": "0", "x": 480, "y": 407, "name": "怡美", "face": 0, "body": 7},
+      {"line": 33, "stem": "03Shoes_Bichon", "map": "0", "x": 478, "y": 407, "name": "慧媛", "face": 0, "body": 7},
+      {"line": 34, "stem": "04Potion_Bichon1", "map": "0", "x": 397, "y": 363, "name": "药店老板", "face": 0, "body": 5},
+      {"line": 35, "stem": "04Potion_Bichon2", "map": "0", "x": 486, "y": 414, "name": "恩英", "face": 0, "body": 5},
+      {"line": 36, "stem": "04PotionMake_Bichon1", "map": "0", "x": 412, "y": 410, "name": "药剂师", "face": 0, "body": 9},
+      {"line": 37, "stem": "04PotionMake_Bichon2", "map": "0", "x": 413, "y": 409, "name": "老黄", "face": 0, "body": 1}
+    ],
+    "required_rows_note": "12 NPC rows listed (>=10); all on map '0' 比奇县 (Merchant.txt has 318 total across maps)."
+  },
+  "client_server_field_consumption_map": [
+    {
+      "client_window": "inventory/bag (id0, GameInter.wil F250, 6x6 36px grid)",
+      "client_evidence": "data+0x28 WORD icon frame -> selector context 0x5668C4 (el82) via 0x42F6D0; frame clamp 0x466130; grid = ceil(w/0x24) x ceil(h/0x24) = 36px slots (primary-static 0x42F6D0-0x42F790); item-data type byte data+0x22: 0x0A/0x0B -> tinted icon path (primary-static); 负重:%d / 总量:%d literal 0x47BDFC, read 0x7DA11D/0x7DA11F (Finding 262/160)",
+      "server_fields": {
+        "icon_frame": "stditem looks68 -> StoreItem.wil frame (StoreItem.wil 1440 frames covers Looks 0..1044; verified pixel-identical to Ground.wil at Looks 940/950/1042/1043/1044)",
+        "tint_branch": "stditem cat36 10/11 (男衣/女衣) == client type byte 0x0A/0x0B -- PRIMARY cross-link",
+        "weight_total": "stditem d72 (weight candidate) accumulates to client 总量; b148 (16=food/5=equip stack class) candidate; runtime-computed, needs capture"
+      },
+      "cross_link_level": "icon/tint derived; weight_total candidate",
+      "evidence_level": "derived"
+    },
+    {
+      "client_window": "status window (id1, GameInter.wil F200) HP/MP gauges",
+      "client_evidence": "HP gauge 0x40A8A0, MP gauge 0x40A4D0 (bar frame = value); (血量)%d/%d (魔法量)%d/%d literals (Finding 262 area)",
+      "server_fields": "stditem b76 = HP restore (30/70/110/170), b88 = MP restore (40/110/180/250) -- the potions that feed these gauges",
+      "cross_link_level": "derived",
+      "evidence_level": "derived"
+    },
+    {
+      "client_window": "target box (0x449B90)",
+      "client_evidence": "linear scan over monster type library, record stride 0x30, word[record+0xC] = type; HP current/full fields at [+0x61BA0]/[+0x61BA4]",
+      "server_fields": "monster id248 (type id, sequential rec+1) matched against client type word; monster d52 (HP-like) / d56 (secondary) candidate for current/full values",
+      "cross_link_level": "candidate (需运行时捕获 to bind type ids)",
+      "evidence_level": "candidate"
+    },
+    {
+      "client_window": "skill book window (id14, GameInter.wil F400, 296x332)",
+      "client_evidence": "category labels 火/冰/电/风/神圣/黑暗/幻影/剑 (primary-static GB18030 literals + control correlation, skill-window-context.json); selected skill id this+0x964; right-page renders Magic.exp segment",
+      "server_fields": "magic d0 = magic id (matches Magic.exp decode segment numbers); d20 class-like (7=warrior, 0=fire, 1=ice) candidate for category tabs",
+      "cross_link_level": "d0 derived; d20 category candidate",
+      "evidence_level": "derived"
+    },
+    {
+      "client_window": "NPC window (id9, GameInter.wil F1100 bg 552x176, F1101 repeated entries 18px rhythm, F1102 last item; this+0x51C count, +0x530/0x540 position groups)",
+      "client_evidence": "NPCFace.WIL 440 frames / 46 nonblank for face portraits (npc-window-render-evidence.json)",
+      "server_fields": "Merchant body = NPC sprite id (0-12 verified; NPC.wil bound in path table slot 105); face = direction 0-7; Merchant map/x/y = NPC world position",
+      "cross_link_level": "derived",
+      "evidence_level": "derived"
+    },
+    {
+      "client_window": "store window (id2, GameInter.wil F1000; el139 = 0x56B0E8 store item context, flag3 dispatch 0x44DCC4)",
+      "client_evidence": "store item list rendering uses selector el139; StoreItem.wil bound at path-table slot 139 (primary-static)",
+      "server_fields": "Market_Def/[Goods] item lines '金创药（小） 2000 1' = stock volume 2000 + restock hour 1 (header ;ItemName Volume Hour); item names join stditem records; stditem price144 = real price (金创药小 80)",
+      "cross_link_level": "derived",
+      "evidence_level": "derived"
+    }
+  ],
+  "conflict_notes": [
+    {
+      "id": "market_def_price_vs_stock",
+      "status": "RESOLVED",
+      "note": "Market_Def/[Goods] header comment is ';ItemName Volume Hour', so '金创药（小） 2000 1' = stock volume 2000 + restock hour 1, NOT a price. stditem price144 = real price (金创药小 80). Old '2000 vs 80' conflict removed.",
+      "evidence_level": "derived"
+    },
+    {
+      "id": "monster_d52_niulaodao",
+      "status": "OPEN-candidate",
+      "note": "牛老道 d52=1 breaks the HP-like hypothesis for d52 (its d56=1200 is the plausible HP). d52/d56 both stay candidate until a runtime HP capture resolves which field is true HP.",
+      "evidence_level": "candidate"
+    },
+    {
+      "id": "map_544",
+      "status": "RESOLVED",
+      "note": "No map id 544 exists in Mapinfo.txt; 544 = client Map/ dir FILE COUNT (matches survey Finding 242). Mapinfo stems are strings, not numeric ids.",
+      "evidence_level": "derived"
+    },
+    {
+      "id": "stditem_d72_dual_role",
+      "status": "OPEN-candidate",
+      "note": "d72 is 1 for consumables (weight candidate), 4000-20000 for equipment (durability-like candidate), 7/8/29 for spellbooks (spell-id-coded candidate). Cannot be a single semantic without runtime capture.",
+      "evidence_level": "candidate"
+    },
+    {
+      "id": "magic_d24_inconsistent",
+      "status": "OPEN-candidate",
+      "note": "d24 = 2 for 爆裂火焰/冰咆哮 but 5 for 冰沙掌/乾坤大挪移/斗转星移 and 1 for 冰月神掌/冰月震天 -- not a clean element code (ice spells split 1/2/5). Level-requirement candidate remains.",
+      "evidence_level": "candidate"
+    },
+    {
+      "id": "monster_tail_truncation",
+      "status": "RESOLVED-structural",
+      "note": "monster.dat body 109112B = 432*252 + 248B; the final record is truncated by exactly its ID dword @248..251. All 432 full records decode; header count 433 includes the truncated tail.",
+      "evidence_level": "derived"
+    },
+    {
+      "id": "el82_wil_binding_runtime",
+      "status": "OPEN-candidate",
+      "note": "Selector element 82 (0x5668C4) path slot 0x56F944+12*0x104 is bss-filled at runtime (ctor 0x452AA0 loop2 binds elements 70..139; path slots filled by 0x452B20-style string copies). Static WIL filename for el82 unproven; empirical pixel-identity evidence points to StoreItem.wil (identical art to Ground.wil at Looks 940..1044; 1440 frames covers Looks range).",
+      "evidence_level": "candidate"
+    },
+    {
+      "id": "client_consumes_derived_not_primary",
+      "status": "note",
+      "note": "Every client<-server field link above is derived: the server .dat values are business data; only the client-side consumption addresses (selector contexts, literal strings, gauge routines) are primary-static client evidence.",
+      "evidence_level": "derived"
+    }
+  ],
+  "pending": [
+    "runtime capture (需运行时捕获): bind client target-box type word (stride 0x30, [rec+0xC]) to monster id248; confirm monster d52 vs d56 true HP via target-box [+0x61BA0]/[+0x61BA4]; confirm stditem d72 weight-vs-durability via bag 总量/负重 display 0x7DA11D/0x7DA11F; confirm el82 WIL filename via in-game bag icon identity",
+    "server-side candidate only: stditem b44/b92/d64/d108/d148 exact semantics; monster d20/d24/d48/d132/d144 semantics; magic d24 and per-level stats meaning",
+    "Mapinfo flag semantics (DAY/SAFE/FIGHT/NORECALL etc.) not mapped to client behavior in this finding"
+  ],
+  "tools_created": ["Tools/reverse-engineering/parse_mir3_dat.py"]
+}

@@ -3,32 +3,45 @@
     "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
     "function_va": "0x0043A440",
     "called_from": "0x00439520",
+    "call_site": "0x00439520 (inside refresh 0x00439500, arg1 = this+0x964)",
     "evidence_level": "primary-static-render-loop"
   },
   "observations": [
     {
       "va": "0x0043A463",
-      "fact": "The first text/list drawing origin is window-relative this+0x18+0x0f, this+0x1c+0xeb."
+      "evidence_level": "primary-static",
+      "fact": "Render geometry base: Y = [ecx+0x1c]+0x0f (window y + 15), X = [ecx+0x18]+0xeb (window x + 235). Stored to locals [E+0x14] (Y) and [E+0x18] (X). Entry guard 0x0043A454/0x0043A45D: arg1 (this+0x964) == -1 exits immediately (nothing selected).",
+      "derivation": "CORRECTION of the prior round's swapped claim (\"this+0x18+0x0f / this+0x1c+0xeb\"): the +0x0f base is added to [ecx+0x1c] (window Y), the +0xeb offset to [ecx+0x18] (window X). 0xeb = 235 (text column inside the 296-wide book right page); 0x0f = 15 (Y base; the first text row's main y is base+15 = winY+30, see 0x0043A64D)."
     },
     {
       "va": "0x0043A491",
-      "fact": "Each record is obtained from the stream at this+0x968+8 through 0x00468BF0 with length argument 0x0d; a line is accepted when its second byte is LF."
+      "evidence_level": "primary-static",
+      "fact": "Stream scanner: strchr(cursor, 0x0d) via 0x00468BF0 over the decoded stream at this+0x968+8. Line accepted only when the byte after CR is LF (0x0043A4A6-0x0043A4AC: mov al,[ebp+1]; cmp al,0xa; jne exit 0x43A7F7) - a CR not followed by LF terminates the whole render loop. Accepted line is copied into the local line buffer [E+0x28] (rep movsd/movsb at 0x0043A4B3-0x0043A4D0) and NUL-terminated (0x0043A4D6).",
+      "derivation": "CRLF line model; the '\r' is stripped by the copy (length = cursor2 - cursor), the '\n' is consumed by the scanner. Tightens the prior round's 'line accepted when its second byte is LF'."
     },
     {
       "va": "0x0043A4DF",
-      "fact": "Lines beginning with ';' are treated as separators/comments; lines beginning with '#' are parsed as an integer marker and compared with the requested section/id."
+      "evidence_level": "primary-static",
+      "fact": "Line classification: first char ';' (0x3b) -> comment/separator, skip to next line (0x0043A4E1); '#' (0x23) -> section header, atoi of the digits (0x004681F9) compared with arg1 = this+0x964 (0x0043A4FF cmp ecx,eax); non-'#' lines are rendered only while the match flag [E+0x13] == 1 (0x0043A51E-0x0043A523). On match: flag [E+0x13] = 1 and the header line itself is not rendered (0x0043A503-0x0043A50C, then 0x0043A529 cmp al,0x23 -> next line). A subsequent '#' header while flag == 1 exits the whole render loop (0x0043A50E-0x0043A513) = end of the selected section.",
+      "derivation": "Sections are selected by integer id: atoi(\"#N\") == this+0x964. The decoded Magic.exp stream is numbered by skill id (#3 = 基本剑术, #7 = 攻杀剑术, #12 = 刺杀剑术, #25 = 半月弯刀, #26 = 烈火剑法 ...), so this+0x964 is the SELECTED SKILL ID and the right page renders that skill's detail block (all lines between its '#N' header and the next '#' header)."
     },
     {
       "va": "0x0043A531",
-      "fact": "A selected non-marker line is parsed by 0x0045E200 into a large local record area; exact field meanings remain pending."
+      "evidence_level": "primary-static",
+      "fact": "Parse step: zeroes the 20-slot record area (0x514 dwords rep stosd at [E+0x540]; slots are 0x104 bytes, stride 0x104, last slot at [E+0x1888]) and calls 0x0045E200(0xa5, &count=[E+0x1C], &line=[E+0x28], &out=[E+0x198C]) - arg order verified from 0x45E200's prologue (arg2 = &count, init 1; arg3 = &line; arg4 = &out). 0x0045E200 splits the line on backtick '`' into up to 20 fields through the sscanf wrapper 0x00468CD7 with format string at 0x47C350 (179 bytes = 20 groups of \"%[^`]%*c\" separated by spaces; 20 = number of record slots).",
+      "derivation": "RESOLVES the prior round's 'field meanings remain pending': the 20-slot area is a fixed-size multi-field parse buffer, but in this build count is ALWAYS 1 (see count_always_one_proof), so only slot 0 is ever filled and every stream line renders as exactly ONE record/row. No line wrapping or multi-row expansion exists in this client."
     },
     {
       "va": "0x0043A64D",
-      "fact": "Rows are rendered at 15-pixel vertical increments. The stream record pointer advances by 0x104 bytes per rendered row."
+      "evidence_level": "primary-static",
+      "fact": "Row draw loop: row counter [E+0x20] vs count [E+0x1C]; per record the Y local [E+0x14] += 15 (first record's main y = winY+30), the record pointer advances 0x104 bytes, and X is reloaded from [E+0x18] = winX+235. First byte '[' (0x5b, e.g. the '[基本剑术]' name line) selects the name style: 4 corner-shadow draws 0x0045DD70(0, X-1, Y-1 / X+1, Y-1 / X-1, Y+1 / X+1, Y+1, 0x0A0A0A, 0, text, width) plus one main draw 0x0045DD70(0, X, Y, 0x96C8FA, 0, text, width); width is measured per draw by 0x0045DBA0 with (0x47C348, 0xa, 0, 0x2BC, 0, 0, 0x81, text). Other rows: single draw 0x0045DD70(0, X, Y, 0x0A320A, 0, text, 0) - width argument 0.",
+      "derivation": "0x45DD70 = stdcall text draw (0, x, y, color, 0, text, width) on UI object 0x8AB7A8; 0x45DBA0 = text-width measure through the formatter object [0x8AB7A8+0x1c] (vtable+0x44). Name rows (dark-green 0x0A320A for normal rows; 0x96C8FA light-blue on a 0x0A0A0A 4-corner shadow for name rows) at (winX+235, winY+30+15k)."
     },
     {
       "va": "0x0043A7D7",
-      "fact": "The loop continues until the requested row count is reached, then resumes reading the next stream line."
+      "evidence_level": "primary-static",
+      "fact": "Row loop ends when the counter [E+0x20] reaches count [E+0x1C] (count is 1 - see count_always_one_proof), then the stream cursor is reloaded from [E+0x24] (0x0043A7E9) and scanning resumes at the next stream line (0x0043A48D). Exit path 0x0043A7F7 restores registers and ret 4.",
+      "derivation": "One stream line -> one rendered row -> next line. Total: the selected section's lines are drawn top-down at 15px pitch inside the book's right page until the next '#' section header."
     }
   ],
   "window_constructor_control_geometry": {
@@ -48,24 +61,70 @@
       {"object_offset": "this+0x72C", "frame_pair": [462, 463], "position_expression": ["window_arg_x+0xE7", "window_arg_y+0x01"]},
       {"object_offset": "this+0x7E0", "frame_pair": [464, 465], "position_expression": ["window_arg_x+0x10A", "window_arg_y+0x00"]}
     ],
+    "frame_padding_bytes": {"0x1B8/0x1B9": "frame 440/441", "0x1C2/0x1C3": "frame 410/411", "0x1C4/0x1C5": "frame 412/413", "0x1C6/0x1C7": "frame 412/413 alt"},
+    "caption_strings": {"0x0047C314": "category tab label", "0x0047C30C": "category tab label", "0x0047C308": "category tab label"},
     "evidence_level": "primary-static-control-constructor",
-    "warning": "These are recovered constructor expressions and frame pairs, not modern business names; the common wrapper may later apply centering or parent-anchor rules."
+    "warning": "These are recovered constructor expressions and frame pairs, not modern business names; the common wrapper may later apply centering or parent-anchor rules. position_expression lists are in (Y, X) order."
   },
   "render_calls": [
-    {"va": "0x0043A681", "callee": "0x0045DBA0", "role": "text/value draw candidate", "font_or_style": "0x81", "color_or_flags": "0x2BC"},
-    {"va": "0x0043A69E", "callee": "0x0045DD70", "role": "record field draw candidate", "color_or_flags": "0x0A0A0A"},
-    {"va": "0x0043A6BC", "callee": "0x0045DBA0", "role": "text/value draw candidate", "font_or_style": "0x81", "color_or_flags": "0x2BC"},
-    {"va": "0x0043A6DD", "callee": "0x0045DD70", "role": "record field draw candidate", "color_or_flags": "0x0A0A0A"},
-    {"va": "0x0043A6FB", "callee": "0x0045DBA0", "role": "text/value draw candidate", "font_or_style": "0x81", "color_or_flags": "0x2BC"},
-    {"va": "0x0043A717", "callee": "0x0045DD70", "role": "record field draw candidate", "color_or_flags": "0x0A0A0A"},
-    {"va": "0x0043A735", "callee": "0x0045DBA0", "role": "text/value draw candidate", "font_or_style": "0x81", "color_or_flags": "0x2BC"},
-    {"va": "0x0043A758", "callee": "0x0045DD70", "role": "record field draw candidate", "color_or_flags": "0x0A0A0A"},
-    {"va": "0x0043A776", "callee": "0x0045DBA0", "role": "text/value draw candidate", "font_or_style": "0x81", "color_or_flags": "0x2BC"},
-    {"va": "0x0043A79A", "callee": "0x0045DD70", "role": "record field draw candidate", "color_or_flags": "0x0A0A0A"}
+    {"va": "0x0043A668", "callee": "0x0045DBA0", "role": "text-width measure for name-row shadow/main draws", "args": "0x47C348 (\"%s\"), 0x0a (height), 0, 0x2BC (max), 0, 0, 0x81, text", "evidence_level": "primary-static"},
+    {"va": "0x0043A69E", "callee": "0x0045DD70", "role": "corner-shadow draw (X-1, Y-1) color 0x0A0A0A", "args": "0, X-1, Y-1, 0x0A0A0A, 0, text, width", "evidence_level": "primary-static"},
+    {"va": "0x0043A6BC", "callee": "0x0045DBA0", "role": "text-width measure for name-row shadow/main draws", "evidence_level": "primary-static"},
+    {"va": "0x0043A6DD", "callee": "0x0045DD70", "role": "corner-shadow draw (X+1, Y-1) color 0x0A0A0A", "args": "0, X+1, Y-1, 0x0A0A0A, 0, text, width", "evidence_level": "primary-static"},
+    {"va": "0x0043A6FB", "callee": "0x0045DBA0", "role": "text-width measure for name-row shadow/main draws", "evidence_level": "primary-static"},
+    {"va": "0x0043A717", "callee": "0x0045DD70", "role": "corner-shadow draw (X-1, Y+1) color 0x0A0A0A", "args": "0, X-1, Y+1, 0x0A0A0A, 0, text, width", "evidence_level": "primary-static"},
+    {"va": "0x0043A735", "callee": "0x0045DBA0", "role": "text-width measure for name-row shadow/main draws", "evidence_level": "primary-static"},
+    {"va": "0x0043A758", "callee": "0x0045DD70", "role": "corner-shadow draw (X+1, Y+1) color 0x0A0A0A", "args": "0, X+1, Y+1, 0x0A0A0A, 0, text, width", "evidence_level": "primary-static"},
+    {"va": "0x0043A776", "callee": "0x0045DBA0", "role": "text-width measure for the name-row main draw", "evidence_level": "primary-static"},
+    {"va": "0x0043A79A", "callee": "0x0045DD70", "role": "name-row main draw (X, Y) color 0x96C8FA", "args": "0, X, Y, 0x96C8FA, 0, text, width", "evidence_level": "primary-static"},
+    {"va": "0x0043A7C9", "callee": "0x0045DD70", "role": "regular-row draw (X, Y) color 0x0A320A, width arg 0", "args": "0, X, Y, 0x0A320A, 0, text, 0", "evidence_level": "primary-static"}
   ],
+  "count_always_one_proof": {
+    "evidence_level": "primary-static",
+    "claim": "0x0045E200's backtick-wrapping machinery is INERT: every stream line renders as exactly one record/row (count == 1), so no multi-field/multi-row expansion exists in this build.",
+    "details": [
+      "0x0045E200(arg1=0xa5 wrap threshold, arg2=&count init 1, arg3=&line, arg4=&out) splits the line on '`' into a token buffer and calls the formatter 0x0045E0C0(&result, 0, &token) to measure the token; a result length > 0xa5 (165px) would push a backtick into the output and increment count (0x0045E200 cmp eax, ecx; jle copy-path).",
+      "0x0045E0C0 has exactly three return paths (no formatter 0x0045E0E3-0x0045E0F2; default formatter missing; normal path 0x0045E188-0x0045E19F) and ALL of them write the two locals [S-0x8]/[S-0x4] = {0, 0} into the result (those locals are initialized to 0 at 0x0045E0D2/0x0045E0D6 and never modified anywhere in the function - verified with full stack-arithmetic tracking over the whole body).",
+      "Therefore result.len = 0 always, 0 <= 0xa5 always takes the copy branch, no backtick is ever emitted, count stays 1.",
+      "The 20-field sscanf format at 0x47C350 (20 x \"%[^`]%*c\" via 0x00468CD7) and the 20 x 0x104 record slots are a fixed-size parse buffer for the general case; in this client only slot 0 is filled."
+    ]
+  },
+  "selection_chain": {
+    "evidence_level": "primary-static",
+    "description": "Right-page content is selected by skill id stored at this+0x964; the render loop 0x0043A440 receives it as arg1.",
+    "steps": [
+      {"va": "0x00439134", "fact": "Constructor tail initializes this+0x964 = -1 (no selection until the user clicks the left-page skill list)."},
+      {"va": "0x0043AC80", "fact": "Window mouse handler: after clicking the 3 frame buttons (0xD8/0x18C/0x240) and the 8 category tabs (0x2F4..0x7E0, stride 0xB4), calls 0x0043A370(this, x, y)."},
+      {"va": "0x0043A370", "fact": "Left-page skill-list hit-test: category byte [this+0x54]; per-category linked lists head [this+0x898+24*cl] with entries linked at +0x0C and per-category counts [this+0x58+4*cl]; 6 window-relative hit rects at this+0x7C (PtInRect via IAT 0x4762B4). Returns -1 (miss) or the 16-bit skill id read as word [entry+4]+6 (0x0043A42E mov ax, [edx+6])."},
+      {"va": "0x0043ACE4", "fact": "mov [esi+0x964], eax with movsx eax, ax (0x0043ACE1) - stores the hit-test result (skill id) into this+0x964; if -1 the store is skipped (0x0043ACDC cmp eax,-1)."},
+      {"va": "0x00439520", "fact": "Refresh 0x00439500 calls 0x0043A440 with arg1 = this+0x964 (mov eax,[esi+0x964] around 0x00439517-0x00439520); 0x00439500 is the window paint, called from the main UI loop 0x00428265 (xref-verified; 0x0043A440 has no other callers)."},
+      {"va": "0x0047C2FC", "fact": "Stream source file name literal \"Magic.exp\"; the decoded sections are numbered by skill id (#3 基本剑术, #7 攻杀剑术, #12 刺杀剑术, #25 半月弯刀, #26 烈火剑法, #1 火球术 ...), consistent with atoi(header) == skill id."}
+    ]
+  },
+  "stream_lifecycle": {
+    "evidence_level": "primary-static",
+    "steps": [
+      {"va": "0x00439150", "fact": "Load: 0x0046926D(0x47C2FC \"Magic.exp\", 0x47BCF8 key) opens/decrypts the resource, 0x00469382 decodes the text, 0x00468B1A allocates and copies it into this+0x968 (the stream pointer; data starts at +8)."},
+      {"va": "0x004391F0", "fact": "0x004525F0(stream, decoded) validates the CRLF structure; on failure the stream is freed via 0x004680F8 and the load returns 0."},
+      {"va": "0x00439230", "fact": "Teardown: 0x004680F8 frees this+0x968 and sets it to null (0x0043923B)."},
+      {"va": "0x00439120", "fact": "Constructor tail zeroes the window, sets this+0x968 = null, this+0x54 = 0 (category 火), this+0x964 = 0xFFFFFFFF."}
+    ]
+  },
+  "round3": {
+    "section": "Findings 267-273",
+    "finding_272": {
+      "finding_id": 272,
+      "agent": "Skills2",
+      "date": "2026-08-11",
+      "title": "技能书窗口右侧详情页渲染循环 0x0043A440 全闭合：流扫描/段选择/解析 count==1/逐行几何与配色/技能 id 选择链",
+      "evidence_level": "primary-static",
+      "conclusion": "0x0043A440 = 技能书右页详情渲染循环（非左页列表，左页列表由 0x004397A0 绘制）。输入 arg1 = this+0x964（选中的技能 id，点击左页技能列表经 0x43A370 命中返回 [entry+4]+6 的 16 位 id，ctor 初始 -1）。流 = this+0x968（Magic.exp 解码文本，数据从 +8 起），按 CRLF 分行（0x468BF0，CR 后必须跟 LF）；';' 注释行跳过；'#' 段头 atoi 与技能 id 比较，命中后 flag=1 且段头本身不绘制，遇到下一个 '#' 段头即退出整个渲染循环；行经 0x45E200(0xa5, &count, &line, &out) 用 0x47C350 格式（20 组 \"%[^`]%*c\"）经 0x468CD7 反引号切分，但 0x45E0C0 三条返回路径全部返回 {len=0, str=0}，0<=0xa5 恒走复制分支 → count 恒为 1 → 每行恰好渲染为一行记录（20 槽仅槽 0 使用）。绘制：行 k 于 (winX+235, winY+30+15k)；'[' 起头的技能名行 = 4 角阴影 0x0A0A0A (X±1, Y±1) + 主文字 0x96C8FA，宽度经 0x45DBA0 测量；普通行单次绘制 0x0A320A、宽度参数 0。调用链：主循环 0x428265 → paint 0x439500 → 0x00439520 处 call 0x43A440（唯一调用者）。",
+      "pending": "无（渲染循环内无未决项）。运行时 candidate：0x45DBA0 实际字体/宽度依赖 0x8AB7A8+0x1c 表单对象运行时状态；左页 6 个命中矩形（this+0x7C..0xCC）的具体值在 0x43A440 之外设置（不影响右页闭合）。"
+    }
+  },
+  "result": "Round 3 (Finding 272, Skills2): 技能书窗口右页详情渲染循环 0x0043A440 全闭合（primary-static）。行流：Magic.exp 解码文本 this+0x968+8 → CRLF 分行（CR 后必须 LF）→ ';' 注释 / '#' 段头 atoi==this+0x964（技能 id）匹配 → 命中后渲染至下一个 '#' 段头即退出；每行经 0x45E200 解析，count 恒为 1（0x45E0C0 三条返回路径全返回 {0,0}，wrap 逻辑惰性）→ 每行恰好一行记录，20 槽反引号缓冲区仅槽 0 使用（修正旧 round 的 field meanings pending）；几何 (winX+235, winY+30+15k)，'[' 技能名行 4 角阴影 0x0A0A0A + 主文字 0x96C8FA（0x45DBA0 测宽），普通行 0x0A320A 单次绘制；选择链：点击左页列表 → 0x43A370 命中（分类 [this+0x54]、列表 this+0x898+24*cl、计数 this+0x58+4*cl、矩形 this+0x7C）→ [entry+4]+6 技能 id → 0x43ACE4 写 this+0x964 → paint 0x439500 → 0x439520 call 0x43A440；流生命周期 0x439150（0x46926D/0x469382/0x468B1A）与 0x4680F8 释放闭合。",
   "unresolved": [
-    "The semantic names of the parsed fields and the exact field-to-screen-column mapping.",
-    "The runtime meaning of the requested row count and the 0x104-byte record stride.",
-    "The final screen origin after window movement and the exact clipping rectangle."
+    "runtime candidate: rendered font/width depends on the formatter object state of 0x8AB7A8+0x1c at runtime (0x45DBA0 measure)",
+    "runtime candidate: the exact left-page hit-rect values (this+0x7C..0xCC) and the per-category list population (this+0x898) are set in code outside 0x0043A440 (left-page concerns; not needed for the right-page closure)"
   ]
 }

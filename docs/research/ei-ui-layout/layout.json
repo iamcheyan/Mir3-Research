@@ -13975,6 +13975,13 @@
         ],
         "confidence": "candidate-not-runtime-confirmed",
         "warning": "The Chinese button labels and exact screen state still require runtime/input-path confirmation; do not rename this as final UI business truth."
+      },
+      "closure": {
+        "finding": "Finding 267 (LoginFlow)",
+        "status": "closed-primary-static",
+        "evidence_file": "login-flow-evidence.json",
+        "mode": 2,
+        "note": "parent/9-button screen (char list + create): Interface1c F50 640x480 bg, 9 buttons F51/F53/F55/F57/F86/F89/F92/F95/F98, phase machine this+0x930 (table 0x457778), server dispatcher 0x458F80 (msgid table 0x45950C cases 0x208-0x210)"
       }
     },
     {
@@ -14135,6 +14142,13 @@
         ],
         "confidence": "candidate-with-visual-and-static-support",
         "warning": "Exact Chinese text and state-machine transition still require runtime confirmation."
+      },
+      "closure": {
+        "finding": "Finding 267 (LoginFlow)",
+        "status": "closed-primary-static",
+        "evidence_file": "login-flow-evidence.json",
+        "mode": 0,
+        "note": "char-select screen: GameInter+0x46C / Interface1c+0x5B0, 4 buttons F11(459,436)选择角色/F13(139,379)创建账号/F15(279,379)修改密码/F17(439,379), account+0xD39 password+0xE3D remember+0xD38, submit 0x403640->0x451F10 msgid 0x7D1 \"%s/%s\""
       }
     }
   ],
@@ -36354,5 +36368,122 @@
       "source": "chat-window-render-evidence.json",
       "warning": null
     }
-  ]
+  ],
+  "login_flow_evidence": {
+    "source": "docs/research/ei-ui-layout/login-flow-evidence.json (Finding 267, primary-static)",
+    "mode_byte": {
+      "va": "0x8B1878",
+      "writers": [
+        {
+          "va": "0x4020AD",
+          "value": 0
+        },
+        {
+          "va": "0x40298E",
+          "value": 2
+        },
+        {
+          "va": "0x419BF9",
+          "value": 2
+        },
+        {
+          "va": "0x4570BE",
+          "value": 3
+        }
+      ],
+      "dispatch": "0x40211E"
+    },
+    "boot_chain": [
+      "0x401B30 patch-MB -> connect msg 0x66 -> main window 0x451100 (EDIT class, gulim체 0x47BE18) -> char-select 0x4026E0 -> mode 0 -> PeekMessage pump"
+    ],
+    "char_select": {
+      "screen_obj": "0x8A9520",
+      "vtable": "0x476368",
+      "tick": "0x402BE0",
+      "buttons": [
+        {
+          "va": "0x402C00",
+          "hotkey": "F11",
+          "label": "选择角色",
+          "pos": [
+            459,
+            436
+          ],
+          "action": "submit 0x403640 -> 0x451F10 msgid 0x7D1 '%s/%s'"
+        },
+        {
+          "va": "0x402D00",
+          "hotkey": "F13",
+          "label": "创建账号",
+          "pos": [
+            139,
+            379
+          ],
+          "action": "Mir3.ini URL ShellExecuteA + WM_DESTROY"
+        },
+        {
+          "va": "0x402E00",
+          "hotkey": "F15",
+          "label": "修改密码",
+          "pos": [
+            279,
+            379
+          ],
+          "action": "TODO runtime"
+        },
+        {
+          "va": "0x402F00",
+          "hotkey": "F17",
+          "label": "退出",
+          "pos": [
+            439,
+            379
+          ],
+          "action": "TODO runtime"
+        }
+      ],
+      "bg": "wemade.dat"
+    },
+    "parent_screen": {
+      "screen_obj": "0x8A7140",
+      "vtable": "0x476368",
+      "show": "0x402970",
+      "buttons": [
+        {
+          "va": "0x456CB0",
+          "hotkey": "F50",
+          "label": "bg 640x480 Interface1c"
+        },
+        {
+          "va": "0x456CB0",
+          "hotkey": "F51",
+          "label": "create -> phase1 CreateChr.dat"
+        },
+        {
+          "va": "0x456CB0",
+          "hotkey": "F55",
+          "label": "enter -> 0x452070 msgid 0x67"
+        },
+        {
+          "va": "0x456CB0",
+          "hotkey": "F57",
+          "label": "exit"
+        },
+        {
+          "va": "0x456CB0",
+          "hotkey": "F89",
+          "label": "confirm -> msgid 0x64 '%s/%d'"
+        }
+      ],
+      "phase_machine": {
+        "offset": "+0x930",
+        "table": "0x457778"
+      },
+      "server_dispatcher": {
+        "va": "0x458F80",
+        "msgid_table": "0x45950C",
+        "cases": "0x208 char-list / 0x209 create / 0x20D enter-OK phase4+StartGame.dat / 0x20E cp949 notice"
+      }
+    }
+  }
 }
