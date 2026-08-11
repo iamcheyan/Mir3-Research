@@ -5572,3 +5572,18 @@ F302 wParam 0x03000405 一致）。
 
 cross-ref：F258/F260/F263/F295/F302/F313/F316/F321。
 落盘：`trade-window-click-binding-evidence.json`、`ui-coverage-matrix.json`（exchange closed_2026_08_12；pending_notes 修剪）、`UI_COMPLETION_AUDIT.md`。
+## Round 17 (2026-08-12) — 0x40C020 caller 全链闭合 + vtable+0x7C 多态槽定案（Finding 323）
+
+- EntityHeadbarVtable77cCallers（Finding 323）：entity-headbar-vtable77c-callers-evidence.json — **target-box 记录末项『0x40C020 caller unidentified』闭合（primary-static）**：
+  - **0x40C020 = vtable 0x47671C（NPC/怪物实体）slot +0x7C**，无 E8 直接调用；安装点唯一 = 0x42264E（msg 0x327 解析器 0x4225E0 内；al==0x32→实体、al∈{0,1}→玩家 ctor 0x40C560、其余→基类 ctor 0x404960）。
+  - **恰 4 个间接调用点**（FF 5? 7C / FF 57 7C mod01 0x50-0x57 + mod10 0x90-0x97 双编码扫描）：0x41C831（帧渲染 0x41C450 本地玩家路径）+ 0x41CCA1/0x41CCC9/0x41CCEA（实体渲染循环 0x41CBD0 类型分派）。
+  - **类型分派**：`cmp [esi+0x88],0x32; ja 跳过` → 字节表 0x41CD1C（00 00 03 01 03…03 02：0→case0、1/3→case1、0x32→case2、其余→跳过）→ 跳表 0x41CD0C（case0→0x41CC8E、case1→0x41CCD7、case2→0x41CCB6、case3→0x41CCED）。5 栈参 + this（a1=edi+0xF5200, a2=0, a3=[edi+0x30], a4=1, a5=0/1 本地玩家标志）；case0 调后 0x40B180+0x40CE20、case1/2 调后 0x40B180。
+  - **vtable+0x7C = 多态『实体头部信息条/屏幕 anchor』槽**：基类 0x4763C0→0x40B2C0、玩家 0x476480→0x40F5F0、NPC 0x47671C→0x40C020（+0x78=0x406CC0、+0xC=0x404FB0、+0x84=0x40B850 三 vtable 共享）。
+  - **0x40C020 语义**：实体头部 HP 条 + 名字——anchor 公式 ([esi+0xCC]−[ctx+0x12C])·48 − [ctx+0x134] + [esi+0xD4] − 0xC8（与 0x40F5F0 同构）；HP 分数 [esi+0x61C58]/[esi+0x61C60] → 填充字节 0..0x1F（shl5−sub=×31; idiv; cl=0x1F−al; 超界置 0）；名字 0x462710（ecx=0x8AB7A8, 0x8A68D4=空串''）、条 0x404E10（0x94BF 模式分派）、状态位 0x404DA0（[+0x61C68] bit 0x800000）；ret 0x14。
+  - **0x40F5F0 双路径**：E8 唯一 0x4120EE（固定 anchor 路径 0x4120B0：预写 [ecx+0xE4]=0x178/[ecx+0xE8]=0xE3，门 [ecx+0x62A48]）+ **间接 vtable 调用 0x41C831**（记录『only_direct_caller』为 E8-only 结论，补全）。0x40F5F0 全函数 fresh 复核：写此+0xE4/+0xE8（a4 门）→ 10000+(A%400) 系列（A=[629C8]·400−[8A]·3000+[C4]−0xAA0, [esi+0x62A20]=A, frame=0x2710+(A%400), call 0x466130）——与 target-box 记录逐字节一致。
+  - **类型字节 [esi+0x88] 证据**：0x4123E3（mov eax,[0x7E335C]; cmp byte [eax+0x88],0x32 → ret 1 全局 NPC 检查）、0x43DC65（cmp [edi+0x88],0x32; jne; fild [edi+0xCC] 浮点世界 x）；**写入点 = 0 命中**（0x88/0x89/C6/C7 全 mod 含 SIB 扫描，primary-negative）→ [INFERENCE] 经 vtable+0xC Init 0x404FB0 家族（跳表 0x4054EC/分类表 0x405500）或 F300 0x405862 外观/type 更新设置。
+  - 解析器尾部（0x4227A6）：[esi+0x61C58]=0x12C(300) HP 上限、[esi+0x61C5C]=0；实体入表 call [edi+0xE1154] vtable+4。
+  - **与既有记录边界**：0x40C020 是第六个独立绘制路径（通用实体头部条），非悬停目标框；F257 的 0x41C063 是 [vtable+0x84]=0x40B850（name-plate box），槽位 +0x80/+0x84 与本案 +0x7C 不同。
+
+cross-ref：F239/F257/F271/F300/F315/F321/F322。
+落盘：`entity-headbar-vtable77c-callers-evidence.json`、`ui-coverage-matrix.json`（target-box closed_2026_08_12；pending_notes 修剪为 runtime WIL 部分）、`UI_COMPLETION_AUDIT.md`。

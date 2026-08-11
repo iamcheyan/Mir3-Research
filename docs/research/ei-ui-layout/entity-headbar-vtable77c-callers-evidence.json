@@ -1,0 +1,99 @@
+{
+ "evidence_id": "entity-headbar-vtable77c-callers",
+ "title": "0x40C020 caller 全链闭合 — 实体头部信息条 vtable+0x7C 多态槽：0x40C020 = vtable 0x47671C（NPC/怪物实体）slot +0x7C，4 个间接调用点（帧渲染 0x41C450 本地玩家路径 @0x41C831 + 实体渲染循环 0x41CBD0 类型分派 @0x41CCA1/0x41CCC9/0x41CCEA）；玩家 vtable 0x476480 同槽 = 0x40F5F0（target-box 记录 anchor 函数）→ +0x7C 为多态『实体头部信息/屏幕 anchor』槽，基类 0x4763C0 同槽 = 0x40B2C0 — F323",
+ "date": "2026-08-12",
+ "objective": "闭合 ui-coverage-matrix.json target-box 记录 pending_notes 末项（'0x40C020 caller unidentified'）：识别 0x40C020 的全部调用点、其所属类层次（vtable 归属与安装点）、调用参数约定与分派逻辑（实体渲染循环按 [esi+0x88] 类型字节分派），并与已闭合的玩家 anchor 函数 0x40F5F0（target-box 记录「only_direct_caller = 0x4120EE」）对照，建立 vtable+0x7C 多态槽的完整语义。",
+ "question": "1) 0x40C020 的调用点在哪里，通过什么间接寻址到达（vtable slot 编号与 vtable 归属）？2) 调用方（帧渲染 / 实体渲染循环）如何选择调用对象，实体类型字节 [esi+0x88] 的分派表（0x41CD1C/0x41CD0C）与各 case 的参数与后置调用是什么？3) 玩家对象（vtable 0x476480）同 slot 的函数是什么，与 0x40C020 是否同构（同一多态槽）？4) 0x40F5F0 除 E8 直接调用 0x4120EE 外是否存在 vtable 间接调用路径？5) 类型字节 0x32 = NPC/怪物的证据（0x4123E3/0x43DC65），以及 [esi+0x88] 的写入点是否存在直接编码？",
+ "method": [
+  "capstone 线性反汇编（已知指令边界线性 sweep，16 字节 stride 分块禁用）：0x40C020 全函数（头部 HP 条/名字绘制，ret 0x14）、0x40F5F0 全函数（0x40F5F0-0x40F6FC，anchor 计算 + 10000+(A%400) 帧系列）、0x4120B0 固定 anchor 路径（0x4120B0-0x4120F9）、实体渲染循环 0x41CBD0（0x41CBFD..0x41CD00，含 0x41CC56-0x41CC8E 分派头）、帧渲染 0x41C450 内调用点 0x41C831 上下文、实体解析器 0x4225E0（msg 0x327）与 ctor 0x40C560/0x40C5E0/0x404960 的 vtable 安装点、vtable+0xC Init 0x404FB0 头部（类型跳转表 0x4054EC/分类字节表 0x405500）。",
+  "FF 5? 7C / FF 57 7C 间接调用扫描：全文件扫 `call dword ptr [reg+0x7C]`，第二字节 mod01（b2 in range(0x50,0x58)）与 mod10（b2 in range(0x90,0x98)）双编码（教训：mod01 单独扫描会漏 mod10 disp32 编码）——命中恰 4 点 0x41C831/0x41CCA1/0x41CCC9/0x41CCEA。",
+  "vtable 对照：0x47671C vs 0x476480 vs 0x4763C0 的 slot +0x74..+0x8C 逐项读出；vtable 安装点 E8-scan（0x47671C 唯一安装点 0x42264E；0x476480 安装点 0x40C58E/0x40C5ED）；0x4763C0 全文件 4 字节引用扫描（恰 2 处 0x404994/0x4049EF，均在基类 ctor 0x404960）。",
+  "E8 rel32 全文件扫描复核：0x40F5F0 唯一直接调用点 = 0x4120EE（与 target-box 记录一致）；0x40C020 无 E8 直接调用点（纯 vtable 间接）。",
+  "字节编码穷举扫描 [reg+0x88] 写入：0x88/0x89/C6/C7 全 mod（mod01/mod10/SIB，disp8/disp32）——0 命中（写入点无直接位移编码，[INFERENCE] 经 vtable+0xC Init 0x404FB0 家族指针派生写或分配器零初始化 + 解析器设置）。",
+  "字符串/数据区直读：0x8A68D4 = 空串 ''（GBK/EUC-KR 均解不出非空）；0x8AB7A8/0x8AB828 = 数据区全局；0x8AA5C0/0x8AA5C8/0x8AA686 = F300 已落盘的实体外观/坐标写表。"
+ ],
+ "scope": {
+  "exe": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+  "image_base": "0x400000",
+  "text_section": {"vaddr": 4096, "raddr": 4096, "rsize": 479232, "file_offset": "VA - 0x400000"},
+  "vtables": {
+   "0x4763C0": "实体/HUD 基类（ctor 0x404960 安装 @0x404994/0x4049EF）",
+   "0x476480": "玩家实体（ctor 0x40C560 安装 @0x40C58E；第二 ctor 0x40C5E0 → 0x40C700 安装 @0x40C5ED）",
+   "0x47671C": "NPC/怪物实体（唯一安装点 0x42264E，msg 0x327 解析器 0x4225E0 内）"
+  },
+  "frame_ctx": "帧渲染 0x41C450 中 edi（本体：此=渲染器；+0xF5200 tile 上下文、+0x2F8780 HUD、+0x364444 本地玩家实体、+0xF532C/+0xF5330 可视 tile 范围）",
+  "local_player": "[frame_ctx+0x364444]（vtable 0x476480）",
+  "table_addrs": {
+   "entity_loop": "0x41CBD0（头 0x41CBFD；≤0x64=100 实体指针槽，基址 this+0x154+grid(arg1,arg2)，stride 4；0x41C5E4 帧渲染调用）",
+   "type_byte_table": "0x41CD1C（索引=类型字节；00 00 03 01 03…03 02：0→case0、1→case1、3→case1、0x32→case2、2/4..0x31→case3 跳过）",
+   "type_jump_table": "0x41CD0C（case0→0x41CC8E、case1→0x41CCD7、case2→0x41CCB6、case3→0x41CCED）",
+   "init_dispatch": "0x404FB0（三 vtable 共享 +0xC Init；跳转表 0x4054EC、分类字节表 0x405500，值域 0..0x32）"
+  }
+ },
+ "cell_analysis": {
+  "vtable_77c_slots": {
+   "0x4763C0_base": "+7C=0x40B2C0, +80=0x40B750, +84=0x40B850（+74/+78 本轮未读）",
+   "0x476480_player": "+74=0x40D420, +78=0x406CC0, +7C=0x40F5F0, +80=0x40C900, +84=0x40B850, +88=0x40F420, +8C=0x40C720",
+   "0x47671C_npc": "+74=0x406AB0, +78=0x406CC0, +7C=0x40C020, +80=0x40B750, +84=0x40B850, +8C=0x40EA60",
+   "shared": "+78=0x406CC0 三 vtable 共享（公共基槽）；+0xC=0x404FB0 三 vtable 共享（类型分派 Init）；+84=0x40B850 共享（target-box 记录 name-plate box 绘制）"
+  },
+  "call_site_0x41C831": {
+   "owner": "帧渲染 0x41C450（本体 edi）",
+   "this": "本地玩家实体（eax=[edi+0x364444]，vtable 0x476480 → 0x40F5F0）",
+   "args": "a1=this+0xF5200, a2=0(ebp), a3=[this+0x30](world obj), a4=0(ebp), a5=[this+0x30]",
+   "pre_post": "调前 [player+0x61C58]=9(ebx)、[player+0x61C5C]=5，调后恢复 0（HP 分数临时注入）"
+  },
+  "entity_loop_0x41CBD0": {
+   "dispatch_head": "0x41CC56 mov edx,[edi+0x364444]; cmp esi,edx; jne → eax=1（非本地玩家）；esi==本地玩家 且 [edi+0x30]!=0 → eax=0；0x41CC72 dl=[esi+0x88]; cmp 0x32; ja → 跳过；表 0x41CD1C → jmp [0x41CD0C]",
+   "case0_0x41CC8E": "call [vtable+0x7C]（5 栈参 + this）→ 0x40B180 → 0x40CE20",
+   "case1_0x41CCD7": "call [vtable+0x7C] → 0x40B180",
+   "case2_0x41CCB6": "call [vtable+0x7C]（0x32=NPC）→ 0x40B180",
+   "case3_0x41CCED": "跳过（类型 2/4..0x31 或 >0x32）",
+   "args_common": "a1=edi+0xF5200, a2=0(ecx), a3=[edi+0x30], a4=1, a5=eax（0=本地玩家在帧内, 1=其他）",
+   "post_calls": "0x40B180：arg1=1, [ecx+0x61BD4] 状态字节==2 分支用 [ecx+0x98]/[ecx+0x94]（语义 candidate）；0x40CE20：仅 case0（type 0），门 [esi+0x61C68] bit 0x100000 + GetTickCount([0x47630C]) − [esi+0x62A2C] > 0x6A4(1700ms)（超时附加绘制，语义 candidate——type 0 实体专属）"
+  },
+  "fn_0x40C020": {
+  "signature": "5 栈参 thiscall ret 0x14（与 0x40F5F0 同签名）",
+   "anchor_math": "屏幕 rect = ([esi+0xCC]−[ctx+0x12C])·3·16 − [ctx+0x134] + [esi+0xD4] − 0xC8（ctx=arg1；与 0x40F5F0 同公式）",
+   "hp_fraction": "分数 [esi+0x61C58]/[esi+0x61C60] → 填充字节 0..0x1F：shl 5 − sub（×31）+ idiv；cl=0x1F−al；超界置 0（cmp cl,0x1F; jbe；否则 [esp+0x1C]=0）；[esp+0x20](arg2) 非零时依 [esi+0x61C60] 加 0xFB/+5",
+   "name_draw": "0x462710（ecx=0x8AB7A8；~10 栈参含 record 字字段、0x8A68D4=空串''、0x320、0x1EC、0xD）——arg5（0x40C1C2 门）为 0 时跳过（本地玩家名字由 0x41C831 路径画）",
+   "bar_draw": "0x404E10（mov edx,[esp+0x28]; and eax,0xFFFF; cmp eax,0x94BF 模式分派）",
+   "status_helper": "0x404DA0（[ecx+0x61C68] bit 0x800000 → 返回 1/0xFFFF）",
+   "callees": "0x462710/0x404E10/0x404DA0/0x40B180 家族"
+  },
+  "fn_0x40F5F0": {
+   "signature": "5 栈参 thiscall ret 0x14",
+   "anchor_gate": "a4=[esp+0x10](entry) 非零 → 写 [esi+0xE4]/[esi+0xE8]（此=被绘对象自身，非绝对 HUD 地址）：x = ([esi+0xCC]−[a1+0x12C])·48 − [a1+0x134] + [esi+0xD4] − 0xC8；y = ([esi+0xD0]−[a1+0x130])·32 − [a1+0x138] + [esi+0xD8] − 0x9D",
+   "frame_series": "[esi+0x629C8]!=0 && [esi+0x62A14]!=0 && [esi+0xC0]>=0x1D：A=[629C8]·400 − [8A]·3000 + [C4] − 0xAA0；[esi+0x62A20]=A；div 0x190；frame=0x2710+(A%400)；call 0x466130（帧查找）→ 非零继续绘制，否则 pop 返回 1（与 target-box 记录 10000+(A%400) 系列逐字节一致，fresh 复核）",
+   "callers": "直接 E8：0x4120EE（唯一；0x4120B0 固定 anchor 路径：先写 [ecx+0xE4]=0x178(376)/[ecx+0xE8]=0xE3(227)，门 [ecx+0x62A48]!=0，ret 0x10；0x40F5F0 的 a4=调用方 arg3 非零时覆盖 anchor）；间接 vtable：0x41C831（玩家 vtable 0x476480 +0x7C）——target-box 记录「only_direct_caller=0x4120EE」为 E8-scan 结论，未覆盖间接调用（补全）"
+  },
+  "fn_0x4120B0": "固定 anchor 路径（target-box 记录「fixed (376,227)」）：门 [ecx+0x62A48]；预写 [ecx+0xE4]=0x178、[ecx+0xE8]=0xE3；call 0x40F5F0(a1=[ecx+0x62A58], a2=调用方arg1, a3=arg2, a4=arg3, a5=arg4)；ret 0x10；0x40F5F0 的 a4=调用方 arg3（[esp+0x10]）非零 → 覆盖 anchor（记录「arg3 (mouse screen x) nonzero → overwrite anchor」= 调用方相对编号，无矛盾）",
+  "type_byte_0x88": {
+   "read_sites": "31 读取点 / 11 cmp 点（Round 17 扫描，disp32 编码为主，如 8A 96 88 00 00 00）",
+   "npc_0x32": "0x4123E3：mov eax,[0x7E335C]; cmp byte [eax+0x88],0x32 → ret 1（目标全局 NPC 检查）；0x43DC65：cmp [edi+0x88],0x32; jne; fild [edi+0xCC]（0x32 实体按浮点取世界 x）",
+   "parser_0x4225E0": "msg 0x327：al==0x32 → vtable 0x47671C（实体）；al∈{0,1} → 0x42270C 玩家 ctor 0x40C560（vtable 0x476480）；其余 → 0x422699 仅基类 ctor 0x404960（vtable 0x4763C0）",
+   "write_sites": "直接位移编码扫描（0x88/0x89/C6/C7 × mod01/mod10/SIB × disp8/disp32）= 0 命中（primary-negative）；[INFERENCE] 经 vtable+0xC Init 0x404FB0 家族指针派生写（跳转表 0x4054EC、分类表 0x405500 值域 0..0x32）或分配器零初始化 + 解析器设置；F300 已落盘 0x405862 mov dword [esi+0x88],ebp 为外观/type 更新路径（0x405630 家族，arg=[esp+8] server 外观码，跳转表 0x405894 分派 <0x32）",
+   "parser_tail": "0x4227A6：mov [esi+0x61C58],0x12C(300)（HP 上限）; mov [esi+0x61C5C],0（HP 当前）; 实体入表：mov edx,[edi+0xE1154]; lea ecx,[edi+0xE1154]; push esi; call [edx+4]（实体链表 add）"
+  }
+ },
+ "exe_trace": {
+  "call_sites_77c": ["0x41C831（帧渲染 0x41C450，本地玩家路径 → 0x40F5F0）", "0x41CCA1（实体循环 case0，type 0 → 玩家 vtable → 0x40F5F0）", "0x41CCC9（实体循环 case2，type 0x32 → NPC vtable → 0x40C020）", "0x41CCEA（实体循环 case1，type 1/3 → 玩家 vtable → 0x40F5F0）"],
+  "dispatch_tables": {"0x41CD1C": "00 00 03 01 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 02 (0x32 处=02)（0x33+ 由 0x41CC7D cmp 0x32 guard 拦截，表尾 0x90 不可达）", "0x41CD0C": "0041CC8E 0041CCD7 0041CCB6 0041CCED"},
+  "vtable_installs": {"0x47671C": "0x42264E（唯一，msg 0x327 解析器 0x4225E0）", "0x476480": "0x40C58E（ctor 0x40C560）/ 0x40C5ED（ctor 0x40C5E0 → call 0x40C700）", "0x4763C0": "0x404994/0x4049EF（基类 ctor 0x404960；全文件恰 2 处 4 字节引用）"},
+  "fn_0x40C020_args": "case2 模式：push eax(a5=1); mov eax,[edi+0x30]; push 1(a4); push eax(a3); push ecx(a2=0); lea ecx,[edi+0xF5200]; push ecx(a1); mov ecx,esi(this); call [edx+0x7C]",
+  "fn_0x41C831_args": "mov eax,[esi+0x30]; push eax(a5); push ebp(a4=0); push eax(a3); push ebp(a2=0); lea ecx,[esi+0xF5200]; push ecx(a1); call [edx+0x7C]",
+  "post_call_0x40B180": "mov eax,[esp+4](arg1=1); test; je; mov al,[ecx+0x61BD4]; cmp al,2; jne; mov eax,[ecx+0x98]; mov ecx,[ecx+0x94] — 状态相关附加绘制（candidate）",
+  "post_call_0x40CE20": "sub esp,0x154; test dword [esi+0x61C68],0x100000; je; call [0x47630C](GetTickCount); sub eax,[esi+0x62A2C]; cmp eax,0x6A4; jbe — type-0 专属超时附加绘制（candidate）"
+ },
+ "audit_vs_exe": "target-box 记录与 fresh disasm 全表一致，无矛盾。补全关系：(1) 记录「hp_bar: selector element 0x5600FC+[8D]*0x144, frame=HP value (primary-static, 0x40A8A0)」与「0x40F5F0 10000+(A%400) series = separate rect HUD+0x629FC on element 0x57」均在 0x40F5F0 尾部逐字节复核一致（A=[629C8]*400−[8A]*3000+[C4]−0xAA0、[esi+0x62A20]=A、frame=0x2710+(A%400)、call 0x466130）；(2) 记录「0x40F5F0 only_direct_caller=0x4120EE」在 E8 层面正确，本证据补全间接 vtable 调用 0x41C831；(3) 记录「0x40C020 caller unidentified」闭合：= vtable 0x47671C slot +0x7C，经实体循环 case2 调用；(4) 记录「fixed (376,227) 0x4120B0」与 0x4120B0 预写 [ecx+0xE4]=0x178/[ecx+0xE8]=0xE3 一致，0x40F5F0 的 a4 门（调用方 arg3 非零）覆盖语义与记录「arg3 (mouse screen x) nonzero → overwrite anchor」一致（编号相对调用方）；(5) 记录 5 个绘制函数（0x40B750/0x40B79C/0x40B811/0x40B850/0x40BB00）不包含 0x40C020 —— 0x40C020 是第六个独立绘制路径（通用实体头部条，非悬停目标框）；F257 的 0x41C063 为 call [edx+0x84]（=0x40B850），与本案 +0x7C 槽位不同（+0x80=0x40B750 vs +0x84=0x40B850 区别需注意）。",
+ "contrast_c17": "不涉及地图 OOB 黑帧语义；纯实体渲染多态槽静态闭合。与 C17 对照点：无。",
+ "verdict": {
+  "summary": "0x40C020 caller 全链静态闭合：0x40C020 = vtable 0x47671C（NPC/怪物实体，msg 0x327 解析器 0x4225E0 唯一安装 @0x42264E）slot +0x7C，无 E8 直接调用，恰 4 个间接调用点——帧渲染 0x41C450 本地玩家路径 @0x41C831（此=玩家 → 0x40F5F0）与实体渲染循环 0x41CBD0 类型分派 @0x41CCA1/0x41CCC9/0x41CCEA（type 字节表 0x41CD1C + 跳表 0x41CD0C；case2 type 0x32 → 0x40C020，case0/1 type 0/1/3 → 玩家 vtable 0x476480 → 0x40F5F0）。vtable+0x7C 为多态『实体头部信息条/屏幕 anchor』槽：基类 0x4763C0→0x40B2C0、玩家 0x476480→0x40F5F0、NPC 0x47671C→0x40C020；0x40C020 语义 = 实体头部 HP 条 + 名字绘制（anchor 公式与 0x40F5F0 同构：([this+0xCC]−[ctx+0x12C])·48 − [ctx+0x134] + [this+0xD4] − 0xC8；HP 分数 [esi+0x61C58]/[esi+0x61C60] → 填充字节 0..0x1F；名字 0x462710、条 0x404E10、状态位 0x404DA0）。0x40F5F0 双路径确认：E8 唯一 0x4120EE（固定 anchor 0x178/0xE3 的 HUD 路径）+ vtable 间接 0x41C831（玩家路径）——target-box 记录「only_direct_caller」为 E8-only 结论，本证据补全。实体类型 0x32=NPC 证据：0x4123E3（全局 NPC 检查 ret 1）、0x43DC65（浮点世界 x）；[esi+0x88] 无直接位移编码写入（primary-negative），[INFERENCE] 经 vtable+0xC Init 0x404FB0 家族或 0x405862（F300 外观/type 更新）设置。",
+  "confidence": "primary-static (vtable/调用点/分派表/参数全部直接反汇编字节级确认)；0x40B180/0x40CE20 业务语义与 [esi+0x88] 写入点为 candidate"
+ },
+ "evidence_level": "primary-static",
+ "evidence_level_note": "全部结论来自 Mir3.exe 直接反汇编 + 字节扫描：FF 5? 7C/FF 57 7C 双编码扫描恰 4 点；E8 rel32 全文件扫描复核 0x40F5F0 唯一直接调用 0x4120EE、0x40C020 零直接调用；vtable 4 字节引用扫描（0x4763C0 恰 2 处、0x47671C 安装点唯一）；分派表 0x41CD1C/0x41CD0C 逐字节读出；0x4123E3/0x43DC65 类型比较字节级确认。candidate 项：0x40B180（[ecx+0x61BD4]==2 分支用 [ecx+0x98]/[ecx+0x94]）与 0x40CE20（type-0 专属、bit 0x100000 + 1700ms 超时）的业务语义未逐字节解构；[esi+0x88] 写入点无直接编码（0 命中），为推断。",
+ "cross_refs": ["F239", "F257", "F271", "F300", "F315", "F321", "F322"],
+ "tool": "Tools/reverse-engineering/disasm_capstone.py (PeImage + capstone 5.0.9); 手写 FF 5? 7C / FF 57 7C 间接调用扫描（mod01 0x50-0x57 + mod10 0x90-0x97 双编码）; E8 rel32 全文件扫描; 4 字节 vtable 引用扫描; 0x88/0x89/C6/C7 全 mod 写入扫描; Python int.from_bytes 表/字节直读; GBK/EUC-KR 字符串解码",
+ "reproduce": "MIR3=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe; python Tools/reverse-engineering/disasm_capstone.py 0x40C020 0x40C2A0 (NPC 头部条绘制全函数); disasm 0x40F5F0 0x40F6FC (玩家头部条/anchor); disasm 0x41CBD0 0x41CD00 (实体循环+分派); disasm 0x41C831 0x41C8A0 (帧渲染调用点上下文); disasm 0x4225E0 0x4227E1 (msg 0x327 解析器); 间接调用扫描: for i in range(len(data)-2): b1,b2=data[i],data[i+1]; if b1==0xFF and ((0x50<=b2<=0x57) or (0x90<=b2<=0x97)) and data[i+2]==0x7C: 收集; 表读出: data[0x41CD1C-0x400000:0x41CD1C-0x400000+0x34] / data[0x41CD0C-0x400000:0x41CD0C-0x400000+16]"
+}
