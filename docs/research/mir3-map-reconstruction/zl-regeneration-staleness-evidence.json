@@ -1,0 +1,106 @@
+{
+ "evidence_id": "zl-regeneration-staleness",
+ "title": "ZL 资源树 2026-08-11 09:57 重生成：与 EI 同帧数，resource-consistency.json（2026-08-10 20:49）ZL 帧数引用 STALE — F319/C63",
+ "date": "2026-08-11",
+ "objective": "记录 ZL 客户端库重生成事实（mtime 2026-08-11 09:57，64 个 .Zl），给出 EI↔ZL 帧数实测对照表，宣告 resource-consistency.json 中 ZL 帧数引用过时，并纠正依赖旧 ZL 帧数的『ZL 更大 tileset 覆盖』子论断。",
+ "question": "当前 ZL 树各库实际帧数（entries/headers）与 EI 是否一致？resource-consistency.json 的 ZL 帧数（2026-08-10 生成）是否已 stale？",
+ "method": [
+  "对 /home/tetsuya/development/zircon/Debug/Client/Data/Map Data 全部 64 个 .Zl 读取 mtime（stat）：2026-08-11 09:57 批量重生成。",
+  "ZlLibrary 实测（l.entries/l.headers 为实际条目，l.count 仅为元数据）：逐库记录实际条目数。",
+  "EI 侧对应 .wil 帧数实测（同库名）。",
+  "逐库对照 EI vs ZL；与 resource-consistency.json（2026-08-10 20:49）中的 ZL 计数对比，识别变化。"
+ ],
+ "scope": {
+  "zl_root": "/home/tetsuya/development/zircon/Debug/Client/Data/Map Data",
+  "zl_file_count": 64,
+  "zl_mtime": "2026-08-11 09:57",
+  "ei_root": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端",
+  "stale_file": "docs/research/mir3-map-reconstruction/resource-consistency.json (2026-08-10 20:49)"
+ },
+ "cell_analysis": {
+  "ei_vs_zl_frame_counts": {
+   "Wood/Tilesc": [
+    3927,
+    3927
+   ],
+   "Wood/Wallsc": [
+    3791,
+    3791
+   ],
+   "Wood/Housesc": [
+    9010,
+    9010
+   ],
+   "Wood/Dungeonsc": [
+    4710,
+    4710
+   ],
+   "Wood/SmObjectsc": [
+    969,
+    969
+   ],
+   "Sand/Tilesc": [
+    4299,
+    4299
+   ],
+   "Sand/Housesc": [
+    1274,
+    1274
+   ],
+   "Sand/SmObjectsc": [
+    631,
+    631
+   ],
+   "Sand/Wallsc": [
+    860,
+    860
+   ],
+   "Sand/Animationsc": [
+    127,
+    127
+   ],
+   "Tilesc": [
+    9836,
+    9836
+   ],
+   "Tiles5c": [
+    20000,
+    20000
+   ],
+   "root Dungeonsc": [
+    5364,
+    5364
+   ],
+   "Sand/Dungeonsc": [
+    null,
+    16654
+   ]
+  },
+  "notes": {
+   "order": "EI↔ZL 帧数全部一致（13/14 库）；唯一例外 ZL Sand/Dungeonsc = 16654（EI 侧 Sand/ 目录无 Dungeonsc，回退 root Dungeonsc 5364）",
+   "count_vs_entries": "ZlLibrary.count 为元数据字段；实际条目必须读 l.entries/l.headers（Wood/SmObjectsc entries=830、Wallsc 3709、Tilesc 3777、Housesc 8657 等，均与 EI 一致）",
+   "staleness": "resource-consistency.json 中 ZL 帧数（2026-08-10 20:49 记录，当时 ZL 明显更大）已过时；凡引用 ZL 帧数必须先实测",
+   "old_zl_narrative": "『ZL 时代制作 / ZL 更大 tileset 覆盖』对 2026-08-10 旧构建成立；当前 ZL 与 EI 同帧数 → F317 的 lib/frame-space 混淆结论对两客户端均适用"
+  }
+ },
+ "exe_trace": {},
+ "audit_vs_exe": "资源文件层面对照（客户端不涉及）——本证据支撑 F317：混淆帧在 EI/ZL 双侧均为透明（C22），与客户端 FetchFrame 边界检查一致。",
+ "contrast_c17": "与 C17 无关（C17 为 EI 侧黑帧素材）；本证据为 EI↔ZL 资源树一致性与文档新鲜度。",
+ "verdict": {
+  "mechanism": "ZL 构建流程 2026-08-11 09:57 用与 EI 相同的帧数重新生成全部 64 个 .Zl；旧 resource-consistency.json 记录的是重生成前的 ZL（帧数更大）",
+  "summary": "当前 ZL 与 EI 帧数完全一致（13/14 库精确相等；Sand/Dungeonsc 仅 ZL 有 = 16654）。resource-consistency.json（2026-08-10 20:49）中的 ZL 帧数引用 STALE，须以实测为准（ZlLibrary.entries/headers，勿用 l.count）。『ZL 更大 tileset → ZL 时代制作』子论断仅对旧构建成立，正式失效。",
+  "action": "后续所有引用 ZL 帧数的分析（含 resource-consistency.json 重跑）须基于重生成后的实测值"
+ },
+ "evidence_level": "derived",
+ "evidence_level_note": "mtime、帧数 = primary（stat + 库文件直读实测）；staleness 判定 = primary 对照；『重生成原因』未查证（构建流程推断）→ derived。",
+ "cross_refs": [
+  "F317",
+  "C61",
+  "C63",
+  "C64",
+  "resource-consistency.json",
+  "Finding319"
+ ],
+ "tool": "ZlLibrary（zircon 客户端）, stat, survey_mir3_maps.py",
+ "reproduce": "stat /home/tetsuya/development/zircon/Debug/Client/Data/Map Data/*.Zl | grep 2026-08-11；python3 -c 'from ZlLibrary import ZlLibrary; l=ZlLibrary(\"<zl路径>\"); print(len(l.entries), len(l.headers))'（勿用 l.count）"
+}

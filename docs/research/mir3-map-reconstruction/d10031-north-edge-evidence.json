@@ -1,0 +1,80 @@
+{
+ "evidence_id": "d10031-north-edge",
+ "title": "D10031 ground 帧-OOB 定案：62 格全在北边缘 block 行 y=0，帧 42756–42766 两客户端任何库均不存在 = 真缺失 edge art — F318/C62",
+ "date": "2026-08-11",
+ "objective": "全局唯一 ground 帧-OOB（D10031，300×300）：定案 62 格的精确位置、帧值分布、以及这些帧在两客户端（EI + ZL）任何库中的存在性。",
+ "question": "D10031 的 62 格 ground OOB（tiles5c 槽）帧 42756–42766 是否在 EI/ZL 任意库中存在？位置是否集中（北边缘）暗示缺失的连续 edge art 段？",
+ "method": [
+  "survey_mir3_maps.py 全 544 图：ground 层 OOB 仅 D10031 一图（ground lib2 tiles5c cells=22500, frame_min 20, frame_max 42766, frame_oob 62, lib_frames 20000）。",
+  "从 survey-round14.json 提取 D10031 ground OOB 逐格坐标：全部 block 行 y=0（北边缘），x∈[6,115]。",
+  "帧值直方图：42765×4、42762×9、42759×6、42766×8、42763×6、42760×6、42764×9、42761×8、42758×5、42756×1（10 个 distinct 帧，全部 > 20000）。",
+  "EI Tiles5c.wil（cap 20000）与 ZL Tiles5c（同帧数）实测：帧 42756–42766 不存在；另一可能的 ground 库（Tilesc 9836、Tiles30c 1080）同样不存在 → 两客户端任何库均无。",
+  "render_oob_tiles.py z=2 tile(0,0)：10 个标记格（橙=ground 帧 OOB）→ /tmp/oob_t_d10031_0_0.png（241,671 B）。"
+ ],
+ "scope": {
+  "maps": [
+   {
+    "name": "D10031.map",
+    "w": 300,
+    "h": 300,
+    "md5": "1d1407d0",
+    "ground_libs": {
+     "2": {
+      "lib": "tiles5c",
+      "cells": 22500,
+      "frame_range": "20..42766",
+      "oob": 62,
+      "lib_frames": 20000
+     }
+    }
+   }
+  ],
+  "ei": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端",
+  "zl": "/home/tetsuya/development/zircon/Debug/Client/Data/Map Data"
+ },
+ "cell_analysis": {
+  "oob_positions": "62 格全部位于 block 行 y=0（地图北边缘），x∈[6,115]——连续 110 格宽的北缘条带",
+  "frame_histogram": {
+   "42756": 1,
+   "42758": 5,
+   "42759": 6,
+   "42760": 6,
+   "42761": 8,
+   "42762": 9,
+   "42763": 6,
+   "42764": 9,
+   "42765": 4,
+   "42766": 8
+  },
+  "existence": {
+   "EI_tiles5c": "cap 20000，42756..42766 不存在",
+   "ZL_tiles5c": "cap 20000（重生成后与 EI 同帧数），不存在",
+   "other_ground_libs": "Tilesc 9836 / Tiles30c 1080，均无"
+  },
+  "prior_error": "早前『D10031 smtilesc ground OOB frame 9998』= Middle 层 lib? smtilesc 帧 9998 < 10180（cap）在界内，正常渲染非异常；ground OOB 真身 = tiles5c 帧 42756–42766（C22 更正）"
+ },
+ "exe_trace": {
+  "ground_renderer": "0x43b440 逐 2×2 块：T=file−⌊file/14⌋（0x43b53c）、T<=0x45（0x43b545）、frame!=0xFFFF（0x43b54a）、lookup 非空（0x43b569）→ 通过后经 FetchFrame 0x466130 边界检查（jae 越界返回 0）→ 不绘制",
+  "consequence": "北缘 62 格在原版中透明不绘制 → 露出地图外黑（缓冲清零 0x43b455）或下一层背景"
+ },
+ "audit_vs_exe": "audit 的 frame_oob（帧 ≥ 库帧数）判定与 EXE FetchFrame jae 边界检查一致；tiles5c 帧 42756–42766 超过任何库上限 → 两客户端均拒绝。",
+ "contrast_c17": "C17 黑帧在库内（tiles5c f20-24）正常绘制；本证据帧在库外（42756+）被拒绝 → 真缺失，区别于显式引用黑帧。",
+ "verdict": {
+  "mechanism": "地图数据引用不存在的帧号（42756–42766，可能为建图工具对北缘地形素材的占位引用），两客户端 FetchFrame 边界检查拒绝 → 不绘制",
+  "summary": "D10031 ground 62 格 OOB 全部位于北边缘 block 行 y=0（x∈[6,115]），帧 42756–42766（10 distinct）在 EI/ZL 两客户端任何库（含 Tilesc/Tiles30c）中均不存在 = 真缺失 edge art。连续北缘条带形状暗示缺失一组连续的地形素材帧（约 110 格宽）。全局 544 图仅此一图 ground 层有帧-OOB。",
+  "correction": "P3『D10031 ground OOB（smtilesc 9998）』更正为 tiles5c 42756–42766（C22 原更正 + 本证据位置/帧/存在性定案）"
+ },
+ "evidence_level": "derived",
+ "evidence_level_note": "位置、帧直方图、库存在性 = primary（文件直读 + 帧数实测）；『缺失 edge art 段形状』描述 = derived 推断；两客户端拒绝 = C22 primary-static 反汇编合成。",
+ "cross_refs": [
+  "C22",
+  "C62",
+  "C64",
+  "P3",
+  "Finding274",
+  "Finding318",
+  "C17"
+ ],
+ "tool": "Tools/maps/survey_mir3_maps.py, Tools/maps/render_oob_tiles.py, ZlLibrary",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/survey_mir3_maps.py --map D10031.map（ground lib2 oob=62）；python3 Tools/maps/render_oob_tiles.py --map D10031.map --tx 0 --ty 0（橙标记北缘格）；python3 -c 'from ZlLibrary import ZlLibrary; print(len(ZlLibrary(\"...Tiles5c.Zl\").entries))'"
+}

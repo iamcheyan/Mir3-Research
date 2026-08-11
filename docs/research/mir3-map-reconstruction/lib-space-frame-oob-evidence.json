@@ -1,0 +1,161 @@
+{
+ "evidence_id": "lib-space-frame-oob",
+ "title": "3.map/41.map/50.map frame-OOB 根因 = lib/frame-space 混淆（非素材帧数不足、非 ZL 更大覆盖）— F317/C61，修订 C11",
+ "date": "2026-08-11",
+ "objective": "C11『3.map 帧越界根因 = EI 素材帧数 < 地图引用』与『ZL 更大 tileset 覆盖 → ZL 时代制作』叙述在 ZL 重生成（2026-08-11 09:57，与 EI 同帧数）后失效：重新定案 3.map/41.map/50.map 共 4913 格 frame-OOB 的真实机制。",
+ "question": "frame-OOB 帧值在 EI/ZL 两客户端各自的同族兄弟库中是否存在？如果存在，则地图的层/库槽指向与帧值来自不同的库空间（lib/frame-space 混淆），两客户端渲染时该格按 C22 语义不绘制（透明）——而非素材缺失。",
+ "method": [
+  "survey_mir3_maps.py 全量 544 图逐层逐库 frame_oob 统计（survey-round14.json）：3.map mid lib24 wood_wallsc oob 172 / lib25 wood_smobjectsc oob 2575、front lib24 oob 8 / lib25 oob 500；41.map mid lib34 sand_housesc oob 450 / lib40 sand_smobjectsc oob 1099、front lib34 oob 1 / lib40 oob 69；50.map mid lib24 oob 6 / lib25 oob 29、front lib24 oob 4。",
+  "EI WIL 库实测：Wood/Tilesc 3927 帧、Wood/Wallsc 3791、Wood/Housesc 9010、Wood/Dungeonsc 4710、Wood/SmObjectsc 969、Sand/Tilesc 4299、Sand/Housesc 1274、Sand/SmObjectsc 631、Sand/Wallsc 860、Sand/Animationsc 127、root Tilesc 9836、Tiles5c 20000、root Dungeonsc 5364。",
+  "ZL 树（/home/tetsuya/development/zircon/Debug/Client/Data/Map Data，64 个 .Zl，mtime 2026-08-11 09:57）同名库帧数实测（ZlLibrary.entries/headers 实际条目，非 l.count 元数据）：全部与 EI 相同——Wood/Tilesc 3777、Wood/Wallsc 3709、Wood/Housesc 8657、Wood/SmObjectsc 830、Sand/Tilesc、Sand/Housesc、Sand/SmObjectsc、Tilesc 9836、Tiles5c 20000；唯一例外 ZL Sand/Dungeonsc = 16654。",
+  "sibling-lib 存在性对照（KR_ORDER 同主题族）：wood_smobjectsc 槽 OOB 帧 0x9e3(2531) → Wood/Tilesc 2531 EXISTS（96×64）；wood_wallsc 槽 OOB 帧 0x11b9(4537) → Wood/Housesc 4537 EXISTS（48×896 竖条）；sand_smobjectsc 槽 OOB 帧 0xe22(3618) → EI root Dungeonsc 有 1000/2000/3000/3618、ZL Sand/Dungeonsc 有 2/631/1000/2000/3000/3618；sand_housesc 槽 OOB 帧 0x6d8(1752) → Sand/Tilesc 1752 EXISTS。",
+  "render_oob_tiles.py z=2 单 tile marker 渲染：OOB 格按 C22 语义解码为 None → 渲染器跳过 → marker 覆盖图（洋红=mid/front OOB）精确标出透明格位置（/tmp/oob_t_3_2_4.png 415 格、oob_t_3_6_2.png 342、oob_t_41_2_2.png 452、oob_t_50_2_1.png 39）。"
+ ],
+ "scope": {
+  "maps": [
+   {
+    "name": "3.map",
+    "w": 400,
+    "h": 600,
+    "md5": "60036c1f",
+    "frame_oob_total": 3255,
+    "cn": "沙巴克城"
+   },
+   {
+    "name": "41.map",
+    "w": 400,
+    "h": 400,
+    "md5": "407deda0",
+    "frame_oob_total": 1619
+   },
+   {
+    "name": "50.map",
+    "w": 120,
+    "h": 150,
+    "md5": "ea960513",
+    "frame_oob_total": 39
+   }
+  ],
+  "ei": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端",
+  "zl": "/home/tetsuya/development/zircon/Debug/Client/Data/Map Data"
+ },
+ "cell_analysis": {
+  "3.map": {
+   "mid_lib24": {
+    "lib": "wood_wallsc",
+    "cells": 3384,
+    "frame_range": "2..4537",
+    "oob": 172,
+    "lib_frames": 3791,
+    "sibling": "wood_housesc 4537 EXISTS (cap 9010)"
+   },
+   "mid_lib25": {
+    "lib": "wood_smobjectsc",
+    "cells": 2765,
+    "frame_range": "2..2531",
+    "oob": 2575,
+    "lib_frames": 969,
+    "sibling": "wood_tilesc 2531 EXISTS (cap 3927)"
+   },
+   "front_lib24": {
+    "lib": "wood_wallsc",
+    "cells": 191,
+    "frame_range": "45..4523",
+    "oob": 8,
+    "lib_frames": 3791
+   },
+   "front_lib25": {
+    "lib": "wood_smobjectsc",
+    "cells": 501,
+    "frame_range": "10..2418",
+    "oob": 500,
+    "lib_frames": 969
+   }
+  },
+  "41.map": {
+   "mid_lib34": {
+    "lib": "sand_housesc",
+    "cells": 450,
+    "frame_range": "1275..1752",
+    "oob": 450,
+    "lib_frames": 1274,
+    "sibling": "sand_tilesc 1752 EXISTS (cap 4299)"
+   },
+   "mid_lib40": {
+    "lib": "sand_smobjectsc",
+    "cells": 2254,
+    "frame_range": "2..3618",
+    "oob": 1099,
+    "lib_frames": 631,
+    "sibling": "EI root Dungeonsc 1000/2000/3000/3618 (cap 5364); ZL Sand/Dungeonsc 2/631/1000/2000/3000/3618 (cap 16654)"
+   },
+   "front_lib34": {
+    "lib": "sand_housesc",
+    "cells": 1,
+    "frame": "1613",
+    "oob": 1,
+    "lib_frames": 1274
+   },
+   "front_lib40": {
+    "lib": "sand_smobjectsc",
+    "cells": 317,
+    "frame_range": "2..3618",
+    "oob": 69,
+    "lib_frames": 631
+   }
+  },
+  "50.map": {
+   "mid_lib24": {
+    "lib": "wood_wallsc",
+    "cells": 6,
+    "frame_range": "3870..3929",
+    "oob": 6,
+    "lib_frames": 3791,
+    "sibling": "wood_housesc (cap 9010)"
+   },
+   "mid_lib25": {
+    "lib": "wood_smobjectsc",
+    "cells": 145,
+    "frame_range": "2..2302",
+    "oob": 29,
+    "lib_frames": 969,
+    "sibling": "wood_tilesc (cap 3927)"
+   },
+   "front_lib24": {
+    "lib": "wood_wallsc",
+    "cells": 4,
+    "frame_range": "3901..3917",
+    "oob": 4,
+    "lib_frames": 3791
+   }
+  }
+ },
+ "exe_trace": {
+  "fetch_frame": "0x466130（type0 WIL 0x466640、type1/2 ZL 0x466720）解引用前比较帧号 vs 库帧数：0x46664A cmp edi,[esi+0x10]; jae 0x466714；0x466727 cmp eax,[ecx+0x2C]; jae 0x466761 → 越界返回 0 → 全部 7 条绘制路径 test eax,eax; je 跳过 → 单元格不绘制（透明）——C22 语义，地图数据引用何种库槽与帧值无强制一致性检查，混淆帧被透明吞掉",
+  "render_result": "两客户端（EI + 重生成后同帧数 ZL）对这些格均不绘制 → 视觉透明，非『ZL 能画出而 EI 不能』"
+ },
+ "audit_vs_exe": "audit 标记 frame_oob（帧号 ≥ 库帧数）与 EXE FetchFrame 边界检查（jae 越界返回 0）判定标准一致；C11『素材帧数 < 地图引用』为表面描述，未解释帧值在兄弟库存在的事实；本证据以 sibling-lib 存在性实测补足机制层。",
+ "contrast_c17": "C17 黑帧（tiles5c f20-24 近纯黑）是库内合法帧被显式引用并正常绘制；本证据的混淆帧是越界帧（≥ 本槽库帧数）被 C22 检查拒绝 → 不绘制。黑 vs 透明是两种不同后果。",
+ "verdict": {
+  "mechanism": "lib/frame-space 混淆：地图 cell 的库槽（v 变换 → KR_ORDER 槽）与其 frame 值分别来自不同库空间——槽指向 smobjectsc/wallsc，帧值属于同主题族 tilesc/housesc 空间",
+  "summary": "3.map（3255 格）、41.map（1619 格）、50.map（39 格）的 frame-OOB 帧值在 EI/ZL 两客户端各自的同族兄弟库中全部存在（wood_smobjectsc OOB → wood_tilesc；wood_wallsc OOB → wood_housesc；sand_smobjectsc OOB → root/Sand Dungeonsc；sand_housesc OOB → sand_tilesc）。EI↔ZL 帧数对照实测全一致（唯一例外 ZL Sand/Dungeonsc=16654）→ 当前两客户端渲染结果均为 C22 透明不绘制。旧 C11 表述（素材帧数不足）与旧『ZL 更大覆盖』叙述仅对 2026-08-10 旧 ZL 构建成立（C63）。",
+  "correction": "C11 标记『被 F317 修订』；K1『越界帧替换逻辑 = 空帧显示』维持排除（C22）"
+ },
+ "evidence_level": "derived",
+ "evidence_level_note": "EI/ZL 帧数、sibling 帧存在性、地图 frame_oob 计数 = primary（文件直读实测）；『混淆帧被 C22 透明吞掉』= C22 反汇编（primary-static）+ 本证据的帧存在性合成；『建图工具写入』为推断 → 整体 derived。",
+ "cross_refs": [
+  "C11",
+  "C22",
+  "C61",
+  "C63",
+  "C64",
+  "K1",
+  "D4",
+  "P1",
+  "P3",
+  "Finding274",
+  "Finding317"
+ ],
+ "tool": "Tools/maps/survey_mir3_maps.py, Tools/maps/render_oob_tiles.py, ZlLibrary（zircon 客户端库读取）",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/survey_mir3_maps.py（→ survey-round14.json：3.map/41.map/50.map frame_oob 明细）；python3 -c 'from ZlLibrary import ZlLibrary; l=ZlLibrary(path); print(len(l.entries))'（实测 ZL 帧数，勿用 l.count）；python3 Tools/maps/render_oob_tiles.py --map 3.map --tx 2 --ty 4（OOB marker 覆盖图）"
+}

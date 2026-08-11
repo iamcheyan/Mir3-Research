@@ -1,0 +1,76 @@
+{
+ "evidence_id": "class8-file0xff",
+ "title": "class 8 空地面格定案：23 图 670 格全部 = 字面空条目 file=0xFF（0 个 valid-file+0xFFFF/FF7F），位置 = 有规则『留空』设计 — F320/C65",
+ "date": "2026-08-11",
+ "objective": "544 图 survey 中 23 图 670 格 ground_not_drawn（P2 机制 C23 之后的新分类 class 8）：逐图确认空标记的字节形态（file=0xFF vs valid-file+保留帧）、位置模式、以及与原 P2『0_003 60×100 右 2 下 6』描述的差异。",
+ "question": "全部 class 8 空格是否统一为 file=0xFF 字面空条目？是否存在 valid-file + 0xFFFF / valid-file + 0xFF7F 的组合？空格位置是随机损坏还是有规则设计？",
+ "method": [
+  "survey_mir3_maps.py 对每图 ground 层空标记分类统计：file_0xFF / valid_file_frame_FFFF / valid_file_frame_FF7F 三桶。",
+  "23 图逐图提取 file_0xFF 格坐标 bounding box（survey JSON + 会话内 block 坐标提取）。",
+  "render_oob_tiles.py z=2 单 tile marker 渲染（青=ground file-0xFF）→ comparisons/<map>__oob_markers_t<tx>-<ty>.png。",
+  "对照 C23（0_003/5_0013 空地面格跳过 + 黑底）与 D4/D7（室内图边距）：本证据把机制推广到全部 23 图并修正 P2 尺寸描述。"
+ ],
+ "scope": {
+  "maps_23": [
+   "0.map(3)",
+   "02_010..02_014(各7)",
+   "0_003(137)",
+   "1.map(7)",
+   "122(18)",
+   "123(34)",
+   "5_0013(67)",
+   "74(90)",
+   "8.map(2)",
+   "D1202(2)",
+   "D1204(1)",
+   "D12121(171)",
+   "D1401(32)",
+   "D1411(32)",
+   "D1421(32)",
+   "D6023(3)",
+   "D9022(1)",
+   "D9032(1)",
+   "d6004(2)"
+  ],
+  "total": 670
+ },
+ "cell_analysis": {
+  "marker_shape": {
+   "file_0xFF": 670,
+   "valid_file_frame_FFFF": 0,
+   "valid_file_frame_FF7F": 0
+  },
+  "patterns": {
+   "center_hole": "74.map 90 块 cell x∈[294,326] y∈[292,330]（中央洞；tiles (7,4)=48/(7,5)=32/(6,4)=9/(6,5)=1）",
+   "top_left_band": "D12121 171 块 x∈[34,68] y∈[28,56]；0_003 137 块 x∈[0,98] y∈[0,58]（顶部带）；5_0013 67 块（tiles (1,0)=32/(0,1)=22/(1,1)=13）",
+   "east_edge_column": "123.map 34 块全在单列 x=398 y∈[272,338]（w=400 东缘竖线）",
+   "corner_band": "D1401/D1411/D1421 各 32 块 x∈[256,268] y∈[44,68]（md5 f7a83061 同文件）",
+   "scattered": "0.map 3、02_010..02_014 各 7（md5 8bfa0edf 同文件）、1.map 7、8.map 2、D1202 2、D1204 1、D6023 3、D9022 1、D9032 1、d6004 2"
+  }
+ },
+ "exe_trace": {
+  "ground_renderer_gates": "0x43b440：T%14<=2（0x43b53c，T=file−⌊file/14⌋）、T<=0x45（0x43b545）、frame!=0xFFFF（0x43b54a）、lookup 非空（0x43b569）；T(255)=237 被门 A（237>69 且 237%14=13>2）拒 → file=0xFF 条目无条件不 blit（C23）",
+  "rendered_as": "地面缓冲 0x43b455 清零为黑 → 空格在原版为黑 void；与 C23 黑底语义一致"
+ },
+ "audit_vs_exe": "audit 把 file=0xFF 与 frame 保留值（0xFFFF/0xFF7F）分开统计：0 个 valid-file 组合 → 空格全部是字面 file=0xFF；EXE 门 A/C 对两者都拒绝，渲染后果一致。",
+ "contrast_c17": "C17 黑帧（tiles5c f20-24）在库内被正常绘制（黑）；class 8 空格在库外被拒绝（黑 void）——两者视觉都可为黑，但机制不同（绘制黑帧 vs 不绘制）。",
+ "verdict": {
+  "mechanism": "地图作者/工具以 file=0xFF 字面条目显式留空地面格；客户端 0x43b440 门 A 拒 T=237 → 不 blit → 黑底",
+  "summary": "23 图 670 格 class 8 空格全部为 file=0xFF 统一标记（0 个 valid-file+0xFFFF、0 个 valid-file+0xFF7F）。位置模式 = 有规则『留空』设计：74 中央洞、D12121 左上带、0_003 顶部带、5_0013 块带、123 东缘单列（x=398）、D1401 系角落带、其余零散。原 P2『0_003 60×100 右 2 下 6』描述 = object 层 file=255 与 ground 层 file=0xFF 的混用（0_003 实测 100×60，地面 137 空格），已按 survey 实测更正。",
+  "correction": "D4/D7『0_003 绘制区 58×94/60×100』维持 C23 结论不变；尺寸标注以 survey-round14.json w/h 为准"
+ },
+ "evidence_level": "derived",
+ "evidence_level_note": "file=0xFF 计数与坐标 = primary（文件直读）；『有规则设计』= 位置模式归纳（derived）；渲染黑 void = C23 primary-static 合成；23 图 670 格全覆盖（非抽样）→ 高置信。",
+ "cross_refs": [
+  "C23",
+  "C65",
+  "D4",
+  "D7",
+  "P2",
+  "Finding275",
+  "Finding320",
+  "K2"
+ ],
+ "tool": "Tools/maps/survey_mir3_maps.py, Tools/maps/render_oob_tiles.py",
+ "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/survey_mir3_maps.py（ground empty 三桶统计）；python3 Tools/maps/render_oob_tiles.py --map 74.map --tx 7 --ty 4（青标记中央洞）"
+}
