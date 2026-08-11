@@ -1,0 +1,139 @@
+{
+ "evidence_id": "trade-window-click-binding",
+ "title": "交易窗（id3）点击绑定全链闭合 — ctor 0x4159D0 五子控件 → 分派链（0x42BEAA → 0x42AAB0 → 0x42C4D4 case3=0x42C00B）→ 输入处理器 0x416EF0 全分支：금전(金钱) 金币对话框开窗（0x418030, prompt 0x47AD98, msgId 0x405）、交易按钮 0x130 → msg 0x406 @0x451B30 + lock 标志 [trade+0x13644]=1、X 按钮 0x7C → ret 1 → 外部 toggle 关闭、隐藏按钮 0x1E4 点击消费 no-op、左格 +0x5C 物品转移链（0x416830/0x416950/0x416C20/0x416D60/0x416DC0 → msg 0x402 @0x451AA0）、右格 +0x6C 无点击处理 — F322",
+ "date": "2026-08-12",
+ "objective": "闭合 ui-coverage-matrix.json exchange 记录 pending_notes 首项（'exchange button business names (1060-1062 Chinese 交易 label visible, click binding not traced)'）与第二项（'trade state transitions beyond draw-time side selection'）的静态可闭合部分：从 ctor 0x4159D0 的五个子控件出发，追踪 id3 交易窗输入分派链到输入处理器 0x416EF0，为每个可点击区域建立 控件偏移 ↔ 命中测试 ↔ 业务动作（协议消息/窗口状态）的完整映射；同时核证金币对话框开窗点与 F302 确认链的边界无重叠，并核对 0x417960 双子控件（+0x13648/+0x13694）与 lock 状态字段的语义。",
+ "question": "1) 交易窗（id3）ctor 建立的五个子控件（+0x7C X 关闭 / +0x130 交易按钮 / +0x1E4 隐藏按钮 / +0x13648 / +0x13694）各自的点击命中后发生什么？2) 交易按钮（帧 1061/1062，交易 label）点击是否即 trade accept，发什么协议消息，[trade+0x13644] 标志的语义是什么？3) 金币对话框在交易窗内的开窗触发点（0x416EF0→0x418030）与 F302 覆盖的确认链（0x418520/0x418600→0x7EE）是否重叠？4) 左右两格（+0x5C/+0x6C）的点击处理分别是什么，右侧格子是否有任何点击绑定？",
+ "method": [
+  "capstone 线性反汇编（每段从已知指令边界线性 sweep，16 字节 stride 分块禁用）：0x416EF0 全函数（0x416EF0-0x4171A0，输入处理器，8 参 thiscall ret 0xC）、ctor 0x4159D0 全量（0x4159D0-0x415B10，子控件创建点 0x415A5B/0x415A76/0x415AA2/0x415AC8/0x415AE6）、分派链 0x42BEAA-0x42C036（含 0x42AAB0 窗口查找、0x42C4D4 表 case3=0x42C00B、toggle 0x42ADB0）、消息 builder 0x451B30（msg 0x406）与 0x451AA0（msg 0x402）全函数、格子动作处理器头部（0x416830/0x416950/0x416C20/0x416D60/0x416DC0）、gold-dialog ctor 0x418030 头部。",
+  "字符串 GBK/EUC-KR 直读：0x47ADB4 字节 b1 dd c0 fc = EUC-KR '금전'（金钱；GBK 解出 '陛傈' 为乱码弃用）；0x47AD98 = GBK '您要付给对方多少金币?'（c4 fa d2 aa b8 b6 b8 f8 b6 d4 b7 bd b6 e0 c9 d9 bd f0 b1 d2 3f）。",
+  "E8 相对调用全文件扫描：0x416EF0（交易输入处理器）唯一调用点 = 0x42C017（case3 分派）；0x451B30（0x406 发送）唯一调用点 = 0x417034（交易按钮命中）；0x418030（gold-dialog ctor）24 个调用点全表（0x403E12/0x416F9C/0x4193D8/0x41C196/0x41D230/0x41D633/0x41E0B6/0x41FB0F/0x41FD72/0x420416/0x420B9F/0x420BD3/0x42179D/0x4217C6/0x421828/0x421851/0x4246BA/0x425C8F/0x42BF66/0x44048D/0x459352/0x4594F9/0x4597E4/0x45A074）。",
+  "与既有结论交叉：F260（draw-time 侧选择、左格原点 winx+0x15/winy+0x30、帧 1063-1065 空像素实测）、F263（show 分派）、F295（msg 0x406 header-only wire、accept click 0x417034）、F302（金币对话框确认链 0x418520/0x418600→0x7EE）、F316（toggle case3 0x42AEE0）、F321（协议消息层表 + 0x452940/0x451E60 装配模式）。"
+ ],
+ "scope": {
+  "exe": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+  "image_base": "0x400000",
+  "text_section": {
+   "vaddr": 4096,
+   "raddr": 4096,
+   "rsize": 479232,
+   "file_offset": "VA - 0x400000"
+  },
+  "trade_obj": "HUD+0x3399C（0x416EF0 中 esi；交易窗对象，id3）",
+  "winmgr": "HUD（窗口管理器基址；分派 0x42BEAA 中 esi，输入处理器 arg1 = winmgr+0x20 指针）",
+  "net_obj": "0x8AB828（全局网络/客户端对象, +0x18 消息缓冲）",
+  "table_addrs": {
+   "trade_ctor": "0x4159D0",
+   "child_ctor_9arg": "0x417550",
+   "inputbox_ctor_7arg": "0x417960",
+   "dispatch_entry": "0x42BEAA",
+   "win_lookup": "0x42AAB0",
+   "subwin_click_table": "0x42C4D4 (case3=0x42C00B)",
+   "trade_input_handler": "0x416EF0",
+   "msg406_sender": "0x451B30",
+   "msg402_sender": "0x451AA0",
+   "gold_dialog_ctor": "0x418030",
+   "toggle": "0x42ADB0",
+   "gold_token": "0x47ADB4 ('금전' EUC-KR)",
+   "gold_prompt": "0x47AD98 ('您要付给对方多少金币?' GBK)"
+  }
+ },
+ "cell_analysis": {
+  "ctor_subcontrols_0x4159D0": {
+   "base": "call 0x423B30 (0x415A02)；SetRect [0x4762B0] 两次 (0x415A24/0x415A47) 分割 +0x5C（左格）/ +0x6C（右格）",
+   "children": [
+    {"offset": "+0x7C", "ctor": "0x417550 (9-arg)", "frames": "0xA1/0xA2 (161/162)", "site": "0x415A5B-0x415A71", "args": "push 0; lea ecx,[ebp+0x15E]; lea edx,[ebx+0x214]; push ecx; push edx; push 0xA2; push 0xA1; push edi", "role": "X 关闭按钮（vtable+0x10 命中 → ret 1 → case3 外部 toggle 关闭）"},
+    {"offset": "+0x130", "ctor": "0x417550 (9-arg)", "frames": "0x425/0x426 (1061/1062)", "site": "0x415A76-0x415A9D", "args": "push 0; push -1; push 1; push 0; lea eax,[ebx+0xB9]; push ebp(+0x14C); push eax; push 0x426; push 0x425; push edi", "role": "交易按钮（交易 label 帧 1061/1062，F260 非空白实测；命中 → msg 0x406 + lock）"},
+    {"offset": "+0x1E4", "ctor": "0x417550 (9-arg)", "frames": "0x428/0x429 (1064/1065)", "site": "0x415AA2-0x415AC3", "args": "push 0; push -1; push 1; push 0; add ebx,0xE1; push ebp; push ebx; push 0x429; push 0x428; push edi", "role": "隐藏按钮（帧 1064/1065 空白，F260 0 不透明像素实测；命中 → 消费 no-op ret 0）"},
+    {"offset": "+0x13648", "ctor": "0x417960 (7-arg)", "frames": "-", "site": "0x415AC8-0x415AE1", "args": "push 0; push 0xC; push 0xB8; push 0xC; push 6; push 0x42E; push edi", "role": "输入框 1（0x416FD2 命中环 2 迭代 stride 0x4C 覆盖）"},
+    {"offset": "+0x13694", "ctor": "0x417960 (7-arg)", "frames": "-", "site": "0x415AE6-0x415AFF", "args": "push 0; push 0xC; push 0xB8; push 0xC; push 6; push 0x42E; push edi", "role": "输入框 2（同一 0x417960 ctor；与 +0x13648 间距 0x4C）"}
+   ],
+   "ret": "ret 0x20（8 栈参 thiscall）"
+  },
+  "dispatch_chain": {
+   "entry": "0x42BEAA：ebp=[esp+0x18]=y, ebx=[esp+0x14]=x",
+   "misc_hit": "0x42BEB4 call 0x417E60 (ecx=esi+0x61BC) 杂项控件命中测试，命中 ret 1",
+   "win_lookup": "0x42BED3 call 0x42AAB0 → edi = 窗口 id",
+   "open_gate": "0x42BEE5 call 0x44E910(esi+0x33188) 窗口开检查，jne 跳过",
+   "table": "0x42BF7E jmp [edi*4+0x42C4D4]（15 case 表，F321 权威编号）",
+   "case3": "0x42C00B：push ebp(y); push ebx(x); push ecx(esi+0x20=winmgr+0x20 指针); lea ecx,[esi+0x3399C]; call 0x416EF0",
+   "close": "0x42C01C test eax,eax; je 0x42C198; push 3; mov ecx,esi; call 0x42ADB0（toggle id3 关闭）; mov eax,1; ret 8"
+  },
+  "input_handler_0x416EF0": {
+   "proto": "args=(arg1=winmgr+0x20 指针, arg2=x, arg3=y); ret 0xC; esi=ecx=trade",
+   "branches": [
+    {"gate": "0x416F2F strcmp 循环", "lhs": "[edi+0x1C]（arg1+0x1C）", "rhs": "0x47ADB4 '금전'（EUC-KR, b1 dd c0 fc）", "action": "==0 且 PtInRect([0x4762B4], rect@[esp+0x18], x, y) → 金币对话框 0x418030（见 gold_dialog 分支）→ rep stosd 0x30E dwords 清 arg1 记录 → ret 0"},
+    {"gate": "0x416FB4 lock 检查", "cond": "[esi+0x13644]!=0", "action": "→ 0x41719B ret 0（已锁定窗口对点击惰性）"},
+    {"gate": "0x416FD2 环（2 迭代 stride 0x4C）", "targets": "+0x13648 / +0x13694（0x417960 输入框）", "test": "call 0x417E60(x, y) 命中测试", "action": "命中 → ret 0（消费）"},
+    {"gate": "0x416FFA", "target": "+0x7C X 按钮", "test": "vtable+0x10 命中", "action": "命中 → eax=1 ret 0xC（外部 0x42C01C 非 0 → toggle id3 关闭）"},
+    {"gate": "0x417018", "target": "+0x130 交易按钮", "test": "vtable+0x10 命中", "action": "命中 → mov ecx,0x8AB828; call 0x451B30（msg 0x406 发送）; [esi+0x13644]=1（lock 标志）; ret 0"},
+    {"gate": "0x41704F 环（counter=1 起, stride 0xB4）", "targets": "+0x130（重查, 已由上行处理）/ +0x1E4 隐藏按钮", "test": "vtable+0x10 命中", "action": "命中 → ret 0（点击消费 no-op）"},
+    {"gate": "0x41707C PtInRect(+0x5C 左格, [0x7DA1C4]=y, [0x7DA1C0]=x)", "chain": "0x416830(esi,x,y,0) → ebx=源 cell（-1 表示未命中）; 0x416950(esi,x,y,0) → eax=目标 cell", "item_check": "ebx!=-1 && eax!=-1 && [esi+((eax*3*32+eax)*4+eax)*2+eax)*4+0x5B8]!=0（item 存在）", "actions": [
+      "[edi]==0 → push edi,eax,ebx,0; call 0x416C20（格子内移动/整理）→ ret 0",
+      "[edi+4]==0 && [edi+0xC]!=0 → push edi,ebx,0; call 0x416D60（取回/清除）; rep stosd 0x30E 清记录 → ret 0",
+      "否则 → call 0x416DC0(ebx,edi); push [esi+0x12A61]; jmp 0x417183 → add esi,0x12A28; mov ecx,0x8AB828; push esi; call 0x451AA0（msg 0x402, 2 参: buffer=esi+0x12A28, value=[esi+0x12A61]）; [edi+4]=1 → ret 0"
+     ]},
+    {"gate": "0x41713E cell 空分支（ebx==-1 || eax==-1 || item==0）", "actions": [
+      "[edi]==0 → ret 0",
+      "[edi+4]!=0 → ret 0",
+      "[edi+0xC]!=0 → call 0x416D60 + rep stosd 0x30E 清记录 → ret 0",
+      "否则 → call 0x416DC0 + 0x451AA0（msg 0x402）→ [edi+4]=1 → ret 0"
+     ]},
+    {"gate": "0x41719B 公共尾", "action": "xor eax,eax; ret 0xC（右格 +0x6C 无任何命中测试 → 右格点击 = 无处理 ret 0）"}
+   ]
+  },
+  "msg406_sender_0x451B30": {
+   "code": "mov eax,[esp+4]?（0x451B30 无参, esi=ecx=net_obj 0x8AB828）: push 0; push 0; push 0; lea edi,[esi+0x18]; push 0; push 0x406; push edi; call 0x452940（装配）; push 0; push edi; mov ecx,esi; call 0x451E60（wire 发送）; ret",
+   "role": "msg 0x406 = trade accept（协议表新增项；F321 表无 0x406）",
+   "callers": ["0x417034（唯一, 交易按钮命中）"]
+  },
+  "msg402_sender_0x451AA0": {
+   "code": "mov eax,[esp+8]（arg1=buffer）; push 0; push 0; push 0; lea edi,[esi+0x18]; push eax; push 0x402; push edi; call 0x452940; mov ecx,[esp+0xC]（arg2）; push ecx; push edi; mov ecx,esi; call 0x451E60; ret 8",
+   "role": "msg 0x402 = 格子物品转移（F321 表已有 0x402@0x451AA0，语义此处补全）",
+   "trade_callers": ["0x41718F（格子链 else 分支）", "0x417183 跳入点（0x41713C/0x417182 双 push 汇合）"]
+  },
+  "gold_dialog_open": {
+   "site": "0x416F7E（strcmp('금전')==0 且 PtInRect 命中左格区域上方 rect）",
+   "args": "push 0x405; push -1; push -1; push 1; push 0x47AD98('您要付给对方多少金币?'); push 1; push 3; push 0x565994; mov ecx,0x7E04C8; call 0x418030",
+   "rect": "[esp+0x14]=x+0x22, [esp+0x18]=y+0x10E, [esp+0x1C]=x+0x9C, [esp+0x20]=y+0x130（x=[esi+0x18], y=[esi+0x1C]，PtInRect 用 [esp+0x18] 起）",
+   "after": "rep stosd 0x30E dwords @edi（清 arg1=winmgr+0x20 记录区）→ ret 0",
+   "boundary_vs_F302": "F302 覆盖确认链（0x418520 ENTER/SPACE / 0x418600 点击 → SendMessageA(0x8AB7B0, 0x7EE, wParam=0x03000405) → 0x41DFE0 → ... → 0x451B00 msg 0x405 不可达）；本证据覆盖开窗点（0x416EF0 금전 门 → 0x418030 建窗）。两段无重叠：开窗在输入处理器，确认链在对话框自身。",
+   "note": "0x418030 为通用消息/对话框 ctor（E8-scan 24 调用点），第 4 参 = 提示文案 VA、第 8 参 = 0x405（与 F302 金币框 wParam 0x03000405 的 msgId 段一致）。"
+  },
+  "grid_helpers": {
+   "0x416830": "cell 索引（F258 已记录）：[esp+4] 标志位 → 依 [esi+0x18]/[esi+0x1C] 与鼠标算 5x5 格索引，未命中 -1",
+   "0x416950": "目标 cell 包装：push arg; call 0x416830；-1 → 0x41699E",
+   "0x416C20": "格子内移动/整理（SEH 帧, 大栈 0xC20, ebx=源, eax=目标, edi=记录）",
+   "0x416D60": "取回/清除（读 [ebx] 记录头, 遍历 +0x18 链）",
+   "0x416DC0": "格子动作前处理（读 [edx] 记录头 / [edx+0x10] / [edx+8]，决定 0x416E0E 或继续）"
+  }
+ },
+ "exe_trace": {
+  "ctor_subcontrols": "00415A53 lea ecx,[ebp+0x15E] / 00415A59 push 0 / 00415A5B lea edx,[ebx+0x214] / 00415A61 push ecx / 00415A62 push edx / 00415A63 push 0xA2 / 00415A68 push 0xA1 / 00415A6D push edi / 00415A6E lea ecx,[esi+0x7C] / 00415A71 call 0x417550 — 00415A76 push 0 / 00415A78 push -1 / 00415A7A add ebp,0x14C / 00415A80 push 1 / 00415A82 push 0 / 00415A84 lea eax,[ebx+0xB9] / 00415A8A push ebp / 00415A8B push eax / 00415A8C push 0x426 / 00415A91 push 0x425 / 00415A96 push edi / 00415A97 lea ecx,[esi+0x130] / 00415A9D call 0x417550 — 00415AA2 push 0 / 00415AA4 push -1 / 00415AA6 push 1 / 00415AA8 push 0 / 00415AAA add ebx,0xE1 / 00415AB0 push ebp / 00415AB1 push ebx / 00415AB2 push 0x429 / 00415AB7 push 0x428 / 00415ABC push edi / 00415ABD lea ecx,[esi+0x1E4] / 00415AC3 call 0x417550 — 00415AC8 push 0 / 00415ACA push 0xC / 00415ACC push 0xB8 / 00415AD1 push 0xC / 00415AD3 push 6 / 00415AD5 push 0x42E / 00415ADA push edi / 00415ADB lea ecx,[esi+0x13648] / 00415AE1 call 0x417960 — 00415AE6 push 0 / 00415AE8 push 0xC / 00415AEA push 0xB8 / 00415AEF push 0xC / 00415AF1 push 6 / 00415AF3 push 0x42E / 00415AF8 push edi / 00415AF9 lea ecx,[esi+0x13694] / 00415AFF call 0x417960 — 00415B04 pop edi / 00415B05 pop esi / 00415B06 pop ebp / 00415B07 pop ebx / 00415B08 ret 0x20",
+  "dispatch_case3": "0042C00B push ebp / 0042C00C lea ecx,[esi+0x20] / 0042C00F push ebx / 0042C010 push ecx / 0042C011 lea ecx,[esi+0x3399C] / 0042C017 call 0x416EF0 / 0042C01C test eax,eax / 0042C01E je 0x42C198 / 0042C024 push 3 / 0042C026 mov ecx,esi / 0042C028 call 0x42ADB0 / 0042C02D pop edi / 0042C02E pop esi / 0042C02F pop ebp / 0042C030 mov eax,1 / 0042C035 pop ebx / 0042C036 ret 8",
+  "handler_gold_gate": "00416EFD mov eax,[esi+0x18] / 00416F00 mov ebp,0x47ADB4 / 00416F05 lea ecx,[eax+0x22] / 00416F08 add eax,0x9C / 00416F0D mov [esp+0x14],ecx / 00416F11 mov ecx,[esi+0x1C] / 00416F14 mov [esp+0x1C],eax / 00416F18 lea eax,[edi+0x1C] / 00416F1B lea edx,[ecx+0x10E] / 00416F21 add ecx,0x130 / 00416F27 mov [esp+0x18],edx / 00416F2B mov [esp+0x20],ecx / 00416F2F mov dl,[eax] / 00416F31 mov bl,[ebp] / 00416F34 mov cl,dl / 00416F36 cmp dl,bl / 00416F38 jne 0x416F58 / 00416F3A test cl,cl / 00416F3C je 0x416F54 / 00416F3E mov dl,[eax+1] / 00416F41 mov bl,[ebp+1] / 00416F44 mov cl,dl / 00416F46 cmp dl,bl / 00416F48 jne 0x416F58 / 00416F4A add eax,2 / 00416F4D add ebp,2 / 00416F50 test cl,cl / 00416F52 jne 0x416F2F / 00416F54 xor eax,eax / 00416F56 jmp 0x416F5D / 00416F58 sbb eax,eax / 00416F5A sbb eax,-1 / 00416F5D test eax,eax / 00416F5F jne 0x416FB4",
+  "handler_gold_dialog": "00416F61 mov eax,[esp+0x30] / 00416F65 mov ecx,[esp+0x2C] / 00416F69 push eax / 00416F6A lea edx,[esp+0x18] / 00416F6E push ecx / 00416F6F push edx / 00416F70 call [0x4762B4] / 00416F76 test eax,eax / 00416F78 je 0x41719B / 00416F7E push 0x405 / 00416F83 push -1 / 00416F85 push -1 / 00416F87 push 1 / 00416F89 push 0x47AD98 / 00416F8E push 1 / 00416F90 push 3 / 00416F92 push 0x565994 / 00416F97 mov ecx,0x7E04C8 / 00416F9C call 0x418030 / 00416FA1 mov ecx,0x30E / 00416FA6 xor eax,eax / 00416FA8 rep stosd dword ptr es:[edi],eax / 00416FAA pop edi / 00416FAB pop esi / 00416FAC pop ebp / 00416FAD pop ebx / 00416FAE add esp,0x14 / 00416FB1 ret 0xC",
+  "handler_controls": "00416FB4 mov eax,[esi+0x13644] / 00416FBA test eax,eax / 00416FBC jne 0x41719B / 00416FC2 mov ebp,[esp+0x30] / 00416FC6 mov edi,[esp+0x2C] / 00416FCA mov [esp+0x10],0 / 00416FD2 lea ebx,[esi+0x13648] / 00416FD8 push ebp / 00416FD9 push edi / 00416FDA mov ecx,ebx / 00416FDC call 0x417E60 / 00416FE1 test eax,eax / 00416FE3 jne 0x41719B / 00416FE9 mov eax,[esp+0x10] / 00416FED add ebx,0x4C / 00416FF0 inc eax / 00416FF1 cmp eax,2 / 00416FF4 mov [esp+0x10],eax / 00416FF8 jl 0x416FD8 / 00416FFA mov eax,[esi+0x7C] / 00416FFD lea ecx,[esi+0x7C] / 00417000 push ebp / 00417001 push edi / 00417002 call [eax+0x10] / 00417005 test eax,eax / 00417007 je 0x417018 / 00417009 pop edi / 0041700A pop esi / 0041700B pop ebp / 0041700C mov eax,1 / 00417011 pop ebx / 00417012 add esp,0x14 / 00417015 ret 0xC",
+  "handler_trade_button": "00417018 mov edx,[esi+0x130] / 0041701E lea ebx,[esi+0x130] / 00417024 push ebp / 00417025 push edi / 00417026 mov ecx,ebx / 00417028 call [edx+0x10] / 0041702B test eax,eax / 0041702D je 0x41704F / 0041702F mov ecx,0x8AB828 / 00417034 call 0x451B30 / 00417039 mov [esi+0x13644],1 / 00417043 pop edi / 00417044 pop esi / 00417045 pop ebp / 00417046 xor eax,eax / 00417048 pop ebx / 00417049 add esp,0x14 / 0041704C ret 0xC",
+  "handler_grid_left": "0041707C mov ecx,[0x7DA1C4] / 00417082 mov edx,[0x7DA1C0] / 00417088 push ecx / 00417089 lea eax,[esi+0x5C] / 0041708C push edx / 0041708D push eax / 0041708E call [0x4762B4] / 00417094 test eax,eax / 00417096 je 0x41719B / 0041709C push ebp / 0041709D push edi / 0041709E push 0 / 004170A0 mov ecx,esi / 004170A2 call 0x416830 / 004170A7 push ebp / 004170A8 push edi / 004170A9 push 0 / 004170AB mov ecx,esi / 004170AD mov ebx,eax / 004170AF call 0x416950 / 004170B4 cmp ebx,-1 / 004170B7 je 0x41719B / 004170BD cmp eax,-1 / 004170C0 je 0x41713E / 004170C2 lea ecx,[eax+eax*2] / 004170C5 shl ecx,5 / 004170C8 add ecx,eax / 004170CA lea edx,[eax+ecx*4] / 004170CD lea ecx,[eax+edx*2] / 004170D0 mov edx,[esi+ecx*4+0x5B8] / 004170D7 test edx,edx / 004170D9 je 0x41713E / 004170DB mov edi,[esp+0x28] / 004170DF cmp [edi],0 / 004170E2 jne 0x4170FC / 004170E4 push edi / 004170E5 push eax / 004170E6 push ebx / 004170E7 push 0 / 004170E9 mov ecx,esi / 004170EB call 0x416C20 / 004170F0 pop edi / 004170F1 pop esi / 004170F2 pop ebp / 004170F3 xor eax,eax / 004170F5 pop ebx / 004170F6 add esp,0x14 / 004170F9 ret 0xC",
+  "handler_grid_chain": "004170FC mov eax,[edi+4] / 004170FF test eax,eax / 00417101 jne 0x41719B / 00417107 mov eax,[edi+0xC] / 0041710A test eax,eax / 0041710C je 0x41712C / 0041710E push edi / 0041710F push ebx / 00417110 push 0 / 00417112 mov ecx,esi / 00417114 call 0x416D60 / 00417119 mov ecx,0x30E / 0041711E xor eax,eax / 00417120 rep stosd dword ptr es:[edi],eax / 00417122 pop edi / 00417123 pop esi / 00417124 pop ebp / 00417125 pop ebx / 00417126 add esp,0x14 / 00417129 ret 0xC / 0041712C push ebx / 0041712D push edi / 0041712E mov ecx,esi / 00417130 call 0x416DC0 / 00417135 mov edx,[esi+0x12A61] / 0041713B push edx / 0041713C jmp 0x417183 / 0041713E mov edi,[esp+0x28] / 00417142 cmp [edi],0 / 00417145 je 0x41719B / 00417147 mov eax,[edi+4] / 0041714A test eax,eax / 0041714C jne 0x41719B / 0041714E mov eax,[edi+0xC] / 00417151 test eax,eax / 00417153 je 0x417173 / 00417155 push edi / 00417156 push ebx / 00417157 push 0 / 00417159 mov ecx,esi / 0041715B call 0x416D60 / 00417160 mov ecx,0x30E / 00417165 xor eax,eax / 00417167 rep stosd dword ptr es:[edi],eax / 00417169 pop edi / 0041716A pop esi / 0041716B pop ebp / 0041716C pop ebx / 0041716D add esp,0x14 / 00417170 ret 0xC / 00417173 push ebx / 00417174 push edi / 00417175 mov ecx,esi / 00417177 call 0x416DC0 / 0041717C mov eax,[esi+0x12A61] / 00417182 push eax / 00417183 add esi,0x12A28 / 00417189 mov ecx,0x8AB828 / 0041718E push esi / 0041718F call 0x451AA0 / 00417194 mov [edi+4],1 / 0041719B pop edi / 0041719C pop esi / 0041719D pop ebp / 0041719E xor eax,eax / 0041719F pop ebx / 004171A0 add esp,0x14 / 004171A3 ret 0xC",
+  "msg406_sender": "00451B30 mov eax,[esp+4] / 00451B34 push esi / 00451B35 push edi / 00451B36 mov esi,ecx / 00451B38 push 0 / 00451B3A push 0 / 00451B3C push 0 / 00451B3E lea edi,[esi+0x18] / 00451B41 push 0 / 00451B43 push 0x406 / 00451B48 push edi / 00451B49 call 0x452940 / 00451B4E push 0 / 00451B50 push edi / 00451B52 mov ecx,esi / 00451B54 call 0x451E60 / 00451B59 pop edi / 00451B5A pop esi / 00451B5B ret",
+  "msg402_sender": "00451AA0 mov eax,[esp+8] / 00451AA4 push esi / 00451AA5 push edi / 00451AA6 mov esi,ecx / 00451AA8 push 0 / 00451AAA push 0 / 00451AAC push 0 / 00451AAE lea edi,[esi+0x18] / 00451AB1 push eax / 00451AB2 push 0x402 / 00451AB7 push edi / 00451AB8 call 0x452940 / 00451ABD mov ecx,[esp+0xC] / 00451AC1 push ecx / 00451AC2 push edi / 00451AC3 mov ecx,esi / 00451AC5 call 0x451E60 / 00451ACA pop edi / 00451ACB pop esi / 00451ACC ret 8"
+ },
+ "audit_vs_exe": "audit (F260/F263/F295/F302/F316/F321) 与本证据 fresh disasm 全表一致，无矛盾。补全关系：(1) F316 定案『trade 无 caption、仅游戏逻辑 0x420486 开窗 + toggle case3』与本案 case3 分派 0x42C00B→0x416EF0 一致（id3 点击处理唯一入口）；(2) F295 accept click 0x417034 归属本证据 0x417018 交易按钮命中链，且 0x451B30 唯一 caller = 0x417034 被复核；(3) F260 帧 1063-1065 空白实测与本证据 +0x1E4 隐藏按钮（帧 1064/1065）点击消费 no-op 吻合；(4) F302 金币框 msgId 0x405 与开窗点 0x416F7E 第 8 参 0x405 一致；(5) F321 协议表无 0x406，本证据新增 msg 0x406@0x451B30（trade accept）。",
+ "contrast_c17": "不涉及地图 OOB 黑帧语义；纯 UI 交易窗点击绑定静态闭合。与 C17 对照点仅一处：本 build 交易 accept 走 msg 0x406（header-only, F295），金币对话框确认链的 msg 0x405 发送器在 gate 0x417280 处死（F295/F302）——韩版 EUC-KR 令牌 '금전'（0x47ADB4）与 cap12 도움말창 同源，属韩版遗留 UI 文案，非本 build 新增逻辑。",
+ "verdict": {
+  "summary": "交易窗（id3）点击绑定全链静态闭合。输入分派唯一入口 = case3 0x42C00B → 0x416EF0（唯一 caller 0x42C017）：(1) 金币对话框开窗：strcmp([arg1+0x1C], '금전' EUC-KR)==0 且 PtInRect 命中 → 0x418030 建框（prompt 0x47AD98『您要付给对方多少金币?』, msgId 0x405, 后清 arg1 记录 0x30E dwords）；与 F302 确认链（0x418520/0x418600→0x7EE→死链）无重叠——开窗点在输入处理器，确认链在对话框自身。(2) 交易按钮 +0x130（帧 1061/1062 交易 label）：命中 → msg 0x406 @0x451B30 发送 + [trade+0x13644]=1 lock 标志（此后窗口对点击惰性 ret 0）；0x406 为协议表新增项（F321 表无）。(3) X 按钮 +0x7C（帧 161/162）：命中 → ret 1 → case3 外部 toggle id3 关闭。(4) 隐藏按钮 +0x1E4（帧 1064/1065 空白）：命中 → 消费 no-op。(5) 两输入框 +0x13648/+0x13694（ctor 0x417960, stride 0x4C）：命中 → 消费。(6) 左格 +0x5C：0x416830/0x416950 双 cell 定位 → 0x416C20 格内移动 / 0x416D60 取回 / 0x416DC0+0x451AA0(msg 0x402, buffer=+0x12A28, value=[+0x12A61]) 转移发送；右格 +0x6C 无任何命中测试（点击 ret 0）。",
+  "corrections": [
+   "matrix exchange 记录 pending_notes 首项『click binding not traced』→ CLOSED（本证据全链）",
+   "协议消息层表新增：msg 0x406 @0x451B30（trade accept, 唯一 caller 0x417034）",
+   "F302 边界明确：其覆盖确认后链（0x7EE→死），开窗点 0x416EF0→0x418030 不在 F302 范围（无重叠）",
+   "右格 +0x6C 点击无绑定（draw-time PtInRect 选侧 ≠ 输入处理；输入侧只处理左格）"
+  ]
+ },
+ "evidence_level": "primary-static",
+ "evidence_level_note": "全部结论来自 Mir3.exe 直接反汇编 + 字节扫描（E8 rel32 全文件扫描确认 0x416EF0/0x451B30 唯一调用点、0x418030 24 调用点全表、字符串 GBK/EUC-KR 直读）。0x416C20/0x416D60/0x416DC0 的业务名（格内移动/取回/转移）为基于记录结构读写的 candidate（服务端无源码）；0x417960 控件为输入框为 candidate（7-arg ctor 布局 + 命中环位置）。msg 0x402 的 value 参数 [trade+0x12A61] 语义（cell/数量）未逐字节解构。",
+ "cross_refs": ["F258", "F260", "F263", "F295", "F302", "F313", "F316", "F321"],
+ "tool": "Tools/reverse-engineering/disasm_capstone.py (PeImage + capstone 5.0.9); 手写 E8 rel32 全文件扫描; Python int.from_bytes 表/字节直读; GBK/EUC-KR 字符串解码",
+ "reproduce": "MIR3=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe; python Tools/reverse-engineering/disasm_capstone.py 0x416EF0 0x4171A0 (输入处理器全函数); disasm 0x4159D0 0x415B10 (ctor); disasm 0x42C00B 0x42C036 (case3); disasm 0x451B30 0x451B5C / 0x451AA0 0x451ACF (消息 builder); 字节扫描: for i in range(len(data)-4): if data[i]==0xE8: va=0x400000+i+5+int.from_bytes(data[i+1:i+5],'little',signed=True); 收集 va in {0x416EF0,0x451B30,0x418030} 得调用点集; data[0x47ADB4:0x47ADB8].decode('euc_kr') / data[0x47AD98:0x47ADB4].decode('gbk','replace')"
+}

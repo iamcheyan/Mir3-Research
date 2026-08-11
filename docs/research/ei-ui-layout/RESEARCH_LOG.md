@@ -5509,3 +5509,66 @@ idx3 退出 / idx4 注销 gate 恒通过。IAT 实证：[0x4762B0]=**SetRect**�
 
 cross-ref：F218/F234/F243/F251/F252/F261/F304/F306/F312/F313/F314/F315/F316。
 落盘：`hud-caption-action-tail-evidence.json`、`ui-coverage-matrix.json`（hud closed_2026_08_12；npc pending_notes 修正）、`UI_COMPLETION_AUDIT.md`。
+
+## 2026-08-12：交易窗（id3）点击绑定全链闭合 + 金币对话框开窗点边界定案（Round 16，Finding 322）
+
+> 阶段目标：闭合 ui-coverage-matrix.json exchange 记录 pending_notes 首项（「exchange button business names
+> (1060-1062 Chinese 交易 label visible, click binding not traced)」）与第二项（「trade state transitions beyond
+> draw-time side selection」）的静态可闭合部分：从 ctor 0x4159D0 五子控件出发，经分派链 0x42BEAA→0x42AAB0→
+> 0x42C4D4 case3=0x42C00B，到输入处理器 0x416EF0 全分支，为每个可点击区域建立 控件偏移 ↔ 命中测试 ↔ 业务动作映射；
+> 并核证金币对话框开窗点（0x416EF0→0x418030）与 F302 确认链无重叠。
+> 产物：`trade-window-click-binding-evidence.json`（primary-static，F322）。
+
+### Finding 322 (交易窗点击绑定，2026-08-12)：ctor 五子控件 → case3 分派 → 0x416EF0 全分支 + msg 0x406 协议表新增
+
+**ctor 0x4159D0 五子控件（8 参 thiscall ret 0x20；基类 0x423B30；SetRect [0x4762B0] 分割 +0x5C/+0x6C 左右格）**：
+|偏移|控件|帧对|ctor 调用点|命中动作|
+|---|---|---|---|---|
+|+0x7C|X 关闭|0xA1/0xA2 (161/162)|0x415A5B-0x415A71|vtable+0x10 命中 → ret 1 → case3 外部 toggle id3 关闭|
+|+0x130|交易按钮|0x425/0x426 (1061/1062)|0x415A76-0x415A9D|命中 → **msg 0x406** @0x451B30 发送 + [trade+0x13644]=1 lock → ret 0|
+|+0x1E4|隐藏按钮|0x428/0x429 (1064/1065)|0x415AA2-0x415AC3|空白帧（F260 实测）；命中 → 消费 no-op ret 0|
+|+0x13648|输入框 1|—|0x415AC8-0x415AE1 (ctor 0x417960)|0x416FD2 命中环（2 迭代 stride 0x4C）→ 命中消费|
+|+0x13694|输入框 2|—|0x415AE6-0x415AFF (ctor 0x417960)|同上（间距 0x4C）|
+
+**分派链（id3 点击唯一入口）**：0x42BEAA（ebp=y, ebx=x）→ 0x42BEB4 `call 0x417E60(esi+0x61BC)` 杂项命中（命中 ret 1）→
+0x42BED3 `call 0x42AAB0` → edi=窗口 id → 0x42BEE5 `call 0x44E910(esi+0x33188)` 开检查 → 0x42BF7E `jmp [edi*4+0x42C4D4]`
+→ **case3 = 0x42C00B**：`push ebp(y); push ebx(x); push ecx(esi+0x20); lea ecx,[esi+0x3399C]; call 0x416EF0` →
+非 0 → `push 3; call 0x42ADB0`（toggle id3 关闭）→ ret 8。**E8-scan 全文件：0x416EF0 唯一 caller = 0x42C017。**
+
+**0x416EF0 全分支（8 参 thiscall ret 0xC；esi=trade，arg1=winmgr+0x20 指针，arg2=x，arg3=y）**：
+1. **금전(金钱) 金币对话框开窗**（0x416F2F strcmp 门）：`[edi+0x1C]` vs `0x47ADB4`（字节 b1 dd c0 fc =
+   **EUC-KR '금전'**；GBK '陛傈' 乱码弃用）== 0 且 PtInRect([0x4762B4], rect@[esp+0x18], x, y)（rect：x+0x22..x+0x9C
+   @[esi+0x18]，y+0x10E..y+0x130 @[esi+0x1C]）→ `0x418030(ecx=0x7E04C8, 8 参: 0x565994,3,1,0x47AD98('您要付给对方
+   多少金币?' GBK),1,-1,-1,0x405)` 金币对话框建框 → `rep stosd 0x30E` 清 arg1 记录 → ret 0。
+   **与 F302 边界**：F302 只覆盖确认链（0x418520 ENTER/SPACE / 0x418600 点击 → SendMessageA(0x8AB7B0, 0x7EE,
+   wParam=0x03000405) → 0x41DFE0 → … → 0x451B00 msg 0x405 死链）；**开窗点在输入处理器 0x416EF0，确认链在对话框
+   自身，两段无重叠**。
+2. **lock 检查**（0x416FB4）：`[esi+0x13644]!=0` → ret 0（accept 后窗口对点击惰性）。
+3. **输入框命中环**（0x416FD2）：2 迭代 stride 0x4C，起点 +0x13648 → 0x417E60 命中测试 → 命中 ret 0。
+4. **X 按钮**（0x416FFA）：vtable+0x10 命中 +0x7C → **eax=1 ret 0xC**（外部 case3 非 0 → toggle 关闭）。
+5. **交易按钮**（0x417018）：命中 +0x130 → `mov ecx,0x8AB828; call 0x451B30`（**msg 0x406 发送**）+ `[esi+0x13644]=1`
+   → ret 0。**0x451B30 唯一 caller = 0x417034**（E8-scan 复核 F295 accept click 归属）。
+6. **隐藏按钮环**（0x41704F）：counter=1 起 stride 0xB4（+0x130 重查 / +0x1E4）→ vtable+0x10 命中 → ret 0 消费。
+7. **左格 +0x5C**（0x41707C PtInRect, [0x7DA1C4]=y, [0x7DA1C0]=x）：0x416830 → ebx=源 cell；0x416950 → eax=目标 cell；
+   item 检查 `[esi+((eax*3*32+eax)*4+eax)*2+eax)*4+0x5B8]`：
+   - `[edi]==0` → `0x416C20(esi,0,ebx,eax,edi)` 格内移动/整理 → ret 0。
+   - `[edi+4]==0 && [edi+0xC]!=0` → `0x416D60` 取回/清除 + rep stosd 0x30E 清记录 → ret 0。
+   - 否则 → `0x416DC0` + push [esi+0x12A61] → 0x417183 汇合：`add esi,0x12A28; mov ecx,0x8AB828; push esi;
+     call 0x451AA0`（**msg 0x402**，2 参：buffer=esi+0x12A28, value=[esi+0x12A61]）→ `[edi+4]=1` → ret 0。
+   - cell 空分支（ebx==-1 || eax==-1）：[edi]==0 → ret 0；[edi+4]!=0 → ret 0；[edi+0xC]!=0 → 0x416D60+清 → ret 0；
+     否则 0x416DC0 + 0x451AA0 → [edi+4]=1 → ret 0。
+8. **右格 +0x6C 无处理**（0x41719B 公共尾 ret 0）：输入侧只命中左格；draw-time PtInRect 选侧（F258）≠ 输入处理。
+
+**msg 0x406 @0x451B30（协议表新增项）**：`push 0; push 0; push 0; lea edi,[esi+0x18]; push 0; push 0x406; push edi;
+call 0x452940; push 0; push edi; mov ecx,esi; call 0x451E60; ret` — 与 F321 装配/发送模式一致；**F321 协议表无 0x406**。
+msg 0x402 @0x451AA0 语义补全（F321 表已有）：2 参（buffer, value），ret 8。
+
+**0x418030 E8-scan 24 调用点全表**：0x403E12/0x416F9C(本开窗点)/0x4193D8/0x41C196/0x41D230/0x41D633/0x41E0B6/
+0x41FB0F/0x41FD72/0x420416/0x420B9F/0x420BD3/0x42179D/0x4217C6/0x421828/0x421851/0x4246BA/0x425C8F/0x42BF66/
+0x44048D/0x459352/0x4594F9/0x4597E4/0x45A074 — 通用消息/对话框 ctor（第 4 参=文案 VA，第 8 参=msgId 0x405 与
+F302 wParam 0x03000405 一致）。
+
+**IAT 实证**：[0x4762B4]=PtInRect（0x416F70 与 0x41708E 两处使用）；[0x4762B0]=SetRect（ctor 分割格子）。
+
+cross-ref：F258/F260/F263/F295/F302/F313/F316/F321。
+落盘：`trade-window-click-binding-evidence.json`、`ui-coverage-matrix.json`（exchange closed_2026_08_12；pending_notes 修剪）、`UI_COMPLETION_AUDIT.md`。
