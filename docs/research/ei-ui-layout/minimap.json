@@ -1,0 +1,121 @@
+{
+  "evidence_id": "EI-310",
+  "finding": 310,
+  "date": "2026-08-11",
+  "title": "MinimapPlayerMarkerChain (CORRECTED) - the minimap player marker follows the LIVE coords [0x777764]/[0x777768] = [screen+0x2F884C]/[+0x2F8850] (Y/X), which have exactly TWO writers (0x422A9E Y=word[item+6], 0x422AC5 X=word[item+8], the death/teleport pump handler 0x422960); the previously-targeted 0x7D9234/0x7D9238 pair is the death/respawn-check pair ONLY, not minimap input. Full chain: pump 0x422960 -> live coords -> tick 0x4294E0 -> 0x43D850(Y,X) update+map-texture draw + 0x43DA80 marker layers -> widget 0x48512C = [screen+0x6214]",
+  "objective": "Correct the minimap data-source finding (Round 9 targeted the wrong address pair) and lock the complete minimap chain: which memory feeds the player dot, which handlers write it, the widget field table (D3D target rect byte-exact {672,0,800,128}), the map-texture binding rule (mapid < 0x3E8 -> MMap.wil frame mapid, >= 0x3E8 -> FMMap.wil frame mapid-1000), the marker layers (player box, blinking dot, object markers from [0x560070]/[0x5600A0]), and the map-loader sub-object ([esi+0xF5200] = 0x574118) fed by the decoded death/teleport payload = map name.",
+  "question": "Where does the minimap player dot actually get its position? Which code writes those coordinates and when? What is the widget's full field map and draw sequence? What does the death/teleport handler (msgid 0x33/0x27A) do beyond zeroing the old pair?",
+  "method": "Static disassembly of Mir3.exe raw bytes via capstone; exhaustive absolute-form writer scan for both live-coord addresses (89 {modrm}+abs32 all 8 base regs, C7 05, 8B {modrm}+abs32 all 8 regs, 66 89, C6 05) over the WHOLE file plus pointer-relative forms; reader-hit context dump (52 walk/collision hits 0x419C4E..0x41AF09, tick 0x42959C, HUD text 0x42A476, click-targets 0x42C1D4/0x42CDA4, death tail 0x422B05/0x422B0F); widget field table dump at 0x48512C ([screen+0x6214]); full disassembly of 0x43D850/0x43DA80/0x43DC54/0x43D780/0x43C9C0/0x43B600; string dump at 0x47C404 ('.\\Map\\%s.map' + FMMap/MMap paths + 'EDIT'); death-tail full dump 0x422B0F..0x422B60.",
+  "evidence_level": "primary-static",
+  "confidence": 0.97,
+  "addresses": [
+    "0x00422960", "0x00422A15", "0x00422A1B", "0x00422A45", "0x00422A4B",
+    "0x00422A51", "0x00422A58", "0x00422A9E", "0x00422AC5",
+    "0x00422B05", "0x00422B0F", "0x00422B15", "0x00422B18", "0x00422B1F",
+    "0x00422B24", "0x00422B2B", "0x00422B30", "0x00422B37", "0x00422B42",
+    "0x00422B44", "0x00422B4C", "0x00422B53",
+    "0x004294E0", "0x0042953D", "0x00429546", "0x00429597", "0x0042959C",
+    "0x004295AC", "0x004294EB",
+    "0x0043D850", "0x0043DA80", "0x0043DC54", "0x0043D780", "0x0043D5F0",
+    "0x0043C9C0", "0x0043B600",
+    "0x0042A471", "0x0042A476", "0x0042C1D4", "0x0042CDA4", "0x0042CDAA",
+    "0x0041EC10", "0x00451A70",
+    "0x00466560", "0x00466130", "0x00468520", "0x0045E570",
+    "0x0047EF18", "0x0048512C", "0x00574118",
+    "0x00777764", "0x00777768", "0x007D9234", "0x007D9238",
+    "0x00560070", "0x005600A0",
+    "0x00476904", "0x00476868", "0x00476658", "0x004762B0", "0x0047C404",
+    "0x0047EF68"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "base_va": "0x00401000"
+  },
+  "correction": {
+    "old_claim": "Round 9 targeted 0x7D9234/0x7D9238 = [0x35A31C]/[0x35A320] as the minimap player-marker position source",
+    "corrected": "0x7D9234/0x7D9238 is the DEATH/RESPAWN-CHECK pair ONLY: read at 0x422985/0x42298B/0x422995 ('x-y < 9' defer check), zero-written at 0x422A15/0x422A1B in the death/teleport handler. It never feeds the minimap.",
+    "actual_source": "the minimap player marker follows the LIVE coordinates [0x777764]/[0x777768] = [screen+0x2F884C]/[+0x2F8850] (Y/X): tick 0x4294E0 reads both (8b 0d 64 77 77 00 / 8b 15 68 77 77 00) and pushes X then Y -> 0x43D850(Y, X)",
+    "correction_c_number": "see EVIDENCE-INVENTORY entry for this finding (correction to the Round 9 minimap entry)"
+  },
+  "live_coord_writers": {
+    "exhaustive_scan": "for BOTH 0x777764 (Y) and 0x777768 (X): full-file scans of 89 {modrm}+abs32 (all 8 regs), C7 05, 8B {modrm}+abs32 (all 8 regs), 66 89, C6 05 found 0 direct-form writers; combined with the earlier pointer-relative (disp24 [esi+0x2f884c/50]) scan the ONLY two direct writers are 0x422A9E and 0x422AC5",
+    "0x422A9E": "Y = word[item+6]  (death/teleport pump handler 0x422960, disp24 [esi+0x2f884c])",
+    "0x422AC5": "X = word[item+8]  (same handler, disp24 [esi+0x2f8850])",
+    "caveat": "lea/pointer-based writers could in principle exist un-scanned; the two direct writers plus the reader hit-list are complete for the direct encodings. Normal-walk mirror updates may use un-scanned forms, or the dot may only move on death/teleport/enter-world until a position message arrives - flagged candidate/pending (non-blocking).",
+    "readers": [
+      {"range": "0x419C4E..0x41AF09 (52 hits)", "semantic": "walk/collision/movement family"},
+      {"0x41BBEB/0x41BBF1": "movement"},
+      {"0x41C0BA": "movement"},
+      {"0x41FE3E/0x41FE44": "movement"},
+      {"0x422B05/0x422B0F": "death tail (respawn pos X-12/Y-12)"},
+      {"0x429597/0x42959C": "minimap tick (8b 0d 64 77 77 00 Y)"},
+      {"0x42A471/0x42A476": "HUD location text \"%s : [%d,%d]\" (0x47BD30) -> map-name buf 0x47EF68 drawn at (0x257,0xC9) = (599,201)"},
+      {"0x42C1D4": "click-to-target (8b 15 68 77 77 00 X)"},
+      {"0x42CDA4/0x42CDAA": "click-to-target (X/Y) -> 0x41EC10 find-obj-at-pos -> 0x451A70 send obj name"}
+    ]
+  },
+  "minimap_widget_0x48512C": {
+    "location": "[screen 0x47EF18 + 0x6214] = 0x48512C",
+    "field_map": {
+      "+0x28C": "map id (-1 = none -> draw skipped, je 0x43DDA2)",
+      "+0x290/+0x294": "unused/secondary",
+      "+0x298": "rect 0xC8C8C8 border",
+      "+0x2A8": "rect",
+      "+0x2B8/+0x2BC": "0x80 (half-extent source)",
+      "+0x2C0": "D3D TARGET RECT {672,0,800,128} = (0x2A0, 0, 0x320, 0x80) byte-exact",
+      "+0x2C4": "top = 0",
+      "+0x2C8/+0x2CC": "player marker pos (10x10 0x96C8FF box)",
+      "+0x2D0/+0x2D4": "scroll (written via rect lib call [0x4762B0])",
+      "+0x2D8/+0x2DC": "clamped scroll",
+      "+0x2E0..+0x2EC": "source rect / source map size",
+      "+0x2F0/+0x2F4": "unused",
+      "+0x2F8/+0x2FC": "stored player pos Y/X (4x4 0x64FA64 blinking dot)",
+      "+0x300": "blink counter (gate 0 < [+0x300] < 0x1F4, wraps at 0x320)",
+      "+4": "MMap.wil object (frame 0x32 check 0x4294EB mov ecx,[esi+0x1c]; push 0x32; call 0x466130)",
+      "+0x148": "FMMap.wil object"
+    },
+    "scale_const": "[0x476904] (map scale multiplier); player-dot const [0x476868]; marker const [0x476658]",
+    "rect_lib": "call [0x4762B0] = SetRect/IntersectRect family with (&rect, left, top, scrollX, scrollY)",
+    "fill_helper": "0x45E570(0x8AB7A8, &rect, 0, color, 1); ftol 0x468520",
+    "blit": "0x465560(0x8AB7A8, texture, ?); frame-get 0x466130"
+  },
+  "update_draw": {
+    "tick": "0x4294E0 (called from 0x42953D/0x429546 family; guard [esi+0x6518] != 0): reads live X [0x777768] / Y [0x777764]; mov ecx,0x47ef18; push eax (X); push ecx (Y) -> 0x43D850(Y, X) (LAST push = arg1 = Y); then 0x43DA80 marker draw; plus 0x4294EB MMap frame-0x32 check",
+    "0x43D850": "update + map-texture draw: [esi+0x28C]==-1 -> skip; stores Y -> [0x2F8], X -> [0x2FC]; scroll = fild(Y)*[0x476904] - half-extent(min(src,[0x2B8])>>1) -> ftol -> ebp/edi; rect helper call [0x4762B0](&[0x2C0], [0x2C0], [0x2C4], scrollX, scrollY) writes D3D target rect + scroll; clamped to [0x2D8]/[0x2DC]; texture draw: mapid < 0x3E8 -> lea ecx,[esi+4] MMap.wil frame=mapid (via 0x466130); >= 0x3E8 -> add eax,0xfffffc18 (mapid-1000), lea ecx,[esi+0x148] FMMap.wil frame=mapid-1000; then mov ecx,0x8AB7A8; call 0x465560 (D3D blit)",
+    "0x43DA80": "marker layers: player 10x10 0x96C8FF box at [0x2C8]/[0x2CC]; 4x4 0x64FA64 blinking dot from fild[0x2F8]*[0x476904]+[0x2C0]-[0x2D0]-[0x476868] -> ftol 0x468520, gate 0 < [0x300] < 0x1F4, [0x300] wraps 0x320; 0x298 border 0xC8C8C8; object markers inside 0x43DC54 (see marker_lists)",
+    "0x43D780": "map binding: >= 0x3E8 -> FMMap frame-1000 else MMap frame (0x466130); called from 0x420C3C",
+    "0x43D5F0": "texture create (callers 0x42CED2/0x42CEF0/0x43D5DE/0x43D7E3/0x43D831/0x43DE73/0x43DE96)"
+  },
+  "marker_lists": {
+    "0x560070": "[screen+0xE1158] objects with byte[obj+0x88] == 0x32 (type-byte 0x32 = minimap-marker flag) -> 2x2 YELLOW 0xFFFF at [obj+0xCC]/[obj+0xD0] * [0x476904] + origin [0x2C0]/[0x2C4] - scroll [0x2D0]/[0x2D4] - const [0x476658]",
+    "0x5600A0": "[screen+0xE1188] generic objects -> 2x2 GREEN 0x64C864, bounds-culled",
+    "correction_note": "the type-byte 0x32 marker objects are NOT the pump msgid 0x32 (enter-world); they are created via the handoff Finding 254 paths 0x4123E3/0x41ECAE"
+  },
+  "death_teleport_handler": {
+    "0x422960": "pump msgid 0x33/0x27A: death dialog 0x42E1F0, sounds, [0x7D9234]/[0x7D9238] zeroed (0x422A15/0x422A1B) + related [0x35A324]/[0x35A328]/[0x35A329]/[0x35A338] writes (0x422A45/0x422A4B/0x422A51/0x422A58), LIVE coords written 0x422A9E (Y)/0x422AC5 (X), playerObj vtable[+0x10] mode = byte[0x2F8841], base64 decode item+0xC (0x400 max) -> [esp+0x14]",
+    "death_tail": "0x422B0F..0x422B60: mov eax,[esi+0x2f8850] (live X); sub ecx,0xc; sub eax,0xc; call 0x43C9C0 (&[esi+0xF5200], X-12, Y-12) = map-loader set-pos; lea edx,[esp+0x14]; call 0x43B600 (&[esi+0xF5200], decodedBuf) = map-name set; mov ecx,0x38400; lea edi,[esi+0x154]; rep stosd (zero 0x38400 dwords = 0xE1000 bytes = scene entity grid 24x24x100x16B); movzx ax, byte[esi+0x35b2bd]; cmp ax, word[edi+0xa] (item+0xA flag check)",
+    "payload": "decoded death/teleport payload (item+0xC, base64) = MAP NAME: format string 0x47C404 '.\\Map\\%s.map' (+ following strings '.\\Data\\FMMap.wil', '.\\Data\\MMap.wil', 'EDIT')",
+    "map_loader": "sub-object [esi+0xF5200] = 0x574118: 0x43C9C0 position setter ([+0x12C]=arg1, [+0x130]=arg2, zeros +0x134/+0x138; bounds checks on word[+0x126]/[+0x128]; gate [+0x10C]); 0x43B600 format+copy ('.\\Map\\%s.map') into same object"
+  },
+  "simulator_impact": {
+    "data": "hud.minimap note carries the full anatomy; frame_tables.json gained frame_dispatch (jump table 12 rows, large types, queue pump, queue item, base64 encoder); map.minimap 128x128 at (672,0) CONFIRMED byte-exact by widget D3D target rect {672,0,800,128}",
+    "draw": "app.js draws minimap from hud.minimap + maps.find(id==='map.minimap'), cycle key hud.minimap (lines ~229/234/982/1007-1014)"
+  },
+  "verdict": "CLOSED with correction - the minimap player marker is fed by the LIVE coords [0x777764]/[0x777768] (only writers 0x422A9E/0x422AC5 in the death/teleport handler; tick 0x4294E0 -> 0x43D850/0x43DA80 -> widget 0x48512C). 0x7D9234/0x7D9238 is the death/respawn-check pair only. The death/teleport payload is the map name and drives a map change (map loader sub-object + full scene-grid clear).",
+  "conclusions": [
+    "Live coords have exactly 2 direct writers, both in pump handler 0x422960 (death/teleport msgid 0x33/0x27A).",
+    "Tick 0x4294E0 (guarded by [esi+0x6518]) reads live coords every frame and calls 0x43D850(Y,X) then 0x43DA80.",
+    "0x43D850 = widget update + map-texture draw; 0x43DA80 = marker layers (player box, blink dot, object markers).",
+    "Widget D3D target rect {672,0,800,128} byte-exact = simulator map.minimap rect.",
+    "Map texture rule: mapid < 0x3E8 -> MMap.wil frame mapid; >= 0x3E8 -> FMMap.wil frame mapid-1000.",
+    "Death/teleport payload = map name ('.\\Map\\%s.map'), loaded via map-loader sub-object 0x574118; scene entity grid (0xE1000 bytes) cleared (map change).",
+    "0x7D9234/0x7D9238 pair = death/respawn-check only - reads 0x422985/0x42298B/0x422995, zero-writes 0x422A15/0x422A1B."
+  ],
+  "closed_notes": {
+    "round9_correction": "the Round 9 minimap entry (0x7D9234/0x7D9238 as marker source) is superseded by this finding; the correction is recorded in EVIDENCE-INVENTORY and HANDOFF Round 10."
+  },
+  "pending": [
+    "Normal-walk mirror writes to the live coords: no direct-form writers exist outside the death/teleport handler; lea/pointer-based forms could not be exhaustively excluded, and walking may legitimately not move the minimap dot until a position message - candidate/pending, non-blocking",
+    "Exact semantics of word[item+0xA] (death-tail flag compare) - candidate"
+  ]
+}

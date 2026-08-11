@@ -1,0 +1,109 @@
+{
+  "evidence_id": "EI-307",
+  "finding": 307,
+  "date": "2026-08-11",
+  "title": "NetworkMessageObjectAnatomy - the inbound frame pipeline is fully decoded: MIR base64 encoder 0x452740 (emulation-validated byte-exact), the frame-type jump table 0x421D8C->0x421D5C (12 handler slots, 153 no-op types), the queue pump 0x4227F0 dispatch (msgid 0x33/0x27A death, 0x32 enter-world, 0x34 self-stats, 0x2F0 status), the queue item anatomy 0x421CFC (0x40C bytes: id/msgid/HP words/base64 payload), and the compiled-out older handlers 0x421BBC/0x421C23/0x421C81",
+  "objective": "Lock the complete inbound network-message object model of Mir3.exe: (a) the 0x452740 encoder algorithm and its exact stack contract (prove by byte-exact emulation); (b) the frame-type -> handler dispatch table with every type mapped; (c) the queue-push item layout and the second queue at screen+0x3C5EFC; (d) the queue-pump's per-msgid handlers, correcting the earlier '0x32 = minimap markers' hypothesis to '0x32 = enter-world self-init'.",
+  "question": "How does an inbound server frame become client state? What exactly does 0x452740 encode (charset, carry handling, padding, return value)? Which frame types queue vs handle inline, and what does each pump msgid do? What is the queue item's byte layout?",
+  "method": "Static disassembly of Mir3.exe raw bytes via capstone (PE VA->offset proven: .text 0x1000/0x74AE2/0x75000, .rdata 0x76000, .data 0x7A000); hand-rolled stack emulator for 0x452740 (mem 0x11000, code at 0, eip base 0x452740, all MSVC idioms traced) validated against Python b64_3c reference on 3 test vectors; full-file scans for 0x421CFC callers (none - jump-table only), 0x4227F0 callers (0x41BBCA only), and jump-table byte/ptr table dumps at 0x421D8C/0x421D5C.",
+  "evidence_level": "primary-static",
+  "confidence": 0.98,
+  "addresses": [
+    "0x00452740", "0x00452750", "0x00452810", "0x004528E0", "0x00452920",
+    "0x00421D8C", "0x00421D5C", "0x00421CFC", "0x00421D3A", "0x00421D3F",
+    "0x004227F0", "0x00422960", "0x00422CC0", "0x00423000", "0x00423070",
+    "0x00421BA7", "0x00421BBC", "0x00421C23", "0x00421C81", "0x00421C53",
+    "0x00421497", "0x00456C58", "0x00456C00", "0x0041ED5D", "0x0041E6D0",
+    "0x0041E740", "0x0041EDC4", "0x0041EE34", "0x0041EF62", "0x0041EF8B",
+    "0x0041EFC6", "0x0041F06B", "0x0041F0F0", "0x0041EDE0",
+    "0x0041F175", "0x0041F264", "0x0041F79E", "0x0041F8C6", "0x004203F7", "0x0042042B",
+    "0x00456E60", "0x00456E40", "0x0046C0C8", "0x0046C0C0",
+    "0x007E3370", "0x00844E14", "0x0077769C", "0x00777764", "0x00777768",
+    "0x007DA060", "0x007DA108", "0x007DA10D", "0x007DA111", "0x007DA169"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "base_va": "0x00401000",
+    "sections": ".text 0x1000/0x74AE2/0x75000 | .rdata 0x76000/0x3D9E/0x4000 | .data 0x7A000/0x49EFD4/0x5000 | .rsrc 0x519000"
+  },
+  "encoder_0x452740": {
+    "contract": "cdecl-ish ret 0x10; stack map (C = caller esp at call): [C+4]=src, [C+8]=dest, [C+0xC]=len, [C+0x10]=destmax",
+    "algorithm": "esi=src, edi=carry bits (0/2/4/6), al=leftover low bits; per 3-byte group: dl = ((b >> (edi+2)) | al) & 0x3F, emit dl+0x3C (charset = value+0x3C); at edi==6 the two-char path emits dl+0x3C then al+0x3C and resets edi/al; partial tail emits al+0x3C; null-terminates; returns emitted byte count",
+    "counter_resolution": "0x452750 'mov [esp+0xc],edi' zeroes the saved-ecx slot [C-4] BEFORE the loop, so the counter always starts at 0; 'push ecx' is an MSVC alloc idiom holding a dead value - this resolves the earlier counter 'anomaly'",
+    "emulation": "hand-rolled interpreter, all 3 test vectors byte-exact: chat [0x3000,0x5000,4,0x2000] -> ret 6, out 4c50453f4d3c00; hello 22 B -> ret 30, out 465e655d5472497047733d5d5873486b485f3c6c493f3c6d483f406b484c00; empty -> ret 0",
+    "verdict": "LOCKED: base64 encoder (src, dest, len, destmax), MIR charset value+0x3C, caller ecx dead",
+    "decode_wrapper": "0x452810 = up-to-N base64 decode (used at 0x421BB2 with 0x400 max, 0x423026 with 0x61 = 97, 0x4214D4 with 0x449); 0x452920/0x4528E0 = header/string copy wrappers (12-byte header decode, 32-byte padded copy)"
+  },
+  "jump_table": {
+    "tables": "byte table 0x421D8C indexes types 6..0xC8 (inclusive); pointer table 0x421D5C has 12 dword entries",
+    "rows": [
+      {"idx": 0, "handler": "0x421CFC", "types": [6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,24,27,31,32,33,34,50,51,52],
+       "semantic": "queue push - incl. 0x32/0x33/0x34 which are QUEUED, not handled inline"},
+      {"idx": 1, "handler": "0x421497", "types": [29,30],
+       "semantic": "0xC-byte item {+0 type, +4 type, +8 hdr+0xC dword} pushed to 2nd queue [screen+0x3C5EFC] via lea ecx + jmp 0x421D3A (call 0x4561B0)"},
+      {"idx": 2, "handler": "0x421BA7", "types": [40,100,101,102,103,104],
+       "semantic": "live path = front block only: body at buf+0x10, decode via 0x422E30 (up-to-0x400 wrapper, only caller 0x421BB2, uses 0x452810), then jmp 0x421D3F common epilogue (decoded data discarded); sub-blocks 0x421BBC/0x421C23/0x421C81 are compiled-out dead code (no callers, no table entries)"},
+      {"idx": 3, "handler": "0x41EFC6", "types": [41]},
+      {"idx": 4, "handler": "0x41F06B", "types": [42]},
+      {"idx": 5, "handler": "0x41EDE0", "types": [44]},
+      {"idx": 6, "handler": "0x41EF62", "types": [45]},
+      {"idx": 7, "handler": "0x41EF8B", "types": [46]},
+      {"idx": 8, "handler": "0x41F0F0", "types": [53]},
+      {"idx": 9, "handler": "0x41EDC4", "types": [54], "semantic": "chat receive"},
+      {"idx": 10, "handler": "0x41EE34", "types": [200]},
+      {"idx": 11, "handler": "0x421D3F", "types": "all remaining (153 types)", "semantic": "no-op common epilogue"}
+    ],
+    "large_type_chain": [
+      {"range": "== 0xC9", "handler": "0x41F175"},
+      {"range": "0xCA..0x26C", "handler": "0x41F264"},
+      {"range": "== 0x26D", "handler": "0x41F79E"},
+      {"range": "0x26E..0x29D", "handler": "0x41F8C6"},
+      {"range": "== 0x29E", "handler": "0x4203F7"},
+      {"range": "> 0x29E", "handler": "0x42042B"}
+    ],
+    "correction": "earlier summaries 'types 6..0x1F -> queue' and '>0xC9 -> 0x41F264' are SUPERSEDED by the exact tables above"
+  },
+  "queue_item": {
+    "builder": "0x421CFC (SEH frame, ret 4, no direct callers - jump-table entry only)",
+    "layout": "malloc 0x40C; {+0 id dword, +4 msgid dword/word (+6 HP-cur word), +8 dword (+8 HP-max word), +0xC byte0 + frame-content string via lstrcpyA (call [0x4760C8])}",
+    "queue_field": "[screen+0x364458] = 0x7E3370; push helper 0x4561B0 (also used by pump handlers for death/object events)",
+    "second_queue": "[screen+0x3C5EFC] = 0x844E14; receives idx1 0xC-byte items {+0 type, +4 type, +8 body-dword}",
+    "variant": "0x421C53 builds a 0x10-byte item {+0 id, +4 word, +8 word, +0xC timeGetTime()} into list [screen+0xE1184] - belongs to idx2's compiled-out object-add path (dead)"
+  },
+  "queue_pump": {
+    "0x4227F0": "pump; ONLY caller 0x41BBCA; dispatch on movzx ax, word[item+4]",
+    "msgid_0x33_0x27A": "-> 0x422960 death/teleport handler: death dialog 0x42E1F0(&[screen+0x2A548C], &[screen+0x2F8788]), sounds 0x45B1D0/0x45B3D0, respawn-coord pair [0x7D9234]/[0x7D9238] zeroed (0x422A15/0x422A1B), live coords [0x777764]=word[item+6] (Y) @0x422A9E and [0x777768]=word[item+8] (X) @0x422AC5, playerObj vtable[+0x10] state, base64-decode item+0xC (0x400 max) -> map loader 0x43C9C0(x-12,y-12) + 0x43B600(.\\Map\\%s.map from decoded map name, fmt 0x47C404); also sets [0x35B25C]/[0x35B260]/[0x35B264] and [screen+0x2F8860]; detail in Finding 310",
+    "msgid_0x32": "-> 0x422CC0 ENTER-WORLD / SELF-INIT (correction: NOT minimap markers): own player id [0x2F8784] from item+0; byte[item+0xB] -> [0x35A354]; base64-decodes 16 B from item+0xC and 5 B from item+0x22 (22 bytes into the +0xC string); first decoded byte gates two branches; playerObj [0x2F8780] vtable[+0x8C](&[screen+0xE11E4], 0|0x1D, dword, word[item+6], word[item+8]) = enter-world/set-position; account string (repne scasb on 0x47EEE4) -> [0x2F8788] = 0x7776A0; flag [screen+0x2ED0B0] = (item != NULL); free item 0x4680F8; object-list cleanup walk [screen+0xE1188]; 0x417FB0 clear on [screen+0x3615B0]; sound 0x451660",
+    "msgid_0x34": "-> 0x423000 FULL SELF-STATS: [0x35B1E8] = item+0 (player id); byte[item+6] -> [0x35B1E4]; base64-decode 0x61 (97) bytes item+0xC -> display block [0x35B1F0] (level 0x7DA108, weight-cur 0x7DA109, HP-cur 0x7DA10D, MP-cur 0x7DA10F, HP-max 0x7DA111, MP-max 0x7DA113, XP-cur 0x7DA115, XP-max 0x7DA119, weight-max 0x7DA11F); then sync live HP/MP: [0x35A34C]=word[0x35B1F5] (HP cur), [0x35A34A]=word[0x35B1F9] (HP max), [0x35A34E]=word[0x35B1F7] (MP cur); free item",
+    "msgid_0x2F0": "-> 0x423070 STATUS BYTES: word[item+0] -> [0x35B251] (0x7DA169); byte[item+6..0xB] -> [0x35B253..0x35B258]",
+    "default": "own-id (abs 0x77769C) + msgid 0x1F: HP cur word[item+6] -> [0x35B1F5] + [0x35A34C], HP max word[item+8] -> [0x35B1F9] + [0x35A34A]; cur==0 -> death 0x40A1E0([0x2F8780]) + 0x4561B0([0x2F8870]); other-id -> object-list walk [esi+0xE1158] (node [eax+4]=obj, [eax+0xC]=next; match [ebx+4]==[edi]) -> 0x40A1E0(ebx) + 0x4561B0([ebx+0xF0]), else free item",
+    "queue_pump_callers": "0x4227F0 called only from 0x41BBCA; 0x421CFC has NO direct callers (jump-table only)"
+  },
+  "dead_code": {
+    "0x421BBC": "compiled-out map-change handler: sets [0x35B148] map id; playerObj->vtable[0x88](&{mapid,byte}, [0x2F8808]); mode calls vtable[0x10](0x1D/[0x2F8841] vs 0)",
+    "0x421C23": "compiled-out object-add: calls 0x41EB40 then 0x421C53 0x10-byte item builder {+0 id, +4 word, +8 word, +0xC timeGetTime()} added to [screen+0xE1184]",
+    "0x421C81": "compiled-out chat/text struct {this, id, body-string lstrcpyA} -> obj vtable[0x38]",
+    "interpretation": "evidence of design evolution - the current build decodes-and-discards the payload for types 0x28/0x64..0x68; do NOT document these as live paths"
+  },
+  "frame_processor": {
+    "this": "ebx = screen object 0x47EF18 (frame processor); buf esi = arg from [esp+0x3F28]",
+    "header_decode": "0x41E6D0 family: 12-byte header decoded into [esp+0x10] via 0x452920; item body follows at buf+0x10"
+  },
+  "verdict": "CLOSED - the inbound message pipeline is fully decoded: encoder (byte-exact), jump table (all 195 types mapped: 42 table + 6 large-range + 153 no-op), queue item (0x40C bytes), pump dispatch (0x33/0x27A, 0x32, 0x34, 0x2F0, default 0x1F, other-id object events), second queue, and dead handlers. msgid 0x32 = enter-world (correcting the earlier minimap-marker hypothesis).",
+  "conclusions": [
+    "0x452740 = MIR base64 encoder, charset value+0x3C, counter starts at 0 (0x452750 zeroes the dead saved-ecx slot pre-loop), ret 0x10, byte-exact vs Python reference on 3 vectors.",
+    "Jump table exact: idx0 (26 types incl 0x32/0x33/0x34) -> queue 0x421CFC; idx1 (0x1D/0x1E) -> 0x421497 second-queue; idx2 (0x28,0x64..0x68) -> 0x421BA7 decode-discard; idx3..idx10 single-type handlers; idx11 = 153-type no-op 0x421D3F.",
+    "Queue item = {+0 id, +4 msgid, +6 HP-cur word, +8 HP-max word, +0xC byte0 + lstrcpyA string}; 0x40C bytes; field [screen+0x364458] = 0x7E3370.",
+    "Pump: 0x33/0x27A -> 0x422960 (death/teleport; writes LIVE coords [0x777764]/[0x777768]); 0x32 -> 0x422CC0 enter-world self-init; 0x34 -> 0x423000 full self-stats (97-byte block); 0x2F0 -> 0x423070 status bytes; default msgid 0x1F HP pair; other-id -> object list walk.",
+    "0x421BBC/0x421C23/0x421C81 (map-change/object-add/chat) are compiled-out dead code inside idx2's handler.",
+    "0x421497 idx1 items go to a SECOND queue [screen+0x3C5EFC] (0x844E14), distinct from the main pump queue."
+  ],
+  "closed_notes": {
+    "0x32_correction": "handoff's '0x32 = server minimap markers (dispatch 0/1/3 aligns with pump msgid 0x32)' is SUPERSEDED: pump msgid 0x32 = enter-world self-init (own id/name/position/list-clears/sound). The minimap-marker objects (type byte 0x32 at obj+0x88, list [0x560070] = [screen+0xE1158]) are created elsewhere (see Finding 310 marker lists and the handoff Finding 254 0x4123E3/0x41ECAE paths).",
+    "counter_anomaly_resolved": "0x452750 mov [esp+0xc],edi zeros the saved-ecx slot before the loop; push ecx is a dead MSVC alloc idiom - no counter carry bug exists."
+  },
+  "pending": [
+    "msgid 0x27A/0x2F0 queue-item origin not located: the large-type region 0x41F264..0x420430 has no calls to 0x421CFC; candidates = other 0x4561B0 callers (0x40A290/0x40A424/0x40EF20/0x410698/0x4229B6) or direct 0x40C-item builders - low severity",
+    "Semantics of the 0x1D/0x1E second-queue items (2nd queue [screen+0x3C5EFC] consumer not yet found)"
+  ]
+}

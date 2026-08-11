@@ -1,0 +1,55 @@
+{
+  "evidence_id": "EI-308",
+  "finding": 308,
+  "date": "2026-08-11",
+  "title": "HudHpMpXpInjectionChain - the HUD HP/MP/XP globals have exactly one runtime writer family (the inbound frame chain), the XP-max field 0x7DA119 has NO writer at all, and the pump default msgid 0x1F is the only per-frame HP/MP path",
+  "objective": "Prove which runtime code can change the HUD bar values. Enumerate every writer of the live HP/MP globals [0x35A34C]/[0x35A34A]/[0x35A34E] (0x7D9264/0x7D9262/0x7D9266) and the display block 0x7DA108..0x7DA11F, show the exact injection chain (frame parser -> queue -> pump -> handler -> display block -> live globals -> HUD formatter), and record that XP-max (0x7DA119) has no writer in this build.",
+  "question": "What runtime paths write the HUD HP/MP/XP values? Are there any writers outside the server-frame chain? Which fields can never change?",
+  "method": "Full-file static scans of Mir3.exe raw bytes for every write encoding to the target absolute addresses (89 /r modrm all registers both disp forms, 8B mov-to-mem forms, C7 imm32, 66 89 word, C6 imm8, A3/A1 eax forms, lea), plus disassembly of each hit; cross-reference with the pump default handler 0x4227F0 and self-stats handler 0x423000; HUD formatter setrect sites 0x4276D6/0x4276F0/0x42770D from earlier rounds.",
+  "evidence_level": "primary-static",
+  "confidence": 0.98,
+  "addresses": [
+    "0x004227F0", "0x004229E4", "0x004229EB", "0x004229F2", "0x004229F8",
+    "0x00423000", "0x0042302B", "0x00423032", "0x00423040", "0x00423049",
+    "0x004276D6", "0x004276F0", "0x0042770D",
+    "0x007D9262", "0x007D9264", "0x007D9266",
+    "0x007DA108", "0x007DA109", "0x007DA10D", "0x007DA10F",
+    "0x007DA111", "0x007DA113", "0x007DA115", "0x007DA119", "0x007DA11F"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "base_va": "0x00401000"
+  },
+  "hud_globals": {
+    "live_hp_mp": "[0x35A34C] = 0x7D9264 HP cur, [0x35A34A] = 0x7D9262 HP max, [0x35A34E] = 0x7D9266 MP cur (screen object 0x47EF18 + 0x35A34x)",
+    "display_block": "[screen+0x35B1F0..] 97-byte decoded self block: +0x35B1F5 HP cur word, +0x35B1F7 MP cur word, +0x35B1F9 HP max word (level 0x7DA108, weight cur 0x7DA109, HP cur 0x7DA10D, MP cur 0x7DA10F, HP max 0x7DA111, MP max 0x7DA113, XP cur 0x7DA115, XP max 0x7DA119, weight max 0x7DA11F)"
+  },
+  "writer_enumeration": {
+    "method_note": "exhaustive scan over all encodings (89/8B modrm with every base register and disp32 form, absolute 89 05/0D/15/1D/25/2D/35/3D, C7 05 imm32, 66 89 word, C6 imm8, A3 eax-absolute, lea-targets) returned ZERO hits outside the frame chain",
+    "live_hp_cur_0x7D9264": "writers: 0x423040 (msgid 0x34 self-stats, word [0x35B1F5] -> [0x35A34C]) and pump default 0x4229E4-family (msgid 0x1F, word[item+6] -> [0x35B1F5] + [0x35A34C]); also 0x4229EB/0x4229F2 in the same default branch",
+    "live_hp_max_0x7D9262": "writers: 0x423049 (msgid 0x34, word [0x35B1F9] -> [0x35A34A]) and pump default (word[item+8] -> [0x35B1F9] + [0x35A34A])",
+    "live_mp_cur_0x7D9266": "writer: 0x423050 (msgid 0x34, word [0x35B1F7] -> [0x35A34E]) only",
+    "xp_max_0x7DA119": "NO WRITER in the entire binary (all encodings scanned) - XP-max can never change at runtime in this build; the HUD exp bar formatter (0x2770D region) always divides by the compile-time/zero value",
+    "xp_cur_0x7DA115": "written only via the msgid 0x34 97-byte block decode (0x452810 @0x423026 into [0x35B1F0]) - i.e. only by a full self-stats message",
+    "verdict": "F308 CLOSED: the HUD HP/MP values have exactly two injection paths, both inside the inbound frame chain: msgid 0x1F (per-frame HP cur/max pair via pump default) and msgid 0x34 (full self-stats, HP+MP+XP block). No local/UI writer exists; XP-max is a never-written field."
+  },
+  "injection_chain": {
+    "0x1F_path": "frame parser 0x41E6D0 -> jump table idx0 -> queue push 0x421CFC (item {+4 msgid 0x1F, +6 HP cur word, +8 HP max word}) -> pump 0x4227F0 -> default branch (own-id 0x77769C + msgid 0x1F): [0x35B1F5]=word[item+6], [0x35B1F9]=word[item+8], [0x35A34C]=word[item+6], [0x35A34A]=word[item+8]; cur==0 -> death 0x40A1E0 + 0x4561B0",
+    "0x34_path": "frame parser -> queue -> pump -> 0x423000: id -> [0x35B1E8], byte -> [0x35B1E4], 97-byte base64 payload -> [0x35B1F0] block via 0x452810, then live sync [0x35A34C]/[0x35A34A]/[0x35A34E] from decoded words",
+    "hud_render": "HUD bars: GameInter.wil frame 60 HP (rect 61,496,104,566), 61 MP (105,496,147,566), 63 EXP (61,586,400,597); SetRect sites 0x4276D6/0x4276F0/0x42770D; (血量)%d/%d / (魔法)%d/%d / (经验)%d/%d formatters read the display block",
+    "state_gate": "FD_READ callback only buffers when [0x8B1878] (socket state byte) == 3 (in-game); the frame chain is the ONLY runtime writer of the HUD stat globals"
+  },
+  "conclusions": [
+    "Live HP cur/max and MP cur writers = exactly the two frame-chain handlers (pump default 0x1F, self-stats 0x34); exhaustive encoding scan found no other write sites.",
+    "XP-max 0x7DA119 has no writer in the binary - statically immutable.",
+    "XP-cur 0x7DA115 is only reachable through the 97-byte self-stats block (msgid 0x34).",
+    "The HUD bars therefore reflect server state exclusively; there is no client-side stat mutation path."
+  ],
+  "closed_notes": {
+    "F278_family_continuity": "the pump default 0x1F HP path was partially described in earlier rounds as 'HP/MP update'; this finding pins the exact item offsets (+6 cur, +8 max) and the display-block mirror writes."
+  },
+  "pending": [
+    "Whether the XP-max field is populated by an older/newer server build or another frame type - strictly server-side concern for the build under study",
+    "The exact byte offsets inside the 97-byte self-stats payload for fields beyond HP/MP (level, weight, XP) - the block is decoded as a whole; field-level offsets for the remaining fields are candidate"
+  ]
+}

@@ -108,6 +108,69 @@ def frame_tables() -> dict:
                 out["source"] += " + Finding 298 (mounted gait pairs)"
     except Exception:
         pass
+    # Finding 307 (NetworkMessageObjectAnatomy) - the inbound frame-type jump
+    # table (0x421D8C byte table types 6..0xC8 -> 12 handler slots at 0x421D5C),
+    # the queue-pump dispatch and the queue-item anatomy are compile-time data,
+    # emitted here so the simulator can label inbound frame types / messages.
+    out["frame_dispatch"] = {
+        "jump_table": [
+            {"idx": 0, "handler": "0x421CFC", "semantic": "queue push (SEH, ret 4)",
+             "types": [0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x11, 0x12,
+                       0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1b, 0x1f, 0x20, 0x21,
+                       0x22, 0x32, 0x33, 0x34]},
+            {"idx": 1, "handler": "0x421497", "semantic": "0xC-byte item -> 2nd queue [screen+0x3C5EFC]",
+             "types": [0x1d, 0x1e]},
+            {"idx": 2, "handler": "0x421BA7", "semantic": "live = 0x421BA7 front block: body+0x10 "
+                                                           "base64-decode via 0x422E30 into stack, "
+                                                           "discarded (dead sub-blocks 0x421BBC "
+                                                           "map-change / 0x421C23 object-add / "
+                                                           "0x421C81 chat)",
+             "types": [0x28, 0x64, 0x65, 0x66, 0x67, 0x68]},
+            {"idx": 3, "handler": "0x41EFC6", "types": [0x29]},
+            {"idx": 4, "handler": "0x41F06B", "types": [0x2a]},
+            {"idx": 5, "handler": "0x41EDE0", "types": [0x2c]},
+            {"idx": 6, "handler": "0x41EF62", "types": [0x2d]},
+            {"idx": 7, "handler": "0x41EF8B", "types": [0x2e]},
+            {"idx": 8, "handler": "0x41F0F0", "types": [0x35]},
+            {"idx": 9, "handler": "0x41EDC4", "semantic": "chat receive", "types": [0x36]},
+            {"idx": 10, "handler": "0x41EE34", "types": [0xc8]},
+            {"idx": 11, "handler": "0x421D3F", "semantic": "no-op (common epilogue)", "types": "153 remaining"},
+        ],
+        "large_types": [
+            {"range": "== 0xC9", "handler": "0x41F175"},
+            {"range": "0xCA..0x26C", "handler": "0x41F264"},
+            {"range": "== 0x26D", "handler": "0x41F79E"},
+            {"range": "0x26E..0x29D", "handler": "0x41F8C6"},
+            {"range": "== 0x29E", "handler": "0x4203F7"},
+            {"range": "> 0x29E", "handler": "0x42042B"},
+        ],
+        "queue_pump": "0x4227F0 (only caller 0x41BBCA); movzx ax,word[item+4]: "
+                      "0x33/0x27A -> 0x422960 (death/teleport: dialog, sounds, "
+                      "respawn-coords zero, live Y/X [0x777764]/[0x777768] = word[item+6]/[item+8], "
+                      "map loader .\\Map\\%s.map from base64 payload, player obj vtable); "
+                      "0x32 -> 0x422CC0 (enter-world self-init: own id [0x2F8784], "
+                      "byte[item+0xB] -> [0x35A354], 16B+5B base64 decode, "
+                      "playerObj vtable+0x8C enter-world, account -> [0x2F8788], list clears, "
+                      "sound); 0x34 -> 0x423000 (full self-stats: id -> [0x35B1E8], "
+                      "byte -> [0x35B1E4], 97-byte base64 -> display block [0x35B1F0], "
+                      "HP/MP -> live [0x35A34C]/[0x35A34A]/[0x35A34E]); 0x2F0 -> 0x423070 "
+                      "(status bytes: word[item+0] -> [0x35B251], byte[item+6..0xB] -> "
+                      "[0x35B253..0x35B258]); default -> own-id (abs 0x77769C) + msgid 0x1F: "
+                      "HP cur word[item+6] -> [0x35B1F5]/[0x35A34C], HP max word[item+8] -> "
+                      "[0x35B1F9]/[0x35A34A], cur==0 -> death 0x40A1E0+0x4561B0; other-id -> "
+                      "object-list walk [esi+0xE1158] (node +4 obj / +0xC next) -> "
+                      "0x40A1E0 + 0x4561B0([ebx+0xF0]), else free",
+        "queue_item": "0x421CFC malloc 0x40C: {+0 id dword, +4 msgid dword/word (+6 HP cur word), "
+                      "+8 dword (+8 HP max word), +0xC byte0 + frame-content string via lstrcpyA "
+                      "call [0x4760C8]}; queue field [screen+0x364458] (0x7E3370); push helper "
+                      "0x4561B0; no direct callers (jump-table only)",
+        "base64_encoder": "0x452740 (src, dest, len, destmax; ret 0x10): MIR b64 charset "
+                          "value+0x3C, 3 bytes -> 4 chars, carry bits in edi (0/2/4/6), "
+                          "null-terminated, returns byte count; emulation-validated byte-exact "
+                          "(chat 6 B, hello 22 B -> 30 B, empty -> 0); decode wrapper 0x452810 "
+                          "(up-to-N base64 decode)",
+        "source": "network-message-object-anatomy.json Finding 307 (primary-static)",
+    }
     return out
 
 
@@ -375,7 +438,23 @@ def main() -> None:
         "chat_region": {"rect": [224, 492, 578, 566], "evidence_level": "primary-static",
                         "note": "0x00427696 SetRect; chat/text total region"},
         "minimap": {"rect": [672, 0, 800, 128], "evidence_level": "primary-static",
-                    "note": "fixed minimap rect (672,0)-(800,128)"},
+                    "note": "minimap widget 0x48512C = screen+0x6214 (Finding 310); D3D target "
+                            "rect {672,0,800,128} byte-exact (0x2A0,0,0x320,0x80); per-frame "
+                            "update 0x43D850 (called from screen tick 0x4294E0 when "
+                            "[screen+0x6518]!=0) reads live player coords [0x777764]/[0x777768] "
+                            "(Y/X = screen+0x2F884C/+0x2F8850), stores widget [+0x2F8]/[+0x2FC], "
+                            "scroll = fild(pos)*[0x476904] - half-extent, clamped to "
+                            "[+0x2D8]/[+0x2DC]; draw 0x43DA80: map texture (mapid<0x3E8 -> "
+                            "MMap.wil widget+4 frame mapid, else FMMap.wil widget+0x148 frame "
+                            "mapid-1000; blit 0x465560) + 10x10 player box 0x96C8FF at "
+                            "[+0x2C8]/[+0x2CC] + 4x4 blinking dot 0x64FA64 (gate "
+                            "0<[+0x300]<0x1F4, [+0x300] wraps at 0x320); object markers: "
+                            "[0x560070] list (screen+0xE1158) type-byte-0x32 objs drawn 2x2 "
+                            "yellow 0xFFFF at obj+0xCC/+0xD0, [0x5600A0] list (screen+0xE1188) "
+                            "generic objs 2x2 green 0x64C864 bounds-culled; fill helper "
+                            "0x45E570(0x8AB7A8,&rect,0,color,1); live coords written only by "
+                            "pump death/teleport handler 0x422A9E/0x422AC5 (0x7D9234/0x7D9238 = "
+                            "separate death/respawn pair, NOT minimap input)"},
     }
 
     out = {

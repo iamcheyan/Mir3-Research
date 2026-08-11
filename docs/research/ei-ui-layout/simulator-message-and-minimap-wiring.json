@@ -1,0 +1,40 @@
+{
+  "evidence_id": "EI-311",
+  "finding": 311,
+  "date": "2026-08-11",
+  "title": "SimulatorMessageAndMinimapWiring - the 800x600 simulator data now carries the decoded network layer (frame_dispatch: jump table, pump dispatch, queue item anatomy, base64 encoder) and the corrected minimap anatomy (widget 0x48512C D3D target rect byte-exact vs simulator map.minimap {672,0,800,128}); build script Tools/web/build_mir3_simulator_data.py regenerates all data/*.json from evidence",
+  "objective": "Wire Round 10's network-decoding findings into the simulator data pipeline: extend frame_tables.json with the frame-dispatch block (12-row jump table, large-type chain, queue pump semantics per msgid, queue item layout, MIR base64 encoder contract) and extend hud.json's minimap entry with the full corrected F310 anatomy, then regenerate data/*.json and verify the consumers (app.js) still bind.",
+  "question": "How does the simulator consume frame_tables and the minimap data, and does the regenerated data preserve those contracts while adding the new decoded knowledge?",
+  "method": "Edit Tools/web/build_mir3_simulator_data.py (canonical generator) - hud.json minimap note extended to full F310 anatomy; frame_tables() gained 'frame_dispatch' block; re-run python3 Tools/web/build_mir3_simulator_data.py; verify regenerated JSON (keys, row counts, minimap rect) and app.js consumer lines (frame_tables entity state names ~75/145-146; minimap cycle key hud.minimap ~982, draw 1007-1014).",
+  "evidence_level": "derived-tooling",
+  "confidence": 1.0,
+  "addresses": [
+    "Tools/web/build_mir3_simulator_data.py",
+    "Tools/mir3_client_simulator/data/frame_tables.json",
+    "Tools/mir3_client_simulator/data/hud.json",
+    "Tools/mir3_client_simulator/data/maps.json",
+    "Tools/mir3_client_simulator/app.js"
+  ],
+  "source": {
+    "build_script": "Tools/web/build_mir3_simulator_data.py (canonical edits live here, NOT Tools/reverse-engineering; a duplicate Tools/build_mir3_simulator_data.py exists - use the web/ one)",
+    "output": "Tools/mir3_client_simulator/data/*.json (windows/controls/resources/entities/equipment_slots/skills/maps/map_bindings/hud.json/layout.json/frame_tables.json)"
+  },
+  "changes": {
+    "hud_minimap_note": "minimap entry note now carries the full F310 anatomy: widget 0x48512C = screen+0x6214; D3D target rect byte-exact {672,0,800,128}; update 0x43D850 reads live coords [0x777764]/[0x777768] stores [+0x2F8]/[+0x2FC], scroll math; draw 0x43DA80: map texture rule mapid<0x3E8 -> MMap.wil widget+4 else FMMap.wil widget+0x148 frame mapid-1000; 10x10 0x96C8FF box at [+0x2C8]/[+0x2CC]; 4x4 0x64FA64 blink gate 0<[+0x300]<0x1F4 wraps 0x320; object markers [0x560070] type-0x32 2x2 yellow 0xFFFF at obj+0xCC/+0xD0, [0x5600A0] 2x2 green 0x64C864 bounds-culled; live coords written ONLY by 0x422A9E/0x422AC5; 0x7D9234/0x7D9238 = death/respawn pair NOT minimap input",
+    "frame_dispatch_block": "frame_tables.json gained frame_dispatch = { jump_table (12 rows: idx0 queue 26 types incl 0x32/0x33/0x34; idx1 0x421497 2nd queue 0x1D/0x1E; idx2 0x421BA7 decode-discard 0x28/0x64..0x68; idx3..idx10 single handlers; idx11 0x421D3F no-op 153 types), large_types (6 ranges 0xC9..>0x29E), queue_pump (0x4227F0 per-msgid semantics: 0x33/0x27A death, 0x32 enter-world, 0x34 self-stats, 0x2F0 status, default 0x1F HP), queue_item (0x40C layout), base64_encoder (0x452740 contract + validation), source }",
+    "regeneration": "python3 Tools/web/build_mir3_simulator_data.py succeeded: windows=14 controls=40 resources=157 entities=8 equipment_slots=8 skills=12 maps=2 bindings=211; frame_dispatch keys present; jump rows=12; idx2 types [40,100,101,102,103,104]; minimap note len 1039; minimap rect [672,0,800,128]"
+  },
+  "consumers": {
+    "app_js": "frame_tables.json used for entity state-name lookup (lines ~75, 145-146); minimap drawn from hud.minimap + maps.find(id==='map.minimap') with cycle key hud.minimap (lines ~229/234/982, draw 1007-1014); map.minimap 128x128 at (672,0)",
+    "contract_preserved": "frame_dispatch is additive (new top-level key); existing keys unchanged; hud.minimap.rect preserved [672,0,800,128]; no consumer breakage expected"
+  },
+  "verdict": "CLOSED - simulator data regenerated and verified; Round 10 network/minimap knowledge is now machine-readable in the simulator data pipeline.",
+  "conclusions": [
+    "build_mir3_simulator_data.py is the canonical generator; both edits landed there and the data/*.json were regenerated from it.",
+    "frame_tables.json now embeds the exact frame-type jump table, pump dispatch, queue item anatomy and base64 encoder contract (Finding 307).",
+    "hud.json minimap note embeds the corrected F310 anatomy; simulator rect {672,0,800,128} matches the widget D3D target rect byte-exact.",
+    "Verification: regeneration ran clean (0.45 s), all files rewritten, key counts and rect verified by python read-back."
+  ],
+  "pending": [],
+  "notes": "Data-level wiring only; the simulator is a UI/data mirror and does not emulate the network protocol itself - frame_dispatch is carried as semantic reference for future protocol emulation."
+}

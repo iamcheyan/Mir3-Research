@@ -70,6 +70,6 @@
       128
     ],
     "evidence_level": "primary-static",
-    "note": "fixed minimap rect (672,0)-(800,128)"
+    "note": "minimap widget 0x48512C = screen+0x6214 (Finding 310); D3D target rect {672,0,800,128} byte-exact (0x2A0,0,0x320,0x80); per-frame update 0x43D850 (called from screen tick 0x4294E0 when [screen+0x6518]!=0) reads live player coords [0x777764]/[0x777768] (Y/X = screen+0x2F884C/+0x2F8850), stores widget [+0x2F8]/[+0x2FC], scroll = fild(pos)*[0x476904] - half-extent, clamped to [+0x2D8]/[+0x2DC]; draw 0x43DA80: map texture (mapid<0x3E8 -> MMap.wil widget+4 frame mapid, else FMMap.wil widget+0x148 frame mapid-1000; blit 0x465560) + 10x10 player box 0x96C8FF at [+0x2C8]/[+0x2CC] + 4x4 blinking dot 0x64FA64 (gate 0<[+0x300]<0x1F4, [+0x300] wraps at 0x320); object markers: [0x560070] list (screen+0xE1158) type-byte-0x32 objs drawn 2x2 yellow 0xFFFF at obj+0xCC/+0xD0, [0x5600A0] list (screen+0xE1188) generic objs 2x2 green 0x64C864 bounds-culled; fill helper 0x45E570(0x8AB7A8,&rect,0,color,1); live coords written only by pump death/teleport handler 0x422A9E/0x422AC5 (0x7D9234/0x7D9238 = separate death/respawn pair, NOT minimap input)"
   }
 }

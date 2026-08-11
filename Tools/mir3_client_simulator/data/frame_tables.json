@@ -265,5 +265,157 @@
     "mounted variant of 0x15 (mounted channel, fx 0x22 run-family)",
     "mounted variant of 0x16 (mounted channel, fx 0x23 walk-family)",
     "0x17 completion return target @0x40DEB6; also [INFERENCE: 3-frame]"
-  ]
+  ],
+  "frame_dispatch": {
+    "jump_table": [
+      {
+        "idx": 0,
+        "handler": "0x421CFC",
+        "semantic": "queue push (SEH, ret 4)",
+        "types": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          27,
+          31,
+          32,
+          33,
+          34,
+          50,
+          51,
+          52
+        ]
+      },
+      {
+        "idx": 1,
+        "handler": "0x421497",
+        "semantic": "0xC-byte item -> 2nd queue [screen+0x3C5EFC]",
+        "types": [
+          29,
+          30
+        ]
+      },
+      {
+        "idx": 2,
+        "handler": "0x421BA7",
+        "semantic": "live = 0x421BA7 front block: body+0x10 base64-decode via 0x422E30 into stack, discarded (dead sub-blocks 0x421BBC map-change / 0x421C23 object-add / 0x421C81 chat)",
+        "types": [
+          40,
+          100,
+          101,
+          102,
+          103,
+          104
+        ]
+      },
+      {
+        "idx": 3,
+        "handler": "0x41EFC6",
+        "types": [
+          41
+        ]
+      },
+      {
+        "idx": 4,
+        "handler": "0x41F06B",
+        "types": [
+          42
+        ]
+      },
+      {
+        "idx": 5,
+        "handler": "0x41EDE0",
+        "types": [
+          44
+        ]
+      },
+      {
+        "idx": 6,
+        "handler": "0x41EF62",
+        "types": [
+          45
+        ]
+      },
+      {
+        "idx": 7,
+        "handler": "0x41EF8B",
+        "types": [
+          46
+        ]
+      },
+      {
+        "idx": 8,
+        "handler": "0x41F0F0",
+        "types": [
+          53
+        ]
+      },
+      {
+        "idx": 9,
+        "handler": "0x41EDC4",
+        "semantic": "chat receive",
+        "types": [
+          54
+        ]
+      },
+      {
+        "idx": 10,
+        "handler": "0x41EE34",
+        "types": [
+          200
+        ]
+      },
+      {
+        "idx": 11,
+        "handler": "0x421D3F",
+        "semantic": "no-op (common epilogue)",
+        "types": "153 remaining"
+      }
+    ],
+    "large_types": [
+      {
+        "range": "== 0xC9",
+        "handler": "0x41F175"
+      },
+      {
+        "range": "0xCA..0x26C",
+        "handler": "0x41F264"
+      },
+      {
+        "range": "== 0x26D",
+        "handler": "0x41F79E"
+      },
+      {
+        "range": "0x26E..0x29D",
+        "handler": "0x41F8C6"
+      },
+      {
+        "range": "== 0x29E",
+        "handler": "0x4203F7"
+      },
+      {
+        "range": "> 0x29E",
+        "handler": "0x42042B"
+      }
+    ],
+    "queue_pump": "0x4227F0 (only caller 0x41BBCA); movzx ax,word[item+4]: 0x33/0x27A -> 0x422960 (death/teleport: dialog, sounds, respawn-coords zero, live Y/X [0x777764]/[0x777768] = word[item+6]/[item+8], map loader .\\Map\\%s.map from base64 payload, player obj vtable); 0x32 -> 0x422CC0 (enter-world self-init: own id [0x2F8784], byte[item+0xB] -> [0x35A354], 16B+5B base64 decode, playerObj vtable+0x8C enter-world, account -> [0x2F8788], list clears, sound); 0x34 -> 0x423000 (full self-stats: id -> [0x35B1E8], byte -> [0x35B1E4], 97-byte base64 -> display block [0x35B1F0], HP/MP -> live [0x35A34C]/[0x35A34A]/[0x35A34E]); 0x2F0 -> 0x423070 (status bytes: word[item+0] -> [0x35B251], byte[item+6..0xB] -> [0x35B253..0x35B258]); default -> own-id (abs 0x77769C) + msgid 0x1F: HP cur word[item+6] -> [0x35B1F5]/[0x35A34C], HP max word[item+8] -> [0x35B1F9]/[0x35A34A], cur==0 -> death 0x40A1E0+0x4561B0; other-id -> object-list walk [esi+0xE1158] (node +4 obj / +0xC next) -> 0x40A1E0 + 0x4561B0([ebx+0xF0]), else free",
+    "queue_item": "0x421CFC malloc 0x40C: {+0 id dword, +4 msgid dword/word (+6 HP cur word), +8 dword (+8 HP max word), +0xC byte0 + frame-content string via lstrcpyA call [0x4760C8]}; queue field [screen+0x364458] (0x7E3370); push helper 0x4561B0; no direct callers (jump-table only)",
+    "base64_encoder": "0x452740 (src, dest, len, destmax; ret 0x10): MIR b64 charset value+0x3C, 3 bytes -> 4 chars, carry bits in edi (0/2/4/6), null-terminated, returns byte count; emulation-validated byte-exact (chat 6 B, hello 22 B -> 30 B, empty -> 0); decode wrapper 0x452810 (up-to-N base64 decode)",
+    "source": "network-message-object-anatomy.json Finding 307 (primary-static)"
+  }
 }

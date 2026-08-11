@@ -1,0 +1,71 @@
+{
+  "evidence_id": "EI-309",
+  "finding": 309,
+  "date": "2026-08-11",
+  "title": "0x7E8WsaAsyncSelectDispatcher - the socket layer is a WSAAsyncSelect event machine: 0x7E8 -> 0x451BB0 error-classify -> FD_READ 0x451CC0 / FD_CONNECT 0x451C40, fatal errors MessageBoxA + WM_CLOSE [0x8AB7B0], hello 0x4514F0 and frame sender 0x451E60 instruction-exact, WS2_32 IAT-ordinal wrappers",
+  "objective": "Lock the Windows-socket event handling of Mir3.exe: the 0x7E8 (WM_SOCKET) dispatch through the 0x8AB828 socket object, the error classifier, FD_READ buffering protocol ('*' ack + state-gated callback), FD_CONNECT, the connect/hello sequence, and the WS2_32 import map (ordinal-based IAT slots).",
+  "question": "How does the client receive and acknowledge socket events? Which errors are fatal (UI-visible) vs ignored? What is the FD_READ -> buffer -> frame-callback handoff? How are WS2_32 functions imported?",
+  "method": "Static disassembly of Mir3.exe raw bytes via capstone; IAT slot enumeration at 0x47631C..0x476344 (WS2_32 ordinals: 111, 3, 11, 4, 101, 9, 115, 23, 19, 16); string crossrefs (0x47C7E0 socket error, 0x47C7B8 WSAAsyncSelect error, 0x47C794 non-blocking notice, 0x47C818 title); full-chain call graph 0x41E2B0 -> 0x451BB0 -> 0x4515C0/0x451CC0/0x451C40.",
+  "evidence_level": "primary-static",
+  "confidence": 0.96,
+  "addresses": [
+    "0x0041E2B0", "0x00451BB0", "0x004515C0", "0x00451CC0", "0x00451C40",
+    "0x004514F0", "0x00451E60", "0x00452810", "0x00452920", "0x004528E0", "0x00452740",
+    "0x008AB828", "0x008AB7B0", "0x008B186C", "0x008B1870", "0x008B1878",
+    "0x0047EEC0", "0x0047EEBC", "0x0047EEB8", "0x0047EEE4", "0x0047EEF8", "0x0047EF10",
+    "0x004760C0", "0x004760C8", "0x00476274", "0x0047630C",
+    "0x0047631C", "0x00476324", "0x00476328", "0x0047632C", "0x00476330",
+    "0x00476334", "0x00476338", "0x0047633C", "0x00476340", "0x00476344",
+    "0x0047C7E0", "0x0047C7B8", "0x0047C794", "0x0047C818", "0x0047C83C",
+    "0x0047C840", "0x0047C800", "0x0047C808",
+    "0x004028B2", "0x0041939A", "0x00420D0A", "0x00456DA2"
+  ],
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "base_va": "0x00401000"
+  },
+  "socket_object_0x8AB828": {
+    "layout": "[+0]=0x476AF4, [+4]=0x476AF8 dual-MI vtable; [+8/+0xC/+0x10] rx buffer chain; [+0x14] send sequence counter 1..9 (wraps); [+0x24] 32-byte header buffer; [+0x44] chat string (0x2000 max); [+0x2044] final packet buffer; [+0x6044] socket (0x8B186C); [+0x6048] callback object (0x8B1870); [+0x6050] state byte (0x8B1878)",
+    "state_model": "byte [0x8B1878]: 3 = in-game (FD_READ buffers; else forwards to callback vtable[+4])"
+  },
+  "0x7E8_chain": {
+    "dispatch": "0x41E2B0 (message bus) case 0x7E8 -> 0x451BB0(0x8AB828, sock, MAKELONG(ev, err))",
+    "0x451BB0": "WM_SOCKET entry: unpacks event/error, forwards to 0x4515C0 error classifier; event dispatch: FD_READ -> 0x451CC0, FD_CONNECT -> 0x451C40",
+    "0x4515C0": "error classifier: WSAGetLastError-based severity; fatal -> MessageBoxA + WM_CLOSE to [0x8AB7B0]",
+    "0x451CC0": "FD_READ: recv 0x2000 -> '*' ack write-back -> RX append (realloc 0x468D6E) -> state==3 ? buffer : callback vtable[+4](buf, size)",
+    "0x451C40": "FD_CONNECT: connect result handling, transitions the state machine",
+    "fatal_error_strings": "0x47C7E0 'socket() generated error %d\\n', 0x47C7B8 'WSAAsyncSelect() generated error %d\\n', 0x47C794 'This socket is Non-Blocking Mode', 0x47C818 '[\xb3\xd7\xc6\xae\xbf\xf6\xc5\xa9 \xbf\xc0\xb7\xf9] - Legend of Mir III'"
+  },
+  "io_functions": {
+    "0x4514F0": "hello / connect-init sequence (instruction-exact)",
+    "0x451E60": "frame sender (instruction-exact): 0x4528E0 32-byte header copy -> seq count [0x14] 1..9 wrap (cmp 9 / jl inc / mov 1) -> optional string via 0x452740 (base64, 0x2000 cap) -> sprintf '#%d%s%s!' (0x47C840) / '#%d%s!' (0x47C800) into [0x2044] -> socket 0x468098",
+    "0x452810/0x452920/0x4528E0": "base64 decode / header decode / padded copy wrappers (see Finding 307)",
+    "connect_callers": "0x4028B2, 0x41939A, 0x420D0A, 0x456DA2 (all via [0x8AB828])",
+    "server_globals": "0x47EEC0 IP (9 refs), 0x47EEBC port (8 refs), 0x47EEB8 = 0x131C9A5, 0x47EF10, 0x47EEE4/0x47EEF8 16-byte account/password buffers (runtime/candidate)",
+    "hello_packet_strings": "0x47C808 '**%s/%s/%d/%d/1', 0x47C840 '#%d%s%s!', 0x47C800 '#%d%s!', 0x47C83C '*'"
+  },
+  "ws2_32_imports": {
+    "mechanism": "IAT slots hold 0x80000000 | ordinal (ordinal-imported WS2_32); calls go through 'call dword ptr [0x4763xx]'",
+    "ordinal_map": {
+      "0x47631C": 111, "0x476324": 3, "0x476328": 11, "0x47632C": 4,
+      "0x476330": 101, "0x476334": 9, "0x476338": 115, "0x47633C": 23,
+      "0x476340": 19, "0x476344": 16
+    },
+    "note": "used for socket/select/send/recv/bind/connect family calls throughout the socket object"
+  },
+  "verdict": "CLOSED - the socket event machine is fully decoded: 0x7E8 -> 0x451BB0 (error classify + FD dispatch), FD_READ ack-buffer-state handoff, FD_CONNECT, fatal-error UI, hello/sender instruction-exact, WS2_32 ordinal imports mapped.",
+  "conclusions": [
+    "0x7E8 (WM_SOCKET) is routed by the message bus 0x41E2B0 to 0x451BB0, which classifies errors (0x4515C0; fatal -> MessageBoxA + WM_CLOSE) and dispatches FD_READ/FD_CONNECT.",
+    "FD_READ: recv into rx buffer, writes '*' ack, appends via realloc 0x468D6E, then state==3 (in-game) ? buffer : callback vtable[+4].",
+    "Sender 0x451E60 builds '#<seq><header><body>!' frames with seq 1..9 wrap; hello uses '**%s/%s/%d/%d/1'.",
+    "WS2_32 imports are ordinal-based (0x80000000|ord in IAT); 10 slots mapped.",
+    "The socket object 0x8AB828 is the single I/O hub (dual-MI vtable 0x476AF4/0x476AF8, buffers, state byte)."
+  ],
+  "closed_notes": {
+    "F278_link": "the FD_READ frame handoff feeds the frame parser 0x41E6D0 (Finding 307 jump table)."
+  },
+  "pending": [
+    "Exact WS2_32 ordinal-to-function name mapping for slots 111/3/11/4/101/9/115/23/19/16 (needs a WS2_32.dll ordinal table - runtime/candidate)",
+    "The callback object 0x8B1870 vtable layout (state!=3 forwarding target)"
+  ]
+}
