@@ -1384,6 +1384,17 @@ static void GenerateJson(Session session, string outDir)
                 }
                 row[p.Name] = v;
             }
+
+            // 派生 Stats 字段（如 MonsterInfo.Stats / ItemInfo.Stats，是 public field）
+            foreach (FieldInfo f in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (f.FieldType != typeof(Stats)) continue;
+                object sv;
+                try { sv = f.GetValue(ob); }
+                catch { continue; }
+                if (sv is not Stats st || st.Values.Count == 0) continue;
+                row[f.Name] = st.Values.Select(kv => new { Stat = kv.Key.ToString(), Value = kv.Value }).ToList();
+            }
             rows.Add(row);
         }
 
@@ -1392,4 +1403,176 @@ static void GenerateJson(Session session, string outDir)
         File.WriteAllText(file, System.Text.Json.JsonSerializer.Serialize(payload, options));
         Console.WriteLine($"{type.Name,-28} {count,6} 条 -> {Path.GetFileName(file)}");
     }
+
+    // ---------- meta.json（字段类型 / 引用目标 / 中文名，供 dbviewer 渲染与关联跳转） ----------
+
+    static string FieldZh(string field)
+    {
+        if (DbViewerMeta.FieldZhMap.TryGetValue(field, out string z)) return z;
+        return field;
+    }
+
+    var meta = new Dictionary<string, object>();
+    var categoryOrder = new[] { "MonsterInfo", "MonsterInfoStat", "DropInfo", "RespawnInfo", "ItemInfo", "ItemInfoStat", "SetInfo", "SetInfoStat", "WeaponCraftStatInfo", "MagicInfo", "MapInfo", "MapRegion", "MovementInfo", "NPCInfo", "NPCPage", "NPCGood", "NPCButton", "NPCCheck", "NPCAction", "NPCType", "NPCValue", "NPCRequirement", "GuardInfo", "SafeZoneInfo", "MineInfo", "QuestInfo", "QuestTask", "QuestTaskMonsterDetails", "QuestReward", "QuestRequirement", "BaseStat", "CurrencyInfo", "CurrencyInfoImage", "FameInfo", "FameInfoStat", "FameInfoReward", "CompanionInfo", "CompanionLevelInfo", "CompanionSkillInfo", "CompanionSpeech", "DisciplineInfo", "CastleInfo", "CastleFlagInfo", "CastleGateInfo", "CastleGuardInfo", "SystemDatabaseInfo" };
+    var sorted = types.OrderBy(t => Array.IndexOf(categoryOrder, t.Name) < 0 ? 999 : Array.IndexOf(categoryOrder, t.Name)).ThenBy(t => t.Name);
+
+    foreach (Type type in sorted)
+    {
+        var fields = new Dictionary<string, object>();
+        foreach (PropertyInfo p in type.GetProperties())
+        {
+            if (ShouldSkip(p)) continue;
+            var fm = new Dictionary<string, object> { ["zh"] = FieldZh(p.Name) };
+            Type t = p.PropertyType;
+            if (t.IsEnum) { fm["type"] = "enum"; fm["to"] = t.Name; }
+            else if (t == typeof(string)) fm["type"] = "string";
+            else if (t == typeof(bool)) fm["type"] = "bool";
+            else if (t == typeof(int) || t == typeof(long) || t == typeof(short) || t == typeof(byte)) fm["type"] = "int";
+            else if (t == typeof(decimal) || t == typeof(double) || t == typeof(float)) fm["type"] = "number";
+            else if (t == typeof(DateTime)) fm["type"] = "datetime";
+            else if (t == typeof(byte[])) fm["type"] = "bytes";
+            else if (t == typeof(Stats)) fm["type"] = "stats";
+            else if (typeof(DBObject).IsAssignableFrom(t)) { fm["type"] = "ref"; fm["to"] = t.Name; }
+            else if (t.IsArray)
+            {
+                Type el = t.GetElementType();
+                if (typeof(DBObject).IsAssignableFrom(el)) { fm["type"] = "reflist"; fm["to"] = el.Name; }
+                else if (el.Name == "Point") fm["type"] = "points";
+                else fm["type"] = "list";
+            }
+            else if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(DBBindingList<>))
+            {
+                Type el = t.GetGenericArguments()[0];
+                fm["type"] = "reflist"; fm["to"] = el.Name;
+            }
+            else fm["type"] = "other";
+            fields[p.Name] = fm;
+        }
+        // public Stats fields（MonsterInfo.Stats 等）
+        foreach (FieldInfo f in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            if (f.FieldType == typeof(Stats))
+                fields[f.Name] = new Dictionary<string, object> { ["zh"] = FieldZh(f.Name), ["type"] = "stats" };
+
+        var identity = type.GetProperties()
+            .Where(p => p.GetCustomAttribute<IsIdentityAttribute>() != null)
+            .Select(p => p.Name)
+            .ToList();
+
+        meta[type.Name] = new
+        {
+            zh = DbViewerMeta.CollectionZh.TryGetValue(type.Name, out string zz) ? zz : type.Name,
+            identity,
+            fields,
+        };
+    }
+
+    File.WriteAllText(Path.Combine(outDir, "meta.json"), System.Text.Json.JsonSerializer.Serialize(meta, options));
+    Console.WriteLine($"meta -> meta.json");
+}
+
+// 字段/集合中文名（供 meta.json 使用；top-level 程序需放入类）
+static class DbViewerMeta
+{
+    public static readonly Dictionary<string, string> CollectionZh = new(StringComparer.Ordinal)
+    {
+        ["BaseStat"] = "基础属性", ["BundleInfo"] = "礼包", ["BundleItemInfo"] = "礼包物品",
+        ["CastleFlagInfo"] = "沙巴克旗帜", ["CastleGateInfo"] = "沙巴克城门", ["CastleGuardInfo"] = "沙巴克守卫",
+        ["CastleInfo"] = "沙巴克城堡", ["CompanionInfo"] = "宠物", ["CompanionLevelInfo"] = "宠物等级",
+    ["CompanionSkillInfo"] = "宠物技能", ["CompanionSpeech"] = "宠物台词", ["CurrencyInfo"] = "货币",
+    ["CurrencyInfoImage"] = "货币图标", ["DisciplineInfo"] = "修炼", ["DropInfo"] = "掉落",
+    ["DungeonInfo"] = "地下城", ["DungeonMapInfo"] = "地下城地图", ["WorldEventInfo"] = "世界事件",
+    ["WorldEventTrigger"] = "世界事件触发器", ["WorldEventInfoTriggerStat"] = "世界事件触发属性",
+    ["PlayerEventInfo"] = "玩家事件", ["PlayerEventTrigger"] = "玩家事件触发器",
+    ["PlayerEventInfoTriggerStat"] = "玩家事件触发属性", ["MonsterEventInfo"] = "怪物事件",
+    ["MonsterEventTrigger"] = "怪物事件触发器", ["MonsterEventInfoTriggerStat"] = "怪物事件触发属性",
+    ["BaseEventAction"] = "事件动作（基类）", ["WorldEventAction"] = "世界事件动作",
+    ["PlayerEventAction"] = "玩家事件动作", ["MonsterEventAction"] = "怪物事件动作", ["FameInfo"] = "声望",
+    ["FameInfoStat"] = "声望属性", ["FameInfoReward"] = "声望奖励", ["FishingInfo"] = "钓鱼",
+    ["FishingDropInfo"] = "钓鱼掉落", ["GuardInfo"] = "守卫", ["HelpInfo"] = "帮助",
+    ["HelpPageInfo"] = "帮助页面", ["HelpItemInfo"] = "帮助条目", ["InstanceInfo"] = "副本",
+    ["InstanceMapInfo"] = "副本地图", ["InstanceInfoStat"] = "副本属性", ["ItemInfo"] = "物品",
+    ["ItemInfoStat"] = "物品属性加成", ["LootBoxInfo"] = "宝箱", ["LootBoxItemInfo"] = "宝箱物品",
+    ["MagicInfo"] = "魔法", ["MapInfo"] = "地图", ["MapInfoStat"] = "地图属性加成",
+    ["MapRegion"] = "地图区域", ["MilestoneInfo"] = "里程碑", ["MilestoneInfoTask"] = "里程碑任务",
+    ["MineInfo"] = "矿点", ["MonsterInfo"] = "怪物", ["MonsterInfoStat"] = "怪物属性加成",
+    ["MovementInfo"] = "传送点", ["NPCInfo"] = "NPC", ["NPCPage"] = "NPC 页面", ["NPCGood"] = "NPC 商品",
+    ["NPCType"] = "NPC 类型", ["NPCCheck"] = "NPC 检查", ["NPCAction"] = "NPC 动作",
+    ["NPCButton"] = "NPC 按钮", ["NPCRequirement"] = "NPC 需求", ["NPCValue"] = "NPC 值",
+    ["QuestInfo"] = "任务", ["QuestReward"] = "任务奖励", ["QuestRequirement"] = "任务需求",
+    ["QuestTask"] = "任务步骤", ["QuestTaskMonsterDetails"] = "任务怪物明细", ["RespawnInfo"] = "刷新点",
+    ["SafeZoneInfo"] = "安全区", ["SetInfo"] = "套装", ["SetInfoStat"] = "套装属性", ["StoreInfo"] = "商店",
+    ["SystemDatabaseInfo"] = "数据库信息", ["WeaponCraftStatInfo"] = "武器锻造属性",
+};
+
+    // 字段中文名（全局，未收录字段显示英文原名）
+    public static readonly Dictionary<string, string> FieldZhMap = new(StringComparer.Ordinal)
+    {
+    ["Index"] = "索引", ["_Identity"] = "标识",
+    ["MonsterName"] = "怪物名称", ["Monster"] = "怪物", ["MonsterInfoStats"] = "属性加成", ["MonsterInfoStat"] = "属性加成",
+    ["ItemName"] = "物品名称", ["Item"] = "物品", ["ItemInfoStat"] = "属性加成", ["ItemStats"] = "属性加成",
+    ["ItemType"] = "物品类型", ["RequiredClass"] = "职业要求", ["RequiredGender"] = "性别要求", ["RequiredType"] = "类型要求",
+    ["RequiredAmount"] = "需要等级/数量", ["Shape"] = "外形", ["Effect"] = "效果", ["ItemEffect"] = "物品效果",
+    ["ExteriorEffect"] = "外观效果", ["Image"] = "图像", ["Durability"] = "耐久", ["Price"] = "价格", ["Weight"] = "重量",
+    ["StackSize"] = "堆叠数量", ["StartItem"] = "初始物品", ["SellRate"] = "出售倍率", ["CanRepair"] = "可修理",
+    ["CanSell"] = "可出售", ["CanStore"] = "可存仓", ["CanTrade"] = "可交易", ["CanDrop"] = "可掉落",
+    ["CanDeathDrop"] = "死亡掉落", ["Description"] = "说明", ["Rarity"] = "稀有度", ["CanAutoPot"] = "自动喝药",
+    ["BuffIcon"] = "状态图标", ["PartCount"] = "部件数量", ["Set"] = "套装", ["SetName"] = "套装名称",
+    ["Stats"] = "属性", ["Stat"] = "属性", ["Amount"] = "数量", ["Chance"] = "概率", ["DropSet"] = "掉落组",
+    ["PartOnly"] = "仅部件掉落", ["EasterEvent"] = "节日事件", ["Drops"] = "掉落", ["Respawns"] = "刷新点",
+    ["Events"] = "事件", ["QuestDetails"] = "任务明细", ["AI"] = "AI", ["Level"] = "等级", ["ViewRange"] = "视野",
+    ["CoolEye"] = "反隐形", ["Experience"] = "经验", ["Undead"] = "亡灵", ["CanPush"] = "可推动", ["CanTame"] = "可捕捉",
+    ["AttackDelay"] = "攻击间隔", ["MoveDelay"] = "移动间隔", ["IsBoss"] = "Boss", ["Flag"] = "标志",
+    ["FaceImage"] = "头像", ["Region"] = "区域", ["EventSpawn"] = "事件刷新", ["Delay"] = "延迟", ["Count"] = "数量",
+    ["Map"] = "地图", ["FileName"] = "文件名", ["MiniMap"] = "小地图", ["Light"] = "光照", ["Weather"] = "天气",
+    ["AllowRT"] = "允许RT", ["SkillDelay"] = "技能延迟", ["CanHorse"] = "可骑马", ["CanAutoPath"] = "可自动寻路",
+    ["AllowTT"] = "允许TT", ["CanMine"] = "可挖矿", ["CanMarriageRecall"] = "可夫妻召唤", ["AllowRecall"] = "允许召唤",
+    ["MinimumLevel"] = "最低等级", ["MaximumLevel"] = "最高等级", ["Background"] = "背景", ["MonsterHealth"] = "怪物生命",
+    ["MonsterDamage"] = "怪物伤害", ["DropRate"] = "掉落倍率", ["ExperienceRate"] = "经验倍率", ["GoldRate"] = "金币倍率",
+    ["MaxMonsterHealth"] = "怪物生命上限", ["MaxMonsterDamage"] = "怪物伤害上限", ["MaxDropRate"] = "掉落倍率上限",
+    ["MaxExperienceRate"] = "经验倍率上限", ["MaxGoldRate"] = "金币倍率上限", ["Instance"] = "副本",
+    ["DungeonMap"] = "地下城地图", ["Regions"] = "区域", ["Guards"] = "守卫", ["Mining"] = "矿点",
+    ["Castles"] = "沙巴克", ["BuffStats"] = "属性加成", ["MapInfoStat"] = "属性加成",
+    ["RegionType"] = "区域类型", ["Size"] = "尺寸", ["PointRegion"] = "区域点阵", ["BitRegion"] = "位图区域",
+    ["PointCount"] = "点数", ["CenterX"] = "中心X", ["CenterY"] = "中心Y",
+    ["SourceRegion"] = "起点区域", ["DestinationRegion"] = "终点区域", ["Icon"] = "图标", ["NeedItem"] = "需要物品",
+    ["NeedSpawn"] = "需要刷新点", ["NeedHole"] = "需要洞口", ["NeedInstance"] = "需要副本", ["MovementEffect"] = "传送效果",
+    ["SkipValidation"] = "跳过校验", ["Direction"] = "方向", ["X"] = "X", ["Y"] = "Y",
+    ["BindRegion"] = "绑定区域", ["StartClass"] = "起始职业", ["RedZone"] = "红区", ["Border"] = "边界",
+    ["NPCName"] = "NPC名称", ["NPC"] = "NPC", ["GoodsIndex"] = "商店编号", ["MapIcon"] = "地图图标",
+    ["EntryPage"] = "入口页面", ["StartQuests"] = "可接任务", ["FinishQuests"] = "可交任务", ["Requirements"] = "需求",
+    ["Page"] = "页面", ["ButtonID"] = "按钮ID", ["DestinationPage"] = "目标页面", ["CheckType"] = "检查类型",
+    ["Operator"] = "运算符", ["StringParameter1"] = "字符串参数1", ["IntParameter1"] = "整数参数1",
+    ["IntParameter2"] = "整数参数2", ["ItemParameter1"] = "物品参数1", ["StatParameter1"] = "属性参数1",
+    ["FailPage"] = "失败页面", ["ActionType"] = "动作类型", ["MapParameter1"] = "地图参数1",
+    ["InstanceParameter1"] = "副本参数1", ["NPCType"] = "NPC类型", ["Requirement"] = "需求类型",
+    ["QuestParameter"] = "任务参数", ["DaysOfWeek"] = "星期", ["ValueID"] = "值ID", ["ValueType"] = "值类型",
+    ["DataCategory"] = "数据分类", ["DataType"] = "数据类型", ["FieldType"] = "字段类型", ["Rate"] = "倍率",
+    ["BaseCost"] = "基础消耗", ["Cost"] = "价格", ["HuntGoldPrice"] = "猎金价格", ["Filter"] = "筛选",
+    ["Available"] = "可用", ["Duration"] = "持续时间", ["PageDesc"] = "页面说明", ["DialogType"] = "对话框类型",
+    ["Say"] = "台词", ["SuccessPage"] = "成功页面", ["Arguments"] = "参数", ["Currency"] = "货币",
+    ["Checks"] = "检查", ["Actions"] = "动作", ["Buttons"] = "按钮", ["Goods"] = "商品", ["Types"] = "类型",
+    ["Values"] = "值", ["QuestName"] = "任务名称", ["QuestType"] = "任务类型", ["AcceptText"] = "接取文本",
+    ["ProgressText"] = "进度文本", ["CompletedText"] = "完成文本", ["ArchiveText"] = "归档文本",
+    ["StartNPC"] = "接取NPC", ["FinishNPC"] = "完成NPC", ["Tasks"] = "任务步骤", ["Rewards"] = "奖励",
+    ["Quest"] = "任务", ["Task"] = "任务类型", ["ItemParameter"] = "物品参数", ["RegionParameter"] = "区域参数",
+    ["MobDescription"] = "怪物描述", ["MonsterDetails"] = "怪物明细", ["Choice"] = "可自选", ["Bound"] = "绑定",
+    ["Class"] = "职业", ["Health"] = "生命", ["Mana"] = "魔法", ["BagWeight"] = "背包负重",
+    ["WearWeight"] = "穿戴负重", ["HandWeight"] = "手持负重", ["Accuracy"] = "命中", ["Agility"] = "敏捷",
+    ["MinAC"] = "最小物防", ["MaxAC"] = "最大物防", ["MinMR"] = "最小魔防", ["MaxMR"] = "最大魔防",
+    ["MinDC"] = "最小物攻", ["MaxDC"] = "最大物攻", ["MinMC"] = "最小魔攻", ["MaxMC"] = "最大魔攻",
+    ["MinSC"] = "最小道术", ["MaxSC"] = "最大道术", ["MinValue"] = "最小值", ["MaxValue"] = "最大值",
+    ["MinBasePower"] = "最小威力", ["MaxBasePower"] = "最大威力", ["MinLevelPower"] = "每级最小成长",
+    ["MaxLevelPower"] = "每级最大成长", ["LevelCost"] = "每级耗蓝成长",
+    ["NeedLevel1"] = "1级需求", ["NeedLevel2"] = "2级需求", ["NeedLevel3"] = "3级需求",
+    ["Experience1"] = "1级熟练度", ["Experience2"] = "2级熟练度", ["Experience3"] = "3级熟练度",
+    ["Magic"] = "魔法类型", ["School"] = "派系", ["Property"] = "属性", ["Name"] = "名称",
+    ["Abbreviation"] = "缩写", ["Type"] = "类型", ["Category"] = "分类", ["ExchangeRate"] = "汇率",
+    ["DropItem"] = "掉落物品", ["Fame"] = "声望", ["Order"] = "顺序",
+    ["ItemRewards"] = "物品奖励",
+    ["MaxExperience"] = "最大经验", ["InventorySpace"] = "背包格数",
+    ["InventoryWeight"] = "背包负重", ["MaxHunger"] = "最大饥饿", ["StatType"] = "属性类型", ["MaxAmount"] = "最大数量",
+    ["RequiredLevel"] = "需求等级", ["RequiredExperience"] = "需求经验", ["RequiredGold"] = "需求金币",
+    ["FocusPoints"] = "专注点", ["Discount"] = "折扣", ["StartTime"] = "开始时间",
+    ["QuestTask"] = "任务步骤",
+};
 }
