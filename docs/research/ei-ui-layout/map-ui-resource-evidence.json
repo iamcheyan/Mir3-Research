@@ -756,7 +756,7 @@
         "+0x88": "type byte: 0/1 lookup-target entities (0x0041ECE1), 2 rare branch (0x00405F61), 3 actors with kind word +0x8A and subtype +0xC0 (0x004071A0, 0x0043CD3F), 0x32 minimap yellow markers (0x0043DC65, 0x004123E3)",
         "+0xCC/+0xD0": "world x/y coordinates",
         "+0x61C74": "alive/valid flag (0x0041ECCF)",
-        "type_0x32_semantics": "candidate: stationary minimap-marked object (NPC or teleport marker); drawn yellow 0xFFFF outline; excluded from the find-object-at-xy lookup (which matches 0/1); blocks in 0x00412390 target/step check. Not resolvable to a user-facing name statically."
+        "type_0x32_semantics": "RESOLVED (2026-08-12, F325, primary-static): type 0x32 = NPC entity; minimap yellow 0xFFFF +-2px outline = NPC position marker. Evidence: 0x0043DC65 minimap draw gate (cmp byte [edi+0x88],0x32 -> SetRect 0xFFFF); 0x0043CD0F hit-test excludes 0x32 from pickable (only 0/1/3 get edx=1); 0x0041ECAE find-object-at-xy matches 0/1 only; 0x004123E3 picked/target [0x7E335C] type 0x32 -> step/action gate returns 1 (blocks); F269 element binding type 0x32 -> element 128 NPC @0x405263 + NPC.wil @0x47C964; F323 vtable 0x47671C +0x7C = 0x40C020 NPC headbar. Old 2026-08-10 'teleport/block marker; NOT an NPC' SUPERSEDED."
       },
       "minimap_draw": "yellow 0xFFFF outline, rect +-2px, only entries with type byte 0x32 (0x0043DC54-0x0043DCD2)"
     },
@@ -767,7 +767,7 @@
       },
       "minimap_draw": "green 0x64C864 outline, rect +-2px, culled when |dx| or |dy| >= half viewport (0x0043DCF5-0x0043DD8F); candidate: nearby player/party dots"
     },
-    "resolution": "pending_item_4 CLOSED for layouts and type-field values; type 0x32 business name stays candidate."
+    "resolution": "pending_item_4 CLOSED for layouts and type-field values; type 0x32 business name CLOSED 2026-08-12 (F325): NPC entity (see type_0x32_semantics). Remaining runtime-only items: zoom-toggle runtime frame, key label strings absent."
   },
   "closed_notes": [
     {
@@ -785,7 +785,7 @@
     {
       "date": "2026-08-10",
       "phase": "Maps",
-      "closed": "Type 0x32 map-object business name = server-supplied blocking minimap marker (candidate: teleport/block marker; NOT an NPC). Evidence chain: map-object list head 0x560070 / tail 0x56008C / count 0x560098, doubly-linked nodes {vtable 0x476448, +4=object ptr, +8=prev, +0xC=next}; node object +0x88=type byte (dword, low byte), +0xCC/+0xD0=world X/Y. List is populated ONLY by network spawn/update handlers (~0x407Fxx parses pkt+0xB type byte -> obj+0x61BD4, name at pkt+0xC -> obj+8, sprite via 0x4014F0 -> obj+0x61C70, X/Y words at pkt+6/8; find-by-id 0x4350B9; child list 0x560088). Exhaustive scan of ALL byte-store (24 encodings '88 /r,88') and dword-store (27 hits, all unrelated structs) encodings against +0x88 found ZERO writes of value 0x32 -> type byte arrives only from server packets. Paint 0x43DA80 @0x43DC54-0x43DCB8: cmp byte [edi+0x88],0x32 -> draws small yellow (0xFFFF) marker rect at (obj+0xCC, obj+0xD0) at 1.5 px/world-unit. Blocking: 0x4123E3 returns movement-blocked when the object at [0x7E335C] (targeted-object global) has type byte 0x32, plus PtInRect(0x724FFC) gate @0x412397. Targeting/use excluded: position finder 0x41ECAE returns only types 0/1 (0x32 excluded); type dispatch sites 0x408276/0x40DFF0/0x411955/0x43CD29 handle 0/1/3 (kind words 0x1A/0x71/0x72/0x73 at +0x8A, name at +8) - never 0x32. Server MiniMap.txt is map-name->frame-index only (no type semantics). Residual gap: exact business name (teleport vs generic block point) requires a server packet trace or runtime frame capture; candidate stands as teleport/block marker.",
+      "closed": "Type 0x32 map-object business name = server-supplied blocking minimap marker (candidate: teleport/block marker; NOT an NPC). Evidence chain: map-object list head 0x560070 / tail 0x56008C / count 0x560098, doubly-linked nodes {vtable 0x476448, +4=object ptr, +8=prev, +0xC=next}; node object +0x88=type byte (dword, low byte), +0xCC/+0xD0=world X/Y. List is populated ONLY by network spawn/update handlers (~0x407Fxx parses pkt+0xB type byte -> obj+0x61BD4, name at pkt+0xC -> obj+8, sprite via 0x4014F0 -> obj+0x61C70, X/Y words at pkt+6/8; find-by-id 0x4350B9; child list 0x560088). Exhaustive scan of ALL byte-store (24 encodings '88 /r,88') and dword-store (27 hits, all unrelated structs) encodings against +0x88 found ZERO writes of value 0x32 -> type byte arrives only from server packets. Paint 0x43DA80 @0x43DC54-0x43DCB8: cmp byte [edi+0x88],0x32 -> draws small yellow (0xFFFF) marker rect at (obj+0xCC, obj+0xD0) at 1.5 px/world-unit. Blocking: 0x4123E3 returns movement-blocked when the object at [0x7E335C] (targeted-object global) has type byte 0x32, plus PtInRect(0x724FFC) gate @0x412397. Targeting/use excluded: position finder 0x41ECAE returns only types 0/1 (0x32 excluded); type dispatch sites 0x408276/0x40DFF0/0x411955/0x43CD29 handle 0/1/3 (kind words 0x1A/0x71/0x72/0x73 at +0x8A, name at +8) - never 0x32. Server MiniMap.txt is map-name->frame-index only (no type semantics). Residual gap: exact business name (teleport vs generic block point) requires a server packet trace or runtime frame capture; candidate stands as teleport/block marker. [SUPERSEDED 2026-08-12 by F325: type 0x32 = NPC entity; see map-type0x32-marker-npc-evidence.json; the object IS a full NPC (name + NPC.wil element 128 sprite + vtable 0x47671C headbar), and the block semantics = step/action gate 0x4123E3 when picked target [0x7E335C] is type 0x32]",
       "artifacts": [
         "RESEARCH_LOG.md Finding 254"
       ]
@@ -804,6 +804,17 @@
       "closed": "Mode 256x256 vs 128x128 = LARGER VIEWPORT (coverage), NOT zoom-out rendering the same 128x128 widget at higher source resolution. 0x43D5F0 full static: stores view W/H unclamped at +0x2B8/+0x2BC; SetRect(&+0x2C0, 800-min(w,frameW), 0, 800, min(h,frameH)) via IAT 0x4762B0 (frame dims from [0x2E0..0x2E8]/[0x2E4..0x2EC], set by map-select 0x43D780); releases old surface +0x00 and creates a new surface at w x h -> 256 mode = 256x256 widget at (544,0,800,256), 128 mode = 128x128 widget at (672,0,800,128); surface size ALWAYS == widget size, blitted 1:1 at the same 1.5 px/world-unit scale ([0x476904] factor) -> 256 mode shows 4x the map area. Scroll semantics: source/scroll rect at +0x2D0 derived from world pos (SetRect x,y,x+[2B8],y+[2BC]; centering via cdq/sar; clamps to [0, frameW-viewW]/[0, frameH-viewH]; ftol 0x468520); WIL frame decoded 1:1 (0x465560: dest col = x-x0, row = row-y0) -> offset-with-scroll, no scale-to-fit. Per-frame driver 0x4295AC (when [screen+0x6518]!=0): 0x43D850(screen+0x6214, playerX from [0x777764], playerY from [0x777768]) then paint 0x43DA80. 0x43D5F0 external callers = only T-key 0x42CED2/0x42CEF0 (internal 0x43D5DE/0x43D7E3/0x43D831/0x43DE73/0x43DE96). Residual gap (optional): runtime frame capture to visually confirm no scaling; the static chain is complete.",
       "artifacts": [
         "RESEARCH_LOG.md Finding 254"
+      ]
+    },
+    {
+      "date": "2026-08-12",
+      "phase": "Maps",
+      "closed": "Type 0x32 map-object business name CLOSED = NPC entity (Finding 325, primary-static). Minimap yellow 0xFFFF +-2px outline marker @0x43DC65 draws ONLY entries with byte[+0x88]==0x32 from list 0x560070 (world coords [+0xCC]/[+0xD0] via viewport transform [0x476904]*x - [0x476658] + [this+0x2C0]). Business identity: F269 element binding type 0x32 -> element 128 (NPC) @0x405263 with Data/NPC.wil string @0x47C964 (path-table init @0x453F31); F323 vtable 0x47671C (NPC) +0x7C = 0x40C020 headbar draw; spawn/update handler 0x407F20 sets name interning [+0x61C70] + world coords; type byte written via entity ctor arg (0x405862 mov [esi+0x88],ebp; imm/byte-reg scans 0 hits). Interactions: 0x43CD0F minimap hit-test gives 0x32 edx=0 (NOT pickable; only types 0/1 state 0x13 and 3 state 4 pickable); 0x41ECAE find-object-at-xy matches types 0/1 only (0x32 excluded); 0x4123E3 step/action gate returns 1 (blocks) when picked target [0x7E335C] is type 0x32 - the blocking observed pre-Round-19 is NPC interaction lock, not a static teleport/block marker. Old 2026-08-10 entry SUPERSEDED.",
+      "artifacts": [
+        "map-type0x32-marker-npc-evidence.json",
+        "ui-coverage-matrix.json (map closed_2026_08_12)",
+        "RESEARCH_LOG.md Finding 325",
+        "UI_COMPLETION_AUDIT.md Round 19"
       ]
     }
   ]

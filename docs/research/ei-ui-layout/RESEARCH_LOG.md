@@ -5601,3 +5601,14 @@ cross-ref：F239/F257/F271/F300/F315/F321/F322。
 
 cross-ref：F260/F295/F302/F321/F322/F323。
 落盘：`settings-ambience-bgm-volume-evidence.json`、`ui-coverage-matrix.json`（settings closed_2026_08_12 五项 + pending_notes 清空 + F260 SUPERSEDED 注记）、`UI_COMPLETION_AUDIT.md`。
+
+## Round 19 (2026-08-12) — map type 0x32 minimap marker 业务名定案 = NPC 实体（Finding 325）
+
+- MapType0x32MarkerNpc（Finding 325）：map-type0x32-marker-npc-evidence.json — **map 记录 pending 项『type 0x32 marker business name』闭合 + 旧 2026-08-10 候选结论修正（primary-static）**：
+  - **minimap 黄色标记绘制门（fresh 复核 0x43DC54–0x43DCD9）**：遍历 list 0x560070（node+4=实体、node+0xC=next）→ 0x43DC65 `cmp byte [edi+0x88],0x32; jne` → **仅 type 0x32 实体**画 0xFFFF 黄色 ±2px 外框：世界 x [edi+0xCC] → fild/fmul [0x476904]（scale）/fiadd [esi+0x2C0]/fisub [esi+0x2D0]/fsub [0x476658]（offset）→ f2i 0x468520；y = [edi+0xD0]−[esi+0x2D4]+[esi+0x2C4]−1；SetRect(eax,y−1,eax+2,y+2) → call 0x45E570（mode 1, 0xFFFF）。
+  - **业务身份全链（交叉 F269/F323 primary-static）**：F269 element binding type 0x32 → element 128（NPC）@0x405263 + `Data\NPC.wil` 字符串 @0x47C964（runtime 路径表 init 唯一引用 @0x453F31）；F323 type 0x32 → vtable 0x47671C（NPC ctor）→ +0x7C = 0x40C020 头部 HP 条+名字绘制；spawn/update handler 0x407F20（vtable+0x5C）：pkt+0xB 类型字节 → [+0x61BD4]、名字 interning → [+0x61C70]、世界坐标 [+0xCC]/[+0xD0]、列表尾插 @0x408220-0x408234、同 id 时 0x40826A 类型字节拷贝 [+0x88]→[+0x61C78]；[+0x88] 写入点穷举（fresh）＝恰 2 dword-reg：**0x405862 实体 ctor `mov [esi+0x88],ebp`（类型经 ctor 参数写入）** + 0x446EA2 无关。
+  - **交互语义三处交叉验证（fresh 复核）**：① 0x43CD0F minimap 命中测试——type 0/1（[+0xC0]==0x13 死检）与 type 3（[+0xC0]==4）才 edx=1 可 pick，**0x32 恒 edx=0 不可 pick**；② 0x41ECAE find-object-at-xy——匹配 [+0xCC]/[+0xD0] + [+0x61C74]==0，**仅 type 0/1 命中**（0x32 排除，与旧记录『excluded from find lookup』一致）；③ 0x4123E3 步进/动作门——picked/target 全局 [0x7E335C] `+0x88==0x32` → 门返回 1 **阻挡**。
+  - **旧结论修正（SUPERSEDED）**：2026-08-10 closed_notes『candidate: teleport/block marker; NOT an NPC』→ **定案：type 0x32 = 完整 NPC 实体**（有名字、NPC.wil element 128 精灵、vtable 0x47671C 头部条、世界坐标参与视口变换绘制）；『挡路』真实存在但语义 = 目标为 NPC 时的步进/动作阻挡（NPC 交互锁），非静态传送/阻挡标记。
+
+cross-ref：F269/F281/F287/F323 + map-ui-resource-evidence.json（closed_notes SUPERSEDED + 新闭合并入）。
+落盘：`map-type0x32-marker-npc-evidence.json`、`map-ui-resource-evidence.json`（type_0x32_semantics RESOLVED + resolution + closed_notes 5 条）、`ui-coverage-matrix.json`（map closed_2026_08_12；pending_notes 修剪为 runtime 两项）、`UI_COMPLETION_AUDIT.md`。

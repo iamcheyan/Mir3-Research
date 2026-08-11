@@ -182,3 +182,10 @@ git diff --check
 - 选项窗 init fn = ctor 0x440FE0（caller 0x42788D；config load 唯一调用点 0x4411ED→0x441CC0）；open = 0x4414F0（caller 0x42C10B）。
 - ShadowBlend [0x47EF48] = 3 写入点零读取（config-only 死全局）。
 - 落盘：`settings-ambience-bgm-volume-evidence.json` + matrix settings closed_2026_08_12（5 条）+ RESEARCH_LOG。
+
+## Round 19 (2026-08-12) — map type 0x32 小地图标记业务名定案 = NPC 实体（Finding 325）
+
+- **type 0x32 = NPC 实体（primary-static 定案，推翻 2026-08-10『teleport/block marker; NOT an NPC』候选）**：minimap 黄色 0xFFFF ±2px 外框标记绘制门 0x43DC65（list 0x560070 中仅 byte[+0x88]==0x32 实体，世界坐标 [+0xCC]/[+0xD0] 经 [0x476904]×[0x476658]+[0x2C0] 视口变换）；业务身份 = 完整 NPC（F269 element 128 NPC @0x405263 + NPC.wil @0x47C964；F323 vtable 0x47671C +0x7C = 0x40C020 头部条；spawn handler 0x407F20 名字 interning [+0x61C70] + 坐标 [+0xCC]/[+0xD0]；ctor 0x405862 类型参数写 [+0x88]）。
+- **交互语义**：0x43CD0F minimap 命中测试 0x32 不可 pick（仅 0/1 死检 0x13、3 状态 4）；0x41ECAE find-xy 仅匹配 0/1；0x4123E3 picked target [0x7E335C] 为 0x32 → 步进/动作门返回 1（NPC 交互阻挡）。『挡路』= NPC 目标锁，非静态标记。
+- **matrix map pending 项『type 0x32 marker business name』闭合**（closed_2026_08_12）；pending_notes 修剪为 runtime 两项（zoom-toggle runtime frame、key label strings absent）。
+- 落盘：`map-type0x32-marker-npc-evidence.json` + map-ui-resource-evidence.json（SUPERSEDED 注记 + 新闭合并入）+ matrix map closed_2026_08_12 + RESEARCH_LOG Finding 325。

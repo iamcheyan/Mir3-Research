@@ -69,7 +69,7 @@
    "preview_mode": "map-bg-derived,map-minimap-derived",
    "status": "primary-static-resource-loader-plus-paint-chain-closed",
    "pending": false,
-   "pending_notes": "type 0x32 marker business name, zoom-toggle runtime frame, key label strings absent",
+   "pending_notes": "zoom-toggle runtime frame, key label strings absent",
    "closed_2026_08_10": [
     "border=gray outline via CreatePen/LineTo @0x45E570 0x43DBD7",
     "no separate map dialog (single ctor main+0x6214)",
@@ -77,6 +77,9 @@
     "object list layouts + type byte values",
     "map_bindings.json: 182 crossref-confirmed rows (client 0x0043D780 select rule + server MiniMap.txt)",
     "simulator setCurrentMap drives bg+minimap from same binding; derived level"
+   ],
+   "closed_2026_08_12": [
+    "type 0x32 marker business name = NPC entity (F325, primary-static): minimap yellow 0xFFFF +-2px outline = NPC position marker; 0x43DC65 draw gate (byte[+0x88]==0x32 only), 0x43CD0F hit-test excludes 0x32 (not pickable), 0x41ECAE find-xy matches 0/1 only, 0x4123E3 step/action gate blocks on picked target type 0x32; element 128 NPC @0x405263 + NPC.wil @0x47C964 (F269), vtable 0x47671C +0x7C headbar (F323). Old 2026-08-10 'teleport/block marker; NOT an NPC' candidate SUPERSEDED (see map-type0x32-marker-npc-evidence.json)."
    ]
   },
   {
