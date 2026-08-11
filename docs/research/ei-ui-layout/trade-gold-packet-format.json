@@ -1,0 +1,61 @@
+{
+  "evidence_id": "EI-306",
+  "finding": 306,
+  "date": "2026-08-11",
+  "title": "TradeGoldPacketFormat - the exact 12-byte packet layout produced by builder 0x452940 and the wire framing of sender 0x451E60: [dst]=dword arg3, [dst+4]=word arg2 (msg id), [dst+6]=word arg4, [dst+8]=word arg5, [dst+0xA]=word arg6; 0x405 (gold trade) = {dword amount, word 0x405, 0, 0, 0}; 0x3F8 (chat gold) = same shape; 0x406 (trade-accept) = {dword 0, word 0x406, 0, 0, 0}; 0x3FC/0x3FD/0x3FE = {dword 0, word id, 0, 0, 0}. Sender 0x451E60: 32-byte header copy 0x4528E0, optional string copy 0x452740, sprintf \"#%d%s%s!\" (0x47C840) / \"#%d%s!\" (0x47C800) into [esi+0x2044], packet sequence counter [esi+0x14] cycling 1..9, socket write 0x468098. Amount parser 0x4681F9 and dead cap [0x7DA100].",
+  "objective": "Pin the byte-exact packet grammar of the gold/chat/trade message family so the simulator can emit faithful wire frames: builder 0x452940 field order (dword first, msg id as a word at +4 - NOT the flipped layout previously assumed), all six message ids and their arg lists, the sender's framing (counter prefix, optional trailing string), and the amount parser + cap used by both the 0x405 gate (0x417280) and the 0x66 chat branch (0x41CE86).",
+  "question": "What is the byte layout of the 0x405/0x3F8/0x406/0x3FC/0x3FD/0x3FE packets? How does 0x451E60 frame and transmit them? How does the amount parser 0x4681F9 work and what caps the amount?",
+  "method": "Static disassembly of Mir3.exe (/tmp/mir3_full.asm): decode builder 0x452940 (mov [eax],ecx; mov [eax+4],dx; mov [eax+6],si; mov [eax+8],cx; mov [eax+0xA],cx; ret 0x18), each sender's push order (0x451B00 0x405: push 0,0,0,amount,0x405,edi; 0x451940 0x3F8: push 0,0,0,amount,0x3F8,edi; 0x451B30 0x406: push 0,0,0,0,0x406,edi; 0x4522E0/0x452350/0x452380: push 0,0,0,0,id,edi), sender 0x451E60 (0x4528E0 header, 0x452740 string copy, sprintf formats at 0x47C840/0x47C800 read from .rdata as raw bytes, counter cmp eax,9 / jl inc / mov 1 wrap, 0x468098 socket write), parser 0x4681F9, and the 0x417280 gate's [0x7DA100] cap check.",
+  "evidence_level": "primary-static",
+  "confidence": 0.97,
+  "addresses": [
+    "0x00452940", "0x00451B00", "0x00451940", "0x00451B30",
+    "0x004522E0", "0x00452350", "0x00452380",
+    "0x00451E60", "0x004528E0", "0x00452740", "0x0046811C", "0x00468098",
+    "0x0047C840", "0x0047C800",
+    "0x004681F9", "0x007DA100", "0x00417280"
+  ],
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "builder_0x452940": {
+    "signature": "stdcall 6 args (ret 0x18): arg1=dst buffer, arg2=msg id word, arg3=dword, arg4..arg6=words",
+    "layout": "[dst+0x00] = dword arg3; [dst+0x04] = word arg2 (msg id); [dst+0x06] = word arg4; [dst+0x08] = word arg5; [dst+0x0A] = word arg6 -> 12 bytes total",
+    "correction_note": "the msg id is the WORD at +4; the leading DWORD is the first data field (amount). Earlier notes had this flipped ({dword id, word amount}) - corrected here and in F302."
+  },
+  "packet_shapes": {
+    "0x405_trade_gold": "0x451B00: 0x452940(edi, 0x405, amount, 0, 0, 0) -> {dword amount, word 0x405, 0, 0, 0} (12 B). This is the F302-dead gold send.",
+    "0x3F8_chat_gold": "0x451940: 0x452940(edi, 0x3F8, amount, 0, 0, 0) -> {dword amount, word 0x3F8, 0, 0, 0} (12 B). F305-dead (0x66 branch unreachable).",
+    "0x406_trade_accept": "0x451B30: 0x452940(edi, 0x406, 0, 0, 0, 0) -> {dword 0, word 0x406, 0, 0, 0} (12 B). The trade-window accept - header only, no amount field (consistent with F295's 12-byte trade header; the amount for trade is conveyed by the trade-server flow, not this packet).",
+    "0x3FC_0x3FD_0x3FE": "0x4522E0/0x452350/0x452380 (trade router 0x4247C0, dl=6): 0x452940(edi, id, 0, 0, 0, 0) -> {dword 0, word id, 0, 0, 0} (12 B) for id in {0x3FC, 0x3FD, 0x3FE}."
+  },
+  "sender_0x451E60": {
+    "signature": "thiscall 2 args (ret 8): arg1 = packet buffer (built by 0x452940 callers), arg2 = optional string or 0",
+    "flow": "0x4528E0(arg1, &[esi+0x24], 0x20) - 32-byte header copy into the packet; counter: eax=[esi+0x14]; cmp eax,9; jl +1; else [esi+0x14]=1 (wrap); else inc eax; [esi+0x14]=eax -> cycles 1..9; if arg2 != 0: strlen(arg2); 0x452740(&[esi+0x44], arg2, len, 0x2000) string copy; sprintf 0x46811C(&[esi+0x2044], 0x47C840 \"#%d%s%s!\", counter, packet, &[esi+0x44]); else sprintf 0x46811C(&[esi+0x2044], 0x47C800 \"#%d%s!\", counter, packet); strlen(&[esi+0x2044]); 0x468098([esi+0x6044] socket, &[esi+0x2044], len) - final socket write",
+    "wire_frame": "\"#%d\" counter 1..9, \"%s\" 12-byte packet (binary), then \"%s\" optional string, terminating '!' - i.e. the packet bytes are embedded inside an ASCII text frame prefixed by a sequence number"
+  },
+  "amount_parser_0x4681F9": {
+    "behavior": "parses an unsigned decimal amount from a string (digit loop, base-10 accumulation, rejects/terminates on non-digit); used by the 0x405 gate 0x417280 and the 0x66 chat branch 0x41CE86 to convert the lParam text into the dword amount field",
+    "cap": "[0x7DA100] max-amount config compared in 0x417280 ('cmp eax,[0x7DA100]; jg skip') - the data-section dword is never written by any code (dead config, F302 pending), so the cap would be 0 if ever reached; the 0x66 branch caps against [esi+0x35B1E8] instead"
+  },
+  "verdict": "CLOSED - packet grammar and sender framing are exact. The family is a 12-byte binary structure {dword arg3, word msgid, word, word, word} inside a text frame \"#<seq 1..9><12B><optional string>!\"; the 0x405/0x3F8 packets carry the amount in the leading dword, 0x406 and 0x3FC/0x3FD/0x3FE carry a zero dword (no amount field).",
+  "conclusions": [
+    "0x452940: [dst]=dword arg3, [dst+4]=word arg2 (msg id), [dst+6]=word arg4, [dst+8]=word arg5, [dst+0xA]=word arg6; 12 bytes.",
+    "0x405 = {dword amount, word 0x405, 0, 0, 0}; 0x3F8 = {dword amount, word 0x3F8, 0, 0, 0}; 0x406 = {dword 0, word 0x406, 0, 0, 0}; 0x3FC/0x3FD/0x3FE = {dword 0, word id, 0, 0, 0}.",
+    "0x451E60 frames each packet as \"#<counter 1..9><packet><optional string>!\" via sprintf 0x47C840/0x47C800 into [esi+0x2044] and writes it to the socket with 0x468098.",
+    "0x4528E0 prepends a 32-byte header (copy of [esi+0x24]) to the packet before framing; the string arg (if any) is copied into [esi+0x44] with 0x452740 (max 0x2000).",
+    "The amount dword is produced by 0x4681F9 from the input text; the [0x7DA100] cap in 0x417280 is dead config (never written), the 0x66 branch uses [esi+0x35B1E8] as its cap.",
+    "Corrects the previously flipped packet layout (dword-first, msg id at +4) and confirms the trade-accept 0x406 header is 12 bytes with no amount (F295's header size stands)."
+  ],
+  "closed_notes": {
+    "F302_crossref": "0x405 packet {dword amount, word 0x405, 0, 0, 0} is the payload the dead F302 chain would have sent via 0x451B00; wire-format corrected in F302 closed_notes and here",
+    "format_strings": "0x47C840 raw bytes '23 25 64 25 73 25 73 21 00' = \"#%d%s%s!\"; 0x47C800 raw bytes '23 25 64 25 73 21 00' = \"#%d%s!\" - both verified from the PE .rdata dump"
+  },
+  "pending": [
+    "The 32-byte header content copied by 0x4528E0 from [esi+0x24] (session/login token block?) - its fields are not yet decoded",
+    "What the server-side semantics of 0x406's zero dword are (trade-accept amount lives in the trade-server flow, per F295 - not this packet)",
+    "0x468098's socket plumbing (WSASend/send wrapper) and [esi+0x6044] socket handle initialization"
+  ]
+}

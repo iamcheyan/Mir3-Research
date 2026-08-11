@@ -1,0 +1,88 @@
+{
+  "evidence_id": "EI-304",
+  "finding": 304,
+  "date": "2026-08-11",
+  "title": "InputDialogConfirmPaths - the generic input/message dialog class (ctor 0x418030, global object 0x7E04C8) is fully decoded: 8-arg thiscall ctor (type byte [e], prompt string [e+0x2C], centered layout from parent rect, msgId word [e+0x460]), input handler 0x418470 (TAB cycles the focused row 0..2 over the 3 button rows), keyboard confirm 0x418520 (ENTER/SPACE) and click confirm 0x418600, both sending 0x7EE with wParam = ((type<<8)|row)<<16 | msgId to [0x8AB7B0]; 24 ctor call sites enumerated; the gold dialog construction chain 0x42BE21 -> 0x42C4D4 idx3 -> 0x42C00B -> 0x416EF0 -> 0x416F7E with exact argument list",
+  "objective": "Produce the definitive static model of the shared input/message dialog class used for confirm prompts (gold amount 0x7E04C8, plus 23 other instances): constructor signature and field layout, the keyboard and mouse confirm paths, the exact wParam encoding sent on confirm, and every construction site so dialog instances can be differentiated by their (type, msgId, prompt) triple.",
+  "question": "What are the exact constructor arguments and field layout of 0x418030 dialogs? How do the keyboard (TAB/ENTER/SPACE) and mouse confirm paths work, and what exact message/wParam does a confirm produce? Which 24 call sites construct dialogs and with what arguments?",
+  "method": "Static disassembly of Mir3.exe (/tmp/mir3_full.asm): decode ctor 0x418030 (prologue/epilogue arg consumption, ret 0x20 = 8 stack args, button-config dispatch @0x4180E9, centered-layout math @0x418096-0x4180C3), input handler 0x418470 (VK_TAB=9 row cycle, VK_RETURN=0xD/VK_SPACE=0x20 confirm), confirm 0x418520 and click 0x418600 (wParam packing 0x4185DD/0x418646-0x41866A, SendMessageA sites 0x4185DB/0x4186CD), close 0x417FB0, draw 0x4182A0, 2-vs-3-button decision 0x4181E9; enumerate all 24 ctor call sites by full-file grep of 'call 0x418030'; decode the gold construction chain from the 0x42BE21 action handler through dispatch table 0x42C4D4 idx3.",
+  "evidence_level": "primary-static",
+  "confidence": 0.95,
+  "addresses": [
+    "0x00418030", "0x00418096", "0x004180C3", "0x004180E9", "0x0041810D", "0x0041812C", "0x00418149", "0x004181E9", "0x004182A0",
+    "0x00418400", "0x00418470", "0x00418520", "0x0041855B", "0x004185DB", "0x00418600", "0x004186CD", "0x00417FB0",
+    "0x00416460", "0x004164FF",
+    "0x00416F7E", "0x00416F9C", "0x00416EF0", "0x0042C00B", "0x0042C017", "0x0042BE21", "0x0042C4D4",
+    "0x00403E12", "0x004193D8", "0x0041C196", "0x0041D230", "0x0041D633", "0x0041E0B6", "0x0041FB0F", "0x0041FD72",
+    "0x00420416", "0x00420B9F", "0x00420BD3", "0x0042179D", "0x004217C6", "0x00421828", "0x00421851", "0x004246BA",
+    "0x00425C8F", "0x0042BF66", "0x0044048D", "0x00459352", "0x004594F9", "0x004597E4", "0x0045A074",
+    "0x0042BF37", "0x0042C494", "0x0047AD98", "0x0047AEB8", "0x0047AFB4",
+    "0x007E04C8", "0x008AB7B0", "0x008AA48C", "0x008AA498"
+  ],
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "ctor_0x418030": {
+    "signature": "thiscall, ret 0x20 = 8 stack args. arg1 -> [e+0x45C] (context/parent object; [e+0x45C]+0x38 is the layout rect source); arg2 -> [e] = type byte; arg3 in {0,1,2} button-config dispatch @0x4180E9 (0 -> 0x41812C, 1 -> 0x41810D sets row stores 0x234=1 / 0x2EC=0 / 0x3A4=1 = 2-button layout, 2 -> falls through to 0x418149); arg4 -> string copied to [e+0x2C] (repne scasb strlen + copy); arg5 unused-by-default; arg6/arg7 both -1 -> centered layout from the parent rect (half-size math 0x190, 0xF6 @0x418096-0x4180C3); arg8 -> word msgId stored at [e+0x460]. Epilogue: mov cx,[esp+0x30] (arg8); mov [e+0x28],1 (visible); mov [e+0x460],cx; ret 0x20.",
+    "field_layout": "[e] = type byte (3 = gold dialog); [e+0x28] = visible flag; [e+0x2C] = prompt string buffer (ctor arg4); [e+0x130] = input text buffer (0x104 bytes, GetWindowTextA target); [e+0x234]/[e+0x2EC]/[e+0x3A4] = row stores (word per button row; 0 disables the row); [e+0x238]/[e+0x2F0]/[e+0x3A8] = row frame objects (stride 0xB8); [e+0x45C] = context/parent; [e+0x460] = msgId word (ctor arg8); [e+0x462] = focused row byte",
+    "gold_instantiation": "0x416F7E inside trade click handler 0x416EF0 (see F302): push 0x405; push -1; push -1; push 1; push 0x47AD98; push 1; push 3; push 0x565994; mov ecx,0x7E04C8; call 0x418030 -> arg1=0x565994, arg2=3 (type), arg3=1 (2-button layout), arg4=0x47AD98 ('您要付给对方多少金币?'), arg5=1, arg6=-1, arg7=-1 (centered), arg8=0x405 (msgId)."
+  },
+  "input_handler_0x418470": {
+    "gate": "[e+0x28] (visible) must be non-zero, else return",
+    "vk_9_tab": "VK_TAB cycles the focused row byte [e+0x462] 0..2 with wraparound, auto-advancing past disabled rows (rows whose store [e + row*0xB8 + 0x234] == 0): lea edx,[eax+eax*2]; shl edx,3; sub edx,eax -> 23*row; mov eax,[esi+edx*8+0x234] -> stride 0xB8",
+    "vk_0xD_0x20": "VK_RETURN / VK_SPACE -> call 0x418520 (keyboard confirm)"
+  },
+  "keyboard_confirm_0x418520": {
+    "gate": "[e + row*0xB8 + 0x234] != 0 for row = [e+0x462], else return",
+    "wparam_pack": "xor ecx,ecx; mov ch,byte[e] (type -> bits 16-23); mov dx,word[e+0x460] (msgId -> bits 0-15); mov al,byte[e+0x462] (row -> bits 8-15); shl eax,0x10; or eax,ecx -> wParam = ((type<<8)|row)<<16 | msgId = type<<24 | row<<16 | msgId",
+    "text_handoff": "GetWindowTextA([0x8AA48C] input edit, &[e+0x130], 0x104) @0x4185AC; SetWindowTextA([0x8AA48C], string@0x8B187C = BSS zeros = empty) @0x4185B2; [0x8AA498] = 1;",
+    "send": "SendMessageA([0x8AB7B0], 0x7EE, wParam, &[e+0x130]) @0x4185DB; then hide via 0x417FB0",
+    "gold_case": "type=3, row=0 (default focus), msgId=0x405 -> wParam = 0x03000405; amount text in lParam buffer"
+  },
+  "click_confirm_0x418600": {
+    "gate": "[e+0x28] (visible) must be non-zero",
+    "row_loop": "3 button rows, frame pointers at [e+0x238]+row*0xB8 (edi += 0xB8 @0x4186EF); row skipped when word[e + row*0xB8 + 0x234 - 4] == 0; hit-test via button vtable+0x10 (call [eax+0x10]) with the mouse args",
+    "wparam_pack": "on hit: mov ah,byte[e] (type); mov al,bl (row index); mov cx,word[e+0x460] (msgId); mov byte[e+0x462],bl; shl eax,0x10; or eax,ecx -> SAME packing ((type<<8|row)<<16)|msgId",
+    "send": "MoveWindow(input edit rect); SendMessageA([0x8AB7B0], 0x7EE, wParam, &[e+0x130]) @0x4186CD; hide via 0x417FB0"
+  },
+  "support_functions": {
+    "0x417FB0": "close/hide the dialog (and input edit)",
+    "0x418400": "show + hit-test entry",
+    "0x4182A0": "draw/paint of the dialog",
+    "0x4181E9": "2-vs-3-button decision (row store layout)"
+  },
+  "gold_construction_chain": "0x42BE21 (action handler for trade-window mouse messages) -> 0x42AAB0 -> outer dispatch table 0x42C4D4 idx3 -> 0x42C00B -> lea ecx,[esi+0x3399C] (trade window); push lea [esi+0x20]; call 0x416EF0 (click dispatch; inline strcmp([arg1+0x1C] vs 0x47ADB4 '陛傈' + PtInRect on the gold box rect (x+0x22,y+0x10E)-(x+0x9C,y+0x130) via [0x4762B4]) -> on hit: ctor 0x416F7E (see above) + rep stosd zeros 0x30E dwords",
+  "ctor_call_sites_24": [
+    "0x403E12", "0x416F9C", "0x4193D8", "0x41C196", "0x41D230", "0x41D633", "0x41E0B6",
+    "0x41FB0F", "0x41FD72", "0x420416", "0x420B9F", "0x420BD3", "0x42179D", "0x4217C6",
+    "0x421828", "0x421851", "0x4246BA", "0x425C8F", "0x42BF66", "0x44048D", "0x459352",
+    "0x4594F9", "0x4597E4", "0x45A074"
+  ],
+  "other_known_instances": {
+    "0x42BF37": "re-constructs 0x7E04C8 with type=0x65, msgId=0xFFFF, string 0x47AFB4 - reached via inner dispatch table 0x42C494 idx4 of the 0x42BE21 action handler (a second dialog configuration on the same global object)",
+    "0x4193D8": "type=0x64, string 0x47AEB8 (N/A which window - see pending)",
+    "0x42BF66": "type=0x65, msgId=0xFFFF (another instance on the same dispatch path as 0x42BF37)"
+  },
+  "verdict": "CLOSED - the shared input/message dialog class is fully specified. Confirm (keyboard 0x418520 or click 0x418600) always sends SendMessageA([0x8AB7B0], 0x7EE, ((type<<8|row)<<16)|msgId, &[e+0x130]) - the type byte, focused row and msgId are all embedded in wParam, the input text rides in the lParam buffer. The gold dialog is the (type=3, msgId=0x405, prompt='您要付给对方多少金币?') instance at 0x7E04C8 constructed at 0x416F7E; its confirm encodes 0x03000405, which matches the 0x417280 wire-sender gate exactly - yet the whole chain is dead (F302/F305).",
+  "conclusions": [
+    "Ctor 0x418030 takes 8 stack args (ret 0x20): arg1 context -> [e+0x45C] (layout rect source [e+0x45C]+0x38), arg2 type byte -> [e], arg3 button-config {0,1,2} (1 = 2-button layout rows 0x234=1/0x2EC=0/0x3A4=1), arg4 prompt string -> [e+0x2C], arg6/arg7 -1 -> centered, arg8 msgId word -> [e+0x460]; [e+0x28]=1 visible at the end.",
+    "Keyboard path: TAB cycles [e+0x462] over enabled rows (stride 0xB8 stores); ENTER/SPACE confirms the focused row via 0x418520 (gate row store != 0).",
+    "Mouse path: 0x418600 loops the 3 row frames (stride 0xB8), hit-tests via button vtable+0x10, sets [e+0x462] and confirms.",
+    "Both confirm paths produce identical wParam encoding: (type<<8|row)<<16 | msgId; both send 0x7EE to [0x8AB7B0] with &[e+0x130] as lParam and then hide via 0x417FB0.",
+    "The input text is captured from the shared input edit [0x8AA48C] into [e+0x130] (0x104 bytes) and the edit is cleared; [0x8AA498] is set to 1 before the send.",
+    "The gold dialog is one of 24 ctor instances; its construction chain (0x42BE21 -> 0x42C4D4 idx3 -> 0x416EF0 -> 0x416F7E) and argument list are exact.",
+    "Other instance triples: 0x42BF37 re-uses 0x7E04C8 with (type=0x65, msgId=0xFFFF, prompt=0x47AFB4) via inner table 0x42C494 idx4; 0x4193D8 uses (type=0x64, prompt=0x47AEB8); 0x42BF66 uses (type=0x65, msgId=0xFFFF)."
+  ],
+  "closed_notes": {
+    "F302_crossref": "this finding is the input half of the F302 verdict: the confirm message and its wParam encoding are now exact, so the 0x417280 gate match (low word 0x405 + bits16-23==0) is proven against a concrete sender",
+    "button_rows": "the 3 row stores are at +0x234/+0x2EC/+0x3A4 with frames at +0x238/+0x2F0/+0x3A8 (stride 0xB8); the click loop's 'word[e+row*0xB8+0x234-4]' skip test reads the same stores"
+  },
+  "pending": [
+    "Which windows/dialogs the 21 remaining ctor call sites instantiate (type/msgId/prompt triples not yet decoded for each; 0x42BF37/0x4193D8/0x42BF66 decoded, 0x42BF66 duplicates 0x42BF37's config)",
+    "The exact text of prompt strings at 0x47AEB8 (type 0x64 instance) and 0x47AFB4 (type 0x65 instance)",
+    "Where [0x8AA48C] (shared input edit) and [0x8AA498] (flag) are created - runtime window setup",
+    "What the input-restore receiver 0x404600 does with the 0x7EE text (input-restore path, see F303 sender matrix)"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "evidence_id": "EI-305",
+  "finding": 305,
+  "date": "2026-08-11",
+  "title": "ChatSubmitDeadPath - the chat window's 0x7ED submit and the 0x7EE text-handoff are both dead ends in this build: [0x8AA4A4] (the populated-command flag) is never written non-zero anywhere (only 4 zero-fill sites: 0x40274A/0x4194FC/0x41E245/0x456CE4), so 0x41DFE0 (the 0x7EE receiver, via 0x42D650 -> permanent stub 0x440740) can never reach its chat-command parse/send (0x4520F0 @0x41E22F); chat's 0x7ED submit (0x450CD0 -> 0x450EA8/0x450EC2) carries wParam in {0,1} (byte3=0) so 0x42D680 only ever runs its default no-op - the 0x64..0x67 command table (incl. 0x66 -> 0x3F8 gold chat command) is statically unreachable, correcting F295's 'only live gold path' claim",
+  "objective": "Prove statically that the chat window cannot submit anything in this build: (a) the ENTER submit path (0x7ED from the chat edit) lands in 0x42D680's default no-op because byte3(wParam)=0; (b) the dialog text handoff (0x7EE) routes to 0x41DFE0 whose send branch is gated on [0x8AA4A4], a flag with no non-zero writer anywhere in the binary; (c) the 0x64..0x67 command table of the 0x7ED handler 0x41CDE0 (including 0x66 -> msg 0x3F8) is therefore unreachable.",
+  "question": "Can the chat window submit/send anything at all in this build? Which 0x7ED wParam values can arrive and what do they trigger? Is the 0x66 -> 0x3F8 'chat gold' branch (previously called the only live gold path) actually reachable?",
+  "method": "Static disassembly of Mir3.exe (/tmp/mir3_full.asm): enumerate every writer of [0x8AA4A4] by full-file scan (mov edi,0x8AA4A4 + rep stosd zero-fill at 0x40274A/0x4194FC/0x41E245/0x456CE4; no other write forms exist - confirmed by 'mov dword ptr [0x8aa4a4]' and byte-write scans returning empty), enumerate every reader inside 0x41DFE0 (0x41E00E/0x41E021/0x41E0C5/0x41E104/0x41E124/0x41E130/0x41E14F/0x41E1AA/0x41E1E5/0x41E22F), decode 0x42D650 (guard [ecx+0x51180] + 0x440740 stub 'xor eax,eax; ret' = always 0) and its callers, enumerate 0x7ED senders in the chat edit path 0x450CD0 (0x450EA8 wParam=1 / 0x450EC2 wParam=0, byte3=0 both), and re-derive the 0x41CDE0 byte3 dispatch reachability for wParam in {0,1}.",
+  "evidence_level": "primary-static",
+  "confidence": 0.97,
+  "addresses": [
+    "0x008AA4A4", "0x0040274A", "0x004194FC", "0x0041E245", "0x00456CE4",
+    "0x0041DFE0", "0x0041E00E", "0x0041E021", "0x0041E0C5", "0x0041E104", "0x0041E124", "0x0041E130", "0x0041E14F", "0x0041E1AA", "0x0041E1E5", "0x0041E22F",
+    "0x0042D650", "0x00440740",
+    "0x00450CD0", "0x00450C40", "0x00450EA8", "0x00450EC2",
+    "0x0041CDE0", "0x0041CEC2", "0x0042D680", "0x0042D6F9",
+    "0x00451F40", "0x004520F0", "0x00451940",
+    "0x0045B440", "0x00465E80"
+  ],
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "flag_0x8AA4A4": {
+    "role": "global populated-command flag; read by 0x41DFE0 (0x7EE receiver) to decide whether to parse/send the chat command in the lParam buffer (0x4520F0 @0x41E22F: push 0x8AA4A4; push 0x8AA4A4; call 0x4520F0 family)",
+    "writers": "EXACTLY 4 sites, ALL zero-fills: 0x40274A (mov edi,0x8AA4A4; rep stosd), 0x4194FC, 0x41E245, 0x456CE4 - all 'mov edi,0x8AA4A4' + rep stosd patterns. No 'mov dword ptr [0x8AA4A4],imm' and no byte write forms exist (scanned).",
+    "consequence": "[0x8AA4A4] is always 0 at runtime -> every read in 0x41DFE0 sees 0 -> the command-parse/send branch (0x4520F0 @0x41E22F) is unreachable"
+  },
+  "receiver_0x41DFE0": "0x41DFE0(wParam, lParam) - the 0x7EE case (0x41E530) of the [0x8AB7B0] bus; also the confirmed-text handoff for dialogs (gold 0x03000405). Flow: call 0x42D650(ecx=this) FIRST @0x41E001 -> 0x42D650: mov eax,[ecx+0x51180]; test eax,eax; je 0x42D671 (return 0); add ecx,0x51150; call 0x440740; test eax,eax; je 0x42D671; mov eax,1; ret 8. 0x440740 = 'xor eax,eax; ret' permanent stub -> 0x42D650 ALWAYS returns 0. Then mov dl,byte[0x8AA4A4] (0x41E00E) etc.; every path that reaches the 0x4520F0 send requires [0x8AA4A4] != 0 -> never. 0x41DFE0 returns without sending.",
+  "chat_edit_handler_0x450CD0": "the chat-edit window's message handler (0x450C40 is a vtable thunk, NOT the handler). 0x7ED senders inside it: 0x450EA8 ('@' prefix command: wParam=1, lParam=0) and 0x450EC2 (plain text: wParam=0, lParam=0); both byte3(wParam)=0. 0x7EF/0x7F0 senders: 0x450D6D (ctrl+key) / 0x450D96 (alt+key) / 0x450DD1 (ctrl+TAB) - command-history recall (F303).",
+  "0x7ed_reachability": "byte3(wParam) = 0 for every real 0x7ED sender -> 0x41CDE0 dispatch: lea eax,[byte3-0x64]; cmp eax,3; ja default (byte3 0x00 < 0x64) -> default 0x41CEC2 -> 0x42D680(byte3=0): lea eax,[0-3]; cmp eax,6; ja 0x42D6F9 (default no-op) -> 0x42D6F9 = 'xor eax,eax; pop esi; ret 8'. So chat submit is a silent no-op. The 0x64..0x67 command table (0x41CED8) is statically unreachable.",
+  "cmd_0x66_correction": "F295 called the 0x66 -> 0x3F8 branch (0x41CE86: amount parse 0x4681F9, cap [esi+0x35B1E8], send 0x451940) 'the only live gold path'. With the full 0x7ED sender set known (wParam in {0,1}), byte3 can never be 0x66: the branch exists in code shape but is unreachable. This build has NO live gold-send path at all (0x405 dead per F302; 0x3F8 dead per this finding).",
+  "verdict": "CLOSED - the chat window cannot submit anything in this build. Two independent exhaustive proofs: (a) [0x8AA4A4] has no non-zero writer (4 zero-fill sites only) so the 0x7EE text-handoff receiver 0x41DFE0 can never send (its 0x4520F0 command path is gated on the flag, and its 0x42D650 prerequisite returns 0 via the permanent stub 0x440740); (b) chat's own 0x7ED submit carries byte3=0, which both dispatch tables (0x41CDE0 byte3 and 0x42D680 dl) route to no-op defaults. The 0x64..0x67 command table - including 0x66 -> 0x3F8 - is statically unreachable.",
+  "conclusions": [
+    "[0x8AA4A4] writers = exactly 4, all rep stosd zero-fills (0x40274A, 0x4194FC, 0x41E245, 0x456CE4); no immediate/byte writes exist -> flag permanently 0.",
+    "0x41DFE0 (0x7EE receiver) reads [0x8AA4A4] at 10 sites (0x41E00E..0x41E22F) all gating the command parse/send; its first call 0x42D650 returns 0 always (guard [ecx+0x51180] + stub 0x440740 'xor eax,eax; ret').",
+    "0x42D650: 'mov eax,[ecx+0x51180]; test; je return0; add ecx,0x51150; call 0x440740; test; je return0; mov eax,1; ret 8' - since 0x440740 is a permanent xor-eax stub, every path returns 0.",
+    "Chat 0x7ED senders: wParam=1 ('@') / wParam=0 (plain), lParam=0 both -> byte3=0 -> 0x41CDE0 default -> 0x42D680 default no-op 0x42D6F9. Chat submit is a silent no-op.",
+    "The 0x64..0x67 command table (0x41CED8: 0x64 WM_CLOSE, 0x65 server cmd 0x3F1, 0x66 chat gold 0x3F8, 0x67 lParam 0x40E) is unreachable - corrects F295's 'only live gold path' attribution of 0x66->0x3F8.",
+    "Combined with F302: this build transmits NO gold via dialog (0x405) and NO gold via chat command (0x3F8). Gold leaves the client only through the trade-accept 0x406 header (F295) which carries no amount field."
+  ],
+  "closed_notes": {
+    "F295_correction": "0x66 -> 0x3F8 is NOT a live path: it requires byte3(wParam)=0x66 on 0x7ED, but the only 0x7ED senders (chat edit) use wParam in {0,1}. F295's statement '唯一活金币发送 = 聊天命令 0x41CDE0 case byte2==0x66' is superseded - the branch is unreachable dead code like the 0x405 chain.",
+    "0x450C40_clarification": "0x450C40 is a vtable thunk; the actual chat-edit message handler is 0x450CD0."
+  },
+  "pending": [
+    "Whether a server build / different Mir3.exe revision populates [0x8AA4A4] or sends 0x7ED with byte3 0x64..0x67 - strictly runtime/other-build concerns; this verdict covers the build under study",
+    "The exact semantics of 0x42D650's [ecx+0x51180] guard and the 0x51150 sub-context (0x4404E0 family) - reachable only from dl=9 of 0x42D680 (itself unreachable)",
+    "What 0x4520F0 would send if ever reached (command-string parser; the '@' commands list from F292 shows the intended set)"
+  ]
+}

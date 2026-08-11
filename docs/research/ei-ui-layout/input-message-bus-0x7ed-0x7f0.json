@@ -1,0 +1,94 @@
+{
+  "evidence_id": "EI-303",
+  "finding": 303,
+  "date": "2026-08-11",
+  "title": "InputMessageBus0x7ED-0x7F0 - the [0x8AB7B0] window's message bus 0x41E2B0 is fully decoded: complete dispatch tree for msgs 0x7ED/0x7EE/0x7EF/0x7F0 (and the standard chain), the 0x7ED byte3 dispatch 0x41CDE0 with raw command table 0x41CED8 (byte3 0x64..0x67), the corrected 0x42D680 dl=byte3-3 mapping (raw table 0x42D700), the dl=6 trade-message router 0x4247C0 (msgs 0x3FC/0x3FD/0x3FE), and 0x7EF/0x7F0 chat command-history recall (0x428760/0x428DD0) - the complete sender/receiver matrix for all four private messages",
+  "objective": "Produce the definitive static map of the four private window messages 0x7ED/0x7EE/0x7EF/0x7F0 on the [0x8AB7B0] window: every sender, every receiver, and every handler's exact behavior, including the nested dispatch tables (0x41CED8 byte3 table, 0x42D700 dl table, 0x41E58C/0x41E5A0 wm dispatch) so that reachability of any handler (e.g. the 0x7ED command table 0x64..0x67 incl. 0x66->0x3F8 gold chat command) can be decided statically.",
+  "question": "Which code sends 0x7ED/0x7EE/0x7EF/0x7F0, which code receives them, and what does each handler do? In particular: which 0x7ED wParam byte3 values can actually arrive, and is the 0x64..0x67 command table (0x41CED8) reachable?",
+  "method": "Static disassembly of Mir3.exe (/tmp/mir3_full.asm): decode wndproc 0x41E2B0 (prologue/register roles/ret 0x10), all case targets of the 0x7ED..0x7F0 range dispatch (lea eax,[ebp-0x7ED]; cmp 3; jmp [eax*4+0x41E690]) and the 0x113..0x201 range (byte table 0x41E5A0 + jumptable 0x41E58C), the 0x7ED handler 0x41CDE0 (byte3 dispatch via lea edx,[-0x64]; cmp 3; table 0x41CED8), the 0x42D680 dl dispatch (raw bytes of 0x42D700), the dl=6 router 0x4247C0 (0x3FC/0x3FD/0x3FE) and its 0x452940/0x451E60 send calls, and the 0x7EF/0x7F0 handlers 0x428760/0x428DD0 (chat command-history recall). Complete sender enumeration via all SendMessageA/[0x476290] sites with msg 0x7ED/0x7EE/0x7EF/0x7F0.",
+  "evidence_level": "primary-static",
+  "confidence": 0.96,
+  "addresses": [
+    "0x0041E2B0", "0x0041E451", "0x0041E45F", "0x0041E4FB", "0x0041E50C",
+    "0x0041E522", "0x0041E530", "0x0041E54B", "0x0041E56A",
+    "0x0041E39A", "0x0041E5A0", "0x0041E58C",
+    "0x0041CDE0", "0x0041CED8", "0x0041CE14", "0x0041CE60", "0x0041CE86", "0x0041CEAB", "0x0041CEC2",
+    "0x0042D680", "0x0042D700", "0x0042D6BA", "0x0042D6D1", "0x0042D6F9", "0x0042D6A3", "0x0042D6E8",
+    "0x00417280", "0x00425820", "0x004247C0", "0x004404E0",
+    "0x004522E0", "0x00452350", "0x00452380",
+    "0x00428760", "0x00428790", "0x00428DD0", "0x00428E00",
+    "0x00450CD0", "0x00450D6D", "0x00450D96", "0x00450DD1", "0x00450EA8", "0x00450EC2",
+    "0x00418DC0", "0x00419B1A",
+    "0x00453F40", "0x00453F4C",
+    "0x0045A140", "0x00404600", "0x0041E30A",
+    "0x0047BCF4"
+  ],
+  "source": {
+    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "disasm": "/tmp/mir3_full.asm",
+    "base_va": "0x00401000"
+  },
+  "bus_0x41E2B0": {
+    "role": "wndproc of the [0x8AB7B0] window; installed via vtable (no direct call site). Prologue sub esp,8; push ebx/ebp/esi/edi. ebx = wParam = arg3, ebp = msg = arg2, edi = lParam = arg4, esi = this. ret 0x10 -> 4 stack args (hwnd, msg, wParam, lParam).",
+    "msg_le_0x202_chain": "0x202 -> 0x41E451 -> 0x41DB80; 0x105 -> 0x41E37F -> 0x41D2A0; 0x100 -> 0x41DD30; 2 (WM_DESTROY) -> 0x41CEF0; 3 (WM_MOVE) -> 0x41D2B0; 0x101 -> 0x41DD00; 0x104 -> 0x41D090",
+    "msg_gt_0x202": "0x41E45F: 0x7E8 -> 0x41E4FB (0x451BB0(0x8AB828, wParam, lParam), falls through to default); 0x205 -> 0x41DC90; 0x203 -> 0x41D010; 0x204 -> 0x41D9A0; 0x20A -> 0x41E4E0 -> 0x41D050; 0x312 -> 'xor eax,eax; ret 0x10' when [esi+0x4C]==0",
+    "range_0x7ED_0x7F0": "@0x41E50C: lea eax,[ebp-0x7ED]; cmp eax,3; ja default; jmp [eax*4+0x41E690] with raw table [0]=0x41E522 (0x7ED) [1]=0x41E530 (0x7EE) [2]=0x41E54B (0x7EF) [3]=0x41E56A (0x7F0)",
+    "range_0x113_0x201": "@0x41E39A: lea eax,[ebp-0x113]; cmp eax,0xEE; ja default; cl = byte[eax+0x41E5A0]; jmp [ecx*4+0x41E58C]; byte table (0xEF bytes): 0x113->0x00, 0x133->0x01, 0x200->0x02, 0x201->0x03, all others 0x04; jumptable [0]=0x41CF20 (timer: float speed set {0,1,2} vs [esi+0x4279AC] clamp) [1]=0x41E3BA (recolor if lParam==[0x8AA48C] or [esi+0x2F84B4]) [2]=0x41D390 [3]=0x41D470 [4]=0x41E30A (default)",
+    "default_0x41E30A": "forwards (hwnd, msg, wParam, lParam) to 0x45B440(ecx=0x8AB130) then 0x465E80(ecx=esi); [esp+0x1C] = hwnd at that point"
+  },
+  "private_msg_handlers": {
+    "0x7ED_0x41E522": "stack at handler: 4 regs + sub 8 -> [esp+0x24]=wParam, [esp+0x28]=lParam; args pushed lParam-then-wParam => handlers take (wParam, lParam). 0x41E522: push edi(lParam); push ebx(wParam); mov ecx,esi; call 0x41CDE0; then jmp default 0x41E30A (falls through to the 0x45B440/0x465E80 forward).",
+    "0x7EE_0x41E530": "mov eax,[esp+0x28](lParam); mov ecx,[esp+0x24](wParam); push eax; push ecx; mov ecx,esi; call 0x41DFE0; returns directly (no default forwarding).",
+    "0x7EF_0x41E54B": "0x428760(esi+0x2A548C, wParam, lParam); returns.",
+    "0x7F0_0x41E56A": "0x428DD0(esi+0x2A548C, wParam, lParam); returns.",
+    "0x7E8_0x41E4FB": "0x451BB0(0x8AB828, wParam, lParam); falls through to default."
+  },
+  "0x7ed_handler_0x41CDE0": "0x41CDE0(wParam, lParam): dispatch on byte3 = bits 24-31 of wParam (mov eax,wParam; shr eax,0x10; mov dl,ah... lea eax,[edx-0x64]; cmp eax,3; ja default). Raw table 0x41CED8: [0]=0x41CE60, [1]=0x41CE14, [2]=0x41CE86, [3]=0x41CEAB for byte3 0x64..0x67 (NOTE: table order [0x64]=0x41CE60, [0x65]=0x41CE14, [0x66]=0x41CE86, [0x67]=0x41CEAB):",
+  "cmd_table_0x64_0x67": {
+    "0x64": "0x41CE60: cmp cx,1; jne default -> cx(row)==1 AND 0x419CC0 gate (jne default if 0) -> SendMessageA([0x8AB7B0], WM_CLOSE=2, 0, 0) @0x41CE7E; jmp default",
+    "0x65": "0x41CE14: test cx,cx; jne default -> cx(row)==0 AND 0x419CC0 gate (je default if 0) -> 0x451660(0x8AB828, 0x3F1) (server cmd); then 0x42E1F0(esi+0x2A548C, esi+0x2F8788); [esi+0x428208]=0; byte[esi+0x428204]=2; jmp default",
+    "0x66": "0x41CE86: test cx,cx; jne default -> cx==0; 0x4681F9(lParam) amount parse; cmp eax,[esi+0x35B1E8]; jge skip -> 0x451940(0x8AB828, amount) = msg 0x3F8 (chat gold command)",
+    "0x67": "0x41CEAB: cmp di,0x40E; jne default (di = low WORD of lParam == 0x40E); test cx,cx; jne default -> 0x452440(0x8AB828, lParam)",
+    "default": "0x41CEC2: push ebx(lParam); push edi(wParam); lea ecx,[esi+0x2A548C]; call 0x42D680 (the dl=byte3-3 dispatch); xor eax,eax; ret 8"
+  },
+  "0x42d680_dispatch_corrected": {
+    "entry": "0x42D680(byte3 = bits 24-31 of wParam; this = the 0x7ED handler's [esi+0x2A548C] context): mov eax,wParam; shr eax,0x10; mov dl,ah; and edx,0xFF; lea eax,[edx-3]; cmp eax,6; ja 0x42D6F9; jmp [eax*4+0x42D700]",
+    "raw_table_0x42D700": "[0]=0x42D6BA, [1]=0x42D6D1, [2]=0x42D6F9, [3]=0x42D6A3, [4]=0x42D6F9, [5]=0x42D6F9, [6]=0x42D6E8",
+    "dl_3": "0x42D6BA -> 0x417280 (the 0x405-gated gold sender; gate = low word 0x405 + bits16-23==0 + amount <= [0x7DA100])",
+    "dl_4": "0x42D6D1 -> 0x425820",
+    "dl_5_7_8": "0x42D6F9: xor eax,eax; pop esi; ret 8 (no-op)",
+    "dl_6": "0x42D6A3 -> 0x4247C0 (the 0x3FC/0x3FD/0x3FE trade-message router)",
+    "dl_9": "0x42D6E8 -> push [esp+0xC]; push esi; add ecx,0x51150; call 0x4404E0"
+  },
+  "router_0x4247C0": "0x4247C0(lParam-ish this+0x2A548C, wParam, lParam); low word 0x3FC + bits16-23==0 -> 0x4522E0(0x8AB828, lParam); 0x3FD -> 0x452350; 0x3FE -> 0x452380; all end 'xor eax,eax; ret 8'. It does NOT send 0x405. Each of 0x4522E0/0x452350/0x452380: push 0; push 0; push 0; lea edi,[esi+0x18]; push 0; push msgid; push edi; call 0x452940 (builds {dword 0, word msgid, 0, 0, 0}); then 0x451E60(esi, edi, [esp+0xC]=lParam).",
+  "chat_history_recall": {
+    "0x7EF_0x428760": "gate [0x7E04F0]; [ecx+0x6534] = wParam; 0x428790 walks the command-history list [ecx+0x6520] to index [ecx+0x6534]; sprintf 0x47BCF4 ('/%s', entry+8) -> [ecx+0x531EC] via 0x46811C; SetWindowTextA([0x8AA48C]); GetWindowText/SetFocus; calls 0x450C70; ret 8",
+    "0x7F0_0x428DD0": "mirrored with fields +0x654C/+0x6550 and list +0x653C -> 0x428E00",
+    "no_0x8AA4A4_write": "neither history handler writes [0x8AA4A4] - consistent with its only-zero-fill status (F305)"
+  },
+  "sender_matrix": {
+    "0x7ED": "only 0x450EA8 ('@' prefix, wParam=1, lParam=0) and 0x450EC2 (plain, wParam=0, lParam=0) in the chat-edit path 0x450CD0. byte3 always 0. Receiver: only 0x41E2B0.",
+    "0x7EE": "only 0x4185CB/0x4186CD (gold dialog confirm: wParam=0x03000405, lParam=&[e+0x130] text buffer). Receivers: 0x41E2B0 (case 0x41E530), 0x403FA4 -> 0x404600 (input-restore), 0x459654 -> 0x45A140 (type-1 two-slot dialog).",
+    "0x7EF": "only chat edit 0x450D6D (ctrl+key)/0x450D96 (alt+key)/0x450DD1 (ctrl+TAB). Receiver: only 0x41E2B0.",
+    "0x7F0": "only chat edit 0x450D6D (ctrl+key)/0x450D96 (alt+key)/0x450DD1 (ctrl+TAB). Receiver: only 0x41E2B0."
+  },
+  "verdict": "CLOSED - the four private messages are fully mapped. 0x7ED carries the chat-command/submit semantics (byte3 dispatch; table 0x64..0x67; default -> 0x42D680), 0x7EE carries dialog-confirm text handoff (0x41DFE0; dead send chain, F302/F305), 0x7EF/0x7F0 are chat command-history recall. Reachability: the only real 0x7ED senders use wParam in {0,1} (byte3=0), so the 0x64..0x67 command table (including 0x66 -> 0x3F8 chat gold command) is statically unreachable, and 0x42D680 can only ever run its default no-op path.",
+  "conclusions": [
+    "Bus 0x41E2B0 is the [0x8AB7B0] window's wndproc (vtable-installed, ret 0x10); its private-message dispatch is a contiguous range test 0x7ED..0x7F0 with the 4-entry jumptable 0x41E690.",
+    "All four handlers take (wParam, lParam) - stack layout proof: 4 regs + sub 8, [esp+0x24]=wParam, [esp+0x28]=lParam, args pushed lParam-then-wParam.",
+    "0x7ED -> 0x41CDE0 dispatches on byte3 = bits 24-31 of wParam; the 0x64..0x67 command table (0x41CED8) covers chat commands (0x64=close window via WM_CLOSE [row==1], 0x65=server cmd 0x3F1 via 0x451660 + state writes [row==0], 0x66=chat gold send 0x3F8 via 0x451940 [row==0], 0x67=lParam low word 0x40E via 0x452440 [row==0]); default 0x41CEC2 -> 0x42D680.",
+    "0x42D680 dl mapping (raw table, index=dl-3): dl3->0x417280 (0x405 sender), dl4->0x425820, dl5/7/8 no-op, dl6->0x4247C0 (0x3FC/0x3FD/0x3FE router), dl9->0x4404E0. Round-8 dl attributions corrected.",
+    "0x4247C0 routes trade msgs 0x3FC/0x3FD/0x3FE to 0x4522E0/0x452350/0x452380, each building {0,msgid,0,0,0} and sending via 0x451E60 - not a 0x405 sender.",
+    "0x7EF/0x7F0 are chat command-history recall (list walk + '/%s' sprintf + SetWindowTextA), no state writes beyond the dialog fields; they do not write [0x8AA4A4].",
+    "Reachability: byte3(wParam) of every real 0x7ED sender is 0 -> the 0x64..0x67 table and the dl>=3 branches of 0x42D680 are all statically dead (see F302 verdict and F305 dead-path proof)."
+  ],
+  "closed_notes": {
+    "F295_command_table_correction": "the 0x64..0x67 command table (incl. 0x66 -> 0x3F8) was previously described as reachable from chat submit; it is unreachable because chat's 0x7ED submit is a no-op (byte3=0 -> 0x42D680 default no-op). F295's '0x66 -> 0x3F8' branch is the only live-looking gold path in code shape but cannot be triggered by this build's 0x7ED senders.",
+    "round8_dl_attribution_correction": "raw table 0x42D700 order is authoritative (jmp [eax*4+0x42D700], eax=dl-3): dl=3->0x417280, dl=4->0x425820, dl=6->0x4247C0. Any round-8 attribution assigning dl=3->0x4247C0 or dl=4->0x417280 is superseded."
+  },
+  "pending": [
+    "Semantics of 0x425820 (dl=4) and 0x4404E0 (dl=9) - unreachable branches, decoded only at call-site level",
+    "0x7EF/0x7F0 keyboard details: ctrl/alt+TAB handling at 0x450D6D/0x450D96/0x450DD1 - which key combos map to which message, and the direction (up/down) convention - runtime/UX confirmation",
+    "Where [0x8AB7B0] itself is registered (no code writer; data-section-initialized window object)"
+  ]
+}
