@@ -7,11 +7,26 @@
   "method": "primary-static：Mir3.exe（0x80000 字节，fileoff=VA−0x400000，VA 0x400000–0x480000 覆盖代码+数据）capstone 反汇编 + 原始 4 字节立即数扫描 + WIL 头交叉验证；wilsdk 读 Data/*.wil 帧数。",
   "evidence_level": "primary-static (confirmed)",
   "addresses": {
-    "object_base": {"VA": "0x8AA5A8", "role": "静态单例对象（帧表持有者，~0x132+ 字节），所有表都是它的字段；客户端以 mov ecx,0x8aa5a8; call <method> 的 thiscall 访问；运行时由 0x449C80 初始化（唯一调用点 0x402046，位于启动初始化函数内）"},
-    "player_table": {"VA": "0x8AA5C0", "role": "obj+0x18，玩家/骑乘状态帧表，33 条记录（state 0..32），步长 6 字节"},
-    "monster_table": {"VA": "0x8AA686", "role": "obj+0xDE，怪物状态帧表，最多 11 条记录（state 0..10），步长 6 字节；EXE 内无该地址的 4 字节立即数（一律 obj+0xDE 形式访问）"},
-    "npc_table": {"VA": "0x8AA6C8", "role": "obj+0x120，NPC 状态帧表，3 条记录（state 0..2），步长 6 字节"},
-    "weapon_ord_slot": {"VA": "0x8AA6DA", "role": "obj+0x132，weapon.ord 数据缓冲（0xA50 字节），由 0x44A8B0 在初始化时读入（CreateFileA/ReadFile，读文件偏移 0x132 处 0xA50 字节），再经 0x44A910 后处理——与帧表无关（武器外观顺序数据）"}
+    "object_base": {
+      "VA": "0x8AA5A8",
+      "role": "静态单例对象（帧表持有者，~0x132+ 字节），所有表都是它的字段；客户端以 mov ecx,0x8aa5a8; call <method> 的 thiscall 访问；运行时由 0x449C80 初始化（唯一调用点 0x402046，位于启动初始化函数内）"
+    },
+    "player_table": {
+      "VA": "0x8AA5C0",
+      "role": "obj+0x18，玩家/骑乘状态帧表，33 条记录（state 0..32），步长 6 字节"
+    },
+    "monster_table": {
+      "VA": "0x8AA686",
+      "role": "obj+0xDE，怪物状态帧表，最多 11 条记录（state 0..10），步长 6 字节；EXE 内无该地址的 4 字节立即数（一律 obj+0xDE 形式访问）"
+    },
+    "npc_table": {
+      "VA": "0x8AA6C8",
+      "role": "obj+0x120，NPC 状态帧表，3 条记录（state 0..2），步长 6 字节"
+    },
+    "weapon_ord_slot": {
+      "VA": "0x8AA6DA",
+      "role": "obj+0x132，weapon.ord 数据缓冲（0xA50 字节），由 0x44A8B0 在初始化时读入（CreateFileA/ReadFile，读文件偏移 0x132 处 0xA50 字节），再经 0x44A910 后处理——与帧表无关（武器外观顺序数据）"
+    }
   },
   "record_writer": {
     "VA": "0x449C50",
@@ -38,64 +53,332 @@
   "player_table": {
     "table": "obj+0x18 = 0x8AA5C0, 33 records (state 0..32), stride 6B: (w0=base, w1=count, w2=delay)",
     "records": [
-      {"state": 0, "writeVA": "0x449C8D", "w0": "0x000", "w1": 4, "w2": 200},
-      {"state": 1, "writeVA": "0x449CA1", "w0": "0x050", "w1": 6, "w2": 100},
-      {"state": 2, "writeVA": "0x449CB2", "w0": "0x0A0", "w1": 5, "w2": 75},
-      {"state": 3, "writeVA": "0x449CC6", "w0": "0x0F0", "w1": 5, "w2": 75},
-      {"state": 4, "writeVA": "0x449CDA", "w0": "0x140", "w1": 1, "w2": 100},
-      {"state": 5, "writeVA": "0x449CEE", "w0": "0x190", "w1": 1, "w2": 100},
-      {"state": 6, "writeVA": "0x449D02", "w0": "0x1E0", "w1": 1, "w2": 100},
-      {"state": 7, "writeVA": "0x449D16", "w0": "0x230", "w1": 3, "w2": 200},
-      {"state": 8, "writeVA": "0x449D2D", "w0": "0x280", "w1": 2, "w2": 400},
-      {"state": 9, "writeVA": "0x449D44", "w0": "0x2D0", "w1": 6, "w2": 85},
-      {"state": 10, "writeVA": "0x449D58", "w0": "0x320", "w1": 6, "w2": 85},
-      {"state": 11, "writeVA": "0x449D6C", "w0": "0x370", "w1": 6, "w2": 85},
-      {"state": 12, "writeVA": "0x449D80", "w0": "0x3C0", "w1": 6, "w2": 85},
-      {"state": 13, "writeVA": "0x449D94", "w0": "0x410", "w1": 6, "w2": 85},
-      {"state": 14, "writeVA": "0x449DA8", "w0": "0x460", "w1": 6, "w2": 85},
-      {"state": 15, "writeVA": "0x449DBC", "w0": "0x4B0", "w1": 3, "w2": 100},
-      {"state": 16, "writeVA": "0x449DD0", "w0": "0x500", "w1": 10, "w2": 70},
-      {"state": 17, "writeVA": "0x449DE4", "w0": "0x550", "w1": 10, "w2": 90},
-      {"state": 18, "writeVA": "0x449DF8", "w0": "0x5A0", "w1": 10, "w2": 70},
-      {"state": 19, "writeVA": "0x449E0F", "w0": "0x5F0", "w1": 10, "w2": 120},
-      {"state": 20, "writeVA": "0x449E26", "w0": "0x640", "w1": 10, "w2": 100},
-      {"state": 21, "writeVA": "0x449E3D", "w0": "0x690", "w1": 6, "w2": 90},
-      {"state": 22, "writeVA": "0x449E54", "w0": "0x6E0", "w1": 6, "w2": 120},
-      {"state": 23, "writeVA": "0x449E6B", "w0": "0x730", "w1": 6, "w2": 100},
-      {"state": 24, "writeVA": "0x449E82", "w0": "0x780", "w1": 10, "w2": 100},
-      {"state": 25, "writeVA": "0x449E99", "w0": "0x7D0", "w1": 4, "w2": 180},
-      {"state": 26, "writeVA": "0x449EB3", "w0": "0x820", "w1": 3, "w2": 180},
-      {"state": 27, "writeVA": "0x449ECD", "w0": "0x870", "w1": 8, "w2": 180},
-      {"state": 28, "writeVA": "0x449EE7", "w0": "0x8C0", "w1": 8, "w2": 180},
-      {"state": 29, "writeVA": "0x449F01", "w0": "0x910", "w1": 4, "w2": 200},
-      {"state": 30, "writeVA": "0x449F1B", "w0": "0x960", "w1": 6, "w2": 100},
-      {"state": 31, "writeVA": "0x449F32", "w0": "0x9B0", "w1": 6, "w2": 100},
-      {"state": 32, "writeVA": "0x449F49", "w0": "0xA00", "w1": 3, "w2": 100}
+      {
+        "state": 0,
+        "writeVA": "0x449C8D",
+        "w0": "0x000",
+        "w1": 4,
+        "w2": 200
+      },
+      {
+        "state": 1,
+        "writeVA": "0x449CA1",
+        "w0": "0x050",
+        "w1": 6,
+        "w2": 100
+      },
+      {
+        "state": 2,
+        "writeVA": "0x449CB2",
+        "w0": "0x0A0",
+        "w1": 5,
+        "w2": 75
+      },
+      {
+        "state": 3,
+        "writeVA": "0x449CC6",
+        "w0": "0x0F0",
+        "w1": 5,
+        "w2": 75
+      },
+      {
+        "state": 4,
+        "writeVA": "0x449CDA",
+        "w0": "0x140",
+        "w1": 1,
+        "w2": 100
+      },
+      {
+        "state": 5,
+        "writeVA": "0x449CEE",
+        "w0": "0x190",
+        "w1": 1,
+        "w2": 100
+      },
+      {
+        "state": 6,
+        "writeVA": "0x449D02",
+        "w0": "0x1E0",
+        "w1": 1,
+        "w2": 100
+      },
+      {
+        "state": 7,
+        "writeVA": "0x449D16",
+        "w0": "0x230",
+        "w1": 3,
+        "w2": 200
+      },
+      {
+        "state": 8,
+        "writeVA": "0x449D2D",
+        "w0": "0x280",
+        "w1": 2,
+        "w2": 400
+      },
+      {
+        "state": 9,
+        "writeVA": "0x449D44",
+        "w0": "0x2D0",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 10,
+        "writeVA": "0x449D58",
+        "w0": "0x320",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 11,
+        "writeVA": "0x449D6C",
+        "w0": "0x370",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 12,
+        "writeVA": "0x449D80",
+        "w0": "0x3C0",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 13,
+        "writeVA": "0x449D94",
+        "w0": "0x410",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 14,
+        "writeVA": "0x449DA8",
+        "w0": "0x460",
+        "w1": 6,
+        "w2": 85
+      },
+      {
+        "state": 15,
+        "writeVA": "0x449DBC",
+        "w0": "0x4B0",
+        "w1": 3,
+        "w2": 100
+      },
+      {
+        "state": 16,
+        "writeVA": "0x449DD0",
+        "w0": "0x500",
+        "w1": 10,
+        "w2": 70
+      },
+      {
+        "state": 17,
+        "writeVA": "0x449DE4",
+        "w0": "0x550",
+        "w1": 10,
+        "w2": 90
+      },
+      {
+        "state": 18,
+        "writeVA": "0x449DF8",
+        "w0": "0x5A0",
+        "w1": 10,
+        "w2": 70
+      },
+      {
+        "state": 19,
+        "writeVA": "0x449E0F",
+        "w0": "0x5F0",
+        "w1": 10,
+        "w2": 120
+      },
+      {
+        "state": 20,
+        "writeVA": "0x449E26",
+        "w0": "0x640",
+        "w1": 10,
+        "w2": 100
+      },
+      {
+        "state": 21,
+        "writeVA": "0x449E3D",
+        "w0": "0x690",
+        "w1": 6,
+        "w2": 90
+      },
+      {
+        "state": 22,
+        "writeVA": "0x449E54",
+        "w0": "0x6E0",
+        "w1": 6,
+        "w2": 120
+      },
+      {
+        "state": 23,
+        "writeVA": "0x449E6B",
+        "w0": "0x730",
+        "w1": 6,
+        "w2": 100
+      },
+      {
+        "state": 24,
+        "writeVA": "0x449E82",
+        "w0": "0x780",
+        "w1": 10,
+        "w2": 100
+      },
+      {
+        "state": 25,
+        "writeVA": "0x449E99",
+        "w0": "0x7D0",
+        "w1": 4,
+        "w2": 180
+      },
+      {
+        "state": 26,
+        "writeVA": "0x449EB3",
+        "w0": "0x820",
+        "w1": 3,
+        "w2": 180
+      },
+      {
+        "state": 27,
+        "writeVA": "0x449ECD",
+        "w0": "0x870",
+        "w1": 8,
+        "w2": 180
+      },
+      {
+        "state": 28,
+        "writeVA": "0x449EE7",
+        "w0": "0x8C0",
+        "w1": 8,
+        "w2": 180
+      },
+      {
+        "state": 29,
+        "writeVA": "0x449F01",
+        "w0": "0x910",
+        "w1": 4,
+        "w2": 200
+      },
+      {
+        "state": 30,
+        "writeVA": "0x449F1B",
+        "w0": "0x960",
+        "w1": 6,
+        "w2": 100
+      },
+      {
+        "state": 31,
+        "writeVA": "0x449F32",
+        "w0": "0x9B0",
+        "w1": 6,
+        "w2": 100
+      },
+      {
+        "state": 32,
+        "writeVA": "0x449F49",
+        "w0": "0xA00",
+        "w1": 3,
+        "w2": 100
+      }
     ],
     "notes": "块基 w0 呈 0x50 步进（0x000..0xA00），state 16..24 为 10 帧动作块（0x500..0x780，w1=10，delay 70-120），state 25..29 为慢动作（w1=3-4，delay 180-200）"
   },
   "monster_table_default": {
     "table": "obj+0xDE = 0x8AA686, 9 records (state 0..8), stride 6B",
     "records": [
-      {"state": 0, "writeVA": "0x449F60", "w0": "0x000", "w1": 4, "w2": 300},
-      {"state": 1, "writeVA": "0x449F77", "w0": "0x050", "w1": 6, "w2": 130},
-      {"state": 2, "writeVA": "0x449F8E", "w0": "0x0A0", "w1": 6, "w2": 120},
-      {"state": 3, "writeVA": "0x449FA5", "w0": "0x0F0", "w1": 2, "w2": 300},
-      {"state": 4, "writeVA": "0x449FBF", "w0": "0x140", "w1": 10, "w2": 150},
-      {"state": 5, "writeVA": "0x449FD9", "w0": "0x190", "w1": 6, "w2": 150},
-      {"state": 6, "writeVA": "0x449FF3", "w0": "0x1E0", "w1": 10, "w2": 150},
-      {"state": 7, "writeVA": "0x44A00D", "w0": "0x230", "w1": 10, "w2": 150},
-      {"state": 8, "writeVA": "0x44A027", "w0": "0x280", "w1": 6, "w2": 150}
+      {
+        "state": 0,
+        "writeVA": "0x449F60",
+        "w0": "0x000",
+        "w1": 4,
+        "w2": 300
+      },
+      {
+        "state": 1,
+        "writeVA": "0x449F77",
+        "w0": "0x050",
+        "w1": 6,
+        "w2": 130
+      },
+      {
+        "state": 2,
+        "writeVA": "0x449F8E",
+        "w0": "0x0A0",
+        "w1": 6,
+        "w2": 120
+      },
+      {
+        "state": 3,
+        "writeVA": "0x449FA5",
+        "w0": "0x0F0",
+        "w1": 2,
+        "w2": 300
+      },
+      {
+        "state": 4,
+        "writeVA": "0x449FBF",
+        "w0": "0x140",
+        "w1": 10,
+        "w2": 150
+      },
+      {
+        "state": 5,
+        "writeVA": "0x449FD9",
+        "w0": "0x190",
+        "w1": 6,
+        "w2": 150
+      },
+      {
+        "state": 6,
+        "writeVA": "0x449FF3",
+        "w0": "0x1E0",
+        "w1": 10,
+        "w2": 150
+      },
+      {
+        "state": 7,
+        "writeVA": "0x44A00D",
+        "w0": "0x230",
+        "w1": 10,
+        "w2": 150
+      },
+      {
+        "state": 8,
+        "writeVA": "0x44A027",
+        "w0": "0x280",
+        "w1": 6,
+        "w2": 150
+      }
     ],
     "notes": "默认表仅 9 条；0x44A240 运行后扩展到 11 条（state 9 = obj+0x114 (0x2D0,6,150)、state 10 = obj+0x11A (0x370,1,500)）"
   },
   "monster_table_race_fn": {
     "fn": "0x44A240, ret 4; arg1 = race (u16); this=0x8AA5A8. 覆盖 obj+0xDE..0x11A 全部 11 条记录；race>=0x3E8 (1000) 时调用方走 0x405B4E 分支（race-1000 重新解析 element），本函数值仍生效",
     "jump_tables": {
-      "t1": {"jt": "0x44A5F8 (9 entries: 0x44A29D,0x44A2ED,0x44A2F4,0x44A2DB,0x44A309,0x44A31B,0x44A322,0x44A334,0x44A346)", "bt": "0x44A61C (121 bytes, race 0..0x78; values 0..8, 88x 0x08)", "record": "state2 (obj+0xEA): (0xA0,6,delay)"},
-      "t2": {"jt": "0x44A698 (4 real: 0x44A374,0x44A389,0x44A3A3)", "bt": "0x44A6A4 (120 bytes, race 0..0x76; 0x00: race 0..9, 0x01: race 10..12, 0x02: rest, 0x90: race 0x76)", "record": "state3 (obj+0xF0): (0xF0,2,0xB4) or (0xF0,3,0x96)"},
-      "t3": {"jt": "0x44A71C (6 real: 0x44A3E9,0x44A3D4,0x44A3FE,0x44A404,0x44A416,0x44A428)", "bt": "0x44A734 (113 bytes, race 0x1E..0x8D)", "record": "state4 (obj+0xF6): (0x140,10,0x82)/(0x140,4,0xDC)/(0x140,20,0x78)/(0x140,9,0x78)/(0x2D0,20,0x78)/default (0x140,10,0x8C)"},
-      "t4": {"jt": "0x44A7A4 (6 real: 0x44A53B,0x44A55F,0x44A565,0x44A577,0x44A54D,0x44A589)", "bt": "0x44A7BC (92 bytes, race 0..0x5A)", "record": "state8 (obj+0x10E): (0x280,10,0x78)/(0x280,6,0x78)/(0x280,20,0x78)/(0x280,10,0x64)/default (0x280,10,0x78)"}
+      "t1": {
+        "jt": "0x44A5F8 (9 entries: 0x44A29D,0x44A2ED,0x44A2F4,0x44A2DB,0x44A309,0x44A31B,0x44A322,0x44A334,0x44A346)",
+        "bt": "0x44A61C (121 bytes, race 0..0x78; values 0..8, 88x 0x08)",
+        "record": "state2 (obj+0xEA): (0xA0,6,delay)"
+      },
+      "t2": {
+        "jt": "0x44A698 (4 real: 0x44A374,0x44A389,0x44A3A3)",
+        "bt": "0x44A6A4 (120 bytes, race 0..0x76; 0x00: race 0..9, 0x01: race 10..12, 0x02: rest, 0x90: race 0x76)",
+        "record": "state3 (obj+0xF0): (0xF0,2,0xB4) or (0xF0,3,0x96)"
+      },
+      "t3": {
+        "jt": "0x44A71C (6 real: 0x44A3E9,0x44A3D4,0x44A3FE,0x44A404,0x44A416,0x44A428)",
+        "bt": "0x44A734 (113 bytes, race 0x1E..0x8D)",
+        "record": "state4 (obj+0xF6): (0x140,10,0x82)/(0x140,4,0xDC)/(0x140,20,0x78)/(0x140,9,0x78)/(0x2D0,20,0x78)/default (0x140,10,0x8C)"
+      },
+      "t4": {
+        "jt": "0x44A7A4 (6 real: 0x44A53B,0x44A55F,0x44A565,0x44A577,0x44A54D,0x44A589)",
+        "bt": "0x44A7BC (92 bytes, race 0..0x5A)",
+        "record": "state8 (obj+0x10E): (0x280,10,0x78)/(0x280,6,0x78)/(0x280,20,0x78)/(0x280,10,0x64)/default (0x280,10,0x78)"
+      }
     },
     "fixed_records": {
       "state0": "obj+0xDE (0,4,0xFA) 通用；race==0x5F 特例 (0,1,0xFA) @0x44A2C9",
@@ -111,9 +394,27 @@
   "npc_table": {
     "table": "obj+0x120 = 0x8AA6C8, 3 records (state 0..2), stride 6B",
     "default_records": [
-      {"state": 0, "writeVA": "0x44A041", "w0": "0x000", "w1": 4, "w2": 300},
-      {"state": 1, "writeVA": "0x44A058", "w0": "0x01E", "w1": 10, "w2": 300},
-      {"state": 2, "writeVA": "0x44A06F", "w0": "0x03C", "w1": 6, "w2": 300}
+      {
+        "state": 0,
+        "writeVA": "0x44A041",
+        "w0": "0x000",
+        "w1": 4,
+        "w2": 300
+      },
+      {
+        "state": 1,
+        "writeVA": "0x44A058",
+        "w0": "0x01E",
+        "w1": 10,
+        "w2": 300
+      },
+      {
+        "state": 2,
+        "writeVA": "0x44A06F",
+        "w0": "0x03C",
+        "w1": 6,
+        "w2": 300
+      }
     ],
     "action_fn": {
       "fn": "0x44A090, ret 4; arg1 = action (u16); this=0x8AA5A8. 按 action 覆盖三条记录",
@@ -123,14 +424,39 @@
     }
   },
   "read_sites": [
-    {"site": "0x40504D (player, type-0/1 解析器)", "formula": "mov cx, word ptr [eax+0x8AA5C0] (eax=6*state); [ebp+0xB4] = w0 + 2*5*(5*(3*(3*type)) ... ) = w0 + 3000*type + 10*flag; [ebp+0xB8] = w0+w1; [ebp+0xBC] = w2", "note": "type = 职业/身体类型 (0..8)，乘 3000；flag = [esi+0xC1] 字节，乘 10"},
-    {"site": "0x4056BC (painter 0x405630 内, 玩家)", "formula": "frame = word[0x8AA5C0+6*state] + 3000*type + 10*flag; state=[esi+0xC0], type=[esp+0x12]&0xff, flag=[esi+0xC1]; 写 [esi+0xB4]/[esi+0xB8]/[esi+0xBC]"},
-    {"site": "0x40598B / 0x4059E3 (玩家变体, 坐骑/宠物)", "formula": "frame = word[0x8AA5C0+6*state] + 3000*type + 10*flag (同一公式, bounds: type<0x21/0xB, state<9/0xB)"},
-    {"site": "0x40511C (怪物, race<2000)", "formula": "imul edx,edx,0x64 (edx=race%10); frame = word[0x8AA686+6*state] + 1000*(race%10) + 10*flag; 写 [ebp+0xB4..0xBC]"},
-    {"site": "0x405AD6 (怪物, race<0x3E8)", "formula": "frame = word[0x8AA686+6*state] + 1000*(race%10) + 10*flag; race>=0x3E8 走 0x405B4E 分支; race==0x8D (141) 特例 @0x405B00; 写 [esi+0xB4..0xBC]"},
-    {"site": "0x405294 (NPC)", "formula": "state=[esp+0x3C]%3 (idiv 3, 余数回写 [esp+0x40]); frame = word[0x8AA6C8+6*state] + 100*NPCbody + 10*flag; NPCbody=[edi+2] < 0x64; 写 [ebp+0xB4..0xBC]"},
-    {"site": "0x405827 (NPC, painter 0x405630 内)", "formula": "同 0x405294: word[0x8AA6C8+6*state] + 100*NPCbody + 10*flag"},
-    {"site": "0x405CAD (NPC, 第二解析器)", "formula": "同公式; 写 [esi+0xB4..0xBC]"}
+    {
+      "site": "0x40504D (player, type-0/1 解析器)",
+      "formula": "mov cx, word ptr [eax+0x8AA5C0] (eax=6*state); [ebp+0xB4] = w0 + 2*5*(5*(3*(3*type)) ... ) = w0 + 3000*type + 10*flag; [ebp+0xB8] = w0+w1; [ebp+0xBC] = w2",
+      "note": "type = 职业/身体类型 (0..8)，乘 3000；flag = [esi+0xC1] 字节，乘 10"
+    },
+    {
+      "site": "0x4056BC (painter 0x405630 内, 玩家)",
+      "formula": "frame = word[0x8AA5C0+6*state] + 3000*type + 10*flag; state=[esi+0xC0], type=[esp+0x12]&0xff, flag=[esi+0xC1]; 写 [esi+0xB4]/[esi+0xB8]/[esi+0xBC]"
+    },
+    {
+      "site": "0x40598B / 0x4059E3 (玩家变体, 坐骑/宠物)",
+      "formula": "frame = word[0x8AA5C0+6*state] + 3000*type + 10*flag (同一公式, bounds: type<0x21/0xB, state<9/0xB)"
+    },
+    {
+      "site": "0x40511C (怪物, race<2000)",
+      "formula": "imul edx,edx,0x64 (edx=race%10); frame = word[0x8AA686+6*state] + 1000*(race%10) + 10*flag; 写 [ebp+0xB4..0xBC]"
+    },
+    {
+      "site": "0x405AD6 (怪物, race<0x3E8)",
+      "formula": "frame = word[0x8AA686+6*state] + 1000*(race%10) + 10*flag; race>=0x3E8 走 0x405B4E 分支; race==0x8D (141) 特例 @0x405B00; 写 [esi+0xB4..0xBC]"
+    },
+    {
+      "site": "0x405294 (NPC)",
+      "formula": "state=[esp+0x3C]%3 (idiv 3, 余数回写 [esp+0x40]); frame = word[0x8AA6C8+6*state] + 100*NPCbody + 10*flag; NPCbody=[edi+2] < 0x64; 写 [ebp+0xB4..0xBC]"
+    },
+    {
+      "site": "0x405827 (NPC, painter 0x405630 内)",
+      "formula": "同 0x405294: word[0x8AA6C8+6*state] + 100*NPCbody + 10*flag"
+    },
+    {
+      "site": "0x405CAD (NPC, 第二解析器)",
+      "formula": "同公式; 写 [esi+0xB4..0xBC]"
+    }
   ],
   "frame_advance": {
     "fn": "0x40C4B0 (virtual, this=actor)",
@@ -142,13 +468,37 @@
     "logic": "al=9 默认; 若 action 在 2..0x13: dl = byte[action-2 + 0x44A890]; jmp [dl*4 + 0x44A884]: dl=0 -> al=0xD @0x44A848; dl=1 -> al=0xA @0x44A84C; dl=2 -> al 保持 9 @0x44A852; 然后若 flag==0: 9->0xB, 0xA->0xC, 0xD->0xE (0x44A85A-0x44A87D)",
     "byte_table_0x44A890": "[0,0,1,1,0,1,2,2,2,2,2,2,2,1,0,0,2,0] (18 项, action-2 索引)",
     "mapping": {
-      "actions_2_3_6_16_17_19": {"flag0": "0xE", "flagNZ": "0xD"},
-      "actions_4_5_7_15": {"flag0": "0xC", "flagNZ": "0xA"},
-      "actions_8_14_18": {"flag0": "0xB", "flagNZ": "9"},
+      "actions_2_3_6_16_17_19": {
+        "flag0": "0xE",
+        "flagNZ": "0xD"
+      },
+      "actions_4_5_7_15": {
+        "flag0": "0xC",
+        "flagNZ": "0xA"
+      },
+      "actions_8_14_18": {
+        "flag0": "0xB",
+        "flagNZ": "9"
+      },
       "others": "9"
     },
     "role": "action 字节（服务器消息/actor 当前动作 [esi+0x89]）→ 规范 state（玩家表 9..0xE 行的索引）。结果作为 vtable+0x10 状态设置器的参数（0x40E404 call [ebp+0x10] / 0x410BF5 call [edi+0x10]）。14 个调用点全部位于 0x40E3xx-0x4115xx 马匹/宠物/随从 action 分发器，均 mov ecx,0x8AA5A8（this 被忽略）。",
-    "call_sites": ["0x40E3FC", "0x40E443", "0x40E48B", "0x40E4D3", "0x40E5A9", "0x40E5E3", "0x40F07C", "0x410BED", "0x410C5C", "0x410DCA", "0x410E40", "0x410EC6", "0x410F30", "0x411508"]
+    "call_sites": [
+      "0x40E3FC",
+      "0x40E443",
+      "0x40E48B",
+      "0x40E4D3",
+      "0x40E5A9",
+      "0x40E5E3",
+      "0x40F07C",
+      "0x410BED",
+      "0x410C5C",
+      "0x410DCA",
+      "0x410E40",
+      "0x410EC6",
+      "0x410F30",
+      "0x411508"
+    ]
   },
   "corroboration_wil_headers": {
     "M-Hum.wil": "27000 frames = 9 x 3000 (9 个身体类型, 每类型 3000 帧块) — 对应玩家公式 3000*type (type 0..8)",
@@ -176,5 +526,10 @@
     "player_formula_3000_factor": "CONFIRMED — 3000*type (type=职业/身体, 0..8) 而非 3000*dir; 与 M-Hum.wil 27000=9x3000 一致"
   },
   "verdict": "Finding 279 closed (evidence_level primary-static/confirmed)。运行时帧表是 BSS 单例对象 0x8AA5A8 的字段：玩家表 0x8AA5C0=obj+0x18（33 条, state 0..32）、怪物表 0x8AA686=obj+0xDE（9 条默认, race 函数扩展到 11 条）、NPC 表 0x8AA6C8=obj+0x120（3 条）。全部内容为 EXE 编译期常量, 由 0x449C80（启动, 0x402046 唯一调用）写默认种子, 0x44A240（race, 3 渲染调用点）与 0x44A090（NPC action, 2 调用点）按需覆盖, 统一经 0x449C50 三字写器。表布局: 每 state 6 字节 = (w0 块起始帧, w1 块长, w2 帧间隔); 渲染公式 player = w0 + 3000*type + 10*flag、monster = w0 + 1000*(race%10) + 10*flag、NPC = w0 + 100*NPCbody + 10*(flag%3); 帧推进 0x40C4B0 消费 [0xB4]/[0xB8]/[0xBC]/[0xC4]。WIL 头 (M-Hum 9x3000, Mon-N 10x1000, NPC 64x100) 与公式完全互证。0x44A820 为 action→state 映射器（表 0x44A884/0x44A890, 14 调用点, 马匹/宠物分发）。Mir3.dat 与 weapon.ord 均不参与帧表。此结论修正 scene-entity-render-evidence.json 中 'tables are runtime (server) data' 的旧假设（现为静态常量）。",
-  "pending": "无（静态链闭合）。候选后续（非本 finding）: 玩家表 state 0..32 的具体动作语义命名（站立/行走/奔跑/攻击/受伤/死亡/挖矿/钓鱼/骑马等）可从 0x40C4B0 循环回调与 0x44A820 调用点交叉枚举——归属 Finding 282 (PlayerComposition) / 后续动作枚举 finding"
+  "pending": "静态链已闭合 (EI-290 player-state-actions-evidence.json 完成 state 0..32 动作语义枚举)。残余运行时项 (KEPT-runtime, 见 EI-290 pending): 挖矿/钓鱼两对状态 (0x15/0x1E 与 0x16/0x1F) 的归属、骑马步态 0x10/0x11 的走/跑具体映射、攻击链行 9..0xE 与坐/舞行 0x19..0x1C 的个体身份 —— 需服务端 action 码表/包证据。",
+  "closed_notes": {
+    "2026-08-11": [
+      "EI-279 的 state 0..32 动作语义命名候选后续 → 由 EI-290 (player-state-actions-evidence.json) 闭合 (primary-static): 33 行表格、SetAction 0x4058E0 分发/校验/公式、骑马机 0x410B00、马匹机 0x40E400、tick 驱动 0x411AB0、spawn-fx 0x40CD00、handler 对 [0xEC]、0x17→7 自动转移均已在 EI-290 中记录并附 VA。"
+    ]
+  }
 }

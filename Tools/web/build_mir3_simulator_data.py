@@ -69,12 +69,24 @@ def frame_tables() -> dict:
             node = node.get(sub, {})
         recs = node.get("records", []) if isinstance(node, dict) else node
         return [[int(r["w0"], 16), int(r["w1"]), int(r["w2"])] for r in recs]
-    return {
+    out = {
         "player": rows("player_table"),
         "monster": rows("monster_table_default"),
         "npc": rows("npc_table", "default_records"),
         "source": "state-frame-tables-evidence.json Finding 279 (primary-static)",
     }
+    # Finding 290 (PlayerStateActions) names the player states 0..32.
+    # state names are emitted as an aligned array when the evidence exists.
+    try:
+        ev290 = load("player-state-actions-evidence.json")
+        prows = ev290.get("player_table", {}).get("rows", [])
+        names = [r.get("semantic", "") for r in prows] if isinstance(prows, list) else []
+        if names:
+            out["player_names"] = names
+            out["source"] += " + Finding 290 (player state semantics)"
+    except Exception:
+        pass
+    return out
 
 
 def main() -> None:

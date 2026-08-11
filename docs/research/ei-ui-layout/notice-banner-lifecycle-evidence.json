@@ -1,0 +1,143 @@
+{
+  "evidence_id": "notice-banner-lifecycle",
+  "finding": 294,
+  "date": "2026-08-11",
+  "title": "NoticeBanner 0x777200 lifecycle: imm32 uniqueness, absence of timer/tick paths, show/hide branch semantics, identity with notice window id 15, display duration",
+  "objective": "Close the pending items of notice-prompt-window-evidence.json and notice-prompt-window (F268 id-15) by statically pinning the lifecycle of the object at absolute address 0x777200 (the 'banner singleton'): (1) confirm imm32 0x777200 appears ONLY at 0x425A48 (show) and 0x425B46 (hide) in the raw binary; (2) verify no timer/counter/tick path touches the object; (3) fully disassemble the show/hide paths (trigger, WIL frame / text rendered, what each branch does); (4) resolve whether 0x777200 is the notice window id 15 (公告) or a separate singleton, and its relationship to the notice-prompt window; (5) conclude the display-duration question.",
+  "question": "Is 0x777200 a separately-constructed banner singleton with timer-driven scrolling, or the in-place id-15 notice window of the winmgr (0x7243A4 + 0x52E5C)? What triggers show and hide, what frame/text each renders, and how long the window stays visible?",
+  "method": "Capstone linear disassembly (VA-0x400000) of 0x425800-0x425F00 (guild-window click dispatcher + branches), 0x42ADB0-0x42B3F0 (winmgr visibility/page dispatcher + id-15 handler), 0x423E80-0x423F80 (generic set-frame/size/position base), 0x43E260-0x43E660 (id-15 class: ctor/edit/paint/click), 0x418500-0x418700 (notice receive handlers + ticker), 0x450E40-0x450ED0 (chat send), 0x403E81/0x403FA4 and 0x404600 (main WndProc 0x7EE handler, cross-checked against confirmation-prompt-evidence.json); raw little-endian scans of the binary for imm32 0x777200 (00 72 77 00) and for `push 0xF`->`call 0x42ADB0` toggle sites; aligned 4-byte scan over 0x777200-0x777404 for read/write classification; GBK decode of 0x47C440/0x47C460.",
+  "source": {
+    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "resource_file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
+    "disassembler": "Tools/reverse-engineering/disasm_capstone.py",
+    "sibling_evidence": [
+      "docs/research/ei-ui-layout/notice-prompt-window-evidence.json",
+      "docs/research/ei-ui-layout/confirmation-prompt-evidence.json",
+      "docs/research/ei-ui-layout/chat-window-unified-model.json",
+      "docs/research/ei-ui-layout/social-window-render-evidence.json"
+    ]
+  },
+  "evidence_level": "primary-static",
+  "confidence": 0.92,
+  "addresses": [
+    "0x004257F0",
+    "0x004258F0",
+    "0x00425A11",
+    "0x00425A22",
+    "0x00425A46",
+    "0x00425A50",
+    "0x00425A57",
+    "0x00425A74",
+    "0x00425AAF",
+    "0x00425ABB",
+    "0x00425AF1",
+    "0x00425B1E",
+    "0x00425B44",
+    "0x00425B4E",
+    "0x00425B55",
+    "0x00425B74",
+    "0x00425BAD",
+    "0x00425BAC",
+    "0x00423E80",
+    "0x0042ADB0",
+    "0x0042B2AD",
+    "0x0042B349",
+    "0x0042B3E4",
+    "0x0042AC30",
+    "0x0042AC50",
+    "0x0042BE72",
+    "0x0042BE95",
+    "0x0042BE99",
+    "0x00427960",
+    "0x0042797E",
+    "0x0043E260",
+    "0x0043E340",
+    "0x0043E4B0",
+    "0x0043E5D9",
+    "0x00418570",
+    "0x00418637",
+    "0x00418600",
+    "0x00403FA4",
+    "0x00404600",
+    "0x0045A140",
+    "0x00450E5A",
+    "0x00450EC3",
+    "0x0045DC70",
+    "0x004524A0",
+    "0x004524D0",
+    "0x00425CB0",
+    "0x00425D60",
+    "0x00425D80",
+    "0x00425DE0",
+    "0x00412A94",
+    "0x00412320",
+    "0x00777200",
+    "0x00777218",
+    "0x0077721C",
+    "0x0077722C",
+    "0x00777240",
+    "0x00777244",
+    "0x0077728C",
+    "0x007773CC",
+    "0x007773D0",
+    "0x00777404",
+    "0x008AA48C",
+    "0x008AA498",
+    "0x008AB7B0",
+    "0x008AB7F0",
+    "0x008AB7F4",
+    "0x008B187C",
+    "0x008AB828",
+    "0x0047C438",
+    "0x0047C440",
+    "0x0047C460",
+    "0x0047BB28",
+    "0x0047BB4C"
+  ],
+  "verdict": "0x777200 is NOT a separately-constructed banner singleton: it is the in-place id-15 notice window object of the winmgr (winmgr base 0x7243A4 + 0x52E5C), constructed once at main-init (0x42797E, class ctor 0x43E260) and thereafter only re-framed and re-texted. imm32 0x777200 appears exactly twice in the raw binary (0x425A4C show, 0x425B4A hide); the 16 aligned absolute references are ALL reads (plus the two [0x7773D0] byte writes, which are flag flips, not object access). NO timer, counter, or tick path touches the object: the tick functions 0x425CB0/0x425D60/0x425D80/0x425DE0 animate only the 9 guild-window controls, and the only state that changes is [0x7773D0] and [winmgr+0x52E8C]. Display duration is therefore indefinite: the window persists (in the winmgr activation list) until an explicit toggle - the two guild branches (ctrl4 邀请入会 / ctrl7 行会解散), or the manual close/check click path (winmgr msg proc 0x42BE95 -> id-15 toggle 0x42B2AD). Both guild branches actually RE-SHOW the banner (0x423E80 = set-frame + size + position, net show); the 'hide' branch is the alternate state (frame 601, [0x7773D0]=0, different list source), not a window hide. The prior 'scrolling system announcement banner' role is corrected: statically there is no scroll mechanism - banner text is a static SetWindowTextA payload into the Win32 EDIT child at +0x1CC (0x7773CC); the notice-receive chain (internal window message 0x7EE -> main WndProc 0x403FA4 -> 0x404600) writes the chat-input edit [0x8AA48C], not the banner.",
+  "conclusions": [
+    {
+      "claim": "Raw LE scan proof: imm32 0x777200 appears exactly twice in the binary - `00 72 77 00` at file offset 0x25A4C (VA 0x425A4C, show branch) and 0x25B4A (VA 0x425B4A, hide branch). An aligned 4-byte scan over the object window 0x777200-0x777404 finds 16 absolute references, ALL reads: [0x777404] guard reads at 0x412320 and 0x412A94 (`mov eax,[0x777404]; test; je` - never written, BSS-zero, so the guard always proceeds); show-branch reads of [0x777244]/[0x777240]/[0x77721C]/[0x777218] at 0x425A2B/31/37/3C/3D plus imm 0x777200 at 0x425A4B and [0x7773CC] read at 0x425AAF; hide-branch mirror at 0x425B2A/2F/35/3B/41/44 + 0x425B49 + [0x7773CC] read at 0x425BAD. No reference to 0x77722C (frame field) or 0x77728C exists; those and 0x777218/0x21C/0x240/0x244 are zero in BSS at load and get their values only from the register-based main-init ctor (lea ecx,[esi+0x52e5c]). The only write anywhere near the object is the flag flip byte [0x7773D0]=1 (0x425A50) / =0 (0x425B4E).",
+      "va": ["0x425A4C", "0x425B4A", "0x412320", "0x412A94", "0x425A2B", "0x425A4B", "0x425AAF", "0x425B2A", "0x425B49", "0x425BAD", "0x425A50", "0x425B4E", "0x7773D0", "0x777404", "0x77722C"]
+    },
+    {
+      "claim": "Identity resolved: 0x777200 IS the id-15 notice window (公告), not a separate banner singleton. winmgr base = 0x7243A4, and 0x7243A4 + 0x52E5C = 0x777200 (this is the window's own activation/paint slot inside the winmgr instance). Main initializer 0x427960 calls the class ctor 0x43E260 at 0x427978-0x42797E with `lea ecx,[esi+0x52e5c]` and 9 arguments (id=0xF, frame=602, x=107, y=110, w=584, h=252, b=3, a=0), writing the object's geometry fields at +0x18 (x=107), +0x1C (y=110), +0x40 (w=584), +0x44 (h=252). F268 catalog addresses 0x7213A4 / 0x726500 are typos for 0x7243A4 / 0x777200. The prior evidence conflated two objects: the chat-window native EDIT strip [0x8AA48C] (shared by chat visibility jump-table entry 8 at 0x42B180 and by the notice-receive path) versus the id-15 banner window 0x777200 with its own Win32 EDIT child at +0x1CC == 0x7773CC.",
+      "va": ["0x427960", "0x42797E", "0x43E260", "0x777200", "0x7243A4", "0x777218", "0x77721C", "0x777240", "0x777244", "0x7773CC", "0x8AA48C", "0x42B180"]
+    },
+    {
+      "claim": "No timer/counter/tick path touches the banner: the 16 absolute references are all reads, the tick functions 0x425CB0/0x425D60/0x425D80/0x425DE0 (callers 0x42BC00/0x42C60D/0x42C882/0x42C982) frame-cycle only the 9 guild-window controls (writes at this+0x38/+0x3C of the control array), and no code in .text writes any field of the object (only the flag byte [0x7773D0] and the register-based [winmgr+0x52E8C] gate change). No SetScrollInfo/ScrollWindow call exists anywhere in the show/hide/paint paths: the 'scrolling system announcement banner' role in notice-prompt-window-evidence.json is corrected to a static notice/announcement display panel whose text is a SetWindowTextA payload (no scroll code statically observable; [INFERENCE] any runtime scroll would have to live inside the decrypted paint callbacks, unobservable statically).",
+      "va": ["0x425CB0", "0x425D60", "0x425D80", "0x425DE0", "0x42BC00", "0x42C60D", "0x42C882", "0x42C982", "0x7773D0", "0x7773CC"]
+    },
+    {
+      "claim": "Show/hide sites are guild-window button branches, and BOTH re-show the banner. The guild window's click dispatcher 0x4258F0 reads a 9-control array at this+0x118 (stride 0xB4; dispatch order 0,1,2,3,4,7,5,8,6 - not ctor order). Control idx 4 邀请入会 (frames 616/617) branch 0x425A11-0x425AC4: leader guard [this+0x94]; `push 0xF; mov ecx,0x7243A4; call 0x42ADB0` (id-15 visibility toggle) at 0x425A22; then `mov ecx,0x777200; mov byte [0x7773D0],1; call 0x423E80` with (frame=0x25A=602, x=[0x777218], y=[0x77721C], w=[0x777240], h=[0x777244]) at 0x425A46-0x425A57; then the guild-member list at game+0xEC is walked (0x45DC70(0x8AB7A8, stackbuf, line, 0x8B187C), CR-LF separator 0x47BB4C) into a 0x4E2-dword (0x1388-byte) stack buffer and SetWindowTextA([0x7773CC], buf) at 0x425ABB-0x425AC4. Control idx 7 行会解散 (frames 622/623) branch 0x425AF1-0x425BC2 mirrors it: guard [this+0xB4] (list1 count; zero -> error dialog with 0x47BB28 text at 0x425B07-0x425B19), same toggle at 0x425B1E, `0x423E80(frame=0x259=601, x/y/w/h from +0x18/+0x1C/+0x40/+0x44)` with [0x7773D0]=0 at 0x425B44-0x425B55, and SetWindowTextA([0x7773CC], buf) from the list at game+0xBC (0x425BAC-0x425BC2). 0x423E80 is a generic set-frame+size+position: it loads the frame bitmap (0x466130 on [esi+0x2C]), stores frame at +0x28, sizes the Win32 window to the bitmap dims via [0x4762B0] (SetWindowPos-like), stores w/h at +0x40/+0x44, and positions the window - i.e. a net SHOW. Both branches pass the banner's own stored x/y/w/h back in (self-referential geometry), confirming +0x18/+0x1C/+0x40/+0x44 are the ctor-written x/y/w/h. The 'hide' naming of 0x425B46 is task terminology for the alternate state (frame 601 + flag 0 + list1 text source), not a window hide.",
+      "va": ["0x4258F0", "0x425A11", "0x425A22", "0x425A46", "0x425A50", "0x425A57", "0x425A74", "0x425AAF", "0x425ABB", "0x425AF1", "0x425B1E", "0x425B44", "0x425B4E", "0x425B55", "0x425B74", "0x425BAD", "0x425BAC", "0x423E80", "0x466130", "0x47BB28", "0x47BB4C"]
+    },
+    {
+      "claim": "id-15 visibility toggle 0x42B2AD (reachable only via 0x42ADB0, jump table 0x42B3E4 entry 15; guard `cmp eax,0xF; ja 0x42B3DD` proves id 15 is NOT skipped by winmgr close-all). The gate [winmgr+0x52E8C] is the banner's activation-list membership. Nonzero (shown) -> hide-arm 0x42B2BB: call 0x42AC50 (remove from activation list), vtable[4](0) (window invisible), ShowWindow(edit ctrl, 0), SetWindowTextA([0x7773CC], 0x8B187C) (stage notice text), [0x8AA498]=1, ret 0. Zero (hidden) -> show-arm 0x42B349: call 0x42AC30 (add to activation list), vtable[4](1) (visible), ShowWindow(edit ctrl, SW_SHOW=5), [0x4762B8] InvalidateRect, MoveWindow(edit ctrl from [winmgr+0x53018/0x5301C/0x53020/0x53024]), [0x8AA498]=0, ret 1. Both arms manage the Win32 EDIT child, so the banner is interactive when shown. Polarity note: prior evidence labelled 0x42B2AD 'hide' and 0x42B349 'show' - consistent: nonzero gate (already shown) -> hide arm, zero gate (hidden) -> show arm.",
+      "va": ["0x42ADB0", "0x42B3E4", "0x42B2AD", "0x42B2BB", "0x42B349", "0x42AC30", "0x42AC50", "0x42B3DD", "0x7773CC", "0x8B187C", "0x8AA498"]
+    },
+    {
+      "claim": "Exactly three call sites toggle id 15 (raw scan for `push 0xF`->`call 0x42ADB0`): 0x425A1F (guild ctrl4), 0x425B1E (guild ctrl7), and 0x42BE95 (winmgr msg proc manual dismissal: when [winmgr+0x52E8C]!=0, `lea ecx,[esi+0x52e5c]; call 0x43E4B0` (banner click handler with mouse args); if it returns nonzero -> `push 0xF; call 0x42ADB0` -> toggle hide-arm). So a user click on the banner's own child buttons is the ONLY manual dismissal path, and it goes through the same toggle.",
+      "va": ["0x425A1F", "0x425B1E", "0x42BE72", "0x42BE95", "0x42BE99", "0x43E4B0", "0x52E8C"]
+    },
+    {
+      "claim": "Banner click handler 0x43E4B0 (tail 0x43E5D9-0x43E637): the green-check child (btn2 at +0x108, frames 606/607) does GetWindowTextA([0x7773CC], stackbuf, 0xFA0) -> '\n' line split -> 0x45DC70(0x8AB7A8, dst, line, 0x8B187C) append -> commit into the chat-input object 0x8AB828 via 0x4524D0 (byte [+0x1D0]==0; builder pushes msg id 0x411, guild level/rank edit mode) or 0x4524A0 (byte [+0x1D0]!=0; builder pushes msg id 0x410, announcement mode). The close child (btn1 at +0x54, frames 161/162) is consumed with no state change. F268's 'id 15 display-only, never clickable' is corrected: the banner's child controls ARE clickable (hit-test at +0x54/+0x108), although the window itself is not in the hit-test rect table (not draggable/movable).",
+      "va": ["0x43E4B0", "0x43E5D9", "0x43E5C6", "0x43E637", "0x4524A0", "0x4524D0", "0x452940", "0x7773CC", "0x8B187C", "0x8AB828"]
+    },
+    {
+      "claim": "Receive-side chain (internal window message 0x7EE, NOT a network proto): notice receive handlers 0x418570 and 0x418637 (two sites) MoveWindow/ShowWindow the chat-input strip [0x8AA48C] (to [0x8AB7F0]+0x23A x [0x8AB7F4]+0xDF, 0x162 x 0x10), GetWindowTextA + SetWindowTextA([0x8AA48C], 0x8B187C), SendMessage([0x8AB7B0] main hwnd, 0x7EE=2030, ...), [0x8AA498]=1, and fall into a per-frame ticker loop 0x418600+ that iterates the notice list at esi+0x238 (node stride 0xB8, index stored at esi+0x462, per-entry `push 2; call [node+0x10]` vtable) repositioning/showing the strip. The main game WndProc handles 0x7EE at 0x403FA4 (`cmp ebp,0x7EE; jne; push edi; push ebx; mov ecx,esi; call 0x404600`); 0x404600 (game object 0x8AB828): gate [obj+0x8A4]==1, zero 0x41 dwords at obj+0xE3D, SetWindowTextA([0x8AA48C], [obj+0xD39]), [obj+0xD38]=1, call 0x403640 (chat-input dual-buffer restore), [0x8AA498]=0. A second WndProc (0x459654) handles 0x7EE via 0x45A140 (char-select window). Chat send side 0x450E5A-0x450EC3: SendMessage([0x8AB7B0], 0x7ED=2029, param 1 if text starts '@' else 0). Correction: 0x7ED/0x7EE are internal WM_USER-range window messages to the main hwnd, not network protos (prior 'proto 0x7ED' label corrected). The notice text displayed by the banner itself is staged into its own EDIT [0x7773CC] via SetWindowTextA([0x7773CC], 0x8B187C) in the id-15 toggle arms.",
+      "va": ["0x418570", "0x418637", "0x418600", "0x403FA4", "0x404600", "0x459654", "0x45A140", "0x450E5A", "0x450EC3", "0x403640", "0x8AA48C", "0x8AA498", "0x8AB7B0", "0x8AB7F0", "0x8AB7F4", "0x8B187C", "0x8AB828", "0x7EE", "0x7ED"]
+    },
+    {
+      "claim": "Display duration: indefinite. The banner persists in the winmgr activation list until an explicit toggle: (a) a guild ctrl4/ctrl7 click (re-show with frame 602/601 + list text), (b) manual dismissal - click on the banner's own close/check child -> winmgr msg proc 0x42BE95 -> id-15 toggle hide-arm, or (c) an id-15 toggle with gate==0 from any external dispatcher caller [INFERENCE: the runtime event that sets [winmgr+0x52E8C] (server-notice arrival) is register-based and not statically resolvable]. It is NOT closed by winmgr close-all (guard `cmp eax,0xF; ja 0x42B3DD` skips id 15). The notice-receive path (0x7EE -> 0x404600) replaces the CHAT INPUT content, not the banner; the banner's own text is only replaced at toggle/re-frame time. 0x8B187C is a global text/format buffer (BSS, zero at load) used both as the banner-edit text source and as the 0x45DC70 vararg-concat terminator/sentinel; its runtime content is not statically resolvable.",
+      "va": ["0x42B2AD", "0x42B3DD", "0x42BE95", "0x425A22", "0x425B1E", "0x8B187C", "0x45DC70"]
+    }
+  ],
+  "closed_notes": {
+    "notice-prompt-window-evidence.json.banner_singleton": "duration_status and role corrected by F294 (notice-banner-lifecycle-evidence.json): the object at 0x777200 is the in-place id-15 notice window (winmgr 0x7243A4 + 0x52E5C, class ctor 0x43E260 at main-init 0x42797E), not a separately constructed singleton; imm32 0x777200 appears exactly twice (0x425A4C/0x425B4A); the 16 aligned refs are all reads; no timer/tick touches it; both guild branches (ctrl4 frame 602 [0x7773D0]=1, ctrl7 frame 601 [0x7773D0]=0) re-show via 0x423E80; no scroll mechanism statically (static SetWindowTextA into EDIT child [0x7773CC]); display indefinite until explicit toggle (guild buttons or manual click via 0x42BE99 -> 0x42B2AD) or notice replacement (0x7EE -> 0x403FA4 -> 0x404600, writing chat input [0x8AA48C]).",
+    "F268.window-id-15": "0x777200 == notice window id 15; F268 addresses 0x7213A4/0x726500 are typos for 0x7243A4/0x777200; 'display-only, never clickable' corrected (child controls at +0x54/+0x108 are clickable via 0x43E4B0); close-all skips id 15 (guard at 0x42B3DD); toggle entry 0x42B2AD is stateful on [winmgr+0x52E8C] (activation membership)."
+  },
+  "pending": [
+    "Runtime-only residual (not statically resolvable): (1) the exact runtime event that writes [winmgr+0x52E8C] to nonzero for the show arm (server-notice arrival assumed [INFERENCE]); (2) runtime content of the 0x8B187C global text buffer (BSS-zero at load, assembled at runtime by the notice/chat paths); (3) whether the decrypted runtime paint callback performs any visual scroll/animation beyond the static EDIT control (no scroll API statically present). These do not affect layout/draw conclusions."
+  ]
+}

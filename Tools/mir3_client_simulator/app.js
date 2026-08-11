@@ -140,7 +140,11 @@ function renderScene() {
     spr.dataset.rect = `${e.x - 20},${e.y - 60},40,70`;
     spr.dataset.evidence = e.evidence_level;
     const f0 = entityFrame(e, performance.now());
-    spr.dataset.desc = `${e.library} F${f0} · ${e.note || ""}`;
+    // Finding 290: player state semantics (0..32) appended to the frame table.
+    const pn = STATE.data.frame_tables && STATE.data.frame_tables.player_names
+      ? STATE.data.frame_tables.player_names[e.appearance && e.appearance.table === "player" ? e.appearance.state : -1]
+      : null;
+    spr.dataset.desc = `${e.library} F${f0} · ${e.note || ""}${pn ? ` · ${pn}` : ""}`;
     sceneEl.appendChild(spr);
   }
 }

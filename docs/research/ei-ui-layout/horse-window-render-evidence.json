@@ -135,10 +135,29 @@
       ],
       "evidence_level": "primary-static",
       "notes": "imm32 scan of all 0x5600FC+0x144k (k=0..160) shows NO direct reference to 0x566F18 - the mount element is reached only through the computed [esi+0x62A14] pointer, so earlier full-VA scans of stride-324 addresses correctly found only 13 slots with imm32 refs. Element 87 itself is never an imm32 operand. The state value (1/2/3) does NOT index the element table; it only gates the hardcoded selector byte 0x57, so per-value sub-state appearance differences cannot be derived from the element binding (runtime-only)."
+    },
+    {
+      "key": "F292-closes-state-values-and-word-fields-usage",
+      "date": "2026-08-11",
+      "closing_finding": 292,
+      "conclusion": "Both pending items are closed at the primary-static level by Finding 292 (horse-window-state-evidence.json). State byte0 at 0x7DA060 is a 2-bit clamp enum 0..3 (0 = not mounted, clamped at 0x40F46D-0x40F472 and 0x40C78A-0x40C78F); nonzero gates the '@遛马' branch (0x426AE2), pose action 0x1D (0x40F3CD), the world-render mount draw (0x40F662) and scales the mount animation frame by state*400 (0x40F6D7). Packet cases 0x267/0x26B preserve byte0 (0x41F5C8-0x41F5D8) - state transitions originate from session virtual 0x40C720 (vtable slot 0x8C at 0x47650C, invoked by slot 0x150 = 0x410080) or the 0x40FED0 wrapper (slot 0x14C at 0x4765CC). The word fields are 16-bit tint colors: word[0x7DA061-62] tints the player sprite (0x40FD6E), word[0x7DA063-64] tints the mount sprite (0x40FDB0) and the HUD mount icon (0x44B666 -> 0x45FD50 arg6; proven a fill color for RLE op 0xC2 spans at 0x45FF9F with 565 masks at [ebx+0x67..0x74] and float channel scaling at 0x4600B6). Server-side semantic names of 1/2/3 and the protocol origin of the colors remain candidate.",
+      "evidence_chain": [
+        {"va": "0x40F46D-0x40F472 / 0x40C78A-0x40C78F", "fact": "state byte clamped to 0..3 (2-bit enum)"},
+        {"va": "0x41F5C8-0x41F5D8 / 0x41F666-0x41F685", "fact": "packet cases 0x267/0x26B preserve and re-send the current state byte0"},
+        {"va": "0x40FD6E", "fact": "word[0x7DA061-62] -> player-sprite tint argument of draw 0x404E10"},
+        {"va": "0x40FDB0", "fact": "word[0x7DA063-64] -> mount-sprite tint argument of draw 0x404E10"},
+        {"va": "0x44B666-0x44B6A8, 0x45FF9F, 0x4600B6", "fact": "HUD icon passes word[0x7DA063] as arg6 of 0x45FD50 = fill color for RLE op 0xC2 (565 masks [ebx+0x67..0x74], float scaling)"},
+        {"va": "0x40F3CD, 0x40F662, 0x40F6D7", "fact": "nonzero state -> pose action 0x1D, world-render mount draw, animation frame scaled by state*400"}
+      ],
+      "evidence_level": "primary-static",
+      "remaining_candidates": [
+        "semantic names of state 1/2/3 (riding/leading/walking)",
+        "protocol origin/trigger of the tint colors in word[0x7DA061-62] / word[0x7DA063-64]"
+      ]
     }
   ],
   "pending": [
-    "per-value sub-state semantics of mount state values 1/2/3 at 0x007DA060 (candidate)",
-    "protocol meaning of the two word fields 0x007DA061-62 / 0x007DA063-64 (server packet semantics; the HUD icon passes word[0x7DA063] into 0x45FD50 as 16-bit fill-color arg6 - primary-static usage - but the protocol/semantic origin of the value is runtime-only)"
+    "semantic names of mount state values 1/2/3 (riding/leading/walking) - server-packet semantics only; client-side enum usage closed by Finding 292 (candidate)",
+    "protocol origin of the tint colors in word[0x7DA061-62] / word[0x7DA063-64] - server packet case 0x267 payload; client-side usage (player/mount/HUD icon tint) closed by Finding 292 (candidate)"
   ]
 }

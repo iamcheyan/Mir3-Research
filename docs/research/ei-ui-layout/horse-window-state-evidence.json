@@ -1,0 +1,87 @@
+{
+  "evidence_id": "ei-horse-window-state",
+  "finding": 292,
+  "date": "2026-08-11",
+  "title": "HorseWindowState: mount-state block 0x7DA060-0x7DA064 writers, readers, and word-field tint semantics",
+  "objective": "Close the two pending items of horse-window-render-evidence.json (Finding 264 follow-up): (a) mount state values 1/2/3 at 0x7DA060 and (b) protocol meaning of word fields 0x7DA061-62 / 0x7DA063-64, by exhaustively enumerating every static reader/writer of the 5-byte mount-state block, disassembling the HUD mount-icon draw 0x45FD50 to prove arg6 (word[0x7DA063]) is a 16-bit fill color, and resolving the packet-path writers.",
+  "question": "Who writes and reads the mount-state block at 0x7DA060..0x7DA064, what are the semantics of state byte0 (values 0/1/2/3) and of the two word fields 0x7DA061-62 / 0x7DA063-64, and how does arg6 of the HUD blit 0x45FD50 select fill color?",
+  "method": "Primary-static disassembly of Mir3.exe (raw dump, image base 0x400000, file offset = VA - 0x400000). Techniques: (1) exhaustive imm32 byte-pattern scans for every address in 0x7DA060..0x7DA064 and for session-relative offsets 0x629C8..0x629D4; (2) full disassembly of state writers 0x40F420 (vtable slot 0x476508), 0x40C720 (slot 0x47650C), wrapper 0x40FED0 (slot 0x4765CC), their caller 0x410080 (slot 0x4765D0), and pose validator 0x405630; (3) packet-switch cases 0x267 (0x41F597) and 0x26B (0x41F666) in dispatcher 0x41F1CF (jump table 0x421E8C); (4) full disassembly of the HUD blit 0x45FD50 including the RLE op C2/C3 fill-color paths; (5) vtable layout of the session object 0x777698 and window-manager table 0x476640 region; (6) GB18030 decoding of the horse-window command literals.",
+  "source": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+  "evidence_level": "primary-static",
+  "confidence": 0.92,
+  "addresses": [
+    "0x7DA060", "0x7DA061", "0x7DA063", "0x7DA064",
+    "0x40F420", "0x40F43A", "0x40F46D", "0x40F47F", "0x40F583", "0x40F5A6",
+    "0x40C720", "0x40C75E", "0x40C78A", "0x40C79C",
+    "0x40FED0", "0x410080", "0x4100C6",
+    "0x41F597", "0x41F5BA", "0x41F5C8", "0x41F666",
+    "0x426ABD", "0x426AE2", "0x426B22",
+    "0x40FD6E", "0x40FDB0",
+    "0x44B560", "0x44B666", "0x44B6A8",
+    "0x45FD50", "0x45FF9F", "0x45FFA8", "0x4600B6",
+    "0x405630", "0x405894",
+    "0x476508", "0x47650C", "0x4765CC", "0x4765D0",
+    "0x40F3CD", "0x40F662", "0x40F6D7",
+    "0x47B058", "0x47B060", "0x47B068"
+  ],
+  "verdict": "0x7DA060 is byte 0 of the session's 5-byte mount-state block ([0x777698]+0x629C8); byte0 is a 2-bit clamp enum 0..3 (0 = not mounted) that gates horse-window buttons, pose dispatch, and the world-render mount draw, and additionally scales the mount animation frame by state*400. The two word fields are 16-bit tint colors: word[0x7DA061-62] tints the player sprite, word[0x7DA063-64] tints the mount sprite in world render and the HUD mount icon (passed as arg6 of blit 0x45FD50, proven a fill color for RLE spans op 0xC2). The packet handlers 0x267/0x26B never change byte0: they re-submit the current state block through session virtual 0x40F420, so state changes originate from the server-driven action path 0x40C720 (slot 0x8C, via session slot 0x84 = 0x410080) or external callers of the 0x40FED0 wrapper. Sub-state meanings of 1/2/3 (riding/leading/walking) and the protocol origin of the color words remain server-semantic [candidate].",
+  "conclusions": [
+    {
+      "claim": "The 5-byte block at 0x7DA060..0x7DA064 is session object 0x777698 + 0x629C8. Layout: byte0 state (0x7DA060), word (0x7DA061-62), word (0x7DA063-64). Writers 0x40F420/0x40C720 store dword arg2 at [esi+0x629C8] and byte arg3 at [esi+0x629CC] (0x40F436-0x40F448, 0x40C75E-0x40C765).",
+      "va": ["0x40F43A", "0x40F448", "0x40C75E", "0x40C765", "0x7DA060"]
+    },
+    {
+      "claim": "Session vtable (base 0x476480, ctor 0x40C5D0 stores it at 0x40C5ED) maps the mount-state virtuals: slot 0x88 = 0x40F420 (write state block), slot 0x8C = 0x40C720 (action-packet variant, 6 args), slot 0x14C = 0x40FED0 (public 3-arg wrapper forwarding (dword,byte) to 0x40F420), slot 0x150 = 0x410080 (calls 0x40C720 with a caller-built (dword,byte) block at 0x4100A0-0x4100C6). Slots 0x84=0x40C900, 0x85=0x40B850 are unrelated. [INFERENCE: no direct call-[vtable+slot] instruction for slots 0x14C/0x150 exists; dispatch is via indirect call with cached/offset pointers.]",
+      "va": ["0x476508", "0x47650C", "0x4765CC", "0x4765D0", "0x40C5ED", "0x4100C6"]
+    },
+    {
+      "claim": "State byte0 is clamped to 0..3 by 'cmp byte[eax],4 / jb / mov byte[eax],0' in both writers (0x40F46D-0x40F472, 0x40C78A-0x40C78F): a 2-bit enum. Nonzero state also forces byte [esi+0x629CF]=0x57 (0x40F47F, 0x40C79C), which selects mount appearance element 87 (0x566F18) at [esi+0x62A14] via the x324 lea chain (0x40F5A6-0x40F5C0) - element index is the hardcoded 0x57, not the state value.",
+      "va": ["0x40F46D", "0x40F47F", "0x40C78A", "0x40C79C", "0x40F5A6"]
+    },
+    {
+      "claim": "State readers (exhaustive imm32 scan): only 4 absolute refs to 0x7DA060 exist - packet case 0x267 (0x41F5C9), packet case 0x26B (0x41F667), and the two horse-window click gates (0x426ABD, 0x426AE2). Session-relative readers add the world-render gate (0x40F662) and pose dispatch (0x40F3CD). byte[0x7DA060]==0 lets button this+0x108 send '@上马' (0x47B060); !=0 lets button this+0x1BC send '@遛马' (0x47B068); buttons this+0x270 '@收马' (0x47B058) and this+0x324 '@遛马' (0x47B068) are unconditional. All literals decoded GB18030.",
+      "va": ["0x41F5C9", "0x41F667", "0x426ABD", "0x426AE2", "0x47B058", "0x47B060", "0x47B068"]
+    },
+    {
+      "claim": "Packet case 0x267 (0x41F597, jump table 0x421E8C) writes word[0x7DA063]=word[esp+0x18] and word[0x7DA061]=word[esp+0x16] from packet payload, then re-submits the CURRENT state block (dword[0x7DA060]+byte[0x7DA064] read at 0x41F5C8-0x41F5D8) through 0x40F420(this=0x777698) - byte0 is preserved, never overwritten. Then flushes buffered horse list via 0x44BC30([ebx+0x2CF170]) and clears 0x30E dwords at [ebx+0x2A54AC]. Case 0x26B (0x41F666) is the echo/resend twin with identical preserve-and-resend behavior. State transitions therefore come from the server action path (0x40C720/0x410080) or external 0x40FED0 callers, not from these packet cases.",
+      "va": ["0x41F597", "0x41F5BA", "0x41F5C8", "0x41F5E0", "0x41F666", "0x44BC30"]
+    },
+    {
+      "claim": "word[0x7DA061-62] tints the player sprite: sole reader 0x40FD6E ('mov dx, word[esi+0x629C9]') pushes it as the tint argument (slot 4) of draw 0x404E10 for the player's base body. word[0x7DA063-64] tints the mount sprite: sole non-HUD reader 0x40FDB0 ('mov dx, word[esi+0x629CB]') pushes it for the mount draw at 0x40FDCB-0x40FDEB (coords [esi+0x629DC/0x629E0], arg 0x14). Both are 16-bit RGB565-ish colors, not frame indexes.",
+      "va": ["0x40FD6E", "0x40FDB0", "0x40FDCB", "0x404E10"]
+    },
+    {
+      "claim": "HUD mount icon: paint 0x44B560 (invoked from window paint switch 0x44B2D0 for state 0 and 1) draws the icon via 0x466130(element 0x566DD4, frame = byte[0x777720]*10+byte[0x777723]+0x3B; pose 0x777720=[session+0x88], anim step 0x777723=[session+0x8B]) and then calls blit 0x45FD50 with arg6 = word[0x7DA063] and arg7 = 0xFFFF (0x44B666-0x44B6A8). 0x777720/0x777723 have no direct imm32 writers; they are absolute aliases of session fields written by 0x405630/0x40F420 in session-relative form.",
+      "va": ["0x44B560", "0x44B666", "0x44B6A8", "0x777720", "0x777723", "0x44B62D"]
+    },
+    {
+      "claim": "0x45FD50 arg6 ([esp+0x114]) and arg7 ([esp+0x118]) are 16-bit fill colors for RLE span ops: op 0xC2 loads arg6 (0x45FF9F), op 0xC3 loads arg7 (0x45FFA8). Colors are decomposed with RGB masks [ebx+0x6C/0x70/0x74] and shift counts [ebx+0x67/0x68/0x69] (classic 565), scaled in float (fild/fidiv/fimul at 0x4600B6-0x4600CF). All other 22 call sites of 0x45FD50 pass 0xFFFF/0xFFFF (no tint); the HUD horse icon is the only tinted caller.",
+      "va": ["0x45FD50", "0x45FF9F", "0x45FFA8", "0x4600B6", "0x44B6A8"]
+    },
+    {
+      "claim": "State value 1/2/3 consumption beyond the ==0/!=0 gates: (a) pose dispatch 0x40F3CD compares byte[esi+0x629C8] with 0 - nonzero selects action 0x1D, zero selects action 7 or 0 depending on [esi+0x61BC0]; (b) world-render 0x40F662: state!=0 plus mount element [esi+0x62A14] set plus [esi+0xC0]>=0x1D draws the mount; (c) mount anim frame A = state*400 - [esi+0x8A]*3000 + [esi+0xC4] - 0xAA0, frame = 0x2710 + A%400 (0x40F6D7-0x40F6E9) - the state value scales the animation cycle, so 1/2/3 do map to distinct client behaviors, but their semantic names (riding/leading/walking) are server-driven.",
+      "va": ["0x40F3CD", "0x40F662", "0x40F6D7"]
+    },
+    {
+      "claim": "0x405630 (called at the head of 0x40F420/0x40C720) validates the pose/action packet: low byte <= 0x32 dispatch via table 0x4058A8 / jump table 0x405894, sets movement marker [esi+0x8C]=0x47 ('G') or 0x4C ('L'), computes frame ranges from tables 0x8AA5C0/0x8AA5A8 into [esi+0xB4]/[esi+0xB8]. Failure aborts the state commit (0x40F42E-0x40F430 -> ret 0 at 0x40F5DB).",
+      "va": ["0x405630", "0x405894", "0x4058A8", "0x40F429"]
+    }
+  ],
+  "closed_notes": {
+    "F264-pending-state-subvalues": {
+      "date": "2026-08-11",
+      "closing_finding": 292,
+      "conclusion": "Pending item 'per-value sub-state semantics of mount state values 1/2/3 at 0x007DA060' closed: byte0 is a 2-bit clamp enum 0..3; 0 = not mounted (==0 gate for '@上马', world-render skip, pose action 7/0); any nonzero value gates '@遛马', pose action 0x1D, world-render mount draw, and scales the mount animation frame by state*400 (0x40F6D7). The distinct names of 1/2/3 remain server semantics [candidate]."
+    },
+    "F264-pending-word-fields": {
+      "date": "2026-08-11",
+      "closing_finding": 292,
+      "conclusion": "Pending item 'protocol meaning of the two word fields 0x007DA061-62 / 0x007DA063-64' closed as primary-static usage: both words are 16-bit tint colors. word[0x7DA061-62] tints the player sprite (0x40FD6E -> draw 0x404E10); word[0x7DA063-64] tints the mount sprite in world render (0x40FDB0 -> 0x404E10) and the HUD mount icon (0x44B666 -> 0x45FD50 arg6, proven a fill color for RLE op 0xC2 spans at 0x45FF9F with 565 masks at [ebx+0x67..0x74] and float channel scaling at 0x4600B6). Both words are written only from server packet case 0x267 payload (0x41F5BA/0x41F5C1); why the server sends per-state colors is a protocol/runtime question [candidate]."
+    }
+  },
+  "pending": [
+    "Distinct semantic names of mount state values 1/2/3 (riding/leading/walking) - server-packet semantics, not decodable from the client alone (candidate)",
+    "Protocol origin/meaning of the tint colors in word[0x7DA061-62] and word[0x7DA063-64] (server sends them in packet case 0x267; the trigger and per-value palette are runtime) (candidate)",
+    "External callers of session virtual 0x40FED0 (slot 0x14C) / 0x410080 (slot 0x150): no statically-resolvable indirect call site exists; the invocation path (likely a cached virtual dispatch through the action system) is not yet located (candidate)"
+  ]
+}

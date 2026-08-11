@@ -230,5 +230,40 @@
       300
     ]
   ],
-  "source": "state-frame-tables-evidence.json Finding 279 (primary-static)"
+  "source": "state-frame-tables-evidence.json Finding 279 (primary-static) + Finding 290 (player state semantics)",
+  "player_names": [
+    "stand [INFERENCE: idle, 4 frames loop]",
+    "walk [INFERENCE: 6-frame 100ms stride gait]",
+    "run [INFERENCE: 5-frame 75ms stride gait]",
+    "run-variant [INFERENCE: 5-frame, same cadence as 2]",
+    "hit/attack strike [INFERENCE: 1-frame 100ms; spawn-fx group id 1]",
+    "mining/fishing pair A member [INFERENCE]; tick-driver special (byte counter [0x61B98]+=2, loop limit [0x61B99])",
+    "attack windup [INFERENCE: 1-frame]",
+    "hit [INFERENCE: 3-frame 200ms classic hit pose]; riding machine re-applies on new-dir input + msg 0xBC7; tick 0x17->7 completion",
+    "hurt [INFERENCE: the slow 2-frame 400ms Mir hurt pose]",
+    "attack A [INFERENCE: 6-frame; 0x44A820 maps action->state 9/0xA/0xD family]",
+    "attack B [INFERENCE]",
+    "attack C [INFERENCE]",
+    "attack D [INFERENCE]",
+    "attack E [INFERENCE]; 0x17 completion return target @0x40DEB6",
+    "attack F [INFERENCE]",
+    "cast [INFERENCE: 3-frame 100ms]",
+    "mounted gait A [INFERENCE: 10-frame 70ms loop, faster]; riding machine: steps>0xB, fx 0x23, msg 0xBD8, guard [0x629D2]",
+    "mounted gait B [INFERENCE: 10-frame 90ms loop, slower]; riding machine: steps>0xF, fx 0x22, msg 0xBD7, guard [0x629D1]; horse msg 0x51A",
+    "mounted stand [INFERENCE]; horse msg 0x51C",
+    "mounted attack/variant [INFERENCE]",
+    "mounted attack/variant [INFERENCE]",
+    "unmounted gait [INFERENCE]",
+    "unmounted gait [INFERENCE]",
+    "unmounted gait [INFERENCE]",
+    "mount/dismount transition [INFERENCE: 10-frame]",
+    "sit [INFERENCE]",
+    "sit-variant [INFERENCE]",
+    "dance/gesture [INFERENCE]",
+    "dance/gesture [INFERENCE]",
+    "stand variant [INFERENCE]",
+    "mining/fishing pair B member [INFERENCE]; tick-driver special",
+    "mining/fishing pair B member [INFERENCE]; tick-driver special",
+    "0x17 completion return target @0x40DEB6; also [INFERENCE: 3-frame]"
+  ]
 }

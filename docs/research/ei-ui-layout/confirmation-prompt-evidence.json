@@ -1,184 +1,597 @@
 {
-  "source": {
-    "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-    "resource_file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
-    "method": "static disassembly (capstone, VA-0x400000) of ctor 0x418030, base ctor 0x417FB0, button ctor 0x417550, paint 0x4182A0, click 0x418400, keyboard 0x418470, activation 0x418520 plus push-imm32 frame scan and IAT thunk-name decode",
-    "evidence_level": "primary-static (machine code direct) + primary-resource-visual (WIL pixels); no runtime memory evidence"
-  },
-  "singleton": {
-    "object_va": "0x007E04C8",
-    "class_ctor": "0x00418030",
-    "base_ctor": "0x00417FB0",
-    "button_class_vtable": "0x004763A8",
-    "note": "The parent class vtable has no static reference anywhere in the binary (built at runtime); the child button class HAS a static vtable 0x4763A8 in .data."
-  },
-  "constructor": {
-    "va": "0x00418030",
-    "arity": 8,
-    "ret": "0x20 (cdecl-like caller-cleanup; 8 args)",
-    "args": [
-      {"arg": 1, "meaning": "WIL resource (GameInter handle 0x565994 for all callers)", "store": "this+0x45C", "side_effect": "SelectFrame(resource, 950) at 0x41804E; this+4 = 0x3B6 = 950"},
-      {"arg": 2, "meaning": "dialog type id -> this+0 (3=pay/drop-gold, 4=leader-only, 6=kick member, 9=guild-create, 0x65=return-to-select); participates in 0x7EE wparam high byte", "store": "this+0"},
-      {"arg": 3, "meaning": "button mode: 0=only middle (this+0x2F0 checkmark 157/158), 1=YES (this+0x238, frames 151/152) + NO (this+0x3A8, frames 154/155) and [this+0x462]=0, 2=none", "store": "this+0x462 layout selector"},
-      {"arg": 4, "meaning": "message string, copied to this+0x2C (GBK)", "store": "this+0x2C"},
-      {"arg": 5, "meaning": "message-rect variant: 0 -> bottom=top+0x78 (h=97); nonzero -> bottom=top+0x64 (h=77); left=x+0x18, top=y+0x17, right=x+0x14D", "store": "this+0x18 SetRect inputs"},
-      {"arg": 6, "meaning": "x position; -1 triggers in-ctor centering", "store": "this+8 rect"},
-      {"arg": 7, "meaning": "y position; -1 triggers in-ctor centering", "store": "this+8 rect"},
-      {"arg": 8, "meaning": "word -> this+0x460 (wparam low word; 0x405 for payment, 0xFFFF default)", "store": "this+0x460"}
-    ],
-    "center_rule": {
-      "va": "0x0041808D-0x004180C3",
-      "condition": "both position args == -1",
-      "anchor": [400, 246],
-      "formula": "left = 400 - frame_w/2; top = 246 - frame_h/2",
-      "frame_header_source": "[resource+0x38]",
-      "frame_950_size": [360, 190],
-      "screen_origin": [220, 151],
-      "screen_rect": [220, 151, 580, 341],
-      "confirmed_by": "payment call 0x416F9C push sequence (0x565994, 3, 1, 0x47AD98, 1, -1, -1, 0x405) verified register-by-register"
-    },
-    "visibility": {"va": "0x00418284", "store": "this+0x28 = 1 (visible on construction)"}
-  },
-  "base_constructor": {
-    "va": "0x00417FB0",
-    "ret": "none (no stack args)",
-    "effects": [
-      "[this+0x28] = 0",
-      "3x zero-construct buttons via 0x4175F0 at this+0x238 / +0x2F0 / +0x3A8 (stride 0xB8)",
-      "[this+0x460] = 0xFFFF",
-      "[this+0x462] = 0 (active index)"
-    ]
-  },
-  "button_class": {
-    "base_ctor": "0x004175F0",
-    "full_ctor": "0x00417550",
-    "ctor_arity": 9,
-    "ctor_ret": "0x24",
-    "arg_map": [
-      {"arg": 1, "store": "this+0x14", "meaning": "resource"},
-      {"arg": 2, "store": "this+0x18", "meaning": "frame 1 (hover frame)"},
-      {"arg": 3, "store": "this+0x1C", "meaning": "frame 2 (pressed frame)"},
-      {"arg": 4, "store": "this+0x28", "meaning": "x (window-relative)"},
-      {"arg": 5, "store": "this+0x2C", "meaning": "y (window-relative)"},
-      {"arg": 6, "store": "this+0x34", "meaning": "label buffer (zeroed 0x20 dwords)"},
-      {"arg": 7, "store": "this+0x24", "meaning": "enabled byte"},
-      {"arg": 8, "store": "this+0x20", "meaning": "frame 3 (normal frame); -1 = no normal frame"},
-      {"arg": 9, "store": "this+0x30", "meaning": "hover-frame selector flag (0 -> hover reuses frame3)"}
-    ],
-    "vtable_4763A8": [
-      {"slot": "0x00", "va": "0x004046C0", "meaning": "dtor"},
-      {"slot": "0x04", "va": "0x00417640", "meaning": "paint"},
-      {"slot": "0x08", "va": "0x00417780", "meaning": "hover (mouse move)"},
-      {"slot": "0x0C", "va": "0x004177C0", "meaning": "press (mouse down)"},
-      {"slot": "0x10", "va": "0x004177F0", "meaning": "release (mouse up) -> msg 0x69"},
-      {"slot": "0x14", "va": "0x00404910", "meaning": "base-class slot"},
-      {"slot": "0x18", "va": "0x004049B0", "meaning": "base-class slot"},
-      {"slot": "0x1C", "va": "0x00404A30", "meaning": "base-class slot"},
-      {"slot": "0x20", "va": "0x00404D60", "meaning": "base-class slot"}
-    ],
-    "state_byte": {"offset": "this+0x25", "values": {"0": "normal", "1": "hover", "2": "pressed"}},
-    "paint": {
-      "va": "0x00417640",
-      "gate": "[+0x25]==0 && [+0x24]==1 for normal frame; [+0x25]==1 && [+0x24]==1 for hover; [+0x25]==2 for pressed",
-      "frame_selection": "normal -> +0x20; hover -> ([+0x30]!=0 ? +0x18 : +0x20); pressed -> +0x1C",
-      "composite": "0x460240(0x8AB7A8, x, y, frame_w, frame_h, 0x320, 0x258, 0xFFFF, 0xFFFF); frame w/h from [res+0x38] frame header words; 800x600 clip",
-      "selector": "0x466130"
-    },
-    "hover": {"va": "0x00417780", "behavior": "PtInRect(this+4, x, y): inside -> [+0x25]=1; outside -> [+0x25]=0; ret 8"},
-    "press": {"va": "0x004177C0", "behavior": "PtInRect hit -> [+0x25]=2, ret 1; else ret 0; ret 8"},
-    "release": {"va": "0x004177F0", "behavior": "[+0x25]=0; PtInRect hit -> 0x45AFC0(0x8AB130, msg 0x69, 0, 0, 0), ret 1; ret 8"},
-    "note": "0x45AFC0 = scene-object picker over the 0x32-slot array at this+0x460 of object 0x8AB130 (compares [obj+0x3C] against type, dispatches 0x45B900). 0x69 = generic mouse-release-hit message."
-  },
-  "resource_semantics": [
-    {"frame_pair": [151, 152], "size": [44, 20], "visual": "YES button: normal gold/white text and green highlighted state", "role": "YES button (this+0x238), hover/pressed"},
-    {"frame_pair": [154, 155], "size": [44, 20], "visual": "NO button: normal gold/white text and green highlighted state", "role": "NO button (this+0x3A8)"},
-    {"frame_pair": [157, 158], "size": [64, 20], "visual": "checkmark/confirm button state pair", "role": "middle/OK button (this+0x2F0)"},
-    {"frame": 150, "size": [44, 20], "visual": "YES normal-state frame", "role": "normal frame of YES button (this+0x20)"},
-    {"frame": 153, "size": [44, 20], "visual": "NO normal-state frame", "role": "normal frame of NO button"},
-    {"frame": 156, "size": [64, 20], "visual": "checkmark normal-state frame", "role": "normal frame of middle button"}
+ "source": {
+  "file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+  "resource_file": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil",
+  "method": "static disassembly (capstone, VA-0x400000) of ctor 0x418030, base ctor 0x417FB0, button ctor 0x417550, paint 0x4182A0, click 0x418400, keyboard 0x418470, activation 0x418520 plus push-imm32 frame scan and IAT thunk-name decode",
+  "evidence_level": "primary-static (machine code direct) + primary-resource-visual (WIL pixels); no runtime memory evidence"
+ },
+ "singleton": {
+  "object_va": "0x007E04C8",
+  "class_ctor": "0x00418030",
+  "base_ctor": "0x00417FB0",
+  "button_class_vtable": "0x004763A8",
+  "note": "The parent class vtable has no static reference anywhere in the binary (built at runtime); the child button class HAS a static vtable 0x4763A8 in .data."
+ },
+ "constructor": {
+  "va": "0x00418030",
+  "arity": 8,
+  "ret": "0x20 (cdecl-like caller-cleanup; 8 args)",
+  "args": [
+   {
+    "arg": 1,
+    "meaning": "WIL resource (GameInter handle 0x565994 for all callers)",
+    "store": "this+0x45C",
+    "side_effect": "SelectFrame(resource, 950) at 0x41804E; this+4 = 0x3B6 = 950"
+   },
+   {
+    "arg": 2,
+    "meaning": "dialog type id -> this+0 (3=pay/drop-gold, 4=leader-only, 6=kick member, 9=guild-create, 0x65=return-to-select); participates in 0x7EE wparam high byte",
+    "store": "this+0"
+   },
+   {
+    "arg": 3,
+    "meaning": "button mode: 0=only middle (this+0x2F0 checkmark 157/158), 1=YES (this+0x238, frames 151/152) + NO (this+0x3A8, frames 154/155) and [this+0x462]=0, 2=none",
+    "store": "this+0x462 layout selector"
+   },
+   {
+    "arg": 4,
+    "meaning": "message string, copied to this+0x2C (GBK)",
+    "store": "this+0x2C"
+   },
+   {
+    "arg": 5,
+    "meaning": "message-rect variant: 0 -> bottom=top+0x78 (h=97); nonzero -> bottom=top+0x64 (h=77); left=x+0x18, top=y+0x17, right=x+0x14D",
+    "store": "this+0x18 SetRect inputs"
+   },
+   {
+    "arg": 6,
+    "meaning": "x position; -1 triggers in-ctor centering",
+    "store": "this+8 rect"
+   },
+   {
+    "arg": 7,
+    "meaning": "y position; -1 triggers in-ctor centering",
+    "store": "this+8 rect"
+   },
+   {
+    "arg": 8,
+    "meaning": "word -> this+0x460 (wparam low word; 0x405 for payment, 0xFFFF default)",
+    "store": "this+0x460"
+   }
   ],
-  "button_instances": [
-    {"object_offset": "this+0x238", "frame_triple": [150, 151, 152], "enabled_flag": "this+0x234", "relative_rect": [51, 125, 44, 20], "screen_rect_if_centered": [271, 276, 44, 20], "role": "YES (mode 1)"},
-    {"object_offset": "this+0x2F0", "frame_triple": [156, 157, 158], "enabled_flag": "this+0x2EC", "relative_rect": [147, 125, 64, 20], "screen_rect_if_centered": [367, 276, 64, 20], "role": "middle checkmark (mode 0)"},
-    {"object_offset": "this+0x3A8", "frame_triple": [153, 154, 155], "enabled_flag": "this+0x3A4", "relative_rect": [244, 125, 44, 20], "screen_rect_if_centered": [464, 276, 44, 20], "role": "NO (mode 1)"}
-  ],
-  "message_geometry": {
-    "rect_object": "this+0x18",
-    "variant_0": {"bottom": "y+0x78", "height": 97, "branch_va": "0x00418262"},
-    "variant_nonzero": {"bottom": "y+0x64", "height": 77, "branch_va": "0x00418209"},
-    "common": {"left": "x+0x18", "top": "y+0x17", "right": "x+0x14D"},
-    "screen_rect_if_centered_variant0": [238, 168, 333, 97],
-    "evidence_level": "primary-static"
+  "center_rule": {
+   "va": "0x0041808D-0x004180C3",
+   "condition": "both position args == -1",
+   "anchor": [
+    400,
+    246
+   ],
+   "formula": "left = 400 - frame_w/2; top = 246 - frame_h/2",
+   "frame_header_source": "[resource+0x38]",
+   "frame_950_size": [
+    360,
+    190
+   ],
+   "screen_origin": [
+    220,
+    151
+   ],
+   "screen_rect": [
+    220,
+    151,
+    580,
+    341
+   ],
+   "confirmed_by": "payment call 0x416F9C push sequence (0x565994, 3, 1, 0x47AD98, 1, -1, -1, 0x405) verified register-by-register"
   },
-  "paint_order": [
-    {"order": 1, "va": "0x004182A0-0x00418300", "role": "Frame 950 prompt background", "evidence": "gate [+0x28]; SelectFrame(res, 950); composite full 360x190 bitmap at (this+8, this+0xC) via 0x460240 with 800x600 clip"},
-    {"order": 2, "va": "0x00418300-0x00418332", "role": "message text", "evidence": "this+0x2C message buffer through 0x45DF20 text compositor, color 0xC8FAFF"},
-    {"order": 3, "va": "0x00418339-0x004183CA", "role": "up to three child buttons", "evidence": "loop over enabled buttons calling vtable[1] paint (0x417640)"}
-  ],
-  "input_handlers": {
-    "visibility_query": {"va": "0x00418460", "behavior": "returns [this+0x28]!=0; ret 8"},
-    "parent_click": {"va": "0x00418400", "behavior": "gate [this+0x28]; loop 3 enabled buttons, dispatch vtable[0x0C] (press 0x4177C0)"},
-    "keyboard": {
-      "va": "0x00418470",
-      "forwarded_from": "both wndprocs 0x403FF1 and 0x4596B0 with ecx=this+8",
-      "TAB": "cycle active index this+0x462 over 3 buttons (stride 0xB8, skip disabled, wrap at 3)",
-      "Enter/Space": "-> 0x418520 activate",
-      "other_keys": "ret 1 (not handled)"
-    },
-    "activation": {
-      "va": "0x00418520",
-      "sequence": [
-        "idx = [this+0x462]; if button at [this+0x234+idx*0xB8] disabled -> ret 0",
-        "wparam = ((type<<8 | idx) << 16) | tag  (type = byte[this+0], tag = word[this+0x460])",
-        "MoveWindow([0x8AA48C], mouse_x+0xDF, mouse_y+0x23A, 0x162, 0x10, 1)  (reposition chat input near dialog)",
-        "ShowWindow([0x8AA48C], 0)",
-        "GetWindowTextA([0x8AA48C], this+0x130, 0x104)  (grab typed text)",
-        "SetWindowTextA([0x8AA48C], 0x8B187C)  (clear input)",
-        "SendMessageA([0x8AB7B0], 0x7EE, wparam, this+0x130)",
-        "[0x8AA498] = 1",
-        "call 0x417FB0 (base re-init, reset state)"
-      ],
-      "iat": {"MoveWindow": "0x4762BC", "ShowWindow": "0x4762AC", "GetWindowTextA": "0x476304", "SetWindowTextA": "0x4762CC", "SendMessageA": "0x476290"}
-    }
-  },
-  "direct_callers_with_original_messages": [
-    {"call_va": "0x00416F9C", "instance": "singleton 0x7E04C8", "type": 3, "mode": 1, "message_va": "0x0047AD98", "message_encoding": "GBK", "message": "您要付给对方多少金币?", "business_context": "payment/transfer amount confirmation", "tag": "0x405", "positions": "[-1,-1] centered", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x0041D633", "instance": "ROOT+0x3615B0", "type": "0x66", "mode": 1, "message_va": "0x0047B028", "message_encoding": "GBK", "message": "您准备扔下多少金币?", "business_context": "drop-gold amount confirmation", "tag": "0x30E", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x00420B80", "instance": "ROOT+0x3615B0", "mode": 0, "message_va": "0x0047B5A0", "message_encoding": "CP949/Korean", "message": "개인 보관 창고가 다 찼습니다. 더 이상 보관할 수 없습니다.", "business_context": "personal storage full notice", "tag": "0xFFFF", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x00420BB4", "instance": "ROOT+0x3615B0", "mode": 0, "message_va": "0x0047B588", "message_encoding": "CP949/Korean", "message": "보관 할 수 없습니다.", "business_context": "storage operation rejected", "tag": "0xFFFF", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x004246B6", "instance": "singleton", "type": 6, "mode": 1, "message_va": "0x0047BA10", "message_encoding": "GBK", "message": "请在这里添加您要删除的小组成员名字.", "business_context": "guild member removal prompt", "tag": "0x3FE", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x00425C8B", "instance": "singleton", "type": 4, "mode": 0, "message_va": "0x0047BAA4", "message_encoding": "GBK", "message": "只有行会掌门人才能使用这个功能.", "business_context": "guild leader-only feature", "tag": "0xFFFF", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x0042BF62", "instance": "singleton", "type": "0x65", "mode": 1, "message_va": "0x0047AFB4", "message_encoding": "GBK", "message": "返回游戏人物选择界面？", "business_context": "return to character-select screen", "tag": "0xFFFF", "positions": "[-1,-1] centered", "gate": "0x419CC0(ROOT)", "evidence_level": "primary-static-callsite-and-string"},
-    {"call_va": "0x00440489", "instance": "singleton", "type": 9, "mode": 1, "message_va": "0x0047C52C / 0x0047C51C (strcmp-selected)", "message_encoding": "GBK", "message": "请输入要创建的行会名称: / 请输入:", "business_context": "guild creation name prompt", "tag": "0x3F3", "positions": "[-1,-1] centered", "followup": "0x4521B0(0x8AB828, ..., 0x3F3) and [ebx+0x514] write", "evidence_level": "primary-static-callsite-and-string"}
-  ],
-  "cluster2_resolution": {
-    "cluster_va": "0x00418968-0x0041898E",
-    "conclusion": "separate hidden-window class 0x418910 (window id 0x64, object ROOT+0x53030, 0x320x0xB8 at (0xDA,0xB0), open-all tail entry), constructed via base ctor 0x423B30; buttons at +0x54 (151/152) and +0x108 (154/155) REUSE the YES/NO frame family",
-    "not": "not a second state of the confirmation box"
-  },
-  "encoding_note": "Payment/drop-gold/guild/return/create strings are GBK Chinese (cp949 decode fails); storage-full/reject strings are CP949 Korean (GBK/GB18030 decode yields mojibake). The EI 3.0 client ships a Korean-to-Chinese localization in progress with both encodings present. 0x565994 is a resource pointer (empty when read as string).",
-  "confirmed": [
-    "Frames 151/152, 154/155, 157/158 (plus normals 150/153/156) are button state resources; exact roles: YES/middle/NO with normal/hover/pressed triple mapping via button ctor arg order.",
-    "Frame 950 (360x190) is the confirmation dialog background, selected at ctor time.",
-    "The singleton object is 0x7E04C8; ctor 0x418030 with 8 args; base ctor 0x417FB0.",
-    "In-ctor centering rule (0x41808D-0x4180C3, anchor 400x246) is exercised by 6 of 7 callers via -1/-1 (payment push sequence verified).",
-    "The button class has a STATIC vtable 0x4763A8 (dtor/paint/hover/press/release); state byte +0x25; enabled byte +0x24.",
-    "Keyboard: TAB cycles active index 0x462; Enter/Space activates 0x418520.",
-    "Activation: MoveWindow/ShowWindow/GetWindowTextA/SetWindowTextA/SendMessageA(0x7EE, ((type<<8|idx)<<16)|tag, buffer) - all IAT names resolved (0x4762BC/0x4762AC/0x476304/0x4762CC/0x476290).",
-    "0x7EE receive side is closed primary-static: main WndProc 0x403E81 routes 0x7EE at 0x403FA4 to 0x404600 (chat-input buffer restore + 0x403640), second WndProc 0x459654 routes to 0x45A140 (type-gated game-object send via 0x452040/0x451F90); 0x7EE absent from message table 0x421E8C; the old candidate VAs 0x412303/0x412AAE/0x42AAB0/0x42C4D4 are the pre-0x7EE input router (click/visibility/top-window dispatch), not the receive (closed_notes 2026-08-11).",
-    "Cluster 2 is the independent hidden window 0x418910, not a confirm-box state.",
-    "All 7 call sites with original dialog strings identified; encodings are mixed GBK/CP949 (localization in progress)."
-  ],
-  "pending": [
-    "Runtime (in-memory/packet) confirmation of the payment amount flow: the typed amount is carried from the confirm box (this+0x130) through SendMessageA(0x7EE) and delivered to the game object receive handlers 0x404600 / 0x45A140, whose server send path uses 0x452040 + 0x451F90 (message builders with runtime-constructed payloads). The wire packet content of those builders is not statically decodable (format data built at runtime), so only a live client session with a debugger or socket capture can confirm the exact packet. Does not affect layout/draw/input conclusions."
-  ],
-  "closed_notes": [
-    {
-      "date": "2026-08-11",
-      "key": "0x7EE final business processing in the main game window chain",
-      "conclusion": "CONFIRMED primary-static, with the candidate VAs corrected: 0x7EE is NOT in the 40-entry message table 0x421E8C (only entries 0-19 are real, ids 0xf6ef..0xfb6e; 0x7EE absent) and is handled by two dedicated receive handlers. (1) Main game WndProc 0x403E81 switch at 0x403FA4: cmp ebp,0x7EE; jne 0x403FB5; push edi; push ebx; mov ecx,esi; call 0x404600. (2) Second window class WndProc switch at 0x459654: 0x7EE -> 0x45A140. 0x404600 (game object 0x8AB828): gate [obj+0x8A4]==1; zero 0x41 dwords @ obj+0xE3D; SetWindowTextA([0x8AA48C], [obj+0xD39]); [obj+0xD38]=1; call 0x403640; [0x8AA498]=0. 0x403640 = chat-input dual-buffer restore: GetWindowTextA/SetWindowTextA swap between obj+0xD39 and obj+0xE3D; MoveWindow([0x8AA48C], [0x8AB7F0]+obj+0xF44, [0x8AB7F4]+obj+0xF48, w, h, 1) with rect pair selected by [obj+0xD38] (alt rect obj+0xF54..0xF60); SendMessageA([0x8AA48C], 0xCC, 0 or 0x2A, 0); EM_SETSEL (0xB1, 0, -1) select-all when [0x8AB7E8]; SetFocus([0x8AA48C]). 0x45A140: wparam>>16 -> type byte; type==1 and idx(al) in {0,1} -> 0x452040(0x8AB828, this+0xCBF+idx*0x40) then 0x451F90(0x8AB828) (game-object server send); [this+0x930]==2 -> MoveWindow/ShowWindow(5)/SetFocus on chat input; [0x8AA498]=0. The previously cited candidate VAs are real elements of the SAME main-window input chain but NOT the 0x7EE receive: 0x412303 = confirm-box click routing (0x418400 on singleton 0x7E04C8) preceding 0x42AAB0 top-window resolution; 0x412AAE = confirm-box visibility query 0x418460 (returns [this+0x28]!=0) in the sibling mouse handler; 0x42C4D4 = window-id-indexed second-level dispatch jump table used by 'jmp dword ptr [edi*4+0x42C4D4]' at 0x42BF7E (cmp edi,0xE; ja 0x42C198; entries id0..14 = 0x42BF85..0x42C157, default 0x42C198), i.e. the per-top-window-id input router. Layout/draw/input conclusions unchanged.",
-      "evidence_level": "primary-static",
-      "key_vAs": ["0x403E81", "0x403FA4", "0x404600", "0x403640", "0x459654", "0x45A140", "0x412303", "0x412AAE", "0x418460", "0x42AAB0", "0x42BF7E", "0x42C4D4", "0x452040", "0x451F90"]
-    }
+  "visibility": {
+   "va": "0x00418284",
+   "store": "this+0x28 = 1 (visible on construction)"
+  }
+ },
+ "base_constructor": {
+  "va": "0x00417FB0",
+  "ret": "none (no stack args)",
+  "effects": [
+   "[this+0x28] = 0",
+   "3x zero-construct buttons via 0x4175F0 at this+0x238 / +0x2F0 / +0x3A8 (stride 0xB8)",
+   "[this+0x460] = 0xFFFF",
+   "[this+0x462] = 0 (active index)"
   ]
+ },
+ "button_class": {
+  "base_ctor": "0x004175F0",
+  "full_ctor": "0x00417550",
+  "ctor_arity": 9,
+  "ctor_ret": "0x24",
+  "arg_map": [
+   {
+    "arg": 1,
+    "store": "this+0x14",
+    "meaning": "resource"
+   },
+   {
+    "arg": 2,
+    "store": "this+0x18",
+    "meaning": "frame 1 (hover frame)"
+   },
+   {
+    "arg": 3,
+    "store": "this+0x1C",
+    "meaning": "frame 2 (pressed frame)"
+   },
+   {
+    "arg": 4,
+    "store": "this+0x28",
+    "meaning": "x (window-relative)"
+   },
+   {
+    "arg": 5,
+    "store": "this+0x2C",
+    "meaning": "y (window-relative)"
+   },
+   {
+    "arg": 6,
+    "store": "this+0x34",
+    "meaning": "label buffer (zeroed 0x20 dwords)"
+   },
+   {
+    "arg": 7,
+    "store": "this+0x24",
+    "meaning": "enabled byte"
+   },
+   {
+    "arg": 8,
+    "store": "this+0x20",
+    "meaning": "frame 3 (normal frame); -1 = no normal frame"
+   },
+   {
+    "arg": 9,
+    "store": "this+0x30",
+    "meaning": "hover-frame selector flag (0 -> hover reuses frame3)"
+   }
+  ],
+  "vtable_4763A8": [
+   {
+    "slot": "0x00",
+    "va": "0x004046C0",
+    "meaning": "dtor"
+   },
+   {
+    "slot": "0x04",
+    "va": "0x00417640",
+    "meaning": "paint"
+   },
+   {
+    "slot": "0x08",
+    "va": "0x00417780",
+    "meaning": "hover (mouse move)"
+   },
+   {
+    "slot": "0x0C",
+    "va": "0x004177C0",
+    "meaning": "press (mouse down)"
+   },
+   {
+    "slot": "0x10",
+    "va": "0x004177F0",
+    "meaning": "release (mouse up) -> msg 0x69"
+   },
+   {
+    "slot": "0x14",
+    "va": "0x00404910",
+    "meaning": "base-class slot"
+   },
+   {
+    "slot": "0x18",
+    "va": "0x004049B0",
+    "meaning": "base-class slot"
+   },
+   {
+    "slot": "0x1C",
+    "va": "0x00404A30",
+    "meaning": "base-class slot"
+   },
+   {
+    "slot": "0x20",
+    "va": "0x00404D60",
+    "meaning": "base-class slot"
+   }
+  ],
+  "state_byte": {
+   "offset": "this+0x25",
+   "values": {
+    "0": "normal",
+    "1": "hover",
+    "2": "pressed"
+   }
+  },
+  "paint": {
+   "va": "0x00417640",
+   "gate": "[+0x25]==0 && [+0x24]==1 for normal frame; [+0x25]==1 && [+0x24]==1 for hover; [+0x25]==2 for pressed",
+   "frame_selection": "normal -> +0x20; hover -> ([+0x30]!=0 ? +0x18 : +0x20); pressed -> +0x1C",
+   "composite": "0x460240(0x8AB7A8, x, y, frame_w, frame_h, 0x320, 0x258, 0xFFFF, 0xFFFF); frame w/h from [res+0x38] frame header words; 800x600 clip",
+   "selector": "0x466130"
+  },
+  "hover": {
+   "va": "0x00417780",
+   "behavior": "PtInRect(this+4, x, y): inside -> [+0x25]=1; outside -> [+0x25]=0; ret 8"
+  },
+  "press": {
+   "va": "0x004177C0",
+   "behavior": "PtInRect hit -> [+0x25]=2, ret 1; else ret 0; ret 8"
+  },
+  "release": {
+   "va": "0x004177F0",
+   "behavior": "[+0x25]=0; PtInRect hit -> 0x45AFC0(0x8AB130, msg 0x69, 0, 0, 0), ret 1; ret 8"
+  },
+  "note": "0x45AFC0 = scene-object picker over the 0x32-slot array at this+0x460 of object 0x8AB130 (compares [obj+0x3C] against type, dispatches 0x45B900). 0x69 = generic mouse-release-hit message."
+ },
+ "resource_semantics": [
+  {
+   "frame_pair": [
+    151,
+    152
+   ],
+   "size": [
+    44,
+    20
+   ],
+   "visual": "YES button: normal gold/white text and green highlighted state",
+   "role": "YES button (this+0x238), hover/pressed"
+  },
+  {
+   "frame_pair": [
+    154,
+    155
+   ],
+   "size": [
+    44,
+    20
+   ],
+   "visual": "NO button: normal gold/white text and green highlighted state",
+   "role": "NO button (this+0x3A8)"
+  },
+  {
+   "frame_pair": [
+    157,
+    158
+   ],
+   "size": [
+    64,
+    20
+   ],
+   "visual": "checkmark/confirm button state pair",
+   "role": "middle/OK button (this+0x2F0)"
+  },
+  {
+   "frame": 150,
+   "size": [
+    44,
+    20
+   ],
+   "visual": "YES normal-state frame",
+   "role": "normal frame of YES button (this+0x20)"
+  },
+  {
+   "frame": 153,
+   "size": [
+    44,
+    20
+   ],
+   "visual": "NO normal-state frame",
+   "role": "normal frame of NO button"
+  },
+  {
+   "frame": 156,
+   "size": [
+    64,
+    20
+   ],
+   "visual": "checkmark normal-state frame",
+   "role": "normal frame of middle button"
+  }
+ ],
+ "button_instances": [
+  {
+   "object_offset": "this+0x238",
+   "frame_triple": [
+    150,
+    151,
+    152
+   ],
+   "enabled_flag": "this+0x234",
+   "relative_rect": [
+    51,
+    125,
+    44,
+    20
+   ],
+   "screen_rect_if_centered": [
+    271,
+    276,
+    44,
+    20
+   ],
+   "role": "YES (mode 1)"
+  },
+  {
+   "object_offset": "this+0x2F0",
+   "frame_triple": [
+    156,
+    157,
+    158
+   ],
+   "enabled_flag": "this+0x2EC",
+   "relative_rect": [
+    147,
+    125,
+    64,
+    20
+   ],
+   "screen_rect_if_centered": [
+    367,
+    276,
+    64,
+    20
+   ],
+   "role": "middle checkmark (mode 0)"
+  },
+  {
+   "object_offset": "this+0x3A8",
+   "frame_triple": [
+    153,
+    154,
+    155
+   ],
+   "enabled_flag": "this+0x3A4",
+   "relative_rect": [
+    244,
+    125,
+    44,
+    20
+   ],
+   "screen_rect_if_centered": [
+    464,
+    276,
+    44,
+    20
+   ],
+   "role": "NO (mode 1)"
+  }
+ ],
+ "message_geometry": {
+  "rect_object": "this+0x18",
+  "variant_0": {
+   "bottom": "y+0x78",
+   "height": 97,
+   "branch_va": "0x00418262"
+  },
+  "variant_nonzero": {
+   "bottom": "y+0x64",
+   "height": 77,
+   "branch_va": "0x00418209"
+  },
+  "common": {
+   "left": "x+0x18",
+   "top": "y+0x17",
+   "right": "x+0x14D"
+  },
+  "screen_rect_if_centered_variant0": [
+   238,
+   168,
+   333,
+   97
+  ],
+  "evidence_level": "primary-static"
+ },
+ "paint_order": [
+  {
+   "order": 1,
+   "va": "0x004182A0-0x00418300",
+   "role": "Frame 950 prompt background",
+   "evidence": "gate [+0x28]; SelectFrame(res, 950); composite full 360x190 bitmap at (this+8, this+0xC) via 0x460240 with 800x600 clip"
+  },
+  {
+   "order": 2,
+   "va": "0x00418300-0x00418332",
+   "role": "message text",
+   "evidence": "this+0x2C message buffer through 0x45DF20 text compositor, color 0xC8FAFF"
+  },
+  {
+   "order": 3,
+   "va": "0x00418339-0x004183CA",
+   "role": "up to three child buttons",
+   "evidence": "loop over enabled buttons calling vtable[1] paint (0x417640)"
+  }
+ ],
+ "input_handlers": {
+  "visibility_query": {
+   "va": "0x00418460",
+   "behavior": "returns [this+0x28]!=0; ret 8"
+  },
+  "parent_click": {
+   "va": "0x00418400",
+   "behavior": "gate [this+0x28]; loop 3 enabled buttons, dispatch vtable[0x0C] (press 0x4177C0)"
+  },
+  "keyboard": {
+   "va": "0x00418470",
+   "forwarded_from": "both wndprocs 0x403FF1 and 0x4596B0 with ecx=this+8",
+   "TAB": "cycle active index this+0x462 over 3 buttons (stride 0xB8, skip disabled, wrap at 3)",
+   "Enter/Space": "-> 0x418520 activate",
+   "other_keys": "ret 1 (not handled)"
+  },
+  "activation": {
+   "va": "0x00418520",
+   "sequence": [
+    "idx = [this+0x462]; if button at [this+0x234+idx*0xB8] disabled -> ret 0",
+    "wparam = ((type<<8 | idx) << 16) | tag  (type = byte[this+0], tag = word[this+0x460])",
+    "MoveWindow([0x8AA48C], mouse_x+0xDF, mouse_y+0x23A, 0x162, 0x10, 1)  (reposition chat input near dialog)",
+    "ShowWindow([0x8AA48C], 0)",
+    "GetWindowTextA([0x8AA48C], this+0x130, 0x104)  (grab typed text)",
+    "SetWindowTextA([0x8AA48C], 0x8B187C)  (clear input)",
+    "SendMessageA([0x8AB7B0], 0x7EE, wparam, this+0x130)",
+    "[0x8AA498] = 1",
+    "call 0x417FB0 (base re-init, reset state)"
+   ],
+   "iat": {
+    "MoveWindow": "0x4762BC",
+    "ShowWindow": "0x4762AC",
+    "GetWindowTextA": "0x476304",
+    "SetWindowTextA": "0x4762CC",
+    "SendMessageA": "0x476290"
+   }
+  }
+ },
+ "direct_callers_with_original_messages": [
+  {
+   "call_va": "0x00416F9C",
+   "instance": "singleton 0x7E04C8",
+   "type": 3,
+   "mode": 1,
+   "message_va": "0x0047AD98",
+   "message_encoding": "GBK",
+   "message": "您要付给对方多少金币?",
+   "business_context": "payment/transfer amount confirmation",
+   "tag": "0x405",
+   "positions": "[-1,-1] centered",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x0041D633",
+   "instance": "ROOT+0x3615B0",
+   "type": "0x66",
+   "mode": 1,
+   "message_va": "0x0047B028",
+   "message_encoding": "GBK",
+   "message": "您准备扔下多少金币?",
+   "business_context": "drop-gold amount confirmation",
+   "tag": "0x30E",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x00420B80",
+   "instance": "ROOT+0x3615B0",
+   "mode": 0,
+   "message_va": "0x0047B5A0",
+   "message_encoding": "CP949/Korean",
+   "message": "개인 보관 창고가 다 찼습니다. 더 이상 보관할 수 없습니다.",
+   "business_context": "personal storage full notice",
+   "tag": "0xFFFF",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x00420BB4",
+   "instance": "ROOT+0x3615B0",
+   "mode": 0,
+   "message_va": "0x0047B588",
+   "message_encoding": "CP949/Korean",
+   "message": "보관 할 수 없습니다.",
+   "business_context": "storage operation rejected",
+   "tag": "0xFFFF",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x004246B6",
+   "instance": "singleton",
+   "type": 6,
+   "mode": 1,
+   "message_va": "0x0047BA10",
+   "message_encoding": "GBK",
+   "message": "请在这里添加您要删除的小组成员名字.",
+   "business_context": "guild member removal prompt",
+   "tag": "0x3FE",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x00425C8B",
+   "instance": "singleton",
+   "type": 4,
+   "mode": 0,
+   "message_va": "0x0047BAA4",
+   "message_encoding": "GBK",
+   "message": "只有行会掌门人才能使用这个功能.",
+   "business_context": "guild leader-only feature",
+   "tag": "0xFFFF",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x0042BF62",
+   "instance": "singleton",
+   "type": "0x65",
+   "mode": 1,
+   "message_va": "0x0047AFB4",
+   "message_encoding": "GBK",
+   "message": "返回游戏人物选择界面？",
+   "business_context": "return to character-select screen",
+   "tag": "0xFFFF",
+   "positions": "[-1,-1] centered",
+   "gate": "0x419CC0(ROOT)",
+   "evidence_level": "primary-static-callsite-and-string"
+  },
+  {
+   "call_va": "0x00440489",
+   "instance": "singleton",
+   "type": 9,
+   "mode": 1,
+   "message_va": "0x0047C52C / 0x0047C51C (strcmp-selected)",
+   "message_encoding": "GBK",
+   "message": "请输入要创建的行会名称: / 请输入:",
+   "business_context": "guild creation name prompt",
+   "tag": "0x3F3",
+   "positions": "[-1,-1] centered",
+   "followup": "0x4521B0(0x8AB828, ..., 0x3F3) and [ebx+0x514] write",
+   "evidence_level": "primary-static-callsite-and-string"
+  }
+ ],
+ "cluster2_resolution": {
+  "cluster_va": "0x00418968-0x0041898E",
+  "conclusion": "separate hidden-window class 0x418910 (window id 0x64, object ROOT+0x53030, 0x320x0xB8 at (0xDA,0xB0), open-all tail entry), constructed via base ctor 0x423B30; buttons at +0x54 (151/152) and +0x108 (154/155) REUSE the YES/NO frame family",
+  "not": "not a second state of the confirmation box"
+ },
+ "encoding_note": "Payment/drop-gold/guild/return/create strings are GBK Chinese (cp949 decode fails); storage-full/reject strings are CP949 Korean (GBK/GB18030 decode yields mojibake). The EI 3.0 client ships a Korean-to-Chinese localization in progress with both encodings present. 0x565994 is a resource pointer (empty when read as string).",
+ "confirmed": [
+  "Frames 151/152, 154/155, 157/158 (plus normals 150/153/156) are button state resources; exact roles: YES/middle/NO with normal/hover/pressed triple mapping via button ctor arg order.",
+  "Frame 950 (360x190) is the confirmation dialog background, selected at ctor time.",
+  "The singleton object is 0x7E04C8; ctor 0x418030 with 8 args; base ctor 0x417FB0.",
+  "In-ctor centering rule (0x41808D-0x4180C3, anchor 400x246) is exercised by 6 of 7 callers via -1/-1 (payment push sequence verified).",
+  "The button class has a STATIC vtable 0x4763A8 (dtor/paint/hover/press/release); state byte +0x25; enabled byte +0x24.",
+  "Keyboard: TAB cycles active index 0x462; Enter/Space activates 0x418520.",
+  "Activation: MoveWindow/ShowWindow/GetWindowTextA/SetWindowTextA/SendMessageA(0x7EE, ((type<<8|idx)<<16)|tag, buffer) - all IAT names resolved (0x4762BC/0x4762AC/0x476304/0x4762CC/0x476290).",
+  "0x7EE receive side is closed primary-static: main WndProc 0x403E81 routes 0x7EE at 0x403FA4 to 0x404600 (chat-input buffer restore + 0x403640), second WndProc 0x459654 routes to 0x45A140 (type-gated game-object send via 0x452040/0x451F90); 0x7EE absent from message table 0x421E8C; the old candidate VAs 0x412303/0x412AAE/0x42AAB0/0x42C4D4 are the pre-0x7EE input router (click/visibility/top-window dispatch), not the receive (closed_notes 2026-08-11).",
+  "Cluster 2 is the independent hidden window 0x418910, not a confirm-box state.",
+  "All 7 call sites with original dialog strings identified; encodings are mixed GBK/CP949 (localization in progress)."
+ ],
+ "pending": [
+  "Runtime residual (F295, see trade-gold-flow-evidence.json): wire-level confirmation of the exact on-wire bytes of the gold-amount message. Static chain complete: typed text -> obj+0x130 -> SendMessageA(0x7EE, wparam, lparam=&obj+0x130) at 0x4185DB; immediate receivers 0x404600/0x45A140 never read lparam (ret 8); dispatcher 0x41E522 forwards wparam/ebx to 0x41CDE0; live gold send = 0x41CDE0 case byte2==0x66 -> 0x451940 -> msg 0x3F8, header {dword0=amount32, word+4=0x3F8}; 0x406 accept send is header-only (zero payload). Live capture only confirms bytes."
+ ],
+ "closed_notes": [
+  {
+   "date": "2026-08-11",
+   "key": "0x7EE final business processing in the main game window chain",
+   "conclusion": "CONFIRMED primary-static, with the candidate VAs corrected: 0x7EE is NOT in the 40-entry message table 0x421E8C (only entries 0-19 are real, ids 0xf6ef..0xfb6e; 0x7EE absent) and is handled by two dedicated receive handlers. (1) Main game WndProc 0x403E81 switch at 0x403FA4: cmp ebp,0x7EE; jne 0x403FB5; push edi; push ebx; mov ecx,esi; call 0x404600. (2) Second window class WndProc switch at 0x459654: 0x7EE -> 0x45A140. 0x404600 (game object 0x8AB828): gate [obj+0x8A4]==1; zero 0x41 dwords @ obj+0xE3D; SetWindowTextA([0x8AA48C], [obj+0xD39]); [obj+0xD38]=1; call 0x403640; [0x8AA498]=0. 0x403640 = chat-input dual-buffer restore: GetWindowTextA/SetWindowTextA swap between obj+0xD39 and obj+0xE3D; MoveWindow([0x8AA48C], [0x8AB7F0]+obj+0xF44, [0x8AB7F4]+obj+0xF48, w, h, 1) with rect pair selected by [obj+0xD38] (alt rect obj+0xF54..0xF60); SendMessageA([0x8AA48C], 0xCC, 0 or 0x2A, 0); EM_SETSEL (0xB1, 0, -1) select-all when [0x8AB7E8]; SetFocus([0x8AA48C]). 0x45A140: wparam>>16 -> type byte; type==1 and idx(al) in {0,1} -> 0x452040(0x8AB828, this+0xCBF+idx*0x40) then 0x451F90(0x8AB828) (game-object server send); [this+0x930]==2 -> MoveWindow/ShowWindow(5)/SetFocus on chat input; [0x8AA498]=0. The previously cited candidate VAs are real elements of the SAME main-window input chain but NOT the 0x7EE receive: 0x412303 = confirm-box click routing (0x418400 on singleton 0x7E04C8) preceding 0x42AAB0 top-window resolution; 0x412AAE = confirm-box visibility query 0x418460 (returns [this+0x28]!=0) in the sibling mouse handler; 0x42C4D4 = window-id-indexed second-level dispatch jump table used by 'jmp dword ptr [edi*4+0x42C4D4]' at 0x42BF7E (cmp edi,0xE; ja 0x42C198; entries id0..14 = 0x42BF85..0x42C157, default 0x42C198), i.e. the per-top-window-id input router. Layout/draw/input conclusions unchanged.",
+   "evidence_level": "primary-static",
+   "key_vAs": [
+    "0x403E81",
+    "0x403FA4",
+    "0x404600",
+    "0x403640",
+    "0x459654",
+    "0x45A140",
+    "0x412303",
+    "0x412AAE",
+    "0x418460",
+    "0x42AAB0",
+    "0x42BF7E",
+    "0x42C4D4",
+    "0x452040",
+    "0x451F90"
+   ]
+  },
+  {
+   "date": "2026-08-11",
+   "key": "payment amount flow (F295 closure, supersedes runtime-confirmation pending)",
+   "conclusion": "CLOSED by Finding 295 (trade-gold-flow-evidence.json, primary-static): the typed gold amount rides lparam=&obj+0x130 through SendMessageA(0x7EE) at 0x4185DB into dispatcher 0x41E522 -> 0x41CDE0; the only live gold send is chat-command case byte2==0x66 -> 0x451940 -> msg 0x3F8 with 32-bit amount in header dword0 (bound [obj+0x35B1E8]); the trade accept send 0x417034 -> 0x451B30 -> 0x452940 -> msg 0x406 is header-only (dword0=0, no gold field). Previous pending claim of 0x452040/0x451F90 builders superseded. Prior EI-288 note corrected: dispatch index is byte2==3, not category byte 4."
+  }
+ ]
 }
