@@ -1,0 +1,35 @@
+{
+  "evidence_id": "effect-tick-lifecycle-2026-08-12-f626",
+  "title": "Round 320 (F626): Effect tick + lifecycle - 0x435A20 (F489 confirmed): [0xDC] += delta, type dispatch (0x16/0x10/9/0x1E/0xB/0x14A-0x14E/0x140-0x142/0xA/0x21A/0x21B/0x35/0x3F/0x68/0x150 = F336 special family CONFIRMED), 0xC8 (200) tick gate, frame [0x121]++ wrap [0x102], DEATH LIFECYCLE [byte+4]: 0 animating (frame advance) / 1 fade ([0xE8]/[0xE9] or [0xEA]/[0xEB]/[0xEC] -2 decay, clamp 2) / 2 remove - effect tick + lifecycle byte-level (F489 pipeline render side)",
+  "date": "2026-08-12",
+  "objective": "Decode the effect tick + lifecycle.",
+  "question": "How do effects tick and die?",
+  "method": "Disasm 0x435A20-0x435C29.",
+  "scope": "0x435A20-0x435C29; type family; lifecycle.",
+  "cell_analysis": {
+    "0x435A20": {"acc": "[0xDC] += delta", "types": "0x16/0x10/9/0x1E/0xB/0x14A-0x14E/0x140-0x142/0xA/0x21A/0x21B/0x35/0x3F/0x68/0x150 (F336 special family)", "gate": "0xC8 (200) tick", "frame": "[0x121]++ wrap [0x102]"},
+    "lifecycle": {"0": "animating (frame advance)", "1": "fade ([0xE8]/[0xE9] or [0xEA]/[0xEB]/[0xEC] -2 decay clamp 2)", "2": "remove"}
+  },
+  "exe_trace": {
+    "effect_chain": "spawn (F625) -> tick 0x435A20 (acc + frame + fade) -> remove"
+  },
+  "audit_vs_exe": {
+    "F489": "effect family CONFIRMED", "F336": "special type family", "F625": "spawn -> this tick"
+  },
+  "contrast": {
+    "tick_vs_paint": "0x435A20 update + 0x4621F0 blend paint",
+    "fade_vs_remove": "state 1 fade decay vs state 2 remove"
+  },
+  "verdict": "Effect tick PRIMARY-verified: accumulator + type family + frame + death lifecycle (fade/remove); F489/F336/F625 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tick decoded from .text.",
+  "cross_refs": ["F489: effects", "F336: special family", "F625: spawn"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x435A20+0x40",
+  "notes": [
+    "200-tick gate (0xC8)",
+    "fade decay -2 per tick clamp 2",
+    "type family = F336 specials",
+    "[byte+4] = lifecycle state"
+  ]
+}
