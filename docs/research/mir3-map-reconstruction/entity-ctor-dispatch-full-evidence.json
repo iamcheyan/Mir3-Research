@@ -1,0 +1,35 @@
+{
+  "evidence_id": "entity-ctor-dispatch-full-2026-08-12-f1017",
+  "title": "Round 711 (F1017): Entity ctor + dispatch FULL (F336/F725) - 0x434EF0 entity CTOR (vtable 0x476884 + type byte 2 + [0x118]/[0x11C] 0x2710 + [0x130] speed 5 + all fields zeroed); 0x435000/0x435020 dtor (0x4680F8); 0x435030 entity MSG/type dispatch (0x8AA5A8 -> 0x449C10 + type word checks 1/5/0x25/0x27/0x28/0x29) - entity COMPLETE (F336/F725 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the full entity ctor + dispatch.",
+  "question": "How does the entity construct + dispatch?",
+  "method": "Disasm 0x434EF0-0x435030.",
+  "scope": "0x434EF0-0x435030; entity.",
+  "cell_analysis": {
+    "0x434EF0": "ctor vtable 0x476884 + 0x2710 + speed 5",
+    "0x435030": "msg dispatch 0x8AA5A8 + types"
+  },
+  "exe_trace": {
+    "entity_chain": "ctor -> msg dispatch"
+  },
+  "audit_vs_exe": {
+    "F336": "entity list", "F725": "hero runtime"
+  },
+  "contrast": {
+    "ctor_vs_dispatch": "init + msg",
+    "types": "1/5/0x25..0x29"
+  },
+  "verdict": "Entity ctor + dispatch FULL PRIMARY-verified: ctor + dtor + msg dispatch; F336/F725 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Entity decoded from .text.",
+  "cross_refs": ["F336: entity list", "F725: hero runtime"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x434EF0+0x10; 0x435030+0x20",
+  "notes": [
+    "vtable 0x476884",
+    "type byte 2",
+    "0x2710 fields",
+    "dispatch 0x449C10"
+  ]
+}

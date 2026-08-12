@@ -4417,3 +4417,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（地图 + 移动核心完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 711 (2026-08-12) — 实体构造 + 分派全量（Finding 1017）
+
+- **ctor + dtor + 消息分派**（实体完整）。
+- 落盘：`entity-ctor-dispatch-full-evidence.json`（F1017）+ RESEARCH_LOG Round 711。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体完整；下一弧：剩余深层角落）。

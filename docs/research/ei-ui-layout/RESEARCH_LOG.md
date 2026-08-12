@@ -9070,3 +9070,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 达 **150 次刷新**（Round 707-709：移动分派/碰撞全量 + 移动闭合）；基线 Round 706=a1eb641 → Round 709=9bc24b3（**673 连发 F335-F1015**）；移动表面 100%；地图 + 移动核心完整。
 - 落盘：handoff-refresh-150-milestone-evidence.json（F1016，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 710。
+## Round 711 (F1017) — 2026-08-12：实体构造 + 分派全量（F336/F725）
+
+- **〔实体〕**0x434EF0 实体构造（vtable 0x476884 + 类型字节 2 + [0x118]/[0x11C] 0x2710 + [0x130] 速度 5 + 全字段清零）；0x435000/0x435020 析构（0x4680F8）；0x435030 **消息/类型分派**（0x8AA5A8 → 0x449C10 + 类型字检查 1/5/0x25/0x27/0x28/0x29）——实体完整（F336/F725 依赖）。
+- 落盘：entity-ctor-dispatch-full-evidence.json（F1017，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 711。
