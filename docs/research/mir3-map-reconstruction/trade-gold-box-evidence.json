@@ -1,0 +1,38 @@
+{
+  "evidence_id": "trade-gold-box-2026-08-12-f474",
+  "title": "Round 168 (F474): Trade gold box + trade message family - 0x451B30 = gold-offer SENDER (msg 0x406 via 0x452940 + 0x451E60); 0x451B60 = gold offer parse (0x400 len via 0x476114, 0x1300 window msg, 0x8AB7B0); 0x451BB0 = trade msg DISPATCH (0x406 gold -> 0x451B60, 0x407 -> 0x451CB0, 0x408 -> 0x451C40, 0x409 -> 0x451CC0); 0x451C40 = trade reset (0x468D3F); 0x451CC0 = trade-inventory string parse (0x2000 buffer, 0x2A '*' token split via 0x468B30, 0x8B186C name gate, append 0x468D6E) - F364 gold box detail closed; trade paint 0x415B10 dual-pane (drag 0x4542F0 via store 0x5600FC, partner name 0x7776A0)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade gold box and trade message family; close F364 pending.",
+  "question": "How does the trade gold box work and what messages drive the trade window?",
+  "method": "Disasm 0x451B30-0x451E60 (gold box + trade msgs) + 0x415B10 (paint).",
+  "scope": "0x451B30-0x451E60; msgs 0x406-0x409; 0x415B10.",
+  "cell_analysis": {
+    "gold_send_0x451B30": "msg 0x406 (0x452940 builder + 0x451E60 send) - gold offer packet",
+    "gold_parse_0x451B60": "0x400-char buffer via 0x476114, 0x1300 = trade window message, title 0x47C818 via 0x47628C",
+    "dispatch_0x451BB0": {"0x406": "gold -> 0x451B60", "0x407": "-> 0x451CB0 (0x451420)", "0x408": "reset -> 0x451C40", "0x409": "inventory -> 0x451CC0"},
+    "inventory_parse_0x451CC0": {"buffer": "0x2000 bytes, token 0x2A ('*') via 0x468B30", "name_gate": "[0x8B186C] check, 0x47C83C const", "append": "0x468D6E grow"},
+    "paint_0x415B10": {"panes": "self/partner halves (0x5C/0x6C rects), hover -> 0x416830 hit-test + 0x4162E0 item, drag via 0x4542F0 (store 0x5600FC) + 0x466800 transform", "name": "partner name 0x7776A0 (0xFAC8C8)"}
+  },
+  "exe_trace": {
+    "trade_chain": "gold offer (0x406) -> 0x451B30 -> server -> 0x451B60 -> paint; inventory (0x409) -> 0x451CC0 parse"
+  },
+  "audit_vs_exe": {
+    "F364": "gold box (0x405/0x406 controls via 0x451B30) closed",
+    "F35": "trade paint 0x415B10 dual-pane confirmed"
+  },
+  "contrast": {
+    "gold_vs_inventory": "gold = scalar packet (0x406); inventory = '*' delimited string (0x409)",
+    "send_vs_parse": "0x451B30 sends; 0x451B60/0x451CC0 parse server replies"
+  },
+  "verdict": "Trade gold box + message family PRIMARY-verified: gold offer 0x406 (0x451B30 send/0x451B60 parse), trade inventory 0x409 (0x451CC0 '*' token parse), reset 0x408, dispatch 0x451BB0; paint 0x415B10 dual-pane with drag. F364 gold-box detail closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Gold box + msg family + paint decoded from .text.",
+  "cross_refs": ["F364: trade content", "F35: trade paint", "F283/F295: trade panes"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x451B30+0x20, 0x451BB0+0x30, 0x451CC0+0x40, 0x415B10+0x40",
+  "notes": [
+    "0x1300 = trade-specific window message id",
+    "0x8B186C = server name buffer (trade partner gate)",
+    "0x47C818 = gold box caption"
+  ]
+}

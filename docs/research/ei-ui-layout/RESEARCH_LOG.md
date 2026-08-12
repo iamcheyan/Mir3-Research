@@ -6591,3 +6591,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔仓库〕**master 23b0365（用户任务设计提交在 Round 166 346ee6a 之上，全部已推）；工作树有用户未提交 quest 文档（07-任务总表.md，未动）。
 - **〔弧汇总〕**12 槽面板（F469，F325 8→12 修正）/ 装备包族（F470）/ 音效分派器（F471，F470 语义修正）/ 槽绘制+形象（F472）— 装备面板全解。
 - 落盘：equipment-arc-closure-evidence.json（F473，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 167。
+## Round 168 (F474) — 2026-08-12：交易金币框 + 交易消息族
+
+- **〔金币〕**0x451B30 = 金币报价发送（msg 0x406）；0x451B60 解析（0x400 缓冲、0x1300 交易窗消息）；**0x451BB0 分派**（0x406 金币/0x407/0x408 重置/0x409 库存）；0x451CC0 库存字符串解析（0x2000 缓冲、'*' token、0x8B186C 名门）。
+- **〔绘制〕**0x415B10 双栏（自/他半区、悬停 0x416830 + 物品 0x4162E0、拖动 0x4542F0 经存储 0x5600FC、伙伴名 0x7776A0）。
+- **〔闭合〕**F364 金币框细节闭合。
+- 落盘：trade-gold-box-evidence.json（F474，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 168。
