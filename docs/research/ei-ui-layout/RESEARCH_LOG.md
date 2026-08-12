@@ -7818,3 +7818,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 418-420（F725-F726：英雄更新/死亡重生 + 英雄最终闭合 + F614 冲突修复）；基线 Round 417=ab0e0d5 → Round 420=cbbf2ac（**385 连发 F335-F726**）。
 - 落盘：handoff-refresh-52-evidence.json（F727，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 421。
+## Round 422 (F728) — 2026-08-12：逐瓦片渲染家族
+
+- **〔瓦片渲染〕**0x43B9A0 单瓦片地面渲染（奇偶门 + 网格 [0x108] + 类型/7 + 帧表 0x5600FC + **blit 0x45E8E0 入瓦片缓冲 [0x1B2]**——相机滚动 F718 调用）；0x43BB10 物体层瓦片渲染（属性字 +3/+5/+7、0x30×0x20 尺寸门）——地图逐瓦片渲染核心（F718 用）。
+- 落盘：per-tile-render-family-evidence.json（F728，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 422。

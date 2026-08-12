@@ -1,0 +1,35 @@
+{
+  "evidence_id": "per-tile-render-family-2026-08-12-f728",
+  "title": "Round 422 (F728): Per-tile render family - 0x43B9A0 single-tile GROUND render (parity gate + grid [0x108] stride 0xE + type/7 division + frame table 0x5600FC stride 0x144 + blit 0x45E8E0 into tile buffer [0x1B2] with world coords - called by camera scroll F718); 0x43BB10 OBJECT-layer tile render (attr words +3/+5/+7 two variants, frame table 0x5600FC, dims 0x30x0x20 gate) - map render per-tile core (F718 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the per-tile render helpers.",
+  "question": "How is each tile rendered?",
+  "method": "Disasm 0x43B9A0-0x43BC40.",
+  "scope": "0x43B9A0-0x43BC40; buffer [0x1B2].",
+  "cell_analysis": {
+    "0x43B9A0": "ground: parity + [0x108] grid + type/7 + table 0x5600FC + 0x45E8E0 -> buffer [0x1B2]",
+    "0x43BB10": "object: attr +3/+5/+7, table 0x5600FC, 0x30x0x20 gate"
+  },
+  "exe_trace": {
+    "tile_chain": "ground blit (0x45E8E0) -> object layer"
+  },
+  "audit_vs_exe": {
+    "F718": "camera re-render via 0x43B9A0", "F717": "grid [0x108]"
+  },
+  "contrast": {
+    "ground_vs_object": "0x45E8E0 ground + object layer",
+    "tile_vs_frame": "type table + frame"
+  },
+  "verdict": "Per-tile render family PRIMARY-verified: ground + object layer blits; map render per-tile core (F718).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tile render decoded from .text.",
+  "cross_refs": ["F718: camera", "F717: accessors", "F647: blit"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43B9A0+0x20; 0x43BB10+0x20",
+  "notes": [
+    "blit 0x45E8E0 into [0x1B2]",
+    "object dims 0x30x0x20",
+    "type/7 division",
+    "table 0x5600FC"
+  ]
+}
