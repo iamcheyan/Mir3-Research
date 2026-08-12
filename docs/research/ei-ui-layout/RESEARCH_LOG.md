@@ -6908,3 +6908,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔渲染〕**0x447470：文本链遍历（头 [0x1E8]、门 [0x54]）、**19 行上限**（0x44751D）、0xC8 宽度门（200px）、**色 0x1919C8/0x19197D**（旗标 [0x210]/[0x204]）、**行 y = idx*15+18**（0x447618，F51 line*3+0x12 确认）、2 控件。
 - 落盘：quest-window-render-detail-evidence.json（F537，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 231。
+## Round 232 (F538) — 2026-08-12：窗口渲染弧闭合（F534-F537 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 5611c38（**196 连发已推**）。
+- **〔弧汇总〕**技能详情 msg 0xA5（F534）/ 行会 3 态+滚动条（F535）/ 组队 idx/2*20（F536）/ 任务 19 行+色对（F537）——**全部 14 窗口渲染路径字节级**。
+- 落盘：window-render-arc-closure-evidence.json（F538，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 232。
