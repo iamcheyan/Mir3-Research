@@ -8554,3 +8554,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x42C511 滚动条 0x417C80（[0x61BC] 比例）+ 0x42C559 **输入路由器 → jt 0x42C798（15 窗口处理器）**：背包 0x430650/装备 0x44CED0/商店 0x44F110/交易 0x416E70/行会 0x425DE0/组队 0x424770/状态 0x450B70/公告 0x414CF0/任务 0x448430/选项 0x441A20/坐骑 0x426B90/技能 0x43AC80/对话 0x440560 + 0x42C6A7 **默认全重置**（13 窗口隐藏）——HUD caption 分派完整（F580/F587 用）。
 - 落盘：caption-dispatch-tail-evidence.json（F897，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 591。
+## Round 592 (F898) — 2026-08-12：caption 分派闭合（F580/F587/F897 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**522 证据 JSON**；三服务 200；master 4e52da5（**556 连发 F335-F897 已推**）。
+- **〔弧〕**caption 分派（F580）+ 点击分派（F587）+ 分派尾部（F897）——**caption 分派完整**（16 分支 + 15 窗口处理器 + 全重置 + 滚动条），HUD 输入表面 100%。
+- 落盘：caption-dispatch-closure-evidence.json（F898，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 592。

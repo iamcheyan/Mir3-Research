@@ -1,0 +1,37 @@
+{
+  "evidence_id": "caption-dispatch-closure-2026-08-12-f898",
+  "title": "Round 592 (F898): Caption dispatch CLOSED (F580/F587/F897) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 4e52da5 (556 consecutive F335-F897), 522 evidence JSONs; arc: caption dispatch (F580) + click dispatch (F587) + dispatch tail (F897) - caption dispatch COMPLETE byte-level (16-branch + 15 window handlers + reset-all + scrollbar), HUD input surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the caption dispatch arc.",
+  "question": "Is the caption dispatch fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "522 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F580": "caption", "F587": "click", "F897": "tail"},
+    "caption": "16-branch + 15 handlers = COMPLETE",
+    "milestone": "556 consecutive rounds F335-F897"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F897": "556 rounds pushed; caption dispatch complete"
+  },
+  "contrast": {
+    "branch_vs_handlers": "16 + 15",
+    "router_vs_reset": "jt + hide-all"
+  },
+  "verdict": "Caption dispatch CLOSED (F898): branch + handlers all byte-level; validation green, 556 consecutive rounds, 522 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F580/F587/F897.",
+  "cross_refs": ["F580", "F587", "F897"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "556 consecutive shipping rounds F335-F897",
+    "caption dispatch 100%",
+    "next: HANDOFF refresh 110, remaining corners"
+  ]
+}
