@@ -1,0 +1,51 @@
+{
+  "evidence_id": "chat-input-command-dispatch-2026-08-12-f355",
+  "title": "Round 49 (F355): Chat input + command dispatch - 0x404600 dual-buffer restore + 0x41ED20 command dispatch ('+' -> 0x41E740 trade/counter; msgid-6 byte table 0x421D8C -> jump table 0x421D5C) + sim chat command wiring (browser-verified +/@/!/plain)",
+  "date": "2026-08-12",
+  "objective": "Decode the chat input and command dispatch: 0x404600 (dual-buffer restore + SetWindowTextA + EM_SETSEL/SetFocus chain), 0x41ED20 (command parser: '+' trade, msgid dispatch table), and wire chat commands into the simulator.",
+  "question": "How does the original handle chat input and commands, and does the sim dispatch them?",
+  "method": "Capstone disassembly of 0x404600/0x41ED20/0x41E740; byte table 0x421D8C read; sim app.js Enter handler wiring; browser verification.",
+  "scope": "0x404600-0x40465F (chat input), 0x41ED20-0x421D3F (command dispatch), 0x41E740 (trade command), table 0x421D8C/0x421D5C.",
+  "cell_analysis": {
+    "chat_input_0x404600": {
+      "gate": "[ecx+0x8A4]==1 (chat active)",
+      "body": "clear +0xE3D 0x41 dwords; SetWindowTextA([0x8AA48C], &+0xD39); [0xD38]=1; 0x403640 restore; [0x8AA498]=0",
+      "ret": "8 (2 args)"
+    },
+    "command_dispatch_0x41ED20": {
+      "prologue": "SEH (0x474A91) + 0x3F0C stack via 0x468D10",
+      "plus": "byte[esi]==0x2B '+' -> 0x41E740 (trade/counter command: 0x468BF0 split '/', atoi, timeGetTime gate [0x428214])",
+      "parse": "0x452920 parse -> word msgid",
+      "dispatch": "msgid-6 -> byte table 0x421D8C (0x0B=default 11, sparse indexes) -> jmp [idx*4 + 0x421D5C]",
+      "cases": "0x29E/0x26D/0xC9 explicit compares then table",
+      "string_copy": "0x41EDC4: 0x452810 copy into [ebx+0x50] (0x104 bytes)"
+    },
+    "sim_wiring": {
+      "enter": "'+' -> trade command note (0x41E740); '@' -> whisper family (0x47ACB8 help); '!' -> shout family (0x47ACF8/0x47ACE4/0x47ACD0); else plain [你]",
+      "browser": "4 command classes verified: [交易命令]+trade / [私聊]@whisper / [喊话]!shout / [你]plain"
+    }
+  },
+  "exe_trace": {
+    "chat_window": "hero+0x507EC (id8); edit buffer +0xD39; chat ring +0x58 (F341)",
+    "main_hwnd": "0x8AA48C (SetWindowTextA target for chat restore)"
+  },
+  "audit_vs_exe": {
+    "F331": "0x404600 dual-buffer + EM_SETSEL + SetFocus confirmed",
+    "Round 28": "chat command help strings (0x47ACB8/0x47ACF8/0x47ACE4/0x47ACD0) confirmed as command templates"
+  },
+  "contrast": {
+    "plus_vs_msg": "'+' prefix = trade command (0x41E740); normal text = 0x452920 parsed to msgid dispatch",
+    "sim_vs_original": "sim maps command classes to evidence notes (no network); original sends via 0x452810/0x451E60 socket"
+  },
+  "verdict": "Chat input + command dispatch decoded (primary-bytes): 0x404600 dual-buffer restore (SetWindowTextA + [0xD38] + 0x403640), 0x41ED20 command dispatch ('+' -> 0x41E740 trade; msgid-6 byte table 0x421D8C -> jump 0x421D5C). Sim chat commands wired and browser-verified (4 classes).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All dispatch paths and tables read directly from MIR3.EXE bytes; sim wiring is derived-tooling.",
+  "cross_refs": ["F331: 0x404600 dual-buffer", "F341: chat ring 0x414700", "Round 28: chat command help strings", "F250 area: chat window identity"],
+  "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
+  "reproduce": "img.disasm(0x404600, 0x60); img.disasm(0x41ED20, 0xC0); img.disasm(0x41E740, 0x30); read 0x421D8C table; open sim chat (R), type +/@/!/plain commands",
+  "notes": [
+    "0x421D8C byte table: sparse - only ~14 non-default indexes over 0xC2 entries (0x0B=11 default)",
+    "0x41E740 = trade/counter command (split '/', atoi amount, timeGetTime gate [0x428214])",
+    "chat restore writes [0x8AA498]=0 (notice flag interplay, F337)"
+  ]
+}

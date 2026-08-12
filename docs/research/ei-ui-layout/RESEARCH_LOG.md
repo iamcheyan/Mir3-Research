@@ -5930,3 +5930,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔帧选择〕**server value ≥1001 → FMMap.wil value−1001；否则 MMap.wil value−1（0x43D780，F310 差一）；0.map → FMMap F0。
 - **〔模拟器〕**map.minimap = FMMap F0（0.map）、面板 672,0-800,128 primary-static——接线正确。
 - 落盘：`minimap-subsystem-verification-evidence.json`（F354，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 48。
+
+## Round 49 (F355) — 2026-08-12：聊天输入 + 命令分派（0x404600 双缓冲 + 0x41ED20 命令表）+ 模拟器聊天命令
+
+- **〔0x404600 聊天输入〕**门 [0x8A4]==1：清 +0xE3D 0x41 dwords → SetWindowTextA([0x8AA48C], &+0xD39) → [0xD38]=1 → 0x403640 恢复 → [0x8AA498]=0；ret 8。
+- **〔0x41ED20 命令分派〕**SEH + 0x3F0C 栈：`'+'` 前缀 → **0x41E740 交易/计数器命令**（0x468BF0 按 '/' 切、atoi、timeGetTime 门 [0x428214]）；否则 0x452920 解析 → word msgid → **msgid−6 → 字节表 0x421D8C**（0x0B=默认 11，稀疏索引）→ jmp [idx*4 + 0x421D5C]；显式比较 0x29E/0x26D/0xC9；0x41EDC4 字符串拷 [ebx+0x50] 0x104B。
+- **〔模拟器〕**Enter 分派：'+' → 交易命令注（0x41E740）、'@' → 私聊家族（0x47ACB8）、'!' → 喊话家族（0x47ACF8/0x47ACE4/0x47ACD0）、普通 → [你]。**浏览器验证 4 类命令**。
+- 落盘：`chat-input-command-dispatch-evidence.json`（F355，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 49。

@@ -436,6 +436,13 @@ git diff --check
 - **模拟器**：0.map → FMMap F0、面板 672,0-800,128（接线正确）。
 - 落盘：`minimap-subsystem-verification-evidence.json`（F354）+ RESEARCH_LOG Round 48。
 
+## Round 49 (2026-08-12) — 聊天输入 + 命令分派（Finding 355）
+
+- **0x404600**：双缓冲恢复（SetWindowTextA + [0xD38] + 0x403640）。
+- **0x41ED20**：'+' → 0x41E740 交易；msgid−6 → 字节表 0x421D8C → 跳表 0x421D5C。
+- **模拟器聊天命令**：+ / @ / ! / 普通 4 类分派（浏览器验证）。
+- 落盘：`chat-input-command-dispatch-evidence.json`（F355，primary-bytes）+ app.js + RESEARCH_LOG Round 49。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

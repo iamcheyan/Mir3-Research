@@ -610,7 +610,18 @@ function fillWindowContent(w) {
     input.placeholder = "输入聊天内容…";
     input.addEventListener("keydown", (ev) => {
       if (ev.key === "Enter" && input.value) {
-        pushChat(`[你] ${input.value}`);
+        const v = input.value.trim();
+        // Round 49 (F355): original command dispatch 0x41ED20 - '+' prefix =
+        // 0x41E740 trade/counter; else 0x452920 parse -> msgid table 0x421D8C.
+        if (v.startsWith("+")) {
+          pushChat(`[交易命令] ${v} → 0x41E740 (0x452810 解析, 门 [0x428214])`);
+        } else if (v.startsWith("@")) {
+          pushChat(`[私聊] ${v} → @拒绝私聊/@拒绝行会聊天 家族 (0x47ACB8 命令帮助)`);
+        } else if (v.startsWith("!")) {
+          pushChat(`[喊话] ${v} → 大喊话(!喊话) 0x47ACF8 / 编组喊话(!!) 0x47ACE4 / 行会喊话(!~) 0x47ACD0`);
+        } else {
+          pushChat(`[你] ${v}`);
+        }
         input.value = "";
         const hl2 = content.querySelector(".chat-lines");
         if (hl2) hl2.textContent = STATE.chatLines.join("\n");
