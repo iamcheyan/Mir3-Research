@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-audio-apply-arc-closure-2026-08-12-f777",
+  "title": "Round 471 (F777): Options/audio apply arc CLOSED (F546/F632/F761/F776) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 5162b3d (435 consecutive F335-F776), 401 evidence JSONs (400+ milestone); arc: BGM slider (F546) + audio engine (F632) + options click (F761) + slider apply (F776) - options/audio apply COMPLETE byte-level (4x2 toggles + BGM/SFX sliders -> volume slots 0x8AB150/0x8AB14C -> 0x45A700 apply + redraw)",
+  "date": "2026-08-12",
+  "objective": "Close the options/audio apply arc.",
+  "question": "Is the options audio apply fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "401 JSONs (400+ milestone)"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F546": "BGM slider", "F632": "audio", "F761": "options click", "F776": "slider apply"},
+    "audio": "toggles + sliders + apply = COMPLETE",
+    "milestone": "435 consecutive rounds F335-F776 + 400 evidence JSONs"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F776": "435 rounds pushed; options audio complete"
+  },
+  "contrast": {
+    "toggles_vs_sliders": "switches + volumes",
+    "slots_vs_apply": "0x8AB150/0x8AB14C + 0x45A700"
+  },
+  "verdict": "Options/audio apply arc CLOSED (F777): toggles + sliders + apply all byte-level; validation green, 435 consecutive rounds, 401 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F546/F632/F761/F776.",
+  "cross_refs": ["F546", "F632", "F761", "F776"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "435 consecutive shipping rounds F335-F776",
+    "400+ evidence JSONs milestone",
+    "next: HANDOFF refresh 69, remaining corners"
+  ]
+}

@@ -8030,3 +8030,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔选项音频〕**0x441F40（F761 依赖）：arg 1 → **BGM [0x6C] × 0x476978 − 0x476970**（0x468520 浮点→int）→ **音量 [0x8AB150]** + **0x45A700 音量 API** + 0x441B30 重绘；否则 **SFX [0x74] → [0x8AB14C]** + 重绘；0x441FD0/0x442020 构造（vtable 0x476984 + 滑块浮点态 0xBF000000/-0.5、0x43960000/300.0、0x3CA3D70A/0.02、0xBD4CCCCD/-0.05）——选项音频应用完整（F546/F761 用）。
 - 落盘：options-slider-apply-ctor-evidence.json（F776，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 470。
+## Round 471 (F777) — 2026-08-12：选项/音频应用弧闭合（F546/F632/F761/F776 汇总）+ 400 证据里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**401 证据 JSON（400+ 里程碑）**；三服务 200；master 5162b3d（**435 连发 F335-F776 已推**）。
+- **〔弧〕**BGM 滑块（F546）+ 音频引擎（F632）+ 选项点击（F761）+ 滑块应用（F776）——**选项/音频应用完整**（4×2 开关 + BGM/SFX 滑块 → 音量槽 0x8AB150/0x8AB14C → 0x45A700 应用 + 重绘）。
+- 落盘：options-audio-apply-arc-closure-evidence.json（F777，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 471。
