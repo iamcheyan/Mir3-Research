@@ -515,6 +515,12 @@ git diff --check
 - **模拟器精灵**：行会管理员 → NPC.wil F30（浏览器验证）。
 - 落盘：`npc-entity-render-verification-evidence.json`（F367）+ RESEARCH_LOG Round 61。
 
+## Round 62 (2026-08-12) — 最终收尾（Finding 368）
+
+- **数据重生成**（22 窗/41 控件/157 资源）；**全验证套件 exit 0**；**三服务 200**；工作树干净。
+- **Round 29-62 = 34 连发 commit（F335-F368）**。
+- 落盘：`housekeeping-final-evidence.json`（F368）+ RESEARCH_LOG Round 62。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

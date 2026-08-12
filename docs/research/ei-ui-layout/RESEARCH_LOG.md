@@ -6011,3 +6011,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F287〕**NPC 实体 vtable 0x47671C（type 0x32）；NPC.wil = slot 127；body 条带 0x44A090（0,12,0x50=80ms）；**帧 = word[0x8AA6C8+6*state] + 100*body + 10*(flag%3)**；0x40C4B0 帧推进。
 - **〔模拟器〕**entityFrame NPC 分支 = 100*body + 10*(flag%3) + 状态表循环。**浏览器验证**：行会管理员 → NPC.wil F30。
 - 落盘：`npc-entity-render-verification-evidence.json`（F367，derived-tooling；源证据 primary-static F287）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 61。
+
+## Round 62 (F368) — 2026-08-12：最终收尾（模拟器数据重生成 + 全验证套件 + 服务检查 + 仓库干净）
+
+- **〔数据〕**builder 重生成：windows=22 controls=41 resources=157 entities=8 equipment_slots=8 skills=12 maps=2 bindings=211。
+- **〔验证〕**compileall OK；verify_mir3_ui_evidence exit 0（零错误）；node --check OK；layout/matrix/sim-layout JSON 全有效；git diff --check OK；工作树干净（仅未跟踪 scripts/goal_watchdog.sh.bak-20260812-084129 用户文件未动）。
+- **〔服务〕**wilviewer 8765/ui 200、mapviewer 8899 200、sim 8765/sim 200。
+- 落盘：`housekeeping-final-evidence.json`（F368，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 62。**Round 29-62 = 34 连发 commit（F335-F368，4e95988..874a223）。**

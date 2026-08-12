@@ -1,0 +1,31 @@
+{
+  "evidence_id": "housekeeping-final-2026-08-12-f368",
+  "title": "Round 62 (F368): Final housekeeping - sim data regenerated (22 windows/41 controls), full validation suite exit 0, all 3 services 200, repo clean (Rounds 29-61 = 33 consecutive shipping commits)",
+  "date": "2026-08-12",
+  "objective": "Final housekeeping sweep: regenerate all simulator data, run the full validation suite, verify all services, confirm repo cleanliness.",
+  "question": "Is the repository in a consistent, verified state after 33 consecutive shipping rounds?",
+  "method": "builder re-run; compileall; verify_mir3_ui_evidence; node --check; JSON validation; service HTTP checks; git status.",
+  "scope": "Tools + docs + data; services 8765/8899.",
+  "cell_analysis": {
+    "data": {"windows": 22, "controls": 41, "resources": 157, "entities": 8, "equipment_slots": 8, "skills": 12, "maps": 2, "bindings": 211},
+    "validation": {
+      "compileall": "OK",
+      "verify_mir3_ui_evidence": "exit 0 (zero errors)",
+      "node --check app.js": "OK",
+      "JSON": "layout/matrix/sim-layout all valid",
+      "git diff --check": "OK",
+      "git status": "clean except untracked scripts/goal_watchdog.sh.bak-20260812-084129 (user file, not touched)"
+    },
+    "services": {"wilviewer 8765/ui": 200, "mapviewer 8899": 200, "sim 8765/sim": 200}
+  },
+  "verdict": "Repository verified consistent after Rounds 29-61 (33 consecutive shipping commits, F335-F367): sim data current, full validation suite passes (verify exit 0), all services live, working tree clean.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Housekeeping verification of the accumulated evidence corpus.",
+  "cross_refs": ["All F335-F367 evidence", "Commit range 4e95988..874a223"],
+  "tool": "bash; python3; node; curl",
+  "reproduce": "/home/tetsuya/mir3-venv/bin/python Tools/web/build_mir3_simulator_data.py; python3 -m compileall -q Tools; python3 Tools/reverse-engineering/verify_mir3_ui_evidence.py --client $MIR3_EI_ROOT; curl services",
+  "notes": [
+    "scripts/goal_watchdog.sh.bak-20260812-084129 left untracked per user constraint",
+    "all 544 maps + 14 windows + full simulator integration remain from prior rounds"
+  ]
+}
