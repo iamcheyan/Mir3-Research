@@ -1,0 +1,35 @@
+{
+  "evidence_id": "control-ctor-paint-2026-08-12-f701",
+  "title": "Round 395 (F701): Control ctor + paint - 0x417550 (F313 CONFIRMED): 9-arg ctor - rect [0x4] SetRect (0x4762B0) from WIL frame dims (0x466130 + [0x38] words), [0x14]=WIL obj, [0x18]/[0x1C] pos, [0x20]=frame, [0x24] flag, [0x25]=0, [0x28]/[0x2C] pos, [0x30]=-1, [0x34] text, ret 0x24; 0x417640 = control PAINT (frame [0x20] via 0x466130 -> 0x460240 blit at [0x28]/[0x2C]) - button/control system byte-level (F313/F546/F547 all use)",
+  "date": "2026-08-12",
+  "objective": "Decode the control ctor + paint.",
+  "question": "How are controls constructed/painted?",
+  "method": "Disasm 0x417550-0x41770E.",
+  "scope": "0x417550-0x41770E; 9 args; paint.",
+  "cell_analysis": {
+    "0x417550": {"ctor": "9-arg: rect [0x4] + [0x14] WIL + [0x18]/[0x1C] + [0x20] frame + [0x24] flag + [0x28]/[0x2C] pos + [0x30] + [0x34] text", "rect": "SetRect from WIL dims (0x466130 + [0x38] words)", "ret": "0x24"},
+    "0x417640": "paint: frame [0x20] via 0x466130 -> 0x460240 blit at [0x28]/[0x2C]"
+  },
+  "exe_trace": {
+    "control_chain": "ctor 9 args -> rect + fields -> paint 0x417640 frame blit"
+  },
+  "audit_vs_exe": {
+    "F313": "control ctor CONFIRMED", "F546": "option toggles", "F547": "skillbook tabs"
+  },
+  "contrast": {
+    "ctor_vs_paint": "0x417550 ctor + 0x417640 paint",
+    "fields": "rect/pos/frame/flag/text"
+  },
+  "verdict": "Control ctor + paint PRIMARY-verified: 9-arg init + frame blit; button system byte-level (F313/F546/F547).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Control core decoded from .text.",
+  "cross_refs": ["F313: controls", "F546: toggles", "F547: tabs"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x417550+0x20; 0x417640+0x20",
+  "notes": [
+    "9-arg ctor ret 0x24",
+    "rect from WIL frame dims",
+    "fields [0x14..0x34]",
+    "paint blit 0x460240"
+  ]
+}

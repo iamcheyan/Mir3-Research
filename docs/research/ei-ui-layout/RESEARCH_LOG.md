@@ -7701,3 +7701,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 391-393（F698-F699：快捷槽物品使用 + 交互/命令弧）；基线 Round 390=076c820 → Round 393=4c6ccba（**358 连发 F335-F699**）。
 - 落盘：handoff-refresh-44-evidence.json（F700，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 394。
+## Round 395 (F701) — 2026-08-12：控件构造 + 绘制
+
+- **〔构造〕**0x417550（F313 确认）：**9 参 ctor**——矩形 [0x4] SetRect（0x4762B0，来自 WIL 帧尺寸 0x466130 + [0x38] 字）、[0x14]=WIL 对象、[0x18]/[0x1C] 位置、[0x20]=帧、[0x24] 旗标、[0x25]=0、[0x28]/[0x2C] 位置、[0x30]=-1、[0x34] 文本、ret 0x24。
+- **〔绘制〕**0x417640 = 控件绘制（帧 [0x20] 经 0x466130 → 0x460240 blit @ [0x28]/[0x2C]）——按钮/控件系统字节级（F313/F546/F547 全用）。
+- 落盘：control-ctor-paint-evidence.json（F701，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 395。
