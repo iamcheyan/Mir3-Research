@@ -7762,3 +7762,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔窗口基类〕**0x4182A0 绘制：背景帧 [0x4] blit（0x460240）+ **标题文本 0x45DF20（色 0xC8FAFF）** @ 矩形 [0x18] + 3 控件循环（vtable[1] 绘制 + 帧 blit，活跃槽 [0x462]）；0x418400 输入：vtable[3] 命中 → 设 [0x462]；0x418460 可见性（[0x28]）；ctor 尾部：客户区 [0x18]、计数 [0x460]——**窗口基类完整（F713 + 此项）**。
 - 落盘：window-base-paint-input-evidence.json（F714，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 408。
+## Round 409 (F715) — 2026-08-12：窗口基类弧闭合（F713-F714 汇总）+ wilviewer 重启
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**338 证据 JSON**；**wilviewer 8765 进程死亡 → 重启成功**，mapviewer/sim8477 200；master 6bd8d08（**373 连发 F335-F714 已推**）。
+- **〔弧〕**窗口基类构造（F713）+ 绘制/输入（F714）——**窗口基类完整（构造 + 边框按钮 + 背景/标题绘制 + 控件命中路由）**，支撑全部 F313 窗口。
+- 落盘：window-base-arc-closure-evidence.json（F715，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 409。

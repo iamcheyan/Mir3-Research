@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-base-arc-closure-2026-08-12-f715",
+  "title": "Round 409 (F715): Window base arc CLOSED (F713-F714) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer RESTARTED after death + mapviewer/sim8477), master 6bd8d08 (373 consecutive F335-F714), 338 evidence JSONs; arc: window base ctor (F713) + paint/input (F714) - window base COMPLETE byte-level (ctor + chrome buttons + bg/title paint + control hit routing), backing every F313 window",
+  "date": "2026-08-12",
+  "objective": "Close the window base arc.",
+  "question": "Is the window base fully documented?",
+  "method": "Full validation + arc consolidation + wilviewer restart.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "338 JSONs"},
+    "services": "wilviewer 8765 RESTARTED (was 000) / mapviewer 8899 / sim8477 200",
+    "arc": {"F713": "base ctor", "F714": "paint + input"},
+    "window": "ctor + chrome + paint + input = COMPLETE (F313)",
+    "milestone": "373 consecutive rounds F335-F714"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F714": "373 rounds pushed; window base complete"
+  },
+  "contrast": {
+    "ctor_vs_paint": "ctor + bg/title paint",
+    "window_vs_control": "window base + control complete"
+  },
+  "verdict": "Window base arc CLOSED (F715): ctor + paint + input all byte-level; validation green, wilviewer restarted, 373 consecutive rounds, 338 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F713-F714; wilviewer death+restart observed.",
+  "cross_refs": ["F713: base ctor", "F714: paint/input", "F313: windows"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "373 consecutive shipping rounds F335-F714",
+    "wilviewer restarted (3rd death overall)",
+    "next: HANDOFF refresh 49, remaining corners"
+  ]
+}
