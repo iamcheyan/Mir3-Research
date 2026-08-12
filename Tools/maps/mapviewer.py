@@ -1948,6 +1948,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             entLayer.style.width = vp.clientWidth + "px";
             entLayer.style.height = vp.clientHeight + "px";
             const vw = vp.clientWidth, vh = vp.clientHeight;
+            const hlName = window.__hlName || null;
             entLayer.innerHTML = ents.map(e => {
                 const px = Number(e.x) * 48 / s - vp.scrollLeft;
                 const py = Number(e.y) * 32 / s - vp.scrollTop;
@@ -1958,7 +1959,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const shape = entShape(kind);
                 const label = e.name || "";
                 const d = e.drops ? ` · 掉落 ${e.drops.length} 种` : "";
-                return `<div class="ent ${kind}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px"><span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span><span class="ent-label">${label}</span></div>`;
+                const hlCls = (hlName && e.name === hlName) ? " target" : "";
+                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px"><span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span><span class="ent-label">${label}</span></div>`;
             }).join("");
         }
         // hover entity -> tooltip
@@ -2219,11 +2221,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const st = loadState();
             const hasHash = !!location.hash;
 
+            window.__hlName = null;
             if (hasHash) {
                 const matchMap = location.hash.match(/map=([^&]+)/);
                 const matchCur = location.hash.match(/cur=(\\d+)/);
                 const matchX   = location.hash.match(/x=(\\d+)/);
                 const matchY   = location.hash.match(/y=(\\d+)/);
+                const matchHl  = location.hash.match(/hl=([^&]+)/);
                 if (matchMap) {
                     const parsed = decodeURIComponent(matchMap[1]);
                     if (maps.some(m => m.name.toLowerCase() === parsed.toLowerCase())) {
@@ -2233,6 +2237,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 if (matchCur) targetCur = parseInt(matchCur[1]);
                 if (matchX) targetX = parseInt(matchX[1]);
                 if (matchY) targetY = parseInt(matchY[1]);
+                if (matchHl) window.__hlName = decodeURIComponent(matchHl[1]);
             } else if (st && maps.some(m => m.name === st.map)) {
                 targetMap = st.map;
                 targetCur = st.cur;
@@ -2702,6 +2707,20 @@ class ViewerHandler(BaseHTTPRequestHandler):
             qs = parse_qs(urlparse(self.path).query)
             map_name = os.path.basename(qs.get("map", [""])[0])
             ents = [e for e in self.entities if e["map"] == map_name]
+            # 合并 System.db 位置实体（dbviewer 服务 8800 运行时启用）：
+            # 刷怪点 / NPC / 守卫 / 传送点 / 安全区，格式与 Envir 实体一致。
+            try:
+                import urllib.request
+                db_url = "http://127.0.0.1:8800/api/map-entities?map=" + urllib.parse.quote(map_name)
+                with urllib.request.urlopen(db_url, timeout=3) as r:
+                    db = json.loads(r.read().decode("utf-8"))
+                for e in db.get("entities", []):
+                    if not any(x.get("x") == e.get("x") and x.get("y") == e.get("y")
+                               and x.get("kind") == e.get("kind") and x.get("name") == e.get("name")
+                               for x in ents):
+                        ents.append(e)
+            except Exception:
+                pass
             body = json.dumps({"ok": True, "count": len(ents), "entities": ents},
                               ensure_ascii=False).encode("utf-8")
             self.send_response(200)
