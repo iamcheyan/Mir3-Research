@@ -1,0 +1,40 @@
+{
+  "evidence_id": "horse-interaction-verification-2026-08-12-f411",
+  "title": "Round 105 (F411): Horse interaction verified - 4 command rows (말타기 @上马/말내리기 @遛马/말숨기기 @收马/말꺼내기 @遛马) with 0x7DA060 state gates, click logs command dispatch (0x426A80-0x426B45, browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the horse window commands and their state-gated dispatch.",
+  "question": "Do the sim horse commands fire with the original gates?",
+  "method": "Sim browser test (command rows + click); F327/F361 evidence cross-ref.",
+  "scope": "sim window.horse; F327 horse evidence.",
+  "cell_analysis": {
+    "commands": [
+      {"말타기": "@上马 0x47B060", "gate": "[0x7DA060]==0"},
+      {"말내리기": "@遛马 0x47B068", "gate": "[0x7DA060]!=0"},
+      {"말숨기기": "@收马 0x47B058", "site": "0x426AE1"},
+      {"말꺼내기": "@遛马 0x47B068", "site": "0x426B2D"}
+    ],
+    "click": "말타기 click -> chat '[坐骑] 말타기 (mount) · @上马 0x47B060 → 命令 (0x426A80-0x426B45)' (browser)"
+  },
+  "exe_trace": {
+    "horse_window": "hero+0x52118 (id13, Ctrl+S, F327/F361)"
+  },
+  "audit_vs_exe": {
+    "F327": "5 sub-controls + commands + state gates confirmed",
+    "F361": "sim wiring confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim logs command; original sends @command via socket",
+    "state_gate": "0x7DA060 mount state flips which command fires"
+  },
+  "verdict": "Horse interaction verified (F327/F361): 4 command rows with Korean labels + @commands + 0x7DA060 gates; click logs the dispatch. Horse subsystem closed.",
+  "evidence_level": "derived-tooling (semantics primary-static F327)",
+  "evidence_level_note": "Sim commands browser-verified; gates from F327 primary bytes.",
+  "cross_refs": ["F327: horse window", "F361: horse wiring", "F338: id13 Ctrl+S"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; press S; click 말타기; observe chat log",
+  "notes": [
+    "말내리기 and 말꺼내기 share @遛马 (different gates, F327)",
+    "horse window no vtable (F327)",
+    "sim click = demo log; original sends command packet"
+  ]
+}

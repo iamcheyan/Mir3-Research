@@ -751,6 +751,11 @@ git diff --check
 - **8 页签 + 12 真实技能槽验证**（F351/F331）。
 - 落盘：`skill-detail-verification-evidence.json`（F410）+ RESEARCH_LOG Round 104。
 
+## Round 105 (2026-08-12) — 坐骑交互（Finding 411）
+
+- **4 命令 + 0x7DA060 门控验证**（点击日志分派）。
+- 落盘：`horse-interaction-verification-evidence.json`（F411）+ RESEARCH_LOG Round 105。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

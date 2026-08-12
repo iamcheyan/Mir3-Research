@@ -6259,3 +6259,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔页签〕**8 分类（火冰电风神圣黑暗幻影剑，F338）；**〔槽〕**12 真实 Magic.exp 技能（基本剑术/攻杀剑术/刺杀剑术 primary-static，F351）。
 - **〔详情页〕**0x43A440 右页渲染器（F331：Magic.exp 行、0x104 步长、235px x 偏移）已文档化。
 - 落盘：skill-detail-verification-evidence.json（F410，derived-tooling；名 primary-static F351）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 104。
+## Round 105 (F411) — 2026-08-12：坐骑交互验证（4 命令 + 0x7DA060 门控）
+
+- **〔命令〕**말타기 @上马（[0x7DA060]==0）/말내리기 @遛马（!=0）/말숨기기 @收马/말꺼내기 @遛马——全带门控；点击日志分派（浏览器验证）。
+- 落盘：horse-interaction-verification-evidence.json（F411，derived-tooling；语义 primary-static F327）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 105。
