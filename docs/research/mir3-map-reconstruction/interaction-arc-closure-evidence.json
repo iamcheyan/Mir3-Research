@@ -1,0 +1,35 @@
+{
+  "evidence_id": "interaction-arc-closure-2026-08-12-f480",
+  "title": "Round 174 (F480): Interaction arc CLOSED (F474-F479, 6 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 8119727 (141 shipping rounds F335-F479); arc consolidated: trade gold box + msg family (F474), NPC dialog menu options + FCOLOR palette (F475), NPC dialog input/send (F476), bag/equip manager + item transfer (F477), item save file .itm (F478), visibility pass special entities (F479) - F364/F404/F336 pendings closed, 0x47C4D8 corrected",
+  "date": "2026-08-12",
+  "objective": "Close the interaction arc with a validation sweep + summary.",
+  "question": "Is the repo healthy after the 6-round interaction arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 8119727; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F474": "trade gold box (msg 0x406) + inventory 0x409 + dual-pane paint - F364 closed", "F475": "NPC dialog menu options + FCOLOR 8-DOS palette - 0x47C4D8 corrected to color-pair table", "F476": "NPC dialog input/send (2 edits + 0x4524D0 reply) - F404 closed", "F477": "bag/equip manager + item transfer (0x308 dword records)", "F478": "item save file Data/<name>.itm + 0xC2C stride (F293 confirmed)", "F479": "visibility pass special entities + map objects - F336 4-grid end-to-end"},
+    "corrections": {"F364": "gold box detail closed", "F404": "dialog interaction closed", "F336": "4-grid pass complete", "0x47C4D8": "binary color-pair (not title)"}
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F479": "141 rounds pushed; interaction family fully closed"
+  },
+  "contrast": {
+    "closed_vs_pending": "all major pendings closed; remaining = low-priority (store 0x5898 source, exact slot order)"
+  },
+  "verdict": "Interaction arc CLOSED (F474-F479): validation green, services live, 141 shipping rounds pushed. Trade/NPC-dialog/item-movement/visibility all fully decoded; F364/F404/F336 pendings closed.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F474-F479.",
+  "cross_refs": ["F474-F479: arc", "F167: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: minimap runtime, skill cast effects, server Envir deeper integration",
+    "141 shipping rounds + user quest-design commits all pushed"
+  ]
+}

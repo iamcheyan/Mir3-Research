@@ -6624,3 +6624,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔地图对象〕**0x41A367 链 C：PtInRect 剔除、网格3 [0x474] 分桶、视口外移除。
 - **〔完整〕**F336/F446 4 网格可见性通道端到端全解。
 - 落盘：visibility-pass-special-entities-evidence.json（F479，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 173。
+## Round 174 (F480) — 2026-08-12：交互弧闭合（F474-F479 6 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 8119727（**141 连发已推**）。
+- **〔弧汇总〕**交易金币框（F364 闭合）/ NPC 对话菜单+输入（F404 闭合、0x47C4D8 修正）/ 物品转移 + .itm 存档（F293 确认）/ 可见性特殊实体（F336 端到端）。
+- 落盘：interaction-arc-closure-evidence.json（F480，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 174。
