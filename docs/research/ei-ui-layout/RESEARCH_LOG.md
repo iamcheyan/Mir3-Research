@@ -6896,3 +6896,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔解析〕**0x43A440：技能名匹配 + 详情解析（token 0x468BF0 '' 分隔、'#' 等级门、';' 终止、匹配旗标 [esp+0x13]）；**详情请求 msg 0xA5**（0x45E200）+ 多行缓冲（0x100 stride）。
 - 落盘：skill-book-detail-page-evidence.json（F534，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 228。
+## Round 229 (F535) — 2026-08-12：行会窗渲染细节
+
+- **〔分派〕**0x425040：状态字节 [0x98] 3 路（0=0x425280 公告 / 1=0x425440 敌对 / else=0x425590 联盟+成员）、每状态列表位置选择器（[0x9C]/[0xB4]/[0x114]）、**滚动条 0x4179B0 @ [0x76C]**（0x42514D）+ 6+ 控件矩形（0x417830）。
+- 落盘：guild-window-render-detail-evidence.json（F535，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 229。

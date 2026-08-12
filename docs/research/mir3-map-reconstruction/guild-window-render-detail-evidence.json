@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-window-render-detail-2026-08-12-f535",
+  "title": "Round 229 (F535): Guild window render detail - 0x425040: state byte [0x98] dispatch (0=0x425280 行会公告 / 1=0x425440 敌对行会 / else=0x425590 联盟行会+成员, F99/F348), per-state list position selectors ([0x9C] state0 / [0xB4] state1 / [0x114] state2), SCROLLBAR 0x4179B0 @ [0x76C] (0x42514D), 6+ control rects 0x417830 (@ [0x118]/[0x1CC]/[0x280]/[0x334]/[0x3E8]/[0x49C], button/input areas), title 0x96C8FF - guild window render chain complete",
+  "date": "2026-08-12",
+  "objective": "Decode the guild window render detail (F99/F348).",
+  "question": "How does the guild window render its 3 list states?",
+  "method": "Disasm 0x425040-0x425200 (guild paint).",
+  "scope": "0x425040-0x425200; state [0x98]; scrollbar [0x76C].",
+  "cell_analysis": {
+    "state_dispatch": {"byte": "[0x98] 0=0x425280 公告 / 1=0x425440 敌对 / else=0x425590 联盟+成员", "pos_sel": "[0x9C] state0 / [0xB4] state1 / [0x114] state2 (list x-y)"},
+    "scrollbar": "0x4179B0 @ [0x76C] (0x42514D, F96/F402 scroll family)",
+    "controls": "6+ rects 0x417830 @ [0x118]/[0x1CC]/[0x280]/[0x334]/[0x3E8]/[0x49C] (buttons/inputs)"
+  },
+  "exe_trace": {
+    "guild_chain": "state byte -> 3 list fns -> scrollbar + controls render"
+  },
+  "audit_vs_exe": {
+    "F99": "3 list states confirmed", "F348": "guild paint family", "F42": "guild window"
+  },
+  "contrast": {
+    "state0_vs_state2": "公告 vs 联盟+成员 (different list pos selectors)",
+    "list_vs_controls": "list fns (0x425280+) vs control rects"
+  },
+  "verdict": "Guild window render PRIMARY-verified: state [0x98] 3-way dispatch, per-state positions, scrollbar [0x76C], 6+ controls. F99/F348 render chain complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild paint decoded from .text.",
+  "cross_refs": ["F99: guild lists", "F348: guild paint", "F42: window"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x425040+0x60",
+  "notes": [
+    "3 list fns = 公告/敌对/联盟+成员 (F99)",
+    "list pos selectors per state",
+    "6 controls = buttons + input areas"
+  ]
+}
