@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-dialog-menu-options-2026-08-12-f475",
+  "title": "Round 169 (F475): NPC dialog menu options - type-4 paint 0x43F460: menu option list (count [0x3BC], page [0x594] range, option text ptr [list+4], 5px row pitch, color flags [0x5D]/[0x5C]: 0x190/9 enabled vs 0x81/0xFFFF disabled at 0x43F86D); option text drawn via 0x45DD70 (text blit) at x+0x28 rows; FCOLOR token -> 8 DOS colors (0x47C4A8: 0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000, F41); 0x47C4D8 = binary color-pair table NOT text (menu title = server-script text F41); dialog feedback strings at 0x47B8D4-0x47BA09 (购买/卖/修理/仓库/输入/确定/恭喜/升级/经验值/拒绝/允许)",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog menu option rendering + correct the 0x47C4D8 title assumption.",
+  "question": "How are NPC dialog menu options rendered and colored?",
+  "method": "Disasm 0x43F7A0-0x43F86D (menu option draw) + string/palette decode.",
+  "scope": "0x43F460-0x440158; options [0x3BC]/[0x594]; palette 0x47C4A8.",
+  "cell_analysis": {
+    "menu_options": {"list": "option list (count [0x3BC], page range [0x594])", "text": "option text at [list+4]", "row_pitch": "5px per option row (imul 5)", "pos": "x + 0x28, y + 0x23 + row*5", "color": "[0x5D] enable flag (0x190/9 = white on highlight); [0x5C] disable -> 0xFF"},
+    "fcolor_palette": {"table": "0x47C4A8 8 colors: [0]=0x000000 [1]=0x0000FF [2]=0x008000 [3]=0x008080 [4]=0x808080 [5]=0x000080 [6]=0x808000 [7]=0x800000 (DOS palette, F41 FCOLOR token)", "note": "0x47C4D8 = binary color-pair table (NOT menu title GBK)"},
+    "dialog_strings": "0x47B8D4-0x47BA09: 无法变卖/已经被卖掉/购买过快/包袱太重/不能购买/被拿掉/恭喜升级/经验值增加/拒绝/允许 (store+dialog feedback)",
+    "title": "menu title = server-script text (F41 token flow), not a client constant"
+  },
+  "exe_trace": {
+    "dialog_chain": "server script (F41 tokens) -> option list -> paint 0x43F460 type-4 -> 0x45DD70 text rows"
+  },
+  "audit_vs_exe": {
+    "F41": "type-4 token paint confirmed + palette decoded",
+    "F347": "NPC dialog family extended"
+  },
+  "contrast": {
+    "enabled_vs_disabled": "option color flags [0x5D]/[0x5C] toggle enabled/disabled",
+    "script_vs_static": "options = server script text; feedback = client constants"
+  },
+  "verdict": "NPC dialog menu options PRIMARY-verified: type-4 paint renders option rows (5px pitch) with enable/disable color flags, FCOLOR palette = 8 DOS colors at 0x47C4A8; 0x47C4D8 corrected to binary color-pair table (not title). Dialog strings cataloged.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Option draw + palette + strings decoded from .text/.rdata.",
+  "cross_refs": ["F41: NPC dialog paint", "F347: dialog family", "F404: dialog interaction"],
+  "tool": "capstone + .rdata decode",
+  "reproduce": "disasm 0x43F7A0+0x50; decode 0x47C4A8[8] + 0x47B8D4+",
+  "notes": [
+    "FCOLOR indices 0-7 map to DOS 16-color low bytes",
+    "menu title constant not found - script-driven [inference]",
+    "0x45DD70 = text blit (same as status labels F472)"
+  ]
+}

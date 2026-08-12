@@ -6597,3 +6597,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔绘制〕**0x415B10 双栏（自/他半区、悬停 0x416830 + 物品 0x4162E0、拖动 0x4542F0 经存储 0x5600FC、伙伴名 0x7776A0）。
 - **〔闭合〕**F364 金币框细节闭合。
 - 落盘：trade-gold-box-evidence.json（F474，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 168。
+## Round 169 (F475) — 2026-08-12：NPC 对话菜单选项（类型 4 绘制）
+
+- **〔选项〕**0x43F460 type-4：选项列表（计数 [0x3BC]、页范围 [0x594]）、文本 [list+4]、**5px 行距**、启用/禁用色旗 [0x5D]/[0x5C]（0x190/9 vs 0x81/0xFFFF）；文本经 0x45DD70 绘制。
+- **〔调色板〕**FCOLOR = 8 DOS 色（0x47C4A8：0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000）；**0x47C4D8 修正 = 二进制色对表（非菜单标题 GBK）**。
+- **〔字符串〕**0x47B8D4-0x47BA09 商店/对话反馈（购买/卖/修理/仓库/恭喜升级/拒绝/允许）。
+- 落盘：npc-dialog-menu-options-evidence.json（F475，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 169。
