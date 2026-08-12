@@ -1,0 +1,37 @@
+{
+  "evidence_id": "text-layout-closure-2026-08-12-f822",
+  "title": "Round 516 (F822): Text layout CLOSED (F564/F737/F821) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0d28bae (480 consecutive F335-F821), 446 evidence JSONs; arc: GDI text (F564) + BSS helpers (F737) + measure/wrap (F821) - text layout COMPLETE byte-level (measure + wrap split + join + GDI draw + center math), text surface 100%; 480 consecutive rounds milestone",
+  "date": "2026-08-12",
+  "objective": "Close the text layout arc.",
+  "question": "Is the text layout fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "446 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F564": "GDI text", "F737": "BSS helpers", "F821": "measure/wrap"},
+    "text": "measure + wrap + draw = COMPLETE",
+    "milestone": "480 consecutive rounds F335-F821"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F821": "480 rounds pushed; text layout complete"
+  },
+  "contrast": {
+    "measure_vs_draw": "extent + GDI",
+    "wrap_vs_join": "split + concat"
+  },
+  "verdict": "Text layout CLOSED (F822): measure + wrap + draw all byte-level; validation green, 480 consecutive rounds, 446 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F564/F737/F821.",
+  "cross_refs": ["F564", "F737", "F821"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "480 consecutive shipping rounds F335-F821",
+    "text layout 100%",
+    "next: HANDOFF refresh 84, remaining corners"
+  ]
+}

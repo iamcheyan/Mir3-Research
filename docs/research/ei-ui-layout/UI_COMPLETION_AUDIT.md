@@ -2857,3 +2857,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（文本布局完整；下一弧：剩余深层角落）。
+## Round 516 (2026-08-12) — 文本布局闭合 + 480 连发里程碑（Finding 822）
+
+- **480 连发 + 446 证据 + 文本布局完整**。
+- 落盘：`text-layout-closure-evidence.json`（F822）+ RESEARCH_LOG Round 516。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（文本布局完整；下一弧：HANDOFF 刷新 84/剩余角落）。

@@ -8225,3 +8225,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔文本〕**0x45E0C0 **测量**（F818/F621 居中依赖）：vtable[0x44] + GDI 0x476048/0x476078/0x476068 → 返回宽/高对；0x45E200 **换行文本拆分**（0x124 缓冲、strlen 扫描 + 段复制、返回计数）——文本布局助手完整。
 - 落盘：text-measure-wrap-split-evidence.json（F821，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 515。
+## Round 516 (F822) — 2026-08-12：文本布局闭合（F564/F737/F821 汇总）+ 480 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**446 证据 JSON**；三服务 200；master 0d28bae（**480 连发 F335-F821 已推**）——**480 连发里程碑**。
+- **〔弧〕**GDI 文本（F564）+ BSS 助手（F737）+ 测量/换行（F821）——**文本布局完整**（测量 + 换行拆分 + 拼接 + GDI 绘制 + 居中数学），文本表面 100%。
+- 落盘：text-layout-closure-evidence.json（F822，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 516。
