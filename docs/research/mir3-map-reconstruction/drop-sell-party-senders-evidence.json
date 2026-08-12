@@ -1,0 +1,34 @@
+{
+  "evidence_id": "drop-sell-party-senders-2026-08-12-f882",
+  "title": "Round 576 (F882): Drop/sell/party senders - 0x452270 msg 0x40A DROP (item idx) + 0x4522A0 msg 0x408 SELL (packed coord + count) + party 0x4522E0 0x3FC invite / 0x452310 0x3FB leave (toggle flag) / 0x452350 0x3FD remove / 0x452380 0x3FE - all via 0x452940 + 0x451E60 (F572) - F845/F740 sends CONFIRMED",
+  "date": "2026-08-12",
+  "objective": "Decode the drop/sell/party senders.",
+  "question": "How do drop/sell/party messages send?",
+  "method": "Disasm 0x452270-0x4523A9.",
+  "scope": "0x452270-0x4523A9; msgs.",
+  "cell_analysis": {
+    "0x452270": "0x40A drop", "0x4522A0": "0x408 sell packed", "0x4522E0": "0x3FC invite", "0x452310": "0x3FB leave flag", "0x452350": "0x3FD", "0x452380": "0x3FE"
+  },
+  "exe_trace": {
+    "send_chain": "header 0x452940 -> send 0x451E60"
+  },
+  "audit_vs_exe": {
+    "F740": "sell path", "F845": "party sends", "F572": "frame"
+  },
+  "contrast": {
+    "drop_vs_sell": "0x40A + 0x408",
+    "party_vs_leave": "0x3FC + 0x3FB"
+  },
+  "verdict": "Drop/sell/party senders PRIMARY-verified: 0x40A/0x408/0x3FC-0x3FE; F845/F740 confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Senders decoded from .text.",
+  "cross_refs": ["F740: shop", "F845: party", "F572: frame"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x452270+0x10; 0x4522E0+0x10",
+  "notes": [
+    "0x40A drop",
+    "0x408 sell",
+    "0x3FC/0x3FB/0x3FD/0x3FE",
+    "packed coords"
+  ]
+}

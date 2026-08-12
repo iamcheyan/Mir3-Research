@@ -8485,3 +8485,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 572-574（F879-F880：NPC 回复/种子/校验和 + 回复/校验和闭合）；基线 Round 571=0cb4dd3 → Round 574=1ff8849（**539 连发 F335-F880**）。
 - 落盘：handoff-refresh-104-evidence.json（F881，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 575。
+## Round 576 (F882) — 2026-08-12：丢弃/卖出/组队发送器
+
+- **〔发送〕**0x452270 **msg 0x40A 丢弃**（物品 idx）+ 0x4522A0 **msg 0x408 卖出**（打包坐标 + 数量）+ 组队 0x4522E0 **0x3FC 邀请** / 0x452310 **0x3FB 离开**（切换旗标）/ 0x452350 **0x3FD 移除** / 0x452380 **0x3FE**——全部经 0x452940 + 0x451E60（F572）——**F845/F740 发送确认**。
+- 落盘：drop-sell-party-senders-evidence.json（F882，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 576。

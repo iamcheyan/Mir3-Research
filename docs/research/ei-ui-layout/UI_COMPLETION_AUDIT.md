@@ -3337,3 +3337,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（回复/校验完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 576 (2026-08-12) — 丢弃/卖出/组队发送器（Finding 882）
+
+- **0x40A/0x408 + 0x3FC-0x3FE**（F845/F740 确认）。
+- 落盘：`drop-sell-party-senders-evidence.json`（F882）+ RESEARCH_LOG Round 576。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（发送器完整；下一弧：剩余深层角落）。
