@@ -1,0 +1,37 @@
+{
+  "evidence_id": "party-social-arc-closure-2026-08-12-f753",
+  "title": "Round 447 (F753): Party/social arc CLOSED (F558/F569/F752) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 7f54e68 (411 consecutive F335-F752), 377 evidence JSONs; arc: window registry party (F558) + guild/party/ally errors (F569) + party draw/clear (F752) - party/social COMPLETE byte-level (2-col member list + 5 buttons + leader badge + teardown + error family), window mode 6 fully documented",
+  "date": "2026-08-12",
+  "objective": "Close the party/social arc.",
+  "question": "Is the party/social fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "377 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F558": "registry party", "F569": "errors", "F752": "draw/clear"},
+    "party": "members + buttons + teardown = COMPLETE",
+    "milestone": "411 consecutive rounds F335-F752"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F752": "411 rounds pushed; party complete, mode 6 documented"
+  },
+  "contrast": {
+    "party_vs_errors": "draw + error family",
+    "members_vs_buttons": "2-col + 5 buttons"
+  },
+  "verdict": "Party/social arc CLOSED (F753): draw + errors + teardown all byte-level; validation green, 411 consecutive rounds, 377 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F558/F569/F752.",
+  "cross_refs": ["F558", "F569", "F752"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "411 consecutive shipping rounds F335-F752",
+    "party 100%",
+    "next: HANDOFF refresh 61, remaining corners"
+  ]
+}

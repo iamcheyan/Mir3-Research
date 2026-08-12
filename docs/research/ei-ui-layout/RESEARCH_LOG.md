@@ -7926,3 +7926,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔组队〕**0x4243D0（F558 模式 6）：标题 0x45DD70 色 0xDCE6C8 + **成员列表 [0x58] 双列绘制**（row/2×20、x +0x5A 偶/+0x64 奇、色 0xFFFFFF）+ **5 按钮 via F704 set-pos 0x417830**（@ +0x6C/+0x120/+0x1D4/+0x288/+0x33C）+ 队长文本 [0x3F0]（0x47BA08/0x47BA00）+ 5 控件绘制（stride 0xB4）；0x4245A0 **拆除**（成员链表 free + 重构造 5×0x4175F0）；0x424610 成员添加（0x423CA0）——组队窗口完整（F558/F704 用）。
 - 落盘：party-window-draw-clear-evidence.json（F752，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 446。
+## Round 447 (F753) — 2026-08-12：组队/社交弧闭合（F558/F569/F752 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**377 证据 JSON**；三服务 200；master 7f54e68（**411 连发 F335-F752 已推**）。
+- **〔弧〕**窗口注册表组队（F558）+ 行会/组队/联盟错误（F569）+ 组队绘制/清除（F752）——**组队/社交完整**（双列成员 + 5 按钮 + 队长徽章 + 拆除 + 错误族），窗口模式 6 全文档化。
+- 落盘：party-social-arc-closure-evidence.json（F753，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 447。

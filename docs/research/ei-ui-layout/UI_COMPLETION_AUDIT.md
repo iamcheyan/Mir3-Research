@@ -2461,9 +2461,14 @@ git diff --check
 - **双列成员 + 5 按钮 + 拆除**（组队窗口完整）。
 - 落盘：`party-window-draw-clear-evidence.json`（F752）+ RESEARCH_LOG Round 446。
 
+## Round 447 (2026-08-12) — 组队/社交弧闭合（Finding 753）
+
+- **411 连发 + 377 证据 + 组队完整**。
+- 落盘：`party-social-arc-closure-evidence.json`（F753）+ RESEARCH_LOG Round 447。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（组队窗口完整；下一弧：剩余深层角落）。
+- 无阻塞项（组队完整；下一弧：HANDOFF 刷新 61/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
