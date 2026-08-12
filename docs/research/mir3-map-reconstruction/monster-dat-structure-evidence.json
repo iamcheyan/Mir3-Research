@@ -1,0 +1,36 @@
+{
+  "evidence_id": "monster-dat-structure-2026-08-12-f492",
+  "title": "Round 186 (F492): monster.dat structure survey - server Envir monster.dat = 109116 bytes; 432 name slots x 0xFC (252B) from 0x1E6 (name bytes GBK-shifted legacy-KR, NOT matching MonGen GBK names - encoding/layout pending), stats section after names; client has NO monster name table (names/stats = server packets F450); record store 0x8AA5A8 is packet-fed (F450) - monster.dat = server-side DB, exact field decode deferred (legacy KR encoding)",
+  "date": "2026-08-12",
+  "objective": "Survey the server monster.dat structure and its relation to the client record store.",
+  "question": "What is monster.dat's structure and how does it link to the client?",
+  "method": "Binary parse: stride calc, name-slot scan (0xFC), encoding probes vs MonGen GBK.",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/monster.dat (109116B).",
+  "cell_analysis": {
+    "file": {"size": "109116 bytes", "names": "432 slots x 0xFC from 0x1E6 (0x09-terminated)", "stats": "section after names (field layout unclear)", "encoding": "name bytes c3d1c7c9 = '醚巧' GBK / KR-shifted - NOT MonGen GBK names (legacy KR charset [inference])"},
+    "client_link": {"no_local_names": "client has ZERO monster name refs (F486 check: 栗子树/多钩猫/半兽人 = 0 refs)", "record_store": "0x8AA5A8 = packet-fed (F450), not file-loaded", "implication": "monster.dat = server-only DB; client receives name+stats per spawn packet"},
+    "deferred": "exact record field decode deferred (legacy KR encoding + unknown field offsets)"
+  },
+  "exe_trace": {
+    "server_client": "server monster.dat -> spawn packets -> client 0x8AA5A8 records -> render (F433)"
+  },
+  "audit_vs_exe": {
+    "F450": "record store packet-fed confirmed (no client monster DB)",
+    "F424": "MonGen GBK names = separate from monster.dat legacy encoding"
+  },
+  "contrast": {
+    "server_vs_client": "server holds monster DB (monster.dat); client holds only per-session records",
+    "gbk_vs_kr": "MonGen GBK vs monster.dat KR-shifted names - two charsets in server files"
+  },
+  "verdict": "monster.dat structure SURVEYED (secondary-server): 432 name slots x 0xFC + stats; legacy KR encoding (not MonGen GBK); client has no local monster names (packet-fed F450). Field decode deferred.",
+  "evidence_level": "secondary (server file) + primary (client no-name refs)",
+  "evidence_level_note": "File layout + client ref scan from binary; encoding = inference.",
+  "cross_refs": ["F450: record store", "F424: MonGen", "F37: KR_ORDER"],
+  "tool": "python binary parse + capstone ref scan",
+  "reproduce": "parse monster.dat: 432 slots x 0xFC from 0x1E6; scan client .rdata for monster names",
+  "notes": [
+    "monster.dat likely KR-source legacy (KSC5601) - decode needs KR charset shift",
+    "client monster data = runtime packets (no local DB) - key finding",
+    "stditem.dat = item DB (next survey candidate)"
+  ]
+}

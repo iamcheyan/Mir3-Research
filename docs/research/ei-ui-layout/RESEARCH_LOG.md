@@ -6689,3 +6689,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔附带〕**0x416F7E 交易对话打开（msg 0x405、窗口 0x7E04C8）。
 - **〔闭合〕**最后一个低优先 pending 解决。
 - 落盘：figure-frame-context-array-evidence.json（F491，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 185。
+## Round 186 (F492) — 2026-08-12：monster.dat 结构调查（服务端怪物库）
+
+- **〔结构〕**monster.dat = 109116B：**432 名称槽 × 0xFC**（0x1E6 起，0x09 终止）+ 统计区；名称 = **遗留 KR 编码**（c3d1c7c9 → GBK 乱码，非 MonGen GBK 名）。
+- **〔客户端〕**客户端**零怪物名引用**（栗子树/多钩猫/半兽人 = 0 引用）→ 记录存储 0x8AA5A8 = **数据包驱动**（F450），非文件加载——怪物名+属性随生成包到达。
+- **〔待深〕**记录字段解码延迟（遗留编码）。
+- 落盘：monster-dat-structure-evidence.json（F492，secondary + primary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 186。
