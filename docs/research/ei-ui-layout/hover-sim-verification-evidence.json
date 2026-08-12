@@ -1,0 +1,34 @@
+{
+  "evidence_id": "hover-sim-verification-2026-08-12-f414",
+  "title": "Round 108 (F414): Hover verified - pointerover 稻草人 marks sprite (hovered class) + targetbox shows name (F239 0x40BB00 hover -> 0x40B850 name plate path), browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the sim hover behavior matches the F239 hover chain.",
+  "question": "Does hovering an entity show the name tag in the sim?",
+  "method": "Sim browser test (pointerover monster -> sprite class + targetbox).",
+  "scope": "sim hover; F239/F359 hover evidence.",
+  "cell_analysis": {
+    "hover": {"event": "pointerover", "sprite_class": "sprite monster hovered", "targetbox": "shows 稻草人 (not hidden)"},
+    "original": "F239: 0x40BB00 hover tag (3000ms accumulator) + 0x40B850 name plate (measure + centered); F359 verified"
+  },
+  "exe_trace": {
+    "hover_chain": "0x40BB00 (F239/F359): gate [0x620A0], 0xBB8=3000ms timer, anchor [0xE4]/[0xE8]-0x2C/-0x37"
+  },
+  "audit_vs_exe": {
+    "F359": "hover tag + name plate verified",
+    "F239": "hover chain confirmed in sim"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = sprite class + targetbox; original = floating name tag + plate"
+  },
+  "verdict": "Hover verified (F239/F359): pointerover marks the sprite + shows name in targetbox (稻草人). Hover subsystem closed in sim.",
+  "evidence_level": "derived-tooling (semantics primary-static F239/F359)",
+  "evidence_level_note": "Sim hover browser-verified; chain from F239/F359 primary bytes.",
+  "cross_refs": ["F239: target-box-evidence", "F359: hover verification", "F413: target sim"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; hover monster; observe sprite class + targetbox",
+  "notes": [
+    "hover 3000ms timeout (0x40BB00) - sim persistent until pointerout",
+    "name plate = measure + centered (0x40B850)",
+    "hover and click both drive targetbox (F239)"
+  ]
+}

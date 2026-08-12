@@ -766,6 +766,11 @@ git diff --check
 - **稻草人 面板 + 覆盖层验证**（F239/F359）。
 - 落盘：`target-sim-verification-evidence.json`（F413）+ RESEARCH_LOG Round 107。
 
+## Round 108 (2026-08-12) — 悬停模拟器（Finding 414）
+
+- **悬停精灵标记 + targetbox 显名验证**（F239/F359）。
+- 落盘：`hover-sim-verification-evidence.json`（F414）+ RESEARCH_LOG Round 108。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

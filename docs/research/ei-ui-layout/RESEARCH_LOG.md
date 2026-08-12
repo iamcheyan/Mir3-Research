@@ -6271,3 +6271,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔面板〕**怪物：稻草人 + 帧证据（Finding 280 Mon-(Race//10+1).wil）；**〔覆盖层〕**targetbox 显示名字（F239 复合）。
 - 落盘：target-sim-verification-evidence.json（F413，derived-tooling；语义 primary-static F239/F359）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 107。
+## Round 108 (F414) — 2026-08-12：悬停模拟器验证（稻草人 精灵标记 + targetbox）
+
+- **〔悬停〕**pointerover 稻草人 → 精灵 hovered 类 + targetbox 显名（F239 0x40BB00 → 0x40B850 名牌路径）。
+- 落盘：hover-sim-verification-evidence.json（F414，derived-tooling；语义 primary-static F239/F359）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 108。
