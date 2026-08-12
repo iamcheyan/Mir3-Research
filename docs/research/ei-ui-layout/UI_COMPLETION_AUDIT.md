@@ -3193,3 +3193,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（列表基类完整；下一弧：剩余深层角落）。
+## Round 558 (2026-08-12) — 行列表基类闭合（Finding 864）
+
+- **522 连发 + 488 证据 + 列表基类完整**。
+- 落盘：`line-list-base-closure-evidence.json`（F864）+ RESEARCH_LOG Round 558。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（列表基类完整；下一弧：HANDOFF 刷新 98/剩余角落）。

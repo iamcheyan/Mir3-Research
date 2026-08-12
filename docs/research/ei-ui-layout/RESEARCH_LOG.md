@@ -8407,3 +8407,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔列表〕**0x415130 构造（SEH + vtable 0x476638 + 列表 [0x8] + 计数 [0x18] + 0x415210）；0x415180/0x415220 析构/清除（链表 free 0x4680F8 + 计数重置）；0x415280 行添加（**F734 确认**：修剪 ≥8、头 [0x8]/尾 [0x10]/计数 [0x18]）——行列表基类完整。
 - 落盘：base-line-list-ctor-clear-evidence.json（F863，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 557。
+## Round 558 (F864) — 2026-08-12：行列表基类闭合（F677/F734/F863 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**488 证据 JSON**；三服务 200；master 74b0ef1（**522 连发 F335-F863 已推**）。
+- **〔弧〕**行列表核心（F677）+ 公告添加（F734）+ 基类构造/清除（F863）——**行列表基类完整**（构造 + 添加修剪 + 析构 free + 头/尾），列表家族表面闭合。
+- 落盘：line-list-base-closure-evidence.json（F864，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 558。

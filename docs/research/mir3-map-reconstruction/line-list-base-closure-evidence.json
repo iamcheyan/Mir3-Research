@@ -1,0 +1,37 @@
+{
+  "evidence_id": "line-list-base-closure-2026-08-12-f864",
+  "title": "Round 558 (F864): Line-list base CLOSED (F677/F734/F863) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 74b0ef1 (522 consecutive F335-F863), 488 evidence JSONs; arc: line-list core (F677) + notice add (F734) + base ctor/clear (F863) - line-list base COMPLETE byte-level (ctor + add prune + dtor free + head/tail), list family surface closed",
+  "date": "2026-08-12",
+  "objective": "Close the line-list base arc.",
+  "question": "Is the line-list base fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "488 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F677": "core", "F734": "add", "F863": "ctor/clear"},
+    "list": "ctor + add + clear = COMPLETE",
+    "milestone": "522 consecutive rounds F335-F863"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F863": "522 rounds pushed; line-list base complete"
+  },
+  "contrast": {
+    "ctor_vs_add": "init + prune",
+    "clear_vs_free": "reset + chain"
+  },
+  "verdict": "Line-list base CLOSED (F864): ctor + add + clear all byte-level; validation green, 522 consecutive rounds, 488 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F677/F734/F863.",
+  "cross_refs": ["F677", "F734", "F863"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "522 consecutive shipping rounds F335-F863",
+    "line-list base 100%",
+    "next: HANDOFF refresh 98, remaining corners"
+  ]
+}
