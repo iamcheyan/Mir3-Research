@@ -7767,3 +7767,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**338 证据 JSON**；**wilviewer 8765 进程死亡 → 重启成功**，mapviewer/sim8477 200；master 6bd8d08（**373 连发 F335-F714 已推**）。
 - **〔弧〕**窗口基类构造（F713）+ 绘制/输入（F714）——**窗口基类完整（构造 + 边框按钮 + 背景/标题绘制 + 控件命中路由）**，支撑全部 F313 窗口。
 - 落盘：window-base-arc-closure-evidence.json（F715，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 409。
+## Round 410 (F716) — 2026-08-12：HANDOFF 刷新 49（Round 406-409）
+
+- **〔刷新〕**HANDOFF 追加 Round 406-409（F713-F715：窗口基类构造 + 绘制/输入 + 弧闭合）；基线 Round 405=5e67f53 → Round 409=6619ed9（**374 连发 F335-F715**）。
+- 落盘：handoff-refresh-49-evidence.json（F716，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 410。
