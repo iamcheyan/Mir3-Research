@@ -1,35 +1,36 @@
 {
-  "evidence_id": "entity-render-arc-closure-2026-08-12-f455",
-  "title": "Round 149 (F455): Entity-render arc CLOSED (F429-F454, 26 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer 8765/mapviewer 8899/sim), 120 shipping rounds pushed (master d803935); arc consolidated: monster WIL family/density/state layout/frame addressing PRIMARY/appearance/stats/anim machine/frame loader/shadow light/projection/pipeline/5 lists/4 bucket grids/camera scroll/tile store 140 slots/ground lib 17/record store",
+  "evidence_id": "entity-render-arc-closure-2026-08-12-f623",
+  "title": "Round 317 (F623): Entity render arc CLOSED (F621-F622) - validation green (compileall/verify exit 0/node/JSON), services 200, master eb7ef71 (281 consecutive F335-F622), 248 evidence JSONs; arc: hero name/level text layer (F621: show flag + 3000ms timer + centered name) + entity projection + HP frame (F622: 48x32 world->screen + HP select + clamp + shadow) - ENTITY render layer complete (projection -> HP bar/frame -> name/level -> shadow), connecting F435/F436/F350/F531/F590",
   "date": "2026-08-12",
-  "objective": "Close the entity-render arc with a validation sweep + consolidated summary.",
-  "question": "Is the repo healthy after the 26-round entity-render arc?",
-  "method": "Full validation suite + service health + arc summary.",
-  "scope": "Tools/, docs/, services 8765/8899.",
+  "objective": "Close the entity render arc.",
+  "question": "Is the entity render layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
   "cell_analysis": {
-    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
-    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
-    "repo": "master d803935; untracked quest_design_v3_goal.md + goal_watchdog.sh.bak (left alone)",
-    "arc_summary": {"monster_render": "WIL family 16x10000 (F429) / DMon death libs (F430) / 10-block density (F431) / state layout (F432) / frame addressing PRIMARY (F433) / appearance table (F434) / anim machine +2/+1+wrap (F435) / frame loader 0x466130 (F436) / hex-grid shadow 0x434A20 (F437)", "projection_pipeline": "48x32 projection + cam chain (F438) / 18-stage tick + 6 paint objects (F439) / 5 list containers (F440) / game reset 480x480 grid (F441) / list maintenance (F442) / housekeeping (F443) / visibility grid role (F444) / type dispatch + off-viewport cull (F445) / 4 bucket grids definitive (F446) / scroll+render full (F447)", "resources": "shared resource table (F448) / update handlers 0xBC6-0xBD8 (F449) / record store 0x8AA5A8 (F450) / GAME OBJECT BASE CORRECTION main 0x47EF18 (F451) / tile store 140 slots (F452) / ground lib 17 (F453) / slot mapping partial (F454)"},
-    "base_correction_impact": "F440-448 base labels corrected to main 0x47EF18 (0x8AB828 = packet sender); all absolutes reconciled (0x560088/0x5600FC/0x574118)"
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "248 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F621": "hero name/level text", "F622": "projection + HP frame"},
+    "render_chain": "projection -> HP bar/frame -> name/level -> shadow - COMPLETE",
+    "milestone": "281 consecutive rounds F335-F622"
   },
   "exe_trace": {
-    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+    "verify": "exit 0"
   },
   "audit_vs_exe": {
-    "F335-F454": "120 rounds pushed; 26-round arc fully closed"
+    "F335-F622": "281 rounds pushed; entity render complete"
   },
   "contrast": {
-    "closed_vs_pending": "arc closed; remaining = low-priority (slot mapping, store+0x5898 source)"
+    "entity_vs_hud": "entity render (F621/622) + HUD render (F584-590) complete",
+    "text_vs_bar": "name/level text + HP bar/frame"
   },
-  "verdict": "Entity-render arc CLOSED (F429-F454): full validation green, services live, 120 shipping rounds pushed. Major structural findings: game object base corrected to main 0x47EF18, 4 bucket grids + 5 lists, tile store 140 slots, monster frame pipeline complete.",
+  "verdict": "Entity render arc CLOSED (F623): projection + HP frame + name/level + shadow all byte-level; validation green, 281 consecutive rounds, 248 evidence JSONs.",
   "evidence_level": "derived-tooling (validators) + secondary (services)",
-  "evidence_level_note": "Validation results from tool runs; arc content from F429-F454 evidence.",
-  "cross_refs": ["F429-F454: arc", "F137: prior housekeeping"],
+  "evidence_level_note": "Validation from tool runs; arc content from F621-F622.",
+  "cross_refs": ["F621: name text", "F622: projection/HP", "F435-F436: projection/shadow"],
   "tool": "compileall / verify / node / json.tool / curl / git",
   "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
   "notes": [
-    "next arcs: UI window content deep-dive (0x419D40 done), server Envir integration (F423-427), mapviewer alignment with client store",
-    "quest_design_v3_goal.md = user file, untouched"
+    "281 consecutive shipping rounds F335-F622",
+    "next: HANDOFF refresh 21, remaining corners"
   ]
 }

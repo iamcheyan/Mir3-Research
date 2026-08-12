@@ -7343,3 +7343,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔投影〕**0x40B2A0 = 光阴影（0x434A20 0x190×0xF2，F436）；0x40B2C0 = **实体世界→屏幕投影**（[0xE4] = (wx−camX)×3×16 − camY + wy − 0xC8、[0xE8] = (wy−camY)×32……48×32 F435 数学，相机 [0x12C]/[0x130]/[0x134]/[0x138]）。
 - **〔HP 框〕**实体 [0x90] 帧 + **HP 选择**（[0x61C64]/[0x61B99] 旗标、[0xB4]/[0xB8]/[0xC4] F350）→ 0x466130 帧 + SetRect + **钳制 0x3A（58px）/0x28（40px）** → [0xA4]/[0xA8]/[0xAC] 目标矩形——实体投影 + 目标 HP 框字节级。
 - 落盘：entity-projection-hp-frame-evidence.json（F622，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 316。
+## Round 317 (F623) — 2026-08-12：实体渲染弧闭合（F621-F622 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**248 证据 JSON**；三服务 200；master eb7ef71（**281 连发 F335-F622 已推**）。
+- **〔弧〕**英雄名/等级文本层（F621）+ 实体投影/HP 框（F622）——**实体渲染层完整（投影 → HP 条/框 → 名/等级 → 阴影）**，连接 F435/F436/F350/F531/F590。
+- 落盘：entity-render-arc-closure-evidence.json（F623，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 317。
