@@ -3265,3 +3265,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告全交互；下一弧：剩余深层角落/模拟器 polish）。
+## Round 567 (2026-08-12) — 聊天输入命令处理（Finding 873）
+
+- **'/' 解析 + 速度累积 + 命令链**（聊天命令完整）。
+- 落盘：`chat-input-command-handler-evidence.json`（F873）+ RESEARCH_LOG Round 567。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（聊天命令完整；下一弧：剩余深层角落）。

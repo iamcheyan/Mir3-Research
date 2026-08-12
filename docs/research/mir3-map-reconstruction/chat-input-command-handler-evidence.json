@@ -1,0 +1,34 @@
+{
+  "evidence_id": "chat-input-command-handler-2026-08-12-f873",
+  "title": "Round 567 (F873): Chat input command handler (F576 wiring) - 0x41E740: '/' cmd parse (0x468BF0 0x2F + 0x4681F9 atoi) + MOVE-speed accumulate [0x428218]/[0x428220] (delta ratio, clamp 1.0/0.0, [0x428224] counter + 0x401670 gate + announce 0x427E30 0x47B110) + COMMAND compare chain (0x47AE64/0x47AE6C/0x47AE74 strings -> 0x410720, [0x35B1D4] reset) - chat command input COMPLETE (F600 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the chat input command handler.",
+  "question": "How does chat input parse commands?",
+  "method": "Disasm 0x41E740-0x41E900.",
+  "scope": "0x41E740-0x41E900; cmds.",
+  "cell_analysis": {
+    "0x41E740": {"parse": "0x468BF0 '/' + 0x4681F9", "speed": "[0x428218]/[0x428220] + [0x428224] + 0x401670", "cmds": "0x47AE64/0x47AE6C/0x47AE74 -> 0x410720"}
+  },
+  "exe_trace": {
+    "chat_chain": "/ parse -> speed -> cmd compare -> 0x410720"
+  },
+  "audit_vs_exe": {
+    "F576": "chat wiring", "F600": "commands", "F586": "speed"
+  },
+  "contrast": {
+    "parse_vs_cmds": "0x468BF0 + strings",
+    "speed_vs_action": "accumulate + 0x410720"
+  },
+  "verdict": "Chat input command handler PRIMARY-verified: '/' parse + speed + cmd chain; chat commands complete (F576/F600).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Chat input decoded from .text.",
+  "cross_refs": ["F576: chat", "F600: commands", "F586: speed"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41E740+0x20",
+  "notes": [
+    "'/' parse",
+    "speed [0x428220]",
+    "cmd strings 0x47AE64+",
+    "0x410720 action"
+  ]
+}

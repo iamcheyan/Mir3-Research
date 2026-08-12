@@ -8446,3 +8446,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 563-565（F870-F871：公告输入处理 + 公告交互闭合）；基线 Round 562=806bbff → Round 565=52cb4dd（**530 连发 F335-F871**）。
 - 落盘：handoff-refresh-101-evidence.json（F872，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 566。
+## Round 567 (F873) — 2026-08-12：聊天输入命令处理（F576 接线）
+
+- **〔聊天〕**0x41E740：'/' 命令解析（0x468BF0 0x2F + 0x4681F9 atoi）+ **移动速度累积 [0x428218]/[0x428220]**（delta 比例、钳制 1.0/0.0、[0x428224] 计数器 + 0x401670 门 + 公告 0x427E30 0x47B110）+ **命令比较链**（0x47AE64/0x47AE6C/0x47AE74 串 → 0x410720、[0x35B1D4] 重置）——聊天命令输入完整（F600 用）。
+- 落盘：chat-input-command-handler-evidence.json（F873，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 567。
