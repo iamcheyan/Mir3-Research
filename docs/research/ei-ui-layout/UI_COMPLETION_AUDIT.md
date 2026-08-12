@@ -731,6 +731,11 @@ git diff --check
 - **F289 颜色应用**（等级 0xfae1c8、值 0xfafafa）浏览器验证。
 - 落盘：`status-attribute-colors-evidence.json`（F406）+ app.js + RESEARCH_LOG Round 100。
 
+## Round 101 (2026-08-12) — 选项开关（Finding 407）
+
+- **4 行 ON/OFF + 켬/끔 帧验证**（F324/F289/F297）。
+- 落盘：`option-toggle-verification-evidence.json`（F407）+ RESEARCH_LOG Round 101。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "option-toggle-verification-2026-08-12-f407",
+  "title": "Round 101 (F407): Option toggles verified - 4 rows (音乐/音效/环境声/阴影混合) with ON/OFF buttons (OPT_STATE flip + frame 760/761 켬 762/763 끔 chat log, F324/F289/F297), sliders 751",
+  "date": "2026-08-12",
+  "objective": "Verify the option window toggles: ON/OFF state flip, frame evidence (켬/끔), and the 4 Config.ini rows.",
+  "question": "Do the sim option toggles work with the original frame semantics?",
+  "method": "app.js option toggle inspection + browser display check.",
+  "scope": "sim window.option; F324/F289/F297 evidence.",
+  "cell_analysis": {
+    "toggles": {"rows": "音乐/音效/环境声/阴影混合 (y43/116/190/217)", "ON": "OPT_STATE[name]=true + chat 'frame 760/761'", "OFF": "false + 'frame 762/763'", "frames": "760/761 = 켬, 762/763 = 끔 (F297 pixels)", "state_bytes": "+0x54/+0x58/+0x5C/+0x60 (F324)"},
+    "sliders": "751 @ (34,96)/(34,170) (BGM volume, F334)"}
+  ,
+  "exe_trace": {
+    "option_window": "hero+0x518E0 (id12, Ctrl+N, frame 750, F324)"
+  },
+  "audit_vs_exe": {
+    "F324": "4 Config.ini toggles confirmed",
+    "F289/F297": "frame pairs + 켬/끔 pixels confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim flips OPT_STATE + logs; original flips field bytes + config save 0x441B30",
+    "frame_pairs": "ON 760/761 vs OFF 762/763"
+  },
+  "verdict": "Option toggles verified (F324/F289/F297 semantics): 4 rows with ON/OFF state flip + frame evidence (760/761 켬, 762/763 끔), sliders 751. Option subsystem closed.",
+  "evidence_level": "derived-tooling (semantics primary-static F324/F289/F297)",
+  "evidence_level_note": "Sim toggles browser-inspected; frames from F297 pixel evidence.",
+  "cross_refs": ["F324: option window", "F289: option frames", "F297: 켬/끔 pixels", "F362: option verification"],
+  "tool": "app.js inspection; puppeteer browser",
+  "reproduce": "open sim; press N; click ON/OFF; observe state flip + chat log",
+  "notes": [
+    "环境声 = Ambience dead switch (F324: visual-only)",
+    "state bytes +0x54..+0x60 map to Config.ini fields",
+    "slider 751 = BGM volume -> 0x45A4A0 (F334)"
+  ]
+}

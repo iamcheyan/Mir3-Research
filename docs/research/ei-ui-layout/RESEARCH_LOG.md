@@ -6241,3 +6241,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F289〕**30 值 0xfafafa + 28 标签 0xfae1c8 + 4 特殊 0xff（防御/攻击/魔法/魔御）；62 处 0x45DD70。
 - **〔模拟器〕**等级标签 rgb(250,225,200)=0xfae1c8、攻击值 rgb(250,250,250)=0xfafafa（浏览器验证）。
 - 落盘：status-attribute-colors-evidence.json（F406，derived-tooling；颜色 primary-static F289）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 100。
+## Round 101 (F407) — 2026-08-12：选项开关验证（4 行 ON/OFF + 켬/끔 帧）
+
+- **〔开关〕**4 行（音乐/音效/环境声/阴影混合）ON/OFF 状态翻转 + 帧证据日志（760/761 켬、762/763 끔，F297 像素）；滑块 751（BGM 音量 F334）；状态字节 +0x54..+0x60（F324）。
+- 落盘：option-toggle-verification-evidence.json（F407，derived-tooling；语义 primary-static F324/F289/F297）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 101。
