@@ -1,0 +1,36 @@
+{
+  "evidence_id": "dialog-window-draw-open-2026-08-12-f914",
+  "title": "Round 608 (F914): Dialog window draw + open (F897 dep) - 0x43F000 controls reset (3 buttons clear); 0x43F020 OPEN-flag setter ([0x274]); 0x43F040 DIALOG draw: frame 0x44C blit (0x460240 @ [0x520]/[0x524]) + OPTION frames 0x44D loop (y+0x12, count [0x51C], base [0x530]/[0x534]) + 0x44E close frame - dialog window COMPLETE (F857/F598 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the dialog window draw + open.",
+  "question": "How does the dialog window draw + open?",
+  "method": "Disasm 0x43F000-0x43F125.",
+  "scope": "0x43F000-0x43F125; frames.",
+  "cell_analysis": {
+    "0x43F000": "reset 3 controls",
+    "0x43F020": "open flag [0x274]",
+    "0x43F040": "draw: 0x44C + options 0x44D y+0x12 + 0x44E"
+  },
+  "exe_trace": {
+    "dialog_chain": "open flag -> frame blit -> options -> close"
+  },
+  "audit_vs_exe": {
+    "F897": "reset-all", "F857": "dialog render", "F598": "4-type"
+  },
+  "contrast": {
+    "frame_vs_options": "0x44C + 0x44D loop",
+    "open_vs_close": "[0x274] + 0x44E"
+  },
+  "verdict": "Dialog window draw + open PRIMARY-verified: frames + option loop; dialog window complete (F857/F598).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dialog draw decoded from .text.",
+  "cross_refs": ["F897: reset", "F857: render", "F598: types"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43F000+0x10; 0x43F040+0x20",
+  "notes": [
+    "frame 0x44C/0x44D/0x44E",
+    "option y+0x12",
+    "count [0x51C]",
+    "open [0x274]"
+  ]
+}

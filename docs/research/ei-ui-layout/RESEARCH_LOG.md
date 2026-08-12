@@ -8624,3 +8624,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 604-606（F911-F912：商店槽命中/查找 + 商店槽闭合）；基线 Round 603=3368b64 → Round 606=0915bf9（**571 连发 F335-F912**）。
 - 落盘：handoff-refresh-115-evidence.json（F913，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 607。
+## Round 608 (F914) — 2026-08-12：对话窗口绘制 + 开启（F897 依赖）
+
+- **〔对话〕**0x43F000 控件重置（3 按钮清）；0x43F020 **开启旗标设置**（[0x274]）；0x43F040 **对话绘制**：帧 0x44C blit（0x460240 @ [0x520]/[0x524]）+ **选项帧 0x44D 循环**（y+0x12、计数 [0x51C]、基址 [0x530]/[0x534]）+ 0x44E 关闭帧——对话窗口完整（F857/F598 用）。
+- 落盘：dialog-window-draw-open-evidence.json（F914，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 608。

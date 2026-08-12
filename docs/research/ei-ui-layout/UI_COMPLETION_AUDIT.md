@@ -3593,3 +3593,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店槽完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 608 (2026-08-12) — 对话窗口绘制 + 开启（Finding 914）
+
+- **帧 0x44C/0x44D + 选项循环**（对话窗口完整）。
+- 落盘：`dialog-window-draw-open-evidence.json`（F914）+ RESEARCH_LOG Round 608。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话绘制完整；下一弧：剩余深层角落）。
