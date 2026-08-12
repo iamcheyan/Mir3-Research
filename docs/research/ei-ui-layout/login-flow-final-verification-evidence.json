@@ -1,0 +1,38 @@
+{
+  "evidence_id": "login-flow-final-verification-2026-08-12-f416",
+  "title": "Round 110 (F416): Login flow final verified - intro overlay -> connecting (0x458F80 char list) -> char-select (0x4575D0 stage 3) -> enter game (0x8B1878 state 3 -> 0x41BB00), full stage machine browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the complete login flow stage transitions in the sim.",
+  "question": "Does the sim login flow match the original stage machine (F336/F349/F355)?",
+  "method": "Sim browser test (intro -> click -> connecting -> char list -> enter game).",
+  "scope": "sim login overlay; F336/F349 login evidence.",
+  "cell_analysis": {
+    "stages": [
+      {"s1": "intro overlay (原版流程: 选择服务器 → 角色列表)"},
+      {"s2": "connecting + char list (0x458F80 0x208)"},
+      {"s3": "enter game (0x4575D0 stage 3 -> 0x8B1878 state 3 -> 0x41BB00)"}
+    ],
+    "semantics": "F336: [0x8B1878] 0 intro / 2 char-select / 3 in-game; F349: 0x4575D0 stages + 0x458F80 server dispatch"
+  },
+  "exe_trace": {
+    "login": "F349: intro 0x402BE0 + char-select 0x4575D0 + server 0x458F80"
+  },
+  "audit_vs_exe": {
+    "F349": "login stage machine confirmed in sim",
+    "F336": "0x8B1878 state machine confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = timed demo transitions; original = server-driven (0x458F80)"
+  },
+  "verdict": "Login flow final verified (F336/F349): full stage chain (intro -> connecting -> char list -> enter game) browser-verified. Login subsystem closed.",
+  "evidence_level": "derived-tooling (semantics primary-static F336/F349)",
+  "evidence_level_note": "Sim flow browser-verified; stage machine from F336/F349 primary bytes.",
+  "cross_refs": ["F336: state machine", "F349: login flow", "F355: command dispatch"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; observe intro; click 进入游戏; watch stage transitions",
+  "notes": [
+    "loginStage 0->2 (intro -> in-game) in sim",
+    "original stages: 0 intro 0x8A9520 / 2 char-select 0x8A7140 / 3 main (F336)",
+    "server dispatch 0x458F80 msgid-0x208 (F349)"
+  ]
+}

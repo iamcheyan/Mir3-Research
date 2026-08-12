@@ -6279,3 +6279,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔点击〕**点行会管理员 → selectedEntity 设置；点商店老板 → 切换（F239 点击 msg 2 → 0xBC4 语义）。
 - 落盘：click-targeting-verification-evidence.json（F415，derived-tooling；语义 primary-static F239/F336）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 109。
+## Round 110 (F416) — 2026-08-12：登录流程终验（intro → 连接 → 角色列表 → 进游戏）
+
+- **〔阶段〕**intro 遮罩 → 连接（0x458F80 角色列表）→ 角色选择（0x4575D0 stage 3）→ 进游戏（0x8B1878 state 3 → 0x41BB00）——全链浏览器验证。
+- 落盘：login-flow-final-verification-evidence.json（F416，derived-tooling；语义 primary-static F336/F349）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 110。

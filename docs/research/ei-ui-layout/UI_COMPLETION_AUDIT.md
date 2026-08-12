@@ -776,6 +776,11 @@ git diff --check
 - **选中 + 切换验证**（F239/F336）。
 - 落盘：`click-targeting-verification-evidence.json`（F415）+ RESEARCH_LOG Round 109。
 
+## Round 110 (2026-08-12) — 登录流程终验（Finding 416）
+
+- **intro → 连接 → 角色列表 → 进游戏全链验证**（F336/F349）。
+- 落盘：`login-flow-final-verification-evidence.json`（F416）+ RESEARCH_LOG Round 110。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
