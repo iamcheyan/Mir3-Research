@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hero-name-level-text-layer-2026-08-12-f621",
+  "title": "Round 315 (F621): Hero name/level text layer - 0x40BB00: show flag [0x620A0] + hover timer [0x6209C] (0xBB8 = 3000ms -> clear name buffer [0x621A4] 0x208 dwords, F531 target-frame timer CONNECTED), name [0x621A4] + mode [0x61C8C] (1 = centered name text 0x45E0C0 + 0x45DE50, else level-scaled offset), SetRect + gradient 0x466800 (0x3E20A0A1 family) + screen vtable[0x40]/[0x14] projection - hero name/level above-head text byte-level (F531/F590 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the hero name/level text layer.",
+  "question": "How does the hero name/level text render?",
+  "method": "Disasm 0x40BB00-0x40BCBB.",
+  "scope": "0x40BB00-0x40BCBB; name [0x621A4]; timer [0x6209C].",
+  "cell_analysis": {
+    "0x40BB00": {"flag": "[0x620A0] show", "timer": "[0x6209C] 0xBB8=3000ms -> clear [0x621A4] 0x208 dwords (F531)", "name": "[0x621A4] buffer", "mode": "[0x61C8C] 1 = centered 0x45E0C0+0x45DE50, else level-scaled"},
+    "render": "SetRect + gradient 0x466800 (0x3E20A0A1/0x3E70F0F1/0x3EA0A0A1) + screen vtable[0x40]/[0x14]"
+  },
+  "exe_trace": {
+    "name_chain": "hover/target -> [0x620A0] flag + timer -> name [0x621A4] -> centered text above hero"
+  },
+  "audit_vs_exe": {
+    "F531": "target frame 3000ms timer CONNECTED", "F590": "HP bar stage", "F564": "text family"
+  },
+  "contrast": {
+    "name_vs_hp": "0x40BB00 name text vs 0x40A8A0 HP bar (same entity)",
+    "centered_vs_level": "mode 1 centered name vs level-scaled offset"
+  },
+  "verdict": "Hero name/level text layer PRIMARY-verified: show flag + 3000ms timer + name buffer + centered render; F531 timer + text family connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Text layer decoded from .text.",
+  "cross_refs": ["F531: target timer", "F590: HP bar", "F564: text family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40BB00+0x40",
+  "notes": [
+    "timer 0xBB8 = 3000ms (F531)",
+    "name buffer 0x208 dwords at [0x621A4]",
+    "mode [0x61C8C] 1 = centered",
+    "gradient 0x3E20A0A1 family shared"
+  ]
+}

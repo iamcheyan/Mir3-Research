@@ -7333,3 +7333,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 309-313（F616-F619：攻击/交易发送器 + NPC 回复/校验和 + 出站弧 + 模拟器校验和层）；基线 Round 308=6ec8705 → Round 313=50f6c52（**278 连发 F335-F619**）。
 - 落盘：handoff-refresh-20-evidence.json（F620，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 314。
+## Round 315 (F621) — 2026-08-12：英雄名/等级文本层
+
+- **〔层〕**0x40BB00：显示旗标 [0x620A0] + **悬停计时器 [0x6209C]（0xBB8 = 3000ms → 清名缓冲 [0x621A4] 0x208 双字，F531 目标框计时器连接）**、名 [0x621A4] + 模式 [0x61C8C]（1 = 居中名文本 0x45E0C0+0x45DE50，否则等级缩放偏移）。
+- **〔渲染〕**SetRect + 渐变 0x466800（0x3E20A0A1 族）+ 屏幕 vtable[0x40]/[0x14] 投影——英雄头顶名/等级文本字节级（F531/F590 连接）。
+- 落盘：hero-name-level-text-evidence.json（F621，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 315。
