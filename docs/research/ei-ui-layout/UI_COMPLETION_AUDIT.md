@@ -886,6 +886,11 @@ git diff --check
 - **六边形光场渲染器**（0x434A20 + 0x434670 + 模式 [0x61BD4]）。
 - 落盘：`monster-shadow-light-system-evidence.json`（F437）+ RESEARCH_LOG Round 131。
 
+## Round 132 (2026-08-12) — 实体屏幕投影（Finding 438）
+
+- **48×32 投影 + 相机链 + 3 层绘制**（F379 调和）。
+- 落盘：`entity-screen-projection-evidence.json`（F438）+ RESEARCH_LOG Round 132。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

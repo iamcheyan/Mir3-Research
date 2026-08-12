@@ -6386,3 +6386,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔渲染〕**0x434A20 六边形网格径向光渲染器（fsqrt 距离衰减、RGB32 混合、6 顶点四边形扇、0x12/0x11 六边间距、半径门 0x7E1）→ 全局 0x7DA1D8。
 - **〔坐标〕**0x434670 像素→六边形格 (x+8)*2/3、y>>5。
 - 落盘：monster-shadow-light-system-evidence.json（F437，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 131。
+## Round 132 (F438) — 2026-08-12：实体屏幕投影（48×32 菱形瓦片率）
+
+- **〔投影〕**0x40F5F0：screen_x = (wx−camTileX)*48 − camPxX + [0xD4] − 200；screen_y = (wy−camTileY)*32 − camPxY + [0xD8] − 157（**48px/瓦片 x、32px/瓦片 y**）。
+- **〔相机链〕**地图视口 0x43B8D9/0x43B8FF 写 cam px [0x134]/[0x138] = 瓦片偏移 × 滚动 → 实体投影读取。
+- **〔3 层绘制〕**槽 [0x62A14]/[0x62A10]/[0x90] → 0x466130 帧装载 → SetRect 0x4762B0 blit（rects [0x629FC]/[0x629EC]/[0x94]）。
+- **〔调和〕**视口 768×576 = 48×32 瓦片 16 列 × 18 行（F379「24×24」= 半格 x 轴 24）；F433 帧公式复用于层 A。
+- 落盘：entity-screen-projection-evidence.json（F438，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 132。

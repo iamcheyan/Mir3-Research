@@ -1,0 +1,39 @@
+{
+  "evidence_id": "entity-screen-projection-2026-08-12-f438",
+  "title": "Round 132 (F438): Entity screen projection - 0x40F5F0: screen_x = (wx-camTileX)*48 - camPxX + [0xD4] - 200, screen_y = (wy-camTileY)*32 - camPxY + [0xD8] - 157 (48x32 diamond tile RATE); cam px [0x134]/[0x138] written by map viewport 0x43B8D9/0x43B8FF (tile*scroll); 3-layer sprite draw (slots [0x62A14]/[0x62A10]/[0x90]) via 0x466130 + SetRect 0x4762B0; viewport 768x576 = 16x18 tiles at 48x32 (F379 reconciled)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity world->screen projection and reconcile the tile dimensions with the map viewport.",
+  "question": "How do entity world coords map to screen, and at what tile rate?",
+  "method": "Disasm 0x40F5F0 (projection + 3-layer draw) + 0x43B8C0-0x43B96C (cam px writers) + F379 reconcile.",
+  "scope": "0x40F5F0-0x40F90D, 0x43B8C0-0x43B96C, cam struct +0x12C..+0x138.",
+  "cell_analysis": {
+    "projection_0x40F5F0": {"x": "screen_x = (wx - camTileX)*48 - camPxX + [esi+0xD4] - 0xC8(200)", "y": "screen_y = (wy - camTileY)*32 - camPxY + [esi+0xD8] - 0x9D(157)", "tile_rate": "48 px/tile x, 32 px/tile y (diamond)", "world": "[esi+0xCC]/[0xD0]", "cam_tile": "[ecx+0x12C]/[0x130]", "cam_px": "[ecx+0x134]/[0x138]", "intra": "[0xD4]/[0xD8] pixel offset, centering -200/-157"},
+    "cam_writers_0x43B8D9": {"px_x": "[ecx+0x134] = [ecx+edx*8+0x15C] * scroll (imul)", "px_y": "[ecx+0x138] = [ecx+edx*8+0x160] * scroll", "sign": "positive/negated variants (0x43B908+/0x43B932+)", "owner": "map viewport object (0x43B440 family)"},
+    "layer_draw": {"layerA": "slot [0x62A14]: frame = state*400 - race*3000 + [0xC4] - 0xAA0 (0x40F6A3); div 400 -> [0x62A20] state idx; frame%400 + 0x2710(10000) -> 0x466130", "layerB": "slot [0x62A10]: (race%10)*3000-ish + [0xC4] -> 0x466130 (type [0x89]!=0, [0xC0]<0x19 gate)", "layerC": "slot [0x90]: frame = [0xC4] -> 0x466130 (shadow flag byte +8, dims +4/+6)", "blit": "SetRect [0x4762B0] into [esi+0x629FC]/[0x629EC]/[0x94]"},
+    "viewport_reconcile": {"buffer": "768x576 px (F379)", "tile": "48x32 -> 16 cols x 18 rows visible", "half_cells": "384x288 grid, 24x16 half-cells per tile (24 = F379 '24x24' x-axis)"}
+  },
+  "exe_trace": {
+    "cam_chain": "map viewport 0x43B440 -> cam px [0x134]/[0x138] -> entity projection 0x40F5F0",
+    "draw_chain": "projection -> 3 layers (appearance slots) -> 0x466130 frame -> SetRect blit"
+  },
+  "audit_vs_exe": {
+    "F379": "viewport 768x576 reconciled as 16x18 tiles at 48x32",
+    "F433": "state*400 + counter - 0xAA0 formula reused at 0x40F6A3",
+    "F435": "frame loader 0x466130 + SetRect blit confirmed in draw"
+  },
+  "contrast": {
+    "entity_vs_tile": "entity 48/32 px rates vs tile buffer half-cell addressing (F379) - same 48x32 tile",
+    "map_vs_entity_projection": "map renderer uses viewport scroll; entities use cam px + 48/32 rates"
+  },
+  "verdict": "Entity screen projection PRIMARY-verified: (wx-camX)*48 - pxX + intra - 200 / (wy-camY)*32 - pxY + intra - 157; cam px written by map viewport (0x43B8D9); 3-layer sprite draw via 0x466130 + SetRect; tile = 48x32 px (viewport 16x18).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Projection + cam chain + layers all decoded from .text.",
+  "cross_refs": ["F379: viewport buffer (reconciled)", "F433: frame addressing", "F435: anim machine", "F436: frame loader"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x40F5F0+0x70, 0x43B8C0+0x30; writers scan for +0x12c/0x130/0x134/0x138",
+  "notes": [
+    "-0xC8/-0x9D centering = half-tile (24/16 px) offsets",
+    "layerA frame%400+0x2710: sub-frame within 400-frame state + 10000 base [inference]",
+    "three blit targets [0x629FC]/[0x629EC]/[0x94] = per-layer rects"
+  ]
+}
