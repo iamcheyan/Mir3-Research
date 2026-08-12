@@ -6917,3 +6917,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔追加〕**HANDOFF 补 Round 227-232（窗口渲染字节级）；基线 Round 226=17faa1b → **Round 232=dd66590（196 连发 F335-F538）**；164 地图重建证据 JSON。
 - 落盘：handoff-refresh-4-evidence.json（F539，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 233。
+## Round 234 (F540) — 2026-08-12：NPC 对话类型分派
+
+- **〔分派〕**0x43F460：对话数据链（[0x8B1AE4]）、**type 字节−1 ≤ 3（类型 1-4）经跳表 0x440158**（0x43F4E0）、7 行换行（0x131 偏移）、GBK 字节对复制 + 文本测量 0x45E0C0——F41/F475 统一。
+- 落盘：npc-dialog-type-dispatch-evidence.json（F540，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 234。

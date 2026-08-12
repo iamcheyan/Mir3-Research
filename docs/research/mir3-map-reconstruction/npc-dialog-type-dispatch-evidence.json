@@ -1,0 +1,34 @@
+{
+  "evidence_id": "npc-dialog-type-dispatch-2026-08-12-f540",
+  "title": "Round 234 (F540): NPC dialog type dispatch - 0x43F460: dialog data walk ([0x8B1AE4] list), TYPE byte [ebx]-1 <= 3 (types 1-4) via jt 0x440158 (0x43F4E0), line wrap at 7+ lines (0x131 offset, 0x43F511), GBK byte-pair copy + text measure 0x45E0C0 - F41 type-4 flow + F475 options unified",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog type dispatch (F41/F347).",
+  "question": "How does the NPC dialog dispatch its 4 types?",
+  "method": "Disasm 0x43F460-0x43F580 (dialog paint dispatch).",
+  "scope": "0x43F460-0x43F580; types 1-4; jt 0x440158.",
+  "cell_analysis": {
+    "dispatch": {"data": "[0x8B1AE4] dialog list", "type": "byte [ebx]-1 <= 3 (types 1-4), jt 0x440158 (0x43F4E0)"},
+    "render": {"wrap": "7+ lines -> 0x131 offset (0x43F511)", "copy": "GBK byte-pair copy", "measure": "0x45E0C0 text width"}
+  },
+  "exe_trace": {
+    "npc_chain": "dialog data -> type dispatch (1-4) -> per-type render -> options (F475)"
+  },
+  "audit_vs_exe": {
+    "F41": "type dispatch confirmed", "F475": "type-4 options unified", "F347": "dialog family"
+  },
+  "contrast": {
+    "type_vs_render": "4 types dispatch vs per-type render fns",
+    "wrap_vs_scroll": "7-line wrap vs scrollbar (chat)"
+  },
+  "verdict": "NPC dialog type dispatch PRIMARY-verified: 0x43F460 walks dialog data, dispatches types 1-4 via jt 0x440158, renders with 7-line wrap + GBK copy + text measure. F41/F475 unified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dialog dispatch decoded from .text.",
+  "cross_refs": ["F41: dialog", "F475: options", "F347: family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43F460+0x40",
+  "notes": [
+    "type byte 1-4 = text/input/options/image",
+    "7-line wrap = dialog page break",
+    "jt 0x440158 = 4 type handlers"
+  ]
+}
