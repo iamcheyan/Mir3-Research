@@ -7965,3 +7965,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔选项〕**0x441380（F558 模式 C）：**11 控件 via F704 set-pos**（**4×2 开关网格** @ 0x94/0xB9 × 0x2B/0x74/0xBE/0xD9 = **F546 4 开关行确认** + **2 滑块 BGM [0x6C]/SFX [0x74]** @ 0x22+值）+ 11 控件绘制（stride 0xB4）；0x4414F0 点击：开关旗标 [0x64]/[0x68] + **BGM 滑块 [0x6C] ±8 钳制 0..0xA0** + 音效 0x69 + 重绘 0x441F40——选项窗口完整（F546/F558 用）。
 - 落盘：options-window-draw-click-evidence.json（F761，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 455。
+## Round 456 (F762) — 2026-08-12：选项窗口弧闭合（F546/F761 汇总）+ 420 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**386 证据 JSON**；三服务 200；master 0669267（**420 连发 F335-F761 已推**）——**420 连发里程碑**。
+- **〔弧〕**4 开关行（F546）+ 绘制/点击（F761）——**选项窗口完整**（4×2 开关网格 + BGM/SFX 滑块 + msg 0x2F8-0x2FB 开关），窗口模式 C 全文档化。
+- 落盘：options-window-arc-closure-evidence.json（F762，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 456。

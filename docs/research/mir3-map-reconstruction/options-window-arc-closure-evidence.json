@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-window-arc-closure-2026-08-12-f762",
+  "title": "Round 456 (F762): Options window arc CLOSED (F546/F761) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0669267 (420 consecutive F335-F761), 386 evidence JSONs; arc: 4 switch rows (F546) + draw/click (F761) - options window COMPLETE byte-level (4x2 toggle grid + BGM/SFX sliders + msg 0x2F8-0x2FB toggles), window mode C fully documented; 420 consecutive rounds milestone",
+  "date": "2026-08-12",
+  "objective": "Close the options window arc.",
+  "question": "Is the options window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "386 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F546": "4 switches", "F761": "draw/click"},
+    "options": "toggles + sliders = COMPLETE",
+    "milestone": "420 consecutive rounds F335-F761"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F761": "420 rounds pushed; options complete, mode C documented"
+  },
+  "contrast": {
+    "toggles_vs_sliders": "4x2 grid + BGM/SFX",
+    "msg_vs_click": "0x2F8-0x2FB + slider math"
+  },
+  "verdict": "Options window arc CLOSED (F762): toggles + sliders all byte-level; validation green, 420 consecutive rounds, 386 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F546/F761.",
+  "cross_refs": ["F546", "F761"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "420 consecutive shipping rounds F335-F761",
+    "options 100%",
+    "next: HANDOFF refresh 64, remaining corners"
+  ]
+}
