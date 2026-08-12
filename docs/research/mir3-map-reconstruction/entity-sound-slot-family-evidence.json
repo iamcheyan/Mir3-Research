@@ -1,0 +1,37 @@
+{
+  "evidence_id": "entity-sound-slot-family-2026-08-12-f668",
+  "title": "Round 362 (F668): Entity sound slot family - 0x45B140 ([0x8AB130]): 50 sound slots [0x460] stride 4, find by id [edx+0x3C] -> 0x45BC60/0x45BC80 play (ret 0x10); 0x45B1B0/0x45B1C0 = enable/disable [0x14]; 0x45B1D0 = stop-all (50 slots 0x45B950); 0x45B210 = clear-all (0x45B7F0 + [esi]=0) - entity sound management byte-level (F566/F665 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity sound slot family.",
+  "question": "How do entity sounds play?",
+  "method": "Disasm 0x45B140-0x45B248.",
+  "scope": "0x45B140-0x45B248; slots [0x460].",
+  "cell_analysis": {
+    "0x45B140": {"slots": "50 x [0x460] stride 4", "find": "by id [edx+0x3C]", "play": "0x45BC60/0x45BC80 (ret 0x10)"},
+    "0x45B1B0/0x45B1C0": "enable/disable [0x14]",
+    "0x45B1D0": "stop-all: 50 slots 0x45B950",
+    "0x45B210": "clear-all: 0x45B7F0 + [esi]=0"
+  },
+  "exe_trace": {
+    "entity_sound_chain": "entity tick (F566) -> 0x45B140 find slot -> 0x45BC60/0x45BC80 play"
+  },
+  "audit_vs_exe": {
+    "F566": "entity HP bar uses 0x45B140 family", "F665": "sound ids", "F632": "sound engine"
+  },
+  "contrast": {
+    "stop_vs_clear": "0x45B1D0 stop-all + 0x45B210 clear-all",
+    "find_vs_play": "slot find + play fns"
+  },
+  "verdict": "Entity sound slot family PRIMARY-verified: 50-slot find/play + stop/clear; F566/F665 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sound family decoded from .text.",
+  "cross_refs": ["F566: entity tick", "F665: sound map", "F632: engine"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45B140+0x20; 0x45B1D0+0x10",
+  "notes": [
+    "50 slots [0x460]",
+    "find by [edx+0x3C]",
+    "enable flag [0x14]",
+    "play 0x45BC60/0x45BC80"
+  ]
+}

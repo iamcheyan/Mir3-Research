@@ -7555,3 +7555,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 358-360（F665-F666：音效分派映射 + 物品/音效弧）；基线 Round 357=7334178 → Round 360=3287054（**325 连发 F335-F666**）。
 - 落盘：handoff-refresh-33-evidence.json（F667，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 361。
+## Round 362 (F668) — 2026-08-12：实体音效槽族
+
+- **〔槽〕**0x45B140（[0x8AB130]）：**50 音效槽 [0x460] stride 4**、按 id [edx+0x3C] 查找 → 0x45BC60/0x45BC80 播放（ret 0x10）；0x45B1B0/0x45B1C0 = 启用/禁用 [0x14]；0x45B1D0 = **全停**（50 槽 0x45B950）；0x45B210 = **全清**（0x45B7F0 + [esi]=0）——实体音效管理字节级（F566/F665 连接）。
+- 落盘：entity-sound-slot-family-evidence.json（F668，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 362。
