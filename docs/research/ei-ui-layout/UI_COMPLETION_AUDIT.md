@@ -1451,6 +1451,11 @@ git diff --check
 - **16 模式 0x42ADB0 + 开窗列表 [hero+0xD24]**（mapval1 = 行会开 + 背包定位修正）。
 - 落盘：`window-toggle-dispatcher-evidence.json`（F550）+ RESEARCH_LOG Round 244。
 
+## Round 245 (2026-08-12) — recv1 mapval14 仓库 + 模式族（Finding 551）
+
+- **背包管理器模式 0/1/3 + 栗子马粮循环**。
+- 落盘：`recv1-mapval14-warehouse-mode-evidence.json`（F551）+ RESEARCH_LOG Round 245。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv1 处理器函数体深化中）。

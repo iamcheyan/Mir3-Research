@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv1-mapval14-warehouse-mode-family-2026-08-12-f551",
+  "title": "Round 245 (F551): recv1 mapval14 (warehouse) body + bag-manager mode family - 0x420AFC: gate [0x2ABA10] -> OpenWindow(0) -> bag manager [hero+0x6554] mode byte [0x54]=3 WAREHOUSE, msgs 0x111/0x112/0x113, common tail 0x41FB54 (0x417880 ctor @ [0x1C4] + [0x2CF14C]=packet dword); mode family: [0x54]=0 bag (opener F550), =1 (0x41FB24 msgs 0x107/0x108/0x109), =3 warehouse; tails: 0x41FB6E gold dword -> [0x35B1E8] + selected [0x2CF13C] -> item array [0x2AC164] stride 0xC2C words +0x3D/+0x3F + 0x415280 refresh; 0x41FC09 chestnut loop: 10 ptrs 0x47ADC4..0x47ADEC (밤1-10 F549) vs bag name [0x2A54C8] + sprintf 0x47AF7C - chestnut horse-food info (F361/F545)",
+  "date": "2026-08-12",
+  "objective": "Decode mapval14 warehouse body + bag-manager mode family.",
+  "question": "How does the warehouse packet handler work?",
+  "method": "Disasm 0x420AFC-0x420B31 + tails 0x41FB24/0x41FB54/0x41FB6E/0x41FC09.",
+  "scope": "0x420AFC; bag manager [hero+0x6554]; mode [0x54]; item array [0x2AC164].",
+  "cell_analysis": {
+    "mapval14": {"gate": "[0x2ABA10] (bag open)", "open": "OpenWindow(0) bag", "mode": "[0x54]=3 WAREHOUSE", "msgs": "0x111/0x112/0x113", "tail": "0x41FB54: 0x417880 ctor @ [0x1C4] + [0x2CF14C]=packet dword"},
+    "mode_family": {"0": "bag (opener F550)", "1": "0x41FB24 msgs 0x107/0x108/0x109", "3": "warehouse"},
+    "gold_tail_0x41FB6E": {"gold": "dword -> [0x35B1E8]", "selected": "[0x2CF13C] idx -> array [0x2AC164] stride 0xC2C (idx*0xC2C math *779*4) words +0x3D/+0x3F", "refresh": "0x415280"},
+    "chestnut_0x41FC09": {"loop": "10 ptrs 0x47ADC4..0x47ADEC (밤1-10, F549 table)", "cmp": "bag name [0x2A54C8]", "fmt": "sprintf 0x47AF7C - horse-food info (F361/F545)"}
+  },
+  "exe_trace": {
+    "warehouse_chain": "server msg -> gate -> OpenWindow(0) + mode 3 -> button msgs 0x111-0x113 -> gold/selected item update"
+  },
+  "audit_vs_exe": {
+    "F549": "bag deserialize + gold accumulator [0x35B1E8] + 밤 table", "F550": "OpenWindow(0) bag", "F361/F545": "horse + chestnut food", "F520": "mapval14 gate [0x2ABA10]"
+  },
+  "contrast": {
+    "bag_vs_warehouse": "mode 0 bag vs mode 3 warehouse (same window object)",
+    "item_array": "[0x2AC164] stride 0xC2C = .itm-size records (F465)"
+  },
+  "verdict": "mapval14 warehouse body PRIMARY-verified: bag window in mode 3 with msgs 0x111-0x113, gold accumulator [0x35B1E8], item array [0x2AC164] stride 0xC2C; chestnut loop confirms F549 table = horse food info. Bag-manager mode family (0/1/3) complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handler + tails + table usage decoded from .text.",
+  "cross_refs": ["F549: bag deserialize", "F550: opener", "F465: .itm 0xC2C", "F361: horse"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x420AFC+0x35; 0x41FB24+0x50; 0x41FC09+0x70",
+  "notes": [
+    "[0x2ABA10] = main-object bag-open gate (shared modes)",
+    "[0x2CF13C] selected item idx / [0x2CF140] flag / [0x2CF148] item id / [0x2CF150] name buf",
+    "chestnut 밤1-10 = horse food (F425 栗子树 1488 顶)",
+    "0x417880 = button-bar ctor at bag manager [0x1C4]"
+  ]
+}

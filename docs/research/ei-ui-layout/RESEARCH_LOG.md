@@ -6966,3 +6966,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模式表〕**0=背包管理器 [0x6554]、1:[0x29CE4]、2:[0x33188]、3=行会 [0x3399C]、4:[0x4707C]、6=商店 [0x47834]（ctor 0x398/0x399 @ [0x47B70]）、7:[0x47C28]、8=大地图 [0x507EC]（0x4762BC blit）、9:[0x51150]、B:[0x516E8]、C:[0x518E0]、D:[0x52118]、E:[0x524F0]、F:[0x52E5C]（缓冲 [0x53028] + 旗标 0x8AA498）；5/A 桩。
 - **〔mapval1〕**0x420474：OpenWindow(3) + 0x3C 行会名复制（packet+0x10 → [hero+0x2EB800]）；主门 [0x2ABA10] 清 → OpenWindow(0) 背包 + 0x423FA0 定位 **(518,0)——0x206 = x 坐标 518，非 msgid**（修正）。
 - 落盘：window-toggle-dispatcher-evidence.json（F550，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 244。
+## Round 245 (F551) — 2026-08-12：recv1 mapval14 仓库 + 背包管理器模式族
+
+- **〔仓库〕**0x420AFC：门 [0x2ABA10] → OpenWindow(0) → 背包管理器 [hero+0x6554] 模式 [0x54]=**3 仓库**、msg 0x111/0x112/0x113、公共尾 0x41FB54（0x417880 ctor @ [0x1C4] + [0x2CF14C]=包 dword）。
+- **〔模式族〕**[0x54]：0=背包（F550）、1=（0x41FB24 msg 0x107/0x108/0x109）、3=仓库。
+- **〔尾部〕**0x41FB6E：金币 dword → [0x35B1E8] + 选中 [0x2CF13C] → 物品数组 [0x2AC164] **stride 0xC2C**（+0x3D/+0x3F 字）+ 0x415280 刷新；0x41FC09：**栗子循环** 10 指针 0x47ADC4..0x47ADEC（밤1-10，F549 表）比对包名 [0x2A54C8] + sprintf 0x47AF7C——栗子马粮信息（F361/F545）。
+- 落盘：recv1-mapval14-warehouse-mode-evidence.json（F551，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 245。
