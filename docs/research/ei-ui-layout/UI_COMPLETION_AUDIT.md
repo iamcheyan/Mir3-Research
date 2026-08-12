@@ -1896,9 +1896,14 @@ git diff --check
 - **Round 329-332 追加 + 297 连发**（启动链入档）。
 - 落盘：`handoff-refresh-25-evidence.json`（F639）+ RESEARCH_LOG Round 333。
 
+## Round 334 (2026-08-12) — 帧节奏 + LRU 淘汰（Finding 640）
+
+- **60s 帧门 + 300s LRU 淘汰**（F436 确认）。
+- 落盘：`frame-pacing-lru-evict-evidence.json`（F640）+ RESEARCH_LOG Round 334。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（启动链完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（帧节奏/LRU 闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

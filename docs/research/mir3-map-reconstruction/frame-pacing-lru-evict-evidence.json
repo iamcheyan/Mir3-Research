@@ -1,0 +1,35 @@
+{
+  "evidence_id": "frame-pacing-lru-evict-2026-08-12-f640",
+  "title": "Round 334 (F640): Frame pacing + LRU eviction - 0x454C40: GetTickCount 0x47611C gate 0xEA60 (60s) frame update + per-entry LRU: [esi+0x20] last-use vs 0x493E0 (300s) -> evict (0x466130-family unload vtable[0x14] + [esi+0x1C] free + 0x4680F8), [0x8] last-frame-time; 0x454CC0 = entry create (idx*81*4 stride 0x24 malloc + 0x466130 load) - frame pacing + WIL LRU cache eviction byte-level (F436 LRU 0x3A98/0x493E0ms CONFIRMED)",
+  "date": "2026-08-12",
+  "objective": "Decode the frame pacing + LRU eviction.",
+  "question": "How does frame pacing + WIL cache eviction work?",
+  "method": "Disasm 0x454C40-0x454D13.",
+  "scope": "0x454C40-0x454D13; LRU 0x493E0.",
+  "cell_analysis": {
+    "0x454C40": {"gate": "GetTickCount 0x47611C 0xEA60 (60s) frame", "lru": "[esi+0x20] vs 0x493E0 (300s) -> evict (vtable[0x14] + [0x1C] + 0x4680F8)", "frame_time": "[0x8]"},
+    "0x454CC0": "entry create: idx*81*4 stride 0x24 + 0x466130 load"
+  },
+  "exe_trace": {
+    "pacing_chain": "game loop -> 0x454C40 frame gate (60s) + LRU sweep (300s evict)"
+  },
+  "audit_vs_exe": {
+    "F436": "LRU 0x3A98/0x493E0ms CONFIRMED", "F128-136": "WIL loader family", "F591": "main tick pacing"
+  },
+  "contrast": {
+    "frame_vs_lru": "60s frame gate + 300s LRU eviction",
+    "create_vs_evict": "0x454CC0 create + 0x454C40 evict"
+  },
+  "verdict": "Frame pacing + LRU PRIMARY-verified: 60s frame gate + 300s LRU eviction; F436 LRU family confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Pacing + LRU decoded from .text.",
+  "cross_refs": ["F436: LRU", "F128: WIL loader", "F591: main tick"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x454C40+0x30; 0x454CC0+0x20",
+  "notes": [
+    "frame gate 0xEA60 = 60s",
+    "LRU evict 0x493E0 = 300s",
+    "entry stride 0x24 (idx*81*4)",
+    "frame time [0x8]"
+  ]
+}

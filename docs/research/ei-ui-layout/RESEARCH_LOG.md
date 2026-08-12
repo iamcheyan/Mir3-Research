@@ -7424,3 +7424,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 329-332（F636-F638：主构造/引导 + 构造体 + 启动弧）；基线 Round 328=5534555 → Round 332=0d191b0（**297 连发 F335-F638**）。
 - 落盘：handoff-refresh-25-evidence.json（F639，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 333。
+## Round 334 (F640) — 2026-08-12：帧节奏 + LRU 淘汰
+
+- **〔节奏〕**0x454C40：GetTickCount 0x47611C **0xEA60（60s）帧门** + 每项 LRU：[esi+0x20] 最后使用 vs **0x493E0（300s）** → 淘汰（vtable[0x14] 卸载 + [0x1C] + 0x4680F8）、[0x8] 帧时间。
+- **〔创建〕**0x454CC0：条目创建（idx×81×4 stride 0x24 + 0x466130 装载）——帧节奏 + WIL LRU 缓存淘汰字节级（F436 LRU 0x3A98/0x493E0ms 确认）。
+- 落盘：frame-pacing-lru-evict-evidence.json（F640，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 334。
