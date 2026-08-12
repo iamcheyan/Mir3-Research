@@ -8754,3 +8754,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔里程碑〕**达成 **600 连发**（F335-F942，Round 100 基线 → Round 636）；**567 证据 JSON**；**709 总 commit**；三服务 200；master df276f5 已推。
 - **〔自 Round 500 闭合 6 表面〕**选项输入/状态/装备/背包/技能/任务输入——全部窗口输入表面 100%。
 - 落盘：round-600-consecutive-milestone-evidence.json（F943，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 637。
+## Round 638 (F944) — 2026-08-12：HANDOFF 刷新 126（Round 635-637）
+
+- **〔刷新〕**HANDOFF 追加 Round 635-637（F942-F943：任务窗口输入 + 600 连发里程碑）；基线 Round 634=52937fb → Round 637=ad68532（**601 连发 F335-F943**）。
+- 落盘：handoff-refresh-126-evidence.json（F944，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 638。

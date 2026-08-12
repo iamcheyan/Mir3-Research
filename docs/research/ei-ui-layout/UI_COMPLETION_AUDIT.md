@@ -3833,3 +3833,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口输入表面全闭合；下一弧：剩余深层角落/模拟器 polish）。
+## Round 638 (2026-08-12) — HANDOFF 刷新 126（Finding 944）
+
+- **Round 635-637 追加 + 601 连发**（任务输入 + 600 连发里程碑入档）。
+- 落盘：`handoff-refresh-126-evidence.json`（F944）+ RESEARCH_LOG Round 638。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（600 连发达成；下一弧：剩余深层角落/模拟器 polish）。

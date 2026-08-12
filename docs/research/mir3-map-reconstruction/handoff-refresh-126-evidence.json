@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-126-2026-08-12-f944",
+  "title": "Round 638 (F944): HANDOFF refresh 126 - Rounds 635-637 (F941-F943: HANDOFF 125, quest input, 600-consecutive milestone), baseline Round 634=52937fb -> Round 637=ad68532 (601 consecutive F335-F943), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 635-637.",
+  "question": "What changed since HANDOFF refresh 125?",
+  "method": "Append Round 635-637 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 635-637 appended (3 rounds, F941-F943)",
+    "baseline": "Round 634=52937fb -> Round 637=ad68532 (601 consecutive F335-F943)",
+    "arcs": {"input": "F942 quest", "milestone": "F943 600-consecutive"},
+    "key": "600 consecutive rounds; quest input complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F941": "refresh 125 baseline -> now refresh 126", "F335-F943": "601 rounds"
+  },
+  "contrast": {
+    "refresh_125_vs_126": "F942-F943 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 126 (F944): Rounds 635-637 documented (quest input + 600-consecutive milestone), baseline 52937fb -> ad68532, 601 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F942-F943 evidence.",
+  "cross_refs": ["F941: refresh 125", "F943: 600-consecutive milestone"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 635-637 section to HANDOFF",
+  "notes": [
+    "601 consecutive shipping rounds F335-F943",
+    "next: remaining deep corners, sim polish"
+  ]
+}
