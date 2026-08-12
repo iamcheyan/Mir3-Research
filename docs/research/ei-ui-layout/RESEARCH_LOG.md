@@ -6393,3 +6393,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔3 层绘制〕**槽 [0x62A14]/[0x62A10]/[0x90] → 0x466130 帧装载 → SetRect 0x4762B0 blit（rects [0x629FC]/[0x629EC]/[0x94]）。
 - **〔调和〕**视口 768×576 = 48×32 瓦片 16 列 × 18 行（F379「24×24」= 半格 x 轴 24）；F433 帧公式复用于层 A。
 - 落盘：entity-screen-projection-evidence.json（F438，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 132。
+## Round 133 (F439) — 2026-08-12：实体绘制流水线（游戏 tick 18 阶段）
+
+- **〔流水线〕**0x41BB00 18 阶段：时间门 0x5F → BGM 0x1388 5s → 地图滚动 0x43B1E0 → 光场 0x434650 → 英雄更新 → 相机 blit 0x45E730 → 实体更新链 0xE1170 → **6 绘制对象 esi+0x361150..0x3614F4**（门 [0x24]/[0x2C]）→ HP 条 + 目标框 → 实体绘制链 0xE1158 → 光场绘制 0x434D40(400×300) → 精灵链 vtable+0x10 → hover 0x320 → 聊天/UI → 特效。
+- **〔修正〕**F336「4 画家数组」→ 实际 **6 绘制对象**（vtable+0x14 更新 + vtable+0x10 画到屏幕 0x8AB7BC）。
+- 落盘：entity-draw-pipeline-evidence.json（F439，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 133。

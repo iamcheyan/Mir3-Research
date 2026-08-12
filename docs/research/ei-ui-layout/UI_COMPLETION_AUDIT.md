@@ -891,9 +891,14 @@ git diff --check
 - **48×32 投影 + 相机链 + 3 层绘制**（F379 调和）。
 - 落盘：`entity-screen-projection-evidence.json`（F438）+ RESEARCH_LOG Round 132。
 
+## Round 133 (2026-08-12) — 实体绘制流水线（Finding 439）
+
+- **18 阶段 tick + 6 绘制对象**（F336 4→6 修正）。
+- 落盘：`entity-draw-pipeline-evidence.json`（F439）+ RESEARCH_LOG Round 133。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
+- 实体链 0xE1170 插入排序键（y 排序）— 待验证。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

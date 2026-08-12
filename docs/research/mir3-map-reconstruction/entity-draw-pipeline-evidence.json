@@ -1,0 +1,37 @@
+{
+  "evidence_id": "entity-draw-pipeline-2026-08-12-f439",
+  "title": "Round 133 (F439): Entity draw pipeline in game tick 0x41BB00 - 18-stage order (time pacing 0x5F gate / BGM 0x1388 5s / map scroll 0x43B1E0 / light 0x434650 / hero update vtable+0x1C / map cam blit 0x45E730 / entity update walk 0xE1170 / 6 paint objects esi+0x361150..0x3614F4 gated [0x24]/[0x2C] / HP bar 0x40A8A0 + target 0x40BB00 / entity draw walk 0xE1158 / light draw 0x434D40(400x300) / entity sprite walk vtable+0x10 / hover 0x320 / chat+UI) - F336 '4 arrays' corrected to 6",
+  "date": "2026-08-12",
+  "objective": "Map the full entity draw pipeline order inside the game tick 0x41BB00.",
+  "question": "In what order does the client update and draw entities, maps, and HUD each tick?",
+  "method": "Full disasm of 0x41BB00-0x41C1D3 (game tick) + paint object gate analysis.",
+  "scope": "0x41BB00-0x41C1D3; entity lists 0xE1170/0xE1158; paint objects 0x361150-0x3614F4.",
+  "cell_analysis": {
+    "tick_stages": {"1_time": "[0x8B1A94] += tick; gate 0x5F (95); anim clock [0x4279A8] wrap at [0x4279A4]", "2_bgm": "[0x428048] > 0x1388 (5000ms) -> 0x45B250 + Sleep(0x1E) + reset", "3_scroll": "0x43B1E0 on [esi+0xF5200] (F422 scroll)", "4_light": "0x434650 on [esi+0x35B2C0] (light field update)", "5_hero": "[esi+0x2F8780] vtable+0x1C(edi,ebx)", "6_state": "[esi+0x3C] gate -> 0x41A9D0/0x41A5B0", "7_cam_blit": "[0xF538C] gate -> 0x45E730 on 0x8AB7A8 (screen) with cam [0xF5334..0xF5348]", "8_click": "0x419D40 (entity click/select); [0x364444]=0", "9_update": "walk [0xE1170]: vtable+0xC tick; 0x96/0x48 special (vtable+0x14/vtable+0x0 dead path)", "10_paint": "6 objects esi+0x361150/+0x3611F0/+0x3612B4/+0x36137C/+0x361438/+0x3614F4, gated [0x24]/[0x2C]: vtable+0x14(0,0,0) + vtable+0x10([0x8AB7BC])", "11_hud": "0x40A8A0 (HP bar F350) + 0x40BB00 (target F359) + vtable+0x80(-1,-1)", "12_draw": "walk [0xE1158]: 0x40A8A0 + 0x40BB00 per entity (type [0x88] <=1 or ==3)", "13_light_draw": "0x434D40(0x190=400, 0x12C=300) on [0x35B2C0]", "14_sprites": "walk [0xE1170] again: vtable+0x10 per entity", "15_hover": "timeGetTime [0x47630C] 0x320 (800ms) gate; 0x4516D0/0x451700 target send", "16_ui": "0x41C2A0 + 0x41EB70 (chat) + 0x4294E0 (hero+0x2A548C UI)", "17_npc": "type [0x88]==3 + [0x61C74]==0 + race!=0x7F -> 0x419730", "18_effects": "0x41AF60 + 0x41B8D0 (screen effects F336)"},
+    "paint_objects": {"count": "6 (NOT 4 - F336 correction)", "base": "esi+0x361150..+0x3614F4 (game obj 0x8AB828)", "gates": "[esi+0x24]/[esi+0x2C] presence flags", "calls": "vtable+0x14 (0,0,0) = update; vtable+0x10 ([0x8AB7BC]) = draw onto screen"}
+  },
+  "exe_trace": {
+    "lists": {"0xE1170": "entity update/sprite walk (node {+4 entity, +0xC next})", "0xE1158": "entity draw walk (HP/name pass)"},
+    "screen_obj": "0x8AB7A8/0x8AB7BC = screen/DC object (F422 blit target)"
+  },
+  "audit_vs_exe": {
+    "F336": "game loop summary expanded + painter count corrected 4 -> 6",
+    "F422": "scroll 0x43B1E0 called from tick stage 3",
+    "F350/F359": "HP bar + target box per-entity in draw passes"
+  },
+  "contrast": {
+    "update_vs_draw": "stage 9 (update walk) before stage 10-14 (paint/draw) - tick-then-render",
+    "hud_vs_entity": "hero HUD (stage 11) before entity draw (12) - hero on top"
+  },
+  "verdict": "Entity draw pipeline PRIMARY-verified: 18-stage game tick order (pacing/BGM/scroll/light/update/paint/draw/effects), 6 paint objects (corrected from F336's 4), entity walks via 0xE1170/0xE1158 with HP/target passes, light draw 0x434D40, screen object 0x8AB7A8.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Full tick disassembled; paint object count corrected.",
+  "cross_refs": ["F336: game loop", "F422: scroll", "F350: HP bars", "F359: target box", "F437: light system"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x41BB00+0x110",
+  "notes": [
+    "paint object strides irregular (0xA0/0xC4..) - 6 distinct objects",
+    "entity list sort key (0xE1170 insertion) = pending follow-up",
+    "0x45E730 = screen compose blit (F422 chain)"
+  ]
+}
