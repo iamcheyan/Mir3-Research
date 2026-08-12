@@ -1,0 +1,35 @@
+{
+  "evidence_id": "prompt-system-detail-2026-08-12-f527",
+  "title": "Round 221 (F527): Prompt system detail - 3-slot array (stride 0xB8, base [0x234], first-free scan 0x418507-0x418518, active slot byte [0x462]); activation 0x418520: wparam = type<<16 | slot<<8 | tag (0x41854C-0x41855D), MoveWindow 0x4762BC (0x23A/0xDF offsets), ShowWindow 0x4762AC, GetWindowTextA 0x476304 (input [0x130]), SetWindowTextA 0x4762CC, SendMessageA 0x7EE (0x4185CB); button click 0x418600 (slot hit-test vtable+0x10, same window flow) - F356 prompt family fully decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the prompt window internals (3-slot array + activation + click).",
+  "question": "How do the prompt's 3 slots and buttons work?",
+  "method": "Disasm 0x4184E0-0x4186A0 (prompt ctor/activation/click).",
+  "scope": "0x4184E0-0x4186A0; slots [0x234] stride 0xB8; msg 0x7EE.",
+  "cell_analysis": {
+    "slots": {"array": "3 x stride 0xB8 at [0x234]", "first_free": "scan 0x418507-0x418518", "active": "byte [0x462] (slot idx)"},
+    "activation_0x418520": {"wparam": "type<<16 | slot<<8 | tag (0x41854C-0x41855D)", "move": "MoveWindow 0x4762BC (+0x23A/+0xDF)", "show": "ShowWindow 0x4762AC", "input": "GetWindowTextA 0x476304 ([0x130] buffer)", "set": "SetWindowTextA 0x4762CC", "send": "msg 0x7EE (0x4185CB)"},
+    "click_0x418600": "slot hit-test vtable+0x10 + same window flow (0x418637)"
+  },
+  "exe_trace": {
+    "prompt_chain": "activation -> slot find -> MoveWindow/ShowWindow -> input -> msg 0x7EE send"
+  },
+  "audit_vs_exe": {
+    "F356": "3-button array + msg 0x7EE confirmed", "F50": "prompt family extended"
+  },
+  "contrast": {
+    "activation_vs_click": "0x418520 programmatic vs 0x418600 user click",
+    "slot_vs_button": "3 slots (stride 0xB8) = 3 prompt instances"
+  },
+  "verdict": "Prompt system detail PRIMARY-verified: 3-slot array (stride 0xB8), activation wparam packing (type<<16|slot<<8|tag), MoveWindow/ShowWindow/input/msg 0x7EE flow, click hit-test. F356 prompt family fully decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Prompt ctor/activation/click decoded from .text.",
+  "cross_refs": ["F356: prompt activation", "F50: prompt family", "F29: window flow"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4184E0+0x40, 0x418600+0x40",
+  "notes": [
+    "wparam packing = type<<16|slot<<8|tag (F356 confirmed)",
+    "input buffer [0x130] = 0x104 chars",
+    "msg 0x7EE = prompt reply send"
+  ]
+}

@@ -6862,3 +6862,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔验证〕**商店测试导航 商店状态+1 正常（state0→1、标签更新、170 槽）；全局辅助完整（isOpen/setWindowOpen/pushChat）；STATE 模块作用域（内部接线）——F497/F498 新增无回归。
 - 落盘：simulator-edge-verification-evidence.json（F526，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 220。
+## Round 221 (F527) — 2026-08-12：提示框系统细节（3 槽数组 + 激活）
+
+- **〔槽〕**3 × stride 0xB8 @ [0x234]、首空扫描、活动槽字节 [0x462]。
+- **〔激活〕**0x418520：wparam = type<<16 | slot<<8 | tag、MoveWindow（+0x23A/+0xDF）、ShowWindow、GetWindowTextA 输入 [0x130]、msg 0x7EE 发送；点击 0x418600（槽命中 vtable+0x10）。
+- 落盘：prompt-system-detail-evidence.json（F527，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 221。
