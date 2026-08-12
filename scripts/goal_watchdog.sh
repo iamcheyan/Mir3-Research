@@ -69,6 +69,7 @@ GOALS=(
   "019ff331-5ca2-7000-869c-ab301d561150|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-11T23-38-46-306Z_019ff331-5ca2-7000-869c-ab301d561150.jsonl|dbviewer|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff331.state"
   "019ff34c-b48e-7000-b3f9-0bf36fa2ad54|/home/tetsuya/.omp/agent/sessions/-development-mir3-website/2026-08-12T00-42-14-194Z_019ff34c-b48e-7000-b3f9-0bf36fa2ad54.jsonl|mir3site|/home/tetsuya/development/mir3-website|/home/tetsuya/.omp/goal-watchdog.019ff34c.state"
   "019ff444-b5f7-7000-af5b-3288f2608d49|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-12T04-39-31-575Z_019ff444-b5f7-7000-af5b-3288f2608d49.jsonl|questdesign|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff444.state"
+  "019ff47d-4e2e-7000-9d9b-008f5e47c431|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-12T05-41-20-558Z_019ff47d-4e2e-7000-9d9b-008f5e47c431.jsonl|questv2|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff47d.state"
 )
 
 CHECK_ONLY=0
