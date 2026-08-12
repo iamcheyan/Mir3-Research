@@ -3401,3 +3401,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（小地图完整；下一弧：HANDOFF 刷新 107/剩余角落）。
+## Round 584 (2026-08-12) — HANDOFF 刷新 107（Finding 890）
+
+- **Round 581-583 追加 + 548 连发**（小地图完整入档）。
+- 落盘：`handoff-refresh-107-evidence.json`（F890）+ RESEARCH_LOG Round 584。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（小地图完整；下一弧：剩余深层角落/模拟器 polish）。

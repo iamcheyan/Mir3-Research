@@ -8520,3 +8520,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**513 证据 JSON**；三服务 200；master 8e7f596（**547 连发 F335-F888 已推**）。
 - **〔弧〕**小地图（F584）+ 热键栏（F581）+ 部件（F888）——**小地图完整**（缩放钳制 + 帧 blit + 6 热键图标），HUD 部件表面闭合。
 - 落盘：mini-map-closure-evidence.json（F889，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 583。
+## Round 584 (F890) — 2026-08-12：HANDOFF 刷新 107（Round 581-583）
+
+- **〔刷新〕**HANDOFF 追加 Round 581-583（F888-F889：小地图部件 + 小地图闭合）；基线 Round 580=82c41e0 → Round 583=97f8e53（**548 连发 F335-F889**）。
+- 落盘：handoff-refresh-107-evidence.json（F890，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 584。

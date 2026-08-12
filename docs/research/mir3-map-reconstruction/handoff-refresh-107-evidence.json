@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-107-2026-08-12-f890",
+  "title": "Round 584 (F890): HANDOFF refresh 107 - Rounds 581-583 (F887-F889: HANDOFF 106, mini-map widget, mini-map closure), baseline Round 580=82c41e0 -> Round 583=97f8e53 (548 consecutive F335-F889), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 581-583.",
+  "question": "What changed since HANDOFF refresh 106?",
+  "method": "Append Round 581-583 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 581-583 appended (3 rounds, F887-F889)",
+    "baseline": "Round 580=82c41e0 -> Round 583=97f8e53 (548 consecutive F335-F889)",
+    "arcs": {"minimap": "F888 widget", "closure": "F889 minimap"},
+    "key": "mini-map complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F887": "refresh 106 baseline -> now refresh 107", "F335-F889": "548 rounds"
+  },
+  "contrast": {
+    "refresh_106_vs_107": "F888-F889 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 107 (F890): Rounds 581-583 documented (mini-map complete), baseline 82c41e0 -> 97f8e53, 548 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F888-F889 evidence.",
+  "cross_refs": ["F887: refresh 106", "F889: minimap closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 581-583 section to HANDOFF",
+  "notes": [
+    "548 consecutive shipping rounds F335-F889",
+    "next: remaining deep corners, sim polish"
+  ]
+}
