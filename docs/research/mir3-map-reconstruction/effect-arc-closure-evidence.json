@@ -1,0 +1,36 @@
+{
+  "evidence_id": "effect-arc-closure-2026-08-12-f627",
+  "title": "Round 321 (F627): Effect arc CLOSED (F625-F626) - validation green (compileall/verify exit 0/node/JSON), services 200, master 4687b3b (285 consecutive F335-F626), 251 evidence JSONs; arc: effect spawn (F625: record + target + coords + speed) + effect tick/lifecycle (F626: type family + fade/remove) - spell effect pipeline COMPLETE (spawn -> tick -> fade -> remove), connecting F489/F336/F435",
+  "date": "2026-08-12",
+  "objective": "Close the effect arc.",
+  "question": "Is the spell effect pipeline fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "251 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F625": "effect spawn", "F626": "tick/lifecycle"},
+    "pipeline": "spawn -> tick -> fade -> remove - COMPLETE (F489/F336/F435)",
+    "milestone": "285 consecutive rounds F335-F626"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F626": "285 rounds pushed; effect pipeline complete"
+  },
+  "contrast": {
+    "effect_vs_entity": "effect pipeline (F625/626) + entity lifecycle (F565/566) both complete",
+    "spawn_vs_die": "spawn + fade/remove lifecycle"
+  },
+  "verdict": "Effect arc CLOSED (F627): spawn + tick + lifecycle all byte-level; validation green, 285 consecutive rounds, 251 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F625-F626.",
+  "cross_refs": ["F625: spawn", "F626: tick", "F489: effects"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "285 consecutive shipping rounds F335-F626",
+    "next: HANDOFF refresh 22, remaining corners"
+  ]
+}

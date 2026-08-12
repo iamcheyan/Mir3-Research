@@ -7361,3 +7361,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔tick〕**0x435A20（F489 确认）：[0xDC] += delta、**类型分派（0x16/0x10/9/0x1E/0xB/0x14A-0x14E/0x140-0x142/0xA/0x21A/0x21B/0x35/0x3F/0x68/0x150 = F336 特殊族确认）**、0xC8（200）tick 门、帧 [0x121]++ 回绕 [0x102]。
 - **〔生命周期〕**[byte+4]：**0 动画中**（帧推进）/ **1 淡出**（[0xE8]/[0xE9] 或 [0xEA]/[0xEB]/[0xEC] −2 衰减钳制 2）/ **2 移除**——特效 tick + 生命周期字节级（F489 管线渲染侧）。
 - 落盘：effect-tick-lifecycle-evidence.json（F626，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 320。
+## Round 321 (F627) — 2026-08-12：特效弧闭合（F625-F626 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**251 证据 JSON**；三服务 200；master 4687b3b（**285 连发 F335-F626 已推**）。
+- **〔弧〕**特效生成（F625）+ 特效 tick/生命周期（F626）——**法术特效管线完整（生成 → tick → 淡出 → 移除）**，连接 F489/F336/F435。
+- 落盘：effect-arc-closure-evidence.json（F627，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 321。
