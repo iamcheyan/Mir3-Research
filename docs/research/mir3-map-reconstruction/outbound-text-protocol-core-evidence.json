@@ -1,0 +1,37 @@
+{
+  "evidence_id": "outbound-text-protocol-core-2026-08-12-f572",
+  "title": "Round 266 (F572): OUTBOUND TEXT PROTOCOL CORE - 0x452940 = header builder (msgid dword + 5 words -> 12-byte header [+4]/[+6]/[+8]/[+0xA], ret 0x18); 0x451E60 = send tail: buffer [obj+0x24], seq [obj+0x14] (wrap at 9 -> 1), format '#%d%s%s!' (0x47C840 with body) / '#%d%s!' (0x47C800 no body) via wsprintf 0x46811C into [obj+0x2044], then send() (thunk 0x468098 -> WS2_32 send 0x476340, socket [obj+0x6044]); body 0x452740 copy (0x2000 cap); wrappers: 0x451F10 = '%s/%s' (0x47C84C, 2 str), 0x451F90 = '%s/%d' (0x47C854, [0x47EF10] main obj), 0x451FE0 = '%s/%s/%d/%d/%d' (0x47C85C 3 num), 0x451F60 = msg 0x68 - CLIENT-SERVER = TEXT FRAME PROTOCOL '#<seq><cmd>/<args>!' on one async socket - outbound layer full core decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the outbound send core + text protocol framing.",
+  "question": "How does the client send packets?",
+  "method": "Disasm 0x452940/0x451E60/0x451F10/0x451F60/0x451F90/0x451FE0 + format strings + send thunk.",
+  "scope": "0x452940-0x45296E, 0x451E60-0x451F08, wrappers 0x451F10-0x452020.",
+  "cell_analysis": {
+    "0x452940": "header builder: dword + 5 words -> 12B header ([+4]/[+6]/[+8]/[+0xA), ret 0x18",
+    "0x451E60": {"buffer": "[obj+0x24], seq [obj+0x14] wrap 9->1", "fmt": "'#%d%s%s!' (0x47C840) / '#%d%s!' (0x47C800)", "body": "0x452740 copy 0x2000 cap", "send": "wsprintf -> [obj+0x2044] -> send() 0x468098 (WS2_32 0x476340), socket [obj+0x6044]"},
+    "wrappers": {"0x451F10": "'%s/%s' 0x47C84C (2 str)", "0x451F60": "msg 0x68", "0x451F90": "'%s/%d' 0x47C854 (main obj [0x47EF10])", "0x451FE0": "'%s/%s/%d/%d/%d' 0x47C85C (3 num)"},
+    "protocol": "TEXT FRAME '#<seq><cmd>/<args>!' on one async socket"
+  },
+  "exe_trace": {
+    "send_chain": "wrapper -> 0x452940 header -> 0x451E60 frame '#seq cmd args!' -> send() socket [0x6044]"
+  },
+  "audit_vs_exe": {
+    "F524": "34 outbound msgids - now framing understood", "F552": "socket [0x6044] + WSAAsyncSelect confirmed", "F516": "send args"
+  },
+  "contrast": {
+    "text_vs_binary": "TEXT '#...#!' protocol (not binary) - KR MIR3 style",
+    "header_vs_body": "12B header vs 0x2000 body buffer"
+  },
+  "verdict": "Outbound core PRIMARY-verified: TEXT frame protocol '#<seq><cmd>/<args>!' via send() on socket [obj+0x6044]; header builder 0x452940 + send tail 0x451E60 + 4 wrappers decoded. Outbound layer core complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Functions + format strings + thunk decoded from .text/.data.",
+  "cross_refs": ["F524: outbound catalog", "F552: socket connect", "F516: senders"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x451E60+0x30; 0x452940+0x10; 0x451F10+0x20",
+  "notes": [
+    "seq counter [obj+0x14] wraps 9 -> 1 (max 9 in-flight?)",
+    "body buffer [obj+0x24], frame buffer [obj+0x2044]",
+    "main obj [0x47EF10] = game object (F451)",
+    "0x452740 = body copy (0x2000 cap)"
+  ]
+}

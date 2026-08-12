@@ -7099,3 +7099,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔里程碑〕**recv1 表 0x42042B **49/49 处理器字节级**（F549-F570）+ recv2 表 0x4218F2 **11/11**（F553）+ 怪物 0xBC6-0xBD8（F523）——**整个入站协议层 100% 函数体覆盖**。
 - **〔HANDOFF 刷新 9〕**追加 Round 262-264（F568-F570），基线 9fbbccc → ae595b2。
 - 落盘：inbound-protocol-100-percent-evidence.json（F571，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 265。
+## Round 266 (F572) — 2026-08-12：出站文本协议核心
+
+- **〔核心〕**0x452940 = **包头构造器**（msgid dword + 5 word → 12B 头 [+4]/[+6]/[+8]/[+0xA]）；0x451E60 = **发送尾**：缓冲 [obj+0x24]、序列 [obj+0x14]（9→1 回绕）、格式 **'#%d%s%s!'**（0x47C840 带体）/ **'#%d%s!'**（0x47C800 无体）→ wsprintf → [obj+0x2044] → **send()**（门 0x468098 → WS2_32 0x476340，socket [obj+0x6044]）；体 0x452740 复制（0x2000 上限）。
+- **〔包装〕**0x451F10='%s/%s'（2 串）、0x451F60=msg 0x68、0x451F90='%s/%d'（[0x47EF10] 主对象）、0x451FE0='%s/%s/%d/%d/%d'（3 数）。
+- **〔协议〕**客户端-服务器 = **文本帧 '#<seq><cmd>/<args>!'** 单异步 socket（KR MIR3 风格）。
+- 落盘：outbound-text-protocol-core-evidence.json（F572，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 266。

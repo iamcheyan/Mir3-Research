@@ -1556,9 +1556,14 @@ git diff --check
 - **recv1 49 + recv2 11 + 怪物族全函数体 + 229 连发**。
 - 落盘：`inbound-protocol-100-percent-evidence.json`（F571）+ RESEARCH_LOG Round 265。
 
+## Round 266 (2026-08-12) — 出站文本协议核心（Finding 572）
+
+- **'#<seq><cmd>/<args>!' 文本帧 + send() 核心**（F524 出站层补全）。
+- 落盘：`outbound-text-protocol-core-evidence.json`（F572）+ RESEARCH_LOG Round 266。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（**入站协议 100%**；下一弧：出站 34 发送器函数体/模拟器 polish）。
+- 无阻塞项（出站核心闭合；下一弧：出站 34 发送器逐个）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
