@@ -1486,9 +1486,14 @@ git diff --check
 - **模式 3 = 交易窗**（F313 cap0 佐证；F550/F551 行会归属修正）。
 - 落盘：`recv1-trade-family-evidence.json`（F557）+ RESEARCH_LOG Round 251。
 
+## Round 252 (2026-08-12) — 窗口绘制分派器·权威注册表（Finding 558）
+
+- **14 窗口全映射**（F58/F535/F536/F537 绘制目标确认；F550 模式表全面修正）。
+- 落盘：`window-paint-dispatcher-registry-evidence.json`（F558）+ RESEARCH_LOG Round 252。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（交易族闭合；行会窗对象待定位 = cap6）。
+- 无阻塞项（窗口注册表定稿；模式 7/9/C/F 待命名）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

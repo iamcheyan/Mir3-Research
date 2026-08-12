@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-paint-dispatcher-registry-2026-08-12-f558",
+  "title": "Round 252 (F558): Window paint dispatcher 0x4280F0 - DEFINITIVE window registry - render loop over open-windows list [0xD28..0xD38] (F550 nodes {+0 mode,+4 next}), jt 0x428358 mode->(obj, paint): 0=bag [0x6554] 0x42EB80, 1=equipment [0x29CE4] 0x44B2D0 (F325 family), 2=store [0x33188] 0x44E260 (0x44E8B0/0x44F940/0x44FB00 mgr family), 3=TRADE [0x3399C] 0x415B10 (F58 CONFIRMED), 4=GUILD [0x4707C] 0x425040 (F535 - guild LOCATED, F550 table corrected), 6=PARTY [0x47834] 0x4243D0 (F536 - F550 store WRONG corrected), 7=[0x47C28] 0x450530, 8=NOTICE [0x507EC] 0x414700 (F556 0x427E30 target - F550 world-map WRONG), 9=[0x51150] 0x43F460, 0xB=QUEST [0x516E8] 0x447470 (F537), 0xC=[0x518E0] 0x441380 (option family 0x440FE0?), 0xD=HORSE [0x52118] 0x4269C0 (F545), 0xE=SKILLBOOK [0x524F0] 0x439500 (F547), 0xF=[0x52E5C] 0x43E3C0, 5/0xA stubs; 2nd input dispatch 0x4282EE: 0->0x42FAB0 1->0x44B6B0 2->0x44E650 3->0x416790 7->0x450AC0; rect clip IntersectRect 0x476248 (region 0xDF/0x23A/0x241/0x24A) + ShowWindow 0x4762AC - window registry byte-level definitive",
+  "date": "2026-08-12",
+  "objective": "Pin the definitive window object registry via the paint dispatcher.",
+  "question": "Which window object belongs to which mode?",
+  "method": "Disasm 0x4280F0-0x4283BE (paint dispatcher) + IAT cross-check.",
+  "scope": "0x4280F0-0x4283BE; jt 0x428358; open list [0xD28..0xD38].",
+  "cell_analysis": {
+    "loop": "open-windows list [0xD28 head/0xD2C cursor/0xD34 count/0xD38 len], nodes {+0 mode,+4 next}, jt 0x428358",
+    "registry": {"0": "bag [0x6554] 0x42EB80", "1": "equipment [0x29CE4] 0x44B2D0 (F325)", "2": "store [0x33188] 0x44E260", "3": "trade [0x3399C] 0x415B10 (F58)", "4": "guild [0x4707C] 0x425040 (F535)", "6": "party [0x47834] 0x4243D0 (F536)", "7": "[0x47C28] 0x450530", "8": "notice [0x507EC] 0x414700 (F556)", "9": "[0x51150] 0x43F460", "B": "quest [0x516E8] 0x447470 (F537)", "C": "[0x518E0] 0x441380", "D": "horse [0x52118] 0x4269C0 (F545)", "E": "skillbook [0x524F0] 0x439500 (F547)", "F": "[0x52E5C] 0x43E3C0"},
+    "input_dispatch": "0x4282EE: 0->0x42FAB0 1->0x44B6B0 2->0x44E650 3->0x416790 7->0x450AC0",
+    "clip": "IntersectRect 0x476248, region 0xDF/0x23A/0x241/0x24A, ShowWindow 0x4762AC (screen 0x8AA48C)"
+  },
+  "exe_trace": {
+    "paint_chain": "frame -> 0x4280F0 -> list walk -> mode jt -> window paint (ecx=hero+off) -> clip + ShowWindow"
+  },
+  "audit_vs_exe": {
+    "F58": "trade paint 0x415B10 CONFIRMED (mode 3)", "F535": "guild paint 0x425040 = mode 4 (F550 'mode 3 guild' fully corrected)", "F536": "party paint 0x4243D0 = mode 6 (F550 'store' corrected)", "F550": "mode table corrected: 2=store 3=trade 4=guild 6=party 8=notice B=quest D=horse E=skillbook", "F556": "0x427E30 notice -> [0x507EC] = mode 8"
+  },
+  "contrast": {
+    "paint_vs_input": "paint jt 0x428358 vs input jt 0x4282EE (different subsets)",
+    "window_vs_manager": "store window [0x33188] vs store mgr [hero+0x33988]"
+  },
+  "verdict": "Window registry DEFINITIVE (F558): 14 windows mapped via paint dispatcher 0x4280F0; trade (F58), guild (F535), party (F536), quest (F537), horse, skillbook, notice, bag, equipment, store all pinned; F550 mode table corrected (guild=4, party=6, trade=3, notice=8, quest=B).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dispatcher + jt decoded; paint targets match F-numbers.",
+  "cross_refs": ["F550: dispatcher (corrected)", "F535-F537: window renders", "F58: trade", "F313: captions"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x4280F0+0x80; jt 0x428358",
+  "notes": [
+    "TBD: modes 7 [0x47C28], 9 [0x51150], C [0x518E0], F [0x52E5C]",
+    "mode C candidate = option (0x440FE0 ctor family)",
+    "mode F candidate = chat-log or memo",
+    "window rect clip region = (0xDF, 0x23A)-(0x241, 0x24A)"
+  ]
+}
