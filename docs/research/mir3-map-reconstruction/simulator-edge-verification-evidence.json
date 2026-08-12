@@ -1,0 +1,34 @@
+{
+  "evidence_id": "simulator-edge-verification-2026-08-12-f526",
+  "title": "Round 220 (F526): Simulator edge verification - store test-nav 商店状态+1 works (state0->1, label '出售 (state1 · 服务端 @NPC_Sell)', 170 slots render); global fns intact (isOpen/setWindowOpen/pushChat); STATE module-scoped (not window) - internal wiring confirmed; store cycle (F497) + chat quick-slot (F498) additions co-exist without breaking prior functionality",
+  "date": "2026-08-12",
+  "objective": "Verify sim edge cases after recent additions.",
+  "question": "Do the sim's prior features still work after F497/F498?",
+  "method": "Browser: store test-nav click + keyboard hotkey + element audit.",
+  "scope": "sim 8765/sim; store test-nav; global fns.",
+  "cell_analysis": {
+    "verified": {"store_nav": "商店状态+1 -> state 0->1, label updates, 170 slots", "globals": "isOpen/setWindowOpen/pushChat intact", "state": "STATE module-scoped (internal wiring)"},
+    "regression": "F497 store cycle + F498 chat quick-slot co-exist with F420 baseline"
+  },
+  "exe_trace": {
+    "sim_state": "all windows + interactions functional post-additions"
+  },
+  "audit_vs_exe": {
+    "F497": "store cycle intact", "F498": "chat quick-slot intact", "F420": "baseline intact"
+  },
+  "contrast": {
+    "module_vs_global": "STATE module-local vs helper fns global",
+    "nav_vs_cycle": "test-nav (商店状态±1) + in-window cycle buttons both work"
+  },
+  "verdict": "Simulator edge verification PASSED: store test-nav works (state flip + label + slots), global helpers intact, STATE module-scoped; F497/F498 additions regression-free.",
+  "evidence_level": "derived-tooling (sim) + primary (browser verify)",
+  "evidence_level_note": "Browser-verified state flips + element counts.",
+  "cross_refs": ["F497: store cycle", "F498: chat quick-slot", "F420: baseline"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; click 商店状态+1; check label/slots",
+  "notes": [
+    "STATE not on window (module closure) - internal access only",
+    "helper fns global (isOpen/setWindowOpen/pushChat)",
+    "no regression from F497/F498"
+  ]
+}

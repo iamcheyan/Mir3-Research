@@ -6858,3 +6858,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔追加〕**HANDOFF 补 Round 195-218（服务端全解码 F501-F512 + 法术变体/模拟器/包层 F507-F524）；基线 Round 194=204c6f4 → **Round 218=be1b382（183 连发 F335-F524）**。
 - 落盘：handoff-refresh-2-evidence.json（F525，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 219。
+## Round 220 (F526) — 2026-08-12：模拟器边缘验证
+
+- **〔验证〕**商店测试导航 商店状态+1 正常（state0→1、标签更新、170 槽）；全局辅助完整（isOpen/setWindowOpen/pushChat）；STATE 模块作用域（内部接线）——F497/F498 新增无回归。
+- 落盘：simulator-edge-verification-evidence.json（F526，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 220。
