@@ -638,6 +638,11 @@ git diff --check
 - **共性**：back tiles5c + mid wood_tilesc。
 - 落盘：`cave-family-comparison-evidence.json`（F388，primary-bytes）+ RESEARCH_LOG Round 82。
 
+## Round 83 (2026-08-12) — 地表图分类（Finding 389）
+
+- **E 路 2 绑定 + 编号 37 绑定**（城镇/野图）；**0_00x 建筑 + kt 全未绑定**。
+- 落盘：`surface-map-classification-evidence.json`（F389，primary-bytes）+ RESEARCH_LOG Round 83。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

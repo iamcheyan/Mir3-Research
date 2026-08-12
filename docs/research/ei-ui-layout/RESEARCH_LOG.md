@@ -6148,3 +6148,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔差异〕**D0 半兽 400×400 mid 12 object1c（50307）；**D1 赤月 300-400 mid 13 object2c 主导（94317，暗美术）**；D6 诺玛 200-250 稀疏（mid 255 77279）；D4 废矿 200×200 mid 12（24487）。
 - **〔渲染〕**D1 近黑（深洞）、D6 较亮——美术区分验证。
 - 落盘：cave-family-comparison-evidence.json（F388，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 82。
+## Round 83 (F389) — 2026-08-12：地表图分类（E 路/编号城野 + 0_00x 建筑/kt 全未绑定）
+
+- **〔E 路〕**2 绑定，100×100（back tiles5c + mid wood/object1c）——走廊。
+- **〔编号〕**37 绑定（0-9/12/121-125/31/401-407/41-44/5/6/71-78/81）——城镇+野图（back {1,0} + mid {15, 5 cliffsc, 10}）。
+- **〔未绑定〕**0_00x 建筑（市政厅/左右翼 9 图）+ kt 测试 **0 绑定**（EI 客户端永不加载，F369 吻合）。
+- 落盘：surface-map-classification-evidence.json（F389，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 83。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "surface-map-classification-2026-08-12-f389",
+  "title": "Round 83 (F389): Surface map classification - E roads (100x100 back tiles5c + mid wood/object1c, 2 bound) vs numbered towns/wilds (37 bound, back {1,0} + mid {15,5,10}) + 0_00x buildings (市政厅/左右翼) and kt tests ALL UNBOUND (0 bound)",
+  "date": "2026-08-12",
+  "objective": "Classify the non-cave outdoor maps: E-series roads, numbered towns/wilds, 0_00x buildings, kt tests - by structure and bound status.",
+  "question": "Which surface map families are playable (bound) and how do they differ?",
+  "method": "Aggregated layer analysis of bound E + numbered maps; bound-status check for 0_00x/kt.",
+  "scope": "$MIR3_EI_ROOT/Map bound sets; layer aggregation.",
+  "cell_analysis": {
+    "E_roads": {"bound": 2, "size": "100x100", "back": "{2: 5000 tiles5c}", "mid": "{15: 16420 wood, 12: 3485 object1c, 13: 88}", "role": "road corridors"},
+    "numbered": {"bound": 37, "list": "0,01,02,1,12,121-125,2,3,31,4,401-407,41-44,5,6,71-78,8,81,9", "sizes": "400-800", "back": "{1: 434588, 0: 139289, 2: 24954}", "mid": "{15: 1339448, 255: 382515, 5: 329453 cliffsc, 0: 188036, 10: 126465}", "role": "towns + wilds"},
+    "0_00x_buildings": {"on_disk": 9, "bound": 0, "role": "市政厅/左右翼 interiors - UNBOUND legacy"},
+    "kt_tests": {"bound": 0, "role": "Korean test maps - UNBOUND (F369 anomaly set)"}
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331)"
+  },
+  "audit_vs_exe": {
+    "F369": "kt/0_0031-33 unbound confirmed",
+    "F372": "numbered town composition (0/02/3.map) confirmed"
+  },
+  "contrast": {
+    "road_vs_town": "E roads = small corridor (tiles5c + objects); numbered = large open (tilesc/tiles30c + cliffsc/smobjectsc)",
+    "bound_vs_unbound": "numbered + E = playable; 0_00x buildings + kt = legacy (client never loads)"
+  },
+  "verdict": "Surface map classification complete (primary-bytes): E roads (2 bound, 100x100 corridors) + numbered towns/wilds (37 bound, dense back {1,0} + mid {15,5,10}); 0_00x buildings (9) + kt tests all UNBOUND (never loaded by EI client).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Layer stats + bound status from map binaries and MiniMap.txt.",
+  "cross_refs": ["F369: unbound legacy maps", "F372: town composition", "F342: map inventory"],
+  "tool": "python3 aggregation; MiniMap cross-ref",
+  "reproduce": "aggregate bound E/numbered layers; check 0_00x/kt bound status",
+  "notes": [
+    "numbered 401-407 = outpost/fort maps (FMMap frames 31-37 OOB per F310)",
+    "E roads E01/E02 = north/south routes (mapnames 北路/南路)",
+    "0_000 市政厅 etc are single-room interiors never bound in MiniMap"
+  ]
+}
