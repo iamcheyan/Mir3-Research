@@ -9148,3 +9148,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 725-727（F1032-F1033：实体/列表析构 vtable 尾部全量 + 实体/列表生命周期闭合）；基线 Round 724=ab2b0ba → Round 727=691b7c4（**691 连发 F335-F1033**）。
 - 落盘：handoff-refresh-156-evidence.json（F1034，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 728。
+## Round 729 (F1035) — 2026-08-12：实体/列表一次性注册全量
+
+- **〔注册〕**0x423B00 检查全局守卫字节 [0x917C1C] bit0，首次置位；随后将无操作回调 0x401380 传入 0x468467。0x4683FA 把回调追加到动态表 [0x918FD0..0x918FCC]，容量不足时经 0x468D6E 扩容，条目宽度 4B——注册链完整。
+- 落盘：entity-list-init-registration-evidence.json（F1035，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 729。

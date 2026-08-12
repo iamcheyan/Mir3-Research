@@ -1,0 +1,25 @@
+{
+  "evidence_id": "entity-list-init-registration-2026-08-12-f1035",
+  "title": "Round 729 (F1035): entity/list one-time init registration FULL - 0x423B00 tests global guard byte [0x917C1C] bit0, sets it once, then passes no-op callback 0x401380 to 0x468467; helper 0x4683FA appends callback to dynamic registry [0x918FD0..0x918FCC] with realloc 0x468D6E and 4-byte entries; init registration COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the one-time registration adjacent to entity/list classes.",
+  "question": "How is the entity/list teardown callback registered?",
+  "method": "Disasm 0x423B00-0x423B2B and helper 0x4683FA-0x468477.",
+  "scope": "0x423B00-0x423B2B; 0x4683FA-0x468477; registry globals.",
+  "cell_analysis": {
+    "guard": "[0x917C1C] bit0 prevents duplicate registration",
+    "callback": "0x401380 (no-op callback) passed to 0x468467",
+    "append": "0x4683FA appends callback to [0x918FD0]..[0x918FCC]",
+    "growth": "capacity growth via 0x468D6E, 4-byte callback entries"
+  },
+  "exe_trace": {"init": "guard -> callback registry append -> return"},
+  "audit_vs_exe": {"F1032": "object destructor thunks", "F1035": "one-time callback registration"},
+  "contrast": {"first_call": "sets guard and appends", "later_call": "guard already set, append helper still called by thunk"},
+  "verdict": "Entity/list init registration FULL PRIMARY-verified: guard, callback, dynamic registry append, and growth helper decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Registration and helper decoded directly from .text.",
+  "cross_refs": ["F1032: destructor vtables", "F1033: lifecycle closure"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423B00+0x20; 0x4683FA+0x40",
+  "notes": ["guard [0x917C1C]", "registry [0x918FD0]/[0x918FCC]", "callback 0x401380", "realloc 0x468D6E"]
+}

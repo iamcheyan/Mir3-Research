@@ -4561,3 +4561,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体/列表生命周期 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 729 (2026-08-12) — 实体/列表一次性注册全量（Finding 1035）
+
+- **守卫 + 回调 + 动态注册表扩容**（实体/列表注册链完整）。
+- 落盘：`entity-list-init-registration-evidence.json`（F1035）+ RESEARCH_LOG Round 729。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体/列表注册链完整；下一弧：剩余深层角落/模拟器 polish）。
