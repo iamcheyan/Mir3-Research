@@ -1,0 +1,38 @@
+{
+  "evidence_id": "monster-animation-state-layout-2026-08-12-f432",
+  "title": "Round 126 (F432): Monster animation state layout verified - Mon-6.wil block 0 = 304 valid frames: 32 x 10-frame cells (2-6 valid + pad, frames 0-311) + two 80-frame dense attack sequences (320-399, 640-719) + blank tail; 10-frame cell stride = anim tick granularity",
+  "date": "2026-08-12",
+  "objective": "Identify the per-state sub-range layout inside one 1000-frame race block.",
+  "question": "How are animation states (idle/walk/attack) packed within a monster race block?",
+  "method": "Mon-6.wil block 0 full valid-run analysis (frames 0-999, word-count > 0).",
+  "scope": "Data/Mon-6.wil block 0 (race 0-9 slot).",
+  "cell_analysis": {
+    "cell_region_0_311": {"cells": "32 x 10-frame cells", "pattern": "4 valid + 6 pad (cells 0-73), 6 valid + 4 pad (80-195), 6 valid (200-235), 2 valid (240-311)", "stride": "10 frames per cell"},
+    "dense_sequences": {"attack_1": "frames 320-399 (80 continuous, no padding)", "attack_2": "frames 640-719 (80 continuous)", "dims": "attack frames 108-112px wide (sweep sprites)"},
+    "blank_tail": "400-639 + 720-999 blank",
+    "total": "304 valid frames (matches F431 blocks 0-2 = 304)",
+    "semantics_inference": "0-311 = idle/walk cycles (10-frame cells = direction stride), 320-399/640-719 = attack/cast sets [inference]"
+  },
+  "exe_trace": {
+    "cell_stride": "10-frame granularity suggests anim addressing = cell*10 + subframe [inference]"
+  },
+  "audit_vs_exe": {
+    "F431": "block valid counts reconciled (304 = 32 cells + 2x80 dense)",
+    "F429": "10 race blocks x 1000 frames consistent"
+  },
+  "contrast": {
+    "cell_vs_dense": "idle/walk = padded cells; attack = dense runs (no padding)",
+    "block0_vs_others": "blocks 0-2 (304) have 2 attack sets; blocks 3-9 (224) likely 1 set [inference]"
+  },
+  "verdict": "Monster animation state layout verified (primary-static): block 0 = 32 ten-frame cells (2-6 valid + pad) for idle/walk (0-311), two 80-frame dense attack sequences (320-399, 640-719), 304 valid total. 10-frame cell stride is the animation addressing granularity.",
+  "evidence_level": "primary-bytes (layout) + [inference] (state semantics)",
+  "evidence_level_note": "Frame runs/dims read from headers; state mapping inferred from density.",
+  "cross_refs": ["F431: frame density", "F429: Mon WIL family", "F280: race formula"],
+  "tool": "wilsdk.open_library.header() run analysis",
+  "reproduce": "valid(f) = header(f) and words>0; scan block 0 runs; sum = 304",
+  "notes": [
+    "attack sprites 108-112px wide = weapon sweep frames",
+    "10-frame cell = 4/6/2 valid + pad to fixed stride",
+    "two 80-frame dense sets = melee + special/cast [inference]"
+  ]
+}

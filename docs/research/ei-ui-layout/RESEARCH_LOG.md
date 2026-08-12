@@ -6352,3 +6352,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔块结构〕**Mon-N.wil = 10 种族块 × 1000 帧；块 0-2 各 304 有效帧、块 3-9 各 224（尾部 400-999 空白；边界 f375 有效 → f400 空）。
 - **〔偏移〕**块内偏移 (race%10)*1000 [inference]（结构支撑）。
 - 落盘：monster-frame-density-verification-evidence.json（F431，primary-bytes + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 125。
+## Round 126 (F432) — 2026-08-12：怪物动画状态布局（10 帧格 + 双攻击段）
+
+- **〔布局〕**块 0 = 304 有效帧：32 × 10 帧格（2-6 有效 + 填充，0-311 待机/走位）+ 双 80 帧密集攻击段（320-399、640-719，108-112px 横扫）+ 空白尾。
+- **〔粒度〕**10 帧格步长 = 动画寻址粒度（cell*10+subframe [inference]）。
+- 落盘：monster-animation-state-layout-evidence.json（F432，primary-bytes + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 126。
