@@ -3505,3 +3505,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（命中路由完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 597 (2026-08-12) — HP 条注册表 + blit（Finding 903）
+
+- **注册表 + 访问器 + 渲染**（F590 核心完整）。
+- 落盘：`hp-bar-registry-blit-evidence.json`（F903）+ RESEARCH_LOG Round 597。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HP 条完整；下一弧：剩余深层角落）。

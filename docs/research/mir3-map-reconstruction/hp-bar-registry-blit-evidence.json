@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hp-bar-registry-blit-2026-08-12-f903",
+  "title": "Round 597 (F903): HP bar registry + blit (F590/F885/F891 core) - 0x4542A0 REGISTRY (type<5 + slot<0x8C -> 0x454DA0, base +0x13F60); 0x4542E0 accessor (+0x13F60); 0x4542F0 BAR BLIT (vtable[0x40]/[0x14]/[0x30] render + matrix floats 0x476364/0x476470/0x476474 + color/matrix setup) - HP bar system COMPLETE (F590 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the HP bar registry + blit.",
+  "question": "How does the HP bar registry render?",
+  "method": "Disasm 0x4542A0-0x45440D.",
+  "scope": "0x4542A0-0x45440D; registry.",
+  "cell_analysis": {
+    "0x4542A0": "registry: type<5 + slot<0x8C -> 0x454DA0 +0x13F60",
+    "0x4542E0": "accessor +0x13F60",
+    "0x4542F0": "blit: vtable[0x40]/[0x14]/[0x30] + floats 0x476364/0x476470/0x476474"
+  },
+  "exe_trace": {
+    "bar_chain": "registry -> accessor -> blit"
+  },
+  "audit_vs_exe": {
+    "F590": "bar system", "F885": "HUD status", "F891": "map overlay"
+  },
+  "contrast": {
+    "registry_vs_blit": "slots + render",
+    "type_vs_slot": "<5 + <0x8C"
+  },
+  "verdict": "HP bar registry + blit PRIMARY-verified: registry + accessor + render; F590 core complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Bar system decoded from .text.",
+  "cross_refs": ["F590: bars", "F885: status", "F891: overlay"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4542A0+0x10; 0x4542F0+0x20",
+  "notes": [
+    "type<5 slot<0x8C",
+    "base +0x13F60",
+    "vtable[0x40] render",
+    "floats 0x476364+"
+  ]
+}

@@ -8576,3 +8576,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 593-595（F900-F901：窗口命中路由 + 命中路由闭合）；基线 Round 592=7ef2235 → Round 595=7b5435e（**560 连发 F335-F901**）。
 - 落盘：handoff-refresh-111-evidence.json（F902，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 596。
+## Round 597 (F903) — 2026-08-12：HP 条注册表 + blit（F590/F885/F891 核心）
+
+- **〔条〕**0x4542A0 **注册表**（类型<5 + 槽<0x8C → 0x454DA0、基址 +0x13F60）；0x4542E0 访问器（+0x13F60）；0x4542F0 **条 blit**（vtable[0x40]/[0x14]/[0x30] 渲染 + 矩阵浮点 0x476364/0x476470/0x476474 + 颜色/矩阵设置）——HP 条系统完整（F590 用）。
+- 落盘：hp-bar-registry-blit-evidence.json（F903，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 597。
