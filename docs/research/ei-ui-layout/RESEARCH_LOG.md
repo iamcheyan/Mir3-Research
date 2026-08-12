@@ -8433,3 +8433,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 达 **100 次刷新**（基线 Round 561=cb441d4 → Round 562=806bbff，**527 连发 F335-F868**）；自 Round 400 里程碑：**13 大表面闭合**（窗口/选项/输入/英雄/技能/名字/行会/组队/交易/坐骑/任务/公告/对话），**530+ 证据 JSON**。
 - 落盘：handoff-refresh-100-evidence.json（F869，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 563。
+## Round 564 (F870) — 2026-08-12：公告输入处理（F731 门依赖）
+
+- **〔公告〕**0x414DC0：msg 0x31/0x32/0xBE（编辑键）→ **公告缓冲 [0x850]**（默认串 0x47AD94、预设 0x47AD84/0x47AD90）+ SetWindowText 0x4762CC + SendMessage 0x476290 0xB1 + **0x450C70 刷新** + 0x4762B8/0x4762AC 编辑控件操作——公告编辑完整。
+- 落盘：announce-input-handler-evidence.json（F870，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 564。

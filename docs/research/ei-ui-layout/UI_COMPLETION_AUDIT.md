@@ -3241,3 +3241,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13 表面闭合；下一弧：剩余深层角落/模拟器 polish）。
+## Round 564 (2026-08-12) — 公告输入处理（Finding 870）
+
+- **编辑键 + 缓冲 + 刷新**（公告编辑完整）。
+- 落盘：`announce-input-handler-evidence.json`（F870）+ RESEARCH_LOG Round 564。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告编辑完整；下一弧：剩余深层角落）。

@@ -1,0 +1,34 @@
+{
+  "evidence_id": "announce-input-handler-2026-08-12-f870",
+  "title": "Round 564 (F870): Announce input handler (F731 gate dep) - 0x414DC0: msg 0x31/0x32/0xBE (edit keys) -> announce buffer [0x850] (default string 0x47AD94, presets 0x47AD84/0x47AD90) + SetWindowText 0x4762CC + SendMessage 0x476290 0xB1 + 0x450C70 refresh + 0x4762B8/0x4762AC edit control ops - announce edit COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the announce input handler.",
+  "question": "How does announce input process?",
+  "method": "Disasm 0x414DC0-0x414F44.",
+  "scope": "0x414DC0-0x414F44; buffer [0x850].",
+  "cell_analysis": {
+    "0x414DC0": {"msgs": "0x31/0x32/0xBE", "buffer": "[0x850] default 0x47AD94", "set": "0x4762CC + 0x476290 0xB1", "refresh": "0x450C70"}
+  },
+  "exe_trace": {
+    "announce_chain": "key -> buffer -> set text -> refresh"
+  },
+  "audit_vs_exe": {
+    "F731": "input gate", "F854": "announce render", "F866": "list"
+  },
+  "contrast": {
+    "keys_vs_buffer": "0x31/0x32/0xBE + [0x850]",
+    "set_vs_refresh": "0x476290 + 0x450C70"
+  },
+  "verdict": "Announce input handler PRIMARY-verified: keys + buffer + refresh; announce edit complete (F731).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Announce input decoded from .text.",
+  "cross_refs": ["F731: gate", "F854: render", "F866: list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414DC0+0x20",
+  "notes": [
+    "keys 0x31/0x32/0xBE",
+    "buffer [0x850]",
+    "presets 0x47AD84/0x47AD90",
+    "refresh 0x450C70"
+  ]
+}
