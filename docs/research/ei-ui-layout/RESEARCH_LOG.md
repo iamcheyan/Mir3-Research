@@ -5910,3 +5910,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔EXE 技能链〕**0x4525F0（Magic.exp 解码器）callers = 0x4391F0（技能 ctor 装载）+ 0x44A9C2；0x43A440（技能详情渲染）caller = 0x439520（技能书 paint 右页）；0x4397A0 左列表；0x439250 ctor（帧 400 面板 + 8 魔法分类页签）。
 - **〔浏览器〕**E 开技能书；content children = 20（8 分类页签 + 12 技能槽）。
 - 落盘：`skill-grid-magic-exp-evidence.json`（F351，derived-tooling；源记录 primary-static）+ builder + skills.json 重生成 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 45。
+
+## Round 46 (F352) — 2026-08-12：背包格修正为原版 46 槽布局（bag+0x774 stride 0xC2C + 6 列网格）
+
+- **〔原版事实〕**背包 = **46 槽（0x2E）**记录 bag+0x774 + i*0xC2C（flag 槽底、w/h +0x778/+0x77C、0xC20 记录体 +0x780）；网格 WORD 表 bag+0x324（6 列/行、12B 行距、空 0xFFFF、首格标记 slot+0x3E8）；索引数学 0x42FCC0 = bag + 3116*slot（F293）。
+- **〔模拟器修正〕**window.inventory 填充：36 槽（6×6）→ **46 槽（6 列 × 8 行，40px 距 36px 格）**；desc 标注 bag+0x774+i*0xC2C F293。**浏览器验证**：slotCount = 46。
+- 落盘：`bag-grid-46-slot-evidence.json`（F352，derived-tooling；源证据 primary-static F293）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 46。

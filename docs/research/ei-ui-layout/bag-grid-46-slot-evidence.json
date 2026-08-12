@@ -1,0 +1,46 @@
+{
+  "evidence_id": "bag-grid-46-slot-2026-08-12-f352",
+  "title": "Round 46 (F352): Bag grid fixed to original 46-slot layout (bag+0x774 stride 0xC2C, grid WORD table +0x324 6 cols, F293/F288) - sim inventory now 46 slots browser-verified",
+  "date": "2026-08-12",
+  "objective": "Fix the simulator inventory window to match the original bag geometry: 46 slot records (0x2E) at bag+0x774 stride 0xC2C with 0xC20 record bodies, 6-col grid cell table, replacing the placeholder 36-slot 6x6 grid.",
+  "question": "How many slots does the original bag have and how is the grid laid out?",
+  "method": "Cross-validated against bag-list-fill-chain-evidence.json (F293: 46 slots 0x2E, stride 0xC2C, grid bag+0x324 6 cols 12B pitch, empty 0xFFFF, marker slot+0x3E8); app.js bag fill updated; browser verification.",
+  "scope": "Tools/mir3_client_simulator/app.js (window.inventory fill); browser 8765/sim.",
+  "cell_analysis": {
+    "original_bag": {
+      "slot_count": "46 (0x2E) - 0x42F280 free-slot scan loop (F293)",
+      "slot_records": "bag+0x774 + i*0xC2C; flag at base, w/h +0x778/+0x77C, 0xC20 (0x308 dword) item record at +0x780",
+      "grid": "WORD cell table bag+0x324 (6 cols/row, 12B row pitch, empty 0xFFFF, first-cell marker slot+0x3E8)",
+      "index_math": "0x42FCC0: slot -> bag + 3116*slot; flag probe +0x774; rep movsd 0x308 to dest"
+    },
+    "sim_fix": {
+      "change": "window.inventory fill: 36 slots (6x6) -> 46 slots (6 cols x 8 rows, 40px pitch, 36px cells)",
+      "desc": "bag slot i + 1 · 46 槽 · bag+0x774+i*0xC2C · F293",
+      "browser": "slotCount = 46; slot 46 desc correct"
+    }
+  },
+  "exe_trace": {
+    "bag_object": "embedded at game+0x2AB9E0 (fill handlers, F293); login reset 0x42E0C1 -> obj+0x6554 (F337 id0)",
+    "fill": "0x42FC20 (F293: 13 callers, 10 server-msg sites {0x35,0xC8,0x259,0x268,0x27C,0x2A2,0x2A4,0x2A5,0x2A9})"
+  },
+  "audit_vs_exe": {
+    "F293": "46 slots + stride 0xC2C + grid 6 cols confirmed",
+    "F288": "mode byte +0x54, tabs +0x5C confirmed (bag class)",
+    "F337": "id0 = bag window confirmed"
+  },
+  "contrast": {
+    "before": "36-slot 6x6 placeholder grid",
+    "after": "46-slot 6-col grid matching original bag+0x774 stride 0xC2C"
+  },
+  "verdict": "Simulator bag grid fixed to the original 46-slot layout (primary-bytes via F293): 6-col grid, bag+0x774+i*0xC2C records, browser-verified 46 slots. Bag geometry now matches the original client.",
+  "evidence_level": "derived-tooling (source evidence primary-static F293)",
+  "evidence_level_note": "Sim grid geometry derives from F293 slot-record layout; 40px slot pitch is sim presentation (original grid pitch 12B/col cell - cell size candidate).",
+  "cross_refs": ["F293: bag-list-fill-chain-evidence.json (46 slots, stride 0xC2C, grid +0x324)", "F288: bag mode/tabs", "F337: id0 = bag", "F340: bag mouse 0x42FAB0 46-slot hit-test"],
+  "tool": "app.js edit; puppeteer browser",
+  "reproduce": "open sim; login; press Q; count .slot in window.inventory content = 46",
+  "notes": [
+    "original grid cell pitch is 12B per row (6 WORD cells) - actual pixel pitch depends on item frame sizes (0x42F2A0 rect math)",
+    "46 slots / 6 cols = 8 rows (last row 4 slots)",
+    "trade window has its own 24-slot grid (trade+0x5B8, 2 blocks x 12) - different class (F293)"
+  ]
+}

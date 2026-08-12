@@ -447,8 +447,10 @@ function fillWindowContent(w) {
       content.appendChild(lbl);
     });
   } else if (id === "window.inventory") {
-    // 6x6 grid from evidence: 36px cells
-    for (let i = 0; i < 36; i++) {
+    // Round 46 (F352): original bag = 46 slot records (0x2E) at bag+0x774
+    // stride 0xC2C (flag/w/h, 0xC20 body at +0x780), grid WORD cell table
+    // bag+0x324 6 cols/row 12B pitch (bag-list-fill-chain-evidence F293).
+    for (let i = 0; i < 46; i++) {
       const col = i % 6, row = Math.floor(i / 6);
       const x = 8 + col * 40, y = 8 + row * 40;
       const slot = document.createElement("div");
@@ -457,7 +459,7 @@ function fillWindowContent(w) {
       slot.dataset.slot = `bag.${i}`;
       slot.dataset.rect = `${x},${y},36,36`;
       slot.dataset.evidence = "primary-static";
-      slot.dataset.desc = "背包 6×6 网格 · 36px · 0x0042F150";
+      slot.dataset.desc = `背包格 ${i + 1} · 46 槽 · bag+0x774+i*0xC2C · F293`;
       slot.title = `背包格 ${i + 1} · primary-static`;
       // place a few real item icons from Equip.wil
       if (i % 7 === 0) {

@@ -417,6 +417,12 @@ git diff --check
 - **浏览器**：E 开技能书，20 内容元素（8 分类 + 12 技能）。
 - 落盘：`skill-grid-magic-exp-evidence.json`（F351）+ builder/skills.json + RESEARCH_LOG Round 45。
 
+## Round 46 (2026-08-12) — 背包 46 槽网格（Finding 352）
+
+- **原版背包**：46 槽（0x2E）bag+0x774 stride 0xC2C（0xC20 记录体 +0x780）；网格 WORD 表 +0x324 6 列（F293）。
+- **模拟器**：36 槽 → 46 槽（6 列 × 8 行）；浏览器验证 46。
+- 落盘：`bag-grid-46-slot-evidence.json`（F352）+ app.js + RESEARCH_LOG Round 46。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
