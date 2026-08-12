@@ -1,0 +1,36 @@
+{
+  "evidence_id": "quest-system-closure-2026-08-12-f672",
+  "title": "Round 366 (F672): Quest system CLOSED (F671) - validation green (compileall/verify exit 0/node/JSON), services 200, master 24cbec6 (330 consecutive F335-F671), 296 evidence JSONs; arc: quest window paint full (F671: chain + 19-line + colors) - quest system COMPLETE (render F671 + journal F553 + server QuestDiary/MapQuest F511), connecting F537/F553/F564",
+  "date": "2026-08-12",
+  "objective": "Close the quest system.",
+  "question": "Is the quest system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "296 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F671": "quest window paint"},
+    "quest": "render (F671) + journal (F553) + server files (F511) = COMPLETE",
+    "milestone": "330 consecutive rounds F335-F671"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F671": "330 rounds pushed; quest complete"
+  },
+  "contrast": {
+    "client_vs_server": "quest render + server QuestDiary/MapQuest",
+    "window_vs_journal": "quest window + journal notices"
+  },
+  "verdict": "Quest system CLOSED (F672): render + journal + server files all byte-level; validation green, 330 consecutive rounds, 296 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F671.",
+  "cross_refs": ["F671: render", "F553: journal", "F511: server quest"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "330 consecutive shipping rounds F335-F671",
+    "next: HANDOFF refresh 35, remaining corners"
+  ]
+}

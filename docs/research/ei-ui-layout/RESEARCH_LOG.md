@@ -7572,3 +7572,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔绘制〕**0x447470（F537 确认）：文本链 [0x54]/[0x1E8] + **19 行上限 0x13**（[esp+0x10] ≥ 0x13 门）、**宽度门 0xC8（200px）+ 换行子门 0xA0（160px）**、色旗标 [0x204]/[0x210] → 0x1919C8/0x19197D、**行 y = idx×15+0x12**（F537 idx×3×5）、x = [0x18]+0x41、0x45DD70 绘制 + 2 控件矩形（[0x74]/[0x128] + 2 遍历）——任务窗渲染字节级（F537 扩展）。
 - 落盘：quest-window-paint-full-evidence.json（F671，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 365。
+## Round 366 (F672) — 2026-08-12：任务系统闭合（F671 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**296 证据 JSON**；三服务 200；master 24cbec6（**330 连发 F335-F671 已推**）。
+- **〔弧〕**任务窗绘制完整（F671）——**任务系统完整（渲染 F671 + 日志 F553 + 服务端 QuestDiary/MapQuest F511）**，连接 F537/F564。
+- 落盘：quest-system-closure-evidence.json（F672，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 366。
