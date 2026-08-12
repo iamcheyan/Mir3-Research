@@ -1,0 +1,38 @@
+{
+  "evidence_id": "recv1-full-coverage-2026-08-12-f570",
+  "title": "Round 264 (F570): recv1 FULL COVERAGE - last 3 handlers: idx40 (msg 0x2C8 0x4217E2) guild-create success '你申请的行会已建立成功.' (0x47B200); idx41 (msg 0x2C9 0x4217F4) 3-way guild-create errors: -1 '没足够的钱,或者已经创建行会.' (0x47B1E0)/-2 '你没有足够的申请经费.' (0x47B1C8)/-3 '필요아이템을 모두 가지고 있지 않습니다.' (0x47B1A0 missing items); idx43 (msg 0x2CB 0x421767) 3-way alliance errors: -1 '必须面对要联盟行会掌门.' (0x47B254)/-2 '그 문파와 동맹중이 아닙니다.' (0x47B234)/-3 '존재하지 않는 문파입니다.' (0x47B218); ALL 49 recv1 handlers now decoded (F549-F570): bag/store/warehouse/craft/trade/guild/party/alliance/entity/char/notice/memo/TCP - recv1 dispatch table 0x42042B 100% body coverage",
+  "date": "2026-08-12",
+  "objective": "Decode the final recv1 handlers + declare full coverage.",
+  "question": "Are all 49 recv1 handlers decoded?",
+  "method": "Disasm 0x4217E2/0x4217F4/0x421767 + decode strings.",
+  "scope": "0x4217E2-0x42186D; idx40/41/43.",
+  "cell_analysis": {
+    "idx40": {"msg": "0x2C8", "0x4217E2": "guild-create success '你申请的行会已建立成功.' (0x47B200)"},
+    "idx41": {"msg": "0x2C9", "0x4217F4": "3-way: -1 no-money/already-guild (0x47B1E0), -2 no-funds (0x47B1C8), -3 missing-items (0x47B1A0 필)"},
+    "idx43": {"msg": "0x2CB", "0x421767": "3-way: -1 must-face-master (0x47B254), -2 not-allied (0x47B234), -3 no-such-guild (0x47B218)"},
+    "coverage": {"49": "ALL recv1 handlers decoded (F549-F570)", "families": "bag/store/warehouse/craft/trade/guild/party/alliance/entity/char/notice/memo/TCP"},
+    "shared": "idx31 0x421CFC = recv2 idx8 memo#2 (0x4561B0)"
+  },
+  "exe_trace": {
+    "guild_create_chain": "create-guild packet -> idx41 status (-1/-2/-3) -> error prompt OR idx40 success"
+  },
+  "audit_vs_exe": {
+    "F517": "137 msgid range -> 49 handlers all covered", "F520": "recv1 semantics complete", "F549-F569": "all prior bodies"
+  },
+  "contrast": {
+    "create_vs_join": "guild creation (idx40/41) vs join/invite (idx36)",
+    "alliance_vs_guild": "alliance errors (idx42/43) vs guild errors (idx38/39)"
+  },
+  "verdict": "recv1 FULL COVERAGE (F570): all 49 handlers byte-level (last 3: guild-create success + 3-way errors, alliance 3-way errors); entire recv1 dispatch table 0x42042B 100% body coverage.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Final handlers + strings decoded; coverage consolidated.",
+  "cross_refs": ["F517: recv1 table", "F520: semantics", "F549-F569: bodies", "F553: recv2"],
+  "tool": "capstone disasm + cp949/GBK decode",
+  "reproduce": "disasm 0x4217E2+0x8; 0x4217F4+0x10; 0x421767+0x10",
+  "notes": [
+    "필요아이템을 모두 가지고 있지 않습니다 = missing required items (KR)",
+    "guild creation cost check: money + funds + items",
+    "문파 = guild/sect (KR); 동맹 = alliance",
+    "recv1 = 100% covered; recv2 = 100% covered (F553)"
+  ]
+}

@@ -7086,3 +7086,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔idx37/45/22〕**0x2C5：仅发送；0x2CD：备忘结构 malloc 0xC → 0x4561B0([main+0x3C5EFC])；0x2B6：[0x4279A0]=包 dword。
 - **〔编码〕**KR 源（문주/문파/동맹/변경오류）+ CN GBK 层。
 - 落盘：recv1-guild-party-errors-evidence.json（F569，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 263。
+## Round 264 (F570) — 2026-08-12：recv1 全覆盖（最后 3 处理器）
+
+- **〔idx40〕**msg 0x2C8：建会成功 '你申请的行会已建立成功.'（0x47B200）。
+- **〔idx41〕**msg 0x2C9 3 路：-1 '没足够的钱,或者已经创建行会.'（0x47B1E0）、-2 '你没有足够的申请经费.'（0x47B1C8）、-3 '필요아이템을 모두 가지고 있지 않습니다.'（0x47B1A0 缺材料）。
+- **〔idx43〕**msg 0x2CB 3 路：-1 '必须面对要联盟行会掌门.'（0x47B254）、-2 '그 문파와 동맹중이 아닙니다.'（0x47B234）、-3 '존재하지 않는 문파입니다.'（0x47B218）。
+- **〔覆盖〕**全部 **49 个 recv1 处理器字节级**（F549-F570：背包/商店/仓库/制作/交易/行会/组队/联盟/实体/角色/公告/备忘/TCP）——recv1 表 0x42042B **100% 函数体覆盖**。
+- 落盘：recv1-full-coverage-evidence.json（F570，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 264。
