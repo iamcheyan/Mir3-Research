@@ -1,0 +1,40 @@
+{
+  "evidence_id": "cell-record-layout-verification-2026-08-12-f386",
+  "title": "Round 80 (F386): Cell record layout verified - 14-byte cell {+0 flag, +1 midAnim, +2 frontAnim, +3 frontFile, +4 midFile, +5-6 midImg u16, +7-8 frontImg u16, +9..13 zero} + file-size exact match (9440028 = 28 + back*3 + cells*14) + populated-cell samples (midFile 10/5 with real midImg)",
+  "date": "2026-08-12",
+  "objective": "Byte-verify the 14-byte map cell record layout against the client's frame reads (+5 midImg, +7 frontImg) and the file-size formula.",
+  "question": "Does the 14-byte cell layout match the client's record reads exactly?",
+  "method": "0.map raw cell dumps (0/1/1000/100000 + populated samples); file-size formula check; cross-ref client reads 0x43B516/+5/+7 (F331/F379).",
+  "scope": "$MIR3_EI_ROOT/Map/0.map; client 0x43B440 record reads.",
+  "cell_analysis": {
+    "layout": {"+0": "flag byte", "+1": "midAnim", "+2": "frontAnim", "+3": "frontFile", "+4": "midFile", "+5-6": "midImg u16", "+7-8": "frontImg u16", "+9..13": "zero tail (5 bytes)"},
+    "size_math": "28 header + (w/2)*(h/2)*3 back + w*h*14 cells = 9440028 EXACT (0.map)",
+    "samples": {
+      "empty": "cells 0/1/1000/100000: midFile 0/15, midImg 0xFFFF (empty), flag 2",
+      "populated": "cell 296: midFile 10 (SmObjectsc) midImg 4354; cell 1091: midFile 10 midImg 5528; cell 1883/1884: midFile 5 (Cliffsc) midImg 5203/5202; frontFile 15 all"
+    },
+    "client_reads": "0x43B516 mov si, word[cell+1] (back tile); mid frame at +5, front at +7 (F331 0x43BB10 func1: mov bx,[edx+5] / [edx+7])"
+  },
+  "exe_trace": {
+    "record_reads": "0x43B516 (back 3-byte), 0x43BB10 func1 (mid/front 14-byte cells, F331/F378)"
+  },
+  "audit_vs_exe": {
+    "F331": "14-byte layout + file format confirmed byte-exact",
+    "F379": "back 3-byte records + cell indexing confirmed"
+  },
+  "contrast": {
+    "back_vs_cell": "back = 3-byte half-res records (attr+word); full cells = 14 bytes",
+    "empty_vs_populated": "0xFFFF = empty; real midImg = object frame"
+  },
+  "verdict": "Cell record layout verified (primary-bytes): 14-byte cells {flag, midAnim, frontAnim, frontFile, midFile, midImg u16, frontImg u16, zero tail} with exact file-size match (9440028) and populated samples (midFile 10/5 with real frames). Client reads at +5/+7 confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Cell bytes + size math read directly from 0.map; client reads from MIR3.EXE.",
+  "cross_refs": ["F331: map format", "F379: back records + viewport", "F378: frame checks"],
+  "tool": "python3 struct dump; capstone refs",
+  "reproduce": "dump 0.map cells at cb+i*14; verify size formula",
+  "notes": [
+    "frontFile 15 = wood_tilesc ground-group (not drawn as object - F331 r<3 skip)",
+    "flag 2 common on populated cells (walkable?) [candidate]",
+    "zero tail +9..13 = reserved/padding"
+  ]
+}

@@ -6131,3 +6131,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔D022〕**midAnim {0: 249911, 152: 89}、frontAnim 全 0xFF 静态、mid libs {15: 238198, 12: 11802}——**midAnim 0 = 水/熔岩循环索引**。
 - **〔客户端〕**帧空判断 0x43BBBB ==0xFFFF 精确；非 0xFF 动画字节 = 帧循环组。
 - 落盘：animated-cells-analysis-evidence.json（F385，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 79。
+## Round 80 (F386) — 2026-08-12：单元记录布局验证（14 字节 + 文件尺寸精确）
+
+- **〔布局〕**14 字节单元 {+0 flag, +1 midAnim, +2 frontAnim, +3 frontFile, +4 midFile, +5-6 midImg u16, +7-8 frontImg u16, +9..13 零尾}；**文件尺寸精确**：28 + (w/2)(h/2)*3 + w*h*14 = 9440028（0.map）。
+- **〔样本〕**空单元（midImg 0xFFFF）；实体单元 cell 296/1091（midFile 10 SmObjectsc midImg 4354/5528）、1883/1884（midFile 5 Cliffsc midImg 5203/5202）、frontFile 15。
+- **〔客户端〕**mid 帧 +5、front +7（F331 0x43BB10）；back 3 字节 @ 0x43B516。
+- 落盘：cell-record-layout-verification-evidence.json（F386，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 80。
