@@ -7657,3 +7657,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**314 证据 JSON**；三服务 200；master d0d9a9c（**348 连发 F335-F689 已推**）。
 - **〔弧〕**base64 编码 + 包头（F689）——**包编码完整（base64 + 包头 + 文本帧 F572 + 校验和 F617）**，闭合 F307/F524 包管线。
 - 落盘：packet-encode-arc-closure-evidence.json（F690，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 384。
+## Round 385 (F691) — 2026-08-12：HANDOFF 刷新 41（Round 382-384）
+
+- **〔刷新〕**HANDOFF 追加 Round 382-384（F689-F690：base64 编码 + 包编码弧）；基线 Round 381=5144fe6 → Round 384=8b3528d（**349 连发 F335-F690**）。
+- 落盘：handoff-refresh-41-evidence.json（F691，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 385。
