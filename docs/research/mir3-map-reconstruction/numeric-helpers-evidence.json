@@ -1,0 +1,36 @@
+{
+  "evidence_id": "numeric-helpers-2026-08-12-f683",
+  "title": "Round 377 (F683): Numeric helpers - 0x401700 = PERCENT math (val/denom + 0.5 -> 0x468520 round, div-by-0 -> 0xFFFF); 0x468520 = float->int64 (fistp qword, rounding-mode save/restore fldcw); 0x46855F/0x46858C = itoa/utoa (base 10/16 digit conversion + sign 0x2D) - shared numeric core byte-level (F460/F588/F566 all use)",
+  "date": "2026-08-12",
+  "objective": "Decode the numeric helpers.",
+  "question": "What are the shared numeric functions?",
+  "method": "Disasm 0x401700 + 0x468520-0x46858C.",
+  "scope": "0x401700, 0x468520-0x46858C.",
+  "cell_analysis": {
+    "0x401700": "percent: val/denom + 0.5 -> round (0xFFFF if 0)",
+    "0x468520": "float->int64: fistp qword + fldcw round save/restore",
+    "0x46855F/0x46858C": "itoa/utoa: base 10/16 + sign 0x2D"
+  },
+  "exe_trace": {
+    "numeric_chain": "tooltip/HP/effects -> 0x401700 percent + 0x468520 round + itoa text"
+  },
+  "audit_vs_exe": {
+    "F460": "tooltip %s", "F588": "HP bars", "F566": "entity tick", "F636": "rand"
+  },
+  "contrast": {
+    "percent_vs_round": "percent math + float-int round",
+    "itoa_vs_utoa": "signed + unsigned digit conversion"
+  },
+  "verdict": "Numeric helpers PRIMARY-verified: percent + float-int + itoa; shared numeric core byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Numeric core decoded from .text.",
+  "cross_refs": ["F460: tooltip", "F588: bars", "F566: tick"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x401700+0x10; 0x468520+0x10",
+  "notes": [
+    "percent + 0.5 rounding",
+    "fistp qword int64",
+    "itoa bases 10/16",
+    "div-0 -> 0xFFFF"
+  ]
+}

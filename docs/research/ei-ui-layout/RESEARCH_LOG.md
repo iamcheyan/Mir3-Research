@@ -7621,3 +7621,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 373-375（F680-F681：sprintf/strtol + 字符串库弧）；基线 Round 372=5304cc8 → Round 375=5d6ee76（**340 连发 F335-F681**）。
 - 落盘：handoff-refresh-38-evidence.json（F682，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 376。
+## Round 377 (F683) — 2026-08-12：数值助手
+
+- **〔数值〕**0x401700 = **百分比数学**（val/denom + 0.5 → 0x468520 舍入、除 0 → 0xFFFF）；0x468520 = **浮点→int64**（fistp qword、fldcw 舍入模式保存/恢复）；0x46855F/0x46858C = **itoa/utoa**（基 10/16 数字转换 + 符号 0x2D）——共享数值核心字节级（F460/F588/F566 全用）。
+- 落盘：numeric-helpers-evidence.json（F683，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 377。
