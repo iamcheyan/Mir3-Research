@@ -1,0 +1,35 @@
+{
+  "evidence_id": "map-widget-arc-closure-2026-08-12-f596",
+  "title": "Round 290 (F596): Minimap/world-map arc CLOSED (F584-F595) - validation green (compileall/verify exit 0/node/JSON), services 200, master e5dc5e7 (254 consecutive F335-F595), 221 evidence JSONs; arc: minimap HUD (F584: zoom + frame 0x33 + 6 icons) + world-map base render (F584: 4-state + player arrow) + overlay/hover (F594: coord text + gradient bar + frame 0x3C) + player marker/ratio bars (F595: HP qword ratio + arrow frame 0x3E) - ENTIRE map widget layer (minimap + world-map) byte-level",
+  "date": "2026-08-12",
+  "objective": "Close the map widget arc.",
+  "question": "Is the map widget layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "221 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F584": "minimap HUD + world-map base", "F594": "overlay/hover", "F595": "player marker + ratios"},
+    "milestone": "254 consecutive rounds F335-F595"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F595": "254 rounds pushed; map widget complete"
+  },
+  "contrast": {
+    "minimap_vs_worldmap": "small HUD minimap + full world map both complete",
+    "render_vs_interaction": "base render + overlay + marker all byte-level"
+  },
+  "verdict": "Map widget arc CLOSED (F596): minimap + world-map (render/overlay/marker) all byte-level; validation green, 254 consecutive rounds, 221 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F584-F595.",
+  "cross_refs": ["F584: map render", "F594: overlay", "F595: marker"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "254 consecutive shipping rounds F335-F595",
+    "next: HANDOFF refresh 15, remaining corners"
+  ]
+}

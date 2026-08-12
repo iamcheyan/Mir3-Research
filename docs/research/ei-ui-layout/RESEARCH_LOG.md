@@ -7216,3 +7216,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔比例〕**0x429880：比率数学（pos/denom 钳制 1.0 经 0x476658，守卫 [0x7DA113]/[0x7DA11F] 字）、**HP 比率 [0x7DA119]（qword 64 位除法）→ [0x50]**、MP/exp [0x54]、**帧 0x3E** WIL 绘制（玩家箭头，[0x36]<0x1C 门，位于 [0xC58]+0x31/[0xC5C]+0xC 经 0x45F2D0）。
 - 落盘：worldmap-player-marker-ratios-evidence.json（F595，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 289。
+## Round 290 (F596) — 2026-08-12：地图 widget 弧闭合（F584-F595 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**221 证据 JSON**；三服务 200；master e5dc5e7（**254 连发 F335-F595 已推**）。
+- **〔弧〕**小地图 HUD（F584：缩放 + 帧 0x33 + 6 图标）+ 大地图基础（F584：4 态 + 玩家箭头）+ 覆盖层/悬停（F594：坐标文本 + 渐变条 + 帧 0x3C）+ 玩家标记/比例条（F595：HP qword 比率 + 箭头帧 0x3E）——**整个地图 widget 层字节级**。
+- 落盘：map-widget-arc-closure-evidence.json（F596，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 290。
