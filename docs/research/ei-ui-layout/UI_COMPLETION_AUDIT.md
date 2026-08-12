@@ -283,6 +283,19 @@ git diff --check
 - **init 序列（证据定稿）**：0x401FAD 0x45CA80(&0x8AB7A8) 图形窗 → 0x401FEC 0x451100(&0x8AA488) 主窗 → 0x401FF9 ShowWindow(0) → 0x402005 0x45A8C0([0x8AB7B0]) DSound init（失败 [0x8AB138]=0）→ [0x8AB138]=1 → config1/config2 装载（0x45ADA0/0x45AE90）→ 0x449C80(&0x8AA5A8)。
 - 落盘：`sound-manager-0x8ab130-family-evidence.json`（F334，primary-bytes）+ matrix sound-manager 新记录 + layout.json version 0.12（sound-manager.0x8ab130 更名补全 + main-window-hwnd.0x8ab7b0 新增）+ RESEARCH_LOG Round 28。
 
+## Round 29 (2026-08-12) — 主初始化窗口创建目录（Finding 335：hero HUD builder 0x427600 + frame fns 0x419350/0x419110 + 15 子窗口 id→ctor→偏移全表）
+
+- **〔核心〕主初始化窗口创建分派器 = 0x419350**（唯一 caller 0x4570B9 游戏启动路径，ecx=main 0x47EF18；结尾 [0x8B1878]=3）：屏幕帧 0x10@800×600（0x45D270(&0x8AB7A8, flag, 0x320, 0x258, 0x10)）→ 0x451320(&0x8AB828, hwnd, 0x47EEC0) → 0x452AA0(&+0xE11E4) → **0x418030 公告窗**（'正在连接《骷髅射手3.0》服务器' 0x47AEB8，frame 0x3B6=950，x/y=-1 居中）→ **CreateSolidBrush(0x323232) → [main+0x2F877C]**（0x476064）→ fog 0x434500(&+0x35B2C0, 0xFFFFFF) → **0x427600 英雄 HUD 创建器** → 列表方法 vtable 调用（500/400 + 800.0f/600.0f）→ 缓冲区清零（rep stosd 0x38400 + 0x41）→ SetWindowTextA/SendMessageA(0xCC) 主窗 → 0x45E4E0(&0x8AB7A8, 0x141414)。
+- **〔核心〕0x427600 = 英雄对象 (main+0x2A548C) 的 HUD/UI 窗口创建器**（唯一 caller 0x419405，arg1=[main+0xE11E4]，ret 4）：父窗 = arg1+0x5898 = main+0xE6A7C → [esi+0x1C]；MoveWindow 主窗（0x4762BC）；**frame 0x32=50 装载**（0x466130）；SetRect 族（+0xC58 视口 / +0xCF8 / +0xCA8 16 行网格 224,492 起 16px 行高 / +0xC58..+0xC98）。
+- **15 子窗口全表**：id0 0x42EA80 +0x6554 f250 (518,0) 284×324；id1 0x44B130 +0x29CE4 f200 (0,0) 244×328 状态(本级)；id2 0x44D310 +0x33188 f1000 (0,0) 300×304 货币('(%d两)'，flag=0 隐藏)；id3 0x4159D0 +0x3399C f1050 484×330 装备('%d')；id4 0x424E60 +0x4707C f600 (102,22) 596×446 背包/仓库(5 字段 scanf)；id6 0x424250 +0x47834 f900 (272,123) 256×244 组队([允许]/[拒绝]/成员编辑)；id7 0x4503B0 +0x47C28 f200 (560,0) 244×328 右侧面板(本级+%s %s)；id8 0x414060 +0x507EC f350 (114,76) 572×388 聊天(9 控件 stride 0xB4，8 命令帮助串全解)；id9 0x43ED00 +0x51150 f1100 552×176 NPC 对话(NPCFace.WIL)；id0xB 0x4473E0 +0x516E8 f700 340×440 候选；id0xC 0x440FE0 +0x518E0 f750 (276,113) 248×264 选项（F324 确认）；id0xD 0x4268C0 +0x52118 f850 296×332 坐骑(@上马/@收马/@遛马)；id0xE 0x439250 +0x524F0 f400 (348,0) 452×380 属性详情(火冰电风神圣黑暗幻影剑)；id0xF 0x43E260 +0x52E5C f602 (107,110) 584×252 行会公告(EDIT，= id15 通知窗)；id0x64 0x418910 +0x53030 f800 (218,176) 364×184 居中公告弹窗。id 5/0xA 未用。
+- **16 HUD 标题字符串定稿**（ctor 0x417550，hero+0x567C..+0x6108，x 相对 [0xC58]，帧对 normal/state 0x50..0x73）：交易栏(Ctrl+C)/小地图(Ctrl+V)/技能图鉴(Ctrl+B)/退出游戏(Alt+Q)/注销人物(Alt+X)/组队(Ctrl+G)/行会(Ctrl+F)/腰带(Ctrl+Z 0x9F/0x9F)/技能书(Ctrl+E)/聊天记录(Ctrl+R)/信息窗口(Ctrl+D)/设置栏(Ctrl+N)/帮助窗口(도움말창(지원예정) EUC-KR 韩版遗留，非乱码)/坐骑(Ctrl+S)/包袱栏(Ctrl+Q)/状态栏(Ctrl+W)。字符串区域 0x47BCxx cap0-12 / 0x47BBxx cap13-15。
+- **窗口工厂模式**：15 ctor 共享 8 参重载 → 基 ctor **0x423B30**（+4 frame-type/+0x28/+0x2C/+0x3C）→ 0x466130 帧装载（0x466640/0x466720 分派）→ 0x417550 子控件 → [0x4762B0] SetRect。0x417960 = toast ctor（7 参 ret 0x1C，timeGetTime 时间戳）。
+- **小地图窗** hero+0x6214（0x43D4D0 @ 0x427E01，arg=[0x8AB7BC]）：+4/+0x148 双子对象装载 MMap.wil / FMMap.wil。
+- **frame fn 0x419110 = 每帧更新分派器**（callers 0x418D7B + 0x419BEA）：KillTimer(main hwnd, 1) 0x47624C、ring A/B 排水、DeleteObject([+0x2F877C]) 0x476068、子对象更新 0x454270/0x43B190/0x427440/0x403AC0、E11xx 三列表排空、声音管理器 0x45B210/0x45B3D0、游戏对象 0x451420。
+- **IAT 新增/修正（pefile）**：0x47624C=KillTimer（原标 ShowWindow-like 修正）、0x476064=CreateSolidBrush、0x476068=DeleteObject、0x4762BC=MoveWindow、0x4762CC=SetWindowTextA；0x4762B0=SetRect、0x47630C=timeGetTime 确认。
+- **交叉验证**：0xC 选项窗 = F324 全吻合；id8 聊天 = 已知锚 main+0x507EC；id0xF 行会公告 = id15 通知窗（0x777200 锚 VA 差异 pending：hero+0x52E5C=0x779600）；0x565994 = 零 BSS 容器。
+- 落盘：`window-catalog-evidence.json`（F335，primary-bytes）+ matrix window-catalog 新记录 + layout.json version 0.13（8 新记录 + hud.belt + 16 hud.* 字符串/帧对注记）+ RESEARCH_LOG Round 29。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
