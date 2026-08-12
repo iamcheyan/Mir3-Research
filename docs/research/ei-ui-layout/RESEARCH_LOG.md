@@ -7499,3 +7499,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔插入〕**0x42F440（F652 插入）：**显式槽路径**（填网格字 + 标记 [0x774]=1 + 尺寸 [0x778]/[0x77C]）或 **自动放置**（0x42F6D0 空槽查找 + SetRect、占用 6×0x64 网格扫描、边界 6/0x258）——物品放置字节级（F652 内部）。
 - 落盘：item-insert-place-evidence.json（F655，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 349。
+## Round 350 (F656) — 2026-08-12：背包/仓库弧闭合（F651-F655 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**280 证据 JSON**；三服务 200；master 35ed1e4（**314 连发 F335-F655 已推**）。
+- **〔弧〕**物品图标/详情（F651）+ 反序列化/背包 IO（F652）+ 插入/放置（F655）——**背包/仓库系统完整（图标渲染 + 反序列化 + 取放 + 放置）**。
+- **〔仓库〕**用户 quest 文件未触碰。
+- 落盘：bag-storage-arc-closure-evidence.json（F656，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 350。

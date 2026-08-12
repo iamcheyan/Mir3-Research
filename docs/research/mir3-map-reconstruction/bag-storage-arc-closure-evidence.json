@@ -1,0 +1,37 @@
+{
+  "evidence_id": "bag-storage-arc-closure-2026-08-12-f656",
+  "title": "Round 350 (F656): Bag/storage arc CLOSED (F651-F655) - validation green (compileall/verify exit 0/node/JSON), services 200, master 35ed1e4 (314 consecutive F335-F655), 280 evidence JSONs; arc: item icon/detail (F651) + deserialize/bag IO (F652) + insert/place (F655) - bag/storage system COMPLETE (icon render + deserialize + get/set + place); user quest files untouched",
+  "date": "2026-08-12",
+  "objective": "Close the bag/storage arc.",
+  "question": "Is the bag/storage system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "280 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F651": "icon/detail", "F652": "deserialize/IO", "F655": "insert/place"},
+    "bag": "icon + deserialize + get/set + place = COMPLETE",
+    "repo": "user quest files untouched",
+    "milestone": "314 consecutive rounds F335-F655"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F655": "314 rounds pushed; bag/storage complete"
+  },
+  "contrast": {
+    "bag_vs_store": "bag slots + warehouse arrays",
+    "io_vs_render": "serialize/place + icon render"
+  },
+  "verdict": "Bag/storage arc CLOSED (F656): item icon + deserialize + get/set + place all byte-level; validation green, 314 consecutive rounds, 280 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F651-F655.",
+  "cross_refs": ["F651: icon", "F652: IO", "F655: place"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "314 consecutive shipping rounds F335-F655",
+    "next: HANDOFF refresh 30, remaining corners"
+  ]
+}
