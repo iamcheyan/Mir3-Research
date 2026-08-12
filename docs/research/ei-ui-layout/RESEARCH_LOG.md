@@ -7429,3 +7429,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔节奏〕**0x454C40：GetTickCount 0x47611C **0xEA60（60s）帧门** + 每项 LRU：[esi+0x20] 最后使用 vs **0x493E0（300s）** → 淘汰（vtable[0x14] 卸载 + [0x1C] + 0x4680F8）、[0x8] 帧时间。
 - **〔创建〕**0x454CC0：条目创建（idx×81×4 stride 0x24 + 0x466130 装载）——帧节奏 + WIL LRU 缓存淘汰字节级（F436 LRU 0x3A98/0x493E0ms 确认）。
 - 落盘：frame-pacing-lru-evict-evidence.json（F640，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 334。
+## Round 335 (F641) — 2026-08-12：游戏循环弧闭合（F636-F640 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**265 证据 JSON**；三服务 200；master 807f3b6（**299 连发 F335-F640 已推**）。
+- **〔弧〕**WinMain/主构造（F636）+ 构造体/子系统（F637）+ 帧节奏/LRU（F640）——**整个客户端生命周期字节级（引导 → 构造 → 子系统 → Intro → 登录 → 游戏循环 F591 → LRU）**。
+- **〔仓库〕**用户 quest 文件未触碰。
+- 落盘：game-loop-arc-closure-evidence.json（F641，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 335。
