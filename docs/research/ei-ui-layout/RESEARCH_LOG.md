@@ -7737,3 +7737,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**332 证据 JSON**；三服务 200；master c95af32（**366 连发 F335-F707 已推**）。
 - **〔弧〕**滚动条构造/命中/点击（F707）——**滚动条系统完整（构造比例 + 拖动命中 + 箭头点击）**，支撑全部滚动条（F535 行会/F599 聊天/F581 热键栏）。
 - 落盘：scrollbar-arc-closure-evidence.json（F708，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 402。
+## Round 403 (F709) — 2026-08-12：HANDOFF 刷新 47（Round 400-402）
+
+- **〔刷新〕**HANDOFF 追加 Round 400-402（F707-F708：滚动条家族 + 滚动条弧）；基线 Round 399=bb029ae → Round 402=0f4dfea（**367 连发 F335-F708**）。
+- 落盘：handoff-refresh-47-evidence.json（F709，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 403。
