@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-50-2026-08-12-f721",
+  "title": "Round 415 (F721): HANDOFF refresh 50 - Rounds 410-414 (F716-F720: HANDOFF 49, tile accessors, camera renderer/scroll, collision/direction, map core closure), baseline Round 409=6619ed9 -> Round 414=100e5fa (379 consecutive F335-F720), doc maintenance + refresh-50 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 410-414.",
+  "question": "What changed since HANDOFF refresh 49?",
+  "method": "Append Round 410-414 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 410-414 appended (5 rounds, F716-F720)",
+    "baseline": "Round 409=6619ed9 -> Round 414=100e5fa (379 consecutive F335-F720)",
+    "milestone": "HANDOFF refresh 50 reached",
+    "arcs": {"tile": "F717 accessors", "camera": "F718 renderer/scroll", "collision": "F719", "closure": "F720 map core"},
+    "key": "map core complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F716": "refresh 49 baseline -> now refresh 50", "F335-F720": "379 rounds"
+  },
+  "contrast": {
+    "refresh_49_vs_50": "F717-F720 (4 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 50 (F721): Rounds 410-414 documented (map core complete), baseline 6619ed9 -> 100e5fa, 379 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F717-F720 evidence.",
+  "cross_refs": ["F716: refresh 49", "F720: map core closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 410-414 section to HANDOFF",
+  "notes": [
+    "379 consecutive shipping rounds F335-F720",
+    "HANDOFF refresh 50 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}

@@ -2301,9 +2301,14 @@ git diff --check
 - **378 连发 + 344 证据 + 地图核心完整**（角落 0x43C9F0 闭合）。
 - 落盘：`map-core-arc-closure-evidence.json`（F720）+ RESEARCH_LOG Round 414。
 
+## Round 415 (2026-08-12) — HANDOFF 刷新 50 + 50 刷新里程碑（Finding 721）
+
+- **Round 410-414 追加 + 379 连发 + 50 刷新**（地图核心入档）。
+- 落盘：`handoff-refresh-50-evidence.json`（F721）+ RESEARCH_LOG Round 415。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（地图核心完整；下一弧：HANDOFF 刷新 50/剩余角落）。
+- 无阻塞项（地图核心完整；下一弧：剩余深层角落/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

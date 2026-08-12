@@ -7788,3 +7788,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**344 证据 JSON**；三服务 200；master 9681c4e（**378 连发 F335-F719 已推**）。
 - **〔弧〕**瓦片访问器（F717）+ 相机渲染/滚动（F718）+ 碰撞/方向（F719）——**地图核心完整**（瓦片取/可行走/封锁 + 相机绘制/平移 + 碰撞/8 方向），**列明角落 0x43C9F0 闭合**。
 - 落盘：map-core-arc-closure-evidence.json（F720，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 414。
+## Round 415 (F721) — 2026-08-12：HANDOFF 刷新 50（Round 410-414）+ 50 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 410-414（F717-F720：瓦片访问器 + 相机渲染/滚动 + 碰撞/方向 + 地图核心弧）；基线 Round 409=6619ed9 → Round 414=100e5fa（**379 连发 F335-F720**）——**HANDOFF 刷新 50 里程碑**。
+- 落盘：handoff-refresh-50-evidence.json（F721，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 415。
