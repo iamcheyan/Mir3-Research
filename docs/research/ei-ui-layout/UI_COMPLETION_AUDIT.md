@@ -1146,9 +1146,14 @@ git diff --check
 - **帧基 = [esi]+type*10**（法术特效生命周期闭合）。
 - 落盘：`effect-entity-spawner-evidence.json`（F489）+ RESEARCH_LOG Round 183。
 
+## Round 184 (2026-08-12) — 法术特效弧闭合（Finding 490）
+
+- **F486-F489 弧闭合 + 150 连发**；施法管线完整。
+- 落盘：`spell-effect-arc-closure-evidence.json`（F490）+ RESEARCH_LOG Round 184。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（法术特效族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（全部弧已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

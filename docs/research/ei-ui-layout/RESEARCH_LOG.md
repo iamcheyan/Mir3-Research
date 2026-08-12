@@ -6678,3 +6678,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔帧公式〕**MonMagic 帧基 = **[esi] + type*10**（0x43538E-0x4353AB）——每法术 10 帧块。
 - **〔链〕**技能使用（F484）→ 服务端 → 特效生成 → tick（F487）→ 绘制 → 565 混合（F486）— **法术特效生命周期 + 帧数学全闭合**。
 - 落盘：effect-entity-spawner-evidence.json（F489，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 183。
+## Round 184 (F490) — 2026-08-12：法术特效弧闭合（F486-F489 4 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 28da098（**150 连发已推**）。
+- **〔弧汇总〕**565 混合器（F486）/ 特效 tick（F487）/ 特效 vtable（F488）/ 特效生成器 + 帧基 [esi]+type*10（F489）——**施法管线完整**（技能使用→生成→tick→绘制→混合）；MonMagic 帧数学 pending 闭合。
+- 落盘：spell-effect-arc-closure-evidence.json（F490，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 184。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "spell-effect-arc-closure-2026-08-12-f490",
+  "title": "Round 184 (F490): Spell-effect arc CLOSED (F486-F489, 4 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 28da098 (150 shipping rounds F335-F489); arc consolidated: 565 pixel blender (F486), effect entity tick (F487), effect vtable 0x476440 (F488), effect spawner + MonMagic frame base [esi]+type*10 (F489) - spell-cast effect pipeline COMPLETE (skill use F484 -> spawn -> tick -> draw -> blend), MonMagic frame math pending closed",
+  "date": "2026-08-12",
+  "objective": "Close the spell-effect arc with a validation sweep + summary.",
+  "question": "Is the repo healthy after the 4-round spell-effect arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 28da098; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F486": "565 pixel blender (masks + alpha)", "F487": "effect tick (frame [0x121] wrap + death lifecycle)", "F488": "effect vtable 0x476440 (draw +0x1C/tick +0x2C)", "F489": "effect spawner + MonMagic frame base [esi]+type*10"},
+    "pipeline": "skill use F484 -> server -> spawn 0x435030 -> tick 0x435A20 -> draw (frame base + progress) -> 565 blend blit"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F489": "150 rounds pushed; spell-effect pipeline complete"
+  },
+  "contrast": {
+    "closed_vs_pending": "spell-effect arc closed; MonMagic frame math pending resolved"
+  },
+  "verdict": "Spell-effect arc CLOSED (F486-F489): validation green, services live, 150 shipping rounds pushed. Full cast pipeline (use -> spawn -> tick -> draw -> blend) + frame formula decoded.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F486-F489.",
+  "cross_refs": ["F486-F489: arc", "F179: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: server Envir deeper integration, mapviewer alignment, remaining low-priority items",
+    "150 shipping rounds + user quest-design commits all pushed"
+  ]
+}
