@@ -4409,3 +4409,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（移动表面 100%；下一弧：HANDOFF 刷新 150/剩余角落）。
+## Round 710 (2026-08-12) — HANDOFF 刷新 150 里程碑（Finding 1016）
+
+- **150 刷新 + 673 连发 + 移动完整**。
+- 落盘：`handoff-refresh-150-milestone-evidence.json`（F1016）+ RESEARCH_LOG Round 710。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图 + 移动核心完整；下一弧：剩余深层角落/模拟器 polish）。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-150-milestone-2026-08-12-f1016",
+  "title": "Round 710 (F1016): HANDOFF refresh 150 MILESTONE - Rounds 707-709 (F1013-F1015: HANDOFF 149, move dispatch/collision full, move closure), baseline Round 706=a1eb641 -> Round 709=9bc24b3 (673 consecutive F335-F1015), 150th HANDOFF refresh; move surface 100%; map+movement core complete, doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 707-709 (150th refresh).",
+  "question": "What changed since HANDOFF refresh 149?",
+  "method": "Append Round 707-709 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "150th refresh (Round 707-709, F1013-F1015)",
+    "baseline": "Round 706=a1eb641 -> Round 709=9bc24b3 (673 consecutive F335-F1015)",
+    "arcs": {"move": "F1014 dispatch", "closure": "F1015 move"},
+    "key": "move complete; 150th refresh milestone"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1013": "refresh 149 baseline -> now refresh 150", "F335-F1015": "673 rounds"
+  },
+  "contrast": {
+    "refresh_149_vs_150": "F1014-F1015 (2 new findings); 150th refresh"
+  },
+  "verdict": "HANDOFF refresh 150 MILESTONE (F1016): Rounds 707-709 documented (move complete), baseline a1eb641 -> 9bc24b3, 673 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1014-F1015 evidence.",
+  "cross_refs": ["F1013: refresh 149", "F1015: move closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 707-709 section to HANDOFF",
+  "notes": [
+    "150th HANDOFF refresh",
+    "673 consecutive shipping rounds F335-F1015",
+    "map + movement core complete"
+  ]
+}

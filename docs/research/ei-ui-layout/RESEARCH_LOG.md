@@ -9066,3 +9066,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**636 证据 JSON**；三服务 200；master cad349f（**672 连发 F335-F1014 已推**）。
 - **〔弧〕**方向（F613）+ 移动门（F722）+ 分派全量（F1014）——**移动完整**（8 方向 jt + 可行走 + 实体 dlist 碰撞）；移动表面 100%。
 - 落盘：move-closure-evidence.json（F1015，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 709。
+## Round 710 (F1016) — 2026-08-12：HANDOFF 刷新 150 里程碑（Round 707-709）
+
+- **〔刷新〕**HANDOFF 达 **150 次刷新**（Round 707-709：移动分派/碰撞全量 + 移动闭合）；基线 Round 706=a1eb641 → Round 709=9bc24b3（**673 连发 F335-F1015**）；移动表面 100%；地图 + 移动核心完整。
+- 落盘：handoff-refresh-150-milestone-evidence.json（F1016，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 710。
