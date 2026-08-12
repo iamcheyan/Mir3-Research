@@ -1,0 +1,44 @@
+{
+  "evidence_id": "map-transition-verification-2026-08-12-f366",
+  "title": "Round 60 (F366): Map transition verified - F333 0x422960 map-change handler (gate + save + flush + 12-slot clear + coords) + sim map cycling (211 bindings, 比奇县->边境城市 browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the map transition system: the F333 0x422960 map-change handler semantics and the simulator's map switching.",
+  "question": "How does the original handle map transitions, and does the sim switch maps?",
+  "method": "Cross-validated against F333 (map-change-pipeline-and-main-window-class-evidence.json); sim setCurrentMap/cycleMinimap; browser verification.",
+  "scope": "F333 evidence; sim app.js map cycling; browser 8765/sim.",
+  "cell_analysis": {
+    "map_change_F333": {
+      "handler": "0x422960 (type 0x33/0x27A): gate (mode [0x2F8840]==3 + ring accounting) or timer [0x4279A4]; busy path 0x4229A8; process 0x4229D1",
+      "process": "1) 0x42E1F0 save state; 2) 0x45B1D0/0x45B3D0 flush windows; 3) [0x4279A4]=1500ms rate-limit; 4) 12-slot clear; 5) [0x428220]=1.0f + counters; 6) coords from msg -> [0x35B25C]/[0x2F884C]",
+      "sound": "0x4229E9/0x4229F3 stop all SFX + BGM"
+    },
+    "sim_transition": {
+      "setCurrentMap": "index into map_bindings (211 rows); updates map.bg + map.minimap library/frame (FMMap.wil); renderScene",
+      "browser": "before 比奇县 -> setCurrentMap(1) -> 边境城市 -> setCurrentMap(0) -> 比奇县 (verified)",
+      "bindings": "211 rows (MiniMap.txt server bindings, F310)"
+    }
+  },
+  "exe_trace": {
+    "map_object": "main+0xF5200 (loader 0x43B600, F331/F343)",
+    "minimap": "screen+0x6214 == main+0x2AB6A0 (F310)"
+  },
+  "audit_vs_exe": {
+    "F333": "0x422960 handler chain confirmed",
+    "F310": "211 MiniMap.txt bindings confirmed",
+    "F343": "tile binding formula confirmed"
+  },
+  "contrast": {
+    "original_vs_sim": "original = server msg 0x33/0x27A -> 0x422960 -> full reload; sim = client-side binding cycle (visual demo)"
+  },
+  "verdict": "Map transition verified (primary-bytes via F333): 0x422960 handler (gate, save, flush windows, rate-limit 1500ms, 12-slot clear, coords, stop sounds). Sim map cycling works (比奇县->边境城市, 211 bindings) browser-verified.",
+  "evidence_level": "derived-tooling (source evidence primary-static F333)",
+  "evidence_level_note": "Map-change semantics from F333 primary evidence; sim cycling is visual demo.",
+  "cross_refs": ["F333: 0x422960 handler", "F310: MiniMap.txt bindings", "F343: tile binding formula"],
+  "tool": "app.js inspection; puppeteer browser",
+  "reproduce": "open sim; login; call setCurrentMap(1) or click minimap; observe map change",
+  "notes": [
+    "sim map cycle uses FMMap.wil (world map) for both bg + minimap",
+    "original map change reloads 56 tile slots (0x43B600) + clears entity array (F331)",
+    "ladder tiles in /api/maps (0.map [2,3,4]) = transition tiles"
+  ]
+}

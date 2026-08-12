@@ -5999,3 +5999,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔浏览器全流程〕**登录遮罩 → 8 热键（Q/W/E/R/S/D/G/N 各开对窗）→ NPC 点击（行会管理员 → 对话窗 .npc-body）→ 悬停提示框（0x96FFFF）——单次浏览器通跑全通过。
 - **〔HANDOFF〕**docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md 追加 Round 29-58 交付摘要（窗口目录/主循环/分派/身份/地图/模拟器接线 F335-F364、29 新证据 JSON、commit 基线 4e95988..cf56033）。
 - 落盘：`integration-sweep-evidence.json`（F365，derived-tooling）+ HANDOFF + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 59。
+
+## Round 60 (F366) — 2026-08-12：地图切换验证（F333 0x422960 + 模拟器切换）
+
+- **〔F333 0x422960〕**type 0x33/0x27A：门（mode [0x2F8840]==3 + 环记账）或 timer [0x4279A4]；处理 = 存盘 0x42E1F0 → 窗口 flush 0x45B1D0/0x45B3D0 → 1500ms 限流 → 12 槽清零 → 坐标 → 停全部音效+BGM（0x4229E9/0x4229F3）。
+- **〔模拟器〕**setCurrentMap/cycleMinimap（211 绑定、FMMap.wil）。**浏览器验证**：比奇县 → 边境城市 → 比奇县。
+- 落盘：`map-transition-verification-evidence.json`（F366，derived-tooling；源证据 primary-static F333）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 60。

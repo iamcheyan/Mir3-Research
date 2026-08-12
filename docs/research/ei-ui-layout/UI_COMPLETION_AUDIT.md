@@ -503,6 +503,12 @@ git diff --check
 - **HANDOFF 更新**：Round 29-58 交付摘要（30 连发 commit 基线 4e95988..cf56033）。
 - 落盘：`integration-sweep-evidence.json`（F365）+ HANDOFF + RESEARCH_LOG Round 59。
 
+## Round 60 (2026-08-12) — 地图切换验证（Finding 366）
+
+- **F333 0x422960**：地图切换 handler（门 + 存盘 + flush + 限流 + 12 槽清零 + 停音效）。
+- **模拟器切换**：211 绑定循环（比奇县→边境城市，浏览器验证）。
+- 落盘：`map-transition-verification-evidence.json`（F366）+ RESEARCH_LOG Round 60。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
