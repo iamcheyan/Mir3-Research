@@ -1,0 +1,39 @@
+{
+  "evidence_id": "dialog-announcement-closure-2026-08-12-f961",
+  "title": "Round 655 (F961): Dialog + announcement windows CLOSED (F746/F857/F957 + F854/F866/F870/F958) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 3537591 (619 consecutive F335-F960), 585 evidence JSONs; arcs: dialog (F746 options + F857 draw + F957 input) + announcement (F854 render + F866 nodes + F870 keys + F958 input) - both COMPLETE byte-level; ALL 13 windows input surfaces 100%; milestone",
+  "date": "2026-08-12",
+  "objective": "Close the dialog + announcement window arcs.",
+  "question": "Are the dialog + announcement windows fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "585 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "dialog": {"F746": "options", "F857": "draw", "F957": "input"},
+    "announcement": {"F854": "render", "F866": "nodes", "F870": "keys", "F958": "input"},
+    "windows": "13/13 input surfaces 100%",
+    "milestone": "619 consecutive rounds F335-F960"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F960": "619 rounds pushed; dialog + announcement complete"
+  },
+  "contrast": {
+    "dialog_vs_announce": "options + nodes",
+    "windows": "13/13 inputs"
+  },
+  "verdict": "Dialog + announcement CLOSED (F961): both windows byte-level complete; validation green, 619 consecutive rounds, 585 evidence JSONs, 13/13 window inputs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F746-F959.",
+  "cross_refs": ["F957", "F958", "F959"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "619 consecutive shipping rounds F335-F960",
+    "dialog + announcement 100%",
+    "13/13 window inputs",
+    "next: HANDOFF refresh 132, remaining corners"
+  ]
+}

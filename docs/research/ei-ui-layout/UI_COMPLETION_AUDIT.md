@@ -3969,3 +3969,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话/公告窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 655 (2026-08-12) — 对话 + 公告窗口闭合（Finding 961）
+
+- **619 连发 + 585 证据 + 13/13 窗口输入**。
+- 落盘：`dialog-announcement-closure-evidence.json`（F961）+ RESEARCH_LOG Round 655。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口输入；下一弧：HANDOFF 刷新 132/剩余角落）。
