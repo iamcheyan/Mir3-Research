@@ -906,9 +906,14 @@ git diff --check
 - **480×480 网格缓冲 + 第 5 链表 vtable 0x4766F0 + 8 方向向量**。
 - 落盘：`game-object-reset-480grid-evidence.json`（F441）+ RESEARCH_LOG Round 135。
 
+## Round 136 (2026-08-12) — 实体链表维护（Finding 442）
+
+- **ID 清除/移除/状态门**；480 网格写入侧未定位。
+- 落盘：`entity-list-add-path-evidence.json`（F442）+ RESEARCH_LOG Round 136。
+
 ## Pending（未阻塞，持续队列）
 
-- 实体 y 排序：0x154 网格候选为实体桶（行主序 = 隐式 y 序）— 待验证写入侧。
+- 480×480 网格角色（写入侧未定位）— 低优先 [candidate: 地图瓦片可见性]。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

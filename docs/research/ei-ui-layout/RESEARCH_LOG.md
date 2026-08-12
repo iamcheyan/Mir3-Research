@@ -6409,3 +6409,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔网格〕**0x418EE0 状态初始化：**[esi+0x154] = 0x38400 dword = 480×480 单元网格缓冲**（rep stosd 清零）— F336「main+0x154 画家数组」基址修正为游戏对象 +0x154 [candidate: 实体桶/可见性网格]。
 - **〔方向〕**0x43D290 = 8 方向行走向量（点差 → dir 0-7，±2 容差）→ 帧选择（F433）。
 - 落盘：game-object-reset-480grid-evidence.json（F441，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 135。
+## Round 136 (F442) — 2026-08-12：实体链表维护路径（ID 清除/移除/状态门）
+
+- **〔清除〕**0x41B570 遍历列表 A+C 清 [entity+0x14]/[0x18] 双 ID 字段（匹配 arg）。
+- **〔移除〕**0x419650 沿 0xE1158 绘制链：type [0x88] ≤ 0x32 跳表 0x4196F0 + 子对象链 [0xF0] 清理 + vtable+8/vtable+0。
+- **〔状态〕**0x41B5D0 游戏时间（[0x428204] 模式字节 + [0x428208] 累加器 0x9C4 门）。
+- **〔网格〕**480×480 网格写入侧未定位（imul 480 = 0 站点）— 绘制序 = 列表插入序（服务器生成序）；网格角色维持 pending。
+- 落盘：entity-list-add-path-evidence.json（F442，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 136。

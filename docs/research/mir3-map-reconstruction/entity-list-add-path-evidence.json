@@ -1,0 +1,38 @@
+{
+  "evidence_id": "entity-list-add-path-2026-08-12-f442",
+  "title": "Round 136 (F442): Entity list add-path structure - 0x41B570 ID-clear walks lists A/B clearing [entity+0x14]/[0x18] (2 ID fields per entity), 0x419650 removal walk (type [0x88]<=0x32 dispatch, vtable+8/+0), 0x41B5D0 game-time state ([0x428204] mode byte + [0x428208] accumulator 0x9C4(2500) gates); 480x480 grid write-side NOT located - draw order remains = list insertion order (grid role pending)",
+  "date": "2026-08-12",
+  "objective": "Map the entity list maintenance functions (add/clear/remove) and continue the 480x480 grid role hunt.",
+  "question": "How are entities added/cleared/removed from the lists, and does the 480x480 grid participate?",
+  "method": "Disasm 0x41B540-0x41B5CA (clear) + 0x419650 (remove walk) + 0x41B5D0 (state) + imul-480 scan.",
+  "scope": "0x41B540-0x41B70A, 0x419650-0x4196ED, 0x154 grid.",
+  "cell_analysis": {
+    "id_clear_0x41B570": {"walk": "list A (0xE1170) + list B (0xE11A0 head of container C) via node+0xC", "action": "clear [entity+0x14] and [entity+0x18] matching arg (2 ID fields)"},
+    "remove_walk_0x419650": {"walk": "0xE1158 draw list; per entity type [0x88] <= 0x32 dispatch via byte map 0x4196F8 + jump table 0x4196F0", "cleanup": "[esi+0xF0] child object list free (0x456270/0x4680F8), vtable+8 then vtable+0(delete)"},
+    "state_0x41B5D0": {"mode": "byte [0x428204] (0/1/2 = gates)", "acc": "[0x428208] += tick; cap 0x9C4 (2500) -> reset or 0x419BE0 call (mode 2)", "float": "fmul 0x476710/0x47639C etc (time scale)"},
+    "grid_480": {"write_side": "NOT located (imul 480 = 0 sites; lea +0x154 = 110 too-broad)", "role": "pending - candidate: map visibility flags (not entity sort)"}
+  },
+  "exe_trace": {
+    "entity_ids": "entity+0x14/+0x18 = 2 ID dwords (server id + type id?)",
+    "draw_order": "lists walked head->next; insertion order (server spawn sequence)"
+  },
+  "audit_vs_exe": {
+    "F439": "tick stage 9 update walk + stage 12 draw walk consume these lists",
+    "F440": "container C head = 0xE11A0 (0x41B5A0 walk target)"
+  },
+  "contrast": {
+    "clear_vs_remove": "0x41B570 clears IDs in place; 0x419650 removes + frees entities",
+    "grid_vs_list": "grid not shown to participate in entity draw (plain list walk)"
+  },
+  "verdict": "Entity list maintenance PRIMARY-verified: ID-clear 0x41B570 (lists A+C, fields +0x14/+0x18), removal walk 0x419650 (type dispatch + child cleanup), game state 0x41B5D0. 480x480 grid write-side not found - draw order = list insertion order (grid role stays pending).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Maintenance functions decoded; grid role unresolved this round.",
+  "cross_refs": ["F439: draw pipeline", "F440: list containers", "F441: 480x480 grid"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x41B570+0x40, 0x419650+0x60, 0x41B5D0+0x30; imul-480 scan",
+  "notes": [
+    "entity 2 ID fields = server entity id + local type id [inference]",
+    "0x4196F8 byte map gates 0x32 types (50) same as F433 type dispatch",
+    "grid role: map tile visibility [candidate] - low priority"
+  ]
+}
