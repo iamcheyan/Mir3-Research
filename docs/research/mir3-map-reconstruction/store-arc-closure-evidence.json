@@ -1,0 +1,36 @@
+{
+  "evidence_id": "store-arc-closure-2026-08-12-f663",
+  "title": "Round 357 (F663): Store arc CLOSED (F661-F662) - validation green (compileall/verify exit 0/node/JSON), services 200, master be3497d (321 consecutive F335-F662), 287 evidence JSONs; arc: store manager + hit/click (F661) + store paint + mode layouts (F662) - store system COMPLETE (manager/update + hit/click + render), connecting F555/F558/F551",
+  "date": "2026-08-12",
+  "objective": "Close the store arc.",
+  "question": "Is the store system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "287 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F661": "store manager + hit/click", "F662": "store paint + modes"},
+    "store": "manager/update + hit/click + render = COMPLETE (F555/F558/F551)",
+    "milestone": "321 consecutive rounds F335-F662"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F662": "321 rounds pushed; store complete"
+  },
+  "contrast": {
+    "store_vs_warehouse": "store (F661/662) + warehouse (F551)",
+    "mgr_vs_render": "manager + paint"
+  },
+  "verdict": "Store arc CLOSED (F663): manager + hit/click + render all byte-level; validation green, 321 consecutive rounds, 287 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F661-F662.",
+  "cross_refs": ["F661: manager", "F662: paint", "F555: family"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "321 consecutive shipping rounds F335-F662",
+    "next: HANDOFF refresh 32, remaining corners"
+  ]
+}

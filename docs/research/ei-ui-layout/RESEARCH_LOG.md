@@ -7532,3 +7532,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔绘制〕**0x44E260（F558 模式 2）：模式 [0x5F8] **4 路布局**（0/1/3/4）：默认（控件 +0xAC/+0xA9 等）、**买模式 1**（矩形 +0x1D2/+0x172/+0x144/+0x1B2）、模式 4（+0x43/+0x3D +0x1FA/+0x188）、控件 [0x54]/[0x108]/[0x1BC]/[0x270]/[0x324]/[0x3D8]/[0x48C]/[0x540] + **8 控件遍历 stride 0xB4**——商店渲染字节级（F555/F661 连接）。
 - 落盘：store-paint-mode-layouts-evidence.json（F662，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 356。
+## Round 357 (F663) — 2026-08-12：商店弧闭合（F661-F662 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**287 证据 JSON**；三服务 200；master be3497d（**321 连发 F335-F662 已推**）。
+- **〔弧〕**商店管理器 + 命中/点击（F661）+ 商店绘制 + 模式布局（F662）——**商店系统完整（管理器/更新 + 命中/点击 + 渲染）**，连接 F555/F558/F551。
+- 落盘：store-arc-closure-evidence.json（F663，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 357。
