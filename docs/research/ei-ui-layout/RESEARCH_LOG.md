@@ -8117,3 +8117,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 487-489（F794-F795：技能消息/地图标题 + 技能/显示处理闭合）；基线 Round 486=95c2f7f → Round 489=f14f2e5（**454 连发 F335-F795**）——**HANDOFF 刷新 75 里程碑**。
 - 落盘：handoff-refresh-75-evidence.json（F796，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 490。
+## Round 491 (F797) — 2026-08-12：地图/名字消息处理
+
+- **〔消息〕**0x422E30（recv1 相邻家族）：base64 0x452810 解码（0x400 上限）+ msg 类型 [edi+4] **分派**：0x68/其他 → 0x401390 ×2 + **公告绘制 0x427E30（F674）** + 0x4256A0；0x28/0x5DD → 实体**名字更新**：[edi]==[0x2F8784] 自身 → 名 [0x35A820] + 0x40BA60 + 重置 [0x35A81C]，否则列表扫描 [0xE1158] → 名 **[0x620A0]**（F621/F531 英雄名槽）+ 0x40BA60 + 重置 [0x6209C]——公告 + 实体名消息完整。
+- 落盘：map-name-message-handler-evidence.json（F797，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 491。

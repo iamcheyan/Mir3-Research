@@ -1,0 +1,34 @@
+{
+  "evidence_id": "map-name-message-handler-2026-08-12-f797",
+  "title": "Round 491 (F797): Map/name message handler - 0x422E30 (recv1-adjacent family): base64 0x452810 decode (0x400 cap) + msg type [edi+4] DISPATCH: 0x68/else -> 0x401390 x2 + ANNOUNCE draw 0x427E30 (F674) + 0x4256A0; 0x28/0x5DD -> entity NAME update: [edi]==[0x2F8784] self -> name [0x35A820] + 0x40BA60 + reset [0x35A81C], else list scan [0xE1158] -> name [0x620A0] (F621/F531 hero name slot) + 0x40BA60 + reset [0x6209C] - announce + entity-name messages COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the map/name message handler.",
+  "question": "How do announce + entity-name messages process?",
+  "method": "Disasm 0x422E30-0x422FF4.",
+  "scope": "0x422E30-0x422FF4; name slots.",
+  "cell_analysis": {
+    "0x422E30": {"decode": "base64 0x452810 0x400", "announce": "0x68/else -> 0x427E30 + 0x4256A0", "name": "0x28/0x5DD -> [0x35A820] or [0x620A0] + 0x40BA60"}
+  },
+  "exe_trace": {
+    "msg_chain": "base64 -> announce draw | entity name update"
+  },
+  "audit_vs_exe": {
+    "F674": "announce draw 0x427E30", "F621": "hero name [0x620A0]", "F531": "0x6209C timer"
+  },
+  "contrast": {
+    "announce_vs_name": "notice + entity name",
+    "self_vs_list": "[0x35A820] + [0x620A0]"
+  },
+  "verdict": "Map/name message handler PRIMARY-verified: base64 + announce + entity name; F621/F674 family extended.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Name handler decoded from .text.",
+  "cross_refs": ["F674: announce", "F621: name", "F531: timer"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422E30+0x20",
+  "notes": [
+    "base64 0x452810",
+    "announce 0x427E30",
+    "name [0x620A0]",
+    "0x40BA60 update"
+  ]
+}
