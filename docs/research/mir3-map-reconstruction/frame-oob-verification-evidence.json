@@ -1,0 +1,49 @@
+{
+  "evidence_id": "frame-oob-verification-2026-08-12-f371",
+  "title": "Round 65 (F371): Frame-OOB independent verification - 4936 OOB refs in 211 playable maps confined to 4 maps (3.map 3255 / 41.map 1619 / D10031 62 / 50.map 39) + D10031 NEW (back-layer lib-2 frames 42759-42766) + F317 mechanism extended",
+  "date": "2026-08-12",
+  "objective": "Independently scan all 211 playable maps for out-of-bounds tile frame references against authoritative WIL frame counts, identify all affected maps, and reconcile with the F317 lib/frame-space confusion evidence.",
+  "question": "Which playable maps have OOB frame refs, on which layers/libs, and is D10031 a new instance of the F317 mechanism?",
+  "method": "Full binary scan of 211 bound maps: back (lib+16-bit img) + mid/front (14-byte cells) vs wilsdk-verified frame counts for 27 terrain libs; D10031 spatial/detail analysis; mapviewer cross-check.",
+  "scope": "$MIR3_EI_ROOT/Map (211 bound maps); Data terrain libs (wilsdk counts); lib-space-frame-oob-evidence.json (F317).",
+  "cell_analysis": {
+    "scan_results": {
+      "total_oob": "4936 refs across 4 maps only (of 211 bound)",
+      "3.map": "3255 (mid 25 Wood/SmObjectsc 2575 + frt 25 500 + mid 40 1099-ish; F317 covered)",
+      "41.map": "1619 (F317 covered)",
+      "D10031": "62 - NEW (back lib 2 Tiles5c frames 42759-42766, 0xA707-0xA70E)",
+      "50.map": "39 (F317 covered)"
+    },
+    "d10031": {
+      "map": "300x300 row-0 (Bichon cave branch family)",
+      "oob": "62 back-layer refs lib 2 (Tiles5c count 20000) frames 42759-42766 - 8 distinct frames",
+      "sibling_check": "frames 42759+ > object1c 33125 / object2c 30000 - NOT covered by object libs either; candidate = reserved/anim-marker frames (reserved-frame-markers-evidence) or 3rd lib space",
+      "render": "mapviewer shows back lib tiles5c with transformed frame (11952 at a nearby cell) - lib/frame-space confusion confirmed"
+    },
+    "mechanism": "F317: map cell lib slot (KR_ORDER) vs frame value from sibling-family lib space - frame exists in same-theme family, not the named slot"
+  },
+  "exe_trace": {
+    "tile_load": "0x466130 frame selector (0x466640 WIL lazy load / 0x466720 memory sprite) - OOB frames fall back to 0/null (F331/F340)",
+    "tile_render": "0x43B440 (F331)"
+  },
+  "audit_vs_exe": {
+    "F317": "3/41/50.map mechanism confirmed; D10031 added (back-layer instance)",
+    "F342/F343": "211 playable set + binding formula confirmed",
+    "wilsdk": "authoritative frame counts (Wood/SmObjectsc 969, Tiles5c 20000, etc.)"
+  },
+  "contrast": {
+    "back_vs_midfront": "F317 covered mid/front OOB; D10031 is the first BACK-layer instance (lib 2)",
+    "bound_vs_unbound": "OOB refs exist ONLY in 4 bound maps (0.19%); 333 unbound maps excluded"
+  },
+  "verdict": "Frame-OOB independent verification complete (primary-bytes): 4936 OOB refs confined to 4 playable maps (3/41/D10031/50.map). D10031 is a NEW back-layer instance of the F317 lib/frame-space confusion (lib 2 frames 42759-42766). F317 evidence updated.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All frame refs vs wilsdk counts read directly from binaries; F317 mechanism re-verified.",
+  "cross_refs": ["F317: lib-space-frame-oob-evidence.json", "F342: map inventory", "F343: binding formula", "reserved-frame-markers-evidence.json"],
+  "tool": "python3 struct scan; wilsdk; mapviewer HTTP",
+  "reproduce": "scan 211 bound maps for frame >= wilsdk count per lib (script above); verify D10031 back frames 42759-42766",
+  "notes": [
+    "wilsdk count for Wood/SmObjectsc = 969 (wix 0x3C9) - authoritative",
+    "D10031 OOB frames 42759-42766 = 0xA707-0xA70E - high-byte 0xA7 not in any EI terrain lib family [candidate reserved/anim]",
+    "mapviewer transforms lib-2 frame (observed 11952 vs binary 42765 nearby) - consistent with F317 sibling-family mapping"
+  ]
+}

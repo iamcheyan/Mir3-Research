@@ -6032,3 +6032,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0_003 空间模式〕**右缘 3 列空白（row 4: cols 27-29；其他行 26-29 变化）+ 底部 row 48-49 大部分空（23/30、30/30）——**不规则海岸线边缘，非 P2 所述均匀『右 2 格 + 下 6 格』**；5_0013 = 1 空列 + 1 空行（67 半格）近似 P2。机制 = 字面 file=255（客户端 0x43B440 跳过，P2 real-skip）。
 - **〔修正〕ground-not-drawn-evidence.json 追加 f369 空间精析注记**（右缘宽度逐行变化、底部 2 半行）。
 - 落盘：`ground-coverage-survey-evidence.json`（F370，primary-bytes）+ ground-not-drawn-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 64。
+
+## Round 65 (F371) — 2026-08-12：帧越界独立验证（4936 OOB 仅 4 图 + D10031 新增 back 层实例）
+
+- **〔扫描〕**211 绑定图全扫（wilsdk 权威帧数）：**4936 OOB 仅限 4 图**——3.map 3255（mid 25 Wood/SmObjectsc 2575 + frt 500）、41.map 1619、**D10031 62（新增）**、50.map 39（F317 已覆盖 3 图）。
+- **〔D10031〕**300×300 row-0：**back 层 62 格 lib 2（Tiles5c 20000）帧 42759-42766（0xA707-0xA70E）**——F317 lib/frame-space 混淆的 **back 层新实例**（F317 原覆盖 mid/front）；帧 42759+ 超 object1c/object2c 上限 → 候选 reserved/anim 标记或第三库空间。
+- **〔F317 更新〕**lib-space-frame-oob-evidence.json 追加 f370 注记（D10031 back 层实例）。
+- 落盘：`frame-oob-verification-evidence.json`（F371，primary-bytes）+ lib-space-frame-oob-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 65。

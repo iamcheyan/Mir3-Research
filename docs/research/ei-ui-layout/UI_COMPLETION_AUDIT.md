@@ -535,6 +535,12 @@ git diff --check
 - **ground-not-drawn 证据更新**（f369 精析注记）。
 - 落盘：`ground-coverage-survey-evidence.json`（F370，primary-bytes）+ RESEARCH_LOG Round 64。
 
+## Round 65 (2026-08-12) — 帧越界独立验证（Finding 371）
+
+- **4936 OOB 仅 4 图**（3/41/D10031/50.map）；D10031 = back 层新实例（lib2 帧 42759-42766）。
+- **F317 更新**（D10031 注记）。
+- 落盘：`frame-oob-verification-evidence.json`（F371，primary-bytes）+ RESEARCH_LOG Round 65。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
