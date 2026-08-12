@@ -2421,7 +2421,11 @@
         "0x45E4E0": "(&0x8AB7A8, 0x141414)；[0x8AA498]=1"
       },
       "evidence_level": "primary-bytes",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "frame.update-0x419110",
@@ -2438,7 +2442,11 @@
         "0x403AC0": "(&+0x361150)"
       },
       "evidence_level": "primary-bytes",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "window-catalog.hero-builder-0x427600",
@@ -2711,7 +2719,11 @@
         }
       ],
       "evidence_level": "primary-bytes",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "window.minimap-0x6214",
@@ -2722,7 +2734,11 @@
       "ctor": "0x43D4D0",
       "call_va": "0x427E01",
       "evidence_level": "primary-bytes",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "window.id1-status-left",
@@ -2748,7 +2764,11 @@
       "ctor": "0x44B130",
       "identity": "人物状态窗（左侧；'本级' 0x47C348）",
       "evidence_level": "derived",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "derived",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "window.id7-status-right",
@@ -2774,7 +2794,11 @@
       "ctor": "0x4503B0",
       "identity": "右侧面板（'本级' + '%s %s'）候选 属性/装备",
       "evidence_level": "candidate",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "candidate",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "window.id2-hidden-candidate",
@@ -2800,7 +2824,11 @@
       "ctor": "0x44D310",
       "identity": "候选（'(%d两)' 货币/交易；flag=0 初始隐藏）",
       "evidence_level": "candidate",
-      "source": "window-catalog-evidence.json (Round 29)"
+      "source": "window-catalog-evidence.json (Round 29)",
+      "evidence": {
+        "level": "candidate",
+        "source": "window-catalog-evidence.json (Round 29)"
+      }
     },
     {
       "id": "hud.belt",
@@ -2865,7 +2893,11 @@
         "transitions": "[0x8B1878]=0 @0x4020AD；=2 @0x419BEA；=3 @0x4570B9"
       },
       "evidence_level": "primary-bytes",
-      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      }
     },
     {
       "id": "game-loop.tick-0x41BB00",
@@ -2874,7 +2906,11 @@
       "va": "0x41BB00",
       "role": "游戏主 tick(main, dt)：BGM 5s 门（0x428048>0x1388 -> 0x45B250(&0x8AB130,1,地图名 0xF5204) + Sleep(30)）；环排水 0x41B440->0x422280->0x4227F0->0x465EA0->0x454C50；busy 0x35B2B8 -> 0x43B1E0 地图滚动 + 0x434650；实体点击 0x419D40(dt,slowflag) + 瓦片通道 0x41C450；列表 vtable 调用（0x3611F0/0x3612B4/0x36137C/0x361438/0x3614F4 +0x14(0,0,0)/+0x10(mouse 0x8AB7BC)）；HUD 目标框链（0x40A8A0/0x40BB00/vtable+0x80）；当前目标 [0x364444] -> 移动 0x4516D0 / 攻击 0x451700；HUD 绘制 0x4294E0；效果更新 0x41B8D0；断线重连公告 0x418030(文本 cp949 '서버와의 접속이 불안합니다...' 0x47AF80)",
       "evidence_level": "primary-bytes",
-      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      }
     },
     {
       "id": "game-loop.screen-effect-0x41B8D0",
@@ -2883,7 +2919,11 @@
       "va": "0x41B8D0",
       "role": "屏幕特效（淡入淡出/闪光）条件更新：门 [main+0x428064]；累加器 +0x42806C vs 上限 +0x428068 -> 超限重置（清 +0x428174 0x24 dwords、[+0x4279A4]=0x3E8）；由游戏 tick 0x41C14B 调用",
       "evidence_level": "primary-bytes",
-      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      }
     },
     {
       "id": "entity.click-dispatch-0x419D40",
@@ -2892,7 +2932,11 @@
       "va": "0x419D40",
       "role": "世界实体排序/点击分派（main 方法，ret 8）：4 画家数组 root+0x154 实体 / +0x2E4 特效 / +0x474 地面装饰 / +0x604 地面物品（F331）；实体点击按类型 word[+0x10] 分派：{0x10,0x16,0x3F,0x14A-0x14E,0x48} 特殊拾取路径（[+0x124] picked 标志、地图视口命中测试 [0xF532C]/[0xF5330]+0x18、tile 表 main+0x2E4 100 槽扫描、插入）；{9,0x35,0x150} 泛型 vtable+0xC + [+4]==2 列表 E119C；PtInRect [0x4762B4] 通道 main+0x474；timeGetTime 超时通道 main+0x604",
       "evidence_level": "primary-bytes",
-      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      }
     },
     {
       "id": "window.id15-notice-va-fix",
@@ -2901,7 +2945,11 @@
       "va": "0x777200",
       "role": "Round 29 算术修正：hero/winmgr 0x7243A4 + 0x52E5C = 0x777200（非 0x779600）；id-15 公告窗 = hero+0x52E5C 内嵌对象（ctor 0x43E260 @ 0x42797E，与 F268/F294 锚一致）",
       "evidence_level": "primary-bytes",
-      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+      }
     },
     {
       "id": "visibility.toggle-0x42ADB0",
@@ -3006,7 +3054,11 @@
         }
       },
       "evidence_level": "primary-bytes",
-      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      }
     },
     {
       "id": "visibility.close-all-0x42B820",
@@ -3015,7 +3067,11 @@
       "va": "0x42B820",
       "role": "关全部窗口：遍历可见链表 main+0xD28..+0xD38，对 id 0..0xE（跳表 0x42B938，5/10 跳过）调 0x423F90(obj, 0) 清可见标志；id15 公告不在表内（F294 确认）",
       "evidence_level": "primary-bytes",
-      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      }
     },
     {
       "id": "visibility.click-dispatch-0x42B430",
@@ -3024,7 +3080,11 @@
       "va": "0x42B430",
       "role": "可见顶层窗口点击分派（ret 8）：弹可见链表头 main+0xD30，id<=0xF → 跳表 0x42B658 → 各窗口 0x423FA0(obj, x, y, 0) 点击处理器",
       "evidence_level": "primary-bytes",
-      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+      }
     },
     {
       "id": "paint.window-dispatch-0x428105",
@@ -3033,7 +3093,11 @@
       "va": "0x428105",
       "role": "窗口绘制分派（HUD paint 0x4280F0 家族）：遍历可见链表 main+0xD28..+0xD38 → id<=0xF → 渲染表 0x428358（16 项：id0 0x42EB80/id1 0x44B2D0/id2 0x44E260/id3 0x415B10/id4 0x425040/id6 0x4243D0/id7 0x450530/id8 0x414700/id9 0x43F460/idB 0x447470/idC 0x441380/idD 0x4269C0/idE 0x439500/idF 0x43E3C0，5/10 no-op）→ IntersectRect [0x476248] 视口裁剪（id8 聊天除外）→ 命中 → 鼠标分派表 0x428398（id0 0x42FAB0/id1 0x44B6B0/id2 0x44E650/id3 0x416790/id7 0x450AC0）→ 未消费 ShowWindow([0x8AA48C], 0) 回退",
       "evidence_level": "primary-bytes",
-      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+      }
     },
     {
       "id": "hotkey.table-0x42CC76",
@@ -3042,7 +3106,11 @@
       "va": "0x42CC76",
       "role": "英雄热键表（GetKeyState 0x476278；门 [hero+0x20]/[+0x24] 模态抑制）：Q→id0 背包、W→id1 状态栏、E→id14 技能书、R→id8 聊天、S→id13 坐骑、D→id11 信息窗口、Z→亮度 [hero+0xD40]∈[0,0x2E]（腰带光效）、C→0x41EC10 实体查找+名字 0x451A70、V→小地图 0x451770（节流 0x6210）、B→技能浏览翻转 [0x6208]、G→id6 组队、F→0x4523E0 行会、N→id12 选项、T→小地图状态检查。F329『D→坐骑 id13』修正：D→id11，S→id13",
       "evidence_level": "primary-bytes",
-      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+      }
     },
     {
       "id": "window.status-0x44B2D0",
@@ -3078,7 +3146,11 @@
         "sub_controls": "0x417550 @ +0x58/+0x10C; 0x417830 reloc"
       },
       "evidence_level": "primary-bytes",
-      "source": "status-window-family-evidence.json (Round 33)"
+      "source": "status-window-family-evidence.json (Round 33)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "status-window-family-evidence.json (Round 33)"
+      }
     },
     {
       "id": "input.hotkeys-sim",
@@ -3086,7 +3158,11 @@
       "layer": "simulator",
       "role": "模拟器热键层（Round 33）：app.js bindHotkeys 消费 layout.json hotkeys 块（F338 热键表 0x42CC76）——Q/W/E/R/S/D/G/N 开合对应窗口，按窗口 id→帧→layout id 映射；验证：浏览器单次 Q 开 window.inventory",
       "evidence_level": "derived-tooling",
-      "source": "Tools/mir3_client_simulator/app.js + build_mir3_simulator_data.py (Round 33)"
+      "source": "Tools/mir3_client_simulator/app.js + build_mir3_simulator_data.py (Round 33)",
+      "evidence": {
+        "level": "derived-tooling",
+        "source": "Tools/mir3_client_simulator/app.js + build_mir3_simulator_data.py (Round 33)"
+      }
     },
     {
       "id": "tooltip.item-0x4341F0",
@@ -3095,7 +3171,11 @@
       "va": "0x4341F0",
       "role": "物品提示框渲染器（status 12 槽 0x44B717 / 背包 0x42FB0F / 商店 0x44E6C1 三调用者）：行列表（count +0x64、lines +0x70 stride 0x3C、0xF 行高、0x45E0C0 测宽）→ 浮动矩形（x−5..maxW+x+5, y−5..行数×0xF+y+2，0x466800 浮点缩放 0x3EC8C8C9）→ 图标帧（0x5668C4 选择器 + word[+0x28] 物品帧 + 0x45FD50 blit）→ 800px 右裁剪 → 底板 0x329696（0x45E570）→ 文本行 0x45DE50",
       "evidence_level": "primary-bytes",
-      "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+      "source": "item-tooltip-and-store-family-evidence.json (Round 34)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+      }
     },
     {
       "id": "window.store-0x44D310",
@@ -3129,7 +3209,11 @@
         "default_hidden": "ctor arg8=0"
       },
       "evidence_level": "primary-bytes",
-      "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+      "source": "item-tooltip-and-store-family-evidence.json (Round 34)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+      }
     },
     {
       "id": "paint.matrix-final",
@@ -3137,7 +3221,11 @@
       "layer": "windows",
       "role": "窗口绘制矩阵定稿（Round 35）：14 窗口 paint/mouse 全枚举——id0 0x42EB80/0x42FAB0；id1 0x44B2D0/0x44B6B0；id2 0x44E260/0x44E650；id3 0x415B10/0x416790；id4 0x425040/0x4258F0；id6 0x4243D0；id7 0x450530/0x450AC0；id8 0x414700；id9 0x43F460；idB 0x447470；idC 0x441380；idD 0x4269C0；idE 0x439500；idF 0x43E3C0；id5/10 无窗",
       "evidence_level": "primary-bytes",
-      "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      "source": "trade-chat-option-paint-evidence.json (Round 35)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      }
     },
     {
       "id": "window.chat-paint-0x414700",
@@ -3156,7 +3244,11 @@
         "scrollbar": "0x4179B0 @ +0x6D4"
       },
       "evidence_level": "primary-bytes",
-      "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      "source": "trade-chat-option-paint-evidence.json (Round 35)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      }
     },
     {
       "id": "window.trade-paint-0x415B10",
@@ -3175,7 +3267,11 @@
         "row": "行 = idx*9；x = win.x + 行*4 + 0x15（左）/ +0xFD（右）"
       },
       "evidence_level": "primary-bytes",
-      "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      "source": "trade-chat-option-paint-evidence.json (Round 35)",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "trade-chat-option-paint-evidence.json (Round 35)"
+      }
     }
   ],
   "control_constructors": [

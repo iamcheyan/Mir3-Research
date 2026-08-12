@@ -21,7 +21,7 @@ DEFAULT_EXE = Path(os.environ.get(
 )) / "Mir3.exe"
 DEFAULT_CLIENT = DEFAULT_EXE.parent
 DEFAULT_EVIDENCE = Path("docs/research/ei-ui-layout")
-ALLOWED_LEVEL_PREFIXES = ("primary", "secondary", "candidate", "pending")
+ALLOWED_LEVEL_PREFIXES = ("primary", "secondary", "candidate", "pending", "derived")
 
 
 def load_json(path: Path):
