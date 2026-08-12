@@ -7505,3 +7505,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**物品图标/详情（F651）+ 反序列化/背包 IO（F652）+ 插入/放置（F655）——**背包/仓库系统完整（图标渲染 + 反序列化 + 取放 + 放置）**。
 - **〔仓库〕**用户 quest 文件未触碰。
 - 落盘：bag-storage-arc-closure-evidence.json（F656，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 350。
+## Round 351 (F657) — 2026-08-12：HANDOFF 刷新 30（Round 348-350）
+
+- **〔刷新〕**HANDOFF 追加 Round 348-350（F655-F656：物品插入/放置 + 背包/仓库弧）；基线 Round 347=d3a4411 → Round 350=d393058（**315 连发 F335-F656**）。
+- 落盘：handoff-refresh-30-evidence.json（F657，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 351。
