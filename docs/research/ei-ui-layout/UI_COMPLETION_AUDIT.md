@@ -3905,3 +3905,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（交易窗口完整；下一弧：HANDOFF 刷新 129/剩余角落）。
+## Round 647 (2026-08-12) — HANDOFF 刷新 129（Finding 953）
+
+- **Round 644-646 追加 + 611 连发**（交易窗口完整入档）。
+- 落盘：`handoff-refresh-129-evidence.json`（F953）+ RESEARCH_LOG Round 647。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（交易窗口完整；下一弧：剩余深层角落/模拟器 polish）。

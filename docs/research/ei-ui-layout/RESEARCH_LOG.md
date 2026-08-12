@@ -8794,3 +8794,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**576 证据 JSON**；三服务 200；master cf8b6bf（**610 连发 F335-F951 已推**）。
 - **〔弧〕**槽布局（F749）+ 绘制（F842）+ 槽操作（F908）+ 输入/点击（F951）——**交易窗口完整**（居中 + 2 滚动条 + 槽查找 + 取消 msg 0x405 + 输入），交易表面 100%。
 - 落盘：trade-window-closure-evidence.json（F952，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 646。
+## Round 647 (F953) — 2026-08-12：HANDOFF 刷新 129（Round 644-646）
+
+- **〔刷新〕**HANDOFF 追加 Round 644-646（F951-F952：交易窗口输入/点击 + 交易窗口闭合）；基线 Round 643=1e047c0 → Round 646=44da0b8（**611 连发 F335-F952**）。
+- 落盘：handoff-refresh-129-evidence.json（F953，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 647。
