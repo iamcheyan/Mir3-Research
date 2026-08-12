@@ -2306,9 +2306,14 @@ git diff --check
 - **Round 410-414 追加 + 379 连发 + 50 刷新**（地图核心入档）。
 - 落盘：`handoff-refresh-50-evidence.json`（F721）+ RESEARCH_LOG Round 415。
 
+## Round 416 (2026-08-12) — 地图移动 + 实体碰撞（Finding 722）
+
+- **8 方向 + 瓦片 + 实体同瓦片封锁**（F613 jt 确认、F336 链表）。
+- 落盘：`map-move-entity-collision-evidence.json`（F722）+ RESEARCH_LOG Round 416。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（地图核心完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（移动门字节级；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

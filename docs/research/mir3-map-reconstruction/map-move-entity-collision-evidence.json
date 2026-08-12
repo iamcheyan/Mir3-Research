@@ -1,0 +1,35 @@
+{
+  "evidence_id": "map-move-entity-collision-2026-08-12-f722",
+  "title": "Round 416 (F722): Map move WITH entity collision - 0x43CC30: 8-dir jt 0x43CD94 (F613 CONFIRMED) -> candidate (x,y) -> tile blocked check 0x43C9F0 -> entity list 0x560070 scan (pos [0xCC]/[0xD0], state [0x88], type [0xC0], flag [0x61C74]) blocks same-tile; 0x43CDC0 movement anim history (8 dir counters @ [0x1B01B4] + 4x16-frame progress buffers) [INFERENCE] - authoritative movement gate (F613/F336 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the map move with entity collision.",
+  "question": "How is movement gated by tile + entity collision?",
+  "method": "Disasm 0x43CC30-0x43CDC0.",
+  "scope": "0x43CC30-0x43CDC0; entity list 0x560070.",
+  "cell_analysis": {
+    "0x43CC30": {"jt": "0x43CD94 8-dir", "tile": "0x43C9F0 check", "entity": "list 0x560070, pos [0xCC]/[0xD0], state [0x88], type [0xC0], flag [0x61C74]"},
+    "0x43CDC0": "anim history: 8 counters + 16-frame buffers [INFERENCE]"
+  },
+  "exe_trace": {
+    "move_chain": "8-dir offset -> tile blocked -> entity same-tile -> allow"
+  },
+  "audit_vs_exe": {
+    "F613": "8-dir jt CONFIRMED", "F336": "entity list 0x560070"
+  },
+  "contrast": {
+    "tile_vs_entity": "walkable + same-tile block",
+    "move_vs_anim": "gate + history"
+  },
+  "verdict": "Map move with entity collision PRIMARY-verified: 8-dir + tile + entity scan; authoritative movement gate (F613/F336).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Move gate decoded from .text; anim history purpose inferred.",
+  "cross_refs": ["F613: move", "F336: entity list", "F719: collision"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43CC30+0x20; 0x43CDC0+0x10",
+  "notes": [
+    "jt 0x43CD94 = F613 move jt",
+    "entity pos [0xCC]/[0xD0]",
+    "anim history [INFERENCE]",
+    "authoritative move gate"
+  ]
+}

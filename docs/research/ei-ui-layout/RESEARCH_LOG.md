@@ -7792,3 +7792,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 410-414（F717-F720：瓦片访问器 + 相机渲染/滚动 + 碰撞/方向 + 地图核心弧）；基线 Round 409=6619ed9 → Round 414=100e5fa（**379 连发 F335-F720**）——**HANDOFF 刷新 50 里程碑**。
 - 落盘：handoff-refresh-50-evidence.json（F721，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 415。
+## Round 416 (F722) — 2026-08-12：地图移动 + 实体碰撞
+
+- **〔移动〕**0x43CC30：8 方向 jt 0x43CD94（F613 确认）→ 候选 (x,y) → 瓦片封锁 0x43C9F0 → **实体链表 0x560070 扫描**（位置 [0xCC]/[0xD0]、状态 [0x88]、类型 [0xC0]、旗标 [0x61C74]）同瓦片封锁；0x43CDC0 移动动画历史（8 计数器 @ [0x1B01B4] + 4×16 帧进度缓冲）[INFERENCE]——权威移动门（F613/F336 用）。
+- 落盘：map-move-entity-collision-evidence.json（F722，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 416。
