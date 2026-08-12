@@ -6081,3 +6081,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔空白帧复验〕**D901/D9021/D9022/D2011/D2012 → MMap **f144-149 = None（真空白，F310 确认）**；但 **81.map→f18（152×100 真实头）、D452→f23（600×400 真实头）**——F310 空白清单含 value/帧精确问题待和解 [candidate]。
 - **〔D001〕**f0 = 600×400 真实小地图——400 宽洞穴 × 1.5 缩放 = 600（F277 放置公式吻合）。
 - 落盘：`minimap-calibration-crosscheck-evidence.json`（F377，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 71。
+
+## Round 72 (F378) — 2026-08-12：保留标记帧验证（0xFFFF 空哨兵主导 + 0xFFxx 仅未绑定图）
+
+- **〔哨兵〕**211 绑定图：mid 0xFFFF 18,045,874 / frt 20,684,963 / back 422 格——**0xFFFF = 层空哨兵主导**（地图大多 back+mid、front 稀疏）。
+- **〔0xFFxx 标记〕**绑定图 **0 个 0xFF00-0xFFFE**；未绑定遗留图 0_0031/kt0018 有 mid 0xFFFC（65532）@ (8,0)——F369 异常集吻合。
+- **〔语义〕**客户端空判断 = **精确 ==0xFFFF**（非掩码）；0xFFxx = 普通越界帧（不绘制、无特殊含义）——reserved-frame-markers 证据确认。
+- 落盘：`reserved-frame-marker-verification-evidence.json`（F378，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 72。

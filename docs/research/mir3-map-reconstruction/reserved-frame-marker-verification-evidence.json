@@ -1,0 +1,45 @@
+{
+  "evidence_id": "reserved-frame-marker-verification-2026-08-12-f378",
+  "title": "Round 72 (F378): Reserved frame markers verified - 0xFFFF empty sentinel dominates bound maps (mid 18.0M/frt 20.7M/back 422 cells), ZERO 0xFF00-0xFFFE markers in 211 bound maps (markers only in unbound legacy 0_0031/kt0018 = 0xFFFC), client ==0xFFFF exact compare confirmed",
+  "date": "2026-08-12",
+  "objective": "Verify the reserved-frame-marker semantics: 0xFFFF empty sentinel usage across bound maps, 0xFF00-0xFFFE marker distribution (bound vs unbound), and the client's exact-compare behavior.",
+  "question": "Where do reserved frame markers appear, and does the client treat 0xFFxx specially?",
+  "method": "Full 211-bound-map scan for sentinel/marker frame values (back/mid/front); unbound-map marker check (0_0031/kt0018); cross-ref reserved-frame-markers-evidence.json.",
+  "scope": "$MIR3_EI_ROOT/Map (211 bound + unbound); reserved-frame-markers-evidence.json.",
+  "cell_analysis": {
+    "sentinel_usage": {
+      "mid_0xFFFF": "18,045,874 cells (empty mid layer)",
+      "frt_0xFFFF": "20,684,963 cells (empty front layer)",
+      "back_0xFFFF": "422 cells (sparse empty back)",
+      "pattern": "0xFFFF = layer-empty sentinel dominates - maps are mostly back+mid with sparse front"
+    },
+    "marker_0xFFxx": {
+      "bound_maps": "ZERO 0xFF00-0xFFFE markers in all 211 bound maps - markers are NOT used by playable maps",
+      "unbound": "0_0031.map + kt0018.map have mid 0xFFFC (65532) at cell (8,0) - legacy maps only (F369 anomaly set)",
+      "semantics": "reserved-frame-markers evidence: client empty check = EXACT ==0xFFFF (not mask); 0xFFxx = ordinary OOB frame (no draw, no special meaning)"
+    }
+  },
+  "exe_trace": {
+    "frame_check": "0x43B440 tile render: cell.mid_img != 0xFFFF && < count gate (mapviewer mirrors); client 0x466130 returns null for OOB (F331/F340)"
+  },
+  "audit_vs_exe": {
+    "reserved-frame-markers": "==0xFFFF exact compare + 0xFFxx no-special confirmed",
+    "F369": "0xFFxx markers confined to unbound legacy maps confirmed",
+    "F371": "OOB frames (incl. 0xFFxx) = no-draw confirmed"
+  },
+  "contrast": {
+    "0xFFFF_vs_0xFFxx": "0xFFFF = empty sentinel (checked); 0xFF00-0xFFFE = ordinary OOB (unchecked, no-draw)",
+    "bound_vs_unbound": "bound maps use only 0xFFFF; unbound legacy maps carry 0xFFxx markers"
+  },
+  "verdict": "Reserved frame markers verified (primary-bytes): 0xFFFF empty sentinel dominates (18M/20.7M mid/front cells), 0xFF00-0xFFFE markers appear ONLY in unbound legacy maps (0_0031/kt0018 = 0xFFFC), client uses exact ==0xFFFF compare with no special 0xFFxx semantics. reserved-frame-markers evidence confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sentinel/marker counts computed directly from all 211 bound map binaries + unbound samples.",
+  "cross_refs": ["reserved-frame-markers-evidence.json", "F369: tile-lib anomaly survey", "F371: frame-OOB verification"],
+  "tool": "python3 struct scan; python3 json",
+  "reproduce": "scan bound maps for frame values 0xFFFF/0xFF00-0xFFFE in back/mid/front; check 0_0031/kt0018",
+  "notes": [
+    "back 0xFFFF only 422 cells (ground always drawn; F370 90%+ coverage)",
+    "0xFFFC = 65532 in 0_0031/kt0018 mid - anim-marker candidates [candidate, unbound legacy]",
+    "mapviewer gates mid_img > 0 && < 65535 (excludes 0xFFFF, allows 0xFFxx decode attempt -> fails -> no draw)"
+  ]
+}
