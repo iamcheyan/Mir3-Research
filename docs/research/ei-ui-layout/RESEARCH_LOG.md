@@ -7996,3 +7996,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**392 证据 JSON**；三服务 200；master ff4dfc0（**426 连发 F335-F767 已推**）。
 - **〔弧〕**对话（F746）+ 交易（F749）+ 组队（F752）+ 行会（F755）+ 状态（F758）+ 选项（F761）+ 背包（F764）+ 装备（F767）——**F558 注册表全部 14 个窗口绘制字节级解码**，窗口绘制表面 100% 完整。
 - 落盘：window-draws-total-closure-evidence.json（F768，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 462。
+## Round 463 (F769) — 2026-08-12：HANDOFF 刷新 66（Round 460-462）
+
+- **〔刷新〕**HANDOFF 追加 Round 460-462（F767-F768：装备窗口 + 窗口绘制全量闭合）；基线 Round 459=fb330c0 → Round 462=061e7c2（**427 连发 F335-F768**）。
+- 落盘：handoff-refresh-66-evidence.json（F769，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 463。

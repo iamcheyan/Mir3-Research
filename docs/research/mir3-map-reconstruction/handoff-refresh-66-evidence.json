@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-66-2026-08-12-f769",
+  "title": "Round 463 (F769): HANDOFF refresh 66 - Rounds 460-462 (F766-F768: HANDOFF 65 + window milestone, equipment window draw, window draws total closure), baseline Round 459=fb330c0 -> Round 462=061e7c2 (427 consecutive F335-F768), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 460-462.",
+  "question": "What changed since HANDOFF refresh 65?",
+  "method": "Append Round 460-462 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 460-462 appended (3 rounds, F766-F768)",
+    "baseline": "Round 459=fb330c0 -> Round 462=061e7c2 (427 consecutive F335-F768)",
+    "arcs": {"equip": "F767 equip draw", "closure": "F768 draws total"},
+    "key": "all 14 registry draws decoded"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F766": "refresh 65 baseline -> now refresh 66", "F335-F768": "427 rounds"
+  },
+  "contrast": {
+    "refresh_65_vs_66": "F767-F768 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 66 (F769): Rounds 460-462 documented (all window draws decoded), baseline fb330c0 -> 061e7c2, 427 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F767-F768 evidence.",
+  "cross_refs": ["F766: refresh 65", "F768: draws closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 460-462 section to HANDOFF",
+  "notes": [
+    "427 consecutive shipping rounds F335-F768",
+    "next: remaining deep corners, sim polish"
+  ]
+}
