@@ -5875,3 +5875,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模态〕setWindowOpen(open) 先关其他窗**（除 notice id15，原版 close-all 0x42B820 排除 id15）——匹配 0x42ADB0 单窗口模态（F337）。
 - **〔浏览器验证〕**Q→W：仅 status 开（bag 被关）；Q 再按：仅 bag 开（status 被关）；chat-lines = 5 行（启动 2 条 + 热键推送）。
 - 落盘：`simulator-chat-modal-wiring-evidence.json`（F346，derived-tooling）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 40。
+
+## Round 41 (F347) — 2026-08-12：NPC 对话窗口家族全解（脚本 token 渲染器 FCOLOR/NPCIMG + 点击处理器）+ 模拟器 NPC 交互接线
+
+- **〔paint 0x43F460〕**dialog-type byte [ebx] 1..3 → 跳表 0x440158：[0x43F4E7 文本（≥7 行换第二列 x=0x131−0x6B、行距 0x14=20px）、0x43F86D、0x43F85F、0x43FF92 脚本 token]。**type-4 0x43FF92**：strcmp vs **FCOLOR 0x47C514** → atoi [ebx+8] → **菜单颜色表 [eax*4 + 0x47C4A8]**（[0x0, 0xFF, 0x8000, 0x8080, 0x808080, 0x80, 0x808000, 0x800000] DOS/BIOS 色码）；strcmp vs **NPCIMG 0x47C50C**（F331）→ atoi → **0x466130(&[ebp+0x278] NPCFace.wil, frame) 头像 blit**。
+- **〔click 0x43E4B0〕**（ret 8，0x1F40 栈探测）：2 子控件 +0x54（帧 161/162）/ +0x108（帧 606/607）vtable+0x10 命中 → [ebp+0x1CC] 编辑缓冲 → GetWindowTextA [0x476304]（0xFA0）→ 0x468BF0 分行 → **msg 0x410/0x411**（F331）；消费返 1（0x42ADB0 关窗）。
+- **〔模拟器接线〕**refreshWindowContent('window.npc-candidate') 填充 FCOLOR 色码 + NPCIMG 头像 demo 对话（行会管理员）；点击菜单行关闭对话。**浏览器验证**：点 行会管理员 → 开 window.npc-candidate + 色码正文。
+- 落盘：`npc-dialog-family-evidence.json`（F347，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 41。

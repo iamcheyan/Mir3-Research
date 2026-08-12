@@ -383,6 +383,13 @@ git diff --check
 - **浏览器验证**：Q→W 仅 status 开、Q 再按仅 bag 开；chat ≤19 行。
 - 落盘：`simulator-chat-modal-wiring-evidence.json`（F346）+ app.js + RESEARCH_LOG Round 40。
 
+## Round 41 (2026-08-12) — NPC 对话窗口家族（Finding 347）
+
+- **paint 0x43F460**：dialog-type 跳表（文本 2 列换行 / 菜单 / 脚本 token）；**FCOLOR 色码表 0x47C4A8**（8 色 DOS 调色板）+ **NPCIMG 头像**（NPCFace.wil +0x278）。
+- **click 0x43E4B0**：2 子控件命中 + 编辑缓冲 → GetWindowTextA → msg 0x410/0x411。
+- **模拟器接线**：NPC 点击 → 对话窗 + FCOLOR/NPCIMG demo 内容；浏览器验证（行会管理员）。
+- 落盘：`npc-dialog-family-evidence.json`（F347，primary-bytes）+ app.js + RESEARCH_LOG Round 41。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

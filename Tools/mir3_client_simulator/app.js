@@ -941,6 +941,39 @@ function refreshWindowContent(id) {
     const w = STATE.data.windows.find((q) => q.id === id);
     if (w) fillWindowContent(w);
   }
+  if (id === "window.npc-candidate") {
+    // Round 41 (F347): NPC dialog script renderer - type-4 tokens FCOLOR/NPCIMG
+    // (0x43FF92), menu color table 0x47C4A8. Fill a demo dialog: portrait +
+    // text lines with FCOLOR palette.
+    const box = winEl.querySelector(`[data-window="${id}"]`);
+    if (!box) return;
+    const e = STATE.selectedEntity;
+    const lines = [
+      { t: `[NPCIMG 0] ${e ? e.name : "比奇武器商"}`, c: 0x808080 },
+      { t: "FCOLOR 0 你好，勇士！", c: 0x0 },
+      { t: "FCOLOR 2 购买装备 (frame 0x3F2)", c: 0x8000 },
+      { t: "FCOLOR 4 出售物品 (frame 0x3F4)", c: 0x808080 },
+      { t: "FCOLOR 6 修理装备", c: 0x808000 },
+    ];
+    let body = box.querySelector(".npc-body");
+    if (!body) {
+      body = document.createElement("div");
+      body.className = "npc-body";
+      body.style.cssText = "position:absolute;left:8px;top:8px;right:8px;bottom:8px;font-size:11px;line-height:16px;overflow:auto;";
+      box.appendChild(body);
+    }
+    body.innerHTML = lines.map((l) =>
+      `<div style="color:#${(l.c & 0xFFFFFF).toString(16).padStart(6, "0")}">${l.t}</div>`
+    ).join("");
+    // click a menu line -> close dialog (original: consumed -> 0x42ADB0 close)
+    body.querySelectorAll("div").forEach((d, i) => {
+      d.style.cursor = i >= 2 ? "pointer" : "default";
+      d.addEventListener("click", () => {
+        pushChat(`[NPC] 选择: ${d.textContent}`);
+        setWindowOpen(id, false);
+      });
+    });
+  }
 }
 
 function bindWindowDrag(box) {

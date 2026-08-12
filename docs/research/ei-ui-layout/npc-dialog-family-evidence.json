@@ -1,0 +1,58 @@
+{
+  "evidence_id": "npc-dialog-family-2026-08-12-f347",
+  "title": "Round 41 (F347): NPC dialog window family - script token renderer (0x43F460 type-4: FCOLOR menu-color table 0x47C4A8 + NPCIMG portrait) + click handler 0x43E4B0 (2 controls + edit buffer -> msg 0x410/0x411) + token strings decoded",
+  "date": "2026-08-12",
+  "objective": "Complete the NPC dialog window (id9) decode: script token renderer (FCOLOR text color, NPCIMG portrait), dialog-type dispatch table (1-4), and the click handler (child controls + edit buffer + message send). Prepare NPC interaction wiring for the simulator.",
+  "question": "How does the original client render NPC dialog script (text colors, portraits, menus) and handle clicks (menu selection, edit input)?",
+  "method": "Capstone linear disassembly of 0x43F460 (paint) + 0x43E4B0 (click); string/table reads via pefile; cross-validated against F331 (NPCFace binding +0x278, msg 0x410/0x411).",
+  "scope": "0x43F460-0x440158 (paint + type dispatch), 0x43E4B0-0x43E62C (click), strings 0x47C514/0x47C50C/0x47C4D8, menu color table 0x47C4A8.",
+  "cell_analysis": {
+    "paint_0x43F460": {
+      "type_dispatch": "dialog-type byte [ebx] (1..3) -> jmp [eax*4 + 0x440158]: [0x43F4E7, 0x43F86D, 0x43F85F, 0x43FF92]",
+      "type1_0x43F4E7": "text: 0x45E0C0 measure line [ebx+4]; x = 0x131 - 0x6B when line >= 7 (2-column); y = line*0x14; wrap at 0x95 width",
+      "type2_3": "0x43F85F/0x43F86D - text variants (menu/list formatting)",
+      "type4_0x43FF92": "SCRIPT TOKEN parser: strcmp line vs FCOLOR 0x47C514 -> atoi [ebx+8] -> menu color [eax*4 + 0x47C4A8]; strcmp vs NPCIMG 0x47C50C -> atoi -> 0x466130(&[ebp+0x278] NPCFace.wil, frame) portrait blit",
+      "menu_colors_0x47C4A8": "[0x0, 0xFF, 0x8000, 0x8080, 0x808080, 0x80, 0x808000, 0x800000] DOS/console color codes (black/blue/green/cyan/gray/dark-red/olive/navy)"
+    },
+    "click_0x43E4B0": {
+      "prologue": "mov eax, 0x1F40; call 0x468D10 (stack probe); ret 8 (x, y args)",
+      "controls": "child control +0x54 (frames 161/162) vtable+0x10 hit-test; +0x108 (frames 606/607) hit-test",
+      "edit": "on hit with [ebp+0x1CC] edit buffer: GetWindowTextA [0x476304] (0xFA0) -> line-split 0x468BF0(0xA) -> msg 0x410/0x411 send (F331: 0x4524A0/0x4524D0)",
+      "return": "1 = consumed (hide id9), 0 = continue"
+    },
+    "tokens": {
+      "0x47C514": "FCOLOR (text color token)",
+      "0x47C50C": "NPCIMG (portrait token, F331)",
+      "0x47C4D8": "GBK string (3 bytes, menu title candidate)"
+    }
+  },
+  "exe_trace": {
+    "npc_window": "hero+0x51150 (id9); frame 1100 552x176; NPCFace.wil binding +0x278 (F331)",
+    "click_dispatch": "0x43E4B0 -> 0x42ADB0(hero, 9) close on consumed (F337)"
+  },
+  "audit_vs_exe": {
+    "F331": "NPCFace +0x278 binding, NPCIMG token, msg 0x410/0x411 - all confirmed; FCOLOR token NEW",
+    "F249": "0x43E4B0 click payload = WM 0x201/0x202 packed coords confirmed"
+  },
+  "contrast": {
+    "npc_vs_chat": "NPC dialog = script-token renderer (FCOLOR/NPCIMG/menu); chat = message ring 0x414700 - different renderers",
+    "npc_vs_notice": "NPC has edit buffer +0x1CC (input); notice id15 has EDIT control +0x53028 hwnd (SetWindowTextA)"
+  },
+  "verdict": "NPC dialog family fully decoded (primary-bytes): paint 0x43F460 dispatches on dialog-type byte (text 2-column wrap / menu / script tokens FCOLOR+NPCIMG); click 0x43E4B0 handles 2 child controls + edit buffer (GetWindowTextA -> line-split -> msg 0x410/0x411). Script tokens and menu color table decoded. Ready for simulator NPC interaction wiring.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All tokens, dispatch targets, table entries and control offsets read directly from MIR3.EXE bytes.",
+  "cross_refs": [
+    "F331: NPCFace binding +0x278, msg 0x410/0x411, NPC dialog identity",
+    "F249: click payload packed coords",
+    "F337: close on consumed via 0x42ADB0",
+    "F338: NPC window paint 0x43F460 in render table"
+  ],
+  "tool": "capstone via disasm_capstone.PeImage; pefile; python3 json",
+  "reproduce": "img.disasm(0x43F460, 0x2D0); img.disasm(0x43E4B0, 0x180); read 0x47C4A8 table + 0x47C514/0x47C50C strings",
+  "notes": [
+    "type-1 text wrap: lines >= 7 shift to second column (x 0x131-0x6B); row stride 0x14=20px",
+    "FCOLOR menu colors are BIOS/DOS palette codes (0x0 black, 0xFF bright blue, 0x8000 dark green, 0x8080 dark cyan, 0x808080 gray, 0x80 dark red, 0x808000 olive, 0x800000 navy)",
+    "0x47C4D8 = GBK menu-title string (3 bytes; content pending decode)",
+    "NPC dialog content (script lines) comes from server messages (0x7ED-0x7F0 family, F249) - runtime data"
+  ]
+}
