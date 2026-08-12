@@ -7075,3 +7075,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**192 证据 JSON**；三服务 200；master 02a7294（**225 连发 F335-F566 已推**）。
 - **〔弧〕**recv1 函数体（背包金币 F549/分派器 F550/仓库 F551/TCP 重定向 F552/recv2 全图 F553/商店 F555/制作 F556/交易 F557/错误装备 F563）+ 窗口系统（F558-F560）+ 文本渲染族（F564）+ 实体生命周期（生成/移除 F565、init/tick F566）——**整个入站包管线 + 实体管线字节级**。
 - 落盘：recv-entity-arc-closure-evidence.json（F567，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 261。
+## Round 262 (F568) — 2026-08-12：HANDOFF 刷新 8（Round 257-261）
+
+- **〔刷新〕**HANDOFF 追加 Round 257-261（F563-F567：错误/装备 + 文本渲染族 + 实体生命周期 + recv/实体弧）；基线 Round 255=ce24497 → Round 261=9fbbccc（**226 连发 F335-F567**）。
+- 落盘：handoff-refresh-8-evidence.json（F568，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 262。

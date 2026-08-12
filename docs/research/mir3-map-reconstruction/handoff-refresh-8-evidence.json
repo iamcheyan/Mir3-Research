@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-8-2026-08-12-f568",
+  "title": "Round 262 (F568): HANDOFF refresh 8 - Rounds 257-261 (F563-F567: recv1 error/equip + text render GDI family + entity lifecycle spawn/remove/init/tick + recv-entity arc closure), baseline Round 255=ce24497 -> Round 261=9fbbccc (226 consecutive F335-F567), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 257-261.",
+  "question": "What changed since HANDOFF refresh 7?",
+  "method": "Append Round 257-261 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 257-261 appended (5 rounds, F563-F567)",
+    "baseline": "Round 255=ce24497 -> Round 261=9fbbccc (226 consecutive F335-F567)",
+    "arcs": {"error_equip": "F563 mapval2/3 + sound dispatch", "text": "F564 GDI render family", "entity": "F565-F566 spawn/remove + init/tick", "closure": "F567 recv-entity arc"},
+    "key": "entity lifecycle spawn->init->tick->render closed; text = measure+draw pair on 0x8AB7A8"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F562": "refresh 7 baseline -> now refresh 8", "F335-F567": "226 rounds"
+  },
+  "contrast": {
+    "refresh_7_vs_8": "F554-F561 -> F563-F567 (5 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 8 (F568): Rounds 257-261 documented, baseline ce24497 -> 9fbbccc, 226 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F563-F567 evidence.",
+  "cross_refs": ["F562: refresh 7", "F567: recv-entity closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 257-261 section to HANDOFF",
+  "notes": [
+    "226 consecutive shipping rounds F335-F567",
+    "next: sim polish, remaining recv1 idx handlers (22, 37-43, 45)"
+  ]
+}
