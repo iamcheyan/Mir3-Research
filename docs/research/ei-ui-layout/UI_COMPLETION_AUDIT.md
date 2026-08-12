@@ -583,6 +583,11 @@ git diff --check
 - **==0xFFFF 精确比较、0xFFxx 无特殊语义**确认。
 - 落盘：`reserved-frame-marker-verification-evidence.json`（F378，primary-bytes）+ RESEARCH_LOG Round 72。
 
+## Round 73 (2026-08-12) — 瓦片视口验证（Finding 379）
+
+- **0x43B440**：0x6C000 dwords = 768×576 缓冲；24×24 半分辨率窗口（奇偶门 + (y>>1)*w+(x>>1) 索引 + attr/7 行选 + 3 字节记录）。
+- 落盘：`tile-viewport-verification-evidence.json`（F379，primary-bytes）+ RESEARCH_LOG Round 73。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

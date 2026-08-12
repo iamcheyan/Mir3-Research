@@ -6088,3 +6088,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0xFFxx 标记〕**绑定图 **0 个 0xFF00-0xFFFE**；未绑定遗留图 0_0031/kt0018 有 mid 0xFFFC（65532）@ (8,0)——F369 异常集吻合。
 - **〔语义〕**客户端空判断 = **精确 ==0xFFFF**（非掩码）；0xFFxx = 普通越界帧（不绘制、无特殊含义）——reserved-frame-markers 证据确认。
 - 落盘：`reserved-frame-marker-verification-evidence.json`（F378，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 72。
+
+## Round 73 (F379) — 2026-08-12：瓦片视口验证（0x43B440 768×576 缓冲 + 24×24 半分辨率窗口）
+
+- **〔缓冲〕**map+0x1B2 **0x6C000 dwords = 768×576 px**（442368，rep stosd 清零）。
+- **〔循环〕**y=[+0x12C]/x=[+0x130]..+0x18 = **24×24 半分辨率瓦片对窗口**；奇偶门（两坐标须偶）；**索引 = (y>>1)*w + (x>>1)**（imul w + sar）；**行 = attr/7**（imul 0xE = 14，0x6DB6DB6D 魔数）；**3 字节记录**（byte+1 = 16 位瓦片 id @ 0x43B516）。
+- **〔分辨率〕**24×24 半瓦片 = 768 宽 × 384 高渲染入 768×576——覆盖 24 列 × 18 行全瓦片 + 垂直滚动（F332 0x43B1E0）。
+- 落盘：`tile-viewport-verification-evidence.json`（F379，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 73。

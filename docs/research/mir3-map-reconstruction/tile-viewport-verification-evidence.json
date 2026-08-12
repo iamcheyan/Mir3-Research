@@ -1,0 +1,40 @@
+{
+  "evidence_id": "tile-viewport-verification-2026-08-12-f379",
+  "title": "Round 73 (F379): Tile viewport verification - client 0x43B440 buffer 0x6C000 dwords = 768x576 px (442368), loop y/x = [+0x12C]/[+0x130]..+0x18 (24x24 half-res tile-pairs), even/odd gate, tile index (y>>1)*w+(x>>1), row = attr/7 (imul 0xE), 3-byte attr+word tile record at 0x43B516",
+  "date": "2026-08-12",
+  "objective": "Verify the client's map tile viewport: buffer dimensions, loop bounds, half-res tile indexing, row-select math, and record layout.",
+  "question": "How does the client's 0x43B440 tile renderer address its 768x576 viewport?",
+  "method": "Capstone disassembly of 0x43B440 (buffer clear, loop, indexing, row math); arithmetic cross-check of 0x6C000 = 768*576.",
+  "scope": "0x43B440-0x43B516 (tile render), buffer +0x1B2 0x6C000 dwords.",
+  "cell_analysis": {
+    "buffer": "0x6C000 dwords at map+0x1B2 = 768x576 px (442368) - cleared via rep stosd",
+    "loop": "y = [map+0x12C]..+0x18 (24), x = [map+0x130]..+0x18 (24) - 24x24 HALF-RES tile-pair window",
+    "gates": "even/odd: both coords must be even (0x43B4B4-0x43B4D8 odd check) - half-res sampling",
+    "index": "tile = (y>>1)*w + (x>>1) via (y/2)*w (0x43B4FE imul ecx=w) + x/2 (0x43B50D)",
+    "row_select": "row = attr/7 (imul 0xE = 14 at 0x43B4F7; the 0x6DB6DB6D magic from F331) -> tile row byte",
+    "record": "3-byte entry: byte[+1] = 16-bit tile id (mov si, word [ecx+edx+1] at 0x43B516) - attr + word tile",
+    "view_resolution": "24x24 half-tiles = 768px wide (24*32) x 384px tall (24*16) rendered into the 768x576 buffer - viewport covers 24 cols x 18 rows full tiles (768/32 x 576/32) with the 24x24 loop covering a 384px-tall region + vertical scroll"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331); scroll 0x43B1E0 (F332); map fields w/h +0x126/+0x128, viewport +0x12C/+0x130"
+  },
+  "audit_vs_exe": {
+    "F331": "0x6C000 buffer + viewport confirmed",
+    "F332": "0x43B1E0 scroll blit confirmed (viewport follows player)"
+  },
+  "contrast": {
+    "half_vs_full": "back layer = half-res (48x32 tile -> 24x16); mid/front = full-res (dest math 0x43BCF5)",
+    "mapviewer": "viewer renders full-res tiles; client renders half-res back + full-res objects into 768x576"
+  },
+  "verdict": "Tile viewport verified (primary-bytes): 0x43B440 renders a 24x24 half-res tile window (even/odd gate, (y>>1)*w+(x>>1) index, row=attr/7) into a 768x576 (0x6C000 dword) buffer; 3-byte attr+word tile records read at 0x43B516. Buffer math matches F331/F332.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All buffer/loop/index math read directly from MIR3.EXE bytes.",
+  "cross_refs": ["F331: 0x43B440 tile render", "F332: 0x43B1E0 scroll", "F374: layer render verification"],
+  "tool": "capstone via disasm_capstone.PeImage; python3 arithmetic",
+  "reproduce": "img.disasm(0x43B440, 0x100); verify 0x6C000 = 768*576",
+  "notes": [
+    "0x6C000 = 442368 = 768*576 (double-checked)",
+    "loop 24x24 pairs: 768px wide / 32px per pair-col = 24; 384px tall / 16px per pair-row = 24 -> renders 768x384 region",
+    "row magic 0x6DB6DB6D (F331) = divide-by-7 -> 14-byte cell row select"
+  ]
+}
