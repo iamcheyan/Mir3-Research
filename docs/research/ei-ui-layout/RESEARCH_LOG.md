@@ -8312,3 +8312,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 532-534（F839-F840：技能书绘制 + 技能书窗口闭合）；基线 Round 531=0084901 → Round 534=bc99e68（**499 连发 F335-F840**）——**HANDOFF 刷新 90 里程碑**。
 - 落盘：handoff-refresh-90-evidence.json（F841，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 535。
+## Round 536 (F842) — 2026-08-12：交易窗口绘制（F558 模式 3）
+
+- **〔交易〕**0x415B10：居中矩形 [0x5C]/[0x6C]（SetRect 0x4762B0）+ **己方/对方网格命中**（鼠标 [0x7DA1C0]/[0x7DA1C4] via PtInRect 0x4762B4）+ **拖动预览**：槽命中 0x416830 + 放置 0x4162E0（F749）+ IntersectRect 0x476248 + **矩阵 0x466800（F643）** 缩放——交易窗口绘制完整（F557/F749 用）。
+- 落盘：trade-window-draw-evidence.json（F842，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 536。

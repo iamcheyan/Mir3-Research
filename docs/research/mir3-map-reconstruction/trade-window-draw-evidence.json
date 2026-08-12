@@ -1,0 +1,34 @@
+{
+  "evidence_id": "trade-window-draw-2026-08-12-f842",
+  "title": "Round 536 (F842): Trade window draw (F558 mode 3) - 0x415B10: center rects [0x5C]/[0x6C] (SetRect 0x4762B0) + SELF/OTHER grid hit (mouse [0x7DA1C0]/[0x7DA1C4] via PtInRect 0x4762B4) + DRAG preview: slot hit 0x416830 + place 0x4162E0 (F749) + IntersectRect 0x476248 + matrix 0x466800 (F643) scale floats - trade window draw COMPLETE (F557/F749 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade window draw.",
+  "question": "How does the trade window render + drag?",
+  "method": "Disasm 0x415B10-0x415D20.",
+  "scope": "0x415B10-0x415D20; grids.",
+  "cell_analysis": {
+    "0x415B10": {"rects": "center [0x5C]/[0x6C]", "hit": "mouse [0x7DA1C0] + PtInRect", "drag": "0x416830 + 0x4162E0 + 0x476248 + 0x466800"}
+  },
+  "exe_trace": {
+    "trade_chain": "center -> grid hit -> drag preview"
+  },
+  "audit_vs_exe": {
+    "F557": "trade family", "F749": "slot layout", "F643": "matrix"
+  },
+  "contrast": {
+    "self_vs_other": "x +0x15/+0xFD",
+    "hit_vs_drag": "PtInRect + preview"
+  },
+  "verdict": "Trade window draw PRIMARY-verified: center + grids + drag; trade draw complete (F557/F749).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Trade draw decoded from .text.",
+  "cross_refs": ["F557: trade", "F749: layout", "F643: matrix"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x415B10+0x20",
+  "notes": [
+    "grid hit mouse",
+    "drag 0x4162E0",
+    "matrix scale",
+    "self +0x15 / other +0xFD"
+  ]
+}

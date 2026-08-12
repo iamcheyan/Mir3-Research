@@ -3017,3 +3017,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能书完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 536 (2026-08-12) — 交易窗口绘制（Finding 842）
+
+- **居中 + 网格命中 + 拖动预览**（交易绘制完整）。
+- 落盘：`trade-window-draw-evidence.json`（F842）+ RESEARCH_LOG Round 536。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（交易绘制完整；下一弧：剩余深层角落）。
