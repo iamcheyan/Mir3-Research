@@ -3585,3 +3585,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店槽完整；下一弧：HANDOFF 刷新 115/剩余角落）。
+## Round 607 (2026-08-12) — HANDOFF 刷新 115（Finding 913）
+
+- **Round 604-606 追加 + 571 连发**（商店槽完整入档）。
+- 落盘：`handoff-refresh-115-evidence.json`（F913）+ RESEARCH_LOG Round 607。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店槽完整；下一弧：剩余深层角落/模拟器 polish）。

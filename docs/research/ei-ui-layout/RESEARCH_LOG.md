@@ -8620,3 +8620,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**536 证据 JSON**；三服务 200；master c921b12（**570 连发 F335-F911 已推**）。
 - **〔弧〕**管理（F661）+ 点击（F740）+ 分派（F824）+ 槽命中/查找（F911）——**商店槽完整**（买 5 槽 + 卖 4 槽 + 列表获取 + 模式门），商店窗口 100% 交互。
 - 落盘：shop-slots-closure-evidence.json（F912，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 606。
+## Round 607 (F913) — 2026-08-12：HANDOFF 刷新 115（Round 604-606）
+
+- **〔刷新〕**HANDOFF 追加 Round 604-606（F911-F912：商店槽命中/查找 + 商店槽闭合）；基线 Round 603=3368b64 → Round 606=0915bf9（**571 连发 F335-F912**）。
+- 落盘：handoff-refresh-115-evidence.json（F913，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 607。
