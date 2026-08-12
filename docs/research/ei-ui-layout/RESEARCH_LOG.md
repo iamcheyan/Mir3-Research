@@ -6695,3 +6695,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔客户端〕**客户端**零怪物名引用**（栗子树/多钩猫/半兽人 = 0 引用）→ 记录存储 0x8AA5A8 = **数据包驱动**（F450），非文件加载——怪物名+属性随生成包到达。
 - **〔待深〕**记录字段解码延迟（遗留编码）。
 - 落盘：monster-dat-structure-evidence.json（F492，secondary + primary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 186。
+## Round 187 (F493) — 2026-08-12：stditem.dat 结构调查（服务端物品库）
+
+- **〔结构〕**stditem.dat = 210316B、头 0x7704（计数 0x477 = 1143 物品 [inference]、~184B/记录）；**零 GBK 名匹配**（金创药/魔法药/号角/金币/木剑 = 0）——与 monster.dat 同源遗留 KR 编码（F492）。
+- **〔客户端〕**物品 0xC20 记录 = 数据包驱动（F464），无本地物品库。
+- 落盘：stditem-dat-structure-evidence.json（F493，secondary + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 187。

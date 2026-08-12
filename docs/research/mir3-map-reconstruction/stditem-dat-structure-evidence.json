@@ -1,0 +1,37 @@
+{
+  "evidence_id": "stditem-dat-structure-2026-08-12-f493",
+  "title": "Round 187 (F493): stditem.dat structure survey - server Envir stditem.dat = 210316 bytes, header 0x7704 (item count 0x477 = 1143 items [inference]), NO GBK name matches (金创药/魔法药/号角/金币/木剑 = 0 hits) - same legacy KR-shifted encoding as monster.dat (F492); item DB = server-only (client items = 0xC20 records packet-fed F464); both .dat files = KR-source legacy charsets, exact field decode deferred",
+  "date": "2026-08-12",
+  "objective": "Survey stditem.dat structure + encoding; complete the server-DB picture.",
+  "question": "What is stditem.dat's structure and encoding?",
+  "method": "Binary parse: header, GBK name probes, name-run scan.",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/stditem.dat (210316B).",
+  "cell_analysis": {
+    "file": {"size": "210316 bytes", "header": "0x7704 (count 0x477 = 1143 items [inference: 210316/1143 = 184B/record])", "names": "NO GBK matches (0 hits for 金创药/魔法药/号角/金币/木剑) - legacy KR-shifted", "encoding": "same as monster.dat (F492)"},
+    "client_link": {"items": "client 0xC20 records = packet-fed (F464)", "local": "no client item DB (names via packets/store strings F461)"},
+    "record_guess": "184B/record @ 1143 items [inference]"
+  },
+  "exe_trace": {
+    "server_client": "server stditem.dat -> item packets -> client 0xC20 records -> bag/store (F464/F461)"
+  },
+  "audit_vs_exe": {
+    "F492": "legacy KR encoding shared with monster.dat",
+    "F464": "client item records packet-fed",
+    "F423": "server drops (金币 33%) source = this DB"
+  },
+  "contrast": {
+    "item_vs_monster": "stditem.dat (items) vs monster.dat (monsters) - same legacy format family",
+    "server_vs_client": "server DBs KR-shifted; client fully packet-driven"
+  },
+  "verdict": "stditem.dat structure SURVEYED (secondary-server): 210316B, header count 0x477 (1143 items [inference]), legacy KR-shifted names (no GBK), 184B/record [inference]. Server-only item DB; client packet-fed (F464).",
+  "evidence_level": "secondary (server file) + [inference]",
+  "evidence_level_note": "File size/header from binary; record size + count inferred.",
+  "cross_refs": ["F492: monster.dat", "F464: client items", "F423: drops"],
+  "tool": "python binary parse",
+  "reproduce": "parse stditem.dat head; GBK name probes",
+  "notes": [
+    "legacy KR-shifted = both server .dat files use pre-GBK charset",
+    "exact field decode deferred (shared with F492)",
+    "client-side item display fully packet-driven (no local DB)"
+  ]
+}
