@@ -7491,3 +7491,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**277 证据 JSON**；三服务 200；master 33f8b89（**311 连发 F335-F652 已推**）。
 - **〔弧〕**物品图标 + 详情分派（F651）+ 反序列化 + 背包 IO（F652）——**物品系统核心完整（图标/渲染 + 详情/提示框 + 序列化/IO）**，连接 F464/F457/F460/F549。
 - 落盘：item-core-arc-closure-evidence.json（F653，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 347。
+## Round 348 (F654) — 2026-08-12：HANDOFF 刷新 29（Round 344-347）
+
+- **〔刷新〕**HANDOFF 追加 Round 344-347（F651-F653：物品图标/详情 + 反序列化/背包 IO + 物品核心弧）；基线 Round 343=aa3e93e → Round 347=d3a4411（**312 连发 F335-F653**）。
+- 落盘：handoff-refresh-29-evidence.json（F654，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 348。
