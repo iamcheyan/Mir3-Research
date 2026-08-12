@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-39-2026-08-12-f685",
+  "title": "Round 379 (F685): HANDOFF refresh 39 - Rounds 376-378 (F682-F684: numeric helpers + utility-lib arc closure), baseline Round 375=5d6ee76 -> Round 378=6c890eb (343 consecutive F335-F684), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 376-378.",
+  "question": "What changed since HANDOFF refresh 38?",
+  "method": "Append Round 376-378 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 376-378 appended (3 rounds, F682-F684)",
+    "baseline": "Round 375=5d6ee76 -> Round 378=6c890eb (343 consecutive F335-F684)",
+    "arcs": {"numeric": "F683 numeric helpers", "closure": "F684 utility-lib arc"},
+    "key": "utility library complete (strings + numbers)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F682": "refresh 38 baseline -> now refresh 39", "F335-F684": "343 rounds"
+  },
+  "contrast": {
+    "refresh_38_vs_39": "F683-F684 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 39 (F685): Rounds 376-378 documented (utility lib), baseline 5d6ee76 -> 6c890eb, 343 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F683-F684 evidence.",
+  "cross_refs": ["F682: refresh 38", "F684: utility closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 376-378 section to HANDOFF",
+  "notes": [
+    "343 consecutive shipping rounds F335-F684",
+    "next: remaining deep corners, sim polish"
+  ]
+}

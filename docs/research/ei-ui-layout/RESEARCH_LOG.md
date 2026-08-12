@@ -7630,3 +7630,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**308 证据 JSON**；三服务 200；master 9795f4f（**342 连发 F335-F683 已推**）。
 - **〔弧〕**字符串库（F680：sprintf/strtol/strlen）+ 数值助手（F683：百分比/浮点/itoa）——**工具库完整（字符串 + 数值）**，支撑全部文本/数值路径。
 - 落盘：utility-lib-arc-closure-evidence.json（F684，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 378。
+## Round 379 (F685) — 2026-08-12：HANDOFF 刷新 39（Round 376-378）
+
+- **〔刷新〕**HANDOFF 追加 Round 376-378（F683-F684：数值助手 + 工具库弧）；基线 Round 375=5d6ee76 → Round 378=6c890eb（**343 连发 F335-F684**）。
+- 落盘：handoff-refresh-39-evidence.json（F685，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 379。
