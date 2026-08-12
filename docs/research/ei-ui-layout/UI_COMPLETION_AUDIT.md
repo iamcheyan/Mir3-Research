@@ -354,6 +354,14 @@ git diff --check
 - **mapviewer 冒烟**：/api/maps、/tile（512×512 JPEG）、/api/cell（lib 解析正确）全 200。
 - 落盘：`docs/research/mir3-map-reconstruction/map-inventory-evidence.json`（F342，primary-bytes）+ RESEARCH_LOG Round 36。
 
+## Round 37 (2026-08-12) — 城镇/洞穴地图深挖 + 瓦片绑定公式（Finding 343）
+
+- **客户端 56 槽瓦片绑定公式定案**：map+0x124 tile-row → 绑定文件 id [(row+1)*14, (row+2)*14)（0x43B77A imul 0x0E）；row0=wood id14-27（530 张含全部城镇洞穴）、row1=sand id28-41（14 张沙漠）。
+- **KR_ORDER 地形解析修正**：wood_X → Data/Wood/X.wil、sand_X → Data/Sand/X.wil（实测全存在）；Round 36『缺失』系顶层扫描错误。
+- **城镇 vs 洞穴层构成**：城镇 back{0,1}+mid/front{15,5,10,0}；洞穴 back{2}+mid{15,12}。
+- **三镇渲染对比**：0/1/02 全 200，视觉验证草地地面。
+- 落盘：`town-cave-map-deepdive-evidence.json`（F343，primary-bytes）+ RESEARCH_LOG Round 37。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

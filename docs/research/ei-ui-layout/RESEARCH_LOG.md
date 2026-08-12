@@ -5845,3 +5845,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔KR_ORDER 绑定〕**mapviewer 的 Zircon 表：0 tilesc / 1 tiles30c / 2 tiles5c / 3 smtilesc / 4 housesc / 5 cliffsc / 6 dungeonsc / 7 innersc / 8 furnituresc / 9 wallsc / 10 smobjectsc / 11 animationsc / 12 object1c / 13 object2c / 15-26 wood_* / 30-41 sand_* / 45-56 snow_* / 200 sabak。与客户端 0x43B600 的 56 槽（0x0E..0x1B / 0x1C..0x29）区间一致——逐图保真度标记 candidate。
 - **〔mapviewer 冒烟〕**/api/maps 200（0.map=比奇城 800×800 world 38400×25600 ladder [2,3,4]）；**/tile 渲染 200**（512×512 JPEG 88377B）；**/api/cell**（0.map 0,0 → {flag:2, back:{file:1, lib:tiles30c, frame:754}, mid:{file:0, lib:tilesc, frame:65535}, front:{file:15, lib:wood_tilesc, frame:65535}}）。
 - 落盘：`docs/research/mir3-map-reconstruction/map-inventory-evidence.json`（F342，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 36。
+
+## Round 37 (F343) — 2026-08-12：城镇/洞穴地图深挖 + 客户端 56 槽瓦片绑定公式定案
+
+- **〔核心〕客户端瓦片绑定公式定案（primary-bytes）**：0x43B600 载入循环（0x43B756 起）——56 槽 0x5612B4..0x565994（stride 0x144）先 0x465FE0 清；`al = byte[map+0x124]`（tile-row）；**start = (al+1)*0x0E、count = 0x0E**（0x43B77A imul 0x0E）；逐槽 `0x4660E0(&0x5600FC + id*0x144, &0x56B22C + id*0x104, 1)` → **每图绑定文件 id [(row+1)*14, (row+2)*14) = 14 个库**。分布：**row=0 → id 14..27（wood 族）530 张**；**row=1 → id 28..41（sand 族）14 张**（4/5/6/41-44/72-78 沙漠区）。**356 张洞穴 D-图全部 row=0（wood 瓦片）**。
+- **〔修正 Round 36〕KR_ORDER 地形库解析正确**：wood_X → Data/Wood/X.wil、sand_X → Data/Sand/X.wil（_find_library_path 实测：wood_tilesc → Data/Wood/Tilesc.wil、sand_tilesc → Data/Sand/Tilesc.wil、wood_housesc → Data/Wood/Housesc.wil 全存在）；Round 36『wood_* 缺失』系只看顶层目录的扫描错误——地形库在子目录。
+- **〔城镇层构成〕**0.map 比奇城 800×800：back {1:97521, 0:58275, 2:4201} + mid {15:406562, 0:89189, 5:86182, 10:46587} + front {15:541559}；1.map/02.map 同构（back{0,1} + mid/front{15 wood_tilesc, 5 cliffsc, 10 smobjectsc, 0 tilesc}）。**洞穴层构成**：D001-D012 400×400 back{2:40000 全 tiles5c} + mid{15 wood_tilesc, 12 object1c}——城镇 vs 洞穴地面族信号截然不同。
+- **〔渲染对比〕**0/1/02 三镇 tile(1,1) 全 200（512×512 JPEG ~88KB）；inspect_image 视觉验证 0.map/02.map = 草地地面纹理（绿/棕，无建筑——角块为空地）。
+- 落盘：`docs/research/mir3-map-reconstruction/town-cave-map-deepdive-evidence.json`（F343，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 37。

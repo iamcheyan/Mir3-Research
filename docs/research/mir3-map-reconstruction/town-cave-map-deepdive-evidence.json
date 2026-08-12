@@ -1,0 +1,72 @@
+{
+  "evidence_id": "town-cave-map-deepdive-2026-08-12-f343",
+  "title": "Round 37 (F343): Town/cave map deep-dive - 0.map Bichon City structure + cave family (356 D-maps, all row-0 wood libs) + client 56-slot tile binding resolved ((row+1)*14..(row+2)*14-1) + KR_ORDER terrain subdir resolution (Data/Wood, Data/Sand) + town render-diff",
+  "date": "2026-08-12",
+  "objective": "Deep-investigate the EI town and cave maps: (1) resolve the client's per-map tile-slot binding (0x43B600 loop: (obj+0x124 tile-row + 1)*0x0E..+0x0E file ids), (2) verify KR_ORDER terrain-lib resolution against the real Data subdirs (Wood/Sand/Snow/Forest), (3) measure town vs cave layer composition, (4) render-diff the three towns (0/1/02).",
+  "question": "Which file ids does each map bind (tile-row formula)? Do the terrain WILs resolve (Wood/Sand subdirs)? What distinguishes town vs cave maps in layer composition? Do the towns render correctly?",
+  "method": "Direct binary scan of 544 maps (header[0x14] tile-row, w/h, layer lib bytes); capstone decode of 0x43B600 binding loop; mapviewer _find_library_path test against real Data subdirs; HTTP tile renders + inspect_image visual verification.",
+  "scope": "$MIR3_EI_ROOT/Map (544 maps, 356 cave D-maps); $MIR3_EI_ROOT/Data + terrain subdirs; mapviewer 8899.",
+  "cell_analysis": {
+    "client_tile_binding_0x43B600": {
+      "loop": "0x43B756: 56 slots 0x5612B4..0x565994 (stride 0x144) pre-cleared via 0x465FE0",
+      "binding": "al = byte[map+0x124] (tile-row); start = (al+1)*0x0E; count = 0x0E; per id: 0x4660E0(&0x5600FC + id*0x144, &0x56B22C + id*0x104, 1)",
+      "formula": "map binds file ids [(row+1)*14, (row+2)*14) = 14 libs",
+      "distribution": "row=0 -> ids 14..27: 530 maps; row=1 -> ids 28..41: 14 maps",
+      "row1_maps": "4.map, 5.map, 6.map, 41.map, 42.map, 43.map, 44.map, 72.map, 73.map, 74.map, 75.map, 76.map, 77.map, 78.map (desert zone)",
+      "all_caves": "356 D-maps ALL row=0 (wood libs) - caves use wood tileset"
+    },
+    "kr_order_terrain_resolution": {
+      "method": "mapviewer _find_library_path: wood_X -> Data/Wood/X.wil; sand_X -> Data/Sand/X.wil; snow_X -> Data/Snow/X.wil; forest_X -> Data/Forest/X.wil; base -> Data/X.wil",
+      "verified": "wood_tilesc -> Data/Wood/Tilesc.wil; sand_tilesc -> Data/Sand/Tilesc.wil; wood_housesc -> Data/Wood/Housesc.wil; object1c -> Data/object1c.wil; wood_animationsc -> Data/Wood/Animationsc.wil (all present)",
+      "subdir_contents": "Wood/: Tilesc/Tiles5c/Dungeonsc/Housesc/Innersc/SmObjectsc/Wallsc/Animationsc; Sand/: Tilesc/Housesc/SmObjectsc/Wallsc/Animationsc; Snow/ + Forest/ also exist",
+      "conclusion": "KR_ORDER is CORRECT for EI: terrain libs resolve to subdir variants, not missing files (Round 36 'wood_* missing' was top-level-only scan error - corrected)"
+    },
+    "town_layer_composition": {
+      "0.map": "比奇城 800x800 9.44MB; back {1:97521, 0:58275, 2:4201}; mid {15:406562, 0:89189, 5:86182, 10:46587, 11:4277, 4:2936}; front {15:541559, 0:85373, 10:11249}",
+      "1.map": "600x600; back {1:51451, 0:31348, 2:6292, 15:902}; mid {15:259783, 5:45444, 10:22289, 13:1726}; front {15:339594, 10:6179, 5:3993}",
+      "02.map": "600x600; back {1:76502, 0:13498}; mid {15:276267, 5:47846, 10:14324, 4:676}; front {15:300415, 10:3092, 5:538}",
+      "pattern": "towns = back {0,1} ground + mid/front {15 wood_tilesc, 5 cliffsc, 10 smobjectsc, 0 tilesc} (houses/objects overlay ground)"
+    },
+    "cave_layer_composition": {
+      "D001": "400x400; back {2:40000} ALL tiles5c; mid {15 wood_tilesc, 12 object1c}",
+      "D002/D003/D011/D012": "400x400; back {2:40000}; mid {15} + sparse {12}",
+      "small_instances": "D001_001 30x30 back {2} mid {15,12,0}; D012_001 20x20 back {2} mid {15,12}",
+      "pattern": "caves = back 2 tiles5c + mid 15 wood_tilesc + 12 object1c (rock/decoration)"
+    },
+    "town_render_diff": {
+      "0.map": "tile(1,1) -> 200, 512x512 JPEG 88468B; inspect_image: 'mottled grass-like texture, green and brown, no buildings at this tile'",
+      "02.map": "tile(1,1) -> 200, 88365B; 'olive green/brownish grass, no structures'",
+      "1.map": "tile(1,1) -> 200, 88361B",
+      "conclusion": "all three towns render correct ground terrain (grass) at corner tiles; buildings/objects appear in denser tiles"
+    }
+  },
+  "exe_trace": {
+    "loader": "0x43B600: sprintf '.\\Map\\%s.map'; CreateFileA 0x4760DC; 0x43B820 reset; ReadFile 0x1C -> +0x110; w=word[+0x126] h=word[+0x128]; alloc w*h*3/4 -> +0x108; alloc w*h*14 -> +0x10C; 56 slots clear; tile-row bind; [+0x18C] flag -> 0x43B440 tile render",
+    "tile_slots": "0x5600FC + id*0x144 (selector table), name table 0x56B22C + id*0x104"
+  },
+  "audit_vs_exe": {
+    "Round 36_correction": "Round 36 'wood_*/sand_* WIL missing' was wrong - they live in Data/Wood, Data/Sand subdirs; mapviewer resolves them correctly",
+    "F331": "tile-row header[0x14] in {0,1} confirmed; formula (row+1)*14 now byte-verified from 0x43B77A imul 0x0E",
+    "F331_0x43B440": "tile render gates on [+0x18C] (minimap flag) - town/cave render path confirmed"
+  },
+  "contrast": {
+    "town_vs_cave": "towns: back {0,1} (mixed tilesc/tiles30c) + mid/front {15,5,10,0} (wood_tilesc/cliffsc/smobjectsc/tilesc); caves: back {2} (tiles5c uniform) + mid {15,12} (wood_tilesc/object1c) - distinct ground family signals terrain type",
+    "row0_vs_row1": "row0 = wood family (530 maps incl. all towns+caves); row1 = sand family (14 desert maps)"
+  },
+  "verdict": "Client per-map tile binding resolved (primary-bytes): map binds file ids [(header[0x14]+1)*14, (header[0x14]+2)*14) via 0x43B600 (0x43B77A imul 0x0E). 530 maps row-0 (wood ids 14-27), 14 desert maps row-1 (sand ids 28-41), all 356 caves row-0. KR_ORDER terrain resolution verified against Data/Wood + Data/Sand subdirs (Round 36 correction). Town layers: back{0,1}+mid/front{15,5,10,0}; caves: back{2}+mid{15,12}. Towns render correct grass terrain (visual verify).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tile-row formula, slot ranges and layer bytes read directly from EXE + 544 map files; visual render verified via inspect_image; KR_ORDER is mapviewer's table (Zircon-compatible) - EI binding verified by formula.",
+  "cross_refs": [
+    "F331: map loader 0x43B600, tile slots 0x5612B4, tile render 0x43B440",
+    "Round 36: 544-map inventory, KR_ORDER table",
+    "mapviewer-investigation.md"
+  ],
+  "tool": "python3 struct binary scan; capstone; mapviewer HTTP; inspect_image",
+  "reproduce": "scan header[0x14] + layer bytes (see Round 36 script); capstone 0x43B600+0x156; curl /tile + /api/cell; _find_library_path test",
+  "notes": [
+    "cave D-maps: D001-D012 main + D0xxx_xxx instances; D1011/D1012 etc = Bichon cave branches",
+    "0.map mid lib 0 (tilesc) 89189 cells = ground detail overlay under objects",
+    "KR_ORDER id 14/27/28/29 unassigned (binding gaps; 14 ids bound but only 12-13 libs named - idle slots)",
+    "next: deep-dive D1011/D1012 cave + snow/forest maps (row-0 wood but snow/forest subdirs exist for other clients)"
+  ]
+}
