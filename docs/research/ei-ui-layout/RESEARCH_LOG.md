@@ -7879,3 +7879,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**365 证据 JSON**；三服务 200；master 7c81bb0（**399 连发 F335-F740 已推**）。
 - **〔弧〕**买/卖/修（F555）+ 管理/命中（F661）+ 绘制（F662）+ 点击（F740）——**商店系统 100% 字节级**（模式 [0x5F8] 4 态 + 物品列表 [0x70C] + 购买 0x3EA/卖修发送 + 确认命中），**F731 转发目标 0x44F1D0 闭合**。
 - 落盘：shop-family-final-closure-evidence.json（F741，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 435。
+## Round 436 (F742) — 2026-08-12：HANDOFF 刷新 57（Round 433-435）+ 400 连发里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 433-435（F740-F741：商店点击 + 商店家族最终闭合）；基线 Round 432=994b5d7 → Round 435=6cd1af5（**400 连发 F335-F741**）——**400 连发里程碑**。
+- 落盘：handoff-refresh-57-evidence.json（F742，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 436。

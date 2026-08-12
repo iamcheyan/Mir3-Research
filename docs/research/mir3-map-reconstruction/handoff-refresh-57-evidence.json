@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-57-2026-08-12-f742",
+  "title": "Round 436 (F742): HANDOFF refresh 57 - Rounds 433-435 (F739-F741: HANDOFF 56, shop window click handler, shop family final closure), baseline Round 432=994b5d7 -> Round 435=6cd1af5 (400 consecutive F335-F741), doc maintenance + 400-consecutive-round milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 433-435.",
+  "question": "What changed since HANDOFF refresh 56?",
+  "method": "Append Round 433-435 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 433-435 appended (3 rounds, F739-F741)",
+    "baseline": "Round 432=994b5d7 -> Round 435=6cd1af5 (400 consecutive F335-F741)",
+    "milestone": "400 consecutive shipping rounds reached",
+    "arcs": {"shop": "F740 click", "closure": "F741 shop final"},
+    "key": "shop system 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F739": "refresh 56 baseline -> now refresh 57", "F335-F741": "400 rounds"
+  },
+  "contrast": {
+    "refresh_56_vs_57": "F740-F741 (2 new findings + 400 milestone)"
+  },
+  "verdict": "HANDOFF refreshed 57 (F742): Rounds 433-435 documented (shop 100% + 400 consecutive rounds), baseline 994b5d7 -> 6cd1af5, 400 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F740-F741 evidence.",
+  "cross_refs": ["F739: refresh 56", "F741: shop closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 433-435 section to HANDOFF",
+  "notes": [
+    "400 consecutive shipping rounds F335-F741",
+    "next: remaining deep corners, sim polish"
+  ]
+}
