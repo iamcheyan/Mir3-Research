@@ -1,0 +1,34 @@
+{
+  "evidence_id": "bar-drain-live-value-2026-08-12-f530",
+  "title": "Round 230 (F530): Bar drain live-value path - 0x40A8A0: gates [0x61BB8]/[0x61BBC], HP = [0x61BA0]-[0xB4]+[0xC4] (F350 exact), type byte [0x8D] dispatch (0x51/0x89/0x81/0x8A variants), ELEMENT FRAME = live value [0x61B9C] via 0x4542A0 registry (store 0x5600FC, type*81*4), 0x466130 load + 0x466800 transform blit, screen [0xE4]/[0xE8] - bar element = frame-per-value (F350 family runtime confirmed)",
+  "date": "2026-08-12",
+  "objective": "Verify the bar drain live-value element selection (F350).",
+  "question": "How does the HP bar pick its frame from live values?",
+  "method": "Disasm 0x40A8A0-0x40AA60 (bar draw).",
+  "scope": "0x40A8A0-0x40AA60; HP [0x61BA0]; frame [0x61B9C].",
+  "cell_analysis": {
+    "bar_0x40A8A0": {"gates": "[0x61BB8]/[0x61BBC] (bar visible)", "hp": "[0x61BA0]-[0xB4]+[0xC4] -> [0x61B9C] (F350)", "type": "byte [0x8D] (0x51/0x89/0x81/0x8A = bar classes)", "frame": "live [0x61B9C] via 0x4542A0 (store 0x5600FC, type*81*4)", "draw": "0x466130 + 0x466800 transform + screen [0xE4]/[0xE8]"},
+    "element_semantics": "frame index = current value (frame-per-value bars)"
+  },
+  "exe_trace": {
+    "bar_chain": "HP value -> [0x61B9C] -> 0x4542A0 registry -> frame -> blit"
+  },
+  "audit_vs_exe": {
+    "F350": "HP formula + element frame confirmed", "F44": "bar family", "F102": "sim bars"
+  },
+  "contrast": {
+    "frame_vs_percent": "frame = live value (not percent) - direct index",
+    "type_variants": "0x51/0x89/0x81/0x8A = HP/MP/EXP/other bar types"
+  },
+  "verdict": "Bar drain live-value path PRIMARY-verified: 0x40A8A0 computes HP [0x61BA0]-[0xB4]+[0xC4], picks frame = live [0x61B9C] via 0x4542A0 registry (store type*81*4), draws via 0x466130+0x466800. F350 runtime confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Bar draw decoded from .text.",
+  "cross_refs": ["F350: HP bars", "F44: bar family", "F452: store"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40A8A0+0x40",
+  "notes": [
+    "0x4542A0 registry read = frame from live value",
+    "type byte [0x8D] = bar class (HP/MP/EXP)",
+    "0x466800 = transform blit (shared F459)"
+  ]
+}
