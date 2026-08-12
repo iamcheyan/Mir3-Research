@@ -7783,3 +7783,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔碰撞〕**0x43C9F0 封锁检查（**瓦片 bit0**、stride 14B [0x10C]）；0x43CA40 属性提取（+0xC 字：**2 位类别 (>>14)&3 + 8 位值 (>>4)&0xFF**）；0x43CAF0 **8 方向偏移计算器**（+4 mod 8 环绕、jt 0x43CC04、每方向 dx/dy × 距离）——地图移动核心（F613 用）。
 - 落盘：tile-collision-attribute-direction-evidence.json（F719，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 413。
+## Round 414 (F720) — 2026-08-12：地图核心弧闭合（F717-F719 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**344 证据 JSON**；三服务 200；master 9681c4e（**378 连发 F335-F719 已推**）。
+- **〔弧〕**瓦片访问器（F717）+ 相机渲染/滚动（F718）+ 碰撞/方向（F719）——**地图核心完整**（瓦片取/可行走/封锁 + 相机绘制/平移 + 碰撞/8 方向），**列明角落 0x43C9F0 闭合**。
+- 落盘：map-core-arc-closure-evidence.json（F720，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 414。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-core-arc-closure-2026-08-12-f720",
+  "title": "Round 414 (F720): Map core arc CLOSED (F717-F719) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 9681c4e (378 consecutive F335-F719), 344 evidence JSONs; arc: tile accessors (F717) + camera renderer/scroll (F718) + collision/direction (F719) - map core COMPLETE byte-level (tile GET/walkable/block + camera draw/pan + collision/8-dir), closing listed corner 0x43C9F0",
+  "date": "2026-08-12",
+  "objective": "Close the map core arc.",
+  "question": "Is the map core fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "344 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F717": "tile accessors", "F718": "camera renderer/scroll", "F719": "collision/direction"},
+    "map": "GET/walkable/block + camera + collision = COMPLETE (F613/F610)",
+    "milestone": "378 consecutive rounds F335-F719"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F719": "378 rounds pushed; map core complete, corner 0x43C9F0 closed"
+  },
+  "contrast": {
+    "tile_vs_camera": "accessors + renderer",
+    "collision_vs_move": "block + 8-dir"
+  },
+  "verdict": "Map core arc CLOSED (F720): tile + camera + collision all byte-level; validation green, 378 consecutive rounds, 344 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F717-F719.",
+  "cross_refs": ["F717: accessors", "F718: camera", "F719: collision"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "378 consecutive shipping rounds F335-F719",
+    "corner 0x43C9F0 closed",
+    "next: HANDOFF refresh 50, remaining corners"
+  ]
+}
