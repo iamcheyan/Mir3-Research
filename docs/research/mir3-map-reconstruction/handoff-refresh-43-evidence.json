@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-43-2026-08-12-f697",
+  "title": "Round 391 (F697): HANDOFF refresh 43 - Rounds 388-390 (F694-F696: hero-actor move + hero-actor arc closure), baseline Round 387=4db4bee -> Round 390=076c820 (355 consecutive F335-F696), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 388-390.",
+  "question": "What changed since HANDOFF refresh 42?",
+  "method": "Append Round 388-390 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 388-390 appended (3 rounds, F694-F696)",
+    "baseline": "Round 387=4db4bee -> Round 390=076c820 (355 consecutive F335-F696)",
+    "arcs": {"move": "F695 hero-actor move", "closure": "F696 hero-actor arc"},
+    "key": "hero movement complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F694": "refresh 42 baseline -> now refresh 43", "F335-F696": "355 rounds"
+  },
+  "contrast": {
+    "refresh_42_vs_43": "F695-F696 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 43 (F697): Rounds 388-390 documented (hero movement), baseline 4db4bee -> 076c820, 355 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F695-F696 evidence.",
+  "cross_refs": ["F694: refresh 42", "F696: hero closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 388-390 section to HANDOFF",
+  "notes": [
+    "355 consecutive shipping rounds F335-F696",
+    "next: remaining deep corners, sim polish"
+  ]
+}

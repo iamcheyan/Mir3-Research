@@ -7684,3 +7684,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**英雄角色移动（F695）——**英雄移动完整（移动 F695 + 碰撞 F613 + 选择 F692）**，闭合战斗/移动链。
 - **〔仓库〕**用户/兄弟 Zircon .Zl 编辑（zlsdk.py/wilviewer.py）在工作树——**未触碰**。
 - 落盘：hero-actor-arc-closure-evidence.json（F696，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 390。
+## Round 391 (F697) — 2026-08-12：HANDOFF 刷新 43（Round 388-390）
+
+- **〔刷新〕**HANDOFF 追加 Round 388-390（F695-F696：英雄角色移动 + 英雄角色弧）；基线 Round 387=4db4bee → Round 390=076c820（**355 连发 F335-F696**）。
+- 落盘：handoff-refresh-43-evidence.json（F697，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 391。

@@ -2181,9 +2181,14 @@ git diff --check
 - **354 连发 + 320 证据 + 英雄移动完整**。
 - 落盘：`hero-actor-arc-closure-evidence.json`（F696）+ RESEARCH_LOG Round 390。
 
+## Round 391 (2026-08-12) — HANDOFF 刷新 43（Finding 697）
+
+- **Round 388-390 追加 + 355 连发**（英雄移动入档）。
+- 落盘：`handoff-refresh-43-evidence.json`（F697）+ RESEARCH_LOG Round 391。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（英雄移动完整；下一弧：HANDOFF 刷新 43/剩余角落）。
+- 无阻塞项（英雄移动完整；下一弧：剩余深层角落/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
