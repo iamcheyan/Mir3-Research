@@ -331,6 +331,14 @@ git diff --check
 - **模拟器热键层**：builder 新增 hotkeys/window_catalog 块；app.js bindHotkeys（Q/W/E/R/S/D/G/N）；浏览器验证 Q 开 window.inventory；数据重生成 windows=18。
 - 落盘：`status-window-family-evidence.json`（F339，primary-bytes）+ matrix status-window 新记录 + layout.json version 0.17（2 新记录）+ builder/app.js/data 更新 + RESEARCH_LOG Round 33。
 
+## Round 34 (2026-08-12) — 物品提示框 + 商店窗口家族（Finding 340）
+
+- **〔核心〕0x4341F0 = 物品提示框渲染器**：行列表（+0x64/+0x70 stride 0x3C、0xF 行高、0x45E0C0 测宽）→ 浮动矩形（0x466800 浮点缩放）→ 图标帧（0x5668C4 + word[+0x28]）→ 800px 裁剪 → 底板 0x329696（0x45E570）→ 文本 0x45DE50。调用者：status 12 槽 / 背包 / 商店。
+- **背包鼠标 0x42FAB0**：门 [0x7243C4] → 0x42F240 46 槽命中（stride 0x184）→ 0x4341F0(&slot+0x780, mouse+0xA)。
+- **商店 id2 定案**：ctor 0x44D310（8 控件帧对 0x3F2-0x3F9 + gauge + 26 槽）、paint 0x44E260（mode +0x5F8 双布局）、mouse 0x44E650（mode 1/2 → 0x44E800 → 0x4341F0，[item+0x22] 0xA/0xB 标志）。
+- **三套 tooltip 系统**：物品 0x4341F0（0x329696）/ caption 0x417370（0x96FFFF）/ 悬停名签 0x40BB00。
+- 落盘：`item-tooltip-and-store-family-evidence.json`（F340，primary-bytes）+ matrix item-tooltip-store 新记录 + layout.json version 0.18（2 新记录）+ RESEARCH_LOG Round 34。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

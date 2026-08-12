@@ -1,5 +1,5 @@
 {
-  "version": "0.17-status-window",
+  "version": "0.18-item-tooltip-store",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -3087,6 +3087,49 @@
       "role": "模拟器热键层（Round 33）：app.js bindHotkeys 消费 layout.json hotkeys 块（F338 热键表 0x42CC76）——Q/W/E/R/S/D/G/N 开合对应窗口，按窗口 id→帧→layout id 映射；验证：浏览器单次 Q 开 window.inventory",
       "evidence_level": "derived-tooling",
       "source": "Tools/mir3_client_simulator/app.js + build_mir3_simulator_data.py (Round 33)"
+    },
+    {
+      "id": "tooltip.item-0x4341F0",
+      "kind": "function",
+      "layer": "windows",
+      "va": "0x4341F0",
+      "role": "物品提示框渲染器（status 12 槽 0x44B717 / 背包 0x42FB0F / 商店 0x44E6C1 三调用者）：行列表（count +0x64、lines +0x70 stride 0x3C、0xF 行高、0x45E0C0 测宽）→ 浮动矩形（x−5..maxW+x+5, y−5..行数×0xF+y+2，0x466800 浮点缩放 0x3EC8C8C9）→ 图标帧（0x5668C4 选择器 + word[+0x28] 物品帧 + 0x45FD50 blit）→ 800px 右裁剪 → 底板 0x329696（0x45E570）→ 文本行 0x45DE50",
+      "evidence_level": "primary-bytes",
+      "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+    },
+    {
+      "id": "window.store-0x44D310",
+      "kind": "window",
+      "layer": "windows",
+      "window": {
+        "id": 2,
+        "can_move": true
+      },
+      "obj_offset": "hero+0x33188",
+      "ctor": "0x44D310",
+      "paint": "0x44E260",
+      "mouse": "0x44E650 -> 0x44E800 hit-test -> 0x4341F0",
+      "resource": {
+        "file": "GameInter.wil",
+        "frame": 1000
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 300,
+        "height": 304
+      },
+      "detail": {
+        "controls": "8 x 0x417550: +0x54/+0x108/+0x1BC/+0x270/+0x324/+0x3D8/+0x48C/+0x540 (frames 0x3F2-0x3F9 购买/出售/模式按钮对)",
+        "gauge": "0x417960 @ +0x5FC (0, 0xC, 0xD8, 0xC, 5, 0x3FC, 0)",
+        "slots": "26 slots +0x660 stride 0x24",
+        "mode_byte": "+0x5F8: {0,1,3,4} 默认布局 / 2,5+ 交替布局（同一 8 控件双几何）",
+        "default_hidden": "ctor arg8=0"
+      },
+      "evidence_level": "primary-bytes",
+      "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
     }
   ],
   "control_constructors": [

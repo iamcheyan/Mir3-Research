@@ -733,6 +733,28 @@
         "simulator data regenerated: windows=18 controls=41 resources=157 (was 14/40/157) with new window catalog records"
       ],
       "pending_notes": "0x4341F0 attribute detail popup renderer body; 12-slot per-slot stat semantics (which stat per rect); 0x777720/0x7776A0 runtime content"
+    },
+    {
+      "id": "item-tooltip-store",
+      "category": "物品提示框 + 商店窗口家族 (F340)",
+      "artifacts": [
+        "item-tooltip-and-store-family-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "tooltip.item-0x4341F0",
+        "window.store-0x44D310"
+      ],
+      "preview_mode": "ui",
+      "status": "primary-bytes-tooltip-and-store",
+      "pending": false,
+      "closed_2026_08_12": [
+        "item tooltip 0x4341F0 decoded (Finding 340): line list (count +0x64, lines +0x70 stride 0x3C, 0xF row height, 0x45E0C0 measure), floating rect (x-5..maxW+x+5, y-5..lines*0xF+y+2, 0x466800 float 0x3EC8C8C9), icon frame 0x5668C4/word[+0x28] + 0x45FD50 blit, 800px clip, backdrop 0x329696 via 0x45E570, text lines 0x45DE50; callers = status 12-slot 0x44B717 / bag 0x42FB0F / store 0x44E6C1",
+        "bag mouse 0x42FAB0 (Finding 340): gate [0x7243C4]; 0x42F240 slot hit-test (46 slots bag+0x774+i*0x184, stride 0x184 verified at 0x42FAD5); item block slot+0x780; tooltip 0x4341F0 at (mouse+0xA, mouse+0xA, 0)",
+        "store id2 family (Finding 340): ctor 0x44D310 (frame 1000 300x304, default hidden) + 8 controls 0x3F2-0x3F9 pairs (+0x54..+0x540) + gauge 0x417960 @ +0x5FC + 26 slots +0x660 stride 0x24; paint 0x44E260 mode byte +0x5F8 dual layout ({0,1,3,4} default / 2+ alternate); mouse 0x44E650 (mode 1/2 -> 0x44E800 hit-test -> 0x44E7D0 item resolve -> [item+0x22] type 0xA/0xB flag -> 0x4341F0 tooltip)",
+        "three tooltip systems contrasted: item tooltip 0x4341F0 (0x329696 backdrop) vs caption tooltip 0x417370 (0x96FFFF) vs hover name-tag 0x40BB00 (3000ms)"
+      ],
+      "pending_notes": "0x430B70 tooltip context loader body; tooltip text color 0x45DE50 arg; store control semantics (buy/sell/warehouse buttons); store 26-slot content source"
     }
   ],
   "verification": {

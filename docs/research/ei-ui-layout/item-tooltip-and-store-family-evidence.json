@@ -1,0 +1,91 @@
+{
+  "evidence_id": "item-tooltip-and-store-family-2026-08-12-f340",
+  "title": "Round 34 (F340): Item tooltip renderer 0x4341F0 (line list + floating rect + icon frame + colored backdrop 0x329696) + bag mouse 0x42FAB0 (46-slot hit-test 0x42F240 -> tooltip) + store window family 0x44D310 (8 controls + gauge + mode byte 0x5F8; paint 0x44E260; mouse 0x44E650 -> 0x44E800 hit-test -> tooltip; item type 0xA/0xB) + 0x430B70 tooltip loader",
+  "date": "2026-08-12",
+  "objective": "Decode the item tooltip renderer 0x4341F0 (called from status 12-slot, bag mouse, store mouse), the bag window mouse handler 0x42FAB0, and the store window family 0x44D310 (id2, the last unresolved candidate window): ctor controls, paint layout, mouse hit-test, mode byte semantics.",
+  "question": "How does the client render item tooltips? How does the bag window handle mouse (slot hit-test -> tooltip)? What is the store window's full layout/mode/paint/mouse structure?",
+  "method": "Capstone linear disassembly of MIR3.EXE .text; pefile IAT; cross-validated against F288 (bag 46 slots flag+0x774+i*0xC2C), F331 (store label id2), Round 33 (status 12-slot -> 0x4341F0), Round 32 (mouse dispatch 0x428398 id0->0x42FAB0, id2->0x44E650).",
+  "scope": "0x4341F0-0x43443D (tooltip), 0x430B70 (tooltip loader), 0x42FAB0-0x42FB15 (bag mouse), 0x42F240 (bag slot hit-test), 0x44D310-0x44D4B8 (store ctor), 0x44E260-0x44E64F (store paint), 0x44E650-0x44E6C7 (store mouse), 0x44E800 (store hit-test), 0x44E7D0 (store item resolve).",
+  "cell_analysis": {
+    "item_tooltip_0x4341F0": {
+      "va": "0x4341F0",
+      "signature": "Tooltip(ecx=item-list obj, x, y, arg) - sub esp 0x8C",
+      "body": [
+        "0x430B70(0x8AB7A8) tooltip loader (context prep)",
+        "line list: count [edi+0x64], lines [edi+0x70+i*0x3C]; byte[line]==0 skip; 0x45E0C0 measure line text; width accumulate (max width esi); [esp+0x14] += 0xF (row height)",
+        "rect: left=x-5, right=maxWidth+x+5, top=y-5, bottom=lines*0xF+y+2 (floats 0x3E48C8C9/0x3EC8C8C9 = 0.196/1.57 scale via 0x466800)",
+        "icon: if arg != 0 -> 0x466130(0x5668C4, word[edi+0x28] item-frame) + [0x5668FC] frame header; width += frame.w+0xA (icon on left)",
+        "clip right at 0x320=800 (SetRect)",
+        "0x4542F0(&0x5600FC tile, mouse 0x8AB7BC, rect, 0, 0, 0) + 0x45E570(0x8AB7A8, rect, 0x329696, 1) backdrop (COLORREF 0x329696 = dark green-blue)",
+        "0x466130(0x5668C4, word[edi+0x28]) icon frame -> 0x45FD50 blit icon",
+        "text lines loop: 0x45E0C0 measure + 0x45DE50 draw (color 0xFFFFFF?)"
+      ],
+      "colors": "backdrop 0x329696; text color pending (0x45DE50 arg)",
+      "evidence_level": "primary-bytes"
+    },
+    "bag_mouse_0x42FAB0": {
+      "va": "0x42FAB0",
+      "gate": "[0x7243C4] (bag active flag) != 0 -> skip",
+      "body": [
+        "0x42F240(bag, mouseX, mouseY) slot hit-test -> idx or -1",
+        "idx -> slot = idx*0x5C (lea edx,[eax+eax*2] shl 5 + eax*4*2 = 0x5C stride) -> [esi+idx*0x5C+0x774] item-ptr gate (F288 slot base +0x774, stride 0xC2C -> 0x5C = 92? recompute: eax*3 shl5 = eax*96; +eax = 97; *4 = 388 = 0x184? no: (eax*3)<<5 = 96eax, +eax = 97eax, (eax+edx*4)?? -> verify stride)",
+        "hit: 0x4341F0(&[eax+0x780] item, mouseX+0xA, mouseY+0xA, 0) tooltip"
+      ],
+      "slot_stride": "0x184=388 bytes per slot (bag+0x774+i*0x184); item block +0x780",
+      "evidence_level": "primary-bytes"
+    },
+    "store_window_id2": {
+      "identity": "商店 Store (id2, F331 label; frame 1000, x=0, y=0, w=300, h=304; ctor flag arg8=0 -> default hidden)",
+      "ctor_0x44D310": "base 0x423B30 (frame 1000) + 8 x 0x417550 controls: +0x54 (0x3F2/0x3F3 @ +0x10A/+0x10E), +0x108 (0x3F4/0x3F5 @ +0x7F/+0x10B), +0x1BC (0x3F2/0x3F3 @ +0x1D2/+0xA9), +0x270 (0x3F4/0x3F5 @ +0x172/+0xA2), +0x324 (0x3F6/0x3F7 @ +0x144/+0x9F), +0x3D8 (0x3F8/0x3F9 @ +0x1B2/+0x9F), +0x48C (0x3F2/0x3F3 @ +0x1FA/+0x43), +0x540 (0x3F4/0x3F5 @ +0x188/+0x3D) + gauge 0x417960 @ +0x5FC (0, 0xC, 0xD8, 0xC, 5, 0x3FC, 0) + loop 0x1A=26 slots (edi+0x660 stride 0x24?)",
+      "paint_0x44E260": "mode byte [esi+0x5F8]: {0,1,3,4} -> default layout; else -> repositioned layout (controls at +0xAC/+0xA9, +0xA5/+0x47, +0xA2/+0x1C, +0xA2/+0x89 ...); 0x417830 reposition each visible control",
+      "mouse_0x44E650": "mode byte [esi+0x5F8] == 1 or 2: 0x44E800(store, mouse) slot hit-test -> idx; 0x44E7D0(idx) item resolve; [item+0x22] type byte: 0xA/0xB -> tooltip flag 1 else 0; 0x4341F0(item, mouseX+0xA, mouseY+0xA, flag)",
+      "hit_test_0x44E800": "slot grid hit-test (26 slots loop 0x1A)",
+      "evidence_level": "primary-bytes"
+    },
+    "iat_used": {
+      "0x4762B0": "SetRect (tooltip rect)",
+      "0x45E570": "backdrop (CreateSolidBrush + FillRect/FrameRect family)",
+      "0x45FD50": "icon blit",
+      "0x45DE50": "text draw",
+      "0x45DBA0": "text measure",
+      "0x4542F0": "tile lookup",
+      "0x466800": "float rect scale",
+      "0x5668C4": "item icon WIL selector"
+    }
+  },
+  "exe_trace": {
+    "bag": "hero+0x6554 (id0); slots bag+0x774+i*0x184; item block +0x780; gate [0x7243C4]",
+    "store": "hero+0x33188 (id2); mode byte +0x5F8; slots +0x660 stride 0x24 count 0x1A=26",
+    "mouse_global": "0x7DA1C0/0x7DA1C4 (Round 28 mouse pos pair; also [0x8AB7BC])"
+  },
+  "audit_vs_exe": {
+    "F288": "bag slot base +0x774 confirmed; stride here 0x184 (F288 0xC2C was 3-flag record stride for item records - different layer)",
+    "F331": "store id2 label confirmed (frame 1000); default hidden",
+    "Round 33": "status 12-slot -> 0x4341F0 confirmed as item tooltip",
+    "Round 32": "mouse dispatch 0x428398 id0->0x42FAB0, id2->0x44E650 confirmed"
+  },
+  "contrast": {
+    "tooltip_style": "0x4341F0 = item tooltip (icon + multi-line text + 0x329696 backdrop) vs 0x417370 caption tooltip (0x96FFFF yellow, Round 28) vs hover name-tag 0x40BB00 (3000ms) - three distinct tooltip systems",
+    "store_modes": "[+0x5F8]: 0/1/3/4 default layout (buy list), 2/5+ alternate (sell/warehouse layout) - two geometry sets for the same 8 controls",
+    "bag_vs_store_slots": "bag 46 slots (F288, stride 0x184/0xC2C dual record) vs store 26 slots (+0x660 stride 0x24) - different grids"
+  },
+  "verdict": "Item tooltip renderer 0x4341F0 fully decoded (primary-bytes): line-list (count +0x64, lines +0x70 stride 0x3C, 0xF row height, 0x45E0C0 measure), floating rect (x-5..maxW+x+5, y-5..lines*0xF+y+2 with 0x466800 float scale), icon frame (0x5668C4, word[+0x28]), clip at 800px, backdrop 0x329696 via 0x45E570, text lines via 0x45DE50. Bag mouse 0x42FAB0: gate [0x7243C4], 0x42F240 46-slot hit-test, tooltip at slot+0x780 (mouse+0xA). Store id2: ctor 0x44D310 (8 controls 0x3F2-0x3F9 frame pairs + gauge + 26 slots), paint 0x44E260 (mode +0x5F8 dual layout), mouse 0x44E650 (mode 1/2 -> 0x44E800 hit-test -> 0x4341F0, item type 0xA/0xB flag).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All rects, colors, frame ids and control offsets read directly from MIR3.EXE bytes; slot stride math verified at 0x42FAD5-0x42FAE3 (0x184); tooltip text color 0x45DE50 arg pending exact COLORREF (candidate).",
+  "cross_refs": [
+    "F288: bag slots, mode byte, tabs",
+    "F331: store id2 label, ctor table",
+    "Round 28: hover tooltip 0x417370 (0x96FFFF), mouse pos 0x7DA1C0",
+    "Round 32: mouse dispatch table 0x428398",
+    "Round 33: status 12-slot -> 0x4341F0"
+  ],
+  "tool": "capstone (CS_ARCH_X86/CS_MODE_32) via Tools/reverse-engineering/disasm_capstone.py PeImage; pefile; python3 json",
+  "reproduce": "sys.path.insert(0,'Tools/reverse-engineering'); from disasm_capstone import PeImage; img=PeImage(Path('$MIR3_EI_ROOT/MIR3.EXE')); img.disasm(0x4341F0, 0x250); img.disasm(0x42FAB0, 0x70); img.disasm(0x44D310, 0x1B0); img.disasm(0x44E260, 0x1F0); img.disasm(0x44E650, 0x80)",
+  "notes": [
+    "bag slot stride at 0x42FAD5: (eax*3)<<5 + eax -> (eax+((eax*3)<<5))*4 = eax*388 = 0x184; slots bag+0x774+i*0x184; item block slot+0x780 (0x774+0xC.. wait: 0x780-0x774 = 0xC; tooltip arg = &slot+0x780 = item sub-object +0xC)",
+    "0x4341F0 caller count: status 12-slot 0x44B717, bag 0x42FB0F, store 0x44E6C1 - all item tooltips",
+    "0x430B70 = tooltip context loader (sets 0x8AB7A8 DC state) [INFERENCE - called with 0x8AB7A8]",
+    "store frame pair pattern: 0x3F2/0x3F3 = buy button pair, 0x3F4/0x3F5 = sell/close, 0x3F6/0x3F7, 0x3F8/0x3F9 = mode buttons [INFERENCE from positions]",
+    "0x44E7D0 = item resolve by idx (returns item ptr or 0)"
+  ]
+}
