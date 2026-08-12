@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-46-2026-08-12-f706",
+  "title": "Round 400 (F706): HANDOFF refresh 46 - Rounds 397-399 (F703-F705: control hit/set-pos + control final closure + 400-round milestone), baseline Round 396=6e94d4d -> Round 399=bb029ae (364 consecutive F335-F705), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 397-399.",
+  "question": "What changed since HANDOFF refresh 45?",
+  "method": "Append Round 397-399 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 397-399 appended (3 rounds, F703-F705)",
+    "baseline": "Round 396=6e94d4d -> Round 399=bb029ae (364 consecutive F335-F705)",
+    "milestone": "400 shipping rounds reached (Round 400)",
+    "arcs": {"hit": "F704 control hit/set-pos", "closure": "F705 control final"},
+    "key": "control system 100% byte-level"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F703": "refresh 45 baseline -> now refresh 46", "F335-F705": "364 rounds"
+  },
+  "contrast": {
+    "refresh_45_vs_46": "F704-F705 (2 new findings + milestone)"
+  },
+  "verdict": "HANDOFF refreshed 46 (F706): Rounds 397-399 documented (control 100% + 400-round milestone), baseline 6e94d4d -> bb029ae, 364 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F704-F705 evidence.",
+  "cross_refs": ["F703: refresh 45", "F705: control closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 397-399 section to HANDOFF",
+  "notes": [
+    "364 consecutive shipping rounds F335-F705",
+    "400-round milestone documented",
+    "next: remaining deep corners, sim polish"
+  ]
+}

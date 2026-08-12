@@ -7724,3 +7724,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**329 证据 JSON**；三服务 200；master 60b477e（**363 连发 F335-F704 已推**）。
 - **〔弧〕**构造/绘制（F701）+ 命中/定位/构造（F704）——**控件系统 100% 字节级（构造 + 绘制 + 命中 + 定位）**，支撑全部窗口控件（F313/F546/F547/F580）。
 - 落盘：control-final-closure-evidence.json（F705，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 399。
+## Round 400 (F706) — 2026-08-12：HANDOFF 刷新 46（Round 397-399）+ 400 轮里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 397-399（F704-F705：控件命中/定位 + 控件最终闭合）；基线 Round 396=6e94d4d → Round 399=bb029ae（**364 连发 F335-F705**）——**400 轮里程碑**。
+- 落盘：handoff-refresh-46-evidence.json（F706，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 400。
