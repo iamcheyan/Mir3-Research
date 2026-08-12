@@ -8559,3 +8559,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**522 证据 JSON**；三服务 200；master 4e52da5（**556 连发 F335-F897 已推**）。
 - **〔弧〕**caption 分派（F580）+ 点击分派（F587）+ 分派尾部（F897）——**caption 分派完整**（16 分支 + 15 窗口处理器 + 全重置 + 滚动条），HUD 输入表面 100%。
 - 落盘：caption-dispatch-closure-evidence.json（F898，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 592。
+## Round 593 (F899) — 2026-08-12：HANDOFF 刷新 110（Round 590-592）+ 110 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 590-592（F897-F898：caption 分派尾部 + caption 分派闭合）；基线 Round 589=17ef963 → Round 592=7ef2235（**557 连发 F335-F898**）——**HANDOFF 刷新 110 里程碑**。
+- 落盘：handoff-refresh-110-evidence.json（F899，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 593。

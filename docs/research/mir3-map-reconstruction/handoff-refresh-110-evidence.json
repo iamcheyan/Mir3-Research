@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-110-2026-08-12-f899",
+  "title": "Round 593 (F899): HANDOFF refresh 110 - Rounds 590-592 (F896-F898: HANDOFF 109, caption dispatch tail, caption dispatch closure), baseline Round 589=17ef963 -> Round 592=7ef2235 (557 consecutive F335-F898), doc maintenance + refresh-110 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 590-592.",
+  "question": "What changed since HANDOFF refresh 109?",
+  "method": "Append Round 590-592 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 590-592 appended (3 rounds, F896-F898)",
+    "baseline": "Round 589=17ef963 -> Round 592=7ef2235 (557 consecutive F335-F898)",
+    "milestone": "HANDOFF refresh 110 reached",
+    "arcs": {"caption": "F897 dispatch tail", "closure": "F898 caption"},
+    "key": "caption dispatch complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F896": "refresh 109 baseline -> now refresh 110", "F335-F898": "557 rounds"
+  },
+  "contrast": {
+    "refresh_109_vs_110": "F897-F898 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 110 (F899): Rounds 590-592 documented (caption dispatch complete), baseline 17ef963 -> 7ef2235, 557 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F897-F898 evidence.",
+  "cross_refs": ["F896: refresh 109", "F898: caption closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 590-592 section to HANDOFF",
+  "notes": [
+    "557 consecutive shipping rounds F335-F898",
+    "HANDOFF refresh 110 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}
