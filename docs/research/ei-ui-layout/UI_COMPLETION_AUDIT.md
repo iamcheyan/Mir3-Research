@@ -706,6 +706,11 @@ git diff --check
 - **notice 豁免 + 前台 + 模态**全验证（z=50 保持 vs z=100 前台）。
 - 落盘：`window-zorder-verification-evidence.json`（F401）+ RESEARCH_LOG Round 95。
 
+## Round 96 (2026-08-12) — 聊天滚动条验证（Finding 402）
+
+- **0x4179B0 量条语义**（94 尺度、6 行视口、value=[+0x68]/max=[+0x6D0]）；模拟器 ±266px 滚动。
+- 落盘：`chat-scrollbar-verification-evidence.json`（F402）+ RESEARCH_LOG Round 96。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

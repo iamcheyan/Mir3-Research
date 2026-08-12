@@ -6217,3 +6217,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模拟器〕**notice（id15，z=50，close-all 豁免 F294）在 option（z=100 前台）打开时保持——模态 + 豁免 + 前台全工作。
 - **〔语义〕**close-all 0x42B820（F337）+ id15 跳过 + 显示置前（可见链表追加 0x449870）；绘制按链表序（0x428105 F338）。
 - 落盘：window-zorder-verification-evidence.json（F401，derived-tooling；语义 primary-static F337/F294）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 95。
+## Round 96 (F402) — 2026-08-12：聊天滚动条验证（0x4179B0 量条 + 模拟器滚动）
+
+- **〔量条〕**0x4179B0（帧 1070 16×360、94 定点尺度 F301、6 行视口）：chat 值=[+0x68] scroll / 上限=[+0x6D0] count、@+0x6D4（F341）。
+- **〔模拟器〕**scroll-up/down ±266px（19 行 × 14px）；track 380 @ win.x+0x215/y-0xD0 证据-only。
+- 落盘：chat-scrollbar-verification-evidence.json（F402，derived-tooling；量条语义 primary-static F301/F341）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 96。

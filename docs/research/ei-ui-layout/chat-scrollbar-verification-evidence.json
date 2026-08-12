@@ -1,0 +1,37 @@
+{
+  "evidence_id": "chat-scrollbar-verification-2026-08-12-f402",
+  "title": "Round 96 (F402): Chat scrollbar verified - 0x4179B0 gauge semantics (value=[+0x68] scroll, max=[+0x6D0] count, frame 1070 16x360, 94 fixed-point scale, 6-row viewport) + sim scroll buttons (±266px = 19x14) + scrollbar-track frame 380 evidence-only",
+  "date": "2026-08-12",
+  "objective": "Verify the chat window scrollbar: gauge semantics (F341/F301), sim scroll behavior, and the track control.",
+  "question": "How does the chat scrollbar work, and does the sim match?",
+  "method": "Chat paint 0x414700 scroll fields + 0x4179B0 gauge (F301 scale) cross-ref; sim scroll buttons test.",
+  "scope": "0x414700 scroll fields; 0x4179B0 gauge; sim chat-pop scroll.",
+  "cell_analysis": {
+    "gauge_0x4179B0": {"frame": "1070 (16x360)", "scale": "94 fixed-point (0x476650, F301: 94 = shared scale not row count)", "normalize": "/93 @0x4179F7", "page": "[+0x10]=6/94 (6-row viewport)", "ctor_arg3": "6 = viewport rows"},
+    "chat_usage": {"value": "[+0x68] scroll offset", "max": "[+0x6D0] message count", "gauge_at": "+0x6D4 (F341)"},
+    "render": "lines = min(count - scroll, 0x13=19), row 0xE=14px (F341)",
+    "sim": {"scroll_buttons": "scroll-up/down ±266px (19 lines x 14px)", "scrollbar_track": "frame 380 16x502 @ win.x+0x215/y-0xD0 (0x00414846) evidence-only non-interactive"}
+  },
+  "exe_trace": {
+    "chat_paint": "0x414700 (F341): ring +0x58/0x5C/0x64, count +0x6D0, scroll +0x68"
+  },
+  "audit_vs_exe": {
+    "F341": "chat scroll fields confirmed",
+    "F301": "0x4179B0 94-scale + 6-row viewport confirmed"
+  },
+  "contrast": {
+    "chat_vs_trade_gauge": "same 0x4179B0 family; chat value=scroll/count, trade = split handle",
+    "sim_vs_original": "sim scrollTop approximates; original gauge + ring offset"
+  },
+  "verdict": "Chat scrollbar verified (primary-bytes via F341/F301): 0x4179B0 gauge (94 scale, 6-row viewport, value=[+0x68] scroll / max=[+0x6D0] count) + sim scroll buttons (±266px) + evidence-only track (frame 380).",
+  "evidence_level": "derived-tooling (gauge semantics primary-static F301/F341)",
+  "evidence_level_note": "Gauge semantics from F301/F341 primary bytes; sim scroll browser-inspected.",
+  "cross_refs": ["F341: chat paint", "F301: 0x4179B0 gauge scale", "F350: bar family"],
+  "tool": "evidence JSON cross-ref; app.js inspection",
+  "reproduce": "open sim chat; click scroll-up/down; observe line shift",
+  "notes": [
+    "chat 19-line cap (F341) + 14px rows = 266px page",
+    "scrollbar-track 380 mostly off-screen at default origin (F341)",
+    "original scroll = ring offset (count - scroll), not pixel scrollTop"
+  ]
+}
