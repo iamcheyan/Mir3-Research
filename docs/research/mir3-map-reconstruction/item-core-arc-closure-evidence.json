@@ -1,0 +1,36 @@
+{
+  "evidence_id": "item-core-arc-closure-2026-08-12-f653",
+  "title": "Round 347 (F653): Item-core arc CLOSED (F651-F652) - validation green (compileall/verify exit 0/node/JSON), services 200, master 33f8b89 (311 consecutive F335-F652), 277 evidence JSONs; arc: item icon + detail dispatch (F651: 3-context icons + 5-class tooltip) + item deserialize + bag IO (F652: parse/insert + bag get/set) - item system core COMPLETE (icon/render + detail/tooltip + serialize/IO), connecting F464/F457/F460/F549",
+  "date": "2026-08-12",
+  "objective": "Close the item-core arc.",
+  "question": "Is the item system core fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "277 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F651": "icon + detail", "F652": "deserialize + bag IO"},
+    "item": "icon/render + detail/tooltip + serialize/IO = COMPLETE (F464/F457/F460/F549)",
+    "milestone": "311 consecutive rounds F335-F652"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F652": "311 rounds pushed; item core complete"
+  },
+  "contrast": {
+    "render_vs_io": "icon/detail render + serialize/IO",
+    "bag_vs_store": "bag slots + store arrays"
+  },
+  "verdict": "Item-core arc CLOSED (F653): icon/detail + serialize/IO all byte-level; validation green, 311 consecutive rounds, 277 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F651-F652.",
+  "cross_refs": ["F651: icon/detail", "F652: deserialize/IO", "F464: item core"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "311 consecutive shipping rounds F335-F652",
+    "next: HANDOFF refresh 29, remaining corners"
+  ]
+}

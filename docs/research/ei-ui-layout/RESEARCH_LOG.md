@@ -7486,3 +7486,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔反序列化〕**0x42FC20（F464/F549）：0x42F2A0 解析 + 0x42F280 + 0x42F440 插入（0xC28 栈、ret 0xC28）。
 - **〔背包〕**0x42FCC0 = 背包取（idx×0xC20 @ [0x774]、0x308 双字复制 + 0x42FB20 标记清）；0x42FD10 = 背包放（0x430920 物品构造 + 0x42FCC0 + 0x42FC20 反序列化 + [0x1A] 字）——物品记录 IO 字节级（F464/F549/F590 连接）。
 - 落盘：item-deserialize-bag-io-evidence.json（F652，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 346。
+## Round 347 (F653) — 2026-08-12：物品核心弧闭合（F651-F652 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**277 证据 JSON**；三服务 200；master 33f8b89（**311 连发 F335-F652 已推**）。
+- **〔弧〕**物品图标 + 详情分派（F651）+ 反序列化 + 背包 IO（F652）——**物品系统核心完整（图标/渲染 + 详情/提示框 + 序列化/IO）**，连接 F464/F457/F460/F549。
+- 落盘：item-core-arc-closure-evidence.json（F653，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 347。
