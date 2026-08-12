@@ -8628,3 +8628,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔对话〕**0x43F000 控件重置（3 按钮清）；0x43F020 **开启旗标设置**（[0x274]）；0x43F040 **对话绘制**：帧 0x44C blit（0x460240 @ [0x520]/[0x524]）+ **选项帧 0x44D 循环**（y+0x12、计数 [0x51C]、基址 [0x530]/[0x534]）+ 0x44E 关闭帧——对话窗口完整（F857/F598 用）。
 - 落盘：dialog-window-draw-open-evidence.json（F914，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 608。
+## Round 609 (F915) — 2026-08-12：对话全闭合（F598/F746/F857/F914 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**539 证据 JSON**；三服务 200；master ca1b9ff（**573 连发 F335-F914 已推**）。
+- **〔弧〕**4 类型渲染（F598）+ 选项命中（F746）+ 窗口渲染（F857）+ 绘制/开启（F914）——**对话完整**（开启旗标 + 帧 blit + 选项循环 + 命中/激活 + 4 类型），对话表面 100%。
+- 落盘：dialog-full-closure-evidence.json（F915，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 609。

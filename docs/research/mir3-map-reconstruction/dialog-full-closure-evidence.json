@@ -1,0 +1,37 @@
+{
+  "evidence_id": "dialog-full-closure-2026-08-12-f915",
+  "title": "Round 609 (F915): Dialog FULL closure (F598/F746/F857/F914) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master ca1b9ff (573 consecutive F335-F914), 539 evidence JSONs; arc: 4-type render (F598) + option hit (F746) + window render (F857) + draw/open (F914) - dialog COMPLETE byte-level (open flag + frame blit + option loop + hit/activate + 4-type), dialog surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the dialog fully.",
+  "question": "Is the dialog fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "539 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F598": "types", "F746": "hit", "F857": "render", "F914": "draw/open"},
+    "dialog": "open + frames + options + hit = COMPLETE",
+    "milestone": "573 consecutive rounds F335-F914"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F914": "573 rounds pushed; dialog complete"
+  },
+  "contrast": {
+    "draw_vs_hit": "frames + activate",
+    "open_vs_types": "[0x274] + jt"
+  },
+  "verdict": "Dialog FULL closure (F915): open + render + hit all byte-level; validation green, 573 consecutive rounds, 539 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F598/F746/F857/F914.",
+  "cross_refs": ["F598", "F746", "F857", "F914"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "573 consecutive shipping rounds F335-F914",
+    "dialog 100%",
+    "next: HANDOFF refresh 116, remaining corners"
+  ]
+}

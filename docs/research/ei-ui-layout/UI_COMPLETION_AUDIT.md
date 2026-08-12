@@ -3601,3 +3601,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话绘制完整；下一弧：剩余深层角落）。
+## Round 609 (2026-08-12) — 对话全闭合（Finding 915）
+
+- **573 连发 + 539 证据 + 对话完整**。
+- 落盘：`dialog-full-closure-evidence.json`（F915）+ RESEARCH_LOG Round 609。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话完整；下一弧：HANDOFF 刷新 116/剩余角落）。
