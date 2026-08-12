@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-124-2026-08-12-f938",
+  "title": "Round 632 (F938): HANDOFF refresh 124 - Rounds 629-631 (F935-F937: HANDOFF 123, inventory ctor/click/use, inventory closure), baseline Round 628=4109e2a -> Round 631=443c043 (596 consecutive F335-F937), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 629-631.",
+  "question": "What changed since HANDOFF refresh 123?",
+  "method": "Append Round 629-631 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 629-631 appended (3 rounds, F935-F937)",
+    "baseline": "Round 628=4109e2a -> Round 631=443c043 (596 consecutive F335-F937)",
+    "arcs": {"input": "F936 inventory", "closure": "F937 inventory window"},
+    "key": "inventory window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F935": "refresh 123 baseline -> now refresh 124", "F335-F937": "596 rounds"
+  },
+  "contrast": {
+    "refresh_123_vs_124": "F936-F937 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 124 (F938): Rounds 629-631 documented (inventory window complete), baseline 4109e2a -> 443c043, 596 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F936-F937 evidence.",
+  "cross_refs": ["F935: refresh 123", "F937: inventory closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 629-631 section to HANDOFF",
+  "notes": [
+    "596 consecutive shipping rounds F335-F937",
+    "next: remaining deep corners, sim polish"
+  ]
+}

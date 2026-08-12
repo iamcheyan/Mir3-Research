@@ -8728,3 +8728,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**561 证据 JSON**；三服务 200；master b177a92（**595 连发 F335-F936 已推**）。
 - **〔弧〕**绘制+滚动条+拖动预览（F764）+ 初始化/点击/使用（F815）+ 重置/点击/使用门（F936）——**背包窗口完整**（绘制 + 滚动条 + 槽查找 + 拖动预览 + 使用门），背包表面 100%。
 - 落盘：inventory-window-closure-evidence.json（F937，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 631。
+## Round 632 (F938) — 2026-08-12：HANDOFF 刷新 124（Round 629-631）
+
+- **〔刷新〕**HANDOFF 追加 Round 629-631（F936-F937：背包构造/点击/使用 + 背包窗口闭合）；基线 Round 628=4109e2a → Round 631=443c043（**596 连发 F335-F937**）。
+- 落盘：handoff-refresh-124-evidence.json（F938，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 632。
