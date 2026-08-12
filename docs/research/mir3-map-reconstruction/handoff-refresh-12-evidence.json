@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-12-2026-08-12-f583",
+  "title": "Round 277 (F583): HANDOFF refresh 12 - Rounds 273-276 (F579-F582: all pending closed + HUD interaction layer - 16-caption action dispatch + action bar + 6 hot-slot target system), baseline Round 268=d54bc29 -> Round 276=6ef0adb (241 consecutive F335-F582), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 273-276.",
+  "question": "What changed since HANDOFF refresh 11?",
+  "method": "Append Round 273-276 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 273-276 appended (4 rounds, F579-F582)",
+    "baseline": "Round 268=d54bc29 -> Round 276=6ef0adb (241 consecutive F335-F582)",
+    "arcs": {"pending": "F579 zero open items", "hud": "F580-F582 caption dispatch + action bar + hot-key system"},
+    "key": "caption cases == window registry modes (F558 cross-confirmed)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F575": "refresh 10 baseline -> now refresh 12", "F335-F582": "241 rounds"
+  },
+  "contrast": {
+    "refresh_11_vs_12": "F579-F582 (4 new findings incl. zero-pending milestone)"
+  },
+  "verdict": "HANDOFF refreshed 12 (F583): Rounds 273-276 documented (zero pending + HUD interaction), baseline d54bc29 -> 6ef0adb, 241 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F579-F582 evidence.",
+  "cross_refs": ["F575: refresh 10", "F582: HUD closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 273-276 section to HANDOFF",
+  "notes": [
+    "241 consecutive shipping rounds F335-F582",
+    "next: remaining deep corners, sim polish, server-side cross-ref"
+  ]
+}

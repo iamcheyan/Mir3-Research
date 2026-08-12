@@ -536,3 +536,12 @@ simulator/style.css
 **DSound 3D 监听器解析（F578，最后 pending）**：0x476CA8 = **IID {279AFA84-4981-11CE-A521-0020AF0BE560} = IID_IDirectSound3DListener**（MS 文档确认）；COM 单例获取 0x45A9B4（CoCreateInstance 0x468116 → 出参 0x9135C4、失败 E_FAIL）；dsound.dll 仅序号导入——**F28 起全部 pending 笔记闭合**。
 
 **commit 基线更新**：Round 268=d54bc29 → Round 272=515600e（master 已推，237 连发 F335-F578）。
+
+
+## Round 273-276 追加交付（2026-08-12，Finding 579-582）：全部 pending 闭合 + 模拟器协议层 + HUD 交互层
+
+**全部 pending 闭合（F579）**：零未决项（0x45A650/0x45B490 timeKillEvent F577 + 0x476CA8 DSound3DListener F578 = 最后 4 项）——**F28 起全部 pending 笔记闭合**；204 证据 JSON。
+
+**HUD 交互层（F580-F582）**：**16 caption 动作分派**（0x42BEF8 16 次迭代 + jt 0x42C4D4：0 背包/1 装备/2 商店/3 交易/4 行会/6 组队/7 角色状态/8 公告/B 任务/C 选项/D 坐骑/E 技能书——**与 F558 窗口注册表模式一致交叉确认**）+ **动作栏**（攻击目标 0x41EC10+0x451A70、腰带切换 [0x6208]、相机缩放 [0xD40] 钳制 0x2E、生成检查 0x419CC0、3s 冷却 [0x6210]）；**6 热键槽目标系统**（0x42D720 RECT 命中 [0xD44] stride 0x10 + 0x42D9E0 执行 0x430920 物品+0x42E2D0 音效 + 记录 6×0xC24 @ [0xDA4] + 金币门 0x47ADB4）；HUD 交互弧闭合（F582，240 连发 + 207 证据 JSON）。
+
+**commit 基线更新**：Round 268=d54bc29 → Round 276=6ef0adb（master 已推，241 连发 F335-F582）。

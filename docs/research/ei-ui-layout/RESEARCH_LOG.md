@@ -7158,3 +7158,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**207 证据 JSON**；三服务 200；master a5a8fb4（**240 连发 F335-F581 已推**）。
 - **〔弧〕**16 caption 动作分派（jt 0x42C4D4，F580）+ 动作栏（攻击/腰带/缩放/生成检查）+ **6 热键槽目标系统**（F581：RECT 命中 + 0xC24 记录 + 执行 + 金币门）——**整个 HUD 交互层（caption/动作/热键）字节级**。
 - 落盘：hud-interaction-arc-closure-evidence.json（F582，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 276。
+## Round 277 (F583) — 2026-08-12：HANDOFF 刷新 12（Round 273-276）
+
+- **〔刷新〕**HANDOFF 追加 Round 273-276（F579-F582：零 pending + HUD 交互层）；基线 Round 268=d54bc29 → Round 276=6ef0adb（**241 连发 F335-F582**）。
+- 落盘：handoff-refresh-12-evidence.json（F583，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 277。
