@@ -1,0 +1,38 @@
+{
+  "evidence_id": "hero-runtime-final-closure-2026-08-12-f726",
+  "title": "Round 420 (F726): Hero runtime FINAL closure (F695/F696/F725) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 431153f (384 consecutive F335-F725), 350 evidence JSONs; arc: hero move (F695) + hero arc (F696) + hero update/death (F725) - hero runtime COMPLETE byte-level (move 8-dir + msg 0xBC3 + state [0x62A50..0x62AE4] + data load + death/spawn dlist + 1500ms respawn), closing listed corner 0x410100; NOTE: renamed from hero-runtime-arc-closure (F614 collision)",
+  "date": "2026-08-12",
+  "objective": "Close the hero runtime arc finally.",
+  "question": "Is the hero runtime fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "350 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F695": "hero move", "F696": "hero arc", "F725": "update/death"},
+    "hero": "move + state + data + death/spawn = COMPLETE",
+    "milestone": "384 consecutive rounds F335-F725"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F725": "384 rounds pushed; hero runtime complete, corner 0x410100 closed"
+  },
+  "contrast": {
+    "move_vs_death": "8-dir move + death/spawn",
+    "data_vs_state": "data load + state [0x62A50..]"
+  },
+  "verdict": "Hero runtime FINAL closure (F726): move + data + death/spawn all byte-level; validation green, 384 consecutive rounds, 350 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F695/F696/F725.",
+  "cross_refs": ["F695: move", "F696: arc", "F725: update/death", "F614: prior hero closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "384 consecutive shipping rounds F335-F725",
+    "corner 0x410100 closed",
+    "renamed to avoid F614 filename collision",
+    "next: HANDOFF refresh 52, remaining corners"
+  ]
+}
