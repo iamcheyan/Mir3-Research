@@ -7697,3 +7697,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**323 证据 JSON**；三服务 200；master 49858b6（**357 连发 F335-F698 已推**）。
 - **〔弧〕**快捷槽物品使用（F698）——**命令/交互完整（快捷使用 + 聊天命令 F600 + 热键 F581）**，闭合 F355/F549/F577 链。
 - 落盘：interaction-command-arc-closure-evidence.json（F699，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 393。
+## Round 394 (F700) — 2026-08-12：HANDOFF 刷新 44（Round 391-393）
+
+- **〔刷新〕**HANDOFF 追加 Round 391-393（F698-F699：快捷槽物品使用 + 交互/命令弧）；基线 Round 390=076c820 → Round 393=4c6ccba（**358 连发 F335-F699**）。
+- 落盘：handoff-refresh-44-evidence.json（F700，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 394。

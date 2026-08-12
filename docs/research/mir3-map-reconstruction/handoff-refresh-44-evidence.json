@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-44-2026-08-12-f700",
+  "title": "Round 394 (F700): HANDOFF refresh 44 - Rounds 391-393 (F697-F699: item-use quick-slot + interaction/command arc closure), baseline Round 390=076c820 -> Round 393=4c6ccba (358 consecutive F335-F699), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 391-393.",
+  "question": "What changed since HANDOFF refresh 43?",
+  "method": "Append Round 391-393 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 391-393 appended (3 rounds, F697-F699)",
+    "baseline": "Round 390=076c820 -> Round 393=4c6ccba (358 consecutive F335-F699)",
+    "arcs": {"quick": "F698 item-use quick-slot", "closure": "F699 interaction arc"},
+    "key": "command/interaction complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F697": "refresh 43 baseline -> now refresh 44", "F335-F699": "358 rounds"
+  },
+  "contrast": {
+    "refresh_43_vs_44": "F698-F699 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 44 (F700): Rounds 391-393 documented (quick-slot + interaction), baseline 076c820 -> 4c6ccba, 358 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F698-F699 evidence.",
+  "cross_refs": ["F697: refresh 43", "F699: interaction closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 391-393 section to HANDOFF",
+  "notes": [
+    "358 consecutive shipping rounds F335-F699",
+    "next: remaining deep corners, sim polish"
+  ]
+}
