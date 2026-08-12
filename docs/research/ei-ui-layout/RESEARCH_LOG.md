@@ -9109,3 +9109,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 716-718（F1023-F1024：recv1 坐骑/物品/封锁/公告全量 + recv1 闭合）；基线 Round 715=c937e7e → Round 718=5a3ddb0（**682 连发 F335-F1024**）。
 - 落盘：handoff-refresh-153-evidence.json（F1025，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 719。
+## Round 720 (F1026) — 2026-08-12：recv2 地图/名字/标题全量（F797/F794）
+
+- **〔recv2〕**0x422E30：base64 0x452810（0x400 缓冲）+ 消息类型 0x64/0x68（公告 0x427E30 + 行会 0x4256A0）+ 地图标题检查 [0x2F8784] → 名字存储 [0x35A820] + 0x40BA60 格式化（F800）+ 旗标类型 0x28/0x5DD——recv2 家族完整。
+- 落盘：recv2-map-name-title-full-evidence.json（F1026，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 720。

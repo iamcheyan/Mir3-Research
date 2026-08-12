@@ -4489,3 +4489,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（入站 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 720 (2026-08-12) — recv2 地图/名字/标题全量（Finding 1026）
+
+- **base64 + 标题/名字**（recv2 家族完整）。
+- 落盘：`recv2-map-name-title-full-evidence.json`（F1026）+ RESEARCH_LOG Round 720。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（recv2 家族完整；下一弧：剩余深层角落）。

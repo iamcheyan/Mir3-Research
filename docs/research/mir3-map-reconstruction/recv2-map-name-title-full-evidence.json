@@ -1,0 +1,36 @@
+{
+  "evidence_id": "recv2-map-name-title-full-2026-08-12-f1026",
+  "title": "Round 720 (F1026): recv2 map/name/title FULL (F797/F794) - 0x422E30: base64 0x452810 (0x400 buffer) + msg types 0x64/0x68 (announce 0x427E30 + guild 0x4256A0) + map title check [0x2F8784] -> name store [0x35A820] + 0x40BA60 format (F800) + flag types 0x28/0x5DD - recv2 family COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the recv2 map/name/title handlers.",
+  "question": "How does recv2 handle map titles + names?",
+  "method": "Disasm 0x422E30-0x422FEB.",
+  "scope": "0x422E30-0x422FEB; recv2.",
+  "cell_analysis": {
+    "0x422E30": "base64 + announce + guild + title",
+    "types": "0x64/0x68/0x28/0x5DD",
+    "name": "[0x35A820] + 0x40BA60"
+  },
+  "exe_trace": {
+    "recv2_chain": "base64 -> announce/guild -> title/name"
+  },
+  "audit_vs_exe": {
+    "F797": "map/name msgs", "F794": "title"
+  },
+  "contrast": {
+    "announce_vs_title": "0x427E30 + 0x40BA60",
+    "flags": "0x28/0x5DD"
+  },
+  "verdict": "recv2 map/name/title FULL PRIMARY-verified: base64 + title/name; F797/F794 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "recv2 decoded from .text.",
+  "cross_refs": ["F797: map/name msgs", "F794: title"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422E30+0x20",
+  "notes": [
+    "base64 0x452810",
+    "title [0x2F8784]",
+    "name [0x35A820]",
+    "format 0x40BA60"
+  ]
+}
