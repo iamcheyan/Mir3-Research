@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-header-verification-2026-08-12-f387",
+  "title": "Round 81 (F387): Map header verified - 28-byte header {0x00-0x13 zero (except 50.map 'Created by WWW Team' text), +0x14 tile-row, +0x16/+0x18 w/h, +0x1A.. rest} + 50.map = WWW editor signature (unbound) + client parses w/h at +0x16/+0x18 regardless",
+  "date": "2026-08-12",
+  "objective": "Verify the 28-byte map header field map against the client's reads and identify header variants.",
+  "question": "What is the exact map header layout, and are there variant headers?",
+  "method": "Full 544-map header scan (nonzero bytes 0x00-0x13); 50.map ASCII decode; client w/h read cross-ref (+0x16/+0x18).",
+  "scope": "$MIR3_EI_ROOT/Map (544 headers); client 0x43B600 reads.",
+  "cell_analysis": {
+    "header_layout": {"0x00-0x13": "zero (543 maps)", "0x14": "tile-row (0 wood / 1 sand)", "0x16": "w u16 (client +0x126)", "0x18": "h u16 (client +0x128)", "0x1A-0x1B": "rest"},
+    "50_map_variant": {"header": "'.Created by WWW Team' ASCII (0x00437265...)", "editor": "WWW Team map editor signature", "w/h": "120x150 (client still parses +0x16/+0x18)", "bound": "NOT in MiniMap (unbound)", "size": "265528 EXACT formula match"},
+    "client_reads": "0x43B600: ReadFile 0x1C -> +0x110; w = word[+0x126], h = word[+0x128] (file +0x16/+0x18) - text header ignored, offsets fixed"
+  },
+  "exe_trace": {
+    "loader": "0x43B600 (F331/F343): ReadFile 0x1C header, w/h at +0x126/+0x128"
+  },
+  "audit_vs_exe": {
+    "F343": "tile-row +0x14 confirmed",
+    "F331": "header size 0x1C + w/h offsets confirmed",
+    "F342": "544-map inventory - one nonstandard header"
+  },
+  "contrast": {
+    "standard_vs_www": "543 standard zero headers + 1 WWW-editor text header (50.map)",
+    "bound_vs_unbound": "50.map unbound (tool test map)"
+  },
+  "verdict": "Map header verified (primary-bytes): 28 bytes {0x00-0x13 zero (543 maps), +0x14 tile-row, +0x16/+0x18 w/h, rest}. 50.map carries a 'Created by WWW Team' text header (WWW editor, unbound, size-exact). Client parses fixed offsets regardless of header text.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All 544 headers scanned; client reads from MIR3.EXE.",
+  "cross_refs": ["F343: tile-row binding", "F331: map loader", "F342: map inventory"],
+  "tool": "python3 header scan; struct",
+  "reproduce": "scan 544 headers for nonzero 0x00-0x13; decode 50.map ASCII",
+  "notes": [
+    "WWW Team = Mir map editor tool (unrelated to client)",
+    "50.map also carries the F371 OOB anomaly (39 cells) - tool-generated test map",
+    "header +0x1A-0x1C unknown (zero in all maps)"
+  ]
+}

@@ -6137,3 +6137,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔样本〕**空单元（midImg 0xFFFF）；实体单元 cell 296/1091（midFile 10 SmObjectsc midImg 4354/5528）、1883/1884（midFile 5 Cliffsc midImg 5203/5202）、frontFile 15。
 - **〔客户端〕**mid 帧 +5、front +7（F331 0x43BB10）；back 3 字节 @ 0x43B516。
 - 落盘：cell-record-layout-verification-evidence.json（F386，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 80。
+## Round 81 (F387) — 2026-08-12：地图头验证（28 字节布局 + 50.map WWW 编辑器签名）
+
+- **〔布局〕**28 字节头 {0x00-0x13 零（543 图）、+0x14 瓦片行、+0x16/+0x18 w/h（客户端 +0x126/+0x128）、余部}。
+- **〔50.map 变体〕**头 = ASCII 'Created by WWW Team'（WWW 地图编辑器签名）、w=120 h=150、**未绑定**（MiniMap 无）、尺寸精确（265528）；客户端固定偏移解析不受文本头影响。
+- 落盘：map-header-verification-evidence.json（F387，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 81。
