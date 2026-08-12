@@ -6780,3 +6780,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔绑定〕**MiniMap.txt = 37 map→帧对（1001-1038）、0.map→1001（帧 0）——**精确匹配 F310「FMMap value−1001」公式**（1001+ = FMMap.wil 帧索引）。
 - **〔出生点〕**StartPoint.txt = 出生坐标（01 459 261 比奇县出生点，F423 源）。
 - 落盘：minimap-txt-binding-evidence.json（F509，secondary + F310 交叉）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 203。
+## Round 204 (F510) — 2026-08-12：MiniMap 地图集交叉（37 = 30 EI + 7 服务端专属）
+
+- **〔交叉〕**MiniMap.txt 37 图 = **30 在 EI + 7 服务端专属**（{401-407} 哨所 + 9.map——F396 服务端专属类子集）。
+- **〔Mapinfo〕**格式 = 仅传送记录（F87/F382 确认，map x,y -> map x,y 1:1 对，无名称）——**F382「Mapinfo 名」修正**（名称源 = mapnames 遗留库）。
+- 落盘：minimap-map-set-cross-evidence.json（F510，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 204。

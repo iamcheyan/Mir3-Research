@@ -1,0 +1,35 @@
+{
+  "evidence_id": "minimap-map-set-cross-2026-08-12-f510",
+  "title": "Round 204 (F510): MiniMap map set cross - 37 server minimap maps: 30 in EI package + 7 server-only ({401-407} sentry maps + 9.map); Mapinfo.txt = transition records ONLY (F87/F382 format confirmed: map x,y -> map x,y 1:1 pairs, NO names); minimap set overlaps bound set (F396 211) but adds 7 server-only - F382 'Mapinfo names' corrected (mapnames legacy lib was the name source)",
+  "date": "2026-08-12",
+  "objective": "Cross the server minimap map set against EI package + Mapinfo format.",
+  "question": "How do the 37 minimap maps relate to the EI package and Mapinfo?",
+  "method": "MiniMap.txt set vs EI Map dir + Mapinfo.txt format analysis.",
+  "scope": "MiniMap.txt 37; EI Map/; Mapinfo.txt transitions.",
+  "cell_analysis": {
+    "minimap_set": {"total": "37 maps", "in_ei": "30", "server_only": "7 = {401-407} sentry + 9.map (F396 server-only class)"},
+    "mapinfo": {"format": "transition records only (map x,y -> map x,y, 1:1 pairs, F87/F382)", "no_names": "name source = mapnames legacy lib (F382)"},
+    "f396_overlap": "server-only minimap maps (401-407/9) = the F396 102 server-only gap subset"
+  },
+  "exe_trace": {
+    "minimap_chain": "MiniMap.txt -> 37 maps -> FMMap frames (F509) -> client minimap"
+  },
+  "audit_vs_exe": {
+    "F509": "binding table cross-set", "F396": "server-only maps confirmed", "F87": "transition format", "F382": "name source corrected to mapnames"
+  },
+  "contrast": {
+    "30_vs_7": "shipped vs server-only minimaps",
+    "minimap_vs_transition": "MiniMap binding vs Mapinfo transitions (separate files)"
+  },
+  "verdict": "MiniMap map set crossed (secondary-server): 37 = 30 EI + 7 server-only (401-407/9.map); Mapinfo.txt = transitions only; F382 name source corrected (mapnames legacy).",
+  "evidence_level": "secondary (server files)",
+  "evidence_level_note": "Set math from server files; F382/F396 cross-refs.",
+  "cross_refs": ["F509: binding", "F396: bound set", "F87: transitions", "F382: names"],
+  "tool": "python set analysis",
+  "reproduce": "MiniMap maps - EI dir files; Mapinfo line format",
+  "notes": [
+    "401-407 = sentry/outpost maps (server-only)",
+    "9.map server-only minimap too",
+    "Mapinfo no names - mapnames lib = F382 name source"
+  ]
+}
