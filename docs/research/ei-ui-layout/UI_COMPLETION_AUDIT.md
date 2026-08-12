@@ -971,6 +971,11 @@ git diff --check
 - **17 库字符串 + 14/70 双初始化循环**。
 - 落盘：`tile-store-slot-mapping-evidence.json`（F454）+ RESEARCH_LOG Round 148。
 
+## Round 149 (2026-08-12) — 实体渲染弧闭合（Finding 455）
+
+- **F429-F454 弧闭合 + 120 连发**；全验证绿色。
+- 落盘：`entity-render-arc-closure-evidence.json`（F455）+ RESEARCH_LOG Round 149。
+
 ## Pending（未阻塞，持续队列）
 
 - 精确槽序（store+0x5898 第二数组来源）— 低优先。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "entity-render-arc-closure-2026-08-12-f455",
+  "title": "Round 149 (F455): Entity-render arc CLOSED (F429-F454, 26 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer 8765/mapviewer 8899/sim), 120 shipping rounds pushed (master d803935); arc consolidated: monster WIL family/density/state layout/frame addressing PRIMARY/appearance/stats/anim machine/frame loader/shadow light/projection/pipeline/5 lists/4 bucket grids/camera scroll/tile store 140 slots/ground lib 17/record store",
+  "date": "2026-08-12",
+  "objective": "Close the entity-render arc with a validation sweep + consolidated summary.",
+  "question": "Is the repo healthy after the 26-round entity-render arc?",
+  "method": "Full validation suite + service health + arc summary.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master d803935; untracked quest_design_v3_goal.md + goal_watchdog.sh.bak (left alone)",
+    "arc_summary": {"monster_render": "WIL family 16x10000 (F429) / DMon death libs (F430) / 10-block density (F431) / state layout (F432) / frame addressing PRIMARY (F433) / appearance table (F434) / anim machine +2/+1+wrap (F435) / frame loader 0x466130 (F436) / hex-grid shadow 0x434A20 (F437)", "projection_pipeline": "48x32 projection + cam chain (F438) / 18-stage tick + 6 paint objects (F439) / 5 list containers (F440) / game reset 480x480 grid (F441) / list maintenance (F442) / housekeeping (F443) / visibility grid role (F444) / type dispatch + off-viewport cull (F445) / 4 bucket grids definitive (F446) / scroll+render full (F447)", "resources": "shared resource table (F448) / update handlers 0xBC6-0xBD8 (F449) / record store 0x8AA5A8 (F450) / GAME OBJECT BASE CORRECTION main 0x47EF18 (F451) / tile store 140 slots (F452) / ground lib 17 (F453) / slot mapping partial (F454)"},
+    "base_correction_impact": "F440-448 base labels corrected to main 0x47EF18 (0x8AB828 = packet sender); all absolutes reconciled (0x560088/0x5600FC/0x574118)"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F454": "120 rounds pushed; 26-round arc fully closed"
+  },
+  "contrast": {
+    "closed_vs_pending": "arc closed; remaining = low-priority (slot mapping, store+0x5898 source)"
+  },
+  "verdict": "Entity-render arc CLOSED (F429-F454): full validation green, services live, 120 shipping rounds pushed. Major structural findings: game object base corrected to main 0x47EF18, 4 bucket grids + 5 lists, tile store 140 slots, monster frame pipeline complete.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation results from tool runs; arc content from F429-F454 evidence.",
+  "cross_refs": ["F429-F454: arc", "F137: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: UI window content deep-dive (0x419D40 done), server Envir integration (F423-427), mapviewer alignment with client store",
+    "quest_design_v3_goal.md = user file, untouched"
+  ]
+}

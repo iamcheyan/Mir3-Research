@@ -6485,3 +6485,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔循环〕**0x452AA0：14 条目循环（stride 0x144/0x104）+ **70 条目循环**（运行时表 store+0xF848 → 第二资源数组 store+0x5898 [candidate: 怪物/NPC 槽]）。
 - **〔待深〕**精确槽序 = 更深 pending。
 - 落盘：tile-store-slot-mapping-evidence.json（F454，primary-bytes + candidate）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 148。
+## Round 149 (F455) — 2026-08-12：实体渲染弧闭合（F429-F454 26 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master d803935（**120 连发已推**）。
+- **〔弧汇总〕**怪物渲染（WIL 族/密度/状态/寻址 PRIMARY/外观/动画机/装载器/阴影光场）+ 投影流水线（48×32/18 阶段/5 链表/4 桶网格/滚动渲染全解）+ 资源（共享表/更新处理器/记录存储/**基址修正 main 0x47EF18**/瓦片存储 140 槽/地面库 17）。
+- 落盘：entity-render-arc-closure-evidence.json（F455，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 149。
