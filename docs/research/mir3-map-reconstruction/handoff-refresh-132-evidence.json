@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-132-2026-08-12-f962",
+  "title": "Round 656 (F962): HANDOFF refresh 132 - Rounds 654-655 (F960-F961: HANDOFF 131, dialog+announcement closure), baseline Round 653=925178a -> Round 655=e60958b (620 consecutive F335-F961), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 654-655.",
+  "question": "What changed since HANDOFF refresh 131?",
+  "method": "Append Round 654-655 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 654-655 appended (2 rounds, F960-F961)",
+    "baseline": "Round 653=925178a -> Round 655=e60958b (620 consecutive F335-F961)",
+    "arcs": {"closure": "F961 dialog+announcement"},
+    "key": "13/13 window inputs closed"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F960": "refresh 131 baseline -> now refresh 132", "F335-F961": "620 rounds"
+  },
+  "contrast": {
+    "refresh_131_vs_132": "F961 (1 new finding)"
+  },
+  "verdict": "HANDOFF refreshed 132 (F962): Rounds 654-655 documented (13/13 window inputs), baseline 925178a -> e60958b, 620 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F961 evidence.",
+  "cross_refs": ["F960: refresh 131", "F961: dialog/announcement closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 654-655 section to HANDOFF",
+  "notes": [
+    "620 consecutive shipping rounds F335-F961",
+    "next: remaining deep corners, sim polish"
+  ]
+}

@@ -3977,3 +3977,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13/13 窗口输入；下一弧：HANDOFF 刷新 132/剩余角落）。
+## Round 656 (2026-08-12) — HANDOFF 刷新 132（Finding 962）
+
+- **Round 654-655 追加 + 620 连发**（13/13 窗口输入入档）。
+- 落盘：`handoff-refresh-132-evidence.json`（F962）+ RESEARCH_LOG Round 656。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口输入；下一弧：剩余深层角落/模拟器 polish）。
