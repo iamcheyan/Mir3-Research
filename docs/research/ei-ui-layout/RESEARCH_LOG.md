@@ -6662,3 +6662,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔混合〕**0x4621F0：逐像素 alpha 混合（**565 掩码** 0x7E0F81F/0x7C0F83F/0xF81F07E0、shr 5/10 通道移位、imul alpha [0x134]&0xFF）——通用精灵合成器（法术特效 + 全部 16 位精灵绘制）。
 - **〔调用〕**type 0x14A 特效实体 blit（0x462227/0x462BDC）= 法术特效路径；MonMagic 帧数学 = 独立绘制函数（F483/F351 pending）。
 - 落盘：pixel-blend-565-evidence.json（F486，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 180。
+## Round 181 (F487) — 2026-08-12：特效实体 tick（法术动画进度）
+
+- **〔tick〕**0x435A20：特效/特殊实体更新（type {0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = F336 特殊族）：帧计数 [0x121]++ 回绕 [0x102]、0xC8 (200) tick 门、**死亡生命周期**（[byte+4]：0 动画中、1 子帧衰减 [0xE8]/[0xE9]、2 死亡移除）。
+- **〔链〕**特效 tick → 帧 [0x121] → MonMagic 帧选择 → 565 混合 blit（F486）。
+- 落盘：effect-entity-tick-evidence.json（F487，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 181。

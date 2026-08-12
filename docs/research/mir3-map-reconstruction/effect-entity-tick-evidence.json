@@ -1,0 +1,37 @@
+{
+  "evidence_id": "effect-entity-tick-2026-08-12-f487",
+  "title": "Round 181 (F487): Effect entity tick - 0x435A20: effect/special entity update (types {0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = F336 special family): frame counter [0x121]++ wrap at [0x102] (reset + [0xDC]=0), death-state [byte+4] (0 -> anim end, 1 -> [0xE8] sub-frame decay, 2 = dead), 0xC8 (200) tick gate - spell/effect animation progress + death lifecycle",
+  "date": "2026-08-12",
+  "objective": "Decode the effect entity update (spell animation progress).",
+  "question": "How do spell/effect entities animate and die?",
+  "method": "Disasm 0x435A20-0x435CAC (effect tick).",
+  "scope": "0x435A20-0x435CAC; effect types; frames [0x121]/[0x102]; state [byte+4].",
+  "cell_analysis": {
+    "effect_types": {"full": "{0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150}"},
+    "tick": {"gate": "[0xDC] accumulator > 0xC8 (200) ticks", "frame": "[0x121]++ wrap at [0x102] (frame count) -> reset + [0xDC]=0", "death": "state [byte+4]: 0 = anim (frame++), 1 = [0xE8] sub-frame decay (dec [0xE8]/[0xE9] pair), 2 = dead (removed)"},
+    "special_family": "types match F336/F479 special dispatch (projectiles/effects)"
+  },
+  "exe_trace": {
+    "spell_anim": "effect entity tick -> frame [0x121] -> MonMagic frame selection -> 565 blend blit (F486)"
+  },
+  "audit_vs_exe": {
+    "F336": "special type family confirmed (0x10/0x16/0x3F/0x14A-0x14E etc)",
+    "F479": "special walk tick source = this fn",
+    "F486": "blend consumes effect frames"
+  },
+  "contrast": {
+    "effect_vs_monster": "effect tick (frame counter [0x121]) vs monster anim machine (F435 [0xC4])",
+    "alive_vs_dead": "state 0/1 = animating; 2 = remove"
+  },
+  "verdict": "Effect entity tick PRIMARY-verified: 0x435A20 advances effect frames ([0x121] wrap [0x102]) with 0xC8-tick gate and death lifecycle (state 0/1/2); effect types = F336 special family. Spell animation progress decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Effect tick decoded from .text.",
+  "cross_refs": ["F336: special types", "F479: special walk", "F486: 565 blend"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x435A20+0x60",
+  "notes": [
+    "[0x102] = per-effect frame count (MonMagic block frames)",
+    "0xC8 gate = 200-tick animation pacing",
+    "death state 2 = removal (F479 dead-remove check [byte+4]==2)"
+  ]
+}
