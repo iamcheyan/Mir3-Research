@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-95-2026-08-12-f856",
+  "title": "Round 550 (F856): HANDOFF refresh 95 - Rounds 547-549 (F853-F855: HANDOFF 94, announce window render, announce window closure), baseline Round 546=cc45e11 -> Round 549=8150b28 (514 consecutive F335-F855), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 547-549.",
+  "question": "What changed since HANDOFF refresh 94?",
+  "method": "Append Round 547-549 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 547-549 appended (3 rounds, F853-F855)",
+    "baseline": "Round 546=cc45e11 -> Round 549=8150b28 (514 consecutive F335-F855)",
+    "arcs": {"announce": "F854 render", "closure": "F855 announce"},
+    "key": "announce window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F853": "refresh 94 baseline -> now refresh 95", "F335-F855": "514 rounds"
+  },
+  "contrast": {
+    "refresh_94_vs_95": "F854-F855 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 95 (F856): Rounds 547-549 documented (announce window complete), baseline cc45e11 -> 8150b28, 514 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F854-F855 evidence.",
+  "cross_refs": ["F853: refresh 94", "F855: announce closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 547-549 section to HANDOFF",
+  "notes": [
+    "514 consecutive shipping rounds F335-F855",
+    "next: remaining deep corners, sim polish"
+  ]
+}

@@ -8373,3 +8373,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**479 证据 JSON**；三服务 200；master afffd1c（**513 连发 F335-F854 已推**）。
 - **〔弧〕**公告消息（F553）+ 聊天家族（F599）+ 窗口渲染（F854）——**公告窗口完整**（19 行列表 + 滚动条 + 7 按钮 + 彩色行），模式 8 全渲染。
 - 落盘：announce-window-closure-evidence.json（F855，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 549。
+## Round 550 (F856) — 2026-08-12：HANDOFF 刷新 95（Round 547-549）
+
+- **〔刷新〕**HANDOFF 追加 Round 547-549（F854-F855：公告窗口渲染 + 公告窗口闭合）；基线 Round 546=cc45e11 → Round 549=8150b28（**514 连发 F335-F855**）。
+- 落盘：handoff-refresh-95-evidence.json（F856，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 550。
