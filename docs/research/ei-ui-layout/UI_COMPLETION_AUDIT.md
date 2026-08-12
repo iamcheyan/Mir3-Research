@@ -761,6 +761,11 @@ git diff --check
 - **128×128 + FMMap F0 绑定验证**（F310）。
 - 落盘：`minimap-sim-verification-evidence.json`（F412）+ RESEARCH_LOG Round 106。
 
+## Round 107 (2026-08-12) — 目标框模拟器（Finding 413）
+
+- **稻草人 面板 + 覆盖层验证**（F239/F359）。
+- 落盘：`target-sim-verification-evidence.json`（F413）+ RESEARCH_LOG Round 107。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

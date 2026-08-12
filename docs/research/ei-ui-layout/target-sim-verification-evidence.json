@@ -1,0 +1,34 @@
+{
+  "evidence_id": "target-sim-verification-2026-08-12-f413",
+  "title": "Round 107 (F413): Target box verified - click 稻草人 shows target panel (怪物：稻草人 + frame evidence Finding 280) + targetbox overlay (name 稻草人, F239 composite), browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the sim target box + panel render the clicked entity correctly.",
+  "question": "Does the sim target box match the F239 chain?",
+  "method": "Sim browser test (click monster -> target panel + box).",
+  "scope": "sim targetbox + target-panel; F239/F359 evidence.",
+  "cell_analysis": {
+    "panel": {"text": "怪物：稻草人", "evidence": "Finding 280: Mon-(Race//10+1).wil (50->Mon-6.wil)"},
+    "box": {"element": "#targetbox", "text": "稻草人", "visible": "not hidden after click", "semantics": "F239 composite (0x40B850 name plate + HP bar 0x40A8A0)"}
+  },
+  "exe_trace": {
+    "target_chain": "F239: 0x40B850 name plate / 0x40B750 name text / 0x40BB00 hover / 0x40A8A0 HP (F359 verified)"
+  },
+  "audit_vs_exe": {
+    "F359": "target box chain verified",
+    "F280": "monster WIL formula confirmed in panel"
+  },
+  "contrast": {
+    "panel_vs_box": "panel = info (name + frame evidence); box = in-world overlay"
+  },
+  "verdict": "Target box verified (F239/F359): clicking 稻草人 shows both the target panel (with frame evidence) and the targetbox overlay (name). Target subsystem closed in sim.",
+  "evidence_level": "derived-tooling (semantics primary-static F239/F359)",
+  "evidence_level_note": "Sim target rendering browser-verified; chain from F239/F359 primary bytes.",
+  "cross_refs": ["F239: target-box-evidence", "F359: hover/target verification", "F280: monster frames"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; click monster; observe target panel + box",
+  "notes": [
+    "targetbox = full-stage overlay (798x598) with name",
+    "HP bar in box = 0x40A8A0 (F239) - sim shows name only [candidate]",
+    "monster WIL = Mon-(Race//10+1).wil formula (F280)"
+  ]
+}

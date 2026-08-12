@@ -6267,3 +6267,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔控件〕**128×128（672,0-800,128）、FMMap.wil F0（0.map 比奇县 → F310 绑定）、标题 primary-static（浏览器验证）。
 - 落盘：minimap-sim-verification-evidence.json（F412，derived-tooling；绑定 primary-static F310）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 106。
+## Round 107 (F413) — 2026-08-12：目标框模拟器验证（稻草人 面板+覆盖层）
+
+- **〔面板〕**怪物：稻草人 + 帧证据（Finding 280 Mon-(Race//10+1).wil）；**〔覆盖层〕**targetbox 显示名字（F239 复合）。
+- 落盘：target-sim-verification-evidence.json（F413，derived-tooling；语义 primary-static F239/F359）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 107。
