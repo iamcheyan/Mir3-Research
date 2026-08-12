@@ -1,0 +1,34 @@
+{
+  "evidence_id": "map-checksum-verification-2026-08-12-f395",
+  "title": "Round 89 (F395): Map checksum verification - F317 hashes re-verified (3.map=60036c1f 3255 / 41.map=407deda0 1619 / 50.map=ea960513 39 ALL MATCH), D10031 fresh md5=1d1407d0 (62 OOB) pinned, F371 updated",
+  "date": "2026-08-12",
+  "objective": "Verify the OOB map checksums: F317-recorded md5s against live files, and pin D10031's checksum for integrity tracking.",
+  "question": "Are the OOB map checksums stable and complete?",
+  "method": "md5sum of 3/41/D10031/50.map; F317 md5 cross-ref; F371 evidence update.",
+  "scope": "$MIR3_EI_ROOT/Map/3,41,D10031,50.map; F317/F371 evidence.",
+  "cell_analysis": {
+    "hashes": {"3.map": "60036c1f (F317 match, 3255 OOB)", "41.map": "407deda0 (F317 match, 1619)", "50.map": "ea960513 (F317 match, 39)", "D10031.map": "1d1407d0 (NEW, 62 back OOB)"},
+    "stability": "all 3 F317-recorded hashes match live files - evidence data stable",
+    "audit_keys": "map-audit.json has NO md5 field (name/theme/w/h/size/cell_bytes/libs/anomalies only) - checksums live in F317/F371"
+  },
+  "exe_trace": {
+    "oob_maps": "4 total: 3/41/D10031/50.map (F371)"
+  },
+  "audit_vs_exe": {
+    "F371": "D10031 checksum pinned",
+    "F317": "3/41/50 hashes verified stable"
+  },
+  "contrast": {
+    "audit_vs_evidence": "audit = structural; F317/F371 = checksums + OOB detail"
+  },
+  "verdict": "Map checksums verified (primary): F317 hashes (3/41/50.map) match live files exactly; D10031 pinned at 1d1407d0. All 4 OOB map hashes now tracked for integrity.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "md5sum computed directly from map files; F317 records verified.",
+  "cross_refs": ["F317: lib-space-frame-oob", "F371: frame-OOB verification"],
+  "tool": "md5sum; python3 json",
+  "reproduce": "md5sum 3.map 41.map D10031.map 50.map; compare F317/F371",
+  "notes": [
+    "audit tool could add md5 field for future integrity checks [enhancement]",
+    "hashes pin the exact map binaries under analysis"
+  ]
+}

@@ -38,12 +38,20 @@
   "verdict": "Frame-OOB independent verification complete (primary-bytes): 4936 OOB refs confined to 4 playable maps (3/41/D10031/50.map). D10031 is a NEW back-layer instance of the F317 lib/frame-space confusion (lib 2 frames 42759-42766). F317 evidence updated.",
   "evidence_level": "primary-bytes",
   "evidence_level_note": "All frame refs vs wilsdk counts read directly from binaries; F317 mechanism re-verified.",
-  "cross_refs": ["F317: lib-space-frame-oob-evidence.json", "F342: map inventory", "F343: binding formula", "reserved-frame-markers-evidence.json"],
+  "cross_refs": [
+    "F317: lib-space-frame-oob-evidence.json",
+    "F342: map inventory",
+    "F343: binding formula",
+    "reserved-frame-markers-evidence.json"
+  ],
   "tool": "python3 struct scan; wilsdk; mapviewer HTTP",
   "reproduce": "scan 211 bound maps for frame >= wilsdk count per lib (script above); verify D10031 back frames 42759-42766",
   "notes": [
     "wilsdk count for Wood/SmObjectsc = 969 (wix 0x3C9) - authoritative",
     "D10031 OOB frames 42759-42766 = 0xA707-0xA70E - high-byte 0xA7 not in any EI terrain lib family [candidate reserved/anim]",
     "mapviewer transforms lib-2 frame (observed 11952 vs binary 42765 nearby) - consistent with F317 sibling-family mapping"
-  ]
+  ],
+  "closed_notes": {
+    "f394_2026_08_12": "Checksum verification: F317-recorded md5s re-verified against live files - 3.map=60036c1f (3255 OOB), 41.map=407deda0 (1619), 50.map=ea960513 (39) ALL MATCH. D10031 fresh md5 = 1d1407d0 (62 back-layer OOB, F371). All 4 OOB map hashes now pinned for future integrity checks."
+  }
 }

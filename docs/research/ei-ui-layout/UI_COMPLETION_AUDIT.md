@@ -671,6 +671,11 @@ git diff --check
 - **/fullmap 9600×6400 26MB**（最深 z=2 16384 上限）；热瓦片 121ms、冷 1.4s。
 - 落盘：`map-render-performance-evidence.json`（F394）+ RESEARCH_LOG Round 88。
 
+## Round 89 (2026-08-12) — 地图校验和验证（Finding 395）
+
+- **F317 哈希复验全匹配**（3/41/50.map）；**D10031 钉定 1d1407d0**。
+- 落盘：`map-checksum-verification-evidence.json`（F395，primary-bytes）+ F371 更新 + RESEARCH_LOG Round 89。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

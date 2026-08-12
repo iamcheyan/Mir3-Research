@@ -6182,3 +6182,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔fullmap〕**0.map → 9600×6400 JPEG 26MB（19.7s 冷）——世界 38400×25600 / 4 = 最深 z=2（16384 上限，F373 阶梯吻合）。
 - **〔瓦片〕**热 121ms（10 片 1.21s、8 片/s）、冷 ~1.4s——缓存对交互平移关键。
 - 落盘：map-render-performance-evidence.json（F394，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 88。
+## Round 89 (F395) — 2026-08-12：地图校验和验证（F317 哈希复验 + D10031 钉定）
+
+- **〔复验〕**F317 记录 md5 与现文件全匹配：3.map=60036c1f（3255 OOB）、41.map=407deda0（1619）、50.map=ea960513（39）。
+- **〔新增〕**D10031 fresh md5=1d1407d0（62 back OOB）——钉定入 F371 closed_notes。
+- **〔审计〕**map-audit.json 无 md5 字段（结构性数据）——校验和在 F317/F371。
+- 落盘：map-checksum-verification-evidence.json（F395，primary-bytes）+ frame-oob-verification-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 89。
