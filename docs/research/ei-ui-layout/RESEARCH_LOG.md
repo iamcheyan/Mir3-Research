@@ -8541,3 +8541,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔实体〕**0x40B2C0：世界→屏幕投影（[0xCC]/[0xD0] − 相机 [0x12C..0x138]、x×3×16、y<<5、偏移 −0xC8/−0x9D → [0xE4]/[0xE8]）+ **阴影帧 [0x90] blit**（0x466130 + SetRect 0x4762B0 + 帧尺寸 [0x38]+[4..0xB]）+ 矩形钳制 [0xA4]/[0xAC] + HP 条区域——实体渲染完整（F622/F435 用）。
 - 落盘：entity-projection-shadow-evidence.json（F894，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 588。
+## Round 589 (F895) — 2026-08-12：实体渲染闭合（F622/F894 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**519 证据 JSON**；三服务 200；master 0f4353d（**553 连发 F335-F894 已推**）。
+- **〔弧〕**投影/阴影（F622）+ 投影/阴影全量（F894）——**实体渲染完整**（世界→屏幕 + 阴影帧 blit + 矩形钳制 + HP 区域），实体表面闭合。
+- 落盘：entity-render-closure-evidence.json（F895，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 589。
