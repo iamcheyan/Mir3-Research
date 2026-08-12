@@ -8611,3 +8611,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 601-603（F908-F909：交易槽查找/添加 + 交易操作闭合）；基线 Round 600=d3d9827 → Round 603=3368b64（**568 连发 F335-F909**）。
 - 落盘：handoff-refresh-114-evidence.json（F910，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 604。
+## Round 605 (F911) — 2026-08-12：商店槽命中 + 查找（F740 依赖）
+
+- **〔商店〕**0x44E700 **购买槽命中**（5 槽 @ [0x668] stride 0x10 + 2 号矩形 +0x48、PtInRect 0x4762B4 → idx + [0x700]）；0x44E7D0 **列表槽获取**（[0x70C] 列表、idx 匹配）；0x44E800 **卖出槽命中**（4 槽 @ [0x728] + [0x7E0] 状态）——商店槽交互完整。
+- 落盘：shop-slot-hit-lookup-evidence.json（F911，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 605。

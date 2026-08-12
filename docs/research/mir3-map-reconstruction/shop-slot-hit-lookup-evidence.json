@@ -1,0 +1,36 @@
+{
+  "evidence_id": "shop-slot-hit-lookup-2026-08-12-f911",
+  "title": "Round 605 (F911): Shop slot hit + lookup (F740 deps) - 0x44E700 BUY-slot hit (5 slots @ [0x668] stride 0x10 + 2nd rect +0x48, PtInRect 0x4762B4 -> idx + [0x700]); 0x44E7D0 LIST-slot get ([0x70C] list, idx match); 0x44E800 SELL-slot hit (4 slots @ [0x728] + [0x7E0] state) - shop slot interaction COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the shop slot hit + lookup.",
+  "question": "How do shop slots hit-test + look up?",
+  "method": "Disasm 0x44E700-0x44E873.",
+  "scope": "0x44E700-0x44E873; slots.",
+  "cell_analysis": {
+    "0x44E700": "buy hit: 5 slots [0x668] + rect +0x48 -> idx+[0x700]",
+    "0x44E7D0": "list get: [0x70C] idx match",
+    "0x44E800": "sell hit: 4 slots [0x728] + [0x7E0]"
+  },
+  "exe_trace": {
+    "shop_chain": "buy hit -> idx -> list get; sell hit"
+  },
+  "audit_vs_exe": {
+    "F740": "click handler", "F661": "manager", "F824": "dispatch"
+  },
+  "contrast": {
+    "buy_vs_sell": "5 + 4 slots",
+    "hit_vs_get": "PtInRect + list"
+  },
+  "verdict": "Shop slot hit + lookup PRIMARY-verified: buy/sell hits + list get; F740 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Shop slots decoded from .text.",
+  "cross_refs": ["F740: click", "F661: manager", "F824: dispatch"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44E700+0x10; 0x44E800+0x10",
+  "notes": [
+    "buy 5 slots [0x668]",
+    "sell 4 slots [0x728]",
+    "list [0x70C]",
+    "state [0x7E0]"
+  ]
+}
