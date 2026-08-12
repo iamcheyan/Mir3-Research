@@ -6380,3 +6380,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔缓存〕**LRU 淘汰 0x3A98ms（0x466770）+ 0x493E0ms 超时；0x4667D0 = 上下文构造（size 0x7C，条目 stride 0x20）。
 - **〔IAT〕**新增 SetFilePointer 0x4761EC / GetTickCount 0x47611C / UnmapViewOfFile 0x4760F8。
 - 落盘：wil-frame-loader-0x466130-evidence.json（F436，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 130。
+## Round 131 (F437) — 2026-08-12：怪物阴影/光照系统（六边形光场）
+
+- **〔调用〕**0x40B180 模式字节 [0x61BD4]：0=暗影 (5,5,10)、2=亮 (100,100,100)、8=闪白 (255,255,255)。
+- **〔渲染〕**0x434A20 六边形网格径向光渲染器（fsqrt 距离衰减、RGB32 混合、6 顶点四边形扇、0x12/0x11 六边间距、半径门 0x7E1）→ 全局 0x7DA1D8。
+- **〔坐标〕**0x434670 像素→六边形格 (x+8)*2/3、y>>5。
+- 落盘：monster-shadow-light-system-evidence.json（F437，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 131。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "monster-shadow-light-system-2026-08-12-f437",
+  "title": "Round 131 (F437): Monster shadow/light system - 0x40B180 caller (mode [0x61BD4]: 0=dim (5,5,10), 2=bright (100,100,100), 8=flash (255,255,255), else (10,255,255,255)) -> 0x434A20 hex-grid radial light renderer (fsqrt distance falloff, RGB32 blend, 6-vertex quad-fan, 0x12/0x11 hex pitch) on global 0x7DA1D8; 0x434670 = pixel->hex-cell (x+8)*2/3, y>>5",
+  "date": "2026-08-12",
+  "objective": "Decode the monster shadow/light effect render path: caller, renderer, and coordinate conversion.",
+  "question": "How does the client draw monster shadows and hit-flashes?",
+  "method": "Disasm 0x434A20 (renderer) + 0x434670 (coord setup) + 0x40B180 caller (Round 129 trace).",
+  "scope": "0x40B180-0x40B2B4 (caller), 0x434670-0x434A20 (setup+render), 0x7DA1D8 global.",
+  "cell_analysis": {
+    "caller_0x40B180": {"mode_byte": "[ecx+0x61BD4]", "modes": {"0": "dim (r5,g5,b10) 0x40B1D9-0x40B1DD", "2": "bright (100,100,100)", "8": "flash (255,255,255)", "else": "(10,255,255,255)"}, "pos": "x+0x10, y+0x18 (screen pos + 16/24)"},
+    "renderer_0x434A20": {"grid": "hex cells (0x12=18px pitch, 0x11=17 row offset, 0x6C0 base, 0x30=48 row stride)", "distance": "per-cell fsqrt(x^2+y^2) falloff, radius gate 0x7E1 (2017)", "write": "6-vertex quad-fan (5 words) per cell into 32-bit RGB buffer", "blend": "r/g/b += distance-scaled color, clamp 0xFF (0x434C3D-0x434CDB)", "scale": "float arg (0x3F800000 = 1.0) via 0x468520 (ftol?)"},
+    "coord_setup_0x434670": {"x": "(x+8) * 2/3 (0x2AAAAAAB magic)", "y": "(y+0x1D) >> 5", "out": "cell coords for renderer"},
+    "global": "0x7DA1D8 = hex light-field object (this = ecx)"
+  },
+  "exe_trace": {
+    "shadow_chain": "monster draw (0x40B2C0 F435) -> shadow 0x40B180 -> 0x434A20 on 0x7DA1D8",
+    "hex_grid": "isometric light grid (not pixel buffer) - 0x12/0x11/0x6C0 constants"
+  },
+  "audit_vs_exe": {
+    "F435": "draw path: shadow call site 0x40B1BC confirmed in anim machine",
+    "F375": "separate from map blit (0x43B440) - light system independent"
+  },
+  "contrast": {
+    "light_vs_tiles": "hex-cell light field vs 32px square tile buffer (F379)",
+    "dim_vs_flash": "shadow dim (5,5,10) vs hit flash (255,255,255) = same renderer, different color args"
+  },
+  "verdict": "Monster shadow/light system PRIMARY-verified: 0x40B180 caller with mode [0x61BD4] (dim/bright/flash), 0x434A20 hex-grid radial renderer (fsqrt distance, RGB32 blend, quad-fan), 0x434670 pixel->hex conversion, global 0x7DA1D8.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All three functions decoded from .text.",
+  "cross_refs": ["F435: anim/draw path", "F375: map blit (separate)", "F379: viewport buffer"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x434670+0x20, 0x434A20+0x60, 0x40B180+0x40",
+  "notes": [
+    "hex cell stride 0x30 row / 0x12 col = isometric packing",
+    "radius gate 0x7E1 caps light field extent",
+    "0x468520 = float->int conversion (ftol)"
+  ]
+}
