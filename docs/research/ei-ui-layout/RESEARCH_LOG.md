@@ -7728,3 +7728,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 397-399（F704-F705：控件命中/定位 + 控件最终闭合）；基线 Round 396=6e94d4d → Round 399=bb029ae（**364 连发 F335-F705**）——**400 轮里程碑**。
 - 落盘：handoff-refresh-46-evidence.json（F706，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 400。
+## Round 401 (F707) — 2026-08-12：滚动条家族
+
+- **〔滚动条〕**0x4179B0 ctor/refresh（F535/F599 确认）：**滑块比例 [0xC] = count/(max-1)**、步长 [0x10] = 1/max、WIL 帧尺寸、SetRect 滑块；0x417C80 命中（拖动 [0x18] 门 + x 夹取 [0x28]/[0x30] + 比例 = (x-min)/(max-min)）；0x417D00 点击（PtInRect + **10ms 门 [0x44]** + 箭头 [0x18]=1 + 滚动 [0xC] ± 步长）——滚动条系统字节级（F535/F599/F581 全用）。
+- 落盘：scrollbar-family-evidence.json（F707，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 401。

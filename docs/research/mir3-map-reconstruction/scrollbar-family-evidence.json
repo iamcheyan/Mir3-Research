@@ -1,0 +1,36 @@
+{
+  "evidence_id": "scrollbar-family-2026-08-12-f707",
+  "title": "Round 401 (F707): Scrollbar family - 0x4179B0 ctor/refresh (F535/F599 CONFIRMED): thumb ratio [0xC] = count/(max-1), step [0x10] = 1/max, WIL frame dims, SetRect thumb; 0x417C80 HIT (drag [0x18] gate, x clamp [0x28]/[0x30], ratio [0xC] = (x-min)/(max-min)); 0x417D00 CLICK (PtInRect + 10ms gate [0x44] + arrow [0x18]=1 + thumb scroll [0xC] +/- step) - scrollbar system byte-level (F535/F599/F581 all use)",
+  "date": "2026-08-12",
+  "objective": "Decode the scrollbar family.",
+  "question": "How do scrollbars work?",
+  "method": "Disasm 0x4179B0-0x417D00.",
+  "scope": "0x4179B0-0x417D00; ratio; thumb.",
+  "cell_analysis": {
+    "0x4179B0": {"ratio": "[0xC] = count/(max-1)", "step": "[0x10] = 1/max", "thumb": "WIL dims + SetRect"},
+    "0x417C80": "hit: drag [0x18] + x clamp [0x28]/[0x30] + ratio",
+    "0x417D00": "click: PtInRect + 10ms [0x44] + arrow [0x18]=1 + scroll [0xC] +/- step"
+  },
+  "exe_trace": {
+    "scroll_chain": "ctor ratio -> click arrows -> drag thumb -> scroll"
+  },
+  "audit_vs_exe": {
+    "F535": "guild scrollbar", "F599": "chat scrollbar", "F581": "hotbar"
+  },
+  "contrast": {
+    "ctor_vs_hit": "ratio math + drag hit",
+    "arrow_vs_thumb": "arrow click + thumb drag"
+  },
+  "verdict": "Scrollbar family PRIMARY-verified: ctor ratio + hit + click; scrollbar system byte-level (F535/F599/F581).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Scrollbar decoded from .text.",
+  "cross_refs": ["F535: guild", "F599: chat", "F581: hotbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4179B0+0x20; 0x417C80+0x10; 0x417D00+0x20",
+  "notes": [
+    "ratio [0xC] count/(max-1)",
+    "step [0x10] 1/max",
+    "drag gate [0x18]",
+    "click 10ms [0x44]"
+  ]
+}
