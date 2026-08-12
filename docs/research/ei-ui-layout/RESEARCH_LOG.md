@@ -8048,3 +8048,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**404 证据 JSON**；三服务 200；master bde6bc5（**438 连发 F335-F779 已推**）。
 - **〔弧〕**开关（F546）+ 绘制/点击（F761）+ 滑块应用（F776）+ 字符串/配置（F779）——**选项系统 100% 字节级**（4×2 开关 + BGM/SFX 滑块 + 音量应用 0x45A700 + 实时值 + 配置装载），窗口模式 C 全文档化。
 - 落盘：options-system-final-closure-evidence.json（F780，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 474。
+## Round 475 (F781) — 2026-08-12：HANDOFF 刷新 70（Round 472-474）+ 70 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 472-474（F779-F780：选项字符串/配置 + 选项系统最终闭合）；基线 Round 471=bbd1855 → Round 474=d753c98（**439 连发 F335-F780**）——**HANDOFF 刷新 70 里程碑**。
+- 落盘：handoff-refresh-70-evidence.json（F781，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 475。
