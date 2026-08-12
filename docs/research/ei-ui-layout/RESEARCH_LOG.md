@@ -7004,3 +7004,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔金币显示/冷却〕**0x420BE8：'%d 金'（0x47B580）→ [0x2CF150] + [0x2CF140]=1；0x420C1E：timeGetTime → [0x2AB69C] + 0x43D780 + [0x2AB9A4]=1。
 - **〔编码〕**KR 源 cp949（돈이 부족합니다/오류/보관/아이템이 잘 만들어 졌습니다）+ CN GBK 层。
 - 落盘：recv1-craft-family-evidence.json（F556，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 250。
+## Round 251 (F557) — 2026-08-12：recv1 交易族 + 模式 3 修正
+
+- **〔修正〕**[hero+0x3399C] = **交易窗**（F313 cap0 交易栏 Ctrl+C）——F550/F551「行会」归属**错误已修正**（行会 = cap6 Ctrl+F 另窗）。
+- **〔交易布局〕**2 栏 × 12 槽（stride 0xC2C、栏块 0x9210=12×0xC2C）@ [win+0x5B8]；找槽 0x4162A0（idx×0x9210+0x5B8 扫 12）、加 0x4161F0（ret 0xC2C）、删 0x416150（id + 名 strcmp → 0x4160E0）、插 0x416490。
+- **〔处理器〕**mapval1 = **交易开**（对方名 0x3C → [hero+0x2EB800] + 背包 (518,0)）；0x42081D 交易放入（0x430920/0x430940 物品构造 + 0x4161F0(trade,1) + 音效 + '%s 已经被放入对方的物品交易栏.' 0x47B6A4）；0x4208EC 交易取走（0x416150(trade,1,word,name) + '%s 已经被对方从物品交易栏中拿走.' 0x47B680）；0x420766 待装备 → 0x4161F0(trade,0)；0x420671 腰带卸 → 背包；0x4206CE 待装备金币检查（F549 镜像）；0x4207BC/0x4207FC 金币 → 0x45AFC0([0x8AB130], 0x6A) + [0x2EB840]/[0x2EB844] + [0x35B1E8]。
+- 落盘：recv1-trade-family-evidence.json（F557，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 251。

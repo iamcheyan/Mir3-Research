@@ -1,0 +1,42 @@
+{
+  "evidence_id": "recv1-trade-family-mode3-correction-2026-08-12-f557",
+  "title": "Round 251 (F557): recv1 trade family + mode-3 CORRECTION - [hero+0x3399C] = TRADE window (F313 cap0 交易栏 Ctrl+C, NOT guild as F550/F551 said); trade layout: 2 panes x 12 item slots (stride 0xC2C, pane block 0x9210=12*0xC2C) at [win+0x5B8], slot find 0x4162A0 (idx*0x9210+0x5B8 scan 12), add 0x4161F0 (ret 0xC2C), remove 0x416150 (id + name strcmp + 0x4160E0), insert 0x416490; mapval1 (0x420474) = TRADE OPEN: partner name 0x3C -> [hero+0x2EB800] + bag position (518,0) (F550 corrected); 0x42081D trade offer: item record build (0x430920/0x430940 F464) + 0x4161F0(trade,1) + sound 0x42E2D0 + '%s 已经被放入对方的物品交易栏.' (0x47B6A4); 0x4208EC trade withdrawal: 0x416150(trade,1,word,name) + '%s 已经被对方从物品交易栏中拿走.' (0x47B680); 0x420766 pending equip -> 0x4161F0(trade,0); 0x420671 belt remove -> bag; 0x4206CE pending equip gold-check (F549 mirror); 0x4207BC/0x4207FC gold -> 0x45AFC0([0x8AB130], 0x6A) + [0x2EB840]/[0x2EB844] + [0x35B1E8] - trade family byte-level (guild = cap6 Ctrl+F, separate window)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 trade family + correct mode-3 attribution.",
+  "question": "Is mode 3 the guild or trade window?",
+  "method": "Disasm 0x420671-0x4209A8 + 0x4161F0/0x416150/0x4162A0 + F313 caption cross-check.",
+  "scope": "0x420671-0x4209A8; trade win [0x2D8E28]; 0x4161F0 family.",
+  "cell_analysis": {
+    "correction": {"mode3": "TRADE window (F313 cap0 交易栏 Ctrl+C)", "F550_F551": "guild attribution WRONG - corrected", "guild": "cap6 Ctrl+F separate window"},
+    "trade_layout": {"slots": "2 panes x 12 slots (stride 0xC2C, pane block 0x9210) at [win+0x5B8]", "find": "0x4162A0 (idx*0x9210+0x5B8, scan 12, idx = pane)", "add": "0x4161F0 (ret 0xC2C, 0x416490 insert)", "remove": "0x416150 (id [edi]+ name strcmp -> 0x4160E0)"},
+    "mapval1": "TRADE OPEN: partner name 0x3C -> [hero+0x2EB800] + bag (518,0) - F550 corrected",
+    "0x42081D": "trade offer: 0x430920/0x430940 item build + 0x4161F0(trade,1) + 0x42E2D0 + 0x47B6A4 '%s 已经被放入对方的物品交易栏.'",
+    "0x4208EC": "trade withdrawal: 0x416150(trade,1,word,name) + 0x47B680 '%s 已经被对方从物品交易栏中拿走.'",
+    "0x420766": "pending equip -> 0x4161F0(trade,0) + clear",
+    "0x420671": "belt [0x2EB848] remove -> bag (0x42FC20)",
+    "0x4206CE": "pending equip gold-check '금전' (F549 mirror) -> bag",
+    "gold": "0x4207BC/0x4207FC: 0x45AFC0([0x8AB130], 0x6A, 0, 0, 0) + [0x2EB840]/[0x2EB844] + [0x35B1E8]"
+  },
+  "exe_trace": {
+    "trade_chain": "trade packet -> partner name + trade window (mode 3) + bag right; offer/withdraw -> slot add/remove + confirm strings"
+  },
+  "audit_vs_exe": {
+    "F313": "caption map id3 = 交易栏 (Ctrl+C) - CONFIRMS correction", "F550/F551": "mode 3 guild -> TRADE corrected", "F544": "trade pane hit-test", "F464": "0x430920/0x430940 item ctor"
+  },
+  "contrast": {
+    "trade_vs_guild": "mode 3 = trade (cap0 Ctrl+C); guild = cap6 Ctrl+F elsewhere",
+    "offer_vs_withdraw": "0x4161F0 add vs 0x416150 remove"
+  },
+  "verdict": "recv1 trade family PRIMARY-verified: mode 3 = TRADE window (F313 caption cross-check), 2 panes x 12 slots at +0x5B8, add/remove helpers, offer/withdraw strings; F550/F551 guild misattribution CORRECTED (guild = cap6 Ctrl+F separate).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + helpers decoded; caption cross-check F313.",
+  "cross_refs": ["F313: caption map", "F550: dispatcher (corrected)", "F544: trade pane", "F464: item ctor"],
+  "tool": "capstone disasm + F313 cross-check",
+  "reproduce": "disasm 0x4161F0+0x20, 0x4162A0+0x20, 0x42081D+0x60",
+  "notes": [
+    "pane block 0x9210 = 12 slots x 0xC2C",
+    "trade win object big (~0x189D8 bytes: 2 panes + grid)",
+    "guild window mode TBD (cap6 Ctrl+F, likely 0xB-0xF)",
+    "mapval1 = trade request handler (partner name)"
+  ]
+}
