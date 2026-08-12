@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hit-router-closure-2026-08-12-f967",
+  "title": "Round 661 (F967): Hit router CLOSED (F900/F966) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 5e6f5cd (625 consecutive F335-F966), 591 evidence JSONs; arc: hit router (F900) + full 13-rect router (F966) - window routing COMPLETE byte-level (open dlist walk + jt 13 rects + PtInRect + open/close helpers); ALL 13 windows + HUD inputs + hit routing closed",
+  "date": "2026-08-12",
+  "objective": "Close the hit router arc.",
+  "question": "Is the hit router fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "591 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F900": "router", "F966": "13-rect full"},
+    "routing": "dlist + jt + PtInRect = COMPLETE",
+    "milestone": "625 consecutive rounds F335-F966"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F966": "625 rounds pushed; hit router complete"
+  },
+  "contrast": {
+    "router_vs_full": "head + 13 rects",
+    "windows": "13/13 + HUD + routing"
+  },
+  "verdict": "Hit router CLOSED (F967): dlist walk + 13 rect jt all byte-level; validation green, 625 consecutive rounds, 591 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F900/F966.",
+  "cross_refs": ["F900", "F966"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "625 consecutive shipping rounds F335-F966",
+    "hit router 100%",
+    "next: HANDOFF refresh 134, remaining corners"
+  ]
+}

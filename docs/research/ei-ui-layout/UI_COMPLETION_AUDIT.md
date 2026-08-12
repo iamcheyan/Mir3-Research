@@ -4017,3 +4017,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（命中路由器完整；下一弧：剩余深层角落）。
+## Round 661 (2026-08-12) — 命中路由器闭合（Finding 967）
+
+- **625 连发 + 591 证据 + 命中路由完整**。
+- 落盘：`hit-router-closure-evidence.json`（F967）+ RESEARCH_LOG Round 661。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口 + HUD + 命中路由；下一弧：HANDOFF 刷新 134/剩余角落）。

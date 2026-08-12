@@ -8854,3 +8854,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔命中〕**0x42AAB0：开窗 dlist [0xD2C]/[0xD30]/[0xD38] 遍历 + jt 0x42ABE8 **13 模式** → 矩形偏移（0x656C 背包/0x29CFC 装备/0x331A0 商店/0x339B4 交易/0x47094 行会/0x4784C 组队/0x47C40 状态/0x50804 公告/0x51168 对话/0x51700 任务/0x518F8 选项/0x52130 坐骑/0x52508 技能书）+ PtInRect 0x4762B4 → 模式或 -1；0x42AC30 开窗助手（0x449870）+ 0x42AC50 关窗助手（dlist 解除，F812 依赖）——命中路由器完整。
 - 落盘：window-hit-router-full-evidence.json（F966，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 660。
+## Round 661 (F967) — 2026-08-12：命中路由器闭合（F900/F966 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**591 证据 JSON**；三服务 200；master 5e6f5cd（**625 连发 F335-F966 已推**）。
+- **〔弧〕**命中路由器（F900）+ 13 矩形全量（F966）——**窗口路由完整**（开窗 dlist 遍历 + jt 13 矩形 + PtInRect + 开/关助手）；**13/13 窗口 + HUD 输入 + 命中路由闭合**。
+- 落盘：hit-router-closure-evidence.json（F967，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 661。
