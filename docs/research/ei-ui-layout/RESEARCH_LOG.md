@@ -7625,3 +7625,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔数值〕**0x401700 = **百分比数学**（val/denom + 0.5 → 0x468520 舍入、除 0 → 0xFFFF）；0x468520 = **浮点→int64**（fistp qword、fldcw 舍入模式保存/恢复）；0x46855F/0x46858C = **itoa/utoa**（基 10/16 数字转换 + 符号 0x2D）——共享数值核心字节级（F460/F588/F566 全用）。
 - 落盘：numeric-helpers-evidence.json（F683，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 377。
+## Round 378 (F684) — 2026-08-12：工具库弧闭合（F680-F683 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**308 证据 JSON**；三服务 200；master 9795f4f（**342 连发 F335-F683 已推**）。
+- **〔弧〕**字符串库（F680：sprintf/strtol/strlen）+ 数值助手（F683：百分比/浮点/itoa）——**工具库完整（字符串 + 数值）**，支撑全部文本/数值路径。
+- 落盘：utility-lib-arc-closure-evidence.json（F684，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 378。

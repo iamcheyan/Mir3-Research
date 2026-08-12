@@ -1,0 +1,36 @@
+{
+  "evidence_id": "utility-lib-arc-closure-2026-08-12-f684",
+  "title": "Round 378 (F684): Utility-lib arc CLOSED (F680-F683) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 9795f4f (342 consecutive F335-F683), 308 evidence JSONs; arc: string lib (F680: sprintf/strtol/strlen) + numeric helpers (F683: percent/float-int/itoa) - utility library COMPLETE (strings + numbers), backing every text/numeric path",
+  "date": "2026-08-12",
+  "objective": "Close the utility-lib arc.",
+  "question": "Is the utility library fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "308 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F680": "string lib", "F683": "numeric helpers"},
+    "utility": "strings (sprintf/strtol/strlen) + numbers (percent/float/itoa) = COMPLETE",
+    "milestone": "342 consecutive rounds F335-F683"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F683": "342 rounds pushed; utility lib complete"
+  },
+  "contrast": {
+    "string_vs_numeric": "string lib + numeric helpers",
+    "format_vs_convert": "format/parse + percent/convert"
+  },
+  "verdict": "Utility-lib arc CLOSED (F684): string + numeric libs all byte-level; validation green, 342 consecutive rounds, 308 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F680-F683.",
+  "cross_refs": ["F680: string lib", "F683: numeric"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "342 consecutive shipping rounds F335-F683",
+    "next: HANDOFF refresh 39, remaining corners"
+  ]
+}
