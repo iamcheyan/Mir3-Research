@@ -1,0 +1,36 @@
+{
+  "evidence_id": "item-icon-draw-detail-dispatch-2026-08-12-f651",
+  "title": "Round 345 (F651): Item icon draw + detail dispatch - 0x430A40 (F464/F559): 3-context dispatch (byte [esp+0xC]: 0 = StoreItem 0x5668C4, 1 = 0x566A08, 2 = 0x56B0E8 WIL tables, frame [0x28] via 0x466130), centering math 0x13 (19px half) + [0x22] type 0xA/0xB color tint -> 0x45E4E0, blit 0x460240; 0x430B70 = item DETAIL 5-class dispatch (jt 0x430BF8: 0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 = F457/F460 5-class tooltip family CONFIRMED) - item icon + detail core byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the item icon draw + detail dispatch.",
+  "question": "How do item icons + details render?",
+  "method": "Disasm 0x430A40-0x430BF8.",
+  "scope": "0x430A40-0x430BF8; 3 contexts; 5-class jt.",
+  "cell_analysis": {
+    "0x430A40": {"contexts": "0 = StoreItem 0x5668C4 / 1 = 0x566A08 / 2 = 0x56B0E8 (frame [0x28] via 0x466130)", "center": "0x13 (19px half)", "tint": "[0x22] type 0xA/0xB -> 0x45E4E0", "blit": "0x460240"},
+    "0x430B70": {"jt": "0x430BF8 5-class: 0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 (F457/F460 tooltip family)"}
+  },
+  "exe_trace": {
+    "icon_chain": "item paint -> 0x430A40 context -> WIL frame -> center/tint -> 0x460240 blit",
+    "detail_chain": "item tooltip -> 0x430B70 5-class jt -> class body"
+  },
+  "audit_vs_exe": {
+    "F464": "item icon 0x430A40 CONFIRMED", "F457/F460": "5-class tooltip family", "F559": "mode 7 equip icons"
+  },
+  "contrast": {
+    "icon_vs_detail": "0x430A40 icon + 0x430B70 detail",
+    "contexts": "3 WIL tables by context byte"
+  },
+  "verdict": "Item icon + detail PRIMARY-verified: 3-context icon draw + 5-class detail dispatch; F464/F457/F460 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Item core decoded from .text.",
+  "cross_refs": ["F464: icons", "F457/F460: tooltip", "F559: equip icons"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x430A40+0x30; 0x430B70+0x20",
+  "notes": [
+    "3 WIL tables by context",
+    "center 0x13 = 19px",
+    "tint 0xA/0xB types",
+    "5-class detail jt"
+  ]
+}

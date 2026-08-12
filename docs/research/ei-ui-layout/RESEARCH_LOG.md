@@ -7476,3 +7476,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 340-343（F647-F649：通用 RLE blit + 世界 blit + 渲染弧）；基线 Round 339=4ce6ee7 → Round 343=aa3e93e（**308 连发 F335-F649**）。
 - 落盘：handoff-refresh-28-evidence.json（F650，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 344。
+## Round 345 (F651) — 2026-08-12：物品图标绘制 + 详情分派
+
+- **〔图标〕**0x430A40（F464/F559）：**3 上下文分派**（字节 [esp+0xC]：0 = StoreItem 0x5668C4、1 = 0x566A08、2 = 0x56B0E8 WIL 表，帧 [0x28] 经 0x466130）、居中数学 0x13（19px 半）、[0x22] 类型 0xA/0xB 色调 → 0x45E4E0、blit 0x460240。
+- **〔详情〕**0x430B70 = 物品详情 **5 类分派**（jt 0x430BF8：0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 = F457/F460 5 类提示框族确认）——物品图标 + 详情核心字节级。
+- 落盘：item-icon-draw-detail-evidence.json（F651，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 345。
