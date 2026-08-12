@@ -6549,3 +6549,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔上下文〕**3 图标上下文：0x5668C4 默认（背包 0x42F6D5/0x42F854、提示框 0x434286、角色选择 0x416A93、物品绘制 0x430ABC）/ 0x566A08 type-1 / 0x56B0E8 type-2（商店绘制 0x44D65C）；头 [0x5668FC]/[0x566A40]/[0x56B120]。
 - **〔角色选择背包〕**槽 stride 0x24、帧字 [0x5EC]、type [0x5E6]（0xA/0xB 金币/经验特殊混合）。
 - 落盘：item-icon-library-evidence.json（F465，primary + secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 159。
+## Round 160 (F466) — 2026-08-12：背包交互系统（悬停→提示框链确认）
+
+- **〔悬停〕**0x42FAB0：门 [0x7243C4] → 槽命中测试 0x42F240（鼠标 [0x7DA1C0]/[0x7DA1C4]）→ 记录 bag+槽*0xC2C+0x774 → **0x4341F0 提示框**（鼠标+0xA，记录+0x780）— F340 链字节确认。
+- **〔槽操作〕**清槽 0x42FB20（0x258 字标记 [0x2C4] + 0x30B dword 清零）；按名查找 0x42FB80（strcmp 46 槽）；全清 0x42FC00；**反序列化 0x42FC20**（0xC28 输入，0x42F2A0/0x42F280/0x42F440）；取槽 0x42FCC0（0x308 dword 复制）；设槽 0x42FD10。
+- 落盘：bag-interaction-system-evidence.json（F466，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 160。

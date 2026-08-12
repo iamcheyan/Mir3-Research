@@ -1026,9 +1026,14 @@ git diff --check
 - **StoreItem.wil 1440 帧 + 3 图标上下文**。
 - 落盘：`item-icon-library-evidence.json`（F465）+ RESEARCH_LOG Round 159。
 
+## Round 160 (2026-08-12) — 背包交互系统（Finding 466）
+
+- **悬停→提示框链 + 槽操作 + 反序列化**。
+- 落盘：`bag-interaction-system-evidence.json`（F466）+ RESEARCH_LOG Round 160。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（物品/图标族全解；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（背包族全解；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

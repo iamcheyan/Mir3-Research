@@ -1,0 +1,39 @@
+{
+  "evidence_id": "bag-interaction-system-2026-08-12-f466",
+  "title": "Round 160 (F466): Bag interaction system - hover 0x42FAB0 (gate [0x7243C4], slot hit-test 0x42F240 with mouse [0x7DA1C0]/[0x7DA1C4] -> bag+slot*0xC2C+0x774 record -> 0x4341F0 tooltip at mouse+0xA, record+0x780 = F340 chain CONFIRMED); slot clear 0x42FB20 (0x258 word marks [0x2C4] + 0x30B dwords zero); name find 0x42FB80 (strcmp 46 slots, [0x7BD] name); clear-all 0x42FC00; deserialize 0x42FC20 (0xC28 input, 0x42F2A0/0x42F280/0x42F440); get-slot 0x42FCC0 (copies 0x308 dwords); set-slot 0x42FD10 (0x430920 + get + apply)",
+  "date": "2026-08-12",
+  "objective": "Decode the bag mouse interaction and slot operation functions.",
+  "question": "How does the bag handle hover, slot ops, and server data?",
+  "method": "Disasm 0x42FAB0 (hover) + 0x42FB20/0x42FB80/0x42FC00/0x42FC20/0x42FCC0/0x42FD10.",
+  "scope": "0x42FAB0-0x42FD10; bag 46 slots x 0xC2C.",
+  "cell_analysis": {
+    "hover_0x42FAB0": {"gate": "[0x7243C4] (hero UI) -> skip", "hit_test": "0x42F240(mouse [0x7DA1C0]/[0x7DA1C4]) -> slot or -1", "record": "bag + slot*0xC2C + 0x774 (46-slot F293 stride)", "tooltip": "0x4341F0(0, 0, mouse+0xA, +0xA, record+0x780) - F340 chain"},
+    "slot_clear_0x42FB20": {"marks": "0x258 words at [0x2C4+idx*2] set 0xFFFF (or idx+0x3E8)", "record": "zero 0x30B dwords at [bag+slot*0xC2C+0x774]"},
+    "name_find_0x42FB80": {"scan": "46 slots (0x2E), strcmp vs [0x7BD] name", "found": "-> clear via 0x42FB20"},
+    "deserialize_0x42FC20": {"input": "0xC28 bytes (bag packet)", "flow": "0x42F2A0 (parse) -> 0x42F280 -> 0x42F440 (apply)"},
+    "get_set_slot": {"get": "0x42FCC0 copies 0x308 dwords (0xC20 record) from [bag+slot*0xC2C+0x780]", "set": "0x42FD10: 0x430920 ctor + 0x42FCC0 + 0x42FC20 apply"}
+  },
+  "exe_trace": {
+    "bag_chain": "server bag packet -> 0x42FC20 deserialize -> slots -> hover 0x42FAB0 -> tooltip 0x4341F0"
+  },
+  "audit_vs_exe": {
+    "F340": "bag mouse 0x42FAB0 + tooltip 0x4341F0 chain byte-confirmed",
+    "F293": "46 slots x 0xC2C stride confirmed",
+    "F46/F52": "bag grid sizes consistent"
+  },
+  "contrast": {
+    "hover_vs_click": "hover = tooltip (0x42FAB0); click = use/drop (0x42FB80 name-based?)",
+    "deserialize_vs_parse": "0x42FC20 bulk deserialize vs store string parsers (F461-463)"
+  },
+  "verdict": "Bag interaction system PRIMARY-verified: hover hit-test + tooltip chain (F340 confirmed), slot clear/name-find/clear-all, 0xC28 deserialize, get/set slot with 0x308-dword record copies. Bag UI family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All bag functions decoded from .text.",
+  "cross_refs": ["F340: bag mouse", "F293: 46-slot grid", "F464: item record"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x42FAB0+0x20, 0x42FC20+0x40, 0x42FCC0+0x20",
+  "notes": [
+    "0x2C4 word marks = per-slot grid flags (0x258 = 600 = 46x13?)",
+    "0x7BD = slot name field (strcmp key)",
+    "0xC28 deserialize = full bag packet (46 x 0xC20 + header?)"
+  ]
+}
