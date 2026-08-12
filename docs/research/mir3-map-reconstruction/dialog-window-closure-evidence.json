@@ -1,0 +1,37 @@
+{
+  "evidence_id": "dialog-window-closure-2026-08-12-f858",
+  "title": "Round 552 (F858): Dialog window CLOSED (F598/F746/F857) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master d999948 (516 consecutive F335-F857), 482 evidence JSONs; arc: 4-type render (F598) + option hit/select (F746) + window render (F857) - dialog window COMPLETE byte-level (option list + 4-type jt + measure/wrap + draw + hit/activate), window mode 9 fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the dialog window arc.",
+  "question": "Is the dialog window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "482 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F598": "4-type", "F746": "hit/select", "F857": "render"},
+    "dialog": "list + types + draw + hit = COMPLETE",
+    "milestone": "516 consecutive rounds F335-F857"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F857": "516 rounds pushed; dialog window complete"
+  },
+  "contrast": {
+    "render_vs_hit": "draw + activate",
+    "types_vs_list": "jt + [0x8B1AE4]"
+  },
+  "verdict": "Dialog window CLOSED (F858): render + hit all byte-level; validation green, 516 consecutive rounds, 482 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F598/F746/F857.",
+  "cross_refs": ["F598", "F746", "F857"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "516 consecutive shipping rounds F335-F857",
+    "dialog window 100%",
+    "next: HANDOFF refresh 96, remaining corners"
+  ]
+}

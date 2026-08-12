@@ -8381,3 +8381,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔对话〕**0x43F460：选项列表 [0x8B1AE4] 遍历 + **类型 jt 0x440158（4 类型，F598 确认）** + 测量 0x45E0C0（0x45DD70 换行）+ **选项绘制 0x45DD70**（y=idx×[选项+5]+0x28、色 0x131/0xFFFFFF95 门 [0x582]）——对话窗口完整。
 - 落盘：dialog-window-render-evidence.json（F857，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 551。
+## Round 552 (F858) — 2026-08-12：对话窗口闭合（F598/F746/F857 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**482 证据 JSON**；三服务 200；master d999948（**516 连发 F335-F857 已推**）。
+- **〔弧〕**4 类型渲染（F598）+ 选项命中/选择（F746）+ 窗口渲染（F857）——**对话窗口完整**（选项列表 + 4 类型 jt + 测量/换行 + 绘制 + 命中/激活），模式 9 全交互。
+- 落盘：dialog-window-closure-evidence.json（F858，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 552。

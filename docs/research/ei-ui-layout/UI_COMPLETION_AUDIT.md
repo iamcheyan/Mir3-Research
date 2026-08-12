@@ -3145,3 +3145,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话窗口完整；下一弧：剩余深层角落）。
+## Round 552 (2026-08-12) — 对话窗口闭合（Finding 858）
+
+- **516 连发 + 482 证据 + 对话窗口完整**。
+- 落盘：`dialog-window-closure-evidence.json`（F858）+ RESEARCH_LOG Round 552。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话窗口完整；下一弧：HANDOFF 刷新 96/剩余角落）。
