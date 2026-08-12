@@ -8980,3 +8980,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 686-688（F993-F994：实体投影/阴影全量 + 实体渲染闭合）；基线 Round 685=b8d775e → Round 688=f74d73d（**653 连发 F335-F994**）。
 - 落盘：handoff-refresh-143-evidence.json（F995，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 689。
+## Round 690 (F996) — 2026-08-12：相机滚动全量（F718）
+
+- **〔相机〕**0x43C500：平移 [0x12C]/[0x130] += 增量 + 瓦片缓冲滚动 0x468E90（0x900 stride 0x18 瓦片）+ 脏瓦片重绘 0x43B9A0（F728 地面 blit）+ 钳制 0x900——相机滚动完整。
+- 落盘：camera-scroll-full-evidence.json（F996，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 690。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "camera-scroll-full-2026-08-12-f996",
+  "title": "Round 690 (F996): Camera scroll FULL (F718) - 0x43C500: pan [0x12C]/[0x130] += delta + tile buffer scroll 0x468E90 (0x900 stride 0x18 tiles) + dirty tile redraw 0x43B9A0 (F728 ground blit) + clamp 0x900 - camera scroll COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the full camera scroll.",
+  "question": "How does the camera scroll the tile buffer?",
+  "method": "Disasm 0x43C500-0x43C670.",
+  "scope": "0x43C500-0x43C670; scroll.",
+  "cell_analysis": {
+    "0x43C500": "pan + buffer scroll + redraw",
+    "buffer": "0x468E90 0x900",
+    "tiles": "0x18 stride redraw"
+  },
+  "exe_trace": {
+    "scroll_chain": "pan -> buffer shift -> dirty redraw"
+  },
+  "audit_vs_exe": {
+    "F718": "camera scroll", "F728": "tile blit"
+  },
+  "contrast": {
+    "pan_vs_redraw": "shift + dirty",
+    "tile": "0x18 blocks"
+  },
+  "verdict": "Camera scroll FULL PRIMARY-verified: pan + buffer shift + dirty redraw; F718/F728 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Camera scroll decoded from .text.",
+  "cross_refs": ["F718: camera", "F728: tile blit"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43C500+0x20",
+  "notes": [
+    "pan [0x12C]/[0x130]",
+    "buffer 0x468E90",
+    "tiles 0x18",
+    "clamp 0x900"
+  ]
+}

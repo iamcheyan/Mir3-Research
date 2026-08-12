@@ -4249,3 +4249,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 690 (2026-08-12) — 相机滚动全量（Finding 996）
+
+- **平移 + 缓冲滚动 + 脏重绘**（相机滚动完整）。
+- 落盘：`camera-scroll-full-evidence.json`（F996）+ RESEARCH_LOG Round 690。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（相机滚动完整；下一弧：剩余深层角落）。
