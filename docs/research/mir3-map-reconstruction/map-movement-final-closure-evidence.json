@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-movement-final-closure-2026-08-12-f723",
+  "title": "Round 417 (F723): Map + movement arc FINAL closure (F717-F722) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 075975f (381 consecutive F335-F722), 347 evidence JSONs; arc: tile accessors (F717) + camera (F718) + collision/direction (F719) + move gate (F722) - map+movement 100% byte-level (GET/walkable/block + camera draw/pan + collision + entity-blocked 8-dir move), closing listed corners 0x43C9F0 + 0x43CC30",
+  "date": "2026-08-12",
+  "objective": "Close the map + movement arc finally.",
+  "question": "Is the map + movement fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "347 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F717": "tile", "F718": "camera", "F719": "collision/dir", "F722": "move gate"},
+    "map": "GET/walkable/block + camera + collision + move = 100% (F613/F610/F336)",
+    "milestone": "381 consecutive rounds F335-F722"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F722": "381 rounds pushed; map+movement complete, corners 0x43C9F0 + 0x43CC30 closed"
+  },
+  "contrast": {
+    "tile_vs_move": "accessors + move gate",
+    "camera_vs_collision": "renderer + collision"
+  },
+  "verdict": "Map + movement arc FINAL closure (F723): tile + camera + collision + entity-blocked move all byte-level; validation green, 381 consecutive rounds, 347 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F717-F722.",
+  "cross_refs": ["F717-F722", "F613/F610/F336"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "381 consecutive shipping rounds F335-F722",
+    "corners 0x43C9F0 + 0x43CC30 closed",
+    "next: HANDOFF refresh 51, remaining corners"
+  ]
+}

@@ -7796,3 +7796,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔移动〕**0x43CC30：8 方向 jt 0x43CD94（F613 确认）→ 候选 (x,y) → 瓦片封锁 0x43C9F0 → **实体链表 0x560070 扫描**（位置 [0xCC]/[0xD0]、状态 [0x88]、类型 [0xC0]、旗标 [0x61C74]）同瓦片封锁；0x43CDC0 移动动画历史（8 计数器 @ [0x1B01B4] + 4×16 帧进度缓冲）[INFERENCE]——权威移动门（F613/F336 用）。
 - 落盘：map-move-entity-collision-evidence.json（F722，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 416。
+## Round 417 (F723) — 2026-08-12：地图 + 移动最终闭合（F717-F722 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**347 证据 JSON**；三服务 200；master 075975f（**381 连发 F335-F722 已推**）。
+- **〔弧〕**瓦片访问器（F717）+ 相机（F718）+ 碰撞/方向（F719）+ 移动门（F722）——**地图 + 移动 100% 字节级**（取/可行走/封锁 + 相机绘制/平移 + 碰撞 + 实体封锁 8 方向移动），**列明角落 0x43C9F0 + 0x43CC30 闭合**。
+- 落盘：map-movement-final-closure-evidence.json（F723，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 417。
