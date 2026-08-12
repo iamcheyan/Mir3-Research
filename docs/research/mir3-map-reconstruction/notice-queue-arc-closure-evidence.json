@@ -1,0 +1,36 @@
+{
+  "evidence_id": "notice-queue-arc-closure-2026-08-12-f678",
+  "title": "Round 372 (F678): Notice queue arc CLOSED (F674-F677) - validation green (compileall/verify exit 0/node/JSON), services all 200 (wilviewer/sim/mapviewer/sim8477), master d998511 (336 consecutive F335-F677), 302 evidence JSONs; arc: notice window paint (F674) + line-list core (F677) - notice system COMPLETE (queue insert/pop + render + strings F556 + colors F553)",
+  "date": "2026-08-12",
+  "objective": "Close the notice queue arc.",
+  "question": "Is the notice system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "302 JSONs"},
+    "services": "wilviewer 8765 / sim / mapviewer 8899 / sim8477 all 200",
+    "arc": {"F674": "notice window paint", "F677": "line-list core"},
+    "notice": "queue insert/pop + render + strings + colors = COMPLETE",
+    "milestone": "336 consecutive rounds F335-F677"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F677": "336 rounds pushed; notice complete"
+  },
+  "contrast": {
+    "queue_vs_render": "line-list + window paint",
+    "strings_vs_colors": "F556 strings + F553 colors"
+  },
+  "verdict": "Notice queue arc CLOSED (F678): queue + render all byte-level; validation green, 336 consecutive rounds, 302 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F674-F677.",
+  "cross_refs": ["F674: paint", "F677: queue", "F556/F553: strings/colors"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "336 consecutive shipping rounds F335-F677",
+    "next: HANDOFF refresh 37, remaining corners"
+  ]
+}

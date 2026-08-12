@@ -7598,3 +7598,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔核心〕**0x414FA0 = **插入**（malloc 0x410 节点 {0x408/0x40C 链接} + 复制 0x102 双字、头 [0x4]/尾 [0xC]/计数 [0x14]、ret 0x408 = F674 公告队列节点）；0x415030 = 列表析构（释放全部）；0x415090 = 尾弹出（[0x8] → prev）——公告队列字节级（F674 连接）。
 - 落盘：notice-line-list-evidence.json（F677，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 371。
+## Round 372 (F678) — 2026-08-12：公告队列弧闭合（F674-F677 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**302 证据 JSON**；四服务全 200；master d998511（**336 连发 F335-F677 已推**）。
+- **〔弧〕**公告窗绘制（F674）+ 行列表核心（F677）——**公告系统完整（队列插入/弹出 + 渲染 + 字符串 F556 + 色 F553）**。
+- 落盘：notice-queue-arc-closure-evidence.json（F678，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 372。
