@@ -7283,3 +7283,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 300-303（F607-F609：Intro/启动状态机 + 登录/服务器屏 + 启动弧 + **300 轮里程碑**）；基线 Round 299=74e206f → Round 303=e918c0d（**268 连发 F335-F609**）。
 - 落盘：handoff-refresh-18-evidence.json（F610，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 304。
+## Round 305 (F611) — 2026-08-12：死亡/传送泵完整（0x422960）
+
+- **〔死亡〕**检查（[0x2F8840]==3 + [0x35A31C]−[0x35A320] < [0x35A329]−1 延迟）或冷却 [0x4279A4] → **重生路径**：0x42E1F0 英雄重置 + 0x45B1D0/0x45B3D0、冷却 = 0x5DC（1500ms）、坐标 [0x35A31C]/[0x35A320] 重置 + [0x35A329]=0xA、**活动坐标 [0x2F884C]/[0x2F8850] = 包字 +6/+8（F310 两写者确认）** + 镜像 [0x35B25C]/[0x35B260]、瓦片存储清 0x38400 双字。
+- **〔光照〕**色类型分派（字节 +0xA：0→0xFFFFFF、1→0xF0F0F、2→0x555555）+ 0x434610 + 0x41C1E0；实体列表 [0xE11D0] 清理——**死亡/重生生命周期字节级**。
+- 落盘：death-teleport-pump-evidence.json（F611，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 305。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "death-teleport-pump-full-2026-08-12-f611",
+  "title": "Round 305 (F611): Death/teleport pump FULL - 0x422960 (F310 confirmed): death check ([0x2F8840]==3 + [0x35A31C]-[0x35A320] < [0x35A329]-1 delay) or cooldown [0x4279A4] -> respawn path: 0x42E1F0 hero reset + 0x45B1D0/0x45B3D0, cooldown = 0x5DC (1500ms), coords [0x35A31C]/[0x35A320] + [0x35A329]=0xA reset, LIVE coords [0x2F884C]/[0x2F8850] = packet words +6/+8 (F310 2 writers CONFIRMED) + [0x35B25C]/[0x35B260] mirrors, tile store clear 0x38400 dwords, light color type dispatch (byte +0xA: 0->0xFFFFFF, 1->0xF0F0F, 2->0x555555) + 0x434610 + 0x41C1E0 + entity list [0xE11D0] cleanup - death/respawn lifecycle byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the death/teleport pump fully.",
+  "question": "How does death/respawn work?",
+  "method": "Disasm 0x422960-0x422C17.",
+  "scope": "0x422960-0x422C17; coords; cooldown.",
+  "cell_analysis": {
+    "death_check": "[0x2F8840]==3 + [0x35A31C]-[0x35A320] < [0x35A329]-1 delay OR cooldown [0x4279A4]",
+    "respawn": {"reset": "0x42E1F0 hero + 0x45B1D0/0x45B3D0", "cooldown": "0x5DC (1500ms)", "coords": "[0x35A31C]/[0x35A320] reset + [0x35A329]=0xA", "live": "[0x2F884C]/[0x2F8850] = packet +6/+8 (F310) + mirrors [0x35B25C]/[0x35B260]", "tiles": "clear 0x38400 dwords"},
+    "light": "color type dispatch (byte +0xA: 0->0xFFFFFF, 1->0xF0F0F, 2->0x555555) + 0x434610 + 0x41C1E0",
+    "cleanup": "entity list [0xE11D0] remove"
+  },
+  "exe_trace": {
+    "death_chain": "death -> 0x422960 check -> respawn (hero reset + coords + tiles clear + light) -> 0x41C1E0"
+  },
+  "audit_vs_exe": {
+    "F310": "live coord writers 0x422A9E/0x422AC5 CONFIRMED + full pump", "F430": "death animation", "F549": "0x2F8840 state"
+  },
+  "contrast": {
+    "death_vs_teleport": "same pump: death check + teleport coords",
+    "color_types": "3 light colors by state byte"
+  },
+  "verdict": "Death/teleport pump PRIMARY-verified: death check + respawn (cooldown 1500ms, coord reset, tile clear, light colors) + entity cleanup; F310 writers confirmed in context.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Pump decoded from .text; F310 cross-check.",
+  "cross_refs": ["F310: live coords", "F430: death anim", "F549: state byte"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422960+0x60",
+  "notes": [
+    "respawn cooldown 0x5DC = 1500ms",
+    "live coords = packet words +6/+8",
+    "light colors: 0xFFFFFF/0xF0F0F/0x555555",
+    "tile store 0x38400 dwords cleared"
+  ]
+}
