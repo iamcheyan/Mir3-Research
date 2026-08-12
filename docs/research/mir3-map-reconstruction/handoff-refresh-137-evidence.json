@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-137-2026-08-12-f977",
+  "title": "Round 671 (F977): HANDOFF refresh 137 - Rounds 668-670 (F974-F976: HANDOFF 136, editor input, editor closure + 600-evidence milestone), baseline Round 667=8f8dcce -> Round 670=ede234f (635 consecutive F335-F976), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 668-670.",
+  "question": "What changed since HANDOFF refresh 136?",
+  "method": "Append Round 668-670 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 668-670 appended (3 rounds, F974-F976)",
+    "baseline": "Round 667=8f8dcce -> Round 670=ede234f (635 consecutive F335-F976)",
+    "arcs": {"editor": "F975 input", "closure": "F976 editor + 600 JSONs"},
+    "key": "editor complete; 600 evidence JSON milestone"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F974": "refresh 136 baseline -> now refresh 137", "F335-F976": "635 rounds"
+  },
+  "contrast": {
+    "refresh_136_vs_137": "F975-F976 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 137 (F977): Rounds 668-670 documented (editor complete + 600 JSONs), baseline 8f8dcce -> ede234f, 635 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F975-F976 evidence.",
+  "cross_refs": ["F974: refresh 136", "F976: editor closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 668-670 section to HANDOFF",
+  "notes": [
+    "635 consecutive shipping rounds F335-F976",
+    "600 evidence JSONs",
+    "next: remaining deep corners, sim polish"
+  ]
+}

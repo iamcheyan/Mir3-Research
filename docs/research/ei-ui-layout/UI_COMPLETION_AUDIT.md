@@ -4097,3 +4097,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（全部窗口 + 编辑器 100%；下一弧：HANDOFF 刷新 137/剩余角落）。
+## Round 671 (2026-08-12) — HANDOFF 刷新 137（Finding 977）
+
+- **Round 668-670 追加 + 635 连发 + 600 证据**（编辑器完整入档）。
+- 落盘：`handoff-refresh-137-evidence.json`（F977）+ RESEARCH_LOG Round 671。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（全部窗口 + 编辑器 100%；下一弧：剩余深层角落/模拟器 polish）。

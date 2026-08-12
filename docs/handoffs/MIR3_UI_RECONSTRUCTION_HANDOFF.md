@@ -1905,3 +1905,14 @@ simulator/style.css
 **坐骑窗口闭合（F973）**：631 连发 + 597 证据 JSON——**坐骑窗口完整**（5 按钮 + 6 物品槽 + 旗标 0x7DA060 + 输入 + 构造链）；**13/13 窗口 + HUD + 路由 + 主构造 100%**。
 
 **commit 基线更新**：Round 664=8ef379d → Round 667=8f8dcce（master 已推，632 连发 F335-F973）。
+
+
+## Round 668-670 追加交付（2026-08-12，Finding 974-976）：HANDOFF 刷新 136 + 公告编辑器输入 + 编辑器闭合/600 证据里程碑
+
+**HANDOFF 刷新 136（F974）**：基线更新至 Round 667=8f8dcce（632 连发）。
+
+**公告编辑器输入（F975，F770 依赖）**：0x43E3C0 编辑器输入/渲染（GDI 文本 0x45DD70 0x323232/0x96C8FF + 2 按钮 0x417830 + vtable[4] 刷新）；0x43E4B0 **按键/GetWindowText**（0x1F40 栈 + GetWindowText 0x476304 len 0xFA0 [0x1CC] + 解析 0x468BF0 + 发送 0x47C4A4）。
+
+**编辑器闭合 + 600 证据 JSON 里程碑（F976）**：634 连发 + **600 证据 JSON**——编辑器完整（GDI 渲染 + 2 按钮 + GetWindowText 0xFA0 + 发送 0x47C4A4）；全部窗口 + 编辑器 100%。
+
+**commit 基线更新**：Round 667=8f8dcce → Round 670=ede234f（master 已推，635 连发 F335-F976）。

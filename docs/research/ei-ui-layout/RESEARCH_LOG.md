@@ -8898,3 +8898,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**600 证据 JSON（里程碑）**；三服务 200；master db4c470（**634 连发 F335-F975 已推**）。
 - **〔弧〕**编辑器发送（F770）+ 编辑器输入（F975）——**编辑器完整**（GDI 渲染 + 2 按钮 + GetWindowText 0xFA0 + 发送 0x47C4A4）；全部窗口 + 编辑器 100%。
 - 落盘：editor-window-closure-evidence.json（F976，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 670。
+## Round 671 (F977) — 2026-08-12：HANDOFF 刷新 137（Round 668-670）
+
+- **〔刷新〕**HANDOFF 追加 Round 668-670（F975-F976：公告编辑器输入 + 编辑器闭合/600 证据里程碑）；基线 Round 667=8f8dcce → Round 670=ede234f（**635 连发 F335-F976**）。
+- 落盘：handoff-refresh-137-evidence.json（F977，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 671。
