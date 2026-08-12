@@ -7692,3 +7692,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔使用〕**0x41EDE0（F355 确认）：0x46811C 格式 + 公告 0x427E30；**物品记录构建**（0x430920 + 0x430940 从包 + 0x42FC20 背包 + 0x42E2D0 音效）、**广N 名表遍历 0x47ADC4**（밤1-10，名匹配 → 0x47B9BC 格式）——快捷槽物品使用字节级（F355/F549/F577 连接）。
 - 落盘：item-use-quick-slot-evidence.json（F698，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 392。
+## Round 393 (F699) — 2026-08-12：交互/命令弧闭合（F698 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**323 证据 JSON**；三服务 200；master 49858b6（**357 连发 F335-F698 已推**）。
+- **〔弧〕**快捷槽物品使用（F698）——**命令/交互完整（快捷使用 + 聊天命令 F600 + 热键 F581）**，闭合 F355/F549/F577 链。
+- 落盘：interaction-command-arc-closure-evidence.json（F699，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 393。

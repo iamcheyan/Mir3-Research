@@ -1,0 +1,36 @@
+{
+  "evidence_id": "interaction-command-arc-closure-2026-08-12-f699",
+  "title": "Round 393 (F699): Interaction/command arc CLOSED (F698) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 49858b6 (357 consecutive F335-F698), 323 evidence JSONs; arc: item-use quick-slot (F698) - command/interaction COMPLETE (quick-slot use + chat commands F600 + hotkeys F581), closing F355/F549/F577 chain",
+  "date": "2026-08-12",
+  "objective": "Close the interaction/command arc.",
+  "question": "Is the command/interaction layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "323 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F698": "item-use quick-slot"},
+    "interaction": "quick-slot use (F698) + chat commands (F600) + hotkeys (F581) = COMPLETE",
+    "milestone": "357 consecutive rounds F335-F698"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F698": "357 rounds pushed; interaction complete"
+  },
+  "contrast": {
+    "quick_vs_command": "quick-slot + chat commands",
+    "use_vs_hotkey": "item use + hot-key bar"
+  },
+  "verdict": "Interaction/command arc CLOSED (F699): quick-slot + commands + hotkeys all byte-level; validation green, 357 consecutive rounds, 323 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F698.",
+  "cross_refs": ["F698: quick-slot", "F600: commands", "F581: hotkeys"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "357 consecutive shipping rounds F335-F698",
+    "next: HANDOFF refresh 44, remaining corners"
+  ]
+}
