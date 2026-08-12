@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-99-2026-08-12-f868",
+  "title": "Round 562 (F868): HANDOFF refresh 99 - Rounds 559-561 (F865-F867: HANDOFF 98, notice node add/dequeue, notice list full closure), baseline Round 558=1e2d1b2 -> Round 561=cb441d4 (526 consecutive F335-F867), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 559-561.",
+  "question": "What changed since HANDOFF refresh 98?",
+  "method": "Append Round 559-561 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 559-561 appended (3 rounds, F865-F867)",
+    "baseline": "Round 558=1e2d1b2 -> Round 561=cb441d4 (526 consecutive F335-F867)",
+    "arcs": {"notice": "F866 node/dequeue", "closure": "F867 notice full"},
+    "key": "notice list complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F865": "refresh 98 baseline -> now refresh 99", "F335-F867": "526 rounds"
+  },
+  "contrast": {
+    "refresh_98_vs_99": "F866-F867 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 99 (F868): Rounds 559-561 documented (notice list complete), baseline 1e2d1b2 -> cb441d4, 526 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F866-F867 evidence.",
+  "cross_refs": ["F865: refresh 98", "F867: notice closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 559-561 section to HANDOFF",
+  "notes": [
+    "526 consecutive shipping rounds F335-F867",
+    "next: remaining deep corners, sim polish"
+  ]
+}

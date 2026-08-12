@@ -8425,3 +8425,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**491 证据 JSON**；三服务 200；master 2267cad（**525 连发 F335-F866 已推**）。
 - **〔弧〕**公告核心（F677）+ 行添加（F734）+ 节点添加/出队（F866）——**公告列表完整**（节点分配/插入/出队/析构 + 修剪 + 渲染），公告家族 100%。
 - 落盘：notice-list-full-closure-evidence.json（F867，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 561。
+## Round 562 (F868) — 2026-08-12：HANDOFF 刷新 99（Round 559-561）
+
+- **〔刷新〕**HANDOFF 追加 Round 559-561（F866-F867：公告节点/出队 + 公告列表全闭合）；基线 Round 558=1e2d1b2 → Round 561=cb441d4（**526 连发 F335-F867**）。
+- 落盘：handoff-refresh-99-evidence.json（F868，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 562。
