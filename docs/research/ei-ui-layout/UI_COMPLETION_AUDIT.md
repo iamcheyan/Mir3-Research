@@ -4065,3 +4065,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑输入完整；下一弧：剩余深层角落）。
+## Round 667 (2026-08-12) — 坐骑窗口闭合（Finding 973）
+
+- **631 连发 + 597 证据 + 坐骑窗口完整**。
+- 落盘：`mount-window-closure-evidence.json`（F973）+ RESEARCH_LOG Round 667。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口 + HUD + 路由 + 主构造；下一弧：HANDOFF 刷新 136/剩余角落）。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "mount-window-closure-2026-08-12-f973",
+  "title": "Round 667 (F973): Mount window CLOSED (F773/F836/F860/F972) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 2643734 (631 consecutive F335-F972), 597 evidence JSONs; arc: draw+commands (F773) + flag writers (F836) + hit/click/ctor (F860) + input/ctor (F972) - mount window COMPLETE byte-level (5 buttons + 6 item slots + flag 0x7DA060 + input + ctor chain); ALL 13 windows + HUD + routing + main 100%",
+  "date": "2026-08-12",
+  "objective": "Close the mount window arc.",
+  "question": "Is the mount window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "597 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F773": "draw", "F836": "flags", "F860": "hit/click", "F972": "input/ctor"},
+    "mount": "5 buttons + 6 slots + input = COMPLETE",
+    "milestone": "631 consecutive rounds F335-F972"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F972": "631 rounds pushed; mount window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "ctor_vs_flags": "chain + writers"
+  },
+  "verdict": "Mount window CLOSED (F973): draw + input + ctor all byte-level; validation green, 631 consecutive rounds, 597 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F773/F836/F860/F972.",
+  "cross_refs": ["F773", "F836", "F860", "F972"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "631 consecutive shipping rounds F335-F972",
+    "mount window 100%",
+    "13/13 windows + HUD + routing + main",
+    "next: HANDOFF refresh 136, remaining corners"
+  ]
+}

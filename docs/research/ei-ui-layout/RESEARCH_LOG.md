@@ -8880,3 +8880,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔坐骑〕**0x426B90 坐骑输入（5 控件 vtable[8] @ +0x54 stride 0xB4）；0x426BC0 5 控件重置；0x426C10 **窗口构造链**（6 物品槽 0x4686C4 @ +0xDA4 stride 0xC24 + vtable 0x476620/0x476864 + F558 注册表构造：背包 0x42E810 @ +0x6554 → 装备 0x44AF50 @ +0x29CE4 → 商店 0x44CFC0 @ +0x33188 → 交易 0x415650 @ +0x3399C → 行会 0x424A60 @ +0x4707C…）——坐骑输入完整（F860 6 槽依赖）。
 - 落盘：mount-window-input-ctor-evidence.json（F972，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 666。
+## Round 667 (F973) — 2026-08-12：坐骑窗口闭合（F773/F836/F860/F972 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**597 证据 JSON**；三服务 200；master 2643734（**631 连发 F335-F972 已推**）。
+- **〔弧〕**绘制+命令（F773）+ 旗标写者（F836）+ 命中/点击/构造（F860）+ 输入/构造（F972）——**坐骑窗口完整**（5 按钮 + 6 物品槽 + 旗标 0x7DA060 + 输入 + 构造链）；**13/13 窗口 + HUD + 路由 + 主构造 100%**。
+- 落盘：mount-window-closure-evidence.json（F973，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 667。
