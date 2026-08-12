@@ -7147,3 +7147,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔循环〕**0x42BEF8/0x42BF02：16 次迭代（caption 对象 = HUD+0x567C+idx*0xB4、vtable[0x10] press 命中 → idx、jt 0x42C4D4）：0=背包（0x4300F0 + OpenWindow 0）、1=装备、2=商店、3=交易、4=行会、6=组队、7=角色状态、8=公告、B=任务、C=选项、D=坐骑、E=技能书（5/A 桩）——**与 F558 窗口注册表模式完全一致（交叉确认）**。
 - **〔动作栏〕**0x42C1CE 攻击目标（0x41EC10 查找 + 0x451A70）、0x42C209 0x4523E0 发送、0x42C218/0x42C226/0x42C234 OpenWindow 6/8/0、**0x42C241 腰带切换 [0x6208]**、0x42C259 0x451770 发送（3s 冷却 [0x6210]）、**0x42C292 相机缩放 [0xD40] 钳制 0x2E + [0xD42]**、0x42C2E1 0x419CC0 生成检查 + 公告 [0x53030]、0x42C30D 装备面板模式 0 + 0x423E80。
 - 落盘：hud-caption-action-dispatch-evidence.json（F580，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 274。
+## Round 275 (F581) — 2026-08-12：HUD 热键/目标系统
+
+- **〔热键〕**0x42D720 = **6 热键槽 RECT 命中**（数组 [0xD44] stride 0x10 {+0 x,+4 y,+8 w,+0xC h}、+0x26 垫、PtInRect、门 [0xD42]）；命中 → 0x42D9E0 执行（0x430920 物品构造 + 0x42D8A0 记录取 + 0x42E2D0 音效）或 0x42D8F0/0x42DAA0 变体；**金币门 0x47ADB4 + [0x5A]==3**（F549 금전 门复用）。
+- **〔记录〕**热键记录 = 6 × 0xC24 @ [0xDA4]（0x42D7C0 构造 [0xDA4]=1 + 0x308 双字；0x42D790 清除；0x42D8A0 按 idx 取）。
+- **〔渲染〕**0x42C511 热键栏渲染尾：0x417C80 命中 + [0xD20] 计数 × [0x61C8] 浮点滚动 → [0xD08] + 转发分派 0x42AAB0（0x430650 背包/0x44CED0 装备/0x44F110 商店/0x416E70 交易）。
+- 落盘：hud-hotkey-target-system-evidence.json（F581，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 275。

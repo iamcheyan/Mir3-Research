@@ -1,0 +1,38 @@
+{
+  "evidence_id": "hud-hotkey-target-system-2026-08-12-f581",
+  "title": "Round 275 (F581): HUD hot-key/target system - post-caption tail 0x42C36B: 0x42D720 = 6 HOT-SLOT RECT hit-test (array [0xD44] stride 0x10 {+0 x,+4 y,+8 w,+0xC h}, each rect +0x26 pad, PtInRect 0x4762B4, gate byte [0xD42]); on hit -> 0x42D9E0 execute (item ctor 0x430920 + 0x42D8A0 record get + 0x42E2D0 sound) or 0x42D8F0/0x42DAA0 trade/skill variants, gold-name gate 0x47ADB4 + [0x5A]==3; hot-slot records = 6 x 0xC24 at [0xDA4] (0x42D7C0 ctor: [0xDA4]=1 flag + 0x308 dwords copy; 0x42D790 clear; 0x42D8A0 get by idx); 0x42C511 = skill/trade hot bar render tail: 0x417C80 hit + [0xD20] count * [0x61C8] float scroll [0xD08] + forward dispatch 0x42AAB0 to window input handlers (0x430650 bag/0x44CED0 equip/0x44F110 store/0x416E70 trade/...) - HUD hot-key + target system byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the HUD hot-key/target system tail.",
+  "question": "How do the HUD hot slots work?",
+  "method": "Disasm 0x42C36B-0x42C5A9 + 0x42D720/0x42D790/0x42D7C0/0x42D8A0/0x42D9E0.",
+  "scope": "0x42C36B-0x42C5A9; hot-slot array [0xD44]/records [0xDA4].",
+  "cell_analysis": {
+    "0x42D720": "6 hot-slot RECT hit-test (array [0xD44] stride 0x10, +0x26 pad, PtInRect, gate [0xD42])",
+    "0x42D9E0": "execute: 0x430920 item ctor + 0x42D8A0 record get + 0x42E2D0 sound",
+    "records": {"0x42D7C0": "ctor: [0xDA4]=1 flag + 0x308 dwords", "0x42D790": "clear 6 x 0xC24 at [0xDA4]", "0x42D8A0": "get by idx (idx*0xC24 math)"},
+    "gold_gate": "0x47ADB4 name cmp + [0x5A]==3 (F549 금전 gate reuse)",
+    "0x42C511": "hot bar render tail: 0x417C80 hit + [0xD20] count * [0x61C8] float scroll -> [0xD08] + forward dispatch 0x42AAB0 (0x430650 bag/0x44CED0 equip/0x44F110 store/0x416E70 trade)"
+  },
+  "exe_trace": {
+    "hotkey_chain": "hot slot click -> 0x42D720 rect hit -> idx -> 0x42D9E0 (item use + sound) OR 0x42D8F0/0x42DAA0 variants"
+  },
+  "audit_vs_exe": {
+    "F549": "금전 gate reuse", "F580": "action bar", "F460": "item ctor 0x430920", "F470": "0x42E2D0 sound"
+  },
+  "contrast": {
+    "hotkey_vs_action": "6 hot slots (0x42D720) vs action bar buttons (F580)",
+    "records_vs_rects": "6 records 0xC24 at [0xDA4] + 6 rects 0x10 at [0xD44]"
+  },
+  "verdict": "HUD hot-key/target system PRIMARY-verified: 6-slot rect hit-test + record store (0xC24 each) + execute (item+sound) + gold gate; hot bar render + forward dispatch. HUD interaction layer complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hot-slot system decoded from .text.",
+  "cross_refs": ["F580: action bar", "F549: gold gate", "F460: item ctor"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42C36B+0x40; 0x42D720+0x20; 0x42D9E0+0x20",
+  "notes": [
+    "6 hot slots = quick item/skill bar",
+    "record 0xC24 = item-record size (F465)",
+    "gold gate prevents trading gold item",
+    "[0xD42] gate byte = hot bar enabled"
+  ]
+}
