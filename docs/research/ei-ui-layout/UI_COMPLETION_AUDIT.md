@@ -4321,3 +4321,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（英雄表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 699 (2026-08-12) — 受击闪光特效全量（Finding 1005）
+
+- **ctor + 网格 + 拾取 + 绘制**（受击闪光完整）。
+- 落盘：`hit-flash-effect-full-evidence.json`（F1005）+ RESEARCH_LOG Round 699。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（受击闪光完整；下一弧：剩余深层角落）。

@@ -9019,3 +9019,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 695-697（F1002-F1003：英雄运行时构造/死亡全量 + 英雄运行时闭合）；基线 Round 694=0322683 → Round 697=b2ad52a（**662 连发 F335-F1003**）。
 - 落盘：handoff-refresh-146-evidence.json（F1004，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 698。
+## Round 699 (F1005) — 2026-08-12：受击闪光特效全量（F625）
+
+- **〔特效〕**0x4344E0 构造（色 0xDCDCDC → 0x434500）；0x434500 初始化（**0x1D × 0x30 网格** + 三角形条 0x11×0x11 顶点 + 复制 0xA20 dwords）；0x434610 设色 + 0x434650 恢复；0x434670 网格拾取（÷3 0x2AAAAAAB + >>5）；0x4346B0 绘制体（0x434670 + 顶点构建）——受击闪光特效完整（F625/F626）。
+- 落盘：hit-flash-effect-full-evidence.json（F1005，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 699。

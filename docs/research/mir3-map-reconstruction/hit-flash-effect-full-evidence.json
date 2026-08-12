@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hit-flash-effect-full-2026-08-12-f1005",
+  "title": "Round 699 (F1005): Hit flash effect FULL (F625) - 0x4344E0 ctor (color 0xDCDCDC -> 0x434500); 0x434500 init (0x1D x 0x30 grid + triangle strip 0x11x0x11 verts + copy 0xA20 dwords); 0x434610 set color + 0x434650 restore; 0x434670 grid pick (div3 0x2AAAAAAB + >>5); 0x4346B0 draw body (0x434670 + vertex build) - hit flash effect COMPLETE (F625/F626)",
+  "date": "2026-08-12",
+  "objective": "Decode the full hit flash effect.",
+  "question": "How does the client render hit flash effects?",
+  "method": "Disasm 0x4344E0-0x4346B0.",
+  "scope": "0x4344E0-0x4346B0; effect.",
+  "cell_analysis": {
+    "0x4344E0/0x434500": "ctor + init grid",
+    "0x434610/0x434650": "set/restore color",
+    "0x434670/0x4346B0": "pick + draw"
+  },
+  "exe_trace": {
+    "effect_chain": "ctor -> grid -> pick -> draw"
+  },
+  "audit_vs_exe": {
+    "F625": "effects", "F626": "effect draw"
+  },
+  "contrast": {
+    "ctor_vs_draw": "init + render",
+    "grid": "0x1D x 0x30"
+  },
+  "verdict": "Hit flash effect FULL PRIMARY-verified: ctor + grid + draw; F625/F626 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hit flash effect decoded from .text.",
+  "cross_refs": ["F625: effects", "F626: draw"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4344E0+0x10; 0x434500+0x20",
+  "notes": [
+    "color 0xDCDCDC",
+    "grid 0x1D x 0x30",
+    "verts 0x11 x 0x11",
+    "pick 0x2AAAAAAB"
+  ]
+}
