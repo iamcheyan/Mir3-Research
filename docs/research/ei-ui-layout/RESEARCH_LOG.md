@@ -6814,3 +6814,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔解码〕**0x3EA 3 参（0x452170）/ 0x3F6 2 参（0x4521B0）/ 0x3FA/0x3FD/0x3FE/0x401 1 参 / **0x3FF/0x400 坐标包**（shr 0x10 = x,y 打包，商店控件族）/ 0x40C-0x40F NPC 对话回复变体——**全部 34 msgid 已识别（34/34）**。
 - 落盘：unmapped-msgid-senders-evidence.json（F516，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 210。
+## Round 211 (F517) — 2026-08-12：主接收分派表（0x42042B 137 槽 → 49 处理器）
+
+- **〔表〕**0x42042B 开关：msgid 0x29F-0x44C（add −0x29F、cmp 0x88）+ 字节映射 0x422080（137 槽、49 处理器）+ 跳表 0x421FBC；>0x44C = 怪物消息 0xBC6-0xBD8（F449 分离）。
+- **〔簇〕**0x2A1-0x2A6（1-6）、0x2BC-0x2CA（14-28 商店/仓库/制作，0x2BC=14、0x2C8=26 F399 确认）、0x2EE-0x2FA（29-41）、0x300-0x303（42-43）、0x322-0x325（44-47）——**完整入站包目录**（互补 F514 出站）。
+- 落盘：recv-dispatch-table-evidence.json（F517，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 211。

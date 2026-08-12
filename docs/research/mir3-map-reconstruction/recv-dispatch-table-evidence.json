@@ -1,0 +1,35 @@
+{
+  "evidence_id": "recv-dispatch-table-2026-08-12-f517",
+  "title": "Round 211 (F517): Master recv dispatch table - 0x42042B switch: msgid 0x29F-0x44C range (cmp 0x44C, add -0x29F, cmp 0x88), byte map 0x422080 (137 slots) -> jt 0x421FBC (49 handlers); msgid clusters: 0x2A1-0x2A6 (mapval 1-6), 0x2A9-0x2AF (7-13), 0x2BC-0x2CA (14-28 = store/warehouse/craft F399: 0x2BC=14 warehouse, 0x2C8=26 craft), 0x2EE-0x2FA (29-41), 0x300-0x303 (42-43), 0x322-0x325 (44-47); >0x44C = monster msgs 0xBC6-0xBD8 (F449 separate); COMPLETE inbound packet catalog",
+  "date": "2026-08-12",
+  "objective": "Extract the complete client receive dispatch table.",
+  "question": "What is the full inbound packet handler map?",
+  "method": "0x42042B switch decode + byte map 0x422080 + jt 0x421FBC extraction.",
+  "scope": "0x42042B; map 0x422080 (0x89); jt 0x421FBC (49).",
+  "cell_analysis": {
+    "switch": {"range": "msgid 0x29F-0x44C (add -0x29F, cmp 0x88 = 136)", "map": "0x422080 (137 slots, 49 distinct)", "jt": "0x421FBC (49 handlers)", "above": ">0x44C = monster msgs 0xBC6-0xBD8 (F449)"},
+    "clusters": {"0x2A1-0x2A6": "mapval 1-6", "0x2A9-0x2AF": "7-13", "0x2BC-0x2CA": "14-28 (store/warehouse/craft F399: 0x2BC=14, 0x2C8=26)", "0x2EE-0x2FA": "29-41", "0x300-0x303": "42-43", "0x322-0x325": "44-47", "0x2A0/0x2A7/0x2A8/0x2B0-0x2BB/0x2CB-0x2ED/0x2F3/0x2FC-0x2FF/0x304-0x321": "mapval 48 (default)"},
+    "significance": "COMPLETE inbound packet catalog (complements F514 outbound)"
+  },
+  "exe_trace": {
+    "recv_chain": "server packet -> 0x42042B switch -> byte map -> jt handler -> UI/state update"
+  },
+  "audit_vs_exe": {
+    "F514": "outbound catalog + this = full packet picture", "F399": "store msgs 0x2BC/0x2C8 in table", "F449": "monster msgs separate (>0x44C)"
+  },
+  "contrast": {
+    "recv_vs_send": "inbound 0x29F-0x44C + 0xBC6+ vs outbound 0x3E9-0x419",
+    "primary_vs_default": "49 real handlers vs mapval 48 default"
+  },
+  "verdict": "Master recv dispatch PRIMARY-verified: 137 msgid slots (0x2A0-0x327) -> 49 handlers via map 0x422080 + jt 0x421FBC; store/warehouse/craft + more clusters mapped; >0x44C = monster family. COMPLETE inbound catalog.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Switch + map + jt all extracted from .text/.rdata.",
+  "cross_refs": ["F514: send catalog", "F399: store msgs", "F449: monster msgs"],
+  "tool": "capstone + pefile table extraction",
+  "reproduce": "disasm 0x42042B; dump 0x422080[0x89] + 0x421FBC[49*4]",
+  "notes": [
+    "49 handlers = distinct recv functions",
+    "mapval 48 = shared default (unmapped msgids)",
+    "msgid 0x2BC/0x2C8 confirm F399 (14/26 mapvals)"
+  ]
+}

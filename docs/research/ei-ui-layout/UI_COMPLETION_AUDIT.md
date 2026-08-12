@@ -1281,9 +1281,14 @@ git diff --check
 - **34/34 msgid 全识别**（坐标包 + NPC 回复变体）。
 - 落盘：`unmapped-msgid-senders-evidence.json`（F516）+ RESEARCH_LOG Round 210。
 
+## Round 211 (2026-08-12) — 主接收分派表（Finding 517）
+
+- **137 槽 → 49 处理器**（入站包目录完整）。
+- 落盘：`recv-dispatch-table-evidence.json`（F517）+ RESEARCH_LOG Round 211。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（客户端包目录 100% 完整）。
+- 无阻塞项（入站+出站包目录均完整）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
