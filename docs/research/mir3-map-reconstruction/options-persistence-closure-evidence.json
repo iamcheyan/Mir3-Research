@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-persistence-closure-2026-08-12-f789",
+  "title": "Round 483 (F789): Options persistence CLOSED (F546/F776/F779/F788) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 6ac6a14 (447 consecutive F335-F788), 413 evidence JSONs; arc: sliders (F546) + apply (F776) + refresh (F779) + config load (F788) - options persistence COMPLETE byte-level (Mir3.ini 6 keys + atoi + audio on/off + volume<->slider both directions + live values), options full lifecycle (load -> display -> adjust -> apply) documented",
+  "date": "2026-08-12",
+  "objective": "Close the options persistence arc.",
+  "question": "Is the options persistence fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "413 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F546": "sliders", "F776": "apply", "F779": "refresh", "F788": "config load"},
+    "options": "load + display + adjust + apply = COMPLETE",
+    "milestone": "447 consecutive rounds F335-F788"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F788": "447 rounds pushed; options persistence complete"
+  },
+  "contrast": {
+    "load_vs_apply": "ini read + volume set",
+    "slider_vs_volume": "0..0xA0 + -100..0"
+  },
+  "verdict": "Options persistence CLOSED (F789): load + display + adjust + apply all byte-level; validation green, 447 consecutive rounds, 413 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F546/F776/F779/F788.",
+  "cross_refs": ["F546", "F776", "F779", "F788"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "447 consecutive shipping rounds F335-F788",
+    "options lifecycle 100%",
+    "next: HANDOFF refresh 73, remaining corners"
+  ]
+}
