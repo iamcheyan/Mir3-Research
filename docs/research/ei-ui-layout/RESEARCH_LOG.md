@@ -6046,3 +6046,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔3.map 沙巴克 = 稀疏要塞〕**mid/front **255 主导**（171994/209506 空）+ **Wood/Wallsc lib 24 = 3384 墙格**（x 0..399、y 211..405 **内城墙带，非周长**；边缘墙仅 4.9%）——开阔地面 + 墙围城设计。
 - **〔渲染〕**三镇 tile 全 200（88KB JPEG）；3.map 角块 = 开阔草地（墙仅 y211-405 带）。
 - 落盘：`town-structure-comparison-evidence.json`（F372，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 66。
+
+## Round 67 (F373) — 2026-08-12：缩放阶梯验证（mapviewer ladder = 缩放级别，非地图切换）
+
+- **〔语义澄清〕**mapviewer `ladder` = **逐图缩放级别 [最深..适配]**（0 = 1:1）；最深 = 全图 ≤16384px（MAX_FULL_DIM）、适配 = ≥2048px（FIT_FULL_DIM）；**非地图切换表**（切换 = 服务端 0x422960，F333/F366）。
+- **〔公式复验〕**800×800 → [2,3,4]；600×600 → [1,2,3]；100×100 → [0,1]；≤50×50 → [0]；400×600 → [1,2,3]。
+- 落盘：`zoom-ladder-verification-evidence.json`（F373，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 67。

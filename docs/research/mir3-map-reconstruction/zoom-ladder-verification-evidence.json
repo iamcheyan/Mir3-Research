@@ -1,0 +1,39 @@
+{
+  "evidence_id": "zoom-ladder-verification-2026-08-12-f373",
+  "title": "Round 67 (F373): Zoom ladder verification - mapviewer ladder = zoom levels [deepest..fit] (0.map 800x800 -> [2,3,4], 600x600 -> [1,2,3], 100x100 -> [0,1], <=50 -> [0]) via MAX_FULL_DIM 16384/FIT_FULL_DIM 2048 formula; NOT map transitions",
+  "date": "2026-08-12",
+  "objective": "Clarify the mapviewer 'ladder' field (zoom levels, not map transitions), verify the formula, and document the per-map zoom ranges.",
+  "question": "What does the ladder field mean and how is it computed?",
+  "method": "mapviewer map_ladder() source analysis + formula re-execution across map sizes; cross-ref against client zoom constants.",
+  "scope": "Tools/maps/mapviewer.py (map_ladder/world_bounds), /api/maps ladder output.",
+  "cell_analysis": {
+    "ladder_semantics": {
+      "definition": "zoom levels [deepest..fit] where 0 = 1:1 cell; deepest = max zoom keeping whole map <= 16384px (MAX_FULL_DIM), fit = default overview >= 2048px (FIT_FULL_DIM)",
+      "formula": "deep_z = while (max_dim >> z) > 16384; fit_z = while (max_dim >> (z+1)) >= 2048",
+      "examples": {"800x800": "[2,3,4]", "600x600": "[1,2,3]", "100x100": "[0,1]", "50x50": "[0]", "30x30": "[0]", "400x600": "[1,2,3]"},
+      "not_transition": "ladder is NOT a map-transition table (map transitions are server-driven 0x422960, F333/F366)"
+    },
+    "client_zoom": "client map render 0x43B440 uses 24x24 tile viewport (F331); zoom levels in mapviewer are viewer-side (no client zoom constant for full-map) [candidate]"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331): 0x6C000 dword buffer, 24x24 viewport, row=attr/7"
+  },
+  "audit_vs_exe": {
+    "F366": "map transitions = 0x422960 (NOT ladder)",
+    "F342": "544-map inventory ladder output explained"
+  },
+  "contrast": {
+    "ladder_vs_transition": "ladder = viewer zoom (mapviewer-only); transition = server map change (client)"
+  },
+  "verdict": "Zoom ladder clarified (primary-tooling): mapviewer ladder = per-map zoom levels [deepest..fit] from world-size formula (16384/2048 caps); NOT map transitions. Formula re-verified across 6 map sizes.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Formula read from mapviewer source and re-executed; ladder is a viewer concept, not a client binary field.",
+  "cross_refs": ["F366: map transitions (0x422960)", "F342: map inventory", "F331: 0x43B440 render"],
+  "tool": "mapviewer source analysis; python re-exec",
+  "reproduce": "python: exec map_ladder + world_bounds; print ladder for various w/h",
+  "notes": [
+    "world_bounds uses LAYOUT_RECT: max_dim = max(w*48, h*32)",
+    "800x800 -> world 38400x25600 -> deep_z=2 (38400>>2=9600<=16384), fit_z=4 (9600>>3? recompute: 38400>>5=1200<2048? actually fit_z extends while >>(z+1)>=2048) - [2,3,4] verified",
+    "small maps (<=50) = single zoom 0 (1:1 fits)"
+  ]
+}

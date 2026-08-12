@@ -547,6 +547,12 @@ git diff --check
 - **三镇渲染验证**（tile 200 + 视觉）。
 - 落盘：`town-structure-comparison-evidence.json`（F372，primary-bytes）+ RESEARCH_LOG Round 66。
 
+## Round 67 (2026-08-12) — 缩放阶梯验证（Finding 373）
+
+- **ladder = 逐图缩放级别**（[最深..适配]，16384/2048 上限公式）——**非地图切换**。
+- **公式复验**：800×800→[2,3,4]、600×600→[1,2,3]、≤50→[0]。
+- 落盘：`zoom-ladder-verification-evidence.json`（F373）+ RESEARCH_LOG Round 67。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
