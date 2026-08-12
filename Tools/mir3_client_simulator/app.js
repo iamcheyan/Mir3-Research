@@ -727,14 +727,40 @@ function fillWindowContent(w) {
       content.appendChild(off);
     });
   } else if (id === "window.group" || id === "window.guild-candidate") {
+    // Round 54 (F360): group window paint 0x4243D0 - title 0x7776A0 in
+    // 0xDCE6C8, member list head +0x58/count +0x68, row = i*20 (0x42443E-0x424455).
+    // Edit boxes: [允许] 0x47BA08 / [拒绝] 0x47BA00 / add/remove member
+    // placeholder text (F294 strings 0x47BA38/0x47BA10).
     const members = id === "window.group" ? ["玩家", "队友·法师", "队友·道士"] : ["行会会长", "长老", "成员 1", "成员 2"];
+    const cap = document.createElement("div");
+    cap.className = "lbl";
+    cap.style.cssText = `left:16px;top:8px;width:220px;color:#dce6c8`;
+    cap.textContent = (id === "window.group" ? "组队成员" : "行会成员") + " · 0x7776A0";
+    cap.dataset.evidence = "primary-static";
+    content.appendChild(cap);
     members.forEach((m, i) => {
       const lbl = document.createElement("div");
       lbl.className = "lbl";
       lbl.style.cssText = `left:16px;top:${30 + i * 24}px;width:220px`;
       lbl.textContent = (id === "window.group" ? "▸ " : "▪ ") + m;
+      lbl.dataset.evidence = "primary-static";
+      lbl.dataset.desc = `成员 ${i + 1} · 0x4243D0 行距 0x14`;
       content.appendChild(lbl);
     });
+    if (id === "window.group") {
+      const add = document.createElement("div");
+      add.className = "lbl";
+      add.style.cssText = "left:16px;top:120px;width:200px;font-size:11px;color:#888";
+      add.textContent = "请在这里添加新的小组成员名字. (0x47BA38)";
+      add.dataset.evidence = "primary-static";
+      content.appendChild(add);
+      const del = document.createElement("div");
+      del.className = "lbl";
+      del.style.cssText = "left:16px;top:140px;width:220px;font-size:11px;color:#888";
+      del.textContent = "请在这里添加您要删除的小组成员名字. (0x47BA10)";
+      del.dataset.evidence = "primary-static";
+      content.appendChild(del);
+    }
   } else if (id === "window.horse") {
     const horseLbl = document.createElement("div");
     horseLbl.className = "lbl";

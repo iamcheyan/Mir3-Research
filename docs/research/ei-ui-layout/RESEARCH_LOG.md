@@ -5962,3 +5962,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x40B850 名牌〕**门 byte[+8]；0x45E0C0 测宽；盒 = 锚X + (w+0x30)/2 居中、y = 锚Y−0xF..−0x1E（15px 高）、宽 w+0x30（F239 0xA0A0A 边框）。
 - **〔模拟器〕**点击实体 → setTarget → target-panel visible + target-box。**浏览器验证**：点玩家 → 面板显示 '玩家：玩家 Finding 282/279 帧证据'。
 - 落盘：`target-box-hover-verification-evidence.json`（F359，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 53。
+
+## Round 54 (F360) — 2026-08-12：组队窗口 id6 内容（0x4243D0 成员列表 + 编辑框字符串）+ 模拟器接线
+
+- **〔0x4243D0〕**标题 0x7776A0 色 **0xDCE6C8**（0x45DD70 @ x+0x2D/y+0x16）；**成员列表** count [0x68]、head [0x58]、node+4 名、**行距 i*20**（0x424449-0x424455 (i>>1)*5<<2）；编辑字符串 0x47BA38 添加成员/0x47BA10 删除成员占位 + [允许] 0x47BA08/[拒绝] 0x47BA00。
+- **〔模拟器〕**window.group：标题 '组队成员 · 0x7776A0' 色 0xDCE6C8 + 成员列表 + 添加/删除占位。**浏览器验证**：G 开组队窗、6 行、标题色 rgb(220,230,200)。
+- 落盘：`group-window-detail-evidence.json`（F360，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 54。

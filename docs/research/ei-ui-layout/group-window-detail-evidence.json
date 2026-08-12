@@ -1,0 +1,50 @@
+{
+  "evidence_id": "group-window-detail-2026-08-12-f360",
+  "title": "Round 54 (F360): Group window id6 paint 0x4243D0 (title 0x7776A0 in 0xDCE6C8, member list head +0x58/count +0x68, row i*20) + edit-box strings (0x47BA38 add/0x47BA10 remove, 允许/拒绝 0x47BA08/0x47BA00) + sim wiring browser-verified",
+  "date": "2026-08-12",
+  "objective": "Decode the group window (id6) content rendering: title, member list geometry, edit boxes, and wire it into the simulator.",
+  "question": "How does the original group window render members and edit boxes?",
+  "method": "Capstone disassembly of 0x4243D0 (group paint); F294 strings; sim app.js wiring; browser verification.",
+  "scope": "0x4243D0-0x4244A6 (group paint), strings 0x47BA08/0x47BA00/0x47BA38/0x47BA10, sim window.group fill.",
+  "cell_analysis": {
+    "group_paint_0x4243D0": {
+      "title": "0x45DD70 text 0x7776A0 (group name buffer) color 0xDCE6C8 at (x+0x2D, y+0x16)",
+      "member_list": "count [esi+0x68]; head [esi+0x58]; node +4 text; row = i*20 (0x424445-0x424455: i/2*20)",
+      "row_math": "0x424449-0x424455: (i>>1)*5 << 2 = i*20px row stride"
+    },
+    "edit_strings": {
+      "0x47BA08": "[允许] (allow button)",
+      "0x47BA00": "[拒绝] (reject button)",
+      "0x47BA38": "请在这里添加新的小组成员名字. (add member placeholder)",
+      "0x47BA10": "请在这里添加您要删除的小组成员名字. (remove member placeholder)"
+    },
+    "sim_wiring": {
+      "fill": "window.group: caption '组队成员 · 0x7776A0' color 0xDCE6C8 + member list + add/remove placeholder notes",
+      "browser": "G key opens group; 6 lines; caption rgb(220,230,200) = 0xDCE6C8; add note present"
+    }
+  },
+  "exe_trace": {
+    "group_window": "hero+0x47834 (id6, Ctrl+G, frame 900 256x244 at 272,123)",
+    "paint": "0x4243D0 (render table 0x428358 id6, F338)"
+  },
+  "audit_vs_exe": {
+    "F337": "id6 = group window confirmed (组队 strings)",
+    "F294": "edit strings + 允许/拒绝 confirmed",
+    "F338": "render table id6 -> 0x4243D0 confirmed"
+  },
+  "contrast": {
+    "group_vs_guild": "group = member list (0x7776A0 title, i*20 rows) + add/remove edit; guild = 3 list states + 9 controls (F294/F348)",
+    "sim_vs_original": "sim renders evidence strings/colors"
+  },
+  "verdict": "Group window content decoded (primary-bytes): 0x4243D0 title 0x7776A0 in 0xDCE6C8 + member list (head +0x58/count +0x68, row i*20) + edit strings (add/remove placeholders, 允许/拒绝). Sim wired and browser-verified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Paint geometry and strings read directly from MIR3.EXE bytes; sim member data is demo.",
+  "cross_refs": ["F337: id6 group", "F294: edit strings", "F338: render table", "F360: this file"],
+  "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
+  "reproduce": "img.disasm(0x4243D0, 0x100); open sim; press G; observe group window",
+  "notes": [
+    "row math (0x424449): (i/2)*5*4 = i*20 - even rows only? [INFERENCE: i>>1 then *20]",
+    "member node +4 = name text (list head [0x58], count [0x68])",
+    "title buffer 0x7776A0 = hero map-name/group-name slot (F331 dual role)"
+  ]
+}

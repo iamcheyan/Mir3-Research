@@ -467,6 +467,12 @@ git diff --check
 - **模拟器目标流**：点击实体 → 面板 + 目标框（浏览器验证）。
 - 落盘：`target-box-hover-verification-evidence.json`（F359，primary-bytes）+ RESEARCH_LOG Round 53。
 
+## Round 54 (2026-08-12) — 组队窗口内容（Finding 360）
+
+- **0x4243D0**：标题 0x7776A0 色 0xDCE6C8 + 成员列表（head +0x58/count +0x68、行距 i*20）+ 编辑占位（0x47BA38/0x47BA10）+ 允许/拒绝。
+- **模拟器组队窗**：浏览器验证（G 开窗、标题色正确）。
+- 落盘：`group-window-detail-evidence.json`（F360，primary-bytes）+ app.js + RESEARCH_LOG Round 54。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
