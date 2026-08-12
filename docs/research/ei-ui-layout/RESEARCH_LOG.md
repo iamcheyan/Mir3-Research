@@ -8850,3 +8850,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 656-658（F963-F964：HUD 输入分派尾部 + HUD 分派闭合）；基线 Round 655=e60958b → Round 658=cb789da（**623 连发 F335-F964**）。
 - 落盘：handoff-refresh-133-evidence.json（F965，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 659。
+## Round 660 (F966) — 2026-08-12：窗口命中路由器全量（F900）
+
+- **〔命中〕**0x42AAB0：开窗 dlist [0xD2C]/[0xD30]/[0xD38] 遍历 + jt 0x42ABE8 **13 模式** → 矩形偏移（0x656C 背包/0x29CFC 装备/0x331A0 商店/0x339B4 交易/0x47094 行会/0x4784C 组队/0x47C40 状态/0x50804 公告/0x51168 对话/0x51700 任务/0x518F8 选项/0x52130 坐骑/0x52508 技能书）+ PtInRect 0x4762B4 → 模式或 -1；0x42AC30 开窗助手（0x449870）+ 0x42AC50 关窗助手（dlist 解除，F812 依赖）——命中路由器完整。
+- 落盘：window-hit-router-full-evidence.json（F966，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 660。

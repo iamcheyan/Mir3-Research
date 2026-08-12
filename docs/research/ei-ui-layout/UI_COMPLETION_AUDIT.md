@@ -4009,3 +4009,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13/13 窗口 + HUD 输入；下一弧：剩余深层角落/模拟器 polish）。
+## Round 660 (2026-08-12) — 窗口命中路由器全量（Finding 966）
+
+- **13 矩形 jt + PtInRect**（命中路由器完整）。
+- 落盘：`window-hit-router-full-evidence.json`（F966）+ RESEARCH_LOG Round 660。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（命中路由器完整；下一弧：剩余深层角落）。

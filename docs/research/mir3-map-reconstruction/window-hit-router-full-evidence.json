@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-hit-router-full-2026-08-12-f966",
+  "title": "Round 660 (F966): Window hit router FULL (F900) - 0x42AAB0: open-window dlist [0xD2C]/[0xD30]/[0xD38] walk + jt 0x42ABE8 13 modes -> rect offsets (0x656C inventory, 0x29CFC equipment, 0x331A0 shop, 0x339B4 trade, 0x47094 guild, 0x4784C party, 0x47C40 status, 0x50804 announcement, 0x51168 dialog, 0x51700 quest, 0x518F8 options, 0x52130 mount, 0x52508 skill book) + PtInRect 0x4762B4 -> mode or -1; 0x42AC30 open helper (0x449870) + 0x42AC50 close helper (dlist unlink, F812 deps) - hit router COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the full window hit router.",
+  "question": "How does the hit router map clicks to windows?",
+  "method": "Disasm 0x42AAB0-0x42AC50.",
+  "scope": "0x42AAB0-0x42AC50; routing.",
+  "cell_analysis": {
+    "0x42AAB0": "dlist walk + jt 0x42ABE8 13 rects",
+    "rects": "0x656C..0x52508 13 windows",
+    "0x42AC30/0x42AC50": "open/close helpers"
+  },
+  "exe_trace": {
+    "router_chain": "dlist -> jt -> PtInRect -> mode"
+  },
+  "audit_vs_exe": {
+    "F900": "hit router", "F812": "open/close"
+  },
+  "contrast": {
+    "modes": "13 window rects",
+    "hit_vs_open": "PtInRect + helpers"
+  },
+  "verdict": "Window hit router FULL PRIMARY-verified: dlist walk + 13 rect jt + PtInRect; F900 complete with all 13 rect offsets.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hit router decoded from .text.",
+  "cross_refs": ["F900: hit router", "F812: open/close"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42AAB0+0x20; 0x42AC30+0x10",
+  "notes": [
+    "dlist [0xD2C]/[0xD30]/[0xD38]",
+    "jt 0x42ABE8",
+    "13 rects 0x656C..0x52508",
+    "open 0x449870"
+  ]
+}
