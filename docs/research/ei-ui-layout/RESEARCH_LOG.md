@@ -8139,3 +8139,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**425 证据 JSON**；三服务 200；master f9256fa（**459 连发 F335-F800 已推**）。
 - **〔弧〕**英雄名字层（F621）+ 3000ms 计时（F531）+ 名字消息处理（F797）+ 格式化/渲染（F800）——**名字/头顶完整**（名字消息 → 0x40BA60 格式化 → 0x40BB00 渲染 → 3000ms 清除、矩阵缩放、位置 [0xE4]/[0xE8]）。
 - 落盘：name-overhead-system-closure-evidence.json（F801，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 495。
+## Round 496 (F802) — 2026-08-12：HANDOFF 刷新 77（Round 493-495）
+
+- **〔刷新〕**HANDOFF 追加 Round 493-495（F800-F801：实体名字格式/渲染 + 名字/头顶系统闭合 + Round 800 finding）；基线 Round 492=56c9011 → Round 495=a2d8040（**460 连发 F335-F801**）。
+- 落盘：handoff-refresh-77-evidence.json（F802，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 496。
