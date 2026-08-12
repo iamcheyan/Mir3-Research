@@ -9061,3 +9061,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔移动〕**0x43CC30：jt 0x43CD94 **8 方向** → 新坐标 → 可行走 0x43C9F0（F719）+ 实体碰撞 dlist 0x560070/0x560080（类型 [0x88] 0/1/3 + [0xC0] 0x13/4 + [0x61C74] 坐骑旗标，同瓦片封锁）——移动分派完整（F722/F336 依赖）。
 - 落盘：move-dispatch-collision-full-evidence.json（F1014，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 708。
+## Round 709 (F1015) — 2026-08-12：移动闭合（F613/F722/F1014 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**636 证据 JSON**；三服务 200；master cad349f（**672 连发 F335-F1014 已推**）。
+- **〔弧〕**方向（F613）+ 移动门（F722）+ 分派全量（F1014）——**移动完整**（8 方向 jt + 可行走 + 实体 dlist 碰撞）；移动表面 100%。
+- 落盘：move-closure-evidence.json（F1015，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 709。

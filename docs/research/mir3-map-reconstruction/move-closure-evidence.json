@@ -1,0 +1,37 @@
+{
+  "evidence_id": "move-closure-2026-08-12-f1015",
+  "title": "Round 709 (F1015): Move CLOSED (F613/F722/F1014) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master cad349f (672 consecutive F335-F1014), 636 evidence JSONs; arc: dirs (F613) + move gate (F722) + dispatch full (F1014) - move COMPLETE byte-level (8-dir jt + walkable + entity dlist collision); movement surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the move arc.",
+  "question": "Is the move dispatch fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "636 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F613": "dirs", "F722": "move gate", "F1014": "dispatch full"},
+    "move": "8 dirs + walkable + collision = COMPLETE",
+    "milestone": "672 consecutive rounds F335-F1014"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1014": "672 rounds pushed; move complete"
+  },
+  "contrast": {
+    "gate_vs_full": "head + collision",
+    "dirs": "8 jt"
+  },
+  "verdict": "Move CLOSED (F1015): 8 dirs + walkable + collision all byte-level; validation green, 672 consecutive rounds, 636 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F613/F722/F1014.",
+  "cross_refs": ["F613", "F722", "F1014"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "672 consecutive shipping rounds F335-F1014",
+    "move 100%",
+    "next: HANDOFF refresh 150, remaining corners"
+  ]
+}

@@ -4401,3 +4401,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（移动分派完整；下一弧：剩余深层角落）。
+## Round 709 (2026-08-12) — 移动闭合（Finding 1015）
+
+- **672 连发 + 636 证据 + 移动完整**。
+- 落盘：`move-closure-evidence.json`（F1015）+ RESEARCH_LOG Round 709。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（移动表面 100%；下一弧：HANDOFF 刷新 150/剩余角落）。
