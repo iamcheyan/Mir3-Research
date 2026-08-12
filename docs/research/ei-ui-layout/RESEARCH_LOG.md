@@ -8807,3 +8807,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**579 证据 JSON**；三服务 200；master 731c55d（**613 连发 F335-F954 已推**）。
 - **〔弧〕**模式点击（F740）+ 点击分派（F824）+ 槽命中（F911）+ 输入/点击（F954）——**商店窗口完整**（模式 0/1/3/4 + 滚动条 + 买 msg 0x3EA + 卖/修 0x4521F0 + 输入），商店表面 100%。
 - 落盘：shop-window-closure-evidence.json（F955，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 649。
+## Round 650 (F956) — 2026-08-12：HANDOFF 刷新 130 里程碑（Round 647-649）
+
+- **〔刷新〕**HANDOFF 达 **130 次刷新**（Round 647-649：商店窗口输入/点击 + 商店窗口闭合）；基线 Round 646=44da0b8 → Round 649=5e6c0d4（**614 连发 F335-F955**）；商店表面 100%（**13/13 窗口输入闭合**）。
+- 落盘：handoff-refresh-130-milestone-evidence.json（F956，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 650。

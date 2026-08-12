@@ -3929,3 +3929,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店窗口完整；下一弧：HANDOFF 刷新 130/剩余角落）。
+## Round 650 (2026-08-12) — HANDOFF 刷新 130 里程碑（Finding 956）
+
+- **130 刷新 + 614 连发 + 13/13 窗口输入闭合**。
+- 落盘：`handoff-refresh-130-milestone-evidence.json`（F956）+ RESEARCH_LOG Round 650。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口输入表面全闭合；下一弧：剩余深层角落/模拟器 polish）。

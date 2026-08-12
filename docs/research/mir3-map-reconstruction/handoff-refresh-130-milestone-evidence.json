@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-130-milestone-2026-08-12-f956",
+  "title": "Round 650 (F956): HANDOFF refresh 130 MILESTONE - Rounds 647-649 (F953-F955: HANDOFF 129, shop input/click, shop closure), baseline Round 646=44da0b8 -> Round 649=5e6c0d4 (614 consecutive F335-F955), 130th HANDOFF refresh; shop surface 100% (13/13 windows input closed since Round 500), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 647-649 (130th refresh).",
+  "question": "What changed since HANDOFF refresh 129?",
+  "method": "Append Round 647-649 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "130th refresh (Round 647-649, F953-F955)",
+    "baseline": "Round 646=44da0b8 -> Round 649=5e6c0d4 (614 consecutive F335-F955)",
+    "arcs": {"input": "F954 shop", "closure": "F955 shop window"},
+    "key": "shop window complete; 13/13 window inputs closed"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F953": "refresh 129 baseline -> now refresh 130", "F335-F955": "614 rounds"
+  },
+  "contrast": {
+    "refresh_129_vs_130": "F954-F955 (2 new findings); 130th refresh milestone"
+  },
+  "verdict": "HANDOFF refresh 130 MILESTONE (F956): Rounds 647-649 documented (shop window complete), baseline 44da0b8 -> 5e6c0d4, 614 consecutive rounds pushed; 13/13 window input surfaces closed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F954-F955 evidence.",
+  "cross_refs": ["F953: refresh 129", "F955: shop closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 647-649 section to HANDOFF",
+  "notes": [
+    "130th HANDOFF refresh",
+    "614 consecutive shipping rounds F335-F955",
+    "13/13 window inputs closed"
+  ]
+}
