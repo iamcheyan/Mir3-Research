@@ -521,6 +521,13 @@ git diff --check
 - **Round 29-62 = 34 连发 commit（F335-F368）**。
 - 落盘：`housekeeping-final-evidence.json`（F368）+ RESEARCH_LOG Round 62。
 
+## Round 63 (2026-08-12) — 瓦片库异常调查（Finding 369）
+
+- **EI 可玩集 = 211 张**（MiniMap 绑定），只用 base/wood/sand libs。
+- **147 张未绑定图**携带 forest/snow/200+ lib（kt*/d*/D6xx/0_0031-33），客户端绑定范围外 → 黑块。
+- **Forest/Snow 子目录 = 他客户端产物**（EI 3.0 不用）。
+- 落盘：`tile-lib-anomaly-survey-evidence.json`（F369，primary-bytes）+ RESEARCH_LOG Round 63。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

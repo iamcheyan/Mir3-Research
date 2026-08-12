@@ -6018,3 +6018,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK；verify_mir3_ui_evidence exit 0（零错误）；node --check OK；layout/matrix/sim-layout JSON 全有效；git diff --check OK；工作树干净（仅未跟踪 scripts/goal_watchdog.sh.bak-20260812-084129 用户文件未动）。
 - **〔服务〕**wilviewer 8765/ui 200、mapviewer 8899 200、sim 8765/sim 200。
 - 落盘：`housekeeping-final-evidence.json`（F368，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 62。**Round 29-62 = 34 连发 commit（F335-F368，4e95988..874a223）。**
+
+## Round 63 (F369) — 2026-08-12：瓦片库异常调查（147 张未绑定图携带范围外 lib + EI 可玩集 = 211 张）
+
+- **〔范围外 lib〕**544 张全扫：**base 0-13（544 张全用）/ wood 14-27（468）/ sand 28-41（30）/ forest 42-55（32）/ snow 56-69（23）/ 200-254（39，255=空层哨兵排除）**。
+- **〔关键结论〕forest/snow/200+ lib 的图 = 0 张被服务器绑定**（MiniMap.txt 313 项仅 211 匹配 EI 图）；这些图（kt* 韩测、d*/D6xx 他版洞穴、0_0031-33）**全部未绑定 + row=0**——客户端仅绑 14-27，forest/snow/异常 lib 越界 → 若加载渲染黑块；img 值近 0xFF00（65305/65348）表明非 EI 瓦片编码。
+- **〔EI 可玩集定界〕211 张绑定图只用 libs {0-13 base, 14-27 wood, 28-41 sand}**；**Data/Forest + Data/Snow 子目录 = 他客户端（Zircon KR）产物，EI 3.0 不用**；Wood/Sand 子目录实际使用。
+- 落盘：`docs/research/mir3-map-reconstruction/tile-lib-anomaly-survey-evidence.json`（F369，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 63。

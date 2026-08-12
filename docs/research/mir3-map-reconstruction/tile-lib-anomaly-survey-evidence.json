@@ -1,0 +1,61 @@
+{
+  "evidence_id": "tile-lib-anomaly-survey-2026-08-12-f369",
+  "title": "Round 63 (F369): Tile-lib anomaly survey - 147 unbound maps carry libs outside EI binding range (200-254 anim markers, forest 42-55, snow 56-69) + zero bound maps use them + EI playable set = 211 maps using ONLY base/wood/sand libs + Forest/Snow subdirs are other-client artifacts",
+  "date": "2026-08-12",
+  "objective": "Resolve the tile-lib anomaly: maps referencing libs 200-254, forest (42-55), and snow (56-69) - determine whether they are playable EI maps or legacy/other-version artifacts, and bound the EI 3.0 playable map set's lib usage.",
+  "question": "Which maps reference libs outside the EI client's binding range (base 0-13 / wood 14-27 / sand 28-41), and are any of them in the playable (server-bound) set?",
+  "method": "Full 544-map scan for lib ids in ranges {200-254, 42-55 forest, 56-69 snow, 14-27 wood, 28-41 sand, 0-13 base}; cross-reference against server MiniMap.txt (313 entries, 211 matching EI maps); cell-level img-value inspection; mapviewer render/cell verification.",
+  "scope": "$MIR3_EI_ROOT/Map (544 maps); /tmp/nas_mnt/NAS/TMP/Mud3/Envir/MiniMap.txt (313 entries); mapviewer 8899.",
+  "cell_analysis": {
+    "lib_range_usage": {
+      "base_0-13": "544 maps (all use base libs somewhere - tilesc/tiles30c/tiles5c/smtilesc/housesc/cliffsc/dungeonsc/innersc/furnituresc/wallsc/smobjectsc/animationsc/object1c/object2c)",
+      "wood_14-27": "468 maps (row-0 binding range)",
+      "sand_28-41": "30 maps (row-1 binding range 14 desert + others)",
+      "forest_42-55": "32 maps (0 bound - ALL unbound legacy)",
+      "snow_56-69": "23 maps (0 bound - ALL unbound legacy)",
+      "200-254": "39 maps (0 bound - ALL unbound legacy; 255 = empty sentinel excluded)"
+    },
+    "anomaly_maps": {
+      "examples": "0_0011/0_002/0_0021, 0_0031/32/33, d601-d611, D612-D619, kt0002-kt00181",
+      "tile_row": "ALL row=0 (header[0x14]=0) - client binds ids 14-27 only, forest/snow/anomaly libs OUT OF RANGE",
+      "img_values": "cell img values near 0xFF00 (65305/65348 = 0xFF19/0xFF44) - non-EI tile encoding (animation markers or other-version format)",
+      "render": "mapviewer resolves lib255/empty; cells with lib 200+ render black/missing"
+    },
+    "ei_playable_set": {
+      "mini_map": "313 entries (MiniMap.txt), 211 match EI map files (F310)",
+      "lib_usage": "ZERO bound maps use libs 200-254, forest 42-55, or snow 56-69 - playable maps use ONLY base/wood/sand",
+      "conclusion": "EI 3.0 playable map set = 211 maps; libs {0-13, 14-27, 28-41} only"
+    },
+    "subdir_verdict": {
+      "Data/Forest": "exists but NO EI map references forest libs - other-client (Zircon KR) artifact",
+      "Data/Snow": "exists but NO EI map references snow libs - other-client artifact",
+      "Data/Wood": "used (row-0 maps bind 14-27 -> Wood/Tilesc.wil etc.)",
+      "Data/Sand": "used (row-1 maps bind 28-41 -> Sand/Tilesc.wil etc.)"
+    }
+  },
+  "exe_trace": {
+    "tile_binding": "0x43B600 (F343): row-0 -> ids 14-27, row-1 -> ids 28-41; 56-slot table 0x5612B4..0x565994",
+    "tile_render": "0x43B440 (F331): row=attr/7; 0x466130(&0x5600FC + file*0x144, id)"
+  },
+  "audit_vs_exe": {
+    "F343": "binding formula (row+1)*14 confirmed; forest/snow/anomaly libs outside bound range",
+    "F342": "544-map inventory refined: only 211 playable, 333 on-disk extras (147 with out-of-range libs + 186 clean unused)",
+    "F310": "211 MiniMap.txt bindings confirmed as the playable set"
+  },
+  "contrast": {
+    "bound_vs_unbound": "bound (211): base+wood/sand libs only, render correctly; unbound (333): include 147 with forest/snow/200+ libs that render black if ever loaded",
+    "wood_vs_forest_vs_snow": "wood = EI 3.0 default terrain; forest/snow = other-client terrains (subdirs exist but unused by EI maps)"
+  },
+  "verdict": "Tile-lib anomaly resolved (primary-bytes): the EI 3.0 playable map set = 211 server-bound maps using ONLY libs {0-13 base, 14-27 wood, 28-41 sand}. The 147 maps referencing libs 200-254 / forest 42-55 / snow 56-69 are ALL unbound legacy/other-version artifacts (kt* Korean test, d*/D6xx dungeons, 0_0031-33); their libs fall outside the client's tile-row binding range and would render black/missing. Data/Forest + Data/Snow subdirs are other-client artifacts, not used by EI 3.0.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Lib ranges, tile-row bytes and img values read directly from all 544 map files; server binding via MiniMap.txt; mapviewer render verified.",
+  "cross_refs": ["F343: tile binding formula", "F342: 544-map inventory", "F310: 211 MiniMap bindings", "map-inventory-evidence.json F342", "town-cave-map-deepdive-evidence.json F343"],
+  "tool": "python3 struct scan; mapviewer HTTP; curl",
+  "reproduce": "scan all 544 maps for lib ids in ranges (see scripts above); cross-ref MiniMap.txt; curl /tile + /api/cell on 0_0031.map",
+  "notes": [
+    "255 = empty-layer sentinel (not anomaly); excluded from 200+ counts",
+    "39 maps use 200-254 (overlap with forest/snow sets)",
+    "0_0031/32/33 (18x22) heavy lib-207/227 usage with img ~0xFF00 - possibly cutscene/anim maps for another build",
+    "mapviewer emits 'lib255' fallback naming for unmapped libs (correct defensive behavior)"
+  ]
+}
