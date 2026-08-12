@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-19-2026-08-12-f615",
+  "title": "Round 309 (F615): HANDOFF refresh 19 - Rounds 304-308 (F610-F614: death/teleport pump + hero movement/camera + map move/collision + hero runtime arc closure), baseline Round 303=e918c0d -> Round 308=6ec8705 (273 consecutive F335-F614), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 304-308.",
+  "question": "What changed since HANDOFF refresh 18?",
+  "method": "Append Round 304-308 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 304-308 appended (5 rounds, F610-F614)",
+    "baseline": "Round 303=e918c0d -> Round 308=6ec8705 (273 consecutive F335-F614)",
+    "arcs": {"death": "F611 death/respawn pump", "move": "F612 hero movement + F613 collision", "closure": "F614 hero runtime arc"},
+    "key": "hero runtime lifecycle complete (death->respawn->move->collide)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F610": "refresh 18 baseline -> now refresh 19", "F335-F614": "273 rounds"
+  },
+  "contrast": {
+    "refresh_18_vs_19": "F611-F614 (4 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 19 (F615): Rounds 304-308 documented (hero runtime lifecycle), baseline e918c0d -> 6ec8705, 273 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F611-F614 evidence.",
+  "cross_refs": ["F610: refresh 18", "F614: hero runtime closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 304-308 section to HANDOFF",
+  "notes": [
+    "273 consecutive shipping rounds F335-F614",
+    "next: remaining deep corners, sim polish"
+  ]
+}

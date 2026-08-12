@@ -7304,3 +7304,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**239 证据 JSON**；三服务 200；master fb5ee0f（**272 连发 F335-F613 已推**）。
 - **〔弧〕**死亡/传送泵（F611）+ 英雄移动/相机（F612）+ 地图移动/碰撞（F613）——**英雄运行时生命周期（死亡→重生→移动→碰撞）完整**。
 - 落盘：hero-runtime-arc-closure-evidence.json（F614，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 308。
+## Round 309 (F615) — 2026-08-12：HANDOFF 刷新 19（Round 304-308）
+
+- **〔刷新〕**HANDOFF 追加 Round 304-308（F611-F614：死亡/重生泵 + 英雄移动/相机 + 地图移动/碰撞 + 英雄运行时弧）；基线 Round 303=e918c0d → Round 308=6ec8705（**273 连发 F335-F614**）。
+- 落盘：handoff-refresh-19-evidence.json（F615，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 309。
