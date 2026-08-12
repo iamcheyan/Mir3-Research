@@ -7545,3 +7545,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔映射〕**0x42E2D0（F470/F563）：字节表 0x42E428（**32 物品类型 → 9 例**）：0 = 音效 0x6C（金币）、1 = 0x6F、2 = 0x70、3 = 0x74、4 = 0x73、5 = 0x71、6 = **名字 strcmp 族**（갑박/장갑 → 0x45DD00 → 0x72/0x75）、7 = [0x23] 字节门 0x6A → 0x6C、8 = 默认 0x76；全部经 0x45AFC0（[0x8AB130]）——音效 id 映射字节级（F470/F563 完整）。
 - 落盘：sound-dispatch-map-evidence.json（F665，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 359。
+## Round 360 (F666) — 2026-08-12：物品/音效弧闭合（F661-F665 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**290 证据 JSON**；三服务 200；master 49b69ac（**324 连发 F335-F665 已推**）。
+- **〔弧〕**商店管理器/命中点击（F661）+ 商店绘制/模式（F662）+ 音效分派映射（F665）——**商店 + 物品音效系统完整**。
+- **〔仓库〕**用户 quest 文件未触碰。
+- 落盘：item-sound-arc-closure-evidence.json（F666，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 360。

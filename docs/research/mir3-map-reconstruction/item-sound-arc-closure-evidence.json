@@ -1,0 +1,37 @@
+{
+  "evidence_id": "item-sound-arc-closure-2026-08-12-f666",
+  "title": "Round 360 (F666): Item/sound arc CLOSED (F661-F665) - validation green (compileall/verify exit 0/node/JSON), services 200, master 49b69ac (324 consecutive F335-F665), 290 evidence JSONs; arc: store manager/hit/click (F661) + store paint/modes (F662) + sound dispatch map (F665) - store + item-sound systems COMPLETE; user quest files untouched",
+  "date": "2026-08-12",
+  "objective": "Close the item/sound arc.",
+  "question": "Are store + item-sound systems fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "290 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F661": "store manager/hit/click", "F662": "store paint/modes", "F665": "sound dispatch map"},
+    "systems": "store + item-sound = COMPLETE",
+    "repo": "user quest files untouched",
+    "milestone": "324 consecutive rounds F335-F665"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F665": "324 rounds pushed; store + sound complete"
+  },
+  "contrast": {
+    "store_vs_sound": "store system + item-sound map",
+    "mgr_vs_map": "store manager + sound type map"
+  },
+  "verdict": "Item/sound arc CLOSED (F666): store + item-sound all byte-level; validation green, 324 consecutive rounds, 290 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F661-F665.",
+  "cross_refs": ["F661/F662: store", "F665: sound"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "324 consecutive shipping rounds F335-F665",
+    "next: HANDOFF refresh 33, remaining corners"
+  ]
+}
