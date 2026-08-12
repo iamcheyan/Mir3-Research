@@ -8984,3 +8984,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔相机〕**0x43C500：平移 [0x12C]/[0x130] += 增量 + 瓦片缓冲滚动 0x468E90（0x900 stride 0x18 瓦片）+ 脏瓦片重绘 0x43B9A0（F728 地面 blit）+ 钳制 0x900——相机滚动完整。
 - 落盘：camera-scroll-full-evidence.json（F996，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 690。
+## Round 691 (F997) — 2026-08-12：相机闭合（F718/F996 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**618 证据 JSON**；三服务 200；master c04f5a2（**655 连发 F335-F996 已推**）。
+- **〔弧〕**相机渲染/滚动（F718）+ 滚动全量（F996）——**相机完整**（24×24 视口 + 平移 + 缓冲滚动 0x468E90 + 脏重绘）；地图表面 100%。
+- 落盘：camera-closure-evidence.json（F997，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 691。

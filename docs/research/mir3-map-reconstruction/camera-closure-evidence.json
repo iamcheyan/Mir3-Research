@@ -1,0 +1,37 @@
+{
+  "evidence_id": "camera-closure-2026-08-12-f997",
+  "title": "Round 691 (F997): Camera CLOSED (F718/F996) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c04f5a2 (655 consecutive F335-F996), 618 evidence JSONs; arc: camera render/scroll (F718) + scroll full (F996) - camera COMPLETE byte-level (24x24 viewport + pan + buffer shift 0x468E90 + dirty redraw); map surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the camera arc.",
+  "question": "Is the camera fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "618 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F718": "render/scroll", "F996": "scroll full"},
+    "camera": "viewport + pan + buffer = COMPLETE",
+    "milestone": "655 consecutive rounds F335-F996"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F996": "655 rounds pushed; camera complete"
+  },
+  "contrast": {
+    "render_vs_scroll": "draw + pan",
+    "buffer": "0x468E90 shift"
+  },
+  "verdict": "Camera CLOSED (F997): viewport + pan + buffer shift all byte-level; validation green, 655 consecutive rounds, 618 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F718/F996.",
+  "cross_refs": ["F718", "F996"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "655 consecutive shipping rounds F335-F996",
+    "camera 100%",
+    "next: HANDOFF refresh 144, remaining corners"
+  ]
+}

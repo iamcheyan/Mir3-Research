@@ -4257,3 +4257,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（相机滚动完整；下一弧：剩余深层角落）。
+## Round 691 (2026-08-12) — 相机闭合（Finding 997）
+
+- **655 连发 + 618 证据 + 相机完整**。
+- 落盘：`camera-closure-evidence.json`（F997）+ RESEARCH_LOG Round 691。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图表面 100%；下一弧：HANDOFF 刷新 144/剩余角落）。
