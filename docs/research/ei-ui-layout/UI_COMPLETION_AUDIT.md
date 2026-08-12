@@ -404,6 +404,12 @@ git diff --check
 - **模拟器登录遮罩**：intro → 连接 → 角色列表 → 进游戏（浏览器验证）。
 - 落盘：`login-charselect-flow-evidence.json`（F349，primary-bytes）+ app.js + RESEARCH_LOG Round 43。
 
+## Round 44 (2026-08-12) — HP/MP/EXP 条家族（Finding 350）
+
+- **0x40A8A0**：门 + 类型分派 + HP=cur−dmg+bonus；元素帧=实时值（0x4542A0 注册表）；位置 400/300 中心公式；常量 1/255、0.5、400、300。
+- **模拟器条**：primary-static SetRect 证据（0x4276D6/0x4276F0/0x42770D）接线正确。
+- 落盘：`hpmp-exp-bar-family-evidence.json`（F350，primary-bytes）+ RESEARCH_LOG Round 44。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -5896,3 +5896,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔server 0x458F80〕**0x452920 解析 msgid；msgid−0x208 ≤ 8 → 跳表 0x45950C 9 项（0x208/520 角色列表刷新 0x458FBD：清 +0xCB8 0x20 dwords + [0x1168]=-1 + 解析名；0x209 建号；0x20A 错误；0x20B 重发；0x20D 进入 OK → 0x459465 stage 4 + StartGame.dat 0x47D7C8；0x20E 韩语消息…）。职业名 0x47D778 ' 武 士 ]' / 0x47D784 ' 法 师 ]' / 0x47D790 ' 道 士 ]'。
 - **〔模拟器〕renderLoginOverlay()**：intro 遮罩（账号/密码 + 进入游戏）→ '连接服务器 (0x458F80 0x208)' → '角色列表就绪 (0x4575D0 stage 3 → 0x458B20)' → 进游戏（0x8B1878 state 3）。**浏览器验证**：遮罩 → 点击 → 中间提示 → 1.7s 后遮罩移除 + chat '进入游戏'。
 - 落盘：`login-charselect-flow-evidence.json`（F349，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 43。
+
+## Round 44 (F350) — 2026-08-12：HP/MP/EXP 条家族验证（0x40A8A0 + 浮点常量 + 模拟器条对齐）
+
+- **〔0x40A8A0 HP 条渲染器〕**门 [0x61BB8]/[0x61BBC] && 鼠标 [0x8AB7BC]；类型字节 [0x8D]（0x51/0x89 flag0、0x81/0x8A flag1）；**HP = [0x61BA0] − [0xB4]（伤害）+ [0xC4]（增益）→ [0x61B9C]**；元素 = 0x5600FC + type*0x144，**帧 = 实时 HP 值**（0x4542A0 注册表查 type<5/frame<0x8C → 0x454DA0 @ 0x5600FC+0x13F60）；位置 = 锚 [0xE4]/[0xE8] + 帧 fx/fy×0.5（0x476364）− 400.0/300.0（0x476474/0x476470）中心公式（F310）。
+- **〔浮点常量〕**0x47639C=1/255（0.00392 字节色缩放）、0x476364=0.5、0x476474=400.0、0x476470=300.0。
+- **〔模拟器〕**hp/mp/exp 条已用 primary-static SetRect 证据（0x4276D6/0x4276F0/0x42770D，帧 60/61/63）；CSS 填充动画为帧=值原版的视觉近似——接线正确。
+- 落盘：`hpmp-exp-bar-family-evidence.json`（F350，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 44。

@@ -1,0 +1,61 @@
+{
+  "evidence_id": "hpmp-exp-bar-family-2026-08-12-f350",
+  "title": "Round 44 (F350): HP/MP/EXP bar family verification - 0x40A8A0 (gates + type dispatch + HP=cur-dmg+bonus + element frame=value + registry 0x4542A0 + float constants 1/255, 0.5, 400.0, 300.0) + sim bars already primary-static (0x4276D6/0x4276F0/0x42770D)",
+  "date": "2026-08-12",
+  "objective": "Verify the HP/MP/EXP bar family against primary bytes: the 0x40A8A0 HP-bar renderer (gates, type dispatch, value formula, element-frame = live value, registry lookup, position math with float constants) and confirm the simulator's bar wiring matches the evidence.",
+  "question": "How does the original render HP/MP/EXP bars, and does the simulator's bar model match?",
+  "method": "Capstone disassembly of 0x40A8A0; pefile float-constant reads; simulator data/app verification.",
+  "scope": "0x40A8A0-0x40AC44 (HP bar renderer), 0x4542A0 (registry), floats 0x47639C/0x476364/0x476474/0x476470, sim hud bars.",
+  "cell_analysis": {
+    "hp_bar_0x40A8A0": {
+      "gates": "[esi+0x61BB8] OR [esi+0x61BBC] (bar flag) && mouse [0x8AB7BC] != 0",
+      "type_dispatch": "byte [esi+0x8D]: 0x51/0x89 -> flag0, 0x81/0x8A -> flag1",
+      "value": "HP = [esi+0x61BA0] - [esi+0xB4] (dmg) + [esi+0xC4] (bonus) -> [esi+0x61B9C] (cached when [0x61BB8]==0)",
+      "element": "0x4542A0(&0x5600FC, type, flag, frame=[0x61B9C]) registry lookup (type<5, frame<0x8C); 0x466130(&0x5600FC + type*0x144, [0x61B9C]) frame load (element frame = LIVE HP VALUE)",
+      "position": "anchor [esi+0xE4]/[0xE8] + frame fx/fy * 0.5 (0x476364) - 400.0/300.0 (0x476474/0x476470) center formula (F310/Round 28)",
+      "scale": "0x47639C = 1/255 (0.00392) color/alpha scale via 0x466800 float math"
+    },
+    "constants": {
+      "0x47639C": "0.003921569 = 1/255 (byte-to-float color)",
+      "0x476364": "0.5 (frame fx/fy half-scale)",
+      "0x476474": "400.0 (screen center x)",
+      "0x476470": "300.0 (screen center y)"
+    },
+    "sim_bars": {
+      "hp_bar": "rect [61,496,104,566], frame 60, primary-static, note '0x004276D6 SetRect; (血量)%d/%d formatter'",
+      "mp_bar": "rect [105,496,147,566], frame 61, primary-static, note '0x004276F0 SetRect; (魔法)%d/%d'",
+      "exp_bar": "rect [61,586,400,597], frame 63, primary-static, note '0x0042770D SetRect; (经验)%d/%d'",
+      "values": "STATE.hp/mp/exp demo values; bars animated via updateBars (Round 33 area)"
+    }
+  },
+  "exe_trace": {
+    "registry": "0x4542A0: type<5 && frame<0x8C -> 0x454DA0 lookup at 0x5600FC+0x13F60; ret 0xC",
+    "hud_rects": "0x4276D6 (hp), 0x4276F0 (mp), 0x42770D (exp) SetRect in hero HUD builder (Round 29 F335)"
+  },
+  "audit_vs_exe": {
+    "F310": "anchor formula + center 400/300 confirmed (0x476474/0x476470)",
+    "Round 28": "HP bar chain (0x40A8A0, element 0x5600FC+type*0x144, frame=HP value) confirmed",
+    "F335": "HUD bar rects 0x4276D6/0x4276F0/0x42770D confirmed as sim source"
+  },
+  "contrast": {
+    "hp_vs_mp_exp": "HP/MP use vertical bars (496..566) with element frame = value; EXP is horizontal (586..597) - different geometry, same frame=value semantics",
+    "sim_animation": "sim animates bars as CSS fills (visual approximation); original uses per-value frame selection (element frame = exact value)"
+  },
+  "verdict": "HP/MP/EXP bar family verified against primary bytes (0x40A8A0: gates, type dispatch, value formula, element-frame = live value, registry 0x4542A0, position math with 400/300 center + 1/255 scale). Simulator bars use the primary-static SetRect evidence (0x4276D6/0x4276F0/0x42770D) with frame values 60/61/63 - wiring correct; sim animation is CSS-fill approximation of the frame-per-value original.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Renderer, constants and registry read directly from MIR3.EXE bytes; sim wiring is derived-tooling confirmed against evidence.",
+  "cross_refs": [
+    "F310: anchor formula, live coords",
+    "F335: hero HUD builder bar rects",
+    "Round 28: target-box HP bar chain",
+    "Round 33: sim updateBars"
+  ],
+  "tool": "capstone via disasm_capstone.PeImage; pefile; python3 json",
+  "reproduce": "img.disasm(0x40A8A0, 0x3A0); read floats 0x47639C/0x476364/0x476474/0x476470; img.disasm(0x4542A0, 0x30)",
+  "notes": [
+    "0x40A8A0 called from 0x41BF14/0x41BF50/0x41BF67 (game tick HUD target box chain, Round 30)",
+    "bar element stride 0x144 = 324 bytes (0x5600FC + type*0x144); registry base 0x5600FC+0x13F60",
+    "HP value cache [0x61B9C] recomputed when [0x61BB8]==0 (no ongoing damage marker)",
+    "sim could select frame = round(hp) for true frame-per-value fidelity (future enhancement)"
+  ]
+}
