@@ -7142,3 +7142,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔里程碑〕**全部历史 pending 笔记闭合（0x45A650 F577、0x45B490 F577、[0x140] timeKillEvent F577、0x476CA8 DSound3DListener F578）——**零未决项**。
 - **〔HANDOFF 刷新 11〕**追加 Round 269-272（F575-F578：模拟器协议层 + 装载器族 + DSound 解析），基线 d54bc29 → 515600e。
 - 落盘：all-pending-closed-evidence.json（F579，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 273。
+## Round 274 (F580) — 2026-08-12：HUD caption 动作分派完整（16 分支）
+
+- **〔循环〕**0x42BEF8/0x42BF02：16 次迭代（caption 对象 = HUD+0x567C+idx*0xB4、vtable[0x10] press 命中 → idx、jt 0x42C4D4）：0=背包（0x4300F0 + OpenWindow 0）、1=装备、2=商店、3=交易、4=行会、6=组队、7=角色状态、8=公告、B=任务、C=选项、D=坐骑、E=技能书（5/A 桩）——**与 F558 窗口注册表模式完全一致（交叉确认）**。
+- **〔动作栏〕**0x42C1CE 攻击目标（0x41EC10 查找 + 0x451A70）、0x42C209 0x4523E0 发送、0x42C218/0x42C226/0x42C234 OpenWindow 6/8/0、**0x42C241 腰带切换 [0x6208]**、0x42C259 0x451770 发送（3s 冷却 [0x6210]）、**0x42C292 相机缩放 [0xD40] 钳制 0x2E + [0xD42]**、0x42C2E1 0x419CC0 生成检查 + 公告 [0x53030]、0x42C30D 装备面板模式 0 + 0x423E80。
+- 落盘：hud-caption-action-dispatch-evidence.json（F580，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 274。

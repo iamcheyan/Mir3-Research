@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hud-caption-action-dispatch-2026-08-12-f580",
+  "title": "Round 274 (F580): HUD caption action dispatch FULL - 0x42BEF8/0x42BF02 16-iter loop, each caption vtable[0x10] press -> hit idx, dispatch jt 0x42C4D4 (16 cases): 0=bag open (0x4300F0 hit + OpenWindow 0), 1=equipment (0x44CCD0 + mode 1), 2=store (0x44E9B0 + mode 2), 3=TRADE (0x416EF0 + mode 3), 4=GUILD (0x4258F0 + mode 4), 6=PARTY (0x424610 + mode 6), 7=char/status (0x450B30 + mode 7), 8=notice (0x4149A0 + mode 8), B=quest (0x447FA0 + mode B), C=option (0x4414F0 + mode C), D=horse (0x4269C0+0x426970 family + mode D), E=skillbook (mode E), 5/0xA stubs; plus ACTION BAR cases: 0x42C1CE attack-target (0x41EC10 find + 0x451A70 msg 0x401 trade req? no - target attack), 0x42C209 0x4523E0 send, 0x42C218/0x42C226/0x42C234 OpenWindow 6/8/0, 0x42C241 belt toggle [0x6208], 0x42C259 0x451770 send (3s cooldown [0x6210]), 0x42C292 camera/zoom [0xD40] clamp 0x2E + mode byte [0xD42], 0x42C2E1 0x419CC0 spawn-check + notice [0x53030], 0x42C302 mode E skillbook, 0x42C30D equipment panel [0x29CE4] mode 0 + 0x423E80 - HUD bottom bar FULL byte-level (F321 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the full HUD caption action dispatch + action bar.",
+  "question": "How do the HUD buttons dispatch?",
+  "method": "Disasm 0x42BEF8-0x42C4D4 (16-case jt) + action bar 0x42C1CE-0x42C354.",
+  "scope": "0x42BEF8-0x42C4D4; jt 0x42C4D4; action bar.",
+  "cell_analysis": {
+    "loop": "0x42BEF8 16-iter: caption obj = HUD+0x567C+idx*0xB4, vtable[0x10] press hit -> idx, jt 0x42C4D4",
+    "cases": {"0": "bag (0x4300F0 + OpenWindow 0)", "1": "equipment (0x44CCD0 + mode 1)", "2": "store (0x44E9B0 + mode 2)", "3": "trade (0x416EF0 + mode 3)", "4": "guild (0x4258F0 + mode 4)", "6": "party (0x424610 + mode 6)", "7": "char/status (0x450B30 + mode 7)", "8": "notice (0x4149A0 + mode 8)", "B": "quest (0x447FA0 + mode B)", "C": "option (0x4414F0 + mode C)", "D": "horse (mode D)", "E": "skillbook (mode E)"},
+    "action_bar": {"0x42C1CE": "attack-target (0x41EC10 find + 0x451A70)", "0x42C209": "0x4523E0 send", "0x42C218/0x42C226/0x42C234": "OpenWindow 6/8/0", "0x42C241": "belt toggle [0x6208]", "0x42C259": "0x451770 send (3s cd [0x6210])", "0x42C292": "camera zoom [0xD40] clamp 0x2E + [0xD42]", "0x42C2E1": "0x419CC0 spawn-check + notice [0x53030]", "0x42C30D": "equipment mode 0 + 0x423E80"},
+    "match": "cases == F558 window registry modes CONFIRMED"
+  },
+  "exe_trace": {
+    "hud_chain": "caption click -> vtable[0x10] hit -> idx -> jt -> window hit-check + OpenWindow(mode)"
+  },
+  "audit_vs_exe": {
+    "F558": "window registry modes == caption cases", "F321": "16-caption loop extended to full dispatch", "F313": "caption map"
+  },
+  "contrast": {
+    "captions_vs_action": "caption bar (16 windows) vs action bar (attack/belt/zoom)",
+    "hit_vs_open": "each case = window-specific hit fn + OpenWindow(mode)"
+  },
+  "verdict": "HUD caption action dispatch PRIMARY-verified: 16-case jt 0x42C4D4 maps captions to windows (matches F558 registry) + full action bar (attack/belt/zoom/spawn-check). HUD bottom bar byte-level complete (F321 extended).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Full dispatch + action bar decoded from .text.",
+  "cross_refs": ["F321: caption loop", "F558: window registry", "F313: caption map", "F243: vtable[0x10]"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42BEF8+0x80; jt 0x42C4D4; 0x42C1CE+0x80",
+  "notes": [
+    "caption cases == window modes (F558) cross-confirmed",
+    "belt toggle [0x6208], camera zoom [0xD40] clamp 46",
+    "attack cooldown 3s ([0x6210] timeGetTime)",
+    "action bar = attack/magic/equip/belt/zoom/spawn-check"
+  ]
+}
