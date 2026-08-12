@@ -1,0 +1,38 @@
+{
+  "evidence_id": "map-tile-accessor-family-2026-08-12-f717",
+  "title": "Round 411 (F717): Map tile accessor family - 0x43C0F0 tile GET (stride 14B @ [map+0x10C], dims [0x126]/[0x128], type byte+9 bit7 flag); 0x43C150 walkable (+9/+0xB bit7 both clear); 0x43C1B0 block-region setter (18x18, type match -> [tile+0xB]|=0x80); 0x43C270 block-clear ([tile+0xA]&=0x7FFF); 0x43C330 isometric picker (half-tile /2 indexing, [0x108] array, region [0x12C]/[0x130]) - tile collision core (F613 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the map tile accessor family.",
+  "question": "How does the map expose tiles?",
+  "method": "Disasm 0x43C0F0-0x43C32A + 0x43C330 head.",
+  "scope": "0x43C0F0-0x43C32A; 0x43C330.",
+  "cell_analysis": {
+    "0x43C0F0": "GET: stride 14B, type byte+9, bit7 -> type&0x7F",
+    "0x43C150": "walkable: +9/+0xB bit7 clear",
+    "0x43C1B0": "block: 18x18 type match -> [0xB]|=0x80",
+    "0x43C270": "clear: 18x18 type match -> [0xA]&=0x7FFF",
+    "0x43C330": "isometric picker: half-tile /2, [0x108] array"
+  },
+  "exe_trace": {
+    "tile_chain": "GET type -> walkable -> block set/clear -> picker"
+  },
+  "audit_vs_exe": {
+    "F613": "tile collision", "F610": "map"
+  },
+  "contrast": {
+    "get_vs_walk": "type read + flags",
+    "set_vs_clear": "0xB|=0x80 vs 0xA&=0x7FFF"
+  },
+  "verdict": "Map tile accessor family PRIMARY-verified: GET/walkable/block-set/clear + isometric picker; tile collision core (F613).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tile accessors decoded from .text.",
+  "cross_refs": ["F613: collision", "F610: map"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43C0F0+0x10; 0x43C150+0x10; 0x43C1B0+0x20",
+  "notes": [
+    "stride 14B @ [0x10C]",
+    "dims [0x126]/[0x128]",
+    "18x18 block region",
+    "half-tile picker"
+  ]
+}

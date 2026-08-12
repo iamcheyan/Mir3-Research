@@ -7771,3 +7771,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 406-409（F713-F715：窗口基类构造 + 绘制/输入 + 弧闭合）；基线 Round 405=5e67f53 → Round 409=6619ed9（**374 连发 F335-F715**）。
 - 落盘：handoff-refresh-49-evidence.json（F716，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 410。
+## Round 411 (F717) — 2026-08-12：地图瓦片访问器家族
+
+- **〔瓦片〕**0x43C0F0 取类型（**stride 14B @ [地图+0x10C]**、尺寸 [0x126]/[0x128]、类型字节 +9 bit7 旗标）；0x43C150 可行走（+9/+0xB bit7 全清）；0x43C1B0 **区域封锁**（18×18、类型匹配 → [0xB]|=0x80）；0x43C270 解锁（[0xA]&=0x7FFF）；0x43C330 **等距拾取器**（半瓦片 /2 索引、[0x108] 数组）——瓦片碰撞核心（F613 用）。
+- 落盘：map-tile-accessor-family-evidence.json（F717，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 411。
