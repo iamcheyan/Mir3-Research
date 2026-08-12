@@ -6805,3 +6805,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔目录〕**商店控件 0x3F2-0x3F9（F460）+ 商店操作 0x3E9/0x3EF/0x3F0、交易 0x402/0x403（F364）+ 金币 0x405/0x406（F474）+ 重置 0x407/0x408 + 库存 0x409、**NPC 对话回复 0x410/0x411（F476 0x4524D0/0x4524A0）**、生成 0x417、NPC 0x416/0x418/0x419——完整客户端发包目录（含发送函数）。
 - 落盘：client-send-msgid-map-evidence.json（F514，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 208。
+## Round 209 (F515) — 2026-08-12：模拟器+包弧闭合（F513-F514 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 14ed6fa（**174 连发已推**）。
+- **〔弧汇总〕**模拟器 14+8 窗口全内容（F513，浏览器 41 按钮/170 槽/35 标签）+ 客户端发送 34 msgid 目录（F514，F460/F474/F476 确认）——模拟器 UI + 发包目录完整。
+- 落盘：sim-packet-arc-closure-evidence.json（F515，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 209。

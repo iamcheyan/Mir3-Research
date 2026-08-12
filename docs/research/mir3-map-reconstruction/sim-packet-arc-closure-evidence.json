@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sim-packet-arc-closure-2026-08-12-f515",
+  "title": "Round 209 (F515): Sim+packet arc CLOSED (F513-F514) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 14ed6fa (174 shipping rounds F335-F514); arc consolidated: simulator window content audit (F513: 14+8 windows, 41 buttons/170 slots/35 labels browser-verified), client send-msgid map (F514: 34 msgids 0x3E9-0x419 with sender fns, F460/F474/F476 confirmed) - sim UI + outbound packet catalog complete",
+  "date": "2026-08-12",
+  "objective": "Close the sim+packet arc with validation + summary.",
+  "question": "Is the repo healthy after the 2-round sim+packet arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 14ed6fa; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F513": "sim 14+8 windows full content (41 btns/170 slots/35 lbls)", "F514": "client send 34 msgids (0x3E9-0x419) + sender fns"},
+    "significance": "sim UI + outbound packet catalog both complete"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F514": "174 rounds pushed; sim + packet layers closed"
+  },
+  "contrast": {
+    "send_vs_recv": "send catalog (F514) + recv handlers (F449/F450)",
+    "sim_vs_client": "sim mirrors client windows + packets"
+  },
+  "verdict": "Sim+packet arc CLOSED (F513-F514): validation green, services live, 174 shipping rounds pushed. Simulator content + client outbound packet catalog complete.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F513-F514.",
+  "cross_refs": ["F513-F514: arc", "F206: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: deep-dive remaining (spell frame math verified F504, packet recv mapping, sim edge polish)",
+    "174 shipping rounds + user quest-design commits all pushed"
+  ]
+}
