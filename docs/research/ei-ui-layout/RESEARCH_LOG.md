@@ -8394,3 +8394,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔坐骑〕**0x426B50 命中（5 控件 vtable[0xC] @ +0x54 stride 0xB4）；0x426B90 点击（5 控件 vtable[8]）；0x426C10 **坐骑窗口构造**（0x415130 基类 + 0x430920 物品构造 @ +0x38 + vtable 0x476620/0x476864 + **6 物品槽 0xC24 @ +0xDA4** + SEH 0x426E70/0x415750）——坐骑窗口交互 + 构造完整（F545/F773）。
 - 落盘：mount-hit-click-ctor-evidence.json（F860，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 554。
+## Round 555 (F861) — 2026-08-12：坐骑窗口全闭合（F545/F773/F836/F860 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**485 证据 JSON**；三服务 200；master c808529（**519 连发 F335-F860 已推**）。
+- **〔弧〕**命令（F545）+ 窗口（F773）+ 旗标写者（F836）+ 命中/点击/构造（F860）——**坐骑窗口完整**（5 按钮 + 命令分派 + 旗标门 + 6 物品槽 + 命中/点击），模式 D 全交互。
+- 落盘：mount-window-full-closure-evidence.json（F861，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 555。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "mount-window-full-closure-2026-08-12-f861",
+  "title": "Round 555 (F861): Mount window FULL closure (F545/F773/F836/F860) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c808529 (519 consecutive F335-F860), 485 evidence JSONs; arc: commands (F545) + window (F773) + flag writers (F836) + hit/click/ctor (F860) - mount window COMPLETE byte-level (5 buttons + command dispatch + flag gate + 6 item slots + hit/click), window mode D fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the mount window fully.",
+  "question": "Is the mount window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "485 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F545": "commands", "F773": "window", "F836": "writers", "F860": "hit/ctor"},
+    "mount": "buttons + commands + flag + slots = COMPLETE",
+    "milestone": "519 consecutive rounds F335-F860"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F860": "519 rounds pushed; mount window complete"
+  },
+  "contrast": {
+    "draw_vs_dispatch": "buttons + hit/click",
+    "flag_vs_slots": "0x7DA060 + 6 x 0xC24"
+  },
+  "verdict": "Mount window FULL closure (F861): draw + dispatch + ctor all byte-level; validation green, 519 consecutive rounds, 485 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F545/F773/F836/F860.",
+  "cross_refs": ["F545", "F773", "F836", "F860"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "519 consecutive shipping rounds F335-F860",
+    "mount window 100%",
+    "next: HANDOFF refresh 97, remaining corners"
+  ]
+}

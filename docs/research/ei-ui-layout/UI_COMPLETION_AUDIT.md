@@ -3169,3 +3169,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑交互完整；下一弧：剩余深层角落）。
+## Round 555 (2026-08-12) — 坐骑窗口全闭合（Finding 861）
+
+- **519 连发 + 485 证据 + 坐骑窗口完整**。
+- 落盘：`mount-window-full-closure-evidence.json`（F861）+ RESEARCH_LOG Round 555。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（坐骑窗口完整；下一弧：HANDOFF 刷新 97/剩余角落）。
