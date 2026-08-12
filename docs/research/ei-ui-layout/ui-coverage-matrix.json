@@ -629,6 +629,33 @@
         "IAT additions: 0x47624C=KillTimer, 0x476064=CreateSolidBrush, 0x476068=DeleteObject, 0x4762BC=MoveWindow, 0x4762CC=SetWindowTextA, 0x47630C=timeGetTime (pefile verified)"
       ],
       "pending_notes": "window identities marked candidate (id0/id2/id3/id4/id7/idB/idE/id64) need runtime/behavior confirmation; 0x777200 vs hero+0x52E5C notify-window VA discrepancy; 0x41A0C0 window-id dispatch (0x10/0x16/0x3F/0x14A-0x14E/0x48/9) next round; caption action table 0x42C494 vs new string map re-verify (idx7 腰带 0x9F frames, idx12 帮助窗口)"
+    },
+    {
+      "id": "game-loop",
+      "category": "主游戏循环/实体点击分派 (F336)",
+      "artifacts": [
+        "game-loop-and-entity-dispatch-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "game-loop.winmain-msg-loop",
+        "game-loop.tick-0x41BB00",
+        "game-loop.screen-effect-0x41B8D0",
+        "entity.click-dispatch-0x419D40",
+        "window.id15-notice-va-fix"
+      ],
+      "preview_mode": "ui",
+      "status": "primary-bytes-main-loop-hierarchy",
+      "pending": false,
+      "closed_2026_08_12": [
+        "WinMain message loop decoded (Finding 336, game-loop-and-entity-dispatch-evidence.json): PeekMessageA 0x4762A8 -> GetMessageA 0x4762A4 -> TranslateMessage 0x4762A0 -> DispatchMessageA 0x47629C; dt = timeGetTime delta (0x47630C, ebp); state machine [0x8B1878]: 0=intro 0x402BE0(&0x8A9520) / 2=char-select 0x4575D0(&0x8A7140) / 3=in-game 0x41BB00(&main) with [0x8AB7E8] gate; GetAsyncKeyState(0x2C) 0x476298; GetLocalTime 0x476120 -> clock '[%s---- %s] - %d年 %d月 %d日 %d时 %d分 %d秒' 0x47A2D8 -> 0x45DD70; transitions [0x8B1878]=0@0x4020AD / =2@0x419BEA / =3@0x4570B9",
+        "game tick 0x41BB00(dt) full body (Finding 336): BGM 5s gate [main+0x428048]>0x1388 -> 0x45B250(&0x8AB130, 1, &[main+0xF5204] map name) + Sleep(30); ring drains 0x41B440->0x422280->0x4227F0->0x465EA0->0x454C50; busy 0x35B2B8 -> 0x43B1E0 map scroll + 0x434650; entity click 0x419D40 + tile channel 0x41C450; list vtable calls with mouse 0x8AB7BC (0x3611F0/0x3612B4/0x36137C/0x361438/0x3614F4 +0x14(0,0,0)/+0x10); HUD target box (0x40A8A0/0x40BB00/vtable+0x80, Round 28 chain); current target [0x364444] -> 0x4516D0 move / 0x451700 attack; HUD paint 0x4294E0; screen-effect 0x41B8D0; reconnect announce 0x418030 with cp949 text 0x47AF80 '서버와의 접속이 불안합니다. 게임을 종료하겠습니다.'",
+        "0x419D40 entity click/pick dispatch decoded (Finding 336; F331 painter arrays confirmed): per-type dispatch word[+0x10] {0x10,0x16,0x3F,0x14A-0x14E,0x48} -> special pick ([+0x124] flag, viewport hit-test [main+0xF532C]/[+0xF5330]+0x18, tile table main+0x2E4 100-slot/64B scan, insert); {9,0x35,0x150} -> generic vtable+0xC + [obj+4]==2 list 0xE119C; default skip; PtInRect [0x4762B4] channel main+0x474; timeGetTime timeout channel main+0x604; entity types cross-ref F331 (0x10 type4 / 0x16 type5 effect / 0x3F / 0x14A-0x14E effect frames / 0x48 / 0x96 special tick ids)",
+        "0x777200 VA RESOLVED (Finding 336): hero 0x7243A4 + 0x52E5C = 0x777200 (Round 29 '0x779600' was arithmetic slip); F268/F294 anchors stand; id-15 notice window confirmed in-place at hero+0x52E5C",
+        "IAT additions: 0x4762A8=PeekMessageA, 0x4762A4=GetMessageA, 0x4762A0=TranslateMessage, 0x47629C=DispatchMessageA, 0x476298=GetAsyncKeyState, 0x476120=GetLocalTime, 0x4762B4=PtInRect, 0x4760CC=Sleep",
+        "Round 29 audit corrections: '0x41A0C0 window-id dispatch' mislabel -> it is mid-body of 0x419D40 (entity dispatch); window-catalog id15 VA 0x779600 -> 0x777200"
+      ],
+      "pending_notes": "0x47AF80 announce text is cp949 (Korean) - GBK misread corrected; [0x8AB7BC] mouse pos written via [0x8AB7A8+0x14] (no direct abs32 writer, 119 readers); 0x41A9D0/0x41A5B0 renderer select body; 0x8A9520 intro tick 0x402BE0 sub-states"
     }
   ],
   "verification": {

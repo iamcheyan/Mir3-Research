@@ -1,0 +1,180 @@
+{
+  "evidence_id": "game-loop-and-entity-dispatch-2026-08-12",
+  "title": "Round 30 (F336): Main game loop hierarchy (WinMain msg loop -> state machine -> 0x41BB00 tick) + entity click/pick dispatch 0x419D40 (4 painter arrays + per-type click paths) + IAT PeekMessage/GetLocalTime/PtInRect + 0x777200 arithmetic fix",
+  "date": "2026-08-12",
+  "objective": "Decode the top-level game loop: WinMain message loop, [0x8B1878] state machine (intro/char-select/in-game), the per-frame tick 0x41BB00, the screen-effect sub-update 0x41B8D0, and the entity click/pick dispatcher 0x419D40 (window-id / entity-type dispatch at 0x41A0D9, previously mislabeled '0x41A0C0 window-id dispatch'). Also resolve the 0x777200 vs hero+0x52E5C notify-window VA discrepancy (Round 29 arithmetic slip).",
+  "question": "What is the exact call hierarchy from WinMain down to the per-frame UI/entity update? How does the client dispatch clicks/picks by entity window-id (0x10/0x16/0x3F/0x14A-0x14E/0x48/9/0x35/0x150)? Where is the clock text drawn? Is 0x777200 the id-15 notice window?",
+  "method": "Capstone linear disassembly of MIR3.EXE .text (VA = file_offset + 0x400000); E8 caller scan by raw-byte regex; IAT name resolution via pefile DIRECTORY_ENTRY_IMPORT; string decode via pefile get_memory_mapped_image GBK; cdecl arg order (last push = arg1). Cross-checked against F294 notice-banner-lifecycle-evidence.json and F331 message-rings/world-lifecycle evidence.",
+  "scope": "0x401F00-0x402260 (WinMain + message loop), 0x41B8D0-0x41BAF5 (screen-effect update), 0x41BB00-0x41C1D3 (game tick), 0x419D40-0x41A524 (entity click/pick dispatch), 0x41C450 (tile channel head), IAT 0x476120/0x47629C/0x4762A0/0x4762A4/0x4762A8/0x476298/0x4762B4/0x4760CC.",
+  "cell_analysis": {
+    "winmain_message_loop": {
+      "va": "0x401F40ish (ret 0x10, 4 args)",
+      "prologue": "sub esp 0x52C region (epilogue 0x40224F-0x40225D add esp,0x52C; ret 0x10)",
+      "structure": [
+        "0x401F6D: call 0x4019A0; cmp eax,7; jne continue (7 -> exit -1)",
+        "[0x47EE89] flag -> 0x45CA80(&0x8AB7A8, hwnd-parent, title 'Legend Of Mir 3' 0x47A468, 0, 0, flag 5/2, 0x66) create graphic window (class 'MirDXG')",
+        "0x401FEC: 0x451100(&0x8AA488, [0x8AB7AC], [0x8AB7B0], 0,0,0,0) create main app window",
+        "0x401FF9: ShowWindow([0x8AA48C], 0=SW_HIDE) [0x4762AC]",
+        "0x402005: 0x45A8C0 DSound init (Round 28)",
+        "config loads 0x40202D/0x40203C (Round 28)",
+        "0x4020A8: 0x4026E0(&0x8A9520) intro object ctor; [0x8AB820]=[0x8B1870]=0x8A9520",
+        "0x4020AD: [0x8B1878]=0 (state machine init = intro)",
+        "0x4020B5: 0x4016A0 -> [0x8B1874]",
+        "0x4020BA: ebp=[0x47630C] timeGetTime; esi=[0x476120] GetLocalTime",
+        "MSG LOOP 0x4020CB: PeekMessageA [0x4762A8] -> if msg: GetMessageA [0x4762A4] -> TranslateMessage [0x4762A0] -> DispatchMessageA [0x47629C] -> loop",
+        "else 0x40210C: dt = timeGetTime() - edi (frame delta); state dispatch:",
+        "  [0x8B1878]==0 -> 0x402BE0(&0x8A9520, dt) intro/logo tick",
+        "  [0x8B1878]==2 -> 0x4575D0(&0x8A7140, dt) char-select tick",
+        "  [0x8B1878]==3 -> [0x8AB7E8] gate: 0x41BB00(&main 0x47EF18, dt) IN-GAME TICK else 0x41B440+0x41B500",
+        "0x402177: GetAsyncKeyState(0x2C) [0x476298]",
+        "0x402188: call esi=GetLocalTime [0x476120] -> SYSTEMTIME -> sprintf(0x46811C, fmt 0x47A2D8 '[%s---- %s] - %d年 %d月 %d日 %d时 %d分 %d秒', ...) -> 0x45DD70(&0x8AB7A8,...) clock display"
+      ],
+      "state_transitions": {
+        "[0x8B1878]=0": "0x4020AD (init -> intro 0x8A9520)",
+        "[0x8B1878]=2": "0x419BEA (char-select entry 0x8A7140)",
+        "[0x8B1878]=3": "0x4570B9 (in-game entry; calls 0x419350 main-init window creation)"
+      },
+      "evidence_level": "primary-bytes"
+    },
+    "game_tick_0x41BB00": {
+      "va": "0x41BB00",
+      "prologue": "0x41BB00 fild [esp+4] (dt float); sub esp 0xC; push ebx/ebp/esi/edi; mov esi,ecx; [0x8B1A90]=0",
+      "epilogue": "0x41C1D3 ret 4 (1 stack arg = dt)",
+      "caller": "0x402142 (WinMain msg loop state 3; [0x8AB7E8] gate)",
+      "signature": "GameTick(main 0x47EF18, dt)",
+      "calls": [
+        "0x468520 (ftol) -> ebx = dt (clamp >= 0xA); [0x8B1A90] += dt; [esi+0x4279A8] += dt; >= [esi+0x4279A4]=0x3E8 -> both reset (1s tick)",
+        "BGM gate 0x41BB6D: [esi+0x428048] += dt; > 0x1388=5000ms -> 0x45B250(&0x8AB130, 1, &[esi+0xF5204] map-name) PlaySoundFromConfig(map BGM) + Sleep(30) [0x4760CC]; reset [esi+0x428044]/[+0x428048]",
+        "0x41B440 -> 0x422280 (ring B 0x3C5EFC drain) -> 0x4227F0 (ring A 0x364458 drain) -> 0x465EA0 -> 0x454C50(&+0xF5144)",
+        "[esi+0x35B2B8] busy gate -> 0x43B1E0 map scroll blit + 0x434650(&+0x35B2C0) + [0x2F8780] vtable+0x1C(edi, ebx)",
+        "[esi+0x3C] -> 0x41A9D0 else 0x41A5B0 (renderer select)",
+        "[esi+0xF538C] -> 0x45E730(&0x8AB7A8, camera-relative screen draw) else 0x465D50 + 0x43C330",
+        "[esi+0x364444]=0 -> 0x419D40(ebx=dt, edi=slowflag) entity click/pick + 0x41C450(ebx) tile channel",
+        "[esi+0xE1170] entity list: id 0x96/0x48 -> vtable+0xC([esp+0x20]) + byte[+4]==2 -> [0xE116C] vtable+0x14 unlink; else vtable+0xC",
+        "list vtable calls with mouse [0x8AB7BC]: [esi+0x28] -> 0x447160; [esi+0x24] -> 0x3611F0 vtable+0x14(0,0,0)+vtable+0x10(mouse); [esi+0x2C] -> 0x3612B4 same; 0x36137C / 0x361438 / 0x3614F4 same",
+        "HUD target box chain (Round 28): 0x40A8A0 HP bar, 0x40BB00 hover tag, vtable+0x80 name text; per-entity [edi+0x88] byte 1..3 gate",
+        "0x41B1C0 + 0x434D40(&+0x35B2C0, 0x190, 0x12C)",
+        "current target [0x364444]: [0x364448]=target, timeGetTime -> [0x42803C]; [target+8]==0 -> 0x4516D0(&0x8AB828, target+4, target+0xCC, target+0xD0) move-to; [target+0x61C90]==-1 -> 0x451700 attack; vtable+0x84 target-box paint",
+        "no target: 800ms (0x320) timeout -> [0x364448]=0",
+        "mouse drag: [0x42804C]/[0x428050] vs [0x2F884C]/[0x2F8850] delta > 5 -> 0x41C1E0 (window close via 0x42AC50 id9/2)",
+        "0x41C2A0 / 0x41EB70 / 0x4294E0 HUD paint (2A548C, 0, [0x35B2A8], [0x35B2AC])",
+        "[0x364448] name byte +0x88==3 && [0x61C74]==0 && name != 0x7F -> 0x419730",
+        "0x41AF60 -> 0x41C14B call 0x41B8D0 screen-effect update",
+        "reconnect: [0x8B1A90] > 0x186A0=100000 -> 0x418030(&+0x3615B0, 0x565994, 0x64, 0, 0x47AF80, 0, -1, -1, 0xFFFF) announce",
+        "0x4182A0(&+0x3615B0, [0x35B2A8], [0x35B2AC]) / [0x362354] vtable+0x24 / 0x41B5D0"
+      ],
+      "evidence_level": "primary-bytes"
+    },
+    "screen_effect_update_0x41B8D0": {
+      "va": "0x41B8D0",
+      "prologue": "0x41B8D0 sub esp 0x5C; push ebx/ebp/esi; mov esi,ecx; xor ebx,ebx; push edi",
+      "epilogue": "0x41BAEE-0x41BAF5 (pop edi/esi/ebp/ebx; add esp 0x5C; ret 4)",
+      "caller": "0x41C14B (game tick)",
+      "gate": "[esi+0x428064] != 0 (screen-effect active flag)",
+      "body": [
+        "accumulator [esi+0x42806C] += arg1(dt); if > limit [esi+0x428068] (reset at 0x41B905): [esi+0x428064]=0; [esi+0x4279A4]=0x3E8; [esi+0x4279A8]=0; [esi+0x428068]=0; [esi+0x42806C]=0; clear [esi+0x428174] 0x24 dwords",
+        "[esi+0x428054]/[esi+0x428070] fields; 0x24-stride loop at 0x41B8E7-0x41B8AA (entity loop with [esp+0x10] counter, [edx+6] word, step 0x30/0x24)"
+      ],
+      "role": "Screen-effect (fade/flash) conditional sub-update of the game tick; runs only while [main+0x428064] effect flag is set",
+      "evidence_level": "primary-bytes"
+    },
+    "entity_click_dispatch_0x419D40": {
+      "va": "0x419D40",
+      "prologue": "0x419D40 sub esp 0x1AC; push ebx/ebp; mov ebp,ecx; push esi/edi; clear &[ebp+0x154] 0x38400 dwords",
+      "epilogue": "0x41A51A-0x41A524 (pop edi/esi/ebp/ebx; add esp 0x1AC; ret 8)",
+      "caller": "0x41BCB7 only (game tick): push edi(slowflag); push ebx(dt); mov ecx,esi(main); [esi+0x364444]=0; call 0x419D40",
+      "signature": "EntityClickDispatch(main, dt, slowflag) - main method (ebp=ecx)",
+      "role": "World entity sort/click channel. Builds 4 y-sorted painter arrays (F331): root+0x154 entity / +0x2E4 effects / +0x474 ground decor / +0x604 ground items; then per-entity click/pick dispatch by window-id (= entity type) [esi+0x10].",
+      "painter_arrays": {
+        "+0x154": "entity array (clear 0x38400 dwords; viewport bounds [ebp+0x2F884C]/[ebp+0x2F8850] +/- 0x18)",
+        "+0x2E4": "click entity tile table: tile index = ((y-[ebp+0xF5330])*24 + (x-[ebp+0xF532C])) * 1600 dwords + main+0x2E4; 100-slot scan (0x64 x dword), insert [ebp + eax*4 + 0x2E4] (0x41A33E-0x41A349)",
+        "+0x474": "PtInRect channel (0x41A3C3-0x41A424): rect hit-test via [0x4762B4] on obj+4/+8, tile insert +0x474",
+        "+0x604": "timed channel (0x41A458-0x41A4FC): timeGetTime [0x47630C] vs [ebx+0xC] stamp + [ebx+0x10] timeout -> 0x4680F8 remove; else tile insert +0x604"
+      },
+      "click_dispatch": {
+        "ids_special": "[0x10, 0x16, 0x3F, 0x14A, 0x14B, 0x14C, 0x14D, 0x14E, 0x48] -> 0x41A208: [esi+0x124]=1 (pick flag); map viewport hit-test ([ebp+0xF532C]/[ebp+0xF5330] origin, +0x18 span, coords [esi+0xD0]/[esi+0xD4]); tile index math (0x41A310-0x41A327); scan tile table main+0x2E4 (100 slots) for [eax+0x10]==type && [eax+0xB0]==[esi+0xB0] && [eax+0xB4]==[esi+0xB4] -> [esi+0x124]=0 (already picked); else vtable+0xC([esp+0x1C0]) then re-scan and insert",
+        "ids_generic": "[9, 0x35, 0x150] -> 0x41A158: vtable+0xC([esp+0x1C0]); byte[esi+4]==2 -> 0x41A16D: [ebp+0xE119C] vtable+0x14(list), vtable[0](1); else map hit-test + tile scan/insert same as special",
+        "default": "-> 0x41A350 skip (no click handling)"
+      },
+      "entity_types": {
+        "0x10=16": "type-4 entity (0x438100(...,0x10,...) ctor; F331)",
+        "0x16=22": "type-5 effect entity (0x438100(...,0x16,...); F331; 0x4212B5 random(0x14A,0x14E) frame idx when word[+0x10]==0x16)",
+        "0x3F=63": "entity (m4 dedup list {0x10,0x16,0x3F}; F331)",
+        "0x48=72": "entity (frame-loop special id, tick vtable+0x10)",
+        "0x96=150": "entity (frame-loop special id, tick vtable+0xC/+0x10)",
+        "0x14A-0x14E=330-334": "effect frame index range (0x4212B5)",
+        "9/0x35": "entity types (hover redraw 0x437DF0 word[esi+0x10] 9/0x35 branch; Round 28)"
+      },
+      "evidence_level": "primary-bytes"
+    },
+    "tile_channel_0x41C450": {
+      "va": "0x41C450",
+      "prologue": "0x41C450 sub esp 0x10; push ebx/ebp/esi; mov esi,ecx; push edi",
+      "role": "Ground/tile channel (F331): [esi+0xF5200] map object gate; 0x43CDC0 viewport; tile loop y=[0xF5330]-0xA..+0x22, x=[0xF532C]-0xA..+0x22; 0x41C860 ground items / 0x41CA20 decor / 0x41CBD0 entities / 0x41CD50 effects",
+      "evidence_level": "primary-bytes"
+    },
+    "notify_window_va_fix": {
+      "0x777200": "hero/winmgr 0x7243A4 + 0x52E5C = 0x777200 (NOT 0x779600 - Round 29 arithmetic slip). 0x7243A4 + 0x50000 = 0x7743A4; + 0x2E5C = 0x777200. F294 notice-banner-lifecycle-evidence.json already correct. id-15 notice window = in-place object at hero+0x52E5C, ctor 0x43E260 @ main-init 0x42797E.",
+      "round29_audit_correction": "window-catalog-evidence.json audit_vs_exe 'id15_notify' entry claiming hero+0x52E5C = 0x779600 is WRONG; correct VA = 0x777200 (matches all prior F268/F294 anchors)."
+    },
+    "iat_additions": {
+      "0x4762A8": "USER32 PeekMessageA",
+      "0x4762A4": "USER32 GetMessageA",
+      "0x4762A0": "USER32 TranslateMessage",
+      "0x47629C": "USER32 DispatchMessageA",
+      "0x476298": "USER32 GetAsyncKeyState",
+      "0x476120": "KERNEL32 GetLocalTime",
+      "0x4762B4": "USER32 PtInRect",
+      "0x4760CC": "KERNEL32 Sleep",
+      "0x47630C": "WINMM timeGetTime (Round 28, now frame-delta source in msg loop)"
+    }
+  },
+  "exe_trace": {
+    "file": "$MIR3_EI_ROOT/MIR3.EXE",
+    "image_base": "0x400000",
+    "main": "0x47EF18",
+    "state_byte": "0x8B1878 (0=intro 0x8A9520, 2=char-select 0x8A7140, 3=in-game main)",
+    "state_aux": "0x8B1874 = 0x4016A0 result",
+    "frame_accumulators": "0x8B1A90 global dt; main+0x4279A4/0x4279A8 1s tick; main+0x428044/0x428048 BGM 5s gate; main+0x428064 effect flag; main+0x428068/0x42806C effect accumulator",
+    "mouse_pos": "0x8AB7BC (119 readers; written via [0x8AB7A8+0x14] addressing)",
+    "map_object": "main+0xF5200; viewport origin main+0xF532C/+0xF5330; name main+0xF5204",
+    "hero": "main+0x2A548C = 0x7243A4"
+  },
+  "audit_vs_exe": {
+    "0x41A0C0": "NOT a function start - it is mid-body of 0x419D40 (data 0x41A0C0-0x41A0D8, code resumes 0x41A0D9). Round 29 '0x41A0C0 window-id dispatch' label corrected: the dispatch is inside 0x419D40 (entity click/pick).",
+    "0x41B8D0": "NOT the main frame loop (Round 30 earlier trace) - it is the screen-effect conditional sub-update called from game tick 0x41C14B; main per-frame update = 0x41BB00 (dt tick from WinMain loop).",
+    "0x777200": "Round 29 window-catalog claimed hero+0x52E5C = 0x779600; CORRECT = 0x777200. F294/F268 anchors stand.",
+    "F331 overlap": "0x419D40 painter arrays (root+0x154/+0x2E4/+0x474/+0x604) match F331; F336 adds the per-entity-type click/pick dispatch (0x41A0D9-0x41A350) and the loop hierarchy.",
+    "0x476120": "GetLocalTime (clock display), NOT GetCursorPos.",
+    "0x402177": "GetAsyncKeyState(0x2C), NOT Sleep(44)."
+  },
+  "contrast": {
+    "state_3_dispatch": "[0x8B1878]==3 && [0x8AB7E8]!=0 -> 0x41BB00; [0x8AB7E8]==0 -> 0x41B440+0x41B500 (connection-down fallback tick)",
+    "dt_flow": "msg loop computes dt = timeGetTime() - last (0x40210C); passes to state tick; 0x41BB00 multiplies by [esi+0x428220] (frame scale float) before ftol",
+    "BGM_repeat": "map BGM re-played every 5000ms of accumulated dt (0x41BB6D-0x41BBB4), NOT on 1s tick; Sleep(30) inside the gate",
+    "clock_display": "'[%s---- %s] - %d年 %d月 %d日 %d时 %d分 %d秒' 0x47A2D8 -> 0x45DD70 (game HUD clock, GetLocalTime source)"
+  },
+  "verdict": "The top-level execution hierarchy of the original client is now fully decoded: WinMain (0x401F40ish, ret 0x10) -> message loop 0x4020CB (PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA + timeGetTime dt + GetAsyncKeyState(0x2C) + GetLocalTime clock) -> [0x8B1878] state machine (0 intro 0x402BE0@0x8A9520 / 2 char-select 0x4575D0@0x8A7140 / 3 in-game 0x41BB00@main) -> game tick 0x41BB00(dt): BGM 5s gate, ring drains, map scroll, entity click/pick 0x419D40 (4 painter arrays + per-type click dispatch by entity window-id), HUD target box, move/attack sends, HUD paint 0x4294E0, screen-effect update 0x41B8D0, reconnect announce. 0x777200 = hero+0x52E5C = id-15 notice window (Round 29 arithmetic slip corrected). 8 IAT entries verified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All calls, gates, state transitions and IAT entries read directly from MIR3.EXE bytes; entity-type semantics cross-referenced against F331 (message-rings-drain-pipeline-and-world-lifecycle-evidence.json).",
+  "cross_refs": [
+    "F331: 0x419D40 4 painter arrays; ring drains 0x422280/0x4227F0; entity types 0x10/0x16/0x3F; 0x404FB0 Init dispatcher",
+    "F294: 0x777200 = id-15 notice window = winmgr 0x7243A4 + 0x52E5C (VA math re-verified)",
+    "F310: live coords [0x777764]/[0x777768] = [screen+0x2F884C]/[+0x2F8850] (viewport origin used by 0x419D40 hit-tests)",
+    "Round 28: HUD target box chain 0x40A8A0/0x40BB00/vtable+0x80/0x4516D0/0x451700; BGM player 0x45B250",
+    "Round 29: frame fns 0x419350/0x419110; hero HUD builder 0x427600; window-catalog",
+    "0x47A2D8 clock format string",
+    "0x4294E0 HUD paint (Round 28 renderer-family evidence)"
+  ],
+  "tool": "capstone (CS_ARCH_X86/CS_MODE_32) via Tools/reverse-engineering/disasm_capstone.py PeImage; pefile get_memory_mapped_image; python3 json",
+  "reproduce": "sys.path.insert(0,'Tools/reverse-engineering'); from disasm_capstone import PeImage; img=PeImage(Path('$MIR3_EI_ROOT/MIR3.EXE')); img.disasm(0x4020CB, 0x1A0); img.disasm(0x41BB00, 0x2D0); img.disasm(0x41B8D0, 0x230); img.disasm(0x419D40, 0x5E0); img.disasm(0x41C450, 0x30)",
+  "notes": [
+    "0x41A0D9-0x41A0DE: entity list iteration entry (esi=[edx+4]); window-id word at [esi+0x10]",
+    "tile index math: ((y-oy)*24 + (x-ox)) * 1600 dwords; 100-slot linear scan per tile; slot = 64 bytes",
+    "[esi+0x124] = 'picked' flag for special ids; set 1 on click, 0 when matching entity already in tile table",
+    "0x41C450 tile channel viewport = [0xF5330]-0xA .. +0x22 (44px window), matches 24x24 tile + margins",
+    "state byte [0x8B1878] is the SAME byte the game-tick/frame fns gate on; =0x4020AD sets 0 (intro)",
+    "0x8A9520 = intro/logo object (GameInter/Interface1c loaded at +0x8/+0x14C per F311); 0x8A7140 = char-select object",
+    "0x47AF80 (reconnect announce text arg) = pending string decode (empty/zero container check next round)"
+  ]
+}

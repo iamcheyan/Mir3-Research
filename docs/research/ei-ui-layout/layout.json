@@ -1,5 +1,5 @@
 {
-  "version": "0.13-window-catalog",
+  "version": "0.14-game-loop",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -2853,6 +2853,55 @@
         ],
         "notes": "Round 29 (F335): caption 8, 字符串 '腰带(Ctrl+Z, Z)' 0x47BC68, x 相对 [0xC58] 偏移 0x189=393, frames 0x6A/0x6B."
       }
+    },
+    {
+      "id": "game-loop.winmain-msg-loop",
+      "kind": "function",
+      "layer": "main-loop",
+      "va": "0x401F40ish (ret 0x10)",
+      "role": "WinMain 主消息循环：PeekMessageA 0x4762A8 -> GetMessageA 0x4762A4 -> TranslateMessage 0x4762A0 -> DispatchMessageA 0x47629C；dt = timeGetTime 0x47630C 差；GetAsyncKeyState(0x2C) 0x476298；GetLocalTime 0x476120 -> sprintf '[%s---- %s] - %d年 %d月 %d日 %d时 %d分 %d秒' 0x47A2D8 -> 0x45DD70 时钟显示。建图形窗 0x45CA80 / 主窗 0x451100 / ShowWindow(0) / DSound 0x45A8C0",
+      "state_machine": {
+        "0x8B1878": "0=intro 0x402BE0(&0x8A9520, dt)；2=角色选择 0x4575D0(&0x8A7140, dt)；3=游戏内 0x41BB00(&main, dt)（[0x8AB7E8] 门控，==0 -> 0x41B440+0x41B500）",
+        "transitions": "[0x8B1878]=0 @0x4020AD；=2 @0x419BEA；=3 @0x4570B9"
+      },
+      "evidence_level": "primary-bytes",
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+    },
+    {
+      "id": "game-loop.tick-0x41BB00",
+      "kind": "function",
+      "layer": "main-loop",
+      "va": "0x41BB00",
+      "role": "游戏主 tick(main, dt)：BGM 5s 门（0x428048>0x1388 -> 0x45B250(&0x8AB130,1,地图名 0xF5204) + Sleep(30)）；环排水 0x41B440->0x422280->0x4227F0->0x465EA0->0x454C50；busy 0x35B2B8 -> 0x43B1E0 地图滚动 + 0x434650；实体点击 0x419D40(dt,slowflag) + 瓦片通道 0x41C450；列表 vtable 调用（0x3611F0/0x3612B4/0x36137C/0x361438/0x3614F4 +0x14(0,0,0)/+0x10(mouse 0x8AB7BC)）；HUD 目标框链（0x40A8A0/0x40BB00/vtable+0x80）；当前目标 [0x364444] -> 移动 0x4516D0 / 攻击 0x451700；HUD 绘制 0x4294E0；效果更新 0x41B8D0；断线重连公告 0x418030(文本 cp949 '서버와의 접속이 불안합니다...' 0x47AF80)",
+      "evidence_level": "primary-bytes",
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+    },
+    {
+      "id": "game-loop.screen-effect-0x41B8D0",
+      "kind": "function",
+      "layer": "main-loop",
+      "va": "0x41B8D0",
+      "role": "屏幕特效（淡入淡出/闪光）条件更新：门 [main+0x428064]；累加器 +0x42806C vs 上限 +0x428068 -> 超限重置（清 +0x428174 0x24 dwords、[+0x4279A4]=0x3E8）；由游戏 tick 0x41C14B 调用",
+      "evidence_level": "primary-bytes",
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+    },
+    {
+      "id": "entity.click-dispatch-0x419D40",
+      "kind": "function",
+      "layer": "world",
+      "va": "0x419D40",
+      "role": "世界实体排序/点击分派（main 方法，ret 8）：4 画家数组 root+0x154 实体 / +0x2E4 特效 / +0x474 地面装饰 / +0x604 地面物品（F331）；实体点击按类型 word[+0x10] 分派：{0x10,0x16,0x3F,0x14A-0x14E,0x48} 特殊拾取路径（[+0x124] picked 标志、地图视口命中测试 [0xF532C]/[0xF5330]+0x18、tile 表 main+0x2E4 100 槽扫描、插入）；{9,0x35,0x150} 泛型 vtable+0xC + [+4]==2 列表 E119C；PtInRect [0x4762B4] 通道 main+0x474；timeGetTime 超时通道 main+0x604",
+      "evidence_level": "primary-bytes",
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+    },
+    {
+      "id": "window.id15-notice-va-fix",
+      "kind": "correction",
+      "layer": "windows",
+      "va": "0x777200",
+      "role": "Round 29 算术修正：hero/winmgr 0x7243A4 + 0x52E5C = 0x777200（非 0x779600）；id-15 公告窗 = hero+0x52E5C 内嵌对象（ctor 0x43E260 @ 0x42797E，与 F268/F294 锚一致）",
+      "evidence_level": "primary-bytes",
+      "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
     }
   ],
   "control_constructors": [

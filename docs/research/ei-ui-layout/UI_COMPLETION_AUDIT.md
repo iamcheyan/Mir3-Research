@@ -296,6 +296,16 @@ git diff --check
 - **交叉验证**：0xC 选项窗 = F324 全吻合；id8 聊天 = 已知锚 main+0x507EC；id0xF 行会公告 = id15 通知窗（0x777200 锚 VA 差异 pending：hero+0x52E5C=0x779600）；0x565994 = 零 BSS 容器。
 - 落盘：`window-catalog-evidence.json`（F335，primary-bytes）+ matrix window-catalog 新记录 + layout.json version 0.13（8 新记录 + hud.belt + 16 hud.* 字符串/帧对注记）+ RESEARCH_LOG Round 29。
 
+## Round 30 (2026-08-12) — 主游戏循环层级 + 实体点击分派（Finding 336：WinMain 消息循环 → [0x8B1878] 状态机 → 0x41BB00 tick；0x419D40 点击分派；0x777200 算术修正）
+
+- **〔核心〕WinMain 消息循环**（ret 0x10）：PeekMessageA 0x4762A8 → GetMessageA 0x4762A4 → TranslateMessage 0x4762A0 → DispatchMessageA 0x47629C；dt = timeGetTime 差；**状态机 [0x8B1878]**：0=intro 0x402BE0(&0x8A9520) / 2=角色选择 0x4575D0(&0x8A7140) / 3=游戏内 **0x41BB00(&main, dt)**（[0x8AB7E8] 门）；GetAsyncKeyState(0x2C)；GetLocalTime → 时钟 '[%s---- %s] - %d年 %d月 %d日 %d时 %d分 %d秒' → 0x45DD70。转移：=0@0x4020AD、=2@0x419BEA、=3@0x4570B9。
+- **0x41BB00 = 游戏主 tick(dt)**：BGM 5s 门（[+0x428048]>0x1388 → 0x45B250 地图 BGM + Sleep(30)）；环排水 0x41B440→0x422280→0x4227F0→0x465EA0→0x454C50；busy → 0x43B1E0 地图滚动；实体点击 0x419D40 + 瓦片 0x41C450；列表 vtable 调用（mouse 0x8AB7BC）；HUD 目标框链（0x40A8A0/0x40BB00/vtable+0x80）；当前目标 → 0x4516D0 移动 / 0x451700 攻击；HUD 绘制 0x4294E0；效果更新 0x41B8D0；断线公告 0x418030（cp949 0x47AF80『서버와의 접속이 불안합니다…』）。
+- **0x41B8D0 = 屏幕特效条件更新**（门 [+0x428064]，非主帧循环——Round 30 早期追踪修正）。
+- **0x419D40 = 世界实体排序/点击分派**（F331 四画家数组 root+0x154/+0x2E4/+0x474/+0x604 确认）：点击按类型 word[+0x10] 分派 {0x10,0x16,0x3F,0x14A-0x14E,0x48} 特殊拾取（[+0x124]、视口命中、tile 表 +0x2E4 100 槽）；{9,0x35,0x150} 泛型 vtable+0xC；PtInRect 通道 +0x474；timeGetTime 超时通道 +0x604。**Round 29『0x41A0C0 window-id dispatch』误标修正：实为 0x419D40 体内 0x41A0D9 起。**
+- **0x777200 算术修正**：hero 0x7243A4 + 0x52E5C = **0x777200**（Round 29 误算 0x779600 作废）；F268/F294 锚成立，id-15 公告窗 = hero+0x52E5C 内嵌（ctor 0x43E260）。
+- **IAT 新增/修正（pefile）**：0x4762A8=PeekMessageA、0x4762A4=GetMessageA、0x4762A0=TranslateMessage、0x47629C=DispatchMessageA、0x476298=GetAsyncKeyState、0x476120=GetLocalTime、0x4762B4=PtInRect、0x4760CC=Sleep。
+- 落盘：`game-loop-and-entity-dispatch-evidence.json`（F336，primary-bytes）+ matrix game-loop 新记录 + layout.json version 0.14（5 新记录 + 0x779600→0x777200 全库修正）+ RESEARCH_LOG Round 30。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
