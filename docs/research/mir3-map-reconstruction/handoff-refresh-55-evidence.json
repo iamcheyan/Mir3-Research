@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-55-2026-08-12-f736",
+  "title": "Round 430 (F736): HANDOFF refresh 55 - Rounds 427-429 (F733-F735: HANDOFF 54, notice line-list add/render, chat/notice arc closure), baseline Round 426=2450f7e -> Round 429=0d84db2 (394 consecutive F335-F735), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 427-429.",
+  "question": "What changed since HANDOFF refresh 54?",
+  "method": "Append Round 427-429 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 427-429 appended (3 rounds, F733-F735)",
+    "baseline": "Round 426=2450f7e -> Round 429=0d84db2 (394 consecutive F335-F735)",
+    "arcs": {"notice": "F734 add/render", "closure": "F735 chat/notice"},
+    "key": "chat + notice complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F733": "refresh 54 baseline -> now refresh 55", "F335-F735": "394 rounds"
+  },
+  "contrast": {
+    "refresh_54_vs_55": "F734-F735 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 55 (F736): Rounds 427-429 documented (chat+notice complete), baseline 2450f7e -> 0d84db2, 394 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F734-F735 evidence.",
+  "cross_refs": ["F733: refresh 54", "F735: chat/notice closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 427-429 section to HANDOFF",
+  "notes": [
+    "394 consecutive shipping rounds F335-F735",
+    "next: remaining deep corners, sim polish"
+  ]
+}
