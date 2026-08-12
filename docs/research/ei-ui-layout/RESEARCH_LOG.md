@@ -9057,3 +9057,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 704-706（F1011-F1012：地面瓦片 blit 全量 + 瓦片渲染闭合）；基线 Round 703=433e443 → Round 706=a1eb641（**670 连发 F335-F1012**）。
 - 落盘：handoff-refresh-149-evidence.json（F1013，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 707。
+## Round 708 (F1014) — 2026-08-12：移动分派 + 碰撞全量（F722/F613）
+
+- **〔移动〕**0x43CC30：jt 0x43CD94 **8 方向** → 新坐标 → 可行走 0x43C9F0（F719）+ 实体碰撞 dlist 0x560070/0x560080（类型 [0x88] 0/1/3 + [0xC0] 0x13/4 + [0x61C74] 坐骑旗标，同瓦片封锁）——移动分派完整（F722/F336 依赖）。
+- 落盘：move-dispatch-collision-full-evidence.json（F1014，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 708。

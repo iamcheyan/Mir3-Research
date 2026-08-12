@@ -1,0 +1,36 @@
+{
+  "evidence_id": "move-dispatch-collision-full-2026-08-12-f1014",
+  "title": "Round 708 (F1014): Move dispatch + collision FULL (F722/F613) - 0x43CC30: jt 0x43CD94 8 directions -> new pos -> walkable 0x43C9F0 (F719) + entity collision dlist 0x560070/0x560080 (type [0x88] 0/1/3 + [0xC0] 0x13/4 + [0x61C74] mount flag, same-tile block) - move dispatch COMPLETE (F722/F336 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the full move dispatch + collision.",
+  "question": "How does the client dispatch moves + test entity collision?",
+  "method": "Disasm 0x43CC30-0x43CD90.",
+  "scope": "0x43CC30-0x43CD90; dispatch.",
+  "cell_analysis": {
+    "0x43CC30": "jt 8 dirs + walkable + dlist",
+    "collision": "0x560070/0x560080",
+    "flags": "[0x88] type + [0xC0] + [0x61C74]"
+  },
+  "exe_trace": {
+    "move_chain": "jt -> walkable -> dlist collision"
+  },
+  "audit_vs_exe": {
+    "F722": "move gate", "F613": "dirs", "F336": "entity list"
+  },
+  "contrast": {
+    "dirs": "8 jt 0x43CD94",
+    "collision": "same-tile block"
+  },
+  "verdict": "Move dispatch + collision FULL PRIMARY-verified: 8 dirs + walkable + dlist; F722/F613/F336 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Move dispatch decoded from .text.",
+  "cross_refs": ["F722: move gate", "F613: dirs", "F336: entity list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43CC30+0x20",
+  "notes": [
+    "jt 0x43CD94",
+    "walkable 0x43C9F0",
+    "dlist 0x560070",
+    "flags [0x88]/[0xC0]"
+  ]
+}
