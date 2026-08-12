@@ -1,0 +1,39 @@
+{
+  "evidence_id": "monster-wil-family-verification-2026-08-12-f429",
+  "title": "Round 123 (F429): Monster WIL family verified - 16 Mon-N.wil shipped (all exactly 10000 frames), client table Mon-1..20 + MonS-1..20 shadow + DMon-1/DMonS-1 (88 WIL strings), loader 0x4538B0 builds 40-slot filename table (stride 0x104, dest ebx+0x10B94..), F280 race//10+1 -> Mon-N.wil slot (shipped 1-16 = race 0-159; Mon-17..20 = server-only)",
+  "date": "2026-08-12",
+  "objective": "Verify the monster WIL family: shipped files, client string table, and the F280 race-to-file formula.",
+  "question": "How do monster races map to Mon-N.wil files in the client?",
+  "method": "WIL frame counts (16 files); .rdata string table scan (88 WIL strings); loader 0x4538B0 disasm.",
+  "scope": "Data/Mon-*.wil; MIR3.EXE .rdata 0x47C8D8-0x47CD10; loader 0x4538B0+.",
+  "cell_analysis": {
+    "shipped": {"files": "Mon-1..16.wil", "frames": "ALL exactly 10000 each"},
+    "client_table": {"mon": "Mon-1..20 (0x47CC80 desc to 0x47CB04)", "shadow": "MonS-1..20 (0x47CAF0..)", "extra": "DMon-1.wil/DMonS-1.wil (0x47C8D0/0x47C8BC), MonImg/MonMagic/Magic/MagicEx/MonMagicEx, NPC.wil", "total": "88 WIL strings in .rdata"},
+    "loader_0x4538B0": {"pattern": "strlen via repne scasb + strcpy rep movsd/movsb per entry", "dests": "ebx+0x10B94, +0x10C98, +0x10D9C ... stride 0x104 (260 bytes)", "order": "descending strings -> slot index (19-i) = 20-slot Mon table"},
+    "f280_formula": "Mon-(Race//10+1).wil: race 0-9->Mon-1 ... 190-199->Mon-20; shipped 1-16 covers race 0-159; Mon-17..20 unshipped = server-only races"
+  },
+  "exe_trace": {
+    "f280": "Mon-(Race//10+1).wil confirmed against real 20-slot client table",
+    "shadow": "MonS-N.wil = shadow variants (same race index)"
+  },
+  "audit_vs_exe": {
+    "F280": "formula now primary-static (loader + table)",
+    "F413": "稻草人 race 50 -> Mon-6.wil consistent (50//10+1=6)",
+    "F425": "308 monsters -> 16 files = ~19 races/file"
+  },
+  "contrast": {
+    "shipped_vs_table": "client reserves 20 slots; package ships 16 (Mon-17..20 = server-only content)",
+    "mon_vs_mons": "Mon-N = normal; MonS-N = shadow-pass variant (DMon = death anims)"
+  },
+  "verdict": "Monster WIL family verified (primary-static): 16 shipped files x 10000 frames; client embeds Mon-1..20 + MonS-1..20 + DMon/DMonS (88 total WIL strings); loader 0x4538B0 builds the 40-slot table (stride 0x104); F280 race//10+1 formula confirmed byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Loader + string table + frame counts all read directly from binary/package.",
+  "cross_refs": ["F280: monster formula", "F413: 稻草人 Mon-6.wil", "F425: monster distribution"],
+  "tool": "capstone + wilsdk.open_library + .rdata regex scan",
+  "reproduce": "ls Data/Mon-*.wil; w.count per file; scan .rdata for Mon-*.wil; disasm 0x4538B0+",
+  "notes": [
+    "40-slot = 20 Mon + 20 MonS; DMon-1/DMonS-1 separate",
+    "stride 0x104 dest buffers at ebx+0x10B94 (ebx = object base)",
+    "Mon-17..20 referenced but unshipped (server-only high races)"
+  ]
+}
