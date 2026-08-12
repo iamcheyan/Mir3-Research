@@ -1,0 +1,37 @@
+{
+  "evidence_id": "minimap-library-loader-2026-08-12-f481",
+  "title": "Round 175 (F481): Minimap library loader - 0x43DF60 loads FMMap.wil (0x47C414, map 0 frame) into string ctx [+0x148] (0x465FA0/0x4660E0) + DDS surface creation (0x8AB7B8 vtable+0x18, 0x467080, pixel format 0x1000/0x1800 via cmpsd 0x476CC8/0x476CB8, size from map [0x2B8]/[0x2BC]) - minimap runtime surface init; MMap.wil (0x47C428) loaded at 0x43D4E1 in map-object ctor (0x43D4D0, marker lib F310)",
+  "date": "2026-08-12",
+  "objective": "Decode the minimap runtime: FMMap surface init + MMap marker lib.",
+  "question": "How is the minimap surface initialized and what libs feed it?",
+  "method": "Disasm 0x43DF60-0x43E0A6 (FMMap loader) + 0x43D4D0 context (MMap).",
+  "scope": "0x43DF60-0x43E0A6; 0x43D4D0; strings 0x47C414/0x47C428.",
+  "cell_analysis": {
+    "fmmap_0x43DF60": {"load": "FMMap.wil (0x47C414) -> ctx [+0x148] (0x465FE0/0x465FA0 init + 0x4660E0 set)", "surface": "0x8AB7B8 vtable+0x18 (create surface) + 0x467080, format 0x1000/0x1800 (pixel fmt cmpsd 0x476CC8/0x476CB8), size [0x2B8]/[0x2BC] (map w/h)", "dim": "frame 0 = map minimap image"},
+    "mmap_0x43D4E1": "MMap.wil (0x47C428) in map-object ctor 0x43D4D0 - marker/player-position lib (F310)",
+    "ctx_chain": "0x465FE0/0x465FA0 = string ctx init; 0x4660E0 = string set (F452 tile store family)"
+  },
+  "exe_trace": {
+    "minimap_chain": "map load -> FMMap.wil frame 0 -> DDS surface -> HUD blit; MMap.wil markers overlay"
+  },
+  "audit_vs_exe": {
+    "F310": "MMap markers lib confirmed at map-object ctor",
+    "F48": "minimap subsystem (672,0-800,128) now has surface init",
+    "F277": "FMMap frame 0 = map minimap"
+  },
+  "contrast": {
+    "fmmap_vs_mmap": "FMMap = static map image (frame 0); MMap = marker frames (value-1, F310)",
+    "surface_vs_wil": "runtime DDS surface vs source .wil lib"
+  },
+  "verdict": "Minimap library loader PRIMARY-verified: 0x43DF60 loads FMMap.wil into ctx + creates DDS surface (formats 0x1000/0x1800); MMap.wil loaded at map-object ctor (markers). Minimap runtime init decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Loader + surface init decoded from .text.",
+  "cross_refs": ["F310: markers", "F48: minimap subsystem", "F277: FMMap binding"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x43DF60+0x40; scan FMMap.wil/MMap.wil refs",
+  "notes": [
+    "0x1000 = D3DFMT_A8R8G8B8, 0x1800 = D3DFMT_X8R8G8B8 [inference]",
+    "map size [0x2B8]/[0x2BC] = minimap surface dims",
+    "0x8AB7B8 = D3D device object"
+  ]
+}

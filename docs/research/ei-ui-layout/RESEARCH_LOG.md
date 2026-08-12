@@ -6629,3 +6629,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 8119727（**141 连发已推**）。
 - **〔弧汇总〕**交易金币框（F364 闭合）/ NPC 对话菜单+输入（F404 闭合、0x47C4D8 修正）/ 物品转移 + .itm 存档（F293 确认）/ 可见性特殊实体（F336 端到端）。
 - 落盘：interaction-arc-closure-evidence.json（F480，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 174。
+## Round 175 (F481) — 2026-08-12：小地图库装载器（FMMap 表面初始化）
+
+- **〔FMMap〕**0x43DF60：FMMap.wil（0x47C414）→ 字符串上下文 [+0x148]（0x465FA0/0x4660E0）+ **DDS 表面创建**（0x8AB7B8 vtable+0x18 + 0x467080、像素格式 0x1000/0x1800、尺寸 [0x2B8]/[0x2BC] 地图大小）。
+- **〔MMap〕**0x43D4E1：MMap.wil（0x47C428）在地图对象 ctor 0x43D4D0（标记库 F310）。
+- 落盘：minimap-library-loader-evidence.json（F481，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 175。
