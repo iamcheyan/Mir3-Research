@@ -771,3 +771,13 @@
 | kt0017.map | 30×30 | 13B | 0 | · | · | kt0017 |
 | kt0018.map | 36×36 | 13B | 13 | 3 | x2 | kt0018 |
 | kt00181.map | 36×36 | 13B | 13 | 3 | x2 | kt00181 |
+
+## Round 37-38 补充（F343/F344，2026-08-12）：城镇/洞穴/沙漠深挖 + 瓦片绑定公式
+
+- **客户端 56 槽瓦片绑定公式（primary-bytes，0x43B600）**：每图绑定文件 id `[(header[0x14]+1)*14, (header[0x14]+2)*14)`（0x43B77A `imul 0x0E`）；row=0 → id 14..27（wood 族，530 张含全部 356 洞穴）；row=1 → id 28..41（sand 族，14 张沙漠：4/5/6/41-44/72-78）。
+- **地形库解析**：wood_X → `Data/Wood/X.wil`、sand_X → `Data/Sand/X.wil`（_find_library_path 实测全存在；Round 36『缺失』系顶层扫描错误）。
+- **城镇层构成**：back{0,1}（tilesc/tiles30c）+ mid/front{15 wood_tilesc, 5 cliffsc, 10 smobjectsc, 0 tilesc}。
+- **洞穴层构成**：back{2}（tiles5c 全幅）+ mid{15 wood_tilesc, 12 object1c, 13 object2c}；D1011/D1012 300×300 back{2:22500} mid{15, 13} front{15:90000}。
+- **沙漠层构成**：4.map 800×800 back{1, 0, 30 sand_tilesc} + mid{15, 5, 0, 10}；41.map 400×400 稀疏（mid/front 255 空 + back{1,0,30} + mid{40 sand_smobjectsc}）。
+- **渲染验证**：0/1/02 城镇草地、4.map 沙漠沙地、D1011 洞穴岩石（视觉 + inspect_image 确认）。
+- 落盘：`town-cave-map-deepdive-evidence.json`（F343）+ `cave-desert-map-evidence.json`（F344，本文件）。

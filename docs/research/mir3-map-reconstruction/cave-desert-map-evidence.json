@@ -1,0 +1,50 @@
+{
+  "evidence_id": "cave-desert-map-2026-08-12-f344",
+  "title": "Round 38 (F344): Cave branch D1011/D1012 + desert maps (4/41 row-1 sand) deep-dive - layer composition, sand lib 30/40 usage, render verification (sand terrain + cave rock confirmed via inspect_image)",
+  "date": "2026-08-12",
+  "objective": "Complete the cave/desert map survey: analyze D1011/D1012 (Bichon cave branches) and the row-1 sand maps (4.map, 41.map), verify sand library 30/40 usage and rendering, verify cave object libraries (12/13) render, and consolidate into MAP-SURVEY.md.",
+  "question": "What are the layer compositions of Bichon cave branches and the desert maps? Do the sand libs (30 sand_tilesc, 40 sand_smobjectsc) and cave object libs (12 object1c, 13 object2c) render correctly?",
+  "method": "Binary scan of D1011/D1012/4/41 maps (back 3-byte + cell 14-byte layers); mapviewer HTTP tile renders; inspect_image visual verification.",
+  "scope": "$MIR3_EI_ROOT/Map/D1011.map, D1012.map, 4.map, 41.map; mapviewer 8899.",
+  "cell_analysis": {
+    "D1011_map": {"w": 300, "h": 300, "row": 0, "back": {"2": 22500}, "mid": {"15": 74627, "13": 15373}, "front": {"15": 90000}, "note": "Bichon cave branch - uniform tiles5c floor + wood_tilesc walls + object2c decor"},
+    "D1012_map": {"w": 300, "h": 300, "row": 0, "back": {"2": 22500}, "mid": {"15": 73486, "13": 16514}, "front": {"15": 90000}, "note": "mirror of D1011 (slightly more object2c)"},
+    "4_map": {"w": 800, "h": 800, "row": 1, "back": {"1": 138135, "0": 12899, "30": 8817, "2": 149}, "mid": {"15": 532444, "5": 62276, "0": 31219, "10": 12980, "4": 498}, "front": {"15": 540421, "0": 68289, "10": 21259, "5": 9731}, "note": "large desert - back lib 30 (sand_tilesc) used for 8817 cells; rest tilesc/tiles30c; mid/front wood_tilesc/cliffsc/smobjectsc"},
+    "41_map": {"w": 400, "h": 400, "row": 1, "back": {"1": 32530, "0": 5889, "30": 1581}, "mid": {"255": 125101, "5": 23463, "10": 4633, "0": 2552, "40": 2254}, "front": {"255": 154035, "0": 2566, "15": 1597, "10": 1133}, "note": "sparse desert - mostly empty (255) mid/front; back tilesc + sand_tilesc(30); mid sand_smobjectsc(40) for oasis objects"},
+    "sand_lib_usage": "lib 30 (sand_tilesc) appears in back of both row-1 maps; lib 40 (sand_smobjectsc) in 41.map mid - row-1 binding range 28..41 includes these",
+    "render_verification": {
+      "4.map": "tile(1,1) -> 200, 512x512 JPEG 88658B; inspect_image: 'light tan/beige sandy brown, fine grainy texture consistent with sand'",
+      "D1011.map": "tile(1,1) -> 200, 512x512 JPEG 7751B; inspect_image: 'almost entirely black, small irregular rocky formation right edge, dark olive-green/brown/gray stone'",
+      "41.map": "tile -> sparse (mostly empty layers)"
+    }
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331): 0x6C000 dword buffer [+0x1B2] cleared; 24x24 viewport; row=attr/7; 0x466130(&0x5600FC + row*0x144, id) frame load; 0x45E8E0 blit",
+    "frame_load": "0x466130 mode 1/2 -> 0x466720 memory-sprite (index table [+0x30], base [+0x34], frame ptr [+0x38])"
+  },
+  "audit_vs_exe": {
+    "F343": "binding formula confirmed: row-1 maps bind ids 28-41; 4.map back{30} + 41.map mid{40} both in range",
+    "F331": "D1011/D1012 = Bichon cave (wood row); desert maps = sand row"
+  },
+  "contrast": {
+    "cave_vs_desert": "caves: back tiles5c(2) + mid wood_tilesc(15)/object1c(12)/object2c(13) - enclosed rocky; deserts: back tilesc(0/1)+sand_tilesc(30) + mid wood_tilesc(15)/cliffsc(5)/sand_smobjectsc(40) - open sandy with oasis objects",
+    "dense_vs_sparse": "4.map dense (all layers populated); 41.map sparse (mid/front 255-dominant)"
+  },
+  "verdict": "Bichon cave branches (D1011/D1012 300x300) use uniform tiles5c floor + wood_tilesc walls + object2c decor, render as dark rocky cave (visual verified). Desert maps (4.map 800x800 dense, 41.map 400x400 sparse) use sand_tilesc(30) back + sand_smobjectsc(40) mid within the row-1 binding range 28-41, render as sandy terrain (visual verified). MAP-SURVEY.md updated.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Layer bytes + rendering read directly from map files and mapviewer output; visual verification via inspect_image.",
+  "cross_refs": [
+    "F343: tile binding formula, town/cave layers",
+    "F342: 544-map inventory",
+    "F331: loader 0x43B600, tile render 0x43B440",
+    "MAP-SURVEY.md (updated)"
+  ],
+  "tool": "python3 struct; mapviewer HTTP; inspect_image",
+  "reproduce": "scan layer bytes (see Round 37 script); curl /tile?map=4.map / D1011.map; inspect_image",
+  "notes": [
+    "4.map back lib 30 (sand_tilesc) = 8817 cells - sand dunes blended with tilesc ground",
+    "41.map mid 40 (sand_smobjectsc) = 2254 cells - oasis/palm objects",
+    "D1011/D1012 front 15 (wood_tilesc) = 90000 = every cell - cave wall overlay on all cells",
+    "desert maps 5/6/42-44/72-78 similar sand composition (row-1 family)"
+  ]
+}

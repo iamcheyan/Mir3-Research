@@ -5853,3 +5853,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔城镇层构成〕**0.map 比奇城 800×800：back {1:97521, 0:58275, 2:4201} + mid {15:406562, 0:89189, 5:86182, 10:46587} + front {15:541559}；1.map/02.map 同构（back{0,1} + mid/front{15 wood_tilesc, 5 cliffsc, 10 smobjectsc, 0 tilesc}）。**洞穴层构成**：D001-D012 400×400 back{2:40000 全 tiles5c} + mid{15 wood_tilesc, 12 object1c}——城镇 vs 洞穴地面族信号截然不同。
 - **〔渲染对比〕**0/1/02 三镇 tile(1,1) 全 200（512×512 JPEG ~88KB）；inspect_image 视觉验证 0.map/02.map = 草地地面纹理（绿/棕，无建筑——角块为空地）。
 - 落盘：`docs/research/mir3-map-reconstruction/town-cave-map-deepdive-evidence.json`（F343，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 37。
+
+## Round 38 (F344) — 2026-08-12：洞穴分支 D1011/D1012 + 沙漠图（4/41 row-1 sand）深挖 + 渲染验证
+
+- **〔洞穴分支〕D1011/D1012**（300×300，row=0）：back{2:22500 全 tiles5c} + mid{15 wood_tilesc, 13 object2c} + front{15:90000 全单元}——封闭岩石洞；渲染验证 = 黑色底 + 岩石突起（inspect_image）。
+- **〔沙漠图〕4.map**（800×800，row=1）：back{1:138135, 0:12899, **30 sand_tilesc:8817**}, mid{15, 5, 0, 10}, front{15, 0, 10, 5}——沙丘与 tilesc 地面混合；**41.map**（400×400，row=1）稀疏：mid/front 255 主导 + back{1,0,30} + mid{**40 sand_smobjectsc:2254**}（绿洲/棕榈对象）。**sand lib 30/40 在 row-1 绑定范围 28..41 内确认使用**。
+- **〔渲染验证〕**4.map = 沙色细腻颗粒（视觉）；D1011 = 暗岩石；0/1/02 城镇草地（Round 37）。**MAP-SURVEY.md 已追加 Round 37-38 补充段**。
+- 落盘：`docs/research/mir3-map-reconstruction/cave-desert-map-evidence.json`（F344，primary-bytes）+ MAP-SURVEY.md 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 38。

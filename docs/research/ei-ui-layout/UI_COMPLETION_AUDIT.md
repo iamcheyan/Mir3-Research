@@ -362,6 +362,13 @@ git diff --check
 - **三镇渲染对比**：0/1/02 全 200，视觉验证草地地面。
 - 落盘：`town-cave-map-deepdive-evidence.json`（F343，primary-bytes）+ RESEARCH_LOG Round 37。
 
+## Round 38 (2026-08-12) — 洞穴分支 + 沙漠图深挖（Finding 344）
+
+- **D1011/D1012**（300×300）：back{2 tiles5c}+mid{15,13 object2c}+front{15}；渲染=暗岩石洞。
+- **4.map**（800×800 row-1）：back{1,0,30 sand_tilesc}+mid{15,5,0,10}；**41.map** 稀疏 + mid{40 sand_smobjectsc}——sand lib 30/40 在绑定范围 28..41 内使用确认。
+- **渲染验证**：4.map 沙地、D1011 洞穴岩石（inspect_image）；MAP-SURVEY.md 追加。
+- 落盘：`cave-desert-map-evidence.json`（F344，primary-bytes）+ MAP-SURVEY.md + RESEARCH_LOG Round 38。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
