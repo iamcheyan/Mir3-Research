@@ -1,0 +1,36 @@
+{
+  "evidence_id": "wil-loader-entry-open-2026-08-12-f686",
+  "title": "Round 380 (F686): WIL loader entry + file-open - 0x466130 entry (mode [ecx+4]: 0 = 0x466640, 1/2 = 0x466720); 0x466160 = FILE-mode open: path+ext concat (0x47DBB4), CreateFileA 0x4760DC (GENERIC_READ 0x80000000) -> GetFileSize 0x4760C4 -> [0x10] frame count, malloc count*32 frame-table, ReadFile per-entry (0x4760C4, 4-byte headers), handle [ecx+8]; 0x466300 = mode-1 open (byte+4]=1) - WIL loader dual-mode byte-level (F436 loader family connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the WIL loader entry + file-open.",
+  "question": "How does the WIL loader open files?",
+  "method": "Disasm 0x466130-0x4662FC.",
+  "scope": "0x466130-0x4662FC; CreateFileA; frame table.",
+  "cell_analysis": {
+    "0x466130": "entry: mode [ecx+4] 0 -> 0x466640, 1/2 -> 0x466720",
+    "0x466160": {"file": "path+ext 0x47DBB4 + CreateFileA 0x4760DC (0x80000000) + GetFileSize 0x4760C4 -> [0x10]", "table": "malloc count*32 frame-table + ReadFile 0x4760C4 per-entry (4B headers)", "handle": "[ecx+8]"},
+    "0x466300": "mode-1 open ([byte+4]=1)"
+  },
+  "exe_trace": {
+    "loader_chain": "frame request -> 0x466130 mode -> file open 0x466160 -> frame table -> 0x466720"
+  },
+  "audit_vs_exe": {
+    "F436": "WIL loader dual-mode CONNECTED", "F128-136": "WIL tables", "F577": "mmap/resource"
+  },
+  "contrast": {
+    "mode0_vs_12": "0x466640 vs 0x466720 paths",
+    "file_vs_mmap": "CreateFileA+ReadFile vs mmap (F577)"
+  },
+  "verdict": "WIL loader entry + file-open PRIMARY-verified: mode dispatch + frame-table load; F436 loader family connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Loader head decoded from .text.",
+  "cross_refs": ["F436: loader", "F128: WIL tables", "F577: mmap"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x466130+0x10; 0x466160+0x40",
+  "notes": [
+    "mode byte [ecx+4]",
+    "frame table count*32",
+    "GENERIC_READ 0x80000000",
+    "handle [ecx+8]"
+  ]
+}

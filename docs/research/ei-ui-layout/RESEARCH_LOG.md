@@ -7634,3 +7634,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 376-378（F683-F684：数值助手 + 工具库弧）；基线 Round 375=5d6ee76 → Round 378=6c890eb（**343 连发 F335-F684**）。
 - 落盘：handoff-refresh-39-evidence.json（F685，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 379。
+## Round 380 (F686) — 2026-08-12：WIL 装载器入口 + 文件打开
+
+- **〔入口〕**0x466130：模式 [ecx+4]（0 → 0x466640、1/2 → 0x466720）。
+- **〔文件〕**0x466160 = 文件模式打开：路径+扩展拼接（0x47DBB4）、CreateFileA 0x4760DC（GENERIC_READ 0x80000000）→ GetFileSize 0x4760C4 → [0x10] 帧数、malloc 帧数×32 帧表、每项 ReadFile（4 字节头）、句柄 [ecx+8]；0x466300 = 模式 1 打开——WIL 装载器双模式字节级（F436 装载器族连接）。
+- 落盘：wil-loader-entry-open-evidence.json（F686，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 380。
