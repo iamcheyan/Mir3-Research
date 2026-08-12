@@ -479,6 +479,12 @@ git diff --check
 - **模拟器坐骑窗**：浏览器验证（S 键、4 命令）。
 - 落盘：`horse-window-wiring-evidence.json`（F361）+ app.js + RESEARCH_LOG Round 55。
 
+## Round 56 (2026-08-12) — 选项窗口验证（Finding 362）
+
+- **F324**：Config.ini 4 开关（BGM/EffectSound/Ambience 死开关/ShadowBlend）+ 音量滑块 → 0x45A4A0。
+- **模拟器选项窗**：4 行 + 滑块 + 켬/끔 帧对（F289/F297）。
+- 落盘：`option-window-verification-evidence.json`（F362）+ RESEARCH_LOG Round 56。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

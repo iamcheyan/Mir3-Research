@@ -1,0 +1,47 @@
+{
+  "evidence_id": "option-window-verification-2026-08-12-f362",
+  "title": "Round 56 (F362): Option window id12 verification - F324 Config.ini Options chain (배경음->BGM +0x54, 효과음->EffectSound +0x58, 주변효과음->Ambience +0x5C visual-only dead switch, 그림자->ShadowBlend +0x60; load 0x441CC0/save 0x441B30; BGM volume slider 0x45A4A0) + sim option window (F289/F297 frames 760/761/762/763 켬/끔)",
+  "date": "2026-08-12",
+  "objective": "Verify the option window (id12, Ctrl+N) chain: F324 Config.ini fields, toggle control semantics, BGM volume, and the simulator's option window rendering.",
+  "question": "How does the original option window persist settings, and does the sim match?",
+  "method": "Cross-validated against F324 (status-option-names / option window), F289 (control frames), F297 (resource pixels); sim app.js verification.",
+  "scope": "F324/F289/F297 evidence; sim window.option fill.",
+  "cell_analysis": {
+    "option_chain_F324": {
+      "ctor": "0x440FE0 (base 0x423B30 frame 750 + 11 x 0x417550 sub-controls from +0x7C; config load 0x441CC0; restore frames 0x441226-0x44137C; open 0x4414F0)",
+      "config": "Config.ini [Options]: 배경음 -> BGM -> this+0x54; 효과음 -> EffectSound -> +0x58; 주변 효과음 -> Ambience -> +0x5C; 그림자 유무효과 -> ShadowBlend -> +0x60",
+      "save": "0x441B30 (config save); load 0x441CC0",
+      "ambience": "visual-only dead switch (F324 primary-static negative: no audio engine refs, +0x5C written only by ctor/load, save rewrites load value)",
+      "bgm_volume": "BGMLevel [0x8AB130+0x20] -> 0x45A4A0 put_Volume (Round 28 F334) - slider in option window"
+    },
+    "sim_option": {
+      "rows": "音乐 y43 / 音效 y116 / 环境声 y190 / 阴影混合 y217 (F289: ON 760/761, OFF 762/763, 켬/끔 pixel-verified F297)",
+      "sliders": "751 @ (34,96)/(34,170) (BGM volume)",
+      "browser": "N key opens option (window.option)"
+    }
+  },
+  "exe_trace": {
+    "option_window": "hero+0x518E0 (id12, Ctrl+N, frame 750 248x264 at 276,113)",
+    "config_file": "Config.ini [Options] (F324)"
+  },
+  "audit_vs_exe": {
+    "F324": "4 toggles + config save/load + Ambience dead switch confirmed",
+    "F289/F297": "frame pairs 760/761/762/763 + 켬/끔 pixels confirmed",
+    "F334": "BGM volume 0x45A4A0 put_Volume chain confirmed"
+  },
+  "contrast": {
+    "toggle_pairs": "760/761 = ON (켬), 762/763 = OFF (끔) with pressed-shift variants (+2/+1) - UP/PRESSED not ON/OFF art",
+    "sim_vs_original": "sim toggles are visual placeholders; original persists to Config.ini"
+  },
+  "verdict": "Option window verified (primary-bytes via F324/F289/F297): 4 Config.ini toggles (BGM/EffectSound/Ambience/ShadowBlend), config load 0x441CC0/save 0x441B30, Ambience visual-only dead switch, BGM volume via 0x45A4A0. Sim option window matches frame/row evidence.",
+  "evidence_level": "derived-tooling (source evidence primary-static F324/F289/F297)",
+  "evidence_level_note": "Option chain from F324/F289/F297 primary evidence; sim toggles are UI placeholders.",
+  "cross_refs": ["F324: option window + Config.ini", "F289: control frames", "F297: 켬/끔 pixels", "F334: BGM volume 0x45A4A0"],
+  "tool": "app.js inspection; python3 json",
+  "reproduce": "open sim; press N; observe option window rows/sliders",
+  "notes": [
+    "11 sub-controls in ctor (F324) vs 9 noted in some F289 text - verify count: 4 rows x 2 + 2 sliders + ...",
+    "BGM volume slider re-reads [0x8AB130+0x20] at play time (F334)",
+    "Ambience toggle does not persist (F324 dead switch)"
+  ]
+}

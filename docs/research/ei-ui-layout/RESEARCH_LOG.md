@@ -5974,3 +5974,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F327 事实〕**0x4268C0（base frame 850 + 5× 0x417550 子控件 +0x54..+0x324）；帧对 (0xA1,0xA2)..(0x362,0x363)；**韩文美术标签 말타기/말내리기/말숨기기/말꺼내기**（帧 860-867）；**命令 @上马 0x47B060（状态 [0x7DA060]==0）/ @遛马 0x47B068（!=0）/ @收马 0x47B058**；点击 0x426A80-0x426B45 分支；**无 vtable**。
 - **〔模拟器〕**window.horse：标题 + Horse.wil 图 + 4 命令行（韩文标签 + 命令串 + 门控证据）。**浏览器验证**：S 开坐骑窗、5 行。
 - 落盘：`horse-window-wiring-evidence.json`（F361，derived-tooling；源证据 primary-static F327）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 55。
+
+## Round 56 (F362) — 2026-08-12：选项窗口 id12 验证（F324 Config.ini 链 + 模拟器行/滑块）
+
+- **〔F324〕**ctor 0x440FE0（base frame 750 + 11× 0x417550 子控件 +0x7C 起；config load 0x441CC0/save 0x441B30；restore 0x441226-0x44137C；open 0x4414F0）；**Config.ini [Options]**：배경음→BGM→+0x54、효과음→EffectSound→+0x58、주변효과음→Ambience→+0x5C（**visual-only 死开关**：无音频引擎引用、save 回写 load 值）、그림자→ShadowBlend→+0x60；**BGM 音量滑块** → [0x8AB130+0x20] → 0x45A4A0 put_Volume（F334）。
+- **〔模拟器〕**4 行（音乐/音效/环境声/阴影混合 y43/116/190/217）+ 滑块 751 @ (34,96)/(34,170)；帧对 760/761 ON 켬、762/763 OFF 끔（F289/F297 像素验证）。
+- 落盘：`option-window-verification-evidence.json`（F362，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 56。
