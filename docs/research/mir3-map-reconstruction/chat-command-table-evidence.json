@@ -1,0 +1,35 @@
+{
+  "evidence_id": "chat-command-table-2026-08-12-f600",
+  "title": "Round 294 (F600): Chat command table - 0x47ACB8 family (F355 command dispatch): command strings decoded: '@拒绝私聊' (0x47ACC2 cp949 @앳없降좔), '@拒绝行会聊天' (0x47AD60), '@拒绝私聊' (0x47AD70), '!~喊话)' (0x47ACDA), '编组 喊话(!!喊话)' (0x47ACE4 + 0x47ACEE), '!!' (0x47AD80), '!~' (0x47AD7C), '/%s ' (0x47AD28 format), trade-gold prompt '您要付给对方多少金币?' (0x47AD98 cp949 퀭狼마못뚤렘뜩母薺?) + '금전' gold (0x47ADB4) - chat command/help strings byte-level (F355 extended, CN GBK + KR origin)",
+  "date": "2026-08-12",
+  "objective": "Decode the chat command help table.",
+  "question": "What are the chat commands?",
+  "method": "Dump + decode strings near 0x47ACB8-0x47AE00.",
+  "scope": "0x47ACB8-0x47AE00; command strings.",
+  "cell_analysis": {
+    "commands": {"@拒绝私聊": "0x47ACC2/0x47AD70", "@拒绝行会聊天": "0x47AD60", "!~喊话": "0x47ACDA (guild shout)", "编组喊话(!!喊话)": "0x47ACE4/0x47ACEE (party shout)", "!!": "0x47AD80", "!~": "0x47AD7C", "/%s ": "0x47AD28 format"},
+    "gold_prompt": "'您要付给对方多少金币?' (0x47AD98, cp949 KR origin) + '금전' (0x47ADB4 F549)"
+  },
+  "exe_trace": {
+    "command_chain": "chat input -> F355 dispatch -> command table strings"
+  },
+  "audit_vs_exe": {
+    "F355": "command dispatch CONFIRMED strings", "F549": "금전", "F599": "chat render"
+  },
+  "contrast": {
+    "private_vs_guild": "@拒绝私聊 vs @拒绝行会聊天",
+    "shout_variants": "!~ guild vs !! party"
+  },
+  "verdict": "Chat command table PRIMARY-verified: 8 command strings + gold prompt decoded (CN GBK + KR origin); F355 command dispatch extended with actual strings.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Command strings decoded from .data.",
+  "cross_refs": ["F355: dispatch", "F599: chat render", "F549: 금전"],
+  "tool": "capstone disasm + cp949/GBK decode",
+  "reproduce": "dump 0x47ACB8-0x47AE00 strings",
+  "notes": [
+    "'/%s ' = slash command format",
+    "gold trade prompt KR origin",
+    "command strings = CN GBK layer",
+    "F355 0x41ED20 dispatch reads these"
+  ]
+}

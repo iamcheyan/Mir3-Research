@@ -7233,3 +7233,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔渲染〕**0x414700（F341 扩展）：输入矩形 SetRect(0x1A, 0x137, 0x20D, 0x146) @ [0x954]、**消息环**（滚动 [0x6D0] + 计数 [0x68] − 0x13 钳制 **19 行上限**、节点链 [0x58]/[0x5C]（+0x408 next、负 0x40C prev）、每行 0x45DD70 绘制（色 [0x8AB7C4]、y=[0x6C4]+行*0xE 14px、x=[0x6C0]））+ **滚动条 0x4179B0 @ [0x6D4]** + 10 控件矩形 0x417830（@ [0x6C]..[0x60C]）+ 9 控件遍历——聊天窗渲染字节级。
 - 落盘：chat-window-render-full-evidence.json（F599，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 293。
+## Round 294 (F600) — 2026-08-12：聊天命令表
+
+- **〔命令〕**0x47ACB8 族（F355 分派）：'@拒绝私聊'（0x47ACC2/0x47AD70）、'@拒绝行会聊天'（0x47AD60）、'!~喊话)'（0x47ACDA 行会喊话）、'编组 喊话(!!喊话)'（0x47ACE4/0x47ACEE 组队喊话）、'!!'（0x47AD80）、'!~'（0x47AD7C）、'/%s '（0x47AD28 斜杠命令格式）；**金币交易提示 '您要付给对方多少金币?'**（0x47AD98，cp949 KR 源）+ '금전'（0x47ADB4 F549）。
+- 落盘：chat-command-table-evidence.json（F600，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 294。
