@@ -8273,3 +8273,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 523-525（F830-F831：行会页子绘制 + 行会页闭合）；基线 Round 522=72734be → Round 525=720d442（**490 连发 F335-F831**）。
 - 落盘：handoff-refresh-87-evidence.json（F832，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 526。
+## Round 527 (F833) — 2026-08-12：任务窗口绘制体（F671 全量）
+
+- **〔任务〕**0x447470（F558 模式 B）：**2 按钮 F704**（@ +0x74/+0x128）+ 任务列表 [0x54] 遍历：标题测量 0x45E0C0（>0xC8 换行）+ **行换行 0xA0** + **状态色 0x1919C8**（完成 via [0x210] 旗标 vs 进行 0x19197D）+ 0x45DD70 + **y=(idx×15)+0x12**（F671 确认）x+0x41——任务窗口绘制完整。
+- 落盘：quest-window-draw-body-evidence.json（F833，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 527。

@@ -1,0 +1,34 @@
+{
+  "evidence_id": "quest-window-draw-body-2026-08-12-f833",
+  "title": "Round 527 (F833): Quest window draw body (F671 FULL) - 0x447470 (F558 mode B): 2 buttons F704 set-pos (@ +0x74/+0x128) + quest list [0x54] walk: title measure 0x45E0C0 (>0xC8 wrap) + LINE wrap 0xA0 + status color 0x1919C8 (done via [0x210] flag vs active 0x19197D) + 0x45DD70 + y=(idx*15)+0x12 (F671 CONFIRMED) x+0x41 - quest window draw COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window draw body.",
+  "question": "How does the quest window render?",
+  "method": "Disasm 0x447470-0x4476CC.",
+  "scope": "0x447470-0x4476CC; list [0x54].",
+  "cell_analysis": {
+    "0x447470": {"buttons": "2 x F704", "list": "[0x54] walk", "wrap": "title 0xC8 + line 0xA0", "color": "0x1919C8 done / 0x19197D active", "y": "idx*15+0x12"}
+  },
+  "exe_trace": {
+    "quest_chain": "measure -> wrap -> status color -> draw"
+  },
+  "audit_vs_exe": {
+    "F671": "19-line + y CONFIRMED", "F558": "mode B quest", "F821": "measure"
+  },
+  "contrast": {
+    "title_vs_lines": "wrap 0xC8 + 0xA0",
+    "done_vs_active": "0x1919C8 + 0x19197D"
+  },
+  "verdict": "Quest window draw body PRIMARY-verified: list + wrap + colors; F671 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Quest window decoded from .text.",
+  "cross_refs": ["F671: quest", "F558: registry", "F821: measure"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x447470+0x20",
+  "notes": [
+    "list [0x54]",
+    "wrap 0xC8/0xA0",
+    "colors 0x1919C8/0x19197D",
+    "y idx*15+0x12"
+  ]
+}

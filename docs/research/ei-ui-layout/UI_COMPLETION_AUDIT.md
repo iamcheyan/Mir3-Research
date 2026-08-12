@@ -2945,3 +2945,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会页完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 527 (2026-08-12) — 任务窗口绘制体（Finding 833）
+
+- **列表 + 换行 + 状态色**（F671 全量）。
+- 落盘：`quest-window-draw-body-evidence.json`（F833）+ RESEARCH_LOG Round 527。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务绘制完整；下一弧：剩余深层角落）。
