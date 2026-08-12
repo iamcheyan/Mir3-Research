@@ -2236,9 +2236,14 @@ git diff --check
 - **滑块比例 + 拖动命中 + 箭头点击 10ms 门**（F535/F599/F581 用）。
 - 落盘：`scrollbar-family-evidence.json`（F707）+ RESEARCH_LOG Round 401。
 
+## Round 402 (2026-08-12) — 滚动条弧闭合（Finding 708）
+
+- **366 连发 + 332 证据 + 滚动条完整**。
+- 落盘：`scrollbar-arc-closure-evidence.json`（F708）+ RESEARCH_LOG Round 402。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（滚动条字节级；下一弧：剩余深层角落）。
+- 无阻塞项（滚动条完整；下一弧：HANDOFF 刷新 47/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

@@ -7732,3 +7732,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔滚动条〕**0x4179B0 ctor/refresh（F535/F599 确认）：**滑块比例 [0xC] = count/(max-1)**、步长 [0x10] = 1/max、WIL 帧尺寸、SetRect 滑块；0x417C80 命中（拖动 [0x18] 门 + x 夹取 [0x28]/[0x30] + 比例 = (x-min)/(max-min)）；0x417D00 点击（PtInRect + **10ms 门 [0x44]** + 箭头 [0x18]=1 + 滚动 [0xC] ± 步长）——滚动条系统字节级（F535/F599/F581 全用）。
 - 落盘：scrollbar-family-evidence.json（F707，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 401。
+## Round 402 (F708) — 2026-08-12：滚动条弧闭合（F707 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**332 证据 JSON**；三服务 200；master c95af32（**366 连发 F335-F707 已推**）。
+- **〔弧〕**滚动条构造/命中/点击（F707）——**滚动条系统完整（构造比例 + 拖动命中 + 箭头点击）**，支撑全部滚动条（F535 行会/F599 聊天/F581 热键栏）。
+- 落盘：scrollbar-arc-closure-evidence.json（F708，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 402。

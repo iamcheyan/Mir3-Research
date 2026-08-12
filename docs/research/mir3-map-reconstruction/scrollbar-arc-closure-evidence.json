@@ -1,0 +1,36 @@
+{
+  "evidence_id": "scrollbar-arc-closure-2026-08-12-f708",
+  "title": "Round 402 (F708): Scrollbar arc CLOSED (F707) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c95af32 (366 consecutive F335-F707), 332 evidence JSONs; arc: scrollbar ctor/hit/click (F707) - scrollbar system COMPLETE byte-level (ctor ratio + drag hit + arrow click), backing every scrollbar (F535 guild/F599 chat/F581 hotbar)",
+  "date": "2026-08-12",
+  "objective": "Close the scrollbar arc.",
+  "question": "Is the scrollbar system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "332 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F707": "scrollbar ctor/hit/click"},
+    "scrollbar": "ctor + hit + click = COMPLETE (F535/F599/F581)",
+    "milestone": "366 consecutive rounds F335-F707"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F707": "366 rounds pushed; scrollbar complete"
+  },
+  "contrast": {
+    "ctor_vs_click": "ratio math + arrow click",
+    "scrollbar_vs_window": "scrollbar + window complete"
+  },
+  "verdict": "Scrollbar arc CLOSED (F708): ctor + hit + click all byte-level; validation green, 366 consecutive rounds, 332 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F707.",
+  "cross_refs": ["F707: scrollbar", "F535: guild", "F599: chat"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "366 consecutive shipping rounds F335-F707",
+    "next: HANDOFF refresh 47, remaining corners"
+  ]
+}
