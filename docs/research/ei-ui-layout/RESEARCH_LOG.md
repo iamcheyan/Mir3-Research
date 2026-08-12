@@ -6839,3 +6839,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔语义〕**仓库 0x2BC（0x420AFC：窗门 [0x2ABA10] + 开）、制作 0x2C8（0x4209A8：0x2800 字符串 → 0x44FB00 族）、行会窗（0x420474 [0x2D8E58]）、商店更新（0x41F99F 0x44E8B0）、错误提示（0x47B6C4）、背包反序列化（12 槽 0x42FC20）、装备使用（0x42E2D0）——**recv1 = 商店/行会/背包/装备族**。
 - **〔完整〕**入站图景完整（recv1 UI 状态 + recv2 实体/聊天）。
 - 落盘：recv1-handler-semantics-evidence.json（F521，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 215。
+## Round 216 (F522) — 2026-08-12：入站图景弧闭合（F520-F521 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master ce7ccc2（**181 连发已推**）。
+- **〔弧汇总〕**recv2 13 处理器（F520）+ recv1 49 处理器（F521）——**349 入站槽 + 怪物族全语义映射**；完整双向包图景（出站 F514 + 入站 F517-F521）。
+- 落盘：inbound-picture-closure-evidence.json（F522，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 216。

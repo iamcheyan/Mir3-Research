@@ -1,0 +1,36 @@
+{
+  "evidence_id": "inbound-picture-closure-2026-08-12-f522",
+  "title": "Round 216 (F522): Inbound-picture arc CLOSED (F520-F521) - full validation green (compileall/verify exit 0/node/JSON), services 200, master ce7ccc2 (181 shipping rounds F335-F521); arc consolidated: recv2 handlers 13 classified (F520: entity create/chat/coord/hero-state), recv1 handlers 49 classified (F521: store/guild/bag/equip) - COMPLETE inbound picture: 349 slots + monster family, all semantically mapped",
+  "date": "2026-08-12",
+  "objective": "Close the inbound-picture arc with validation + summary.",
+  "question": "Is the repo healthy after the 2-round inbound arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master ce7ccc2; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F520": "recv2 13 handlers (entity/chat/coord/hero-state)", "F521": "recv1 49 handlers (store/guild/bag/equip)", "total": "349 inbound slots + monster family, all semantic"},
+    "significance": "complete bidirectional packet picture (send F514 + recv F517-F521)"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F521": "181 rounds pushed; packet layer fully closed"
+  },
+  "contrast": {
+    "recv1_vs_recv2": "UI state vs entity/chat",
+    "send_vs_recv": "34 outbound + 349 inbound complete"
+  },
+  "verdict": "Inbound-picture arc CLOSED (F520-F521): validation green, services live, 181 shipping rounds pushed. Complete bidirectional packet picture (send + both recv tables + monster family), all semantically mapped.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F520-F521.",
+  "cross_refs": ["F520-F521: arc", "F213: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: monster family recv detail (0xBC6+), sim edge polish, deep UI corners",
+    "181 shipping rounds + user quest-design commits all pushed"
+  ]
+}
