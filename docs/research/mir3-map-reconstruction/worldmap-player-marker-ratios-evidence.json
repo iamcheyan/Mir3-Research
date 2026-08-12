@@ -1,0 +1,37 @@
+{
+  "evidence_id": "worldmap-player-marker-ratios-2026-08-12-f595",
+  "title": "Round 289 (F595): World-map player marker + ratio bars - 0x429880: ratio math (pos/denom clamp 1.0 via 0x476658, guarded by [0x7DA113]/[0x7DA11F] words), HP ratio [0x7DA119] (qword 64-bit divide) -> [0x50], MP/exp [0x54], frame 0x3E WIL blit (player arrow, [0x36]<0x1C gate, at [0xC58]+0x31/[0xC5C]+0xC via 0x45F2D0) - world-map player marker + status ratio bars byte-level (F584/F594 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the world-map player marker + ratio bars.",
+  "question": "How does the player arrow + status ratios render on the world map?",
+  "method": "Disasm 0x429880-0x429A3D.",
+  "scope": "0x429880-0x429A3D; ratios; frame 0x3E.",
+  "cell_analysis": {
+    "ratio_math": "pos/denom clamp 1.0 (0x476658), guards [0x7DA113]/[0x7DA11F] words",
+    "hp_ratio": "[0x7DA119] qword 64-bit divide -> [0x50]",
+    "mp_exp": "[0x54] ratio",
+    "player_arrow": "frame 0x3E WIL blit ([0x36]<0x1C gate, at [0xC58]+0x31/[0xC5C]+0xC via 0x45F2D0)"
+  },
+  "exe_trace": {
+    "marker_chain": "world map paint -> 0x429880 ratio bars (HP/MP/exp) + player arrow frame 0x3E"
+  },
+  "audit_vs_exe": {
+    "F584": "player arrow [0x7D9262] + bars [0x7DA109..0x7DA11F] CONFIRMED", "F594": "overlay + this marker layer"
+  },
+  "contrast": {
+    "marker_vs_overlay": "0x429880 marker/ratios vs 0x429A40 hover/coords",
+    "word_vs_qword": "HP word ratio vs exp qword ratio"
+  },
+  "verdict": "World-map player marker PRIMARY-verified: ratio bar math (HP qword + MP/exp) + player arrow frame 0x3E blit; F584/F594 extended to full marker layer.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Marker + ratio decoded from .text.",
+  "cross_refs": ["F584: world-map", "F594: overlay"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x429880+0x60",
+  "notes": [
+    "ratio clamp 1.0 = full bar",
+    "exp ratio = 64-bit divide ([0x7DA119])",
+    "player arrow frame 0x3E",
+    "arrow pos [0xC58]+0x31/[0xC5C]+0xC"
+  ]
+}

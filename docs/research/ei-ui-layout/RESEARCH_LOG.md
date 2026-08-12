@@ -7212,3 +7212,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔悬停〕**0x429A40：鼠标矩形命中（[0xC68] + [0xC78] 两区，PtInRect）、**坐标文本**（0x47BD70 格式 → 0x45E0C0 测量 → 0x45DE50 白 0xFFFFFF 居中 0x211/0x6E）、渐变条 0x466800（0x3E70F0F1/0x3EF0F0F1 + 0x4542F0 瓦片）+ 填充 0x45E570 0x5050A0、**帧 0x3C** WIL 绘制（0x45F2D0）+ 地图名标签区。
 - 落盘：worldmap-overlay-hover-evidence.json（F594，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 288。
+## Round 289 (F595) — 2026-08-12：大地图玩家标记 + 比例条
+
+- **〔比例〕**0x429880：比率数学（pos/denom 钳制 1.0 经 0x476658，守卫 [0x7DA113]/[0x7DA11F] 字）、**HP 比率 [0x7DA119]（qword 64 位除法）→ [0x50]**、MP/exp [0x54]、**帧 0x3E** WIL 绘制（玩家箭头，[0x36]<0x1C 门，位于 [0xC58]+0x31/[0xC5C]+0xC 经 0x45F2D0）。
+- 落盘：worldmap-player-marker-ratios-evidence.json（F595，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 289。
