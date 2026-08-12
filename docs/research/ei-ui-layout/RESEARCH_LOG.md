@@ -8152,3 +8152,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**428 证据 JSON**；三服务 200；master dcda73e（**462 连发 F335-F803 已推**）。
 - **〔弧〕**行会窗口（F755）+ 公告路径（F797）+ 公告列表/消息分派（F803）——**行会/社交消息完整**（5 行公告列表 + 80 积压 + msg 0x40F/0x414/0x415 发送），行会社交表面闭合。
 - 落盘：guild-social-messages-closure-evidence.json（F804，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 498。
+## Round 499 (F805) — 2026-08-12：HANDOFF 刷新 78（Round 496-498）
+
+- **〔刷新〕**HANDOFF 追加 Round 496-498（F803-F804：行会公告列表/消息 + 行会/社交消息闭合）；基线 Round 495=a2d8040 → Round 498=0056799（**463 连发 F335-F804**）。
+- 落盘：handoff-refresh-78-evidence.json（F805，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 499。
