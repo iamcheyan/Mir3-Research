@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hero-movement-camera-2026-08-12-f612",
+  "title": "Round 306 (F612): Hero movement/camera - 0x41A9D0: gates [0x35B1D0]/[0x35B1D4] + timer [0x2F8870], hero vtable[0x18] + 0x410840 move (dir [0x2F8841], state [0x35B148] 0x1D variant), world coords [0x2F884C]/[0x2F8850] -> 0x43CC30 map move (via [0xF5200]) + special [0x2F8809]==7 + [0x35B268] -> 0x410840(0xB); target entity [0x364450]: type [0x88] gate + name check (0x468BF0) + GetAsyncKeyState 0x476278/0x476250 click-target + [0x61C70] anim state - hero movement + click-target camera byte-level (F591 stage connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the hero movement/camera chain.",
+  "question": "How does hero movement + camera work?",
+  "method": "Disasm 0x41A9D0-0x41AB91.",
+  "scope": "0x41A9D0-0x41AB91; hero [0x2F8780]; camera.",
+  "cell_analysis": {
+    "gates": "[0x35B1D0]/[0x35B1D4] + timer [0x2F8870]",
+    "move": "hero vtable[0x18] + 0x410840 (dir [0x2F8841], state [0x35B148] 0x1D variant)",
+    "world": "coords [0x2F884C]/[0x2F8850] -> 0x43CC30 map move ([0xF5200]) + [0x2F8809]==7 + [0x35B268] -> 0x410840(0xB)",
+    "target": "[0x364450] entity: type [0x88] gate + name (0x468BF0) + GetAsyncKeyState 0x476278/0x476250 click-target + [0x61C70] anim"
+  },
+  "exe_trace": {
+    "hero_chain": "hero tick -> gates -> move (0x410840) -> world coords -> 0x43CC30 map -> click-target checks"
+  },
+  "audit_vs_exe": {
+    "F591": "hero vtable[0x1C] stage CONNECTED", "F310": "world coords", "F611": "death pump coords"
+  },
+  "contrast": {
+    "move_vs_camera": "0x410840 move + 0x43CC30 map-camera",
+    "key_vs_click": "async key move + click-target entity"
+  },
+  "verdict": "Hero movement/camera PRIMARY-verified: gates + move + world coords -> map camera + click-target entity checks; F591 stage connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hero chain decoded from .text.",
+  "cross_refs": ["F591: main tick", "F310: coords", "F611: death pump"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41A9D0+0x50",
+  "notes": [
+    "0x410840 = hero move fn",
+    "0x43CC30 = map move/camera",
+    "click-target [0x364450] + GetAsyncKeyState",
+    "special move 0xB when [0x2F8809]==7"
+  ]
+}

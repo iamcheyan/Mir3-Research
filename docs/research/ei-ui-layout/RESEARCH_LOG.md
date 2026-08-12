@@ -7288,3 +7288,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔死亡〕**检查（[0x2F8840]==3 + [0x35A31C]−[0x35A320] < [0x35A329]−1 延迟）或冷却 [0x4279A4] → **重生路径**：0x42E1F0 英雄重置 + 0x45B1D0/0x45B3D0、冷却 = 0x5DC（1500ms）、坐标 [0x35A31C]/[0x35A320] 重置 + [0x35A329]=0xA、**活动坐标 [0x2F884C]/[0x2F8850] = 包字 +6/+8（F310 两写者确认）** + 镜像 [0x35B25C]/[0x35B260]、瓦片存储清 0x38400 双字。
 - **〔光照〕**色类型分派（字节 +0xA：0→0xFFFFFF、1→0xF0F0F、2→0x555555）+ 0x434610 + 0x41C1E0；实体列表 [0xE11D0] 清理——**死亡/重生生命周期字节级**。
 - 落盘：death-teleport-pump-evidence.json（F611，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 305。
+## Round 306 (F612) — 2026-08-12：英雄移动/相机
+
+- **〔移动〕**0x41A9D0：门 [0x35B1D0]/[0x35B1D4] + 计时器 [0x2F8870]、英雄 vtable[0x18] + **0x410840 移动**（方向 [0x2F8841]、状态 [0x35B148] 0x1D 变体）、世界坐标 [0x2F884C]/[0x2F8850] → **0x43CC30 地图移动**（[0xF5200]）+ [0x2F8809]==7 + [0x35B268] → 0x410840(0xB) 特例。
+- **〔目标〕**点击目标实体 [0x364450]：类型 [0x88] 门 + 名比对（0x468BF0）+ GetAsyncKeyState 0x476278/0x476250 + [0x61C70] 动画——英雄移动 + 点击目标相机字节级（F591 阶段连接）。
+- 落盘：hero-movement-camera-evidence.json（F612，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 306。
