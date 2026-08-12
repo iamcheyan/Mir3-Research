@@ -3481,3 +3481,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（caption 完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 594 (2026-08-12) — 窗口命中路由器（Finding 900）
+
+- **13 窗口矩形 + PtInRect → 模式**（路由完整）。
+- 落盘：`window-hit-router-evidence.json`（F900）+ RESEARCH_LOG Round 594。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（命中路由完整；下一弧：剩余深层角落）。

@@ -8563,3 +8563,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 590-592（F897-F898：caption 分派尾部 + caption 分派闭合）；基线 Round 589=17ef963 → Round 592=7ef2235（**557 连发 F335-F898**）——**HANDOFF 刷新 110 里程碑**。
 - 落盘：handoff-refresh-110-evidence.json（F899，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 593。
+## Round 594 (F900) — 2026-08-12：窗口命中路由器（F591/F897 路由器依赖）
+
+- **〔路由〕**0x42AAB0：开窗列表 [0xD24..0xD38] 遍历 + **jt 0x42ABE8 各模式窗口矩形**（+0x656C 背包/+0x29CFC 装备/+0x331A0 商店/+0x339B4 交易/+0x47094 行会/+0x4784C 组队/+0x47C40 状态/+0x50804 公告/+0x51168 对话/+0x51700 任务/+0x518F8 选项/+0x52130 坐骑/+0x52508 技能）+ PtInRect 0x4762B4 → 返回**窗口模式或 -1**——窗口命中路由完整（F558/F897 用）。
+- 落盘：window-hit-router-evidence.json（F900，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 594。
