@@ -6207,3 +6207,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔状态图〕**0 BUY 0x44EAB8 f1000 / 1 SELL 0x44F7EF f1003 / 2 仓库 0x44F940 f1001 / 3 CRAFT 0x44FB00 / 4 详情——各态重工厂换帧；状态字节 +0x5F8。
 - **〔模拟器〕**开商店 state0（购买）10 槽 + 证据标签（浏览器验证）。
 - 落盘：store-mode-state-graph-verification-evidence.json（F399，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 93。
+## Round 94 (F400) — 2026-08-12：交易关闭验证（模拟器开/关/模态 + F337 关闭机制）
+
+- **〔模拟器〕**交易窗开 → 关 → 开 group 时交易被模态关闭（close-all F337）。
+- **〔原版〕**关闭 = 0x42ADB0 id3 → 0x42AC50 可见链表移除（F337）；trade-window-closure 证据 5/6 pending 已闭（+0x298 运行时填充 KEPT-runtime）。
+- 落盘：trade-closure-verification-evidence.json（F400，derived-tooling；关闭机制 primary-static F337）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 94。

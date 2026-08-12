@@ -1,0 +1,38 @@
+{
+  "evidence_id": "trade-closure-verification-2026-08-12-f400",
+  "title": "Round 94 (F400): Trade closure verified - sim open/close/modal (trade opens, closes, group-open closes trade via close-all), original close = 0x42ADB0 id3 -> 0x42AC50 remove (F337), trade-window-closure evidence (5/6 pending closed) confirmed",
+  "date": "2026-08-12",
+  "objective": "Verify the trade window's closure behavior end-to-end: sim open/close/modal and the original close mechanism.",
+  "question": "How does the trade window close, and does the sim match?",
+  "method": "Sim browser test (open/close/modal); trade-window-closure-evidence + F337 close mechanism cross-ref.",
+  "scope": "sim window.exchange-candidate; trade-window-closure-evidence.json; F337 0x42ADB0.",
+  "cell_analysis": {
+    "sim": {"open": "window.exchange-candidate visible", "close": "setWindowOpen(false) removes", "modal": "opening window.group closes trade (close-all F337)"},
+    "original_close": "F337: 0x42ADB0(hero, 3) -> id3 gate -> 0x42AC50 visible-list remove + vtable+0x10(0)",
+    "closure_evidence": "trade-window-closure-evidence.json: 5/6 pending closed (base ctor +0x40/+0x44 content size, slot algebra, gauge hit, frame 1050 pixel catalog); +0x298 runtime fill KEPT-runtime"
+  },
+  "exe_trace": {
+    "trade_window": "hero+0x3399C (id3, frame 1050 484x330, vtable 0x47663C)",
+    "close_path": "0x42ADB0 -> 0x42AC50 (F337)"
+  },
+  "audit_vs_exe": {
+    "F337": "id3 close via 0x42AC50 confirmed",
+    "F364": "trade content + gold flow confirmed",
+    "trade-window-closure": "field/slot algebra closed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim setWindowOpen mirrors 0x42ADB0 toggle; close-all modal identical",
+    "content_vs_closure": "F364 = content; F400 = closure lifecycle"
+  },
+  "verdict": "Trade closure verified (primary-bytes via F337 + sim): trade window opens/closes/modal-switches correctly in sim; original close = 0x42ADB0 id3 -> 0x42AC50 (F337). Trade-window-closure evidence (5/6 pending closed) confirmed. Trade subsystem fully closed.",
+  "evidence_level": "derived-tooling (close mechanism primary-static F337)",
+  "evidence_level_note": "Sim lifecycle browser-verified; close mechanism from F337 primary bytes.",
+  "cross_refs": ["F337: visibility dispatcher", "F364: trade content", "trade-window-closure-evidence.json"],
+  "tool": "puppeteer browser; evidence JSON",
+  "reproduce": "open sim; open trade; close; open group (trade closes via modal)",
+  "notes": [
+    "trade close = visibility list remove (not window destroy)",
+    "modal close-all runs before every show (F337 single-window)",
+    "5/6 closure pending items closed; +0x298 runtime fill remains [KEPT-runtime]"
+  ]
+}

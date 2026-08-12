@@ -696,6 +696,11 @@ git diff --check
 - **5 态工厂链**（0x44EAB8/0x44F7EF/0x44F940/0x44FB00）+ 状态字节 +0x5F8；模拟器 state0 显示验证。
 - 落盘：`store-mode-state-graph-verification-evidence.json`（F399，primary-bytes）+ RESEARCH_LOG Round 93。
 
+## Round 94 (2026-08-12) — 交易关闭验证（Finding 400）
+
+- **模拟器开/关/模态验证**；原版关闭 = 0x42ADB0 → 0x42AC50（F337）。
+- 落盘：`trade-closure-verification-evidence.json`（F400）+ RESEARCH_LOG Round 94。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
