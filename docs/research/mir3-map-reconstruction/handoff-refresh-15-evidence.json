@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-15-2026-08-12-f597",
+  "title": "Round 291 (F597): HANDOFF refresh 15 - Rounds 287-290 (F593-F596: world-map overlay/hover + player marker/ratio bars + map widget arc closure), baseline Round 286=f711837 -> Round 290=251b3bd (255 consecutive F335-F596), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 287-290.",
+  "question": "What changed since HANDOFF refresh 14?",
+  "method": "Append Round 287-290 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 287-290 appended (4 rounds, F593-F596)",
+    "baseline": "Round 286=f711837 -> Round 290=251b3bd (255 consecutive F335-F596)",
+    "arcs": {"overlay": "F594 world-map hover/coords", "marker": "F595 player marker + ratios", "closure": "F596 map widget arc"},
+    "key": "map widget layer complete (minimap + world-map render/overlay/marker)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F593": "refresh 14 baseline -> now refresh 15", "F335-F596": "255 rounds"
+  },
+  "contrast": {
+    "refresh_14_vs_15": "F594-F596 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 15 (F597): Rounds 287-290 documented (map widget layer), baseline f711837 -> 251b3bd, 255 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F594-F596 evidence.",
+  "cross_refs": ["F593: refresh 14", "F596: map closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 287-290 section to HANDOFF",
+  "notes": [
+    "255 consecutive shipping rounds F335-F596",
+    "next: remaining deep corners, sim polish"
+  ]
+}

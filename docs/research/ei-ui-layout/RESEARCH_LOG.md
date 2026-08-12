@@ -7221,3 +7221,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**221 证据 JSON**；三服务 200；master e5dc5e7（**254 连发 F335-F595 已推**）。
 - **〔弧〕**小地图 HUD（F584：缩放 + 帧 0x33 + 6 图标）+ 大地图基础（F584：4 态 + 玩家箭头）+ 覆盖层/悬停（F594：坐标文本 + 渐变条 + 帧 0x3C）+ 玩家标记/比例条（F595：HP qword 比率 + 箭头帧 0x3E）——**整个地图 widget 层字节级**。
 - 落盘：map-widget-arc-closure-evidence.json（F596，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 290。
+## Round 291 (F597) — 2026-08-12：HANDOFF 刷新 15（Round 287-290）
+
+- **〔刷新〕**HANDOFF 追加 Round 287-290（F594-F596：大地图覆盖层/标记 + 地图 widget 弧）；基线 Round 286=f711837 → Round 290=251b3bd（**255 连发 F335-F596**）。
+- 落盘：handoff-refresh-15-evidence.json（F597，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 291。
