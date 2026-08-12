@@ -55,40 +55,136 @@
 
 ### 3.1 ✅ 支持的能力（设计时可自由使用）
 
-**A. 任务步骤（QuestTaskType，共 3 种）**
+**A. 任务（QuestInfo）——字段级定义**
 
-| 类型 | 说明 | 参数 |
+| 字段 | 类型 | 说明 |
 |------|------|------|
-| `KillMonster` | 击杀指定怪物计数 | 怪物（可限定地图/掉落组）+ 数量 |
-| `GainItem` | 收集任务物品（杀怪掉落自动计数，绑定任务）| 物品 + 数量 |
-| `VisitRegion` | 到达指定地图区域 | 区域 + 数量 |
+| `QuestName` | string | 任务唯一名（Identity，如 `MAIN_EP1_CURE`）|
+| `QuestType` | QuestType | General=普通 / Daily=每日 / Weekly=周常 / Repeatable=可重复 / **Story=剧情（一次性）** / Account=账号级 |
+| `AcceptText` | string | 接取时显示的文本（可含 `[PLAYERNAME]` 玩家名占位符）|
+| `ProgressText` | string | 任务追踪中显示的进度文本 |
+| `CompletedText` | string | 完成时显示的文本 |
+| `ArchiveText` | string | 归档/回顾文本 |
+| `StartNPC` | NPCInfo | 接取 NPC（对话按钮触发接受）|
+| `FinishNPC` | NPCInfo | 交任务 NPC |
+| `Requirements` | QuestRequirement[] | 接取条件（见下）|
+| `Tasks` | QuestTask[] | 任务步骤（见下）|
+| `Rewards` | QuestReward[] | 奖励（见下）|
 
-- 任务步骤可多步组合、可顺序推进；全部完成 → 找 NPC 交任务（`FinishQuests`）
-- 任务类型（QuestType）：General 普通 / **Daily 每日** / **Weekly 周常** / Repeatable 可重复 / **Story 剧情** / Account
-- 接取条件（QuestRequirement）：等级范围 / 是否已接 / 是否已完成 / **职业限定** / 前后置任务链
+**QuestRequirement（接取条件）**
 
-**B. NPC 对话分支（NPCButton/Page + NPCCheck/NPCAction）——"剧情引擎"**
+| 类型 | 参数 | 说明 |
+|------|------|------|
+| `MinLevel` / `MaxLevel` | IntParameter1=等级 | 等级范围 |
+| `NotAccepted` / `HaveCompleted` / `HaveNotCompleted` | QuestParameter=前置任务 | 前后置任务链 |
+| `Class` | Class=RequiredClass | 职业限定（Warrior/Wizard/Taoist/Assassin 位掩码）|
 
-- **NPCCheck 条件（21 种）**：等级 / 职业 / 性别 / 金币 / 持有物品 / PK 值 / 武器状态（等级/元素/可炼制）/ 坐骑 / 婚姻 / 婚礼戒指 / 空间（背包满?）/ 随机数 / **DataList 标记** / **DataValue 数值** / 声望
-- **NPCAction 动作（22 种）**：`Teleport` 传送 / 给收金币 / 给收物品 / `Message` 消息 / **`AddDataList`/`RemoveDataList`/`ClearDataList` 剧情标记** / **`SetDataValue`/`ChangeDataValue` 剧情数值** / 货币 / 声望 / 转生 / 武器炼制 / 婚姻 / 坐骑
-- **对话树**：按钮 → 页面多级跳转，Check 条件决定分支走向
+> 注：QuestRequirement 无 Accepted 类型（区别于 NPCRequirement）；默认 OnCreated 自动加一条 `HaveNotCompleted` 自身。
+
+**QuestTask（任务步骤，QuestTaskType 共 3 种）**
+
+| 类型 | 参数 | 说明 |
+|------|------|------|
+| `KillMonster` | `MonsterDetails[]`（怪物+地图+Chance 掉率+Amount 数量）+ `MobDescription` + `Amount` | 击杀计数；MonsterDetails 可空=任意怪 |
+| `GainItem` | `ItemParameter`（物品）+ `Amount` | 收集任务物品；杀怪掉落时自动挂接 UserTask 并标记 QuestItem |
+| `VisitRegion` | `RegionParameter`（MapRegion）+ `Amount` | 到达指定地图区域计数 |
+
+- 多步骤**并行推进**（每步独立计数），全部 `Amount` 达标 → `IsComplete` → 找 FinishNPC 交差
+- 步骤可复用同一怪物/物品但不同数量，形成"阶段感"
+
+**QuestReward（奖励）**
+
+| 字段 | 说明 |
+|------|------|
+| `Item` + `Amount` | 物品奖励 |
+| `Choice` | 多选一：多个 Choice 奖励，玩家选一个 |
+| `Bound` | 绑定（不可交易）|
+| `Duration` | 限时物品（秒，0=永久）|
+| `Class` | 职业限定（RequiredClass 位掩码，默认 All）|
+
+**B. NPC 对话分支（NPCPage/NPCButton/NPCCheck/NPCAction）——"剧情引擎"**
+
+**NPCPage（对话页）**
+
+| 字段 | 说明 |
+|------|------|
+| `Description` | 页名（Identity）|
+| `DialogType` | 对话框类型 |
+| `Say` | 本页台词文本 |
+| `SuccessPage` | 条件满足时跳转页（与 Checks 配合）|
+| `Arguments` | 参数串 |
+| `Currency` | 货币参数 |
+| `Checks[]` / `Actions[]` / `Buttons[]` | 条件/动作/按钮 |
+
+**NPCCheck（条件检查，21 种）**
+
+| CheckType | 参数 | 说明 |
+|-----------|------|------|
+| `Level` | Operator + IntParameter1 | 等级比较 |
+| `Class` | IntParameter1=RequiredClass | 职业判断 |
+| `Gender` | IntParameter1 | 性别 |
+| `Gold` | Operator + IntParameter1 | 金币持有 |
+| `HasItem` | ItemParameter1 + IntParameter1 | 持有物品（数量）|
+| `PKPoints` | Operator + IntParameter1 | PK 值 |
+| `HasWeapon` / `WeaponLevel` / `WeaponElement` / `WeaponCanRefine` | ItemParameter1 | 武器状态检查 |
+| `Horse` | IntParameter1 | 坐骑 |
+| `Marriage` / `WeddingRing` | - | 婚姻状态 |
+| `CanGainItem` / `CanResetWeapon` | ItemParameter1 | 背包空间/武器可重置 |
+| `Random` | IntParameter1 | 随机概率（%），**对话掷骰子** |
+| `WeaponAddedStats` | - | 武器附加属性 |
+| `Currency` | IntParameter1 | 货币余额 |
+| `RollResult` | IntParameter1 | 掷骰结果比较 |
+| `CheckDataList` | StringParameter1=分类 | **检查剧情标记**（该玩家在该分类列表内？）|
+| `CheckDataValue` | StringParameter1=分类 + Operator + IntParameter1 | **检查剧情数值** |
+| `CheckFame` | IntParameter1 | 声望等级 |
+
+**NPCAction（动作，22 种）**
+
+| ActionType | 参数 | 说明 |
+|------------|------|------|
+| `Teleport` | MapParameter1 + IntParameter1/2 | 传送 |
+| `GiveGold` / `TakeGold` | IntParameter1 | 给/收金币 |
+| `GiveItem` / `TakeItem` | ItemParameter1 + IntParameter1 | 给/收物品（可指定数量）|
+| `ChangeElement` | IntParameter1 | 改武器元素 |
+| `ChangeHorse` | IntParameter1 | 换坐骑 |
+| `Message` | StringParameter1 | 显示消息 |
+| `Marriage` / `Divorce` / `RemoveWeddingRing` | - | 婚姻系统 |
+| `ResetWeapon` / `GiveItemExperience` / `SpecialRefine` | ItemParameter1 + IntParameter1 | 武器炼制 |
+| `Rebirth` | - | 转生 |
+| `GiveCurrency` / `TakeCurrency` | IntParameter1 + IntParameter2 | 货币增减 |
+| `AddDataList` / `RemoveDataList` / `ClearDataList` | StringParameter1=分类 + IntParameter1=NPCDataType | **写入/删除/清空剧情标记** |
+| `SetDataValue` / `ChangeDataValue` | StringParameter1=分类 + IntParameter1 | **设置/增减剧情数值** |
+| `PromoteFame` | IntParameter1 | 提升声望 |
+
+**NPCButton（按钮）**：`ButtonID` + `DestinationPage`——按钮跳转到目标页，构成对话树分支。
+
+**NPCDataType**（DataList/DataValue 的值来源）：决定标记记录的是玩家名/怪物名/物品名等维度。
 
 **C. 由此可实现的任务设计（我们的主线全部依赖这些）**
 
 | 设计需求 | 实现方式 |
 |---------|---------|
-| **对话选项分支**（选 A / 选 B 走不同剧情）| ✅ NPCButton 分页 + NPCCheck 条件分支 |
-| **剧情选择影响后续**（"是否交出信物"等）| ✅ `AddDataList` 记录选择 → 后续 NPC `CheckDataList` 说不同话 |
-| **剧情变量**（章节进度/真相状态）| ✅ DataList / DataValue 标记体系 |
-| **递送任务**（A 处取信 → B 处交付）| ✅ `TakeItem` + `GiveItem` + 两个 NPC 组合 |
-| **技能觉醒任务**（收集卷轴→交任务→学会）| ✅ GainItem（技能书/觉醒卷轴）+ FinishQuests |
+| **对话选项分支**（选 A / 选 B 走不同剧情）| ✅ 一个页多个 Button → 不同 DestinationPage |
+| **剧情选择影响后续**（"是否交出信物"等）| ✅ `AddDataList` 记录选择 → 后续 NPC `CheckDataList` 分支 |
+| **剧情变量**（章节进度/真相状态）| ✅ DataList（标记存在与否）+ DataValue（数值/计数）|
+| **对话掷骰子**（随机成败，如"劝降"）| ✅ NPCCheck.Random + SuccessPage/失败页 |
+| **递送任务**（A 处取信 → B 处交付）| ✅ TakeItem/GiveItem + 两个 NPC 对话组合 |
+| **技能觉醒任务**（收集卷轴→交任务→学会）| ✅ GainItem（技能书）+ FinishQuests |
 | **职业专属任务**（三线分线）| ✅ QuestRequirement.Class + NPCCheck.Class |
-| **每周/每日限时开启**（如神舰开门）| ✅ QuestType.Daily/Weekly + NPCRequirement.DaysOfWeek |
-| **双结局/分歧**（封印 vs 救赎）| ✅ DataList 标记 + 终章 NPC 条件分支 |
-| **BOSS 战任务**（击杀指定 BOSS）| ✅ KillMonster + `QuestTaskMonsterDetails`（可限定地图/掉率）|
+| **每周/每日限时开启**（神舰开门）| ✅ QuestType.Daily/Weekly + NPCRequirement.DaysOfWeek |
+| **双结局/分歧**（封印 vs 救赎）| ✅ DataList 标记 + 终章 NPC CheckDataList 分支 |
+| **BOSS 战任务**（击杀指定 BOSS）| ✅ KillMonster + QuestTaskMonsterDetails（地图+掉率限定）|
 | **声望成长**（万事通声望等级）| ✅ CheckFame / PromoteFame |
+| **货币经济**（任务奖励特殊货币）| ✅ GiveCurrency / TakeCurrency + Currency 检查 |
 
-**D. NPC 可见性条件（NPCRequirement）**：等级 / 职业 / 任务状态 / **星期几**——NPC 可按天/按任务进度出现（如"神舰开门时失乐园海边出现摆渡人"）。
+**D. NPC 可见性条件（NPCRequirement）**
+
+| 类型 | 说明 |
+|------|------|
+| `MinLevel` / `MaxLevel` | 等级 |
+| `Accepted` / `NotAccepted` / `HaveCompleted` / `HaveNotCompleted` | 任务状态（QuestParameter）|
+| `Class` | 职业 |
+| `DaysOfWeek` | **星期几可见**（位掩码）——如"神舰开门日海边出现摆渡人" |
 
 ### 3.2 ❌ 不支持的能力（设计时回避）
 
