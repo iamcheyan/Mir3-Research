@@ -2929,3 +2929,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会 3 页完整；下一弧：剩余深层角落）。
+## Round 525 (2026-08-12) — 行会页闭合（Finding 831）
+
+- **489 连发 + 455 证据 + 行会页完整**。
+- 落盘：`guild-pages-closure-evidence.json`（F831）+ RESEARCH_LOG Round 525。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会页完整；下一弧：HANDOFF 刷新 87/剩余角落）。
