@@ -1,0 +1,37 @@
+{
+  "evidence_id": "control-hit-setpos-ctor-2026-08-12-f704",
+  "title": "Round 398 (F704): Control hit-test + set-pos + ctor - 0x4177F0 (F243 CONFIRMED): [0x25]=0 + PtInRect [0x4] (0x4762B4) + hover sound 0x69 (0x45AFC0); 0x417830 = set-pos ([0x28]/[0x2C] + rect from WIL dims 0x466130); 0x417880 = frame-set ([0x20] + rect); 0x4178E0 = ctor (vtable 0x476654, rects [0x4]/[0x34]) - control core COMPLETE (F701 + this)",
+  "date": "2026-08-12",
+  "objective": "Decode the control hit-test + set-pos + ctor.",
+  "question": "How do control hits + positioning work?",
+  "method": "Disasm 0x4177F0-0x41792A.",
+  "scope": "0x4177F0-0x41792A; vtable 0x476654.",
+  "cell_analysis": {
+    "0x4177F0": "hit-test: [0x25]=0 + PtInRect [0x4] + hover sound 0x69",
+    "0x417830": "set-pos: [0x28]/[0x2C] + rect from WIL dims",
+    "0x417880": "frame-set: [0x20] + rect",
+    "0x4178E0": "ctor: vtable 0x476654 + rects [0x4]/[0x34]"
+  },
+  "exe_trace": {
+    "control_chain": "ctor -> frame-set/set-pos -> hit-test (sound) -> paint"
+  },
+  "audit_vs_exe": {
+    "F243": "hit-test CONFIRMED", "F701": "ctor/paint", "F313": "controls"
+  },
+  "contrast": {
+    "hit_vs_set": "hit-test + set-pos",
+    "ctor_vs_paint": "ctor + paint (F701)"
+  },
+  "verdict": "Control hit-test + set-pos + ctor PRIMARY-verified: vtable 0x476654 + PtInRect + sound; control core complete (F701 + this).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Control core decoded from .text.",
+  "cross_refs": ["F243: hit", "F701: ctor/paint", "F313: controls"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4177F0+0x10; 0x417830+0x10",
+  "notes": [
+    "hover sound 0x69",
+    "vtable 0x476654",
+    "rects [0x4]/[0x34]",
+    "set-pos from WIL dims"
+  ]
+}

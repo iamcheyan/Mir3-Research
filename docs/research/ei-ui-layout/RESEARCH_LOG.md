@@ -7715,3 +7715,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 394-396（F701-F702：控件构造/绘制 + 控件系统弧）；基线 Round 393=4c6ccba → Round 396=6e94d4d（**361 连发 F335-F702**）。
 - 落盘：handoff-refresh-45-evidence.json（F703，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 397。
+## Round 398 (F704) — 2026-08-12：控件命中 + 定位 + 构造
+
+- **〔命中〕**0x4177F0（F243 确认）：[0x25]=0 + PtInRect [0x4]（0x4762B4）+ **悬停音效 0x69**（0x45AFC0）；0x417830 = 设置位置（[0x28]/[0x2C] + WIL 尺寸矩形）；0x417880 = 设置帧（[0x20] + 矩形）；0x4178E0 = ctor（vtable 0x476654、矩形 [0x4]/[0x34]）——控件核心完整（F701 + 此项）。
+- 落盘：control-hit-setpos-ctor-evidence.json（F704，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 398。
