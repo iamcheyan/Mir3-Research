@@ -664,3 +664,14 @@ simulator/style.css
 **混合渲染弧闭合（F630）**：288 连发 + 254 证据 JSON；用户 quest-design 文件（item_catalog.json/vision_item_desc/vision_batches）在工作树——未触碰。
 
 **commit 基线更新**：Round 321=582e689 → Round 324=2603e46（master 已推，289 连发 F335-F630）。
+
+
+## Round 325-328 追加交付（2026-08-12，Finding 631-634）：HANDOFF 刷新 23 + 音效引擎 + 音乐引擎 + 音频弧
+
+**HANDOFF 刷新 23（F631）**：基线更新至 Round 324=2603e46（289 连发）。
+
+**音频子系统（F632-F633）**：**音效引擎 + DirectSound**（0x45B250 播放链：SOUND\ 路径 0x47D88C + 名过滤器 'none'/'nobgm' + 0x45AF30 查找 + 0x45A3E0/0x45A4A0 播放经 hwnd [0x8AB7B0]；0x45BF30 **DirectSound 初始化** IID 'vids' 0x73646976 + QueryInterface + 缓冲结构）、**音乐 MIDI 引擎**（0x45BD80 ctor 状态清 + SetRect；0x45BE20 停止 midiOutStop 0x400E + 释放）。
+
+**音频弧闭合（F634）**：292 连发 + 258 证据 JSON——音频子系统完整（音效 + DSound + MIDI BGM），连接 F607/F470/F528；用户 quest 文件（item_catalog.json/vision_item_desc/vision_batches）未触碰。
+
+**commit 基线更新**：Round 324=2603e46 → Round 328=5534555（master 已推，293 连发 F335-F634）。

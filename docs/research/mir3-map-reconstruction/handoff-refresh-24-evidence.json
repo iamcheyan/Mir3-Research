@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-24-2026-08-12-f635",
+  "title": "Round 329 (F635): HANDOFF refresh 24 - Rounds 325-328 (F631-F634: sound engine + DSound + music MIDI engine + audio arc closure), baseline Round 324=2603e46 -> Round 328=5534555 (293 consecutive F335-F634), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 325-328.",
+  "question": "What changed since HANDOFF refresh 23?",
+  "method": "Append Round 325-328 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 325-328 appended (4 rounds, F631-F634)",
+    "baseline": "Round 324=2603e46 -> Round 328=5534555 (293 consecutive F335-F634)",
+    "arcs": {"sound": "F632 sound + DSound", "music": "F633 MIDI engine", "closure": "F634 audio arc"},
+    "key": "audio subsystem complete (sound + DSound + MIDI)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F631": "refresh 23 baseline -> now refresh 24", "F335-F634": "293 rounds"
+  },
+  "contrast": {
+    "refresh_23_vs_24": "F632-F634 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 24 (F635): Rounds 325-328 documented (audio subsystem), baseline 2603e46 -> 5534555, 293 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F632-F634 evidence.",
+  "cross_refs": ["F631: refresh 23", "F634: audio closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 325-328 section to HANDOFF",
+  "notes": [
+    "293 consecutive shipping rounds F335-F634",
+    "next: remaining deep corners, sim polish"
+  ]
+}

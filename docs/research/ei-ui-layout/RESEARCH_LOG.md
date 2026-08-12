@@ -7401,3 +7401,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**音效引擎 + DirectSound（F632）+ 音乐 MIDI 引擎（F633）——**音频子系统完整（音效 + DSound + MIDI BGM）**，连接 F607/F470/F528。
 - **〔仓库〕**用户 quest 文件（item_catalog.json/vision_item_desc/vision_batches）未触碰。
 - 落盘：audio-arc-closure-evidence.json（F634，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 328。
+## Round 329 (F635) — 2026-08-12：HANDOFF 刷新 24（Round 325-328）
+
+- **〔刷新〕**HANDOFF 追加 Round 325-328（F632-F634：音效/DSound + MIDI 音乐 + 音频弧）；基线 Round 324=2603e46 → Round 328=5534555（**293 连发 F335-F634**）。
+- 落盘：handoff-refresh-24-evidence.json（F635，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 329。
