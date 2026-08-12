@@ -1,0 +1,40 @@
+{
+  "evidence_id": "scroll-blit-composite-closure-2026-08-12-f422",
+  "title": "Round 116 (F422): Scroll blit composite CLOSED - 0x43B1E0 (viewport [map+0x14C..+0x158] vs player ±0xC gate, SetRect x±0x12/y±0x12 via 0x4762B0, re-render) + 0x43B440 (buffer [map+0x1B2] 768x576) + 0x45E8E0 screen blit; callers 0x410838 (tile refresh) + 0x43B7F5 (map load) - pending item closed",
+  "date": "2026-08-12",
+  "objective": "Close the long-standing pending item: the 0x43B1E0 scroll blit -> 0x43B440 buffer composite path.",
+  "question": "How does the client scroll the map viewport and composite the tile buffer to screen?",
+  "method": "Capstone disassembly of 0x43B1E0 (scroll) + 0x43B440 callers + 0x410838 (tile refresh).",
+  "scope": "0x43B1E0-0x43B283 (scroll), 0x410838, 0x43B7F5, buffer +0x1B2.",
+  "cell_analysis": {
+    "scroll_0x43B1E0": {
+      "gate": "viewport [map+0x14C] (left) vs player_x-0xC, [+0x154] vs +0xC, [+0x150]/[+0x158] y-bounds - if player within ±12 of edges, no scroll",
+      "action": "SetRect([map+0x14C], x-0x12, y-0x12, x+0x12, y+0x12) via [0x4762B0] + tile re-render loop"
+    },
+    "composite": {"render": "0x43B440 into [map+0x1B2] 768x576 buffer (0x6C000 dwords)", "blit": "0x45E8E0 to screen DC", "callers": "0x410838 (tile refresh fn) + 0x43B7F5 (map load tail, gated [map+0x18C])"},
+    "tile_refresh": "0x410820-0x41083D: 0x43C9C0(map, ecx=[esi+0x62A58]) -> 0x43B440 re-render"
+  },
+  "exe_trace": {
+    "map_object": "main+0xF5200; viewport +0x14C..+0x158; buffer +0x1B2 (F331/F379/F422)"
+  },
+  "audit_vs_exe": {
+    "F332": "0x43B1E0 = viewport scroll confirmed",
+    "F379": "buffer 768x576 confirmed",
+    "F331": "0x45E8E0 blit confirmed"
+  },
+  "contrast": {
+    "scroll_vs_render": "scroll updates viewport rect + re-renders; render fills buffer + blits",
+    "gate_vs_action": "±0xC gate skips scroll when player centered; ±0x12 SetRect when scrolled"
+  },
+  "verdict": "Scroll blit composite CLOSED (primary-bytes): 0x43B1E0 scroll (viewport ±0xC gate, SetRect ±0x12) -> 0x43B440 re-render (768x576 buffer +0x1B2) -> 0x45E8E0 screen blit. The long-standing pending item is now byte-verified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All scroll/render/blit bytes read directly from MIR3.EXE.",
+  "cross_refs": ["F332: scroll", "F379: viewport buffer", "F331: tile render", "F422: this closure"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "img.disasm(0x43B1E0, 0x100); img.disasm(0x410820, 0x20); img.disasm(0x43B7E9, 0x10)",
+  "notes": [
+    "scroll loop re-renders tiles after SetRect (0x43B248+)",
+    "0x410838 = tile refresh (F422 new caller discovery)",
+    "pending item resolved: static composite fully byte-verified"
+  ]
+}

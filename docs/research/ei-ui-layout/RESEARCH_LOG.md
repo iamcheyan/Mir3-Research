@@ -6304,3 +6304,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔审计〕**6301 行研究日志、172 UI JSON + 47 地图 JSON、58 记录 layout.json、1613 行模拟器、wilviewer 8765 + mapviewer 8899 在线、86 连发 commit 全推 master（8145504）。
 - **〔HANDOFF〕**追加 Round 93-114 交付摘要。
 - 落盘：deliverable-audit-evidence.json（F421，derived-tooling）+ HANDOFF + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 115。
+## Round 116 (F422) — 2026-08-12：滚动 blit 复合路径闭合（长期 pending 项）
+
+- **〔0x43B1E0 滚动〕**视口 [map+0x14C..+0x158] vs 玩家 ±0xC 门（玩家居中跳过）；越界 → SetRect(x±0x12, y±0x12) + 重渲染。
+- **〔复合〕**0x43B440 → [map+0x1B2] 768×576 缓冲 → 0x45E8E0 屏幕 blit；callers 0x410838（瓦片刷新）+ 0x43B7F5（地图装载尾）。
+- **〔闭合〕**长期 pending（0x43B1E0 → 0x43B440 复合路径）字节级验证闭合。
+- 落盘：scroll-blit-composite-closure-evidence.json（F422，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 116。
