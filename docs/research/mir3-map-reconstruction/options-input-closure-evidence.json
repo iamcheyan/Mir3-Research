@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-input-closure-2026-08-12-f928",
+  "title": "Round 622 (F928): Options input CLOSED (F546/F761/F776/F927) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0678ebb (586 consecutive F335-F927), 552 evidence JSONs; arc: sliders (F546) + click (F761) + apply (F776) + toggle handler (F927) - options input COMPLETE byte-level (BGM/SFX sliders + toggle + 11 control dispatch + apply), options window 100% interactive",
+  "date": "2026-08-12",
+  "objective": "Close the options input arc.",
+  "question": "Is the options input fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "552 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F546": "sliders", "F761": "click", "F776": "apply", "F927": "toggle"},
+    "options": "sliders + toggles + apply = COMPLETE",
+    "milestone": "586 consecutive rounds F335-F927"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F927": "586 rounds pushed; options input complete"
+  },
+  "contrast": {
+    "slider_vs_toggle": "BGM/SFX + flags",
+    "click_vs_apply": "11 controls + 0x441F40"
+  },
+  "verdict": "Options input CLOSED (F928): sliders + toggles + apply all byte-level; validation green, 586 consecutive rounds, 552 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F546/F761/F776/F927.",
+  "cross_refs": ["F546", "F761", "F776", "F927"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "586 consecutive shipping rounds F335-F927",
+    "options input 100%",
+    "next: HANDOFF refresh 121, remaining corners"
+  ]
+}

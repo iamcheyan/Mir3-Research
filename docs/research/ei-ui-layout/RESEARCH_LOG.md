@@ -8684,3 +8684,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔选项〕**0x441A20：**BGM 滑块 [0x6C]** += 鼠标 x 增量（钳制 0..0xA0、0xFFFFFFD2 偏移 → 0x441F40 应用）+ **SFX [0x74]**（arg 0）+ **11 控件点击分派**（vtable[8] @ +0x7C stride 0xB4）；0x441B10 控件重置（11 清）——选项输入完整。
 - 落盘：options-toggle-click-handler-evidence.json（F927，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 621。
+## Round 622 (F928) — 2026-08-12：选项输入闭合（F546/F761/F776/F927 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**552 证据 JSON**；三服务 200；master 0678ebb（**586 连发 F335-F927 已推**）。
+- **〔弧〕**滑块（F546）+ 点击（F761）+ 应用（F776）+ 开关处理（F927）——**选项输入完整**（BGM/SFX 滑块 + 开关 + 11 控件分派 + 应用），选项窗口 100% 交互。
+- 落盘：options-input-closure-evidence.json（F928，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 622。

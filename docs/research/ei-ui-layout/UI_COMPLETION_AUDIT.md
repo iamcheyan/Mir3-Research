@@ -3705,3 +3705,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（选项输入完整；下一弧：剩余深层角落）。
+## Round 622 (2026-08-12) — 选项输入闭合（Finding 928）
+
+- **586 连发 + 552 证据 + 选项输入完整**。
+- 落盘：`options-input-closure-evidence.json`（F928）+ RESEARCH_LOG Round 622。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（选项输入完整；下一弧：HANDOFF 刷新 121/剩余角落）。
