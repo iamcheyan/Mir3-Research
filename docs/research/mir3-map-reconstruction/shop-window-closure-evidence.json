@@ -1,0 +1,37 @@
+{
+  "evidence_id": "shop-window-closure-2026-08-12-f955",
+  "title": "Round 649 (F955): Shop window CLOSED (F740/F824/F911/F954) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 731c55d (613 consecutive F335-F954), 579 evidence JSONs; arc: shop mode click (F740) + click dispatch (F824) + slot hit (F911) + input/click (F954) - shop window COMPLETE byte-level (mode 0/1/3/4 + scrollbar + buy msg 0x3EA + sell/repair 0x4521F0 + input), shop surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the shop window arc.",
+  "question": "Is the shop window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "579 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F740": "mode click", "F824": "click dispatch", "F911": "slot hit", "F954": "input/click"},
+    "shop": "mode + slots + input = COMPLETE",
+    "milestone": "613 consecutive rounds F335-F954"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F954": "613 rounds pushed; shop window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "buy_vs_sell": "0x3EA + 0x4521F0"
+  },
+  "verdict": "Shop window CLOSED (F955): mode + slot + input all byte-level; validation green, 613 consecutive rounds, 579 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F740/F824/F911/F954.",
+  "cross_refs": ["F740", "F824", "F911", "F954"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "613 consecutive shipping rounds F335-F954",
+    "shop window 100%",
+    "next: HANDOFF refresh 130, remaining corners"
+  ]
+}

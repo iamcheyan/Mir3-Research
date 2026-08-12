@@ -3921,3 +3921,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店输入完整；下一弧：剩余深层角落）。
+## Round 649 (2026-08-12) — 商店窗口闭合（Finding 955）
+
+- **613 连发 + 579 证据 + 商店窗口完整**。
+- 落盘：`shop-window-closure-evidence.json`（F955）+ RESEARCH_LOG Round 649。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店窗口完整；下一弧：HANDOFF 刷新 130/剩余角落）。

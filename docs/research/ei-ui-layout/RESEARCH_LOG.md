@@ -8802,3 +8802,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔商店〕**0x44F110 商店输入（模式 [0x5F8] 0/1/3/4 买/卖/修 → 滚动条 0x417C80 @ +0x5FC → 滚动 [0x700]；否则 8 控件 vtable[8] @ +0x54 stride 0xB4）；0x44F1A0 滚动衰减；0x44F1D0 **点击**（买 0x44E700 槽 → 物品检查 [eax+0x20] → 0x423E80 发送 + msg 0x3EA + 卖/修 0x4521F0 ecx 0x8AB828）——商店输入完整。
 - 落盘：shop-window-input-click-evidence.json（F954，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 648。
+## Round 649 (F955) — 2026-08-12：商店窗口闭合（F740/F824/F911/F954 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**579 证据 JSON**；三服务 200；master 731c55d（**613 连发 F335-F954 已推**）。
+- **〔弧〕**模式点击（F740）+ 点击分派（F824）+ 槽命中（F911）+ 输入/点击（F954）——**商店窗口完整**（模式 0/1/3/4 + 滚动条 + 买 msg 0x3EA + 卖/修 0x4521F0 + 输入），商店表面 100%。
+- 落盘：shop-window-closure-evidence.json（F955，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 649。
