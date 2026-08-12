@@ -1,0 +1,36 @@
+{
+  "evidence_id": "store-manager-hit-click-2026-08-12-f661",
+  "title": "Round 355 (F661): Store manager + hit/click - 0x44E8B0 = store update (list [0x70C] nodes, selected [0x7E4], vtable[0x14] + free 0x4680F8); 0x44E910 = store HIT-TEST (mode byte [0x5F8]: 1 = rect +0x12C/+0xD0, 4 = +0x12C/+0x64, PtInRect 0x4762B4); 0x44E9B0 = store CLICK (modes 0/1/3/4 -> [0x54] vtable[0x10], 1/2/4 -> [0x1BC] + list [0x70C] cleanup) - store manager byte-level (F555 store family connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the store manager + hit/click.",
+  "question": "How does the store manager work?",
+  "method": "Disasm 0x44E8B0-0x44EA82.",
+  "scope": "0x44E8B0-0x44EA82; mode [0x5F8]; list [0x70C].",
+  "cell_analysis": {
+    "0x44E8B0": "store update: list [0x70C] + selected [0x7E4] + vtable[0x14] + free",
+    "0x44E910": {"hit": "mode [0x5F8]: 1 = +0x12C/+0xD0, 4 = +0x12C/+0x64", "test": "PtInRect 0x4762B4"},
+    "0x44E9B0": {"click": "modes 0/1/3/4 -> [0x54] vtable[0x10], 1/2/4 -> [0x1BC]", "cleanup": "list [0x70C] nodes free"}
+  },
+  "exe_trace": {
+    "store_chain": "server update -> 0x44E8B0 list + selected -> hit 0x44E910 -> click 0x44E9B0"
+  },
+  "audit_vs_exe": {
+    "F555": "store family CONNECTED", "F558": "mode 2 store window", "F551": "warehouse"
+  },
+  "contrast": {
+    "hit_vs_click": "0x44E910 hit + 0x44E9B0 click",
+    "modes": "mode [0x5F8] per layout"
+  },
+  "verdict": "Store manager PRIMARY-verified: update + hit-test + click; F555 store family connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Store mgr decoded from .text.",
+  "cross_refs": ["F555: store family", "F558: window", "F551: warehouse"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44E8B0+0x10; 0x44E910+0x20",
+  "notes": [
+    "list [0x70C] + selected [0x7E4]",
+    "mode [0x5F8] layouts",
+    "hit rects +0x12C/+0xD0/+0x64",
+    "click vtable[0x10]/[0x1BC]"
+  ]
+}

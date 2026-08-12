@@ -7522,3 +7522,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 351-353（F658-F659：物品构造/类别 + 物品系统最终闭合）；基线 Round 350=d393058 → Round 353=b4a3d10（**318 连发 F335-F659**）。
 - 落盘：handoff-refresh-31-evidence.json（F660，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 354。
+## Round 355 (F661) — 2026-08-12：商店管理器 + 命中/点击
+
+- **〔更新〕**0x44E8B0 = 商店更新（列表 [0x70C] 节点、选中 [0x7E4]、vtable[0x14] + 释放）。
+- **〔命中〕**0x44E910 = 商店命中测试（模式字节 [0x5F8]：1 = 矩形 +0x12C/+0xD0、4 = +0x12C/+0x64、PtInRect 0x4762B4）。
+- **〔点击〕**0x44E9B0 = 商店点击（模式 0/1/3/4 → [0x54] vtable[0x10]、1/2/4 → [0x1BC] + 列表 [0x70C] 清理）——商店管理器字节级（F555 商店族连接）。
+- 落盘：store-manager-hit-click-evidence.json（F661，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 355。
