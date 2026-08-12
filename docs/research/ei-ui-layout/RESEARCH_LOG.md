@@ -6537,3 +6537,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔CRAFT〕**0x44FB00：模式 [0x5F8]=3、布局 0x423E80(0x3E8,0,...)、格网 [0x720]、清链表 [0x64C]+[0x70C]、strtok '/' 解析（7 token/配方）→ 0x3C 桩（名 + atoi：[+0x20] 标志、[+0x24..0x38] 6 值）→ [0x64C]；链表 push 0x44FDB0（节点 vtable 0x476AD4）。
 - **〔族全解〕**BUY（7-token 0x3C → [0x64C]）/ SELL（0xC20 记录 → [0x708]）/ 仓库（0xC20 → [0x70C]）/ CRAFT（7-token 0x3C → [0x64C]）——全部解析 '/' 分隔服务端字符串。
 - 落盘：store-craft-parser-evidence.json（F463，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 157。
+## Round 158 (F464) — 2026-08-12：物品对象结构全解（0xC20 记录）
+
+- **〔结构〕**0xC20（3104B）记录：ctor 0x430920（清 [0x68..] 0x2EE dword）；0x430940 记录→物品（0x17 dword 复制 + **类→类型映射 {1,0,4,3,7,5,2,9,0xA}** jt 0x4309E0）；图标绘制 0x430A40（**3 图标上下文** 0x5668C4/0x566A08/0x56B0E8 按类型、帧字 [0x28] → 0x466130、中心化偏移）。
+- **〔字段〕**{+0 类型、+2 字、+4 名、+0x22 类、+0x24 重量、+0x28 图标帧、+0x2A/+0x41/+0x43 持久、+0x2C/+0x2D 防御、+0x2E-0x30 属性、+0x55/+0x56 加成、+0x64 行数、+0x68 详情行}。
+- **〔统一〕**背包/商店/地面物品共用 0xC20 记录。
+- 落盘：item-object-structure-evidence.json（F464，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 158。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "item-object-structure-2026-08-12-f464",
+  "title": "Round 158 (F464): Item object structure COMPLETE - 0xC20 (3104B) record: ctor 0x430920 (zero [0x68..] 0x2EE dwords + [0]/[2]/[0x64]); 0x430940 item-from-record (0x17 dword + word + byte copy -> class dispatch jt 0x4309E0 byte map 0x430A08 -> type byte [item+0] = {1,0,4,3,7,5,2,9,0xA} per class); icon draw 0x430A40 (3 icon contexts by type: 0x5668C4/0x566A08/0x56B0E8, frame word [item+0x28] via 0x466130, offsets from ctx headers 0x5668FC/0x566A40/0x56B120) - field map {+0 type, +2 word, +4 name, +0x22 class, +0x24 weight, +0x28 icon frame, +0x2A/+0x41/+0x43 durability, +0x2C/+0x2D defense, +0x2E-0x30 stats, +0x55/+0x56 bonuses, +0x64 rows, +0x68 detail}",
+  "date": "2026-08-12",
+  "objective": "Decode the item object: ctor, from-record, icon draw, full field map.",
+  "question": "What is the complete item object layout and its type-class mapping?",
+  "method": "Disasm 0x430920 (ctor) + 0x430940 (from-record) + 0x430A40 (icon draw).",
+  "scope": "0x430920-0x430B70; item 0xC20 record.",
+  "cell_analysis": {
+    "ctor_0x430920": {"size": "0x68 + 0x2EE*4 = 0xC20 (3104B)", "zero": "[0x68..0xC20] + [0]/[2]/[0x64]"},
+    "from_record_0x430940": {"copy": "0x17 dwords + word + byte (~0x5C B header)", "class_dispatch": "[item+0x22]-5 <= 0x30, jt 0x4309E0 (byte map 0x430A08)", "type_map": "class -> type byte [item+0]: {1, 0, 4, 3, 7, 5, 2, 9, 0xA}"},
+    "icon_draw_0x430A40": {"type_dispatch": "[esp+0xC]: 0 -> 0x5668C4 / 1 -> 0x566A08 / 2 -> 0x56B0E8 icon contexts", "frame": "word [item+0x28] -> 0x466130 (F436 loader)", "offsets": "ctx headers [0x5668FC]/[0x566A40]/[0x56B120] (w/2, h/2 centering)"},
+    "field_map": {"+0": "type byte (class-derived)", "+2": "word", "+4": "name", "+0x22": "class (F456/F457 dispatch)", "+0x24": "weight", "+0x28": "icon frame word", "+0x2A/+0x41/+0x43": "durability words", "+0x2C/+0x2D": "defense min/max", "+0x2E-0x30": "stat min/max/count", "+0x55/+0x56": "signed bonuses", "+0x64": "row count", "+0x68": "detail rows (F456)"}
+  },
+  "exe_trace": {
+    "item_chain": "server string -> parse (F461-463) -> 0x430920/0x430940 item -> paint (tooltip F456/icon F464/bag F293)"
+  },
+  "audit_vs_exe": {
+    "F456": "tooltip field reads match field map",
+    "F293": "bag 0xC2C stride = 0xC20 record + slot",
+    "F461-463": "store parsers construct 0xC20 records"
+  },
+  "contrast": {
+    "type_vs_class": "class [0x22] drives tooltip/type mapping; type [0] = runtime category",
+    "icon_contexts": "3 icon WIL contexts by item type (0x5668C4/0x566A08/0x56B0E8)"
+  },
+  "verdict": "Item object structure COMPLETE (primary-bytes): 0xC20 record, ctor 0x430920, from-record 0x430940 (class->type map {1,0,4,3,7,5,2,9,0xA}), icon draw 0x430A40 (3 contexts), full field map. Connects bag/store/tooltip/ground-item systems.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor/from-record/icon + field map all decoded from .text.",
+  "cross_refs": ["F456: tooltip", "F461-463: store parsers", "F293: bag", "F459: ground items"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x430920+0x20, 0x430940+0x40, 0x430A40+0x40",
+  "notes": [
+    "0xC20 = unified item record (bag/store/ground share it)",
+    "class->type map: 9 classes -> 9 types (weapon/armor/helmet/necklace/bracelet/ring/shoe/etc [inference])",
+    "icon frame [0x28] reused by tooltip + store + bag"
+  ]
+}
