@@ -7931,3 +7931,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**377 证据 JSON**；三服务 200；master 7f54e68（**411 连发 F335-F752 已推**）。
 - **〔弧〕**窗口注册表组队（F558）+ 行会/组队/联盟错误（F569）+ 组队绘制/清除（F752）——**组队/社交完整**（双列成员 + 5 按钮 + 队长徽章 + 拆除 + 错误族），窗口模式 6 全文档化。
 - 落盘：party-social-arc-closure-evidence.json（F753，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 447。
+## Round 448 (F754) — 2026-08-12：HANDOFF 刷新 61（Round 445-447）
+
+- **〔刷新〕**HANDOFF 追加 Round 445-447（F752-F753：组队窗口 + 组队/社交弧）；基线 Round 444=e69704e → Round 447=18ca584（**412 连发 F335-F753**）。
+- 落盘：handoff-refresh-61-evidence.json（F754，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 448。

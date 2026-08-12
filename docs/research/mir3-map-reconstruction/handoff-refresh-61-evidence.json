@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-61-2026-08-12-f754",
+  "title": "Round 448 (F754): HANDOFF refresh 61 - Rounds 445-447 (F751-F753: HANDOFF 60 + 60-refresh milestone, party window draw/clear, party/social arc closure), baseline Round 444=e69704e -> Round 447=18ca584 (412 consecutive F335-F753), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 445-447.",
+  "question": "What changed since HANDOFF refresh 60?",
+  "method": "Append Round 445-447 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 445-447 appended (3 rounds, F751-F753)",
+    "baseline": "Round 444=e69704e -> Round 447=18ca584 (412 consecutive F335-F753)",
+    "arcs": {"party": "F752 draw/clear", "closure": "F753 party/social"},
+    "key": "party/social complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F751": "refresh 60 baseline -> now refresh 61", "F335-F753": "412 rounds"
+  },
+  "contrast": {
+    "refresh_60_vs_61": "F752-F753 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 61 (F754): Rounds 445-447 documented (party/social complete), baseline e69704e -> 18ca584, 412 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F752-F753 evidence.",
+  "cross_refs": ["F751: refresh 60", "F753: party closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 445-447 section to HANDOFF",
+  "notes": [
+    "412 consecutive shipping rounds F335-F753",
+    "next: remaining deep corners, sim polish"
+  ]
+}
