@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-120-2026-08-12-f926",
+  "title": "Round 620 (F926): HANDOFF refresh 120 MILESTONE - 120th HANDOFF refresh; baseline Round 618=ede392c -> Round 619=6013609 (584 consecutive F335-F925); since Round 600: 6 surfaces closed (trade ops/shop slots/dialog/party member/guild member/quest input), 550+ evidence JSONs; doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Document the HANDOFF refresh 120 milestone.",
+  "question": "What is the state at refresh 120?",
+  "method": "Append refresh-120 section to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "120th refresh",
+    "baseline": "Round 618=ede392c -> Round 619=6013609 (584 consecutive F335-F925)",
+    "milestone": "120 HANDOFF refreshes",
+    "surfaces": "6 closed since Round 600",
+    "evidence": "550+ JSONs"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F335-F925": "584 rounds pushed"
+  },
+  "contrast": {
+    "refresh_119_vs_120": "120th milestone"
+  },
+  "verdict": "HANDOFF refresh 120 MILESTONE (F926): 584 consecutive rounds, 6 surfaces closed, 120 refreshes documented.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc milestone; content from Rounds 601-619 evidence.",
+  "cross_refs": ["F925: refresh 119", "F908-F924: surfaces"],
+  "tool": "edit / bash",
+  "reproduce": "append refresh-120 section to HANDOFF",
+  "notes": [
+    "120 HANDOFF refreshes",
+    "584 consecutive shipping rounds",
+    "next: remaining deep corners, sim polish"
+  ]
+}

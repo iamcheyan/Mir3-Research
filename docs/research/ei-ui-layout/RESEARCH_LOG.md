@@ -8676,3 +8676,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 616-618（F923-F924：任务窗口初始化/命中 + 任务输入闭合）；基线 Round 615=d331333 → Round 618=ede392c（**583 连发 F335-F924**）。
 - 落盘：handoff-refresh-119-evidence.json（F925，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 619。
+## Round 620 (F926) — 2026-08-12：HANDOFF 刷新 120 里程碑
+
+- **〔刷新〕**HANDOFF 达 **120 次刷新**（基线 Round 618=ede392c → Round 619=6013609，**584 连发 F335-F925**）；自 Round 600 里程碑：**6 表面闭合**（交易槽操作/商店槽/对话/组队成员/行会成员/任务输入），**550+ 证据 JSON**。
+- 落盘：handoff-refresh-120-evidence.json（F926，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 620。

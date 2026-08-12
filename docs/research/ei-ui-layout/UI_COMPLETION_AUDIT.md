@@ -3689,3 +3689,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（任务输入完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 620 (2026-08-12) — HANDOFF 刷新 120 里程碑（Finding 926）
+
+- **120 刷新 + 584 连发 + 6 表面闭合**。
+- 落盘：`handoff-refresh-120-evidence.json`（F926）+ RESEARCH_LOG Round 620。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（6 表面闭合；下一弧：剩余深层角落/模拟器 polish）。
