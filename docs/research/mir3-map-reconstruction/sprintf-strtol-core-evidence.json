@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sprintf-strtol-core-2026-08-12-f680",
+  "title": "Round 374 (F680): sprintf + strtol core - 0x46811C = vsprintf wrapper (0x469E94 _vsnprintf, flags 0x42/0x7FFFFFFF, NUL-term, ret len); 0x46816E = STRTOL internals (skip-space via char-class table [0x47DDB0], sign +/-, digit loop base-10, locale flag [0x47DFBC], [0x47DD50] hook); 0x4681F9 = strlen - string lib core byte-level (backs every sprintf F572/F585/F600)",
+  "date": "2026-08-12",
+  "objective": "Decode the sprintf + strtol core.",
+  "question": "How do the string functions work?",
+  "method": "Disasm 0x46811C-0x4681F9.",
+  "scope": "0x46811C-0x4681F9; char-class 0x47DDB0.",
+  "cell_analysis": {
+    "0x46811C": "vsprintf: 0x469E94 _vsnprintf + NUL-term (flags 0x42/0x7FFFFFFF)",
+    "0x46816E": {"strtol": "skip-space (0x47DDB0 table) + sign + digit base-10", "locale": "[0x47DFBC] + hook [0x47DD50]"},
+    "0x4681F9": "strlen"
+  },
+  "exe_trace": {
+    "string_chain": "game code -> 0x46811C vsprintf -> 0x469E94 -> buffer"
+  },
+  "audit_vs_exe": {
+    "F572": "frame formats", "F585": "config strings", "F600": "commands", "F549": "금전"
+  },
+  "contrast": {
+    "fmt_vs_parse": "vsprintf + strtol",
+    "table": "char-class [0x47DDB0]"
+  },
+  "verdict": "sprintf + strtol core PRIMARY-verified: vsprintf wrapper + strtol internals; string lib byte-level (backs F572/F585/F600).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "String core decoded from .text.",
+  "cross_refs": ["F572: frames", "F585: config", "F600: commands"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x46811C+0x10; 0x46816E+0x30",
+  "notes": [
+    "_vsnprintf 0x469E94",
+    "char-class table 0x47DDB0",
+    "locale flag 0x47DFBC",
+    "strlen 0x4681F9"
+  ]
+}

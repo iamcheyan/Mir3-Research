@@ -7607,3 +7607,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 370-372（F677-F678：公告行列表 + 队列弧）；基线 Round 369=93a6bd2 → Round 372=5304cc8（**337 连发 F335-F678**）。
 - 落盘：handoff-refresh-37-evidence.json（F679，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 373。
+## Round 374 (F680) — 2026-08-12：sprintf + strtol 核心
+
+- **〔sprintf〕**0x46811C = **vsprintf 包装**（0x469E94 _vsnprintf、旗标 0x42/0x7FFFFFFF、NUL 终止、返回长度）。
+- **〔strtol〕**0x46816E = **strtol 内部**（字符类表 [0x47DDB0] 跳空格 + 符号 +/‒ + 十进制数字循环、locale 旗标 [0x47DFBC]、钩子 [0x47DD50]）；0x4681F9 = strlen——字符串库核心字节级（支撑全部 sprintf F572/F585/F600）。
+- 落盘：sprintf-strtol-core-evidence.json（F680，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 374。
