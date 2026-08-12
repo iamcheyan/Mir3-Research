@@ -8789,3 +8789,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔交易〕**0x416E70 交易输入（2 滚动条 0x417C80 @ +0x13648 stride 0x4C → 滚动 [esi*4+0x54] 0x476650 + 确认按钮 vtable[8] @ +0x7C）；0x416EF0 **点击**（字符串比对 0x47ADB4「取消」→ 0x418030 窗口 + msg 0x405；否则交易槽命中 [0x13644] → 0x417E60 槽）——交易输入完整（F749/F908 依赖）。
 - 落盘：trade-window-input-evidence.json（F951，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 645。
+## Round 646 (F952) — 2026-08-12：交易窗口闭合（F749/F842/F908/F951 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**576 证据 JSON**；三服务 200；master cf8b6bf（**610 连发 F335-F951 已推**）。
+- **〔弧〕**槽布局（F749）+ 绘制（F842）+ 槽操作（F908）+ 输入/点击（F951）——**交易窗口完整**（居中 + 2 滚动条 + 槽查找 + 取消 msg 0x405 + 输入），交易表面 100%。
+- 落盘：trade-window-closure-evidence.json（F952，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 646。
