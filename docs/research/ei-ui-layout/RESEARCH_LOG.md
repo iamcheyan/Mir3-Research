@@ -7874,3 +7874,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔商店〕**0x44F1D0：模式 [0x5F8] 分派（F661）：**购买路径**（0x44E700 命中 → msg 0x3EA via 0x423E80、确认态 [0x5F8]=4、物品 [0x7F0]、旗标 [0x7EC]）+ **卖出/修理路径**（0x4521F0 + 耐久 [item+0x3D]；0x452230/0x4522A0 发送）+ 购买确认命中测试（SetRect [0x7F4..0x810] + PtInRect → 0x452270/0x452230）——商店家族扩展（F555/F661/F662 用）。
 - 落盘：shop-window-click-handler-evidence.json（F740，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 434。
+## Round 435 (F741) — 2026-08-12：商店家族最终闭合（F555/F661/F662/F740 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**365 证据 JSON**；三服务 200；master 7c81bb0（**399 连发 F335-F740 已推**）。
+- **〔弧〕**买/卖/修（F555）+ 管理/命中（F661）+ 绘制（F662）+ 点击（F740）——**商店系统 100% 字节级**（模式 [0x5F8] 4 态 + 物品列表 [0x70C] + 购买 0x3EA/卖修发送 + 确认命中），**F731 转发目标 0x44F1D0 闭合**。
+- 落盘：shop-family-final-closure-evidence.json（F741，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 435。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "shop-family-final-closure-2026-08-12-f741",
+  "title": "Round 435 (F741): Shop family FINAL closure (F555/F661/F662/F740) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 7c81bb0 (399 consecutive F335-F740), 365 evidence JSONs; arc: shop buy/sell/repair (F555) + manager/hit (F661) + draw (F662) + click handler (F740) - shop system 100% byte-level (mode [0x5F8] 4-state + item lists [0x70C] + buy 0x3EA/sell-repair sends + confirm hit-test), closing F731 forward target 0x44F1D0",
+  "date": "2026-08-12",
+  "objective": "Close the shop family finally.",
+  "question": "Is the shop system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "365 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F555": "buy/sell/repair", "F661": "manager", "F662": "draw", "F740": "click"},
+    "shop": "mode + lists + sends + confirm = 100%",
+    "milestone": "399 consecutive rounds F335-F740"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F740": "399 rounds pushed; shop complete, forward target 0x44F1D0 closed"
+  },
+  "contrast": {
+    "buy_vs_sell": "0x3EA + repair sends",
+    "draw_vs_click": "F662 + F740"
+  },
+  "verdict": "Shop family FINAL closure (F741): mode + lists + sends + confirm all byte-level; validation green, 399 consecutive rounds, 365 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F555/F661/F662/F740.",
+  "cross_refs": ["F555", "F661", "F662", "F740"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "399 consecutive shipping rounds F335-F740",
+    "shop 100%",
+    "next: HANDOFF refresh 57 + Round 400 milestone check"
+  ]
+}

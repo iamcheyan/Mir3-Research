@@ -2401,9 +2401,14 @@ git diff --check
 - **购买 0x3EA + 卖出/修理 + 确认命中**（商店家族扩展）。
 - 落盘：`shop-window-click-handler-evidence.json`（F740）+ RESEARCH_LOG Round 434。
 
+## Round 435 (2026-08-12) — 商店家族最终闭合（Finding 741）
+
+- **399 连发 + 365 证据 + 商店 100%**（目标 0x44F1D0 闭合）。
+- 落盘：`shop-family-final-closure-evidence.json`（F741）+ RESEARCH_LOG Round 435。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（商店点击字节级；下一弧：剩余深层角落）。
+- 无阻塞项（商店 100%；下一弧：HANDOFF 刷新 57/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
