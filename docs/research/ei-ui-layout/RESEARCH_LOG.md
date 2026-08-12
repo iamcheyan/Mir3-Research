@@ -8420,3 +8420,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告〕**0x414FA0 **节点添加**（分配 0x410 + 复制 0x102 双字 + [0x408] next/[0x40C] prev + 头 [0x4]/尾 [0xC] 插入 + 计数 [0x14]++）；0x415030 **析构**（链 free + vtable 0x476620）；0x415090 **出队**（尾 [0xC] → next [0x40C]、[0x10]--）；0x4150C0/0x4150D0 构造（vtable 0x476624 + 0x423CF0）——公告行列表完整。
 - 落盘：notice-node-add-dequeue-evidence.json（F866，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 560。
+## Round 561 (F867) — 2026-08-12：公告列表全闭合（F677/F734/F866 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**491 证据 JSON**；三服务 200；master 2267cad（**525 连发 F335-F866 已推**）。
+- **〔弧〕**公告核心（F677）+ 行添加（F734）+ 节点添加/出队（F866）——**公告列表完整**（节点分配/插入/出队/析构 + 修剪 + 渲染），公告家族 100%。
+- 落盘：notice-list-full-closure-evidence.json（F867，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 561。

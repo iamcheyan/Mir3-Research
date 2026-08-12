@@ -1,0 +1,37 @@
+{
+  "evidence_id": "notice-list-full-closure-2026-08-12-f867",
+  "title": "Round 561 (F867): Notice list FULL closure (F677/F734/F866) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 2267cad (525 consecutive F335-F866), 491 evidence JSONs; arc: notice core (F677) + line add (F734) + node add/dequeue (F866) - notice list COMPLETE byte-level (node alloc/insert/dequeue/dtor + prune + render), notice family 100%",
+  "date": "2026-08-12",
+  "objective": "Close the notice list fully.",
+  "question": "Is the notice list fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "491 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F677": "core", "F734": "add", "F866": "node/dequeue"},
+    "notice": "alloc + insert + dequeue + dtor = COMPLETE",
+    "milestone": "525 consecutive rounds F335-F866"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F866": "525 rounds pushed; notice list complete"
+  },
+  "contrast": {
+    "add_vs_dequeue": "insert + remove",
+    "prune_vs_dtor": "cap + free"
+  },
+  "verdict": "Notice list FULL closure (F867): alloc + insert + dequeue all byte-level; validation green, 525 consecutive rounds, 491 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F677/F734/F866.",
+  "cross_refs": ["F677", "F734", "F866"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "525 consecutive shipping rounds F335-F866",
+    "notice list 100%",
+    "next: HANDOFF refresh 99, remaining corners"
+  ]
+}
