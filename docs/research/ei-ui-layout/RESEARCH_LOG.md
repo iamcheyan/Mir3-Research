@@ -7603,3 +7603,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**302 证据 JSON**；四服务全 200；master d998511（**336 连发 F335-F677 已推**）。
 - **〔弧〕**公告窗绘制（F674）+ 行列表核心（F677）——**公告系统完整（队列插入/弹出 + 渲染 + 字符串 F556 + 色 F553）**。
 - 落盘：notice-queue-arc-closure-evidence.json（F678，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 372。
+## Round 373 (F679) — 2026-08-12：HANDOFF 刷新 37（Round 370-372）
+
+- **〔刷新〕**HANDOFF 追加 Round 370-372（F677-F678：公告行列表 + 队列弧）；基线 Round 369=93a6bd2 → Round 372=5304cc8（**337 连发 F335-F678**）。
+- 落盘：handoff-refresh-37-evidence.json（F679，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 373。

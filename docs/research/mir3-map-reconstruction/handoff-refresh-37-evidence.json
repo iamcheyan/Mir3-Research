@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-37-2026-08-12-f679",
+  "title": "Round 373 (F679): HANDOFF refresh 37 - Rounds 370-372 (F676-F678: notice line-list core + notice queue arc closure), baseline Round 369=93a6bd2 -> Round 372=5304cc8 (337 consecutive F335-F678), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 370-372.",
+  "question": "What changed since HANDOFF refresh 36?",
+  "method": "Append Round 370-372 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 370-372 appended (3 rounds, F676-F678)",
+    "baseline": "Round 369=93a6bd2 -> Round 372=5304cc8 (337 consecutive F335-F678)",
+    "arcs": {"queue": "F677 line-list core", "closure": "F678 notice queue arc"},
+    "key": "notice system complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F676": "refresh 36 baseline -> now refresh 37", "F335-F678": "337 rounds"
+  },
+  "contrast": {
+    "refresh_36_vs_37": "F677-F678 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 37 (F679): Rounds 370-372 documented (notice queue), baseline 93a6bd2 -> 5304cc8, 337 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F677-F678 evidence.",
+  "cross_refs": ["F676: refresh 36", "F678: notice closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 370-372 section to HANDOFF",
+  "notes": [
+    "337 consecutive shipping rounds F335-F678",
+    "next: remaining deep corners, sim polish"
+  ]
+}
