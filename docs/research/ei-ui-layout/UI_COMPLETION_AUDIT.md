@@ -3865,3 +3865,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 642 (2026-08-12) — 组队窗口输入 + 消息分派（Finding 948）
+
+- **5 控件 + 0x3FC-0x3FE 分派**（组队输入完整）。
+- 落盘：`party-window-input-msg-evidence.json`（F948）+ RESEARCH_LOG Round 642。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队输入完整；下一弧：剩余深层角落）。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "party-window-input-msg-2026-08-12-f948",
+  "title": "Round 642 (F948): Party window input + msg dispatch (F845/F897 dep) - 0x424770 party INPUT (5 controls vtable[8] @ +0x6C stride 0xB4); 0x4247A0 5 control reset; 0x4247C0 party MSG dispatch (0x3FC -> 0x4522E0 invite / 0x3FD -> 0x452350 remove / 0x3FE -> 0x452380 leave, ecx 0x8AB828, F845 deps); 0x424830 record ctor (vtable 0x4767E0); 0x424840 list ADD (dlist 0x4767FC) - party input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the party window input + msg dispatch.",
+  "question": "How does the party window route input + messages?",
+  "method": "Disasm 0x424770-0x424840.",
+  "scope": "0x424770-0x424840; input.",
+  "cell_analysis": {
+    "0x424770": "input 5 controls",
+    "0x4247A0": "reset 5",
+    "0x4247C0": "msg 0x3FC/0x3FD/0x3FE",
+    "0x424830": "record ctor 0x4767E0",
+    "0x424840": "list add dlist 0x4767FC"
+  },
+  "exe_trace": {
+    "party_chain": "input -> msg dispatch"
+  },
+  "audit_vs_exe": {
+    "F845": "party click + msg", "F897": "reset"
+  },
+  "contrast": {
+    "controls_vs_msg": "5 + dispatch",
+    "record_vs_list": "ctor + add"
+  },
+  "verdict": "Party window input + msg dispatch PRIMARY-verified: input + 0x3FC-0x3FE dispatch; F845 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Party input decoded from .text.",
+  "cross_refs": ["F845: party", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x424770+0x10; 0x4247C0+0x30",
+  "notes": [
+    "5 controls +0x6C",
+    "msg 0x3FC/0x3FD/0x3FE",
+    "dlist 0x4767FC",
+    "ecx 0x8AB828"
+  ]
+}
