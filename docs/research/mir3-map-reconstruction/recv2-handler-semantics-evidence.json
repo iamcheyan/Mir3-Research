@@ -1,0 +1,38 @@
+{
+  "evidence_id": "recv2-handler-semantics-2026-08-12-f520",
+  "title": "Round 214 (F520): Recv-table-2 handler semantics - 13 handlers classified: 0x421913/0x421CFC entity CREATE (0x40C alloc -> 0x41B710/0x4561B0 add to [0x364458] list, [0x4760C8] string copy), 0x421955/0x421A45/0x421A85/0x421AF5/0x421B5B CHAT (0x2000 string + 0x448D90/0x4488D0), 0x4219A0 entity COORDS ([0x61C90-0x61C98], F310), 0x421BA7 2-arg action, 0x421BBC HERO STATE byte ([0x35B148] -> vtable+0x88, mode 0x1D/0 walk, [0x2F8841]), 0x421C23 entity lookup/create (0x41EB40 + node + timeGetTime [0x47630C]), 0x421C81 2-word msg - recv2 complete",
+  "date": "2026-08-12",
+  "objective": "Decode the 13 recv-table-2 handler semantics.",
+  "question": "What do the second recv table handlers do?",
+  "method": "Disasm of remaining handlers (0x421AF5-0x421CFC) + classification.",
+  "scope": "0x421AF5-0x421D3A; 13 handlers.",
+  "cell_analysis": {
+    "entity_create": {"0x421913": "0x40C alloc + 0x41B710 add", "0x421CFC": "0x40C alloc + 0x4561B0 add ([0x364458] list), [0x4760C8] string copy"},
+    "chat": {"0x421955": "0x2000 string + 0x448D90", "0x421A45/0x421A85/0x421AF5/0x421B5B": "0x2000 string variants (0x4488D0)"},
+    "entity_coords": {"0x4219A0": "[0x61C90-0x61C98] set (F310 live pos)"},
+    "hero_state": {"0x421BBC": "byte [0x35B148] -> vtable+0x88, mode 0x1D/0 walk, [0x2F8841] anim"},
+    "entity_lookup": {"0x421C23": "0x41EB40 find + node alloc + timeGetTime [0x47630C]"},
+    "other": {"0x421BA7": "2-arg action", "0x421C81": "2-word msg"}
+  },
+  "exe_trace": {
+    "recv2_chain": "0x44D-0x520 msgs -> spawn/chat/coord/state handlers -> entity lists/UI"
+  },
+  "audit_vs_exe": {
+    "F518": "handler targets now semantic", "F310": "coords handler confirmed", "F440": "node alloc family"
+  },
+  "contrast": {
+    "create_vs_lookup": "0x421CFC unconditional create vs 0x421C23 lookup-then-create",
+    "chat_vs_state": "0x2000 string vs single-byte state"
+  },
+  "verdict": "Recv-table-2 handlers PRIMARY-verified: all 13 classified (entity create x2, chat x5, coords, hero state, lookup, action, 2-word). Second recv table COMPLETE semantically.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All handler bodies decoded from .text.",
+  "cross_refs": ["F518: recv table 2", "F310: coords", "F440: entity lists"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x421BBC+0x20, 0x421C23+0x30, 0x421CFC+0x20",
+  "notes": [
+    "0x421CFC = unconditional entity create (spawn msg)",
+    "0x421C23 = lookup-or-create (target msg)",
+    "hero state byte [0x35B148] = run/walk mode"
+  ]
+}

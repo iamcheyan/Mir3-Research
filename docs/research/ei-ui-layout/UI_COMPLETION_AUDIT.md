@@ -1296,9 +1296,14 @@ git diff --check
 - **F516-F518 弧闭合 + 178 连发**；双向包目录完整。
 - 落盘：`packet-catalog-arc-closure-evidence.json`（F519）+ RESEARCH_LOG Round 213。
 
+## Round 214 (2026-08-12) — 接收表2 处理器语义（Finding 520）
+
+- **13 处理器全分类**（生成/聊天/坐标/状态/查找）。
+- 落盘：`recv2-handler-semantics-evidence.json`（F520）+ RESEARCH_LOG Round 214。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（包目录完整；其余 = 持续深化）。
+- 无阻塞项（接收表2 语义完整）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

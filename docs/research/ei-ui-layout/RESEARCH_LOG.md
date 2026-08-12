@@ -6829,3 +6829,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master fc496bf（**178 连发已推**）。
 - **〔弧汇总〕**出站 34/34 全解码（F516）+ 入站表1 137→49（F517）+ 入站表2 212→13（F518）——**完整双向包目录：34 出站 + 349 入站 + 怪物 0xBC6+**。
 - 落盘：packet-catalog-arc-closure-evidence.json（F519，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 213。
+## Round 214 (F520) — 2026-08-12：接收表2 处理器语义（13 全分类）
+
+- **〔语义〕**实体生成 ×2（0x421913/0x421CFC：0x40C 分配 → 0x41B710/0x4561B0 入 [0x364458] 链）、聊天 ×5（0x2000 字符串 + 0x448D90/0x4488D0）、实体坐标（0x4219A0 [0x61C90] F310）、**英雄状态字节**（0x421BBC [0x35B148] → vtable+0x88，0x1D/0 行走）、实体查找/生成（0x421C23：0x41EB40 + 节点 + timeGetTime）。
+- **〔完整〕**接收表2 语义全解。
+- 落盘：recv2-handler-semantics-evidence.json（F520，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 214。
