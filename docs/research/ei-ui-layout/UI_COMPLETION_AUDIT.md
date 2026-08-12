@@ -553,6 +553,12 @@ git diff --check
 - **公式复验**：800×800→[2,3,4]、600×600→[1,2,3]、≤50→[0]。
 - 落盘：`zoom-ladder-verification-evidence.json`（F373）+ RESEARCH_LOG Round 67。
 
+## Round 68 (2026-08-12) — 图层渲染验证（Finding 374）
+
+- **mid/front 开关差异确认**（89506B vs 107427B）；视觉树/岩渲染正确。
+- **层序 = back→mid→front**（F331 0x43B440 语义）。
+- 落盘：`layer-render-verification-evidence.json`（F374）+ RESEARCH_LOG Round 68。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

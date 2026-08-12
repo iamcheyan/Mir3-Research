@@ -6052,3 +6052,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔语义澄清〕**mapviewer `ladder` = **逐图缩放级别 [最深..适配]**（0 = 1:1）；最深 = 全图 ≤16384px（MAX_FULL_DIM）、适配 = ≥2048px（FIT_FULL_DIM）；**非地图切换表**（切换 = 服务端 0x422960，F333/F366）。
 - **〔公式复验〕**800×800 → [2,3,4]；600×600 → [1,2,3]；100×100 → [0,1]；≤50×50 → [0]；400×600 → [1,2,3]。
 - 落盘：`zoom-ladder-verification-evidence.json`（F373，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 67。
+
+## Round 68 (F374) — 2026-08-12：图层渲染验证（mapviewer mid/front 开关差异 + 视觉确认）
+
+- **〔开关差异〕**0.map tile (16,3) z=1：ground-only 89506B vs all 107427B（+18KB mid/front 对象）——**mid/front 渲染确认激活**；区域 = 24×24 含 458 对象格（libs 4/5/6/10/12/13）。
+- **〔视觉〕**inspect_image：树 + 岩壁 + 灌木（libs 5 cliffsc + 10 smobjectsc 对象正确渲染）。
+- **〔层序〕**mapviewer 按 back→mid→front（0x43B440 序，F331）；mid/front 左下锚（0x43bce6/0x43bfd2 目标数学）；is_object_library 排除纯地面（tilesc/wood_tilesc 等）——早前 tx=2 相同 md5 因该区只有地面 lib 15。
+- 落盘：`layer-render-verification-evidence.json`（F374，derived-tooling；渲染语义源 primary-static F331）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 68。

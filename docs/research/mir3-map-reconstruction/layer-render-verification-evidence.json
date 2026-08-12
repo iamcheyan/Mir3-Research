@@ -1,0 +1,42 @@
+{
+  "evidence_id": "layer-render-verification-2026-08-12-f374",
+  "title": "Round 68 (F374): Layer render verification - mapviewer mid/front layer toggle differentiates (tile 16,3: 89506B ground-only vs 107427B all +18KB objects) + visual confirm (trees/rocks from libs 5 cliffsc/10 smobjectsc) + layer order matches client 0x43B440",
+  "date": "2026-08-12",
+  "objective": "Verify the mapviewer renders mid/front layers (matching the client's back→mid→front order) and that toggling layers produces correct visual differences.",
+  "question": "Does the mapviewer correctly render mid/front object layers per the client's 0x43B440 semantics?",
+  "method": "Layer-toggle render diff (g/m/f params) on object-dense tile (0.map cell region 384,72); md5/size comparison; inspect_image visual verification.",
+  "scope": "mapviewer 8899; 0.map tile (16,3) z=1.",
+  "cell_analysis": {
+    "layer_toggle": {
+      "ground_only": "89506B (md5 8a8bbb21) - back layer only",
+      "all_layers": "107427B (md5 eb14866b) - +18KB mid/front objects",
+      "diff": "17KB of object content at tile (16,3) - mid/front rendering CONFIRMED active",
+      "dense_region": "458 object-lib cells (libs 4/5/6/10/12/13) in 24x24 region (384,72)"
+    },
+    "visual": "inspect_image: trees (deciduous), rocky outcrop/ridge, shrubs - libs 5 cliffsc + 10 smobjectsc objects render",
+    "layer_order": "mapviewer draws back -> mid -> front (0x43B440 order, F331); mid/front anchored bottom-left to cell (dest math 0x43bce6/0x43bfd2, F331 comment)",
+    "is_object_library": "excludes pure ground (tilesc/tiles30c/tiles5c/wood_tilesc/smtilesc) - 15 wood_tilesc mid excluded as ground (correct: my earlier dense-region calc counted lib 15 = ground)"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331): row=attr/7 gate, 0x466130 frame load, 0x45E8E0 blit; ground -157 vs mid/front -125 anchor (F331 comment)"
+  },
+  "audit_vs_exe": {
+    "F331": "layer order + anchor math confirmed in mapviewer",
+    "F343": "0.map mid libs {15,0,5,10} - object libs 5/10 render (this round)"
+  },
+  "contrast": {
+    "ground_vs_object": "ground libs (0/1/2/15) excluded from object rendering; object libs (4-13) render mid/front",
+    "layer_toggle": "g/m/f params correctly gate each layer"
+  },
+  "verdict": "Layer rendering verified (derived-tooling matching primary bytes): mapviewer mid/front layers render correctly per client 0x43B440 semantics (back→mid→front, object-lib gate, bottom-left anchor). Toggle diff (89506B vs 107427B) + visual trees/rocks confirmed.",
+  "evidence_level": "derived-tooling (renderer semantics from primary-static F331)",
+  "evidence_level_note": "Layer order/anchor from F331 primary evidence; render behavior verified via HTTP diff + vision.",
+  "cross_refs": ["F331: 0x43B440 render", "F343: 0.map layer composition", "F342: map inventory"],
+  "tool": "curl layer-toggle renders; md5sum; inspect_image",
+  "reproduce": "curl '/tile?map=0.map&tx=16&ty=3&z=1&g=1&m=0&f=0' vs '&g=1&m=1&f=1'; compare sizes/md5",
+  "notes": [
+    "earlier identical-md5 result (tx=2) = region with only ground lib 15 (excluded as object)",
+    "object-lib gate is_object_library excludes 15 wood_tilesc - correct ground exclusion",
+    "tile_world_sz = TILE_SZ 512 / scale; z=1 tile covers ~10x10 cells"
+  ]
+}
