@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-64-2026-08-12-f763",
+  "title": "Round 457 (F763): HANDOFF refresh 64 - Rounds 454-456 (F760-F762: HANDOFF 63, options window draw/click, options arc closure + 420 milestone), baseline Round 453=1acd4d4 -> Round 456=eb5f4b4 (421 consecutive F335-F762), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 454-456.",
+  "question": "What changed since HANDOFF refresh 63?",
+  "method": "Append Round 454-456 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 454-456 appended (3 rounds, F760-F762)",
+    "baseline": "Round 453=1acd4d4 -> Round 456=eb5f4b4 (421 consecutive F335-F762)",
+    "milestone": "420 consecutive rounds documented",
+    "arcs": {"options": "F761 draw/click", "closure": "F762 options"},
+    "key": "options window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F760": "refresh 63 baseline -> now refresh 64", "F335-F762": "421 rounds"
+  },
+  "contrast": {
+    "refresh_63_vs_64": "F761-F762 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 64 (F763): Rounds 454-456 documented (options complete), baseline 1acd4d4 -> eb5f4b4, 421 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F761-F762 evidence.",
+  "cross_refs": ["F760: refresh 63", "F762: options closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 454-456 section to HANDOFF",
+  "notes": [
+    "421 consecutive shipping rounds F335-F762",
+    "next: remaining deep corners, sim polish"
+  ]
+}
