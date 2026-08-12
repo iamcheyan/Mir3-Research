@@ -6323,3 +6323,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分布〕**2987 刷怪/308 种（栗子树 137、狼 64、多钩猫/钉耙猫 58、半兽人/森林雪人 52）；等级 1-700（lvl1 768、lvl10 359、lvl40 137 栗子树）。
 - 落盘：monster-distribution-evidence.json（F425，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 119。
+## Round 120 (F426) — 2026-08-12：NPC 分布（318/248 种 + 六面神石主导）
+
+- **〔分布〕**318 NPC/248 种（六面神石 33 传送石、沙巴克旗帜 11、变异骷髅 8、商人族）；face 全 0；body 56×23/3×19/34×16/10000×12 特殊（F287 100*body 公式）。
+- 落盘：npc-distribution-evidence.json（F426，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 120。

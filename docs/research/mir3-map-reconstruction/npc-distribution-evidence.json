@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-distribution-2026-08-12-f426",
+  "title": "Round 120 (F426): NPC distribution - 318 NPCs/248 unique (六面神石 33 teleport stones, 沙巴克旗帜 11, 变异骷髅 8, 万事通 5, merchants), all face 0, bodies 56x23/3x19/34x16/10000x12 special",
+  "date": "2026-08-12",
+  "objective": "Analyze the NPC population: types, faces, bodies from Merchant.txt.",
+  "question": "What NPCs populate the server and with what appearances?",
+  "method": "Merchant.txt parse (name/face/body counters).",
+  "scope": "Merchant.txt.",
+  "cell_analysis": {
+    "npcs": {"total": 318, "unique": 248, "top": "六面神石 33 / 沙巴克旗帜 11 / 变异骷髅 8 / 万事通 5 / 栗子商人 4 / 霹雳尊者 4"},
+    "faces": "ALL 0 (single face set)",
+    "bodies": {"top": "56x23 / 3x19 / 34x16 / 48x16 / 18x12 / 10000x12 (special body 10000)", "semantics": "body -> NPC.wil 100*body frames (F287)"},
+    "types": "六面神石 = teleport stones; 沙巴克旗帜 = guild flags; 变异骷髅/霸王幽灵 = combat NPCs; merchants (栗子商人/药剂师/王铁匠)"
+  },
+  "exe_trace": {
+    "npc_frames": "F287: frame = 100*body + 10*(flag%3); NPC.wil slot 127"
+  },
+  "audit_vs_exe": {
+    "F287": "body semantics confirmed",
+    "F423": "NPC parse consistent"
+  },
+  "contrast": {
+    "npc_vs_monster": "NPC body 100x scale vs monster race formula (F280)",
+    "special_body": "10000 = special NPC appearance (candidate)"
+  },
+  "verdict": "NPC distribution verified (secondary-server): 318 NPCs/248 unique, 六面神石 teleport stones dominate (33), all face 0, bodies map to F287 formula (100*body).",
+  "evidence_level": "secondary (server Merchant.txt)",
+  "evidence_level_note": "Counts from server Merchant; body formula primary-static F287.",
+  "cross_refs": ["F287: NPC frames", "F423: entity parse", "F425: monster distribution"],
+  "tool": "mapviewer load_entities; python3 Counter",
+  "reproduce": "load_entities(Envir); Counter(name/face/body for npcs)",
+  "notes": [
+    "六面神石 (teleport stone) = 33 locations",
+    "沙巴克旗帜 11 = guild territory markers",
+    "body 10000 = special NPC render (F287 candidate)"
+  ]
+}

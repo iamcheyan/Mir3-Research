@@ -826,6 +826,11 @@ git diff --check
 - **2987 项/308 种 + 等级 1-700**（栗子树主导）。
 - 落盘：`monster-distribution-evidence.json`（F425）+ RESEARCH_LOG Round 119。
 
+## Round 120 (2026-08-12) — NPC 分布（Finding 426）
+
+- **318/248 种**（六面神石 33 主导）；body → F287 公式。
+- 落盘：`npc-distribution-evidence.json`（F426）+ RESEARCH_LOG Round 120。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
