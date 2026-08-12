@@ -3313,3 +3313,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（聊天完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 573 (2026-08-12) — NPC 回复 + 种子 + 校验和（Finding 879）
+
+- **回复 0x411 + 种子 + XOR 校验**（F617 完整）。
+- 落盘：`npc-reply-seed-checksum-evidence.json`（F879）+ RESEARCH_LOG Round 573。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（回复/校验完整；下一弧：剩余深层角落）。

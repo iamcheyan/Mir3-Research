@@ -1,0 +1,36 @@
+{
+  "evidence_id": "npc-reply-seed-checksum-2026-08-12-f879",
+  "title": "Round 573 (F879): NPC reply + seed + checksum (F617 FULL) - 0x4524D0 reply sender (msg 0x411 via 0x452940 + 0x451E60); 0x452500 dtor (vtable 0x476AF8 + 0x468D3F free); 0x452580 SEED setter (key [0x9135B8]/[0x9135BC] from arg OR rand 0x4684B2 x4 bytes + 0x4685E8/0x4684A8 mix); 0x4525F0 CHECKSUM (byte-wise XOR vs key [0x9135B8], weighted) - F617 family COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC reply + seed + checksum.",
+  "question": "How do NPC reply + checksum work?",
+  "method": "Disasm 0x4524D0-0x452641.",
+  "scope": "0x4524D0-0x452641; seed.",
+  "cell_analysis": {
+    "0x4524D0": "reply: msg 0x411 0x452940 + 0x451E60",
+    "0x452580": "seed: [0x9135B8]/[0x9135BC] arg OR rand",
+    "0x4525F0": "checksum: byte XOR vs key"
+  },
+  "exe_trace": {
+    "reply_chain": "seed -> reply -> checksum"
+  },
+  "audit_vs_exe": {
+    "F617": "reply/seed CONFIRMED", "F572": "send", "F876": "chat"
+  },
+  "contrast": {
+    "seed_vs_checksum": "key set + XOR",
+    "reply_vs_send": "0x411 + frame"
+  },
+  "verdict": "NPC reply + seed + checksum PRIMARY-verified: reply send + seed + XOR; F617 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Reply/checksum decoded from .text.",
+  "cross_refs": ["F617: reply", "F572: send", "F876: chat"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4524D0+0x10; 0x4525F0+0x10",
+  "notes": [
+    "msg 0x411 reply",
+    "seed [0x9135B8]/[0x9135BC]",
+    "rand 0x4684B2",
+    "byte XOR checksum"
+  ]
+}

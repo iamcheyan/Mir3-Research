@@ -8472,3 +8472,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 569-571（F876-F877：聊天发送/物品使用 + 聊天系统全闭合 + 500+ 证据里程碑）；基线 Round 568=3bed6bf → Round 571=0cb4dd3（**536 连发 F335-F877**）。
 - 落盘：handoff-refresh-103-evidence.json（F878，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 572。
+## Round 573 (F879) — 2026-08-12：NPC 回复 + 种子 + 校验和（F617 全量）
+
+- **〔回复〕**0x4524D0 回复发送器（**msg 0x411** via 0x452940 + 0x451E60）；0x452500 析构（vtable 0x476AF8 + 0x468D3F free）；0x452580 **种子设置器**（键 [0x9135B8]/[0x9135BC] 参数 OR rand 0x4684B2 ×4 字节 + 0x4685E8/0x4684A8 混合）；0x4525F0 **校验和**（逐字节 XOR vs 键 [0x9135B8]、加权）——F617 家族完整。
+- 落盘：npc-reply-seed-checksum-evidence.json（F879，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 573。
