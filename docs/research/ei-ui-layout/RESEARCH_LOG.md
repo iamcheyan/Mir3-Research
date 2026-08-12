@@ -6059,3 +6059,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔视觉〕**inspect_image：树 + 岩壁 + 灌木（libs 5 cliffsc + 10 smobjectsc 对象正确渲染）。
 - **〔层序〕**mapviewer 按 back→mid→front（0x43B440 序，F331）；mid/front 左下锚（0x43bce6/0x43bfd2 目标数学）；is_object_library 排除纯地面（tilesc/wood_tilesc 等）——早前 tx=2 相同 md5 因该区只有地面 lib 15。
 - 落盘：`layer-render-verification-evidence.json`（F374，derived-tooling；渲染语义源 primary-static F331）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 68。
+
+## Round 69 (F375) — 2026-08-12：精灵偏移/锚点验证（EI 帧统一 -24,-16 + 客户端忽略偏移左下锚）
+
+- **〔帧偏移〕**Cliffsc/SmObjectsc 采样：全帧 offsetX=-24 offsetY=-16（48×32 瓦片半格锚），高随对象变（SmObjectsc f200 h=352 高树）。
+- **〔客户端锚〕**0x43B440 目标数学（0x43BCF5-0x43BD36）：dx = x*48 − scrollX − 0xC8(200)；dy = y*32 − scrollY − h(word[+2]) − 0x7D(125)——**不读 WIL offsetX/offsetY，仅用帧高**（左下锚）；地面 −157 vs mid/front −125 差一单元高。
+- **〔对照〕**UI 控件（0x417550）用帧偏移定 rect；**地图精灵忽略偏移**——两套系统。offset-distribution P9 + F331 确认。
+- 落盘：`sprite-offset-anchor-verification-evidence.json`（F375，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 69。

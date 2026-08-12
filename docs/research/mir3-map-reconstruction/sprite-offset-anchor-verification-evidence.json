@@ -1,0 +1,44 @@
+{
+  "evidence_id": "sprite-offset-anchor-verification-2026-08-12-f375",
+  "title": "Round 69 (F375): Sprite offset/anchor verification - EI frames carry uniform tile-grid offset (-24,-16) for 48x32 tiles (Cliffsc/SmObjectsc sampled) + client 0x43B440 dest math IGNORES WIL offsets (bottom-left anchor: destX=x*48-scrollX-200, destY=y*32-scrollY-h-125) + offset-distribution P9 confirmed",
+  "date": "2026-08-12",
+  "objective": "Verify the sprite offset handling: EI WIL frames carry offsetX/offsetY in headers, but the client's tile blit (0x43B440) anchors bottom-left using frame height only (ignoring offsets). Confirm against the offset-distribution P9 evidence.",
+  "question": "Does the client use WIL frame offsets for mid/front sprites, or anchor bottom-left ignoring them?",
+  "method": "wilsdk frame-header offset sampling (Cliffsc/SmObjectsc); capstone verification of 0x43B440 dest math (0x43BCF5-0x43BD36); cross-ref offset-distribution-evidence.json (P9).",
+  "scope": "Data/Cliffsc.wil + SmObjectsc.wil samples; 0x43B440 (0x43BCF5-0x43BD36); offset-distribution-evidence.json.",
+  "cell_analysis": {
+    "frame_offsets": {
+      "Cliffsc": "f100/f500/f1000 all offsetX=-24 offsetY=-16, w=48 h=32 - uniform tile-grid anchor (48x32 tile, sprite centered -24,-16)",
+      "SmObjectsc": "f50 off(-24,-16) 48x64; f200 off(-24,-16) 48x352 (tall object); f500 off(-24,-16) 48x32 - same -24,-16 anchor, heights vary",
+      "pattern": "all EI terrain frames use -24,-16 (half-tile) - NOT per-frame art offsets"
+    },
+    "client_anchor_0x43B440": {
+      "dest_math": "0x43BCF5: dx = (x - viewX)*3<<4 - scrollX - 0xC8 (200); dy = (y - viewY)*5<<4 - scrollY - h(word[+2]) - 0x7D (125)",
+      "offset_usage": "NO offsetX/offsetY read in the blit path - frame height only (bottom-left anchor)",
+      "vs_ground": "ground -157 vs mid/front -125 (F331 comment) - differ by one cell height (32px)"
+    },
+    "p9": "offset-distribution-evidence.json: EI 3.0 frame offset (WIL +4/+6) nonzero distribution scanned; uniform -24,-16 for terrain confirmed"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331): 0x460240 blit call at 0x43BCE6 (mid/front); frame h at word[+2]"
+  },
+  "audit_vs_exe": {
+    "P9": "offset distribution confirmed - terrain frames uniform -24,-16",
+    "F331": "bottom-left anchor + -125 mid/front confirmed byte-level"
+  },
+  "contrast": {
+    "offset_use": "UI controls (0x417550) use frame offsets for rects; MAP sprites IGNORE offsets (bottom-left anchor) - two systems",
+    "tall_objects": "SmObjectsc f200 h=352 (tall tree) still anchored bottom-left via height"
+  },
+  "verdict": "Sprite offset/anchor verified (primary-bytes): EI terrain frames carry uniform -24,-16 (half-tile) offsets, but the client's 0x43B440 map blit anchors sprites bottom-left using frame height only (destY = y*32 - scrollY - h - 125), ignoring WIL offsets. offset-distribution P9 + F331 confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Frame headers read via wilsdk; dest math read directly from MIR3.EXE bytes.",
+  "cross_refs": ["P9: offset-distribution-evidence.json", "F331: 0x43B440 tile render", "F374: layer render verification"],
+  "tool": "wilsdk frame headers; capstone via disasm_capstone.PeImage",
+  "reproduce": "wilsdk header() on Cliffsc/SmObjectsc frames; img.disasm(0x43BCF5, 0x40)",
+  "notes": [
+    "-24,-16 = half of 48x32 tile - frames pre-aligned to tile grid",
+    "mapviewer offset_mode param exists to experiment with offsets (F331 comment) - default ignores them like the client",
+    "tall sprites (h=352) extend upward from bottom-left anchor correctly"
+  ]
+}

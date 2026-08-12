@@ -559,6 +559,12 @@ git diff --check
 - **层序 = back→mid→front**（F331 0x43B440 语义）。
 - 落盘：`layer-render-verification-evidence.json`（F374）+ RESEARCH_LOG Round 68。
 
+## Round 69 (2026-08-12) — 精灵偏移/锚点（Finding 375）
+
+- **EI 帧统一 -24,-16 偏移**；客户端地图 blit **忽略偏移左下锚**（仅帧高，0x43B440 目标数学确认）。
+- **P9 + F331 确认**。
+- 落盘：`sprite-offset-anchor-verification-evidence.json`（F375，primary-bytes）+ RESEARCH_LOG Round 69。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
