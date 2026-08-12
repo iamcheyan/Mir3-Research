@@ -7018,3 +7018,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔裁剪〕**IntersectRect 0x476248（区域 0xDF/0x23A/0x241/0x24A）+ ShowWindow 0x4762AC。
 - **〔修正〕**F550 模式表：2=商店、3=交易、4=行会、6=组队、8=公告、B=任务、D=坐骑、E=技能书（原「行会/商店/大地图」归属全部修正）。
 - 落盘：window-paint-dispatcher-registry-evidence.json（F558，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 252。
+## Round 253 (F559) — 2026-08-12：窗口注册表完整（模式 7/9/C/F 定名）
+
+- **〔模式 7 = 角色/状态窗〕**[0x47C28] 绘制 0x450530：头像 WIL 0x566DD4（帧 [0x551]+0x3B+[0x554]*0xA）、**11 装备槽 stride 0xC24**（0x430A40 图标 F464）、名 [0x8B94]、属性色 0xDCFFDC/0xB4FAFF + '%s %s'（0x47B560）+ 굴림 字体（0x47C348）；ctor 0x4507E0（0x112 双字复制 + 槽表 +0x13C stride 0x5F）。
+- **〔模式 9 = NPC 对话窗〕**[0x51150] 绘制 0x43F460：列表 [0x8B1AE4] + **类型跳表 0x440158 = F540 4 类型分派** + 文本渲染 0x45E0C0/0x45DD70（0x8AB7A8）。
+- **〔模式 C = 选项窗〕**[0x518E0] 绘制 0x441380：**11 控件 0x417830 @ [0x7C]..[0x61C]/[0x6D0]/[0x784]——与 F546 选项 ctor 偏移完全一致**。
+- **〔模式 F = 行会公告编辑窗〕**[0x52E5C] 绘制 0x43E3C0：占位串 '[行会公告，请自行修改公告内容.]'（0x47C440）+ '[行会修改...]'（0x47C460）+ 文本缓冲 [0x53028] + 开窗 SetFocus（F550）。
+- **〔完整〕14 窗口全定名**：0 背包/1 装备/2 商店/3 交易/4 行会/6 组队/7 角色状态/8 公告/9 NPC 对话/B 任务/C 选项/D 坐骑/E 技能书/F 行会公告编辑。
+- 落盘：window-registry-complete-evidence.json（F559，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 253。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "window-registry-complete-modes-7-9-c-f-2026-08-12-f559",
+  "title": "Round 253 (F559): Window registry COMPLETE (modes 7/9/C/F named) - mode 7 = CHARACTER/STATUS [0x47C28] paint 0x450530: portrait WIL 0x566DD4 frame [0x551]+0x3B+[0x554]*0xA, 11 equipment slots stride 0xC24 (0x430A40 item icons F464, gate [edi-4]), name [0x8B94], stat text colors 0xDCFFDC/0xB4FAFF + '%s %s' (0x47B560) + Gulim font (0x47C348 0x45DBA0), ctor 0x4507E0 copies 0x112 dwords + slot list +0x13C stride 0x5F; mode 9 = NPC DIALOG [0x51150] paint 0x43F460: list [0x8B1AE4] + type jt 0x440158 (= F540 4-type dispatch!) + text render 0x45E0C0/0x45DD70 via 0x8AB7A8; mode C = OPTION [0x518E0] paint 0x441380: 11 controls 0x417830 at [0x7C]/[0x130]/[0x1E4]/[0x298]/[0x34C]/[0x400]/[0x4B4]/[0x568]/[0x61C]/[0x6D0]/[0x784] (EXACT match F546 option ctor offsets); mode F = GUILD NOTICE EDITOR [0x52E5C] paint 0x43E3C0: placeholders '[行会公告，请自行修改公告内容.]' (0x47C440) + '[行会修改 请自行修改行会等级、成员排行信息]' (0x47C460) + text buffer [0x53028] + SetFocus on open (F550) - ALL 14 windows named",
+  "date": "2026-08-12",
+  "objective": "Name the remaining window modes 7/9/C/F.",
+  "question": "What are the last 4 window modes?",
+  "method": "Disasm paints 0x450530/0x43F460/0x441380/0x43E3C0 + string decode + F546/F540 cross-check.",
+  "scope": "0x450530, 0x43F460, 0x441380, 0x43E3C0.",
+  "cell_analysis": {
+    "mode7": {"name": "CHARACTER/STATUS [0x47C28]", "paint": "0x450530", "portrait": "WIL 0x566DD4 frame [0x551]+0x3B+[0x554]*0xA", "slots": "11 x 0xC24 (0x430A40 icons F464, gate [edi-4])", "text": "name [0x8B94] + stats colors 0xDCFFDC/0xB4FAFF + '%s %s' 0x47B560 + Gulim 0x47C348", "ctor": "0x4507E0 (0x112 dwords copy + slot list +0x13C stride 0x5F)"},
+    "mode9": {"name": "NPC DIALOG [0x51150]", "paint": "0x43F460", "jt": "0x440158 = F540 4-type dispatch", "list": "[0x8B1AE4]", "render": "0x45E0C0/0x45DD70 via 0x8AB7A8"},
+    "modeC": {"name": "OPTION [0x518E0]", "paint": "0x441380", "controls": "11 x 0x417830 at [0x7C]/[0x130]/[0x1E4]/[0x298]/[0x34C]/[0x400]/[0x4B4]/[0x568]/[0x61C]/[0x6D0]/[0x784]", "match": "EXACT F546 option ctor offsets"},
+    "modeF": {"name": "GUILD NOTICE EDITOR [0x52E5C]", "paint": "0x43E3C0", "strings": "0x47C440 '[行会公告，请自行修改公告内容.]' + 0x47C460 '[行会修改...]'", "buffer": "[0x53028] + SetFocus (F550)"},
+    "complete": "ALL 14 windows named: 0 bag, 1 equip, 2 store, 3 trade, 4 guild, 6 party, 7 char/status, 8 notice, 9 NPC dialog, B quest, C option, D horse, E skillbook, F guild-notice-editor"
+  },
+  "exe_trace": {
+    "paint_chain": "frame -> 0x4280F0 -> mode jt -> named paint"
+  },
+  "audit_vs_exe": {
+    "F546": "option ctor offsets == mode C paint offsets CONFIRMED", "F540": "NPC dialog jt 0x440158 == mode 9 dispatch", "F550": "mode F buffer [0x53028] = guild notice editor", "F464": "0x430A40 item icons in mode 7"
+  },
+  "contrast": {
+    "mode7_vs_mode1": "char/status (portrait+stats) vs equipment panel (F325)",
+    "modeF_vs_mode4": "guild notice EDITOR vs guild window (announce/enemy/alliance states F535)"
+  },
+  "verdict": "Window registry COMPLETE (F559): all 14 windows named; mode C = option (F546 offsets exact match), mode 9 = NPC dialog (F540 jt), mode F = guild notice editor, mode 7 = character/status. Registry definitive.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Paints decoded + cross-checked against F546/F540 evidence.",
+  "cross_refs": ["F558: registry", "F546: option ctor", "F540: NPC dialog", "F550: dispatcher"],
+  "tool": "capstone disasm + string decode",
+  "reproduce": "disasm 0x450530+0x80; 0x441380+0x40; 0x43E3C0+0x20",
+  "notes": [
+    "mode 7 slots stride 0xC24 = equipment-record size (F465)",
+    "mode 9 = the NPC dialog window registered as a mode",
+    "mode F text buffer [0x53028] editable (SetFocus 0x8AB7B0)",
+    "portrait WIL table 0x566DD4"
+  ]
+}
