@@ -1,0 +1,36 @@
+{
+  "evidence_id": "trade-slot-layout-family-2026-08-12-f749",
+  "title": "Round 443 (F749): Trade slot layout family - 0x4162A0 find-FREE slot (12 slots x 0xC2C @ 0x5B8 + group idx*0x9210, F557 stride CONFIRMED, ret idx/-1); 0x4162E0 trade item PLACE (bag scan 0x42F6D0 + 5-col grid pitch 36px, x +0x15 self/+0xFD other, y +0x30 + item array [obj+0x298] valid check); 0x416490 slot WRITE (word -> [obj + 0x298 + grid]) - trade window layout COMPLETE (F557 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade slot layout family.",
+  "question": "How does the trade grid work?",
+  "method": "Disasm 0x4162A0-0x416500.",
+  "scope": "0x4162A0-0x416500; slots 0x5B8.",
+  "cell_analysis": {
+    "0x4162A0": "find-free: 12 x 0xC2C @ 0x5B8 + 0x9210 group",
+    "0x4162E0": "place: 0x42F6D0 bag + 5-col grid +0x15/+0xFD/+0x30 + [0x298]",
+    "0x416490": "write: word -> [0x298 + grid]"
+  },
+  "exe_trace": {
+    "trade_chain": "find-free -> place (bag scan + grid) -> slot write"
+  },
+  "audit_vs_exe": {
+    "F557": "2 cols x 12 slots 0xC2C CONFIRMED", "F655": "bag scan 0x42F6D0"
+  },
+  "contrast": {
+    "find_vs_place": "free scan + grid place",
+    "self_vs_other": "x +0x15 vs +0xFD"
+  },
+  "verdict": "Trade slot layout family PRIMARY-verified: find-free + place + write; trade window layout complete (F557).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Trade layout decoded from .text.",
+  "cross_refs": ["F557: trade", "F655: bag scan"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4162A0+0x10; 0x4162E0+0x20",
+  "notes": [
+    "0xC2C x 12 = 0x9210 group",
+    "5-col grid 36px",
+    "item array [0x298]",
+    "self x +0x15 / other +0xFD"
+  ]
+}

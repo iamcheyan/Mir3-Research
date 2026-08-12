@@ -7909,3 +7909,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 439-441（F746-F747：NPC 对话选项 + NPC 对话弧）；基线 Round 438=7599abe → Round 441=2599ac2（**406 连发 F335-F747**）。
 - 落盘：handoff-refresh-59-evidence.json（F748，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 442。
+## Round 443 (F749) — 2026-08-12：交易槽布局家族
+
+- **〔交易〕**0x4162A0 查找空闲槽（12 槽 × 0xC2C @ 0x5B8 + 组 idx×0x9210——**F557 stride 确认**，返回 idx/-1）；0x4162E0 交易物品放置（背包扫描 0x42F6D0 + **5 列网格 36px**、x +0x15 己方/+0xFD 对方、y +0x30 + 物品数组 [obj+0x298] 校验）；0x416490 槽写入（字 → [obj+0x298+网格]）——**交易窗口布局完整**（F557 用）。
+- 落盘：trade-slot-layout-family-evidence.json（F749，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 443。
