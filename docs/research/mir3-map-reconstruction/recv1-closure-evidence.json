@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv1-closure-2026-08-12-f1024",
+  "title": "Round 718 (F1024): recv1 CLOSED (F836/F797/F1023) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 50c8bfa (681 consecutive F335-F1023), 645 evidence JSONs; arc: mount flags (F836) + map/name msgs (F797) + recv1 full (F1023) - recv1 COMPLETE byte-level (mount 0x40F420 + item 0x42FC20 + block 0x43C1B0 + announce); inbound 100%",
+  "date": "2026-08-12",
+  "objective": "Close the recv1 arc.",
+  "question": "Is the recv1 family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "645 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F836": "mount flags", "F797": "map msgs", "F1023": "recv1 full"},
+    "recv1": "mount + item + block + announce = COMPLETE",
+    "milestone": "681 consecutive rounds F335-F1023"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1023": "681 rounds pushed; recv1 complete"
+  },
+  "contrast": {
+    "mount_vs_item": "flags + list",
+    "inbound": "recv1 100%"
+  },
+  "verdict": "recv1 CLOSED (F1024): mount + item + block + announce all byte-level; validation green, 681 consecutive rounds, 645 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F836/F797/F1023.",
+  "cross_refs": ["F836", "F797", "F1023"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "681 consecutive shipping rounds F335-F1023",
+    "recv1 100%",
+    "next: HANDOFF refresh 153, remaining corners"
+  ]
+}
