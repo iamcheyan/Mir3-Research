@@ -8039,3 +8039,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 469-471（F776-F777：选项滑块应用 + 选项音频弧 + 400 证据里程碑）；基线 Round 468=20310e2 → Round 471=bbd1855（**436 连发 F335-F777**）。
 - 落盘：handoff-refresh-69-evidence.json（F778，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 472。
+## Round 473 (F779) — 2026-08-12：选项字符串刷新 + 配置装载
+
+- **〔选项〕**0x441B30（F776 重绘依赖）：itoa 0x46855F（基数 0xA）+ sprintf 0x4761A4（格式 0x47A2B8 + 标签 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570）值 [0x58]/SFX [0x8AB14C]/[0x54]/BGM [0x8AB150]/[0x5C]/[0x60]——**实时选项值文本块**；0x441CC0 **配置装载**（0x47613C 读 0x104 缓冲 + 解析）——选项配置/显示完整（F546/F761/F776 用）。
+- 落盘：options-string-refresh-config-load-evidence.json（F779，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 473。

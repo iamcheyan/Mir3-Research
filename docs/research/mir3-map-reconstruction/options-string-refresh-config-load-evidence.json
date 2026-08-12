@@ -1,0 +1,35 @@
+{
+  "evidence_id": "options-string-refresh-config-load-2026-08-12-f779",
+  "title": "Round 473 (F779): Options string refresh + config load - 0x441B30 (F776 redraw dependency): itoa 0x46855F (radix 0xA) + sprintf 0x4761A4 (format 0x47A2B8 + labels 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570) for values [0x58]/SFX [0x8AB14C]/[0x54]/BGM [0x8AB150]/[0x5C]/[0x60] - live options values text block; 0x441CC0 CONFIG LOAD (0x47613C read 0x104 buffer + parse) - options config/display COMPLETE (F546/F761/F776 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the options string refresh + config load.",
+  "question": "How do options display live values + load config?",
+  "method": "Disasm 0x441B30-0x441CB5 + 0x441CC0 head.",
+  "scope": "0x441B30-0x441CB5; 0x441CC0.",
+  "cell_analysis": {
+    "0x441B30": "refresh: itoa 0x46855F + sprintf 0x4761A4, values [0x58]/[0x8AB14C]/[0x54]/[0x8AB150]/[0x5C]/[0x60]",
+    "0x441CC0": "config load: 0x47613C read + parse"
+  },
+  "exe_trace": {
+    "options_chain": "config load -> values -> string refresh -> display"
+  },
+  "audit_vs_exe": {
+    "F546": "BGM/SFX", "F761": "options click", "F776": "apply"
+  },
+  "contrast": {
+    "refresh_vs_load": "string build + config read",
+    "bgm_vs_sfx": "0x8AB150 + 0x8AB14C"
+  },
+  "verdict": "Options string refresh + config load PRIMARY-verified: live values + config read; options config/display complete (F546/F761/F776).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Options refresh decoded from .text.",
+  "cross_refs": ["F546: sliders", "F761: click", "F776: apply"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441B30+0x20; 0x441CC0+0x10",
+  "notes": [
+    "labels 0x47C5AC-0x47C570",
+    "sprintf 0x4761A4",
+    "config read 0x47613C",
+    "live values text"
+  ]
+}
