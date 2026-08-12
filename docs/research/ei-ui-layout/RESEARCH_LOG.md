@@ -7594,3 +7594,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 367-369（F674-F675：公告窗绘制 + 公告闭合 + 服务恢复）；基线 Round 366=0596b2c → Round 369=93a6bd2（**334 连发 F335-F675**）。
 - 落盘：handoff-refresh-36-evidence.json（F676，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 370。
+## Round 371 (F677) — 2026-08-12：公告行列表核心
+
+- **〔核心〕**0x414FA0 = **插入**（malloc 0x410 节点 {0x408/0x40C 链接} + 复制 0x102 双字、头 [0x4]/尾 [0xC]/计数 [0x14]、ret 0x408 = F674 公告队列节点）；0x415030 = 列表析构（释放全部）；0x415090 = 尾弹出（[0x8] → prev）——公告队列字节级（F674 连接）。
+- 落盘：notice-line-list-evidence.json（F677，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 371。

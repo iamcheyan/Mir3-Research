@@ -1,0 +1,36 @@
+{
+  "evidence_id": "notice-line-list-2026-08-12-f677",
+  "title": "Round 371 (F677): Notice line-list core - 0x414FA0 = insert (malloc 0x410 node {0x408/0x40C links} + copy 0x102 dwords, head [0x4]/tail [0xC]/count [0x14], ret 0x408 = F674 notice queue node); 0x415030 = list dtor (free 0x4680F8 all); 0x415090 = tail-pop ([0x8] -> prev) - notice queue byte-level (F674 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the notice line-list core.",
+  "question": "How does the notice queue work?",
+  "method": "Disasm 0x414FA0-0x415090.",
+  "scope": "0x414FA0-0x415090; node 0x410.",
+  "cell_analysis": {
+    "0x414FA0": {"insert": "malloc 0x410 node + copy 0x102 dwords", "links": "0x408/0x40C", "head/tail": "[0x4]/[0xC] + count [0x14]", "ret": "0x408"},
+    "0x415030": "list dtor: free 0x4680F8 all nodes",
+    "0x415090": "tail-pop: [0x8] -> prev"
+  },
+  "exe_trace": {
+    "notice_queue_chain": "server notice -> 0x414FA0 insert node -> render F674 -> pop 0x415090"
+  },
+  "audit_vs_exe": {
+    "F674": "notice render CONNECTED", "F556/F565": "notice family"
+  },
+  "contrast": {
+    "insert_vs_pop": "0x414FA0 insert + 0x415090 pop",
+    "dtor": "0x415030 list cleanup"
+  },
+  "verdict": "Notice line-list PRIMARY-verified: insert node + pop + dtor; F674 notice queue byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Queue core decoded from .text.",
+  "cross_refs": ["F674: render", "F556/F565: notices"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414FA0+0x20; 0x415030+0x10",
+  "notes": [
+    "node 0x410 = 0x408 + 8 links",
+    "copy 0x102 dwords = 0x408 bytes",
+    "head [0x4] / tail [0xC]",
+    "count [0x14]"
+  ]
+}
