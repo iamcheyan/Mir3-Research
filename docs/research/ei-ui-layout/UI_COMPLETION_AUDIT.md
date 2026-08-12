@@ -2666,9 +2666,14 @@ git diff --check
 - **Round 484-486 追加 + 451 连发**（英雄生命周期完整入档）。
 - 落盘：`handoff-refresh-74-evidence.json`（F793）+ RESEARCH_LOG Round 487。
 
+## Round 488 (2026-08-12) — 技能消息处理 + 地图标题处理（Finding 794）
+
+- **技能 0x34 全量 + 地图标题**（F743 来源完整）。
+- 落盘：`skill-msg-handler-map-title-evidence.json`（F794）+ RESEARCH_LOG Round 488。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（英雄完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（技能/标题处理完整；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

@@ -8104,3 +8104,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 484-486（F791-F792：英雄消息/死亡泵 + 英雄生命周期最终闭合 + 450 里程碑）；基线 Round 483=581634a → Round 486=95c2f7f（**451 连发 F335-F792**）。
 - 落盘：handoff-refresh-74-evidence.json（F793，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 487。
+## Round 488 (F794) — 2026-08-12：技能消息处理 + 地图标题处理
+
+- **〔技能〕**0x423000 技能 msg 0x34 全量（base64 0x452810 解码 msg+0xC → [0x35B1F0] 记录 → 显示槽 [0x35A34x]，free——**F743 的 0x423020 为其尾部**）；0x422CC0 **地图标题处理**（msg → 实体 id [0x2F8784]、base64 ×2、vtable[0x8C]、**标题 0x47EEE4 → 0x7776A0**、[0x2ED0B0]、列表 [0xE1188] 清 + 0x417FB0 重置、发送 msg 0x51、[0x35B2B8]=1）——技能 + 地图显示处理完整。
+- 落盘：skill-msg-handler-map-title-evidence.json（F794，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 488。

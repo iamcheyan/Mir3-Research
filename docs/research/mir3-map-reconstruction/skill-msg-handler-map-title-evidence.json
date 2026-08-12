@@ -1,0 +1,35 @@
+{
+  "evidence_id": "skill-msg-handler-map-title-2026-08-12-f794",
+  "title": "Round 488 (F794): Skill msg handler + map-title handler - 0x423000 skill msg 0x34 FULL (base64 0x452810 decode msg+0xC -> [0x35B1F0] record -> display slots [0x35A34C]/[0x35A34A]/[0x35A34E], [0x35B1E8]/[0x35B1E4] set, free - F743 0x423020 was its tail); 0x422CC0 MAP-TITLE handler (msg -> entity id [0x2F8784], bytes [0x35A354], base64 0x452810 x2, vtable[0x8C] on [0x2F8780], TITLE copy 0x47EEE4 -> 0x7776A0, [0x2ED0B0] flag, list [0xE1188] clear + 0x417FB0 reset, send msg 0x51 via 0x451660, [0x35B2B8]=1) - skill + map display handlers COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the skill msg handler + map-title handler.",
+  "question": "How do skill + map-title messages process?",
+  "method": "Disasm 0x423000-0x423030 + 0x422CC0-0x422E20.",
+  "scope": "0x423000; 0x422CC0.",
+  "cell_analysis": {
+    "0x423000": "skill 0x34: base64 -> [0x35B1F0] -> display [0x35A34x]",
+    "0x422CC0": "map-title: [0x2F8784] + 0x7776A0 title + send 0x51"
+  },
+  "exe_trace": {
+    "msg_chain": "0x34 skill decode -> display; map-title -> title + reset"
+  },
+  "audit_vs_exe": {
+    "F743": "0x423020 tail confirmed", "F572": "base64 0x452810", "F580": "title"
+  },
+  "contrast": {
+    "skill_vs_title": "0x34 + map title",
+    "decode_vs_send": "base64 + 0x51"
+  },
+  "verdict": "Skill msg handler + map-title handler PRIMARY-verified: skill decode full + title handler; F743 origin fully resolved.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers decoded from .text.",
+  "cross_refs": ["F743: skill", "F689: base64", "F791: dispatch"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423000+0x10; 0x422CC0+0x20",
+  "notes": [
+    "skill msg 0x34",
+    "base64 0x452810",
+    "title 0x7776A0",
+    "send 0x51"
+  ]
+}
