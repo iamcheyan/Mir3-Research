@@ -9031,3 +9031,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 698-700（F1005-F1006：受击闪光特效全量 + ROUND 700 里程碑）；基线 Round 697=b2ad52a → Round 700=7bcd530（**664 连发 F335-F1006**）。
 - 落盘：handoff-refresh-147-evidence.json（F1007，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 701。
+## Round 702 (F1008) — 2026-08-12：瓦片访问器可行走 + 属性全量（F719）
+
+- **〔瓦片〕**0x43C9F0 **可行走**（bit0 测试 @ 0x10C stride 0xE，边界 [0x126]/[0x128] 宽/高）+ 0x43CA40 **属性读取**（word @ +0xC，类型位 >>0xE&3，属性 >>4，旗标位；默认 −1）——瓦片访问器完整（F717/F719 依赖）。
+- 落盘：tile-accessors-walkable-attr-full-evidence.json（F1008，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 702。

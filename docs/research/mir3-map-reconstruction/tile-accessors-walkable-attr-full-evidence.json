@@ -1,0 +1,36 @@
+{
+  "evidence_id": "tile-accessors-walkable-attr-full-2026-08-12-f1008",
+  "title": "Round 702 (F1008): Tile accessors walkable + attr FULL (F719) - 0x43C9F0 WALKABLE (bit0 test @ 0x10C stride 0xE, bounds [0x126]/[0x128] width/height) + 0x43CA40 ATTR read (word @ +0xC, type bits >>0xE&3, attr >>4, flag bits; -1 default) - tile accessors COMPLETE (F717/F719 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the full tile walkable + attr accessors.",
+  "question": "How do the tile accessors test walkability + attributes?",
+  "method": "Disasm 0x43C9F0-0x43CA40.",
+  "scope": "0x43C9F0-0x43CA40; accessors.",
+  "cell_analysis": {
+    "0x43C9F0": "walkable bit0 @ 0x10C",
+    "0x43CA40": "attr word + 0xC type bits",
+    "default": "-1"
+  },
+  "exe_trace": {
+    "tile_chain": "bounds -> stride -> bits"
+  },
+  "audit_vs_exe": {
+    "F719": "tile collision", "F717": "tile access"
+  },
+  "contrast": {
+    "walk_vs_attr": "bit0 + word",
+    "stride": "0xE"
+  },
+  "verdict": "Tile accessors walkable + attr FULL PRIMARY-verified: bit0 + attr word; F717/F719 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tile accessors decoded from .text.",
+  "cross_refs": ["F719: collision", "F717: access"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43C9F0+0x10; 0x43CA40+0x20",
+  "notes": [
+    "walk bit0",
+    "attr +0xC",
+    "type bits 0xE-0xF",
+    "stride 0xE"
+  ]
+}

@@ -4345,3 +4345,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（ROUND 700 达成；下一弧：剩余深层角落/模拟器 polish）。
+## Round 702 (2026-08-12) — 瓦片访问器可行走 + 属性全量（Finding 1008）
+
+- **bit0 + 属性字**（瓦片访问器完整）。
+- 落盘：`tile-accessors-walkable-attr-full-evidence.json`（F1008）+ RESEARCH_LOG Round 702。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（瓦片访问器完整；下一弧：剩余深层角落）。
