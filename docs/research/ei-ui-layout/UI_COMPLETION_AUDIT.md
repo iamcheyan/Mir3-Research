@@ -726,6 +726,11 @@ git diff --check
 - **模拟器成员列表验证**；原版 3 列表态 + 横幅引用（F348/F294）。
 - 落盘：`guild-window-content-verification-evidence.json`（F405）+ RESEARCH_LOG Round 99。
 
+## Round 100 (2026-08-12) — 状态属性颜色（Finding 406）
+
+- **F289 颜色应用**（等级 0xfae1c8、值 0xfafafa）浏览器验证。
+- 落盘：`status-attribute-colors-evidence.json`（F406）+ app.js + RESEARCH_LOG Round 100。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

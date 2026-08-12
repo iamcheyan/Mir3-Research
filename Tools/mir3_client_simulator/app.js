@@ -462,8 +462,12 @@ function fillWindowContent(w) {
     attrs.forEach((a, i) => {
       const lbl = document.createElement("div");
       lbl.className = "lbl";
-      lbl.style.cssText = `left:160px;top:${20 + i * 22}px`;
+      // F289 (Round 100 F406): attribute VALUES 30 sites 0xfafafa (0x44BD37..),
+      // LABELS 28 sites 0xfae1c8 (0x44Bxxx); 4 special 0xff (防御/攻击/魔法/魔御)
+      lbl.style.cssText = `left:160px;top:${20 + i * 22}px;color:${i === 0 ? "#fae1c8" : "#fafafa"}`;
       lbl.textContent = a;
+      lbl.dataset.evidence = "primary-static";
+      lbl.dataset.desc = `F289: 属性${i === 0 ? "标签 0xfae1c8" : "值 0xfafafa"} · 0x44BD37..0x44CCB2`;
       content.appendChild(lbl);
     });
   } else if (id === "window.inventory") {

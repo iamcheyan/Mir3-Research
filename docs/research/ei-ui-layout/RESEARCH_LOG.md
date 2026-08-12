@@ -6236,3 +6236,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模拟器〕**行会成员标题 0x7776A0（0xDCE6C8）+ 4 成员。
 - **〔原版〕**3 列表态（0x425280 公告/敌对/联盟 0x96FF 标记、0x425440 成员、0x425590 双画）+ 9 控件 + id15 横幅引用（ctrl4/ctrl7，F294）。
 - 落盘：guild-window-content-verification-evidence.json（F405，derived-tooling；语义 primary-static F348/F294）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 99。
+## Round 100 (F406) — 2026-08-12：状态属性颜色验证（F289 0xfafafa/0xfae1c8 应用）
+
+- **〔F289〕**30 值 0xfafafa + 28 标签 0xfae1c8 + 4 特殊 0xff（防御/攻击/魔法/魔御）；62 处 0x45DD70。
+- **〔模拟器〕**等级标签 rgb(250,225,200)=0xfae1c8、攻击值 rgb(250,250,250)=0xfafafa（浏览器验证）。
+- 落盘：status-attribute-colors-evidence.json（F406，derived-tooling；颜色 primary-static F289）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 100。

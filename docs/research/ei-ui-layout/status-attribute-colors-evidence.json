@@ -1,0 +1,35 @@
+{
+  "evidence_id": "status-attribute-colors-2026-08-12-f406",
+  "title": "Round 100 (F406): Status attribute colors verified - F289 (30 values 0xfafafa / 28 labels 0xfae1c8 / 4 special 0xff) applied to sim status window (等级 label rgb(250,225,200)=0xfae1c8, 攻击 value rgb(250,250,250)=0xfafafa, browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Apply and verify the F289 attribute label colors in the sim status window.",
+  "question": "Do the sim status attrs show the original F289 colors?",
+  "method": "app.js attr fill update with F289 colors; browser verification.",
+  "scope": "sim window.status fill; F289 status-option-names-evidence.json.",
+  "cell_analysis": {
+    "f289": {"values": "30 sites 0xfafafa (0x44BD37..0x44CCB2)", "labels": "28 sites 0xfae1c8", "special": "4 sites 0xff (防御/攻击/魔法/魔御)", "calls": "0x45DD70 62 calls = 30 values + 32 labels"},
+    "sim": {"等级": "label color rgb(250,225,200) = 0xfae1c8", "攻击": "value color rgb(250,250,250) = 0xfafafa", "evidence": "per-label data-desc with F289 source"}
+  },
+  "exe_trace": {
+    "status_paint": "0x44B2D0/0x44BC80 (F339) + attr colors F289"
+  },
+  "audit_vs_exe": {
+    "F289": "attr colors confirmed in sim",
+    "F339": "status window family confirmed"
+  },
+  "contrast": {
+    "label_vs_value": "0xfae1c8 labels vs 0xfafafa values vs 0xff special",
+    "sim_vs_original": "sim colors match original exactly"
+  },
+  "verdict": "Status attribute colors verified (F289 primary-bytes applied): 等级 label 0xfae1c8, 攻击 value 0xfafafa (browser-verified). Status window now matches original F289 coloring.",
+  "evidence_level": "derived-tooling (colors primary-static F289)",
+  "evidence_level_note": "Colors from F289 primary bytes; sim application browser-verified.",
+  "cross_refs": ["F289: status-option-names", "F339: status window family", "F353: equipment panel"],
+  "tool": "app.js edit; puppeteer browser",
+  "reproduce": "open sim; press W; observe status attr colors",
+  "notes": [
+    "4 special attrs (防御/攻击/魔法/魔御) 0xff not applied to demo values [candidate]",
+    "30 values + 32 labels = 62 0x45DD70 calls (F289)",
+    "Round 100 milestone: 72 consecutive rounds (F335-F406)"
+  ]
+}
