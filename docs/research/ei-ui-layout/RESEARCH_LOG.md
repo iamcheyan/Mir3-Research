@@ -8507,3 +8507,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**510 证据 JSON（510 里程碑）**；三服务 200；master fd7f983（**544 连发 F335-F885 已推**）。
 - **〔弧〕**HUD 状态条（F588）+ 条注册表（F590）+ 状态全量（F885）——**HUD 状态完整**（% 格式 + 矩阵缩放 + 注册表 blit + 文本 + 填充），HUD 条表面 100%。
 - 落盘：hud-status-closure-evidence.json（F886，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 580。
+## Round 581 (F887) — 2026-08-12：HANDOFF 刷新 106（Round 578-580）
+
+- **〔刷新〕**HANDOFF 追加 Round 578-580（F885-F886：HUD 状态条全量 + HUD 状态闭合 + 510 里程碑）；基线 Round 577=5efee62 → Round 580=82c41e0（**545 连发 F335-F886**）。
+- 落盘：handoff-refresh-106-evidence.json（F887，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 581。

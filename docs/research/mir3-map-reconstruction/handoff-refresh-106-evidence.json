@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-106-2026-08-12-f887",
+  "title": "Round 581 (F887): HANDOFF refresh 106 - Rounds 578-580 (F884-F886: HANDOFF 105, HUD status bar full, HUD status closure + 510 evidence milestone), baseline Round 577=5efee62 -> Round 580=82c41e0 (545 consecutive F335-F886), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 578-580.",
+  "question": "What changed since HANDOFF refresh 105?",
+  "method": "Append Round 578-580 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 578-580 appended (3 rounds, F884-F886)",
+    "baseline": "Round 577=5efee62 -> Round 580=82c41e0 (545 consecutive F335-F886)",
+    "milestone": "510 evidence JSONs documented",
+    "arcs": {"status": "F885 HUD status", "closure": "F886 status"},
+    "key": "HUD status complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F884": "refresh 105 baseline -> now refresh 106", "F335-F886": "545 rounds"
+  },
+  "contrast": {
+    "refresh_105_vs_106": "F885-F886 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 106 (F887): Rounds 578-580 documented (HUD status complete), baseline 5efee62 -> 82c41e0, 545 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F885-F886 evidence.",
+  "cross_refs": ["F884: refresh 105", "F886: status closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 578-580 section to HANDOFF",
+  "notes": [
+    "545 consecutive shipping rounds F335-F886",
+    "next: remaining deep corners, sim polish"
+  ]
+}

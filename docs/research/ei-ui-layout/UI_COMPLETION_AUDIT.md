@@ -3377,3 +3377,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HUD 状态完整；下一弧：HANDOFF 刷新 106/剩余角落）。
+## Round 581 (2026-08-12) — HANDOFF 刷新 106（Finding 887）
+
+- **Round 578-580 追加 + 545 连发**（HUD 状态完整入档）。
+- 落盘：`handoff-refresh-106-evidence.json`（F887）+ RESEARCH_LOG Round 581。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HUD 状态完整；下一弧：剩余深层角落/模拟器 polish）。
