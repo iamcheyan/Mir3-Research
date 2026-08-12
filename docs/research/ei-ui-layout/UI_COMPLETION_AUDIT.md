@@ -2596,9 +2596,14 @@ git diff --check
 - **实时值文本 + 配置读入**（选项配置/显示完整）。
 - 落盘：`options-string-refresh-config-load-evidence.json`（F779）+ RESEARCH_LOG Round 473。
 
+## Round 474 (2026-08-12) — 选项系统最终闭合（Finding 780）
+
+- **438 连发 + 404 证据 + 选项系统 100%**。
+- 落盘：`options-system-final-closure-evidence.json`（F780）+ RESEARCH_LOG Round 474。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（选项配置完整；下一弧：剩余深层角落）。
+- 无阻塞项（选项 100%；下一弧：HANDOFF 刷新 70/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

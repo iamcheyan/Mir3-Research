@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-system-final-closure-2026-08-12-f780",
+  "title": "Round 474 (F780): Options system FINAL closure (F546/F761/F776/F779) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master bde6bc5 (438 consecutive F335-F779), 404 evidence JSONs; arc: switches (F546) + draw/click (F761) + slider apply (F776) + string/config (F779) - options system 100% byte-level (4x2 toggles + BGM/SFX sliders + volume apply 0x45A700 + live values + config load), window mode C completely documented",
+  "date": "2026-08-12",
+  "objective": "Close the options system finally.",
+  "question": "Is the options system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "404 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F546": "switches", "F761": "draw/click", "F776": "apply", "F779": "string/config"},
+    "options": "toggles + sliders + apply + config = 100%",
+    "milestone": "438 consecutive rounds F335-F779"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F779": "438 rounds pushed; options system complete"
+  },
+  "contrast": {
+    "draw_vs_apply": "controls + volume",
+    "config_vs_values": "load + live text"
+  },
+  "verdict": "Options system FINAL closure (F780): toggles + sliders + apply + config all byte-level; validation green, 438 consecutive rounds, 404 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F546/F761/F776/F779.",
+  "cross_refs": ["F546", "F761", "F776", "F779"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "438 consecutive shipping rounds F335-F779",
+    "options system 100%",
+    "next: HANDOFF refresh 70, remaining corners"
+  ]
+}
