@@ -9035,3 +9035,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔瓦片〕**0x43C9F0 **可行走**（bit0 测试 @ 0x10C stride 0xE，边界 [0x126]/[0x128] 宽/高）+ 0x43CA40 **属性读取**（word @ +0xC，类型位 >>0xE&3，属性 >>4，旗标位；默认 −1）——瓦片访问器完整（F717/F719 依赖）。
 - 落盘：tile-accessors-walkable-attr-full-evidence.json（F1008，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 702。
+## Round 703 (F1009) — 2026-08-12：瓦片访问器闭合（F717/F719/F1008 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**630 证据 JSON**；三服务 200；master c8c7fb1（**666 连发 F335-F1008 已推**）。
+- **〔弧〕**瓦片访问（F717）+ 碰撞/属性（F719）+ 可行走/属性全量（F1008）——**瓦片访问器完整**（GET stride 0xE + bit0 可行走 + 属性字 + 类型位）；地图碰撞 100%。
+- 落盘：tile-accessors-closure-evidence.json（F1009，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 703。

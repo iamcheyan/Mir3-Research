@@ -4353,3 +4353,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（瓦片访问器完整；下一弧：剩余深层角落）。
+## Round 703 (2026-08-12) — 瓦片访问器闭合（Finding 1009）
+
+- **666 连发 + 630 证据 + 瓦片访问器完整**。
+- 落盘：`tile-accessors-closure-evidence.json`（F1009）+ RESEARCH_LOG Round 703。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图碰撞 100%；下一弧：HANDOFF 刷新 148/剩余角落）。
