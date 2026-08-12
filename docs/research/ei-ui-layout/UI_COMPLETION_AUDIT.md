@@ -4201,3 +4201,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备 + 纸娃娃 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 684 (2026-08-12) — HP 条 blit 全量（Finding 990）
+
+- **lerp + 矩阵 + blit**（HP 条 blit 完整）。
+- 落盘：`hp-bar-blit-full-evidence.json`（F990）+ RESEARCH_LOG Round 684。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HP 条 blit 完整；下一弧：剩余深层角落）。

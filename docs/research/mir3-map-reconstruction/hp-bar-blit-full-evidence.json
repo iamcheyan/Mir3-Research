@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hp-bar-blit-full-2026-08-12-f990",
+  "title": "Round 684 (F990): HP bar blit FULL (F590 core) - 0x4542F0: entity pos [ebx]/[edi] lerp 0x476364 (world coords) -> matrix build 0x467000 D3DX + 0x466CE0/0x466F20 blit + bar frame 0x112 @ +0x13F9C + vtable[0x40]/[0x14]/[0x30]/[0x2C]/[0x8C]/[0x64]/[0x18] sprite ops + 0x80004005 fail - HP bar blit COMPLETE (F590/F903)",
+  "date": "2026-08-12",
+  "objective": "Decode the full HP bar blit.",
+  "question": "How does the client blit the HP bar over entities?",
+  "method": "Disasm 0x4542F0-0x454530.",
+  "scope": "0x4542F0-0x454530; blit.",
+  "cell_analysis": {
+    "0x4542F0": "lerp + matrix + blit + frame 0x112",
+    "ops": "vtable 0x40/0x14/0x30/0x2C/0x8C/0x64/0x18",
+    "fail": "0x80004005"
+  },
+  "exe_trace": {
+    "hpbar_chain": "pos lerp -> matrix -> blit"
+  },
+  "audit_vs_exe": {
+    "F590": "bar system", "F903": "bar registry"
+  },
+  "contrast": {
+    "lerp_vs_blit": "pos + render",
+    "frame": "0x112 @ +0x13F9C"
+  },
+  "verdict": "HP bar blit FULL PRIMARY-verified: lerp + matrix + blit; F590/F903 core complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "HP bar blit decoded from .text.",
+  "cross_refs": ["F590: bars", "F903: registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4542F0+0x20",
+  "notes": [
+    "lerp 0x476364",
+    "matrix 0x467000",
+    "frame 0x112",
+    "fail 0x80004005"
+  ]
+}

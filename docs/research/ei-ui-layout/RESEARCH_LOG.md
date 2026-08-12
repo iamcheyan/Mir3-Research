@@ -8954,3 +8954,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 680-682（F987-F988：装备构造/纸娃娃全量 + 装备/纸娃娃闭合）；基线 Round 679=be6bdf1 → Round 682=ec09a52（**647 连发 F335-F988**）。
 - 落盘：handoff-refresh-141-evidence.json（F989，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 683。
+## Round 684 (F990) — 2026-08-12：HP 条 blit 全量（F590 核心）
+
+- **〔HP 条〕**0x4542F0：实体坐标 [ebx]/[edi] lerp 0x476364（世界坐标）→ 矩阵构建 0x467000 D3DX + 0x466CE0/0x466F20 blit + **条帧 0x112 @ +0x13F9C** + vtable[0x40]/[0x14]/[0x30]/[0x2C]/[0x8C]/[0x64]/[0x18] 精灵操作 + 失败 0x80004005——HP 条 blit 完整（F590/F903）。
+- 落盘：hp-bar-blit-full-evidence.json（F990，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 684。
