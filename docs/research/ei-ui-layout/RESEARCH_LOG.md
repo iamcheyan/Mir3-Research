@@ -8087,3 +8087,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**413 证据 JSON**；三服务 200；master 6ac6a14（**447 连发 F335-F788 已推**）。
 - **〔弧〕**滑块（F546）+ 应用（F776）+ 刷新（F779）+ 配置装载（F788）——**选项持久化完整**（Mir3.ini 6 键 + atoi + 音频开/关 + 音量↔滑块双向 + 实时值），**选项全生命周期**（装载 → 显示 → 调整 → 应用）文档化。
 - 落盘：options-persistence-closure-evidence.json（F789，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 483。
+## Round 484 (F790) — 2026-08-12：HANDOFF 刷新 73（Round 481-483）
+
+- **〔刷新〕**HANDOFF 追加 Round 481-483（F788-F789：选项配置装载 + 选项持久化闭合）；基线 Round 480=b4b8bc8 → Round 483=581634a（**448 连发 F335-F789**）。
+- 落盘：handoff-refresh-73-evidence.json（F790，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 484。

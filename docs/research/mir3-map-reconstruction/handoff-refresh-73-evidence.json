@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-73-2026-08-12-f790",
+  "title": "Round 484 (F790): HANDOFF refresh 73 - Rounds 481-483 (F787-F789: HANDOFF 72, options config load, options persistence closure), baseline Round 480=b4b8bc8 -> Round 483=581634a (448 consecutive F335-F789), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 481-483.",
+  "question": "What changed since HANDOFF refresh 72?",
+  "method": "Append Round 481-483 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 481-483 appended (3 rounds, F787-F789)",
+    "baseline": "Round 480=b4b8bc8 -> Round 483=581634a (448 consecutive F335-F789)",
+    "arcs": {"config": "F788 config load", "closure": "F789 persistence"},
+    "key": "options lifecycle complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F787": "refresh 72 baseline -> now refresh 73", "F335-F789": "448 rounds"
+  },
+  "contrast": {
+    "refresh_72_vs_73": "F788-F789 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 73 (F790): Rounds 481-483 documented (options lifecycle complete), baseline b4b8bc8 -> 581634a, 448 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F788-F789 evidence.",
+  "cross_refs": ["F787: refresh 72", "F789: persistence closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 481-483 section to HANDOFF",
+  "notes": [
+    "448 consecutive shipping rounds F335-F789",
+    "next: remaining deep corners, sim polish"
+  ]
+}
