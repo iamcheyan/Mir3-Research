@@ -1,0 +1,35 @@
+{
+  "evidence_id": "window-open-close-dispatcher-2026-08-12-f811",
+  "title": "Round 505 (F811): Window open/close dispatcher (F550 FULL) - 0x42ADB0: 0x42B820 pre + 16-mode jt 0x42B3E4 (F550 CONFIRMED): each mode OPEN = 0x42AC30 + window SHOW (vtable[0x10]=1) + per-window init (bag 0x6554/0x42FF90 + frame 0x417880 0x10B/0x10C, equip 0x29CE4, shop 0x33188, trade 0x3399C, quest 0x516E8, options 0x518E0...), CLOSE = 0x42AC50 + window HIDE (vtable[0x10]=0) - authoritative open/close per F558 mode, F550 body complete",
+  "date": "2026-08-12",
+  "objective": "Decode the window open/close dispatcher.",
+  "question": "How do windows open/close?",
+  "method": "Disasm 0x42ADB0-0x42AF80.",
+  "scope": "0x42ADB0-0x42AF80; jt 0x42B3E4.",
+  "cell_analysis": {
+    "0x42ADB0": {"jt": "0x42B3E4 16-mode", "open": "0x42AC30 + vtable[0x10]=1", "close": "0x42AC50 + vtable[0x10]=0"},
+    "windows": {"bag": "0x6554", "equip": "0x29CE4", "shop": "0x33188", "trade": "0x3399C", "quest": "0x516E8", "options": "0x518E0"}
+  },
+  "exe_trace": {
+    "toggle_chain": "mode -> open (show) | close (hide)"
+  },
+  "audit_vs_exe": {
+    "F550": "16-mode CONFIRMED", "F558": "registry", "F808": "toggle user"
+  },
+  "contrast": {
+    "open_vs_close": "0x42AC30 + hide",
+    "modes_vs_windows": "16 jt + slots"
+  },
+  "verdict": "Window open/close dispatcher PRIMARY-verified: 16-mode toggle + show/hide; F550 body complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Window toggle decoded from .text.",
+  "cross_refs": ["F550: toggle", "F558: registry", "F808: guild user"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42ADB0+0x20",
+  "notes": [
+    "jt 0x42B3E4",
+    "16 modes",
+    "show/hide vtable[0x10]",
+    "bag init 0x42FF90"
+  ]
+}

@@ -2769,3 +2769,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会全交互；下一弧：剩余深层角落/模拟器 polish）。
+## Round 505 (2026-08-12) — 窗口开/关分派器（Finding 811）
+
+- **16 模式开关 + 显示/隐藏**（F550 全量）。
+- 落盘：`window-open-close-dispatcher-evidence.json`（F811）+ RESEARCH_LOG Round 505。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口开关完整；下一弧：剩余深层角落）。

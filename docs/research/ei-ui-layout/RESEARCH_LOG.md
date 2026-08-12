@@ -8178,3 +8178,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 501-503（F808-F809：行会消息/按钮分派 + 行会分派弧）；基线 Round 500=82f32d8 → Round 503=0352e21（**468 连发 F335-F809**）——**HANDOFF 刷新 80 里程碑**。
 - 落盘：handoff-refresh-80-evidence.json（F810，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 504。
+## Round 505 (F811) — 2026-08-12：窗口开/关分派器（F550 全量）
+
+- **〔窗口〕**0x42ADB0：0x42B820 预 + **16 模式 jt 0x42B3E4**（F550 确认）：每模式**开 = 0x42AC30 + 窗口显示（vtable[0x10]=1）+ 各窗口初始化**（背包 0x6554/0x42FF90 + 帧 0x417880 0x10B/0x10C、装备 0x29CE4、商店 0x33188、交易 0x3399C、任务 0x516E8、选项 0x518E0...）、**关 = 0x42AC50 + 窗口隐藏**——每 F558 模式的开/关权威，F550 函数体完整。
+- 落盘：window-open-close-dispatcher-evidence.json（F811，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 505。
