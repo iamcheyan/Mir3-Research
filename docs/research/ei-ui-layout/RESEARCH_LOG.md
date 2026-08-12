@@ -7513,3 +7513,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔构造〕**0x430920 = 物品 ctor（清 0x2EE 双字 + [0x64] 旗标）、0x430940 = **从记录构造**（复制 0x17 双字 + [0x22] 类型 → **类别映射 jt 0x4309E0**：[0]=1 武器、[2]=2、[3]=3、[4]=4、[5]=5、[7]=7、[9]=9、[0xA]=0xA = **F464 类别映射确认**、ret 0x64）——物品构造 + 类别分派字节级。
 - 落盘：item-ctor-class-map-evidence.json（F658，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 352。
+## Round 353 (F659) — 2026-08-12：物品系统最终闭合（F651-F658 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**283 证据 JSON**；三服务 200；master dfd1c37（**317 连发 F335-F658 已推**）。
+- **〔弧〕**图标/详情（F651）+ 反序列化/IO（F652）+ 插入/放置（F655）+ 构造/类别映射（F658）——**整个物品系统字节级（构造/类别 → 反序列化 → 背包 IO → 放置 → 图标/详情）**，闭合 F464/F457/F460/F549。
+- 落盘：item-system-final-closure-evidence.json（F659，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 353。

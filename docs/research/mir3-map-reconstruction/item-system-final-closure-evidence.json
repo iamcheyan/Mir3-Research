@@ -1,0 +1,36 @@
+{
+  "evidence_id": "item-system-final-closure-2026-08-12-f659",
+  "title": "Round 353 (F659): Item system FINAL closure (F651-F658) - validation green (compileall/verify exit 0/node/JSON), services 200, master dfd1c37 (317 consecutive F335-F658), 283 evidence JSONs; arc: icon/detail (F651) + deserialize/IO (F652) + insert/place (F655) + ctor/class map (F658) - ENTIRE item system byte-level (ctor/class -> deserialize -> bag IO -> place -> icon/detail), closing F464/F457/F460/F549",
+  "date": "2026-08-12",
+  "objective": "Close the item system finally.",
+  "question": "Is the item system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "283 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F651": "icon/detail", "F652": "deserialize/IO", "F655": "insert/place", "F658": "ctor/class map"},
+    "item": "ctor/class -> deserialize -> bag IO -> place -> icon/detail = COMPLETE",
+    "milestone": "317 consecutive rounds F335-F658"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F658": "317 rounds pushed; item system complete"
+  },
+  "contrast": {
+    "ctor_vs_render": "construction/IO + icon/detail render",
+    "class_vs_type": "type [0x22] -> class map"
+  },
+  "verdict": "Item system FINAL closure (F659): ctor/class + deserialize + IO + place + icon/detail all byte-level; validation green, 317 consecutive rounds, 283 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F651-F658.",
+  "cross_refs": ["F651-F658: item arc", "F464: core"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "317 consecutive shipping rounds F335-F658",
+    "next: HANDOFF refresh 31, remaining corners"
+  ]
+}
