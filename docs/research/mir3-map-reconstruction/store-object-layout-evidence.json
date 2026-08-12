@@ -1,0 +1,37 @@
+{
+  "evidence_id": "store-object-layout-2026-08-12-f460",
+  "title": "Round 154 (F460): Store object layout - reset 0x44D180: mode [0x5F8] cleared, goods linked list [0x64C] freed (nodes {+4 item, +8 prev, +0xC next}, 0x4680F8), slot arrays zeroed: [0x660] 0x14 (20) dwords + [0x6B0] 0x14 (20) + [0x720] 0x30 (48) + [0x7F4]/[0x804] 4+4 = ~90 slots (F340 '26 slots' = first grid only); second list [0x70C] + capacities [0x700]; store ctor 0x44D310: 8 controls (msg 0x3F2-0x3F9) + scrollbar 0x3FC + slot rects via SetRect (0x1C/0x40 stride, 0x45/0x100, 0x143+0x26 grid) - store goods = server-filled list (msg source pending)",
+  "date": "2026-08-12",
+  "objective": "Map the store window object layout: goods list, slot arrays, capacities.",
+  "question": "How is the store object structured and cleared?",
+  "method": "Disasm 0x44D180 (reset) + 0x44D310 (ctor slot rects) + 0x44D590 (paint head).",
+  "scope": "0x44D180-0x44D310; store obj 0x5F4-0x808.",
+  "cell_analysis": {
+    "reset_0x44D180": {"mode": "[0x5F8] = 0 (reset state byte F57/F399)", "goods_list": "[0x64C] head of linked list {+4 item ptr, +8 prev, +0xC next} (freed 0x4680F8 + vtable+0)", "arrays": {"[0x660]": "0x14 (20) dwords", "[0x6B0]": "0x14 (20) dwords", "[0x720]": "0x30 (48) dwords", "[0x7F4]/[0x804]": "4 + 4 dwords"}, "second_list": "[0x70C] (same node layout, freed)", "counters": "[0x650]/[0x65C]/[0x710]/[0x71C]", "capacity": "[0x700]"},
+    "ctor_slot_rects_0x44D310": {"controls": "8 child controls 0x417550 (msgs 0x3F2-0x3F9, rects from +0x10A/+0x7F/+0x1D2/+0x172/+0x144/+0x1B2/+0x1FA/+0x188)", "scrollbar": "0x417960 (msg 0x3FC)", "slot_grids": {"0x660": "26 rects (0x1C/0x40 + idx*0x31, stride 0x10)", "0x6B0": "21 rects (0x45/0x100 + idx*0x31)", "0x720": "2D grid (0x143+0x26x, 0x2B+0x26y -> ~10x4), stride 0x10", "0x7F4/0x804": "2 extra (0x144/0x13, 0x16D/0x13)"}},
+    "paint_0x44D590": {"mode_dispatch": "[0x5F8]: 1 = sell bounds dec, 4 = detail inc 2, else default rect", "goods_walk": "count [0x64C] list: item ptr [node+4], frame [item+0x30] -> 0x466130 (0x56B0E8 icon context), sprite centering (w/2, h/2 from [0x56B120])"}
+  },
+  "exe_trace": {
+    "store_chain": "server packet -> goods list fill [0x64C] -> paint 0x44D590 walks list"
+  },
+  "audit_vs_exe": {
+    "F340": "'26 slots +0x660' = first grid only (3 grids + 2 = ~90 total)",
+    "F399": "mode byte [0x5F8] confirmed in reset",
+    "F57": "5-state graph consistent"
+  },
+  "contrast": {
+    "list_vs_grids": "goods = linked list; slot arrays = fixed grids (buy/sell/warehouse layouts)",
+    "reset_vs_set": "0x44D180 clears; fill fn = server packet handler (msg id pending)"
+  },
+  "verdict": "Store object layout PRIMARY-verified: mode [0x5F8], goods linked list [0x64C], 3 slot arrays (20+20+48) + 2 extras (~90 slots), second list [0x70C], capacities [0x700]; reset 0x44D180 + ctor slot rects + paint walk decoded. F340 '26 slots' corrected to multi-grid.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Reset/ctor/paint decoded from .text.",
+  "cross_refs": ["F340: store family", "F399: state graph", "F57: store modes"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44D180+0x80, 0x44D310+0x60, 0x44D590+0x50",
+  "notes": [
+    "goods list nodes share 0x476448 node vtable family (F440)",
+    "0x56B0E8/0x56B120 = store icon contexts",
+    "grid semantics per mode (BUY/SELL/仓库/CRAFT) = F57 state graph"
+  ]
+}

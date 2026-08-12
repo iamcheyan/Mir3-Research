@@ -6512,3 +6512,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔渲染〕**0x40CE30 掉落物品实体绘制：帧 = [0x62A24] + 0x355（type 0xF）/0x352（其他）→ 0x4542A0（存储 0x5600FC type **0x51 = 物品槽**）→ 0x566780 上下文 → 0x466130 装载 → [0xE4]/[0xE8] 投影 blit + 0x467000 文本 + 屏幕 vtable。
 - **〔修正〕**「msg 0x285」= 误报（jbe 位移 0x285）— 商店货物 msg id 仍未知（pending）。
 - 落盘：ground-item-render-evidence.json（F459，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 153。
+## Round 154 (F460) — 2026-08-12：商店对象布局（货物链表 + 3 槽网格）
+
+- **〔重置〕**0x44D180：模式 [0x5F8] 清零、货物链表 [0x64C] 释放（节点 {+4 物品, +8 prev, +0xC next}）、槽数组清零（[0x660] 20 + [0x6B0] 20 + [0x720] 48 + [0x7F4]/[0x804] 4+4 = **~90 槽**）+ 第二链表 [0x70C] + 容量 [0x700]。
+- **〔构造〕**0x44D310：8 控件（msg 0x3F2-0x3F9）+ 滚动条 0x3FC + 槽矩形（0x1C/0x40、0x45/0x100、2D 网格 0x143+0x26×0x2B+0x26）。
+- **〔绘制〕**0x44D590：模式分派（1=卖减界、4=详情+2）+ 货物链表遍历（帧 [item+0x30] → 0x466130 + 0x56B0E8 图标上下文 + 0x56B120 中心化）。
+- **〔修正〕**F340「26 槽」= 首网格；实际多网格 ~90 槽。
+- 落盘：store-object-layout-evidence.json（F460，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 154。

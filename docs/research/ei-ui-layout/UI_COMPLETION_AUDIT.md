@@ -996,6 +996,11 @@ git diff --check
 - **物品帧 [0x62A24]+0x352/0x355**；msg 0x285 误报。
 - 落盘：`ground-item-render-evidence.json`（F459）+ RESEARCH_LOG Round 153。
 
+## Round 154 (2026-08-12) — 商店对象布局（Finding 460）
+
+- **货物链表 + 3 槽网格（~90 槽）**（F340 26 槽修正）。
+- 落盘：`store-object-layout-evidence.json`（F460）+ RESEARCH_LOG Round 154。
+
 ## Pending（未阻塞，持续队列）
 
 - 商店货物 msg id（0x285 误报）— 低优先。
