@@ -7758,3 +7758,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔窗口基类〕**0x418030：调控件列表 ctor 0x417FB0；[0x45C]=WIL、[0x4]=0x3B6、标题→[0x2C]、**居中默认（0x190/0xF6 = 400/246）**、模式 0/1/2 设槽可见 [0x234]/[0x2EC]/[0x3A4]+[0x462]；**3 个窗口边框按钮**（F701 九参 ctor）@ +0x238/+0x2F0/+0x3A8（帧 0x97/0x98、0x9D/0x9E、0x9A/0x9B、y 偏移 +0x33/+0x93/+0xF4）；0x418020 = jmp 0x417FB0 别名——带 3 内嵌控件的窗口基类。
 - 落盘：window-base-ctor-evidence.json（F713，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 407。
+## Round 408 (F714) — 2026-08-12：窗口基类绘制 + 输入
+
+- **〔窗口基类〕**0x4182A0 绘制：背景帧 [0x4] blit（0x460240）+ **标题文本 0x45DF20（色 0xC8FAFF）** @ 矩形 [0x18] + 3 控件循环（vtable[1] 绘制 + 帧 blit，活跃槽 [0x462]）；0x418400 输入：vtable[3] 命中 → 设 [0x462]；0x418460 可见性（[0x28]）；ctor 尾部：客户区 [0x18]、计数 [0x460]——**窗口基类完整（F713 + 此项）**。
+- 落盘：window-base-paint-input-evidence.json（F714，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 408。

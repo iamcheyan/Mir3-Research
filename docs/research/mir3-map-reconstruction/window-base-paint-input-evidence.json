@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-base-paint-input-2026-08-12-f714",
+  "title": "Round 408 (F714): Window base PAINT + input + is-visible - 0x4182A0 paint: bg frame [0x4] blit (0x460240) + title text 0x45DF20 (color 0xC8FAFF) @ rect [0x18] + 3-control loop (vtable[1] paint + frame blit, active slot [0x462]); 0x418400 input: 3 controls vtable[3] hit -> sets [0x462]; 0x418460 is-visible ([0x28]); ctor tail: rect [0x18] client area, [0x460] count word - window base COMPLETE (F713 + this)",
+  "date": "2026-08-12",
+  "objective": "Decode the window base paint + input.",
+  "question": "How does the window base render + route input?",
+  "method": "Disasm 0x4181E5-0x41846A.",
+  "scope": "0x4181E5-0x41846A; vtable slots.",
+  "cell_analysis": {
+    "ctor_tail": "rect [0x18] client area, [0x28]=1 visible, [0x460] count word",
+    "0x4182A0": "paint: bg frame [0x4] + title 0x45DF20 color 0xC8FAFF + 3 controls (vtable[1] + blit)",
+    "0x418400": "input: vtable[3] hit -> [0x462] active",
+    "0x418460": "is-visible: [0x28]"
+  },
+  "exe_trace": {
+    "window_chain": "ctor (F713) -> paint (bg+title+controls) -> input (hit) -> is-visible"
+  },
+  "audit_vs_exe": {
+    "F713": "base ctor", "F704": "control hit vtable[3]", "F710": "paint vtable[1]"
+  },
+  "contrast": {
+    "bg_vs_controls": "bg frame + 3 control loop",
+    "paint_vs_input": "vtable[1] + vtable[3]"
+  },
+  "verdict": "Window base PAINT + input + is-visible PRIMARY-verified: bg + title + control loop; window base complete (F713 + this).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Window base decoded from .text.",
+  "cross_refs": ["F713: base ctor", "F704: control hit", "F710: control paint"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4182A0+0x20; 0x418400+0x10",
+  "notes": [
+    "title color 0xC8FAFF",
+    "active slot [0x462]",
+    "control count [0x460]",
+    "vtable[1] paint / vtable[3] hit"
+  ]
+}
