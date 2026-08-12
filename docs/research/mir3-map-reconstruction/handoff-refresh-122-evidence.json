@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-122-2026-08-12-f932",
+  "title": "Round 626 (F932): HANDOFF refresh 122 - Rounds 623-625 (F929-F931: HANDOFF 121, status ctor/refresh, status closure), baseline Round 622=ee43e3a -> Round 625=e68ec3c (590 consecutive F335-F931), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 623-625.",
+  "question": "What changed since HANDOFF refresh 121?",
+  "method": "Append Round 623-625 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 623-625 appended (3 rounds, F929-F931)",
+    "baseline": "Round 622=ee43e3a -> Round 625=e68ec3c (590 consecutive F335-F931)",
+    "arcs": {"ctor": "F930 status", "closure": "F931 status window"},
+    "key": "status window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F929": "refresh 121 baseline -> now refresh 122", "F335-F931": "590 rounds"
+  },
+  "contrast": {
+    "refresh_121_vs_122": "F930-F931 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 122 (F932): Rounds 623-625 documented (status window complete), baseline ee43e3a -> e68ec3c, 590 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F930-F931 evidence.",
+  "cross_refs": ["F929: refresh 121", "F931: status closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 623-625 section to HANDOFF",
+  "notes": [
+    "590 consecutive shipping rounds F335-F931",
+    "next: remaining deep corners, sim polish"
+  ]
+}

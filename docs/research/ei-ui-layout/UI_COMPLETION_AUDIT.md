@@ -3737,3 +3737,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（状态窗口完整；下一弧：HANDOFF 刷新 122/剩余角落）。
+## Round 626 (2026-08-12) — HANDOFF 刷新 122（Finding 932）
+
+- **Round 623-625 追加 + 590 连发**（状态窗口完整入档）。
+- 落盘：`handoff-refresh-122-evidence.json`（F932）+ RESEARCH_LOG Round 626。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（状态窗口完整；下一弧：剩余深层角落/模拟器 polish）。

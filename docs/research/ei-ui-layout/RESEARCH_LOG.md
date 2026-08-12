@@ -8702,3 +8702,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**555 证据 JSON**；三服务 200；master 101dfe6（**589 连发 F335-F930 已推**）。
 - **〔弧〕**状态绘制（F758）+ 详情面板（F819）+ 构造/刷新（F930）——**状态窗口完整**（ctor 单例 + 头像 + 装备图标 + 详情值 + 刷新），状态表面 100%。
 - 落盘：status-window-closure-evidence.json（F931，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 625。
+## Round 626 (F932) — 2026-08-12：HANDOFF 刷新 122（Round 623-625）
+
+- **〔刷新〕**HANDOFF 追加 Round 623-625（F930-F931：状态窗口构造/刷新 + 状态窗口闭合）；基线 Round 622=ee43e3a → Round 625=e68ec3c（**590 连发 F335-F931**）。
+- 落盘：handoff-refresh-122-evidence.json（F932，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 626。
