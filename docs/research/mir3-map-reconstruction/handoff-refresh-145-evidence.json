@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-145-2026-08-12-f1001",
+  "title": "Round 695 (F1001): HANDOFF refresh 145 - Rounds 692-694 (F998-F1000: HANDOFF 144, name tag render full, name tag closure + FINDING 1000 milestone), baseline Round 691=fef6aba -> Round 694=0322683 (659 consecutive F335-F1000), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 692-694.",
+  "question": "What changed since HANDOFF refresh 144?",
+  "method": "Append Round 692-694 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 692-694 appended (3 rounds, F998-F1000)",
+    "baseline": "Round 691=fef6aba -> Round 694=0322683 (659 consecutive F335-F1000)",
+    "arcs": {"render": "F999 name tag", "closure": "F1000 name tag + FINDING 1000"},
+    "key": "name tag complete; FINDING 1000 milestone"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F998": "refresh 144 baseline -> now refresh 145", "F335-F1000": "659 rounds"
+  },
+  "contrast": {
+    "refresh_144_vs_145": "F999-F1000 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 145 (F1001): Rounds 692-694 documented (name tag complete + FINDING 1000), baseline fef6aba -> 0322683, 659 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F999-F1000 evidence.",
+  "cross_refs": ["F998: refresh 144", "F1000: name tag closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 692-694 section to HANDOFF",
+  "notes": [
+    "659 consecutive shipping rounds F335-F1000",
+    "FINDING 1000 reached",
+    "next: remaining deep corners, sim polish"
+  ]
+}
