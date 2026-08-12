@@ -4441,3 +4441,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 714 (2026-08-12) — 消息发送器家族全量（Finding 1020）
+
+- **构建 + 泵 + 10 变体**（发送器家族完整）。
+- 落盘：`msg-sender-family-full-evidence.json`（F1020）+ RESEARCH_LOG Round 714。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（发送器家族完整；下一弧：剩余深层角落）。

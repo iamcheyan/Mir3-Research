@@ -9083,3 +9083,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 710-712（F1017-F1018：实体构造/分派全量 + 实体闭合）；基线 Round 709=9bc24b3 → Round 712=e353c0b（**676 连发 F335-F1018**）。
 - 落盘：handoff-refresh-151-evidence.json（F1019，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 713。
+## Round 714 (F1020) — 2026-08-12：消息发送器家族全量（F785/F782）
+
+- **〔发送〕**0x451910 基础发送器（0x452940 构建 @ +0x18 + 0x451E60 泵）+ 变体 0x3F8/0x3E9/0x3EF/0x416/0x418/0x419/0x401/0x402/0x403/0x405——发送器家族完整（0x3E9-0x419 出站）。
+- 落盘：msg-sender-family-full-evidence.json（F1020，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 714。

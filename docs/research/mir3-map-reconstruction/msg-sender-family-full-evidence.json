@@ -1,0 +1,36 @@
+{
+  "evidence_id": "msg-sender-family-full-2026-08-12-f1020",
+  "title": "Round 714 (F1020): Msg sender family FULL (F785/F782) - 0x451910 base sender (0x452940 build @ +0x18 + 0x451E60 pump) + variants 0x3F8/0x3E9/0x3EF/0x416/0x418/0x419/0x401/0x402/0x403/0x405 - sender family COMPLETE (0x3E9-0x419 outbound)",
+  "date": "2026-08-12",
+  "objective": "Decode the full msg sender family.",
+  "question": "How do the outbound msg senders work?",
+  "method": "Disasm 0x451910-0x451B18.",
+  "scope": "0x451910-0x451B18; senders.",
+  "cell_analysis": {
+    "0x451910": "base 0x452940 + 0x451E60",
+    "variants": "0x3F8..0x419",
+    "build": "@ +0x18 buffer"
+  },
+  "exe_trace": {
+    "sender_chain": "build -> pump"
+  },
+  "audit_vs_exe": {
+    "F785": "senders", "F782": "sender family"
+  },
+  "contrast": {
+    "base_vs_variants": "0x451910 + 10",
+    "outbound": "0x3E9-0x419"
+  },
+  "verdict": "Msg sender family FULL PRIMARY-verified: 0x452940 build + 0x451E60 pump + variants; F785/F782 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sender family decoded from .text.",
+  "cross_refs": ["F785: senders", "F782: family", "F572: frame"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x451910+0x10; 0x451940+0x20",
+  "notes": [
+    "build 0x452940",
+    "pump 0x451E60",
+    "buffer +0x18",
+    "variants 0x3F8..0x419"
+  ]
+}
