@@ -8022,3 +8022,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**398 证据 JSON**；三服务 200；master f52141a（**432 连发 F335-F773 已推**）。
 - **〔弧〕**行会（F755）+ 组队（F752）+ 坐骑（F773）+ 公告编辑（F770）——**社交窗口家族完整**（行会 3 页 + 组队双列 + 坐骑 5 按钮命令 + 公告编辑器），F558 全部社交模式文档化。
 - 落盘：social-windows-final-closure-evidence.json（F774，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 468。
+## Round 469 (F775) — 2026-08-12：HANDOFF 刷新 68（Round 466-468）
+
+- **〔刷新〕**HANDOFF 追加 Round 466-468（F773-F774：坐骑窗口 + 社交窗口最终闭合）；基线 Round 465=88248b7 → Round 468=20310e2（**433 连发 F335-F774**）。
+- 落盘：handoff-refresh-68-evidence.json（F775，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 469。

@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-68-2026-08-12-f775",
+  "title": "Round 469 (F775): HANDOFF refresh 68 - Rounds 466-468 (F772-F774: HANDOFF 67, mount window draw/commands, social windows final closure), baseline Round 465=88248b7 -> Round 468=20310e2 (433 consecutive F335-F774), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 466-468.",
+  "question": "What changed since HANDOFF refresh 67?",
+  "method": "Append Round 466-468 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 466-468 appended (3 rounds, F772-F774)",
+    "baseline": "Round 465=88248b7 -> Round 468=20310e2 (433 consecutive F335-F774)",
+    "arcs": {"mount": "F773 draw/commands", "closure": "F774 social"},
+    "key": "social windows complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F772": "refresh 67 baseline -> now refresh 68", "F335-F774": "433 rounds"
+  },
+  "contrast": {
+    "refresh_67_vs_68": "F773-F774 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 68 (F775): Rounds 466-468 documented (social complete), baseline 88248b7 -> 20310e2, 433 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F773-F774 evidence.",
+  "cross_refs": ["F772: refresh 67", "F774: social closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 466-468 section to HANDOFF",
+  "notes": [
+    "433 consecutive shipping rounds F335-F774",
+    "next: remaining deep corners, sim polish"
+  ]
+}
