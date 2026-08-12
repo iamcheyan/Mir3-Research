@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-toggle-helpers-2026-08-12-f812",
+  "title": "Round 506 (F812): Window toggle helpers (F550 family complete) - 0x42AC30 OPEN-list add (0x449870 insert into [0xD24..0xD38] open-window list, F550 list CONFIRMED); 0x42AC50 CLOSE-list remove (walk [0xD2C] unlink + free + count [0xD38]--); 0x42B820 toggle PRE-dispatch (mode jt 0x42B938 -> per-mode window slot: 0x6554 bag/0x29CE4 equip/0x33188 shop/0x3399C trade/0x4707C guild/0x47834 party/0x47C28 status/0x507EC notice/0x51150 dialog/0x516E8 quest) + hide-all pre-pass - window toggle machinery 100%",
+  "date": "2026-08-12",
+  "objective": "Decode the window toggle helpers.",
+  "question": "How do the window open/close helpers work?",
+  "method": "Disasm 0x42AC30-0x42AC50 + 0x42B820-0x42B8D2.",
+  "scope": "0x42AC30; 0x42AC50; 0x42B820.",
+  "cell_analysis": {
+    "0x42AC30": "open add: 0x449870 insert [0xD24..0xD38]",
+    "0x42AC50": "close remove: unlink [0xD2C] + free",
+    "0x42B820": "pre: mode jt 0x42B938 -> window slots"
+  },
+  "exe_trace": {
+    "toggle_chain": "pre hide -> mode -> open/close list"
+  },
+  "audit_vs_exe": {
+    "F550": "open list [0xD24..0xD38] CONFIRMED", "F558": "registry slots"
+  },
+  "contrast": {
+    "open_vs_close": "insert + remove",
+    "pre_vs_modes": "0x42B938 jt + slots"
+  },
+  "verdict": "Window toggle helpers PRIMARY-verified: open/close lists + pre-dispatch; F550 machinery 100%.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Toggle helpers decoded from .text.",
+  "cross_refs": ["F550: toggle", "F558: registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42AC30+0x10; 0x42AC50+0x10; 0x42B820+0x10",
+  "notes": [
+    "open list [0xD24..0xD38]",
+    "jt 0x42B938",
+    "10 window slots",
+    "unlink + free"
+  ]
+}

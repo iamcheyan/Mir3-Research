@@ -2777,3 +2777,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口开关完整；下一弧：剩余深层角落）。
+## Round 506 (2026-08-12) — 窗口切换助手（Finding 812）
+
+- **开/关列表 + 预分派**（F550 机制 100%）。
+- 落盘：`window-toggle-helpers-evidence.json`（F812）+ RESEARCH_LOG Round 506。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口切换完整；下一弧：剩余深层角落）。

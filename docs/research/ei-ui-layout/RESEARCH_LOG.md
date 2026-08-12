@@ -8182,3 +8182,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔窗口〕**0x42ADB0：0x42B820 预 + **16 模式 jt 0x42B3E4**（F550 确认）：每模式**开 = 0x42AC30 + 窗口显示（vtable[0x10]=1）+ 各窗口初始化**（背包 0x6554/0x42FF90 + 帧 0x417880 0x10B/0x10C、装备 0x29CE4、商店 0x33188、交易 0x3399C、任务 0x516E8、选项 0x518E0...）、**关 = 0x42AC50 + 窗口隐藏**——每 F558 模式的开/关权威，F550 函数体完整。
 - 落盘：window-open-close-dispatcher-evidence.json（F811，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 505。
+## Round 506 (F812) — 2026-08-12：窗口切换助手（F550 家族完整）
+
+- **〔窗口〕**0x42AC30 **开窗列表添加**（0x449870 插入 [0xD24..0xD38]，F550 列表确认）；0x42AC50 **关窗列表移除**（[0xD2C] 遍历解链 + free + 计数 [0xD38]--）；0x42B820 **切换预分派**（模式 jt 0x42B938 → 各模式窗口槽：0x6554 背包/0x29CE4 装备/0x33188 商店/0x3399C 交易/0x4707C 行会/0x47834 组队/0x47C28 状态/0x507EC 公告/0x51150 对话/0x516E8 任务）+ 全隐藏预扫——窗口切换机制 100%。
+- 落盘：window-toggle-helpers-evidence.json（F812，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 506。
