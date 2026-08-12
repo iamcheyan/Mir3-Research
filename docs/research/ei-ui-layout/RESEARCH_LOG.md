@@ -8234,3 +8234,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 514-516（F821-F822：文本测量/换行 + 文本布局闭合 + 480 里程碑）；基线 Round 513=f6e1d69 → Round 516=ef83484（**481 连发 F335-F822**）。
 - 落盘：handoff-refresh-84-evidence.json（F823，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 517。
+## Round 518 (F824) — 2026-08-12：商店点击分派（F661 槽依赖）
+
+- **〔商店〕**0x44E9B0：模式 [0x5F8] 门（0/4/1/3 vs 1/4/2）+ **退出按钮 → 0x423E80 发送 msg 0x3E8**（坐标 0xBA/0x12C/0x130）+ 物品列表 [0x70C] free + 模式 0；购买确认**取消** + 模式 0；滚动条 F707 释放 0x417E60 @ +0x5FC；更多控件 vtable[0x10] 命中（0x108 等）——商店窗口点击完整（F661/F740 用）。
+- 落盘：shop-click-dispatch-evidence.json（F824，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 518。

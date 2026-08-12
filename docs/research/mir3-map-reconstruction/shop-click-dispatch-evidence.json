@@ -1,0 +1,34 @@
+{
+  "evidence_id": "shop-click-dispatch-2026-08-12-f824",
+  "title": "Round 518 (F824): Shop click dispatch (F661 slot dep) - 0x44E9B0: mode [0x5F8] gate (0/4/1/3 vs 1/4/2) + EXIT button -> 0x423E80 send msg 0x3E8 (coords 0xBA/0x12C/0x130) + item list [0x70C] free + mode 0; buy-confirm CANCEL + mode 0; scrollbar F707 release 0x417E60 @ +0x5FC; more control vtable[0x10] hits (0x108 etc) - shop window click COMPLETE (F661/F740 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the shop click dispatch.",
+  "question": "How does the shop window dispatch clicks?",
+  "method": "Disasm 0x44E9B0-0x44EC17.",
+  "scope": "0x44E9B0-0x44EC17; mode [0x5F8].",
+  "cell_analysis": {
+    "0x44E9B0": {"exit": "0x423E80 msg 0x3E8 + list [0x70C] free + mode 0", "cancel": "0x423E80 + [0x7F0]=0 + mode 0", "scrollbar": "0x417E60 @ +0x5FC", "controls": "vtable[0x10] 0x108 etc"}
+  },
+  "exe_trace": {
+    "shop_chain": "mode gate -> exit/cancel -> close send"
+  },
+  "audit_vs_exe": {
+    "F661": "mode [0x5F8]", "F740": "click handler", "F707": "scrollbar release"
+  },
+  "contrast": {
+    "exit_vs_cancel": "0x3E8 close + cancel",
+    "modes_vs_controls": "gates + hits"
+  },
+  "verdict": "Shop click dispatch PRIMARY-verified: exit/cancel + close send; shop window click complete (F661/F740).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Shop dispatch decoded from .text.",
+  "cross_refs": ["F661: shop", "F740: click", "F707: scrollbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44E9B0+0x20",
+  "notes": [
+    "msg 0x3E8 close",
+    "list [0x70C] free",
+    "scrollbar +0x5FC",
+    "mode [0x5F8] gates"
+  ]
+}

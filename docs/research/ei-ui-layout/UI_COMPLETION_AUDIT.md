@@ -2873,3 +2873,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（文本布局完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 518 (2026-08-12) — 商店点击分派（Finding 824）
+
+- **退出/取消 + msg 0x3E8 关闭**（商店点击完整）。
+- 落盘：`shop-click-dispatch-evidence.json`（F824）+ RESEARCH_LOG Round 518。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店点击完整；下一弧：剩余深层角落）。
