@@ -1,0 +1,37 @@
+{
+  "evidence_id": "party-interactive-closure-2026-08-12-f846",
+  "title": "Round 540 (F846): Party interactive CLOSED (F752/F845) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 12a4052 (504 consecutive F335-F845), 470 evidence JSONs; arc: party draw (F752) + click/msg dispatch (F845) - party window COMPLETE byte-level (2-col members + 5 buttons + invite/remove/leave sends + leader), window mode 6 fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the party interactive arc.",
+  "question": "Is the party window fully interactive + documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "470 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F752": "draw", "F845": "click/msg"},
+    "party": "members + buttons + sends = COMPLETE",
+    "milestone": "504 consecutive rounds F335-F845"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F845": "504 rounds pushed; party fully interactive"
+  },
+  "contrast": {
+    "draw_vs_click": "members + dispatch",
+    "invite_vs_leave": "0x3FC + toggle"
+  },
+  "verdict": "Party interactive CLOSED (F846): draw + click + msg all byte-level; validation green, 504 consecutive rounds, 470 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F752/F845.",
+  "cross_refs": ["F752", "F845"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "504 consecutive shipping rounds F335-F845",
+    "party 100% interactive",
+    "next: HANDOFF refresh 92, remaining corners"
+  ]
+}

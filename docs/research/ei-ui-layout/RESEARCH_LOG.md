@@ -8329,3 +8329,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔组队〕**0x424610：5 按钮 vtable[0x10]：**0x3FC 邀请（0x4522E0）/ 0x3FD 移除（0x452350）/ 0x3FE（0x452380）** + 对话窗 ctor 0x418030 @ 0x7E04C8（0x565994 帧 6）+ **离开切换 [0x3F0] → 0x452310** + 按钮帧 0x398/0x399（0x417880）；0x4247C0 **组队消息分派**（0x3FC/0x3FD/0x3FE seq 0 → 同发送）——组队窗口交互完整。
 - 落盘：party-window-click-msg-dispatch-evidence.json（F845，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 539。
+## Round 540 (F846) — 2026-08-12：组队交互闭合（F752/F845 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**470 证据 JSON**；三服务 200；master 12a4052（**504 连发 F335-F845 已推**）。
+- **〔弧〕**组队绘制（F752）+ 点击/消息分派（F845）——**组队窗口完整**（双列成员 + 5 按钮 + 邀请/移除/离开发送 + 队长），模式 6 全交互。
+- 落盘：party-interactive-closure-evidence.json（F846，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 540。
