@@ -3329,3 +3329,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（回复/校验完整；下一弧：HANDOFF 刷新 104/剩余角落）。
+## Round 575 (2026-08-12) — HANDOFF 刷新 104（Finding 881）
+
+- **Round 572-574 追加 + 539 连发**（回复/校验完整入档）。
+- 落盘：`handoff-refresh-104-evidence.json`（F881）+ RESEARCH_LOG Round 575。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（回复/校验完整；下一弧：剩余深层角落/模拟器 polish）。

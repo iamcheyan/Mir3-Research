@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-104-2026-08-12-f881",
+  "title": "Round 575 (F881): HANDOFF refresh 104 - Rounds 572-574 (F878-F880: HANDOFF 103, NPC reply/seed/checksum, reply/checksum closure), baseline Round 571=0cb4dd3 -> Round 574=1ff8849 (539 consecutive F335-F880), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 572-574.",
+  "question": "What changed since HANDOFF refresh 103?",
+  "method": "Append Round 572-574 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 572-574 appended (3 rounds, F878-F880)",
+    "baseline": "Round 571=0cb4dd3 -> Round 574=1ff8849 (539 consecutive F335-F880)",
+    "arcs": {"reply": "F879 reply/checksum", "closure": "F880 reply"},
+    "key": "reply/checksum complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F878": "refresh 103 baseline -> now refresh 104", "F335-F880": "539 rounds"
+  },
+  "contrast": {
+    "refresh_103_vs_104": "F879-F880 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 104 (F881): Rounds 572-574 documented (reply/checksum complete), baseline 0cb4dd3 -> 1ff8849, 539 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F879-F880 evidence.",
+  "cross_refs": ["F878: refresh 103", "F880: reply closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 572-574 section to HANDOFF",
+  "notes": [
+    "539 consecutive shipping rounds F335-F880",
+    "next: remaining deep corners, sim polish"
+  ]
+}

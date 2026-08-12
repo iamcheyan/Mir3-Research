@@ -8481,3 +8481,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**504 证据 JSON**；三服务 200；master 8cc4681（**538 连发 F335-F879 已推**）。
 - **〔弧〕**回复/种子（F617）+ 回复/校验和体（F879）——**回复/校验和完整**（msg 0x411 回复 + 种子 [0x9135B8] + 逐字节 XOR 校验），F617 家族全闭合。
 - 落盘：reply-checksum-closure-evidence.json（F880，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 574。
+## Round 575 (F881) — 2026-08-12：HANDOFF 刷新 104（Round 572-574）
+
+- **〔刷新〕**HANDOFF 追加 Round 572-574（F879-F880：NPC 回复/种子/校验和 + 回复/校验和闭合）；基线 Round 571=0cb4dd3 → Round 574=1ff8849（**539 连发 F335-F880**）。
+- 落盘：handoff-refresh-104-evidence.json（F881，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 575。
