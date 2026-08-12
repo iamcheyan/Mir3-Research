@@ -8594,3 +8594,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**530 证据 JSON**；三服务 200；master b333330（**564 连发 F335-F905 已推**）。
 - **〔里程碑〕**Round 500 以来 101 轮（101 findings F805-F905）：**发送器目录 100% + 聊天系统 100% + HP 条 + 地图部件 + caption 分派 + 命中路由 + 实体渲染 + 公告列表 + 小地图 + HUD 状态**——客户端逆向表面全面闭合。
 - 落盘：round-600-milestone-evidence.json（F906，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 600。
+## Round 601 (F907) — 2026-08-12：HANDOFF 刷新 113（Round 599-600）
+
+- **〔刷新〕**HANDOFF 追加 Round 599-600（F906：Round 600 里程碑）；基线 Round 598=7f068bf → Round 600=d3d9827（**565 连发 F335-F906**）。
+- 落盘：handoff-refresh-113-evidence.json（F907，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 601。

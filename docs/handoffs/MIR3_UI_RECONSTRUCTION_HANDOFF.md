@@ -1647,3 +1647,12 @@ simulator/style.css
 **HP 条系统闭合（F904）**：562 连发 + 528 证据 JSON——**HP 条系统完整**（注册表 + vtable 渲染 + 矩阵 + 消费者：HUD 状态/地图覆盖层/实体 HP）。
 
 **commit 基线更新**：Round 595=7b5435e → Round 598=7f068bf（master 已推，563 连发 F335-F904）。
+
+
+## Round 599-600 追加交付（2026-08-12，Finding 905-906）：HANDOFF 刷新 112 + ROUND 600 里程碑
+
+**HANDOFF 刷新 112（F905）**：基线更新至 Round 598=7f068bf（563 连发）。
+
+**ROUND 600 里程碑（F906）**：**564 连发** + **530 证据 JSON**——**Round 500 以来 101 轮（101 findings F805-F905）**：发送器目录 100% + 聊天系统 100% + HP 条 + 地图部件 + caption 分派 + 命中路由 + 实体渲染 + 公告列表 + 小地图 + HUD 状态——客户端逆向表面全面闭合。
+
+**commit 基线更新**：Round 598=7f068bf → Round 600=d3d9827（master 已推，565 连发 F335-F906）。

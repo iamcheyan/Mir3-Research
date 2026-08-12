@@ -3537,3 +3537,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（表面全面闭合；下一弧：HANDOFF 刷新 113/剩余角落）。
+## Round 601 (2026-08-12) — HANDOFF 刷新 113（Finding 907）
+
+- **Round 599-600 追加 + 565 连发**（Round 600 里程碑入档）。
+- 落盘：`handoff-refresh-113-evidence.json`（F907）+ RESEARCH_LOG Round 601。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（表面全面闭合；下一弧：剩余深层角落/模拟器 polish）。
