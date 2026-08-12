@@ -3873,3 +3873,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队输入完整；下一弧：剩余深层角落）。
+## Round 643 (2026-08-12) — 组队窗口闭合（Finding 949）
+
+- **607 连发 + 573 证据 + 组队窗口完整**。
+- 落盘：`party-window-closure-evidence.json`（F949）+ RESEARCH_LOG Round 643。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队窗口完整；下一弧：HANDOFF 刷新 128/剩余角落）。

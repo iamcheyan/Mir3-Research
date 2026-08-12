@@ -8776,3 +8776,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔组队〕**0x424770 组队输入（5 控件 vtable[8] @ +0x6C stride 0xB4）；0x4247A0 5 控件重置；0x4247C0 **组队消息分派**（0x3FC → 0x4522E0 邀请 / 0x3FD → 0x452350 移除 / 0x3FE → 0x452380 离开，ecx 0x8AB828，F845 依赖）；0x424830 记录构造（vtable 0x4767E0）；0x424840 **列表添加**（dlist 0x4767FC）——组队输入完整。
 - 落盘：party-window-input-msg-evidence.json（F948，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 642。
+## Round 643 (F949) — 2026-08-12：组队窗口闭合（F752/F845/F917/F948 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**573 证据 JSON**；三服务 200；master 855f02c（**607 连发 F335-F948 已推**）。
+- **〔弧〕**绘制+清除（F752）+ 点击+消息（F845）+ 成员构造（F917）+ 输入/消息分派（F948）——**组队窗口完整**（双列 + 5 按钮 + 成员列表 + 0x3FC-0x3FE 分派 + 输入），组队表面 100%。
+- 落盘：party-window-closure-evidence.json（F949，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 643。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "party-window-closure-2026-08-12-f949",
+  "title": "Round 643 (F949): Party window CLOSED (F752/F845/F917/F948) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 855f02c (607 consecutive F335-F948), 573 evidence JSONs; arc: draw+clear (F752) + click+msg (F845) + member ctor (F917) + input/msg dispatch (F948) - party window COMPLETE byte-level (2-column + 5 buttons + member list + 0x3FC-0x3FE dispatch + input), party surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the party window arc.",
+  "question": "Is the party window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "573 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F752": "draw+clear", "F845": "click+msg", "F917": "member ctor", "F948": "input/msg dispatch"},
+    "party": "draw + input + msg = COMPLETE",
+    "milestone": "607 consecutive rounds F335-F948"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F948": "607 rounds pushed; party window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "member_vs_msg": "list + dispatch"
+  },
+  "verdict": "Party window CLOSED (F949): draw + input + msg dispatch all byte-level; validation green, 607 consecutive rounds, 573 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F752/F845/F917/F948.",
+  "cross_refs": ["F752", "F845", "F917", "F948"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "607 consecutive shipping rounds F335-F948",
+    "party window 100%",
+    "next: HANDOFF refresh 128, remaining corners"
+  ]
+}
