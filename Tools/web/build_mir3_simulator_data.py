@@ -472,17 +472,33 @@ def main() -> None:
     ]
 
     # ---------------------------------------------------------------- skills
+    # Round 45 (F351): real Magic.exp records (F37 0x4525F0 decoder, 50 skills
+    # with id/name/attribute/element/levels) - first 12 map to the skill grid
+    # slots (frames 410+, candidate slot geometry from skill-window evidence).
     skills: list[dict] = []
+    try:
+        magic = load("magic-exp-records.json")
+        recs = magic if isinstance(magic, list) else magic.get("records", magic.get("magic", []))
+    except Exception:
+        recs = []
     for i in range(12):
         frame = 410 + i
+        m = recs[i] if i < len(recs) else None
+        lvl1 = (m.get("levels") or [{}])[0] if m else {}
         skills.append({
             "id": f"skill.{i}",
-            "name": f"技能 {i + 1}",
+            "name": (m or {}).get("name", f"技能 {i + 1}"),
+            "magic_id": (m or {}).get("id"),
+            "attribute": (m or {}).get("attribute"),
+            "element": (m or {}).get("element"),
+            "required_level": lvl1.get("required_level"),
+            "practice": lvl1.get("practice_value"),
             "x": 30 + (i % 4) * 40, "y": 60 + (i // 4) * 40,
             "w": 36, "h": 36,
             "library": "GameInter.wil", "frame": frame,
-            "evidence_level": "candidate",
-            "note": f"skill grid slot; F{frame} from skill-window evidence",
+            "evidence_level": "primary-static" if m else "candidate",
+            "note": (f"Magic.exp id {m['id']} {m['name']} (F37/F351)" if m
+                     else f"skill grid slot; F{frame} from skill-window evidence"),
         })
 
     # ------------------------------------------------------------------ maps

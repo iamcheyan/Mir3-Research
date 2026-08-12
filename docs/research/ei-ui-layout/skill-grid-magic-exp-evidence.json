@@ -1,0 +1,51 @@
+{
+  "evidence_id": "skill-grid-magic-exp-2026-08-12-f351",
+  "title": "Round 45 (F351): Skill grid wired to Magic.exp (50 real skills via 0x4525F0 decoder; sim grid now primary-static with 基本剑术/攻杀剑术/刺杀剑术/半月弯刀...) + skill chain verification (0x4525F0 callers 0x4391F0/0x44A9C2, detail 0x43A440 from 0x439520)",
+  "date": "2026-08-12",
+  "objective": "Wire the real Magic.exp skill records (F37: 50 skills decoded via 0x4525F0) into the simulator skill grid, replacing the 12 placeholder slots, and verify the skill chain callers in the EXE.",
+  "question": "Do the sim skill slots now show real skills with primary evidence? What are the skill chain callers?",
+  "method": "Builder upgrade (magic-exp-records.json -> skills.json); capstone caller scan (0x4525F0, 0x43A440); browser verification.",
+  "scope": "Tools/web/build_mir3_simulator_data.py; docs/research/ei-ui-layout/magic-exp-records.json; browser 8765/sim.",
+  "cell_analysis": {
+    "builder_upgrade": {
+      "change": "skills builder reads magic-exp-records.json (50 records: id/name/attribute/element/levels[{required_level, practice_value}]); first 12 fill grid slots with primary-static evidence",
+      "result": "sim skills: 基本剑术 id3 req7, 攻杀剑术 id7 req14, 刺杀剑术 id12 req19, 半月弯刀 id25 req24, 野蛮冲撞 id27 req27... - all primary-static",
+      "browser": "E key opens window.skill-book; content children = 20 (8 category tabs + 12 skill slots)"
+    },
+    "exe_skill_chain": {
+      "0x4525F0": "Magic.exp decoder (F37) - callers 0x4391F0 (skill ctor load) + 0x44A9C2",
+      "0x43A440": "skill detail renderer (F331) - caller 0x439520 (skill book paint 0x439500 right page)",
+      "0x4397A0": "left skill list (F331)",
+      "0x439250": "skill book ctor (F331; frames 400 panel, 8 magic-category tabs 火冰电风神圣黑暗幻影剑 0x47C330..)"
+    }
+  },
+  "exe_trace": {
+    "magic_file": "$MIR3_EI_ROOT/Magic.exp (client root, NOT Data/Magic.exp - F37)",
+    "skill_book": "hero+0x524F0 (id14, Ctrl+E)"
+  },
+  "audit_vs_exe": {
+    "F37": "Magic.exp 50 records + 0x4525F0 decoder confirmed",
+    "F331": "skill family (0x439250/0x4397A0/0x43A440) confirmed",
+    "F338": "skill book id14 (Ctrl+E) confirmed"
+  },
+  "contrast": {
+    "before": "12 placeholder slots '技能 1..12' candidate",
+    "after": "12 real skills from Magic.exp primary-static (name/id/attribute/element/req-level/practice)"
+  },
+  "verdict": "Simulator skill grid now uses the real Magic.exp records (primary-static via F37 decoder 0x4525F0): first 12 skills shown with name/magic_id/attribute/element/required_level/practice. Skill chain verified in EXE (0x4525F0 -> 0x4391F0/0x44A9C2; detail 0x43A440 from paint 0x439520). Browser-verified skill-book opens with 20 content elements.",
+  "evidence_level": "derived-tooling (source records primary-static)",
+  "evidence_level_note": "Magic.exp records decoded via original 0x4525F0 algorithm (F37, primary-static); sim grid placement remains candidate geometry from skill-window evidence.",
+  "cross_refs": [
+    "F37: Magic.exp 50 records, 0x4525F0 decoder",
+    "F331: skill window family (0x439250/0x4397A0/0x43A440)",
+    "F338: skill book id14 Ctrl+E",
+    "F162: magic-exp-records.json in layout.json"
+  ],
+  "tool": "build_mir3_simulator_data.py; capstone; puppeteer browser",
+  "reproduce": "/home/tetsuya/mir3-venv/bin/python Tools/web/build_mir3_simulator_data.py; open sim; login; press E; observe skill book with real skill names",
+  "notes": [
+    "skills.json carries magic_id for future cast-packet wiring (0x4525F0 family)",
+    "skill slot geometry (30+i%4*40, 60+i//4*40, 36x36) remains candidate - grid layout from skill-window evidence not yet byte-pinned",
+    "element/attribute from Magic.exp (无属性/无 for warrior skills; mage skills have elements 火/冰/电/风 etc.)"
+  ]
+}

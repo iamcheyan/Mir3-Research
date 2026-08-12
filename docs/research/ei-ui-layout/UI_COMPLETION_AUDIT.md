@@ -410,6 +410,13 @@ git diff --check
 - **模拟器条**：primary-static SetRect 证据（0x4276D6/0x4276F0/0x42770D）接线正确。
 - 落盘：`hpmp-exp-bar-family-evidence.json`（F350，primary-bytes）+ RESEARCH_LOG Round 44。
 
+## Round 45 (2026-08-12) — 技能格接入 Magic.exp（Finding 351）
+
+- **模拟器技能格**：12 槽现用真实 Magic.exp 记录（基本剑术/攻杀剑术/刺杀剑术/半月弯刀…，primary-static）。
+- **EXE 技能链**：0x4525F0 callers 0x4391F0/0x44A9C2；详情 0x43A440 ← 0x439520。
+- **浏览器**：E 开技能书，20 内容元素（8 分类 + 12 技能）。
+- 落盘：`skill-grid-magic-exp-evidence.json`（F351）+ builder/skills.json + RESEARCH_LOG Round 45。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -5903,3 +5903,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔浮点常量〕**0x47639C=1/255（0.00392 字节色缩放）、0x476364=0.5、0x476474=400.0、0x476470=300.0。
 - **〔模拟器〕**hp/mp/exp 条已用 primary-static SetRect 证据（0x4276D6/0x4276F0/0x42770D，帧 60/61/63）；CSS 填充动画为帧=值原版的视觉近似——接线正确。
 - 落盘：`hpmp-exp-bar-family-evidence.json`（F350，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 44。
+
+## Round 45 (F351) — 2026-08-12：技能格接入真实 Magic.exp 记录（50 技能 primary-static）+ 技能链调用点验证
+
+- **〔builder〕**skills 生成器读 magic-exp-records.json（F37 0x4525F0 解码的 50 条：id/name/attribute/element/levels[{required_level, practice_value}]）；前 12 填技能格 primary-static。**结果**：基本剑术 id3 req7、攻杀剑术 id7 req14、刺杀剑术 id12 req19、半月弯刀 id25 req24、野蛮冲撞 id27 req27…（原 12 占位槽 candidate 作废）。
+- **〔EXE 技能链〕**0x4525F0（Magic.exp 解码器）callers = 0x4391F0（技能 ctor 装载）+ 0x44A9C2；0x43A440（技能详情渲染）caller = 0x439520（技能书 paint 右页）；0x4397A0 左列表；0x439250 ctor（帧 400 面板 + 8 魔法分类页签）。
+- **〔浏览器〕**E 开技能书；content children = 20（8 分类页签 + 12 技能槽）。
+- 落盘：`skill-grid-magic-exp-evidence.json`（F351，derived-tooling；源记录 primary-static）+ builder + skills.json 重生成 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 45。
