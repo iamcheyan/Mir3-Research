@@ -7835,3 +7835,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔输入〕**0x42C9E0：窗口转发（0x516EC→0x448490、0x33188 商店→0x44F1D0）+ 热键栏命中 0x42D720（F581）+ 冷却门 0x7D0/0x3E8 vs GetTickCount [0x29CD8] + **物品名表 0x47ADB4（cp949）热键发送 msg 0x3EE**（0x451910）+ 格式化 0x46811C/公告 0x415280；0x42CBD0 输入门（窗口 [0x53060]/[0x52E8C] + 公告 [0x5081C]→0x414DC0）——HUD 输入路由（F580/F581/F616 用）。
 - 落盘：hud-keyboard-dispatch-evidence.json（F731，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 425。
+## Round 426 (F732) — 2026-08-12：HUD 输入弧闭合（F580/F581/F587/F731 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**356 证据 JSON**；三服务 200；master f676d43（**390 连发 F335-F731 已推**）。
+- **〔弧〕**caption 分派（F580）+ 热键栏（F581）+ 点击分派（F587）+ 键盘分派（F731）——**HUD 输入完整**（16 分支 caption + 6 槽热键 + 点击路由 + 键盘窗口转发/热键发送），**待办角落 0x42C9E0 闭合**。
+- 落盘：hud-input-arc-closure-evidence.json（F732，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 426。

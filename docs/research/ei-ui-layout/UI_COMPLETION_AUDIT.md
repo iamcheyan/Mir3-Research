@@ -2356,9 +2356,14 @@ git diff --check
 - **窗口转发 + 热键 + 冷却 + 名表发送**（F580/F581/F616 用）。
 - 落盘：`hud-keyboard-dispatch-evidence.json`（F731）+ RESEARCH_LOG Round 425。
 
+## Round 426 (2026-08-12) — HUD 输入弧闭合（Finding 732）
+
+- **390 连发 + 356 证据 + HUD 输入完整**（角落 0x42C9E0 闭合）。
+- 落盘：`hud-input-arc-closure-evidence.json`（F732）+ RESEARCH_LOG Round 426。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（HUD 输入路由字节级；下一弧：剩余深层角落）。
+- 无阻塞项（HUD 输入完整；下一弧：HANDOFF 刷新 54/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

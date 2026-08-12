@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hud-input-arc-closure-2026-08-12-f732",
+  "title": "Round 426 (F732): HUD input arc CLOSED (F580/F581/F587/F731) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master f676d43 (390 consecutive F335-F731), 356 evidence JSONs; arc: caption dispatch (F580) + hotbar (F581) + click dispatch (F587) + keyboard dispatch (F731) - HUD input COMPLETE byte-level (caption 16-branch + hotbar 6-slot + click routing + keyboard window-forward/hotkey-send), closing pending corner 0x42C9E0",
+  "date": "2026-08-12",
+  "objective": "Close the HUD input arc.",
+  "question": "Is the HUD input fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "356 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F580": "caption", "F581": "hotbar", "F587": "click", "F731": "keyboard"},
+    "hud": "caption + hotbar + click + keyboard = COMPLETE",
+    "milestone": "390 consecutive rounds F335-F731"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F731": "390 rounds pushed; HUD input complete, corner 0x42C9E0 closed"
+  },
+  "contrast": {
+    "caption_vs_click": "16-branch + click routing",
+    "hotbar_vs_keyboard": "6-slot + window-forward"
+  },
+  "verdict": "HUD input arc CLOSED (F732): caption + hotbar + click + keyboard all byte-level; validation green, 390 consecutive rounds, 356 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F580/F581/F587/F731.",
+  "cross_refs": ["F580", "F581", "F587", "F731"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "390 consecutive shipping rounds F335-F731",
+    "corner 0x42C9E0 closed",
+    "next: HANDOFF refresh 54, remaining corners"
+  ]
+}
