@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-75-2026-08-12-f796",
+  "title": "Round 490 (F796): HANDOFF refresh 75 - Rounds 487-489 (F793-F795: HANDOFF 74, skill msg/map-title handlers, skill/display handlers closure), baseline Round 486=95c2f7f -> Round 489=f14f2e5 (454 consecutive F335-F795), doc maintenance + refresh-75 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 487-489.",
+  "question": "What changed since HANDOFF refresh 74?",
+  "method": "Append Round 487-489 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 487-489 appended (3 rounds, F793-F795)",
+    "baseline": "Round 486=95c2f7f -> Round 489=f14f2e5 (454 consecutive F335-F795)",
+    "milestone": "HANDOFF refresh 75 reached",
+    "arcs": {"handlers": "F794 skill/title", "closure": "F795 display chain"},
+    "key": "skill/display complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F793": "refresh 74 baseline -> now refresh 75", "F335-F795": "454 rounds"
+  },
+  "contrast": {
+    "refresh_74_vs_75": "F794-F795 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 75 (F796): Rounds 487-489 documented (skill/display complete), baseline 95c2f7f -> f14f2e5, 454 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F794-F795 evidence.",
+  "cross_refs": ["F793: refresh 74", "F795: skill closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 487-489 section to HANDOFF",
+  "notes": [
+    "454 consecutive shipping rounds F335-F795",
+    "HANDOFF refresh 75 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}

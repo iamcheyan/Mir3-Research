@@ -8113,3 +8113,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**419 证据 JSON**；三服务 200；master afc68f7（**453 连发 F335-F794 已推**）。
 - **〔弧〕**技能记录（F743）+ 英雄分派（F791）+ 技能消息/地图标题（F794）——**技能/显示处理完整**（msg 0x34 base64 解码 + 0x2F0 装载器 + 0x1F 槽 + 地图标题 0x7776A0），待办显示槽链全解析。
 - 落盘：skill-display-handlers-closure-evidence.json（F795，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 489。
+## Round 490 (F796) — 2026-08-12：HANDOFF 刷新 75（Round 487-489）+ 75 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 487-489（F794-F795：技能消息/地图标题 + 技能/显示处理闭合）；基线 Round 486=95c2f7f → Round 489=f14f2e5（**454 连发 F335-F795**）——**HANDOFF 刷新 75 里程碑**。
+- 落盘：handoff-refresh-75-evidence.json（F796，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 490。
