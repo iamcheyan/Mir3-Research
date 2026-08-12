@@ -6416,3 +6416,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔状态〕**0x41B5D0 游戏时间（[0x428204] 模式字节 + [0x428208] 累加器 0x9C4 门）。
 - **〔网格〕**480×480 网格写入侧未定位（imul 480 = 0 站点）— 绘制序 = 列表插入序（服务器生成序）；网格角色维持 pending。
 - 落盘：entity-list-add-path-evidence.json（F442，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 136。
+## Round 137 (F443) — 2026-08-12：维护清扫（全验证通过 + 服务健康）
+
+- **〔验证〕**compileall OK、verify exit 0、node --check OK、layout.json + matrix JSON 有效。
+- **〔服务〕**wilviewer 8765 200 / mapviewer 8899 200 / sim 200。
+- **〔仓库〕**干净（仅未跟踪 goal_watchdog.sh.bak）；master = 0c0cbe4（**108 连发已推**）。
+- **〔实体弧汇总 F429-F442〕**怪物 WIL 族/死亡库/帧密度/状态布局/寻址 PRIMARY/外观表/动画机/帧装载器/阴影光场/投影/流水线/链表/重置/维护 14 项闭合。
+- 落盘：housekeeping-round137-evidence.json（F443，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 137。

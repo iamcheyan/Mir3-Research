@@ -911,6 +911,11 @@ git diff --check
 - **ID 清除/移除/状态门**；480 网格写入侧未定位。
 - 落盘：`entity-list-add-path-evidence.json`（F442）+ RESEARCH_LOG Round 136。
 
+## Round 137 (2026-08-12) — 维护清扫（Finding 443）
+
+- **全验证通过 + 服务健康 + 108 连发**；实体弧 F429-F442 汇总。
+- 落盘：`housekeeping-round137-evidence.json`（F443）+ RESEARCH_LOG Round 137。
+
 ## Pending（未阻塞，持续队列）
 
 - 480×480 网格角色（写入侧未定位）— 低优先 [candidate: 地图瓦片可见性]。
