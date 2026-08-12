@@ -866,6 +866,11 @@ git diff --check
 - **(race%10)*1000 公式字节级确认**；50 类跳表 + 0x5600FC 外观表。
 - 落盘：`monster-frame-addressing-primary-evidence.json`（F433）+ RESEARCH_LOG Round 127。
 
+## Round 128 (2026-08-12) — 怪物外观表构建（Finding 434）
+
+- **0x5600FC 运行时数组 + 类型分派 + 0x96 工厂**。
+- 落盘：`monster-appearance-table-construction-evidence.json`（F434）+ RESEARCH_LOG Round 128。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

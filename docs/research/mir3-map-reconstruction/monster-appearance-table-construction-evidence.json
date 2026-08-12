@@ -1,0 +1,38 @@
+{
+  "evidence_id": "monster-appearance-table-construction-2026-08-12-f434",
+  "title": "Round 128 (F434): Monster appearance table construction - 0x5600FC = runtime descriptor array (stride 0x144) read via [esi+0x90] + 3 slots [0x62A0C/0x62A10/0x62A14]; type dispatcher 0x40E3E0 (types 0x12/8/0x13/0x51A/0x51B -> record lookup 0x449B90 on 0x8AA5A8 + stats 0x40A4D0 with codes 0x19/0x1A/0xC/0x11/0x23 + flags [0x629D0-0x629D8]); type 0x96 factory 0x13C-byte vtable 0x476448 global 0x560088",
+  "date": "2026-08-12",
+  "objective": "Document the 0x5600FC monster appearance table construction and type-specific init paths.",
+  "question": "How is the runtime appearance descriptor array built and which init paths exist per monster type?",
+  "method": "Disasm of 0x40E3E0-0x40E5EE (type dispatcher) + 0x40E600+ (factory) + 0x40F54E-0x40F55A (table read).",
+  "scope": "0x40E3E0-0x40E5F2, 0x40E600-0x40E74D, 0x40F480-0x40F5DF, 0x5600FC/0x560088.",
+  "cell_analysis": {
+    "appearance_array": {"base": "0x5600FC", "stride": "0x144 (324B) = idx*81*4 (0x40F55A)", "readers": "[esi+0x90] (0x405878), 3 slots [esi+0x62A0C/0x62A10/0x62A14] (0x40F55A/0x40F589/0x40F5B9)", "source": "runtime-built (in zero-filled .data tail)"},
+    "type_dispatcher_0x40E3E0": {"types": {"0x12": "record code 0x19 (25), flag [0x629D0]=2", "8": "code 0x1A (26), flag [0x629D3]=2", "0x13": "code 0xC (12), [0x629D8]=0", "0x51A": "code 0x11 (17), flag [0x629D1]=2", "0x51B": "code 0x23 (35), flag [0x629D2]=2"}, "lookup": "0x449B90 on table 0x8AA5A8 (record find)", "stats": "0x40A4D0 (HP/MP [0x61BA0] + type*10, F433)"},
+    "factory_0x40E600": {"type_0x96": "alloc 0x13C (316B) via 0x468B1A, ctor 0x434EF0, vtable 0x476448, global [0x560088]", "other_types": "0x18/0x68/0x15/0x1E/8/0x12/0x11/0x4E/0x40/0x69 branch to 0x40EA3C (shared path)"},
+    "sound_effect": "0x40A4D0 tail: (code+0x3E8)*10 -> push to 0x45AFC0 (0x8AB130 = game object) - spawn sound"
+  },
+  "exe_trace": {
+    "monster_struct_ext": {"+0x629D0-0x629D8": "per-type init flags", "+0x62A0C/0x62A10/0x62A14": "appearance slot ptrs", "+0x62A34": "special (type 0xF)"}
+  },
+  "audit_vs_exe": {
+    "F433": "appearance ptr [esi+0x90] + stride 0x144 confirmed at read sites",
+    "F350": "HP [0x61BA0] init path confirmed via 0x40A4D0",
+    "F429": "runtime table vs static filename table (0x10B94) - two-layer design"
+  },
+  "contrast": {
+    "static_vs_runtime": "filename table 0x10B94 static-built (F429) vs appearance descriptors runtime-populated (0x5600FC)",
+    "type_vs_race": "type dispatch (init) vs race (frame range) - orthogonal axes"
+  },
+  "verdict": "Monster appearance table construction documented (primary-bytes): 0x5600FC = runtime descriptor array (stride 0x144, read via [esi+0x90]/3 slots); type dispatcher 0x40E3E0 routes 5 special types to record lookup + stats init, type 0x96 to a 0x13C-byte factory (vtable 0x476448, global 0x560088). Record-content layout remains pending (populated by runtime record loader).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All init paths decoded from .text; record content layout = pending note.",
+  "cross_refs": ["F433: frame addressing", "F429: Mon WIL family", "F350: HP bars"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x40E3E0+0x40, 0x40E600+0x60, 0x40F54E+0x10",
+  "notes": [
+    "0x5600FC in zero-filled .data tail -> runtime construction",
+    "spawn sound = (type code + 1000) * 10",
+    "type 0xF sets [esi+0x62A34] from record byte +0xC"
+  ]
+}

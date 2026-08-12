@@ -6364,3 +6364,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔表〕**外观表 0x5600FC stride 0x144 运行时构建（[esi+0x90] + 3 槽）；帧 = state*400 + counter − 0xAA0（0x40F6A3，400 = 40 格 × 10 帧 F432）。
 - **〔属性〕**0x40A4D0 统计初始化：HP/MP [0x61BA0] + type*10 偏移（F350 族）。
 - 落盘：monster-frame-addressing-primary-evidence.json（F433，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 127。
+## Round 128 (F434) — 2026-08-12：怪物外观表构建（0x5600FC 运行时数组）
+
+- **〔表〕**0x5600FC = 运行时外观描述数组（stride 0x144 = idx*81*4），读侧 [esi+0x90] + 3 槽 [0x62A0C/0x62A10/0x62A14]；位于 .data 零填充尾部（运行时构建）。
+- **〔分派〕**0x40E3E0 类型初始化：0x12/8/0x13/0x51A/0x51B → 记录查找 0x449B90（表 0x8AA5A8）+ 属性 0x40A4D0（码 0x19/0x1A/0xC/0x11/0x23）+ 标志 [0x629D0-0x629D8]；type 0x96 → 0x13C 字节工厂（vtable 0x476448，全局 0x560088）。
+- 落盘：monster-appearance-table-construction-evidence.json（F434，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 128。
