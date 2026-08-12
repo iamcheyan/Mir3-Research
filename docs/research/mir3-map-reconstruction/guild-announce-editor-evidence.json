@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-announce-editor-2026-08-12-f770",
+  "title": "Round 464 (F770): Guild-announce editor - 0x43E3C0 draw (F558 mode F): prompt/text 0x47C460/0x47C440 via 0x45DD70 color 0x323232, flag [0x1D0] + 2 buttons F704 set-pos (@ +0x54/+0x108) + 2 paints; 0x43E4B0 INPUT/enter (0x1F40 scratch): edit control vtable[0x10] hit + GetWindowText 0x476304 (0xFA0 cap) + '\\n' line split (0x468BF0) + string join 0x45DC70 (F737, skip 0x8B187C) + SEND 0x4524D0 (F617) - guild announce editor COMPLETE, LAST F558 registry body decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the guild announce editor.",
+  "question": "How does the guild announce editor work?",
+  "method": "Disasm 0x43E3C0-0x43E620.",
+  "scope": "0x43E3C0-0x43E620; edit control.",
+  "cell_analysis": {
+    "0x43E3C0": {"draw": "0x47C460/0x47C440 0x323232 [0x1D0]", "buttons": "2 x F704"},
+    "0x43E4B0": {"input": "vtable[0x10] + 0x476304 0xFA0", "split": "'\\n' 0x468BF0", "join": "0x45DC70", "send": "0x4524D0"}
+  },
+  "exe_trace": {
+    "editor_chain": "draw -> edit input -> line split -> join -> send"
+  },
+  "audit_vs_exe": {
+    "F558": "mode F editor", "F737": "join 0x45DC70", "F617": "send 0x4524D0"
+  },
+  "contrast": {
+    "draw_vs_input": "prompt + edit",
+    "split_vs_send": "'\\n' split + 0x4524D0"
+  },
+  "verdict": "Guild announce editor PRIMARY-verified: draw + input + split + join + send; LAST F558 registry body decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Announce editor decoded from .text.",
+  "cross_refs": ["F558: editor", "F737: join", "F617: send"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43E3C0+0x10; 0x43E4B0+0x20",
+  "notes": [
+    "strings 0x47C460/0x47C440",
+    "GetWindowText 0xFA0",
+    "'\\n' line split",
+    "send 0x4524D0"
+  ]
+}

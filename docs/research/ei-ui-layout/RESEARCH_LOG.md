@@ -8000,3 +8000,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 460-462（F767-F768：装备窗口 + 窗口绘制全量闭合）；基线 Round 459=fb330c0 → Round 462=061e7c2（**427 连发 F335-F768**）。
 - 落盘：handoff-refresh-66-evidence.json（F769，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 463。
+## Round 464 (F770) — 2026-08-12：行会公告编辑器
+
+- **〔公告编辑〕**0x43E3C0 绘制（F558 模式 F）：提示/文本 0x47C460/0x47C440 via 0x45DD70 色 0x323232、旗标 [0x1D0] + **2 按钮 F704** + 2 绘制；0x43E4B0 输入/回车（0x1F40 暂存）：编辑控件 vtable[0x10] 命中 + **GetWindowText 0x476304（0xFA0 上限）** + **'\n' 行拆分（0x468BF0）** + **拼接 0x45DC70（F737）** + **发送 0x4524D0（F617）**——行会公告编辑器完整，**F558 注册表最后一个函数体解码**。
+- 落盘：guild-announce-editor-evidence.json（F770，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 464。
