@@ -7809,3 +7809,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔英雄〕**0x410100 setter（[0x62A58]）；0x410110 数据装载（方向字 [0x61BCx] + **等级进度字节 [0x61BC8] = 比例 × 0x47644C**）；0x410190 死亡/重生（SEH）：音效 0x6E @ [0xCC]/[0xD0] + 实体 0x434EF0 ctor（F565）+ **双向链表 0x560088**（vtable 0x476448、next [0x8]/prev [0xC]、头 0x56008C、计数 [0x560098]）+ **1500ms 重生计时 [0x8A68BC]**（F611 1500ms 确认）。
 - 落盘：hero-update-death-spawn-evidence.json（F725，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 419。
+## Round 420 (F726) — 2026-08-12：英雄运行时弧闭合（F695/F696/F725 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**350 证据 JSON**；三服务 200；master 431153f（**384 连发 F335-F725 已推**）。
+- **〔弧〕**英雄移动（F695）+ 英雄弧（F696）+ 更新/死亡（F725）——**英雄运行时完整**（8 方向移动 + msg 0xBC3 + 状态 [0x62A50..0x62AE4] + 数据装载 + 死亡/重生链表 + 1500ms 重生），**列明角落 0x410100 闭合**。
+- 落盘：hero-runtime-arc-closure-evidence.json（F726，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 420。

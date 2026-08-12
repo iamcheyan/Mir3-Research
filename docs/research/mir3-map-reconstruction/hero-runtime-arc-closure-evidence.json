@@ -1,36 +1,37 @@
 {
-  "evidence_id": "hero-runtime-arc-closure-2026-08-12-f614",
-  "title": "Round 308 (F614): Hero runtime arc CLOSED (F611-F613) - validation green (compileall/verify exit 0/node/JSON), services 200, master fb5ee0f (272 consecutive F335-F613), 239 evidence JSONs; arc: death/teleport pump (F611: respawn cooldown + coord reset + light colors) + hero movement/camera (F612: 0x410840 move + 0x43CC30 map camera + click-target) + map move/collision (F613: 8-dir jt + tile/entity collision) - hero runtime lifecycle complete (death -> respawn -> move -> collide)",
+  "evidence_id": "hero-runtime-arc-closure-2026-08-12-f726",
+  "title": "Round 420 (F726): Hero runtime arc CLOSED (F695/F696/F725) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 431153f (384 consecutive F335-F725), 350 evidence JSONs; arc: hero move (F695) + hero arc (F696) + hero update/death (F725) - hero runtime COMPLETE byte-level (move 8-dir + msg 0xBC3 + state [0x62A50..0x62AE4] + data load + death/spawn dlist + 1500ms respawn), closing listed corner 0x410100",
   "date": "2026-08-12",
   "objective": "Close the hero runtime arc.",
-  "question": "Is the hero runtime lifecycle fully documented?",
+  "question": "Is the hero runtime fully documented?",
   "method": "Full validation + arc consolidation.",
   "scope": "Tools/, docs/, services.",
   "cell_analysis": {
-    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "239 JSONs"},
-    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
-    "arc": {"F611": "death/teleport pump", "F612": "hero movement/camera", "F613": "map move/collision"},
-    "lifecycle": "death -> respawn -> move -> collide - COMPLETE",
-    "milestone": "272 consecutive rounds F335-F613"
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "350 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F695": "hero move", "F696": "hero arc", "F725": "update/death"},
+    "hero": "move + state + data + death/spawn = COMPLETE",
+    "milestone": "384 consecutive rounds F335-F725"
   },
   "exe_trace": {
     "verify": "exit 0"
   },
   "audit_vs_exe": {
-    "F335-F613": "272 rounds pushed; hero runtime complete"
+    "F335-F725": "384 rounds pushed; hero runtime complete, corner 0x410100 closed"
   },
   "contrast": {
-    "hero_vs_world": "hero runtime (F611-613) + world/entity systems complete",
-    "move_vs_death": "movement chain + death/respawn chain"
+    "move_vs_death": "8-dir move + death/spawn",
+    "data_vs_state": "data load + state [0x62A50..]"
   },
-  "verdict": "Hero runtime arc CLOSED (F614): death/respawn + movement + collision all byte-level; validation green, 272 consecutive rounds, 239 evidence JSONs.",
+  "verdict": "Hero runtime arc CLOSED (F726): move + data + death/spawn all byte-level; validation green, 384 consecutive rounds, 350 evidence JSONs.",
   "evidence_level": "derived-tooling (validators) + secondary (services)",
-  "evidence_level_note": "Validation from tool runs; arc content from F611-F613.",
-  "cross_refs": ["F611: death pump", "F612: hero move", "F613: collision"],
+  "evidence_level_note": "Validation from tool runs; arc content from F695/F696/F725.",
+  "cross_refs": ["F695: move", "F696: arc", "F725: update/death"],
   "tool": "compileall / verify / node / json.tool / curl / git",
   "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
   "notes": [
-    "272 consecutive shipping rounds F335-F613",
-    "next: HANDOFF refresh 19, remaining corners"
+    "384 consecutive shipping rounds F335-F725",
+    "corner 0x410100 closed",
+    "next: HANDOFF refresh 52, remaining corners"
   ]
 }
