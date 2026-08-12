@@ -7644,3 +7644,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**311 证据 JSON**；**wilviewer 再次死亡 → 重启 8765**，三服务全 200；master 43eff42（**345 连发 F335-F686 已推**）。
 - **〔弧〕**WIL 装载器入口 + 文件打开（F686）——**装载器系统完整（入口分派 + 帧表 + mmap/资源 F577）**，连接 F436/F128。
 - 落盘：loader-arc-closure-evidence.json（F687，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 381。
+## Round 382 (F688) — 2026-08-12：HANDOFF 刷新 40（Round 379-381）
+
+- **〔刷新〕**HANDOFF 追加 Round 379-381（F686-F687：WIL 装载器入口 + 装载器弧 + 服务恢复）；基线 Round 378=6c890eb → Round 381=5144fe6（**346 连发 F335-F687**）。
+- 落盘：handoff-refresh-40-evidence.json（F688，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 382。

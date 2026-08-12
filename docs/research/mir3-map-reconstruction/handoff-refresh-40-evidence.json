@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-40-2026-08-12-f688",
+  "title": "Round 382 (F688): HANDOFF refresh 40 - Rounds 379-381 (F685-F687: WIL loader entry + file-open + loader arc closure + service restore), baseline Round 378=6c890eb -> Round 381=5144fe6 (346 consecutive F335-F687), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 379-381.",
+  "question": "What changed since HANDOFF refresh 39?",
+  "method": "Append Round 379-381 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 379-381 appended (3 rounds, F685-F687)",
+    "baseline": "Round 378=6c890eb -> Round 381=5144fe6 (346 consecutive F335-F687)",
+    "arcs": {"loader": "F686 WIL loader entry", "closure": "F687 loader arc + service restore"},
+    "key": "WIL loader complete; wilviewer restarted"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F685": "refresh 39 baseline -> now refresh 40", "F335-F687": "346 rounds"
+  },
+  "contrast": {
+    "refresh_39_vs_40": "F686-F687 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 40 (F688): Rounds 379-381 documented (WIL loader + service restore), baseline 6c890eb -> 5144fe6, 346 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F686-F687 evidence.",
+  "cross_refs": ["F685: refresh 39", "F687: loader closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 379-381 section to HANDOFF",
+  "notes": [
+    "346 consecutive shipping rounds F335-F687",
+    "next: remaining deep corners, sim polish"
+  ]
+}
