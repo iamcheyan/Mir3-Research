@@ -1,0 +1,34 @@
+{
+  "evidence_id": "skill-page-text-parser-2026-08-12-f851",
+  "title": "Round 545 (F851): Skill page text parser (F839 page dep) - 0x43A440 (0x1E90 frame): LINE split 0x468BF0 ('\\n' terminator, ';' section end) + '#' META marker (0x4681F9 atoi id compare vs arg) + active-flag [0x13] + 0x45E200 WRAP (width 0xA5) + 10-line split into fields (0x100 each) - skill page render data path COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the skill page text parser.",
+  "question": "How is skill page text parsed?",
+  "method": "Disasm 0x43A440-0x43A600.",
+  "scope": "0x43A440-0x43A600; parser.",
+  "cell_analysis": {
+    "0x43A440": {"split": "0x468BF0 '\\n'/'\\n;'", "meta": "'#' 0x4681F9 id", "flag": "[0x13] active", "wrap": "0x45E200 0xA5", "fields": "10 x 0x100"}
+  },
+  "exe_trace": {
+    "page_chain": "line split -> #meta -> wrap -> fields"
+  },
+  "audit_vs_exe": {
+    "F839": "page render", "F821": "wrap", "F680": "atoi"
+  },
+  "contrast": {
+    "meta_vs_lines": "'#' id + text",
+    "wrap_vs_fields": "0xA5 + 10 slots"
+  },
+  "verdict": "Skill page text parser PRIMARY-verified: split + meta + wrap; F839 data path complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Skill parser decoded from .text.",
+  "cross_refs": ["F839: book", "F821: wrap", "F680: atoi"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43A440+0x20",
+  "notes": [
+    "'#' meta id",
+    "wrap 0xA5",
+    "10 line fields",
+    "'\\n' split"
+  ]
+}

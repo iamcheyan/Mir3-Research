@@ -8351,3 +8351,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 541-543（F848-F849：技能页签头 + 技能书全闭合）；基线 Round 540=fc5086b → Round 543=1c2c0ba（**508 连发 F335-F849**）。
 - 落盘：handoff-refresh-93-evidence.json（F850，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 544。
+## Round 545 (F851) — 2026-08-12：技能页文本解析器（F839 页依赖）
+
+- **〔解析〕**0x43A440（0x1E90 帧）：行拆分 0x468BF0（'\n' 终止、';' 节末）+ **'#' 元标记**（0x4681F9 atoi id 比较 vs 参数）+ 激活旗标 [0x13] + **0x45E200 换行**（宽 0xA5）+ 10 行拆入字段（0x100 各）——技能页渲染数据路径完整。
+- 落盘：skill-page-text-parser-evidence.json（F851，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 545。
