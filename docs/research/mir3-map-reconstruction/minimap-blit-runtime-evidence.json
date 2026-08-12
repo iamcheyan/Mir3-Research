@@ -1,0 +1,37 @@
+{
+  "evidence_id": "minimap-blit-runtime-2026-08-12-f482",
+  "title": "Round 176 (F482): Minimap blit runtime - 0x460240 full-surface blit: clip rect math (src offset [0x148]/[0x14C] + w/h, dst, negative-offset clamp), 16-bit per-row copy (word [dst + row*stride + x*2], vtable+0x64 GetDC-ish, 0x7C struct), HUD caller 0x429630 (frame [0x1C] 0x33 via 0x466130 -> 0x460240 at 0x113/0x1DE screen pos, scroll [0xD40] animation) + 6 quick-equip icons (0x4296F7, records [0xDA8] stride 0xC24) - minimap runtime render complete (surface F481 + blit this)",
+  "date": "2026-08-12",
+  "objective": "Decode the minimap runtime blit; complete the minimap subsystem.",
+  "question": "How is the minimap surface copied to screen each frame?",
+  "method": "Disasm 0x460240-0x460C94 (blit) + 0x429630 (HUD caller).",
+  "scope": "0x460240-0x460C94; 0x429580-0x429732.",
+  "cell_analysis": {
+    "blit_0x460240": {"clip": "src offset [0x148]/[0x14C] (can be negative -> clamp), w/h [0x150]/[0x154], dst bounds", "copy": "16-bit per-row: word [src + row*stride + x*2] -> dst, vtable+0x64 (DC lock), 0x7C struct", "loop": "row-major over clipped region"},
+    "hud_caller_0x429630": {"frame": "[0x1C] 0x33 -> 0x466130 (FMMap frame)", "blit": "0x460240 at screen 0x113 (275) x 0x1DE (478), scroll [0xD40] anim (0x2E cap)", "quick_slots": "6 equip icons at [0xDA8] stride 0xC24 (0x430A40 draw)"},
+    "surface_chain": "map load (F481) -> frame 0x33 -> 0x460240 blit -> screen"
+  },
+  "exe_trace": {
+    "minimap_render": "FMMap surface + 16-bit blit + quick-slot icons on HUD"
+  },
+  "audit_vs_exe": {
+    "F481": "surface creation -> blit consumption confirmed",
+    "F48": "minimap subsystem (672,0-800,128) - blit at 0x113/0x1DE = different position (HUD minimap?)",
+    "F310": "marker overlay separate (MMap)"
+  },
+  "contrast": {
+    "hud_vs_panel": "HUD minimap blit (0x113/0x1DE) vs panel minimap (672,0) - two render paths",
+    "surface_vs_frame": "0x460240 blits DDS surface; frame-based paths use 0x45FD50/0x460240 variants"
+  },
+  "verdict": "Minimap blit runtime PRIMARY-verified: 0x460240 clipped 16-bit surface copy; HUD caller 0x429630 (frame 0x33 + scroll anim + 6 quick slots). Minimap subsystem render complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Blit + caller decoded from .text.",
+  "cross_refs": ["F481: surface init", "F48: minimap panel", "F310: markers"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x460240+0x60, 0x429630+0x40",
+  "notes": [
+    "16-bit = 565 pixel format (matches surface 0x1000/0x1800 family)",
+    "scroll [0xD40] = minimap pan animation",
+    "HUD minimap at (275,478) + panel at (672,0) = two instances"
+  ]
+}

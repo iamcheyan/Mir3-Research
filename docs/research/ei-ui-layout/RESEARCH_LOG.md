@@ -6634,3 +6634,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔FMMap〕**0x43DF60：FMMap.wil（0x47C414）→ 字符串上下文 [+0x148]（0x465FA0/0x4660E0）+ **DDS 表面创建**（0x8AB7B8 vtable+0x18 + 0x467080、像素格式 0x1000/0x1800、尺寸 [0x2B8]/[0x2BC] 地图大小）。
 - **〔MMap〕**0x43D4E1：MMap.wil（0x47C428）在地图对象 ctor 0x43D4D0（标记库 F310）。
 - 落盘：minimap-library-loader-evidence.json（F481，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 175。
+## Round 176 (F482) — 2026-08-12：小地图 blit 运行时（0x460240 表面复制）
+
+- **〔blit〕**0x460240：裁剪矩形数学（src 偏移 [0x148]/[0x14C] 可负 → 夹紧）+ **16 位逐行复制**（word [src + 行*stride + x*2]、vtable+0x64 DC 锁、0x7C 结构）。
+- **〔HUD〕**0x429630：帧 [0x1C] 0x33 → 0x466130 → 0x460240 @屏幕 (0x113, 0x1DE)（滚动 [0xD40] 动画、0x2E 上限）+ **6 快捷装备图标**（[0xDA8] stride 0xC24）。
+- **〔双实例〕**HUD 小地图 (275,478) vs 面板小地图 (672,0)。
+- 落盘：minimap-blit-runtime-evidence.json（F482，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 176。

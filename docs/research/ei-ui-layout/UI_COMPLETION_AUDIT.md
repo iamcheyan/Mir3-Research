@@ -1106,6 +1106,11 @@ git diff --check
 - **FMMap 表面初始化 + MMap 标记库**。
 - 落盘：`minimap-library-loader-evidence.json`（F481）+ RESEARCH_LOG Round 175。
 
+## Round 176 (2026-08-12) — 小地图 blit 运行时（Finding 482）
+
+- **16 位表面复制 + HUD 双实例**。
+- 落盘：`minimap-blit-runtime-evidence.json`（F482）+ RESEARCH_LOG Round 176。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（小地图族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
