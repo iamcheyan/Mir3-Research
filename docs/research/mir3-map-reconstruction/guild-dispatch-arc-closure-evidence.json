@@ -1,0 +1,37 @@
+{
+  "evidence_id": "guild-dispatch-arc-closure-2026-08-12-f809",
+  "title": "Round 503 (F809): Guild dispatch arc CLOSED (F755/F803/F808) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 29dfeef (467 consecutive F335-F808), 433 evidence JSONs; arc: guild draw (F755) + notices/msg (F803) + button dispatch (F808) - guild window COMPLETE byte-level (3-page draw + 9-button dispatch + notice list + msg 0x25A/0x415 sends), guild mode 4 fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the guild dispatch arc.",
+  "question": "Is the guild window fully interactive + documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "433 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F755": "draw", "F803": "notices/msg", "F808": "button dispatch"},
+    "guild": "draw + dispatch + notices = COMPLETE",
+    "milestone": "467 consecutive rounds F335-F808"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F808": "467 rounds pushed; guild fully interactive"
+  },
+  "contrast": {
+    "draw_vs_dispatch": "3 pages + 9 buttons",
+    "notice_vs_msg": "list + sends"
+  },
+  "verdict": "Guild dispatch arc CLOSED (F809): draw + dispatch + notices all byte-level; validation green, 467 consecutive rounds, 433 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F755/F803/F808.",
+  "cross_refs": ["F755", "F803", "F808"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "467 consecutive shipping rounds F335-F808",
+    "guild 100% interactive",
+    "next: HANDOFF refresh 80, remaining corners"
+  ]
+}

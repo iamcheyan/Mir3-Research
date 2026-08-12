@@ -2753,3 +2753,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会输入完整；下一弧：剩余深层角落）。
+## Round 503 (2026-08-12) — 行会分派弧闭合（Finding 809）
+
+- **467 连发 + 433 证据 + 行会全交互**。
+- 落盘：`guild-dispatch-arc-closure-evidence.json`（F809）+ RESEARCH_LOG Round 503。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会全交互；下一弧：HANDOFF 刷新 80/剩余角落）。

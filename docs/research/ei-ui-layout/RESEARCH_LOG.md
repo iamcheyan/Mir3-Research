@@ -8169,3 +8169,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔行会〕**0x4258A3（F803 msg 0x415 尾部）：拼接 0x45DC70（F737）+ **发送 0x4520F0** + 0x4523E0；0x4258F0 **行会按钮分派**（0x148C 帧）：滚动条 F707 释放 0x417E60 + 9 控件 vtable[0x10] 命中 → **页模式 [0x98]**（0/1/2、重置计数 [0x9C]）+ 0x4523E0/0x452410 发送 + **窗口切换 0x42ADB0**（模式 0xF）+ **0x423E80 发送 msg 0x25A**（成员操作）——行会窗口输入完整（F755/F803 用）。
 - 落盘：guild-msg-send-button-dispatch-evidence.json（F808，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 502。
+## Round 503 (F809) — 2026-08-12：行会分派弧闭合（F755/F803/F808 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**433 证据 JSON**；三服务 200；master 29dfeef（**467 连发 F335-F808 已推**）。
+- **〔弧〕**行会绘制（F755）+ 公告/消息（F803）+ 按钮分派（F808）——**行会窗口完整**（3 页绘制 + 9 按钮分派 + 公告列表 + msg 0x25A/0x415 发送），行会模式 4 全交互。
+- 落盘：guild-dispatch-arc-closure-evidence.json（F809，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 503。
