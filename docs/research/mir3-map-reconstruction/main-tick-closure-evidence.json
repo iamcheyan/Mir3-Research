@@ -1,0 +1,37 @@
+{
+  "evidence_id": "main-tick-closure-2026-08-12-f970",
+  "title": "Round 664 (F970): Main tick CLOSED (F591/F636/F637/F969) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c62b847 (628 consecutive F335-F969), 594 evidence JSONs; arc: 18 phases (F591) + ctor (F636) + ecx 0x47EF18 (F637) + ctor chain recap (F969) - main construction COMPLETE byte-level (vtable chain 0x4766F0..0x476680 + phase ctors 6-0xB); core lifecycle 100%",
+  "date": "2026-08-12",
+  "objective": "Close the main tick arc.",
+  "question": "Is the main construction fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "594 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F591": "18 phases", "F636": "ctor", "F637": "ecx 0x47EF18", "F969": "chain recap"},
+    "main": "vtable chain + phases = COMPLETE",
+    "milestone": "628 consecutive rounds F335-F969"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F969": "628 rounds pushed; main tick complete"
+  },
+  "contrast": {
+    "chain_vs_phases": "vtables + ctors",
+    "lifecycle": "18-phase core"
+  },
+  "verdict": "Main tick CLOSED (F970): vtable chain + phase ctors all byte-level; validation green, 628 consecutive rounds, 594 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F591-F969.",
+  "cross_refs": ["F591", "F636", "F637", "F969"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "628 consecutive shipping rounds F335-F969",
+    "main construction 100%",
+    "next: HANDOFF refresh 135, remaining corners"
+  ]
+}

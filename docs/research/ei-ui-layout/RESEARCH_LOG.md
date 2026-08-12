@@ -8867,3 +8867,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔主链〕**0x418B00：vtable 链 0x4766F0 → 0x4766D4 → 0x4766B8 → 0x47669C → 0x476680（@ +0xE1154 stride 0x28）+ 阶段构造 0x4529B0（6）→ 0x43AF70（7）→ 0x426C10（8 坐骑）→ 0x40FE80（9）→ 0x4344E0（0xA）→ 0x446D60（0xB）；ecx 0x47EF18 基线确认——主构造完整（18 阶段重述）。
 - 落盘：main-tick-ctor-chain-recap-evidence.json（F969，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 663。
+## Round 664 (F970) — 2026-08-12：主 tick 闭合（F591/F636/F637/F969 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**594 证据 JSON**；三服务 200；master c62b847（**628 连发 F335-F969 已推**）。
+- **〔弧〕**18 阶段（F591）+ 构造（F636）+ ecx 0x47EF18（F637）+ 构造链重述（F969）——**主构造完整**（vtable 链 0x4766F0..0x476680 + 阶段构造 6-0xB）；核心生命周期 100%。
+- 落盘：main-tick-closure-evidence.json（F970，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 664。

@@ -4041,3 +4041,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（主构造完整；下一弧：剩余深层角落）。
+## Round 664 (2026-08-12) — 主 tick 闭合（Finding 970）
+
+- **628 连发 + 594 证据 + 主构造完整**。
+- 落盘：`main-tick-closure-evidence.json`（F970）+ RESEARCH_LOG Round 664。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（主构造完整；下一弧：HANDOFF 刷新 135/剩余角落）。
