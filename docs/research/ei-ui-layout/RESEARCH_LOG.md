@@ -6613,3 +6613,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔管理器〕**0x42DC20 构造：46 × 0xC2C 背包记录 + 6 × 0xC24 装备记录（0x4686C4、ctor 0x415730/0x415750 + 0x426E70）、[0xDA4] 0x1236 dword 标记清零、**文件持久化**（0x4760DC CreateFileA，路径 0x47BDCC，读取 0x22FE8/0x4B0/0x48D8）。
 - **〔转移〕**0x42DB80：找空（[edx+槽*0xC2C+0xDA4]==0，循环 0x2E）→ **0x308 dword 记录复制**（背包 ↔ 装备槽）+ 标记 + 清 0x42FB20。
 - 落盘：bag-equip-manager-evidence.json（F477，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 171。
+## Round 172 (F478) — 2026-08-12：物品存档格式（Data/<名>.itm）
+
+- **〔路径〕**存档 = `.\Data\`（0x47BDC4）+ 角色名 + `.itm`（0x47BDCC，0x45DC70 组名）；管理器 0x42DC20 按玩家名构建。
+- **〔记录〕**记录 ctor 0x415730：0xC 头 + 物品 0x430920 @+0xC → **stride 0xC2C**（F293 背包步长确认）；背包管理器 0x415760（vtable 0x47663C、46 × 0xC2C 记录 [0x5B8]、3 × 0xB4 控件 [0x7C]）。
+- 落盘：item-save-file-format-evidence.json（F478，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 172。

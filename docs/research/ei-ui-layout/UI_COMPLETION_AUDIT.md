@@ -1086,9 +1086,14 @@ git diff --check
 - **物品转移 + 文件持久化**（背包↔装备）。
 - 落盘：`bag-equip-manager-evidence.json`（F477）+ RESEARCH_LOG Round 171。
 
+## Round 172 (2026-08-12) — 物品存档格式（Finding 478）
+
+- **Data/<名>.itm + 0xC2C 记录**（F293 确认）。
+- 落盘：`item-save-file-format-evidence.json`（F478）+ RESEARCH_LOG Round 172。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（物品移动族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（物品族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

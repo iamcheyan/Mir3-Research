@@ -1,0 +1,37 @@
+{
+  "evidence_id": "item-save-file-format-2026-08-12-f478",
+  "title": "Round 172 (F478): Item save file - path = '.\\\\Data\\\\' (0x47BDC4) + char-name + '.itm' (0x47BDCC) via 0x45DC70 (0x8AB7A8); manager 0x42DC20 builds file from player name; record ctor 0x415730 wraps item 0x430920 at +0xC (bag slot records = 0xC + 0xC20 = 0xC2C stride, F293 confirmed); 0x415760 = bag manager ctor (0x47663C vtable, 46 x 0xC2C records [0x5B8], 3 x 0xB4 controls [0x7C], 0x18 dwords [0x12A24]) - item persistence = per-character .itm file in Data",
+  "date": "2026-08-12",
+  "objective": "Decode the item save file path/format and the bag manager structure.",
+  "question": "Where and how are items persisted?",
+  "method": "Decode 0x47BDC4/0x47BDCC + disasm 0x415730 (record ctor) + 0x415760 (bag ctor).",
+  "scope": "0x47BDC4-0x47BDCC; 0x415730-0x415760; 0x415760-0x4158A4.",
+  "cell_analysis": {
+    "save_path": {"dir": ".\\Data\\ (0x47BDC4)", "ext": ".itm (0x47BDCC)", "name": "player name (0x45DC70 compose, 0x8AB7A8)"},
+    "record_ctor_0x415730": {"layout": "0xC header + item 0x430920 at +0xC", "stride": "0xC + 0xC20 = 0xC2C (F293 bag slot stride confirmed)"},
+    "bag_ctor_0x415760": {"vtable": "0x47663C", "records": "46 x 0xC2C at [0x5B8] (0x4908 dwords = 0x12240)", "controls": "3 x 0xB4 at [0x7C] (0x4175F0)", "marks": "0x309 dwords [0x12A20] + 0x10 dwords [0x12A18]"}
+  },
+  "exe_trace": {
+    "item_persist": "Data/<name>.itm <- manager 0x42DC20 load/save (F477)"
+  },
+  "audit_vs_exe": {
+    "F477": "file path resolved (.itm in Data)",
+    "F293": "0xC2C stride = 0xC header + 0xC20 record confirmed",
+    "F464": "item 0x430920 ctor reused"
+  },
+  "contrast": {
+    "client_vs_server": "client persists .itm locally (offline items); server = DB (F450)",
+    "bag_vs_store": "bag = 0xC2C records; store = 0x3C stubs (F461)"
+  },
+  "verdict": "Item save file PRIMARY-verified: Data/<name>.itm (0x47BDC4/0x47BDCC), record = 0xC header + 0xC20 item (0xC2C stride), bag manager 0x415760 (46 records + 3 controls). Persistence format closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Path strings + ctors decoded from .rdata/.text.",
+  "cross_refs": ["F477: manager", "F293: bag stride", "F464: item record"],
+  "tool": "capstone + .rdata decode",
+  "reproduce": "decode 0x47BDC4/0x47BDCC; disasm 0x415730+0x10, 0x415760+0x30",
+  "notes": [
+    ".itm = item data extension (client-side cache)",
+    "bag ctor 0x415760 distinct from manager 0x42DC20 (window vs persistence)",
+    "0x4175F0 = control ctor (3 controls in bag window)"
+  ]
+}
