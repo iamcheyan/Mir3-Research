@@ -3369,3 +3369,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（状态条完整；下一弧：剩余深层角落）。
+## Round 580 (2026-08-12) — HUD 状态闭合 + 510 证据里程碑（Finding 886）
+
+- **544 连发 + 510 证据（510 里程碑）+ HUD 状态完整**。
+- 落盘：`hud-status-closure-evidence.json`（F886）+ RESEARCH_LOG Round 580。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HUD 状态完整；下一弧：HANDOFF 刷新 106/剩余角落）。

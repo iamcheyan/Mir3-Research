@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hud-status-closure-2026-08-12-f886",
+  "title": "Round 580 (F886): HUD status CLOSED (F588/F590/F885) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master fd7f983 (544 consecutive F335-F885), 510 evidence JSONs (510 milestone); arc: HUD status bar (F588) + bar registry (F590) + status full (F885) - HUD status COMPLETE byte-level (% format + matrix scale + registry blit + text + fill), HUD bars surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the HUD status arc.",
+  "question": "Is the HUD status fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "510 JSONs (510 milestone)"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F588": "status bar", "F590": "registry", "F885": "full"},
+    "status": "format + matrix + blit = COMPLETE",
+    "milestone": "544 consecutive rounds F335-F885"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F885": "544 rounds pushed; HUD status complete"
+  },
+  "contrast": {
+    "format_vs_blit": "% + 0x4542F0",
+    "hit_vs_text": "rect + 0x45DE50"
+  },
+  "verdict": "HUD status CLOSED (F886): format + matrix + blit all byte-level; validation green, 544 consecutive rounds, 510 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F588/F590/F885.",
+  "cross_refs": ["F588", "F590", "F885"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "544 consecutive shipping rounds F335-F885",
+    "HUD status 100%",
+    "next: HANDOFF refresh 106, remaining corners"
+  ]
+}

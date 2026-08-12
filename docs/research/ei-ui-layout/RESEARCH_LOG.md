@@ -8502,3 +8502,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔状态〕**0x42A040：鼠标命中矩形 [0xC88]（PtInRect 0x4762B4 vs [0x7DA1C0]）+ **% 格式 0x46811C**（0x47BD4C/0x47BD5C、×0x47644C）+ 测量 0x45E0C0 + 居中数学 + **矩阵 0x466800 缩放** + **0x4542F0 条注册表 blit**（类型 [0x8AB7BC]）+ 文本 0x45DE50（0xFFFFFF）+ **0x45E570 矩形填充**（0x324B64）——HUD 状态完整（F588/F590 用）。
 - 落盘：hud-status-bar-full-evidence.json（F885，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 579。
+## Round 580 (F886) — 2026-08-12：HUD 状态闭合（F588/F590/F885 汇总）+ 510 证据里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**510 证据 JSON（510 里程碑）**；三服务 200；master fd7f983（**544 连发 F335-F885 已推**）。
+- **〔弧〕**HUD 状态条（F588）+ 条注册表（F590）+ 状态全量（F885）——**HUD 状态完整**（% 格式 + 矩阵缩放 + 注册表 blit + 文本 + 填充），HUD 条表面 100%。
+- 落盘：hud-status-closure-evidence.json（F886，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 580。
