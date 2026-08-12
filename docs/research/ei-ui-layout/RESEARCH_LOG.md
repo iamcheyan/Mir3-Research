@@ -8026,3 +8026,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 466-468（F773-F774：坐骑窗口 + 社交窗口最终闭合）；基线 Round 465=88248b7 → Round 468=20310e2（**433 连发 F335-F774**）。
 - 落盘：handoff-refresh-68-evidence.json（F775，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 469。
+## Round 470 (F776) — 2026-08-12：选项滑块应用 + 构造
+
+- **〔选项音频〕**0x441F40（F761 依赖）：arg 1 → **BGM [0x6C] × 0x476978 − 0x476970**（0x468520 浮点→int）→ **音量 [0x8AB150]** + **0x45A700 音量 API** + 0x441B30 重绘；否则 **SFX [0x74] → [0x8AB14C]** + 重绘；0x441FD0/0x442020 构造（vtable 0x476984 + 滑块浮点态 0xBF000000/-0.5、0x43960000/300.0、0x3CA3D70A/0.02、0xBD4CCCCD/-0.05）——选项音频应用完整（F546/F761 用）。
+- 落盘：options-slider-apply-ctor-evidence.json（F776，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 470。

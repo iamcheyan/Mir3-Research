@@ -1,0 +1,35 @@
+{
+  "evidence_id": "options-slider-apply-ctor-2026-08-12-f776",
+  "title": "Round 470 (F776): Options slider APPLY + ctor - 0x441F40 (F761 dependency): arg 1 -> BGM [0x6C] x 0x476978 - 0x476970 (0x468520 float->int) -> VOLUME [0x8AB150] + 0x45A700 volume API + 0x441B30 redraw; else SFX [0x74] -> [0x8AB14C] + redraw; 0x441FD0/0x442020 ctor (vtable 0x476984 + slider float state: 0xBF000000/-0.5, 0x43960000/300.0, 0x3CA3D70A/0.02, 0xBD4CCCCD/-0.05) - options audio apply COMPLETE (F546/F761 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the options slider apply + ctor.",
+  "question": "How do options sliders apply audio volume?",
+  "method": "Disasm 0x441F40-0x442150.",
+  "scope": "0x441F40-0x442150; volumes.",
+  "cell_analysis": {
+    "0x441F40": {"bgm": "[0x6C] -> [0x8AB150] + 0x45A700", "sfx": "[0x74] -> [0x8AB14C]", "redraw": "0x441B30"},
+    "0x441FD0": "ctor vtable 0x476984 + float state"
+  },
+  "exe_trace": {
+    "audio_chain": "slider -> scale -> volume slot -> 0x45A700 -> redraw"
+  },
+  "audit_vs_exe": {
+    "F546": "BGM slider", "F761": "options click", "F632": "audio engine"
+  },
+  "contrast": {
+    "bgm_vs_sfx": "[0x8AB150] + [0x8AB14C]",
+    "apply_vs_ctor": "0x441F40 + 0x441FD0"
+  },
+  "verdict": "Options slider APPLY + ctor PRIMARY-verified: BGM/SFX volume scale + apply; options audio complete (F546/F761).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Options audio decoded from .text.",
+  "cross_refs": ["F546: slider", "F761: click", "F632: audio"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441F40+0x10; 0x441FD0+0x10",
+  "notes": [
+    "volume slots 0x8AB150/0x8AB14C",
+    "apply 0x45A700",
+    "scale 0x476978/0x476970",
+    "redraw 0x441B30"
+  ]
+}
