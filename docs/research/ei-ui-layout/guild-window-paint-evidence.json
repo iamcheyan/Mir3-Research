@@ -1,0 +1,50 @@
+{
+  "evidence_id": "guild-window-paint-2026-08-12-f348",
+  "title": "Round 42 (F348): Guild window id4 paint 0x425040 - title text 0x96C8FF + state byte [0x98] dispatch (0x425280 list0 / 0x425440 list1 / 0x425590 other) + scrollbar 0x4179B0 @ +0x76C + 9 controls reposition + list row geometry",
+  "date": "2026-08-12",
+  "objective": "Complete the guild window (id4) paint decode: title rendering, state-machine list dispatch (member lists per state byte), scrollbar, control repositioning, and row geometry - closing the last paint gap in the window matrix.",
+  "question": "How does the guild window paint its three list states and its controls? What are the list row geometries?",
+  "method": "Capstone linear disassembly of 0x425040 (paint) + 0x425280/0x425440/0x425590 (list states); cross-validated against F294 (guild window, 9-control array, banner refs).",
+  "scope": "0x425040-0x42527F (paint head), 0x425280 (state0 list), 0x425440 (state1), 0x425590 (other), 0x425152-0x425258 (control reposition).",
+  "cell_analysis": {
+    "paint_0x425040": {
+      "title": "SetRect header (x+0x15E, y+0x18, x+0x233, y+0x30) + 0x45DE50 title text color 0x96C8FF",
+      "state_dispatch": "byte [esi+0x98]: 0 -> 0x425280 (list0: 行会成员 [行会成员] marker), 1 -> 0x425440 (list1), else -> 0x425590 (list4)",
+      "scrollbar": "0x4179B0 @ +0x76C; count per state: state0 [0xE4] count, state1 [0xB4] count, other [0x114] count; position (x+0x224, y+0xD0..)",
+      "controls": "9 controls repositioned 0x417830: +0x118 关闭 (x+0x22C, y+0x199), +0x1CC 会员升职 (x+0x22, y+0x178), +0x280 成员踢出 (x+0x22, y+0x192), +0x334 盟主转让 (x+0x79, y+0x192)...",
+      "row_geometry": "state lists at (x+0x22, y+0x3B+step*row) with 0xA140A shadow + 0xFF00 green (F294 other state)"
+    },
+    "list_states": {
+      "0x425280": "state0: count [0xE4] + head [0xD4]; marker strcmp 0x47BA78 '[行会公告]'/0x47BA6C '[敌对行会]'/0x47BA60 '[联盟行会]' -> 0x96FF else 0xFFFFFF (F294)",
+      "0x425440": "state1: count [0xB4] + head [0xA4]; marker 0x47BA84 '[行会成员]' -> 0x96FF",
+      "0x425590": "other: list4 head [+0x104]/count [+0x114]; no marker; dual draw 0xA140A shadow + 0xFF00 green (F294)"
+    }
+  },
+  "exe_trace": {
+    "guild_window": "hero+0x4707C (id4); frame 600 596x446 at (102,22); ctor 0x424E60 (F294 9-control array this+0x118 stride 0xB4)",
+    "click": "0x4258F0 (F294: dispatch order 0,1,2,3,4,7,5,8,6; banner id15 refs ctrl4/ctrl7)"
+  },
+  "audit_vs_exe": {
+    "F294": "9-control array, banner refs, list markers - all confirmed; paint 0x425040 now fills the paint gap",
+    "F338": "render table id4 -> 0x425040 confirmed"
+  },
+  "contrast": {
+    "guild_vs_chat": "guild = state-machine 3 lists + scrollbar; chat = single message ring - different scroll architectures",
+    "list_markers": "state0/1 have strcmp color markers ([行会公告]/[敌对行会]/[联盟行会]/[行会成员]); other state dual-draw shadow"
+  },
+  "verdict": "Guild window paint fully decoded (primary-bytes): 0x425040 = title + state-byte dispatch (3 list states with markers/colors) + scrollbar 0x4179B0 @ +0x76C + 9 controls repositioned. Window paint matrix now 100% complete (all 14 windows' paint + mouse + click decoded).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All colors, markers, offsets and dispatch targets read directly from MIR3.EXE bytes; F294 list semantics confirmed.",
+  "cross_refs": [
+    "F294: guild window id4 (9-control array, banner id15, click 0x4258F0)",
+    "F338: render table 0x428358 id4 -> 0x425040",
+    "F341: scrollbar 0x4179B0 family"
+  ],
+  "tool": "capstone via disasm_capstone.PeImage; python3 json",
+  "reproduce": "img.disasm(0x425040, 0x240); img.disasm(0x425280, 0x1C0); img.disasm(0x425440, 0x150); img.disasm(0x425590, 0x100)",
+  "notes": [
+    "state byte [0x98] also gates control visibility ([+0x9C] field pair - ctrl3 盟主转让 sets [+0x98]=0/[+0x9C]=0 per F294)",
+    "scrollbar count: state0 [0xE4], state1 [0xB4], other [0x114] - three list heads +0xD4/+0xA4/+0x104",
+    "controls repositioned every frame (0x417830) - paint-time truth (F294: ctor-time garbage for controls 5-9)"
+  ]
+}

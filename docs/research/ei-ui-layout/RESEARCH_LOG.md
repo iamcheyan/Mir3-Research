@@ -5882,3 +5882,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔click 0x43E4B0〕**（ret 8，0x1F40 栈探测）：2 子控件 +0x54（帧 161/162）/ +0x108（帧 606/607）vtable+0x10 命中 → [ebp+0x1CC] 编辑缓冲 → GetWindowTextA [0x476304]（0xFA0）→ 0x468BF0 分行 → **msg 0x410/0x411**（F331）；消费返 1（0x42ADB0 关窗）。
 - **〔模拟器接线〕**refreshWindowContent('window.npc-candidate') 填充 FCOLOR 色码 + NPCIMG 头像 demo 对话（行会管理员）；点击菜单行关闭对话。**浏览器验证**：点 行会管理员 → 开 window.npc-candidate + 色码正文。
 - 落盘：`npc-dialog-family-evidence.json`（F347，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 41。
+
+## Round 42 (F348) — 2026-08-12：行会窗口 id4 paint 0x425040 定稿（窗口绘制矩阵 100% 闭合）
+
+- **〔paint 0x425040〕**标题文本 0x96C8FF（SetRect 头 + 0x45DE50）→ **状态字节 [0x98] 分派**：0 → 0x425280（list0：count [0xE4]/head [0xD4]，strcmp 标记 [行会公告]/[敌对行会]/[联盟行会] → 0x96FF 否则 0xFFFFFF）；1 → 0x425440（list1：[0xB4]/[0xA4]，[行会成员] 标记）；其他 → 0x425590（list4：[0x114]/[0x104]，无标记，双画 0xA140A 阴影 + 0xFF00 绿）→ **滚动条 0x4179B0 @ +0x76C**（state 计数 [0xE4]/[0xB4]/[0x114]，位置 x+0x224/y+0xD0）→ **9 控件 0x417830 重定位**（+0x118 关闭 @ x+0x22C/y+0x199、+0x1CC 会员升职 @ x+0x22/y+0x178、+0x280 成员踢出 @ x+0x22/y+0x192、+0x334 盟主转让 @ x+0x79/y+0x192…）。
+- **〔意义〕窗口绘制矩阵 100% 闭合**：14 窗口 paint/mouse/click 全解码（行会为最后一块）。
+- 落盘：`guild-window-paint-evidence.json`（F348，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 42。

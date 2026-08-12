@@ -390,6 +390,12 @@ git diff --check
 - **模拟器接线**：NPC 点击 → 对话窗 + FCOLOR/NPCIMG demo 内容；浏览器验证（行会管理员）。
 - 落盘：`npc-dialog-family-evidence.json`（F347，primary-bytes）+ app.js + RESEARCH_LOG Round 41。
 
+## Round 42 (2026-08-12) — 行会窗口 id4 paint 定稿（Finding 348：窗口绘制矩阵 100% 闭合）
+
+- **0x425040**：标题 0x96C8FF + 状态字节 [0x98] 三分派（list0 标记 [行会公告]/[敌对行会]/[联盟行会] / list1 [行会成员] / other 双画阴影绿）+ 滚动条 0x4179B0 @ +0x76C + 9 控件重定位。
+- **窗口绘制矩阵 100% 闭合**（14 窗口 paint/mouse/click 全解码）。
+- 落盘：`guild-window-paint-evidence.json`（F348，primary-bytes）+ RESEARCH_LOG Round 42。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
