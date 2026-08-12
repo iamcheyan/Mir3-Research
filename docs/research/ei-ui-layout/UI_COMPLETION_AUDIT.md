@@ -981,6 +981,11 @@ git diff --check
 - **0x430B70 行构建器闭合**（F340 pending）。
 - 落盘：`item-tooltip-detail-body-evidence.json`（F456）+ RESEARCH_LOG Round 150。
 
+## Round 151 (2026-08-12) — 物品类构建器 魔御（Finding 457）
+
+- **8 元素魔御行 + 字段语义**（F340 类 1/5）。
+- 落盘：`item-class-mdef-builder-evidence.json`（F457）+ RESEARCH_LOG Round 151。
+
 ## Pending（未阻塞，持续队列）
 
 - 精确槽序（store+0x5898 第二数组来源）— 低优先。

@@ -6497,3 +6497,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔辅助〕**0x401700 百分比（value/除数 + 0.5 舍入）；持久百分比 = cur/1000。
 - **〔闭合〕**F340「0x430B70 body」pending 闭合。
 - 落盘：item-tooltip-detail-body-evidence.json（F456，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 150。
+## Round 151 (F457) — 2026-08-12：物品类构建器 0x430C40 = 魔御类（8 元素行）
+
+- **〔类〕**0x430C40 = MDEF 类（F456 分派 5 类之一）：名称行（前缀 0xA1E5 + [0x48] 后缀）、持久 %d/%d（字 [0x41]/[0x43]/[0x2A] /1000%）、重量 %d（字节 [0x24]）、防御 %d-%d (+%d)（[0x2C]/[0x2D] + 有符号 [0x55]）。
+- **〔8 元素行〕**名称表 0x47BE54：火焰系魔御/冰冻系魔御/雷电系魔御/狂风系魔御/神圣系魔御/黑暗系魔御/幻影系魔御/全魔系魔法；值 [0x2F]/[0x30] + 有符号 [0x56]；格式 %s: %d-%d (+%d)（0x47BFEC）。
+- 落盘：item-class-mdef-builder-evidence.json（F457，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 151。

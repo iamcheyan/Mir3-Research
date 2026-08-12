@@ -1,0 +1,37 @@
+{
+  "evidence_id": "item-class-mdef-builder-2026-08-12-f457",
+  "title": "Round 151 (F457): Item class builder 0x430C40 = MDEF class - name line (prefix 0xA1E5 + name [0x48] suffix), durability 持久 %d/%d (words [0x41]/[0x43]/[0x2A] via percent 0x401700/1000), weight 重量 %d (byte [0x24]), defense 防御 %d-%d (+%d) (bytes [0x2C]/[0x2D] + signed [0x55]), 8 elemental MDEF stat rows (names table 0x47BE54: 火焰系魔御/冰冻系魔御/雷电系魔御/狂风系魔御/神圣系魔御/黑暗系魔御/幻影系魔御/全魔系魔法, values [0x2F]/[0x30] + signed [0x56], format %s: %d-%d (+%d) 0x47BFEC) - F340 tooltip body class 1 of 5",
+  "date": "2026-08-12",
+  "objective": "Decode the first item-class builder (0x430C40) fully: stat names + field semantics.",
+  "question": "What stats does the first tooltip class show?",
+  "method": "Disasm 0x430C40-0x43117A + stat-name table decode (0x47BE54, 8 dword pointers).",
+  "scope": "0x430C40-0x43117A; names 0x47BE54-0x47BE74; formats 0x47BFC0-0x47C03C.",
+  "cell_analysis": {
+    "class_role": "MDEF (magic defense) class - 1 of 5 (F456 dispatch)",
+    "rows": {"name": "prefix 0xA1E5 + '%s %s' (0x47C03C) / '%s' (0x47C034); color 0xFAFF", "durability": "\"持久: %d/%d\" (0x47C028): cur word [0x41] /1000%, max word [0x43] (+variant [0x2A]); blue 0x3232FF if <=1% else yellow 0xFFFF80", "weight": "\"重量: %d\" (0x47C01C): byte [0x24]; white 0xFFFFFF", "defense": "\"防御: %d-%d (+%d)\" (0x47C008): [0x2C]/[0x2D] + signed [0x55]; green 0xC8FF96; no-bonus 0x47BFFC"},
+    "stat_rows": {"count": "8 elemental MDEF (byte [0x2E] gate)", "names": "0x47BE54 table: 火焰系魔御 0x47A7C8 / 冰冻系魔御 0x47A7BC / 雷电系魔御 0x47A7B0 / 狂风系魔御 0x47A7A4 / 神圣系魔御 0x47A798 / 黑暗系魔御 0x47A78C / 幻影系魔御 0x47A780 / 全魔系魔法 0x47A774", "values": "[0x2F] min + [0x30] max + signed [0x56] bonus", "format": "\"%s: %d-%d (+%d)\" (0x47BFEC) / no-bonus 0x47BFE0"},
+    "fields": {"item+0x22": "class byte (dispatch)", "+0x24": "weight", "+0x2A/+0x41/+0x43": "durability words", "+0x2C/+0x2D": "defense min/max", "+0x2E": "stat count", "+0x2F/+0x30": "stat min/max", "+0x55/+0x56": "signed bonuses"}
+  },
+  "exe_trace": {
+    "tooltip": "0x4341F0 -> 0x430B70 -> class builder -> rows (sprintf 0x46811C)"
+  },
+  "audit_vs_exe": {
+    "F456": "class 1 decoded (was opaque)",
+    "F340": "tooltip body family extended"
+  },
+  "contrast": {
+    "mdef_vs_phys": "MDEF class = 8 elemental rows; other classes (0x431E50/0x432A80/0x431860/0x433CF0) = physical/other [inference]",
+    "bonus_vs_base": "signed bonus bytes (+0x55/+0x56) appended when nonzero"
+  },
+  "verdict": "Item class builder 0x430C40 PRIMARY-verified: MDEF class (name/durability/weight/defense + 8 elemental magic-defense stat rows), stat-name table 0x47BE54 decoded (火焰/冰冻/雷电/狂风/神圣/黑暗/幻影/全魔系). F340 tooltip body class 1 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Builder + name table + formats decoded from .text/.rdata.",
+  "cross_refs": ["F456: tooltip body", "F340: tooltip family", "F41: NPC FCOLOR palette"],
+  "tool": "capstone + pefile table decode",
+  "reproduce": "disasm 0x430C40+0x60; decode 0x47BE54[8] dword ptrs",
+  "notes": [
+    "8 elemental MDEF = Mir3's 7 elements + all (8 rows)",
+    "0xA1E5 = GBK prefix marker (◆-style)",
+    "stat count byte [0x2E] gates the 8-row loop"
+  ]
+}
