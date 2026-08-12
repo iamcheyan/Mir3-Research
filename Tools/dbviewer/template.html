@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mir3 / Zircon 数据库查看器</title>
+<style>
+:root {
+  --bg: #f5f6f8; --panel: #ffffff; --border: #dde1e6; --text: #1c2733;
+  --muted: #6b7684; --accent: #2f6fed; --accent-soft: #e8effc;
+  --monster: #b3452f; --item: #2f6fed; --magic: #7a4fd0; --map: #0e8a5f;
+  --npc: #c07d1f; --guard: #a33a63; --quest: #1f8a9e; --sys: #5a6572;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; }
+#app { display: flex; height: 100vh; }
+
+/* ---------- 左栏 ---------- */
+#sidebar { width: 280px; min-width: 280px; background: var(--panel); border-right: 1px solid var(--border);
+           display: flex; flex-direction: column; overflow: hidden; }
+#sidebar header { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+#sidebar header h1 { margin: 0 0 10px; font-size: 16px; }
+#search-box { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+              font-size: 13px; outline: none; }
+#search-box:focus { border-color: var(--accent); }
+#tree { flex: 1; overflow-y: auto; padding: 8px; }
+.cat { margin-bottom: 4px; }
+.cat-head { display: flex; align-items: center; gap: 6px; padding: 6px 8px; cursor: pointer;
+            border-radius: 6px; font-weight: 600; }
+.cat-head:hover { background: var(--accent-soft); }
+.cat-head .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.cat-head .arrow { transition: transform .15s; font-size: 10px; color: var(--muted); }
+.cat-head.closed .arrow { transform: rotate(-90deg); }
+.cat-head .cnt { margin-left: auto; color: var(--muted); font-weight: 400; font-size: 12px; }
+.coll { display: block; width: 100%; text-align: left; padding: 5px 10px 5px 22px; border: 0;
+        background: none; cursor: pointer; border-radius: 6px; color: var(--text); font-size: 13px; }
+.coll:hover { background: var(--accent-soft); }
+.coll.active { background: var(--accent); color: #fff; }
+.coll .zh { margin-right: 6px; }
+.coll .en { color: var(--muted); font-size: 11px; }
+.coll.active .en { color: #cfe0ff; }
+#sidebar footer { padding: 8px 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+#sidebar footer a { color: var(--accent); text-decoration: none; }
+
+/* ---------- 主区 ---------- */
+#main { flex: 1; overflow-y: auto; padding: 16px 20px; }
+#toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+#toolbar h2 { margin: 0; font-size: 18px; }
+#toolbar .sub { color: var(--muted); font-size: 13px; }
+#toolbar input[type=text] { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; width: 220px; font-size: 13px; }
+#toolbar select { padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
+.btn { padding: 6px 12px; border: 1px solid var(--border); background: var(--panel); border-radius: 6px;
+       cursor: pointer; font-size: 13px; }
+.btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.small { padding: 2px 8px; font-size: 12px; }
+
+table.data { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--border); }
+table.data th, table.data td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left;
+                               white-space: nowrap; max-width: 320px; overflow: hidden; text-overflow: ellipsis; }
+table.data th { background: #f0f2f5; font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0; }
+table.data th:hover { color: var(--accent); }
+table.data th .dir { font-size: 10px; color: var(--accent); }
+table.data tr.row { cursor: pointer; }
+table.data tr.row:hover { background: var(--accent-soft); }
+table.data td.num { font-variant-numeric: tabular-nums; }
+
+#pager { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 13px; }
+#pager button { padding: 4px 10px; }
+
+/* ---------- 详情页 ---------- */
+.detail-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.detail-head h2 { margin: 0; font-size: 20px; }
+.detail-head .badge { padding: 2px 10px; border-radius: 10px; color: #fff; font-size: 12px; }
+.detail-head .idx { color: var(--muted); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 0 24px;
+               background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+.fld { display: flex; padding: 5px 0; border-bottom: 1px dashed #eef1f5; align-items: baseline; }
+.fld .k { flex: none; width: 150px; color: var(--muted); font-size: 12.5px; }
+.fld .v { flex: 1; word-break: break-all; min-width: 0; }
+a.link { color: var(--accent); text-decoration: none; cursor: pointer; }
+a.link:hover { text-decoration: underline; }
+a.link .t { font-weight: 600; }
+.v .ref { color: var(--accent); }
+.v .arr { font-size: 12px; color: var(--muted); }
+.v .arr-item { margin: 2px 0; }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-top: 14px; }
+.panel h3 { margin: 0; padding: 10px 16px; font-size: 14px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px; }
+.panel h3 .n { margin-left: auto; color: var(--muted); font-size: 12px; font-weight: 400; }
+.panel .body { padding: 8px 16px; }
+.panel table.data { border: 0; }
+.panel table.data th { position: static; }
+
+/* 位置行 */
+.loc { display: inline-flex; align-items: center; gap: 6px; }
+.loc .coord { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 高亮 */
+.hl-item { background: #fff8e1; }
+tr.hl-item td { background: #fff8e1; }
+
+/* 统计 */
+.stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; cursor: pointer; }
+.stat-card:hover { border-color: var(--accent); }
+.stat-card .num { font-size: 22px; font-weight: 700; }
+.stat-card .lbl { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.empty { color: var(--muted); text-align: center; padding: 40px; }
+#loading { position: fixed; inset: 0; background: rgba(255,255,255,.85); display: flex;
+           align-items: center; justify-content: center; font-size: 16px; z-index: 99; }
+#toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333;
+         color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 13px; display: none; z-index: 100; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar">
+    <header>
+      <h1>Mir3 / Zircon 数据库</h1>
+      <input id="search-box" type="text" placeholder="全局搜索：怪物 / 物品 / NPC / 地图…（Enter）">
+    </header>
+    <nav id="tree"></nav>
+    <footer>
+      <a href="#stats">统计概览</a> · <a href="#" id="link-map" target="_blank">地图查看器</a>
+    </footer>
+  </div>
+  <div id="main">
+    <div id="toolbar"></div>
+    <div id="content"></div>
+  </div>
+</div>
+<div id="loading">加载数据中…</div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- 常量：业务分类 ---------- */
+const CATEGORIES = [
+  { name: "怪物图鉴", color: "var(--monster)", collections: ["MonsterInfo", "MonsterInfoStat", "DropInfo", "RespawnInfo", "MonsterEventInfo", "MonsterEventTrigger", "MonsterEventAction", "MonsterEventInfoTriggerStat"] },
+  { name: "物品装备", color: "var(--item)", collections: ["ItemInfo", "ItemInfoStat", "SetInfo", "SetInfoStat", "WeaponCraftStatInfo", "StoreInfo", "LootBoxInfo", "LootBoxItemInfo", "BundleInfo", "BundleItemInfo"] },
+  { name: "技能魔法", color: "var(--magic)", collections: ["MagicInfo", "CompanionSkillInfo"] },
+  { name: "地图信息", color: "var(--map)", collections: ["MapInfo", "MapRegion", "MovementInfo", "MineInfo", "MapInfoStat", "InstanceInfo", "InstanceMapInfo", "InstanceInfoStat", "DungeonInfo", "DungeonMapInfo"] },
+  { name: "NPC 位置", color: "var(--npc)", collections: ["NPCInfo", "NPCPage", "NPCGood", "NPCButton", "NPCCheck", "NPCAction", "NPCType", "NPCValue", "NPCRequirement"] },
+  { name: "守卫信息", color: "var(--guard)", collections: ["GuardInfo", "SafeZoneInfo", "CastleInfo", "CastleGateInfo", "CastleGuardInfo", "CastleFlagInfo"] },
+  { name: "任务系统", color: "var(--quest)", collections: ["QuestInfo", "QuestTask", "QuestTaskMonsterDetails", "QuestReward", "QuestRequirement"] },
+  { name: "系统数据", color: "var(--sys)", collections: ["BaseStat", "CurrencyInfo", "CurrencyInfoImage", "FameInfo", "FameInfoStat", "FameInfoReward", "CompanionInfo", "CompanionLevelInfo", "CompanionSpeech", "DisciplineInfo", "SystemDatabaseInfo", "FishingInfo", "FishingDropInfo", "HelpInfo", "HelpPageInfo", "HelpItemInfo", "MilestoneInfo", "MilestoneInfoTask", "WorldEventInfo", "WorldEventTrigger", "WorldEventAction", "WorldEventInfoTriggerStat", "PlayerEventInfo", "PlayerEventTrigger", "PlayerEventAction", "PlayerEventInfoTriggerStat", "NPCValue"] },
+];
+const CAT_LOOKUP = {};
+CATEGORIES.forEach(c => c.collections.forEach(t => CAT_LOOKUP[t] = c.name));
+
+/* 每集合表格默认显示字段（5-8 个），按业务可读性挑选 */
+const TABLE_VIEWS = {
+  MonsterInfo:      ["_Identity", "Level", "Experience", "IsBoss", "Undead", "ViewRange", "AttackDelay"],
+  MonsterInfoStat:  ["Monster", "Stat", "Amount"],
+  DropInfo:         ["Monster", "Item", "Chance", "Amount", "DropSet", "PartOnly"],
+  RespawnInfo:      ["Monster", "Region", "Delay", "Count", "EventSpawn"],
+  ItemInfo:         ["_Identity", "ItemType", "RequiredClass", "RequiredAmount", "Price", "Weight", "Rarity", "StackSize"],
+  ItemInfoStat:     ["Item", "Stat", "Amount"],
+  SetInfo:          ["_Identity"],
+  SetInfoStat:      ["Set", "Stat", "Amount", "Class", "Level"],
+  WeaponCraftStatInfo: ["RequiredClass", "Stat", "MinValue", "MaxValue", "Weight"],
+  StoreInfo:        ["Item", "Price", "HuntGoldPrice", "Filter", "Available"],
+  MagicInfo:        ["_Identity", "Class", "Magic", "School", "Property", "NeedLevel1", "BaseCost", "Delay"],
+  MapInfo:          ["_Identity", "FileName", "MinimumLevel", "MaximumLevel", "Light", "Weather", "MiniMap"],
+  MapRegion:        ["Map", "Description", "RegionType", "Size"],
+  MovementInfo:     ["SourceRegion", "DestinationRegion", "Icon", "NeedItem", "RequiredClass"],
+  MineInfo:         ["Map", "Item", "Chance", "Quantity"],
+  NPCInfo:          ["_Identity", "Region", "GoodsIndex", "Image", "FaceImage", "MapIcon"],
+  NPCPage:          ["_Identity", "DialogType", "Say"],
+  NPCGood:          ["Page", "Item", "Rate", "GoodsIndex"],
+  NPCButton:        ["Page", "ButtonID", "DestinationPage"],
+  NPCCheck:         ["Page", "CheckType", "Operator", "StringParameter1", "IntParameter1"],
+  NPCAction:        ["Page", "ActionType", "StringParameter1", "IntParameter1"],
+  NPCType:          ["Page", "ItemType"],
+  NPCValue:         ["Page", "ValueID", "ValueType"],
+  GuardInfo:        ["Map", "Monster", "X", "Y", "Direction"],
+  SafeZoneInfo:     ["Region", "BindRegion", "StartClass", "RedZone"],
+  QuestInfo:        ["_Identity", "QuestType", "StartNPC", "FinishNPC"],
+  QuestTask:        ["Quest", "Task", "ItemParameter", "RegionParameter", "MobDescription", "Amount"],
+  QuestReward:      ["Quest", "Item", "Amount", "Choice", "Class"],
+  QuestRequirement: ["Quest", "Requirement", "IntParameter1", "QuestParameter", "Class"],
+  BaseStat:         ["Class", "Level", "Health", "Mana", "MinDC", "MaxDC", "MinAC", "MaxAC"],
+  CurrencyInfo:     ["_Identity", "Abbreviation", "Type", "Category", "ExchangeRate"],
+  FameInfo:         ["_Identity", "Cost", "Order"],
+  CompanionInfo:    ["_Identity", "Price", "Available"],
+  CastleInfo:       ["_Identity"],
+  DisciplineInfo:   ["Level", "RequiredLevel", "RequiredExperience", "RequiredGold", "FocusPoints"],
+  MineInfo:         ["Map", "Item", "Chance", "Quantity", "RestockTimeInMinutes"],
+  QuestTaskMonsterDetails: ["Task", "Monster", "Map", "Chance", "Amount", "DropSet"],
+};
+
+/* 地图查看器地址（hash 定位：map/x/y 为世界像素坐标） */
+const MAP_VIEWER_URL = "http://127.0.0.1:8899";
+/* 图片预览：wilviewer 的 /api/image 端点（物品 -> Storeitem.wil 帧号，NPC -> NPC.wil 帧号） */
+const SPRITE_URL = "http://127.0.0.1:8765";
+
+/* 图片预览面板：返回对应图库帧的 <img>，无法预览时返回空 */
+function spritePanel(type, row) {
+  let lib = null, frame = null, label = "";
+  if (type === "ItemInfo" && row.Image != null) {
+    lib = "Storeitem.wil"; frame = row.Image;
+  } else if (type === "NPCInfo" && row.Image != null) {
+    lib = "NPC.wil"; frame = row.Image;
+  }
+  if (!lib || frame == null) return "";
+  const url = `${SPRITE_URL}/api/image?f=${encodeURIComponent(lib)}&i=${frame}&scale=2`;
+  return `<div class="panel"><h3>图片预览</h3><div class="body" style="text-align:center">` +
+    `<img src="${url}" alt="预览" style="image-rendering:pixelated;max-width:160px;max-height:160px">` +
+    `<div class="muted">${esc(lib)} 帧 ${frame}</div></div></div>`;
+}
+
+let META = null;          // meta.json
+let DATA = {};            // type -> {count, rows, byIndex}
+let STATE = { type: null, page: 1, per: 50, sort: null, dir: 1, q: "", detail: null };
+
+/* ---------- 工具 ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.style.display = "block"; setTimeout(() => t.style.display = "none", 2500); }
+
+/* 地图中文名 */
+const MAP_CN = window.__MAP_CN__ || {};
+function mapCn(fileName) { return MAP_CN[fileName] || MAP_CN[fileName + ".map"] || fileName; }
+
+/* 值格式化：引用对象 -> 链接；Stats -> 中文属性串；数组 -> 列表 */
+function refLabel(ref, toType) {
+  if (!ref) return "";
+  const name = ref.Name || ("#" + ref.Index);
+  return `<a class="link" data-goto="${esc(toType)}:${ref.Index}"><span class="t">${esc(name)}</span> <span class="idx">#${ref.Index}</span></a>`;
+}
+function statsText(stats) {
+  if (!stats || !stats.length) return "";
+  return stats.map(s => `${s.Stat} ${s.Value}`).join(" · ");
+}
+function valueHtml(fieldMeta, v) {
+  if (v === null || v === undefined) return '<span class="muted">—</span>';
+  const t = fieldMeta.type;
+  if (t === "ref" && v && typeof v === "object") return refLabel(v, fieldMeta.to);
+  if (t === "reflist" && Array.isArray(v)) {
+    return v.length ? `<div class="arr">${v.map(x => `<div class="arr-item">${refLabel(x, fieldMeta.to)}</div>`).join("")}</div>` : "—";
+  }
+  if (t === "stats" && Array.isArray(v)) return esc(statsText(v));
+  if (t === "points" && v && typeof v === "object") return `${v.PointCount} 点 (中心 ${v.CenterX},${v.CenterY})`;
+  if (typeof v === "boolean") return v ? "是" : "否";
+  if (t === "enum") return esc(String(v));
+  return esc(String(v));
+}
+
+/* 位置提取：从行数据里找 (mapFile, x, y, kindLabel) */
+function extractLocation(type, row) {
+  const tryLoc = (mapObj, x, y) => {
+    if (mapObj && mapObj.Index != null && (x != null || y != null)) return { map: mapObj, x, y };
+    return null;
+  };
+  switch (type) {
+    case "GuardInfo": {
+      const m = row.Map; if (!m) return null;
+      const mon = row.Monster && typeof row.Monster === "object" ? row.Monster.Name : "";
+      return { map: m, x: row.X, y: row.Y, kind: "守卫", name: mon };
+    }
+    case "RespawnInfo": {
+      const r = row.Region; if (!r) return null;
+      const mon = row.Monster && typeof row.Monster === "object" ? row.Monster.Name : "";
+      return { map: r.Map, x: r.CenterX, y: r.CenterY, kind: "刷怪", name: mon };
+    }
+    case "NPCInfo": {
+      const r = row.Region; if (!r) return null;
+      return { map: r.Map, x: r.CenterX, y: r.CenterY, kind: "NPC", name: row.NPCName || "" };
+    }
+    case "MovementInfo": {
+      const r = row.SourceRegion; if (!r) return null;
+      return { map: r.Map, x: r.CenterX, y: r.CenterY, kind: "传送" };
+    }
+    case "SafeZoneInfo": {
+      const r = row.Region; if (!r) return null;
+      return { map: r.Map, x: r.CenterX, y: r.CenterY, kind: "安全区" };
+    }
+    case "MineInfo": {
+      const m = row.Map; if (!m) return null;
+      const r = row.Region;
+      const x = r && r.CenterX != null ? r.CenterX : null;
+      const y = r && r.CenterY != null ? r.CenterY : null;
+      return { map: m, x, y, kind: "矿点" };
+    }
+  }
+  return null;
+}
+
+/* mapviewer 定位 URL：hash 参数 map/x/y 为世界像素坐标，hl=实体名（怪物/NPC） */
+function mapUrl(loc) {
+  if (!loc || !loc.map) return "";
+  let url = `${MAP_VIEWER_URL}/#map=${encodeURIComponent(loc.map.Name + ".map")}&cur=0&g=1&m=1&f=1`;
+  if (loc.x != null && loc.y != null) url += `&x=${Math.round(loc.x * 48)}&y=${Math.round(loc.y * 32)}`;
+  if (loc.name) url += `&hl=${encodeURIComponent(loc.name)}`;
+  return url;
+}
+
+/* 「在地图上查看」按钮：跳到 mapviewer 并定位（mapviewer 用 hash 参数） */
+function mapLink(loc, label) {
+  const url = mapUrl(loc);
+  if (!url) return "";
+  return `<span class="loc">${esc(label)}<span class="coord">${mapCn(loc.map.Name)}${loc.x != null ? ` (${loc.x},${loc.y})` : ""}</span>` +
+         `<a class="link" href="${url}" target="_blank">在地图上查看 ↗</a></span>`;
+}
+function locationHtml(type, row) {
+  const loc = extractLocation(type, row);
+  if (!loc) return "";
+  const url = mapUrl(loc);
+  if (!url) return "";
+  const mapName = loc.map.Name;
+  const desc = mapCn(mapName);
+  const coord = loc.x != null ? ` (${loc.x},${loc.y})` : "";
+  return `<span class="loc">${esc(desc)}<span class="coord">${coord}</span>` +
+         `<a class="link" href="${url}" target="_blank">地图 ↗</a></span>`;
+}
+
+/* ---------- 加载 ---------- */
+async function loadAll() {
+  const [metaRes] = await Promise.all([fetch("api/meta")]);
+  META = await metaRes.json();
+  renderTree();
+  await loadCollection(Object.keys(META.collections).find(t => t === "MonsterInfo") || Object.keys(META.collections)[0]);
+  $("#loading").style.display = "none";
+}
+
+async function loadCollection(type) {
+  STATE.type = type; STATE.page = 1; STATE.detail = null;
+  await fetchRows();
+}
+
+async function fetchRows() {
+  const { type, page, per, sort, dir, q } = STATE;
+  const url = `api/rows?type=${encodeURIComponent(type)}&page=${page}&per=${per}` +
+    (sort ? `&sort=${encodeURIComponent(sort)}&dir=${dir}` : "") + (q ? `&q=${encodeURIComponent(q)}` : "");
+  try {
+    const res = await fetch(url);
+    const d = await res.json();
+    renderTable(d);
+  } catch (e) { $("#content").innerHTML = `<div class="empty">加载失败：${esc(e.message)}</div>`; }
+}
+
+/* ---------- 树 ---------- */
+function renderTree() {
+  const tree = $("#tree");
+  tree.innerHTML = "";
+  CATEGORIES.forEach(cat => {
+    const section = document.createElement("div");
+    section.className = "cat";
+    const cols = cat.collections.filter(t => META.collections[t]);
+    if (!cols.length) return;
+    const head = document.createElement("div");
+    head.className = "cat-head";
+    head.innerHTML = `<span class="arrow">▼</span><span class="dot" style="background:${cat.color}"></span>` +
+      `<span>${cat.name}</span><span class="cnt">${cols.length}</span>`;
+    const body = document.createElement("div");
+    body.className = "cat-body";
+    cols.forEach(t => {
+      const c = META.collections[t];
+      const b = document.createElement("button");
+      b.className = "coll";
+      b.dataset.type = t;
+      b.innerHTML = `<span class="zh">${esc(c.zh)}</span><span class="en">${esc(t)}</span>` +
+        `<span class="cnt" style="float:right;color:var(--muted);font-size:11px">${c.count}</span>`;
+      b.onclick = () => { activateColl(t); };
+      body.appendChild(b);
+    });
+    head.onclick = () => { body.style.display = body.style.display === "none" ? "" : "none";
+                           head.classList.toggle("closed", body.style.display === "none"); };
+    section.appendChild(head); section.appendChild(body);
+    tree.appendChild(section);
+  });
+  $("#tree").addEventListener("click", e => {
+    const b = e.target.closest(".coll");
+    if (b) document.querySelectorAll(".coll").forEach(x => x.classList.remove("active"));
+  });
+}
+function activateColl(type) {
+  document.querySelectorAll(".coll").forEach(x => x.classList.toggle("active", x.dataset.type === type));
+  loadCollection(type);
+}
+
+/* ---------- 表格 ---------- */
+function renderTable(d) {
+  const { type } = STATE;
+  const meta = META.collections[type];
+  const toolbar = $("#toolbar");
+  const views = TABLE_VIEWS[type];
+  let fields = views || meta.identity.concat(Object.keys(meta.fields).filter(f => !f.startsWith("_") && meta.fields[f].type !== "reflist" && meta.fields[f].type !== "stats").slice(0, 6));
+  fields = fields.filter(f => meta.fields[f] || f === "_Identity");
+
+  toolbar.innerHTML = `<h2>${esc(meta.zh)}<span class="sub">${esc(type)} · ${d.total} 条</span></h2>` +
+    `<input type="text" id="tbl-q" placeholder="搜索本表（名称 / ID）" value="${esc(STATE.q)}">` +
+    `<select id="tbl-per"><option value="25">25/页</option><option value="50" selected>50/页</option><option value="100">100/页</option><option value="200">200/页</option></select>` +
+    (d.total === 0 ? "" : `<button class="btn" id="btn-prev">← 上一页</button><button class="btn" id="btn-next">下一页 →</button>`);
+  $("#tbl-q").onkeydown = e => { if (e.key === "Enter") { STATE.q = e.target.value.trim(); STATE.page = 1; fetchRows(); } };
+  $("#tbl-per").onchange = e => { STATE.per = +e.target.value; STATE.page = 1; fetchRows(); };
+  $("#btn-prev").onclick = () => { if (STATE.page > 1) { STATE.page--; fetchRows(); } };
+  $("#btn-next").onclick = () => { if (STATE.page * STATE.per < d.total) { STATE.page++; fetchRows(); } };
+
+  if (!d.rows.length) { $("#content").innerHTML = `<div class="empty">没有记录</div>`; return; }
+
+  const th = f => {
+    const metaF = meta.fields[f] || {};
+    const zh = metaF.zh || f;
+    const dir = STATE.sort === f ? (STATE.dir > 0 ? " ▲" : " ▼") : "";
+    return `<th data-f="${esc(f)}">${esc(zh)}<span class="dir">${dir}</span></th>`;
+  };
+  const head = `<thead><tr><th data-f="Index">#</th>${fields.map(th).join("")}</tr></thead>`;
+  const rows = d.rows.map(r => {
+    const loc = extractLocation(type, r);
+    const cells = fields.map(f => {
+      if (f === "_Identity") return `<td class="num"><b>${esc(r._Identity || "#" + r.Index)}</b></td>`;
+      const v = r[f];
+      return `<td class="${f === "Index" ? "num" : ""}">${valueHtml(meta.fields[f] || {}, v)}</td>`;
+    }).join("");
+    const locCell = loc ? `<td>${locationHtml(type, r)}</td>` : "";
+    return `<tr class="row" data-idx="${r.Index}"><td class="num">${r.Index}</td>${cells}${locCell}</tr>`;
+  }).join("");
+  $("#content").innerHTML = `<table class="data">${head}<tbody>${rows}</tbody></table>`;
+
+  document.querySelectorAll("table.data th").forEach(thEl => {
+    thEl.onclick = () => {
+      const f = thEl.dataset.f;
+      if (STATE.sort === f) STATE.dir = -STATE.dir; else { STATE.sort = f; STATE.dir = 1; }
+      fetchRows();
+    };
+  });
+  document.querySelectorAll("tr.row").forEach(tr => {
+    tr.onclick = () => showDetail(type, +tr.dataset.idx);
+  });
+  document.querySelectorAll("a.link[data-goto]").forEach(a => {
+    a.onclick = e => { e.stopPropagation(); const [t, i] = a.dataset.goto.split(":"); showDetail(t, +i); };
+  });
+}
+
+/* ---------- 详情页 ---------- */
+async function showDetail(type, index) {
+  STATE.detail = { type, index };
+  try {
+    const [rowRes, relRes] = await Promise.all([
+      fetch(`api/row?type=${encodeURIComponent(type)}&index=${index}`),
+      fetch(`api/related?type=${encodeURIComponent(type)}&index=${index}`),
+    ]);
+    const row = await rowRes.json();
+    const rel = await relRes.json();
+    renderDetail(row, rel);
+  } catch (e) { toast("详情加载失败: " + e.message); }
+}
+
+function renderDetail(row, rel) {
+  const type = row.__type, meta = META.collections[type];
+  const data = row.row;
+  const fields = Object.keys(data);
+  const loc = extractLocation(type, data);
+  const catColor = CATEGORIES.find(c => c.collections.includes(type))?.color || "var(--sys)";
+
+  let head = `<div class="detail-head"><span class="badge" style="background:${catColor}">${esc(meta.zh)}</span>` +
+    `<h2>${esc(data._Identity || ("#" + data.Index))}</h2><span class="idx">#${data.Index} · ${esc(type)}</span></div>`;
+
+  const grid = `<div class="detail-grid">` + fields.map(f => {
+    const fm = meta.fields[f] || { zh: f, type: "other" };
+    return `<div class="fld"><div class="k">${esc(fm.zh || f)}</div><div class="v">${valueHtml(fm, data[f])}</div></div>`;
+  }).join("") + `</div>`;
+
+  let locPanel = "";
+  if (loc && loc.map) {
+    locPanel = `<div class="panel"><h3>位置信息</h3><div class="body">${mapLink(loc, `${loc.kind}：${mapCn(loc.map.Name)}`)}</div></div>`;
+  }
+
+  const sprite = spritePanel(type, data);
+
+  let related = "";
+  if (rel) {
+    related = renderRelated(rel, type);
+  }
+
+  const backBtn = `<div style="margin-bottom:10px"><button class="btn" id="btn-back-list">← 返回列表</button></div>`;
+  $("#toolbar").innerHTML = "";
+  $("#content").innerHTML = backBtn + head + locPanel + sprite + grid + related;
+  $("#btn-back-list").onclick = () => { STATE.detail = null; fetchRows(); };
+  document.querySelectorAll("a.link[data-goto]").forEach(a => {
+    a.onclick = e => { e.stopPropagation(); const [t, i] = a.dataset.goto.split(":"); showDetail(t, +i); };
+  });
+}
+
+/* 关联面板：正向（本行引用的对象）+ 反向（引用本行的记录，按来源集合分组） */
+function renderRelated(rel, type) {
+  let html = "";
+  const groups = [];
+
+  if (rel.mapLayers) {
+    const layers = rel.mapLayers;
+    const layerHtml = (title, typeName, rows) => {
+      if (!rows.length) return "";
+      const meta = META.collections[typeName];
+      return `<div class="panel"><h3>${esc(title)}<span class="n">${rows.length}</span></h3><div class="body">` +
+        `<table class="data"><thead><tr><th>#</th><th>名称</th><th>位置</th></tr></thead><tbody>` +
+        rows.map(r => {
+          const loc = extractLocation(typeName, r);
+          return `<tr class="row" data-goto="${typeName}:${r.Index}"><td class="num">${r.Index}</td>` +
+            `<td><a class="link" data-goto="${typeName}:${r.Index}">${esc(r._Identity || ("#" + r.Index))}</a></td>` +
+            `<td>${loc ? locationHtml(typeName, r) : "—"}</td></tr>`;
+        }).join("") + `</tbody></table></div></div>`;
+    };
+    html += layerHtml("该地图的刷怪点", "RespawnInfo", layers.respawns);
+    html += layerHtml("该地图的 NPC", "NPCInfo", layers.npcs);
+    html += layerHtml("该地图的传送点", "MovementInfo", layers.movements);
+    html += layerHtml("该地图的守卫", "GuardInfo", layers.guards);
+    html += layerHtml("该地图的安全区", "SafeZoneInfo", layers.safezones);
+    html += layerHtml("该地图的矿点", "MineInfo", layers.mines);
+  }
+
+  if (rel.forward && rel.forward.length) {
+    const fwd = `<div class="panel"><h3>引用对象<span class="n">${rel.forward.length}</span></h3><div class="body">` +
+      rel.forward.map(f => {
+        const fm = META.collections[rel.type]?.fields[f.field] || {};
+        return `<div class="fld"><div class="k">${esc(fm.zh || f.field)}</div><div class="v">${valueHtml(fm, f.value)}</div></div>`;
+      }).join("") + `</div></div>`;
+    html += fwd;
+  }
+
+  if (rel.backward && Object.keys(rel.backward).length) {
+    for (const [fromType, items] of Object.entries(rel.backward)) {
+      const meta = META.collections[fromType];
+      if (!meta || !items.length) continue;
+      const byField = {};
+      items.forEach(it => { (byField[it.field] = byField[it.field] || []).push(it); });
+      let body = "";
+      for (const [field, list] of Object.entries(byField)) {
+        const fm = meta.fields[field] || { zh: field };
+        const rowsHtml = list.slice(0, 100).map(it => {
+          const row = DATA[fromType]?.byIndex[it.index] || {};
+          const label = row._Identity || row.Index || ("#" + it.index);
+          const loc2 = extractLocation(fromType, row);
+          return `<div class="arr-item"><a class="link" data-goto="${fromType}:${it.index}">${esc(label)}</a> <span class="idx">#${it.index}</span>` +
+            (loc2 ? ` · ${locationHtml(fromType, row)}` : "") + `</div>`;
+        }).join("");
+        body += `<div class="fld"><div class="k">${esc(fm.zh || field)}</div><div class="v">${rowsHtml}` +
+          (list.length > 100 ? `<div class="muted">…共 ${list.length} 条</div>` : "") + `</div></div>`;
+      }
+      html += `<div class="panel"><h3>被「${esc(meta.zh)}」引用<span class="n">${items.length}</span></h3><div class="body">${body}</div></div>`;
+    }
+  }
+
+  if (!html) html = `<div class="empty">无关联数据</div>`;
+  return html;
+}
+
+/* ---------- 全局搜索 ---------- */
+async function globalSearch(q) {
+  const res = await fetch(`api/search?q=${encodeURIComponent(q)}`);
+  const d = await res.json();
+  const results = d.results || [];
+  const groups = {};
+  results.forEach(r => { (groups[r.type] = groups[r.type] || []).push(r); });
+  let html = `<div class="detail-head"><h2>搜索「${esc(q)}」</h2><span class="sub">${results.length} 条结果</span></div>`;
+  if (!results.length) html += `<div class="empty">未找到匹配记录（可在左侧选择集合后按字段搜索）</div>`;
+  for (const [type, list] of Object.entries(groups)) {
+    const meta = META.collections[type];
+    html += `<div class="panel"><h3>${esc(meta?.zh || type)}<span class="n">${list.length}</span></h3><div class="body">` +
+      `<table class="data"><thead><tr><th>#</th><th>标识</th><th>位置</th></tr></thead><tbody>` +
+      list.map(r => {
+        const loc = extractLocation(type, r.row);
+        return `<tr class="row" data-goto="${type}:${r.row.Index}"><td class="num">${r.row.Index}</td>` +
+          `<td><a class="link" data-goto="${type}:${r.row.Index}">${esc(r.row._Identity || ("#" + r.row.Index))}</a></td>` +
+          `<td>${loc ? locationHtml(type, r.row) : "—"}</td></tr>`;
+      }).join("") + `</tbody></table></div></div>`;
+  }
+  $("#toolbar").innerHTML = "";
+  $("#content").innerHTML = html;
+  document.querySelectorAll("a.link[data-goto]").forEach(a => {
+    a.onclick = e => { e.stopPropagation(); const [t, i] = a.dataset.goto.split(":"); showDetail(t, +i); };
+  });
+}
+
+/* ---------- 统计 ---------- */
+async function showStats() {
+  const res = await fetch("api/stats");
+  const d = await res.json();
+  const cards = d.map(s => `<div class="stat-card" data-type="${esc(s.type)}"><div class="num">${s.count}</div><div class="lbl">${esc(s.zh)} · ${esc(s.type)}</div></div>`).join("");
+  $("#toolbar").innerHTML = `<h2>统计概览</h2>`;
+  $("#content").innerHTML = `<div class="stat-cards">${cards}</div>`;
+  document.querySelectorAll(".stat-card").forEach(c => c.onclick = () => activateColl(c.dataset.type));
+}
+
+/* ---------- 路由 ---------- */
+function route() {
+  const h = location.hash;
+  if (h.startsWith("#/detail/")) {
+    const [, , type, index] = h.split("/");
+    showDetail(decodeURIComponent(type), +index);
+    return;
+  }
+  if (h === "#stats") { showStats(); return; }
+  if (h.startsWith("#/table/")) {
+    activateColl(decodeURIComponent(h.slice(8)));
+    return;
+  }
+}
+
+/* ---------- 事件 ---------- */
+$("#search-box").onkeydown = e => { if (e.key === "Enter" && e.target.value.trim()) globalSearch(e.target.value.trim()); };
+$("#link-map").href = MAP_VIEWER_URL + "/";
+window.addEventListener("hashchange", route);
+
+/* 事件委托：详情/表格里的跳转链接 */
+document.addEventListener("click", e => {
+  const goto = e.target.closest("a[data-goto]");
+  if (goto) {
+    e.preventDefault(); e.stopPropagation();
+    const [t, i] = goto.dataset.goto.split(":");
+    showDetail(t, +i);
+  }
+});
+
+loadAll();
+</script>
+</body>
+</html>
