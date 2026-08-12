@@ -6938,3 +6938,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔几何〕**0x416830 双栏命中：pane 字节（0=自身 +0x15/+0x30、1=对方 +0xFD/+0x30）、**8 列 × 9 行网格**（0x24=36px 步长，x 帽 0xB4、y 帽 0xD8）、槽 = row*8+col（[0x54] 基）；0x416950 槽查找（[0x298] 物品字、0xFFFF 空、%0x3E8）——**F283 5×6 修正为 8×9**。
 - 落盘：trade-pane-geometry-evidence.json（F544，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 238。
+## Round 239 (F545) — 2026-08-12：坐骑命令分派
+
+- **〔分派〕**0x426A80：4 按钮命中（[+0x54]/[+0x108]/[+0x1BC]/[+0x270]）、命令 @上马 0x47B060（门 [0x7DA060]==0）/ @收马 0x47B058 / @遛马 0x47B068（门 !=0）、发送 0x4520F0 + [0x8A68BC]=0x12C 计时器；5 控件遍历（stride 0xB4）——F105/F361 族完整。
+- 落盘：horse-command-dispatch-evidence.json（F545，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 239。

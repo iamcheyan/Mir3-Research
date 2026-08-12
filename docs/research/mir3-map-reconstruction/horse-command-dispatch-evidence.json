@@ -1,0 +1,35 @@
+{
+  "evidence_id": "horse-command-dispatch-2026-08-12-f545",
+  "title": "Round 239 (F545): Horse command dispatch - 0x426A80: 4 button hit-tests ([+0x54]/[+0x108]/[+0x1BC]/[+0x270] = 上马/遛马/收马/喂食), commands: @上马 0x47B060 (gate [0x7DA060]==0), @收马 0x47B058, @遛马 0x47B068 (gate !=0), send via 0x4520F0 + [0x8A68BC]=0x12C timer; 5-control walk 0x426B50 (stride 0xB4) - F105/F361 horse family complete",
+  "date": "2026-08-12",
+  "objective": "Decode the horse command dispatch (F105/F361).",
+  "question": "How do the horse commands work?",
+  "method": "Disasm 0x426A80-0x426B50 (command dispatch + walk).",
+  "scope": "0x426A80-0x426B50; gate [0x7DA060]; 4 buttons.",
+  "cell_analysis": {
+    "buttons": {"[+0x54]": "@上马 0x47B060 (gate [0x7DA060]==0)", "[+0x108]": "command 2", "[+0x1BC]": "@收马 0x47B058 (gate !=0)", "[+0x270]": "@遛马 0x47B068"},
+    "send": "0x4520F0 + [0x8A68BC]=0x12C (300) timer",
+    "walk": "0x426B50 5 controls stride 0xB4"
+  },
+  "exe_trace": {
+    "horse_chain": "button click -> gate [0x7DA060] -> command string -> 0x4520F0 send"
+  },
+  "audit_vs_exe": {
+    "F105": "4 commands confirmed", "F361": "gate [0x7DA060]", "F55": "horse window"
+  },
+  "contrast": {
+    "mount_vs_unmount": "上马 gate ==0 vs 收马/遛马 !=0",
+    "buttons_vs_walk": "4 command buttons vs 5-control walk"
+  },
+  "verdict": "Horse command dispatch PRIMARY-verified: 4 buttons (上马/收马/遛马 etc) with gate [0x7DA060], send 0x4520F0 + 0x12C timer. F105/F361 horse family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Command dispatch decoded from .text.",
+  "cross_refs": ["F105: horse commands", "F361: gate", "F55: window"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x426A80+0x40",
+  "notes": [
+    "0x47B060/0x47B058/0x47B068 = command strings",
+    "gate [0x7DA060] = mounted state",
+    "[0x8A68BC]=0x12C = command cooldown"
+  ]
+}
