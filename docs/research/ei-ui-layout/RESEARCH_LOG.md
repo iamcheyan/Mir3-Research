@@ -9079,3 +9079,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**639 证据 JSON**；三服务 200；master b2b4dfe（**675 连发 F335-F1017 已推**）。
 - **〔弧〕**实体链表（F336）+ 英雄运行时（F725）+ 构造/分派（F1017）——**实体完整**（ctor 0x476884 + 类型 + 字段 + 消息分派）；实体表面 100%。
 - 落盘：entity-closure-evidence.json（F1018，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 712。
+## Round 713 (F1019) — 2026-08-12：HANDOFF 刷新 151（Round 710-712）
+
+- **〔刷新〕**HANDOFF 追加 Round 710-712（F1017-F1018：实体构造/分派全量 + 实体闭合）；基线 Round 709=9bc24b3 → Round 712=e353c0b（**676 连发 F335-F1018**）。
+- 落盘：handoff-refresh-151-evidence.json（F1019，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 713。
