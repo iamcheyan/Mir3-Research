@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hero-update-death-spawn-2026-08-12-f725",
+  "title": "Round 419 (F725): Hero update + death/spawn - 0x410100 setter ([0x62A58]); 0x410110 data load (heading words [0x61BCA/BCC/BCE] + [0x62A75/77/79], level progress byte [0x61BC8] = ratio x0x47644C); 0x410190 death/spawn (SEH): sound 0x6E at [0xCC]/[0xD0] + entity 0x434EF0 ctor (F565) + doubly-linked list 0x560088 (vtable 0x476448, next [0x8]/prev [0xC], head 0x56008C, count [0x560098]) + 1500ms respawn timer [0x8A68BC] (F611 1500ms CONFIRMED)",
+  "date": "2026-08-12",
+  "objective": "Decode the hero update + death/spawn handler.",
+  "question": "How does the hero update + death spawn work?",
+  "method": "Disasm 0x410100-0x4103E0.",
+  "scope": "0x410100-0x4103E0; list 0x560088.",
+  "cell_analysis": {
+    "0x410100": "setter: [0x62A58] = arg",
+    "0x410110": "data: heading words + level progress [0x61BC8]",
+    "0x410190": "death: sound 0x6E + entity 0x434EF0 + list 0x560088 + 1500ms [0x8A68BC]"
+  },
+  "exe_trace": {
+    "hero_chain": "setter -> data load -> death/spawn (list insert)"
+  },
+  "audit_vs_exe": {
+    "F565": "entity ctor 0x434EF0", "F611": "1500ms respawn", "F336": "entity lists"
+  },
+  "contrast": {
+    "data_vs_death": "heading load + spawn",
+    "list_vs_timer": "0x560088 dlist + 1500ms"
+  },
+  "verdict": "Hero update + death/spawn PRIMARY-verified: data load + entity spawn + dlist + respawn timer; F611 1500ms confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hero update decoded from .text.",
+  "cross_refs": ["F565: entity", "F611: respawn", "F336: lists"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x410100+0x10; 0x410190+0x20",
+  "notes": [
+    "sound 0x6E",
+    "dlist 0x560088",
+    "1500ms [0x8A68BC]",
+    "level progress [0x61BC8]"
+  ]
+}

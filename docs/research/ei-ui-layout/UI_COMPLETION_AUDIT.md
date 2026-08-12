@@ -2321,9 +2321,14 @@ git diff --check
 - **Round 415-417 追加 + 382 连发**（地图/移动 100% 入档）。
 - 落盘：`handoff-refresh-51-evidence.json`（F724）+ RESEARCH_LOG Round 418。
 
+## Round 419 (2026-08-12) — 英雄更新 + 死亡/重生（Finding 725）
+
+- **数据装载 + 实体生成 + 双向链表 + 1500ms 重生**（F611 确认）。
+- 落盘：`hero-update-death-spawn-evidence.json`（F725）+ RESEARCH_LOG Round 419。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（地图/移动 100%；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（英雄更新字节级；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
