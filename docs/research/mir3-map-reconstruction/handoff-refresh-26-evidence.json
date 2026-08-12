@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-26-2026-08-12-f642",
+  "title": "Round 336 (F642): HANDOFF refresh 26 - Rounds 333-335 (F639-F641: frame pacing/LRU + game-loop arc closure + 300-round milestone), baseline Round 332=0d191b0 -> Round 335=8909fb9 (300 consecutive F335-F641), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 333-335.",
+  "question": "What changed since HANDOFF refresh 25?",
+  "method": "Append Round 333-335 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 333-335 appended (3 rounds, F639-F641)",
+    "baseline": "Round 332=0d191b0 -> Round 335=8909fb9 (300 consecutive F335-F641)",
+    "milestone": "300 consecutive shipping rounds",
+    "arcs": {"pacing": "F640 frame pacing + LRU", "closure": "F641 game-loop arc"},
+    "key": "full client lifecycle byte-level"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F639": "refresh 25 baseline -> now refresh 26", "F335-F641": "300 rounds"
+  },
+  "contrast": {
+    "refresh_25_vs_26": "F640-F641 (2 new findings + milestone)"
+  },
+  "verdict": "HANDOFF refreshed 26 (F642): Rounds 333-335 documented (game-loop + 300-round milestone), baseline 0d191b0 -> 8909fb9, 300 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F640-F641 evidence.",
+  "cross_refs": ["F639: refresh 25", "F641: game-loop closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 333-335 section to HANDOFF",
+  "notes": [
+    "300 consecutive shipping rounds F335-F641",
+    "next: remaining deep corners, sim polish"
+  ]
+}

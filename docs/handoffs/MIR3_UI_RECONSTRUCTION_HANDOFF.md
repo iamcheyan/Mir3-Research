@@ -686,3 +686,14 @@ simulator/style.css
 **启动/构造弧闭合（F638）**：296 连发 + 262 证据 JSON——**启动链（WinMain → 魔数 → ctor → 子系统 → Intro F607）字节级**，F451 基址闭环。
 
 **commit 基线更新**：Round 328=5534555 → Round 332=0d191b0（master 已推，297 连发 F335-F638）。
+
+
+## Round 333-335 追加交付（2026-08-12，Finding 639-641）：HANDOFF 刷新 25 + 帧节奏/LRU + 游戏循环弧
+
+**HANDOFF 刷新 25（F639）**：基线更新至 Round 332=0d191b0（297 连发）。
+
+**帧节奏 + LRU（F640）**：0x454C40 GetTickCount 0xEA60（60s）帧门 + 每项 LRU [esi+0x20] vs **0x493E0（300s）** → 淘汰（vtable[0x14] 卸载 + 释放）；0x454CC0 条目创建（idx×81×4 stride 0x24 + 0x466130）——F436 LRU 确认。
+
+**游戏循环弧闭合（F641）**：299 连发 + 265 证据 JSON——**整个客户端生命周期字节级（WinMain 引导 F636 → 构造 F637 → Intro F607 → 登录 → 游戏循环 F591 → LRU F640）**。
+
+**commit 基线更新**：Round 332=0d191b0 → Round 335=8909fb9（master 已推，300 连发 F335-F641）。

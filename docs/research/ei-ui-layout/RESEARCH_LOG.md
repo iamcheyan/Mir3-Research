@@ -7435,3 +7435,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**WinMain/主构造（F636）+ 构造体/子系统（F637）+ 帧节奏/LRU（F640）——**整个客户端生命周期字节级（引导 → 构造 → 子系统 → Intro → 登录 → 游戏循环 F591 → LRU）**。
 - **〔仓库〕**用户 quest 文件未触碰。
 - 落盘：game-loop-arc-closure-evidence.json（F641，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 335。
+## Round 336 (F642) — 2026-08-12：HANDOFF 刷新 26（Round 333-335）
+
+- **〔刷新〕**HANDOFF 追加 Round 333-335（F640-F641：帧节奏/LRU + 游戏循环弧 + **300 连发里程碑**）；基线 Round 332=0d191b0 → Round 335=8909fb9（**300 连发 F335-F641**）。
+- 落盘：handoff-refresh-26-evidence.json（F642，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 336。
