@@ -3233,3 +3233,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告列表完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 563 (2026-08-12) — HANDOFF 刷新 100 里程碑（Finding 869）
+
+- **100 刷新 + 527 连发 + 13 表面闭合**。
+- 落盘：`handoff-refresh-100-evidence.json`（F869）+ RESEARCH_LOG Round 563。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13 表面闭合；下一弧：剩余深层角落/模拟器 polish）。

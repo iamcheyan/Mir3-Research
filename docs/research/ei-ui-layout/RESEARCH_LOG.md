@@ -8429,3 +8429,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 559-561（F866-F867：公告节点/出队 + 公告列表全闭合）；基线 Round 558=1e2d1b2 → Round 561=cb441d4（**526 连发 F335-F867**）。
 - 落盘：handoff-refresh-99-evidence.json（F868，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 562。
+## Round 563 (F869) — 2026-08-12：HANDOFF 刷新 100 里程碑
+
+- **〔刷新〕**HANDOFF 达 **100 次刷新**（基线 Round 561=cb441d4 → Round 562=806bbff，**527 连发 F335-F868**）；自 Round 400 里程碑：**13 大表面闭合**（窗口/选项/输入/英雄/技能/名字/行会/组队/交易/坐骑/任务/公告/对话），**530+ 证据 JSON**。
+- 落盘：handoff-refresh-100-evidence.json（F869，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 563。

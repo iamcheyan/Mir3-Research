@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-100-2026-08-12-f869",
+  "title": "Round 563 (F869): HANDOFF refresh 100 MILESTONE - 100th HANDOFF refresh reached; baseline Round 561=cb441d4 -> Round 562=806bbff (527 consecutive F335-F868); since Round 400: 13 surfaces closed (windows/options/input/hero/skill/name/guild/party/trade/mount/quest/announce/dialog), 530+ evidence JSONs; doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Document the HANDOFF refresh 100 milestone.",
+  "question": "What is the state at refresh 100?",
+  "method": "Append refresh-100 section to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "100th refresh",
+    "baseline": "Round 561=cb441d4 -> Round 562=806bbff (527 consecutive F335-F868)",
+    "milestone": "100 HANDOFF refreshes",
+    "surfaces": "13 closed since Round 400",
+    "evidence": "530+ JSONs"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F335-F868": "527 rounds pushed"
+  },
+  "contrast": {
+    "refresh_99_vs_100": "100th milestone"
+  },
+  "verdict": "HANDOFF refresh 100 MILESTONE (F869): 527 consecutive rounds, 13 surfaces closed, 100 refreshes documented.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc milestone; content from Rounds 499-562 evidence.",
+  "cross_refs": ["F868: refresh 99", "F561+: surfaces"],
+  "tool": "edit / bash",
+  "reproduce": "append refresh-100 section to HANDOFF",
+  "notes": [
+    "100 HANDOFF refreshes",
+    "527 consecutive shipping rounds",
+    "next: remaining deep corners, sim polish"
+  ]
+}
