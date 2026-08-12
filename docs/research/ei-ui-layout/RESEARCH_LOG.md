@@ -6796,3 +6796,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 0d90824（**171 连发已推**）。
 - **〔弧汇总〕**magic.dat 105×120B（F508）/ MiniMap.txt 37 绑定 + F310 确认（F509）/ 地图集 30+7（F510）/ GuardList+MapQuest+QuestDiary（F511）——**服务端 Envir 清单完整**（全部 .dat + 配置 + 任务解码）。
 - 落盘：envir-arc-closure-evidence.json（F512，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 206。
+## Round 207 (F513) — 2026-08-12：模拟器窗口内容审计
+
+- **〔覆盖〕**全部 14 客户端窗口 + 8 辅助（22 总）均有真实处理器（24 buildWindow id 检查）；**浏览器验证：41 按钮 + 170 槽 + 35 标签**（丰富内容非占位）。
+- **〔基线〕**F420 集成基线扩展（F497/F498 商店循环 + 聊天快捷新增）。
+- 落盘：simulator-window-content-audit-evidence.json（F513，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 207。

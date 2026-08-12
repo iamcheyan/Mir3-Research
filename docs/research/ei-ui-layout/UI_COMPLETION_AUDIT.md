@@ -1261,9 +1261,14 @@ git diff --check
 - **F508-F511 弧闭合 + 171 连发**；服务端清单完整。
 - 落盘：`envir-arc-closure-evidence.json`（F512）+ RESEARCH_LOG Round 206。
 
+## Round 207 (2026-08-12) — 模拟器窗口内容审计（Finding 513）
+
+- **14 客户端窗 + 8 辅助全内容**（41 按钮/170 槽/35 标签）。
+- 落盘：`simulator-window-content-audit-evidence.json`（F513）+ RESEARCH_LOG Round 207。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（服务端 Envir 全解码；其余 = 持续深化）。
+- 无阻塞项（模拟器全内容；其余 = 持续深化）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
