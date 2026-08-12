@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hit-routing-closure-2026-08-12-f901",
+  "title": "Round 595 (F901): Hit routing CLOSED (F560/F591/F897/F900) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 5bc4faf (559 consecutive F335-F900), 525 evidence JSONs; arc: hit-test (F560) + caption router (F591) + dispatch (F897) + window hit router (F900) - hit routing COMPLETE byte-level (PtInRect + open-list walk + 13 window rects + mode return), input routing surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the hit routing arc.",
+  "question": "Is the hit routing fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "525 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F560": "hit-test", "F591": "router", "F897": "dispatch", "F900": "window router"},
+    "routing": "PtInRect + rects + mode = COMPLETE",
+    "milestone": "559 consecutive rounds F335-F900"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F900": "559 rounds pushed; hit routing complete"
+  },
+  "contrast": {
+    "hit_vs_router": "test + walk",
+    "mode_vs_dispatch": "return + handlers"
+  },
+  "verdict": "Hit routing CLOSED (F901): hit-test + router all byte-level; validation green, 559 consecutive rounds, 525 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F560/F591/F897/F900.",
+  "cross_refs": ["F560", "F591", "F897", "F900"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "559 consecutive shipping rounds F335-F900",
+    "hit routing 100%",
+    "next: HANDOFF refresh 111, remaining corners"
+  ]
+}

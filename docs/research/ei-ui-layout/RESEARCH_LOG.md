@@ -8567,3 +8567,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔路由〕**0x42AAB0：开窗列表 [0xD24..0xD38] 遍历 + **jt 0x42ABE8 各模式窗口矩形**（+0x656C 背包/+0x29CFC 装备/+0x331A0 商店/+0x339B4 交易/+0x47094 行会/+0x4784C 组队/+0x47C40 状态/+0x50804 公告/+0x51168 对话/+0x51700 任务/+0x518F8 选项/+0x52130 坐骑/+0x52508 技能）+ PtInRect 0x4762B4 → 返回**窗口模式或 -1**——窗口命中路由完整（F558/F897 用）。
 - 落盘：window-hit-router-evidence.json（F900，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 594。
+## Round 595 (F901) — 2026-08-12：命中路由闭合（F560/F591/F897/F900 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**525 证据 JSON**；三服务 200；master 5bc4faf（**559 连发 F335-F900 已推**）。
+- **〔弧〕**命中测试（F560）+ caption 路由（F591）+ 分派（F897）+ 窗口命中路由（F900）——**命中路由完整**（PtInRect + 开窗列表遍历 + 13 窗口矩形 + 模式返回），输入路由表面 100%。
+- 落盘：hit-routing-closure-evidence.json（F901，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 595。
