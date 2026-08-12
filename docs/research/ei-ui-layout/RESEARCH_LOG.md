@@ -9113,3 +9113,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔recv2〕**0x422E30：base64 0x452810（0x400 缓冲）+ 消息类型 0x64/0x68（公告 0x427E30 + 行会 0x4256A0）+ 地图标题检查 [0x2F8784] → 名字存储 [0x35A820] + 0x40BA60 格式化（F800）+ 旗标类型 0x28/0x5DD——recv2 家族完整。
 - 落盘：recv2-map-name-title-full-evidence.json（F1026，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 720。
+## Round 721 (F1027) — 2026-08-12：recv2 闭合（F794/F797/F1026 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**648 证据 JSON**；三服务 200；master d6c37cf（**684 连发 F335-F1026 已推**）。
+- **〔弧〕**地图标题（F794）+ 地图/名字消息（F797）+ recv2 全量（F1026）——**recv2 完整**（base64 + 公告 + 行会 + 地图标题 + 名字格式化）；**recv1+recv2 入站 100%**。
+- 落盘：recv2-closure-evidence.json（F1027，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 721。

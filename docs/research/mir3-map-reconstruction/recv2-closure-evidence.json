@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv2-closure-2026-08-12-f1027",
+  "title": "Round 721 (F1027): recv2 CLOSED (F794/F797/F1026) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master d6c37cf (684 consecutive F335-F1026), 648 evidence JSONs; arc: map title (F794) + map/name msgs (F797) + recv2 full (F1026) - recv2 COMPLETE byte-level (base64 + announce + guild + map title + name format); recv1+recv2 inbound 100%",
+  "date": "2026-08-12",
+  "objective": "Close the recv2 arc.",
+  "question": "Is the recv2 family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "648 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F794": "title", "F797": "map msgs", "F1026": "recv2 full"},
+    "recv2": "base64 + title + name = COMPLETE",
+    "milestone": "684 consecutive rounds F335-F1026"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1026": "684 rounds pushed; recv2 complete"
+  },
+  "contrast": {
+    "recv1_vs_recv2": "both inbound 100%",
+    "title_vs_name": "0x2F8784 + 0x35A820"
+  },
+  "verdict": "recv2 CLOSED (F1027): base64 + title + name all byte-level; validation green, 684 consecutive rounds, 648 evidence JSONs; recv1+recv2 inbound complete.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F794/F797/F1026.",
+  "cross_refs": ["F794", "F797", "F1026"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "684 consecutive shipping rounds F335-F1026",
+    "recv2 100%; inbound complete",
+    "next: HANDOFF refresh 154, remaining corners"
+  ]
+}

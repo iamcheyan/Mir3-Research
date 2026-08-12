@@ -4497,3 +4497,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv2 家族完整；下一弧：剩余深层角落）。
+## Round 721 (2026-08-12) — recv2 闭合（Finding 1027）
+
+- **684 连发 + 648 证据 + recv2 完整 + 入站 100%**。
+- 落盘：`recv2-closure-evidence.json`（F1027）+ RESEARCH_LOG Round 721。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（recv1+recv2 入站完整；下一弧：HANDOFF 刷新 154/剩余角落）。
