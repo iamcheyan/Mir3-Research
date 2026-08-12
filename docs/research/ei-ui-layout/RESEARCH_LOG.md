@@ -6295,3 +6295,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔背景〕**场景 bg = FMMap.wil F0（0.map → F277/F310 绑定）、800×600 视口缩放、8 精灵叠加（浏览器验证）。
 - 落盘：map-bg-sim-verification-evidence.json（F419，derived-tooling；绑定 primary-static F277/F310）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 113。
+## Round 114 (F420) — 2026-08-12：模拟器最终集成扫描（全功能单次通过）
+
+- **〔扫描〕**登录 → 类选 → 游戏内 → 8 热键（Q/W/E/R/S/D/G/N 全对）→ NPC 对话 → 证据模式 → 血条动画（hp 44→45）→ 小地图——单次浏览器全通过。
+- 落盘：simulator-final-sweep-evidence.json（F420，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 114。**Round 29-114 = 86 连发（F335-F420）。**

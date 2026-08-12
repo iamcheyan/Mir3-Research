@@ -1,0 +1,40 @@
+{
+  "evidence_id": "simulator-final-sweep-2026-08-12-f420",
+  "title": "Round 114 (F420): Simulator final integration sweep - ALL features pass (login -> class-select -> in-game -> 8 hotkeys -> NPC dialog -> evidence mode -> bars animating -> minimap), one browser pass",
+  "date": "2026-08-12",
+  "objective": "Final comprehensive simulator verification: every wired feature in one browser pass.",
+  "question": "Does the simulator work end-to-end with all F335-F419 wiring?",
+  "method": "Single puppeteer pass covering all sim features.",
+  "scope": "browser 8765/sim; all sim subsystems.",
+  "cell_analysis": {
+    "results": {
+      "login": "overlay shown -> class-select (block) -> in-game (overlay gone)",
+      "hotkeys": "Q inventory / W status / E skill-book / R chat / S horse / D quest / G group / N option (ALL correct)",
+      "npc": "click 行会管理员 -> dialog (.npc-body) opens",
+      "evidence": "evidence overlay toggles visible",
+      "bars": "hp 45px (animating from 44), exp 129px",
+      "minimap": "widget renders"
+    }
+  },
+  "exe_trace": {
+    "sim_data": "windows=22 controls=41 resources=157 entities=8 skills=12 maps=2 bindings=211 (F368 regenerated)"
+  },
+  "audit_vs_exe": {
+    "F345-F419": "all sim wiring verified across 75 evidence rounds",
+    "F368": "data regeneration consistent"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = evidence-driven demo of the original client semantics"
+  },
+  "verdict": "Simulator final sweep passed (F420): ALL features work in one browser pass - login flow with class select, 8 hotkey windows, NPC dialog, evidence mode, animated bars, minimap. Simulator deliverable complete.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Full browser pass verified; every feature sourced from primary-byte evidence (F335-F419).",
+  "cross_refs": ["F345-F419: all sim wiring rounds", "F368: data regeneration", "F420: this sweep"],
+  "tool": "puppeteer browser",
+  "reproduce": "open 8765/sim; login; pick class; press Q/W/E/R/S/D/G/N; click NPC; toggle evidence",
+  "notes": [
+    "86 consecutive shipping rounds (F335-F420) delivered to master",
+    "simulator covers all 14 windows + login + NPC + target + map + evidence",
+    "original-client semantics byte-verified throughout"
+  ]
+}

@@ -796,6 +796,11 @@ git diff --check
 - **FMMap F0 背景 + 800×600 验证**（F277/F310）。
 - 落盘：`map-bg-sim-verification-evidence.json`（F419）+ RESEARCH_LOG Round 113。
 
+## Round 114 (2026-08-12) — 模拟器最终集成扫描（Finding 420）
+
+- **全功能单次浏览器通过**（登录/类选/热键/NPC/证据/血条/小地图）。
+- 落盘：`simulator-final-sweep-evidence.json`（F420）+ RESEARCH_LOG Round 114。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
