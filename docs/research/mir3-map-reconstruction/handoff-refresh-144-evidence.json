@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-144-2026-08-12-f998",
+  "title": "Round 692 (F998): HANDOFF refresh 144 - Rounds 689-691 (F995-F997: HANDOFF 143, camera scroll full, camera closure), baseline Round 688=f74d73d -> Round 691=fef6aba (656 consecutive F335-F997), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 689-691.",
+  "question": "What changed since HANDOFF refresh 143?",
+  "method": "Append Round 689-691 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 689-691 appended (3 rounds, F995-F997)",
+    "baseline": "Round 688=f74d73d -> Round 691=fef6aba (656 consecutive F335-F997)",
+    "arcs": {"scroll": "F996 camera", "closure": "F997 camera"},
+    "key": "camera complete; map surface 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F995": "refresh 143 baseline -> now refresh 144", "F335-F997": "656 rounds"
+  },
+  "contrast": {
+    "refresh_143_vs_144": "F996-F997 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 144 (F998): Rounds 689-691 documented (camera complete), baseline f74d73d -> fef6aba, 656 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F996-F997 evidence.",
+  "cross_refs": ["F995: refresh 143", "F997: camera closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 689-691 section to HANDOFF",
+  "notes": [
+    "656 consecutive shipping rounds F335-F997",
+    "next: remaining deep corners, sim polish"
+  ]
+}

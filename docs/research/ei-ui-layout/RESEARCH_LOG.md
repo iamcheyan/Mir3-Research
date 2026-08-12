@@ -8989,3 +8989,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**618 证据 JSON**；三服务 200；master c04f5a2（**655 连发 F335-F996 已推**）。
 - **〔弧〕**相机渲染/滚动（F718）+ 滚动全量（F996）——**相机完整**（24×24 视口 + 平移 + 缓冲滚动 0x468E90 + 脏重绘）；地图表面 100%。
 - 落盘：camera-closure-evidence.json（F997，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 691。
+## Round 692 (F998) — 2026-08-12：HANDOFF 刷新 144（Round 689-691）
+
+- **〔刷新〕**HANDOFF 追加 Round 689-691（F996-F997：相机滚动全量 + 相机闭合）；基线 Round 688=f74d73d → Round 691=fef6aba（**656 连发 F335-F997**）。
+- 落盘：handoff-refresh-144-evidence.json（F998，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 692。
