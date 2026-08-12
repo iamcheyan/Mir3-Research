@@ -7093,3 +7093,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔idx43〕**msg 0x2CB 3 路：-1 '必须面对要联盟行会掌门.'（0x47B254）、-2 '그 문파와 동맹중이 아닙니다.'（0x47B234）、-3 '존재하지 않는 문파입니다.'（0x47B218）。
 - **〔覆盖〕**全部 **49 个 recv1 处理器字节级**（F549-F570：背包/商店/仓库/制作/交易/行会/组队/联盟/实体/角色/公告/备忘/TCP）——recv1 表 0x42042B **100% 函数体覆盖**。
 - 落盘：recv1-full-coverage-evidence.json（F570，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 264。
+## Round 265 (F571) — 2026-08-12：入站协议 100% 闭合 + HANDOFF 刷新 9
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**196 证据 JSON**；三服务 200；master ae595b2（**229 连发 F335-F570 已推**）。
+- **〔里程碑〕**recv1 表 0x42042B **49/49 处理器字节级**（F549-F570）+ recv2 表 0x4218F2 **11/11**（F553）+ 怪物 0xBC6-0xBD8（F523）——**整个入站协议层 100% 函数体覆盖**。
+- **〔HANDOFF 刷新 9〕**追加 Round 262-264（F568-F570），基线 9fbbccc → ae595b2。
+- 落盘：inbound-protocol-100-percent-evidence.json（F571，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 265。

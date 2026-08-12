@@ -1,0 +1,35 @@
+{
+  "evidence_id": "inbound-protocol-100-percent-closure-2026-08-12-f571",
+  "title": "Round 265 (F571): INBOUND PROTOCOL 100% closure + HANDOFF refresh 9 - validation green (compileall/verify exit 0/node/JSON), services 200, master ae595b2 (229 consecutive F335-F570), 196 evidence JSONs; MILESTONE: recv1 dispatch 0x42042B ALL 49 handlers byte-level (F549-F570) + recv2 dispatch 0x4218F2 ALL 11 handlers (F553) + monster 0xBC6-0xBD8 (F523) - ENTIRE inbound protocol layer 100% function-body coverage; HANDOFF appended Rounds 262-264 (F568-F570)",
+  "date": "2026-08-12",
+  "objective": "Declare inbound protocol 100% coverage + refresh HANDOFF.",
+  "question": "Is the inbound protocol layer fully covered?",
+  "method": "Full validation + HANDOFF append + coverage consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "196 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "milestone": {"recv1": "49/49 handlers byte-level (F549-F570)", "recv2": "11/11 handlers (F553)", "monster": "0xBC6-0xBD8 state machine (F523)", "total": "INBOUND PROTOCOL 100% function-body coverage"},
+    "handoff": "refresh 9: Rounds 262-264 appended, baseline 9fbbccc -> ae595b2"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F570": "229 rounds pushed", "F517/F518": "both inbound tables 100% bodies"
+  },
+  "contrast": {
+    "recv1_vs_recv2": "49 UI/store handlers + 11 quest/entity/chat handlers both complete",
+    "semantics_vs_bodies": "F520/F521 semantics -> now full function bodies"
+  },
+  "verdict": "INBOUND PROTOCOL 100% closure (F571): all inbound handlers (recv1 49 + recv2 11 + monster family) byte-level; validation green, 229 consecutive rounds, 196 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; coverage from F549-F570/F553/F523.",
+  "cross_refs": ["F570: recv1 coverage", "F553: recv2 map", "F523: monster", "F524: protocol closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next: outbound 34 senders full bodies, sim polish, 0x45A650/0x45B490",
+    "229 consecutive shipping rounds F335-F570"
+  ]
+}

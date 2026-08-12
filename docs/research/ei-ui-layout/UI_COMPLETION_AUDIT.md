@@ -1551,9 +1551,14 @@ git diff --check
 - **49/49 recv1 处理器字节级**（建会/联盟错误收尾）。
 - 落盘：`recv1-full-coverage-evidence.json`（F570）+ RESEARCH_LOG Round 264。
 
+## Round 265 (2026-08-12) — 入站协议 100% 闭合 + HANDOFF 9（Finding 571）
+
+- **recv1 49 + recv2 11 + 怪物族全函数体 + 229 连发**。
+- 落盘：`inbound-protocol-100-percent-evidence.json`（F571）+ RESEARCH_LOG Round 265。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（**recv1 + recv2 双表 100% 覆盖**）。
+- 无阻塞项（**入站协议 100%**；下一弧：出站 34 发送器函数体/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
