@@ -6972,3 +6972,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模式族〕**[0x54]：0=背包（F550）、1=（0x41FB24 msg 0x107/0x108/0x109）、3=仓库。
 - **〔尾部〕**0x41FB6E：金币 dword → [0x35B1E8] + 选中 [0x2CF13C] → 物品数组 [0x2AC164] **stride 0xC2C**（+0x3D/+0x3F 字）+ 0x415280 刷新；0x41FC09：**栗子循环** 10 指针 0x47ADC4..0x47ADEC（밤1-10，F549 表）比对包名 [0x2A54C8] + sprintf 0x47AF7C——栗子马粮信息（F361/F545）。
 - 落盘：recv1-mapval14-warehouse-mode-evidence.json（F551，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 245。
+## Round 246 (F552) — 2026-08-12：recv 命令处理器 + 异步 TCP 连接
+
+- **〔连接〕**0x451320（发送器对象 0x8AB828）：socket(2,1,0) → [0x6044]、WSAAsyncSelect(sock, hwnd [0x8AB7B0], 0x7E8=WM_USER+0x3E8, 0x31=FD_READ|FD_CONNECT|FD_CLOSE)、sockaddr_in（family 2 + htons(arg3) + inet_addr(arg2)）、connect、[0x14]=1；0x451420 = closesocket。
+- **〔IAT 门〕**0x46806E=closesocket 0x468074=inet_addr 0x46807A=connect 0x468080=WSAAsyncSelect 0x468086=htons 0x46808C=WSAGetLastError 0x468092=socket 0x468098=send 0x46809E=recv。
+- **〔命令〕**0x420C90：收 'IP/端口'（0x2000 复制 + strchr '/' 0x468BF0）→ 0x451420 关旧 + 0x451320 连接（冷却 [0x4279A4]=0x1F4）；0x420D14：'A/B' → sprintf '%s %s'（0x47B560）→ [0x2F87C8]。
+- **〔佐证〕**0x47B5DC='%s 被放置到仓库里了!'（GBK）确认 [0x2AC164] 仓库数组 stride 0xC2C；0x47AF7C='栗'（GBK）确认栗子标记——**服务器重定向通道**。
+- 落盘：recv-command-tcp-connect-evidence.json（F552，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 246。

@@ -1456,6 +1456,11 @@ git diff --check
 - **背包管理器模式 0/1/3 + 栗子马粮循环**。
 - 落盘：`recv1-mapval14-warehouse-mode-evidence.json`（F551）+ RESEARCH_LOG Round 245。
 
+## Round 246 (2026-08-12) — recv 命令 + 异步 TCP 连接（Finding 552）
+
+- **服务器重定向通道**（0x451320 connect / 0x451420 close / IP:port 命令）。
+- 落盘：`recv-command-tcp-connect-evidence.json`（F552）+ RESEARCH_LOG Round 246。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv1 处理器函数体深化中）。

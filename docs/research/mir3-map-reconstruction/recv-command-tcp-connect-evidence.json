@@ -1,0 +1,39 @@
+{
+  "evidence_id": "recv-command-handlers-tcp-connect-2026-08-12-f552",
+  "title": "Round 246 (F552): recv command handlers + async TCP connect - 0x451320 (on packet-sender 0x8AB828): socket(2,1,0) -> [0x6044], WSAAsyncSelect(sock, hwnd [0x8AB7B0], 0x7E8=WM_USER+0x3E8, 0x31=FD_READ|FD_CONNECT|FD_CLOSE) errors 0x47C7E0/0x47C7B8/0x47C794, sockaddr_in family 2 + port htons(arg3) + inet_addr(arg2), connect, [0x14]=1; 0x451420 = closesocket; IAT thunk map 0x46806E=closesocket 0x468074=inet_addr 0x46807A=connect 0x468080=WSAAsyncSelect 0x468086=htons 0x46808C=WSAGetLastError 0x468092=socket 0x468098=send 0x46809E=recv; 0x420C90 recv 'IP/port' cmd: copy 0x2000, strchr '/' (0x468BF0), 0x451420 close + 0x451320 connect, cooldown [0x4279A4]=0x1F4; 0x420D14 recv 'A/B' cmd: sprintf '%s %s' (0x47B560) -> [0x2F87C8] truncate 0x1E; bonus: 0x47B5DC='%s 被放置到仓库里了!  ' (GBK) confirms [0x2AC164] warehouse stride 0xC2C + 0x47AF7C='栗' (GBK) chestnut marker - server-redirect channel decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the recv command handlers + the TCP sender family.",
+  "question": "What do the recv string-command handlers and 0x451320/0x451420 do?",
+  "method": "Disasm 0x420C90/0x420D14 + 0x451320/0x451420 + IAT thunks + string decode.",
+  "scope": "0x420C90, 0x420D14, 0x451320, 0x451420; WS2_32 thunks; strings.",
+  "cell_analysis": {
+    "0x451320": {"socket": "socket(AF_INET=2, SOCK_STREAM=1, 0) -> [0x6044]", "async": "WSAAsyncSelect(sock, hwnd [0x8AB7B0], 0x7E8, 0x31=FD_READ|FD_CONNECT|FD_CLOSE)", "addr": "sockaddr_in family 2 + port htons(arg3) + inet_addr(arg2)", "connect": "connect(sock, addr, 16)", "flag": "[0x14]=1 connected"},
+    "0x451420": "closesocket [0x6044] if open -> -1",
+    "0x420C90": {"cmd": "copy 0x2000 packet+0x10, strchr '/' (0x468BF0)", "split": "IP/port: term at '/', close old 0x451420, connect 0x451320", "cooldown": "[0x4279A4]=0x1F4"},
+    "0x420D14": {"cmd": "copy 0x400, split '/', truncate 0x1E", "fmt": "sprintf '%s %s' (0x47B560) -> [0x2F87C8]"},
+    "thunks": {"0x46806E": "closesocket", "0x468074": "inet_addr", "0x46807A": "connect", "0x468080": "WSAAsyncSelect", "0x468086": "htons", "0x46808C": "WSAGetLastError", "0x468092": "socket", "0x468098": "send", "0x46809E": "recv"},
+    "bonus": {"0x47B5DC": "'%s 被放置到仓库里了!  ' GBK - warehouse store confirm (F551 array)", "0x47AF7C": "GBK 栗 - chestnut marker (F551 loop)"}
+  },
+  "exe_trace": {
+    "redirect_chain": "server sends 'IP/port' -> 0x420C90 split -> 0x451420 close -> 0x451320 async connect -> WSAAsyncSelect events -> game channel"
+  },
+  "audit_vs_exe": {
+    "F524": "outbound senders family extended (0x451320/0x451420 = TCP connect/close)", "F451": "0x8AB828 packet sender = connection object", "F551": "warehouse array + chestnut"
+  },
+  "contrast": {
+    "connect_vs_send": "0x451320 async connect vs 0x452940/0x451E60 data senders",
+    "recv1_cmd": "command strings arrive over the SAME game channel (server redirect)"
+  },
+  "verdict": "recv command handlers + TCP sender PRIMARY-verified: server-pushed 'IP/port' redirect -> async connect via WSAAsyncSelect (hwnd [0x8AB7B0], msg 0x7E8); thunk map pinned; warehouse confirm + chestnut strings decode confirms F551.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + thunks + strings decoded from .text/.data.",
+  "cross_refs": ["F524: senders", "F451: 0x8AB828", "F551: warehouse/chestnut"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x451320+0x70; 0x420C90+0x80; decode 0x47B560/0x47B5DC/0x47AF7C",
+  "notes": [
+    "[0x8AB7B0] = main HWND (SetFocus in F550 mode 0xF)",
+    "msg 0x7E8 = WM_USER+0x3E8 async socket notify",
+    "0x468BF0 = strchr (custom), 0x4681F9 = strlen",
+    "0x2F87C8 = global string buffer ('%s %s')"
+  ]
+}
