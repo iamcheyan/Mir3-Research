@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-33-2026-08-12-f667",
+  "title": "Round 361 (F667): HANDOFF refresh 33 - Rounds 358-360 (F664-F666: sound dispatch map + item/sound arc closure), baseline Round 357=7334178 -> Round 360=3287054 (325 consecutive F335-F666), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 358-360.",
+  "question": "What changed since HANDOFF refresh 32?",
+  "method": "Append Round 358-360 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 358-360 appended (3 rounds, F664-F666)",
+    "baseline": "Round 357=7334178 -> Round 360=3287054 (325 consecutive F335-F666)",
+    "arcs": {"sound": "F665 sound map", "closure": "F666 item/sound arc"},
+    "key": "store + item-sound complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F664": "refresh 32 baseline -> now refresh 33", "F335-F666": "325 rounds"
+  },
+  "contrast": {
+    "refresh_32_vs_33": "F665-F666 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 33 (F667): Rounds 358-360 documented (sound map + closure), baseline 7334178 -> 3287054, 325 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F665-F666 evidence.",
+  "cross_refs": ["F664: refresh 32", "F666: item/sound closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 358-360 section to HANDOFF",
+  "notes": [
+    "325 consecutive shipping rounds F335-F666",
+    "next: remaining deep corners, sim polish"
+  ]
+}

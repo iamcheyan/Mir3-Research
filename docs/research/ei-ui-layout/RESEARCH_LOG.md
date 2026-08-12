@@ -7551,3 +7551,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**商店管理器/命中点击（F661）+ 商店绘制/模式（F662）+ 音效分派映射（F665）——**商店 + 物品音效系统完整**。
 - **〔仓库〕**用户 quest 文件未触碰。
 - 落盘：item-sound-arc-closure-evidence.json（F666，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 360。
+## Round 361 (F667) — 2026-08-12：HANDOFF 刷新 33（Round 358-360）
+
+- **〔刷新〕**HANDOFF 追加 Round 358-360（F665-F666：音效分派映射 + 物品/音效弧）；基线 Round 357=7334178 → Round 360=3287054（**325 连发 F335-F666**）。
+- 落盘：handoff-refresh-33-evidence.json（F667，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 361。
