@@ -684,6 +684,29 @@
         "id2/id9 created hidden (ctor flag 0) - opened on demand; single-window modality confirmed (close-all before every show)"
       ],
       "pending_notes": "0x4762B8 (id15 show/hide) = SetForegroundWindow candidate pending pefile verify; ids 7/11/14 identity semantics candidate (need paint/behavior cross-ref)"
+    },
+    {
+      "id": "window-identities-final",
+      "category": "窗口身份定稿 + 绘制/热键分派 (F338)",
+      "artifacts": [
+        "window-paint-and-hotkey-dispatch-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "paint.window-dispatch-0x428105",
+        "hotkey.table-0x42CC76",
+        "window-catalog.hero-builder-0x427600"
+      ],
+      "preview_mode": "ui",
+      "status": "primary-bytes-window-paint-and-hotkeys",
+      "pending": false,
+      "closed_2026_08_12": [
+        "window paint dispatcher 0x428105 decoded (Finding 338): iterate visible list -> render table 0x428358 (16 entries, all windows mapped) -> IntersectRect [0x476248] viewport clip (id8 chat excluded) -> mouse dispatch table 0x428398 (ids 0,1,2,3,7) -> ShowWindow([0x8AA48C], 0) fallback when mouse unconsumed",
+        "hotkey table 0x42CC76 byte-verified (Finding 338): Q->id0 bag, W->id1 status, E->id14 skill book, R->id8 chat, S->id13 horse, D->id11 quest/info, Z->brightness [hero+0xD40] clamp 0..0x2E, C->entity find 0x41EC10 + name 0x451A70, V->minimap 0x451770 (throttle 0x6210), B->skill browse flip [0x6208], G->id6 group, F->0x4523E0 guild, N->id12 option, T->minimap state; F329 'D->horse' CORRECTED (D->id11, S->id13)",
+        "window identities finalized: id1 状态栏 Ctrl+W (本级 0x47C348, paint 0x44B2D0, mouse 0x44B6B0); id4 行会 Guild (F294 9控件数组, F331 '物品' 修正); id7 状态-形象预览 (paint 0x450530 角色形象 @ window+0x61/+0xC8 = Round 28 status figure slot, 13 SetRect attr slots); id9 NPC 对话 (0x43F460 dialog-type dispatch, F331 '快捷栏' 修正); id11 信息窗口/任务 (Ctrl+D, paint 0x447470 text list 200px width gate, '-' 0x47C5C0 separator); id14 技能书 (Ctrl+E, 0x439500 = 0x4397A0 左列表 + 0x43A440 右详情 F331, 火冰电风魔法页签); id0 背包/ id2 商店/ id3 交易/ id6 组队/ id8 聊天/ id12 选项/ id13 坐骑/ id15 公告 (ids 5/10 unused)",
+        "IAT additions: 0x476248=IntersectRect, 0x4762B8=SetFocus (F337 candidate confirmed), 0x476250=GetFocus, 0x476254=GetWindowRect, 0x4762F0=FillRect, 0x4762F4=FrameRect"
+      ],
+      "pending_notes": "id7 13 attribute slot semantics (which stat per rect) runtime; id11 quest list entry format (0x104 stride shared with F331 skill list); id14 sub-control frame map (0x3D=61 frames per tab)"
     }
   ],
   "verification": {

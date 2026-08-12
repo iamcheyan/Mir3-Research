@@ -1,0 +1,138 @@
+{
+  "evidence_id": "window-paint-and-hotkey-dispatch-2026-08-12-f338",
+  "title": "Round 32 (F338): Window paint dispatcher 0x428105 (id-indexed render table 0x428358 + IntersectRect clip + mouse dispatch 0x428398) + full hotkey table 0x42CC76 (Q/W/E/R/S/D/Z/C/V/B/G/F/N) + window identities finalized (id1 status/id4 guild/id7 status-figure/id9 NPC/id11 quest/id14 skill book) + F329 hotkey correction + IAT SetFocus/IntersectRect",
+  "date": "2026-08-12",
+  "objective": "Close the remaining window-identity candidates (id1, id4, id7, id11, id14) and decode the window paint pipeline (0x428105: render dispatch by visible-list id, IntersectRect clip vs viewport, mouse dispatch) and the hotkey dispatcher 0x42CC76 (which key opens which window). Correct the F329 'D->horse' mislabel.",
+  "question": "Which function renders the visible windows and in what order? Which hotkeys toggle which windows? What are the true identities of windows id1/id4/id7/id11/id14? What is 0x4762B8?",
+  "method": "Capstone linear disassembly of MIR3.EXE .text (VA = file_offset + 0x400000); jump tables as raw dwords; GetKeyState scan in hotkey dispatcher; pefile IAT; cross-validated against F294 (guild 0x424E60 9-control array), F331 (skill book 0x439250/0x43A440/0x4397A0, ctor table), Round 28 F321 (caption action table), F329 (hotkey 0x42CBD0).",
+  "scope": "0x428105-0x428357 (window paint dispatcher + render table 0x428358 + mouse table 0x428398), 0x42CC76-0x42CEF7 (hotkey dispatcher), 0x4503B0/0x450530 (id7 ctor/paint), 0x4473E0/0x447470 (id11 ctor/paint), 0x439500 (id14 paint), 0x43F460 (id9 NPC paint), 0x4473E0-0x44746A, IAT 0x476248/0x4762B8/0x476250/0x476254/0x4762F0/0x4762F4.",
+  "cell_analysis": {
+    "window_paint_dispatcher_0x428105": {
+      "va": "0x428105 (inside HUD paint 0x4280F0 family)",
+      "structure": [
+        "iterate visible list: count [esi+0xD38], cursor [esi+0xD2C]; per node: id = [edi]",
+        "id <= 0xF -> jmp [id*4 + 0x428358] RENDER TABLE",
+        "each entry: lea ecx,[esi+obj]; call PAINT_FN; lea eax,[esi+obj+0x18] (window rect +0x18)",
+        "id != 8: IntersectRect([0x476248], &[esp+0x10] viewport, &rect) -> if empty ebp=0 (skip mouse)",
+        "mouse dispatch: after render, if ebp!=0 -> jmp [0x7DA1C0/0x7DA1C4 mouse-pos-derived *4 + 0x428398] per-window mouse handler",
+        "0x428398 table: id0 -> 0x42FAB0 bag mouse; id1 -> 0x44B6B0 status mouse; id2 -> 0x44E650 store mouse; id3 -> 0x416790 trade mouse; id7 -> 0x450AC0 status mouse; others skip",
+        "if not consumed (ebp==0): ShowWindow([0x8AA48C], 0) [0x4762AC]",
+        "after loop: mouse-pos dispatch 0x42AAB0 (Round 28) -> window id"
+      ],
+      "render_table_0x428358": {
+        "0": "0x428166 -> 0x42EB80 (bag)",
+        "1": "0x42817C -> 0x44B2D0 (status)",
+        "2": "0x428192 -> 0x44E260 (store)",
+        "3": "0x4281A8 -> 0x415B10 (trade, F295)",
+        "4": "0x4281BE -> 0x425040 (guild, F294)",
+        "5": "0x428283 (no-op)",
+        "6": "0x4281D4 -> 0x4243D0 (group)",
+        "7": "0x4281EA -> 0x450530 (status-figure)",
+        "8": "0x428200 -> 0x414700 (chat)",
+        "9": "0x428213 -> 0x43F460 (NPC)",
+        "10": "0x428283 (no-op)",
+        "11": "0x428226 -> 0x447470 (quest)",
+        "12": "0x428239 -> 0x441380 (option)",
+        "13": "0x42824C -> 0x4269C0 (horse)",
+        "14": "0x42825F -> 0x439500 (skill book)",
+        "15": "0x428272 -> 0x43E3C0 (notice)"
+      },
+      "evidence_level": "primary-bytes"
+    },
+    "hotkey_dispatcher_0x42CC76": {
+      "va": "0x42CC76 (inside 0x42CBD0 hero hotkey handler)",
+      "gate": "[ebp+0x20] OR [ebp+0x24] set -> early ret 1 (modal guard)",
+      "table": [
+        {"key": "0x51 'Q'", "action": "0x42CC8B: call 0x42ADB0(id0) BAG + 0x417880(&[ebp+0x6718], 0x10B, 0x10C, -1) reframe + byte[ebp+0x65A8]=0"},
+        {"key": "0x57 'W'", "action": "0x42CCC3: 0x42ADB0(id1) STATUS"},
+        {"key": "0x45 'E'", "action": "0x42CCDD: 0x42ADB0(id14) SKILL BOOK"},
+        {"key": "0x52 'R'", "action": "0x42CCF7: 0x42ADB0(id8) CHAT"},
+        {"key": "0x53 'S'", "action": "0x42CD11: 0x42ADB0(id13) HORSE"},
+        {"key": "0x44 'D'", "action": "0x42CD2B: 0x42ADB0(id11) QUEST/INFO"},
+        {"key": "0x5A 'Z'", "action": "0x42CD35: brightness [ebp+0xD40] clamp 0..0x2E; [ebp+0xD42]=1/2 (belt/light effect - caption 腰带(Ctrl+Z) semantics)"},
+        {"key": "0x43 'C'", "action": "0x42CD93: 0x41EC10(&main, [0x777759] selector, [0x777764], [0x777768], 1) entity find -> name(eax+8) -> 0x451A70 status line"},
+        {"key": "0x56 'V'", "action": "0x42CDDA: minimap throttle (timeGetTime-[ebp+0x6210] <= 0x64); [ebp+0x6518]==0 -> 0x451770 open else [ebp+0x6518]=0"},
+        {"key": "0x42 'B'", "action": "0x42CE1D: skill-book browse flip [ebp+0x6208] ^= 1"},
+        {"key": "0x47 'G'", "action": "0x42CE4D: 0x42ADB0(id6) GROUP"},
+        {"key": "0x46 'F'", "action": "0x42CE67: 0x4523E0(&0x8AB828) guild action"},
+        {"key": "0x4E 'N'", "action": "0x42CE82: 0x42ADB0(id12) OPTION"},
+        {"key": "0x54 'T'", "action": "0x42CE90: [ebp+0x6518]==1 gate (minimap state check)"}
+      ],
+      "correction_F329": "F329 note 'D->horse id13' is WRONG: 0x44 'D' -> push 0xB (id11 quest); horse id13 is 0x53 'S'. Caption 信息窗口(Ctrl+D) and 坐骑(Ctrl+S) align.",
+      "evidence_level": "primary-bytes"
+    },
+    "window_identities_final": {
+      "id1": {"obj": "hero+0x29CE4", "ctor": "0x44B130", "frame": 200, "x": 0, "y": 0, "w": 244, "h": 328, "identity": "状态栏/状态面板 (Ctrl+W -> id1; '本级' 0x47C348 level + scanf fields 0x47A214; paint 0x44B2D0, mouse 0x44B6B0)", "evidence": "derived-primary (hotkey+caption+strings)"},
+      "id4": {"obj": "hero+0x4707C", "ctor": "0x424E60", "frame": 600, "x": 102, "y": 22, "w": 596, "h": 446, "identity": "行会 Guild (F294 9-control array this+0x118: 关闭/会员升职/成员踢出/盟主转让/邀请入会/行会公告/退出行会/行会解散; click 0x4258F0; banner id15 refs; paint 0x425040; F331 '物品' label CORRECTED)", "evidence": "primary-bytes"},
+      "id7": {"obj": "hero+0x47C28", "ctor": "0x4503B0", "frame": 200, "x": 560, "y": 0, "w": 244, "h": 328, "identity": "状态窗-角色形象预览 (paint 0x450530: frame selector 0x566DD4 with byte[+0x551], character figure at (window.x+0x61, window.y+0xC8) = Round 28 status-window this+0x200 49x33 special slot; 13 SetRect attribute slots +0x578..+0x5E8; mouse 0x450AC0)", "evidence": "derived-primary"},
+      "id9": {"obj": "hero+0x51150", "ctor": "0x43ED00", "frame": 1100, "x": 0, "y": 0, "w": 552, "h": 176, "identity": "NPC 对话 (paint 0x43F460: dialog-type jump 0x440158, NPCIMG token 0x47C50C -> 0x4681F9; NPCFace.WIL +0x278; F331 '快捷栏' CORRECTED)", "evidence": "primary-bytes"},
+      "id11": {"obj": "hero+0x516E8", "ctor": "0x4473E0", "frame": 700, "x": 0, "y": 0, "w": 340, "h": 440, "identity": "信息窗口/任务 Quest (Ctrl+D -> id11; caption 信息窗口 0x47BC2C; paint 0x447470: text list [esi+0x54] with 0x45E0C0 measure + 0xC8=200px width gate, 2 frame controls +0x74/+0x128 (0x2D1/0x2D2=721/722, 0x2D3/0x2D4=723/724) via 0x417830; '-' 0x47C5C0 separator; frame counter 0x8B1B00)", "evidence": "derived-primary (hotkey+caption+paint)"},
+      "id14": {"obj": "hero+0x524F0", "ctor": "0x439250", "frame": 400, "x": 348, "y": 0, "w": 452, "h": 380, "identity": "技能书 Skill Book (Ctrl+E -> id14; paint 0x439500 = 0x4397A0 left list + 0x43A440 right detail (F331 skill family); 火冰电风神圣黑暗幻影剑 0x47C330..0x47C308 = magic-type tabs; frames 0x3D=61 sub-controls; mouse 0x439560 family)", "evidence": "primary-bytes"},
+      "id0": "背包 Bag (Ctrl+Q; F337)",
+      "id2": "商店 Store (F331; '(%d两)' money)",
+      "id3": "交易 Trade (F295)",
+      "id6": "组队 Group (Ctrl+G; [允许]/[拒绝])",
+      "id8": "聊天 Chat (Ctrl+R)",
+      "id12": "选项 Option (Ctrl+N; F324)",
+      "id13": "坐骑 Horse (Ctrl+S; F327)",
+      "id15": "公告 Notice (id15; F294)"
+    },
+    "iat_additions": {
+      "0x476248": "USER32 IntersectRect (paint dispatcher clip test)",
+      "0x4762B8": "USER32 SetFocus (id15 notice show/hide focus - Round 31 candidate confirmed)",
+      "0x476250": "USER32 GetFocus (TAB/click dispatch)",
+      "0x476254": "USER32 GetWindowRect",
+      "0x4762F0": "USER32 FillRect",
+      "0x4762F4": "USER32 FrameRect"
+    }
+  },
+  "exe_trace": {
+    "hero": "main+0x2A548C = 0x7243A4",
+    "paint_dispatcher": "0x4280F0 family -> 0x428105 (visible-list iterate) -> render table 0x428358 -> IntersectRect clip -> mouse table 0x428398 -> ShowWindow fallback",
+    "visible_list": "main+0xD28 head / +0xD2C cursor / +0xD38 count (F337)",
+    "hotkey_handler": "0x42CBD0 -> 0x42CC76 GetKeyState table (0x476278)",
+    "brightness": "hero+0xD40 (0..0x2E) + mode +0xD42",
+    "minimap_gate": "hero+0x6518 + throttle +0x6210",
+    "skill_browse": "hero+0x6208",
+    "entity_selector": "0x777759 + coords 0x777764/0x777768 (F310)"
+  },
+  "audit_vs_exe": {
+    "F329_correction": "'D' opens id11 (quest), NOT horse; 'S' opens id13 (horse). Hotkey table byte-verified.",
+    "F331_corrections": "id4 = 行会 Guild (was '物品'); id9 = NPC 对话 (was '快捷栏'); id14 = 技能书 (was '属性详情 候选'); id1 = 状态栏 (was '人物状态 候选' - both have 本级, id1 is the Ctrl+W panel)",
+    "F294_confirmed": "id4 = guild window (0x424E60 9-control array), banner id15 refs",
+    "F321_confirmed": "caption action table: idx10 信息窗口 push 0xB = id11 (quest) - matches hotkey D; idx14 包袱栏 push 0 = id0 - matches hotkey Q",
+    "Round 28 status-window anchor": "id7 paint 0x450530 draws character figure at (window.x+0x61, window.y+0xC8) - matches 'status-window 49x33 rect this+0x200 special index 4 character-figure slot'",
+    "0x4762B8": "SetFocus (was 'candidate' in F337) - confirmed"
+  },
+  "contrast": {
+    "id1_vs_id7": "id1 = left panel (0,0) Ctrl+W 状态栏 with 本级 level + scanf stats; id7 = right panel (560,0) with character figure preview + 13 attribute SetRect slots - two different status-related panels",
+    "belt_caption": "caption 腰带(Ctrl+Z) tooltip vs Z hotkey = brightness clamp [hero+0xD40] - the belt (light source) toggles the screen brightness/light effect",
+    "id4_guild_vs_F331_item": "F331 ctor-table label 'id4 物品' was the scanf-format guess; F294 guild 9-control array (关闭/会员升职/...) is authoritative: id4 = guild window",
+    "paint_order": "render table order follows visible-list order (insertion = show order, F337); IntersectRect clips each window to viewport before paint; mouse dispatch only for hit windows; ShowWindow(0) fallback when mouse consumed by a window"
+  },
+  "verdict": "All 14 window identities finalized from primary bytes: id0 背包 / id1 状态栏 / id2 商店 / id3 交易 / id4 行会 / id6 组队 / id7 状态(形象预览) / id8 聊天 / id9 NPC对话 / id11 信息窗口(任务) / id12 选项 / id13 坐骑 / id14 技能书 / id15 公告 (ids 5/10 unused). Window paint pipeline decoded: 0x428105 visible-list render dispatch (table 0x428358) + IntersectRect [0x476248] viewport clip + mouse dispatch (table 0x428398) + ShowWindow fallback. Hotkey table 0x42CC76 byte-verified (Q/W/E/R/S/D/Z/C/V/B/G/F/N/T) with F329 correction ('D'->id11, 'S'->id13). IAT additions: IntersectRect, SetFocus, GetFocus, GetWindowRect, FillRect, FrameRect.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hotkey key-codes, jump tables, render table, window identities all read directly from MIR3.EXE bytes; identity labels cross-validated against F294/F295/F321/F324/F327/F331 string+behavior evidence.",
+  "cross_refs": [
+    "F294: guild window id4 (0x424E60 9-control array this+0x118, click 0x4258F0, banner id15)",
+    "F295: trade id3 (frame 1050, vtable 0x47663C)",
+    "F321: caption action table 0x42C494 (idx10 信息窗口->0xB, idx14 包袱栏->0)",
+    "F324: option id12 (frame 750)",
+    "F327: horse id13 (5 controls, no vtable)",
+    "F329: hotkey 0x42CBD0 (CORRECTION: D->id11 not id13)",
+    "F331: skill book family 0x439250/0x4397A0/0x43A440; ctor table",
+    "F337: visibility dispatcher 0x42ADB0; visible list main+0xD24 family",
+    "Round 28: HUD paint 0x4294E0; status-window figure slot; hover selector 0x566DD4"
+  ],
+  "tool": "capstone (CS_ARCH_X86/CS_MODE_32) via Tools/reverse-engineering/disasm_capstone.py PeImage; pefile; python3 json",
+  "reproduce": "sys.path.insert(0,'Tools/reverse-engineering'); from disasm_capstone import PeImage; img=PeImage(Path('$MIR3_EI_ROOT/MIR3.EXE')); img.disasm(0x428105, 0x260); img.disasm(0x42CC76, 0x290); img.disasm(0x450530, 0x60); img.disasm(0x447470, 0x100); img.disasm(0x439500, 0x40)",
+  "notes": [
+    "render table entry pattern: lea ecx,[esi+obj]; call paint; lea eax,[esi+obj+0x18] (rect for IntersectRect)",
+    "mouse dispatch table 0x428398: ids 0,1,2,3,7 dispatch; others skip (ret to 0x42833E)",
+    "ShowWindow([0x8AA48C], 0) at 0x428343-0x42834C fires when no window consumed the mouse (ebp==0)",
+    "hotkey modal guard: [hero+0x20] OR [hero+0x24] nonzero -> hotkeys suppressed",
+    "0x42CE90 'T' key: minimap state [ebp+0x6518]==1 check (throttle continuation)",
+    "id11 quest text list: [esi+0x54] list head, 0x45E0C0 text measure, 200px width gate, '-' 0x47C5C0 line separator; entry stride 0x104 (F331 skill-list pattern shared)",
+    "id7 attribute slots: 13 SetRect at +0x578/+0x588/+0x598/+0x5A8/+0x5B8/+0x5C8/+0x5D8/+0x5E8 (+0x200 figure rect)"
+  ]
+}

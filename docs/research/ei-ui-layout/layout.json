@@ -1,5 +1,5 @@
 {
-  "version": "0.15-visibility-dispatch",
+  "version": "0.16-paint-hotkey",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -2468,8 +2468,8 @@
           "y": 0,
           "w": 244,
           "h": 328,
-          "identity": "人物状态窗（左侧；'本级' 0x47C348 + scanf）",
-          "evidence": "derived"
+          "identity": "状态栏 Status (Ctrl+W -> id1; 本级 level)",
+          "evidence": "derived-primary"
         },
         {
           "id": 2,
@@ -2504,8 +2504,8 @@
           "y": 22,
           "w": 596,
           "h": 446,
-          "identity": "候选 背包/仓库（5 字段 scanf 0x47AD30）",
-          "evidence": "candidate"
+          "identity": "行会 Guild (F294 9控件数组; F331 物品标签修正)",
+          "evidence": "derived-primary"
         },
         {
           "id": 6,
@@ -2528,8 +2528,8 @@
           "y": 0,
           "w": 244,
           "h": 328,
-          "identity": "右侧面板（'本级' + '%s %s'）",
-          "evidence": "candidate"
+          "identity": "状态窗-形象预览 (paint 0x450530 角色形象 @ +0x61/+0xC8)",
+          "evidence": "derived-primary"
         },
         {
           "id": 8,
@@ -2552,8 +2552,8 @@
           "y": 0,
           "w": 552,
           "h": 176,
-          "identity": "NPC 对话（NPCFace.WIL 绑定 +0x278；F331 快捷栏标签修正）",
-          "evidence": "derived"
+          "identity": "NPC 对话 (NPCFace.WIL; F331 快捷栏标签修正)",
+          "evidence": "derived-primary"
         },
         {
           "id": 11,
@@ -2564,8 +2564,8 @@
           "y": 0,
           "w": 340,
           "h": 440,
-          "identity": "候选",
-          "evidence": "candidate"
+          "identity": "信息窗口/任务 Quest (Ctrl+D; 文本列表)",
+          "evidence": "derived-primary"
         },
         {
           "id": 12,
@@ -2600,8 +2600,8 @@
           "y": 0,
           "w": 452,
           "h": 380,
-          "identity": "候选 属性详情（火冰电风神圣黑暗幻影剑）",
-          "evidence": "candidate"
+          "identity": "技能书 Skill Book (Ctrl+E; 火冰电风魔法页签)",
+          "evidence": "derived-primary"
         },
         {
           "id": 15,
@@ -3025,6 +3025,24 @@
       "role": "可见顶层窗口点击分派（ret 8）：弹可见链表头 main+0xD30，id<=0xF → 跳表 0x42B658 → 各窗口 0x423FA0(obj, x, y, 0) 点击处理器",
       "evidence_level": "primary-bytes",
       "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+    },
+    {
+      "id": "paint.window-dispatch-0x428105",
+      "kind": "function",
+      "layer": "windows",
+      "va": "0x428105",
+      "role": "窗口绘制分派（HUD paint 0x4280F0 家族）：遍历可见链表 main+0xD28..+0xD38 → id<=0xF → 渲染表 0x428358（16 项：id0 0x42EB80/id1 0x44B2D0/id2 0x44E260/id3 0x415B10/id4 0x425040/id6 0x4243D0/id7 0x450530/id8 0x414700/id9 0x43F460/idB 0x447470/idC 0x441380/idD 0x4269C0/idE 0x439500/idF 0x43E3C0，5/10 no-op）→ IntersectRect [0x476248] 视口裁剪（id8 聊天除外）→ 命中 → 鼠标分派表 0x428398（id0 0x42FAB0/id1 0x44B6B0/id2 0x44E650/id3 0x416790/id7 0x450AC0）→ 未消费 ShowWindow([0x8AA48C], 0) 回退",
+      "evidence_level": "primary-bytes",
+      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+    },
+    {
+      "id": "hotkey.table-0x42CC76",
+      "kind": "function",
+      "layer": "input",
+      "va": "0x42CC76",
+      "role": "英雄热键表（GetKeyState 0x476278；门 [hero+0x20]/[+0x24] 模态抑制）：Q→id0 背包、W→id1 状态栏、E→id14 技能书、R→id8 聊天、S→id13 坐骑、D→id11 信息窗口、Z→亮度 [hero+0xD40]∈[0,0x2E]（腰带光效）、C→0x41EC10 实体查找+名字 0x451A70、V→小地图 0x451770（节流 0x6210）、B→技能浏览翻转 [0x6208]、G→id6 组队、F→0x4523E0 行会、N→id12 选项、T→小地图状态检查。F329『D→坐骑 id13』修正：D→id11，S→id13",
+      "evidence_level": "primary-bytes",
+      "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
     }
   ],
   "control_constructors": [

@@ -314,6 +314,14 @@ git diff --check
 - **43 调用者**：背包模式 4、服务端事件 6、行会公告 3、caption 动作表 20、热键 8、TAB 1、守卫安全（0x42CC8B push 81）。
 - 落盘：`window-visibility-dispatch-evidence.json`（F337 追加段 + closed_notes，保留 Round 12/21 原记录）+ matrix window-visibility 新记录 + layout.json version 0.15（3 新记录 + window-catalog id0/id2/id3/id6/id9 修正）+ RESEARCH_LOG Round 31。
 
+## Round 32 (2026-08-12) — 窗口身份定稿 + 绘制/热键分派（Finding 338：14 窗口身份全定 + 0x428105 渲染分派 + 热键表 0x42CC76）
+
+- **〔核心〕0x428105 = 窗口绘制分派**：可见链表 → 渲染表 0x428358（16 项全映射）→ IntersectRect [0x476248] 视口裁剪（id8 除外）→ 鼠标分派 0x428398（id0/1/2/3/7）→ 未消费 ShowWindow(0) 回退。
+- **〔核心〕热键表 0x42CC76 全解**：Q→id0 背包、W→id1 状态栏、E→id14 技能书、R→id8 聊天、S→id13 坐骑、D→id11 信息窗口、Z→亮度 [0xD40]、C→实体查找、V→小地图、B→技能浏览、G→id6 组队、F→行会、N→id12 选项、T→小地图门。**F329 修正：D→id11（非坐骑），S→id13。**
+- **身份定稿**：id0 背包 / id1 状态栏 / id2 商店 / id3 交易 / id4 行会（F294，F331『物品』修正）/ id6 组队 / id7 状态-形象预览（角色形象 @ +0x61/+0xC8）/ id8 聊天 / id9 NPC 对话（F331『快捷栏』修正）/ idB 信息窗口-任务（文本列表 200px 宽门）/ idC 选项 / idD 坐骑 / idE 技能书（魔法页签）/ idF 公告；id5/10 未用。
+- **IAT 新增**：0x476248=IntersectRect、0x4762B8=SetFocus（F337 候选确认）、0x476250=GetFocus、0x476254=GetWindowRect、0x4762F0=FillRect、0x4762F4=FrameRect。
+- 落盘：`window-paint-and-hotkey-dispatch-evidence.json`（F338，primary-bytes）+ matrix window-identities-final 新记录 + layout.json version 0.16（2 新记录 + window-catalog 6 身份修正）+ RESEARCH_LOG Round 32。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
