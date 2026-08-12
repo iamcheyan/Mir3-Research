@@ -3257,3 +3257,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告全交互；下一弧：HANDOFF 刷新 101/剩余角落）。
+## Round 566 (2026-08-12) — HANDOFF 刷新 101（Finding 872）
+
+- **Round 563-565 追加 + 530 连发**（公告全交互入档）。
+- 落盘：`handoff-refresh-101-evidence.json`（F872）+ RESEARCH_LOG Round 566。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告全交互；下一弧：剩余深层角落/模拟器 polish）。

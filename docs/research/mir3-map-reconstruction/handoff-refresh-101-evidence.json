@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-101-2026-08-12-f872",
+  "title": "Round 566 (F872): HANDOFF refresh 101 - Rounds 563-565 (F869-F871: HANDOFF 100 milestone, announce input handler, announce interactive closure), baseline Round 562=806bbff -> Round 565=52cb4dd (530 consecutive F335-F871), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 563-565.",
+  "question": "What changed since HANDOFF refresh 100?",
+  "method": "Append Round 563-565 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 563-565 appended (3 rounds, F869-F871)",
+    "baseline": "Round 562=806bbff -> Round 565=52cb4dd (530 consecutive F335-F871)",
+    "arcs": {"input": "F870 announce input", "closure": "F871 announce interactive"},
+    "key": "announce interactive complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F869": "refresh 100 baseline -> now refresh 101", "F335-F871": "530 rounds"
+  },
+  "contrast": {
+    "refresh_100_vs_101": "F870-F871 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 101 (F872): Rounds 563-565 documented (announce interactive complete), baseline 806bbff -> 52cb4dd, 530 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F870-F871 evidence.",
+  "cross_refs": ["F869: refresh 100", "F871: announce closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 563-565 section to HANDOFF",
+  "notes": [
+    "530 consecutive shipping rounds F335-F871",
+    "next: remaining deep corners, sim polish"
+  ]
+}
