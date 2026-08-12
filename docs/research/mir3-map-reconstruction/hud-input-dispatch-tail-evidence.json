@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hud-input-dispatch-tail-2026-08-12-f963",
+  "title": "Round 657 (F963): HUD input dispatch TAIL (F731) - 0x42C9E0: quest hit [0x516EC] -> 0x448490 (F923 quest list); shop hit [0x3318C] -> 0x44F1D0 (F954 shop); hotkey 0x42D720 (F581) -> cooldown gates 0x7D0/0x3E8 -> item use (name cmp 0x47ADB4) -> 0x451910 msg 0x3EE (F785) -> announce add 0x415280 (F734); 0x42CBD0 key gate [0x53060]/[0x52E8C] -> 0x42B980 - HUD dispatch COMPLETE (F731+F963)",
+  "date": "2026-08-12",
+  "objective": "Decode the HUD input dispatch tail.",
+  "question": "How does the HUD route clicks/hotkeys?",
+  "method": "Disasm 0x42C9E0-0x42CBD0.",
+  "scope": "0x42C9E0-0x42CBD0; dispatch.",
+  "cell_analysis": {
+    "0x42C9E0": "quest 0x448490 + shop 0x44F1D0 + hotkey 0x42D720",
+    "gates": "0x7D0/0x3E8",
+    "use": "0x451910 0x3EE + 0x415280"
+  },
+  "exe_trace": {
+    "hud_chain": "click -> window/hotkey -> use -> announce"
+  },
+  "audit_vs_exe": {
+    "F731": "HUD dispatch", "F923": "quest", "F954": "shop"
+  },
+  "contrast": {
+    "quest_vs_shop": "0x448490 + 0x44F1D0",
+    "hotkey_vs_use": "0x42D720 + 0x3EE"
+  },
+  "verdict": "HUD input dispatch tail PRIMARY-verified: quest/shop routing + hotkey use; F731/F785 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "HUD dispatch decoded from .text.",
+  "cross_refs": ["F731: HUD dispatch", "F923: quest", "F954: shop", "F785: senders"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42C9E0+0x20",
+  "notes": [
+    "quest [0x516EC]",
+    "shop [0x3318C]",
+    "cooldown 0x7D0/0x3E8",
+    "msg 0x3EE"
+  ]
+}

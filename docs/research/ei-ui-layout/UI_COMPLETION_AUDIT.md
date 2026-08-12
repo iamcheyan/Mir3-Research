@@ -3985,3 +3985,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13/13 窗口输入；下一弧：剩余深层角落/模拟器 polish）。
+## Round 657 (2026-08-12) — HUD 输入分派尾部（Finding 963）
+
+- **任务/商店路由 + 热键使用**（HUD 分派完整）。
+- 落盘：`hud-input-dispatch-tail-evidence.json`（F963）+ RESEARCH_LOG Round 657。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HUD 分派完整；下一弧：剩余深层角落）。

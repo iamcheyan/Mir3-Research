@@ -8837,3 +8837,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 654-655（F961：对话 + 公告窗口闭合）；基线 Round 653=925178a → Round 655=e60958b（**620 连发 F335-F961**）。
 - 落盘：handoff-refresh-132-evidence.json（F962，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 656。
+## Round 657 (F963) — 2026-08-12：HUD 输入分派尾部（F731）
+
+- **〔HUD〕**0x42C9E0：任务命中 [0x516EC] → 0x448490（F923 任务列表）；商店命中 [0x3318C] → 0x44F1D0（F954 商店）；热键 0x42D720（F581）→ 冷却门 0x7D0/0x3E8 → 物品使用（名字比对 0x47ADB4）→ 0x451910 msg 0x3EE（F785）→ 公告添加 0x415280（F734）；0x42CBD0 按键门 [0x53060]/[0x52E8C] → 0x42B980——HUD 分派完整（F731+F963）。
+- 落盘：hud-input-dispatch-tail-evidence.json（F963，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 657。
