@@ -7449,3 +7449,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔点积〕**0x466FB0 = **自点积**（v·v = |v|²）、0x466FE0 = **双向量点积**（a·b）、0x445C60 = **3 向量复制**（{x,y,z} → out）。
 - **〔矩阵〕**0x467000 = **4×4 矩阵乘法**（4×4 循环、矩阵 [esp+0x14]、行×16 + 列×4）——向量/矩阵核心完整（F643 扩展，全变换共用）。
 - 落盘：vector-dot-matrix-mult-evidence.json（F644，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 338。
+## Round 339 (F645) — 2026-08-12：数学核弧闭合（F643-F644 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**269 证据 JSON**；三服务 200；master 59a6127（**303 连发 F335-F644 已推**）。
+- **〔弧〕**变换矩阵 + 向量数学（F643）+ 向量点积 + 矩阵乘法（F644）——**共享数学核完整**（支撑全部渐变/绘制/投影 F588/F594/F625/F435）。
+- 落盘：math-core-arc-closure-evidence.json（F645，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 339。

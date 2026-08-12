@@ -1,0 +1,36 @@
+{
+  "evidence_id": "math-core-arc-closure-2026-08-12-f645",
+  "title": "Round 339 (F645): Math-core arc CLOSED (F643-F644) - validation green (compileall/verify exit 0/node/JSON), services 200, master 59a6127 (303 consecutive F335-F644), 269 evidence JSONs; arc: transform matrix + vector math (F643: 4x4 matrix + normalize/cross) + vector dot + matrix mult (F644: self/pair dot + 4x4 mult) - shared math core COMPLETE (backing every gradient/blit/projection F588/F594/F625/F435)",
+  "date": "2026-08-12",
+  "objective": "Close the math-core arc.",
+  "question": "Is the shared math core fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "269 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F643": "matrix + vector math", "F644": "dot + matrix mult"},
+    "users": "gradients F588 / overlay F594 / effects F625 / projection F435",
+    "milestone": "303 consecutive rounds F335-F644"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F644": "303 rounds pushed; math core complete"
+  },
+  "contrast": {
+    "math_vs_render": "math core + all render families complete",
+    "matrix_vs_vector": "4x4 ops + vector ops"
+  },
+  "verdict": "Math-core arc CLOSED (F645): matrix + vector math byte-level; validation green, 303 consecutive rounds, 269 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F643-F644.",
+  "cross_refs": ["F643: matrix/vector", "F644: dot/mult"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "303 consecutive shipping rounds F335-F644",
+    "next: HANDOFF refresh 27, remaining corners"
+  ]
+}
