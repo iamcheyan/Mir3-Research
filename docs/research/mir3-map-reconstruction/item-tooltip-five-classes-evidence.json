@@ -1,0 +1,38 @@
+{
+  "evidence_id": "item-tooltip-five-classes-2026-08-12-f458",
+  "title": "Round 152 (F458): Item tooltip 5-class classification COMPLETE - class1 0x430C40 = MDEF (8 elemental 魔御 rows F457); class2 0x431E50 + class4 0x431860 = weapon req/attack (要求 rows 0x47BEA4-0x47BF94: 精神力要求 幻影/黑暗/神圣系 + 魔法力要求 狂风/雷电/冰冻/火焰/全魔系 + 精神力要求全道系 + 攻击力要求 + 等级要求: %d + 攻击: %d-%d(+%d)); class3 0x432A80 = special equip (0x47C0AC-0x47C170: 诅咒/幸运/攻击速度±/准确/强度/神圣 with +bonus variants); class5 0x433CF0 = consumable (0x47C2A0-0x47C2E0: 纯度/品质/数量/魔法恢复+%dMP/生命恢复+%dHP)",
+  "date": "2026-08-12",
+  "objective": "Classify all 5 item tooltip detail builders by their format sets.",
+  "question": "What stats does each item class show in the tooltip?",
+  "method": "Format-string scan per builder (0x431E50/0x432A80/0x431860/0x433CF0) + decode.",
+  "scope": "0x431E50/0x432A80/0x431860/0x433CF0; formats 0x47BEA4-0x47C2F4.",
+  "cell_analysis": {
+    "class1_0x430C40": "MDEF: name/durability/weight/defense + 8 elemental 魔御 (F457)",
+    "class2_0x431E50": "weapon req/attack: 要求 rows (精神力 幻影/黑暗/神圣系 0x47BEA4/BEBC/BED4, 魔法力 狂风/雷电/冰冻/火焰/全魔系 0x47BEEC/BF04/BF1C/BF34/BF4C, 精神力全道系 0x47BF64, 攻击力 0x47BF94) + 等级要求: %d (0x47BFA4) + 攻击: %d-%d(+%d) (0x47BFC0/BFCC) + stat rows %s: %d-%d (0x47BFB4)",
+    "class3_0x432A80": "special equip: 诅咒 +%d(+%d) 0x47C0AC/B8, 幸运 0x47C0C8/D4, 攻击速度 ±%d(±%d) 0x47C0E4/F4/108/118, 准确 0x47C12C/138, 强度 0x47C148/154, 神圣 0x47C164/170 + 防御 0x47BFFC/C008",
+    "class4_0x431860": "weapon req/attack variant: same 要求 set as class2 + 0x47C044-0x47C098 extras",
+    "class5_0x433CF0": "consumable: 纯度: %d 0x47C2A0, 品质: %d/%d 0x47C2B4, 数量: %d/%d 0x47C2C0, 魔法恢复: +%dMP 0x47C2CC, 生命恢复: +%dHP 0x47C2E0, name %s 0x47AF48"
+  },
+  "exe_trace": {
+    "tooltip": "0x4341F0 -> 0x430B70 dispatch [item+0x22]-5 -> 5 class builders"
+  },
+  "audit_vs_exe": {
+    "F457": "class1 MDEF confirmed",
+    "F456": "5-class dispatch fully classified"
+  },
+  "contrast": {
+    "weapon_vs_equip": "class2/4 = requirements + attack; class3 = special modifiers (curse/luck/speed)",
+    "consumable_vs_gear": "class5 = purity/quality/stack/recovery (no defense rows)"
+  },
+  "verdict": "Item tooltip 5-class classification COMPLETE (primary-bytes): MDEF / weapon req+attack (x2) / special equip / consumable, each with distinct format sets decoded. F340 tooltip family fully closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All format sets decoded from .rdata.",
+  "cross_refs": ["F457: MDEF class", "F456: dispatch", "F340: tooltip family"],
+  "tool": "capstone + .rdata decode",
+  "reproduce": "scan push 0x47xxxx per builder; decode formats",
+  "notes": [
+    "class2 vs class4 differ in extras (0x47C044-0x47C098 vs 0x47C0AC+ usage) [inference: 物理/魔法武器]",
+    "攻击速度 ± = attack speed modifier (weapon speed)",
+    "纯度 = ore purity (mining items); 品质 = quality"
+  ]
+}

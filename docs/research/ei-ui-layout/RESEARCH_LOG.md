@@ -6502,3 +6502,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔类〕**0x430C40 = MDEF 类（F456 分派 5 类之一）：名称行（前缀 0xA1E5 + [0x48] 后缀）、持久 %d/%d（字 [0x41]/[0x43]/[0x2A] /1000%）、重量 %d（字节 [0x24]）、防御 %d-%d (+%d)（[0x2C]/[0x2D] + 有符号 [0x55]）。
 - **〔8 元素行〕**名称表 0x47BE54：火焰系魔御/冰冻系魔御/雷电系魔御/狂风系魔御/神圣系魔御/黑暗系魔御/幻影系魔御/全魔系魔法；值 [0x2F]/[0x30] + 有符号 [0x56]；格式 %s: %d-%d (+%d)（0x47BFEC）。
 - 落盘：item-class-mdef-builder-evidence.json（F457，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 151。
+## Round 152 (F458) — 2026-08-12：物品提示框 5 类分类完成
+
+- **〔分类〕**类1 0x430C40 = 魔御（8 元素行 F457）；**类2 0x431E50 + 类4 0x431860 = 武器要求/攻击**（精神力要求 幻影/黑暗/神圣系 + 魔法力要求 狂风/雷电/冰冻/火焰/全魔系 + 全道系 + 攻击力要求 + 等级要求: %d + 攻击: %d-%d(+%d)）；**类3 0x432A80 = 特殊装备**（诅咒/幸运/攻击速度±/准确/强度/神圣）；**类5 0x433CF0 = 消耗品**（纯度/品质/数量/魔法恢复+%dMP/生命恢复+%dHP）。
+- **〔闭合〕**F340 提示框族全闭合。
+- 落盘：item-tooltip-five-classes-evidence.json（F458，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 152。

@@ -986,6 +986,11 @@ git diff --check
 - **8 元素魔御行 + 字段语义**（F340 类 1/5）。
 - 落盘：`item-class-mdef-builder-evidence.json`（F457）+ RESEARCH_LOG Round 151。
 
+## Round 152 (2026-08-12) — 物品提示框 5 类分类（Finding 458）
+
+- **魔御/武器×2/特殊装备/消耗品**全分类（F340 闭合）。
+- 落盘：`item-tooltip-five-classes-evidence.json`（F458）+ RESEARCH_LOG Round 152。
+
 ## Pending（未阻塞，持续队列）
 
 - 精确槽序（store+0x5898 第二数组来源）— 低优先。
