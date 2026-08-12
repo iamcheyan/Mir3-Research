@@ -653,3 +653,14 @@ simulator/style.css
 **特效弧闭合（F627）**：285 连发 + 251 证据 JSON——法术特效管线完整（生成 → tick → 淡出 → 移除），连接 F489/F336/F435。
 
 **commit 基线更新**：Round 317=581fd9e → Round 321=582e689（master 已推，286 连发 F335-F627）。
+
+
+## Round 322-324 追加交付（2026-08-12，Finding 628-630）：HANDOFF 刷新 22 + 565 混合/RLE 绘制 + 混合渲染弧
+
+**HANDOFF 刷新 22（F628）**：基线更新至 Round 321=582e689（286 连发）。
+
+**565 混合 + RLE 绘制（F629）**：0x4621F0（F489 绘制侧）**16 位 RGB565 通道拆分**（掩码 0x7E0F81F/0x7C0F83F/0xF81F07E0）+ **每通道 α 混合**（src×α + dst×(32−α))>>5）+ 暂存 [0x917C20..0x917C2C] + **RLE 操作码 0xC2/0xC3 填充**（掩码 [ebx+0x6C..0x74]、移位 [0x67..0x69]，F436 确认）——法术特效渲染（F625 生成 + F626 tick + F629 绘制）**完整**。
+
+**混合渲染弧闭合（F630）**：288 连发 + 254 证据 JSON；用户 quest-design 文件（item_catalog.json/vision_item_desc/vision_batches）在工作树——未触碰。
+
+**commit 基线更新**：Round 321=582e689 → Round 324=2603e46（master 已推，289 连发 F335-F630）。

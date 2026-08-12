@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-23-2026-08-12-f631",
+  "title": "Round 325 (F631): HANDOFF refresh 23 - Rounds 322-324 (F628-F630: 565 blend + RLE paint + blend render arc closure), baseline Round 321=582e689 -> Round 324=2603e46 (289 consecutive F335-F630), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 322-324.",
+  "question": "What changed since HANDOFF refresh 22?",
+  "method": "Append Round 322-324 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 322-324 appended (3 rounds, F628-F630)",
+    "baseline": "Round 321=582e689 -> Round 324=2603e46 (289 consecutive F335-F630)",
+    "arcs": {"blend": "F629 565 blend + RLE", "closure": "F630 blend render arc"},
+    "key": "effect render pipeline complete (spawn+tick+paint)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F628": "refresh 22 baseline -> now refresh 23", "F335-F630": "289 rounds"
+  },
+  "contrast": {
+    "refresh_22_vs_23": "F629-F630 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 23 (F631): Rounds 322-324 documented (565 blend + effect render closure), baseline 582e689 -> 2603e46, 289 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F629-F630 evidence.",
+  "cross_refs": ["F628: refresh 22", "F630: blend closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 322-324 section to HANDOFF",
+  "notes": [
+    "289 consecutive shipping rounds F335-F630",
+    "next: remaining deep corners, sim polish"
+  ]
+}

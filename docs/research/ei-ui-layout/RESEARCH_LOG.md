@@ -7381,3 +7381,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**565 混合 + RLE 绘制（F629）补全法术特效渲染（F625 生成 + F626 tick + F629 绘制 = **完整**）。
 - **〔仓库〕**用户 quest-design 文件（item_catalog.json/vision_item_desc/vision_batches）在工作树——**未触碰**（用户所有）。
 - 落盘：blend-render-arc-closure-evidence.json（F630，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 324。
+## Round 325 (F631) — 2026-08-12：HANDOFF 刷新 23（Round 322-324）
+
+- **〔刷新〕**HANDOFF 追加 Round 322-324（F629-F630：565 混合/RLE + 混合渲染弧）；基线 Round 321=582e689 → Round 324=2603e46（**289 连发 F335-F630**）。
+- 落盘：handoff-refresh-23-evidence.json（F631，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 325。
