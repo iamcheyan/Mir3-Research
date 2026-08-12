@@ -1,0 +1,39 @@
+{
+  "evidence_id": "file-mapping-resource-loader-family-2026-08-12-f577",
+  "title": "Round 271 (F577): File-mapping/resource loader family (0x45A650-0x45B610) - CLOSES long-pending tails: 0x45B5B0 = RESOURCE loader (FindResourceA 0x4760B0/LoadResource 0x4760B4/LockResource 0x4760F4 + 0x45BA60); 0x45B610 = FILE-MAPPING loader (CreateFileA 0x4760DC -> CreateFileMappingA 0x4760A4 -> MapViewOfFile 0x4760A0, CloseHandle 0x4760E4, Unmap 0x4760F8) - the 'mmap mode' of WIL loader F436 (0x466130 dual mode); 0x45B490 = dispatcher: try resource first, else file mapping, returns view, vtable[0xC] init + vtable[+8] release on fail; 0x45A650 = container DESTRUCTOR: timeKillEvent (0x476310) timer [0x140] + release 7 views [+0x118]/[+0x11C]/[+0x120]/[+0x124]/[+0x128]/[+0x12C] (vtable[+8]) + [0x134]=0; ctor 0x45A850 vtable 0x476BD8; 0x45A880 static dtor for globals 0x9135C0/0x9135C4 - file/resource loader layer byte-level (F436 connection)",
+  "date": "2026-08-12",
+  "objective": "Decode the long-pending 0x45A650/0x45B490 tails.",
+  "question": "What are the 0x45A650/0x45B490 functions?",
+  "method": "Disasm 0x45A650-0x45B610 + IAT cross-check.",
+  "scope": "0x45A650-0x45B610; vtable 0x476BD8; globals 0x9135C0.",
+  "cell_analysis": {
+    "0x45B5B0": "RESOURCE loader: FindResourceA 0x4760B0 -> LoadResource 0x4760B4 -> LockResource 0x4760F4 -> 0x45BA60",
+    "0x45B610": "FILE-MAPPING loader: CreateFileA 0x4760DC -> CreateFileMappingA 0x4760A4 -> MapViewOfFile 0x4760A0 (CloseHandle 0x4760E4, Unmap 0x4760F8) - F436 mmap mode",
+    "0x45B490": "dispatcher: try resource 0x45B5B0, else file 0x45B610, vtable[0xC] init, vtable[+8] release on fail",
+    "0x45A650": "container DESTRUCTOR: timeKillEvent 0x476310 ([0x140] timer) + release 7 views [+0x118..+0x12C] (vtable[+8]) + [0x134]=0",
+    "0x45A850": "ctor vtable 0x476BD8",
+    "0x45A880": "static dtor globals 0x9135C0/0x9135C4"
+  },
+  "exe_trace": {
+    "loader_chain": "open -> 0x45B490 (resource/file) -> mapped view -> read -> 0x45A650 cleanup (kill timer + unmap 7 views)"
+  },
+  "audit_vs_exe": {
+    "F436": "0x466130 WIL loader file/mmap dual mode = 0x45B610 mmap + 0x45B5B0 resource CONFIRMED", "pending": "0x45A650/0x45B490 tails CLOSED"
+  },
+  "contrast": {
+    "resource_vs_file": "FindResource (embedded) vs CreateFileA+MapViewOfFile (external)",
+    "load_vs_unload": "0x45B5B0/0x45B610 load vs 0x45A650 unload"
+  },
+  "verdict": "File-mapping/resource loader family PRIMARY-verified: 0x45B5B0 resource + 0x45B610 file-mapping + 0x45B490 dispatcher + 0x45A650 destructor (timer + 7 views); F436 WIL dual-mode loader closed; long-pending tails done.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Functions + IAT decoded from .text.",
+  "cross_refs": ["F436: WIL loader 0x466130", "F128-136: WIL table", "F372: 0x466130 file mode"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x45B490+0x40; 0x45B610+0x30; 0x45A650+0x20",
+  "notes": [
+    "7 views per container = multi-section WIL (color/delta/mask?)",
+    "0x45BA60 = final mapping validator",
+    "0x9135C0/0x9135C4 = loader singletons",
+    "timeKillEvent timer [0x140] = async load watchdog"
+  ]
+}

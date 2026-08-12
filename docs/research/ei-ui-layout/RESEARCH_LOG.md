@@ -7125,3 +7125,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实现〕**app.js 新增 sendFrame()：镜像原版 **'#%d%s%s!'/'#%d%s!'** 帧（F572 0x47C840/0x47C800）+ seq 计数 9→1 回绕（[obj+0x14]）→ 聊天环 '[送出] #<seq><cmd>/<args>!'；聊天输入接线：'+'→0x41E740、'@'→0x47ACB8、'!'→0x47ACF8、广N→0x41EDE0、普通→0x404600（F355 分派）。
 - **〔验证〕**node --check OK + sim 200 无回归——模拟器现在讲真实 KR MIR3 文本协议。
 - 落盘：sim-text-frame-protocol-evidence.json（F576，primary-bytes 帧格式 + derived 集成）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 270。
+## Round 271 (F577) — 2026-08-12：文件映射/资源装载器族（0x45A650-0x45B610，长尾闭合）
+
+- **〔装载〕**0x45B5B0 = **资源装载器**（FindResourceA 0x4760B0 → LoadResource 0x4760B4 → LockResource 0x4760F4 → 0x45BA60）；0x45B610 = **文件映射装载器**（CreateFileA 0x4760DC → CreateFileMappingA 0x4760A4 → MapViewOfFile 0x4760A0）——**F436 WIL 装载器 0x466130 双模式 = 资源 + mmap 确认**。
+- **〔分派/析构〕**0x45B490 = 分派（先资源后文件、vtable[0xC] 初始化、失败 vtable[+8] 释放）；**0x45A650 = 容器析构**（timeKillEvent 0x476310 杀计时器 [0x140] + 释放 **7 视图** [+0x118..+0x12C] + [0x134]=0）；ctor 0x45A850 vtable 0x476BD8。
+- **〔闭合〕**长期 pending 项（0x45A650 尾部/0x45B490 body）完成。
+- 落盘：file-mapping-resource-loader-evidence.json（F577，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 271。
