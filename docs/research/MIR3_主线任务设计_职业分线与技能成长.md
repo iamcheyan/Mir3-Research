@@ -217,7 +217,52 @@ mir3-website 法师技能按元素分系，天然构成任务链骨架：
 
 ---
 
-## 六、待办 / 下一步
+## 六、副线任务体系（不影响剧情）
+
+> 设计原则：**副线 = 世界填充物**，与主线剧情解耦——玩家跳过副线不损失剧情体验，
+> 做副线获得资源/声望/趣味。全部落在第三章能力边界内。
+
+### 6.1 副线分类（复用原版 34 个任务 + 新增）
+
+**A. 悬赏讨伐类（原版就有）**
+- 清剿怪物：`Wolves in Bichon` / `Elephants on Parade` / `Are they in Banya Yeti?`（按新手村三地各一套）
+- 系列讨伐：`Crushing the Remains`（骷髅占洞，2步）
+- 深层清剿：`Descent into Darkness`（地下深渊，4步——毕业前最后挑战）
+
+**B. 采集救援类**
+- 解药采集：`Curing the Poison`（蜘蛛毒液→蜘蛛牙→麻痹源头→BOSS 蜘蛛女王，6步完整故事线）
+- 城镇补给：`Feeding Bichon Town` / `Feeding Banya Village` / `Feeding Lost Paradise`（收集食物，各新手村一套）
+- 护送替代：`Time for the Fleas to Flee`（清理跳蚤洞穴）
+
+**C. 跑腿递送类**
+- 找钥匙：`Hunting for David's Key` / `Haylee's Key` / `Kacy's Key`（三个 NPC 各自丢钥匙——三件套任务）
+- 寻物归还：`Gresham's Journal` / `Isaac's Journal` / `Henry's Journal`（三位居民丢日记——三件套）
+- 新手教学：`Let's try something new`（引导玩家尝试新功能）
+
+**D. 区域收复类**
+- `Reclaiming the Carved Tomb`（夺回石窟墓穴，4步——从清野猪到洞穴深处打 BOSS）
+
+### 6.2 新增副线设计建议（贴合本服世界观）
+
+| 类型 | 设计 | 说明 |
+|------|------|------|
+| **万事通悬赏板** | 每日/周常打怪悬赏（指定区域 N 只怪）| 用 QuestType.Daily/Weekly，奖励金币+经验 |
+| **元素采集**（法师）| 收集元素结晶交 NPC 换护身符 | 复用任务道具，挂载在各自出生地 |
+| **亡灵超度**（道士）| 特定亡灵怪掉落"怨念珠"，超度后净化 | 道士专属趣味副线 |
+| **武器试炼**（战士）| 用指定武器杀满 N 怪 → 武器经验/称号 | 结合 NPCCheck.WeaponLevel |
+| **赏金 BOSS** | 每周一个随机 BOSS 悬赏（沃玛/祖玛/牛魔王轮换）| Weekly + KillMonster BOSS 限定 |
+
+### 6.3 副线与主线的边界约定
+
+1. **副线不产生 DataList 剧情标记**（剧情标记只属于主线）；副线可用 DataValue 做计数（如"悬赏完成次数"）
+2. **副线 NPC 与主线 NPC 分离**：副线用独立 NPC（或同 NPC 的独立页面树），避免对话树交叉
+3. **副线奖励不包含主线关键道具**：技能书只从主线觉醒任务出；副线给金币/经验/消耗品/称号
+4. **副线可反复做**（Daily/Weekly/Repeatable），主线一次性（Story）
+5. 原版 34 个任务全部保留为副线基础，**中文名/对话按新世界观润色**（如"Wolves in Bichon"→"比奇狼患"）
+
+---
+
+## 七、待办 / 下一步
 
 - [x] 核对职业出生点具体地图（已确认：战士=比奇城 / 法师=潘夜村 / 道士=失乐园，数据源 SafeZoneInfo.StartClass）
 - [x] 任务能力边界盘点（已确认：3.1 支持 / 3.2 不支持，见第三章约定）
