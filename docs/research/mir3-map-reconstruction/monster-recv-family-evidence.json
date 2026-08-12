@@ -1,0 +1,35 @@
+{
+  "evidence_id": "monster-recv-family-2026-08-12-f523",
+  "title": "Round 217 (F523): Monster recv family structure - 0x410B80 entity-state machine (NOT msgid switch): type byte [0x89] dispatch, state flags [0x629D3-0x629D8] + counter [0x62A77] gate, record lookup 0x44A820 (0x8AA5A8) -> vtable+0x10 -> stats 0x40A4D0 -> REPLY msgs 0xBC7 (type-7 lookup, 0x410C0F) / 0xBD1 (0x410C93) via 0x451450; transform/update msgs 0xBC6-0xBD8 (F449) drive these - monster recv = per-entity state transitions, complement to spawn 0x421CFC (F520)",
+  "date": "2026-08-12",
+  "objective": "Decode the monster recv family structure.",
+  "question": "How do monster update msgs (0xBC6-0xBD8) work?",
+  "method": "Disasm 0x410B80-0x410C9D (monster entity-state machine).",
+  "scope": "0x410B80-0x410CA2; type [0x89]; flags [0x629D3-0x629D8].",
+  "cell_analysis": {
+    "state_machine": {"type": "byte [0x89] dispatch (7 = special record path)", "gate": "flags [0x629D3-0x629D8] + counter [0x62A77] > N", "lookup": "0x44A820 (0x8AA5A8 record)", "stats": "0x40A4D0 (type 0x1A + store 0x5600FC)"},
+    "replies": {"0xBC7": "type-7 record reply (0x410C0F, coords + [0xC1] + vtable+0x10)", "0xBD1": "transform reply (0x410C93)"},
+    "family": "0xBC6-0xBD8 msgs (F449) drive per-entity transitions; spawn = 0x421CFC (F520)"
+  },
+  "exe_trace": {
+    "monster_chain": "server msg -> state machine (record+flags) -> stats/reply -> render (F433)"
+  },
+  "audit_vs_exe": {
+    "F449": "handler family structure confirmed", "F489": "spawn separate", "F520": "recv2 create"
+  },
+  "contrast": {
+    "state_vs_switch": "monster = per-entity state machine vs recv tables (msgid switches)",
+    "reply_vs_update": "0xBC7 reply vs 0xBD1 transform"
+  },
+  "verdict": "Monster recv family PRIMARY-verified: 0x410B80 per-entity state machine (type [0x89], flags, record lookup, stats, replies 0xBC7/0xBD1); 0xBC6-0xBD8 drive transitions. Monster recv structure complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "State machine decoded from .text.",
+  "cross_refs": ["F449: update handlers", "F489: spawn", "F520: recv2"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x410B80+0x40, 0x410C38+0x40",
+  "notes": [
+    "type 7 = special record path (transform)",
+    "reply 0xBC7 = server sync after record lookup",
+    "per-entity flags gate transitions (F449 state bytes)"
+  ]
+}

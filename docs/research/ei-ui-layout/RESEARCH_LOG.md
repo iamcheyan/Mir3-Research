@@ -6844,3 +6844,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master ce7ccc2（**181 连发已推**）。
 - **〔弧汇总〕**recv2 13 处理器（F520）+ recv1 49 处理器（F521）——**349 入站槽 + 怪物族全语义映射**；完整双向包图景（出站 F514 + 入站 F517-F521）。
 - 落盘：inbound-picture-closure-evidence.json（F522，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 216。
+## Round 217 (F523) — 2026-08-12：怪物接收族结构（实体状态机）
+
+- **〔结构〕**0x410B80 = 每实体状态机（非 msgid 开关）：type [0x89] 分派、状态旗标 [0x629D3-0x629D8] + 计数 [0x62A77] 门、记录查找 0x44A820 → vtable+0x10 → 属性 0x40A4D0 → **回复 msg 0xBC7（type-7 查找）/ 0xBD1（变形）** 经 0x451450。
+- **〔族〕**0xBC6-0xBD8（F449）驱动每实体转换；生成 = 0x421CFC（F520）。
+- 落盘：monster-recv-family-evidence.json（F523，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 217。

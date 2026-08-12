@@ -1311,9 +1311,14 @@ git diff --check
 - **F520-F521 弧闭合 + 181 连发**；双向包图景完整。
 - 落盘：`inbound-picture-closure-evidence.json`（F522）+ RESEARCH_LOG Round 216。
 
+## Round 217 (2026-08-12) — 怪物接收族结构（Finding 523）
+
+- **每实体状态机**（记录查找 + 回复 0xBC7/0xBD1）。
+- 落盘：`monster-recv-family-evidence.json`（F523）+ RESEARCH_LOG Round 217。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（包层全闭合；其余 = 持续深化）。
+- 无阻塞项（怪物接收族完整）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
