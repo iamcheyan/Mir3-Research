@@ -1,0 +1,37 @@
+{
+  "evidence_id": "audio-arc-closure-2026-08-12-f634",
+  "title": "Round 328 (F634): Audio arc CLOSED (F632-F633) - validation green (compileall/verify exit 0/node/JSON), services 200, master da0e285 (292 consecutive F335-F633), 258 evidence JSONs; arc: sound engine + DirectSound (F632: play chain + DSound init) + music engine (F633: MIDI ctor + stop) - AUDIO subsystem complete (sound effects + DSound + MIDI BGM), connecting F607/F470/F528; user quest files (item_catalog.json/vision_item_desc/vision_batches) untouched",
+  "date": "2026-08-12",
+  "objective": "Close the audio arc.",
+  "question": "Is the audio subsystem fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "258 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F632": "sound engine + DSound", "F633": "music MIDI engine"},
+    "audio": "sound effects + DirectSound + MIDI BGM = COMPLETE (F607/F470/F528)",
+    "repo": "user quest files untouched",
+    "milestone": "292 consecutive rounds F335-F633"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F633": "292 rounds pushed; audio complete"
+  },
+  "contrast": {
+    "sound_vs_music": "0x45B250 sound + 0x45BD80 MIDI music",
+    "init_vs_play": "DSound init + play/stop chains"
+  },
+  "verdict": "Audio arc CLOSED (F634): sound + DSound + MIDI music all byte-level; validation green, 292 consecutive rounds, 258 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F632-F633.",
+  "cross_refs": ["F632: sound", "F633: music", "F607: audio init"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "292 consecutive shipping rounds F335-F633",
+    "next: HANDOFF refresh 24, remaining corners"
+  ]
+}

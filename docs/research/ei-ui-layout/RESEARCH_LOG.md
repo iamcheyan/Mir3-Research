@@ -7395,3 +7395,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔构造〕**0x45BD80 = 音乐 ctor（状态清 [0x0..0x38]/[0x74..0x1AC] + SetRect 0x4762B0 @ [0x3C]/[0x4C] + 0x23 双字 ×2）。
 - **〔停止〕**0x45BE20 = 音乐停止/清理（0x45C550 + **midiOutStop 0x400E** 经 0x4680BC + 释放 0x4680F8/0x4680B0/0x4680AA + 0x4680A4）——音乐引擎字节级（F632 音效引擎兄弟、F607 音频族）。
 - 落盘：music-engine-ctor-stop-evidence.json（F633，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 327。
+## Round 328 (F634) — 2026-08-12：音频弧闭合（F632-F633 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**258 证据 JSON**；三服务 200；master da0e285（**292 连发 F335-F633 已推**）。
+- **〔弧〕**音效引擎 + DirectSound（F632）+ 音乐 MIDI 引擎（F633）——**音频子系统完整（音效 + DSound + MIDI BGM）**，连接 F607/F470/F528。
+- **〔仓库〕**用户 quest 文件（item_catalog.json/vision_item_desc/vision_batches）未触碰。
+- 落盘：audio-arc-closure-evidence.json（F634，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 328。
