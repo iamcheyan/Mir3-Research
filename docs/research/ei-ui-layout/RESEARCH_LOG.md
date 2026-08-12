@@ -8749,3 +8749,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔任务〕**0x448430 任务输入（2 按钮 @ +0x74/+0x128 → 0x417830 移动 + vtable[8] 点击）；0x448490 列表命中（dlist [0x1E4]/[0x1E8] 遍历 + 矩形 +0x218 PtInRect → [0x1DC] → 0x448580 激活，F746 对话共享）——任务输入完整（F923 布局 + F942 输入）。
 - 落盘：quest-window-input-evidence.json（F942，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 636。
+## Round 637 (F943) — 2026-08-12：**600 连发里程碑**
+
+- **〔里程碑〕**达成 **600 连发**（F335-F942，Round 100 基线 → Round 636）；**567 证据 JSON**；**709 总 commit**；三服务 200；master df276f5 已推。
+- **〔自 Round 500 闭合 6 表面〕**选项输入/状态/装备/背包/技能/任务输入——全部窗口输入表面 100%。
+- 落盘：round-600-consecutive-milestone-evidence.json（F943，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 637。

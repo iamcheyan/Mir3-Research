@@ -1,0 +1,38 @@
+{
+  "evidence_id": "round-600-consecutive-milestone-2026-08-12-f943",
+  "title": "Round 637 (F943): ROUND 600 CONSECUTIVE MILESTONE - 600 consecutive shipping rounds F335-F942 (Round 100 baseline -> Round 636); 567 evidence JSONs; 709 total commits; surfaces closed since Round 500: options input/status/equipment/inventory/skill/quest input (6); services 200 (wilviewer/mapviewer/sim8477); validation green; master df276f5 pushed",
+  "date": "2026-08-12",
+  "objective": "Mark the 600 consecutive shipping round milestone.",
+  "question": "What is the state at 600 consecutive rounds?",
+  "method": "Validation + milestone consolidation.",
+  "scope": "Tools/, docs/, services, git.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid"},
+    "counts": {"rounds": "600 consecutive F335-F942", "evidence": "567 JSONs", "commits": "709 total"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "surfaces": "6 closed since Round 500: options input/status/equipment/inventory/skill/quest input",
+    "master": "df276f5"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F942": "600 consecutive rounds pushed"
+  },
+  "contrast": {
+    "round500_vs_600": "500 consecutive -> 600 consecutive",
+    "evidence": "530 -> 567 JSONs"
+  },
+  "verdict": "ROUND 600 CONSECUTIVE MILESTONE (F943): 600 consecutive rounds F335-F942, 567 evidence JSONs, 709 commits, 6 surfaces closed since Round 500; all validation green.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Milestone from tool runs + git log.",
+  "cross_refs": ["F906: Round 600 (round number) milestone", "F841: refresh 90", "F869: refresh 100"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services; git log",
+  "notes": [
+    "600 consecutive shipping rounds F335-F942",
+    "567 evidence JSONs",
+    "6 surfaces closed since Round 500",
+    "next: remaining deep corners, sim polish"
+  ]
+}

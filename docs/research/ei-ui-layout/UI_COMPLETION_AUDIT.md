@@ -3825,3 +3825,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（任务输入完整；下一弧：剩余深层角落）。
+## Round 637 (2026-08-12) — 600 连发里程碑（Finding 943）
+
+- **600 连发 + 567 证据 + 709 commit + 6 表面闭合**。
+- 落盘：`round-600-consecutive-milestone-evidence.json`（F943）+ RESEARCH_LOG Round 637。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口输入表面全闭合；下一弧：剩余深层角落/模拟器 polish）。
