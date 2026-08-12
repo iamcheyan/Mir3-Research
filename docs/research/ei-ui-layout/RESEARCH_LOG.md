@@ -7162,3 +7162,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 273-276（F579-F582：零 pending + HUD 交互层）；基线 Round 268=d54bc29 → Round 276=6ef0adb（**241 连发 F335-F582**）。
 - 落盘：handoff-refresh-12-evidence.json（F583，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 277。
+## Round 278 (F584) — 2026-08-12：小地图 HUD + 大地图渲染
+
+- **〔小地图〕**0x429630：缩放态 [0xD42]（1=放大 +0xA / 2=缩小 -0xA，钳制 0x2E/0，自动清除）、帧 0x33 → 0x466130 → 0x460240 绘制于 (0x113, 0x1DE-[0xD40]) 0x320×0x258、**6 快捷装备图标**（记录 [0xDA8] stride 0xC24、矩形 [0xD44] stride 0x10、0x430A40、x-[0xD40] 滚动）。
+- **〔大地图〕**0x429740：状态 [0x7DA1D4] 4 路 jt 0x42A83C（帧 0x82/0x83/0x84/0x85 经 0x466130）+ **玩家箭头 [0x7D9262]/[0x7D9264]**（2 字）+ 0x45FD50 绘制（([edi+0xC58]+0x2AC, [edi+0xC5C]+0x32)）+ HP/MP 条 [0x7DA109..0x7DA11D] + 相机 [0x7DA115]。
+- 落盘：minimap-hud-worldmap-render-evidence.json（F584，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 278。

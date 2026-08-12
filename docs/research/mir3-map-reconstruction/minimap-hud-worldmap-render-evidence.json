@@ -1,0 +1,36 @@
+{
+  "evidence_id": "minimap-hud-and-worldmap-render-2026-08-12-f584",
+  "title": "Round 278 (F584): Minimap HUD + world-map render - 0x429630 minimap: zoom state [0xD42] (1=in +0xA, 2=out -0xA, clamp 0x2E/0, auto-clear), frame 0x33 -> 0x466130 WIL load -> 0x460240 blit at screen (0x113, 0x1DE-[0xD40]) size 0x320x0x258 (800x600), + 6 quick-equip icons (records [0xDA8] stride 0xC24, rects [0xD44] stride 0x10, 0x430A40 draw, x-[0xD40] scroll); 0x429740 = WORLD MAP full-surface render: state [0x7DA1D4] 4-way jt 0x42A83C (0x82/0x83/0x84/0x85 -> frame via 0x466130) + player arrow at [0x7D9262]/[0x7D9264] (2 words) + 0x45FD50 blit (pos [edi+0xC58]+0x2AC, [edi+0xC5C]+0x32) + HP/MP bars [0x7DA109..0x7DA11D] + camera [0x7DA115] - minimap + world-map render complete (F482 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the minimap HUD + world-map render.",
+  "question": "How do the minimap/world-map render?",
+  "method": "Disasm 0x429630 + 0x429740-0x429868.",
+  "scope": "0x429630-0x429868; frame 0x33; state [0x7DA1D4].",
+  "cell_analysis": {
+    "0x429630_minimap": {"zoom": "[0xD42] 1=in +0xA / 2=out -0xA, clamp 0x2E/0, auto-clear", "frame": "0x33 -> 0x466130", "blit": "0x460240 at (0x113, 0x1DE-[0xD40]) 0x320x0x258", "icons": "6 quick-equip (records [0xDA8] stride 0xC24, rects [0xD44] stride 0x10, 0x430A40, x-[0xD40])"},
+    "0x429740_worldmap": {"state": "[0x7DA1D4] 4-way jt 0x42A83C -> frame 0x82/0x83/0x84/0x85 via 0x466130", "player": "arrow at [0x7D9262]/[0x7D9264] (2 words)", "blit": "0x45FD50 at ([edi+0xC58]+0x2AC, [edi+0xC5C]+0x32) 0x320x0x258", "bars": "HP/MP [0x7DA109..0x7DA11D]", "camera": "[0x7DA115]"}
+  },
+  "exe_trace": {
+    "minimap_chain": "HUD tick -> zoom state -> frame 0x33 blit + 6 equip icons",
+    "worldmap_chain": "world map open -> state jt -> frame blit + player arrow + bars"
+  },
+  "audit_vs_exe": {
+    "F482": "minimap blit 0x460240 CONFIRMED + extended", "F509/F310": "FMMap frames", "F377": "MMap calibration"
+  },
+  "contrast": {
+    "minimap_vs_worldmap": "minimap = frame 0x33 small blit + icons; worldmap = 4-state full render + arrow",
+    "zoom": "minimap [0xD40] zoom vs worldmap fixed 0x320x0x258"
+  },
+  "verdict": "Minimap + world-map render PRIMARY-verified: minimap zoom/frame 0x33/6 icons; world-map 4-state jt + player arrow + bars; F482 extended to full HUD render.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Render paths decoded from .text.",
+  "cross_refs": ["F482: minimap blit", "F509: MiniMap.txt", "F310: FMMap frames"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x429630+0x30; 0x429740+0x40",
+  "notes": [
+    "frame 0x33 = FMMap 51 (0x33 = 51)",
+    "quick-equip icons = 6 slots shared with hot-key records (F581)",
+    "world map frames 0x82-0x85 = 4 zoom levels?",
+    "player arrow = 2-word pos [0x7D9262]"
+  ]
+}
