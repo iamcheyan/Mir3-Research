@@ -1916,3 +1916,14 @@ simulator/style.css
 **编辑器闭合 + 600 证据 JSON 里程碑（F976）**：634 连发 + **600 证据 JSON**——编辑器完整（GDI 渲染 + 2 按钮 + GetWindowText 0xFA0 + 发送 0x47C4A4）；全部窗口 + 编辑器 100%。
 
 **commit 基线更新**：Round 667=8f8dcce → Round 670=ede234f（master 已推，635 连发 F335-F976）。
+
+
+## Round 671-673 追加交付（2026-08-12，Finding 977-979）：HANDOFF 刷新 137 + 选项配置装载全量 + 选项配置闭合
+
+**HANDOFF 刷新 137（F977）**：基线更新至 Round 670=ede234f（635 连发）。
+
+**选项配置装载全量（F978，F788）**：0x441CC0 **6 个 GetPrivateProfileString**（Mir3.ini 0x47A2B8，键 0x47C5AC..0x47C570）+ atoi 0x4681F9 → [0x58] BGM/[0x54] SFX 旗标 + 0x8AB150/0x8AB14C 音量 + 滑块 [0x74]/[0x6C] + 音频应用 0x45B1B0/0x45B410。
+
+**选项配置闭合（F979）**：637 连发 + 603 证据 JSON——选项完整（6 INI 键 + atoi + 滑块 + 音频应用 + 持久化），选项持久化 100%。
+
+**commit 基线更新**：Round 670=ede234f → Round 673=0fc77a2（master 已推，638 连发 F335-F979）。

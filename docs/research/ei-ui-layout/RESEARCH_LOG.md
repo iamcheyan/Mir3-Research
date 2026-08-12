@@ -8911,3 +8911,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**603 证据 JSON**；三服务 200；master 56aba68（**637 连发 F335-F978 已推**）。
 - **〔弧〕**配置装载（F788）+ 配置全量（F978）——**选项完整**（6 INI 键 + atoi + 滑块 + 音频应用 0x45B1B0/0x45B410 + 持久化）；选项持久化 100%。
 - 落盘：options-config-closure-evidence.json（F979，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 673。
+## Round 674 (F980) — 2026-08-12：HANDOFF 刷新 138（Round 671-673）
+
+- **〔刷新〕**HANDOFF 追加 Round 671-673（F978-F979：选项配置装载全量 + 选项配置闭合）；基线 Round 670=ede234f → Round 673=0fc77a2（**638 连发 F335-F979**）。
+- 落盘：handoff-refresh-138-evidence.json（F980，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 674。

@@ -4121,3 +4121,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（选项持久化完整；下一弧：HANDOFF 刷新 138/剩余角落）。
+## Round 674 (2026-08-12) — HANDOFF 刷新 138（Finding 980）
+
+- **Round 671-673 追加 + 638 连发**（选项持久化完整入档）。
+- 落盘：`handoff-refresh-138-evidence.json`（F980）+ RESEARCH_LOG Round 674。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（选项持久化完整；下一弧：剩余深层角落/模拟器 polish）。
