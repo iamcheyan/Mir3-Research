@@ -1,0 +1,36 @@
+{
+  "evidence_id": "simulator-store-mode-cycle-2026-08-12-f497",
+  "title": "Round 191 (F497): Simulator store mode-cycle buttons - added 5-button cycle (购买/出售/仓库/制作/详情) to window.store-candidate; click flips STATE.storeState (0-4) + renders per-mode grid (state2 仓库 = 12 cells '仓库格 N · candidate' matching F460 +0x720 12-cell grid cols 22/60/98/136 × rows 43/81/119); BROWSER VERIFIED: click 仓库 -> state 0->2, label '仓库 (state2 · msg 0x2BC → 0x44F940)', 12 store-like slots rendered; fixes renderWindows() call (was undefined renderAll)",
+  "date": "2026-08-12",
+  "objective": "Add store mode-cycle buttons to the simulator + browser-verify.",
+  "question": "Can the sim now cycle store modes like the client (F399/F460)?",
+  "method": "app.js edit (5 buttons + renderWindows) + harness browser verify.",
+  "scope": "Tools/mir3_client_simulator/app.js window.store-candidate; browser 8765/sim.",
+  "cell_analysis": {
+    "feature": {"buttons": "5 (购买/出售/仓库/制作/详情) at #store-mode-cycle", "state": "click -> STATE.storeState = idx + renderWindows()", "grids": "per-state storeGridSlots (state2 = 12-cell 仓库 F460; state0/3/4 = 5-row)"},
+    "verify": {"browser": "click 仓库 -> state 0->2, label '仓库 (state2 · msg 0x2BC → 0x44F940)', 12 仓库格 slots rendered", "fix": "renderAll -> renderWindows (module-local vs top-level)"},
+    "f460_align": "12-cell 仓库 grid matches F460 +0x720 cols 22/60/98/136 × rows 43/81/119"
+  },
+  "exe_trace": {
+    "sim_chain": "mode button -> storeState -> storeGridSlots -> per-mode grid (F399 5-state graph)"
+  },
+  "audit_vs_exe": {
+    "F399": "store-state graph now interactable in sim",
+    "F460": "warehouse grid geometry reproduced"
+  },
+  "contrast": {
+    "test_nav_vs_cycle": "existing 商店状态±1 (test nav) vs new in-window mode buttons",
+    "sim_vs_client": "sim buttons = convenience; client = mode byte +0x5F8 (F399)"
+  },
+  "verdict": "Simulator store mode-cycle PRIMARY-verified (browser): 5-button cycle flips state + renders per-mode grids; 仓库 12-cell grid matches F460. Store modes now interactable in sim.",
+  "evidence_level": "derived-tooling (sim feature) + primary (browser verify)",
+  "evidence_level_note": "Feature added + browser-verified; client semantics from F399/F460.",
+  "cross_refs": ["F399: state graph", "F460: store layout", "F57: modes"],
+  "tool": "app.js edit + puppeteer browser",
+  "reproduce": "open /sim/ -> NPC 商店 -> click 仓库 button -> 12 仓库格",
+  "notes": [
+    "renderWindows is the top-level window rebuild fn",
+    "store slots render with .slot class (not id^=store.)",
+    "state2 grid = 12 cells exactly (F460)"
+  ]
+}

@@ -6715,3 +6715,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔索引〕**0x43B770：槽 = **(tile_row+1)*14**（字节 [0x124]++ × imul 0xE）+ 14 槽带循环 → 存储 0x5600FC + idx*0x144（F452 stride）+ 文件名 0x56B22C + idx*0x104。
 - **〔对齐〕**mapviewer audit 公式（v = file − floor(file/14)、槽 = v、带 0-13/14-27/28-41/42-55/56-69）= 客户端精确匹配——F343/F452 交叉确认。
 - 落盘：client-tile-store-index-evidence.json（F496，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 190。
+## Round 191 (F497) — 2026-08-12：模拟器商店模式循环按钮
+
+- **〔功能〕**window.store-candidate 加 5 按钮（购买/出售/仓库/制作/详情）；点击翻 STATE.storeState + renderWindows()（修正：renderAll 未定义 → renderWindows 顶层函数）。
+- **〔验证〕**浏览器：点「仓库」→ state 0→2、标签「仓库 (state2 · msg 0x2BC → 0x44F940)」、**12 仓库格**渲染（匹配 F460 +0x720 12 格）。
+- 落盘：simulator-store-mode-cycle-evidence.json（F497，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 191。

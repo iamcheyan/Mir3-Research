@@ -1181,6 +1181,11 @@ git diff --check
 - **(row+1)*14 槽公式字节确认**；mapviewer 完全对齐。
 - 落盘：`client-tile-store-index-evidence.json`（F496）+ RESEARCH_LOG Round 190。
 
+## Round 191 (2026-08-12) — 模拟器商店模式循环（Finding 497）
+
+- **5 按钮模式循环 + 浏览器验证**（12 仓库格）。
+- 落盘：`simulator-store-mode-cycle-evidence.json`（F497）+ RESEARCH_LOG Round 191。
+
 ## Pending（未阻塞，持续队列）
 
 - 服务端 .dat 名称编码（自定义移位）— 低优先（唯一）。

@@ -571,6 +571,26 @@ function fillWindowContent(w) {
       fb.id = "store-feedback";
       fb.textContent = STATE.storeFeedback || "";
       content.appendChild(fb);
+      // Round 191 (F399/F460): mode-cycle buttons - store mode byte +0x5F8
+      // (BUY 0x44F480 / SELL 0x44F710 / 仓库 0x44F940 / CRAFT 0x44FB00 / detail).
+      const cycle = document.createElement("div");
+      cycle.style.cssText = "left:8px;top:312px;width:280px;height:20px";
+      cycle.id = "store-mode-cycle";
+      const modeNames = ["购买", "出售", "仓库", "制作", "详情"];
+      modeNames.forEach((nm, mi) => {
+        const b = document.createElement("button");
+        b.textContent = nm;
+        b.className = "mode-btn";
+        b.style.cssText = "margin-right:6px;font-size:11px;padding:1px 6px;background:#333;color:#eee;border:1px solid #666;cursor:pointer";
+        b.addEventListener("click", () => {
+          STATE.storeState = mi;
+          STATE.storeFeedback = "";
+          setWindowOpen("window.store-candidate", true);
+          renderWindows();
+        });
+        cycle.appendChild(b);
+      });
+      content.appendChild(cycle);
     }
   } else if (id === "window.chat-pop") {
     // chat pop window: history + channel toggles + scroll buttons + input.
