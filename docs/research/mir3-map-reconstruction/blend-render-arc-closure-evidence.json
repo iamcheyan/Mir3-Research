@@ -1,0 +1,37 @@
+{
+  "evidence_id": "blend-render-arc-closure-2026-08-12-f630",
+  "title": "Round 324 (F630): Blend/render arc CLOSED (F629) - validation green (compileall/verify exit 0/node/JSON), services 200, master 16f0ac0 (288 consecutive F335-F629), 254 evidence JSONs; arc: 565 blend + RLE paint (F629: RGB565 channel blend + RLE fill) completing the spell-effect render (F625 spawn + F626 tick + F629 paint); user quest-design work (item_catalog.json/vision_item_desc/vision_batches) present in worktree - UNTOUCHED (user-owned)",
+  "date": "2026-08-12",
+  "objective": "Close the blend/render arc.",
+  "question": "Is the effect render complete?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "254 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F629": "565 blend + RLE paint", "pipeline": "F625 spawn + F626 tick + F629 paint = COMPLETE"},
+    "repo": "user quest-design files (item_catalog.json/vision_item_desc/vision_batches) UNTOUCHED",
+    "milestone": "288 consecutive rounds F335-F629"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F629": "288 rounds pushed; effect render complete"
+  },
+  "contrast": {
+    "paint_vs_tick": "0x4621F0 paint + 0x435A20 tick",
+    "mine_vs_user": "research files committed; user quest files untouched"
+  },
+  "verdict": "Blend/render arc CLOSED (F630): 565 blend completes effect render pipeline; validation green, 288 consecutive rounds, 254 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F629.",
+  "cross_refs": ["F629: blend", "F625/F626: effect pipeline"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "288 consecutive shipping rounds F335-F629",
+    "user quest-design work in worktree untouched",
+    "next: HANDOFF refresh 23, remaining corners"
+  ]
+}

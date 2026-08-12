@@ -7375,3 +7375,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔混合〕**0x4621F0（F489 绘制侧）：**16 位 RGB565 拆分**（掩码 0x7E0F81F/0x7C0F83F/0xF81F07E0）、**每通道 α 混合**（src×α + dst×(32−α))>>5）、暂存 [0x917C20..0x917C2C]。
 - **〔RLE〕**操作码 0xC2/0xC3 填充（α 0x12C/0x130、[ebx+0x6C]/[0x70]/[0x74] 掩码 + 移位 [0x67]/[0x68]/[0x69]）——565 混合 + RLE 绘制字节级（F436 RLE 操作确认）。
 - 落盘：565-blend-rle-paint-evidence.json（F629，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 323。
+## Round 324 (F630) — 2026-08-12：混合/渲染弧闭合（F629 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**254 证据 JSON**；三服务 200；master 16f0ac0（**288 连发 F335-F629 已推**）。
+- **〔弧〕**565 混合 + RLE 绘制（F629）补全法术特效渲染（F625 生成 + F626 tick + F629 绘制 = **完整**）。
+- **〔仓库〕**用户 quest-design 文件（item_catalog.json/vision_item_desc/vision_batches）在工作树——**未触碰**（用户所有）。
+- 落盘：blend-render-arc-closure-evidence.json（F630，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 324。
