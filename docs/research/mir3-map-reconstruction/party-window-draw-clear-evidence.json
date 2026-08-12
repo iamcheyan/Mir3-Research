@@ -1,0 +1,36 @@
+{
+  "evidence_id": "party-window-draw-clear-2026-08-12-f752",
+  "title": "Round 446 (F752): Party window draw + clear - 0x4243D0 (F558 mode 6): title 0x45DD70 color 0xDCE6C8 + member list [0x58] 2-COL draw (row/2*20 pitch, x +0x5A even/+0x64 odd, color 0xFFFFFF) + 5 buttons via F704 set-pos 0x417830 (@ +0x6C/+0x120/+0x1D4/+0x288/+0x33C) + leader text [0x3F0] (0x47BA08/0x47BA00) + 5 control paints (stride 0xB4); 0x4245A0 TEARDOWN (member dlist free 0x4680F8 + re-ctor 5x 0x4175F0); 0x424610 member ADD (0x423CA0) - party window COMPLETE (F558/F704 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the party window draw + clear.",
+  "question": "How does the party window work?",
+  "method": "Disasm 0x4243D0-0x424640.",
+  "scope": "0x4243D0-0x424640; controls +0x6C.",
+  "cell_analysis": {
+    "0x4243D0": "draw: title + member 2-col list + 5 buttons (F704) + leader text + 5 paints",
+    "0x4245A0": "teardown: list free + re-ctor 5x 0x4175F0",
+    "0x424610": "member add: 0x423CA0 + insert"
+  },
+  "exe_trace": {
+    "party_chain": "member add -> draw (2-col + buttons) -> teardown"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 6 party", "F704": "set-pos 0x417830"
+  },
+  "contrast": {
+    "draw_vs_clear": "render + teardown",
+    "members_vs_buttons": "2-col names + 5 buttons"
+  },
+  "verdict": "Party window draw + clear PRIMARY-verified: 2-col members + 5 buttons + teardown; party window complete (F558/F704).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Party window decoded from .text.",
+  "cross_refs": ["F558: party", "F704: set-pos"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4243D0+0x20; 0x4245A0+0x10",
+  "notes": [
+    "member list [0x58]",
+    "2-col x +0x5A/+0x64",
+    "5 buttons stride 0xB4",
+    "leader [0x3F0]"
+  ]
+}

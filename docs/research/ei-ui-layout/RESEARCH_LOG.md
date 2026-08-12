@@ -7922,3 +7922,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 442-444（F749-F750：交易槽布局 + 交易窗口弧）；基线 Round 441=2599ac2 → Round 444=e69704e（**409 连发 F335-F750**）——**HANDOFF 刷新 60 里程碑**。
 - 落盘：handoff-refresh-60-evidence.json（F751，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 445。
+## Round 446 (F752) — 2026-08-12：组队窗口绘制 + 清除
+
+- **〔组队〕**0x4243D0（F558 模式 6）：标题 0x45DD70 色 0xDCE6C8 + **成员列表 [0x58] 双列绘制**（row/2×20、x +0x5A 偶/+0x64 奇、色 0xFFFFFF）+ **5 按钮 via F704 set-pos 0x417830**（@ +0x6C/+0x120/+0x1D4/+0x288/+0x33C）+ 队长文本 [0x3F0]（0x47BA08/0x47BA00）+ 5 控件绘制（stride 0xB4）；0x4245A0 **拆除**（成员链表 free + 重构造 5×0x4175F0）；0x424610 成员添加（0x423CA0）——组队窗口完整（F558/F704 用）。
+- 落盘：party-window-draw-clear-evidence.json（F752，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 446。
