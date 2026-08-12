@@ -9087,3 +9087,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔发送〕**0x451910 基础发送器（0x452940 构建 @ +0x18 + 0x451E60 泵）+ 变体 0x3F8/0x3E9/0x3EF/0x416/0x418/0x419/0x401/0x402/0x403/0x405——发送器家族完整（0x3E9-0x419 出站）。
 - 落盘：msg-sender-family-full-evidence.json（F1020，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 714。
+## Round 715 (F1021) — 2026-08-12：发送器闭合（F572/F785/F1020 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**642 证据 JSON**；三服务 200；master 56dbce5（**678 连发 F335-F1020 已推**）。
+- **〔弧〕**文本帧（F572）+ 发送器（F785）+ 家族全量（F1020）——**发送器完整**（0x452940 构建 + 0x451E60 泵 + 0x3E9-0x419 变体）；出站 100%。
+- 落盘：sender-closure-evidence.json（F1021，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 715。

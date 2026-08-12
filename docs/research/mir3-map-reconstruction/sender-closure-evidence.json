@@ -1,0 +1,37 @@
+{
+  "evidence_id": "sender-closure-2026-08-12-f1021",
+  "title": "Round 715 (F1021): Sender CLOSED (F572/F785/F1020) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 56dbce5 (678 consecutive F335-F1020), 642 evidence JSONs; arc: text frame (F572) + senders (F785) + family full (F1020) - sender COMPLETE byte-level (0x452940 build + 0x451E60 pump + 0x3E9-0x419 variants); outbound 100%",
+  "date": "2026-08-12",
+  "objective": "Close the sender arc.",
+  "question": "Is the sender family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "642 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F572": "frame", "F785": "senders", "F1020": "family full"},
+    "sender": "build + pump + variants = COMPLETE",
+    "milestone": "678 consecutive rounds F335-F1020"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1020": "678 rounds pushed; sender complete"
+  },
+  "contrast": {
+    "frame_vs_family": "proto + senders",
+    "outbound": "0x3E9-0x419"
+  },
+  "verdict": "Sender CLOSED (F1021): build + pump + variants all byte-level; validation green, 678 consecutive rounds, 642 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F572/F785/F1020.",
+  "cross_refs": ["F572", "F785", "F1020"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "678 consecutive shipping rounds F335-F1020",
+    "sender 100%",
+    "next: HANDOFF refresh 152, remaining corners"
+  ]
+}

@@ -4449,3 +4449,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（发送器家族完整；下一弧：剩余深层角落）。
+## Round 715 (2026-08-12) — 发送器闭合（Finding 1021）
+
+- **678 连发 + 642 证据 + 发送器完整**。
+- 落盘：`sender-closure-evidence.json`（F1021）+ RESEARCH_LOG Round 715。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（出站 100%；下一弧：HANDOFF 刷新 152/剩余角落）。
