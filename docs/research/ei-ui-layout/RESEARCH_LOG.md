@@ -7848,3 +7848,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告〕**0x415280 添加：修剪 ≥8（解链 + free 0x4680F8）+ 分配 0x104 + 复制 + 插入 0x449870（头 [0x8]/尾 [0x10]/计数 [0x18]）；0x4153B0 渲染：0x45DD70 TextOutA 阴影 0xA0A0A + **文本色 0xB4FFB4**（经典 Mir3 伤害/治疗绿）、y += 0xF 行、寿命 0xBB8（3000ms）/0x3E8（>6 行）、超时修剪——浮动公告文本系统（F731 用、F564/F677 家族）。
 - 落盘：notice-line-list-add-render-evidence.json（F734，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 428。
+## Round 429 (F735) — 2026-08-12：聊天/公告弧闭合（F564/F599/F600/F677/F731/F734 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**359 证据 JSON**；三服务 200；master c69430b（**393 连发 F335-F734 已推**）。
+- **〔弧〕**文本渲染（F564）+ 聊天渲染（F599）+ 聊天命令（F600）+ 行列表核心（F677）+ HUD 键盘（F731）+ 公告添加/渲染（F734）——**聊天 + 公告完整**（19 行环 + 滚动条 + 命令 + 修剪/插入 + 浮动文本带寿命）。
+- 落盘：chat-notice-arc-closure-evidence.json（F735，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 429。

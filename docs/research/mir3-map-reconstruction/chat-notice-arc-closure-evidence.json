@@ -1,0 +1,37 @@
+{
+  "evidence_id": "chat-notice-arc-closure-2026-08-12-f735",
+  "title": "Round 429 (F735): Chat/notice arc CLOSED (F564/F599/F600/F677/F731/F734) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c69430b (393 consecutive F335-F734), 359 evidence JSONs; arc: text render (F564) + chat render (F599) + chat commands (F600) + line-list core (F677) + HUD keyboard (F731) + notice add/render (F734) - chat+notice COMPLETE byte-level (19-line ring + scrollbar + commands + prune/insert + floating text with lifetime), pending corner 0x42C9E0 + notice chain closed",
+  "date": "2026-08-12",
+  "objective": "Close the chat + notice arc.",
+  "question": "Is the chat + notice fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "359 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F564": "text", "F599": "chat", "F600": "commands", "F677": "line-list", "F731": "keyboard", "F734": "notice add/render"},
+    "chat": "ring + scrollbar + commands + notice = COMPLETE",
+    "milestone": "393 consecutive rounds F335-F734"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F734": "393 rounds pushed; chat+notice complete"
+  },
+  "contrast": {
+    "chat_vs_notice": "ring render + floating text",
+    "add_vs_render": "prune/insert + draw"
+  },
+  "verdict": "Chat/notice arc CLOSED (F735): text + chat + commands + line-list + notice all byte-level; validation green, 393 consecutive rounds, 359 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F564/F599/F600/F677/F731/F734.",
+  "cross_refs": ["F564", "F599", "F600", "F677", "F731", "F734"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "393 consecutive shipping rounds F335-F734",
+    "chat+notice 100%",
+    "next: HANDOFF refresh 55, remaining corners"
+  ]
+}
