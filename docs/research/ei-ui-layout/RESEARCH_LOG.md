@@ -8633,3 +8633,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**539 证据 JSON**；三服务 200；master ca1b9ff（**573 连发 F335-F914 已推**）。
 - **〔弧〕**4 类型渲染（F598）+ 选项命中（F746）+ 窗口渲染（F857）+ 绘制/开启（F914）——**对话完整**（开启旗标 + 帧 blit + 选项循环 + 命中/激活 + 4 类型），对话表面 100%。
 - 落盘：dialog-full-closure-evidence.json（F915，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 609。
+## Round 610 (F916) — 2026-08-12：HANDOFF 刷新 116（Round 607-609）
+
+- **〔刷新〕**HANDOFF 追加 Round 607-609（F914-F915：对话窗口绘制/开启 + 对话全闭合）；基线 Round 606=0915bf9 → Round 609=7556d36（**574 连发 F335-F915**）。
+- 落盘：handoff-refresh-116-evidence.json（F916，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 610。

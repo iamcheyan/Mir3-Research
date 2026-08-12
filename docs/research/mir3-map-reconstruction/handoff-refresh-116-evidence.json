@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-116-2026-08-12-f916",
+  "title": "Round 610 (F916): HANDOFF refresh 116 - Rounds 607-609 (F913-F915: HANDOFF 115, dialog window draw/open, dialog full closure), baseline Round 606=0915bf9 -> Round 609=7556d36 (574 consecutive F335-F915), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 607-609.",
+  "question": "What changed since HANDOFF refresh 115?",
+  "method": "Append Round 607-609 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 607-609 appended (3 rounds, F913-F915)",
+    "baseline": "Round 606=0915bf9 -> Round 609=7556d36 (574 consecutive F335-F915)",
+    "arcs": {"dialog": "F914 draw/open", "closure": "F915 dialog full"},
+    "key": "dialog complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F913": "refresh 115 baseline -> now refresh 116", "F335-F915": "574 rounds"
+  },
+  "contrast": {
+    "refresh_115_vs_116": "F914-F915 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 116 (F916): Rounds 607-609 documented (dialog complete), baseline 0915bf9 -> 7556d36, 574 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F914-F915 evidence.",
+  "cross_refs": ["F913: refresh 115", "F915: dialog closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 607-609 section to HANDOFF",
+  "notes": [
+    "574 consecutive shipping rounds F335-F915",
+    "next: remaining deep corners, sim polish"
+  ]
+}
