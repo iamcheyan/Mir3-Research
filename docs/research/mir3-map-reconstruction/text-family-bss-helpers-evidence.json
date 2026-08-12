@@ -1,0 +1,36 @@
+{
+  "evidence_id": "text-family-bss-helpers-2026-08-12-f737",
+  "title": "Round 431 (F737): Text family BSS-side helpers - 0x45DC70 string-list JOIN (append varargs to dest, skipping matches of BSS string 0x8B187C - pending 0x45DC70 concat gap CLOSED); 0x45DD00 contains check (0x468BF0 strchr); 0x45DD70 text draw wrapper (GDI font/text 0x476044/0x476048/0x476050/0x476060/0x476074) - F564 text family COMPLETE (F734 render uses 0x45DD70)",
+  "date": "2026-08-12",
+  "objective": "Decode the text family BSS-side helpers.",
+  "question": "How do text join + draw helpers work?",
+  "method": "Disasm 0x45DC70-0x45DE42.",
+  "scope": "0x45DC70-0x45DE42; 0x8B187C.",
+  "cell_analysis": {
+    "0x45DC70": "join: append varargs to dest, skip 0x8B187C",
+    "0x45DD00": "contains: 0x468BF0 strchr scan",
+    "0x45DD70": "draw: GDI 0x476044/0x476048/0x476050/0x476060/0x476074"
+  },
+  "exe_trace": {
+    "text_chain": "join args -> contains check -> GDI draw"
+  },
+  "audit_vs_exe": {
+    "F564": "text family COMPLETE", "F734": "render uses 0x45DD70"
+  },
+  "contrast": {
+    "join_vs_draw": "concat + GDI",
+    "skip_vs_gate": "0x8B187C skip + contains"
+  },
+  "verdict": "Text family BSS-side helpers PRIMARY-verified: join + contains + GDI draw; F564 complete, pending 0x45DC70 gap closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Text helpers decoded from .text.",
+  "cross_refs": ["F564: text", "F734: render", "F680: sprintf"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45DC70+0x10; 0x45DD70+0x10",
+  "notes": [
+    "skip string 0x8B187C",
+    "GDI draw 0x476074",
+    "strchr 0x468BF0",
+    "pending gap closed"
+  ]
+}

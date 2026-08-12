@@ -7857,3 +7857,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 427-429（F734-F735：公告行列表 + 聊天/公告弧）；基线 Round 426=2450f7e → Round 429=0d84db2（**394 连发 F335-F735**）。
 - 落盘：handoff-refresh-55-evidence.json（F736，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 430。
+## Round 431 (F737) — 2026-08-12：文本家族 BSS 侧助手
+
+- **〔文本〕**0x45DC70 **字符串列表拼接**（追加 varargs 至目标、跳过 BSS 串 **0x8B187C**——待办 0x45DC70 拼接缺口闭合）；0x45DD00 包含检查（0x468BF0 strchr）；0x45DD70 文本绘制包装（GDI 0x476044/0x476048/0x476050/0x476060/0x476074）——**F564 文本家族完整**（F734 渲染用 0x45DD70）。
+- 落盘：text-family-bss-helpers-evidence.json（F737，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 431。
