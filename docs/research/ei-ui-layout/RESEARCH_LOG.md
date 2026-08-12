@@ -9092,3 +9092,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**642 证据 JSON**；三服务 200；master 56dbce5（**678 连发 F335-F1020 已推**）。
 - **〔弧〕**文本帧（F572）+ 发送器（F785）+ 家族全量（F1020）——**发送器完整**（0x452940 构建 + 0x451E60 泵 + 0x3E9-0x419 变体）；出站 100%。
 - 落盘：sender-closure-evidence.json（F1021，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 715。
+## Round 716 (F1022) — 2026-08-12：HANDOFF 刷新 152（Round 713-715）
+
+- **〔刷新〕**HANDOFF 追加 Round 713-715（F1020-F1021：消息发送器家族全量 + 发送器闭合）；基线 Round 712=e353c0b → Round 715=c937e7e（**679 连发 F335-F1021**）。
+- 落盘：handoff-refresh-152-evidence.json（F1022，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 716。

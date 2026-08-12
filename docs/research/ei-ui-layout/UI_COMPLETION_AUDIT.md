@@ -4457,3 +4457,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（出站 100%；下一弧：HANDOFF 刷新 152/剩余角落）。
+## Round 716 (2026-08-12) — HANDOFF 刷新 152（Finding 1022）
+
+- **Round 713-715 追加 + 679 连发**（发送器完整入档）。
+- 落盘：`handoff-refresh-152-evidence.json`（F1022）+ RESEARCH_LOG Round 716。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（出站 100%；下一弧：剩余深层角落/模拟器 polish）。

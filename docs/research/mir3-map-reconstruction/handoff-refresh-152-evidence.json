@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-152-2026-08-12-f1022",
+  "title": "Round 716 (F1022): HANDOFF refresh 152 - Rounds 713-715 (F1019-F1021: HANDOFF 151, msg sender family full, sender closure), baseline Round 712=e353c0b -> Round 715=c937e7e (679 consecutive F335-F1021), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 713-715.",
+  "question": "What changed since HANDOFF refresh 151?",
+  "method": "Append Round 713-715 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 713-715 appended (3 rounds, F1019-F1021)",
+    "baseline": "Round 712=e353c0b -> Round 715=c937e7e (679 consecutive F335-F1021)",
+    "arcs": {"sender": "F1020 family", "closure": "F1021 sender"},
+    "key": "outbound senders complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1019": "refresh 151 baseline -> now refresh 152", "F335-F1021": "679 rounds"
+  },
+  "contrast": {
+    "refresh_151_vs_152": "F1020-F1021 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 152 (F1022): Rounds 713-715 documented (senders complete), baseline e353c0b -> c937e7e, 679 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1020-F1021 evidence.",
+  "cross_refs": ["F1019: refresh 151", "F1021: sender closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 713-715 section to HANDOFF",
+  "notes": [
+    "679 consecutive shipping rounds F335-F1021",
+    "next: remaining deep corners, sim polish"
+  ]
+}
