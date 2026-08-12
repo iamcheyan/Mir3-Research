@@ -8165,3 +8165,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 499-500（F806：Round 500 里程碑闭合）；基线 Round 498=0056799 → Round 500=82f32d8（**465 连发 F335-F806**）。
 - 落盘：handoff-refresh-79-evidence.json（F807，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 501。
+## Round 502 (F808) — 2026-08-12：行会消息发送 + 按钮分派
+
+- **〔行会〕**0x4258A3（F803 msg 0x415 尾部）：拼接 0x45DC70（F737）+ **发送 0x4520F0** + 0x4523E0；0x4258F0 **行会按钮分派**（0x148C 帧）：滚动条 F707 释放 0x417E60 + 9 控件 vtable[0x10] 命中 → **页模式 [0x98]**（0/1/2、重置计数 [0x9C]）+ 0x4523E0/0x452410 发送 + **窗口切换 0x42ADB0**（模式 0xF）+ **0x423E80 发送 msg 0x25A**（成员操作）——行会窗口输入完整（F755/F803 用）。
+- 落盘：guild-msg-send-button-dispatch-evidence.json（F808，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 502。

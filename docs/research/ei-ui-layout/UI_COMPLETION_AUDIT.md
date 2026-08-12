@@ -2745,3 +2745,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（表面接近完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 502 (2026-08-12) — 行会消息发送 + 按钮分派（Finding 808）
+
+- **页模式 + 窗口切换 + msg 0x25A**（行会输入完整）。
+- 落盘：`guild-msg-send-button-dispatch-evidence.json`（F808）+ RESEARCH_LOG Round 502。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会输入完整；下一弧：剩余深层角落）。

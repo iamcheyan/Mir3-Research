@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-msg-send-button-dispatch-2026-08-12-f808",
+  "title": "Round 502 (F808): Guild msg send + button dispatch - 0x4258A3 (F803 msg 0x415 tail): join 0x45DC70 (F737) + SEND 0x4520F0 + 0x4523E0; 0x4258F0 GUILD BUTTON dispatch (0x148C frame): scrollbar F707 release 0x417E60 + 9 control vtable[0x10] hits -> PAGE mode [0x98] (0/1/2, reset count [0x9C]) + 0x4523E0/0x452410 sends + window toggle 0x42ADB0 (mode 0xF) + 0x423E80 send msg 0x25A (member op) - guild window input COMPLETE (F755/F803 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the guild msg send + button dispatch.",
+  "question": "How do guild buttons dispatch?",
+  "method": "Disasm 0x4258A3-0x425A60.",
+  "scope": "0x4258A3-0x425A60; mode [0x98].",
+  "cell_analysis": {
+    "0x4258A3": "msg 0x415 send: 0x45DC70 + 0x4520F0 + 0x4523E0",
+    "0x4258F0": "buttons: 0x417E60 + vtable[0x10] -> page [0x98] + 0x42ADB0 + msg 0x25A"
+  },
+  "exe_trace": {
+    "guild_chain": "button hit -> page mode -> send/window"
+  },
+  "audit_vs_exe": {
+    "F803": "msg 0x415", "F755": "guild window", "F707": "scrollbar release"
+  },
+  "contrast": {
+    "msg_vs_buttons": "send + dispatch",
+    "page_vs_toggle": "[0x98] + 0x42ADB0"
+  },
+  "verdict": "Guild msg send + button dispatch PRIMARY-verified: send + page modes + window toggle; guild input complete (F755/F803).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild dispatch decoded from .text.",
+  "cross_refs": ["F803: msg", "F755: window", "F707: scrollbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4258A3+0x10; 0x4258F0+0x20",
+  "notes": [
+    "msg 0x25A member op",
+    "page mode [0x98]",
+    "0x42ADB0 toggle",
+    "9 control hits"
+  ]
+}
