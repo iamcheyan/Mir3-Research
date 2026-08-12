@@ -6188,3 +6188,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔新增〕**D10031 fresh md5=1d1407d0（62 back OOB）——钉定入 F371 closed_notes。
 - **〔审计〕**map-audit.json 无 md5 字段（结构性数据）——校验和在 F317/F371。
 - 落盘：map-checksum-verification-evidence.json（F395，primary-bytes）+ frame-oob-verification-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 89。
+## Round 90 (F396) — 2026-08-12：地图覆盖完整性（313 MiniMap = 211 出货 + 102 服务端专属）
+
+- **〔覆盖〕**313 MiniMap 项 = **211 出货 EI 图（100% 审计，544/544 记录完整）** + **102 服务端专属图不在 EI 包**（401-407 哨所、D15xxx 诺玛区、D2xxx/D6xxx、E/F/Q 系列、RUSH1/Island、9.map）——服务端可引用客户端缺失的图（0x43B600 装载失败）。
+- 落盘：map-coverage-completeness-evidence.json（F396，primary-bytes + 服务端 secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 90。

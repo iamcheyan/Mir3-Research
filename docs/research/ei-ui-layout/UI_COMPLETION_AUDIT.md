@@ -676,6 +676,11 @@ git diff --check
 - **F317 哈希复验全匹配**（3/41/50.map）；**D10031 钉定 1d1407d0**。
 - 落盘：`map-checksum-verification-evidence.json`（F395，primary-bytes）+ F371 更新 + RESEARCH_LOG Round 89。
 
+## Round 90 (2026-08-12) — 地图覆盖完整性（Finding 396）
+
+- **313 MiniMap = 211 出货（100% 审计）+ 102 服务端专属**（客户端缺失，装载失败）。
+- 落盘：`map-coverage-completeness-evidence.json`（F396）+ RESEARCH_LOG Round 90。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

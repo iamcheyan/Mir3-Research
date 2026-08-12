@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-coverage-completeness-2026-08-12-f396",
+  "title": "Round 90 (F396): Map coverage completeness - 313 MiniMap entries = 211 shipped EI maps (100% audited) + 102 server-only maps NOT in EI package (401-407 outposts, D15xxx 诺玛-area, RUSH1/Island/Q event series); audit 544/544 records complete",
+  "date": "2026-08-12",
+  "objective": "Audit map coverage completeness: verify all 211 shipped EI maps are individually characterized, quantify the server-only map set, and confirm audit completeness.",
+  "question": "Is every playable EI map covered, and how many server maps are missing from the package?",
+  "method": "MiniMap (313) vs EI Map dir (544) intersection; audit field-completeness check; server-only classification.",
+  "scope": "$MIR3_EI_ROOT/Map; MiniMap.txt; map-audit.json.",
+  "cell_analysis": {
+    "coverage": {"mini_map_entries": 313, "in_ei_dir": 211 (ALL audited), "server_only_not_shipped": 102},
+    "server_only": {"samples": "401-407 (outposts), D1500-D1513 (诺玛-area), D2001-D20032, D6001-D60022, E702/E703, F001-F009, Q036-Q051, RUSH1, Island01/02, 9.map"},
+    "audit": {"records": "544/544 complete (w/h/size/mid_libs/front_libs/ground/anomalies all present)", "bound_coverage": "211/211 shipped maps characterized"},
+    "implication": "server can reference 102 maps the EI client lacks - would fail to load if sent (missing file)"
+  },
+  "exe_trace": {
+    "loader": "0x43B600 (F331/F343): sprintf '.\\Map\\%s.map' - missing file -> CreateFileA fails -> load aborts"
+  },
+  "audit_vs_exe": {
+    "F369": "playable set = 211 shipped (refined: server references 313 total)",
+    "F342": "544-map inventory = 211 shipped + 333 unbound extras"
+  },
+  "contrast": {
+    "shipped_vs_server": "211 playable vs 102 server-only (client can't load the latter)",
+    "bound_vs_audit": "all 211 bound maps in audit; audit also covers 333 extras"
+  },
+  "verdict": "Map coverage verified (primary-bytes + secondary server): 313 MiniMap entries = 211 shipped EI maps (100% audited, 544/544 records complete) + 102 server-only maps absent from the client package (outposts/诺玛-area/event series). The server references maps the EI client cannot load.",
+  "evidence_level": "primary-bytes (map coverage) + secondary (server MiniMap)",
+  "evidence_level_note": "Map dir + audit = primary; MiniMap server list = secondary cross-reference.",
+  "cross_refs": ["F369: playable set", "F342: map inventory", "F343: loader"],
+  "tool": "python3 set analysis; map-audit.json",
+  "reproduce": "MiniMap entries vs Map dir intersection; audit completeness check",
+  "notes": [
+    "102 server-only maps = the gap between server config and client package",
+    "9.map (失乐园 alternate) server-referenced but not shipped",
+    "audit 544 = full on-disk set; 211 = the playable subset"
+  ]
+}
