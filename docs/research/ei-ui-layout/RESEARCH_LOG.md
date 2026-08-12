@@ -8069,3 +8069,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x4515C0（F782 转发依赖）：**自定义消息分派**（msg − 0x2714 ≤ 0x59 → 字节表 0x4515F8 → jt 0x4515F0，否则已处理 1）；发送器：0x451660（arg）+ 0x451690（字节+arg）+ 0x4516D0 **msg 0x50**（WM_KEYDOWN?）+ 0x451700 **0x417** + 0x451740 **0x3F2** + 0x451770 **0x409** + 0x4517A0 **0x3F5**（打包坐标）+ 0x4517E0 **0x3F4**——全部经 0x452940 + 0x451E60——**出站目录扩展**。
 - 落盘：message-dispatcher-sender-continuation-evidence.json（F785，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 479。
+## Round 480 (F786) — 2026-08-12：输入/消息系统闭合（F552/F560/F587/F782/F785 汇总）+ Round 480 里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**410 证据 JSON**；三服务 200；master d627c4f（**444 连发 F335-F785 已推**）——**Round 480 里程碑**。
+- **〔弧〕**异步 TCP（F552）+ 命中测试（F560）+ 点击分派（F587）+ 输入转发（F782）+ 消息分派器（F785）——**输入/消息完整**（WSAAsyncSelect 0x7E8 + 自定义消息表 0x2714 + 点击路由 + 发送器）。
+- 落盘：input-message-system-closure-evidence.json（F786，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 480。

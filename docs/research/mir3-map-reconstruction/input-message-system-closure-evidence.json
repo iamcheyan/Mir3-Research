@@ -1,0 +1,38 @@
+{
+  "evidence_id": "input-message-system-closure-2026-08-12-f786",
+  "title": "Round 480 (F786): Input/message system CLOSED (F552/F560/F587/F782/F785) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master d627c4f (444 consecutive F335-F785), 410 evidence JSONs; arc: async TCP (F552) + hit-test (F560) + click dispatch (F587) + input forward (F782) + message dispatcher (F785) - input/message COMPLETE byte-level (WSAAsyncSelect 0x7E8 + custom-msg map 0x2714 + click routing + senders), Round 480 milestone",
+  "date": "2026-08-12",
+  "objective": "Close the input/message system.",
+  "question": "Is the input/message system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "410 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F552": "async TCP", "F560": "hit-test", "F587": "click", "F782": "forward", "F785": "dispatcher"},
+    "input": "async msgs + hit + click + dispatch = COMPLETE",
+    "milestone": "444 consecutive rounds F335-F785 + Round 480"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F785": "444 rounds pushed; input/message complete"
+  },
+  "contrast": {
+    "async_vs_dispatch": "0x7E8 + custom map",
+    "hit_vs_click": "PtInRect + routing"
+  },
+  "verdict": "Input/message system CLOSED (F786): async + hit + click + dispatch all byte-level; validation green, 444 consecutive rounds, 410 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F552/F560/F587/F782/F785.",
+  "cross_refs": ["F552", "F560", "F587", "F782", "F785"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "444 consecutive shipping rounds F335-F785",
+    "input/message 100%",
+    "Round 480 milestone",
+    "next: HANDOFF refresh 72, remaining corners"
+  ]
+}
