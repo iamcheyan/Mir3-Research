@@ -1,0 +1,35 @@
+{
+  "evidence_id": "options-window-draw-click-2026-08-12-f761",
+  "title": "Round 455 (F761): Options window draw + click - 0x441380 (F558 mode C): 11 controls via F704 set-pos 0x417830 (4x2 toggle grid @ 0x94/0xB9 x 0x2B/0x74/0xBE/0xD9 = F546 4-switch rows CONFIRMED + 2 sliders BGM [0x6C]/SFX [0x74] @ 0x22+value + base) + 11 control paints (stride 0xB4); 0x4414F0 CLICK: toggle flags [0x64]/[0x68] + BGM slider [0x6C] +/-8 clamp 0..0xA0 + sound 0x69 (0x45AFC0) + redraw 0x441F40 - options window COMPLETE (F546/F558 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the options window draw + click.",
+  "question": "How does the options window render + handle input?",
+  "method": "Disasm 0x441380-0x4415D4.",
+  "scope": "0x441380-0x4415D4; sliders [0x6C].",
+  "cell_analysis": {
+    "0x441380": {"controls": "11 x F704 stride 0xB4", "grid": "4x2 toggles", "sliders": "BGM [0x6C] / SFX [0x74]"},
+    "0x4414F0": "click: toggles [0x64]/[0x68] + slider +/-8 clamp 0..0xA0 + sound 0x69"
+  },
+  "exe_trace": {
+    "options_chain": "draw controls -> click toggle/slider -> redraw"
+  },
+  "audit_vs_exe": {
+    "F546": "4 switch rows CONFIRMED", "F558": "mode C options"
+  },
+  "contrast": {
+    "toggles_vs_sliders": "4x2 grid + BGM/SFX",
+    "draw_vs_click": "F704 set-pos + slider math"
+  },
+  "verdict": "Options window draw + click PRIMARY-verified: 11 controls + toggle grid + sliders; options window complete (F546/F558).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Options window decoded from .text.",
+  "cross_refs": ["F546: switches", "F558: options", "F704: set-pos"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441380+0x20; 0x4414F0+0x20",
+  "notes": [
+    "4x2 toggle grid",
+    "BGM [0x6C] clamp 0..0xA0",
+    "sound 0x69",
+    "redraw 0x441F40"
+  ]
+}

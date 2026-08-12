@@ -7961,3 +7961,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 451-453（F758-F759：角色状态窗口 + 角色/装备/背包弧）；基线 Round 450=2f8112b → Round 453=1acd4d4（**418 连发 F335-F759**）。
 - 落盘：handoff-refresh-63-evidence.json（F760，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 454。
+## Round 455 (F761) — 2026-08-12：选项窗口绘制 + 点击
+
+- **〔选项〕**0x441380（F558 模式 C）：**11 控件 via F704 set-pos**（**4×2 开关网格** @ 0x94/0xB9 × 0x2B/0x74/0xBE/0xD9 = **F546 4 开关行确认** + **2 滑块 BGM [0x6C]/SFX [0x74]** @ 0x22+值）+ 11 控件绘制（stride 0xB4）；0x4414F0 点击：开关旗标 [0x64]/[0x68] + **BGM 滑块 [0x6C] ±8 钳制 0..0xA0** + 音效 0x69 + 重绘 0x441F40——选项窗口完整（F546/F558 用）。
+- 落盘：options-window-draw-click-evidence.json（F761，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 455。
