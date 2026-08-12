@@ -756,6 +756,11 @@ git diff --check
 - **4 命令 + 0x7DA060 门控验证**（点击日志分派）。
 - 落盘：`horse-interaction-verification-evidence.json`（F411）+ RESEARCH_LOG Round 105。
 
+## Round 106 (2026-08-12) — 小地图控件（Finding 412）
+
+- **128×128 + FMMap F0 绑定验证**（F310）。
+- 落盘：`minimap-sim-verification-evidence.json`（F412）+ RESEARCH_LOG Round 106。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

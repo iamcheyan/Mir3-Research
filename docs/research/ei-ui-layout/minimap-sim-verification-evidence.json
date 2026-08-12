@@ -1,0 +1,33 @@
+{
+  "evidence_id": "minimap-sim-verification-2026-08-12-f412",
+  "title": "Round 106 (F412): Minimap widget verified - 128x128 at (672,0)-(800,128), FMMap.wil F0 (0.map 比奇县 -> F310 binding), title primary-static (browser)",
+  "date": "2026-08-12",
+  "objective": "Verify the sim minimap widget renders with the correct binding.",
+  "question": "Does the sim minimap match the F310 binding?",
+  "method": "Sim browser check (widget rect, image source, title).",
+  "scope": "sim minimap widget; F310/F354 evidence.",
+  "cell_analysis": {
+    "widget": {"rect": "128x128 (matches panel (672,0)-(800,128) F310)", "src": "FMMap.wil F0", "title": "小地图 · 比奇县 · FMMap.wil F0 · primary-static", "binding": "0.map -> MiniMap 1001 -> FMMap value-1001 = F0 (F310)"}
+  },
+  "exe_trace": {
+    "minimap": "hero+0x6214 (F335); 0x43D850 update (F310)"
+  },
+  "audit_vs_exe": {
+    "F310": "0.map FMMap F0 binding confirmed in sim",
+    "F354": "minimap subsystem verified"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = static FMMap F0 img; original = per-frame texture + player marker"
+  },
+  "verdict": "Minimap widget verified (F310/F354): 128x128 panel with FMMap F0 (0.map binding) + primary-static evidence title. Minimap subsystem closed in sim.",
+  "evidence_level": "derived-tooling (binding primary-static F310)",
+  "evidence_level_note": "Sim widget browser-verified; binding from F310 primary bytes.",
+  "cross_refs": ["F310: minimap player marker", "F354: minimap subsystem", "F367: minimap wiring"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; observe minimap widget top-right (672,0)-(800,128)",
+  "notes": [
+    "V key toggles minimap (F338 hotkey)",
+    "player marker = live coords 0x777764/0x777768 (F310) - sim static",
+    "widget shows currentMap name (比奇县 = Mapinfo name)"
+  ]
+}

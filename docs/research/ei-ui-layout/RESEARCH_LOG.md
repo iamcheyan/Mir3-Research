@@ -6263,3 +6263,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔命令〕**말타기 @上马（[0x7DA060]==0）/말내리기 @遛马（!=0）/말숨기기 @收马/말꺼내기 @遛马——全带门控；点击日志分派（浏览器验证）。
 - 落盘：horse-interaction-verification-evidence.json（F411，derived-tooling；语义 primary-static F327）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 105。
+## Round 106 (F412) — 2026-08-12：小地图控件验证（128×128 + FMMap F0 绑定）
+
+- **〔控件〕**128×128（672,0-800,128）、FMMap.wil F0（0.map 比奇县 → F310 绑定）、标题 primary-static（浏览器验证）。
+- 落盘：minimap-sim-verification-evidence.json（F412，derived-tooling；绑定 primary-static F310）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 106。
