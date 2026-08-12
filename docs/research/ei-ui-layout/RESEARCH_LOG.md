@@ -8290,3 +8290,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔坐骑〕**0x41F580 recv1 怪物家族分派器（0x2D-0x35、jt 0x421E8C）：**0x41F597 坐骑/外观消息**（位置字 [0x7DA061]/[0x7DA063] + **旗标 dword [0x7DA060] + [0x7DA064]** → 0x40F420 坐骑 + 0x44BC30 装备重置）；0x41F666 使用坐骑态（0x7DA060 → 0x40F420）——**F773 坐骑门写者解析**（F571 怪物家族扩展）。
 - 落盘：mount-flag-writers-evidence.json（F836，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 530。
+## Round 531 (F837) — 2026-08-12：坐骑/recv 闭合（F545/F571/F773/F836 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**461 证据 JSON**；三服务 200；master a8f31be（**495 连发 F335-F836 已推**）。
+- **〔弧〕**坐骑命令（F545）+ recv1 家族（F571）+ 坐骑窗口（F773）+ 旗标写者（F836）——**坐骑/recv 完整**（4 命令 + recv1 坐骑消息 + 门读写者 + 0x40F420 坐骑态），坐骑生命周期表面闭合。
+- 落盘：mount-recv-closure-evidence.json（F837，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 531。

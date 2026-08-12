@@ -1,0 +1,37 @@
+{
+  "evidence_id": "mount-recv-closure-2026-08-12-f837",
+  "title": "Round 531 (F837): Mount/recv CLOSED (F545/F571/F773/F836) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master a8f31be (495 consecutive F335-F836), 461 evidence JSONs; arc: mount commands (F545) + recv1 family (F571) + mount window (F773) + flag writers (F836) - mount/recv COMPLETE byte-level (4 commands + recv1 mount msg + gate readers/writers + 0x40F420 mount state), mount lifecycle surface closed",
+  "date": "2026-08-12",
+  "objective": "Close the mount/recv arc.",
+  "question": "Is the mount/recv fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "461 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F545": "commands", "F571": "recv1", "F773": "window", "F836": "writers"},
+    "mount": "commands + msg + gate = COMPLETE",
+    "milestone": "495 consecutive rounds F335-F836"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F836": "495 rounds pushed; mount/recv complete"
+  },
+  "contrast": {
+    "commands_vs_msg": "0x4520F0 + recv1",
+    "gate_vs_state": "0x7DA060 + 0x40F420"
+  },
+  "verdict": "Mount/recv CLOSED (F837): commands + msg + gate all byte-level; validation green, 495 consecutive rounds, 461 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F545/F571/F773/F836.",
+  "cross_refs": ["F545", "F571", "F773", "F836"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "495 consecutive shipping rounds F335-F836",
+    "mount/recv 100%",
+    "next: HANDOFF refresh 89, remaining corners"
+  ]
+}

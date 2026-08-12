@@ -2977,3 +2977,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑写者完整；下一弧：剩余深层角落）。
+## Round 531 (2026-08-12) — 坐骑/recv 闭合（Finding 837）
+
+- **495 连发 + 461 证据 + 坐骑/recv 完整**。
+- 落盘：`mount-recv-closure-evidence.json`（F837）+ RESEARCH_LOG Round 531。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（坐骑/recv 完整；下一弧：HANDOFF 刷新 89/剩余角落）。
