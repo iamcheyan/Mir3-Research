@@ -6332,3 +6332,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔脚本〕**339 Market_Def + Merchant.txt 项（01Meet_Bichon1 → 0.map 446,405 body 11）；格式 %100 加价 + 货物行（+40 肉）+ [@main] #IF/#ACT。
 - **〔关联〕**商店模式（F289/F399）货物来自脚本包（msg 0x285）。
 - 落盘：merchant-script-verification-evidence.json（F427，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 121。
+## Round 122 (F428) — 2026-08-12：NPC body→帧交叉验证（6400 帧库）
+
+- **〔帧库〕**NPC.wil = 6400 帧；body ≤ 64 直接索引（56/3/34/48/18/2/9 全适配 ≤ 5610）；**body 10000 = OOB 特殊渲染覆盖**（非帧索引）。
+- **〔帧头〕**f0 36×78 / f100 28×66 / f300 36×72 / f5600 188×130（F287 公式实测）。
+- 落盘：npc-body-frame-crosscheck-evidence.json（F428，primary-static + secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 122。

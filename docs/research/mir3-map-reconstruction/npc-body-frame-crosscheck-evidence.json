@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-body-frame-crosscheck-2026-08-12-f428",
+  "title": "Round 122 (F428): NPC body->frame crosscheck - NPC.wil = 6400 frames; bodies 56/3/34/48/18/2/9 all fit F287 (need <= 5610 < 6400); body 10000 = OOB (rendering override, not direct index); frame headers 0/100/300/5600 valid (36x78/28x66/36x72/188x130)",
+  "date": "2026-08-12",
+  "objective": "Crosscheck server NPC bodies against the client NPC.wil frame count via the F287 formula.",
+  "question": "Do all merchant bodies map to valid NPC.wil frames?",
+  "method": "WilLibrary header/count on NPC.wil; F287 formula (frame = 100*body + 10*(flag%3)).",
+  "scope": "Data/NPC.wil (6400 frames); F426 bodies.",
+  "cell_analysis": {
+    "wil": {"file": "Data/NPC.wil + .wix", "frames": 6400, "max_body": "64 (6400/100)"},
+    "bodies": {"56/3/34/48/18/2/9": "ALL fit (need <= 5610)", "10000": "OOB (needs 1M frames) = special render override"},
+    "headers": {"frame 0": "36x78 off(9,-52)", "frame 100": "28x66 off(13,-43)", "frame 300": "36x72 off(5,-48)", "frame 5600": "188x130 off(-73,-50) no shadow"}
+  },
+  "exe_trace": {
+    "f287": "frame = 100*body + 10*(flag%3); NPC.wil slot 127",
+    "body_semantics": "body < 64 = direct; body 10000 = special (candidate override)"
+  },
+  "audit_vs_exe": {
+    "F287": "formula confirmed against 6400-frame library",
+    "F426": "body distribution consistent"
+  },
+  "contrast": {
+    "direct_vs_override": "bodies < 64 direct-frame; 10000 = special-case render (no frame index)",
+    "npc_vs_monster": "NPC 6400-frame flat lib vs monster Mon-N.wil race formula (F280)"
+  },
+  "verdict": "NPC body->frame crosscheck verified (primary-static + secondary): 6400-frame NPC.wil fits all standard bodies (<= 64); body 10000 is an OOB override (not a frame index). F287 formula validated against the real library.",
+  "evidence_level": "primary-static (WIL library) + secondary (server bodies)",
+  "evidence_level_note": "WIL frame count/headers primary; body values secondary-server.",
+  "cross_refs": ["F287: NPC frames", "F426: NPC distribution", "F280: monster formula"],
+  "tool": "wilsdk.open_library + header()",
+  "reproduce": "open_library('Data/NPC.wil'); w.count; w.header(0/100/300/5600)",
+  "notes": [
+    "max direct body = 64 (6400/100)",
+    "frame 5600 (body 56) = 188x130 wide sprite (大型NPC)",
+    "body 10000 = special render path (F428 candidate)"
+  ]
+}

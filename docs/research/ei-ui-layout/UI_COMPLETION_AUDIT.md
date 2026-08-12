@@ -836,6 +836,11 @@ git diff --check
 - **339 Market_Def + 格式验证**（%100 加价 + 货物 + #IF/#ACT）。
 - 落盘：`merchant-script-verification-evidence.json`（F427）+ RESEARCH_LOG Round 121。
 
+## Round 122 (2026-08-12) — NPC body→帧交叉（Finding 428）
+
+- **6400 帧库验证 F287**；body 10000 = OOB 覆盖。
+- 落盘：`npc-body-frame-crosscheck-evidence.json`（F428）+ RESEARCH_LOG Round 122。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
