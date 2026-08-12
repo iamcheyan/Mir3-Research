@@ -7274,3 +7274,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔绘制〕**0x4031A0：渐变背景 0x466800 + 填充 0x45E570 0x969696、**服务器列表遍历**（[0xA50] 节点 +4 数据、[0xA64] 选中 = -1）、每服务器悬停矩形 [esi+0x208..0x214]（PtInRect）+ 渐变 0x4029A0 + 服务器名 **0xFF0000 红** + 0x45DE50；[0xA3C..0xA48] 窗口矩形浮点——登录服务器选择屏字节级（F585 Mir3.ini 服务器列表连接）。
 - 落盘：login-server-screen-paint-evidence.json（F608，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 302。
+## Round 303 (F609) — 2026-08-12：启动/登录弧闭合（F607-F608 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**234 证据 JSON**；三服务 200；master 0bef374（**267 连发 F335-F608 已推**）。
+- **〔弧〕**Intro/启动状态机（F607）+ 登录/服务器屏（F608）——**整个启动链（启动画面 → 服务器选择 → 登录 → 角色选择 F603/F604 → 进入）字节级**，连接 F585/F605。
+- 落盘：launch-login-arc-closure-evidence.json（F609，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 303。

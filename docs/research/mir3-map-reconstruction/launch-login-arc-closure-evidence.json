@@ -1,0 +1,36 @@
+{
+  "evidence_id": "launch-login-arc-closure-2026-08-12-f609",
+  "title": "Round 303 (F609): Launch/login arc CLOSED (F607-F608) - validation green (compileall/verify exit 0/node/JSON), services 200, master 0bef374 (267 consecutive F335-F608), 234 evidence JSONs; arc: intro/splash state machine (F607: Interface1c + wemade.dat + chat/audio) + login/server screen paint (F608: server list + hover/select) - ENTIRE launch chain (splash -> server select -> login -> char select -> enter) byte-level, connecting F585/F603/F604/F605",
+  "date": "2026-08-12",
+  "objective": "Close the launch/login arc.",
+  "question": "Is the launch chain fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "234 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F607": "intro/splash machine", "F608": "login/server screen"},
+    "chain": "splash -> server select -> login -> char select (F603/F604) -> enter - ALL byte-level",
+    "milestone": "267 consecutive rounds F335-F608"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F608": "267 rounds pushed; launch chain complete"
+  },
+  "contrast": {
+    "launch_vs_ingame": "splash/login (F607/608) + in-game (all prior) complete",
+    "splash_vs_select": "intro splash + server select screens"
+  },
+  "verdict": "Launch/login arc CLOSED (F609): intro + server-select + login + char-select + enter all byte-level; validation green, 267 consecutive rounds, 234 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F607-F608.",
+  "cross_refs": ["F607: intro", "F608: login screen", "F605: login arc"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "267 consecutive shipping rounds F335-F608",
+    "next: HANDOFF refresh 18, remaining corners"
+  ]
+}
