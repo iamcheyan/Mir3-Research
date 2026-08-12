@@ -1191,6 +1191,11 @@ git diff --check
 - **广N 快捷物品分派 + 浏览器验证**。
 - 落盘：`simulator-chat-quick-slot-evidence.json`（F498）+ RESEARCH_LOG Round 192。
 
+## Round 193 (2026-08-12) — mapviewer 缓存确认（Finding 499）
+
+- **瓦片 346× + fullmap 26MB 热缓存**（F88/F376/F394 确认）。
+- 落盘：`mapviewer-cache-confirm-evidence.json`（F499）+ RESEARCH_LOG Round 193。
+
 ## Pending（未阻塞，持续队列）
 
 - 服务端 .dat 名称编码（自定义移位）— 低优先（唯一）。

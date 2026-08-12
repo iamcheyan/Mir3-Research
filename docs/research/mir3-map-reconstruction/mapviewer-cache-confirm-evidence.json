@@ -1,0 +1,37 @@
+{
+  "evidence_id": "mapviewer-cache-confirm-2026-08-12-f499",
+  "title": "Round 193 (F499): Mapviewer cache confirmed - tile cache: cold 0.428s -> warm 0.0012s (346x, byte-identical, .tilecache-v3 disk cache F376); fullmap z=2: 26.19MB (F394 26MB match), warm 0.056s (process-pool in-memory) byte-identical; both cache levels operational - F88/F394/F376 cross-confirmed",
+  "date": "2026-08-12",
+  "objective": "Verify both mapviewer cache levels still perform (tile disk cache + fullmap pool cache).",
+  "question": "Do the mapviewer caches still deliver the documented speedups?",
+  "method": "curl timing: /tile cold/warm + /fullmap z=2 cold/warm, cmp checksums.",
+  "scope": "mapviewer 8899 /tile + /fullmap; .tilecache-v3.",
+  "cell_analysis": {
+    "tile_cache": {"cold": "0.428s", "warm": "0.0012s (346x)", "identity": "byte-identical (cmp)", "mechanism": ".tilecache-v3 disk cache (F376, F88)"},
+    "fullmap": {"size": "26.19MB (z=2, F394 26MB match)", "cold": "0.139s", "warm": "0.056s", "identity": "byte-identical", "mechanism": "process-pool in-memory frame cache (0x873 render_full_map)"},
+    "both": "disk + in-memory caches operational"
+  },
+  "exe_trace": {
+    "cache_chain": "/tile -> disk cache; /fullmap -> pool frame cache"
+  },
+  "audit_vs_exe": {
+    "F376": "tile cache 15x -> now 346x (cold faster base)",
+    "F394": "fullmap 26MB + warm caching confirmed",
+    "F88": "tile cache v3 consistent"
+  },
+  "contrast": {
+    "tile_vs_fullmap": "disk cache (tiles) vs memory cache (fullmap)",
+    "cold_vs_warm": "346x tile vs 2.5x fullmap (fullmap already warm from F394)"
+  },
+  "verdict": "Mapviewer caches CONFIRMED (secondary-tooling): tile disk cache 346x (0.428s->0.0012s identical), fullmap 26.19MB warm 0.056s identical. F88/F376/F394 all cross-confirmed live.",
+  "evidence_level": "secondary (live timing)",
+  "evidence_level_note": "Timing + size from live curl; byte identity via cmp.",
+  "cross_refs": ["F376: tile cache", "F394: fullmap", "F88: cache v3"],
+  "tool": "curl timing + cmp",
+  "reproduce": "curl /tile twice + /fullmap twice; cmp outputs",
+  "notes": [
+    "tile warm 0.0012s = disk cache read path",
+    "fullmap warm = pool frame cache (no re-decode)",
+    "both byte-identical = cache correctness"
+  ]
+}

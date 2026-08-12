@@ -6726,3 +6726,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔客户端链〕**0x41EDE0 物品使用（0x430920 解析 + 0x42FC20 背包反序列化 + 0x42E2D0 音效 + 0x47ADC4 名匹配循环）。
 - **〔验证〕**浏览器：输入 广1 → 快捷行日志。
 - 落盘：simulator-chat-quick-slot-evidence.json（F498，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 192。
+## Round 193 (F499) — 2026-08-12：mapviewer 缓存确认
+
+- **〔瓦片〕**冷 0.428s → 热 **0.0012s（346×）**、字节一致（.tilecache-v3 磁盘缓存 F376/F88）。
+- **〔fullmap〕**z=2 = 26.19MB（F394 匹配）、热 0.056s（进程池内存帧缓存）、字节一致。
+- **〔双级〕**磁盘（瓦片）+ 内存（fullmap）缓存均运行正常——F88/F376/F394 交叉确认。
+- 落盘：mapviewer-cache-confirm-evidence.json（F499，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 193。
