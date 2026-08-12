@@ -5916,3 +5916,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔原版事实〕**背包 = **46 槽（0x2E）**记录 bag+0x774 + i*0xC2C（flag 槽底、w/h +0x778/+0x77C、0xC20 记录体 +0x780）；网格 WORD 表 bag+0x324（6 列/行、12B 行距、空 0xFFFF、首格标记 slot+0x3E8）；索引数学 0x42FCC0 = bag + 3116*slot（F293）。
 - **〔模拟器修正〕**window.inventory 填充：36 槽（6×6）→ **46 槽（6 列 × 8 行，40px 距 36px 格）**；desc 标注 bag+0x774+i*0xC2C F293。**浏览器验证**：slotCount = 46。
 - 落盘：`bag-grid-46-slot-evidence.json`（F352，derived-tooling；源证据 primary-static F293）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 46。
+
+## Round 47 (F353) — 2026-08-12：装备面板验证（8 槽 primary-static + 状态窗渲染）
+
+- **〔装备槽〕**8 槽 primary-static（equipment-slots-evidence.json F325）：头盔 (177,70)/火把 (27,264)/毒药 (64,264)/左手镯 (27,186)/右手镯 (175,186)/左戒指 (27,227)/右戒指 (175,227)/鞋子 (103,264)——38px 槽、Equip.wil 帧 = 槽索引。
+- **〔状态窗〕**模拟器 window.status 渲染 8 装备槽 + 5 属性标签（等级/攻击/魔法/防御/魔御）；角色形象 @ +0x61/+0xC8（F338/F339）。**浏览器验证**：equipSlots = 8、attrLabels 5 条。
+- 落盘：`equipment-panel-verification-evidence.json`（F353，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 47。

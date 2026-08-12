@@ -423,6 +423,12 @@ git diff --check
 - **模拟器**：36 槽 → 46 槽（6 列 × 8 行）；浏览器验证 46。
 - 落盘：`bag-grid-46-slot-evidence.json`（F352）+ app.js + RESEARCH_LOG Round 46。
 
+## Round 47 (2026-08-12) — 装备面板验证（Finding 353）
+
+- **8 装备槽 primary-static**（头盔/火把/毒药/手镯×2/戒指×2/鞋子，F325）。
+- **模拟器状态窗**：8 槽 + 5 属性标签 + 角色形象（浏览器验证）。
+- 落盘：`equipment-panel-verification-evidence.json`（F353）+ RESEARCH_LOG Round 47。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

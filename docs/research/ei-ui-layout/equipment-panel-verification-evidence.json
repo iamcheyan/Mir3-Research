@@ -1,0 +1,51 @@
+{
+  "evidence_id": "equipment-panel-verification-2026-08-12-f353",
+  "title": "Round 47 (F353): Equipment panel verification - 8 primary-static slots (equipment-slots-evidence.json: 头盔/火把/毒药/手镯x2/戒指x2/鞋子) + status window figure/attribute rendering in sim (browser-verified 8 slots + 5 attrs)",
+  "date": "2026-08-12",
+  "objective": "Verify the equipment panel chain: the 8 equipment slots (primary-static evidence) + status window character-figure + attribute rendering, and confirm the simulator renders them correctly.",
+  "question": "Do the sim equipment slots match the primary evidence, and does the status window render them?",
+  "method": "Cross-validated against equipment-slots-evidence.json + status-window-render-evidence.json (F325 area); builder + app.js; browser verification.",
+  "scope": "Tools/web/build_mir3_simulator_data.py (equipment_slots); Tools/mir3_client_simulator/app.js (window.status fill); browser 8765/sim.",
+  "cell_analysis": {
+    "equipment_slots": [
+      {"id": "slot.helmet", "name": "头盔", "x": 177, "y": 70, "frame": 0},
+      {"id": "slot.torch", "name": "火把", "x": 27, "y": 264, "frame": 1},
+      {"id": "slot.poison", "name": "毒药", "x": 64, "y": 264, "frame": 2},
+      {"id": "slot.braceletL", "name": "左手镯", "x": 27, "y": 186, "frame": 3},
+      {"id": "slot.braceletR", "name": "右手镯", "x": 175, "y": 186, "frame": 4},
+      {"id": "slot.ringL", "name": "左戒指", "x": 27, "y": 227, "frame": 5},
+      {"id": "slot.ringR", "name": "右戒指", "x": 175, "y": 227, "frame": 6},
+      {"id": "slot.shoes", "name": "鞋子", "x": 103, "y": 264, "frame": 7}
+    ],
+    "all": "primary-static (38px slots, Equip.wil frame = slot index)",
+    "sim_status_window": {
+      "fill": "window.status renders equipment_slots (8) + attribute labels (等级/攻击/魔法/防御/魔御)",
+      "browser": "equipSlots = 8, attrLabels = [等级 1, 攻击 5-10, 魔法 3-8, 防御 2-5, 魔御 1-4]"
+    },
+    "figure_slot": "status window figure at (win.x+0x61, win.y+0xC8) via 0x44B560/0x450530 (F338/F339) - the 8 equip slots surround the figure"
+  },
+  "exe_trace": {
+    "equip_evidence": "equipment-slots-evidence.json (F325 closed: 8 slots 38px, human names from index mapping)",
+    "status_render": "status-window-render-evidence.json (flag_dispatch mode byte +0x54, faces 0xAB/0xAC=171/172, frames 200=256x512/201=1024x512)"
+  },
+  "audit_vs_exe": {
+    "F325": "8 equipment slots + human names confirmed (equipment-slots-evidence.json)",
+    "F338/F339": "status figure slot + 12-slot attribute array confirmed",
+    "Round 33": "sim status window fill confirmed"
+  },
+  "contrast": {
+    "equip_vs_attr": "8 equip slots (item placement, Equip.wil frames 0-7) vs 12-slot attribute hit-test array (+0x1C0 rects, F339) - placement vs display",
+    "figure": "character figure at +0x61/+0xC8 (both id1 paint 0x44B560 and id7 paint 0x450530)"
+  },
+  "verdict": "Equipment panel verified end-to-end (primary-static): 8 slots with human names (头盔/火把/毒药/手镯x2/戒指x2/鞋子) render in the sim status window alongside the character figure + attribute labels (browser-verified). Equipment chain complete.",
+  "evidence_level": "derived-tooling (source evidence primary-static F325)",
+  "evidence_level_note": "Slot geometry/names from equipment-slots-evidence.json (F325 primary-static); sim rendering verified in browser.",
+  "cross_refs": ["F325: equipment-slots-evidence.json", "F338: status-right figure 0x450530", "F339: status id1 12-slot attrs", "Round 33: sim status fill"],
+  "tool": "builder; app.js; puppeteer browser",
+  "reproduce": "open sim; login; press W; observe status window with 8 equip slots + attribute labels",
+  "notes": [
+    "equip slot frames 0-7 = Equip.wil frame index (placeholder icons in sim)",
+    "status window attr labels are sim demo values (runtime stats are server-driven)",
+    "figure + equip slots layout matches original (figure center, slots around: helmet top, bracelets/rings sides, shoes bottom)"
+  ]
+}
