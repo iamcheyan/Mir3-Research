@@ -443,6 +443,12 @@ git diff --check
 - **模拟器聊天命令**：+ / @ / ! / 普通 4 类分派（浏览器验证）。
 - 落盘：`chat-input-command-dispatch-evidence.json`（F355，primary-bytes）+ app.js + RESEARCH_LOG Round 49。
 
+## Round 50 (2026-08-12) — 确认/公告提示系统（Finding 356）
+
+- **0x418520**：wparam = ((type<<8|idx)<<16)|tag；MoveWindow+ShowWindow+SendMessageA 0x7EE（F233-238）。
+- **模拟器提示**：confirm/notice/gold 三型（帧 950/602/950+输入）；浏览器验证显示。
+- 落盘：`prompt-system-verification-evidence.json`（F356，primary-bytes）+ RESEARCH_LOG Round 50。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

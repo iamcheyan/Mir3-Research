@@ -5937,3 +5937,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x41ED20 命令分派〕**SEH + 0x3F0C 栈：`'+'` 前缀 → **0x41E740 交易/计数器命令**（0x468BF0 按 '/' 切、atoi、timeGetTime 门 [0x428214]）；否则 0x452920 解析 → word msgid → **msgid−6 → 字节表 0x421D8C**（0x0B=默认 11，稀疏索引）→ jmp [idx*4 + 0x421D5C]；显式比较 0x29E/0x26D/0xC9；0x41EDC4 字符串拷 [ebx+0x50] 0x104B。
 - **〔模拟器〕**Enter 分派：'+' → 交易命令注（0x41E740）、'@' → 私聊家族（0x47ACB8）、'!' → 喊话家族（0x47ACF8/0x47ACE4/0x47ACD0）、普通 → [你]。**浏览器验证 4 类命令**。
 - 落盘：`chat-input-command-dispatch-evidence.json`（F355，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 49。
+
+## Round 50 (F356) — 2026-08-12：确认/公告提示系统验证（0x418520 激活链 + 模拟器提示流程）
+
+- **〔0x418520 激活〕**门 [0x462] mode → 3 按钮数组 [esi+0x234+i*0x28]（步长 0x28）；**wparam = ((type<<8|idx)<<16)|tag**（F233-238 编码确认）→ MoveWindow + ShowWindow + **SendMessageA([0x8AA48C], 0x7EE, wparam, &[esi+0x130])**（lparam = 按钮负载缓冲 0x104）。
+- **〔模拟器〕**PROMPT_BUTTONS（confirm 帧 950 3 按钮 / notice 帧 602 2 按钮 / gold 帧 950+输入框 F283）——浏览器验证 showPrompt('confirm') 显示文本。
+- 落盘：`prompt-system-verification-evidence.json`（F356，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 50。

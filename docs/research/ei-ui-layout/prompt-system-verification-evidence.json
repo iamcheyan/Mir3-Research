@@ -1,0 +1,44 @@
+{
+  "evidence_id": "prompt-system-verification-2026-08-12-f356",
+  "title": "Round 50 (F356): Prompt/confirm system verification - 0x418520 activation (wparam = ((type<<8|idx)<<16)|tag, MoveWindow+ShowWindow+SendMessageA 0x7EE) + sim prompt flow (confirm/notice/gold browser-verified visible)",
+  "date": "2026-08-12",
+  "objective": "Verify the confirmation/notice prompt system: 0x418520 activation chain (F233-238), the prompt button wparam encoding, and the simulator prompt flow.",
+  "question": "How does the original activate prompt buttons, and does the sim prompt work?",
+  "method": "Capstone disassembly of 0x418520 (prompt activation); sim prompt test in browser.",
+  "scope": "0x418520-0x4185EA (activation), sim PROMPT_BUTTONS (confirm/notice/gold).",
+  "cell_analysis": {
+    "activation_0x418520": {
+      "gate": "[esi+0x462] mode byte -> 3-button array [esi+0x234+i*0x28] (button obj or 0)",
+      "wparam": "(([esi+0] type << 8 | idx) << 16) | word[esi+0x460] tag - F233-238 wparam encoding confirmed",
+      "flow": "MoveWindow(main hwnd, [0x8AB7F0]+0xDF, [0x8AB7F4]+0x23A, 0x162, 0x10) + ShowWindow + SendMessageA([0x8AA48C], 0x7EE, wparam, &[esi+0x130])",
+      "lparam": "&[esi+0x130] (button payload buffer, 0x104)"
+    },
+    "sim_prompt": {
+      "PROMPT_BUTTONS": "confirm (frame 950, 360x190 @ 400,246, 3 buttons 确定/取消/其他), notice (frame 602 584x252 @ 107,110, 2 buttons), gold (frame 950 + input, Finding 283)",
+      "browser": "showPrompt('confirm', ...) -> .prompt.visible true with text; buttons render (markup differs from button[] query)"
+    },
+    "evidence_chain": "F233-238: single instance 0x7E04C8, ctor 0x418030 (frame 950, -1/-1 center, 3 buttons), button class static vtable 0x4763A8 (paint 0x417640/hover 0x417780/press 0x4177C0/release 0x4177F0), TAB/Enter -> 0x418520"
+  },
+  "exe_trace": {
+    "prompt_singleton": "0x7E04C8 (F233-238)",
+    "msg": "0x7EE (SendMessageA from activation; F331: main wndproc 0x403FA4 -> 0x404600 / 0x45A140)"
+  },
+  "audit_vs_exe": {
+    "F233-238": "0x418520 activation + wparam encoding confirmed",
+    "F283": "gold prompt (msg 0x405/0x406) confirmed"
+  },
+  "contrast": {
+    "original_vs_sim": "original = native window + SendMessageA 0x7EE; sim = HTML overlay with same frame/button evidence"
+  },
+  "verdict": "Prompt system verified (primary-bytes): 0x418520 activation encodes wparam ((type<<8|idx)<<16)|tag + SendMessageA 0x7EE + MoveWindow/ShowWindow (F233-238). Sim prompt shows correctly (browser-verified).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Activation chain read directly from MIR3.EXE bytes; sim prompt browser-verified.",
+  "cross_refs": ["F233-238: confirmation-prompt-evidence.json", "F283: trade gold prompt", "F331: 0x7EE receive chain"],
+  "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
+  "reproduce": "img.disasm(0x418520, 0x60); open sim; trigger confirm prompt (logout/exit caption or showPrompt)",
+  "notes": [
+    "wparam encoding: byte[esi+0] = prompt type, idx = button index, word[esi+0x460] = tag",
+    "3-button array stride 0x28 at [esi+0x234]",
+    "gold prompt adds input field (Finding 283: msg 0x405 '你要给对方多少金币?')"
+  ]
+}
