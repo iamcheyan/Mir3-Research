@@ -8308,3 +8308,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**464 证据 JSON**；三服务 200；master 0b3b025（**498 连发 F335-F839 已推**）。
 - **〔弧〕**8 页签（F547）+ 技能记录（F743）+ 技能书绘制（F839）——**技能书完整**（8 页签 + 8 技能槽 + 页计数 + 记录槽），模式 E 全渲染。
 - 落盘：skill-book-closure-evidence.json（F840，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 534。
+## Round 535 (F841) — 2026-08-12：HANDOFF 刷新 90（Round 532-534）+ 90 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 532-534（F839-F840：技能书绘制 + 技能书窗口闭合）；基线 Round 531=0084901 → Round 534=bc99e68（**499 连发 F335-F840**）——**HANDOFF 刷新 90 里程碑**。
+- 落盘：handoff-refresh-90-evidence.json（F841，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 535。

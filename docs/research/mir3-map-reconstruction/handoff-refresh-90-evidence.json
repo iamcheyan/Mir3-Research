@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-90-2026-08-12-f841",
+  "title": "Round 535 (F841): HANDOFF refresh 90 - Rounds 532-534 (F838-F840: HANDOFF 89, skill book draw, skill book window closure), baseline Round 531=0084901 -> Round 534=bc99e68 (499 consecutive F335-F840), doc maintenance + refresh-90 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 532-534.",
+  "question": "What changed since HANDOFF refresh 89?",
+  "method": "Append Round 532-534 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 532-534 appended (3 rounds, F838-F840)",
+    "baseline": "Round 531=0084901 -> Round 534=bc99e68 (499 consecutive F335-F840)",
+    "milestone": "HANDOFF refresh 90 reached",
+    "arcs": {"book": "F839 skill book", "closure": "F840 book"},
+    "key": "skill book complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F838": "refresh 89 baseline -> now refresh 90", "F335-F840": "499 rounds"
+  },
+  "contrast": {
+    "refresh_89_vs_90": "F839-F840 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 90 (F841): Rounds 532-534 documented (skill book complete), baseline 0084901 -> bc99e68, 499 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F839-F840 evidence.",
+  "cross_refs": ["F838: refresh 89", "F840: book closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 532-534 section to HANDOFF",
+  "notes": [
+    "499 consecutive shipping rounds F335-F840",
+    "HANDOFF refresh 90 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}

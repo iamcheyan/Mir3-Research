@@ -3009,3 +3009,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能书完整；下一弧：HANDOFF 刷新 90/剩余角落）。
+## Round 535 (2026-08-12) — HANDOFF 刷新 90 + 90 刷新里程碑（Finding 841）
+
+- **Round 532-534 追加 + 499 连发 + 90 刷新**（技能书完整入档）。
+- 落盘：`handoff-refresh-90-evidence.json`（F841）+ RESEARCH_LOG Round 535。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能书完整；下一弧：剩余深层角落/模拟器 polish）。
