@@ -1011,6 +1011,11 @@ git diff --check
 - **0xC20 记录构建**（模式 1/2 全解）。
 - 落盘：`store-sell-warehouse-parsers-evidence.json`（F462）+ RESEARCH_LOG Round 156。
 
+## Round 157 (2026-08-12) — 商店 CRAFT 解析器（Finding 463）
+
+- **模式族全解**（BUY/SELL/仓库/CRAFT）。
+- 落盘：`store-craft-parser-evidence.json`（F463）+ RESEARCH_LOG Round 157。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店族全解；其余 = 低优先深化，见 RESEARCH_LOG）。

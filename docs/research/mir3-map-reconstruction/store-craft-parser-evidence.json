@@ -1,0 +1,36 @@
+{
+  "evidence_id": "store-craft-parser-2026-08-12-f463",
+  "title": "Round 157 (F463): Store CRAFT parser - 0x44FB00: mode [0x5F8]=3, layout 0x423E80(0x3E8,0,0xBA,0x12C,0x130), slot grid [0x720], clears lists [0x64C]+[0x70C], strtok '/' parse (7 tokens/recipe) -> 0x3C stubs (name + atoi 0x4681F9: [+0x20] flag, [+0x24..0x38] 6 values) -> append [0x64C]; list push 0x44FDB0 (node vtable 0x476AD4); STORE MODE FAMILY COMPLETE: BUY 0x44F480 (7-token 0x3C -> [0x64C]) / SELL 0x44F710 (0xC20 records -> [0x708]) / 仓库 0x44F940 (0xC20 -> [0x70C]) / CRAFT 0x44FB00 (7-token 0x3C -> [0x64C]) - all parse '/' delimited server strings",
+  "date": "2026-08-12",
+  "objective": "Decode the CRAFT store parser; complete the store mode family analysis.",
+  "question": "How does the CRAFT mode parse recipe data?",
+  "method": "Disasm 0x44FB00-0x44FD99 (CRAFT) + 0x44FDB0 (list push).",
+  "scope": "0x44FB00-0x44FD99; mode [0x5F8]; list [0x64C].",
+  "cell_analysis": {
+    "craft_0x44FB00": {"mode": "[0x5F8] = 3", "layout": "0x423E80(0x3E8, 0, 0xBA, 0x12C, 0x130)", "grid": "[0x720] 2D (0x143+0x26x, 0x2B+0x26y)", "parse": "strtok '/' loop (7 tokens/recipe) -> alloc 0x3C stub -> name copy + atoi 0x4681F9 -> [+0x20] flag (atoi>0), [+0x24]/[+0x28]/[+0x2C]/[+0x30]/[+0x34]/[+0x38] 6 values -> append vtable+4 to [0x64C]", "loop": "while next '/' token exists (0x44FD84)"},
+    "list_push_0x44FDB0": {"node": "vtable 0x476AD4, {+4 data, +8 prev, +0xC next}", "same": "doubly-linked push-back (F440 family)"},
+    "mode_family_complete": {"BUY": "0x44F480: 7-token -> 0x3C stubs -> [0x64C] (F461)", "SELL": "0x44F710: '/' -> 0xC20 records (0x430920) -> [0x708] (F462)", "仓库": "0x44F940: '/' -> 0xC20 records -> [0x70C] (F462)", "CRAFT": "0x44FB00: 7-token -> 0x3C stubs -> [0x64C]"}
+  },
+  "exe_trace": {
+    "store_chain": "all 4 modes parse '/' delimited server strings -> mode-specific lists -> paint 0x44D590"
+  },
+  "audit_vs_exe": {
+    "F461/F462": "mode family unified (7-token 0x3C vs 0xC20 records)",
+    "F57/F399": "5-state graph now fully decoded"
+  },
+  "contrast": {
+    "craft_vs_buy": "CRAFT = same parse as BUY (recipes as goods stubs); SELL/仓库 = full records",
+    "stub_vs_record": "0x3C stubs (list display) vs 0xC20 records (interactive items)"
+  },
+  "verdict": "Store CRAFT parser PRIMARY-verified: mode [0x5F8]=3, 7-token 0x3C stub parse into [0x64C], list push 0x44FDB0 (node 0x476AD4). STORE MODE FAMILY COMPLETE (BUY/SELL/仓库/CRAFT all decoded, all '/' delimited).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "CRAFT + push decoded; family table consolidated.",
+  "cross_refs": ["F461: BUY", "F462: SELL/仓库", "F57/F399: mode graph"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44FB00+0x80, 0x44FDB0+0x30",
+  "notes": [
+    "recipes use same 0x3C stub layout as goods",
+    "0x44FDA0 = store window vtable init (0x476AB8)",
+    "craft loop continues while '/' tokens remain (multi-recipe)"
+  ]
+}

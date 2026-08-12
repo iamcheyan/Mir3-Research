@@ -6532,3 +6532,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔仓库〕**0x44F940：模式 [0x5F8]=2、布局 0x423E80(0x3E9,-4,...)、同解析 → 链表 [0x70C]。
 - **〔族〕**BUY 0x3C 桩 vs SELL/仓库 0xC20 完整记录（= 背包记录 F293）；CRAFT 0x44FB00 模式 3。
 - 落盘：store-sell-warehouse-parsers-evidence.json（F462，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 156。
+## Round 157 (F463) — 2026-08-12：商店 CRAFT 解析器（模式族全解）
+
+- **〔CRAFT〕**0x44FB00：模式 [0x5F8]=3、布局 0x423E80(0x3E8,0,...)、格网 [0x720]、清链表 [0x64C]+[0x70C]、strtok '/' 解析（7 token/配方）→ 0x3C 桩（名 + atoi：[+0x20] 标志、[+0x24..0x38] 6 值）→ [0x64C]；链表 push 0x44FDB0（节点 vtable 0x476AD4）。
+- **〔族全解〕**BUY（7-token 0x3C → [0x64C]）/ SELL（0xC20 记录 → [0x708]）/ 仓库（0xC20 → [0x70C]）/ CRAFT（7-token 0x3C → [0x64C]）——全部解析 '/' 分隔服务端字符串。
+- 落盘：store-craft-parser-evidence.json（F463，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 157。
