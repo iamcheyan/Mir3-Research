@@ -1,0 +1,34 @@
+{
+  "evidence_id": "dialog-window-render-2026-08-12-f857",
+  "title": "Round 551 (F857): NPC dialog window render (F558 mode 9, F598 render side) - 0x43F460: option list [0x8B1AE4] walk + TYPE jt 0x440158 (4 types, F598 CONFIRMED) + measure 0x45E0C0 (0x45DD70 wrap) + option DRAW 0x45DD70 (y=idx*[opt+5]+0x28, colors 0x131/0xFFFFFF95 gate [0x582]) - dialog window COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog window render.",
+  "question": "How does the dialog window render options?",
+  "method": "Disasm 0x43F460-0x43F620.",
+  "scope": "0x43F460-0x43F620; list [0x8B1AE4].",
+  "cell_analysis": {
+    "0x43F460": {"list": "[0x8B1AE4] walk", "types": "jt 0x440158 4", "measure": "0x45E0C0", "draw": "0x45DD70 y=idx*[opt+5]+0x28"}
+  },
+  "exe_trace": {
+    "dialog_chain": "list walk -> type -> measure -> option draw"
+  },
+  "audit_vs_exe": {
+    "F598": "4-type CONFIRMED", "F558": "mode 9 dialog", "F746": "option hit"
+  },
+  "contrast": {
+    "types_vs_draw": "jt + options",
+    "list_vs_y": "[0x8B1AE4] + idx spacing"
+  },
+  "verdict": "NPC dialog window render PRIMARY-verified: list + types + options; dialog window complete (F598/F746).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dialog render decoded from .text.",
+  "cross_refs": ["F598: dialog", "F558: registry", "F746: options"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43F460+0x20",
+  "notes": [
+    "type jt 0x440158",
+    "list [0x8B1AE4]",
+    "y idx*[opt+5]+0x28",
+    "gate [0x582]"
+  ]
+}

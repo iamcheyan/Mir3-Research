@@ -3137,3 +3137,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 551 (2026-08-12) — NPC 对话窗口渲染（Finding 857）
+
+- **选项列表 + 4 类型 + 绘制**（对话窗口完整）。
+- 落盘：`dialog-window-render-evidence.json`（F857）+ RESEARCH_LOG Round 551。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话窗口完整；下一弧：剩余深层角落）。

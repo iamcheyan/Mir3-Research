@@ -8377,3 +8377,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 547-549（F854-F855：公告窗口渲染 + 公告窗口闭合）；基线 Round 546=cc45e11 → Round 549=8150b28（**514 连发 F335-F855**）。
 - 落盘：handoff-refresh-95-evidence.json（F856，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 550。
+## Round 551 (F857) — 2026-08-12：NPC 对话窗口渲染（F558 模式 9，F598 渲染侧）
+
+- **〔对话〕**0x43F460：选项列表 [0x8B1AE4] 遍历 + **类型 jt 0x440158（4 类型，F598 确认）** + 测量 0x45E0C0（0x45DD70 换行）+ **选项绘制 0x45DD70**（y=idx×[选项+5]+0x28、色 0x131/0xFFFFFF95 门 [0x582]）——对话窗口完整。
+- 落盘：dialog-window-render-evidence.json（F857，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 551。
