@@ -1,0 +1,36 @@
+{
+  "evidence_id": "outbound-catalog-complete-2026-08-12-f573",
+  "title": "Round 267 (F573): OUTBOUND CATALOG COMPLETE - 46 calls to 0x452940 (header builder) in 0x45171E-0x4524E5: 30 static msgids mapped (0x3E9 merchant, 0x3EA, 0x3EF/0x3F0 store ops, 0x3F2/0x3F4/0x3F5/0x3F6/0x3F7/0x3F8/0x3F9 store controls, 0x3FA/0x3FB/0x3FC scroll, 0x3FD/0x3FE, 0x3FF/0x400 coords, 0x401 trade request, 0x402/0x403 trade, 0x405/0x406 gold, 0x407/0x408 reset, 0x409 inventory, 0x40A, 0x416/0x417/0x418/0x419 NPC/spawn) + dynamic-reg msgids: 0x451928 (reg arg), 0x452052 msg 0x66, 0x452085 msg 0x67, 0x452105 msg 0xBD6, 0x452156 msg 0xBC9 (packed coord), 0x4521CB (reg), 0x451F28/0x451F72/0x451FA5/0x451FF5 msg 0x7D1/0x68/0x64/0x65 (text wrappers F572) - FULL outbound catalog 46 senders byte-verified",
+  "date": "2026-08-12",
+  "objective": "Complete the outbound sender catalog with all msgids.",
+  "question": "What are all 34+ outbound msgid senders?",
+  "method": "Sweep 0x45171E-0x4524E5 for E8->0x452940 calls + extract msgid pushes + decode dynamic cases.",
+  "scope": "0x45171E-0x4524E5; 46 sender call sites.",
+  "cell_analysis": {
+    "static_msgids": {"store": "0x3E9/0x3EA/0x3EF/0x3F0 + controls 0x3F2-0x3F9", "scroll": "0x3FA/0x3FB/0x3FC/0x3FD/0x3FE", "coords": "0x3FF/0x400", "trade": "0x401-0x403 + gold 0x405/0x406 + reset 0x407/0x408 + inventory 0x409 + 0x40A", "npc": "0x416-0x419 (0x416/0x418/0x419 + spawn 0x417)"},
+    "dynamic": {"0x451928": "register arg", "0x452052": "msg 0x66", "0x452085": "msg 0x67", "0x452105": "msg 0xBD6", "0x452156": "msg 0xBC9 packed coord", "0x4521CB": "register arg", "text_wrappers": "0x451F28 (0x7D1) / 0x451F72 (0x68) / 0x451FA5 (0x64) / 0x451FF5 (0x65) = F572 wrappers"},
+    "count": "46 sender call sites (F514 '34' expanded)"
+  },
+  "exe_trace": {
+    "send_chain": "UI event -> sender fn -> 0x452940 header -> 0x451E60 frame -> send()"
+  },
+  "audit_vs_exe": {
+    "F514": "34 msgid inventory -> 46 call sites verified", "F572": "text wrappers 0x7D1/0x68/0x64/0x65", "F364": "trade/gold", "F460/F461": "store controls"
+  },
+  "contrast": {
+    "static_vs_dynamic": "pushed msgid vs register-loaded (0x451928/0x4521CB)",
+    "0x3E9_range_vs_0xBC9": "game ops 0x3E9-0x40A vs entity ops 0xBC9/0xBD6"
+  },
+  "verdict": "Outbound catalog COMPLETE (F573): 46 sender call sites byte-verified (30 static msgids + 6 dynamic + 4 text wrappers + reg cases); full client->server frame senders documented.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sweep + msgid extraction from .text.",
+  "cross_refs": ["F514: inventory", "F572: text core", "F364: trade", "F460: store"],
+  "tool": "capstone disasm sweep",
+  "reproduce": "scan 0x45171E-0x4524E5 for E8->0x452940; extract push msgid",
+  "notes": [
+    "0xBC9/0xBD6 = entity op msgids (monster family F523)",
+    "0x7D1/0x64/0x65/0x66/0x67/0x68 = chat/skill/action msgids",
+    "2 register-loaded msgids (0x451928/0x4521CB)",
+    "catalog = 46 call sites"
+  ]
+}

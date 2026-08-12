@@ -1561,9 +1561,14 @@ git diff --check
 - **'#<seq><cmd>/<args>!' 文本帧 + send() 核心**（F524 出站层补全）。
 - 落盘：`outbound-text-protocol-core-evidence.json`（F572）+ RESEARCH_LOG Round 266。
 
+## Round 267 (2026-08-12) — 出站目录完整（Finding 573）
+
+- **46 发送调用点**（30 静态 + 6 动态 + 4 文本包装 + 寄存器参）。
+- 落盘：`outbound-catalog-complete-evidence.json`（F573）+ RESEARCH_LOG Round 267。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（出站核心闭合；下一弧：出站 34 发送器逐个）。
+- 无阻塞项（出站目录完整；下一弧：协议双向 100% 闭合）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

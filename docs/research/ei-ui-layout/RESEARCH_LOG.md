@@ -7105,3 +7105,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔包装〕**0x451F10='%s/%s'（2 串）、0x451F60=msg 0x68、0x451F90='%s/%d'（[0x47EF10] 主对象）、0x451FE0='%s/%s/%d/%d/%d'（3 数）。
 - **〔协议〕**客户端-服务器 = **文本帧 '#<seq><cmd>/<args>!'** 单异步 socket（KR MIR3 风格）。
 - 落盘：outbound-text-protocol-core-evidence.json（F572，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 266。
+## Round 267 (F573) — 2026-08-12：出站目录完整（46 发送器）
+
+- **〔扫描〕**0x45171E-0x4524E5 中 **46 个调用 0x452940**（包头构造器）：30 静态 msgid（0x3E9 商人/0x3EA/0x3EF/0x3F0 商店操作 + 0x3F2-0x3F9 商店控件/0x3FA-0x3FE 滚动/0x3FF/0x400 坐标/0x401-0x403 交易 + 0x405/0x406 金币 + 0x407/0x408 重置 + 0x409 背包 + 0x40A/0x416-0x419 NPC/生成）+ 动态（0x451928 寄存器参、0x452052 msg 0x66、0x452085 msg 0x67、0x452105 msg 0xBD6、0x452156 msg 0xBC9 压缩坐标、0x4521CB 寄存器参）+ **文本包装 0x7D1/0x68/0x64/0x65**（F572）。
+- **〔定案〕**F514「34」扩展为 **46 发送调用点字节验证**（0xBC9/0xBD6 = 实体操作 msgid，怪物族 F523 连接）。
+- 落盘：outbound-catalog-complete-evidence.json（F573，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 267。
