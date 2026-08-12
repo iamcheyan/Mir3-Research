@@ -6746,3 +6746,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔格式〕**stditem.dat = 1143 记录 × 184B + 4B 计数头 = 210316（**精确等于文件大小**）；名称 @ rec+0x99（EUC-KR/Hanja、0x04 终止，rec1 '뱐같烈㎚滔㎛'）——F493 184B/记录 inference 确认精确 + 编码解析。
 - **〔双库〕**monster/stditem 全解码（KR 源格式）。
 - 落盘：stditem-dat-kr-format-evidence.json（F502，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 196。
+## Round 197 (F503) — 2026-08-12：服务端数据库解码弧闭合（F501-F502 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master b2a8f7d（**162 连发已推**）。
+- **〔弧汇总〕**monster.dat EUC-KR/Hanja 破解（F501、432 槽全命名）+ stditem.dat 1143×184B+4B 精确格式 + 名称 +0x99（F502）——**服务端双库全可解码**；客户端仍包驱动（F492/F464）。
+- 落盘：server-db-decode-arc-closure-evidence.json（F503，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 197。

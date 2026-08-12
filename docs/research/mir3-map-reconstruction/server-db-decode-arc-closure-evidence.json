@@ -1,0 +1,36 @@
+{
+  "evidence_id": "server-db-decode-arc-closure-2026-08-12-f503",
+  "title": "Round 197 (F503): Server-DB decode arc CLOSED (F501-F502) - full validation green (compileall/verify exit 0/node/JSON), services 200, master b2a8f7d (162 shipping rounds F335-F502); arc consolidated: monster.dat EUC-KR/Hanja encoding cracked (F501, 432 slots all named), stditem.dat 1143x184B+4B exact format + name +0x99 (F502); ALL server .dat decodable now; client remains packet-fed (F492/F464)",
+  "date": "2026-08-12",
+  "objective": "Close the server-DB decode arc with validation + summary.",
+  "question": "Is the repo healthy after the 2-round server-DB decode arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master b2a8f7d; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F501": "monster.dat EUC-KR/Hanja cracked (432 slots, KR-source)", "F502": "stditem.dat 1143x184B+4B exact + name +0x99 EUC-KR/Hanja"},
+    "significance": "server DBs fully decodable (KR-source); client packet-fed unaffected"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F502": "162 rounds pushed; server DB picture complete + decodable"
+  },
+  "contrast": {
+    "kr_vs_cn": "KR-source .dat vs CN script layer translation",
+    "server_vs_client": "server DBs decodable; client still packet-fed"
+  },
+  "verdict": "Server-DB decode arc CLOSED (F501-F502): validation green, services live, 162 shipping rounds pushed. Both server .dat files fully decodable (EUC-KR/Hanja).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F501-F502.",
+  "cross_refs": ["F501-F502: arc", "F189: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: spell frame math runtime verify, remaining sim polish, deep Envir integration",
+    "162 shipping rounds + user quest-design commits all pushed"
+  ]
+}
