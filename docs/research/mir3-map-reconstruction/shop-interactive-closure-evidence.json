@@ -1,0 +1,37 @@
+{
+  "evidence_id": "shop-interactive-closure-2026-08-12-f825",
+  "title": "Round 519 (F825): Shop interactive CLOSED (F661/F740/F824) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 04febcf (483 consecutive F335-F824), 449 evidence JSONs; arc: shop manager/hit (F661) + click handler (F740) + click dispatch (F824) - shop window COMPLETE byte-level (buy 0x3EA + sell/repair + exit 0x3E8 + cancel + item list + confirm hit), window mode 2 fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the shop interactive arc.",
+  "question": "Is the shop window fully interactive + documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "449 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F661": "manager/hit", "F740": "click handler", "F824": "click dispatch"},
+    "shop": "buy + sell + exit + cancel = COMPLETE",
+    "milestone": "483 consecutive rounds F335-F824"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F824": "483 rounds pushed; shop fully interactive"
+  },
+  "contrast": {
+    "buy_vs_exit": "0x3EA + 0x3E8",
+    "handler_vs_dispatch": "0x44F1D0 + 0x44E9B0"
+  },
+  "verdict": "Shop interactive CLOSED (F825): buy + sell + exit + cancel all byte-level; validation green, 483 consecutive rounds, 449 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F661/F740/F824.",
+  "cross_refs": ["F661", "F740", "F824"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "483 consecutive shipping rounds F335-F824",
+    "shop 100% interactive",
+    "next: HANDOFF refresh 85, remaining corners"
+  ]
+}

@@ -8238,3 +8238,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔商店〕**0x44E9B0：模式 [0x5F8] 门（0/4/1/3 vs 1/4/2）+ **退出按钮 → 0x423E80 发送 msg 0x3E8**（坐标 0xBA/0x12C/0x130）+ 物品列表 [0x70C] free + 模式 0；购买确认**取消** + 模式 0；滚动条 F707 释放 0x417E60 @ +0x5FC；更多控件 vtable[0x10] 命中（0x108 等）——商店窗口点击完整（F661/F740 用）。
 - 落盘：shop-click-dispatch-evidence.json（F824，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 518。
+## Round 519 (F825) — 2026-08-12：商店交互闭合（F661/F740/F824 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**449 证据 JSON**；三服务 200；master 04febcf（**483 连发 F335-F824 已推**）。
+- **〔弧〕**商店管理/命中（F661）+ 点击处理（F740）+ 点击分派（F824）——**商店窗口完整**（购买 0x3EA + 卖/修 + 退出 0x3E8 + 取消 + 物品列表 + 确认命中），模式 2 全交互。
+- 落盘：shop-interactive-closure-evidence.json（F825，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 519。
