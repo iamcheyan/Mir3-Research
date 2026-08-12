@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-81-2026-08-12-f814",
+  "title": "Round 508 (F814): HANDOFF refresh 81 - Rounds 505-507 (F811-F813: window open/close dispatcher F550 FULL, toggle helpers, toggle machinery closure), baseline Round 503=0352e21 -> Round 507=c3255fb (472 consecutive F335-F813), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 505-507.",
+  "question": "What changed since HANDOFF refresh 80?",
+  "method": "Append Round 505-507 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 505-507 appended (3 rounds, F811-F813)",
+    "baseline": "Round 503=0352e21 -> Round 507=c3255fb (472 consecutive F335-F813)",
+    "arcs": {"toggle": "F811/F812 toggle", "closure": "F813 machinery"},
+    "key": "toggle machinery complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F810": "refresh 80 baseline -> now refresh 81", "F335-F813": "472 rounds"
+  },
+  "contrast": {
+    "refresh_80_vs_81": "F811-F813 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 81 (F814): Rounds 505-507 documented (toggle complete), baseline 0352e21 -> c3255fb, 472 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F811-F813 evidence.",
+  "cross_refs": ["F810: refresh 80", "F813: toggle closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 505-507 section to HANDOFF",
+  "notes": [
+    "472 consecutive shipping rounds F335-F813",
+    "next: remaining deep corners, sim polish"
+  ]
+}

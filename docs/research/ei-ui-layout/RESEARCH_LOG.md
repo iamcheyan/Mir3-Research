@@ -8191,3 +8191,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**437 证据 JSON**；三服务 200；master 8c3e89a（**471 连发 F335-F812 已推**）。
 - **〔弧〕**切换分派器（F550）+ 开/关函数体（F811）+ 助手（F812）——**切换机制完整**（16 模式 jt + 开/关列表 [0xD24..0xD38] + 各模式窗口槽 + 显示/隐藏），窗口生命周期表面全闭合。
 - 落盘：toggle-machinery-closure-evidence.json（F813，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 507。
+## Round 508 (F814) — 2026-08-12：HANDOFF 刷新 81（Round 505-507）
+
+- **〔刷新〕**HANDOFF 追加 Round 505-507（F811-F813：窗口开/关 + 切换助手 + 切换机制闭合）；基线 Round 503=0352e21 → Round 507=c3255fb（**472 连发 F335-F813**）。
+- 落盘：handoff-refresh-81-evidence.json（F814，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 508。

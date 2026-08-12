@@ -2793,3 +2793,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（切换机制完整；下一弧：HANDOFF 刷新 81/剩余角落）。
+## Round 508 (2026-08-12) — HANDOFF 刷新 81（Finding 814）
+
+- **Round 505-507 追加 + 472 连发**（切换机制完整入档）。
+- 落盘：`handoff-refresh-81-evidence.json`（F814）+ RESEARCH_LOG Round 508。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（切换机制完整；下一弧：剩余深层角落/模拟器 polish）。
