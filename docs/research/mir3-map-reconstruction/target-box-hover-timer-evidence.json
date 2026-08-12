@@ -1,0 +1,34 @@
+{
+  "evidence_id": "target-box-hover-timer-2026-08-12-f531",
+  "title": "Round 225 (F531): Target box hover timer - 0x40BB00: accumulator [0x6209C] += tick while [0x620A0] flag, gate 0xBB8 (3000ms), THEN clear [0x620A0] 0x41 dwords + [0x621A4] 0x208 dwords (name box reset F359); box anchor [0xE4]-0x2C / [0xE8]-0x37 (F359 exact), type [0x61C8C] variant sizes (1 = text-measured 0x45E0C0, else fixed), SetRect 0x4762B0 + 0x466800 transform + screen vtable+0x40 - hover name box lifecycle complete",
+  "date": "2026-08-12",
+  "objective": "Decode the target hover name box timer + lifecycle.",
+  "question": "How does the hover name box time out and reset?",
+  "method": "Disasm 0x40BB00-0x40BC00 (timer + reset + draw).",
+  "scope": "0x40BB00-0x40BC00; timer [0x6209C]; box [0x620A0].",
+  "cell_analysis": {
+    "timer": {"acc": "[0x6209C] += tick while [0x620A0] flag", "gate": "0xBB8 (3000ms, F359)", "reset": "clear [0x620A0] 0x41 dw + [0x621A4] 0x208 dw"},
+    "box": {"anchor": "[0xE4]-0x2C / [0xE8]-0x37 (F359)", "type": "[0x61C8C]: 1 = text-measured (0x45E0C0), else fixed-size", "draw": "SetRect 0x4762B0 + 0x466800 transform + screen vtable+0x40"}
+  },
+  "exe_trace": {
+    "hover_chain": "pointerover -> [0x620A0] flag -> timer -> 3000ms reset -> box draw"
+  },
+  "audit_vs_exe": {
+    "F359": "3000ms + anchor confirmed", "F53": "target box family", "F108": "sim hover"
+  },
+  "contrast": {
+    "timer_vs_draw": "timer resets box; draw shows it while flag set",
+    "text_vs_fixed": "type 1 text-measured vs fixed box"
+  },
+  "verdict": "Target box hover timer PRIMARY-verified: 0x40BB00 accumulator 0xBB8 (3000ms) + reset (0x41+0x208 dwords), anchor [0xE4]-0x2C/[0xE8]-0x37, type [0x61C8C] box variants. F359 lifecycle complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Timer + reset + draw decoded from .text.",
+  "cross_refs": ["F359: hover box", "F53: target family", "F108: sim"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40BB00+0x40",
+  "notes": [
+    "0xBB8 = 3000ms exact (F359)",
+    "name box buffer [0x621A4] 0x208 dwords",
+    "box anchor -0x2C/-0x37 = above entity"
+  ]
+}

@@ -6879,3 +6879,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔条〕**0x40A8A0：门 [0x61BB8]/[0x61BBC]、**HP = [0x61BA0]−[0xB4]+[0xC4]（F350 精确）**、type [0x8D] 分派（0x51/0x89/0x81/0x8A）、**元素帧 = 实时值 [0x61B9C] 经 0x4542A0 注册表**（存储 type*81*4）、0x466130 + 0x466800 变换 blit——F350 运行时确认。
 - 落盘：bar-drain-live-value-evidence.json（F530，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 224。
+## Round 225 (F531) — 2026-08-12：目标框悬停计时器
+
+- **〔计时〕**0x40BB00：累加器 [0x6209C] += tick（[0x620A0] 旗标时）、**门 0xBB8（3000ms，F359）**、随后清 [0x620A0] 0x41 dword + [0x621A4] 0x208 dword（名签重置）；锚 [0xE4]−0x2C/[0xE8]−0x37（F359 精确）、type [0x61C8C] 变体（1 = 文本测量）。
+- 落盘：target-box-hover-timer-evidence.json（F531，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 225。
