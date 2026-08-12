@@ -8872,3 +8872,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**594 证据 JSON**；三服务 200；master c62b847（**628 连发 F335-F969 已推**）。
 - **〔弧〕**18 阶段（F591）+ 构造（F636）+ ecx 0x47EF18（F637）+ 构造链重述（F969）——**主构造完整**（vtable 链 0x4766F0..0x476680 + 阶段构造 6-0xB）；核心生命周期 100%。
 - 落盘：main-tick-closure-evidence.json（F970，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 664。
+## Round 665 (F971) — 2026-08-12：HANDOFF 刷新 135（Round 662-664）
+
+- **〔刷新〕**HANDOFF 追加 Round 662-664（F969-F970：主 tick/构造链重述 + 主 tick 闭合）；基线 Round 661=8057ad3 → Round 664=8ef379d（**629 连发 F335-F970**）。
+- 落盘：handoff-refresh-135-evidence.json（F971，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 665。
