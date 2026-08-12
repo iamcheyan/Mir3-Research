@@ -8885,3 +8885,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**597 证据 JSON**；三服务 200；master 2643734（**631 连发 F335-F972 已推**）。
 - **〔弧〕**绘制+命令（F773）+ 旗标写者（F836）+ 命中/点击/构造（F860）+ 输入/构造（F972）——**坐骑窗口完整**（5 按钮 + 6 物品槽 + 旗标 0x7DA060 + 输入 + 构造链）；**13/13 窗口 + HUD + 路由 + 主构造 100%**。
 - 落盘：mount-window-closure-evidence.json（F973，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 667。
+## Round 668 (F974) — 2026-08-12：HANDOFF 刷新 136（Round 665-667）
+
+- **〔刷新〕**HANDOFF 追加 Round 665-667（F972-F973：坐骑窗口输入/构造 + 坐骑窗口闭合）；基线 Round 664=8ef379d → Round 667=8f8dcce（**632 连发 F335-F973**）。
+- 落盘：handoff-refresh-136-evidence.json（F974，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 668。
