@@ -1,0 +1,34 @@
+{
+  "evidence_id": "options-config-load-2026-08-12-f788",
+  "title": "Round 482 (F788): Options config LOAD full - 0x441CC0 body: Mir3.ini keys 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570 (section 0x47A2B8, GetPrivateProfileString 0x4760D4, defaults 0x47C5BC/0x47C5B8) + atoi 0x4681F9 -> fields [0x58]/SFX [0x8AB14C]/[0x54]/BGM [0x8AB150]/[0x5C]/[0x60] + audio ON/OFF (0x45B1B0/0x45B1D0/0x45B1C0 sound, 0x45B410/0x45B3D0/0x45B430 music) + volume->slider conversion (x0x476968, clamp -100) - options persistence COMPLETE (F779 load side)",
+  "date": "2026-08-12",
+  "objective": "Decode the options config load full body.",
+  "question": "How does the options config load from ini?",
+  "method": "Disasm 0x441CC0-0x441F30.",
+  "scope": "0x441CC0-0x441F30; ini keys.",
+  "cell_analysis": {
+    "0x441CC0": {"keys": "0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570", "api": "0x4760D4 + atoi 0x4681F9", "audio": "0x45B1B0/0x45B410 on-off", "convert": "volume x0x476968 -> slider [0x6C]/[0x74]"}
+  },
+  "exe_trace": {
+    "config_chain": "ini read -> atoi -> fields -> audio on/off -> slider convert"
+  },
+  "audit_vs_exe": {
+    "F779": "load head", "F776": "apply inverse", "F585": "Mir3.ini"
+  },
+  "contrast": {
+    "load_vs_apply": "0x441CC0 + 0x441F40",
+    "audio_vs_volume": "on/off + slider"
+  },
+  "verdict": "Options config LOAD PRIMARY-verified: ini keys + atoi + audio on/off + slider convert; options persistence complete (F779).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Config load decoded from .text.",
+  "cross_refs": ["F779: refresh", "F776: apply", "F585: Mir3.ini"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441CC0+0x20",
+  "notes": [
+    "section 0x47A2B8",
+    "6 ini keys",
+    "audio on/off",
+    "slider convert x0x476968"
+  ]
+}

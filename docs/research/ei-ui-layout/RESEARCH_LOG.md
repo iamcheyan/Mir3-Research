@@ -8078,3 +8078,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 478-480（F785-F786：消息分派器 + 输入/消息系统闭合 + Round 480 里程碑）；基线 Round 477=213256b → Round 480=b4b8bc8（**445 连发 F335-F786**）。
 - 落盘：handoff-refresh-72-evidence.json（F787，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 481。
+## Round 482 (F788) — 2026-08-12：选项配置装载全量
+
+- **〔配置〕**0x441CC0 全量：**Mir3.ini 键** 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570（节 0x47A2B8、GetPrivateProfileString 0x4760D4、默认 0x47C5BC/0x47C5B8）+ **atoi 0x4681F9** → 字段 [0x58]/SFX [0x8AB14C]/[0x54]/BGM [0x8AB150]/[0x5C]/[0x60] + **音频开/关**（0x45B1B0/0x45B1D0/0x45B1C0 音效、0x45B410/0x45B3D0/0x45B430 音乐）+ **音量→滑块换算**（×0x476968、钳制 −100）——选项持久化完整（F779 装载侧）。
+- 落盘：options-config-load-evidence.json（F788，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 482。
