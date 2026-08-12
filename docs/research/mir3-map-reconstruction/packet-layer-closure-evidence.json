@@ -1,0 +1,36 @@
+{
+  "evidence_id": "packet-layer-closure-2026-08-12-f524",
+  "title": "Round 218 (F524): Full packet layer CLOSED - validation green (compileall/verify exit 0/node/JSON), services 200, master 89dc1b1 (183 shipping rounds F335-F523); COMPLETE packet map: outbound 34 msgids 0x3E9-0x419 (F514/F516) + inbound 349 slots 2 tables (F517/F518, semantics F520/F521) + monster 0xBC6-0xBD8 state machine (F523) - entire client-server protocol layer documented",
+  "date": "2026-08-12",
+  "objective": "Close the full packet layer with validation + consolidated map.",
+  "question": "Is the repo healthy with the complete packet layer?",
+  "method": "Full validation + service health + packet-map consolidation.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 89dc1b1; only untracked goal_watchdog.sh.bak",
+    "packet_map": {"outbound": "34 msgids 0x3E9-0x419 (F514/F516: senders + args)", "inbound": "349 slots (F517/F518: 2 tables, semantics F520/F521)", "monster": "0xBC6-0xBD8 state machine (F523)"},
+    "significance": "ENTIRE client-server protocol layer documented"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F523": "183 rounds pushed; protocol layer complete"
+  },
+  "contrast": {
+    "send_vs_recv": "34 outbound vs 349 inbound + monster",
+    "tables": "3 inbound mechanisms (2 switches + state machine)"
+  },
+  "verdict": "Full packet layer CLOSED (F524): validation green, services live, 183 shipping rounds pushed. Entire client-server protocol documented (34 outbound + 349 inbound + monster family).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; packet map from F514-F523.",
+  "cross_refs": ["F514-F523: packet arc", "F216: prior closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: sim edge polish, deep UI corners, HANDOFF refresh",
+    "183 shipping rounds + user quest-design commits all pushed"
+  ]
+}

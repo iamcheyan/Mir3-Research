@@ -6849,3 +6849,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔结构〕**0x410B80 = 每实体状态机（非 msgid 开关）：type [0x89] 分派、状态旗标 [0x629D3-0x629D8] + 计数 [0x62A77] 门、记录查找 0x44A820 → vtable+0x10 → 属性 0x40A4D0 → **回复 msg 0xBC7（type-7 查找）/ 0xBD1（变形）** 经 0x451450。
 - **〔族〕**0xBC6-0xBD8（F449）驱动每实体转换；生成 = 0x421CFC（F520）。
 - 落盘：monster-recv-family-evidence.json（F523，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 217。
+## Round 218 (F524) — 2026-08-12：完整包层闭合（F514-F523 全映射）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 89dc1b1（**183 连发已推**）。
+- **〔包图〕**出站 34 msgid（F514/F516）+ 入站 349 槽两表（F517/F518，语义 F520/F521）+ 怪物 0xBC6-0xBD8 状态机（F523）——**完整客户端-服务端协议层文档化**。
+- 落盘：packet-layer-closure-evidence.json（F524，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 218。
