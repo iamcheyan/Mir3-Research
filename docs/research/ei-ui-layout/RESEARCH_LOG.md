@@ -8533,3 +8533,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**516 证据 JSON**；三服务 200；master 5ea93c8（**550 连发 F335-F891 已推**）——**550 连发里程碑**。
 - **〔弧〕**小地图（F584）+ 覆盖层（F594）+ 标记（F595）+ 部件（F888）+ 覆盖层全量（F891）——**地图部件完整**（缩放 + 坐标 + 矩阵 + 条 blit + 标记），地图部件表面 100%。
 - 落盘：map-widget-closure-evidence.json（F892，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 586。
+## Round 587 (F893) — 2026-08-12：HANDOFF 刷新 108（Round 584-586）
+
+- **〔刷新〕**HANDOFF 追加 Round 584-586（F891-F892：大地图覆盖层 + 地图部件闭合 + 550 里程碑）；基线 Round 583=97f8e53 → Round 586=0008576（**551 连发 F335-F892**）。
+- 落盘：handoff-refresh-108-evidence.json（F893，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 587。

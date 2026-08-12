@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-108-2026-08-12-f893",
+  "title": "Round 587 (F893): HANDOFF refresh 108 - Rounds 584-586 (F890-F892: HANDOFF 107, large-map overlay, map widget closure + 550 milestone), baseline Round 583=97f8e53 -> Round 586=0008576 (551 consecutive F335-F892), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 584-586.",
+  "question": "What changed since HANDOFF refresh 107?",
+  "method": "Append Round 584-586 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 584-586 appended (3 rounds, F890-F892)",
+    "baseline": "Round 583=97f8e53 -> Round 586=0008576 (551 consecutive F335-F892)",
+    "milestone": "550 consecutive rounds documented",
+    "arcs": {"overlay": "F891 map overlay", "closure": "F892 map widget"},
+    "key": "map widget complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F890": "refresh 107 baseline -> now refresh 108", "F335-F892": "551 rounds"
+  },
+  "contrast": {
+    "refresh_107_vs_108": "F891-F892 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 108 (F893): Rounds 584-586 documented (map widget complete), baseline 97f8e53 -> 0008576, 551 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F891-F892 evidence.",
+  "cross_refs": ["F890: refresh 107", "F892: map closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 584-586 section to HANDOFF",
+  "notes": [
+    "551 consecutive shipping rounds F335-F892",
+    "next: remaining deep corners, sim polish"
+  ]
+}

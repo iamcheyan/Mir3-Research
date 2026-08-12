@@ -3425,3 +3425,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（地图部件完整；下一弧：HANDOFF 刷新 108/剩余角落）。
+## Round 587 (2026-08-12) — HANDOFF 刷新 108（Finding 893）
+
+- **Round 584-586 追加 + 551 连发**（地图部件完整入档）。
+- 落盘：`handoff-refresh-108-evidence.json`（F893）+ RESEARCH_LOG Round 587。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图部件完整；下一弧：剩余深层角落/模拟器 polish）。
