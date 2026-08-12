@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-dialog-arc-closure-2026-08-12-f747",
+  "title": "Round 441 (F747): NPC dialog arc CLOSED (F598/F617/F746) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 58adac3 (405 consecutive F335-F746), 371 evidence JSONs; arc: dialog 4-type render (F598) + NPC reply/seed (F617) + option hit/select (F746) - NPC dialog COMPLETE byte-level (4-type jt render + FCOLOR + option list hit/activate/send), closing F731 forward target 0x448490",
+  "date": "2026-08-12",
+  "objective": "Close the NPC dialog arc.",
+  "question": "Is the NPC dialog fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "371 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F598": "dialog render", "F617": "reply/seed", "F746": "option hit/select"},
+    "dialog": "render + reply + options = COMPLETE",
+    "milestone": "405 consecutive rounds F335-F746"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F746": "405 rounds pushed; dialog complete, forward target 0x448490 closed"
+  },
+  "contrast": {
+    "render_vs_options": "4-type jt + option list",
+    "reply_vs_activate": "0x411 reply + 0x451A10 send"
+  },
+  "verdict": "NPC dialog arc CLOSED (F747): render + reply + options all byte-level; validation green, 405 consecutive rounds, 371 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F598/F617/F746.",
+  "cross_refs": ["F598", "F617", "F746"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "405 consecutive shipping rounds F335-F746",
+    "dialog 100%",
+    "next: HANDOFF refresh 59, remaining corners"
+  ]
+}

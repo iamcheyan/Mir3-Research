@@ -7900,3 +7900,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔对话〕**0x448490（F731 转发目标 [0x516EC]）：列表头 [0x1E4]/计数 [0x1F4]/索引 [0x1F0]、**节点矩形 @ +0x218 相对命中** → 选中 [0x1DC]；0x448580 **激活**（节点 [0x208]=0、选中 +0x208=1、[0x68]=1、发送 0x451A10）；0x448650 对话布局（SetRect + 窗口矩形 0x476240/0x476234 + hwnd 0x8AB7B0）；0x448640 清旗标 [0x99]/[0x14D]——NPC 对话选项 UI（F598/F731 用）。
 - 落盘：npc-dialog-option-hit-select-evidence.json（F746，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 440。
+## Round 441 (F747) — 2026-08-12：NPC 对话弧闭合（F598/F617/F746 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**371 证据 JSON**；三服务 200；master 58adac3（**405 连发 F335-F746 已推**）。
+- **〔弧〕**对话 4 类型渲染（F598）+ NPC 回复/种子（F617）+ 选项命中/选择（F746）——**NPC 对话完整**（4 类型 jt 渲染 + FCOLOR + 选项列表命中/激活/发送），**F731 转发目标 0x448490 闭合**。
+- 落盘：npc-dialog-arc-closure-evidence.json（F747，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 441。
