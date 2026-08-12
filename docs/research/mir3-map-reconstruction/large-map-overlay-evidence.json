@@ -1,0 +1,34 @@
+{
+  "evidence_id": "large-map-overlay-2026-08-12-f891",
+  "title": "Round 585 (F891): Large-map overlay (F594) - 0x429A40: mouse-hit rects [0xC68]/[0xC78] (PtInRect 0x4762B4) + coord format 0x47BD70 (0x46811C) + measure 0x45E0C0 + center + MATRIX 0x466800 + 0x4542F0 bar blit (0x5600FC) + text 0x45DE50 (0xFFFFFF) + fill 0x5050A0 - large-map overlay COMPLETE (F594/F595 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the large-map overlay.",
+  "question": "How does the large-map overlay render?",
+  "method": "Disasm 0x429A40-0x429BD6.",
+  "scope": "0x429A40-0x429BD6; overlay.",
+  "cell_analysis": {
+    "0x429A40": {"hit": "[0xC68]/[0xC78]", "format": "0x47BD70 coords", "measure": "0x45E0C0", "matrix": "0x466800", "blit": "0x4542F0", "fill": "0x5050A0"}
+  },
+  "exe_trace": {
+    "overlay_chain": "hit -> coord format -> matrix -> blit -> text"
+  },
+  "audit_vs_exe": {
+    "F594": "map overlay", "F595": "player marker", "F643": "matrix"
+  },
+  "contrast": {
+    "coords_vs_blit": "0x47BD70 + 0x4542F0",
+    "hit_vs_fill": "rects + 0x5050A0"
+  },
+  "verdict": "Large-map overlay PRIMARY-verified: coords + matrix + blit; F594 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Map overlay decoded from .text.",
+  "cross_refs": ["F594: overlay", "F595: marker", "F643: matrix"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x429A40+0x20",
+  "notes": [
+    "hit rects [0xC68]/[0xC78]",
+    "coord format 0x47BD70",
+    "bar blit 0x4542F0",
+    "fill 0x5050A0"
+  ]
+}

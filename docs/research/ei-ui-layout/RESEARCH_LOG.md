@@ -8524,3 +8524,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 581-583（F888-F889：小地图部件 + 小地图闭合）；基线 Round 580=82c41e0 → Round 583=97f8e53（**548 连发 F335-F889**）。
 - 落盘：handoff-refresh-107-evidence.json（F890，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 584。
+## Round 585 (F891) — 2026-08-12：大地图覆盖层（F594）
+
+- **〔大地图〕**0x429A40：鼠标命中矩形 [0xC68]/[0xC78]（PtInRect 0x4762B4）+ **坐标格式 0x47BD70**（0x46811C）+ 测量 0x45E0C0 + 居中 + **矩阵 0x466800** + **0x4542F0 条 blit**（0x5600FC）+ 文本 0x45DE50（0xFFFFFF）+ 填充 0x5050A0——大地图覆盖层完整（F594/F595 用）。
+- 落盘：large-map-overlay-evidence.json（F891，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 585。

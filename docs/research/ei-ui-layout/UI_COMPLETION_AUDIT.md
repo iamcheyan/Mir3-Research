@@ -3409,3 +3409,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（小地图完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 585 (2026-08-12) — 大地图覆盖层（Finding 891）
+
+- **坐标格式 + 矩阵 + 条 blit**（F594 完整）。
+- 落盘：`large-map-overlay-evidence.json`（F891）+ RESEARCH_LOG Round 585。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（大地图完整；下一弧：剩余深层角落）。
