@@ -1,0 +1,39 @@
+{
+  "evidence_id": "control-paint-state-ctor-tail-2026-08-12-f710",
+  "title": "Round 404 (F710): Control paint state machine + base ctor + scrollbar tail/release - 0x417640 PAINT fully refined (F701): [0x25]=hover, [0x24]=visible -> normal [0x20] or hover [0x30] frame, WIL blit 0x460240 @ [0x28]/[0x2C]; 0x4175F0 base ctor (flags [0x24]/[0x25]=1, rect [0x4]); 0x417D5E arrow scroll +/- step clamps 0.0/1.0 (0x476450/0x476658) + tick [0x44]; 0x417E60 release drag [0x18]=0; 0x417FB0 control-list ctor 3x0xB8 embedded controls at +0x234, [0x460]=0xFFFF",
+  "date": "2026-08-12",
+  "objective": "Complete the control paint state machine + scrollbar tail.",
+  "question": "How does control paint handle hover, and how do arrow/release work?",
+  "method": "Disasm 0x4175F0-0x417E60 + 0x417FB0.",
+  "scope": "0x4175F0-0x417E60; 0x417FB0.",
+  "cell_analysis": {
+    "0x4175F0": "base ctor: flags [0x24]/[0x25]=1, rect [0x4], zeros",
+    "0x417640": "paint: hover [0x25] x visible [0x24] -> [0x20] or [0x30] frame, 0x460240 blit",
+    "0x417D5E": "arrow: [0xC] +/- step, clamps 0.0/1.0 (0x476450/0x476658), tick [0x44]",
+    "0x417E60": "release: drag [0x18]=0",
+    "0x417FB0": "control-list: 3x0xB8 embedded @ +0x234, [0x460]=0xFFFF"
+  },
+  "exe_trace": {
+    "paint_chain": "base ctor -> visible/hover -> frame blit",
+    "scroll_chain": "arrow step -> clamp -> release"
+  },
+  "audit_vs_exe": {
+    "F701": "paint refined (hover state)", "F707": "scrollbar tail"
+  },
+  "contrast": {
+    "normal_vs_hover": "frame [0x20] vs [0x30]",
+    "arrow_vs_release": "step scroll + drag clear"
+  },
+  "verdict": "Control paint state machine + scrollbar tail PRIMARY-verified: hover/visible flags, frame blit, arrow clamps, release, control-list; F701/F707 refined.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Control paint + scrollbar decoded from .text.",
+  "cross_refs": ["F701: paint", "F707: scrollbar", "F704: hit"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4175F0+0x10; 0x417640+0x20; 0x417D5E+0x20",
+  "notes": [
+    "clamps 0.0/1.0 (0x476450/0x476658)",
+    "control-list 3x0xB8 embedded",
+    "hover flag [0x25]",
+    "release clears drag"
+  ]
+}

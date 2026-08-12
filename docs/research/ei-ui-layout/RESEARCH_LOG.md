@@ -7741,3 +7741,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 400-402（F707-F708：滚动条家族 + 滚动条弧）；基线 Round 399=bb029ae → Round 402=0f4dfea（**367 连发 F335-F708**）。
 - 落盘：handoff-refresh-47-evidence.json（F709，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 403。
+## Round 404 (F710) — 2026-08-12：控件绘制状态机 + 基础构造 + 滚动条尾部
+
+- **〔绘制〕**0x417640（F701 精化）：**[0x25]=悬停、[0x24]=可见** → 普通 [0x20] 或悬停 [0x30] 帧、0x460240 blit @ [0x28]/[0x2C]；0x4175F0 基础 ctor（旗标 [0x24]/[0x25]=1、矩形 [0x4]）；0x417D5E 箭头 ±步长**钳制 0.0/1.0**（0x476450/0x476658）+ tick [0x44]；0x417E60 释放（拖动 [0x18]=0）；0x417FB0 控件列表 ctor（3×0xB8 内嵌 @ +0x234、[0x460]=0xFFFF）。
+- 落盘：control-paint-state-ctor-tail-evidence.json（F710，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 404。
