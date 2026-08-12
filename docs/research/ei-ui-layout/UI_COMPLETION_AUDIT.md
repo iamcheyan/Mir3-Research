@@ -811,6 +811,11 @@ git diff --check
 - **长期 pending 项闭合**：0x43B1E0 滚动（±0xC 门 + SetRect ±0x12）→ 0x43B440 缓冲（768×576）→ 0x45E8E0 屏幕 blit（0x410838 瓦片刷新）。
 - 落盘：`scroll-blit-composite-closure-evidence.json`（F422，primary-bytes）+ RESEARCH_LOG Round 116。
 
+## Round 117 (2026-08-12) — 地图实体标记（Finding 423）
+
+- **Envir 3323 实体解析**（出生/NPC/怪物+掉落）；mapviewer --envir 服务；F254 标记运行时分离。
+- 落盘：`map-entity-markers-verification-evidence.json`（F423）+ RESEARCH_LOG Round 117。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

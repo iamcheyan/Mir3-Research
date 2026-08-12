@@ -6310,3 +6310,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔复合〕**0x43B440 → [map+0x1B2] 768×576 缓冲 → 0x45E8E0 屏幕 blit；callers 0x410838（瓦片刷新）+ 0x43B7F5（地图装载尾）。
 - **〔闭合〕**长期 pending（0x43B1E0 → 0x43B440 复合路径）字节级验证闭合。
 - 落盘：scroll-blit-composite-closure-evidence.json（F422，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 116。
+## Round 117 (F423) — 2026-08-12：地图实体标记验证（Envir 3323 实体）
+
+- **〔实体〕**服务端 Envir 解析：3323 = 18 出生点（12 图，0.map 3）+ 318 NPC（79 图，0.map 46 比奇城）+ 2987 怪物（带掉落：金币 33%/号角 10%）。
+- **〔服务〕**mapviewer /api/entities 需 --envir 参数（StartPoint/Merchant/MonGen）；F254 type-0x32 标记 = 运行时推送（0x560070 列表），与静态实体分离。
+- 落盘：map-entity-markers-verification-evidence.json（F423，secondary + F254 primary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 117。

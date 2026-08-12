@@ -1,0 +1,36 @@
+{
+  "evidence_id": "map-entity-markers-verification-2026-08-12-f423",
+  "title": "Round 117 (F423): Map entity markers verified - server Envir parse yields 3323 entities (18 spawns + 318 NPCs + 2987 monsters with drops), 0.map has 3 spawns + 46 NPCs (比奇城 merchants), mapviewer /api/entities serves via --envir (F254 type-0x32 markers are runtime-pushed, not static)",
+  "date": "2026-08-12",
+  "objective": "Verify the map entity marker data: server Envir entity parse, distribution, and the mapviewer entities overlay source.",
+  "question": "What entity data exists for the maps, and how is it served?",
+  "method": "mapviewer load_entities extraction + server Envir parse (StartPoint/Merchant/MonGen); distribution analysis.",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/{StartPoint,Merchant,MonGen}.txt; mapviewer load_entities.",
+  "cell_analysis": {
+    "entities": {"total": 3323, "spawns": "18 (12 maps; 0.map 3)", "npcs": "318 (79 maps; 0.map 46 比奇城)", "monsters": "2987 (with drops: 金币 33%/号角 10%/药水/装备)"},
+    "serving": {"api": "/api/entities?map=X (needs --envir arg)", "sources": "StartPoint.txt (spawn) / Merchant.txt (NPC: name map x y face body) / MonGen.txt (monster: map x y name count level attack respawn)"},
+    "f254_relation": "type-0x32 minimap markers (F254) = runtime server-pushed (0x560070 list), NOT static map data - separate from these spawn/NPC/monster entries"
+  },
+  "exe_trace": {
+    "markers": "F254: type 0x32 blocking markers via 0x560070 list (server packets)"
+  },
+  "audit_vs_exe": {
+    "F254": "type-0x32 markers = runtime, confirmed separate",
+    "F342": "map inventory - entity data is server-side"
+  },
+  "contrast": {
+    "static_vs_runtime": "Envir spawn/NPC/monster = static server config; type-0x32 markers = runtime packets",
+    "mapviewer_vs_client": "mapviewer serves Envir entities; client receives runtime entities"
+  },
+  "verdict": "Map entity markers verified (secondary-server): Envir parse yields 3323 entities (18 spawns/318 NPCs/2987 monsters with drops); 0.map has 46 NPCs. Mapviewer /api/entities serves via --envir. F254 type-0x32 markers remain runtime-pushed.",
+  "evidence_level": "secondary (server Envir config) + primary (F254 runtime semantics)",
+  "evidence_level_note": "Entity data from server Envir files (secondary); F254 marker semantics primary-static.",
+  "cross_refs": ["F254: type-0x32 markers", "F342: map inventory", "F381: map connections"],
+  "tool": "mapviewer load_entities; python3 parse",
+  "reproduce": "python3 load_entities(Envir); curl /api/entities?map=X.map (with --envir)",
+  "notes": [
+    "mapviewer started without --envir -> 0 entities (config arg)",
+    "monster drops parsed from MonGen (金币 33% etc)",
+    "0.map 46 NPCs = 比奇城 merchant density"
+  ]
+}
