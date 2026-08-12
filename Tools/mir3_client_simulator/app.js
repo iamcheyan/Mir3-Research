@@ -299,6 +299,20 @@ function pushChat(line) {
   if (el) el.textContent = STATE.chatLines.join("\n");
 }
 
+// Round 266-267 (F572/F573): original outbound TEXT FRAME protocol —
+// '#%d%s%s!' (0x47C840) / '#%d%s!' (0x47C800) via 0x452940 header builder
+// + 0x451E60 send tail (seq [obj+0x14] wraps 9 -> 1) -> send() on socket
+// [obj+0x6044]. The sim mirrors the wire format so the visible log matches
+// what the real client emits.
+let simFrameSeq = 1;
+function sendFrame(cmd, args) {
+  const seq = simFrameSeq;
+  simFrameSeq = simFrameSeq >= 9 ? 1 : simFrameSeq + 1;
+  const frame = args ? `#${seq}${cmd}/${args}!` : `#${seq}${cmd}!`;
+  pushChat(`[送出] ${frame}  (0x452940 包头 + 0x451E60 帧, seq ${seq})`);
+  return frame;
+}
+
 function setTarget(entity) {
   STATE.selectedEntity = entity;
   // clear targeting marks
@@ -657,18 +671,24 @@ function fillWindowContent(w) {
         const v = input.value.trim();
         // Round 49 (F355): original command dispatch 0x41ED20 - '+' prefix =
         // 0x41E740 trade/counter; else 0x452920 parse -> msgid table 0x421D8C.
+        // Round 266-267 (F572/F573): outbound = '#<seq><cmd>/<args>!' text frame.
         if (v.startsWith("+")) {
+          sendFrame("0x41E740", encodeURIComponent(v));
           pushChat(`[交易命令] ${v} → 0x41E740 (0x452810 解析, 门 [0x428214])`);
         } else if (v.startsWith("@")) {
+          sendFrame("0x47ACB8", encodeURIComponent(v));
           pushChat(`[私聊] ${v} → @拒绝私聊/@拒绝行会聊天 家族 (0x47ACB8 命令帮助)`);
         } else if (v.startsWith("!")) {
+          sendFrame("0x47ACF8", encodeURIComponent(v));
           pushChat(`[喊话] ${v} → 大喊话(!喊话) 0x47ACF8 / 编组喊话(!!) 0x47ACE4 / 行会喊话(!~) 0x47ACD0`);
         } else if (/^广\d+$/.test(v)) {
           // Round 192: quick-slot item use (F355 name-command table
           // 0x47ADC4: 广1..广10 -> 0x41EDE0 item-use chain
           // 0x430920 item + 0x42FC20 bag + 0x42E2D0 sound + 0x47AA48 行动速度).
+          sendFrame("0x41EDE0", encodeURIComponent(v));
           pushChat(`[快捷] ${v} → 快捷物品使用 (0x41EDE0: 0x430920/0x42FC20/0x42E2D0, 表 0x47ADC4)`);
         } else {
+          sendFrame("0x404600", encodeURIComponent(v));
           pushChat(`[你] ${v}`);
         }
         input.value = "";

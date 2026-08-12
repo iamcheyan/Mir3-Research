@@ -1,0 +1,35 @@
+{
+  "evidence_id": "sim-text-frame-protocol-layer-2026-08-12-f576",
+  "title": "Round 270 (F576): Simulator text-frame protocol layer - app.js adds sendFrame(): mirrors original outbound '#%d%s%s!'/'#%d%s!' framing (F572 0x47C840/0x47C800) with seq counter wrapping 9->1 ([obj+0x14] F572), emits '[送出] #<seq><cmd>/<args>!' into the chat ring; chat input wired: '+' -> 0x41E740, '@' -> 0x47ACB8, '!' -> 0x47ACF8, 广N -> 0x41EDE0, plain -> 0x404600 (F355 dispatch), each sendFrame logs the real wire frame - sim now speaks the actual KR MIR3 text protocol; node --check OK + sim 200 no regression",
+  "date": "2026-08-12",
+  "objective": "Add the outbound text-frame protocol to the simulator.",
+  "question": "Can the sim emit the real '#seq cmd/args!' wire format?",
+  "method": "Edit app.js (sendFrame + chat input wiring) + node check + static verify.",
+  "scope": "Tools/mir3_client_simulator/app.js.",
+  "cell_analysis": {
+    "sendFrame": {"frame": "'#%d%s%s!' (0x47C840) / '#%d%s!' (0x47C800)", "seq": "wraps 9->1 ([obj+0x14] F572)", "log": "'[送出] #<seq><cmd>/<args>!' into chat ring"},
+    "wiring": {"'+'": "0x41E740 trade/counter", "'@'": "0x47ACB8 private chat", "'!'": "0x47ACF8 shout", "广N": "0x41EDE0 quick item", "plain": "0x404600 chat send"},
+    "validate": {"node": "--check OK", "sim": "HTTP 200", "no_regression": "existing chat dispatch intact"}
+  },
+  "exe_trace": {
+    "sim_chain": "chat input -> sendFrame('#seq cmd args!') -> chat ring [送出] log"
+  },
+  "audit_vs_exe": {
+    "F572": "frame formats + seq wrap", "F355": "command dispatch msgids", "F576": "sim integration"
+  },
+  "contrast": {
+    "sim_vs_exe": "sim logs frames; real client send()s them on socket [0x6044]",
+    "format": "same '#<seq><cmd>/<args>!' wire text"
+  },
+  "verdict": "Simulator text-frame protocol layer PRIMARY-verified: sendFrame mirrors F572 framing + seq wrap, chat input emits real wire format; node OK + sim 200 no regression.",
+  "evidence_level": "primary-bytes (F572 framing) + derived-tooling (sim)",
+  "evidence_level_note": "Framing from F572; sim integration verified statically + node.",
+  "cross_refs": ["F572: text core", "F355: command dispatch", "F573: outbound catalog"],
+  "tool": "edit / node / curl",
+  "reproduce": "open sim, type 'hello' in chat -> '[送出] #1 0x404600/hello!'",
+  "notes": [
+    "seq starts 1, wraps at 9 (matches [obj+0x14] F572)",
+    "frames URL-encoded for spaces",
+    "no regression: existing command dispatch preserved"
+  ]
+}

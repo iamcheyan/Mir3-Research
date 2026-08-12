@@ -1576,9 +1576,14 @@ git diff --check
 - **Round 265-268 追加 + 233 连发**（双向协议里程碑入档）。
 - 落盘：`handoff-refresh-10-evidence.json`（F575）+ RESEARCH_LOG Round 269。
 
+## Round 270 (2026-08-12) — 模拟器文本帧协议层（Finding 576）
+
+- **sendFrame '#seq cmd/args!' + 聊天输入接线**（node OK + sim 200）。
+- 落盘：`sim-text-frame-protocol-evidence.json`（F576）+ RESEARCH_LOG Round 270。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（协议双向 100%；下一弧：模拟器 polish/深层角落）。
+- 无阻塞项（模拟器协议层闭合；下一弧：0x45A650/0x45B490 尾部）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

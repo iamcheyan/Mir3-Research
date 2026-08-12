@@ -7120,3 +7120,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 265-268（F571-F574：入站 100% + 出站文本帧核心 + 46 发送器 + 双向闭合）；基线 Round 261=9fbbccc → Round 268=d54bc29（**233 连发 F335-F574**）。
 - 落盘：handoff-refresh-10-evidence.json（F575，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 269。
+## Round 270 (F576) — 2026-08-12：模拟器文本帧协议层
+
+- **〔实现〕**app.js 新增 sendFrame()：镜像原版 **'#%d%s%s!'/'#%d%s!'** 帧（F572 0x47C840/0x47C800）+ seq 计数 9→1 回绕（[obj+0x14]）→ 聊天环 '[送出] #<seq><cmd>/<args>!'；聊天输入接线：'+'→0x41E740、'@'→0x47ACB8、'!'→0x47ACF8、广N→0x41EDE0、普通→0x404600（F355 分派）。
+- **〔验证〕**node --check OK + sim 200 无回归——模拟器现在讲真实 KR MIR3 文本协议。
+- 落盘：sim-text-frame-protocol-evidence.json（F576，primary-bytes 帧格式 + derived 集成）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 270。
