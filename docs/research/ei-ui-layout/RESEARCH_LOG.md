@@ -8672,3 +8672,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**548 证据 JSON**；三服务 200；master 772cb80（**582 连发 F335-F923 已推**）。
 - **〔弧〕**任务绘制（F671）+ 绘制体（F833）+ 初始化/命中（F923）——**任务输入完整**（清旗标 + 布局 + 命中 + 绘制 + 状态色），任务窗口 100%。
 - 落盘：quest-input-closure-evidence.json（F924，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 618。
+## Round 619 (F925) — 2026-08-12：HANDOFF 刷新 119（Round 616-618）
+
+- **〔刷新〕**HANDOFF 追加 Round 616-618（F923-F924：任务窗口初始化/命中 + 任务输入闭合）；基线 Round 615=d331333 → Round 618=ede392c（**583 连发 F335-F924**）。
+- 落盘：handoff-refresh-119-evidence.json（F925，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 619。
