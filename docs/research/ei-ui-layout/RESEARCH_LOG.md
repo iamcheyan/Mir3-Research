@@ -7750,3 +7750,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**335 证据 JSON**；三服务 200；master fe2015e（**369 连发 F335-F710 已推**）。
 - **〔弧〕**构造/绘制（F701）+ 命中/定位（F704）+ 滚动条（F707）+ 绘制状态/尾部（F710）——**控件 + 滚动条 100% 字节级**（构造 + 普通/悬停绘制 + 命中 + 定位 + 滚动条构造/命中/点击/箭头/释放），支撑全部窗口控件（F313/F535/F546/F547/F580/F581/F599）。
 - 落盘：control-scrollbar-final-closure-evidence.json（F711，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 405。
+## Round 406 (F712) — 2026-08-12：HANDOFF 刷新 48（Round 403-405）
+
+- **〔刷新〕**HANDOFF 追加 Round 403-405（F710-F711：控件绘制状态机/滚动条尾部 + 控件+滚动条最终闭合）；基线 Round 402=0f4dfea → Round 405=5e67f53（**370 连发 F335-F711**）。
+- 落盘：handoff-refresh-48-evidence.json（F712，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 406。

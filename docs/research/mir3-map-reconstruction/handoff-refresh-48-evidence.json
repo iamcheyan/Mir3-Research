@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-48-2026-08-12-f712",
+  "title": "Round 406 (F712): HANDOFF refresh 48 - Rounds 403-405 (F709-F711: HANDOFF 47, control paint state + scrollbar tail, control+scrollbar final closure), baseline Round 402=0f4dfea -> Round 405=5e67f53 (370 consecutive F335-F711), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 403-405.",
+  "question": "What changed since HANDOFF refresh 47?",
+  "method": "Append Round 403-405 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 403-405 appended (3 rounds, F709-F711)",
+    "baseline": "Round 402=0f4dfea -> Round 405=5e67f53 (370 consecutive F335-F711)",
+    "arcs": {"paint": "F710 paint state + tail", "closure": "F711 family final"},
+    "key": "control + scrollbar 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F709": "refresh 47 baseline -> now refresh 48", "F335-F711": "370 rounds"
+  },
+  "contrast": {
+    "refresh_47_vs_48": "F710-F711 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 48 (F712): Rounds 403-405 documented (control+scrollbar 100%), baseline 0f4dfea -> 5e67f53, 370 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F710-F711 evidence.",
+  "cross_refs": ["F709: refresh 47", "F711: family closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 403-405 section to HANDOFF",
+  "notes": [
+    "370 consecutive shipping rounds F335-F711",
+    "next: remaining deep corners, sim polish"
+  ]
+}
