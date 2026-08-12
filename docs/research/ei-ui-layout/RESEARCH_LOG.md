@@ -6921,3 +6921,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x43F460：对话数据链（[0x8B1AE4]）、**type 字节−1 ≤ 3（类型 1-4）经跳表 0x440158**（0x43F4E0）、7 行换行（0x131 偏移）、GBK 字节对复制 + 文本测量 0x45E0C0——F41/F475 统一。
 - 落盘：npc-dialog-type-dispatch-evidence.json（F540，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 234。
+## Round 235 (F541) — 2026-08-12：角色选择阶段机
+
+- **〔阶段〕**0x4575D0：阶段字节 [0x930] ≤ 4 经跳表 0x457778（5 阶段）：0=0x457790 连接、1=0x457AB0 服务器、2=0x457615 角色列表（0x45C900）、3=0x4576FA 角色选择、4=0x45773C；**进游戏 = 0x458B20(stage, idx)**；角色名缓冲 [0x10BC]/[0x10FC]——F349/F110 流程完整。
+- 落盘：char-select-stage-machine-evidence.json（F541，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 235。

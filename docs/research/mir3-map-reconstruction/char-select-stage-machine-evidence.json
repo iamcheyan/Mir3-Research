@@ -1,0 +1,35 @@
+{
+  "evidence_id": "char-select-stage-machine-2026-08-12-f541",
+  "title": "Round 235 (F541): Char-select stage machine - 0x4575D0: stage byte [0x930] <= 4 via jt 0x457778 (5 stages): 0=0x457790 connect, 1=0x457AB0 server, 2=0x457615 char list (0x45C900 load, stage=2, [0x1160]=1), 3=0x4576FA char pick, 4=0x45773C; ENTER GAME = 0x458B20(stage, idx) (0x4576D2/0x4576F3/0x457735); char name buffers [0x10BC]/[0x10FC] - F349/F110 flow complete",
+  "date": "2026-08-12",
+  "objective": "Decode the char-select stage machine (F349).",
+  "question": "How does the char-select stage machine transition to game?",
+  "method": "Disasm 0x4575D0-0x457740 (stage machine + enter).",
+  "scope": "0x4575D0-0x457740; stage [0x930]; jt 0x457778.",
+  "cell_analysis": {
+    "stages": {"0": "0x457790 connect", "1": "0x457AB0 server", "2": "0x457615 char list (0x45C900, [0x1160]=1)", "3": "0x4576FA char pick", "4": "0x45773C"},
+    "enter": "0x458B20(stage, idx) (0x4576D2/0x4576F3/0x457735)",
+    "buffers": "char names [0x10BC]/[0x10FC]"
+  },
+  "exe_trace": {
+    "login_chain": "connect -> server -> char list -> pick -> enter 0x458B20 -> game (F336)"
+  },
+  "audit_vs_exe": {
+    "F349": "5-stage jt confirmed", "F110": "login flow", "F336": "state 3 = game"
+  },
+  "contrast": {
+    "stage_vs_msg": "stage byte machine vs server msgs (0x208 char list)",
+    "pick_vs_enter": "char pick (stage 3) vs enter 0x458B20"
+  },
+  "verdict": "Char-select stage machine PRIMARY-verified: 5 stages via jt 0x457778, enter 0x458B20(stage,idx), name buffers [0x10BC]/[0x10FC]. F349 login flow complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Stage machine decoded from .text.",
+  "cross_refs": ["F349: login", "F110: char-select", "F336: state machine"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4575D0+0x40",
+  "notes": [
+    "5 stages = connect/server/list/pick/enter",
+    "enter 0x458B20 = stage+idx args",
+    "char names at [0x10BC]/[0x10FC]"
+  ]
+}
