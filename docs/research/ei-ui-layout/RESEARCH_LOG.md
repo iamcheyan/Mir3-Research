@@ -7541,3 +7541,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 354-357（F661-F663：商店管理器/命中点击 + 绘制/模式 + 商店弧）；基线 Round 353=b4a3d10 → Round 357=7334178（**322 连发 F335-F663**）。
 - 落盘：handoff-refresh-32-evidence.json（F664，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 358。
+## Round 359 (F665) — 2026-08-12：音效分派完整映射
+
+- **〔映射〕**0x42E2D0（F470/F563）：字节表 0x42E428（**32 物品类型 → 9 例**）：0 = 音效 0x6C（金币）、1 = 0x6F、2 = 0x70、3 = 0x74、4 = 0x73、5 = 0x71、6 = **名字 strcmp 族**（갑박/장갑 → 0x45DD00 → 0x72/0x75）、7 = [0x23] 字节门 0x6A → 0x6C、8 = 默认 0x76；全部经 0x45AFC0（[0x8AB130]）——音效 id 映射字节级（F470/F563 完整）。
+- 落盘：sound-dispatch-map-evidence.json（F665，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 359。

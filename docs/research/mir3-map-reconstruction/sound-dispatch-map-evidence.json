@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sound-dispatch-map-2026-08-12-f665",
+  "title": "Round 359 (F665): Sound dispatch FULL map - 0x42E2D0 (F470/F563): byte map 0x42E428 (32 item types -> 9 cases): 0 = sound 0x6C (gold), 1 = 0x6F, 2 = 0x70, 3 = 0x74, 4 = 0x73, 5 = 0x71, 6 = NAME-STRCMP family (갑박/장갑 0x47BDDC/0x47BDD4 -> 0x45DD00 -> 0x72/0x75), 7 = [0x23] byte gate 0x6A -> 0x6C, 8 = default 0x76; all via 0x45AFC0 ([0x8AB130]) - sound-id map byte-level (F470/F563 complete)",
+  "date": "2026-08-12",
+  "objective": "Decode the sound dispatch map fully.",
+  "question": "What are the sound ids per item type?",
+  "method": "Disasm 0x42E2D0 + dump map 0x42E428 + jt 0x42E404.",
+  "scope": "0x42E2D0; map 0x42E428; jt 0x42E404.",
+  "cell_analysis": {
+    "map": "0x42E428: 32 types -> 9 cases (0-8)",
+    "cases": {"0": "0x6C gold", "1": "0x6F", "2": "0x70", "3": "0x74", "4": "0x73", "5": "0x71", "6": "name strcmp 갑박/장갑 -> 0x72/0x75", "7": "[0x23] gate 0x6A -> 0x6C", "8": "0x76 default"},
+    "send": "0x45AFC0 ([0x8AB130])"
+  },
+  "exe_trace": {
+    "sound_chain": "item use -> 0x42E2D0 type map -> case sound id -> 0x45AFC0 play"
+  },
+  "audit_vs_exe": {
+    "F470": "sound dispatch CONFIRMED", "F563": "equip sound", "F632": "sound engine"
+  },
+  "contrast": {
+    "type_vs_name": "type-based ids + name-strcmp cases",
+    "gold_vs_default": "0x6C gold vs 0x76 default"
+  },
+  "verdict": "Sound dispatch map PRIMARY-verified: 32 types -> 9 sound cases; F470/F563 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Map + cases decoded from .text/.data.",
+  "cross_refs": ["F470: dispatch", "F563: equip sound", "F632: engine"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42E2D0+0x20; dump 0x42E428",
+  "notes": [
+    "32 type entries",
+    "9 sound ids 0x6C-0x76",
+    "name strcmp for armor/gloves",
+    "[0x23] gate for special"
+  ]
+}
