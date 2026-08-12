@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-42-2026-08-12-f694",
+  "title": "Round 388 (F694): HANDOFF refresh 42 - Rounds 385-387 (F691-F693: entity select by dir + combat arc closure), baseline Round 384=8b3528d -> Round 387=4db4bee (352 consecutive F335-F693), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 385-387.",
+  "question": "What changed since HANDOFF refresh 41?",
+  "method": "Append Round 385-387 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 385-387 appended (3 rounds, F691-F693)",
+    "baseline": "Round 384=8b3528d -> Round 387=4db4bee (352 consecutive F335-F693)",
+    "arcs": {"select": "F692 entity select by dir", "closure": "F693 combat arc"},
+    "key": "combat target selection complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F691": "refresh 41 baseline -> now refresh 42", "F335-F693": "352 rounds"
+  },
+  "contrast": {
+    "refresh_41_vs_42": "F692-F693 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 42 (F694): Rounds 385-387 documented (combat selection), baseline 8b3528d -> 4db4bee, 352 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F692-F693 evidence.",
+  "cross_refs": ["F691: refresh 41", "F693: combat closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 385-387 section to HANDOFF",
+  "notes": [
+    "352 consecutive shipping rounds F335-F693",
+    "next: remaining deep corners, sim polish"
+  ]
+}

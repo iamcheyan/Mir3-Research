@@ -7670,3 +7670,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**317 证据 JSON**；三服务 200；master 83b52ae（**351 连发 F335-F692 已推**）。
 - **〔弧〕**按方向实体选择（F692）——**战斗目标选择完整（8 方向选择 + 攻击发送 F616 + 特效 F625）**，连接 F580/F612/F336。
 - 落盘：combat-arc-closure-evidence.json（F693，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 387。
+## Round 388 (F694) — 2026-08-12：HANDOFF 刷新 42（Round 385-387）
+
+- **〔刷新〕**HANDOFF 追加 Round 385-387（F692-F693：按方向实体选择 + 战斗弧）；基线 Round 384=8b3528d → Round 387=4db4bee（**352 连发 F335-F693**）。
+- 落盘：handoff-refresh-42-evidence.json（F694，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 388。
