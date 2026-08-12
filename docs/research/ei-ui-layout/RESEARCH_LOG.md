@@ -8689,3 +8689,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**552 证据 JSON**；三服务 200；master 0678ebb（**586 连发 F335-F927 已推**）。
 - **〔弧〕**滑块（F546）+ 点击（F761）+ 应用（F776）+ 开关处理（F927）——**选项输入完整**（BGM/SFX 滑块 + 开关 + 11 控件分派 + 应用），选项窗口 100% 交互。
 - 落盘：options-input-closure-evidence.json（F928，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 622。
+## Round 623 (F929) — 2026-08-12：HANDOFF 刷新 121（Round 620-622）
+
+- **〔刷新〕**HANDOFF 追加 Round 620-622（F927-F928：选项开关/点击 + 选项输入闭合）；基线 Round 619=6013609 → Round 622=ee43e3a（**587 连发 F335-F928**）。
+- 落盘：handoff-refresh-121-evidence.json（F929，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 623。

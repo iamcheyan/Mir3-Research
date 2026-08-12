@@ -3713,3 +3713,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（选项输入完整；下一弧：HANDOFF 刷新 121/剩余角落）。
+## Round 623 (2026-08-12) — HANDOFF 刷新 121（Finding 929）
+
+- **Round 620-622 追加 + 587 连发**（选项输入完整入档）。
+- 落盘：`handoff-refresh-121-evidence.json`（F929）+ RESEARCH_LOG Round 623。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（选项输入完整；下一弧：剩余深层角落/模拟器 polish）。
