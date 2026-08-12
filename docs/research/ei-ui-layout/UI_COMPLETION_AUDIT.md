@@ -3353,3 +3353,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（发送器完整；下一弧：HANDOFF 刷新 105/剩余角落）。
+## Round 578 (2026-08-12) — HANDOFF 刷新 105（Finding 884）
+
+- **Round 575-577 追加 + 542 连发**（发送器目录完整入档）。
+- 落盘：`handoff-refresh-105-evidence.json`（F884）+ RESEARCH_LOG Round 578。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（发送器完整；下一弧：剩余深层角落/模拟器 polish）。

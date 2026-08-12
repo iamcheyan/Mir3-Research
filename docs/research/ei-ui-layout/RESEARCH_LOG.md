@@ -8494,3 +8494,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**507 证据 JSON**；三服务 200；master 2083833（**541 连发 F335-F882 已推**）。
 - **〔弧〕**文本帧（F572）+ 目录（F573）+ 扩展（F782）+ 回复/校验（F879）+ 丢弃/卖出/组队（F882）——**发送器目录完整**（包头 0x452940 + 发送 0x451E60 + msg 0x3E9-0x419 + 丢弃/卖出/组队/回复 + 校验和），出站表面 100%。
 - 落盘：sender-directory-final-closure-evidence.json（F883，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 577。
+## Round 578 (F884) — 2026-08-12：HANDOFF 刷新 105（Round 575-577）
+
+- **〔刷新〕**HANDOFF 追加 Round 575-577（F882-F883：丢弃/卖出/组队发送器 + 发送器目录最终闭合）；基线 Round 574=1ff8849 → Round 577=5efee62（**542 连发 F335-F883**）。
+- 落盘：handoff-refresh-105-evidence.json（F884，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 578。

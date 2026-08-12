@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-105-2026-08-12-f884",
+  "title": "Round 578 (F884): HANDOFF refresh 105 - Rounds 575-577 (F881-F883: HANDOFF 104, drop/sell/party senders, sender directory final closure), baseline Round 574=1ff8849 -> Round 577=5efee62 (542 consecutive F335-F883), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 575-577.",
+  "question": "What changed since HANDOFF refresh 104?",
+  "method": "Append Round 575-577 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 575-577 appended (3 rounds, F881-F883)",
+    "baseline": "Round 574=1ff8849 -> Round 577=5efee62 (542 consecutive F335-F883)",
+    "arcs": {"senders": "F882 drop/party", "closure": "F883 sender dir"},
+    "key": "sender directory complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F881": "refresh 104 baseline -> now refresh 105", "F335-F883": "542 rounds"
+  },
+  "contrast": {
+    "refresh_104_vs_105": "F882-F883 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 105 (F884): Rounds 575-577 documented (sender directory complete), baseline 1ff8849 -> 5efee62, 542 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F882-F883 evidence.",
+  "cross_refs": ["F881: refresh 104", "F883: sender closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 575-577 section to HANDOFF",
+  "notes": [
+    "542 consecutive shipping rounds F335-F883",
+    "next: remaining deep corners, sim polish"
+  ]
+}
