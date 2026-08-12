@@ -7153,3 +7153,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔记录〕**热键记录 = 6 × 0xC24 @ [0xDA4]（0x42D7C0 构造 [0xDA4]=1 + 0x308 双字；0x42D790 清除；0x42D8A0 按 idx 取）。
 - **〔渲染〕**0x42C511 热键栏渲染尾：0x417C80 命中 + [0xD20] 计数 × [0x61C8] 浮点滚动 → [0xD08] + 转发分派 0x42AAB0（0x430650 背包/0x44CED0 装备/0x44F110 商店/0x416E70 交易）。
 - 落盘：hud-hotkey-target-system-evidence.json（F581，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 275。
+## Round 276 (F582) — 2026-08-12：HUD 交互弧闭合（F580-F581 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**207 证据 JSON**；三服务 200；master a5a8fb4（**240 连发 F335-F581 已推**）。
+- **〔弧〕**16 caption 动作分派（jt 0x42C4D4，F580）+ 动作栏（攻击/腰带/缩放/生成检查）+ **6 热键槽目标系统**（F581：RECT 命中 + 0xC24 记录 + 执行 + 金币门）——**整个 HUD 交互层（caption/动作/热键）字节级**。
+- 落盘：hud-interaction-arc-closure-evidence.json（F582，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 276。

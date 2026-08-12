@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hud-interaction-arc-closure-2026-08-12-f582",
+  "title": "Round 276 (F582): HUD interaction arc CLOSED (F580-F581) - validation green (compileall/verify exit 0/node/JSON), services 200, master a5a8fb4 (240 consecutive F335-F581), 207 evidence JSONs; arc: 16-caption action dispatch jt 0x42C4D4 (F580, matches F558 registry) + action bar (attack/belt/zoom/spawn-check) + 6 hot-slot target system (F581: rect hit-test + 0xC24 records + execute + gold gate) - ENTIRE HUD interaction layer byte-level (captions/action/hotkeys)",
+  "date": "2026-08-12",
+  "objective": "Close the HUD interaction arc.",
+  "question": "Is the HUD interaction layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "207 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F580": "16-caption action dispatch (jt 0x42C4D4) + action bar", "F581": "6 hot-slot target system + records + gold gate"},
+    "significance": "ENTIRE HUD interaction layer (captions/action/hotkeys) byte-level"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F581": "240 rounds pushed; HUD interaction complete"
+  },
+  "contrast": {
+    "interaction_vs_render": "HUD clicks (F580/581) + HUD render (F321+) both complete",
+    "captions_vs_hotkeys": "16 window captions + 6 hot slots + action bar"
+  },
+  "verdict": "HUD interaction arc CLOSED (F582): caption dispatch + action bar + hot-key system all byte-level; validation green, 240 consecutive rounds, 207 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F580-F581.",
+  "cross_refs": ["F580: caption dispatch", "F581: hot-key system", "F321: caption render"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "240 consecutive shipping rounds F335-F581",
+    "next: HANDOFF refresh 12, remaining deep corners"
+  ]
+}
