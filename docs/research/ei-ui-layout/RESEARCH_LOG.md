@@ -9044,3 +9044,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 701-703（F1008-F1009：瓦片可行走/属性全量 + 瓦片访问器闭合）；基线 Round 700=7bcd530 → Round 703=433e443（**667 连发 F335-F1009**）。
 - 落盘：handoff-refresh-148-evidence.json（F1010，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 704。
+## Round 705 (F1011) — 2026-08-12：地面瓦片 blit 全量（F728）
+
+- **〔瓦片〕**0x43B9A0：边界 [0x126]/[0x128] + 奇偶检查（and 1）+ 瓦片索引（÷7 0x6DB6DB6D）+ 类型表 0x5600FC stride 0x144 → 帧 0x466130 + blit 0x45E8E0（0x8AB7A8，屏幕 0x300×0x480，偏移 <<5/×3×16）；0x43BB10 物体层瓦片（byte +3 / word +5/+7）——地面瓦片 blit 完整（F728/F719 依赖）。
+- 落盘：ground-tile-blit-full-evidence.json（F1011，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 705。

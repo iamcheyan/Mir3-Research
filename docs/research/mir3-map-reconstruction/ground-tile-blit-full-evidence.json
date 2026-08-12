@@ -1,0 +1,36 @@
+{
+  "evidence_id": "ground-tile-blit-full-2026-08-12-f1011",
+  "title": "Round 705 (F1011): Ground tile blit FULL (F728) - 0x43B9A0: bounds [0x126]/[0x128] + parity check (and 1) + tile idx (div7 0x6DB6DB6D) + type table 0x5600FC stride 0x144 -> frame 0x466130 + blit 0x45E8E0 (0x8AB7A8, screen 0x300x0x480, offsets <<5/x3x16); 0x43BB10 object layer tile (byte +3 / word +5/+7) - ground tile blit COMPLETE (F728/F719 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the full ground tile blit.",
+  "question": "How does the client blit ground tiles?",
+  "method": "Disasm 0x43B9A0-0x43BB10.",
+  "scope": "0x43B9A0-0x43BB10; blit.",
+  "cell_analysis": {
+    "0x43B9A0": "bounds + parity + div7 + table + blit",
+    "table": "0x5600FC stride 0x144",
+    "blit": "0x45E8E0"
+  },
+  "exe_trace": {
+    "ground_chain": "bounds -> parity -> tile -> blit"
+  },
+  "audit_vs_exe": {
+    "F728": "tile render", "F719": "attr"
+  },
+  "contrast": {
+    "ground_vs_object": "0x43B9A0 + 0x43BB10",
+    "div": "0x6DB6DB6D"
+  },
+  "verdict": "Ground tile blit FULL PRIMARY-verified: parity + div7 + table + blit; F728/F719 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ground tile blit decoded from .text.",
+  "cross_refs": ["F728: tile render", "F719: attr"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43B9A0+0x20",
+  "notes": [
+    "parity and 1",
+    "div7 0x6DB6DB6D",
+    "table 0x5600FC",
+    "blit 0x45E8E0"
+  ]
+}
