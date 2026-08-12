@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-reply-send-random-checksum-2026-08-12-f617",
+  "title": "Round 311 (F617): NPC-reply send + random seed + checksum - 0x4524D0 = skill/NPC reply msg 0x411 (0x452940 header + 0x451E60 frame F572, F476); 0x452580 = RANDOM SEED init (0x9135B8/0x9135BC 4+4 bytes from time 0x4685E8 + 0x4684A8, fill via 0x4684B2 rand); 0x4525F0 = CHECKSUM verify: 4-byte key XOR (0x9135B8 key) + payload sum (idx*byte) vs stored dword [0x9135BC] + byte verify - anti-cheat/packet integrity byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC-reply send + random seed + checksum.",
+  "question": "How do NPC-reply sends + packet checksums work?",
+  "method": "Disasm 0x4524D0 + 0x452580 + 0x4525F0-0x45269A.",
+  "scope": "0x4524D0-0x45269A; seed 0x9135B8.",
+  "cell_analysis": {
+    "0x4524D0": "skill/NPC reply msg 0x411 (0x452940 + 0x451E60, F476)",
+    "0x452580": {"seed": "0x9135B8/0x9135BC (4+4 bytes) from 0x4685E8 + 0x4684A8 time", "fill": "0x4684B2 rand x4 + 2"},
+    "0x4525F0": {"checksum": "4-byte key XOR (0x9135B8) + payload sum (idx*byte) vs [0x9135BC] + byte verify"}
+  },
+  "exe_trace": {
+    "reply_chain": "NPC dialog -> 0x4524D0 msg 0x411 -> frame (F572)",
+    "integrity": "send: seed key -> checksum appended; recv: 0x4525F0 verify"
+  },
+  "audit_vs_exe": {
+    "F476": "NPC reply 0x4524D0 CONFIRMED", "F572": "framing", "F573": "msg 0x411 in catalog"
+  },
+  "contrast": {
+    "reply_vs_attack": "0x411 NPC reply vs 0x401 attack",
+    "seed_vs_checksum": "random seed + XOR checksum verify"
+  },
+  "verdict": "NPC-reply send + integrity PRIMARY-verified: msg 0x411 sender + random seed init + XOR checksum verify; F476/F572 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Senders + checksum decoded from .text.",
+  "cross_refs": ["F476: NPC reply", "F572: framing", "F573: catalog"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4524D0+0x10; 0x4525F0+0x30",
+  "notes": [
+    "msg 0x411 = NPC dialog reply",
+    "seed 0x9135B8 = 8-byte key",
+    "checksum = XOR + weighted sum",
+    "anti-cheat packet integrity"
+  ]
+}

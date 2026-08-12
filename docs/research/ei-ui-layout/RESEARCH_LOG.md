@@ -7313,3 +7313,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔发送〕**0x451A70 = **攻击 msg 0x401**、0x451AA0 = 交易 0x402、0x451AD0 = 0x403、0x451B00 = 金币 0x405、0x451B30 = 0x406（全经 0x452940 头 + 0x451E60 帧 F572）。
 - **〔窗口〕**0x451B60 = 系统窗口消息（SendMessage 0x476114 + 0x47628C + GlobalAlloc/Free 0x4760B8/0x4760BC、格式 0x47C818）；0x451BB0 = **窗口消息分派器**（0x4515C0 解析 + 类型 1/0x10/0x1F → 0x451CC0/0x451C40/0x451CB0）。
 - 落盘：attack-trade-sender-wnd-dispatch-evidence.json（F616，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 310。
+## Round 311 (F617) — 2026-08-12：NPC 回复发送 + 随机种子 + 校验和
+
+- **〔发送〕**0x4524D0 = 技能/NPC 回复 **msg 0x411**（0x452940 头 + 0x451E60 帧 F572，F476）。
+- **〔种子〕**0x452580 = **随机种子初始化**（0x9135B8/0x9135BC 4+4 字节，源时间 0x4685E8 + 0x4684A8、经 0x4684B2 rand 填充）。
+- **〔校验〕**0x4525F0 = **校验和验证**：4 字节键 XOR（0x9135B8）+ 载荷加权和（idx×字节）vs 存储 [0x9135BC] + 字节验证——**反作弊/包完整性字节级**。
+- 落盘：npc-reply-random-checksum-evidence.json（F617，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 311。
