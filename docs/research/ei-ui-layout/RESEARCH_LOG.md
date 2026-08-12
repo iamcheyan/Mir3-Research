@@ -7251,3 +7251,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔进入〕**0x458B20（F541 阶段 2/3）：槽 idx×0x40 记录 @ [0xCB8]（阶段 0/3）或 [0x10BC]（阶段 2）、门 [0x930] 字节（0/2/3）、0x458EC0 实体创建 → [esi+0x3C]、名 [0x38]、职业字 [0x20]、类型字 [0x22]。
 - **〔布局〕**0x458BB0 = 表单布局构造：16+ 矩形 0x449C50（y 0xD2..0x4CE、x 0x78..0x456 = 角色选择屏按钮/输入）——角色选择进入 + 布局字节级（F541/F349 扩展）。
 - 落盘：char-select-enter-layout-evidence.json（F603，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 297。
+## Round 298 (F604) — 2026-08-12：角色列表解析器 + 槽工厂
+
+- **〔解析〕**0x458F80：解析 msg 0x208-0x210（jt 0x45950C 9 例）、'/' 分隔符分词（0x468BF0）、每角色记录：名 → [0xCBF]、职业 → [0xCBC]、等级 → [0xCBE]/[0xCBD]（strlen 0x4681F9）、槽 @ [0xCB8]+idx×0x40、'/*' 标记 + 最多 2 角色（[esp+0x14] 钳制）。
+- **〔工厂〕**0x458EC0 = 槽查找（职业 + 类型×2 + 工作 → [0x932]+idx×6，边界 < 0x1E）；0x458F00 = 0x451F90 发送包装——角色选择服务器列表字节级（F603 扩展）。
+- 落盘：char-list-parser-factory-evidence.json（F604，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 298。

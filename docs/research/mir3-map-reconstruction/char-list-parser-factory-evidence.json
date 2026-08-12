@@ -1,0 +1,36 @@
+{
+  "evidence_id": "char-list-parser-factory-2026-08-12-f604",
+  "title": "Round 298 (F604): Char list parser + slot factory - 0x458F80: parse msg 0x208-0x210 (jt 0x45950C 9 cases), '/' delimiter tokenizer (0x468BF0 strchr), char record per slot: name -> [0xCBF], job -> [0xCBC], level -> [0xCBE]/[0xCBD] (strlen 0x4681F9), slots at [0xCB8]+idx*0x40, '/*' marker + max 2 chars ([esp+0x14] clamp); 0x458EC0 = slot finder (class + type*2 + job -> [0x932]+idx*6, bounds < 0x1E), 0x458F00 = 0x451F90 send wrapper - char-select server list byte-level (F603 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the char list parser + slot factory.",
+  "question": "How does the char-select list parse?",
+  "method": "Disasm 0x458EC0-0x459112 + jt 0x45950C.",
+  "scope": "0x458EC0-0x459112; slots [0xCB8]; jt 0x45950C.",
+  "cell_analysis": {
+    "0x458F80": {"parse": "msg 0x208-0x210 (jt 0x45950C 9 cases)", "delim": "'/' tokenizer (0x468BF0)", "record": "name [0xCBF] + job [0xCBC] + level [0xCBE]/[0xCBD] (0x4681F9)", "slots": "[0xCB8]+idx*0x40, '/*' marker, max 2"},
+    "0x458EC0": "slot finder: class + type*2 + job -> [0x932]+idx*6, bounds < 0x1E",
+    "0x458F00": "0x451F90 send wrapper"
+  },
+  "exe_trace": {
+    "list_chain": "server char list -> 0x458F80 parse '/' fields -> slots [0xCB8] -> 0x458B20 enter (F603)"
+  },
+  "audit_vs_exe": {
+    "F603": "slot records + enter CONFIRMED", "F541": "stage machine", "F349": "char select"
+  },
+  "contrast": {
+    "parse_vs_enter": "0x458F80 list parse vs 0x458B20 enter",
+    "factory_vs_finder": "0x458EC0 slot find vs 0x458F80 parser"
+  },
+  "verdict": "Char list parser PRIMARY-verified: '/' tokenizer + per-slot records (name/job/level) + 9-case jt + slot finder; char-select server list byte-level (F603 extended).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Parser + factory decoded from .text.",
+  "cross_refs": ["F603: char-select enter", "F541: stage machine"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x458F80+0x40; 0x458EC0+0x10",
+  "notes": [
+    "'/' = field delimiter",
+    "record fields name/job/level",
+    "slot stride 0x40",
+    "msg 0x208-0x210 = char list packets"
+  ]
+}
