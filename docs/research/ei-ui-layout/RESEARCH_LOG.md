@@ -8052,3 +8052,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 472-474（F779-F780：选项字符串/配置 + 选项系统最终闭合）；基线 Round 471=bbd1855 → Round 474=d753c98（**439 连发 F335-F780**）——**HANDOFF 刷新 70 里程碑**。
 - 落盘：handoff-refresh-70-evidence.json（F781，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 475。
+## Round 476 (F782) — 2026-08-12：发送器家族扩展（F616/F572 扩展）
+
+- **〔发送〕**0x451A10 **msg 0x418**（对话动作、F746 依赖）+ 0x451A40 0x419 + 0x451A70 **0x401**（F580 攻击确认）+ 0x451AA0 0x402 + 0x451AD0 0x403 + 0x451B00 0x405 + 0x451B30 0x406——全部经包头 0x452940 + 发送 0x451E60（F572）；0x451B60 窗口关闭泵（0x476114 PostMessage 0x1300 + 0x47628C + 0x4760B8/0x4760BC 销毁）；0x451BB0 输入转发（0x4515C0 + hwnd 0x8AB7B0）——**出站发送器完整**。
+- 落盘：sender-family-extension-evidence.json（F782，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 476。

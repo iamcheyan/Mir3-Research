@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sender-family-extension-2026-08-12-f782",
+  "title": "Round 476 (F782): Sender family extension (F616/F572 extended) - 0x451A10 msg 0x418 (DIALOG action, F746 dependency) + 0x451A40 0x419 + 0x451A70 0x401 (F580 attack CONFIRMED) + 0x451AA0 0x402 + 0x451AD0 0x403 + 0x451B00 0x405 + 0x451B30 0x406 - all via header 0x452940 + send 0x451E60 (F572); 0x451B60 window-close pump (0x476114 PostMessage 0x1300 + 0x47628C 0x10 0x47C818 + 0x4760B8/0x4760BC destroy); 0x451BB0 input forwarder (0x4515C0 + hwnd 0x8AB7B0) - outbound senders COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the sender family extension.",
+  "question": "What messages do the sender family cover?",
+  "method": "Disasm 0x451A10-0x451BD0.",
+  "scope": "0x451A10-0x451BD0; msgs.",
+  "cell_analysis": {
+    "senders": {"0x418": "0x451A10 dialog action", "0x419": "0x451A40", "0x401": "0x451A70 attack", "0x402-0x406": "0x451AA0-0x451B30"},
+    "0x451B60": "close pump: 0x476114 0x1300 + destroy",
+    "0x451BB0": "input forwarder: 0x4515C0 + hwnd 0x8AB7B0"
+  },
+  "exe_trace": {
+    "send_chain": "header 0x452940 -> send 0x451E60"
+  },
+  "audit_vs_exe": {
+    "F572": "header/send", "F580": "attack 0x401", "F616": "sender family"
+  },
+  "contrast": {
+    "dialogs_vs_actions": "0x418/0x419 + 0x401-0x406",
+    "close_vs_forward": "pump + input"
+  },
+  "verdict": "Sender family extension PRIMARY-verified: 0x418/0x419 + 0x401-0x406 senders + close pump; outbound senders complete (F616/F572).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Senders decoded from .text.",
+  "cross_refs": ["F572: header/send", "F580: attack", "F616: senders"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x451A10+0x10; 0x451A70+0x10",
+  "notes": [
+    "msg 0x418 dialog action",
+    "attack 0x401",
+    "close pump 0x1300",
+    "header 0x452940"
+  ]
+}
