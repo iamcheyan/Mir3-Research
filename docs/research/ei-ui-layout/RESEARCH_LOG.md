@@ -7420,3 +7420,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**262 证据 JSON**；三服务 200；master 6f96ef2（**296 连发 F335-F637 已推**）。
 - **〔弧〕**主构造 + WinMain 引导（F636）+ 主构造体/子系统（F637）——**整个启动链（WinMain → 魔数 → ctor → 子系统 → Intro F607）字节级**，F451 基址闭环。
 - 落盘：startup-construction-arc-closure-evidence.json（F638，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 332。
+## Round 333 (F639) — 2026-08-12：HANDOFF 刷新 25（Round 329-332）
+
+- **〔刷新〕**HANDOFF 追加 Round 329-332（F636-F638：主构造/引导 + 构造体 + 启动弧）；基线 Round 328=5534555 → Round 332=0d191b0（**297 连发 F335-F638**）。
+- 落盘：handoff-refresh-25-evidence.json（F639，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 333。

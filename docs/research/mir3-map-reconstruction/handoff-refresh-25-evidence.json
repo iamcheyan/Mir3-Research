@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-25-2026-08-12-f639",
+  "title": "Round 333 (F639): HANDOFF refresh 25 - Rounds 329-332 (F635-F638: main ctor + WinMain bootstrap + main ctor body/subsystems + startup arc closure), baseline Round 328=5534555 -> Round 332=0d191b0 (297 consecutive F335-F638), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 329-332.",
+  "question": "What changed since HANDOFF refresh 24?",
+  "method": "Append Round 329-332 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 329-332 appended (4 rounds, F635-F638)",
+    "baseline": "Round 328=5534555 -> Round 332=0d191b0 (297 consecutive F335-F638)",
+    "arcs": {"bootstrap": "F636 WinMain + ctor", "ctor": "F637 body + subsystems", "closure": "F638 startup arc"},
+    "key": "startup chain complete (F451 base circle closed)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F635": "refresh 24 baseline -> now refresh 25", "F335-F638": "297 rounds"
+  },
+  "contrast": {
+    "refresh_24_vs_25": "F636-F638 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 25 (F639): Rounds 329-332 documented (startup/construction chain), baseline 5534555 -> 0d191b0, 297 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F636-F638 evidence.",
+  "cross_refs": ["F635: refresh 24", "F638: startup closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 329-332 section to HANDOFF",
+  "notes": [
+    "297 consecutive shipping rounds F335-F638",
+    "next: remaining deep corners, sim polish"
+  ]
+}

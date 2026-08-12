@@ -675,3 +675,14 @@ simulator/style.css
 **音频弧闭合（F634）**：292 连发 + 258 证据 JSON——音频子系统完整（音效 + DSound + MIDI BGM），连接 F607/F470/F528；用户 quest 文件（item_catalog.json/vision_item_desc/vision_batches）未触碰。
 
 **commit 基线更新**：Round 324=2603e46 → Round 328=5534555（master 已推，293 连发 F335-F634）。
+
+
+## Round 329-332 追加交付（2026-08-12，Finding 635-638）：HANDOFF 刷新 24 + 主构造/引导 + 主构造体 + 启动弧
+
+**HANDOFF 刷新 24（F635）**：基线更新至 Round 328=5534555（293 连发）。
+
+**启动/构造链（F636-F637）**：**主构造 + WinMain 引导**（0x401970 主 ctor 尾 ecx=0x47EF18 → 0x418B00 **F451 基址证明**、0x401990 静态析构；0x401B30 WinMain 引导 [0x47EEB8]=0x131C9A5 魔数 + [0x47EF10]=0 + rand 0x401700 + GetPrivateProfileStringA 配置族）、**主构造体 + 子系统链**（0x418B00 **5 实体链表 vtable** 0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680 @ [0xE1154..0xE11E0] F336 + 子系统构造：瓦片 0x4529B0、地图 0x43AF70、英雄 0x426C10、英雄角色 0x40FE80、光场 0x4344E0、**6 绘制对象** F439、公告 0x417EC0、备忘 3 个 + vtable [0]=0x476670）。
+
+**启动/构造弧闭合（F638）**：296 连发 + 262 证据 JSON——**启动链（WinMain → 魔数 → ctor → 子系统 → Intro F607）字节级**，F451 基址闭环。
+
+**commit 基线更新**：Round 328=5534555 → Round 332=0d191b0（master 已推，297 连发 F335-F638）。

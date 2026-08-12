@@ -1891,9 +1891,14 @@ git diff --check
 - **296 连发 + 262 证据 + 启动链完整**（F451 闭环）。
 - 落盘：`startup-construction-arc-closure-evidence.json`（F638）+ RESEARCH_LOG Round 332。
 
+## Round 333 (2026-08-12) — HANDOFF 刷新 25（Finding 639）
+
+- **Round 329-332 追加 + 297 连发**（启动链入档）。
+- 落盘：`handoff-refresh-25-evidence.json`（F639）+ RESEARCH_LOG Round 333。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（启动链完整；下一弧：HANDOFF 刷新 25/剩余角落）。
+- 无阻塞项（启动链完整；下一弧：剩余深层角落/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
