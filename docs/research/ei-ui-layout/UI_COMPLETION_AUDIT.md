@@ -1356,9 +1356,14 @@ git diff --check
 - **3000ms + 重置 + 锚**（F359 生命周期完整）。
 - 落盘：`target-box-hover-timer-evidence.json`（F531）+ RESEARCH_LOG Round 225。
 
+## Round 226 (2026-08-12) — UI 角落弧闭合（Finding 532）
+
+- **F527-F531 弧闭合 + 190 连发**；UI 角落字节级完整。
+- 落盘：`ui-corner-arc-closure-evidence.json`（F532）+ RESEARCH_LOG Round 226。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（目标框族完整）。
+- 无阻塞项（UI 角落完整；其余 = 持续深化）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

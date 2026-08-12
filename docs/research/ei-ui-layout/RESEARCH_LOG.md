@@ -6883,3 +6883,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔计时〕**0x40BB00：累加器 [0x6209C] += tick（[0x620A0] 旗标时）、**门 0xBB8（3000ms，F359）**、随后清 [0x620A0] 0x41 dword + [0x621A4] 0x208 dword（名签重置）；锚 [0xE4]−0x2C/[0xE8]−0x37（F359 精确）、type [0x61C8C] 变体（1 = 文本测量）。
 - 落盘：target-box-hover-timer-evidence.json（F531，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 225。
+## Round 226 (F532) — 2026-08-12：UI 角落弧闭合（F527-F531 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 65678c3（**190 连发已推**）。
+- **〔弧汇总〕**提示框 3 槽（F527）/ Config.ini 6 键保存（F528）/ 聊天输入发送（F529）/ 血条实时值帧（F530）/ 目标框悬停 3000ms（F531）——**深层 UI 角落字节级闭合**。
+- 落盘：ui-corner-arc-closure-evidence.json（F532，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 226。
