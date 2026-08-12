@@ -351,8 +351,8 @@ flowchart LR
 
 | 数值 | 含义 | 累加点（副线任务） | 影响 |
 |------|------|-------------------|------|
-| M3S_CHOICE_DAVID | 大卫钥匙·追查木牌主人 | M3S_KEY_DAVID | 大卫道歉（情感回响） |
-| M3S_CHOICE_GRESHAM | 格雷沙姆日记·找画 | M3S_JOURNAL_GRESHAM | 画合璧赠画 |
+| M3S_CHOICE_DAVID | 戴长风钥匙·追查木牌主人 | M3S_KEY_DAVID | 戴长风道歉（情感回响） |
+| M3S_CHOICE_GRESHAM | 葛世豪日记·找画 | M3S_JOURNAL_GRESHAM | 画合璧赠画 |
 | M3S_CHOICE_CURE | 解药·先救路人 | M3S_CURE_POISON1-6 | 解药线减 1 环 |
 | M3S_CHOICE_FISH | 渔获·放生孕鱼 | M3S_GATHER_FISH | 渔夫敬重 |
 | M3S_CHOICE_HERB | 药草·留灵芝 | M3S_GATHER_HERB | 阿丑知己 |
