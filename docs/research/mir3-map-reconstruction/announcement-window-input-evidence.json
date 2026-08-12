@@ -1,0 +1,36 @@
+{
+  "evidence_id": "announcement-window-input-2026-08-12-f958",
+  "title": "Round 652 (F958): Announcement window input (F870/F897 dep) - 0x414CF0 announcement INPUT (scrollbar 0x417C80 @ +0x6D4 -> scroll [0x6D0] via [0x68]x[0x6E0]; else 9 controls vtable[8] @ +0x6C stride 0xB4); 0x414D60 scroll decay + 0x414D80 scroll step (clamp [0x68]-1); 0x414DC0 KEY input (keys 0x31/0x32/0xBE -> buffer [0x850] + send 0x450C70 refresh, F870 dep) - announcement input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the announcement window input.",
+  "question": "How does the announcement window route input?",
+  "method": "Disasm 0x414CF0-0x414DC0.",
+  "scope": "0x414CF0-0x414DC0; input.",
+  "cell_analysis": {
+    "0x414CF0": "input scrollbar + 9 controls",
+    "0x414D60/0x414D80": "scroll decay/step",
+    "0x414DC0": "key 0x31/0x32/0xBE + [0x850] + 0x450C70"
+  },
+  "exe_trace": {
+    "announce_chain": "input -> scroll/key"
+  },
+  "audit_vs_exe": {
+    "F870": "announce key", "F897": "reset"
+  },
+  "contrast": {
+    "scroll_vs_key": "input + keys",
+    "send": "0x450C70 refresh"
+  },
+  "verdict": "Announcement window input PRIMARY-verified: scrollbar + 9 controls + key input; F870 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Announcement input decoded from .text.",
+  "cross_refs": ["F870: announce", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414CF0+0x10; 0x414DC0+0x20",
+  "notes": [
+    "scrollbar +0x6D4",
+    "9 controls +0x6C",
+    "keys 0x31/0x32/0xBE",
+    "refresh 0x450C70"
+  ]
+}

@@ -3945,3 +3945,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话输入完整；下一弧：剩余深层角落）。
+## Round 652 (2026-08-12) — 公告窗口输入（Finding 958）
+
+- **滚动 + 9 控件 + 按键**（公告输入完整）。
+- 落盘：`announcement-window-input-evidence.json`（F958）+ RESEARCH_LOG Round 652。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告输入完整；下一弧：剩余深层角落）。

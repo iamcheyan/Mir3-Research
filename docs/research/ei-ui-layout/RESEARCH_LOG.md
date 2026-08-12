@@ -8815,3 +8815,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔对话〕**0x440560 对话输入（3 按钮 vtable[8] @ +0x58 + 滚动条 0x417C80 @ +0x3C4 → 滚动 [0x3BC] [0x3C0]×[0x3D0]；否则 dlist 0x8B1AE4 遍历 type==2 → 5 选项命中 0x4762B4 → 选中 [edi+0x5D]）；0x440630 **列表清除**（dlist 0x8B1AE4/0x8B1AE8 free）；0x4406D0 滚轮 −（钳 0）+ 0x440700 滚轮 +（钳 [0x3C0]-1）——对话输入完整。
 - 落盘：dialog-window-input-evidence.json（F957，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 651。
+## Round 652 (F958) — 2026-08-12：公告窗口输入（F870/F897 依赖）
+
+- **〔公告〕**0x414CF0 公告输入（滚动条 0x417C80 @ +0x6D4 → 滚动 [0x6D0] [0x68]×[0x6E0]；否则 9 控件 vtable[8] @ +0x6C stride 0xB4）；0x414D60 滚动衰减 + 0x414D80 滚动步进（钳 [0x68]-1）；0x414DC0 **按键输入**（键 0x31/0x32/0xBE → 缓冲 [0x850] + 发送 0x450C70 刷新，F870 依赖）——公告输入完整。
+- 落盘：announcement-window-input-evidence.json（F958，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 652。
