@@ -876,6 +876,11 @@ git diff --check
 - **+2/+1 tick + 回绕 + 帧公式**（F433 范围消费）。
 - 落盘：`monster-anim-advance-machine-evidence.json`（F435）+ RESEARCH_LOG Round 129。
 
+## Round 130 (2026-08-12) — WIL 帧装载器（Finding 436）
+
+- **文件/mmap 双模式 + LRU + 3 新 IAT**（HUD/怪物共用）。
+- 落盘：`wil-frame-loader-0x466130-evidence.json`（F436）+ RESEARCH_LOG Round 130。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

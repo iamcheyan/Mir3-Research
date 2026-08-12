@@ -1,0 +1,40 @@
+{
+  "evidence_id": "wil-frame-loader-0x466130-2026-08-12-f436",
+  "title": "Round 130 (F436): WIL frame loader 0x466130 - mode byte [ecx+4]: 0 -> 0x466640 (.wil file mode), 1/2 -> 0x466720 (mmap mode); 17-byte (0x11) frame header read, words*2 payload ReadFile; LRU cache evict 0x3A98ms (0x466770) + 0x493E0ms timeout; IAT SetFilePointer 0x4761EC/GetTickCount 0x47611C/UnmapViewOfFile 0x4760F8",
+  "date": "2026-08-12",
+  "objective": "Decode the shared WIL frame loader 0x466130 used by both HUD (F29) and monster draw (F435).",
+  "question": "How does the client load a single WIL frame (header + payload) and cache it?",
+  "method": "Disasm 0x466130 (dispatch), 0x466640 (file mode), 0x466720 (mmap mode), 0x466770 (LRU evict); IAT resolve.",
+  "scope": "0x466130-0x4667C0, IAT 0x4761EC/0x47611C/0x4760F8/0x4760F8.",
+  "cell_analysis": {
+    "dispatch_0x466130": {"mode0": "0x466640 (.wil file handle mode)", "mode1_2": "0x466720 (mmap WIX offset mode)", "else": "0"},
+    "file_mode_0x466640": {"gates": "frame idx < [esi+0x10]; entry valid; w/h <= 0x1000", "header": "SetFilePointer(0x4761EC) + ReadFile 17 bytes (0x11) = WIL header", "payload": "alloc words*2 (0x468B1A) + ReadFile words*2", "cache": "[esi+0x38]/[0x3C] last header/data; evict if tick - [esi+0x14] > 0x3A98 (15000ms)"},
+    "mmap_mode_0x466720": {"offset": "idx*4 -> [ecx+0x30] offset table + [0x34] mmap base", "header": "w/h words at [eax] <= 0x1000", "data": "[0x3C] = base + offset + 0x11 (header skip)"},
+    "lru_evict_0x466770": {"scan": "frame entries [0x10] x stride 0x20; evict if tick - entry[0] > 0x493E0 (300000ms)", "free": "0x4680F8"},
+    "ctx_0x4667D0": {"init": "dword[0]=0x7C (struct size 124), [4]=file handle, [0x68]=mmap base, [0x48]=0x20 (stride)"}
+  },
+  "exe_trace": {
+    "monster_draw": "F435: 0x466130 called with frame = [0xB4]+([0xB8]-[0xC4])-1 (reverse) or [0xC4] (forward)",
+    "hud": "F29: window frame loading shares 0x466130"
+  },
+  "audit_vs_exe": {
+    "F435": "draw path loader confirmed",
+    "F29": "HUD frame loader confirmed shared",
+    "F380": "wilsdk reads = same 17-byte header layout"
+  },
+  "contrast": {
+    "file_vs_mmap": ".wil file mode reads header+payload per frame; mmap mode = WIX offsets into mapped file (no per-frame IO)",
+    "sprite_vs_hud": "same loader, different mode byte = two WIL storage schemes"
+  },
+  "verdict": "WIL frame loader 0x466130 PRIMARY-verified: mode dispatch (file/mmap), 17-byte header + words*2 payload, 3 IAT (SetFilePointer/GetTickCount/UnmapViewOfFile), LRU eviction at 0x3A98/0x493E0ms. Shared by HUD (F29) and monster draw (F435).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Loader + IAT resolved from binary.",
+  "cross_refs": ["F435: anim advance (draw path)", "F29: HUD frames", "F380: wilsdk header layout"],
+  "tool": "capstone + pefile IAT",
+  "reproduce": "disasm 0x466130+0x30, 0x466640+0x60, 0x466720+0x20, 0x466770+0x20; resolve IAT 0x4761EC/0x47611C",
+  "notes": [
+    "WIL header = 17 bytes (w,h,offx,offy,shadow,sw,sh,words) - matches wilsdk",
+    "0x4667D0 = WIL context ctor (size 0x7C, stride 0x20 entries)",
+    "mmap mode = WIX offset table in [0x30], base in [0x34]"
+  ]
+}

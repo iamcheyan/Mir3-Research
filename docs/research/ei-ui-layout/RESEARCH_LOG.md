@@ -6374,3 +6374,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔推进〕**0x40B022 ticker：正向 +2（[0xC4] + 字节 [0x61B98] 副计数）、反向 +1（门 [0x61B94]）；**回绕 [0xC4]=[0xB4]**（重置位置 [0xDC/0xE0/0xD4/0xD8] + HP/MP [0x61B9C..0x61BB8] + vtable[0x10]）。
 - **〔帧公式〕**正向 frame=[0xC4]；反向 frame=[0xB4]+([0xB8]-[0xC4])-1（0x40B37A）；绘制 0x40B2C0 经 [0x90] 外观 + 0x466130。
 - 落盘：monster-anim-advance-machine-evidence.json（F435，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 129。
+## Round 130 (F436) — 2026-08-12：WIL 帧装载器 0x466130（文件/mmap 双模式 + LRU）
+
+- **〔分派〕**mode [ecx+4]：0 → 0x466640 文件模式（SetFilePointer+ReadFile 17 字节头 + words*2 载荷）、1/2 → 0x466720 mmap 模式（WIX 偏移表 [0x30] + 基 [0x34]）。
+- **〔缓存〕**LRU 淘汰 0x3A98ms（0x466770）+ 0x493E0ms 超时；0x4667D0 = 上下文构造（size 0x7C，条目 stride 0x20）。
+- **〔IAT〕**新增 SetFilePointer 0x4761EC / GetTickCount 0x47611C / UnmapViewOfFile 0x4760F8。
+- 落盘：wil-frame-loader-0x466130-evidence.json（F436，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 130。
