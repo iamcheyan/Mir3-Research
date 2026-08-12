@@ -1,5 +1,5 @@
 {
-  "version": "0.11-map-change-pipeline",
+  "version": "0.12-sound-manager",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -2309,25 +2309,64 @@
       }
     },
     {
-      "id": "window-manager.0x8ab130",
+      "id": "sound-manager.0x8ab130",
       "kind": "game-object",
       "layer": "core-objects",
       "absolute": "0x8AB130",
-      "role": "窗口管理器（主体 UI 容器）",
+      "role": "声音管理器 SoundManager（vtable 0x476BF8；50 效果音频道槽 + 内嵌 DirectShow BGM 播放器；F333『窗口管理器』旧标作废）",
       "layout": {
-        "+0x460": "50 子窗口指针槽 (0x45B1D0 逐 0x45B950 释放)",
-        "+0x528": "深层释放标志 (0x45B3D0 -> 0x45A510)"
+        "+0x8": "init 标志（0x402023 置 1；失败 0 跳过声音）",
+        "+0x14": "enabled（0x45B1B0/0x45B1C0）",
+        "+0x20": "BGMLevel 音量（BGM 音量设置，= 0x8AB150；播放时重读：0x45B250 -> 0x45A4A0 arg1 -> 0x45A700 put_Volume）",
+        "+0x420/+0x452/+0x45C": "config1 SoundList.wwl 效果音表（0x10B 项：word[0]=ID、byte[2]=启用、entry+2=名）",
+        "+0x460..0x528": "50 效果音频道槽（槽对象 {+0 DSound 封装、+4 WAV 数据、+8 缓冲数、+0x10/+0x14+4i IDirectSoundBuffer[]、+0x38 最近使用、+0x3C 频道 ID}）",
+        "+0x528": "内嵌 SoundPlayer（DirectShow FilterGraph BGM 播放器，vtable 0x476BD4；布局见 sound-manager-evidence cell_analysis）",
+        "+0x52C/+0x55E/+0x568/+0x56C": "config2 Bgmlist.wwl BGM 表（0x18B 项名在 +0xA；'none'/'nobgm' 跳过）"
       },
       "methods": {
-        "0x45B440": "通用消息分派 (wndproc 默认分支 4 参转发)",
-        "0x45B1D0": "flush：50 槽 0x45B950 逐窗释放",
-        "0x45B3D0": "flush 深层：+0x134/+0x13C/+0x130 缓冲 + [+0x11C] vtable+0x20",
-        "0x45A510": "深层释放体"
+        "0x45AFC0": "频道注册/查找+激活（36 调用点；ID 体系 1/0x21-0x23/0x69-0x76/0x83/0x8E/0x2711+6*idx）",
+        "0x45AC00": "频道槽分配（0x45AD40 config1 查 + 0x45B6D0 建 10 缓冲组；>1000ms 淘汰）",
+        "0x45ADA0/0x45AE90": "config1/config2 装载（唯一调用者 0x40202D/0x40203C）",
+        "0x45B090/0x45B0F0": "StopChannel / StopChannelAll",
+        "0x45B140": "PositionChannel（0x574118 格->屏 0x43CFD0 + 等距 0x45BB50 + SetPan/SetVolume，DSBVOLUME_MIN 钳制）",
+        "0x45B1B0/0x45B1C0": "EnableSound / DisableSound（[+0x14]）",
+        "0x45B1D0/0x45B210": "StopAllSounds / StopAllAndRelease（50 槽）",
+        "0x45B250/0x45B390": "PlaySoundFromConfig(arg1, arg2=config2 查键, arg3=循环标志)；音量播放时重读 [0x8AB130+0x20]；直接路径版 0x45B390",
+        "0x45B3D0/0x45B3F0": "StopBGM / IsBGMPlaying",
+        "0x45B410/0x45B430": "config2 BGM 表开/关",
+        "0x45B440": "0x81F4 消息分派（wndproc 默认分支；-> [0x528] -> 0x45A5A0 事件泵）",
+        "0x45B6D0": "CreateSoundBufferSet（WAV 解析 + 槽对象 + 克隆缓冲 vtable=IDirectSoundBuffer）",
+        "0x45B7F0/0x45B830": "释放槽 / GetStatus 轮询取空闲克隆缓冲",
+        "0x45B900/0x45B950": "激活 / 停频道（Stop+SetCurrentPosition(0)）",
+        "0x45AA40": "SoundManager ctor（0x45A250 建播放器 -> [0x528]）",
+        "0x45AB60/0x45AB80": "SoundManager dtor（删 50 槽 + 删播放器 + 释放全局 DSound）"
       },
-      "notes": "地图切换 0x422960 调 0x45B1D0+0x45B3D0 全关窗；F332 语境中仅作缓冲对象 -> F333 修正为主体窗口管理器",
+      "notes": "BGM 播放器 = DirectShow FilterGraph（0x45A2F0 CoCreateInstance CLSID_FilterGraph + IGraphBuilder/IMediaControl/IBasicAudio/IMediaPosition/IMediaEventEx/IMediaSeeking 六接口；EC_COMPLETE(1) 且 [player+8] 循环标志非 0 时经 0x45A7C0 重播、0x14 停止；SetNotifyWindow(0x8AB7B0, 0x81F4) 回注主窗；0x45A5A0 事件泵）。0x8AB7B0 = 主图形窗口句柄（类 'MirDXG'，DSound SetCooperativeLevel + BGM SetNotifyWindow 双用）。地图切换 0x4229E9/0x4229F3 停全部音效+BGM。",
       "evidence": {
         "level": "primary-bytes",
-        "source": "map-change-pipeline-and-main-window-class-evidence.json (F333)"
+        "source": "sound-manager-0x8ab130-family-evidence.json (F334); F333 旧标 5 处修正见 audit_vs_exe"
+      }
+    },
+    {
+      "id": "main-window-hwnd.0x8ab7b0",
+      "kind": "bss-slot",
+      "layer": "core-objects",
+      "absolute": "0x8AB7B0",
+      "role": "主图形窗口句柄（[0x8AB7A8+8]；类 'MirDXG' 0x47B004 / 标题 'Legend Of Mir 3' 0x47A468；F333 旧标『全局资源参数』作废）",
+      "layout": {
+        "0x8AB7A8": "图形窗口对象 CWHDXGraphicWindow（0x45CA80 创建；blitter 0x45E8E0 this）",
+        "+0x8": "hwnd（= 0x8AB7B0；0x45CA80 失败路径 MessageBoxA(hwnd,...) 证明）",
+        "0x8AA48C": "主应用窗 hwnd（0x451100 创建；ShowWindow/SendMessageA 用）"
+      },
+      "uses": {
+        "0x402005": "-> 0x45A8C0 DirectSound SetCooperativeLevel（存 [0x9135C8]）",
+        "0x45B353": "-> 0x45A3E0 arg1 -> player[0x138] -> IMediaEventEx::SetNotifyWindow(hwnd, 0x81F4, 0)",
+        "0x45CA80": "失败路径 MessageBoxA([0x8AB7B0], '[CWHDXGraphicWindow::Create]Window create failed.', 'MirDXG', 0x10)"
+      },
+      "notes": "0x81F4 = FilterGraph 播放完成/事件消息回注到该 hwnd；wndproc 默认分支 0x41E312 -> 0x45B440 -> 0x45A5A0 事件泵",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "sound-manager-0x8ab130-family-evidence.json (F334)"
       }
     }
   ],

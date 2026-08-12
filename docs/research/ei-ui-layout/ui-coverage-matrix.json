@@ -215,7 +215,8 @@
       ],
       "notes": "close button F161/162 (28x26) + 6 channel toggles + 2 scroll + input box (0x00417960) rects closed; chat node fields node+0x00 color / node+0x04 bg(0=transparent) / node+0x08 text confirmed via 0x004147F3 -> 0x0045DD70 argument flow",
       "closed_2026_08_12": [
-        "F333 修正：F332 把 0x422960/0x42E1F0/0xF5200 归入『聊天显示』为错标——0x422960 = 地图切换 handler、0x42E1F0 = 英雄存盘、0xF5200 = 地图对象。真正聊天相关：主对象 vtable 0x476670 +0x4 0x41E6D0 聊天指令解析（memchr 0x468B30 按 '!'/'#' 切分 -> 0x41ED20 执行器）、wndproc KEYDOWN 0x41DD30 热键链（0x418470 热键表 -> 0x42CBD0）、0x45B440 窗口管理器分派。"
+        "F333 修正：F332 把 0x422960/0x42E1F0/0xF5200 归入『聊天显示』为错标——0x422960 = 地图切换 handler、0x42E1F0 = 英雄存盘、0xF5200 = 地图对象。真正聊天相关：主对象 vtable 0x476670 +0x4 0x41E6D0 聊天指令解析（memchr 0x468B30 按 '!'/'#' 切分 -> 0x41ED20 执行器）、wndproc KEYDOWN 0x41DD30 热键链（0x418470 热键表 -> 0x42CBD0）、0x45B440 消息分派。",
+        "F334 修正：0x45B440 非『窗口管理器分派』——0x8AB130 = 声音管理器，0x45B440 = msg==0x81F4（BGM FilterGraph 事件）分派 -> [0x528] 播放器 -> 0x45A5A0 事件泵（详见 sound-manager 记录）"
       ]
     },
     {
@@ -569,9 +570,33 @@
         "F332: ring B 0x422280 分派：0x1E/0x1D/0x323->实体移除（0x41B570 回指清理 + 排水实体环 + 跳表 0x42253C）、0x279->0x422403 世界清空（0x4195C0/0x419570/0x419650 全链）",
         "F332: 0x40A1E0 航向数学 angle/factor x 100.0 -> ftol -> [obj+0x61BC8] 朝向字节（f32 常量 0x47644C=100.0/0x476450=0.0 已确认）；0x61BCC/0x61BCA/0x61BC8 共 25 个实体渲染读者",
         "F332: write-only 状态槽判定：0x35B251-0x35B258 / 0x35B1F0 / 0x35A34A-0x35A34E .text 零读者（mod10+绝对寻址双验证）-> presentation-layer 契约字段（sim HUD 消费）",
-        "F333 修正：F332 记『0x33/0x27A -> 0x422960 文本消息（限流重推 ring A）』错标 → 0x422960 = 地图切换/加载 handler（英雄存盘 0x42E1F0 + 窗口全关 0x45B1D0/0x45B3D0 + 1500ms 限流重推 + 0x43B600 地图装载 + 实体清空）；F332 帧序列叙述『0x43B1E0 flush 0x2F884C/0x2F8850 进 0xF5200』→ 实为地图视口滚动重绘。0x8AB130 定性为主体窗口管理器（50 子窗槽 +0x460），非缓冲对象。"
+        "F333 修正：F332 记『0x33/0x27A -> 0x422960 文本消息（限流重推 ring A）』错标 → 0x422960 = 地图切换/加载 handler（英雄存盘 0x42E1F0 + 窗口全关 0x45B1D0/0x45B3D0 + 1500ms 限流重推 + 0x43B600 地图装载 + 实体清空）；F332 帧序列叙述『0x43B1E0 flush 0x2F884C/0x2F8850 进 0xF5200』→ 实为地图视口滚动重绘。",
+        "F334 修正：F333 记『0x8AB130 定性为主体窗口管理器（50 子窗槽 +0x460），非缓冲对象』错标 → 0x8AB130 = 声音管理器 SoundManager（50 效果音 IDirectSoundBuffer 频道槽 + 内嵌 DirectShow BGM 播放器；详见 sound-manager 记录）。"
       ],
       "pending_notes": "runtime-only: 0x422CC0/0x423000/0x423070 handler semantics (type 0x32/0x34/0x2F0), 0x41B570 m1-node handler, pump object business identity"
+    },
+    {
+      "id": "sound-manager",
+      "category": "声音管理器（0x8AB130：50 DSound 效果音频道 + DirectShow BGM 播放器）",
+      "artifacts": [
+        "sound-manager-0x8ab130-family-evidence.json"
+      ],
+      "layout_ids": [
+        "sound-manager.0x8ab130",
+        "main-window-hwnd.0x8ab7b0"
+      ],
+      "preview_mode": "sim",
+      "status": "primary-bytes-sound-family-closed",
+      "pending": false,
+      "closed_2026_08_12": [
+        "F334: 0x8AB130 = 声音管理器（F333 旧标『窗口管理器』作废）——0x45A000-0x45BC00 全家族逐字节解码 + 69 imm32 引用 + 36 寄存器调用点：+0x8 init 标志、+0x14 enabled、+0x20 BGMLevel 音量（=0x8AB150，播放时重读）、+0x420/+0x452/+0x45C config1（SoundList.wwl 效果音表）、+0x460..0x528 50 频道槽（槽对象 {+0 DSound 封装、+4 WAV、+8 缓冲数、+0x10/+0x14+4i IDirectSoundBuffer[]、+0x38 最近使用、+0x3C 频道 ID}）、+0x528 内嵌 SoundPlayer、+0x52C/+0x55E/+0x568/+0x56C config2（Bgmlist.wwl BGM 表；'none'/'nobgm' 哨兵跳过）",
+        "F334: BGM 播放器（vtable 0x476BD4，布局 +0x118..0x13C = IBasicAudio/IMediaControl/IMediaSeeking/IMediaPosition/IMediaEventEx/IGraphBuilder 六接口、+0x130 running、+0x134 init、+0x138 通知窗 hwnd、+0x13C 已装载、+0x140 WINMM 定时器 ID）= DirectShow FilterGraph：0x45A2F0 CoCreateInstance(CLSID_FilterGraph e436ebb3 @0x476D78) + 五 QI（GUID 全 web 验证，0x476D28-0x476D88）；0x45A3E0 = 装载（arg1=hwnd [0x8AB7B0] -> [0x138]、arg2=文件名 -> MultiByteToWideChar + IGraphBuilder vtable+0x34=RenderFile）；0x45A4A0 = 启动（arg1=音量 -> 0x45A700 IBasicAudio put_Volume(+0x1C)、arg2=循环标志 -> [player+8]）；0x45A740/0x45A790 = IMediaEventEx SetNotifyWindow([0x138], 0x81F4)/SetNotifyFlags；0x45A5A0 = 事件泵（wndproc 默认分支 0x41E312 -> 0x45B440 -> [0x528]）：GetEvent(+0x20)，EC_COMPLETE(1) 且 [player+8] 非 0 -> 0x45A7C0 重播循环，0x14 -> 0x45A510 停止，其余 FreeEventParams(+0x30) 排空",
+        "F334: 0x8AB7B0 = 主图形窗口 hwnd（[0x8AB7A8+8]；类 'MirDXG' 0x47B004 / 标题 'Legend Of Mir 3' 0x47A468）——0x45CA80 失败路径 MessageBoxA(hwnd=[0x8AB7B0], '[CWHDXGraphicWindow::Create]Window create failed.' 0x47D978, 'MirDXG', 0x10) 决定性证明；DSound SetCooperativeLevel（0x402005 -> 0x45A8C0 -> [0x9135C8]）+ BGM SetNotifyWindow 双用。0x8AA48C = 主应用窗 hwnd（0x451100 CreateWindowExA 家族；ShowWindow([0x8AA48C],0) @0x401FF9 隐藏主窗）",
+        "F334: IAT 终验（pefile）：0x4762AC=ShowWindow（修正旧注 SetWindowTextA）、0x4760C4=ReadFile、0x47628C=MessageBoxA、0x476290=SendMessageA、0x476258=UpdateWindow、0x47634C=CoCreateInstance、0x476350=CoUninitialize、0x476354=CoInitialize、0x4760F0=MultiByteToWideChar、0x47630C=timeGetTime、0x476310=timeKillEvent",
+        "F334: 频道 ID 体系 = 声音通道 ID（1/0x21-0x23/0x69-0x76/0x83/0x8E/运行时 0x2711+6*idx）；DSound 全局 0x9135C0=IDirectSound、0x9135C4=次级接口（IID 279AFA84 @0x476CA8）、0x9135C8=hwnd；WAVEFORMATEX PCM 44100Hz 16bit 双声道；DSBVOLUME_MIN=-10000 钳制；IDirectSoundBuffer vtable 11 偏移（+0x24 GetStatus/+0x2C Lock/+0x30 Play/+0x34 SetCurrentPosition/+0x3C SetVolume/+0x40 SetPan/+0x48 Stop/+0x4C Unlock）全吻合",
+        "F334 修正（5 条 F333 旧标）：①0x8AB130 窗口管理器->声音管理器；②+0x528 深层释放标志->内嵌 SoundPlayer；③0x45B440 通用消息分派->精确化 msg==0x81F4 播放器事件泵；④0x8AB7B0 全局资源参数->主图形窗口句柄；⑤0x45A3E0 参数序（arg1=hwnd、arg2=文件名）+ 0x45A4A0（arg1=音量、arg2=循环标志）"
+      ],
+      "pending_notes": "0x45A650 尾部 null 范围、0x45ADA0/0x45AE90 尾部细节、0x45B490 完整 body、[0x140] timeKillEvent 与 GetEvent(0) 非阻塞轮询协同、0x476CA8 次级 DSound 接口名最终裁决"
     }
   ],
   "verification": {

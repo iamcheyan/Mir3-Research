@@ -273,7 +273,18 @@ git diff --check
 - **F330 标注细化**：main+0x154 0xE1000 B = 实体数组（地图切换清零）；0x5600FC = 瓦片对象槽双重角色（行号索引 0x144 + 帧装载目标）；0xE11D0 = 实体链表头（切换释放）。
 - 落盘：`map-change-pipeline-and-main-window-class-evidence.json`（F333）+ matrix map/chat/main-object-vtable-family/message-queue closed_2026_08_12 注记 + layout.json version 0.11 + RESEARCH_LOG Round 27。
 
+## Round 28 (2026-08-12) — 0x8AB130 声音管理器家族 + DirectShow BGM 播放器（Finding 334，F333 定性重大修正）
+
+- **〔核心修正〕0x8AB130 = 声音管理器 SoundManager（非窗口管理器）**：+0x460..0x528 = 50 效果音 IDirectSoundBuffer 频道槽（槽 {+0 DSound 封装、+4 WAV、+8 缓冲数、+0x10/+0x14+4i IDirectSoundBuffer[]、+0x38 最近使用、+0x3C 频道 ID}）；+0x528 = 内嵌 DirectShow BGM 播放器 SoundPlayer（vtable 0x476BD4）；+0x420/+0x452/+0x45C config1（SoundList.wwl 效果音表）、+0x52C..+0x56C config2（Bgmlist.wwl BGM 表）；+0x20 = BGMLevel 音量（=0x8AB150）。证据：'SOUND\'+config 名 → 0x45B6D0 建缓冲组；IDirectSoundBuffer vtable 11 偏移全吻合；DSBVOLUME_MIN=-10000 钳制；'none'/'nobgm' 哨兵。69 imm32 引用 + 36 寄存器调用点全景。
+- **BGM 播放器 = DirectShow FilterGraph**：0x45A2F0 CoCreateInstance(CLSID_FilterGraph e436ebb3) + 五 QI（IGraphBuilder 56A868A9 / IMediaControl 56A868B1 / IBasicAudio 56A868B3 / IMediaPosition 56A868B2 / IMediaEventEx 56A868C0 / IMediaSeeking 36B73880，GUID 全 web 验证）；RenderFile = IGraphBuilder vtable+0x34（继承 IFilterGraph 偏移后移）。**事件链闭环**：播放完成 → 0x81F4 消息 → 主图形窗 [0x8AB7B0] → wndproc 默认 0x41E312 → 0x45B440（msg==0x81F4 分派）→ [0x528] → 0x45A5A0 事件泵：EC_COMPLETE(1) 且 [player+8] 循环标志非 0 → 0x45A7C0 Pause+IMediaPosition 0.0 复位+Run 重播；0x14 → 0x45A510 停止；其余 FreeEventParams 排空。
+- **0x8AB7B0 = 主图形窗口 hwnd**（[0x8AB7A8+8]，类 'MirDXG' 0x47B004 / 标题 'Legend Of Mir 3' 0x47A468）：0x45CA80 失败路径 MessageBoxA(hwnd=[0x8AB7B0], '[CWHDXGraphicWindow::Create]Window create failed.', 'MirDXG', 0x10) 决定性证明；DSound SetCooperativeLevel（0x45A8C0）+ BGM SetNotifyWindow 双用。**0x8AA48C = 主应用窗 hwnd**（0x451100 CreateWindowExA 家族 + SendMessageA/UpdateWindow；0x401FF9 ShowWindow([0x8AA48C], 0=SW_HIDE)）。
+- **0x45A4A0 参数序（定稿）**：arg1=音量（调用点 0x45B36D 传 [0x8AB130+0x20]）→ 0x45A700 = IBasicAudio put_Volume(+0x1C, arg×40)；arg2=循环标志 → [player+8]（0x45A5A0 EC_COMPLETE 时非 0 才重播）。
+- **IAT 终验（pefile）**：0x4762AC=ShowWindow（旧注 SetWindowTextA 修正）、0x4760C4=ReadFile（旧注修正）、0x47628C=MessageBoxA、0x476290=SendMessageA、0x476258=UpdateWindow、0x47634C=CoCreateInstance、0x476350=CoUninitialize、0x476354=CoInitialize、0x4760F0=MultiByteToWideChar。
+- **init 序列（证据定稿）**：0x401FAD 0x45CA80(&0x8AB7A8) 图形窗 → 0x401FEC 0x451100(&0x8AA488) 主窗 → 0x401FF9 ShowWindow(0) → 0x402005 0x45A8C0([0x8AB7B0]) DSound init（失败 [0x8AB138]=0）→ [0x8AB138]=1 → config1/config2 装载（0x45ADA0/0x45AE90）→ 0x449C80(&0x8AA5A8)。
+- 落盘：`sound-manager-0x8ab130-family-evidence.json`（F334，primary-bytes）+ matrix sound-manager 新记录 + layout.json version 0.12（sound-manager.0x8ab130 更名补全 + main-window-hwnd.0x8ab7b0 新增）+ RESEARCH_LOG Round 28。
+
 ## Pending（未阻塞，持续队列）
+
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
