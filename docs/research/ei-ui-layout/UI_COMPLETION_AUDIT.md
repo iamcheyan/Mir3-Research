@@ -4001,3 +4001,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13/13 窗口 + HUD 输入；下一弧：HANDOFF 刷新 133/剩余角落）。
+## Round 659 (2026-08-12) — HANDOFF 刷新 133（Finding 965）
+
+- **Round 656-658 追加 + 623 连发**（HUD 分派完整入档）。
+- 落盘：`handoff-refresh-133-evidence.json`（F965）+ RESEARCH_LOG Round 659。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口 + HUD 输入；下一弧：剩余深层角落/模拟器 polish）。

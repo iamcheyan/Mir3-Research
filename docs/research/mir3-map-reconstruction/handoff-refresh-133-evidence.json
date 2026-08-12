@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-133-2026-08-12-f965",
+  "title": "Round 659 (F965): HANDOFF refresh 133 - Rounds 656-658 (F962-F964: HANDOFF 132, HUD dispatch tail, HUD dispatch closure), baseline Round 655=e60958b -> Round 658=cb789da (623 consecutive F335-F964), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 656-658.",
+  "question": "What changed since HANDOFF refresh 132?",
+  "method": "Append Round 656-658 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 656-658 appended (3 rounds, F962-F964)",
+    "baseline": "Round 655=e60958b -> Round 658=cb789da (623 consecutive F335-F964)",
+    "arcs": {"dispatch": "F963 tail", "closure": "F964 HUD dispatch"},
+    "key": "HUD dispatch complete; 13/13 + HUD inputs"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F962": "refresh 132 baseline -> now refresh 133", "F335-F964": "623 rounds"
+  },
+  "contrast": {
+    "refresh_132_vs_133": "F963-F964 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 133 (F965): Rounds 656-658 documented (HUD dispatch complete), baseline e60958b -> cb789da, 623 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F963-F964 evidence.",
+  "cross_refs": ["F962: refresh 132", "F964: HUD closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 656-658 section to HANDOFF",
+  "notes": [
+    "623 consecutive shipping rounds F335-F964",
+    "next: remaining deep corners, sim polish"
+  ]
+}

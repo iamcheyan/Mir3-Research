@@ -8846,3 +8846,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**588 证据 JSON**；三服务 200；master 510fa16（**622 连发 F335-F963 已推**）。
 - **〔弧〕**HUD 分派（F731）+ 分派尾部（F963）——**HUD 完整**（窗口路由 + 热键冷却 + 物品使用 msg 0x3EE + 公告）；**13/13 窗口 + HUD 输入闭合**。
 - 落盘：hud-dispatch-closure-evidence.json（F964，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 658。
+## Round 659 (F965) — 2026-08-12：HANDOFF 刷新 133（Round 656-658）
+
+- **〔刷新〕**HANDOFF 追加 Round 656-658（F963-F964：HUD 输入分派尾部 + HUD 分派闭合）；基线 Round 655=e60958b → Round 658=cb789da（**623 连发 F335-F964**）。
+- 落盘：handoff-refresh-133-evidence.json（F965，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 659。
