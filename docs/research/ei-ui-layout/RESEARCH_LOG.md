@@ -7189,3 +7189,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 277-282（F584-F588：小地图/大地图渲染 + Mir3.ini 配置 + 窗口拖动/点击 + HUD 状态条）；基线 Round 276=6ef0adb → Round 282=ee78dbd（**247 连发 F335-F588**）。
 - 落盘：handoff-refresh-13-evidence.json（F589，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 283。
+## Round 284 (F590) — 2026-08-12：实体 HP 条完整 + 注册表
+
+- **〔实体条〕**0x40A8A0（F530 扩展）：门 [0x61BB8]/[0x61BBC] + 屏幕 [0x8AB7BC]、类型 [0x8D] 4 路（0x51/0x89/0x81/0x8A → 旗标）、**HP = [0x61BA0]−[0xB4]+[0xC4] → [0x61B9C]**（F350）、注册表 0x4542A0（瓦片 0x5600FC **type*81*4**，边界 type<5 + idx<0x8C）→ 帧装载 0x466130 + **0x466800 变换**（RGB 浮点 0x47639C + 条尺寸字节 [0x61BB2..0x61BB5]）+ 屏幕投影（[0xE4]/[0xE8] + 0x476364）+ vtable[0x40]/[0x14]/[0x30] + blit。
+- **〔0x4542F0〕**共享条 blit 助手（HUD F588 + 实体共用）——**完整条系统（实体 + HUD）字节级**。
+- 落盘：entity-hp-bar-full-evidence.json（F590，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 284。

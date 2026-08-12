@@ -1,0 +1,37 @@
+{
+  "evidence_id": "entity-hp-bar-full-2026-08-12-f590",
+  "title": "Round 284 (F590): Entity HP bar FULL + registry - 0x40A8A0 (F530 extended): gates [0x61BB8]/[0x61BBC] + screen [0x8AB7BC], type byte [0x8D] 4-way (0x51/0x89/0x81/0x8A -> flag), HP = [0x61BA0]-[0xB4]+[0xC4] -> [0x61B9C] live, registry 0x4542A0 (tile store 0x5600FC, type*81*4, bounds type<5 + idx<0x8C) -> frame load 0x466130 + 0x466800 transform (RGB float scale 0x47639C + bar W/H bytes [0x61BB2]/[0x61BB3]/[0x61BB4]/[0x61BB5]) + screen proj ([0xE4]/[0xE8] + 0x476364 scale) + vtable[0x40]/[0x14]/[0x30] + blit - entity HP bar byte-level (HUD bar F588 + entity bar this = complete bar system)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity HP bar full paint + registry.",
+  "question": "How do entity HP bars render?",
+  "method": "Disasm 0x40A8A0-0x40AB40 + 0x4542A0 + 0x4542F0.",
+  "scope": "0x40A8A0; registry 0x4542A0; bars.",
+  "cell_analysis": {
+    "0x40A8A0": {"gates": "[0x61BB8]/[0x61BBC] + screen [0x8AB7BC]", "type": "[0x8D] 4-way 0x51/0x89/0x81/0x8A", "hp": "[0x61BA0]-[0xB4]+[0xC4] -> [0x61B9C] (F350)", "registry": "0x4542A0 (tile 0x5600FC type*81*4)"},
+    "0x4542A0": "tile registry: bounds type<5 + idx<0x8C -> 0x454DA0, ret 0xC",
+    "render": "0x466800 transform (RGB float 0x47639C + bar dims [0x61BB2..0x61BB5]) + screen proj ([0xE4]/[0xE8] + 0x476364) + vtable[0x40]/[0x14]/[0x30]",
+    "0x4542F0": "shared bar blit helper (HUD F588 + entity)"
+  },
+  "exe_trace": {
+    "entity_bar_chain": "entity paint -> 0x40A8A0 gates/type/HP -> 0x4542A0 registry -> frame 0x466130 -> 0x466800 transform -> screen blit"
+  },
+  "audit_vs_exe": {
+    "F530": "0x40A8A0 HP formula CONFIRMED + full body", "F588": "HUD bar shares 0x4542F0/0x4542A0", "F350": "HP exact"
+  },
+  "contrast": {
+    "entity_vs_hud": "0x40A8A0 over-head bar vs 0x42A040 HUD bar (shared registry)",
+    "bar_types": "4 types 0x51/0x89/0x81/0x8A = HP/MP/exp/stamina"
+  },
+  "verdict": "Entity HP bar PRIMARY-verified: gates/type/HP live value + registry 0x4542A0 + transform + blit; complete bar system (entity + HUD) byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Full bar + registry decoded from .text.",
+  "cross_refs": ["F530: entity HP", "F588: HUD bars", "F350: HP formula"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40A8A0+0x60; 0x4542A0+0x10",
+  "notes": [
+    "bar dims from 4 bytes [0x61BB2..0x61BB5]",
+    "RGB float 0x47639C = bar color scale",
+    "type*81*4 = tile store stride (F530)",
+    "4 bar types = HP/MP/exp/stamina"
+  ]
+}
