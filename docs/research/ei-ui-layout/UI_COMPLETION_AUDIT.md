@@ -831,6 +831,11 @@ git diff --check
 - **318/248 种**（六面神石 33 主导）；body → F287 公式。
 - 落盘：`npc-distribution-evidence.json`（F426）+ RESEARCH_LOG Round 120。
 
+## Round 121 (2026-08-12) — 商人脚本（Finding 427）
+
+- **339 Market_Def + 格式验证**（%100 加价 + 货物 + #IF/#ACT）。
+- 落盘：`merchant-script-verification-evidence.json`（F427）+ RESEARCH_LOG Round 121。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

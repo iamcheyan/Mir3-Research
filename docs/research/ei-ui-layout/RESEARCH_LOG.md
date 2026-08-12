@@ -6327,3 +6327,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分布〕**318 NPC/248 种（六面神石 33 传送石、沙巴克旗帜 11、变异骷髅 8、商人族）；face 全 0；body 56×23/3×19/34×16/10000×12 特殊（F287 100*body 公式）。
 - 落盘：npc-distribution-evidence.json（F426，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 120。
+## Round 121 (F427) — 2026-08-12：商人脚本验证（339 Market_Def + 格式）
+
+- **〔脚本〕**339 Market_Def + Merchant.txt 项（01Meet_Bichon1 → 0.map 446,405 body 11）；格式 %100 加价 + 货物行（+40 肉）+ [@main] #IF/#ACT。
+- **〔关联〕**商店模式（F289/F399）货物来自脚本包（msg 0x285）。
+- 落盘：merchant-script-verification-evidence.json（F427，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 121。

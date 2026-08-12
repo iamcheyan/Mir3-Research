@@ -1,0 +1,35 @@
+{
+  "evidence_id": "merchant-script-verification-2026-08-12-f427",
+  "title": "Round 121 (F427): Merchant scripts verified - 339 Market_Def scripts + Merchant.txt entries (17GoldenIsland_Island Island02 95,135 / 01Meet_Bichon1 0.map 446,405 body 11), script format %100 markup + goods (+40 meat) + [@main] #IF/#ACT flow",
+  "date": "2026-08-12",
+  "objective": "Verify the merchant script system: Market_Def script count, Merchant.txt entry format, and script structure.",
+  "question": "How do merchant scripts drive the store system?",
+  "method": "Merchant.txt + Market_Def inspection; sample script structure.",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/{Merchant.txt, Market_Def/}.",
+  "cell_analysis": {
+    "merchant_txt": {"format": "filename Map X Y Name Face Body Sabuk", "samples": {"17GoldenIsland_Island": "Island02 95,135 (生存游戏场美眉)", "01Meet_Bichon1": "0.map 446,405 (比奇商人, face 0 body 11)", "24PR": "0.map 459,395"}},
+    "scripts": {"count": 339 Market_Def files, "format": "%100 markup + goods (+40 meat/+1 dried meat) + [@main] #IF/#ACT flow"},
+    "shop_relation": "store window modes (F289/F399): BUY list from script goods; CRAFT/SELL per merchant"
+  },
+  "exe_trace": {
+    "store_client": "0x44D310 (F340/F399) modes; goods from server script packets"
+  },
+  "audit_vs_exe": {
+    "F399": "store state graph consistent with merchant goods",
+    "F340": "store family confirmed"
+  },
+  "contrast": {
+    "script_vs_packet": "server script = goods config; client receives via msg 0x285 (F399)"
+  },
+  "verdict": "Merchant scripts verified (secondary-server): 339 Market_Def scripts + Merchant.txt entries (0.map 比奇商人 at 446,405); format %100 markup + goods + #IF/#ACT flow. Store system input source confirmed.",
+  "evidence_level": "secondary (server Merchant/Market_Def)",
+  "evidence_level_note": "Script data from server files; client store semantics primary-static (F340/F399).",
+  "cross_refs": ["F399: store state graph", "F340: store family", "F426: NPC distribution"],
+  "tool": "head/grep Merchant.txt + Market_Def",
+  "reproduce": "grep -v ';' Merchant.txt | head; head Market_Def/01Meet_Bichon1-0.txt",
+  "notes": [
+    "339 scripts cover all merchant NPCs",
+    "%100 = price markup; +N = goods lines",
+    "[@main] #IF/#ACT = Mir script dialect (server-side)"
+  ]
+}
