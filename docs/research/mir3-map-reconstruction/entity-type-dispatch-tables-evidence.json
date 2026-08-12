@@ -1,0 +1,37 @@
+{
+  "evidence_id": "entity-type-dispatch-tables-2026-08-12-f445",
+  "title": "Round 139 (F445): Entity type dispatch tables - bucket-map 0x41A534 (type 0/1/50 -> 0 skip-special, 2 -> 2 special handler, 3-41 -> 1 default) + bucket-jt 0x41A528 ([0]=0x419DC6 vtable+0x1C click handler, [1]=0x419E46 handler+0x61C7C==3 removal, [2]=0x419DDD default); select-map 0x41A570 (0/1/3 -> 0, 2/4-42 -> 1) + select-jt 0x41A568 ([0]=0x419E1C OFF-VIEWPORT CULL: ID-clear 0x41B570 + unlink 0xE1154 + delete, [1]=0x419E94 keep) - transient types culled outside viewport, persistent kept",
+  "date": "2026-08-12",
+  "objective": "Decode the entity type dispatch tables used by the visibility/selection pass 0x419D40.",
+  "question": "How do entity types gate bucketing and selection, and what happens off-viewport?",
+  "method": "Dump byte maps 0x41A534/0x41A570 + jump tables 0x41A528/0x41A568 + target disasm.",
+  "scope": "0x41A528-0x41A58C, 0x419D9F-0x419E94.",
+  "cell_analysis": {
+    "bucket_map_0x41A534": {"layout": "50 bytes (type 0-49)", "values": {"0": "types 0/1/50 -> skip pre-handler", "1": "types 3-41 -> default (straight to grid/PtInRect)", "2": "type 2 only -> special handler"}, "jt_0x41A528": {"[0]": "0x419DC6: vtable+0x1C(mouse) click handler then default", "[1]": "0x419E46: vtable+0x1C + [0x61C7C]==3 -> ID-clear + unlink + delete", "[2]": "0x419DDD: default"}},
+    "select_map_0x41A570": {"layout": "50 bytes", "values": {"0": "types 0/1/3 -> CULL", "1": "types 2/4-42 -> KEEP"}, "jt_0x41A568": {"[0]": "0x419E1C: OFF-VIEWPORT CULL (ID-clear 0x41B570 + unlink 0xE1154 container vtable+0x14 + delete vtable+0)", "[1]": "0x419E94: selection flow (PtInRect)"}},
+    "semantics": "entity outside cam ±0x18 viewport: transient types (0/1/3/50) removed from draw list; persistent types (NPC/monster 2/4-42) kept"
+  },
+  "exe_trace": {
+    "type_byte": "entity+0x88 (same as F433 50-type dispatch, F442 removal walk)"
+  },
+  "audit_vs_exe": {
+    "F444": "bucketing gates decoded (was opaque)", 
+    "F433": "50-type dispatch family consistent",
+    "F442": "removal walk 0x419650 shares type byte [0x88] + 0x32 gate"
+  },
+  "contrast": {
+    "transient_vs_persistent": "types 0/1/3/50 = transient (culled off-viewport); 2/4-42 = persistent (NPC/monsters stay)",
+    "bucket_vs_select": "bucket map gates pre-handler; select map gates off-viewport retention"
+  },
+  "verdict": "Entity type dispatch tables PRIMARY-verified: bucket map 0x41A534 + jt 0x41A528 (click handlers per type), select map 0x41A570 + jt 0x41A568 (off-viewport cull for transient types 0/1/3/50, keep for persistent 2/4-42).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tables + targets all read from .text/.rdata.",
+  "cross_refs": ["F444: visibility grid", "F433: type dispatch", "F442: removal walk"],
+  "tool": "capstone + pefile table dumps",
+  "reproduce": "dump 0x41A534[50] + 0x41A528[4] + 0x41A570[50] + 0x41A568[4]; disasm targets",
+  "notes": [
+    "type 2 = special (unique handler, likely player)",
+    "cull = ID-clear + unlink + free (full removal from draw list)",
+    "0x61C7C == 3 = removal-gated state (type 0x48 family?)"
+  ]
+}

@@ -6428,3 +6428,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔闭合〕**0x419D40 = 每帧可见性/选择通道：**0x419D53 每帧清零 0x38400 dword 网格**（故无静态写点）→ 视口 cam ±0x18 范围内实体**分桶入网格**（cell = f(wx,wy,cam)*400*4 + 100 格探测，0x419F2C）+ PtInRect 选择 → **[0x364444]**（悬停 [0x364448]/[0x364450]）。
 - **〔关联〕**F441 pending 项闭合；F359 目标框由 [0x364444] 驱动确认。
 - 落盘：entity-visibility-grid-evidence.json（F444，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 138。
+## Round 139 (F445) — 2026-08-12：实体类型分派表（桶映射 + 选择/剔除）
+
+- **〔桶映射〕**0x41A534（50 字节）：type 0/1/50 → 跳预处理、2 → 特殊处理器、3-41 → 默认；跳表 0x41A528（[0] vtable+0x1C 点击处理器、[1] 处理器+[0x61C7C]==3 移除、[2] 默认）。
+- **〔选择/剔除〕**0x41A570：0/1/3 → 0（**视口外剔除**：ID 清 0x41B570 + 解链 0xE1154 + 删除）、2/4-42 → 1（保留）；跳表 0x41A568。
+- **〔语义〕**瞬时类型（0/1/3/50）移出 ±0x18 视口即剔除；持久类型（NPC/怪物）保留。
+- 落盘：entity-type-dispatch-tables-evidence.json（F445，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 139。

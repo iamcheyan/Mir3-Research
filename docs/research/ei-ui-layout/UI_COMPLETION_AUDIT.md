@@ -921,6 +921,11 @@ git diff --check
 - **480×480 网格角色闭合**（每帧实体桶 + 选择 [0x364444]）。
 - 落盘：`entity-visibility-grid-evidence.json`（F444）+ RESEARCH_LOG Round 138。
 
+## Round 139 (2026-08-12) — 实体类型分派表（Finding 445）
+
+- **桶映射 + 选择/剔除表**（瞬时类型视口外剔除）。
+- 落盘：`entity-type-dispatch-tables-evidence.json`（F445）+ RESEARCH_LOG Round 139。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（网格角色已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
