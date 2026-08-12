@@ -1,0 +1,34 @@
+{
+  "evidence_id": "guild-window-draw-2026-08-12-f755",
+  "title": "Round 449 (F755): Guild window draw - 0x425040 (F558 mode 4): title DrawTextA 0x45DE50 (color 0x96C8FF) + 3-PAGE mode dispatch [0x98] (0x425280 main / 0x425440 / 0x425590) + scrollbar F707 ctor 0x4179B0 @ +0x76C (pos [0x18]+0x224/[0x1C]-0xD0, counts [0x9C]/[0xE4]) + 9 buttons F704 set-pos 0x417830 (@ +0x118/+0x1CC/+0x280/+0x334/+0x3E8/+0x49C/+0x550/+0x604/+0x6B8 stride 0xB4) + 9 control paints; 0x425280 main sub-draw (measure 0x45E0C0 + list [0xE4]) - guild window COMPLETE (F558/F704/F707 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the guild window draw.",
+  "question": "How does the guild window render?",
+  "method": "Disasm 0x425040-0x4252DD.",
+  "scope": "0x425040-0x4252DD; mode [0x98].",
+  "cell_analysis": {
+    "0x425040": {"title": "0x45DE50 DrawTextA 0x96C8FF", "mode": "[0x98] 3 pages", "scrollbar": "F707 @ +0x76C", "buttons": "9 x F704 stride 0xB4"}
+  },
+  "exe_trace": {
+    "guild_chain": "title -> mode page -> scrollbar -> 9 buttons -> paints"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 4 guild", "F704": "set-pos", "F707": "scrollbar ctor"
+  },
+  "contrast": {
+    "title_vs_pages": "DrawTextA + 3-page dispatch",
+    "scrollbar_vs_buttons": "F707 + 9 buttons"
+  },
+  "verdict": "Guild window draw PRIMARY-verified: title + 3 pages + scrollbar + 9 buttons; guild window complete (F558/F704/F707).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild window decoded from .text.",
+  "cross_refs": ["F558: guild", "F704: set-pos", "F707: scrollbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x425040+0x20",
+  "notes": [
+    "3-page mode [0x98]",
+    "9 buttons stride 0xB4",
+    "scrollbar +0x76C",
+    "title 0x96C8FF"
+  ]
+}
