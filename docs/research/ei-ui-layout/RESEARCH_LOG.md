@@ -8256,3 +8256,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**452 证据 JSON**；三服务 200；master 0a1e304（**486 连发 F335-F827 已推**）。
 - **〔弧〕**控件构造（F701）+ 定位（F704）+ 基类构造（F713）+ 内容布局（F827）——**窗口几何完整**（帧尺寸 + 矩形 + 内嵌 + 居中 + 控件位置），窗口布局表面 100%。
 - 落盘：window-geometry-closure-evidence.json（F828，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 522。
+## Round 523 (F829) — 2026-08-12：HANDOFF 刷新 86（Round 520-522）
+
+- **〔刷新〕**HANDOFF 追加 Round 520-522（F827-F828：窗口内容布局 + 窗口几何闭合）；基线 Round 519=a41f88a → Round 522=72734be（**487 连发 F335-F828**）。
+- 落盘：handoff-refresh-86-evidence.json（F829，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 523。

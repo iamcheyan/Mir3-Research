@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-86-2026-08-12-f829",
+  "title": "Round 523 (F829): HANDOFF refresh 86 - Rounds 520-522 (F826-F828: HANDOFF 85, window content layout, window geometry closure), baseline Round 519=a41f88a -> Round 522=72734be (487 consecutive F335-F828), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 520-522.",
+  "question": "What changed since HANDOFF refresh 85?",
+  "method": "Append Round 520-522 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 520-522 appended (3 rounds, F826-F828)",
+    "baseline": "Round 519=a41f88a -> Round 522=72734be (487 consecutive F335-F828)",
+    "arcs": {"layout": "F827 content layout", "closure": "F828 geometry"},
+    "key": "window geometry complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F826": "refresh 85 baseline -> now refresh 86", "F335-F828": "487 rounds"
+  },
+  "contrast": {
+    "refresh_85_vs_86": "F827-F828 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 86 (F829): Rounds 520-522 documented (window geometry complete), baseline a41f88a -> 72734be, 487 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F827-F828 evidence.",
+  "cross_refs": ["F826: refresh 85", "F828: geometry closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 520-522 section to HANDOFF",
+  "notes": [
+    "487 consecutive shipping rounds F335-F828",
+    "next: remaining deep corners, sim polish"
+  ]
+}

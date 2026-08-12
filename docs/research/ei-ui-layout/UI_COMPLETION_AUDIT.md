@@ -2913,3 +2913,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口几何完整；下一弧：HANDOFF 刷新 86/剩余角落）。
+## Round 523 (2026-08-12) — HANDOFF 刷新 86（Finding 829）
+
+- **Round 520-522 追加 + 487 连发**（窗口几何完整入档）。
+- 落盘：`handoff-refresh-86-evidence.json`（F829）+ RESEARCH_LOG Round 523。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口几何完整；下一弧：剩余深层角落/模拟器 polish）。
