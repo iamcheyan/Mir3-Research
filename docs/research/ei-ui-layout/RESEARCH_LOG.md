@@ -8511,3 +8511,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 578-580（F885-F886：HUD 状态条全量 + HUD 状态闭合 + 510 里程碑）；基线 Round 577=5efee62 → Round 580=82c41e0（**545 连发 F335-F886**）。
 - 落盘：handoff-refresh-106-evidence.json（F887，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 581。
+## Round 582 (F888) — 2026-08-12：小地图部件（F584）
+
+- **〔小地图〕**0x429630：缩放帧 [0xD40] ±0xA 钳制 0..0x2E（模式 [0xD42] 1 放大/2 缩小）+ 帧 0x33 blit（0x460240 @ 0x113/0x1DE-缩放）+ **6 热键物品图标**（0x430A40、位置表 [0xD44] stride 0x10、记录 +0xDA8 stride 0xC24）——小地图/热键部件完整（F584/F581 用）。
+- 落盘：mini-map-widget-evidence.json（F888，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 582。

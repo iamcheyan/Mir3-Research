@@ -3385,3 +3385,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HUD 状态完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 582 (2026-08-12) — 小地图部件（Finding 888）
+
+- **缩放 + 帧 + 6 热键图标**（小地图完整）。
+- 落盘：`mini-map-widget-evidence.json`（F888）+ RESEARCH_LOG Round 582。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（小地图完整；下一弧：剩余深层角落）。

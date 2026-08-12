@@ -1,0 +1,34 @@
+{
+  "evidence_id": "mini-map-widget-2026-08-12-f888",
+  "title": "Round 582 (F888): Mini-map widget (F584) - 0x429630: zoom frame [0xD40] +/-0xA clamp 0..0x2E (mode [0xD42] 1 zoom in/2 out) + frame 0x33 blit (0x460240 @ 0x113/0x1DE-zoom) + 6 HOTBAR item icons (0x430A40, pos table [0xD44] stride 0x10, records +0xDA8 stride 0xC24) - mini-map/hotbar widget COMPLETE (F584/F581 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the mini-map widget.",
+  "question": "How does the mini-map widget render?",
+  "method": "Disasm 0x429630-0x429730.",
+  "scope": "0x429630-0x429730; widget.",
+  "cell_analysis": {
+    "0x429630": {"zoom": "[0xD40] +/-0xA 0..0x2E [0xD42]", "frame": "0x33 blit 0x460240", "items": "6 x 0x430A40 @ [0xD44]/+0xDA8"}
+  },
+  "exe_trace": {
+    "widget_chain": "zoom -> frame blit -> 6 items"
+  },
+  "audit_vs_exe": {
+    "F584": "minimap", "F581": "hotbar", "F651": "item icon"
+  },
+  "contrast": {
+    "zoom_vs_frame": "[0xD40] + 0x33",
+    "map_vs_items": "bg + 6 icons"
+  },
+  "verdict": "Mini-map widget PRIMARY-verified: zoom + frame + items; mini-map/hotbar complete (F584/F581).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Mini-map decoded from .text.",
+  "cross_refs": ["F584: minimap", "F581: hotbar", "F651: icon"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x429630+0x20",
+  "notes": [
+    "zoom [0xD40] clamp 0x2E",
+    "frame 0x33",
+    "6 hotbar icons",
+    "pos [0xD44] stride 0x10"
+  ]
+}
