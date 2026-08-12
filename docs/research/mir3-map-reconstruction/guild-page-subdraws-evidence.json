@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-page-subdraws-2026-08-12-f830",
+  "title": "Round 524 (F830): Guild page sub-draws (F755 3-page deps) - 0x425280 PAGE 0 (notice page): member list [0xE4] walk + RANK compare (0x47BA78/0x47BA6C/0x47BA60 = leader/elder/member) + 0x45DD70 color 0xFFFFFF (rank) / 0x96FF (notice) + y=(idx-offset)*row+0x3C x+0x23 + scroll offset [0x9C]; 0x425440 PAGE 1: member list [0xB4] parallel structure - guild 3 pages COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the guild page sub-draws.",
+  "question": "How do the guild pages render?",
+  "method": "Disasm 0x425280-0x425440.",
+  "scope": "0x425280-0x425440; lists [0xE4]/[0xB4].",
+  "cell_analysis": {
+    "0x425280": "page 0: [0xE4] walk + ranks 0x47BA78/0x47BA6C/0x47BA60 + 0xFFFFFF/0x96FF",
+    "0x425440": "page 1: [0xB4] list parallel"
+  },
+  "exe_trace": {
+    "guild_chain": "page mode -> list walk -> rank color -> text"
+  },
+  "audit_vs_exe": {
+    "F755": "3-page dispatch", "F564": "text", "F803": "notice list"
+  },
+  "contrast": {
+    "page0_vs_page1": "notices + members",
+    "rank_vs_notice": "0xFFFFFF + 0x96FF"
+  },
+  "verdict": "Guild page sub-draws PRIMARY-verified: page 0 + page 1 lists; guild 3 pages complete (F755).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild pages decoded from .text.",
+  "cross_refs": ["F755: guild", "F803: notices", "F564: text"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x425280+0x20; 0x425440+0x10",
+  "notes": [
+    "ranks 0x47BA78/0x47BA6C/0x47BA60",
+    "list [0xE4]/[0xB4]",
+    "colors 0xFFFFFF/0x96FF",
+    "scroll offset [0x9C]"
+  ]
+}

@@ -8260,3 +8260,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 520-522（F827-F828：窗口内容布局 + 窗口几何闭合）；基线 Round 519=a41f88a → Round 522=72734be（**487 连发 F335-F828**）。
 - 落盘：handoff-refresh-86-evidence.json（F829，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 523。
+## Round 524 (F830) — 2026-08-12：行会页子绘制（F755 3 页依赖）
+
+- **〔行会〕**0x425280 **页 0（公告页）**：成员列表 [0xE4] 遍历 + **级别比较**（0x47BA78/0x47BA6C/0x47BA60 = 盟主/长老/成员）+ 0x45DD70 色 0xFFFFFF（级别）/0x96FF（公告）+ y=(idx-偏移)×行+0x3C x+0x23 + 滚动偏移 [0x9C]；0x425440 **页 1**：成员列表 [0xB4] 并行结构——行会 3 页完整。
+- 落盘：guild-page-subdraws-evidence.json（F830，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 524。

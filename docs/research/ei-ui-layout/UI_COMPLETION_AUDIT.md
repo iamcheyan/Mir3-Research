@@ -2921,3 +2921,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口几何完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 524 (2026-08-12) — 行会页子绘制（Finding 830）
+
+- **页 0/页 1 列表 + 级别色**（行会 3 页完整）。
+- 落盘：`guild-page-subdraws-evidence.json`（F830）+ RESEARCH_LOG Round 524。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会 3 页完整；下一弧：剩余深层角落）。
