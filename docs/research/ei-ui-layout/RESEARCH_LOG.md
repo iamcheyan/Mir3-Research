@@ -5888,3 +5888,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔paint 0x425040〕**标题文本 0x96C8FF（SetRect 头 + 0x45DE50）→ **状态字节 [0x98] 分派**：0 → 0x425280（list0：count [0xE4]/head [0xD4]，strcmp 标记 [行会公告]/[敌对行会]/[联盟行会] → 0x96FF 否则 0xFFFFFF）；1 → 0x425440（list1：[0xB4]/[0xA4]，[行会成员] 标记）；其他 → 0x425590（list4：[0x114]/[0x104]，无标记，双画 0xA140A 阴影 + 0xFF00 绿）→ **滚动条 0x4179B0 @ +0x76C**（state 计数 [0xE4]/[0xB4]/[0x114]，位置 x+0x224/y+0xD0）→ **9 控件 0x417830 重定位**（+0x118 关闭 @ x+0x22C/y+0x199、+0x1CC 会员升职 @ x+0x22/y+0x178、+0x280 成员踢出 @ x+0x22/y+0x192、+0x334 盟主转让 @ x+0x79/y+0x192…）。
 - **〔意义〕窗口绘制矩阵 100% 闭合**：14 窗口 paint/mouse/click 全解码（行会为最后一块）。
 - 落盘：`guild-window-paint-evidence.json`（F348，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 42。
+
+## Round 43 (F349) — 2026-08-12：登录/角色选择流程全解（intro 0x402BE0 + char-select 0x4575D0 + server 0x458F80）+ 模拟器登录遮罩
+
+- **〔intro 0x402BE0〕**tick + 子级 0x402C40：stage byte [0x8A4]（0→0x402D50、1→0x4031A0、2→0x403560）；**sub-stage [0x8A5]**：0 → 屏幕帧 0x3C（0x45FD50 wemade.dat）；1 → 0x45C900(&+0x6F4) 载入 → [0x8A5]=2；2 → Interface1c 帧 +0x5B0 + [0x8A4]=1 + 0x403640。
+- **〔char-select 0x4575D0〕**stage byte [0x930] → 跳表 0x457778 5 项：[0x4575F3→0x457790 列表动画（1s tick 0x1160/0x1164 → **0x45B390 BGM '.\\Sound\\SelChr.mp3' 0x47D624** + 帧 0x32）、0x457615→0x457AB0 建号、0x457604 登录动画（[0x930]=2 + 0x4584C0 + SetWindowTextA）、0x4576FA→**0x458B20([0x1168] 角色索引) 进入游戏**、0x45773C 完成]。
+- **〔server 0x458F80〕**0x452920 解析 msgid；msgid−0x208 ≤ 8 → 跳表 0x45950C 9 项（0x208/520 角色列表刷新 0x458FBD：清 +0xCB8 0x20 dwords + [0x1168]=-1 + 解析名；0x209 建号；0x20A 错误；0x20B 重发；0x20D 进入 OK → 0x459465 stage 4 + StartGame.dat 0x47D7C8；0x20E 韩语消息…）。职业名 0x47D778 ' 武 士 ]' / 0x47D784 ' 法 师 ]' / 0x47D790 ' 道 士 ]'。
+- **〔模拟器〕renderLoginOverlay()**：intro 遮罩（账号/密码 + 进入游戏）→ '连接服务器 (0x458F80 0x208)' → '角色列表就绪 (0x4575D0 stage 3 → 0x458B20)' → 进游戏（0x8B1878 state 3）。**浏览器验证**：遮罩 → 点击 → 中间提示 → 1.7s 后遮罩移除 + chat '进入游戏'。
+- 落盘：`login-charselect-flow-evidence.json`（F349，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 43。

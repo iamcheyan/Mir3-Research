@@ -34,6 +34,8 @@ const STATE = {
   inventoryMode: 0,             // Finding 288 mode byte [bag+0x54]: 0 default / 1 修补 / 2 变卖 / 3 储存
   tradeFinalized: false,        // [+0x13644]: 0 trading, 1 finalized (accept)
   tradeSplit: [0, 0],           // [+0x54]/[+0x58] = top visible DATA ROW per pane (Finding 301: row offset, not px; 94-scale, usable [0,34])
+  loginStage: 0,                // Round 43 (F349): [0x8B1878]-style stage machine - 0 intro / 1 char-select / 2 in-game
+  charStage: 0,                 // [0x930] char-select stage (0 list, 1 creating, 2 login anim, 3 enter, 4 anim done)
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -1355,6 +1357,39 @@ function bindHotkeys() {
 }
 const FRAME_BY_ID = { 0: 250, 1: 200, 2: 1000, 3: 1050, 4: 600, 6: 900, 7: 200, 8: 350, 9: 1100, 11: 700, 12: 750, 13: 850, 14: 400, 15: 602 };
 
+/* ------------------------------------------------------------ login flow (Round 43 F349) */
+// Original: [0x8B1878] stage machine (F336) - 0 intro 0x402BE0@0x8A9520 /
+// 2 char-select 0x4575D0@0x8A7140 / 3 in-game 0x41BB00@main. Char-select
+// stages [0x930] (F349): 0 list / 1 creating / 2 login anim + SelChr.mp3
+// (0x47D624) / 3 enter 0x458B20 / 4 done. Server dispatch 0x458F80:
+// msgid-0x208 -> 9-entry table 0x45950C (0x208 char list refresh etc).
+function renderLoginOverlay() {
+  if (document.getElementById("login-overlay")) return;
+  const ov = document.createElement("div");
+  ov.id = "login-overlay";
+  ov.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99;color:#fff;font-family:sans-serif;";
+  ov.innerHTML = `
+    <h2 style="letter-spacing:4px;color:#96C8FF;text-shadow:0 0 12px rgba(150,200,255,0.8);">传奇 3.0</h2>
+    <p style="color:#808080;font-size:12px;margin:4px 0 16px;">Mir3 EI 3.0 原版客户端模拟器</p>
+    <div id="login-account" style="margin:4px;font-size:12px;color:#0f0;">账号: <input style="width:140px"></div>
+    <div style="margin:4px;font-size:12px;color:#0f0;">密码: <input type="password" style="width:140px"></div>
+    <button id="login-btn" style="margin-top:16px;padding:6px 24px;background:#444;color:#fff;border:1px solid #96C8FF;cursor:pointer;">进入游戏</button>
+    <p id="login-note" style="font-size:11px;color:#666;margin-top:8px;">原版流程: 选择服务器 → 角色列表 (0x458F80 分派) → 进入游戏</p>`;
+  document.getElementById("stage-wrap").appendChild(ov);
+  document.getElementById("login-btn").addEventListener("click", () => {
+    // stage 0 intro -> 1 char-select (list) -> 2 in-game (0x458B20 enter)
+    ov.querySelector("#login-note").textContent = "正在连接服务器... (0x458F80: 0x208 角色列表)";
+    setTimeout(() => {
+      ov.querySelector("#login-note").textContent = "角色列表就绪 - 选择角色进入 (0x4575D0 stage 3 → 0x458B20)";
+      setTimeout(() => {
+        ov.remove();
+        STATE.loginStage = 2;
+        pushChat("[系统] 进入游戏 (0x8B1878 state 3 → 0x41BB00 tick)");
+      }, 800);
+    }, 700);
+  });
+}
+
 /* ------------------------------------------------------------ boot */
 async function boot() {
   try {
@@ -1376,6 +1411,7 @@ async function boot() {
   bindSceneInteraction();
   renderEvidenceOverlay();
   renderTestNav();
+  renderLoginOverlay();
   applyScale();
   $("#status").textContent = "就绪";
   const counts = {

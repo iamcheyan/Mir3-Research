@@ -1,0 +1,61 @@
+{
+  "evidence_id": "login-charselect-flow-2026-08-12-f349",
+  "title": "Round 43 (F349): Login/char-select flow - intro stage machine 0x402BE0 ([0x8A4]/[0x8A5] sub-stages) + char-select 0x4575D0 ([0x930] 5-stage table 0x457778, SelChr.mp3 0x47D624, enter 0x458B20) + server dispatch 0x458F80 (msgid-0x208 -> 9-entry 0x45950C) + simulator login overlay",
+  "date": "2026-08-12",
+  "objective": "Decode the login/character-select flow: intro stage machine, char-select stage machine (incl. BGM SelChr.mp3), server dispatch (character list/enter), and wire the full flow into the simulator.",
+  "question": "How does the original client progress intro -> char-select -> in-game, and how does it dispatch server character-list messages?",
+  "method": "Capstone linear disassembly of 0x402BE0/0x402C40 (intro), 0x4575D0 + table 0x457778 (char-select), 0x458F80 + table 0x45950C (server dispatch); string reads; simulator wiring + browser verification.",
+  "scope": "0x402BE0-0x402C40 (intro tick), 0x402C40-0x402D50 (intro sub-stages), 0x4575D0-0x457758 (char-select), 0x457778 table, 0x458F80-0x45950C (server dispatch), 0x47D624 (SelChr.mp3), 0x47D778/0x47D784/0x47D790 (class names).",
+  "cell_analysis": {
+    "intro_0x402BE0": {
+      "tick": "0x465D50 + 0x402C40 sub-stage; stage byte [esi+0x8A4]: 0 -> 0x402D50, 1 -> 0x4031A0, 2 -> 0x403560",
+      "sub_stages_0x402C40": "byte [esi+0x8A5]: 0 -> load screen frame 0x3C via 0x45FD50 (wemade.dat); 1 -> 0x45C900(&+0x6F4 wemade.dat) then [0x8A5]=2; 2 -> frame +0x5B0 (Interface1c) + [0x8A4]=1 + 0x403640",
+      "end": "0x4182A0(&[esi+8], [0x8A8], [0x8AC])"
+    },
+    "char_select_0x4575D0": {
+      "tick": "0x465D50 + stage byte [esi+0x930] -> jmp [eax*4 + 0x457778]",
+      "stages": {"0": "0x4575F3 -> 0x457790 (list anim + 1s tick 0x1160/0x1164 -> 0x45B390 BGM SelChr.mp3 0x47D624 + frame 0x32)", "1": "0x457615 -> 0x457AB0 (creating)", "2": "0x457604 -> 0x457AB0 + [0x930]=2 + [0x1160]=1 + 0x4584C0 + SetWindowTextA (login anim)", "3": "0x4576FA -> 0x458B20 ([0x1168] char index) enter game", "4": "0x45773C (done)"},
+      "bgm": "'.\\Sound\\SelChr.mp3' 0x47D624 via 0x45B390 (Round 28 DirectShow player)"
+    },
+    "server_dispatch_0x458F80": {
+      "selector": "0x452920 parse -> word msgid; msgid - 0x208; > 8 -> default",
+      "table_0x45950C": "9 entries: 0x458FBD (0x208/520 char list refresh - clears +0xCB8 0x20 dwords, [0x1168]=-1, parse names), 0x459216 (0x209 create), 0x4592A4 (0x20A error), 0x459357 (0x20B resend), 0x459310 (0x20C 900), 0x45936D (0x20D enter OK -> 0x459465 stage 4 + StartGame.dat), 0x4594B5 (0x20E Korean msg), 0x4591F3, 0x4594D5",
+      "class_names": "0x47D778 ' 武 士 ]' / 0x47D784 ' 法 师 ]' / 0x47D790 ' 道 士 ]' (GBK, F311)"
+    },
+    "simulator": {
+      "login_overlay": "renderLoginOverlay() in boot: intro screen (account/password + 进入游戏) -> 'connecting (0x458F80 0x208 char list)' -> 'char list ready (0x4575D0 stage 3 -> 0x458B20)' -> enter game (0x8B1878 state 3)",
+      "verification": "browser: overlay shows, click 进入游戏 -> mid note '角色列表就绪', after 1.7s overlay removed + chat '[系统] 进入游戏 (0x8B1878 state 3 → 0x41BB00 tick)'"
+    }
+  },
+  "exe_trace": {
+    "state_byte": "0x8B1878 (F336: 0 intro 0x8A9520, 2 char-select 0x8A7140, 3 in-game main)",
+    "intro_obj": "0x8A9520 (ctor 0x4026E0)",
+    "char_obj": "0x8A7140 (parent 0x456CB0, init 0x456A90)",
+    "server": "socket 0x8AB828"
+  },
+  "audit_vs_exe": {
+    "F311": "intro 0x4026E0 (GameInter +0x8/Interface1c +0x14C, wemade.dat +0x6F4, 4 buttons) confirmed; char-select parent 0x456CB0 (9 buttons, F50 640x480) confirmed",
+    "F336": "state machine 0x8B1878 confirmed; intro 0x402BE0 / char 0x4575D0 = state 0/2 ticks"
+  },
+  "contrast": {
+    "intro_vs_char": "intro 0x402BE0 = 3-stage logo/load (0x8A4/0x8A5); char-select 0x4575D0 = 5-stage (0x930) with BGM + login anim + enter",
+    "server_dispatch": "0x458F80 = pre-game server messages (0x208-0x20E); in-game uses 0x41CDE0 (F331)"
+  },
+  "verdict": "Login/char-select flow fully decoded (primary-bytes): intro 3-stage machine (0x402BE0/0x402C40), char-select 5-stage machine (0x4575D0 table 0x457778, SelChr.mp3 BGM, enter 0x458B20), server dispatch 9-entry (0x458F80/0x45950C, char list refresh/enter OK). Simulator login overlay wired and browser-verified (intro -> connecting -> char list -> in-game).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All stage tables, dispatch targets and strings read directly from MIR3.EXE bytes; simulator login is derived-tooling.",
+  "cross_refs": [
+    "F311: intro/char-select ctor details, class names, wemade.dat",
+    "F336: 0x8B1878 state machine, game tick 0x41BB00",
+    "F331: in-game dispatch 0x41CDE0",
+    "Round 28: BGM player 0x45B390"
+  ],
+  "tool": "capstone via disasm_capstone.PeImage; pefile; puppeteer browser",
+  "reproduce": "img.disasm(0x402BE0, 0x60); img.disasm(0x402C40, 0x110); img.disasm(0x4575D0, 0x40); read 0x457778/0x45950C tables; open sim and click 进入游戏",
+  "notes": [
+    "0x47D624 SelChr.mp3 = char-select BGM via DirectShow (Round 28 0x45B390 family)",
+    "char list refresh 0x458FBD parses names into +0xCB8 region (0x20 dwords = 32 chars max?)",
+    "enter OK 0x20D -> stage 4 0x459465 + StartGame.dat 0x47D7C8 (F311)",
+    "0x47D778/0x47D784/0x47D790 = 武士/法师/道士 class name suffixes"
+  ]
+}

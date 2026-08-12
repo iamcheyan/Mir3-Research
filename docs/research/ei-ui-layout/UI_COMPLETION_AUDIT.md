@@ -396,6 +396,14 @@ git diff --check
 - **窗口绘制矩阵 100% 闭合**（14 窗口 paint/mouse/click 全解码）。
 - 落盘：`guild-window-paint-evidence.json`（F348，primary-bytes）+ RESEARCH_LOG Round 42。
 
+## Round 43 (2026-08-12) — 登录/角色选择流程（Finding 349）
+
+- **intro 0x402BE0**：3 级 stage（[0x8A4]/[0x8A5] sub-stage，wemade.dat + Interface1c 帧）。
+- **char-select 0x4575D0**：5 级 stage（0x457778 表；SelChr.mp3 BGM；0x458B20 进入游戏）。
+- **server 0x458F80**：msgid−0x208 → 9 项表（角色列表刷新/建号/进入 OK）；职业名 武士/法师/道士。
+- **模拟器登录遮罩**：intro → 连接 → 角色列表 → 进游戏（浏览器验证）。
+- 落盘：`login-charselect-flow-evidence.json`（F349，primary-bytes）+ app.js + RESEARCH_LOG Round 43。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
