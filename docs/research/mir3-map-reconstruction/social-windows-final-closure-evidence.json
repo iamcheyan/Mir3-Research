@@ -1,0 +1,37 @@
+{
+  "evidence_id": "social-windows-final-closure-2026-08-12-f774",
+  "title": "Round 468 (F774): Social windows FINAL closure (F545/F558/F752/F755/F773) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master f52141a (432 consecutive F335-F773), 398 evidence JSONs; arc: guild (F755) + party (F752) + mount (F773) + announce editor (F770) - social window family COMPLETE byte-level (guild 3-page + party 2-col + mount 5-button commands + announce editor), all F558 social modes documented",
+  "date": "2026-08-12",
+  "objective": "Close the social windows finally.",
+  "question": "Is the social window family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "398 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F755": "guild", "F752": "party", "F773": "mount", "F770": "announce editor"},
+    "social": "guild + party + mount + editor = COMPLETE",
+    "milestone": "432 consecutive rounds F335-F773"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F773": "432 rounds pushed; social family complete"
+  },
+  "contrast": {
+    "guild_vs_party": "3-page + 2-col",
+    "mount_vs_editor": "commands + text edit"
+  },
+  "verdict": "Social windows FINAL closure (F774): guild + party + mount + editor all byte-level; validation green, 432 consecutive rounds, 398 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F545/F558/F752/F755/F770/F773.",
+  "cross_refs": ["F545", "F558", "F752", "F755", "F770", "F773"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "432 consecutive shipping rounds F335-F773",
+    "social windows 100%",
+    "next: HANDOFF refresh 68, remaining corners"
+  ]
+}

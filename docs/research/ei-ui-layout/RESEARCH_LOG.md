@@ -8017,3 +8017,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔坐骑〕**0x4269C0（F558 模式 D）：**5 按钮 F704**（大 0xFC/0x125 @ +0x54 + 4 命令按钮 @ 0x1C/0x4A/0x85/0xC0 × 0xF4）+ 5 控件绘制；0x426A80 **命令分派**（vtable[0x10] 命中 + 坐骑旗标 [0x7DA060] + **发送 0x4520F0** 串 0x47B058/0x47B060/0x47B068 + **300ms 冷却 [0x8A68BC]=0x12C**（F545 确认））；0x426B50/0x426B90 命中/点击分派——坐骑窗口完整（F545/F558 用）。
 - 落盘：mount-window-draw-commands-evidence.json（F773，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 467。
+## Round 468 (F774) — 2026-08-12：社交窗口最终闭合（F545/F558/F752/F755/F770/F773 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**398 证据 JSON**；三服务 200；master f52141a（**432 连发 F335-F773 已推**）。
+- **〔弧〕**行会（F755）+ 组队（F752）+ 坐骑（F773）+ 公告编辑（F770）——**社交窗口家族完整**（行会 3 页 + 组队双列 + 坐骑 5 按钮命令 + 公告编辑器），F558 全部社交模式文档化。
+- 落盘：social-windows-final-closure-evidence.json（F774，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 468。
