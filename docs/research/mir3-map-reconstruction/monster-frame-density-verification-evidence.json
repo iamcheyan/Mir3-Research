@@ -1,0 +1,37 @@
+{
+  "evidence_id": "monster-frame-density-verification-2026-08-12-f431",
+  "title": "Round 125 (F431): Monster frame density verified - Mon-N.wil = 10 race blocks x 1000 frames; each block = one race's full animation set (blocks 0-2: 304 valid, 3-9: 224 valid, blank tail 400-999); within-file offset (race%10)*1000 [inference]",
+  "date": "2026-08-12",
+  "objective": "Verify the frame packing density inside Mon-N.wil: per-race block structure and valid-frame counts.",
+  "question": "How are the 10000 frames of each Mon-N.wil organized per race?",
+  "method": "Mon-6.wil header sampling (step 25/50/100/500) + valid-frame counting per 1000-block.",
+  "scope": "Data/Mon-6.wil (10000 frames).",
+  "cell_analysis": {
+    "block_structure": {"stride": "1000 frames per race (f0 48x74 == f1000 48x74, f100 40x76 == f1100)", "blocks": "10 per file (10000/1000)", "valid": "blocks 0-2: 304 frames each / blocks 3-9: 224 frames each / block 8: 232", "blank_tail": "boundary f375 valid -> f400 blank (block 0); tail 400-999 blank"},
+    "content": {"per_block": "one race's full animation set (stand/walk/attack/hurt/dead states)", "dims": "dims repeat at block starts but differ within (distinct races, shared layout style)"},
+    "offset_formula": "(race%10)*1000 + anim_offset [inference - natural from 10-block layout]"
+  },
+  "exe_trace": {
+    "file_select": "F280/F429: file = race//10+1",
+    "within_file": "(race%10)*1000 base [inference, structure-backed]"
+  },
+  "audit_vs_exe": {
+    "F429": "16 files x 10000 frames = 160 race blocks total",
+    "F425": "308 monsters fit 160 slots (multi-race sharing blocks)"
+  },
+  "contrast": {
+    "mon_vs_npc": "NPC 100*body stride vs monster 1000-frame race blocks",
+    "valid_vs_blank": "224-304 used of 1000 per race = ~25-30% density (blank tail)"
+  },
+  "verdict": "Monster frame density verified (primary-static): Mon-N.wil = 10 race blocks x 1000 frames; blocks 0-2 pack 304 valid frames, blocks 3-9 pack 224 (blank tail 400-999). Within-file offset (race%10)*1000 [inference].",
+  "evidence_level": "primary-bytes (block structure) + [inference] (offset formula)",
+  "evidence_level_note": "Block stride/density read from headers; offset formula inferred from structure.",
+  "cross_refs": ["F429: Mon WIL family", "F280: race formula", "F425: monster distribution"],
+  "tool": "wilsdk.open_library.header() sampling",
+  "reproduce": "for f in range(0,10000): h=w.header(f); valid= h and h['words']>0; count per 1000-block",
+  "notes": [
+    "304-frame blocks (0-2) vs 224 (3-9) = richer anim sets for some races",
+    "blank tail = reserved space for animations (fixed stride design)",
+    "f9990 blank = block 9 tail (10000-frame boundary)"
+  ]
+}

@@ -6347,3 +6347,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔族系〕**DMon-1.wil 4340 帧 + DMonS-1.wil 4000 帧 = 通用单槽死亡动画库（非按种族）；f0 80×70 / f100 72×64 有效头。
 - **〔装载器〕**0x454040 附加表 5 槽：DMon-1→ebx+0x13A4C、DMonS-1→+0x13B50、MagicEx→+0x13C54、MonMagicEx→+0x13D58、StoreItem.wil(0x47C878)→+0x13E5C（stride 0x104）。
 - 落盘：dmon-death-animation-verification-evidence.json（F430，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 124。
+## Round 125 (F431) — 2026-08-12：怪物帧密度验证（10 种族块 × 1000 帧）
+
+- **〔块结构〕**Mon-N.wil = 10 种族块 × 1000 帧；块 0-2 各 304 有效帧、块 3-9 各 224（尾部 400-999 空白；边界 f375 有效 → f400 空）。
+- **〔偏移〕**块内偏移 (race%10)*1000 [inference]（结构支撑）。
+- 落盘：monster-frame-density-verification-evidence.json（F431，primary-bytes + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 125。

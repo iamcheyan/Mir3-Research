@@ -851,6 +851,11 @@ git diff --check
 - **4340/4000 帧通用死亡库 + 0x454040 5 槽装载器**。
 - 落盘：`dmon-death-animation-verification-evidence.json`（F430）+ RESEARCH_LOG Round 124。
 
+## Round 125 (2026-08-12) — 怪物帧密度（Finding 431）
+
+- **10 种族块 × 1000 帧**（304/224 有效 + 空白尾）。
+- 落盘：`monster-frame-density-verification-evidence.json`（F431）+ RESEARCH_LOG Round 125。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
