@@ -8602,3 +8602,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔交易〕**0x416150 **槽查找按物品**（组 idx×0x9210 + [0x601] 名称比较、12 槽）→ 0x4160E0 **移除**；0x4161F0 **物品添加**（0x4162E0 放置 + 0x4162A0 找空闲 + 0x416490 槽写入 + 0x403AC0 物品构造）——交易槽操作完整（F557/F749 用）。
 - 落盘：trade-slot-lookup-add-evidence.json（F908，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 602。
+## Round 603 (F909) — 2026-08-12：交易操作闭合（F557/F749/F842/F908 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**533 证据 JSON**；三服务 200；master a58a940（**567 连发 F335-F908 已推**）。
+- **〔弧〕**交易家族（F557）+ 布局（F749）+ 绘制（F842）+ 槽查找/添加（F908）——**交易操作完整**（找空闲 + 放置 + 写入 + 查找 + 移除 + 添加），交易窗口 100% 交互。
+- 落盘：trade-ops-closure-evidence.json（F909，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 603。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "trade-ops-closure-2026-08-12-f909",
+  "title": "Round 603 (F909): Trade ops CLOSED (F557/F749/F842/F908) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master a58a940 (567 consecutive F335-F908), 533 evidence JSONs; arc: trade family (F557) + layout (F749) + draw (F842) + slot lookup/add (F908) - trade ops COMPLETE byte-level (find-free + place + write + lookup + remove + add), trade window 100% interactive",
+  "date": "2026-08-12",
+  "objective": "Close the trade ops arc.",
+  "question": "Is the trade ops fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "533 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F557": "family", "F749": "layout", "F842": "draw", "F908": "lookup/add"},
+    "trade": "find + place + write + lookup = COMPLETE",
+    "milestone": "567 consecutive rounds F335-F908"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F908": "567 rounds pushed; trade ops complete"
+  },
+  "contrast": {
+    "place_vs_lookup": "insert + find",
+    "write_vs_remove": "0x416490 + 0x4160E0"
+  },
+  "verdict": "Trade ops CLOSED (F909): layout + lookup + add all byte-level; validation green, 567 consecutive rounds, 533 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F557/F749/F842/F908.",
+  "cross_refs": ["F557", "F749", "F842", "F908"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "567 consecutive shipping rounds F335-F908",
+    "trade ops 100%",
+    "next: HANDOFF refresh 114, remaining corners"
+  ]
+}
