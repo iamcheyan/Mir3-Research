@@ -7299,3 +7299,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔碰撞〕**实体列表 [0x560070]/[0x560080] 遍历：类型 [0x88] 门（0/1/3）+ [0xC0] 状态（0x13/4）+ [0x61C74] 旗标 + 坐标匹配 [0xCC]/[0xD0] → 阻挡。
 - **〔计数〕**0x43CDC0：地图信息计数器 [0x1B01B4..0x1B01BC]（阈值 0x96/0x19/0x32）——地图移动 + 碰撞字节级（F612 连接）。
 - 落盘：map-move-collision-evidence.json（F613，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 307。
+## Round 308 (F614) — 2026-08-12：英雄运行时弧闭合（F611-F613 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**239 证据 JSON**；三服务 200；master fb5ee0f（**272 连发 F335-F613 已推**）。
+- **〔弧〕**死亡/传送泵（F611）+ 英雄移动/相机（F612）+ 地图移动/碰撞（F613）——**英雄运行时生命周期（死亡→重生→移动→碰撞）完整**。
+- 落盘：hero-runtime-arc-closure-evidence.json（F614，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 308。

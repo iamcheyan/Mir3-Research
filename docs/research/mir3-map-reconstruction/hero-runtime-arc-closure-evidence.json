@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hero-runtime-arc-closure-2026-08-12-f614",
+  "title": "Round 308 (F614): Hero runtime arc CLOSED (F611-F613) - validation green (compileall/verify exit 0/node/JSON), services 200, master fb5ee0f (272 consecutive F335-F613), 239 evidence JSONs; arc: death/teleport pump (F611: respawn cooldown + coord reset + light colors) + hero movement/camera (F612: 0x410840 move + 0x43CC30 map camera + click-target) + map move/collision (F613: 8-dir jt + tile/entity collision) - hero runtime lifecycle complete (death -> respawn -> move -> collide)",
+  "date": "2026-08-12",
+  "objective": "Close the hero runtime arc.",
+  "question": "Is the hero runtime lifecycle fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "239 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F611": "death/teleport pump", "F612": "hero movement/camera", "F613": "map move/collision"},
+    "lifecycle": "death -> respawn -> move -> collide - COMPLETE",
+    "milestone": "272 consecutive rounds F335-F613"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F613": "272 rounds pushed; hero runtime complete"
+  },
+  "contrast": {
+    "hero_vs_world": "hero runtime (F611-613) + world/entity systems complete",
+    "move_vs_death": "movement chain + death/respawn chain"
+  },
+  "verdict": "Hero runtime arc CLOSED (F614): death/respawn + movement + collision all byte-level; validation green, 272 consecutive rounds, 239 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F611-F613.",
+  "cross_refs": ["F611: death pump", "F612: hero move", "F613: collision"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "272 consecutive shipping rounds F335-F613",
+    "next: HANDOFF refresh 19, remaining corners"
+  ]
+}
