@@ -8937,3 +8937,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**608 证据 JSON**；三服务 200；master 42115da（**643 连发 F335-F984 已推**）。
 - **〔弧〕**坐骑 6 槽网格（F773）+ 网格构造/初始化/绘制（F984）——**物品网格完整**（ctor 0x465EF0 + init 0x4660E0 矩形 0x2A0×0x80 + 绘制体）；网格表面 100%。
 - 落盘：item-grid-closure-evidence.json（F985，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 679。
+## Round 680 (F986) — 2026-08-12：HANDOFF 刷新 140（Round 677-679）
+
+- **〔刷新〕**HANDOFF 追加 Round 677-679（F984-F985：物品网格构造/初始化/绘制 + 物品网格闭合）；基线 Round 676=659206c → Round 679=be6bdf1（**644 连发 F335-F985**）。
+- 落盘：handoff-refresh-140-evidence.json（F986，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 680。

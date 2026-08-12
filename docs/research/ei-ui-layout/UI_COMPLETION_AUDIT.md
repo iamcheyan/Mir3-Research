@@ -4169,3 +4169,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（网格表面 100%；下一弧：HANDOFF 刷新 140/剩余角落）。
+## Round 680 (2026-08-12) — HANDOFF 刷新 140（Finding 986）
+
+- **Round 677-679 追加 + 644 连发**（物品网格完整入档）。
+- 落盘：`handoff-refresh-140-evidence.json`（F986）+ RESEARCH_LOG Round 680。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（网格表面 100%；下一弧：剩余深层角落/模拟器 polish）。
