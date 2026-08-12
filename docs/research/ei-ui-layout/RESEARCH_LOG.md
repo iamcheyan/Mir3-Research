@@ -7415,3 +7415,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔列表〕**5 实体链表 vtable（0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680 @ [0xE1154..0xE11E0] = F336 容器族）。
 - **〔子系统〕**瓦片 0x4529B0 [0xE11E4]、地图 0x43AF70 [0xF5200]、英雄 0x426C10 [0x2A548C]、英雄角色 0x40FE80 [0x2F8780]、光场 0x4344E0 [0x35B2C0]、**6 绘制对象** [0x361150..0x3614F4]（F439）、公告 0x417EC0 [0x3615B0]、备忘 3 个（0x446BF0/0x455A80/0x456180）；vtable [0]=0x476670 + 0x418EE0——**完整游戏对象构造字节级**（F451/F336/F439 连接）。
 - 落盘：main-ctor-body-subsystems-evidence.json（F637，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 331。
+## Round 332 (F638) — 2026-08-12：启动/构造弧闭合（F636-F637 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**262 证据 JSON**；三服务 200；master 6f96ef2（**296 连发 F335-F637 已推**）。
+- **〔弧〕**主构造 + WinMain 引导（F636）+ 主构造体/子系统（F637）——**整个启动链（WinMain → 魔数 → ctor → 子系统 → Intro F607）字节级**，F451 基址闭环。
+- 落盘：startup-construction-arc-closure-evidence.json（F638，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 332。

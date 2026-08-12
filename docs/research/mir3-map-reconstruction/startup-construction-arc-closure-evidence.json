@@ -1,0 +1,36 @@
+{
+  "evidence_id": "startup-construction-arc-closure-2026-08-12-f638",
+  "title": "Round 332 (F638): Startup/construction arc CLOSED (F636-F637) - validation green (compileall/verify exit 0/node/JSON), services 200, master 6f96ef2 (296 consecutive F335-F637), 262 evidence JSONs; arc: main ctor + WinMain bootstrap (F636: 0x47EF18 + magic + config) + main ctor body/subsystems (F637: 5 list vtables + subsystem ctors) - ENTIRE startup chain (WinMain -> magic -> ctor -> subsystems -> intro F607) byte-level, closing the F451 base circle",
+  "date": "2026-08-12",
+  "objective": "Close the startup/construction arc.",
+  "question": "Is the startup chain fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "262 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F636": "main ctor + WinMain bootstrap", "F637": "ctor body + subsystems"},
+    "chain": "WinMain -> magic -> ctor 0x418B00 -> subsystems -> intro (F607) - COMPLETE",
+    "milestone": "296 consecutive rounds F335-F637"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F637": "296 rounds pushed; startup complete"
+  },
+  "contrast": {
+    "startup_vs_runtime": "boot/ctor (F636/637) + runtime (all prior) complete",
+    "ctor_vs_dtor": "0x418B00 ctor + 0x401990 dtor"
+  },
+  "verdict": "Startup/construction arc CLOSED (F638): WinMain + ctor + subsystems all byte-level; validation green, 296 consecutive rounds, 262 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F636-F637.",
+  "cross_refs": ["F636: bootstrap", "F637: ctor body", "F451: base"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "296 consecutive shipping rounds F335-F637",
+    "next: HANDOFF refresh 25, remaining corners"
+  ]
+}
