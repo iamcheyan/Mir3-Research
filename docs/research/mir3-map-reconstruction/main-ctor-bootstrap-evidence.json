@@ -1,0 +1,36 @@
+{
+  "evidence_id": "main-ctor-bootstrap-2026-08-12-f636",
+  "title": "Round 330 (F636): Main ctor + WinMain bootstrap - 0x401970 = main ctor TAIL (mov ecx, 0x47EF18 -> jmp 0x418B00, F451 base PROOF), 0x401990 = static dtor (0x418D50); 0x401B30 = WinMain bootstrap: [0x47EEB8]=0x131C9A5 magic, [0x47EF10]=0 game-obj null init, 0x401700 rand (0x5DC/0x3E8), config GetPrivateProfileStringA family (0x47613C/0x476138/0x4761A4, sections 0x47A2B8/0x47A2C0), DllMain guard [0x917C1C] - startup chain byte-level (F451 confirmed)",
+  "date": "2026-08-12",
+  "objective": "Decode the main ctor + WinMain bootstrap.",
+  "question": "How does the game bootstrap?",
+  "method": "Disasm 0x401970-0x401B75.",
+  "scope": "0x401970-0x401B75; 0x47EF18; magic.",
+  "cell_analysis": {
+    "0x401970": "main ctor tail: ecx=0x47EF18 -> 0x418B00 (F451 proof)",
+    "0x401990": "static dtor 0x418D50",
+    "0x401B30": {"magic": "[0x47EEB8]=0x131C9A5", "game_obj": "[0x47EF10]=0 init", "rand": "0x401700 (0x5DC/0x3E8)", "config": "GetPrivateProfileStringA 0x47613C/0x476138/0x4761A4 (0x47A2B8/0x47A2C0)", "guard": "DllMain [0x917C1C]"}
+  },
+  "exe_trace": {
+    "startup_chain": "WinMain 0x401B30 -> magic + game obj null + rand + config -> main ctor 0x401970 -> 0x418B00 -> game"
+  },
+  "audit_vs_exe": {
+    "F451": "0x47EF18 base CONFIRMED", "F607": "intro after boot", "F585": "config family"
+  },
+  "contrast": {
+    "ctor_vs_dtor": "0x401970 ctor + 0x401990 dtor",
+    "bootstrap_vs_intro": "WinMain bootstrap -> intro (F607)"
+  },
+  "verdict": "Main ctor + bootstrap PRIMARY-verified: 0x47EF18 main obj (F451) + magic + config init; startup chain byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Startup chain decoded from .text.",
+  "cross_refs": ["F451: base", "F607: intro", "F585: config"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x401970+0x10; 0x401B30+0x20",
+  "notes": [
+    "magic 0x131C9A5 = build stamp",
+    "game obj [0x47EF10] = global ptr",
+    "0x401700 = rand init",
+    "config sections 0x47A2B8/0x47A2C0"
+  ]
+}

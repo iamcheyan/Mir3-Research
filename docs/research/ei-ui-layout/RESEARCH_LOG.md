@@ -7405,3 +7405,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 325-328（F632-F634：音效/DSound + MIDI 音乐 + 音频弧）；基线 Round 324=2603e46 → Round 328=5534555（**293 连发 F335-F634**）。
 - 落盘：handoff-refresh-24-evidence.json（F635，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 329。
+## Round 330 (F636) — 2026-08-12：主构造 + WinMain 引导
+
+- **〔构造〕**0x401970 = **主 ctor 尾**（mov ecx, 0x47EF18 → jmp 0x418B00，**F451 基址证明**）、0x401990 = 静态析构（0x418D50）。
+- **〔引导〕**0x401B30 = **WinMain 引导**：[0x47EEB8]=0x131C9A5 魔数、[0x47EF10]=0 游戏对象空初始化、0x401700 rand（0x5DC/0x3E8）、配置 GetPrivateProfileStringA 族（0x47613C/0x476138/0x4761A4、节 0x47A2B8/0x47A2C0）、DllMain 守卫 [0x917C1C]——启动链字节级（F451 确认）。
+- 落盘：main-ctor-bootstrap-evidence.json（F636，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 330。
