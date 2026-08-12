@@ -3321,3 +3321,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（回复/校验完整；下一弧：剩余深层角落）。
+## Round 574 (2026-08-12) — 回复/校验和闭合（Finding 880）
+
+- **538 连发 + 504 证据 + 回复/校验完整**。
+- 落盘：`reply-checksum-closure-evidence.json`（F880）+ RESEARCH_LOG Round 574。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（回复/校验完整；下一弧：HANDOFF 刷新 104/剩余角落）。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "reply-checksum-closure-2026-08-12-f880",
+  "title": "Round 574 (F880): Reply/checksum CLOSED (F617/F879) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 8cc4681 (538 consecutive F335-F879), 504 evidence JSONs; arc: reply/seed (F617) + reply/checksum body (F879) - reply/checksum COMPLETE byte-level (msg 0x411 reply + seed [0x9135B8] + byte XOR checksum), F617 family fully closed",
+  "date": "2026-08-12",
+  "objective": "Close the reply/checksum arc.",
+  "question": "Is the reply/checksum fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "504 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F617": "reply/seed", "F879": "body"},
+    "reply": "0x411 + seed + XOR = COMPLETE",
+    "milestone": "538 consecutive rounds F335-F879"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F879": "538 rounds pushed; reply/checksum complete"
+  },
+  "contrast": {
+    "reply_vs_checksum": "send + XOR",
+    "seed_vs_key": "arg + rand"
+  },
+  "verdict": "Reply/checksum CLOSED (F880): reply + seed + checksum all byte-level; validation green, 538 consecutive rounds, 504 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F617/F879.",
+  "cross_refs": ["F617", "F879"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "538 consecutive shipping rounds F335-F879",
+    "reply/checksum 100%",
+    "next: HANDOFF refresh 104, remaining corners"
+  ]
+}
