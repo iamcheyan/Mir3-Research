@@ -6227,3 +6227,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔频道〕**6 按钮全带原版命令帮助串（拒绝私聊 @拒绝私聊/大喊话 !/编组喊话 !! /行会喊话 !~/拒绝和某人私聊）——F341 串。
 - **〔注入〕**大喊话 点击 → 输入框 '!'（浏览器验证）；分派 0x41ED20（F355）。
 - 落盘：chat-channel-verification-evidence.json（F403，derived-tooling；串 primary-static F341）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 97。
+## Round 98 (F404) — 2026-08-12：NPC 对话交互验证（开/选/关）
+
+- **〔模拟器〕**点行会管理员 → 对话开（NPCIMG 0 头）；菜单选购买装备 → 日志 + 窗口关闭（consumed → 0x42ADB0 id9，F347/F337 语义）。
+- 落盘：npc-dialog-interaction-verification-evidence.json（F404，derived-tooling；语义 primary-static F347/F337）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 98。

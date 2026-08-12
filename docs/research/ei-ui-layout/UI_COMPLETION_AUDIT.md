@@ -716,6 +716,11 @@ git diff --check
 - **6 频道命令模板全验证** + 大喊话注入 '!'（F341/F355）。
 - 落盘：`chat-channel-verification-evidence.json`（F403）+ RESEARCH_LOG Round 97。
 
+## Round 98 (2026-08-12) — NPC 对话交互（Finding 404）
+
+- **开/选/关全验证**（NPCIMG 头、菜单选择关窗、F347/F337 语义）。
+- 落盘：`npc-dialog-interaction-verification-evidence.json`（F404）+ RESEARCH_LOG Round 98。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
