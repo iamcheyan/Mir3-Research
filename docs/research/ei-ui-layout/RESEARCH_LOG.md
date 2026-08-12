@@ -7957,3 +7957,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**383 证据 JSON**；三服务 200；master 23e0aca（**417 连发 F335-F758 已推**）。
 - **〔弧〕**物品图标（F651）+ 反序列化/IO（F652）+ 插入/放置（F655）+ 状态绘制（F758）——**角色/装备/背包完整**（11 装备槽 stride 0xC24 + 背包 6×0x64 自动扫描 + 头像帧 + 图标渲染），窗口模式 0/1/7 全文档化。
 - 落盘：char-equip-arc-closure-evidence.json（F759，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 453。
+## Round 454 (F760) — 2026-08-12：HANDOFF 刷新 63（Round 451-453）
+
+- **〔刷新〕**HANDOFF 追加 Round 451-453（F758-F759：角色状态窗口 + 角色/装备/背包弧）；基线 Round 450=2f8112b → Round 453=1acd4d4（**418 连发 F335-F759**）。
+- 落盘：handoff-refresh-63-evidence.json（F760，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 454。
