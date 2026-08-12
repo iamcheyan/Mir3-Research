@@ -7229,3 +7229,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔类型〕**jt 0x440158（F540）：**类型 1**（0x43F4E7）= 文本换行渲染（0x45E0C0 测量 + 0x45DD70 绘制、7 行门 +0x131 y 偏移）；**类型 2**（0x43F86D）= **굴림 字体**（0x45DBA0 0x47C348、字号 0x190/9）+ 色旗标 [0x5C]/[0x5D]（0xFF 白/0xFFFF）+ 换行；**类型 3**（0x43F85F）= 跳行；**类型 4**（0x43FF92）= **特殊脚本标签**：**'FCOLOR'**（0x47C514）→ 色表 0x47C4A8（8 色 0/0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000）+ **'NPCIMG'**（0x47C50C）→ WIL 帧 blit（0x466130 + 0x45FD50 于 0x28/0x1E）+ **'NOTCLOSE'**（0x47C500）= 不关窗旗标——**NPC 对话脚本标签字节级**（F540 扩展）。
 - 落盘：npc-dialog-4type-render-evidence.json（F598，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 292。
+## Round 293 (F599) — 2026-08-12：聊天窗渲染完整
+
+- **〔渲染〕**0x414700（F341 扩展）：输入矩形 SetRect(0x1A, 0x137, 0x20D, 0x146) @ [0x954]、**消息环**（滚动 [0x6D0] + 计数 [0x68] − 0x13 钳制 **19 行上限**、节点链 [0x58]/[0x5C]（+0x408 next、负 0x40C prev）、每行 0x45DD70 绘制（色 [0x8AB7C4]、y=[0x6C4]+行*0xE 14px、x=[0x6C0]））+ **滚动条 0x4179B0 @ [0x6D4]** + 10 控件矩形 0x417830（@ [0x6C]..[0x60C]）+ 9 控件遍历——聊天窗渲染字节级。
+- 落盘：chat-window-render-full-evidence.json（F599，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 293。

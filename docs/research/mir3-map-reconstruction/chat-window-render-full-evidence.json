@@ -1,0 +1,37 @@
+{
+  "evidence_id": "chat-window-render-full-2026-08-12-f599",
+  "title": "Round 293 (F599): Chat window render FULL - 0x414700 (F341 extended): input rect SetRect(0x1A, 0x137, 0x20D, 0x146) @ [0x954], message ring: scroll [0x6D0] + count [0x68] - scroll >= 0x13 clamp (19-line cap F341), node chain [0x58]/[0x5C] (+0x408 next, -neg 0x40C prev), per-line draw 0x45DD70 (color [0x8AB7C4], y = [0x6C4]+line*0xE 14px stride, x = [0x6C0]) + scrollbar 0x4179B0 @ [0x6D4] (count/scroll at [0x18]+0x215/[0x1C]-0xD0) + 10 control rects 0x417830 (@ [0x6C]..[0x60C]: tabs/buttons) + 9-ctrl walk - chat window render byte-level (F341 confirmed)",
+  "date": "2026-08-12",
+  "objective": "Decode the chat window render fully.",
+  "question": "How does the chat window render?",
+  "method": "Disasm 0x414700-0x414955.",
+  "scope": "0x414700-0x414955; ring [0x58]; 19-line cap.",
+  "cell_analysis": {
+    "input_rect": "SetRect(0x1A, 0x137, 0x20D, 0x146) @ [0x954]",
+    "ring": {"scroll": "[0x6D0] + count [0x68] - 0x13 clamp (19-line F341)", "nodes": "[0x58]/[0x5C] (+0x408 next, neg 0x40C prev)", "draw": "0x45DD70 per line (color [0x8AB7C4], y=[0x6C4]+line*0xE, x=[0x6C0])"},
+    "scrollbar": "0x4179B0 @ [0x6D4] (count/scroll pos [0x18]+0x215/[0x1C]-0xD0)",
+    "controls": "10 rects 0x417830 (@ [0x6C]..[0x60C]) + 9-ctrl walk"
+  },
+  "exe_trace": {
+    "chat_render_chain": "chat window paint -> input rect + ring (scroll/cap) + per-line draw + scrollbar + controls"
+  },
+  "audit_vs_exe": {
+    "F341": "19-line cap CONFIRMED + full body", "F355": "command dispatch", "F529": "chat send path"
+  },
+  "contrast": {
+    "ring_vs_scroll": "19-line ring + scrollbar",
+    "line_stride": "0xE = 14px per line (F341)"
+  },
+  "verdict": "Chat window render PRIMARY-verified: input rect + 19-line ring (scroll/cap/node chain) + per-line draw + scrollbar + controls; F341 confirmed and extended.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Chat render decoded from .text.",
+  "cross_refs": ["F341: 19-line", "F355: dispatch", "F529: send path"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414700+0x60",
+  "notes": [
+    "line stride 0xE = 14px",
+    "scrollbar at [0x6D4]",
+    "10 control rects",
+    "color from [0x8AB7C4]"
+  ]
+}

@@ -1691,9 +1691,14 @@ git diff --check
 - **文本/字体/跳行/脚本标签 FCOLOR/NPCIMG/NOTCLOSE**（F540 扩展）。
 - 落盘：`npc-dialog-4type-render-evidence.json`（F598）+ RESEARCH_LOG Round 292。
 
+## Round 293 (2026-08-12) — 聊天窗渲染完整（Finding 599）
+
+- **19 行环 + 滚动条 + 控件**（F341 确认扩展）。
+- 落盘：`chat-window-render-full-evidence.json`（F599）+ RESEARCH_LOG Round 293。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（NPC 对话渲染闭合；下一弧：剩余深层角落）。
+- 无阻塞项（聊天窗渲染闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
