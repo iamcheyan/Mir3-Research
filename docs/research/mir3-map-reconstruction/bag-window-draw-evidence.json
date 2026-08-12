@@ -1,0 +1,34 @@
+{
+  "evidence_id": "bag-window-draw-2026-08-12-f764",
+  "title": "Round 458 (F764): Bag window draw - 0x42EB80 (F558 mode 0): scrollbar F707 ctor 0x4179B0 @ +0x278 (count [0x58], pos [0x18]+0xF8/[0x1C]-0xA5, push 0x5E) + item grid rects (+0x19/+0x29, pitch 36px) + DRAG preview (slot hit 0x42F150 -> layout 0x42F2A0 + IntersectRect 0x476248 + matrix transform 0x466800 F643 floats 1.0/0.196/0.392 + 0x3B808081 -> scaled blit; dragged [0x7243C4], flag [0x7243D8]) - bag window COMPLETE (F558/F707 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the bag window draw.",
+  "question": "How does the bag window render + drag items?",
+  "method": "Disasm 0x42EB80-0x42EE20.",
+  "scope": "0x42EB80-0x42EE20; drag state.",
+  "cell_analysis": {
+    "0x42EB80": {"scrollbar": "F707 @ +0x278", "grid": "+0x19/+0x29 pitch 36", "drag": "0x42F150 + 0x42F2A0 + 0x476248 + 0x466800 matrix"}
+  },
+  "exe_trace": {
+    "bag_chain": "scrollbar -> grid -> drag preview (matrix blit)"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 0 bag", "F707": "scrollbar", "F643": "matrix 0x466800"
+  },
+  "contrast": {
+    "grid_vs_drag": "slots + scaled preview",
+    "scrollbar_vs_matrix": "F707 + 0x466800"
+  },
+  "verdict": "Bag window draw PRIMARY-verified: scrollbar + grid + drag preview; bag window complete (F558/F707/F643).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Bag window decoded from .text.",
+  "cross_refs": ["F558: bag", "F707: scrollbar", "F643: matrix"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42EB80+0x20",
+  "notes": [
+    "scrollbar +0x278",
+    "grid pitch 36px",
+    "drag matrix floats",
+    "dragged [0x7243C4]"
+  ]
+}

@@ -7974,3 +7974,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 454-456（F761-F762：选项窗口 + 选项弧 + 420 里程碑）；基线 Round 453=1acd4d4 → Round 456=eb5f4b4（**421 连发 F335-F762**）。
 - 落盘：handoff-refresh-64-evidence.json（F763，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 457。
+## Round 458 (F764) — 2026-08-12：背包窗口绘制
+
+- **〔背包〕**0x42EB80（F558 模式 0）：**滚动条 F707 ctor** @ +0x278（计数 [0x58]、位置 [0x18]+0xF8/[0x1C]-0xA5）+ 物品网格矩形（+0x19/+0x29、36px）+ **拖动预览**（槽命中 0x42F150 → 布局 0x42F2A0 + IntersectRect 0x476248 + **矩阵变换 0x466800（F643）** 浮点 1.0/0.196/0.392 + 0x3B808081 → 缩放 blit；拖动中 [0x7243C4]、旗标 [0x7243D8]）——背包窗口完整（F558/F707 用）。
+- 落盘：bag-window-draw-evidence.json（F764，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 458。
