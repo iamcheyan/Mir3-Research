@@ -1,0 +1,37 @@
+{
+  "evidence_id": "skill-display-handlers-closure-2026-08-12-f795",
+  "title": "Round 489 (F795): Skill/display handlers CLOSED (F743/F791/F794) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master afc68f7 (453 consecutive F335-F794), 419 evidence JSONs; arc: skill record (F743) + hero dispatch (F791) + skill msg/map title (F794) - skill/display handlers COMPLETE byte-level (msg 0x34 base64 decode + 0x2F0 loader + 0x1F slots + map title 0x7776A0), pending display-slot chain fully resolved",
+  "date": "2026-08-12",
+  "objective": "Close the skill/display handlers arc.",
+  "question": "Is the skill/display handler chain fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "419 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F743": "skill record", "F791": "dispatch", "F794": "msg handlers"},
+    "skill": "0x34 + 0x2F0 + 0x1F + title = COMPLETE",
+    "milestone": "453 consecutive rounds F335-F794"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F794": "453 rounds pushed; skill/display chain complete"
+  },
+  "contrast": {
+    "0x34_vs_0x2F0": "base64 + loader",
+    "slots_vs_title": "display + map title"
+  },
+  "verdict": "Skill/display handlers CLOSED (F795): 0x34 + 0x2F0 + 0x1F + title all byte-level; validation green, 453 consecutive rounds, 419 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F743/F791/F794.",
+  "cross_refs": ["F743", "F791", "F794"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "453 consecutive shipping rounds F335-F794",
+    "skill/display 100%",
+    "next: HANDOFF refresh 75, remaining corners"
+  ]
+}

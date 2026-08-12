@@ -8108,3 +8108,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔技能〕**0x423000 技能 msg 0x34 全量（base64 0x452810 解码 msg+0xC → [0x35B1F0] 记录 → 显示槽 [0x35A34x]，free——**F743 的 0x423020 为其尾部**）；0x422CC0 **地图标题处理**（msg → 实体 id [0x2F8784]、base64 ×2、vtable[0x8C]、**标题 0x47EEE4 → 0x7776A0**、[0x2ED0B0]、列表 [0xE1188] 清 + 0x417FB0 重置、发送 msg 0x51、[0x35B2B8]=1）——技能 + 地图显示处理完整。
 - 落盘：skill-msg-handler-map-title-evidence.json（F794，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 488。
+## Round 489 (F795) — 2026-08-12：技能/显示处理闭合（F743/F791/F794 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**419 证据 JSON**；三服务 200；master afc68f7（**453 连发 F335-F794 已推**）。
+- **〔弧〕**技能记录（F743）+ 英雄分派（F791）+ 技能消息/地图标题（F794）——**技能/显示处理完整**（msg 0x34 base64 解码 + 0x2F0 装载器 + 0x1F 槽 + 地图标题 0x7776A0），待办显示槽链全解析。
+- 落盘：skill-display-handlers-closure-evidence.json（F795，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 489。
