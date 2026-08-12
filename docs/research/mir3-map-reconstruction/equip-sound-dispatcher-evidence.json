@@ -1,0 +1,36 @@
+{
+  "evidence_id": "equip-sound-dispatcher-2026-08-12-f471",
+  "title": "Round 165 (F471): Equip sound/effect dispatcher - 0x42E2D0: class [item+0x22] <= 0x1F jump table 0x42E404 (byte map 0x42E428) -> sound IDs via 0x45AFC0 (0x8AB130): class generic 0x6C, weapon sub [0x23] 0x6C/0x6F-0x76, name-based (0x47BDDC/0x47BDD4) 0x72/0x75, armor 0x6B/0x6C (0x42E450); 0x45AFC0 = game-object sound player (same as spawn sound F434 (type+1000)*10 path) - equip feedback audio",
+  "date": "2026-08-12",
+  "objective": "Decode the equip sound dispatcher (the 'hero sync' called by equip handlers).",
+  "question": "What does the equip sync actually do?",
+  "method": "Disasm 0x42E2D0-0x42E488 (dispatcher) + jump table/byte map dump.",
+  "scope": "0x42E2D0-0x42E488; table 0x42E404/0x42E428; 0x45AFC0.",
+  "cell_analysis": {
+    "dispatcher": {"key": "class [item+0x22] <= 0x1F (31)", "table": "byte map 0x42E428 + jt 0x42E404", "default": "sound 0x76 (0x42E3EC)"},
+    "classes": {"generic": "0x6C (0x42E2F2)", "weapon": "sub-class [0x23]: >= 0x6A -> 0x76; else 0x6C (0x42E308)", "0x6F/0x70/0x71": "specific classes (0x42E32A/0x42E340/0x42E356)", "name_gated": "0x47BDDC/0x47BDD4 name match -> 0x72/0x75 else 0x75 (0x42E36C/0x42E3AA)", "0x73/0x74": "0x42E3C0/0x42E3D6", "armor": "0x42E450: class 1-2 -> 0x6B, else 0x6C"},
+    "player": "0x45AFC0(0x8AB130 game obj, sound id, args) - equip feedback audio"
+  },
+  "exe_trace": {
+    "equip_chain": "equip packet (F470) -> 0x42E2D0 -> sound (not appearance refresh; appearance = item records read at paint)"
+  },
+  "audit_vs_exe": {
+    "F470": "'hero sync 0x42E2D0' = sound dispatcher (corrected from appearance)",
+    "F434": "0x45AFC0 shared sound player"
+  },
+  "contrast": {
+    "sound_vs_appearance": "0x42E2D0 plays equip sounds; hero appearance = read from slot records at draw time",
+    "name_vs_class": "some classes gated by item name (special weapons)"
+  },
+  "verdict": "Equip sound/effect dispatcher PRIMARY-verified: 0x42E2D0 maps item class [0x22] to equip sound IDs (0x6B-0x76) via jt 0x42E404, played through 0x45AFC0. F470 'hero sync' semantic corrected to sound feedback.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dispatcher + tables decoded from .text.",
+  "cross_refs": ["F470: equip handlers", "F434: sound player", "F469: equip slots"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x42E2D0+0x60; dump 0x42E404/0x42E428",
+  "notes": [
+    "sound IDs 0x6B-0x76 = equip SFX bank",
+    "name-gated sounds = special item (weapon?) effects [inference]",
+    "0x47BDDC/0x47BDD4 = item name constants"
+  ]
+}

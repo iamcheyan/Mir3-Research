@@ -6575,3 +6575,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔设置〕**0x44B930 装备包（0xC28 输入、槽 idx [0xC38]、0x308 dword 记录复制到 [status+槽*0xC24+0x2F8]、标记 [0x2F4]=1、槽字 [0x2FA]；idx≥11 自动槽）。
 - **〔族〕**0x44BA60 取槽（复制 + 清 0x44B880）；0x44BAB0 构建器（0x430920 + 取槽 + **英雄同步 0x42E2D0** @0x7243A4）；0x44BB70 清除；**0x44BBD0 快捷装备**（[0x8880] 记录块 stride 0xC24）；0x44BC30 快捷使用。
 - 落盘：equipment-packet-handler-evidence.json（F470，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 164。
+## Round 165 (F471) — 2026-08-12：装备音效分派器（0x42E2D0）
+
+- **〔分派〕**0x42E2D0：类 [item+0x22] ≤ 0x1F 跳表 0x42E404（字节映射 0x42E428）→ 音效 ID 0x6B-0x76（0x45AFC0 @0x8AB130）；武器子类 [0x23] ≥ 0x6A → 0x76；名称门（0x47BDDC/0x47BDD4）→ 0x72/0x75；防具类 1-2 → 0x6B。
+- **〔修正〕**F470「英雄同步 0x42E2D0」= **音效分派器**（外观 = 绘制时读槽记录）。
+- 落盘：equip-sound-dispatcher-evidence.json（F471，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 165。

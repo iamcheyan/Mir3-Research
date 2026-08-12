@@ -1051,6 +1051,11 @@ git diff --check
 - **装备包全族 + 英雄同步**（装备面板闭合）。
 - 落盘：`equipment-packet-handler-evidence.json`（F470）+ RESEARCH_LOG Round 164。
 
+## Round 165 (2026-08-12) — 装备音效分派器（Finding 471）
+
+- **0x42E2D0 = 音效**（F470 语义修正）。
+- 落盘：`equip-sound-dispatcher-evidence.json`（F471）+ RESEARCH_LOG Round 165。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
