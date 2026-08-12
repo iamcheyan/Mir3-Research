@@ -6125,3 +6125,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分布〕**flag0 {0: 294, 1: 22, 2: 232, 3: 240, 252: 313, 253: 33, 254: 164, 255: 317 格}；**252-255 = 每图 1 个哨兵格**（317 图）——边缘/动画标记，非群体阻挡。
 - **〔阻挡〕**客户端移动阻挡 = **type 0x32 小地图标记**（0x4123E3 门 [0x7E335C]+0x88==0x32 → 返回 1 阻挡；pick/select 排除 0x32）——**非单元旗标**；单元旗标 = 瓦片行 attr（F331 attr/7）。
 - 落盘：cell-flag-analysis-evidence.json（F384，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 78。
+## Round 79 (F385) — 2026-08-12：动画单元分析（7.56M 格 / 326 图 + midAnim 循环）
+
+- **〔分布〕**动画格 7,564,096 / 326 图（D022/D032/D042/D052 各 250000 = 500×500 全动画水图；D003/D011/D033/D043/D053/D1001 等 160000）。
+- **〔D022〕**midAnim {0: 249911, 152: 89}、frontAnim 全 0xFF 静态、mid libs {15: 238198, 12: 11802}——**midAnim 0 = 水/熔岩循环索引**。
+- **〔客户端〕**帧空判断 0x43BBBB ==0xFFFF 精确；非 0xFF 动画字节 = 帧循环组。
+- 落盘：animated-cells-analysis-evidence.json（F385，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 79。

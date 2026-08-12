@@ -1,0 +1,40 @@
+{
+  "evidence_id": "animated-cells-analysis-2026-08-12-f385",
+  "title": "Round 79 (F385): Animated cells analysis - 7.56M animated cells across 326 maps (D022/D032/D042/D052 250000 each), midAnim byte 0 = water/lava cycle index (not 0xFF), client frame check ==0xFFFF (0x43BBBB), anim byte drives frame cycling",
+  "date": "2026-08-12",
+  "objective": "Analyze animated map cells: distribution, anim byte values, and the client's animation frame mechanism.",
+  "question": "How many animated cells exist, and how does the client cycle their frames?",
+  "method": "map-audit animated_cells aggregation; D022 byte-level anim analysis; client frame-check cross-ref (0x43BBBB).",
+  "scope": "map-audit.json (544 maps); D022.map; client 0x43BB10-0x43BBBB.",
+  "cell_analysis": {
+    "distribution": {"total": "7,564,096 cells / 326 maps", "top": {"D022/D032/D042/D052": "250000 each (500x500 all-animated)", "D003/D011/D033/D043/D053/D1001/D10011/D421": "160000 each"}},
+    "D022_detail": {"midAnim": "{0: 249911, 152: 89}", "frontAnim": "{255: 250000} (all static front)", "mid_libs": "{15: 238198, 12: 11802}", "anim_index": "midAnim byte 0 (not 0xFF) = animation cycle index 0"},
+    "client_anim": {
+      "frame_check": "0x43BBBB cmp frame, 0xFFFF (exact, not mask) - empty frames skipped",
+      "anim_byte": "midAnim/frontAnim bytes (cell +1/+2) = animation index; 0xFF = static; other = cycle frame group",
+      "render": "frame = base + anim-cycle (client advances animated cells per tick)"
+    }
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 + anim advance (F331); frame check 0x43BBBB"
+  },
+  "audit_vs_exe": {
+    "F331/F378": "frame semantics confirmed (0xFFFF exact)",
+    "F384": "cell flag/anim bytes = metadata (not blocking)"
+  },
+  "contrast": {
+    "static_vs_animated": "0xFF = static cell; 0-254 = animation index (water/lava/light cycles)",
+    "mid_vs_front_anim": "mid anim (water) dominant; front mostly static"
+  },
+  "verdict": "Animated cells analyzed (primary-bytes): 7.56M animated cells in 326 maps (all-water maps D022 family = 250000 each); midAnim byte 0 = water/lava cycle index; client checks ==0xFFFF for empty (0x43BBBB) and cycles non-0xFF frames.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Anim distribution from map binaries; frame check from MIR3.EXE.",
+  "cross_refs": ["F331: tile render", "F378: 0xFFFF exact compare", "F384: cell metadata"],
+  "tool": "map-audit analysis; struct scan; capstone refs",
+  "reproduce": "aggregate animated_cells; dump D022 cell +1/+2 bytes; verify 0x43BBBB",
+  "notes": [
+    "midAnim 152 (89 cells in D022) = second anim index (special feature)",
+    "anim frame advance rate = tick-driven (0x40C4B0 entity cycle analog for tiles) [candidate]",
+    "water maps (D0xx caves) = the dominant animated terrain"
+  ]
+}

@@ -617,6 +617,11 @@ git diff --check
 - **flag0 分布**（0-3 + 252-255 哨兵格）；**客户端阻挡 = type 0x32 标记（0x4123E3）非单元旗标**；单元旗标 = 瓦片行 attr。
 - 落盘：`cell-flag-analysis-evidence.json`（F384，primary-bytes）+ RESEARCH_LOG Round 78。
 
+## Round 79 (2026-08-12) — 动画单元分析（Finding 385）
+
+- **7.56M 动画格 / 326 图**（D022 族全动画水图）；midAnim 0 = 水/熔岩循环；客户端 ==0xFFFF 帧检查。
+- 落盘：`animated-cells-analysis-evidence.json`（F385，primary-bytes）+ RESEARCH_LOG Round 79。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
