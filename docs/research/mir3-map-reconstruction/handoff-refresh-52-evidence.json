@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-52-2026-08-12-f727",
+  "title": "Round 421 (F727): HANDOFF refresh 52 - Rounds 418-420 (F724-F726: HANDOFF 51, hero update/death-spawn, hero runtime final closure + F614 collision fix), baseline Round 417=ab0e0d5 -> Round 420=cbbf2ac (385 consecutive F335-F726), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 418-420.",
+  "question": "What changed since HANDOFF refresh 51?",
+  "method": "Append Round 418-420 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 418-420 appended (3 rounds, F724-F726)",
+    "baseline": "Round 417=ab0e0d5 -> Round 420=cbbf2ac (385 consecutive F335-F726)",
+    "arcs": {"death": "F725 hero death/spawn", "closure": "F726 hero final"},
+    "key": "hero runtime complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F724": "refresh 51 baseline -> now refresh 52", "F335-F726": "385 rounds"
+  },
+  "contrast": {
+    "refresh_51_vs_52": "F725-F726 (2 new findings + collision fix)"
+  },
+  "verdict": "HANDOFF refreshed 52 (F727): Rounds 418-420 documented (hero runtime complete + F614 fix), baseline ab0e0d5 -> cbbf2ac, 385 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F725-F726 evidence.",
+  "cross_refs": ["F724: refresh 51", "F726: hero closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 418-420 section to HANDOFF",
+  "notes": [
+    "385 consecutive shipping rounds F335-F726",
+    "F614 filename collision fixed",
+    "next: remaining deep corners, sim polish"
+  ]
+}

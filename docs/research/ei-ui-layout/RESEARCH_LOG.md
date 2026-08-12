@@ -7814,3 +7814,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**350 证据 JSON**；三服务 200；master 431153f（**384 连发 F335-F725 已推**）。
 - **〔弧〕**英雄移动（F695）+ 英雄弧（F696）+ 更新/死亡（F725）——**英雄运行时完整**（8 方向移动 + msg 0xBC3 + 状态 [0x62A50..0x62AE4] + 数据装载 + 死亡/重生链表 + 1500ms 重生），**列明角落 0x410100 闭合**。
 - 落盘：hero-runtime-arc-closure-evidence.json（F726，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 420。
+## Round 421 (F727) — 2026-08-12：HANDOFF 刷新 52（Round 418-420）
+
+- **〔刷新〕**HANDOFF 追加 Round 418-420（F725-F726：英雄更新/死亡重生 + 英雄最终闭合 + F614 冲突修复）；基线 Round 417=ab0e0d5 → Round 420=cbbf2ac（**385 连发 F335-F726**）。
+- 落盘：handoff-refresh-52-evidence.json（F727，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 421。
