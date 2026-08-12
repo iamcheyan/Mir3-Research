@@ -6507,3 +6507,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分类〕**类1 0x430C40 = 魔御（8 元素行 F457）；**类2 0x431E50 + 类4 0x431860 = 武器要求/攻击**（精神力要求 幻影/黑暗/神圣系 + 魔法力要求 狂风/雷电/冰冻/火焰/全魔系 + 全道系 + 攻击力要求 + 等级要求: %d + 攻击: %d-%d(+%d)）；**类3 0x432A80 = 特殊装备**（诅咒/幸运/攻击速度±/准确/强度/神圣）；**类5 0x433CF0 = 消耗品**（纯度/品质/数量/魔法恢复+%dMP/生命恢复+%dHP）。
 - **〔闭合〕**F340 提示框族全闭合。
 - 落盘：item-tooltip-five-classes-evidence.json（F458，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 152。
+## Round 153 (F459) — 2026-08-12：地面物品渲染（0x40CE30）
+
+- **〔渲染〕**0x40CE30 掉落物品实体绘制：帧 = [0x62A24] + 0x355（type 0xF）/0x352（其他）→ 0x4542A0（存储 0x5600FC type **0x51 = 物品槽**）→ 0x566780 上下文 → 0x466130 装载 → [0xE4]/[0xE8] 投影 blit + 0x467000 文本 + 屏幕 vtable。
+- **〔修正〕**「msg 0x285」= 误报（jbe 位移 0x285）— 商店货物 msg id 仍未知（pending）。
+- 落盘：ground-item-render-evidence.json（F459，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 153。

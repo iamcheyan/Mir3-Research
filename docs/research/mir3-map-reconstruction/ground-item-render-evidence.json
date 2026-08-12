@@ -1,0 +1,37 @@
+{
+  "evidence_id": "ground-item-render-2026-08-12-f459",
+  "title": "Round 153 (F459): Ground-item render 0x40CE30 - dropped-item entity draw: item frame = byte [entity+0x62A24] + 0x355 (type [0xC0]==0xF) / 0x352 (else), frame lookup 0x4542A0 on store 0x5600FC (type 0x51 = item slot) -> 0x566780 WIL context -> 0x466130 load, sprite blit at [0xE4]/[0xE8] (F438 projection) via 0x466800 transform + 0x467000 text + screen 0x8AB7BC vtable (+0x40/+0x14/+0x30/+0x2C/+0x8C/+0x64); the 'msg 0x285' constant = false positive (jbe displacement) - store-goods msg source remains unknown",
+  "date": "2026-08-12",
+  "objective": "Decode the ground-item render function; resolve the store-goods msg 0x285 question.",
+  "question": "How does the client render dropped ground items?",
+  "method": "Disasm 0x40CE30-0x40D0E0 + constant verification.",
+  "scope": "0x40CE30-0x40D0E0; item context 0x566780; store 0x5600FC.",
+  "cell_analysis": {
+    "render": {"frame": "[entity+0x62A24] + 0x355 (type [0xC0]==0xF) / 0x352 (else)", "lookup": "0x4542A0(store 0x5600FC, 0x51 = item slot, 0, frame) -> context", "load": "0x566780 context + 0x466130 (F436 loader)", "draw": "sprite at [esi+0xE4]/[0xE8] (entity screen pos, F438) via 0x466800 transform + 0x467000 text + screen vtable 0x8AB7BC"},
+    "0x285_false_positive": "0x40CE4E bytes = jbe 0x40D0D7 displacement 0x285, NOT a msg constant - store-goods packet msg id still unknown",
+    "store_slots": "type 0x51 = item icon slot in store 0x5600FC; 0x566780 = item WIL context"
+  },
+  "exe_trace": {
+    "ground_item": "dropped items = entity type (draw via this fn), frame from [0x62A24] + class base"
+  },
+  "audit_vs_exe": {
+    "F436": "0x466130 loader shared by ground items",
+    "F438": "projection [0xE4]/[0xE8] reused",
+    "F448": "store 0x5600FC type-slot semantics (0x51 = items)"
+  },
+  "contrast": {
+    "ground_vs_bag": "ground items draw via entity render; bag items = records (F293)",
+    "item_frame_vs_lib": "frame = [0x62A24] + class base (0x352/0x355 = item icon class offsets)"
+  },
+  "verdict": "Ground-item render PRIMARY-verified: 0x40CE30 draws dropped items (frame [0x62A24]+0x352/0x355 via store type 0x51 + 0x566780 + 0x466130, blit at F438 projection). Msg 0x285 = false positive; store-goods source stays pending.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Render decoded; 0x285 constant disproven (jbe displacement).",
+  "cross_refs": ["F436: frame loader", "F438: projection", "F448: store slots"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x40CE30+0x60",
+  "notes": [
+    "0x352/0x355 = item class icon bases (likely 0x351 + class)",
+    "0x566780 = separate item-icon WIL context",
+    "store goods msg id = pending (not 0x285)"
+  ]
+}
