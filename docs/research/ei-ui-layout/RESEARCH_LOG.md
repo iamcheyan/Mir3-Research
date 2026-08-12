@@ -6900,3 +6900,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x425040：状态字节 [0x98] 3 路（0=0x425280 公告 / 1=0x425440 敌对 / else=0x425590 联盟+成员）、每状态列表位置选择器（[0x9C]/[0xB4]/[0x114]）、**滚动条 0x4179B0 @ [0x76C]**（0x42514D）+ 6+ 控件矩形（0x417830）。
 - 落盘：guild-window-render-detail-evidence.json（F535，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 229。
+## Round 230 (F536) — 2026-08-12：组队窗渲染细节
+
+- **〔渲染〕**0x4243D0：标题 0xDCE6C8 + 名 0x7776A0、成员链遍历（计数 [0x68]、头 [0x58]、节点 {+4 名, +0xC next}）、**行距 = idx/2*20**（0x42444A：idx*5*4，F54 20px 确认）、成员名白 0xFFFFFF、5 控件（0x417830）、允许/拒绝串（0x47BA08/0x47BA00）。
+- 落盘：group-window-render-detail-evidence.json（F536，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 230。

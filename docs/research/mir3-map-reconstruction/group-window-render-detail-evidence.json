@@ -1,0 +1,35 @@
+{
+  "evidence_id": "group-window-render-detail-2026-08-12-f536",
+  "title": "Round 230 (F536): Group window render detail - 0x4243D0: title 0xDCE6C8 + name 0x7776A0, member list walk (count [0x68], head [0x58], node {+4 name, +0xC next}), ROW PITCH = idx/2*20 (0x42444A-0x424455: idx*5*4, F54 20px rows CONFIRMED), member names 0x45DD70 white 0xFFFFFF, 5 controls 0x417830 (@ [0x6C]/[0x120]/[0x1D4]/[0x288]/[0x33C]), group-state strings 0x47BA08/0x47BA00 (允许/拒绝) - F54 group family complete",
+  "date": "2026-08-12",
+  "objective": "Decode the group window render detail (F54).",
+  "question": "How does the group window render members?",
+  "method": "Disasm 0x4243D0-0x424598 (group paint).",
+  "scope": "0x4243D0-0x424598; list [0x58]/[0x68]; rows.",
+  "cell_analysis": {
+    "list": {"count": "[0x68]", "head": "[0x58] (node {+4 name, +0xC next})", "row_pitch": "idx/2*20 = idx*5*4 (0x42444A-0x424455, F54 20px confirmed)", "draw": "0x45DD70 white 0xFFFFFF"},
+    "controls": "5 x 0x417830 (@ [0x6C]/[0x120]/[0x1D4]/[0x288]/[0x33C])",
+    "state_strings": "0x47BA08/0x47BA00 (允许/拒绝, [0x3F0] gate)"
+  },
+  "exe_trace": {
+    "group_chain": "member list -> idx/2*20 rows -> names -> controls"
+  },
+  "audit_vs_exe": {
+    "F54": "20px rows + list structure confirmed", "F40": "group family", "F236": "group-state strings"
+  },
+  "contrast": {
+    "row_math": "idx/2*20 = two-column layout (idx/2 = column)",
+    "list_vs_controls": "member names vs 5 control areas"
+  },
+  "verdict": "Group window render PRIMARY-verified: member list walk + row pitch idx/2*20 (F54 exact), names white, 5 controls, 允许/拒绝 state strings. Group family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Group paint decoded from .text.",
+  "cross_refs": ["F54: group window", "F40: group family", "F236: state strings"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4243D0+0x60",
+  "notes": [
+    "idx/2*20 = 2-col member grid",
+    "0x47BA08/0x47BA00 = 允许/拒绝 (allow/deny)",
+    "5 controls = button/input areas"
+  ]
+}
