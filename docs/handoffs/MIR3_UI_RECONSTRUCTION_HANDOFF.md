@@ -1960,3 +1960,14 @@ simulator/style.css
 **装备/纸娃娃闭合（F988）**：646 连发 + 611 证据 JSON——装备完整（11 槽 + 纸娃娃帧 0xA1/0xA2 + 输入 + 详情），装备 + 纸娃娃表面 100%。
 
 **commit 基线更新**：Round 679=be6bdf1 → Round 682=ec09a52（master 已推，647 连发 F335-F988）。
+
+
+## Round 683-685 追加交付（2026-08-12，Finding 989-991）：HANDOFF 刷新 141 + HP 条 blit 全量 + HP 条系统闭合
+
+**HANDOFF 刷新 141（F989）**：基线更新至 Round 682=ec09a52（647 连发）。
+
+**HP 条 blit 全量（F990，F590 核心）**：0x4542F0 实体坐标 lerp 0x476364 → 矩阵 0x467000 D3DX + 0x466CE0/0x466F20 blit + **条帧 0x112 @ +0x13F9C** + 精灵 vtable 操作 + 失败 0x80004005。
+
+**HP 条系统闭合（F991）**：649 连发 + 614 证据 JSON——HP 条完整（注册表 type<5 + lerp + 矩阵 + 帧 0x112），HUD/实体覆盖 100%。
+
+**commit 基线更新**：Round 682=ec09a52 → Round 685=b8d775e（master 已推，650 连发 F335-F991）。
