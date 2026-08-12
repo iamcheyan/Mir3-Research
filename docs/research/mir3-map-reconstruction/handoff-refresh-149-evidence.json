@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-149-2026-08-12-f1013",
+  "title": "Round 707 (F1013): HANDOFF refresh 149 - Rounds 704-706 (F1010-F1012: HANDOFF 148, ground tile blit full, tile render closure), baseline Round 703=433e443 -> Round 706=a1eb641 (670 consecutive F335-F1012), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 704-706.",
+  "question": "What changed since HANDOFF refresh 148?",
+  "method": "Append Round 704-706 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 704-706 appended (3 rounds, F1010-F1012)",
+    "baseline": "Round 703=433e443 -> Round 706=a1eb641 (670 consecutive F335-F1012)",
+    "arcs": {"blit": "F1011 ground tile", "closure": "F1012 tile render"},
+    "key": "tile render complete; map tile 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1010": "refresh 148 baseline -> now refresh 149", "F335-F1012": "670 rounds"
+  },
+  "contrast": {
+    "refresh_148_vs_149": "F1011-F1012 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 149 (F1013): Rounds 704-706 documented (tile render complete), baseline 433e443 -> a1eb641, 670 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1011-F1012 evidence.",
+  "cross_refs": ["F1010: refresh 148", "F1012: tile render closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 704-706 section to HANDOFF",
+  "notes": [
+    "670 consecutive shipping rounds F335-F1012",
+    "next: remaining deep corners, sim polish"
+  ]
+}
