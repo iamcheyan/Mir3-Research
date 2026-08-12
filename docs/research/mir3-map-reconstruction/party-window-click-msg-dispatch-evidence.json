@@ -1,0 +1,35 @@
+{
+  "evidence_id": "party-window-click-msg-dispatch-2026-08-12-f845",
+  "title": "Round 539 (F845): Party window click + msg dispatch (F752 interactive side) - 0x424610: 5 buttons vtable[0x10]: 0x3FC invite (0x4522E0) / 0x3FD remove (0x452350) / 0x3FE (0x452380) + dialog window ctor 0x418030 @ 0x7E04C8 (0x565994 frame 6) + LEAVE toggle [0x3F0] -> 0x452310 + button frames 0x398/0x399 (0x417880); 0x4247C0 PARTY msg dispatch (0x3FC/0x3FD/0x3FE seq 0 -> same sends) - party window interactive COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the party window click + msg dispatch.",
+  "question": "How does the party window handle clicks + msgs?",
+  "method": "Disasm 0x424624-0x424827.",
+  "scope": "0x424624-0x424827; buttons.",
+  "cell_analysis": {
+    "0x424610": {"0x3FC": "0x4522E0", "0x3FD": "0x452350", "0x3FE": "0x452380", "leave": "[0x3F0] -> 0x452310"},
+    "0x4247C0": "party msg dispatch same sends"
+  },
+  "exe_trace": {
+    "party_chain": "button hit -> send | leave toggle"
+  },
+  "audit_vs_exe": {
+    "F752": "party draw", "F558": "mode 6", "F573": "senders"
+  },
+  "contrast": {
+    "click_vs_msg": "buttons + msgs",
+    "invite_vs_leave": "0x3FC + toggle"
+  },
+  "verdict": "Party window click + msg dispatch PRIMARY-verified: sends + leave toggle; party interactive complete (F752).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Party dispatch decoded from .text.",
+  "cross_refs": ["F752: party", "F558: registry", "F573: senders"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x424624+0x20; 0x4247C0+0x10",
+  "notes": [
+    "sends 0x4522E0/0x452350/0x452380/0x452310",
+    "leave [0x3F0]",
+    "frames 0x398/0x399",
+    "msg 0x3FC/0x3FD/0x3FE"
+  ]
+}

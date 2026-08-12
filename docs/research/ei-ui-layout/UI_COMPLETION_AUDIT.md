@@ -3041,3 +3041,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（交易完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 539 (2026-08-12) — 组队窗口点击 + 消息分派（Finding 845）
+
+- **邀请/移除/离开发送**（组队交互完整）。
+- 落盘：`party-window-click-msg-dispatch-evidence.json`（F845）+ RESEARCH_LOG Round 539。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队交互完整；下一弧：剩余深层角落）。
