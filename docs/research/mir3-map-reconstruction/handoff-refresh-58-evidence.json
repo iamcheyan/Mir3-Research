@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-58-2026-08-12-f745",
+  "title": "Round 439 (F745): HANDOFF refresh 58 - Rounds 436-438 (F742-F744: HANDOFF 57 + 400 milestone, skill record loader/display slots, skill family closure), baseline Round 435=6cd1af5 -> Round 438=7599abe (403 consecutive F335-F744), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 436-438.",
+  "question": "What changed since HANDOFF refresh 57?",
+  "method": "Append Round 436-438 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 436-438 appended (3 rounds, F742-F744)",
+    "baseline": "Round 435=6cd1af5 -> Round 438=7599abe (403 consecutive F335-F744)",
+    "arcs": {"skill": "F743 loader/display", "closure": "F744 skill"},
+    "key": "skill complete + write-only slots resolved"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F742": "refresh 57 baseline -> now refresh 58", "F335-F744": "403 rounds"
+  },
+  "contrast": {
+    "refresh_57_vs_58": "F743-F744 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 58 (F745): Rounds 436-438 documented (skill complete), baseline 6cd1af5 -> 7599abe, 403 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F743-F744 evidence.",
+  "cross_refs": ["F742: refresh 57", "F744: skill closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 436-438 section to HANDOFF",
+  "notes": [
+    "403 consecutive shipping rounds F335-F744",
+    "next: remaining deep corners, sim polish"
+  ]
+}
