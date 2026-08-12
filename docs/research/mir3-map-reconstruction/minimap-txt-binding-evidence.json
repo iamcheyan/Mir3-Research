@@ -1,0 +1,37 @@
+{
+  "evidence_id": "minimap-txt-binding-2026-08-12-f509",
+  "title": "Round 203 (F509): MiniMap.txt = server minimap binding - 37 map->frame pairs (range 1001-1038), 0.map->1001 (frame 0), 01.map->1002, 3.map->1018... EXACTLY matches F310 'FMMap value-1001' formula (1001+ = FMMap.wil frame index); StartPoint.txt = spawn coords (01 459 261 比奇县出生点, 01 439 304 等); server MiniMap table = the FMMap binding source the client receives",
+  "date": "2026-08-12",
+  "objective": "Decode the server MiniMap.txt binding table; cross-check F310's FMMap formula.",
+  "question": "What is the server-side minimap frame binding?",
+  "method": "MiniMap.txt parse (37 pairs) + F310 formula compare + StartPoint.txt sample.",
+  "scope": "MiniMap.txt (417 lines/37 pairs); StartPoint.txt (58 lines).",
+  "cell_analysis": {
+    "minimap_txt": {"pairs": "37 map->frame (range 1001-1038)", "binding": "0.map->1001 = frame 0, 01.map->1002, 3.map->1018", "f310_match": "FMMap value-1001 formula EXACTLY confirmed (1001+ = FMMap.wil index)"},
+    "startpoint": {"format": "map x y per line (01 459 261 = 比奇县出生点)", "purpose": "server spawn points (F423 spawn kind)"},
+    "significance": "MiniMap.txt = the server minimap binding source; client receives frames via packets (F310 runtime)"
+  },
+  "exe_trace": {
+    "minimap_chain": "MiniMap.txt -> server -> FMMap frame -> client minimap surface (F481/F482)"
+  },
+  "audit_vs_exe": {
+    "F310": "value-1001 formula server-confirmed",
+    "F481": "FMMap surface source = this table",
+    "F423": "spawn points from StartPoint.txt"
+  },
+  "contrast": {
+    "server_vs_client": "server binding table vs client runtime frames",
+    "37_vs_544": "37 maps have minimaps (bound set subset)"
+  },
+  "verdict": "MiniMap.txt PRIMARY-verified (server file): 37 map->frame pairs (1001-1038) exactly matching F310's FMMap value-1001; StartPoint.txt spawn coords confirmed. Server minimap binding = client FMMap frame source.",
+  "evidence_level": "secondary (server file) + primary (F310 formula cross-confirm)",
+  "evidence_level_note": "File parse from server; formula from F310 client evidence.",
+  "cross_refs": ["F310: FMMap formula", "F481: surface", "F423: spawns"],
+  "tool": "python txt parse",
+  "reproduce": "parse MiniMap.txt; 0.map->1001-1001=0",
+  "notes": [
+    "1001 base = FMMap frame offset (value-1001 = frame)",
+    "37 maps = minimap-enabled subset (F396 211 bound overlap)",
+    "StartPoint.txt = spawn map/coords (F423 source)"
+  ]
+}

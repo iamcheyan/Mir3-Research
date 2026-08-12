@@ -6775,3 +6775,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔格式〕**magic.dat = 105 法术 × 120B 步长（精确，12604 = 105*120+4）+ 4B 计数头；名称 @ rec+0x6B（EUC-KR/Hanja、0x11 终止）——服务端 DB 三件套（monster/stditem/magic）全可解码（F501/F502 同族）。
 - **〔客户端〕**法术名包驱动（F351 Magic.exp）。
 - 落盘：magic-dat-format-evidence.json（F508，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 202。
+## Round 203 (F509) — 2026-08-12：MiniMap.txt 服务端小地图绑定
+
+- **〔绑定〕**MiniMap.txt = 37 map→帧对（1001-1038）、0.map→1001（帧 0）——**精确匹配 F310「FMMap value−1001」公式**（1001+ = FMMap.wil 帧索引）。
+- **〔出生点〕**StartPoint.txt = 出生坐标（01 459 261 比奇县出生点，F423 源）。
+- 落盘：minimap-txt-binding-evidence.json（F509，secondary + F310 交叉）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 203。
