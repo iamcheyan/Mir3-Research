@@ -7754,3 +7754,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 403-405（F710-F711：控件绘制状态机/滚动条尾部 + 控件+滚动条最终闭合）；基线 Round 402=0f4dfea → Round 405=5e67f53（**370 连发 F335-F711**）。
 - 落盘：handoff-refresh-48-evidence.json（F712，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 406。
+## Round 407 (F713) — 2026-08-12：窗口基类构造
+
+- **〔窗口基类〕**0x418030：调控件列表 ctor 0x417FB0；[0x45C]=WIL、[0x4]=0x3B6、标题→[0x2C]、**居中默认（0x190/0xF6 = 400/246）**、模式 0/1/2 设槽可见 [0x234]/[0x2EC]/[0x3A4]+[0x462]；**3 个窗口边框按钮**（F701 九参 ctor）@ +0x238/+0x2F0/+0x3A8（帧 0x97/0x98、0x9D/0x9E、0x9A/0x9B、y 偏移 +0x33/+0x93/+0xF4）；0x418020 = jmp 0x417FB0 别名——带 3 内嵌控件的窗口基类。
+- 落盘：window-base-ctor-evidence.json（F713，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 407。

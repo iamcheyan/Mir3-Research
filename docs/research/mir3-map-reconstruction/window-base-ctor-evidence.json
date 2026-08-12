@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-base-ctor-2026-08-12-f713",
+  "title": "Round 407 (F713): Window base ctor 0x418030 - calls control-list ctor 0x417FB0; [0x45C]=WIL, [0x4]=0x3B6, title->[0x2C], center default (0x190/0xF6 = 400/246), mode 0/1/2 sets slot visibility [0x234]/[0x2EC]/[0x3A4]+[0x462]; 3 chrome buttons via F701 9-arg ctor @ +0x238/+0x2F0/+0x3A8 (frames 0x97/0x98, 0x9D/0x9E, 0x9A/0x9B, y offsets +0x33/+0x93/+0xF4) - window base with 3 embedded controls (0x418020 = jmp 0x417FB0 alias)",
+  "date": "2026-08-12",
+  "objective": "Decode the window base ctor.",
+  "question": "How is the window base class constructed?",
+  "method": "Disasm 0x418020-0x4181DA.",
+  "scope": "0x418020-0x4181DA; control slots.",
+  "cell_analysis": {
+    "0x418020": "jmp 0x417FB0 (control-list ctor alias)",
+    "0x418030": {"WIL": "[0x45C]", "type": "[0x4] = 0x3B6", "title": "[0x2C]", "center": "0x190/0xF6 (400/246)"},
+    "mode": {"0": "[0x2EC]=1 [0x462]=1", "1": "[0x234]=[0x3A4]=1", "2": "all 0"},
+    "buttons": {"c1": "+0x238 frames 0x97/0x98 y+0x33", "c2": "+0x2F0 frames 0x9D/0x9E y+0x93", "c3": "+0x3A8 frames 0x9A/0x9B y+0xF4"}
+  },
+  "exe_trace": {
+    "window_chain": "base ctor -> 3 chrome buttons (F701 ctor) -> window body"
+  },
+  "audit_vs_exe": {
+    "F701": "control ctor used for chrome", "F313": "window base", "F710": "control-list"
+  },
+  "contrast": {
+    "base_vs_chrome": "base ctor + 3 buttons",
+    "mode_vs_slots": "visibility modes"
+  },
+  "verdict": "Window base ctor PRIMARY-verified: control-list + title + center + 3 chrome buttons; window base class with 3 embedded controls.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Window base decoded from .text.",
+  "cross_refs": ["F701: control ctor", "F313: windows", "F710: control-list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x418020+0x10; 0x418030+0x20",
+  "notes": [
+    "3 chrome buttons frames 0x97-0x9E",
+    "center 400x246",
+    "title [0x2C]",
+    "mode visibility flags"
+  ]
+}
