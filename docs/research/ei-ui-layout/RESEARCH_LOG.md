@@ -7338,3 +7338,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔层〕**0x40BB00：显示旗标 [0x620A0] + **悬停计时器 [0x6209C]（0xBB8 = 3000ms → 清名缓冲 [0x621A4] 0x208 双字，F531 目标框计时器连接）**、名 [0x621A4] + 模式 [0x61C8C]（1 = 居中名文本 0x45E0C0+0x45DE50，否则等级缩放偏移）。
 - **〔渲染〕**SetRect + 渐变 0x466800（0x3E20A0A1 族）+ 屏幕 vtable[0x40]/[0x14] 投影——英雄头顶名/等级文本字节级（F531/F590 连接）。
 - 落盘：hero-name-level-text-evidence.json（F621，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 315。
+## Round 316 (F622) — 2026-08-12：实体屏幕投影 + HP 框
+
+- **〔投影〕**0x40B2A0 = 光阴影（0x434A20 0x190×0xF2，F436）；0x40B2C0 = **实体世界→屏幕投影**（[0xE4] = (wx−camX)×3×16 − camY + wy − 0xC8、[0xE8] = (wy−camY)×32……48×32 F435 数学，相机 [0x12C]/[0x130]/[0x134]/[0x138]）。
+- **〔HP 框〕**实体 [0x90] 帧 + **HP 选择**（[0x61C64]/[0x61B99] 旗标、[0xB4]/[0xB8]/[0xC4] F350）→ 0x466130 帧 + SetRect + **钳制 0x3A（58px）/0x28（40px）** → [0xA4]/[0xA8]/[0xAC] 目标矩形——实体投影 + 目标 HP 框字节级。
+- 落盘：entity-projection-hp-frame-evidence.json（F622，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 316。

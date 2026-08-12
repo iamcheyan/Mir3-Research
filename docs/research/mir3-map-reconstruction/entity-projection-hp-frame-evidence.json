@@ -1,0 +1,35 @@
+{
+  "evidence_id": "entity-screen-projection-hp-frame-2026-08-12-f622",
+  "title": "Round 316 (F622): Entity screen projection + HP frame - 0x40B2A0 = light shadow (0x434A20 0x190x0xF2, F436); 0x40B2C0 = entity world->screen projection ([0xE4] = (wx-camX)*3*16 - camY + wy - 0xC8, [0xE8] = (wy-camY)*32 - ... 48x32 F435 math, camera [0x12C]/[0x130]/[0x134]/[0x138]) + HP FRAME: entity [0x90] frame + HP select ([0x61C64]/[0x61B99] flags, [0xB4]/[0xB8]/[0xC4] F350) -> 0x466130 frame + SetRect + clamp 0x3A (58px) / 0x28 (40px) -> [0xA4]/[0xA8]/[0xAC] target rect - entity projection + target HP frame byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the entity screen projection + HP frame.",
+  "question": "How do entities project + render HP frames?",
+  "method": "Disasm 0x40B2A0-0x40B460.",
+  "scope": "0x40B2A0-0x40B460; projection; HP frame.",
+  "cell_analysis": {
+    "0x40B2A0": "light shadow (0x434A20 0x190x0xF2, F436)",
+    "0x40B2C0": {"proj": "[0xE4] = (wx-camX)*3*16 - camY + wy - 0xC8; [0xE8] = (wy-camY)*32 (48x32 F435, camera [0x12C]/[0x130]/[0x134]/[0x138])", "hp_frame": "entity [0x90] + HP select ([0x61C64]/[0x61B99], [0xB4]/[0xB8]/[0xC4] F350) -> 0x466130 + SetRect + clamp 0x3A/0x28 -> [0xA4]/[0xA8]/[0xAC]"}
+  },
+  "exe_trace": {
+    "proj_chain": "entity paint -> 0x40B2C0 world->screen -> HP frame select -> blit"
+  },
+  "audit_vs_exe": {
+    "F435": "48x32 projection CONFIRMED", "F436": "light shadow", "F350": "HP formula", "F590": "HP bar"
+  },
+  "contrast": {
+    "proj_vs_frame": "screen projection + HP frame rect clamp",
+    "hp_select": "[0x61C64]/[0x61B99] flags choose HP source"
+  },
+  "verdict": "Entity projection + HP frame PRIMARY-verified: 48x32 world->screen + HP frame select + clamp; F435/F436/F350 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Projection + frame decoded from .text.",
+  "cross_refs": ["F435: projection", "F436: shadow", "F350: HP", "F590: bar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40B2C0+0x50",
+  "notes": [
+    "proj math = 48x32 F435",
+    "camera [0x12C..0x138]",
+    "HP frame clamp 0x3A/0x28 px",
+    "HP select flags [0x61C64]/[0x61B99]"
+  ]
+}
