@@ -816,6 +816,11 @@ git diff --check
 - **Envir 3323 实体解析**（出生/NPC/怪物+掉落）；mapviewer --envir 服务；F254 标记运行时分离。
 - 落盘：`map-entity-markers-verification-evidence.json`（F423）+ RESEARCH_LOG Round 117。
 
+## Round 118 (2026-08-12) — 怪物刷怪覆盖（Finding 424）
+
+- **288 刷怪图**（0.map 348 热点）；**184 EI + 104 服务端专属**（F396 缺口吻合）。
+- 落盘：`monster-spawn-coverage-evidence.json`（F424）+ RESEARCH_LOG Round 118。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "monster-spawn-coverage-2026-08-12-f424",
+  "title": "Round 118 (F424): Monster spawn coverage - 288 maps with spawns (0.map 348/1.map 279/4.map 127 city outskirts), 184 spawn maps in EI dir + 104 server-only (D6015/D515/D15xx = F396 gap), spawn-vs-bound correlation",
+  "date": "2026-08-12",
+  "objective": "Analyze monster spawn map coverage and correlate with the EI bound map set.",
+  "question": "Where do monsters spawn, and do the spawn maps exist in the EI package?",
+  "method": "Envir MonGen parse (monster counts per map); EI Map dir correlation.",
+  "scope": "MonGen.txt; EI Map dir; F396 server-only gap.",
+  "cell_analysis": {
+    "coverage": {"monster_maps": 288, "top": "0.map 348 / 1.map 279 / 4.map 127 / 9.map 96 / 2.map 74 / 41.map 45"},
+    "ei_correlation": {"in_ei": "184 spawn maps shipped", "server_only": "104 spawn maps absent (D6015/D515/D1506/D904/D1606/d14xx/d15xx etc = F396 gap)"},
+    "f396_consistency": "104 spawn-only ≈ 102 server-only map gap (MiniMap) - overlapping server-side maps the EI client lacks"
+  },
+  "exe_trace": {
+    "spawn": "MonGen.txt (map x y name count level attack respawn) + .gen expansions"
+  },
+  "audit_vs_exe": {
+    "F396": "server-only gap confirmed by spawn data",
+    "F423": "entity parse consistent"
+  },
+  "contrast": {
+    "spawn_vs_bound": "288 spawn maps vs 211 bound: cities (0/1/4) are the spawn hotspots",
+    "in_vs_out": "184 spawn maps playable; 104 spawn maps unplayable (missing files)"
+  },
+  "verdict": "Monster spawn coverage verified (secondary-server): 288 spawn maps, cities dominate (0.map 348); 184 in EI + 104 server-only (F396 gap). Spawn data confirms the 102-map server-only class.",
+  "evidence_level": "secondary (server MonGen)",
+  "evidence_level_note": "Spawn counts from server MonGen; EI correlation from map dir.",
+  "cross_refs": ["F396: server-only gap", "F423: entity parse", "F342: map inventory"],
+  "tool": "mapviewer load_entities; python3 Counter",
+  "reproduce": "python3 load_entities(Envir); Counter(e['map'] for monsters); correlate with Map dir",
+  "notes": [
+    "0.map 348 monster spawns = 比奇城 outskirts (hunting grounds)",
+    "104 spawn-only maps = server config references unshipped maps",
+    "spawn counts include .gen loadgen expansions"
+  ]
+}

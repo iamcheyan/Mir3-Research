@@ -6315,3 +6315,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实体〕**服务端 Envir 解析：3323 = 18 出生点（12 图，0.map 3）+ 318 NPC（79 图，0.map 46 比奇城）+ 2987 怪物（带掉落：金币 33%/号角 10%）。
 - **〔服务〕**mapviewer /api/entities 需 --envir 参数（StartPoint/Merchant/MonGen）；F254 type-0x32 标记 = 运行时推送（0x560070 列表），与静态实体分离。
 - 落盘：map-entity-markers-verification-evidence.json（F423，secondary + F254 primary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 117。
+## Round 118 (F424) — 2026-08-12：怪物刷怪覆盖（288 图 + 104 服务端专属）
+
+- **〔覆盖〕**288 刷怪图（0.map 348、1.map 279、4.map 127 城郊热点）；**184 在 EI + 104 服务端专属**（D6015/D515/D15xx = F396 缺口吻合）。
+- 落盘：monster-spawn-coverage-evidence.json（F424，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 118。
