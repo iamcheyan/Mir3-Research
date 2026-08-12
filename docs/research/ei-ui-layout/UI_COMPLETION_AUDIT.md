@@ -2961,3 +2961,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（任务窗口完整；下一弧：HANDOFF 刷新 88/剩余角落）。
+## Round 529 (2026-08-12) — HANDOFF 刷新 88（Finding 835）
+
+- **Round 526-528 追加 + 493 连发**（任务窗口完整入档）。
+- 落盘：`handoff-refresh-88-evidence.json`（F835）+ RESEARCH_LOG Round 529。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务窗口完整；下一弧：剩余深层角落/模拟器 polish）。

@@ -8282,3 +8282,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**458 证据 JSON**；三服务 200；master a12f20d（**492 连发 F335-F833 已推**）。
 - **〔弧〕**注册表（F558）+ 任务绘制（F671）+ 绘制体（F833）——**任务窗口完整**（19 行列表 + 标题换行 + 状态色 + 2 按钮），模式 B 全渲染。
 - 落盘：quest-window-closure-evidence.json（F834，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 528。
+## Round 529 (F835) — 2026-08-12：HANDOFF 刷新 88（Round 526-528）
+
+- **〔刷新〕**HANDOFF 追加 Round 526-528（F833-F834：任务窗口绘制体 + 任务窗口闭合）；基线 Round 525=720d442 → Round 528=7041814（**493 连发 F335-F834**）。
+- 落盘：handoff-refresh-88-evidence.json（F835，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 529。
