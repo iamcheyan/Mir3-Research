@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-60-2026-08-12-f751",
+  "title": "Round 445 (F751): HANDOFF refresh 60 - Rounds 442-444 (F748-F750: HANDOFF 59, trade slot layout, trade window arc closure), baseline Round 441=2599ac2 -> Round 444=e69704e (409 consecutive F335-F750), doc maintenance + refresh-60 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 442-444.",
+  "question": "What changed since HANDOFF refresh 59?",
+  "method": "Append Round 442-444 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 442-444 appended (3 rounds, F748-F750)",
+    "baseline": "Round 441=2599ac2 -> Round 444=e69704e (409 consecutive F335-F750)",
+    "milestone": "HANDOFF refresh 60 reached",
+    "arcs": {"trade": "F749 slot layout", "closure": "F750 trade"},
+    "key": "trade window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F748": "refresh 59 baseline -> now refresh 60", "F335-F750": "409 rounds"
+  },
+  "contrast": {
+    "refresh_59_vs_60": "F749-F750 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 60 (F751): Rounds 442-444 documented (trade complete), baseline 2599ac2 -> e69704e, 409 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F749-F750 evidence.",
+  "cross_refs": ["F748: refresh 59", "F750: trade closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 442-444 section to HANDOFF",
+  "notes": [
+    "409 consecutive shipping rounds F335-F750",
+    "HANDOFF refresh 60 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}
