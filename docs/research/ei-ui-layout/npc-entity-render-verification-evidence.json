@@ -1,0 +1,45 @@
+{
+  "evidence_id": "npc-entity-render-verification-2026-08-12-f367",
+  "title": "Round 61 (F367): NPC entity rendering verified - F287 (vtable 0x47671C, NPC.wil slot 127, body strips 0x44A090, frame = 100*body+10*(flag%3)) + sim entity sprite (行会管理员 -> NPC.wil F30 browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the NPC scene entity rendering chain: F287 (NPC vtable, body strips, frame formula) and the simulator's entity sprite rendering.",
+  "question": "How does the original blit NPC entities, and does the sim render them with the closed formula?",
+  "method": "Cross-validated against F287 (npc-body-strip-evidence.json); sim entityFrame; browser verification.",
+  "scope": "F287 evidence; sim app.js entityFrame; browser 8765/sim.",
+  "cell_analysis": {
+    "npc_entity_F287": {
+      "vtable": "0x47671C (type 0x32 -> alloc 0x629C8 -> ctor 0x404960; +0x0C = 0x404FB0 packet dispatch, +0x7C = 0x40C020 scene blit)",
+      "body_strips": "body 0x38/0x39 strips 4..11 = 0x44A090 unconditional overwrite (0,12,0x50=80ms); frame counter [0xC4] base..base+11 cycle; 0x40C4B0 frame advance ([0xC8]+=delta, wrap [0xC4]=[0xB4], [0x61C68]&0x8000000 interval x2)",
+      "frame_formula": "NPC frame = word[0x8AA6C8+6*state] + 100*body + 10*(flag%3); body = [edi+2]/[esi+0x8A]",
+      "lib": "NPC.wil = path table slot 127 (dest +0x13330); standard body 42 frames"
+    },
+    "sim_render": {
+      "entityFrame": "npc: base += 100*a.body + 10*((a.flag||0)%3); state table cycle w2",
+      "browser": "行会管理员 sprite rendered -> src NPC.wil F30 (formula-applied frame)"
+    }
+  },
+  "exe_trace": {
+    "npc_entity": "type 0x32, vtable 0x47671C (F287)",
+    "npc_wil": "slot 127 (F331 slot table)"
+  },
+  "audit_vs_exe": {
+    "F287": "NPC vtable + body strips + frame formula confirmed",
+    "F331": "NPC.wil slot 127 confirmed",
+    "F279": "frame table state cycle confirmed"
+  },
+  "contrast": {
+    "npc_vs_monster": "NPC 100*body+10*(flag%3); monster 1000*(race%10)+10*flag - different body scales",
+    "npc_vs_dialog": "NPC scene = NPC.wil sprites; NPC dialog portrait = NPCFace.wil (F287/F331)"
+  },
+  "verdict": "NPC entity rendering verified (primary-bytes via F287): vtable 0x47671C, NPC.wil slot 127, body strips 0x44A090, frame = 100*body+10*(flag%3). Sim renders 行会管理员 with the closed formula (NPC.wil F30, browser-verified).",
+  "evidence_level": "derived-tooling (source evidence primary-static F287)",
+  "evidence_level_note": "NPC rendering facts from F287 primary evidence; sim formula-implemented.",
+  "cross_refs": ["F287: npc-body-strip-evidence.json", "F331: NPC.wil slot 127", "F279: frame tables"],
+  "tool": "app.js inspection; puppeteer browser",
+  "reproduce": "open sim; login; observe NPC sprite 行会管理员 (NPC.wil frame via formula)",
+  "notes": [
+    "NPC body standard layout 42 frames (state0 3 + state1 3, state2 blank)",
+    "body byte [esi+0x8A] server-filled (F287: no direct .text writer)",
+    "NPCFace.wil only used in NPC dialog window (F287 negative for monster portraits)"
+  ]
+}

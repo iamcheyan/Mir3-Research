@@ -509,6 +509,12 @@ git diff --check
 - **模拟器切换**：211 绑定循环（比奇县→边境城市，浏览器验证）。
 - 落盘：`map-transition-verification-evidence.json`（F366）+ RESEARCH_LOG Round 60。
 
+## Round 61 (2026-08-12) — NPC 场景实体渲染（Finding 367）
+
+- **F287**：NPC vtable 0x47671C + NPC.wil slot 127 + body 条带 + 帧公式 100*body+10*(flag%3)。
+- **模拟器精灵**：行会管理员 → NPC.wil F30（浏览器验证）。
+- 落盘：`npc-entity-render-verification-evidence.json`（F367）+ RESEARCH_LOG Round 61。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

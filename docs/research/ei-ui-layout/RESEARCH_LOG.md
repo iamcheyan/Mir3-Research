@@ -6005,3 +6005,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F333 0x422960〕**type 0x33/0x27A：门（mode [0x2F8840]==3 + 环记账）或 timer [0x4279A4]；处理 = 存盘 0x42E1F0 → 窗口 flush 0x45B1D0/0x45B3D0 → 1500ms 限流 → 12 槽清零 → 坐标 → 停全部音效+BGM（0x4229E9/0x4229F3）。
 - **〔模拟器〕**setCurrentMap/cycleMinimap（211 绑定、FMMap.wil）。**浏览器验证**：比奇县 → 边境城市 → 比奇县。
 - 落盘：`map-transition-verification-evidence.json`（F366，derived-tooling；源证据 primary-static F333）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 60。
+
+## Round 61 (F367) — 2026-08-12：NPC 场景实体渲染验证（F287 帧公式 + 模拟器精灵）
+
+- **〔F287〕**NPC 实体 vtable 0x47671C（type 0x32）；NPC.wil = slot 127；body 条带 0x44A090（0,12,0x50=80ms）；**帧 = word[0x8AA6C8+6*state] + 100*body + 10*(flag%3)**；0x40C4B0 帧推进。
+- **〔模拟器〕**entityFrame NPC 分支 = 100*body + 10*(flag%3) + 状态表循环。**浏览器验证**：行会管理员 → NPC.wil F30。
+- 落盘：`npc-entity-render-verification-evidence.json`（F367，derived-tooling；源证据 primary-static F287）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 61。
