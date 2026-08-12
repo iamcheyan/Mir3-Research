@@ -6490,3 +6490,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master d803935（**120 连发已推**）。
 - **〔弧汇总〕**怪物渲染（WIL 族/密度/状态/寻址 PRIMARY/外观/动画机/装载器/阴影光场）+ 投影流水线（48×32/18 阶段/5 链表/4 桶网格/滚动渲染全解）+ 资源（共享表/更新处理器/记录存储/**基址修正 main 0x47EF18**/瓦片存储 140 槽/地面库 17）。
 - 落盘：entity-render-arc-closure-evidence.json（F455，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 149。
+## Round 150 (F456) — 2026-08-12：物品提示框详情体闭合（0x430B70 行构建器）
+
+- **〔构建〕**0x430B70：type [item+0x22]−5 ≤ 0x30 分派（跳表 0x430BF8：0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 五类构建器）；行缓冲 [obj+0x70 + row*0xC]（计数 [0x64]、色 +0x68、文本 +0x70）。
+- **〔格式〕**持久: %d/%d（0x47C028）/ 重量: %d（0x47C01C）/ 防御: %d-%d (+%d)（0x47C008）/ %s: %d-%d (+%d)（0x47BFEC）；色 0xFAFF 名/0x3232FF 单数/0xFFFF80 复数/0xFFFFFF/0xC8FF96 属性。
+- **〔辅助〕**0x401700 百分比（value/除数 + 0.5 舍入）；持久百分比 = cur/1000。
+- **〔闭合〕**F340「0x430B70 body」pending 闭合。
+- 落盘：item-tooltip-detail-body-evidence.json（F456，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 150。

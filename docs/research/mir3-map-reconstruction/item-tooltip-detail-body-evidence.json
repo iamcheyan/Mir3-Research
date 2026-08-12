@@ -1,0 +1,38 @@
+{
+  "evidence_id": "item-tooltip-detail-body-2026-08-12-f456",
+  "title": "Round 150 (F456): Item tooltip detail body CLOSED - 0x430B70 line builder (F340 pending): type [item+0x22]-5 <= 0x30 dispatch (byte map 0x430C0C, jt 0x430BF8: 0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 = 5 item-class stat builders); row buffer [obj+0x70 + row*0xC] (count [obj+0x64], color +0x68, text +0x70); formats 0x47C028 持久: %d/%d / 0x47C01C 重量: %d / 0x47C008 防御: %d-%d (+%d) / 0x47BFFC 防御: %d-%d / 0x47BFEC %s: %d-%d (+%d); colors 0xFAFF name/0x3232FF count==1/0xFFFF80 count>1/0xFFFFFF/0xC8FF96 attr; percent helper 0x401700 (value/divisor + 0.5 rounding)",
+  "date": "2026-08-12",
+  "objective": "Close the F340 pending: decode the item tooltip's attribute-detail body (0x430B70).",
+  "question": "How does the client build the item tooltip's stat lines?",
+  "method": "Disasm 0x430B70-0x430E44 (line builder) + format string decode + 0x401700 helper.",
+  "scope": "0x430B70-0x43117A; formats 0x47C008-0x47C03C; row buffer stride 0xC.",
+  "cell_analysis": {
+    "dispatch": {"key": "byte [item+0x22] - 5, <= 0x30 (48)", "map": "0x430C0C", "jt": "0x430BF8: [0]=0x430C40 [1]=0x431E50 [2]=0x432A80 [3]=0x431860 [else]=0x433CF0 (5 item-class builders)"},
+    "row_buffer": {"base": "[obj+0x70]", "stride": "0xC per row (row = [obj+0x64] counter)", "layout": "{+0x68 color dword, +0x6C flag?, +0x70 text}"},
+    "lines": {"name": "\"%s\" prefix line (0x47C034/0x47C03C)", "durability": "\"持久: %d/%d\" (0x47C028, cur/max words [item+0x41]/[0x43])", "weight": "\"重量: %d\" (0x47C01C, byte [item+0x24])", "defense": "\"防御: %d-%d (+%d)\" (0x47C008, bytes [item+0x2C]/[0x2D] + bonus [item+0x55])", "stats": "\"%s: %d-%d (+%d)\" (0x47BFEC, generic [item+0x2E]/[0x2F]/[0x30] + signed [item+0x56])"},
+    "colors": {"0xFAFF": "name line", "0x3232FF": "durability count == 1 (blue)", "0xFFFF80": "count > 1 (yellow)", "0xFFFFFF": "weight (white)", "0xC8FF96": "attr lines (green)"},
+    "percent_helper_0x401700": {"math": "value / divisor (fild/fidiv) + 0.5 ([0x476364]) -> ftol 0x468520; 0xFFFF if div 0", "use": "durability percent = cur/1000 (0x3E8 arg)"}
+  },
+  "exe_trace": {
+    "tooltip_chain": "0x4341F0 (F340 renderer) -> 0x430B70 body builder -> row text via 0x46811C (sprintf)"
+  },
+  "audit_vs_exe": {
+    "F340": "pending '0x430B70 body' CLOSED",
+    "F434": "0x401700 percent helper shared with stats"
+  },
+  "contrast": {
+    "name_vs_stat": "name/durability/weight rows fixed; defense/stat rows per item class",
+    "color_semantics": "blue = single-count (rare), yellow = multi-count (stacked), green = positive attr"
+  },
+  "verdict": "Item tooltip detail body CLOSED (primary-bytes): 0x430B70 builds rows via 5 item-class dispatch, sprintf 0x46811C into stride-0xC buffer, formats 持久/重量/防御/stat with per-row colors, percent helper 0x401700. F340 pending resolved.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Builder + formats + colors decoded from .text/.rdata.",
+  "cross_refs": ["F340: tooltip family", "F242/F243: caption tooltip", "F103: bag tooltip"],
+  "tool": "capstone + .rdata string decode",
+  "reproduce": "disasm 0x430B70+0x80; decode 0x47C008-0x47C03C",
+  "notes": [
+    "row count tracked at [obj+0x64]; buffer 0x2EE dwords zeroed at ctor (0x430B78)",
+    "5 class builders = weapon/armor/accessory/consumable/etc [inference]",
+    "0x46811C = sprintf (libc)"
+  ]
+}

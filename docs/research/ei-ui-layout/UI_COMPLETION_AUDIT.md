@@ -976,6 +976,11 @@ git diff --check
 - **F429-F454 弧闭合 + 120 连发**；全验证绿色。
 - 落盘：`entity-render-arc-closure-evidence.json`（F455）+ RESEARCH_LOG Round 149。
 
+## Round 150 (2026-08-12) — 物品提示框详情体（Finding 456）
+
+- **0x430B70 行构建器闭合**（F340 pending）。
+- 落盘：`item-tooltip-detail-body-evidence.json`（F456）+ RESEARCH_LOG Round 150。
+
 ## Pending（未阻塞，持续队列）
 
 - 精确槽序（store+0x5898 第二数组来源）— 低优先。
