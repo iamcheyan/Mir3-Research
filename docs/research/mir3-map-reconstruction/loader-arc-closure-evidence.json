@@ -1,0 +1,37 @@
+{
+  "evidence_id": "loader-arc-closure-2026-08-12-f687",
+  "title": "Round 381 (F687): Loader arc CLOSED (F686) + service restore - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer restarted on 8765 again, mapviewer 8899, sim8477), master 43eff42 (345 consecutive F335-F686), 311 evidence JSONs; arc: WIL loader entry + file-open (F686) - loader system COMPLETE (entry dispatch + frame-table + mmap/resource F577), connecting F436/F128",
+  "date": "2026-08-12",
+  "objective": "Close the loader arc + restore services.",
+  "question": "Is the WIL loader fully documented + services healthy?",
+  "method": "Full validation + wilviewer restart + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "311 JSONs"},
+    "services": "wilviewer 8765 restarted (died again) / mapviewer 8899 / sim8477 all 200",
+    "arc": {"F686": "WIL loader entry + file-open"},
+    "loader": "entry dispatch + frame-table + mmap/resource (F577) = COMPLETE (F436/F128)",
+    "milestone": "345 consecutive rounds F335-F686"
+  },
+  "exe_trace": {
+    "verify": "exit 0; service health 200 x3"
+  },
+  "audit_vs_exe": {
+    "F335-F686": "345 rounds pushed; loader complete"
+  },
+  "contrast": {
+    "file_vs_mmap": "CreateFileA+ReadFile + mmap/resource (F577)",
+    "entry_vs_load": "mode dispatch + frame load"
+  },
+  "verdict": "Loader arc CLOSED (F687): WIL loader entry + file-open byte-level + services restored; validation green, 345 consecutive rounds, 311 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation + service restart from tool runs; arc from F686.",
+  "cross_refs": ["F686: loader", "F436: family", "F577: mmap"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "wilviewer restarted again on 8765",
+    "345 consecutive shipping rounds F335-F686",
+    "next: HANDOFF refresh 40, remaining corners"
+  ]
+}
