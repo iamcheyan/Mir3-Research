@@ -1,0 +1,37 @@
+{
+  "evidence_id": "skill-record-loader-display-slots-2026-08-12-f743",
+  "title": "Round 437 (F743): Skill record loader + display slots - 0x423070 skill DATA LOADER (record +0/+6..+0xB -> display slots [0x35B251..0x35B258], pending write-only slots RESOLVED); 0x423020 skill display copy (record words [0x35B1F5/0x35B1F7/0x35B1F9] -> display [0x35A34A/0x35A34C/0x35A34E] + base64 0x452810 + free); 0x4230E0/0x423180/0x423220 dlist append/insert (node vtable 0x4767C0, next [0x8]/prev [0xC], count [0x14]); 0x423290 list ctor (vtable 0x4766D4) - skill state slots now write-side complete",
+  "date": "2026-08-12",
+  "objective": "Resolve the write-only display slot consumers.",
+  "question": "Who writes the display state slots?",
+  "method": "Disasm 0x423020-0x4232A0 + ref scan.",
+  "scope": "0x423020-0x4232A0; slots 0x35B251/0x35A34A.",
+  "cell_analysis": {
+    "0x423070": "skill loader: record -> [0x35B251..0x35B258]",
+    "0x423020": "display copy: [0x35B1F5..] -> [0x35A34A/0x35A34C/0x35A34E] + 0x452810",
+    "0x4230E0": "dlist append/insert: vtable 0x4767C0",
+    "0x423290": "list ctor: vtable 0x4766D4"
+  },
+  "exe_trace": {
+    "skill_chain": "loader -> slots -> display copy -> base64"
+  },
+  "audit_vs_exe": {
+    "pending": "write-only slots 0x35B251/0x35A34A RESOLVED", "F689": "base64 0x452810"
+  },
+  "contrast": {
+    "loader_vs_copy": "record -> slots + display",
+    "dlist_vs_ctor": "append/insert + ctor"
+  },
+  "verdict": "Skill record loader + display slots PRIMARY-verified: writers found for all pending write-only slots; skill state write-side complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Slot writers decoded from .text; render-side consumer still elsewhere.",
+  "cross_refs": ["F689: base64", "F637: list vtables"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423020+0x10; 0x423070+0x10",
+  "notes": [
+    "slots 0x35B251-0x35B258 writer",
+    "display 0x35A34A-0x35A34E writer",
+    "base64 0x452810",
+    "dlist vtable 0x4767C0"
+  ]
+}

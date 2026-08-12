@@ -2411,9 +2411,14 @@ git diff --check
 - **Round 433-435 追加 + 400 连发里程碑**（商店 100% 入档）。
 - 落盘：`handoff-refresh-57-evidence.json`（F742）+ RESEARCH_LOG Round 436。
 
+## Round 437 (2026-08-12) — 技能记录装载 + 显示槽（Finding 743）
+
+- **write-only 槽写者找到**（技能装载/显示复制）。
+- 落盘：`skill-record-loader-display-slots-evidence.json`（F743）+ RESEARCH_LOG Round 437。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（商店 100%；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（技能槽写侧完整；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

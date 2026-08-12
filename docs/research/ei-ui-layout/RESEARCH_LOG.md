@@ -7883,3 +7883,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 433-435（F740-F741：商店点击 + 商店家族最终闭合）；基线 Round 432=994b5d7 → Round 435=6cd1af5（**400 连发 F335-F741**）——**400 连发里程碑**。
 - 落盘：handoff-refresh-57-evidence.json（F742，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 436。
+## Round 437 (F743) — 2026-08-12：技能记录装载 + 显示槽
+
+- **〔技能〕**0x423070 技能数据装载（记录 +0/+6..+0xB → **显示槽 [0x35B251..0x35B258]**——待办 write-only 槽**已解析**）；0x423020 技能显示复制（[0x35B1F5/0x35B1F7/0x35B1F9] → [0x35A34A/0x35A34C/0x35A34E] + base64 0x452810 + free）；0x4230E0/0x423180/0x423220 dlist 追加/插入（节点 vtable 0x4767C0、next [0x8]/prev [0xC]、计数 [0x14]）；0x423290 列表 ctor（vtable 0x4766D4）——技能状态槽写侧完整。
+- 落盘：skill-record-loader-display-slots-evidence.json（F743，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 437。
