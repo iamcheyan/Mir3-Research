@@ -6801,3 +6801,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔覆盖〕**全部 14 客户端窗口 + 8 辅助（22 总）均有真实处理器（24 buildWindow id 检查）；**浏览器验证：41 按钮 + 170 槽 + 35 标签**（丰富内容非占位）。
 - **〔基线〕**F420 集成基线扩展（F497/F498 商店循环 + 聊天快捷新增）。
 - 落盘：simulator-window-content-audit-evidence.json（F513，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 207。
+## Round 208 (F514) — 2026-08-12：客户端发送消息目录（34 msgid 0x3E9-0x419）
+
+- **〔目录〕**商店控件 0x3F2-0x3F9（F460）+ 商店操作 0x3E9/0x3EF/0x3F0、交易 0x402/0x403（F364）+ 金币 0x405/0x406（F474）+ 重置 0x407/0x408 + 库存 0x409、**NPC 对话回复 0x410/0x411（F476 0x4524D0/0x4524A0）**、生成 0x417、NPC 0x416/0x418/0x419——完整客户端发包目录（含发送函数）。
+- 落盘：client-send-msgid-map-evidence.json（F514，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 208。

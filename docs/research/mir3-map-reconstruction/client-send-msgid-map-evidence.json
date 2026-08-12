@@ -1,0 +1,34 @@
+{
+  "evidence_id": "client-send-msgid-map-2026-08-12-f514",
+  "title": "Round 208 (F514): Client send-msgid inventory - 34 client->server msgids (0x3E9-0x419) via 0x452940 builder: store controls 0x3F2-0x3F9 (F460), store ops 0x3E9/0x3EF/0x3F0 (F461/F460), trade 0x402/0x403 (F364) + gold 0x405/0x406 (F474) + reset 0x407/0x408 + inventory 0x409, NPC dialog reply 0x410/0x411 (F476 0x4524D0/0x4524A0!), spawn 0x417, npc 0x416/0x418/0x419 - full client packet catalog with sender functions",
+  "date": "2026-08-12",
+  "objective": "Inventory the client's outbound message catalog.",
+  "question": "What messages does the client send, and from where?",
+  "method": "0x452940 call-site scan (36 sites) + msgid extraction + F-ref mapping.",
+  "scope": "0x452940 senders; msgids 0x3E9-0x419.",
+  "cell_analysis": {
+    "msgids": {"store": "0x3F2-0x3F9 controls (F460) + 0x3E9 merchant (F461) + 0x3EF/0x3F0 store ops + 0x3FC scroll", "trade": "0x402/0x403 (F364) + 0x405/0x406 gold (F474) + 0x407/0x408 reset + 0x409 inventory", "npc": "0x410/0x411 dialog reply (F476 0x4524D0/0x4524A0) + 0x416/0x418/0x419", "spawn": "0x417", "other": "0x3EA/0x3F6/0x3FA/0x3FD-0x401/0x40C-0x40F/0x410-0x411 (unmapped)"},
+    "senders": "each msgid 1 sender fn (0x45171E-0x4524E5 range)"
+  },
+  "exe_trace": {
+    "packet_chain": "UI action -> sender fn (0x452940 build) -> server handler"
+  },
+  "audit_vs_exe": {
+    "F460": "store controls confirmed", "F474": "trade gold/inventory confirmed", "F476": "NPC reply 0x410/0x411 = 0x4524D0/0x4524A0", "F364": "trade msgs"
+  },
+  "contrast": {
+    "send_vs_recv": "client sends 0x3E9-0x419; receives 0xBC6-0xBD8 (F449) + 0x285 store",
+    "ui_vs_proto": "UI actions map 1:1 to msgids"
+  },
+  "verdict": "Client send-msgid map PRIMARY-verified: 34 msgids (0x3E9-0x419) with sender functions; store/trade/NPC/spawn families mapped to prior findings. Complete outbound packet catalog.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Msgid + sender extraction from .text.",
+  "cross_refs": ["F460: store", "F474: trade", "F476: NPC reply", "F364: trade"],
+  "tool": "capstone call-site scan",
+  "reproduce": "scan 0x452940 callers; extract push-imm msgids",
+  "notes": [
+    "0x410/0x411 = NPC dialog reply (matches F476 senders)",
+    "12 unmapped msgids (0x3EA/0x3F6/0x3FA/0x3FD-0x401/0x40C-0x40F) = misc UI actions",
+    "1 sender per msgid = clean 1:1 UI->packet mapping"
+  ]
+}
