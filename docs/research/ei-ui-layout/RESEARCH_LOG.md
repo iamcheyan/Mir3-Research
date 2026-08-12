@@ -7366,3 +7366,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**251 证据 JSON**；三服务 200；master 4687b3b（**285 连发 F335-F626 已推**）。
 - **〔弧〕**特效生成（F625）+ 特效 tick/生命周期（F626）——**法术特效管线完整（生成 → tick → 淡出 → 移除）**，连接 F489/F336/F435。
 - 落盘：effect-arc-closure-evidence.json（F627，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 321。
+## Round 322 (F628) — 2026-08-12：HANDOFF 刷新 22（Round 318-321）
+
+- **〔刷新〕**HANDOFF 追加 Round 318-321（F625-F627：特效生成 + tick/生命周期 + 特效弧）；基线 Round 317=581fd9e → Round 321=582e689（**286 连发 F335-F627**）。
+- 落盘：handoff-refresh-22-evidence.json（F628，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 322。

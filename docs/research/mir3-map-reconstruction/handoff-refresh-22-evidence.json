@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-22-2026-08-12-f628",
+  "title": "Round 322 (F628): HANDOFF refresh 22 - Rounds 318-321 (F624-F627: effect spawn + effect tick/lifecycle + effect arc closure), baseline Round 317=581fd9e -> Round 321=582e689 (286 consecutive F335-F627), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 318-321.",
+  "question": "What changed since HANDOFF refresh 21?",
+  "method": "Append Round 318-321 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 318-321 appended (4 rounds, F624-F627)",
+    "baseline": "Round 317=581fd9e -> Round 321=582e689 (286 consecutive F335-F627)",
+    "arcs": {"spawn": "F625 effect spawn", "tick": "F626 tick/lifecycle", "closure": "F627 effect arc"},
+    "key": "spell effect pipeline complete (spawn->tick->fade->remove)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F624": "refresh 21 baseline -> now refresh 22", "F335-F627": "286 rounds"
+  },
+  "contrast": {
+    "refresh_21_vs_22": "F625-F627 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 22 (F628): Rounds 318-321 documented (spell effect pipeline), baseline 581fd9e -> 582e689, 286 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F625-F627 evidence.",
+  "cross_refs": ["F624: refresh 21", "F627: effect closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 318-321 section to HANDOFF",
+  "notes": [
+    "286 consecutive shipping rounds F335-F627",
+    "next: remaining deep corners, sim polish"
+  ]
+}
