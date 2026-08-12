@@ -2251,9 +2251,14 @@ git diff --check
 - **悬停/可见帧 + 箭头钳制 + 释放 + 控件列表**（F701/F707 精化）。
 - 落盘：`control-paint-state-ctor-tail-evidence.json`（F710）+ RESEARCH_LOG Round 404。
 
+## Round 405 (2026-08-12) — 控件 + 滚动条家族最终闭合（Finding 711）
+
+- **369 连发 + 335 证据 + 控件/滚动条 100%**。
+- 落盘：`control-scrollbar-final-closure-evidence.json`（F711）+ RESEARCH_LOG Round 405。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（控件/滚动条 100%；下一弧：剩余深层角落）。
+- 无阻塞项（控件/滚动条 100%；下一弧：HANDOFF 刷新 48/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

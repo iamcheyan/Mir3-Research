@@ -7745,3 +7745,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔绘制〕**0x417640（F701 精化）：**[0x25]=悬停、[0x24]=可见** → 普通 [0x20] 或悬停 [0x30] 帧、0x460240 blit @ [0x28]/[0x2C]；0x4175F0 基础 ctor（旗标 [0x24]/[0x25]=1、矩形 [0x4]）；0x417D5E 箭头 ±步长**钳制 0.0/1.0**（0x476450/0x476658）+ tick [0x44]；0x417E60 释放（拖动 [0x18]=0）；0x417FB0 控件列表 ctor（3×0xB8 内嵌 @ +0x234、[0x460]=0xFFFF）。
 - 落盘：control-paint-state-ctor-tail-evidence.json（F710，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 404。
+## Round 405 (F711) — 2026-08-12：控件 + 滚动条家族最终闭合（F701-F710 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**335 证据 JSON**；三服务 200；master fe2015e（**369 连发 F335-F710 已推**）。
+- **〔弧〕**构造/绘制（F701）+ 命中/定位（F704）+ 滚动条（F707）+ 绘制状态/尾部（F710）——**控件 + 滚动条 100% 字节级**（构造 + 普通/悬停绘制 + 命中 + 定位 + 滚动条构造/命中/点击/箭头/释放），支撑全部窗口控件（F313/F535/F546/F547/F580/F581/F599）。
+- 落盘：control-scrollbar-final-closure-evidence.json（F711，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 405。

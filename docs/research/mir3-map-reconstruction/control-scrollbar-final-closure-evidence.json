@@ -1,0 +1,37 @@
+{
+  "evidence_id": "control-scrollbar-final-closure-2026-08-12-f711",
+  "title": "Round 405 (F711): Control + scrollbar family FINAL closure (F701-F710) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master fe2015e (369 consecutive F335-F710), 335 evidence JSONs; arc: ctor/paint (F701) + hit/set-pos (F704) + scrollbar (F707) + paint state/tail (F710) - control+scrollbar 100% byte-level (ctor + paint normal/hover + hit + set-pos + scrollbar ctor/hit/click/arrow/release), backing every window control (F313/F535/F546/F547/F580/F581/F599)",
+  "date": "2026-08-12",
+  "objective": "Close the control+scrollbar family finally.",
+  "question": "Is the control+scrollbar family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "335 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F701": "ctor + paint", "F704": "hit + set-pos", "F707": "scrollbar", "F710": "paint state + tail"},
+    "control": "ctor + paint normal/hover + hit + set-pos = 100%",
+    "scrollbar": "ctor + hit + click + arrow + release = 100%",
+    "milestone": "369 consecutive rounds F335-F710"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F710": "369 rounds pushed; control+scrollbar complete"
+  },
+  "contrast": {
+    "normal_vs_hover": "frames [0x20]/[0x30]",
+    "control_vs_scrollbar": "both complete"
+  },
+  "verdict": "Control + scrollbar family FINAL closure (F711): ctor/paint/hit/set-pos + scrollbar all byte-level; validation green, 369 consecutive rounds, 335 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F701-F710.",
+  "cross_refs": ["F701/F704/F707/F710", "F313/F535/F546/F547/F580/F581/F599"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "369 consecutive shipping rounds F335-F710",
+    "next: HANDOFF refresh 48, remaining corners"
+  ]
+}
