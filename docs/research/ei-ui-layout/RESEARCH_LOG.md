@@ -6946,3 +6946,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔构造〕**0x440FE0：**4 开关行 × 2 控件**（0x417550、msg 对 0x2F8/0x2F9 + 0x2FA/0x2FB = ON/OFF，F101）、控件 @ [0x7C]..[0x61C] + BGM 滑块 [0x2C0]——4 开关 = 音乐/音效/环境声/阴影混合。
 - 落盘：option-window-toggle-ctor-evidence.json（F546，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 240。
+## Round 241 (F547) — 2026-08-12：技能书分类页签
+
+- **〔页签〕**0x439500：**8 分类页签控件**（0x417830 @ [0x2F4]-[0x7E0] stride 0xB4，火冰电风神圣黑暗幻影剑 F104）、选中 [0x54] → 计数 [0x58+tab*4]、除 3 计数数学（0x2AAAAAAB）、详情 0x43A440（F534）。
+- 落盘：skill-book-category-tabs-evidence.json（F547，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 241。

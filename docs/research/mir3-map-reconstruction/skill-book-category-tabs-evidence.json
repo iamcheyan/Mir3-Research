@@ -1,0 +1,35 @@
+{
+  "evidence_id": "skill-book-category-tabs-2026-08-12-f547",
+  "title": "Round 241 (F547): Skill book category tabs - 0x439500 paint: 8 category tab controls (0x417830 @ [0x2F4]-[0x7E0] stride 0xB4, loop 8, F104 火冰电风神圣黑暗幻影剑), 3 top controls ([0xD8]-[0x240]), selected tab byte [0x54] -> [0x58+tab*4] count, div-by-3 (0x2AAAAAAB) skill-count math, detail 0x43A440 (F534) - F104/F351 skill book complete",
+  "date": "2026-08-12",
+  "objective": "Decode the skill book category tabs (F104/F351).",
+  "question": "How do the 8 skill categories work?",
+  "method": "Disasm 0x439500-0x4396C0 (skill book paint).",
+  "scope": "0x439500-0x4396C0; 8 tabs; selected [0x54].",
+  "cell_analysis": {
+    "tabs": {"8": "0x417830 @ [0x2F4]-[0x7E0] stride 0xB4 (火冰电风神圣黑暗幻影剑 F104)", "selected": "byte [0x54] -> count [0x58+tab*4]", "count_math": "div-by-3 (0x2AAAAAAB) skill count"},
+    "detail": "0x43A440 (F534) via [0x964]",
+    "top": "3 controls ([0xD8]-[0x240])"
+  },
+  "exe_trace": {
+    "skillbook_chain": "tab click -> [0x54] -> count -> skill list (F351) -> detail (F534)"
+  },
+  "audit_vs_exe": {
+    "F104": "8 tabs confirmed", "F351": "skill slots", "F534": "detail"
+  },
+  "contrast": {
+    "tab_vs_slot": "8 categories vs 12 skill slots",
+    "count_math": "div-3 = per-tab skill count"
+  },
+  "verdict": "Skill book category tabs PRIMARY-verified: 8 tabs (stride 0xB4), selected [0x54] -> count, div-3 math, detail 0x43A440. F104/F351 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tab dispatch decoded from .text.",
+  "cross_refs": ["F104: tabs", "F351: slots", "F534: detail"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x439500+0x60",
+  "notes": [
+    "8 tabs = 火/冰/电/风/神圣/黑暗/幻影/剑",
+    "tab count [0x58+tab*4] div-3",
+    "detail via [0x964] -> 0x43A440"
+  ]
+}
