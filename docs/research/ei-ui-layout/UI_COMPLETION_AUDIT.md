@@ -2825,3 +2825,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包全交互；下一弧：剩余深层角落/模拟器 polish）。
+## Round 512 (2026-08-12) — 装备详情面板绘制（Finding 818）
+
+- **标签 + 等级/HP/MP/XP 值**（状态面板完整）。
+- 落盘：`equip-detail-panel-draw-evidence.json`（F818）+ RESEARCH_LOG Round 512。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（详情面板完整；下一弧：剩余深层角落）。

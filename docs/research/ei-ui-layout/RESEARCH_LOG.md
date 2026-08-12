@@ -8208,3 +8208,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 508-510（F815-F816：背包初始化/点击/使用 + 背包窗口弧）；基线 Round 507=c3255fb → Round 510=b45ce8d（**475 连发 F335-F816**）。
 - 落盘：handoff-refresh-82-evidence.json（F817，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 511。
+## Round 512 (F818) — 2026-08-12：装备详情面板绘制（F767 槽依赖）
+
+- **〔面板〕**0x44BC80：字体 0x45DBA0（0x47BE18）+ 标签串 0x47C74C/0x47C748/0x47C73C/0x47C734 via 0x45DD70（0xFAE1C8 标题、0xFAFAFA 值）+ **值字段**：等级 [0x7DA108]（格式 0x47A214）、HP [0x7DA10D]/[0x7DA111]、MP [0x7DA10F]/[0x7DA113]、XP 比例 [0x7DA115]/[0x7DA119] + 0x46811C 格式 + % 缩放 0x476970——角色状态详情面板完整。
+- 落盘：equip-detail-panel-draw-evidence.json（F818，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 512。

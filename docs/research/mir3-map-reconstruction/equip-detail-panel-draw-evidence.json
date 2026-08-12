@@ -1,0 +1,34 @@
+{
+  "evidence_id": "equip-detail-panel-draw-2026-08-12-f818",
+  "title": "Round 512 (F818): Equip detail panel draw (F767 slot dep) - 0x44BC80: font 0x45DBA0 (0x47BE18) + label strings 0x47C74C/0x47C748/0x47C73C/0x47C734 via 0x45DD70 (0xFAE1C8 headers, 0xFAFAFA values) + VALUE fields: level [0x7DA108] (fmt 0x47A214), HP [0x7DA10D]/[0x7DA111], MP [0x7DA10F]/[0x7DA113], XP ratio [0x7DA115]/[0x7DA119] + 0x46811C format + % scale 0x476970 - char status detail panel COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the equip detail panel draw.",
+  "question": "How does the equip detail panel render stats?",
+  "method": "Disasm 0x44BC80-0x44BED2.",
+  "scope": "0x44BC80-0x44BED2; stat slots.",
+  "cell_analysis": {
+    "0x44BC80": {"labels": "0x47C74C/0x47C748/0x47C73C/0x47C734", "values": "level [0x7DA108] + HP [0x7DA10D]/[0x7DA111] + MP + XP ratio", "fmt": "0x46811C + 0x476970"}
+  },
+  "exe_trace": {
+    "panel_chain": "label draw -> value format -> render"
+  },
+  "audit_vs_exe": {
+    "F767": "equip draw", "F758": "status stats", "F564": "text"
+  },
+  "contrast": {
+    "labels_vs_values": "headers + stats",
+    "hp_vs_xp": "0x7DA10D + ratio"
+  },
+  "verdict": "Equip detail panel draw PRIMARY-verified: labels + stat values; char status panel complete (F767/F758).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Detail panel decoded from .text.",
+  "cross_refs": ["F767: equip", "F758: status", "F564: text"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44BC80+0x20",
+  "notes": [
+    "labels 0x47C74C-0x47C734",
+    "level [0x7DA108]",
+    "HP/MP 0x7DA10D-0x7DA113",
+    "XP ratio 0x7DA115/0x7DA119"
+  ]
+}
