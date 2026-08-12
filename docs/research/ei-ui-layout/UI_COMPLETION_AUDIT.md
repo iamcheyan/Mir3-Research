@@ -541,6 +541,12 @@ git diff --check
 - **F317 更新**（D10031 注记）。
 - 落盘：`frame-oob-verification-evidence.json`（F371，primary-bytes）+ RESEARCH_LOG Round 65。
 
+## Round 66 (2026-08-12) — 城镇结构对比（Finding 372）
+
+- **0/02.map 密集城镇**（wood_tilesc 主导）；**3.map 沙巴克稀疏要塞**（255 主导 + Wood/Wallsc 3384 墙格 y211-405 内墙带）。
+- **三镇渲染验证**（tile 200 + 视觉）。
+- 落盘：`town-structure-comparison-evidence.json`（F372，primary-bytes）+ RESEARCH_LOG Round 66。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

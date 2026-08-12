@@ -1,0 +1,38 @@
+{
+  "evidence_id": "town-structure-comparison-2026-08-12-f372",
+  "title": "Round 66 (F372): Town structure comparison - 0.map/02.map dense (wood_tilesc mid/front dominant) vs 3.map 沙巴克 sparse fortress (mid/front 255-dominant 171994/209506, wallsc 24 = 3384 cells in y211-405 band) + render verification",
+  "date": "2026-08-12",
+  "objective": "Compare the three major EI towns' layer structures: 0.map (比奇城), 3.map (沙巴克), 02.map - quantifying density, wall placement, and render behavior.",
+  "question": "What distinguishes 沙巴克 (3.map) from the other towns structurally?",
+  "method": "Layer byte analysis of 0/3/02.map (back/mid/front counters); wall-cell spatial distribution; mapviewer tile renders + inspect_image.",
+  "scope": "$MIR3_EI_ROOT/Map/0.map, 3.map, 02.map; mapviewer 8899.",
+  "cell_analysis": {
+    "0_map_比奇城": {"size": "800x800", "back": "{1:97521, 0:58275, 2:4201}", "mid": "{15:406562, 0:89189, 5:86182, 10:46587, 11:4277, 4:2936}", "frt": "{15:541559, 0:85373, 10:11249}", "density": "dense town - full mid/front wood_tilesc + cliffsc + smobjectsc"},
+    "3_map_沙巴克": {"size": "400x600", "back": "{1:50908, 0:8655, 15:403, 2:34}", "mid": "{255:171994, 5:25075, 0:18272, 15:10410, 10:6161, 24:3384}", "frt": "{255:209506, 15:19581, 0:8845, 10:927}", "density": "SPARSE fortress - mid/front 255-dominant (empty terrain), walls lib 24 (Wood/Wallsc) 3384 cells", "walls": "x 0..399, y 211..405 (inner keep wall band, NOT perimeter); edge walls only 4.9%"},
+    "02_map": {"size": "600x600", "back": "{1:76502, 0:13498}", "mid": "{15:276267, 5:47846, 0:19851, 10:14324, 4:676, 11:485}", "frt": "{15:300415, 0:55705, 10:3092, 5:538}", "density": "dense town (similar to 0.map)"},
+    "render": "0/3/02.map tiles all 200 (88KB JPEGs); 3.map corner tile = open grass (walls only in y211-405 band)"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331): row=attr/7; 0x466130 frame load; 0x45E8E0 blit",
+    "lib_24": "Wood/Wallsc (F331 slot 24, 3791 frames)"
+  },
+  "audit_vs_exe": {
+    "F343": "town layer composition (back{0,1}+mid{15,5,10,0}) confirmed for 0/02.map",
+    "F371": "3.map OOB (3255) noted - sparse map still renders"
+  },
+  "contrast": {
+    "dense_vs_fortress": "0/02.map = dense open town (objects everywhere); 3.map = empty terrain + isolated fortress wall band (y211-405)",
+    "wall_lib": "3.map uses lib 24 (Wood/Wallsc) - the only town with significant wall usage"
+  },
+  "verdict": "Town structure comparison complete (primary-bytes): 0.map (比奇城) + 02.map = dense towns (wood_tilesc mid/front dominant, full object coverage); 3.map (沙巴克) = sparse fortress with 255-dominant mid/front (empty) + 3384 Wood/Wallsc cells forming an inner wall band (y211-405, not perimeter). All three render correctly.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Layer bytes + wall distribution read directly from the 3 map binaries; render verified visually.",
+  "cross_refs": ["F343: town/cave layers", "F371: 3.map OOB", "F342: map inventory"],
+  "tool": "python3 struct scan; mapviewer HTTP; inspect_image",
+  "reproduce": "scan back/mid/front of 0/3/02.map; extract lib-24 wall cells of 3.map; curl /tile",
+  "notes": [
+    "3.map 沙巴克 = classic fortress design: open ground + walled keep",
+    "wall cells x 0..399 full width but y confined 211-405 = horizontal wall band",
+    "0.map mid lib 0 (tilesc) 89189 = ground-detail overlay under objects (dense town signature)"
+  ]
+}

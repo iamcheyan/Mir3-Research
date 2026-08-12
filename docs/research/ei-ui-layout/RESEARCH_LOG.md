@@ -6039,3 +6039,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔D10031〕**300×300 row-0：**back 层 62 格 lib 2（Tiles5c 20000）帧 42759-42766（0xA707-0xA70E）**——F317 lib/frame-space 混淆的 **back 层新实例**（F317 原覆盖 mid/front）；帧 42759+ 超 object1c/object2c 上限 → 候选 reserved/anim 标记或第三库空间。
 - **〔F317 更新〕**lib-space-frame-oob-evidence.json 追加 f370 注记（D10031 back 层实例）。
 - 落盘：`frame-oob-verification-evidence.json`（F371，primary-bytes）+ lib-space-frame-oob-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 65。
+
+## Round 66 (F372) — 2026-08-12：城镇结构对比（0.map 比奇城 / 3.map 沙巴克 / 02.map）
+
+- **〔0/02.map 密集城镇〕**back{1,0}+mid{15 wood_tilesc, 5 cliffsc, 10 smobjectsc, 0 tilesc 地面细节}+front{15}——全图对象覆盖。
+- **〔3.map 沙巴克 = 稀疏要塞〕**mid/front **255 主导**（171994/209506 空）+ **Wood/Wallsc lib 24 = 3384 墙格**（x 0..399、y 211..405 **内城墙带，非周长**；边缘墙仅 4.9%）——开阔地面 + 墙围城设计。
+- **〔渲染〕**三镇 tile 全 200（88KB JPEG）；3.map 角块 = 开阔草地（墙仅 y211-405 带）。
+- 落盘：`town-structure-comparison-evidence.json`（F372，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 66。
