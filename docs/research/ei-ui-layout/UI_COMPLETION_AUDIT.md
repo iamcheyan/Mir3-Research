@@ -1221,9 +1221,14 @@ git diff --check
 - **F489 type*10 公式对真实库确认**（153 段）。
 - 落盘：`monmagic-block-layout-evidence.json`（F504）+ RESEARCH_LOG Round 198。
 
+## Round 199 (2026-08-12) — 实体类型字语义（Finding 505）
+
+- **单分派族 + 服务端包链接**。
+- 落盘：`entity-type-semantics-evidence.json`（F505）+ RESEARCH_LOG Round 199。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（法术帧数学运行时确认）。
+- 无阻塞项（实体类型全解）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

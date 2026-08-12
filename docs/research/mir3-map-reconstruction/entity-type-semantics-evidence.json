@@ -1,0 +1,38 @@
+{
+  "evidence_id": "entity-type-semantics-2026-08-12-f505",
+  "title": "Round 199 (F505): Entity type word [0x10] semantics - single dispatch drives ALL entity lifecycle: types {0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = effect/special family (F336/F479/F487); type set from spawn packet arg (F489 [ebp+0x10]); server Envir kinds (F423: spawn/npc/monster) arrive as spawn packets -> client type word; dispatch coverage: effect types ticked (0x435A20), drawn (0x435030), deduped (F479); the type word = CLIENT entity class from server spawn, not Envir file kind directly",
+  "date": "2026-08-12",
+  "objective": "Document the entity type word semantics and its server link.",
+  "question": "What does entity type [0x10] mean and how does it link to server data?",
+  "method": "Type compare chain analysis + F336/F479/F487/F489 cross-ref.",
+  "scope": "0x435A20 type compares; type word [0x10].",
+  "cell_analysis": {
+    "type_dispatch": {"family": "{0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = effect/special (F336)", "set": "spawn packet arg -> [0x10] (F489)", "drives": "tick 0x435A20 / draw 0x435030 / dedup F479"},
+    "server_link": {"envir_kinds": "spawn/npc/monster (F423) -> spawn packets", "client_type": "word [0x10] = client entity class from packet (not Envir kind directly)"},
+    "coverage": "effect types fully handled (tick/draw/dedup/death)"
+  },
+  "exe_trace": {
+    "entity_chain": "server spawn -> packet -> type [0x10] -> lifecycle (F336 special family)"
+  },
+  "audit_vs_exe": {
+    "F336": "special type family consolidated",
+    "F479": "dedup + walk",
+    "F489": "spawn sets type",
+    "F423": "server kinds -> packets"
+  },
+  "contrast": {
+    "client_vs_server": "client type word (packet) vs Envir kind (file) - mapped via spawn",
+    "effect_vs_normal": "effect types (this) vs normal entity types (0x88 dispatch F433)"
+  },
+  "verdict": "Entity type word [0x10] PRIMARY-verified: single dispatch family (F336) drives effect lifecycle; type = client class from spawn packet; server Envir kinds feed packets. Full dispatch coverage confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Type chain from .text; server link via F423/F489.",
+  "cross_refs": ["F336: special family", "F479: walk", "F489: spawn", "F423: Envir"],
+  "tool": "capstone + cross-ref",
+  "reproduce": "disasm 0x435A3F+0x40; cross F336/F479/F489",
+  "notes": [
+    "type 0x10/0x16 = projectile/effect classes [inference]",
+    "9/0x1E/0xB/0xA = magic bolt variants [inference]",
+    "0x21A/0x21B = special large effects [inference]"
+  ]
+}

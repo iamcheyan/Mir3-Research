@@ -6756,3 +6756,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔库〕**MonMagic.wil = 2270 帧 / **153 段**（可变长 4/10/18/6/8，起点 0/20/40/60/80/100/260/280/306...）；Magic.wil 3550 / MagicEx.wil 1780（独立特效族）。
 - **〔公式〕**F489 **[esi]+type*10 = 段起点索引确认**：偶 type（0/2/4/6/8/10）起点 = type*10 精确；奇 type → 下一段；每特效帧数 [0x102]（F487）= 段长。
 - 落盘：monmagic-block-layout-evidence.json（F504，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 198。
+## Round 199 (F505) — 2026-08-12：实体类型字 [0x10] 语义
+
+- **〔分派〕**type [0x10] 单分派驱动全部实体生命周期：{0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = 特效/特殊族（F336/F479/F487）；type = 生成包参数（F489）。
+- **〔服务端〕**Envir kind（spawn/npc/monster F423）→ 生成包 → 客户端 type 字（非直接 Envir kind）。
+- 落盘：entity-type-semantics-evidence.json（F505，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 199。
