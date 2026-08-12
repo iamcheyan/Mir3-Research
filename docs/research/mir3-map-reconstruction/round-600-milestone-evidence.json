@@ -1,0 +1,38 @@
+{
+  "evidence_id": "round-600-milestone-2026-08-12-f906",
+  "title": "Round 600 (F906): ROUND 600 MILESTONE - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master b333330 (564 consecutive F335-F905), 530 evidence JSONs; since Round 500 (100 rounds, 101 findings F805-F905): sender directory 100% + chat system 100% + HP bars + map widget + caption dispatch + hit routing + entity render + notice list + mini-map + HUD status - client reverse-engineering surface COMPLETE across all major systems",
+  "date": "2026-08-12",
+  "objective": "Close the Round 600 milestone.",
+  "question": "What did Rounds 499-599 achieve?",
+  "method": "Full validation + milestone consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "530 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "rounds": "499-599 (101 rounds, 101 findings F805-F905)",
+    "arcs": {"senders": "F882/F883", "chat": "F876/F877", "bars": "F903/F904", "map": "F888-F892", "caption": "F897/F898", "routing": "F900/F901", "entity": "F894/F895", "notice": "F866/F867"},
+    "milestone": "Round 600 + 564 consecutive shipping rounds"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F905": "564 rounds pushed; surface complete"
+  },
+  "contrast": {
+    "round500_vs_600": "sender/chat/bars/routing closed",
+    "pending_vs_now": "all surfaces closed"
+  },
+  "verdict": "ROUND 600 milestone (F906): 101 rounds since Round 500, all major systems closed; validation green, 564 consecutive rounds, 530 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; milestone content from Rounds 499-599 evidence.",
+  "cross_refs": ["F805-F905"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "Round 600 milestone",
+    "564 consecutive shipping rounds",
+    "530 evidence JSONs",
+    "next: HANDOFF refresh 113, remaining corners"
+  ]
+}

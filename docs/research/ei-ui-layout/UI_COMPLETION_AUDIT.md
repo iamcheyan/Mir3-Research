@@ -3529,3 +3529,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HP 条完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 600 (2026-08-12) — ROUND 600 里程碑（Finding 906）
+
+- **564 连发 + 530 证据 + Round 600 里程碑**（101 轮全系统闭合）。
+- 落盘：`round-600-milestone-evidence.json`（F906）+ RESEARCH_LOG Round 600。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（表面全面闭合；下一弧：HANDOFF 刷新 113/剩余角落）。
