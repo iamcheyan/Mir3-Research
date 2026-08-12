@@ -6543,3 +6543,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔字段〕**{+0 类型、+2 字、+4 名、+0x22 类、+0x24 重量、+0x28 图标帧、+0x2A/+0x41/+0x43 持久、+0x2C/+0x2D 防御、+0x2E-0x30 属性、+0x55/+0x56 加成、+0x64 行数、+0x68 详情行}。
 - **〔统一〕**背包/商店/地面物品共用 0xC20 记录。
 - 落盘：item-object-structure-evidence.json（F464，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 158。
+## Round 159 (F465) — 2026-08-12：物品图标库（StoreItem.wil 1440 帧）
+
+- **〔库〕**客户端引用 Item.wil（0x47C884）+ StoreItem.wil（0x47C878，附加表装载 F430）；**出货仅 StoreItem.wil 1440 帧**（Item.wil/DnItems/StateItem 缺失）；1440 帧 = 物品图标表 0-1439 [inference]。
+- **〔上下文〕**3 图标上下文：0x5668C4 默认（背包 0x42F6D5/0x42F854、提示框 0x434286、角色选择 0x416A93、物品绘制 0x430ABC）/ 0x566A08 type-1 / 0x56B0E8 type-2（商店绘制 0x44D65C）；头 [0x5668FC]/[0x566A40]/[0x56B120]。
+- **〔角色选择背包〕**槽 stride 0x24、帧字 [0x5EC]、type [0x5E6]（0xA/0xB 金币/经验特殊混合）。
+- 落盘：item-icon-library-evidence.json（F465，primary + secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 159。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "item-icon-library-2026-08-12-f465",
+  "title": "Round 159 (F465): Item icon library - client refs Item.wil (0x47C884) + StoreItem.wil (0x47C878, loaded via extra table 0x454040 -> hero+0x13E5C F430); package ships ONLY StoreItem.wil (1440 frames = item icon table 0-1439), Item.wil/DnItems/StateItem MISSING; 3 icon contexts: 0x5668C4 (default: bag 0x42F6D5/0x42F854 + tooltip 0x434286 + char-select 0x416A93 + item draw 0x430ABC + tick 0x41BA8F) / 0x566A08 (type-1, 0x430A86) / 0x56B0E8 (type-2: store paint 0x44D65C + 0x430A63); ctx headers [0x5668FC]/[0x566A40]/[0x56B120]; char-select inventory slot stride 0x24 (36B), frame word [0x5EC], type [0x5E6] (0xA/0xB special blend)",
+  "date": "2026-08-12",
+  "objective": "Map the item icon library system: WIL files, contexts, usages.",
+  "question": "Which WIL files provide item icons and how are the contexts used?",
+  "method": ".rdata scan (Item.wil 0x47C884/StoreItem.wil 0x47C878) + context ref classification + package check.",
+  "scope": ".rdata 0x47C878-0x47C890; contexts 0x5668C4/0x566A08/0x56B0E8; Data/*.wil.",
+  "cell_analysis": {
+    "libs": {"referenced": "Item.wil (0x47C884) + StoreItem.wil (0x47C878, extra-table load F430)", "shipped": "StoreItem.wil 1440 frames only (Item.wil/DnItems/StateItem MISSING)", "icon_table": "1440 frames = item icons 0-1439 [inference]"},
+    "contexts": {"0x5668C4": "default (bag 0x42F6D5/0x42F854, tooltip 0x434286, char-select 0x416A93, item draw 0x430ABC, tick 0x41BA8F)", "0x566A08": "type-1 (item draw 0x430A86)", "0x56B0E8": "type-2 (item draw 0x430A63, store paint 0x44D65C/0x44DBAE/0x44E05D)", "headers": "[0x5668FC]/[0x566A40]/[0x56B120] (w/2, h/2 centering)"},
+    "char_select_inv_0x416A70": {"slot": "stride 0x24 (36B), index [0x5C0] x 36", "frame": "word [0x5EC] -> 0x466130 (0x5668C4)", "type": "[0x5E6] byte (0xA/0xB = gold/exp special blend)", "blit": "SetRect [0x4762B0] with header centering"}
+  },
+  "exe_trace": {
+    "icon_chain": "StoreItem.wil -> contexts -> 0x466130 frame -> bag/store/tooltip/char-select/ground blit"
+  },
+  "audit_vs_exe": {
+    "F464": "icon draw contexts identified",
+    "F430": "StoreItem.wil extra-table slot confirmed",
+    "F460": "store paint uses 0x56B0E8"
+  },
+  "contrast": {
+    "shipped_vs_referenced": "client refs Item.wil + StoreItem.wil; ships only StoreItem.wil (1440)",
+    "contexts": "3 contexts = icon variant sets (normal/type1/type2)"
+  },
+  "verdict": "Item icon library PRIMARY-verified: client references Item.wil + StoreItem.wil; package ships StoreItem.wil (1440 frames); 3 icon contexts (0x5668C4 default/0x566A08/0x56B0E8) serve bag/tooltip/store/char-select/ground-item draws; char-select slot stride 0x24.",
+  "evidence_level": "primary-bytes (refs) + secondary (package)",
+  "evidence_level_note": "String refs + contexts from binary; frame count from package WIL.",
+  "cross_refs": ["F464: item object", "F430: StoreItem extra table", "F460: store paint"],
+  "tool": "capstone + wilsdk + package ls",
+  "reproduce": "scan .rdata for Item.wil; open_library('Data/StoreItem.wil').count",
+  "notes": [
+    "Item.wil = KR-client name for the icon lib; EI ships as StoreItem.wil [inference]",
+    "1440 icons = base item count scale",
+    "0xA/0xB types = gold/exp display (no icon)"
+  ]
+}
