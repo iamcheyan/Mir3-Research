@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-103-2026-08-12-f878",
+  "title": "Round 572 (F878): HANDOFF refresh 103 - Rounds 569-571 (F875-F877: HANDOFF 102, chat send/item-use tail, chat system full closure + 500+ evidence milestone), baseline Round 568=3bed6bf -> Round 571=0cb4dd3 (536 consecutive F335-F877), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 569-571.",
+  "question": "What changed since HANDOFF refresh 102?",
+  "method": "Append Round 569-571 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 569-571 appended (3 rounds, F875-F877)",
+    "baseline": "Round 568=3bed6bf -> Round 571=0cb4dd3 (536 consecutive F335-F877)",
+    "milestone": "500+ evidence JSONs documented",
+    "arcs": {"send": "F876 chat send", "closure": "F877 chat full"},
+    "key": "chat system complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F875": "refresh 102 baseline -> now refresh 103", "F335-F877": "536 rounds"
+  },
+  "contrast": {
+    "refresh_102_vs_103": "F876-F877 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 103 (F878): Rounds 569-571 documented (chat system complete), baseline 3bed6bf -> 0cb4dd3, 536 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F876-F877 evidence.",
+  "cross_refs": ["F875: refresh 102", "F877: chat closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 569-571 section to HANDOFF",
+  "notes": [
+    "536 consecutive shipping rounds F335-F877",
+    "next: remaining deep corners, sim polish"
+  ]
+}

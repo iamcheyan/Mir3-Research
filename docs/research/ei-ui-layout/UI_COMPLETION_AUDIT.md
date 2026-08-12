@@ -3305,3 +3305,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（聊天完整；下一弧：HANDOFF 刷新 103/剩余角落）。
+## Round 572 (2026-08-12) — HANDOFF 刷新 103（Finding 878）
+
+- **Round 569-571 追加 + 536 连发**（聊天完整入档）。
+- 落盘：`handoff-refresh-103-evidence.json`（F878）+ RESEARCH_LOG Round 572。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（聊天完整；下一弧：剩余深层角落/模拟器 polish）。

@@ -8468,3 +8468,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**501 证据 JSON（500+ 里程碑）**；三服务 200；master fb1f121（**535 连发 F335-F876 已推**）。
 - **〔弧〕**文本帧（F576）+ 聊天渲染（F599）+ 命令（F600）+ 输入（F873）+ 发送/物品使用（F876）——**聊天系统完整**（'/' 命令 + 发送 + 物品使用 + 公告 + 速度），聊天表面 100%。
 - 落盘：chat-system-full-closure-evidence.json（F877，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 571。
+## Round 572 (F878) — 2026-08-12：HANDOFF 刷新 103（Round 569-571）
+
+- **〔刷新〕**HANDOFF 追加 Round 569-571（F876-F877：聊天发送/物品使用 + 聊天系统全闭合 + 500+ 证据里程碑）；基线 Round 568=3bed6bf → Round 571=0cb4dd3（**536 连发 F335-F877**）。
+- 落盘：handoff-refresh-103-evidence.json（F878，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 572。
