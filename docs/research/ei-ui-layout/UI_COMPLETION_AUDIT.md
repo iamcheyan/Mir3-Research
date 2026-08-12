@@ -649,6 +649,11 @@ git diff --check
 - **Snow/Forest 未被 EI 使用**（F369 佐证）。
 - 落盘：`ei-vs-zl-libraries-verification-evidence.json`（F390）+ RESEARCH_LOG Round 84。
 
+## Round 85 (2026-08-12) — 大型图对比（Finding 391）
+
+- **6=沙漠城、8=冰雪村（稀疏雪镇）、0=比奇城密集、4=沙漠**；主题 wood/sand 分。
+- 落盘：`large-map-comparison-evidence.json`（F391，primary-bytes）+ RESEARCH_LOG Round 85。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

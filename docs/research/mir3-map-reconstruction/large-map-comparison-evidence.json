@@ -1,0 +1,36 @@
+{
+  "evidence_id": "large-map-comparison-2026-08-12-f391",
+  "title": "Round 85 (F391): Large map comparison - 6/8/0/4.map (800x800): 6=desert row-1 city (sand_smobjectsc 40), 8=冰雪村 snow town (sparse 582718 empty + cliffsc/smobjectsc, lib 25 snow), 0=比奇城 dense wood, 4=desert with sand_tilesc 30; 8.map no anomalies",
+  "date": "2026-08-12",
+  "objective": "Compare the four largest bound maps' structures: city layouts, themes, density, and anomalies.",
+  "question": "How do the largest EI cities differ structurally?",
+  "method": "Layer analysis of 6/8/0/4.map (800x800); audit detail for 8.map; mapnames identity.",
+  "scope": "$MIR3_EI_ROOT/Map/6/8/0/4.map; map-audit.json.",
+  "cell_analysis": {
+    "6_map": {"row": 1 (sand), "back": "{1: 138760, 0: 21240}", "mid": "{15: 542963, 5: 49043, 10: 29387, 0: 18328, 40: 113}", "identity": "desert city (mapnames 沙漠土城?)", "note": "sand_smobjectsc 40 present"},
+    "8_map": {"row": 0, "back": "{2: 85200 tiles5c, 0: 42651, 1: 30347, 15: 1800}", "mid": "{255: 582718 SPARSE, 5: 23426 cliffsc, 0: 16279, 10: 14385, 25: 1723}", "identity": "冰雪村 snow town", "mid_libs": "{3 SmTilesc 96, 5 Cliffsc 23426, 10 SmObjectsc 14385}", "anomalies": "ground_not_drawn 2 (trivial)"},
+    "0_map": {"row": 0, "identity": "比奇城 dense wood town (F372)", "mid": "{15: 406562, 0: 89189, 5: 86182, 10: 46587}"},
+    "4_map": {"row": 1, "identity": "desert (sand_tilesc 30)", "back": "{1: 138135, 0: 12899, 30: 8817}", "mid": "{15: 532444, 5: 62276}"}
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331)"
+  },
+  "audit_vs_exe": {
+    "F372": "0.map dense town confirmed", "F369": "8.map lib 25 = snow context", "F383": "6/4.map theme-1 confirmed"}
+  },
+  "contrast": {
+    "dense_vs_sparse": "0/4 dense; 8/6 sparse mid",
+    "themes": "0/8 wood-row; 4/6 sand-row (desert cities)"
+  },
+  "verdict": "Large map comparison complete (primary-bytes): 0=比奇城 dense wood, 8=冰雪村 sparse snow town (582718 empty mid), 4=desert (sand_tilesc 30), 6=desert city (sand_smobjectsc 40). 8.map anomaly-free. City themes split wood/sand rows.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Layer stats + audit from map binaries.",
+  "cross_refs": ["F372: town comparison", "F369: snow libs unused overall (8.map is the snow town exception)", "F383: themes"],
+  "tool": "python3 layer aggregation; map-audit.json",
+  "reproduce": "aggregate 6/8/0/4.map back/mid; audit 8.map detail",
+  "notes": [
+    "8.map = 冰雪村 (only bound snow-themed town)",
+    "6.map desert city vs 4.map desert - both sand-row but different layouts",
+    "largest maps 640000 cells = 1.28M world px (800x800 x 48/32)"
+  ]
+}

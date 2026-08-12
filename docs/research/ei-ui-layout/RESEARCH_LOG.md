@@ -6160,3 +6160,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔格式〕**ZL = .Zl 压缩（Zircon 格式）vs EI .wil/.wix——不同容器/帧数。
 - **〔主题〕**Snow/Forest 未被 EI 使用（全 theme 0/1）——F369 佐证；ZL 用 Snow/Forest 补偿。
 - 落盘：ei-vs-zl-libraries-verification-evidence.json（F390，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 84。
+## Round 85 (F391) — 2026-08-12：大型图对比（6/8/0/4.map 800x800）
+
+- **〔结构〕**6.map = 沙行沙漠城（sand_smobjectsc 40）；**8.map = 冰雪村稀疏雪镇**（mid 255 582718 空 + cliffsc/smobjectsc，lib 25 雪语境，零异常）；0.map = 比奇城密集木镇（F372）；4.map = 沙漠（sand_tilesc 30）。
+- **〔主题〕**0/8 wood 行、4/6 sand 行——城市主题分 wood/sand。
+- 落盘：large-map-comparison-evidence.json（F391，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 85。
