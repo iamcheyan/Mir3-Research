@@ -1,0 +1,38 @@
+{
+  "evidence_id": "tile-store-structure-2026-08-12-f452",
+  "title": "Round 146 (F452): Tile/resource store structure - ctor 0x4529B0 (main+0xE11E4 = 0x5600FC): array 0x144 stride x 0x8C (140) entries via 0x4686C4 + string member ctors (0x465EF0/0x465F40), zero 0x2C4C dwords + 0x238C @ +0xB130, sub-array 0x454B40 @ +0x13F60; path loader 0x452B20 (strings 0x47D51C/0x47D508/0x47D4F4/0x47D4E0/0x47D4CC/0x47D4B8 -> [ebx+0xB130..0xB540] stride 0x104); per-entry init 0x452AA0 (14 entries stride 0x144 + 70 entries, 0x4660E0 string set) - F448 'shared resource table' = tile-library store (140 slots), monsters/entities index same slots",
+  "date": "2026-08-12",
+  "objective": "Decode the tile/resource store at main+0xE11E4 (0x5600FC): ctor, entry count, layout.",
+  "question": "What is the 0x5600FC store's structure and capacity?",
+  "method": "Disasm 0x4529B0 (ctor) + 0x452B20 (path loader) + 0x452AA0 (entry init).",
+  "scope": "0x4529B0-0x452B20; store 0x5600FC (140 x 0x144).",
+  "cell_analysis": {
+    "ctor_0x4529B0": {"alloc": "0x4686C4(esi, 0x144, 0x8C, str-ctor 0x465EF0, str-dtor 0x465F40) = 140 entries x 324B with string members", "zero": "0x2C4C dwords @ [esi] + 0x238C dwords @ [esi+0xB130]", "sub": "0x454B40 ctor @ [esi+0x13F60]"},
+    "path_loader_0x452B20": {"strings": "0x47D51C/0x47D508/0x47D4F4/0x47D4E0/0x47D4CC/0x47D4B8 (WIL filenames)", "dest": "[ebx+0xB130..0xB540] stride 0x104"},
+    "entry_init_0x452AA0": {"loop1": "0xE (14) entries: esi+=0x144, dest edi+=0x104, 0x4660E0 string set", "loop2": "0x46 (70) entries: 0x4660E0 with string at [ebx+0xF848]"},
+    "f448_refinement": "'shared resource table' = tile-library store: 140 slots x 0x144; tile libs + monster/NPC/effect slots share the array"
+  },
+  "exe_trace": {
+    "store_base": "main+0xE11E4 = 0x5600FC; 140 x 0x144 = 0xCC90 bytes region"
+  },
+  "audit_vs_exe": {
+    "F448": "store structure identified (was 'shared table')",
+    "F433": "monster index *0x144 = slot into same store",
+    "F343": "tile lib formula feeds slot index"
+  },
+  "contrast": {
+    "store_vs_wil": "store = descriptors (140 slots); actual WIL files = Data/*.wil (F429)",
+    "tiles_vs_entities": "tiles (lib formula) + entities (type) both index - unified store"
+  },
+  "verdict": "Tile/resource store PRIMARY-verified: 0x5600FC = 140-slot array (stride 0x144, string members), ctor 0x4529B0, path loader 0x452B20 (WIL filenames), per-entry init 0x452AA0. F448 refined: the 'shared table' = the tile-library/resource store, indexed by tiles AND entities.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor + loader + entry init decoded from .text.",
+  "cross_refs": ["F448: shared table (refined)", "F433: monster slots", "F343: tile lib formula"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x4529B0+0x30, 0x452B20+0x40, 0x452AA0+0x40",
+  "notes": [
+    "0x8C = 140 entries; 0x144 = 324B each",
+    "string members per entry = WIL filename (lazy load)",
+    "entry slot mapping (tiles 0-41, monsters, NPCs) = pending detail"
+  ]
+}

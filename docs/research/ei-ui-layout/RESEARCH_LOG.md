@@ -6468,3 +6468,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔记录存储〕**ctor 0x449A10/0x449A30（三区清零）+ 写入器 0x449AD0（**25 参数属性填充**，0x30B 记录 {+0/+4 HP/MP、+8/+0xA AC/MAC、+0xC ID、+0xE..+0x1C 字节属性、+0x20..+0x2C 4 dword}）。
 - **〔静态链〕**0x8AA5A8 记录存储 / 0x8AA488 主窗（0x450BC0）/ 0x8A9520 / 0x8A7140 / 0x47EF18。
 - 落盘：game-object-base-correction-evidence.json（F451，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 145。
+## Round 146 (F452) — 2026-08-12：瓦片/资源存储结构（140 槽 × 0x144）
+
+- **〔存储〕**main+0xE11E4 = 0x5600FC：**140 槽（0x8C）× 0x144（324B）资源数组**（0x4686C4 分配 + 字符串成员 0x465EF0/0x465F40）+ 清零区（0x2C4C dword + 0x238C @ +0xB130）+ 子数组 0x454B40 @ +0x13F60。
+- **〔装载〕**0x452B20 路径表（WIL 文件名 0x47D51C 等 → [ebx+0xB130..] stride 0x104）；0x452AA0 逐条目初始化（14 + 70 条目，0x4660E0 字符串）。
+- **〔细化〕**F448「共享资源表」= 瓦片库存储（140 槽）；怪物/实体按 type 索引同一数组。
+- 落盘：tile-store-structure-evidence.json（F452，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 146。
