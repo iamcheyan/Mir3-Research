@@ -8876,3 +8876,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 662-664（F969-F970：主 tick/构造链重述 + 主 tick 闭合）；基线 Round 661=8057ad3 → Round 664=8ef379d（**629 连发 F335-F970**）。
 - 落盘：handoff-refresh-135-evidence.json（F971，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 665。
+## Round 666 (F972) — 2026-08-12：坐骑窗口输入 + 构造（F773/F558 依赖）
+
+- **〔坐骑〕**0x426B90 坐骑输入（5 控件 vtable[8] @ +0x54 stride 0xB4）；0x426BC0 5 控件重置；0x426C10 **窗口构造链**（6 物品槽 0x4686C4 @ +0xDA4 stride 0xC24 + vtable 0x476620/0x476864 + F558 注册表构造：背包 0x42E810 @ +0x6554 → 装备 0x44AF50 @ +0x29CE4 → 商店 0x44CFC0 @ +0x33188 → 交易 0x415650 @ +0x3399C → 行会 0x424A60 @ +0x4707C…）——坐骑输入完整（F860 6 槽依赖）。
+- 落盘：mount-window-input-ctor-evidence.json（F972，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 666。

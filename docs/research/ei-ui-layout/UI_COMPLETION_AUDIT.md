@@ -4057,3 +4057,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（主构造完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 666 (2026-08-12) — 坐骑窗口输入 + 构造（Finding 972）
+
+- **5 控件 + 构造链**（坐骑输入完整）。
+- 落盘：`mount-window-input-ctor-evidence.json`（F972）+ RESEARCH_LOG Round 666。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（坐骑输入完整；下一弧：剩余深层角落）。

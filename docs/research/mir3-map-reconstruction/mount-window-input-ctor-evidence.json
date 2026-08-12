@@ -1,0 +1,36 @@
+{
+  "evidence_id": "mount-window-input-ctor-2026-08-12-f972",
+  "title": "Round 666 (F972): Mount window input + ctor (F773/F558 dep) - 0x426B90 mount INPUT (5 controls vtable[8] @ +0x54 stride 0xB4); 0x426BC0 5 control reset; 0x426C10 window CTOR chain (6 item slots 0x4686C4 @ +0xDA4 stride 0xC24 + vtable 0x476620/0x476864 + F558 registry ctors: inventory 0x42E810 @ +0x6554 -> equipment 0x44AF50 @ +0x29CE4 -> shop 0x44CFC0 @ +0x33188 -> trade 0x415650 @ +0x3399C -> guild 0x424A60 @ +0x4707C...) - mount input COMPLETE (F860 6-slot dep)",
+  "date": "2026-08-12",
+  "objective": "Decode the mount window input + ctor.",
+  "question": "How does the mount window route input + construct?",
+  "method": "Disasm 0x426B90-0x426C10.",
+  "scope": "0x426B90-0x426C10; input/ctor.",
+  "cell_analysis": {
+    "0x426B90": "input 5 controls",
+    "0x426BC0": "reset 5",
+    "0x426C10": "ctor 6 slots + F558 registry"
+  },
+  "exe_trace": {
+    "mount_chain": "input -> ctor registry"
+  },
+  "audit_vs_exe": {
+    "F773": "mount draw", "F860": "6 slots", "F558": "registry"
+  },
+  "contrast": {
+    "input_vs_ctor": "5 controls + chain",
+    "registry": "F558 recap"
+  },
+  "verdict": "Mount window input + ctor PRIMARY-verified: input + ctor chain; F773/F860 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Mount input decoded from .text.",
+  "cross_refs": ["F773: mount", "F860: slots", "F558: registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x426B90+0x10; 0x426C10+0x30",
+  "notes": [
+    "5 controls +0x54",
+    "6 slots +0xDA4",
+    "registry 0x42E810..",
+    "vtable 0x476620"
+  ]
+}
