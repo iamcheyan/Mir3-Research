@@ -7844,3 +7844,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 424-426（F731-F732：HUD 键盘分派 + HUD 输入弧）；基线 Round 423=facd4c5 → Round 426=2450f7e（**391 连发 F335-F732**）。
 - 落盘：handoff-refresh-54-evidence.json（F733，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 427。
+## Round 428 (F734) — 2026-08-12：公告行列表添加 + 渲染
+
+- **〔公告〕**0x415280 添加：修剪 ≥8（解链 + free 0x4680F8）+ 分配 0x104 + 复制 + 插入 0x449870（头 [0x8]/尾 [0x10]/计数 [0x18]）；0x4153B0 渲染：0x45DD70 TextOutA 阴影 0xA0A0A + **文本色 0xB4FFB4**（经典 Mir3 伤害/治疗绿）、y += 0xF 行、寿命 0xBB8（3000ms）/0x3E8（>6 行）、超时修剪——浮动公告文本系统（F731 用、F564/F677 家族）。
+- 落盘：notice-line-list-add-render-evidence.json（F734，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 428。

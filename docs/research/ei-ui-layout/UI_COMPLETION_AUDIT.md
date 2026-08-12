@@ -2366,9 +2366,14 @@ git diff --check
 - **Round 424-426 追加 + 391 连发**（HUD 输入完整入档）。
 - 落盘：`handoff-refresh-54-evidence.json`（F733）+ RESEARCH_LOG Round 427。
 
+## Round 428 (2026-08-12) — 公告行列表添加 + 渲染（Finding 734）
+
+- **修剪/插入 + 阴影/绿字 + 寿命**（浮动公告系统）。
+- 落盘：`notice-line-list-add-render-evidence.json`（F734）+ RESEARCH_LOG Round 428。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（HUD 输入完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（公告系统字节级；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "notice-line-list-add-render-2026-08-12-f734",
+  "title": "Round 428 (F734): Notice line-list ADD + RENDER - 0x415280 add: prune >=8 (unlink + free 0x4680F8) + alloc 0x104 + copy + insert 0x449870 (head [0x8]/tail [0x10]/count [0x18]); 0x4153B0 render: 0x45DD70 TextOutA shadow 0xA0A0A + text color 0xB4FFB4 (classic Mir3 damage/heal green), y += 0xF lines, lifetime 0xBB8 (3000ms) or 0x3E8 (>6 lines), prune on timeout - floating notice text system (F731 use, F564/F677 family)",
+  "date": "2026-08-12",
+  "objective": "Decode the notice line-list add + render.",
+  "question": "How are floating notices added + rendered?",
+  "method": "Disasm 0x415280-0x415460.",
+  "scope": "0x415280-0x415460; line list.",
+  "cell_analysis": {
+    "0x415280": "add: prune >=8 + alloc 0x104 + copy + 0x449870 insert",
+    "0x4153B0": "render: 0x45DD70 shadow 0xA0A0A + text 0xB4FFB4, y+0xF, life 0xBB8/0x3E8"
+  },
+  "exe_trace": {
+    "notice_chain": "add (prune+insert) -> render (shadow+text) -> timeout prune"
+  },
+  "audit_vs_exe": {
+    "F731": "keyboard dispatch uses 0x415280", "F564": "TextOutA 0x45DD70", "F677": "line list family"
+  },
+  "contrast": {
+    "add_vs_render": "insert + draw",
+    "shadow_vs_text": "0xA0A0A + 0xB4FFB4"
+  },
+  "verdict": "Notice line-list ADD + RENDER PRIMARY-verified: prune/insert + shadow/text draw + lifetime; floating notice system (F731/F564/F677).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Notice system decoded from .text.",
+  "cross_refs": ["F731: dispatch", "F564: text", "F677: line list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x415280+0x10; 0x4153B0+0x20",
+  "notes": [
+    "color 0xB4FFB4 damage green",
+    "0xBB8 lifetime",
+    "prune >=8",
+    "y+0xF line height"
+  ]
+}
