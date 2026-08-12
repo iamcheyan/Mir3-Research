@@ -7348,3 +7348,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**248 证据 JSON**；三服务 200；master eb7ef71（**281 连发 F335-F622 已推**）。
 - **〔弧〕**英雄名/等级文本层（F621）+ 实体投影/HP 框（F622）——**实体渲染层完整（投影 → HP 条/框 → 名/等级 → 阴影）**，连接 F435/F436/F350/F531/F590。
 - 落盘：entity-render-arc-closure-evidence.json（F623，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 317。
+## Round 318 (F624) — 2026-08-12：HANDOFF 刷新 21（Round 314-317）
+
+- **〔刷新〕**HANDOFF 追加 Round 314-317（F621-F623：英雄名/等级文本 + 实体投影/HP 框 + 实体渲染弧）；基线 Round 313=50f6c52 → Round 317=581fd9e（**282 连发 F335-F623**）。
+- 落盘：handoff-refresh-21-evidence.json（F624，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 318。
