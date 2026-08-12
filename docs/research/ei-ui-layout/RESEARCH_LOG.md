@@ -7079,3 +7079,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 257-261（F563-F567：错误/装备 + 文本渲染族 + 实体生命周期 + recv/实体弧）；基线 Round 255=ce24497 → Round 261=9fbbccc（**226 连发 F335-F567**）。
 - 落盘：handoff-refresh-8-evidence.json（F568，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 262。
+## Round 263 (F569) — 2026-08-12：recv1 行会/组队/联盟错误族
+
+- **〔idx33/35〕**msg 0x2C1：未入会 '对不起！您还没有加入行会！.'（0x47B544）；msg 0x2C3：0x452410 发送 + 收人成功 '行会收人成功!'（0x47B528）。
+- **〔idx36/38/39/42〕**状态跳表：0x2C4 5 路（jt 0x42211C：无权限/失败/已在本门/已在它门）、0x2C6 4 路（jt 0x422130：无名/문주 不能自退 0x47B418/命令不可用）、0x2C7 6 路（jt 0x422140：**[변경오류] 문주가 비어있습니다/명칙이 비어있습니다/2명 초과/접속 필요** + 封号编辑拒绝 0x47B30C + 重复 0x47B2D8）、0x2CA 4 路（jt 0x422158：동맹에 실패했습니다/需面对面 문주 0x47B298）。
+- **〔idx37/45/22〕**0x2C5：仅发送；0x2CD：备忘结构 malloc 0xC → 0x4561B0([main+0x3C5EFC])；0x2B6：[0x4279A0]=包 dword。
+- **〔编码〕**KR 源（문주/문파/동맹/변경오류）+ CN GBK 层。
+- 落盘：recv1-guild-party-errors-evidence.json（F569，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 263。

@@ -1,0 +1,42 @@
+{
+  "evidence_id": "recv1-guild-party-alliance-errors-2026-08-12-f569",
+  "title": "Round 263 (F569): recv1 guild/party/alliance error family - idx33 (msg 0x2C1 0x421555): '对不起！您还没有加入行会！.' (not-in-guild); idx35 (msg 0x2C3 0x42157E): 0x452410 send + '行会收人成功!' (recruit success); idx36 (msg 0x2C4 0x42159D) 5-way jt 0x42211C: no-permission (0x47B50C)/失败 FAIL (0x47B4D8)/already-in-our-guild (0x47B4B4)/already-in-other (0x47B490); idx37 (msg 0x2C5 0x42161D): 0x452410 send; idx38 (msg 0x2C6 0x42162C) 4-way jt 0x422130: no-name (0x47B444)/master-cannot-remove-self (0x47B418 문주 본인이 본인을 탈퇴)/command-unavailable (0x47B3FC); idx39 (msg 0x2C7 0x421682) 6-way jt 0x422140: master-change errors [변경오류] 문주가 비어있습니다/명칙이 비어있습니다/2명 초과/접속 필요 + title-edit-denied (0x47B30C) + duplicate-title (0x47B2D8); idx42 (msg 0x2CA 0x421717) 4-way jt 0x422158: alliance failed (0x47B2C0 동맹에 실패)/must-face-master (0x47B298); idx45 (msg 0x2CD 0x421497): memo struct malloc 0xC -> 0x4561B0([main+0x3C5EFC]); idx22 (msg 0x2B6 0x421488): [0x4279A0] = packet dword - guild/party/alliance message family byte-level (KR origin cp949)",
+  "date": "2026-08-12",
+  "objective": "Decode the remaining recv1 guild/party/alliance error handlers.",
+  "question": "What do the remaining recv1 handlers do?",
+  "method": "Disasm 0x421555-0x421717 + jt 0x42211C/0x422130/0x422140/0x422158 + decode strings.",
+  "scope": "0x421488-0x421497, 0x421555-0x421717; 4 jts; error strings.",
+  "cell_analysis": {
+    "idx33": "msg 0x2C1: not-in-guild '对不起！您还没有加入行会！.' (0x47B544)",
+    "idx35": "msg 0x2C3: 0x452410 send + recruit success '行会收人成功!' (0x47B528)",
+    "idx36": "msg 0x2C4: 5-way jt 0x42211C - no-permission (0x47B50C)/FAIL (0x47B4D8)/already-our-guild (0x47B4B4)/already-other (0x47B490)",
+    "idx37": "msg 0x2C5: 0x452410 send",
+    "idx38": "msg 0x2C6: 4-way jt 0x422130 - no-name (0x47B444)/master-self-remove (0x47B418)/cmd-unavailable (0x47B3FC)",
+    "idx39": "msg 0x2C7: 6-way jt 0x422140 - master-change errors [변경오류] (0x47B3D8/0x47B3B0/0x47B384/0x47B33C) + title-edit-denied (0x47B30C) + duplicate (0x47B2D8)",
+    "idx42": "msg 0x2CA: 4-way jt 0x422158 - alliance failed (0x47B2C0)/must-face-master (0x47B298)",
+    "idx45": "msg 0x2CD: memo struct malloc 0xC {+0,+4,+8} -> 0x4561B0([main+0x3C5EFC])",
+    "idx22": "msg 0x2B6: [0x4279A0] = packet dword (HUD state)"
+  },
+  "exe_trace": {
+    "guild_chain": "guild/party/alliance packet -> state jt -> error prompt (GBK/KR) OR send ack"
+  },
+  "audit_vs_exe": {
+    "F553": "recv2 memo family", "F558": "guild window mode 4", "F535": "guild render", "F520": "recv1 semantics"
+  },
+  "contrast": {
+    "error_vs_ack": "error prompts (idx33/36/38/39/42) vs send-only acks (idx35/37)",
+    "guild_vs_party": "guild master-change errors vs party invite errors"
+  },
+  "verdict": "recv1 guild/party/alliance family PRIMARY-verified: 10 handlers decoded (error prompts + send acks + memo), 4 state jump tables mapped, KR origin strings confirmed. recv1 handler coverage ~complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + jts + strings decoded from .text/.data.",
+  "cross_refs": ["F553: recv2", "F558: window registry", "F535: guild render"],
+  "tool": "capstone disasm + cp949/GBK decode",
+  "reproduce": "disasm 0x42159D+0x10; 0x42162C+0x10; 0x421682+0x10; 0x421717+0x10",
+  "notes": [
+    "문주 = guild master (KR), 문파 = guild/sect",
+    "0x47B4D8 = '失败' FAIL (CN)",
+    "[0x4279A0] = HUD/quick slot state dword",
+    "memo 0x4561B0([main+0x3C5EFC]) = memo queue"
+  ]
+}
