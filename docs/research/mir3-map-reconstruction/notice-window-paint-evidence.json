@@ -1,0 +1,34 @@
+{
+  "evidence_id": "notice-window-paint-2026-08-12-f674",
+  "title": "Round 368 (F674): Notice window paint FULL - 0x427E30 (F556/F565 shared notice): 5-line max gate ([esp+0x10] vs eax), per-line 0x104 stride copy + 0x414FA0 render ([ebp+0xD0C] list), node list [0xD10]/[0xD14]/[0xD18]/[0xD1C] (0x408/0x40C links, [0xD08] count), count > 0x50 (80) prune via node unlink + free 0x4680F8 - notice system byte-level (F556/F565 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the notice window paint fully.",
+  "question": "How does the notice window render?",
+  "method": "Disasm 0x427F03-0x4280E2.",
+  "scope": "0x427F03-0x4280E2; 5-line; node list.",
+  "cell_analysis": {
+    "0x427E30": {"lines": "5-line max gate", "copy": "0x104 stride + 0x414FA0 render ([0xD0C] list)", "nodes": "[0xD10]/[0xD14]/[0xD18]/[0xD1C] (0x408/0x40C links, [0xD08] count)", "prune": "count > 0x50 (80) unlink + free 0x4680F8"}
+  },
+  "exe_trace": {
+    "notice_chain": "server msg -> 0x427E30 5-line render -> node list -> prune at 80"
+  },
+  "audit_vs_exe": {
+    "F556": "notice strings", "F565": "notice shared", "F553": "notice colors"
+  },
+  "contrast": {
+    "render_vs_prune": "5-line render + 80-count prune",
+    "lines": "0x104 stride per line"
+  },
+  "verdict": "Notice window paint PRIMARY-verified: 5-line render + node list + prune; F556/F565 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Notice render decoded from .text.",
+  "cross_refs": ["F556: notices", "F565: shared", "F553: colors"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x427E30+0x60",
+  "notes": [
+    "5-line max",
+    "line stride 0x104",
+    "node links 0x408/0x40C",
+    "prune at 80 (0x50)"
+  ]
+}

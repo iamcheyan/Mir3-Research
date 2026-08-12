@@ -7581,3 +7581,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 364-366（F671-F672：任务窗绘制 + 任务系统闭合）；基线 Round 363=409fe27 → Round 366=0596b2c（**331 连发 F335-F672**）。
 - 落盘：handoff-refresh-35-evidence.json（F673，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 367。
+## Round 368 (F674) — 2026-08-12：公告窗绘制完整
+
+- **〔绘制〕**0x427E30（F556/F565 共享公告）：**5 行上限门**、每行 0x104 步长复制 + 0x414FA0 渲染（[0xD0C] 列表）、节点列表 [0xD10]/[0xD14]/[0xD18]/[0xD1C]（0x408/0x40C 链接、[0xD08] 计数）、**计数 > 0x50（80）剪枝**（解链 + 释放 0x4680F8）——公告系统字节级（F556/F565 连接）。
+- 落盘：notice-window-paint-evidence.json（F674，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 368。
