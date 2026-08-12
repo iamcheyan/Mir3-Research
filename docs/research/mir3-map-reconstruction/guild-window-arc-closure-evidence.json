@@ -1,0 +1,38 @@
+{
+  "evidence_id": "guild-window-arc-closure-2026-08-12-f756",
+  "title": "Round 450 (F756): Guild window arc CLOSED (F535/F558/F755) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 57ca694 (414 consecutive F335-F755), 380 evidence JSONs; arc: guild scrollbar (F535) + registry (F558) + window draw (F755) - guild window COMPLETE byte-level (3-page mode + scrollbar + 9 buttons + member list + guild content), window mode 4 fully documented; Round 450 milestone",
+  "date": "2026-08-12",
+  "objective": "Close the guild window arc.",
+  "question": "Is the guild window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "380 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F535": "guild scrollbar", "F558": "registry", "F755": "window draw"},
+    "guild": "pages + scrollbar + buttons = COMPLETE",
+    "milestone": "414 consecutive rounds F335-F755 + Round 450"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F755": "414 rounds pushed; guild complete, mode 4 documented"
+  },
+  "contrast": {
+    "draw_vs_scrollbar": "pages + F707",
+    "buttons_vs_members": "9 buttons + member list"
+  },
+  "verdict": "Guild window arc CLOSED (F756): pages + scrollbar + buttons all byte-level; validation green, 414 consecutive rounds, 380 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F535/F558/F755.",
+  "cross_refs": ["F535", "F558", "F755"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "414 consecutive shipping rounds F335-F755",
+    "guild 100%",
+    "Round 450 milestone",
+    "next: HANDOFF refresh 62, remaining corners"
+  ]
+}

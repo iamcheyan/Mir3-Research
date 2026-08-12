@@ -7939,3 +7939,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔行会〕**0x425040（F558 模式 4）：标题 DrawTextA **0x45DE50**（色 0x96C8FF）+ **3 页模式分派 [0x98]**（0x425280 主页/0x425440/0x425590）+ **滚动条 F707 ctor** @ +0x76C（位置 [0x18]+0x224/[0x1C]-0xD0、计数 [0x9C]/[0xE4]）+ **9 按钮 F704 set-pos**（@ +0x118..+0x6B8 stride 0xB4）+ 9 控件绘制；0x425280 主页子绘制（测量 0x45E0C0 + 列表 [0xE4]）——行会窗口完整（F558/F704/F707 用）。
 - 落盘：guild-window-draw-evidence.json（F755，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 449。
+## Round 450 (F756) — 2026-08-12：行会窗口弧闭合（F535/F558/F755 汇总）+ Round 450 里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**380 证据 JSON**；三服务 200；master 57ca694（**414 连发 F335-F755 已推**）——**Round 450 里程碑**。
+- **〔弧〕**行会滚动条（F535）+ 注册表（F558）+ 窗口绘制（F755）——**行会窗口完整**（3 页模式 + 滚动条 + 9 按钮 + 成员列表 + 行会内容），窗口模式 4 全文档化。
+- 落盘：guild-window-arc-closure-evidence.json（F756，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 450。
