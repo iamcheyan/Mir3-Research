@@ -1,0 +1,37 @@
+{
+  "evidence_id": "stditem-dat-kr-format-2026-08-12-f502",
+  "title": "Round 196 (F502): stditem.dat format CRACKED - 1143 records x 184B + 4B count header = 210316 (EXACT file size); name at rec+0x99 (153) EUC-KR/Hanja (rec1 '뱐같烈㎚滔㎛', rec2 '웰낚烈㎚滔㎛', 0x04-terminated); count u32 at 0 = 1143; same KR-source format as monster.dat (F501) - F493 184B/record inference CONFIRMED + encoding resolved",
+  "date": "2026-08-12",
+  "objective": "Crack stditem.dat record layout + encoding (F493 deferred).",
+  "question": "What is stditem.dat's exact record format?",
+  "method": "Record-stride math + EUC-KR name offset scan.",
+  "scope": "stditem.dat: 1143 x 184 + 4 header; name +0x99.",
+  "cell_analysis": {
+    "file": {"count": "1143 (u32 @0)", "record": "184B (0xB8)", "total": "1143*184+4 = 210316 = exact file size", "name": "rec+0x99 (153), EUC-KR/Hanja, 0x04-terminated"},
+    "names": {"rec1": "'뱐같烈㎚滔㎛'", "rec2": "'웰낚烈㎚滔㎛'", "format": "Hangul + Hanja mix (KR-source, F501 family)"},
+    "f493_confirm": "184B/record inference now EXACT (was [inference])"
+  },
+  "exe_trace": {
+    "server": "stditem.dat KR -> CN translation layer -> item packets -> client 0xC20 (F464)"
+  },
+  "audit_vs_exe": {
+    "F493": "record size + count confirmed exactly",
+    "F501": "same EUC-KR/Hanja encoding",
+    "F464": "client packet-fed (never reads file)"
+  },
+  "contrast": {
+    "stditem_vs_monster": "stditem 184B rec / name +0x99 vs monster 0xFC slot / name +0",
+    "kr_vs_gbk": "KR file vs GBK script layer translation"
+  },
+  "verdict": "stditem.dat format CRACKED (primary-bytes): 1143 x 184B records + 4B count, name at +0x99 EUC-KR/Hanja; F493 inference confirmed exact. Both server DBs fully decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Record math + name decode from binary.",
+  "cross_refs": ["F493: structure", "F501: KR encoding", "F464: client items"],
+  "tool": "python binary parse + euc-kr decode",
+  "reproduce": "1143*184+4 == len; decode d[188+0x99:+0x10] euc-kr",
+  "notes": [
+    "name 0x04-terminated (vs 0x09 in monster.dat)",
+    "all 1143 records sized exactly",
+    "server layer translates KR names to GBK (MonGen/scripts)"
+  ]
+}

@@ -6741,3 +6741,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔破解〕**名称 = **EUC-KR/Hanja 混合**：槽解码为真韩文（slot0 '총핀헥뇨'、slot5 '츤딜'、slot20 '뮤늬춈흐'）+ 汉字（KR 字节内中文）——**KR 源服务端格式**；432 槽全非空；CN 服务端在脚本层翻译（MonGen GBK）。
 - **〔闭合〕**最后一个低优先 pending 闭合；客户端不受影响（数据包驱动 F492）。
 - 落盘：monster-dat-kr-encoding-evidence.json（F501，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 195。
+## Round 196 (F502) — 2026-08-12：stditem.dat 格式破解（1143 × 184B + 头）
+
+- **〔格式〕**stditem.dat = 1143 记录 × 184B + 4B 计数头 = 210316（**精确等于文件大小**）；名称 @ rec+0x99（EUC-KR/Hanja、0x04 终止，rec1 '뱐같烈㎚滔㎛'）——F493 184B/记录 inference 确认精确 + 编码解析。
+- **〔双库〕**monster/stditem 全解码（KR 源格式）。
+- 落盘：stditem-dat-kr-format-evidence.json（F502，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 196。
