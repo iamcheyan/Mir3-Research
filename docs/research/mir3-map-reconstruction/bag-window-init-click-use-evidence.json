@@ -1,0 +1,36 @@
+{
+  "evidence_id": "bag-window-init-click-use-2026-08-12-f815",
+  "title": "Round 515 (F815): Bag window init + click + use-item - 0x42FF90 (F811 bag init dep): reset bag state [0x2375C..0x23778], drag slots -1 [0x23764]/[0x23768]; 0x42FFD0 CLICK handler: hit -> empty-slot use 0x42FEC0 (0x43002B) / scrollbar F707 click 0x417D00 @ +0x278 (ratio [0x284] -> count [0x58] x0x476650) / 3 control vtable[0xC] / slot hit 0x42F150 -> item check [0x774 + idx*0x6C] -> busy flag [0x3C]; 0x4300F0 USE-ITEM gate: cooldowns 0x12C(300ms)/0x7D0/0x3E8 vs [0x23784], item type [0x3A]/[0x40], notice 0x415280 0x47BDA4, scrollbar [0x278] - bag window interactive COMPLETE (F811/F764 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the bag window init + click + use.",
+  "question": "How does the bag window initialize + handle clicks + use items?",
+  "method": "Disasm 0x42FF90-0x4301C0.",
+  "scope": "0x42FF90-0x4301C0; item array [0x774].",
+  "cell_analysis": {
+    "0x42FF90": "init: reset [0x2375C..0x23778] + slots -1",
+    "0x42FFD0": "click: 0x42FEC0 + 0x417D00 + 3 controls + 0x42F150 + [0x774+idx*0x6C]",
+    "0x4300F0": "use gate: 0x12C/0x7D0/0x3E8 + type [0x3A]/[0x40] + 0x415280"
+  },
+  "exe_trace": {
+    "bag_chain": "init -> click dispatch -> use gate -> notice"
+  },
+  "audit_vs_exe": {
+    "F811": "bag init", "F764": "bag draw", "F707": "scrollbar click"
+  },
+  "contrast": {
+    "click_vs_use": "dispatch + gate",
+    "init_vs_items": "reset + [0x774] array"
+  },
+  "verdict": "Bag window init + click + use PRIMARY-verified: reset + dispatch + use gate; bag interactive complete (F811/F764).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Bag window decoded from .text.",
+  "cross_refs": ["F811: toggle", "F764: draw", "F707: scrollbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42FF90+0x10; 0x42FFD0+0x20",
+  "notes": [
+    "item array [0x774] stride 0x6C",
+    "scrollbar ratio [0x284]",
+    "use cooldown 0x7D0/0x3E8",
+    "notice 0x415280"
+  ]
+}

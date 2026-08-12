@@ -2801,3 +2801,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（切换机制完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 509 (2026-08-12) — 背包窗口初始化 + 点击 + 使用（Finding 815）
+
+- **重置 + 点击分派 + 使用门**（背包全交互）。
+- 落盘：`bag-window-init-click-use-evidence.json`（F815）+ RESEARCH_LOG Round 509。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（背包全交互；下一弧：剩余深层角落）。
