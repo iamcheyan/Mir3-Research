@@ -449,6 +449,12 @@ git diff --check
 - **模拟器提示**：confirm/notice/gold 三型（帧 950/602/950+输入）；浏览器验证显示。
 - 落盘：`prompt-system-verification-evidence.json`（F356，primary-bytes）+ RESEARCH_LOG Round 50。
 
+## Round 51 (2026-08-12) — 任务窗口渲染（Finding 357）
+
+- **0x447470**：文本列表（0x104 步长、19 行上限、200px 测宽门、色 0x1919C8/0x19197D、行距 0x12）。
+- **模拟器任务列表**：浏览器验证（D 开窗、首行选中色）。
+- 落盘：`quest-window-render-evidence.json`（F357，primary-bytes）+ app.js + RESEARCH_LOG Round 51。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

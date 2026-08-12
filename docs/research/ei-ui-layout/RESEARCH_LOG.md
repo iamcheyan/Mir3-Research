@@ -5943,3 +5943,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x418520 激活〕**门 [0x462] mode → 3 按钮数组 [esi+0x234+i*0x28]（步长 0x28）；**wparam = ((type<<8|idx)<<16)|tag**（F233-238 编码确认）→ MoveWindow + ShowWindow + **SendMessageA([0x8AA48C], 0x7EE, wparam, &[esi+0x130])**（lparam = 按钮负载缓冲 0x104）。
 - **〔模拟器〕**PROMPT_BUTTONS（confirm 帧 950 3 按钮 / notice 帧 602 2 按钮 / gold 帧 950+输入框 F283）——浏览器验证 showPrompt('confirm') 显示文本。
 - 落盘：`prompt-system-verification-evidence.json`（F356，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 50。
+
+## Round 51 (F357) — 2026-08-12：任务窗口 id11 渲染细节（0x447470 文本列表）+ 模拟器任务列表
+
+- **〔0x447470 任务列表〕**head [0x54]、cursor [0x1E8]=[0x1E4]、**行数上限 0x13=19**；**条目步长 0x104**（F331 技能列表同款）；0x45E0C0 测宽、**0xC8=200px 门**（超宽换行/滚动 0x44755C）；**选中色 0x1919C8 / 常态 0x19197D**（0x4475F7-0x447606，选择标志 [ebp+0x204]/[ebp+0x210]）；**行 y = line*3 + 0x12**（0x447618）、原点 win.x+0x41；滚动 cursor vs [0x58]。
+- **〔模拟器〕**window.quest 渲染 5 任务行（19 上限）、色 0x1919C8/0x19197D、证据 desc。**浏览器验证**：D 开任务窗、首行 ★ 主线：拜见国王 色 rgb(25,25,200)。
+- 落盘：`quest-window-render-evidence.json`（F357，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 51。

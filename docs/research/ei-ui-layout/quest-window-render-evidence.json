@@ -1,250 +1,46 @@
 {
-  "source": {
-    "file": "/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-    "constructor_va": "0x00447400",
-    "paint_va": "0x00447470",
-    "fill_va": "0x004488D0 (msg 0x515 handler via 0x421A45; splits the server body on '/' - see closed_notes P1)",
-    "input_va": "0x00447FA0 (click) / 0x00448230 (update/navigation)",
-    "evidence_level": "primary-static"
-  },
-  "window": {
-    "id": "window.quest",
-    "background": {"file": "Data/GameInter.wil", "frame": 700, "visible_size": [340, 440]},
-    "constructor_window_size": [340, 440],
-    "window_object_origin": {"x_field": "this+0x18", "y_field": "this+0x1c"}
-  },
-  "resource_visual_inspection": {
-    "source": "Data/GameInter.wil direct pixel inspection; exported at native size and enlarged with nearest-neighbor for review",
-    "frames": [
-      {
-        "frame": 700,
-        "visual_text": ["QUESTS", "DONE QUESTS"],
-        "visual_description": "scroll/parchment quest panel with the two baked English section labels and right-side operation-icon area",
-        "confidence": "high",
-        "note": "These are artwork labels; they do not by themselves prove the runtime field names or click behavior."
-      },
-      {
-        "frame": 705,
-        "visual_description": "blank parchment/detail panel intended to receive runtime-selected quest body text",
-        "confidence": "high"
-      },
-      {
-        "frame_pair": [721, 722],
-        "visual_description": "X/cross operation icon on a circular tan base: Frame 721 renders the cross in bright green (46 green pixels, sample RGB (152,188,56)), Frame 722 in muted gold (0 green pixels, sample RGB (112,88,72))",
-        "confidence": "high",
-        "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); green = highlighted state, gold = normal state (iconography candidate, runtime state binding comes from the control pair)."
-      },
-      {
-        "frame_pair": [723, 724],
-        "visual_description": "right-pointing arrow operation icon on a circular tan base: Frame 723 renders the arrow in bright green (106 green pixels, sample RGB (192,236,72)), Frame 724 in muted gold (0 green pixels, sample RGB (112,88,72))",
-        "confidence": "high",
-        "note": "WILSDK decode (28x28, bbox (0,0,27,27) both frames); earlier 'Frame 724 empty' claim came from the retired hand-rolled WIL parser and is superseded."
-      }
-    ],
-    "evidence_level": "primary-resource-visual"
-  },
-  "controls": [
-    {"object_offset": "this+0x74", "call_va": "0x0044743B", "frame_pair": [723, 724], "position": {"x": 290, "y": 59, "coordinate_space": "window-relative"}},
-    {"object_offset": "this+0x128", "call_va": "0x0044745E", "frame_pair": [721, 722], "position": {"x": 290, "y": 89, "coordinate_space": "window-relative"}}
-  ],
-  "hit_rects": {
-    "basis": "Shared control constructor 0x00417550 selects the GameInter frame and writes SetRect from the frame width/height.",
-    "records": [
-      {"frame_pair": [723, 724], "relative_rect": [290, 59, 28, 28]},
-      {"frame_pair": [721, 722], "relative_rect": [290, 89, 28, 28]}
-    ],
-    "evidence_level": "primary-static-plus-primary-resource"
-  },
-  "text_list": {
-    "source_chain": ["this+0x1E8", "0x0045E0C0"],
-    "first_column": {"x": 65, "y": 90, "coordinate_space": "window-relative"},
-    "line_spacing": 15,
-    "line_count_guard": 19,
-    "evidence": "0x0044760B/0x004477EF compute window.x+0x41 and window.y+(row*15)+0x5A",
-    "scroll_semantics": {
-      "this+0x58": "list scroll offset (rows); painted row index = row - this+0x58; click in list area increments with clamp [0, this+0x5C-1] (0x0044888B-0x0044889E), wheel decrements with floor 0 (0x00448761-0x00448774)",
-      "this+0x5C": "list row count clamp; written by Paint each frame at 0x00447DED from the decoded row counter",
-      "paint_guard": "rows outside [this+0x58, this+0x58+19) are skipped (0x004475CE-0x004475E1 and 0x0044765C-0x00447670)",
-      "evidence_level": "primary-static-scroll-model"
+  "evidence_id": "quest-window-render-2026-08-12-f357",
+  "title": "Round 51 (F357): Quest window id11 render detail - 0x447470 (entry stride 0x104, 19-line cap, 0x45E0C0 measure 0xC8=200px gate, colors 0x1919C8 selected/0x19197D normal, row = line*3+0x12) + sim quest list wired (browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window (id11, Ctrl+D) text-list renderer details and wire them into the simulator.",
+  "question": "How does the original quest window render its text list (stride, cap, measure gate, colors)?",
+  "method": "Capstone disassembly of 0x447470 (quest paint); sim app.js wiring; browser verification.",
+  "scope": "0x447470-0x447D58 (quest paint), 0x45E0C0 (measure), sim window.quest fill.",
+  "cell_analysis": {
+    "quest_paint_0x447470": {
+      "list": "head [esi+0x54]; cursor [esi+0x1E8] = [esi+0x1E4]; line cap 0x13=19",
+      "entry_stride": "0x104 (matches F331 skill-list pattern; entry+4 = text)",
+      "measure": "0x45E0C0 measure line; width > 0xC8=200 -> wrap/scroll path (0x44755C repne scasb string length)",
+      "colors": "selected row 0x1919C8 (0x4475F7-0x4475FF), normal 0x19197D (0x447604-0x447606); selection flag [ebp+0x204]/[ebp+0x210]",
+      "row_geometry": "row y = line*3 + 0x12 (0x447618); origin win.x+0x41 (0x447621)",
+      "scroll": "cursor offset vs [esi+0x58] scroll position (0x4475CE-0x4475DE)"
     },
-    "entry_decode": {
-      "record_text_field_candidate": "record+0x04",
-      "lookup_helper": "0x0045E0C0",
-      "length_threshold_bytes": 200,
-      "long_entry_path": "0x0044755C–0x0044764E",
-      "short_entry_path": "0x0044777E–0x00447824",
-      "color_selection": {"state_fields": ["record+0x204", "record+0x210"], "literal_candidates": ["0x0019197D", "0x001919C8"], "evidence_level": "primary-static-color-branch-candidate"},
-      "evidence_level": "primary-static-entry-formatting"
+    "sim_wiring": {
+      "fill": "window.quest renders 5 quest lines (19 cap), left=0x41+24, top=0x12+i*22, colors 0x1919C8/0x19197D, evidence desc",
+      "browser": "D key opens quest; 5 lines; first = ★ 主线：拜见国王 color rgb(25,25,200) = 0x1919C8"
     }
   },
-  "detail_text": {
-    "frame_select_va": "0x00447E07",
-    "frame": 705,
-    "draw_va": "0x00447E43",
-    "draw_helper": "0x0045FD50",
-    "origin": {"x": 65, "y": 294, "coordinate_space": "window-relative"},
-    "position_expression": {"x": "window.x+0x41", "y": "window.y+0x126"},
-    "body_text_draw": {
-      "source_field": "this+0x6C",
-      "line_guard": "this+0x60 <= line_index < this+0x60+3",
-      "origin": {"x": 80, "y": 310, "coordinate_space": "window-relative"},
-      "line_spacing": 15,
-      "visible_line_count": 3,
-      "text_measurement_limit": 160,
-      "text_color_bgr": "0x007D0000 (dark blue; pushed at 0x00447F51/0x00447F70)",
-      "draw_helper": "0x0045DD70",
-      "hit_rect": {"window_relative": [80, 310, 250, 380], "source": "SetRect via USER32 IAT [0x4762B0] at 0x004487CC with window.x+0x50, window.y+0x136, window.x+0xFA, window.y+0x17C"},
-      "scroll_semantics": {
-        "this+0x60": "detail body scroll offset (lines); click inside the body hit rect increments with clamp [0,3] (0x0044884D-0x00448860), wheel decrements with floor 0 (0x00448728-0x0044873A)",
-        "evidence_level": "primary-static-scroll-model"
-      },
-      "evidence_level": "primary-static-detail-text-loop",
-      "record_text_field_candidate": "detail_record+0x04",
-      "long_line_threshold_bytes": 190,
-      "line_clip_or_wrap_path": "0x00447957–0x00447B7A"
-    },
-    "evidence_level": "primary-static-detail-render"
+  "exe_trace": {
+    "quest_window": "hero+0x516E8 (id11, Ctrl+D, frame 700 340x440)",
+    "paint": "0x447470 (render table 0x428358 id11, F338)"
   },
-  "paint_order": [
-    {"order": 1, "va": "0x0044747E-0x0044748C", "role": "window base/background", "evidence": "The paint entry calls the window vtable +0x0C before quest-specific controls or text processing."},
-    {"order": 2, "va": "0x004474B3-0x004474E2", "role": "two operation-control reposition", "evidence": "The two child controls are positioned at window-relative (290,59) and (290,89), then their vtable +0x04 paint slots are called."},
-    {"order": 3, "va": "0x004474FC-0x00447D90", "role": "quest-list decode and row text", "evidence": "The list cursor is refreshed, records are decoded through 0x45E0C0, long/short entries are selected, and visible rows are emitted at the 15-pixel cadence."},
-    {"order": 4, "va": "0x00447DE4-0x00447E43", "role": "selected quest detail frame", "evidence": "When the detail field exists, Frame 705 is looked up and drawn at window-relative origin (65,294), after the list update path."},
-    {"order": 5, "va": "0x00447E48-0x00447F1D", "role": "selected quest body text", "evidence": "The detail field is decoded and only three lines in the this+0x60 window are emitted through 0x45DD70 at window-relative (80,310), 15 pixels apart."}
-  ],
-  "interaction_event_paths": {
-    "event_dispatch": [
-      {
-        "caller_va": "0x0042C0E1",
-        "handler_va": "0x00447FA0",
-        "ui_slot": 11,
-        "role": "pointer/input selection path",
-        "evidence": "The global UI dispatcher calls the quest input handler and dispatches the handled result through the quest window slot."
-      },
-      {
-        "caller_va": "0x0042BCDC",
-        "handler_va": "0x00448230",
-        "ui_slot": 11,
-        "role": "state/update/navigation path",
-        "evidence": "The update dispatcher calls the quest navigation handler, which refreshes both child controls and list state."
-      }
-    ],
-    "control_paths": [
-      {
-        "control": "this+0x128",
-        "frame_pair": [721, 722],
-        "handler_va": "0x00447FA0",
-        "child_vtable_slot": "+0x10",
-        "downstream_va": null,
-        "effects": [
-          "shared button release 0x4177F0 (vtable 0x4763A8 +0x10, ctor 0x417550 @ 0x44745E): clear this+0x25, PtInRect(0x4762B4) on rect obj+4; inside -> 0x45AFC0(0x8AB130, cmd 0x69) button-command dispatch, returns 1",
-          "handled result tested at 0x447FD6; nonzero -> quest handler returns 1 at 0x447FDA: click consumed locally, NO 0x418/0x419 message is sent",
-          "NOT routed to 0x448580 (supersedes the earlier 'both control pairs converge on 0x448580' note)"
-        ],
-        "business_name": "candidate: close quest window (X chrome button, top-right at (290,89); consumed locally; whether the 0x69 command chain performs the close needs runtime confirmation)",
-        "evidence_level": "primary-static-control-to-event-chain"
-      },
-      {
-        "control": "this+0x74",
-        "frame_pair": [723, 724],
-        "handler_va": "0x00447FA0",
-        "child_vtable_slot": "+0x10",
-        "downstream_va": "0x00448580",
-        "effects": [
-          "shared button release 0x4177F0 (vtable 0x4763A8 +0x10, ctor 0x417550 @ 0x44743B): same PtInRect / 0x45AFC0 cmd 0x69 path, returns 1 when clicked",
-          "handled result tested at 0x4481F4; nonzero -> call 0x448580 at 0x4481FA: marks record+0x208=1, sets this+0x68=1 and this+0x1DC=record, and when record+0x20C==0 sends type 0x418 via 0x00451A10; quest handler returns 1",
-          "not handled -> falls through to the record hover loop (0x44820B)"
-        ],
-        "business_name": "candidate: advance/next quest-record action (right-arrow iconography; green 723 highlighted, gold 724 normal); exact 0x418 semantics need a protocol reference",
-        "evidence_level": "primary-static-control-to-event-chain"
-      },
-      {
-        "control": "this+0x74",
-        "frame_pair": [723, 724],
-        "handler_va": "0x00448230",
-        "child_vtable_slot": "+0x0C",
-        "downstream_va": "0x00448580",
-        "effects": [
-          "update handler calls press slot +0x0C on both child controls (arrow 0x448248, X 0x448259); the X's result is tested at 0x44825C -> handled -> return 1",
-          "otherwise re-runs the list hover/selection loop and reaches 0x448580 at E8 site 0x44856B"
-        ],
-        "business_name": "candidate: same record-mark/advance path on navigation update",
-        "evidence_level": "primary-static-control-to-event-chain"
-      },
-      {
-        "control": "record+0x228 sub-list rows",
-        "frame_pair": null,
-        "handler_va": "0x00447FA0",
-        "child_vtable_slot": null,
-        "downstream_va": "0x00451A40",
-        "effects": [
-          "record loop hit-tests the sub-rect at child+0x204 (0x4480F1-0x44810C); on hit this+0x6C = child+0x220",
-          "when byte[child+0x220]==0: push [child+0], push [record+0], mov ecx,0x8AB828, call 0x00451A40 at 0x448148 -> type 0x419 via shared builder 0x452940",
-          "marquee advance after send: child+0x8 = next, child+0x10 = min(+0x10+1, +0x14)"
-        ],
-        "business_name": "candidate: quest sub-record action (detail/request view); needs a protocol reference",
-        "evidence_level": "primary-static-control-to-event-chain"
-      }
-    ],
-    "record_state_fields": {
-      "this+0x58": "list scroll offset (rows); painted row = row - this+0x58; click +1 clamped to [0, this+0x5C-1], wheel -1 floored at 0",
-      "this+0x5C": "list row-count clamp written by Paint each frame",
-      "this+0x60": "detail body scroll offset (lines); click +1 clamped to [0,3], wheel -1 floored at 0; read by the 3-line paint window guard",
-      "this+0x68": "refresh/action state set to 1 by 0x00448580",
-      "this+0x6C": "selected detail/body pointer consumed by Paint",
-      "this+0x1DC": "selected record pointer consumed by 0x00448580",
-      "this+0x1E8": "current list cursor / record chain head used by Paint and input",
-      "this+0x1F0": "current/selected list index reset during selection processing",
-      "this+0x1F4": "record count used by the input traversal",
-      "record+0x204": "row base color (RGB component branch 0x19197D / 0x1919C8)",
-      "record+0x208": "selection/processed flag written by 0x00448580",
-      "record+0x20C": "server/handled gate tested before event dispatch",
-      "record+0x210": "row highlight/state flag selecting the color branch",
-      "record+0x218..+0x224": "record hit rectangle consumed by the input handler",
-      "record+0x228": "per-row sub-record list head (hit-tested sub-rects at +0x204..+0x210)",
-      "record+0x220": "sub-record body text; when empty, row click sends event 0x419"
-    },
-    "interaction_handlers": [
-      {"va": "0x00448640", "role": "mouse-down on operation controls / body-area hit test", "evidence": "sets child-control pressed byte flags, then SetRect + cursor hit test over the body rect"},
-      {"va": "0x00448700", "role": "mouse wheel over body/list areas", "evidence": "two register-passed rect tests; decrements this+0x60 (body) and this+0x58 (list) with floor 0"},
-      {"va": "0x00448780", "role": "mouse click over body/list areas", "evidence": "GetCursorPos [0x476240] + ScreenToClient [0x476234]; body click increments this+0x60 clamped [0,3]; list click increments this+0x58 clamped [0, this+0x5C-1]"}
-    ],
-    "event_message": {
-      "va": "0x00451A10",
-      "type": "0x418",
-      "meaning": "quest record action event; business semantics candidate (advance/next on the 723/724 arrow control that routes here; the abandon/delete guess tied to the X was retired after 0x447FCA showed the X is consumed locally with no message), not provable statically",
-      "args": "1 argument: selected record's first dword (quest id candidate)",
-      "gate": "sent when record+0x20C is zero",
-      "evidence": "0x00448580 marks the selected record (+0x208=1), sets this+0x68=1 and this+0x1DC=record, then conditionally calls 0x00451A10 which pushes 0x418 into the original message/event builder 0x00452940 before dispatch; 0x448580 is reached from the arrow click at E8 site 0x4481FA and from the update handler at 0x44856B."
-    },
-    "event_message_twin": {
-      "va": "0x00451A40",
-      "type": "0x419",
-      "meaning": "quest row/sub-record event; business semantics candidate (request detail/view is suggested by the row-click trigger), not provable statically",
-      "args": "2 arguments: record first dword + sub-record first dword (both id candidates; pushed [child+0] then [record+0] at 0x44813D/0x448147)",
-      "gate": "row click inside sub-rect at record+0x228->+0x204 with empty body at +0x220",
-      "evidence": "0x00448148 (inside input handler 0x00447FA0) calls 0x00451A40 which pushes 0x419 into the same message builder."
-    },
-    "evidence_level": "primary-static-dispatch-and-state-chain"
+  "audit_vs_exe": {
+    "F338": "quest id11 + paint 0x447470 confirmed",
+    "F331": "entry stride 0x104 shared with skill list confirmed"
   },
-  "confirmed": [
-    "Frame 700 and the two control frame pairs are statically tied to the quest window constructor.",
-    "The quest list is read through 0x0045E0C0 and rendered with a 15-pixel row cadence.",
-    "Both operation controls are repositioned by 0x00447470 using the same relative coordinates.",
-    "Frame 705 is selected by the task refresh path for the detail/body text region.",
-    "The quest window's local paint sequence is statically ordered from base, controls, list rows, selected detail frame and body text.",
-    "Row geometry is window.x+65, window.y+90+15*row with a 19-row paint window; the list scroll offset is this+0x58 with row-count clamp this+0x5C (written by Paint each frame).",
-    "Detail body geometry is window.x+80, window.y+310, 15px apart, 3 visible lines, hit rect (80,310)-(250,380) window-relative; body scroll offset is this+0x60 clamped to [0,3].",
-    "Mouse wheel (0x00448700) decrements both scroll offsets with floor 0; mouse click (0x00448780) increments them with the clamps above.",
-    "Frame 705 is a full-coverage 204x76 detail panel (WIL bbox (0,0,202,76)) drawn at (65,294), sized to hold the three 15px body lines.",
-    "Frame pairs are pixel-verified: 721 green X / 722 gold X; 723 green right-arrow / 724 gold right-arrow (green = highlighted, gold = normal).",
-    "Event/message twins 0x418 (mark-selected action, gated on record+0x20C==0) and 0x419 (row click with empty body at record+0x220) are built by 0x00451A10/0x00451A40 through the shared builder 0x00452940.",
-    "Wire separator is '/' (0x2F): fill 0x4488D0 (msg 0x515 handler; called by 0x421A45 with ROOT+0x2F6B74 body + word count) splits the body in place via fast strchr 0x468BF0 (push 0x2f at 0x44891C/0x448932/0x448944/0x44895C/0x44897A); row text -> record+4, field4 -> record+0x230 with has-field4 flag record+0x214, field lengths record+0x204/record+0x22C.",
-    "No client-side pixel wrap: each list/detail line is emitted as exactly one TextOutA call at an arithmetic position (0x45DD70, ret 0x1C, 7 args); GetTextExtentPoint32A appears only inside the field-fetch helper 0x45E0C0 for measurement; no reflow/wrap loop exists in the paint or fill chain.",
-    "Control-to-event attribution: only the 723/724 arrow reaches 0x448580 -> 0x418 (click 0x4481FA, update 0x44856B); the 721/722 X is consumed at 0x447FD6-0x447FDA with no outbound message (shared release 0x4177F0 -> 0x45AFC0 command 0x69)."
-  ],
-  "closed_notes": [
-    "2026-08-11 P1 (separator/wrap): WIRE SEPARATOR '/' (0x2F) primary-static - fill 0x4488D0 (msg 0x515 handler via 0x421A45, body ROOT+0x2F6B74 + word count) splits the server body in place through fast strchr 0x468BF0 (push 0x2f at 0x44891C/0x448932/0x448944/0x44895C/0x44897A); row text -> record+4, field4 -> record+0x230 (has-field4 flag record+0x214), field lengths record+0x204/record+0x22C. NO client-side pixel wrap primary-static - 0x45DD70 (ret 0x1C, 7 args) draws each line as exactly one TextOutA at arithmetic positions (fixed 15px cadence); GetTextExtentPoint32A only measures inside the field-fetch helper 0x45E0C0; no reflow loop exists in the paint or fill chain. Per-row tokenization stays candidate: field fetch = record-class vtable +0x44 (negative ret = no field) / +0x68 advance on [0x8AB7A8+0x1C], type gates 0xA0/0xC8; missing evidence = record-class vtable address or runtime capture of the parser method plus live row text.",
-    "2026-08-11 P2 (business names): static chains closed primary-static - (a) X 721/722 @this+0x128: shared release 0x4177F0 (button vtable 0x4763A8 +0x10, ctor 0x417550 @ 0x44745E) -> PtInRect(0x4762B4) -> 0x45AFC0(0x8AB130, cmd 0x69) button-command dispatch, ret 1; quest handler 0x447FD6/0x447FDA consumes it, NO 0x418/0x419 message (window-chrome close candidate). (b) arrow 723/724 @this+0x74: same release, handled -> 0x4481FA -> 0x448580 (record+0x208=1, this+0x68=1, this+0x1DC=record) -> record+0x20C==0 -> 0x451A10 -> type 0x418 (arg record+0); update path 0x448230 -> 0x44856B -> 0x448580. (c) sub-record row click with empty byte[child+0x220] -> push [child+0], [record+0] -> 0x451A40 at 0x448148 -> type 0x419. Iconography primary-resource-visual: 721 green X / 722 gold X, 723 green right-arrow / 724 gold right-arrow (28x28). Business NAMES remain candidate: no local server protocol catalog names 0x418/0x419/0x69 (greps across docs/Tools/scripts exhausted; EIServer.exe is binary-only); missing evidence = server packet-handler reference or live packet capture of the 0x418/0x419 sends."
+  "contrast": {
+    "quest_vs_skill": "both use 0x104 stride text lists; quest = 2 colors (selected/normal) + 200px gate; skill = category tabs + detail page",
+    "quest_vs_chat": "quest = server-pushed quest list (0x104 stride); chat = message ring (0x408 node)"
+  },
+  "verdict": "Quest window render decoded (primary-bytes): 0x447470 text list with 0x104 stride, 19-line cap, 0x45E0C0 measure 200px gate, selected/normal colors 0x1919C8/0x19197D, row = line*3+0x12. Sim quest list wired and browser-verified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All offsets, colors and gates read directly from MIR3.EXE bytes; sim quest content is demo (server-pushed at runtime).",
+  "cross_refs": ["F338: quest id11 paint 0x447470", "F331: 0x104 stride skill list", "Round 32: F338 quest identity"],
+  "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
+  "reproduce": "img.disasm(0x447470, 0x400); open sim; press D; observe quest window colors/rows",
+  "notes": [
+    "quest line width gate 0xC8=200px (0x44754D cmp edx,0xC8) - longer lines wrap",
+    "selection colors: [ebp+0x204]==0 -> 0x19197D else 0x1919C8; [ebp+0x210] flag gates",
+    "row stride = line*3 (0x447618 lea eax,[ecx+ecx*2+0x12]) = 12px per line + 0x12 base"
   ]
 }

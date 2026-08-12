@@ -629,12 +629,20 @@ function fillWindowContent(w) {
     });
     content.appendChild(input);
   } else if (id === "window.quest") {
+    // Round 51 (F357): original quest window (id11, Ctrl+D) renders a text
+    // list via 0x447470: entry stride 0x104 (shared with skill-list F331),
+    // 19-line cap, 0x45E0C0 measure with 0xC8=200px width gate (wrap/scroll),
+    // selected color 0x1919C8 / normal 0x19197D (0x4475F7-0x447606).
     const quests = ["主线：拜见国王", "支线：收集草药", "活动：讨伐稻草人", "任务 4：护送商队", "任务 5：击杀骷髅"];
-    quests.forEach((q, i) => {
+    quests.slice(0, 19).forEach((q, i) => {
       const lbl = document.createElement("div");
       lbl.className = "lbl";
-      lbl.style.cssText = `left:24px;top:${50 + i * 22}px;width:260px`;
+      // row = line*3 + 0x12; origin win.x+0x41 / y+0x12 (0x44761C/0x447621)
+      lbl.style.cssText = `left:${0x41 + 24}px;top:${0x12 + i * 22}px;width:260px`;
+      lbl.style.color = i === 0 ? "#1919c8" : "#19197d";
       lbl.textContent = (i === 0 ? "★ " : "○ ") + q;
+      lbl.dataset.evidence = "primary-static";
+      lbl.dataset.desc = `任务 ${i + 1} · 0x447470 行距 0x12 · 色 0x1919C8/0x19197D`;
       content.appendChild(lbl);
     });
   } else if (id === "window.npc-candidate") {
