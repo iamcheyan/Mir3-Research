@@ -8976,3 +8976,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**616 证据 JSON**；三服务 200；master be3d360（**652 连发 F335-F993 已推**）。
 - **〔弧〕**实体渲染（F622）+ 投影/阴影（F894）+ 投影全量（F993）——**实体渲染完整**（投影 ×3×16/<<5 + 阴影 + 钳制 + 绘制）；实体表面 100%。
 - 落盘：entity-render-closure-evidence.json（F994，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 688。
+## Round 689 (F995) — 2026-08-12：HANDOFF 刷新 143（Round 686-688）
+
+- **〔刷新〕**HANDOFF 追加 Round 686-688（F993-F994：实体投影/阴影全量 + 实体渲染闭合）；基线 Round 685=b8d775e → Round 688=f74d73d（**653 连发 F335-F994**）。
+- 落盘：handoff-refresh-143-evidence.json（F995，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 689。

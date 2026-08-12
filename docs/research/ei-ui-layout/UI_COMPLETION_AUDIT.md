@@ -4241,3 +4241,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体表面 100%；下一弧：HANDOFF 刷新 143/剩余角落）。
+## Round 689 (2026-08-12) — HANDOFF 刷新 143（Finding 995）
+
+- **Round 686-688 追加 + 653 连发**（实体渲染完整入档）。
+- 落盘：`handoff-refresh-143-evidence.json`（F995）+ RESEARCH_LOG Round 689。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体表面 100%；下一弧：剩余深层角落/模拟器 polish）。
