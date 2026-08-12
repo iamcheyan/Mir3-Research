@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-20-2026-08-12-f620",
+  "title": "Round 314 (F620): HANDOFF refresh 20 - Rounds 309-313 (F615-F619: attack/trade senders + NPC reply/checksum + outbound arc closure + sim checksum layer), baseline Round 308=6ec8705 -> Round 313=50f6c52 (278 consecutive F335-F619), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 309-313.",
+  "question": "What changed since HANDOFF refresh 19?",
+  "method": "Append Round 309-313 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 309-313 appended (5 rounds, F615-F619)",
+    "baseline": "Round 308=6ec8705 -> Round 313=50f6c52 (278 consecutive F335-F619)",
+    "arcs": {"senders": "F616 attack/trade/gold + wnd dispatcher", "integrity": "F617 NPC reply + checksum", "closure": "F618 outbound arc + F619 sim checksum"},
+    "key": "outbound layer complete + sim mirrors wire integrity"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F615": "refresh 19 baseline -> now refresh 20", "F335-F619": "278 rounds"
+  },
+  "contrast": {
+    "refresh_19_vs_20": "F616-F619 (4 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 20 (F620): Rounds 309-313 documented (outbound send layer + sim checksum), baseline 6ec8705 -> 50f6c52, 278 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F616-F619 evidence.",
+  "cross_refs": ["F615: refresh 19", "F618: outbound closure", "F619: sim checksum"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 309-313 section to HANDOFF",
+  "notes": [
+    "278 consecutive shipping rounds F335-F619",
+    "next: remaining deep corners, sim polish"
+  ]
+}

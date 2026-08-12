@@ -7329,3 +7329,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实现〕**app.js sendFrame() 扩展：simSeedKey [0x13,0x37,0x52,0x71]（镜像 0x9135B8 4 字节种子 F617）、simChecksum() = **0x4525F0 XOR 算法**（4 字节键 XOR + 加权载荷和 (idx+1)×idx vs [0x9135BC]）→ '[送出] #seq cmd/args! ... XOR 校验和 0xXXXXXXXX'。
 - **〔验证〕**node --check OK + sim 200 无回归——模拟器镜像 F617 线完整性。
 - 落盘：sim-checksum-layer-evidence.json（F619，primary-bytes 算法 + derived 集成）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 313。
+## Round 314 (F620) — 2026-08-12：HANDOFF 刷新 20（Round 309-313）
+
+- **〔刷新〕**HANDOFF 追加 Round 309-313（F616-F619：攻击/交易发送器 + NPC 回复/校验和 + 出站弧 + 模拟器校验和层）；基线 Round 308=6ec8705 → Round 313=50f6c52（**278 连发 F335-F619**）。
+- 落盘：handoff-refresh-20-evidence.json（F620，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 314。
