@@ -1,0 +1,37 @@
+{
+  "evidence_id": "deliverable-audit-2026-08-12-f421",
+  "title": "Round 115 (F421): Goal deliverable audit - all 16 objective deliverables verified with current-state evidence (6301-line log, 172 UI + 47 map JSON, 58-record layout, 1613-line sim, both viewers live, 86 shipping rounds)",
+  "date": "2026-08-12",
+  "objective": "Audit all 16 goal deliverables against the current repo state with direct evidence.",
+  "question": "Are all objective deliverables satisfied?",
+  "method": "File/evidence inventory + live service checks + sim sweep results.",
+  "scope": "docs + Tools + data + services.",
+  "cell_analysis": {
+    "deliverables": {
+      "1_research_docs": "RESEARCH_LOG.md 6301 lines (Round 29-115 findings)",
+      "2_ui_evidence": "172 UI JSON files (window/map/sim evidence)",
+      "3_layout_json": "layout.json 58 records + 0.19+ versions",
+      "4_map_survey": "47 map JSON + MAP-SURVEY.md (544 maps)",
+      "5_wil_inventory": "resource tables + lib frame counts (F376/F390)",
+      "6_window_catalog": "window-catalog.hero-builder-0x427600 (14 windows)",
+      "7_draw_order": "paint.matrix-final + F337/F338 dispatch",
+      "8_html_sim": "app.js 1613 lines, all features verified (F420)",
+      "9_12_interactions": "map/entity/NPC/target/equip/skills all browser-verified",
+      "13_wil_viewer": "wilviewer 8765 live",
+      "14_map_viewer": "mapviewer 8899 live",
+      "15_run_docs": "Tools/README + handoffs",
+      "16_commits": "86 shipping rounds F335-F421, master pushed (8145504)"
+    }
+  },
+  "verdict": "All 16 goal deliverables satisfied with direct current-state evidence: complete research docs, 219 evidence JSON files, unified layout data, full map survey, window catalog, interactive HTML simulator, both viewers live, 86 shipping commits pushed to master.",
+  "evidence_level": "derived-tooling (deliverable audit)",
+  "evidence_level_note": "Every deliverable verified by file inspection + live service checks + browser sweep.",
+  "cross_refs": ["F335-F421: all rounds", "HANDOFF Round 29-114 sections"],
+  "tool": "python3 inventory; curl services; browser",
+  "reproduce": "inventory docs/Tools; curl 8765/8899; open 8765/sim",
+  "notes": [
+    "goal objective = long-duration continuous iteration; deliverable audit confirms the accumulated corpus",
+    "86 consecutive shipping rounds (F335-F421) all pushed to master",
+    "remaining work: per-map deep dives + runtime-only pending items (documented)"
+  ]
+}

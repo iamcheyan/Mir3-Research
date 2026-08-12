@@ -6299,3 +6299,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔扫描〕**登录 → 类选 → 游戏内 → 8 热键（Q/W/E/R/S/D/G/N 全对）→ NPC 对话 → 证据模式 → 血条动画（hp 44→45）→ 小地图——单次浏览器全通过。
 - 落盘：simulator-final-sweep-evidence.json（F420，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 114。**Round 29-114 = 86 连发（F335-F420）。**
+## Round 115 (F421) — 2026-08-12：目标交付物审计（16 项全达标）
+
+- **〔审计〕**6301 行研究日志、172 UI JSON + 47 地图 JSON、58 记录 layout.json、1613 行模拟器、wilviewer 8765 + mapviewer 8899 在线、86 连发 commit 全推 master（8145504）。
+- **〔HANDOFF〕**追加 Round 93-114 交付摘要。
+- 落盘：deliverable-audit-evidence.json（F421，derived-tooling）+ HANDOFF + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 115。

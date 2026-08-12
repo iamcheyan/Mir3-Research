@@ -801,6 +801,11 @@ git diff --check
 - **全功能单次浏览器通过**（登录/类选/热键/NPC/证据/血条/小地图）。
 - 落盘：`simulator-final-sweep-evidence.json`（F420）+ RESEARCH_LOG Round 114。
 
+## Round 115 (2026-08-12) — 目标交付物审计（Finding 421）
+
+- **16 项交付物全达标**（文档/证据/数据/地图/模拟器/双 viewer/commit）。
+- 落盘：`deliverable-audit-evidence.json`（F421）+ HANDOFF + RESEARCH_LOG Round 115。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

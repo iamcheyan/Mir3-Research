@@ -405,3 +405,13 @@ simulator/style.css
 - **模拟器接线（F345-F364）**：14 窗口 primary-static 精确坐标、8 热键、模态切换、19 行聊天环、登录遮罩、NPC 对话 FCOLOR/NPCIMG、技能格 Magic.exp 50 记录、背包 46 槽、装备 8 槽、商店模式链、交易双栏+金币、组队/坐骑/选项/任务内容、小地图 F310、目标框、0x96FFFF 悬停提示框——**全浏览器逐项验证**。
 - **证据文件（29 个新 JSON）**：window-catalog / game-loop-and-entity-dispatch / window-visibility-dispatch(+f337) / window-paint-and-hotkey-dispatch / status-window-family / item-tooltip-and-store-family / trade-chat-option-paint / guild-window-paint / login-charselect-flow / hpmp-exp-bar-family / skill-grid-magic-exp / bag-grid-46-slot / equipment-panel-verification / minimap-subsystem-verification / chat-input-command-dispatch / prompt-system-verification / quest-window-render / caption-tooltip-0x96ffff / group-window-detail / horse-window-wiring / option-window-verification / store-window-content-verification / trade-window-content-verification / simulator-window-catalog-wiring / simulator-chat-modal-wiring / map-inventory / town-cave-map-deepdive / cave-desert-map。
 - **commit 基线**：Round 27=4e95988 → Round 58=cf56033（master 已推，30 连发）。
+
+## Round 93-114 追加交付（2026-08-12，Finding 399-420）：模拟器全交互层验证 + 最终交付审计
+
+**窗口交互验证（F399-F411）**：商店 5 态状态图（0x44EAB8/0x44F7EF/0x44F940/0x44FB00）、交易关闭（0x42ADB0→0x42AC50）、Z 序/前台（notice 豁免 F294）、聊天滚动条（0x4179B0 94 尺度）、聊天频道 6 模板、NPC 对话交互（开/选/关）、行会 3 列表、坐骑 4 命令（0x7DA060 门控）、状态属性色（F289 0xfafafa/0xfae1c8）。
+
+**模拟器子系统验证（F412-F419）**：小地图控件（128×128 FMMap F0）、目标框（F239 复合）、悬停（0x40BB00→0x40B850）、点击目标切换、登录流程终验（F336/F349）、角色选择视觉（武士/法师/道士）、证据调试模式、地图背景（FMMap F0 800×600）。
+
+**最终（F420）**：模拟器全功能单次浏览器通过（登录+类选+8 热键+NPC+证据+血条+小地图）；16 项目标交付物全审计达标。
+
+**commit 基线更新**：Round 29=4e95988 前 → Round 114=8145504（master 已推，86 连发 F335-F420）。
