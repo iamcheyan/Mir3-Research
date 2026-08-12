@@ -946,6 +946,11 @@ git diff --check
 - **7+ 处理器（msg 0xBC6-0xBD8）**；0x5600FC 立即参分类细化。
 - 落盘：`monster-update-handlers-evidence.json`（F449）+ RESEARCH_LOG Round 143。
 
+## Round 144 (2026-08-12) — 怪物记录存储（Finding 450）
+
+- **0x8AA5A8 3 子数组 + 0x30 步长 + 线性查找**。
+- 落盘：`monster-record-store-evidence.json`（F450）+ RESEARCH_LOG Round 144。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x5600FC 条目布局（0x144B 内 WIL 上下文 + 外观数据）— 低优先。

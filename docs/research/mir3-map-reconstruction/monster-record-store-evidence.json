@@ -1,0 +1,38 @@
+{
+  "evidence_id": "monster-record-store-2026-08-12-f450",
+  "title": "Round 144 (F450): Monster/NPC record store - 0x8AA5A8 collection {+0 count, +4/+8/+0xC sub-array ptrs, +0x10/+0x14}, records stride 0x30 (48B) with id WORD at +0xC, lookup 0x449B90/0x449BD0/0x449C10 (3 collections linear scan, cmp word [rec+0xC] == id, return rec or 0), default-stat builder 0x449C80 (0x449C50 writes 3-word field triples: HP/level/attack-style defaults) - record source for stats init 0x40A4D0 (F434) and monster update handlers (F449)",
+  "date": "2026-08-12",
+  "objective": "Map the monster/NPC record store (0x8AA5A8) used by stats init and update handlers.",
+  "question": "How are monster records stored and looked up?",
+  "method": "Disasm 0x449B90 (lookup) + 0x449BD0/0x449C10 (variants) + 0x449C80 (default builder).",
+  "scope": "0x449B90-0x449E30; collection 0x8AA5A8.",
+  "cell_analysis": {
+    "collection": {"base": "0x8AA5A8", "fields": {"+0": "count (collection 1)", "+4": "collection 2 count", "+8": "collection 3 count", "+0xC": "array 1 ptr (stride 0x30)", "+0x10": "array 2 ptr", "+0x14": "array 3 ptr"}},
+    "lookup_0x449B90": {"scan": "linear over array 1 (count [ecx+0], base [ecx+0xC])", "key": "id WORD at record+0xC (cmp bx, word [rec+0xC])", "stride": "0x30 (48B) per record (lea [edx+edx*2]<<4)", "result": "record ptr or 0"},
+    "variants": {"0x449BD0": "array at [ecx+8]/[ecx+0x14] (collection 3)", "0x449C10": "array at [ecx+4]/[ecx+0x10] (collection 2)"},
+    "default_builder_0x449C80": {"pattern": "0x449C50(dst, w1, w2, w3) writes 3-word field at successive record offsets", "fields": "offset +0x18: 0x50/0xC8/4; +0x1E: 0x64/6/0x50; +0x24: 0x4B/5/0xA0; ... (HP/level/attack-style defaults chain)"},
+    "consumers": {"stats": "0x40A4D0 reads record[0]/[4]/[0xA..0x19] (F434)", "handlers": "0x44A820 lookup in monster update family (F449)"}
+  },
+  "exe_trace": {
+    "record_layout": {"+0/+4": "HP/MP dwords", "+0xA": "type byte", "+0xC": "ID word (lookup key)", "+0x18+": "stat fields (default builder)"}
+  },
+  "audit_vs_exe": {
+    "F434": "stats init record source identified",
+    "F449": "handler lookup path confirmed (0x44A820 variant)"
+  },
+  "contrast": {
+    "record_vs_descriptor": "0x8AA5A8 record store (stats) vs 0x5600FC descriptor table (appearance) - two stores",
+    "linear_vs_hash": "linear scan lookup (O(n)) - small collections"
+  },
+  "verdict": "Monster/NPC record store PRIMARY-verified: 0x8AA5A8 collection with 3 sub-arrays (stride 0x30, id word +0xC), linear lookups 0x449B90/0x449BD0/0x449C10, default-stat builder 0x449C80. Feeds stats init (F434) + update handlers (F449).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Collection layout + lookups + builder decoded from .text.",
+  "cross_refs": ["F434: stats init", "F449: update handlers", "F433: monster addressing"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x449B90+0x20, 0x449C80+0x40",
+  "notes": [
+    "3 collections = likely monsters/NPCs/players [inference]",
+    "default builder used when no DB record (fallback stats)",
+    "0x44A820 = name-based lookup variant (handlers)"
+  ]
+}

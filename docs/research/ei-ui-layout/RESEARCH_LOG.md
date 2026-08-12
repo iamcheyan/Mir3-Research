@@ -6455,3 +6455,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔处理器〕**0x410C38 族 7+ 处理器：门 [0x629D0-0x629D8] + 字 [0x62A77] → 记录查找 0x44A820（0x8AA5A8）→ vtable+0x10 → 属性 0x40A4D0（arg2=type，生成音效 (type+1000)*10）→ 0x451450 发包（0xBD1/0xBD8/0xBD7/0xBCB/0xBCA/0xBD0/0xBC6）→ 状态标志 =2。
 - **〔细化〕**「push 0x5600fc」= 0x40A4D0 的立即数基参（非直接表读）— F448 引用分类细化。
 - 落盘：monster-update-handlers-evidence.json（F449，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 143。
+## Round 144 (F450) — 2026-08-12：怪物/NPC 记录存储（0x8AA5A8 3 子数组）
+
+- **〔存储〕**0x8AA5A8 集合 {+0/+4/+8 计数、+0xC/+0x10/+0x14 子数组指针}；记录 stride 0x30（48B）**ID 字 @+0xC**；查找 0x449B90/0x449BD0/0x449C10（3 集合线性扫描）。
+- **〔默认〕**0x449C80 默认属性构建器（0x449C50 三字字段写入：HP/等级/攻击风格默认链）。
+- **〔消费〕**属性初始化 0x40A4D0（F434）+ 更新处理器 0x44A820（F449）。
+- 落盘：monster-record-store-evidence.json（F450，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 144。
