@@ -7564,3 +7564,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**293 证据 JSON**；三服务 200；master f5bcdcc（**327 连发 F335-F668 已推**）。
 - **〔弧〕**音效分派映射（F665）+ 实体音效槽族（F668）——**音频系统完整（音效 id 映射 + 50 槽引擎 + DSound/MIDI F632/633）**，连接 F470/F563/F566。
 - 落盘：audio-final-closure-evidence.json（F669，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 363。
+## Round 364 (F670) — 2026-08-12：HANDOFF 刷新 34（Round 361-363）
+
+- **〔刷新〕**HANDOFF 追加 Round 361-363（F668-F669：实体音效槽族 + 音频最终闭合）；基线 Round 360=3287054 → Round 363=409fe27（**328 连发 F335-F669**）。
+- 落盘：handoff-refresh-34-evidence.json（F670，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 364。
