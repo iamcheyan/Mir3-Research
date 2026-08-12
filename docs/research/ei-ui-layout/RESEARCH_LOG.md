@@ -6603,3 +6603,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔调色板〕**FCOLOR = 8 DOS 色（0x47C4A8：0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000）；**0x47C4D8 修正 = 二进制色对表（非菜单标题 GBK）**。
 - **〔字符串〕**0x47B8D4-0x47BA09 商店/对话反馈（购买/卖/修理/仓库/恭喜升级/拒绝/允许）。
 - 落盘：npc-dialog-menu-options-evidence.json（F475，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 169。
+## Round 170 (F476) — 2026-08-12：NPC 对话输入/发送（F404 交互闭合）
+
+- **〔输入〕**0x43E4B0：2 编辑控件（vtable+0x10 命中 @[0x54]/[0x108]，stride 0xB4）；对话文本 [0x1CC]（0xFA0 字符）'/' token 拆分 → 0x45DC70 脚本行绘制（0x0D 换行 2px 间距）；**提交 → 0x4524D0（回复消息）或 0x4524A0（[0x1D0] 特殊模式）**。
+- **〔闭合〕**F404 NPC 对话交互全解（点击/输入/发送）。
+- 落盘：npc-dialog-input-send-evidence.json（F476，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 170。

@@ -1,0 +1,38 @@
+{
+  "evidence_id": "npc-dialog-input-send-2026-08-12-f476",
+  "title": "Round 170 (F476): NPC dialog input/send - 0x43E4B0: 2 edit controls (vtable+0x10 at [+0x54] and [+0x108], F41 2-control confirmed), dialog text buffer [0x1CC] (0xFA0 chars) token-split '/' (0x468BF0) -> script lines drawn via 0x45DC70 (0x8AB7A8, [0x0D] = 2px line gap, [0x8B187C] font); submit -> 0x4524D0 (msg 0x8B187C input send) or 0x4524A0 when [0x1D0] set; 2-control hit-test 0x43E640 (stride 0xB4) - NPC dialog interaction (F404) fully closed",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog input/send flow; close the F404 interaction pending.",
+  "question": "How does the client handle NPC dialog input and send it?",
+  "method": "Disasm 0x43E4B0-0x43E680 (input/click + send).",
+  "scope": "0x43E4B0-0x43E680; edits [0x54]/[0x108]; text [0x1CC]; msgs 0x4524D0/0x4524A0.",
+  "cell_analysis": {
+    "edits": {"0x54": "edit control 1 (vtable+0x10 hit-test)", "0x108": "edit control 2 (vtable+0x10)", "stride": "0xB4 per control (0x43E65F)"},
+    "text_buffer": {"[0x1CC]": "dialog script text (0xFA0 = 4000 chars)", "split": "strtok '/' (0x468BF0) into script lines", "draw": "0x45DC70 (0x8AB7A8) per line; [0x0D] line-break -> 2px gap; [0x8B187C] font"},
+    "send": {"normal": "0x4524D0(0x8AB828, input) - NPC dialog reply msg", "alt": "0x4524A0 when byte [0x1D0] set (special mode)"},
+    "hit_test_0x43E640": "2-control hit-test (vtable+0xC), stride 0xB4"
+  },
+  "exe_trace": {
+    "dialog_chain": "server script -> text [0x1CC] -> paint 0x43F460 + click 0x43E4B0 -> reply 0x4524D0"
+  },
+  "audit_vs_exe": {
+    "F41": "2-control dialog confirmed",
+    "F404": "NPC dialog interaction fully closed (click/input/send)",
+    "F475": "menu options + input unified"
+  },
+  "contrast": {
+    "menu_vs_input": "menu = option list click (F475); input = edit control text (this)",
+    "normal_vs_alt": "0x4524D0 normal reply vs 0x4524A0 special ([0x1D0] gate)"
+  },
+  "verdict": "NPC dialog input/send PRIMARY-verified: 0x43E4B0 handles 2 edit controls, token-splits dialog text, draws script lines, sends reply via 0x4524D0/0x4524A0. F404 NPC dialog interaction closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Input/send flow decoded from .text.",
+  "cross_refs": ["F41: dialog paint", "F404: dialog interaction", "F475: menu options"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x43E4B0+0x60, 0x43E640+0x20",
+  "notes": [
+    "edit control stride 0xB4 (2 controls at +0x54/+0x108)",
+    "0x8B187C = dialog font/context",
+    "script lines wrap at 0x0D/0x0A with 2px gap"
+  ]
+}

@@ -1076,6 +1076,11 @@ git diff --check
 - **选项行绘制 + FCOLOR 调色板**（0x47C4D8 修正）。
 - 落盘：`npc-dialog-menu-options-evidence.json`（F475）+ RESEARCH_LOG Round 169。
 
+## Round 170 (2026-08-12) — NPC 对话输入/发送（Finding 476）
+
+- **输入/回复发送**（F404 交互闭合）。
+- 落盘：`npc-dialog-input-send-evidence.json`（F476）+ RESEARCH_LOG Round 170。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（NPC 对话族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
