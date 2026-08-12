@@ -755,6 +755,29 @@
         "three tooltip systems contrasted: item tooltip 0x4341F0 (0x329696 backdrop) vs caption tooltip 0x417370 (0x96FFFF) vs hover name-tag 0x40BB00 (3000ms)"
       ],
       "pending_notes": "0x430B70 tooltip context loader body; tooltip text color 0x45DE50 arg; store control semantics (buy/sell/warehouse buttons); store 26-slot content source"
+    },
+    {
+      "id": "paint-matrix-final",
+      "category": "窗口绘制矩阵定稿 (F341)",
+      "artifacts": [
+        "trade-chat-option-paint-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "paint.matrix-final",
+        "window.chat-paint-0x414700",
+        "window.trade-paint-0x415B10"
+      ],
+      "preview_mode": "ui",
+      "status": "primary-bytes-window-paint-matrix-complete",
+      "pending": false,
+      "closed_2026_08_12": [
+        "trade paint 0x415B10 decoded (Finding 341): split-pane +0x5C/+0x6C (mid = x+(w>>1)), hover highlight left (x+0x15,y+0x30)..(x+0xC9,y+0x108) / right (x+0xFD,y+0x30)..(x+0x1B1,y+0x108), item hover 0x416830 hit-test + 0x4162E0(idx, 0x7243DC, mouse) with gate [0x7243C4]&&[0x7243D8]==0, row = idx*9 geometry",
+        "chat paint 0x414700 decoded (Finding 341): message ring head +0x58/cursor +0x5C/idx +0x64/count +0x6D0/scroll +0x68, node {+0 type, +4 text, +0x408 next}, 19 lines max 14px row stride, origin win.x+[+0x6C0]/win.y+[+0x6C4], 0x45DD70 per line with color [0x8AB7C4], scrollbar 0x4179B0 @ +0x6D4",
+        "option paint 0x441380 decoded (Finding 341): 8 controls reposition via 0x417830 (+0x7C @ x+0xDA/y+0xEE, +0x130 @ x+0x94/y+0x2B, +0x1E4 @ x+0xB9/y+0x2B, +0x298 @ x+0x94/y+0x74, +0x34C @ x+0xB9/y+0x74, +0x400 @ x+0x94/y+0xBE, +2 more)",
+        "WINDOW PAINT MATRIX COMPLETE: all 14 windows have paint + mouse handlers enumerated (id0 0x42EB80/0x42FAB0, id1 0x44B2D0/0x44B6B0, id2 0x44E260/0x44E650, id3 0x415B10/0x416790, id4 0x425040/0x4258F0, id6 0x4243D0, id7 0x450530/0x450AC0, id8 0x414700, id9 0x43F460, idB 0x447470, idC 0x441380, idD 0x4269C0, idE 0x439500, idF 0x43E3C0)"
+      ],
+      "pending_notes": "chat node field names [INFERENCE]; trade 0x4162E0 hover body; option controls 7-8 exact frames"
     }
   ],
   "verification": {

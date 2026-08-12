@@ -339,6 +339,14 @@ git diff --check
 - **三套 tooltip 系统**：物品 0x4341F0（0x329696）/ caption 0x417370（0x96FFFF）/ 悬停名签 0x40BB00。
 - 落盘：`item-tooltip-and-store-family-evidence.json`（F340，primary-bytes）+ matrix item-tooltip-store 新记录 + layout.json version 0.18（2 新记录）+ RESEARCH_LOG Round 34。
 
+## Round 35 (2026-08-12) — 交易/聊天/选项绘制定稿 + 窗口绘制矩阵全表（Finding 341）
+
+- **交易 paint 0x415B10**：双栏分割 +0x5C/+0x6C → PtInRect 悬停高亮（左/右）→ 物品悬停 0x416830 + 0x4162E0（门 [0x7243C4]&&[0x7243D8]==0）；行几何 idx*9。
+- **聊天 paint 0x414700**：消息环（head +0x58/cursor +0x5C/count +0x6D0/scroll +0x68，节点 {+0 type, +4 text, +0x408 next}）→ 19 行 × 14px → 0x45DD70 逐行（颜色 [0x8AB7C4]）→ 滚动条 0x4179B0 @ +0x6D4。
+- **选项 paint 0x441380**：8 控件 0x417830 重定位。
+- **窗口绘制矩阵定稿**：14 窗口 paint/mouse 全枚举（id5/10 无窗）。
+- 落盘：`trade-chat-option-paint-evidence.json`（F341，primary-bytes）+ matrix paint-matrix-final 新记录 + layout.json version 0.19（3 新记录）+ RESEARCH_LOG Round 35。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

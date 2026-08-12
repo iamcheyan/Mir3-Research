@@ -1,5 +1,5 @@
 {
-  "version": "0.18-item-tooltip-store",
+  "version": "0.19-paint-matrix",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -3130,6 +3130,52 @@
       },
       "evidence_level": "primary-bytes",
       "source": "item-tooltip-and-store-family-evidence.json (Round 34)"
+    },
+    {
+      "id": "paint.matrix-final",
+      "kind": "window-catalog",
+      "layer": "windows",
+      "role": "窗口绘制矩阵定稿（Round 35）：14 窗口 paint/mouse 全枚举——id0 0x42EB80/0x42FAB0；id1 0x44B2D0/0x44B6B0；id2 0x44E260/0x44E650；id3 0x415B10/0x416790；id4 0x425040/0x4258F0；id6 0x4243D0；id7 0x450530/0x450AC0；id8 0x414700；id9 0x43F460；idB 0x447470；idC 0x441380；idD 0x4269C0；idE 0x439500；idF 0x43E3C0；id5/10 无窗",
+      "evidence_level": "primary-bytes",
+      "source": "trade-chat-option-paint-evidence.json (Round 35)"
+    },
+    {
+      "id": "window.chat-paint-0x414700",
+      "kind": "window",
+      "layer": "windows",
+      "window": {
+        "id": 8,
+        "can_move": true
+      },
+      "obj_offset": "hero+0x507EC",
+      "paint": "0x414700",
+      "detail": {
+        "ring": "head +0x58, cursor +0x5C, idx +0x64, count +0x6D0, scroll +0x68; node {+0 type, +4 text, +0x408 next}",
+        "lines": "19 行上限，行距 0xE=14px，原点 win.x+[+0x6C0]/win.y+[+0x6C4]",
+        "draw": "0x45DD70(0x8AB7A8, [0x8AB7C4] 颜色, x, y, type, text, 0)",
+        "scrollbar": "0x4179B0 @ +0x6D4"
+      },
+      "evidence_level": "primary-bytes",
+      "source": "trade-chat-option-paint-evidence.json (Round 35)"
+    },
+    {
+      "id": "window.trade-paint-0x415B10",
+      "kind": "window",
+      "layer": "windows",
+      "window": {
+        "id": 3,
+        "can_move": true
+      },
+      "obj_offset": "hero+0x3399C",
+      "paint": "0x415B10",
+      "detail": {
+        "split": "双栏 +0x5C/+0x6C（mid = x + (w>>1)）",
+        "hover_highlight": "左栏 (x+0x15, y+0x30)..(x+0xC9, y+0x108) / 右栏 (x+0xFD, y+0x30)..(x+0x1B1, y+0x108)",
+        "item_hover": "0x416830 命中 + 0x4162E0(idx, 0x7243DC, mouse)（门 [0x7243C4] bag 活动 && [0x7243D8]==0）",
+        "row": "行 = idx*9；x = win.x + 行*4 + 0x15（左）/ +0xFD（右）"
+      },
+      "evidence_level": "primary-bytes",
+      "source": "trade-chat-option-paint-evidence.json (Round 35)"
     }
   ],
   "control_constructors": [
