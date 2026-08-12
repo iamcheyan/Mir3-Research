@@ -8303,3 +8303,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔技能书〕**0x439500：0x4397A0 页签头 + 0x43A440 页 + 3 头部按钮 F704（@ +0xD8/+0x18C/+0x240）+ **8 技能槽控件 F704**（@ +0x2F4..+0x7E0 stride 0xB4）+ 8 绘制 + **页计数 [0x58+idx×4] ÷3**（0x2AAAAAAB 除法）+ 0x46811C 0x47C334 + 0x45DD70（0x323232/0x6496C8）——技能书窗口完整（F547/F558 用）。
 - 落盘：skill-book-draw-evidence.json（F839，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 533。
+## Round 534 (F840) — 2026-08-12：技能书窗口闭合（F547/F743/F839 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**464 证据 JSON**；三服务 200；master 0b3b025（**498 连发 F335-F839 已推**）。
+- **〔弧〕**8 页签（F547）+ 技能记录（F743）+ 技能书绘制（F839）——**技能书完整**（8 页签 + 8 技能槽 + 页计数 + 记录槽），模式 E 全渲染。
+- 落盘：skill-book-closure-evidence.json（F840，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 534。

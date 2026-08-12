@@ -1,0 +1,37 @@
+{
+  "evidence_id": "skill-book-closure-2026-08-12-f840",
+  "title": "Round 534 (F840): Skill book window CLOSED (F547/F743/F839) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0b3b025 (498 consecutive F335-F839), 464 evidence JSONs; arc: 8 tabs (F547) + skill records (F743) + book draw (F839) - skill book COMPLETE byte-level (8 tabs + 8 skill slots + page counter + record slots), window mode E fully rendered",
+  "date": "2026-08-12",
+  "objective": "Close the skill book window arc.",
+  "question": "Is the skill book window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "464 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F547": "8 tabs", "F743": "records", "F839": "book draw"},
+    "book": "tabs + slots + counter = COMPLETE",
+    "milestone": "498 consecutive rounds F335-F839"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F839": "498 rounds pushed; skill book complete"
+  },
+  "contrast": {
+    "tabs_vs_slots": "0x4397A0 + 8 slots",
+    "records_vs_counter": "F743 + /3"
+  },
+  "verdict": "Skill book window CLOSED (F840): tabs + slots + records all byte-level; validation green, 498 consecutive rounds, 464 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F547/F743/F839.",
+  "cross_refs": ["F547", "F743", "F839"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "498 consecutive shipping rounds F335-F839",
+    "skill book 100%",
+    "next: HANDOFF refresh 90, remaining corners"
+  ]
+}
