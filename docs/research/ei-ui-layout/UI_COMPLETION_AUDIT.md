@@ -3633,3 +3633,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队成员完整；下一弧：HANDOFF 刷新 117/剩余角落）。
+## Round 613 (2026-08-12) — HANDOFF 刷新 117（Finding 919）
+
+- **Round 610-612 追加 + 577 连发**（组队成员完整入档）。
+- 落盘：`handoff-refresh-117-evidence.json`（F919）+ RESEARCH_LOG Round 613。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队成员完整；下一弧：剩余深层角落/模拟器 polish）。

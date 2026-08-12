@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-117-2026-08-12-f919",
+  "title": "Round 613 (F919): HANDOFF refresh 117 - Rounds 610-612 (F916-F918: HANDOFF 116, party member ctor/frame, party member closure), baseline Round 609=7556d36 -> Round 612=6771eff (577 consecutive F335-F918), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 610-612.",
+  "question": "What changed since HANDOFF refresh 116?",
+  "method": "Append Round 610-612 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 610-612 appended (3 rounds, F916-F918)",
+    "baseline": "Round 609=7556d36 -> Round 612=6771eff (577 consecutive F335-F918)",
+    "arcs": {"member": "F917 ctor/frame", "closure": "F918 party member"},
+    "key": "party member complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F916": "refresh 116 baseline -> now refresh 117", "F335-F918": "577 rounds"
+  },
+  "contrast": {
+    "refresh_116_vs_117": "F917-F918 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 117 (F919): Rounds 610-612 documented (party member complete), baseline 7556d36 -> 6771eff, 577 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F917-F918 evidence.",
+  "cross_refs": ["F916: refresh 116", "F918: member closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 610-612 section to HANDOFF",
+  "notes": [
+    "577 consecutive shipping rounds F335-F918",
+    "next: remaining deep corners, sim polish"
+  ]
+}
