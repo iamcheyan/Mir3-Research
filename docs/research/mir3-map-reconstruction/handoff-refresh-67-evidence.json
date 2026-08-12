@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-67-2026-08-12-f772",
+  "title": "Round 466 (F772): HANDOFF refresh 67 - Rounds 463-465 (F769-F771: HANDOFF 66, guild announce editor, window registry total closure), baseline Round 462=061e7c2 -> Round 465=88248b7 (430 consecutive F335-F771), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 463-465.",
+  "question": "What changed since HANDOFF refresh 66?",
+  "method": "Append Round 463-465 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 463-465 appended (3 rounds, F769-F771)",
+    "baseline": "Round 462=061e7c2 -> Round 465=88248b7 (430 consecutive F335-F771)",
+    "arcs": {"editor": "F770 announce editor", "closure": "F771 registry total"},
+    "key": "window registry 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F769": "refresh 66 baseline -> now refresh 67", "F335-F771": "430 rounds"
+  },
+  "contrast": {
+    "refresh_66_vs_67": "F770-F771 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 67 (F772): Rounds 463-465 documented (window registry 100%), baseline 061e7c2 -> 88248b7, 430 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F770-F771 evidence.",
+  "cross_refs": ["F769: refresh 66", "F771: registry closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 463-465 section to HANDOFF",
+  "notes": [
+    "430 consecutive shipping rounds F335-F771",
+    "next: remaining deep corners, sim polish"
+  ]
+}

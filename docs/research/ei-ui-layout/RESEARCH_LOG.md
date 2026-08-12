@@ -8009,3 +8009,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**395 证据 JSON**；三服务 200；master dd1f504（**429 连发 F335-F770 已推**）。
 - **〔弧〕**F558 注册表**全部 14 个窗口函数体解码**（背包 F764 + 状态 F758 + 行会 F755 + 组队 F752 + 交易 F749 + 对话 F746 + 选项 F761 + 装备 F767 + 公告编辑 F770 + 基类 F713/F714 + 控件 F701/F704 + 滚动条 F707）——**窗口注册表完整**：Round 236-265 的 F559 窗口系统弧 100% 闭合。
 - 落盘：window-registry-total-closure-evidence.json（F771，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 465。
+## Round 466 (F772) — 2026-08-12：HANDOFF 刷新 67（Round 463-465）
+
+- **〔刷新〕**HANDOFF 追加 Round 463-465（F770-F771：行会公告编辑器 + 窗口注册表全量闭合）；基线 Round 462=061e7c2 → Round 465=88248b7（**430 连发 F335-F771**）。
+- 落盘：handoff-refresh-67-evidence.json（F772，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 466。
