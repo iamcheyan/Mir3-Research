@@ -3361,3 +3361,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（发送器完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 579 (2026-08-12) — HUD 状态条全量（Finding 885）
+
+- **% 格式 + 矩阵 + 注册表 blit**（F588 完整）。
+- 落盘：`hud-status-bar-full-evidence.json`（F885）+ RESEARCH_LOG Round 579。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（状态条完整；下一弧：剩余深层角落）。

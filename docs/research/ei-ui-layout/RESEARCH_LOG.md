@@ -8498,3 +8498,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 575-577（F882-F883：丢弃/卖出/组队发送器 + 发送器目录最终闭合）；基线 Round 574=1ff8849 → Round 577=5efee62（**542 连发 F335-F883**）。
 - 落盘：handoff-refresh-105-evidence.json（F884，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 578。
+## Round 579 (F885) — 2026-08-12：HUD 状态条全量（F588）
+
+- **〔状态〕**0x42A040：鼠标命中矩形 [0xC88]（PtInRect 0x4762B4 vs [0x7DA1C0]）+ **% 格式 0x46811C**（0x47BD4C/0x47BD5C、×0x47644C）+ 测量 0x45E0C0 + 居中数学 + **矩阵 0x466800 缩放** + **0x4542F0 条注册表 blit**（类型 [0x8AB7BC]）+ 文本 0x45DE50（0xFFFFFF）+ **0x45E570 矩形填充**（0x324B64）——HUD 状态完整（F588/F590 用）。
+- 落盘：hud-status-bar-full-evidence.json（F885，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 579。
