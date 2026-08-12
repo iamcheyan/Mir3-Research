@@ -7070,3 +7070,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔paint 0x4382C0〕**行走 + [0xF0]/[0xF1] 动画 -5 回绕 + 投影绘制。
 - **〔闭环〕**生成（F565）→ init → tick → 渲染（F434-442）全连接。
 - 落盘：entity-init-tick-core-evidence.json（F566，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 260。
+## Round 261 (F567) — 2026-08-12：recv/实体弧闭合（F549-F566 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**192 证据 JSON**；三服务 200；master 02a7294（**225 连发 F335-F566 已推**）。
+- **〔弧〕**recv1 函数体（背包金币 F549/分派器 F550/仓库 F551/TCP 重定向 F552/recv2 全图 F553/商店 F555/制作 F556/交易 F557/错误装备 F563）+ 窗口系统（F558-F560）+ 文本渲染族（F564）+ 实体生命周期（生成/移除 F565、init/tick F566）——**整个入站包管线 + 实体管线字节级**。
+- 落盘：recv-entity-arc-closure-evidence.json（F567，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 261。

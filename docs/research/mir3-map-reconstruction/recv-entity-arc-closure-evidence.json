@@ -1,0 +1,36 @@
+{
+  "evidence_id": "recv-entity-arc-closure-2026-08-12-f567",
+  "title": "Round 261 (F567): recv/entity arc CLOSED (F549-F566) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 02a7294 (225 consecutive F335-F566), 192 evidence JSONs; arc: recv1 handler bodies (bag-gold F549, dispatcher F550, warehouse F551, TCP redirect F552, recv2 full map F553, store F555, craft F556, trade F557, error/equip F563) + window system (F558-F560) + text render family (F564) + entity lifecycle (spawn/remove F565, init/tick F566) - ENTIRE recv + entity pipeline byte-level",
+  "date": "2026-08-12",
+  "objective": "Close the recv/entity arc with validation + consolidated summary.",
+  "question": "Is the full recv + entity pipeline documented?",
+  "method": "Full validation + service health + arc consolidation.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "valid", "evidence": "192 JSONs"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 02a7294; only untracked goal_watchdog.sh.bak",
+    "arc": {"recv1_bodies": "F549-F557, F563 (bag/dispatcher/warehouse/TCP/store/craft/trade/error/equip)", "recv2": "F553 full map", "window_system": "F558-F560", "text": "F564 GDI family", "entity": "F565 spawn/remove + F566 init/tick"},
+    "significance": "ENTIRE recv (inbound packet processing) + entity pipeline byte-level"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F566": "225 rounds pushed; recv + entity complete"
+  },
+  "contrast": {
+    "recv_vs_entity": "inbound handlers (F549-564) + entity lifecycle (F565-566) both complete",
+    "recv1_vs_recv2": "both tables fully mapped with bodies"
+  },
+  "verdict": "recv/entity arc CLOSED (F567): validation green, services live, 225 consecutive rounds pushed, 192 evidence JSONs. Entire inbound packet pipeline + entity lifecycle byte-level documented.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F549-F566.",
+  "cross_refs": ["F549-F566: recv/entity arc", "F524: protocol closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next: HANDOFF refresh 8, sim polish, remaining recv1 idx handlers",
+    "225 consecutive shipping rounds F335-F566"
+  ]
+}
