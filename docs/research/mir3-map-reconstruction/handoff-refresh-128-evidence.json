@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-128-2026-08-12-f950",
+  "title": "Round 644 (F950): HANDOFF refresh 128 - Rounds 641-643 (F947-F949: HANDOFF 127, party input/msg dispatch, party closure), baseline Round 640=29856f5 -> Round 643=1e047c0 (608 consecutive F335-F949), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 641-643.",
+  "question": "What changed since HANDOFF refresh 127?",
+  "method": "Append Round 641-643 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 641-643 appended (3 rounds, F947-F949)",
+    "baseline": "Round 640=29856f5 -> Round 643=1e047c0 (608 consecutive F335-F949)",
+    "arcs": {"input": "F948 party", "closure": "F949 party window"},
+    "key": "party window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F947": "refresh 127 baseline -> now refresh 128", "F335-F949": "608 rounds"
+  },
+  "contrast": {
+    "refresh_127_vs_128": "F948-F949 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 128 (F950): Rounds 641-643 documented (party window complete), baseline 29856f5 -> 1e047c0, 608 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F948-F949 evidence.",
+  "cross_refs": ["F947: refresh 127", "F949: party closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 641-643 section to HANDOFF",
+  "notes": [
+    "608 consecutive shipping rounds F335-F949",
+    "next: remaining deep corners, sim polish"
+  ]
+}

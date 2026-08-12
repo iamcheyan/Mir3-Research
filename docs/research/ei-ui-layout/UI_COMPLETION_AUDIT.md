@@ -3881,3 +3881,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队窗口完整；下一弧：HANDOFF 刷新 128/剩余角落）。
+## Round 644 (2026-08-12) — HANDOFF 刷新 128（Finding 950）
+
+- **Round 641-643 追加 + 608 连发**（组队窗口完整入档）。
+- 落盘：`handoff-refresh-128-evidence.json`（F950）+ RESEARCH_LOG Round 644。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队窗口完整；下一弧：剩余深层角落/模拟器 polish）。
