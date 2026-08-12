@@ -1,0 +1,37 @@
+{
+  "evidence_id": "tile-render-closure-2026-08-12-f1012",
+  "title": "Round 706 (F1012): Tile render CLOSED (F728/F1011) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 7b1f2b8 (669 consecutive F335-F1011), 633 evidence JSONs; arc: tile render family (F728) + ground tile full (F1011) - tile render COMPLETE byte-level (parity + div7 + type table 0x5600FC + frame + blit 0x45E8E0); map tile surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the tile render arc.",
+  "question": "Is the tile render fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "633 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F728": "tile family", "F1011": "ground full"},
+    "tile": "parity + div7 + blit = COMPLETE",
+    "milestone": "669 consecutive rounds F335-F1011"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1011": "669 rounds pushed; tile render complete"
+  },
+  "contrast": {
+    "family_vs_full": "family + ground",
+    "table": "0x5600FC stride 0x144"
+  },
+  "verdict": "Tile render CLOSED (F1012): parity + div7 + blit all byte-level; validation green, 669 consecutive rounds, 633 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F728/F1011.",
+  "cross_refs": ["F728", "F1011"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "669 consecutive shipping rounds F335-F1011",
+    "tile render 100%",
+    "next: HANDOFF refresh 149, remaining corners"
+  ]
+}

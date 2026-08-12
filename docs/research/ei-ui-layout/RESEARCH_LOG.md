@@ -9048,3 +9048,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔瓦片〕**0x43B9A0：边界 [0x126]/[0x128] + 奇偶检查（and 1）+ 瓦片索引（÷7 0x6DB6DB6D）+ 类型表 0x5600FC stride 0x144 → 帧 0x466130 + blit 0x45E8E0（0x8AB7A8，屏幕 0x300×0x480，偏移 <<5/×3×16）；0x43BB10 物体层瓦片（byte +3 / word +5/+7）——地面瓦片 blit 完整（F728/F719 依赖）。
 - 落盘：ground-tile-blit-full-evidence.json（F1011，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 705。
+## Round 706 (F1012) — 2026-08-12：瓦片渲染闭合（F728/F1011 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**633 证据 JSON**；三服务 200；master 7b1f2b8（**669 连发 F335-F1011 已推**）。
+- **〔弧〕**瓦片渲染家族（F728）+ 地面瓦片全量（F1011）——**瓦片渲染完整**（奇偶 + ÷7 + 类型表 0x5600FC + 帧 + blit 0x45E8E0）；地图瓦片表面 100%。
+- 落盘：tile-render-closure-evidence.json（F1012，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 706。
