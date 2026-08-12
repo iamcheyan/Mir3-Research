@@ -461,6 +461,12 @@ git diff --check
 - **14 caption 标签入模拟器**：样式提示框浏览器验证（交易栏 F80/81 正确配色）。
 - 落盘：`caption-tooltip-0x96ffff-evidence.json`（F358）+ builder/app.js + RESEARCH_LOG Round 52。
 
+## Round 53 (2026-08-12) — 目标框/悬停系统（Finding 359）
+
+- **0x40BB00**：3000ms 悬停名签（累加器 + 0x41/0x208 dword 清除）；**0x40B850**：名牌（居中 15px 盒）。
+- **模拟器目标流**：点击实体 → 面板 + 目标框（浏览器验证）。
+- 落盘：`target-box-hover-verification-evidence.json`（F359，primary-bytes）+ RESEARCH_LOG Round 53。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -5955,3 +5955,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x417370〕**门 byte[+0x34]（悬停标志）；状态 [0x8B1880]/[0x8B1884] + 当前标签 0x8B1888 strcmp；渲染 = 测宽 + **0x96FFFF 底板**（CreateSolidBrush+FillRect 0x4762F0）+ **1px 黑框**（FrameRect 0x4762F4）+ 文本 DrawTextA flags 0x25（Round 28 F242/243 确认）；文本色 BLACK。
 - **〔模拟器〕**layout.json 14 个 hud.* 记录获 caption_label（Round 29 F335 字符串解析）；builder hud 控件输出 caption_label（14 验证）；app.js renderHud 加样式 .cap-tip（0x96ffff 底 + 1px 黑框）。**浏览器验证**：hud.exchange 悬停 → '交易栏(Ctrl+C, C) · F80/81' 色 rgb(150,255,255)。
 - 落盘：`caption-tooltip-0x96ffff-evidence.json`（F358，primary-bytes）+ layout.json + builder + app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 52。
+
+## Round 53 (F359) — 2026-08-12：目标框/悬停系统验证（0x40BB00 悬停名签 + 0x40B850 名牌）
+
+- **〔0x40BB00 悬停名签〕**门 byte[+0x620A0]；**3000ms 定时器**（累加器 [0x6209C] > 0xBB8 → 清 +0x620A0 0x41 dwords + +0x621A4 0x208 dwords）；锚 [0xE4]/[0xE8] − 0x2C/−0x37。
+- **〔0x40B850 名牌〕**门 byte[+8]；0x45E0C0 测宽；盒 = 锚X + (w+0x30)/2 居中、y = 锚Y−0xF..−0x1E（15px 高）、宽 w+0x30（F239 0xA0A0A 边框）。
+- **〔模拟器〕**点击实体 → setTarget → target-panel visible + target-box。**浏览器验证**：点玩家 → 面板显示 '玩家：玩家 Finding 282/279 帧证据'。
+- 落盘：`target-box-hover-verification-evidence.json`（F359，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 53。

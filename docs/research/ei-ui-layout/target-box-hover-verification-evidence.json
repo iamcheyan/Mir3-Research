@@ -1,0 +1,50 @@
+{
+  "evidence_id": "target-box-hover-verification-2026-08-12-f359",
+  "title": "Round 53 (F359): Target box / hover system verification - 0x40BB00 hover tag (3000ms 0xBB8 accumulator, clear 0x41+0x208 dwords, anchor-0x2C/-0x37) + 0x40B850 name plate (measure + centered, 15px tall at anchor-0xF) + sim target flow browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the target box / hover name system: 0x40BB00 hover tag (3000ms timeout), 0x40B850 name-plate box, and the sim click-to-target flow.",
+  "question": "How does the original render hover name tags and target plates, and does the sim target flow work?",
+  "method": "Capstone disassembly of 0x40BB00/0x40B850; sim target flow browser verification.",
+  "scope": "0x40BB00-0x40BFD3 (hover tag), 0x40B850-0x40BA4B (name plate), sim target-panel.",
+  "cell_analysis": {
+    "hover_tag_0x40BB00": {
+      "gate": "byte [esi+0x620A0] (hover active)",
+      "timer": "accumulator [esi+0x6209C] += dt; > 0xBB8=3000 -> clear +0x620A0 0x41 dwords + 0x621A4 0x208 dwords (tag reset)",
+      "anchor": "text at ([0xE4]-0x2C, [0xE8]-0x37) (anchor 0xE4/0xE8, offset -44/-55)"
+    },
+    "name_plate_0x40B850": {
+      "gate": "byte [ebx+8] (name shown)",
+      "measure": "0x45E0C0 measure name text [ebx+8]",
+      "box": "centered x = anchorX + (w+0x30)/2, y = anchorY-0xF..-0x1E (15px tall), width = w+0x30 (0x40B89F-0x40B8AA)"
+    },
+    "chain": "F239: hover -> 0x40BB00 tag + 0x40B850 name plate + 0x40A8A0 HP bar; anchor [0xE4]/[0xE8] world-derived (F310)",
+    "sim_target": {
+      "flow": "click entity -> setTarget -> updateTargetPanel (visible) + updateTargetBox (0x40B850 composite)",
+      "browser": "click player -> target-panel visible '玩家：玩家 Finding 282/279 frame evidence'"
+    }
+  },
+  "exe_trace": {
+    "target_chain": "F239 (Round 28): name-plate 0x40B850 (0xA0A0A border, 15px, 15..30px above anchor), name text 0x40B750 (selector 0x566DD4), hover tag 0x40BB00 (3000ms), HP bar 0x40A8A0, entity re-render 0x437DF0",
+    "click": "msg 2 -> 0xBC4 (F239); current target [0x364444] (Round 30 F336)"
+  },
+  "audit_vs_exe": {
+    "F239": "hover tag 3000ms + name plate geometry confirmed",
+    "F310": "anchor [0xE4]/[0xE8] world-derived confirmed",
+    "Round 30": "current target [0x364444] in game tick confirmed"
+  },
+  "contrast": {
+    "hover_vs_target": "hover tag = transient (3000ms, cursor-near); target plate = persistent selection (click)",
+    "sim_vs_original": "sim target-panel + target-box approximate the original composite"
+  },
+  "verdict": "Target box / hover system verified (primary-bytes): 0x40BB00 hover tag (3000ms accumulator + 0x41/0x208 dword clear, anchor-0x2C/-0x37), 0x40B850 name plate (measure + centered 15px box). Sim click-to-target flow browser-verified (player target panel).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hover/plate renderers read directly from MIR3.EXE bytes; sim target flow browser-verified.",
+  "cross_refs": ["F239: target-box-evidence.json", "F310: anchor formula", "Round 30 F336: [0x364444] current target"],
+  "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
+  "reproduce": "img.disasm(0x40BB00, 0x100); img.disasm(0x40B850, 0x50); open sim; click entity; observe target panel",
+  "notes": [
+    "0x40BB00 timer 0xBB8 = 3000ms; tag clears both hover state and text buffers",
+    "name plate border 0xA0A0A (F239), width = text width + 0x30 padding",
+    "sim target panel shows entity frame formula (Finding 282/279 player table 0x8AA5C0)"
+  ]
+}
