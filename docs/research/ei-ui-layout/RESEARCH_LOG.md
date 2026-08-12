@@ -8715,3 +8715,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**558 证据 JSON**；三服务 200；master e979653（**592 连发 F335-F933 已推**）。
 - **〔弧〕**2 页纸娃娃（F767）+ 详情面板（F818）+ 输入/命中/构造（F933）——**装备窗口完整**（2 页 + 纸娃娃 + 槽查找 + 详情面板 + 输入），装备表面 100%。
 - 落盘：equipment-window-closure-evidence.json（F934，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 628。
+## Round 629 (F935) — 2026-08-12：HANDOFF 刷新 123（Round 626-628）
+
+- **〔刷新〕**HANDOFF 追加 Round 626-628（F933-F934：装备窗口输入/构造 + 装备窗口闭合）；基线 Round 625=e68ec3c → Round 628=4109e2a（**593 连发 F335-F934**）。
+- 落盘：handoff-refresh-123-evidence.json（F935，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 629。
