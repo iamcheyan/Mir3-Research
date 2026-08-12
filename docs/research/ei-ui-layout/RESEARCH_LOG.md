@@ -8334,3 +8334,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**470 证据 JSON**；三服务 200；master 12a4052（**504 连发 F335-F845 已推**）。
 - **〔弧〕**组队绘制（F752）+ 点击/消息分派（F845）——**组队窗口完整**（双列成员 + 5 按钮 + 邀请/移除/离开发送 + 队长），模式 6 全交互。
 - 落盘：party-interactive-closure-evidence.json（F846，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 540。
+## Round 541 (F847) — 2026-08-12：HANDOFF 刷新 92（Round 538-540）
+
+- **〔刷新〕**HANDOFF 追加 Round 538-540（F845-F846：组队点击/消息 + 组队交互闭合）；基线 Round 537=cc10978 → Round 540=fc5086b（**505 连发 F335-F846**）。
+- 落盘：handoff-refresh-92-evidence.json（F847，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 541。

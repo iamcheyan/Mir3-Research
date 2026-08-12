@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-92-2026-08-12-f847",
+  "title": "Round 541 (F847): HANDOFF refresh 92 - Rounds 538-540 (F844-F846: HANDOFF 91, party window click/msg dispatch, party interactive closure), baseline Round 537=cc10978 -> Round 540=fc5086b (505 consecutive F335-F846), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 538-540.",
+  "question": "What changed since HANDOFF refresh 91?",
+  "method": "Append Round 538-540 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 538-540 appended (3 rounds, F844-F846)",
+    "baseline": "Round 537=cc10978 -> Round 540=fc5086b (505 consecutive F335-F846)",
+    "arcs": {"party": "F845 click/msg", "closure": "F846 party"},
+    "key": "party window interactive complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F844": "refresh 91 baseline -> now refresh 92", "F335-F846": "505 rounds"
+  },
+  "contrast": {
+    "refresh_91_vs_92": "F845-F846 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 92 (F847): Rounds 538-540 documented (party interactive complete), baseline cc10978 -> fc5086b, 505 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F845-F846 evidence.",
+  "cross_refs": ["F844: refresh 91", "F846: party closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 538-540 section to HANDOFF",
+  "notes": [
+    "505 consecutive shipping rounds F335-F846",
+    "next: remaining deep corners, sim polish"
+  ]
+}
