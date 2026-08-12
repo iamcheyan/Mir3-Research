@@ -612,6 +612,11 @@ git diff --check
 - **5 图主题/内容不一致**（72/73/76/77/78.map：沙行 + 基础地面库）——新不一致类。
 - 落盘：`map-theme-verification-evidence.json`（F383，primary-bytes）+ RESEARCH_LOG Round 77。
 
+## Round 78 (2026-08-12) — 单元旗标分析（Finding 384）
+
+- **flag0 分布**（0-3 + 252-255 哨兵格）；**客户端阻挡 = type 0x32 标记（0x4123E3）非单元旗标**；单元旗标 = 瓦片行 attr。
+- 落盘：`cell-flag-analysis-evidence.json`（F384，primary-bytes）+ RESEARCH_LOG Round 78。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

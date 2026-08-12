@@ -6120,3 +6120,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔theme〕**= header[0x14] 瓦片行（F343）：全集 {0 wood: 530, 1 sand: 14}、绑定 {0: 197, 1: 14}（211 总）。
 - **〔不一致〕**5 张 theme-1 图（72/73/76/77/78.map，400×200）绑定 sand 库但格引用基础库 {0,1}（ground tilesc/tiles30c，帧 7596 合法）+ mid {5,10,3}——**沙行绑定但基础地面内容**（稀疏沙漠用基础瓦片）[candidate]。
 - 落盘：map-theme-verification-evidence.json（F383，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 77。
+## Round 78 (F384) — 2026-08-12：单元旗标分析（flag0 值分布 + 客户端阻挡机制）
+
+- **〔分布〕**flag0 {0: 294, 1: 22, 2: 232, 3: 240, 252: 313, 253: 33, 254: 164, 255: 317 格}；**252-255 = 每图 1 个哨兵格**（317 图）——边缘/动画标记，非群体阻挡。
+- **〔阻挡〕**客户端移动阻挡 = **type 0x32 小地图标记**（0x4123E3 门 [0x7E335C]+0x88==0x32 → 返回 1 阻挡；pick/select 排除 0x32）——**非单元旗标**；单元旗标 = 瓦片行 attr（F331 attr/7）。
+- 落盘：cell-flag-analysis-evidence.json（F384，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 78。

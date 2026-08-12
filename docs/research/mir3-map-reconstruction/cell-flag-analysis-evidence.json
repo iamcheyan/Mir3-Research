@@ -1,0 +1,39 @@
+{
+  "evidence_id": "cell-flag-analysis-2026-08-12-f384",
+  "title": "Round 78 (F384): Cell flag analysis - flag0 values {0,1,2,3,252-255}, high flags (252-255) = single sentinel cells per map (317 maps), client blocking = type 0x32 minimap markers (0x4123E3) NOT cell flags, attr byte = tile-row selector (F331)",
+  "date": "2026-08-12",
+  "objective": "Analyze the map cell flag byte: value distribution, high-flag semantics, and the client's actual blocking mechanism.",
+  "question": "What do cell flag bytes mean, and how does the client block movement?",
+  "method": "map-audit cell_flag0 distribution; per-map high-flag check; client blocking cross-ref (0x4123E3 type 0x32).",
+  "scope": "map-audit.json (544 maps); client 0x4123E3 blocking gate.",
+  "cell_analysis": {
+    "flag_values": {"0": 294 cells, "1": 22, "2": 232, "3": 240, "252": 313, "253": 33, "254": 164, "255": 317},
+    "high_flags": "252-255 = single sentinel cells in 317 maps (count 1 per map per value) - edge/anim markers, not mass blocking",
+    "flag_semantics": "flag byte = cell attribute (F331: attr/7 = tile-row selector for 14-byte cell rows; high values 252-255 = special markers)",
+    "client_blocking": "movement blocked by type 0x32 minimap markers: 0x4123E3 gate [0x7E335C]+0x88==0x32 -> return 1 (block); pick/select excludes 0x32 (0x41ECAE only 0/1, minimap pick 0x43CD0F only 0/1/3)",
+    "NOT_cell_flag": "cell flag bytes do NOT gate movement - blocking is entity-type-driven"
+  },
+  "exe_trace": {
+    "blocking": "0x4123E3 (type 0x32 marker check + PtInRect 0x724FFC gate 0x412397)",
+    "tile_row": "0x43B440 row = attr/7 (imul 0xE magic)"
+  },
+  "audit_vs_exe": {
+    "F331": "attr = tile-row selector confirmed",
+    "F254/map-ui": "type 0x32 = blocking minimap marker (0x560070 list, 0x407F20) confirmed"
+  },
+  "contrast": {
+    "cell_flag_vs_entity": "cell flag = tile metadata; movement block = type 0x32 entity markers",
+    "sentinel_vs_block": "252-255 single cells = sentinels (1 per map); blocking = entity list"
+  },
+  "verdict": "Cell flag analysis complete (primary-bytes): flag values {0,1,2,3,252-255} where high values = single sentinel cells (317 maps); the client blocks movement via type 0x32 minimap markers (0x4123E3), NOT cell flags. Cell flag = tile-row attr (F331).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Flag distribution from map binaries (audit); blocking gate read from MIR3.EXE.",
+  "cross_refs": ["F331: attr tile-row", "F254: type 0x32 marker", "F332: render gates"],
+  "tool": "map-audit analysis; python3",
+  "reproduce": "python3 -c map-audit cell_flag0 aggregation; verify 0x4123E3 gate",
+  "notes": [
+    "flag 252/254/255 appear in 0.map as 1 cell each - corner sentinels",
+    "high flags' exact meaning (anim marker vs reserved) [candidate]",
+    "attr byte also gates parity/row in 0x43B440 (F379 viewport)"
+  ]
+}
