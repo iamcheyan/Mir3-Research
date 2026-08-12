@@ -1,0 +1,36 @@
+{
+  "evidence_id": "all-pending-closed-closure-2026-08-12-f579",
+  "title": "Round 273 (F579): ALL PENDING CLOSED + HANDOFF refresh 11 - validation green (compileall/verify exit 0/node/JSON), services 200, master 515600e (237 consecutive F335-F578), 204 evidence JSONs; MILESTONE: every historical pending note now closed (0x45A650 F577, 0x45B490 F577, [0x140] timeKillEvent F577, 0x476CA8 DSound3DListener F578) - ZERO open items; HANDOFF appended Rounds 269-272 (F575-F578: sim protocol layer + loader family + DSound resolve)",
+  "date": "2026-08-12",
+  "objective": "Declare all-pending-closed + refresh HANDOFF.",
+  "question": "Are all pending items resolved?",
+  "method": "Full validation + HANDOFF append + pending consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "204 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "pending_closed": {"0x45A650": "F577 destructor (timer + 7 views)", "0x45B490": "F577 loader dispatcher", "timeKillEvent_0x140": "F577 [0x140] timer", "0x476CA8": "F578 DSound3DListener IID"},
+    "handoff": "refresh 11: Rounds 269-272 appended, baseline d54bc29 -> 515600e",
+    "repo": "user quest doc 16-道具图册.md untracked (untouched)"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F578": "237 rounds pushed", "F28": "oldest pending note -> now closed"
+  },
+  "contrast": {
+    "pending_vs_closed": "F28-era notes all resolved now",
+    "audio_vs_loader": "DSound3D (F578) + file/resource loader (F577) both closed"
+  },
+  "verdict": "ALL PENDING CLOSED (F579): zero open items (F577/F578 resolved the last 4); validation green, 237 consecutive rounds, 204 evidence JSONs; HANDOFF refreshed 11.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; closures from F577-F578.",
+  "cross_refs": ["F577: loader family", "F578: DSound", "F28: original notes"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "237 consecutive shipping rounds F335-F578",
+    "next: deep UI corners, sim polish, further protocol detail"
+  ]
+}

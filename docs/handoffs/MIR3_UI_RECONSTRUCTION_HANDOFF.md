@@ -523,3 +523,16 @@ simulator/style.css
 **全协议双向闭合（F574）**：入站 100% + 出站 100% = **整个客户端-服务器协议双向字节级**（发送 '#<seq><cmd>/<args>!' 经 send() socket [0x6044]、接收经 WSAAsyncSelect 0x7E8 → 分派表 0x42042B/0x4218F2）——232 连发 + 199 证据 JSON。
 
 **commit 基线更新**：Round 261=9fbbccc → Round 268=d54bc29（master 已推，233 连发 F335-F574）。
+
+
+## Round 269-272 追加交付（2026-08-12，Finding 575-578）：HANDOFF 刷新 10 + 模拟器协议层 + 装载器族 + DSound 解析（全部 pending 闭合）
+
+**HANDOFF 刷新 10（F575）**：基线更新至 Round 268=d54bc29（233 连发）。
+
+**模拟器文本帧协议层（F576）**：app.js 新增 sendFrame() 镜像原版 **'#%d%s%s!'/'#%d%s!'** 帧（F572）+ seq 9→1 回绕 → 聊天环 '[送出] #<seq><cmd>/<args>!'；聊天输入接线（'+'→0x41E740、'@'→0x47ACB8、'!'→0x47ACF8、广N→0x41EDE0、普通→0x404600）——模拟器讲真实 KR MIR3 文本协议（node OK + sim 200）。
+
+**文件映射/资源装载器族（F577，长尾闭合）**：0x45B5B0 = 资源装载器（FindResourceA/LoadResource/LockResource）、0x45B610 = 文件映射装载器（CreateFileA/CreateFileMappingA/MapViewOfFile）——**F436 WIL 装载器 0x466130 双模式 = 资源 + mmap 确认**；0x45B490 分派、**0x45A650 容器析构**（timeKillEvent + 7 视图 +0x118..+0x12C）。
+
+**DSound 3D 监听器解析（F578，最后 pending）**：0x476CA8 = **IID {279AFA84-4981-11CE-A521-0020AF0BE560} = IID_IDirectSound3DListener**（MS 文档确认）；COM 单例获取 0x45A9B4（CoCreateInstance 0x468116 → 出参 0x9135C4、失败 E_FAIL）；dsound.dll 仅序号导入——**F28 起全部 pending 笔记闭合**。
+
+**commit 基线更新**：Round 268=d54bc29 → Round 272=515600e（master 已推，237 连发 F335-F578）。

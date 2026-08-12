@@ -7136,3 +7136,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔解析〕**0x476CA8（.rdata）= **IID {279AFA84-4981-11CE-A521-0020AF0BE560} = IID_IDirectSound3DListener**（MS 文档确认）；用法 0x45A9B4：COM 单例获取（0x45A8C0 创建 / 0x9135C0 全局）→ push 0x9135C4 出参 + push 0x476CA8 riid + call vtable[0]（0x468116 CoCreateInstance）→ 失败 E_FAIL 0x80004005 → vtable[+8] 释放；dsound.dll 仅序号导入（0x47603C）。
 - **〔闭合〕**最后 pending 项（F28 '0x476CA8 次级 DSound 接口名 279AFA84'）**完成——全部 pending 笔记闭合**。
 - 落盘：dsound-3d-listener-evidence.json（F578，primary-bytes + secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 272。
+## Round 273 (F579) — 2026-08-12：全部 pending 闭合 + HANDOFF 刷新 11
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**204 证据 JSON**；三服务 200；master 515600e（**237 连发 F335-F578 已推**）。
+- **〔里程碑〕**全部历史 pending 笔记闭合（0x45A650 F577、0x45B490 F577、[0x140] timeKillEvent F577、0x476CA8 DSound3DListener F578）——**零未决项**。
+- **〔HANDOFF 刷新 11〕**追加 Round 269-272（F575-F578：模拟器协议层 + 装载器族 + DSound 解析），基线 d54bc29 → 515600e。
+- 落盘：all-pending-closed-evidence.json（F579，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 273。
