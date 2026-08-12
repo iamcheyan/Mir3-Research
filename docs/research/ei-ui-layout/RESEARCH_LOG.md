@@ -8338,3 +8338,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 538-540（F845-F846：组队点击/消息 + 组队交互闭合）；基线 Round 537=cc10978 → Round 540=fc5086b（**505 连发 F335-F846**）。
 - 落盘：handoff-refresh-92-evidence.json（F847，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 541。
+## Round 542 (F848) — 2026-08-12：技能页签头绘制（F839 页签依赖）
+
+- **〔页签〕**0x4397A0：激活页签 [0x54]×3 → 页签记录 **[0x898+idx×0x18]** 遍历（页计数 [0x58+idx×4]）+ **技能图标**（0x566C90 帧 = [技能+6]、blit 0x45FD50）+ **4 边高亮矩形**（SetRect 0x4762B0）+ **技能名 0x45DE50**（色 0x3C3C3C）+ 边框——技能页签头完整。
+- 落盘：skill-tab-header-draw-evidence.json（F848，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 542。
