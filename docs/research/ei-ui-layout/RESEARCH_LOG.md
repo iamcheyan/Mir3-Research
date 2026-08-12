@@ -7063,3 +7063,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔移除〕**0x42121B：按 id 查两链表；类型 0x16 特例 = **重生替换**（rand 0x4E20-0x7530 + 0x438100）。
 - **〔连带 msgid〕**0x2BE=角色/状态数据（idx30 开模式 7）、0x2C0=行会数据（idx32 开模式 4）、0x2B7=多物品拾取（idx23）、0x2AD=交易关（idx13）。
 - 落盘：recv1-entity-spawn-remove-evidence.json（F565，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 259。
+## Round 260 (F566) — 2026-08-12：实体初始化 + 帧推进核心
+
+- **〔init 0x438100〕**9 参转 0x435030（特效生成 F489）、id → [0x140]、x/y → [0xB0]/[0xB4]、投影 0x43CFD0（地图 0x574118，F435 48×32）→ [0xA0]/[0xA4]、参数 → [0x13C]。
+- **〔tick 0x4381A0〕**[0xD8] += 增量（行走）、回绕 [0xFC]++ → [0xF8]/[0xF4] 重置、阶段 [0x130]<5 门 + **帧基：类型 0x16 特例 0x27EE，否则 type*5+0x2711**、血条 0x45B140/0x45B090/0x45B0F0（[0x8AB130]）、vtable[0x14] → **0x7DA1D8 光场**（F436）、离屏旗标 [0x4]。
+- **〔paint 0x4382C0〕**行走 + [0xF0]/[0xF1] 动画 -5 回绕 + 投影绘制。
+- **〔闭环〕**生成（F565）→ init → tick → 渲染（F434-442）全连接。
+- 落盘：entity-init-tick-core-evidence.json（F566，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 260。

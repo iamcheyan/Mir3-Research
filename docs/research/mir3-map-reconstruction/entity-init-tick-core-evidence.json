@@ -1,0 +1,36 @@
+{
+  "evidence_id": "entity-init-tick-core-2026-08-12-f566",
+  "title": "Round 260 (F566): Entity init 0x438100 + tick 0x4381A0 - init: forward 9 args to 0x435030 (effect spawn, F489 type*10 MonMagic), id -> [0x140], x/y -> [0xB0]/[0xB4], projection 0x43CFD0 via map 0x574118 (F435 48x32) -> [0xA0]/[0xA4], arg -> [0x13C], ret 0x24; tick: [0xD8] += delta (walk), wrap [0xFC]++ -> [0xF8]/[0xF4] reset, stage [0x130]<5 gate + frame base type 0x16 special 0x27EE else type*5+0x2711, HP bar 0x45B140/0x45B090/0x45B0F0 ([0x8AB130]), vtable[0x14] -> 0x7DA1D8 light field (F436), offscreen flag [0x4] - entity lifecycle CORE byte-level (spawn F565 -> init -> tick -> render F434-442 closed)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity init + tick core functions.",
+  "question": "How does the client initialize and animate entities?",
+  "method": "Disasm 0x438100 (init) + 0x4381A0 (tick) + 0x4382C0 (paint).",
+  "scope": "0x438100-0x4382C0; map 0x574118; light 0x7DA1D8.",
+  "cell_analysis": {
+    "init_0x438100": {"args": "9 -> 0x435030 (effect spawn F489)", "id": "[0x140]", "xy": "[0xB0]/[0xB4]", "proj": "0x43CFD0 (map 0x574118 F435) -> [0xA0]/[0xA4]", "tail": "[0x13C], ret 0x24"},
+    "tick_0x4381A0": {"move": "[0xD8] += delta, wrap [0xFC]++", "frame": "stage [0x130]<5, type 0x16 base 0x27EE else type*5+0x2711", "hpbar": "0x45B140/0x45B090/0x45B0F0 ([0x8AB130])", "light": "vtable[0x14] -> 0x7DA1D8 (F436)", "flag": "offscreen [0x4]=1"},
+    "paint_0x4382C0": "walk + [0xF0]/[0xF1] anim sub-5 wrap + paint via map proj"
+  },
+  "exe_trace": {
+    "lifecycle_chain": "spawn packet -> 0x420E36 -> 0x438100 init -> frame tick 0x4381A0 -> paint 0x4382C0 -> render (F434-442)"
+  },
+  "audit_vs_exe": {
+    "F489": "0x435030 effect spawn = init first call CONFIRMED", "F435": "0x43CFD0 projection via 0x574118", "F436": "0x7DA1D8 light field via vtable[0x14]", "F565": "spawn handler -> this init", "F434": "animation advance [0xFC]"
+  },
+  "contrast": {
+    "init_vs_tick": "0x438100 spawn-position vs 0x4381A0 per-frame advance",
+    "frame_base": "type 0x16 special 0x27EE vs generic type*5+0x2711"
+  },
+  "verdict": "Entity core PRIMARY-verified: init (id/xy/projection/effect) + tick (walk/frame/HP bar/light field) + paint; lifecycle spawn->init->tick->render closed with F489/F435/F436.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Functions decoded from .text; cross-checked F489/F435/F436.",
+  "cross_refs": ["F565: spawn", "F489: effect spawn", "F435: projection", "F436: light field"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x438100+0x20; 0x4381A0+0x40",
+  "notes": [
+    "0x43CFD0 = world->screen projection (48x32)",
+    "0x8AB130 = entity manager (HP bar ops)",
+    "frame base formula type*5+0x2711",
+    "[0x4] = visibility/offscreen flag"
+  ]
+}

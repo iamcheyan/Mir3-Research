@@ -1526,9 +1526,14 @@ git diff --check
 - **类型分派生成 + F336 实体链表 + 重生特例**。
 - 落盘：`recv1-entity-spawn-remove-evidence.json`（F565）+ RESEARCH_LOG Round 259。
 
+## Round 260 (2026-08-12) — 实体初始化 + 帧推进核心（Finding 566）
+
+- **init/tick/paint 三件套 + 生命周期闭环**（F489/F435/F436 连接）。
+- 落盘：`entity-init-tick-core-evidence.json`（F566）+ RESEARCH_LOG Round 260。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（recv1 实体生命周期闭合）。
+- 无阻塞项（实体核心闭合）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
