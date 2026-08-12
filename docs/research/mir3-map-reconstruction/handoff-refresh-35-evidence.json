@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-35-2026-08-12-f673",
+  "title": "Round 367 (F673): HANDOFF refresh 35 - Rounds 364-366 (F670-F672: quest window paint + quest system closure), baseline Round 363=409fe27 -> Round 366=0596b2c (331 consecutive F335-F672), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 364-366.",
+  "question": "What changed since HANDOFF refresh 34?",
+  "method": "Append Round 364-366 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 364-366 appended (3 rounds, F670-F672)",
+    "baseline": "Round 363=409fe27 -> Round 366=0596b2c (331 consecutive F335-F672)",
+    "arcs": {"paint": "F671 quest window paint", "closure": "F672 quest system"},
+    "key": "quest system complete (render + journal + server files)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F670": "refresh 34 baseline -> now refresh 35", "F335-F672": "331 rounds"
+  },
+  "contrast": {
+    "refresh_34_vs_35": "F671-F672 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 35 (F673): Rounds 364-366 documented (quest system), baseline 409fe27 -> 0596b2c, 331 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F671-F672 evidence.",
+  "cross_refs": ["F670: refresh 34", "F672: quest closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 364-366 section to HANDOFF",
+  "notes": [
+    "331 consecutive shipping rounds F335-F672",
+    "next: remaining deep corners, sim polish"
+  ]
+}

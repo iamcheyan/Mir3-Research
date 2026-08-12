@@ -7577,3 +7577,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**296 证据 JSON**；三服务 200；master 24cbec6（**330 连发 F335-F671 已推**）。
 - **〔弧〕**任务窗绘制完整（F671）——**任务系统完整（渲染 F671 + 日志 F553 + 服务端 QuestDiary/MapQuest F511）**，连接 F537/F564。
 - 落盘：quest-system-closure-evidence.json（F672，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 366。
+## Round 367 (F673) — 2026-08-12：HANDOFF 刷新 35（Round 364-366）
+
+- **〔刷新〕**HANDOFF 追加 Round 364-366（F671-F672：任务窗绘制 + 任务系统闭合）；基线 Round 363=409fe27 → Round 366=0596b2c（**331 连发 F335-F672**）。
+- 落盘：handoff-refresh-35-evidence.json（F673，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 367。
