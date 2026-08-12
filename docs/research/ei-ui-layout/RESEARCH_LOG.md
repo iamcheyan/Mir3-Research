@@ -8680,3 +8680,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 达 **120 次刷新**（基线 Round 618=ede392c → Round 619=6013609，**584 连发 F335-F925**）；自 Round 600 里程碑：**6 表面闭合**（交易槽操作/商店槽/对话/组队成员/行会成员/任务输入），**550+ 证据 JSON**。
 - 落盘：handoff-refresh-120-evidence.json（F926，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 620。
+## Round 621 (F927) — 2026-08-12：选项开关 + 点击处理（F546/F761）
+
+- **〔选项〕**0x441A20：**BGM 滑块 [0x6C]** += 鼠标 x 增量（钳制 0..0xA0、0xFFFFFFD2 偏移 → 0x441F40 应用）+ **SFX [0x74]**（arg 0）+ **11 控件点击分派**（vtable[8] @ +0x7C stride 0xB4）；0x441B10 控件重置（11 清）——选项输入完整。
+- 落盘：options-toggle-click-handler-evidence.json（F927，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 621。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "options-toggle-click-handler-2026-08-12-f927",
+  "title": "Round 621 (F927): Options toggle + click handler (F546/F761) - 0x441A20: BGM slider [0x6C] += mouse x delta (clamp 0..0xA0, 0xFFFFFFD2 offset -> 0x441F40 apply) + SFX [0x74] (arg 0) + 11 control click dispatch (vtable[8] @ +0x7C stride 0xB4); 0x441B10 controls reset (11 clear) - options input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the options toggle + click handler.",
+  "question": "How do options sliders + toggles respond to input?",
+  "method": "Disasm 0x441A20-0x441B2E.",
+  "scope": "0x441A20-0x441B2E; sliders.",
+  "cell_analysis": {
+    "0x441A20": {"bgm": "[0x6C] mouse x clamp 0xA0", "sfx": "[0x74]", "apply": "0x441F40", "controls": "11 vtable[8]"},
+    "0x441B10": "reset 11 controls"
+  },
+  "exe_trace": {
+    "options_chain": "slider input -> clamp -> 0x441F40 apply; control click"
+  },
+  "audit_vs_exe": {
+    "F546": "sliders", "F761": "click", "F776": "apply"
+  },
+  "contrast": {
+    "bgm_vs_sfx": "[0x6C] + [0x74]",
+    "slider_vs_controls": "input + 11"
+  },
+  "verdict": "Options toggle + click handler PRIMARY-verified: sliders + apply + control dispatch; F546/F761 input complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Options input decoded from .text.",
+  "cross_refs": ["F546: sliders", "F761: click", "F776: apply"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441A20+0x20",
+  "notes": [
+    "BGM [0x6C] clamp 0xA0",
+    "SFX [0x74]",
+    "apply 0x441F40",
+    "11 controls"
+  ]
+}

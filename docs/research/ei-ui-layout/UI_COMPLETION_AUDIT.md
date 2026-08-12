@@ -3697,3 +3697,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（6 表面闭合；下一弧：剩余深层角落/模拟器 polish）。
+## Round 621 (2026-08-12) — 选项开关 + 点击处理（Finding 927）
+
+- **滑块输入 + 应用 + 11 控件**（选项输入完整）。
+- 落盘：`options-toggle-click-handler-evidence.json`（F927）+ RESEARCH_LOG Round 621。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（选项输入完整；下一弧：剩余深层角落）。
