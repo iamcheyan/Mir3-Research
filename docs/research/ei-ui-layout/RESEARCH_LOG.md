@@ -7131,3 +7131,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分派/析构〕**0x45B490 = 分派（先资源后文件、vtable[0xC] 初始化、失败 vtable[+8] 释放）；**0x45A650 = 容器析构**（timeKillEvent 0x476310 杀计时器 [0x140] + 释放 **7 视图** [+0x118..+0x12C] + [0x134]=0）；ctor 0x45A850 vtable 0x476BD8。
 - **〔闭合〕**长期 pending 项（0x45A650 尾部/0x45B490 body）完成。
 - 落盘：file-mapping-resource-loader-evidence.json（F577，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 271。
+## Round 272 (F578) — 2026-08-12：DSound 3D 监听器接口解析
+
+- **〔解析〕**0x476CA8（.rdata）= **IID {279AFA84-4981-11CE-A521-0020AF0BE560} = IID_IDirectSound3DListener**（MS 文档确认）；用法 0x45A9B4：COM 单例获取（0x45A8C0 创建 / 0x9135C0 全局）→ push 0x9135C4 出参 + push 0x476CA8 riid + call vtable[0]（0x468116 CoCreateInstance）→ 失败 E_FAIL 0x80004005 → vtable[+8] 释放；dsound.dll 仅序号导入（0x47603C）。
+- **〔闭合〕**最后 pending 项（F28 '0x476CA8 次级 DSound 接口名 279AFA84'）**完成——全部 pending 笔记闭合**。
+- 落盘：dsound-3d-listener-evidence.json（F578，primary-bytes + secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 272。

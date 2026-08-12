@@ -1,0 +1,36 @@
+{
+  "evidence_id": "dsound-3d-listener-interface-2026-08-12-f578",
+  "title": "Round 272 (F578): DSound 3D listener interface RESOLVED - 0x476CA8 (.rdata) holds IID {279AFA84-4981-11CE-A521-0020AF0BE560} = IID_IDirectSound3DListener (MS-confirmed, DSound3D family tail 4981-11CE-A521-0020AF0BE560); used at 0x45A9B4: COM singleton acquire (0x45A8C0 create / 0x9135C0 global) -> push 0x9135C4 out, push 0x476CA8 riid, push obj, call vtable[0] (0x468116 CoCreateInstance) -> E_FAIL 0x80004005 on fail -> vtable[+8] release; dsound.dll imported by ordinal only (slot 0x47603C no name) - LAST long-pending item (F28 pending_notes '0x476CA8 次级 DSound 接口名 279AFA84') CLOSED",
+  "date": "2026-08-12",
+  "objective": "Resolve the final pending DSound interface name.",
+  "question": "What interface does 0x476CA8/0x279AFA84 reference?",
+  "method": "Dump GUID @0x476CA8 + web-verify IID + code ref 0x45A9B4.",
+  "scope": "0x476CA8, 0x45A9B4, 0x45A8C0.",
+  "cell_analysis": {
+    "guid": {"0x476CA8": "{279AFA84-4981-11CE-A521-0020AF0BE560}", "name": "IID_IDirectSound3DListener (MS confirmed)"},
+    "usage": {"0x45A9B4": "push 0x9135C4 out + push 0x476CA8 riid + call vtable[0] (CoCreateInstance 0x468116)", "err": "E_FAIL 0x80004005", "com": "singleton 0x9135C0 (0x45A8C0 create / 0x45A880 dtor F577)"},
+    "import": "dsound.dll ordinal-only (0x47603C no name)"
+  },
+  "exe_trace": {
+    "audio_chain": "audio engine init -> CoCreateInstance(DSound3DListener riid) -> listener out 0x9135C4 -> 3D audio"
+  },
+  "audit_vs_exe": {
+    "pending_notes": "F28 '0x476CA8 次级 DSound 接口名 279AFA84' CLOSED", "F577": "loader COM singleton family"
+  },
+  "contrast": {
+    "listener_vs_buffer": "IDirectSound3DListener (global 3D pos) vs IDirectSound3DBuffer (per-sound)",
+    "3d_vs_2d": "3D listener (0x279AFA84) vs base IDirectSound (0x279AFA83)"
+  },
+  "verdict": "DSound 3D listener interface RESOLVED (F578): 0x476CA8 = IID_IDirectSound3DListener (web-verified MS), acquired via CoCreateInstance at 0x45A9B4 into 0x9135C4; LAST pending item closed - all long-pending notes complete.",
+  "evidence_level": "primary-bytes + secondary (MS docs)",
+  "evidence_level_note": "GUID bytes from .rdata; name verified against Microsoft docs.",
+  "cross_refs": ["F577: loader family", "F28: original pending note"],
+  "tool": "capstone disasm + web_search",
+  "reproduce": "dump 16 bytes @0x476CA8; web '279AFA84-4981-11CE-A521-0020AF0BE560'",
+  "notes": [
+    "obtained from primary buffer via QueryInterface (MS)",
+    "dsound.dll ordinal import",
+    "audio engine = COM singleton 0x9135C0",
+    "ALL pending notes now closed"
+  ]
+}

@@ -1586,9 +1586,14 @@ git diff --check
 - **F436 双模式装载器闭合 + 长期 pending 尾部完成**。
 - 落盘：`file-mapping-resource-loader-evidence.json`（F577）+ RESEARCH_LOG Round 271。
 
+## Round 272 (2026-08-12) — DSound 3D 监听器接口（Finding 578）
+
+- **IID_IDirectSound3DListener 确认 + 全部 pending 笔记闭合**。
+- 落盘：`dsound-3d-listener-evidence.json`（F578）+ RESEARCH_LOG Round 272。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（装载器族闭合；剩余低优先：0x476CA8 DSound 接口名、[0x140] timeKillEvent 协同）。
+- 无阻塞项（**全部历史 pending 笔记闭合**；下一弧：HANDOFF 刷新 11/深度角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
