@@ -7467,3 +7467,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔blit〕**0x45E730（F591 世界 blit 阶段）：裁剪 0x320×0x258 + 负偏移钳制、表面 vtable[0x64] GetDC（0x7C）、**逐行 16 位复制**（行步长 + rep movsd/movsb）——主世界→屏幕 blit 字节级（F591 阶段 + F647 blit 族）。
 - 落盘：world-blit-main-evidence.json（F648，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 342。
+## Round 343 (F649) — 2026-08-12：blit/渲染弧闭合（F647-F648 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**273 证据 JSON**；三服务 200；master 4ccdb3c（**307 连发 F335-F648 已推**）。
+- **〔弧〕**通用 WIL blit + RLE（F647）+ 主世界 blit（F648）——**渲染引擎完整（通用 RLE blit + 世界 blit + 565 混合 F629）**，支撑全部绘制路径。
+- 落盘：blit-render-arc-closure-evidence.json（F649，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 343。

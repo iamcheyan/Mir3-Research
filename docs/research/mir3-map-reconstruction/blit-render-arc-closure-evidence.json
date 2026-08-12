@@ -1,0 +1,36 @@
+{
+  "evidence_id": "blit-render-arc-closure-2026-08-12-f649",
+  "title": "Round 343 (F649): Blit/render arc CLOSED (F647-F648) - validation green (compileall/verify exit 0/node/JSON), services 200, master 4ccdb3c (307 consecutive F335-F648), 273 evidence JSONs; arc: universal WIL blit + RLE (F647: 0xC0/0xC1 ops + clip) + main world blit (F648: per-row copy) - render engine COMPLETE (universal RLE blit + world blit + 565 blend F629), backing every paint path",
+  "date": "2026-08-12",
+  "objective": "Close the blit/render arc.",
+  "question": "Is the render engine fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "273 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F647": "universal RLE blit", "F648": "world blit"},
+    "engine": "universal RLE + world + 565 blend (F629) = COMPLETE",
+    "milestone": "307 consecutive rounds F335-F648"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F648": "307 rounds pushed; render engine complete"
+  },
+  "contrast": {
+    "blit_vs_blend": "opaque RLE blit + alpha blend",
+    "universal_vs_world": "0x45FD50 universal + 0x45E730 world"
+  },
+  "verdict": "Blit/render arc CLOSED (F649): render engine byte-level (RLE + world + blend); validation green, 307 consecutive rounds, 273 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F647-F648.",
+  "cross_refs": ["F647: RLE blit", "F648: world blit", "F629: blend"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "307 consecutive shipping rounds F335-F648",
+    "next: HANDOFF refresh 28, remaining corners"
+  ]
+}
