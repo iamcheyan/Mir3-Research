@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-146-2026-08-12-f1004",
+  "title": "Round 698 (F1004): HANDOFF refresh 146 - Rounds 695-697 (F1001-F1003: HANDOFF 145, hero runtime ctor/death full, hero runtime closure), baseline Round 694=0322683 -> Round 697=b2ad52a (662 consecutive F335-F1003), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 695-697.",
+  "question": "What changed since HANDOFF refresh 145?",
+  "method": "Append Round 695-697 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 695-697 appended (3 rounds, F1001-F1003)",
+    "baseline": "Round 694=0322683 -> Round 697=b2ad52a (662 consecutive F335-F1003)",
+    "arcs": {"runtime": "F1002 hero", "closure": "F1003 hero runtime"},
+    "key": "hero runtime complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1001": "refresh 145 baseline -> now refresh 146", "F335-F1003": "662 rounds"
+  },
+  "contrast": {
+    "refresh_145_vs_146": "F1002-F1003 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 146 (F1004): Rounds 695-697 documented (hero runtime complete), baseline 0322683 -> b2ad52a, 662 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1002-F1003 evidence.",
+  "cross_refs": ["F1001: refresh 145", "F1003: hero runtime closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 695-697 section to HANDOFF",
+  "notes": [
+    "662 consecutive shipping rounds F335-F1003",
+    "next: remaining deep corners, sim polish"
+  ]
+}

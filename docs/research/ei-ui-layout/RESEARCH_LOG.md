@@ -9015,3 +9015,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**624 证据 JSON**；三服务 200；master 47fd5c9（**661 连发 F335-F1002 已推**）。
 - **〔弧〕**死亡泵（F611）+ 运行时（F725）+ 消息/死亡（F791）+ 构造/死亡全量（F1002）——**英雄运行时完整**（ctor + 数据装载 + 死亡 dlist 0x560088 + 1500ms + 重生）；英雄表面 100%。
 - 落盘：hero-runtime-closure-evidence.json（F1003，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 697。
+## Round 698 (F1004) — 2026-08-12：HANDOFF 刷新 146（Round 695-697）
+
+- **〔刷新〕**HANDOFF 追加 Round 695-697（F1002-F1003：英雄运行时构造/死亡全量 + 英雄运行时闭合）；基线 Round 694=0322683 → Round 697=b2ad52a（**662 连发 F335-F1003**）。
+- 落盘：handoff-refresh-146-evidence.json（F1004，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 698。
