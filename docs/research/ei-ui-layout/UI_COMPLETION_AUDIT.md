@@ -4153,3 +4153,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 678 (2026-08-12) — 物品网格构造/初始化/绘制（Finding 984）
+
+- **ctor + init + draw**（物品网格完整）。
+- 落盘：`item-grid-ctor-init-draw-evidence.json`（F984）+ RESEARCH_LOG Round 678。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（物品网格完整；下一弧：剩余深层角落）。

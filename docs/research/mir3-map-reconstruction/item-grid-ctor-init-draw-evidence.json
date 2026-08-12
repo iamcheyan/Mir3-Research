@@ -1,0 +1,36 @@
+{
+  "evidence_id": "item-grid-ctor-init-draw-2026-08-12-f984",
+  "title": "Round 678 (F984): Item grid ctor/init/draw (F966 dep, mount 6-slot) - 0x43D400 grid CTOR (0x465EF0 strings @ +4/+0x148); 0x43D450 grid DTOR (0x465FE0 + free [esi]); 0x43D4D0 grid INIT (0x4660E0 0x47C428/0x47C414 + rect 0x2A0x0x80 @ 0x320 + state fields 0x28C..0x2F8); 0x43D5F0 grid DRAW body ([0x2E8]/[0x2E0] state) - item grid COMPLETE (F773 mount 6-slot dep)",
+  "date": "2026-08-12",
+  "objective": "Decode the item grid ctor/init/draw.",
+  "question": "How does the item grid construct + draw?",
+  "method": "Disasm 0x43D400-0x43D5F0.",
+  "scope": "0x43D400-0x43D5F0; grid.",
+  "cell_analysis": {
+    "0x43D400/0x43D450": "ctor/dtor",
+    "0x43D4D0": "init strings + rect",
+    "0x43D5F0": "draw body"
+  },
+  "exe_trace": {
+    "grid_chain": "ctor -> init -> draw"
+  },
+  "audit_vs_exe": {
+    "F966": "hit router", "F773": "mount 6-slot"
+  },
+  "contrast": {
+    "ctor_vs_draw": "init + render",
+    "rect": "0x2A0x0x80"
+  },
+  "verdict": "Item grid ctor/init/draw PRIMARY-verified: ctor + init + draw; F773 mount 6-slot dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Item grid decoded from .text.",
+  "cross_refs": ["F773: mount", "F966: router"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43D400+0x10; 0x43D4D0+0x20",
+  "notes": [
+    "strings 0x47C428/0x47C414",
+    "rect 0x2A0x0x80",
+    "state [0x2E8]/[0x2E0]",
+    "ctor 0x465EF0"
+  ]
+}

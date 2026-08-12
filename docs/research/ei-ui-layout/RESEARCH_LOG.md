@@ -8928,3 +8928,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 674-676（F981-F982：技能书绘制/页计数 + 技能书闭合）；基线 Round 673=0fc77a2 → Round 676=659206c（**641 连发 F335-F982**）。
 - 落盘：handoff-refresh-139-evidence.json（F983，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 677。
+## Round 678 (F984) — 2026-08-12：物品网格构造/初始化/绘制（F966 依赖，坐骑 6 槽）
+
+- **〔网格〕**0x43D400 网格构造（0x465EF0 字符串 @ +4/+0x148）；0x43D450 析构（0x465FE0 + free [esi]）；0x43D4D0 **初始化**（0x4660E0 0x47C428/0x47C414 + 矩形 0x2A0×0x80 @ 0x320 + 状态字段 0x28C..0x2F8）；0x43D5F0 **绘制体**（[0x2E8]/[0x2E0] 状态）——物品网格完整（F773 坐骑 6 槽依赖）。
+- 落盘：item-grid-ctor-init-draw-evidence.json（F984，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 678。
