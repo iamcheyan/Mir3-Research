@@ -2937,3 +2937,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会页完整；下一弧：HANDOFF 刷新 87/剩余角落）。
+## Round 526 (2026-08-12) — HANDOFF 刷新 87（Finding 832）
+
+- **Round 523-525 追加 + 490 连发**（行会页完整入档）。
+- 落盘：`handoff-refresh-87-evidence.json`（F832）+ RESEARCH_LOG Round 526。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会页完整；下一弧：剩余深层角落/模拟器 polish）。
