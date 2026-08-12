@@ -8286,3 +8286,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 526-528（F833-F834：任务窗口绘制体 + 任务窗口闭合）；基线 Round 525=720d442 → Round 528=7041814（**493 连发 F335-F834**）。
 - 落盘：handoff-refresh-88-evidence.json（F835，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 529。
+## Round 530 (F836) — 2026-08-12：坐骑旗标写者
+
+- **〔坐骑〕**0x41F580 recv1 怪物家族分派器（0x2D-0x35、jt 0x421E8C）：**0x41F597 坐骑/外观消息**（位置字 [0x7DA061]/[0x7DA063] + **旗标 dword [0x7DA060] + [0x7DA064]** → 0x40F420 坐骑 + 0x44BC30 装备重置）；0x41F666 使用坐骑态（0x7DA060 → 0x40F420）——**F773 坐骑门写者解析**（F571 怪物家族扩展）。
+- 落盘：mount-flag-writers-evidence.json（F836，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 530。

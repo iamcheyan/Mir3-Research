@@ -1,0 +1,36 @@
+{
+  "evidence_id": "mount-flag-writers-2026-08-12-f836",
+  "title": "Round 530 (F836): Mount flag writers - 0x41F580 recv1 monster-family dispatcher (0x2D-0x35, jt 0x421E8C): 0x41F597 mount/appearance msg (pos words [0x7DA061]/[0x7DA063] + flag dword [0x7DA060] + [0x7DA064] -> 0x40F420 mount + 0x44BC30 equip reset); 0x41F666 use-mount state (0x7DA060 -> 0x40F420) - F773 mount gate writers RESOLVED (F571 monster family extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the mount flag writers.",
+  "question": "Who writes the mount flag [0x7DA060]?",
+  "method": "Disasm 0x41F580-0x41F680.",
+  "scope": "0x41F580-0x41F680; flag [0x7DA060].",
+  "cell_analysis": {
+    "0x41F580": "recv1 monster dispatcher jt 0x421E8C",
+    "0x41F597": "mount msg: [0x7DA061]/[0x7DA063] + [0x7DA060] -> 0x40F420 + 0x44BC30",
+    "0x41F666": "use-mount: [0x7DA060] -> 0x40F420"
+  },
+  "exe_trace": {
+    "mount_chain": "recv1 msg -> flag [0x7DA060] -> 0x40F420 -> equip reset"
+  },
+  "audit_vs_exe": {
+    "F773": "mount gate reader", "F571": "recv1 family", "F665": "sound map"
+  },
+  "contrast": {
+    "mount_msg_vs_use": "appearance + use",
+    "flag_vs_pos": "[0x7DA060] + coords"
+  },
+  "verdict": "Mount flag writers PRIMARY-verified: recv1 mount msg + use state; F773 gate writers resolved.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Mount writers decoded from .text.",
+  "cross_refs": ["F773: mount", "F571: recv1", "F545: commands"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41F597+0x10; 0x41F666+0x10",
+  "notes": [
+    "flag [0x7DA060] + [0x7DA064]",
+    "mount 0x40F420",
+    "equip reset 0x44BC30",
+    "recv1 jt 0x421E8C"
+  ]
+}
