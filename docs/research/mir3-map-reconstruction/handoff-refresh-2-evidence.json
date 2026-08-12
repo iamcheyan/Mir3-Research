@@ -1,0 +1,32 @@
+{
+  "evidence_id": "handoff-refresh-2-2026-08-12-f525",
+  "title": "Round 219 (F525): HANDOFF refreshed (Round 195-218, F500-F524) - MIR3_UI_RECONSTRUCTION_HANDOFF.md appended: server full decode (F501-F512: monster/stditem/magic KR + MiniMap binding + Envir complete), spell variants + sim/packet layers (F507-F524: 9 handler classes, MonMagic blocks, 34 outbound + 349 inbound + monster state machine); baseline Round 194=204c6f4 -> Round 218=be1b382 (183 consecutive F335-F524)",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with F500-F524 findings.",
+  "question": "Is the HANDOFF up to date with 183 shipping rounds?",
+  "method": "Append Round 195-218 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "appended": {"F501-F512": "server DB trio KR decode + MiniMap binding + Envir complete", "F507-F524": "spell variants + sim/packet layers", "baseline": "Round 194=204c6f4 -> 218=be1b382 (183 rounds)"},
+    "coverage": "HANDOFF now spans F335-F524 (183 rounds)"
+  },
+  "exe_trace": {
+    "handoff": "agent prompt references HANDOFF file"
+  },
+  "audit_vs_exe": {
+    "F194": "prior handoff refresh", "F115": "first"
+  },
+  "contrast": {
+    "before_vs_after": "handoff covered F335-F499; now F335-F524"
+  },
+  "verdict": "HANDOFF refreshed: F500-F524 appended, baseline updated to be1b382 (183 consecutive shipping rounds).",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Document update; content from F500-F524 evidence.",
+  "cross_refs": ["F194: prior handoff", "F500-F524: arcs"],
+  "tool": "python append to HANDOFF.md",
+  "reproduce": "tail MIR3_UI_RECONSTRUCTION_HANDOFF.md",
+  "notes": [
+    "handoff now covers full F335-F524 scope",
+    "next arcs: sim edge polish, deep UI corners, ongoing verification"
+  ]
+}

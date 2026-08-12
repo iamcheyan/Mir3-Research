@@ -6854,3 +6854,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 89dc1b1（**183 连发已推**）。
 - **〔包图〕**出站 34 msgid（F514/F516）+ 入站 349 槽两表（F517/F518，语义 F520/F521）+ 怪物 0xBC6-0xBD8 状态机（F523）——**完整客户端-服务端协议层文档化**。
 - 落盘：packet-layer-closure-evidence.json（F524，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 218。
+## Round 219 (F525) — 2026-08-12：HANDOFF 刷新 2（F500-F524 追加）
+
+- **〔追加〕**HANDOFF 补 Round 195-218（服务端全解码 F501-F512 + 法术变体/模拟器/包层 F507-F524）；基线 Round 194=204c6f4 → **Round 218=be1b382（183 连发 F335-F524）**。
+- 落盘：handoff-refresh-2-evidence.json（F525，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 219。
