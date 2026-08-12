@@ -1,0 +1,36 @@
+{
+  "evidence_id": "options-config-load-full-2026-08-12-f978",
+  "title": "Round 672 (F978): Options config load FULL (F788) - 0x441CC0: 6x GetPrivateProfileString (0x47613C, Mir3.ini 0x47A2B8, keys 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570) + atoi 0x4681F9 -> [0x58] BGM flag + 0x8AB14C SFX vol + [0x54] SFX flag + 0x8AB150 BGM vol (clamp) + sliders [0x74]/[0x6C] (0x476968 mult) + [0x5C] + audio apply 0x45B1B0/0x45B1C0/0x45B410/0x45B3D0 (0x8AB130) - config load COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the full options config load.",
+  "question": "How does the client load Mir3.ini options?",
+  "method": "Disasm 0x441CC0-0x441F12.",
+  "scope": "0x441CC0-0x441F12; config.",
+  "cell_analysis": {
+    "0x441CC0": "6 keys + atoi + audio apply",
+    "keys": "0x47C5AC..0x47C570",
+    "targets": "[0x58]/[0x54]/[0x6C]/[0x74]/[0x5C] + 0x8AB150/0x8AB14C"
+  },
+  "exe_trace": {
+    "config_chain": "GetPrivateProfileString -> atoi -> apply"
+  },
+  "audit_vs_exe": {
+    "F788": "config load", "F776": "sliders"
+  },
+  "contrast": {
+    "keys": "6 INI keys",
+    "audio": "0x45B1B0/0x45B410"
+  },
+  "verdict": "Options config load FULL PRIMARY-verified: 6 keys + audio apply; F788 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Config load decoded from .text.",
+  "cross_refs": ["F788: config", "F776: sliders"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x441CC0+0x20",
+  "notes": [
+    "6 INI keys",
+    "atoi 0x4681F9",
+    "vol 0x8AB150/0x8AB14C",
+    "audio 0x45B1B0"
+  ]
+}

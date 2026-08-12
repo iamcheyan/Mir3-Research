@@ -8902,3 +8902,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 668-670（F975-F976：公告编辑器输入 + 编辑器闭合/600 证据里程碑）；基线 Round 667=8f8dcce → Round 670=ede234f（**635 连发 F335-F976**）。
 - 落盘：handoff-refresh-137-evidence.json（F977，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 671。
+## Round 672 (F978) — 2026-08-12：选项配置装载全量（F788）
+
+- **〔选项〕**0x441CC0：**6 个 GetPrivateProfileString**（0x47613C，Mir3.ini 0x47A2B8，键 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570）+ atoi 0x4681F9 → [0x58] BGM 旗标 + 0x8AB14C SFX 音量 + [0x54] SFX 旗标 + 0x8AB150 BGM 音量（钳制）+ 滑块 [0x74]/[0x6C]（0x476968）+ [0x5C] + 音频应用 0x45B1B0/0x45B1C0/0x45B410/0x45B3D0（0x8AB130）——配置装载完整。
+- 落盘：options-config-load-full-evidence.json（F978，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 672。

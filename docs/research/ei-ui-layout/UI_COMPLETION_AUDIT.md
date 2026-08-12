@@ -4105,3 +4105,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（全部窗口 + 编辑器 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 672 (2026-08-12) — 选项配置装载全量（Finding 978）
+
+- **6 键 + 音频应用**（配置装载完整）。
+- 落盘：`options-config-load-full-evidence.json`（F978）+ RESEARCH_LOG Round 672。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（配置装载完整；下一弧：剩余深层角落）。
