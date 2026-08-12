@@ -8693,3 +8693,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 620-622（F927-F928：选项开关/点击 + 选项输入闭合）；基线 Round 619=6013609 → Round 622=ee43e3a（**587 连发 F335-F928**）。
 - 落盘：handoff-refresh-121-evidence.json（F929，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 623。
+## Round 624 (F930) — 2026-08-12：状态窗口构造 + 刷新（F897 依赖）
+
+- **〔状态〕**0x450B70 状态点击（1 控件 vtable[8] @ +0x54）；0x450BC0 **状态构造**（vtable 0x476AF0 + 单例 [0x8B1B08] + 色 0xFF00FF + 字体 0x476068）；0x450C10 析构（字体 free + 0x47625C）；0x450C40 vtable[0] 分派；0x450C70 **刷新**（0x46805C/0x468056/0x468050）——状态窗口完整（F758/F870 用）。
+- 落盘：status-window-ctor-refresh-evidence.json（F930，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 624。
