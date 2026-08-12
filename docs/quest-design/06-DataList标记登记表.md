@@ -275,7 +275,7 @@ flowchart LR
 | 副线计数（DataValue） | M3S_COUNT_DAILY、WEEKLY、BOSS、ELEMENT、ABSOLVE、TRIAL | 6 |
 | **v2 小计** | | **54 ＋ 动态** |
 | 三值体系（DataValue，v3） | M3_VIRTUE、M3_BOND、M3_WRATH（§9.1） | 3 |
-| 两难抉择（DataList，v3） | DILEMMA_DAGGER/SCROLL/SNAKEKING/BONEPOWDER/JADE/ROBE/TREASURE/CANYON/SACRIFICE/STELE/GUARDIAN/TABLET/SCRIBE/TULAN/PURIFY/PASS/HORN/OLDMINER/COMPANION/ROSTER/PENDANT（§9.2） | 21 |
+| 两难抉择（DataList，v3） | DILEMMA_DAGGER/SCROLL/SNAKEKING/BONEPOWDER/JADE/ROBE/TREASURE/CANYON/SACRIFICE/STELE/GUARDIAN/TABLET/SCRIBE/TULAN/PURIFY/PASS/HORN/OLDMINER/COMPANION/ROSTER/PENDANT（21）＋觉醒 BLOODOATH/BEAST/SOUL/BLOODPRICE/TIGER/THUNDER（6）＝27（§9.2） | 27 |
 | 副线小抉择（DataValue，v3） | M3S_CHOICE_*（§9.3） | 12 |
 | NPC 好感（DataValue，v3） | M3_FAVOR_<NPC>（§9.4） | 30 |
 | 纪念物（DataList，v3） | M3_MEMENTO_*（§9.5） | 13 |
@@ -283,8 +283,8 @@ flowchart LR
 | 称号（DataList，v3） | M3_TITLE_*（§9.7） | 12 |
 | 伏笔驱动（DataList，v3） | M3_FORESIGHT_*（§9.8） | 4 |
 | 多人计数（DataValue，v3） | M3P_COUNT_*（§9.9） | 6 |
-| **v3 小计** | | **111** |
-| **总计** | | **165 ＋ 动态** |
+| **v3 小计** | | **117** |
+| **总计** | | **171 ＋ 动态** |
 
 ---
 
@@ -332,6 +332,17 @@ flowchart LR
 | DILEMMA_COMPANION | 终章·带谁上船 | M3M_EPF_OPEN 抉择页（带故人/独行） | 结局差分（故人命运线） | 带→羁绊+2 差分；独行→标准结局 |
 | DILEMMA_ROSTER | 终章·名册页 | M3M_EPF_LOG 抉择页（找回/不找） | 老矿工身份回收（F45） | 找回→善缘+羁绊+情感核弹；不找→留白 |
 | DILEMMA_PENDANT | 终章·吊坠保魂 | M3M_EPF_TRUTH 抉择页（保万事通魂/自用） | 结局告别台词（T14） | 保→吊坠碎+完整告别；自用→告别缺半句 |
+
+**觉醒两难标记（v3 补登，04 号 §8.1 使用，6 个）**
+
+| 分类名 | 含义 | 写入点（任务/抉择页） | 检查点 | 代价/反映 |
+|--------|------|----------------------|--------|----------|
+| DILEMMA_BLOODOATH | 战士·破血狂杀血誓（己血/敌血） | M3K_WAR_FINAL_C7 抉择页 | 关铁山亲传加成；NPC 态度 | 己血→善缘+1（HP 上限 -2%）；敌血→煞气+1 |
+| DILEMMA_BEAST | 道士·召唤神兽（救幼崽/强契） | M3K_TAO_BEAST_C4 抉择页 | 召唤攻击加成 | 救→羁绊+2（召唤 +10%）；强契→煞气+1（强度 -5%） |
+| DILEMMA_SOUL | 法师·凝血离魂魂契（己魂/取魂） | M3K_MAG_SOULBIND_C8 抉择页 | 万事通台词；终章救赎判定 | 己魂→善缘+1（MP 上限 -2%）；取魂→煞气+2（反噬 +） |
+| DILEMMA_BLOODPRICE | 道士·回生术血偿（己血/引渡邪魂） | M3K_TAO_REVIVE_C4 抉择页 | 回生术成功率 | 己血→善缘+2（HP 上限 -2%）；引渡→煞气+1（成功率 -5%） |
+| DILEMMA_TIGER | 道士·猛虎强势（放归/收宠） | M3K_TAO_TIGER_C5 抉择页 | 虎灵报恩；战宠加成 | 放归→善缘+1（年礼）；收宠→战宠 +5% |
+| DILEMMA_THUNDER | 法师·怒神霹雳（护村/淬体） | M3K_MAG_THUNDER_C7 抉择页 | 村庄香火礼 | 护村→善缘+1（每日香火）；淬体→进度快 |
 
 ### 9.3 副线小抉择（DataValue，v3，12 个）
 
