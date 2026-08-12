@@ -1,0 +1,36 @@
+{
+  "evidence_id": "party-member-ctor-frame-2026-08-12-f917",
+  "title": "Round 611 (F917): Party member ctor + frame draw (F752 deps) - 0x423CA0 MEMBER ctor (SetRect [0x8]/[0x18] + zeros [0x4..0x48], F752 dep); 0x423CF0 vtable[1] dispatch; 0x423D00 member FRAME draw (frame [0x2C] blit 0x460240 @ [0x8]/[0xC] + scale floats) - party member render COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the party member ctor + frame draw.",
+  "question": "How do party members construct + render?",
+  "method": "Disasm 0x423CA0-0x423DC1.",
+  "scope": "0x423CA0-0x423DC1; member.",
+  "cell_analysis": {
+    "0x423CA0": "ctor: rects + zeros",
+    "0x423CF0": "vtable[1] dispatch",
+    "0x423D00": "draw: frame [0x2C] blit + scale"
+  },
+  "exe_trace": {
+    "member_chain": "ctor -> vtable -> frame draw"
+  },
+  "audit_vs_exe": {
+    "F752": "party", "F845": "click", "F692": "frame"
+  },
+  "contrast": {
+    "ctor_vs_draw": "init + blit",
+    "frame_vs_scale": "[0x2C] + floats"
+  },
+  "verdict": "Party member ctor + frame draw PRIMARY-verified: ctor + vtable + render; F752 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Party member decoded from .text.",
+  "cross_refs": ["F752: party", "F845: click", "F692: frame"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423CA0+0x10; 0x423D00+0x10",
+  "notes": [
+    "ctor rects",
+    "vtable[1]",
+    "frame [0x2C]",
+    "scale floats"
+  ]
+}

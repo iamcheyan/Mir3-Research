@@ -8637,3 +8637,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 607-609（F914-F915：对话窗口绘制/开启 + 对话全闭合）；基线 Round 606=0915bf9 → Round 609=7556d36（**574 连发 F335-F915**）。
 - 落盘：handoff-refresh-116-evidence.json（F916，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 610。
+## Round 611 (F917) — 2026-08-12：组队成员构造 + 帧绘制（F752 依赖）
+
+- **〔组队〕**0x423CA0 **成员构造**（SetRect [0x8]/[0x18] + 清零 [0x4..0x48]）；0x423CF0 vtable[1] 分派；0x423D00 **成员帧绘制**（帧 [0x2C] blit 0x460240 @ [0x8]/[0xC] + 缩放浮点）——组队成员渲染完整。
+- 落盘：party-member-ctor-frame-evidence.json（F917，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 611。

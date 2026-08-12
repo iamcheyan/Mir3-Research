@@ -3617,3 +3617,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 611 (2026-08-12) — 组队成员构造 + 帧绘制（Finding 917）
+
+- **ctor + vtable + 帧 blit**（组队成员完整）。
+- 落盘：`party-member-ctor-frame-evidence.json`（F917）+ RESEARCH_LOG Round 611。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队成员完整；下一弧：剩余深层角落）。
