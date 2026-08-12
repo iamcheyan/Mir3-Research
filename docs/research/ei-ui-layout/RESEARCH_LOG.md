@@ -8889,3 +8889,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 665-667（F972-F973：坐骑窗口输入/构造 + 坐骑窗口闭合）；基线 Round 664=8ef379d → Round 667=8f8dcce（**632 连发 F335-F973**）。
 - 落盘：handoff-refresh-136-evidence.json（F974，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 668。
+## Round 669 (F975) — 2026-08-12：公告编辑器输入（F770 依赖）
+
+- **〔编辑器〕**0x43E3C0 编辑器输入/渲染（GDI 文本 0x45DD70 0x323232/0x96C8FF + 2 按钮 0x417830 @ +0x54/+0x108 + vtable[4] 刷新）；0x43E4B0 **按键/GetWindowText**（0x1F40 栈分配 + GetWindowText 0x476304 len 0xFA0 [0x1CC] + 解析 0x468BF0 + 发送行 0x47C4A4）——编辑器输入完整（F770 发送依赖）。
+- 落盘：announcement-editor-input-evidence.json（F975，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 669。

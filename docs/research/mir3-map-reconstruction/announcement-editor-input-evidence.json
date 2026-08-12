@@ -1,0 +1,35 @@
+{
+  "evidence_id": "announcement-editor-input-2026-08-12-f975",
+  "title": "Round 669 (F975): Announcement editor input (F770 dep) - 0x43E3C0 editor input/render (GDI text 0x45DD70 0x323232/0x96C8FF + 2 buttons 0x417830 @ +0x54/+0x108 + vtable[4] refresh); 0x43E4B0 editor KEY/GetWindowText (0x1F40 stack alloc + GetWindowText 0x476304 len 0xFA0 [0x1CC] + parse 0x468BF0 + send line 0x47C4A4) - editor input COMPLETE (F770 send dep)",
+  "date": "2026-08-12",
+  "objective": "Decode the announcement editor input.",
+  "question": "How does the guild announcement editor input work?",
+  "method": "Disasm 0x43E3C0-0x43E4B0.",
+  "scope": "0x43E3C0-0x43E4B0; input.",
+  "cell_analysis": {
+    "0x43E3C0": "input/render text + 2 buttons",
+    "0x43E4B0": "key GetWindowText 0x476304 + parse"
+  },
+  "exe_trace": {
+    "editor_chain": "render -> key -> GetWindowText -> send"
+  },
+  "audit_vs_exe": {
+    "F770": "editor send", "F558": "registry"
+  },
+  "contrast": {
+    "render_vs_key": "GDI + input",
+    "send": "0x47C4A4"
+  },
+  "verdict": "Announcement editor input PRIMARY-verified: render + key + GetWindowText; F770 send dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Editor input decoded from .text.",
+  "cross_refs": ["F770: editor", "F558: registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43E3C0+0x20; 0x43E4B0+0x20",
+  "notes": [
+    "GDI 0x45DD70",
+    "2 buttons +0x54/+0x108",
+    "GetWindowText 0x476304",
+    "send 0x47C4A4"
+  ]
+}
