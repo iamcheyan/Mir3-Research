@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-85-2026-08-12-f826",
+  "title": "Round 520 (F826): HANDOFF refresh 85 - Rounds 517-519 (F823-F825: HANDOFF 84, shop click dispatch, shop interactive closure), baseline Round 516=ef83484 -> Round 519=a41f88a (484 consecutive F335-F825), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 517-519.",
+  "question": "What changed since HANDOFF refresh 84?",
+  "method": "Append Round 517-519 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 517-519 appended (3 rounds, F823-F825)",
+    "baseline": "Round 516=ef83484 -> Round 519=a41f88a (484 consecutive F335-F825)",
+    "arcs": {"dispatch": "F824 shop click", "closure": "F825 shop interactive"},
+    "key": "shop fully interactive"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F823": "refresh 84 baseline -> now refresh 85", "F335-F825": "484 rounds"
+  },
+  "contrast": {
+    "refresh_84_vs_85": "F824-F825 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 85 (F826): Rounds 517-519 documented (shop interactive complete), baseline ef83484 -> a41f88a, 484 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F824-F825 evidence.",
+  "cross_refs": ["F823: refresh 84", "F825: shop closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 517-519 section to HANDOFF",
+  "notes": [
+    "484 consecutive shipping rounds F335-F825",
+    "next: remaining deep corners, sim polish"
+  ]
+}

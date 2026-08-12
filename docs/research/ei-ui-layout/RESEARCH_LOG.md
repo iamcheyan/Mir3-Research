@@ -8243,3 +8243,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**449 证据 JSON**；三服务 200；master 04febcf（**483 连发 F335-F824 已推**）。
 - **〔弧〕**商店管理/命中（F661）+ 点击处理（F740）+ 点击分派（F824）——**商店窗口完整**（购买 0x3EA + 卖/修 + 退出 0x3E8 + 取消 + 物品列表 + 确认命中），模式 2 全交互。
 - 落盘：shop-interactive-closure-evidence.json（F825，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 519。
+## Round 520 (F826) — 2026-08-12：HANDOFF 刷新 85（Round 517-519）
+
+- **〔刷新〕**HANDOFF 追加 Round 517-519（F824-F825：商店点击分派 + 商店交互闭合）；基线 Round 516=ef83484 → Round 519=a41f88a（**484 连发 F335-F825**）。
+- 落盘：handoff-refresh-85-evidence.json（F826，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 520。

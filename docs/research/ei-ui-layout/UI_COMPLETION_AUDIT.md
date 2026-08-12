@@ -2889,3 +2889,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店全交互；下一弧：HANDOFF 刷新 85/剩余角落）。
+## Round 520 (2026-08-12) — HANDOFF 刷新 85（Finding 826）
+
+- **Round 517-519 追加 + 484 连发**（商店全交互入档）。
+- 落盘：`handoff-refresh-85-evidence.json`（F826）+ RESEARCH_LOG Round 520。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店全交互；下一弧：剩余深层角落/模拟器 polish）。
