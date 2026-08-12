@@ -3545,3 +3545,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（表面全面闭合；下一弧：剩余深层角落/模拟器 polish）。
+## Round 602 (2026-08-12) — 交易槽查找 + 添加（Finding 908）
+
+- **名称查找 + 添加/写入**（F557 尾部完整）。
+- 落盘：`trade-slot-lookup-add-evidence.json`（F908）+ RESEARCH_LOG Round 602。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（交易槽操作完整；下一弧：剩余深层角落）。

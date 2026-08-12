@@ -8598,3 +8598,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 599-600（F906：Round 600 里程碑）；基线 Round 598=7f068bf → Round 600=d3d9827（**565 连发 F335-F906**）。
 - 落盘：handoff-refresh-113-evidence.json（F907，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 601。
+## Round 602 (F908) — 2026-08-12：交易槽查找 + 添加（F557 尾部）
+
+- **〔交易〕**0x416150 **槽查找按物品**（组 idx×0x9210 + [0x601] 名称比较、12 槽）→ 0x4160E0 **移除**；0x4161F0 **物品添加**（0x4162E0 放置 + 0x4162A0 找空闲 + 0x416490 槽写入 + 0x403AC0 物品构造）——交易槽操作完整（F557/F749 用）。
+- 落盘：trade-slot-lookup-add-evidence.json（F908，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 602。

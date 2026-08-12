@@ -1,0 +1,35 @@
+{
+  "evidence_id": "trade-slot-lookup-add-2026-08-12-f908",
+  "title": "Round 602 (F908): Trade slot lookup + add (F557 tail) - 0x416150 slot LOOKUP by item (group idx*0x9210 + [0x601] name compare, 12 slots) -> 0x4160E0 REMOVE; 0x4161F0 item ADD (0x4162E0 place + 0x4162A0 find-free + 0x416490 slot write + 0x403AC0 item ctor) - trade slot ops COMPLETE (F557/F749 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade slot lookup + add.",
+  "question": "How do trade slots look up + add items?",
+  "method": "Disasm 0x416150-0x41628F.",
+  "scope": "0x416150-0x41628F; slots.",
+  "cell_analysis": {
+    "0x416150": "lookup: idx*0x9210 + [0x601] name -> 0x4160E0 remove",
+    "0x4161F0": "add: 0x4162E0 + 0x4162A0 + 0x416490 + 0x403AC0"
+  },
+  "exe_trace": {
+    "trade_chain": "lookup -> remove | add -> write"
+  },
+  "audit_vs_exe": {
+    "F557": "trade family", "F749": "slot layout", "F692": "item ctor"
+  },
+  "contrast": {
+    "lookup_vs_add": "name match + insert",
+    "remove_vs_write": "0x4160E0 + 0x416490"
+  },
+  "verdict": "Trade slot lookup + add PRIMARY-verified: lookup/remove + add/write; F557 tail complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Trade ops decoded from .text.",
+  "cross_refs": ["F557: trade", "F749: layout", "F692: item"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x416150+0x10; 0x4161F0+0x10",
+  "notes": [
+    "name compare [0x601]",
+    "12 slot scan",
+    "add via 0x416490",
+    "item ctor 0x403AC0"
+  ]
+}
