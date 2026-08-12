@@ -1,0 +1,53 @@
+{
+  "evidence_id": "store-window-content-verification-2026-08-12-f363",
+  "title": "Round 57 (F363): Store window content verification - mode chain (0=BUY 0x44F480 / 1=SELL / 2=仓库 0x44F940 / 3=CRAFT 0x44FB00 / 4=detail, state byte +0x5F8) + sim store grid (5-row buy list, warehouse 12-cell +0x720, mode label browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the store window (id2) content: mode state chain (F289), grid layouts per mode, and the simulator's store rendering.",
+  "question": "How does the original store window switch modes and grids, and does the sim match?",
+  "method": "Cross-validated against F289 (store states 0-4, msg chains), F245 (store grid), F340 (store ctor 0x44D310); sim app.js verification; browser check.",
+  "scope": "F289/F245/F340 evidence; sim window.store-candidate fill; browser 8765/sim.",
+  "cell_analysis": {
+    "store_modes_F289": {
+      "0": "BUY (msg 0x285 -> 0x41F92B -> 0x44F480, primary-static)",
+      "1": "SELL (server @NPC_Sell + Merchant.txt, secondary)",
+      "2": "仓库 warehouse (msg 0x2BC -> 0x42042B -> 0x420A9B -> 0x44F940, primary-static)",
+      "3": "CRAFT (msg 0x2C8 -> 0x44FB00, frame 1002, primary-static; errors 0x47B620/0x47B634 돈이 부족합니다/0x47B648/0x47B660 아이템이 잘 만들어 졌습니다)",
+      "4": "item detail (primary-static)",
+      "state_byte": "[esi+0x5F8]"
+    },
+    "store_ctor_F340": {
+      "controls": "8 x 0x417550 (frames 0x3F2-0x3F9) + gauge 0x417960 @ +0x5FC + 26 slots +0x660 stride 0x24",
+      "paint": "0x44E260 mode byte dual layout",
+      "mouse": "0x44E650 mode 1/2 -> 0x44E800 hit-test -> 0x4341F0 tooltip"
+    },
+    "sim_store": {
+      "grid": "state0/3/4 = 5-row buy list (rowsY 40/86/132/178/224); state2 = warehouse 12-cell grid (cols 22/60/98/136 x rows 43/81/119, +0x720)",
+      "label": "STORE_STATE_NAMES per mode (evidence chains)",
+      "browser": "store opens state0 购买, 10 slots, label '购买 (state0 · msg 0x285 → 0x41F92B → 0x44F480, primary-static)'"
+    }
+  },
+  "exe_trace": {
+    "store_window": "hero+0x33188 (id2, frame 1000 300x304, default hidden)",
+    "mode_handlers": "0x44F480 (buy) / 0x44F940 (warehouse) / 0x44FB00 (craft) - F289"
+  },
+  "audit_vs_exe": {
+    "F289": "5 store states + msg chains confirmed",
+    "F340": "store ctor 8 controls + 26 slots confirmed",
+    "F245": "warehouse grid +0x720 confirmed"
+  },
+  "contrast": {
+    "buy_vs_warehouse": "buy = 5-row list (state0/3/4); warehouse = 12-cell grid +0x720 (state2) - different layouts per mode",
+    "sim_vs_original": "sim grid geometry candidate (store window origin 0,0); modes evidence-labeled"
+  },
+  "verdict": "Store window verified (primary-bytes via F289/F340/F245): 5 modes (BUY/SELL/仓库/CRAFT/detail) with msg chains, 8 controls + 26 slots (F340), mode byte +0x5F8. Sim store grid + mode labels browser-verified.",
+  "evidence_level": "derived-tooling (source evidence primary-static F289/F340/F245)",
+  "evidence_level_note": "Store modes/geometry from primary evidence; sim grid placement candidate (store at 0,0).",
+  "cross_refs": ["F289: store states", "F340: store family 0x44D310", "F245: store grid", "F288: bag modes contrast"],
+  "tool": "app.js inspection; puppeteer browser",
+  "reproduce": "open sim; login; open store; cycle modes; observe grids + labels",
+  "notes": [
+    "store opens via NPC dialog (购买物品/存取仓库 options, 0x417550 click)",
+    "CRAFT error strings cp949 (F289)",
+    "store 26 slots +0x660 stride 0x24 (F340) vs warehouse 12-cell +0x720 (F245) - two grids"
+  ]
+}

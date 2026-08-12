@@ -5980,3 +5980,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F324〕**ctor 0x440FE0（base frame 750 + 11× 0x417550 子控件 +0x7C 起；config load 0x441CC0/save 0x441B30；restore 0x441226-0x44137C；open 0x4414F0）；**Config.ini [Options]**：배경음→BGM→+0x54、효과음→EffectSound→+0x58、주변효과음→Ambience→+0x5C（**visual-only 死开关**：无音频引擎引用、save 回写 load 值）、그림자→ShadowBlend→+0x60；**BGM 音量滑块** → [0x8AB130+0x20] → 0x45A4A0 put_Volume（F334）。
 - **〔模拟器〕**4 行（音乐/音效/环境声/阴影混合 y43/116/190/217）+ 滑块 751 @ (34,96)/(34,170)；帧对 760/761 ON 켬、762/763 OFF 끔（F289/F297 像素验证）。
 - 落盘：`option-window-verification-evidence.json`（F362，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 56。
+
+## Round 57 (F363) — 2026-08-12：商店窗口内容验证（F289 模式链 + 网格布局 + 模拟器）
+
+- **〔F289 模式〕**0=BUY（msg 0x285→0x41F92B→0x44F480）/ 1=SELL / 2=仓库（0x2BC→0x42042B→0x44F940）/ 3=CRAFT（0x2C8→0x44FB00，错误 돈이 부족합니다 0x47B634 / 아이템이 잘 만들어 졌습니다 0x47B660）/ 4=详情；状态字节 [0x5F8]。
+- **〔F340 ctor〕**8 控件（0x3F2-0x3F9）+ gauge + 26 槽 +0x660 stride 0x24；paint 0x44E260 mode 双布局；mouse 0x44E650。
+- **〔模拟器〕**state0/3/4 = 5 行购买列表（y 40/86/132/178/224）；state2 = 仓库 12 格（+0x720）；模式标签带证据链。**浏览器验证**：开商店 state0 购买 10 槽。
+- 落盘：`store-window-content-verification-evidence.json`（F363，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 57。
