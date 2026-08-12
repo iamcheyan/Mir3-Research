@@ -1,0 +1,36 @@
+{
+  "evidence_id": "intro-splash-state-machine-2026-08-12-f607",
+  "title": "Round 301 (F607): Intro/splash state machine - 0x402BE0 (F336-adjacent stage [0x8A4] 3-way: 0->0x402D50, 1->0x4031A0, 2->0x403560) + 0x402C40 sub-stage [0x8A5]: 0 = Interface1c frame 0x3C blit (0x45FD50 0x8AB7A8) + 0x45C900 load [0x6F4]; 1 = wemade.dat splash (0x45BE20) + [0x8A5]=2; 2 = chat show 0x403640 (F585) + audio 0x45BF30 (0x9135C0 dtor + 0x8AB7B8, fmt 0x47AAD0) + rect SetRect(0x740, 0, 0x3C, 0x280, 0x1A4) + 0x45C4C0; main intro paint 0x402D50 = gradient 0x466800 + fill 0x45E570 0x646464 + 4 controls walk [0xA68] stride 0xB4 - intro splash chain byte-level (F585/F536 connect)",
+  "date": "2026-08-12",
+  "objective": "Decode the intro/splash state machine.",
+  "question": "How does the intro sequence work?",
+  "method": "Disasm 0x402BE0 + 0x402C40 + 0x402D50.",
+  "scope": "0x402BE0-0x402D50; stages [0x8A4]/[0x8A5].",
+  "cell_analysis": {
+    "0x402BE0": "stage [0x8A4] 3-way: 0->0x402D50, 1->0x4031A0, 2->0x403560 + 0x4182A0 screen [0x8A8]/[0x8AC]",
+    "0x402C40": {"sub0": "Interface1c frame 0x3C blit (0x45FD50) + 0x45C900 load [0x6F4]", "sub1": "wemade.dat splash 0x45BE20 + [0x8A5]=2", "sub2": "chat show 0x403640 (F585) + audio 0x45BF30 (0x9135C0 + 0x8AB7B8, fmt 0x47AAD0) + rect 0x740/0x3C/0x280/0x1A4 + 0x45C4C0"},
+    "0x402D50": "intro paint: gradient 0x466800 + fill 0x45E570 0x646464 + 4 controls [0xA68] stride 0xB4"
+  },
+  "exe_trace": {
+    "intro_chain": "launch -> 0x402BE0 stage -> sub-stage (Interface1c/wemade splash) -> chat + audio -> 0x402D50 paint"
+  },
+  "audit_vs_exe": {
+    "F585": "chat show 0x403640 connect", "F336": "stage family", "F588": "gradient family shared"
+  },
+  "contrast": {
+    "stage_vs_substage": "[0x8A4] main vs [0x8A5] sub-stage",
+    "splash_vs_interface": "wemade.dat vs Interface1c frames"
+  },
+  "verdict": "Intro/splash state machine PRIMARY-verified: 3-stage + 3-sub-stage chain (Interface1c/wemade splash/chat+audio) + intro paint; F585/F336 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Intro machine decoded from .text.",
+  "cross_refs": ["F585: chat show", "F336: stages", "F588: gradient"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x402BE0+0x20; 0x402C40+0x40",
+  "notes": [
+    "frame 0x3C = Interface1c splash",
+    "wemade.dat = studio logo splash",
+    "audio init fmt 0x47AAD0",
+    "intro rect 0x740/0x3C/0x280/0x1A4"
+  ]
+}
