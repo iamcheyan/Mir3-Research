@@ -8515,3 +8515,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔小地图〕**0x429630：缩放帧 [0xD40] ±0xA 钳制 0..0x2E（模式 [0xD42] 1 放大/2 缩小）+ 帧 0x33 blit（0x460240 @ 0x113/0x1DE-缩放）+ **6 热键物品图标**（0x430A40、位置表 [0xD44] stride 0x10、记录 +0xDA8 stride 0xC24）——小地图/热键部件完整（F584/F581 用）。
 - 落盘：mini-map-widget-evidence.json（F888，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 582。
+## Round 583 (F889) — 2026-08-12：小地图闭合（F584/F581/F888 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**513 证据 JSON**；三服务 200；master 8e7f596（**547 连发 F335-F888 已推**）。
+- **〔弧〕**小地图（F584）+ 热键栏（F581）+ 部件（F888）——**小地图完整**（缩放钳制 + 帧 blit + 6 热键图标），HUD 部件表面闭合。
+- 落盘：mini-map-closure-evidence.json（F889，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 583。
