@@ -8585,3 +8585,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**528 证据 JSON**；三服务 200；master 4a82be2（**562 连发 F335-F903 已推**）。
 - **〔弧〕**条注册表（F590）+ HUD 状态（F885）+ 地图覆盖层（F891）+ 注册表/blit（F903）——**HP 条系统完整**（注册表 类型<5 槽<0x8C + vtable 渲染 + 矩阵 + 消费者），条表面 100%。
 - 落盘：hp-bar-system-closure-evidence.json（F904，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 598。
+## Round 599 (F905) — 2026-08-12：HANDOFF 刷新 112（Round 596-598）
+
+- **〔刷新〕**HANDOFF 追加 Round 596-598（F903-F904：HP 条注册表/blit + HP 条系统闭合）；基线 Round 595=7b5435e → Round 598=7f068bf（**563 连发 F335-F904**）。
+- 落盘：handoff-refresh-112-evidence.json（F905，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 599。

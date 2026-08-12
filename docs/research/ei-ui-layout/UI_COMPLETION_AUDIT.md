@@ -3521,3 +3521,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HP 条完整；下一弧：HANDOFF 刷新 112/剩余角落）。
+## Round 599 (2026-08-12) — HANDOFF 刷新 112（Finding 905）
+
+- **Round 596-598 追加 + 563 连发**（HP 条完整入档）。
+- 落盘：`handoff-refresh-112-evidence.json`（F905）+ RESEARCH_LOG Round 599。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HP 条完整；下一弧：剩余深层角落/模拟器 polish）。
