@@ -8061,3 +8061,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**407 证据 JSON**；三服务 200；master 453c90f（**441 连发 F335-F782 已推**）。
 - **〔弧〕**文本帧协议（F572）+ 出站目录（F573）+ 攻击/交易发送器（F616）+ 发送器扩展（F782）——**出站发送器完整**（包头 0x452940 + 发送 0x451E60 + msg 0x3E9-0x40A/0x416-0x419/0x418/0x401-0x406 + 关闭泵 + 输入转发）。
 - 落盘：outbound-senders-final-closure-evidence.json（F783，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 477。
+## Round 478 (F784) — 2026-08-12：HANDOFF 刷新 71（Round 475-477）
+
+- **〔刷新〕**HANDOFF 追加 Round 475-477（F782-F783：发送器家族扩展 + 出站发送器最终闭合）；基线 Round 474=d753c98 → Round 477=213256b（**442 连发 F335-F783**）。
+- 落盘：handoff-refresh-71-evidence.json（F784，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 478。

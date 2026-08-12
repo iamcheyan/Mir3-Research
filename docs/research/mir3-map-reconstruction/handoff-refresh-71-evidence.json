@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-71-2026-08-12-f784",
+  "title": "Round 478 (F784): HANDOFF refresh 71 - Rounds 475-477 (F781-F783: HANDOFF 70 + 70-refresh milestone, sender family extension, outbound senders final closure), baseline Round 474=d753c98 -> Round 477=213256b (442 consecutive F335-F783), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 475-477.",
+  "question": "What changed since HANDOFF refresh 70?",
+  "method": "Append Round 475-477 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 475-477 appended (3 rounds, F781-F783)",
+    "baseline": "Round 474=d753c98 -> Round 477=213256b (442 consecutive F335-F783)",
+    "arcs": {"senders": "F782 extension", "closure": "F783 outbound"},
+    "key": "outbound senders complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F781": "refresh 70 baseline -> now refresh 71", "F335-F783": "442 rounds"
+  },
+  "contrast": {
+    "refresh_70_vs_71": "F782-F783 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 71 (F784): Rounds 475-477 documented (outbound senders complete), baseline d753c98 -> 213256b, 442 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F782-F783 evidence.",
+  "cross_refs": ["F781: refresh 70", "F783: senders closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 475-477 section to HANDOFF",
+  "notes": [
+    "442 consecutive shipping rounds F335-F783",
+    "next: remaining deep corners, sim polish"
+  ]
+}
