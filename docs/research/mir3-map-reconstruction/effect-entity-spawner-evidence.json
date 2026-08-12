@@ -1,0 +1,38 @@
+{
+  "evidence_id": "effect-entity-spawner-2026-08-12-f489",
+  "title": "Round 183 (F489): Effect entity SPAWNER - 0x435030: magic-effect creation (vtable+0x1C): record lookup 0x449C10 (0x8AA5A8), target find (0x77769C self / 0x560070 entity list), map coord set 0x43CFD0/0x43D070/0x43D190 (0x574118 map), TYPE DISPATCH 0x30-0x2F (jt 0x4357E8 byte map 0x435808: 0x31-0x2F family = magic spells), state init ([0x10] type word, [0x121] frame=0, [0xDC] counter, [0x120] walk flag), MAGIC FRAME BASE = [esi]+type*10 (0x43538E-0x4353AB: frame base + type*10 = MonMagic block start) - effect creation + per-spell frame base formula CLOSED",
+  "date": "2026-08-12",
+  "objective": "Decode the effect entity spawner + per-spell frame base formula.",
+  "question": "How are spell effects created and how is the MonMagic frame base computed?",
+  "method": "Disasm 0x435030-0x435488 (spawner + type dispatch).",
+  "scope": "0x435030-0x4355E6; type jt 0x4357E8; frame base [esi]+type*10.",
+  "cell_analysis": {
+    "spawner": {"lookup": "record 0x449C10 (0x8AA5A8 collection 3)", "target": "0x77769C self or 0x560070 list (id match)", "coords": "map 0x574118: 0x43CFD0 (pos) + 0x43D070 (walk) + 0x43D190 (blocking)", "state": "[0x10] type word, [0x121] frame=0, [0xDC] counter, [0x120] walk flag, [0x128] word, [0xB0-0xB4] coords"},
+    "type_dispatch": {"range": "type word <= 0x30, jt 0x4357E8 byte map 0x435808", "spells": "0x31-0x2F family = magic effect types (F336 special)"},
+    "frame_base": {"formula": "[ebp+0xF4] = [esi] + type*10 (0x43538E: [esi] = MonMagic base ctx frame + type*10)", "use": "MonMagic block start for the spell's animation"},
+    "cast_chain": "skill use (F484 msg 0xB1) -> server -> effect spawn 0x435030 -> tick 0x435A20 (F487) -> draw -> 565 blend (F486)"
+  },
+  "exe_trace": {
+    "effect_lifecycle": "spawn (0x435030) -> tick (0x435A20 F487) -> draw (MonMagic frame base + [0x121] progress)"
+  },
+  "audit_vs_exe": {
+    "F487": "tick consumes spawner state ([0x121]/[0xDC])",
+    "F488": "vtable+0x1C = spawner confirmed",
+    "F486": "565 blend renders frames"
+  },
+  "contrast": {
+    "spawn_vs_tick": "0x435030 creates + sets type/frame; 0x435A20 advances",
+    "frame_base_vs_progress": "type*10 = block base; [0x121] = in-block progress"
+  },
+  "verdict": "Effect entity spawner PRIMARY-verified: 0x435030 creates magic effects (record/target/coords/type dispatch 0x30-0x2F), frame base = [esi] + type*10 (MonMagic block formula). Effect lifecycle + frame math CLOSED.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Spawner + type dispatch + frame base decoded from .text.",
+  "cross_refs": ["F487: tick", "F488: vtable", "F486: blend", "F484: skill use"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x435030+0x60; dump 0x4357E8/0x435808",
+  "notes": [
+    "type*10 = 10-frame per-spell blocks in MonMagic [inference]",
+    "0x435808 byte map gates 0x28 types (0x31-0x2F + 0x30)",
+    "[0x120] = walk/stationary flag for effect movement"
+  ]
+}

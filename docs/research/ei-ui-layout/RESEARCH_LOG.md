@@ -6672,3 +6672,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔槽映射〕**+0/+4 名签（F239）、+8/+0x10 节点 ctor、+0xC 0x42C800、+0x14 vtable 0x476454、**+0x1C 0x435030 = 绘制**（特效精灵）、+0x20 dtor、**+0x2C 0x435A20 = tick（F487）**、+0x30-0x3C 浮点常量（250/400/36/0.01 特效尺寸）。
 - **〔链〕**tick 0x435A20 → 绘制 0x435030 → MonMagic 帧 → 565 混合（F486）。
 - 落盘：effect-entity-vtable-evidence.json（F488，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 182。
+## Round 183 (F489) — 2026-08-12：特效实体生成器（法术帧公式闭合）
+
+- **〔生成〕**0x435030（vtable+0x1C）：记录查找 0x449C10、目标查找（0x77769C 自身 / 0x560070 链表）、地图坐标 0x43CFD0/0x43D070/0x43D190（0x574118）、**类型分派 0x30-0x2F**（jt 0x4357E8 + 字节映射 0x435808）、状态初始化（[0x10] 类型、[0x121] 帧=0、[0xDC] 计数）。
+- **〔帧公式〕**MonMagic 帧基 = **[esi] + type*10**（0x43538E-0x4353AB）——每法术 10 帧块。
+- **〔链〕**技能使用（F484）→ 服务端 → 特效生成 → tick（F487）→ 绘制 → 565 混合（F486）— **法术特效生命周期 + 帧数学全闭合**。
+- 落盘：effect-entity-spawner-evidence.json（F489，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 183。
