@@ -1656,9 +1656,14 @@ git diff --check
 - **delta/累加器/BGM + 18 阶段全函数体**（F439 扩展）。
 - 落盘：`main-tick-orchestration-evidence.json`（F591）+ RESEARCH_LOG Round 285。
 
+## Round 286 (2026-08-12) — HUD + 主循环弧闭合（Finding 592）
+
+- **250 连发 + 217 证据 + HUD/主循环完整**。
+- 落盘：`hud-loop-arc-closure-evidence.json`（F592）+ RESEARCH_LOG Round 286。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（主循环完整；下一弧：剩余深层角落）。
+- 无阻塞项（HUD/主循环完整；下一弧：HANDOFF 刷新 14/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

@@ -7199,3 +7199,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔delta〕**fild(time) × [0x428220] 速度 + 最小 0xA 钳制；累加器 [0x8B1A94]（帧门 > 0x5F → 旗标）+ [0x4279A8]/[0x4279A4]（冷却回绕 F246）；BGM 5s [0x428044]/[0x428048] → 0x45B250 + Sleep 0x1E。
 - **〔18 阶段〕**0x41B440 → 0x422280 → 0x4227F0 → 0x465EA0 → 0x454C50 → 地图滚动 0x43B1E0（F116）→ 光场 0x434650 → 英雄 vtable[0x1C] → 相机 0x41A9D0/0x41A5B0 → 世界 blit 0x45E730（或 0x465D50+0x43C330）→ **网格清 0x419D40**（F336）→ 0x41C450 → **实体 tick 链 [0xE1170]**（类型 0x96/0x48 特例、vtable[0xC]、[0x4]==2 清理）→ **6 绘制对象 [0x361150..0x3614F4]**（门 [0x24]/[0x28]/[0x2C]）→ 英雄 HP 条 0x40A8A0（F590）+ 0x40BB00 + vtable[0x80] → 实体 HP 条 [0xE1158]（[0x88] 1/3/其他）→ 0x41B1C0 → 光场绘制 0x434D40（0x190×0x12C）→ 精灵链 vtable[0x10] → 特效 [0x364444]——**F439 确认并扩展完整编排**。
 - 落盘：main-tick-orchestration-evidence.json（F591，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 285。
+## Round 286 (F592) — 2026-08-12：HUD + 主循环弧闭合（F583-F591 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**217 证据 JSON**；三服务 200；master 2be41c9（**250 连发 F335-F591 已推**）。
+- **〔弧〕**HANDOFF 12（F583）+ 小地图/大地图（F584）+ Mir3.ini 配置（F585）+ 拖动/点击分派（F586/F587）+ HUD 状态条（F588）+ 实体 HP 条（F590）+ **主 tick 18 阶段**（F591）——**HUD 全层 + 实体条 + 游戏循环完整**。
+- 落盘：hud-loop-arc-closure-evidence.json（F592，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 286。

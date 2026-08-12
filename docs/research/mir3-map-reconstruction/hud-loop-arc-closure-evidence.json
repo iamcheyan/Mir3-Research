@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hud-and-loop-arc-closure-2026-08-12-f592",
+  "title": "Round 286 (F592): HUD + main-loop arc CLOSED (F583-F591) - validation green (compileall/verify exit 0/node/JSON), services 200, master 2be41c9 (250 consecutive F335-F591), 217 evidence JSONs; arc: HANDOFF 12 (F583) + minimap/world-map render (F584) + Mir3.ini config (F585) + window drag/click dispatchers (F586/F587) + HUD status bars (F588) + entity HP bar full (F590) + main tick orchestration (F591) - HUD full layer + entity bars + game loop complete",
+  "date": "2026-08-12",
+  "objective": "Close the HUD + main-loop arc.",
+  "question": "Is the HUD layer + game loop fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "217 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F584": "minimap/world-map", "F585": "Mir3.ini config", "F586/F587": "drag + click dispatchers", "F588": "HUD bars", "F590": "entity HP bar", "F591": "main tick 18-stage"},
+    "milestone": "250 consecutive rounds F335-F591"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F591": "250 rounds pushed"
+  },
+  "contrast": {
+    "hud_vs_loop": "HUD layer (F584-590) + game loop (F591) both complete",
+    "render_vs_interaction": "HUD render + interaction + bars + loop all byte-level"
+  },
+  "verdict": "HUD + main-loop arc CLOSED (F592): HUD full layer (render/config/interaction/bars) + entity bars + 18-stage game loop all byte-level; validation green, 250 consecutive rounds, 217 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F583-F591.",
+  "cross_refs": ["F591: main tick", "F588: HUD bars", "F590: entity bars"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "250 consecutive shipping rounds F335-F591",
+    "next: HANDOFF refresh 14, sim polish, remaining corners"
+  ]
+}
