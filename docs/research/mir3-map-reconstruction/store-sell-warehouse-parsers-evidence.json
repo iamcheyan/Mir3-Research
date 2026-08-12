@@ -1,0 +1,38 @@
+{
+  "evidence_id": "store-sell-warehouse-parsers-2026-08-12-f462",
+  "title": "Round 156 (F462): Store SELL + warehouse parsers - 0x44F710 SELL: mode [0x5F8]=1, layout 0x423E80(0x3EB,1,0xBA,0x1F2,0x130), slot grid [0x720], div-by-10 count, strtok '/' parse -> alloc 0x5F name + 0xC20 (3104B) item record, ctor 0x430920 + 0x430940 (item from record), 0x17-dword copy via 0x452810, append list [0x708]; 0x44F940 仓库: mode [0x5F8]=2, layout 0x423E80(0x3E9,-4,0xB6,0xCD,0xCD), same parse -> list [0x70C]; 0xC20 = bag item record size (F293) - store mode family (F57/F399) complete with item-record construction",
+  "date": "2026-08-12",
+  "objective": "Decode the SELL and warehouse store parsers + item record construction.",
+  "question": "How do SELL and 仓库 modes parse their data into item records?",
+  "method": "Disasm 0x44F78D-0x44F940 (SELL) + 0x44F940-0x44FAF4 (仓库).",
+  "scope": "0x44F710-0x44FB00; mode [0x5F8]; lists [0x708]/[0x70C].",
+  "cell_analysis": {
+    "sell_0x44F710": {"mode": "[0x5F8] = 1 (SELL)", "layout": "0x423E80(0x3EB, 1, 0xBA, 0x1F2, 0x130)", "grid": "[0x720] 2D (0x143+0x26x, 0x2B+0x26y)", "count": "div-by-10 (0x66666667) of config count", "parse": "strtok '/' (0x468BF0) -> per entry: alloc 0x5F (95B) name + 0xC20 (3104B) record (0x468B1A), ctor 0x430920, 0x17 dword + word + byte copy (0x452810), 0x430940 (item from record), append vtable+4 to list [0x708]"},
+    "warehouse_0x44F940": {"mode": "[0x5F8] = 2 (仓库)", "layout": "0x423E80(0x3E9, -4, 0xB6, 0xCD, 0xCD)", "grid": "[0x720] (0x16+0x26x, 0x2B+0x26y)", "parse": "same strtok loop -> 0xC20 records -> append list [0x70C]"},
+    "item_record": {"size": "0xC20 (3104B) = bag item record (F293)", "ctor": "0x430920 (item ctor), 0x430940 (item-from-record)"},
+    "mode_family": {"BUY": "0x44F480 mode 0, list [0x64C], 0x3C stubs (F461)", "SELL": "0x44F710 mode 1, list [0x708], 0xC20 records", "仓库": "0x44F940 mode 2, list [0x70C], 0xC20 records", "CRAFT": "0x44FB00 mode 3 (list [0x64C])"}
+  },
+  "exe_trace": {
+    "store_chain": "server config strings -> per-mode parser (strtok '/') -> item records -> lists -> paint 0x44D590"
+  },
+  "audit_vs_exe": {
+    "F57/F399": "mode graph confirmed with record construction",
+    "F293": "0xC20 bag record size shared",
+    "F461": "BUY 0x3C stubs vs SELL/仓库 0xC20 records"
+  },
+  "contrast": {
+    "buy_vs_sell": "BUY = lightweight 0x3C stubs (goods list); SELL/仓库 = full 0xC20 item records",
+    "lists": "BUY/CRAFT use [0x64C]; SELL [0x708]; 仓库 [0x70C]"
+  },
+  "verdict": "Store SELL + 仓库 parsers PRIMARY-verified: mode [0x5F8]=1/2, strtok '/' parse into 0xC20 item records (ctor 0x430920/0x430940), lists [0x708]/[0x70C]. Store mode family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Both parsers + record construction decoded from .text.",
+  "cross_refs": ["F461: BUY parser", "F57/F399: mode graph", "F293: bag records"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44F78D+0x60, 0x44F940+0x60",
+  "notes": [
+    "0x430920/0x430940 = item object ctor pair",
+    "0x452810 = record field copy (snprintf-style)",
+    "0x5F name buffer = 95B item name"
+  ]
+}

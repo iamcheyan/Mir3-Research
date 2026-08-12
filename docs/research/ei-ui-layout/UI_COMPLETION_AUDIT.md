@@ -1006,9 +1006,14 @@ git diff --check
 - **BUY 字符串解析器**（strtok '/' 7 字段）；货物源闭合。
 - 落盘：`store-goods-fill-evidence.json`（F461）+ RESEARCH_LOG Round 155。
 
+## Round 156 (2026-08-12) — 商店 SELL/仓库 解析器（Finding 462）
+
+- **0xC20 记录构建**（模式 1/2 全解）。
+- 落盘：`store-sell-warehouse-parsers-evidence.json`（F462）+ RESEARCH_LOG Round 156。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（货物源已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（商店族全解；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

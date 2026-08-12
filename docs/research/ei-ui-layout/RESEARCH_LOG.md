@@ -6526,3 +6526,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔源〕**货物 = 服务端 Merchant 脚本数据（F427）经 '/' 分隔字符串发送 → 客户端解析。
 - **〔闭合〕**商店货物 msg id pending 解决（字符串解析非二进制包）。
 - 落盘：store-goods-fill-evidence.json（F461，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 155。
+## Round 156 (F462) — 2026-08-12：商店 SELL/仓库 解析器（0xC20 物品记录构建）
+
+- **〔卖〕**0x44F710：模式 [0x5F8]=1、布局 0x423E80(0x3EB,1,...)、格网 [0x720]、除 10 计数、strtok '/' 解析 → **0x5F 名称 + 0xC20（3104B）物品记录**（ctor 0x430920/0x430940、0x17 dword 复制）→ 链表 [0x708]。
+- **〔仓库〕**0x44F940：模式 [0x5F8]=2、布局 0x423E80(0x3E9,-4,...)、同解析 → 链表 [0x70C]。
+- **〔族〕**BUY 0x3C 桩 vs SELL/仓库 0xC20 完整记录（= 背包记录 F293）；CRAFT 0x44FB00 模式 3。
+- 落盘：store-sell-warehouse-parsers-evidence.json（F462，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 156。
