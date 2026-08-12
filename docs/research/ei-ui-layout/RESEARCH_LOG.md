@@ -7057,3 +7057,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔字体〕**0x45DBA0：굴림（Gulim，0x47C348）帧渲染（帧 0x2BC）——模式 7 属性用（F559）。
 - **〔屏幕对象〕**0x8AB7A8 + 字体 [obj+0x28]/[obj+0x1C]——公告 0x427E30/NPC 对话 0x43F460/属性窗/F 行会编辑**全部共用**。
 - 落盘：text-render-family-gdi-evidence.json（F564，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 258。
+## Round 259 (F565) — 2026-08-12：recv1 实体生成/移除（msg 0x2CE/0x2CF）
+
+- **〔生成〕**0x420E36：id 查重（[main+0xE11A0]/[0xE11D0]）→ **类型分派**：5/4 → malloc 0x144 + ctor 0x434EF0 + vtable 0x4767A8 + 0x438100 初始化（9 参：id、0x16/0x10、旗标、x、y…）→ 追加**实体链表 0x5600B8(头)/0x5600BC(尾)/0x5600C8(计数)**（节点 {0x476448,+4 数据,+8 prev,+0xC next}，F336 容器）；6/3 → malloc 0x20 **迷你实体** {+0 类型, +4 id, +8 字 0xD2/0xE6, +0xC timeGetTime, +0x10 0xFFFF, +0x14 y, +0x18 x} → 链表 0x5600E8（vtable 0x476454）。
+- **〔移除〕**0x42121B：按 id 查两链表；类型 0x16 特例 = **重生替换**（rand 0x4E20-0x7530 + 0x438100）。
+- **〔连带 msgid〕**0x2BE=角色/状态数据（idx30 开模式 7）、0x2C0=行会数据（idx32 开模式 4）、0x2B7=多物品拾取（idx23）、0x2AD=交易关（idx13）。
+- 落盘：recv1-entity-spawn-remove-evidence.json（F565，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 259。

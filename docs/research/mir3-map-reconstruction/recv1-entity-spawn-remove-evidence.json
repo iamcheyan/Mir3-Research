@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv1-entity-spawn-remove-2026-08-12-f565",
+  "title": "Round 259 (F565): recv1 entity spawn (msg 0x2CE idx46 0x420E36) + remove (msg 0x2CF idx47 0x42121B) - spawn: id lookup in [main+0xE11A0]+[0xE11D0] lists (skip if exists), TYPE dispatch: 5/4 -> malloc 0x144 + ctor 0x434EF0 + vtable 0x4767A8 + 0x438100 init (9 args: id, 0x16/0x10, flags, x, y...), append to ENTITY LIST 0x5600B8(head)/0x5600BC(tail)/0x5600C8(count) nodes {vtable 0x476448,+4 data,+8 prev,+0xC next} (F336 container); 6/3 -> malloc 0x20 mini-entity {+0 type, +4 id, +8 word 0xD2/0xE6, +0xC timeGetTime, +0x10 0xFFFF, +0x14 y, +0x18 x} -> list 0x5600E8 (vtable 0x476454); remove (0x42121B): find by id, type 0x16 special: spawn replacement entity with rand(0x4E20, 0x7530) HP + 0x438100 (respawn) - entity lifecycle byte-level (F336 list family + F434-442 render system connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 entity spawn/remove handlers.",
+  "question": "How are entities created/removed from server packets?",
+  "method": "Disasm 0x420E36-0x42121B (spawn/remove) + recv1 byte-map msgid mapping.",
+  "scope": "0x420E36-0x42121B; entity lists 0x5600B8-0x5600C8/0x5600E8; type dispatch.",
+  "cell_analysis": {
+    "msgids": {"0x2CE": "spawn (idx46)", "0x2CF": "remove (idx47)", "0x2BE": "char/status data (idx30 mode 7)", "0x2C0": "guild data (idx32 mode 4)", "0x2B7": "multi-item pickup (idx23)", "0x2AD": "trade close (idx13)"},
+    "spawn": {"lookup": "skip if id in [main+0xE11A0]/[0xE11D0]", "type5_4": "malloc 0x144 + 0x434EF0 ctor + vtable 0x4767A8 + 0x438100 init (id, 0x16/0x10, ...)", "type6_3": "malloc 0x20 mini {+0 type, +4 id, +8 word 0xD2/0xE6, +0xC timeGetTime, +0x10 0xFFFF, +0x14 y, +0x18 x}"},
+    "lists": {"entity": "0x5600B8 head/0x5600BC tail/0x5600C8 count, nodes {0x476448,+4 data,+8 prev,+0xC next} (F336)", "mini": "0x5600E8 (vtable 0x476454)"},
+    "remove": "0x42121B find by id in both lists; type 0x16 special: respawn replacement (rand 0x4E20-0x7530 + 0x438100)"
+  },
+  "exe_trace": {
+    "spawn_chain": "server spawn packet -> id lookup -> type dispatch (5/4 big entity, 6/3 mini) -> ctor + init -> entity list append"
+  },
+  "audit_vs_exe": {
+    "F336": "5 containers 0x560070-0x560088 - 0x5600B8-0x5600C8 = entity container confirmed", "F434-442": "entity render system connects via 0x4767A8 vtable", "F553": "recv2 idx12 entity register = same list"
+  },
+  "contrast": {
+    "big_vs_mini": "0x144 entity (types 4/5, 0x10/0x16) vs 0x20 mini (types 3/6, 0xD2/0xE6)",
+    "spawn_vs_remove": "0x420E36 create vs 0x42121B delete/respawn"
+  },
+  "verdict": "Entity spawn/remove PRIMARY-verified: msg 0x2CE/0x2CF, type-based creation (4 types), entity list 0x5600B8-0x5600C8 (F336) + mini list 0x5600E8, respawn special for type 0x16. Lifecycle connected to F434-442 render system.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + lists + type dispatch decoded from .text.",
+  "cross_refs": ["F336: entity containers", "F434-442: entity render", "F553: recv2 register", "F558: window registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x420E36+0x40; 0x42121B+0x60",
+  "notes": [
+    "0x438100 = entity init from packet (9 args)",
+    "0x4767A8 = entity vtable, 0x476448/0x476454 = list node vtables",
+    "mini types 3/6 = dropped items/short effects",
+    "respawn rand range 0x4E20-0x7530 = HP/misc"
+  ]
+}
