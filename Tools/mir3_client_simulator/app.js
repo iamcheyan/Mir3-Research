@@ -270,7 +270,9 @@ function renderHud() {
 
 function pushChat(line) {
   STATE.chatLines.push(line);
-  if (STATE.chatLines.length > 40) STATE.chatLines.shift();
+  // Round 35 (F341): original chat ring renders min(count-scroll, 0x13=19) lines
+  // at 14px row stride (0x414700); keep the sim ring at the same cap.
+  if (STATE.chatLines.length > 19) STATE.chatLines.shift();
   const el = $("#chat-lines");
   if (el) el.textContent = STATE.chatLines.join("\n");
 }
@@ -906,6 +908,15 @@ function setWindowOpen(id, open) {
   const box = winEl.querySelector(`[data-window="${id}"]`);
   if (!box) return;
   if (open) {
+    // Round 31 (F337): original is modal - 0x42ADB0 runs close-all 0x42B820
+    // before showing the requested window (single active window at a time).
+    // Notice window id15 is excluded from close-all in the original.
+    winEl.querySelectorAll(".win:not(.closed)").forEach((w) => {
+      const wid = w.dataset.window;
+      if (wid === id || wid === "window.notice-prompt-candidate") return;
+      w.classList.add("closed");
+      STATE.openWindows.delete(wid);
+    });
     box.classList.remove("closed");
     STATE.openWindows.add(id);
     bringToFront(id);

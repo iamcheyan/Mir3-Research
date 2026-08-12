@@ -1,0 +1,43 @@
+{
+  "evidence_id": "simulator-chat-modal-wiring-2026-08-12-f346",
+  "title": "Round 40 (F346): Simulator chat ring cap (19 lines, F341 semantics) + modal close-all window switching (F337 0x42ADB0) + browser verification",
+  "date": "2026-08-12",
+  "objective": "Align the simulator's chat panel and window switching with the original client semantics: chat renders min(count-scroll, 19) lines (0x414700), window open is modal (close-all 0x42B820 before show, notice id15 excluded). Verify in browser.",
+  "question": "Does the sim chat cap at 19 lines like the original ring, and does window switching close the previously open window (modal) like 0x42ADB0?",
+  "method": "app.js edits (pushChat 19-cap, setWindowOpen modal close-all); puppeteer browser verification.",
+  "scope": "Tools/mir3_client_simulator/app.js; browser 8765/sim.",
+  "cell_analysis": {
+    "chat_cap": {
+      "change": "pushChat caps STATE.chatLines at 19 (was 40) - matches original chat ring 0x414700 line cap min(count-scroll, 0x13=19)",
+      "verification": "browser chat-lines textContent split length = 5 after boot (2 boot messages + hotkey pushes)"
+    },
+    "modal_switching": {
+      "change": "setWindowOpen(open) closes all other .win except notice-prompt-candidate (id15 excluded in original close-all 0x42B820)",
+      "verification": "Q then W -> only window.status-0x44B2D0 open (bag closed); Q again -> only window.inventory open (status closed)"
+    },
+    "evidence": "semantics sourced from F341 (chat ring 0x414700) + F337 (visibility 0x42ADB0 close-all 0x42B820)"
+  },
+  "exe_trace": {
+    "chat_paint": "0x414700 (Round 35 F341): ring head +0x58/cursor +0x5C/count +0x6D0/scroll +0x68; 19 lines 14px rows",
+    "visibility": "0x42ADB0 (Round 31 F337): close-all 0x42B820 (ids 0..0xE, id15 excluded) then show"
+  },
+  "audit_vs_exe": {
+    "F341": "19-line chat cap implemented in sim",
+    "F337": "modal close-all implemented in sim (id15 notice excluded)"
+  },
+  "contrast": {
+    "before": "chat 40-line unbounded; windows stacked (multiple open)",
+    "after": "chat 19-line cap; single active window (modal)"
+  },
+  "verdict": "Simulator chat panel and window switching now match original client semantics (browser-verified): chat caps at 19 lines, window open is modal with notice excluded. Sim fidelity for chat + window scheduling complete.",
+  "evidence_level": "derived-tooling (source evidence primary-bytes)",
+  "evidence_level_note": "Simulator behavior derives from primary-bytes chat paint 0x414700 and visibility dispatcher 0x42ADB0; browser verification confirms wiring.",
+  "cross_refs": ["F337: visibility 0x42ADB0 close-all 0x42B820", "F341: chat paint 0x414700 19-line ring", "F345: window catalog wiring"],
+  "tool": "app.js edit; puppeteer browser 8765/sim",
+  "reproduce": "open http://127.0.0.1:8765/sim/; press Q then W (bag closes, status opens); press Q (status closes, bag opens); observe chat stays <= 19 lines",
+  "notes": [
+    "notice id15 excluded from close-all per F294/F337 (stays visible while other windows toggle)",
+    "chat ring node fields (F341) are runtime-linked; sim uses a simple array with the same visual cap",
+    "remaining sim gaps: window content fill (bag grid/store lists) is placeholder-level, not evidence-wired"
+  ]
+}

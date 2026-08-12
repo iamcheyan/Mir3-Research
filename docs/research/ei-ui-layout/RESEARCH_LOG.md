@@ -5868,3 +5868,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔浏览器验证〕8 热键全开对窗**：Q→背包、W→状态、E→技能书、R→聊天、S→坐骑、D→任务、G→组队、N→选项；二次按全部关闭（allOpen=[]）。**几何验证**：背包屏 (519,1) 284×324（ctor 518,0）、状态 (1,1) 244×328（ctor 0,0）——缩放内精确。
 - **〔闭环〕EXE → 证据 JSON → layout.json → 模拟器数据 → 渲染模拟器** 窗口目录全链路打通。
 - 落盘：`simulator-window-catalog-wiring-evidence.json`（F345，derived-tooling；源证据 primary-bytes）+ Tools/web/build_mir3_simulator_data.py + Tools/mir3_client_simulator/data/* 重生成 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 39。
+
+## Round 40 (F346) — 2026-08-12：模拟器聊天环 19 行上限 + 模态窗口切换（F337/F341 语义落地）
+
+- **〔聊天〕pushChat 上限 19 行**（原 40）——匹配原版聊天环 0x414700 的 min(count−scroll, 0x13=19) 行 14px 行距（F341）。
+- **〔模态〕setWindowOpen(open) 先关其他窗**（除 notice id15，原版 close-all 0x42B820 排除 id15）——匹配 0x42ADB0 单窗口模态（F337）。
+- **〔浏览器验证〕**Q→W：仅 status 开（bag 被关）；Q 再按：仅 bag 开（status 被关）；chat-lines = 5 行（启动 2 条 + 热键推送）。
+- 落盘：`simulator-chat-modal-wiring-evidence.json`（F346，derived-tooling）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 40。

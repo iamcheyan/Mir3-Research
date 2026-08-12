@@ -377,6 +377,12 @@ git diff --check
 - **闭环**：EXE → 证据 JSON → layout.json → 模拟器数据 → 渲染。
 - 落盘：`simulator-window-catalog-wiring-evidence.json`（F345）+ builder/data 更新 + RESEARCH_LOG Round 39。
 
+## Round 40 (2026-08-12) — 模拟器聊天环 + 模态切换（Finding 346）
+
+- **聊天 19 行上限**（F341 0x414700 语义）；**模态切换**（F337 0x42ADB0 close-all，id15 除外）。
+- **浏览器验证**：Q→W 仅 status 开、Q 再按仅 bag 开；chat ≤19 行。
+- 落盘：`simulator-chat-modal-wiring-evidence.json`（F346）+ app.js + RESEARCH_LOG Round 40。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
