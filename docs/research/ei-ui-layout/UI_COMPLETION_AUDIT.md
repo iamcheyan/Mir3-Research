@@ -1411,6 +1411,11 @@ git diff --check
 - **F540-F541 弧闭合 + 200 连发里程碑**。
 - 落盘：`login-family-arc-closure-evidence.json`（F542）+ RESEARCH_LOG Round 236。
 
+## Round 237 (2026-08-12) — HANDOFF 刷新 5（Finding 543）
+
+- **200 连发 F335-F542 全汇总**。
+- 落盘：`handoff-refresh-5-evidence.json`（F543）+ RESEARCH_LOG Round 237。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（UI 状态机完整；其余 = 持续深化）。

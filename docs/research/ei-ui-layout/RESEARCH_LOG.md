@@ -6930,3 +6930,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 01a8904（**200 连发 F335-F541**）。
 - **〔弧汇总〕**NPC 对话 4 类型分派（F540）+ 角色选择 5 阶段机（F541）——全部 UI 状态机字节级。
 - 落盘：login-family-arc-closure-evidence.json（F542，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 236。
+## Round 237 (F543) — 2026-08-12：HANDOFF 刷新 5（F539-F542 追加）
+
+- **〔追加〕**HANDOFF 补 Round 233-236（HANDOFF-4 + 登录族弧 + 200 里程碑）；基线 Round 232=dd66590 → **Round 236=b12e3b2（200 连发 F335-F542）**。
+- 落盘：handoff-refresh-5-evidence.json（F543，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 237。

@@ -1,0 +1,32 @@
+{
+  "evidence_id": "handoff-refresh-5-2026-08-12-f543",
+  "title": "Round 237 (F543): HANDOFF refreshed 5 - MIR3_UI_RECONSTRUCTION_HANDOFF.md appended Round 233-236 (F539-F542: HANDOFF-4 + login arc + 200 milestone), baseline Round 232=dd66590 -> Round 236=b12e3b2 (200 consecutive F335-F542)",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with F539-F542.",
+  "question": "Is the HANDOFF up to date with the 200-round milestone?",
+  "method": "Append Round 233-236 summary to HANDOFF.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "appended": {"F539": "HANDOFF-4", "F540-F542": "NPC 4-type + char-select 5-stage + 200 milestone", "baseline": "Round 232=dd66590 -> 236=b12e3b2 (200 rounds)"},
+    "coverage": "HANDOFF spans F335-F542 (200 rounds)"
+  },
+  "exe_trace": {
+    "handoff": "agent prompt references HANDOFF file"
+  },
+  "audit_vs_exe": {
+    "F233": "prior refresh"
+  },
+  "contrast": {
+    "before_vs_after": "handoff covered F335-F538; now F335-F542"
+  },
+  "verdict": "HANDOFF refreshed 5: F539-F542 appended, baseline b12e3b2 (200 consecutive shipping rounds).",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Document update; content from F539-F542 evidence.",
+  "cross_refs": ["F233: prior handoff", "F539-F542: arcs"],
+  "tool": "python append to HANDOFF.md",
+  "reproduce": "tail MIR3_UI_RECONSTRUCTION_HANDOFF.md",
+  "notes": [
+    "handoff covers full F335-F542 scope (200 rounds)",
+    "milestone documented"
+  ]
+}
