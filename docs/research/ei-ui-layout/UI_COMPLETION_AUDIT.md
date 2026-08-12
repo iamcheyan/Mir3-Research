@@ -3105,3 +3105,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能页完整；下一弧：HANDOFF 刷新 94/剩余角落）。
+## Round 547 (2026-08-12) — HANDOFF 刷新 94（Finding 853）
+
+- **Round 544-546 追加 + 511 连发**（技能页完整入档）。
+- 落盘：`handoff-refresh-94-evidence.json`（F853）+ RESEARCH_LOG Round 547。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能页完整；下一弧：剩余深层角落/模拟器 polish）。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-94-2026-08-12-f853",
+  "title": "Round 547 (F853): HANDOFF refresh 94 - Rounds 544-546 (F850-F852: HANDOFF 93, skill page text parser, skill page closure + 510 milestone), baseline Round 543=1c2c0ba -> Round 546=cc45e11 (511 consecutive F335-F852), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 544-546.",
+  "question": "What changed since HANDOFF refresh 93?",
+  "method": "Append Round 544-546 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 544-546 appended (3 rounds, F850-F852)",
+    "baseline": "Round 543=1c2c0ba -> Round 546=cc45e11 (511 consecutive F335-F852)",
+    "milestone": "510 consecutive rounds documented",
+    "arcs": {"parser": "F851 page parser", "closure": "F852 skill page"},
+    "key": "skill page complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F850": "refresh 93 baseline -> now refresh 94", "F335-F852": "511 rounds"
+  },
+  "contrast": {
+    "refresh_93_vs_94": "F851-F852 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 94 (F853): Rounds 544-546 documented (skill page complete), baseline 1c2c0ba -> cc45e11, 511 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F851-F852 evidence.",
+  "cross_refs": ["F850: refresh 93", "F852: page closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 544-546 section to HANDOFF",
+  "notes": [
+    "511 consecutive shipping rounds F335-F852",
+    "next: remaining deep corners, sim polish"
+  ]
+}
