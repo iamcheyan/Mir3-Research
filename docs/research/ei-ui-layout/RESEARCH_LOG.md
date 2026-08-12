@@ -7678,3 +7678,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔移动〕**0x410840（F612/0x410840 确认）：门 [0x61C74] 特例 → vtable[0x10] 0x13 行走（[0xB8]−1 → [0xC4]）；否则状态 [0xC0]!=0x13 + 0x404DA0 + **0x4113A8 8 路 jt**：0x4121F0 路径 + 0x43CC30 地图移动 + 0x43C0F0 目标 + **msg 0xBC3 发送**（0x451450）+ 状态 [0x62A50]/[0x62A54] + 最后坐标 [0x62ADC]/[0x62AE0] + 方向 [0x62AE4]——英雄移动字节级（F612/F613 连接）。
 - 落盘：hero-actor-move-evidence.json（F695，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 389。
+## Round 390 (F696) — 2026-08-12：英雄角色弧闭合（F695 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**320 证据 JSON**；三服务 200；master 552487f（**354 连发 F335-F695 已推**）。
+- **〔弧〕**英雄角色移动（F695）——**英雄移动完整（移动 F695 + 碰撞 F613 + 选择 F692）**，闭合战斗/移动链。
+- **〔仓库〕**用户/兄弟 Zircon .Zl 编辑（zlsdk.py/wilviewer.py）在工作树——**未触碰**。
+- 落盘：hero-actor-arc-closure-evidence.json（F696，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 390。

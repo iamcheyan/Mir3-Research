@@ -1,0 +1,38 @@
+{
+  "evidence_id": "hero-actor-arc-closure-2026-08-12-f696",
+  "title": "Round 390 (F696): Hero-actor arc CLOSED (F695) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 552487f (354 consecutive F335-F695), 320 evidence JSONs; arc: hero-actor move (F695: 8-way jt + map move + msg 0xBC3) - hero movement COMPLETE (F612/F613/F692), closing the combat/movement chain; user/sibling Zircon .Zl edits (zlsdk.py/wilviewer.py) present - UNTOUCHED",
+  "date": "2026-08-12",
+  "objective": "Close the hero-actor arc.",
+  "question": "Is hero movement fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "320 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F695": "hero-actor move"},
+    "hero": "move (F695) + collision (F613) + select (F692) = COMPLETE",
+    "repo": "user/sibling Zircon .Zl edits (zlsdk.py/wilviewer.py) UNTOUCHED",
+    "milestone": "354 consecutive rounds F335-F695"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F695": "354 rounds pushed; hero movement complete"
+  },
+  "contrast": {
+    "move_vs_collide": "0x410840 move + 0x43CC30 collision",
+    "mine_vs_user": "research files committed; user Zl edits untouched"
+  },
+  "verdict": "Hero-actor arc CLOSED (F696): hero movement byte-level; validation green, 354 consecutive rounds, 320 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F695.",
+  "cross_refs": ["F695: move", "F613: collision", "F692: select"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "354 consecutive shipping rounds F335-F695",
+    "user Zircon .Zl edits in worktree untouched",
+    "next: HANDOFF refresh 43, remaining corners"
+  ]
+}
