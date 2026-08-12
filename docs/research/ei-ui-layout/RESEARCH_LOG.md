@@ -6934,3 +6934,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔追加〕**HANDOFF 补 Round 233-236（HANDOFF-4 + 登录族弧 + 200 里程碑）；基线 Round 232=dd66590 → **Round 236=b12e3b2（200 连发 F335-F542）**。
 - 落盘：handoff-refresh-5-evidence.json（F543，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 237。
+## Round 238 (F544) — 2026-08-12：交易栏几何（8×9 双栏修正）
+
+- **〔几何〕**0x416830 双栏命中：pane 字节（0=自身 +0x15/+0x30、1=对方 +0xFD/+0x30）、**8 列 × 9 行网格**（0x24=36px 步长，x 帽 0xB4、y 帽 0xD8）、槽 = row*8+col（[0x54] 基）；0x416950 槽查找（[0x298] 物品字、0xFFFF 空、%0x3E8）——**F283 5×6 修正为 8×9**。
+- 落盘：trade-pane-geometry-evidence.json（F544，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 238。

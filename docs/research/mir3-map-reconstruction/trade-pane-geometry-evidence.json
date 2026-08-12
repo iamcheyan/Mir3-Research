@@ -1,0 +1,35 @@
+{
+  "evidence_id": "trade-pane-geometry-2026-08-12-f544",
+  "title": "Round 238 (F544): Trade pane geometry - 0x416830 dual-pane hit-test: pane byte (0=self +0x15/+0x30, 1=other +0xFD/+0x30), grid 8 cols x 9 rows (x stride 0x24=36px cap 0xB4, y stride 0x24 cap 0xD8), slot = row*8+col via [0x54] base (0x416930); 0x416950 slot lookup ([0x298] item word, %0x3E8, 0xFFFF empty) - F58 trade geometry complete (5x6 corrected to 8x9)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade pane geometry (F58).",
+  "question": "What is the trade pane grid layout?",
+  "method": "Disasm 0x416830-0x4169A0 (pane hit-test + slot lookup).",
+  "scope": "0x416830-0x4169A0; panes; grid 8x9.",
+  "cell_analysis": {
+    "pane_0x416830": {"select": "byte 0=self (+0x15/+0x30), 1=other (+0xFD/+0x30)", "grid": "8 cols x 9 rows (x 0x24 stride cap 0xB4, y 0x24 cap 0xD8, 36px)", "slot": "row*8+col via [0x54] base"},
+    "slot_0x416950": {"item": "word [0x298+idx*2], 0xFFFF empty, %0x3E8"},
+    "f58_correct": "grid 8x9 (not 5x6 - F283 correction)"
+  },
+  "exe_trace": {
+    "trade_chain": "click -> pane select -> grid hit -> slot -> item word"
+  },
+  "audit_vs_exe": {
+    "F58": "trade geometry", "F283": "pane layout corrected to 8x9", "F35": "trade paint"
+  },
+  "contrast": {
+    "self_vs_other": "pane offsets +0x15 vs +0xFD",
+    "grid_vs_list": "8x9 grid vs list-style panes"
+  },
+  "verdict": "Trade pane geometry PRIMARY-verified: 0x416830 dual-pane hit-test (8x9 grid, 36px cells, pane offsets), 0x416950 slot lookup ([0x298] word). F58 geometry complete (F283 corrected to 8x9).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Pane geometry decoded from .text.",
+  "cross_refs": ["F58: trade window", "F283: panes", "F35: trade paint"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x416830+0x40, 0x416950+0x20",
+  "notes": [
+    "8x9 = 72 cells per pane (was 5x6=30)",
+    "36px cell stride (0x24)",
+    "item word [0x298] + %0x3E8 (F364 gold/id)"
+  ]
+}
