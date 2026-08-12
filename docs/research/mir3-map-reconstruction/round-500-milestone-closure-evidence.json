@@ -1,0 +1,38 @@
+{
+  "evidence_id": "round-500-milestone-closure-2026-08-12-f806",
+  "title": "Round 500 (F806): ROUND 500 MILESTONE CLOSURE - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 49056dc (464 consecutive F335-F805), 430 evidence JSONs; since Round 400 (90 rounds): window system 100% (14-mode registry + base + controls + scrollbars + all draws F701-F770) + options lifecycle (F776/F779/F788) + input/message (F785/F786) + hero lifecycle (F791/F792) + skill/display (F794/F795) + name/overhead (F800/F801) + guild/social (F803/F804) - client reverse-engineering surface nearly complete",
+  "date": "2026-08-12",
+  "objective": "Close the Round 500 milestone.",
+  "question": "What did Rounds 411-499 achieve?",
+  "method": "Full validation + milestone consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "430 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "rounds": "411-499 (90 rounds, 89 findings F717-F805)",
+    "arcs": {"windows": "F701-F770", "options": "F776/F779/F788", "input": "F785/F786", "hero": "F791/F792", "skill": "F794/F795", "name": "F800/F801", "guild": "F803/F804"},
+    "milestone": "Round 500 + 464 consecutive shipping rounds"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F805": "464 rounds pushed; surface nearly complete"
+  },
+  "contrast": {
+    "round400_vs_500": "window system + full lifecycle closed",
+    "pending_vs_now": "write-only slots + death pump + BSS gap resolved"
+  },
+  "verdict": "ROUND 500 milestone CLOSED (F806): 90 rounds since Round 400, window system 100% + full subsystem lifecycles; validation green, 464 consecutive rounds, 430 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; milestone content from Rounds 411-499 evidence.",
+  "cross_refs": ["F717-F805"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "Round 500 milestone",
+    "464 consecutive shipping rounds",
+    "430 evidence JSONs",
+    "next: HANDOFF refresh 79, remaining corners"
+  ]
+}
