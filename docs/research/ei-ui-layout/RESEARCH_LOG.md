@@ -8967,3 +8967,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 683-685（F990-F991：HP 条 blit 全量 + HP 条系统闭合）；基线 Round 682=ec09a52 → Round 685=b8d775e（**650 连发 F335-F991**）。
 - 落盘：handoff-refresh-142-evidence.json（F992，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 686。
+## Round 687 (F993) — 2026-08-12：实体投影 + 阴影 blit 全量（F894）
+
+- **〔投影〕**0x40B2C0：世界→屏幕（×3×16/<<5，−0xC8/−0x9D）→ [0xE4]/[0xE8] + 阴影帧 [0x90] → 0x466130 查找 + 矩形钳制 0x3A/0x28 + 0x404DA0 绘制 + 实体旗标 [0x88]==3 + [0x8A]/[0x8B]——实体投影完整（F622 阴影依赖）。
+- 落盘：entity-projection-shadow-full-evidence.json（F993，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 687。

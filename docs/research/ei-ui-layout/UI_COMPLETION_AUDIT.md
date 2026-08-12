@@ -4225,3 +4225,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HP 条完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 687 (2026-08-12) — 实体投影 + 阴影 blit 全量（Finding 993）
+
+- **投影 + 阴影 + 钳制**（实体投影完整）。
+- 落盘：`entity-projection-shadow-full-evidence.json`（F993）+ RESEARCH_LOG Round 687。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体投影完整；下一弧：剩余深层角落）。

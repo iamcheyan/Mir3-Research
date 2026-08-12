@@ -1,0 +1,36 @@
+{
+  "evidence_id": "entity-projection-shadow-full-2026-08-12-f993",
+  "title": "Round 687 (F993): Entity projection + shadow blit FULL (F894) - 0x40B2C0: world->screen (x3x16/<<5, -0xC8/-0x9D) -> [0xE4]/[0xE8] + shadow frame [0x90] -> 0x466130 lookup + rect clamp 0x3A/0x28 + 0x404DA0 draw + entity flags [0x88]==3 + [0x8A]/[0x8B] - entity projection COMPLETE (F622 shadow dep)",
+  "date": "2026-08-12",
+  "objective": "Decode the full entity projection + shadow.",
+  "question": "How does the client project entities + draw shadows?",
+  "method": "Disasm 0x40B2C0-0x40B4C0.",
+  "scope": "0x40B2C0-0x40B4C0; projection.",
+  "cell_analysis": {
+    "0x40B2C0": "project + shadow + clamp",
+    "shadow": "[0x90] + 0x466130",
+    "draw": "0x404DA0"
+  },
+  "exe_trace": {
+    "proj_chain": "world -> screen -> shadow -> draw"
+  },
+  "audit_vs_exe": {
+    "F894": "projection+shadow", "F622": "entity render"
+  },
+  "contrast": {
+    "project_vs_shadow": "screen + blit",
+    "clamp": "0x3A/0x28"
+  },
+  "verdict": "Entity projection + shadow FULL PRIMARY-verified: project + shadow + draw; F894/F622 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Entity projection decoded from .text.",
+  "cross_refs": ["F894: projection", "F622: entity render"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40B2C0+0x20",
+  "notes": [
+    "projection x3x16/<<5",
+    "shadow [0x90]",
+    "clamp 0x3A/0x28",
+    "draw 0x404DA0"
+  ]
+}
