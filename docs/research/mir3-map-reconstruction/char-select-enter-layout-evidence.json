@@ -1,0 +1,35 @@
+{
+  "evidence_id": "char-select-enter-and-layout-2026-08-12-f603",
+  "title": "Round 297 (F603): Char-select enter + form layout - 0x458B20 (F541 stage 2/3): slot idx*0x40 records at [0xCB8] (stage 0/3) or [0x10BC] (stage 2), gate [0x930] byte (0/2/3), 0x458EC0 entity create -> [esi+0x3C], name [esi+0x38], class word [0x20], type word [0x22]; 0x458BB0 = FORM LAYOUT ctor: 16+ rects 0x449C50 (slots at y 0xD2..0x4CE, x 0x78..0x456 = char-select screen buttons/inputs) - char-select enter + layout byte-level (F541/F349 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the char-select enter + form layout.",
+  "question": "How does char-select enter work?",
+  "method": "Disasm 0x458B20 + 0x458BB0-0x458D7E.",
+  "scope": "0x458B20-0x458D7E; records [0xCB8]/[0x10BC]; stage [0x930].",
+  "cell_analysis": {
+    "0x458B20": {"slot": "idx*0x40 records [0xCB8] (stage 0/3) or [0x10BC] (stage 2)", "gate": "[0x930] byte 0/2/3", "create": "0x458EC0 entity -> [esi+0x3C]", "fields": "name [0x38], class [0x20], type [0x22]"},
+    "0x458BB0": "form layout ctor: 16+ rects 0x449C50 (y 0xD2..0x4CE, x 0x78..0x456)"
+  },
+  "exe_trace": {
+    "enter_chain": "char select -> 0x458B20 slot record -> 0x458EC0 entity create -> [0x3C] -> enter game"
+  },
+  "audit_vs_exe": {
+    "F541": "5-stage machine CONFIRMED + enter body", "F349": "char select", "F540": "login flow"
+  },
+  "contrast": {
+    "stage_2_vs_others": "record base [0x10BC] stage 2 vs [0xCB8] 0/3",
+    "create_vs_select": "0x458EC0 create entity on enter"
+  },
+  "verdict": "Char-select enter PRIMARY-verified: slot records (stage-gated) + entity create + fields; form layout 16 rects; F541/F349 extended.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Enter + layout decoded from .text.",
+  "cross_refs": ["F541: stage machine", "F349: char select", "F540: login"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x458B20+0x30; 0x458BB0+0x20",
+  "notes": [
+    "slot record stride 0x40",
+    "class [0x20]/type [0x22] words",
+    "0x458EC0 = entity factory",
+    "form rects = 16 slots + inputs"
+  ]
+}

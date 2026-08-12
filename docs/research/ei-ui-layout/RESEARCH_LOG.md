@@ -7246,3 +7246,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 292-295（F598-F601：NPC 对话 4 类型 + 聊天窗渲染 + 命令表 + 弧闭合）；基线 Round 290=251b3bd → Round 295=b9a2111（**260 连发 F335-F601**）。
 - 落盘：handoff-refresh-16-evidence.json（F602，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 296。
+## Round 297 (F603) — 2026-08-12：角色选择进入 + 表单布局
+
+- **〔进入〕**0x458B20（F541 阶段 2/3）：槽 idx×0x40 记录 @ [0xCB8]（阶段 0/3）或 [0x10BC]（阶段 2）、门 [0x930] 字节（0/2/3）、0x458EC0 实体创建 → [esi+0x3C]、名 [0x38]、职业字 [0x20]、类型字 [0x22]。
+- **〔布局〕**0x458BB0 = 表单布局构造：16+ 矩形 0x449C50（y 0xD2..0x4CE、x 0x78..0x456 = 角色选择屏按钮/输入）——角色选择进入 + 布局字节级（F541/F349 扩展）。
+- 落盘：char-select-enter-layout-evidence.json（F603，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 297。
