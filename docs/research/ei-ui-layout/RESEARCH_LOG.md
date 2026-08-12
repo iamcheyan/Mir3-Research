@@ -8161,3 +8161,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**430 证据 JSON**；三服务 200；master 49056dc（**464 连发 F335-F805 已推**）。
 - **〔里程碑〕**Round 400 以来 90 轮（89 findings F717-F805）：**窗口系统 100%**（14 模式注册表 + 基类 + 控件/滚动条 + 全部绘制 F701-F770）+ **选项生命周期**（F776/F779/F788）+ **输入/消息**（F785/F786）+ **英雄生命周期**（F791/F792）+ **技能/显示**（F794/F795）+ **名字/头顶**（F800/F801）+ **行会/社交**（F803/F804）——客户端逆向表面接近完整；待办 write-only 槽/死亡泵体/BSS 缺口全解析。
 - 落盘：round-500-milestone-closure-evidence.json（F806，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 500。
+## Round 501 (F807) — 2026-08-12：HANDOFF 刷新 79（Round 499-500）
+
+- **〔刷新〕**HANDOFF 追加 Round 499-500（F806：Round 500 里程碑闭合）；基线 Round 498=0056799 → Round 500=82f32d8（**465 连发 F335-F806**）。
+- 落盘：handoff-refresh-79-evidence.json（F807，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 501。

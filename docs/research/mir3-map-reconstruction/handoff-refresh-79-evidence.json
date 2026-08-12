@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-79-2026-08-12-f807",
+  "title": "Round 501 (F807): HANDOFF refresh 79 - Rounds 499-500 (F805-F806: HANDOFF 78, Round 500 milestone closure), baseline Round 498=0056799 -> Round 500=82f32d8 (465 consecutive F335-F806), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 499-500.",
+  "question": "What changed since HANDOFF refresh 78?",
+  "method": "Append Round 499-500 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 499-500 appended (2 rounds, F805-F806)",
+    "baseline": "Round 498=0056799 -> Round 500=82f32d8 (465 consecutive F335-F806)",
+    "milestone": "Round 500 documented",
+    "key": "Round 500 milestone + all pending resolved"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F805": "refresh 78 baseline -> now refresh 79", "F335-F806": "465 rounds"
+  },
+  "contrast": {
+    "refresh_78_vs_79": "F806 milestone (1 finding)"
+  },
+  "verdict": "HANDOFF refreshed 79 (F807): Rounds 499-500 documented (Round 500 milestone), baseline 0056799 -> 82f32d8, 465 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F806 evidence.",
+  "cross_refs": ["F805: refresh 78", "F806: milestone"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 499-500 section to HANDOFF",
+  "notes": [
+    "465 consecutive shipping rounds F335-F806",
+    "Round 500 milestone documented",
+    "next: remaining deep corners, sim polish"
+  ]
+}
