@@ -7208,3 +7208,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 283-286（F590-F592：实体 HP 条 + 主 tick 18 阶段 + HUD/主循环弧）；基线 Round 282=ee78dbd → Round 286=f711837（**251 连发 F335-F592**）。
 - 落盘：handoff-refresh-14-evidence.json（F593，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 287。
+## Round 288 (F594) — 2026-08-12：大地图覆盖层/悬停渲染
+
+- **〔悬停〕**0x429A40：鼠标矩形命中（[0xC68] + [0xC78] 两区，PtInRect）、**坐标文本**（0x47BD70 格式 → 0x45E0C0 测量 → 0x45DE50 白 0xFFFFFF 居中 0x211/0x6E）、渐变条 0x466800（0x3E70F0F1/0x3EF0F0F1 + 0x4542F0 瓦片）+ 填充 0x45E570 0x5050A0、**帧 0x3C** WIL 绘制（0x45F2D0）+ 地图名标签区。
+- 落盘：worldmap-overlay-hover-evidence.json（F594，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 288。

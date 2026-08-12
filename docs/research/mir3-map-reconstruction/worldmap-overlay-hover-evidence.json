@@ -1,0 +1,37 @@
+{
+  "evidence_id": "worldmap-overlay-hover-2026-08-12-f594",
+  "title": "Round 288 (F594): World-map overlay/hover render - 0x429A40: mouse rect hit ([0xC68] + [0xC78] zones, PtInRect 0x4762B4), coord text (0x47BD70 fmt + 0x45E0C0 measure + 0x45DE50 draw white 0xFFFFFF centered 0x211/0x6E), gradient bar 0x466800 (0x3E70F0F1/0x3EF0F0F1 floats + 0x4542F0 tile) + fill 0x45E570 0x5050A0, frame 0x3C WIL blit (0x45F2D0) + map-name label regions - world-map hover/label layer byte-level (F584 render + this overlay)",
+  "date": "2026-08-12",
+  "objective": "Decode the world-map overlay/hover render.",
+  "question": "How does the world-map hover/label layer render?",
+  "method": "Disasm 0x429A40-0x429BD6.",
+  "scope": "0x429A40-0x429BD6; zones [0xC68]/[0xC78].",
+  "cell_analysis": {
+    "hover": "rect hit zones [0xC68] + [0xC78] (PtInRect)",
+    "coord_text": "0x47BD70 fmt -> 0x45E0C0 measure -> 0x45DE50 white 0xFFFFFF centered 0x211/0x6E",
+    "gradient": "0x466800 (0x3E70F0F1/0x3EF0F0F1) + 0x4542F0 tile 0x5600FC + fill 0x45E570 0x5050A0",
+    "frame_0x3C": "WIL blit 0x45F2D0 + map-name labels"
+  },
+  "exe_trace": {
+    "worldmap_overlay_chain": "world map paint -> 0x429A40 hover zone hit -> coord text + gradient bar + labels"
+  },
+  "audit_vs_exe": {
+    "F584": "world-map render (frame 0x82-0x85 + player arrow) + this overlay", "F588": "HUD bars share gradient family"
+  },
+  "contrast": {
+    "overlay_vs_base": "0x429A40 hover/labels vs 0x429740 base render",
+    "bar_vs_text": "gradient bar + coord text"
+  },
+  "verdict": "World-map overlay/hover PRIMARY-verified: hover zone hit + coord text + gradient bar + frame 0x3C + labels; F584 render extended with interaction layer.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Overlay render decoded from .text.",
+  "cross_refs": ["F584: world-map render", "F588: gradient family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x429A40+0x60",
+  "notes": [
+    "frame 0x3C = world-map frame",
+    "hover coord fmt 0x47BD70",
+    "bar fill 0x5050A0",
+    "two hover zones [0xC68]/[0xC78]"
+  ]
+}
