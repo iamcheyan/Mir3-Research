@@ -1,0 +1,37 @@
+{
+  "evidence_id": "game-object-reset-480grid-2026-08-12-f441",
+  "title": "Round 135 (F441): Game object reset 0x418EE0 - [esi+0x154] = 0x38400-dword grid buffer (230400 = 480x480 cells, rep stosd zeroed), 5th entity list vtable 0x4766F0 at [esi+0xE1154], reset order 0x418E40 (hero 0x40FF20/UI 0x426E80/map 0x43AF80/mapobj 0x452A30 + 5 list vtable rewrite), 8-dir walk vector 0x43D290 (returns 0-7 from point deltas) - F336 'main+0x154 painter array' = 480x480 grid buffer on game object",
+  "date": "2026-08-12",
+  "objective": "Document the game object reset (in-game enter) and the 0x154 grid buffer; close F336's painter-array base question.",
+  "question": "What is the game object's reset layout and the 0x154 buffer?",
+  "method": "Disasm 0x418E40 (reset) + 0x418EE0 (state init) + 0x43D290 (dir vector).",
+  "scope": "0x418E40-0x418ED7, 0x418EE0-0x4190A0, 0x43D290-0x43D3C5.",
+  "cell_analysis": {
+    "reset_0x418E40": {"order": "hero 0x2F8780 (0x40FF20) -> UI 0x2A548C (0x426E80) -> map 0xF5200 (0x43AF80) -> mapobj 0xE11E4 (0x452A30)", "lists": "rewrite 5 vtables: 0xE1154=0x4766F0, 0xE116C=0x4766D4, 0xE1184=0x4766B8, 0xE11B4=0x47669C, 0xE11CC=0x476680"},
+    "grid_buffer_0x154": {"size": "0x38400 dwords (230400) = 480x480 cells", "init": "rep stosd zeroed (0x418F73-0x418F7A)", "role": "F336 'main+0x154 painter array' - actual base = game obj +0x154 [candidate: entity bucket / visibility grid]"},
+    "dir_vector_0x43D290": {"semantics": "returns dir 0-7 from (x1-x2, y1-y2) deltas (8-dir walk)", "cases": "esi = sign(x), ecx = sign(y); combine -> 0-7; ±2 tolerance gates", "use": "entity move direction -> frame selection (F433 frame addressing)"},
+    "state_init_0x418EE0": {"fields": "0x4C=1 (active), [0x428220]=1.0f (scale), [0x35B2BC]=3/[0x35B2BD]=1 (map flags), [0x4279B0/B4/B8]=float 255/230/180 (color?), 0x24 dwords @ 0x428174, 0x41 dwords @ 0x50"}
+  },
+  "exe_trace": {
+    "game_obj": "0x8AB828; +0x154 grid; +0xE1154..+0xE11D0 lists; reset on in-game enter"
+  },
+  "audit_vs_exe": {
+    "F336": "'main+0x154 painter array' = 480x480 dword grid on game object (base corrected)",
+    "F440": "5th list vtable identified = 0x4766F0"
+  },
+  "contrast": {
+    "grid_vs_list": "480x480 grid (cell buckets) vs 5 linked lists (draw walks) - two structures [grid role pending]",
+    "ctor_vs_reset": "0x418B00 ctor (fresh) vs 0x418E40 reset (in-game re-enter)"
+  },
+  "verdict": "Game object reset PRIMARY-verified: 0x418E40 re-inits subsystems + rewrites 5 list vtables (5th = 0x4766F0); 0x418EE0 zeroes the [esi+0x154] 0x38400-dword (480x480) grid + state fields; 0x43D290 = 8-dir walk vector. F336 painter-array base corrected to game obj +0x154.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Reset + grid + dir vector decoded from .text; grid role = candidate.",
+  "cross_refs": ["F336: game loop", "F440: list containers", "F433: frame addressing (dir->frame)"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x418E40+0x40, 0x418EE0+0x70, 0x43D290+0x40",
+  "notes": [
+    "480x480 = 230400 cells; candidate: visible-entity bucket grid (y-order buckets)",
+    "0x43D290 dir byte feeds frame selection (8 directions)",
+    "reset preserves list containers (vtable rewrite only)"
+  ]
+}

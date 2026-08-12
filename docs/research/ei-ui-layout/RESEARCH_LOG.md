@@ -6403,3 +6403,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔容器〕**游戏对象 5 双向链表（0xE1158 绘制链 + A@0xE116C vtable 0x4766D4 / B@0xE1184 / C@0xE11B4 / D@0xE11CC）；节点 = {vtable 0x476448, +4 data, +8 prev, +0xC next} 16B；push-back 0x4232A0 / push-front 0x423340 / insert-after 0x4233E0 / unlink 0x423450；**容器内无 y 排序**（绘制序 = 插入序）。
 - **〔ctor〕**0x418B00 子系统初始化顺序（5 链表 → 地图 0xF5200 → 英雄 UI → 英雄实体 → 光场 → 6 绘制对象 → ...）；F336「4 画家数组」修正为 5 链表。
 - 落盘：entity-list-containers-evidence.json（F440，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 134。
+## Round 135 (F441) — 2026-08-12：游戏对象重置（0x154 = 480×480 网格缓冲）
+
+- **〔重置〕**0x418E40 进游戏重置：英雄/UI/地图/地图对象子系统 + 5 链表 vtable 重写（第 5 链表 vtable = **0x4766F0** @ 0xE1154）。
+- **〔网格〕**0x418EE0 状态初始化：**[esi+0x154] = 0x38400 dword = 480×480 单元网格缓冲**（rep stosd 清零）— F336「main+0x154 画家数组」基址修正为游戏对象 +0x154 [candidate: 实体桶/可见性网格]。
+- **〔方向〕**0x43D290 = 8 方向行走向量（点差 → dir 0-7，±2 容差）→ 帧选择（F433）。
+- 落盘：game-object-reset-480grid-evidence.json（F441，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 135。

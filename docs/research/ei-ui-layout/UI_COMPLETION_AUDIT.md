@@ -901,9 +901,14 @@ git diff --check
 - **5 双向链表 + ctor 顺序**（F336 4→5 修正）。
 - 落盘：`entity-list-containers-evidence.json`（F440）+ RESEARCH_LOG Round 134。
 
+## Round 135 (2026-08-12) — 游戏对象重置（Finding 441）
+
+- **480×480 网格缓冲 + 第 5 链表 vtable 0x4766F0 + 8 方向向量**。
+- 落盘：`game-object-reset-480grid-evidence.json`（F441）+ RESEARCH_LOG Round 135。
+
 ## Pending（未阻塞，持续队列）
 
-- 实体 y 排序（painter's algorithm）：容器内无排序 — 待查实体添加路径（0xE1170 插入侧）。
+- 实体 y 排序：0x154 网格候选为实体桶（行主序 = 隐式 y 序）— 待验证写入侧。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
