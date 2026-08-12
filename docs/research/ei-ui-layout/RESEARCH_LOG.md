@@ -7167,3 +7167,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔小地图〕**0x429630：缩放态 [0xD42]（1=放大 +0xA / 2=缩小 -0xA，钳制 0x2E/0，自动清除）、帧 0x33 → 0x466130 → 0x460240 绘制于 (0x113, 0x1DE-[0xD40]) 0x320×0x258、**6 快捷装备图标**（记录 [0xDA8] stride 0xC24、矩形 [0xD44] stride 0x10、0x430A40、x-[0xD40] 滚动）。
 - **〔大地图〕**0x429740：状态 [0x7DA1D4] 4 路 jt 0x42A83C（帧 0x82/0x83/0x84/0x85 经 0x466130）+ **玩家箭头 [0x7D9262]/[0x7D9264]**（2 字）+ 0x45FD50 绘制（([edi+0xC58]+0x2AC, [edi+0xC5C]+0x32)）+ HP/MP 条 [0x7DA109..0x7DA11D] + 相机 [0x7DA115]。
 - 落盘：minimap-hud-worldmap-render-evidence.json（F584，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 278。
+## Round 279 (F585) — 2026-08-12：聊天布局 + Mir3.ini 配置装载器
+
+- **〔聊天〕**0x403640：门 [0xD38] 字节两布局（0=主聊天：文本 [0xE3D] + 输入 [0xD39] + 矩形 [0xF44..0xF50] MoveWindow；1=私聊：交换 + 矩形 [0xF54..0xF60] + 参 0x2A）、SendMessageA 0x476290（0xCC）+ SetFocus + ShowWindow（旗标 [0x8AB7E8]）。
+- **〔配置〕**0x403780 = **Mir3.ini 配置装载器**：GetCurrentDirectoryA + '\' + 'Mir3.ini'（0x47AB5C）、GetPrivateProfileStringA：**Server/ServerAddr（默认 '192.168.0.200' 0x47AB4C）** + Param1 + Initial、GetPrivateProfileIntA：**ServerCount → [0xA38]**、Server → [0xA50] 列表——登录→服务器列表配置链。
+- 落盘：chat-layout-mir3-ini-evidence.json（F585，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 279。

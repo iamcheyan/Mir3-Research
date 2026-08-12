@@ -1,0 +1,35 @@
+{
+  "evidence_id": "chat-layout-and-mir3-ini-config-2026-08-12-f585",
+  "title": "Round 279 (F585): Chat layout + Mir3.ini config loader - 0x403640 chat window show/hide: gate [0xD38] byte -> two input layouts (0=main chat [0xE3D] text out + input [0xD39] + rect [0xF44..0xF50] MoveWindow; 1=whisper [0xE3D]/[0xD39] swapped + rect [0xF54..0xF60] + arg 0x2A), SendMessageA 0x476290 (0xCC WM?) + SetFocus 0x4762B8 + ShowWindow 0x4762AC (flag [0x8AB7E8]); 0x403780 = MIR3.INI CONFIG LOADER: GetCurrentDirectoryA 0x47613C + '\\' (0x47AB68) + 'Mir3.ini' (0x47AB5C), GetPrivateProfileStringA 0x4760D4: Server/ServerAddr (default '192.168.0.200' 0x47AB4C) + Param1 + Initial + GetPrivateProfileIntA 0x476138: ServerCount -> [0xA38], Server -> [0xA50] list; config chain login->server list byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the chat window layout + Mir3.ini config loader.",
+  "question": "How does the chat window layout + config load work?",
+  "method": "Disasm 0x403640 + 0x403780 + decode strings + IAT.",
+  "scope": "0x403640-0x403780; Mir3.ini; gate [0xD38].",
+  "cell_analysis": {
+    "0x403640": {"gate": "[0xD38] byte two layouts", "layout0": "main chat: [0xE3D] text + input [0xD39] + rect [0xF44..0xF50] MoveWindow", "layout1": "whisper: swapped + rect [0xF54..0xF60] + arg 0x2A", "ops": "SendMessageA 0x476290 (0xCC) + SetFocus + ShowWindow (flag [0x8AB7E8])"},
+    "0x403780": {"file": "GetCurrentDirectoryA + '\\' + 'Mir3.ini' (0x47AB5C)", "server": "GetPrivateProfileStringA: Server/ServerAddr default '192.168.0.200' (0x47AB4C) + Param1 + Initial", "count": "GetPrivateProfileIntA ServerCount -> [0xA38]", "list": "Server -> [0xA50] list nodes"}
+  },
+  "exe_trace": {
+    "config_chain": "login -> 0x403780 read Mir3.ini (Server/ServerAddr/Param1/Initial/ServerCount) -> server list -> connect"
+  },
+  "audit_vs_exe": {
+    "F540": "login stage machine", "F349": "char select", "F552": "server redirect"
+  },
+  "contrast": {
+    "main_vs_whisper": "gate [0xD38] = 0 main chat / 1 whisper layout",
+    "ini_vs_packet": "Mir3.ini local config vs server-pushed redirect (F552)"
+  },
+  "verdict": "Chat layout + Mir3.ini config PRIMARY-verified: chat show/hide with 2 input layouts; config loader reads Server/ServerAddr/Param1/Initial/ServerCount; login config chain byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Functions + strings + IAT decoded from .text/.data.",
+  "cross_refs": ["F540: login machine", "F552: server redirect", "F349: char select"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x403640+0x40; 0x403780+0x60",
+  "notes": [
+    "default server 192.168.0.200 (0x47AB4C)",
+    "ServerCount [0xA38] + Server list [0xA50]",
+    "chat layout rects [0xF44..0xF60]",
+    "flag [0x8AB7E8] = window visible"
+  ]
+}

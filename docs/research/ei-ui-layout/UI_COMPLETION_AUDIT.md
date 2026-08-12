@@ -1621,9 +1621,14 @@ git diff --check
 - **小地图缩放/帧 0x33/6 图标 + 大地图 4 态/玩家箭头**（F482 扩展）。
 - 落盘：`minimap-hud-worldmap-render-evidence.json`（F584）+ RESEARCH_LOG Round 278。
 
+## Round 279 (2026-08-12) — 聊天布局 + Mir3.ini 配置（Finding 585）
+
+- **双布局聊天窗 + 服务器配置链**（默认 192.168.0.200）。
+- 落盘：`chat-layout-mir3-ini-evidence.json`（F585）+ RESEARCH_LOG Round 279。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（小地图/大地图渲染闭合；下一弧：剩余深层角落）。
+- 无阻塞项（聊天/配置链闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
