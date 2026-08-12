@@ -931,6 +931,11 @@ git diff --check
 - **F336「4 画家数组」= 4 每帧实体桶网格**（+0x154/+0x2E4/+0x474/+0x604）。
 - 落盘：`four-bucket-grids-evidence.json`（F446）+ RESEARCH_LOG Round 140。
 
+## Round 141 (2026-08-12) — 视口滚动+渲染全解（Finding 447）
+
+- **相机跟随 = 滚动；瓦片 48×32 blit**（F438 字节确认）。
+- 落盘：`viewport-scroll-render-full-evidence.json`（F447）+ RESEARCH_LOG Round 141。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（网格角色已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。

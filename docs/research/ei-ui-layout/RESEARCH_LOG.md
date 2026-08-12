@@ -6440,3 +6440,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔公式〕**共享单元 ((dy*24−camX+wx)*400+probe)*4 + 0x64 格探测；0x419D40 = 完整每帧可见性通道（清零→4 链分桶→点击→剔除）。
 - **〔闭合〕**F336 谜底 = 4 桶网格（基 = 游戏对象 0x8AB828，非 main）。
 - 落盘：four-bucket-grids-evidence.json（F446，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 140。
+## Round 141 (F447) — 2026-08-12：视口滚动+渲染全解（相机跟随 = 滚动本身）
+
+- **〔滚动〕**0x43B1E0：视口 [0x14C..0x158] vs 英雄 ±0xC 门 → SetRect ±0x12 向英雄滚动（**跟随 = 滚动**）+ 瓦片预览通道（[0x108] 记录、**除 7 魔数 0x6DB6DB6D + 除 14** 库公式、attr≤2/lib≤0x45/0xFFFF 哨兵门、0x466130 装载）。
+- **〔渲染〕**0x43B440：清 [0x1B2] 0x6C000 dword 缓冲 → 遍历 cam [0x12C]/[0x130] → **0x45E8E0 屏幕 blit（x*48 + y*32 投影 = F438 字节确认）**。
+- 落盘：viewport-scroll-render-full-evidence.json（F447，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 141。

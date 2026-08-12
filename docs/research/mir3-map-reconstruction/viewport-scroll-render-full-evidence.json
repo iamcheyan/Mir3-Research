@@ -1,0 +1,40 @@
+{
+  "evidence_id": "viewport-scroll-render-full-2026-08-12-f447",
+  "title": "Round 141 (F447): Viewport scroll+render FULL - 0x43B1E0 = scroll toward hero (SetRect ±0x12 on [0x14C..0x158] when outside ±0xC gate) + tile preview pass (tile records [0x108], div-by-7 0x6DB6DB6D + div-by-14 lib formula, attr<=2/lib<=0x45/frame!=0xFFFF gates, 0x466130 load); 0x43B440 = tile renderer: zeroes [0x1B2] 0x6C000-dword buffer, iterates viewport [0x12C]/[0x130], blits each tile sprite to screen 0x8AB7A8 via 0x45E8E0 with 48x32 projection (shl 5 = y*32, lea*3<<4 = x*48 - F438 confirmed) - camera follow = the scroll itself",
+  "date": "2026-08-12",
+  "objective": "Decode the viewport scroll + tile render fully; resolve camera-follow mechanics.",
+  "question": "How does the camera follow the hero and how are visible tiles rendered?",
+  "method": "Full disasm 0x43B1E0-0x43B5F8 (scroll+preview) + 0x43B440-0x43B5F8 (tile render).",
+  "scope": "0x43B1E0-0x43B5F8; map obj 0x14C..0x158 viewport, 0x108 tiles, 0x12C/0x130 cam, 0x1B2 buffer.",
+  "cell_analysis": {
+    "scroll_0x43B1E0": {"gate": "viewport [0x14C]/[0x154]/[0x150]/[0x158] vs hero±0xC -> skip if centered", "action": "SetRect [0x4762B0](viewport, hero x±0x12, y±0x12) then re-render (follow = scroll toward hero)"},
+    "preview_pass": {"range": "viewport [0x14C..0x154] x [0x150..0x158]", "tile_data": "[0x108] record array; index = (x+y)*14-cell math", "lib_formula": "attr byte /7 (0x6DB6DB6D magic) + /14 (idiv 0xE) -> lib idx (F343 (row+1)*14 family)", "gates": "attr <= 2, lib <= 0x45 (69), frame != 0xFFFF (F378 sentinel)", "load": "0x466130 (F436) with frame + appearance 0x5600FC"},
+    "tile_render_0x43B440": {"buffer": "[ebp+0x1B2] 0x6C000 dwords zeroed (F379)", "range": "cam [0x12C]/[0x130] + 0x18 (24px step)", "blit": "0x45E8E0 to screen 0x8AB7A8 with args (frame dims, y*32 via shl 5, x*48 via lea*3<<4, 0x480/0x300)"},
+    "projection_confirmed": "x*48 + y*32 = F438 entity tile rate (map render uses same)"
+  },
+  "exe_trace": {
+    "cam_chain_full": "hero pos [0x2F884C]/[0x2F8850] (tick 0x41BBF1) -> 0x43B1E0 scroll (viewport [0x14C]) -> 0x43B440 render -> 0x45E8E0 screen",
+    "map_cam": "[0xF532C]/[0xF5330] = visibility-pass cam (0x419D40) - separate read path"
+  },
+  "audit_vs_exe": {
+    "F422": "scroll composite expanded (preview pass + render loop)",
+    "F379": "0x6C000 buffer + tile record read confirmed",
+    "F438": "48x32 projection byte-confirmed in tile blit",
+    "F378": "0xFFFF empty sentinel gate confirmed"
+  },
+  "contrast": {
+    "scroll_vs_render": "0x43B1E0 = scroll+preview (per-tile object draw); 0x43B440 = full tile render into buffer",
+    "follow_vs_abs": "camera follow = incremental scroll (±0x12) not absolute set"
+  },
+  "verdict": "Viewport scroll+render FULL PRIMARY-verified: 0x43B1E0 scrolls toward hero (SetRect ±0x12) + preview pass (attr/7+14 lib formula, 0xFFFF gate); 0x43B440 renders tiles into 0x6C000 buffer and blits 48x32-projected sprites to screen 0x8AB7A8 via 0x45E8E0. Camera follow = the scroll itself.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Both functions fully disassembled; projection constants byte-confirmed.",
+  "cross_refs": ["F422: scroll composite", "F379: viewport buffer", "F438: 48x32 projection", "F378: sentinel", "F436: frame loader"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x43B1E0+0x80, 0x43B440+0x80",
+  "notes": [
+    "0x6DB6DB6D = div-by-7 magic; idiv 0xE = div-by-14 (F343 formula family)",
+    "0x45E8E0 = screen blit (F331/F422 chain)",
+    "24px tile step at 0x43B47B/0x43B4DE = half-tile render grid"
+  ]
+}
