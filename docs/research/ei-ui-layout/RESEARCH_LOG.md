@@ -8958,3 +8958,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔HP 条〕**0x4542F0：实体坐标 [ebx]/[edi] lerp 0x476364（世界坐标）→ 矩阵构建 0x467000 D3DX + 0x466CE0/0x466F20 blit + **条帧 0x112 @ +0x13F9C** + vtable[0x40]/[0x14]/[0x30]/[0x2C]/[0x8C]/[0x64]/[0x18] 精灵操作 + 失败 0x80004005——HP 条 blit 完整（F590/F903）。
 - 落盘：hp-bar-blit-full-evidence.json（F990，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 684。
+## Round 685 (F991) — 2026-08-12：HP 条系统闭合（F590/F903/F990 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**614 证据 JSON**；三服务 200；master de5e080（**649 连发 F335-F990 已推**）。
+- **〔弧〕**条系统（F590）+ 条注册表（F903）+ blit 全量（F990）——**HP 条完整**（注册表 type<5 slot<0x8C + lerp + 矩阵 + 帧 0x112）；HUD/实体覆盖 100%。
+- 落盘：hp-bar-system-closure-evidence.json（F991，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 685。

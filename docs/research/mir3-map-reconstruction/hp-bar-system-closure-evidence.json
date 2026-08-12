@@ -1,37 +1,37 @@
 {
-  "evidence_id": "hp-bar-system-closure-2026-08-12-f904",
-  "title": "Round 598 (F904): HP bar system CLOSED (F590/F885/F891/F903) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 4a82be2 (562 consecutive F335-F903), 528 evidence JSONs; arc: bar registry (F590) + HUD status (F885) + map overlay (F891) + registry/blit (F903) - HP bar system COMPLETE byte-level (registry type<5 slot<0x8C + vtable render + matrix + consumers), bar surface 100%",
+  "evidence_id": "hp-bar-system-closure-2026-08-12-f991",
+  "title": "Round 685 (F991): HP bar system CLOSED (F590/F903/F990) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master de5e080 (649 consecutive F335-F990), 614 evidence JSONs; arc: bar system (F590) + bar registry (F903) + blit full (F990) - HP bar COMPLETE byte-level (registry type<5 slot<0x8C + lerp + matrix + frame 0x112); HUD/entity overlay 100%",
   "date": "2026-08-12",
   "objective": "Close the HP bar system arc.",
   "question": "Is the HP bar system fully documented?",
   "method": "Full validation + arc consolidation.",
   "scope": "Tools/, docs/, services.",
   "cell_analysis": {
-    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "528 JSONs"},
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "614 JSONs"},
     "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
-    "arc": {"F590": "registry", "F885": "status", "F891": "overlay", "F903": "registry/blit"},
-    "bars": "registry + render + consumers = COMPLETE",
-    "milestone": "562 consecutive rounds F335-F903"
+    "arc": {"F590": "bars", "F903": "registry", "F990": "blit"},
+    "hpbar": "registry + blit = COMPLETE",
+    "milestone": "649 consecutive rounds F335-F990"
   },
   "exe_trace": {
     "verify": "exit 0"
   },
   "audit_vs_exe": {
-    "F335-F903": "562 rounds pushed; HP bar complete"
+    "F335-F990": "649 rounds pushed; HP bar system complete"
   },
   "contrast": {
     "registry_vs_blit": "slots + render",
-    "hud_vs_overlay": "status + map"
+    "overlay": "entity + HUD"
   },
-  "verdict": "HP bar system CLOSED (F904): registry + render + consumers all byte-level; validation green, 562 consecutive rounds, 528 evidence JSONs.",
+  "verdict": "HP bar system CLOSED (F991): registry + lerp + blit all byte-level; validation green, 649 consecutive rounds, 614 evidence JSONs.",
   "evidence_level": "derived-tooling (validators) + secondary (services)",
-  "evidence_level_note": "Validation from tool runs; arc content from F590/F885/F891/F903.",
-  "cross_refs": ["F590", "F885", "F891", "F903"],
+  "evidence_level_note": "Validation from tool runs; arc content from F590/F903/F990.",
+  "cross_refs": ["F590", "F903", "F990"],
   "tool": "compileall / verify / node / json.tool / curl / git",
   "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
   "notes": [
-    "562 consecutive shipping rounds F335-F903",
-    "HP bar 100%",
-    "next: HANDOFF refresh 112, remaining corners"
+    "649 consecutive shipping rounds F335-F990",
+    "HP bar system 100%",
+    "next: HANDOFF refresh 142, remaining corners"
   ]
 }

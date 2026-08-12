@@ -4209,3 +4209,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HP 条 blit 完整；下一弧：剩余深层角落）。
+## Round 685 (2026-08-12) — HP 条系统闭合（Finding 991）
+
+- **649 连发 + 614 证据 + HP 条完整**。
+- 落盘：`hp-bar-system-closure-evidence.json`（F991）+ RESEARCH_LOG Round 685。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（HP 条完整；下一弧：HANDOFF 刷新 142/剩余角落）。
