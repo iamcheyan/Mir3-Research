@@ -7026,3 +7026,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模式 F = 行会公告编辑窗〕**[0x52E5C] 绘制 0x43E3C0：占位串 '[行会公告，请自行修改公告内容.]'（0x47C440）+ '[行会修改...]'（0x47C460）+ 文本缓冲 [0x53028] + 开窗 SetFocus（F550）。
 - **〔完整〕14 窗口全定名**：0 背包/1 装备/2 商店/3 交易/4 行会/6 组队/7 角色状态/8 公告/9 NPC 对话/B 任务/C 选项/D 坐骑/E 技能书/F 行会公告编辑。
 - 落盘：window-registry-complete-evidence.json（F559，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 253。
+## Round 254 (F560) — 2026-08-12：窗口命中测试 + 输入路由
+
+- **〔命中〕**0x42AAB0(x,y)：开窗列表**尾部优先**遍历（[0xD30] 尾 → [0xD2C] 游标，最顶优先）、模式 jt 0x42ABE8 → **窗口 RECT @ obj+0x14**（0:[0x656C] 1:[0x29CFC] 2:[0x331A0] 3:[0x339B4] 4:[0x47094] 6:[0x4784C] 7:[0x47C40] 8:[0x50804] 9:[0x51168] B:[0x51700] C:[0x518F8] D:[0x52130] E:[0x52508]，F/5/A 缺席）、PtInRect 0x4762B4 → 悬停模式。
+- **〔输入路由〕**模式 → 处理器：0→0x42FAB0 **背包悬停**（门 [0x7243C4]=hero+0x20、槽 0x42F240、物品 [背包+0x774+槽*0xC20]、提示 0x4341F0 F464）；3→0x416790 **交易悬停**（PtInRect [edi+0x5C]、槽 0x416950 F544、物品 [交易+0x5B8+槽*0xC20]、提示 0x4341F0）；1→0x44B6B0、2→0x44E650、7→0x450AC0。
+- **〔标记〕**背包 [0x2C4] 600 字（0xFFFF 空；0x42FB20 按 id 清 0x258 项，+0x3E8）。
+- 落盘：window-hit-test-input-router-evidence.json（F560，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 254。

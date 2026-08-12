@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-hit-test-input-router-2026-08-12-f560",
+  "title": "Round 254 (F560): Window hit-test 0x42AAB0 + input router - 0x42AAB0(x,y): walk open-windows list tail-first ([0xD30] tail -> [0xD2C] cursor, topmost-first), mode jt 0x42ABE8 -> window RECT at obj+0x14 (0:[0x656C] 1:[0x29CFC] 2:[0x331A0] 3:[0x339B4] 4:[0x47094] 6:[0x4784C] 7:[0x47C40] 8:[0x50804] 9:[0x51168] B:[0x51700] C:[0x518F8] D:[0x52130] E:[0x52508], F/5/A omitted), PtInRect 0x4762B4 -> hovered mode; input router: mode -> handler 0->0x42FAB0 bag hover (gate [0x7243C4]=hero+0x20, slot 0x42F240, bag items [bag+0x774+slot*0xC20], tooltip 0x4341F0 F464), 1->0x44B6B0, 2->0x44E650, 3->0x416790 trade hover (PtInRect [edi+0x5C], slot 0x416950 F544, items [trade+0x5B8+slot*0xC20], tooltip 0x4341F0), 7->0x450AC0; bag markers [0x2C4] 600 words (0xFFFF empty, 0x42FB20 clear by id 0x258 entries) - mouse routing layer byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the window hit-test and input routing layer.",
+  "question": "How does the client route mouse input to windows?",
+  "method": "Disasm 0x42AAB0-0x42AC30 + 0x42FAB0/0x416790 + jt 0x42ABE8.",
+  "scope": "0x42AAB0; jt 0x42ABE8; input handlers; RECT table obj+0x14.",
+  "cell_analysis": {
+    "hit_test": {"0x42AAB0": "(x, y) -> mode", "walk": "list tail-first [0xD30]->[0xD2C] (topmost-first)", "jt": "0x42ABE8 mode -> RECT obj+0x14", "rects": "0:[0x656C] 1:[0x29CFC] 2:[0x331A0] 3:[0x339B4] 4:[0x47094] 6:[0x4784C] 7:[0x47C40] 8:[0x50804] 9:[0x51168] B:[0x51700] C:[0x518F8] D:[0x52130] E:[0x52508]", "test": "PtInRect 0x4762B4"},
+    "input_router": {"0": "0x42FAB0 bag hover (gate [0x7243C4]=hero+0x20, slot 0x42F240, items [bag+0x774+slot*0xC20], tooltip 0x4341F0 F464)", "1": "0x44B6B0", "2": "0x44E650", "3": "0x416790 trade hover (PtInRect [edi+0x5C], slot 0x416950 F544, items [trade+0x5B8+slot*0xC20], tooltip 0x4341F0)", "7": "0x450AC0"},
+    "markers": "bag [0x2C4] 600 words (0xFFFF empty; 0x42FB20 clears 0x258 by id +0x3E8)"
+  },
+  "exe_trace": {
+    "input_chain": "mousemove -> 0x42AAB0 hit-test -> mode -> input handler -> slot hit -> tooltip 0x4341F0"
+  },
+  "audit_vs_exe": {
+    "F464": "bag hover 0x42FAB0 -> 0x4341F0 CONFIRMED", "F544": "trade slot 0x416950 CONFIRMED", "F313": "window RECT at obj+0x14 CONFIRMED", "F550": "open list [0xD28..0xD38]"
+  },
+  "contrast": {
+    "paint_vs_input": "paint dispatcher 0x4280F0 (forward walk) vs hit-test 0x42AAB0 (backward walk)",
+    "bag_vs_trade": "items [bag+0x774] vs [trade+0x5B8], both stride 0xC20, both -> 0x4341F0"
+  },
+  "verdict": "Window hit-test + input router PRIMARY-verified: 0x42AAB0 topmost-window hit-test (RECT obj+0x14, PtInRect), input dispatch to bag/trade hover handlers (0x4341F0 tooltip), marker array [0x2C4]. Mouse routing layer byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hit-test + handlers decoded; F464/F544 cross-check.",
+  "cross_refs": ["F464: bag hover", "F544: trade slot", "F313: RECT +0x14", "F550: open list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42AAB0+0x40; 0x42FAB0+0x20; 0x416790+0x20",
+  "notes": [
+    "gate [0x7243C4] = [hero+0x20] input busy flag",
+    "item stride 0xC20 = item record (F464)",
+    "0x42FB20 = clear 600 bag markers by item id",
+    "mode F (guild notice editor) has no hit rect"
+  ]
+}
