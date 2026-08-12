@@ -600,6 +600,12 @@ git diff --check
 - **Mapinfo（服务端表）与客户端 0x422960 互补**。
 - 落盘：`map-connections-verification-evidence.json`（F381）+ RESEARCH_LOG Round 75。
 
+## Round 76 (2026-08-12) — 地图名表验证（Finding 382）
+
+- **双源差异**：mapnames.py 遗留库 vs Mapinfo 服务端；客户端显示服务端推送名（0x7776A0 缓冲）→ **Mapinfo = 运行时真相**。
+- **覆盖**：365 命名 / 253 端点未命名。
+- 落盘：`map-name-table-verification-evidence.json`（F382，secondary）+ RESEARCH_LOG Round 76。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

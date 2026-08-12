@@ -1,0 +1,42 @@
+{
+  "evidence_id": "map-name-table-verification-2026-08-12-f382",
+  "title": "Round 76 (F382): Map name table verification - TWO name sources differ (mapnames.py legacy-DB: 0=比奇城/1=失乐园; Mapinfo server: 0=比奇县/1=道馆/D001=半兽洞穴1层) + client displays server-pushed name (0x7776A0/0x2F8788 buffer) + 253 link endpoints unnamed in Mapinfo",
+  "date": "2026-08-12",
+  "objective": "Verify the map Chinese-name tables: reconcile the mapnames.py (legacy DB) vs Mapinfo.txt (server) name sources, determine client-side usage, and measure naming coverage.",
+  "question": "Which name table is authoritative, and how do the two sources differ?",
+  "method": "mapnames.py EXPLICIT table vs /tmp/map_links.json names (Mapinfo); link-endpoint name coverage; client name-buffer usage cross-ref (F331/F333).",
+  "scope": "Tools/maps/mapnames.py; Mapinfo.txt-derived names; client 0x7776A0/0x2F8788.",
+  "cell_analysis": {
+    "name_sources": {
+      "mapnames_legacy_db": "0=比奇城, 1=失乐园, 2=潘夜村, 3=沙巴克城, 4=诺马村, 10=比奇城堡, 11=道馆; 244 DB maps + 14 legacy (258 total)",
+      "mapinfo_server": "0=比奇县, 1=道馆, 3=沙巴克城, 01=边境城市, 02=银杏山谷, D001=半兽洞穴1层, D401=废矿矿山入口; 365 names",
+      "discrepancies": "0.map: 比奇城(DB) vs 比奇县(server); 1.map: 失乐园(DB) vs 道馆(server); D001: 幽灵森林(DB) vs 半兽洞穴1层(server)",
+      "agreements": "3.map=沙巴克城 both"
+    },
+    "client_usage": "client displays map name from server-pushed buffer 0x7776A0/0x2F8788 (F331/F333: packet handler writes); NO client-side name table - both files are secondary evidence",
+    "coverage": "365 named maps / 678 link endpoint refs -> 253 endpoints unnamed in Mapinfo (server names only defined for visited maps)",
+    "api": "/api/maps uses mapnames.py legacy names (0=比奇城) - viewer-side choice"
+  },
+  "exe_trace": {
+    "name_buffer": "0x7776A0 = hero map-name/group-name slot (F331 dual role; 0x2F8788 = hero+0x20E4 offset)"
+  },
+  "audit_vs_exe": {
+    "F331": "name buffer server-written confirmed",
+    "F333": "map-change handler stores map name (0x422960 -> 0x2F8788)"
+  },
+  "contrast": {
+    "legacy_vs_server": "legacy DB = community/older naming; Mapinfo = server display names (client shows server's)",
+    "viewer_vs_client": "mapviewer uses legacy names; client displays server names"
+  },
+  "verdict": "Map name table verified (secondary evidence): two sources differ (mapnames.py legacy DB vs Mapinfo server); the CLIENT displays the server-pushed name (0x7776A0 buffer, no client-side table), so Mapinfo names are the runtime truth for EI 3.0. Coverage: 365 named, 253 link endpoints unnamed.",
+  "evidence_level": "secondary (both name tables are server/DB data; client has no name table)",
+  "evidence_level_note": "Names come from server Mapinfo + legacy DB (secondary per policy); client buffer usage primary-static (F331/F333).",
+  "cross_refs": ["F331: 0x7776A0 buffer", "F333: map change name store", "F381: map connections (Mapinfo)"],
+  "tool": "mapnames.py; map_links.json; python3",
+  "reproduce": "compare Tools/maps/mapnames.py EXPLICIT vs /tmp/map_links.json names for 0/1/D001",
+  "notes": [
+    "viewer /api/maps could switch to Mapinfo names for server-accurate display [future]",
+    "D001 幽灵森林(DB) vs 半兽洞穴1层(server): server name = what players see",
+    "253 unnamed endpoints = maps server never names (interior/instances)"
+  ]
+}

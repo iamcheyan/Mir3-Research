@@ -6108,3 +6108,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0.map 150 链〕**Town Area→Bug Cave Entrance (19.62,37.25)、→Ant Cave Entrance (161.67,34.17)、→D001 Red Moon Door (218.71,124.57)——完整 mapinfo 传送数据。
 - **〔互补〕**Mapinfo = 服务端传送表；客户端经 0x33/0x27A → 0x422960 接收坐标（F366）——两套互补。
 - 落盘：map-connections-verification-evidence.json（F381，derived-tooling；源 Mapinfo 次级）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 75。
+
+## Round 76 (F382) — 2026-08-12：地图名表验证（双源差异 + 客户端服务端推送名）
+
+- **〔双源〕**mapnames.py 遗留库（0=比奇城/1=失乐园/D001=幽灵森林）vs Mapinfo 服务端（0=比奇县/1=道馆/D001=半兽洞穴1层）——**客户端显示服务端推送名**（0x7776A0/0x2F8788 缓冲，无客户端名表，F331/F333）→ **Mapinfo 名 = EI 3.0 运行时真相**；3.map=沙巴克城双源一致。
+- **〔覆盖〕**365 命名 / 678 链端点 → **253 端点 Mapinfo 未命名**（服务端只给访问过的图命名）。
+- 落盘：map-name-table-verification-evidence.json（F382，secondary；缓冲用法 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 76。
