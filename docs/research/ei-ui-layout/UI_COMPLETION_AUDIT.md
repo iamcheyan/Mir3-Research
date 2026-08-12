@@ -1446,9 +1446,14 @@ git diff --check
 - **12 槽 × 0xC2C + 金币 '금전' 特例**（F520 语义 → 字节级）。
 - 落盘：`recv1-mapval7-bag-body-evidence.json`（F549）+ RESEARCH_LOG Round 243。
 
+## Round 244 (2026-08-12) — 窗口开关分派器（Finding 550）
+
+- **16 模式 0x42ADB0 + 开窗列表 [hero+0xD24]**（mapval1 = 行会开 + 背包定位修正）。
+- 落盘：`window-toggle-dispatcher-evidence.json`（F550）+ RESEARCH_LOG Round 244。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（recv1 处理器逐个函数体深化中）。
+- 无阻塞项（recv1 处理器函数体深化中）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

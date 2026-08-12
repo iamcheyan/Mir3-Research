@@ -6960,3 +6960,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔函数体〕**0x4204FD：**12 槽 × 0xC2C**（[0x2D93EC]，门 [ebp-0xC] 类型）、0x308 双字复制 → 0x42FC20 反序列化；待装备 [0x2A54AC] **金币特例**：strcmp 名 [0x2A54C8] vs 0x47ADB4 **'금전'**（cp949/EUC-KR = 金钱）→ 跳过入包（计数 [0x35B1E8] += [0x2EB840]），否则反序列化 [0x2A54C4]；清 0x30E 双字于 [0x2A54AC]；腰带 [0x2EB848]；行会关 gate [0x2D8E58] → 0x42AC50。
 - **〔名表〕**0x47ADC4 = 12 指针（밤1-10 栗子 + 行动速度 : 움직이지않음/非常缓慢）——**客户端本地 KR 特殊名**（F478-493 数据包驱动论微调）。
 - 落盘：recv1-mapval7-bag-body-evidence.json（F549，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 243。
+## Round 244 (F550) — 2026-08-12：窗口开关分派器 0x42ADB0（16 模式）
+
+- **〔分派〕**0x42ADB0（hero 方法，jt 0x42B3E4）：每模式 = 窗口对象 hero+OFF + 开旗标 obj+0x30；开 = 0x42AC30 插入开窗列表（0x449870 @ [hero+0xD24]）+ show(1)；关 = 0x42AC50 按模式解链（节点 {+0 模式,+4 next,+8 prev}，头 [0xD28] 计数 [0xD34] 长度 [0xD38]）。
+- **〔模式表〕**0=背包管理器 [0x6554]、1:[0x29CE4]、2:[0x33188]、3=行会 [0x3399C]、4:[0x4707C]、6=商店 [0x47834]（ctor 0x398/0x399 @ [0x47B70]）、7:[0x47C28]、8=大地图 [0x507EC]（0x4762BC blit）、9:[0x51150]、B:[0x516E8]、C:[0x518E0]、D:[0x52118]、E:[0x524F0]、F:[0x52E5C]（缓冲 [0x53028] + 旗标 0x8AA498）；5/A 桩。
+- **〔mapval1〕**0x420474：OpenWindow(3) + 0x3C 行会名复制（packet+0x10 → [hero+0x2EB800]）；主门 [0x2ABA10] 清 → OpenWindow(0) 背包 + 0x423FA0 定位 **(518,0)——0x206 = x 坐标 518，非 msgid**（修正）。
+- 落盘：window-toggle-dispatcher-evidence.json（F550，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 244。

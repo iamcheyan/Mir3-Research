@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-toggle-dispatcher-2026-08-12-f550",
+  "title": "Round 244 (F550): Window toggle dispatcher 0x42ADB0 (hero method, 16 modes jt 0x42B3E4) - each mode: window object ptr at hero+OFF + open gate at obj+0x30; toggle = gate set -> 0x42AC50 unlink from open-windows list ([hero+0xD24..0xD38] nodes {+0 mode,+4 next,+8 prev}, insert 0x449870 at +0xD24) + show(0); gate clear -> 0x42AC30 insert + show(1) + gate=1; mode map: 0:[0x6554]=bag manager (F464 0x42FC20, 0x423FA0 position), 1:[0x29CE4], 2:[0x33188], 3:[0x3399C]=guild, 4:[0x4707C], 6:[0x47834]=store (ctor 0x398/0x399 @ [0x47B70]), 7:[0x47C28], 8:[0x507EC]=world-map (0x4762BC blit, rect [0x51140]), 9:[0x51150], 0xB:[0x516E8], 0xC:[0x518E0], 0xD:[0x52118], 0xE:[0x524F0], 0xF:[0x52E5C] (buffer [0x53028], flag 0x8AA498), 5/0xA stubs; mapval1 guild-open (0x420474): OpenWindow(3) + 0x3C guild name copy packet+0x10 -> [hero+0x2EB800], main gate [0x2ABA10] -> OpenWindow(0) bag + position (518,0) via 0x423FA0 (0x206=518 x, not msgid)",
+  "date": "2026-08-12",
+  "objective": "Decode the window open/close dispatcher + mapval1 guild body.",
+  "question": "How do client windows open/close, and what does mapval1 do?",
+  "method": "Disasm 0x42ADB0 all 16 modes + jt 0x42B3E4 + 0x42AC30/0x42AC50/0x423FA0 + mapval1 0x420474.",
+  "scope": "0x42ADB0-0x42B3E4; hero window list [0xD24..0xD38]; mapval1 0x420474.",
+  "cell_analysis": {
+    "dispatcher": {"16 modes": "jt 0x42B3E4 (5/0xA stubs)", "obj_gate": "window obj hero+OFF, gate obj+0x30", "open": "0x42AC30 insert (0x449870 at [hero+0xD24]) + show(1) + gate=1", "close": "0x42AC50 unlink by mode ({+0 mode,+4 next,+8 prev}, head [0xD28], cnt [0xD34], len [0xD38]) + show(0)"},
+    "mode_map": {"0": "bag manager [0x6554] (0x42FC20 F464, 0x423FA0 position)", "3": "guild [0x3399C]", "6": "store [0x47834] (ctor 0x398/0x399 @ [0x47B70])", "8": "world-map [0x507EC] (0x4762BC blit, rect [0x51140])", "0xF": "[0x52E5C] (buffer [0x53028], flag 0x8AA498)", "others": "1:[0x29CE4] 2:[0x33188] 4:[0x4707C] 7:[0x47C28] 9:[0x51150] B:[0x516E8] C:[0x518E0] D:[0x52118] E:[0x524F0]"},
+    "mapval1": {"gate": "[hero+0x339CC] (guild)", "open": "OpenWindow(3) + 0x3C guild name copy packet+0x10 -> [hero+0x2EB800]", "bag": "gate [0x2ABA10] clear -> OpenWindow(0) + position (518,0) via 0x423FA0 (0x206 = x=518, NOT msgid)"}
+  },
+  "exe_trace": {
+    "open_chain": "packet/UI -> 0x42ADB0(mode) -> gate? -> list insert/remove + show -> window render",
+    "mapval1_chain": "msg 0x26D? -> guild open + name + bag to right"
+  },
+  "audit_vs_exe": {
+    "F520": "mapval1 gate [0x2D8E58] = [hero+0x339CC] confirmed", "F464": "0x42FC20 bag deserialize", "F451": "hero 0x2A548C", "F336": "linked-list family"
+  },
+  "contrast": {
+    "list_vs_gate": "open-windows mode list [0xD24] + per-window gate obj+0x30 both maintained",
+    "msgid_vs_coord": "0x206 in mapval1 = x 518 position arg (F524 senders unaffected)"
+  },
+  "verdict": "Window toggle dispatcher PRIMARY-verified: 16-mode 0x42ADB0 (14 real windows), open-windows list at [hero+0xD24..0xD38], insert/remove helpers; mapval1 = guild open + name + bag positioning. Corrections: 0x423FA0 = position clamp (not sender).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Full dispatcher + mode table + mapval1 body decoded from .text.",
+  "cross_refs": ["F520: recv1 semantics", "F464: bag deserialize", "F336: list family", "F451: hero base"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42ADB0+0x40 per mode; jt 0x42B3E4; 0x420474+0x80",
+  "notes": [
+    "window show = vtable[0x10](bool)",
+    "guild name buffer [hero+0x2EB800]",
+    "bag manager = hero+0x6554 = main+0x2AB9E0",
+    "0x423FA0 clamp 0x23A/0x235 = screen-edge clamp"
+  ]
+}
