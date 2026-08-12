@@ -3457,3 +3457,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体渲染完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 591 (2026-08-12) — HUD caption 分派尾部（Finding 897）
+
+- **15 窗口处理器 + 全重置**（F580 完整）。
+- 落盘：`caption-dispatch-tail-evidence.json`（F897）+ RESEARCH_LOG Round 591。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（caption 分派完整；下一弧：剩余深层角落）。

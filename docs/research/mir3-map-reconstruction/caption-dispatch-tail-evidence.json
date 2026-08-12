@@ -1,0 +1,37 @@
+{
+  "evidence_id": "caption-dispatch-tail-2026-08-12-f897",
+  "title": "Round 591 (F897): Caption dispatch tail (F580) - 0x42C511 scrollbar 0x417C80 ([0x61BC] ratio) + 0x42C559 input ROUTER -> jt 0x42C798 (15 window handlers): bag 0x430650/equip 0x44CED0/shop 0x44F110/trade 0x416E70/guild 0x425DE0/party 0x424770/status 0x450B70/announce 0x414CF0/quest 0x448430/options 0x441A20/mount 0x426B90/skill 0x43AC80/dialog 0x440560 + 0x42C6A7 DEFAULT reset-all (13 windows hide) - HUD caption dispatch COMPLETE (F580/F587 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the caption dispatch tail.",
+  "question": "How does HUD caption dispatch window actions?",
+  "method": "Disasm 0x42C511-0x42C720.",
+  "scope": "0x42C511-0x42C720; jt 0x42C798.",
+  "cell_analysis": {
+    "0x42C511": "scrollbar 0x417C80",
+    "0x42C559": "router -> jt 0x42C798 15 handlers",
+    "handlers": "bag 0x430650 / equip 0x44CED0 / shop 0x44F110 / ... / dialog 0x440560",
+    "0x42C6A7": "default reset-all 13 windows"
+  },
+  "exe_trace": {
+    "caption_chain": "scrollbar -> router -> window handler | reset-all"
+  },
+  "audit_vs_exe": {
+    "F580": "caption dispatch", "F587": "click", "F558": "windows"
+  },
+  "contrast": {
+    "router_vs_handlers": "jt + 15",
+    "window_vs_reset": "handlers + hide-all"
+  },
+  "verdict": "Caption dispatch tail PRIMARY-verified: router + 15 handlers; F580 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Caption dispatch decoded from .text.",
+  "cross_refs": ["F580: caption", "F587: click", "F558: windows"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42C511+0x10; 0x42C559+0x20",
+  "notes": [
+    "jt 0x42C798 15 handlers",
+    "bag 0x430650",
+    "dialog 0x440560",
+    "reset-all 0x42C6A7"
+  ]
+}

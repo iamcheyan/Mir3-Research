@@ -8550,3 +8550,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 587-589（F894-F895：实体投影/阴影 + 实体渲染闭合）；基线 Round 586=0008576 → Round 589=17ef963（**554 连发 F335-F895**）。
 - 落盘：handoff-refresh-109-evidence.json（F896，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 590。
+## Round 591 (F897) — 2026-08-12：HUD caption 分派尾部（F580）
+
+- **〔分派〕**0x42C511 滚动条 0x417C80（[0x61BC] 比例）+ 0x42C559 **输入路由器 → jt 0x42C798（15 窗口处理器）**：背包 0x430650/装备 0x44CED0/商店 0x44F110/交易 0x416E70/行会 0x425DE0/组队 0x424770/状态 0x450B70/公告 0x414CF0/任务 0x448430/选项 0x441A20/坐骑 0x426B90/技能 0x43AC80/对话 0x440560 + 0x42C6A7 **默认全重置**（13 窗口隐藏）——HUD caption 分派完整（F580/F587 用）。
+- 落盘：caption-dispatch-tail-evidence.json（F897，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 591。
