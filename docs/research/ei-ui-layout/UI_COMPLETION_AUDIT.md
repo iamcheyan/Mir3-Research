@@ -3561,3 +3561,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（交易操作完整；下一弧：HANDOFF 刷新 114/剩余角落）。
+## Round 604 (2026-08-12) — HANDOFF 刷新 114（Finding 910）
+
+- **Round 601-603 追加 + 568 连发**（交易操作完整入档）。
+- 落盘：`handoff-refresh-114-evidence.json`（F910）+ RESEARCH_LOG Round 604。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（交易操作完整；下一弧：剩余深层角落/模拟器 polish）。
