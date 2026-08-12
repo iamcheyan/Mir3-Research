@@ -2785,3 +2785,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口切换完整；下一弧：剩余深层角落）。
+## Round 507 (2026-08-12) — 窗口切换机制闭合（Finding 813）
+
+- **471 连发 + 437 证据 + 切换机制完整**。
+- 落盘：`toggle-machinery-closure-evidence.json`（F813）+ RESEARCH_LOG Round 507。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（切换机制完整；下一弧：HANDOFF 刷新 81/剩余角落）。

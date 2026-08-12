@@ -8186,3 +8186,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔窗口〕**0x42AC30 **开窗列表添加**（0x449870 插入 [0xD24..0xD38]，F550 列表确认）；0x42AC50 **关窗列表移除**（[0xD2C] 遍历解链 + free + 计数 [0xD38]--）；0x42B820 **切换预分派**（模式 jt 0x42B938 → 各模式窗口槽：0x6554 背包/0x29CE4 装备/0x33188 商店/0x3399C 交易/0x4707C 行会/0x47834 组队/0x47C28 状态/0x507EC 公告/0x51150 对话/0x516E8 任务）+ 全隐藏预扫——窗口切换机制 100%。
 - 落盘：window-toggle-helpers-evidence.json（F812，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 506。
+## Round 507 (F813) — 2026-08-12：窗口切换机制闭合（F550/F811/F812 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**437 证据 JSON**；三服务 200；master 8c3e89a（**471 连发 F335-F812 已推**）。
+- **〔弧〕**切换分派器（F550）+ 开/关函数体（F811）+ 助手（F812）——**切换机制完整**（16 模式 jt + 开/关列表 [0xD24..0xD38] + 各模式窗口槽 + 显示/隐藏），窗口生命周期表面全闭合。
+- 落盘：toggle-machinery-closure-evidence.json（F813，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 507。
