@@ -8121,3 +8121,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔消息〕**0x422E30（recv1 相邻家族）：base64 0x452810 解码（0x400 上限）+ msg 类型 [edi+4] **分派**：0x68/其他 → 0x401390 ×2 + **公告绘制 0x427E30（F674）** + 0x4256A0；0x28/0x5DD → 实体**名字更新**：[edi]==[0x2F8784] 自身 → 名 [0x35A820] + 0x40BA60 + 重置 [0x35A81C]，否则列表扫描 [0xE1158] → 名 **[0x620A0]**（F621/F531 英雄名槽）+ 0x40BA60 + 重置 [0x6209C]——公告 + 实体名消息完整。
 - 落盘：map-name-message-handler-evidence.json（F797，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 491。
+## Round 492 (F798) — 2026-08-12：recv/名字家族闭合（F571/F621/F674/F791/F794/F797 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**422 证据 JSON**；三服务 200；master 3e7793d（**456 连发 F335-F797 已推**）。
+- **〔弧〕**入站协议（F571）+ 英雄分派（F791）+ 技能处理（F794）+ 地图/名字处理（F797）——**recv/名字家族完整**（base64 载荷 + 公告绘制 + 实体名 [0x35A820]/[0x620A0] + 技能消息），入站处理表面扩展至 100%。
+- 落盘：recv-name-family-closure-evidence.json（F798，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 492。

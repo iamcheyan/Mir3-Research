@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv-name-family-closure-2026-08-12-f798",
+  "title": "Round 492 (F798): recv/name family CLOSED (F571/F621/F674/F791/F794/F797) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 3e7793d (456 consecutive F335-F797), 422 evidence JSONs; arc: inbound protocol (F571) + hero dispatch (F791) + skill handlers (F794) + map/name handler (F797) - recv/name family COMPLETE byte-level (base64 payloads + announce draw + entity names [0x35A820]/[0x620A0] + skill msgs), inbound handler surface extended to 100%",
+  "date": "2026-08-12",
+  "objective": "Close the recv/name family.",
+  "question": "Is the recv/name handler family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "422 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F571": "inbound", "F791": "dispatch", "F794": "skill", "F797": "name"},
+    "recv": "base64 + announce + names + skill = COMPLETE",
+    "milestone": "456 consecutive rounds F335-F797"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F797": "456 rounds pushed; recv/name complete"
+  },
+  "contrast": {
+    "announce_vs_name": "0x427E30 + entity names",
+    "skill_vs_dispatch": "0x34/0x2F0 + msg map"
+  },
+  "verdict": "recv/name family CLOSED (F798): base64 + announce + names + skill all byte-level; validation green, 456 consecutive rounds, 422 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F571/F621/F674/F791/F794/F797.",
+  "cross_refs": ["F571", "F621", "F674", "F791", "F794", "F797"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "456 consecutive shipping rounds F335-F797",
+    "recv/name 100%",
+    "next: HANDOFF refresh 76, remaining corners"
+  ]
+}
