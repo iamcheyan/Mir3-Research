@@ -1,0 +1,36 @@
+{
+  "evidence_id": "hud-status-bars-level-paint-2026-08-12-f588",
+  "title": "Round 282 (F588): HUD status bars + HP/level paint - 0x42A040: HP bar = float gradient bars (mul 0x47644C scale, 0x466800 transform with color floats 0x3E20A0A1/0x3E70F0F1/0x3EA0A0A1, 0x4542F0 via tile store 0x5600FC type 0x51 F530) + HP number text (0x45E0C0 measure + 0x45DE50 draw, HP word [0x7DA11F], centered at 0x250/0x13B) + 0x45E570 bar fill 0x324B64; frame 0x43 WIL blit at ([edi+0xC58]+0xD1, [edi+0xC5C]+0x25) via 0x45F2D0 (F530 0x40A8A0 entity HP extended to HUD); level display 0x42A26A: level [0x7DA11F] + 0x47BD40 fmt + 0x45E0C0 + centered 0x216/0xCD - HUD status bars byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the HUD status bars + HP/level paint.",
+  "question": "How do the HUD HP bars + level display render?",
+  "method": "Disasm 0x42A040-0x42A2E1.",
+  "scope": "0x42A040-0x42A2E1; frame 0x43; floats.",
+  "cell_analysis": {
+    "hp_bar": {"0x42A040": "float gradient (mul 0x47644C, 0x466800 transform 0x3E20A0A1/0x3E70F0F1/0x3EA0A0A1, 0x4542F0 tile 0x5600FC type 0x51 F530)", "number": "HP [0x7DA11F] -> 0x45E0C0 measure + 0x45DE50 draw centered 0x250/0x13B", "fill": "0x45E570 0x324B64"},
+    "frame_0x43": "WIL blit at ([edi+0xC58]+0xD1, [edi+0xC5C]+0x25) via 0x45F2D0",
+    "level": "0x42A26A: level [0x7DA11F] + fmt 0x47BD40 + centered 0x216/0xCD"
+  },
+  "exe_trace": {
+    "hud_bar_chain": "HUD paint -> 0x42A040 HP gradient bar + number + frame 0x43 + level"
+  },
+  "audit_vs_exe": {
+    "F530": "0x40A8A0 entity HP + 0x4542A0 registry -> HUD bars connect", "F584": "world-map HP/MP bars [0x7DA109..0x7DA11F]"
+  },
+  "contrast": {
+    "hud_vs_entity": "HUD 0x42A040 bar vs entity 0x40A8A0 bar (shared 0x4542F0/0x4542A0)",
+    "bar_vs_text": "gradient bar + number text + level text"
+  },
+  "verdict": "HUD status bars PRIMARY-verified: HP gradient bar (float colors + tile 0x5600FC) + HP number + frame 0x43 + level display; F530 entity HP extended to HUD layer.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Bar paint decoded from .text.",
+  "cross_refs": ["F530: HP bars", "F584: world-map bars", "F460: 0x4542F0 family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42A040+0x60",
+  "notes": [
+    "color floats 0x3E20A0A1 = gradient blend factors",
+    "HP number [0x7DA11F] shared with world-map (F584)",
+    "bar fill color 0x324B64",
+    "frame 0x43 = HP bar frame (0x43 = 67)"
+  ]
+}

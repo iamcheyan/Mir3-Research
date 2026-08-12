@@ -7180,3 +7180,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔路由〕**0x42BA20：特殊窗优先（公告 [0x53030] 0x418A50、行会公告编辑 [0x52E5C] 0x43E640）→ **热键栏命中**（0x417D00 @ [0x61BC] + [0xD20]×[0x61C8] → [0xD08]，F581）→ **16 caption 循环**（vtable[0xC] 命中 @ [0x567C]+idx*0xB4）→ 0x428570 + 模式 jt 0x42BDE0 → 每窗点击（背包 0x42FFD0/装备 0x44CF00/商店 0x44EF00/交易 0x4171B0/行会 0x425CB0…）→ 兜底 **0x42B6A0(mode, x, y) = 模式切换按钮**。
 - 落盘：window-input-click-dispatcher-evidence.json（F587，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 281。
+## Round 282 (F588) — 2026-08-12：HUD 状态条 + HP/等级绘制
+
+- **〔HP 条〕**0x42A040：**浮点渐变条**（×0x47644C 缩放、0x466800 变换 色浮点 0x3E20A0A1/0x3E70F0F1/0x3EA0A0A1、0x4542F0 经瓦片存储 0x5600FC type 0x51 F530）+ **HP 数字文本**（[0x7DA11F] → 0x45E0C0 测量 + 0x45DE50 绘制，居中 0x250/0x13B）+ 0x45E570 填充 0x324B64；**帧 0x43** WIL 绘制于 ([edi+0xC58]+0xD1, [edi+0xC5C]+0x25) 经 0x45F2D0。
+- **〔等级〕**0x42A26A：等级 [0x7DA11F] + 格式 0x47BD40 + 居中 0x216/0xCD——HUD 状态条字节级（F530 实体 HP 扩展到 HUD 层）。
+- 落盘：hud-status-bars-level-paint-evidence.json（F588，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 282。
