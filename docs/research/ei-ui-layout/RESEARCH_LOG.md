@@ -6231,3 +6231,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔模拟器〕**点行会管理员 → 对话开（NPCIMG 0 头）；菜单选购买装备 → 日志 + 窗口关闭（consumed → 0x42ADB0 id9，F347/F337 语义）。
 - 落盘：npc-dialog-interaction-verification-evidence.json（F404，derived-tooling；语义 primary-static F347/F337）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 98。
+## Round 99 (F405) — 2026-08-12：行会窗口内容验证（3 列表态 + 横幅引用）
+
+- **〔模拟器〕**行会成员标题 0x7776A0（0xDCE6C8）+ 4 成员。
+- **〔原版〕**3 列表态（0x425280 公告/敌对/联盟 0x96FF 标记、0x425440 成员、0x425590 双画）+ 9 控件 + id15 横幅引用（ctrl4/ctrl7，F294）。
+- 落盘：guild-window-content-verification-evidence.json（F405，derived-tooling；语义 primary-static F348/F294）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 99。

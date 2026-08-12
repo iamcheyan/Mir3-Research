@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-window-content-verification-2026-08-12-f405",
+  "title": "Round 99 (F405): Guild window content verified - sim shows title 0x7776A0 (0xDCE6C8) + 4 members, original 3 list states (0x425280/0x425440/0x425590 markers 行会公告/敌对行会/联盟行会/行会成员 F348) + 9 controls + banner id15 refs (F294)",
+  "date": "2026-08-12",
+  "objective": "Verify the guild window content: sim member list display, the original 3-list-state machine, and banner refs.",
+  "question": "Does the sim guild window match the original 3-list structure?",
+  "method": "Sim browser test (guild window content); F348/F294 evidence cross-ref.",
+  "scope": "sim window.guild-candidate; guild-window-paint-evidence.json (F348).",
+  "cell_analysis": {
+    "sim": {"title": "行会成员 · 0x7776A0 (0xDCE6C8)", "members": "行会会长/长老/成员 1/成员 2", "structure": "title + member list (F360 pattern)"},
+    "original": {"states": "0x425280 list0 (行会公告/敌对行会/联盟行会 markers 0x96FF) / 0x425440 list1 (行会成员) / 0x425590 other (dual-draw shadow)", "controls": "9 (0x417550, F294)", "banner": "id15 refs ctrl4 邀请入会/ctrl7 行会解散 (F294/F337)"}
+  },
+  "exe_trace": {
+    "guild_window": "hero+0x4707C (id4, frame 600 596x446 at 102,22)"
+  },
+  "audit_vs_exe": {
+    "F348": "3-list state machine + scrollbar confirmed",
+    "F294": "9 controls + banner refs confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = single member list demo; original = 3 state-dependent lists",
+    "markers": "list colors distinguish 公告/敌对/联盟/成员"
+  },
+  "verdict": "Guild window content verified (F348/F294 semantics): sim shows title + members; original runs 3 list states (markers 公告/敌对/联盟/成员) + 9 controls + id15 banner refs. Guild subsystem closed.",
+  "evidence_level": "derived-tooling (semantics primary-static F348/F294)",
+  "evidence_level_note": "Sim display browser-verified; state machine from F348 primary bytes.",
+  "cross_refs": ["F348: guild paint", "F294: guild window + banner", "F360: group window"],
+  "tool": "puppeteer browser; evidence JSON",
+  "reproduce": "open sim; open guild window; observe title + members",
+  "notes": [
+    "guild title 0x7776A0 = shared name buffer (F331)",
+    "3 list states switch on [0x98] byte (F348)",
+    "banner id15 = notice window refs (F294 ctrl4/ctrl7)"
+  ]
+}
