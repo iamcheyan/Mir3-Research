@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-registry-total-closure-2026-08-12-f771",
+  "title": "Round 465 (F771): Window registry TOTAL closure (F558 + F713-F770) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master dd1f504 (429 consecutive F335-F770), 395 evidence JSONs; arc: ALL 14 F558 registry window bodies decoded (bag F764 + status F758 + guild F755 + party F752 + trade F749 + dialog F746 + options F761 + equip F767 + announce editor F770 + base F713/F714 + controls F701/F704 + scrollbar F707) - window registry COMPLETE: every registry function body byte-level, F559 window-system arc from Round 236-265 now 100% closed",
+  "date": "2026-08-12",
+  "objective": "Close the window registry totally.",
+  "question": "Is the window registry fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "395 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F558": "registry", "F713-F770": "all bodies"},
+    "registry": "ALL 14 bodies decoded = 100%",
+    "milestone": "429 consecutive rounds F335-F770"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F770": "429 rounds pushed; window registry 100% closed"
+  },
+  "contrast": {
+    "draws_vs_inputs": "all draws + editors",
+    "base_vs_toolkit": "base class + controls"
+  },
+  "verdict": "Window registry TOTAL closure (F771): all 14 bodies + base + toolkit byte-level; validation green, 429 consecutive rounds, 395 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F558/F713-F770.",
+  "cross_refs": ["F558", "F713-F770"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "429 consecutive shipping rounds F335-F770",
+    "window registry 100%",
+    "next: HANDOFF refresh 67, remaining corners"
+  ]
+}

@@ -8004,3 +8004,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告编辑〕**0x43E3C0 绘制（F558 模式 F）：提示/文本 0x47C460/0x47C440 via 0x45DD70 色 0x323232、旗标 [0x1D0] + **2 按钮 F704** + 2 绘制；0x43E4B0 输入/回车（0x1F40 暂存）：编辑控件 vtable[0x10] 命中 + **GetWindowText 0x476304（0xFA0 上限）** + **'\n' 行拆分（0x468BF0）** + **拼接 0x45DC70（F737）** + **发送 0x4524D0（F617）**——行会公告编辑器完整，**F558 注册表最后一个函数体解码**。
 - 落盘：guild-announce-editor-evidence.json（F770，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 464。
+## Round 465 (F771) — 2026-08-12：窗口注册表全量闭合（F558 + F713-F770 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**395 证据 JSON**；三服务 200；master dd1f504（**429 连发 F335-F770 已推**）。
+- **〔弧〕**F558 注册表**全部 14 个窗口函数体解码**（背包 F764 + 状态 F758 + 行会 F755 + 组队 F752 + 交易 F749 + 对话 F746 + 选项 F761 + 装备 F767 + 公告编辑 F770 + 基类 F713/F714 + 控件 F701/F704 + 滚动条 F707）——**窗口注册表完整**：Round 236-265 的 F559 窗口系统弧 100% 闭合。
+- 落盘：window-registry-total-closure-evidence.json（F771，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 465。

@@ -2551,9 +2551,14 @@ git diff --check
 - **绘制 + 输入 + 拆分 + 发送**（注册表最后函数体）。
 - 落盘：`guild-announce-editor-evidence.json`（F770）+ RESEARCH_LOG Round 464。
 
+## Round 465 (2026-08-12) — 窗口注册表全量闭合（Finding 771）
+
+- **429 连发 + 395 证据 + 14 窗口函数体全解码**。
+- 落盘：`window-registry-total-closure-evidence.json`（F771）+ RESEARCH_LOG Round 465。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（公告编辑器完整；下一弧：剩余深层角落）。
+- 无阻塞项（窗口注册表 100%；下一弧：HANDOFF 刷新 67/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
