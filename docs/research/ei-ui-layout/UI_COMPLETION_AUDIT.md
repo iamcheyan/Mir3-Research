@@ -4145,3 +4145,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能表面 100%；下一弧：HANDOFF 刷新 139/剩余角落）。
+## Round 677 (2026-08-12) — HANDOFF 刷新 139（Finding 983）
+
+- **Round 674-676 追加 + 641 连发**（技能书完整入档）。
+- 落盘：`handoff-refresh-139-evidence.json`（F983）+ RESEARCH_LOG Round 677。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能表面 100%；下一弧：剩余深层角落/模拟器 polish）。
