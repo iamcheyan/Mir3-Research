@@ -1186,6 +1186,11 @@ git diff --check
 - **5 按钮模式循环 + 浏览器验证**（12 仓库格）。
 - 落盘：`simulator-store-mode-cycle-evidence.json`（F497）+ RESEARCH_LOG Round 191。
 
+## Round 192 (2026-08-12) — 模拟器聊天快捷命令（Finding 498）
+
+- **广N 快捷物品分派 + 浏览器验证**。
+- 落盘：`simulator-chat-quick-slot-evidence.json`（F498）+ RESEARCH_LOG Round 192。
+
 ## Pending（未阻塞，持续队列）
 
 - 服务端 .dat 名称编码（自定义移位）— 低优先（唯一）。

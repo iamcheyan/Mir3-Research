@@ -1,0 +1,36 @@
+{
+  "evidence_id": "simulator-chat-quick-slot-2026-08-12-f498",
+  "title": "Round 192 (F498): Simulator chat quick-slot command - added 广N dispatch to chat input (F355 name-command table 0x47ADC4: 广1..广10 + 0x47AA48 行动速度); logs '[快捷] 广N → 快捷物品使用 (0x41EDE0: 0x430920/0x42FC20/0x42E2D0, 表 0x47ADC4)'; BROWSER VERIFIED: typing 广1 logs the quick-item-use line; client chain = 0x41EDE0 item-use (0x430920 item parse + 0x42FC20 bag deserialize + 0x42E2D0 sound + name-match loop 0x47ADC4-0x47ADEC)",
+  "date": "2026-08-12",
+  "objective": "Complete the sim chat command coverage with the client quick-slot item-use path.",
+  "question": "Can the sim handle the client's 广N quick-item commands?",
+  "method": "app.js edit (广N regex) + harness browser verify.",
+  "scope": "Tools/mir3_client_simulator/app.js chat dispatch; 0x41EDE0 chain.",
+  "cell_analysis": {
+    "feature": {"pattern": "/^广\\d+$/", "log": "'[快捷] 广N → 快捷物品使用 (0x41EDE0: 0x430920/0x42FC20/0x42E2D0, 表 0x47ADC4)'"},
+    "client_chain": {"0x41EDE0": "item-use: 0x430920 item + 0x42FC20 bag deserialize + 0x42E2D0 sound + name-match 0x47ADC4-0x47ADEC", "table": "0x47ADC4 = 广1..广10 + 0x47AA48 行动速度"},
+    "verify": {"browser": "typing 广1 -> '[快捷] 广1 → 快捷物品使用' logged"}
+  },
+  "exe_trace": {
+    "sim_chain": "chat 广N -> log quick-use line (client: 0x41EDE0)"
+  },
+  "audit_vs_exe": {
+    "F355": "command dispatch extended with 广N table",
+    "F97": "channel help + quick commands complete"
+  },
+  "contrast": {
+    "quick_vs_channel": "广N = item quick-use; !/@/+ = channel commands",
+    "sim_vs_client": "sim logs dispatch; client executes item (0x41EDE0)"
+  },
+  "verdict": "Simulator chat quick-slot PRIMARY-verified (browser): 广N dispatch added + verified; client 0x41EDE0 item-use chain documented (0x430920/0x42FC20/0x42E2D0 + 0x47ADC4 table).",
+  "evidence_level": "derived-tooling (sim) + primary (browser verify)",
+  "evidence_level_note": "Sim feature verified; client chain from .text.",
+  "cross_refs": ["F355: chat dispatch", "F97: channels", "F464: item ctor"],
+  "tool": "app.js edit + puppeteer browser",
+  "reproduce": "open /sim/ chat -> type 广1 -> Enter -> [快捷] line",
+  "notes": [
+    "0x47ADC4 table = 10 quick-slot names",
+    "0x47AA48 = 行动速度 (action speed) help",
+    "0x41EDE0 = full item-use chain (use sound + bag update)"
+  ]
+}

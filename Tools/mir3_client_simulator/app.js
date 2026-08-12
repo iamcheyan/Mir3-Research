@@ -663,6 +663,11 @@ function fillWindowContent(w) {
           pushChat(`[私聊] ${v} → @拒绝私聊/@拒绝行会聊天 家族 (0x47ACB8 命令帮助)`);
         } else if (v.startsWith("!")) {
           pushChat(`[喊话] ${v} → 大喊话(!喊话) 0x47ACF8 / 编组喊话(!!) 0x47ACE4 / 行会喊话(!~) 0x47ACD0`);
+        } else if (/^广\d+$/.test(v)) {
+          // Round 192: quick-slot item use (F355 name-command table
+          // 0x47ADC4: 广1..广10 -> 0x41EDE0 item-use chain
+          // 0x430920 item + 0x42FC20 bag + 0x42E2D0 sound + 0x47AA48 行动速度).
+          pushChat(`[快捷] ${v} → 快捷物品使用 (0x41EDE0: 0x430920/0x42FC20/0x42E2D0, 表 0x47ADC4)`);
         } else {
           pushChat(`[你] ${v}`);
         }

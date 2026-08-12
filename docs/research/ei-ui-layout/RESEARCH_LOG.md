@@ -6720,3 +6720,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔功能〕**window.store-candidate 加 5 按钮（购买/出售/仓库/制作/详情）；点击翻 STATE.storeState + renderWindows()（修正：renderAll 未定义 → renderWindows 顶层函数）。
 - **〔验证〕**浏览器：点「仓库」→ state 0→2、标签「仓库 (state2 · msg 0x2BC → 0x44F940)」、**12 仓库格**渲染（匹配 F460 +0x720 12 格）。
 - 落盘：simulator-store-mode-cycle-evidence.json（F497，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 191。
+## Round 192 (F498) — 2026-08-12：模拟器聊天快捷物品命令
+
+- **〔功能〕**聊天加 广N 分派（F355 名称命令表 0x47ADC4：广1..广10 + 行动速度）；日志「[快捷] 广N → 快捷物品使用 (0x41EDE0: 0x430920/0x42FC20/0x42E2D0, 表 0x47ADC4)」。
+- **〔客户端链〕**0x41EDE0 物品使用（0x430920 解析 + 0x42FC20 背包反序列化 + 0x42E2D0 音效 + 0x47ADC4 名匹配循环）。
+- **〔验证〕**浏览器：输入 广1 → 快捷行日志。
+- 落盘：simulator-chat-quick-slot-evidence.json（F498，derived + browser）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 192。
