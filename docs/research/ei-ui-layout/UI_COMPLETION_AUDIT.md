@@ -3417,3 +3417,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（大地图完整；下一弧：剩余深层角落）。
+## Round 586 (2026-08-12) — 地图部件闭合 + 550 连发里程碑（Finding 892）
+
+- **550 连发 + 516 证据 + 地图部件完整**。
+- 落盘：`map-widget-closure-evidence.json`（F892）+ RESEARCH_LOG Round 586。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图部件完整；下一弧：HANDOFF 刷新 108/剩余角落）。

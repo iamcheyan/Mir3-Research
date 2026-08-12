@@ -8528,3 +8528,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔大地图〕**0x429A40：鼠标命中矩形 [0xC68]/[0xC78]（PtInRect 0x4762B4）+ **坐标格式 0x47BD70**（0x46811C）+ 测量 0x45E0C0 + 居中 + **矩阵 0x466800** + **0x4542F0 条 blit**（0x5600FC）+ 文本 0x45DE50（0xFFFFFF）+ 填充 0x5050A0——大地图覆盖层完整（F594/F595 用）。
 - 落盘：large-map-overlay-evidence.json（F891，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 585。
+## Round 586 (F892) — 2026-08-12：地图部件闭合（F584/F594/F595/F888/F891 汇总）+ 550 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**516 证据 JSON**；三服务 200；master 5ea93c8（**550 连发 F335-F891 已推**）——**550 连发里程碑**。
+- **〔弧〕**小地图（F584）+ 覆盖层（F594）+ 标记（F595）+ 部件（F888）+ 覆盖层全量（F891）——**地图部件完整**（缩放 + 坐标 + 矩阵 + 条 blit + 标记），地图部件表面 100%。
+- 落盘：map-widget-closure-evidence.json（F892，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 586。

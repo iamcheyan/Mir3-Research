@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-widget-closure-2026-08-12-f892",
+  "title": "Round 586 (F892): Map widget CLOSED (F584/F594/F595/F888/F891) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 5ea93c8 (550 consecutive F335-F891), 516 evidence JSONs; arc: minimap (F584) + overlay (F594) + marker (F595) + widget (F888) + overlay full (F891) - map widget COMPLETE byte-level (zoom + coords + matrix + bar blit + markers), map widget surface 100%; 550 consecutive rounds milestone",
+  "date": "2026-08-12",
+  "objective": "Close the map widget arc.",
+  "question": "Is the map widget fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "516 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F584": "minimap", "F594": "overlay", "F595": "marker", "F888": "widget", "F891": "overlay full"},
+    "mapwidget": "zoom + coords + blit = COMPLETE",
+    "milestone": "550 consecutive rounds F335-F891"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F891": "550 rounds pushed; map widget complete"
+  },
+  "contrast": {
+    "minimap_vs_overlay": "zoom + coords",
+    "matrix_vs_marker": "scale + players"
+  },
+  "verdict": "Map widget CLOSED (F892): minimap + overlay + marker all byte-level; validation green, 550 consecutive rounds, 516 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F584/F594/F595/F888/F891.",
+  "cross_refs": ["F584", "F594", "F595", "F888", "F891"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "550 consecutive shipping rounds F335-F891",
+    "map widget 100%",
+    "next: HANDOFF refresh 108, remaining corners"
+  ]
+}
