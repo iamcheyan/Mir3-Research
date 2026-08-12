@@ -1,0 +1,36 @@
+{
+  "evidence_id": "transform-matrix-vector-math-2026-08-12-f643",
+  "title": "Round 337 (F643): Transform matrix + vector math - 0x466800 = 4x4 matrix setup (zero 0x11 dwords + fill diag from 4 floats; the 'transform' called by every gradient/blit family F588/F594/F625); 0x466850 = 3D VECTOR math (3-vector diff + 0x466FB0 dot + fsqrt normalize vs 0x476C6C epsilon + cross product 0x445C60, D3D-style look-at/basis) - matrix/vector math core byte-level (shared transform engine identified)",
+  "date": "2026-08-12",
+  "objective": "Decode the transform matrix + vector math.",
+  "question": "What is the shared transform engine?",
+  "method": "Disasm 0x466800-0x466A44.",
+  "scope": "0x466800-0x466A44; matrix; vector.",
+  "cell_analysis": {
+    "0x466800": "4x4 matrix: zero 0x11 dwords + fill diag from 4 floats",
+    "0x466850": {"vector": "3-vector diff + 0x466FB0 dot + fsqrt normalize (0x476C6C epsilon)", "cross": "0x445C60 cross product"},
+    "shared": "used by gradient/blit families F588/F594/F625"
+  },
+  "exe_trace": {
+    "transform_chain": "paint -> 0x466800 matrix -> 0x466850 vector math (normalize/cross) -> blit"
+  },
+  "audit_vs_exe": {
+    "F588": "HUD bars use 0x466800", "F594": "world-map overlay", "F625": "effect spawn"
+  },
+  "contrast": {
+    "matrix_vs_vector": "matrix setup + vector normalize/cross",
+    "eps": "0x476C6C epsilon guard"
+  },
+  "verdict": "Transform matrix + vector math PRIMARY-verified: 4x4 setup + D3D-style vector ops; shared transform engine identified (F588/F594/F625).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Math core decoded from .text.",
+  "cross_refs": ["F588: bars", "F594: overlay", "F625: effects"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x466800+0x10; 0x466850+0x30",
+  "notes": [
+    "4x4 matrix diag fill",
+    "dot 0x466FB0 + fsqrt normalize",
+    "cross product 0x445C60",
+    "epsilon 0x476C6C"
+  ]
+}

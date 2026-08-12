@@ -7439,3 +7439,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 333-335（F640-F641：帧节奏/LRU + 游戏循环弧 + **300 连发里程碑**）；基线 Round 332=0d191b0 → Round 335=8909fb9（**300 连发 F335-F641**）。
 - 落盘：handoff-refresh-26-evidence.json（F642，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 336。
+## Round 337 (F643) — 2026-08-12：变换矩阵 + 向量数学
+
+- **〔矩阵〕**0x466800 = **4×4 矩阵设置**（清 0x11 双字 + 从 4 浮点填对角；F588/F594/F625 全族共用的 'transform'）。
+- **〔向量〕**0x466850 = **3D 向量数学**（3 向量差 + 0x466FB0 点积 + fsqrt 归一化 vs 0x476C6C ε + 叉积 0x445C60，D3D 风格 look-at/basis）——矩阵/向量数学核心字节级（共享变换引擎识别）。
+- 落盘：transform-matrix-vector-math-evidence.json（F643，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 337。

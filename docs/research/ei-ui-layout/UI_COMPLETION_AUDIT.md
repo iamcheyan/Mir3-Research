@@ -1911,9 +1911,14 @@ git diff --check
 - **Round 333-335 追加 + 300 连发里程碑**（客户端生命周期入档）。
 - 落盘：`handoff-refresh-26-evidence.json`（F642）+ RESEARCH_LOG Round 336。
 
+## Round 337 (2026-08-12) — 变换矩阵 + 向量数学（Finding 643）
+
+- **4×4 矩阵 + D3D 风格向量核**（F588/F594/F625 共享引擎）。
+- 落盘：`transform-matrix-vector-math-evidence.json`（F643）+ RESEARCH_LOG Round 337。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（客户端生命周期完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（变换引擎闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
