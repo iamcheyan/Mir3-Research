@@ -7528,3 +7528,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔命中〕**0x44E910 = 商店命中测试（模式字节 [0x5F8]：1 = 矩形 +0x12C/+0xD0、4 = +0x12C/+0x64、PtInRect 0x4762B4）。
 - **〔点击〕**0x44E9B0 = 商店点击（模式 0/1/3/4 → [0x54] vtable[0x10]、1/2/4 → [0x1BC] + 列表 [0x70C] 清理）——商店管理器字节级（F555 商店族连接）。
 - 落盘：store-manager-hit-click-evidence.json（F661，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 355。
+## Round 356 (F662) — 2026-08-12：商店绘制 + 模式布局
+
+- **〔绘制〕**0x44E260（F558 模式 2）：模式 [0x5F8] **4 路布局**（0/1/3/4）：默认（控件 +0xAC/+0xA9 等）、**买模式 1**（矩形 +0x1D2/+0x172/+0x144/+0x1B2）、模式 4（+0x43/+0x3D +0x1FA/+0x188）、控件 [0x54]/[0x108]/[0x1BC]/[0x270]/[0x324]/[0x3D8]/[0x48C]/[0x540] + **8 控件遍历 stride 0xB4**——商店渲染字节级（F555/F661 连接）。
+- 落盘：store-paint-mode-layouts-evidence.json（F662，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 356。

@@ -1,0 +1,34 @@
+{
+  "evidence_id": "store-paint-mode-layouts-2026-08-12-f662",
+  "title": "Round 356 (F662): Store paint + mode layouts - 0x44E260 (F558 mode 2): mode [0x5F8] 4-way layouts (0/1/3/4): mode-2 default (controls +0xAC/+0xA9 etc), mode-1 buy (rects +0x1D2/+0x172/+0x144/+0x1B2), mode-4 (rects +0x43/+0x3D +0x1FA/+0x188), controls [0x54]/[0x108]/[0x1BC]/[0x270]/[0x324]/[0x3D8]/[0x48C]/[0x540] + 8-control walk stride 0xB4 - store render byte-level (F555/F661 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the store paint + mode layouts.",
+  "question": "How does the store render?",
+  "method": "Disasm 0x44E260-0x44E423.",
+  "scope": "0x44E260-0x44E423; mode [0x5F8]; controls.",
+  "cell_analysis": {
+    "0x44E260": {"modes": "[0x5F8] 4-way (0/1/3/4)", "controls": "[0x54]/[0x108]/[0x1BC]/[0x270]/[0x324]/[0x3D8]/[0x48C]/[0x540] rects 0x417830", "walk": "8 controls stride 0xB4"}
+  },
+  "exe_trace": {
+    "store_paint_chain": "store window -> 0x44E260 mode layout -> control rects -> 8-walk"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 2 store CONFIRMED", "F555": "store family", "F661": "hit/click"
+  },
+  "contrast": {
+    "modes": "buy 1 / default 0 / 3 / 4 layouts",
+    "controls": "8 control rects"
+  },
+  "verdict": "Store paint PRIMARY-verified: 4 mode layouts + 8 controls; F555/F661 render side complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Store render decoded from .text.",
+  "cross_refs": ["F558: mode 2", "F555: family", "F661: hit/click"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44E260+0x40",
+  "notes": [
+    "mode byte [0x5F8]",
+    "buy mode rects +0x1D2..",
+    "8 controls stride 0xB4",
+    "mode 4 rects +0x43/+0x3D"
+  ]
+}
