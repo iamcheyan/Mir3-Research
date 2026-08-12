@@ -871,6 +871,11 @@ git diff --check
 - **0x5600FC 运行时数组 + 类型分派 + 0x96 工厂**。
 - 落盘：`monster-appearance-table-construction-evidence.json`（F434）+ RESEARCH_LOG Round 128。
 
+## Round 129 (2026-08-12) — 怪物动画推进机（Finding 435）
+
+- **+2/+1 tick + 回绕 + 帧公式**（F433 范围消费）。
+- 落盘：`monster-anim-advance-machine-evidence.json`（F435）+ RESEARCH_LOG Round 129。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

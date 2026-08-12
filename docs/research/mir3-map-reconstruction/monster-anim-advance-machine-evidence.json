@@ -1,0 +1,39 @@
+{
+  "evidence_id": "monster-anim-advance-machine-2026-08-12-f435",
+  "title": "Round 129 (F435): Monster anim advance machine - 0x40B022 ticker: normal +2 ([esi+0xC4] + byte [0x61B98] sub-counter), reverse +1 (gate [0x61B94] vs ebx, [0x61B98] clamp), wrap [0xC4]=[0xB4] (resets pos [0xDC/0xE0/0xD4/0xD8] + HP/MP [0x61B9C..0x61BB8] + vtable[0x10] call), frame = [0xB4]+([0xB8]-[0xC4])-1 (0x40B37A); draw 0x40B2C0 uses [0x90] appearance ptr + 0x466130",
+  "date": "2026-08-12",
+  "objective": "Trace the monster animation counter advance + wrap + frame computation.",
+  "question": "How does the monster anim counter [esi+0xC4] advance, wrap, and map to a draw frame?",
+  "method": "mod10 disp32=0xC4 access scan (43 sites) -> ticker cluster 0x40B022-0x40B170 + draw 0x40B2C0-0x40B388 disasm.",
+  "scope": "0x40B010-0x40B170 (tick), 0x40B2C0-0x40B388 (draw), struct offsets 0xB4/0xB8/0xC4/0x61B94/0x61B98.",
+  "cell_analysis": {
+    "tick_normal_0x40B03D": {"gate": "[0x61C84]==1 -> return (0x40B02C/0x40B033)", "advance": "[esi+0xC4] += 2; byte [0x61B98] += 2; clamp byte to al", "note": "2-frame advance = double-step anim"},
+    "tick_reverse_0x40B06C": {"advance": "[0xC4] += 1; if [0x61B94] != ebx: [0xC4] += 1 again (2-step)", "gate": "reverse flag byte"},
+    "wrap_0x40B0CF": {"condition": "[0xC4] >= [0xB8] (frame end)", "action": "[0xC4] = [0xB4] (start), reset [0xDC/0xE0/0xD4/0xD8] + [0x61B9C/0x61BA0/0x61BA4/0x61BA8/0x61BB8/0x61BBC] + [0x61B98/0x61B99/0x61C80], call vtable[0x10]", "intermediate": "0x40B08C: [0x61C7D] adjust + [0x61C80]==0 gate -> 0x4068B0 (end-of-set hook)"},
+    "frame_formula_0x40B366": {"reverse": "frame = [0xB4] + ([0xB8] - [0xC4]) - 1", "forward": "frame = [0xC4] (0x40B352/0x40B35E)", "selector": "byte [0x61B99] + flag [0x61C64]"},
+    "draw_0x40B2C0": {"ptr": "[esi+0x90] appearance (0x40B330, 0x40B738 skip if null)", "blit": "0x466130 frame loader (F29 family)", "pos": "screen [0xE4]/[0xE8] = world math (0x40B2D1-0x40B32A)"}
+  },
+  "exe_trace": {
+    "monster_anim_struct": {"+0xB4/+0xB8": "frame range start/end (F433)", "+0xC4": "anim counter", "+0x61B94": "reverse-step gate", "+0x61B98": "sub-counter", "+0x61B99": "direction flag", "+0x61C64/0x61C80/0x61C84": "anim flags", "+0x61C7D": "end adjust"}
+  },
+  "audit_vs_exe": {
+    "F433": "range [0xB4]/[0xB8] consumption confirmed (wrap + formula)",
+    "F432": "cell stride: +2/+1 advance vs 10-frame cells",
+    "F434": "appearance ptr [0x90] used in draw path"
+  },
+  "contrast": {
+    "forward_vs_reverse": "forward frame=[0xC4]; reverse frame=[0xB4]+([0xB8]-[0xC4])-1",
+    "double_vs_single": "normal +2 vs reverse +1/+2 (reverse playback)"
+  },
+  "verdict": "Monster anim advance machine PRIMARY-verified: +2 normal / +1 reverse tick, wrap resets counter to [0xB4] with full state reset + vtable[0x10], forward/reverse frame formulas at 0x40B37A, draw via [0x90] appearance + 0x466130.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ticker + wrap + frame formulas decoded from .text.",
+  "cross_refs": ["F433: frame addressing", "F432: state layout", "F434: appearance table", "F350: HP reset at wrap"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "scan mod10 disp32=0xC4; disasm 0x40B010+0x60, 0x40B2C0+0x70",
+  "notes": [
+    "wrap resets HP/MP too (0x40B0FF-0x40B10B) - anim end = respawn state",
+    "0x466130 = frame blit (same as F29 HUD frame loader)",
+    "+2 double-step suggests 2:1 subframe interpolation [inference]"
+  ]
+}

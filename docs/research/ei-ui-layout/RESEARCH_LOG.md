@@ -6369,3 +6369,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔表〕**0x5600FC = 运行时外观描述数组（stride 0x144 = idx*81*4），读侧 [esi+0x90] + 3 槽 [0x62A0C/0x62A10/0x62A14]；位于 .data 零填充尾部（运行时构建）。
 - **〔分派〕**0x40E3E0 类型初始化：0x12/8/0x13/0x51A/0x51B → 记录查找 0x449B90（表 0x8AA5A8）+ 属性 0x40A4D0（码 0x19/0x1A/0xC/0x11/0x23）+ 标志 [0x629D0-0x629D8]；type 0x96 → 0x13C 字节工厂（vtable 0x476448，全局 0x560088）。
 - 落盘：monster-appearance-table-construction-evidence.json（F434，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 128。
+## Round 129 (F435) — 2026-08-12：怪物动画推进机（+2 正向/+1 反向 + 回绕）
+
+- **〔推进〕**0x40B022 ticker：正向 +2（[0xC4] + 字节 [0x61B98] 副计数）、反向 +1（门 [0x61B94]）；**回绕 [0xC4]=[0xB4]**（重置位置 [0xDC/0xE0/0xD4/0xD8] + HP/MP [0x61B9C..0x61BB8] + vtable[0x10]）。
+- **〔帧公式〕**正向 frame=[0xC4]；反向 frame=[0xB4]+([0xB8]-[0xC4])-1（0x40B37A）；绘制 0x40B2C0 经 [0x90] 外观 + 0x466130。
+- 落盘：monster-anim-advance-machine-evidence.json（F435，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 129。
