@@ -8841,3 +8841,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔HUD〕**0x42C9E0：任务命中 [0x516EC] → 0x448490（F923 任务列表）；商店命中 [0x3318C] → 0x44F1D0（F954 商店）；热键 0x42D720（F581）→ 冷却门 0x7D0/0x3E8 → 物品使用（名字比对 0x47ADB4）→ 0x451910 msg 0x3EE（F785）→ 公告添加 0x415280（F734）；0x42CBD0 按键门 [0x53060]/[0x52E8C] → 0x42B980——HUD 分派完整（F731+F963）。
 - 落盘：hud-input-dispatch-tail-evidence.json（F963，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 657。
+## Round 658 (F964) — 2026-08-12：HUD 分派闭合（F731/F963 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**588 证据 JSON**；三服务 200；master 510fa16（**622 连发 F335-F963 已推**）。
+- **〔弧〕**HUD 分派（F731）+ 分派尾部（F963）——**HUD 完整**（窗口路由 + 热键冷却 + 物品使用 msg 0x3EE + 公告）；**13/13 窗口 + HUD 输入闭合**。
+- 落盘：hud-dispatch-closure-evidence.json（F964，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 658。

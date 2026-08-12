@@ -3993,3 +3993,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（HUD 分派完整；下一弧：剩余深层角落）。
+## Round 658 (2026-08-12) — HUD 分派闭合（Finding 964）
+
+- **622 连发 + 588 证据 + HUD 分派完整**。
+- 落盘：`hud-dispatch-closure-evidence.json`（F964）+ RESEARCH_LOG Round 658。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（13/13 窗口 + HUD 输入；下一弧：HANDOFF 刷新 133/剩余角落）。

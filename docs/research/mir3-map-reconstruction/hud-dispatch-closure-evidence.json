@@ -1,0 +1,37 @@
+{
+  "evidence_id": "hud-dispatch-closure-2026-08-12-f964",
+  "title": "Round 658 (F964): HUD dispatch CLOSED (F731/F963) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 510fa16 (622 consecutive F335-F963), 588 evidence JSONs; arc: HUD dispatch (F731) + dispatch tail (F963) - HUD COMPLETE byte-level (window routing + hotkey cooldown + item use msg 0x3EE + announce), HUD surface 100%; ALL 13 windows + HUD inputs closed",
+  "date": "2026-08-12",
+  "objective": "Close the HUD dispatch arc.",
+  "question": "Is the HUD dispatch fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "588 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F731": "dispatch", "F963": "dispatch tail"},
+    "hud": "routing + hotkey + use = COMPLETE",
+    "milestone": "622 consecutive rounds F335-F963"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F963": "622 rounds pushed; HUD dispatch complete"
+  },
+  "contrast": {
+    "dispatch_vs_tail": "head + tail",
+    "windows": "13/13 + HUD"
+  },
+  "verdict": "HUD dispatch CLOSED (F964): routing + hotkey + use all byte-level; validation green, 622 consecutive rounds, 588 evidence JSONs, 13/13 + HUD inputs closed.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F731/F963.",
+  "cross_refs": ["F731", "F963"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "622 consecutive shipping rounds F335-F963",
+    "HUD dispatch 100%",
+    "next: HANDOFF refresh 133, remaining corners"
+  ]
+}
