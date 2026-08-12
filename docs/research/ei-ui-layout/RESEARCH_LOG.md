@@ -8572,3 +8572,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**525 证据 JSON**；三服务 200；master 5bc4faf（**559 连发 F335-F900 已推**）。
 - **〔弧〕**命中测试（F560）+ caption 路由（F591）+ 分派（F897）+ 窗口命中路由（F900）——**命中路由完整**（PtInRect + 开窗列表遍历 + 13 窗口矩形 + 模式返回），输入路由表面 100%。
 - 落盘：hit-routing-closure-evidence.json（F901，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 595。
+## Round 596 (F902) — 2026-08-12：HANDOFF 刷新 111（Round 593-595）
+
+- **〔刷新〕**HANDOFF 追加 Round 593-595（F900-F901：窗口命中路由 + 命中路由闭合）；基线 Round 592=7ef2235 → Round 595=7b5435e（**560 连发 F335-F901**）。
+- 落盘：handoff-refresh-111-evidence.json（F902，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 596。

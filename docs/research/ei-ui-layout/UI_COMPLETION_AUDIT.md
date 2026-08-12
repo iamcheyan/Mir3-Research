@@ -3497,3 +3497,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（命中路由完整；下一弧：HANDOFF 刷新 111/剩余角落）。
+## Round 596 (2026-08-12) — HANDOFF 刷新 111（Finding 902）
+
+- **Round 593-595 追加 + 560 连发**（命中路由完整入档）。
+- 落盘：`handoff-refresh-111-evidence.json`（F902）+ RESEARCH_LOG Round 596。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（命中路由完整；下一弧：剩余深层角落/模拟器 polish）。

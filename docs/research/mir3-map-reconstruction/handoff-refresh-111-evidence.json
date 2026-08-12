@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-111-2026-08-12-f902",
+  "title": "Round 596 (F902): HANDOFF refresh 111 - Rounds 593-595 (F899-F901: HANDOFF 110 + 110-refresh milestone, window hit router, hit routing closure), baseline Round 592=7ef2235 -> Round 595=7b5435e (560 consecutive F335-F901), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 593-595.",
+  "question": "What changed since HANDOFF refresh 110?",
+  "method": "Append Round 593-595 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 593-595 appended (3 rounds, F899-F901)",
+    "baseline": "Round 592=7ef2235 -> Round 595=7b5435e (560 consecutive F335-F901)",
+    "arcs": {"router": "F900 window router", "closure": "F901 routing"},
+    "key": "hit routing complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F899": "refresh 110 baseline -> now refresh 111", "F335-F901": "560 rounds"
+  },
+  "contrast": {
+    "refresh_110_vs_111": "F900-F901 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 111 (F902): Rounds 593-595 documented (hit routing complete), baseline 7ef2235 -> 7b5435e, 560 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F900-F901 evidence.",
+  "cross_refs": ["F899: refresh 110", "F901: routing closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 593-595 section to HANDOFF",
+  "notes": [
+    "560 consecutive shipping rounds F335-F901",
+    "next: remaining deep corners, sim polish"
+  ]
+}
