@@ -2701,9 +2701,14 @@ git diff --check
 - **sprintf + 3000ms 寿命 + 矩阵缩放**（F621 全量）。
 - 落盘：`entity-name-format-render-evidence.json`（F800）+ RESEARCH_LOG Round 494。
 
+## Round 495 (2026-08-12) — 名字/头顶系统闭合（Finding 801）
+
+- **459 连发 + 425 证据 + 名字/头顶完整**。
+- 落盘：`name-overhead-system-closure-evidence.json`（F801）+ RESEARCH_LOG Round 495。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（名字系统完整；下一弧：剩余深层角落）。
+- 无阻塞项（名字/头顶完整；下一弧：HANDOFF 刷新 77/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

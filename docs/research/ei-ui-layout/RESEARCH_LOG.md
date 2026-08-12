@@ -8134,3 +8134,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔名字〕**0x40BA60（F797 依赖）：0x468CD7 sprintf 格式 0x47AC3C（名 [0x620A0] + 状态 [0x61C8C] + **8 个状态串 @ [0x621A4..0x628C0] stride 0x104**）+ 重置 [0x6209C]；0x40BB00 **名字渲染（F621 函数体）**：[0x6209C] += delta、**>0xBB8（3000ms，F621/F531 确认）** → 清名+状态；位置 [0xE4]/[0xE8] − 0x2C/−0x37、状态 [0x61C8C]==1 居中测量 0x45E0C0 否则 状态×14 偏移；SetRect + **矩阵 0x466800（F643）缩放**（0.157/0.235/0.313/0.47）+ vtable[0x40] 渲染——实体名字系统完整。
 - 落盘：entity-name-format-render-evidence.json（F800，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 494。
+## Round 495 (F801) — 2026-08-12：名字/头顶系统闭合（F621/F531/F797/F800 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**425 证据 JSON**；三服务 200；master f9256fa（**459 连发 F335-F800 已推**）。
+- **〔弧〕**英雄名字层（F621）+ 3000ms 计时（F531）+ 名字消息处理（F797）+ 格式化/渲染（F800）——**名字/头顶完整**（名字消息 → 0x40BA60 格式化 → 0x40BB00 渲染 → 3000ms 清除、矩阵缩放、位置 [0xE4]/[0xE8]）。
+- 落盘：name-overhead-system-closure-evidence.json（F801，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 495。

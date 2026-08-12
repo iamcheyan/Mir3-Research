@@ -1,0 +1,37 @@
+{
+  "evidence_id": "name-overhead-system-closure-2026-08-12-f801",
+  "title": "Round 495 (F801): Name/overhead system CLOSED (F621/F531/F797/F800) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master f9256fa (459 consecutive F335-F800), 425 evidence JSONs; arc: hero name layer (F621) + 3000ms timer (F531) + name msg handler (F797) + format/render (F800) - name/overhead COMPLETE byte-level (name msg -> 0x40BA60 format -> 0x40BB00 render -> 3000ms clear, matrix scale, pos [0xE4]/[0xE8])",
+  "date": "2026-08-12",
+  "objective": "Close the name/overhead system.",
+  "question": "Is the name/overhead system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "425 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F621": "name layer", "F531": "3000ms", "F797": "msg handler", "F800": "format/render"},
+    "name": "msg + format + render + timeout = COMPLETE",
+    "milestone": "459 consecutive rounds F335-F800"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F800": "459 rounds pushed; name/overhead complete"
+  },
+  "contrast": {
+    "format_vs_render": "sprintf + draw",
+    "msg_vs_timeout": "0x28/0x5DD + 0xBB8"
+  },
+  "verdict": "Name/overhead system CLOSED (F801): msg + format + render + timeout all byte-level; validation green, 459 consecutive rounds, 425 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F621/F531/F797/F800.",
+  "cross_refs": ["F621", "F531", "F797", "F800"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "459 consecutive shipping rounds F335-F800",
+    "name/overhead 100%",
+    "next: HANDOFF refresh 77, remaining corners"
+  ]
+}
