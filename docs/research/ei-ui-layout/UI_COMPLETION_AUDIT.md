@@ -781,6 +781,11 @@ git diff --check
 - **intro → 连接 → 角色列表 → 进游戏全链验证**（F336/F349）。
 - 落盘：`login-flow-final-verification-evidence.json`（F416）+ RESEARCH_LOG Round 110。
 
+## Round 111 (2026-08-12) — 角色选择视觉（Finding 417）
+
+- **武士/法师/道士 按钮入登录流**（F349/F311）浏览器验证。
+- 落盘：`char-select-visual-verification-evidence.json`（F417）+ app.js + RESEARCH_LOG Round 111。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

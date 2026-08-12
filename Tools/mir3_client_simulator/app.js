@@ -1467,18 +1467,31 @@ function renderLoginOverlay() {
     <div id="login-account" style="margin:4px;font-size:12px;color:#0f0;">账号: <input style="width:140px"></div>
     <div style="margin:4px;font-size:12px;color:#0f0;">密码: <input type="password" style="width:140px"></div>
     <button id="login-btn" style="margin-top:16px;padding:6px 24px;background:#444;color:#fff;border:1px solid #96C8FF;cursor:pointer;">进入游戏</button>
-    <p id="login-note" style="font-size:11px;color:#666;margin-top:8px;">原版流程: 选择服务器 → 角色列表 (0x458F80 分派) → 进入游戏</p>`;
+    <p id="login-note" style="font-size:11px;color:#666;margin-top:8px;">原版流程: 选择服务器 → 角色列表 (0x458F80 分派) → 进入游戏</p>
+    <div id="class-select" style="display:none;margin-top:10px;">
+      <p style="font-size:12px;color:#96C8FF;margin-bottom:6px;">选择职业 (0x47D778/0x47D784/0x47D790):</p>
+      <div style="display:flex;gap:8px;">
+        <button data-class="武士" style="padding:6px 18px;background:#444;color:#fff;border:1px solid #96C8FF;cursor:pointer;">武 士</button>
+        <button data-class="法师" style="padding:6px 18px;background:#444;color:#fff;border:1px solid #96C8FF;cursor:pointer;">法 师</button>
+        <button data-class="道士" style="padding:6px 18px;background:#444;color:#fff;border:1px solid #96C8FF;cursor:pointer;">道 士</button>
+      </div>
+    </div>`;
   document.getElementById("stage-wrap").appendChild(ov);
   document.getElementById("login-btn").addEventListener("click", () => {
     // stage 0 intro -> 1 char-select (list) -> 2 in-game (0x458B20 enter)
     ov.querySelector("#login-note").textContent = "正在连接服务器... (0x458F80: 0x208 角色列表)";
     setTimeout(() => {
-      ov.querySelector("#login-note").textContent = "角色列表就绪 - 选择角色进入 (0x4575D0 stage 3 → 0x458B20)";
-      setTimeout(() => {
-        ov.remove();
-        STATE.loginStage = 2;
-        pushChat("[系统] 进入游戏 (0x8B1878 state 3 → 0x41BB00 tick)");
-      }, 800);
+      ov.querySelector("#login-note").textContent = "角色列表就绪 - 选择职业进入 (0x4575D0 stage 3 → 0x458B20)";
+      const cs = ov.querySelector("#class-select");
+      cs.style.display = "block";
+      cs.querySelectorAll("button").forEach((b) => {
+        b.addEventListener("click", () => {
+          pushChat(`[角色] 选择职业 ${b.dataset.class} (0x47D778 武士/0x47D784 法师/0x47D790 道士)`);
+          ov.remove();
+          STATE.loginStage = 2;
+          pushChat("[系统] 进入游戏 (0x8B1878 state 3 → 0x41BB00 tick)");
+        });
+      });
     }, 700);
   });
 }

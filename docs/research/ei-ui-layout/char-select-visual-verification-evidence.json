@@ -1,0 +1,34 @@
+{
+  "evidence_id": "char-select-visual-2026-08-12-f417",
+  "title": "Round 111 (F417): Char-select visual verified - login overlay now shows 武士/法师/道士 class buttons (0x47D778/0x47D784/0x47D790), clicking enters game with evidence log (browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Add and verify the char-select class step in the sim login flow.",
+  "question": "Does the sim char-select show the original class options?",
+  "method": "app.js class-select wiring + browser verification.",
+  "scope": "sim login overlay; F349/F311 class names.",
+  "cell_analysis": {
+    "class_select": {"buttons": "武 士 / 法 师 / 道 士", "evidence": "0x47D778 武士 / 0x47D784 法师 / 0x47D790 道士 (F349/F311)", "flow": "char list -> class select -> enter game"},
+    "click": "武 士 click -> chat '[角色] 选择职业 武士 (0x47D778...)' + enter game (browser)"
+  },
+  "exe_trace": {
+    "char_select": "0x4575D0 (F349): stage 3 enter -> 0x458B20; class names 0x47D778-0x47D790"
+  },
+  "audit_vs_exe": {
+    "F349": "class names + stage machine confirmed in sim",
+    "F311": "class name strings confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = button class pick; original = animated char list + class select"
+  },
+  "verdict": "Char-select visual verified (F349/F311): login overlay shows 武士/法师/道士 buttons; clicking enters game with evidence log. Char-select step added to sim login flow.",
+  "evidence_level": "derived-tooling (class names primary-static F349/F311)",
+  "evidence_level_note": "Sim class-select browser-verified; names from F349/F311 primary bytes.",
+  "cross_refs": ["F349: char-select flow", "F311: class names", "F416: login flow final"],
+  "tool": "app.js edit; puppeteer browser",
+  "reproduce": "open sim; click 进入游戏; wait for class buttons; click 武士",
+  "notes": [
+    "class names GBK 武士/法师/道士 (0x47D778/0x47D784/0x47D790)",
+    "original: char list refresh 0x458FBD + enter 0x458B20 (F349)",
+    "sim class pick = demo; original server assigns class"
+  ]
+}

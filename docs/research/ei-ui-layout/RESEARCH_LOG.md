@@ -6283,3 +6283,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔阶段〕**intro 遮罩 → 连接（0x458F80 角色列表）→ 角色选择（0x4575D0 stage 3）→ 进游戏（0x8B1878 state 3 → 0x41BB00）——全链浏览器验证。
 - 落盘：login-flow-final-verification-evidence.json（F416，derived-tooling；语义 primary-static F336/F349）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 110。
+## Round 111 (F417) — 2026-08-12：角色选择视觉（武士/法师/道士 按钮入登录流）
+
+- **〔类选〕**登录遮罩加 武 士/法 师/道 士 按钮（0x47D778/0x47D784/0x47D790，F349/F311）；点击进游戏 + 证据日志（浏览器验证）。
+- 落盘：char-select-visual-verification-evidence.json（F417，derived-tooling；名 primary-static F349/F311）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 111。
