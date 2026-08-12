@@ -1,0 +1,36 @@
+{
+  "evidence_id": "guild-window-input-reset-2026-08-12-f945",
+  "title": "Round 639 (F945): Guild window input + reset (F920/F897 dep) - 0x425DE0 guild INPUT (scrollbar 0x417C80 @ +0x76C -> per-page count [0x98] mode 0/1/2 x [0x778] -> scroll [0x9C]; else 9 controls vtable[8] @ +0x118 stride 0xB4); 0x425E90 9 control reset; 0x425EB0 guild CLEAR (dlist [0xD0]/[0xE8] free 0x4680F8 + defaults 0x47BB80/0x47BB7C + parse 0x468BF0 '\\n', F920 dep) - guild input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the guild window input + reset.",
+  "question": "How does the guild window route input?",
+  "method": "Disasm 0x425DE0-0x425EB0.",
+  "scope": "0x425DE0-0x425EB0; input.",
+  "cell_analysis": {
+    "0x425DE0": "input scrollbar 0x417C80 + 9 controls",
+    "0x425E90": "reset 9",
+    "0x425EB0": "clear dlist [0xD0]/[0xE8] + 0x47BB80"
+  },
+  "exe_trace": {
+    "guild_chain": "input -> scroll/page -> clear"
+  },
+  "audit_vs_exe": {
+    "F920": "guild member init", "F897": "reset"
+  },
+  "contrast": {
+    "scroll_vs_controls": "page + 9",
+    "clear_vs_init": "free + defaults"
+  },
+  "verdict": "Guild window input + reset PRIMARY-verified: input + clear; F920 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild input decoded from .text.",
+  "cross_refs": ["F920: guild init", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x425DE0+0x20; 0x425EB0+0x30",
+  "notes": [
+    "scrollbar +0x76C",
+    "9 controls +0x118",
+    "clear [0xD0]/[0xE8]",
+    "parse 0x468BF0"
+  ]
+}

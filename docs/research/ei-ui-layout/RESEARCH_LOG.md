@@ -8758,3 +8758,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 635-637（F942-F943：任务窗口输入 + 600 连发里程碑）；基线 Round 634=52937fb → Round 637=ad68532（**601 连发 F335-F943**）。
 - 落盘：handoff-refresh-126-evidence.json（F944，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 638。
+## Round 639 (F945) — 2026-08-12：行会窗口输入 + 重置（F920/F897 依赖）
+
+- **〔行会〕**0x425DE0 行会输入（滚动条 0x417C80 @ +0x76C → 页计数 [0x98] 模式 0/1/2 × [0x778] → 滚动 [0x9C]；否则 9 控件 vtable[8] @ +0x118 stride 0xB4）；0x425E90 9 控件重置；0x425EB0 **行会清空**（dlist [0xD0]/[0xE8] free 0x4680F8 + 默认 0x47BB80/0x47BB7C + 解析 0x468BF0 '
+'，F920 依赖）——行会输入完整。
+- 落盘：guild-window-input-reset-evidence.json（F945，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 639。

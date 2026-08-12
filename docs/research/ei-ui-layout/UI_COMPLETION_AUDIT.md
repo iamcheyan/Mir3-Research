@@ -3841,3 +3841,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（600 连发达成；下一弧：剩余深层角落/模拟器 polish）。
+## Round 639 (2026-08-12) — 行会窗口输入 + 重置（Finding 945）
+
+- **输入 + 清空**（行会输入完整）。
+- 落盘：`guild-window-input-reset-evidence.json`（F945）+ RESEARCH_LOG Round 639。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会输入完整；下一弧：剩余深层角落）。
