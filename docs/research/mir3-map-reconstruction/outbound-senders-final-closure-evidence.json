@@ -1,0 +1,37 @@
+{
+  "evidence_id": "outbound-senders-final-closure-2026-08-12-f783",
+  "title": "Round 477 (F783): Outbound senders FINAL closure (F572/F573/F616/F782) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 453c90f (441 consecutive F335-F782), 407 evidence JSONs; arc: text frame protocol (F572) + outbound directory (F573) + attack/trade senders (F616) + sender extension (F782) - outbound senders COMPLETE byte-level (header 0x452940 + send 0x451E60 + msgs 0x3E9-0x40A/0x416-0x419/0x418/0x401-0x406 + close pump + input forward)",
+  "date": "2026-08-12",
+  "objective": "Close the outbound senders finally.",
+  "question": "Is the outbound send pipeline fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "407 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F572": "protocol", "F573": "directory", "F616": "attack/trade", "F782": "extension"},
+    "senders": "header + send + all msgs + pump = COMPLETE",
+    "milestone": "441 consecutive rounds F335-F782"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F782": "441 rounds pushed; outbound senders complete"
+  },
+  "contrast": {
+    "protocol_vs_senders": "0x452940 + msg senders",
+    "dialog_vs_action": "0x418 + 0x401-0x406"
+  },
+  "verdict": "Outbound senders FINAL closure (F783): protocol + directory + senders all byte-level; validation green, 441 consecutive rounds, 407 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F572/F573/F616/F782.",
+  "cross_refs": ["F572", "F573", "F616", "F782"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "441 consecutive shipping rounds F335-F782",
+    "outbound senders 100%",
+    "next: HANDOFF refresh 71, remaining corners"
+  ]
+}

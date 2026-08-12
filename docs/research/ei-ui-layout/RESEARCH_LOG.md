@@ -8056,3 +8056,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔发送〕**0x451A10 **msg 0x418**（对话动作、F746 依赖）+ 0x451A40 0x419 + 0x451A70 **0x401**（F580 攻击确认）+ 0x451AA0 0x402 + 0x451AD0 0x403 + 0x451B00 0x405 + 0x451B30 0x406——全部经包头 0x452940 + 发送 0x451E60（F572）；0x451B60 窗口关闭泵（0x476114 PostMessage 0x1300 + 0x47628C + 0x4760B8/0x4760BC 销毁）；0x451BB0 输入转发（0x4515C0 + hwnd 0x8AB7B0）——**出站发送器完整**。
 - 落盘：sender-family-extension-evidence.json（F782，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 476。
+## Round 477 (F783) — 2026-08-12：出站发送器最终闭合（F572/F573/F616/F782 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**407 证据 JSON**；三服务 200；master 453c90f（**441 连发 F335-F782 已推**）。
+- **〔弧〕**文本帧协议（F572）+ 出站目录（F573）+ 攻击/交易发送器（F616）+ 发送器扩展（F782）——**出站发送器完整**（包头 0x452940 + 发送 0x451E60 + msg 0x3E9-0x40A/0x416-0x419/0x418/0x401-0x406 + 关闭泵 + 输入转发）。
+- 落盘：outbound-senders-final-closure-evidence.json（F783，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 477。
