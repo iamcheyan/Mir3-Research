@@ -1,0 +1,36 @@
+{
+  "evidence_id": "login-server-screen-paint-2026-08-12-f608",
+  "title": "Round 302 (F608): Login/server screen paint - 0x4031A0: gradient bg 0x466800 + fill 0x45E570 0x969696, server list walk ([0xA50] nodes +4 data, [0xA64] selected = -1), per-server hover rect [esi+0x208..0x214] (PtInRect 0x4762B4) + gradient 0x4029A0 + server name text 0xFF0000 red + 0x45DE50; [0xA3C..0xA48] window rect floats - login server-select screen byte-level (F585 Mir3.ini server list connects)",
+  "date": "2026-08-12",
+  "objective": "Decode the login/server screen paint.",
+  "question": "How does the server-select screen render?",
+  "method": "Disasm 0x4031A0-0x4033A6.",
+  "scope": "0x4031A0-0x4033A6; server list [0xA50].",
+  "cell_analysis": {
+    "bg": "gradient 0x466800 + fill 0x45E570 0x969696",
+    "server_list": {"nodes": "[0xA50] +4 data", "selected": "[0xA64] = -1", "hover": "rect [esi+0x208..0x214] PtInRect + gradient 0x4029A0", "text": "name 0xFF0000 red + 0x45DE50"},
+    "rect": "[0xA3C..0xA48] window rect floats"
+  },
+  "exe_trace": {
+    "login_chain": "intro -> login screen -> server list (Mir3.ini F585) -> hover/select -> connect"
+  },
+  "audit_vs_exe": {
+    "F585": "Mir3.ini server list [0xA50] CONFIRMED", "F607": "intro chain", "F605": "login arc"
+  },
+  "contrast": {
+    "login_vs_intro": "0x4031A0 server select vs 0x402BE0 intro",
+    "hover_vs_select": "hover rect + selected [0xA64]"
+  },
+  "verdict": "Login/server screen paint PRIMARY-verified: gradient bg + server list (hover/select) + red name text; Mir3.ini list connects (F585).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Login paint decoded from .text.",
+  "cross_refs": ["F585: Mir3.ini", "F607: intro", "F605: login arc"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4031A0+0x50",
+  "notes": [
+    "server nodes [0xA50], selected [0xA64]",
+    "hover rect [esi+0x208..0x214]",
+    "server name red 0xFF0000",
+    "bg fill 0x969696"
+  ]
+}

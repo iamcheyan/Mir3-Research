@@ -7270,3 +7270,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔状态〕**0x402BE0：阶段 [0x8A4] 3 路（0→0x402D50、1→0x4031A0、2→0x403560）+ 0x4182A0 屏幕 [0x8A8]/[0x8AC]；0x402C40 子阶段 [0x8A5]：0 = **Interface1c 帧 0x3C** blit（0x45FD50）+ 0x45C900 载入 [0x6F4]；1 = **wemade.dat 启动画面**（0x45BE20）+ [0x8A5]=2；2 = 聊天显示 0x403640（F585）+ **音频初始化 0x45BF30**（0x9135C0 + 0x8AB7B8、格式 0x47AAD0）+ 矩形 + 0x45C4C0。
 - **〔绘制〕**0x402D50：渐变 0x466800 + 填充 0x45E570 0x646464 + 4 控件遍历 [0xA68] stride 0xB4——Intro 启动链字节级（F585/F336 连接）。
 - 落盘：intro-splash-state-machine-evidence.json（F607，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 301。
+## Round 302 (F608) — 2026-08-12：登录/服务器屏绘制
+
+- **〔绘制〕**0x4031A0：渐变背景 0x466800 + 填充 0x45E570 0x969696、**服务器列表遍历**（[0xA50] 节点 +4 数据、[0xA64] 选中 = -1）、每服务器悬停矩形 [esi+0x208..0x214]（PtInRect）+ 渐变 0x4029A0 + 服务器名 **0xFF0000 红** + 0x45DE50；[0xA3C..0xA48] 窗口矩形浮点——登录服务器选择屏字节级（F585 Mir3.ini 服务器列表连接）。
+- 落盘：login-server-screen-paint-evidence.json（F608，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 302。
