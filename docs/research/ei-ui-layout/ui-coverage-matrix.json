@@ -656,6 +656,34 @@
         "Round 29 audit corrections: '0x41A0C0 window-id dispatch' mislabel -> it is mid-body of 0x419D40 (entity dispatch); window-catalog id15 VA 0x779600 -> 0x777200"
       ],
       "pending_notes": "0x47AF80 announce text is cp949 (Korean) - GBK misread corrected; [0x8AB7BC] mouse pos written via [0x8AB7A8+0x14] (no direct abs32 writer, 119 readers); 0x41A9D0/0x41A5B0 renderer select body; 0x8A9520 intro tick 0x402BE0 sub-states"
+    },
+    {
+      "id": "window-visibility",
+      "category": "窗口可见性调度 (F337)",
+      "artifacts": [
+        "window-visibility-dispatch-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "visibility.toggle-0x42ADB0",
+        "visibility.close-all-0x42B820",
+        "visibility.click-dispatch-0x42B430",
+        "window-catalog.hero-builder-0x427600"
+      ],
+      "preview_mode": "ui",
+      "status": "primary-bytes-visibility-dispatch",
+      "pending": false,
+      "closed_2026_08_12": [
+        "0x42ADB0 = window visibility toggle dispatcher fully decoded (Finding 337, window-visibility-dispatch-evidence.json): modal (close-all 0x42B820 first), 16-entry jump table 0x42B3E4, gate [obj+0x30] (ctor arg8 active flag, base ctor 0x423CA0 inits 0), HIDE = 0x42AC50 list-remove + vtable+0x10(0), SHOW = 0x42AC30 list-insert (main+0xD24 via 0x449870) + vtable+0x10(1)",
+        "close-all 0x42B820 = iterate visible list, ids 0..0xE only (15-entry table 0x42B938, ids 5/10 skip), 0x423F90(obj, 0); id15 notice EXCLUDED (F294 confirmed)",
+        "special cases: id8 chat = MoveWindow(main hwnd to chat rect) + ShowWindow(5); id15 notice = SetWindowTextA([hero+0x52E5C+0x53028=0x7773CC], 0x8B187C) + ShowWindow + UpdateWindow + MoveWindow(rect +0x53018..+0x53028) + [0x8AA498] flag; id0 bag = reframe 0x10B/0x10C + byte[+0x54]=0 mode reset + 0x42FF90 grid reset; id6 = reframe 0x398/0x399",
+        "id0 = 背包 Bag RESOLVED: F288 mode byte +0x54 + 3 tabs +0x5C stride 0xB4 + reset 0x42E9A4 + show 0x42AE26 (case-0 path) + grid reset 0x42FF90 (+0x23760..+0x23770) + caption idx14 包袱栏 push 0 (Round 28 F321) - Round 29 '右侧面板 候选' superseded",
+        "full id->obj->gate table (ids 5/10 unused -> guard 0x42B3DD): id0 +0x6554/0x6584 背包; id1 +0x29CE4/0x29D14 状态; id2 +0x33188/0x331B8 商店; id3 +0x3399C/0x339CC 交易(F295); id4 +0x4707C/0x470AC 物品; id6 +0x47834/0x47864 组队(F331 背包标签修正); id7 +0x47C28/0x47C58; id8 +0x507EC/0x5081C 聊天; id9 +0x51150/0x51180 NPC对话(F331 快捷栏标签修正); idB +0x516E8/0x51718; idC +0x518E0/0x51910 选项; idD +0x52118/0x52148 坐骑; idE +0x524F0/0x52520 属性; idF +0x52E5C/0x52E8C 公告",
+        "43 callers of 0x42ADB0 mapped: bag modes 0x41FA28/0x41FB36/0x4204DD/0x420B0E(id0); server events 0x41FEB8(id9)/0x420486(id3)/0x4209EF+0x420AB6(id2)/0x4214EB(id7)/0x42151A(id4); guild notice 0x425A26+0x425B25(id15,F294)+0x42BE99(id15); caption action table 20 sites (ids 0,1,2,3,4,6,7,8,11,12,13,14); hotkeys 0x42CCC3..0x42CE86 (ids 1,14,8,13,11,6,12; 0x42CC8B push 0x51=81 guard no-op); TAB 0x42CFDD",
+        "click dispatch 0x42B430: visible-list head pop (main+0xD30) -> id table 0x42B658 -> per-window 0x423FA0(obj, x, y, 0); visible list layout main+0xD24/+0xD28/+0xD2C/+0xD30/+0xD34/+0xD38 (Round 12 insertion policy confirmed)",
+        "id2/id9 created hidden (ctor flag 0) - opened on demand; single-window modality confirmed (close-all before every show)"
+      ],
+      "pending_notes": "0x4762B8 (id15 show/hide) = SetForegroundWindow candidate pending pefile verify; ids 7/11/14 identity semantics candidate (need paint/behavior cross-ref)"
     }
   ],
   "verification": {

@@ -306,6 +306,14 @@ git diff --check
 - **IAT 新增/修正（pefile）**：0x4762A8=PeekMessageA、0x4762A4=GetMessageA、0x4762A0=TranslateMessage、0x47629C=DispatchMessageA、0x476298=GetAsyncKeyState、0x476120=GetLocalTime、0x4762B4=PtInRect、0x4760CC=Sleep。
 - 落盘：`game-loop-and-entity-dispatch-evidence.json`（F336，primary-bytes）+ matrix game-loop 新记录 + layout.json version 0.14（5 新记录 + 0x779600→0x777200 全库修正）+ RESEARCH_LOG Round 30。
 
+## Round 31 (2026-08-12) — 窗口可见性调度（Finding 337：0x42ADB0 模态 id 索引切换 + close-all + 可见链表 + id0=背包定案）
+
+- **〔核心〕0x42ADB0 = 窗口可见性切换分派器**（ret 4）：先 close-all 0x42B820（模态单窗口）→ id>0xF 守卫 → 16 项跳表 0x42B3E4；门 [obj+0x30]（ctor arg8 活动标志，0x423CA0 初 0）≠0 → HIDE（0x42AC50 链表移除 + vtable+0x10(0)）；==0 → SHOW（0x42AC30 插入 main+0xD24 → 0x449870 + vtable+0x10(1)）。
+- **16 项 id→obj→gate 表**：id0 +0x6554 背包（F288 mode byte +0x54、grid reset 0x42FF90、caption Q 三线合一——Round 29『右侧面板』作废）；id1 +0x29CE4 状态；id2 +0x33188 商店（默认隐藏）；id3 +0x3399C 交易（F295）；id4 +0x4707C 物品；id6 +0x47834 组队（F331『背包』标签修正）；id7 +0x47C28；id8 +0x507EC 聊天（MoveWindow+ShowWindow(5) 特殊）；id9 +0x51150 NPC 对话（F331『快捷栏』修正）；idB +0x516E8；idC +0x518E0 选项；idD +0x52118 坐骑；idE +0x524F0 属性；idF +0x52E5C 公告（SetWindowTextA([+0x53028], 0x8B187C)/ShowWindow/UpdateWindow/MoveWindow + [0x8AA498] 特殊）；id5/10 未用（守卫）。
+- **close-all 0x42B820**：ids 0..0xE 仅（跳表 0x42B938），0x423F90(obj,0)；id15 排除（F294 确认）。**点击分派 0x42B430**：链表头 → 跳表 0x42B658 → 各窗口 0x423FA0(obj, x, y, 0)。
+- **43 调用者**：背包模式 4、服务端事件 6、行会公告 3、caption 动作表 20、热键 8、TAB 1、守卫安全（0x42CC8B push 81）。
+- 落盘：`window-visibility-dispatch-evidence.json`（F337 追加段 + closed_notes，保留 Round 12/21 原记录）+ matrix window-visibility 新记录 + layout.json version 0.15（3 新记录 + window-catalog id0/id2/id3/id6/id9 修正）+ RESEARCH_LOG Round 31。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

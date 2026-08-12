@@ -7,8 +7,28 @@
     "range": "0x0042ADB0-0x0042B3E0",
     "head": "push esi; push edi; mov esi,ecx; xor edi,edi; call 0x0042B820; mov eax,[esp+0xC]; cmp eax,0xF; ja 0x0042B3DD; jmp [eax*4+0x0042B3E4]",
     "jump_table_va": "0x0042B3E4",
-    "jump_table_dwords": ["[0]=0x42ADCF","[1]=0x42AE42","[2]=0x42AE91","[3]=0x42AEE0","[4]=0x42B06B","[5]=0x42B3DD","[6]=0x42B0BA","[7]=0x42B131","[8]=0x42B180","[9]=0x42B25E","[10]=0x42B3DD","[11]=0x42AF2F","[12]=0x42AF7E","[13]=0x42AFCD","[14]=0x42B01C","[15]=0x42B2AD"],
-    "range_ids": [0, 15],
+    "jump_table_dwords": [
+      "[0]=0x42ADCF",
+      "[1]=0x42AE42",
+      "[2]=0x42AE91",
+      "[3]=0x42AEE0",
+      "[4]=0x42B06B",
+      "[5]=0x42B3DD",
+      "[6]=0x42B0BA",
+      "[7]=0x42B131",
+      "[8]=0x42B180",
+      "[9]=0x42B25E",
+      "[10]=0x42B3DD",
+      "[11]=0x42AF2F",
+      "[12]=0x42AF7E",
+      "[13]=0x42AFCD",
+      "[14]=0x42B01C",
+      "[15]=0x42B2AD"
+    ],
+    "range_ids": [
+      0,
+      15
+    ],
     "default_target": "0x0042B3DD",
     "return_contract": "eax = edi: 1 = target was OPENED (was hidden); 0 = target was CLOSED or id invalid (ids 5/10 and >0xF jump straight to the shared tail 0x42B3DD with edi=0 from the prologue xor). Callers rely on this: Q/W/E/R/S/D/N/G letters, Enter case1, FnB 0x43E4B0 notice path, caption action stubs (cap14 toggles only when return 0, cap15 double-toggle gates on return).",
     "close_all_first": "0x0042B820 demote-all runs before the case: walks the visible list from [base+0xD28] head via node+4 (prev links), resets [base+0xD34]=0 and per listed node id <= 0xE executes table 0x42B938 -> 0x423F90(subwin, 0) (mov [subwin+0x34],0; ret 4); ids 5/10 -> 0x42B8F5 no-op advance, id > 0xE skipped; loop inc edi / cmp edi,[base+0xD38] / jl. This is DEACTIVATION of the +0x34 slot only - it does NOT touch the +0x30 visibility gate and does NOT unlink list nodes. 3 E8 callers: 0x42ADB6 (dispatcher head), 0x42B6B3 (drag-start 0x42B6A0), 0x42BD8F (FnA hit-test fallback).",
@@ -20,7 +40,20 @@
     "hide_helper_proof": "0x0042AC50 walks the main+0xD28 linked list, unlinks the matching ID node, decrements the count and releases it through 0x004680F8.",
     "virtual_visibility_slot": "+0x10",
     "virtual_argument": "1 = show, 0 = hide",
-    "iat": {"GetFocus": "0x00476250 (CORRECTED: no GetActiveWindow import exists in this PE; all earlier 'GetActiveWindow([0x476250])' records read GetFocus)", "UpdateWindow": "0x00476258", "ShowWindow": "0x004762AC", "SetFocus": "0x004762B8", "MoveWindow": "0x004762BC", "SetWindowTextA": "0x004762CC", "SetRect": "0x004762B0", "main_window_origin": "[0x8AB7F0] = main X, [0x8AB7F4] = main Y (MoveWindow base for map-bar/chat-HWND placement)", "map_input_bar_hwnd": "[0x8AA48C]", "big_window_flag": "[0x8AA498]", "chat_hwnd_wrapper": "base+0x53028 (nonzero -> native big-chat HWND operations run)", "big_chat_title": "0x8B187C"}
+    "iat": {
+      "GetFocus": "0x00476250 (CORRECTED: no GetActiveWindow import exists in this PE; all earlier 'GetActiveWindow([0x476250])' records read GetFocus)",
+      "UpdateWindow": "0x00476258",
+      "ShowWindow": "0x004762AC",
+      "SetFocus": "0x004762B8",
+      "MoveWindow": "0x004762BC",
+      "SetWindowTextA": "0x004762CC",
+      "SetRect": "0x004762B0",
+      "main_window_origin": "[0x8AB7F0] = main X, [0x8AB7F4] = main Y (MoveWindow base for map-bar/chat-HWND placement)",
+      "map_input_bar_hwnd": "[0x8AA48C]",
+      "big_window_flag": "[0x8AA498]",
+      "chat_hwnd_wrapper": "base+0x53028 (nonzero -> native big-chat HWND operations run)",
+      "big_chat_title": "0x8B187C"
+    }
   },
   "visible_window_list_manager": {
     "container_base": "main+0xD24",
@@ -29,7 +62,11 @@
     "tail": "main+0xD30",
     "current_index": "main+0xD34",
     "count": "main+0xD38",
-    "node_layout": {"offset_0": "window_id", "offset_4": "previous_node", "offset_8": "next_node"},
+    "node_layout": {
+      "offset_0": "window_id",
+      "offset_4": "previous_node",
+      "offset_8": "next_node"
+    },
     "insert_va": "0x00449870",
     "remove_and_free_va": "0x0042AC50 / 0x004680F8",
     "evidence_level": "primary-static-linked-list-flow"
@@ -44,22 +81,160 @@
     "evidence_level": "primary-static-linked-list-insertion"
   },
   "records": [
-    {"window_id": 0, "layout_id": "window.inventory", "object": "main+0x6554", "target": "0x0042ADCF", "state_gate": "main+0x6584", "close_va": "0x0042ADDD", "open_va": "0x0042ADFC", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + byte[sub+0x54]=0 + 0x417880(lea ecx,[sub+0x1C4]; push -1; push 0x10C; push 0x10B) + 0x42FF90(sub), ret 1"},
-    {"window_id": 1, "layout_id": "window.status", "object": "main+0x29CE4", "target": "0x0042AE42", "state_gate": "main+0x29D14", "close_va": "0x0042AE50", "open_va": "0x0042AE6F", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 2, "layout_id": "window.store-candidate", "object": "main+0x33188", "target": "0x0042AE91", "state_gate": "main+0x331B8", "close_va": "0x0042AE9D", "open_va": "0x0042AEBE", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1; store state may be rebuilt before display"},
-    {"window_id": 3, "layout_id": "window.exchange-candidate", "object": "main+0x3399C", "target": "0x0042AEE0", "state_gate": "main+0x339CC", "close_va": "0x0042AEEC", "open_va": "0x0042AF0D", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1 (CORRECTED: case 3 entry is 0x42AEE0; 0x42AEB0 is inside case 2's close body)"},
-    {"window_id": 4, "layout_id": "window.guild-candidate", "object": "main+0x4707C", "target": "0x0042B06B", "state_gate": "main+0x470AC", "close_va": "0x0042B077", "open_va": "0x0042B098", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 5, "layout_id": null, "object": null, "target": "0x0042B3DD", "show_hide": "no registered object branch: jump table [5] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"},
-    {"window_id": 6, "layout_id": "window.group", "object": "main+0x47834", "target": "0x0042B0BA", "state_gate": "main+0x47864", "close_va": "0x0042B0C8", "open_va": "0x0042B0E7", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + 0x417880(lea ecx,[base+0x47B70]; push 0x398 if [base+0x47C24]!=0 else -1; push 0x399; push 0x398), ret 1"},
-    {"window_id": 7, "layout_id": "window.group-pop-candidate", "object": "main+0x47C28", "target": "0x0042B131", "state_gate": "main+0x47C58", "close_va": "0x0042B13D", "open_va": "0x0042B15E", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 8, "layout_id": "window.chat-pop", "object": "main+0x507EC", "target": "0x0042B180", "state_gate": "main+0x5081C", "close_va": "0x0042B188", "open_va": "0x0042B1DB", "show_hide": "gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0), ret 0; gate==0 (open): MoveWindow(mapBar, mainX+[base+0x50804]+[base+0x51140], mainY+[base+0x50808]+[base+0x51144], [base+0x51148]-[base+0x51140], [base+0x5114C]-[base+0x51144], 1) + ShowWindow(mapBar, 5) + 0x42AC30 + vtable[0x10](1), ret 1. mapBar = [0x8AA48C]; mainX/mainY = [0x8AB7F0]/[0x8AB7F4]. Byte-verified 0x42B1DB-0x42B25E (MoveWindow call [0x4762BC] at 0x42B223, ShowWindow at 0x42B232, 0x42AC30 at 0x42B23C, vtable[0x10](1) at 0x42B246)."},
-    {"window_id": 9, "layout_id": "window.npc-candidate", "object": "main+0x51150", "target": "0x0042B25E", "state_gate": "main+0x51180", "close_va": "0x0042B26A", "open_va": "0x0042B28B", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 10, "layout_id": null, "object": null, "target": "0x0042B3DD", "show_hide": "no registered object branch: jump table [10] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"},
-    {"window_id": 11, "layout_id": "window.quest", "object": "main+0x516E8", "target": "0x0042AF2F", "state_gate": "main+0x51718", "close_va": "0x0042AF3B", "open_va": "0x0042AF5C", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 12, "layout_id": "window.option", "object": "main+0x518E0", "target": "0x0042AF7E", "state_gate": "main+0x51910", "close_va": "0x0042AF8A", "open_va": "0x0042AFAB", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 13, "layout_id": "window.horse", "object": "main+0x52118", "target": "0x0042AFCD", "state_gate": "main+0x52148", "close_va": "0x0042AFD9", "open_va": "0x0042AFFA", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 14, "layout_id": "window.skill-book", "object": "main+0x524F0", "target": "0x0042B01C", "state_gate": "main+0x52520", "close_va": "0x0042B028", "open_va": "0x0042B049", "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"},
-    {"window_id": 15, "layout_id": "window.notice-prompt-candidate", "object": "main+0x52E5C", "target": "0x0042B2AD", "state_gate": "main+0x52E8C", "close_va": "0x0042B2B5", "open_va": "0x0042B349", "show_hide": "big-chat/notice window (Frame 602; click handler 0x43E4B0; native chat HWND wrapper [base+0x53028], title 0x8B187C; flag [0x8AA498]). gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0) + if [base+0x53028]: ShowWindow(chatHwnd, 0) + SetWindowTextA(chatHwnd, 0x8B187C) + SetFocus([0x8AB7B0]) + [0x8AA498]=1, ret 0. gate==0 (open): 0x42AC30 + vtable[0x10](1) + if [base+0x53028]: ShowWindow(chatHwnd, 5) + UpdateWindow(chatHwnd) + MoveWindow(chatHwnd, mainX+[base+0x53018], mainY+[base+0x5301C], [base+0x53020]-[base+0x53018], [base+0x53024]-[base+0x5301C], 1) + SetFocus(chatHwnd) + [0x8AA498]=0, ret 1. Byte-verified: close tail 0x42B304-0x42B349 (ShowWindow(chat,0) at 0x42B311, SetWindowTextA at 0x42B323, SetFocus at 0x42B330, [0x8AA498]=1 at 0x42B337); open 0x42B349-0x42B3DD (ShowWindow(chat,5) at 0x42B370, UpdateWindow at 0x42B37D, MoveWindow at 0x42B3BB, SetFocus(chat) at 0x42B3C8, [0x8AA498]=0 at 0x42B3CE)."}
+    {
+      "window_id": 0,
+      "layout_id": "window.inventory",
+      "object": "main+0x6554",
+      "target": "0x0042ADCF",
+      "state_gate": "main+0x6584",
+      "close_va": "0x0042ADDD",
+      "open_va": "0x0042ADFC",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + byte[sub+0x54]=0 + 0x417880(lea ecx,[sub+0x1C4]; push -1; push 0x10C; push 0x10B) + 0x42FF90(sub), ret 1"
+    },
+    {
+      "window_id": 1,
+      "layout_id": "window.status",
+      "object": "main+0x29CE4",
+      "target": "0x0042AE42",
+      "state_gate": "main+0x29D14",
+      "close_va": "0x0042AE50",
+      "open_va": "0x0042AE6F",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 2,
+      "layout_id": "window.store-candidate",
+      "object": "main+0x33188",
+      "target": "0x0042AE91",
+      "state_gate": "main+0x331B8",
+      "close_va": "0x0042AE9D",
+      "open_va": "0x0042AEBE",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1; store state may be rebuilt before display"
+    },
+    {
+      "window_id": 3,
+      "layout_id": "window.exchange-candidate",
+      "object": "main+0x3399C",
+      "target": "0x0042AEE0",
+      "state_gate": "main+0x339CC",
+      "close_va": "0x0042AEEC",
+      "open_va": "0x0042AF0D",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1 (CORRECTED: case 3 entry is 0x42AEE0; 0x42AEB0 is inside case 2's close body)"
+    },
+    {
+      "window_id": 4,
+      "layout_id": "window.guild-candidate",
+      "object": "main+0x4707C",
+      "target": "0x0042B06B",
+      "state_gate": "main+0x470AC",
+      "close_va": "0x0042B077",
+      "open_va": "0x0042B098",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 5,
+      "layout_id": null,
+      "object": null,
+      "target": "0x0042B3DD",
+      "show_hide": "no registered object branch: jump table [5] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"
+    },
+    {
+      "window_id": 6,
+      "layout_id": "window.group",
+      "object": "main+0x47834",
+      "target": "0x0042B0BA",
+      "state_gate": "main+0x47864",
+      "close_va": "0x0042B0C8",
+      "open_va": "0x0042B0E7",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1) + 0x417880(lea ecx,[base+0x47B70]; push 0x398 if [base+0x47C24]!=0 else -1; push 0x399; push 0x398), ret 1"
+    },
+    {
+      "window_id": 7,
+      "layout_id": "window.group-pop-candidate",
+      "object": "main+0x47C28",
+      "target": "0x0042B131",
+      "state_gate": "main+0x47C58",
+      "close_va": "0x0042B13D",
+      "open_va": "0x0042B15E",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 8,
+      "layout_id": "window.chat-pop",
+      "object": "main+0x507EC",
+      "target": "0x0042B180",
+      "state_gate": "main+0x5081C",
+      "close_va": "0x0042B188",
+      "open_va": "0x0042B1DB",
+      "show_hide": "gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0), ret 0; gate==0 (open): MoveWindow(mapBar, mainX+[base+0x50804]+[base+0x51140], mainY+[base+0x50808]+[base+0x51144], [base+0x51148]-[base+0x51140], [base+0x5114C]-[base+0x51144], 1) + ShowWindow(mapBar, 5) + 0x42AC30 + vtable[0x10](1), ret 1. mapBar = [0x8AA48C]; mainX/mainY = [0x8AB7F0]/[0x8AB7F4]. Byte-verified 0x42B1DB-0x42B25E (MoveWindow call [0x4762BC] at 0x42B223, ShowWindow at 0x42B232, 0x42AC30 at 0x42B23C, vtable[0x10](1) at 0x42B246)."
+    },
+    {
+      "window_id": 9,
+      "layout_id": "window.npc-candidate",
+      "object": "main+0x51150",
+      "target": "0x0042B25E",
+      "state_gate": "main+0x51180",
+      "close_va": "0x0042B26A",
+      "open_va": "0x0042B28B",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 10,
+      "layout_id": null,
+      "object": null,
+      "target": "0x0042B3DD",
+      "show_hide": "no registered object branch: jump table [10] = shared tail 0x42B3DD, ret 0 (edi=0 from prologue)"
+    },
+    {
+      "window_id": 11,
+      "layout_id": "window.quest",
+      "object": "main+0x516E8",
+      "target": "0x0042AF2F",
+      "state_gate": "main+0x51718",
+      "close_va": "0x0042AF3B",
+      "open_va": "0x0042AF5C",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 12,
+      "layout_id": "window.option",
+      "object": "main+0x518E0",
+      "target": "0x0042AF7E",
+      "state_gate": "main+0x51910",
+      "close_va": "0x0042AF8A",
+      "open_va": "0x0042AFAB",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 13,
+      "layout_id": "window.horse",
+      "object": "main+0x52118",
+      "target": "0x0042AFCD",
+      "state_gate": "main+0x52148",
+      "close_va": "0x0042AFD9",
+      "open_va": "0x0042AFFA",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 14,
+      "layout_id": "window.skill-book",
+      "object": "main+0x524F0",
+      "target": "0x0042B01C",
+      "state_gate": "main+0x52520",
+      "close_va": "0x0042B028",
+      "open_va": "0x0042B049",
+      "show_hide": "gate!=0 -> 0x42AC50 + vtable[0x10](0), ret 0; gate==0 -> 0x42AC30 + vtable[0x10](1), ret 1"
+    },
+    {
+      "window_id": 15,
+      "layout_id": "window.notice-prompt-candidate",
+      "object": "main+0x52E5C",
+      "target": "0x0042B2AD",
+      "state_gate": "main+0x52E8C",
+      "close_va": "0x0042B2B5",
+      "open_va": "0x0042B349",
+      "show_hide": "big-chat/notice window (Frame 602; click handler 0x43E4B0; native chat HWND wrapper [base+0x53028], title 0x8B187C; flag [0x8AA498]). gate!=0 (close): MoveWindow(mapBar, mainX+0xDF, mainY+0x23A, 0x162, 0x10, 1) + 0x42AC50 + vtable[0x10](0) + if [base+0x53028]: ShowWindow(chatHwnd, 0) + SetWindowTextA(chatHwnd, 0x8B187C) + SetFocus([0x8AB7B0]) + [0x8AA498]=1, ret 0. gate==0 (open): 0x42AC30 + vtable[0x10](1) + if [base+0x53028]: ShowWindow(chatHwnd, 5) + UpdateWindow(chatHwnd) + MoveWindow(chatHwnd, mainX+[base+0x53018], mainY+[base+0x5301C], [base+0x53020]-[base+0x53018], [base+0x53024]-[base+0x5301C], 1) + SetFocus(chatHwnd) + [0x8AA498]=0, ret 1. Byte-verified: close tail 0x42B304-0x42B349 (ShowWindow(chat,0) at 0x42B311, SetWindowTextA at 0x42B323, SetFocus at 0x42B330, [0x8AA498]=1 at 0x42B337); open 0x42B349-0x42B3DD (ShowWindow(chat,5) at 0x42B370, UpdateWindow at 0x42B37D, MoveWindow at 0x42B3BB, SetFocus(chat) at 0x42B3C8, [0x8AA498]=0 at 0x42B3CE)."
+    }
   ],
   "initial_state_proof": {
     "base_constructor_va": "0x00423CA0",
@@ -73,27 +248,122 @@
   "caller_scan": {
     "method": "Static scan of direct calls to 0x0042ADB0 (show/hide dispatcher) and 0x0042AC50 (hide helper), with immediate ID arguments and surrounding basic blocks preserved.",
     "show_paths": [
-      {"call_va": "0x0042BFA2", "window_id": 0, "role": "inventory command path", "evidence": "0x0042BF9E pushes 0 before the dispatcher"},
-      {"call_va": "0x0042BFD0", "window_id": 1, "role": "status command path", "evidence": "0x0042BFCC pushes 1 before the dispatcher"},
-      {"call_va": "0x0042BFFA", "window_id": 2, "role": "store command path", "evidence": "0x0042BFF6 pushes 2 before the dispatcher"},
-      {"call_va": "0x0042C028", "window_id": 3, "role": "exchange command path", "evidence": "0x0042C024 pushes 3 before the dispatcher"},
-      {"call_va": "0x0042C052", "window_id": 4, "role": "guild command path", "evidence": "0x0042C04E pushes 4 before the dispatcher"},
-      {"call_va": "0x0042C07C", "window_id": 6, "role": "group command path", "evidence": "0x0042C078 pushes 6 before the dispatcher"},
-      {"call_va": "0x0042C0A6", "window_id": 7, "role": "group-pop command path", "evidence": "0x0042C0A2 pushes 7 before the dispatcher"},
-      {"call_va": "0x0042C0D0", "window_id": 8, "role": "chat command path", "evidence": "0x0042C0CC pushes 8 before the dispatcher"},
-      {"call_va": "0x0042C0FA", "window_id": 11, "role": "quest command path", "evidence": "0x0042C0F6 pushes 11 before the dispatcher"},
-      {"call_va": "0x0042C120", "window_id": 12, "role": "option command path", "evidence": "0x0042C11C pushes 12 before the dispatcher"},
-      {"call_va": "0x0042C146", "window_id": 13, "role": "horse command path", "evidence": "0x0042C142 pushes 13 before the dispatcher"},
-      {"call_va": "0x0042C16C", "window_id": 14, "role": "skill-book command path", "evidence": "0x0042C168 pushes 14 before the dispatcher"},
-      {"call_va": "0x0042BE99", "window_id": 15, "role": "notice result path", "evidence": "0x0042BE95 pushes 15 after the notice preparation call succeeds"}
+      {
+        "call_va": "0x0042BFA2",
+        "window_id": 0,
+        "role": "inventory command path",
+        "evidence": "0x0042BF9E pushes 0 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042BFD0",
+        "window_id": 1,
+        "role": "status command path",
+        "evidence": "0x0042BFCC pushes 1 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042BFFA",
+        "window_id": 2,
+        "role": "store command path",
+        "evidence": "0x0042BFF6 pushes 2 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C028",
+        "window_id": 3,
+        "role": "exchange command path",
+        "evidence": "0x0042C024 pushes 3 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C052",
+        "window_id": 4,
+        "role": "guild command path",
+        "evidence": "0x0042C04E pushes 4 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C07C",
+        "window_id": 6,
+        "role": "group command path",
+        "evidence": "0x0042C078 pushes 6 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C0A6",
+        "window_id": 7,
+        "role": "group-pop command path",
+        "evidence": "0x0042C0A2 pushes 7 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C0D0",
+        "window_id": 8,
+        "role": "chat command path",
+        "evidence": "0x0042C0CC pushes 8 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C0FA",
+        "window_id": 11,
+        "role": "quest command path",
+        "evidence": "0x0042C0F6 pushes 11 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C120",
+        "window_id": 12,
+        "role": "option command path",
+        "evidence": "0x0042C11C pushes 12 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C146",
+        "window_id": 13,
+        "role": "horse command path",
+        "evidence": "0x0042C142 pushes 13 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042C16C",
+        "window_id": 14,
+        "role": "skill-book command path",
+        "evidence": "0x0042C168 pushes 14 before the dispatcher"
+      },
+      {
+        "call_va": "0x0042BE99",
+        "window_id": 15,
+        "role": "notice result path",
+        "evidence": "0x0042BE95 pushes 15 after the notice preparation call succeeds"
+      }
     ],
     "hide_paths": [
-      {"call_va": "0x0041C1F6", "window_id": 9, "role": "NPC/dialogue cleanup", "evidence": "0x0041C1EE pushes 9"},
-      {"call_va": "0x0041C227", "window_id": 2, "role": "store cleanup", "evidence": "0x0041C21F pushes 2"},
-      {"call_va": "0x0041C254", "window_id": "dynamic", "role": "conditional overlay cleanup", "evidence": "0x0041C24C pushes a runtime value"},
-      {"call_va": "0x0042062D", "window_id": 3, "role": "exchange cleanup", "evidence": "0x00420625 pushes 3"},
-      {"call_va": "0x0042B1BC", "window_id": 8, "role": "chat native-overlay cleanup", "evidence": "0x0042B1B8 pushes 8 after the native overlay call"},
-      {"call_va": "0x0042B2EE", "window_id": 15, "role": "notice cleanup", "evidence": "0x0042B2EA pushes 15 after the native notification call"}
+      {
+        "call_va": "0x0041C1F6",
+        "window_id": 9,
+        "role": "NPC/dialogue cleanup",
+        "evidence": "0x0041C1EE pushes 9"
+      },
+      {
+        "call_va": "0x0041C227",
+        "window_id": 2,
+        "role": "store cleanup",
+        "evidence": "0x0041C21F pushes 2"
+      },
+      {
+        "call_va": "0x0041C254",
+        "window_id": "dynamic",
+        "role": "conditional overlay cleanup",
+        "evidence": "0x0041C24C pushes a runtime value"
+      },
+      {
+        "call_va": "0x0042062D",
+        "window_id": 3,
+        "role": "exchange cleanup",
+        "evidence": "0x00420625 pushes 3"
+      },
+      {
+        "call_va": "0x0042B1BC",
+        "window_id": 8,
+        "role": "chat native-overlay cleanup",
+        "evidence": "0x0042B1B8 pushes 8 after the native overlay call"
+      },
+      {
+        "call_va": "0x0042B2EE",
+        "window_id": 15,
+        "role": "notice cleanup",
+        "evidence": "0x0042B2EA pushes 15 after the native notification call"
+      }
     ],
     "promotion_result": "The recovered command paths show ordinary open actions call the dispatcher once with the target ID; the corresponding cleanup paths are separate. No direct hide-then-show pair was found in the same basic block. A later open can still append a window after a prior cleanup, but an unconditional top-level promotion policy is not proven.",
     "evidence_level": "primary-static-caller-scan"
@@ -108,55 +378,348 @@
   },
   "interpretation": "The original UI has a separate visibility state machine from its position-update dispatcher. A window object is tested at its +0x30 state gate; showing registers its window ID in the main+0xD24 linked-list manager, while hiding removes that ID node. The virtual +0x10 callback then receives 1/0. Shared construction and the main-init call scan now prove the default gate is zero and registration alone does not make a window visible.",
   "pending": [],
-  "closed_notes": [
-    {
-      "date": "2026-08-11",
-      "key": "0x0043E4B0 message payload = WM 0x201/0x202 packed lParam coordinates; Interface1c prompt is displayed before the Frame 602 window (both halves primary-static)",
-      "conclusion": "PART 1 (payload): 0x43E4B0 is the notice window (id 15) click handler: prologue `mov eax,0x1f40; call 0x468d10` (__chkstk), `mov ebp,ecx` (this = notice object main+0x2A548C+0x52E5C), `ret 8` -> 2 stack args (arg1=edi=x, arg2=esi=y). It dispatches its child controls this+0x54 (frames 161/162) and this+0x108 (frames 606/607) with (x,y); on confirm-hit with [this+0x1CC] it sprintf-formats via 0x45DC70 into 0x8AB7A8 then 0x4524A0/0x4524D0 on 0x8AB828; on child-hit it returns 1 and the caller hides id 15. Payload source: WM_LBUTTONDOWN (0x201) -> 0x41D470; WM_LBUTTONUP (0x202) -> 0x41E451 -> 0x41DB80 -> 0x42BE20. Both unpack `[esp+8]` = (y<<16)|x: 0x41D485/0x41D48E and 0x41DB93/0x41DB99 -> x = low16 -> main+0x35B2A8, y = shr16 -> main+0x35B2AC. Call site 0x42BE8C inside 0x42BE20 (gate `[esi+0x52E8C]` != 0 branch): `push [esp+0x18](y); push [esp+0x14](x); lea ecx,[esi+0x52E5C]; call 0x43E4B0`; on nonzero -> `push 0xf; call 0x42ADB0` (show id 15). The LBUTTONDOWN analog is 0x42BA20 -> 0x43E640 (same notice object). PART 2 (display order): YES - the Interface1c prompt is displayed before the Frame 602 window, enforced by mode byte 0x8B1878. Protocol case 0x64/sub0 (0x41CE14, msg 0x7ED-0x7F0 jump table 0x41E690): gate 0x419CC0 -> queue tag 0x3F1 (0x451660 on 0x8AB828) -> file loader 0x42E1F0 -> `[esi+0x428208]=0; byte[esi+0x428204]=2` (0x41CE57, the only writer of the state byte, value 2). Main-window frame step 0x41C1C7 -> 0x41B5D0 (state byte 2 + acc > 0x9C4 -> 0x41B65F) -> 0x419BE0: mode byte = 2, mirrors [0x8AB820]/[0x8B1870] = 0x8A7140 (Interface1c class), call 0x456CB0 (Interface1c re-init), 0x45D270(0x8AB7A8, 0x280, 0x1E0, 0x10, [1|2], 5) text format ([0x47EE89] selects 1/2). Main-loop switch @0x402123: mode 2 -> 0x8A7140 + 0x4575D0 (Interface1c prompt step; state 2 @0x457615: gate 0x45C900 -> SetWindowTextA(0x8AA48C, 0x8B187C) + MoveWindow(0x8AA48C, [0x8AB7F0]+0x120, [0x8AB7F4]+0x195, 0x4B, 0xD, 1) + ShowWindow(0x8AA48C, 5) = prompt shown; state 4 @0x45773C -> 0x4570A0 -> 0x4570C0: mirrors = 0x47EF18, mode byte = 3). Mode 3 -> 0x47EF18 + 0x41BB00 (gate [0x8AB7E8] == 0 -> 0x41B440+0x41B500) = Frame-602/notice banner phase (banner singleton 0x777200 ctor frame 0x25A=602 @0x425A46; show `push 0xf; mov ecx,0x7243A4; call 0x42ADB0` @0x425A26/0x425B25). The mode byte 0x8B1878 ordering (0->2->3) statically guarantees Interface1c prompt (mode 2) precedes Frame 602/banner (mode 3).",
-      "evidence_level": "primary-static",
-      "key_vAs": [
-        "0x43E4B0",
-        "0x42BE8C",
-        "0x42BE20",
-        "0x41DB80",
-        "0x41DB93",
-        "0x41DB99",
-        "0x41D470",
-        "0x41D485",
-        "0x41D48E",
-        "0x41E451",
-        "0x42BA20",
-        "0x43E640",
-        "0x41CDE0",
-        "0x41CE14",
-        "0x41CE57",
-        "0x42E1F0",
-        "0x41B5D0",
-        "0x41C1C7",
-        "0x41B65F",
-        "0x419BE0",
-        "0x456CB0",
-        "0x45D270",
-        "0x402123",
-        "0x4575D0",
-        "0x457615",
-        "0x45773C",
-        "0x4570C0",
-        "0x41BB00",
-        "0x41B440",
-        "0x41B500",
-        "0x425A26",
-        "0x425A46",
-        "0x425B25",
-        "0x8B1878",
-        "0x8A7140",
-        "0x8AB820",
-        "0x8B1870",
-        "0x47EF18",
-        "0x8AB7E8",
-        "0x8AA48C",
-        "0x8B187C"
-      ]
-    }
-  ]
+  "closed_notes": {
+    "f337_2026_08_12": "F337 (Round 31): full id-indexed decode - 16-entry jump table 0x42B3E4, close-all 0x42B820 (ids 0..0xE only, id15 excluded per F294), visible-list ops 0x42AC30/0x42AC50 (main+0xD24 family), click dispatch 0x42B430 -> per-window 0x423FA0, special cases (id8 chat MoveWindow+ShowWindow(5); id15 notice SetWindowTextA([+0x53028], 0x8B187C)/ShowWindow/UpdateWindow/MoveWindow + [0x8AA498]), id0 = 背包 Bag (F288 mode byte +0x54, grid reset 0x42FF90, caption idx14 包袱栏 push 0), full id->obj->gate table (ids 5/10 unused), 43-caller trigger map (bag modes/server events/guild notice/caption table/hotkeys/TAB). See f337_2026_08_12 section."
+  },
+  "f337_2026_08_12": {
+    "title": "Round 31 (F337): Window visibility dispatcher 0x42ADB0 (id-indexed modal toggle) + close-all 0x42B820 + visible-list ops 0x42AC30/0x42AC50 + click dispatch 0x42B430 + full id->obj->gate table + id0=Bag resolution + 43-caller trigger map",
+    "objective": "Decode the complete window visibility scheduling: the id-indexed dispatcher 0x42ADB0 (16-entry jump table @0x42B3E4), close-all 0x42B820 (skip id 15), visible-list insert/remove 0x42AC30/0x42AC50 (main+0xD24 family), click dispatch 0x42B430, and the per-window show/hide special cases (id8 chat MoveWindow+ShowWindow, id15 notice SetWindowTextA/[0x8AA498]). Resolve id0 identity (F288 bag mode-byte) and build the final window-id -> object-offset -> gate -> identity table cross-validated against F288/F295/F331 captions.",
+    "cell_analysis": {
+      "visibility_dispatcher_0x42ADB0": {
+        "va": "0x42ADB0",
+        "signature": "ToggleWindow(hero 0x7243A4, id) - ret 4 (1 arg)",
+        "prologue": "push esi; push edi; mov esi, ecx; xor edi, edi",
+        "epilogue": "0x42B3DD-0x42B3E1 (mov eax,edi; pop edi; pop esi; ret 4)",
+        "body": [
+          "0x42ADB6: call 0x42B820 (CLOSE-ALL first - modal behavior: only one window visible at a time)",
+          "0x42ADBB: mov eax,[esp+0xC] (id); cmp eax,0xF; ja 0x42B3DD (id>15 -> no-op ret 0)",
+          "0x42ADC8: jmp dword ptr [eax*4 + 0x42B3E4] (16-entry jump table)",
+          "per case: mov eax,[esi+obj+0x30] (GATE = visibility flag at obj+0x30); test; je SHOW",
+          "HIDE (gate != 0): push id; call 0x42AC50 (visible-list remove); vtable+0x10(obj, 0); ret 0",
+          "SHOW (gate == 0): push id; call 0x42AC30 (visible-list insert via 0x449870); vtable+0x10(obj, 1); case-specific; ret 1"
+        ],
+        "jump_table_0x42B3E4": {
+          "0": "0x42ADCF obj +0x6554 gate +0x6584 - SHOW extra: 0x417880(&+0x1C4, 0x10B, 0x10C, -1) reframe 2 sub-controls; byte[obj+0x54]=0 (mode reset); 0x42FF90 bag-grid reset",
+          "1": "0x42AE42 obj +0x29CE4 gate +0x29D14",
+          "2": "0x42AE91 obj +0x33188 gate +0x331B8",
+          "3": "0x42AEE0 obj +0x3399C gate +0x339CC",
+          "4": "0x42B06B obj +0x4707C gate +0x470AC",
+          "5": "0x42B3DD GUARD (no id-5 window)",
+          "6": "0x42B0BA obj +0x47834 gate +0x47864 - SHOW extra: 0x417880(&+0x47B70, 0x398/0x399 or -1 by [obj+0x47C24])",
+          "7": "0x42B131 obj +0x47C28 gate +0x47C58",
+          "8": "0x42B180 obj +0x507EC gate +0x5081C - CHAT special: HIDE = MoveWindow(main hwnd [0x8AA48C], [0x8AB7F0]+0xDF, [0x8AB7F4]+0x23A, 0x162, 0x10) + list-remove + vtable+0x10(0); SHOW = same MoveWindow + list-insert + vtable+0x10(1) + ShowWindow([0x8AA48C], 5)",
+          "9": "0x42B25E obj +0x51150 gate +0x51180",
+          "10": "0x42B3DD GUARD (no id-10 window)",
+          "11": "0x42AF2F obj +0x516E8 gate +0x51718",
+          "12": "0x42AF7E obj +0x518E0 gate +0x51910",
+          "13": "0x42AFCD obj +0x52118 gate +0x52148",
+          "14": "0x42B01C obj +0x524F0 gate +0x52520",
+          "15": "0x42B2AD obj +0x52E5C gate +0x52E8C - NOTICE special: HIDE = MoveWindow + list-remove + vtable+0x10(0) + [obj+0x53028] gate -> ShowWindow(0) + SetWindowTextA([obj+0x53028], 0x8B187C) + [0x4762B8] + [0x8AA498]=1; SHOW = list-insert + vtable+0x10(1) + [obj+0x53028] -> ShowWindow(5) + UpdateWindow + MoveWindow(rect +0x53018..+0x53028) + [0x4762B8] + [0x8AA498]=0"
+        },
+        "evidence_level": "primary-bytes"
+      },
+      "visible_list_ops": {
+        "0x42AC30": "insert: add ecx, 0xD24; push id; call 0x449870 (visible-list insert; Round 28 anchor)",
+        "0x42AC50": "remove: walk main+0xD28..+0xD38 (head/count), find id, unlink",
+        "0x42B820": "CLOSE-ALL: iterate visible list; per id 0..0xE (15-entry jump table 0x42B938; ids 5/10 -> skip-node) -> 0x423F90(obj, 0) set visible-flag(0); id 15 (notice) NOT in table (F294 'close-all skips id 15' confirmed)",
+        "0x42B980": "list head-pop: [main+0xD38] count, [main+0xD2C]=[main+0xD30], dec count; used by 0x42B430 with chat-id check",
+        "list_layout": "main+0xD24 insert API (0x449870) / +0xD28 head / +0xD2C cursor / +0xD30 tail / +0xD34 index / +0xD38 count (TAB cycle 0x42CFBE reads +0xD34/+0xD2C)",
+        "visible_flag": "0x423F80 = [obj+0x30]=arg (active/ctor gate), 0x423F90 = [obj+0x34]=arg (visible flag); vtable+0x10(1/0) = SetVisible wrapper",
+        "evidence_level": "primary-bytes"
+      },
+      "click_dispatch_0x42B430": {
+        "va": "0x42B430",
+        "signature": "ClickVisibleWindow(hero, x, y) - ret 8",
+        "body": [
+          "gate [obj+0x5081C] (chat) -> 0x42B980 pop-head check",
+          "pop visible-list head (main+0xD30), id = [head]; id > 0xF -> skip",
+          "jmp [id*4 + 0x42B658] (16-entry per-window click table)",
+          "per case: 0x423FA0(obj, x, y, 0) = window click handler (ids 0/1); id2 = 0x44E910 + 0x423FA0; etc."
+        ],
+        "role": "Mouse click on the top visible window -> per-window click dispatcher 0x423FA0 family",
+        "evidence_level": "primary-bytes"
+      },
+      "id_table": {
+        "0": {
+          "obj": "hero+0x6554",
+          "gate": "+0x6584",
+          "ctor": "0x42EA80",
+          "frame": 250,
+          "x": 518,
+          "y": 0,
+          "w": 284,
+          "h": 324,
+          "identity": "背包 Bag (F288 mode byte +0x54, 3 tabs +0x5C stride 0xB4, grid reset +0x23760 via 0x42FF90, reset 0x42E9A4, show 0x42AE26; Round 29 '右侧面板 候选' RESOLVED)",
+          "evidence": "derived-primary"
+        },
+        "1": {
+          "obj": "hero+0x29CE4",
+          "gate": "+0x29D14",
+          "ctor": "0x44B130",
+          "frame": 200,
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 328,
+          "identity": "人物状态 (本级 0x47C348)",
+          "evidence": "derived"
+        },
+        "2": {
+          "obj": "hero+0x33188",
+          "gate": "+0x331B8",
+          "ctor": "0x44D310",
+          "frame": 1000,
+          "x": 0,
+          "y": 0,
+          "w": 300,
+          "h": 304,
+          "identity": "商店 Store (F331 label; '(%d两)' 货币显示; 默认隐藏 flag=0)",
+          "evidence": "derived"
+        },
+        "3": {
+          "obj": "hero+0x3399C",
+          "gate": "+0x339CC",
+          "ctor": "0x4159D0",
+          "frame": 1050,
+          "x": 0,
+          "y": 0,
+          "w": 484,
+          "h": 330,
+          "identity": "交易 Trade (F295: window id 3, vtable 0x47663C)",
+          "evidence": "primary-bytes"
+        },
+        "4": {
+          "obj": "hero+0x4707C",
+          "gate": "+0x470AC",
+          "ctor": "0x424E60",
+          "frame": 600,
+          "x": 102,
+          "y": 22,
+          "w": 596,
+          "h": 446,
+          "identity": "物品 Item (F331 label; 9-control array this+0x118 stride 0xB4)",
+          "evidence": "derived"
+        },
+        "6": {
+          "obj": "hero+0x47834",
+          "gate": "+0x47864",
+          "ctor": "0x424250",
+          "frame": 900,
+          "x": 272,
+          "y": 123,
+          "w": 256,
+          "h": 244,
+          "identity": "组队 Group ([允许]/[拒绝]/成员编辑 strings; F331 '背包' label corrected)",
+          "evidence": "derived"
+        },
+        "7": {
+          "obj": "hero+0x47C28",
+          "gate": "+0x47C58",
+          "ctor": "0x4503B0",
+          "frame": 200,
+          "x": 560,
+          "y": 0,
+          "w": 244,
+          "h": 328,
+          "identity": "右侧面板 (本级+%s %s)",
+          "evidence": "candidate"
+        },
+        "8": {
+          "obj": "hero+0x507EC",
+          "gate": "+0x5081C",
+          "ctor": "0x414060",
+          "frame": 350,
+          "x": 114,
+          "y": 76,
+          "w": 572,
+          "h": 388,
+          "identity": "聊天 Chat (MoveWindow+ShowWindow(5) special; 9 controls stride 0xB4)",
+          "evidence": "primary-bytes"
+        },
+        "9": {
+          "obj": "hero+0x51150",
+          "gate": "+0x51180",
+          "ctor": "0x43ED00",
+          "frame": 1100,
+          "x": 0,
+          "y": 0,
+          "w": 552,
+          "h": 176,
+          "identity": "NPC 对话 (NPCFace.WIL binding +0x278; F331 '快捷栏' label corrected)",
+          "evidence": "derived"
+        },
+        "11": {
+          "obj": "hero+0x516E8",
+          "gate": "+0x51718",
+          "ctor": "0x4473E0",
+          "frame": 700,
+          "x": 0,
+          "y": 0,
+          "w": 340,
+          "h": 440,
+          "identity": "候选 (F331 '帧')",
+          "evidence": "candidate"
+        },
+        "12": {
+          "obj": "hero+0x518E0",
+          "gate": "+0x51910",
+          "ctor": "0x440FE0",
+          "frame": 750,
+          "x": 276,
+          "y": 113,
+          "w": 248,
+          "h": 264,
+          "identity": "选项 Option (F324)",
+          "evidence": "primary-bytes"
+        },
+        "13": {
+          "obj": "hero+0x52118",
+          "gate": "+0x52148",
+          "ctor": "0x4268C0",
+          "frame": 850,
+          "x": 0,
+          "y": 0,
+          "w": 296,
+          "h": 332,
+          "identity": "坐骑 Horse (@上马/@收马/@遛马)",
+          "evidence": "derived"
+        },
+        "14": {
+          "obj": "hero+0x524F0",
+          "gate": "+0x52520",
+          "ctor": "0x439250",
+          "frame": 400,
+          "x": 348,
+          "y": 0,
+          "w": 452,
+          "h": 380,
+          "identity": "属性详情 (火冰电风神圣黑暗幻影剑)",
+          "evidence": "candidate"
+        },
+        "15": {
+          "obj": "hero+0x52E5C",
+          "gate": "+0x52E8C",
+          "ctor": "0x43E260",
+          "frame": 602,
+          "x": 107,
+          "y": 110,
+          "w": 584,
+          "h": 252,
+          "identity": "公告/通知 Notice (SetWindowTextA([+0x53028], 0x8B187C), [0x8AA498] flag, close-all excluded)",
+          "evidence": "primary-bytes"
+        },
+        "5_10": "unused (jump table -> guard 0x42B3DD no-op)"
+      },
+      "trigger_map_43_callers": {
+        "bag_modes": [
+          "0x41FA28(id0)",
+          "0x41FB36(id0)",
+          "0x4204DD(id0)",
+          "0x420B0E(id0) - F288 mode handlers 变卖/修补/储存 close+reopen bag"
+        ],
+        "server_events": [
+          "0x41FEB8(id9 NPC)",
+          "0x420486(id3 trade)",
+          "0x4209EF(id2)",
+          "0x420AB6(id2)",
+          "0x4214EB(id7)",
+          "0x42151A(id4)"
+        ],
+        "guild_notice": [
+          "0x425A26(id15)",
+          "0x425B25(id15) - ctrl4 邀请入会/ctrl7 行会解散 (F294)",
+          "0x42BE99(id15) - notice close click"
+        ],
+        "caption_action_table_0x42C494": [
+          "0x42BFA2(id0)",
+          "0x42BFD0(id1)",
+          "0x42BFFA(id2)",
+          "0x42C028(id3)",
+          "0x42C052(id4)",
+          "0x42C07C(id6)",
+          "0x42C0A6(id7)",
+          "0x42C0D0(id8)",
+          "0x42C0FA(id11)",
+          "0x42C120(id12)",
+          "0x42C146(id13)",
+          "0x42C16C(id14)",
+          "0x42C1A4(id11)",
+          "0x42C1B2(id12)",
+          "0x42C1C0(id13)",
+          "0x42C218(id6)",
+          "0x42C226(id8)",
+          "0x42C302(id14)",
+          "0x42C313(id1)",
+          "0x42C324(id1)"
+        ],
+        "hotkeys_0x42CBD0_region": [
+          "0x42CC8B(push 0x51=81 -> guard no-op)",
+          "0x42CCC3(id1)",
+          "0x42CCDD(id14)",
+          "0x42CCF7(id8)",
+          "0x42CD11(id13)",
+          "0x42CD2B(id11)",
+          "0x42CE51(id6)",
+          "0x42CE86(id12)"
+        ],
+        "tab_cycle": "0x42CFDD (node id; id9 -> 0x41C1E0 NPC close, else toggle)"
+      },
+      "id0_bag_resolution": {
+        "F288": "mode byte [bag+0x54] server-written (0/1/2/3: 默认/修补/变卖/储存); 3 tabs bag+0x5C stride 0xB4; reset 0x42E9A4; show 0x42AE26",
+        "F336_confirm": "0x42AE26 = case-0 SHOW path of 0x42ADB0 (id0): byte[obj+0x54]=0 mode reset + 0x42FF90 grid reset (+0x23760..+0x23770, +0x23764/+0x23768=-1)",
+        "caption": "idx14 包袱栏(Ctrl+Q) -> push 0 -> id0 (Round 28 Finding 321 '0x42C234 push 0 toggle == Q' = bag)",
+        "conclusion": "id0 = 背包 Bag window (hero+0x6554, ctor 0x42EA80, frame 250, x=518); Round 29 '右侧面板 候选' label superseded"
+      },
+      "iat_new": {
+        "0x4762B8": "used by id15 show/hide (SetForegroundWindow candidate - verify next round)",
+        "0x4762BC": "MoveWindow (Round 29)",
+        "0x4762AC": "ShowWindow (Round 28)",
+        "0x4762CC": "SetWindowTextA (Round 29)",
+        "0x476258": "UpdateWindow (Round 28)"
+      }
+    },
+    "exe_trace": {
+      "hero": "main+0x2A548C = 0x7243A4",
+      "visible_list": "main+0xD24 (insert 0x449870 / head +0xD28 / cursor +0xD2C / tail +0xD30 / index +0xD34 / count +0xD38)",
+      "main_hwnd": "0x8AA48C (MoveWindow/ShowWindow/UpdateWindow targets)",
+      "notice_flag": "0x8AA498 (1 = notice hidden, 0 = notice shown)",
+      "notice_hwnd": "hero+0x52E5C+0x53028 = 0x7773CC (SetWindowTextA target)",
+      "notice_text": "0x8B187C (global text buffer)"
+    },
+    "audit_vs_exe": {
+      "F294_close_all_skip": "confirmed: close-all 0x42B820 jump table 0x42B938 covers ids 0..0xE only; id 15 not closed",
+      "F288_bag_show": "0x42AE26 confirmed as id0 (bag) show path inside 0x42ADB0 case 0",
+      "F295_trade_id3": "confirmed: id3 obj +0x3399C ctor 0x4159D0 (trade window)",
+      "F331_ctor_table": "obj offsets match; F331 labels '商店'(id2)/'物品'(id4)/'快捷栏'(id9) partially corrected: id9 = NPC 对话 (NPCFace.WIL binding), id6 = 组队 (strings), id0 = 背包 (not '右侧面板')",
+      "Round28_F321_caption": "idx14 包袱栏 -> id0 = bag consistent (push 0); caption table toggles route through 0x42ADB0",
+      "0x42ADB0_modal": "close-all runs BEFORE every show - confirms single-window-at-a-time modality"
+    },
+    "contrast": {
+      "id15_special": "notice window excluded from close-all AND has native hwnd child (+0x53028 = 0x7773CC) with SetWindowTextA/ShowWindow/UpdateWindow/MoveWindow - unique among the 15",
+      "id8_special": "chat window show/hide also MoveWindow(main hwnd) to chat rect + ShowWindow(5) - chat is docked to the main application window",
+      "gate_vs_flag": "gate read at obj+0x30 (ctor-active flag, arg8=1 for most, 0 for id2/id9 hidden-by-default); visible flag written at obj+0x34 (0x423F90/vtable+0x10); dispatcher toggles on +0x30",
+      "ids_5_10": "no windows - jump table routes to guard 0x42B3DD (ret 0); hotkey 0x42CC8B push 0x51=81 also guard no-op"
+    },
+    "verdict": "Window visibility scheduling fully decoded (primary-bytes): 0x42ADB0 = modal id-indexed toggle (close-all 0x42B820 then show/hide via visible-list insert/remove 0x42AC30/0x42AC50 + vtable+0x10(1/0)); 16-entry table 0x42B3E4 with per-window special cases (id8 chat MoveWindow+ShowWindow(5), id15 notice SetWindowTextA/ShowWindow/UpdateWindow/MoveWindow + [0x8AA498]); id0 = 背包 Bag resolved (F288 mode byte + grid reset 0x42FF90 + caption Q alignment); full id->obj->gate->identity table (ids 5/10 unused); 43 callers mapped (bag modes, server events, guild notice, caption action table, hotkeys, TAB cycle); visible list layout main+0xD24 family + click dispatch 0x42B430 -> per-window 0x423FA0.",
+    "evidence_level": "primary-bytes",
+    "cross_refs": [
+      "F288 InventoryModeTabs: bag mode byte +0x54, tabs +0x5C, reset 0x42E9A4, show 0x42AE26",
+      "F294 NoticeBanner: id15 = notice window hero+0x52E5C, close-all skip, [0x7773D0] flag",
+      "F295 TradeGoldFlow: id3 = trade window hero+0x3399C vtable 0x47663C",
+      "F331: ctor table 0x427700 region; visible-list anchors; 0x423F80/0x423F90 field setters",
+      "Round 28 Finding 321: caption action table 0x42C494 (16-entry loop 0x42BEF8-0x42C36B); idx14 包袱栏 push 0",
+      "Round 29: window-catalog hero-builder 0x427600; IAT MoveWindow/SetWindowTextA",
+      "Round 30: game tick 0x41BB00 -> HUD paint 0x4294E0 -> caption dispatch; TAB cycle 0x42CFBE"
+    ],
+    "tool": "capstone (CS_ARCH_X86/CS_MODE_32) via Tools/reverse-engineering/disasm_capstone.py PeImage; pefile; python3 json",
+    "reproduce": "sys.path.insert(0,'Tools/reverse-engineering'); from disasm_capstone import PeImage; img=PeImage(Path('$MIR3_EI_ROOT/MIR3.EXE')); img.disasm(0x42ADB0, 0x640); img.disasm(0x42B820, 0x120); img.disasm(0x42AC30, 0x30); img.disasm(0x42AC50, 0x80); img.disasm(0x42B430, 0x230); img.disasm(0x42FF90, 0x10)",
+    "notes": [
+      "0x4762B8 (id15 show/hide) = SetForegroundWindow candidate - pending pefile verify",
+      "id2/id9 created with ctor flag arg8=0 (hidden by default) - only opened on demand",
+      "caption idx0 交易栏 (0x42C1CE) = trade REQUEST send, NOT a window toggle (Round 28 F321) - trade window id3 opened by server event 0x420486",
+      "0x42CC8B push 0x51=81 -> guard: hotkey dispatcher calls with out-of-range ids are safe no-ops",
+      "visible-list insert order = append (0x42AC30 via 0x449870); click dispatch pops head (topmost = last shown)",
+      "close-all clears [obj+0x34] via 0x423F90 but does NOT remove nodes from the list walk (walk uses next pointers) - list rebuilt by subsequent show"
+    ]
+  }
 }

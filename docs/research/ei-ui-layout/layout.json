@@ -1,5 +1,5 @@
 {
-  "version": "0.14-game-loop",
+  "version": "0.15-visibility-dispatch",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -2456,8 +2456,8 @@
           "y": 0,
           "w": 284,
           "h": 324,
-          "identity": "右侧面板（候选 角色/状态）",
-          "evidence": "candidate"
+          "identity": "背包 Bag（F337：F288 mode byte +0x54、grid reset 0x42FF90、caption idx14 包袱栏 push 0；Round 29 右侧面板候选作废）",
+          "evidence": "derived-primary"
         },
         {
           "id": 1,
@@ -2480,7 +2480,7 @@
           "y": 0,
           "w": 300,
           "h": 304,
-          "identity": "候选（'(%d两)' 货币/交易；flag=0 隐藏）",
+          "identity": "商店 Store（F331 标签；(%d两) 货币显示；flag=0 初始隐藏）",
           "evidence": "candidate"
         },
         {
@@ -2492,7 +2492,7 @@
           "y": 0,
           "w": 484,
           "h": 330,
-          "identity": "候选 装备窗（'%d'）",
+          "identity": "交易 Trade（F295: id3, frame 1050, vtable 0x47663C）",
           "evidence": "candidate"
         },
         {
@@ -2516,7 +2516,7 @@
           "y": 123,
           "w": 256,
           "h": 244,
-          "identity": "组队窗（[允许]/[拒绝]/添加删除成员）",
+          "identity": "组队 Group（[允许]/[拒绝]/成员编辑字符串；F331 背包标签修正）",
           "evidence": "derived"
         },
         {
@@ -2552,7 +2552,7 @@
           "y": 0,
           "w": 552,
           "h": 176,
-          "identity": "NPC 对话窗（NPCFace.WIL 0x47C4EC）",
+          "identity": "NPC 对话（NPCFace.WIL 绑定 +0x278；F331 快捷栏标签修正）",
           "evidence": "derived"
         },
         {
@@ -2902,6 +2902,129 @@
       "role": "Round 29 算术修正：hero/winmgr 0x7243A4 + 0x52E5C = 0x777200（非 0x779600）；id-15 公告窗 = hero+0x52E5C 内嵌对象（ctor 0x43E260 @ 0x42797E，与 F268/F294 锚一致）",
       "evidence_level": "primary-bytes",
       "source": "game-loop-and-entity-dispatch-evidence.json (Round 30)"
+    },
+    {
+      "id": "visibility.toggle-0x42ADB0",
+      "kind": "function",
+      "layer": "windows",
+      "va": "0x42ADB0",
+      "role": "窗口可见性切换分派器（模态：先 close-all 0x42B820 再 show/hide；id>0xF 守卫 no-op；16 项跳表 0x42B3E4）。每 case：门 [obj+0x30]（ctor arg8 活动标志，0x423CA0 初 0）!=0 → HIDE（0x42AC50 可见链表移除 + vtable+0x10(0)）；==0 → SHOW（0x42AC30 插入 main+0xD24 + vtable+0x10(1)）。特殊：id8 聊天 MoveWindow+ShowWindow(5)；id15 公告 SetWindowTextA([+0x53028], 0x8B187C)/ShowWindow/UpdateWindow/MoveWindow + [0x8AA498]。43 调用者（背包模式/服务端事件/行会公告/caption 动作表/热键/TAB）",
+      "id_table": {
+        "0": {
+          "obj": "+0x6554",
+          "gate": "+0x6584",
+          "ctor": "0x42EA80",
+          "identity": "背包 Bag"
+        },
+        "1": {
+          "obj": "+0x29CE4",
+          "gate": "+0x29D14",
+          "ctor": "0x44B130",
+          "identity": "人物状态"
+        },
+        "2": {
+          "obj": "+0x33188",
+          "gate": "+0x331B8",
+          "ctor": "0x44D310",
+          "identity": "商店 Store"
+        },
+        "3": {
+          "obj": "+0x3399C",
+          "gate": "+0x339CC",
+          "ctor": "0x4159D0",
+          "identity": "交易 Trade"
+        },
+        "4": {
+          "obj": "+0x4707C",
+          "gate": "+0x470AC",
+          "ctor": "0x424E60",
+          "identity": "物品 Item"
+        },
+        "5": {
+          "obj": "unused",
+          "gate": "guard",
+          "identity": "无窗口"
+        },
+        "6": {
+          "obj": "+0x47834",
+          "gate": "+0x47864",
+          "ctor": "0x424250",
+          "identity": "组队 Group"
+        },
+        "7": {
+          "obj": "+0x47C28",
+          "gate": "+0x47C58",
+          "ctor": "0x4503B0",
+          "identity": "右侧面板 候选"
+        },
+        "8": {
+          "obj": "+0x507EC",
+          "gate": "+0x5081C",
+          "ctor": "0x414060",
+          "identity": "聊天 Chat"
+        },
+        "9": {
+          "obj": "+0x51150",
+          "gate": "+0x51180",
+          "ctor": "0x43ED00",
+          "identity": "NPC 对话"
+        },
+        "10": {
+          "obj": "unused",
+          "gate": "guard",
+          "identity": "无窗口"
+        },
+        "11": {
+          "obj": "+0x516E8",
+          "gate": "+0x51718",
+          "ctor": "0x4473E0",
+          "identity": "候选"
+        },
+        "12": {
+          "obj": "+0x518E0",
+          "gate": "+0x51910",
+          "ctor": "0x440FE0",
+          "identity": "选项 Option"
+        },
+        "13": {
+          "obj": "+0x52118",
+          "gate": "+0x52148",
+          "ctor": "0x4268C0",
+          "identity": "坐骑 Horse"
+        },
+        "14": {
+          "obj": "+0x524F0",
+          "gate": "+0x52520",
+          "ctor": "0x439250",
+          "identity": "属性详情 候选"
+        },
+        "15": {
+          "obj": "+0x52E5C",
+          "gate": "+0x52E8C",
+          "ctor": "0x43E260",
+          "identity": "公告/通知 Notice"
+        }
+      },
+      "evidence_level": "primary-bytes",
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+    },
+    {
+      "id": "visibility.close-all-0x42B820",
+      "kind": "function",
+      "layer": "windows",
+      "va": "0x42B820",
+      "role": "关全部窗口：遍历可见链表 main+0xD28..+0xD38，对 id 0..0xE（跳表 0x42B938，5/10 跳过）调 0x423F90(obj, 0) 清可见标志；id15 公告不在表内（F294 确认）",
+      "evidence_level": "primary-bytes",
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
+    },
+    {
+      "id": "visibility.click-dispatch-0x42B430",
+      "kind": "function",
+      "layer": "windows",
+      "va": "0x42B430",
+      "role": "可见顶层窗口点击分派（ret 8）：弹可见链表头 main+0xD30，id<=0xF → 跳表 0x42B658 → 各窗口 0x423FA0(obj, x, y, 0) 点击处理器",
+      "evidence_level": "primary-bytes",
+      "source": "window-visibility-dispatch-evidence.json f337 (Round 31)"
     }
   ],
   "control_constructors": [
