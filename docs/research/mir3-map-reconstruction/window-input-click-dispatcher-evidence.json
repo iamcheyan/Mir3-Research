@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-input-click-dispatcher-2026-08-12-f587",
+  "title": "Round 281 (F587): Window INPUT/CLICK dispatcher - 0x42BA20: special windows first (notice [0x53030] 0x418A50, guild-notice-editor [0x52E5C] 0x43E640), then hot-bar hit (0x417D00 @ [0x61BC] + [0xD20] count * [0x61C8] float -> [0xD08] scroll, F581), then 16 caption loop (vtable[0xC] hit @ [0x567C]+idx*0xB4), then 0x428570 + mode jt 0x42BDE0 -> per-window click (bag 0x42FFD0/equip 0x44CF00/store 0x44EF00/trade 0x4171B0/guild 0x425CB0/...) each falls back to 0x42B6A0(mode, x, y) = mode toggle button - HUD click routing FULL (captions + hot bar + window clicks, F580/F581 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the window input/click dispatcher.",
+  "question": "How are window clicks routed?",
+  "method": "Disasm 0x42BA20-0x42BDE0 + jt 0x42BDE0.",
+  "scope": "0x42BA20-0x42BDE0; 16-caption loop; jt 0x42BDE0.",
+  "cell_analysis": {
+    "priority": {"notice": "[0x53030] 0x418A50", "guild_editor": "[0x52E5C] 0x43E640", "hotbar": "0x417D00 @ [0x61BC] + [0xD20]*[0x61C8] -> [0xD08] (F581)"},
+    "caption_loop": "16 x vtable[0xC] hit @ [0x567C]+idx*0xB4",
+    "window_clicks": {"jt": "0x42BDE0", "0": "bag 0x42FFD0", "1": "equip 0x44CF00", "2": "store 0x44EF00", "3": "trade 0x4171B0", "4": "guild 0x425CB0", "fallback": "0x42B6A0(mode, x, y) = mode toggle"},
+    "0x428570": "extra click helper before mode jt"
+  },
+  "exe_trace": {
+    "click_chain": "click -> 0x42BA20 specials -> hotbar -> captions -> mode jt window click / 0x42B6A0 toggle"
+  },
+  "audit_vs_exe": {
+    "F580": "caption dispatch", "F581": "hot bar hit", "F586": "drag dispatcher complement"
+  },
+  "contrast": {
+    "click_vs_drag": "0x42BA20 clicks vs 0x42B430 drag",
+    "input_vs_paint": "0x42BA20 input vs 0x4280F0 paint"
+  },
+  "verdict": "Window input/click dispatcher PRIMARY-verified: specials -> hotbar -> captions -> window click jt with 0x42B6A0 toggle fallback; HUD click routing full (F580/F581 extended).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Click dispatcher decoded from .text.",
+  "cross_refs": ["F580: caption action", "F581: hot-key", "F586: drag"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42BA20+0x40; jt 0x42BDE0",
+  "notes": [
+    "0x42B6A0 = mode toggle button handler",
+    "hotbar hit 0x417D00 shares [0x61BC]/[0x61C8] with F581",
+    "click falls through caption loop then mode jt",
+    "special windows processed FIRST"
+  ]
+}

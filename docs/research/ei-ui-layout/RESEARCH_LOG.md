@@ -7176,3 +7176,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x42B430：模式 ≤ 0xF + 门（[0xD38] 计数/[0xD30] 尾/[0xD3C] 旗标）→ jt 0x42B658 每模式：0=背包/1=装备/2=商店（0x44E910 命中+）/3=交易/4=行会/6=组队/7=角色状态/8=公告（+ ShowWindow(0) [0x5081C] 门 + 0x42B980）/B=任务/C=选项/D=坐骑/E=技能书/F=[0x52E5C]——每例先窗特定预命中再 **0x423FA0(x,y) = 设置窗口位置**（F550 修正：0x423FA0 是位置设置器，非钳制）。
 - 落盘：window-drag-move-dispatcher-evidence.json（F586，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 280。
+## Round 281 (F587) — 2026-08-12：窗口输入/点击分派器
+
+- **〔路由〕**0x42BA20：特殊窗优先（公告 [0x53030] 0x418A50、行会公告编辑 [0x52E5C] 0x43E640）→ **热键栏命中**（0x417D00 @ [0x61BC] + [0xD20]×[0x61C8] → [0xD08]，F581）→ **16 caption 循环**（vtable[0xC] 命中 @ [0x567C]+idx*0xB4）→ 0x428570 + 模式 jt 0x42BDE0 → 每窗点击（背包 0x42FFD0/装备 0x44CF00/商店 0x44EF00/交易 0x4171B0/行会 0x425CB0…）→ 兜底 **0x42B6A0(mode, x, y) = 模式切换按钮**。
+- 落盘：window-input-click-dispatcher-evidence.json（F587，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 281。
