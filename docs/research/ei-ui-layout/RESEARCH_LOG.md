@@ -6066,3 +6066,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔客户端锚〕**0x43B440 目标数学（0x43BCF5-0x43BD36）：dx = x*48 − scrollX − 0xC8(200)；dy = y*32 − scrollY − h(word[+2]) − 0x7D(125)——**不读 WIL offsetX/offsetY，仅用帧高**（左下锚）；地面 −157 vs mid/front −125 差一单元高。
 - **〔对照〕**UI 控件（0x417550）用帧偏移定 rect；**地图精灵忽略偏移**——两套系统。offset-distribution P9 + F331 确认。
 - 落盘：`sprite-offset-anchor-verification-evidence.json`（F375，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 69。
+
+## Round 70 (F376) — 2026-08-12：瓦片缓存验证（r_{tx}_{ty}_{z}_{g}{m}{f}{layout}n.jpg + 冷热 15×）
+
+- **〔缓存键〕**`.tilecache-v3/<map>/r_{tx}_{ty}_{z}_{g}{m}{f}{layout}n.jpg`（如 r_3_3_1_111n、r_16_3_1_100n）；布局后缀 n = rect。
+- **〔性能〕**冷 1.40s → 热 0.092s（**15×**）；md5 一致（82a88f87）——缓存正确。
+- **〔层键〕**r_16_3_1_100n/111n = F374 图层开关测试产物（ground-only vs all 区分键）。
+- 落盘：`tile-cache-verification-evidence.json`（F376，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 70。

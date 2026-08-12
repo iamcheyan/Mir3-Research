@@ -1,0 +1,37 @@
+{
+  "evidence_id": "tile-cache-verification-2026-08-12-f376",
+  "title": "Round 70 (F376): Tile cache verification - .tilecache-v3 key format r_{tx}_{ty}_{z}_{g}{m}{f}{layout}n.jpg + cold 1.4s -> warm 92ms (15x) with identical md5 + layer-toggle keys confirmed (r_16_3_1_100n/111n from F374)",
+  "date": "2026-08-12",
+  "objective": "Verify the mapviewer disk tile cache: key format, cold-vs-warm latency, correctness (md5 identity), and cross-layer cache keys.",
+  "question": "Does the tile cache work correctly and how is it keyed?",
+  "method": "Cache dir inspection; cold/warm curl timing; md5 comparison; layer-toggle key cross-ref with F374.",
+  "scope": "$MIR3_EI_ROOT/Map/.tilecache-v3; mapviewer 8899.",
+  "cell_analysis": {
+    "cache_key": "r_{tx}_{ty}_{z}_{g}{m}{f}{layout}n.jpg - e.g. r_3_3_1_111n.jpg (D1011 tx=3 ty=3 z=1 g+m+f), r_16_3_1_100n.jpg (ground-only, F374), layout suffix 'n'",
+    "perf": {"cold": "1.40s (D1011 tx=3 first render)", "warm": "0.092s (cached)", "speedup": "15x"},
+    "correctness": "cold vs warm md5 identical (82a88f87) - cache returns the same render",
+    "sizes": ".tilecache 2.2M + .tilecache-v3 2.8M; per-map dirs (0.map, D1011.map, 0_003.map...)"
+  },
+  "exe_trace": {
+    "render": "mapviewer render_tile (F331 semantics); cache disk-backed JPEG (line 1613 comment 'disk-cached JPEG')"
+  },
+  "audit_vs_exe": {
+    "F374": "layer-toggle keys r_16_3_1_100n/111n in cache = F374 test artifacts confirmed",
+    "F342": "map inventory + viewer pipeline"
+  },
+  "contrast": {
+    "cold_vs_warm": "1.4s decode+render vs 92ms cache read",
+    "layer_keys": "100n (ground) vs 111n (all) distinct cache entries - layer toggles invalidate correctly"
+  },
+  "verdict": "Tile cache verified (derived-tooling): .tilecache-v3 keys r_{tx}_{ty}_{z}_{g}{m}{f}{layout}n.jpg; cold 1.4s -> warm 92ms (15x) with identical md5; layer-toggle entries distinct (F374 keys present).",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Cache behavior measured via HTTP timing + file inspection; render semantics from F331 primary evidence.",
+  "cross_refs": ["F374: layer render verification (cache keys 100n/111n)", "F331: tile render", "F342: map inventory"],
+  "tool": "curl timing; md5sum; ls cache dir",
+  "reproduce": "rm a tile from .tilecache-v3/<map>/; curl twice; compare timing + md5",
+  "notes": [
+    "cache is disk-backed (survives restart) - .tilecache older format, .tilecache-v3 current",
+    "layout suffix 'n' = rect layout (LAYOUT_RECT); iso would differ",
+    "F374 round-trip: layer toggle test artifacts landed in cache with correct distinct keys"
+  ]
+}

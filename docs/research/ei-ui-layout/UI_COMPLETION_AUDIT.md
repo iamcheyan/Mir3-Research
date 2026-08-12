@@ -565,6 +565,12 @@ git diff --check
 - **P9 + F331 确认**。
 - 落盘：`sprite-offset-anchor-verification-evidence.json`（F375，primary-bytes）+ RESEARCH_LOG Round 69。
 
+## Round 70 (2026-08-12) — 瓦片缓存验证（Finding 376）
+
+- **缓存键格式** r_{tx}_{ty}_{z}_{layers}n.jpg；冷 1.4s → 热 92ms（15×）、md5 一致。
+- **F374 层键产物确认**。
+- 落盘：`tile-cache-verification-evidence.json`（F376）+ RESEARCH_LOG Round 70。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
