@@ -7172,3 +7172,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔聊天〕**0x403640：门 [0xD38] 字节两布局（0=主聊天：文本 [0xE3D] + 输入 [0xD39] + 矩形 [0xF44..0xF50] MoveWindow；1=私聊：交换 + 矩形 [0xF54..0xF60] + 参 0x2A）、SendMessageA 0x476290（0xCC）+ SetFocus + ShowWindow（旗标 [0x8AB7E8]）。
 - **〔配置〕**0x403780 = **Mir3.ini 配置装载器**：GetCurrentDirectoryA + '\' + 'Mir3.ini'（0x47AB5C）、GetPrivateProfileStringA：**Server/ServerAddr（默认 '192.168.0.200' 0x47AB4C）** + Param1 + Initial、GetPrivateProfileIntA：**ServerCount → [0xA38]**、Server → [0xA50] 列表——登录→服务器列表配置链。
 - 落盘：chat-layout-mir3-ini-evidence.json（F585，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 279。
+## Round 280 (F586) — 2026-08-12：窗口拖动/移动分派器
+
+- **〔分派〕**0x42B430：模式 ≤ 0xF + 门（[0xD38] 计数/[0xD30] 尾/[0xD3C] 旗标）→ jt 0x42B658 每模式：0=背包/1=装备/2=商店（0x44E910 命中+）/3=交易/4=行会/6=组队/7=角色状态/8=公告（+ ShowWindow(0) [0x5081C] 门 + 0x42B980）/B=任务/C=选项/D=坐骑/E=技能书/F=[0x52E5C]——每例先窗特定预命中再 **0x423FA0(x,y) = 设置窗口位置**（F550 修正：0x423FA0 是位置设置器，非钳制）。
+- 落盘：window-drag-move-dispatcher-evidence.json（F586，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 280。

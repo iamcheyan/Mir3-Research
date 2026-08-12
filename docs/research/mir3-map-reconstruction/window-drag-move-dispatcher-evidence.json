@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-drag-move-dispatcher-2026-08-12-f586",
+  "title": "Round 280 (F586): Window DRAG/MOVE dispatcher - 0x42B430: header = mode <= 0xF + open-list gate ([0xD38] count, [0xD30] tail, cursor [0xD2C], [0xD3C] flag) -> jt 0x42B658 per mode: 0=bag 0x423FA0(pos), 1=equip 0x423FA0, 2=store 0x44E910 hit + 0x423FA0, 3=trade 0x423FA0, 4=guild 0x423FA0, 6=party 0x423FA0, 7=char 0x423FA0, 8=notice 0x423FA0 + ShowWindow(0) flag [0x5081C] gate + 0x42B980, B=quest, C=option, D=horse, E=skillbook 0x423FA0, F=[0x52E5C] 0x423FA0; each case: window-specific pre-hit (0x44E910/0x42B980) then 0x423FA0(x,y) = SET WINDOW POSITION (F550 correction: 0x423FA0 = position setter, NOT clamp) - window move/drag layer byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the window drag/move dispatcher.",
+  "question": "How do windows get moved?",
+  "method": "Disasm 0x42B430-0x42B658 (drag dispatcher) + jt 0x42B658.",
+  "scope": "0x42B430-0x42B658; jt 0x42B658; 0x423FA0.",
+  "cell_analysis": {
+    "dispatcher": {"0x42B430": "mode <= 0xF + gates ([0xD38] count/[0xD30] tail/[0xD3C] flag)", "jt": "0x42B658 per mode"},
+    "cases": {"0": "bag 0x423FA0", "1": "equip 0x423FA0", "2": "store 0x44E910 hit + 0x423FA0", "3": "trade 0x423FA0", "4": "guild 0x423FA0", "6": "party 0x423FA0", "7": "char 0x423FA0", "8": "notice 0x423FA0 + ShowWindow(0) [0x5081C] gate + 0x42B980", "B": "quest", "C": "option", "D": "horse", "E": "skillbook 0x423FA0", "F": "[0x52E5C] 0x423FA0"},
+    "0x423FA0": "SET WINDOW POSITION (x, y) - F550 correction (was 'clamp')"
+  },
+  "exe_trace": {
+    "drag_chain": "titlebar drag -> 0x42B430 -> mode jt -> window pre-hit + 0x423FA0(x,y) set pos"
+  },
+  "audit_vs_exe": {
+    "F550": "0x423FA0 = position setter CORRECTED (was 0x206/0x207 = x coords)", "F558": "window registry modes match", "F560": "hit-test"
+  },
+  "contrast": {
+    "drag_vs_toggle": "0x42B430 drag/move vs 0x42ADB0 open/close",
+    "pos_vs_rect": "0x423FA0 sets pos vs RECT obj+0x14 (F560)"
+  },
+  "verdict": "Window drag/move dispatcher PRIMARY-verified: 0x42B430 mode jt -> 0x423FA0 position setter (F550 corrected); window move layer byte-level, registry modes match F558.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Drag dispatcher decoded from .text; F550 correction.",
+  "cross_refs": ["F550: toggle dispatcher", "F558: registry", "F560: hit-test"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42B430+0x30; jt 0x42B658",
+  "notes": [
+    "0x423FA0 = window position setter (x,y)",
+    "store 0x44E910 / notice 0x42B980 = pre-hit gates",
+    "notice case also ShowWindow(0) when [0x5081C]",
+    "F550 '0x206 = x 518' now fully consistent"
+  ]
+}
