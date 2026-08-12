@@ -1,0 +1,38 @@
+{
+  "evidence_id": "full-wil-table-loader-2026-08-12-f483",
+  "title": "Round 177 (F483): Full WIL table loader - 0x453790 chain = complete filename table: Magic.wil (0x47CD10) -> ebx+0x10478, WM-Weapon4 (0x47CD24) -> +0x10270, Inventory (0x47CCF8) -> +0x10374, Equip (0x47CCE4) -> +0x1057C, Ground (0x47CCD0) -> +0x10680, MIcon (0x47CCBC) -> +0x10784, ProgUse (0x47CCA8) -> +0x10888, Horse (0x47CC94) -> +0x1098C + Mon-20..1 (0x1098C..+0x10B94, F429); magic/avatar libs (0x453F40 chain): MonMagic (0x47C950) -> +0x13538, MonMagicEx -> +0x13434, MonImg (0x47C93C) -> +0x1363C, M-Hair (0x47C928) -> +0x13740, M-Helmet1 (0x47C910) -> +0x13844, WM-Hair (0x47C8FC) -> +0x13948, WM-Helmet1 (0x47C8E4) -> +0x13A4C, DMon-1/DMonS-1/MagicEx/MonMagicEx/StoreItem (0x13B50.., F430) - 35+ slot resource table on game object (F429/F430 extended)",
+  "date": "2026-08-12",
+  "objective": "Extend the WIL table to the full 35+ slot loader chain; map magic/avatar lib slots.",
+  "question": "What is the complete WIL filename table and slot mapping?",
+  "method": "Disasm 0x453790-0x4540FF (full table loader chain) + string decode.",
+  "scope": "0x453790-0x454100; strings 0x47C878-0x47CD24.",
+  "cell_analysis": {
+    "ground_misc_table": {"Magic": "0x47CD10 -> ebx+0x10478", "WM-Weapon4": "0x47CD24 -> +0x10270", "Inventory": "0x47CCF8 -> +0x10374", "Equip": "0x47CCE4 -> +0x1057C", "Ground": "0x47CCD0 -> +0x10680", "MIcon": "0x47CCBC -> +0x10784", "ProgUse": "0x47CCA8 -> +0x10888", "Horse": "0x47CC94 -> +0x1098C"},
+    "avatar_magic_table": {"MonMagicEx": "-> +0x13434", "MonMagic": "0x47C950 -> +0x13538", "MonImg": "0x47C93C -> +0x1363C", "M-Hair": "0x47C928 -> +0x13740", "M-Helmet1": "0x47C910 -> +0x13844", "WM-Hair": "0x47C8FC -> +0x13948", "WM-Helmet1": "0x47C8E4 -> +0x13A4C", "DMon-1/DMonS-1/MagicEx/MonMagicEx/StoreItem": "0x13B50.. (F430)"},
+    "mon_table": "Mon-20..1 (0x1098C..0x10B94, F429) + MonS-1..20 (0x10B94.., F429)",
+    "game_obj": "all slots on game object base ebx (main+offset, F451)"
+  },
+  "exe_trace": {
+    "wil_chain": "35+ WIL files loaded into game-object slot table; indexed by 0x5600FC store (F452)"
+  },
+  "audit_vs_exe": {
+    "F429": "Mon/MonS table extended with full context",
+    "F430": "DMon/MagicEx/StoreItem extra table confirmed at 0x13B50..",
+    "F452": "tile store + WIL slots unified"
+  },
+  "contrast": {
+    "ground_vs_avatar": "ground/misc libs (Magic/Inventory/Ground) vs avatar libs (M-Hair/Helmet/WM)",
+    "mon_vs_avatar": "Mon-N.wil (monsters) vs M-*/WM-* (player avatar)"
+  },
+  "verdict": "Full WIL table loader PRIMARY-verified: 35+ slots (Magic/WM-Weapon4/Inventory/Equip/Ground/MIcon/ProgUse/Horse + Mon-N + MonS-N + MonMagic/MonImg/M-Hair/M-Helmet/WM + DMon/MagicEx/StoreItem) mapped on game object. F429/F430 extended.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Table chain + strings decoded from .text/.rdata.",
+  "cross_refs": ["F429: Mon table", "F430: extra table", "F452: tile store"],
+  "tool": "capstone + .rdata decode",
+  "reproduce": "disasm 0x453790+0x40, 0x453F40+0x60; decode 0x47C878-0x47CD24",
+  "notes": [
+    "M-*/WM-* = male/female avatar parts (hair/helmet)",
+    "spell-cast effects = MonMagic/MagicEx frames (F351 family)",
+    "slots stride 0x104 (260B filename buffers)"
+  ]
+}

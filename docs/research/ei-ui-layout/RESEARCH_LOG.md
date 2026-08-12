@@ -6640,3 +6640,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔HUD〕**0x429630：帧 [0x1C] 0x33 → 0x466130 → 0x460240 @屏幕 (0x113, 0x1DE)（滚动 [0xD40] 动画、0x2E 上限）+ **6 快捷装备图标**（[0xDA8] stride 0xC24）。
 - **〔双实例〕**HUD 小地图 (275,478) vs 面板小地图 (672,0)。
 - 落盘：minimap-blit-runtime-evidence.json（F482，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 176。
+## Round 177 (F483) — 2026-08-12：完整 WIL 表装载器（35+ 槽）
+
+- **〔地面/杂项〕**Magic → +0x10478、WM-Weapon4 → +0x10270、Inventory → +0x10374、Equip → +0x1057C、Ground → +0x10680、MIcon → +0x10784、ProgUse → +0x10888、Horse → +0x1098C + Mon-20..1（F429）。
+- **〔形象/魔法〕**MonMagicEx → +0x13434、MonMagic → +0x13538、MonImg → +0x1363C、M-Hair → +0x13740、M-Helmet1 → +0x13844、WM-Hair → +0x13948、WM-Helmet1 → +0x13A4C、DMon/MagicEx/StoreItem → 0x13B50..（F430）。
+- **〔统一〕**35+ WIL 槽全部挂在游戏对象（main 基址 F451）；技能施法特效 = MonMagic/MagicEx 帧（F351 族）。
+- 落盘：full-wil-table-loader-evidence.json（F483，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 177。

@@ -1111,9 +1111,14 @@ git diff --check
 - **16 位表面复制 + HUD 双实例**。
 - 落盘：`minimap-blit-runtime-evidence.json`（F482）+ RESEARCH_LOG Round 176。
 
+## Round 177 (2026-08-12) — 完整 WIL 表装载器（Finding 483）
+
+- **35+ 槽全映射**（F429/F430 扩展）。
+- 落盘：`full-wil-table-loader-evidence.json`（F483）+ RESEARCH_LOG Round 177。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（小地图族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（WIL 族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
