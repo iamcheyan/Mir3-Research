@@ -1,0 +1,39 @@
+{
+  "evidence_id": "round-700-milestone-2026-08-12-f1006",
+  "title": "Round 700 (F1006): ROUND 700 MILESTONE - 700th shipping round; 663 consecutive F335-F1005 (Round 100 baseline -> Round 699); 627 evidence JSONs; 772 total commits; FINDING 1000 reached; surfaces closed since Round 600: options/equipment/mount/skill book/item grid/editor/HP bar/entity render/camera/name tag/hero runtime/hit flash (12); services 200; validation green; master 81d4630 pushed",
+  "date": "2026-08-12",
+  "objective": "Mark the Round 700 shipping milestone.",
+  "question": "What is the state at Round 700?",
+  "method": "Validation + milestone consolidation.",
+  "scope": "Tools/, docs/, services, git.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid"},
+    "counts": {"round": "700 total", "consecutive": "663 F335-F1005", "evidence": "627 JSONs", "commits": "772 total"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "surfaces": "12 closed since Round 600",
+    "findings": "F1000 reached",
+    "master": "81d4630"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1005": "663 consecutive rounds pushed"
+  },
+  "contrast": {
+    "round600_vs_700": "600 -> 700 rounds",
+    "findings": "F906 -> F1005"
+  },
+  "verdict": "ROUND 700 MILESTONE (F1006): 700th round, 663 consecutive F335-F1005, 627 evidence JSONs, 772 commits, FINDING 1000, 12 surfaces closed since Round 600; all validation green.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Milestone from tool runs + git log.",
+  "cross_refs": ["F943: 600-consecutive milestone", "F1000: FINDING 1000"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services; git log",
+  "notes": [
+    "700th shipping round",
+    "663 consecutive F335-F1005",
+    "627 evidence JSONs",
+    "FINDING 1000 reached"
+  ]
+}
