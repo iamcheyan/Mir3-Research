@@ -1,0 +1,37 @@
+{
+  "evidence_id": "party-member-closure-2026-08-12-f918",
+  "title": "Round 612 (F918): Party member CLOSED (F752/F845/F917) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 82e5915 (576 consecutive F335-F917), 542 evidence JSONs; arc: party draw (F752) + click (F845) + member ctor/frame (F917) - party member COMPLETE byte-level (ctor + vtable + frame blit + members + sends), party window 100%",
+  "date": "2026-08-12",
+  "objective": "Close the party member arc.",
+  "question": "Is the party member fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "542 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F752": "draw", "F845": "click", "F917": "member"},
+    "party": "draw + members + sends = COMPLETE",
+    "milestone": "576 consecutive rounds F335-F917"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F917": "576 rounds pushed; party member complete"
+  },
+  "contrast": {
+    "ctor_vs_frame": "init + blit",
+    "members_vs_sends": "list + 0x3FC"
+  },
+  "verdict": "Party member CLOSED (F918): ctor + frame + sends all byte-level; validation green, 576 consecutive rounds, 542 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F752/F845/F917.",
+  "cross_refs": ["F752", "F845", "F917"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "576 consecutive shipping rounds F335-F917",
+    "party member 100%",
+    "next: HANDOFF refresh 117, remaining corners"
+  ]
+}

@@ -3625,3 +3625,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队成员完整；下一弧：剩余深层角落）。
+## Round 612 (2026-08-12) — 组队成员闭合（Finding 918）
+
+- **576 连发 + 542 证据 + 组队成员完整**。
+- 落盘：`party-member-closure-evidence.json`（F918）+ RESEARCH_LOG Round 612。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（组队成员完整；下一弧：HANDOFF 刷新 117/剩余角落）。

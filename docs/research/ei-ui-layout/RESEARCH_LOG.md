@@ -8641,3 +8641,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔组队〕**0x423CA0 **成员构造**（SetRect [0x8]/[0x18] + 清零 [0x4..0x48]）；0x423CF0 vtable[1] 分派；0x423D00 **成员帧绘制**（帧 [0x2C] blit 0x460240 @ [0x8]/[0xC] + 缩放浮点）——组队成员渲染完整。
 - 落盘：party-member-ctor-frame-evidence.json（F917，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 611。
+## Round 612 (F918) — 2026-08-12：组队成员闭合（F752/F845/F917 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**542 证据 JSON**；三服务 200；master 82e5915（**576 连发 F335-F917 已推**）。
+- **〔弧〕**组队绘制（F752）+ 点击（F845）+ 成员构造/帧（F917）——**组队成员完整**（构造 + vtable + 帧 blit + 成员 + 发送），组队窗口 100%。
+- 落盘：party-member-closure-evidence.json（F918，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 612。
