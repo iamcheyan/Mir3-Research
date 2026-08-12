@@ -1,0 +1,36 @@
+{
+  "evidence_id": "map-camera-renderer-scroll-2026-08-12-f718",
+  "title": "Round 412 (F718): Map camera renderer + scroll - 0x43C330 camera draw: viewport 24x24 half-tiles (even gate), tile grid [0x108] stride 0xE, type->frame table @ 0x5600FC stride 0x144 (+0x38/+0x3C), projection x=(tx-camX)<<5-[0x138]-0x9D, y=(ty-camY)*48-[0x134]-0xC8 -> blit 0x460240; 0x43C500 camera scroll: [0x12C]/[0x130]+=dx/dy, scroll-buffer memcpy 0x468E90 (0x900 rows), region re-render 0x43B9A0 - map render core (F610/F613 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the map camera renderer + scroll.",
+  "question": "How does the map camera render + pan?",
+  "method": "Disasm 0x43C41F-0x43C62A.",
+  "scope": "0x43C41F-0x43C62A; 0x5600FC.",
+  "cell_analysis": {
+    "0x43C330": "camera draw: 24x24 viewport, even gate, tile grid [0x108] stride 0xE, type table 0x5600FC stride 0x144",
+    "projection": {"x": "(tx-camX)<<5 - [0x138] - 0x9D", "y": "(ty-camY)*48 - [0x134] - 0xC8"},
+    "0x43C500": "scroll: [0x12C]/[0x130]+=dx/dy, buffer 0x468E90 (0x900 rows), re-render 0x43B9A0"
+  },
+  "exe_trace": {
+    "map_chain": "scroll camera -> re-render region -> tile blit"
+  },
+  "audit_vs_exe": {
+    "F610": "map", "F613": "collision", "F717": "tile accessors"
+  },
+  "contrast": {
+    "render_vs_scroll": "camera draw + pan",
+    "tile_vs_type": "grid [0x108] + type table 0x5600FC"
+  },
+  "verdict": "Map camera renderer + scroll PRIMARY-verified: viewport draw + projection + pan buffer; map render core (F610/F613).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Camera renderer decoded from .text.",
+  "cross_refs": ["F610: map", "F613: collision", "F717: tile accessors"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43C330+0x20; 0x43C500+0x20",
+  "notes": [
+    "type table 0x5600FC stride 0x144",
+    "projection <<5 / *48",
+    "camera [0x12C]/[0x130]",
+    "buffer 0x900 rows"
+  ]
+}

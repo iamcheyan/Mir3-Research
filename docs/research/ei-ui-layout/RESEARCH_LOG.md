@@ -7775,3 +7775,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔瓦片〕**0x43C0F0 取类型（**stride 14B @ [地图+0x10C]**、尺寸 [0x126]/[0x128]、类型字节 +9 bit7 旗标）；0x43C150 可行走（+9/+0xB bit7 全清）；0x43C1B0 **区域封锁**（18×18、类型匹配 → [0xB]|=0x80）；0x43C270 解锁（[0xA]&=0x7FFF）；0x43C330 **等距拾取器**（半瓦片 /2 索引、[0x108] 数组）——瓦片碰撞核心（F613 用）。
 - 落盘：map-tile-accessor-family-evidence.json（F717，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 411。
+## Round 412 (F718) — 2026-08-12：地图相机渲染 + 滚动
+
+- **〔相机〕**0x43C330 相机绘制：24×24 视口半瓦片（偶数门）、瓦片网格 [0x108] stride 0xE、类型→帧表 **@ 0x5600FC stride 0x144**（+0x38/+0x3C）、投影 x=(tx-camX)<<5-[0x138]-0x9D、y=(ty-camY)×48-[0x134]-0xC8 → blit；0x43C500 相机滚动：[0x12C]/[0x130]+=dx/dy、滚动缓冲 memcpy 0x468E90（0x900 行）、区域重渲染 0x43B9A0——地图渲染核心（F610/F613 用）。
+- 落盘：map-camera-renderer-scroll-evidence.json（F718，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 412。
