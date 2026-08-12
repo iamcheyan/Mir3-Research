@@ -8580,3 +8580,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔条〕**0x4542A0 **注册表**（类型<5 + 槽<0x8C → 0x454DA0、基址 +0x13F60）；0x4542E0 访问器（+0x13F60）；0x4542F0 **条 blit**（vtable[0x40]/[0x14]/[0x30] 渲染 + 矩阵浮点 0x476364/0x476470/0x476474 + 颜色/矩阵设置）——HP 条系统完整（F590 用）。
 - 落盘：hp-bar-registry-blit-evidence.json（F903，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 597。
+## Round 598 (F904) — 2026-08-12：HP 条系统闭合（F590/F885/F891/F903 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**528 证据 JSON**；三服务 200；master 4a82be2（**562 连发 F335-F903 已推**）。
+- **〔弧〕**条注册表（F590）+ HUD 状态（F885）+ 地图覆盖层（F891）+ 注册表/blit（F903）——**HP 条系统完整**（注册表 类型<5 槽<0x8C + vtable 渲染 + 矩阵 + 消费者），条表面 100%。
+- 落盘：hp-bar-system-closure-evidence.json（F904，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 598。
