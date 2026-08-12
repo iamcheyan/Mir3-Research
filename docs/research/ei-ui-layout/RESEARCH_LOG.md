@@ -6683,3 +6683,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 28da098（**150 连发已推**）。
 - **〔弧汇总〕**565 混合器（F486）/ 特效 tick（F487）/ 特效 vtable（F488）/ 特效生成器 + 帧基 [esi]+type*10（F489）——**施法管线完整**（技能使用→生成→tick→绘制→混合）；MonMagic 帧数学 pending 闭合。
 - 落盘：spell-effect-arc-closure-evidence.json（F490，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 184。
+## Round 185 (F491) — 2026-08-12：形象帧上下文数组（0x565994 源闭合）
+
+- **〔闭合〕**0x565994 = **人类形象帧上下文数组**（21 绘制点：角色选择 0x416F93、状态形象 F472、游戏初始化 0x4193D1、tick 族）；由 0x452AA0 70 条目循环从形象库（F483 M-*/WM-*）填充——**F454「store+0x5898 第二数组」= 形象上下文**（非怪物槽）。
+- **〔附带〕**0x416F7E 交易对话打开（msg 0x405、窗口 0x7E04C8）。
+- **〔闭合〕**最后一个低优先 pending 解决。
+- 落盘：figure-frame-context-array-evidence.json（F491，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 185。

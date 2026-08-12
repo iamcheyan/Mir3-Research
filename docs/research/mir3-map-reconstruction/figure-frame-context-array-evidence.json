@@ -1,0 +1,38 @@
+{
+  "evidence_id": "figure-frame-context-array-2026-08-12-f491",
+  "title": "Round 185 (F491): Store second-array source CLOSED - 0x565994 = HUMAN FIGURE frame-context array (21 draw sites: char-select 0x416F93 title-window 0x418030, status figure F472, game init 0x4193D1, tick family); populated by 0x452AA0 70-entry loop (F454 'store+0x5898 second array' = figure/avatar contexts, NOT monster slots); 0x416F7E trade-dialog open (msg 0x405, window 0x7E04C8) - pending item resolved: second array = avatar figure lib contexts (M-*/WM-* from F483)",
+  "date": "2026-08-12",
+  "objective": "Resolve the last low-priority pending: the store+0x5898 second-array source.",
+  "question": "What is the 0x565994 array and how is it populated?",
+  "method": "Ref analysis 0x565994 (21 sites) + 0x452AA0 loop + 0x416F93/0x4193D1 contexts.",
+  "scope": "0x565994; 0x452AA0; figure draw sites.",
+  "cell_analysis": {
+    "array": {"base": "0x565994 (store+0x5898)", "role": "HUMAN FIGURE frame-context array (avatar libs)", "refs": "21 draw sites (char-select/status/tick/init)"},
+    "populate": {"loop": "0x452AA0 70 entries from runtime name table (F454)", "libs": "M-*/WM-* avatar libs (F483: M-Hair/M-Helmet1/WM-Hair/WM-Helmet1)"},
+    "use_sites": {"char_select": "0x416F93 title-window 0x418030 (figure preview)", "status": "F472 figure draw (0x566DD4 family)", "init": "0x4193D1 game init", "trade": "0x416F7E opens trade dialog (msg 0x405, window 0x7E04C8)"},
+    "pending_closed": "F454 'store+0x5898 second array' = avatar figure contexts (not monster slots)"
+  },
+  "exe_trace": {
+    "figure_chain": "avatar libs (F483) -> 0x452AA0 fill 0x565994 -> figure draw (F472/char-select)"
+  },
+  "audit_vs_exe": {
+    "F454": "second array semantic resolved (avatar figure)",
+    "F483": "avatar libs feed this array",
+    "F472": "status figure uses these contexts"
+  },
+  "contrast": {
+    "figure_vs_monster": "0x565994 = player avatar; monster frames = Mon-N (F429)",
+    "figure_vs_tiles": "store entries 0-16 = ground libs; +0x5898 = avatar contexts"
+  },
+  "verdict": "Store second-array source RESOLVED (primary-bytes): 0x565994 = human figure frame-context array (21 sites), filled by 0x452AA0 from avatar libs. Last low-priority pending closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Array role + population decoded from .text.",
+  "cross_refs": ["F454: second array (resolved)", "F483: avatar libs", "F472: figure draw"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "scan 0x565994 refs; disasm 0x452AA0, 0x416F60+0x20",
+  "notes": [
+    "trade dialog opens via msg 0x405 (window 0x7E04C8)",
+    "0x452AA0 loop = 70 avatar lib contexts",
+    "all low-priority pendings now closed"
+  ]
+}
