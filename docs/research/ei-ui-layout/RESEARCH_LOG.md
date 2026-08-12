@@ -8386,3 +8386,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**482 证据 JSON**；三服务 200；master d999948（**516 连发 F335-F857 已推**）。
 - **〔弧〕**4 类型渲染（F598）+ 选项命中/选择（F746）+ 窗口渲染（F857）——**对话窗口完整**（选项列表 + 4 类型 jt + 测量/换行 + 绘制 + 命中/激活），模式 9 全交互。
 - 落盘：dialog-window-closure-evidence.json（F858，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 552。
+## Round 553 (F859) — 2026-08-12：HANDOFF 刷新 96（Round 550-552）
+
+- **〔刷新〕**HANDOFF 追加 Round 550-552（F857-F858：NPC 对话窗口渲染 + 对话窗口闭合）；基线 Round 549=8150b28 → Round 552=fa44e88（**517 连发 F335-F858**）。
+- 落盘：handoff-refresh-96-evidence.json（F859，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 553。
