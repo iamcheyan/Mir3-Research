@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv2-dispatch-full-handler-map-2026-08-12-f553",
+  "title": "Round 247 (F553): recv2 dispatch (0x4218F2) FULL handler map - msg 0x44D-0x520 range -> byte map 0x42219C (12 distinct values 0-10,12) -> jt 0x422168, default 0x421C81; 11 real handlers: idx0=entity name set (lstrcpyA 0x4760C8, hero id [0x2F8784] vs 0x41EB10, vtable[0x38]), idx1=memo struct (malloc 0x40C, 3 dwords + string -> 0x41B710), idx2=hero state ([0x35B148] byte, vtable[0x88]+vtable[0x10](0x1D/0)), idx3=quest add 0x4488D0([0x2F6B74]), idx4='새로운 퀘스트가 시작 되었습니다.' notice (0x47B15C cp949) + 0x449390, idx5='퀘스트 일지가 변경되었습니다.' (0x47B180) + 0x449390, idx6=entity coord triple (hero [0x35A410] else entity+0x61C90), idx7=chat line 0x422E30, idx8=memo#2 -> 0x4561B0([main+0x364458]), idx9=0x448B10, idx10=0x448D90, idx12=entity register (0x41EB40 [main+0xE1188]=0x560088, malloc 0x10 {+0 id,+4 w1,+8 w2,+0xC timeGetTime}); helpers: 0x41EB10 = find by id (list [0xE1158]=0x560070 F336), 0x401390 = COLOR TABLE {0:0,1:0xA0A0A,2:0xFFFFFF,3:0xFF,4:0xFF00,5:0xFF9696,6:0x50FFFF,7:0x80FF}, 0x427E30 = notice window (0x507EC) multi-line max 5 (fmt 0x47AD30) - recv2 family complete (F518 13 -> revised 11+default)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv2 dispatch structure + all handler bodies.",
+  "question": "What are the 13 recv2 handlers?",
+  "method": "Disasm 0x4218F2 dispatch + all 12 jt targets + byte map 0x42219C + helpers.",
+  "scope": "0x4218F2-0x421D57; byte map 0x42219C; jt 0x422168; helpers 0x41EB10/0x41EB40/0x401390/0x427E30.",
+  "cell_analysis": {
+    "dispatch": {"range": "msg 0x44D-0x520 (212)", "byte_map": "0x42219C (12 distinct 0-10,12)", "jt": "0x422168", "default": "0x421C81"},
+    "handlers": {"idx0": "entity name set (hero id [0x2F8784] else 0x41EB10, vtable[0x38])", "idx1": "memo struct (malloc 0x40C, 3 dwords + lstrcpyA 0x4760C8) -> 0x41B710", "idx2": "hero state [0x35B148] byte, vtable[0x88], vtable[0x10](0x1D/[0x2F8841])", "idx3": "0x4488D0 quest add (1 word)", "idx4": "new-quest notice 0x47B15C + 0x449390", "idx5": "journal-changed notice 0x47B180 + 0x449390", "idx6": "entity coord triple (hero [0x35A410..] else +0x61C90)", "idx7": "0x422E30 chat line", "idx8": "memo#2 -> 0x4561B0([main+0x364458])", "idx9": "0x448B10 quest variant", "idx10": "0x448D90 quest add (2 words)", "idx12": "entity register (0x41EB40 [0xE1188]=0x560088, malloc 0x10 {+0 id,+4 w1,+8 w2,+0xC timeGetTime})"},
+    "helpers": {"0x41EB10": "find entity by id (list [main+0xE1158] = 0x560070, F336 container A)", "0x401390": "COLOR TABLE 0-7", "0x427E30": "notice window 0x507EC multi-line max 5 (fmt 0x47AD30)"},
+    "strings": {"0x47B180": "퀘스트 일지가 변경되었습니다. (cp949: quest journal changed)", "0x47B15C": "새로운 퀘스트가 시작 되었습니다. (cp949: new quest started)"}
+  },
+  "exe_trace": {
+    "recv2_chain": "msg 0x44D-0x520 -> byte map -> jt -> handler (quest/memo/entity/chat/state)"
+  },
+  "audit_vs_exe": {
+    "F518": "212->13 revised: 12 byte-map values = 11 real + default", "F336": "entity lists 0x560070/0x560088 confirmed via 0x41EB10/0x41EB40", "F538": "task window colors (0x401390 table)", "F451": "hero base"
+  },
+  "contrast": {
+    "recv1_vs_recv2": "recv1 = UI/store state msgs; recv2 = quest/memo/entity/chat msgs",
+    "hero_vs_entity": "coords: hero -> [0x35A410], others -> entity+0x61C90"
+  },
+  "verdict": "recv2 dispatch FULL map PRIMARY-verified: 12 byte-map values -> 11 real handlers + default; quest journal (퀘스트 일지), memos, entity name/coord/register, chat, hero state; helpers + color table + notices decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All handler bodies + helpers decoded from .text.",
+  "cross_refs": ["F518: recv2 table", "F336: entity lists", "F538: task window", "F520: recv1 semantics"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x4218F2+0x20; dump 0x42219C; disasm each jt target",
+  "notes": [
+    "[0x2F8780] = hero actor obj, [0x2F8784] = hero id, [0x2F6B74] = quest list mgr",
+    "0x468B1A = malloc, 0x4760C8 = lstrcpyA",
+    "memo struct = 0x40C bytes {+0,+4,+8 dwords, +0xC string}",
+    "color table feeds 0x427E30 notice (F538 19-line colors)"
+  ]
+}
