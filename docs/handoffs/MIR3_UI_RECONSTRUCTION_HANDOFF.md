@@ -441,3 +441,12 @@ simulator/style.css
 **关键架构结论（更新）**：客户端-服务端协议层全文档化（34 出站 + 349 入站 + 怪物族）；服务端 Envir 清单完整（KR .dat 全解码 + CN 翻译层）；MonMagic 帧公式 type×10 对真实库确认。
 
 **commit 基线更新**：Round 194=204c6f4 → Round 218=be1b382（master 已推，183 连发 F335-F524）。
+
+
+## Round 219-226 追加交付（2026-08-12，Finding 525-532）：协议层 + 深层 UI 角落闭合
+
+**协议层完整（F514-F524）**：出站 34 msgid（0x3E9-0x419 全发送函数 + 参数结构，含坐标包 0x3FF/0x400 + NPC 回复变体 0x40C-0x40F）+ 入站 349 槽两表（0x42042B 137→49 处理器 + 0x4218F2 212→13 处理器，语义全解：实体生成/聊天/坐标/英雄状态/商店仓库制作/行会/背包装备）+ 怪物 0xBC6-0xBD8 每实体状态机（记录查找 → 属性 → 回复 0xBC7/0xBD1）——**完整客户端-服务端协议层**。
+
+**模拟器边缘 + 深层 UI 角落（F526-F532）**：模拟器边缘验证（商店导航/全局辅助/模块状态无回归）、提示框 3 槽数组（激活 wparam type<<16|slot<<8|tag + msg 0x7EE）、Config.ini 6 键保存链（BGM/BGMLevel/EffectSound/EffectSoundLevel/Ambience/ShadowBlend）、聊天输入发送路径（门 [0x8A4] + SetWindowTextA + 0x403640 分派）、血条实时值帧（HP=[0x61BA0]−[0xB4]+[0xC4] 经 0x4542A0 注册表）、目标框悬停 3000ms 计时器（累加器 [0x6209C] + 重置）——**全部字节级闭合**。
+
+**commit 基线更新**：Round 218=be1b382 → Round 226=17faa1b（master 已推，190 连发 F335-F532）。

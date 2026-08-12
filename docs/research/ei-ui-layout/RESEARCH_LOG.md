@@ -6888,3 +6888,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 65678c3（**190 连发已推**）。
 - **〔弧汇总〕**提示框 3 槽（F527）/ Config.ini 6 键保存（F528）/ 聊天输入发送（F529）/ 血条实时值帧（F530）/ 目标框悬停 3000ms（F531）——**深层 UI 角落字节级闭合**。
 - 落盘：ui-corner-arc-closure-evidence.json（F532，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 226。
+## Round 227 (F533) — 2026-08-12：HANDOFF 刷新 3（F525-F532 追加）
+
+- **〔追加〕**HANDOFF 补 Round 219-226（协议层完整 + 模拟器边缘 + 深层 UI 角落）；基线 Round 218=be1b382 → **Round 226=17faa1b（190 连发 F335-F532）**。
+- 落盘：handoff-refresh-3-evidence.json（F533，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 227。
