@@ -4233,3 +4233,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体投影完整；下一弧：剩余深层角落）。
+## Round 688 (2026-08-12) — 实体渲染闭合（Finding 994）
+
+- **652 连发 + 616 证据 + 实体渲染完整**。
+- 落盘：`entity-render-closure-evidence.json`（F994）+ RESEARCH_LOG Round 688。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体表面 100%；下一弧：HANDOFF 刷新 143/剩余角落）。
