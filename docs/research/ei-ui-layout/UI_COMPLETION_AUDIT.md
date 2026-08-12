@@ -2341,9 +2341,14 @@ git diff --check
 - **地面 + 物体层 blit 0x45E8E0**（相机滚动依赖）。
 - 落盘：`per-tile-render-family-evidence.json`（F728）+ RESEARCH_LOG Round 422。
 
+## Round 423 (2026-08-12) — 地图渲染最终闭合（Finding 729）
+
+- **387 连发 + 353 证据 + 地图系统 100%**。
+- 落盘：`map-render-final-closure-evidence.json`（F729）+ RESEARCH_LOG Round 423。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（逐瓦片渲染字节级；下一弧：剩余深层角落）。
+- 无阻塞项（地图 100%；下一弧：HANDOFF 刷新 53/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

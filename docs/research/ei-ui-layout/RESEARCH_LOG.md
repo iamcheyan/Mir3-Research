@@ -7822,3 +7822,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔瓦片渲染〕**0x43B9A0 单瓦片地面渲染（奇偶门 + 网格 [0x108] + 类型/7 + 帧表 0x5600FC + **blit 0x45E8E0 入瓦片缓冲 [0x1B2]**——相机滚动 F718 调用）；0x43BB10 物体层瓦片渲染（属性字 +3/+5/+7、0x30×0x20 尺寸门）——地图逐瓦片渲染核心（F718 用）。
 - 落盘：per-tile-render-family-evidence.json（F728，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 422。
+## Round 423 (F729) — 2026-08-12：地图渲染最终闭合（F717-F728 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**353 证据 JSON**；三服务 200；master 5fbfd50（**387 连发 F335-F728 已推**）。
+- **〔弧〕**瓦片访问器（F717）+ 相机（F718）+ 碰撞/方向（F719）+ 移动门（F722）+ 逐瓦片渲染（F728）——**地图系统 100% 字节级**（取/可行走/封锁 + 相机绘制/平移 + 碰撞 + 实体封锁移动 + 地面/物体层瓦片 blit），列明地图角落全部闭合。
+- 落盘：map-render-final-closure-evidence.json（F729，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 423。
