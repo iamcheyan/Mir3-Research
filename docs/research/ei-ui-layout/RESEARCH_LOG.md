@@ -6618,3 +6618,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔路径〕**存档 = `.\Data\`（0x47BDC4）+ 角色名 + `.itm`（0x47BDCC，0x45DC70 组名）；管理器 0x42DC20 按玩家名构建。
 - **〔记录〕**记录 ctor 0x415730：0xC 头 + 物品 0x430920 @+0xC → **stride 0xC2C**（F293 背包步长确认）；背包管理器 0x415760（vtable 0x47663C、46 × 0xC2C 记录 [0x5B8]、3 × 0xB4 控件 [0x7C]）。
 - 落盘：item-save-file-format-evidence.json（F478，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 172。
+## Round 173 (F479) — 2026-08-12：可见性通道特殊实体处理
+
+- **〔特殊〕**0x41A0D5 特殊类型链（{0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150）：vtable+0xC tick、[byte+4]==2 移除、网格2 [0x2E4] 分桶（100 探测）、**重叠去重**（0x41A208：同 type [0x10] + 坐标 [0xB0]/[0xB4] → [0x124]=0 合并）。
+- **〔地图对象〕**0x41A367 链 C：PtInRect 剔除、网格3 [0x474] 分桶、视口外移除。
+- **〔完整〕**F336/F446 4 网格可见性通道端到端全解。
+- 落盘：visibility-pass-special-entities-evidence.json（F479，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 173。

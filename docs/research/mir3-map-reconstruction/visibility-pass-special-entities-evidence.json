@@ -1,0 +1,37 @@
+{
+  "evidence_id": "visibility-pass-special-entities-2026-08-12-f479",
+  "title": "Round 173 (F479): Visibility pass special-entity handling - 0x419D40 tail: special-type walk (0x41A0D5 list 0xE11A0 types {0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150): vtable+0xC tick, dead [byte+4]==2 remove, in-viewport + grid2 [0x2E4] bucket (100-probe), OVERLAP DEDUP (0x41A208: match type word [0x10] + coords [0xB0]/[0xB4] in grid -> [0x124]=0 merge else [0x124]=1); map-object walk (0x41A367 list C: PtInRect [0x4762B4] cull, grid3 [0x474] bucket, off-viewport remove 0x4680F8) - F336/F446 4-grid pass fully decoded end-to-end",
+  "date": "2026-08-12",
+  "objective": "Complete the 0x419D40 visibility pass tail (special entities + map objects).",
+  "question": "How do special entities and map objects get bucketed/culled in the visibility pass?",
+  "method": "Disasm 0x41A0C3-0x41A446 (special walk + map-object walk).",
+  "scope": "0x41A0C3-0x41A446; grid2 [0x2E4]; grid3 [0x474]; lists 0xE11A0/0xE11B8.",
+  "cell_analysis": {
+    "special_walk": {"list": "0xE11A0 (types {0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150 dispatch)", "tick": "vtable+0xC; [byte+4]==2 -> remove+delete (0x41A16D)", "bucket": "grid2 [0x2E4] via shared cell formula + 100-probe (0x41A1D3-0x41A349)", "dedup": "0x41A208: scan grid for same type word [0x10] + coords [0xB0]/[0xB4] -> [0x124]=0 (merge) else 1"},
+    "map_obj_walk": {"list": "0xE11B8 (container C)", "cull": "PtInRect 0x4762B4 (entity rect) -> off-viewport remove 0x4680F8", "bucket": "grid3 [0x474] via shared formula (0x41A3EB-0x41A424)"},
+    "pass_complete": "F336/F446: 4-grid visibility pass = draw-list walk + special walk + map-obj walk + expiry walk (F446)"
+  },
+  "exe_trace": {
+    "visibility_full": "0x419D40 = zero grid1 + 4 walks (F446) + special dedup + map-obj cull (this)"
+  },
+  "audit_vs_exe": {
+    "F446": "grid2/grid3 write paths confirmed in full",
+    "F439": "tick stage 8 complete",
+    "F336": "4-grid mystery fully resolved"
+  },
+  "contrast": {
+    "dedup_vs_bucket": "special entities dedup by type+coords; others bucket unconditionally",
+    "mapobj_vs_entity": "map objects = PtInRect-culled + grid3; entities = grid1/grid2"
+  },
+  "verdict": "Visibility pass special-entity handling PRIMARY-verified: special types walk + overlap dedup ([0x124] flag) + grid2 bucket; map objects PtInRect-culled + grid3 bucket. F336 4-grid pass decoded end-to-end.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Special + map-obj walks decoded from .text.",
+  "cross_refs": ["F446: 4 grids", "F439: pipeline", "F336: game loop"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x41A0C3+0x60, 0x41A208+0x60, 0x41A367+0x40",
+  "notes": [
+    "special types = projectiles/effects (0x10/0x16/0x3F/0x14A-0x14E = F336 dispatch)",
+    "dedup [0x124] = overlap flag (one render per cell)",
+    "map-object remove = off-viewport garbage collection"
+  ]
+}
