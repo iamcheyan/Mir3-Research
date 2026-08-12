@@ -6319,3 +6319,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔覆盖〕**288 刷怪图（0.map 348、1.map 279、4.map 127 城郊热点）；**184 在 EI + 104 服务端专属**（D6015/D515/D15xx = F396 缺口吻合）。
 - 落盘：monster-spawn-coverage-evidence.json（F424，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 118。
+## Round 119 (F425) — 2026-08-12：怪物分布（2987 项/308 种 + 等级 1-700）
+
+- **〔分布〕**2987 刷怪/308 种（栗子树 137、狼 64、多钩猫/钉耙猫 58、半兽人/森林雪人 52）；等级 1-700（lvl1 768、lvl10 359、lvl40 137 栗子树）。
+- 落盘：monster-distribution-evidence.json（F425，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 119。

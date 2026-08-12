@@ -821,6 +821,11 @@ git diff --check
 - **288 刷怪图**（0.map 348 热点）；**184 EI + 104 服务端专属**（F396 缺口吻合）。
 - 落盘：`monster-spawn-coverage-evidence.json`（F424）+ RESEARCH_LOG Round 118。
 
+## Round 119 (2026-08-12) — 怪物分布（Finding 425）
+
+- **2987 项/308 种 + 等级 1-700**（栗子树主导）。
+- 落盘：`monster-distribution-evidence.json`（F425）+ RESEARCH_LOG Round 119。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。

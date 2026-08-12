@@ -1,0 +1,37 @@
+{
+  "evidence_id": "monster-distribution-2026-08-12-f425",
+  "title": "Round 119 (F425): Monster distribution - 2987 entries / 308 unique (栗子树 137/狼 64/多钩猫+钉耙猫 58/半兽人+森林雪人 52), levels 1-700 (lvl1 768 spawns, lvl10 359, lvl40 137)",
+  "date": "2026-08-12",
+  "objective": "Analyze the monster population: name distribution and level spread from MonGen.",
+  "question": "What monsters populate the EI server and at what levels?",
+  "method": "Envir MonGen parse (monster name/level counters).",
+  "scope": "MonGen.txt + .gen expansions.",
+  "cell_analysis": {
+    "entries": "2987 monster spawn entries / 308 unique names",
+    "top": "栗子树 137 / 狼 64 / 多钩猫 58 / 钉耙猫 58 / 半兽人 52 / 森林雪人 52 / 僵尸1-4 39 each",
+    "levels": {"range": "1-700", "top": "lvl1 768 / lvl10 359 / lvl5 202 / lvl20 182 / lvl3 175 / lvl2 140 / lvl40 137 / lvl15 117"},
+    "note": "栗子树 (chestnut tree, lvl40 137) = dominant mid-game mob; 狼 (wolf) 64 early"
+  },
+  "exe_trace": {
+    "monster_frames": "F280: Mon-(Race//10+1).wil formula (50->Mon-6.wil)"
+  },
+  "audit_vs_exe": {
+    "F424": "spawn map coverage consistent",
+    "F280": "monster WIL formula for rendering"
+  },
+  "contrast": {
+    "name_vs_frame": "server names (栗子树) map to Mon-*.wil via race formula",
+    "level_curve": "lvl1 dominant (starter mobs) tapering to lvl40+ (栗子树)"
+  },
+  "verdict": "Monster distribution verified (secondary-server): 2987 entries/308 names, levels 1-700, 栗子树 dominant (137). Population data complements the F280 rendering formula.",
+  "evidence_level": "secondary (server MonGen)",
+  "evidence_level_note": "Counts from server MonGen; rendering formula primary-static F280.",
+  "cross_refs": ["F280: monster frames", "F424: spawn coverage", "F423: entity parse"],
+  "tool": "mapviewer load_entities; python3 Counter",
+  "reproduce": "load_entities(Envir); Counter(name/level for monsters)",
+  "notes": [
+    "308 unique monsters across 288 maps",
+    "lvl700 = high-end boss (rare)",
+    "栗子树 = tree-type mob (chestnut) - EI classic"
+  ]
+}
