@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-83-2026-08-12-f820",
+  "title": "Round 514 (F820): HANDOFF refresh 83 - Rounds 511-513 (F817-F819: HANDOFF 82, equip detail panel draw, status/equip panel closure), baseline Round 510=b45ce8d -> Round 513=f6e1d69 (478 consecutive F335-F819), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 511-513.",
+  "question": "What changed since HANDOFF refresh 82?",
+  "method": "Append Round 511-513 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 511-513 appended (3 rounds, F817-F819)",
+    "baseline": "Round 510=b45ce8d -> Round 513=f6e1d69 (478 consecutive F335-F819)",
+    "arcs": {"panel": "F818 detail panel", "closure": "F819 status/equip"},
+    "key": "status/equip panels complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F817": "refresh 82 baseline -> now refresh 83", "F335-F819": "478 rounds"
+  },
+  "contrast": {
+    "refresh_82_vs_83": "F818-F819 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 83 (F820): Rounds 511-513 documented (status/equip complete), baseline b45ce8d -> f6e1d69, 478 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F818-F819 evidence.",
+  "cross_refs": ["F817: refresh 82", "F819: panel closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 511-513 section to HANDOFF",
+  "notes": [
+    "478 consecutive shipping rounds F335-F819",
+    "next: remaining deep corners, sim polish"
+  ]
+}

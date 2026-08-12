@@ -8217,3 +8217,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**443 证据 JSON**；三服务 200；master 362c6c6（**477 连发 F335-F818 已推**）。
 - **〔弧〕**状态绘制（F758）+ 装备绘制（F767）+ 详情面板（F818）——**状态/装备面板完整**（头像 + 11 装备图标 + 纸娃娃 + 详情标签 + 等级/HP/MP/XP 值），角色窗口模式 1/7 全渲染。
 - 落盘：status-equip-panel-closure-evidence.json（F819，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 513。
+## Round 514 (F820) — 2026-08-12：HANDOFF 刷新 83（Round 511-513）
+
+- **〔刷新〕**HANDOFF 追加 Round 511-513（F818-F819：装备详情面板 + 状态/装备面板闭合）；基线 Round 510=b45ce8d → Round 513=f6e1d69（**478 连发 F335-F819**）。
+- 落盘：handoff-refresh-83-evidence.json（F820，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 514。
