@@ -1,0 +1,25 @@
+{
+  "evidence_id": "handoff-refresh-155-2026-08-12-f1031",
+  "title": "Round 725 (F1031): HANDOFF refresh 155 - Rounds 722-724 (F1028-F1030: HANDOFF 154, recv2 non-hero name update full, recv2 name closure), baseline Round 721=47a2b29 -> Round 724=ab2b0ba (688 consecutive F335-F1030), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 722-724.",
+  "question": "What changed since HANDOFF refresh 154?",
+  "method": "Append Round 722-724 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 722-724 appended (3 rounds, F1028-F1030)",
+    "baseline": "Round 721=47a2b29 -> Round 724=ab2b0ba (688 consecutive F335-F1030)",
+    "arcs": {"recv2_name": "F1029 non-hero branch", "closure": "F1030 hero + non-hero"},
+    "key": "recv2 name handling 100%"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1028": "refresh 154 baseline -> now refresh 155", "F335-F1030": "688 rounds"},
+  "contrast": {"refresh_154_vs_155": "F1029-F1030 (2 new findings)"},
+  "verdict": "HANDOFF refreshed 155 (F1031): Rounds 722-724 documented (recv2 name handling complete), baseline 47a2b29 -> ab2b0ba, 688 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1029-F1030 evidence.",
+  "cross_refs": ["F1028: refresh 154", "F1030: recv2 name closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 722-724 section to HANDOFF",
+  "notes": ["688 consecutive shipping rounds F335-F1030", "recv2 name handling 100%", "next: remaining deep corners, sim polish"]
+}

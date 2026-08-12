@@ -9131,3 +9131,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**651 证据 JSON**；三服务 200；master 60aae6d（**687 连发 F335-F1029 已推**）。
 - **〔弧〕**主角名字 [0x35A820] + 非主角实体名字 [0x620A0] + 共享格式化 0x40BA60 + 超时清零 [0x6209C]——**recv2 名字处理完整**。
 - 落盘：recv2-name-closure-evidence.json（F1030，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 724。
+## Round 725 (F1031) — 2026-08-12：HANDOFF 刷新 155（Round 722-724）
+
+- **〔刷新〕**HANDOFF 追加 Round 722-724（F1029-F1030：recv2 非主角名字更新全量 + recv2 名字处理闭合）；基线 Round 721=47a2b29 → Round 724=ab2b0ba（**688 连发 F335-F1030**）。
+- 落盘：handoff-refresh-155-evidence.json（F1031，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 725。
