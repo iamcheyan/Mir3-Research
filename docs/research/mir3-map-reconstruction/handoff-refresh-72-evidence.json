@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-72-2026-08-12-f787",
+  "title": "Round 481 (F787): HANDOFF refresh 72 - Rounds 478-480 (F784-F786: HANDOFF 71, message dispatcher/sender continuation, input/message system closure + Round 480 milestone), baseline Round 477=213256b -> Round 480=b4b8bc8 (445 consecutive F335-F786), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 478-480.",
+  "question": "What changed since HANDOFF refresh 71?",
+  "method": "Append Round 478-480 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 478-480 appended (3 rounds, F784-F786)",
+    "baseline": "Round 477=213256b -> Round 480=b4b8bc8 (445 consecutive F335-F786)",
+    "milestone": "Round 480 shipping milestone documented",
+    "arcs": {"dispatch": "F785 message dispatcher", "closure": "F786 input/message"},
+    "key": "input/message complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F784": "refresh 71 baseline -> now refresh 72", "F335-F786": "445 rounds"
+  },
+  "contrast": {
+    "refresh_71_vs_72": "F785-F786 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 72 (F787): Rounds 478-480 documented (input/message complete), baseline 213256b -> b4b8bc8, 445 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F785-F786 evidence.",
+  "cross_refs": ["F784: refresh 71", "F786: input closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 478-480 section to HANDOFF",
+  "notes": [
+    "445 consecutive shipping rounds F335-F786",
+    "next: remaining deep corners, sim polish"
+  ]
+}

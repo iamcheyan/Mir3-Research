@@ -8074,3 +8074,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**410 证据 JSON**；三服务 200；master d627c4f（**444 连发 F335-F785 已推**）——**Round 480 里程碑**。
 - **〔弧〕**异步 TCP（F552）+ 命中测试（F560）+ 点击分派（F587）+ 输入转发（F782）+ 消息分派器（F785）——**输入/消息完整**（WSAAsyncSelect 0x7E8 + 自定义消息表 0x2714 + 点击路由 + 发送器）。
 - 落盘：input-message-system-closure-evidence.json（F786，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 480。
+## Round 481 (F787) — 2026-08-12：HANDOFF 刷新 72（Round 478-480）
+
+- **〔刷新〕**HANDOFF 追加 Round 478-480（F785-F786：消息分派器 + 输入/消息系统闭合 + Round 480 里程碑）；基线 Round 477=213256b → Round 480=b4b8bc8（**445 连发 F335-F786**）。
+- 落盘：handoff-refresh-72-evidence.json（F787，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 481。
