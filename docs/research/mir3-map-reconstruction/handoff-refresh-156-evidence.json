@@ -1,0 +1,25 @@
+{
+  "evidence_id": "handoff-refresh-156-2026-08-12-f1034",
+  "title": "Round 728 (F1034): HANDOFF refresh 156 - Rounds 725-727 (F1031-F1033: HANDOFF 155, entity/list destructor vtable tail, entity/list lifecycle closure), baseline Round 724=ab2b0ba -> Round 727=691b7c4 (691 consecutive F335-F1033), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 725-727.",
+  "question": "What changed since HANDOFF refresh 155?",
+  "method": "Append Round 725-727 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 725-727 appended (3 rounds, F1031-F1033)",
+    "baseline": "Round 724=ab2b0ba -> Round 727=691b7c4 (691 consecutive F335-F1033)",
+    "arcs": {"destructor": "F1032 vtable tail", "closure": "F1033 list lifecycle"},
+    "key": "entity/list lifecycle 100%"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1031": "refresh 155 baseline -> now refresh 156", "F335-F1033": "691 rounds"},
+  "contrast": {"refresh_155_vs_156": "F1032-F1033 (2 new findings)"},
+  "verdict": "HANDOFF refreshed 156 (F1034): Rounds 725-727 documented (entity/list lifecycle complete), baseline ab2b0ba -> 691b7c4, 691 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1032-F1033 evidence.",
+  "cross_refs": ["F1031: refresh 155", "F1033: list lifecycle closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 725-727 section to HANDOFF",
+  "notes": ["691 consecutive shipping rounds F335-F1033", "entity/list lifecycle 100%", "next: remaining deep corners, sim polish"]
+}

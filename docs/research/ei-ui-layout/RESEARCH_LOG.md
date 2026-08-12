@@ -9144,3 +9144,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**654 证据 JSON**；三服务 200；master 146f53e（**690 连发 F335-F1032 已推**）。
 - **〔弧〕**5 个实体列表 + 节点布局（F336）+ 插入/解除链接（F440）+ 8 个 vtable 析构 thunk/条件释放（F1032）——**容器生命周期完整**。
 - 落盘：entity-list-destructor-closure-evidence.json（F1033，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 727。
+## Round 728 (F1034) — 2026-08-12：HANDOFF 刷新 156（Round 725-727）
+
+- **〔刷新〕**HANDOFF 追加 Round 725-727（F1032-F1033：实体/列表析构 vtable 尾部全量 + 实体/列表生命周期闭合）；基线 Round 724=ab2b0ba → Round 727=691b7c4（**691 连发 F335-F1033**）。
+- 落盘：handoff-refresh-156-evidence.json（F1034，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 728。
