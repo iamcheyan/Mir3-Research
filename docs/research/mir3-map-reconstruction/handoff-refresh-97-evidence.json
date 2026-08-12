@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-97-2026-08-12-f862",
+  "title": "Round 556 (F862): HANDOFF refresh 97 - Rounds 553-555 (F859-F861: HANDOFF 96, mount hit/click/ctor, mount window full closure), baseline Round 552=fa44e88 -> Round 555=8d5f502 (520 consecutive F335-F861), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 553-555.",
+  "question": "What changed since HANDOFF refresh 96?",
+  "method": "Append Round 553-555 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 553-555 appended (3 rounds, F859-F861)",
+    "baseline": "Round 552=fa44e88 -> Round 555=8d5f502 (520 consecutive F335-F861)",
+    "arcs": {"mount": "F860 hit/ctor", "closure": "F861 mount full"},
+    "key": "mount window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F859": "refresh 96 baseline -> now refresh 97", "F335-F861": "520 rounds"
+  },
+  "contrast": {
+    "refresh_96_vs_97": "F860-F861 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 97 (F862): Rounds 553-555 documented (mount window complete), baseline fa44e88 -> 8d5f502, 520 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F860-F861 evidence.",
+  "cross_refs": ["F859: refresh 96", "F861: mount closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 553-555 section to HANDOFF",
+  "notes": [
+    "520 consecutive shipping rounds F335-F861",
+    "next: remaining deep corners, sim polish"
+  ]
+}
