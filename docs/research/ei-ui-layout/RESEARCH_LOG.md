@@ -7719,3 +7719,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔命中〕**0x4177F0（F243 确认）：[0x25]=0 + PtInRect [0x4]（0x4762B4）+ **悬停音效 0x69**（0x45AFC0）；0x417830 = 设置位置（[0x28]/[0x2C] + WIL 尺寸矩形）；0x417880 = 设置帧（[0x20] + 矩形）；0x4178E0 = ctor（vtable 0x476654、矩形 [0x4]/[0x34]）——控件核心完整（F701 + 此项）。
 - 落盘：control-hit-setpos-ctor-evidence.json（F704，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 398。
+## Round 399 (F705) — 2026-08-12：控件系统最终闭合（F701-F704 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**329 证据 JSON**；三服务 200；master 60b477e（**363 连发 F335-F704 已推**）。
+- **〔弧〕**构造/绘制（F701）+ 命中/定位/构造（F704）——**控件系统 100% 字节级（构造 + 绘制 + 命中 + 定位）**，支撑全部窗口控件（F313/F546/F547/F580）。
+- 落盘：control-final-closure-evidence.json（F705，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 399。

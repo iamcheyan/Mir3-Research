@@ -1,0 +1,36 @@
+{
+  "evidence_id": "control-final-closure-2026-08-12-f705",
+  "title": "Round 399 (F705): Control system FINAL closure (F701-F704) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 60b477e (363 consecutive F335-F704), 329 evidence JSONs; arc: ctor/paint (F701) + hit/set-pos/ctor (F704) - control system 100% byte-level (ctor + paint + hit + set-pos), backing every window control (F313/F546/F547/F580)",
+  "date": "2026-08-12",
+  "objective": "Close the control system finally.",
+  "question": "Is the control system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "329 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F701": "ctor + paint", "F704": "hit + set-pos + ctor"},
+    "control": "ctor + paint + hit + set-pos = 100% byte-level (F313/F546/F547/F580)",
+    "milestone": "363 consecutive rounds F335-F704"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F704": "363 rounds pushed; control complete"
+  },
+  "contrast": {
+    "hit_vs_paint": "hit-test + paint",
+    "ctor_vs_set": "ctor + set-pos/frame"
+  },
+  "verdict": "Control system FINAL closure (F705): ctor + paint + hit + set-pos all byte-level; validation green, 363 consecutive rounds, 329 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F701-F704.",
+  "cross_refs": ["F701: ctor/paint", "F704: hit/set-pos"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "363 consecutive shipping rounds F335-F704",
+    "next: HANDOFF refresh 46, remaining corners"
+  ]
+}
