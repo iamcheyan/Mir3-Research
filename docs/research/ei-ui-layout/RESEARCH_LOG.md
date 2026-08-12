@@ -7831,3 +7831,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 421-423（F728-F729：逐瓦片渲染 + 地图渲染最终闭合）；基线 Round 420=cbbf2ac → Round 423=facd4c5（**388 连发 F335-F729**）。
 - 落盘：handoff-refresh-53-evidence.json（F730，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 424。
+## Round 425 (F731) — 2026-08-12：HUD 键盘/输入分派
+
+- **〔输入〕**0x42C9E0：窗口转发（0x516EC→0x448490、0x33188 商店→0x44F1D0）+ 热键栏命中 0x42D720（F581）+ 冷却门 0x7D0/0x3E8 vs GetTickCount [0x29CD8] + **物品名表 0x47ADB4（cp949）热键发送 msg 0x3EE**（0x451910）+ 格式化 0x46811C/公告 0x415280；0x42CBD0 输入门（窗口 [0x53060]/[0x52E8C] + 公告 [0x5081C]→0x414DC0）——HUD 输入路由（F580/F581/F616 用）。
+- 落盘：hud-keyboard-dispatch-evidence.json（F731，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 425。

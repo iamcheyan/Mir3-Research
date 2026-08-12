@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hud-keyboard-dispatch-2026-08-12-f731",
+  "title": "Round 425 (F731): HUD keyboard/input dispatch - 0x42C9E0: window-forward (0x516EC -> 0x448490, 0x33188 shop -> 0x44F1D0) + hotbar hit 0x42D720 (F581) + cooldown gates 0x7D0/0x3E8 vs GetTickCount [0x29CD8] + item-name table 0x47ADB4 (cp949) hotkey SEND msg 0x3EE (0x451910) + format 0x46811C/notice 0x415280; 0x42CBD0 input gate (windows [0x53060]/[0x52E8C] + announce [0x5081C] -> 0x414DC0) - HUD input routing (F580/F581/F616 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the HUD keyboard dispatch.",
+  "question": "How does HUD keyboard input route?",
+  "method": "Disasm 0x42C9E0-0x42CC80.",
+  "scope": "0x42C9E0-0x42CC80; hotbar; name table.",
+  "cell_analysis": {
+    "0x42C9E0": {"forward": "0x516EC->0x448490, 0x33188->0x44F1D0", "hotbar": "0x42D720 (F581)", "gates": "0x7D0/0x3E8 [0x29CD8]", "send": "name 0x47ADB4 -> msg 0x3EE (0x451910)"},
+    "0x42CBD0": "gate: [0x53060]/[0x52E8C] + announce 0x414DC0"
+  },
+  "exe_trace": {
+    "input_chain": "window forward -> hotbar -> cooldown -> send/display"
+  },
+  "audit_vs_exe": {
+    "F581": "hotbar 0x42D720", "F616": "sender 0x451910", "F698": "name table 0x47ADB4"
+  },
+  "contrast": {
+    "forward_vs_hotbar": "open-window + hotkey",
+    "send_vs_display": "0x3EE send + notice"
+  },
+  "verdict": "HUD keyboard dispatch PRIMARY-verified: window forward + hotbar + cooldown + name-table send; HUD input routing complete (F580/F581/F616).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "HUD dispatch decoded from .text.",
+  "cross_refs": ["F581: hotbar", "F616: sender", "F698: name table"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42C9E0+0x20; 0x42CBD0+0x10",
+  "notes": [
+    "msg 0x3EE hotkey send",
+    "cooldown 0x7D0/0x3E8",
+    "name table 0x47ADB4",
+    "announce gate 0x414DC0"
+  ]
+}
