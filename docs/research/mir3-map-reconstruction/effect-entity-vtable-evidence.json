@@ -1,0 +1,36 @@
+{
+  "evidence_id": "effect-entity-vtable-2026-08-12-f488",
+  "title": "Round 182 (F488): Effect entity vtable 0x476440 - slot map: +0 0x40B750 / +4 0x40B850 (name tags F239) / +8 0x413D60 node ctor / +0xC 0x42C800 / +0x10 0x413D60 (node 0x476448) / +0x14 0x413D80 (vtable 0x476454) / +0x1C 0x435030 (DRAW) / +0x20 0x403AC0 (dtor) / +0x2C 0x435A20 (EFFECT TICK F487) / +0x30-0x3C float consts (0x43960000=250, 0x43C80000=400, 0x42100000=36, 0x3C23D70A=0.01) - effect draw = 0x435030 (frame [0x121] -> MonMagic frame selection)",
+  "date": "2026-08-12",
+  "objective": "Map the effect entity vtable and locate the effect draw (MonMagic frame selection).",
+  "question": "Which vtable slots drive effect draw vs tick?",
+  "method": "Vtable dump 0x476440 + slot target classification.",
+  "scope": "0x476440 vtable; slots 0x435030/0x435A20.",
+  "cell_analysis": {
+    "vtable_0x476440": {"+0": "0x40B750 (name tag F239)", "+4": "0x40B850 (name tag)", "+8": "0x413D60 (node ctor 0x476448)", "+0xC": "0x42C800 (hit?)", "+0x10": "0x413D60 ctor (node)", "+0x14": "0x413D80 (vtable 0x476454)", "+0x18": "0x40EA60", "+0x1C": "0x435030 (DRAW - effect sprite)", "+0x20": "0x403AC0 (dtor)", "+0x24": "0x4378E0", "+0x28": "0x437DF0", "+0x2C": "0x435A20 (TICK F487)", "+0x30..0x3C": "float consts (250/400/36/0.01)"},
+    "draw_slot": "+0x1C = 0x435030 = effect draw (frame [0x121] -> MonMagic selection [pending detail])"
+  },
+  "exe_trace": {
+    "effect_render": "tick 0x435A20 (F487) -> draw 0x435030 -> MonMagic frame -> 565 blend (F486)"
+  },
+  "audit_vs_exe": {
+    "F487": "tick slot +0x2C confirmed",
+    "F479": "special walk vtable+0xC tick (0x42C800?) + draw +0x1C",
+    "F239": "name tag slots +0/+4"
+  },
+  "contrast": {
+    "draw_vs_tick": "+0x1C draw vs +0x2C tick - separated lifecycle stages",
+    "float_consts": "250/400/36/0.01 = effect sizing params"
+  },
+  "verdict": "Effect entity vtable PRIMARY-verified: 0x476440 mapped (draw +0x1C = 0x435030, tick +0x2C = 0x435A20, name tags +0/+4, node ctors). Effect render chain = tick -> draw -> MonMagic -> 565 blend.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Vtable dump + slot classification from binary.",
+  "cross_refs": ["F487: tick", "F486: blend", "F239: name tags"],
+  "tool": "capstone + pefile vtable dump",
+  "reproduce": "dump 0x476440[0x40]; disasm 0x435030",
+  "notes": [
+    "0x42C800 = +0xC slot (node tick?) - misaligned dump earlier",
+    "draw 0x435030 = next pending (MonMagic frame formula)",
+    "float consts = effect scale/alpha"
+  ]
+}

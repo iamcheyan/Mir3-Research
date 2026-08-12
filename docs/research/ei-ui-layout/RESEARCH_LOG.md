@@ -6667,3 +6667,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔tick〕**0x435A20：特效/特殊实体更新（type {0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = F336 特殊族）：帧计数 [0x121]++ 回绕 [0x102]、0xC8 (200) tick 门、**死亡生命周期**（[byte+4]：0 动画中、1 子帧衰减 [0xE8]/[0xE9]、2 死亡移除）。
 - **〔链〕**特效 tick → 帧 [0x121] → MonMagic 帧选择 → 565 混合 blit（F486）。
 - 落盘：effect-entity-tick-evidence.json（F487，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 181。
+## Round 182 (F488) — 2026-08-12：特效实体 vtable 0x476440
+
+- **〔槽映射〕**+0/+4 名签（F239）、+8/+0x10 节点 ctor、+0xC 0x42C800、+0x14 vtable 0x476454、**+0x1C 0x435030 = 绘制**（特效精灵）、+0x20 dtor、**+0x2C 0x435A20 = tick（F487）**、+0x30-0x3C 浮点常量（250/400/36/0.01 特效尺寸）。
+- **〔链〕**tick 0x435A20 → 绘制 0x435030 → MonMagic 帧 → 565 混合（F486）。
+- 落盘：effect-entity-vtable-evidence.json（F488，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 182。
