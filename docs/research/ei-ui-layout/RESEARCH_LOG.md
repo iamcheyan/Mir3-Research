@@ -6171,3 +6171,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔新变体〕D11032/D1116/D12122**：back lib 17（wood_tiles5c）+ mid 21（wood_dungeonsc 稀疏）——与标准 D0xx（tiles5c+wood_tilesc+object1c）不同的地牢瓦片集。
 - **〔尺寸谱〕**50x50 房间 → 100 洞穴 → 200+ D4/D6 → 300-400 D1/D0 → 600-800 城。
 - 落盘：small-map-analysis-evidence.json（F392，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 86。
+## Round 87 (F393) — 2026-08-12：传送坐标验证（2049 条全整数 + 双向对）
+
+- **〔记录〕**2049 条 'mapA x,y -> mapB x,y'，**全整数地图格坐标**（x 3-779、y 5-781）、**1:1 双向对**（3<->0150 双记录）。
+- **〔0.map 17 条〕**333,776->01 564,69（北界）、65,174->D001 151,362（红月门）、764,206->D401 25,181（西矿口）。
+- **〔客户端〕**格式与 0x422960（F333）msg 0x33/0x27A word+6/+8 坐标兼容。
+- 落盘：transition-coordinate-verification-evidence.json（F393，derived-tooling；客户端格式 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 87。

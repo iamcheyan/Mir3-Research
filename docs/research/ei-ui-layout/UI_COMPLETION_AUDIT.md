@@ -660,6 +660,12 @@ git diff --check
 - **D11xxx 洞穴变体**（wood_tiles5c + wood_dungeonsc 稀疏）——新瓦片集类。
 - 落盘：`small-map-analysis-evidence.json`（F392，primary-bytes）+ RESEARCH_LOG Round 86。
 
+## Round 87 (2026-08-12) — 传送坐标验证（Finding 393）
+
+- **2049 条全整数地图格坐标 + 双向对**；0.map 17 条（北界/红月门/西矿口）。
+- **与客户端 0x33/0x27A 格式兼容**（F333）。
+- 落盘：`transition-coordinate-verification-evidence.json`（F393）+ RESEARCH_LOG Round 87。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

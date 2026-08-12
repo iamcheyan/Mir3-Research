@@ -1,0 +1,37 @@
+{
+  "evidence_id": "transition-coordinate-verification-2026-08-12-f393",
+  "title": "Round 87 (F393): Transition coordinates verified - 2049 Mapinfo records, ALL integer map-cell coords (x 3-779, y 5-781), bidirectional 1:1 pairs, 0.map 17 transitions (333,776->01 564,69; 65,174->D001 151,362; 764,206->D401 25,181), matches client 0x33/0x27A word+6/+8 coords",
+  "date": "2026-08-12",
+  "objective": "Verify the map transition coordinates: format, ranges, bidirectionality, and client-side coordinate compatibility.",
+  "question": "Are Mapinfo transition coords in the client's map-cell format?",
+  "method": "Mapinfo.txt transition parse (2049 records); coord range + integer analysis; 0.map sample; client coord format cross-ref (F333).",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/Mapinfo.txt; client 0x422960 (F333).",
+  "cell_analysis": {
+    "records": {"count": 2049, "format": "mapA x,y -> mapB x,y", "bidirectional": "1:1 pairs (3->0150 and 0150->3 both present)", "coords": "ALL integer (0 fractional)"},
+    "ranges": {"x": "3..779", "y": "5..781", "meaning": "map-cell coordinates (48x32 tile grid)"},
+    "0_map_transitions": {"count": 17, "samples": {"333,776->01 564,69": "north border", "65,174->D001 151,362": "Red Moon Door (cave)", "764,206->D401 25,181": "west mine entrance"}},
+    "client_format": "0x422960 (F333): msg 0x33/0x27A word+6/+8 = destination coords -> [0x35B25C]/[0x2F884C] - map-cell format matches"
+  },
+  "exe_trace": {
+    "transition_handler": "0x422960 (F333/F366): gate, save, flush, coords from msg"
+  },
+  "audit_vs_exe": {
+    "F333": "coord format word+6/+8 confirmed compatible",
+    "F381": "connection data (342 links) = deduplicated transition pairs"
+  },
+  "contrast": {
+    "server_vs_client": "Mapinfo = server transition table (2049 directional records); client receives per-change coords",
+    "links_vs_records": "342 undirected links vs 2049 directional records (multi-door per map pair)"
+  },
+  "verdict": "Transition coordinates verified (secondary-server): 2049 Mapinfo records, all integer map-cell coords (3-779), bidirectional pairs, 0.map 17 transitions. Format matches client 0x33/0x27A handling (F333).",
+  "evidence_level": "derived-tooling (source: server Mapinfo secondary; client format primary-static F333)",
+  "evidence_level_note": "Coords from server Mapinfo.txt; client coord handling from F333 primary bytes.",
+  "cross_refs": ["F333: 0x422960 coord parse", "F381: map connections", "F366: map transitions"],
+  "tool": "python3 Mapinfo parse",
+  "reproduce": "regex-parse Mapinfo.txt transitions; aggregate ranges; check 0.map records",
+  "notes": [
+    "all coords integral -> client word coords (no float loss)",
+    "multi-door maps (0.map 17 records) = multiple transition points per boundary",
+    "coords stay within map dims (0.map 800x800, max 779/781)"
+  ]
+}
