@@ -7537,3 +7537,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**287 证据 JSON**；三服务 200；master be3497d（**321 连发 F335-F662 已推**）。
 - **〔弧〕**商店管理器 + 命中/点击（F661）+ 商店绘制 + 模式布局（F662）——**商店系统完整（管理器/更新 + 命中/点击 + 渲染）**，连接 F555/F558/F551。
 - 落盘：store-arc-closure-evidence.json（F663，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 357。
+## Round 358 (F664) — 2026-08-12：HANDOFF 刷新 32（Round 354-357）
+
+- **〔刷新〕**HANDOFF 追加 Round 354-357（F661-F663：商店管理器/命中点击 + 绘制/模式 + 商店弧）；基线 Round 353=b4a3d10 → Round 357=7334178（**322 连发 F335-F663**）。
+- 落盘：handoff-refresh-32-evidence.json（F664，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 358。
