@@ -1,0 +1,35 @@
+{
+  "evidence_id": "recv-dispatch-table-2-2026-08-12-f518",
+  "title": "Round 212 (F518): Second recv dispatch - 0x4218F2 = msgid 0x44D-0x520 (sub 0x44D, cmp 0xD3 = 212 slots), byte map 0x42219C (13 distinct) -> jt 0x422168 (13 handlers): 0x421913 entity-spawn (0x40C alloc + 0x41B710), 0x421955 chat (0x2000 string + 0x448D90), 0x4219A0 entity coord ([0x61C90] set), 0x421A45/0x421A85 chat variants, 0x421CFC etc; TOTAL inbound = 349 slots (137 + 212) across both tables - complete client recv picture",
+  "date": "2026-08-12",
+  "objective": "Extract the second (0x44D+) recv dispatch table.",
+  "question": "What handlers serve msgid 0x44D-0x520?",
+  "method": "0x4218F2 switch decode + map 0x42219C + jt 0x422168 extraction.",
+  "scope": "0x4218F2; map 0x42219C (0xD4); jt 0x422168 (13).",
+  "cell_analysis": {
+    "switch": {"range": "msgid 0x44D-0x520 (sub 0x44D, cmp 0xD3 = 212 slots)", "map": "0x42219C (13 distinct)", "jt": "0x422168 (13 handlers)"},
+    "handlers": {"0x421913": "entity spawn (0x40C alloc + 0x41B710 add)", "0x421955": "chat/string (0x2000 + 0x448D90)", "0x4219A0": "entity coords ([0x61C90-0x61C98])", "0x421A45/0x421A85": "chat variants (0x4488D0)", "0x421CFC": "cmd?", "0x421D3F": "default"},
+    "total_inbound": "349 slots (137 + 212) across both tables (0x42042B + 0x4218F2)"
+  },
+  "exe_trace": {
+    "recv_chain": "server packet -> 0x42042B (0x29F-0x44C) or 0x4218F2 (0x44D-0x520) or monster (0xBC6+) -> handler"
+  },
+  "audit_vs_exe": {
+    "F517": "first table + this = full 349-slot inbound", "F449": "monster msgs 0xBC6+ separate", "F310": "entity coords via [0x61C90]"
+  },
+  "contrast": {
+    "table1_vs_table2": "0x29F-0x44C (UI/store) vs 0x44D-0x520 (entity/chat)",
+    "spawn_vs_coord": "0x421913 create vs 0x4219A0 move"
+  },
+  "verdict": "Second recv dispatch PRIMARY-verified: 212 slots (0x44D-0x520) -> 13 handlers (spawn/chat/coord); TOTAL inbound = 349 slots across both tables. Complete client recv picture.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Switch + map + jt extracted from binary.",
+  "cross_refs": ["F517: first table", "F449: monster msgs", "F310: coords"],
+  "tool": "capstone + pefile extraction",
+  "reproduce": "disasm 0x4218F2; dump 0x42219C[0xD4] + 0x422168[13*4]",
+  "notes": [
+    "13 handlers = spawn/chat/coord families",
+    "0x421913 = entity create (alloc 0x40C + list add)",
+    "entity coords at [0x61C90] = F310 live-position family"
+  ]
+}

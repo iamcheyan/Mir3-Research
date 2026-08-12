@@ -6819,3 +6819,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔表〕**0x42042B 开关：msgid 0x29F-0x44C（add −0x29F、cmp 0x88）+ 字节映射 0x422080（137 槽、49 处理器）+ 跳表 0x421FBC；>0x44C = 怪物消息 0xBC6-0xBD8（F449 分离）。
 - **〔簇〕**0x2A1-0x2A6（1-6）、0x2BC-0x2CA（14-28 商店/仓库/制作，0x2BC=14、0x2C8=26 F399 确认）、0x2EE-0x2FA（29-41）、0x300-0x303（42-43）、0x322-0x325（44-47）——**完整入站包目录**（互补 F514 出站）。
 - 落盘：recv-dispatch-table-evidence.json（F517，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 211。
+## Round 212 (F518) — 2026-08-12：第二接收分派表（0x44D-0x520 → 13 处理器）
+
+- **〔表〕**0x4218F2 开关：msgid 0x44D-0x520（212 槽）+ 字节映射 0x42219C（13 处理器）+ 跳表 0x422168；处理器：实体生成 0x421913（0x40C 分配 + 0x41B710）、聊天 0x421955（0x2000 字符串）、实体坐标 0x4219A0（[0x61C90] F310 族）。
+- **〔总计〕**入站 = **349 槽**（137 + 212，两表）+ 怪物 0xBC6+——完整客户端接收图。
+- 落盘：recv-dispatch-table-2-evidence.json（F518，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 212。
