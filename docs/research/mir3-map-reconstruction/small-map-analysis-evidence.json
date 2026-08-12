@@ -1,0 +1,37 @@
+{
+  "evidence_id": "small-map-analysis-2026-08-12-f392",
+  "title": "Round 86 (F392): Small map analysis - NO bound maps <= 40 (all small instances unbound); smallest bound = D5071/D716 50x50, D0xx/D1xxx/D2xxx caves 100x100; D11032/D1116/D12122 = distinct cave variant (back 17 wood_tiles5c + mid 21 wood_dungeonsc + sparse)",
+  "date": "2026-08-12",
+  "objective": "Analyze the small bound maps: confirm no sub-40 instances are playable, identify the smallest bound set, and characterize their structures.",
+  "question": "What are the smallest playable maps and do any use a distinct tileset?",
+  "method": "Bound-map size scan (all 211); smallest-10 layer analysis; cave-variant identification.",
+  "scope": "$MIR3_EI_ROOT/Map bound set.",
+  "cell_analysis": {
+    "small_bound": {"none_le_40": "0 bound maps <= 40 (22x22/30x30 instances all unbound)", "smallest": "D5071/D716 50x50", "next": "D0xx/D1xxx/D2xxx 100x100 caves"},
+    "typical_cave": "back lib 2 (tiles5c) + mid 15 (wood_tilesc) + 12/13 object decor (D021/D024/D10053/D2011 etc)",
+    "cave_variant": {"D11032/D1116/D12122": "back {17: 956-1570 wood_tiles5c + 2}, mid {255 SPARSE, 21: 1296-2259 wood_dungeonsc, 0}", "role": "distinct dungeon tileset (wood_dungeonsc mid) - sparse open-chamber style"},
+    "sizes": "50x50 (D5071/D716) -> 100x100 (cave rooms) -> 200+ (D4/D6) -> 300-400 (D1/D0) -> 600-800 (cities)"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331); lib 17 = wood_tiles5c, lib 21 = wood_dungeonsc (F331 slot table)"
+  },
+  "audit_vs_exe": {
+    "F343": "cave composition confirmed; wood_dungeonsc variant NEW",
+    "F383": "theme-0 (wood) consistent"
+  },
+  "contrast": {
+    "standard_vs_variant": "D0xx standard (tiles5c+wood_tilesc+object1c); D11xxx variant (wood_tiles5c+wood_dungeonsc sparse)",
+    "size_spectrum": "50x50 rooms -> 800x800 cities"
+  },
+  "verdict": "Small map analysis complete (primary-bytes): no bound maps <= 40 (all instances unbound); smallest bound = 50x50 (D5071/D716) then 100x100 caves. NEW cave variant: D11032/D1116/D12122 use wood_tiles5c back + wood_dungeonsc mid (sparse) - distinct tileset from standard D0xx.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Size/layer data from 211 bound map binaries.",
+  "cross_refs": ["F343: cave composition", "F388: cave families", "F383: themes"],
+  "tool": "python3 bound-map scan + layer aggregation",
+  "reproduce": "scan bound maps by size; aggregate D11032/D1116/D12122 layers",
+  "notes": [
+    "D11032/D1116/D12122 = 赤月-area sub-caves with dungeon tileset",
+    "wood_dungeonsc (lib 21) = 4710 frames (F331)",
+    "all 22x22/30x30 instances (01_001 志善屋 etc) are unbound - interiors reached by server map-change"
+  ]
+}

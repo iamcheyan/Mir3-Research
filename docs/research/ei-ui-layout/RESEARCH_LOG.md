@@ -6165,3 +6165,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔结构〕**6.map = 沙行沙漠城（sand_smobjectsc 40）；**8.map = 冰雪村稀疏雪镇**（mid 255 582718 空 + cliffsc/smobjectsc，lib 25 雪语境，零异常）；0.map = 比奇城密集木镇（F372）；4.map = 沙漠（sand_tilesc 30）。
 - **〔主题〕**0/8 wood 行、4/6 sand 行——城市主题分 wood/sand。
 - 落盘：large-map-comparison-evidence.json（F391，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 85。
+## Round 86 (F392) — 2026-08-12：小型图分析（无 ≤40 绑定 + D11xxx 洞穴变体）
+
+- **〔无 ≤40 绑定〕**全部 22x22/30x30 实例未绑定（01_001 志善屋等室内经服务端切换）；最小绑定 = D5071/D716 50x50、D0xx/D1xxx/D2xxx 洞穴 100x100。
+- **〔新变体〕D11032/D1116/D12122**：back lib 17（wood_tiles5c）+ mid 21（wood_dungeonsc 稀疏）——与标准 D0xx（tiles5c+wood_tilesc+object1c）不同的地牢瓦片集。
+- **〔尺寸谱〕**50x50 房间 → 100 洞穴 → 200+ D4/D6 → 300-400 D1/D0 → 600-800 城。
+- 落盘：small-map-analysis-evidence.json（F392，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 86。

@@ -654,6 +654,12 @@ git diff --check
 - **6=沙漠城、8=冰雪村（稀疏雪镇）、0=比奇城密集、4=沙漠**；主题 wood/sand 分。
 - 落盘：`large-map-comparison-evidence.json`（F391，primary-bytes）+ RESEARCH_LOG Round 85。
 
+## Round 86 (2026-08-12) — 小型图分析（Finding 392）
+
+- **无 ≤40 绑定**（实例全未绑定）；最小绑定 50x50。
+- **D11xxx 洞穴变体**（wood_tiles5c + wood_dungeonsc 稀疏）——新瓦片集类。
+- 落盘：`small-map-analysis-evidence.json`（F392，primary-bytes）+ RESEARCH_LOG Round 86。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
