@@ -1,5 +1,5 @@
 {
-  "version": "0.10-message-rings-drain-pipeline",
+  "version": "0.11-map-change-pipeline",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -86,10 +86,10 @@
       "spawn_vtable": "0x47671C"
     },
     "drain_pipeline": {
-      "frame_seq": "0x41BBBA：0x41B440 -> 0x422280（ring B）-> 0x4227F0（ring A）-> 0x465EA0 -> 0x454C50；busy [0x35B2B8]!=0 -> 0x43B1E0（0x2F884C/0x2F8850 -> 0xF5200 对象）+ 0x35B2C0 send",
+      "frame_seq": "0x41BBBA：0x41B440 -> 0x422280（ring B）-> 0x4227F0（ring A）-> 0x465EA0 -> 0x454C50；busy [0x35B2B8]!=0 -> 0x43B1E0（地图视口滚动：0x2F884C/0x2F8850 玩家坐标 vs [+0x14C..0x158] 视口矩形，越界 -> [0x4762B0] 滚动 + 0x8AB7A8 blitter 重绘）+ 0x35B2C0 send",
       "ringA_drainer_0x4227F0": {
         "types": {
-          "0x33/0x27A": "0x422960 文本消息（门控 0x2F8840+环空间记账；busy/1500ms -> 重推 ring A；处理 = 0x42E1F0(&0x2A548C,&0x2F8788) + 0x45B1D0/0x45B3D0(&0x8AB130) + [0x428220]=1.0f + busy=1）",
+          "0x33/0x27A": "0x422960 地图切换/加载 handler（F332『文本消息』错标已修正）：门控 = (mode[0x2F8840]==3 且 [0x35A31C]-[0x35A320] >= [0x35A329]-1) 或 timer[0x4279A4]!=0 -> busy 路径 0x4229A8（0x4561B0 重推 ring A + [0x35B2B8]=1）；处理 0x4229D1 = 0x42E1F0(&0x2A548C,&0x2F8788) 英雄存盘 .\\Data\\<名>.itm + 0x45B1D0/0x45B3D0(&0x8AB130) 窗口全关 + [0x4279A4]=0x5DC 限流 + 12 槽清零 + [0x428220]=1.0f + 坐标 word[msg+6]/word[msg+8] -> 0x35B25C/0x35B260 & 0x2F884C/0x2F8850 + 0x410100(&0x2F8780,&0xF5200) 地图对象指针槽 + 0x43C9C0 SetPos(x-0xC,y-0xC) + 0x43B600 LoadMap + 实体数组 main+0x154 清零 + 0xE11D0 链表释放 + 地图类型/环境色",
           "0x32": "0x422CC0 世界状态重置（UpdatePlayerState 7 参 + wipe 0xE1188 + busy=1 + 0x451660(0x51)）",
           "0x34": "0x423000 目标信息（0x35B1E8 id + 0x61 块 + 航向快照）",
           "0x2F0": "0x423070 状态块（write-only 槽 0x35B251-0x35B258）",
@@ -111,7 +111,9 @@
       },
       "world_lifecycle": {
         "ringA_type32": "玩家重进/世界重置（0x422CC0）",
-        "ringB_type279": "世界清空（0x422403）——两环职责不同：A=玩家状态/文本/航向/spawn，B=实体移除/世界清空"
+        "ringB_type279": "世界清空（0x422403）——两环职责不同：A=玩家状态/文本/航向/spawn，B=实体移除/世界清空",
+        "ringA_type33_27A": "地图切换（0x422960）：msg+0xC=地图名、word6/word8=坐标（-12 偏移）、byte0xA=地图类型、byte[0x2F8841]=环境色标志",
+        "hero_save": "0x42E1F0 = 英雄对象 0x2A548C 状态存盘 .\\Data\\<名>.itm（3 块 +0x6CC8 0x22FE8 / +0x6818 0x4B0 / +0xDA4 0x48D8）"
       },
       "write_only_state_slots": [
         "0x35B251-0x35B258（状态块，仅 0x423070 写入）",
@@ -2254,6 +2256,78 @@
       "evidence": {
         "level": "primary-static-main-window-initialization",
         "source": "legacy-layout-record"
+      }
+    },
+    {
+      "id": "map-object.0xf5200",
+      "kind": "game-object",
+      "layer": "core-objects",
+      "offset": "main+0xF5200",
+      "absolute": "0x574118",
+      "role": "当前地图对象",
+      "methods": {
+        "0x43B600": "LoadMap('.\\Map\\%s.map' 0x47C404)：CreateFileA(READ)+ReadFile 0x1C 头->+0x110 + w*h*3/4 ->+0x108 + w*h*14 ->+0x10C + [+0]=1 + 56 瓦片槽 0x5612B4..0x565994 stride 0x144 0x465FE0 + 14 帧 0x4660E0(&0x5600FC+i*0x144,&0x56B22C+i*0x104,1) + CloseHandle",
+        "0x43C9C0": "SetPos(x,y)：[+0x12C]=x [+0x130]=y [+0x134]=0 [+0x138]=0",
+        "0x43B440": "24x24 瓦片视口渲染：清 +0x1B2 0x6C000 dwords；idx=(y>>1)*w+(x>>1)；行=attr/7；0x466130(&0x5600FC+行*0x144,id) + 0x45E8E0(&0x8AB7A8 blitter)",
+        "0x43B1E0": "视口滚动重绘（玩家坐标越界 -> [0x4762B0] 滚动 + 重 blit）"
+      },
+      "layout": {
+        "+0": "loaded 标志",
+        "+4": "文件名 (<=0x80)",
+        "+0x108": "瓦片索引缓冲 w*h*3/4（每 3 字节：byte 属性 + word 瓦片 id）",
+        "+0x10C": "瓦片数据缓冲 w*h*14",
+        "+0x110": "文件头 0x1C 字节",
+        "+0x124": "帧行选择（载入 14 帧起点 = (+0x124+1)*14）",
+        "+0x126/+0x128": "宽/高 word",
+        "+0x12C/+0x130": "位置 x/y (0x43C9C0)",
+        "+0x14C..0x158": "视口矩形 x1,y1,x2,y2 (0x43B1E0)",
+        "+0x18C": "小地图标志 (w<100&&h<100 -> 0)",
+        "+0x1B2": "渲染像素缓冲 0x6C000 dwords = 768x576x4"
+      },
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "map-change-pipeline-and-main-window-class-evidence.json (F333)"
+      }
+    },
+    {
+      "id": "hero-object.0x2a548c",
+      "kind": "game-object",
+      "layer": "core-objects",
+      "offset": "main+0x2A548C",
+      "absolute": "0x7243A4",
+      "role": "英雄/玩家对象",
+      "methods": {
+        "0x42CBD0": "键盘热键处理器 (F329; wndproc KEYDOWN 0x41DD84 ecx=this)",
+        "0x42D680": "消息分发器 (跳表 0x42D700, word>>8 索引)",
+        "0x42DC20": "消息方法 (0x41F24D 调用, 包处理出口 0x421D3F)",
+        "0x42E1F0": "SaveToFile .\\Data\\<名>.itm (3 块 +0x6CC8 0x22FE8/+0x6818 0x4B0/+0xDA4 0x48D8; callers 0x41CE48/0x41CEFD/0x4229DF)",
+        "0x42C9E0": "busy 定时状态显示"
+      },
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "map-change-pipeline-and-main-window-class-evidence.json (F333)"
+      }
+    },
+    {
+      "id": "window-manager.0x8ab130",
+      "kind": "game-object",
+      "layer": "core-objects",
+      "absolute": "0x8AB130",
+      "role": "窗口管理器（主体 UI 容器）",
+      "layout": {
+        "+0x460": "50 子窗口指针槽 (0x45B1D0 逐 0x45B950 释放)",
+        "+0x528": "深层释放标志 (0x45B3D0 -> 0x45A510)"
+      },
+      "methods": {
+        "0x45B440": "通用消息分派 (wndproc 默认分支 4 参转发)",
+        "0x45B1D0": "flush：50 槽 0x45B950 逐窗释放",
+        "0x45B3D0": "flush 深层：+0x134/+0x13C/+0x130 缓冲 + [+0x11C] vtable+0x20",
+        "0x45A510": "深层释放体"
+      },
+      "notes": "地图切换 0x422960 调 0x45B1D0+0x45B3D0 全关窗；F332 语境中仅作缓冲对象 -> F333 修正为主体窗口管理器",
+      "evidence": {
+        "level": "primary-bytes",
+        "source": "map-change-pipeline-and-main-window-class-evidence.json (F333)"
       }
     }
   ],
