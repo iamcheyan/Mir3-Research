@@ -8295,3 +8295,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**461 证据 JSON**；三服务 200；master a8f31be（**495 连发 F335-F836 已推**）。
 - **〔弧〕**坐骑命令（F545）+ recv1 家族（F571）+ 坐骑窗口（F773）+ 旗标写者（F836）——**坐骑/recv 完整**（4 命令 + recv1 坐骑消息 + 门读写者 + 0x40F420 坐骑态），坐骑生命周期表面闭合。
 - 落盘：mount-recv-closure-evidence.json（F837，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 531。
+## Round 532 (F838) — 2026-08-12：HANDOFF 刷新 89（Round 529-531）
+
+- **〔刷新〕**HANDOFF 追加 Round 529-531（F836-F837：坐骑旗标写者 + 坐骑/recv 闭合）；基线 Round 528=7041814 → Round 531=0084901（**496 连发 F335-F837**）。
+- 落盘：handoff-refresh-89-evidence.json（F838，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 532。

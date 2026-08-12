@@ -2985,3 +2985,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑/recv 完整；下一弧：HANDOFF 刷新 89/剩余角落）。
+## Round 532 (2026-08-12) — HANDOFF 刷新 89（Finding 838）
+
+- **Round 529-531 追加 + 496 连发**（坐骑/recv 完整入档）。
+- 落盘：`handoff-refresh-89-evidence.json`（F838）+ RESEARCH_LOG Round 532。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（坐骑/recv 完整；下一弧：剩余深层角落/模拟器 polish）。
