@@ -67,6 +67,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 GOALS=(
   "019feb87-4104-7000-8548-3a0adb440578|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-10T11-55-37-604Z_019feb87-4104-7000-8548-3a0adb440578.jsonl|zircon|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019feb87.state"
   "019ff331-5ca2-7000-869c-ab301d561150|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-11T23-38-46-306Z_019ff331-5ca2-7000-869c-ab301d561150.jsonl|dbviewer|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff331.state"
+  "019ff34c-b48e-7000-b3f9-0bf36fa2ad54|/home/tetsuya/.omp/agent/sessions/-development-mir3-website/2026-08-12T00-08-38-286Z_019ff34c-b48e-7000-b3f9-0bf36fa2ad54.jsonl|mir3site|/home/tetsuya/development/mir3-website|/home/tetsuya/.omp/goal-watchdog.019ff34c.state"
 )
 
 CHECK_ONLY=0
