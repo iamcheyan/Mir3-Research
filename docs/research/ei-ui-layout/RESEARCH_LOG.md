@@ -6142,3 +6142,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔布局〕**28 字节头 {0x00-0x13 零（543 图）、+0x14 瓦片行、+0x16/+0x18 w/h（客户端 +0x126/+0x128）、余部}。
 - **〔50.map 变体〕**头 = ASCII 'Created by WWW Team'（WWW 地图编辑器签名）、w=120 h=150、**未绑定**（MiniMap 无）、尺寸精确（265528）；客户端固定偏移解析不受文本头影响。
 - 落盘：map-header-verification-evidence.json（F387，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 81。
+## Round 82 (F388) — 2026-08-12：洞穴家族对比（半兽/赤月/诺玛/废矿）
+
+- **〔共性〕**全部 back lib 2 (tiles5c) + mid 15 (wood_tilesc)。
+- **〔差异〕**D0 半兽 400×400 mid 12 object1c（50307）；**D1 赤月 300-400 mid 13 object2c 主导（94317，暗美术）**；D6 诺玛 200-250 稀疏（mid 255 77279）；D4 废矿 200×200 mid 12（24487）。
+- **〔渲染〕**D1 近黑（深洞）、D6 较亮——美术区分验证。
+- 落盘：cave-family-comparison-evidence.json（F388，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 82。

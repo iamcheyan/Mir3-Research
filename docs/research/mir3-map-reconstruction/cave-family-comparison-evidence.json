@@ -1,0 +1,38 @@
+{
+  "evidence_id": "cave-family-comparison-2026-08-12-f388",
+  "title": "Round 82 (F388): Cave family comparison - D0 半兽 (400x400, mid 12 object1c 50307) vs D1 赤月 (300-400, mid 13 object2c 94317 dominant, dark) vs D6 诺玛 (200-250, sparse mid 255 77279 + 12) vs D4 废矿 (200x200, mid 12 24487); all back lib 2 tiles5c + mid 15 wood_tilesc",
+  "date": "2026-08-12",
+  "objective": "Compare the four bound cave families' structures: sizes, decoration libs, density, and render behavior.",
+  "question": "How do the cave families (半兽/赤月/诺玛/废矿) differ structurally?",
+  "method": "Aggregated layer analysis of bound cave maps per family prefix; render verification (D1 dark, D6 lighter).",
+  "scope": "$MIR3_EI_ROOT/Map bound D0/D1/D4/D6 maps; mapviewer renders.",
+  "cell_analysis": {
+    "D0_半兽": {"bound": 3, "size": "400x400", "back": "{2: 120000}", "mid": "{15: 429683, 12: 50307, 0: 10}", "decor": "object1c 12"},
+    "D1_赤月": {"bound": 23, "size": "300-400", "back": "{2: 140000}", "mid": "{15: 465456, 13: 94317, 12: 165, 3: 62}", "decor": "object2c 13 DOMINANT (94317)", "render": "nearly black (dark cave interior)"},
+    "D6_诺玛": {"bound": 20, "size": "200-250 (smaller)", "back": "{2: 89373, 255: 2}", "mid": "{15: 249423, 255: 77279 SPARSE, 12: 30130, 0: 668}", "decor": "sparse + object1c 12"},
+    "D4_废矿": {"bound": 6, "size": "200x200", "back": "{2: 60000}", "mid": "{15: 215503, 12: 24487, 0: 10}", "decor": "object1c 12"},
+    "common": "all back lib 2 (tiles5c) + mid 15 (wood_tilesc) - same cave base; decoration lib + density differentiate"
+  },
+  "exe_trace": {
+    "tile_render": "0x43B440 (F331); dark D1 = object2c art style"
+  },
+  "audit_vs_exe": {
+    "F343": "cave composition (back 2 + mid 15/12) confirmed",
+    "F369": "D6xxx anomaly maps (unbound) separate from bound D6 family"
+  },
+  "contrast": {
+    "decor_libs": "D0/D4/D6 = object1c 12; D1 = object2c 13 (distinct 赤月 style)",
+    "density": "D6 sparse (255-dominant mid) vs D0/D4 dense"
+  },
+  "verdict": "Cave family comparison complete (primary-bytes): D0 半兽/D4 废矿 = object1c decor dense; D1 赤月 = object2c decor dominant + dark art; D6 诺玛 = smaller + sparse. All share back tiles5c + mid wood_tilesc base.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Layer stats from bound cave binaries; render verified visually.",
+  "cross_refs": ["F343: cave layers", "F369: D6xxx anomaly maps", "F342: map inventory"],
+  "tool": "python3 struct aggregation; mapviewer HTTP; inspect_image",
+  "reproduce": "aggregate bound D0/D1/D4/D6 mid/back; curl /tile D1001 + d601",
+  "notes": [
+    "D1 赤月 = 23 bound maps (largest cave family)",
+    "D6 诺玛 sparse = 255-dominant mid (open chambers)",
+    "D1 dark render = object2c art (赤月 = deep cave)"
+  ]
+}

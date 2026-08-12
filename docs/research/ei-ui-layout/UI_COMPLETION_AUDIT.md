@@ -632,6 +632,12 @@ git diff --check
 - **28 字节头布局**确认（+0x14 瓦片行、+0x16/+0x18 w/h）；**50.map = WWW 编辑器文本头**（未绑定、客户端固定偏移解析）。
 - 落盘：`map-header-verification-evidence.json`（F387，primary-bytes）+ RESEARCH_LOG Round 81。
 
+## Round 82 (2026-08-12) — 洞穴家族对比（Finding 388）
+
+- **四族差异**：D0/D4 = object1c 装饰密集；D1 赤月 = object2c 主导 + 暗美术；D6 诺玛 = 更小 + 稀疏。
+- **共性**：back tiles5c + mid wood_tilesc。
+- 落盘：`cave-family-comparison-evidence.json`（F388，primary-bytes）+ RESEARCH_LOG Round 82。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
