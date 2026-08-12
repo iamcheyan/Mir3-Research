@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-10-2026-08-12-f575",
+  "title": "Round 269 (F575): HANDOFF refresh 10 - Rounds 265-268 (F571-F574: inbound protocol 100% + outbound text frame core '#<seq><cmd>/<args>!' + 46-sender catalog + full bidirectional closure), baseline Round 261=9fbbccc -> Round 268=d54bc29 (233 consecutive F335-F574), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 265-268.",
+  "question": "What changed since HANDOFF refresh 9?",
+  "method": "Append Round 265-268 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 265-268 appended (4 rounds, F571-F574)",
+    "baseline": "Round 261=9fbbccc -> Round 268=d54bc29 (233 consecutive F335-F574)",
+    "milestones": {"inbound_100": "F571 recv1 49 + recv2 11 + monster", "outbound": "F572 text frame core + F573 46 senders", "bidirectional": "F574 full closure"},
+    "key": "TEXT FRAME protocol '#<seq><cmd>/<args>!' - KR MIR3 style"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F568": "refresh 8 baseline -> now refresh 10", "F335-F574": "233 rounds"
+  },
+  "contrast": {
+    "refresh_9_vs_10": "F571-F574 (4 new findings incl. 2 milestones)"
+  },
+  "verdict": "HANDOFF refreshed 10 (F575): Rounds 265-268 documented (inbound 100% + outbound core + bidirectional closure), baseline 9fbbccc -> d54bc29, 233 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F571-F574 evidence.",
+  "cross_refs": ["F568: refresh 8", "F574: bidirectional closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 265-268 section to HANDOFF",
+  "notes": [
+    "233 consecutive shipping rounds F335-F574",
+    "next: sim polish, 0x45A650/0x45B490 tails, deep UI corners"
+  ]
+}
