@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-125-2026-08-12-f941",
+  "title": "Round 635 (F941): HANDOFF refresh 125 - Rounds 632-634 (F938-F940: HANDOFF 124, skill input/record list, skill closure), baseline Round 631=443c043 -> Round 634=52937fb (599 consecutive F335-F940), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 632-634.",
+  "question": "What changed since HANDOFF refresh 124?",
+  "method": "Append Round 632-634 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 632-634 appended (3 rounds, F938-F940)",
+    "baseline": "Round 631=443c043 -> Round 634=52937fb (599 consecutive F335-F940)",
+    "arcs": {"input": "F939 skill", "closure": "F940 skill window"},
+    "key": "skill window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F938": "refresh 124 baseline -> now refresh 125", "F335-F940": "599 rounds"
+  },
+  "contrast": {
+    "refresh_124_vs_125": "F939-F940 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 125 (F941): Rounds 632-634 documented (skill window complete), baseline 443c043 -> 52937fb, 599 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F939-F940 evidence.",
+  "cross_refs": ["F938: refresh 124", "F940: skill closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 632-634 section to HANDOFF",
+  "notes": [
+    "599 consecutive shipping rounds F335-F940",
+    "next: remaining deep corners, sim polish"
+  ]
+}

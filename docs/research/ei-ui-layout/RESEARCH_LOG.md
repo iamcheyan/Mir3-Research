@@ -8741,3 +8741,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**564 证据 JSON**；三服务 200；master 86cbae0（**598 连发 F335-F939 已推**）。
 - **〔弧〕**技能记录装载（F743）+ 技能书绘制（F839）+ 页签头（F848）+ 输入/记录列表（F939）——**技能窗口完整**（记录装载 + 技能书绘制 + 页签头 + 槽查找 + 记录列表），技能表面 100%。
 - 落盘：skill-window-closure-evidence.json（F940，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 634。
+## Round 635 (F941) — 2026-08-12：HANDOFF 刷新 125（Round 632-634）
+
+- **〔刷新〕**HANDOFF 追加 Round 632-634（F939-F940：技能窗口输入/记录列表 + 技能窗口闭合）；基线 Round 631=443c043 → Round 634=52937fb（**599 连发 F335-F940**）。
+- 落盘：handoff-refresh-125-evidence.json（F941，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 635。
