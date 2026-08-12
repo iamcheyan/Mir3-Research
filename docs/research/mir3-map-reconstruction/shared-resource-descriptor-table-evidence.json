@@ -1,0 +1,37 @@
+{
+  "evidence_id": "shared-resource-descriptor-table-2026-08-12-f448",
+  "title": "Round 142 (F448): 0x5600FC = SHARED resource descriptor table (81 refs / 39 function clusters, stride 0x144 = 81*4 = 324B) - indexed by tile lib formula (attr/7+14, 0x43B329 preview + 0x43B552 render), monster type (F433/F434), entity appearance slots (0x40F55D), type dispatch (0x40E40B), map render (0x41C9ED), UI (0x423DF2) - F434 'monster appearance table' scope CORRECTED to global resource table; entry +0x38 = WIL context (0x466130 ecx)",
+  "date": "2026-08-12",
+  "objective": "Correct the scope of the 0x5600FC table from 'monster appearance' to shared resource descriptors.",
+  "question": "What is the 0x5600FC table's true scope?",
+  "method": "All 81 refs enumerated + index-stride analysis (lea*8*8*4 = *324) + cluster classification.",
+  "scope": "0x5600FC (81 refs, 39 clusters); stride 0x144.",
+  "cell_analysis": {
+    "table": {"base": "0x5600FC (.data tail, runtime-built)", "stride": "0x144 (324B) = idx*81*4 (lea [eax+eax*8] x2 + *4)", "refs": "81 total / 39 function clusters", "entry": "+0x38 = WIL context/frame-table ptr (F433 read at 0x40F708/0x40F839)"},
+    "users": {"tiles": "0x43B329 (preview F447) + 0x43B552 (render F447): lib index from attr/7+14", "monsters": "0x405878/0x40F55D (F433/434): type index", "entities": "0x410C6F (6 refs, draw path)", "effects": "0x40E40B (type dispatch F434)", "map_render": "0x41C9ED", "ui": "0x423DF2 (hero/UI)"},
+    "correction": "F434 'monster appearance table' -> SHARED resource descriptor table (monster appearance = one user)"
+  },
+  "exe_trace": {
+    "table_role": "global resource/appearance descriptor array; tiles + entities + effects index it"
+  },
+  "audit_vs_exe": {
+    "F434": "scope corrected (was monster-only)",
+    "F433": "stride 0x144 + slot semantics confirmed",
+    "F447": "tile path stride re-verified = same 0x144"
+  },
+  "contrast": {
+    "tile_vs_monster_index": "tiles index by lib (attr/7+14); monsters by type - same table, different keys",
+    "shared_vs_dedicated": "shared descriptor table vs per-subsystem tables (Mon filename table 0x10B94 separate)"
+  },
+  "verdict": "0x5600FC = SHARED resource descriptor table (primary-bytes): 81 refs/39 clusters across tiles, monsters, entities, effects, UI; stride 0x144; entry +0x38 = WIL context. F434 scope corrected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ref enumeration + stride + users all from binary.",
+  "cross_refs": ["F434: appearance table (scope corrected)", "F433: monster addressing", "F447: tile render"],
+  "tool": "capstone + regex ref scan",
+  "reproduce": "scan 0x5600FC bytes; cluster refs; verify lea*8*8*4 index math",
+  "notes": [
+    "81 refs = core subsystem (density comparable to main globals)",
+    "entry layout (0x144B) = WIL context + appearance data [layout pending]",
+    "tile lib formula keys: attr/7*14-family -> lib index -> table entry"
+  ]
+}

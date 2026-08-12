@@ -6445,3 +6445,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔滚动〕**0x43B1E0：视口 [0x14C..0x158] vs 英雄 ±0xC 门 → SetRect ±0x12 向英雄滚动（**跟随 = 滚动**）+ 瓦片预览通道（[0x108] 记录、**除 7 魔数 0x6DB6DB6D + 除 14** 库公式、attr≤2/lib≤0x45/0xFFFF 哨兵门、0x466130 装载）。
 - **〔渲染〕**0x43B440：清 [0x1B2] 0x6C000 dword 缓冲 → 遍历 cam [0x12C]/[0x130] → **0x45E8E0 屏幕 blit（x*48 + y*32 投影 = F438 字节确认）**。
 - 落盘：viewport-scroll-render-full-evidence.json（F447，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 141。
+## Round 142 (F448) — 2026-08-12：0x5600FC = 共享资源描述符表（81 引用/39 簇）
+
+- **〔共享〕**0x5600FC stride 0x144（= idx*81*4）**全局资源/外观描述数组**：瓦片（attr/7+14 库公式，0x43B329/0x43B552）、怪物（type，F433/434）、实体槽（0x40F55D）、特效分派（0x40E40B）、地图渲染（0x41C9ED）、UI（0x423DF2）；条目 +0x38 = WIL 上下文（0x466130 ecx）。
+- **〔修正〕**F434「怪物外观表」范围 → **共享资源表**（怪物外观 = 用户之一）。
+- 落盘：shared-resource-descriptor-table-evidence.json（F448，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 142。

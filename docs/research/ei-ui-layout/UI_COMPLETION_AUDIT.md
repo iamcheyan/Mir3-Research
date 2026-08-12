@@ -936,9 +936,14 @@ git diff --check
 - **相机跟随 = 滚动；瓦片 48×32 blit**（F438 字节确认）。
 - 落盘：`viewport-scroll-render-full-evidence.json`（F447）+ RESEARCH_LOG Round 141。
 
+## Round 142 (2026-08-12) — 共享资源描述符表（Finding 448）
+
+- **0x5600FC = 全局资源表**（81 引用；F434 范围修正）。
+- 落盘：`shared-resource-descriptor-table-evidence.json`（F448）+ RESEARCH_LOG Round 142。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（网格角色已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 0x5600FC 条目布局（0x144B 内 WIL 上下文 + 外观数据）— 低优先。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
