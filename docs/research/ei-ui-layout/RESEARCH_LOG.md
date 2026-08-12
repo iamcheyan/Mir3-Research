@@ -7390,3 +7390,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔播放〕**0x45B250：**SOUND\ 路径**（0x47D88C）+ 名过滤器 'none'（0x47D884）/'nobgm'（0x47D87C）、0x45AF30 名查找、0x45A3E0/0x45A4A0 播放（hwnd [0x8AB7B0]）+ 音效 id。
 - **〔初始化〕**0x45BF30 = **DirectSound 初始化**（0x4680E6 创建 + IID 'vids' 0x73646976 + 0x4680D4/0x4680DA QueryInterface + 缓冲结构 0x7C/0x1B + 0x4680CE/0x4680C8、状态 [0x1A4]/[0x1A8]/[0x1AC]）——音效引擎字节级（F607 音频初始化连接）。
 - 落盘：sound-engine-directsound-evidence.json（F632，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 326。
+## Round 327 (F633) — 2026-08-12：音乐引擎构造 + 停止
+
+- **〔构造〕**0x45BD80 = 音乐 ctor（状态清 [0x0..0x38]/[0x74..0x1AC] + SetRect 0x4762B0 @ [0x3C]/[0x4C] + 0x23 双字 ×2）。
+- **〔停止〕**0x45BE20 = 音乐停止/清理（0x45C550 + **midiOutStop 0x400E** 经 0x4680BC + 释放 0x4680F8/0x4680B0/0x4680AA + 0x4680A4）——音乐引擎字节级（F632 音效引擎兄弟、F607 音频族）。
+- 落盘：music-engine-ctor-stop-evidence.json（F633，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 327。

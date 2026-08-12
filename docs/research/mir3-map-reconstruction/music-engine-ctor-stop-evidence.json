@@ -1,0 +1,35 @@
+{
+  "evidence_id": "music-engine-ctor-stop-2026-08-12-f633",
+  "title": "Round 327 (F633): Music engine ctor + stop - 0x45BD80 = music ctor (state clears [0x0..0x38]/[0x74..0x1AC] + SetRect 0x4762B0 at [0x3C]/[0x4C] + 0x23 dwords x2); 0x45BE20 = music STOP/cleanup (0x45C550 stop + midiOutStop 0x400E via 0x4680BC + free 0x4680F8/0x4680B0/0x4680AA + 0x4680A4) - music engine byte-level (F632 sound engine sibling, F607 audio family)",
+  "date": "2026-08-12",
+  "objective": "Decode the music engine ctor + stop.",
+  "question": "How does the music engine init/stop?",
+  "method": "Disasm 0x45BD80-0x45BEF7.",
+  "scope": "0x45BD80-0x45BEF7; midi 0x400E.",
+  "cell_analysis": {
+    "0x45BD80": {"ctor": "state clears [0x0..0x38]/[0x74..0x1AC] + SetRect [0x3C]/[0x4C] + 0x23 dwords x2"},
+    "0x45BE20": {"stop": "0x45C550 + midiOutStop 0x400E (0x4680BC)", "free": "0x4680F8/0x4680B0/0x4680AA buffers + 0x4680A4"}
+  },
+  "exe_trace": {
+    "music_chain": "init 0x45BD80 -> play -> stop 0x45BE20 (midi stop + free)"
+  },
+  "audit_vs_exe": {
+    "F632": "sound engine sibling", "F607": "audio init family", "F528": "Config.ini BGM keys"
+  },
+  "contrast": {
+    "music_vs_sound": "0x45BD80 MIDI music vs 0x45B250 sound",
+    "ctor_vs_stop": "state init vs midi stop + frees"
+  },
+  "verdict": "Music engine PRIMARY-verified: ctor (state + rects) + stop (midi 0x400E + frees); F632/F607 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Music engine decoded from .text.",
+  "cross_refs": ["F632: sound engine", "F607: audio init", "F528: Config.ini"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45BD80+0x20; 0x45BE20+0x30",
+  "notes": [
+    "midi out 0x400E = midiOutStop",
+    "state struct ~0x1B0 bytes",
+    "2 x 0x23 dword tables",
+    "BGM = MIDI music (Config.ini F528)"
+  ]
+}
