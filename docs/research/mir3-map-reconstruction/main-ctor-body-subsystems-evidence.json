@@ -1,0 +1,36 @@
+{
+  "evidence_id": "main-ctor-body-subsystems-2026-08-12-f637",
+  "title": "Round 331 (F637): Main ctor body + subsystem chain - 0x418B00 (0x47EF18, F636): 5 entity-list vtables (0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680 @ [0xE1154..0xE11E0] = F336 container family) + subsystem ctor chain: 0x4529B0 tile store [0xE11E4], 0x43AF70 map [0xF5200], 0x426C10 hero [0x2A548C], 0x40FE80 hero-actor [0x2F8780], 0x4344E0 light [0x35B2C0], 6 draw objects [0x361150..0x3614F4] (0x446D60/0x442650/0x443020/0x444870/0x4457C0/0x443B30), 0x417EC0 notice [0x3615B0], 0x446BF0/0x455A80/0x456180 memos, vtable [0]=0x476670 + 0x418EE0 - FULL game-object construction byte-level (F451/F336/F439 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the main ctor body + subsystem chain.",
+  "question": "How is the game object constructed?",
+  "method": "Disasm 0x418B00-0x418D40.",
+  "scope": "0x418B00-0x418D40; subsystem ctors.",
+  "cell_analysis": {
+    "lists": "5 entity-list vtables 0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680 @ [0xE1154..0xE11E0] (F336)",
+    "subsystems": {"tile": "0x4529B0 [0xE11E4]", "map": "0x43AF70 [0xF5200]", "hero": "0x426C10 [0x2A548C]", "hero_actor": "0x40FE80 [0x2F8780]", "light": "0x4344E0 [0x35B2C0]", "draw6": "0x446D60/0x442650/0x443020/0x444870/0x4457C0/0x443B30 [0x361150..0x3614F4]", "notice": "0x417EC0 [0x3615B0]", "memos": "0x446BF0/0x455A80/0x456180"},
+    "vtable": "[0]=0x476670 + 0x418EE0"
+  },
+  "exe_trace": {
+    "ctor_chain": "0x401970 -> 0x418B00 -> 5 lists + subsystems (tile/map/hero/light/draw6/notice/memos) -> vtable"
+  },
+  "audit_vs_exe": {
+    "F451": "base 0x47EF18 CONFIRMED", "F336": "list vtables", "F439": "6 draw objects", "F636": "ctor tail"
+  },
+  "contrast": {
+    "ctor_vs_tail": "0x418B00 body + 0x401970 tail",
+    "lists_vs_subs": "5 entity lists + subsystem ctors"
+  },
+  "verdict": "Main ctor body PRIMARY-verified: 5 list vtables + full subsystem chain; game-object construction byte-level (F451/F336/F439 connected).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor body decoded from .text.",
+  "cross_refs": ["F451: base", "F336: lists", "F439: draw objects", "F636: ctor tail"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x418B00+0x60",
+  "notes": [
+    "5 list vtable family",
+    "subsystem offsets match F439",
+    "vtable [0]=0x476670",
+    "memos 3 ctors"
+  ]
+}

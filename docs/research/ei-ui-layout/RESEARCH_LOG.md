@@ -7410,3 +7410,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔构造〕**0x401970 = **主 ctor 尾**（mov ecx, 0x47EF18 → jmp 0x418B00，**F451 基址证明**）、0x401990 = 静态析构（0x418D50）。
 - **〔引导〕**0x401B30 = **WinMain 引导**：[0x47EEB8]=0x131C9A5 魔数、[0x47EF10]=0 游戏对象空初始化、0x401700 rand（0x5DC/0x3E8）、配置 GetPrivateProfileStringA 族（0x47613C/0x476138/0x4761A4、节 0x47A2B8/0x47A2C0）、DllMain 守卫 [0x917C1C]——启动链字节级（F451 确认）。
 - 落盘：main-ctor-bootstrap-evidence.json（F636，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 330。
+## Round 331 (F637) — 2026-08-12：主构造体 + 子系统链
+
+- **〔列表〕**5 实体链表 vtable（0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680 @ [0xE1154..0xE11E0] = F336 容器族）。
+- **〔子系统〕**瓦片 0x4529B0 [0xE11E4]、地图 0x43AF70 [0xF5200]、英雄 0x426C10 [0x2A548C]、英雄角色 0x40FE80 [0x2F8780]、光场 0x4344E0 [0x35B2C0]、**6 绘制对象** [0x361150..0x3614F4]（F439）、公告 0x417EC0 [0x3615B0]、备忘 3 个（0x446BF0/0x455A80/0x456180）；vtable [0]=0x476670 + 0x418EE0——**完整游戏对象构造字节级**（F451/F336/F439 连接）。
+- 落盘：main-ctor-body-subsystems-evidence.json（F637，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 331。
