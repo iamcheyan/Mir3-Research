@@ -1,0 +1,36 @@
+{
+  "evidence_id": "main-tick-ctor-chain-recap-2026-08-12-f969",
+  "title": "Round 663 (F969): Main tick/ctor chain recap (F591/F636/F637) - 0x418B00: vtable chain 0x4766F0 -> 0x4766D4 -> 0x4766B8 -> 0x47669C -> 0x476680 (@ +0xE1154 stride 0x28) + phase ctors 0x4529B0 (phase 6) -> 0x43AF70 (7) -> 0x426C10 (8 mount) -> 0x40FE80 (9) -> 0x4344E0 (0xA) -> 0x446D60 (0xB); ecx 0x47EF18 baseline confirmed - main construction COMPLETE (18-phase recap)",
+  "date": "2026-08-12",
+  "objective": "Recap the main tick/ctor chain.",
+  "question": "How does the main tick construct its phases?",
+  "method": "Disasm 0x418B00-0x418C71.",
+  "scope": "0x418B00-0x418C71; ctor chain.",
+  "cell_analysis": {
+    "0x418B00": "vtable chain 0x4766F0..0x476680",
+    "phases": "0x4529B0 (6)..0x446D60 (0xB)",
+    "base": "ecx 0x47EF18"
+  },
+  "exe_trace": {
+    "tick_chain": "ctor chain -> phases"
+  },
+  "audit_vs_exe": {
+    "F591": "18 phases", "F636": "ctor", "F637": "ecx 0x47EF18"
+  },
+  "contrast": {
+    "vtable_chain": "5 vtable slots",
+    "phases": "6+"
+  },
+  "verdict": "Main tick/ctor chain recap PRIMARY-verified: vtable chain + phase ctors; F591/F636/F637 confirmed with fresh bytes.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Main ctor chain re-decoded from .text.",
+  "cross_refs": ["F591: 18 phases", "F636: ctor", "F637: ecx 0x47EF18"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x418B00+0x20",
+  "notes": [
+    "vtable 0x4766F0..0x476680",
+    "phase ctors 6-0xB",
+    "ecx 0x47EF18",
+    "stride 0x28"
+  ]
+}

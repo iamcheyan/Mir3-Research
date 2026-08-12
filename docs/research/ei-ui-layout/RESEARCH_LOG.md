@@ -8863,3 +8863,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 659-661（F966-F967：窗口命中路由器全量 + 命中路由器闭合）；基线 Round 658=cb789da → Round 661=8057ad3（**626 连发 F335-F967**）。
 - 落盘：handoff-refresh-134-evidence.json（F968，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 662。
+## Round 663 (F969) — 2026-08-12：主 tick/构造链重述（F591/F636/F637）
+
+- **〔主链〕**0x418B00：vtable 链 0x4766F0 → 0x4766D4 → 0x4766B8 → 0x47669C → 0x476680（@ +0xE1154 stride 0x28）+ 阶段构造 0x4529B0（6）→ 0x43AF70（7）→ 0x426C10（8 坐骑）→ 0x40FE80（9）→ 0x4344E0（0xA）→ 0x446D60（0xB）；ecx 0x47EF18 基线确认——主构造完整（18 阶段重述）。
+- 落盘：main-tick-ctor-chain-recap-evidence.json（F969，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 663。

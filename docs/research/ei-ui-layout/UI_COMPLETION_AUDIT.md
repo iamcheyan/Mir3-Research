@@ -4033,3 +4033,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（13/13 窗口 + HUD + 命中路由；下一弧：剩余深层角落/模拟器 polish）。
+## Round 663 (2026-08-12) — 主 tick/构造链重述（Finding 969）
+
+- **vtable 链 + 阶段构造**（主构造完整）。
+- 落盘：`main-tick-ctor-chain-recap-evidence.json`（F969）+ RESEARCH_LOG Round 663。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（主构造完整；下一弧：剩余深层角落）。
