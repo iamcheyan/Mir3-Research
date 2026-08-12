@@ -6824,3 +6824,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔表〕**0x4218F2 开关：msgid 0x44D-0x520（212 槽）+ 字节映射 0x42219C（13 处理器）+ 跳表 0x422168；处理器：实体生成 0x421913（0x40C 分配 + 0x41B710）、聊天 0x421955（0x2000 字符串）、实体坐标 0x4219A0（[0x61C90] F310 族）。
 - **〔总计〕**入站 = **349 槽**（137 + 212，两表）+ 怪物 0xBC6+——完整客户端接收图。
 - 落盘：recv-dispatch-table-2-evidence.json（F518，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 212。
+## Round 213 (F519) — 2026-08-12：包目录弧闭合（F516-F518 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master fc496bf（**178 连发已推**）。
+- **〔弧汇总〕**出站 34/34 全解码（F516）+ 入站表1 137→49（F517）+ 入站表2 212→13（F518）——**完整双向包目录：34 出站 + 349 入站 + 怪物 0xBC6+**。
+- 落盘：packet-catalog-arc-closure-evidence.json（F519，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 213。

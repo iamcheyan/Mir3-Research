@@ -1,0 +1,36 @@
+{
+  "evidence_id": "packet-catalog-arc-closure-2026-08-12-f519",
+  "title": "Round 213 (F519): Packet-catalog arc CLOSED (F516-F518) - full validation green (compileall/verify exit 0/node/JSON), services 200, master fc496bf (178 shipping rounds F335-F518); arc consolidated: unmapped senders decoded (F516: 34/34 outbound), master recv table (F517: 137 slots -> 49 handlers), second recv table (F518: 212 slots -> 13 handlers) - COMPLETE bidirectional packet catalog: 34 outbound + 349 inbound + monster 0xBC6+",
+  "date": "2026-08-12",
+  "objective": "Close the packet-catalog arc with validation + summary.",
+  "question": "Is the repo healthy after the 3-round packet-catalog arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master fc496bf; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F516": "34/34 outbound msgids (all senders decoded)", "F517": "recv table 1 (137 slots -> 49 handlers)", "F518": "recv table 2 (212 slots -> 13 handlers)", "total": "34 outbound + 349 inbound + monster 0xBC6+"},
+    "significance": "COMPLETE bidirectional packet catalog"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F518": "178 rounds pushed; packet layer complete"
+  },
+  "contrast": {
+    "send_vs_recv": "34 outbound vs 349 inbound (+monster)",
+    "tables": "0x42042B (UI/store) vs 0x4218F2 (entity/chat) vs 0xBC6+ (monster)"
+  },
+  "verdict": "Packet-catalog arc CLOSED (F516-F518): validation green, services live, 178 shipping rounds pushed. Complete bidirectional packet catalog (34 outbound + 349 inbound + monster family).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F516-F518.",
+  "cross_refs": ["F516-F518: arc", "F209: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: remaining handler detail (13 recv-2 handlers), sim edge polish, deep UI corners",
+    "178 shipping rounds + user quest-design commits all pushed"
+  ]
+}
