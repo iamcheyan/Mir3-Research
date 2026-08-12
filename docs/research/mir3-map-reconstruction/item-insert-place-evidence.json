@@ -1,0 +1,34 @@
+{
+  "evidence_id": "item-insert-place-2026-08-12-f655",
+  "title": "Round 349 (F655): Item insert + place - 0x42F440 (F652 insert): explicit-slot path (fill grid words + marker [0x774]=1 + dims [0x778]/[0x77C]) OR AUTO-PLACE (0x42F6D0 free-slot find + SetRect, occupancy scan 6x0x64 grid, bounds 6/0x258) - item placement byte-level (F652 internals)",
+  "date": "2026-08-12",
+  "objective": "Decode the item insert + place.",
+  "question": "How do items get placed in the bag?",
+  "method": "Disasm 0x42F440-0x42F5F3.",
+  "scope": "0x42F440-0x42F5F3; grid scan.",
+  "cell_analysis": {
+    "0x42F440": {"explicit": "slot path: fill grid words + [0x774]=1 + dims [0x778]/[0x77C]", "auto": "0x42F6D0 free-slot + SetRect, occupancy 6x0x64 grid scan, bounds 6/0x258"}
+  },
+  "exe_trace": {
+    "place_chain": "item add -> 0x42F440 explicit slot OR auto-place scan -> marker + dims"
+  },
+  "audit_vs_exe": {
+    "F652": "insert internals", "F549": "bag slots", "F464": "item ctor"
+  },
+  "contrast": {
+    "explicit_vs_auto": "given slot vs free-slot scan",
+    "grid": "6x0x64 occupancy grid"
+  },
+  "verdict": "Item insert + place PRIMARY-verified: explicit slot + auto-place scan; F652 internals byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Insert/place decoded from .text.",
+  "cross_refs": ["F652: insert", "F549: bag", "F464: ctor"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42F440+0x40",
+  "notes": [
+    "explicit slot fill + marker",
+    "auto-place 6x0x64 scan",
+    "bounds 6 cols / 0x258 px",
+    "dims [0x778]/[0x77C]"
+  ]
+}

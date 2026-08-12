@@ -7495,3 +7495,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 344-347（F651-F653：物品图标/详情 + 反序列化/背包 IO + 物品核心弧）；基线 Round 343=aa3e93e → Round 347=d3a4411（**312 连发 F335-F653**）。
 - 落盘：handoff-refresh-29-evidence.json（F654，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 348。
+## Round 349 (F655) — 2026-08-12：物品插入 + 放置
+
+- **〔插入〕**0x42F440（F652 插入）：**显式槽路径**（填网格字 + 标记 [0x774]=1 + 尺寸 [0x778]/[0x77C]）或 **自动放置**（0x42F6D0 空槽查找 + SetRect、占用 6×0x64 网格扫描、边界 6/0x258）——物品放置字节级（F652 内部）。
+- 落盘：item-insert-place-evidence.json（F655，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 349。
