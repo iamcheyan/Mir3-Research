@@ -1196,6 +1196,11 @@ git diff --check
 - **瓦片 346× + fullmap 26MB 热缓存**（F88/F376/F394 确认）。
 - 落盘：`mapviewer-cache-confirm-evidence.json`（F499）+ RESEARCH_LOG Round 193。
 
+## Round 194 (2026-08-12) — HANDOFF 刷新（Finding 500）
+
+- **160 连发 F335-F499 全汇总**（HANDOFF 覆盖完整范围）。
+- 落盘：`handoff-refresh-evidence.json`（F500）+ RESEARCH_LOG Round 194。
+
 ## Pending（未阻塞，持续队列）
 
 - 服务端 .dat 名称编码（自定义移位）— 低优先（唯一）。

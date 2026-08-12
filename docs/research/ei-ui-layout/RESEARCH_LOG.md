@@ -6732,3 +6732,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔fullmap〕**z=2 = 26.19MB（F394 匹配）、热 0.056s（进程池内存帧缓存）、字节一致。
 - **〔双级〕**磁盘（瓦片）+ 内存（fullmap）缓存均运行正常——F88/F376/F394 交叉确认。
 - 落盘：mapviewer-cache-confirm-evidence.json（F499，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 193。
+## Round 194 (F500) — 2026-08-12：HANDOFF 刷新（F429-F499 弧汇总）
+
+- **〔追加〕**HANDOFF 补 Round 149-194（实体渲染/物品背包商店/装备/交互运行时服务端弧 + 模拟器增强）；基线 Round 114=8145504 → Round 194=204c6f4（**160 连发 F335-F499**）。
+- 落盘：handoff-refresh-evidence.json（F500，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 194。
