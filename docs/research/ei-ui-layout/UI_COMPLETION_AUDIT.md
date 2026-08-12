@@ -473,6 +473,12 @@ git diff --check
 - **模拟器组队窗**：浏览器验证（G 开窗、标题色正确）。
 - 落盘：`group-window-detail-evidence.json`（F360，primary-bytes）+ app.js + RESEARCH_LOG Round 54。
 
+## Round 55 (2026-08-12) — 坐骑窗口接线（Finding 361）
+
+- **F327**：5 子控件、韩文标签（말타기/말내리기/말숨기기/말꺼내기）、命令（@上马/@遛马/@收马）、状态 0x7DA060 门控。
+- **模拟器坐骑窗**：浏览器验证（S 键、4 命令）。
+- 落盘：`horse-window-wiring-evidence.json`（F361）+ app.js + RESEARCH_LOG Round 55。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

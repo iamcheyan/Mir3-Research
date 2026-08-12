@@ -762,14 +762,36 @@ function fillWindowContent(w) {
       content.appendChild(del);
     }
   } else if (id === "window.horse") {
-    const horseLbl = document.createElement("div");
-    horseLbl.className = "lbl";
-    horseLbl.style.cssText = "left:16px;top:20px;width:260px";
-    horseLbl.textContent = "坐骑：枣红马\n状态：健康\n命令：召唤 / 喂食 / 遛马";
-    content.appendChild(horseLbl);
+    // Round 55 (F361): horse window 0x4268C0 (F327) - 5 sub-controls
+    // (frame pairs 0x3F2/0x3F3..0x362/0x363); Korean art labels 말타기/
+    // 말내리기/말숨기기/말꺼내기 (frames 860-867); commands @上马/@收马/@遛马
+    // (0x47B060/0x47B058/0x47B068) gated on state byte 0x7DA060.
+    const lbl = document.createElement("div");
+    lbl.className = "lbl";
+    lbl.style.cssText = "left:16px;top:20px;width:260px;color:#dce6c8";
+    lbl.textContent = "坐骑 (Ctrl+S · frame 850)";
+    lbl.dataset.evidence = "primary-static";
+    content.appendChild(lbl);
     const hIm = makeImg("Horse.wil", 0);
     hIm.style.cssText = "position:absolute;left:60px;top:80px;max-width:180px;image-rendering:pixelated";
     content.appendChild(hIm);
+    const cmds = [
+      ["말타기 (mount) · @上马 0x47B060", "[0x7DA060]==0 -> send"],
+      ["말내리기 (dismount) · @遛马 0x47B068", "[0x7DA060]!=0 -> send"],
+      ["말숨기기 (hide) · @收马 0x47B058", "0x426AE1"],
+      ["말꺼내기 (take out) · @遛马 0x47B068", "0x426B2D"],
+    ];
+    cmds.forEach((c, i) => {
+      const b = document.createElement("div");
+      b.className = "slot";
+      b.style.cssText = `left:16px;top:${190 + i * 30}px;width:260px;height:24px;border:none;background:rgba(0,0,0,.25);font:11px monospace;color:#e8eef5;text-align:left;line-height:24px;padding-left:8px;cursor:pointer`;
+      b.textContent = c[0];
+      b.title = c[1];
+      b.dataset.evidence = "primary-static";
+      b.dataset.desc = `${c[0]} · ${c[1]} · F327`;
+      b.addEventListener("click", () => pushChat(`[坐骑] ${c[0]} → 命令 (0x426A80-0x426B45)`));
+      content.appendChild(b);
+    });
   }
 }
 

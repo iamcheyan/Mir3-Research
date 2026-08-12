@@ -1,0 +1,47 @@
+{
+  "evidence_id": "horse-window-wiring-2026-08-12-f361",
+  "title": "Round 55 (F361): Horse window id13 wiring - 0x4268C0 5 sub-controls (F327: 말타기/말내리기/말숨기기/말꺼내기 frames 860-867, commands @上马/@收马/@遛马 gated on 0x7DA060) + sim horse window browser-verified",
+  "date": "2026-08-12",
+  "objective": "Wire the horse window (id13, Ctrl+S) into the simulator with the F327-decoded content: Korean art labels, command strings, state byte gating.",
+  "question": "Does the sim horse window show the original commands with correct evidence?",
+  "method": "Cross-validated against horse-window-render-evidence.json (F327: 5 sub-controls, frames, commands, state 0x7DA060); sim app.js wiring; browser verification.",
+  "scope": "Tools/mir3_client_simulator/app.js (window.horse fill); browser 8765/sim.",
+  "cell_analysis": {
+    "horse_evidence_F327": {
+      "ctor": "0x4268C0 (base 0x423B30 frame 850 + 5 x 0x417550 sub-controls at +0x54/+0x108/+0x1BC/+0x270/+0x324 stride 0xB4)",
+      "frame_pairs": "(0xA1,0xA2), (0x35C,0x35D), (0x35E,0x35F), (0x360,0x361), (0x362,0x363)",
+      "art_labels": "말타기 (860/861 mount), 말내리기 (862/863 dismount), 말숨기기 (864/865 hide), 말꺼내기 (866/867 take out) - Korean pixel art",
+      "commands": "@上马 0x47B060 (state [0x7DA060]==0), @遛马 0x47B068 ([0x7DA060]!=0), @收马 0x47B058",
+      "click": "0x426A80-0x426B45 branch on 0x7DA060",
+      "no_vtable": "horse window has no vtable write point (F327)"
+    },
+    "sim_wiring": {
+      "fill": "window.horse: caption '坐骑 (Ctrl+S · frame 850)' + Horse.wil image + 4 command rows (Korean label + command string + gate evidence)",
+      "browser": "S key opens horse; 5 lines; commands: 말타기 @上马 / 말내리기 @遛马 / 말숨기기 @收马 / 말꺼내기 @遛马"
+    }
+  },
+  "exe_trace": {
+    "horse_window": "hero+0x52118 (id13, Ctrl+S, frame 850 296x332 at 0,0)",
+    "state_byte": "0x7DA060 (mount state; updates 0x41F5BA-0x41F5CD)"
+  },
+  "audit_vs_exe": {
+    "F327": "5 sub-controls + frames + commands + no-vtable confirmed",
+    "F338": "id13 horse (Ctrl+S) confirmed (F329 correction)",
+    "Round 32": "hotkey S -> id13 confirmed"
+  },
+  "contrast": {
+    "art_vs_command": "Korean labels = client art (frames 860-867); @commands = click business strings - two layers (F327)",
+    "shared_command": "@遛马 used by both 말내리기 and 말꺼내기 (different gates) - command string not unique control id"
+  },
+  "verdict": "Horse window wired into sim (primary-bytes via F327): 4 Korean-labeled command rows with @上马/@遛马/@收马 strings and 0x7DA060 gating evidence. Browser-verified (S key).",
+  "evidence_level": "derived-tooling (source evidence primary-static F327)",
+  "evidence_level_note": "Horse window facts from horse-window-render-evidence.json (F327 primary-static); sim wiring browser-verified.",
+  "cross_refs": ["F327: horse-window-render-evidence.json", "F338: id13 Ctrl+S", "Round 32: hotkey table"],
+  "tool": "app.js edit; puppeteer browser",
+  "reproduce": "open sim; login; press S; observe horse window commands",
+  "notes": [
+    "5th sub-control (0x324) = 4th command button (말꺼내기)",
+    "Horse.wil slot 81 binding (F331: slot 81..87 = Horse/ProgUse etc.)",
+    "horse window no vtable - base 0x423B30 shared window class"
+  ]
+}

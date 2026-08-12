@@ -5968,3 +5968,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x4243D0〕**标题 0x7776A0 色 **0xDCE6C8**（0x45DD70 @ x+0x2D/y+0x16）；**成员列表** count [0x68]、head [0x58]、node+4 名、**行距 i*20**（0x424449-0x424455 (i>>1)*5<<2）；编辑字符串 0x47BA38 添加成员/0x47BA10 删除成员占位 + [允许] 0x47BA08/[拒绝] 0x47BA00。
 - **〔模拟器〕**window.group：标题 '组队成员 · 0x7776A0' 色 0xDCE6C8 + 成员列表 + 添加/删除占位。**浏览器验证**：G 开组队窗、6 行、标题色 rgb(220,230,200)。
 - 落盘：`group-window-detail-evidence.json`（F360，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 54。
+
+## Round 55 (F361) — 2026-08-12：坐骑窗口 id13 接线（F327 5 子控件 + 韩文标签 + 命令门控）
+
+- **〔F327 事实〕**0x4268C0（base frame 850 + 5× 0x417550 子控件 +0x54..+0x324）；帧对 (0xA1,0xA2)..(0x362,0x363)；**韩文美术标签 말타기/말내리기/말숨기기/말꺼내기**（帧 860-867）；**命令 @上马 0x47B060（状态 [0x7DA060]==0）/ @遛马 0x47B068（!=0）/ @收马 0x47B058**；点击 0x426A80-0x426B45 分支；**无 vtable**。
+- **〔模拟器〕**window.horse：标题 + Horse.wil 图 + 4 命令行（韩文标签 + 命令串 + 门控证据）。**浏览器验证**：S 开坐骑窗、5 行。
+- 落盘：`horse-window-wiring-evidence.json`（F361，derived-tooling；源证据 primary-static F327）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 55。
