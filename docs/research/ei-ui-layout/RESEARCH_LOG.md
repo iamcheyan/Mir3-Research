@@ -8364,3 +8364,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 544-546（F851-F852：技能页解析器 + 技能页闭合 + 510 里程碑）；基线 Round 543=1c2c0ba → Round 546=cc45e11（**511 连发 F335-F852**）。
 - 落盘：handoff-refresh-94-evidence.json（F853，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 547。
+## Round 548 (F854) — 2026-08-12：公告窗口渲染（F558 模式 8，F599 聊天家族）
+
+- **〔公告〕**0x414700：SetRect [0x954] + 行列表 [0x58] 遍历（next [0x408]/[0x40C]、滚动 [0x6D0]、计数 [0x68] 上限 0x13=19）+ 行绘制 0x45DD70（y+=0xE、色参）+ **滚动条 F707 ctor @ +0x6D4**（计数 [0x68]/[0x6D0]、位置 +0x215/-0xD0）+ **7 按钮 F704**（@ +0x6C..+0x3F0 stride 0xB4）+ 7 绘制——公告窗口完整（F553/F599 用）。
+- 落盘：announce-window-render-evidence.json（F854，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 548。

@@ -3113,3 +3113,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能页完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 548 (2026-08-12) — 公告窗口渲染（Finding 854）
+
+- **19 行 + 滚动条 + 7 按钮**（公告窗口完整）。
+- 落盘：`announce-window-render-evidence.json`（F854）+ RESEARCH_LOG Round 548。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告窗口完整；下一弧：剩余深层角落）。

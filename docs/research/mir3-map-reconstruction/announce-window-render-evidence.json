@@ -1,0 +1,34 @@
+{
+  "evidence_id": "announce-window-render-2026-08-12-f854",
+  "title": "Round 548 (F854): Announce window render (F558 mode 8, F599 chat family) - 0x414700: SetRect [0x954] + line list [0x58] walk (next [0x408]/[0x40C], scroll [0x6D0], count [0x68] cap 0x13=19) + line draw 0x45DD70 (y+=0xE, colors arg) + SCROLLBAR F707 ctor @ +0x6D4 (count [0x68]/[0x6D0], pos +0x215/-0xD0) + 7 BUTTONS F704 (@ +0x6C..+0x3F0 stride 0xB4) + 7 paints - announce window COMPLETE (F553/F599 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the announce window render.",
+  "question": "How does the announce window render?",
+  "method": "Disasm 0x414700-0x414910.",
+  "scope": "0x414700-0x414910; line list.",
+  "cell_analysis": {
+    "0x414700": {"rect": "SetRect [0x954]", "lines": "[0x58] walk + scroll [0x6D0] + cap 0x13", "draw": "0x45DD70 y+0xE", "scrollbar": "F707 @ +0x6D4", "buttons": "7 x F704"}
+  },
+  "exe_trace": {
+    "announce_chain": "rect -> line walk -> draw -> scrollbar -> buttons"
+  },
+  "audit_vs_exe": {
+    "F553": "announce msg", "F599": "chat family", "F707": "scrollbar"
+  },
+  "contrast": {
+    "lines_vs_buttons": "19 cap + 7 buttons",
+    "scroll_vs_draw": "F707 + 0x45DD70"
+  },
+  "verdict": "Announce window render PRIMARY-verified: line list + scrollbar + buttons; announce window complete (F553/F599).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Announce render decoded from .text.",
+  "cross_refs": ["F553: announce", "F599: chat", "F707: scrollbar"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414700+0x20",
+  "notes": [
+    "line cap 0x13",
+    "scrollbar +0x6D4",
+    "7 buttons stride 0xB4",
+    "y+0xE lines"
+  ]
+}
