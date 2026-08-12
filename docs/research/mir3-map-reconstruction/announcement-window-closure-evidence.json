@@ -1,0 +1,37 @@
+{
+  "evidence_id": "announcement-window-closure-2026-08-12-f959",
+  "title": "Round 653 (F959): Announcement window CLOSED (F854/F866/F870/F958) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 28f2998 (617 consecutive F335-F958), 583 evidence JSONs; arc: render (F854) + node add/dequeue (F866) + key input (F870) + input (F958) - announcement window COMPLETE byte-level (19 lines + scrollbar + 7 buttons + node list + key input), announcement surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the announcement window arc.",
+  "question": "Is the announcement window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "583 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F854": "render", "F866": "node add", "F870": "key input", "F958": "input"},
+    "announcement": "render + node + input = COMPLETE",
+    "milestone": "617 consecutive rounds F335-F958"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F958": "617 rounds pushed; announcement window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "node_vs_key": "list + keys"
+  },
+  "verdict": "Announcement window CLOSED (F959): render + node list + input all byte-level; validation green, 617 consecutive rounds, 583 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F854/F866/F870/F958.",
+  "cross_refs": ["F854", "F866", "F870", "F958"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "617 consecutive shipping rounds F335-F958",
+    "announcement window 100%",
+    "next: HANDOFF refresh 131, remaining corners"
+  ]
+}

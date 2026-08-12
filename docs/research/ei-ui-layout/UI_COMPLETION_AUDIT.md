@@ -3953,3 +3953,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告输入完整；下一弧：剩余深层角落）。
+## Round 653 (2026-08-12) — 公告窗口闭合（Finding 959）
+
+- **617 连发 + 583 证据 + 公告窗口完整**。
+- 落盘：`announcement-window-closure-evidence.json`（F959）+ RESEARCH_LOG Round 653。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告窗口完整；下一弧：HANDOFF 刷新 131/剩余角落）。

@@ -8819,3 +8819,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告〕**0x414CF0 公告输入（滚动条 0x417C80 @ +0x6D4 → 滚动 [0x6D0] [0x68]×[0x6E0]；否则 9 控件 vtable[8] @ +0x6C stride 0xB4）；0x414D60 滚动衰减 + 0x414D80 滚动步进（钳 [0x68]-1）；0x414DC0 **按键输入**（键 0x31/0x32/0xBE → 缓冲 [0x850] + 发送 0x450C70 刷新，F870 依赖）——公告输入完整。
 - 落盘：announcement-window-input-evidence.json（F958，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 652。
+## Round 653 (F959) — 2026-08-12：公告窗口闭合（F854/F866/F870/F958 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**583 证据 JSON**；三服务 200；master 28f2998（**617 连发 F335-F958 已推**）。
+- **〔弧〕**渲染（F854）+ 节点添加/出队（F866）+ 按键输入（F870）+ 输入（F958）——**公告窗口完整**（19 行 + 滚动条 + 7 按钮 + 节点列表 + 按键输入），公告表面 100%。
+- 落盘：announcement-window-closure-evidence.json（F959，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 653。
