@@ -8745,3 +8745,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 632-634（F939-F940：技能窗口输入/记录列表 + 技能窗口闭合）；基线 Round 631=443c043 → Round 634=52937fb（**599 连发 F335-F940**）。
 - 落盘：handoff-refresh-125-evidence.json（F941，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 635。
+## Round 636 (F942) — 2026-08-12：任务窗口输入（F746/F897 依赖）
+
+- **〔任务〕**0x448430 任务输入（2 按钮 @ +0x74/+0x128 → 0x417830 移动 + vtable[8] 点击）；0x448490 列表命中（dlist [0x1E4]/[0x1E8] 遍历 + 矩形 +0x218 PtInRect → [0x1DC] → 0x448580 激活，F746 对话共享）——任务输入完整（F923 布局 + F942 输入）。
+- 落盘：quest-window-input-evidence.json（F942，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 636。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "quest-window-input-2026-08-12-f942",
+  "title": "Round 636 (F942): Quest window input (F746/F897 dep) - 0x448430 quest INPUT (2 buttons @ +0x74/+0x128 -> 0x417830 move + vtable[8] click); 0x448490 list hit (dlist [0x1E4]/[0x1E8] walk + rect +0x218 PtInRect -> [0x1DC] -> 0x448580 activate, F746 dialog shared) - quest input COMPLETE (F923 layout + F942 input)",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window input.",
+  "question": "How does the quest window route input?",
+  "method": "Disasm 0x448430-0x448490.",
+  "scope": "0x448430-0x448490; input.",
+  "cell_analysis": {
+    "0x448430": "input 2 buttons + 0x417830",
+    "0x448490": "list hit dlist [0x1E4] + 0x218 + [0x1DC]"
+  },
+  "exe_trace": {
+    "quest_chain": "input -> list hit -> activate"
+  },
+  "audit_vs_exe": {
+    "F746": "dialog list hit", "F923": "quest layout", "F897": "reset"
+  },
+  "contrast": {
+    "buttons_vs_list": "click + hit",
+    "shared": "0x448490 dialog/quest"
+  },
+  "verdict": "Quest window input PRIMARY-verified: 2 buttons + list hit; F923/F746 shared machinery.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Quest input decoded from .text.",
+  "cross_refs": ["F923: quest layout", "F746: dialog list", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x448430+0x20",
+  "notes": [
+    "2 buttons +0x74/+0x128",
+    "list [0x1E4] rect +0x218",
+    "activate [0x1DC]",
+    "F746 shared"
+  ]
+}

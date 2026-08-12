@@ -3817,3 +3817,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（技能窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 636 (2026-08-12) — 任务窗口输入（Finding 942）
+
+- **2 按钮 + 列表命中**（任务输入完整）。
+- 落盘：`quest-window-input-evidence.json`（F942）+ RESEARCH_LOG Round 636。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务输入完整；下一弧：剩余深层角落）。
