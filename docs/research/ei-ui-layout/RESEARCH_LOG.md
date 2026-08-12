@@ -6342,3 +6342,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔族系〕**Mon-1..16.wil 全 10000 帧；客户端表 Mon-1..20 + MonS-1..20 影 + DMon-1/DMonS-1 + NPC/MonImg/MonMagic/Magic 共 **88 WIL 字符串**。
 - **〔装载器〕**0x4538B0 构建 40 槽文件名表（stride 0x104，dest ebx+0x10B94..，降序字符串 = 槽 19-i）；**F280 race//10+1 → Mon-N.wil 字节级确认**（出货 1-16 = race 0-159；Mon-17..20 服务端专属）。
 - 落盘：monster-wil-family-verification-evidence.json（F429，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 123。
+## Round 124 (F430) — 2026-08-12：DMon 死亡动画族验证（4340/4000 帧）
+
+- **〔族系〕**DMon-1.wil 4340 帧 + DMonS-1.wil 4000 帧 = 通用单槽死亡动画库（非按种族）；f0 80×70 / f100 72×64 有效头。
+- **〔装载器〕**0x454040 附加表 5 槽：DMon-1→ebx+0x13A4C、DMonS-1→+0x13B50、MagicEx→+0x13C54、MonMagicEx→+0x13D58、StoreItem.wil(0x47C878)→+0x13E5C（stride 0x104）。
+- 落盘：dmon-death-animation-verification-evidence.json（F430，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 124。

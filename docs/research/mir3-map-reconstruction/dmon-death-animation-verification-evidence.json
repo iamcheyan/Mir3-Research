@@ -1,0 +1,36 @@
+{
+  "evidence_id": "dmon-death-animation-verification-2026-08-12-f430",
+  "title": "Round 124 (F430): DMon death-animation family verified - DMon-1.wil 4340 frames + DMonS-1.wil 4000 frames (generic single-slot death libs, NOT per-race), extra-table loader 0x454040 (DMon-1 -> ebx+0x13A4C, DMonS-1 -> +0x13B50, MagicEx/MonMagicEx/StoreItem -> +0x13C54/+0x13D58/+0x13E5C, stride 0x104)",
+  "date": "2026-08-12",
+  "objective": "Verify the DMon death-animation WIL family: shipped frames and loader slots.",
+  "question": "How do the death-animation libraries (DMon/DMonS) load in the client?",
+  "method": "WIL frame counts; extra-table loader 0x454040 disasm; 0x47C878 string decode.",
+  "scope": "Data/DMon-1.wil + DMonS-1.wil; loader 0x454040-0x454106; .rdata 0x47C878-0x47C8D0.",
+  "cell_analysis": {
+    "shipped": {"DMon-1.wil": "4340 frames (f0 80x70 off(-16,-31), f100 72x64)", "DMonS-1.wil": "4000 frames (f0 84x72 off(-16,-20), f100 80x58 off(-12,-13))"},
+    "extra_table_0x454040": {"slots": ["DMon-1.wil (0x47C8D0) -> ebx+0x13A4C", "DMonS-1.wil (0x47C8BC) -> ebx+0x13B50", "MagicEx.wil (0x47C8A8) -> ebx+0x13C54", "MonMagicEx.wil (0x47C890) -> ebx+0x13D58", "StoreItem.wil (0x47C878) -> ebx+0x13E5C"], "stride": "0x104 (260 bytes)"},
+    "semantics": {"DMon": "generic death animation (single set, not race-indexed)", "DMonS": "death + shadow variant", "MagicEx/MonMagicEx": "extended magic effects", "StoreItem": "store item icons"}
+  },
+  "exe_trace": {
+    "death_anims": "DMon = 1 generic death set shared across races (contrast Mon-N per-race)"
+  },
+  "audit_vs_exe": {
+    "F429": "Mon family = 40-slot race table; DMon = separate 5-slot extra table",
+    "F280": "death anims NOT race//10+1 - single lib"
+  },
+  "contrast": {
+    "mon_vs_dmon": "Mon-N.wil per-race (10000 frames) vs DMon-1 single generic death set (4340)",
+    "normal_vs_shadow": "DMonS-1 = shadow-pass death variant (4000)"
+  },
+  "verdict": "DMon death-animation family verified (primary-static): DMon-1.wil 4340 + DMonS-1.wil 4000 frames, generic single-slot death libs; extra-table loader 0x454040 wires 5 slots (DMon-1/DMonS-1/MagicEx/MonMagicEx/StoreItem) at stride 0x104.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Frame counts + loader bytes read directly from package/binary.",
+  "cross_refs": ["F429: Mon WIL family", "F280: race formula", "F425: monster distribution"],
+  "tool": "capstone + wilsdk.open_library + .rdata decode",
+  "reproduce": "open_library('Data/DMon-1.wil').count; disasm 0x454040+; decode 0x47C878",
+  "notes": [
+    "DMon death set shared by all races (one 4340-frame lib)",
+    "extra table stride 0x104 matches Mon table convention",
+    "StoreItem.wil = item icons for store UI (F340 family)"
+  ]
+}

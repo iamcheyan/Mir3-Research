@@ -846,6 +846,11 @@ git diff --check
 - **16×10000 帧 + 88 字符串表 + 0x4538B0 40 槽装载器**；F280 字节级确认。
 - 落盘：`monster-wil-family-verification-evidence.json`（F429）+ RESEARCH_LOG Round 123。
 
+## Round 124 (2026-08-12) — DMon 死亡动画族（Finding 430）
+
+- **4340/4000 帧通用死亡库 + 0x454040 5 槽装载器**。
+- 落盘：`dmon-death-animation-verification-evidence.json`（F430）+ RESEARCH_LOG Round 124。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
