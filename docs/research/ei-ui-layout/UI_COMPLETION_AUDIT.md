@@ -3673,3 +3673,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（任务输入完整；下一弧：剩余深层角落）。
+## Round 618 (2026-08-12) — 任务输入闭合（Finding 924）
+
+- **582 连发 + 548 证据 + 任务输入完整**。
+- 落盘：`quest-input-closure-evidence.json`（F924）+ RESEARCH_LOG Round 618。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务输入完整；下一弧：HANDOFF 刷新 119/剩余角落）。

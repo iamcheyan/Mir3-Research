@@ -8667,3 +8667,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔任务〕**0x448640 旗标清（[0x99]/[0x14D]=0）；0x448650 **任务窗口布局 + 鼠标命中**（SetRect 0x4762B0 + 窗口矩形 0x476240/0x476234 + hwnd 0x8AB7B0 + PtInRect + 计数器 [0x60]/[0x58]）——任务窗口输入完整（F833/F671 用）。
 - 落盘：quest-window-init-hit-evidence.json（F923，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 617。
+## Round 618 (F924) — 2026-08-12：任务输入闭合（F671/F833/F923 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**548 证据 JSON**；三服务 200；master 772cb80（**582 连发 F335-F923 已推**）。
+- **〔弧〕**任务绘制（F671）+ 绘制体（F833）+ 初始化/命中（F923）——**任务输入完整**（清旗标 + 布局 + 命中 + 绘制 + 状态色），任务窗口 100%。
+- 落盘：quest-input-closure-evidence.json（F924，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 618。

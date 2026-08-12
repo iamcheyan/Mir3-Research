@@ -1,0 +1,37 @@
+{
+  "evidence_id": "quest-input-closure-2026-08-12-f924",
+  "title": "Round 618 (F924): Quest input CLOSED (F671/F833/F923) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 772cb80 (582 consecutive F335-F923), 548 evidence JSONs; arc: quest draw (F671) + draw body (F833) + init/hit (F923) - quest input COMPLETE byte-level (clear + layout + hit + draw + status colors), quest window 100%",
+  "date": "2026-08-12",
+  "objective": "Close the quest input arc.",
+  "question": "Is the quest input fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "548 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F671": "draw", "F833": "body", "F923": "init/hit"},
+    "quest": "clear + hit + draw = COMPLETE",
+    "milestone": "582 consecutive rounds F335-F923"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F923": "582 rounds pushed; quest input complete"
+  },
+  "contrast": {
+    "init_vs_draw": "hit + render",
+    "clear_vs_colors": "flags + status"
+  },
+  "verdict": "Quest input CLOSED (F924): init + hit + draw all byte-level; validation green, 582 consecutive rounds, 548 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F671/F833/F923.",
+  "cross_refs": ["F671", "F833", "F923"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "582 consecutive shipping rounds F335-F923",
+    "quest input 100%",
+    "next: HANDOFF refresh 119, remaining corners"
+  ]
+}
