@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-134-2026-08-12-f968",
+  "title": "Round 662 (F968): HANDOFF refresh 134 - Rounds 659-661 (F965-F967: HANDOFF 133, window hit router full, hit router closure), baseline Round 658=cb789da -> Round 661=8057ad3 (626 consecutive F335-F967), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 659-661.",
+  "question": "What changed since HANDOFF refresh 133?",
+  "method": "Append Round 659-661 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 659-661 appended (3 rounds, F965-F967)",
+    "baseline": "Round 658=cb789da -> Round 661=8057ad3 (626 consecutive F335-F967)",
+    "arcs": {"router": "F966 full", "closure": "F967 hit router"},
+    "key": "hit router complete; 13/13 + HUD + routing"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F965": "refresh 133 baseline -> now refresh 134", "F335-F967": "626 rounds"
+  },
+  "contrast": {
+    "refresh_133_vs_134": "F966-F967 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 134 (F968): Rounds 659-661 documented (hit router complete), baseline cb789da -> 8057ad3, 626 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F966-F967 evidence.",
+  "cross_refs": ["F965: refresh 133", "F967: hit router closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 659-661 section to HANDOFF",
+  "notes": [
+    "626 consecutive shipping rounds F335-F967",
+    "next: remaining deep corners, sim polish"
+  ]
+}

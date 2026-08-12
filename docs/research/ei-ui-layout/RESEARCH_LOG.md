@@ -8859,3 +8859,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**591 证据 JSON**；三服务 200；master 5e6f5cd（**625 连发 F335-F966 已推**）。
 - **〔弧〕**命中路由器（F900）+ 13 矩形全量（F966）——**窗口路由完整**（开窗 dlist 遍历 + jt 13 矩形 + PtInRect + 开/关助手）；**13/13 窗口 + HUD 输入 + 命中路由闭合**。
 - 落盘：hit-router-closure-evidence.json（F967，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 661。
+## Round 662 (F968) — 2026-08-12：HANDOFF 刷新 134（Round 659-661）
+
+- **〔刷新〕**HANDOFF 追加 Round 659-661（F966-F967：窗口命中路由器全量 + 命中路由器闭合）；基线 Round 658=cb789da → Round 661=8057ad3（**626 连发 F335-F967**）。
+- 落盘：handoff-refresh-134-evidence.json（F968，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 662。
