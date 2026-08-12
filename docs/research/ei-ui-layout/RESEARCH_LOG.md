@@ -6652,3 +6652,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔构造〕**0x414830：9 × 0x4175F0 按钮 + 输入框 [0x6D4] + 滚动区 [0x720]。
 - **〔链〕**技能栏点击 → msg 0xB1 → 服务端施法 → MonMagic 特效（F351/F483）。
 - 落盘：skill-button-click-evidence.json（F484，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 178。
+## Round 179 (F485) — 2026-08-12：运行时弧闭合（F481-F484 4 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master cf1a3cf（**146 连发已推**）。
+- **〔弧汇总〕**小地图装载+表面（F481）/ 小地图 blit 16 位（F482）/ **完整 WIL 表 35+ 槽**（F483）/ 技能栏 9 按钮 + msg 0xB1（F484）。
+- 落盘：runtime-arc-closure-evidence.json（F485，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 179。

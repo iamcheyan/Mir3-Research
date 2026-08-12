@@ -1,0 +1,35 @@
+{
+  "evidence_id": "runtime-arc-closure-2026-08-12-f485",
+  "title": "Round 179 (F485): Runtime arc CLOSED (F481-F484, 4 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200, master cf1a3cf (146 shipping rounds F335-F484); arc consolidated: minimap lib loader + DDS surface (F481), minimap blit runtime 16-bit (F482), full WIL table 35+ slots (F483), skill-button click + msg 0xB1 (F484) - minimap runtime + skill activation + complete WIL slot map all closed",
+  "date": "2026-08-12",
+  "objective": "Close the runtime arc with a validation sweep + summary.",
+  "question": "Is the repo healthy after the 4-round runtime arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master cf1a3cf; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F481": "minimap FMMap.wil loader + DDS surface (formats 0x1000/0x1800)", "F482": "minimap blit 0x460240 (16-bit row copy, HUD 0x429630 + 6 quick slots)", "F483": "full WIL table 35+ slots (Magic/WM-Weapon4/Inventory/Equip/Ground/MIcon/ProgUse/Horse + Mon/MonS + MonMagic/MonImg/M-Hair/Helmet/WM + DMon/MagicEx/StoreItem)", "F484": "skill 9-button bar + msg 0xB1 cast"},
+    "corrections": "none this arc (extensions: F429/F430 WIL table, F351 activation)"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F484": "146 rounds pushed; runtime subsystems fully decoded"
+  },
+  "contrast": {
+    "closed_vs_pending": "runtime arc closed; remaining = low-priority (store 0x5898 source, exact slot order)"
+  },
+  "verdict": "Runtime arc CLOSED (F481-F484): validation green, services live, 146 shipping rounds pushed. Minimap runtime, skill activation, complete WIL slot map all decoded.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F481-F484.",
+  "cross_refs": ["F481-F484: arc", "F174: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: server Envir deeper integration (F423-427), mapviewer alignment with client store, spell effect frame math",
+    "146 shipping rounds + user quest-design commits all pushed"
+  ]
+}
