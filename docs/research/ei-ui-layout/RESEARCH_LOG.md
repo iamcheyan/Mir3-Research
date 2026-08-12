@@ -8100,3 +8100,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**416 证据 JSON**；三服务 200；master 12ea43e（**450 连发 F335-F791 已推**）——**450 连发里程碑**。
 - **〔弧〕**死亡泵（F611）+ 移动（F695）+ 更新（F725）+ 技能装载（F743）+ 消息分派（F791）——**英雄生命周期完整**（移动 → 数据装载 → 技能消息 → 死亡 → 1500ms 重生 → 生成），待办 write-only 槽消费者 + 死亡泵体全解析。
 - 落盘：hero-lifecycle-final-closure-evidence.json（F792，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 486。
+## Round 487 (F793) — 2026-08-12：HANDOFF 刷新 74（Round 484-486）
+
+- **〔刷新〕**HANDOFF 追加 Round 484-486（F791-F792：英雄消息/死亡泵 + 英雄生命周期最终闭合 + 450 里程碑）；基线 Round 483=581634a → Round 486=95c2f7f（**451 连发 F335-F792**）。
+- 落盘：handoff-refresh-74-evidence.json（F793，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 487。

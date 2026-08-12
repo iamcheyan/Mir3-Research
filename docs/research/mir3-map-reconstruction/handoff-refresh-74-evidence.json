@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-74-2026-08-12-f793",
+  "title": "Round 487 (F793): HANDOFF refresh 74 - Rounds 484-486 (F790-F792: HANDOFF 73, hero message dispatch/death pump, hero lifecycle final closure + 450 milestone), baseline Round 483=581634a -> Round 486=95c2f7f (451 consecutive F335-F792), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 484-486.",
+  "question": "What changed since HANDOFF refresh 73?",
+  "method": "Append Round 484-486 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 484-486 appended (3 rounds, F790-F792)",
+    "baseline": "Round 483=581634a -> Round 486=95c2f7f (451 consecutive F335-F792)",
+    "milestone": "450 consecutive rounds documented",
+    "arcs": {"dispatch": "F791 hero dispatch", "closure": "F792 hero lifecycle"},
+    "key": "hero lifecycle complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F790": "refresh 73 baseline -> now refresh 74", "F335-F792": "451 rounds"
+  },
+  "contrast": {
+    "refresh_73_vs_74": "F791-F792 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 74 (F793): Rounds 484-486 documented (hero lifecycle complete), baseline 581634a -> 95c2f7f, 451 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F791-F792 evidence.",
+  "cross_refs": ["F790: refresh 73", "F792: hero closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 484-486 section to HANDOFF",
+  "notes": [
+    "451 consecutive shipping rounds F335-F792",
+    "next: remaining deep corners, sim polish"
+  ]
+}
