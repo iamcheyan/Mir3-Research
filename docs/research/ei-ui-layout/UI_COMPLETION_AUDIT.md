@@ -1031,6 +1031,11 @@ git diff --check
 - **悬停→提示框链 + 槽操作 + 反序列化**。
 - 落盘：`bag-interaction-system-evidence.json`（F466）+ RESEARCH_LOG Round 160。
 
+## Round 161 (2026-08-12) — 背包网格几何（Finding 467）
+
+- **6 列 × 36px + 标记数组**（F293 字节确认）。
+- 落盘：`bag-grid-geometry-evidence.json`（F467）+ RESEARCH_LOG Round 161。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包族全解；其余 = 低优先深化，见 RESEARCH_LOG）。

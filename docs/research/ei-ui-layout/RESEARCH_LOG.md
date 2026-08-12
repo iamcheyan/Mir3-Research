@@ -6554,3 +6554,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔悬停〕**0x42FAB0：门 [0x7243C4] → 槽命中测试 0x42F240（鼠标 [0x7DA1C0]/[0x7DA1C4]）→ 记录 bag+槽*0xC2C+0x774 → **0x4341F0 提示框**（鼠标+0xA，记录+0x780）— F340 链字节确认。
 - **〔槽操作〕**清槽 0x42FB20（0x258 字标记 [0x2C4] + 0x30B dword 清零）；按名查找 0x42FB80（strcmp 46 槽）；全清 0x42FC00；**反序列化 0x42FC20**（0xC28 输入，0x42F2A0/0x42F280/0x42F440）；取槽 0x42FCC0（0x308 dword 复制）；设槽 0x42FD10。
 - 落盘：bag-interaction-system-evidence.json（F466，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 160。
+## Round 161 (F467) — 2026-08-12：背包网格几何（6 列 × 36px）
+
+- **〔几何〕**0x42F240 命中测试（0x42F150 → 标记 [0x2C4+idx*2]：0xFFFF 空，否则 idx%0x3E8）；**6 列确认**（0x42F2DC idiv 6）、单元 36px、原点 (25,41)、行主序槽 = row*6+col（+0xB1 基标记 stride 6）。
+- **〔放置〕**首空 0x42F280（46 槽扫描）；放置 0x42F440（脚印 0x42F6D0、标记 idx/+0x3E8 原点、记录 [0x774]=1 + 尺寸 [0x778]/[0x77C]）。
+- **〔确认〕**F293 6 列 WORD 网格字节级确认。
+- 落盘：bag-grid-geometry-evidence.json（F467，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 161。

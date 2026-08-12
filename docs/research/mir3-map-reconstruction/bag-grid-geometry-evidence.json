@@ -1,0 +1,37 @@
+{
+  "evidence_id": "bag-grid-geometry-2026-08-12-f467",
+  "title": "Round 161 (F467): Bag grid geometry - hit-test 0x42F240 (0x42F150 mouse->index, mark word [0x2C4+idx*2]: 0xFFFF empty else slot%0x3E8); 6 COLUMNS confirmed (idiv 6 at 0x42F2DC), cell pitch 36px (0x24), origin (0x19=25, 0x29=41), row-major slot = row*6+col via +0xB1 base marks (stride 6, bounds 0x162..0xF72); first-empty 0x42F280 (scan 46 slots [0x774] stride 0xC2C); placement 0x42F440 (item footprint 0x42F6D0, marks [0x2C4+slot*2]=idx or idx+0x3E8 origin, record [0x774]=1 + size [0x778]/[0x77C]) - F293 6-column grid byte-confirmed",
+  "date": "2026-08-12",
+  "objective": "Derive the bag grid geometry from the hit-test and placement functions.",
+  "question": "What is the bag grid layout (columns, cell size, marks)?",
+  "method": "Disasm 0x42F240 (hit-test) + 0x42F2A0 (placement validation) + 0x42F280/0x42F440.",
+  "scope": "0x42F240-0x42F6B2; marks [0x2C4]; grid 6 cols.",
+  "cell_analysis": {
+    "hit_test_0x42F240": {"flow": "0x42F150(mouse) -> index -> mark [esi+idx*2+0x2C4] -> 0xFFFF = -1, else idx % 0x3E8"},
+    "grid_6col_0x42F2A0": {"columns": "idiv 6 (0x42F2DC): row = idx/6, col = idx%6", "pitch": "36px (0x24) both axes", "origin": "x = [0x18] + col*36 + 0x19(25); y = [0x1C] + row*36 + 0x29(41)", "marks": "word [edi+idx*2] (0x2C4 base): 0xFFFF empty; occupancy scan stride 6, bounds 0x162..0xF72", "footprint": "0x42F6D0 item rect (w/h cells from frame header)"},
+    "first_empty_0x42F280": "scan [0x774+slot*0xC2C] != 0 across 46 slots (0x2E)",
+    "placement_0x42F440": {"marks": "[0x2C4+slot*2] = slot (or slot+0x3E8 for origin)", "record": "[slot*0xC2C+0x774] = 1, [+0x778]/[+0x77C] = w/h cells"}
+  },
+  "exe_trace": {
+    "bag_layout": "6 cols x ~8 rows = 46+ slots; cell 36px; origin (25,41); marks array [0x2C4]"
+  },
+  "audit_vs_exe": {
+    "F293": "6-column WORD grid confirmed byte-level",
+    "F466": "hit-test chain source decoded"
+  },
+  "contrast": {
+    "marks_vs_records": "marks [0x2C4] = lightweight grid occupancy; records [0x774] = items",
+    "origin_mark": "slot+0x3E8 marks the drag origin (0x42F440/0x42F2E3)"
+  },
+  "verdict": "Bag grid geometry PRIMARY-verified: 6 columns (idiv 6), 36px cells, origin (25,41), slot marks [0x2C4] (0xFFFF empty / +0x3E8 origin), first-empty + placement functions. F293 6-column grid byte-confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hit-test + placement geometry decoded from .text.",
+  "cross_refs": ["F293: bag grid", "F466: interaction", "F46: 46-slot"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x42F240+0x20, 0x42F2A0+0x40, 0x42F440+0x40",
+  "notes": [
+    "cell pitch 36px = 6-col grid fits 216px bag width",
+    "0x3E8 = 1000 origin-mark offset (distinct from 0xFFFF empty)",
+    "marks bounds 0x162(354)..0xF72(3954) = 46-slot area"
+  ]
+}
