@@ -1,0 +1,34 @@
+{
+  "evidence_id": "skill-book-draw-2026-08-12-f839",
+  "title": "Round 533 (F839): Skill book draw (F558 mode E) - 0x439500: 0x4397A0 tab header + 0x43A440 page + 3 header buttons F704 (@ +0xD8/+0x18C/+0x240) + 8 SKILL-SLOT controls F704 (@ +0x2F4..+0x7E0 stride 0xB4) + 8 paints + page counter [0x58+idx*4] /3 (0x2AAAAAAB div) + 0x46811C 0x47C334 + 0x45DD70 (0x323232/0x6496C8) - skill book window COMPLETE (F547/F558 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the skill book draw.",
+  "question": "How does the skill book render?",
+  "method": "Disasm 0x439500-0x439752.",
+  "scope": "0x439500-0x439752; slots.",
+  "cell_analysis": {
+    "0x439500": {"tabs": "0x4397A0", "page": "0x43A440", "buttons": "3 header F704", "slots": "8 x F704 stride 0xB4", "counter": "[0x58+idx*4] /3 + 0x47C334"}
+  },
+  "exe_trace": {
+    "book_chain": "tabs -> page -> slots -> counter text"
+  },
+  "audit_vs_exe": {
+    "F547": "8 tabs CONFIRMED", "F558": "mode E book", "F704": "set-pos"
+  },
+  "contrast": {
+    "tabs_vs_slots": "0x4397A0 + 8 slots",
+    "counter_vs_text": "/3 + 0x45DD70"
+  },
+  "verdict": "Skill book draw PRIMARY-verified: tabs + 8 slots + counter; skill book window complete (F547/F558).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Skill book decoded from .text.",
+  "cross_refs": ["F547: tabs", "F558: book", "F704: set-pos"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x439500+0x20",
+  "notes": [
+    "8 skill slots stride 0xB4",
+    "counter /3 div",
+    "format 0x47C334",
+    "colors 0x323232/0x6496C8"
+  ]
+}

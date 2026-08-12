@@ -8299,3 +8299,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 529-531（F836-F837：坐骑旗标写者 + 坐骑/recv 闭合）；基线 Round 528=7041814 → Round 531=0084901（**496 连发 F335-F837**）。
 - 落盘：handoff-refresh-89-evidence.json（F838，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 532。
+## Round 533 (F839) — 2026-08-12：技能书绘制（F558 模式 E）
+
+- **〔技能书〕**0x439500：0x4397A0 页签头 + 0x43A440 页 + 3 头部按钮 F704（@ +0xD8/+0x18C/+0x240）+ **8 技能槽控件 F704**（@ +0x2F4..+0x7E0 stride 0xB4）+ 8 绘制 + **页计数 [0x58+idx×4] ÷3**（0x2AAAAAAB 除法）+ 0x46811C 0x47C334 + 0x45DD70（0x323232/0x6496C8）——技能书窗口完整（F547/F558 用）。
+- 落盘：skill-book-draw-evidence.json（F839，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 533。

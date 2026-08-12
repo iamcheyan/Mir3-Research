@@ -2993,3 +2993,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑/recv 完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 533 (2026-08-12) — 技能书绘制（Finding 839）
+
+- **页签 + 8 技能槽 + 页计数**（技能书完整）。
+- 落盘：`skill-book-draw-evidence.json`（F839）+ RESEARCH_LOG Round 533。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能书完整；下一弧：剩余深层角落）。
