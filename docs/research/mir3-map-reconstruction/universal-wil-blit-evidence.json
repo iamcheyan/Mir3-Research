@@ -1,0 +1,35 @@
+{
+  "evidence_id": "universal-wil-blit-2026-08-12-f647",
+  "title": "Round 341 (F647): Universal WIL blit + RLE decode - 0x45FD50 (F436/F292 family): clip bounds 0x320x0x258 (800x600 screen) + negative-offset clamps, surface vtable[0x64] GetDC (struct 0x7C), 16-bit RLE decode: opcodes 0xC0 = skip-run (word count -> dst x advance), 0xC1 = pixel-run (word count + clip left/right), word-pair rows, dst stride (w/2)*x - blit engine + RLE decode byte-level (backs all F584/F607/F629 blits)",
+  "date": "2026-08-12",
+  "objective": "Decode the universal WIL blit + RLE decode.",
+  "question": "How does the universal blit work?",
+  "method": "Disasm 0x45FD50-0x45FF79.",
+  "scope": "0x45FD50-0x45FF79; RLE ops.",
+  "cell_analysis": {
+    "0x45FD50": {"clip": "0x320x0x258 (800x600) + negative clamps", "surface": "vtable[0x64] GetDC (struct 0x7C)", "stride": "dst (w/2)*x"},
+    "rle": {"0xC0": "skip-run (word count -> x advance)", "0xC1": "pixel-run (word count + left/right clip)", "layout": "word-pair rows"}
+  },
+  "exe_trace": {
+    "blit_chain": "paint -> 0x45FD50 clip + surface -> RLE decode (0xC0 skip/0xC1 run) -> dst write"
+  },
+  "audit_vs_exe": {
+    "F436": "RLE blit family", "F584": "world-map blit", "F607": "intro splash", "F629": "565 blend"
+  },
+  "contrast": {
+    "blit_vs_blend": "0x45FD50 opaque RLE blit vs 0x4621F0 alpha blend",
+    "skip_vs_run": "0xC0 skip + 0xC1 pixel run"
+  },
+  "verdict": "Universal WIL blit PRIMARY-verified: clip + surface + 16-bit RLE decode (0xC0/0xC1); blit engine complete (backs F584/F607/F629).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Blit + RLE decoded from .text.",
+  "cross_refs": ["F436: RLE family", "F584: world-map", "F607: intro", "F629: blend"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45FD50+0x60",
+  "notes": [
+    "screen clip 0x320x0x258",
+    "RLE 0xC0 skip / 0xC1 run",
+    "vtable[0x64] surface GetDC",
+    "dst stride (w/2)*x"
+  ]
+}

@@ -7458,3 +7458,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 336-339（F643-F645：帧节奏/LRU + 变换矩阵/向量 + 点积/矩阵乘 + 数学核弧）；基线 Round 335=8909fb9 → Round 339=4ce6ee7（**304 连发 F335-F645**）。
 - 落盘：handoff-refresh-27-evidence.json（F646，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 340。
+## Round 341 (F647) — 2026-08-12：通用 WIL blit + RLE 解码
+
+- **〔blit〕**0x45FD50（F436/F292 族）：裁剪 0x320×0x258（800×600 屏）+ 负偏移钳制、表面 vtable[0x64] GetDC（结构 0x7C）、dst 步长 (w/2)×x。
+- **〔RLE〕**16 位 RLE 解码：**0xC0 = 跳行**（字数 → x 前进）、**0xC1 = 像素行**（字数 + 左右裁剪）、字对行——blit 引擎 + RLE 解码字节级（支撑 F584/F607/F629 全部 blit）。
+- 落盘：universal-wil-blit-evidence.json（F647，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 341。
