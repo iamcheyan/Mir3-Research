@@ -1,0 +1,37 @@
+{
+  "evidence_id": "full-protocol-bidirectional-closure-2026-08-12-f574",
+  "title": "Round 268 (F574): FULL PROTOCOL BIDIRECTIONAL closure - validation green (compileall/verify exit 0/node/JSON), services 200, master b35c1d2 (232 consecutive F335-F573), 199 evidence JSONs; MILESTONE: INBOUND 100% (recv1 49 + recv2 11 + monster F571) + OUTBOUND 100% (text frame core 0x452940/0x451E60 F572 + 46 sender catalog F573) - ENTIRE client-server protocol BIDIRECTIONAL byte-level: send '#<seq><cmd>/<args>!' via send() socket [0x6044], recv via WSAAsyncSelect 0x7E8 -> dispatch tables; user quest doc 16-道具图册.md untracked (untouched)",
+  "date": "2026-08-12",
+  "objective": "Declare full bidirectional protocol closure.",
+  "question": "Is the entire protocol layer documented both ways?",
+  "method": "Full validation + bidirectional consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "199 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "inbound": "100% (F571: recv1 49 + recv2 11 + monster 0xBC6-0xBD8)",
+    "outbound": "100% (F572: text frame core '#%d%s%s!' + F573: 46 senders)",
+    "transport": {"send": "send() thunk 0x468098 socket [0x6044]", "recv": "WSAAsyncSelect 0x7E8 (F552) -> dispatch tables 0x42042B/0x4218F2"},
+    "repo": "user quest doc 16-道具图册.md untracked - untouched"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F573": "232 rounds pushed; protocol bidirectional complete"
+  },
+  "contrast": {
+    "text_vs_binary": "TEXT protocol '#<seq><cmd>/<args>!' both directions",
+    "in_vs_out": "recv tables 100% bodies + send catalog 46 call sites"
+  },
+  "verdict": "FULL PROTOCOL BIDIRECTIONAL closure (F574): inbound (recv1+recv2+monster) + outbound (text frame + 46 senders) all byte-level; validation green, 232 consecutive rounds, 199 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; coverage from F571-F573.",
+  "cross_refs": ["F571: inbound 100%", "F572: text core", "F573: outbound catalog"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next: HANDOFF refresh 10, sim polish, 0x45A650/0x45B490 tails",
+    "232 consecutive shipping rounds F335-F573"
+  ]
+}

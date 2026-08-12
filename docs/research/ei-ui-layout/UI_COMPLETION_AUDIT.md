@@ -1566,9 +1566,14 @@ git diff --check
 - **46 发送调用点**（30 静态 + 6 动态 + 4 文本包装 + 寄存器参）。
 - 落盘：`outbound-catalog-complete-evidence.json`（F573）+ RESEARCH_LOG Round 267。
 
+## Round 268 (2026-08-12) — 全协议双向闭合（Finding 574）
+
+- **入站 100% + 出站 100% + 232 连发**。
+- 落盘：`full-protocol-bidirectional-evidence.json`（F574）+ RESEARCH_LOG Round 268。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（出站目录完整；下一弧：协议双向 100% 闭合）。
+- 无阻塞项（**协议双向 100%**；下一弧：HANDOFF 刷新 10/模拟器 polish）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

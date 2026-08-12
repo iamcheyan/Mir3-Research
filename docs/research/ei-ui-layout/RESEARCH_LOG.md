@@ -7110,3 +7110,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔扫描〕**0x45171E-0x4524E5 中 **46 个调用 0x452940**（包头构造器）：30 静态 msgid（0x3E9 商人/0x3EA/0x3EF/0x3F0 商店操作 + 0x3F2-0x3F9 商店控件/0x3FA-0x3FE 滚动/0x3FF/0x400 坐标/0x401-0x403 交易 + 0x405/0x406 金币 + 0x407/0x408 重置 + 0x409 背包 + 0x40A/0x416-0x419 NPC/生成）+ 动态（0x451928 寄存器参、0x452052 msg 0x66、0x452085 msg 0x67、0x452105 msg 0xBD6、0x452156 msg 0xBC9 压缩坐标、0x4521CB 寄存器参）+ **文本包装 0x7D1/0x68/0x64/0x65**（F572）。
 - **〔定案〕**F514「34」扩展为 **46 发送调用点字节验证**（0xBC9/0xBD6 = 实体操作 msgid，怪物族 F523 连接）。
 - 落盘：outbound-catalog-complete-evidence.json（F573，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 267。
+## Round 268 (F574) — 2026-08-12：全协议双向闭合
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**199 证据 JSON**；三服务 200；master b35c1d2（**232 连发 F335-F573 已推**）。
+- **〔里程碑〕**入站 100%（recv1 49 + recv2 11 + 怪物 F571）+ 出站 100%（文本帧核心 F572 + **46 发送器目录** F573）——**整个客户端-服务器协议双向字节级**：发送 '#<seq><cmd>/<args>!' 经 send()（socket [0x6044]）、接收经 WSAAsyncSelect 0x7E8（F552）→ 分派表 0x42042B/0x4218F2。
+- **〔仓库〕**用户 quest 文档 16-道具图册.md 未跟踪（未触碰）。
+- 落盘：full-protocol-bidirectional-evidence.json（F574，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 268。
