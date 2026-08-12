@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-7-2026-08-12-f562",
+  "title": "Round 256 (F562): HANDOFF refresh 7 - Rounds 248-255 (F554-F561: recv1 store/craft/trade families + window system arc - dispatcher 0x42ADB0, paint registry 0x4280F0, 14 windows named, hit-test 0x42AAB0; mode table corrections 2=store 3=trade 4=guild 6=party 8=notice), baseline Round 247=01e92a1 -> Round 255=ce24497 (220 consecutive F335-F561), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 248-255.",
+  "question": "What changed since HANDOFF refresh 6?",
+  "method": "Append Round 248-255 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 248-255 appended (8 rounds, F554-F561)",
+    "baseline": "Round 247=01e92a1 -> Round 255=ce24497 (220 consecutive F335-F561)",
+    "arcs": {"store_family": "F555 buy/sell/repair + bag modes 0/1/2/3", "craft_family": "F556 recipe 4-branch", "trade_family": "F557 + mode3 correction", "window_system": "F558-F561 registry + 14 names + hit-test + closure"},
+    "key": "mode table corrected: 2=store 3=trade 4=guild 6=party 8=notice B=quest C=option D=horse E=skillbook F=guild-notice-editor"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F554": "refresh 6 baseline -> now refresh 7", "F335-F561": "220 rounds"
+  },
+  "contrast": {
+    "refresh_6_vs_7": "F543-F553 -> F554-F561 (8 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 7 (F562): Rounds 248-255 documented with mode-table corrections, baseline 01e92a1 -> ce24497, 220 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F554-F561 evidence.",
+  "cross_refs": ["F554: refresh 6", "F561: window system closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 248-255 section to HANDOFF",
+  "notes": [
+    "220 consecutive shipping rounds F335-F561",
+    "mode table corrections consolidated in HANDOFF",
+    "next: sim polish, remaining recv1 bodies"
+  ]
+}

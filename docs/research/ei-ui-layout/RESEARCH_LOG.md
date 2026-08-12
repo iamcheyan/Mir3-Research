@@ -7038,3 +7038,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔弧〕**开关分派器 0x42ADB0 16 模式 + 开窗列表（F550）、交易族 + 模式 3 修正（F557）、绘制分派器 0x4280F0 **权威注册表**（F558）、14 窗口全定名（F559）、命中测试 0x42AAB0 + 输入路由（F560）——**整个窗口系统（开/关/绘/输入）字节级**。
 - **〔注册表〕**0 背包/1 装备/2 商店/3 交易/4 行会/6 组队/7 角色状态/8 公告/9 NPC 对话/B 任务/C 选项/D 坐骑/E 技能书/F 行会公告编辑。
 - 落盘：window-system-arc-closure-evidence.json（F561，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 255。
+## Round 256 (F562) — 2026-08-12：HANDOFF 刷新 7（Round 248-255）
+
+- **〔刷新〕**HANDOFF 追加 Round 248-255（F554-F561：recv1 商店/制作/交易族 + 窗口系统弧 + 模式表修正）；基线 Round 247=01e92a1 → Round 255=ce24497（**220 连发 F335-F561**）。
+- 落盘：handoff-refresh-7-evidence.json（F562，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 256。
