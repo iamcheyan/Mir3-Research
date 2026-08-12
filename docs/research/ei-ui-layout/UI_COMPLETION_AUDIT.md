@@ -3777,3 +3777,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包输入完整；下一弧：剩余深层角落）。
+## Round 631 (2026-08-12) — 背包窗口闭合（Finding 937）
+
+- **595 连发 + 561 证据 + 背包窗口完整**。
+- 落盘：`inventory-window-closure-evidence.json`（F937）+ RESEARCH_LOG Round 631。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（背包窗口完整；下一弧：HANDOFF 刷新 124/剩余角落）。

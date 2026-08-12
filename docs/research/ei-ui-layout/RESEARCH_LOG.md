@@ -8723,3 +8723,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔背包〕**0x42FF90 背包重置（清 [0x23760..0x23780] + [-1] [0x23764]/[0x23768]）；0x42FFD0 **点击**（滚动条 0x417D00 @ +0x278 → 滚动 [0x58] 0x476650 + 3 物品控件 vtable[0xC] + 槽查找 0x42F150 → [0x774] 物品测试 → 页旗标 [0x3C]）；0x4300F0 **使用门**（300ms [0x23788] + 冷却 [0x23784] 0x7D0 + 物品字段检查 [0]/[+4]/[+8]/[+0xC] + 拖动 [0x3A]/word [0x40]）——背包输入完整。
 - 落盘：inventory-ctor-click-use-evidence.json（F936，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 630。
+## Round 631 (F937) — 2026-08-12：背包窗口闭合（F764/F815/F936 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**561 证据 JSON**；三服务 200；master b177a92（**595 连发 F335-F936 已推**）。
+- **〔弧〕**绘制+滚动条+拖动预览（F764）+ 初始化/点击/使用（F815）+ 重置/点击/使用门（F936）——**背包窗口完整**（绘制 + 滚动条 + 槽查找 + 拖动预览 + 使用门），背包表面 100%。
+- 落盘：inventory-window-closure-evidence.json（F937，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 631。

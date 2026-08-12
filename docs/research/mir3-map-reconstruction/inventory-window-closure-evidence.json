@@ -1,0 +1,37 @@
+{
+  "evidence_id": "inventory-window-closure-2026-08-12-f937",
+  "title": "Round 631 (F937): Inventory window CLOSED (F764/F815/F936) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master b177a92 (595 consecutive F335-F936), 561 evidence JSONs; arc: draw+scrollbar+drag preview (F764) + init/click/use (F815) + reset/click/use gate (F936) - inventory window COMPLETE byte-level (draw + scrollbar + slot lookup + drag preview + use gate), inventory surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the inventory window arc.",
+  "question": "Is the inventory window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "561 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F764": "draw+scrollbar", "F815": "init/click/use", "F936": "reset/click/use gate"},
+    "inventory": "draw + input + use = COMPLETE",
+    "milestone": "595 consecutive rounds F335-F936"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F936": "595 rounds pushed; inventory window complete"
+  },
+  "contrast": {
+    "draw_vs_click": "render + hit",
+    "use_vs_drag": "gate + preview"
+  },
+  "verdict": "Inventory window CLOSED (F937): draw + input + use gate all byte-level; validation green, 595 consecutive rounds, 561 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F764/F815/F936.",
+  "cross_refs": ["F764", "F815", "F936"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "595 consecutive shipping rounds F335-F936",
+    "inventory window 100%",
+    "next: HANDOFF refresh 124, remaining corners"
+  ]
+}
