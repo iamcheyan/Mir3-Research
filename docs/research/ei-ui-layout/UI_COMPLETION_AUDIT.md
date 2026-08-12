@@ -3961,3 +3961,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告窗口完整；下一弧：HANDOFF 刷新 131/剩余角落）。
+## Round 654 (2026-08-12) — HANDOFF 刷新 131（Finding 960）
+
+- **Round 650-653 追加 + 618 连发**（对话/公告窗口完整入档）。
+- 落盘：`handoff-refresh-131-evidence.json`（F960）+ RESEARCH_LOG Round 654。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话/公告窗口完整；下一弧：剩余深层角落/模拟器 polish）。
