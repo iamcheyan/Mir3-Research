@@ -8403,3 +8403,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 553-555（F860-F861：坐骑命中/点击/构造 + 坐骑窗口全闭合）；基线 Round 552=fa44e88 → Round 555=8d5f502（**520 连发 F335-F861**）。
 - 落盘：handoff-refresh-97-evidence.json（F862，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 556。
+## Round 557 (F863) — 2026-08-12：基础行列表构造 + 清除（F860 基类依赖）
+
+- **〔列表〕**0x415130 构造（SEH + vtable 0x476638 + 列表 [0x8] + 计数 [0x18] + 0x415210）；0x415180/0x415220 析构/清除（链表 free 0x4680F8 + 计数重置）；0x415280 行添加（**F734 确认**：修剪 ≥8、头 [0x8]/尾 [0x10]/计数 [0x18]）——行列表基类完整。
+- 落盘：base-line-list-ctor-clear-evidence.json（F863，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 557。

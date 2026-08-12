@@ -1,0 +1,36 @@
+{
+  "evidence_id": "base-line-list-ctor-clear-2026-08-12-f863",
+  "title": "Round 557 (F863): Base line-list ctor + clear (F860 base dep) - 0x415130 ctor (SEH + vtable 0x476638 + list [0x8] + count [0x18] + 0x415210); 0x415180/0x415220 DTOR/CLEAR (chain free 0x4680F8 + count reset); 0x415280 LINE ADD (F734 CONFIRMED: prune >=8, head [0x8]/tail [0x10]/count [0x18]) - line-list base class COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the base line-list ctor + clear.",
+  "question": "How does the base line-list construct + clear?",
+  "method": "Disasm 0x415130-0x415280.",
+  "scope": "0x415130-0x415280; list.",
+  "cell_analysis": {
+    "0x415130": "ctor: vtable 0x476638 + [0x8] + [0x18]",
+    "0x415180": "dtor/clear: chain free + reset",
+    "0x415280": "line add: F734 prune >=8"
+  },
+  "exe_trace": {
+    "list_chain": "ctor -> add (prune) -> clear"
+  },
+  "audit_vs_exe": {
+    "F860": "mount base", "F734": "notice add", "F677": "line list"
+  },
+  "contrast": {
+    "ctor_vs_clear": "init + free",
+    "add_vs_prune": "insert + >=8"
+  },
+  "verdict": "Base line-list ctor + clear PRIMARY-verified: ctor + free + add; line-list base complete (F734/F677).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Line-list base decoded from .text.",
+  "cross_refs": ["F860: mount", "F734: add", "F677: list"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x415130+0x10; 0x415280+0x10",
+  "notes": [
+    "vtable 0x476638",
+    "prune >=8",
+    "free 0x4680F8",
+    "head/tail/count"
+  ]
+}

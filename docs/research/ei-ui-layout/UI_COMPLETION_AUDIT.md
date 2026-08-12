@@ -3185,3 +3185,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（坐骑窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 557 (2026-08-12) — 基础行列表构造 + 清除（Finding 863）
+
+- **ctor + free + 修剪添加**（列表基类完整）。
+- 落盘：`base-line-list-ctor-clear-evidence.json`（F863）+ RESEARCH_LOG Round 557。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（列表基类完整；下一弧：剩余深层角落）。
