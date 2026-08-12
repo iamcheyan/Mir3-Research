@@ -7568,3 +7568,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 361-363（F668-F669：实体音效槽族 + 音频最终闭合）；基线 Round 360=3287054 → Round 363=409fe27（**328 连发 F335-F669**）。
 - 落盘：handoff-refresh-34-evidence.json（F670，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 364。
+## Round 365 (F671) — 2026-08-12：任务窗绘制完整
+
+- **〔绘制〕**0x447470（F537 确认）：文本链 [0x54]/[0x1E8] + **19 行上限 0x13**（[esp+0x10] ≥ 0x13 门）、**宽度门 0xC8（200px）+ 换行子门 0xA0（160px）**、色旗标 [0x204]/[0x210] → 0x1919C8/0x19197D、**行 y = idx×15+0x12**（F537 idx×3×5）、x = [0x18]+0x41、0x45DD70 绘制 + 2 控件矩形（[0x74]/[0x128] + 2 遍历）——任务窗渲染字节级（F537 扩展）。
+- 落盘：quest-window-paint-full-evidence.json（F671，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 365。

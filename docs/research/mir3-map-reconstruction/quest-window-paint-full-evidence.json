@@ -1,0 +1,34 @@
+{
+  "evidence_id": "quest-window-paint-full-2026-08-12-f671",
+  "title": "Round 365 (F671): Quest window paint FULL - 0x447470 (F537 confirmed): text chain [0x54]/[0x1E8] + 19-line cap 0x13 ([esp+0x10] >= 0x13 gate), width gate 0xC8 (200px) + wrap sub-gate 0xA0 (160px), color flags [0x204]/[0x210] -> 0x1919C8/0x19197D, line y = idx*15+0x12 (F537 idx*3*5), x = [0x18]+0x41, 0x45DD70 draw + 2 control rects ([0x74]/[0x128] + 2-walk) - quest window render byte-level (F537 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window paint fully.",
+  "question": "How does the quest window render?",
+  "method": "Disasm 0x447470-0x447635.",
+  "scope": "0x447470-0x447635; chain; caps.",
+  "cell_analysis": {
+    "0x447470": {"chain": "[0x54]/[0x1E8] text list", "cap": "19-line 0x13 gate", "width": "0xC8 (200px) + wrap 0xA0", "colors": "[0x204]/[0x210] -> 0x1919C8/0x19197D", "line": "y = idx*15+0x12 (F537), x = [0x18]+0x41", "draw": "0x45DD70", "controls": "2 rects [0x74]/[0x128] + 2-walk"}
+  },
+  "exe_trace": {
+    "quest_paint_chain": "quest window -> chain walk -> cap/width -> color -> line draw"
+  },
+  "audit_vs_exe": {
+    "F537": "19-line + colors CONFIRMED + full body", "F553": "quest journal notices", "F564": "text family"
+  },
+  "contrast": {
+    "cap_vs_width": "19-line + 200px width gates",
+    "colors": "2-state color flags"
+  },
+  "verdict": "Quest window paint PRIMARY-verified: chain + caps + colors + line math; F537 extended.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Quest render decoded from .text.",
+  "cross_refs": ["F537: quest render", "F553: journal", "F564: text"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x447470+0x40",
+  "notes": [
+    "19-line cap 0x13",
+    "width gate 0xC8",
+    "line y = idx*15+0x12",
+    "colors 0x1919C8/0x19197D"
+  ]
+}
