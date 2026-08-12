@@ -347,6 +347,13 @@ git diff --check
 - **窗口绘制矩阵定稿**：14 窗口 paint/mouse 全枚举（id5/10 无窗）。
 - 落盘：`trade-chat-option-paint-evidence.json`（F341，primary-bytes）+ matrix paint-matrix-final 新记录 + layout.json version 0.19（3 新记录）+ RESEARCH_LOG Round 35。
 
+## Round 36 (2026-08-12) — EI 地图目录清单（Finding 342：544 张全验证 + 瓦片库分布 + mapviewer 冒烟）
+
+- **544 张 .map 全解析通过**（w/h @ 0x16/0x18 与载入器 0x43B600 一致）；0.map=比奇城 800×800；尺寸/尺寸直方图记录。
+- **瓦片库分布**：back {0,1,2}=tiles 族；mid/front {4,5,6,10,12,13,15}=houses/cliffs/dungeons/objects/wood；255=空层。
+- **mapviewer 冒烟**：/api/maps、/tile（512×512 JPEG）、/api/cell（lib 解析正确）全 200。
+- 落盘：`docs/research/mir3-map-reconstruction/map-inventory-evidence.json`（F342，primary-bytes）+ RESEARCH_LOG Round 36。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

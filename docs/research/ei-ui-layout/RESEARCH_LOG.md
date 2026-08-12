@@ -5837,3 +5837,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔选项 paint〕0x441380**（id12）：8 控件 0x417830 重定位（+0x7C @ x+0xDA/y+0xEE、+0x130 @ x+0x94/y+0x2B、+0x1E4 @ x+0xB9/y+0x2B、+0x298 @ x+0x94/y+0x74、+0x34C @ x+0xB9/y+0x74、+0x400 @ x+0x94/y+0xBE、+2 至 0x414470）。
 - **〔矩阵定稿〕窗口绘制矩阵全表**：id0 0x42EB80/0x42FAB0；id1 0x44B2D0/0x44B6B0；id2 0x44E260/0x44E650；id3 0x415B10/0x416790；id4 0x425040/0x4258F0；id6 0x4243D0；id7 0x450530/0x450AC0；id8 0x414700；id9 0x43F460；idB 0x447470；idC 0x441380；idD 0x4269C0；idE 0x439500；idF 0x43E3C0；id5/10 无窗。**14 窗口 paint/mouse 全枚举完成。**
 - 落盘：`trade-chat-option-paint-evidence.json`（F341，17 键模板，evidence_level=primary-bytes；audit_vs_exe 含 F295/F324/Round 28 交叉）+ ui-coverage-matrix.json（paint-matrix-final 新记录 closed_2026_08_12）+ layout.json version 0.19（paint.matrix-final / window.chat-paint-0x414700 / window.trade-paint-0x415B10）+ UI_COMPLETION_AUDIT.md Round 35。
+
+## Round 36 (F342) — 2026-08-12：EI 地图目录清单（544 张全验证）+ 瓦片库分布 + mapviewer 冒烟
+
+- **〔清单〕544 张 .map 全解析通过**（w/h @ 文件偏移 0x16/0x18 = 22/24，与客户端载入器 0x43B600 的 ReadFile 0x1C → [+0x110] 一致）；尺寸直方图（147528B×84、2360028B×72、36903B×56…）；**w/h 直方图**（100×100×91、400×400×72、50×50×59、200×200×52、22×22×44、30×30×39、300×300×32、800×800×4、600×600×4…）。**0.map = 比奇城 800×800 9.44MB**（F331 旧注『0.map 32×32』系另一命名约定，实锤 800×800）。
+- **〔瓦片库分布〕**back 层 {2:14057, 1:6104, 0:485, 255:19} = tiles5c/tiles30c/tilesc 地面族；mid {15:7365, 13:164, 12:79, 10:20, 5:20, 4:15, 6…} = wood_tilesc/object2c/object1c/smobjectsc/cliffsc/housesc/dungeonsc；front {15:7670, 10:8, 207:6…}；255 = 空层（3900+ 单元）。header[0x14] ∈ {0,1}（106/14）确认 F331。
+- **〔KR_ORDER 绑定〕**mapviewer 的 Zircon 表：0 tilesc / 1 tiles30c / 2 tiles5c / 3 smtilesc / 4 housesc / 5 cliffsc / 6 dungeonsc / 7 innersc / 8 furnituresc / 9 wallsc / 10 smobjectsc / 11 animationsc / 12 object1c / 13 object2c / 15-26 wood_* / 30-41 sand_* / 45-56 snow_* / 200 sabak。与客户端 0x43B600 的 56 槽（0x0E..0x1B / 0x1C..0x29）区间一致——逐图保真度标记 candidate。
+- **〔mapviewer 冒烟〕**/api/maps 200（0.map=比奇城 800×800 world 38400×25600 ladder [2,3,4]）；**/tile 渲染 200**（512×512 JPEG 88377B）；**/api/cell**（0.map 0,0 → {flag:2, back:{file:1, lib:tiles30c, frame:754}, mid:{file:0, lib:tilesc, frame:65535}, front:{file:15, lib:wood_tilesc, frame:65535}}）。
+- 落盘：`docs/research/mir3-map-reconstruction/map-inventory-evidence.json`（F342，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 36。

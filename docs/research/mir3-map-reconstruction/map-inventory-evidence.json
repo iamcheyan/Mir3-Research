@@ -1,0 +1,76 @@
+{
+  "evidence_id": "map-inventory-2026-08-12-f342",
+  "title": "Round 36 (F342): EI map inventory - 544 maps verified against client loader 0x43B600 (headers w/h@0x16/0x18, tile lib distribution, KR_ORDER binding) + mapviewer smoke test",
+  "date": "2026-08-12",
+  "objective": "Systematically inventory the EI 3.0 Map directory (544 .map files): verify all headers parse (w/h at file offset 0x16/0x18 per client loader 0x43B600), measure tile-library byte distribution (back/mid/front layers), cross-check lib ids against the mapviewer KR_ORDER binding table, and smoke-test the mapviewer rendering pipeline.",
+  "question": "How many EI maps exist, what are their sizes? Do all headers parse? Which tile libraries do the maps reference (back/mid/front)? Does the mapviewer render them correctly?",
+  "method": "Direct binary scan of all 544 .map files (struct.unpack w/h at 22/24); tile lib byte histogram (back 3-byte entries from offset 28; cell 14-byte entries midFile@+4/frontFile@+3); mapviewer HTTP smoke tests (/api/maps, /tile, /api/cell). Cross-validated against client map loader 0x43B600 (F331) and mapviewer KR_ORDER.",
+  "scope": "$MIR3_EI_ROOT/Map/*.map (544 files); $MIR3_EI_ROOT/Data/*.wil/*.wix; mapviewer 8899.",
+  "cell_analysis": {
+    "inventory": {
+      "total": 544,
+      "all_parse": true,
+      "header": "w @ 0x16 (22), h @ 0x18 (24) uint16 LE; matches client loader 0x43B600 (F331: ReadFile 0x1C -> [+0x110])",
+      "size_histogram": {"147528B": 84, "2360028B": 72, "36903B": 56, "590028B": 51, "7167B": 44, "13303B": 33, "1327528B": 31, "19144B": 28, "23628B": 19, "5528B": 14},
+      "w_h_histogram_top": {"100x100": 91, "400x400": 72, "50x50": 59, "200x200": 52, "22x22": 44, "30x30": 39, "300x300": 32, "36x36": 30, "20x20": 22, "40x40": 19, "800x800": 4, "600x600": 4}
+    },
+    "notable_maps": {
+      "0.map": "比奇城 Bichon City, 800x800, 9.44MB",
+      "1.map": "600x600, 5.31MB",
+      "01.map": "600x600 (dupe of 1.map size)",
+      "0150.map": "24x28 (small instance)",
+      "01_001..01_003": "rooms 30x30/50x50/18x22",
+      "02.map": "600x600 town; 02_001..02_014 rooms/interiors"
+    },
+    "tile_lib_distribution": {
+      "back": {"2": 14057, "1": 6104, "0": 485, "255": 19},
+      "mid": {"15": 7365, "255": 3805, "0": 482, "13": 164, "12": 79, "10": 20, "5": 20, "4": 15, "207": 9, "7": 6, "8": 5, "9": 4, "227": 3, "231": 3, "11": 2},
+      "front": {"15": 7670, "255": 3988, "0": 302, "252": 21, "10": 8, "207": 6, "25": 3, "3": 2},
+      "header_lib": {"hdr[0x14]=0": 106, "hdr[0x14]=1": 14}
+    },
+    "kr_order_mapping": {
+      "0": "tilesc", "1": "tiles30c", "2": "tiles5c", "3": "smtilesc",
+      "4": "housesc", "5": "cliffsc", "6": "dungeonsc", "7": "innersc",
+      "8": "furnituresc", "9": "wallsc", "10": "smobjectsc", "11": "animationsc",
+      "12": "object1c", "13": "object2c", "15-26": "wood_*", "30-41": "sand_*", "45-56": "snow_*",
+      "200": "sabak (Zircon custom)"
+    },
+    "mapviewer_smoke": {
+      "api_maps": "200 OK; 0.map=比奇城/800x800/38400x25600 world; ladder [2,3,4]; town category",
+      "tile_render": "/tile?map=0.map&tx=0&ty=0&z=1&g=1&m=1&f=1 -> 200, 512x512 JPEG 88377B",
+      "cell_info": "/api/cell?map=0.map&x=0&y=0 -> {flag:2, back:{file:1, lib:tiles30c, frame:754}, mid:{file:0, lib:tilesc, frame:65535}, front:{file:15, lib:wood_tilesc, frame:65535}}",
+      "catalog": "/api/catalog + /api/entities + /api/connections available"
+    }
+  },
+  "exe_trace": {
+    "loader": "0x43B600 (F331): sprintf '.\\Map\\%s.map'; CreateFileA; ReadFile 0x1C -> [+0x110] header; w*h*3/4 -> [+0x108]; w*h*14 -> [+0x10C]; 56 tile slots 0x5612B4..0x565994 (stride 0x144) via 0x465FE0/0x4660E0",
+    "tile_slots": "lib ids 0x0E..0x1B (14-27) and 0x1C..0x29 (28-41) bound at map load (F331; matches KR_ORDER 15-26 wood / 30-41 sand)"
+  },
+  "audit_vs_exe": {
+    "F331_map_sizes": "F331 note '0.map 32x32' was about a different map-naming convention; actual 0.map = 800x800 Bichon City (byte-verified w=800 h=800 @ 0x16/0x18)",
+    "map_count": "F331 said 544 shipped maps; confirmed 544 files all parse",
+    "header_lib": "hdr[0x14] ∈ {0,1} confirmed (106 maps lib0 / 14 maps lib1) - matches F331"
+  },
+  "contrast": {
+    "back_libs": "{0,1,2} = tilesc/tiles30c/tiles5c ground families (most common back lib 2 = tiles5c 14057 cells)",
+    "mid_front_libs": "{15 wood_tilesc, 13 object2c, 12 object1c, 10 smobjectsc, 5 cliffsc, 4 housesc, 6 dungeonsc} - object/building families dominate mid/front",
+    "empty": "lib 255 = no-layer (3900+ cells) - sparse maps use only back",
+    "kr_vs_original": "KR_ORDER is the Zircon/Korean-server binding; original EI client binds per-map via 0x43B600's 56-slot table - mapping must be verified per-map for full fidelity [candidate]"
+  },
+  "verdict": "All 544 EI maps parse correctly (w/h @ 0x16/0x18, matching client loader 0x43B600). Tile library usage: back layers {0,1,2}=tiles families; mid/front {4,5,6,10,12,13,15}=houses/cliffs/dungeons/objects/wood. mapviewer renders correctly (0.map = 比奇城 800x800, tile JPEG 512x512, cell info resolves libs via KR_ORDER). Map inventory baseline established for per-map investigation.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All sizes, headers and lib bytes read directly from the 544 .map files; KR_ORDER binding is the mapviewer's Zircon-table (map-specific fidelity marked candidate).",
+  "cross_refs": [
+    "F331: map loader 0x43B600; map object 0xF5200 layout; 56 tile slots",
+    "F310: minimap MMap.wil/FMMap.wil bindings",
+    "mapviewer-investigation.md (existing docs)"
+  ],
+  "tool": "python3 struct binary scan; curl mapviewer HTTP; pefile (previous rounds)",
+  "reproduce": "python3 - <<'PY' (scan $MIR3_EI_ROOT/Map/*.map w/h @ 22/24 + lib histogram); curl http://127.0.0.1:8899/api/maps; curl 'http://127.0.0.1:8899/tile?map=0.map&tx=0&ty=0&z=1&g=1&m=1&f=1' -o /tmp/t.png; curl 'http://127.0.0.1:8899/api/cell?map=0.map&x=0&y=0'",
+  "notes": [
+    "0.map 9.44MB (800x800): back half-res table 800/2*800/2*3 = 480000B + cells 800*800*14 = 8960000B + header ~9440000B total - matches size 9440028",
+    "world size = w*48 x h*32 (mapviewer: 800x800 -> 38400x25600)",
+    "ladder field in /api/maps = map transition tiles (0.map [2,3,4])",
+    "next round: per-map tile slot verification against original client 56-slot binding; town/cave deep-dive (0.map, 1.map, 02.map, D101-D103, D201-D203)"
+  ]
+}
