@@ -7370,3 +7370,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 318-321（F625-F627：特效生成 + tick/生命周期 + 特效弧）；基线 Round 317=581fd9e → Round 321=582e689（**286 连发 F335-F627**）。
 - 落盘：handoff-refresh-22-evidence.json（F628，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 322。
+## Round 323 (F629) — 2026-08-12：565 混合 + RLE 绘制
+
+- **〔混合〕**0x4621F0（F489 绘制侧）：**16 位 RGB565 拆分**（掩码 0x7E0F81F/0x7C0F83F/0xF81F07E0）、**每通道 α 混合**（src×α + dst×(32−α))>>5）、暂存 [0x917C20..0x917C2C]。
+- **〔RLE〕**操作码 0xC2/0xC3 填充（α 0x12C/0x130、[ebx+0x6C]/[0x70]/[0x74] 掩码 + 移位 [0x67]/[0x68]/[0x69]）——565 混合 + RLE 绘制字节级（F436 RLE 操作确认）。
+- 落盘：565-blend-rle-paint-evidence.json（F629，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 323。

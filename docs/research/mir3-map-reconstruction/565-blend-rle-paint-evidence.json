@@ -1,0 +1,35 @@
+{
+  "evidence_id": "565-blend-rle-paint-2026-08-12-f629",
+  "title": "Round 323 (F629): 565 blend + RLE paint - 0x4621F0 (F489 paint side): 16-bit RGB565 split (masks 0x7E0F81F/0x7C0F83F/0xF81F07E0), alpha blend per channel (src*alpha + dst*(32-alpha))>>5, scratch [0x917C20..0x917C2C], RLE ops 0xC2/0xC3 fill (alpha 0x12C/0x130, [ebx+0x6C]/[0x70]/[0x74] masks + shift [0x67]/[0x68]/[0x69]) - 565 blend + RLE paint byte-level (F436 RLE ops CONFIRMED)",
+  "date": "2026-08-12",
+  "objective": "Decode the 565 blend + RLE paint.",
+  "question": "How does the 565 color blend work?",
+  "method": "Disasm 0x4621F0-0x4623F9.",
+  "scope": "0x4621F0-0x4623F9; 565 masks; RLE.",
+  "cell_analysis": {
+    "0x4621F0": {"565": "RGB565 split (0x7E0F81F/0x7C0F83F/0xF81F07E0)", "blend": "src*alpha + dst*(32-alpha)>>5 per channel", "scratch": "[0x917C20..0x917C2C]"},
+    "rle": {"ops": "0xC2/0xC3 fill", "alpha": "0x12C/0x130", "masks": "[ebx+0x6C]/[0x70]/[0x74] + shifts [0x67]/[0x68]/[0x69]"}
+  },
+  "exe_trace": {
+    "blend_chain": "effect paint -> 0x4621F0 565 split + alpha blend + RLE fill"
+  },
+  "audit_vs_exe": {
+    "F436": "RLE op 0xC2 CONFIRMED", "F489": "effect paint side", "F292": "F436-family fill color"
+  },
+  "contrast": {
+    "blend_vs_rle": "per-pixel blend + RLE fill ops",
+    "src_dst": "src*alpha + dst*(32-alpha)"
+  },
+  "verdict": "565 blend + RLE paint PRIMARY-verified: RGB565 channel blend + RLE fill; F436 RLE ops confirmed in context.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Blend decoded from .text.",
+  "cross_refs": ["F436: RLE ops", "F489: effect paint", "F292: fill color"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4621F0+0x40",
+  "notes": [
+    "565 masks split RGB channels",
+    "alpha 0-32 blend",
+    "RLE 0xC2/0xC3 fill",
+    "scratch [0x917C20..0x917C2C]"
+  ]
+}
