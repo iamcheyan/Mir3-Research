@@ -1,0 +1,38 @@
+{
+  "evidence_id": "trade-window-full-closure-2026-08-12-f843",
+  "title": "Round 537 (F843): Trade window FULL closure (F557/F749/F842) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master ccb2823 (501 consecutive F335-F842), 467 evidence JSONs; arc: trade family (F557) + slot layout (F749) + window draw (F842) - trade window COMPLETE byte-level (2-grid x 12-slot + place/write + center/hit + drag preview), window mode 3 fully documented; 500+ consecutive rounds milestone",
+  "date": "2026-08-12",
+  "objective": "Close the trade window fully.",
+  "question": "Is the trade window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "467 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F557": "family", "F749": "layout", "F842": "draw"},
+    "trade": "grid + place + draw + drag = COMPLETE",
+    "milestone": "501 consecutive rounds F335-F842"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F842": "501 rounds pushed; trade window complete"
+  },
+  "contrast": {
+    "layout_vs_draw": "slots + render",
+    "hit_vs_drag": "grid + preview"
+  },
+  "verdict": "Trade window FULL closure (F843): grid + place + draw + drag all byte-level; validation green, 501 consecutive rounds, 467 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F557/F749/F842.",
+  "cross_refs": ["F557", "F749", "F842"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "501 consecutive shipping rounds F335-F842",
+    "500+ milestone",
+    "trade window 100%",
+    "next: HANDOFF refresh 91, remaining corners"
+  ]
+}

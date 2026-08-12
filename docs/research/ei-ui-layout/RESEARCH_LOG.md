@@ -8316,3 +8316,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔交易〕**0x415B10：居中矩形 [0x5C]/[0x6C]（SetRect 0x4762B0）+ **己方/对方网格命中**（鼠标 [0x7DA1C0]/[0x7DA1C4] via PtInRect 0x4762B4）+ **拖动预览**：槽命中 0x416830 + 放置 0x4162E0（F749）+ IntersectRect 0x476248 + **矩阵 0x466800（F643）** 缩放——交易窗口绘制完整（F557/F749 用）。
 - 落盘：trade-window-draw-evidence.json（F842，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 536。
+## Round 537 (F843) — 2026-08-12：交易窗口全闭合（F557/F749/F842 汇总）+ 500+ 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**467 证据 JSON**；三服务 200；master ccb2823（**501 连发 F335-F842 已推**）——**500+ 连发里程碑**。
+- **〔弧〕**交易家族（F557）+ 槽布局（F749）+ 窗口绘制（F842）——**交易窗口完整**（2 网格 × 12 槽 + 放置/写入 + 居中/命中 + 拖动预览），模式 3 全文档化。
+- 落盘：trade-window-full-closure-evidence.json（F843，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 537。
