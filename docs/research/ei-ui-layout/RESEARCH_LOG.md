@@ -7454,3 +7454,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**269 证据 JSON**；三服务 200；master 59a6127（**303 连发 F335-F644 已推**）。
 - **〔弧〕**变换矩阵 + 向量数学（F643）+ 向量点积 + 矩阵乘法（F644）——**共享数学核完整**（支撑全部渐变/绘制/投影 F588/F594/F625/F435）。
 - 落盘：math-core-arc-closure-evidence.json（F645，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 339。
+## Round 340 (F646) — 2026-08-12：HANDOFF 刷新 27（Round 336-339）
+
+- **〔刷新〕**HANDOFF 追加 Round 336-339（F643-F645：帧节奏/LRU + 变换矩阵/向量 + 点积/矩阵乘 + 数学核弧）；基线 Round 335=8909fb9 → Round 339=4ce6ee7（**304 连发 F335-F645**）。
+- 落盘：handoff-refresh-27-evidence.json（F646，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 340。
