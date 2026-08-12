@@ -3793,3 +3793,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 633 (2026-08-12) — 技能窗口输入 + 记录列表（Finding 939）
+
+- **输入 + 记录列表**（技能输入完整）。
+- 落盘：`skill-window-input-evidence.json`（F939）+ RESEARCH_LOG Round 633。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能输入完整；下一弧：剩余深层角落）。

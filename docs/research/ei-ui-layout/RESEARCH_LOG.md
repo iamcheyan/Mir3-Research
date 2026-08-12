@@ -8732,3 +8732,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 629-631（F936-F937：背包构造/点击/使用 + 背包窗口闭合）；基线 Round 628=4109e2a → Round 631=443c043（**596 连发 F335-F937**）。
 - 落盘：handoff-refresh-124-evidence.json（F938，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 632。
+## Round 633 (F939) — 2026-08-12：技能窗口输入 + 记录列表（F743/F897 依赖）
+
+- **〔技能〕**0x43AC80 技能输入（3 页签控件 vtable[8] @ +0xD8 stride 0xB4 + 8 技能槽控件 @ +0x2F4 stride 0xB4 + 槽查找 0x43A370 → 选中 [0x964]）；0x43AD00 页签重置（3 清）；0x43AD20 技能记录构造（vtable 0x4768E4）；0x43AD50 **列表添加**（dlist 0x476900，F743 dlist 0x4767C0 相关）——技能输入完整。
+- 落盘：skill-window-input-evidence.json（F939，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 633。
