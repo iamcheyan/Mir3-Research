@@ -1,0 +1,37 @@
+{
+  "evidence_id": "bag-equip-manager-2026-08-12-f477",
+  "title": "Round 171 (F477): Bag/equip manager + item transfer - 0x42DC20 manager CTOR: 46 x 0xC2C bag records + 6 x 0xC24 equip records (0x4686C4, ctor 0x415730/dtor 0x415740/0x415750 + 0x426E70), zero 0x1236 dwords [0xDA4] marks, file load (0x4760DC CreateFileA, path 0x47BDCC, 0x22FE8+0x4B0+0x48D8 reads, header text 0x47BDC4 via 0x45DC70); 0x42DB80 = item TRANSFER (find empty in source list [0xDA4] scan 0x2E, copy 0x308 dwords between bag slot and equip slot [0x6CD4+...] + [0xDA8+...], marks, clear 0x42FB20) - bag<->equip item movement + save/load persistence",
+  "date": "2026-08-12",
+  "objective": "Decode the bag/equip manager and item transfer; close the 0x419D40 item-use path question.",
+  "question": "How are items moved between bag and equip slots and persisted?",
+  "method": "Disasm 0x42DC20 (manager ctor) + 0x42DB80 (transfer) + 0x42DB50 head.",
+  "scope": "0x42DB50-0x42DC20; bag 46x0xC2C; equip 6x0xC24; file 0x47BDCC.",
+  "cell_analysis": {
+    "manager_ctor_0x42DC20": {"bag": "46 x 0xC2C records (0x4686C4, ctor 0x415730)", "equip": "6 x 0xC24 records (0x4686C4, 0x415750 + 0x426E70)", "marks": "0x1236 dwords zeroed at [ebx+0xDA4]", "file": "CreateFileA 0x4760DC (path 0x47BDCC), reads 0x22FE8/0x4B0/0x48D8, header 0x47BDC4"},
+    "transfer_0x42DB80": {"src_scan": "find empty: [edx+slot*0xC2C+0xDA4] == 0, loop 0x2E (46)", "copy": "0x308 dwords from bag [edx+...0x6CD4] to equip [edx+word[ebp+0x1A]*0xC24+0xDA8] (or reverse)", "marks": "[+0xDA4] = 1 occupied", "clear": "0x42FB20 after move"},
+    "file_layout": {"0x22FE8": "bag save block (46 x 0xC20 = 0x22FE0 + hdr)", "0x4B0": "equip block (6 x 0xC4?)", "0x48D8": "extended block"}
+  },
+  "exe_trace": {
+    "item_chain": "bag click -> transfer 0x42DB80 (bag<->equip) -> marks + save file -> paint"
+  },
+  "audit_vs_exe": {
+    "F470": "equip records [0xDA4]/[0xDA8] consistent with status panel [0x2F4]",
+    "F464": "0x308 dword record copy shared",
+    "F466": "0x42FB20 slot clear reused"
+  },
+  "contrast": {
+    "transfer_vs_packet": "transfer = local record move + file persist; equip packets (F470) = server-driven",
+    "bag_vs_equip": "bag stride 0xC2C vs equip 0xC24 (record + 4/8 header)"
+  },
+  "verdict": "Bag/equip manager PRIMARY-verified: ctor 0x42DC20 (46 bag + 6 equip records + file persistence), transfer 0x42DB80 (0x308 dword copies + marks). Item movement between bag and equip decoded; persistence via save file.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Manager ctor + transfer decoded from .text.",
+  "cross_refs": ["F470: equip packets", "F464: item record", "F466: bag ops"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x42DC20+0x60, 0x42DB80+0x40",
+  "notes": [
+    "equip count here = 6 (transfer) vs 12 (status hit-test) - two equip sets [inference]",
+    "0x47BDCC = save file name constant",
+    "0x426E70 = equip record ctor variant"
+  ]
+}

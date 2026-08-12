@@ -6608,3 +6608,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔输入〕**0x43E4B0：2 编辑控件（vtable+0x10 命中 @[0x54]/[0x108]，stride 0xB4）；对话文本 [0x1CC]（0xFA0 字符）'/' token 拆分 → 0x45DC70 脚本行绘制（0x0D 换行 2px 间距）；**提交 → 0x4524D0（回复消息）或 0x4524A0（[0x1D0] 特殊模式）**。
 - **〔闭合〕**F404 NPC 对话交互全解（点击/输入/发送）。
 - 落盘：npc-dialog-input-send-evidence.json（F476，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 170。
+## Round 171 (F477) — 2026-08-12：背包/装备管理器 + 物品转移
+
+- **〔管理器〕**0x42DC20 构造：46 × 0xC2C 背包记录 + 6 × 0xC24 装备记录（0x4686C4、ctor 0x415730/0x415750 + 0x426E70）、[0xDA4] 0x1236 dword 标记清零、**文件持久化**（0x4760DC CreateFileA，路径 0x47BDCC，读取 0x22FE8/0x4B0/0x48D8）。
+- **〔转移〕**0x42DB80：找空（[edx+槽*0xC2C+0xDA4]==0，循环 0x2E）→ **0x308 dword 记录复制**（背包 ↔ 装备槽）+ 标记 + 清 0x42FB20。
+- 落盘：bag-equip-manager-evidence.json（F477，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 171。
