@@ -1231,9 +1231,14 @@ git diff --check
 - **200 连发 F335-F505 + 131 证据 JSON + 全 pending 闭合**。
 - 落盘：`round-200-milestone-evidence.json`（F506）+ RESEARCH_LOG Round 200。
 
+## Round 201 (2026-08-12) — 法术特效处理器类（Finding 507）
+
+- **9 移动变体**（静止/投射/追踪）。
+- 落盘：`spell-effect-handler-classes-evidence.json`（F507）+ RESEARCH_LOG Round 201。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（全部闭合；后续 = 持续深化，见 RESEARCH_LOG）。
+- 无阻塞项（法术特效深化）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

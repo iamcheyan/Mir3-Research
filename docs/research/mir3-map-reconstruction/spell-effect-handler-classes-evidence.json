@@ -1,0 +1,37 @@
+{
+  "evidence_id": "spell-effect-handler-classes-2026-08-12-f507",
+  "title": "Round 201 (F507): Spell-effect handler classes - spawner type dispatch 0x4357E8 -> 9 handlers differing in [0x8]/[0xC] flags + [0x120] walk-flag + [0x18] target: 0x43538C default (walk-flag read), 0x4354CA (both set), 0x435600/0x4354FD/0x4355E6 (walk-flag=0, stationary), 0x435322 (pos reuse), 0x4354C7 ([0x18] target set), 0x435313 (walk-flag=0 + target), 0x4355BD (entity target check [ecx+0xC1]) - spell effects classified by MOVEMENT (stationary/projectile/homing), per-type byte map 0x435808",
+  "date": "2026-08-12",
+  "objective": "Classify the spell-effect handler variants by movement behavior.",
+  "question": "How do spell effects differ in their spawn/movement handling?",
+  "method": "Disasm 9 handler heads from jt 0x4357E8 + byte map 0x435808.",
+  "scope": "0x4357E8 jt; handlers 0x43538C-0x435600; map 0x435808.",
+  "cell_analysis": {
+    "handlers": {"0x43538C": "default (walk-flag [0x120] read + frame base)", "0x4354CA": "both flags set (projectile?)", "0x435600": "walk-flag=0 (stationary)", "0x4354FD": "walk-flag=0", "0x435322": "pos reuse (0xC0/0xC4)", "0x4355E6": "walk-flag=0", "0x4354C7": "target [0x18] set (homing)", "0x435313": "walk-flag=0 + target", "0x4355BD": "entity target check [ecx+0xC1]"},
+    "classification": "movement classes: stationary (walk=0) / projectile (both flags) / homing (target [0x18])",
+    "byte_map": "0x435808: 48 bytes mapping types to handlers (0-6 + default 7)"
+  },
+  "exe_trace": {
+    "spell_chain": "effect type -> handler class (movement) -> tick 0x435A20 -> draw 0x435030"
+  },
+  "audit_vs_exe": {
+    "F489": "spawner type dispatch detail (was opaque)",
+    "F487": "walk-flag [0x120] used in tick",
+    "F505": "type family = effect classes"
+  },
+  "contrast": {
+    "stationary_vs_projectile": "walk-flag 0 vs both-set = buff vs bolt",
+    "homing_vs_free": "target [0x18] vs free-flight"
+  },
+  "verdict": "Spell-effect handler classes PRIMARY-verified: 9 movement variants (stationary/projectile/homing) via jt 0x4357E8 + byte map 0x435808; walk-flag [0x120] + target [0x18] + flags [0x8]/[0xC] classify each.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handler heads + tables decoded from .text.",
+  "cross_refs": ["F489: spawner", "F487: tick", "F505: type semantics"],
+  "tool": "capstone + pefile table dump",
+  "reproduce": "dump 0x4357E8[0x30] + 0x435808[0x30]; disasm 9 handler heads",
+  "notes": [
+    "walk-flag [0x120] = movement mode (0 stationary)",
+    "target [0x18] = homing entity",
+    "9 classes = spell variety (buffs/bolts/seeks)"
+  ]
+}

@@ -6766,3 +6766,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 0cb14b5；**131 地图重建证据 JSON**。
 - **〔里程碑〕**200 连发、全部 pending 闭合（服务端 .dat 解码、MonMagic 块布局、实体类型语义）。
 - 落盘：round-200-milestone-evidence.json（F506，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 200。
+## Round 201 (F507) — 2026-08-12：法术特效处理器类（9 移动变体）
+
+- **〔类〕**生成器分派 0x4357E8 → 9 处理器，差异在 [0x8]/[0xC] 旗标 + [0x120] 行走旗标 + [0x18] 目标：**静止（walk=0）/ 投射（双旗标）/ 追踪（目标 [0x18]）**；字节映射 0x435808（48 类型 → 处理器）。
+- 落盘：spell-effect-handler-classes-evidence.json（F507，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 201。
