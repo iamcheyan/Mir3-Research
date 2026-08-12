@@ -1,0 +1,38 @@
+{
+  "evidence_id": "editor-window-closure-2026-08-12-f976",
+  "title": "Round 670 (F976): Announcement editor CLOSED (F770/F975) + 600 evidence JSON milestone - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master db4c470 (634 consecutive F335-F975), 600 evidence JSONs (milestone); arc: editor send (F770) + editor input (F975) - editor COMPLETE byte-level (GDI render + 2 buttons + GetWindowText 0xFA0 + send 0x47C4A4); ALL windows + editor 100%",
+  "date": "2026-08-12",
+  "objective": "Close the announcement editor arc (600th evidence JSON).",
+  "question": "Is the announcement editor fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "600 JSONs (milestone)"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F770": "send", "F975": "input"},
+    "editor": "GDI + buttons + GetWindowText = COMPLETE",
+    "milestone": "634 consecutive rounds F335-F975; 600 evidence JSONs"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F975": "634 rounds pushed; editor complete"
+  },
+  "contrast": {
+    "render_vs_input": "GDI + keys",
+    "count": "600 evidence JSONs"
+  },
+  "verdict": "Announcement editor CLOSED (F976): GDI + buttons + GetWindowText all byte-level; validation green, 634 consecutive rounds, 600 evidence JSONs milestone.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F770/F975; 600th JSON milestone.",
+  "cross_refs": ["F770", "F975"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "634 consecutive shipping rounds F335-F975",
+    "editor window 100%",
+    "600 evidence JSONs",
+    "next: HANDOFF refresh 137, remaining corners"
+  ]
+}

@@ -4089,3 +4089,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（编辑器输入完整；下一弧：剩余深层角落）。
+## Round 670 (2026-08-12) — 公告编辑器闭合 + 600 证据里程碑（Finding 976）
+
+- **634 连发 + 600 证据 + 编辑器完整**。
+- 落盘：`editor-window-closure-evidence.json`（F976）+ RESEARCH_LOG Round 670。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（全部窗口 + 编辑器 100%；下一弧：HANDOFF 刷新 137/剩余角落）。

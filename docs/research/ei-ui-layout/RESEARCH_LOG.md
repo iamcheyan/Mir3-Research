@@ -8893,3 +8893,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔编辑器〕**0x43E3C0 编辑器输入/渲染（GDI 文本 0x45DD70 0x323232/0x96C8FF + 2 按钮 0x417830 @ +0x54/+0x108 + vtable[4] 刷新）；0x43E4B0 **按键/GetWindowText**（0x1F40 栈分配 + GetWindowText 0x476304 len 0xFA0 [0x1CC] + 解析 0x468BF0 + 发送行 0x47C4A4）——编辑器输入完整（F770 发送依赖）。
 - 落盘：announcement-editor-input-evidence.json（F975，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 669。
+## Round 670 (F976) — 2026-08-12：公告编辑器闭合 + **600 证据 JSON 里程碑**（F770/F975 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**600 证据 JSON（里程碑）**；三服务 200；master db4c470（**634 连发 F335-F975 已推**）。
+- **〔弧〕**编辑器发送（F770）+ 编辑器输入（F975）——**编辑器完整**（GDI 渲染 + 2 按钮 + GetWindowText 0xFA0 + 发送 0x47C4A4）；全部窗口 + 编辑器 100%。
+- 落盘：editor-window-closure-evidence.json（F976，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 670。
