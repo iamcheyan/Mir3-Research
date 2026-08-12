@@ -7590,3 +7590,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**297 证据 JSON**；**wilviewer 进程死亡 → 重启 8765**，四服务全 200；master 642eb5b（**333 连发 F335-F674 已推**）。
 - **〔弧〕**公告窗绘制完整（F674）——公告系统完整（渲染 + 字符串 F556 + 色 F553）。
 - 落盘：notice-system-closure-evidence.json（F675，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 369。
+## Round 370 (F676) — 2026-08-12：HANDOFF 刷新 36（Round 367-369）
+
+- **〔刷新〕**HANDOFF 追加 Round 367-369（F674-F675：公告窗绘制 + 公告闭合 + 服务恢复）；基线 Round 366=0596b2c → Round 369=93a6bd2（**334 连发 F335-F675**）。
+- 落盘：handoff-refresh-36-evidence.json（F676，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 370。
