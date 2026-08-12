@@ -4569,3 +4569,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体/列表注册链完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 730 (2026-08-12) — 实体/列表生命周期与注册闭合（Finding 1036）
+
+- **693 连发 + 657 证据 + 实体/列表生命周期与注册完整**。
+- 落盘：`entity-list-lifecycle-registration-closure-evidence.json`（F1036）+ RESEARCH_LOG Round 730。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体/列表生命周期与注册 100%；下一弧：HANDOFF 刷新 157/剩余深层角落）。

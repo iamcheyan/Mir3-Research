@@ -1,0 +1,26 @@
+{
+  "evidence_id": "entity-list-lifecycle-registration-closure-2026-08-12-f1036",
+  "title": "Round 730 (F1036): entity/list lifecycle + registration CLOSED (F336/F440/F1032/F1035) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master b5d66ea (693 consecutive F335-F1035), 657 evidence JSONs; arc: 5 lists + node links + insertion/unlink + 8 destructors + guarded callback registry; entity/list lifecycle and registration COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Close the entity/list lifecycle and registration arc.",
+  "question": "Is the entity/list subsystem documented from registration through teardown?",
+  "method": "Full validation + lifecycle/registration consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "657 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F336": "5 container layout", "F440": "links/insertion", "F1032": "destructors", "F1035": "guarded callback registry"},
+    "lifecycle": "register + construct + mutate + unlink + destroy = COMPLETE",
+    "milestone": "693 consecutive rounds F335-F1035"
+  },
+  "exe_trace": {"verify": "exit 0"},
+  "audit_vs_exe": {"F335-F1035": "693 rounds pushed; lifecycle and registration complete"},
+  "contrast": {"registration_vs_teardown": "callback registry [0x918FD0] vs vtable reset/free", "guard_vs_destructor": "[0x917C1C] bit0 vs flags bit0"},
+  "verdict": "Entity/list lifecycle + registration CLOSED (F1036): guarded callback registration, containers, links, insertion/unlink, destructor vtables, and conditional frees are byte-level documented; validation green, 693 consecutive rounds, 657 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F336/F440/F1032/F1035.",
+  "cross_refs": ["F336", "F440", "F1032", "F1035"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": ["693 consecutive shipping rounds F335-F1035", "entity/list lifecycle + registration 100%", "next: HANDOFF refresh 157, remaining deep corners"]
+}

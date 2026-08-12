@@ -9152,3 +9152,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔注册〕**0x423B00 检查全局守卫字节 [0x917C1C] bit0，首次置位；随后将无操作回调 0x401380 传入 0x468467。0x4683FA 把回调追加到动态表 [0x918FD0..0x918FCC]，容量不足时经 0x468D6E 扩容，条目宽度 4B——注册链完整。
 - 落盘：entity-list-init-registration-evidence.json（F1035，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 729。
+## Round 730 (F1036) — 2026-08-12：实体/列表生命周期与注册闭合（F336/F440/F1032/F1035 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**657 证据 JSON**；三服务 200；master b5d66ea（**693 连发 F335-F1035 已推**）。
+- **〔弧〕**5 个列表 + 节点链接/插入/解除链接（F336/F440）+ 8 个析构 vtable（F1032）+ 守卫回调注册表（F1035）——**实体/列表生命周期与注册完整**。
+- 落盘：entity-list-lifecycle-registration-closure-evidence.json（F1036，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 730。
