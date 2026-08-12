@@ -6810,3 +6810,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 14ed6fa（**174 连发已推**）。
 - **〔弧汇总〕**模拟器 14+8 窗口全内容（F513，浏览器 41 按钮/170 槽/35 标签）+ 客户端发送 34 msgid 目录（F514，F460/F474/F476 确认）——模拟器 UI + 发包目录完整。
 - 落盘：sim-packet-arc-closure-evidence.json（F515，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 209。
+## Round 210 (F516) — 2026-08-12：未映射 msgid 发送器解码（F514 目录 100% 完整）
+
+- **〔解码〕**0x3EA 3 参（0x452170）/ 0x3F6 2 参（0x4521B0）/ 0x3FA/0x3FD/0x3FE/0x401 1 参 / **0x3FF/0x400 坐标包**（shr 0x10 = x,y 打包，商店控件族）/ 0x40C-0x40F NPC 对话回复变体——**全部 34 msgid 已识别（34/34）**。
+- 落盘：unmapped-msgid-senders-evidence.json（F516，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 210。

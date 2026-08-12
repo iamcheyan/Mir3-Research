@@ -1,0 +1,34 @@
+{
+  "evidence_id": "unmapped-msgid-senders-2026-08-12-f516",
+  "title": "Round 210 (F516): Unmapped msgid senders decoded - 0x3EA 3-arg (0x452170), 0x3F6 2-arg (0x4521B0), 0x3FA/0x3FD/0x3FE/0x401 1-arg (0x4520D5/0x452365/0x452395/0x451A85), 0x3FF/0x400 COORD PACKETS (0x451820/0x451860: shr ecx,0x10 = x,y packed, store-control family like 0x407), 0x40C-0x40F NPC-dialog variants (0x4523E0-0x452499); all 34 msgids now identified - F514 unmapped set CLOSED",
+  "date": "2026-08-12",
+  "objective": "Decode the 12 unmapped client send msgids from F514.",
+  "question": "What are the remaining client send functions?",
+  "method": "Enclosing-fn disasm for 0x3EA/0x3F6/0x3FA/0x3FD-0x401/0x40C-0x40F senders.",
+  "scope": "0x451820-0x452499 sender fns; msgids 0x3EA-0x411.",
+  "cell_analysis": {
+    "decoded": {"0x3EA": "3-arg (0x452170)", "0x3F6": "2-arg (0x4521B0, like 0x3F7)", "0x3FA/0x3FD/0x3FE/0x401": "1-arg generic (0x4520D5/0x452365/0x452395/0x451A85)", "0x3FF/0x400": "COORD packets (0x451820/0x451860, shr ecx 0x10 = x,y packed - store-control family)", "0x40C-0x40F": "NPC-dialog reply variants (0x4523E0-0x452499)"},
+    "f514_complete": "all 34 msgids (0x3E9-0x419) now identified"
+  },
+  "exe_trace": {
+    "packet_chain": "UI -> sender (packed args) -> 0x452940 -> server"
+  },
+  "audit_vs_exe": {
+    "F514": "unmapped set closed", "F310": "0x52 death/teleport pump confirmed same family"
+  },
+  "contrast": {
+    "packed_vs_plain": "0x3FF/0x400 pack x,y in one word; others plain args",
+    "npc_vs_store": "0x40C-0x40F NPC replies vs 0x3F2-0x3F9 store controls"
+  },
+  "verdict": "Unmapped msgid senders PRIMARY-verified: all 12 decoded (3-arg/2-arg/1-arg + 0x3FF/0x400 coord packets + NPC variants); F514 catalog now 100% complete (34/34).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All sender fns decoded from .text.",
+  "cross_refs": ["F514: msgid map", "F476: NPC replies", "F310: coord packets"],
+  "tool": "capstone enclosing-fn disasm",
+  "reproduce": "disasm 0x451820+0x60, 0x452170+0x30, 0x4523E0+0x80",
+  "notes": [
+    "shr 0x10 = x,y packed into one dword (coordinate msg)",
+    "0x3F6 = same shape as 0x3F7 (store control)",
+    "client packet catalog 100% identified"
+  ]
+}
