@@ -8390,3 +8390,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 550-552（F857-F858：NPC 对话窗口渲染 + 对话窗口闭合）；基线 Round 549=8150b28 → Round 552=fa44e88（**517 连发 F335-F858**）。
 - 落盘：handoff-refresh-96-evidence.json（F859，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 553。
+## Round 554 (F860) — 2026-08-12：坐骑命中 + 点击 + 构造（F773 依赖）
+
+- **〔坐骑〕**0x426B50 命中（5 控件 vtable[0xC] @ +0x54 stride 0xB4）；0x426B90 点击（5 控件 vtable[8]）；0x426C10 **坐骑窗口构造**（0x415130 基类 + 0x430920 物品构造 @ +0x38 + vtable 0x476620/0x476864 + **6 物品槽 0xC24 @ +0xDA4** + SEH 0x426E70/0x415750）——坐骑窗口交互 + 构造完整（F545/F773）。
+- 落盘：mount-hit-click-ctor-evidence.json（F860，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 554。

@@ -3161,3 +3161,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（对话窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 554 (2026-08-12) — 坐骑命中 + 点击 + 构造（Finding 860）
+
+- **5 控件分派 + 6 物品槽构造**（坐骑交互完整）。
+- 落盘：`mount-hit-click-ctor-evidence.json`（F860）+ RESEARCH_LOG Round 554。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（坐骑交互完整；下一弧：剩余深层角落）。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "mount-hit-click-ctor-2026-08-12-f860",
+  "title": "Round 554 (F860): Mount hit + click + ctor (F773 deps) - 0x426B50 hit (5 controls vtable[0xC] @ +0x54 stride 0xB4); 0x426B90 click (5 controls vtable[8]); 0x426C10 MOUNT ctor (0x415130 base + 0x430920 item ctor @ +0x38 + vtables 0x476620/0x476864 + 6 ITEM SLOTS 0xC24 @ +0xDA4 + SEH 0x426E70/0x415750) - mount window interactive + ctor COMPLETE (F545/F773)",
+  "date": "2026-08-12",
+  "objective": "Decode the mount hit + click + ctor.",
+  "question": "How does the mount window handle hit/click + construct?",
+  "method": "Disasm 0x426B50-0x426CB3.",
+  "scope": "0x426B50-0x426CB3; ctor.",
+  "cell_analysis": {
+    "0x426B50": "hit: 5 controls vtable[0xC]",
+    "0x426B90": "click: 5 controls vtable[8]",
+    "0x426C10": "ctor: 0x415130 + 0x430920 + vtables + 6 slots 0xC24"
+  },
+  "exe_trace": {
+    "mount_chain": "ctor -> hit -> click"
+  },
+  "audit_vs_exe": {
+    "F773": "mount window", "F545": "commands", "F651": "item 0x430920"
+  },
+  "contrast": {
+    "hit_vs_click": "vtable[0xC] + vtable[8]",
+    "ctor_vs_slots": "base + 6 x 0xC24"
+  },
+  "verdict": "Mount hit + click + ctor PRIMARY-verified: dispatch + construction; mount interactive complete (F545/F773).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Mount dispatch decoded from .text.",
+  "cross_refs": ["F773: mount", "F545: commands", "F651: item ctor"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x426B50+0x10; 0x426C10+0x20",
+  "notes": [
+    "5 control hits",
+    "ctor vtables 0x476620/0x476864",
+    "6 item slots 0xC24",
+    "SEH 0x426E70"
+  ]
+}
