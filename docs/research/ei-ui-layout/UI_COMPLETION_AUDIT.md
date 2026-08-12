@@ -966,9 +966,14 @@ git diff --check
 - **15+ WIL 路径表**（wood + base）→ 存储 0x5600FC。
 - 落盘：`ground-tile-library-table-evidence.json`（F453）+ RESEARCH_LOG Round 147。
 
+## Round 148 (2026-08-12) — 瓦片存储槽位映射（Finding 454）
+
+- **17 库字符串 + 14/70 双初始化循环**。
+- 落盘：`tile-store-slot-mapping-evidence.json`（F454）+ RESEARCH_LOG Round 148。
+
 ## Pending（未阻塞，持续队列）
 
-- 槽位映射（tiles 0-41/怪物/NPC 槽号）— 低优先。
+- 精确槽序（store+0x5898 第二数组来源）— 低优先。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

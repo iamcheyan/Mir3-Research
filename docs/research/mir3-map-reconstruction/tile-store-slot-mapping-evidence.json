@@ -1,0 +1,36 @@
+{
+  "evidence_id": "tile-store-slot-mapping-2026-08-12-f454",
+  "title": "Round 148 (F454): Tile store slot mapping partial - ground lib table = 17 strings (Wood/Tiles5c + Wood/tiles30c + Wood/tilesc at 0x47D3BC-0x47D3F0 + 14 base 0x47D408-0x47D51C); init loop 0x452AA0: 14-entry loop (store+0x144 stride) + 70-entry loop copying runtime table store+0xF848 (src stride 0x104) -> dest store+0x5898 (stride 0x144) = second resource array (monster/NPC slots [candidate]); exact slot order = deeper pending",
+  "date": "2026-08-12",
+  "objective": "Advance the tile store slot mapping: full ground lib table + second resource array structure.",
+  "question": "How many lib strings feed the store, and what is the 70-entry init loop?",
+  "method": "Scan .rdata 0x47D3BC-0x47D51C (17 strings) + re-analysis of 0x452AA0 loops.",
+  "scope": ".rdata 0x47D3BC-0x47D51C; store loops at 0x452AA0.",
+  "cell_analysis": {
+    "full_table": {"count": "17 (3 Wood/ + 14 base)", "wood": "0x47D3BC Wood/Tiles5c / 0x47D3D4 Wood/tiles30c / 0x47D3F0 Wood/tilesc", "base": "0x47D408 object2c / 0x47D41C object1c / 0x47D430 animationsc / 0x47D448 smobjectsc / 0x47D460 wallsc / 0x47D474 furnituresc / 0x47D48C innersc / 0x47D4A0 dungeonsc / 0x47D4B8 cliffsc / 0x47D4CC housesc / 0x47D4E0 smtilesc / 0x47D4F4 Tiles5c / 0x47D508 tiles30c / 0x47D51C tilesc"},
+    "init_loops_0x452AA0": {"loop1": "0xE (14) entries: dest edi += 0x144, src esi += 0x104 (from 0x452B20 path table)", "loop2": "0x46 (70) entries: src store+0xF848 (runtime table, stride 0x104) -> dest store+0x5898 (stride 0x144), 0x4660E0 string set", "interpretation": "second resource array (monster/NPC/effect slots) [candidate]"},
+    "slot_order": "exact store index per lib = deeper pending (array at +0x5898 offset not 0x144-aligned to entry 0)"
+  },
+  "exe_trace": {
+    "store_regions": "0x5600FC entry array + 0xB130 path table + 0x5898 second table + 0xF848 runtime names"
+  },
+  "audit_vs_exe": {
+    "F453": "table extended 15 -> 17 (Wood trio counted)",
+    "F452": "entry init loops quantified (14 + 70)"
+  },
+  "contrast": {
+    "static_vs_runtime": "ground libs = .rdata constants; second table = runtime-populated (packet/DB?)",
+    "tile_vs_entity_slots": "17 ground libs vs 70 second-array entries"
+  },
+  "verdict": "Tile store slot mapping PARTIAL (primary-bytes): ground lib table = 17 strings (wood+base); init loops = 14 + 70 entries; 70-loop = second resource array from runtime table store+0xF848. Exact slot order = deeper pending.",
+  "evidence_level": "primary-bytes + [candidate]",
+  "evidence_level_note": "String table + loops decoded; second-array role inferred.",
+  "cross_refs": ["F453: ground table", "F452: store structure", "F343: row bindings"],
+  "tool": "capstone + .rdata scan",
+  "reproduce": "scan .rdata for .\\Data\\*.wil in 0x47D000+; disasm 0x452AA0",
+  "notes": [
+    "only 17 ground lib strings - rest of 140 slots from runtime sources",
+    "store+0x5898 array = candidate monster/NPC resource table",
+    "deeper: trace 0x4660E0 callers to find second-table population source"
+  ]
+}

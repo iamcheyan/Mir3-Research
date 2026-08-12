@@ -6479,3 +6479,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔表〕**0x47D3BC-0x47D51C：Wood/Tiles5c + Wood/tiles30c + Wood/tilesc（wood 行）+ object2c/object1c/animationsc/smobjectsc/wallsc/furnituresc/innersc/dungeonsc/cliffsc/housesc/smtilesc/Tiles5c/tiles30c/tilesc（base）→ 经 0x452B20 入存储 0x5600FC（F452）。
 - **〔关联〕**F343 行绑定（wood 14-27/base 0-13/sand 28-41）+ F369 可玩集 + F390 Tiles5c 20000 全部与客户端表一致。
 - 落盘：ground-tile-library-table-evidence.json（F453，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 147。
+## Round 148 (F454) — 2026-08-12：瓦片存储槽位映射（17 库字符串 + 双初始化循环）
+
+- **〔表〕**地面库 = **17 字符串**（Wood/Tiles5c + Wood/tiles30c + Wood/tilesc @0x47D3BC-0x47D3F0 + 14 base @0x47D408-0x47D51C）。
+- **〔循环〕**0x452AA0：14 条目循环（stride 0x144/0x104）+ **70 条目循环**（运行时表 store+0xF848 → 第二资源数组 store+0x5898 [candidate: 怪物/NPC 槽]）。
+- **〔待深〕**精确槽序 = 更深 pending。
+- 落盘：tile-store-slot-mapping-evidence.json（F454，primary-bytes + candidate）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 148。
