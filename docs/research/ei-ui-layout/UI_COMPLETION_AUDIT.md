@@ -4305,3 +4305,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（英雄运行时完整；下一弧：剩余深层角落）。
+## Round 697 (2026-08-12) — 英雄运行时闭合（Finding 1003）
+
+- **661 连发 + 624 证据 + 英雄运行时完整**。
+- 落盘：`hero-runtime-closure-evidence.json`（F1003）+ RESEARCH_LOG Round 697。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（英雄表面 100%；下一弧：HANDOFF 刷新 146/剩余角落）。

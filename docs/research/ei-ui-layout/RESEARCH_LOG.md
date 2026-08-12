@@ -9010,3 +9010,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔英雄〕**0x410100 构造（0x62A58）；0x410110 数据装载（坐标 [0x61BCC]/[0x61BCE]/[0x61BCA] + 速度比 0x47644C/0x476450 → [0x61BC8]）；0x410190 **英雄运行时**（死亡音效 0x45AFC0 0x6E + 实体 0x434EF0 + dlist 0x560088/0x56008C（vtable 0x476448）+ 1500ms [0x8A68BC]=0x5DC）——英雄运行时完整（F611/F725 依赖）。
 - 落盘：hero-runtime-ctor-death-full-evidence.json（F1002，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 696。
+## Round 697 (F1003) — 2026-08-12：英雄运行时闭合（F611/F725/F791/F1002 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**624 证据 JSON**；三服务 200；master 47fd5c9（**661 连发 F335-F1002 已推**）。
+- **〔弧〕**死亡泵（F611）+ 运行时（F725）+ 消息/死亡（F791）+ 构造/死亡全量（F1002）——**英雄运行时完整**（ctor + 数据装载 + 死亡 dlist 0x560088 + 1500ms + 重生）；英雄表面 100%。
+- 落盘：hero-runtime-closure-evidence.json（F1003，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 697。
