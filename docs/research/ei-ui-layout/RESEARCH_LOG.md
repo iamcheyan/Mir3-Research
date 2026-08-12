@@ -7352,3 +7352,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 314-317（F621-F623：英雄名/等级文本 + 实体投影/HP 框 + 实体渲染弧）；基线 Round 313=50f6c52 → Round 317=581fd9e（**282 连发 F335-F623**）。
 - 落盘：handoff-refresh-21-evidence.json（F624，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 318。
+## Round 319 (F625) — 2026-08-12：特效生成完整（0x435030）
+
+- **〔生成〕**0x435030（F489 确认）：记录存储 0x8AA5A8 + 0x449C10、类型门（ax 1/5/0x25/0x27/0x28/0x29 跳过）、**目标实体 [0x18]**（英雄 id [0x77769C] → [0x777698] 或 [0x560070] 列表查找）、**起止坐标** → [0xC0]/[0xC4]/[0xD0]/[0xD4] + 0x43CFD0 投影（[0xB8]/[0xBC]/[0xC8]/[0xCC]）→ [0xA0..0xAC] 屏幕、**速度浮点 0x47689C** delta → [0x110]、帧 [0x128] 字 + 色 [0xF0..0xF2] 0xFF——特效生成（MonMagic type×10 帧基 F489）字节级。
+- 落盘：effect-spawn-full-evidence.json（F625，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 319。
