@@ -5987,3 +5987,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F340 ctor〕**8 控件（0x3F2-0x3F9）+ gauge + 26 槽 +0x660 stride 0x24；paint 0x44E260 mode 双布局；mouse 0x44E650。
 - **〔模拟器〕**state0/3/4 = 5 行购买列表（y 40/86/132/178/224）；state2 = 仓库 12 格（+0x720）；模式标签带证据链。**浏览器验证**：开商店 state0 购买 10 槽。
 - 落盘：`store-window-content-verification-evidence.json`（F363，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 57。
+
+## Round 58 (F364) — 2026-08-12：交易窗口内容验证（F295/F283/F341 分裂面板 + 金币流 + 模拟器）
+
+- **〔F295/F283/F341〕**双栏 +0x5C/+0x6C（mid=x+(w>>1)）；行 idx*9、x=win.x+row*4+0x15（左）/0xFD（右）；**金币框 (34,270)..(156,304)**：点击 → msgbox 0x405 '你要给对方多少金币?' → 确定 → **msg 0x406 via 0x451B30**（F283）；接受 → [+0x13644]=1 定稿；交易自有槽记录 24×0xC2C @ +0x5B8（F293，与背包分开）。
+- **〔模拟器〕**2 栏 × 5×6 = 60 trade-cell + trade-gold 金币框 + 3 zone + 2 divider + 状态 lbl（'交易中 ([+0x13644]=0)'）。**浏览器验证**：60 格 + 金币 + 区域。
+- 落盘：`trade-window-content-verification-evidence.json`（F364，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 58。

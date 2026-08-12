@@ -491,6 +491,12 @@ git diff --check
 - **模拟器商店**：5 行购买列表 / 12 格仓库 +0x720；浏览器验证 state0。
 - 落盘：`store-window-content-verification-evidence.json`（F363）+ RESEARCH_LOG Round 57。
 
+## Round 58 (2026-08-12) — 交易窗口内容（Finding 364）
+
+- **F295/F283**：双栏 + 金币框（0x405/0x406）+ 接受定稿（+0x13644）。
+- **模拟器交易窗**：60 格 + 金币框 + 区域（浏览器验证）。
+- 落盘：`trade-window-content-verification-evidence.json`（F364）+ RESEARCH_LOG Round 58。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

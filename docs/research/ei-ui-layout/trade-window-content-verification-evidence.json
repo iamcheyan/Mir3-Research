@@ -1,0 +1,47 @@
+{
+  "evidence_id": "trade-window-content-verification-2026-08-12-f364",
+  "title": "Round 58 (F364): Trade window content verification - split panes (2 x 30 cells, F295/F341), gold box (msg 0x405/0x406, F283), accept/finalize ([+0x13644], F295) + sim trade browser-verified (60 cells + gold + zones)",
+  "date": "2026-08-12",
+  "objective": "Verify the trade window (id3) content: split-pane grid, gold box flow, accept/finalize, and the simulator's trade rendering.",
+  "question": "Does the sim trade window match the original split-pane + gold flow?",
+  "method": "Cross-validated against F295 (trade), F283 (gold msg 0x405/0x406), F341 (trade paint 0x415B10); sim tradeContent; browser verification.",
+  "scope": "F295/F283/F341 evidence; sim window.exchange-candidate fill; browser 8765/sim.",
+  "cell_analysis": {
+    "trade_evidence": {
+      "panes": "2 split panes +0x5C/+0x6C (mid = x+(w>>1), F341 0x415B10); item rows idx*9, x = win.x+row*4+0x15 (L) / +0xFD (R)",
+      "gold": "gold box (34,270)..(156,304) rel (0x416F05): click -> msgbox 0x405 '你要给对方多少金币?' (0x418030); accept -> msg 0x406 via 0x451B30 (F283)",
+      "accept": "accept button -> 0x406 + [+0x13644]=1 finalized (F295)",
+      "trade_grid": "trade window own slot records at trade+0x5B8 (24 x 0xC2C, 2 blocks x 12) - separate from bag (F293)"
+    },
+    "sim_trade": {
+      "cells": "2 panes x 5 cols x 6 rows = 60 trade-cell slots (paneX 21/253, paneY 48, CELL 36)",
+      "elements": "trade-gold (gold box), trade-zone x3, trade-divider x2, status lbl '交易中 ([+0x13644]=0) · 玩家间交易 · Finding 283'",
+      "demo": "item icons candidate (L0 金创药, L6 魔法药, R12 随机传送卷)",
+      "browser": "60 cells + gold + zones verified"
+    }
+  },
+  "exe_trace": {
+    "trade_window": "hero+0x3399C (id3, frame 1050 484x330, vtable 0x47663C)",
+    "gold_msg": "0x405 (input) / 0x406 (finalize) via 0x451B30 (F283/F295)"
+  },
+  "audit_vs_exe": {
+    "F295": "trade id3 + gold flow + [+0x13644] confirmed",
+    "F341": "split-pane paint 0x415B10 confirmed",
+    "F283": "gold box + 0x405/0x406 confirmed"
+  },
+  "contrast": {
+    "trade_vs_bag": "trade 60 cells (5x6 x2 panes) demo vs bag 46 slots (F352); trade slot records 24 x 0xC2C at +0x5B8 (F293)",
+    "sim_vs_original": "sim cells are demo icons; real item words runtime 0x8AB828 state"
+  },
+  "verdict": "Trade window verified (primary-bytes via F295/F283/F341): split panes (2x30), gold box (0x405/0x406), accept/finalize (+0x13644). Sim trade renders 60 cells + gold + zones (browser-verified).",
+  "evidence_level": "derived-tooling (source evidence primary-static F295/F283/F341)",
+  "evidence_level_note": "Trade flow from primary evidence; sim cell contents demo (runtime server items).",
+  "cross_refs": ["F295: trade-gold-flow-evidence.json", "F283: gold msg", "F341: trade paint 0x415B10", "F293: trade slot records"],
+  "tool": "app.js inspection; puppeteer browser",
+  "reproduce": "open sim; login; open trade window; observe 60 cells + gold box + zones",
+  "notes": [
+    "trade window opens via server event 0x420486 (F337 trigger map)",
+    "gold input prompt = msgbox 0x405 with input field (F283)",
+    "accept button frames 1061/1062; cancel 1064/1065 missing in WIL (invisible by design, F295)"
+  ]
+}
