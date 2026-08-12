@@ -8095,3 +8095,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔英雄〕**0x422840：msg 0x34 → 0x423000、**msg 0x2F0 → 0x423070（F743 技能装载器）**、**msg 0x1F → 显示槽 [0x35A34A/0x35A34C] + 内部 [0x35B1F5/0x35B1F9]**（500ms 门 [0x35B278]、0x40A1E0 + 0x4561B0 地图串）——F743 写者来源解析；**0x422960 死亡/重生泵（F611 全量）**：状态 [0x2F8840]==3 + 停音 0x45B1D0/0x45B3D0 + **1500ms 计时 [0x4279A4]=0x5DC** + 重生坐标 [0x2F884C]/[0x2F8850] + 速度 [0x428220]=1.0f + 0x410100（F725）+ vtable[0x10]——**F611 函数体完整**。
 - 落盘：hero-message-dispatch-death-pump-evidence.json（F791，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 485。
+## Round 486 (F792) — 2026-08-12：英雄生命周期最终闭合（F611/F695/F696/F725/F743/F791 汇总）+ 450 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**416 证据 JSON**；三服务 200；master 12ea43e（**450 连发 F335-F791 已推**）——**450 连发里程碑**。
+- **〔弧〕**死亡泵（F611）+ 移动（F695）+ 更新（F725）+ 技能装载（F743）+ 消息分派（F791）——**英雄生命周期完整**（移动 → 数据装载 → 技能消息 → 死亡 → 1500ms 重生 → 生成），待办 write-only 槽消费者 + 死亡泵体全解析。
+- 落盘：hero-lifecycle-final-closure-evidence.json（F792，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 486。

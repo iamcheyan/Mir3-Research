@@ -2656,9 +2656,14 @@ git diff --check
 - **msg 0x2F0/0x1F 分派 + F611 全量**（F743 来源解析）。
 - 落盘：`hero-message-dispatch-death-pump-evidence.json`（F791）+ RESEARCH_LOG Round 485。
 
+## Round 486 (2026-08-12) — 英雄生命周期最终闭合 + 450 连发里程碑（Finding 792）
+
+- **450 连发 + 416 证据 + 英雄生命周期完整**。
+- 落盘：`hero-lifecycle-final-closure-evidence.json`（F792）+ RESEARCH_LOG Round 486。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（英雄分派完整；下一弧：剩余深层角落）。
+- 无阻塞项（英雄完整；下一弧：HANDOFF 刷新 74/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
