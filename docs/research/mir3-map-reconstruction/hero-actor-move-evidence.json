@@ -1,0 +1,34 @@
+{
+  "evidence_id": "hero-actor-move-2026-08-12-f695",
+  "title": "Round 389 (F695): Hero-actor move - 0x410840 (F612/0x410840 CONFIRMED): gate [0x61C74] special -> vtable[0x10] 0x13 walk ([0xB8]-1 -> [0xC4]); else state [0xC0]!=0x13 + 0x404DA0 + 0x4113A8 8-way jt: 0x4121F0 path + 0x43CC30 map move + 0x43C0F0 target + **msg 0xBC3 send** (0x451450) + state [0x62A50]/[0x62A54] + last-coord [0x62ADC]/[0x62AE0] + dir [0x62AE4] - hero movement byte-level (F612/F613 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the hero-actor move.",
+  "question": "How does the hero actor move?",
+  "method": "Disasm 0x410840-0x4109AE.",
+  "scope": "0x410840-0x4109AE; 0x4113A8 jt; msg 0xBC3.",
+  "cell_analysis": {
+    "0x410840": {"special": "[0x61C74] -> vtable[0x10] 0x13 walk", "normal": "state [0xC0]!=0x13 + 0x404DA0 + 0x4113A8 8-way jt", "move": "0x4121F0 + 0x43CC30 + 0x43C0F0 target", "send": "msg 0xBC3 (0x451450)", "state": "[0x62A50]/[0x62A54] + coords [0x62ADC]/[0x62AE0] + dir [0x62AE4]"}
+  },
+  "exe_trace": {
+    "hero_move_chain": "key/click -> 0x410840 gate -> 8-way jt -> 0x43CC30 move -> msg 0xBC3"
+  },
+  "audit_vs_exe": {
+    "F612": "hero move CONFIRMED", "F613": "0x43CC30 collision", "F573": "msg 0xBC3"
+  },
+  "contrast": {
+    "special_vs_normal": "walk vtable vs full move jt",
+    "move_vs_send": "0x43CC30 + msg 0xBC3"
+  },
+  "verdict": "Hero-actor move PRIMARY-verified: gate + 8-way jt + map move + msg 0xBC3; F612/F613 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hero move decoded from .text.",
+  "cross_refs": ["F612: hero move", "F613: collision", "F573: msg 0xBC3"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x410840+0x40",
+  "notes": [
+    "state [0xC0] != 0x13",
+    "8-way jt 0x4113A8",
+    "msg 0xBC3 move send",
+    "state [0x62A50..0x62AE4]"
+  ]
+}

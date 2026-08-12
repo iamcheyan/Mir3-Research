@@ -7674,3 +7674,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 385-387（F692-F693：按方向实体选择 + 战斗弧）；基线 Round 384=8b3528d → Round 387=4db4bee（**352 连发 F335-F693**）。
 - 落盘：handoff-refresh-42-evidence.json（F694，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 388。
+## Round 389 (F695) — 2026-08-12：英雄角色移动
+
+- **〔移动〕**0x410840（F612/0x410840 确认）：门 [0x61C74] 特例 → vtable[0x10] 0x13 行走（[0xB8]−1 → [0xC4]）；否则状态 [0xC0]!=0x13 + 0x404DA0 + **0x4113A8 8 路 jt**：0x4121F0 路径 + 0x43CC30 地图移动 + 0x43C0F0 目标 + **msg 0xBC3 发送**（0x451450）+ 状态 [0x62A50]/[0x62A54] + 最后坐标 [0x62ADC]/[0x62AE0] + 方向 [0x62AE4]——英雄移动字节级（F612/F613 连接）。
+- 落盘：hero-actor-move-evidence.json（F695，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 389。

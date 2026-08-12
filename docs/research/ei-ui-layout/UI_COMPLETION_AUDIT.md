@@ -2171,9 +2171,14 @@ git diff --check
 - **Round 385-387 追加 + 352 连发**（战斗选择入档）。
 - 落盘：`handoff-refresh-42-evidence.json`（F694）+ RESEARCH_LOG Round 388。
 
+## Round 389 (2026-08-12) — 英雄角色移动（Finding 695）
+
+- **8 路 jt + 地图移动 + msg 0xBC3**（F612/F613 连接）。
+- 落盘：`hero-actor-move-evidence.json`（F695）+ RESEARCH_LOG Round 389。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（战斗选择完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（英雄移动闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
