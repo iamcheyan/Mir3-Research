@@ -6101,3 +6101,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔审计完整性〕**map-audit.json 544 图全含 size_ok/cell_bytes/mid/front/ground/anomalies；**总异常 5723 格 / 34 图**（3.map 3255、41.map 1619、D12121 171、0_003 137、74.map 90、5_0013 67、D10031 62、50.map 39）。
 - **〔对账〕**F371 D10031 back 层 OOB 在审计中 = **ground_lib2_frame_oob=62**（存于 'ground' 统计，非 mid/front_libs——早前查询误读）；**异常类拆分**：帧越界（3/41/D10031/50.map）vs 地面未绘（D12121/74/0_003/5_0013，F370 覆盖案例）。
 - 落盘：`map-audit-reconciliation-evidence.json`（F380，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 74。
+
+## Round 75 (F381) — 2026-08-12：地图连接验证（Mapinfo 365 名 342 链 + 覆盖对账）
+
+- **〔Mapinfo〕**365 地图名 + 342 无向链接（map_routes.py 解析）；**279/342 双端在 EI（81.6%）**、14 单端在 EI（目标服务端专属）、49 双端他服。
+- **〔0.map 150 链〕**Town Area→Bug Cave Entrance (19.62,37.25)、→Ant Cave Entrance (161.67,34.17)、→D001 Red Moon Door (218.71,124.57)——完整 mapinfo 传送数据。
+- **〔互补〕**Mapinfo = 服务端传送表；客户端经 0x33/0x27A → 0x422960 接收坐标（F366）——两套互补。
+- 落盘：map-connections-verification-evidence.json（F381，derived-tooling；源 Mapinfo 次级）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 75。

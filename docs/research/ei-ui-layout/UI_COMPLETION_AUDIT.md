@@ -594,6 +594,12 @@ git diff --check
 - **异常类拆分**：帧越界 vs 地面未绘。
 - 落盘：`map-audit-reconciliation-evidence.json`（F380，primary-bytes）+ RESEARCH_LOG Round 74。
 
+## Round 75 (2026-08-12) — 地图连接验证（Finding 381）
+
+- **Mapinfo 365 名 + 342 链**；279 双端在 EI（81.6%）；0.map 150 传送记录。
+- **Mapinfo（服务端表）与客户端 0x422960 互补**。
+- 落盘：`map-connections-verification-evidence.json`（F381）+ RESEARCH_LOG Round 75。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-connections-verification-2026-08-12-f381",
+  "title": "Round 75 (F381): Map connections verified - Mapinfo.txt-derived 365 names + 342 undirected links, 279/342 both-ends-in-EI (81%), 14 one-end-in-EI (server-only destinations), 0.map 150 connection records (Bug Cave Entrance at 19.62,37.25 / Ant Cave 161.67,34.17 / D001 Red Moon Door 218.71,124.57) via /api/connections",
+  "date": "2026-08-12",
+  "objective": "Verify the map connection/route data: Mapinfo.txt parsing (map_routes.py), link coverage against the EI map set, and the transition coordinate API.",
+  "question": "How complete is the map connection data and does it match the EI map set?",
+  "method": "map_routes.py run (Mapinfo.txt -> /tmp/map_links.json); link coverage vs 544 EI maps; /api/connections spot checks.",
+  "scope": "/tmp/nas_mnt/NAS/TMP/Mud3/Envir/Mapinfo.txt; map_routes.py; mapviewer /api/connections.",
+  "cell_analysis": {
+    "mapinfo": {"names": 365, "links": 342 (undirected, deduped), "format": "[mapA x,y -> mapB x,y] transition records"},
+    "coverage": {"both_ends_in_EI": "279/342 (81.6%)", "one_end_in_EI": "14 (destination server-only, e.g. 9->d8002 失乐园, 41->d1601/d2001 诺玛村庄)", "neither": "49 (other-server maps)"},
+    "0_map_links": {"count": 150, "samples": {"idx2482": "Town Area -> Bug Cave Entrance (19.62, 37.25)", "idx2484": "Bug Cave Entrance -> Bug Cave Landing (23.0, 42.0)", "idx2485": "Bug Cave Entrance -> Ant Cave Entrance (161.67, 34.17)", "idx2486": "Town Area -> D001 Red Moon Door (218.71, 124.57)"}},
+    "icon_types": "Building / Province (transition icons)"
+  },
+  "exe_trace": {
+    "transition_client": "map change = server msg 0x33/0x27A -> 0x422960 (F333/F366); coordinates in msg word+6/+8 (F333)"
+  },
+  "audit_vs_exe": {
+    "F366": "map transitions (0x422960) vs connection data (Mapinfo) - complementary",
+    "F342": "544-map inventory - link coverage computed against it"
+  },
+  "contrast": {
+    "server_vs_client": "Mapinfo.txt = server transition table; client receives coordinates via 0x33/0x27A (no client-side table)",
+    "api_vs_tool": "/api/connections serves Mapinfo-derived links; map_routes.py generates the JSON"
+  },
+  "verdict": "Map connections verified (secondary-server evidence): Mapinfo.txt yields 365 names + 342 links; 279 (81.6%) have both ends in the EI map set; 0.map alone has 150 transition records with coordinates. The connection data complements the client-side 0x422960 transition handler (F366).",
+  "evidence_level": "derived-tooling (source: server Mapinfo.txt secondary)",
+  "evidence_level_note": "Connection data from server Mapinfo.txt (secondary cross-reference per policy); client transition handler primary-static.",
+  "cross_refs": ["F366: map transitions 0x422960", "F342: map inventory", "map_routes.py"],
+  "tool": "map_routes.py; mapviewer /api/connections; python3",
+  "reproduce": "/home/tetsuya/mir3-venv/bin/python Tools/maps/map_routes.py; curl '/api/connections?map=0.map'",
+  "notes": [
+    "14 links reference server-only destinations (not shipped in EI client Map dir)",
+    "transition coords (19.62, 37.25 etc.) are fractional tile coords - client converts to msg 0x33/0x27A coords",
+    "mapviewer /api/connections powering the UI map-route overlay"
+  ]
+}
