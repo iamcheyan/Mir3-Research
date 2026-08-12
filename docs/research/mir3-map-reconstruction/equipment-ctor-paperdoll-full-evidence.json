@@ -1,0 +1,37 @@
+{
+  "evidence_id": "equipment-ctor-paperdoll-full-2026-08-12-f987",
+  "title": "Round 681 (F987): Equipment ctor + paperdoll FULL (F767) - 0x44AF50 equipment CTOR (0x423CA0 + 2 controls 0x4686C4 @ +0x58 stride 0xB4 + 11 item slots 0x4686C4 @ +0x2F4 stride 0xC24 + 0x430920 @ +0x8884 + 0x44B0B0 init -> vtable 0x476A70); 0x44AFF0/0x44B010 dtor chain (0x44B110 + 0x403AC0 + 0x468306 + 0x423CF0); 0x44B0B0 init (zero 0x1C0/0x2F4/0x8880/0x270 + 2 base ctors 0x4175F0); 0x44B130 paperdoll DRAW (0x423B30 + frames 0xA1/0xA2 @ [ebx+0xD4]/[edi+0x12A]...) - equipment COMPLETE (F767 paperdoll)",
+  "date": "2026-08-12",
+  "objective": "Decode the full equipment ctor + paperdoll.",
+  "question": "How does the equipment window construct + draw its paperdoll?",
+  "method": "Disasm 0x44AF50-0x44B130.",
+  "scope": "0x44AF50-0x44B130; ctor/paperdoll.",
+  "cell_analysis": {
+    "0x44AF50": "ctor 11 slots + vtable 0x476A70",
+    "0x44B010": "dtor chain",
+    "0x44B0B0": "init zero + base ctors",
+    "0x44B130": "paperdoll draw frames 0xA1/0xA2"
+  },
+  "exe_trace": {
+    "equip_chain": "ctor -> init -> paperdoll draw"
+  },
+  "audit_vs_exe": {
+    "F767": "equip 2-page paperdoll", "F558": "registry"
+  },
+  "contrast": {
+    "ctor_vs_draw": "init + paperdoll",
+    "slots": "11 item slots"
+  },
+  "verdict": "Equipment ctor + paperdoll FULL PRIMARY-verified: ctor + init + paperdoll frames; F767 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Equipment ctor decoded from .text.",
+  "cross_refs": ["F767: equipment", "F558: registry"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44AF50+0x20; 0x44B130+0x20",
+  "notes": [
+    "11 slots +0x2F4 stride 0xC24",
+    "vtable 0x476A70",
+    "paperdoll 0xA1/0xA2",
+    "init 0x4175F0"
+  ]
+}

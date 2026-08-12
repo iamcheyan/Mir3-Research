@@ -4177,3 +4177,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（网格表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 681 (2026-08-12) — 装备构造 + 纸娃娃全量（Finding 987）
+
+- **11 槽 + 纸娃娃帧**（装备完整）。
+- 落盘：`equipment-ctor-paperdoll-full-evidence.json`（F987）+ RESEARCH_LOG Round 681。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（装备完整；下一弧：剩余深层角落）。
