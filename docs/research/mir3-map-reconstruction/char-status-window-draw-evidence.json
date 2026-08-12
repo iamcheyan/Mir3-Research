@@ -1,0 +1,34 @@
+{
+  "evidence_id": "char-status-window-draw-2026-08-12-f758",
+  "title": "Round 452 (F758): Character status window draw - 0x450530 (F558 mode 7): avatar frame ([0x551] class x10 + [0x554] level + 0x3B -> blit 0x45FD50 F647, WIL 0x566DD4) + 11 EQUIP icons (0x430A40 F651, records stride 0xC24 @ +0x60C, pos table [0x558] stride 0x10, defaults +0x61/+0xC8) + name/guild title (0x45DBA0 font + 0x45DE50 DrawTextA 0xDCFFDC/0xB4FAFF + format 0x46811C strings 0x47B560/0x47AF48) - char status window COMPLETE (F558/F651 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the character status window draw.",
+  "question": "How does the char status window render?",
+  "method": "Disasm 0x450530-0x4507A0.",
+  "scope": "0x450530-0x4507A0; equip slots.",
+  "cell_analysis": {
+    "0x450530": {"avatar": "class x10 + level + 0x3B -> 0x45FD50", "equip": "11 x 0x430A40 stride 0xC24 @ +0x60C", "text": "0x45DBA0 + 0x45DE50 0xDCFFDC/0xB4FAFF"}
+  },
+  "exe_trace": {
+    "status_chain": "avatar blit -> 11 equip icons -> name/title text"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 7 status", "F651": "item icon", "F647": "blit 0x45FD50"
+  },
+  "contrast": {
+    "avatar_vs_equip": "class frame + icons",
+    "name_vs_title": "0xB4FAFF + 0xDCFFDC"
+  },
+  "verdict": "Character status window draw PRIMARY-verified: avatar + 11 equip icons + name/title; char status window complete (F558/F651).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Status window decoded from .text.",
+  "cross_refs": ["F558: status", "F651: icon", "F647: blit"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x450530+0x20",
+  "notes": [
+    "avatar idx class x10 + level",
+    "11 equip stride 0xC24",
+    "pos table [0x558]",
+    "name format 0x47B560"
+  ]
+}

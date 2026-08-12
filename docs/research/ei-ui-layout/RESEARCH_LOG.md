@@ -7948,3 +7948,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 448-450（F755-F756：行会窗口 + 行会弧 + Round 450 里程碑）；基线 Round 447=18ca584 → Round 450=2f8112b（**415 连发 F335-F756**）。
 - 落盘：handoff-refresh-62-evidence.json（F757，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 451。
+## Round 452 (F758) — 2026-08-12：角色状态窗口绘制
+
+- **〔状态〕**0x450530（F558 模式 7）：**头像帧**（[0x551] 职业×10 + [0x554] 等级 + 0x3B → blit 0x45FD50 F647、WIL 0x566DD4）+ **11 装备图标**（0x430A40 F651、记录 stride 0xC24 @ +0x60C、位置表 [0x558] stride 0x10、默认 +0x61/+0xC8）+ 名字/行会标题（0x45DBA0 字体 + 0x45DE50 DrawTextA 0xDCFFDC/0xB4FAFF + 格式化 0x46811C 串 0x47B560/0x47AF48）——角色状态窗口完整（F558/F651 用）。
+- 落盘：char-status-window-draw-evidence.json（F758，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 452。
