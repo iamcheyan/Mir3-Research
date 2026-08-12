@@ -8126,3 +8126,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**422 证据 JSON**；三服务 200；master 3e7793d（**456 连发 F335-F797 已推**）。
 - **〔弧〕**入站协议（F571）+ 英雄分派（F791）+ 技能处理（F794）+ 地图/名字处理（F797）——**recv/名字家族完整**（base64 载荷 + 公告绘制 + 实体名 [0x35A820]/[0x620A0] + 技能消息），入站处理表面扩展至 100%。
 - 落盘：recv-name-family-closure-evidence.json（F798，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 492。
+## Round 493 (F799) — 2026-08-12：HANDOFF 刷新 76（Round 490-492）
+
+- **〔刷新〕**HANDOFF 追加 Round 490-492（F797-F798：地图/名字消息 + recv/名字家族闭合）；基线 Round 489=f14f2e5 → Round 492=56c9011（**457 连发 F335-F798**）。
+- 落盘：handoff-refresh-76-evidence.json（F799，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 493。

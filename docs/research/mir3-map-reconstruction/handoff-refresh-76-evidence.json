@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-76-2026-08-12-f799",
+  "title": "Round 493 (F799): HANDOFF refresh 76 - Rounds 490-492 (F796-F798: HANDOFF 75 + 75-refresh milestone, map/name message handler, recv/name family closure), baseline Round 489=f14f2e5 -> Round 492=56c9011 (457 consecutive F335-F798), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 490-492.",
+  "question": "What changed since HANDOFF refresh 75?",
+  "method": "Append Round 490-492 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 490-492 appended (3 rounds, F796-F798)",
+    "baseline": "Round 489=f14f2e5 -> Round 492=56c9011 (457 consecutive F335-F798)",
+    "arcs": {"name": "F797 map/name", "closure": "F798 recv/name"},
+    "key": "recv/name family complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F796": "refresh 75 baseline -> now refresh 76", "F335-F798": "457 rounds"
+  },
+  "contrast": {
+    "refresh_75_vs_76": "F797-F798 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 76 (F799): Rounds 490-492 documented (recv/name complete), baseline f14f2e5 -> 56c9011, 457 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F797-F798 evidence.",
+  "cross_refs": ["F796: refresh 75", "F798: recv closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 490-492 section to HANDOFF",
+  "notes": [
+    "457 consecutive shipping rounds F335-F798",
+    "next: remaining deep corners, sim polish"
+  ]
+}
