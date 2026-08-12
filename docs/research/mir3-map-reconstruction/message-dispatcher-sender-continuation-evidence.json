@@ -1,0 +1,35 @@
+{
+  "evidence_id": "message-dispatcher-sender-continuation-2026-08-12-f785",
+  "title": "Round 479 (F785): Message dispatcher + sender continuation - 0x4515C0 (F782 forwarder dependency): custom-message DISPATCH (msg - 0x2714 <= 0x59 -> byte table 0x4515F8 -> jt 0x4515F0, else handled 1); senders: 0x451660 (arg) + 0x451690 (byte+arg) + 0x4516D0 msg 0x50 (WM_KEYDOWN?) + 0x451700 msg 0x417 + 0x451740 msg 0x3F2 + 0x451770 msg 0x409 + 0x4517A0 msg 0x3F5 (packed coord) + 0x4517E0 msg 0x3F4 - all via header 0x452940 + send 0x451E60 - outbound directory EXTENDED",
+  "date": "2026-08-12",
+  "objective": "Decode the message dispatcher + sender continuation.",
+  "question": "How do custom messages dispatch + more senders work?",
+  "method": "Disasm 0x4515C0-0x451820.",
+  "scope": "0x4515C0-0x451820; table 0x4515F8.",
+  "cell_analysis": {
+    "0x4515C0": "dispatch: 0x2714 base + 0x59 range + table 0x4515F8 + jt 0x4515F0",
+    "senders": {"0x50": "0x4516D0", "0x417": "0x451700", "0x3F2": "0x451740", "0x409": "0x451770", "0x3F5": "0x4517A0", "0x3F4": "0x4517E0"}
+  },
+  "exe_trace": {
+    "input_chain": "WM message -> dispatch table -> handler/sender"
+  },
+  "audit_vs_exe": {
+    "F572": "header/send", "F573": "outbound directory", "F782": "forwarder"
+  },
+  "contrast": {
+    "dispatch_vs_senders": "msg map + senders",
+    "key_vs_mouse": "0x50 + coords 0x3F5"
+  },
+  "verdict": "Message dispatcher + sender continuation PRIMARY-verified: custom-msg map + 6 more senders; outbound directory extended (F572/F573).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dispatcher + senders decoded from .text.",
+  "cross_refs": ["F572: header/send", "F573: directory", "F782: forwarder"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4515C0+0x10; 0x4516D0+0x10",
+  "notes": [
+    "msg base 0x2714",
+    "table 0x4515F8",
+    "senders 0x50/0x417/0x3F2/0x409/0x3F5/0x3F4",
+    "jt 0x4515F0"
+  ]
+}

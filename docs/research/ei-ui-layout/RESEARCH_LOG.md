@@ -8065,3 +8065,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 475-477（F782-F783：发送器家族扩展 + 出站发送器最终闭合）；基线 Round 474=d753c98 → Round 477=213256b（**442 连发 F335-F783**）。
 - 落盘：handoff-refresh-71-evidence.json（F784，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 478。
+## Round 479 (F785) — 2026-08-12：消息分派器 + 发送器续篇
+
+- **〔分派〕**0x4515C0（F782 转发依赖）：**自定义消息分派**（msg − 0x2714 ≤ 0x59 → 字节表 0x4515F8 → jt 0x4515F0，否则已处理 1）；发送器：0x451660（arg）+ 0x451690（字节+arg）+ 0x4516D0 **msg 0x50**（WM_KEYDOWN?）+ 0x451700 **0x417** + 0x451740 **0x3F2** + 0x451770 **0x409** + 0x4517A0 **0x3F5**（打包坐标）+ 0x4517E0 **0x3F4**——全部经 0x452940 + 0x451E60——**出站目录扩展**。
+- 落盘：message-dispatcher-sender-continuation-evidence.json（F785，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 479。
