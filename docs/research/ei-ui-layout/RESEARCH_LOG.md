@@ -7324,3 +7324,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**243 证据 JSON**；三服务 200；master 3db040c（**276 连发 F335-F617 已推**）。
 - **〔弧〕**攻击/交易/金币发送器（F616：msg 0x401-0x406 + wnd 分派）+ NPC 回复/随机种子/校验和（F617：msg 0x411 + XOR 完整性）——**整个出站发送层（全部游戏动作 + 完整性）字节级**，补全 F572/F573 文本帧协议。
 - 落盘：outbound-send-arc-closure-evidence.json（F618，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 312。
+## Round 313 (F619) — 2026-08-12：模拟器校验和层
+
+- **〔实现〕**app.js sendFrame() 扩展：simSeedKey [0x13,0x37,0x52,0x71]（镜像 0x9135B8 4 字节种子 F617）、simChecksum() = **0x4525F0 XOR 算法**（4 字节键 XOR + 加权载荷和 (idx+1)×idx vs [0x9135BC]）→ '[送出] #seq cmd/args! ... XOR 校验和 0xXXXXXXXX'。
+- **〔验证〕**node --check OK + sim 200 无回归——模拟器镜像 F617 线完整性。
+- 落盘：sim-checksum-layer-evidence.json（F619，primary-bytes 算法 + derived 集成）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 313。

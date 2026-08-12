@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sim-checksum-layer-2026-08-12-f619",
+  "title": "Round 313 (F619): Simulator checksum layer - app.js sendFrame() extended: simSeedKey [0x13,0x37,0x52,0x71] (mirrors 0x9135B8 4-byte seed F617), simChecksum() = 0x4525F0 XOR algorithm (4-byte key XOR + weighted payload sum (idx+1)*idx vs [0x9135BC]) -> '[送出] #<seq><cmd>/<args>! ... XOR 校验和 0xXXXXXXXX' in chat ring; node --check OK + sim 200 no regression - sim now mirrors F617 wire integrity",
+  "date": "2026-08-12",
+  "objective": "Add the checksum/seed layer to the simulator.",
+  "question": "Can the sim show the real checksum behavior?",
+  "method": "Edit app.js (simChecksum + sendFrame) + node check + static verify.",
+  "scope": "Tools/mir3_client_simulator/app.js.",
+  "cell_analysis": {
+    "seed": "simSeedKey [0x13,0x37,0x52,0x71] = 0x9135B8 mirror",
+    "checksum": "0x4525F0 XOR: 4-byte key XOR + weighted sum (idx+1)*idx",
+    "log": "'[送出] #seq cmd/args! ... XOR 校验和 0xXXXXXXXX'",
+    "validate": {"node": "--check OK", "sim": "HTTP 200", "no_regression": "frame format intact"}
+  },
+  "exe_trace": {
+    "sim_chain": "sendFrame -> simChecksum(cmd+args) -> chat ring with checksum"
+  },
+  "audit_vs_exe": {
+    "F617": "seed + XOR checksum mirrored", "F576": "frame protocol layer extended"
+  },
+  "contrast": {
+    "sim_vs_exe": "sim logs checksum; real client verifies via 0x4525F0",
+    "seed": "fixed demo key vs runtime random"
+  },
+  "verdict": "Simulator checksum layer PRIMARY-verified: seed + XOR checksum mirrored (F617); node OK + sim 200 no regression.",
+  "evidence_level": "primary-bytes (F617 algo) + derived-tooling (sim)",
+  "evidence_level_note": "Algorithm from F617; sim verified statically + node.",
+  "cross_refs": ["F617: checksum", "F576: frame layer"],
+  "tool": "edit / node / curl",
+  "reproduce": "open sim, type 'hi' -> '[送出] #1 0x404600/hi! ... XOR 校验和 0x...'",
+  "notes": [
+    "fixed demo seed for deterministic log",
+    "XOR + weighted sum matches 0x4525F0",
+    "no regression: frame format preserved"
+  ]
+}

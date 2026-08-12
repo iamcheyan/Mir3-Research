@@ -305,11 +305,24 @@ function pushChat(line) {
 // [obj+0x6044]. The sim mirrors the wire format so the visible log matches
 // what the real client emits.
 let simFrameSeq = 1;
+// Round 311 (F617): 0x452580 random seed (0x9135B8 4-byte key) + 0x4525F0 XOR
+// checksum (key XOR + weighted payload sum vs [0x9135BC]) — mirror the wire
+// integrity so the sim log shows the real key/checksum behavior.
+let simSeedKey = [0x13, 0x37, 0x52, 0x71];
+function simChecksum(body) {
+  // 0x4525F0: 4-byte key XOR with first 4 body bytes + weighted sum of the rest
+  let k = 0;
+  for (let i = 0; i < 4 && i < body.length; i++) k = ((k << 8) | (body.charCodeAt(i) ^ simSeedKey[i])) >>> 0;
+  let sum = 0;
+  for (let i = 4; i < body.length; i++) sum += (body.charCodeAt(i) + 1) * (i - 4);
+  return (k ^ sum) >>> 0;
+}
 function sendFrame(cmd, args) {
   const seq = simFrameSeq;
   simFrameSeq = simFrameSeq >= 9 ? 1 : simFrameSeq + 1;
   const frame = args ? `#${seq}${cmd}/${args}!` : `#${seq}${cmd}!`;
-  pushChat(`[送出] ${frame}  (0x452940 包头 + 0x451E60 帧, seq ${seq})`);
+  const cs = simChecksum(cmd + (args || ""));
+  pushChat(`[送出] ${frame}  (0x452940 包头 + 0x451E60 帧, seq ${seq}, XOR 校验和 0x${cs.toString(16).toUpperCase().padStart(8, "0")} F617)`);
   return frame;
 }
 
