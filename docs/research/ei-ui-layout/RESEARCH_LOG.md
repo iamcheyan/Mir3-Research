@@ -7870,3 +7870,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 430-432（F737-F738：文本 BSS 助手 + 文本家族最终闭合）；基线 Round 429=0d84db2 → Round 432=994b5d7（**397 连发 F335-F738**）。
 - 落盘：handoff-refresh-56-evidence.json（F739，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 433。
+## Round 434 (F740) — 2026-08-12：商店窗口点击处理
+
+- **〔商店〕**0x44F1D0：模式 [0x5F8] 分派（F661）：**购买路径**（0x44E700 命中 → msg 0x3EA via 0x423E80、确认态 [0x5F8]=4、物品 [0x7F0]、旗标 [0x7EC]）+ **卖出/修理路径**（0x4521F0 + 耐久 [item+0x3D]；0x452230/0x4522A0 发送）+ 购买确认命中测试（SetRect [0x7F4..0x810] + PtInRect → 0x452270/0x452230）——商店家族扩展（F555/F661/F662 用）。
+- 落盘：shop-window-click-handler-evidence.json（F740，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 434。

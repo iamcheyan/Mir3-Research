@@ -1,0 +1,34 @@
+{
+  "evidence_id": "shop-window-click-handler-2026-08-12-f740",
+  "title": "Round 434 (F740): Shop window click handler - 0x44F1D0: mode [0x5F8] dispatch (F661): BUY path (item hit 0x44E700 -> msg 0x3EA via 0x423E80, confirm state [0x5F8]=4, item [0x7F0], mode flag [0x7EC]) + SELL/REPAIR path (0x4521F0 with [0x5F4]; durability [item+0x3D]; 0x452230/0x4522A0 sends) + buy-confirm hit-test (SetRect [0x7F4..0x810] + PtInRect -> 0x452270/0x452230) - shop family EXTENDED (F555/F661/F662 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the shop window click handler.",
+  "question": "How does the shop window handle clicks?",
+  "method": "Disasm 0x44F1D0-0x44F420.",
+  "scope": "0x44F1D0-0x44F420; mode [0x5F8].",
+  "cell_analysis": {
+    "0x44F1D0": {"buy": "0x44E700 hit -> msg 0x3EA (0x423E80), state 4, [0x7F0]", "sell": "0x4521F0 + durability [0x3D]", "confirm": "rects [0x7F4..0x810] -> 0x452270/0x452230"}
+  },
+  "exe_trace": {
+    "shop_chain": "mode dispatch -> buy (0x3EA) / sell-repair -> confirm send"
+  },
+  "audit_vs_exe": {
+    "F555": "shop buy/sell/repair", "F661": "mode [0x5F8]", "F662": "shop draw"
+  },
+  "contrast": {
+    "buy_vs_sell": "0x3EA + confirm vs 0x4521F0",
+    "mode_vs_rects": "state 4 + hit-test"
+  },
+  "verdict": "Shop window click handler PRIMARY-verified: buy/sell/repair + confirm; shop family extended (F555/F661/F662).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Shop click decoded from .text.",
+  "cross_refs": ["F555: shop", "F661: mode", "F662: draw"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44F1D0+0x20",
+  "notes": [
+    "msg 0x3EA buy",
+    "confirm state 4",
+    "durability [0x3D]",
+    "rects [0x7F4..0x810]"
+  ]
+}
