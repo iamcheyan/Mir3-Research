@@ -1,0 +1,36 @@
+{
+  "evidence_id": "equipment-arc-closure-2026-08-12-f473",
+  "title": "Round 167 (F473): Equipment arc CLOSED (F469-F472, 4 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 23b0365 (user quest-design commits on top of my Round 166 346ee6a; all pushed); arc consolidated: 12-slot panel (F469), packet handlers + hero sync (F470), equip sound dispatcher (F471), slot icon draw + figure (F472) - F325 8-slot corrected to 12, F470 'hero sync' corrected to sound; repo has uncommitted user quest doc (07-任务总表.md) left untouched",
+  "date": "2026-08-12",
+  "objective": "Close the equipment arc with validation + summary; note the user's concurrent quest-design commits.",
+  "question": "Is the repo healthy after the equipment arc, given concurrent user commits?",
+  "method": "Full validation + service health + git state inspection.",
+  "scope": "Tools/, docs/, services 8765/8899, master.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": {"master": "23b0365 (user quest-design commit on top of 346ee6a Round 166)", "uncommitted": "docs/quest-design/07-任务总表.md (user's in-progress - untouched)", "all_pushed": "yes"},
+    "arc_summary": {"F469": "12-slot equip panel (hit-test/compat/clear/name-find) - F325 8->12 corrected", "F470": "equip packet family (0xC28 set, 0x308 dword records, hero 0x42E2D0)", "F471": "0x42E2D0 = equip sound dispatcher (0x6B-0x76 IDs) - F470 semantic corrected", "F472": "equip slot draw (11 icons 0x430A40 + figure 0x566DD4) - render chain complete"}
+  },
+  "exe_trace": {
+    "equip_chain_full": "server packet -> 0x44B930 -> slot records -> paint 0x44B2D0 -> 0x44B560 (icons + figure) + sound 0x42E2D0"
+  },
+  "audit_vs_exe": {
+    "F325": "slot count corrected", "F33": "status family consistent", "F464": "icon draw reused"
+  },
+  "contrast": {
+    "user_vs_research": "user quest-design commits coexist with research rounds (separate doc trees)",
+    "closed_vs_pending": "equipment arc closed; all major UI families now closed"
+  },
+  "verdict": "Equipment arc CLOSED (F469-F472): validation green, services live, all pushes synced with user's concurrent quest-design commits. Equipment panel fully decoded (slots/packets/sound/draw).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F469-F472.",
+  "cross_refs": ["F469-F472: arc", "F162: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "user quest doc 07-任务总表.md modified in working tree - not staged (their work)",
+    "next arcs: trade content (F364), NPC dialog interaction depth (F404), 0x419D40 item-use paths",
+    "135 shipping rounds F335-F472 pushed (+ user commits)"
+  ]
+}

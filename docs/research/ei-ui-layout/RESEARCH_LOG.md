@@ -6585,3 +6585,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔绘制〕**0x44B560：角色形象帧字节 [0x777720] → 0x566DD4 上下文 → 0x45FD50 blit（+0xC8/+0x61）；**11 槽图标循环**（0x44B5CD：记录 [0x2F8+槽*0xC24]、门 [edi-4] 占用、**0x430A40 图标绘制**（F464）、矩形 [0x1C0+槽*0x10]、槽 0/1/4 特殊居中在形象上）；行走帧 [0x777723] ≤ 0xA → 帧 [0x777720]*10+[0x777723]+0x3B。
 - **〔链〕**绘制 0x44B2D0 → 0x44B560 → 0x430A40 图标 + 0x45FD50 形象 — 装备面板渲染链完整。
 - 落盘：equip-slot-draw-evidence.json（F472，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 166。
+## Round 167 (F473) — 2026-08-12：装备弧闭合（F469-F472 4 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200。
+- **〔仓库〕**master 23b0365（用户任务设计提交在 Round 166 346ee6a 之上，全部已推）；工作树有用户未提交 quest 文档（07-任务总表.md，未动）。
+- **〔弧汇总〕**12 槽面板（F469，F325 8→12 修正）/ 装备包族（F470）/ 音效分派器（F471，F470 语义修正）/ 槽绘制+形象（F472）— 装备面板全解。
+- 落盘：equipment-arc-closure-evidence.json（F473，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 167。
