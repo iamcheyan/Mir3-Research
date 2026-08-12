@@ -1,0 +1,35 @@
+{
+  "evidence_id": "skill-detail-verification-2026-08-12-f410",
+  "title": "Round 104 (F410): Skill book verified - 8 category tabs (火冰电风神圣黑暗幻影剑) + 12 skill slots with real Magic.exp names (基本剑术/攻杀剑术/刺杀剑术 primary-static F351), detail page 0x43A440 documented (F331)",
+  "date": "2026-08-12",
+  "objective": "Verify the skill book window: category tabs + skill slots with real Magic.exp data.",
+  "question": "Does the sim skill book show the original skill data?",
+  "method": "Sim browser check (tabs + skill slots + names); F331/F351 evidence cross-ref.",
+  "scope": "sim window.skill-book; F331/F351 skill evidence.",
+  "cell_analysis": {
+    "tabs": {"count": 8, "labels": "火/冰/电/风/神圣/黑暗/幻影/剑 (F338)"},
+    "slots": {"count": 12, "names": "基本剑术/攻杀剑术/刺杀剑术/半月弯刀/野蛮冲撞... (Magic.exp F37/F351)", "evidence": "primary-static"},
+    "detail_page": "0x43A440 right-page renderer (F331: Magic.exp lines, 0x104 stride, 235px x-offset)"
+  },
+  "exe_trace": {
+    "skill_book": "hero+0x524F0 (id14, Ctrl+E, frame 400, F338)"
+  },
+  "audit_vs_exe": {
+    "F351": "Magic.exp names in sim confirmed",
+    "F331": "skill family + detail page confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = grid slots; original = left list + right detail page"
+  },
+  "verdict": "Skill book verified (F351/F331): 8 tabs + 12 real-skill slots (基本剑术 etc, primary-static). Detail page 0x43A440 documented. Skill subsystem closed.",
+  "evidence_level": "derived-tooling (names primary-static F351)",
+  "evidence_level_note": "Sim slots browser-verified; names from Magic.exp (F37/F351).",
+  "cross_refs": ["F351: skill grid Magic.exp", "F331: skill family", "F338: skill book id14"],
+  "tool": "puppeteer browser; evidence cross-ref",
+  "reproduce": "open sim; press E; observe 8 tabs + 12 skill slots",
+  "notes": [
+    "slot geometry candidate (36px, 40px pitch)",
+    "detail page select = click skill -> 0x43A440 (F331)",
+    "Magic.exp 50 records, sim shows first 12"
+  ]
+}

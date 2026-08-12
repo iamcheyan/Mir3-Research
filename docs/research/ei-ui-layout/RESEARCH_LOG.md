@@ -6254,3 +6254,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔槽〕**46 槽（F293 证据 desc）+ 7 Equip 图标槽（i%7）；原版提示链 0x42FAB0 → 0x42F240 → 0x4341F0（F340，底板 0x329696）。
 - 落盘：bag-tooltip-verification-evidence.json（F409，derived-tooling；链 primary-static F340）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 103。
+## Round 104 (F410) — 2026-08-12：技能书验证（8 页签 + 12 真实技能槽）
+
+- **〔页签〕**8 分类（火冰电风神圣黑暗幻影剑，F338）；**〔槽〕**12 真实 Magic.exp 技能（基本剑术/攻杀剑术/刺杀剑术 primary-static，F351）。
+- **〔详情页〕**0x43A440 右页渲染器（F331：Magic.exp 行、0x104 步长、235px x 偏移）已文档化。
+- 落盘：skill-detail-verification-evidence.json（F410，derived-tooling；名 primary-static F351）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 104。

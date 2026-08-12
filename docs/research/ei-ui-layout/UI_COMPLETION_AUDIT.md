@@ -746,6 +746,11 @@ git diff --check
 - **46 槽 + 7 图标验证**；0x42FAB0 → 0x42F240 → 0x4341F0 链（F340）。
 - 落盘：`bag-tooltip-verification-evidence.json`（F409）+ RESEARCH_LOG Round 103。
 
+## Round 104 (2026-08-12) — 技能书验证（Finding 410）
+
+- **8 页签 + 12 真实技能槽验证**（F351/F331）。
+- 落盘：`skill-detail-verification-evidence.json`（F410）+ RESEARCH_LOG Round 104。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
