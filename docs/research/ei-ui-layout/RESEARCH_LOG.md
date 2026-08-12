@@ -7463,3 +7463,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔blit〕**0x45FD50（F436/F292 族）：裁剪 0x320×0x258（800×600 屏）+ 负偏移钳制、表面 vtable[0x64] GetDC（结构 0x7C）、dst 步长 (w/2)×x。
 - **〔RLE〕**16 位 RLE 解码：**0xC0 = 跳行**（字数 → x 前进）、**0xC1 = 像素行**（字数 + 左右裁剪）、字对行——blit 引擎 + RLE 解码字节级（支撑 F584/F607/F629 全部 blit）。
 - 落盘：universal-wil-blit-evidence.json（F647，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 341。
+## Round 342 (F648) — 2026-08-12：主世界 blit
+
+- **〔blit〕**0x45E730（F591 世界 blit 阶段）：裁剪 0x320×0x258 + 负偏移钳制、表面 vtable[0x64] GetDC（0x7C）、**逐行 16 位复制**（行步长 + rep movsd/movsb）——主世界→屏幕 blit 字节级（F591 阶段 + F647 blit 族）。
+- 落盘：world-blit-main-evidence.json（F648，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 342。

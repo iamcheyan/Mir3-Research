@@ -1,0 +1,34 @@
+{
+  "evidence_id": "world-blit-main-2026-08-12-f648",
+  "title": "Round 342 (F648): World blit (main) - 0x45E730 (F591 world-blit stage): clip 0x320x0x258 + negative clamps, surface vtable[0x64] GetDC (0x7C struct), per-row 16-bit copy (row stride + rep movsd/movsb) - main world-to-screen blit byte-level (F591 stage + F647 blit family)",
+  "date": "2026-08-12",
+  "objective": "Decode the main world blit.",
+  "question": "How does the world blit to screen?",
+  "method": "Disasm 0x45E730-0x45E8A1.",
+  "scope": "0x45E730-0x45E8A1; clip; rows.",
+  "cell_analysis": {
+    "0x45E730": {"clip": "0x320x0x258 + negative clamps", "surface": "vtable[0x64] GetDC (0x7C)", "copy": "per-row 16-bit rep movsd/movsb (row stride)"}
+  },
+  "exe_trace": {
+    "world_blit_chain": "main tick (F591) -> 0x45E730 clip + surface -> per-row copy -> screen"
+  },
+  "audit_vs_exe": {
+    "F591": "main tick stage CONFIRMED", "F647": "blit family", "F584": "world-map blit"
+  },
+  "contrast": {
+    "world_vs_universal": "0x45E730 world blit + 0x45FD50 universal",
+    "copy_vs_rle": "raw row copy vs RLE decode"
+  },
+  "verdict": "World blit PRIMARY-verified: clip + surface + per-row copy; F591 stage + F647 family connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "World blit decoded from .text.",
+  "cross_refs": ["F591: main tick", "F647: blit family", "F584: world-map"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45E730+0x40",
+  "notes": [
+    "screen clip 0x320x0x258",
+    "per-row 16-bit copy",
+    "vtable[0x64] surface",
+    "rep movsd/movsb rows"
+  ]
+}
