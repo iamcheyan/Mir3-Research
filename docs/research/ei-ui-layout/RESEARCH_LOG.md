@@ -6871,3 +6871,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔链〕**0x441B30 写 6 键（0x4761A4 WritePrivateProfileString，文件 Config.ini、节 Options）：**BGM/[0x54]、BGMLevel/[0x8AB150]、EffectSound/[0x58]、EffectSoundLevel/[0x8AB14C]、Ambience/[0x5C]、ShadowBlend/[0x60]**——F324 字节级确认。
 - 落盘：config-ini-save-chain-evidence.json（F528，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 222。
+## Round 223 (F529) — 2026-08-12：聊天输入发送路径
+
+- **〔发送〕**0x404600：门 [0x8A4]==1、清 [0xE3D] 缓冲、SetWindowTextA（[0x8AA48C] ← &[0xD39]）、[0xD38]=1 发送旗标、0x403640 分派、[0x8AA498]=0；0x404660 聚焦（SetFocus + ShowWindow）；ctor 0x404690（vtable 0x4763A8）。
+- 落盘：chat-input-send-path-evidence.json（F529，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 223。

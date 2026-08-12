@@ -1,0 +1,35 @@
+{
+  "evidence_id": "chat-input-send-path-2026-08-12-f529",
+  "title": "Round 223 (F529): Chat input send path - 0x404600: gate [0x8A4]==1, clears [0xE3D] 0x41-dword buffer, SetWindowTextA 0x4762CC ([0x8AA48C] window <- &[0xD39] input), [0xD38]=1 send-flag, 0x403640 dispatch, [0x8AA498]=0; 0x404660 focus path (SetFocus 0x4762B8 + ShowWindow); chat ctor 0x404690 (vtable 0x4763A8 + 0x4175F0) - F355 input flow fully decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the chat input send path (F355).",
+  "question": "How does the chat input send its text?",
+  "method": "Disasm 0x404600-0x404690 (input send + focus + ctor).",
+  "scope": "0x404600-0x404690; buffers [0xD39]/[0xE3D]; flags [0x8A4]/[0xD38].",
+  "cell_analysis": {
+    "send_0x404600": {"gate": "[0x8A4]==1 (chat open)", "clear": "[0xE3D] 0x41 dwords zeroed", "set": "SetWindowTextA 0x4762CC ([0x8AA48C] <- &[0xD39])", "flag": "[0xD38]=1 (send pending)", "dispatch": "0x403640 (command/chat send)", "reset": "[0x8AA498]=0"},
+    "focus_0x404660": "SetFocus 0x4762B8 + ShowWindow 0x4762AC (input activation)",
+    "ctor_0x404690": "vtable 0x4763A8 + 0x4175F0 (control init)"
+  },
+  "exe_trace": {
+    "chat_chain": "user text -> [0xD39] -> 0x404600 (clear+set+flag) -> 0x403640 dispatch -> command (F355)"
+  },
+  "audit_vs_exe": {
+    "F355": "input flow byte-confirmed", "F49": "chat family", "F97": "channels"
+  },
+  "contrast": {
+    "send_vs_focus": "0x404600 sends vs 0x404660 focuses",
+    "input_vs_history": "[0xD39] input vs [0xE3D] clear buffer"
+  },
+  "verdict": "Chat input send path PRIMARY-verified: 0x404600 gate+clear+set+flag+dispatch (0x403640), 0x404660 focus, ctor 0x404690. F355 input flow complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Input/send/focus decoded from .text.",
+  "cross_refs": ["F355: chat dispatch", "F49: chat family", "F97: channels"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x404600+0x20, 0x404660+0x10, 0x404690+0x10",
+  "notes": [
+    "[0x8A4] = chat window open gate",
+    "[0xD38] = send-pending flag (consumed by 0x403640)",
+    "[0x8AA498] = busy flag reset after send"
+  ]
+}
