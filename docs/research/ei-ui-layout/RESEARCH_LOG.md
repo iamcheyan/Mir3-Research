@@ -6710,3 +6710,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master d8c9240（**154 连发已推**）。
 - **〔弧汇总〕**monster.dat 432 槽 × 0xFC（F492）/ stditem.dat 1143 物品 [inference]（F493）/ monster.dat 统计字段偏移（F494）；**关键发现：客户端零本地名引用——记录存储全包驱动，服务端 .dat = KR 遗留自定义字符集**。
 - 落盘：server-db-arc-closure-evidence.json（F495，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 189。
+## Round 190 (F496) — 2026-08-12：客户端瓦片存储索引 PRIMARY（与 mapviewer 对齐）
+
+- **〔索引〕**0x43B770：槽 = **(tile_row+1)*14**（字节 [0x124]++ × imul 0xE）+ 14 槽带循环 → 存储 0x5600FC + idx*0x144（F452 stride）+ 文件名 0x56B22C + idx*0x104。
+- **〔对齐〕**mapviewer audit 公式（v = file − floor(file/14)、槽 = v、带 0-13/14-27/28-41/42-55/56-69）= 客户端精确匹配——F343/F452 交叉确认。
+- 落盘：client-tile-store-index-evidence.json（F496，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 190。

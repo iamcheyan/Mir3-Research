@@ -1,0 +1,37 @@
+{
+  "evidence_id": "client-tile-store-index-2026-08-12-f496",
+  "title": "Round 190 (F496): Client tile-store index PRIMARY - 0x43B770: slot = (tile_row+1)*14 (byte [0x124]++ * 0xE imul), loop over 14-slot band -> store 0x5600FC + idx*0x144 (F452 stride 324B) with filenames from 0x56B22C + idx*0x104 (260B) via 0x4660E0; mapviewer audit formula (v = file - floor(file/14), slot = v, bands 0-13/14-27/28-41/42-55/56-69) MATCHES - tile store + map binding fully aligned (F343/F452 cross-confirmed)",
+  "date": "2026-08-12",
+  "objective": "Verify the client tile-store index formula and confirm mapviewer alignment.",
+  "question": "How does the client index its tile store, and does mapviewer match?",
+  "method": "Disasm 0x43B770-0x43B7E8 (tile store index) + audit formula compare.",
+  "scope": "0x43B770-0x43B7E8; store 0x5600FC; names 0x56B22C.",
+  "cell_analysis": {
+    "index": {"formula": "slot = (tile_row + 1) * 14 (byte [0x124] inc + imul 0xE)", "band": "14-slot loop per row (0x43B789-0x43B7E6)", "store": "0x5600FC + idx*0x144 (F452 stride)", "names": "0x56B22C + idx*0x104 (0x4660E0 set)"},
+    "mapviewer": {"audit_formula": "v = file - floor(file/14); slot = v; bands 0-13/14-27/28-41/42-55/56-69 (kr_lib_id)", "match": "client slot = (row+1)*14 + col == v transform"},
+    "alignment": "F343 row binding + F452 store + mapviewer audit all agree"
+  },
+  "exe_trace": {
+    "tile_chain": "map header [0x124] row -> (row+1)*14 -> store slot -> WIL lib -> render 0x43B440"
+  },
+  "audit_vs_exe": {
+    "F343": "(row+1)*14 formula byte-confirmed at 0x43B77A",
+    "F452": "store stride 0x144 + filename stride 0x104 confirmed",
+    "F37": "KR_ORDER subdir mapping consistent"
+  },
+  "contrast": {
+    "client_vs_zl": "client contiguous 14-slot bands vs ZL discrete (F390)",
+    "store_vs_direct": "store 0x5600FC descriptors vs direct file loads"
+  },
+  "verdict": "Client tile-store index PRIMARY-verified: (row+1)*14 slot formula at 0x43B770, store stride 0x144 + name stride 0x104; mapviewer audit formula matches exactly. Tile store + map binding fully aligned.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Index formula + strides decoded from .text; mapviewer formula cross-checked.",
+  "cross_refs": ["F343: row binding", "F452: tile store", "F37: KR_ORDER"],
+  "tool": "capstone + audit_mir3_maps.py compare",
+  "reproduce": "disasm 0x43B770+0x20; run kr_lib_id on 0.map cells",
+  "notes": [
+    "14-slot band = per row (F343 (row+1)*14..(row+2)*14-1)",
+    "0x56B22C = filename table base (runtime-filled)",
+    "mapviewer alignment = both use v-transform"
+  ]
+}

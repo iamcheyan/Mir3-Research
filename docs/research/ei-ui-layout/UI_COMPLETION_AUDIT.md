@@ -1176,6 +1176,11 @@ git diff --check
 - **F492-F494 弧闭合 + 154 连发**；客户端包驱动确认。
 - 落盘：`server-db-arc-closure-evidence.json`（F495）+ RESEARCH_LOG Round 189。
 
+## Round 190 (2026-08-12) — 客户端瓦片存储索引（Finding 496）
+
+- **(row+1)*14 槽公式字节确认**；mapviewer 完全对齐。
+- 落盘：`client-tile-store-index-evidence.json`（F496）+ RESEARCH_LOG Round 190。
+
 ## Pending（未阻塞，持续队列）
 
 - 服务端 .dat 名称编码（自定义移位）— 低优先（唯一）。
