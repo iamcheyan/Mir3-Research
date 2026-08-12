@@ -8091,3 +8091,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 481-483（F788-F789：选项配置装载 + 选项持久化闭合）；基线 Round 480=b4b8bc8 → Round 483=581634a（**448 连发 F335-F789**）。
 - 落盘：handoff-refresh-73-evidence.json（F790，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 484。
+## Round 485 (F791) — 2026-08-12：英雄消息分派 + 死亡泵
+
+- **〔英雄〕**0x422840：msg 0x34 → 0x423000、**msg 0x2F0 → 0x423070（F743 技能装载器）**、**msg 0x1F → 显示槽 [0x35A34A/0x35A34C] + 内部 [0x35B1F5/0x35B1F9]**（500ms 门 [0x35B278]、0x40A1E0 + 0x4561B0 地图串）——F743 写者来源解析；**0x422960 死亡/重生泵（F611 全量）**：状态 [0x2F8840]==3 + 停音 0x45B1D0/0x45B3D0 + **1500ms 计时 [0x4279A4]=0x5DC** + 重生坐标 [0x2F884C]/[0x2F8850] + 速度 [0x428220]=1.0f + 0x410100（F725）+ vtable[0x10]——**F611 函数体完整**。
+- 落盘：hero-message-dispatch-death-pump-evidence.json（F791，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 485。

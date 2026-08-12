@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hero-message-dispatch-death-pump-2026-08-12-f791",
+  "title": "Round 485 (F791): Hero message dispatch + death pump - 0x422840: msg 0x34 -> 0x423000, msg 0x2F0 -> 0x423070 (F743 skill loader), msg 0x1F -> display slots [0x35A34A/0x35A34C] + internal [0x35B1F5/0x35B1F9] (500ms gate [0x35B278], 0x40A1E0 + 0x4561B0 map string) - F743 writer origin RESOLVED; 0x422960 DEATH/RESPAWN pump (F611 full body): state [0x2F8840]==3 + stop sound 0x45B1D0/0x45B3D0 + 1500ms timer [0x4279A4]=0x5DC + respawn coords [0x2F884C]/[0x2F8850] + speed [0x428220]=1.0f + 0x410100 (F725) + vtable[0x10] - F611 body COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the hero message dispatch + death pump.",
+  "question": "How do hero messages dispatch + respawn pump work?",
+  "method": "Disasm 0x422840-0x422ADC.",
+  "scope": "0x422840-0x422ADC; slots.",
+  "cell_analysis": {
+    "0x422840": {"msgs": "0x34->0x423000, 0x2F0->0x423070, 0x1F->slots", "slots": "[0x35A34A/0x35A34C] + [0x35B1F5/0x35B1F9]"},
+    "0x422960": "death: state [0x2F8840]==3 + 1500ms [0x4279A4] + coords [0x2F884C]/[0x2F8850] + speed [0x428220]"
+  },
+  "exe_trace": {
+    "hero_chain": "msg dispatch -> skill/display -> death pump -> respawn"
+  },
+  "audit_vs_exe": {
+    "F743": "skill loader msg 0x2F0", "F611": "respawn 1500ms CONFIRMED", "F725": "0x410100"
+  },
+  "contrast": {
+    "dispatch_vs_pump": "msg map + death",
+    "slots_vs_coords": "display + respawn"
+  },
+  "verdict": "Hero message dispatch + death pump PRIMARY-verified: msg map + F611 full body; F743 writer origin resolved.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hero dispatch decoded from .text.",
+  "cross_refs": ["F743: skill", "F611: respawn", "F725: update"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422840+0x10; 0x422960+0x20",
+  "notes": [
+    "msg 0x2F0 skill loader",
+    "msg 0x1F display slots",
+    "1500ms respawn",
+    "coords 0x2F884C/0x2F8850"
+  ]
+}
