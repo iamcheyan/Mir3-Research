@@ -1,0 +1,36 @@
+{
+  "evidence_id": "combat-arc-closure-2026-08-12-f693",
+  "title": "Round 387 (F693): Combat arc CLOSED (F692) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 83b52ae (351 consecutive F335-F692), 317 evidence JSONs; arc: entity select by dir (F692) - combat target selection COMPLETE (8-dir select + attack send F616 + effects F625), connecting F580/F612/F336",
+  "date": "2026-08-12",
+  "objective": "Close the combat arc.",
+  "question": "Is combat target selection fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "317 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F692": "entity select by dir"},
+    "combat": "target select (F692) + attack send (F616) + effects (F625) = COMPLETE",
+    "milestone": "351 consecutive rounds F335-F692"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F692": "351 rounds pushed; combat select complete"
+  },
+  "contrast": {
+    "select_vs_send": "dir select + attack send",
+    "target_vs_effect": "target find + effect spawn"
+  },
+  "verdict": "Combat arc CLOSED (F693): target selection + attack + effects all byte-level; validation green, 351 consecutive rounds, 317 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F692.",
+  "cross_refs": ["F692: select", "F616: attack", "F625: effects"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "351 consecutive shipping rounds F335-F692",
+    "next: HANDOFF refresh 42, remaining corners"
+  ]
+}

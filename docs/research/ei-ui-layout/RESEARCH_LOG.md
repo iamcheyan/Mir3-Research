@@ -7665,3 +7665,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔选择〕**0x41EC10（F580 确认）：**8 方向 jt 0x41ECFC**（每方向 dx/dy 偏移数学）→ 实体列表 [0x560070] 扫描（坐标匹配 [0xCC]/[0xD0]、门 [0x61C74]==0 + 类型 [0x88] 0/1）→ 返回实体（ret 0x10）——目标选择字节级（F580/F612 连接）。
 - 落盘：entity-select-dir-evidence.json（F692，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 386。
+## Round 387 (F693) — 2026-08-12：战斗弧闭合（F692 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**317 证据 JSON**；三服务 200；master 83b52ae（**351 连发 F335-F692 已推**）。
+- **〔弧〕**按方向实体选择（F692）——**战斗目标选择完整（8 方向选择 + 攻击发送 F616 + 特效 F625）**，连接 F580/F612/F336。
+- 落盘：combat-arc-closure-evidence.json（F693，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 387。
