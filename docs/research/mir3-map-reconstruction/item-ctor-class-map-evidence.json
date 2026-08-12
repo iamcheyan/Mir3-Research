@@ -1,0 +1,35 @@
+{
+  "evidence_id": "item-ctor-class-map-2026-08-12-f658",
+  "title": "Round 352 (F658): Item ctor + class map - 0x430920 = item ctor (clear 0x2EE dwords + [0x64] flag, [0]=0), 0x430940 = FROM-RECORD ctor (copy 0x17 dwords + [0x22] type -> CLASS MAP jt 0x4309E0: [0]=1 weapon, [2]=2, [3]=3, [4]=4, [5]=5, [7]=7, [9]=9, [0xA]=0xA = F464 class map CONFIRMED, ret 0x64) - item construction + class dispatch byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the item ctor + class map.",
+  "question": "How are items constructed + classed?",
+  "method": "Disasm 0x430920-0x4309E0.",
+  "scope": "0x430920-0x4309E0; class map jt 0x4309E0.",
+  "cell_analysis": {
+    "0x430920": "item ctor: clear 0x2EE dwords + [0x64] flag",
+    "0x430940": {"copy": "0x17 dwords + type [0x22]", "class_map": "jt 0x4309E0: [0]=1, [2]=2, [3]=3, [4]=4, [5]=5, [7]=7, [9]=9, [0xA]=0xA (F464)", "ret": "0x64"}
+  },
+  "exe_trace": {
+    "item_chain": "record -> 0x430940 copy + type -> class map [0] -> item"
+  },
+  "audit_vs_exe": {
+    "F464": "class map CONFIRMED", "F590": "item records", "F651": "icon draw"
+  },
+  "contrast": {
+    "ctor_vs_fromrecord": "empty ctor + record ctor",
+    "type_classes": "type -> class 1/2/3/4/5/7/9/0xA"
+  },
+  "verdict": "Item ctor + class map PRIMARY-verified: 0x430940 record copy + type-class jt; F464 class map confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor + class map decoded from .text.",
+  "cross_refs": ["F464: item core", "F590: records", "F651: icons"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x430920+0x10; 0x430940+0x20",
+  "notes": [
+    "record size 0x64 (ret 0x64)",
+    "0x17 dwords + word + byte copy",
+    "class from type [0x22]",
+    "9 classes mapped"
+  ]
+}

@@ -7509,3 +7509,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 348-350（F655-F656：物品插入/放置 + 背包/仓库弧）；基线 Round 347=d3a4411 → Round 350=d393058（**315 连发 F335-F656**）。
 - 落盘：handoff-refresh-30-evidence.json（F657，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 351。
+## Round 352 (F658) — 2026-08-12：物品构造 + 类别映射
+
+- **〔构造〕**0x430920 = 物品 ctor（清 0x2EE 双字 + [0x64] 旗标）、0x430940 = **从记录构造**（复制 0x17 双字 + [0x22] 类型 → **类别映射 jt 0x4309E0**：[0]=1 武器、[2]=2、[3]=3、[4]=4、[5]=5、[7]=7、[9]=9、[0xA]=0xA = **F464 类别映射确认**、ret 0x64）——物品构造 + 类别分派字节级。
+- 落盘：item-ctor-class-map-evidence.json（F658，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 352。
