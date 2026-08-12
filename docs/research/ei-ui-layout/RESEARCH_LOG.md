@@ -7688,3 +7688,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 388-390（F695-F696：英雄角色移动 + 英雄角色弧）；基线 Round 387=4db4bee → Round 390=076c820（**355 连发 F335-F696**）。
 - 落盘：handoff-refresh-43-evidence.json（F697，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 391。
+## Round 392 (F698) — 2026-08-12：快捷槽物品使用链
+
+- **〔使用〕**0x41EDE0（F355 确认）：0x46811C 格式 + 公告 0x427E30；**物品记录构建**（0x430920 + 0x430940 从包 + 0x42FC20 背包 + 0x42E2D0 音效）、**广N 名表遍历 0x47ADC4**（밤1-10，名匹配 → 0x47B9BC 格式）——快捷槽物品使用字节级（F355/F549/F577 连接）。
+- 落盘：item-use-quick-slot-evidence.json（F698，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 392。

@@ -2186,9 +2186,14 @@ git diff --check
 - **Round 388-390 追加 + 355 连发**（英雄移动入档）。
 - 落盘：`handoff-refresh-43-evidence.json`（F697）+ RESEARCH_LOG Round 391。
 
+## Round 392 (2026-08-12) — 快捷槽物品使用链（Finding 698）
+
+- **记录构建 + 广N 名表**（F355/F549 连接）。
+- 落盘：`item-use-quick-slot-evidence.json`（F698）+ RESEARCH_LOG Round 392。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（英雄移动完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（快捷使用闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

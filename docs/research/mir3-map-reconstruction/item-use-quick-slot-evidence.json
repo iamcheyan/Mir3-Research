@@ -1,0 +1,34 @@
+{
+  "evidence_id": "item-use-quick-slot-2026-08-12-f698",
+  "title": "Round 392 (F698): Item-use quick-slot chain - 0x41EDE0 (F355 CONFIRMED): 0x46811C format + notice 0x427E30; item record build (0x430920 + 0x430940 from-packet + 0x42FC20 bag + 0x42E2D0 sound), 广N name-table walk 0x47ADC4 (밤1-10, name match -> 0x47B9BC '%s %s' family) - quick-slot item use byte-level (F355/F549/F577 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the item-use quick-slot chain.",
+  "question": "How do quick-slot item uses work?",
+  "method": "Disasm 0x41EDE0-0x41EF60.",
+  "scope": "0x41EDE0-0x41EF60; table 0x47ADC4; bag.",
+  "cell_analysis": {
+    "0x41EDE0": {"format": "0x46811C + notice 0x427E30", "record": "0x430920 + 0x430940 + 0x42FC20 bag + 0x42E2D0 sound", "table": "广N 0x47ADC4 walk (밤1-10, 0x47B9BC match)"}
+  },
+  "exe_trace": {
+    "use_chain": "广N cmd -> 0x41EDE0 -> item record -> bag + sound -> table match -> name"
+  },
+  "audit_vs_exe": {
+    "F355": "quick-slot CONFIRMED", "F549": "밤 table", "F577": "item records"
+  },
+  "contrast": {
+    "use_vs_build": "item use + record build",
+    "table": "广N name table walk"
+  },
+  "verdict": "Item-use quick-slot PRIMARY-verified: record + bag + sound + name table; F355/F549 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Item-use chain decoded from .text.",
+  "cross_refs": ["F355: quick-slot", "F549: 밤 table", "F577: records"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41EDE0+0x40",
+  "notes": [
+    "广N table 0x47ADC4",
+    "밤1-10 name match",
+    "record build + bag + sound",
+    "format 0x47B9BC"
+  ]
+}
