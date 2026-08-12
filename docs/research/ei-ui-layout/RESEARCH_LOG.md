@@ -8763,3 +8763,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔行会〕**0x425DE0 行会输入（滚动条 0x417C80 @ +0x76C → 页计数 [0x98] 模式 0/1/2 × [0x778] → 滚动 [0x9C]；否则 9 控件 vtable[8] @ +0x118 stride 0xB4）；0x425E90 9 控件重置；0x425EB0 **行会清空**（dlist [0xD0]/[0xE8] free 0x4680F8 + 默认 0x47BB80/0x47BB7C + 解析 0x468BF0 '
 '，F920 依赖）——行会输入完整。
 - 落盘：guild-window-input-reset-evidence.json（F945，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 639。
+## Round 640 (F946) — 2026-08-12：行会窗口闭合（F755/F830/F920/F945 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**570 证据 JSON**；三服务 200；master 216ed15（**604 连发 F335-F945 已推**）。
+- **〔弧〕**行会绘制（F755）+ 页子绘制（F830）+ 成员初始化（F920）+ 输入/重置（F945）——**行会窗口完整**（3 页 + 滚动条 + 成员列表 + 公告编辑器 + 输入），行会表面 100%。
+- 落盘：guild-window-closure-evidence.json（F946，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 640。

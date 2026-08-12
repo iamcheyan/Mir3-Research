@@ -1,0 +1,37 @@
+{
+  "evidence_id": "guild-window-closure-2026-08-12-f946",
+  "title": "Round 640 (F946): Guild window CLOSED (F755/F830/F920/F945) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 216ed15 (604 consecutive F335-F945), 570 evidence JSONs; arc: guild draw (F755) + page draw (F830) + member init (F920) + input/reset (F945) - guild window COMPLETE byte-level (3-page + scrollbar + member list + announcement editor + input), guild surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the guild window arc.",
+  "question": "Is the guild window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "570 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F755": "draw", "F830": "page draw", "F920": "member init", "F945": "input/reset"},
+    "guild": "3-page + scrollbar + input = COMPLETE",
+    "milestone": "604 consecutive rounds F335-F945"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F945": "604 rounds pushed; guild window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "member_vs_reset": "init + clear"
+  },
+  "verdict": "Guild window CLOSED (F946): 3-page + scrollbar + input all byte-level; validation green, 604 consecutive rounds, 570 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F755/F830/F920/F945.",
+  "cross_refs": ["F755", "F830", "F920", "F945"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "604 consecutive shipping rounds F335-F945",
+    "guild window 100%",
+    "next: HANDOFF refresh 127, remaining corners"
+  ]
+}

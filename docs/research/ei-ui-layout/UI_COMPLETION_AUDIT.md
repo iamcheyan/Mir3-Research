@@ -3849,3 +3849,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会输入完整；下一弧：剩余深层角落）。
+## Round 640 (2026-08-12) — 行会窗口闭合（Finding 946）
+
+- **604 连发 + 570 证据 + 行会窗口完整**。
+- 落盘：`guild-window-closure-evidence.json`（F946）+ RESEARCH_LOG Round 640。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会窗口完整；下一弧：HANDOFF 刷新 127/剩余角落）。
