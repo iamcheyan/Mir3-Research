@@ -4361,3 +4361,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（地图碰撞 100%；下一弧：HANDOFF 刷新 148/剩余角落）。
+## Round 704 (2026-08-12) — HANDOFF 刷新 148（Finding 1010）
+
+- **Round 701-703 追加 + 667 连发**（瓦片访问器完整入档）。
+- 落盘：`handoff-refresh-148-evidence.json`（F1010）+ RESEARCH_LOG Round 704。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（地图碰撞 100%；下一弧：剩余深层角落/模拟器 polish）。

@@ -9040,3 +9040,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**630 证据 JSON**；三服务 200；master c8c7fb1（**666 连发 F335-F1008 已推**）。
 - **〔弧〕**瓦片访问（F717）+ 碰撞/属性（F719）+ 可行走/属性全量（F1008）——**瓦片访问器完整**（GET stride 0xE + bit0 可行走 + 属性字 + 类型位）；地图碰撞 100%。
 - 落盘：tile-accessors-closure-evidence.json（F1009，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 703。
+## Round 704 (F1010) — 2026-08-12：HANDOFF 刷新 148（Round 701-703）
+
+- **〔刷新〕**HANDOFF 追加 Round 701-703（F1008-F1009：瓦片可行走/属性全量 + 瓦片访问器闭合）；基线 Round 700=7bcd530 → Round 703=433e443（**667 连发 F335-F1009**）。
+- 落盘：handoff-refresh-148-evidence.json（F1010，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 704。
