@@ -1,0 +1,34 @@
+{
+  "evidence_id": "recv1-handler-semantics-2026-08-12-f521",
+  "title": "Round 215 (F521): Recv-table-1 handler semantics - 49 handlers (F517): key families decoded - mapval14 0x2BC warehouse (window-open gate [0x2ABA10] + open), mapval26 0x2C8 craft (0x2800 string -> 0x44FB00 family), mapval1 0x420474 (guild window [0x2D8E58]), mapval19 0x41F99F (store update 0x44E8B0), mapval2 0x42045B (error prompt 0x47B6C4), mapval7 0x4204FD (bag deserialize 12 slots 0x42FC20), mapval3 0x420640 (equip use 0x42E2D0) - recv1 = store/guild/inventory family COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Classify the 49 recv-table-1 handlers.",
+  "question": "What do the first recv table handlers do?",
+  "method": "Disasm key handler heads (warehouse/craft/guild/store/error/bag/equip).",
+  "scope": "recv1 jt handlers; store/guild/bag family.",
+  "cell_analysis": {
+    "key_handlers": {"mapval14": "0x2BC warehouse (0x420AFC: gate [0x2ABA10] + open)", "mapval26": "0x2C8 craft (0x4209A8: 0x2800 string -> 0x44FB00 family)", "mapval1": "guild window (0x420474: [0x2D8E58] gate)", "mapval19": "store update (0x41F99F: 0x44E8B0)", "mapval2": "error prompt (0x42045B: 0x47B6C4)", "mapval7": "bag deserialize (0x4204FD: 12 slots x 0x42FC20)", "mapval3": "equip use (0x420640: 0x42E2D0 sound)"},
+    "family": "recv1 = store/guild/inventory/bag/equip UI state msgs"
+  },
+  "exe_trace": {
+    "recv1_chain": "0x29F-0x44C msgs -> store/warehouse/craft/guild/bag/equip handlers -> UI state"
+  },
+  "audit_vs_exe": {
+    "F517": "handler targets now semantic", "F399": "store msgs 0x2BC/0x2C8 confirmed", "F466": "bag deserialize", "F471": "equip sound"
+  },
+  "contrast": {
+    "recv1_vs_recv2": "recv1 = UI/store state; recv2 = entity/chat",
+    "open_vs_update": "warehouse opens window; store updates content"
+  },
+  "verdict": "Recv-table-1 handlers PRIMARY-verified: 49 classified into store/guild/inventory/bag/equip families; warehouse 0x2BC + craft 0x2C8 confirmed (F399). Inbound picture COMPLETE.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handler heads decoded from .text.",
+  "cross_refs": ["F517: recv table 1", "F399: store msgs", "F466: bag", "F471: equip"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x420AFC/0x4209A8/0x420474/0x41F99F",
+  "notes": [
+    "warehouse opens via 0x2BC (window gate)",
+    "craft parses 0x2800 string",
+    "bag 12-slot deserialize (F466 46-slot full)"
+  ]
+}

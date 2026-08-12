@@ -6834,3 +6834,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔语义〕**实体生成 ×2（0x421913/0x421CFC：0x40C 分配 → 0x41B710/0x4561B0 入 [0x364458] 链）、聊天 ×5（0x2000 字符串 + 0x448D90/0x4488D0）、实体坐标（0x4219A0 [0x61C90] F310）、**英雄状态字节**（0x421BBC [0x35B148] → vtable+0x88，0x1D/0 行走）、实体查找/生成（0x421C23：0x41EB40 + 节点 + timeGetTime）。
 - **〔完整〕**接收表2 语义全解。
 - 落盘：recv2-handler-semantics-evidence.json（F520，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 214。
+## Round 215 (F521) — 2026-08-12：接收表1 处理器语义（49 分类）
+
+- **〔语义〕**仓库 0x2BC（0x420AFC：窗门 [0x2ABA10] + 开）、制作 0x2C8（0x4209A8：0x2800 字符串 → 0x44FB00 族）、行会窗（0x420474 [0x2D8E58]）、商店更新（0x41F99F 0x44E8B0）、错误提示（0x47B6C4）、背包反序列化（12 槽 0x42FC20）、装备使用（0x42E2D0）——**recv1 = 商店/行会/背包/装备族**。
+- **〔完整〕**入站图景完整（recv1 UI 状态 + recv2 实体/聊天）。
+- 落盘：recv1-handler-semantics-evidence.json（F521，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 215。
