@@ -4193,3 +4193,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备 + 纸娃娃 100%；下一弧：HANDOFF 刷新 141/剩余角落）。
+## Round 683 (2026-08-12) — HANDOFF 刷新 141（Finding 989）
+
+- **Round 680-682 追加 + 647 连发**（装备/纸娃娃完整入档）。
+- 落盘：`handoff-refresh-141-evidence.json`（F989）+ RESEARCH_LOG Round 683。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（装备 + 纸娃娃 100%；下一弧：剩余深层角落/模拟器 polish）。

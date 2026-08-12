@@ -8950,3 +8950,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**611 证据 JSON**；三服务 200；master 6072363（**646 连发 F335-F987 已推**）。
 - **〔弧〕**2 页纸娃娃（F767）+ 输入/构造（F933）+ 构造/纸娃娃全量（F987）——**装备完整**（11 槽 + 纸娃娃帧 0xA1/0xA2 + 输入 + 详情）；装备 + 纸娃娃表面 100%。
 - 落盘：paperdoll-closure-evidence.json（F988，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 682。
+## Round 683 (F989) — 2026-08-12：HANDOFF 刷新 141（Round 680-682）
+
+- **〔刷新〕**HANDOFF 追加 Round 680-682（F987-F988：装备构造/纸娃娃全量 + 装备/纸娃娃闭合）；基线 Round 679=be6bdf1 → Round 682=ec09a52（**647 连发 F335-F988**）。
+- 落盘：handoff-refresh-141-evidence.json（F989，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 683。

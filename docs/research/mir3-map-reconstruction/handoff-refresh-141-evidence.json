@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-141-2026-08-12-f989",
+  "title": "Round 683 (F989): HANDOFF refresh 141 - Rounds 680-682 (F986-F988: HANDOFF 140, equipment ctor/paperdoll full, paperdoll closure), baseline Round 679=be6bdf1 -> Round 682=ec09a52 (647 consecutive F335-F988), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 680-682.",
+  "question": "What changed since HANDOFF refresh 140?",
+  "method": "Append Round 680-682 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 680-682 appended (3 rounds, F986-F988)",
+    "baseline": "Round 679=be6bdf1 -> Round 682=ec09a52 (647 consecutive F335-F988)",
+    "arcs": {"paperdoll": "F987 ctor full", "closure": "F988 paperdoll"},
+    "key": "equipment + paperdoll complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F986": "refresh 140 baseline -> now refresh 141", "F335-F988": "647 rounds"
+  },
+  "contrast": {
+    "refresh_140_vs_141": "F987-F988 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 141 (F989): Rounds 680-682 documented (equipment + paperdoll complete), baseline be6bdf1 -> ec09a52, 647 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F987-F988 evidence.",
+  "cross_refs": ["F986: refresh 140", "F988: paperdoll closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 680-682 section to HANDOFF",
+  "notes": [
+    "647 consecutive shipping rounds F335-F988",
+    "next: remaining deep corners, sim polish"
+  ]
+}
