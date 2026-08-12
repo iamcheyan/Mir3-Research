@@ -7050,3 +7050,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔公共尾〕**0x42181D（push 0x565994 上下文 + 0x418030）被 mapval2/商店错/仓库拒共用。
 - **〔recv2 idx0 尾〕**0x42186D：实体名设置（hero id [0x2F8784] → vtable[0x34]，否则 0x41EB10）。
 - 落盘：recv1-error-equip-sound-evidence.json（F563，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 257。
+## Round 258 (F564) — 2026-08-12：文本渲染族（GDI 管线）
+
+- **〔测量〕**0x45E0C0：GetTextExtentPoint32A（0x476078）+ SelectObject（0x476048）、字体对象 vtable[0x44] 选/[0x68] 还原、返回 {宽,高} 8B。
+- **〔绘制〕**0x45DD70：SetBkMode/SetBkColor（0x476044/0x476050）+ SetTextColor（0x476060）+ **TextOutA**（0x476074）；0x45DE50：+ **DrawTextA**（0x476280，flags 0x25）矩形版。
+- **〔字体〕**0x45DBA0：굴림（Gulim，0x47C348）帧渲染（帧 0x2BC）——模式 7 属性用（F559）。
+- **〔屏幕对象〕**0x8AB7A8 + 字体 [obj+0x28]/[obj+0x1C]——公告 0x427E30/NPC 对话 0x43F460/属性窗/F 行会编辑**全部共用**。
+- 落盘：text-render-family-gdi-evidence.json（F564，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 258。

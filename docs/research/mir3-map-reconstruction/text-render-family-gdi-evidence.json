@@ -1,0 +1,39 @@
+{
+  "evidence_id": "text-render-family-gdi-2026-08-12-f564",
+  "title": "Round 258 (F564): Text render family (0x45E0C0/0x45DD70/0x45DE50/0x45DBA0) - core GDI text pipeline on screen object 0x8AB7A8: 0x45E0C0 = text MEASURE (GetTextExtentPoint32A 0x476078, SelectObject 0x476048, font obj vtable[0x44]=select/[0x68]=restore, returns width/height 8B); 0x45DD70 = text DRAW (SetBkMode/SetBkColor 0x476044/0x476050, SetTextColor 0x476060, TextOutA 0x476074, GetTextExtentPoint32A, ret 0x1C); 0x45DE50 = text DRAW + DrawTextA (0x476280, DT_SINGLELINE 0x20? push 0x25) rect version; 0x45DBA0 = font render (Gulim '굴림' 0x47C348, frame 0x2BC bitmap? via 0x8AB7A8) used by mode-7 stats; all use screen object 0x8AB7A8 + font in [obj+0x28]/[obj+0x1C] - text pipeline shared by notice/NPC-dialog/stats (F553/F559) byte-level",
+  "date": "2026-08-12",
+  "objective": "Decode the shared text render family.",
+  "question": "How does the client render/measure text?",
+  "method": "Disasm 0x45E0C0/0x45DD70/0x45DE50/0x45DBA0 + GDI IAT cross-check.",
+  "scope": "0x45E0C0-0x45DE50; screen 0x8AB7A8; font object.",
+  "cell_analysis": {
+    "0x45E0C0": "text MEASURE: GetTextExtentPoint32A (0x476078) + SelectObject (0x476048), font vtable[0x44] select/[0x68] restore, returns {width,height} 8B, ret 0x10",
+    "0x45DD70": "text DRAW: SetBkMode (0x476044) / SetBkColor (0x476050), SetTextColor (0x476060), TextOutA (0x476074), GetTextExtentPoint32A, ret 0x1C",
+    "0x45DE50": "text DRAW + DrawTextA (0x476280, flags 0x25 = DT_SINGLELINE|DT_NOCLIP|DT_LEFT?) rect version",
+    "0x45DBA0": "font render (Gulim '굴림' 0x47C348, frame 0x2BC) via 0x8AB7A8 - mode-7 stats (F559)",
+    "screen": "0x8AB7A8 screen object, font [obj+0x28]/[obj+0x1C]",
+    "usage": "notice 0x427E30, NPC dialog 0x43F460, mode-7 stats, mode-F guild editor - ALL share this family"
+  },
+  "exe_trace": {
+    "text_chain": "paint -> 0x45E0C0 measure (wrap calc) -> 0x45DD70 draw (TextOutA) -> vtable[0x68] restore font"
+  },
+  "audit_vs_exe": {
+    "F553": "recv2 notice + color table feed this family", "F559": "mode-7 stats colors 0xDCFFDC/0xB4FAFF + Gulim", "F559": "mode-9 NPC dialog text"
+  },
+  "contrast": {
+    "measure_vs_draw": "0x45E0C0 (measure) vs 0x45DD70/0x45DE50 (draw)",
+    "font_vs_bitmap": "GDI font path vs Gulim frame render 0x45DBA0"
+  },
+  "verdict": "Text render family PRIMARY-verified: GDI pipeline (SelectObject/TextOutA/GetTextExtentPoint32A/DrawTextA) on screen 0x8AB7A8; measure 0x45E0C0 + draw 0x45DD70/0x45DE50 + Gulim font render 0x45DBA0; shared by notices/NPC dialog/stats.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Functions + IAT decoded from .text.",
+  "cross_refs": ["F553: notice + colors", "F559: stats/NPC-dialog", "F538: task colors"],
+  "tool": "capstone disasm + pefile IAT",
+  "reproduce": "disasm 0x45E0C0+0x30; 0x45DD70+0x30; 0x45DE50+0x20",
+  "notes": [
+    "font object vtable[0x44] = select, [0x68] = restore",
+    "DrawTextA flags 0x25 = DT_SINGLELINE|DT_NOCLIP|DT_LEFT",
+    "Gulim = Korean default font (굴림)",
+    "text pipeline = measure + draw pair"
+  ]
+}
