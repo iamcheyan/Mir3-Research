@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-6-2026-08-12-f554",
+  "title": "Round 248 (F554): HANDOFF refresh 6 - Rounds 237-247 (F543-F553: window corners trade 8x9/horse 4cmd/option 4toggle/skillbook 8tab + recv bodies mapval7 bag-gold/mapval1 guild/window dispatcher 0x42ADB0 16 modes/mapval14 warehouse/TCP redirect/recv2 full map), baseline Round 236=b12e3b2 -> Round 247=01e92a1 (212 consecutive F335-F553), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 237-247.",
+  "question": "What changed since HANDOFF refresh 5?",
+  "method": "Append Round 237-247 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 237-247 appended (11 rounds, F543-F553)",
+    "baseline": "Round 236=b12e3b2 -> Round 247=01e92a1 (212 consecutive F335-F553)",
+    "arcs": {"window_corners": "F544-F548 (trade 8x9/horse/option/skillbook + closure)", "recv_bodies": "F549-F553 (bag-gold, guild+dispatcher, warehouse, TCP redirect, recv2 map)"},
+    "key": "0x42ADB0 16-mode dispatcher + hero window list [0xD24..0xD38]; recv2 11 handlers + default; gold '금전' local KR special"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F543": "refresh 5 baseline -> now refresh 6", "F335-F553": "212 rounds"
+  },
+  "contrast": {
+    "refresh_5_vs_6": "F539-F542 -> F543-F553 (11 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 6 (F554): Rounds 237-247 documented, baseline b12e3b2 -> 01e92a1, 212 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F543-F553 evidence.",
+  "cross_refs": ["F543: refresh 5", "F548: window-corners closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 237-247 section to HANDOFF",
+  "notes": [
+    "212 consecutive shipping rounds F335-F553",
+    "next: sim polish, remaining recv1 bodies, 0x45A650/0x45B490"
+  ]
+}

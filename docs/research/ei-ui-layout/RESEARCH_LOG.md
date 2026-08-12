@@ -6985,3 +6985,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔处理器〕**idx0=实体名设置（lstrcpyA + hero id [0x2F8784] vs 0x41EB10、vtable[0x38]）；idx1=备忘结构（malloc 0x40C + 3 dword + 串 → 0x41B710）；idx2=英雄状态（[0x35B148] 字节、vtable[0x88]+vtable[0x10](0x1D/0)）；idx3/9/10=任务列表增（0x4488D0/0x448B10/0x448D90 @ [0x2F6B74]）；idx4/5=**任务公告**（'새로운 퀘스트가 시작 되었습니다.' 0x47B15C / '퀘스트 일지가 변경되었습니다.' 0x47B180，cp949）；idx6=实体坐标三元组（hero → [0x35A410] 否则 entity+0x61C90）；idx7=聊天行 0x422E30；idx8=备忘#2 → 0x4561B0([main+0x364458])；idx12=实体登记（0x41EB40 [0xE1188]=0x560088、malloc 0x10 {+0 id,+4 w1,+8 w2,+0xC timeGetTime}）。
 - **〔助手〕**0x41EB10=按 id 找实体（[0xE1158]=0x560070 F336 容器 A）；**0x401390 = 色表** {0:0,1:0xA0A0A,2:0xFFFFFF,3:0xFF,4:0xFF00,5:0xFF9696,6:0x50FFFF,7:0x80FF}；0x427E30=公告窗（0x507EC）多行最多 5 行（fmt 0x47AD30）。
 - 落盘：recv2-dispatch-full-map-evidence.json（F553，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 247。
+## Round 248 (F554) — 2026-08-12：HANDOFF 刷新 6（Round 237-247）
+
+- **〔刷新〕**HANDOFF 追加 Round 237-247（F543-F553：窗口角落 4 项 + recv 函数体 5 项）；基线 Round 236=b12e3b2 → Round 247=01e92a1（**212 连发 F335-F553**）。
+- 落盘：handoff-refresh-6-evidence.json（F554，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 248。

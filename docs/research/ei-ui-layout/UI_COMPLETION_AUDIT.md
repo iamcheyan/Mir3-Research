@@ -1466,6 +1466,11 @@ git diff --check
 - **11 处理器 + 默认 + 色表 0x401390**（F518 修正）。
 - 落盘：`recv2-dispatch-full-map-evidence.json`（F553）+ RESEARCH_LOG Round 247。
 
+## Round 248 (2026-08-12) — HANDOFF 刷新 6（Finding 554）
+
+- **Round 237-247 追加 + 212 连发**。
+- 落盘：`handoff-refresh-6-evidence.json`（F554）+ RESEARCH_LOG Round 248。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv1/recv2 处理器函数体深化中）。
