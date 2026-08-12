@@ -8710,3 +8710,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔装备〕**0x44CED0 装备输入（2 控件 vtable[8] @ +0x58/+0x10C）；0x44CF00 **命中路由**（vtable[0xC] 双控件 → 槽查找 0x44B720 → 槽物品测试 [esi+edx*4+0x2F4] → 页旗标 [0x3C] 0/1）；0x44CFC0 **装备构造**（vtable 0x476624 + [0x648]=0x476AB8 + 0x4178E0）——装备输入完整（F767 纸娃娃依赖）。
 - 落盘：equipment-window-ctor-input-evidence.json（F933，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 627。
+## Round 628 (F934) — 2026-08-12：装备窗口闭合（F767/F818/F933 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**558 证据 JSON**；三服务 200；master e979653（**592 连发 F335-F933 已推**）。
+- **〔弧〕**2 页纸娃娃（F767）+ 详情面板（F818）+ 输入/命中/构造（F933）——**装备窗口完整**（2 页 + 纸娃娃 + 槽查找 + 详情面板 + 输入），装备表面 100%。
+- 落盘：equipment-window-closure-evidence.json（F934，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 628。

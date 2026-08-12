@@ -3753,3 +3753,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备输入完整；下一弧：剩余深层角落）。
+## Round 628 (2026-08-12) — 装备窗口闭合（Finding 934）
+
+- **592 连发 + 558 证据 + 装备窗口完整**。
+- 落盘：`equipment-window-closure-evidence.json`（F934）+ RESEARCH_LOG Round 628。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（装备窗口完整；下一弧：HANDOFF 刷新 123/剩余角落）。
