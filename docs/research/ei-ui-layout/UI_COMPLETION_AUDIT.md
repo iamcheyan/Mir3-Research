@@ -3913,3 +3913,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（交易窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 648 (2026-08-12) — 商店窗口输入 + 点击（Finding 954）
+
+- **滚动 + 买/卖/修**（商店输入完整）。
+- 落盘：`shop-window-input-click-evidence.json`（F954）+ RESEARCH_LOG Round 648。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店输入完整；下一弧：剩余深层角落）。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "shop-window-input-click-2026-08-12-f954",
+  "title": "Round 648 (F954): Shop window input + click (F740/F897 dep) - 0x44F110 shop INPUT (mode [0x5F8] 0/1/3/4 buy/sell/repair -> scrollbar 0x417C80 @ +0x5FC -> scroll [0x700]; else 8 controls vtable[8] @ +0x54 stride 0xB4); 0x44F1A0 scroll decay; 0x44F1D0 shop CLICK (buy 0x44E700 slot -> item check [eax+0x20] -> 0x423E80 send + msg 0x3EA + sell/repair 0x4521F0 ecx 0x8AB828) - shop input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the shop window input + click.",
+  "question": "How does the shop window route input?",
+  "method": "Disasm 0x44F110-0x44F1D0.",
+  "scope": "0x44F110-0x44F1D0; input.",
+  "cell_analysis": {
+    "0x44F110": "input scrollbar + 8 controls",
+    "0x44F1A0": "scroll decay [0x700]",
+    "0x44F1D0": "click buy 0x44E700 + 0x423E80 + 0x3EA"
+  },
+  "exe_trace": {
+    "shop_chain": "input -> scroll/click -> buy/sell"
+  },
+  "audit_vs_exe": {
+    "F740": "shop mode click", "F897": "reset"
+  },
+  "contrast": {
+    "scroll_vs_click": "input + buy",
+    "mode": "[0x5F8] 0/1/3/4"
+  },
+  "verdict": "Shop window input + click PRIMARY-verified: input + scroll + buy/sell/repair; F740 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Shop input decoded from .text.",
+  "cross_refs": ["F740: shop", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44F110+0x20; 0x44F1D0+0x30",
+  "notes": [
+    "mode [0x5F8]",
+    "scrollbar +0x5FC",
+    "msg 0x3EA",
+    "sell 0x4521F0"
+  ]
+}
