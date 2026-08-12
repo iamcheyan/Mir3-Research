@@ -1,0 +1,34 @@
+{
+  "evidence_id": "equip-window-draw-2026-08-12-f767",
+  "title": "Round 461 (F767): Equipment window draw - 0x44B2D0 (F558 mode 1): 2-page mode [0x54] (0/1 branches) + PAPERDOLL blit (WIL 0x565994 frame 0xA7 page1/0xAA page0 -> 0x45FD50 F647 at [0x18]+0xB0/[0x1C]+0x109) + title/subtitle DrawTextA 0x45DE50 (strings 0x7776A0/0x7776E0, colors 0xDCFFDC/0xB4FAFF, font 0x45DBA0) + 0x44BC80 equip-slot sub-draw + button F704 set-pos @ +0x58 - equipment window COMPLETE, last F558 registry draw decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the equipment window draw.",
+  "question": "How does the equipment window render?",
+  "method": "Disasm 0x44B2D0-0x44B520.",
+  "scope": "0x44B2D0-0x44B520; mode [0x54].",
+  "cell_analysis": {
+    "0x44B2D0": {"pages": "mode [0x54] 0/1", "paperdoll": "0x565994 frame 0xA7/0xAA -> 0x45FD50", "text": "0x7776A0/0x7776E0 + 0xDCFFDC/0xB4FAFF", "slots": "0x44BC80 sub-draw"}
+  },
+  "exe_trace": {
+    "equip_chain": "page mode -> paperdoll blit -> title -> slots"
+  },
+  "audit_vs_exe": {
+    "F558": "mode 1 equip", "F647": "blit 0x45FD50", "F564": "text"
+  },
+  "contrast": {
+    "pages_vs_paperdoll": "2-page + frame blit",
+    "title_vs_slots": "text + 0x44BC80"
+  },
+  "verdict": "Equipment window draw PRIMARY-verified: 2 pages + paperdoll + titles + slots; LAST F558 registry draw decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Equipment window decoded from .text.",
+  "cross_refs": ["F558: equip", "F647: blit", "F564: text"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44B2D0+0x20",
+  "notes": [
+    "2-page mode [0x54]",
+    "paperdoll 0x565994",
+    "frames 0xA7/0xAA",
+    "strings 0x7776A0/0x7776E0"
+  ]
+}

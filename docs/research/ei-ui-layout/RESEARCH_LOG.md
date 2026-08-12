@@ -7987,3 +7987,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 457-459（F764-F765：背包窗口 + 窗口系统最终闭合）；基线 Round 456=eb5f4b4 → Round 459=fb330c0（**424 连发 F335-F765**）——**窗口系统 100% 里程碑**。
 - 落盘：handoff-refresh-65-evidence.json（F766，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 460。
+## Round 461 (F767) — 2026-08-12：装备窗口绘制
+
+- **〔装备〕**0x44B2D0（F558 模式 1）：**2 页模式 [0x54]**（0/1 分支）+ **纸娃娃 blit**（WIL 0x565994 帧 0xA7 页 1/0xAA 页 0 → 0x45FD50 F647 @ [0x18]+0xB0/[0x1C]+0x109）+ 标题/副标题 DrawTextA 0x45DE50（串 0x7776A0/0x7776E0、色 0xDCFFDC/0xB4FAFF、字体 0x45DBA0）+ 0x44BC80 装备槽子绘制 + 按钮 F704——**装备窗口完整，F558 注册表最后一个窗口绘制解码**。
+- 落盘：equip-window-draw-evidence.json（F767，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 461。
