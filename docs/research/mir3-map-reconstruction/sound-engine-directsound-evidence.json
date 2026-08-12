@@ -1,0 +1,36 @@
+{
+  "evidence_id": "sound-engine-directsound-2026-08-12-f632",
+  "title": "Round 326 (F632): Sound engine + DirectSound init - 0x45B250 sound play: SOUND\\ path (0x47D88C) + name filters 'none' (0x47D884)/'nobgm' (0x47D87C), 0x45AF30 name lookup, 0x45A3E0/0x45A4A0 play via hwnd [0x8AB7B0] + sound id; 0x45BF30 = DIRECTSOUND INIT (0x4680E6 create + IID 'vids' 0x73646976 + 0x4680D4/0x4680DA QueryInterface + buffer struct 0x7C/0x1B + 0x4680CE/0x4680C8, [0x1A4]/[0x1A8]/[0x1AC] state) - sound engine byte-level (F607 audio init 0x45BF30 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the sound engine + DirectSound init.",
+  "question": "How does the sound engine work?",
+  "method": "Disasm 0x45B250-0x45B390 + 0x45BF30-0x45C058 + strings.",
+  "scope": "0x45B250-0x45B390, 0x45BF30-0x45C058; DSound.",
+  "cell_analysis": {
+    "0x45B250": {"path": "SOUND\\ (0x47D88C)", "filters": "'none' 0x47D884 / 'nobgm' 0x47D87C", "lookup": "0x45AF30", "play": "0x45A3E0/0x45A4A0 via hwnd [0x8AB7B0]"},
+    "0x45BF30": {"init": "0x4680E6 create + IID 'vids' 0x73646976 + 0x4680D4/0x4680DA QueryInterface", "buffer": "struct 0x7C/0x1B + 0x4680CE/0x4680C8", "state": "[0x1A4]/[0x1A8]/[0x1AC]"}
+  },
+  "exe_trace": {
+    "sound_chain": "game event -> 0x45B250 (path + filters) -> 0x45AF30 lookup -> 0x45A3E0/0x45A4A0 play",
+    "audio_init": "startup -> 0x45BF30 DirectSound create + buffers (F607)"
+  },
+  "audit_vs_exe": {
+    "F607": "0x45BF30 audio init CONNECTED", "F470": "0x42E2D0 sound dispatch", "F566": "0x45B140/0x45B090 family"
+  },
+  "contrast": {
+    "play_vs_init": "0x45B250 play vs 0x45BF30 init",
+    "filters": "'none'/'nobgm' mute flags"
+  },
+  "verdict": "Sound engine PRIMARY-verified: play chain (path/filters/lookup/play) + DirectSound init; F607/F470 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sound engine decoded from .text/.data.",
+  "cross_refs": ["F607: audio init", "F470: sound dispatch", "F566: sound family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45B250+0x30; 0x45BF30+0x40",
+  "notes": [
+    "SOUND\\ path prefix",
+    "none/nobgm mute filters",
+    "IID 'vids' = DirectSound",
+    "buffer structs 0x7C/0x1B"
+  ]
+}
