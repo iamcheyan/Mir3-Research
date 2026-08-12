@@ -1,0 +1,36 @@
+{
+  "evidence_id": "base64-encode-header-2026-08-12-f689",
+  "title": "Round 383 (F689): Base64 encode + header - 0x452810 = MIR base64 ENCODE (F307 confirmed): per-byte 6-bit packing (shift table 0x47C86E, 0x3C offset, output cap, ret len); 0x452920 = wrapper; 0x4528E0 = 12-byte header encode via 0x452740 - packet encode helpers byte-level (F307/F572 packet layer)",
+  "date": "2026-08-12",
+  "objective": "Decode the base64 encode + header.",
+  "question": "How does the packet encode work?",
+  "method": "Disasm 0x452810-0x452931.",
+  "scope": "0x452810-0x452931; table 0x47C86E.",
+  "cell_analysis": {
+    "0x452810": "base64 encode: 6-bit packing (0x47C86E shifts, 0x3C offset, output cap)",
+    "0x452920": "wrapper (0xC args)",
+    "0x4528E0": "12-byte header encode via 0x452740"
+  },
+  "exe_trace": {
+    "encode_chain": "packet body -> 0x452810 base64 -> frame (F572) -> send"
+  },
+  "audit_vs_exe": {
+    "F307": "MIR base64 CONFIRMED", "F572": "text frame", "F524": "packet layer"
+  },
+  "contrast": {
+    "encode_vs_header": "body encode + header encode",
+    "packing": "6-bit shift table"
+  },
+  "verdict": "Base64 encode + header PRIMARY-verified: 6-bit packing + header; packet encode helpers byte-level (F307/F572).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Encode decoded from .text.",
+  "cross_refs": ["F307: base64", "F572: frames", "F524: packets"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x452810+0x30; 0x4528E0+0x10",
+  "notes": [
+    "shift table 0x47C86E",
+    "0x3C = base64 offset",
+    "12-byte header encode",
+    "output cap guard"
+  ]
+}
