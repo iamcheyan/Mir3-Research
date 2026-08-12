@@ -1,0 +1,40 @@
+{
+  "evidence_id": "monster-frame-addressing-primary-2026-08-12-f433",
+  "title": "Round 127 (F433): Monster frame addressing PRIMARY - 0x405ABD: idiv race/10 + (race%10)*1000 frame-range base + 10*sub granularity -> [esi+0xB4/0xB8] (F431 inference closed); type dispatch [esi+0x88]<=0x32 jump table 0x405D50; appearance table 0x5600FC stride 0x144 runtime-built; frame = state*400 + counter - 0xAA0 (0x40F6A3); stats init 0x40A4D0 HP/MP [0x61BA0]",
+  "date": "2026-08-12",
+  "objective": "Close the F431/F432 [inference] by locating the client's monster frame-addressing code.",
+  "question": "How does the client compute a monster's frame range and animation frame from race/state?",
+  "method": "Divide-by-10 magic scan (15 sites) -> 0x40F49D/0x40F6A3/0x405AC2 disasm; 0x40A4D0 stats init; 0x5600FC refs.",
+  "scope": "0x405860-0x405AF9 (monster init), 0x40A4D0-0x40A622 (stats), 0x40F480-0x40F6CB (appearance/frame), 0x5600FC table.",
+  "cell_analysis": {
+    "frame_range_0x405ABD": {"formula": "idiv race/10 -> eax=race//10, edx=race%10; edx=race%10*100+sub; eax=(...)*5; frame_start [esi+0xB4] = word[0x8AA686+type*6] + (race%10)*1000 + 10*sub", "end": "[esi+0xB8] = [esi+0xB4] + word[0x8AA688]"},
+    "type_dispatch_0x4058E7": {"gate": "type [esi+0x88] <= 0x32 (50 types); race word [esi+0x8A/0x8B]; special races 0x1F(31)/0x3E8(1000)", "table": "jump table 0x405D50 via byte map 0x405D64"},
+    "appearance_table": {"base": "0x5600FC (runtime-built, .data tail)", "stride": "0x144 (324B) = idx*81*4 confirmed at 0x40F55A", "ptr": "[esi+0x90] + 3 slots [esi+0x62A0C/0x62A10/0x62A14]"},
+    "frame_formula_0x40F6A3": {"state": "state*400 (0x190) at 0x40F6A9", "counter": "+[esi+0xC4]", "base": "-0xAA0 (2720)", "note": "400 = 40 cells x 10 frames (F432 cell stride)"},
+    "stats_init_0x40A4D0": {"record": "lookup 0x449B90 on 0x8AA5A8", "hp_mp": "[0x61BA0]/[0x61BA4] = record[0]/[4]", "type_offset": "+(type*5)*2 = type*10 (10-frame granularity)", "special": "race 0x8D + type byte <<1 -> *4 (F350 HP gate family)"}
+  },
+  "exe_trace": {
+    "monster_struct": {"+0x88": "type", "+0x8A/0x8B": "race word", "+0x90": "appearance table ptr", "+0xB4/0xB8": "frame range start/end", "+0xC4": "anim counter", "+0x629C8": "state", "+0x61BA0/4": "HP/MP"},
+    "f431_closed": "(race%10)*1000 + 10*sub formula = PRIMARY (was [inference])"
+  },
+  "audit_vs_exe": {
+    "F431": "inference closed: (race%10)*1000 base byte-verified",
+    "F432": "400-frame state stride = 40 cells x 10 confirmed at 0x40F6A9",
+    "F350": "HP gate [0x61BA0]-[0xB4]+[0xC4] consistent with stats init"
+  },
+  "contrast": {
+    "npc_vs_monster": "NPC 100*body (F287) vs monster (race%10)*1000 + 10*sub + state*400",
+    "category_offsets": "0x40F4B7/0x40F510: -125/-123 vs +72/+77 = per-class appearance adjustments"
+  },
+  "verdict": "Monster frame addressing PRIMARY-verified: frame range = word[type table] + (race%10)*1000 + 10*sub ([esi+0xB4], 0x405ABD); state stride 400 frames (0x40F6A9); appearance table 0x5600FC stride 0x144 runtime-built; type dispatch 50-class jump table 0x405D50. F431 inference closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All formulas decoded directly from MIR3.EXE .text.",
+  "cross_refs": ["F431: frame density (inference closed)", "F432: state layout", "F429: Mon WIL family", "F350: HP bars"],
+  "tool": "capstone via disasm_capstone.PeImage + pefile",
+  "reproduce": "scan 0x66666667; disasm 0x405860+0x60, 0x40A4D0, 0x40F480+0x60; refs to 0x5600FC",
+  "notes": [
+    "50 monster classes dispatched at 0x405D50",
+    "special races 31/1000 (boss/unique) branch at 0x405A9F",
+    "frame formula tail -0xAA0 = first-state base offset"
+  ]
+}

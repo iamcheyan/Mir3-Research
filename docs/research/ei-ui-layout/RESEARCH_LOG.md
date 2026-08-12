@@ -6357,3 +6357,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔布局〕**块 0 = 304 有效帧：32 × 10 帧格（2-6 有效 + 填充，0-311 待机/走位）+ 双 80 帧密集攻击段（320-399、640-719，108-112px 横扫）+ 空白尾。
 - **〔粒度〕**10 帧格步长 = 动画寻址粒度（cell*10+subframe [inference]）。
 - 落盘：monster-animation-state-layout-evidence.json（F432，primary-bytes + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 126。
+## Round 127 (F433) — 2026-08-12：怪物帧寻址 PRIMARY（F431 inference 闭合）
+
+- **〔帧范围〕**0x405ABD：idiv race/10 → **(race%10)*1000 + 10*sub** + word[0x8AA686+type*6] → [esi+0xB4/0xB8]（F431 推断升级为字节级）。
+- **〔分派〕**type [esi+0x88] ≤ 0x32（50 类）跳表 0x405D50；race word [esi+0x8A/0x8B]；特殊 race 0x1F/0x3E8。
+- **〔表〕**外观表 0x5600FC stride 0x144 运行时构建（[esi+0x90] + 3 槽）；帧 = state*400 + counter − 0xAA0（0x40F6A3，400 = 40 格 × 10 帧 F432）。
+- **〔属性〕**0x40A4D0 统计初始化：HP/MP [0x61BA0] + type*10 偏移（F350 族）。
+- 落盘：monster-frame-addressing-primary-evidence.json（F433，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 127。

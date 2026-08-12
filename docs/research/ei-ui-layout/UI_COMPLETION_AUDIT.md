@@ -861,6 +861,11 @@ git diff --check
 - **10 帧格 + 双 80 帧攻击段**（304 有效帧）。
 - 落盘：`monster-animation-state-layout-evidence.json`（F432）+ RESEARCH_LOG Round 126。
 
+## Round 127 (2026-08-12) — 怪物帧寻址 PRIMARY（Finding 433）
+
+- **(race%10)*1000 公式字节级确认**；50 类跳表 + 0x5600FC 外观表。
+- 落盘：`monster-frame-addressing-primary-evidence.json`（F433）+ RESEARCH_LOG Round 127。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（滚动复合已闭合；其余 = 运行时/逐图深化，见 RESEARCH_LOG）。
