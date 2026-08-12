@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-notice-list-msg-dispatch-2026-08-12-f803",
+  "title": "Round 497 (F803): Guild notice list + message dispatch - 0x4256A0 (F797 announce path): 0x45E200 + 0x468CD7 sprintf format 0x47AD30 -> split <=5 lines (0x104 each) -> list insert [0x100] (node alloc 0x1000, count [0x9C] cap 5, backlog [0x114] cap 0x50=80 prune via vtable[0x14] + free); 0x425820 GUILD msg dispatch: msg 0x40F (seq 0) -> 0x452470 + 0x452410, msg 0x414 -> 0x4520F0 with 0x47BA9C, msg 0x415 -> 0x41-dword member op - guild notice/messages COMPLETE (F755/F797 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the guild notice list + message dispatch.",
+  "question": "How do guild notices + messages work?",
+  "method": "Disasm 0x4256A0-0x4258A3.",
+  "scope": "0x4256A0-0x4258A3; list [0x100].",
+  "cell_analysis": {
+    "0x4256A0": {"format": "0x468CD7 0x47AD30", "lines": "<=5 x 0x104", "list": "[0x100] 0x1000 nodes, backlog 0x50"},
+    "0x425820": {"0x40F": "0x452470/0x452410", "0x414": "0x4520F0 0x47BA9C", "0x415": "member op"}
+  },
+  "exe_trace": {
+    "guild_chain": "notice format -> list insert -> prune; msg dispatch -> sends"
+  },
+  "audit_vs_exe": {
+    "F797": "announce path", "F755": "guild window", "F573": "senders"
+  },
+  "contrast": {
+    "notice_vs_msg": "list add + dispatch",
+    "lines_vs_backlog": "5 lines + 80 nodes"
+  },
+  "verdict": "Guild notice list + message dispatch PRIMARY-verified: format/insert/prune + msg sends; guild notices complete (F755/F797).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild notices decoded from .text.",
+  "cross_refs": ["F797: announce", "F755: guild", "F573: senders"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4256A0+0x20; 0x425820+0x10",
+  "notes": [
+    "format 0x47AD30",
+    "5 line cap",
+    "backlog 0x50",
+    "msg 0x40F/0x414/0x415"
+  ]
+}

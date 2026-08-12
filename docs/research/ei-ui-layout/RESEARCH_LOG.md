@@ -8143,3 +8143,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 493-495（F800-F801：实体名字格式/渲染 + 名字/头顶系统闭合 + Round 800 finding）；基线 Round 492=56c9011 → Round 495=a2d8040（**460 连发 F335-F801**）。
 - 落盘：handoff-refresh-77-evidence.json（F802，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 496。
+## Round 497 (F803) — 2026-08-12：行会公告列表 + 消息分派
+
+- **〔行会〕**0x4256A0（F797 公告路径）：0x45E200 + 0x468CD7 sprintf 格式 **0x47AD30** → 拆分 ≤5 行（0x104 各）→ 列表插入 [0x100]（节点分配 0x1000、计数 [0x9C] 上限 5、积压 [0x114] 上限 0x50=80 修剪 via vtable[0x14] + free）；0x425820 **行会消息分派**：msg 0x40F（seq 0）→ 0x452470 + 0x452410、msg 0x414 → **0x4520F0 with 0x47BA9C**、msg 0x415 → 0x41 双字成员操作——行会公告/消息完整（F755/F797 用）。
+- 落盘：guild-notice-list-msg-dispatch-evidence.json（F803，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 497。
