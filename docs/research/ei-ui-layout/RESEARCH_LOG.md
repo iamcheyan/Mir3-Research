@@ -6434,3 +6434,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔选择/剔除〕**0x41A570：0/1/3 → 0（**视口外剔除**：ID 清 0x41B570 + 解链 0xE1154 + 删除）、2/4-42 → 1（保留）；跳表 0x41A568。
 - **〔语义〕**瞬时类型（0/1/3/50）移出 ±0x18 视口即剔除；持久类型（NPC/怪物）保留。
 - 落盘：entity-type-dispatch-tables-evidence.json（F445，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 139。
+## Round 140 (F446) — 2026-08-12：F336「4 画家数组」定案（4 实体桶网格）
+
+- **〔定案〕**游戏对象 4 每帧实体桶网格：**[0x154]** 绘制链（0xE1158）/ **[0x2E4]** 特殊类型链（0xE11A0：{0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150）/ **[0x474]** 容器 C（0xE11B8，PtInRect 门）/ **[0x604]** 容器 D（0xE11D0，**timeGetTime 过期移除** [0x47630C]）。
+- **〔公式〕**共享单元 ((dy*24−camX+wx)*400+probe)*4 + 0x64 格探测；0x419D40 = 完整每帧可见性通道（清零→4 链分桶→点击→剔除）。
+- **〔闭合〕**F336 谜底 = 4 桶网格（基 = 游戏对象 0x8AB828，非 main）。
+- 落盘：four-bucket-grids-evidence.json（F446，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 140。

@@ -1,0 +1,40 @@
+{
+  "evidence_id": "four-bucket-grids-2026-08-12-f446",
+  "title": "Round 140 (F446): F336 '4 painter arrays' DEFINITIVELY CLOSED - 4 per-frame entity bucket grids on game obj: [0x154] draw-list (0xE1158) / [0x2E4] special-types list (0xE11A0: {0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150) / [0x474] container C (0xE11B8) / [0x604] container D (0xE11D0, timeGetTime expiry removal); shared cell formula ((dy*24-camX+wx)*400+probe)*4 + 0x64-probe; 0x419D40 = full per-frame visibility pass",
+  "date": "2026-08-12",
+  "objective": "Definitively close the F336 '4 painter arrays' question.",
+  "question": "What are the 4 arrays at game+0x154/+0x2E4/+0x474/+0x604?",
+  "method": "Disasm 0x419D40 tail (0x41A0C3-0x41A524): per-list bucket loops + grid write sites.",
+  "scope": "0x41A0C3-0x41A524; grids +0x154/+0x2E4/+0x474/+0x604; lists 0xE1158/0xE11A0/0xE11B8/0xE11D0.",
+  "cell_analysis": {
+    "grid_1_0x154": {"list": "draw list 0xE1158", "write": "0x41A071 mov [ebp+idx*4+0x154], esi", "role": "all entities (bucket map gated)"},
+    "grid_2_0x2E4": {"list": "0xE11A0 (special types {0x10,0x16,0x3F,0x14A-0x14E,0x48}/9/0x35/0x150 dispatch at 0x41A0E4)", "write": "0x41A349 mov [ebp+eax*4+0x2E4], esi", "role": "special-type entities"},
+    "grid_3_0x474": {"list": "container C head 0xE11B8 (0x41A367)", "write": "0x41A424 mov [ebp+eax*4+0x474], esi", "role": "map objects (PtInRect [0x4762B4] gated)"},
+    "grid_4_0x604": {"list": "container D head 0xE11D0 (0x41A446)", "write": "0x41A4FC mov [ebp+eax*4+0x604], ebx", "role": "expiring entities: timeGetTime [0x47630C] - [ent+0xC] > [ent+0x10] -> remove (0x41A46B-0x41A496)"},
+    "cell_formula": {"shared": "((dy*24 - camX + wx) * 400 + probe) * 4 bytes; probe scan 0x64 (100) cells (lea*5*5<<4 path at write)", "probe_stride": "lea*5*5<<6 = *1600 for occupancy check (0x41A1E7/0x41A3FF/0x41A4D7)"},
+    "f336_closure": "F336 'main+0x154/+0x2E4/+0x474/+0x604 painter arrays' = 4 per-frame entity bucket grids on game object (base 0x8AB828, NOT main 0x47EF18)"
+  },
+  "exe_trace": {
+    "pass_0x419D40": {"stage": "tick stage 8 (F439)", "steps": "zero grid1 -> walk draw list (bucket grid1 + click + cull) -> walk special list (grid2) -> walk container C (grid3) -> walk container D (grid4 + expiry)"}
+  },
+  "audit_vs_exe": {
+    "F336": "4 painter arrays = 4 bucket grids (definitive)",
+    "F444": "grid1 role confirmed; grids 2-4 = same pattern",
+    "F439": "pipeline stage 8 = this full pass"
+  },
+  "contrast": {
+    "grids_vs_lists": "4 grids (per-frame buckets by category) vs 5 persistent lists (containers)",
+    "special_vs_normal": "special types (0x10/0x16/0x3F/0x14A-0x14E/0x48/9/0x35/0x150) bucketed separately (grid2)"
+  },
+  "verdict": "F336 '4 painter arrays' DEFINITIVELY CLOSED (primary-bytes): 4 per-frame entity bucket grids at game+0x154/+0x2E4/+0x474/+0x604, each fed by a different entity list, shared cell formula + 100-cell probe, container-D walk adds timeGetTime expiry removal. 0x419D40 = complete per-frame visibility pass.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All 4 grid write sites + walks decoded from .text.",
+  "cross_refs": ["F336: game loop (final closure)", "F444: grid role", "F439: pipeline", "F440: containers"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x419D40+0x180; scan lea [ecx+ebp+0x2E4/0x474/0x604]",
+  "notes": [
+    "grid3 = map objects (PtInRect gated, vtable+0x1C click)",
+    "grid4 expiry = time-bounded entities (projectiles/effects)",
+    "cell geometry: 0x38400 dwords / 400-col rows / 1600-probe stride [inference]"
+  ]
+}

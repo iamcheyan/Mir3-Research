@@ -926,6 +926,11 @@ git diff --check
 - **桶映射 + 选择/剔除表**（瞬时类型视口外剔除）。
 - 落盘：`entity-type-dispatch-tables-evidence.json`（F445）+ RESEARCH_LOG Round 139。
 
+## Round 140 (2026-08-12) — 4 桶网格定案（Finding 446）
+
+- **F336「4 画家数组」= 4 每帧实体桶网格**（+0x154/+0x2E4/+0x474/+0x604）。
+- 落盘：`four-bucket-grids-evidence.json`（F446）+ RESEARCH_LOG Round 140。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（网格角色已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
