@@ -1,0 +1,38 @@
+{
+  "evidence_id": "equip-slot-draw-2026-08-12-f472",
+  "title": "Round 166 (F472): Equip slot draw FOUND - 0x44B560 status sub-paint: figure frame byte [0x777720] -> 0x566DD4 (level frame ctx) blit at +0xC8/+0x61 via 0x45FD50; 11-SLOT icon loop (0x44B5CD-0x44B629): records [0x2F8+slot*0xC24], gate [edi-4] occupied, icon draw 0x430A40 (F464) with rects [0x1C0+slot*0x10] + special centered pos slots 0/1/4 (0x44B5E0-0x44B614); walk frame byte [0x777723] <= 0xA -> frame [0x777720]*10 + [0x777723] + 0x3B via 0x566DD4 (0x44B62B-0x44B6A8) - equip panel render chain complete (paint 0x44B2D0 -> 0x44B560 -> 0x430A40 icons + figure)",
+  "date": "2026-08-12",
+  "objective": "Locate and decode the equip slot icon rendering in the status panel.",
+  "question": "How are equip slot icons and the character figure drawn?",
+  "method": "Disasm 0x44B560-0x44B6AD (status sub-paint with equip loop).",
+  "scope": "0x44B560-0x44B6AD; slots [0x2F8] stride 0xC24; rects [0x1C0] stride 0x10.",
+  "cell_analysis": {
+    "figure_draw": {"frame": "byte [0x777720] (level) -> 0x566DD4 ctx -> 0x466130", "pos": "+0xC8/+0x61 from window origin", "blit": "0x45FD50 (0x8AB7A8)"},
+    "equip_loop_11": {"records": "[0x2F8 + slot*0xC24]", "gate": "[slot*0xC24+0x2F4] occupied (edi-4)", "draw": "0x430A40(item, pos, type) - F464 icon renderer", "rects": "[0x1C0 + slot*0x10] per-slot rects", "special": "slots 0/1/4 -> centered at +0xC8/+0x61 (figure overlay slots)", "loop": "0xB (11) slots stride 0xC24"},
+    "walk_frames": {"gate": "byte [0x777723] <= 0xA (walk state)", "frame": "[0x777720]*10 + [0x777723] + 0x3B -> 0x566DD4", "pos": "[0x7DA063] frame word + same blit"},
+    "chain": "paint 0x44B2D0 -> 0x44B560 -> 0x430A40 icons + 0x45FD50 figure"
+  },
+  "exe_trace": {
+    "equip_render": "11 slots drawn with icons; 0/1/4 = figure-overlay slots (weapon/shield/helm?) [inference]"
+  },
+  "audit_vs_exe": {
+    "F469": "slot stride 0xC24 + rects confirmed in draw",
+    "F464": "0x430A40 icon renderer = the slot draw",
+    "F33": "status family paint chain complete"
+  },
+  "contrast": {
+    "figure_vs_slots": "figure = 0x566DD4 level frame; slots = item icons 0x430A40",
+    "overlay_vs_rect": "slots 0/1/4 centered on figure; others at rects"
+  },
+  "verdict": "Equip slot draw PRIMARY-verified: 0x44B560 renders 11 slot icons (0x430A40) from records [0x2F8+slot*0xC24] with rects [0x1C0+slot*0x10], 3 overlay slots centered on the figure (0x566DD4 level frame). Equip panel render chain complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Sub-paint + loops decoded from .text.",
+  "cross_refs": ["F469: equip slots", "F464: icon draw", "F33: status family"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44B560+0x80",
+  "notes": [
+    "0x566DD4 = character figure WIL ctx (level frame [0x777720])",
+    "walk frames [0x777723] animate the figure",
+    "slots 0/1/4 = figure-overlay positions (helm/weapon/shield?) [inference]"
+  ]
+}

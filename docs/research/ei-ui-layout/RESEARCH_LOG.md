@@ -6580,3 +6580,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分派〕**0x42E2D0：类 [item+0x22] ≤ 0x1F 跳表 0x42E404（字节映射 0x42E428）→ 音效 ID 0x6B-0x76（0x45AFC0 @0x8AB130）；武器子类 [0x23] ≥ 0x6A → 0x76；名称门（0x47BDDC/0x47BDD4）→ 0x72/0x75；防具类 1-2 → 0x6B。
 - **〔修正〕**F470「英雄同步 0x42E2D0」= **音效分派器**（外观 = 绘制时读槽记录）。
 - 落盘：equip-sound-dispatcher-evidence.json（F471，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 165。
+## Round 166 (F472) — 2026-08-12：装备槽绘制（0x44B560 子绘制）
+
+- **〔绘制〕**0x44B560：角色形象帧字节 [0x777720] → 0x566DD4 上下文 → 0x45FD50 blit（+0xC8/+0x61）；**11 槽图标循环**（0x44B5CD：记录 [0x2F8+槽*0xC24]、门 [edi-4] 占用、**0x430A40 图标绘制**（F464）、矩形 [0x1C0+槽*0x10]、槽 0/1/4 特殊居中在形象上）；行走帧 [0x777723] ≤ 0xA → 帧 [0x777720]*10+[0x777723]+0x3B。
+- **〔链〕**绘制 0x44B2D0 → 0x44B560 → 0x430A40 图标 + 0x45FD50 形象 — 装备面板渲染链完整。
+- 落盘：equip-slot-draw-evidence.json（F472，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 166。

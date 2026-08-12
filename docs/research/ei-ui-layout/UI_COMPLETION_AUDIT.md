@@ -1056,6 +1056,11 @@ git diff --check
 - **0x42E2D0 = 音效**（F470 语义修正）。
 - 落盘：`equip-sound-dispatcher-evidence.json`（F471）+ RESEARCH_LOG Round 165。
 
+## Round 166 (2026-08-12) — 装备槽绘制（Finding 472）
+
+- **11 槽图标 + 形象帧**（装备渲染链完整）。
+- 落盘：`equip-slot-draw-evidence.json`（F472）+ RESEARCH_LOG Round 166。
+
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备族闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
