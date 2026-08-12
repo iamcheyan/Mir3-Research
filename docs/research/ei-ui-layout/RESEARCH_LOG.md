@@ -9105,3 +9105,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**645 证据 JSON**；三服务 200；master 50c8bfa（**681 连发 F335-F1023 已推**）。
 - **〔弧〕**坐骑旗标（F836）+ 地图/名字消息（F797）+ recv1 全量（F1023）——**recv1 完整**（坐骑 0x40F420 + 物品 0x42FC20 + 封锁 0x43C1B0 + 公告）；入站 100%。
 - 落盘：recv1-closure-evidence.json（F1024，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 718。
+## Round 719 (F1025) — 2026-08-12：HANDOFF 刷新 153（Round 716-718）
+
+- **〔刷新〕**HANDOFF 追加 Round 716-718（F1023-F1024：recv1 坐骑/物品/封锁/公告全量 + recv1 闭合）；基线 Round 715=c937e7e → Round 718=5a3ddb0（**682 连发 F335-F1024**）。
+- 落盘：handoff-refresh-153-evidence.json（F1025，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 719。

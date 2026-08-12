@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-153-2026-08-12-f1025",
+  "title": "Round 719 (F1025): HANDOFF refresh 153 - Rounds 716-718 (F1022-F1024: HANDOFF 152, recv1 mount/item/block/announce full, recv1 closure), baseline Round 715=c937e7e -> Round 718=5a3ddb0 (682 consecutive F335-F1024), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 716-718.",
+  "question": "What changed since HANDOFF refresh 152?",
+  "method": "Append Round 716-718 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 716-718 appended (3 rounds, F1022-F1024)",
+    "baseline": "Round 715=c937e7e -> Round 718=5a3ddb0 (682 consecutive F335-F1024)",
+    "arcs": {"recv1": "F1023 full", "closure": "F1024 recv1"},
+    "key": "recv1 complete; inbound 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1022": "refresh 152 baseline -> now refresh 153", "F335-F1024": "682 rounds"
+  },
+  "contrast": {
+    "refresh_152_vs_153": "F1023-F1024 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 153 (F1025): Rounds 716-718 documented (recv1 complete), baseline c937e7e -> 5a3ddb0, 682 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1023-F1024 evidence.",
+  "cross_refs": ["F1022: refresh 152", "F1024: recv1 closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 716-718 section to HANDOFF",
+  "notes": [
+    "682 consecutive shipping rounds F335-F1024",
+    "next: remaining deep corners, sim polish"
+  ]
+}
