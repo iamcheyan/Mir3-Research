@@ -7518,3 +7518,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**283 证据 JSON**；三服务 200；master dfd1c37（**317 连发 F335-F658 已推**）。
 - **〔弧〕**图标/详情（F651）+ 反序列化/IO（F652）+ 插入/放置（F655）+ 构造/类别映射（F658）——**整个物品系统字节级（构造/类别 → 反序列化 → 背包 IO → 放置 → 图标/详情）**，闭合 F464/F457/F460/F549。
 - 落盘：item-system-final-closure-evidence.json（F659，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 353。
+## Round 354 (F660) — 2026-08-12：HANDOFF 刷新 31（Round 351-353）
+
+- **〔刷新〕**HANDOFF 追加 Round 351-353（F658-F659：物品构造/类别 + 物品系统最终闭合）；基线 Round 350=d393058 → Round 353=b4a3d10（**318 连发 F335-F659**）。
+- 落盘：handoff-refresh-31-evidence.json（F660，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 354。

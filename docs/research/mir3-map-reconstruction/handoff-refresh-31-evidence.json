@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-31-2026-08-12-f660",
+  "title": "Round 354 (F660): HANDOFF refresh 31 - Rounds 351-353 (F657-F659: item ctor/class map + item system final closure), baseline Round 350=d393058 -> Round 353=b4a3d10 (318 consecutive F335-F659), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 351-353.",
+  "question": "What changed since HANDOFF refresh 30?",
+  "method": "Append Round 351-353 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 351-353 appended (3 rounds, F657-F659)",
+    "baseline": "Round 350=d393058 -> Round 353=b4a3d10 (318 consecutive F335-F659)",
+    "arcs": {"ctor": "F658 item ctor/class", "closure": "F659 item system final"},
+    "key": "entire item system byte-level"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F657": "refresh 30 baseline -> now refresh 31", "F335-F659": "318 rounds"
+  },
+  "contrast": {
+    "refresh_30_vs_31": "F658-F659 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 31 (F660): Rounds 351-353 documented (item system complete), baseline d393058 -> b4a3d10, 318 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F658-F659 evidence.",
+  "cross_refs": ["F657: refresh 30", "F659: item closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 351-353 section to HANDOFF",
+  "notes": [
+    "318 consecutive shipping rounds F335-F659",
+    "next: remaining deep corners, sim polish"
+  ]
+}
