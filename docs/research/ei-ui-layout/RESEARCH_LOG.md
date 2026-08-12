@@ -8489,3 +8489,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔发送〕**0x452270 **msg 0x40A 丢弃**（物品 idx）+ 0x4522A0 **msg 0x408 卖出**（打包坐标 + 数量）+ 组队 0x4522E0 **0x3FC 邀请** / 0x452310 **0x3FB 离开**（切换旗标）/ 0x452350 **0x3FD 移除** / 0x452380 **0x3FE**——全部经 0x452940 + 0x451E60（F572）——**F845/F740 发送确认**。
 - 落盘：drop-sell-party-senders-evidence.json（F882，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 576。
+## Round 577 (F883) — 2026-08-12：发送器目录最终闭合（F572/F573/F782/F879/F882 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**507 证据 JSON**；三服务 200；master 2083833（**541 连发 F335-F882 已推**）。
+- **〔弧〕**文本帧（F572）+ 目录（F573）+ 扩展（F782）+ 回复/校验（F879）+ 丢弃/卖出/组队（F882）——**发送器目录完整**（包头 0x452940 + 发送 0x451E60 + msg 0x3E9-0x419 + 丢弃/卖出/组队/回复 + 校验和），出站表面 100%。
+- 落盘：sender-directory-final-closure-evidence.json（F883，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 577。

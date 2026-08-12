@@ -1,0 +1,37 @@
+{
+  "evidence_id": "sender-directory-final-closure-2026-08-12-f883",
+  "title": "Round 577 (F883): Sender directory FINAL closure (F572/F573/F782/F879/F882) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 2083833 (541 consecutive F335-F882), 507 evidence JSONs; arc: text frame (F572) + directory (F573) + extension (F782) + reply/checksum (F879) + drop/sell/party (F882) - sender directory COMPLETE byte-level (header 0x452940 + send 0x451E60 + msgs 0x3E9-0x419 + drop/sell/party/reply + checksum), outbound surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the sender directory finally.",
+  "question": "Is the sender directory fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "507 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F572": "frame", "F573": "directory", "F782": "extension", "F879": "reply", "F882": "drop/party"},
+    "senders": "0x3E9-0x419 + checksum = COMPLETE",
+    "milestone": "541 consecutive rounds F335-F882"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F882": "541 rounds pushed; sender directory complete"
+  },
+  "contrast": {
+    "frame_vs_senders": "header + msgs",
+    "reply_vs_checksum": "0x411 + XOR"
+  },
+  "verdict": "Sender directory FINAL closure (F883): frame + senders + checksum all byte-level; validation green, 541 consecutive rounds, 507 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F572/F573/F782/F879/F882.",
+  "cross_refs": ["F572", "F573", "F782", "F879", "F882"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "541 consecutive shipping rounds F335-F882",
+    "sender directory 100%",
+    "next: HANDOFF refresh 105, remaining corners"
+  ]
+}
