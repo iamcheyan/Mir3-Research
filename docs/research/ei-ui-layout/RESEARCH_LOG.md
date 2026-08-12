@@ -7661,3 +7661,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 382-384（F689-F690：base64 编码 + 包编码弧）；基线 Round 381=5144fe6 → Round 384=8b3528d（**349 连发 F335-F690**）。
 - 落盘：handoff-refresh-41-evidence.json（F691，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 385。
+## Round 386 (F692) — 2026-08-12：按方向实体选择
+
+- **〔选择〕**0x41EC10（F580 确认）：**8 方向 jt 0x41ECFC**（每方向 dx/dy 偏移数学）→ 实体列表 [0x560070] 扫描（坐标匹配 [0xCC]/[0xD0]、门 [0x61C74]==0 + 类型 [0x88] 0/1）→ 返回实体（ret 0x10）——目标选择字节级（F580/F612 连接）。
+- 落盘：entity-select-dir-evidence.json（F692，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 386。

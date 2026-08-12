@@ -1,0 +1,34 @@
+{
+  "evidence_id": "entity-select-dir-2026-08-12-f692",
+  "title": "Round 386 (F692): Entity select by dir - 0x41EC10 (F580 CONFIRMED): 8-dir jt 0x41ECFC (dx/dy offset math per dir) -> entity list [0x560070] scan (coord match [0xCC]/[0xD0], gate [0x61C74]==0 + type [0x88] 0/1) -> return entity (ret 0x10) - target selection byte-level (F580/F612 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity select by direction.",
+  "question": "How is an entity selected for attack?",
+  "method": "Disasm 0x41EC10-0x41ECF9.",
+  "scope": "0x41EC10-0x41ECF9; jt 0x41ECFC; list 0x560070.",
+  "cell_analysis": {
+    "0x41EC10": {"jt": "8-dir 0x41ECFC dx/dy math", "scan": "list [0x560070]: coord [0xCC]/[0xD0] match + [0x61C74]==0 + type [0x88] 0/1", "ret": "entity (0x10)"}
+  },
+  "exe_trace": {
+    "select_chain": "attack dir -> 0x41EC10 offset -> list scan -> target entity"
+  },
+  "audit_vs_exe": {
+    "F580": "attack target CONFIRMED", "F612": "hero move uses", "F336": "list 0x560070"
+  },
+  "contrast": {
+    "dir_vs_scan": "dir offset + list scan",
+    "gates": "coord + alive + type"
+  },
+  "verdict": "Entity select PRIMARY-verified: 8-dir offset + list scan; F580/F612 target selection byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Selection decoded from .text.",
+  "cross_refs": ["F580: attack", "F612: hero", "F336: lists"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41EC10+0x30; jt 0x41ECFC",
+  "notes": [
+    "8-dir jt 0x41ECFC",
+    "coord match [0xCC]/[0xD0]",
+    "gate [0x61C74] + type [0x88]",
+    "returns entity ptr"
+  ]
+}
