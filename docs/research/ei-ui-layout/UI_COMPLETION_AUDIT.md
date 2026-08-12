@@ -4129,3 +4129,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（选项持久化完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 675 (2026-08-12) — 技能书绘制 + 页计数（Finding 981）
+
+- **3 页签 + 8 槽 + 页 ÷3**（技能书绘制完整）。
+- 落盘：`skill-book-draw-page-evidence.json`（F981）+ RESEARCH_LOG Round 675。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（技能书绘制完整；下一弧：剩余深层角落）。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "skill-book-draw-page-2026-08-12-f981",
+  "title": "Round 675 (F981): Skill book draw + page count (F839/F848 dep) - 0x439500: 3 tab rects 0x417830 @ +0xD8 stride 0xB4 + 8 slot rects @ +0x2F4 stride 0xB4 + page count div3 (0x2AAAAAAB magic, [0x54] tab x [0x58] records) -> sprintf 0x47C334 + GDI 0x45DD70 0x323232/0x6496C8 - skill book draw COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the skill book draw + page count.",
+  "question": "How does the skill book draw its pages?",
+  "method": "Disasm 0x439500-0x439700.",
+  "scope": "0x439500-0x439700; draw.",
+  "cell_analysis": {
+    "0x439500": "3 tabs + 8 slots + page div3",
+    "page": "0x2AAAAAAB magic",
+    "text": "0x47C334 + 0x45DD70"
+  },
+  "exe_trace": {
+    "skillbook_chain": "tab -> slots -> page count -> text"
+  },
+  "audit_vs_exe": {
+    "F839": "skill book draw", "F848": "tab headers"
+  },
+  "contrast": {
+    "tabs_vs_slots": "3 + 8",
+    "page": "div3 count"
+  },
+  "verdict": "Skill book draw + page count PRIMARY-verified: tabs + slots + page div3; F839/F848 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Skill book draw decoded from .text.",
+  "cross_refs": ["F839: skill book", "F848: tabs"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x439500+0x20",
+  "notes": [
+    "3 tabs +0xD8",
+    "8 slots +0x2F4",
+    "page magic 0x2AAAAAAB",
+    "GDI 0x45DD70"
+  ]
+}

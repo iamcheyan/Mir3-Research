@@ -8915,3 +8915,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 671-673（F978-F979：选项配置装载全量 + 选项配置闭合）；基线 Round 670=ede234f → Round 673=0fc77a2（**638 连发 F335-F979**）。
 - 落盘：handoff-refresh-138-evidence.json（F980，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 674。
+## Round 675 (F981) — 2026-08-12：技能书绘制 + 页计数（F839/F848 依赖）
+
+- **〔技能书〕**0x439500：3 页签矩形 0x417830 @ +0xD8 stride 0xB4 + 8 技能槽矩形 @ +0x2F4 stride 0xB4 + 页计数 ÷3（0x2AAAAAAB 幻数，[0x54] 页签 × [0x58] 记录）→ sprintf 0x47C334 + GDI 0x45DD70 0x323232/0x6496C8——技能书绘制完整。
+- 落盘：skill-book-draw-page-evidence.json（F981，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 675。
