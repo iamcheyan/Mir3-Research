@@ -6450,3 +6450,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔共享〕**0x5600FC stride 0x144（= idx*81*4）**全局资源/外观描述数组**：瓦片（attr/7+14 库公式，0x43B329/0x43B552）、怪物（type，F433/434）、实体槽（0x40F55D）、特效分派（0x40E40B）、地图渲染（0x41C9ED）、UI（0x423DF2）；条目 +0x38 = WIL 上下文（0x466130 ecx）。
 - **〔修正〕**F434「怪物外观表」范围 → **共享资源表**（怪物外观 = 用户之一）。
 - 落盘：shared-resource-descriptor-table-evidence.json（F448，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 142。
+## Round 143 (F449) — 2026-08-12：怪物更新/变形处理器族（msg 0xBC6-0xBD8）
+
+- **〔处理器〕**0x410C38 族 7+ 处理器：门 [0x629D0-0x629D8] + 字 [0x62A77] → 记录查找 0x44A820（0x8AA5A8）→ vtable+0x10 → 属性 0x40A4D0（arg2=type，生成音效 (type+1000)*10）→ 0x451450 发包（0xBD1/0xBD8/0xBD7/0xBCB/0xBCA/0xBD0/0xBC6）→ 状态标志 =2。
+- **〔细化〕**「push 0x5600fc」= 0x40A4D0 的立即数基参（非直接表读）— F448 引用分类细化。
+- 落盘：monster-update-handlers-evidence.json（F449，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 143。

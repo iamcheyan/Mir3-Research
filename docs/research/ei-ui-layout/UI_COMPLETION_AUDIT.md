@@ -941,6 +941,11 @@ git diff --check
 - **0x5600FC = 全局资源表**（81 引用；F434 范围修正）。
 - 落盘：`shared-resource-descriptor-table-evidence.json`（F448）+ RESEARCH_LOG Round 142。
 
+## Round 143 (2026-08-12) — 怪物更新处理器族（Finding 449）
+
+- **7+ 处理器（msg 0xBC6-0xBD8）**；0x5600FC 立即参分类细化。
+- 落盘：`monster-update-handlers-evidence.json`（F449）+ RESEARCH_LOG Round 143。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x5600FC 条目布局（0x144B 内 WIL 上下文 + 外观数据）— 低优先。

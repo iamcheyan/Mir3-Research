@@ -1,0 +1,36 @@
+{
+  "evidence_id": "monster-update-handlers-2026-08-12-f449",
+  "title": "Round 149 (F449): Monster update/transform handler family 0x410C38 - per-type packet handlers (msgs 0xBC6/0xBCA/0xBCB/0xBD0/0xBD1/0xBD7/0xBD8, gates [0x629D0-0x629D8]+[0x62A77] word), record lookup 0x44A820 (table 0x8AA5A8) + vtable+0x10 + stats init 0x40A4D0 (arg2 = type, spawn sound (type+1000)*10) + state flag =2; the 'push 0x5600fc' refs = immediate base ARG to 0x40A4D0 (not direct table reads) - F448 ref count refined",
+  "date": "2026-08-12",
+  "objective": "Decode the monster update/transform handler family; refine the 0x5600FC ref classification.",
+  "question": "How does the client handle monster state-change packets, and what are the 'push 0x5600fc' refs?",
+  "method": "Disasm 0x410C30-0x410F60 (handler family) + arg-flow analysis of 0x40A4D0 call sites.",
+  "scope": "0x410C30-0x410F60; msgs 0xBC6-0xBD8; flags [0x629D0-0x629D8].",
+  "cell_analysis": {
+    "handlers": {"family": "7+ per-type handlers (0x410C38/0x410CBD/0x410D2B/0x410D99/0x410E24/0x410EA1/0x410F1C)", "gates": "flag [0x629D0-0x629D8] != 0 + word [0x62A77] > N", "flow": "record lookup 0x44A820 (0x8AA5A8) -> vtable+0x10 call -> 0x40A4D0 (stats) -> 0x451450 send (msg 0xBD1/0xBD8/0xBD7/0xBCB/0xBCA/0xBD0/0xBC6) -> flag [0x629Dx]=2", "type_codes": "0x1A/0x23/0x22/0xC/7/0x19 per handler"},
+    "stats_init_0x40A4D0_args": {"arg1": "0x5600FC (immediate base - constant)", "arg2": "type code (drives (type+1000)*10 spawn sound at 0x40A5F4)", "arg3": "entity id param", "note": "arg1 constant = NOT a direct table read at these sites"},
+    "f448_refinement": "81 refs include ~20+ 'push 0x5600fc' immediate-arg sites (0x40E4xx/0x410Cxx families); real table accesses = tile render + appearance + entity draw clusters"
+  },
+  "exe_trace": {
+    "monster_state": "state flags [0x629D0-0x629D8] consumed (set 2) after handler; word [0x62A77] = state counter"
+  },
+  "audit_vs_exe": {
+    "F434": "0x40A4D0 stats init confirmed (sound (type+1000)*10)",
+    "F448": "ref count refined (immediate args vs table reads)"
+  },
+  "contrast": {
+    "handler_vs_draw": "update handlers (0x410C38) vs draw path (0x40F5F0) - separate families",
+    "msg_family": "0xBC6-0xBD8 = monster transform/update messages"
+  },
+  "verdict": "Monster update/transform handler family PRIMARY-verified: 7+ handlers (msgs 0xBC6-0xBD8), record lookup + stats init + spawn sound + state-flag consumption. 'push 0x5600fc' refs = immediate base args to 0x40A4D0 (F448 refined).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + arg flow decoded from .text.",
+  "cross_refs": ["F434: stats init", "F448: shared table (refined)", "F433: type dispatch"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x410C30+0x60; trace 0x40A4D0 args",
+  "notes": [
+    "0x62A77 word = per-entity state counter (gates handler runs)",
+    "state flags consumed =2 after handling (one-shot transforms)",
+    "0x451450 = packet sender (game obj ecx 0x8AB828)"
+  ]
+}
