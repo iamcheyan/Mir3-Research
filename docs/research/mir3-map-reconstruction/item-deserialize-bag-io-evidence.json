@@ -1,0 +1,36 @@
+{
+  "evidence_id": "item-deserialize-bag-io-2026-08-12-f652",
+  "title": "Round 346 (F652): Item deserialize + bag IO - 0x42FC20 (F464/F549): 0x42F2A0 parse + 0x42F280 + 0x42F440 insert (0xC28 stack), ret 0xC28; 0x42FCC0 = bag item GET (idx*0xC20 math at [0x774], 0x308 dwords copy + 0x42FB20 marker clear); 0x42FD10 = bag item SET (0x430920 item ctor + 0x42FCC0 + 0x42FC20 deserialize + [0x1A] word) - item record IO byte-level (F464/F549/F590 connected)",
+  "date": "2026-08-12",
+  "objective": "Decode the item deserialize + bag IO.",
+  "question": "How do item records serialize + bag IO work?",
+  "method": "Disasm 0x42FC20-0x42FDF8.",
+  "scope": "0x42FC20-0x42FDF8; bag [0x774]; 0xC28.",
+  "cell_analysis": {
+    "0x42FC20": "deserialize: 0x42F2A0 parse + 0x42F280 + 0x42F440 insert (0xC28 stack, ret 0xC28)",
+    "0x42FCC0": "bag get: idx*0xC20 at [0x774] + 0x308 dwords copy + 0x42FB20 marker",
+    "0x42FD10": "bag set: 0x430920 ctor + 0x42FCC0 + 0x42FC20 + [0x1A] word"
+  },
+  "exe_trace": {
+    "item_io_chain": "packet -> 0x42FC20 deserialize -> bag [0x774] slots; get 0x42FCC0 / set 0x42FD10"
+  },
+  "audit_vs_exe": {
+    "F464": "deserialize 0x42FC20 CONFIRMED", "F549": "bag 12 slots", "F590": "item record"
+  },
+  "contrast": {
+    "get_vs_set": "0x42FCC0 get + 0x42FD10 set",
+    "deser_vs_copy": "parse/insert + 0x308 dword copies"
+  },
+  "verdict": "Item deserialize + bag IO PRIMARY-verified: parse/insert + get/set bag slots; F464/F549 connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Item IO decoded from .text.",
+  "cross_refs": ["F464: deserialize", "F549: bag", "F590: records"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42FC20+0x20; 0x42FCC0+0x20",
+  "notes": [
+    "0xC28 = item record size",
+    "bag slots [0x774] stride 0xC20",
+    "0x308 dwords = item body",
+    "get clears marker 0x42FB20"
+  ]
+}

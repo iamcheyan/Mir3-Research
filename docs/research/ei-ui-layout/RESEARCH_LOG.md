@@ -7481,3 +7481,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔图标〕**0x430A40（F464/F559）：**3 上下文分派**（字节 [esp+0xC]：0 = StoreItem 0x5668C4、1 = 0x566A08、2 = 0x56B0E8 WIL 表，帧 [0x28] 经 0x466130）、居中数学 0x13（19px 半）、[0x22] 类型 0xA/0xB 色调 → 0x45E4E0、blit 0x460240。
 - **〔详情〕**0x430B70 = 物品详情 **5 类分派**（jt 0x430BF8：0x430C40/0x431E50/0x432A80/0x431860/0x433CF0 = F457/F460 5 类提示框族确认）——物品图标 + 详情核心字节级。
 - 落盘：item-icon-draw-detail-evidence.json（F651，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 345。
+## Round 346 (F652) — 2026-08-12：物品反序列化 + 背包 IO
+
+- **〔反序列化〕**0x42FC20（F464/F549）：0x42F2A0 解析 + 0x42F280 + 0x42F440 插入（0xC28 栈、ret 0xC28）。
+- **〔背包〕**0x42FCC0 = 背包取（idx×0xC20 @ [0x774]、0x308 双字复制 + 0x42FB20 标记清）；0x42FD10 = 背包放（0x430920 物品构造 + 0x42FCC0 + 0x42FC20 反序列化 + [0x1A] 字）——物品记录 IO 字节级（F464/F549/F590 连接）。
+- 落盘：item-deserialize-bag-io-evidence.json（F652，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 346。

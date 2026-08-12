@@ -1956,9 +1956,14 @@ git diff --check
 - **3 上下文图标 + 5 类详情 jt**（F464/F457/F460 连接）。
 - 落盘：`item-icon-draw-detail-evidence.json`（F651）+ RESEARCH_LOG Round 345。
 
+## Round 346 (2026-08-12) — 物品反序列化 + 背包 IO（Finding 652）
+
+- **解析/插入 + 背包取放**（F464/F549 连接）。
+- 落盘：`item-deserialize-bag-io-evidence.json`（F652）+ RESEARCH_LOG Round 346。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（物品核心闭合；下一弧：剩余深层角落）。
+- 无阻塞项（物品 IO 闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
