@@ -1,0 +1,39 @@
+{
+  "evidence_id": "recv1-mapval7-bag-deserialize-body-2026-08-12-f549",
+  "title": "Round 243 (F549): recv1 mapval7 (msg 0x26E) full body - 12-slot bag deserialize @ 0x4204FD: 12 slots x 0xC2C stride at [0x2D93EC] (gate [ebp-0xC] type), 0x308 dword copy -> 0x42FC20 deserialize; pending equip [0x2A54AC] GOLD special-case: strcmp name [0x2A54C8] vs 0x47ADB4 '금전' (cp949/EUC-KR = 金钱/gold) -> skip bag insert, else deserialize [0x2A54C4]; gold accumulator [0x35B1E8] += [0x2EB840]; belt [0x2EB848] deserialize; clear 0x30E dwords (0xC38) at [0x2A54AC]; guild close gate [0x2D8E58] -> 0x42AC50; name table 0x47ADC4 = 12 ptrs (밤1-10 chestnut + 行动速度 : 움직이지않음/very-slow lines) - client-internal KR gold name PROVES local special-cases (F478-493 packet-driven nuance)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 mapval7 handler body (F517/F520 semantic -> byte-level).",
+  "question": "What exactly does the bag deserialize packet handler do?",
+  "method": "Disasm 0x4204FD-0x420671 + decode 0x47ADB4 name table (cp949/EUC-KR).",
+  "scope": "0x4204FD-0x420671; [0x2D93EC] bag; [0x2A54AC] pending equip; 0x47ADB4 table.",
+  "cell_analysis": {
+    "bag12": {"slots": "12 x 0xC2C stride at [0x2D93EC]", "gate": "[ebp-0xC] type != 0", "copy": "0x308 dwords -> 0x42FC20 deserialize (bag [0x2AB9E0])"},
+    "gold_case": {"slot": "[0x2A54AC] type +0xC both nonzero", "cmp": "strcmp name [0x2A54C8] vs 0x47ADB4 '금전' (gold)", "skip": "gold -> no bag insert (counted via [0x35B1E8] += [0x2EB840])", "else": "deserialize [0x2A54C4]"},
+    "clear": "0x30E dwords (0xC38) rep stosd at [0x2A54AC]",
+    "belt": "[0x2EB848] deserialize",
+    "guild": "0x2D8E28 control + gate [0x2D8E58] -> 0x42AC50 close",
+    "name_table": {"0x47ADB4": "'금전' gold (cp949/EUC-KR, CN GBK layer 金钱)", "0x47ADC4": "12 ptrs: 밤1-10 (chestnut) + 行动速度 : 움직이지않음 + very-slow"}
+  },
+  "exe_trace": {
+    "recv1_chain": "msg 0x26E -> 0x42042B dispatch -> mapval7 -> bag/equip/belt/gold update -> guild close"
+  },
+  "audit_vs_exe": {
+    "F520": "mapval7 semantic -> full body now", "F478-493": "packet-driven nuance: gold name IS local KR", "F464": "0x42FC20 deserialize"
+  },
+  "contrast": {
+    "gold_vs_item": "금전 special-cased vs normal items deserialized",
+    "local_vs_packet": "client keeps minimal KR special names (gold/chestnut/speed) though record store is packet-driven"
+  },
+  "verdict": "recv1 mapval7 body PRIMARY-verified: 12-slot bag deserialize (0xC2C stride), gold '금전' special-case (skip bag insert, count accumulator), belt + pending-equip paths, guild close. Client-internal KR strings (F478-493 nuance).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handler body + string table decoded from .text/.data.",
+  "cross_refs": ["F520: recv1 semantics", "F464: 0x42FC20", "F478-493: packet-driven store"],
+  "tool": "capstone disasm + cp949/EUC-KR decode",
+  "reproduce": "disasm 0x4204FD+0x70; decode 0x47ADB4 as cp949",
+  "notes": [
+    "0x2A54AC = pending-equip record: +0 type, +0xC flag, +0x18 data, +0x1C name",
+    "gold = '금전' EUC-KR; CN layer 金钱 (GBK)",
+    "밤1-10 = chestnut items (F425 栗子树 1488 顶)",
+    "speed lines = 行动速度 status descriptions (F460 tooltip family)"
+  ]
+}

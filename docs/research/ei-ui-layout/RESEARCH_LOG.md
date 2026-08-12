@@ -6955,3 +6955,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master a9ee4ac（**206 连发已推**）。
 - **〔弧汇总〕**交易 8×9 栏（F544，F283 修正）/ 坐骑 4 命令（F545）/ 选项 4 开关行（F546）/ 技能书 8 页签（F547）——**全部 14 窗口 + 登录/NPC 字节级**。
 - 落盘：window-corners-arc-closure-evidence.json（F548，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 242。
+## Round 243 (F549) — 2026-08-12：recv1 mapval7 背包反序列化函数体
+
+- **〔函数体〕**0x4204FD：**12 槽 × 0xC2C**（[0x2D93EC]，门 [ebp-0xC] 类型）、0x308 双字复制 → 0x42FC20 反序列化；待装备 [0x2A54AC] **金币特例**：strcmp 名 [0x2A54C8] vs 0x47ADB4 **'금전'**（cp949/EUC-KR = 金钱）→ 跳过入包（计数 [0x35B1E8] += [0x2EB840]），否则反序列化 [0x2A54C4]；清 0x30E 双字于 [0x2A54AC]；腰带 [0x2EB848]；行会关 gate [0x2D8E58] → 0x42AC50。
+- **〔名表〕**0x47ADC4 = 12 指针（밤1-10 栗子 + 行动速度 : 움직이지않음/非常缓慢）——**客户端本地 KR 特殊名**（F478-493 数据包驱动论微调）。
+- 落盘：recv1-mapval7-bag-body-evidence.json（F549，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 243。
