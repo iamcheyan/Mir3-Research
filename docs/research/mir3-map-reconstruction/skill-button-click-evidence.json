@@ -1,0 +1,36 @@
+{
+  "evidence_id": "skill-button-click-2026-08-12-f484",
+  "title": "Round 178 (F484): Skill-button click handler - 0x4149A0: 9 skill buttons (stride 0xB4, hit-test vtable+0x10), skill use flow: SetFocus 0x4762B8 + ShowWindow 0x4762AC(5) + SetWindowTextA 0x4762CC(0x47AD88 skill name) on main window 0x8AA48C + msg 0xB1 send (0x476290); ctor 0x414830: 9 buttons (0x4175F0) + input text [0x6D4] (0x4179B0) + 6 fields + scrollbar area (0x720, stride 0x10) - skill UI activation (F351 skill grid F-key/F9 bar)",
+  "date": "2026-08-12",
+  "objective": "Decode the skill-button click handler (skill cast activation).",
+  "question": "How does the client activate a skill from the skill bar?",
+  "method": "Disasm 0x4149A0-0x414C51 (click) + 0x414830 (ctor).",
+  "scope": "0x414830-0x414C51; 9 buttons stride 0xB4; window 0x8AA48C.",
+  "cell_analysis": {
+    "click_0x4149A0": {"buttons": "9 skill buttons (stride 0xB4, [0x6C]+i*0xB4, vtable+0x10 hit-test)", "flow": "SetFocus 0x4762B8 + ShowWindow(5) 0x4762AC + SetWindowTextA 0x4762CC (name 0x47AD88/0x47AD84 per button) on 0x8AA48C", "send": "msg 0xB1 (0x476290) - skill-use command"},
+    "ctor_0x414830": {"buttons": "9 x 0x4175F0 at [0x6C] stride 0xB4", "input": "text box [0x6D4] (0x4179B0)", "fields": "6 + 2 text fields (0x417830)", "scroll_area": "[0x720] stride 0x10 (0x10A entries)"},
+    "skill_chain": "skill bar click -> window text + msg 0xB1 -> server cast -> MonMagic effect (F351)"
+  },
+  "exe_trace": {
+    "skill_ui": "9-button skill bar (F351 grid = 12 real skills in book; bar = 9 shortcuts)"
+  },
+  "audit_vs_exe": {
+    "F351": "skill grid family extended (activation path)",
+    "F450": "Magic.exp record source (F351 decoder 0x4525F0)"
+  },
+  "contrast": {
+    "book_vs_bar": "skill book (12 slots F351) vs quick bar (9 buttons this)",
+    "click_vs_hotkey": "click -> msg 0xB1; hotkeys (F338) -> same dispatch"
+  },
+  "verdict": "Skill-button click PRIMARY-verified: 9-button bar (stride 0xB4), click sets window text + sends msg 0xB1 (skill use). Skill activation path decoded (F351 family).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Click + ctor decoded from .text.",
+  "cross_refs": ["F351: skill grid", "F338: hotkeys", "F483: MonMagic effects"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x4149A0+0x40, 0x414830+0x40",
+  "notes": [
+    "0x47AD88/0x47AD84 = skill name constants",
+    "msg 0xB1 = skill-use (spell cast command)",
+    "scroll area [0x720] = F9 bar paging"
+  ]
+}

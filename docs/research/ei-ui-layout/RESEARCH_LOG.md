@@ -6646,3 +6646,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔形象/魔法〕**MonMagicEx → +0x13434、MonMagic → +0x13538、MonImg → +0x1363C、M-Hair → +0x13740、M-Helmet1 → +0x13844、WM-Hair → +0x13948、WM-Helmet1 → +0x13A4C、DMon/MagicEx/StoreItem → 0x13B50..（F430）。
 - **〔统一〕**35+ WIL 槽全部挂在游戏对象（main 基址 F451）；技能施法特效 = MonMagic/MagicEx 帧（F351 族）。
 - 落盘：full-wil-table-loader-evidence.json（F483，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 177。
+## Round 178 (F484) — 2026-08-12：技能按钮点击处理器（技能激活）
+
+- **〔点击〕**0x4149A0：**9 技能按钮**（stride 0xB4、vtable+0x10 命中）→ SetFocus + ShowWindow(5) + SetWindowTextA（0x47AD88 技能名）@主窗 0x8AA48C + **msg 0xB1 技能使用命令**。
+- **〔构造〕**0x414830：9 × 0x4175F0 按钮 + 输入框 [0x6D4] + 滚动区 [0x720]。
+- **〔链〕**技能栏点击 → msg 0xB1 → 服务端施法 → MonMagic 特效（F351/F483）。
+- 落盘：skill-button-click-evidence.json（F484，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 178。
