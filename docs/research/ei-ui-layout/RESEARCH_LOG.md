@@ -8650,3 +8650,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 610-612（F917-F918：组队成员构造/帧 + 组队成员闭合）；基线 Round 609=7556d36 → Round 612=6771eff（**577 连发 F335-F918**）。
 - 落盘：handoff-refresh-117-evidence.json（F919，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 613。
+## Round 614 (F920) — 2026-08-12：行会成员列表初始化（F897 依赖）
+
+- **〔行会〕**0x425E90 控件重置（9 按钮）；0x425EB0 **成员列表初始化**（清 [0xD0]/[0xE8] 列表 + free + 默认串 0x47BB80/0x47BB7C + 名字解析 0x468BF0 '\n' + 节点添加）——行会成员列表完整（F755/F830 用）。
+- 落盘：guild-member-list-init-evidence.json（F920，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 614。

@@ -3641,3 +3641,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队成员完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 614 (2026-08-12) — 行会成员列表初始化（Finding 920）
+
+- **重置 + 清列表 + 默认/解析**（行会成员完整）。
+- 落盘：`guild-member-list-init-evidence.json`（F920）+ RESEARCH_LOG Round 614。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会成员完整；下一弧：剩余深层角落）。

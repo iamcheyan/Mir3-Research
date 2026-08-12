@@ -1,0 +1,35 @@
+{
+  "evidence_id": "guild-member-list-init-2026-08-12-f920",
+  "title": "Round 614 (F920): Guild member list init (F897 dep) - 0x425E90 controls reset (9 buttons, F897); 0x425EB0 MEMBER list init (clear [0xD0]/[0xE8] lists + free + default strings 0x47BB80/0x47BB7C + name parse 0x468BF0 '\\n' + node add) - guild member list COMPLETE (F755/F830 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the guild member list init.",
+  "question": "How does the guild member list initialize?",
+  "method": "Disasm 0x425E90-0x425FB3.",
+  "scope": "0x425E90-0x425FB3; lists.",
+  "cell_analysis": {
+    "0x425E90": "reset 9 controls",
+    "0x425EB0": "init: clear [0xD0]/[0xE8] + defaults 0x47BB80/0x47BB7C + parse 0x468BF0"
+  },
+  "exe_trace": {
+    "guild_chain": "reset -> clear -> defaults -> parse"
+  },
+  "audit_vs_exe": {
+    "F897": "reset", "F755": "guild", "F830": "pages"
+  },
+  "contrast": {
+    "reset_vs_init": "controls + lists",
+    "defaults_vs_parse": "strings + '\\n'"
+  },
+  "verdict": "Guild member list init PRIMARY-verified: reset + clear + defaults; F755/F830 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Guild init decoded from .text.",
+  "cross_refs": ["F897: reset", "F755: guild", "F830: pages"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x425E90+0x10; 0x425EB0+0x20",
+  "notes": [
+    "9 control reset",
+    "lists [0xD0]/[0xE8]",
+    "defaults 0x47BB80/0x47BB7C",
+    "'\\n' parse"
+  ]
+}
