@@ -6570,3 +6570,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔槽〕**0x44B720 12 槽矩形命中测试（[0x1C8] stride 0x10、0xB=12 循环、PtInRect）；**0x44B7A0 装备兼容检查**（type 5/6/9 → 武器类 0x19、7/8 互换对、否则 type==槽）；0x44B880 清槽（stride 0xC24、[0x2F4] 0x309 dword）；0x44B8B0 按名查找（11 槽）。
 - **〔修正〕**F325「8 装备槽」→ **12 槽**（状态面板 F33/F47 族一致）。
 - 落盘：equipment-panel-slots-evidence.json（F469，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 163。
+## Round 164 (F470) — 2026-08-12：装备数据包处理器族（0x44B930 家族）
+
+- **〔设置〕**0x44B930 装备包（0xC28 输入、槽 idx [0xC38]、0x308 dword 记录复制到 [status+槽*0xC24+0x2F8]、标记 [0x2F4]=1、槽字 [0x2FA]；idx≥11 自动槽）。
+- **〔族〕**0x44BA60 取槽（复制 + 清 0x44B880）；0x44BAB0 构建器（0x430920 + 取槽 + **英雄同步 0x42E2D0** @0x7243A4）；0x44BB70 清除；**0x44BBD0 快捷装备**（[0x8880] 记录块 stride 0xC24）；0x44BC30 快捷使用。
+- 落盘：equipment-packet-handler-evidence.json（F470，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 164。

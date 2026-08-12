@@ -1,0 +1,39 @@
+{
+  "evidence_id": "equipment-packet-handler-2026-08-12-f470",
+  "title": "Round 164 (F470): Equipment packet handler family - 0x44B930 equip-set (0xC28 input, slot idx [esp+0xC38], record 0x308 dwords copy to [status+slot*0xC24+0x2F8], mark [0x2F4]=1, slot word [0x2FA]); 0x44BA60 get-slot (copy 0x308 dwords out + clear 0x44B880); 0x44BAB0 builder (0x430920 ctor + get + hero sync 0x42E2D0 on 0x7243A4); 0x44BB70 clear; 0x44BBD0 quick-equip (records at [status+0x8880] stride 0xC24, 0x430920 use); 0x44BC30 quick-equip use - full equip slot server sync",
+  "date": "2026-08-12",
+  "objective": "Decode the equipment packet handlers and hero sync.",
+  "question": "How does the client apply equip slot packets and sync the hero?",
+  "method": "Disasm 0x44B930-0x44BC76 (equip packet family).",
+  "scope": "0x44B930-0x44BC76; slots [0x2F4] stride 0xC24; hero 0x7243A4.",
+  "cell_analysis": {
+    "set_0x44B930": {"input": "0xC28 packet (slot idx [0xC38], record [0x18..])", "flow": "if slot idx < 11: find empty -> copy 0x308 dwords to [status+slot*0xC24+0x2F8], mark [0x2F4]=1, slot word [0x2FA]; else auto-slot (first empty scan 0xB)"},
+    "get_0x44BA60": "copy 0x308 dwords out + clear via 0x44B880",
+    "builder_0x44BAB0": "0x430920 ctor + 0x44BA60 get + hero sync 0x42E2D0 (0x7243A4)",
+    "quick_equip_0x44BBD0": {"records": "[status+0x8880] stride 0xC24 (0x308 dword copy + word [0x8886])", "gate": "no child [edx+0xC]/[+0x10]"},
+    "use_0x44BC30": "quick-equip item use (0x308 dword stack copy)"
+  },
+  "exe_trace": {
+    "equip_chain": "server equip packet -> 0x44B930 -> [status+slot*0xC24] + hero sync -> paint 0x44B2D0/0x44BC80"
+  },
+  "audit_vs_exe": {
+    "F469": "slot stride 0xC24 + [0x2F4] marks confirmed",
+    "F464": "0x308 dword record copy = 0xC20 item record",
+    "F436": "icon draw via 0x466130 in paint"
+  },
+  "contrast": {
+    "equip_vs_bag": "equip = fixed 11-12 slots [0x2F4]; bag = 46 slots [0x774] (F466)",
+    "quick_vs_normal": "quick-equip [0x8880] separate record block (f-key items?)"
+  },
+  "verdict": "Equipment packet handler family PRIMARY-verified: 0x44B930 equip-set (0xC28 packet -> slot records + hero sync 0x42E2D0), get/builder/clear/quick-equip/use complete. Equip panel fully closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All equip handlers decoded from .text.",
+  "cross_refs": ["F469: equip slots", "F464: item record", "F33: status family"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44B930+0x40, 0x44BAB0+0x30, 0x44BBD0+0x20",
+  "notes": [
+    "hero sync 0x42E2D0 = appearance refresh (equip visible on figure)",
+    "quick-equip block = F12 quick slots [inference]",
+    "0x8880 marks = quick-equip occupancy"
+  ]
+}
