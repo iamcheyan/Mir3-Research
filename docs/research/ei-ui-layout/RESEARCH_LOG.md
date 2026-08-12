@@ -7801,3 +7801,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**347 证据 JSON**；三服务 200；master 075975f（**381 连发 F335-F722 已推**）。
 - **〔弧〕**瓦片访问器（F717）+ 相机（F718）+ 碰撞/方向（F719）+ 移动门（F722）——**地图 + 移动 100% 字节级**（取/可行走/封锁 + 相机绘制/平移 + 碰撞 + 实体封锁 8 方向移动），**列明角落 0x43C9F0 + 0x43CC30 闭合**。
 - 落盘：map-movement-final-closure-evidence.json（F723，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 417。
+## Round 418 (F724) — 2026-08-12：HANDOFF 刷新 51（Round 415-417）
+
+- **〔刷新〕**HANDOFF 追加 Round 415-417（F722-F723：地图移动/实体碰撞 + 地图+移动最终闭合）；基线 Round 414=100e5fa → Round 417=ab0e0d5（**382 连发 F335-F723**）。
+- 落盘：handoff-refresh-51-evidence.json（F724，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 418。
