@@ -1,0 +1,36 @@
+{
+  "evidence_id": "name-tag-render-full-2026-08-12-f999",
+  "title": "Round 693 (F999): Name tag render FULL (F800) - 0x40BB00: 3000ms [0x6209C] timeout + 8 state strings [0x621A4] (F800 8-state) + color matrix 0x466800 (0x3EF0F0F1/0x3E70F0F1/0x3EA0A0A1/0x3E20A0A1) + text measure 0x45E0C0 + D3D blit 0x467000 - name tag render COMPLETE (F800/F801)",
+  "date": "2026-08-12",
+  "objective": "Decode the full name tag render.",
+  "question": "How does the client render name tags?",
+  "method": "Disasm 0x40BB00-0x40BD57.",
+  "scope": "0x40BB00-0x40BD57; render.",
+  "cell_analysis": {
+    "0x40BB00": "timeout 0xBB8 + strings + matrix + blit",
+    "matrix": "0x466800 colors",
+    "text": "0x45E0C0 measure"
+  },
+  "exe_trace": {
+    "nametag_chain": "timeout -> strings -> matrix -> blit"
+  },
+  "audit_vs_exe": {
+    "F800": "name format", "F801": "head tags"
+  },
+  "contrast": {
+    "timeout_vs_strings": "0xBB8 + 8 states",
+    "blit": "0x467000 D3D"
+  },
+  "verdict": "Name tag render FULL PRIMARY-verified: timeout + strings + matrix + blit; F800/F801 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Name tag render decoded from .text.",
+  "cross_refs": ["F800: name format", "F801: head tags"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40BB00+0x20",
+  "notes": [
+    "timeout 0xBB8 [0x6209C]",
+    "8 strings [0x621A4]",
+    "matrix 0x466800",
+    "blit 0x467000"
+  ]
+}

@@ -4273,3 +4273,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（地图表面 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 693 (2026-08-12) — 名字标签渲染全量（Finding 999）
+
+- **超时 + 8 状态串 + 矩阵 + blit**（名字标签渲染完整）。
+- 落盘：`name-tag-render-full-evidence.json`（F999）+ RESEARCH_LOG Round 693。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（名字标签渲染完整；下一弧：剩余深层角落）。

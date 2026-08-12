@@ -8993,3 +8993,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 689-691（F996-F997：相机滚动全量 + 相机闭合）；基线 Round 688=f74d73d → Round 691=fef6aba（**656 连发 F335-F997**）。
 - 落盘：handoff-refresh-144-evidence.json（F998，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 692。
+## Round 693 (F999) — 2026-08-12：名字标签渲染全量（F800）
+
+- **〔名字〕**0x40BB00：3000ms [0x6209C] 超时 + 8 状态串 [0x621A4]（F800 8 状态）+ 颜色矩阵 0x466800（0x3EF0F0F1/0x3E70F0F1/0x3EA0A0A1/0x3E20A0A1）+ 文本测量 0x45E0C0 + D3D blit 0x467000——名字标签渲染完整（F800/F801）。
+- 落盘：name-tag-render-full-evidence.json（F999，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 693。
