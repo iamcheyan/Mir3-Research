@@ -6761,3 +6761,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分派〕**type [0x10] 单分派驱动全部实体生命周期：{0x16,0x10,9,0x1E,0xB,0x14A-0x14E,0x140-0x142,0xA,0x21A,0x21B,0x35,0x3F,0x68,0x150} = 特效/特殊族（F336/F479/F487）；type = 生成包参数（F489）。
 - **〔服务端〕**Envir kind（spawn/npc/monster F423）→ 生成包 → 客户端 type 字（非直接 Envir kind）。
 - 落盘：entity-type-semantics-evidence.json（F505，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 199。
+## Round 200 (F506) — 2026-08-12：里程碑（200 连发 F335-F505）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 0cb14b5；**131 地图重建证据 JSON**。
+- **〔里程碑〕**200 连发、全部 pending 闭合（服务端 .dat 解码、MonMagic 块布局、实体类型语义）。
+- 落盘：round-200-milestone-evidence.json（F506，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 200。

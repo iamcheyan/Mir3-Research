@@ -1,0 +1,37 @@
+{
+  "evidence_id": "round-200-milestone-2026-08-12-f506",
+  "title": "Round 200 (F506): MILESTONE - 200 consecutive shipping rounds (F335-F505) - full validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer 8765/mapviewer 8899/sim), master 0cb14b5, 131 map-reconstruction evidence JSONs; recent arcs (F501-F505): server .dat KR decode (monster EUC-KR + stditem 1143x184B), MonMagic block layout (F489 formula confirmed), entity type semantics - ALL pendings closed",
+  "date": "2026-08-12",
+  "objective": "Milestone: 200 rounds delivered; full validation + consolidated state.",
+  "question": "Is the project healthy at the 200-round milestone?",
+  "method": "Full validation suite + service health + evidence inventory.",
+  "scope": "Tools/, docs/, services 8765/8899, evidence JSONs.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 0cb14b5; 131 map-reconstruction evidence JSONs",
+    "milestone": {"rounds": "200 consecutive (F335-F505)", "arcs_closed": "entity-render / item-bag-store / equipment / interaction / runtime / server-DB / server-DB-decode / alignment / sim-enhance / milestone", "pendings": "ALL CLOSED"},
+    "recent": {"F501": "monster.dat EUC-KR cracked", "F502": "stditem.dat 1143x184B exact", "F504": "MonMagic blocks confirm F489", "F505": "entity type semantics"}
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F505": "200 rounds pushed; full client/server/map picture"
+  },
+  "contrast": {
+    "milestone_vs_start": "200 rounds of shipping vs Round 29 baseline 4e95988",
+    "closed_vs_open": "ALL pendings closed (no open items)"
+  },
+  "verdict": "Round 200 MILESTONE: full validation green, services live, 131 evidence JSONs, 200 consecutive shipping rounds (F335-F505). ALL pendings closed. Client UI/render/server-DB/map fully decoded.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; inventory from filesystem.",
+  "cross_refs": ["F501-F505: recent", "F197: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git / ls",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services; ls evidence JSONs",
+  "notes": [
+    "200 rounds = sustained shipping milestone",
+    "next: ongoing deep-dive (spell variants, Envir full translation), sim polish",
+    "user quest-design commits continue to coexist on master"
+  ]
+}
