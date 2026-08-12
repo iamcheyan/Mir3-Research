@@ -7319,3 +7319,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔种子〕**0x452580 = **随机种子初始化**（0x9135B8/0x9135BC 4+4 字节，源时间 0x4685E8 + 0x4684A8、经 0x4684B2 rand 填充）。
 - **〔校验〕**0x4525F0 = **校验和验证**：4 字节键 XOR（0x9135B8）+ 载荷加权和（idx×字节）vs 存储 [0x9135BC] + 字节验证——**反作弊/包完整性字节级**。
 - 落盘：npc-reply-random-checksum-evidence.json（F617，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 311。
+## Round 312 (F618) — 2026-08-12：出站发送弧闭合（F616-F617 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**243 证据 JSON**；三服务 200；master 3db040c（**276 连发 F335-F617 已推**）。
+- **〔弧〕**攻击/交易/金币发送器（F616：msg 0x401-0x406 + wnd 分派）+ NPC 回复/随机种子/校验和（F617：msg 0x411 + XOR 完整性）——**整个出站发送层（全部游戏动作 + 完整性）字节级**，补全 F572/F573 文本帧协议。
+- 落盘：outbound-send-arc-closure-evidence.json（F618，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 312。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "outbound-send-arc-closure-2026-08-12-f618",
+  "title": "Round 312 (F618): Outbound send arc CLOSED (F616-F617) - validation green (compileall/verify exit 0/node/JSON), services 200, master 3db040c (276 consecutive F335-F617), 243 evidence JSONs; arc: attack/trade/gold senders (F616: msg 0x401-0x406 + wnd dispatcher) + NPC reply + random seed + checksum (F617: msg 0x411 + XOR integrity) - ENTIRE outbound send layer (all game actions + integrity) byte-level, completing the F572/F573 text-frame protocol",
+  "date": "2026-08-12",
+  "objective": "Close the outbound send arc.",
+  "question": "Is the outbound send layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "243 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F616": "attack/trade/gold senders 0x401-0x406 + wnd dispatcher", "F617": "NPC reply 0x411 + seed + checksum"},
+    "protocol": "F572 text frame + F573 46-sender catalog + F616/F617 action senders = COMPLETE",
+    "milestone": "276 consecutive rounds F335-F617"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F617": "276 rounds pushed; outbound complete"
+  },
+  "contrast": {
+    "outbound_vs_inbound": "send layer (F616/617) + recv tables 100% (F571)",
+    "actions_vs_integrity": "game action senders + anti-cheat checksum"
+  },
+  "verdict": "Outbound send arc CLOSED (F618): all action senders + integrity byte-level; validation green, 276 consecutive rounds, 243 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F616-F617.",
+  "cross_refs": ["F616: senders", "F617: checksum", "F572/F573: protocol"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "276 consecutive shipping rounds F335-F617",
+    "next: HANDOFF refresh 20, remaining corners"
+  ]
+}
