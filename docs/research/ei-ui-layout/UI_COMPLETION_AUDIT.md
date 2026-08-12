@@ -588,6 +588,12 @@ git diff --check
 - **0x43B440**：0x6C000 dwords = 768×576 缓冲；24×24 半分辨率窗口（奇偶门 + (y>>1)*w+(x>>1) 索引 + attr/7 行选 + 3 字节记录）。
 - 落盘：`tile-viewport-verification-evidence.json`（F379，primary-bytes）+ RESEARCH_LOG Round 73。
 
+## Round 74 (2026-08-12) — 地图审计对账（Finding 380）
+
+- **审计完整**（544 图、5723 异常格/34 图）；D10031 back OOB 确认在 ground 统计。
+- **异常类拆分**：帧越界 vs 地面未绘。
+- 落盘：`map-audit-reconciliation-evidence.json`（F380，primary-bytes）+ RESEARCH_LOG Round 74。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

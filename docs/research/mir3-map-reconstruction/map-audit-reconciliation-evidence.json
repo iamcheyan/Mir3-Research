@@ -1,0 +1,41 @@
+{
+  "evidence_id": "map-audit-reconciliation-2026-08-12-f380",
+  "title": "Round 74 (F380): Map audit reconciliation - audit_mir3_maps.py data complete (544 maps, 5723 anomaly cells across 34 maps) + D10031 ground_lib2_frame_oob=62 present (my F371 back-layer finding) + anomaly classes split (frame-OOB: 3/41/D10031/50.map; ground-not-drawn: D12121/74/0_003/5_0013)",
+  "date": "2026-08-12",
+  "objective": "Verify the map-audit data is complete and reconcile its anomaly classification with my independent findings (F369-F378).",
+  "question": "Is the map-audit.json current, and does its anomaly data match independent verification?",
+  "method": "map-audit.json inspection (544 results); anomaly_total aggregation; cross-ref with F370/F371/F378 findings; audit_mir3_maps.py source check.",
+  "scope": "docs/research/mir3-map-reconstruction/map-audit.json; Tools/maps/audit_mir3_maps.py.",
+  "cell_analysis": {
+    "audit_coverage": "544 maps, all with size_ok/cell_bytes/mid_libs/front_libs/ground/anomalies",
+    "totals": {"anomaly_cells": 5723, "maps": 34, "top": {"3.map": 3255, "41.map": 1619, "D12121.map": 171, "0_003.map": 137, "74.map": 90, "5_0013.map": 67, "D10031.map": 62, "50.map": 39}},
+    "reconciliation": {
+      "frame_oob": "3.map 3255 / 41.map 1619 / 50.map 39 / D10031.map 62 (ground_lib2_frame_oob - F371 back-layer finding PRESENT in audit)",
+      "ground_not_drawn": "D12121.map 171 / 74.map 90 / 0_003.map 137 / 5_0013.map 67 (F370 coverage cases)",
+      "audit_schema": "back-layer OOB tracked in 'ground' lib stats + anomalies.ground_libN_frame_oob (not in mid/front_libs - explains my earlier 0-lookup)"
+    }
+  },
+  "exe_trace": {
+    "audit_tool": "Tools/maps/audit_mir3_maps.py: v_lookup + kr_lib_id (raw file -> KR_ORDER), ground draw gate r<=2/v<=69 (0x43b317), object skip r<=2, EMPTY_FRAME 0xFFFF"
+  },
+  "audit_vs_exe": {
+    "F371": "D10031 back OOB confirmed in audit (ground_lib2_frame_oob=62)",
+    "F370": "ground-not-drawn maps confirmed (D12121/74/0_003/5_0013)",
+    "F369": "anomaly map set consistent with lib-range survey"
+  },
+  "contrast": {
+    "frame_oob_vs_ground": "frame-OOB = valid lib, frame >= count (no-draw); ground-not-drawn = file fails draw gate (r>2 or v>69)",
+    "mid_front_vs_back": "audit tracks mid/front OOB in lib stats + back in 'ground' stats"
+  },
+  "verdict": "Map audit reconciled (primary-bytes): audit_mir3_maps.py data is complete (544 maps, 5723 anomaly cells/34 maps). D10031's back-layer OOB (F371) IS captured (ground_lib2_frame_oob=62). Anomaly classes split: frame-OOB (3/41/D10031/50.map) vs ground-not-drawn (D12121/74/0_003/5_0013).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Audit data computed by audit_mir3_maps.py from map binaries; reconciled against independent scans.",
+  "cross_refs": ["F371: frame-OOB (D10031)", "F370: ground coverage", "F369: tile-lib anomalies"],
+  "tool": "python3 json audit inspection; audit_mir3_maps.py source",
+  "reproduce": "python3 -c 'import json; d=json.load(open(\"docs/research/mir3-map-reconstruction/map-audit.json\")); ...'",
+  "notes": [
+    "my earlier D10031 'oob=0' query summed mid/front_libs only - back OOB lives in 'ground' stats",
+    "audit regenerates via audit_mir3_maps.py (not needed - data current)",
+    "34 anomaly maps vs 4 frame-OOB maps: most are ground-not-drawn edge blanks (F370)"
+  ]
+}

@@ -6095,3 +6095,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔循环〕**y=[+0x12C]/x=[+0x130]..+0x18 = **24×24 半分辨率瓦片对窗口**；奇偶门（两坐标须偶）；**索引 = (y>>1)*w + (x>>1)**（imul w + sar）；**行 = attr/7**（imul 0xE = 14，0x6DB6DB6D 魔数）；**3 字节记录**（byte+1 = 16 位瓦片 id @ 0x43B516）。
 - **〔分辨率〕**24×24 半瓦片 = 768 宽 × 384 高渲染入 768×576——覆盖 24 列 × 18 行全瓦片 + 垂直滚动（F332 0x43B1E0）。
 - 落盘：`tile-viewport-verification-evidence.json`（F379，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 73。
+
+## Round 74 (F380) — 2026-08-12：地图审计对账（544 图 5723 异常格/34 图 + 异常类拆分）
+
+- **〔审计完整性〕**map-audit.json 544 图全含 size_ok/cell_bytes/mid/front/ground/anomalies；**总异常 5723 格 / 34 图**（3.map 3255、41.map 1619、D12121 171、0_003 137、74.map 90、5_0013 67、D10031 62、50.map 39）。
+- **〔对账〕**F371 D10031 back 层 OOB 在审计中 = **ground_lib2_frame_oob=62**（存于 'ground' 统计，非 mid/front_libs——早前查询误读）；**异常类拆分**：帧越界（3/41/D10031/50.map）vs 地面未绘（D12121/74/0_003/5_0013，F370 覆盖案例）。
+- 落盘：`map-audit-reconciliation-evidence.json`（F380，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 74。
