@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-18-2026-08-12-f610",
+  "title": "Round 304 (F610): HANDOFF refresh 18 - Rounds 300-303 (F606-F609: intro/splash state machine + login/server screen paint + launch/login arc closure + 300-round milestone), baseline Round 299=74e206f -> Round 303=e918c0d (268 consecutive F335-F609), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 300-303.",
+  "question": "What changed since HANDOFF refresh 17?",
+  "method": "Append Round 300-303 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 300-303 appended (4 rounds, F606-F609)",
+    "baseline": "Round 299=74e206f -> Round 303=e918c0d (268 consecutive F335-F609)",
+    "milestone": "300 shipping rounds reached (Round 300)",
+    "arcs": {"intro": "F607 intro/splash machine", "login": "F608 server screen", "closure": "F609 launch arc"},
+    "key": "launch chain complete (splash -> server -> login -> char -> enter)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F606": "refresh 17 baseline -> now refresh 18", "F335-F609": "268 rounds"
+  },
+  "contrast": {
+    "refresh_17_vs_18": "F607-F609 (3 new findings + milestone)"
+  },
+  "verdict": "HANDOFF refreshed 18 (F610): Rounds 300-303 documented (launch chain + 300-round milestone), baseline 74e206f -> e918c0d, 268 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F607-F609 evidence.",
+  "cross_refs": ["F606: refresh 17", "F609: launch closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 300-303 section to HANDOFF",
+  "notes": [
+    "268 consecutive shipping rounds F335-F609",
+    "300-round milestone documented",
+    "next: remaining deep corners, sim polish"
+  ]
+}

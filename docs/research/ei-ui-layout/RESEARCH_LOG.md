@@ -7279,3 +7279,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**234 证据 JSON**；三服务 200；master 0bef374（**267 连发 F335-F608 已推**）。
 - **〔弧〕**Intro/启动状态机（F607）+ 登录/服务器屏（F608）——**整个启动链（启动画面 → 服务器选择 → 登录 → 角色选择 F603/F604 → 进入）字节级**，连接 F585/F605。
 - 落盘：launch-login-arc-closure-evidence.json（F609，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 303。
+## Round 304 (F610) — 2026-08-12：HANDOFF 刷新 18（Round 300-303）
+
+- **〔刷新〕**HANDOFF 追加 Round 300-303（F607-F609：Intro/启动状态机 + 登录/服务器屏 + 启动弧 + **300 轮里程碑**）；基线 Round 299=74e206f → Round 303=e918c0d（**268 连发 F335-F609**）。
+- 落盘：handoff-refresh-18-evidence.json（F610，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 304。
