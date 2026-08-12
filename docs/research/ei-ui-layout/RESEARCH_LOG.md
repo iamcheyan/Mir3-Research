@@ -6154,3 +6154,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔编号〕**37 绑定（0-9/12/121-125/31/401-407/41-44/5/6/71-78/81）——城镇+野图（back {1,0} + mid {15, 5 cliffsc, 10}）。
 - **〔未绑定〕**0_00x 建筑（市政厅/左右翼 9 图）+ kt 测试 **0 绑定**（EI 客户端永不加载，F369 吻合）。
 - 落盘：surface-map-classification-evidence.json（F389，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 83。
+## Round 84 (F390) — 2026-08-12：EI vs ZL 库差异验证（56 行 52 DIFF + 格式/规模差）
+
+- **〔数据〕**56 行：52 DIFF / 4 SAME；26 库 EI > ZL（Tiles5c 20000 vs ZL 35-73，300×）、26 ZL > EI（Wood/Tilesc 13841 vs EI 3927）。
+- **〔格式〕**ZL = .Zl 压缩（Zircon 格式）vs EI .wil/.wix——不同容器/帧数。
+- **〔主题〕**Snow/Forest 未被 EI 使用（全 theme 0/1）——F369 佐证；ZL 用 Snow/Forest 补偿。
+- 落盘：ei-vs-zl-libraries-verification-evidence.json（F390，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 84。

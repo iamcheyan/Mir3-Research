@@ -643,6 +643,12 @@ git diff --check
 - **E 路 2 绑定 + 编号 37 绑定**（城镇/野图）；**0_00x 建筑 + kt 全未绑定**。
 - 落盘：`surface-map-classification-evidence.json`（F389，primary-bytes）+ RESEARCH_LOG Round 83。
 
+## Round 84 (2026-08-12) — EI vs ZL 库差异（Finding 390）
+
+- **52/56 库 DIFF**；EI 地面库远超 ZL（Tiles5c 20000 vs 35-73）；ZL .Zl 格式。
+- **Snow/Forest 未被 EI 使用**（F369 佐证）。
+- 落盘：`ei-vs-zl-libraries-verification-evidence.json`（F390）+ RESEARCH_LOG Round 84。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
