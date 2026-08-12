@@ -6423,3 +6423,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔仓库〕**干净（仅未跟踪 goal_watchdog.sh.bak）；master = 0c0cbe4（**108 连发已推**）。
 - **〔实体弧汇总 F429-F442〕**怪物 WIL 族/死亡库/帧密度/状态布局/寻址 PRIMARY/外观表/动画机/帧装载器/阴影光场/投影/流水线/链表/重置/维护 14 项闭合。
 - 落盘：housekeeping-round137-evidence.json（F443，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 137。
+## Round 138 (F444) — 2026-08-12：480×480 网格角色闭合（每帧实体桶网格）
+
+- **〔闭合〕**0x419D40 = 每帧可见性/选择通道：**0x419D53 每帧清零 0x38400 dword 网格**（故无静态写点）→ 视口 cam ±0x18 范围内实体**分桶入网格**（cell = f(wx,wy,cam)*400*4 + 100 格探测，0x419F2C）+ PtInRect 选择 → **[0x364444]**（悬停 [0x364448]/[0x364450]）。
+- **〔关联〕**F441 pending 项闭合；F359 目标框由 [0x364444] 驱动确认。
+- 落盘：entity-visibility-grid-evidence.json（F444，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 138。

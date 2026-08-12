@@ -916,9 +916,14 @@ git diff --check
 - **全验证通过 + 服务健康 + 108 连发**；实体弧 F429-F442 汇总。
 - 落盘：`housekeeping-round137-evidence.json`（F443）+ RESEARCH_LOG Round 137。
 
+## Round 138 (2026-08-12) — 实体可见性网格（Finding 444）
+
+- **480×480 网格角色闭合**（每帧实体桶 + 选择 [0x364444]）。
+- 落盘：`entity-visibility-grid-evidence.json`（F444）+ RESEARCH_LOG Round 138。
+
 ## Pending（未阻塞，持续队列）
 
-- 480×480 网格角色（写入侧未定位）— 低优先 [candidate: 地图瓦片可见性]。
+- 无阻塞项（网格角色已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

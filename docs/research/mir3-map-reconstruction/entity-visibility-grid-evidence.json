@@ -1,0 +1,39 @@
+{
+  "evidence_id": "entity-visibility-grid-2026-08-12-f444",
+  "title": "Round 138 (F444): 480x480 grid role CLOSED - 0x419D40 = per-frame entity bucket grid: zeroes [ebp+0x154] 0x38400 dwords every tick (rep stosd), buckets visible entities (viewport cam ±0x18, PtInRect gated) via cell = f(wx,wy,cam)*400*4 + probe (100-cell collision scan, 0x419F2C-0x419F38), write [ebp+cell+0x154]=entity; mouse selection -> [0x364444] (PtInRect on rects +0x94/+0xA4), hover [0x364448]/[0x364450] (F359 family); pending item resolved",
+  "date": "2026-08-12",
+  "objective": "Close the 480x480 grid role pending item.",
+  "question": "What is the [game+0x154] 0x38400-dword grid used for?",
+  "method": "Disasm 0x419D40-0x41A0C3 (visibility/selection pass, tick stage 8).",
+  "scope": "0x419D40-0x41A0C3; grid 0x154; selectors 0x364444/0x364448/0x364450.",
+  "cell_analysis": {
+    "grid_zero": "0x419D53: lea edi,[ebp+0x154]; mov ecx,0x38400; rep stosd - ZEROED EVERY FRAME (why no static write sites found)",
+    "bucketing": {"range": "cam [0x2F884C]/[0x2F8850] ±0x18 (visible viewport)", "cell": "entity at [ebp + ((dy*24 - camX + wx)*400 + probe)*4 + 0x154] (0x41A042-0x41A071)", "probe": "occupied cell -> scan next up to 0x64 (100) cells (0x419F2C-0x419F38)", "gates": "type dispatch 0x41A528 (byte map 0x41A534) + PtInRect 0x4762B4 on viewport"},
+    "selection": {"selected": "[0x364444] = entity (PtInRect on entity rect +0x94 [no child] or +0xA4 [has child 0x61C74])", "hover": "[0x364448]/[0x364450] re-set flags (cleared 0x41A08F/0x41A0A1 if stale)", "priority": "child-entity (0x61C74) bucket stack: 100-dword copy at 0x41A031-0x41A03E"},
+    "special": "entities with [0x61C74]!=0 get grid cell + stack copy (0x41A028-0x41A040, 0x64 dwords)"
+  },
+  "exe_trace": {
+    "grid_semantics": "per-frame entity bucket grid (world-cell -> entity ptr), rebuilt each tick",
+    "stride_note": "bucket path uses *400 stride + 100-probe; *1600 variant at 0x419F25 [INFERENCE: sub-region view]"
+  },
+  "audit_vs_exe": {
+    "F441": "grid role CLOSED (was candidate) - entity bucket grid",
+    "F359": "target box driven by [0x364444] selection confirmed",
+    "F439": "tick stage 8 = this pass (was 'entity click')"
+  },
+  "contrast": {
+    "grid_vs_list": "grid = per-frame visibility buckets (0x154); lists = persistent containers (0xE1158+)",
+    "bucket_vs_probe": "open addressing with 100-cell probe = fixed-size hash grid"
+  },
+  "verdict": "480x480 grid role CLOSED (primary-bytes): per-frame entity bucket grid rebuilt by 0x419D40 each tick (zero + bucket + probe + select), mouse selection into [0x364444] (F359 target). Pending item resolved.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Zero/bucket/probe/select all decoded from .text.",
+  "cross_refs": ["F441: 480 grid (role now closed)", "F359: target box", "F439: draw pipeline"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x419D40+0x80",
+  "notes": [
+    "grid zeroed per frame - transient structure (not persistent state)",
+    "cell stride *400 vs *1600 paths = bucket sub-grid vs full view [inference]",
+    "0x364450 = previous selected entity"
+  ]
+}
