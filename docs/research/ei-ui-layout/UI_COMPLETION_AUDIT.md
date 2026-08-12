@@ -4161,3 +4161,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（物品网格完整；下一弧：剩余深层角落）。
+## Round 679 (2026-08-12) — 物品网格闭合（Finding 985）
+
+- **643 连发 + 608 证据 + 网格完整**。
+- 落盘：`item-grid-closure-evidence.json`（F985）+ RESEARCH_LOG Round 679。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（网格表面 100%；下一弧：HANDOFF 刷新 140/剩余角落）。

@@ -8932,3 +8932,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔网格〕**0x43D400 网格构造（0x465EF0 字符串 @ +4/+0x148）；0x43D450 析构（0x465FE0 + free [esi]）；0x43D4D0 **初始化**（0x4660E0 0x47C428/0x47C414 + 矩形 0x2A0×0x80 @ 0x320 + 状态字段 0x28C..0x2F8）；0x43D5F0 **绘制体**（[0x2E8]/[0x2E0] 状态）——物品网格完整（F773 坐骑 6 槽依赖）。
 - 落盘：item-grid-ctor-init-draw-evidence.json（F984，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 678。
+## Round 679 (F985) — 2026-08-12：物品网格闭合（F773/F984 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**608 证据 JSON**；三服务 200；master 42115da（**643 连发 F335-F984 已推**）。
+- **〔弧〕**坐骑 6 槽网格（F773）+ 网格构造/初始化/绘制（F984）——**物品网格完整**（ctor 0x465EF0 + init 0x4660E0 矩形 0x2A0×0x80 + 绘制体）；网格表面 100%。
+- 落盘：item-grid-closure-evidence.json（F985，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 679。

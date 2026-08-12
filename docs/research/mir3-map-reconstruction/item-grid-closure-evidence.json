@@ -1,0 +1,37 @@
+{
+  "evidence_id": "item-grid-closure-2026-08-12-f985",
+  "title": "Round 679 (F985): Item grid CLOSED (F773/F984) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 42115da (643 consecutive F335-F984), 608 evidence JSONs; arc: mount 6-slot grid (F773) + grid ctor/init/draw (F984) - item grid COMPLETE byte-level (ctor 0x465EF0 + init 0x4660E0 rect 0x2A0x0x80 + draw body); grid surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the item grid arc.",
+  "question": "Is the item grid fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "608 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F773": "6-slot grid", "F984": "ctor/init/draw"},
+    "grid": "ctor + init + draw = COMPLETE",
+    "milestone": "643 consecutive rounds F335-F984"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F984": "643 rounds pushed; item grid complete"
+  },
+  "contrast": {
+    "ctor_vs_draw": "init + render",
+    "grid_vs_mount": "shared + mount"
+  },
+  "verdict": "Item grid CLOSED (F985): ctor + init + draw all byte-level; validation green, 643 consecutive rounds, 608 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F773/F984.",
+  "cross_refs": ["F773", "F984"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "643 consecutive shipping rounds F335-F984",
+    "item grid 100%",
+    "next: HANDOFF refresh 140, remaining corners"
+  ]
+}
