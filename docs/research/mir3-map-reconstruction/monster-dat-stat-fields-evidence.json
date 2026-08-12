@@ -1,0 +1,36 @@
+{
+  "evidence_id": "monster-dat-stat-fields-2026-08-12-f494",
+  "title": "Round 188 (F494): monster.dat stat fields - record = name (8B at +0, 0x09-padded) + stats at fixed offsets: +0x12 = 0x0B (level?), +0x26 = 0xD4, +0x2A = 0x1A (HP), +0x30 = 0xA9, +0x34 = 0x6A, +0x48 = 0x35, +0x4A = 0x65/0x0E (word), +0x4D = 0x21/0x03 (word); name encoding = legacy KR-shifted (총핀헥뇨 via cp949/euc-kr, NO plaintext GBK match - NOT decryptable by standard shifts); 432 contiguous name slots x 0xFC; stat offsets verified on slot0 - name charset decode DEFERRED (custom shift)",
+  "date": "2026-08-12",
+  "objective": "Extract the decodable stat-field offsets from monster.dat; defer the name charset.",
+  "question": "What stat fields does monster.dat expose, and why can't names decode?",
+  "method": "Slot0 byte-offset analysis (stat bytes at fixed +offsets).",
+  "scope": "monster.dat slot0; offsets +0x12..+0x4D.",
+  "cell_analysis": {
+    "record": {"name": "8B at +0 (0x09-padded)", "stat_offsets": {"+0x12": "0x0B (level?)", "+0x26": "0xD4 (HP high?)", "+0x2A": "0x1A", "+0x30": "0xA9", "+0x34": "0x6A", "+0x48": "0x35", "+0x4A": "0x65 0x0E (word)", "+0x4D": "0x21 0x03 (word)"}},
+    "name_charset": {"decodes": "cp949/euc-kr = 총핀헥뇨 (not meaningful)", "gbk": "醚巧琼储 (garbage)", "shifts": "xor80/gbk<->euc-kr/cp949 re-encode = all fail", "verdict": "custom/encrypted name shift - NOT standard charset"},
+    "slots": "432 contiguous x 0xFC from 0x1E6 (stat bytes at same offsets across slots [inference])"
+  },
+  "exe_trace": {
+    "server": "monster.dat -> spawn packets -> client records (F450/F492)"
+  },
+  "audit_vs_exe": {
+    "F492": "structure confirmed + stat offsets extracted",
+    "F493": "stditem.dat shares encoding (deferred)"
+  },
+  "contrast": {
+    "names_vs_stats": "names = custom-shifted (undecodable); stats = plain bytes (decodable)",
+    "client_vs_server": "client never needs the names (packets); server DB charset legacy"
+  },
+  "verdict": "monster.dat stat fields PRIMARY-verified: fixed offsets extracted (level/HP/AC candidates). Name charset = custom shift (cp949/gbk/xor all fail) - decode deferred; client unaffected (packet-fed F450).",
+  "evidence_level": "primary-bytes (stat offsets) + [inference] (name shift)",
+  "evidence_level_note": "Stat bytes at fixed offsets from binary; charset = unproven custom.",
+  "cross_refs": ["F492: structure", "F493: stditem", "F450: packet-fed records"],
+  "tool": "python binary parse",
+  "reproduce": "slot0 = d[0x1E6:0x1E6+0xFC]; dump +0x12/+0x26/+0x2A/+0x30/+0x34/+0x48/+0x4A/+0x4D",
+  "notes": [
+    "0x65/0x0E word @ +0x4A = 0x0E65 = 3685? [inference: HP/MP]",
+    "name shift likely = client-specific legacy table (not worth further rounds)",
+    "stat semantics (level/HP/AC) = pending cross-check vs spawn levels (F425)"
+  ]
+}

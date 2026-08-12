@@ -1166,9 +1166,14 @@ git diff --check
 - **1143 物品 [inference] + 遗留 KR 编码**；客户端包驱动。
 - 落盘：`stditem-dat-structure-evidence.json`（F493）+ RESEARCH_LOG Round 187。
 
+## Round 188 (2026-08-12) — monster.dat 统计字段（Finding 494）
+
+- **固定偏移统计字节**；名称 = 自定义移位（解码延迟）。
+- 落盘：`monster-dat-stat-fields-evidence.json`（F494）+ RESEARCH_LOG Round 188。
+
 ## Pending（未阻塞，持续队列）
 
-- 服务端 .dat 字段解码（遗留 KR 编码）— 低优先。
+- 服务端 .dat 名称编码（自定义移位）— 低优先。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

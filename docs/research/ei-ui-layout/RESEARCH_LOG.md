@@ -6700,3 +6700,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔结构〕**stditem.dat = 210316B、头 0x7704（计数 0x477 = 1143 物品 [inference]、~184B/记录）；**零 GBK 名匹配**（金创药/魔法药/号角/金币/木剑 = 0）——与 monster.dat 同源遗留 KR 编码（F492）。
 - **〔客户端〕**物品 0xC20 记录 = 数据包驱动（F464），无本地物品库。
 - 落盘：stditem-dat-structure-evidence.json（F493，secondary + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 187。
+## Round 188 (F494) — 2026-08-12：monster.dat 统计字段（固定偏移提取）
+
+- **〔字段〕**记录 = 名称 8B（+0，0x09 填充）+ 统计固定偏移：+0x12=0x0B（等级?）、+0x26=0xD4、+0x2A=0x1A、+0x30=0xA9、+0x34=0x6A、+0x48=0x35、+0x4A=0x65/0x0E（字）、+0x4D=0x21/0x03（字）。
+- **〔名称编码〕**cp949/euc-kr = 총핀헥뇨（无意义）、GBK = 乱码、xor80/互转全失败——**自定义/加密名称移位**（非标准字符集），解码延迟；客户端不受影响（数据包驱动 F450）。
+- 落盘：monster-dat-stat-fields-evidence.json（F494，primary + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 188。
