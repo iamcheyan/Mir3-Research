@@ -8736,3 +8736,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔技能〕**0x43AC80 技能输入（3 页签控件 vtable[8] @ +0xD8 stride 0xB4 + 8 技能槽控件 @ +0x2F4 stride 0xB4 + 槽查找 0x43A370 → 选中 [0x964]）；0x43AD00 页签重置（3 清）；0x43AD20 技能记录构造（vtable 0x4768E4）；0x43AD50 **列表添加**（dlist 0x476900，F743 dlist 0x4767C0 相关）——技能输入完整。
 - 落盘：skill-window-input-evidence.json（F939，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 633。
+## Round 634 (F940) — 2026-08-12：技能窗口闭合（F743/F839/F848/F939 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**564 证据 JSON**；三服务 200；master 86cbae0（**598 连发 F335-F939 已推**）。
+- **〔弧〕**技能记录装载（F743）+ 技能书绘制（F839）+ 页签头（F848）+ 输入/记录列表（F939）——**技能窗口完整**（记录装载 + 技能书绘制 + 页签头 + 槽查找 + 记录列表），技能表面 100%。
+- 落盘：skill-window-closure-evidence.json（F940，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 634。

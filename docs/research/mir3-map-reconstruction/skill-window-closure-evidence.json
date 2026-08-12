@@ -1,0 +1,37 @@
+{
+  "evidence_id": "skill-window-closure-2026-08-12-f940",
+  "title": "Round 634 (F940): Skill window CLOSED (F743/F839/F848/F939) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 86cbae0 (598 consecutive F335-F939), 564 evidence JSONs; arc: skill record load (F743) + skill book draw (F839) + tab headers (F848) + input/record list (F939) - skill window COMPLETE byte-level (record load + book draw + tab headers + slot lookup + record list), skill surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the skill window arc.",
+  "question": "Is the skill window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "564 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F743": "record load", "F839": "book draw", "F848": "tab headers", "F939": "input/record list"},
+    "skill": "record + draw + input = COMPLETE",
+    "milestone": "598 consecutive rounds F335-F939"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F939": "598 rounds pushed; skill window complete"
+  },
+  "contrast": {
+    "draw_vs_input": "render + hit",
+    "record_vs_list": "load + add"
+  },
+  "verdict": "Skill window CLOSED (F940): record load + book draw + input all byte-level; validation green, 598 consecutive rounds, 564 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F743/F839/F848/F939.",
+  "cross_refs": ["F743", "F839", "F848", "F939"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "598 consecutive shipping rounds F335-F939",
+    "skill window 100%",
+    "next: HANDOFF refresh 125, remaining corners"
+  ]
+}
