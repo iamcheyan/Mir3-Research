@@ -7887,3 +7887,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔技能〕**0x423070 技能数据装载（记录 +0/+6..+0xB → **显示槽 [0x35B251..0x35B258]**——待办 write-only 槽**已解析**）；0x423020 技能显示复制（[0x35B1F5/0x35B1F7/0x35B1F9] → [0x35A34A/0x35A34C/0x35A34E] + base64 0x452810 + free）；0x4230E0/0x423180/0x423220 dlist 追加/插入（节点 vtable 0x4767C0、next [0x8]/prev [0xC]、计数 [0x14]）；0x423290 列表 ctor（vtable 0x4766D4）——技能状态槽写侧完整。
 - 落盘：skill-record-loader-display-slots-evidence.json（F743，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 437。
+## Round 438 (F744) — 2026-08-12：技能家族闭合（F547/F743 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**368 证据 JSON**；三服务 200；master 1235d17（**402 连发 F335-F743 已推**）。
+- **〔弧〕**技能书 8 页签（F547）+ 记录装载/显示（F743）——**技能系统完整**（8 页签书 stride 0xB4 + 记录→槽装载 + 显示复制 + base64），**待办 write-only 显示槽已解析**。
+- 落盘：skill-family-closure-evidence.json（F744，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 438。
