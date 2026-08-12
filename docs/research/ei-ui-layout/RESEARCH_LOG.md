@@ -5922,3 +5922,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔装备槽〕**8 槽 primary-static（equipment-slots-evidence.json F325）：头盔 (177,70)/火把 (27,264)/毒药 (64,264)/左手镯 (27,186)/右手镯 (175,186)/左戒指 (27,227)/右戒指 (175,227)/鞋子 (103,264)——38px 槽、Equip.wil 帧 = 槽索引。
 - **〔状态窗〕**模拟器 window.status 渲染 8 装备槽 + 5 属性标签（等级/攻击/魔法/防御/魔御）；角色形象 @ +0x61/+0xC8（F338/F339）。**浏览器验证**：equipSlots = 8、attrLabels 5 条。
 - 落盘：`equipment-panel-verification-evidence.json`（F353，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 47。
+
+## Round 48 (F354) — 2026-08-12：小地图子系统验证（F310 玩家标记链 + F277 放置公式 + MMap 差一 + 模拟器接线）
+
+- **〔窗口〕**hero+0x6214 via 0x43D4D0（F335）：MMap.wil→+4、FMMap.wil→+0x148；面板 rect (672,0,800,128)、尺寸 128×128；paint 0x43DA80（地图对象合成到固定矩形）；update 0x4294E0（门 [0x6518]）→ 0x43D850(Y,X)。
+- **〔玩家标记 F310〕**活坐标 [0x777764]/[0x777768] = [screen+0x2F884C]/[+0x2F8850]（Y/X）；恰 2 写者 0x422A9E/0x422AC5（死亡/传送泵 0x422960）；0x7D9234/0x7D9238 排除（死亡/重生检查对）。
+- **〔帧选择〕**server value ≥1001 → FMMap.wil value−1001；否则 MMap.wil value−1（0x43D780，F310 差一）；0.map → FMMap F0。
+- **〔模拟器〕**map.minimap = FMMap F0（0.map）、面板 672,0-800,128 primary-static——接线正确。
+- 落盘：`minimap-subsystem-verification-evidence.json`（F354，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 48。

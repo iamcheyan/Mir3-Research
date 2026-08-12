@@ -429,6 +429,13 @@ git diff --check
 - **模拟器状态窗**：8 槽 + 5 属性标签 + 角色形象（浏览器验证）。
 - 落盘：`equipment-panel-verification-evidence.json`（F353）+ RESEARCH_LOG Round 47。
 
+## Round 48 (2026-08-12) — 小地图子系统验证（Finding 354）
+
+- **窗口**：hero+0x6214（MMap/FMMap + 128×128 面板）；paint 0x43DA80；update 0x43D850。
+- **玩家标记 F310**：活坐标 + 2 写者；MMap value−1 差一。
+- **模拟器**：0.map → FMMap F0、面板 672,0-800,128（接线正确）。
+- 落盘：`minimap-subsystem-verification-evidence.json`（F354）+ RESEARCH_LOG Round 48。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

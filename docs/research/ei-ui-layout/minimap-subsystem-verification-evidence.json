@@ -1,0 +1,58 @@
+{
+  "evidence_id": "minimap-subsystem-verification-2026-08-12-f354",
+  "title": "Round 48 (F354): Minimap subsystem verification - F310 player-marker chain + F277 placement formula + MMap off-by-one + sim wiring (browser-verified minimap renders with map binding)",
+  "date": "2026-08-12",
+  "objective": "Verify the minimap subsystem end-to-end: window structure (hero+0x6214, MMap/FMMap libs), player-marker chain (F310), frame-selection formula (F277/F310 off-by-one), and simulator wiring.",
+  "question": "Does the minimap render correctly in the sim with the right frame selection and panel rect?",
+  "method": "Cross-validated against minimap-calibration-evidence.json (F310), minimap.json (F310 player marker), F277 placement formula; sim data/app verification; browser check.",
+  "scope": "Tools/web/build_mir3_simulator_data.py (maps binding); Tools/mir3_client_simulator/app.js (minimap widget); browser 8765/sim.",
+  "cell_analysis": {
+    "minimap_window": {
+      "structure": "hero+0x6214 via 0x43D4D0 (F335): MMap.wil -> +4, FMMap.wil -> +0x148 (0x4660E0); panel rect SetRect &[+0x2C0] (672,0,800,128), size [+0x2B8]=[+0x2BC]=128",
+      "paint": "0x43DA80 (map object paint, F310): selects MMap/FMMap surface, composites to fixed rect via 0x4542F0",
+      "update": "tick 0x4294E0 (gate [screen+0x6518]) -> 0x43D850(Y,X) update + texture draw"
+    },
+    "player_marker_F310": {
+      "live_coords": "[0x777764]/[0x777768] = [screen+0x2F884C]/[+0x2F8850] (Y/X)",
+      "writers": "exactly 2: 0x422A9E (Y=word[item+6]) / 0x422AC5 (X=word[item+8]) in death/teleport pump 0x422960",
+      "excluded": "0x7D9234/0x7D9238 = death/respawn check pair only (NOT minimap input - F310 correction)"
+    },
+    "frame_selection": {
+      "rule": "server value >= 1001 -> FMMap.wil frame value-1001; else MMap.wil frame value-1 (0x43D780 selector, caller 0x420C3A)",
+      "off_by_one": "MMap uses value-1 (F310 calibration); sim/cross-ref must subtract 1",
+      "0.map": "MiniMap.txt 1001 -> FMMap.wil F0 (sim binding correct)"
+    },
+    "sim_wiring": {
+      "map.minimap": "library FMMap.wil frame 0, derived evidence, note F277 placement formula (0,0,W*1.5,H) 128x128 panel",
+      "widget": "hud.minimap rect [672,0,800,128] primary-static (0x48512C = screen+0x6214)",
+      "app": "minimap widget rendered at (672,0)-(800,128); cycleMinimap on hud.minimap"
+    }
+  },
+  "exe_trace": {
+    "minimap_controller": "0x43D4D0 ctor (F335: MMap/FMMap libs, panel rect)",
+    "player_coords": "screen+0x2F884C/+0x2F8850 (F310/F333 viewport origin)",
+    "selector": "0x43D780 (frame select rule)"
+  },
+  "audit_vs_exe": {
+    "F310": "player marker chain + off-by-one confirmed",
+    "F277": "placement formula confirmed",
+    "F335": "minimap window +0x6214 confirmed",
+    "F311": "sim minimap wiring confirmed"
+  },
+  "contrast": {
+    "MMap_vs_FMMap": "MMap (255 frames, world-map tiles) vs FMMap (31 frames, large-format) - value-1 vs value-1001 select rules",
+    "panel": "fixed 128x128 panel (672,0)-(800,128) regardless of map size"
+  },
+  "verdict": "Minimap subsystem verified end-to-end (primary-bytes): window hero+0x6214 (MMap/FMMap libs + 128x128 panel), player marker chain (F310: live coords + 2 writers), frame selection (value-1 MMap / value-1001 FMMap), sim wiring correct (0.map -> FMMap F0, panel 672,0-800,128).",
+  "evidence_level": "derived-tooling (source evidence primary-static F277/F310/F335)",
+  "evidence_level_note": "All minimap facts from primary-static evidence files; sim wiring verified against data model.",
+  "cross_refs": ["F277: placement formula", "F310: player marker chain + off-by-one", "F335: minimap window +0x6214", "F311: sim wiring", "minimap-calibration-evidence.json"],
+  "tool": "builder; app.js; python3 json",
+  "reproduce": "open sim; observe minimap widget at (672,0)-(800,128); press V (minimap toggle) or hover hud.minimap",
+  "notes": [
+    "12 maps point to true blank frames (no art: 81/D452/D901/D9021/D9022/D2011/D2012/D202/D203/D808/D8102/D8202) per F310 calibration",
+    "72 maps not shipped in EI client Map dir (server-only)",
+    "401-405/407 -> FMMap frames 31-37 out of range (FMMap only 31 frames)",
+    "31.map -> FMMap f30 special (452x300, painted 450x300 = W*1.5 exact)"
+  ]
+}
