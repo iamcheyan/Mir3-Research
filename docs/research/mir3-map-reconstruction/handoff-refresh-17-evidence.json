@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-17-2026-08-12-f606",
+  "title": "Round 300 (F606): HANDOFF refresh 17 - Rounds 296-299 (F602-F605: char-select enter + form layout + char list parser + slot factory + login arc closure), baseline Round 295=b9a2111 -> Round 299=74e206f (264 consecutive F335-F605), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 296-299.",
+  "question": "What changed since HANDOFF refresh 16?",
+  "method": "Append Round 296-299 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 296-299 appended (4 rounds, F602-F605)",
+    "baseline": "Round 295=b9a2111 -> Round 299=74e206f (264 consecutive F335-F605)",
+    "arcs": {"enter": "F603 char-select enter + layout", "parse": "F604 list parser + factory", "closure": "F605 login arc"},
+    "key": "login family end-to-end complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F602": "refresh 16 baseline -> now refresh 17", "F335-F605": "264 rounds"
+  },
+  "contrast": {
+    "refresh_16_vs_17": "F603-F605 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 17 (F606): Rounds 296-299 documented (login family complete), baseline b9a2111 -> 74e206f, 264 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F603-F605 evidence.",
+  "cross_refs": ["F602: refresh 16", "F605: login closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 296-299 section to HANDOFF",
+  "notes": [
+    "264 consecutive shipping rounds F335-F605",
+    "next: remaining deep corners, sim polish"
+  ]
+}

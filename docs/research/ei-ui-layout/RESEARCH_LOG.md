@@ -7261,3 +7261,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**230 证据 JSON**；三服务 200；master 231ee79（**263 连发 F335-F604 已推**）。
 - **〔弧〕**角色选择进入 + 表单布局（F603）+ 角色列表解析器 + 槽工厂（F604）——**登录族（F540 阶段机 + F541 5 阶段 + F349 角色选择 + F585 Mir3.ini + F603/F604）端到端完整**。
 - 落盘：login-arc-closure-evidence.json（F605，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 299。
+## Round 300 (F606) — 2026-08-12：HANDOFF 刷新 17（Round 296-299）
+
+- **〔刷新〕**HANDOFF 追加 Round 296-299（F603-F605：角色选择进入/列表解析 + 登录弧）；基线 Round 295=b9a2111 → Round 299=74e206f（**264 连发 F335-F605**）。
+- 落盘：handoff-refresh-17-evidence.json（F606，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 300。
