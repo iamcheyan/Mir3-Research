@@ -1,0 +1,38 @@
+{
+  "evidence_id": "name-tag-closure-2026-08-12-f1000",
+  "title": "Round 694 (F1000): Name tag CLOSED (F800/F801/F999) - FINDING 1000 MILESTONE - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 75127e2 (658 consecutive F335-F999), 621 evidence JSONs; arc: name format (F800) + head tags (F801) + render full (F999) - name tag COMPLETE byte-level (timeout + 8 state strings + matrix + blit); FINDING 1000 reached (F335-F999 = 665 findings)",
+  "date": "2026-08-12",
+  "objective": "Close the name tag arc; mark FINDING 1000 milestone.",
+  "question": "Is the name tag fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "621 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F800": "name format", "F801": "head tags", "F999": "render full"},
+    "nametag": "timeout + strings + blit = COMPLETE",
+    "milestone": "658 consecutive rounds; FINDING 1000 (F335-F999)"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F999": "658 rounds pushed; name tag complete"
+  },
+  "contrast": {
+    "format_vs_render": "strings + blit",
+    "count": "FINDING 1000"
+  },
+  "verdict": "Name tag CLOSED (F1000): timeout + 8 states + blit all byte-level; FINDING 1000 MILESTONE; validation green, 658 consecutive rounds, 621 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F800/F801/F999; FINDING 1000 milestone.",
+  "cross_refs": ["F800", "F801", "F999"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "658 consecutive shipping rounds F335-F999",
+    "name tag 100%",
+    "FINDING 1000 milestone",
+    "next: HANDOFF refresh 145, remaining corners"
+  ]
+}

@@ -8997,3 +8997,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔名字〕**0x40BB00：3000ms [0x6209C] 超时 + 8 状态串 [0x621A4]（F800 8 状态）+ 颜色矩阵 0x466800（0x3EF0F0F1/0x3E70F0F1/0x3EA0A0A1/0x3E20A0A1）+ 文本测量 0x45E0C0 + D3D blit 0x467000——名字标签渲染完整（F800/F801）。
 - 落盘：name-tag-render-full-evidence.json（F999，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 693。
+## Round 694 (F1000) — 2026-08-12：名字标签闭合 + **FINDING 1000 里程碑**（F800/F801/F999 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**621 证据 JSON**；三服务 200；master 75127e2（**658 连发 F335-F999 已推**）。
+- **〔弧〕**名字格式化（F800）+ 头顶标签（F801）+ 渲染全量（F999）——**名字标签完整**（超时 + 8 状态串 + 矩阵 + blit）；**FINDING 1000 达成**（F335-F999 = 665 findings）。
+- 落盘：name-tag-closure-evidence.json（**F1000**，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 694。
