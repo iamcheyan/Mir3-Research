@@ -534,8 +534,29 @@
         "0x476670 = 4-slot main-object vtable (0x47EF18; ctor 0x418B00 write @0x418D1D, dtor 0x418D50 @0x418D6D): +0x0 0x41E6A0 status-line format to 0x8AB828 (fmt '**%s/%s/%d/%d/1' @0x47C808, args 0x47EEF8/0x47EEE4/[0x47EF10]/[0x47EEB8]); +0x4 0x41E6D0 message parse (memchr 0x468B30 + 0x41ED20 '+' parser); +0x8 0x41E260 [this+0x34]-gated 750ms delay (0x465DD0, WINMM!timeGetTime @IAT 0x47630C); +0xC 0x41E2B0 wndproc (F309)",
         "slots +0x10..+0x24 belong to vtable 0x476680 = separate 7-slot list class (member main+0xE11CC): dtor 0x423A80 / AddTail 0x423850 / AddTail-var 0x4238F0 / insertAfter 0x423990 / ForEach 0x42E700 / unlink 0x423450 / ForEach-var 0x4048B0; family = 6 members main+0xE1154..+0xE11CC (0x4766F0/0x4766D4/0x4766B8/0x4766D4/0x47669C/0x476680, 28-byte vtable spacing, per-member dtor restores own base 0x423A00..0x423A80)",
         "node class 0x476454 (12-byte {+0 vtable,+4 data,+8 prev,+0xC next}): dtor 0x413D80/0x40EA60, render 0x435030, no-op 0x403AC0 (also subobject no-op dtor), position 0x4378E0/0x437DF0/0x435A20",
-        "312 sweep-verified slot-call sites: NONE route through 0x476670 (4-slot vtable, all methods via 18 direct `mov ecx,0x47EF18; call 0x41..` sites); sites dispatch through window-class vtables slot+0x10 (SetVisible) and other object families"
+        "312 sweep-verified slot-call sites: NONE route through 0x476670 (4-slot vtable, all methods via 18 direct `mov ecx,0x47EF18; call 0x41..` sites); sites dispatch through window-class vtables slot+0x10 (SetVisible) and other object families",
+        "Round 25 (F331): node vtable ladder authoritative dumps - 0x4767C0(m1)=[0x423AA0,0x423AE0,0x423AC0,0x4241B0,0x4245A0,0x4268B0,0x423D00,0x423F80], 0x4767C4(m3)=[0x423AE0,0x423AC0,0x4241B0,0x4245A0,0x4268B0,0x423D00,0x423F80,0x4249F0], 0x4767C8(m5)=[0x423AC0,0x4241B0,0x4245A0,0x4268B0,0x423D00,0x423F80,0x4249F0,0x424840], 0x4767CC=[0x4241B0,0x4245A0,0x4268B0,0x423D00,0x423F80,0x4249F0,0x424840,0x4248E0], 0x476624(window final)=[0x4150D0,0x423CA0,0x423CF0,0x423D00,0x423F80,0x4155A0,0x415710,0x415820], 0x4767A8(entity class)=[0x40EA60,0x435030,0x403AC0,0x4381A0,0x4382C0,0x435A20,0x423AA0,0x423AE0]; dtor chain 0x423AA0->0x4767C0/0x423AC0->0x4767C8/0x423AE0->0x4767C4; 0x423D00 (family slot+0x18 render, reads +0x28/+0x2C/+0x30/+0x50 -> 0x466130 frame check) dispatched ONLY on full-size window/entity objects (0x476624 slot+0xC index3, family slot+0x18 index6) - m1 16-byte node is base-class instance dispatching dtor slot 0 only; 0x41EB10 traversal reads node+4 directly, never slots 3-7 => pending conflict CLOSED (not a real contradiction)"
       ]
+    },
+    {
+      "id": "message-queue",
+      "category": "消息环队列系统（0x4561B0 PUSH / 0x456270 POP / 0x40A2B0 泵）",
+      "artifacts": [
+        "node-vtable-family-and-message-queue-evidence.json"
+      ],
+      "layout_ids": [],
+      "preview_mode": "message-queue",
+      "status": "primary-static-message-ring-queue-closed",
+      "pending": true,
+      "closed_2026_08_12": [
+        "0x4561B0 = locked ring PUSH, 0x456270 = paired POP (critsec @+0x61A8C, IAT 0x47610C Enter/0x476110 Leave); ring {+0 count,+4 read,+8 write,+0xC elements[100000x4=0x61A80],+0x61A8C critsec[0x18]} total 0x61AA4",
+        "message = 0x40C bytes (0x103 dwords), type word @+4, string @+0xC; clone 0x40A404 (new 0x468B1A + rep movsd 0x103 + type=0x1F + requeue)",
+        "three ring instances: pump object this+0xF0 (vtable 0x4763C8, drained by 0x40A2B0), main+0x364458 (packet exit push @0x421D3A, drained by 0x4227F0), main+0x3C5EFC (drained by 0x422280); ring spacing = 0x61AA4 multiples",
+        "0x40A2B0 = central message pump (vtable 0x4763C8 slot 4, ref 0x4763D8): type map 0x40A4BC + jump table 0x40A498 -> [this]vtable slots +0x44..+0x6C (0x407200/0x407670/0x407DF0/0x407EC0/0x407F20/0x408060/0x409720/0x408C20/0x408630/0x406A70/0x406AB0); 0x1B->slot+0x58, 0x1F->slot+0x60, 0x20->slot+0x54",
+        "0x422280 (main+0x3C5EFC): 0x1E/0x1D/0x323 -> m1 head main+0xE1158 walk comparing [node+4]+4 == [msg+0] -> call 0x41B570; 0x279 -> 0x422403. 0x4227F0 (main+0x364458): 0x32->0x422CC0, 0x34->0x423000, 0x2F0->0x423070. 0x40A209 = heading ring drain (word[+4]==0x1F -> [edi+0x61BCC]=word[+6], [edi+0x61BCA]=word[+8])",
+        "F330 hypothesis '0x4561B0 = entity +0xF0 subobject method' REFUTED (locked ring queue)"
+      ],
+      "pending_notes": "runtime-only: 0x422CC0/0x423000/0x423070 handler semantics (type 0x32/0x34/0x2F0), 0x41B570 m1-node handler, pump object business identity"
     }
   ],
   "verification": {

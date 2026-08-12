@@ -1,5 +1,20 @@
 {
-  "version": "0.8-six-member-lists-and-packet-handler",
+  "version": "0.9-message-ring-and-entity-init",
+  "message_ring_notes": {
+    "evidence": "primary-static",
+    "ring_object": {"count": "+0", "read_idx": "+4", "write_idx": "+8", "elements_inline": "+0xC", "elements_capacity": 100000, "elements_bytes": "0x61A80", "critsec": "+0x61A8C", "total_size": "0x61AA4"},
+    "push": "0x004561B0（加锁环 PUSH，critsec IAT 0x47610C Enter / 0x476110 Leave）",
+    "pop": "0x00456270（加锁环 POP，空返回 0）",
+    "message": {"size": "0x40C（0x103 dwords）", "type_word": "+4", "string": "+0xC", "clone": "0x0040A404（new 0x468B1A + rep movsd 0x103 + type=0x1F 重入队）"},
+    "ring_instances": [
+      {"id": "pump-object-ring", "offset": "this+0xF0", "owner": "pump 对象（vtable 家族 0x4763C8）", "drained_by": "0x0040A2B0", "pushed_by": ["0x40A290", "0x40A424", "0x40EF20", "0x410698", "0x422799", "0x4228E5", "0x42292E", "0x4229B6"]},
+      {"id": "main-ring-364458", "offset": "main+0x364458", "pushed_by": "包处理函数出口 0x421D3A", "drained_by": "0x004227F0"},
+      {"id": "main-ring-3C5EFC", "offset": "main+0x3C5EFC", "drained_by": "0x00422280"}
+    ],
+    "pump_object_fields": {"+0xC0": "flag", "+0xF0": "ring", "+0x61B94": "flag", "+0x61C58": "0x12c=300 定时", "+0x61C74": "count"},
+    "window_class_5_controls": {"constructor": "0x004241D0", "vtable": "0x476624", "array_helper": "0x00468306", "base_offset": "+0x6C", "stride": "0xB4", "count": 5, "init": "0x4046B0"},
+    "entity_ctor_chain": {"intermediate_vtable": "0x476884", "base_ctor": "0x00435030", "full_ctor": "0x00434EF0", "factory": "0x00438100", "final_vtable": "0x4767A8", "spawn_vtable": "0x47671C"}
+  },
   "viewport": {
     "width": 800,
     "height": 600
