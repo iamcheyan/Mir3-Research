@@ -8013,3 +8013,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 463-465（F770-F771：行会公告编辑器 + 窗口注册表全量闭合）；基线 Round 462=061e7c2 → Round 465=88248b7（**430 连发 F335-F771**）。
 - 落盘：handoff-refresh-67-evidence.json（F772，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 466。
+## Round 467 (F773) — 2026-08-12：坐骑窗口绘制 + 命令
+
+- **〔坐骑〕**0x4269C0（F558 模式 D）：**5 按钮 F704**（大 0xFC/0x125 @ +0x54 + 4 命令按钮 @ 0x1C/0x4A/0x85/0xC0 × 0xF4）+ 5 控件绘制；0x426A80 **命令分派**（vtable[0x10] 命中 + 坐骑旗标 [0x7DA060] + **发送 0x4520F0** 串 0x47B058/0x47B060/0x47B068 + **300ms 冷却 [0x8A68BC]=0x12C**（F545 确认））；0x426B50/0x426B90 命中/点击分派——坐骑窗口完整（F545/F558 用）。
+- 落盘：mount-window-draw-commands-evidence.json（F773，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 467。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "mount-window-draw-commands-2026-08-12-f773",
+  "title": "Round 467 (F773): Mount window draw + commands - 0x4269C0 (F558 mode D): 5 buttons F704 set-pos (big 0xFC/0x125 @ +0x54 + 4 command buttons @ 0x1C/0x4A/0x85/0xC0 x 0xF4 @ +0x108/+0x1BC/+0x270/+0x324) + 5 control paints (stride 0xB4); 0x426A80 COMMAND dispatch: control vtable[0x10] hits + mount flag [0x7DA060] + SEND 0x4520F0 with strings 0x47B058/0x47B060/0x47B068 + 300ms cooldown [0x8A68BC]=0x12C (F545 CONFIRMED); 0x426B50/0x426B90 hit/click dispatch (vtable[3]/vtable[2] 5 controls) - mount window COMPLETE (F545/F558 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the mount window draw + commands.",
+  "question": "How does the mount window render + dispatch commands?",
+  "method": "Disasm 0x4269C0-0x426BB5.",
+  "scope": "0x4269C0-0x426BB5; mount flag.",
+  "cell_analysis": {
+    "0x4269C0": {"buttons": "5 x F704 stride 0xB4", "layout": "big + 4 commands"},
+    "0x426A80": {"dispatch": "vtable[0x10] + flag [0x7DA060]", "send": "0x4520F0 0x47B058/0x47B060/0x47B068", "cooldown": "[0x8A68BC]=0x12C"}
+  },
+  "exe_trace": {
+    "mount_chain": "draw buttons -> command dispatch -> send -> cooldown"
+  },
+  "audit_vs_exe": {
+    "F545": "mount 4 commands CONFIRMED", "F558": "mode D mount"
+  },
+  "contrast": {
+    "draw_vs_dispatch": "5 buttons + commands",
+    "ride_vs_command": "flag + 0x4520F0 sends"
+  },
+  "verdict": "Mount window draw + commands PRIMARY-verified: 5 buttons + dispatch + send; mount window complete (F545/F558).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Mount window decoded from .text.",
+  "cross_refs": ["F545: commands", "F558: mount", "F704: set-pos"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4269C0+0x10; 0x426A80+0x20",
+  "notes": [
+    "5 buttons stride 0xB4",
+    "send 0x4520F0",
+    "mount flag [0x7DA060]",
+    "300ms cooldown"
+  ]
+}
