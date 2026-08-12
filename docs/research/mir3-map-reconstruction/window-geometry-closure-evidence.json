@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-geometry-closure-2026-08-12-f828",
+  "title": "Round 522 (F828): Window geometry CLOSED (F701/F704/F713/F827) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0a1e304 (486 consecutive F335-F827), 452 evidence JSONs; arc: control ctor (F701) + set-pos (F704) + base ctor (F713) + content layout (F827) - window geometry COMPLETE byte-level (frame dims + rects + insets + center + control positions), window layout surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the window geometry arc.",
+  "question": "Is the window geometry fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "452 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F701": "ctor", "F704": "set-pos", "F713": "base ctor", "F827": "layout"},
+    "geometry": "frame + rects + center = COMPLETE",
+    "milestone": "486 consecutive rounds F335-F827"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F827": "486 rounds pushed; window geometry complete"
+  },
+  "contrast": {
+    "ctor_vs_layout": "base + content",
+    "setpos_vs_center": "control pos + center"
+  },
+  "verdict": "Window geometry CLOSED (F828): frame + rects + center all byte-level; validation green, 486 consecutive rounds, 452 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F701/F704/F713/F827.",
+  "cross_refs": ["F701", "F704", "F713", "F827"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "486 consecutive shipping rounds F335-F827",
+    "window geometry 100%",
+    "next: HANDOFF refresh 86, remaining corners"
+  ]
+}

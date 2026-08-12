@@ -8251,3 +8251,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔布局〕**0x423E80（F808/F824 关闭发送的参数载体，**非发送器**）：帧尺寸 0x466130（[0x2C] WIL）+ SetRect 0x4762B0（矩形 [0x8]/[0x18]/[0x28] + 内嵌 [0x40]/[0x44] 自动/参数）+ **居中数学**（半差）——窗口内容几何完整。
 - 落盘：window-content-layout-evidence.json（F827，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 521。
+## Round 522 (F828) — 2026-08-12：窗口几何闭合（F701/F704/F713/F827 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**452 证据 JSON**；三服务 200；master 0a1e304（**486 连发 F335-F827 已推**）。
+- **〔弧〕**控件构造（F701）+ 定位（F704）+ 基类构造（F713）+ 内容布局（F827）——**窗口几何完整**（帧尺寸 + 矩形 + 内嵌 + 居中 + 控件位置），窗口布局表面 100%。
+- 落盘：window-geometry-closure-evidence.json（F828，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 522。
