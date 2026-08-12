@@ -1,0 +1,34 @@
+{
+  "evidence_id": "window-content-layout-2026-08-12-f827",
+  "title": "Round 521 (F827): Window content layout - 0x423E80 (F808/F824 close-send arg carrier, NOT a send): frame dims 0x466130 ([0x2C] WIL) + SetRect 0x4762B0 (rects [0x8]/[0x18] + inner [0x28] + insets [0x40]/[0x44] auto/arg) + CENTER math (half-diff) - window content geometry COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the window content layout.",
+  "question": "How is window content laid out?",
+  "method": "Disasm 0x423E80-0x423F76.",
+  "scope": "0x423E80-0x423F76; rects.",
+  "cell_analysis": {
+    "0x423E80": {"frame": "0x466130 [0x2C]", "rects": "SetRect 0x4762B0 [0x8]/[0x18]/[0x28]", "insets": "[0x40]/[0x44] auto/arg", "center": "half-diff math"}
+  },
+  "exe_trace": {
+    "layout_chain": "frame dims -> rects -> insets -> center"
+  },
+  "audit_vs_exe": {
+    "F704": "set-pos", "F808": "close-send carrier", "F661": "shop layout"
+  },
+  "contrast": {
+    "frame_vs_center": "dims + center",
+    "rects_vs_insets": "SetRect + [0x40]/[0x44]"
+  },
+  "verdict": "Window content layout PRIMARY-verified: frame + rects + center; F824 msg 0x3E8 is arg, layout is geometry.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Content layout decoded from .text.",
+  "cross_refs": ["F704: set-pos", "F808: dispatch", "F824: shop"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423E80+0x20",
+  "notes": [
+    "frame [0x2C] dims",
+    "insets [0x40]/[0x44]",
+    "center half-diff",
+    "not a sender"
+  ]
+}

@@ -8247,3 +8247,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 517-519（F824-F825：商店点击分派 + 商店交互闭合）；基线 Round 516=ef83484 → Round 519=a41f88a（**484 连发 F335-F825**）。
 - 落盘：handoff-refresh-85-evidence.json（F826，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 520。
+## Round 521 (F827) — 2026-08-12：窗口内容布局
+
+- **〔布局〕**0x423E80（F808/F824 关闭发送的参数载体，**非发送器**）：帧尺寸 0x466130（[0x2C] WIL）+ SetRect 0x4762B0（矩形 [0x8]/[0x18]/[0x28] + 内嵌 [0x40]/[0x44] 自动/参数）+ **居中数学**（半差）——窗口内容几何完整。
+- 落盘：window-content-layout-evidence.json（F827，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 521。

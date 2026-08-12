@@ -2897,3 +2897,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店全交互；下一弧：剩余深层角落/模拟器 polish）。
+## Round 521 (2026-08-12) — 窗口内容布局（Finding 827）
+
+- **帧 + 矩形 + 居中**（内容几何完整）。
+- 落盘：`window-content-layout-evidence.json`（F827）+ RESEARCH_LOG Round 521。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（内容布局完整；下一弧：剩余深层角落）。
