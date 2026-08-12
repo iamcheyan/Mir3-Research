@@ -7612,3 +7612,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔sprintf〕**0x46811C = **vsprintf 包装**（0x469E94 _vsnprintf、旗标 0x42/0x7FFFFFFF、NUL 终止、返回长度）。
 - **〔strtol〕**0x46816E = **strtol 内部**（字符类表 [0x47DDB0] 跳空格 + 符号 +/‒ + 十进制数字循环、locale 旗标 [0x47DFBC]、钩子 [0x47DD50]）；0x4681F9 = strlen——字符串库核心字节级（支撑全部 sprintf F572/F585/F600）。
 - 落盘：sprintf-strtol-core-evidence.json（F680，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 374。
+## Round 375 (F681) — 2026-08-12：字符串库弧闭合（F680 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**305 证据 JSON**；三服务 200；master 26b578e（**339 连发 F335-F680 已推**）。
+- **〔弧〕**sprintf + strtol 核心（F680）——**字符串库完整（vsprintf + strtol + strlen）**，支撑全部文本格式路径（F572/F585/F600/F549）。
+- 落盘：string-lib-arc-closure-evidence.json（F681，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 375。

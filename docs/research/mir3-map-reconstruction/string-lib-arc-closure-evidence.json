@@ -1,0 +1,36 @@
+{
+  "evidence_id": "string-lib-arc-closure-2026-08-12-f681",
+  "title": "Round 375 (F681): String-lib arc CLOSED (F680) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 26b578e (339 consecutive F335-F680), 305 evidence JSONs; arc: sprintf + strtol core (F680) - string library COMPLETE (vsprintf + strtol + strlen), backing every text format path (F572/F585/F600/F549)",
+  "date": "2026-08-12",
+  "objective": "Close the string-lib arc.",
+  "question": "Is the string library fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "305 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F680": "sprintf + strtol core"},
+    "string": "vsprintf + strtol + strlen = COMPLETE (backs F572/F585/F600/F549)",
+    "milestone": "339 consecutive rounds F335-F680"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F680": "339 rounds pushed; string lib complete"
+  },
+  "contrast": {
+    "fmt_vs_parse": "format + parse cores",
+    "charset": "char-class table [0x47DDB0]"
+  },
+  "verdict": "String-lib arc CLOSED (F681): vsprintf + strtol + strlen all byte-level; validation green, 339 consecutive rounds, 305 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F680.",
+  "cross_refs": ["F680: string core", "F572/F585/F600: users"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "339 consecutive shipping rounds F335-F680",
+    "next: HANDOFF refresh 38, remaining corners"
+  ]
+}
