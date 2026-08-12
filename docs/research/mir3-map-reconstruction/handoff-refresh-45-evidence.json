@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-45-2026-08-12-f703",
+  "title": "Round 397 (F703): HANDOFF refresh 45 - Rounds 394-396 (F700-F702: control ctor + paint + control system arc closure), baseline Round 393=4c6ccba -> Round 396=6e94d4d (361 consecutive F335-F702), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 394-396.",
+  "question": "What changed since HANDOFF refresh 44?",
+  "method": "Append Round 394-396 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 394-396 appended (3 rounds, F700-F702)",
+    "baseline": "Round 393=4c6ccba -> Round 396=6e94d4d (361 consecutive F335-F702)",
+    "arcs": {"control": "F701 ctor + paint", "closure": "F702 control system arc"},
+    "key": "control system complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F700": "refresh 44 baseline -> now refresh 45", "F335-F702": "361 rounds"
+  },
+  "contrast": {
+    "refresh_44_vs_45": "F701-F702 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 45 (F703): Rounds 394-396 documented (control system), baseline 4c6ccba -> 6e94d4d, 361 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F701-F702 evidence.",
+  "cross_refs": ["F700: refresh 44", "F702: control closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 394-396 section to HANDOFF",
+  "notes": [
+    "361 consecutive shipping rounds F335-F702",
+    "next: remaining deep corners, sim polish"
+  ]
+}

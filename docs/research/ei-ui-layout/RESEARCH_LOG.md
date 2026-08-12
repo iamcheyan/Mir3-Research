@@ -7711,3 +7711,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**326 证据 JSON**；三服务 200；master 5e68a13（**360 连发 F335-F701 已推**）。
 - **〔弧〕**控件构造 + 绘制（F701）——**按钮/控件系统完整（构造 + 绘制 + 命中 F313）**，支撑全部窗口控件（F546/F547/F580）。
 - 落盘：control-system-arc-closure-evidence.json（F702，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 396。
+## Round 397 (F703) — 2026-08-12：HANDOFF 刷新 45（Round 394-396）
+
+- **〔刷新〕**HANDOFF 追加 Round 394-396（F701-F702：控件构造/绘制 + 控件系统弧）；基线 Round 393=4c6ccba → Round 396=6e94d4d（**361 连发 F335-F702**）。
+- 落盘：handoff-refresh-45-evidence.json（F703，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 397。
