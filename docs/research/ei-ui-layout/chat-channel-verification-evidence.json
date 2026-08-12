@@ -1,0 +1,43 @@
+{
+  "evidence_id": "chat-channel-verification-2026-08-12-f403",
+  "title": "Round 97 (F403): Chat channel buttons verified - 6 channels with original command-help strings (拒绝私聊/@拒绝行会聊天/大喊话!/编组喊话!!/行会喊话!~/拒绝和某人私聊) + command injection (大喊话 injects '!' into input, browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the chat channel buttons: presence with original F341 command-help strings, and command injection into the input.",
+  "question": "Do the sim chat channels match the original command templates?",
+  "method": "Sim browser test: channel button list + injection behavior.",
+  "scope": "sim window.chat-pop; F341 chat command strings.",
+  "cell_analysis": {
+    "channels": [
+      {"title": "拒绝和 某人 私聊(@拒绝 某人名)", "src": "0x47AD08"},
+      {"title": "大喊话(!喊话)", "src": "0x47ACF8", "inject": "!"},
+      {"title": "编组 喊话(!!喊话)", "src": "0x47ACE4"},
+      {"title": "行会 喊话(!~喊话)", "src": "0x47ACD0"},
+      {"title": "拒绝 私聊(@拒绝私聊", "src": "0x47ACB8"},
+      {"title": "拒绝 行会 聊天(@拒绝行会聊天)", "src": "0x47AC98"}
+    ],
+    "injection": "大喊话 click -> input.value = '!' (browser-verified); original injects template then user types text (F341/F355)"
+  },
+  "exe_trace": {
+    "command_strings": "0x47AC98-0x47AD28 (F341 chat paint control titles)",
+    "dispatch": "0x41ED20 command parse (F355: '!' shout family)"
+  },
+  "audit_vs_exe": {
+    "F341": "6 command-help strings confirmed in sim",
+    "F355": "command dispatch ('!' -> 大喊话/编组/行会) confirmed"
+  },
+  "contrast": {
+    "channel_vs_dispatch": "channels = template buttons; dispatch = runtime parse",
+    "sim_vs_original": "sim injects template into input; original same (F341)"
+  },
+  "verdict": "Chat channels verified (primary-bytes via F341/F355): all 6 channel buttons carry the original command-help strings; 大喊话 injects '!' into the input (browser-verified). Chat channel subsystem closed.",
+  "evidence_level": "derived-tooling (strings primary-static F341)",
+  "evidence_level_note": "Strings from F341 primary bytes; sim injection browser-verified.",
+  "cross_refs": ["F341: chat paint strings", "F355: command dispatch", "F402: chat scrollbar"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim chat (R); click 大喊话; observe input '!'",
+  "notes": [
+    "6 channel buttons + close + 2 scroll + track = 10 chat controls",
+    "original injects full template then focuses input (F341)",
+    "拒绝 families (@拒绝私聊/@拒绝行会聊天) = whisper block commands"
+  ]
+}

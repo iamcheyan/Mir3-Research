@@ -6222,3 +6222,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔量条〕**0x4179B0（帧 1070 16×360、94 定点尺度 F301、6 行视口）：chat 值=[+0x68] scroll / 上限=[+0x6D0] count、@+0x6D4（F341）。
 - **〔模拟器〕**scroll-up/down ±266px（19 行 × 14px）；track 380 @ win.x+0x215/y-0xD0 证据-only。
 - 落盘：chat-scrollbar-verification-evidence.json（F402，derived-tooling；量条语义 primary-static F301/F341）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 96。
+## Round 97 (F403) — 2026-08-12：聊天频道按钮验证（6 频道命令模板 + 注入）
+
+- **〔频道〕**6 按钮全带原版命令帮助串（拒绝私聊 @拒绝私聊/大喊话 !/编组喊话 !! /行会喊话 !~/拒绝和某人私聊）——F341 串。
+- **〔注入〕**大喊话 点击 → 输入框 '!'（浏览器验证）；分派 0x41ED20（F355）。
+- 落盘：chat-channel-verification-evidence.json（F403，derived-tooling；串 primary-static F341）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 97。
