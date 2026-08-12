@@ -6196,3 +6196,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔UI〕**加载 OK（地图浏览器）、选择器 比奇城 0.map、512×512 瓦片 g=1&m=1&f=1、图层开关 chk-g/m/f/grid/ents（**front 开关 f=1->f=0 触发重渲染**）、缩放 +/–、适配、重新生成。
 - 落盘：mapviewer-ui-verification-evidence.json（F397，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 91。
+## Round 92 (F398) — 2026-08-12：地图知识库合成（544/211/102/333 + MAP-SURVEY 定稿）
+
+- **〔最终统计〕**磁盘 544、MiniMap 313（211 绑定出货 + 102 服务端专属）、333 未绑定；主题 530 wood + 14 sand；异常 5723 格/34 图。
+- **〔可玩构成〕**编号 37 + 洞穴 156（D0/D1/D4/D6/D11xxx）+ E 路 2；尺寸 50x50→800x800。
+- **〔MAP-SURVEY〕**追加 Round 90-92 最终汇总段（瓦片/单元/视口/越界/地面/工具链）。
+- 落盘：map-knowledge-synthesis-evidence.json（F398，primary-bytes）+ MAP-SURVEY.md + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 92。

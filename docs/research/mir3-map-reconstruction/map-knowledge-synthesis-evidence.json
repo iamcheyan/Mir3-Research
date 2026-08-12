@@ -1,0 +1,25 @@
+{
+  "evidence_id": "map-knowledge-synthesis-2026-08-12-f398",
+  "title": "Round 92 (F398): Map knowledge base synthesis - final stats (544 disk / 211 bound / 102 server-only / 333 unbound; themes 530+14; 5723 anomaly cells/34 maps) + MAP-SURVEY final summary section (playable composition, tile/layer semantics, toolchain)",
+  "date": "2026-08-12",
+  "objective": "Consolidate the complete map investigation into a final synthesis: statistics, playable-map composition, layer/tile semantics, and toolchain summary.",
+  "question": "What is the complete EI 3.0 map knowledge base?",
+  "method": "Aggregate all F342-F397 findings into final stats + MAP-SURVEY summary.",
+  "scope": "docs/research/mir3-map-reconstruction/MAP-SURVEY.md + all map evidence.",
+  "cell_analysis": {
+    "stats": {"on_disk": 544, "mini_map": "313 = 211 bound shipped + 102 server-only", "unbound_disk": 333, "themes": "{0 wood: 530, 1 sand: 14}", "anomalies": "5723 cells / 34 maps"},
+    "playable_composition": {"numbered": 37, "caves": "156 (D0 3 / D1 23 / D4 6 / D6 20 / D11xxx variant + others)", "E_roads": 2, "size_spectrum": "50x50 -> 800x800"},
+    "semantics": {"binding": "(row+1)*14 (0x43B600 F343)", "cell": "14-byte records (F386)", "viewport": "768x576 half-res (F379)", "oob": "4 maps (F371 hashes)", "ground": ">= 90% all (F370)"},
+    "toolchain": {"mapviewer": "8899 (layers/zoom/cache/fullmap)", "names": "mapnames legacy + Mapinfo server (F382)", "transitions": "2049 integer coords (F393)"}
+  },
+  "verdict": "Map knowledge base synthesized (F398): EI 3.0 map system fully characterized - 211 playable maps (37 towns + 156 caves + roads), 102 server-only gaps, complete tile/cell/viewport/flag/anim/OOB semantics, working viewer toolchain. MAP-SURVEY updated with final summary.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All stats from F342-F397 primary-byte findings.",
+  "cross_refs": ["F342-F397: all map findings", "MAP-SURVEY.md"],
+  "tool": "python3 aggregation; MAP-SURVEY.md",
+  "reproduce": "review MAP-SURVEY.md Round 90-92 section + map-audit.json",
+  "notes": [
+    "63 consecutive shipping rounds (F335-F398) delivered the map branch",
+    "map knowledge = input for Zircon map implementation (goal deliverable)"
+  ]
+}
