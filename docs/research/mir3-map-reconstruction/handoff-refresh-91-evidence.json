@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-91-2026-08-12-f844",
+  "title": "Round 538 (F844): HANDOFF refresh 91 - Rounds 535-537 (F841-F843: HANDOFF 90 + 90-refresh milestone, trade window draw, trade window full closure + 500+ milestone), baseline Round 534=bc99e68 -> Round 537=cc10978 (502 consecutive F335-F843), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 535-537.",
+  "question": "What changed since HANDOFF refresh 90?",
+  "method": "Append Round 535-537 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 535-537 appended (3 rounds, F841-F843)",
+    "baseline": "Round 534=bc99e68 -> Round 537=cc10978 (502 consecutive F335-F843)",
+    "milestone": "500+ consecutive rounds documented",
+    "arcs": {"trade": "F842 trade draw", "closure": "F843 trade full"},
+    "key": "trade window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F841": "refresh 90 baseline -> now refresh 91", "F335-F843": "502 rounds"
+  },
+  "contrast": {
+    "refresh_90_vs_91": "F842-F843 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 91 (F844): Rounds 535-537 documented (trade window complete), baseline bc99e68 -> cc10978, 502 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F842-F843 evidence.",
+  "cross_refs": ["F841: refresh 90", "F843: trade closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 535-537 section to HANDOFF",
+  "notes": [
+    "502 consecutive shipping rounds F335-F843",
+    "next: remaining deep corners, sim polish"
+  ]
+}
