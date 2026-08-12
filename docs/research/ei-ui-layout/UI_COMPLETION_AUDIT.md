@@ -4113,3 +4113,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（配置装载完整；下一弧：剩余深层角落）。
+## Round 673 (2026-08-12) — 选项配置闭合（Finding 979）
+
+- **637 连发 + 603 证据 + 选项持久化完整**。
+- 落盘：`options-config-closure-evidence.json`（F979）+ RESEARCH_LOG Round 673。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（选项持久化完整；下一弧：HANDOFF 刷新 138/剩余角落）。

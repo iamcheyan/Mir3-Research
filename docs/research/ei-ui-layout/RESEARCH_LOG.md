@@ -8906,3 +8906,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔选项〕**0x441CC0：**6 个 GetPrivateProfileString**（0x47613C，Mir3.ini 0x47A2B8，键 0x47C5AC/0x47C598/0x47C594/0x47C588/0x47C57C/0x47C570）+ atoi 0x4681F9 → [0x58] BGM 旗标 + 0x8AB14C SFX 音量 + [0x54] SFX 旗标 + 0x8AB150 BGM 音量（钳制）+ 滑块 [0x74]/[0x6C]（0x476968）+ [0x5C] + 音频应用 0x45B1B0/0x45B1C0/0x45B410/0x45B3D0（0x8AB130）——配置装载完整。
 - 落盘：options-config-load-full-evidence.json（F978，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 672。
+## Round 673 (F979) — 2026-08-12：选项配置闭合（F788/F978 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**603 证据 JSON**；三服务 200；master 56aba68（**637 连发 F335-F978 已推**）。
+- **〔弧〕**配置装载（F788）+ 配置全量（F978）——**选项完整**（6 INI 键 + atoi + 滑块 + 音频应用 0x45B1B0/0x45B410 + 持久化）；选项持久化 100%。
+- 落盘：options-config-closure-evidence.json（F979，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 673。

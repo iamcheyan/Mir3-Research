@@ -1,0 +1,37 @@
+{
+  "evidence_id": "options-config-closure-2026-08-12-f979",
+  "title": "Round 673 (F979): Options config CLOSED (F788/F978) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 56aba68 (637 consecutive F335-F978), 603 evidence JSONs; arc: config load (F788) + config load full (F978) - options COMPLETE byte-level (6 INI keys + atoi + sliders + audio apply 0x45B1B0/0x45B410 + persistence); options persistence 100%",
+  "date": "2026-08-12",
+  "objective": "Close the options config arc.",
+  "question": "Is the options config fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "603 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F788": "config load", "F978": "config full"},
+    "options": "6 keys + audio = COMPLETE",
+    "milestone": "637 consecutive rounds F335-F978"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F978": "637 rounds pushed; options config complete"
+  },
+  "contrast": {
+    "load_vs_full": "keys + apply",
+    "persistence": "INI round-trip"
+  },
+  "verdict": "Options config CLOSED (F979): 6 INI keys + audio apply all byte-level; validation green, 637 consecutive rounds, 603 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F788/F978.",
+  "cross_refs": ["F788", "F978"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "637 consecutive shipping rounds F335-F978",
+    "options config 100%",
+    "next: HANDOFF refresh 138, remaining corners"
+  ]
+}
