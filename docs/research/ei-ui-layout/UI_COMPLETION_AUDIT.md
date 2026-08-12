@@ -4537,3 +4537,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv2 名字处理 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 726 (2026-08-12) — 实体/列表析构 vtable 尾部全量（Finding 1032）
+
+- **8 个析构 thunk + 条件释放**（列表/节点 teardown 完整）。
+- 落盘：`entity-list-destructor-vtable-evidence.json`（F1032）+ RESEARCH_LOG Round 726。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（列表析构完整；下一弧：剩余深层角落/模拟器 polish）。

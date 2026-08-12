@@ -1,0 +1,25 @@
+{
+  "evidence_id": "entity-list-destructor-vtable-2026-08-12-f1032",
+  "title": "Round 726 (F1032): entity/list destructor vtable tail FULL (F440 extension) - 0x423A00-0x423AFD: 8 destructor thunks reset vtables 0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680/0x4767C0/0x4767C8/0x4767C4; delete flag bit0 invokes 0x4680F8 free; vtable reset + conditional destruction COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the entity/list destructor and vtable tail.",
+  "question": "How are list and node objects destroyed?",
+  "method": "Disasm 0x423A00-0x423AFD.",
+  "scope": "0x423A00-0x423AFD; list/node destructor thunks.",
+  "cell_analysis": {
+    "destructors": "0x423A00, 0x423A20, 0x423A40, 0x423A60, 0x423A80, 0x423AA0, 0x423AC0, 0x423AE0",
+    "vtables": ["0x4766F0", "0x4766D4", "0x4766B8", "0x47669C", "0x476680", "0x4767C0", "0x4767C8", "0x4767C4"],
+    "free": "flags & 1 -> 0x4680F8(this)",
+    "return": "returns this after reset/free decision"
+  },
+  "exe_trace": {"teardown": "destructor thunk -> vtable reset -> optional free"},
+  "audit_vs_exe": {"F440": "list containers and insertion", "F1032": "destructor/vtable tail"},
+  "contrast": {"flags_zero": "reset only", "flags_one": "reset + 0x4680F8 free"},
+  "verdict": "Entity/list destructor vtable tail FULL PRIMARY-verified: all eight reset/free thunks decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Destructor thunks decoded directly from .text.",
+  "cross_refs": ["F440: list containers", "F336: entity containers"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423A00+0xA0",
+  "notes": ["8 destructor thunks", "bit0 delete flag", "free helper 0x4680F8", "vtable reset before free"]
+}

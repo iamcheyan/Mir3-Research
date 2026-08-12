@@ -9135,3 +9135,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 722-724（F1029-F1030：recv2 非主角名字更新全量 + recv2 名字处理闭合）；基线 Round 721=47a2b29 → Round 724=ab2b0ba（**688 连发 F335-F1030**）。
 - 落盘：handoff-refresh-155-evidence.json（F1031，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 725。
+## Round 726 (F1032) — 2026-08-12：实体/列表析构 vtable 尾部全量（F440 扩展）
+
+- **〔析构〕**0x423A00/0x423A20/0x423A40/0x423A60/0x423A80/0x423AA0/0x423AC0/0x423AE0 八个析构 thunk，分别重置 vtable 0x4766F0/0x4766D4/0x4766B8/0x47669C/0x476680/0x4767C0/0x4767C8/0x4767C4；删除标志 bit0 置位时调用 0x4680F8 释放，最后返回 this——列表/节点 teardown 完整。
+- 落盘：entity-list-destructor-vtable-evidence.json（F1032，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 726。
