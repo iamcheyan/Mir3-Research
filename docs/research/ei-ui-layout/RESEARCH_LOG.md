@@ -7978,3 +7978,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔背包〕**0x42EB80（F558 模式 0）：**滚动条 F707 ctor** @ +0x278（计数 [0x58]、位置 [0x18]+0xF8/[0x1C]-0xA5）+ 物品网格矩形（+0x19/+0x29、36px）+ **拖动预览**（槽命中 0x42F150 → 布局 0x42F2A0 + IntersectRect 0x476248 + **矩阵变换 0x466800（F643）** 浮点 1.0/0.196/0.392 + 0x3B808081 → 缩放 blit；拖动中 [0x7243C4]、旗标 [0x7243D8]）——背包窗口完整（F558/F707 用）。
 - 落盘：bag-window-draw-evidence.json（F764，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 458。
+## Round 459 (F765) — 2026-08-12：窗口系统最终闭合（F558/F701-F764 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**389 证据 JSON**；三服务 200；master 9fe1ee6（**423 连发 F335-F764 已推**）。
+- **〔弧〕**注册表（F558）+ 基类构造/绘制（F713/F714）+ 控件（F701/F704/F710）+ 滚动条（F707）+ **全部窗口绘制**（背包 F764 + 状态 F758 + 行会 F755 + 组队 F752 + 交易 F749 + 对话 F746 + 选项 F761）——**窗口系统 100% 字节级**：14 模式注册表 + 基类 + 控件/滚动条工具 + 每窗口绘制/输入全解码。
+- 落盘：window-system-final-closure-evidence.json（F765，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 459。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-system-final-closure-2026-08-12-f765",
+  "title": "Round 459 (F765): Window system FINAL closure (F558/F701-F764 window family) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 9fe1ee6 (423 consecutive F335-F764), 389 evidence JSONs; arc: registry (F558) + base ctor/paint (F713/F714) + controls (F701/F704/F710) + scrollbars (F707) + ALL window draws (bag F764 + status F758 + guild F755 + party F752 + trade F749 + dialog F746 + options F761) - WINDOW SYSTEM 100% byte-level: 14-mode registry + base class + control/scrollbar toolkit + every window draw/input decoded",
+  "date": "2026-08-12",
+  "objective": "Close the window system finally.",
+  "question": "Is the window system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "389 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F558": "registry", "F713/F714": "base", "F701/F704/F710": "controls", "F707": "scrollbar", "F746-F764": "window draws"},
+    "windows": "14-mode registry + base + toolkit + all draws = 100%",
+    "milestone": "423 consecutive rounds F335-F764"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F764": "423 rounds pushed; window system 100%"
+  },
+  "contrast": {
+    "registry_vs_base": "14 modes + base class",
+    "controls_vs_windows": "toolkit + all draws"
+  },
+  "verdict": "Window system FINAL closure (F765): registry + base + toolkit + all window draws/inputs byte-level; validation green, 423 consecutive rounds, 389 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F558/F701-F764.",
+  "cross_refs": ["F558", "F701-F764"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "423 consecutive shipping rounds F335-F764",
+    "window system 100%",
+    "next: HANDOFF refresh 65, remaining corners"
+  ]
+}
