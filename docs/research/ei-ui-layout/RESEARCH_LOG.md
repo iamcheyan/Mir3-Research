@@ -6913,3 +6913,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 5611c38（**196 连发已推**）。
 - **〔弧汇总〕**技能详情 msg 0xA5（F534）/ 行会 3 态+滚动条（F535）/ 组队 idx/2*20（F536）/ 任务 19 行+色对（F537）——**全部 14 窗口渲染路径字节级**。
 - 落盘：window-render-arc-closure-evidence.json（F538，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 232。
+## Round 233 (F539) — 2026-08-12：HANDOFF 刷新 4（F533-F538 追加）
+
+- **〔追加〕**HANDOFF 补 Round 227-232（窗口渲染字节级）；基线 Round 226=17faa1b → **Round 232=dd66590（196 连发 F335-F538）**；164 地图重建证据 JSON。
+- 落盘：handoff-refresh-4-evidence.json（F539，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 233。

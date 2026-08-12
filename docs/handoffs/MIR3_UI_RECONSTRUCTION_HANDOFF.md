@@ -450,3 +450,10 @@ simulator/style.css
 **模拟器边缘 + 深层 UI 角落（F526-F532）**：模拟器边缘验证（商店导航/全局辅助/模块状态无回归）、提示框 3 槽数组（激活 wparam type<<16|slot<<8|tag + msg 0x7EE）、Config.ini 6 键保存链（BGM/BGMLevel/EffectSound/EffectSoundLevel/Ambience/ShadowBlend）、聊天输入发送路径（门 [0x8A4] + SetWindowTextA + 0x403640 分派）、血条实时值帧（HP=[0x61BA0]−[0xB4]+[0xC4] 经 0x4542A0 注册表）、目标框悬停 3000ms 计时器（累加器 [0x6209C] + 重置）——**全部字节级闭合**。
 
 **commit 基线更新**：Round 218=be1b382 → Round 226=17faa1b（master 已推，190 连发 F335-F532）。
+
+
+## Round 227-232 追加交付（2026-08-12，Finding 533-538）：窗口渲染全字节级
+
+**HANDOFF 刷新 3 + 窗口渲染弧（F533-F538）**：技能书详情页（msg 0xA5 详情请求 + 名称/等级匹配）、行会窗 3 路状态分派（公告/敌对/联盟+成员 + 滚动条 [0x76C] + 6 控件）、组队窗成员链 idx/2×20 行距 + 允许/拒绝串、任务窗 19 行上限 + 0xC8 宽度门 + 色对 0x1919C8/0x19197D + idx×15 行距——**全部 14 窗口渲染路径字节级**。
+
+**commit 基线更新**：Round 226=17faa1b → Round 232=dd66590（master 已推，196 连发 F335-F538）。
