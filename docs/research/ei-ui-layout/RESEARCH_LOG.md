@@ -6791,3 +6791,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔任务〕**MapQuest.txt 549 触发行（[MonDie] 沃玛战士 → MU_warrior 脚本，**GBK 怪物名 = CN 翻译层确认** F501）；QuestDiary 35 任务目录。
 - **〔完整〕**服务端 Envir 清单全解码（merchant/monster/stditem/magic/minimap/startpoint/guard/quest）。
 - 落盘：envir-guard-quest-files-evidence.json（F511，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 205。
+## Round 206 (F512) — 2026-08-12：Envir 弧闭合（F508-F511 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 0d90824（**171 连发已推**）。
+- **〔弧汇总〕**magic.dat 105×120B（F508）/ MiniMap.txt 37 绑定 + F310 确认（F509）/ 地图集 30+7（F510）/ GuardList+MapQuest+QuestDiary（F511）——**服务端 Envir 清单完整**（全部 .dat + 配置 + 任务解码）。
+- 落盘：envir-arc-closure-evidence.json（F512，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 206。

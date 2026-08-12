@@ -1,0 +1,36 @@
+{
+  "evidence_id": "envir-arc-closure-2026-08-12-f512",
+  "title": "Round 206 (F512): Envir arc CLOSED (F508-F511) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 0d90824 (171 shipping rounds F335-F511); arc consolidated: magic.dat 105x120B (F508), MiniMap.txt 37 binding + F310 formula confirm (F509), minimap set cross 30+7 (F510), GuardList/MapQuest/QuestDiary + CN translation layer (F511) - server Envir inventory COMPLETE: all DBs (.dat) + configs decoded",
+  "date": "2026-08-12",
+  "objective": "Close the Envir arc with validation + summary.",
+  "question": "Is the repo healthy after the 4-round Envir arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 0d90824; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F508": "magic.dat 105 spells x 120B (server DB trio complete)", "F509": "MiniMap.txt 37 binding, F310 value-1001 confirmed", "F510": "minimap set 30 EI + 7 server-only, Mapinfo = transitions", "F511": "GuardList 117 / MapQuest 549 GBK / QuestDiary 35 - Envir complete"},
+    "envir_complete": "all server files decoded (.dat + txt configs + quests)"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F511": "171 rounds pushed; server side fully documented"
+  },
+  "contrast": {
+    "server_vs_client": "server Envir complete; client packet-fed",
+    "kr_vs_cn": "KR .dat vs CN script layer (F501/F511)"
+  },
+  "verdict": "Envir arc CLOSED (F508-F511): validation green, services live, 171 shipping rounds pushed. Server Envir inventory COMPLETE (all DBs + configs decoded).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F508-F511.",
+  "cross_refs": ["F508-F511: arc", "F200: milestone"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: sim polish (full window content), spell frame math, deeper client-server packet mapping",
+    "171 shipping rounds + user quest-design commits all pushed"
+  ]
+}
