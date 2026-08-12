@@ -6519,3 +6519,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔绘制〕**0x44D590：模式分派（1=卖减界、4=详情+2）+ 货物链表遍历（帧 [item+0x30] → 0x466130 + 0x56B0E8 图标上下文 + 0x56B120 中心化）。
 - **〔修正〕**F340「26 槽」= 首网格；实际多网格 ~90 槽。
 - 落盘：store-object-layout-evidence.json（F460，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 154。
+## Round 155 (F461) — 2026-08-12：商店货物填充解析（0x44F480 BUY 解析器）
+
+- **〔解析〕**0x44F480 BUY 模式：清货物链表 [0x64C] → **strtok 0x468BF0（'/' 分隔，每物品 7 token）**解析服务端商人货物字符串 → 0x3C 字节物品桩 → atoi 0x4681F9（[+0x20] 后缀标志、[+0x24..0x38] 值）→ vtable+4 追加 → 模式 [0x5F8]=0 + 布局 0x423E80。
+- **〔卖〕**0x44F710 SELL 解析器（除 10 价格、0x2010、链表 [0x708]）。
+- **〔源〕**货物 = 服务端 Merchant 脚本数据（F427）经 '/' 分隔字符串发送 → 客户端解析。
+- **〔闭合〕**商店货物 msg id pending 解决（字符串解析非二进制包）。
+- 落盘：store-goods-fill-evidence.json（F461，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 155。

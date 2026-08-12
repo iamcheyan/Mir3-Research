@@ -1,0 +1,37 @@
+{
+  "evidence_id": "store-goods-fill-2026-08-12-f461",
+  "title": "Round 155 (F461): Store goods fill FOUND - 0x44F480 BUY-mode parser: clears goods list [0x648+4], strtok 0x468BF0 ('/' delimiter, 7 tokens/item) over server-sent merchant goods string, alloc 0x3C (60B) item stub per entry, atoi 0x4681F9 into [+0x20 has-suffix]/[+0x24..0x38 values], append via vtable+4, mode [0x5F8]=0 + layout 0x423E80(0x3E8,0xBA,0x12C,0x130); 0x44F710 = SELL parser (div-by-10 prices, 0x2010, list [0x708]); store goods = server Merchant script data (F427) - msg-id pending resolved to string-parsing",
+  "date": "2026-08-12",
+  "objective": "Resolve the store goods fill source (the pending 'store goods msg id').",
+  "question": "How do store goods get into the store window?",
+  "method": "Disasm 0x44F480 (BUY parse) + 0x44F710 (SELL parse).",
+  "scope": "0x44F480-0x44F70D, 0x44F710-0x44F7E0.",
+  "cell_analysis": {
+    "buy_0x44F480": {"flow": "clear goods list [0x64C] -> parse input string via 0x468BF0 ('/' delimiter) -> 7 tokens/item -> alloc 0x3C item stub -> atoi 0x4681F9 -> fields [+0x20]=has-suffix flag, [+0x24]/[+0x28]/[+0x2C]/[+0x30]/[+0x34]/[+0x38] = values -> append vtable+4 -> mode [0x5F8]=0", "layout": "0x423E80(0x3E8, 0xBA, 0x12C, 0x130)"},
+    "sell_0x44F710": {"flow": "clear list [0x708], div-by-10 (0x66666667) price math, msg 0x2010 area, parse sell config"},
+    "source": "server Merchant script goods (F427 Market_Def: %100 markup + goods lines) sent as '/' delimited string -> parsed here"
+  },
+  "exe_trace": {
+    "store_chain": "server merchant data (string) -> 0x44F480 parse -> goods list [0x64C] -> paint 0x44D590 walk (F460)"
+  },
+  "audit_vs_exe": {
+    "F427": "merchant script goods -> client string parse confirmed",
+    "F460": "goods list consumption confirmed",
+    "F399": "BUY mode state 0 confirmed"
+  },
+  "contrast": {
+    "string_vs_packet": "goods = delimited string (not binary packet) - script-driven",
+    "buy_vs_sell": "BUY parses merchant goods; SELL parses sell prices (div-10)"
+  },
+  "verdict": "Store goods fill RESOLVED (primary-bytes): 0x44F480 BUY parser strtok('/') over server merchant goods string -> 7-field item stubs into goods list [0x64C]; SELL = 0x44F710. Goods source = Merchant script data (F427).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Parse flow decoded from .text; goods source = server script (F427 secondary).",
+  "cross_refs": ["F427: merchant scripts", "F460: store layout", "F399: state graph"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44F480+0x80, 0x44F710+0x40",
+  "notes": [
+    "7 '/' tokens per goods entry = item name + 6 value fields [inference]",
+    "0x468BF0 = strtok (libc), 0x4681F9 = atoi",
+    "goods list nodes share the 0x476448-family node vtable"
+  ]
+}
