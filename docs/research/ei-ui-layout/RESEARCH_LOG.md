@@ -6785,3 +6785,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔交叉〕**MiniMap.txt 37 图 = **30 在 EI + 7 服务端专属**（{401-407} 哨所 + 9.map——F396 服务端专属类子集）。
 - **〔Mapinfo〕**格式 = 仅传送记录（F87/F382 确认，map x,y -> map x,y 1:1 对，无名称）——**F382「Mapinfo 名」修正**（名称源 = mapnames 遗留库）。
 - 落盘：minimap-map-set-cross-evidence.json（F510，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 204。
+## Round 205 (F511) — 2026-08-12：Envir 守卫/任务文件（服务端清单完整）
+
+- **〔守卫〕**GuardList.txt 117 守卫 NPC 位置（卫士 map x,y : level，2/01 比奇县区）。
+- **〔任务〕**MapQuest.txt 549 触发行（[MonDie] 沃玛战士 → MU_warrior 脚本，**GBK 怪物名 = CN 翻译层确认** F501）；QuestDiary 35 任务目录。
+- **〔完整〕**服务端 Envir 清单全解码（merchant/monster/stditem/magic/minimap/startpoint/guard/quest）。
+- 落盘：envir-guard-quest-files-evidence.json（F511，secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 205。

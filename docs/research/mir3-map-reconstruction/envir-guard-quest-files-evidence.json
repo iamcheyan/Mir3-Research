@@ -1,0 +1,38 @@
+{
+  "evidence_id": "envir-guard-quest-files-2026-08-12-f511",
+  "title": "Round 205 (F511): Envir guard/quest files - GuardList.txt 117 guard NPC placements (卫士 map x,y : level, 2=比奇县/01=比奇县01); MapQuest.txt 549 quest trigger lines ([MonDie] 沃玛战士 -> MU_warrior script, GBK monster names = CN translation layer CONFIRMED); QuestDiary 35 quest dirs (001/Event/NpcQuest_Def/QT_TODAY/Refine/MU_taoist/Teleport); Adminlist 1 admin - server Envir inventory COMPLETE (all files decoded)",
+  "date": "2026-08-12",
+  "objective": "Decode the remaining Envir files to complete the server inventory.",
+  "question": "What are the guard/quest server files?",
+  "method": "Parse GuardList/MapQuest/Adminlist + QuestDiary listing.",
+  "scope": "Envir GuardList/MapQuest/Adminlist/QuestDiary.",
+  "cell_analysis": {
+    "guardlist": {"count": "117 guard NPC placements", "format": "卫士(1) map x,y : level", "maps": "2/01 (比奇县 area)"},
+    "mapquest": {"count": "549 quest triggers", "format": "map [id] count [event] monster * script", "example": "[MonDie] 沃玛战士 -> MU_warrior script", "encoding": "GBK monster names = CN translation layer (F501 KR->GBK)"},
+    "questdiary": {"count": "35 quest dirs (001/Event/NpcQuest_Def/QT_TODAY/Refine/MU_* /Teleport)"},
+    "adminlist": "1 admin (无聊快活)"
+  },
+  "exe_trace": {
+    "server_quest": "MapQuest triggers -> QuestDiary scripts -> NPC dialog (F41/F475/F476)"
+  },
+  "audit_vs_exe": {
+    "F501": "KR->GBK translation confirmed at quest layer",
+    "F41": "NPC dialog consumes quest script",
+    "F423": "guard NPCs = additional NPC kind"
+  },
+  "contrast": {
+    "guard_vs_merchant": "GuardList guards vs Merchant.txt merchants - separate NPC classes",
+    "kr_vs_gbk": "monster.dat KR vs MapQuest GBK - translation confirmed"
+  },
+  "verdict": "Envir guard/quest files PRIMARY-verified (server): GuardList 117 guards, MapQuest 549 triggers (GBK = CN translation), QuestDiary 35 dirs. Server Envir inventory COMPLETE.",
+  "evidence_level": "secondary (server files)",
+  "evidence_level_note": "File parses from server Envir; translation layer confirmed.",
+  "cross_refs": ["F501: KR encoding", "F41: NPC dialog", "F423: entities"],
+  "tool": "python txt parse",
+  "reproduce": "parse GuardList/MapQuest; ls QuestDiary",
+  "notes": [
+    "MapQuest GBK = server-side CN names (translation complete)",
+    "QuestDiary = NPC quest script sources (F41 renders)",
+    "guard NPCs = town guards (class separate from merchants)"
+  ]
+}
