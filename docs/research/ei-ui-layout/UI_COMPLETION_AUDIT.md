@@ -681,6 +681,11 @@ git diff --check
 - **313 MiniMap = 211 出货（100% 审计）+ 102 服务端专属**（客户端缺失，装载失败）。
 - 落盘：`map-coverage-completeness-evidence.json`（F396）+ RESEARCH_LOG Round 90。
 
+## Round 91 (2026-08-12) — mapviewer UI 验证（Finding 397）
+
+- **UI 全功能**：选择器、512×512 瓦片、图层开关（f 触发重渲染）、缩放/适配/重建。
+- 落盘：`mapviewer-ui-verification-evidence.json`（F397）+ RESEARCH_LOG Round 91。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

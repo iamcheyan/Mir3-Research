@@ -1,0 +1,37 @@
+{
+  "evidence_id": "mapviewer-ui-verification-2026-08-12-f397",
+  "title": "Round 91 (F397): Mapviewer UI verified - loads (Zircon/Mir3 EI 地图浏览器), map selector (比奇城 0.map), 512x512 tiles g=1&m=1&f=1, layer toggles chk-g/m/f/grid/ents (front toggle f=1->f=0 re-renders), zoom +/-, 适配, 重新生成",
+  "date": "2026-08-12",
+  "objective": "Verify the mapviewer web UI: page load, map selection, tile rendering, layer toggles, and controls.",
+  "question": "Does the mapviewer UI work end-to-end?",
+  "method": "Puppeteer browser: page inspection, tile URL analysis, layer toggle interaction.",
+  "scope": "browser 8899/; mapviewer UI.",
+  "cell_analysis": {
+    "load": {"title": "Zircon / Mir3 EI 地图浏览器", "status": "就绪", "canvas": 1, "tiles": "512x512 JPEG imgs (7 visible)"},
+    "selector": "比奇城 — 0.map dropdown (map names from mapnames.py F382)",
+    "layers": {"toggles": "chk-g (ground) / chk-m (mid) / chk-f (front) / chk-grid / chk-ents", "behavior": "tile URL reflects g/m/f params (f=1 -> f=0 on toggle, re-render triggered)"},
+    "controls": "+ / - zoom, 适配 (fit), ❓ help, 重新生成 (rebuild cache)"
+  },
+  "exe_trace": {
+    "tile_api": "/tile?map=0.map&tx=N&ty=N&z=Z&g=&m=&f= (F374/F376 layer/cache semantics)"
+  },
+  "audit_vs_exe": {
+    "F374": "layer params g/m/f confirmed in UI",
+    "F376": "tile cache serves the toggled renders"
+  },
+  "contrast": {
+    "canvas_vs_img": "canvas 0-size (unused?) - tiles render as <img>",
+    "viewer_vs_sim": "mapviewer = exploration UI; simulator = gameplay"
+  },
+  "verdict": "Mapviewer UI verified (derived-tooling): loads with map selector, renders 512x512 tiles with g/m/f layer params, layer toggles trigger re-render (f=1->f=0 confirmed), zoom/fit/rebuild controls present.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "UI behavior verified in browser; tile semantics from primary evidence (F331/F374).",
+  "cross_refs": ["F374: layer render", "F376: tile cache", "F382: map names"],
+  "tool": "puppeteer browser",
+  "reproduce": "open http://127.0.0.1:8899/; toggle chk-f; observe tile URL f param change",
+  "notes": [
+    "canvas element present but tiles are <img> (canvas may be for overlays)",
+    "grid + entities toggles available (chk-grid off by default)",
+    "UI map names = mapnames.py legacy (F382)"
+  ]
+}

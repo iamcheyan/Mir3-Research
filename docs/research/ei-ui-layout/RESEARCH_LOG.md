@@ -6192,3 +6192,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔覆盖〕**313 MiniMap 项 = **211 出货 EI 图（100% 审计，544/544 记录完整）** + **102 服务端专属图不在 EI 包**（401-407 哨所、D15xxx 诺玛区、D2xxx/D6xxx、E/F/Q 系列、RUSH1/Island、9.map）——服务端可引用客户端缺失的图（0x43B600 装载失败）。
 - 落盘：map-coverage-completeness-evidence.json（F396，primary-bytes + 服务端 secondary）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 90。
+## Round 91 (F397) — 2026-08-12：mapviewer UI 验证（加载 + 图层开关 + 瓦片渲染）
+
+- **〔UI〕**加载 OK（地图浏览器）、选择器 比奇城 0.map、512×512 瓦片 g=1&m=1&f=1、图层开关 chk-g/m/f/grid/ents（**front 开关 f=1->f=0 触发重渲染**）、缩放 +/–、适配、重新生成。
+- 落盘：mapviewer-ui-verification-evidence.json（F397，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 91。
