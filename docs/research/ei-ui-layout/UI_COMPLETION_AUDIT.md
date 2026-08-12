@@ -736,6 +736,11 @@ git diff --check
 - **4 行 ON/OFF + 켬/끔 帧验证**（F324/F289/F297）。
 - 落盘：`option-toggle-verification-evidence.json`（F407）+ RESEARCH_LOG Round 101。
 
+## Round 102 (2026-08-12) — 血条动画（Finding 408）
+
+- **三条渲染 + 1.5s 振荡验证**（F350 rects）。
+- 落盘：`bar-animation-verification-evidence.json`（F408）+ RESEARCH_LOG Round 102。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

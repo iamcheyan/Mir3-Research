@@ -1,0 +1,34 @@
+{
+  "evidence_id": "bar-animation-verification-2026-08-12-f408",
+  "title": "Round 102 (F408): Bar animation verified - sim HP/MP/EXP bars render correct rects (hp 44px/100x0.5, mp 50px, exp 129px/339) with 1.5s demo oscillation (STATE.hp/mp % 101 clamp 20), F350 frame-per-value semantics documented",
+  "date": "2026-08-12",
+  "objective": "Verify the sim HP/MP/EXP bar rendering and animation loop.",
+  "question": "Do the sim bars render and animate correctly?",
+  "method": "Sim browser check (bar fills + interval code inspection).",
+  "scope": "sim HUD bars; F350 bar evidence.",
+  "cell_analysis": {
+    "bars": {"hp": "44px height (100x0.5 scale)", "mp": "50px", "exp": "129px width (339 base)"},
+    "animation": "setInterval 1500ms: STATE.hp = max(20, (hp+0.7)%101), mp +0.4, updateBars()",
+    "rects": "hp (61,496,104,566), mp (105,496,147,566), exp (61,586,400,597) primary-static (F350)"
+  },
+  "exe_trace": {
+    "original": "0x40A8A0 HP bar (F350): element frame = live value, gates, 400/300 center"
+  },
+  "audit_vs_exe": {
+    "F350": "bar family + rects confirmed in sim"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = CSS fill animation; original = frame-per-value element selection"
+  },
+  "verdict": "Bar animation verified (F350 semantics): sim renders all 3 bars at correct primary-static rects with 1.5s demo oscillation. Bar subsystem closed.",
+  "evidence_level": "derived-tooling (rects primary-static F350)",
+  "evidence_level_note": "Sim bars browser-verified; original semantics from F350 primary bytes.",
+  "cross_refs": ["F350: bar family", "F339: status window", "F406: attr colors"],
+  "tool": "puppeteer browser; app.js inspection",
+  "reproduce": "open sim; observe HP/MP/EXP bars oscillate every 1.5s",
+  "notes": [
+    "hp fill = 0.5x width scale (vertical bar half), exp = full width",
+    "demo values clamped [20,100]",
+    "original bar = frame = HP value (0x40A8A0, F350)"
+  ]
+}

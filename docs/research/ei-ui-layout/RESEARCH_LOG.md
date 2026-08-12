@@ -6245,3 +6245,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔开关〕**4 行（音乐/音效/环境声/阴影混合）ON/OFF 状态翻转 + 帧证据日志（760/761 켬、762/763 끔，F297 像素）；滑块 751（BGM 音量 F334）；状态字节 +0x54..+0x60（F324）。
 - 落盘：option-toggle-verification-evidence.json（F407，derived-tooling；语义 primary-static F324/F289/F297）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 101。
+## Round 102 (F408) — 2026-08-12：血条动画验证（F350 语义 + 1.5s 演示振荡）
+
+- **〔条〕**HP 44px（100×0.5 竖条半宽）、MP 50px、EXP 129px（339 全宽）——primary-static rects（F350）。
+- **〔动画〕**1500ms 演示振荡（STATE.hp/mp % 101 夹 20）；原版 = 帧=值元素选择（0x40A8A0）。
+- 落盘：bar-animation-verification-evidence.json（F408，derived-tooling；rects primary-static F350）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 102。
