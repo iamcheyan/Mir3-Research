@@ -771,6 +771,11 @@ git diff --check
 - **悬停精灵标记 + targetbox 显名验证**（F239/F359）。
 - 落盘：`hover-sim-verification-evidence.json`（F414）+ RESEARCH_LOG Round 108。
 
+## Round 109 (2026-08-12) — 点击目标（Finding 415）
+
+- **选中 + 切换验证**（F239/F336）。
+- 落盘：`click-targeting-verification-evidence.json`（F415）+ RESEARCH_LOG Round 109。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

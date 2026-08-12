@@ -1,0 +1,34 @@
+{
+  "evidence_id": "click-targeting-verification-2026-08-12-f415",
+  "title": "Round 109 (F415): Click targeting verified - clicking entities sets/switchs STATE.selectedEntity (行会管理员 -> 商店老板), matches F239 click->target semantics (msg 2 -> 0xBC4)",
+  "date": "2026-08-12",
+  "objective": "Verify the sim click-to-target flow and target switching.",
+  "question": "Does clicking entities set and switch the target in the sim?",
+  "method": "Sim browser test (click 2 entities, check selectedEntity switch).",
+  "scope": "sim click targeting; F239 semantics.",
+  "cell_analysis": {
+    "clicks": {"first": "行会管理员 (selectedEntity set)", "second": "商店老板 (switch)", "switched": true},
+    "original": "F239: click msg 2 -> 0xBC4 target set; hover 0xBB8; 800ms timeout + mouse delta > 5 gate (F239/F336)"
+  },
+  "exe_trace": {
+    "target_chain": "F239 (click) + F336 ([0x364444] current target in game tick)"
+  },
+  "audit_vs_exe": {
+    "F239": "click targeting semantics confirmed",
+    "F336": "current target [0x364444] confirmed"
+  },
+  "contrast": {
+    "click_vs_hover": "click = persistent target; hover = transient (F239)"
+  },
+  "verdict": "Click targeting verified (F239 semantics): clicking entities sets and switches STATE.selectedEntity (行会管理员 -> 商店老板). Targeting subsystem closed in sim.",
+  "evidence_level": "derived-tooling (semantics primary-static F239/F336)",
+  "evidence_level_note": "Sim targeting browser-verified; semantics from F239/F336 primary bytes.",
+  "cross_refs": ["F239: target-box-evidence", "F336: current target [0x364444]", "F413/F414: target/hover sim"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; click 2 entities; observe selectedEntity switch",
+  "notes": [
+    "original click msg 2 -> 0xBC4 (F239)",
+    "target persists until switch or 800ms timeout (F336)",
+    "sim target drives panel + box (F413)"
+  ]
+}

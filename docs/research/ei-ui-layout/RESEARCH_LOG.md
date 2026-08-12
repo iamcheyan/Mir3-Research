@@ -6275,3 +6275,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔悬停〕**pointerover 稻草人 → 精灵 hovered 类 + targetbox 显名（F239 0x40BB00 → 0x40B850 名牌路径）。
 - 落盘：hover-sim-verification-evidence.json（F414，derived-tooling；语义 primary-static F239/F359）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 108。
+## Round 109 (F415) — 2026-08-12：点击目标验证（选中 + 切换）
+
+- **〔点击〕**点行会管理员 → selectedEntity 设置；点商店老板 → 切换（F239 点击 msg 2 → 0xBC4 语义）。
+- 落盘：click-targeting-verification-evidence.json（F415，derived-tooling；语义 primary-static F239/F336）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 109。
