@@ -7444,3 +7444,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔矩阵〕**0x466800 = **4×4 矩阵设置**（清 0x11 双字 + 从 4 浮点填对角；F588/F594/F625 全族共用的 'transform'）。
 - **〔向量〕**0x466850 = **3D 向量数学**（3 向量差 + 0x466FB0 点积 + fsqrt 归一化 vs 0x476C6C ε + 叉积 0x445C60，D3D 风格 look-at/basis）——矩阵/向量数学核心字节级（共享变换引擎识别）。
 - 落盘：transform-matrix-vector-math-evidence.json（F643，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 337。
+## Round 338 (F644) — 2026-08-12：向量点积 + 矩阵乘法
+
+- **〔点积〕**0x466FB0 = **自点积**（v·v = |v|²）、0x466FE0 = **双向量点积**（a·b）、0x445C60 = **3 向量复制**（{x,y,z} → out）。
+- **〔矩阵〕**0x467000 = **4×4 矩阵乘法**（4×4 循环、矩阵 [esp+0x14]、行×16 + 列×4）——向量/矩阵核心完整（F643 扩展，全变换共用）。
+- 落盘：vector-dot-matrix-mult-evidence.json（F644，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 338。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "vector-dot-matrix-mult-2026-08-12-f644",
+  "title": "Round 338 (F644): Vector dot + matrix multiply - 0x466FB0 = SELF-dot (v·v = |v|²), 0x466FE0 = 2-vector dot (a·b), 0x445C60 = 3-vector copy ({x,y,z} -> out), 0x467000 = 4x4 MATRIX MULTIPLY (4x4 loop, matrix [esp+0x14], src row*16 + col*4) - vector/matrix core COMPLETE (F643 extended, shared by all transforms)",
+  "date": "2026-08-12",
+  "objective": "Decode the vector dot + matrix multiply.",
+  "question": "What are the exact vector/matrix ops?",
+  "method": "Disasm 0x466FB0-0x467079 + 0x445C60.",
+  "scope": "0x466FB0-0x467079; 0x445C60.",
+  "cell_analysis": {
+    "0x466FB0": "self-dot v·v = |v|² (FPU stack)",
+    "0x466FE0": "2-vector dot a·b",
+    "0x445C60": "3-vector copy {x,y,z} -> out",
+    "0x467000": "4x4 matrix multiply (4x4 loop, matrix [esp+0x14], row*16+col*4)"
+  },
+  "exe_trace": {
+    "math_chain": "F643 normalize uses self-dot + fsqrt; 0x467000 matrix mult for transforms"
+  },
+  "audit_vs_exe": {
+    "F643": "vector/matrix core EXTENDED", "F588/F594": "transform users"
+  },
+  "contrast": {
+    "self_vs_pair": "self-dot vs 2-vector dot",
+    "copy_vs_mult": "vector copy + matrix multiply"
+  },
+  "verdict": "Vector/matrix core PRIMARY-verified: self-dot + pair-dot + vector copy + 4x4 matrix multiply; F643 extended to complete math core.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Math ops decoded from .text.",
+  "cross_refs": ["F643: math core", "F588: users"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x466FB0+0x10; 0x467000+0x20",
+  "notes": [
+    "self-dot = |v|² (normalize base)",
+    "matrix mult 4x4 row-major",
+    "vector copy 12 bytes",
+    "pair-dot for angles"
+  ]
+}
