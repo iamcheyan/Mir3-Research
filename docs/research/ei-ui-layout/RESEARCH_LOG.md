@@ -6904,3 +6904,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔渲染〕**0x4243D0：标题 0xDCE6C8 + 名 0x7776A0、成员链遍历（计数 [0x68]、头 [0x58]、节点 {+4 名, +0xC next}）、**行距 = idx/2*20**（0x42444A：idx*5*4，F54 20px 确认）、成员名白 0xFFFFFF、5 控件（0x417830）、允许/拒绝串（0x47BA08/0x47BA00）。
 - 落盘：group-window-render-detail-evidence.json（F536，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 230。
+## Round 231 (F537) — 2026-08-12：任务窗渲染细节
+
+- **〔渲染〕**0x447470：文本链遍历（头 [0x1E8]、门 [0x54]）、**19 行上限**（0x44751D）、0xC8 宽度门（200px）、**色 0x1919C8/0x19197D**（旗标 [0x210]/[0x204]）、**行 y = idx*15+18**（0x447618，F51 line*3+0x12 确认）、2 控件。
+- 落盘：quest-window-render-detail-evidence.json（F537，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 231。

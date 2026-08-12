@@ -1,0 +1,36 @@
+{
+  "evidence_id": "quest-window-render-detail-2026-08-12-f537",
+  "title": "Round 231 (F537): Quest window render detail - 0x447470: text-list walk (head [0x1E8], gate [0x54]), 0x13 (19) row cap (0x44751D), 0xC8 (200px) width gate (0x44754D), colors 0x1919C8/0x19197D (0x4475F9/0x447606 via flags [0x210]/[0x204]), row y = idx*3*5+0x12 (0x447618 idx*15, F51 line*3+0x12 CONFIRMED), text measure 0x45E0C0, 2 controls (0x417830 @ [0x74]/[0x128]) - F51 quest family complete",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window render detail (F51).",
+  "question": "How does the quest window render its text list?",
+  "method": "Disasm 0x447470-0x447630 (quest paint).",
+  "scope": "0x447470-0x447630; list [0x1E8]; row math.",
+  "cell_analysis": {
+    "list": {"head": "[0x1E8]", "gate": "[0x54] (has quest)", "rows": "0x13 (19) cap (0x44751D)", "width": "0xC8 (200px) gate (0x44754D)"},
+    "colors": {"0x1919C8": "flag [0x210] path", "0x19197D": "flag [0x204] path"},
+    "row_math": "y = idx*3*5+0x12 = idx*15+18 (0x447618, F51 line*3+0x12 confirmed)",
+    "controls": "2 x 0x417830 (@ [0x74]/[0x128])"
+  },
+  "exe_trace": {
+    "quest_chain": "quest data -> list walk -> row y idx*15+18 -> text measure -> colored rows"
+  },
+  "audit_vs_exe": {
+    "F51": "row math + colors + cap confirmed", "F107": "quest family", "F51": "width gate"
+  },
+  "contrast": {
+    "active_vs_normal": "0x1919C8 active vs 0x19197D normal rows",
+    "row_vs_column": "idx*15 vertical = single-column quest log"
+  },
+  "verdict": "Quest window render PRIMARY-verified: list walk + 19-row cap + 0xC8 width gate + colors 0x1919C8/0x19197D + row y idx*15+18 (F51 exact). Quest family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Quest paint decoded from .text.",
+  "cross_refs": ["F51: quest window", "F107: quest family", "F357: quest"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x447470+0x60",
+  "notes": [
+    "row y = idx*15+18 (F51 line*3+0x12 exact)",
+    "0x1919C8 = active quest, 0x19197D = normal",
+    "0xC8 = 200px max line width"
+  ]
+}
