@@ -393,3 +393,15 @@ simulator/style.css
 - 可本地运行的完整 800×600 HTML 客户端模拟器。
 - 运行说明、已完成/候选/待确认清单。
 - 最终验证报告、commit hash 和远程推送结果。
+
+## Round 29-58 追加交付（2026-08-12，Finding 335-364）
+
+主初始化窗口目录、主循环层级、可见性/绘制/热键分派、状态/物品提示框/商店/交易/行会/组队/坐骑/选项/任务/NPC 对话/登录角色选择/HPMPEXP 条/技能格/背包 46 槽/装备面板/小地图/聊天命令/提示框/目标框/悬停提示框全闭合 + 544 张 EI 地图清单 + 城镇/洞穴/沙漠深挖 + 模拟器全交互层接线：
+
+- **窗口目录（F335-F338）**：14 窗口 id→ctor→偏移→frame→x/y/w/h 全表；0x419350 主初始化分派、0x427600 英雄 HUD 创建器、0x419110 帧更新、0x42ADB0 可见性模态切换（close-all 0x42B820）、0x428105 绘制分派（渲染表 0x428358 + IntersectRect + 鼠标表 0x428398）、热键表 0x42CC76（Q/W/E/R/S/D/G/N 等，F329 修正 D→id11）。
+- **窗口身份定稿**：id0 背包（F337 id0=bag 定案）/ id1 状态栏 / id2 商店 / id3 交易 / id4 行会（F294）/ id6 组队 / id7 状态形象 / id8 聊天 / id9 NPC 对话 / idB 任务 / idC 选项 / idD 坐骑 / idE 技能书 / idF 公告；id5/10 未用。
+- **主循环（F336）**：WinMain 消息循环（PeekMessageA/GetMessageA/Translate/Dispatch）+ [0x8B1878] 状态机（intro/角色选择/游戏内 0x41BB00 tick）+ 实体点击分派 0x419D40（4 画家数组）+ IAT 修正（KillTimer/CreateSolidBrush/DeleteObject/MoveWindow/SetWindowTextA/IntersectRect/SetFocus 等）。
+- **地图（F342-F344）**：544 张全解析（w/h@0x16/0x18）；客户端 56 槽瓦片绑定公式 (row+1)*14..；row0 wood 530 张（含 356 洞穴）、row1 sand 14 张；城镇/洞穴/沙漠层构成 + 渲染验证；KR_ORDER 地形子目录解析修正。
+- **模拟器接线（F345-F364）**：14 窗口 primary-static 精确坐标、8 热键、模态切换、19 行聊天环、登录遮罩、NPC 对话 FCOLOR/NPCIMG、技能格 Magic.exp 50 记录、背包 46 槽、装备 8 槽、商店模式链、交易双栏+金币、组队/坐骑/选项/任务内容、小地图 F310、目标框、0x96FFFF 悬停提示框——**全浏览器逐项验证**。
+- **证据文件（29 个新 JSON）**：window-catalog / game-loop-and-entity-dispatch / window-visibility-dispatch(+f337) / window-paint-and-hotkey-dispatch / status-window-family / item-tooltip-and-store-family / trade-chat-option-paint / guild-window-paint / login-charselect-flow / hpmp-exp-bar-family / skill-grid-magic-exp / bag-grid-46-slot / equipment-panel-verification / minimap-subsystem-verification / chat-input-command-dispatch / prompt-system-verification / quest-window-render / caption-tooltip-0x96ffff / group-window-detail / horse-window-wiring / option-window-verification / store-window-content-verification / trade-window-content-verification / simulator-window-catalog-wiring / simulator-chat-modal-wiring / map-inventory / town-cave-map-deepdive / cave-desert-map。
+- **commit 基线**：Round 27=4e95988 → Round 58=cf56033（master 已推，30 连发）。

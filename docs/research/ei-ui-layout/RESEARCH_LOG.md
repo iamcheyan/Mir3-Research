@@ -5993,3 +5993,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F295/F283/F341〕**双栏 +0x5C/+0x6C（mid=x+(w>>1)）；行 idx*9、x=win.x+row*4+0x15（左）/0xFD（右）；**金币框 (34,270)..(156,304)**：点击 → msgbox 0x405 '你要给对方多少金币?' → 确定 → **msg 0x406 via 0x451B30**（F283）；接受 → [+0x13644]=1 定稿；交易自有槽记录 24×0xC2C @ +0x5B8（F293，与背包分开）。
 - **〔模拟器〕**2 栏 × 5×6 = 60 trade-cell + trade-gold 金币框 + 3 zone + 2 divider + 状态 lbl（'交易中 ([+0x13644]=0)'）。**浏览器验证**：60 格 + 金币 + 区域。
 - 落盘：`trade-window-content-verification-evidence.json`（F364，derived-tooling；源证据 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 58。
+
+## Round 59 (F365) — 2026-08-12：模拟器全链路集成验证 + HANDOFF 更新
+
+- **〔浏览器全流程〕**登录遮罩 → 8 热键（Q/W/E/R/S/D/G/N 各开对窗）→ NPC 点击（行会管理员 → 对话窗 .npc-body）→ 悬停提示框（0x96FFFF）——单次浏览器通跑全通过。
+- **〔HANDOFF〕**docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md 追加 Round 29-58 交付摘要（窗口目录/主循环/分派/身份/地图/模拟器接线 F335-F364、29 新证据 JSON、commit 基线 4e95988..cf56033）。
+- 落盘：`integration-sweep-evidence.json`（F365，derived-tooling）+ HANDOFF + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 59。

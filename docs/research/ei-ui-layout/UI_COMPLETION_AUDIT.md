@@ -497,6 +497,12 @@ git diff --check
 - **模拟器交易窗**：60 格 + 金币框 + 区域（浏览器验证）。
 - 落盘：`trade-window-content-verification-evidence.json`（F364）+ RESEARCH_LOG Round 58。
 
+## Round 59 (2026-08-12) — 模拟器全链路集成验证（Finding 365）
+
+- **浏览器全流程通过**：登录 → 8 热键 → NPC 对话 → 悬停提示框。
+- **HANDOFF 更新**：Round 29-58 交付摘要（30 连发 commit 基线 4e95988..cf56033）。
+- 落盘：`integration-sweep-evidence.json`（F365）+ HANDOFF + RESEARCH_LOG Round 59。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

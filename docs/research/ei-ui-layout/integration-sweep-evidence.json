@@ -1,0 +1,30 @@
+{
+  "evidence_id": "integration-sweep-2026-08-12-f365",
+  "title": "Round 59 (F365): Full simulator integration sweep - login->8 hotkeys->NPC dialog end-to-end browser pass + HANDOFF doc updated with Round 29-58 summary (Finding 335-364)",
+  "date": "2026-08-12",
+  "objective": "Final integration verification: run the complete simulator flow (login -> all 8 hotkey windows -> NPC dialog -> target) in one browser pass, and update the HANDOFF doc with the Round 29-58 delivery summary.",
+  "question": "Does the simulator work end-to-end with all the Round 29-58 evidence wiring?",
+  "method": "Single puppeteer browser pass: login overlay -> 8 hotkeys (each opens correct window, second press closes) -> NPC click opens dialog; HANDOFF doc append.",
+  "scope": "browser 8765/sim; docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "browser_pass": {
+      "login": "overlay shown -> click 进入游戏 -> overlay gone (stage 0->3)",
+      "hotkeys": "Q->window.inventory, W->window.status-0x44B2D0, E->window.skill-book, R->window.chat-pop, S->window.horse, D->window.quest, G->window.group, N->window.option - ALL correct",
+      "npc": "click 行会管理员 -> window.npc-candidate with .npc-body dialog",
+      "hover": "cap-tip present on hud.exchange (0x96FFFF styled)"
+    },
+    "handoff_update": {
+      "append": "Round 29-58 delivery summary: window catalog, game loop, visibility/paint/hotkey dispatch, window identities, maps (544), simulator wiring (F335-F364), 29 new evidence JSONs, commit baseline 4e95988..cf56033"
+    }
+  },
+  "verdict": "Simulator verified end-to-end (browser): login flow, 8 hotkey windows, NPC dialog, styled tooltips all working. HANDOFF doc updated with Round 29-58 summary. 30 consecutive shipping rounds (29-58) delivered to master.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Browser pass confirms wiring; source evidence primary-bytes per round.",
+  "cross_refs": ["All F335-F364 evidence files", "HANDOFF Round 29-58 section"],
+  "tool": "puppeteer browser; bash",
+  "reproduce": "open http://127.0.0.1:8765/sim/; login; press Q/W/E/R/S/D/G/N; click NPC",
+  "notes": [
+    "hover tip check after windows closed resets display (expected)",
+    "commit baseline: Round 27=4e95988 ... Round 58=cf56033 (master pushed)"
+  ]
+}
