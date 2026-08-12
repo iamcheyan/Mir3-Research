@@ -6398,3 +6398,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔流水线〕**0x41BB00 18 阶段：时间门 0x5F → BGM 0x1388 5s → 地图滚动 0x43B1E0 → 光场 0x434650 → 英雄更新 → 相机 blit 0x45E730 → 实体更新链 0xE1170 → **6 绘制对象 esi+0x361150..0x3614F4**（门 [0x24]/[0x2C]）→ HP 条 + 目标框 → 实体绘制链 0xE1158 → 光场绘制 0x434D40(400×300) → 精灵链 vtable+0x10 → hover 0x320 → 聊天/UI → 特效。
 - **〔修正〕**F336「4 画家数组」→ 实际 **6 绘制对象**（vtable+0x14 更新 + vtable+0x10 画到屏幕 0x8AB7BC）。
 - 落盘：entity-draw-pipeline-evidence.json（F439，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 133。
+## Round 134 (F440) — 2026-08-12：实体链表容器（5 双向链表 + 游戏 ctor 顺序）
+
+- **〔容器〕**游戏对象 5 双向链表（0xE1158 绘制链 + A@0xE116C vtable 0x4766D4 / B@0xE1184 / C@0xE11B4 / D@0xE11CC）；节点 = {vtable 0x476448, +4 data, +8 prev, +0xC next} 16B；push-back 0x4232A0 / push-front 0x423340 / insert-after 0x4233E0 / unlink 0x423450；**容器内无 y 排序**（绘制序 = 插入序）。
+- **〔ctor〕**0x418B00 子系统初始化顺序（5 链表 → 地图 0xF5200 → 英雄 UI → 英雄实体 → 光场 → 6 绘制对象 → ...）；F336「4 画家数组」修正为 5 链表。
+- 落盘：entity-list-containers-evidence.json（F440，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 134。

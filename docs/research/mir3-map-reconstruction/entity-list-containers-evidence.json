@@ -1,0 +1,39 @@
+{
+  "evidence_id": "entity-list-containers-2026-08-12-f440",
+  "title": "Round 134 (F440): Entity list containers - 5 doubly-linked lists on game obj (0xE1158 head + A@0xE116C vtable 0x4766D4 / B@0xE1184 0x4766B8 / C@0xE11B4 0x47669C / D@0xE11CC 0x476680), node = {vtable 0x476448, +4 data, +8 prev, +0xC next} 0x10B, push-back 0x4232A0/push-front 0x423340/insert-after 0x4233E0/unlink 0x423450, NO y-sort in container (draw order = insertion order), game ctor 0x418B00 subsystem init order (F336 '4 arrays' corrected to 5 lists)",
+  "date": "2026-08-12",
+  "objective": "Document the entity list containers and their insertion semantics (painter's algorithm sort question).",
+  "question": "How are entities stored and in what order are they drawn?",
+  "method": "Game ctor 0x418B00 disasm (raw-bytes verified alignment) + container vtable dumps + method disasm.",
+  "scope": "0x418B00-0x418CFC (ctor), 0x4232A0-0x4234B8 (list methods), 0x4766D4/0x4766B8/0x47669C/0x476680 vtables.",
+  "cell_analysis": {
+    "lists": {"count": "5 (4 + 0xE1158 head)", "A": "@0xE116C (vtable 0x4766D4, head 0xE1170)", "B": "@0xE1184 (0x4766B8, head 0xE1188)", "C": "@0xE11B4 (0x47669C, head 0xE11B8)", "D": "@0xE11CC (0x476680, head 0xE11D0)", "draw_list": "0xE1158 head (tick draw walk)"},
+    "node": {"size": "0x10 (16B)", "layout": "{+0 vtable 0x476448, +4 data, +8 prev, +0xC next}"},
+    "methods": {"push_back": "0x4232A0 (tail insert)", "push_front": "0x423340 (head insert)", "insert_after": "0x4233E0 (after given node)", "unlink": "0x423450 (remove + free via vtable[0])", "sort": "NONE - plain insertion order"},
+    "vtable_chain": "D slot7+ = C's vtable, C slot7+ = B's, B slot7+ = A's (inheritance chain)",
+    "ctor_0x418B00": {"order": "5 lists -> map obj 0xE11E4 (0x4529B0) -> map 0xF5200 (0x43AF70) -> hero UI 0x2A548C (0x426C10) -> hero entity 0x2F8780 (0x40FE80) -> light 0x35B2C0 (0x4344E0) -> 6 paint objs (0x446D60/0x442650/0x443020/0x444870/0x4457C0/0x443B30) -> 0x3615B0 (0x417EC0) -> 0x361A14 (0x446BF0) -> 0x362354 (0x455A80) -> ..."}
+  },
+  "exe_trace": {
+    "draw_order": "game tick walks 0xE1170/0xE1158 head->next (insertion order)",
+    "f336_correction": "'4 painter arrays' = actually 5 linked lists on game object"
+  },
+  "audit_vs_exe": {
+    "F336": "painter arrays corrected to 5 doubly-linked lists",
+    "F439": "tick stages 9/12/14 walk these lists"
+  },
+  "contrast": {
+    "list_vs_sort": "container = plain push/unlink; y-sort NOT in container (pending: entity add path)",
+    "node_vs_entity": "node (16B, vtable 0x476448) separate from entity object"
+  },
+  "verdict": "Entity list containers PRIMARY-verified: 5 doubly-linked lists on game object (A-D vtables + 0xE1158 draw list), 16-byte nodes {vtable, data, prev, next}, push-back/front/insert-after/unlink, NO container-side sort - draw order = insertion order. Game ctor 0x418B00 subsystem init order mapped. F336 '4 arrays' corrected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor raw bytes + vtables + methods all decoded; sort key = pending follow-up.",
+  "cross_refs": ["F336: game loop (corrected)", "F439: draw pipeline", "F434: entity factory"],
+  "tool": "capstone via disasm_capstone.PeImage + raw byte check",
+  "reproduce": "disasm 0x418B00+0x80 (raw-check alignment), 0x4232A0+0x60, dump vtables 0x4766D4/0x4766B8/0x47669C/0x476680",
+  "notes": [
+    "initial 0x418B40 disasm misaligned - raw bytes 89 be XX 11 0e 00 = mov [esi+0xE11XX], edi",
+    "insert-after 0x4233E0 has no direct callers (vtable dispatch)",
+    "y-sort for painter's algorithm: pending - likely server spawn order or add-path sort"
+  ]
+}
