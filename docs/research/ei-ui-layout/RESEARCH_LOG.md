@@ -5949,3 +5949,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x447470 任务列表〕**head [0x54]、cursor [0x1E8]=[0x1E4]、**行数上限 0x13=19**；**条目步长 0x104**（F331 技能列表同款）；0x45E0C0 测宽、**0xC8=200px 门**（超宽换行/滚动 0x44755C）；**选中色 0x1919C8 / 常态 0x19197D**（0x4475F7-0x447606，选择标志 [ebp+0x204]/[ebp+0x210]）；**行 y = line*3 + 0x12**（0x447618）、原点 win.x+0x41；滚动 cursor vs [0x58]。
 - **〔模拟器〕**window.quest 渲染 5 任务行（19 上限）、色 0x1919C8/0x19197D、证据 desc。**浏览器验证**：D 开任务窗、首行 ★ 主线：拜见国王 色 rgb(25,25,200)。
 - 落盘：`quest-window-render-evidence.json`（F357，primary-bytes）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 51。
+
+## Round 52 (F358) — 2026-08-12：HUD 标题提示框（0x417370 0x96FFFF + 14 caption 标签入模拟器）
+
+- **〔0x417370〕**门 byte[+0x34]（悬停标志）；状态 [0x8B1880]/[0x8B1884] + 当前标签 0x8B1888 strcmp；渲染 = 测宽 + **0x96FFFF 底板**（CreateSolidBrush+FillRect 0x4762F0）+ **1px 黑框**（FrameRect 0x4762F4）+ 文本 DrawTextA flags 0x25（Round 28 F242/243 确认）；文本色 BLACK。
+- **〔模拟器〕**layout.json 14 个 hud.* 记录获 caption_label（Round 29 F335 字符串解析）；builder hud 控件输出 caption_label（14 验证）；app.js renderHud 加样式 .cap-tip（0x96ffff 底 + 1px 黑框）。**浏览器验证**：hud.exchange 悬停 → '交易栏(Ctrl+C, C) · F80/81' 色 rgb(150,255,255)。
+- 落盘：`caption-tooltip-0x96ffff-evidence.json`（F358，primary-bytes）+ layout.json + builder + app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 52。

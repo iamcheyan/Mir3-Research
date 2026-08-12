@@ -342,12 +342,18 @@ def main() -> None:
     # -------------------------------------------------------------- controls
     controls: list[dict] = []
     specialized = layout.get("specialized_control_rects", [])
+    # Round 52 (F358): caption labels from hud.* records (Round 29 F335 strings)
+    hud_caps = {}
+    for rec in layout.get("records", []):
+        if rec.get("id", "").startswith("hud.") and rec.get("caption_label"):
+            hud_caps[rec["id"]] = rec["caption_label"]
     for i, c in enumerate(specialized):
         rel = c["relative_rect"]
         wid = c["window_id"]
         base = next((w for w in windows if w["id"] == wid), None)
         bx, by = (base["rect"][0], base["rect"][1]) if base else (0, 0)
         frame_pair = c.get("frame_pair") or [None, None]
+        cap = hud_caps.get(c.get("id", ""), c.get("caption_label", ""))
         controls.append({
             "id": c.get("id", f"specialized-{i}"),
             "window_id": wid,
@@ -363,6 +369,7 @@ def main() -> None:
             "role": c.get("role", ""),
             "call_va": c.get("call_va"),
             "paint_va": c.get("paint_va"),
+            "caption_label": cap,
         })
         if c.get("chat_command") is not None:
             controls[-1]["chat_command"] = c["chat_command"]
@@ -386,6 +393,7 @@ def main() -> None:
             "hitTest": True,
             "evidence_level": rec["evidence"]["level"],
             "source": ";".join(rec["evidence"].get("addresses", [])),
+            "caption_label": rec.get("caption_label", ""),
         })
 
     # -------------------------------------------------------------- resources

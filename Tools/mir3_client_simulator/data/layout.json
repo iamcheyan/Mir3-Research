@@ -363,7 +363,8 @@
       "source": "inventory-window-render-evidence.json",
       "role": "close/confirm candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.inventory.specialized-control.1",
@@ -396,7 +397,8 @@
       "source": "inventory-window-render-evidence.json",
       "role": "inventory action candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.inventory.specialized-control.2",
@@ -429,7 +431,8 @@
       "source": "inventory-window-render-evidence.json",
       "role": "character-sprite/appearance candidate; resource differs from GameInter",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.status.specialized-control.0",
@@ -462,7 +465,8 @@
       "source": "status-window-render-evidence.json",
       "role": "close/confirm candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.status.specialized-control.1",
@@ -495,7 +499,8 @@
       "source": "status-window-render-evidence.json",
       "role": "status action candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.quest.specialized-control.0",
@@ -528,7 +533,8 @@
       "source": "quest-window-render-evidence.json",
       "role": "specialized control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.quest.specialized-control.1",
@@ -561,7 +567,8 @@
       "source": "quest-window-render-evidence.json",
       "role": "specialized control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.npc-candidate.specialized-control.0",
@@ -594,7 +601,8 @@
       "source": "npc-window-render-evidence.json",
       "role": "close/confirm or generic NPC dialogue control",
       "call_va": "0x0043ED65",
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.npc-candidate.specialized-control.1",
@@ -627,7 +635,8 @@
       "source": "npc-window-render-evidence.json",
       "role": "NPC face/portrait or dialogue-side control",
       "call_va": "0x0043ED8B",
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.npc-candidate.specialized-control.2",
@@ -660,7 +669,8 @@
       "source": "npc-window-render-evidence.json",
       "role": "NPC dialogue-side state/control",
       "call_va": "0x0043EDB1",
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.chat-pop.specialized-control.0",
@@ -693,7 +703,8 @@
       "source": "chat-window-render-evidence.json",
       "role": "close-button",
       "call_va": "0x00414144",
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.chat-pop.specialized-control.1",
@@ -727,6 +738,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x00414170",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "@拒绝 ",
       "chat_help": "拒绝和 某人 私聊(@拒绝 某人名)"
     },
@@ -762,6 +774,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x00414196",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "!",
       "chat_help": "大喊话(!喊话)"
     },
@@ -797,6 +810,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x004141BC",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "!!",
       "chat_help": "编组 喊话(!!喊话)"
     },
@@ -832,6 +846,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x004141E5",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "!~",
       "chat_help": "行会 喊话(!~喊话)"
     },
@@ -867,6 +882,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x0041420E",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "@拒绝私聊",
       "chat_help": "拒绝 私聊(@拒绝私聊"
     },
@@ -902,6 +918,7 @@
       "role": "chat-channel-toggle",
       "call_va": "0x00414237",
       "paint_va": null,
+      "caption_label": "",
       "chat_command": "@拒绝行会聊天",
       "chat_help": "拒绝 行会 聊天(@拒绝行会聊天)"
     },
@@ -936,7 +953,8 @@
       "source": "horse-window-render-evidence.json",
       "role": "top/right control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.horse.specialized-control.1",
@@ -969,7 +987,8 @@
       "source": "horse-window-render-evidence.json",
       "role": "mount control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.horse.specialized-control.2",
@@ -1002,7 +1021,8 @@
       "source": "horse-window-render-evidence.json",
       "role": "mount control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.horse.specialized-control.3",
@@ -1035,7 +1055,8 @@
       "source": "horse-window-render-evidence.json",
       "role": "mount control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.horse.specialized-control.4",
@@ -1068,7 +1089,8 @@
       "source": "horse-window-render-evidence.json",
       "role": "mount control candidate",
       "call_va": null,
-      "paint_va": null
+      "paint_va": null,
+      "caption_label": ""
     },
     {
       "id": "window.chat-pop.specialized-control.7",
@@ -1101,7 +1123,8 @@
       "source": "chat-window-render-evidence.json",
       "role": "scroll-up",
       "call_va": "0x00414264",
-      "paint_va": "0x0041492D"
+      "paint_va": "0x0041492D",
+      "caption_label": ""
     },
     {
       "id": "window.chat-pop.specialized-control.8",
@@ -1134,7 +1157,8 @@
       "source": "chat-window-render-evidence.json",
       "role": "scroll-down",
       "call_va": "0x0041428A",
-      "paint_va": "0x0041494B"
+      "paint_va": "0x0041494B",
+      "caption_label": ""
     },
     {
       "id": "window.chat-pop.specialized-control.9",
@@ -1167,7 +1191,8 @@
       "source": "chat-window-render-evidence.json",
       "role": "scrollbar-track (frame 380 16x502, anchored window.x+0x215/window.y-0xD0)",
       "call_va": "0x004142A8",
-      "paint_va": "0x00414846"
+      "paint_va": "0x00414846",
+      "caption_label": ""
     },
     {
       "id": "hud.exchange",
@@ -1197,7 +1222,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x004279B2"
+      "source": "0x00417550;0x004279B2",
+      "caption_label": "交易栏(Ctrl+C, C)"
     },
     {
       "id": "hud.minimap",
@@ -1227,7 +1253,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x004279E6;0x004279B2"
+      "source": "0x00417550;0x004279E6;0x004279B2",
+      "caption_label": "小地图(Ctrl+V, V)"
     },
     {
       "id": "hud.skill-entry",
@@ -1257,7 +1284,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427A1A;0x004279B2"
+      "source": "0x00417550;0x00427A1A;0x004279B2",
+      "caption_label": "技能图鉴(Ctrl+B, B)"
     },
     {
       "id": "hud.exit",
@@ -1287,7 +1315,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427A4E;0x004279B2"
+      "source": "0x00417550;0x00427A4E;0x004279B2",
+      "caption_label": "退出游戏(Alt+Q)"
     },
     {
       "id": "hud.logout",
@@ -1317,7 +1346,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427A82;0x004279B2"
+      "source": "0x00417550;0x00427A82;0x004279B2",
+      "caption_label": "注销人物(Alt+X)"
     },
     {
       "id": "hud.party",
@@ -1347,7 +1377,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427AB6;0x004279B2"
+      "source": "0x00417550;0x00427AB6;0x004279B2",
+      "caption_label": "组队(Ctrl+G, G)"
     },
     {
       "id": "hud.guild",
@@ -1377,7 +1408,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427AEA;0x004279B2"
+      "source": "0x00417550;0x00427AEA;0x004279B2",
+      "caption_label": "行会(Ctrl+F, F)"
     },
     {
       "id": "hud.skill",
@@ -1407,7 +1439,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427B58;0x004279B2"
+      "source": "0x00417550;0x00427B58;0x004279B2",
+      "caption_label": "技能书(Ctrl+E, E)"
     },
     {
       "id": "hud.chat",
@@ -1437,7 +1470,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427BAA;0x004279B2"
+      "source": "0x00417550;0x00427BAA;0x004279B2",
+      "caption_label": "聊天记录(Ctrl+R, R)"
     },
     {
       "id": "hud.quest",
@@ -1467,7 +1501,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427BFC;0x004279B2"
+      "source": "0x00417550;0x00427BFC;0x004279B2",
+      "caption_label": "信息窗口(Ctrl+D, D)"
     },
     {
       "id": "hud.option",
@@ -1497,7 +1532,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427C4D;0x004279B2"
+      "source": "0x00417550;0x00427C4D;0x004279B2",
+      "caption_label": "设置栏(Ctrl+N, N)"
     },
     {
       "id": "hud.group",
@@ -1527,7 +1563,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427C9F;0x004279B2"
+      "source": "0x00417550;0x00427C9F;0x004279B2",
+      "caption_label": ""
     },
     {
       "id": "hud.status",
@@ -1557,7 +1594,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427CF1;0x004279B2"
+      "source": "0x00417550;0x00427CF1;0x004279B2",
+      "caption_label": "坐骑(Ctrl+S, S)"
     },
     {
       "id": "hud.inventory",
@@ -1587,7 +1625,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427D42;0x004279B2"
+      "source": "0x00417550;0x00427D42;0x004279B2",
+      "caption_label": "包袱栏(Ctrl+Q, Q)"
     },
     {
       "id": "hud.store",
@@ -1617,7 +1656,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-static",
-      "source": "0x00417550;0x00427D94;0x004279B2"
+      "source": "0x00417550;0x00427D94;0x004279B2",
+      "caption_label": "状态栏(Ctrl+W, W)"
     },
     {
       "id": "hud.belt",
@@ -1647,7 +1687,8 @@
       "zIndex": 60,
       "hitTest": true,
       "evidence_level": "primary-bytes",
-      "source": "0x00417550;0x00427B24;0x0047BC68"
+      "source": "0x00417550;0x00427B24;0x0047BC68",
+      "caption_label": ""
     }
   ],
   "resources": [

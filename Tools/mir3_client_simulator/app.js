@@ -211,6 +211,26 @@ function renderHud() {
     btn.dataset.evidence = c.evidence_level;
     btn.dataset.desc = c.id;
     btn.title = `${c.id} · F${c.frame_pair[0]} · ${c.evidence_level}`;
+    // Round 52 (F358): caption tooltip 0x417370 - 0x96FFFF pale-yellow
+    // backdrop + 1px black frame + DrawTextA flags 0x25 (Round 28 F242/243).
+    const capLabel = (STATE.data.window_catalog && STATE.data.window_catalog.captions) ?
+      null : null;
+    const tip = document.createElement("div");
+    tip.className = "cap-tip";
+    tip.style.cssText = "position:absolute;display:none;background:#96ffff;color:#000;border:1px solid #000;font:11px monospace;padding:2px 4px;z-index:200;white-space:nowrap;pointer-events:none;";
+    btn.appendChild(tip);
+    btn.addEventListener("pointerenter", () => {
+      const meta = (STATE.data.hotkeys || {}).keys ? null : null;
+      const label = (c.caption_label || c.id).replace("hud.", "");
+      tip.textContent = `${label} · F${c.frame_pair[0]}/${c.frame_pair[1]}`;
+      tip.style.display = "block";
+    });
+    btn.addEventListener("pointermove", (ev) => {
+      const r = btn.getBoundingClientRect();
+      tip.style.left = (ev.clientX - r.left + 8) + "px";
+      tip.style.top = (ev.clientY - r.top - 22) + "px";
+    });
+    btn.addEventListener("pointerleave", () => { tip.style.display = "none"; });
     btn.addEventListener("pointerdown", (ev) => {
       ev.stopPropagation();
       btn.classList.add("pressed");

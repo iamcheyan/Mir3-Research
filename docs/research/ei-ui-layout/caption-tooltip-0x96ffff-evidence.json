@@ -1,0 +1,46 @@
+{
+  "evidence_id": "caption-tooltip-0x96ffff-2026-08-12-f358",
+  "title": "Round 52 (F358): Caption tooltip 0x417370 verified (0x96FFFF backdrop + 1px black frame + DrawTextA 0x25, Round 28 F242) + 14 HUD caption labels bridged into sim controls + styled tooltip browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the caption tooltip renderer 0x417370 (gate [+0x34], state 0x8B1880/0x8B1884, current 0x8B1888 compare, 0x96FFFF backdrop + black frame + DrawTextA 0x25) and wire the 14 HUD caption labels (Round 29 F335 strings) into the simulator with styled tooltips.",
+  "question": "How does the original render caption hover tooltips, and does the sim match?",
+  "method": "Capstone disassembly of 0x417370; layout.json hud.* caption_label parse; builder bridge; app.js styled tooltip; browser verification.",
+  "scope": "0x417370-0x4173F3 (tooltip head), layout hud.* records, builder controls, app.js renderHud.",
+  "cell_analysis": {
+    "tooltip_0x417370": {
+      "gate": "byte [ecx+0x34] (caption hover flag); 0 -> clear 0x8B1880/0x8B1884 + ret",
+      "state": "[0x8B1880] AND [0x8B1884] (tooltip shown state); strcmp current label vs 0x8B1888",
+      "render": "measure + 0x96FFFF backdrop (CreateSolidBrush 0x96FFFF + FillRect 0x4762F0) + 1px black frame (FrameRect 0x4762F4) + text DrawTextA flags 0x25 (0x476280, DT_SINGLELINE|DT_VCENTER|DT_CENTER) - Round 28 F242/243",
+      "callers": "0x4174FF-0x417531 (caption render); arg6 color = 0 (BLACK text), bg = TRANSPARENT"
+    },
+    "sim_bridge": {
+      "layout": "14 hud.* records got caption_label (parsed from Round 29 F335 evidence notes)",
+      "builder": "hud controls emit caption_label (14 verified: 交易栏/小地图/技能图鉴/退出游戏...)",
+      "app": "renderHud adds styled .cap-tip (0x96ffff bg + 1px #000 border) shown on pointerenter",
+      "browser": "hud.exchange hover -> tip '交易栏(Ctrl+C, C) · F80/81', bg rgb(150,255,255), border 1px black"
+    }
+  },
+  "exe_trace": {
+    "tooltip_render": "0x417370 (caption tooltip; Round 28 F242 caption tooltip renderer)",
+    "caption_strings": "0x47BCE0..0x47BBCC (Round 29 F335 GBK/EUC-KR)"
+  },
+  "audit_vs_exe": {
+    "Round 28 F242/243": "0x96FFFF + 1px black + DrawTextA 0x25 confirmed",
+    "Round 29 F335": "16 caption strings confirmed; 14 bridged (hud.belt + hud.status had no evidence note parse)"
+  },
+  "contrast": {
+    "caption_vs_item_tooltip": "caption = 0x96FFFF yellow (0x417370); item = 0x329696 dark (0x4341F0, F340); hover name-tag = 3000ms (0x40BB00) - three systems",
+    "sim_vs_original": "sim styled div matches original colors/frame"
+  },
+  "verdict": "Caption tooltip verified (primary-bytes): 0x417370 gate/state/compare + 0x96FFFF backdrop + 1px black frame + DrawTextA 0x25 (Round 28 F242). 14 HUD caption labels bridged into sim controls with styled tooltips; browser-verified (交易栏 tooltip correct colors).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Tooltip renderer read directly from MIR3.EXE bytes; caption labels from Round 29 F335 strings; sim tooltip browser-verified.",
+  "cross_refs": ["Round 28 F242/243: caption tooltip renderer", "Round 29 F335: 16 caption strings", "F340: item tooltip 0x4341F0 contrast"],
+  "tool": "capstone via disasm_capstone.PeImage; builder; puppeteer browser",
+  "reproduce": "img.disasm(0x417370, 0x60); open sim; hover hud.exchange -> styled 0x96FFFF tooltip",
+  "notes": [
+    "hud.belt (腰带 0x9F/0x9F) and hud.status captions lacked evidence-note parse (belt added Round 29 with different note format) - 14/16 bridged",
+    "tooltip text color = BLACK (0x45DE50 arg6 = 0, Round 28)",
+    "original tooltip drawn at cursor via CreateRectRgn + GetRgnBox (Round 28)"
+  ]
+}

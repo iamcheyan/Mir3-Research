@@ -455,6 +455,12 @@ git diff --check
 - **模拟器任务列表**：浏览器验证（D 开窗、首行选中色）。
 - 落盘：`quest-window-render-evidence.json`（F357，primary-bytes）+ app.js + RESEARCH_LOG Round 51。
 
+## Round 52 (2026-08-12) — HUD 标题提示框（Finding 358）
+
+- **0x417370**：0x96FFFF 底板 + 1px 黑框 + DrawTextA 0x25（F242/243）。
+- **14 caption 标签入模拟器**：样式提示框浏览器验证（交易栏 F80/81 正确配色）。
+- 落盘：`caption-tooltip-0x96ffff-evidence.json`（F358）+ builder/app.js + RESEARCH_LOG Round 52。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

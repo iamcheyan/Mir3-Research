@@ -184,7 +184,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '交易栏(Ctrl+C, C)' @ 0x47BCE0（caption 控件偏移 +0x567C，x 相对 [0xC58] 偏移 0xCC，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "交易栏(Ctrl+C, C)"
     },
     {
       "id": "hud.minimap",
@@ -235,7 +236,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '小地图(Ctrl+V, V)' @ 0x47BCCC（caption 控件偏移 +0x5730，x 相对 [0xC58] 偏移 0xE4，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "小地图(Ctrl+V, V)"
     },
     {
       "id": "hud.skill-entry",
@@ -286,7 +288,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '技能图鉴(Ctrl+B, B)' @ 0x47BCB8（caption 控件偏移 +0x57E4，x 相对 [0xC58] 偏移 0xFC，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "技能图鉴(Ctrl+B, B)"
     },
     {
       "id": "hud.exit",
@@ -337,7 +340,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '退出游戏(Alt+Q)' @ 0x47BCA8（caption 控件偏移 +0x5898，x 相对 [0xC58] 偏移 0xA1，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "退出游戏(Alt+Q)"
     },
     {
       "id": "hud.logout",
@@ -388,7 +392,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '注销人物(Alt+X)' @ 0x47BC98（caption 控件偏移 +0x594C，x 相对 [0xC58] 偏移 0xA1，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "注销人物(Alt+X)"
     },
     {
       "id": "hud.party",
@@ -439,7 +444,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '组队(Ctrl+G, G)' @ 0x47BC88（caption 控件偏移 +0x5A00，x 相对 [0xC58] 偏移 0x268，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "组队(Ctrl+G, G)"
     },
     {
       "id": "hud.guild",
@@ -490,7 +496,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '行会(Ctrl+F, F)' @ 0x47BC78（caption 控件偏移 +0x5AB4，x 相对 [0xC58] 偏移 0x268，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "行会(Ctrl+F, F)"
     },
     {
       "id": "hud.skill",
@@ -541,7 +548,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '技能书(Ctrl+E, E)' @ 0x47BC54（caption 控件偏移 +0x5C1C，x 相对 [0xC58] 偏移 0x2BF，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "技能书(Ctrl+E, E)"
     },
     {
       "id": "hud.chat",
@@ -592,7 +600,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '聊天记录(Ctrl+R, R)' @ 0x47BC40（caption 控件偏移 +0x5CD0，x 相对 [0xC58] 偏移 0x2CE，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "聊天记录(Ctrl+R, R)"
     },
     {
       "id": "hud.quest",
@@ -643,7 +652,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '信息窗口(Ctrl+D, D)' @ 0x47BC2C（caption 控件偏移 +0x5D84，x 相对 [0xC58] 偏移 0x2CE，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "信息窗口(Ctrl+D, D)"
     },
     {
       "id": "hud.option",
@@ -694,7 +704,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '设置栏(Ctrl+N, N)' @ 0x47BC18（caption 控件偏移 +0x5E38，x 相对 [0xC58] 偏移 0x2BF，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "设置栏(Ctrl+N, N)"
     },
     {
       "id": "hud.group",
@@ -798,7 +809,8 @@
         ],
         "notes": "Round 29 (F335): 标题字符串 '坐骑(Ctrl+S, S)' @ 0x47BBF4（caption 控件偏移 +0x5FA0，x 相对 [0xC58] 偏移 0x288，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
       },
-      "role": "坐骑按钮（原候选标『状态』修正：字符串 0x47BBF4 坐骑(Ctrl+S)）"
+      "role": "坐骑按钮（原候选标『状态』修正：字符串 0x47BBF4 坐骑(Ctrl+S)）",
+      "caption_label": "坐骑(Ctrl+S, S)"
     },
     {
       "id": "hud.inventory",
@@ -849,7 +861,8 @@
           "0x004279B2"
         ],
         "notes": "Round 29 (F335): 标题字符串 '包袱栏(Ctrl+Q, Q)' @ 0x47BBE0（caption 控件偏移 +0x6054，x 相对 [0xC58] 偏移 0x288，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
-      }
+      },
+      "caption_label": "包袱栏(Ctrl+Q, Q)"
     },
     {
       "id": "hud.store",
@@ -901,7 +914,8 @@
         ],
         "notes": "Round 29 (F335): 标题字符串 '状态栏(Ctrl+W, W)' @ 0x47BBCC（caption 控件偏移 +0x6108，x 相对 [0xC58] 偏移 0x299，ctor 0x417550 调用点 0x4279B2..0x427D94）。字符串序定稿此映射。"
       },
-      "role": "状态栏按钮（原候选标『商店』修正：字符串 0x47BBCC 状态栏(Ctrl+W)）"
+      "role": "状态栏按钮（原候选标『商店』修正：字符串 0x47BBCC 状态栏(Ctrl+W)）",
+      "caption_label": "状态栏(Ctrl+W, W)"
     },
     {
       "id": "window.inventory",
