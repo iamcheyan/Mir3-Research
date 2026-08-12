@@ -7983,3 +7983,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**389 证据 JSON**；三服务 200；master 9fe1ee6（**423 连发 F335-F764 已推**）。
 - **〔弧〕**注册表（F558）+ 基类构造/绘制（F713/F714）+ 控件（F701/F704/F710）+ 滚动条（F707）+ **全部窗口绘制**（背包 F764 + 状态 F758 + 行会 F755 + 组队 F752 + 交易 F749 + 对话 F746 + 选项 F761）——**窗口系统 100% 字节级**：14 模式注册表 + 基类 + 控件/滚动条工具 + 每窗口绘制/输入全解码。
 - 落盘：window-system-final-closure-evidence.json（F765，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 459。
+## Round 460 (F766) — 2026-08-12：HANDOFF 刷新 65（Round 457-459）+ 窗口系统里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 457-459（F764-F765：背包窗口 + 窗口系统最终闭合）；基线 Round 456=eb5f4b4 → Round 459=fb330c0（**424 连发 F335-F765**）——**窗口系统 100% 里程碑**。
+- 落盘：handoff-refresh-65-evidence.json（F766，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 460。

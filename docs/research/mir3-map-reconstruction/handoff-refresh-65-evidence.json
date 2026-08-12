@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-65-2026-08-12-f766",
+  "title": "Round 460 (F766): HANDOFF refresh 65 - Rounds 457-459 (F763-F765: HANDOFF 64, bag window draw, window system final closure), baseline Round 456=eb5f4b4 -> Round 459=fb330c0 (424 consecutive F335-F765), doc maintenance + window-system milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 457-459.",
+  "question": "What changed since HANDOFF refresh 64?",
+  "method": "Append Round 457-459 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 457-459 appended (3 rounds, F763-F765)",
+    "baseline": "Round 456=eb5f4b4 -> Round 459=fb330c0 (424 consecutive F335-F765)",
+    "milestone": "window system 100% documented",
+    "arcs": {"bag": "F764 bag draw", "closure": "F765 window system"},
+    "key": "window system 100%"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F763": "refresh 64 baseline -> now refresh 65", "F335-F765": "424 rounds"
+  },
+  "contrast": {
+    "refresh_64_vs_65": "F764-F765 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 65 (F766): Rounds 457-459 documented (window system 100%), baseline eb5f4b4 -> fb330c0, 424 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F764-F765 evidence.",
+  "cross_refs": ["F763: refresh 64", "F765: window closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 457-459 section to HANDOFF",
+  "notes": [
+    "424 consecutive shipping rounds F335-F765",
+    "window system 100%",
+    "next: remaining deep corners, sim polish"
+  ]
+}
