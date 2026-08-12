@@ -1,0 +1,37 @@
+{
+  "evidence_id": "guild-social-messages-closure-2026-08-12-f804",
+  "title": "Round 498 (F804): Guild/social messages CLOSED (F755/F797/F803) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master dcda73e (462 consecutive F335-F803), 428 evidence JSONs; arc: guild window (F755) + announce path (F797) + notice list/msg dispatch (F803) - guild/social messages COMPLETE byte-level (5-line notice list + 80 backlog + msg 0x40F/0x414/0x415 sends), guild social surface closed",
+  "date": "2026-08-12",
+  "objective": "Close the guild/social messages arc.",
+  "question": "Is the guild/social messages fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "428 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F755": "guild window", "F797": "announce", "F803": "notice/msg"},
+    "guild": "notices + msgs = COMPLETE",
+    "milestone": "462 consecutive rounds F335-F803"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F803": "462 rounds pushed; guild/social complete"
+  },
+  "contrast": {
+    "notice_vs_msg": "list add + dispatch",
+    "window_vs_announce": "draw + path"
+  },
+  "verdict": "Guild/social messages CLOSED (F804): notices + msgs all byte-level; validation green, 462 consecutive rounds, 428 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F755/F797/F803.",
+  "cross_refs": ["F755", "F797", "F803"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "462 consecutive shipping rounds F335-F803",
+    "guild/social 100%",
+    "next: HANDOFF refresh 78, remaining corners"
+  ]
+}

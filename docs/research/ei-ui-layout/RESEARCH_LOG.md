@@ -8147,3 +8147,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔行会〕**0x4256A0（F797 公告路径）：0x45E200 + 0x468CD7 sprintf 格式 **0x47AD30** → 拆分 ≤5 行（0x104 各）→ 列表插入 [0x100]（节点分配 0x1000、计数 [0x9C] 上限 5、积压 [0x114] 上限 0x50=80 修剪 via vtable[0x14] + free）；0x425820 **行会消息分派**：msg 0x40F（seq 0）→ 0x452470 + 0x452410、msg 0x414 → **0x4520F0 with 0x47BA9C**、msg 0x415 → 0x41 双字成员操作——行会公告/消息完整（F755/F797 用）。
 - 落盘：guild-notice-list-msg-dispatch-evidence.json（F803，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 497。
+## Round 498 (F804) — 2026-08-12：行会/社交消息闭合（F755/F797/F803 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**428 证据 JSON**；三服务 200；master dcda73e（**462 连发 F335-F803 已推**）。
+- **〔弧〕**行会窗口（F755）+ 公告路径（F797）+ 公告列表/消息分派（F803）——**行会/社交消息完整**（5 行公告列表 + 80 积压 + msg 0x40F/0x414/0x415 发送），行会社交表面闭合。
+- 落盘：guild-social-messages-closure-evidence.json（F804，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 498。
