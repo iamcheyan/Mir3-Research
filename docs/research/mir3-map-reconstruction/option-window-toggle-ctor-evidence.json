@@ -1,0 +1,34 @@
+{
+  "evidence_id": "option-window-toggle-ctor-2026-08-12-f546",
+  "title": "Round 240 (F546): Option window toggle ctor - 0x440FE0: 4 toggle ROWS x 2 controls each (0x417550, msg pairs 0x2F8/0x2F9 + 0x2FA/0x2FB = ON/OFF per row, F101), controls @ [0x7C]/[0x130]/[0x1E4]/[0x298]/[0x34C]/[0x400]/[0x4B4]/[0x568]/[0x61C] + BGM slider [0x2C0]; 4 toggles = 音乐/音效/环境声/阴影混合 (F101 frames 760-763 pair) - option family complete",
+  "date": "2026-08-12",
+  "objective": "Decode the option window toggle ctor (F101).",
+  "question": "How are the 4 option toggles constructed?",
+  "method": "Disasm 0x440FE0-0x441200 (option ctor).",
+  "scope": "0x440FE0-0x441200; 4 toggle rows; msgs 0x2F8-0x2FB.",
+  "cell_analysis": {
+    "toggles": {"rows": "4 x 2 controls (0x417550, msg pairs 0x2F8/0x2F9 + 0x2FA/0x2FB = ON/OFF)", "controls": "@ [0x7C]/[0x130]/[0x1E4]/[0x298]/[0x34C]/[0x400]/[0x4B4]/[0x568]/[0x61C]", "slider": "BGM [0x2C0]"},
+    "f101": "4 toggles = 音乐/音效/环境声/阴影混合 (frames 760-763)"
+  },
+  "exe_trace": {
+    "option_chain": "ctor -> 4 toggle rows (2 controls each) -> click flips state (F101)"
+  },
+  "audit_vs_exe": {
+    "F101": "toggle pairs confirmed", "F56": "option family", "F324": "Config.ini states"
+  },
+  "contrast": {
+    "toggle_vs_slider": "4 toggles (ON/OFF) vs BGM slider",
+    "row_pairs": "2 controls per row = label + frame"
+  },
+  "verdict": "Option window toggle ctor PRIMARY-verified: 4 rows x 2 controls (msg pairs 0x2F8-0x2FB), BGM slider [0x2C0]. F101 toggle family complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Option ctor decoded from .text.",
+  "cross_refs": ["F101: toggles", "F56: option family", "F324: Config.ini"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x440FE0+0x60",
+  "notes": [
+    "4 toggles = 音乐/音效/环境声/阴影混合",
+    "msg pairs = ON/OFF frames",
+    "BGM slider at [0x2C0]"
+  ]
+}

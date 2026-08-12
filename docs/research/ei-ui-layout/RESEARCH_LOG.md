@@ -6942,3 +6942,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔分派〕**0x426A80：4 按钮命中（[+0x54]/[+0x108]/[+0x1BC]/[+0x270]）、命令 @上马 0x47B060（门 [0x7DA060]==0）/ @收马 0x47B058 / @遛马 0x47B068（门 !=0）、发送 0x4520F0 + [0x8A68BC]=0x12C 计时器；5 控件遍历（stride 0xB4）——F105/F361 族完整。
 - 落盘：horse-command-dispatch-evidence.json（F545，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 239。
+## Round 240 (F546) — 2026-08-12：选项窗开关构造
+
+- **〔构造〕**0x440FE0：**4 开关行 × 2 控件**（0x417550、msg 对 0x2F8/0x2F9 + 0x2FA/0x2FB = ON/OFF，F101）、控件 @ [0x7C]..[0x61C] + BGM 滑块 [0x2C0]——4 开关 = 音乐/音效/环境声/阴影混合。
+- 落盘：option-window-toggle-ctor-evidence.json（F546，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 240。
