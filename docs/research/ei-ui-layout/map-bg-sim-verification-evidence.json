@@ -1,0 +1,34 @@
+{
+  "evidence_id": "map-bg-sim-verification-2026-08-12-f419",
+  "title": "Round 113 (F419): Map background verified - sim scene bg = FMMap.wil F0 (0.map -> F277 binding), 800x600 viewport scale, 8 entity sprites layered (browser-verified)",
+  "date": "2026-08-12",
+  "objective": "Verify the sim map background rendering and F277 placement.",
+  "question": "Does the sim scene show the correct map background?",
+  "method": "Sim browser test (scene bg image + sprites).",
+  "scope": "sim scene; F277/F310 map binding.",
+  "cell_analysis": {
+    "bg": {"src": "FMMap.wil F0", "size": "800x600 (viewport scale)", "binding": "0.map -> MiniMap 1001 -> FMMap value-1001 = F0 (F277/F310)"},
+    "sprites": "8 entities layered over bg"
+  },
+  "exe_trace": {
+    "map_bg": "map.bg = FMMap.wil F0 (F310); F277 placement formula (0,0,W*1.5,H)"
+  },
+  "audit_vs_exe": {
+    "F277": "FMMap binding confirmed in sim",
+    "F310": "0.map -> FMMap F0 confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = static FMMap F0; original = tiled map render 0x43B440"
+  },
+  "verdict": "Map background verified (F277/F310): sim scene shows FMMap F0 (0.map binding) at 800x600 with 8 sprites layered. Map bg subsystem closed in sim.",
+  "evidence_level": "derived-tooling (binding primary-static F277/F310)",
+  "evidence_level_note": "Sim bg browser-verified; binding from F277/F310 primary bytes.",
+  "cross_refs": ["F277: placement formula", "F310: minimap binding", "F413-415: entity interactions"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; login; observe scene bg + entity sprites",
+  "notes": [
+    "bg scaled to 800x600 (FMMap F0 = world map overview)",
+    "original tiled render = 0x43B440 (F331)",
+    "map cycling via setCurrentMap (F366)"
+  ]
+}

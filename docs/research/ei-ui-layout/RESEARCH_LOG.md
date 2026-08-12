@@ -6291,3 +6291,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔覆盖层〕**证据模式按钮切换：HUD 底板 primary / hp_bar primary-static / 窗口控件 candidate——级别着色显示（浏览器验证）。
 - 落盘：evidence-overlay-verification-evidence.json（F418，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 112。
+## Round 113 (F419) — 2026-08-12：地图背景验证（FMMap F0 + 800×600）
+
+- **〔背景〕**场景 bg = FMMap.wil F0（0.map → F277/F310 绑定）、800×600 视口缩放、8 精灵叠加（浏览器验证）。
+- 落盘：map-bg-sim-verification-evidence.json（F419，derived-tooling；绑定 primary-static F277/F310）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 113。
