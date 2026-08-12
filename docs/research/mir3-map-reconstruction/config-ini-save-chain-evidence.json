@@ -1,0 +1,34 @@
+{
+  "evidence_id": "config-ini-save-chain-2026-08-12-f528",
+  "title": "Round 222 (F528): Config.ini save chain - 0x441B30 writes 6 keys (0x4761A4 WritePrivateProfileString, file 'Config.ini' 0x47A2CC, section 'Options' 0x47A2B8): BGM/[0x54] (0x47C594), BGMLevel/[0x8AB150] (0x47C588), EffectSound/[0x58] (0x47C5AC), EffectSoundLevel/[0x8AB14C] (0x47C598), Ambience/[0x5C] (0x47C57C), ShadowBlend/[0x60] (0x47C570) - F324 chain byte-confirmed",
+  "date": "2026-08-12",
+  "objective": "Decode the Config.ini save chain (F324).",
+  "question": "What keys does the option window save?",
+  "method": "Disasm 0x441B30 (save) + key string decode.",
+  "scope": "0x441B30-0x441CB0; Config.ini keys.",
+  "cell_analysis": {
+    "save_0x441B30": {"file": "Config.ini (0x47A2CC)", "section": "Options (0x47A2B8)", "api": "0x4761A4 (WritePrivateProfileString)", "keys": {"BGM": "[0x54] (0x47C594)", "BGMLevel": "[0x8AB150] (0x47C588)", "EffectSound": "[0x58] (0x47C5AC)", "EffectSoundLevel": "[0x8AB14C] (0x47C598)", "Ambience": "[0x5C] (0x47C57C)", "ShadowBlend": "[0x60] (0x47C570)"}},
+    "f324_confirm": "all 6 state bytes + keys match exactly"
+  },
+  "exe_trace": {
+    "option_chain": "toggle -> state byte (+0x54..+0x60) -> save 0x441B30 -> Config.ini"
+  },
+  "audit_vs_exe": {
+    "F324": "Config.ini chain byte-confirmed", "F56": "option family", "F101": "BGM volume"
+  },
+  "contrast": {
+    "save_vs_load": "0x441B30 save vs 0x441CC0 load (symmetric)",
+    "state_vs_level": "toggle bytes vs volume levels (0x8AB150)"
+  },
+  "verdict": "Config.ini save chain PRIMARY-verified: 6 keys (BGM/BGMLevel/EffectSound/EffectSoundLevel/Ambience/ShadowBlend) with exact state-byte mapping; F324 confirmed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Save fn + keys decoded from .text/.rdata.",
+  "cross_refs": ["F324: Config.ini", "F56: option family", "F101: BGM"],
+  "tool": "capstone + .rdata decode",
+  "reproduce": "disasm 0x441B30+0x40; decode 0x47C570-0x47C5AC",
+  "notes": [
+    "BGMLevel/EffectSoundLevel = volume (0x8AB150/0x8AB14C)",
+    "section = Options, file = Config.ini",
+    "save symmetric with load 0x441CC0"
+  ]
+}

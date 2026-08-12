@@ -6867,3 +6867,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔槽〕**3 × stride 0xB8 @ [0x234]、首空扫描、活动槽字节 [0x462]。
 - **〔激活〕**0x418520：wparam = type<<16 | slot<<8 | tag、MoveWindow（+0x23A/+0xDF）、ShowWindow、GetWindowTextA 输入 [0x130]、msg 0x7EE 发送；点击 0x418600（槽命中 vtable+0x10）。
 - 落盘：prompt-system-detail-evidence.json（F527，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 221。
+## Round 222 (F528) — 2026-08-12：Config.ini 保存链（6 键字节确认）
+
+- **〔链〕**0x441B30 写 6 键（0x4761A4 WritePrivateProfileString，文件 Config.ini、节 Options）：**BGM/[0x54]、BGMLevel/[0x8AB150]、EffectSound/[0x58]、EffectSoundLevel/[0x8AB14C]、Ambience/[0x5C]、ShadowBlend/[0x60]**——F324 字节级确认。
+- 落盘：config-ini-save-chain-evidence.json（F528，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 222。

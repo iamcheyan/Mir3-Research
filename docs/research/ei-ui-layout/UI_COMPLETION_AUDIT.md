@@ -1336,9 +1336,14 @@ git diff --check
 - **3 槽 + 激活 + 点击全解**（F356 族）。
 - 落盘：`prompt-system-detail-evidence.json`（F527）+ RESEARCH_LOG Round 221。
 
+## Round 222 (2026-08-12) — Config.ini 保存链（Finding 528）
+
+- **6 键 + 状态字节映射**（F324 确认）。
+- 落盘：`config-ini-save-chain-evidence.json`（F528）+ RESEARCH_LOG Round 222。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（提示框族完整）。
+- 无阻塞项（选项族完整）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
