@@ -6989,3 +6989,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 237-247（F543-F553：窗口角落 4 项 + recv 函数体 5 项）；基线 Round 236=b12e3b2 → Round 247=01e92a1（**212 连发 F335-F553**）。
 - 落盘：handoff-refresh-6-evidence.json（F554，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 248。
+## Round 249 (F555) — 2026-08-12：recv1 商店族（买/卖/修）全解
+
+- **〔买〕**mapval19（0x41F99F）：0x44E8B0([main+0x2D8614] 商店管理器)；0x41F9AF 开关：3='你不能购买这件物品.'（0x47B940）、2='您的包袱太重啦！无法携带更多物品'（0x47B91C）、1=0x44E8B0 + '您购买的速度过快'（0x47B904）。
+- **〔商店开〕**0x41FA16：模式 [0x54]=**2 商店** + msg 0x10E/0x10F/0x110 + 定位 **(0x207=519, 0)** 经 0x423FA0（公共尾 0x41FA5B）；0x41FB24：模式 [0x54]=1 + msg 0x107/0x108/0x109——**背包管理器模式族完整：0=背包/1=?/2=商店/3=仓库**。
+- **〔卖/修〕**0x41FA72：金币 [0x35B1E8] + 卖出确认 '%s 已经被卖掉!!!'（0x47B8F0）+ 0x42FB20；0x41FB6E：修理确认 '这个物品修补好了!'（0x47B8C0）+ **耐久字 item+0x3D/+0x3F**（[0x2AC1A1]/[0x2AC1A3]）；0x41FAF0：变卖拒绝 '您无法在这里变卖这个物品！'（0x47B8D4）→ 0x418030([main+0x3615B0])。
+- 落盘：recv1-store-family-evidence.json（F555，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 249。

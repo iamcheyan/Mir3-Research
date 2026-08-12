@@ -1,0 +1,41 @@
+{
+  "evidence_id": "recv1-store-family-buy-sell-repair-2026-08-12-f555",
+  "title": "Round 249 (F555): recv1 store family (buy/sell/repair) full decode - mapval19 (0x41F99F): 0x44E8B0([main+0x2D8614] store mgr); 0x41F9AF switch: 3=0x47B940 '你不能购买这件物品.' 2=0x47B91C '您的包袱太重啦！无法携带更多物品' 1=0x44E8B0+0x47B904 '您购买的速度过快'; 0x41FA16 store open: mode [0x54]=2 + msgs 0x10E/0x10F/0x110 + position (0x207=519,0) via 0x423FA0 tail 0x41FA5B; 0x41FB24: mode [0x54]=1 + msgs 0x107/0x108/0x109 -> bag-manager mode family COMPLETE 0=bag/1=?/2=store/3=warehouse (F551); 0x41FA72: gold [0x35B1E8] + sell confirm 0x47B8F0 '%s 已经被卖掉!!!' + 0x42FB20; 0x41FB6E: repair confirm 0x47B8C0 '这个物品修补好了!' + durability words item+0x3D/+0x3F ([0x2AC1A1]/[0x2AC1A3]); 0x41FAF0: sell-denied 0x47B8D4 '您无法在这里变卖这个物品！' -> 0x418030([main+0x3615B0]) - store UI family byte-level (GBK CN layer)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 store buy/sell/repair handler family.",
+  "question": "How do the store buy/sell/repair packets work?",
+  "method": "Disasm 0x41F99F-0x41FC09 + decode store strings (GBK).",
+  "scope": "0x41F99F-0x41FC09; store mgr [0x2D8614]; bag modes [0x54].",
+  "cell_analysis": {
+    "mapval19": "0x44E8B0([main+0x2D8614] store mgr)",
+    "buy_errors": {"3": "0x47B940 '你不能购买这件物品.'", "2": "0x47B91C '您的包袱太重啦！无法携带更多物品'", "1": "0x44E8B0 + 0x47B904 '您购买的速度过快'"},
+    "store_open": {"mode": "[0x54]=2 STORE", "msgs": "0x10E/0x10F/0x110", "pos": "(0x207=519, 0) via 0x423FA0, tail 0x41FA5B"},
+    "mode1": {"0x41FB24": "mode [0x54]=1 + msgs 0x107/0x108/0x109", "family": "0=bag, 1=?, 2=store, 3=warehouse (COMPLETE)"},
+    "sell": {"0x41FA72": "gold [0x35B1E8] + confirm 0x47B8F0 '%s 已经被卖掉!!!' + 0x42FB20([0x2AB9E0], [0x2CF148])"},
+    "repair": {"0x41FB6E": "confirm 0x47B8C0 '这个物品修补好了!' + durability words item+0x3D/+0x3F ([0x2AC1A1]/[0x2AC1A3]) + 0x415280"},
+    "sell_denied": "0x47B8D4 '您无法在这里变卖这个物品！' -> 0x418030([main+0x3615B0])",
+    "strings": "GBK CN layer (KR origin)"
+  },
+  "exe_trace": {
+    "store_chain": "buy packet -> error prompt OR store mgr update; sell -> gold + confirm; repair -> durability + confirm"
+  },
+  "audit_vs_exe": {
+    "F551": "mode 3 warehouse + mode family", "F550": "0x423FA0 position", "F520": "mapval19 semantics", "F464": "0x42FC20", "F460": "item record 0xC2C"
+  },
+  "contrast": {
+    "buy_vs_sell": "buy = 3 error cases; sell = confirm + gold + remove",
+    "repair_vs_sell": "repair writes durability words at +0x3D/+0x3F"
+  },
+  "verdict": "recv1 store family PRIMARY-verified: buy errors (3), store open mode 2 at x=519, sell confirm '%s 已经被卖掉!!!', repair durability words, sell-denied. Bag-manager mode family 0/1/2/3 complete (F551 extended).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + strings decoded from .text/.data.",
+  "cross_refs": ["F551: warehouse mode", "F550: dispatcher", "F497: store 5-mode", "F520: recv1 semantics"],
+  "tool": "capstone disasm + GBK decode",
+  "reproduce": "disasm 0x41F99F+0x30 per handler; decode 0x47B8F0/0x47B904",
+  "notes": [
+    "[main+0x2D8614] = store mgr (hero+0x33988)",
+    "item durability at record+0x3D/+0x3F",
+    "store windows open right side x=518-519",
+    "0x41FA5B = shared position tail (0x207=519)"
+  ]
+}
