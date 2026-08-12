@@ -894,7 +894,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x004279E6"
+    "source": "0x00417550;0x004279E6;0x004279B2"
   },
   {
     "id": "hud.skill-entry",
@@ -924,7 +924,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427A1A"
+    "source": "0x00417550;0x00427A1A;0x004279B2"
   },
   {
     "id": "hud.exit",
@@ -954,7 +954,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427A4E"
+    "source": "0x00417550;0x00427A4E;0x004279B2"
   },
   {
     "id": "hud.logout",
@@ -984,7 +984,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427A82"
+    "source": "0x00417550;0x00427A82;0x004279B2"
   },
   {
     "id": "hud.party",
@@ -1014,7 +1014,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427AB6"
+    "source": "0x00417550;0x00427AB6;0x004279B2"
   },
   {
     "id": "hud.guild",
@@ -1044,7 +1044,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427AEA"
+    "source": "0x00417550;0x00427AEA;0x004279B2"
   },
   {
     "id": "hud.skill",
@@ -1074,7 +1074,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427B58"
+    "source": "0x00417550;0x00427B58;0x004279B2"
   },
   {
     "id": "hud.chat",
@@ -1104,7 +1104,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427BAA"
+    "source": "0x00417550;0x00427BAA;0x004279B2"
   },
   {
     "id": "hud.quest",
@@ -1134,7 +1134,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427BFC"
+    "source": "0x00417550;0x00427BFC;0x004279B2"
   },
   {
     "id": "hud.option",
@@ -1164,7 +1164,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427C4D"
+    "source": "0x00417550;0x00427C4D;0x004279B2"
   },
   {
     "id": "hud.group",
@@ -1194,7 +1194,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427C9F"
+    "source": "0x00417550;0x00427C9F;0x004279B2"
   },
   {
     "id": "hud.status",
@@ -1224,7 +1224,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427CF1"
+    "source": "0x00417550;0x00427CF1;0x004279B2"
   },
   {
     "id": "hud.inventory",
@@ -1254,7 +1254,7 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427D42"
+    "source": "0x00417550;0x00427D42;0x004279B2"
   },
   {
     "id": "hud.store",
@@ -1284,6 +1284,36 @@
     "zIndex": 60,
     "hitTest": true,
     "evidence_level": "primary-static",
-    "source": "0x00417550;0x00427D94"
+    "source": "0x00417550;0x00427D94;0x004279B2"
+  },
+  {
+    "id": "hud.belt",
+    "window_id": "hud",
+    "rect": [
+      393,
+      467,
+      24,
+      16
+    ],
+    "relative_rect": [
+      393,
+      2,
+      24,
+      16
+    ],
+    "frame_pair": [
+      159,
+      159
+    ],
+    "resource_library": "GameInter.wil",
+    "state": [
+      "normal",
+      "hover",
+      "pressed"
+    ],
+    "zIndex": 60,
+    "hitTest": true,
+    "evidence_level": "primary-bytes",
+    "source": "0x00417550;0x00427B24;0x0047BC68"
   }
 ]

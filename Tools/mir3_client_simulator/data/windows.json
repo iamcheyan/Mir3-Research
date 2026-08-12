@@ -209,6 +209,66 @@
       "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B2AD"
+    },
+    {
+      "id": "window.minimap-0x6214",
+      "title": "minimap-0x6214",
+      "rect": [
+        400,
+        300,
+        0,
+        0
+      ],
+      "frame": null,
+      "resource_library": null,
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.id1-status-left",
+      "title": "id1-status-left",
+      "rect": [
+        278,
+        136,
+        244,
+        328
+      ],
+      "frame": 200,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.id7-status-right",
+      "title": "id7-status-right",
+      "rect": [
+        278,
+        136,
+        244,
+        328
+      ],
+      "frame": 200,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.id2-hidden-candidate",
+      "title": "id2-hidden",
+      "rect": [
+        250,
+        148,
+        300,
+        304
+      ],
+      "frame": 1000,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "candidate",
+      "init_va": null,
+      "visibility_va": ""
     }
   ],
   "visibility_dispatch": {

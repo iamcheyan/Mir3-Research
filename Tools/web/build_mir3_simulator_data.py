@@ -223,6 +223,57 @@ def visibility_dispatch() -> dict:
     }
 
 
+def hotkeys() -> dict:
+    """Round 32 (F338, primary-bytes): hotkey table 0x42CC76 (hero hotkey
+    handler 0x42CBD0, GetKeyState). Emitted as additive reference block for
+    the simulator's keyboard layer: key -> window-id / action."""
+    layout = load("layout.json")
+    out = {}
+    for r in layout.get("records", []):
+        if r.get("id") == "hotkey.table-0x42CC76":
+            role = r.get("role", "")
+            out = {
+                "dispatcher_va": "0x42CC76 (inside 0x42CBD0)",
+                "gate": "[hero+0x20] OR [hero+0x24] nonzero -> suppressed",
+                "keys": {
+                    "Q": {"action": "toggle id0", "window_id": 0, "identity": "背包 Bag"},
+                    "W": {"action": "toggle id1", "window_id": 1, "identity": "状态栏 Status"},
+                    "E": {"action": "toggle id14", "window_id": 14, "identity": "技能书 Skill Book"},
+                    "R": {"action": "toggle id8", "window_id": 8, "identity": "聊天 Chat"},
+                    "S": {"action": "toggle id13", "window_id": 13, "identity": "坐骑 Horse"},
+                    "D": {"action": "toggle id11", "window_id": 11, "identity": "信息窗口 Quest/Info"},
+                    "Z": {"action": "brightness [hero+0xD40] clamp 0..0x2E (belt light)"},
+                    "C": {"action": "entity find 0x41EC10 + name status line 0x451A70"},
+                    "V": {"action": "minimap 0x451770 (throttle [hero+0x6210])"},
+                    "B": {"action": "skill browse flip [hero+0x6208]"},
+                    "G": {"action": "toggle id6", "window_id": 6, "identity": "组队 Group"},
+                    "F": {"action": "guild 0x4523E0"},
+                    "N": {"action": "toggle id12", "window_id": 12, "identity": "选项 Option"},
+                    "T": {"action": "minimap state gate [hero+0x6518]==1"},
+                },
+                "note": "F329 'D->horse' corrected (F338): D->id11 quest, S->id13 horse",
+                "source": "window-paint-and-hotkey-dispatch-evidence.json Finding 338 (primary-bytes)",
+            }
+            break
+    return out
+
+
+def window_catalog() -> dict:
+    """Round 29-33 window catalog: id -> {obj offset, ctor, frame, rect, identity}
+    from layout.json window-catalog.hero-builder-0x427600 (primary-bytes)."""
+    layout = load("layout.json")
+    for r in layout.get("records", []):
+        if r.get("id") == "window-catalog.hero-builder-0x427600":
+            windows = r.get("windows", [])
+            return {
+                "builder_va": "0x427600",
+                "hero_object": "main+0x2A548C = 0x7243A4",
+                "windows": windows,
+                "source": "window-catalog-evidence.json (Round 29) + F337/F338 identity resolutions",
+            }
+    return {"windows": []}
+
+
 def main() -> None:
     layout = load("layout.json")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -518,6 +569,8 @@ def main() -> None:
         "hud": hud,
         "frame_tables": frame_tables(),
         "visibility_dispatch": visibility_dispatch(),
+        "hotkeys": hotkeys(),
+        "window_catalog": window_catalog(),
         "viewport": {"width": VIEW_W, "height": VIEW_H},
         "meta": {
             "source": "docs/research/ei-ui-layout/layout.json + specialist evidence",

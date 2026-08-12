@@ -1281,6 +1281,36 @@ function renderTestNav() {
   $("#testnav").classList.toggle("hidden", !STATE.testnav);
 }
 
+/* ------------------------------------------------------------ hotkeys (Round 32 F338) */
+// Maps layout window record id -> data-window box id. Hotkey table 0x42CC76:
+// Q->id0 bag, W->id1 status, E->id14 skill book, R->id8 chat, S->id13 horse,
+// D->id11 quest, G->id6 group, N->id12 option (primary-bytes).
+const HOTKEY_WINDOW_ID = {
+  Q: 0, W: 1, E: 14, R: 8, S: 13, D: 11, G: 6, N: 12,
+};
+function bindHotkeys() {
+  // map window_id -> data.windows layout record by frame (frames are unique per window class)
+  const frameToLayout = {};
+  for (const w of STATE.data.windows || []) {
+    if (typeof w.frame === "number") frameToLayout[w.frame] = w.id;
+  }
+  document.addEventListener("keydown", (ev) => {
+    const k = ev.key.toUpperCase();
+    if (ev.ctrlKey || ev.altKey || ev.metaKey) return; // original uses raw GetKeyState on plain keys
+    const wid = HOTKEY_WINDOW_ID[k];
+    if (wid === undefined) return;
+    ev.preventDefault();
+    const frame = FRAME_BY_ID[wid];
+    const boxId = frameToLayout[frame];
+    if (!boxId) { pushChat(`[热键] ${k}: id${wid} (帧 ${frame} 未在布局中)`); return; }
+    const box = winEl.querySelector(`[data-window="${boxId}"]`);
+    const open = box ? !box.classList.contains("closed") : false;
+    setWindowOpen(boxId, !open);
+    pushChat(`[热键] ${k} → ${open ? "关闭" : "打开"} ${boxId} (id${wid})`);
+  });
+}
+const FRAME_BY_ID = { 0: 250, 1: 200, 2: 1000, 3: 1050, 4: 600, 6: 900, 7: 200, 8: 350, 9: 1100, 11: 700, 12: 750, 13: 850, 14: 400, 15: 602 };
+
 /* ------------------------------------------------------------ boot */
 async function boot() {
   try {
@@ -1298,6 +1328,7 @@ async function boot() {
   renderScene();
   renderHud();
   renderWindows();
+  bindHotkeys();
   bindSceneInteraction();
   renderEvidenceOverlay();
   renderTestNav();

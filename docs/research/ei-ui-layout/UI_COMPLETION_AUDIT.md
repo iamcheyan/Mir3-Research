@@ -322,6 +322,15 @@ git diff --check
 - **IAT 新增**：0x476248=IntersectRect、0x4762B8=SetFocus（F337 候选确认）、0x476250=GetFocus、0x476254=GetWindowRect、0x4762F0=FillRect、0x4762F4=FrameRect。
 - 落盘：`window-paint-and-hotkey-dispatch-evidence.json`（F338，primary-bytes）+ matrix window-identities-final 新记录 + layout.json version 0.16（2 新记录 + window-catalog 6 身份修正）+ RESEARCH_LOG Round 32。
 
+## Round 33 (2026-08-12) — 状态窗口 id1 家族 + 模拟器热键层（Finding 339）
+
+- **〔核心〕id1 状态窗口 paint 0x44B2D0**：mode byte [+0x54] 分派 → SetRect 视口 → '本级' 0x47C348 测宽 → 名字文本 0x7776A0 0xDCFFDC / 0x7776E0 0xB4FAFF → 'LEVEL' 0x47C74C 0xFAE1C8 + font 굴림체 0x47BE18 → 形象帧 0xA7/0xAA（选择器 0x566DD4 + [0x5659CC]，双 blit @ +0xB0/+0x109 与 +0x61/+0xC8）→ 2 子控件。
+- **level 字节 0x777720** 唯一读者 0x44B569（BSS 运行时 [INFERENCE]）；0x7776A0 双角色（地图名缓冲 + 状态名字）。
+- **鼠标 0x44B720 12 槽 PtInRect 命中** → 0x4341F0 属性详情；点击 0x44B7A0 类型分派（5/6/9 vs 7/8）。
+- **NPC 关闭 0x41C1E0**：id9 + id2 + 其他窗口门控关闭链。
+- **模拟器热键层**：builder 新增 hotkeys/window_catalog 块；app.js bindHotkeys（Q/W/E/R/S/D/G/N）；浏览器验证 Q 开 window.inventory；数据重生成 windows=18。
+- 落盘：`status-window-family-evidence.json`（F339，primary-bytes）+ matrix status-window 新记录 + layout.json version 0.17（2 新记录）+ builder/app.js/data 更新 + RESEARCH_LOG Round 33。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

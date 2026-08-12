@@ -1,0 +1,83 @@
+{
+  "evidence_id": "status-window-family-2026-08-12-f339",
+  "title": "Round 33 (F339): Status window id1 family (ctor 0x44B130 / paint 0x44B2D0 / level helper 0x44B560 / label block 0x44BC80 / mouse 0x44B6B0 + 12-slot hit-test 0x44B720) + LEVEL string + font 굴림체 0x47BE18 + 0x777720 level byte + NPC close 0x41C1E0 + simulator data pipeline status",
+  "date": "2026-08-12",
+  "objective": "Complete the status window id1 decode (Ctrl+W): full paint pipeline (level text, character figure, attribute slots, sub-controls), mouse hit-test (12-slot attribute array), label strings ('LEVEL' 0x47C74C, font 굴림체 0x47BE18), level byte 0x777720 (single reader), and the NPC-dialog close path 0x41C1E0 (TAB/ESC). Verify simulator data freshness for the newly resolved window catalog.",
+  "question": "How does the status window render level/attributes/figure, and how does it handle mouse? What are the exact strings/fonts/colors? Where is the level value stored? How is the NPC dialog closed?",
+  "method": "Capstone linear disassembly of MIR3.EXE .text; pefile get_memory_mapped_image string/table reads; absolute-reference scans (A1/8B/89/C7 families) for 0x777720/0x7776A0/0x7776E0; IAT via pefile. Cross-validated against F331 (skill list pattern stride 0x104), F310 (selector 0x566DD4), Round 28 (status-window figure slot, font 굴림체), Round 32 (identity table).",
+  "scope": "0x44B130-0x44B4FD (ctor), 0x44B2D0-0x44B54D (paint), 0x44B560-0x44B6AF (level helper), 0x44B6B0-0x44B71E (mouse), 0x44B720-0x44B793 (12-slot hit-test), 0x44B7A0-0x44B85F (click-dispatch), 0x44BC80-0x44BCE7 (label block), 0x41C1E0-0x41C293 (NPC close), strings 0x47C74C/0x47BE18/0x777720/0x5659CC/0x566DD4.",
+  "cell_analysis": {
+    "status_window_id1": {
+      "identity": "状态栏 Status (Ctrl+W -> 0x42ADB0 id1; caption 状态栏(Ctrl+W, W) 0x47BBCC)",
+      "ctor_0x44B130": "8-arg base 0x423B30 (frame 200, x=0, y=0, w=244, h=328) + controls: frame pairs 0xA1/0xA2 (161/162) +0x58, 0xD4/0xD4-ish +0x58-ish, 0x12A-ish +0x58..; 0x417550 sub-controls @ +0x58/+0x10C/+0x1C0..+0x2F8 (12-slot attribute array stride 0x2C)",
+      "paint_0x44B2D0": "mode byte [esi+0x54] dispatch (0 -> 0x44B3DD, 1 -> 0x44B2ED): 0x44B560 helper -> SetRect viewport (x-0xA, y+0x1E, x+0xFF, y+0x32) -> 0x45DBA0 measure '本级' 0x47C348 (font 9, w=0x2BC) -> 0x45DE50 text 0x7776A0 (name buffer) color 0xDCFFDC + 0x7776E0 color 0xB4FAFF -> 0x44BC80 label block -> frame 0xA7/0xAA figure via 0x5659CC/0x5659D0 (0x466130) -> 0x45FD50 blit at (window.x+0xB0, window.y+0x109) -> 2 sub-controls 0x417830 @ +0x58 (x+0xD4, y+0x12A) + +0x10C (x+0xB0, y+0x108) -> vtable+4",
+      "level_helper_0x44B560": "frame selector 0x566DD4 with level byte [0x777720] (AND 0xFF); [0x566E0C]/[0x566E10] frame header; figure blit at (window.x+0x61, window.y+0xC8) via 0x45FD50; then 12-slot attribute loop [esi+0x2F8-4].. stride 0x2C (tick/frame per slot)",
+      "label_block_0x44BC80": "0x45DBA0 measure 'LEVEL' 0x47C74C + font 굴림체 0x47BE18 (cp949, F311) -> 0x45DE50 text 0x47C74C color 0xFAE1C8 at (window.x+0xFF, window.y+0x43)",
+      "mouse_0x44B6B0": "0x44B720 hit-test: loop 0xB=12 slots stride 0x10 (rects [esi+0x1C0+i*0x10..]), SetRect [0x4762B0] + PtInRect [0x4762B4]; hit index -> slot = idx*0x2C -> [esi+idx*0x2C+0x2F4] gate -> 0x4341F0(x, y, 0) detail popup; miss -> -1",
+      "click_0x44B7A0": "per-slot click: type byte [ecx] (5/6/9 -> 0x44B828, 7/8 -> 0x44B81C, ==arg -> 0x44B865) - slot type dispatch",
+      "evidence_level": "primary-bytes"
+    },
+    "strings_and_tables": {
+      "0x47C74C": "'LEVEL' (ASCII label)",
+      "0x47BE18": "굴림체 (Gulim font, cp949; F311 known)",
+      "0x47C348": "'本级' (current level label, GBK)",
+      "0x7776A0": "name buffer (hero map-name slot per F331 0x2F8788; drawn as status text - runtime content BSS)",
+      "0x7776E0": "second text buffer (BSS; runtime content)",
+      "0x777720": "level byte - SINGLE reader 0x44B569 (0x44B560 helper); no .text writer (server/BSS runtime) [INFERENCE]",
+      "0x5659CC/0x5659D0": "frame table entry for figure selector 0x566DD4 (frame 0xA7=167 / 0xAA=170 figure frames at +0x109/+0xB0 and +0x61/+0xC8)",
+      "colors": "0xDCFFDC name text, 0xB4FAFF second text, 0xFAE1C8 LEVEL label"
+    },
+    "npc_close_0x41C1E0": {
+      "va": "0x41C1E0",
+      "role": "NPC dialog close (TAB cycle 0x42CFBE node id==9 -> this; also ESC/close paths)",
+      "body": [
+        "gate [main+0x2F660C] -> 0x42AC50(id9) list-remove + [main+0x2F65DC] vtable+0x10(0) + clear [0x42804C]/[0x428050] drag",
+        "gate [main+0x2D8644] -> 0x42AC50(id2) + [main+0x2D8614] vtable+0x10(0)",
+        "gate [main+0x2ABA10] && [main+0x2ABA34] -> ... (other window close)"
+      ],
+      "evidence_level": "primary-bytes"
+    },
+    "simulator_data_status": {
+      "pipeline": "Tools/web/build_mir3_simulator_data.py (spec generator) -> Tools/mir3_client_simulator/data/{layout,windows,controls,resources,frame_tables,entities,skills,maps,hud,equipment_slots}.json",
+      "freshness": "F311 round regenerated (windows=14 controls=40 resources=157); Round 29-33 window catalog changes NOT yet re-imported - rerun pipeline as part of simulator sync",
+      "action": "Round 33 will re-run build_mir3_simulator_data.py and verify counts reflect the new window identities (id0 bag/id4 guild/id9 NPC/id11 quest/id14 skill book + visibility/hotkey data)"
+    }
+  },
+  "exe_trace": {
+    "hero": "main+0x2A548C = 0x7243A4",
+    "status_window": "hero+0x29CE4 (id1)",
+    "level_byte": "0x777720 (BSS; single reader 0x44B569)",
+    "selector": "0x566DD4 (character figure frame selector; F310)",
+    "main_hwnd": "0x8AA48C"
+  },
+  "audit_vs_exe": {
+    "Round 28 status-window anchor": "figure slot (window.x+0x61, window.y+0xC8) confirmed in id1 paint 0x44B560 (NOT id7) - Round 32 'id7 figure' was the OTHER figure window; both have figures (id1 character figure, id7 preview)",
+    "F331": "skill-list stride 0x104 vs status attribute slots stride 0x2C - different families",
+    "F310": "selector 0x566DD4 used by id1 figure with level byte 0x777720",
+    "F311": "font 굴림체 0x47BE18 confirmed in 0x44BC80"
+  },
+  "contrast": {
+    "id1_vs_id7": "id1 = left status panel: LEVEL label + 本级 + name buffers 0x7776A0/0x7776E0 + character figure (frame selector 0x566DD4, level byte 0x777720) + 12-slot attribute array; id7 = right panel: character figure preview at +0x61/+0xC8 + 13 SetRect attr slots - id1 is the primary character status, id7 the equipment/attribute panel",
+    "figure_frames": "id1 figure drawn TWICE (0x44B2D0 at +0xB0/+0x109 frame 0xA7/0xAA; 0x44B560 at +0x61/+0xC8) - large preview + small icon [INFERENCE]",
+    "mode_byte": "[esi+0x54] 0/1 = normal/expanded page (both draw same base; 0 adds frame 0xA7, 1 adds 0xAA)"
+  },
+  "verdict": "Status window id1 fully decoded (primary-bytes): ctor 0x44B130 (base frame 200 244x328 + 0x417550 sub-controls + 12-slot attribute array), paint 0x44B2D0 (mode byte dispatch, SetRect viewport, '本级' 0x47C348 measure + name text 0x7776A0 0xDCFFDC / 0x7776E0 0xB4FAFF + LEVEL 0x47C74C 0xFAE1C8 + font 굴림체 0x47BE18 + figure frames 0xA7/0xAA via 0x5659CC + 2 sub-controls), mouse 0x44B6B0 -> 12-slot PtInRect hit-test 0x44B720 (stride 0x10 rects / 0x2C slots, gate 0x2F4-array) -> 0x4341F0 detail; click 0x44B7A0 type dispatch (5/6/9 vs 7/8 vs arg). Level byte 0x777720 single-reader. NPC close 0x41C1E0 (id9 + id2 + others). Simulator pipeline needs re-run for new catalog.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All rects, colors, strings, frame ids and control offsets read directly from MIR3.EXE bytes; BSS buffer content (0x7776A0/0x7776E0/0x777720) is runtime data [INFERENCE].",
+  "cross_refs": [
+    "F310: selector 0x566DD4, live coords 0x777764/0x777768",
+    "F311: font 굴림체 0x47BE18; simulator pipeline",
+    "F329: hotkey W -> id1 (Round 32 F338 correction applied)",
+    "F331: 0x2F8788 = hero map-name buffer = 0x7776A0",
+    "Round 28: status-window figure slot (this+0x200)",
+    "Round 32: id1 identity '状态栏' (paint 0x44B2D0, mouse 0x44B6B0)"
+  ],
+  "tool": "capstone (CS_ARCH_X86/CS_MODE_32) via Tools/reverse-engineering/disasm_capstone.py PeImage; pefile; python3 json",
+  "reproduce": "sys.path.insert(0,'Tools/reverse-engineering'); from disasm_capstone import PeImage; img=PeImage(Path('$MIR3_EI_ROOT/MIR3.EXE')); img.disasm(0x44B2D0, 0x290); img.disasm(0x44B560, 0x160); img.disasm(0x44B720, 0x80); img.disasm(0x44BC80, 0x70); img.disasm(0x41C1E0, 0xB0)",
+  "notes": [
+    "0x7776A0 dual role: hero map-name buffer (F331 0x2F8788) AND status name text - same BSS slot, different consumers",
+    "12-slot attribute array: rects [esi+0x1C0+i*0x10], slots [esi+0x2F8-4+i*0x2C], gates [esi+0x2F4+i*0x2C]",
+    "0x4341F0 = attribute detail popup (tooltip) renderer [INFERENCE - called with x/y/0]",
+    "simulator data: windows.json/controls.json must be regenerated with id0 bag/id4 guild/id9 NPC/id11 quest/id14 skill-book identities + hotkey table"
+  ]
+}

@@ -707,6 +707,32 @@
         "IAT additions: 0x476248=IntersectRect, 0x4762B8=SetFocus (F337 candidate confirmed), 0x476250=GetFocus, 0x476254=GetWindowRect, 0x4762F0=FillRect, 0x4762F4=FrameRect"
       ],
       "pending_notes": "id7 13 attribute slot semantics (which stat per rect) runtime; id11 quest list entry format (0x104 stride shared with F331 skill list); id14 sub-control frame map (0x3D=61 frames per tab)"
+    },
+    {
+      "id": "status-window",
+      "category": "状态窗口 id1 家族 + 模拟器热键 (F339)",
+      "artifacts": [
+        "status-window-family-evidence.json",
+        "window-paint-and-hotkey-dispatch-evidence.json",
+        "layout.json"
+      ],
+      "layout_ids": [
+        "window.status-0x44B2D0",
+        "input.hotkeys-sim",
+        "window-catalog.hero-builder-0x427600"
+      ],
+      "preview_mode": "sim",
+      "status": "primary-bytes-status-window",
+      "pending": false,
+      "closed_2026_08_12": [
+        "status window id1 fully decoded (Finding 339, status-window-family-evidence.json): ctor 0x44B130 (frame 200 244x328 + 0x417550 sub-controls + 12-slot attribute array); paint 0x44B2D0 (mode byte [+0x54], SetRect viewport, '本级' 0x47C348 measure + name text 0x7776A0 0xDCFFDC + 0x7776E0 0xB4FAFF + 'LEVEL' 0x47C74C 0xFAE1C8 + font 굴림체 0x47BE18 + figure frames 0xA7/0xAA via 0x5659CC/selector 0x566DD4 at (win.x+0xB0, win.y+0x109)/(win.x+0x61, win.y+0xC8) + 2 sub-controls 0x417830)",
+        "level byte 0x777720 = single reader 0x44B569 (server/BSS runtime) [INFERENCE]; 0x7776A0 dual role = hero map-name buffer (F331 0x2F8788) + status name text",
+        "mouse 0x44B6B0 -> 0x44B720: 12-slot PtInRect hit-test (rects +0x1C0+i*0x10 stride 0x10, slots +0x2F8-4+i*0x2C, gates +0x2F4) -> 0x4341F0 detail popup; click 0x44B7A0 type dispatch (5/6/9 vs 7/8 vs arg)",
+        "NPC close 0x41C1E0: gates [main+0x2F660C]->0x42AC50(id9)+[+0x2F65DC]vtable+0x10(0)+clear drag; [main+0x2D8644]->id2; [main+0x2ABA10]->others",
+        "simulator hotkey layer wired (Round 33): build_mir3_simulator_data.py emits hotkeys + window_catalog blocks; app.js bindHotkeys consumes them (Q/W/E/R/S/D/G/N -> window toggle by id->frame->layout); browser-verified: single Q opens window.inventory",
+        "simulator data regenerated: windows=18 controls=41 resources=157 (was 14/40/157) with new window catalog records"
+      ],
+      "pending_notes": "0x4341F0 attribute detail popup renderer body; 12-slot per-slot stat semantics (which stat per rect); 0x777720/0x7776A0 runtime content"
     }
   ],
   "verification": {

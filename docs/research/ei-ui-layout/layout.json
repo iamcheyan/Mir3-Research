@@ -1,5 +1,5 @@
 {
-  "version": "0.16-paint-hotkey",
+  "version": "0.17-status-window",
   "message_ring_notes": {
     "evidence": "primary-static",
     "ring_object": {
@@ -3043,6 +3043,50 @@
       "role": "英雄热键表（GetKeyState 0x476278；门 [hero+0x20]/[+0x24] 模态抑制）：Q→id0 背包、W→id1 状态栏、E→id14 技能书、R→id8 聊天、S→id13 坐骑、D→id11 信息窗口、Z→亮度 [hero+0xD40]∈[0,0x2E]（腰带光效）、C→0x41EC10 实体查找+名字 0x451A70、V→小地图 0x451770（节流 0x6210）、B→技能浏览翻转 [0x6208]、G→id6 组队、F→0x4523E0 行会、N→id12 选项、T→小地图状态检查。F329『D→坐骑 id13』修正：D→id11，S→id13",
       "evidence_level": "primary-bytes",
       "source": "window-paint-and-hotkey-dispatch-evidence.json (Round 32)"
+    },
+    {
+      "id": "window.status-0x44B2D0",
+      "kind": "window",
+      "layer": "windows",
+      "window": {
+        "id": 1,
+        "can_move": true
+      },
+      "obj_offset": "hero+0x29CE4",
+      "ctor": "0x44B130",
+      "paint": "0x44B2D0",
+      "mouse": "0x44B6B0 -> 0x44B720 (12-slot hit-test)",
+      "resource": {
+        "file": "GameInter.wil",
+        "frame": 200
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 244,
+        "height": 328
+      },
+      "detail": {
+        "mode_byte": "[+0x54] 0/1 页分派",
+        "level_label": "'本级' 0x47C348 + 'LEVEL' 0x47C74C (0xFAE1C8) + font 굴림체 0x47BE18",
+        "texts": "0x7776A0 name (0xDCFFDC) + 0x7776E0 (0xB4FAFF)",
+        "level_byte": "0x777720 (single reader 0x44B569)",
+        "figure": "selector 0x566DD4 + frames 0xA7/0xAA via 0x5659CC at (win.x+0xB0, win.y+0x109) and (win.x+0x61, win.y+0xC8)",
+        "attr_slots": "12 slots stride 0x2C (rects +0x1C0+i*0x10, gates +0x2F4+i*0x2C); mouse 0x44B720 PtInRect loop -> 0x4341F0 detail",
+        "sub_controls": "0x417550 @ +0x58/+0x10C; 0x417830 reloc"
+      },
+      "evidence_level": "primary-bytes",
+      "source": "status-window-family-evidence.json (Round 33)"
+    },
+    {
+      "id": "input.hotkeys-sim",
+      "kind": "tooling",
+      "layer": "simulator",
+      "role": "模拟器热键层（Round 33）：app.js bindHotkeys 消费 layout.json hotkeys 块（F338 热键表 0x42CC76）——Q/W/E/R/S/D/G/N 开合对应窗口，按窗口 id→帧→layout id 映射；验证：浏览器单次 Q 开 window.inventory",
+      "evidence_level": "derived-tooling",
+      "source": "Tools/mir3_client_simulator/app.js + build_mir3_simulator_data.py (Round 33)"
     }
   ],
   "control_constructors": [
