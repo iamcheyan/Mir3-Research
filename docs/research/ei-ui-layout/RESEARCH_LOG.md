@@ -7840,3 +7840,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**356 证据 JSON**；三服务 200；master f676d43（**390 连发 F335-F731 已推**）。
 - **〔弧〕**caption 分派（F580）+ 热键栏（F581）+ 点击分派（F587）+ 键盘分派（F731）——**HUD 输入完整**（16 分支 caption + 6 槽热键 + 点击路由 + 键盘窗口转发/热键发送），**待办角落 0x42C9E0 闭合**。
 - 落盘：hud-input-arc-closure-evidence.json（F732，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 426。
+## Round 427 (F733) — 2026-08-12：HANDOFF 刷新 54（Round 424-426）
+
+- **〔刷新〕**HANDOFF 追加 Round 424-426（F731-F732：HUD 键盘分派 + HUD 输入弧）；基线 Round 423=facd4c5 → Round 426=2450f7e（**391 连发 F335-F732**）。
+- 落盘：handoff-refresh-54-evidence.json（F733，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 427。
