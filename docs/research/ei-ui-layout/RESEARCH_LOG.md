@@ -8230,3 +8230,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**446 证据 JSON**；三服务 200；master 0d28bae（**480 连发 F335-F821 已推**）——**480 连发里程碑**。
 - **〔弧〕**GDI 文本（F564）+ BSS 助手（F737）+ 测量/换行（F821）——**文本布局完整**（测量 + 换行拆分 + 拼接 + GDI 绘制 + 居中数学），文本表面 100%。
 - 落盘：text-layout-closure-evidence.json（F822，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 516。
+## Round 517 (F823) — 2026-08-12：HANDOFF 刷新 84（Round 514-516）
+
+- **〔刷新〕**HANDOFF 追加 Round 514-516（F821-F822：文本测量/换行 + 文本布局闭合 + 480 里程碑）；基线 Round 513=f6e1d69 → Round 516=ef83484（**481 连发 F335-F822**）。
+- 落盘：handoff-refresh-84-evidence.json（F823，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 517。

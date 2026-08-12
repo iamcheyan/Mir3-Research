@@ -2865,3 +2865,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（文本布局完整；下一弧：HANDOFF 刷新 84/剩余角落）。
+## Round 517 (2026-08-12) — HANDOFF 刷新 84（Finding 823）
+
+- **Round 514-516 追加 + 481 连发**（文本布局完整入档）。
+- 落盘：`handoff-refresh-84-evidence.json`（F823）+ RESEARCH_LOG Round 517。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（文本布局完整；下一弧：剩余深层角落/模拟器 polish）。

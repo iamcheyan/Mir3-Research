@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-84-2026-08-12-f823",
+  "title": "Round 517 (F823): HANDOFF refresh 84 - Rounds 514-516 (F820-F822: HANDOFF 83, text measure/wrap split, text layout closure + 480 milestone), baseline Round 513=f6e1d69 -> Round 516=ef83484 (481 consecutive F335-F822), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 514-516.",
+  "question": "What changed since HANDOFF refresh 83?",
+  "method": "Append Round 514-516 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 514-516 appended (3 rounds, F820-F822)",
+    "baseline": "Round 513=f6e1d69 -> Round 516=ef83484 (481 consecutive F335-F822)",
+    "milestone": "480 consecutive rounds documented",
+    "arcs": {"layout": "F821 measure/wrap", "closure": "F822 text layout"},
+    "key": "text layout complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F820": "refresh 83 baseline -> now refresh 84", "F335-F822": "481 rounds"
+  },
+  "contrast": {
+    "refresh_83_vs_84": "F821-F822 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 84 (F823): Rounds 514-516 documented (text layout complete), baseline f6e1d69 -> ef83484, 481 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F821-F822 evidence.",
+  "cross_refs": ["F820: refresh 83", "F822: layout closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 514-516 section to HANDOFF",
+  "notes": [
+    "481 consecutive shipping rounds F335-F822",
+    "next: remaining deep corners, sim polish"
+  ]
+}
