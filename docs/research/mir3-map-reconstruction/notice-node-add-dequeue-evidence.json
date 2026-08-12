@@ -1,0 +1,37 @@
+{
+  "evidence_id": "notice-node-add-dequeue-2026-08-12-f866",
+  "title": "Round 560 (F866): Notice node add + dequeue (F677 FULL) - 0x414FA0 node ADD (alloc 0x410 + copy 0x102 dwords + [0x408] next/[0x40C] prev + head [0x4]/tail [0xC] insert + count [0x14]++); 0x415030 DTOR (chain free + vtable 0x476620); 0x415090 DEQUEUE (tail [0xC] -> next [0x40C], [0x10]--); 0x4150C0/0x4150D0 ctor (vtable 0x476624 + 0x423CF0) - notice line-list COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the notice node add + dequeue.",
+  "question": "How does the notice list add/remove nodes?",
+  "method": "Disasm 0x414FA0-0x4150E0.",
+  "scope": "0x414FA0-0x4150E0; list.",
+  "cell_analysis": {
+    "0x414FA0": "add: alloc 0x410 + copy + insert head/tail + count",
+    "0x415030": "dtor: chain free vtable 0x476620",
+    "0x415090": "dequeue: tail -> next [0x40C]",
+    "0x4150C0": "ctor: vtable 0x476624 + 0x423CF0"
+  },
+  "exe_trace": {
+    "list_chain": "ctor -> add -> dequeue -> dtor"
+  },
+  "audit_vs_exe": {
+    "F677": "notice core CONFIRMED", "F734": "line add", "F864": "base list"
+  },
+  "contrast": {
+    "add_vs_dequeue": "insert + remove",
+    "ctor_vs_dtor": "vtable + free"
+  },
+  "verdict": "Notice node add + dequeue PRIMARY-verified: alloc/insert/remove; notice line-list complete (F677).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Notice list decoded from .text.",
+  "cross_refs": ["F677: core", "F734: add", "F864: base"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x414FA0+0x10; 0x415090+0x10",
+  "notes": [
+    "node 0x410",
+    "copy 0x102 dwords",
+    "head [0x4]/tail [0xC]",
+    "vtables 0x476620/0x476624"
+  ]
+}

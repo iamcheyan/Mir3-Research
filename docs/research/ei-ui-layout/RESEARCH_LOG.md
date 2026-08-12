@@ -8416,3 +8416,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 556-558（F863-F864：基础行列表 + 行列表基类闭合）；基线 Round 555=8d5f502 → Round 558=1e2d1b2（**523 连发 F335-F864**）。
 - 落盘：handoff-refresh-98-evidence.json（F865，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 559。
+## Round 560 (F866) — 2026-08-12：公告节点添加 + 出队（F677 全量）
+
+- **〔公告〕**0x414FA0 **节点添加**（分配 0x410 + 复制 0x102 双字 + [0x408] next/[0x40C] prev + 头 [0x4]/尾 [0xC] 插入 + 计数 [0x14]++）；0x415030 **析构**（链 free + vtable 0x476620）；0x415090 **出队**（尾 [0xC] → next [0x40C]、[0x10]--）；0x4150C0/0x4150D0 构造（vtable 0x476624 + 0x423CF0）——公告行列表完整。
+- 落盘：notice-node-add-dequeue-evidence.json（F866，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 560。

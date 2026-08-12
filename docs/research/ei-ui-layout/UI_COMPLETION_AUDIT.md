@@ -3209,3 +3209,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（列表基类完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 560 (2026-08-12) — 公告节点添加 + 出队（Finding 866）
+
+- **分配/插入/出队/析构**（公告列表完整）。
+- 落盘：`notice-node-add-dequeue-evidence.json`（F866）+ RESEARCH_LOG Round 560。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告列表完整；下一弧：剩余深层角落）。
