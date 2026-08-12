@@ -6114,3 +6114,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔双源〕**mapnames.py 遗留库（0=比奇城/1=失乐园/D001=幽灵森林）vs Mapinfo 服务端（0=比奇县/1=道馆/D001=半兽洞穴1层）——**客户端显示服务端推送名**（0x7776A0/0x2F8788 缓冲，无客户端名表，F331/F333）→ **Mapinfo 名 = EI 3.0 运行时真相**；3.map=沙巴克城双源一致。
 - **〔覆盖〕**365 命名 / 678 链端点 → **253 端点 Mapinfo 未命名**（服务端只给访问过的图命名）。
 - 落盘：map-name-table-verification-evidence.json（F382，secondary；缓冲用法 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 76。
+
+## Round 77 (F383) — 2026-08-12：地图主题验证（theme = 瓦片行 + 5 图主题/内容不一致类）
+
+- **〔theme〕**= header[0x14] 瓦片行（F343）：全集 {0 wood: 530, 1 sand: 14}、绑定 {0: 197, 1: 14}（211 总）。
+- **〔不一致〕**5 张 theme-1 图（72/73/76/77/78.map，400×200）绑定 sand 库但格引用基础库 {0,1}（ground tilesc/tiles30c，帧 7596 合法）+ mid {5,10,3}——**沙行绑定但基础地面内容**（稀疏沙漠用基础瓦片）[candidate]。
+- 落盘：map-theme-verification-evidence.json（F383，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 77。

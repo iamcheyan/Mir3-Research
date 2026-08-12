@@ -606,6 +606,12 @@ git diff --check
 - **覆盖**：365 命名 / 253 端点未命名。
 - 落盘：`map-name-table-verification-evidence.json`（F382，secondary）+ RESEARCH_LOG Round 76。
 
+## Round 77 (2026-08-12) — 地图主题验证（Finding 383）
+
+- **theme = 瓦片行**（530 wood + 14 sand 全集 / 197+14 绑定）。
+- **5 图主题/内容不一致**（72/73/76/77/78.map：沙行 + 基础地面库）——新不一致类。
+- 落盘：`map-theme-verification-evidence.json`（F383，primary-bytes）+ RESEARCH_LOG Round 77。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

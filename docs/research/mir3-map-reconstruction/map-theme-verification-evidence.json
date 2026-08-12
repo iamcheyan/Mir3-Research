@@ -1,0 +1,37 @@
+{
+  "evidence_id": "map-theme-verification-2026-08-12-f383",
+  "title": "Round 77 (F383): Map theme verification - theme field = header[0x14] tile-row (530 wood + 14 sand full-set; 197 wood + 14 sand bound) + 5 theme-1 maps (72/73/76/77/78.map) use base libs 0/1 not sand libs (tile-row sand but content base) - theme/layer inconsistency class",
+  "date": "2026-08-12",
+  "objective": "Verify the audit theme field semantics and identify maps where theme (tile-row) disagrees with actual layer lib usage.",
+  "question": "Is the theme field consistent with layer content across all maps?",
+  "method": "map-audit.json theme distribution vs F343; theme-1 maps' lib usage cross-check (sand libs 28-41 in ground/mid/front); per-map detail for non-conforming maps.",
+  "scope": "map-audit.json (544 maps); F343 binding formula.",
+  "cell_analysis": {
+    "theme_distribution": {"full": "{0: 530 wood, 1: 14 sand}", "bound": "{0: 197, 1: 14} (211 total)", "semantics": "theme = header[0x14] tile-row (F343)"},
+    "theme_vs_libs": {"theme1_uses_sand": "9/14 (sand libs 28-41 present)", "theme1_no_sand": "72/73/76/77/78.map (5 maps) - ground libs {0,1} base tilesc/tiles30c, mid {5,10,3} - NO sand libs"},
+    "nonconforming_detail": {"72.map": "400x200, ground {0: 4408 blocks, 1: 12972}, mid {5,10}", "78.map": "400x200, ground {0: 3510, 1: 16490}, mid {3,5,10}"},
+    "interpretation": "theme-1 row binds sand libs (28-41) but these maps' cells reference base libs (0/1) - either sand libs 0/1-load-compatible or the maps are sparse desert with base ground (frames 7596 in lib 0 = base Tilesc terrain) [candidate: map author used base tiles in a sand-row map]"
+  },
+  "exe_trace": {
+    "tile_row": "header[0x14] -> binds ids (row+1)*14.. (F343 0x43B77A)"
+  },
+  "audit_vs_exe": {
+    "F343": "theme = tile-row confirmed (530/14 full, 197/14 bound)",
+    "F369": "sand row-1 maps list (14) matches; content inconsistency is a new class"
+  },
+  "contrast": {
+    "theme_vs_content": "9/14 theme-1 maps truly sandy; 5/14 use base ground despite sand binding",
+    "row_vs_cells": "tile-row = binding intent; cell bytes = actual content"
+  },
+  "verdict": "Map theme verified (primary-bytes): theme = tile-row (530 wood + 14 sand full-set; 197+14 bound). NEW inconsistency class: 5 theme-1 maps (72/73/76/77/78.map) bind sand libs but their cells reference base libs 0/1 (ground) - sparse desert maps using base terrain tiles.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Theme + lib usage computed from map binaries via audit tool.",
+  "cross_refs": ["F343: tile-row binding", "F369: sand map set", "F342: map inventory"],
+  "tool": "map-audit.json analysis; python3",
+  "reproduce": "python3 map-audit theme distribution + per-map lib check for theme-1 maps",
+  "notes": [
+    "72/73/76/77/78.map = 400x200 landscape format (desert outskirts)",
+    "frame 7596 in lib 0 (base Tilesc 9836) = valid base terrain",
+    "interpretation candidate: these maps' sand-row binding is nominal; author drew with base tiles - renders fine in EI"
+  ]
+}
