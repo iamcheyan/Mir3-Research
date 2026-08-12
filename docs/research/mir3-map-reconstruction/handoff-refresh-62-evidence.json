@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-62-2026-08-12-f757",
+  "title": "Round 451 (F757): HANDOFF refresh 62 - Rounds 448-450 (F754-F756: HANDOFF 61, guild window draw, guild window arc closure + Round 450 milestone), baseline Round 447=18ca584 -> Round 450=2f8112b (415 consecutive F335-F756), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 448-450.",
+  "question": "What changed since HANDOFF refresh 61?",
+  "method": "Append Round 448-450 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 448-450 appended (3 rounds, F754-F756)",
+    "baseline": "Round 447=18ca584 -> Round 450=2f8112b (415 consecutive F335-F756)",
+    "milestone": "Round 450 shipping milestone documented",
+    "arcs": {"guild": "F755 window draw", "closure": "F756 guild"},
+    "key": "guild window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F754": "refresh 61 baseline -> now refresh 62", "F335-F756": "415 rounds"
+  },
+  "contrast": {
+    "refresh_61_vs_62": "F755-F756 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 62 (F757): Rounds 448-450 documented (guild complete), baseline 18ca584 -> 2f8112b, 415 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F755-F756 evidence.",
+  "cross_refs": ["F754: refresh 61", "F756: guild closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 448-450 section to HANDOFF",
+  "notes": [
+    "415 consecutive shipping rounds F335-F756",
+    "next: remaining deep corners, sim polish"
+  ]
+}
