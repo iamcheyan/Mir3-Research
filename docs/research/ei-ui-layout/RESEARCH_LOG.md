@@ -7185,3 +7185,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔HP 条〕**0x42A040：**浮点渐变条**（×0x47644C 缩放、0x466800 变换 色浮点 0x3E20A0A1/0x3E70F0F1/0x3EA0A0A1、0x4542F0 经瓦片存储 0x5600FC type 0x51 F530）+ **HP 数字文本**（[0x7DA11F] → 0x45E0C0 测量 + 0x45DE50 绘制，居中 0x250/0x13B）+ 0x45E570 填充 0x324B64；**帧 0x43** WIL 绘制于 ([edi+0xC58]+0xD1, [edi+0xC5C]+0x25) 经 0x45F2D0。
 - **〔等级〕**0x42A26A：等级 [0x7DA11F] + 格式 0x47BD40 + 居中 0x216/0xCD——HUD 状态条字节级（F530 实体 HP 扩展到 HUD 层）。
 - 落盘：hud-status-bars-level-paint-evidence.json（F588，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 282。
+## Round 283 (F589) — 2026-08-12：HANDOFF 刷新 13（Round 277-282）
+
+- **〔刷新〕**HANDOFF 追加 Round 277-282（F584-F588：小地图/大地图渲染 + Mir3.ini 配置 + 窗口拖动/点击 + HUD 状态条）；基线 Round 276=6ef0adb → Round 282=ee78dbd（**247 连发 F335-F588**）。
+- 落盘：handoff-refresh-13-evidence.json（F589，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 283。

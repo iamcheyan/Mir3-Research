@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-13-2026-08-12-f589",
+  "title": "Round 283 (F589): HANDOFF refresh 13 - Rounds 277-282 (F583-F588: minimap/world-map render + chat layout/Mir3.ini config + window drag/move dispatcher + input/click dispatcher + HUD status bars HP/level), baseline Round 276=6ef0adb -> Round 282=ee78dbd (247 consecutive F335-F588), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 277-282.",
+  "question": "What changed since HANDOFF refresh 12?",
+  "method": "Append Round 277-282 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 277-282 appended (6 rounds, F583-F588)",
+    "baseline": "Round 276=6ef0adb -> Round 282=ee78dbd (247 consecutive F335-F588)",
+    "arcs": {"render": "F584 minimap/world-map", "config": "F585 Mir3.ini", "interaction": "F586 drag + F587 click", "bars": "F588 HP/level"},
+    "key": "HUD full layer closed (render + interaction + config + bars)"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F583": "refresh 12 baseline -> now refresh 13", "F335-F588": "247 rounds"
+  },
+  "contrast": {
+    "refresh_12_vs_13": "F584-F588 (5 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 13 (F589): Rounds 277-282 documented (HUD full layer), baseline 6ef0adb -> ee78dbd, 247 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F584-F588 evidence.",
+  "cross_refs": ["F583: refresh 12", "F588: HUD bars"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 277-282 section to HANDOFF",
+  "notes": [
+    "247 consecutive shipping rounds F335-F588",
+    "next: remaining deep corners, sim polish, server-side cross-ref"
+  ]
+}
