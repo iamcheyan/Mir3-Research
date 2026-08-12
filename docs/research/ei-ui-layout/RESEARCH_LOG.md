@@ -8615,3 +8615,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔商店〕**0x44E700 **购买槽命中**（5 槽 @ [0x668] stride 0x10 + 2 号矩形 +0x48、PtInRect 0x4762B4 → idx + [0x700]）；0x44E7D0 **列表槽获取**（[0x70C] 列表、idx 匹配）；0x44E800 **卖出槽命中**（4 槽 @ [0x728] + [0x7E0] 状态）——商店槽交互完整。
 - 落盘：shop-slot-hit-lookup-evidence.json（F911，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 605。
+## Round 606 (F912) — 2026-08-12：商店槽闭合（F661/F740/F824/F911 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**536 证据 JSON**；三服务 200；master c921b12（**570 连发 F335-F911 已推**）。
+- **〔弧〕**管理（F661）+ 点击（F740）+ 分派（F824）+ 槽命中/查找（F911）——**商店槽完整**（买 5 槽 + 卖 4 槽 + 列表获取 + 模式门），商店窗口 100% 交互。
+- 落盘：shop-slots-closure-evidence.json（F912，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 606。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "shop-slots-closure-2026-08-12-f912",
+  "title": "Round 606 (F912): Shop slots CLOSED (F661/F740/F824/F911) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master c921b12 (570 consecutive F335-F911), 536 evidence JSONs; arc: manager (F661) + click (F740) + dispatch (F824) + slot hit/lookup (F911) - shop slots COMPLETE byte-level (buy 5 slots + sell 4 slots + list get + mode gating), shop window 100% interactive",
+  "date": "2026-08-12",
+  "objective": "Close the shop slots arc.",
+  "question": "Is the shop slots fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "536 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F661": "manager", "F740": "click", "F824": "dispatch", "F911": "slots"},
+    "shop": "slots + list + modes = COMPLETE",
+    "milestone": "570 consecutive rounds F335-F911"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F911": "570 rounds pushed; shop slots complete"
+  },
+  "contrast": {
+    "buy_vs_sell": "5 + 4 slots",
+    "hit_vs_mode": "PtInRect + [0x5F8]"
+  },
+  "verdict": "Shop slots CLOSED (F912): slots + list + modes all byte-level; validation green, 570 consecutive rounds, 536 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F661/F740/F824/F911.",
+  "cross_refs": ["F661", "F740", "F824", "F911"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "570 consecutive shipping rounds F335-F911",
+    "shop slots 100%",
+    "next: HANDOFF refresh 115, remaining corners"
+  ]
+}

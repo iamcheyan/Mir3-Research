@@ -3577,3 +3577,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（商店槽完整；下一弧：剩余深层角落）。
+## Round 606 (2026-08-12) — 商店槽闭合（Finding 912）
+
+- **570 连发 + 536 证据 + 商店槽完整**。
+- 落盘：`shop-slots-closure-evidence.json`（F912）+ RESEARCH_LOG Round 606。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（商店槽完整；下一弧：HANDOFF 刷新 115/剩余角落）。
