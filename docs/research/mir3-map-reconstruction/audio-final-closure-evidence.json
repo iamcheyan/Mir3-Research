@@ -1,0 +1,36 @@
+{
+  "evidence_id": "audio-final-closure-2026-08-12-f669",
+  "title": "Round 363 (F669): Audio FINAL closure (F665-F668) - validation green (compileall/verify exit 0/node/JSON), services 200, master f5bcdcc (327 consecutive F335-F668), 293 evidence JSONs; arc: sound dispatch map (F665) + entity sound slot family (F668) - AUDIO system complete (sound-id map + 50-slot engine + DSound/MIDI F632/633), connecting F470/F563/F566/F632/F633",
+  "date": "2026-08-12",
+  "objective": "Close the audio system finally.",
+  "question": "Is the audio system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "293 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F665": "sound map", "F668": "entity sound slots"},
+    "audio": "sound map + 50-slot engine + DSound/MIDI (F632/633) = COMPLETE",
+    "milestone": "327 consecutive rounds F335-F668"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F668": "327 rounds pushed; audio complete"
+  },
+  "contrast": {
+    "map_vs_slots": "type map + slot engine",
+    "effect_vs_music": "sound effects + MIDI BGM"
+  },
+  "verdict": "Audio FINAL closure (F669): sound map + slot engine + DSound/MIDI all byte-level; validation green, 327 consecutive rounds, 293 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F665-F668.",
+  "cross_refs": ["F665: sound map", "F668: slots", "F632/633: engine"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "327 consecutive shipping rounds F335-F668",
+    "next: HANDOFF refresh 34, remaining corners"
+  ]
+}

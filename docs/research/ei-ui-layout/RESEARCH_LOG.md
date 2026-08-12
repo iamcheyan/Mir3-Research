@@ -7559,3 +7559,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔槽〕**0x45B140（[0x8AB130]）：**50 音效槽 [0x460] stride 4**、按 id [edx+0x3C] 查找 → 0x45BC60/0x45BC80 播放（ret 0x10）；0x45B1B0/0x45B1C0 = 启用/禁用 [0x14]；0x45B1D0 = **全停**（50 槽 0x45B950）；0x45B210 = **全清**（0x45B7F0 + [esi]=0）——实体音效管理字节级（F566/F665 连接）。
 - 落盘：entity-sound-slot-family-evidence.json（F668，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 362。
+## Round 363 (F669) — 2026-08-12：音频最终闭合（F665-F668 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**293 证据 JSON**；三服务 200；master f5bcdcc（**327 连发 F335-F668 已推**）。
+- **〔弧〕**音效分派映射（F665）+ 实体音效槽族（F668）——**音频系统完整（音效 id 映射 + 50 槽引擎 + DSound/MIDI F632/633）**，连接 F470/F563/F566。
+- 落盘：audio-final-closure-evidence.json（F669，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 363。
