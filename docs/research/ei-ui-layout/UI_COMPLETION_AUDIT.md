@@ -786,6 +786,11 @@ git diff --check
 - **武士/法师/道士 按钮入登录流**（F349/F311）浏览器验证。
 - 落盘：`char-select-visual-verification-evidence.json`（F417）+ app.js + RESEARCH_LOG Round 111。
 
+## Round 112 (2026-08-12) — 证据调试模式（Finding 418）
+
+- **rect + 级别着色覆盖层验证**（primary/primary-static/candidate）。
+- 落盘：`evidence-overlay-verification-evidence.json`（F418）+ RESEARCH_LOG Round 112。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -6287,3 +6287,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔类选〕**登录遮罩加 武 士/法 师/道 士 按钮（0x47D778/0x47D784/0x47D790，F349/F311）；点击进游戏 + 证据日志（浏览器验证）。
 - 落盘：char-select-visual-verification-evidence.json（F417，derived-tooling；名 primary-static F349/F311）+ app.js + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 111。
+## Round 112 (F418) — 2026-08-12：证据调试模式验证（rect + 级别着色）
+
+- **〔覆盖层〕**证据模式按钮切换：HUD 底板 primary / hp_bar primary-static / 窗口控件 candidate——级别着色显示（浏览器验证）。
+- 落盘：evidence-overlay-verification-evidence.json（F418，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 112。

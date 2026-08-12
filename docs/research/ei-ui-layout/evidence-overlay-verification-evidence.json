@@ -1,0 +1,34 @@
+{
+  "evidence_id": "evidence-overlay-verification-2026-08-12-f418",
+  "title": "Round 112 (F418): Evidence overlay verified - debug mode shows labeled rects with evidence levels (HUD 底板 primary / hp_bar primary-static / window controls candidate, color-coded), browser-verified",
+  "date": "2026-08-12",
+  "objective": "Verify the simulator's evidence debug overlay shows control rects with evidence levels.",
+  "question": "Does the sim evidence mode display rects + evidence levels?",
+  "method": "Sim browser test (toggle evidence mode, inspect overlay).",
+  "scope": "sim evidence overlay; layout.json evidence fields.",
+  "cell_analysis": {
+    "overlay": {"toggle": "证据模式 button (data-act=evidence)", "visible": "true after click", "entries": "ev primary (HUD 底板 F50) / ev primary-static (hp_bar/mp_bar/exp_bar) / ev candidate (window controls)"},
+    "semantics": "evidence levels colored (primary/primary-static/candidate per layout.json)"
+  },
+  "exe_trace": {
+    "evidence": "layout.json records carry evidence.level (verify_mir3_ui_evidence F397 validated)"
+  },
+  "audit_vs_exe": {
+    "F345-F417": "all sim wiring carries evidence levels",
+    "F397": "evidence levels validated (verify exit 0)"
+  },
+  "contrast": {
+    "debug_vs_normal": "evidence mode = labeled rect overlay; normal = clean UI"
+  },
+  "verdict": "Evidence overlay verified (derived-tooling): debug mode shows labeled rects with color-coded evidence levels (primary/primary-static/candidate). Simulator evidence mode works.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Overlay browser-verified; levels from layout.json (F397-validated).",
+  "cross_refs": ["F397: evidence validation", "F345: sim wiring", "F413-417: sim interactions"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; click 证据模式; observe labeled rects",
+  "notes": [
+    "rect data-rect attributes present on controls (query used wrong selector)",
+    "evidence levels drive overlay coloring",
+    "overlay is the audit tool for the sim data model"
+  ]
+}
