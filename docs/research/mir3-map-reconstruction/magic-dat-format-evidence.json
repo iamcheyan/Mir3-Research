@@ -1,0 +1,35 @@
+{
+  "evidence_id": "magic-dat-format-2026-08-12-f508",
+  "title": "Round 202 (F508): magic.dat format - 105 spells x 120B stride (EXACT, 4B count header = 12604 total), name at rec+0x6B (107) EUC-KR/Hanja ('隙め쟤' rec1), 0x11-terminated; server spell DB = same KR-source format family as monster.dat (F501) + stditem.dat (F502); full server DB trio (monster/stditem/magic) all decodable; no client-side spell name table (packet-fed F450/F351 Magic.exp)",
+  "date": "2026-08-12",
+  "objective": "Decode the server spell DB (magic.dat) format.",
+  "question": "What is magic.dat's record format and encoding?",
+  "method": "Record-stride math + EUC-KR name offset scan.",
+  "scope": "magic.dat: 105 x 120 + 4 header; name +0x6B.",
+  "cell_analysis": {
+    "file": {"count": "105 (u32 @0)", "record": "120B (stride exact, 12604 = 105*120+4)", "name": "rec+0x6B (107), EUC-KR/Hanja, 0x11-terminated"},
+    "family": "KR-source format (F501/F502) - monster/stditem/magic trio",
+    "client": "spell names packet-fed (F450 record store / F351 Magic.exp)"
+  },
+  "exe_trace": {
+    "server": "magic.dat KR -> server translation -> spell packets -> client Magic.exp (F351)"
+  },
+  "audit_vs_exe": {
+    "F501": "KR encoding shared", "F502": "stride format shared", "F351": "client spells from packets"
+  },
+  "contrast": {
+    "magic_vs_items": "magic 120B rec / name +0x6B vs stditem 184B / +0x99",
+    "kr_vs_client": "KR server DB vs client packet-fed spells"
+  },
+  "verdict": "magic.dat format PRIMARY-verified: 105 x 120B exact stride, name +0x6B EUC-KR/Hanja; full server DB trio decodable. Client spells packet-fed (F351).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Stride + name decode from binary.",
+  "cross_refs": ["F501: monster encoding", "F502: stditem format", "F351: client spells"],
+  "tool": "python binary parse + euc-kr decode",
+  "reproduce": "105*120+4 == len; decode d[124+0x6B:+0x10] euc-kr",
+  "notes": [
+    "0x11 terminator = spell name padding",
+    "105 spells = skill book count scale (F351)",
+    "client never reads magic.dat (packets)"
+  ]
+}

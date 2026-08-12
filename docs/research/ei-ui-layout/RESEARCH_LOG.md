@@ -6770,3 +6770,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔类〕**生成器分派 0x4357E8 → 9 处理器，差异在 [0x8]/[0xC] 旗标 + [0x120] 行走旗标 + [0x18] 目标：**静止（walk=0）/ 投射（双旗标）/ 追踪（目标 [0x18]）**；字节映射 0x435808（48 类型 → 处理器）。
 - 落盘：spell-effect-handler-classes-evidence.json（F507，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 201。
+## Round 202 (F508) — 2026-08-12：magic.dat 格式（105 法术 × 120B）
+
+- **〔格式〕**magic.dat = 105 法术 × 120B 步长（精确，12604 = 105*120+4）+ 4B 计数头；名称 @ rec+0x6B（EUC-KR/Hanja、0x11 终止）——服务端 DB 三件套（monster/stditem/magic）全可解码（F501/F502 同族）。
+- **〔客户端〕**法术名包驱动（F351 Magic.exp）。
+- 落盘：magic-dat-format-evidence.json（F508，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 202。
