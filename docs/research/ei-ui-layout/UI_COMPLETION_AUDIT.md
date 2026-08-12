@@ -4425,3 +4425,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体完整；下一弧：剩余深层角落）。
+## Round 712 (2026-08-12) — 实体闭合（Finding 1018）
+
+- **675 连发 + 639 证据 + 实体完整**。
+- 落盘：`entity-closure-evidence.json`（F1018）+ RESEARCH_LOG Round 712。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体表面 100%；下一弧：HANDOFF 刷新 151/剩余角落）。

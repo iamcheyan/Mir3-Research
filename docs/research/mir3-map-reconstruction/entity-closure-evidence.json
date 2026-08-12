@@ -1,0 +1,37 @@
+{
+  "evidence_id": "entity-closure-2026-08-12-f1018",
+  "title": "Round 712 (F1018): Entity CLOSED (F336/F725/F1017) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master b2b4dfe (675 consecutive F335-F1017), 639 evidence JSONs; arc: entity list (F336) + hero runtime (F725) + ctor/dispatch (F1017) - entity COMPLETE byte-level (ctor 0x476884 + type + fields + msg dispatch); entity surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the entity arc.",
+  "question": "Is the entity fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "639 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F336": "entity list", "F725": "hero runtime", "F1017": "ctor/dispatch"},
+    "entity": "ctor + dispatch = COMPLETE",
+    "milestone": "675 consecutive rounds F335-F1017"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F1017": "675 rounds pushed; entity complete"
+  },
+  "contrast": {
+    "ctor_vs_msg": "init + dispatch",
+    "list": "0x560070 chain"
+  },
+  "verdict": "Entity CLOSED (F1018): ctor + fields + dispatch all byte-level; validation green, 675 consecutive rounds, 639 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F336/F725/F1017.",
+  "cross_refs": ["F336", "F725", "F1017"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "675 consecutive shipping rounds F335-F1017",
+    "entity 100%",
+    "next: HANDOFF refresh 151, remaining corners"
+  ]
+}

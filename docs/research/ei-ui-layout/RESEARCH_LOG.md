@@ -9074,3 +9074,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔实体〕**0x434EF0 实体构造（vtable 0x476884 + 类型字节 2 + [0x118]/[0x11C] 0x2710 + [0x130] 速度 5 + 全字段清零）；0x435000/0x435020 析构（0x4680F8）；0x435030 **消息/类型分派**（0x8AA5A8 → 0x449C10 + 类型字检查 1/5/0x25/0x27/0x28/0x29）——实体完整（F336/F725 依赖）。
 - 落盘：entity-ctor-dispatch-full-evidence.json（F1017，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 711。
+## Round 712 (F1018) — 2026-08-12：实体闭合（F336/F725/F1017 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**639 证据 JSON**；三服务 200；master b2b4dfe（**675 连发 F335-F1017 已推**）。
+- **〔弧〕**实体链表（F336）+ 英雄运行时（F725）+ 构造/分派（F1017）——**实体完整**（ctor 0x476884 + 类型 + 字段 + 消息分派）；实体表面 100%。
+- 落盘：entity-closure-evidence.json（F1018，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 712。
