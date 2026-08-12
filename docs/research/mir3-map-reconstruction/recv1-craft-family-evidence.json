@@ -1,0 +1,43 @@
+{
+  "evidence_id": "recv1-craft-family-2026-08-12-f556",
+  "title": "Round 250 (F556): recv1 craft family (0x4209A8-0x420BE8) full decode - mapval26 (0x4209A8): craft recipe 0x2800 string -> 0x44FB00([main+0x2D8614] store mgr) + open store mode 2 (0x42ADB0) if [0x2D8644]==0 + [0x2D8C08]=packet dword; 0x420A86: 0x44F940(store mgr, str, word); 0x420A26 4-case craft result jt 0x42210C: 1=0x47B620 '您没有原材料......' 2=0x47B634 '돈이 부족합니다.' (not enough money) 3=0x47B648 '오류가 발생했습니다.' (error); 0x420A03: craft success 0x47B660 '아이템이 잘 만들어 졌습니다.' + gold [0x35B1E8]; 0x420ACA: 0x47B60C '点击 速度过快' (click too fast); 0x420AE3: 0x47B5F4 '身上物品已满' (inventory full); 0x420B31: warehouse stored '%s 被放置到仓库里了!' (0x47B5DC); 0x420B80/0x420BB4: 0x47B5A0 '개인 보관 창고가 다 찼습니다. 더 이상 보관할 수 없습니다.' (warehouse full) / 0x47B588 '보관 할 수 없습니다.' (cannot store) -> 0x418030([main+0x3615B0]); 0x420BE8: gold display '%d 金' (0x47B580) -> [0x2CF150] + flag [0x2CF140]=1; 0x420C1E: timeGetTime -> [0x2AB69C] + 0x43D780([main+0x2AB6A0], word-1) + [0x2AB9A4]=1 cooldown trigger - craft/store/warehouse family byte-level (KR origin cp949 + CN GBK layer)",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 craft handler family.",
+  "question": "How do craft/store/warehouse packets work?",
+  "method": "Disasm 0x4209A8-0x420C4B + decode strings (cp949/GBK).",
+  "scope": "0x4209A8-0x420C4B; store mgr [0x2D8614]; craft results.",
+  "cell_analysis": {
+    "mapval26": {"recipe": "0x2800 string -> 0x44FB00(store mgr [0x2D8614])", "open": "mode 2 store if [0x2D8644]==0 (0x42ADB0)", "store": "[0x2D8C08] = packet dword"},
+    "craft_variant": "0x420A86: 0x44F940(store mgr, str, word)",
+    "craft_results": {"jt": "0x42210C 4 cases", "1": "0x47B620 '您没有原材料......' (no materials)", "2": "0x47B634 '돈이 부족합니다.' (not enough money)", "3": "0x47B648 '오류가 발생했습니다.' (error)"},
+    "success": "0x420A03: 0x47B660 '아이템이 잘 만들어 졌습니다.' + gold [0x35B1E8]",
+    "rate": "0x420ACA: 0x47B60C '点击 速度过快' (click too fast)",
+    "full": "0x420AE3: 0x47B5F4 '身上物品已满' (inventory full)",
+    "warehouse": {"stored": "0x420B31: '%s 被放置到仓库里了!' (0x47B5DC) -> 0x41FAC2", "full": "0x420B80: 0x47B5A0 '개인 보관 창고가 다 찼습니다...'", "denied": "0x420BB4: 0x47B588 '보관 할 수 없습니다.' -> 0x418030([main+0x3615B0])"},
+    "gold_display": "0x420BE8: '%d 金' (0x47B580) -> [0x2CF150] + [0x2CF140]=1",
+    "cooldown": "0x420C1E: timeGetTime -> [0x2AB69C] + 0x43D780([main+0x2AB6A0], word-1) + [0x2AB9A4]=1",
+    "encoding": "KR origin cp949 (돈이 부족합니다/오류/보관/아이템이 잘 만들어 졌습니다) + CN GBK layer (您没有原材料/身上物品已满)"
+  },
+  "exe_trace": {
+    "craft_chain": "craft packet -> recipe to store mgr -> result switch (materials/money/error) -> success + gold OR prompts"
+  },
+  "audit_vs_exe": {
+    "F520": "mapval26 semantics", "F555": "store family", "F551": "warehouse", "F550": "0x42ADB0 mode 2", "F497": "store 5-mode"
+  },
+  "contrast": {
+    "craft_vs_store": "craft = recipe + result states; store = buy/sell/repair",
+    "kr_vs_cn": "KR strings cp949 origin; CN layer GBK translation"
+  },
+  "verdict": "recv1 craft family PRIMARY-verified: recipe -> store mgr (0x44FB00/0x44F940), 4-case result jt (no materials/not enough money/error), success + gold, rate/full prompts, warehouse stored/full/denied, gold display '%d 金', cooldown trigger. KR origin confirmed again.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + jt + strings decoded from .text/.data.",
+  "cross_refs": ["F555: store family", "F551: warehouse", "F520: recv1 semantics"],
+  "tool": "capstone disasm + cp949/GBK decode",
+  "reproduce": "disasm 0x4209A8+0x40; jt 0x42210C; decode 0x47B634/0x47B660",
+  "notes": [
+    "[main+0x2D8614] store mgr shared by store+craft+warehouse",
+    "[0x2D8644] store-open flag, [0x2D8C08] last packet dword",
+    "0x43D780 = item-use/cooldown trigger ([main+0x2AB6A0])",
+    "[0x2CF140]=1 = gold display flag"
+  ]
+}
