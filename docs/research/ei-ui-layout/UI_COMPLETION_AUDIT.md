@@ -3769,3 +3769,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 630 (2026-08-12) — 背包构造/重置 + 点击 + 使用门（Finding 936）
+
+- **重置 + 点击路由 + 使用门**（背包输入完整）。
+- 落盘：`inventory-ctor-click-use-evidence.json`（F936）+ RESEARCH_LOG Round 630。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（背包输入完整；下一弧：剩余深层角落）。

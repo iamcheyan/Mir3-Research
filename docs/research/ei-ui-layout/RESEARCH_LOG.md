@@ -8719,3 +8719,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 626-628（F933-F934：装备窗口输入/构造 + 装备窗口闭合）；基线 Round 625=e68ec3c → Round 628=4109e2a（**593 连发 F335-F934**）。
 - 落盘：handoff-refresh-123-evidence.json（F935，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 629。
+## Round 630 (F936) — 2026-08-12：背包构造/重置 + 点击 + 使用门（F815 依赖）
+
+- **〔背包〕**0x42FF90 背包重置（清 [0x23760..0x23780] + [-1] [0x23764]/[0x23768]）；0x42FFD0 **点击**（滚动条 0x417D00 @ +0x278 → 滚动 [0x58] 0x476650 + 3 物品控件 vtable[0xC] + 槽查找 0x42F150 → [0x774] 物品测试 → 页旗标 [0x3C]）；0x4300F0 **使用门**（300ms [0x23788] + 冷却 [0x23784] 0x7D0 + 物品字段检查 [0]/[+4]/[+8]/[+0xC] + 拖动 [0x3A]/word [0x40]）——背包输入完整。
+- 落盘：inventory-ctor-click-use-evidence.json（F936，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 630。

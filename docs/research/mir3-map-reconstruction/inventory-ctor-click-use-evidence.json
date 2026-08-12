@@ -1,0 +1,36 @@
+{
+  "evidence_id": "inventory-ctor-click-use-2026-08-12-f936",
+  "title": "Round 630 (F936): Inventory ctor/reset + click + use gate (F815 dep) - 0x42FF90 inventory RESET (zero [0x23760..0x23780] + [-1] [0x23764]/[0x23768]); 0x42FFD0 inventory CLICK (scrollbar 0x417D00 @ +0x278 -> scroll [0x58] via 0x476650 mult + 3 item controls vtable[0xC] + slot lookup 0x42F150 -> [0x774] item test -> page flag [0x3C]); 0x4300F0 inventory USE gate (300ms [0x23788] + cooldown [0x23784] 0x7D0 + item field checks [0]/[+4]/[+8]/[+0xC] + drag [0x3A]/word [0x40]) - inventory input COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the inventory ctor/reset + click + use gate.",
+  "question": "How does the inventory window handle input + use?",
+  "method": "Disasm 0x42FF90-0x430150.",
+  "scope": "0x42FF90-0x430150; input.",
+  "cell_analysis": {
+    "0x42FF90": "reset [0x23760..] + [-1]",
+    "0x42FFD0": "click scrollbar 0x417D00 + 3 controls + 0x42F150 + [0x774]",
+    "0x4300F0": "use gate 300ms + 0x7D0 + item checks"
+  },
+  "exe_trace": {
+    "inventory_chain": "reset -> click -> slot -> use"
+  },
+  "audit_vs_exe": {
+    "F815": "inv init/click/use", "F764": "inv draw"
+  },
+  "contrast": {
+    "reset_vs_click": "init + hit",
+    "use_vs_drag": "gate + item"
+  },
+  "verdict": "Inventory ctor/reset + click + use gate PRIMARY-verified: reset + click routing + use gate; F815 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Inventory input decoded from .text.",
+  "cross_refs": ["F815: inventory", "F764: draw"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x42FF90+0x10; 0x4300F0+0x20",
+  "notes": [
+    "reset [0x23760..]",
+    "scrollbar +0x278",
+    "use gate 300ms/0x7D0",
+    "page [0x3C]"
+  ]
+}
