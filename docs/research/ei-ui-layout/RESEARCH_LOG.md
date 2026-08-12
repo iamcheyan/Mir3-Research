@@ -6461,3 +6461,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔默认〕**0x449C80 默认属性构建器（0x449C50 三字字段写入：HP/等级/攻击风格默认链）。
 - **〔消费〕**属性初始化 0x40A4D0（F434）+ 更新处理器 0x44A820（F449）。
 - 落盘：monster-record-store-evidence.json（F450，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 144。
+## Round 145 (F451) — 2026-08-12：游戏对象基址修正（main = 0x47EF18）+ 记录存储内部
+
+- **〔修正〕**静态初始化链 0x401860-0x401995 证明：**游戏对象 = main = 0x47EF18**（ctor 0x418B00，0x401970）；**0x8AB828 = 数据包发送器**（非游戏对象）— F440/441/444/446/447 基址标签修正。
+- **〔绝对地址调和〕**0x560088 = main+0xE1170 链表头（F434「全局」= 链表头！）、**0x5600FC = main+0xE11E4 瓦片存储**（F448「共享表」= 瓦片/单元存储 ctor 0x4529B0）、0x574118 = main+0xF5200 地图视口、0x47F06C = main+0x154 网格1（F336「main+0x154」✓）。
+- **〔记录存储〕**ctor 0x449A10/0x449A30（三区清零）+ 写入器 0x449AD0（**25 参数属性填充**，0x30B 记录 {+0/+4 HP/MP、+8/+0xA AC/MAC、+0xC ID、+0xE..+0x1C 字节属性、+0x20..+0x2C 4 dword}）。
+- **〔静态链〕**0x8AA5A8 记录存储 / 0x8AA488 主窗（0x450BC0）/ 0x8A9520 / 0x8A7140 / 0x47EF18。
+- 落盘：game-object-base-correction-evidence.json（F451，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 145。

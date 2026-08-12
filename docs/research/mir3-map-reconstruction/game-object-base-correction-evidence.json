@@ -1,0 +1,38 @@
+{
+  "evidence_id": "game-object-base-correction-2026-08-12-f451",
+  "title": "Round 145 (F451): GAME OBJECT BASE CORRECTION - static init chain 0x401860-0x401995 proves game object = main = 0x47EF18 (ctor 0x418B00 via 0x401970), NOT 0x8AB828 (that = packet sender); ALL F440-448 absolute addresses reconciled: lists main+0xE1158.. = 0x560070..0x560088, tile store main+0xE11E4 = 0x5600FC, map obj main+0xF5200 = 0x574118, grids main+0x154 = 0x47F06C; record store ctor 0x449A10 + record writer 0x449AD0 (25-arg stat fill, 0x30B record); CRT static ctors: 0x8AA5A8 (0x449A10)/0x8AA488 window (0x450BC0)/0x8A9520 (0x4022C0)/0x8A7140 (0x4568F0)",
+  "date": "2026-08-12",
+  "objective": "Correct the game object base (F440-448 used wrong base label) and document the static init chain + record store internals.",
+  "question": "What is the game object's true base, and how are records initialized?",
+  "method": "Disasm static-init stubs 0x401860-0x401995 + record ctor 0x449A10/0x449A30 + writer 0x449AD0.",
+  "scope": "0x401860-0x401995, 0x449A10-0x449B90.",
+  "cell_analysis": {
+    "base_correction": {"game_obj": "main = 0x47EF18 (ctor 0x418B00, static-init 0x401970; F336 'main' was RIGHT)", "0x8AB828": "PACKET SENDER (0x451450 ecx), NOT game obj - F440/441/444/446/447 base labels corrected", "abs_reconcile": {"0x560088": "main+0xE1170 = container A head (F434 'global [0x560088]' = list head!)", "0x5600FC": "main+0xE11E4 = tile store (F448 'shared table' = tile/cell store ctor 0x4529B0)", "0x574118": "main+0xF5200 = map viewport obj (0x40A669 global)", "0x47F06C": "main+0x154 = grid 1 (F336 'main+0x154' ✓)"}},
+    "static_init_chain": {"0x8AA5A8": "record store (ctor 0x449A10/dtor 0x449A20)", "0x8AA488": "main window (0x450BC0/0x450C00)", "0x8A9520": "intro/state obj (0x4022C0/0x402390)", "0x8A7140": "char-select obj (0x4568F0/0x4569C0)", "0x47EF18": "game obj (0x418B00 ctor / 0x418D50 reset)"},
+    "record_store_internals": {"ctor": "0x449A10 -> 0x449A30: zero [esi+0x18..0xE5] (0x31 dw + word) + [0xDE..] (0x10 dw + word) + [0x120..0x130]", "writer": "0x449AD0: fills 0x30B record from 25 args (HP/MP dwords +0/+4, AC words +8/+0xA, byte stats +0xE..+0x1C, dwords +0x20..+0x2C)"},
+    "record_layout_full": {"+0/+4": "HP/MP dwords", "+8/+0xA": "AC/MAC words", "+0xC": "ID word (lookup key)", "+0xE..+0x1C": "byte stats (type etc)", "+0x20..+0x2C": "4 dwords (extended stats)"}
+  },
+  "exe_trace": {
+    "correct_base": "all entity/list/grid/map offsets in F440-448 are from main 0x47EF18"
+  },
+  "audit_vs_exe": {
+    "F440-F448": "base labels corrected (offsets unchanged, absolute addresses now correct)",
+    "F434": "0x560088 = container A head (was 'type 0x96 factory global' - same address, corrected meaning)",
+    "F448": "'shared resource table' 0x5600FC = main+0xE11E4 tile store"
+  },
+  "contrast": {
+    "main_vs_sender": "game obj 0x47EF18 vs packet sender 0x8AB828 - two distinct objects (F336 conflation corrected)",
+    "tile_store_vs_map": "tile store 0x5600FC (descriptors) vs map viewport 0x574118 (render state)"
+  },
+  "verdict": "GAME OBJECT BASE CORRECTED (primary-bytes): static init chain proves game obj = main 0x47EF18; 0x8AB828 = packet sender. All F440-448 absolute addresses reconciled (0x560088 list head / 0x5600FC tile store / 0x574118 map). Record store ctor + 25-arg writer + full 0x30B record layout documented.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Static-init chain + ctors + writer all decoded from .text.",
+  "cross_refs": ["F440-F448: base-corrected", "F434: 0x560088 meaning corrected", "F336: main base confirmed"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x401860+0x80 (static init chain), 0x449A10+0x20, 0x449AD0+0x40",
+  "notes": [
+    "F440-448 evidence JSONs keep offsets; base label correction noted here + RESEARCH_LOG",
+    "0x8AA488 = main window (F337 id15 公告 SetWindowTextA [0x8AA488+0x53028] consistent!)",
+    "record writer arg layout = 25-field monster stats template"
+  ]
+}

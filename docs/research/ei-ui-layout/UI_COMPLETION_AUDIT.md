@@ -951,9 +951,14 @@ git diff --check
 - **0x8AA5A8 3 子数组 + 0x30 步长 + 线性查找**。
 - 落盘：`monster-record-store-evidence.json`（F450）+ RESEARCH_LOG Round 144。
 
+## Round 145 (2026-08-12) — 游戏对象基址修正（Finding 451）
+
+- **游戏对象 = main 0x47EF18**（0x8AB828 = 数据包发送器）；F440-448 基址标签修正 + 绝对地址调和。
+- 落盘：`game-object-base-correction-evidence.json`（F451）+ RESEARCH_LOG Round 145。
+
 ## Pending（未阻塞，持续队列）
 
-- 0x5600FC 条目布局（0x144B 内 WIL 上下文 + 外观数据）— 低优先。
+- 0x5600FC 瓦片存储条目布局（0x144B）— 低优先。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
