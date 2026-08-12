@@ -3433,3 +3433,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（地图部件完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 588 (2026-08-12) — 实体投影 + 阴影帧（Finding 894）
+
+- **投影 + 阴影 blit + 钳制**（F622 完整）。
+- 落盘：`entity-projection-shadow-evidence.json`（F894）+ RESEARCH_LOG Round 588。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体渲染完整；下一弧：剩余深层角落）。

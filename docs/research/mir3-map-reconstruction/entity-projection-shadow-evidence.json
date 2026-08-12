@@ -1,0 +1,34 @@
+{
+  "evidence_id": "entity-projection-shadow-2026-08-12-f894",
+  "title": "Round 588 (F894): Entity projection + shadow frame (F622) - 0x40B2C0: world->screen projection ([0xCC]/[0xD0] - camera [0x12C..0x138], x*3*16, y<<5, offsets -0xC8/-0x9D -> [0xE4]/[0xE8]) + SHADOW frame [0x90] blit (0x466130 + SetRect 0x4762B0 + frame dims [0x38]+[4..0xB]) + rect clamp [0xA4]/[0xAC] + HP bar region - entity render COMPLETE (F622/F435 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the entity projection + shadow frame.",
+  "question": "How do entities project + draw shadows?",
+  "method": "Disasm 0x40B2C0-0x40B435.",
+  "scope": "0x40B2C0-0x40B435; projection.",
+  "cell_analysis": {
+    "0x40B2C0": {"project": "[0xCC]/[0xD0] -> [0xE4]/[0xE8]", "camera": "[0x12C..0x138]", "shadow": "[0x90] blit + frame dims", "clamp": "[0xA4]/[0xAC]"}
+  },
+  "exe_trace": {
+    "entity_chain": "project -> shadow blit -> clamp"
+  },
+  "audit_vs_exe": {
+    "F622": "projection/shadow", "F435": "48x32", "F590": "HP bar"
+  },
+  "contrast": {
+    "project_vs_shadow": "coords + frame",
+    "x_vs_y": "*3*16 + <<5"
+  },
+  "verdict": "Entity projection + shadow frame PRIMARY-verified: project + blit + clamp; F622 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Entity render decoded from .text.",
+  "cross_refs": ["F622: render", "F435: projection", "F590: bars"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40B2C0+0x20",
+  "notes": [
+    "projection x*3*16",
+    "shadow frame [0x90]",
+    "camera [0x12C]",
+    "clamp [0xA4]/[0xAC]"
+  ]
+}

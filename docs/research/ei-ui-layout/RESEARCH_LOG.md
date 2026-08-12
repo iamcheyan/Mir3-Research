@@ -8537,3 +8537,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 584-586（F891-F892：大地图覆盖层 + 地图部件闭合 + 550 里程碑）；基线 Round 583=97f8e53 → Round 586=0008576（**551 连发 F335-F892**）。
 - 落盘：handoff-refresh-108-evidence.json（F893，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 587。
+## Round 588 (F894) — 2026-08-12：实体投影 + 阴影帧（F622）
+
+- **〔实体〕**0x40B2C0：世界→屏幕投影（[0xCC]/[0xD0] − 相机 [0x12C..0x138]、x×3×16、y<<5、偏移 −0xC8/−0x9D → [0xE4]/[0xE8]）+ **阴影帧 [0x90] blit**（0x466130 + SetRect 0x4762B0 + 帧尺寸 [0x38]+[4..0xB]）+ 矩形钳制 [0xA4]/[0xAC] + HP 条区域——实体渲染完整（F622/F435 用）。
+- 落盘：entity-projection-shadow-evidence.json（F894，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 588。
