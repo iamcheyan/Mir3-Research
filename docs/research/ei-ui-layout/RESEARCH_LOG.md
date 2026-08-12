@@ -8199,3 +8199,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔背包〕**0x42FF90（F811 背包初始化依赖）：重置背包态 [0x2375C..0x23778]、拖动槽 -1 [0x23764]/[0x23768]；0x42FFD0 **点击处理**：命中 → 空槽使用 0x42FEC0 / 滚动条 F707 点击 0x417D00 @ +0x278（比例 [0x284] → 计数 [0x58] ×0x476650）/ 3 控件 vtable[0xC] / 槽命中 0x42F150 → 物品检查 [0x774 + idx×0x6C] → 忙碌旗标 [0x3C]；0x4300F0 **使用门**：冷却 0x12C(300ms)/0x7D0/0x3E8 vs [0x23784]、物品类型 [0x3A]/[0x40]、公告 0x415280 0x47BDA4、滚动条 [0x278]——背包窗口全交互（F811/F764 用）。
 - 落盘：bag-window-init-click-use-evidence.json（F815，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 509。
+## Round 510 (F816) — 2026-08-12：背包窗口弧闭合（F764/F811/F815 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**440 证据 JSON**；三服务 200；master d59a049（**474 连发 F335-F815 已推**）。
+- **〔弧〕**背包绘制（F764）+ 切换初始化（F811）+ 点击/使用（F815）——**背包窗口完整**（滚动条 + 网格 + 拖动预览 + 初始化重置 + 点击分派 + 使用冷却门），窗口模式 0 全交互。
+- 落盘：bag-window-arc-closure-evidence.json（F816，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 510。

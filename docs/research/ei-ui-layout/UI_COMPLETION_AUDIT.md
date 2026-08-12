@@ -2809,3 +2809,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包全交互；下一弧：剩余深层角落）。
+## Round 510 (2026-08-12) — 背包窗口弧闭合（Finding 816）
+
+- **474 连发 + 440 证据 + 背包全交互**。
+- 落盘：`bag-window-arc-closure-evidence.json`（F816）+ RESEARCH_LOG Round 510。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（背包全交互；下一弧：HANDOFF 刷新 82/剩余角落）。
