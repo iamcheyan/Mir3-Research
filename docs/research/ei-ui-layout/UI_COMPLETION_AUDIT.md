@@ -4513,3 +4513,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（入站 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 723 (2026-08-12) — recv2 非主角实体名字更新全量（Finding 1029）
+
+- **实体链表查找 + 名字复制 + 格式化 + 超时清零**（recv2 名字更新分支完整）。
+- 落盘：`recv2-entity-name-update-evidence.json`（F1029）+ RESEARCH_LOG Round 723。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（recv2 名字更新完整；下一弧：剩余深层角落/模拟器 polish）。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv2-entity-name-update-2026-08-12-f1029",
+  "title": "Round 723 (F1029): recv2 non-hero entity-name update FULL (F797/F800/F1026) - 0x422F7A walks entity list [0xE1158] from head [0xE1168], matches packet id at node +4, copies packet name to entity +0x620A0, calls 0x40BA60 formatter, clears timeout [0x6209C] - non-hero name branch COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the recv2 non-hero entity-name update branch.",
+  "question": "How are names applied to non-hero entities?",
+  "method": "Disasm 0x422F7A-0x422FF4.",
+  "scope": "0x422F7A-0x422FF4; recv2 name branch.",
+  "cell_analysis": {
+    "lookup": "[0xE1158] list head -> node [0xE1168] -> node +4 id",
+    "copy": "packet name -> entity +0x620A0",
+    "refresh": "0x40BA60 formatter",
+    "timeout": "entity [0x6209C] = 0"
+  },
+  "exe_trace": {
+    "entity_name_chain": "scan -> id match -> copy name -> format -> clear timeout"
+  },
+  "audit_vs_exe": {
+    "F797": "map/name message source", "F800": "name formatter", "F1026": "recv2 title/name branch"
+  },
+  "contrast": {
+    "hero_vs_nonhero": "hero path writes [0x35A820]; non-hero path writes entity +0x620A0",
+    "update_vs_timeout": "name update also clears [0x6209C]"
+  },
+  "verdict": "recv2 non-hero entity-name update FULL PRIMARY-verified: list lookup, id match, name copy, formatter, timeout clear.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Entity-name branch decoded directly from .text.",
+  "cross_refs": ["F797: map/name msgs", "F800: name formatter", "F1026: recv2 title/name"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422F7A+0x20",
+  "notes": [
+    "list head [0xE1158]/[0xE1168]",
+    "entity id +4",
+    "name +0x620A0",
+    "timeout +0x6209C"
+  ]
+}

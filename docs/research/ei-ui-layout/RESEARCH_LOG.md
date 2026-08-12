@@ -9122,3 +9122,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 719-721（F1026-F1027：recv2 地图/名字/标题全量 + recv2 闭合）；基线 Round 718=5a3ddb0 → Round 721=47a2b29（**685 连发 F335-F1027**）。
 - 落盘：handoff-refresh-154-evidence.json（F1028，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 722。
+## Round 723 (F1029) — 2026-08-12：recv2 非主角实体名字更新全量（F797/F800/F1026）
+
+- **〔实体名字〕**0x422F7A 从实体链表 [0xE1158] 头 [0xE1168] 遍历，匹配节点 +4 的包 ID；将名字复制到实体 +0x620A0，调用 0x40BA60 格式化，并清零超时 [0x6209C]——非主角名字分支完整。
+- 落盘：recv2-entity-name-update-evidence.json（F1029，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 723。
