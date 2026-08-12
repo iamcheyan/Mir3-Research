@@ -8811,3 +8811,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 达 **130 次刷新**（Round 647-649：商店窗口输入/点击 + 商店窗口闭合）；基线 Round 646=44da0b8 → Round 649=5e6c0d4（**614 连发 F335-F955**）；商店表面 100%（**13/13 窗口输入闭合**）。
 - 落盘：handoff-refresh-130-milestone-evidence.json（F956，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 650。
+## Round 651 (F957) — 2026-08-12：对话窗口输入（F746/F857/F897 依赖）
+
+- **〔对话〕**0x440560 对话输入（3 按钮 vtable[8] @ +0x58 + 滚动条 0x417C80 @ +0x3C4 → 滚动 [0x3BC] [0x3C0]×[0x3D0]；否则 dlist 0x8B1AE4 遍历 type==2 → 5 选项命中 0x4762B4 → 选中 [edi+0x5D]）；0x440630 **列表清除**（dlist 0x8B1AE4/0x8B1AE8 free）；0x4406D0 滚轮 −（钳 0）+ 0x440700 滚轮 +（钳 [0x3C0]-1）——对话输入完整。
+- 落盘：dialog-window-input-evidence.json（F957，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 651。

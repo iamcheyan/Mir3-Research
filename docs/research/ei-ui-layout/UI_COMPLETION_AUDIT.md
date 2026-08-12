@@ -3937,3 +3937,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口输入表面全闭合；下一弧：剩余深层角落/模拟器 polish）。
+## Round 651 (2026-08-12) — 对话窗口输入（Finding 957）
+
+- **按钮 + 滚动条 + 选项命中 + 滚轮**（对话输入完整）。
+- 落盘：`dialog-window-input-evidence.json`（F957）+ RESEARCH_LOG Round 651。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（对话输入完整；下一弧：剩余深层角落）。
