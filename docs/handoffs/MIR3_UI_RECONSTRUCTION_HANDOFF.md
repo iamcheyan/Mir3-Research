@@ -2092,3 +2092,14 @@ simulator/style.css
 **recv1 闭合（F1024）**：681 连发 + 645 证据 JSON——recv1 完整（坐骑 + 物品 + 封锁 + 公告），入站 100%。
 
 **commit 基线更新**：Round 715=c937e7e → Round 718=5a3ddb0（master 已推，682 连发 F335-F1024）。
+
+
+## Round 719-721 追加交付（2026-08-12，Finding 1025-1027）：HANDOFF 刷新 153 + recv2 地图/名字/标题全量 + recv2 闭合
+
+**HANDOFF 刷新 153（F1025）**：基线更新至 Round 718=5a3ddb0（682 连发）。
+
+**recv2 地图/名字/标题全量（F1026，F797/F794）**：0x422E30 base64 0x452810（0x400）+ 消息类型 0x64/0x68（公告 0x427E30 + 行会 0x4256A0）+ 地图标题 [0x2F8784] → 名字 [0x35A820] + 0x40BA60（F800）+ 旗标 0x28/0x5DD。
+
+**recv2 闭合（F1027）**：684 连发 + 648 证据 JSON——recv2 完整（base64 + 标题 + 名字）；**recv1+recv2 入站 100%**。
+
+**commit 基线更新**：Round 718=5a3ddb0 → Round 721=47a2b29（master 已推，685 连发 F335-F1027）。

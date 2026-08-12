@@ -9118,3 +9118,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**648 证据 JSON**；三服务 200；master d6c37cf（**684 连发 F335-F1026 已推**）。
 - **〔弧〕**地图标题（F794）+ 地图/名字消息（F797）+ recv2 全量（F1026）——**recv2 完整**（base64 + 公告 + 行会 + 地图标题 + 名字格式化）；**recv1+recv2 入站 100%**。
 - 落盘：recv2-closure-evidence.json（F1027，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 721。
+## Round 722 (F1028) — 2026-08-12：HANDOFF 刷新 154（Round 719-721）
+
+- **〔刷新〕**HANDOFF 追加 Round 719-721（F1026-F1027：recv2 地图/名字/标题全量 + recv2 闭合）；基线 Round 718=5a3ddb0 → Round 721=47a2b29（**685 连发 F335-F1027**）。
+- 落盘：handoff-refresh-154-evidence.json（F1028，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 722。
