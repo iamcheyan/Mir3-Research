@@ -4545,3 +4545,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（列表析构完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 727 (2026-08-12) — 实体/列表生命周期闭合（Finding 1033）
+
+- **690 连发 + 654 证据 + 实体/列表生命周期完整**（构造/插入/解除链接/析构）。
+- 落盘：`entity-list-destructor-closure-evidence.json`（F1033）+ RESEARCH_LOG Round 727。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体/列表生命周期 100%；下一弧：HANDOFF 刷新 156/剩余深层角落）。

@@ -1,0 +1,26 @@
+{
+  "evidence_id": "entity-list-destructor-closure-2026-08-12-f1033",
+  "title": "Round 727 (F1033): entity/list destructor CLOSED (F336/F440/F1032) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 146f53e (690 consecutive F335-F1032), 654 evidence JSONs; arc: 5 entity lists + node layout + insertion/unlink + 8 vtable-specific destructor thunks with conditional 0x4680F8 free; container lifecycle COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Close the entity/list container lifecycle arc.",
+  "question": "Is entity/list lifecycle documented from construction through destruction?",
+  "method": "Full validation + lifecycle consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "654 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F336": "container layout", "F440": "insertion/unlink", "F1032": "destructor vtable tail"},
+    "lifecycle": "construct + insert + unlink + destroy = COMPLETE",
+    "milestone": "690 consecutive rounds F335-F1032"
+  },
+  "exe_trace": {"verify": "exit 0"},
+  "audit_vs_exe": {"F335-F1032": "690 rounds pushed; list lifecycle complete"},
+  "contrast": {"construction_vs_destruction": "list heads/counts vs vtable reset/free", "unlink_vs_destroy": "node removal vs object teardown"},
+  "verdict": "Entity/list lifecycle CLOSED (F1033): containers, node links, unlink, vtables, and conditional destruction are byte-level documented; validation green, 690 consecutive rounds, 654 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; lifecycle content from F336/F440/F1032.",
+  "cross_refs": ["F336", "F440", "F1032"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": ["690 consecutive shipping rounds F335-F1032", "entity/list lifecycle 100%", "next: HANDOFF refresh 156, remaining deep corners"]
+}
