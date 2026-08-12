@@ -8368,3 +8368,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告〕**0x414700：SetRect [0x954] + 行列表 [0x58] 遍历（next [0x408]/[0x40C]、滚动 [0x6D0]、计数 [0x68] 上限 0x13=19）+ 行绘制 0x45DD70（y+=0xE、色参）+ **滚动条 F707 ctor @ +0x6D4**（计数 [0x68]/[0x6D0]、位置 +0x215/-0xD0）+ **7 按钮 F704**（@ +0x6C..+0x3F0 stride 0xB4）+ 7 绘制——公告窗口完整（F553/F599 用）。
 - 落盘：announce-window-render-evidence.json（F854，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 548。
+## Round 549 (F855) — 2026-08-12：公告窗口闭合（F553/F599/F854 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**479 证据 JSON**；三服务 200；master afffd1c（**513 连发 F335-F854 已推**）。
+- **〔弧〕**公告消息（F553）+ 聊天家族（F599）+ 窗口渲染（F854）——**公告窗口完整**（19 行列表 + 滚动条 + 7 按钮 + 彩色行），模式 8 全渲染。
+- 落盘：announce-window-closure-evidence.json（F855，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 549。

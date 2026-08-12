@@ -1,0 +1,37 @@
+{
+  "evidence_id": "announce-window-closure-2026-08-12-f855",
+  "title": "Round 549 (F855): Announce window CLOSED (F553/F599/F854) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master afffd1c (513 consecutive F335-F854), 479 evidence JSONs; arc: announce msg (F553) + chat family (F599) + window render (F854) - announce window COMPLETE byte-level (19-line list + scrollbar + 7 buttons + colored lines), window mode 8 fully rendered",
+  "date": "2026-08-12",
+  "objective": "Close the announce window arc.",
+  "question": "Is the announce window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "479 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F553": "announce msg", "F599": "chat family", "F854": "render"},
+    "announce": "list + scrollbar + buttons = COMPLETE",
+    "milestone": "513 consecutive rounds F335-F854"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F854": "513 rounds pushed; announce window complete"
+  },
+  "contrast": {
+    "msg_vs_render": "0x427E30 + list",
+    "scrollbar_vs_buttons": "F707 + 7 F704"
+  },
+  "verdict": "Announce window CLOSED (F855): list + scrollbar + buttons all byte-level; validation green, 513 consecutive rounds, 479 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F553/F599/F854.",
+  "cross_refs": ["F553", "F599", "F854"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "513 consecutive shipping rounds F335-F854",
+    "announce window 100%",
+    "next: HANDOFF refresh 95, remaining corners"
+  ]
+}
