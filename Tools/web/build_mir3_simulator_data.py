@@ -294,14 +294,31 @@ def main() -> None:
         "window.option": (276, 113),
         "window.notice-prompt-candidate": (107, 110),
     }
+    # Round 29-33 window catalog (F337/F338, primary-bytes): exact ctor x/y per window id.
+    # layout records carry window.id (from window.* records) or the catalog windows table.
+    catalog_by_frame = {}
+    catalog_by_winid = {}
+    for r in layout.get("records", []):
+        if r.get("id") == "window-catalog.hero-builder-0x427600":
+            for w in r.get("windows", []):
+                catalog_by_winid[w["id"]] = (w["x"], w["y"])
+                catalog_by_frame[w["frame"]] = (w["x"], w["y"])
     for rec in window_records:
         wid = rec["id"]
         res = rec.get("resource", {})
         size = rec.get("size", {})
         w, h = size.get("width", 0), size.get("height", 0)
         pos = rec.get("position", {})
+        frame = res.get("frame") if isinstance(res.get("frame"), int) else res.get("frames", {}).get("normal")
         origin = confirmed_origins.get(wid)
         evidence = "primary-static"
+        if origin is None:
+            # prefer explicit window-id key (window.X records with window.id), else frame key
+            winid = (rec.get("window") or {}).get("id")
+            if isinstance(winid, int) and winid in catalog_by_winid:
+                origin = catalog_by_winid[winid]
+            elif isinstance(frame, int) and frame in catalog_by_frame:
+                origin = catalog_by_frame[frame]
         if origin is None:
             px, py = pos.get("x"), pos.get("y")
             if isinstance(px, dict) and isinstance(px.get("offset"), (int, float)) \
@@ -315,7 +332,7 @@ def main() -> None:
             "id": wid,
             "title": wid.replace("window.", "").replace("-candidate", ""),
             "rect": [origin[0], origin[1], w, h],
-            "frame": res.get("frame") if isinstance(res.get("frame"), int) else res.get("frames", {}).get("normal"),
+            "frame": frame,
             "resource_library": res.get("file"),
             "evidence_level": evidence,
             "init_va": init_by_id.get(wid, {}).get("va"),

@@ -4,14 +4,14 @@
       "id": "window.inventory",
       "title": "inventory",
       "rect": [
-        258,
-        138,
+        518,
+        0,
         284,
         324
       ],
       "frame": 250,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042ADCF"
     },
@@ -19,14 +19,14 @@
       "id": "window.status",
       "title": "status",
       "rect": [
-        278,
-        136,
+        0,
+        0,
         244,
         328
       ],
       "frame": 200,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE42"
     },
@@ -34,14 +34,14 @@
       "id": "window.store-candidate",
       "title": "store",
       "rect": [
-        250,
-        148,
+        0,
+        0,
         300,
         304
       ],
       "frame": 1000,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AE91"
     },
@@ -49,14 +49,14 @@
       "id": "window.exchange-candidate",
       "title": "exchange",
       "rect": [
-        158,
-        135,
+        0,
+        0,
         484,
         330
       ],
       "frame": 1050,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AEE0"
     },
@@ -109,14 +109,14 @@
       "id": "window.group-pop-candidate",
       "title": "group-pop",
       "rect": [
-        278,
-        136,
+        560,
+        0,
         244,
         328
       ],
       "frame": 200,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B131"
     },
@@ -139,14 +139,14 @@
       "id": "window.quest",
       "title": "quest",
       "rect": [
-        230,
-        80,
+        0,
+        0,
         340,
         440
       ],
       "frame": 700,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AF2F"
     },
@@ -154,14 +154,14 @@
       "id": "window.horse",
       "title": "horse",
       "rect": [
-        252,
-        134,
+        0,
+        0,
         296,
         332
       ],
       "frame": 850,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042AFCD"
     },
@@ -169,14 +169,14 @@
       "id": "window.skill-book",
       "title": "skill-book",
       "rect": [
-        252,
-        134,
+        348,
+        0,
         296,
         332
       ],
       "frame": 400,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B01C"
     },
@@ -184,14 +184,14 @@
       "id": "window.npc-candidate",
       "title": "npc",
       "rect": [
-        124,
-        212,
+        0,
+        0,
         552,
         176
       ],
       "frame": 1100,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": "not promoted; visibility gate is handled separately by 0x0042B25E"
     },
@@ -229,14 +229,14 @@
       "id": "window.id1-status-left",
       "title": "id1-status-left",
       "rect": [
-        278,
-        136,
+        0,
+        0,
         244,
         328
       ],
       "frame": 200,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": ""
     },
@@ -244,14 +244,14 @@
       "id": "window.id7-status-right",
       "title": "id7-status-right",
       "rect": [
-        278,
-        136,
+        560,
+        0,
         244,
         328
       ],
       "frame": 200,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": ""
     },
@@ -259,14 +259,74 @@
       "id": "window.id2-hidden-candidate",
       "title": "id2-hidden",
       "rect": [
-        250,
-        148,
+        0,
+        0,
         300,
         304
       ],
       "frame": 1000,
       "resource_library": "GameInter.wil",
-      "evidence_level": "candidate",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.status-0x44B2D0",
+      "title": "status-0x44B2D0",
+      "rect": [
+        0,
+        0,
+        244,
+        328
+      ],
+      "frame": 200,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.store-0x44D310",
+      "title": "store-0x44D310",
+      "rect": [
+        0,
+        0,
+        300,
+        304
+      ],
+      "frame": 1000,
+      "resource_library": "GameInter.wil",
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.chat-paint-0x414700",
+      "title": "chat-paint-0x414700",
+      "rect": [
+        114,
+        76,
+        0,
+        0
+      ],
+      "frame": null,
+      "resource_library": null,
+      "evidence_level": "primary-static",
+      "init_va": null,
+      "visibility_va": ""
+    },
+    {
+      "id": "window.trade-paint-0x415B10",
+      "title": "trade-paint-0x415B10",
+      "rect": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frame": null,
+      "resource_library": null,
+      "evidence_level": "primary-static",
       "init_va": null,
       "visibility_va": ""
     }

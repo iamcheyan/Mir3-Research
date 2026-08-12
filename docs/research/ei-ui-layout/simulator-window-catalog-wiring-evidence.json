@@ -1,0 +1,68 @@
+{
+  "evidence_id": "simulator-window-catalog-wiring-2026-08-12-f345",
+  "title": "Round 39 (F345): Simulator window catalog wiring - exact ctor x/y rects (primary-static) + visibility/hotkey dispatch in data model + 8-hotkey browser verification + geometry verification",
+  "date": "2026-08-12",
+  "objective": "Wire the Round 29-37 window catalog (F337/F338 exact ctor x/y, visibility dispatcher 0x42ADB0, hotkey table 0x42CC76, paint matrix) into the HTML client simulator data model and verify in browser: all 14 windows get primary-static rects, all 8 hotkeys open the correct window, geometry matches the ctor table.",
+  "question": "Does the simulator now show windows at their original-client positions with correct hotkey bindings?",
+  "method": "build_mir3_simulator_data.py: read window-catalog.hero-builder-0x427600 windows[] (id -> x/y), resolve layout window records by window.id (winid) then frame; rebuild; browser test all 8 hotkeys + measure window geometry.",
+  "scope": "Tools/web/build_mir3_simulator_data.py; Tools/mir3_client_simulator/{app.js, data/*.json}; browser 8765/sim.",
+  "cell_analysis": {
+    "builder_changes": [
+      "catalog_by_winid: window-catalog.hero-builder-0x427600 windows[] id -> (x, y)",
+      "catalog_by_frame: fallback for records without window.id",
+      "window record origin resolution order: confirmed_origins -> winid catalog -> frame catalog -> position offsets -> centered-candidate",
+      "frame variable hoisted (used for both catalog lookup and record emission)"
+    ],
+    "result_rects": {
+      "window.inventory": "[518, 0, 284, 324] bag id0",
+      "window.status": "[0, 0, 244, 328] status id1",
+      "window.store-candidate": "[0, 0, 300, 304] store id2",
+      "window.exchange-candidate": "[0, 0, 484, 330] trade id3",
+      "window.guild-candidate": "[102, 22, 596, 446] guild id4 (F294)",
+      "window.group": "[272, 123, 256, 244] group id6",
+      "window.chat-pop": "[114, 76, 572, 388] chat id8",
+      "window.group-pop-candidate": "[560, 0, 244, 328] status-right id7",
+      "window.option": "[276, 113, 248, 264] option id12 (F324)",
+      "window.quest": "[0, 0, 340, 440] quest id11",
+      "window.horse": "[0, 0, 296, 332] horse id13",
+      "window.skill-book": "[348, 0, 296, 332] skill-book id14",
+      "window.npc-candidate": "[0, 0, 552, 176] NPC id9",
+      "window.notice-prompt-candidate": "[107, 110, 584, 252] notice id15",
+      "summary": "ALL primary-static (was 6 primary-static / 8 candidate)"
+    },
+    "browser_verification": {
+      "hotkeys": "Q->window.inventory, W->window.status-0x44B2D0, E->window.skill-book, R->window.chat-pop, S->window.horse, D->window.quest, G->window.group, N->window.option - ALL open correct window, second press closes (allOpen=[] after double-toggle)",
+      "geometry": "bag at screen (519,1) 284x324 (ctor 518,0), status at (1,1) 244x328 (ctor 0,0) - exact within scale"
+    }
+  },
+  "exe_trace": {
+    "catalog": "window-catalog.hero-builder-0x427600 (Round 29 F335) windows[] = {id, ctor, obj_offset, frame, x, y, w, h, identity, evidence}",
+    "hotkeys": "hotkey.table-0x42CC76 (Round 32 F338) - Q/W/E/R/S/D/G/N -> window ids",
+    "visibility": "visibility.toggle-0x42ADB0 (Round 31 F337) - id-indexed modal toggle"
+  },
+  "audit_vs_exe": {
+    "F335_F337_F338": "ctor x/y, hotkey ids, window identities all consumed from evidence catalog",
+    "F324": "option (276,113) confirmed primary",
+    "F294": "guild (102,22) 596x446 confirmed primary"
+  },
+  "contrast": {
+    "before": "8/14 windows candidate (centered); 6 primary-static",
+    "after": "14/14 primary-static exact ctor rects"
+  },
+  "verdict": "Simulator window model fully wired to the evidence catalog (primary-bytes): all 14 windows have exact ctor-table rects, hotkeys open the correct window (8/8 browser-verified), geometry matches ctor x/y within scale. Window catalog round-trip complete: EXE -> evidence JSON -> layout.json -> simulator data -> rendered sim.",
+  "evidence_level": "derived-tooling (source evidence primary-bytes)",
+  "evidence_level_note": "Simulator positions derive from primary-bytes ctor table; browser verification is runtime confirmation of the wiring, not new binary evidence.",
+  "cross_refs": [
+    "F335: window-catalog.hero-builder-0x427600",
+    "F337: visibility.toggle-0x42ADB0",
+    "F338: hotkey.table-0x42CC76",
+    "F324/F294/F327/F331 identity resolutions"
+  ],
+  "tool": "build_mir3_simulator_data.py; puppeteer browser (8765/sim); python3 json",
+  "reproduce": "/home/tetsuya/mir3-venv/bin/python Tools/web/build_mir3_simulator_data.py; open http://127.0.0.1:8765/sim/; press Q/W/E/R/S/D/G/N and observe windows",
+  "notes": [
+    "frame-collision resolved by winid-first lookup (id1 and id7 both frame 200)",
+    "window.status-0x44B2D0 is the id1 record (Ctrl+W); window.group-pop-candidate is id7 right panel",
+    "store/trade/quest/horse/NPC at (0,0) are docked under the HUD (original behavior: window origin 0,0 = anchored top-left of game area)"
+  ]
+}

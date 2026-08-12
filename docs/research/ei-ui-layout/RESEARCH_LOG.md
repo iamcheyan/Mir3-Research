@@ -5860,3 +5860,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔沙漠图〕4.map**（800×800，row=1）：back{1:138135, 0:12899, **30 sand_tilesc:8817**}, mid{15, 5, 0, 10}, front{15, 0, 10, 5}——沙丘与 tilesc 地面混合；**41.map**（400×400，row=1）稀疏：mid/front 255 主导 + back{1,0,30} + mid{**40 sand_smobjectsc:2254**}（绿洲/棕榈对象）。**sand lib 30/40 在 row-1 绑定范围 28..41 内确认使用**。
 - **〔渲染验证〕**4.map = 沙色细腻颗粒（视觉）；D1011 = 暗岩石；0/1/02 城镇草地（Round 37）。**MAP-SURVEY.md 已追加 Round 37-38 补充段**。
 - 落盘：`docs/research/mir3-map-reconstruction/cave-desert-map-evidence.json`（F344，primary-bytes）+ MAP-SURVEY.md 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 38。
+
+## Round 39 (F345) — 2026-08-12：模拟器窗口目录接线（14 窗口全 primary-static 精确坐标 + 8 热键浏览器验证）
+
+- **〔builder 改造〕**build_mir3_simulator_data.py：读取 window-catalog.hero-builder-0x427600 的 windows[]（id→x/y），布局记录按 **window.id（winid）优先 → frame 兜底** 解析（解决 id1/id7 同帧 200 冲突）；origin 解析序 = confirmed_origins → winid 目录 → frame 目录 → position 偏移 → 居中 candidate。
+- **〔结果〕14/14 窗口 primary-static 精确坐标**：背包 (518,0) 284×324、状态 (0,0) 244×328、商店 (0,0)、交易 (0,0)、行会 (102,22) 596×446（F294）、组队 (272,123)、聊天 (114,76)、状态右 (560,0)、选项 (276,113)（F324）、任务 (0,0)、坐骑 (0,0)、技能书 (348,0)、NPC (0,0)、公告 (107,110)（F294）。此前 8/14 candidate。
+- **〔浏览器验证〕8 热键全开对窗**：Q→背包、W→状态、E→技能书、R→聊天、S→坐骑、D→任务、G→组队、N→选项；二次按全部关闭（allOpen=[]）。**几何验证**：背包屏 (519,1) 284×324（ctor 518,0）、状态 (1,1) 244×328（ctor 0,0）——缩放内精确。
+- **〔闭环〕EXE → 证据 JSON → layout.json → 模拟器数据 → 渲染模拟器** 窗口目录全链路打通。
+- 落盘：`simulator-window-catalog-wiring-evidence.json`（F345，derived-tooling；源证据 primary-bytes）+ Tools/web/build_mir3_simulator_data.py + Tools/mir3_client_simulator/data/* 重生成 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 39。

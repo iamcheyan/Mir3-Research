@@ -369,6 +369,14 @@ git diff --check
 - **渲染验证**：4.map 沙地、D1011 洞穴岩石（inspect_image）；MAP-SURVEY.md 追加。
 - 落盘：`cave-desert-map-evidence.json`（F344，primary-bytes）+ MAP-SURVEY.md + RESEARCH_LOG Round 38。
 
+## Round 39 (2026-08-12) — 模拟器窗口目录接线（Finding 345：14 窗口全 primary-static + 8 热键验证）
+
+- **builder 改造**：window-catalog windows[] id→x/y 按 winid 优先/frame 兜底解析；origin 解析序 5 级。
+- **14/14 窗口 primary-static 精确坐标**（背包 518,0 / 状态 0,0 / 行会 102,22 / 选项 276,113 / 技能书 348,0 / 公告 107,110…）。
+- **浏览器验证**：8 热键全开对窗 + 二次按全关；几何与 ctor 表一致。
+- **闭环**：EXE → 证据 JSON → layout.json → 模拟器数据 → 渲染。
+- 落盘：`simulator-window-catalog-wiring-evidence.json`（F345）+ builder/data 更新 + RESEARCH_LOG Round 39。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
