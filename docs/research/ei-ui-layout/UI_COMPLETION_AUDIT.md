@@ -1776,9 +1776,14 @@ git diff --check
 - **Round 304-308 追加 + 273 连发**（英雄运行时入档）。
 - 落盘：`handoff-refresh-19-evidence.json`（F615）+ RESEARCH_LOG Round 309。
 
+## Round 310 (2026-08-12) — 攻击/交易发送器 + 窗口消息分派（Finding 616）
+
+- **msg 0x401-0x406 + wnd 分派**（F580/F572 连接）。
+- 落盘：`attack-trade-sender-wnd-dispatch-evidence.json`（F616）+ RESEARCH_LOG Round 310。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（英雄运行时完整；下一弧：剩余深层角落/模拟器 polish）。
+- 无阻塞项（攻击/交易发送链闭合；下一弧：剩余深层角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

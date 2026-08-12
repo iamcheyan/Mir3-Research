@@ -1,0 +1,37 @@
+{
+  "evidence_id": "attack-trade-sender-wnd-dispatch-2026-08-12-f616",
+  "title": "Round 310 (F616): Attack/trade senders + wnd-message dispatcher - 0x451A70 = attack send msg 0x401 (0x452940 header + 0x451E60 frame F572), 0x451AA0 = trade offer 0x402, 0x451AD0 = trade 0x403, 0x451B00 = gold 0x405, 0x451B30 = gold 0x406; 0x451B60 = wnd-msg system call (SendMessage 0x476114 + 0x47628C + GlobalAlloc/Free 0x4760B8/0x4760BC, fmt 0x47C818); 0x451BB0 = wnd message dispatcher (0x4515C0 parse + type switch 1/0x10/0x1F -> 0x451CC0/0x451C40/0x451CB0) - attack/trade senders + wnd dispatcher byte-level (F580 action bar attack connects, F572 framing)",
+  "date": "2026-08-12",
+  "objective": "Decode the attack/trade senders + wnd dispatcher.",
+  "question": "How do attack/trade sends + window messages work?",
+  "method": "Disasm 0x451A70-0x451C2C.",
+  "scope": "0x451A70-0x451C2C; msgids 0x401-0x406.",
+  "cell_analysis": {
+    "senders": {"0x451A70": "attack 0x401", "0x451AA0": "trade 0x402", "0x451AD0": "trade 0x403", "0x451B00": "gold 0x405", "0x451B30": "gold 0x406"},
+    "0x451B60": "wnd-msg: SendMessage 0x476114 + 0x47628C + GlobalAlloc/Free 0x4760B8/0x4760BC (fmt 0x47C818)",
+    "0x451BB0": "wnd dispatcher: 0x4515C0 parse + type 1/0x10/0x1F -> 0x451CC0/0x451C40/0x451CB0"
+  },
+  "exe_trace": {
+    "attack_chain": "action bar attack (F580) -> 0x451A70 msg 0x401 -> frame '#seq 0x401!' (F572)",
+    "wnd_chain": "system msg -> 0x451BB0 type dispatch"
+  },
+  "audit_vs_exe": {
+    "F580": "action bar 0x451A70 CONFIRMED", "F572": "text frame senders", "F573": "outbound catalog msgids 0x401-0x406"
+  },
+  "contrast": {
+    "attack_vs_trade": "0x401 attack vs 0x402/0x403 trade, 0x405/0x406 gold",
+    "send_vs_wnd": "game frame senders vs system wnd messages"
+  },
+  "verdict": "Attack/trade senders PRIMARY-verified: msg 0x401-0x406 senders + wnd-msg dispatcher; F580 attack chain + F572 framing connected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Senders + dispatcher decoded from .text.",
+  "cross_refs": ["F580: action bar", "F572: framing", "F573: catalog"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x451A70+0x10; 0x451BB0+0x20",
+  "notes": [
+    "attack = msg 0x401",
+    "trade/gold = 0x402-0x406",
+    "wnd msg fmt 0x47C818",
+    "dispatcher types 1/0x10/0x1F"
+  ]
+}

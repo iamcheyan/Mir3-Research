@@ -7308,3 +7308,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 304-308（F611-F614：死亡/重生泵 + 英雄移动/相机 + 地图移动/碰撞 + 英雄运行时弧）；基线 Round 303=e918c0d → Round 308=6ec8705（**273 连发 F335-F614**）。
 - 落盘：handoff-refresh-19-evidence.json（F615，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 309。
+## Round 310 (F616) — 2026-08-12：攻击/交易发送器 + 窗口消息分派
+
+- **〔发送〕**0x451A70 = **攻击 msg 0x401**、0x451AA0 = 交易 0x402、0x451AD0 = 0x403、0x451B00 = 金币 0x405、0x451B30 = 0x406（全经 0x452940 头 + 0x451E60 帧 F572）。
+- **〔窗口〕**0x451B60 = 系统窗口消息（SendMessage 0x476114 + 0x47628C + GlobalAlloc/Free 0x4760B8/0x4760BC、格式 0x47C818）；0x451BB0 = **窗口消息分派器**（0x4515C0 解析 + 类型 1/0x10/0x1F → 0x451CC0/0x451C40/0x451CB0）。
+- 落盘：attack-trade-sender-wnd-dispatch-evidence.json（F616，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 310。
