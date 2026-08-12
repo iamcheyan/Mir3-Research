@@ -1,0 +1,35 @@
+{
+  "evidence_id": "handoff-refresh-147-2026-08-12-f1007",
+  "title": "Round 701 (F1007): HANDOFF refresh 147 - Rounds 698-700 (F1004-F1006: HANDOFF 146, hit flash effect full, ROUND 700 milestone), baseline Round 697=b2ad52a -> Round 700=7bcd530 (664 consecutive F335-F1006), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 698-700.",
+  "question": "What changed since HANDOFF refresh 146?",
+  "method": "Append Round 698-700 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 698-700 appended (3 rounds, F1004-F1006)",
+    "baseline": "Round 697=b2ad52a -> Round 700=7bcd530 (664 consecutive F335-F1006)",
+    "arcs": {"effect": "F1005 hit flash", "milestone": "F1006 ROUND 700"},
+    "key": "ROUND 700 reached; hit flash complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F1004": "refresh 146 baseline -> now refresh 147", "F335-F1006": "664 rounds"
+  },
+  "contrast": {
+    "refresh_146_vs_147": "F1005-F1006 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 147 (F1007): Rounds 698-700 documented (hit flash + ROUND 700), baseline b2ad52a -> 7bcd530, 664 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1005-F1006 evidence.",
+  "cross_refs": ["F1004: refresh 146", "F1006: ROUND 700 milestone"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 698-700 section to HANDOFF",
+  "notes": [
+    "664 consecutive shipping rounds F335-F1006",
+    "ROUND 700 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}

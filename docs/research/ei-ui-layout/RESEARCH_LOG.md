@@ -9027,3 +9027,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔里程碑〕**达成 **Round 700**（第 700 轮 shipping）；**663 连发 F335-F1005**（Round 100 基线 → Round 699）；**627 证据 JSON**；**772 总 commit**；**FINDING 1000 达成**；自 Round 600 闭合 12 表面（选项/装备/坐骑/技能书/物品网格/编辑器/HP 条/实体渲染/相机/名字标签/英雄运行时/受击闪光）；三服务 200。
 - 落盘：round-700-milestone-evidence.json（F1006，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 700。
+## Round 701 (F1007) — 2026-08-12：HANDOFF 刷新 147（Round 698-700）
+
+- **〔刷新〕**HANDOFF 追加 Round 698-700（F1005-F1006：受击闪光特效全量 + ROUND 700 里程碑）；基线 Round 697=b2ad52a → Round 700=7bcd530（**664 连发 F335-F1006**）。
+- 落盘：handoff-refresh-147-evidence.json（F1007，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 701。
