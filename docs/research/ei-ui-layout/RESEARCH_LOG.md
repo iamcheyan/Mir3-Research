@@ -8463,3 +8463,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔聊天〕**0x41EDE0：sprintf 0x47B9D0（格式、存 [0x35B1FD]）+ **公告 0x427E30** + **物品使用路径**：base64 0x452810（0x5F）+ 物品构造 0x430920/0x430940 + 背包反序列化 0x42FC20 + 音效 0x42E2D0 + **名表遍历 0x47ADC4→0x47ADEC** + 公告 0x47B9BC + 0x415280——聊天发送/物品使用完整（F573/F698 用）。
 - 落盘：chat-send-item-use-tail-evidence.json（F876，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 570。
+## Round 571 (F877) — 2026-08-12：聊天系统全闭合（F576/F599/F600/F873/F876 汇总）+ 500+ 证据里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**501 证据 JSON（500+ 里程碑）**；三服务 200；master fb1f121（**535 连发 F335-F876 已推**）。
+- **〔弧〕**文本帧（F576）+ 聊天渲染（F599）+ 命令（F600）+ 输入（F873）+ 发送/物品使用（F876）——**聊天系统完整**（'/' 命令 + 发送 + 物品使用 + 公告 + 速度），聊天表面 100%。
+- 落盘：chat-system-full-closure-evidence.json（F877，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 571。

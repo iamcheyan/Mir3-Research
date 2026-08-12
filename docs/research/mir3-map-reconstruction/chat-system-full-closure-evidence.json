@@ -1,0 +1,38 @@
+{
+  "evidence_id": "chat-system-full-closure-2026-08-12-f877",
+  "title": "Round 571 (F877): Chat system FULL closure (F576/F599/F600/F873/F876) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master fb1f121 (535 consecutive F335-F876), 501 evidence JSONs (500+ milestone); arc: text frame (F576) + chat render (F599) + commands (F600) + input (F873) + send/item-use (F876) - chat system COMPLETE byte-level ('/' commands + send + item-use + announce + speed), chat surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the chat system fully.",
+  "question": "Is the chat system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "501 JSONs (500+ milestone)"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F576": "frame", "F599": "render", "F600": "commands", "F873": "input", "F876": "send"},
+    "chat": "commands + send + item-use = COMPLETE",
+    "milestone": "535 consecutive rounds F335-F876"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F876": "535 rounds pushed; chat system complete"
+  },
+  "contrast": {
+    "input_vs_send": "0x41E740 + 0x41EDE0",
+    "cmd_vs_item": "chain + name walk"
+  },
+  "verdict": "Chat system FULL closure (F877): frame + commands + send all byte-level; validation green, 535 consecutive rounds, 501 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F576/F599/F600/F873/F876.",
+  "cross_refs": ["F576", "F599", "F600", "F873", "F876"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "535 consecutive shipping rounds F335-F876",
+    "500+ evidence JSONs milestone",
+    "chat system 100%",
+    "next: HANDOFF refresh 103, remaining corners"
+  ]
+}

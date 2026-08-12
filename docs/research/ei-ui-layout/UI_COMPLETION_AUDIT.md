@@ -3297,3 +3297,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（聊天发送完整；下一弧：剩余深层角落）。
+## Round 571 (2026-08-12) — 聊天系统全闭合 + 500+ 证据里程碑（Finding 877）
+
+- **535 连发 + 501 证据（500+ 里程碑）+ 聊天完整**。
+- 落盘：`chat-system-full-closure-evidence.json`（F877）+ RESEARCH_LOG Round 571。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（聊天完整；下一弧：HANDOFF 刷新 103/剩余角落）。
