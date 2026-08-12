@@ -8768,3 +8768,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**570 证据 JSON**；三服务 200；master 216ed15（**604 连发 F335-F945 已推**）。
 - **〔弧〕**行会绘制（F755）+ 页子绘制（F830）+ 成员初始化（F920）+ 输入/重置（F945）——**行会窗口完整**（3 页 + 滚动条 + 成员列表 + 公告编辑器 + 输入），行会表面 100%。
 - 落盘：guild-window-closure-evidence.json（F946，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 640。
+## Round 641 (F947) — 2026-08-12：HANDOFF 刷新 127（Round 638-640）
+
+- **〔刷新〕**HANDOFF 追加 Round 638-640（F945-F946：行会窗口输入/重置 + 行会窗口闭合）；基线 Round 637=ad68532 → Round 640=29856f5（**605 连发 F335-F946**）。
+- 落盘：handoff-refresh-127-evidence.json（F947，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 641。

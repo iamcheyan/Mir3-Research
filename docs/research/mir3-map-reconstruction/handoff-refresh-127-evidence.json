@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-127-2026-08-12-f947",
+  "title": "Round 641 (F947): HANDOFF refresh 127 - Rounds 638-640 (F944-F946: HANDOFF 126, guild input/reset, guild closure), baseline Round 637=ad68532 -> Round 640=29856f5 (605 consecutive F335-F946), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 638-640.",
+  "question": "What changed since HANDOFF refresh 126?",
+  "method": "Append Round 638-640 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 638-640 appended (3 rounds, F944-F946)",
+    "baseline": "Round 637=ad68532 -> Round 640=29856f5 (605 consecutive F335-F946)",
+    "arcs": {"input": "F945 guild", "closure": "F946 guild window"},
+    "key": "guild window complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F944": "refresh 126 baseline -> now refresh 127", "F335-F946": "605 rounds"
+  },
+  "contrast": {
+    "refresh_126_vs_127": "F945-F946 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 127 (F947): Rounds 638-640 documented (guild window complete), baseline ad68532 -> 29856f5, 605 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F945-F946 evidence.",
+  "cross_refs": ["F944: refresh 126", "F946: guild closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 638-640 section to HANDOFF",
+  "notes": [
+    "605 consecutive shipping rounds F335-F946",
+    "next: remaining deep corners, sim polish"
+  ]
+}
