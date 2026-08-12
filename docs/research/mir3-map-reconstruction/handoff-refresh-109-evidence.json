@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-109-2026-08-12-f896",
+  "title": "Round 590 (F896): HANDOFF refresh 109 - Rounds 587-589 (F893-F895: HANDOFF 108, entity projection/shadow, entity render closure), baseline Round 586=0008576 -> Round 589=17ef963 (554 consecutive F335-F895), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 587-589.",
+  "question": "What changed since HANDOFF refresh 108?",
+  "method": "Append Round 587-589 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 587-589 appended (3 rounds, F893-F895)",
+    "baseline": "Round 586=0008576 -> Round 589=17ef963 (554 consecutive F335-F895)",
+    "arcs": {"entity": "F894 projection/shadow", "closure": "F895 entity"},
+    "key": "entity render complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F893": "refresh 108 baseline -> now refresh 109", "F335-F895": "554 rounds"
+  },
+  "contrast": {
+    "refresh_108_vs_109": "F894-F895 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 109 (F896): Rounds 587-589 documented (entity render complete), baseline 0008576 -> 17ef963, 554 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F894-F895 evidence.",
+  "cross_refs": ["F893: refresh 108", "F895: entity closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 587-589 section to HANDOFF",
+  "notes": [
+    "554 consecutive shipping rounds F335-F895",
+    "next: remaining deep corners, sim polish"
+  ]
+}

@@ -3449,3 +3449,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体渲染完整；下一弧：HANDOFF 刷新 109/剩余角落）。
+## Round 590 (2026-08-12) — HANDOFF 刷新 109（Finding 896）
+
+- **Round 587-589 追加 + 554 连发**（实体渲染完整入档）。
+- 落盘：`handoff-refresh-109-evidence.json`（F896）+ RESEARCH_LOG Round 590。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体渲染完整；下一弧：剩余深层角落/模拟器 polish）。
