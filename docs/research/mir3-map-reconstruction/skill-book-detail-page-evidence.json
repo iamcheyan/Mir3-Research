@@ -1,0 +1,35 @@
+{
+  "evidence_id": "skill-book-detail-page-2026-08-12-f534",
+  "title": "Round 228 (F534): Skill book detail page - 0x43A440: skill-name match + detail parse: token split 0x468BF0 ('\\r' delimiter), '#' = level compare ([0x1EA8] vs parsed), ';' = end; match flag [esp+0x13]; detail send via 0x45E200 (msg 0xA5 = skill detail request, 0x8AB7A8); multi-line buffer (0x100 stride fields on stack); 0x1E90 stack frame - F104 detail page decoded",
+  "date": "2026-08-12",
+  "objective": "Decode the skill book detail page (F104).",
+  "question": "How does the skill detail page parse and display?",
+  "method": "Disasm 0x43A440-0x43A600 (detail parse + send).",
+  "scope": "0x43A440-0x43A600; msg 0xA5; token split.",
+  "cell_analysis": {
+    "parse_0x43A440": {"token": "0x468BF0 ('\\r' delimiter)", "match": "'#' = level compare (arg [0x1EA8] vs parsed 0x4681F9), ';' = end", "flag": "[esp+0x13] match found", "send": "0x45E200 msg 0xA5 (skill detail request)"},
+    "buffers": "multi-line fields (0x100 stride stack) + 0x145/0x514 dword zeroed",
+    "detail_flow": "skill click -> name match -> msg 0xA5 -> server detail -> render"
+  },
+  "exe_trace": {
+    "skill_chain": "skill book (F104) -> detail 0x43A440 -> msg 0xA5 -> server -> fields"
+  },
+  "audit_vs_exe": {
+    "F104": "detail page decoded", "F351": "skill grid + detail", "F45": "sim skills"
+  },
+  "contrast": {
+    "match_vs_display": "name/level match vs field display",
+    "detail_vs_grid": "0x43A440 detail vs 0x4391F0 grid"
+  },
+  "verdict": "Skill book detail page PRIMARY-verified: 0x43A440 name/level match + msg 0xA5 detail request + multi-line buffers. F104 detail flow complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Detail parse decoded from .text.",
+  "cross_refs": ["F104: detail page", "F351: skill grid", "F45: sim skills"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43A440+0x40",
+  "notes": [
+    "msg 0xA5 = skill detail request",
+    "'#' level gate + ';' terminator",
+    "0x100 stride = per-field buffers"
+  ]
+}

@@ -6892,3 +6892,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔追加〕**HANDOFF 补 Round 219-226（协议层完整 + 模拟器边缘 + 深层 UI 角落）；基线 Round 218=be1b382 → **Round 226=17faa1b（190 连发 F335-F532）**。
 - 落盘：handoff-refresh-3-evidence.json（F533，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 227。
+## Round 228 (F534) — 2026-08-12：技能书详情页
+
+- **〔解析〕**0x43A440：技能名匹配 + 详情解析（token 0x468BF0 '' 分隔、'#' 等级门、';' 终止、匹配旗标 [esp+0x13]）；**详情请求 msg 0xA5**（0x45E200）+ 多行缓冲（0x100 stride）。
+- 落盘：skill-book-detail-page-evidence.json（F534，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 228。

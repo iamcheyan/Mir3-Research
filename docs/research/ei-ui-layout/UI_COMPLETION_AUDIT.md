@@ -1366,9 +1366,14 @@ git diff --check
 - **190 连发 F335-F532 全汇总**。
 - 落盘：`handoff-refresh-3-evidence.json`（F533）+ RESEARCH_LOG Round 227。
 
+## Round 228 (2026-08-12) — 技能书详情页（Finding 534）
+
+- **名称/等级匹配 + msg 0xA5 请求**（F104）。
+- 落盘：`skill-book-detail-page-evidence.json`（F534）+ RESEARCH_LOG Round 228。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（协议层 + UI 角落完整；其余 = 持续深化）。
+- 无阻塞项（技能书族完整）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。
