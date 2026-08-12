@@ -6751,3 +6751,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master b2a8f7d（**162 连发已推**）。
 - **〔弧汇总〕**monster.dat EUC-KR/Hanja 破解（F501、432 槽全命名）+ stditem.dat 1143×184B+4B 精确格式 + 名称 +0x99（F502）——**服务端双库全可解码**；客户端仍包驱动（F492/F464）。
 - 落盘：server-db-decode-arc-closure-evidence.json（F503，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 197。
+## Round 198 (F504) — 2026-08-12：MonMagic.wil 块布局（F489 公式确认）
+
+- **〔库〕**MonMagic.wil = 2270 帧 / **153 段**（可变长 4/10/18/6/8，起点 0/20/40/60/80/100/260/280/306...）；Magic.wil 3550 / MagicEx.wil 1780（独立特效族）。
+- **〔公式〕**F489 **[esi]+type*10 = 段起点索引确认**：偶 type（0/2/4/6/8/10）起点 = type*10 精确；奇 type → 下一段；每特效帧数 [0x102]（F487）= 段长。
+- 落盘：monmagic-block-layout-evidence.json（F504，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 198。

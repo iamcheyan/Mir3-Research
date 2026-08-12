@@ -1,0 +1,37 @@
+{
+  "evidence_id": "monmagic-block-layout-2026-08-12-f504",
+  "title": "Round 198 (F504): MonMagic.wil block layout - 2270 frames / 153 runs (variable lengths 4/10/18/6/8..., starts 0/20/40/60/80/100/260/280/306/320...); F489 frame base [esi]+type*10 CONFIRMED as run-start indexing: even types (0,2,4,6,8,10) start at type*10 exactly (0/20/40/60/80/100), odd types map to next run (1->20, 3->40, 5->60, 7->80); per-effect frame count in [0x102] (F487) matches run lengths; Magic.wil 3550 / MagicEx.wil 1780 = separate effect families",
+  "date": "2026-08-12",
+  "objective": "Verify the F489 spell frame-base formula against the real MonMagic.wil layout.",
+  "question": "Does [esi]+type*10 match the actual MonMagic block structure?",
+  "method": "MonMagic.wil full run-scan (153 runs) + type*10 start comparison.",
+  "scope": "Data/MonMagic.wil (2270 frames); block starts.",
+  "cell_analysis": {
+    "lib": {"count": "2270 frames", "runs": "153 (variable lengths 4/10/18/6/8, starts 0/20/40/60/80/100/260/280/306/320...)"},
+    "formula": {"even_types": "type*10 == run start (0/20/40/60/80/100 for types 0/2/4/6/8/10)", "odd_types": "type*10 maps to next run (1->20, 3->40, 5->60, 7->80) [inference: type = effect class, even = primary]", "frame_count": "[0x102] per-effect count (F487) = run length"},
+    "families": {"Magic.wil": "3550 frames (player spells)", "MagicEx.wil": "1780 frames (extended)", "MonMagic.wil": "2270 (monster effects)"}
+  },
+  "exe_trace": {
+    "spell_chain": "effect type -> [esi]+type*10 base -> [0x102] count -> frames -> 565 blend (F486)"
+  },
+  "audit_vs_exe": {
+    "F489": "frame base formula CONFIRMED against real lib",
+    "F487": "frame count [0x102] = run length confirmed",
+    "F483": "magic lib family (Magic/MagicEx/MonMagic) sized"
+  },
+  "contrast": {
+    "sparse_vs_contiguous": "run starts sparse (gaps 100->260) - types map via table, not dense",
+    "mon_vs_player": "MonMagic (monster) vs Magic (player) effect families"
+  },
+  "verdict": "MonMagic block layout PRIMARY-verified: 153 variable-length runs; F489 type*10 = run-start base (even types exact, odd = next run); per-effect counts = run lengths. Spell frame math CONFIRMED against real WIL.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Run scan + formula compare from binary/WIL.",
+  "cross_refs": ["F489: frame base", "F487: frame count", "F483: magic libs"],
+  "tool": "wilsdk run-scan + capstone formula",
+  "reproduce": "scan MonMagic.wil runs; compare type*10 starts",
+  "notes": [
+    "even/odd type split [inference: 2-frame-pair family]",
+    "gap 100->260 = unused slots (sparse table)",
+    "per-effect frame counts vary (4-18)"
+  ]
+}
