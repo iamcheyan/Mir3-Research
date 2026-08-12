@@ -2953,3 +2953,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（任务绘制完整；下一弧：剩余深层角落）。
+## Round 528 (2026-08-12) — 任务窗口闭合（Finding 834）
+
+- **492 连发 + 458 证据 + 任务窗口完整**。
+- 落盘：`quest-window-closure-evidence.json`（F834）+ RESEARCH_LOG Round 528。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务窗口完整；下一弧：HANDOFF 刷新 88/剩余角落）。

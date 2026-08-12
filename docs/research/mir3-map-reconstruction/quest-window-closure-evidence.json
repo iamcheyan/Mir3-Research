@@ -1,0 +1,37 @@
+{
+  "evidence_id": "quest-window-closure-2026-08-12-f834",
+  "title": "Round 528 (F834): Quest window CLOSED (F558/F671/F833) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master a12f20d (492 consecutive F335-F833), 458 evidence JSONs; arc: registry (F558) + quest draw (F671) + draw body (F833) - quest window COMPLETE byte-level (19-line list + title wrap + status colors + 2 buttons), window mode B fully rendered",
+  "date": "2026-08-12",
+  "objective": "Close the quest window arc.",
+  "question": "Is the quest window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "458 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F558": "registry", "F671": "quest draw", "F833": "draw body"},
+    "quest": "list + wrap + colors = COMPLETE",
+    "milestone": "492 consecutive rounds F335-F833"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F833": "492 rounds pushed; quest window complete"
+  },
+  "contrast": {
+    "list_vs_wrap": "[0x54] + 0xC8/0xA0",
+    "colors_vs_buttons": "status + 2 buttons"
+  },
+  "verdict": "Quest window CLOSED (F834): list + wrap + colors all byte-level; validation green, 492 consecutive rounds, 458 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F558/F671/F833.",
+  "cross_refs": ["F558", "F671", "F833"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "492 consecutive shipping rounds F335-F833",
+    "quest window 100%",
+    "next: HANDOFF refresh 88, remaining corners"
+  ]
+}

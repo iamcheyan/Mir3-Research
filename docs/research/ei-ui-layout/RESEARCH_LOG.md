@@ -8277,3 +8277,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔任务〕**0x447470（F558 模式 B）：**2 按钮 F704**（@ +0x74/+0x128）+ 任务列表 [0x54] 遍历：标题测量 0x45E0C0（>0xC8 换行）+ **行换行 0xA0** + **状态色 0x1919C8**（完成 via [0x210] 旗标 vs 进行 0x19197D）+ 0x45DD70 + **y=(idx×15)+0x12**（F671 确认）x+0x41——任务窗口绘制完整。
 - 落盘：quest-window-draw-body-evidence.json（F833，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 527。
+## Round 528 (F834) — 2026-08-12：任务窗口闭合（F558/F671/F833 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**458 证据 JSON**；三服务 200；master a12f20d（**492 连发 F335-F833 已推**）。
+- **〔弧〕**注册表（F558）+ 任务绘制（F671）+ 绘制体（F833）——**任务窗口完整**（19 行列表 + 标题换行 + 状态色 + 2 按钮），模式 B 全渲染。
+- 落盘：quest-window-closure-evidence.json（F834，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 528。
