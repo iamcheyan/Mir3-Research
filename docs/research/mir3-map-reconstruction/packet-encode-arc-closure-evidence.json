@@ -1,0 +1,36 @@
+{
+  "evidence_id": "packet-encode-arc-closure-2026-08-12-f690",
+  "title": "Round 384 (F690): Packet-encode arc CLOSED (F689) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master d0d9a9c (348 consecutive F335-F689), 314 evidence JSONs; arc: base64 encode + header (F689) - packet encode COMPLETE (base64 + header + text frames F572 + checksum F617), closing F307/F524 packet pipeline",
+  "date": "2026-08-12",
+  "objective": "Close the packet-encode arc.",
+  "question": "Is the packet encode fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "314 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F689": "base64 encode + header"},
+    "encode": "base64 + header + frames (F572) + checksum (F617) = COMPLETE",
+    "milestone": "348 consecutive rounds F335-F689"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F689": "348 rounds pushed; packet encode complete"
+  },
+  "contrast": {
+    "encode_vs_frame": "base64 body + text frame",
+    "packet_vs_checksum": "encode + XOR integrity"
+  },
+  "verdict": "Packet-encode arc CLOSED (F690): base64 + header + frames all byte-level; validation green, 348 consecutive rounds, 314 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F689.",
+  "cross_refs": ["F689: encode", "F572: frames", "F617: checksum"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "348 consecutive shipping rounds F335-F689",
+    "next: HANDOFF refresh 41, remaining corners"
+  ]
+}

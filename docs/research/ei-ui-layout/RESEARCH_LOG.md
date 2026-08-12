@@ -7652,3 +7652,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔编码〕**0x452810 = **MIR base64 编码**（F307 确认）：每字节 6 位打包（移位表 0x47C86E、0x3C 偏移、输出上限、返回长度）；0x452920 = 包装；0x4528E0 = **12 字节包头编码** 经 0x452740——包编码助手字节级（F307/F572 包层）。
 - 落盘：base64-encode-header-evidence.json（F689，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 383。
+## Round 384 (F690) — 2026-08-12：包编码弧闭合（F689 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**314 证据 JSON**；三服务 200；master d0d9a9c（**348 连发 F335-F689 已推**）。
+- **〔弧〕**base64 编码 + 包头（F689）——**包编码完整（base64 + 包头 + 文本帧 F572 + 校验和 F617）**，闭合 F307/F524 包管线。
+- 落盘：packet-encode-arc-closure-evidence.json（F690，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 384。
