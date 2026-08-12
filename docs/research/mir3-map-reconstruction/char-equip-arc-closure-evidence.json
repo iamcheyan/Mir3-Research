@@ -1,0 +1,37 @@
+{
+  "evidence_id": "char-equip-arc-closure-2026-08-12-f759",
+  "title": "Round 453 (F759): Char/equip/bag window arc CLOSED (F651/F652/F655/F758) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 23e0aca (417 consecutive F335-F758), 383 evidence JSONs; arc: item icon (F651) + deserialize/IO (F652) + insert/place (F655) + status draw (F758) - char/equip/bag COMPLETE byte-level (11 equip slots stride 0xC24 + bag 6x0x64 auto-scan + avatar frame + icon render), window modes 0/1/7 fully documented",
+  "date": "2026-08-12",
+  "objective": "Close the char/equip/bag window arc.",
+  "question": "Is the char/equip/bag fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "383 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F651": "icon", "F652": "deserialize", "F655": "insert/place", "F758": "status draw"},
+    "char": "equip slots + bag + avatar = COMPLETE",
+    "milestone": "417 consecutive rounds F335-F758"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F758": "417 rounds pushed; char/equip/bag complete, modes 0/1/7 documented"
+  },
+  "contrast": {
+    "equip_vs_bag": "11 slots + auto-scan",
+    "avatar_vs_icons": "class frame + icons"
+  },
+  "verdict": "Char/equip/bag arc CLOSED (F759): slots + bag + avatar all byte-level; validation green, 417 consecutive rounds, 383 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F651/F652/F655/F758.",
+  "cross_refs": ["F651", "F652", "F655", "F758"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "417 consecutive shipping rounds F335-F758",
+    "char/equip/bag 100%",
+    "next: HANDOFF refresh 63, remaining corners"
+  ]
+}

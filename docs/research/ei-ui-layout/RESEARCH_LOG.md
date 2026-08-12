@@ -7952,3 +7952,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔状态〕**0x450530（F558 模式 7）：**头像帧**（[0x551] 职业×10 + [0x554] 等级 + 0x3B → blit 0x45FD50 F647、WIL 0x566DD4）+ **11 装备图标**（0x430A40 F651、记录 stride 0xC24 @ +0x60C、位置表 [0x558] stride 0x10、默认 +0x61/+0xC8）+ 名字/行会标题（0x45DBA0 字体 + 0x45DE50 DrawTextA 0xDCFFDC/0xB4FAFF + 格式化 0x46811C 串 0x47B560/0x47AF48）——角色状态窗口完整（F558/F651 用）。
 - 落盘：char-status-window-draw-evidence.json（F758，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 452。
+## Round 453 (F759) — 2026-08-12：角色/装备/背包弧闭合（F651/F652/F655/F758 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**383 证据 JSON**；三服务 200；master 23e0aca（**417 连发 F335-F758 已推**）。
+- **〔弧〕**物品图标（F651）+ 反序列化/IO（F652）+ 插入/放置（F655）+ 状态绘制（F758）——**角色/装备/背包完整**（11 装备槽 stride 0xC24 + 背包 6×0x64 自动扫描 + 头像帧 + 图标渲染），窗口模式 0/1/7 全文档化。
+- 落盘：char-equip-arc-closure-evidence.json（F759，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 453。
