@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-14-2026-08-12-f593",
+  "title": "Round 287 (F593): HANDOFF refresh 14 - Rounds 283-286 (F589-F592: entity HP bar full + main tick 18-stage orchestration + HUD/loop arc closure), baseline Round 282=ee78dbd -> Round 286=f711837 (251 consecutive F335-F592), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 283-286.",
+  "question": "What changed since HANDOFF refresh 13?",
+  "method": "Append Round 283-286 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 283-286 appended (4 rounds, F589-F592)",
+    "baseline": "Round 282=ee78dbd -> Round 286=f711837 (251 consecutive F335-F592)",
+    "arcs": {"bars": "F590 entity HP bar full", "loop": "F591 main tick 18-stage", "closure": "F592 HUD/loop arc"},
+    "key": "main game loop fully orchestrated; bar system complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F589": "refresh 13 baseline -> now refresh 14", "F335-F592": "251 rounds"
+  },
+  "contrast": {
+    "refresh_13_vs_14": "F590-F592 (3 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 14 (F593): Rounds 283-286 documented (entity bars + main tick + closure), baseline ee78dbd -> f711837, 251 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F590-F592 evidence.",
+  "cross_refs": ["F589: refresh 13", "F592: HUD/loop closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 283-286 section to HANDOFF",
+  "notes": [
+    "251 consecutive shipping rounds F335-F592",
+    "next: remaining deep corners, sim polish, server-side cross-ref"
+  ]
+}

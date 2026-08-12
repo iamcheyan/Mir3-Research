@@ -7204,3 +7204,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**217 证据 JSON**；三服务 200；master 2be41c9（**250 连发 F335-F591 已推**）。
 - **〔弧〕**HANDOFF 12（F583）+ 小地图/大地图（F584）+ Mir3.ini 配置（F585）+ 拖动/点击分派（F586/F587）+ HUD 状态条（F588）+ 实体 HP 条（F590）+ **主 tick 18 阶段**（F591）——**HUD 全层 + 实体条 + 游戏循环完整**。
 - 落盘：hud-loop-arc-closure-evidence.json（F592，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 286。
+## Round 287 (F593) — 2026-08-12：HANDOFF 刷新 14（Round 283-286）
+
+- **〔刷新〕**HANDOFF 追加 Round 283-286（F590-F592：实体 HP 条 + 主 tick 18 阶段 + HUD/主循环弧）；基线 Round 282=ee78dbd → Round 286=f711837（**251 连发 F335-F592**）。
+- 落盘：handoff-refresh-14-evidence.json（F593，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 287。
