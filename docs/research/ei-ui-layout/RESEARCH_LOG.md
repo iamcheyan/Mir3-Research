@@ -6177,3 +6177,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0.map 17 条〕**333,776->01 564,69（北界）、65,174->D001 151,362（红月门）、764,206->D401 25,181（西矿口）。
 - **〔客户端〕**格式与 0x422960（F333）msg 0x33/0x27A word+6/+8 坐标兼容。
 - 落盘：transition-coordinate-verification-evidence.json（F393，derived-tooling；客户端格式 primary-static）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 87。
+## Round 88 (F394) — 2026-08-12：地图渲染性能（/fullmap 9600x6400 26MB + 瓦片热/冷延迟）
+
+- **〔fullmap〕**0.map → 9600×6400 JPEG 26MB（19.7s 冷）——世界 38400×25600 / 4 = 最深 z=2（16384 上限，F373 阶梯吻合）。
+- **〔瓦片〕**热 121ms（10 片 1.21s、8 片/s）、冷 ~1.4s——缓存对交互平移关键。
+- 落盘：map-render-performance-evidence.json（F394，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 88。

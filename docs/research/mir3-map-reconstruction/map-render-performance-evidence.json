@@ -1,0 +1,36 @@
+{
+  "evidence_id": "map-render-performance-2026-08-12-f394",
+  "title": "Round 88 (F394): Map render performance - /fullmap 0.map = 9600x6400 JPEG 26MB (19.7s cold, world 38400x25600 / 4 = deepest z=2), warm tile 120ms each (10 in 1.2s), cold tile ~1.4s (cache miss decode)",
+  "date": "2026-08-12",
+  "objective": "Measure the mapviewer's full-map and tile rendering performance: fullmap dimensions vs the MAX_FULL_DIM cap, warm/cold tile latency.",
+  "question": "How fast does the viewer render full maps and tiles?",
+  "method": "curl /fullmap + /tile timing; dimension analysis vs world size.",
+  "scope": "mapviewer 8899; 0.map.",
+  "cell_analysis": {
+    "fullmap": {"0.map": "9600x6400 JPEG 26190998B (26MB), 19.7s cold", "math": "world 38400x25600 / 4 = 9600x6400 (deepest z=2, MAX_FULL_DIM 16384 cap)"},
+    "tiles": {"warm": "10 tiles 1.21s = 121ms each (cache hit)", "cold": "~1.4s (first render, F376)"},
+    "throughput": "warm ~8 tiles/s, cold ~0.7 tiles/s - cache is critical for panning"
+  },
+  "exe_trace": {
+    "render": "mapviewer render_tile (F331 semantics); fullmap = full-res composite at deepest zoom"
+  },
+  "audit_vs_exe": {
+    "F373": "zoom ladder (0.map [2,3,4]) confirmed by fullmap z=2 output",
+    "F376": "tile cache cold/warm confirmed"
+  },
+  "contrast": {
+    "full_vs_tile": "fullmap = single giant image (9600x6400); tiles = 512px viewport chunks",
+    "cold_vs_warm": "19.7s full-map cold vs cached tiles 121ms"
+  },
+  "verdict": "Map render performance measured (derived-tooling): /fullmap produces 9600x6400 (26MB, 19.7s cold) at deepest zoom (z=2, 16384 cap); warm tiles 121ms (8/s) vs cold 1.4s. Cache is essential for interactive panning.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Timings measured via HTTP; dimensions match zoom-ladder math (F373).",
+  "cross_refs": ["F373: zoom ladder", "F376: tile cache", "F331: render semantics"],
+  "tool": "curl timing; file; python3",
+  "reproduce": "curl '/fullmap?map=0.map'; curl 10 tiles twice (cold/warm)",
+  "notes": [
+    "26MB fullmap = memory-heavy; viewer uses tiles for interaction",
+    "9600x6400 = 0.map world / 4 (z=2 half of 16384)",
+    "fullmap caches? [candidate - subsequent calls likely disk-cached]"
+  ]
+}

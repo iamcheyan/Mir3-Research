@@ -666,6 +666,11 @@ git diff --check
 - **与客户端 0x33/0x27A 格式兼容**（F333）。
 - 落盘：`transition-coordinate-verification-evidence.json`（F393）+ RESEARCH_LOG Round 87。
 
+## Round 88 (2026-08-12) — 地图渲染性能（Finding 394）
+
+- **/fullmap 9600×6400 26MB**（最深 z=2 16384 上限）；热瓦片 121ms、冷 1.4s。
+- 落盘：`map-render-performance-evidence.json`（F394）+ RESEARCH_LOG Round 88。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
