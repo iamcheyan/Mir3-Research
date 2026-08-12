@@ -1041,9 +1041,14 @@ git diff --check
 - **F456-F467 弧闭合 + 132 连发**；全验证绿色。
 - 落盘：`item-bag-store-arc-closure-evidence.json`（F468）+ RESEARCH_LOG Round 162。
 
+## Round 163 (2026-08-12) — 装备面板槽位（Finding 469）
+
+- **12 槽 + 兼容检查**（F325 8→12 修正）。
+- 落盘：`equipment-panel-slots-evidence.json`（F469）+ RESEARCH_LOG Round 163。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（全部弧已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- 无阻塞项（装备族全解；其余 = 低优先深化，见 RESEARCH_LOG）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

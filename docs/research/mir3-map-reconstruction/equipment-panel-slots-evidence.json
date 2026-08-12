@@ -1,0 +1,39 @@
+{
+  "evidence_id": "equipment-panel-slots-2026-08-12-f469",
+  "title": "Round 163 (F469): Equipment panel slots - 0x44B720 12-slot rect hit-test (rects [0x1C8] stride 0x10, 0xB=12 loops, PtInRect 0x4762B4 -> slot idx or -1); 0x44B7A0 equip compatibility (type byte [item]: 5/6/9 -> class [0x22]==0x19 weapon or slot 5/6/9 match; 7/8 pair-swap; else idx==bl); 0x44B880 slot clear (stride 0xC24=3108B, zero 0x309 dwords at [0x2F4]); 0x44B8B0 name find (0xB=11 slots strcmp [0x335]) - F325 '8 equip slots' CORRECTED to 11-12 slots (status panel family F33/F47)",
+  "date": "2026-08-12",
+  "objective": "Decode the equipment panel slot system; correct the F325 slot count.",
+  "question": "How many equip slots does the status panel have and how do they validate?",
+  "method": "Disasm 0x44B720 (hit-test) + 0x44B7A0 (compat) + 0x44B880/0x44B8B0 (clear/find).",
+  "scope": "0x44B720-0x44B930; slots [0x1C8] stride 0x10; records [0x2F4] stride 0xC24.",
+  "cell_analysis": {
+    "hit_test_0x44B720": {"rects": "12 slots at [0x1C8], stride 0x10, PtInRect 0x4762B4, loop 0xB (12)", "result": "slot idx or -1"},
+    "compat_0x44B7A0": {"rules": "slot 5/6/9: item type 5/6/9 or class [0x22]==0x19 (weapon) matches bl; slots 7/8: type 7/8 swap; else type==bl", "purpose": "drag-drop validation"},
+    "slot_clear_0x44B880": {"stride": "0xC24 (3108B) = 0xC20 record + 4", "zero": "0x309 dwords at [status + idx*0xC24 + 0x2F4]"},
+    "name_find_0x44B8B0": {"slots": "0xB (11) slots, strcmp [0x335] name, clear on match"},
+    "f325_correction": "F325 '8 equip slots' -> 12 slots (hit-test 0xB) / 11 (name find) - status panel (F33 12-slot attr consistent)"
+  },
+  "exe_trace": {
+    "equip_chain": "status paint 0x44B2D0 -> 0x44BC80 stats + equip slots -> hit-test 0x44B720 -> tooltip 0x4341F0"
+  },
+  "audit_vs_exe": {
+    "F325": "slot count corrected 8 -> 12",
+    "F33": "12-slot attr hit-test consistent",
+    "F47": "equipment panel verification extended"
+  },
+  "contrast": {
+    "12_vs_8": "12 rect slots (incl. weapon 2H swap) vs sim's 8 rendered slots",
+    "compat_vs_hit": "0x44B7A0 = type-based validation; 0x44B720 = geometry hit-test"
+  },
+  "verdict": "Equipment panel slots PRIMARY-verified: 12 rect slots (stride 0x10, [0x1C8]), compat check (weapon class 0x19 + slot rules), clear stride 0xC24, name find 11 slots. F325 '8 equip slots' corrected to 12.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All slot functions decoded from .text; F325 corrected.",
+  "cross_refs": ["F325: equip slots (corrected)", "F33: status family", "F47: equipment verification"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x44B720+0x20, 0x44B7A0+0x40, 0x44B880+0x20",
+  "notes": [
+    "12 rects = 0x1C8 + i*0x10 (30px-ish cells)",
+    "weapon slots 5/6 = 1H/2H, 9 = ?; 7/8 = swap pair [inference]",
+    "sim shows 8 slots (F47) - client has 12 rects"
+  ]
+}

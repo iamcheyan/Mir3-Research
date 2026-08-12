@@ -6565,3 +6565,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 9f5da53（**132 连发已推**）。
 - **〔弧汇总〕**提示框（详情体 5 类分派）/ 物品（地面渲染 + 0xC20 统一记录 + StoreItem.wil 图标）/ 商店（3 网格 ~90 槽 + BUY/SELL/仓库/CRAFT 解析器）/ 背包（交互链 + 6 列几何）。
 - 落盘：item-bag-store-arc-closure-evidence.json（F468，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 162。
+## Round 163 (F469) — 2026-08-12：装备面板槽位（12 槽修正）
+
+- **〔槽〕**0x44B720 12 槽矩形命中测试（[0x1C8] stride 0x10、0xB=12 循环、PtInRect）；**0x44B7A0 装备兼容检查**（type 5/6/9 → 武器类 0x19、7/8 互换对、否则 type==槽）；0x44B880 清槽（stride 0xC24、[0x2F4] 0x309 dword）；0x44B8B0 按名查找（11 槽）。
+- **〔修正〕**F325「8 装备槽」→ **12 槽**（状态面板 F33/F47 族一致）。
+- 落盘：equipment-panel-slots-evidence.json（F469，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 163。
