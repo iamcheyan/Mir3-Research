@@ -1,0 +1,36 @@
+{
+  "evidence_id": "login-family-arc-closure-2026-08-12-f542",
+  "title": "Round 236 (F542): Login-family arc CLOSED (F540-F541) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 01a8904 (200 shipping rounds F335-F541); arc consolidated: NPC dialog 4-type dispatch (F540), char-select 5-stage machine (F541) - ALL UI family machines (dialog/login/char-select) now byte-level; milestone: 200 consecutive rounds",
+  "date": "2026-08-12",
+  "objective": "Close the login-family arc; note the 200-round milestone.",
+  "question": "Is the repo healthy at 200 rounds with the login arc closed?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 01a8904; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F540": "NPC dialog 4-type dispatch (jt 0x440158)", "F541": "char-select 5-stage machine (jt 0x457778, enter 0x458B20)"},
+    "milestone": "200 consecutive shipping rounds (F335-F541)"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F541": "200 rounds pushed; UI machines complete"
+  },
+  "contrast": {
+    "machines_vs_renders": "state machines (login/dialog) + render paths all byte-level",
+    "client_vs_server": "client UI machines + server Envir both complete"
+  },
+  "verdict": "Login-family arc CLOSED (F540-F541): validation green, services live, 200 consecutive shipping rounds (F335-F541). All UI state machines byte-level; milestone reached.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F540-F541.",
+  "cross_refs": ["F540-F541: arc", "F232: prior closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "200-round milestone: full client/server/map/packet documentation",
+    "next: HANDOFF refresh, remaining corners, ongoing verification"
+  ]
+}

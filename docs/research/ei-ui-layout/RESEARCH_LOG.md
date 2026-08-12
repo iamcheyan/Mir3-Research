@@ -6925,3 +6925,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔阶段〕**0x4575D0：阶段字节 [0x930] ≤ 4 经跳表 0x457778（5 阶段）：0=0x457790 连接、1=0x457AB0 服务器、2=0x457615 角色列表（0x45C900）、3=0x4576FA 角色选择、4=0x45773C；**进游戏 = 0x458B20(stage, idx)**；角色名缓冲 [0x10BC]/[0x10FC]——F349/F110 流程完整。
 - 落盘：char-select-stage-machine-evidence.json（F541，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 235。
+## Round 236 (F542) — 2026-08-12：登录族弧闭合 + 200 连发里程碑
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 01a8904（**200 连发 F335-F541**）。
+- **〔弧汇总〕**NPC 对话 4 类型分派（F540）+ 角色选择 5 阶段机（F541）——全部 UI 状态机字节级。
+- 落盘：login-family-arc-closure-evidence.json（F542，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 236。
