@@ -7242,3 +7242,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**226 证据 JSON**；三服务 200；master d9db77d（**259 连发 F335-F600 已推**）。
 - **〔弧〕**NPC 对话 4 类型渲染（F598）+ 聊天窗渲染（F599）+ 聊天命令表（F600）——**整个聊天/NPC 对话交互层字节级**。
 - 落盘：chat-dialog-arc-closure-evidence.json（F601，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 295。
+## Round 296 (F602) — 2026-08-12：HANDOFF 刷新 16（Round 292-295）
+
+- **〔刷新〕**HANDOFF 追加 Round 292-295（F598-F601：NPC 对话 4 类型 + 聊天窗渲染 + 命令表 + 弧闭合）；基线 Round 290=251b3bd → Round 295=b9a2111（**260 连发 F335-F601**）。
+- 落盘：handoff-refresh-16-evidence.json（F602，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 296。

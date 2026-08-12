@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-16-2026-08-12-f602",
+  "title": "Round 296 (F602): HANDOFF refresh 16 - Rounds 292-295 (F598-F601: NPC dialog 4-type render + chat window render + chat command table + chat/NPC arc closure), baseline Round 290=251b3bd -> Round 295=b9a2111 (260 consecutive F335-F601), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 292-295.",
+  "question": "What changed since HANDOFF refresh 15?",
+  "method": "Append Round 292-295 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 292-295 appended (4 rounds, F598-F601)",
+    "baseline": "Round 290=251b3bd -> Round 295=b9a2111 (260 consecutive F335-F601)",
+    "arcs": {"npc": "F598 4-type + tags", "chat": "F599 render + F600 commands", "closure": "F601 chat/NPC arc"},
+    "key": "chat + NPC-dialog interaction layer complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F597": "refresh 15 baseline -> now refresh 16", "F335-F601": "260 rounds"
+  },
+  "contrast": {
+    "refresh_15_vs_16": "F598-F601 (4 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 16 (F602): Rounds 292-295 documented (chat/NPC layer), baseline 251b3bd -> b9a2111, 260 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F598-F601 evidence.",
+  "cross_refs": ["F597: refresh 15", "F601: chat/NPC closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 292-295 section to HANDOFF",
+  "notes": [
+    "260 consecutive shipping rounds F335-F601",
+    "next: remaining deep corners, sim polish"
+  ]
+}
