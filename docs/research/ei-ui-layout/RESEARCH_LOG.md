@@ -6560,3 +6560,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔放置〕**首空 0x42F280（46 槽扫描）；放置 0x42F440（脚印 0x42F6D0、标记 idx/+0x3E8 原点、记录 [0x774]=1 + 尺寸 [0x778]/[0x77C]）。
 - **〔确认〕**F293 6 列 WORD 网格字节级确认。
 - 落盘：bag-grid-geometry-evidence.json（F467，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 161。
+## Round 162 (F468) — 2026-08-12：物品/背包/商店弧闭合（F456-F467 12 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master 9f5da53（**132 连发已推**）。
+- **〔弧汇总〕**提示框（详情体 5 类分派）/ 物品（地面渲染 + 0xC20 统一记录 + StoreItem.wil 图标）/ 商店（3 网格 ~90 槽 + BUY/SELL/仓库/CRAFT 解析器）/ 背包（交互链 + 6 列几何）。
+- 落盘：item-bag-store-arc-closure-evidence.json（F468，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 162。

@@ -1,0 +1,35 @@
+{
+  "evidence_id": "item-bag-store-arc-closure-2026-08-12-f468",
+  "title": "Round 162 (F468): Item/bag/store arc CLOSED (F456-F467, 12 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer 8765/mapviewer 8899/sim), 132 shipping rounds pushed (master 9f5da53); arc consolidated: item tooltip body + 5-class classification (F456-458), ground-item render (F459), store layout/paint (F460), goods BUY/SELL/仓库/CRAFT parsers (F461-463), item object 0xC20 (F464), icon library StoreItem.wil (F465), bag interaction (F466), bag grid 6-col geometry (F467)",
+  "date": "2026-08-12",
+  "objective": "Close the item/bag/store arc with a validation sweep + consolidated summary.",
+  "question": "Is the repo healthy after the 12-round item/bag/store arc?",
+  "method": "Full validation suite + service health + arc summary.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 9f5da53 (132 shipping rounds F335-F467)",
+    "arc_summary": {"tooltip": "detail body 0x430B70 (F456) + 5 classes: MDEF 8-element (F457) / weapon req+attack x2 / special equip / consumable (F458)", "items": "ground-item render (F459) + item object 0xC20 unified record (F464) + icon lib StoreItem.wil 1440 (F465)", "store": "layout 3 grids ~90 slots (F460) + goods BUY strtok '/' (F461) + SELL/仓库 0xC20 records (F462) + CRAFT (F463)", "bag": "interaction hover->tooltip (F466) + grid 6-col 36px geometry (F467)"},
+    "pending_note": "no blocking items; low-priority: store+0x5898 second array source"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F467": "132 rounds pushed; item/bag/store family fully closed"
+  },
+  "contrast": {
+    "closed_vs_pending": "item/bag/store fully closed; entity-render arc closed (F455); remaining = low-priority"
+  },
+  "verdict": "Item/bag/store arc CLOSED (F456-F467): full validation green, services live, 132 shipping rounds pushed. Item 0xC20 record unifies bag/store/ground/tooltip; store mode family (BUY/SELL/仓库/CRAFT) fully decoded.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation results from tool runs; arc content from F456-F467 evidence.",
+  "cross_refs": ["F456-F467: arc", "F149: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: equipment slots (F325 8-slot detail), trade content (F364), NPC dialog interaction depth (F404)",
+    "all prior arcs remain closed (entity-render F455, map knowledge base F92)"
+  ]
+}
