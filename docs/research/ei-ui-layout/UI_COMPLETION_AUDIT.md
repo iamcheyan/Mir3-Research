@@ -701,6 +701,11 @@ git diff --check
 - **模拟器开/关/模态验证**；原版关闭 = 0x42ADB0 → 0x42AC50（F337）。
 - 落盘：`trade-closure-verification-evidence.json`（F400）+ RESEARCH_LOG Round 94。
 
+## Round 95 (2026-08-12) — 窗口 Z 序验证（Finding 401）
+
+- **notice 豁免 + 前台 + 模态**全验证（z=50 保持 vs z=100 前台）。
+- 落盘：`window-zorder-verification-evidence.json`（F401）+ RESEARCH_LOG Round 95。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

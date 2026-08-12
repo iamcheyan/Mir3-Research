@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-zorder-verification-2026-08-12-f401",
+  "title": "Round 95 (F401): Window z-order/foreground verified - sim notice (id15, z=50, excluded from close-all) persists when option opens (z=100, foreground), modal close-all + bring-to-front + notice exclusion (F337/F294) all working",
+  "date": "2026-08-12",
+  "objective": "Verify the window foreground/z-order semantics: notice exclusion from close-all, bring-to-front, and modal behavior.",
+  "question": "Does the sim preserve notice window across modal switches with correct z-order?",
+  "method": "Sim browser test: open notice + option, check z-index + foreground class + STATE.foregroundWindow.",
+  "scope": "sim window layering; F337/F294 semantics.",
+  "cell_analysis": {
+    "sim_result": {"wins": "option (z=100, fg) + notice (z=50, not fg)", "notice_persisted": true, "option_foreground": true},
+    "semantics": {"modal": "close-all 0x42B820 before show (F337)", "notice_exclusion": "id15 skipped in close-all (F294)", "bring_to_front": "show -> foreground (0x42ADB0 append, F337)", "click_topmost": "0x42B430 pops list head (F337)"}
+  },
+  "exe_trace": {
+    "z_order_client": "visible list order = show order (0x449870 append, F337); paint iterates list (0x428105 F338)"
+  },
+  "audit_vs_exe": {
+    "F337": "modal + notice exclusion confirmed in sim",
+    "F294": "close-all skips id15 confirmed",
+    "F338": "paint order = list order"
+  },
+  "contrast": {
+    "notice_vs_modal": "notice is the only window surviving modal switches",
+    "sim_z_vs_list": "sim z-index mirrors client list order (append = higher)"
+  },
+  "verdict": "Window z-order verified (F337/F294 semantics in sim): notice (id15) persists across modal switches (z=50) while new windows open foreground (z=100); close-all exclusion + bring-to-front work. Layering matches the client's visible-list order.",
+  "evidence_level": "derived-tooling (semantics primary-static F337/F294)",
+  "evidence_level_note": "Sim layering browser-verified; client semantics from F337/F294 primary bytes.",
+  "cross_refs": ["F337: visibility dispatcher", "F294: notice exclusion", "F338: paint order"],
+  "tool": "puppeteer browser",
+  "reproduce": "open sim; open notice + option; inspect z-index + foreground",
+  "notes": [
+    "notice z=50 vs window z=100 (base vs foreground)",
+    "click dispatch pops topmost (0x42B430, F337) - sim foreground = topmost",
+    "modal single-window + notice always-visible = original behavior"
+  ]
+}

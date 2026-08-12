@@ -6212,3 +6212,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔模拟器〕**交易窗开 → 关 → 开 group 时交易被模态关闭（close-all F337）。
 - **〔原版〕**关闭 = 0x42ADB0 id3 → 0x42AC50 可见链表移除（F337）；trade-window-closure 证据 5/6 pending 已闭（+0x298 运行时填充 KEPT-runtime）。
 - 落盘：trade-closure-verification-evidence.json（F400，derived-tooling；关闭机制 primary-static F337）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 94。
+## Round 95 (F401) — 2026-08-12：窗口 Z 序/前台验证（notice 豁免 + bring-to-front + 模态）
+
+- **〔模拟器〕**notice（id15，z=50，close-all 豁免 F294）在 option（z=100 前台）打开时保持——模态 + 豁免 + 前台全工作。
+- **〔语义〕**close-all 0x42B820（F337）+ id15 跳过 + 显示置前（可见链表追加 0x449870）；绘制按链表序（0x428105 F338）。
+- 落盘：window-zorder-verification-evidence.json（F401，derived-tooling；语义 primary-static F337/F294）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 95。
