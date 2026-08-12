@@ -818,3 +818,14 @@ simulator/style.css
 **公告队列弧闭合（F678）**：336 连发 + 302 证据 JSON——公告系统完整（队列插入/弹出 + 渲染 F674 + 字符串 F556 + 色 F553）；四服务（wilviewer/sim/mapviewer/sim8477）全 200。
 
 **commit 基线更新**：Round 369=93a6bd2 → Round 372=5304cc8（master 已推，337 连发 F335-F678）。
+
+
+## Round 373-375 追加交付（2026-08-12，Finding 679-681）：HANDOFF 刷新 37 + sprintf/strtol 核心 + 字符串库弧
+
+**HANDOFF 刷新 37（F679）**：基线更新至 Round 372=5304cc8（337 连发）。
+
+**字符串库（F680）**：0x46811C = **vsprintf 包装**（0x469E94 _vsnprintf、旗标 0x42/0x7FFFFFFF、NUL 终止）、0x46816E = **strtol 内部**（字符类表 [0x47DDB0] 跳空格 + 符号 + 十进制循环、locale 旗标 [0x47DFBC]）、0x4681F9 = strlen。
+
+**字符串库弧闭合（F681）**：339 连发 + 305 证据 JSON——字符串库完整（vsprintf + strtol + strlen），支撑全部文本格式路径（F572/F585/F600/F549）。
+
+**commit 基线更新**：Round 372=5304cc8 → Round 375=5d6ee76（master 已推，340 连发 F335-F681）。
