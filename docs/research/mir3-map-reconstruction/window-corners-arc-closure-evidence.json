@@ -1,0 +1,36 @@
+{
+  "evidence_id": "window-corners-arc-closure-2026-08-12-f548",
+  "title": "Round 242 (F548): Window-corners arc CLOSED (F544-F547) - full validation green (compileall/verify exit 0/node/JSON), services 200, master a9ee4ac (206 shipping rounds F335-F547); arc consolidated: trade 8x9 panes (F544), horse 4 commands (F545), option 4 toggle rows (F546), skillbook 8 tabs (F547) - remaining window corners byte-level; ALL 14 windows + login/NPC fully detailed",
+  "date": "2026-08-12",
+  "objective": "Close the window-corners arc with validation + summary.",
+  "question": "Is the repo healthy after the 4-round window-corners arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master a9ee4ac; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F544": "trade 8x9 panes (F283 corrected)", "F545": "horse 4 commands + gate", "F546": "option 4 toggle rows", "F547": "skillbook 8 tabs + div-3"},
+    "significance": "ALL 14 windows + login/NPC fully byte-level"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F547": "206 rounds pushed; window corners complete"
+  },
+  "contrast": {
+    "corners_vs_render": "remaining corners + render paths all byte-level",
+    "client_vs_server": "client UI + server Envir + packets all complete"
+  },
+  "verdict": "Window-corners arc CLOSED (F544-F547): validation green, services live, 206 shipping rounds pushed. All remaining window corners byte-level; complete client UI documentation.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F544-F547.",
+  "cross_refs": ["F544-F547: arc", "F236: prior closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next: HANDOFF refresh, ongoing verification, sim polish",
+    "206 shipping rounds + user quest-design commits all pushed"
+  ]
+}

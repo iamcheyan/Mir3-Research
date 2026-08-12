@@ -6950,3 +6950,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔页签〕**0x439500：**8 分类页签控件**（0x417830 @ [0x2F4]-[0x7E0] stride 0xB4，火冰电风神圣黑暗幻影剑 F104）、选中 [0x54] → 计数 [0x58+tab*4]、除 3 计数数学（0x2AAAAAAB）、详情 0x43A440（F534）。
 - 落盘：skill-book-category-tabs-evidence.json（F547，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 241。
+## Round 242 (F548) — 2026-08-12：窗口角落弧闭合（F544-F547 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master a9ee4ac（**206 连发已推**）。
+- **〔弧汇总〕**交易 8×9 栏（F544，F283 修正）/ 坐骑 4 命令（F545）/ 选项 4 开关行（F546）/ 技能书 8 页签（F547）——**全部 14 窗口 + 登录/NPC 字节级**。
+- 落盘：window-corners-arc-closure-evidence.json（F548，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 242。
