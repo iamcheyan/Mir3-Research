@@ -691,6 +691,11 @@ git diff --check
 - **最终统计**（544/211/102/333、主题 530+14、异常 5723/34）；**MAP-SURVEY 定稿**。
 - 落盘：`map-knowledge-synthesis-evidence.json`（F398）+ MAP-SURVEY + RESEARCH_LOG Round 92。
 
+## Round 93 (2026-08-12) — 商店模式状态图（Finding 399）
+
+- **5 态工厂链**（0x44EAB8/0x44F7EF/0x44F940/0x44FB00）+ 状态字节 +0x5F8；模拟器 state0 显示验证。
+- 落盘：`store-mode-state-graph-verification-evidence.json`（F399，primary-bytes）+ RESEARCH_LOG Round 93。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

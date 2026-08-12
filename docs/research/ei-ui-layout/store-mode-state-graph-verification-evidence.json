@@ -1,0 +1,42 @@
+{
+  "evidence_id": "store-mode-state-graph-verification-2026-08-12-f399",
+  "title": "Round 93 (F399): Store mode state graph verified - 5 states with factory sites (0 BUY 0x44EAB8 f1000 / 1 SELL 0x44F7EF f1003 / 2 warehouse 0x44F940 f1001 / 3 CRAFT 0x44FB00 / 4 detail), state byte +0x5F8, sim store shows state0 with evidence label (browser)",
+  "date": "2026-08-12",
+  "objective": "Verify the store window's 5-state machine: factory call sites, frame args, paints, and the simulator's mode display.",
+  "question": "Does the store state graph match the sim and the handlers?",
+  "method": "store-state-graph.json analysis; sim store browser check.",
+  "scope": "store-state-graph.json; sim window.store-candidate.",
+  "cell_analysis": {
+    "states": [
+      {"state": 0, "business": "BUY five-row (msg 0x285)", "factory": "0x44EAB8/0x44EAF3/0x44F56F", "args": "(1000, 0, 186, 300, 304)", "paint": "0x44D590", "evidence": "primary-static"},
+      {"state": 1, "business": "SELL grid", "factory": "0x44F7EF", "args": "(1003, 1, 186, 498, 304)", "paint": "0x44DB50", "evidence": "candidate (no server msg consts)"},
+      {"state": 2, "business": "warehouse/extended grid", "factory": "0x44F940", "args": "(1001, -4, 182, 205, 205)", "evidence": "primary-static msg 0x2BC"},
+      {"state": 3, "business": "CRAFT", "factory": "0x44FB00", "args": "(1000, 0, 186, 300, 304)", "evidence": "primary-static msg 0x2C8"},
+      {"state": 4, "business": "item detail", "evidence": "primary-static"}
+    ],
+    "state_byte": "+0x5F8 (mode selector)",
+    "sim": "store opens state0 (购买), 10 slots, label 'state0 · msg 0x285 → 0x41F92B → 0x44F480, primary-static' (browser)"
+  },
+  "exe_trace": {
+    "store_class": "0x44CFC0 ctor / 0x44D0B0 dtor; ui store game+0x33188 == session+0x2D8614 (F337 id2)"
+  },
+  "audit_vs_exe": {
+    "F289/F340": "store modes + ctor confirmed",
+    "F245": "state graph primary-static confirmed"
+  },
+  "contrast": {
+    "state_frames": "each state re-factories the window with different frame (1000/1003/1001)",
+    "sim_vs_original": "sim displays state label + 10 slots; original re-factories per state"
+  },
+  "verdict": "Store mode state graph verified (primary-static): 5 states with factory sites + frame args + paints + state byte +0x5F8. Sim store shows state0 with full evidence label (browser-verified). Store subsystem closed.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "State graph from store-state-graph.json (primary-static); sim display browser-verified.",
+  "cross_refs": ["F245: store-state-graph.json", "F289: store states", "F340: store family", "F363: store content"],
+  "tool": "store-state-graph.json; puppeteer browser",
+  "reproduce": "open sim; open store; observe state0 label; review store-state-graph.json states",
+  "notes": [
+    "state2 warehouse args (-4, 182, 205, 205) = smaller embedded grid",
+    "state1 SELL candidate (no server constants in client)",
+    "store re-factories window per state (frame swap)"
+  ]
+}

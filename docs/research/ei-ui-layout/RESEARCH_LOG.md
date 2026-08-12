@@ -6202,3 +6202,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔可玩构成〕**编号 37 + 洞穴 156（D0/D1/D4/D6/D11xxx）+ E 路 2；尺寸 50x50→800x800。
 - **〔MAP-SURVEY〕**追加 Round 90-92 最终汇总段（瓦片/单元/视口/越界/地面/工具链）。
 - 落盘：map-knowledge-synthesis-evidence.json（F398，primary-bytes）+ MAP-SURVEY.md + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 92。
+## Round 93 (F399) — 2026-08-12：商店模式状态图验证（5 态工厂 + 状态字节）
+
+- **〔状态图〕**0 BUY 0x44EAB8 f1000 / 1 SELL 0x44F7EF f1003 / 2 仓库 0x44F940 f1001 / 3 CRAFT 0x44FB00 / 4 详情——各态重工厂换帧；状态字节 +0x5F8。
+- **〔模拟器〕**开商店 state0（购买）10 槽 + 证据标签（浏览器验证）。
+- 落盘：store-mode-state-graph-verification-evidence.json（F399，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 93。
