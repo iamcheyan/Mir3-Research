@@ -1,0 +1,35 @@
+{
+  "evidence_id": "entity-name-format-render-2026-08-12-f800",
+  "title": "Round 494 (F800): Entity name format + render (F621 FULL) - 0x40BA60 (F797 dependency): 0x468CD7 sprintf format 0x47AC3C (name [0x620A0] + state [0x61C8C] + 8 stat strings @ [0x621A4..0x628C0] stride 0x104) + reset [0x6209C]; 0x40BB00 NAME RENDER (F621 body): [0x6209C] += delta, >0xBB8 (3000ms F621/F531 CONFIRMED) -> clear name+stats; pos [0xE4]/[0xE8] - 0x2C/-0x37, state [0x61C8C]==1 center measure 0x45E0C0 else state*14 offset; SetRect + matrix 0x466800 (F643) scale floats (0.157/0.235/0.313/0.47) + vtable[0x40] render - entity name system COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the entity name format + render.",
+  "question": "How do entity names format + render?",
+  "method": "Disasm 0x40BA60-0x40BB00 + 0x40BB00-0x40BC70.",
+  "scope": "0x40BA60-0x40BC70; name slots.",
+  "cell_analysis": {
+    "0x40BA60": "format: 0x468CD7 0x47AC3C + 8 stat strings",
+    "0x40BB00": "render: 3000ms [0x6209C] + pos [0xE4]/[0xE8] + state + matrix 0x466800"
+  },
+  "exe_trace": {
+    "name_chain": "msg -> format (0x40BA60) -> render (0x40BB00) -> timeout clear"
+  },
+  "audit_vs_exe": {
+    "F621": "0x40BB00 CONFIRMED", "F531": "3000ms [0x6209C]", "F643": "matrix"
+  },
+  "contrast": {
+    "format_vs_render": "sprintf + draw",
+    "timer_vs_pos": "0xBB8 + [0xE4]/[0xE8]"
+  },
+  "verdict": "Entity name format + render PRIMARY-verified: sprintf + 3000ms lifetime + matrix scale; F621 complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Name system decoded from .text.",
+  "cross_refs": ["F621: name", "F531: timer", "F643: matrix"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40BA60+0x10; 0x40BB00+0x20",
+  "notes": [
+    "format 0x47AC3C",
+    "8 stat strings",
+    "3000ms lifetime",
+    "matrix scale"
+  ]
+}

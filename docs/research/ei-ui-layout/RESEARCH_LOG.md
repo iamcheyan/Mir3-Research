@@ -8130,3 +8130,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 490-492（F797-F798：地图/名字消息 + recv/名字家族闭合）；基线 Round 489=f14f2e5 → Round 492=56c9011（**457 连发 F335-F798**）。
 - 落盘：handoff-refresh-76-evidence.json（F799，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 493。
+## Round 494 (F800) — 2026-08-12：实体名字格式化 + 渲染（F621 全量）
+
+- **〔名字〕**0x40BA60（F797 依赖）：0x468CD7 sprintf 格式 0x47AC3C（名 [0x620A0] + 状态 [0x61C8C] + **8 个状态串 @ [0x621A4..0x628C0] stride 0x104**）+ 重置 [0x6209C]；0x40BB00 **名字渲染（F621 函数体）**：[0x6209C] += delta、**>0xBB8（3000ms，F621/F531 确认）** → 清名+状态；位置 [0xE4]/[0xE8] − 0x2C/−0x37、状态 [0x61C8C]==1 居中测量 0x45E0C0 否则 状态×14 偏移；SetRect + **矩阵 0x466800（F643）缩放**（0.157/0.235/0.313/0.47）+ vtable[0x40] 渲染——实体名字系统完整。
+- 落盘：entity-name-format-render-evidence.json（F800，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 494。
