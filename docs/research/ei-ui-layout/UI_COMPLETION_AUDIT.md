@@ -1126,9 +1126,14 @@ git diff --check
 - **F481-F484 弧闭合 + 146 连发**；小地图/技能/WIL 全解。
 - 落盘：`runtime-arc-closure-evidence.json`（F485）+ RESEARCH_LOG Round 179。
 
+## Round 180 (2026-08-12) — 565 像素混合器（Finding 486）
+
+- **逐像素 alpha 混合**（法术特效 blit 路径）。
+- 落盘：`pixel-blend-565-evidence.json`（F486）+ RESEARCH_LOG Round 180。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（全部弧已闭合；其余 = 低优先深化，见 RESEARCH_LOG）。
+- MonMagic 每法术帧块数学（独立绘制函数）— 低优先。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

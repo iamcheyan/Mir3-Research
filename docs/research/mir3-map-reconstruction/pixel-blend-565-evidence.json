@@ -1,0 +1,37 @@
+{
+  "evidence_id": "pixel-blend-565-2026-08-12-f486",
+  "title": "Round 180 (F486): 16-bit 565 pixel blender - 0x4621F0: per-pixel alpha blend with 565 masks (0x7E0F81F/0x7C0F83F/0xF81F07E0, shr 5/10 channel shifts, imul alpha [0x134]&0xFF, src/dst words) - generic sprite compositor (used by spell effects + all 16-bit sprite draws); the 'type 0x14A effect' refs at 0x462227/0x462BDC = this blender's callers (spell effect blit path) - MonMagic frame math = separate (per-spell frame blocks in draw fn)",
+  "date": "2026-08-12",
+  "objective": "Decode the 16-bit pixel blend used by sprite/effect compositing; locate the MonMagic frame path.",
+  "question": "How are 16-bit sprites blended, and where do spell effects draw?",
+  "method": "Disasm 0x4621F0-0x4626E8 (pixel blender).",
+  "scope": "0x4621F0-0x4626E8; type 0x14A effect refs 0x462227/0x462BDC.",
+  "cell_analysis": {
+    "blend_0x4621F0": {"format": "565 (R5G6B5): masks 0x7E0F81F (RGB), 0x7C0F83F, 0xF81F07E0", "alpha": "[esp+0x134] & 0xFF, per-channel imul + shr 5", "src_dst": "word pairs, src [esi], dst [edi]", "loop": "row-major (0x20-row bands)"},
+    "callers": {"0x462227/0x462BDC": "type 0x14A effect entity blit (spell effects)", "global": "all 16-bit sprite compositing (F331/F436 family)"},
+    "monmagic_frames": "frame math = separate draw fn (per-spell frame blocks, F351/F483)"
+  },
+  "exe_trace": {
+    "blend_chain": "sprite decode -> 0x4621F0 blend -> 0x460240/0x45FD50 blit"
+  },
+  "audit_vs_exe": {
+    "F436": "frame loader -> blend -> blit chain",
+    "F483": "MonMagic = spell effect lib (frame math pending)",
+    "F331": "sprite rendering uses 565 compositing"
+  },
+  "contrast": {
+    "blend_vs_copy": "0x4621F0 alpha-blends; 0x460240 (F482) opaque-copies",
+    "565_vs_888": "16-bit 565 pipeline vs 32-bit UI (F337)"
+  },
+  "verdict": "16-bit 565 pixel blender PRIMARY-verified: 0x4621F0 per-pixel alpha blend (565 masks + channel imul), called by type-0x14A effect blits (spell effects). MonMagic per-spell frame math = separate draw fn (pending).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Blender decoded from .text; frame math still separate.",
+  "cross_refs": ["F483: MonMagic lib", "F436: frame loader", "F351: skills"],
+  "tool": "capstone via disasm_capstone.PeImage",
+  "reproduce": "disasm 0x4621F0+0x60",
+  "notes": [
+    "565 = D3DFMT_R5G6B5 (matches minimap surface F482)",
+    "alpha [0x134] = global opacity (0xFF opaque)",
+    "spell effect frame selection = per-spell blocks in entity draw"
+  ]
+}

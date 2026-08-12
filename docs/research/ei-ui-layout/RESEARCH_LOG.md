@@ -6657,3 +6657,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master cf1a3cf（**146 连发已推**）。
 - **〔弧汇总〕**小地图装载+表面（F481）/ 小地图 blit 16 位（F482）/ **完整 WIL 表 35+ 槽**（F483）/ 技能栏 9 按钮 + msg 0xB1（F484）。
 - 落盘：runtime-arc-closure-evidence.json（F485，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 179。
+## Round 180 (F486) — 2026-08-12：16 位 565 像素混合器
+
+- **〔混合〕**0x4621F0：逐像素 alpha 混合（**565 掩码** 0x7E0F81F/0x7C0F83F/0xF81F07E0、shr 5/10 通道移位、imul alpha [0x134]&0xFF）——通用精灵合成器（法术特效 + 全部 16 位精灵绘制）。
+- **〔调用〕**type 0x14A 特效实体 blit（0x462227/0x462BDC）= 法术特效路径；MonMagic 帧数学 = 独立绘制函数（F483/F351 pending）。
+- 落盘：pixel-blend-565-evidence.json（F486，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 180。
