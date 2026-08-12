@@ -1,0 +1,35 @@
+{
+  "evidence_id": "text-measure-wrap-split-2026-08-12-f821",
+  "title": "Round 515 (F821): Text measure + wrapped-text split - 0x45E0C0 MEASURE (F818/F621 centering dependency): vtable[0x44] + GDI 0x476048/0x476078/0x476068 -> returns width/height pair; 0x45E200 WRAPPED-TEXT split (0x124 buffer, strlen scan + segment copy, ret count) - text layout helpers COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the text measure + wrapped-text split.",
+  "question": "How is text measured + wrapped?",
+  "method": "Disasm 0x45E0C0-0x45E200.",
+  "scope": "0x45E0C0-0x45E200.",
+  "cell_analysis": {
+    "0x45E0C0": "measure: vtable[0x44] + GDI -> w/h",
+    "0x45E200": "wrap: 0x124 buffer + scan + copy -> count"
+  },
+  "exe_trace": {
+    "layout_chain": "measure -> wrap -> render"
+  },
+  "audit_vs_exe": {
+    "F818": "detail centering", "F621": "name centering", "F564": "text family"
+  },
+  "contrast": {
+    "measure_vs_wrap": "extent + split",
+    "gdi_vs_buffer": "0x476048 + 0x124"
+  },
+  "verdict": "Text measure + wrapped-text split PRIMARY-verified: extent + segment split; text layout helpers complete (F564).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Text layout decoded from .text.",
+  "cross_refs": ["F818: detail", "F621: name", "F564: text"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x45E0C0+0x10; 0x45E200+0x10",
+  "notes": [
+    "vtable[0x44] extent",
+    "GDI 0x476048",
+    "wrap buffer 0x124",
+    "returns w/h + count"
+  ]
+}

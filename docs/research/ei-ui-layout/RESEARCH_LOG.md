@@ -8221,3 +8221,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 511-513（F818-F819：装备详情面板 + 状态/装备面板闭合）；基线 Round 510=b45ce8d → Round 513=f6e1d69（**478 连发 F335-F819**）。
 - 落盘：handoff-refresh-83-evidence.json（F820，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 514。
+## Round 515 (F821) — 2026-08-12：文本测量 + 换行拆分
+
+- **〔文本〕**0x45E0C0 **测量**（F818/F621 居中依赖）：vtable[0x44] + GDI 0x476048/0x476078/0x476068 → 返回宽/高对；0x45E200 **换行文本拆分**（0x124 缓冲、strlen 扫描 + 段复制、返回计数）——文本布局助手完整。
+- 落盘：text-measure-wrap-split-evidence.json（F821，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 515。
