@@ -6073,3 +6073,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔性能〕**冷 1.40s → 热 0.092s（**15×**）；md5 一致（82a88f87）——缓存正确。
 - **〔层键〕**r_16_3_1_100n/111n = F374 图层开关测试产物（ground-only vs all 区分键）。
 - 落盘：`tile-cache-verification-evidence.json`（F376，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 70。
+
+## Round 71 (F377) — 2026-08-12：小地图校准交叉验证（268 MMap value−1 + 空白帧复验 + D001 放置公式）
+
+- **〔MMap 路径〕**268 项 value<1001 → 客户端帧 = value−1（F310 差一确认）；D001=1→f0、D002=2→f1…
+- **〔FMMap 路径〕**3.map=1018→f17、41.map=1021→f20、31.map=1031→f30（FMMap 31 帧内）；0.map=1001→f0。
+- **〔空白帧复验〕**D901/D9021/D9022/D2011/D2012 → MMap **f144-149 = None（真空白，F310 确认）**；但 **81.map→f18（152×100 真实头）、D452→f23（600×400 真实头）**——F310 空白清单含 value/帧精确问题待和解 [candidate]。
+- **〔D001〕**f0 = 600×400 真实小地图——400 宽洞穴 × 1.5 缩放 = 600（F277 放置公式吻合）。
+- 落盘：`minimap-calibration-crosscheck-evidence.json`（F377，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 71。

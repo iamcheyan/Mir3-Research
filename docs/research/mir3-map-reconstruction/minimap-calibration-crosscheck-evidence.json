@@ -1,0 +1,43 @@
+{
+  "evidence_id": "minimap-calibration-crosscheck-2026-08-12-f377",
+  "title": "Round 71 (F377): Minimap calibration cross-check - 268 MMap-path entries (value-1 off-by-one), 3.map=1018->FMMap f17/41->20/31->30 (FMMap 31 frames), blank-frame verification (D901/D9021/D9022/D2011/D2012 -> MMap f144-149 = None/true blank; 81->f18/D452->f23 = real headers) + D001 f0 600x400 confirmed",
+  "date": "2026-08-12",
+  "objective": "Cross-check the minimap calibration: MMap off-by-one (value-1), FMMap path (value-1001), blank-frame claims, and town/cave minimap frames.",
+  "question": "Does the F310/F277 minimap calibration hold under independent re-verification?",
+  "method": "MiniMap.txt parse (268 MMap-path + FMMap-path entries); wilsdk frame-header checks on MMap.wil/FMMap.wil for the claimed blank frames + town/cave frames.",
+  "scope": "$MIR3_EI_ROOT/Data/MMap.wil (255 frames) + FMMap.wil (31 frames); MiniMap.txt (313 entries).",
+  "cell_analysis": {
+    "mmap_path": "268 entries with value < 1001 -> client MMap frame = value-1 (F310 off-by-one confirmed); D001=1->f0, D002=2->f1...",
+    "fmmap_path": "3.map=1018->FMMap f17, 41.map=1021->f20, 31.map=1031->f30 (fits FMMap 31 frames 0-30); 0.map=1001->f0",
+    "blank_frames": {
+      "81": "MMap f18 (value 19-1): REAL header 152x100 - NOT blank [F310 said blank - RECONCILE: value 19? need MiniMap value for 81]",
+      "D452": "f23: REAL header 600x400 - not blank",
+      "D901/D9021/D9022/D2011/D2012": "f144-149: None/TRUE BLANK (no header) - F310 blank claim CONFIRMED",
+      "note": "81/D452 headers exist - F310 'true blank' list needs value-exact re-check (frame vs value-1 confusion)"
+    },
+    "cave_frame": "D001 -> MMap f0: 600x400 real minimap (Bichon cave 400x400 map, scale 1.5 = 600 wide - matches placement formula)"
+  },
+  "exe_trace": {
+    "minimap_select": "0x43D780: value >= 1001 -> FMMap.wil value-1001; else MMap.wil value-1 (F310/F277)",
+    "panel": "128x128 at (672,0)-(800,128) (F310)"
+  },
+  "audit_vs_exe": {
+    "F310": "off-by-one + blank frames mostly confirmed; 81/D452 header presence noted for value-exact reconciliation",
+    "F277": "placement formula (0,0, W*1.5, H) confirmed by D001 f0 600x400"
+  },
+  "contrast": {
+    "mmap_vs_fmmap": "MMap 255 frames (value-1), FMMap 31 frames (value-1001) - two spaces",
+    "blank_vs_real": "D901 family = None (no art); 81/D452 = real headers (not blank per this check)"
+  },
+  "verdict": "Minimap calibration cross-check mostly confirms F310/F277 (primary-bytes): 268 MMap-path value-1 entries, FMMap value-1001 (3/41/31.map verified within 31-frame FMMap), D901-family blank frames CONFIRMED (MMap f144-149 = None), D001 f0 600x400 matches placement formula. Two reconciliation notes: 81.map + D452 have real MMap headers (F310 blank list may be value-exact off).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "MiniMap values + frame headers read directly; F310 blank-frame claims re-verified per frame.",
+  "cross_refs": ["F310: minimap calibration", "F277: placement formula", "F367: minimap subsystem verification"],
+  "tool": "wilsdk frame headers; python MiniMap parse",
+  "reproduce": "parse MiniMap.txt; wilsdk header() on MMap.wil frames 0-30 + 144-149 + 18/23",
+  "notes": [
+    "81.map/D452 header presence vs F310 'blank' claim: possible value-vs-frame mixup in F310 list - marked for exact-value reconciliation [candidate]",
+    "D001 f0 600x400: 400-wide cave * 1.5 = 600 -> matches F277 scale 1.5px/tile X",
+    "FMMap f30 (31.map) = 452x300 special (F310 note: painted 450x300 = W*1.5 exact)"
+  ]
+}

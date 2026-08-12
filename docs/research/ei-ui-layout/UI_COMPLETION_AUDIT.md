@@ -571,6 +571,12 @@ git diff --check
 - **F374 层键产物确认**。
 - 落盘：`tile-cache-verification-evidence.json`（F376）+ RESEARCH_LOG Round 70。
 
+## Round 71 (2026-08-12) — 小地图校准交叉验证（Finding 377）
+
+- **268 MMap value−1 + FMMap value−1001 确认**；D901 族空白帧确认（f144-149 None）。
+- **81/D452 有真实帧头**（F310 空白清单待 value 精确和解 [candidate]）；D001 f0 600×400 合 F277。
+- 落盘：`minimap-calibration-crosscheck-evidence.json`（F377，primary-bytes）+ RESEARCH_LOG Round 71。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。
