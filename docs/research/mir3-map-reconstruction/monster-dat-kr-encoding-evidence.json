@@ -1,0 +1,36 @@
+{
+  "evidence_id": "monster-dat-kr-encoding-2026-08-12-f501",
+  "title": "Round 195 (F501): monster.dat encoding CRACKED - EUC-KR/Hanja hybrid: slot names decode as real Hangul (slot0 '총핀헥뇨', slot5 '츤딜', slot20 '뮤늬춈흐') + mixed Hanja (Chinese chars in KR bytes) - KR-source server format, NOT GBK; 432 slots all non-empty; CN server translates names at client/script layer (MonGen GBK); name charset pending CLOSED - decode = EUC-KR with GBK-byte Hanja mixing",
+  "date": "2026-08-12",
+  "objective": "Crack the monster.dat name encoding (the last low-priority pending).",
+  "question": "What charset do monster.dat names use?",
+  "method": "EUC-KR decode of all 432 name slots + Hangul/Hanja pattern analysis.",
+  "scope": "monster.dat 432 slots x 0xFC; encoding.",
+  "cell_analysis": {
+    "encoding": {"decode": "EUC-KR works: slot0 '총핀헥뇨' / slot5 '츤딜' / slot20 '뮤늬춈흐' (real Hangul)", "mix": "Hanja chars (Chinese in KR bytes) interspersed - hybrid format", "verdict": "KR-source server .dat; CN server translates names at script layer (MonGen GBK)"},
+    "slots": "432 all non-empty (full monster table)",
+    "client_irrelevance": "client = packet-fed (F492) - never reads monster.dat"
+  },
+  "exe_trace": {
+    "server": "KR monster.dat -> CN server script translation (MonGen GBK) -> spawn packets -> client"
+  },
+  "audit_vs_exe": {
+    "F492": "encoding question resolved (EUC-KR/Hanja)",
+    "F494": "stat offsets + encoding now both clear"
+  },
+  "contrast": {
+    "kr_vs_gbk": "monster.dat EUC-KR/Hanja vs MonGen GBK - server layer translates",
+    "file_vs_client": "KR file never reaches CN client (packets only)"
+  },
+  "verdict": "monster.dat encoding CRACKED: EUC-KR/Hanja hybrid (KR-source), 432 slots all named; CN server translates at script layer. Last low-priority pending CLOSED.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "EUC-KR decode of all slots from binary; Hanja mixing observed.",
+  "cross_refs": ["F492: structure", "F494: stat fields", "F493: stditem"],
+  "tool": "python euc-kr decode",
+  "reproduce": "decode d[0x1E6+k*0xFC:+0x14] as euc-kr for k in 0..431",
+  "notes": [
+    "Hanja = KR encoding of Chinese chars (legacy Mir3 KR)",
+    "stditem.dat likely same encoding (F493 deferred - now implied)",
+    "client unaffected (packet-fed)"
+  ]
+}

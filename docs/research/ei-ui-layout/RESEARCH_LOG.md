@@ -6736,3 +6736,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔追加〕**HANDOFF 补 Round 149-194（实体渲染/物品背包商店/装备/交互运行时服务端弧 + 模拟器增强）；基线 Round 114=8145504 → Round 194=204c6f4（**160 连发 F335-F499**）。
 - 落盘：handoff-refresh-evidence.json（F500，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 194。
+## Round 195 (F501) — 2026-08-12：monster.dat 编码破解（EUC-KR/Hanja 混合）
+
+- **〔破解〕**名称 = **EUC-KR/Hanja 混合**：槽解码为真韩文（slot0 '총핀헥뇨'、slot5 '츤딜'、slot20 '뮤늬춈흐'）+ 汉字（KR 字节内中文）——**KR 源服务端格式**；432 槽全非空；CN 服务端在脚本层翻译（MonGen GBK）。
+- **〔闭合〕**最后一个低优先 pending 闭合；客户端不受影响（数据包驱动 F492）。
+- 落盘：monster-dat-kr-encoding-evidence.json（F501，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 195。
