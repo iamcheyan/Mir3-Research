@@ -1,0 +1,37 @@
+{
+  "evidence_id": "announce-interactive-closure-2026-08-12-f871",
+  "title": "Round 565 (F871): Announce interactive CLOSED (F731/F854/F870) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 7ff6960 (529 consecutive F335-F870), 495 evidence JSONs; arc: input gate (F731) + window render (F854) + input handler (F870) - announce interactive COMPLETE byte-level (render + scrollbar + buttons + edit input + refresh), announce family fully interactive",
+  "date": "2026-08-12",
+  "objective": "Close the announce interactive arc.",
+  "question": "Is the announce family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "495 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F731": "gate", "F854": "render", "F870": "input"},
+    "announce": "render + scrollbar + input = COMPLETE",
+    "milestone": "529 consecutive rounds F335-F870"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F870": "529 rounds pushed; announce interactive complete"
+  },
+  "contrast": {
+    "render_vs_input": "list + edit",
+    "gate_vs_refresh": "0x414DC0 + 0x450C70"
+  },
+  "verdict": "Announce interactive CLOSED (F871): render + scrollbar + input all byte-level; validation green, 529 consecutive rounds, 495 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F731/F854/F870.",
+  "cross_refs": ["F731", "F854", "F870"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "529 consecutive shipping rounds F335-F870",
+    "announce 100% interactive",
+    "next: HANDOFF refresh 101, remaining corners"
+  ]
+}

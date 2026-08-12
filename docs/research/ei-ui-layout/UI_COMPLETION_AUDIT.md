@@ -3249,3 +3249,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告编辑完整；下一弧：剩余深层角落）。
+## Round 565 (2026-08-12) — 公告交互闭合（Finding 871）
+
+- **529 连发 + 495 证据 + 公告全交互**。
+- 落盘：`announce-interactive-closure-evidence.json`（F871）+ RESEARCH_LOG Round 565。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告全交互；下一弧：HANDOFF 刷新 101/剩余角落）。

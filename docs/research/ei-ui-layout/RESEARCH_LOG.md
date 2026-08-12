@@ -8437,3 +8437,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔公告〕**0x414DC0：msg 0x31/0x32/0xBE（编辑键）→ **公告缓冲 [0x850]**（默认串 0x47AD94、预设 0x47AD84/0x47AD90）+ SetWindowText 0x4762CC + SendMessage 0x476290 0xB1 + **0x450C70 刷新** + 0x4762B8/0x4762AC 编辑控件操作——公告编辑完整。
 - 落盘：announce-input-handler-evidence.json（F870，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 564。
+## Round 565 (F871) — 2026-08-12：公告交互闭合（F731/F854/F870 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**495 证据 JSON**；三服务 200；master 7ff6960（**529 连发 F335-F870 已推**）。
+- **〔弧〕**输入门（F731）+ 窗口渲染（F854）+ 输入处理（F870）——**公告交互完整**（渲染 + 滚动条 + 按钮 + 编辑输入 + 刷新），公告家族全交互。
+- 落盘：announce-interactive-closure-evidence.json（F871，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 565。
