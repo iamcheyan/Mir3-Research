@@ -7913,3 +7913,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔交易〕**0x4162A0 查找空闲槽（12 槽 × 0xC2C @ 0x5B8 + 组 idx×0x9210——**F557 stride 确认**，返回 idx/-1）；0x4162E0 交易物品放置（背包扫描 0x42F6D0 + **5 列网格 36px**、x +0x15 己方/+0xFD 对方、y +0x30 + 物品数组 [obj+0x298] 校验）；0x416490 槽写入（字 → [obj+0x298+网格]）——**交易窗口布局完整**（F557 用）。
 - 落盘：trade-slot-layout-family-evidence.json（F749，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 443。
+## Round 444 (F750) — 2026-08-12：交易窗口弧闭合（F557/F749 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**374 证据 JSON**；三服务 200；master 29b6c97（**408 连发 F335-F749 已推**）。
+- **〔弧〕**交易家族（F557）+ 槽布局（F749）——**交易窗口完整**（2 组 × 12 槽 0xC2C 网格 + 5 列放置 + 槽写入），交易窗 [hero+0x3399C] 全文档化。
+- 落盘：trade-window-arc-closure-evidence.json（F750，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 444。

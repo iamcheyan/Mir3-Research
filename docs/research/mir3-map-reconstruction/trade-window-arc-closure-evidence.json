@@ -1,0 +1,37 @@
+{
+  "evidence_id": "trade-window-arc-closure-2026-08-12-f750",
+  "title": "Round 444 (F750): Trade window arc CLOSED (F557/F749) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 29b6c97 (408 consecutive F335-F749), 374 evidence JSONs; arc: trade family (F557) + slot layout (F749) - trade window COMPLETE byte-level (2-group x 12-slot 0xC2C grid + 5-col place + slot write + buy/sell sends), trade window [hero+0x3399C] fully documented",
+  "date": "2026-08-12",
+  "objective": "Close the trade window arc.",
+  "question": "Is the trade window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "374 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F557": "trade family", "F749": "slot layout"},
+    "trade": "grid + place + write + sends = COMPLETE",
+    "milestone": "408 consecutive rounds F335-F749"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F749": "408 rounds pushed; trade complete"
+  },
+  "contrast": {
+    "grid_vs_place": "12-slot grid + 5-col place",
+    "layout_vs_sends": "slots + 0x3EA family"
+  },
+  "verdict": "Trade window arc CLOSED (F750): grid + place + write all byte-level; validation green, 408 consecutive rounds, 374 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F557/F749.",
+  "cross_refs": ["F557: trade", "F749: layout"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "408 consecutive shipping rounds F335-F749",
+    "trade 100%",
+    "next: HANDOFF refresh 60, remaining corners"
+  ]
+}
