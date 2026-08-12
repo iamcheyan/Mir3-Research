@@ -7225,3 +7225,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 287-290（F594-F596：大地图覆盖层/标记 + 地图 widget 弧）；基线 Round 286=f711837 → Round 290=251b3bd（**255 连发 F335-F596**）。
 - 落盘：handoff-refresh-15-evidence.json（F597，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 291。
+## Round 292 (F598) — 2026-08-12：NPC 对话 4 类型渲染完整
+
+- **〔类型〕**jt 0x440158（F540）：**类型 1**（0x43F4E7）= 文本换行渲染（0x45E0C0 测量 + 0x45DD70 绘制、7 行门 +0x131 y 偏移）；**类型 2**（0x43F86D）= **굴림 字体**（0x45DBA0 0x47C348、字号 0x190/9）+ 色旗标 [0x5C]/[0x5D]（0xFF 白/0xFFFF）+ 换行；**类型 3**（0x43F85F）= 跳行；**类型 4**（0x43FF92）= **特殊脚本标签**：**'FCOLOR'**（0x47C514）→ 色表 0x47C4A8（8 色 0/0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000）+ **'NPCIMG'**（0x47C50C）→ WIL 帧 blit（0x466130 + 0x45FD50 于 0x28/0x1E）+ **'NOTCLOSE'**（0x47C500）= 不关窗旗标——**NPC 对话脚本标签字节级**（F540 扩展）。
+- 落盘：npc-dialog-4type-render-evidence.json（F598，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 292。

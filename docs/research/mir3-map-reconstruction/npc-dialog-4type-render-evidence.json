@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-dialog-4type-render-full-2026-08-12-f598",
+  "title": "Round 292 (F598): NPC dialog 4-type render FULL - jt 0x440158 (F540): type 1 (0x43F4E7) = text wrap render (0x45E0C0 measure, line 7-gate +0x131 y-offset, 0x45DD70 draw, multi-byte copy loop); type 2 (0x43F86D) = Gulim font render (0x45DBA0 0x47C348, font size 0x190/9) + color flags [0x5C]/[0x5D] (0xFF white/0xFFFF) + text wrap; type 3 (0x43F85F) = skip-line (inc esi); type 4 (0x43FF92) = SPECIAL TAGS: strcmp 'FCOLOR' (0x47C514) -> color table 0x47C4A8 (8 colors 0/0xFF/0x8000/0x8080/0x808080/0x80/0x808000/0x800000) + 'NPCIMG' (0x47C50C) -> frame WIL blit (0x466130 + 0x45FD50 at 0x28/0x1E) + 'NOTCLOSE' (0x47C500) = no-close flag - NPC dialog script tags byte-level (F540 extended)",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog 4-type render + script tags.",
+  "question": "How does the NPC dialog render its 4 types?",
+  "method": "Disasm 0x440158 jt + 4 bodies + decode special strings.",
+  "scope": "0x440158; types 1-4; tags FCOLOR/NPCIMG/NOTCLOSE.",
+  "cell_analysis": {
+    "type1": "text wrap render (0x45E0C0 + 0x45DD70, line 7-gate +0x131)",
+    "type2": "Gulim font 0x45DBA0 (0x47C348, 0x190/9) + color [0x5C]/[0x5D] + wrap",
+    "type3": "skip-line (inc esi)",
+    "type4": {"FCOLOR": "0x47C514 -> color table 0x47C4A8 (8 colors)", "NPCIMG": "0x47C50C -> WIL frame blit (0x466130 + 0x45FD50 at 0x28/0x1E)", "NOTCLOSE": "0x47C500 = no-close flag"}
+  },
+  "exe_trace": {
+    "dialog_chain": "NPC dialog -> type dispatch -> text/font/tags render"
+  },
+  "audit_vs_exe": {
+    "F540": "4-type dispatch CONFIRMED + full bodies", "F564": "text render family shared", "F559": "mode 9 dialog window"
+  },
+  "contrast": {
+    "text_vs_special": "types 1-3 text vs type 4 script tags",
+    "tags": "FCOLOR/NPCIMG/NOTCLOSE = server script commands"
+  },
+  "verdict": "NPC dialog 4-type render PRIMARY-verified: text wrap + Gulim font + skip + special tags (FCOLOR/NPCIMG/NOTCLOSE with color table); F540 extended to full render.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All 4 bodies + tags decoded from .text/.data.",
+  "cross_refs": ["F540: 4-type dispatch", "F564: text family", "F559: mode 9"],
+  "tool": "capstone disasm + string decode",
+  "reproduce": "disasm jt 0x440158 + each body",
+  "notes": [
+    "FCOLOR = text color command (8 colors)",
+    "NPCIMG = embed NPC image frame",
+    "NOTCLOSE = keep dialog open",
+    "type 2 uses Gulim font (0x47C348)"
+  ]
+}
