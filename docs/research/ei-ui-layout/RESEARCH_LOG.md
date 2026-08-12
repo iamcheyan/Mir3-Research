@@ -7861,3 +7861,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔文本〕**0x45DC70 **字符串列表拼接**（追加 varargs 至目标、跳过 BSS 串 **0x8B187C**——待办 0x45DC70 拼接缺口闭合）；0x45DD00 包含检查（0x468BF0 strchr）；0x45DD70 文本绘制包装（GDI 0x476044/0x476048/0x476050/0x476060/0x476074）——**F564 文本家族完整**（F734 渲染用 0x45DD70）。
 - 落盘：text-family-bss-helpers-evidence.json（F737，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 431。
+## Round 432 (F738) — 2026-08-12：文本家族最终闭合（F564/F680/F683/F737 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**362 证据 JSON**；三服务 200；master d54fd4c（**396 连发 F335-F737 已推**）。
+- **〔弧〕**GDI 文本渲染（F564）+ sprintf/strtol（F680）+ 数值助手（F683）+ BSS 助手（F737）——**文本系统 100% 字节级**（测量/TextOutA/DrawTextA + vsprintf/strtol + 拼接/包含/GDI 绘制），**待办 BSS 侧缺口闭合**。
+- 落盘：text-family-final-closure-evidence.json（F738，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 432。
