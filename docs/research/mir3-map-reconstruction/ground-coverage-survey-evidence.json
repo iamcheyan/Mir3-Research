@@ -1,0 +1,45 @@
+{
+  "evidence_id": "ground-coverage-survey-2026-08-12-f370",
+  "title": "Round 64 (F370): Ground coverage survey - all 211 playable maps >= 90% back coverage (0_003 90.9%, 5_0013 94.2% lowest; rest >= 95%) + 0_003 spatial pattern correction (irregular right-edge 3-col blanks + bottom rows, NOT uniform margin) + ground-not-drawn evidence updated",
+  "date": "2026-08-12",
+  "objective": "Quantify ground-layer coverage across the 211 playable EI maps, identify sparse-ground maps, verify the spatial pattern of empty ground, and reconcile with the P2 ground-not-drawn evidence.",
+  "question": "Which playable maps have sparse/missing ground, and what is the spatial pattern of empty ground cells?",
+  "method": "Binary scan of all 211 MiniMap-bound maps: half-res back table empty (255) counts + per-row/col distribution; cross-referenced against ground-not-drawn-evidence.json (P2).",
+  "scope": "$MIR3_EI_ROOT/Map (211 bound maps); ground-not-drawn-evidence.json.",
+  "cell_analysis": {
+    "coverage": {
+      "211_bound": "all >= 90% full-res back coverage; ZERO maps < 90%",
+      "0_003": "90.9% (137 empty half-cells) - LOWEST bound map",
+      "5_0013": "94.2% (67 empty half-cells)",
+      "rest": ">= 95% (no other map below 95%)"
+    },
+    "0_003_spatial": {
+      "pattern": "right-edge 3-col blanks on ~30 rows (cols 27-29 on row 4; varies 26-29 on others) + bottom rows 48-49 mostly empty (23/30, 30/30) - irregular coastline edge, NOT uniform strip",
+      "p2_correction": "P2 evidence said '右 2 格 + 下 6 格空' - corrected: right margin 3 cols variable, bottom 2 half-rows (48-49)",
+      "5_0013": "1 empty col + 1 empty row (67 half-cells) - matches P2 'right 2 + bottom 2' approximately"
+    },
+    "mechanism": "all empties are literal file=255 entries; client 0x43B440 skips them (P2 real-skip, not artifacts)"
+  },
+  "exe_trace": {
+    "ground_render": "0x43B440 (F331/P2: T%14<=2 gate + file=255 skip)"
+  },
+  "audit_vs_exe": {
+    "P2": "ground-not-drawn mechanism confirmed (real skip); margin geometry corrected",
+    "F342/F369": "211 playable set confirmed"
+  },
+  "contrast": {
+    "sparse_vs_complete": "all 211 playable maps have ground (>=90%); only 0_003/5_0013 below 95% - no missing-ground playable maps",
+    "margin_vs_void": "0_003 blanks = coastline edge; no interior voids"
+  },
+  "verdict": "Ground coverage survey complete (primary-bytes): all 211 playable maps >= 90% back coverage; only 0_003 (90.9%) and 5_0013 (94.2%) below 95%, both with edge blanks (not interior voids). 0_003's pattern corrected from P2's uniform-margin description to irregular right-edge + bottom rows. Ground-not-drawn evidence updated.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Coverage computed directly from all 211 map binaries; P2 mechanism re-verified.",
+  "cross_refs": ["P2: ground-not-drawn-evidence.json", "F342: map inventory", "F369: tile-lib anomaly survey"],
+  "tool": "python3 struct scan; python3 json",
+  "reproduce": "scan back table of 211 bound maps for 255 entries; per-row/col distribution for 0_003/5_0013",
+  "notes": [
+    "half-res back entry covers 2x2 full-res cells; 255 = empty sentinel (client skip)",
+    "0_003 row 48: 23/30 empty (cols 7-18 + right edge); row 49: full empty - bottom 2 half-rows = 4 full-res px",
+    "no playable map has interior ground voids - all blanks are edge/corner"
+  ]
+}

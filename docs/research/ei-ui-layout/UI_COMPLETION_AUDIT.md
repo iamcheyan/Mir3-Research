@@ -528,6 +528,13 @@ git diff --check
 - **Forest/Snow 子目录 = 他客户端产物**（EI 3.0 不用）。
 - 落盘：`tile-lib-anomaly-survey-evidence.json`（F369，primary-bytes）+ RESEARCH_LOG Round 63。
 
+## Round 64 (2026-08-12) — 地面覆盖调查（Finding 370）
+
+- **211 可玩图全 ≥90% back 覆盖**（0_003 90.9% / 5_0013 94.2% 最低；无缺地面图）。
+- **0_003 空间模式修正**：不规则右缘 3 列 + 底部 2 半行（非 P2 均匀边距描述）。
+- **ground-not-drawn 证据更新**（f369 精析注记）。
+- 落盘：`ground-coverage-survey-evidence.json`（F370，primary-bytes）+ RESEARCH_LOG Round 64。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

@@ -6025,3 +6025,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔关键结论〕forest/snow/200+ lib 的图 = 0 张被服务器绑定**（MiniMap.txt 313 项仅 211 匹配 EI 图）；这些图（kt* 韩测、d*/D6xx 他版洞穴、0_0031-33）**全部未绑定 + row=0**——客户端仅绑 14-27，forest/snow/异常 lib 越界 → 若加载渲染黑块；img 值近 0xFF00（65305/65348）表明非 EI 瓦片编码。
 - **〔EI 可玩集定界〕211 张绑定图只用 libs {0-13 base, 14-27 wood, 28-41 sand}**；**Data/Forest + Data/Snow 子目录 = 他客户端（Zircon KR）产物，EI 3.0 不用**；Wood/Sand 子目录实际使用。
 - 落盘：`docs/research/mir3-map-reconstruction/tile-lib-anomaly-survey-evidence.json`（F369，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 63。
+
+## Round 64 (F370) — 2026-08-12：地面覆盖调查（211 可玩图全 ≥90% + 0_003 空间模式修正）
+
+- **〔覆盖〕211 张绑定图全 ≥90% 全分辨率 back 覆盖**（0_003 90.9% 最低、5_0013 94.2%、其余 ≥95%）——**无缺地面可玩图**。
+- **〔0_003 空间模式〕**右缘 3 列空白（row 4: cols 27-29；其他行 26-29 变化）+ 底部 row 48-49 大部分空（23/30、30/30）——**不规则海岸线边缘，非 P2 所述均匀『右 2 格 + 下 6 格』**；5_0013 = 1 空列 + 1 空行（67 半格）近似 P2。机制 = 字面 file=255（客户端 0x43B440 跳过，P2 real-skip）。
+- **〔修正〕ground-not-drawn-evidence.json 追加 f369 空间精析注记**（右缘宽度逐行变化、底部 2 半行）。
+- 落盘：`ground-coverage-survey-evidence.json`（F370，primary-bytes）+ ground-not-drawn-evidence.json 更新 + RESEARCH_LOG + UI_COMPLETION_AUDIT Round 64。

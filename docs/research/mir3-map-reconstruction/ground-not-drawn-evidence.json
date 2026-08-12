@@ -1,104 +1,227 @@
 {
- "evidence_id": "ground-not-drawn",
- "title": "0_003/5_0013 ground_not_drawn 机制闭合 — P2 定案：原版客户端显式跳过空地面格（file=255 + frame=0xFFFF），D4/K2『静态背景』候选对 EI 不成立 — P2 闭合",
- "date": "2026-08-11",
- "objective": "P2（EVIDENCE-INVENTORY.md pending，137/67 格 ground_not_drawn）：0_003.map（60x100）与 5_0013.map（68x68）地面层未绘制格，原版客户端是（a）跳过不绘、（b）按空帧/黑帧照绘、还是（c）根本不用瓦片而用静态背景图？D4/K2 候选『室内图地面 = 静态背景图而非瓦片（ZL MapInfo.Background 机制）』是否成立？",
- "question": "被审计标志 ground_not_drawn 的地面格是否全部为空条目（file=255 + frame=0xFFFF）而非合法库的空白帧？原版 Mir3.exe 地面绘制路径对这些格走哪条分支？未绘制区域在原版中呈现什么？",
- "method": [
-   "用 audit_mir3_maps.v_lookup（v = file - floor(file/14)，EXE 0x43bb82 序列）对两图地面层（3B/块：file + frame u16，平铺 x-major，flat = xb*(h//2) + yb）计算 ground_not_drawn 格，提取每格 file/frame 值分布、绘制格 frame 区间、空间形态。",
-   "对未绘制格所在的 2x2 格区，读 cell 网格（14B/cell：+0 flag、+3 frontFile、+4 midFile、+5/+7 frame u16），确认 mid/front 层内容（是否全空）。",
-   "Capstone 反汇编 Mir3.exe（基址 0x400000，fileoff = VA - 0x400000）：0x43b440 地面渲染器（调用点 0x43b7f5 地图装载 / 0x410838 视图初始化包装）逐门检查；0x43b280 区预备通道（审计注释引用点 0x43b317）复核；数值仿真魔数 0x6db6db6d v 变换验证 T(255)。",
-   "对比 C17（tiles5c f20-24 近黑帧被原版正常绘制）与本次空条目：黑帧 vs 空帧的客户端处理差异。"
- ],
- "scope": {
-   "maps": [
-     {"name": "0_003.map", "path": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Map/0_003.map", "w": 60, "h": 100, "cell_bytes": 14, "theme": 0, "server_name": "比奇县子图（Finding 273：map 0=比奇县）"},
-     {"name": "5_0013.map", "path": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Map/5_0013.map", "w": 68, "h": 68, "cell_bytes": 14, "theme": 0, "server_name": "沙漠土城子图（Finding 273：map 5=沙漠土城）"}
-   ],
-   "exe": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
-   "exe_layout": "0x400000-0x480000 真实代码；地面渲染器 0x43b440"
- },
- "cell_analysis": {
-   "storage_order": "地面层 = 28B 头后 (w//2)*(h//2)*3 字节平铺，3B/块（+0 file 字节、+1/+2 frame u16），flat 索引 = xb*(h//2) + yb（x-major，与 EXE 索引公式 (x>>1)*(h>>1)+(y>>1) 一致，0x43b50b-0x43b516）",
-   "0_003.map": {
-     "ground_blocks_total": 1500,
-     "drawn_blocks": 1363,
-     "flagged_blocks": 137,
-     "flagged_entries": {"file": 255, "frame": 65535, "frame_hex": "0xFFFF", "count": 137},
-     "drawn_ground_libs": [
-       {"file": 0, "T": 0, "lib": "tilesc", "blocks": 599, "frames": "1803..9143", "lib_cap": 9836},
-       {"file": 1, "T": 1, "lib": "tiles30c", "blocks": 764, "frames": "605..1024", "lib_cap": 1080}
-     ],
-     "spatial_pattern": "L 形边距：最右 1 列地面块（xb=29 全部 50 块 = 格 x58-59 x 全部 y）+ 最下 3 行地面块（yb=47-49, xb=0-28 = 格 y94-99 x x0-57）→ 实际绘制地面区 = 58x94 格（60x100 地图的右上大区）",
-     "cells_at_flagged_area": {"cell_count": 548, "mid_file": 255, "mid_frame": "0xFFFF", "front_file": 255, "front_frame": "0xFFFF", "note": "未绘制地面区对应的 cell 层 mid/front 全部为空条目，任何层都不在该区绘制"},
-     "drawn_block_shape": "绘制区为连续矩形（无内部空洞），仅右/下边距未绘"
-   },
-   "5_0013.map": {
-     "ground_blocks_total": 1156,
-     "drawn_blocks": 1089,
-     "flagged_blocks": 67,
-     "flagged_entries": {"file": 255, "frame": 65535, "frame_hex": "0xFFFF", "count": 67},
-     "drawn_ground_libs": [
-       {"file": 0, "T": 0, "lib": "tilesc", "blocks": 52, "frames": "508..1564", "lib_cap": 9836},
-       {"file": 2, "T": 2, "lib": "tiles5c", "blocks": 1037, "frames": "10..24（帧 10-14 共 39 块；帧 20-24 共 998 块，即 C17 近黑帧）", "lib_cap": 20000}
-     ],
-     "spatial_pattern": "右 1 列（xb=33 全部 34 块 = 格 x66-67）+ 下 1 行（yb=33, xb=0-32 = 格 y66-67）→ 实际绘制地面区 = 66x66 格",
-     "cells_at_flagged_area": {"cell_count": 268, "mid_file": 15, "mid_frame": "0xFFFF", "front_file": 15, "front_frame": "0xFFFF", "note": "mid/front 为 NO_OBJECT_FILE(15) + 空帧 0xFFFF，物件通道双重跳过（0x43b3b8 T%14<=2 跳过 / frame==0xFFFF）"}
-   }
- },
- "exe_trace": {
-   "ground_renderer": {
-     "va": "0x43b440",
-     "callers": [
-       {"va": "0x43b7f5", "context": "地图装载 0x43b600 内（读文件后）"},
-       {"va": "0x410838", "context": "地图视图初始化/刷新包装（前调 0x43c9c0）"}
-     ],
-     "black_buffer_clear": {
-       "va": "0x43b44f-0x43b45c",
-       "desc": "lea edi,[ebp+0x1b2]; mov ecx,0x6c000; xor eax,eax; rep stosd → 地面层缓冲（ebp+0x1b2，0x1B0000B = 768x1152 x 16bpp）每帧调用先整体清零为黑色；未绘制格保留纯黑"
-     },
-     "indexing": {"va": "0x43b4f4-0x43b51b", "desc": "视口格坐标 x//2、y//2 → idx = (x>>1)*(h>>1) + (y>>1)，3B/块，esi=[ebp+0x108] 地面网格指针"},
-     "v_transform": {"va": "0x43b522-0x43b535", "desc": "T(file) = file - floor(file/14)，魔数 0x6db6db6d imul 序列（数值仿真 0..255 已验证：T(0)=0, T(1)=1, T(2)=2, T(14)=13, T(255)=237）"},
-     "gates": [
-       {"va": "0x43b53a-0x43b53c", "name": "Gate A（组内库位）", "desc": "idiv edi(0xe); cmp edx,2; jg 0x43b5c7 → T%14 > 2 跳过。file=255 → T=237 → 237%14=13 > 2 → 跳过"},
-       {"va": "0x43b545-0x43b548", "name": "Gate B（组上限）", "desc": "cmp ecx(T),0x45; jg 0x43b5c7 → T > 69（0x45）跳过。file=255 → 237 > 69 → 跳过"},
-       {"va": "0x43b54a-0x43b550", "name": "Gate C（空帧标记）", "desc": "cmp esi(frame),0xffff; je 0x43b5c7 → frame == 0xFFFF 跳过。全部 204 个未绘格 frame=0xFFFF → 跳过"},
-       {"va": "0x43b552-0x43b569", "name": "Gate D（帧解析）", "desc": "slot = 0x5600fc + T*324; call 0x466130(slot, frame); test eax,eax; je 0x43b5c7 → 帧不存在跳过"}
-     ],
-     "blit": {"va": "0x43b56b-0x43b5bd", "desc": "过全部 4 门才 blit：0x466130 帧数据 → push 0xffff 透明色、尺寸 0x300/0x480、目标 ebp+0x1b2 缓冲，call 0x45e8e0（地面表面 ecx=0x8ab7a8）"},
-     "skip_target": {"va": "0x43b5c7", "desc": "四门任一失败 → 直接跳到下一个视口格（不 blit、不计数）"}
-   },
-   "prepass": {
-     "va": "0x43b2fd-0x43b337",
-     "desc": "地图装载预备通道（0x43b280 区，审计注释引用点）对地面格施加完全相同的 4 门：0x43b317 cmp edx,2 / 0x43b31c cmp ecx,0x45 / 0x43b321 cmp esi,0xffff / 0x43b337 call 0x466130 — 审计 ground_not_drawn = ~((r<=2)&(v<=69)) 与 Gate A/B 逐位一致，非审计工具伪影",
-     "also": "同函数 0x43b3b6-0x43b3fd 对 cell 层 mid（0x43b3b8 T%14<=2 跳过、0x43b3bd v>0x45 跳过）与 front（0x43b3e2）施加物件门"
-   },
-   "object_passes_note": "任务预设的 0x41c860 不是地面通道：0x41C450 瓦片通道内 0x41C860 为动画/事件格渲染器（0x466130 帧解析 + 0x47630c 动画计时门，Finding 269 标注为地面物品/装饰类）。地面层由 0x43b440 预渲染（装载/刷新时），0x41C450 逐帧在预渲染地面上叠加物件/实体/特效。物件通道（0x43bb10 func1 / 0x43be00 func2）同样带 frame==0xFFFF 门（0x43bbbb/0x43bbc1）",
-   "T_values_relevant": {
-     "T0": 0, "T1": 1, "T2": 2, "T14": 13, "T15": 14, "T237": 237,
-     "note": "file 0/1/2 → T=0/1/2（tilesc/tiles30c/tiles5c，T%14<=2 过 Gate A）；file 255 → T=237 → Gate A（13>2）与 Gate B（237>69）双重拒绝，frame=0xFFFF 再触发 Gate C — 三重门全拒，等价无条件跳过"
-   }
- },
- "audit_vs_exe": {
-   "audit_formula": "g_draw = (gr <= 2) & (gv <= 69)，r = v%14，v = file - floor(file/14)",
-   "exe_equivalence": "与 EXE Gate A（T%14<=2，0x43b53c/0x43b317）和 Gate B（T<=0x45，0x43b545/0x43b31c）完全一致；审计对地面格未单独计空帧门，但两图全部未绘格同时满足 file=255（Gate A/B 拒绝）与 frame=0xFFFF（Gate C 拒绝）",
-   "conclusion": "ground_not_drawn 标志准确反映原版客户端行为（跳过），非审计工具伪影"
- },
- "contrast_c17": {
-   "near_black_frames_drawn": "C17：tiles5c f20-24 为近黑素材帧且被原版绘制（39 图 293,933 格）。本次复核：5_0013 地面 1037 块引用 tiles5c 帧 10-24，其中 998 块引用 f20-24 — 全部过门正常绘制（T=2 过 Gate A/B，frame 真实存在过 Gate C/D）",
-   "empty_frames_skipped": "本次 204 格为 file=255 + frame=0xFFFF 空条目 — 被 Gate A/B/C 跳过",
-   "distinction": "客户端绘制『黑帧』（真实素材帧）但不绘制『空帧』（0xFFFF 标记）。C17 与 P2 结论自洽：跳过条件唯一由 file/frame 数据值决定，与像素内容无关"
- },
- "verdict": {
-   "mechanism": "原版客户端显式跳过（real skip，非审计伪影、非空帧绘制、非静态背景）",
-   "summary": "两图未绘制地面格全部为字面空条目（file=255 + frame=0xFFFF/EMPTY_FRAME），构成地图作者留白的地图右/下边距（0_003：58x94/60x100 绘制区，右 2 格 + 下 6 格空；5_0013：66x66/68x68 绘制区，右 2 格 + 下 2 格空）。EXE 地面渲染器 0x43b440 对每格施加 4 道门：T%14<=2（0x43b53c）、T<=0x45（0x43b545）、frame!=0xFFFF（0x43b54a）、帧解析非空（0x43b569）；空条目被 Gate A（T=237>69 且 237%14=13>2）与 Gate C（0xFFFF）三重拒绝，无条件不 blit。地面层缓冲 0x43b455 先整体清零为黑，未绘格保持纯黑 → 原版中该边距滚动到视野内呈现黑色 void（与经典 Mir3 地图外黑边一致）。",
-   "floor_in_original": "0_003 地面 = 瓦片绘制（tilesc 599 块帧 1803..9143 + tiles30c 764 块帧 605..1024），5_0013 地面 = tiles5c 1037 块帧 10-24（其中 998 块为 C17 近黑帧，视觉效果偏黑）+ tilesc 52 块；两图未绘边距为纯黑。5_0013 的『黑地面』观感主要来自 tiles5c f20-24 近黑素材帧本身被绘制，与 67 个永不绘制的空格是两种不同机制。",
-   "d4_k2_refuted": "D4/K2『室内图地面 = 静态背景图而非瓦片（ZL MapInfo.Background）』对 EI 客户端不成立：EI 地面绘制路径 0x43b440 只按地图地面格 blit 瓦片库帧，不存在背景图像机制；0_003 地面 1363/1500 块、5_0013 1089/1156 块均由 tilesc/tiles30c/tiles5c 瓦片绘制。ZL 的 MapInfo.Background 是 ZL/GodotClient 侧机制（MapView.cs），EI Mir3.exe 无对应实现。空区是地图编辑留白，不是背景占位。",
-   "remaining": "无需运行时捕获：静态证据链闭合。可选后续（candidate）：运行时截图验证黑边观感（0x43b440 缓冲合成链路 0x45e8e0 → 0x8ab7a8 上屏路径的逐帧合成细节）。"
- },
- "evidence_level": "derived",
- "evidence_level_note": "客户端跳过逻辑 = primary-static（0x43b440/0x43b2fd 门序列直读，Gate A/B/C/D 与 T 变换数值仿真）；两图 cell/地面数据 = primary（文件直读）；『最终呈现黑色 void』依赖『黑清零缓冲 → blit 链 0x45e8e0 → 0x8ab7a8 地面表面 → 上屏合成』的合成假设（缓冲清零 primary，上屏合成 derived），故整体 derived。",
- "cross_refs": ["C8", "C10", "C17", "C18", "D4", "D6", "K1", "K2", "P2", "P1", "Finding269", "Finding273"],
- "tool": "Tools/maps/audit_mir3_maps.py, Tools/maps/mapviewer.py, Tools/reverse-engineering/disasm_capstone.py",
- "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/audit_mir3_maps.py --map 0_003.map --map 5_0013.map（复现 ground_not_drawn 137/67）；/home/tetsuya/mir3-venv/bin/python Tools/reverse-engineering/disasm_capstone.py 0x43b440 0x43b620（地面渲染器 4 门）；T 变换数值仿真见 evidence 内 method"
+  "evidence_id": "ground-not-drawn",
+  "title": "0_003/5_0013 ground_not_drawn 机制闭合 — P2 定案：原版客户端显式跳过空地面格（file=255 + frame=0xFFFF），D4/K2『静态背景』候选对 EI 不成立 — P2 闭合",
+  "date": "2026-08-11",
+  "objective": "P2（EVIDENCE-INVENTORY.md pending，137/67 格 ground_not_drawn）：0_003.map（60x100）与 5_0013.map（68x68）地面层未绘制格，原版客户端是（a）跳过不绘、（b）按空帧/黑帧照绘、还是（c）根本不用瓦片而用静态背景图？D4/K2 候选『室内图地面 = 静态背景图而非瓦片（ZL MapInfo.Background 机制）』是否成立？",
+  "question": "被审计标志 ground_not_drawn 的地面格是否全部为空条目（file=255 + frame=0xFFFF）而非合法库的空白帧？原版 Mir3.exe 地面绘制路径对这些格走哪条分支？未绘制区域在原版中呈现什么？",
+  "method": [
+    "用 audit_mir3_maps.v_lookup（v = file - floor(file/14)，EXE 0x43bb82 序列）对两图地面层（3B/块：file + frame u16，平铺 x-major，flat = xb*(h//2) + yb）计算 ground_not_drawn 格，提取每格 file/frame 值分布、绘制格 frame 区间、空间形态。",
+    "对未绘制格所在的 2x2 格区，读 cell 网格（14B/cell：+0 flag、+3 frontFile、+4 midFile、+5/+7 frame u16），确认 mid/front 层内容（是否全空）。",
+    "Capstone 反汇编 Mir3.exe（基址 0x400000，fileoff = VA - 0x400000）：0x43b440 地面渲染器（调用点 0x43b7f5 地图装载 / 0x410838 视图初始化包装）逐门检查；0x43b280 区预备通道（审计注释引用点 0x43b317）复核；数值仿真魔数 0x6db6db6d v 变换验证 T(255)。",
+    "对比 C17（tiles5c f20-24 近黑帧被原版正常绘制）与本次空条目：黑帧 vs 空帧的客户端处理差异。"
+  ],
+  "scope": {
+    "maps": [
+      {
+        "name": "0_003.map",
+        "path": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Map/0_003.map",
+        "w": 60,
+        "h": 100,
+        "cell_bytes": 14,
+        "theme": 0,
+        "server_name": "比奇县子图（Finding 273：map 0=比奇县）"
+      },
+      {
+        "name": "5_0013.map",
+        "path": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Map/5_0013.map",
+        "w": 68,
+        "h": 68,
+        "cell_bytes": 14,
+        "theme": 0,
+        "server_name": "沙漠土城子图（Finding 273：map 5=沙漠土城）"
+      }
+    ],
+    "exe": "/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+    "exe_layout": "0x400000-0x480000 真实代码；地面渲染器 0x43b440"
+  },
+  "cell_analysis": {
+    "storage_order": "地面层 = 28B 头后 (w//2)*(h//2)*3 字节平铺，3B/块（+0 file 字节、+1/+2 frame u16），flat 索引 = xb*(h//2) + yb（x-major，与 EXE 索引公式 (x>>1)*(h>>1)+(y>>1) 一致，0x43b50b-0x43b516）",
+    "0_003.map": {
+      "ground_blocks_total": 1500,
+      "drawn_blocks": 1363,
+      "flagged_blocks": 137,
+      "flagged_entries": {
+        "file": 255,
+        "frame": 65535,
+        "frame_hex": "0xFFFF",
+        "count": 137
+      },
+      "drawn_ground_libs": [
+        {
+          "file": 0,
+          "T": 0,
+          "lib": "tilesc",
+          "blocks": 599,
+          "frames": "1803..9143",
+          "lib_cap": 9836
+        },
+        {
+          "file": 1,
+          "T": 1,
+          "lib": "tiles30c",
+          "blocks": 764,
+          "frames": "605..1024",
+          "lib_cap": 1080
+        }
+      ],
+      "spatial_pattern": "L 形边距：最右 1 列地面块（xb=29 全部 50 块 = 格 x58-59 x 全部 y）+ 最下 3 行地面块（yb=47-49, xb=0-28 = 格 y94-99 x x0-57）→ 实际绘制地面区 = 58x94 格（60x100 地图的右上大区）",
+      "cells_at_flagged_area": {
+        "cell_count": 548,
+        "mid_file": 255,
+        "mid_frame": "0xFFFF",
+        "front_file": 255,
+        "front_frame": "0xFFFF",
+        "note": "未绘制地面区对应的 cell 层 mid/front 全部为空条目，任何层都不在该区绘制"
+      },
+      "drawn_block_shape": "绘制区为连续矩形（无内部空洞），仅右/下边距未绘"
+    },
+    "5_0013.map": {
+      "ground_blocks_total": 1156,
+      "drawn_blocks": 1089,
+      "flagged_blocks": 67,
+      "flagged_entries": {
+        "file": 255,
+        "frame": 65535,
+        "frame_hex": "0xFFFF",
+        "count": 67
+      },
+      "drawn_ground_libs": [
+        {
+          "file": 0,
+          "T": 0,
+          "lib": "tilesc",
+          "blocks": 52,
+          "frames": "508..1564",
+          "lib_cap": 9836
+        },
+        {
+          "file": 2,
+          "T": 2,
+          "lib": "tiles5c",
+          "blocks": 1037,
+          "frames": "10..24（帧 10-14 共 39 块；帧 20-24 共 998 块，即 C17 近黑帧）",
+          "lib_cap": 20000
+        }
+      ],
+      "spatial_pattern": "右 1 列（xb=33 全部 34 块 = 格 x66-67）+ 下 1 行（yb=33, xb=0-32 = 格 y66-67）→ 实际绘制地面区 = 66x66 格",
+      "cells_at_flagged_area": {
+        "cell_count": 268,
+        "mid_file": 15,
+        "mid_frame": "0xFFFF",
+        "front_file": 15,
+        "front_frame": "0xFFFF",
+        "note": "mid/front 为 NO_OBJECT_FILE(15) + 空帧 0xFFFF，物件通道双重跳过（0x43b3b8 T%14<=2 跳过 / frame==0xFFFF）"
+      }
+    }
+  },
+  "exe_trace": {
+    "ground_renderer": {
+      "va": "0x43b440",
+      "callers": [
+        {
+          "va": "0x43b7f5",
+          "context": "地图装载 0x43b600 内（读文件后）"
+        },
+        {
+          "va": "0x410838",
+          "context": "地图视图初始化/刷新包装（前调 0x43c9c0）"
+        }
+      ],
+      "black_buffer_clear": {
+        "va": "0x43b44f-0x43b45c",
+        "desc": "lea edi,[ebp+0x1b2]; mov ecx,0x6c000; xor eax,eax; rep stosd → 地面层缓冲（ebp+0x1b2，0x1B0000B = 768x1152 x 16bpp）每帧调用先整体清零为黑色；未绘制格保留纯黑"
+      },
+      "indexing": {
+        "va": "0x43b4f4-0x43b51b",
+        "desc": "视口格坐标 x//2、y//2 → idx = (x>>1)*(h>>1) + (y>>1)，3B/块，esi=[ebp+0x108] 地面网格指针"
+      },
+      "v_transform": {
+        "va": "0x43b522-0x43b535",
+        "desc": "T(file) = file - floor(file/14)，魔数 0x6db6db6d imul 序列（数值仿真 0..255 已验证：T(0)=0, T(1)=1, T(2)=2, T(14)=13, T(255)=237）"
+      },
+      "gates": [
+        {
+          "va": "0x43b53a-0x43b53c",
+          "name": "Gate A（组内库位）",
+          "desc": "idiv edi(0xe); cmp edx,2; jg 0x43b5c7 → T%14 > 2 跳过。file=255 → T=237 → 237%14=13 > 2 → 跳过"
+        },
+        {
+          "va": "0x43b545-0x43b548",
+          "name": "Gate B（组上限）",
+          "desc": "cmp ecx(T),0x45; jg 0x43b5c7 → T > 69（0x45）跳过。file=255 → 237 > 69 → 跳过"
+        },
+        {
+          "va": "0x43b54a-0x43b550",
+          "name": "Gate C（空帧标记）",
+          "desc": "cmp esi(frame),0xffff; je 0x43b5c7 → frame == 0xFFFF 跳过。全部 204 个未绘格 frame=0xFFFF → 跳过"
+        },
+        {
+          "va": "0x43b552-0x43b569",
+          "name": "Gate D（帧解析）",
+          "desc": "slot = 0x5600fc + T*324; call 0x466130(slot, frame); test eax,eax; je 0x43b5c7 → 帧不存在跳过"
+        }
+      ],
+      "blit": {
+        "va": "0x43b56b-0x43b5bd",
+        "desc": "过全部 4 门才 blit：0x466130 帧数据 → push 0xffff 透明色、尺寸 0x300/0x480、目标 ebp+0x1b2 缓冲，call 0x45e8e0（地面表面 ecx=0x8ab7a8）"
+      },
+      "skip_target": {
+        "va": "0x43b5c7",
+        "desc": "四门任一失败 → 直接跳到下一个视口格（不 blit、不计数）"
+      }
+    },
+    "prepass": {
+      "va": "0x43b2fd-0x43b337",
+      "desc": "地图装载预备通道（0x43b280 区，审计注释引用点）对地面格施加完全相同的 4 门：0x43b317 cmp edx,2 / 0x43b31c cmp ecx,0x45 / 0x43b321 cmp esi,0xffff / 0x43b337 call 0x466130 — 审计 ground_not_drawn = ~((r<=2)&(v<=69)) 与 Gate A/B 逐位一致，非审计工具伪影",
+      "also": "同函数 0x43b3b6-0x43b3fd 对 cell 层 mid（0x43b3b8 T%14<=2 跳过、0x43b3bd v>0x45 跳过）与 front（0x43b3e2）施加物件门"
+    },
+    "object_passes_note": "任务预设的 0x41c860 不是地面通道：0x41C450 瓦片通道内 0x41C860 为动画/事件格渲染器（0x466130 帧解析 + 0x47630c 动画计时门，Finding 269 标注为地面物品/装饰类）。地面层由 0x43b440 预渲染（装载/刷新时），0x41C450 逐帧在预渲染地面上叠加物件/实体/特效。物件通道（0x43bb10 func1 / 0x43be00 func2）同样带 frame==0xFFFF 门（0x43bbbb/0x43bbc1）",
+    "T_values_relevant": {
+      "T0": 0,
+      "T1": 1,
+      "T2": 2,
+      "T14": 13,
+      "T15": 14,
+      "T237": 237,
+      "note": "file 0/1/2 → T=0/1/2（tilesc/tiles30c/tiles5c，T%14<=2 过 Gate A）；file 255 → T=237 → Gate A（13>2）与 Gate B（237>69）双重拒绝，frame=0xFFFF 再触发 Gate C — 三重门全拒，等价无条件跳过"
+    }
+  },
+  "audit_vs_exe": {
+    "audit_formula": "g_draw = (gr <= 2) & (gv <= 69)，r = v%14，v = file - floor(file/14)",
+    "exe_equivalence": "与 EXE Gate A（T%14<=2，0x43b53c/0x43b317）和 Gate B（T<=0x45，0x43b545/0x43b31c）完全一致；审计对地面格未单独计空帧门，但两图全部未绘格同时满足 file=255（Gate A/B 拒绝）与 frame=0xFFFF（Gate C 拒绝）",
+    "conclusion": "ground_not_drawn 标志准确反映原版客户端行为（跳过），非审计工具伪影"
+  },
+  "contrast_c17": {
+    "near_black_frames_drawn": "C17：tiles5c f20-24 为近黑素材帧且被原版绘制（39 图 293,933 格）。本次复核：5_0013 地面 1037 块引用 tiles5c 帧 10-24，其中 998 块引用 f20-24 — 全部过门正常绘制（T=2 过 Gate A/B，frame 真实存在过 Gate C/D）",
+    "empty_frames_skipped": "本次 204 格为 file=255 + frame=0xFFFF 空条目 — 被 Gate A/B/C 跳过",
+    "distinction": "客户端绘制『黑帧』（真实素材帧）但不绘制『空帧』（0xFFFF 标记）。C17 与 P2 结论自洽：跳过条件唯一由 file/frame 数据值决定，与像素内容无关"
+  },
+  "verdict": {
+    "mechanism": "原版客户端显式跳过（real skip，非审计伪影、非空帧绘制、非静态背景）",
+    "summary": "两图未绘制地面格全部为字面空条目（file=255 + frame=0xFFFF/EMPTY_FRAME），构成地图作者留白的地图右/下边距（0_003：58x94/60x100 绘制区，右 2 格 + 下 6 格空；5_0013：66x66/68x68 绘制区，右 2 格 + 下 2 格空）。EXE 地面渲染器 0x43b440 对每格施加 4 道门：T%14<=2（0x43b53c）、T<=0x45（0x43b545）、frame!=0xFFFF（0x43b54a）、帧解析非空（0x43b569）；空条目被 Gate A（T=237>69 且 237%14=13>2）与 Gate C（0xFFFF）三重拒绝，无条件不 blit。地面层缓冲 0x43b455 先整体清零为黑，未绘格保持纯黑 → 原版中该边距滚动到视野内呈现黑色 void（与经典 Mir3 地图外黑边一致）。",
+    "floor_in_original": "0_003 地面 = 瓦片绘制（tilesc 599 块帧 1803..9143 + tiles30c 764 块帧 605..1024），5_0013 地面 = tiles5c 1037 块帧 10-24（其中 998 块为 C17 近黑帧，视觉效果偏黑）+ tilesc 52 块；两图未绘边距为纯黑。5_0013 的『黑地面』观感主要来自 tiles5c f20-24 近黑素材帧本身被绘制，与 67 个永不绘制的空格是两种不同机制。",
+    "d4_k2_refuted": "D4/K2『室内图地面 = 静态背景图而非瓦片（ZL MapInfo.Background）』对 EI 客户端不成立：EI 地面绘制路径 0x43b440 只按地图地面格 blit 瓦片库帧，不存在背景图像机制；0_003 地面 1363/1500 块、5_0013 1089/1156 块均由 tilesc/tiles30c/tiles5c 瓦片绘制。ZL 的 MapInfo.Background 是 ZL/GodotClient 侧机制（MapView.cs），EI Mir3.exe 无对应实现。空区是地图编辑留白，不是背景占位。",
+    "remaining": "无需运行时捕获：静态证据链闭合。可选后续（candidate）：运行时截图验证黑边观感（0x43b440 缓冲合成链路 0x45e8e0 → 0x8ab7a8 上屏路径的逐帧合成细节）。"
+  },
+  "evidence_level": "derived",
+  "evidence_level_note": "客户端跳过逻辑 = primary-static（0x43b440/0x43b2fd 门序列直读，Gate A/B/C/D 与 T 变换数值仿真）；两图 cell/地面数据 = primary（文件直读）；『最终呈现黑色 void』依赖『黑清零缓冲 → blit 链 0x45e8e0 → 0x8ab7a8 地面表面 → 上屏合成』的合成假设（缓冲清零 primary，上屏合成 derived），故整体 derived。",
+  "cross_refs": [
+    "C8",
+    "C10",
+    "C17",
+    "C18",
+    "D4",
+    "D6",
+    "K1",
+    "K2",
+    "P2",
+    "P1",
+    "Finding269",
+    "Finding273"
+  ],
+  "tool": "Tools/maps/audit_mir3_maps.py, Tools/maps/mapviewer.py, Tools/reverse-engineering/disasm_capstone.py",
+  "reproduce": "MIR3_EI_ROOT=/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 python3 Tools/maps/audit_mir3_maps.py --map 0_003.map --map 5_0013.map（复现 ground_not_drawn 137/67）；/home/tetsuya/mir3-venv/bin/python Tools/reverse-engineering/disasm_capstone.py 0x43b440 0x43b620（地面渲染器 4 门）；T 变换数值仿真见 evidence 内 method",
+  "closed_notes": {
+    "f369_2026_08_12": "F369 spatial re-analysis: 0_003 empty back entries = 137 half-cells (90.9% full-res coverage) - right-edge 3-col blanks on ~30 rows (cols 27-29 row 4; varies 26-29 elsewhere) + bottom rows 48-49 mostly empty (23/30, 30/30) - NOT a uniform '2 right + 6 bottom' margin. 5_0013 = 67 empty (94.2%), 1 empty col + 1 empty row. All empties are literal file=255 entries (client skip per P2). Correction: margin widths vary per-row (irregular coastline), not fixed strips."
+  }
 }
