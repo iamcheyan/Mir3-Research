@@ -1,0 +1,39 @@
+{
+  "evidence_id": "ground-tile-library-table-2026-08-12-f453",
+  "title": "Round 147 (F453): Ground tile library table - 0x47D3BC-0x47D51C 15 WIL paths: Wood/Tiles5c + Wood/tiles30c + Wood/tilesc (wood row F343) + object2c + object1c + animationsc + smobjectsc + wallsc + furnituresc + innersc + dungeonsc + cliffsc + housesc + smtilesc + Tiles5c + tiles30c + tilesc (base) - feeds tile store 0x5600FC via 0x452B20 (F452); connects F343 row bindings + F369 playable set + F390 Tiles5c 20000 to the client's actual lib table",
+  "date": "2026-08-12",
+  "objective": "Document the ground-tile library table and its connection to the tile store + prior map findings.",
+  "question": "Which WIL libraries does the client's tile store reference?",
+  "method": "Decode string constants 0x47D3BC-0x47D51C (path loader 0x452B20 sources).",
+  "scope": ".rdata 0x47D3BC-0x47D51C; store 0x5600FC.",
+  "cell_analysis": {
+    "table": {"order": ["Wood/Tiles5c.wil", "Wood/tiles30c.wil", "Wood/tilesc.wil", "object2c.wil", "object1c.wil", "animationsc.wil", "smobjectsc.wil", "wallsc.wil", "furnituresc.wil", "innersc.wil", "dungeonsc.wil", "cliffsc.wil", "housesc.wil", "smtilesc.wil", "Tiles5c.wil", "tiles30c.wil", "tilesc.wil"], "count": "15+ unique (wood subdir + base)"},
+    "store_connection": "0x452B20 copies these into [store+0xB130..] stride 0x104 (F452); slots feed the 0x144-stride resource entries",
+    "f343_connection": "wood row (14-27) + base (0-13) + sand (28-41) = the 3 row bindings; table here = wood + base subset",
+    "f369": "playable set uses base(0-13)/wood(14-27)/sand(28-41) - table confirms client has these",
+    "f390": "Tiles5c.wil (20000 frames EI vs ZL 35-73) = in table"
+  },
+  "exe_trace": {
+    "tile_chain": "path table -> store 0x5600FC slots -> tile render 0x43B440/0x43B1E0 frame load 0x466130"
+  },
+  "audit_vs_exe": {
+    "F343": "tile row formula consistent with table order",
+    "F369": "playable lib set confirmed in client table",
+    "F390": "Tiles5c present"
+  },
+  "contrast": {
+    "wood_vs_base": "wood subdir variants (Wood/Tiles5c etc.) vs base dir - the row-0 libs",
+    "client_vs_server": "client table = ground libs; server Mapinfo/MiniMap = map files (separate)"
+  },
+  "verdict": "Ground tile library table PRIMARY-verified: 15+ WIL paths (wood + base) at 0x47D3BC-0x47D51C feed the tile store 0x5600FC via 0x452B20; consistent with F343 row bindings, F369 playable set, F390 Tiles5c.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "String table decoded directly from .rdata.",
+  "cross_refs": ["F452: tile store", "F343: tile row formula", "F369: playable set", "F390: Tiles5c"],
+  "tool": "capstone + .rdata string decode",
+  "reproduce": "decode 0x47D3BC-0x47D51C; trace 0x452B20 copies",
+  "notes": [
+    "object1c/object2c = mid objects (F331/F374 layer semantics)",
+    "animationsc = animated tiles (F385)",
+    "exact slot order (store index per lib) = pending detail"
+  ]
+}

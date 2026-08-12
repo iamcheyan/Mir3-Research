@@ -6474,3 +6474,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔装载〕**0x452B20 路径表（WIL 文件名 0x47D51C 等 → [ebx+0xB130..] stride 0x104）；0x452AA0 逐条目初始化（14 + 70 条目，0x4660E0 字符串）。
 - **〔细化〕**F448「共享资源表」= 瓦片库存储（140 槽）；怪物/实体按 type 索引同一数组。
 - 落盘：tile-store-structure-evidence.json（F452，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 146。
+## Round 147 (F453) — 2026-08-12：地面瓦片库表（0x47D3BC 15+ WIL 路径）
+
+- **〔表〕**0x47D3BC-0x47D51C：Wood/Tiles5c + Wood/tiles30c + Wood/tilesc（wood 行）+ object2c/object1c/animationsc/smobjectsc/wallsc/furnituresc/innersc/dungeonsc/cliffsc/housesc/smtilesc/Tiles5c/tiles30c/tilesc（base）→ 经 0x452B20 入存储 0x5600FC（F452）。
+- **〔关联〕**F343 行绑定（wood 14-27/base 0-13/sand 28-41）+ F369 可玩集 + F390 Tiles5c 20000 全部与客户端表一致。
+- 落盘：ground-tile-library-table-evidence.json（F453，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 147。

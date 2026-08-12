@@ -961,6 +961,11 @@ git diff --check
 - **140 槽 × 0x144 资源存储**（F448 细化）。
 - 落盘：`tile-store-structure-evidence.json`（F452）+ RESEARCH_LOG Round 146。
 
+## Round 147 (2026-08-12) — 地面瓦片库表（Finding 453）
+
+- **15+ WIL 路径表**（wood + base）→ 存储 0x5600FC。
+- 落盘：`ground-tile-library-table-evidence.json`（F453）+ RESEARCH_LOG Round 147。
+
 ## Pending（未阻塞，持续队列）
 
 - 槽位映射（tiles 0-41/怪物/NPC 槽号）— 低优先。
