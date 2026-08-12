@@ -8706,3 +8706,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 623-625（F930-F931：状态窗口构造/刷新 + 状态窗口闭合）；基线 Round 622=ee43e3a → Round 625=e68ec3c（**590 连发 F335-F931**）。
 - 落盘：handoff-refresh-122-evidence.json（F932，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 626。
+## Round 627 (F933) — 2026-08-12：装备窗口输入 + 构造（F767/F897 依赖）
+
+- **〔装备〕**0x44CED0 装备输入（2 控件 vtable[8] @ +0x58/+0x10C）；0x44CF00 **命中路由**（vtable[0xC] 双控件 → 槽查找 0x44B720 → 槽物品测试 [esi+edx*4+0x2F4] → 页旗标 [0x3C] 0/1）；0x44CFC0 **装备构造**（vtable 0x476624 + [0x648]=0x476AB8 + 0x4178E0）——装备输入完整（F767 纸娃娃依赖）。
+- 落盘：equipment-window-ctor-input-evidence.json（F933，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 627。

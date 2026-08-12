@@ -1,0 +1,36 @@
+{
+  "evidence_id": "equipment-window-ctor-input-2026-08-12-f933",
+  "title": "Round 627 (F933): Equipment window input + ctor (F767/F897 dep) - 0x44CED0 equipment INPUT (2 controls vtable[8] @ +0x58/+0x10C); 0x44CF00 hit routing (vtable[0xC] both -> slot lookup 0x44B720 -> slot item test [esi+edx*4+0x2F4] -> page flag [0x3C] 0/1); 0x44CFC0 equipment CTOR (vtable 0x476624 + [0x648]=0x476AB8 + 0x4178E0) - equipment input COMPLETE (F767 paperdoll dep)",
+  "date": "2026-08-12",
+  "objective": "Decode the equipment window input + ctor.",
+  "question": "How does the equipment window route input?",
+  "method": "Disasm 0x44CED0-0x44CFC0.",
+  "scope": "0x44CED0-0x44CFC0; input.",
+  "cell_analysis": {
+    "0x44CED0": "input 2 controls",
+    "0x44CF00": "hit vtable[0xC] + 0x44B720 + [0x2F4] + [0x3C]",
+    "0x44CFC0": "ctor vtable 0x476624 + 0x476AB8"
+  },
+  "exe_trace": {
+    "equip_chain": "input -> hit -> slot test -> page flag"
+  },
+  "audit_vs_exe": {
+    "F767": "equip 2-page + paperdoll", "F897": "reset"
+  },
+  "contrast": {
+    "input_vs_hit": "dispatch + routing",
+    "page": "[0x3C] 0/1"
+  },
+  "verdict": "Equipment window input + ctor PRIMARY-verified: input + hit routing + ctor; F767 paperdoll dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Equipment input decoded from .text.",
+  "cross_refs": ["F767: equipment", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x44CED0+0x10; 0x44CF00+0x30",
+  "notes": [
+    "2 controls +0x58/+0x10C",
+    "slot lookup 0x44B720",
+    "page [0x3C]",
+    "ctor vtable 0x476624"
+  ]
+}

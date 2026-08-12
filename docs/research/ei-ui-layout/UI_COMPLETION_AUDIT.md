@@ -3745,3 +3745,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（状态窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 627 (2026-08-12) — 装备窗口输入 + 构造（Finding 933）
+
+- **输入 + 命中路由 + ctor**（装备输入完整）。
+- 落盘：`equipment-window-ctor-input-evidence.json`（F933）+ RESEARCH_LOG Round 627。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（装备输入完整；下一弧：剩余深层角落）。
