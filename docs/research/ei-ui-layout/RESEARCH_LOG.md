@@ -8174,3 +8174,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**433 证据 JSON**；三服务 200；master 29dfeef（**467 连发 F335-F808 已推**）。
 - **〔弧〕**行会绘制（F755）+ 公告/消息（F803）+ 按钮分派（F808）——**行会窗口完整**（3 页绘制 + 9 按钮分派 + 公告列表 + msg 0x25A/0x415 发送），行会模式 4 全交互。
 - 落盘：guild-dispatch-arc-closure-evidence.json（F809，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 503。
+## Round 504 (F810) — 2026-08-12：HANDOFF 刷新 80（Round 501-503）+ 80 刷新里程碑
+
+- **〔刷新〕**HANDOFF 追加 Round 501-503（F808-F809：行会消息/按钮分派 + 行会分派弧）；基线 Round 500=82f32d8 → Round 503=0352e21（**468 连发 F335-F809**）——**HANDOFF 刷新 80 里程碑**。
+- 落盘：handoff-refresh-80-evidence.json（F810，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 504。

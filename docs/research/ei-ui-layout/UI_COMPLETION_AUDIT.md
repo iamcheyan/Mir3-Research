@@ -2761,3 +2761,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会全交互；下一弧：HANDOFF 刷新 80/剩余角落）。
+## Round 504 (2026-08-12) — HANDOFF 刷新 80 + 80 刷新里程碑（Finding 810）
+
+- **Round 501-503 追加 + 468 连发 + 80 刷新**（行会全交互入档）。
+- 落盘：`handoff-refresh-80-evidence.json`（F810）+ RESEARCH_LOG Round 504。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（行会全交互；下一弧：剩余深层角落/模拟器 polish）。

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "handoff-refresh-80-2026-08-12-f810",
+  "title": "Round 504 (F810): HANDOFF refresh 80 - Rounds 501-503 (F807-F809: HANDOFF 79, guild msg/button dispatch, guild dispatch arc closure), baseline Round 500=82f32d8 -> Round 503=0352e21 (468 consecutive F335-F809), doc maintenance + refresh-80 milestone",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 501-503.",
+  "question": "What changed since HANDOFF refresh 79?",
+  "method": "Append Round 501-503 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 501-503 appended (3 rounds, F807-F809)",
+    "baseline": "Round 500=82f32d8 -> Round 503=0352e21 (468 consecutive F335-F809)",
+    "milestone": "HANDOFF refresh 80 reached",
+    "arcs": {"guild": "F808 dispatch", "closure": "F809 guild arc"},
+    "key": "guild 100% interactive"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F807": "refresh 79 baseline -> now refresh 80", "F335-F809": "468 rounds"
+  },
+  "contrast": {
+    "refresh_79_vs_80": "F808-F809 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 80 (F810): Rounds 501-503 documented (guild interactive), baseline 82f32d8 -> 0352e21, 468 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F808-F809 evidence.",
+  "cross_refs": ["F807: refresh 79", "F809: guild closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 501-503 section to HANDOFF",
+  "notes": [
+    "468 consecutive shipping rounds F335-F809",
+    "HANDOFF refresh 80 milestone",
+    "next: remaining deep corners, sim polish"
+  ]
+}
