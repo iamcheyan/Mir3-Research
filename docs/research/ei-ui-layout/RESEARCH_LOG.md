@@ -8459,3 +8459,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 566-568（F873-F874：聊天输入命令 + 聊天命令闭合）；基线 Round 565=52cb4dd → Round 568=3bed6bf（**533 连发 F335-F874**）。
 - 落盘：handoff-refresh-102-evidence.json（F875，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 569。
+## Round 570 (F876) — 2026-08-12：聊天发送 + 物品使用尾部（F873 动作依赖）
+
+- **〔聊天〕**0x41EDE0：sprintf 0x47B9D0（格式、存 [0x35B1FD]）+ **公告 0x427E30** + **物品使用路径**：base64 0x452810（0x5F）+ 物品构造 0x430920/0x430940 + 背包反序列化 0x42FC20 + 音效 0x42E2D0 + **名表遍历 0x47ADC4→0x47ADEC** + 公告 0x47B9BC + 0x415280——聊天发送/物品使用完整（F573/F698 用）。
+- 落盘：chat-send-item-use-tail-evidence.json（F876，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 570。

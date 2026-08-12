@@ -1,0 +1,34 @@
+{
+  "evidence_id": "chat-send-item-use-tail-2026-08-12-f876",
+  "title": "Round 570 (F876): Chat send + item-use tail (F873 action deps) - 0x41EDE0: sprintf 0x47B9D0 (0x47B9D0 format, store [0x35B1FD]) + ANNOUNCE 0x427E30 + ITEM-USE path: base64 0x452810 (0x5F) + item ctor 0x430920/0x430940 + bag deser 0x42FC20 + sound 0x42E2D0 + NAME-table walk 0x47ADC4->0x47ADEC + notice 0x47B9BC + 0x415280 - chat send/item-use COMPLETE (F573/F698 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the chat send + item-use tail.",
+  "question": "How does chat send + item-use complete?",
+  "method": "Disasm 0x41EDE0-0x41EF52.",
+  "scope": "0x41EDE0-0x41EF52; item path.",
+  "cell_analysis": {
+    "0x41EDE0": {"sprintf": "0x47B9D0 + [0x35B1FD]", "announce": "0x427E30", "item": "0x452810 + 0x430920/0x430940 + 0x42FC20 + 0x42E2D0", "name": "0x47ADC4 walk + 0x47B9BC + 0x415280"}
+  },
+  "exe_trace": {
+    "chat_chain": "sprintf -> announce | item-use -> name -> notice"
+  },
+  "audit_vs_exe": {
+    "F573": "senders", "F698": "name table", "F692": "item ctor"
+  },
+  "contrast": {
+    "send_vs_item": "announce + use",
+    "name_vs_notice": "0x47ADC4 + 0x415280"
+  },
+  "verdict": "Chat send + item-use tail PRIMARY-verified: sprintf + announce + item path; chat item-use complete (F573/F698).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Chat tail decoded from .text.",
+  "cross_refs": ["F573: senders", "F698: name", "F692: item"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41EDE0+0x20",
+  "notes": [
+    "sprintf 0x47B9D0",
+    "item base64 0x5F",
+    "name table 0x47ADC4",
+    "notice 0x47B9BC"
+  ]
+}

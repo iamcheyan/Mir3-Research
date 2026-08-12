@@ -3289,3 +3289,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（聊天命令完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 570 (2026-08-12) — 聊天发送 + 物品使用尾部（Finding 876）
+
+- **sprintf + 公告 + 物品名表路径**（聊天完整）。
+- 落盘：`chat-send-item-use-tail-evidence.json`（F876）+ RESEARCH_LOG Round 570。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（聊天发送完整；下一弧：剩余深层角落）。
