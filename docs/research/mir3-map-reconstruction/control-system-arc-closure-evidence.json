@@ -1,0 +1,36 @@
+{
+  "evidence_id": "control-system-arc-closure-2026-08-12-f702",
+  "title": "Round 396 (F702): Control system arc CLOSED (F701) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 5e68a13 (360 consecutive F335-F701), 326 evidence JSONs; arc: control ctor + paint (F701) - button/control system COMPLETE (ctor + paint + hit F313), backing every window control (F546/F547/F580)",
+  "date": "2026-08-12",
+  "objective": "Close the control system arc.",
+  "question": "Is the control system fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "326 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F701": "control ctor + paint"},
+    "control": "ctor + paint + hit (F313) = COMPLETE (backs F546/F547/F580)",
+    "milestone": "360 consecutive rounds F335-F701"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F701": "360 rounds pushed; control system complete"
+  },
+  "contrast": {
+    "ctor_vs_paint": "9-arg ctor + frame blit",
+    "control_vs_window": "controls + windows both complete"
+  },
+  "verdict": "Control system arc CLOSED (F702): ctor + paint + hit all byte-level; validation green, 360 consecutive rounds, 326 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F701.",
+  "cross_refs": ["F701: control", "F313: hit", "F546/F547: users"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "360 consecutive shipping rounds F335-F701",
+    "next: HANDOFF refresh 45, remaining corners"
+  ]
+}

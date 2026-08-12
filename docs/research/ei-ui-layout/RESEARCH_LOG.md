@@ -7706,3 +7706,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔构造〕**0x417550（F313 确认）：**9 参 ctor**——矩形 [0x4] SetRect（0x4762B0，来自 WIL 帧尺寸 0x466130 + [0x38] 字）、[0x14]=WIL 对象、[0x18]/[0x1C] 位置、[0x20]=帧、[0x24] 旗标、[0x25]=0、[0x28]/[0x2C] 位置、[0x30]=-1、[0x34] 文本、ret 0x24。
 - **〔绘制〕**0x417640 = 控件绘制（帧 [0x20] 经 0x466130 → 0x460240 blit @ [0x28]/[0x2C]）——按钮/控件系统字节级（F313/F546/F547 全用）。
 - 落盘：control-ctor-paint-evidence.json（F701，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 395。
+## Round 396 (F702) — 2026-08-12：控件系统弧闭合（F701 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**326 证据 JSON**；三服务 200；master 5e68a13（**360 连发 F335-F701 已推**）。
+- **〔弧〕**控件构造 + 绘制（F701）——**按钮/控件系统完整（构造 + 绘制 + 命中 F313）**，支撑全部窗口控件（F546/F547/F580）。
+- 落盘：control-system-arc-closure-evidence.json（F702，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 396。
