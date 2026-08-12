@@ -8654,3 +8654,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔行会〕**0x425E90 控件重置（9 按钮）；0x425EB0 **成员列表初始化**（清 [0xD0]/[0xE8] 列表 + free + 默认串 0x47BB80/0x47BB7C + 名字解析 0x468BF0 '\n' + 节点添加）——行会成员列表完整（F755/F830 用）。
 - 落盘：guild-member-list-init-evidence.json（F920，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 614。
+## Round 615 (F921) — 2026-08-12：行会成员闭合（F755/F830/F920 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**545 证据 JSON**；三服务 200；master 0015fbf（**579 连发 F335-F920 已推**）。
+- **〔弧〕**行会窗口（F755）+ 页（F830）+ 成员初始化（F920）——**行会成员完整**（重置 + 列表清 + 默认 + 名字解析 + 级别），行会窗口 100%。
+- 落盘：guild-member-closure-evidence.json（F921，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 615。

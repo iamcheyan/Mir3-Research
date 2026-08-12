@@ -1,0 +1,37 @@
+{
+  "evidence_id": "guild-member-closure-2026-08-12-f921",
+  "title": "Round 615 (F921): Guild member CLOSED (F755/F830/F920) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 0015fbf (579 consecutive F335-F920), 545 evidence JSONs; arc: guild window (F755) + pages (F830) + member init (F920) - guild member COMPLETE byte-level (reset + list clear + defaults + name parse + ranks), guild window 100%",
+  "date": "2026-08-12",
+  "objective": "Close the guild member arc.",
+  "question": "Is the guild member fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "545 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F755": "window", "F830": "pages", "F920": "member init"},
+    "guild": "reset + lists + ranks = COMPLETE",
+    "milestone": "579 consecutive rounds F335-F920"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F920": "579 rounds pushed; guild member complete"
+  },
+  "contrast": {
+    "init_vs_pages": "lists + render",
+    "defaults_vs_parse": "strings + names"
+  },
+  "verdict": "Guild member CLOSED (F921): init + pages + ranks all byte-level; validation green, 579 consecutive rounds, 545 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F755/F830/F920.",
+  "cross_refs": ["F755", "F830", "F920"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "579 consecutive shipping rounds F335-F920",
+    "guild member 100%",
+    "next: HANDOFF refresh 118, remaining corners"
+  ]
+}
