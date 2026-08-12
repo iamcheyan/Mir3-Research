@@ -3273,3 +3273,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（聊天命令完整；下一弧：剩余深层角落）。
+## Round 568 (2026-08-12) — 聊天命令闭合（Finding 874）
+
+- **532 连发 + 498 证据 + 聊天命令完整**。
+- 落盘：`chat-command-closure-evidence.json`（F874）+ RESEARCH_LOG Round 568。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（聊天命令完整；下一弧：HANDOFF 刷新 102/剩余角落）。

@@ -8450,3 +8450,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔聊天〕**0x41E740：'/' 命令解析（0x468BF0 0x2F + 0x4681F9 atoi）+ **移动速度累积 [0x428218]/[0x428220]**（delta 比例、钳制 1.0/0.0、[0x428224] 计数器 + 0x401670 门 + 公告 0x427E30 0x47B110）+ **命令比较链**（0x47AE64/0x47AE6C/0x47AE74 串 → 0x410720、[0x35B1D4] 重置）——聊天命令输入完整（F600 用）。
 - 落盘：chat-input-command-handler-evidence.json（F873，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 567。
+## Round 568 (F874) — 2026-08-12：聊天命令闭合（F576/F600/F873 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**498 证据 JSON**；三服务 200；master 25d0415（**532 连发 F335-F873 已推**）。
+- **〔弧〕**文本帧（F576）+ 命令（F600）+ 输入处理（F873）——**聊天命令完整**（'/' 解析 + 命令链 + 移动速度），聊天输入表面闭合。
+- 落盘：chat-command-closure-evidence.json（F874，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 568。
