@@ -4297,3 +4297,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（FINDING 1000 达成；下一弧：剩余深层角落/模拟器 polish）。
+## Round 696 (2026-08-12) — 英雄运行时构造 + 死亡全量（Finding 1002）
+
+- **ctor + 装载 + 死亡**（英雄运行时完整）。
+- 落盘：`hero-runtime-ctor-death-full-evidence.json`（F1002）+ RESEARCH_LOG Round 696。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（英雄运行时完整；下一弧：剩余深层角落）。

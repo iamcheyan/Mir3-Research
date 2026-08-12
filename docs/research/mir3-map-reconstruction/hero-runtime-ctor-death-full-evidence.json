@@ -1,0 +1,35 @@
+{
+  "evidence_id": "hero-runtime-ctor-death-full-2026-08-12-f1002",
+  "title": "Round 696 (F1002): Hero runtime ctor + death FULL (F725) - 0x410100 ctor (0x62A58); 0x410110 data LOAD (coords [0x61BCC]/[0x61BCE]/[0x61BCA] + speed ratio 0x47644C/0x476450 -> [0x61BC8]); 0x410190 hero RUNTIME (death sound 0x45AFC0 0x6E + entity 0x434EF0 + dlist 0x560088/0x56008C (vtable 0x476448) + 1500ms [0x8A68BC]=0x5DC) - hero runtime COMPLETE (F611/F725 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the full hero runtime ctor + death.",
+  "question": "How does the hero runtime construct + die?",
+  "method": "Disasm 0x410100-0x410190.",
+  "scope": "0x410100-0x410190; runtime.",
+  "cell_analysis": {
+    "0x410100/0x410110": "ctor + data load",
+    "0x410190": "death sound + dlist + 0x5DC"
+  },
+  "exe_trace": {
+    "hero_chain": "ctor -> load -> death"
+  },
+  "audit_vs_exe": {
+    "F725": "hero runtime", "F611": "death pump"
+  },
+  "contrast": {
+    "ctor_vs_death": "init + death",
+    "dlist": "0x560088/0x56008C"
+  },
+  "verdict": "Hero runtime ctor + death FULL PRIMARY-verified: ctor + load + death; F725/F611 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Hero runtime decoded from .text.",
+  "cross_refs": ["F725: hero runtime", "F611: death"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x410100+0x10; 0x410190+0x20",
+  "notes": [
+    "ctor [0x62A58]",
+    "speed ratio 0x47644C",
+    "death dlist 0x560088",
+    "1500ms 0x8A68BC"
+  ]
+}

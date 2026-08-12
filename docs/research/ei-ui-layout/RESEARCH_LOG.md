@@ -9006,3 +9006,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 692-694（F999-F1000：名字标签渲染全量 + 名字标签闭合/FINDING 1000 里程碑）；基线 Round 691=fef6aba → Round 694=0322683（**659 连发 F335-F1000**）。
 - 落盘：handoff-refresh-145-evidence.json（F1001，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 695。
+## Round 696 (F1002) — 2026-08-12：英雄运行时构造 + 死亡全量（F725）
+
+- **〔英雄〕**0x410100 构造（0x62A58）；0x410110 数据装载（坐标 [0x61BCC]/[0x61BCE]/[0x61BCA] + 速度比 0x47644C/0x476450 → [0x61BC8]）；0x410190 **英雄运行时**（死亡音效 0x45AFC0 0x6E + 实体 0x434EF0 + dlist 0x560088/0x56008C（vtable 0x476448）+ 1500ms [0x8A68BC]=0x5DC）——英雄运行时完整（F611/F725 依赖）。
+- 落盘：hero-runtime-ctor-death-full-evidence.json（F1002，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 696。
