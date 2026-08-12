@@ -7256,3 +7256,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔解析〕**0x458F80：解析 msg 0x208-0x210（jt 0x45950C 9 例）、'/' 分隔符分词（0x468BF0）、每角色记录：名 → [0xCBF]、职业 → [0xCBC]、等级 → [0xCBE]/[0xCBD]（strlen 0x4681F9）、槽 @ [0xCB8]+idx×0x40、'/*' 标记 + 最多 2 角色（[esp+0x14] 钳制）。
 - **〔工厂〕**0x458EC0 = 槽查找（职业 + 类型×2 + 工作 → [0x932]+idx×6，边界 < 0x1E）；0x458F00 = 0x451F90 发送包装——角色选择服务器列表字节级（F603 扩展）。
 - 落盘：char-list-parser-factory-evidence.json（F604，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 298。
+## Round 299 (F605) — 2026-08-12：登录弧闭合（F603-F604 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**230 证据 JSON**；三服务 200；master 231ee79（**263 连发 F335-F604 已推**）。
+- **〔弧〕**角色选择进入 + 表单布局（F603）+ 角色列表解析器 + 槽工厂（F604）——**登录族（F540 阶段机 + F541 5 阶段 + F349 角色选择 + F585 Mir3.ini + F603/F604）端到端完整**。
+- 落盘：login-arc-closure-evidence.json（F605，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 299。

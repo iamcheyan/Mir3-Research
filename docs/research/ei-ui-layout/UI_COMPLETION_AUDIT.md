@@ -1721,9 +1721,14 @@ git diff --check
 - **'/' 分词 + 记录字段 + 9 例 jt**（F603 扩展）。
 - 落盘：`char-list-parser-factory-evidence.json`（F604）+ RESEARCH_LOG Round 298。
 
+## Round 299 (2026-08-12) — 登录弧闭合（Finding 605）
+
+- **263 连发 + 230 证据 + 登录族端到端完整**。
+- 落盘：`login-arc-closure-evidence.json`（F605）+ RESEARCH_LOG Round 299。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（角色选择列表闭合；下一弧：剩余深层角落）。
+- 无阻塞项（登录族完整；下一弧：HANDOFF 刷新 17/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

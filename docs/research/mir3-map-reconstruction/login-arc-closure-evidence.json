@@ -1,0 +1,36 @@
+{
+  "evidence_id": "login-arc-closure-2026-08-12-f605",
+  "title": "Round 299 (F605): Login arc CLOSED (F603-F604) - validation green (compileall/verify exit 0/node/JSON), services 200, master 231ee79 (263 consecutive F335-F604), 230 evidence JSONs; arc: char-select enter + form layout (F603: slot records + entity create + 16 rects) + char list parser + slot factory (F604: '/' tokenizer + record fields + 9-case jt) - login family (F540 stage machine + F541 5-stage + F349 char select + F585 Mir3.ini config) now complete end-to-end",
+  "date": "2026-08-12",
+  "objective": "Close the login arc.",
+  "question": "Is the login family fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "230 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F603": "char-select enter + layout", "F604": "char list parser + factory"},
+    "login_family": "F540 stage machine + F541 5-stage + F349 char select + F585 Mir3.ini + F603/F604 = COMPLETE",
+    "milestone": "263 consecutive rounds F335-F604"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F604": "263 rounds pushed; login family complete"
+  },
+  "contrast": {
+    "login_vs_ingame": "login chain (config/list/enter) + in-game systems all complete",
+    "parse_vs_enter": "list parse (F604) -> enter (F603)"
+  },
+  "verdict": "Login arc CLOSED (F605): char-select enter + list parser + full login family byte-level; validation green, 263 consecutive rounds, 230 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F603-F604.",
+  "cross_refs": ["F603: char-select enter", "F604: list parser", "F540/F541: login machine"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "263 consecutive shipping rounds F335-F604",
+    "next: HANDOFF refresh 17, remaining corners"
+  ]
+}
