@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-93-2026-08-12-f850",
+  "title": "Round 544 (F850): HANDOFF refresh 93 - Rounds 541-543 (F847-F849: HANDOFF 92, skill tab header draw, skill book full closure), baseline Round 540=fc5086b -> Round 543=1c2c0ba (508 consecutive F335-F849), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 541-543.",
+  "question": "What changed since HANDOFF refresh 92?",
+  "method": "Append Round 541-543 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 541-543 appended (3 rounds, F847-F849)",
+    "baseline": "Round 540=fc5086b -> Round 543=1c2c0ba (508 consecutive F335-F849)",
+    "arcs": {"tabs": "F848 tab header", "closure": "F849 book full"},
+    "key": "skill book complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F847": "refresh 92 baseline -> now refresh 93", "F335-F849": "508 rounds"
+  },
+  "contrast": {
+    "refresh_92_vs_93": "F848-F849 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 93 (F850): Rounds 541-543 documented (skill book complete), baseline fc5086b -> 1c2c0ba, 508 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F848-F849 evidence.",
+  "cross_refs": ["F847: refresh 92", "F849: book closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 541-543 section to HANDOFF",
+  "notes": [
+    "508 consecutive shipping rounds F335-F849",
+    "next: remaining deep corners, sim polish"
+  ]
+}
