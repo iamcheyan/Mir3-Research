@@ -7991,3 +7991,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔装备〕**0x44B2D0（F558 模式 1）：**2 页模式 [0x54]**（0/1 分支）+ **纸娃娃 blit**（WIL 0x565994 帧 0xA7 页 1/0xAA 页 0 → 0x45FD50 F647 @ [0x18]+0xB0/[0x1C]+0x109）+ 标题/副标题 DrawTextA 0x45DE50（串 0x7776A0/0x7776E0、色 0xDCFFDC/0xB4FAFF、字体 0x45DBA0）+ 0x44BC80 装备槽子绘制 + 按钮 F704——**装备窗口完整，F558 注册表最后一个窗口绘制解码**。
 - 落盘：equip-window-draw-evidence.json（F767，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 461。
+## Round 462 (F768) — 2026-08-12：窗口绘制全量闭合（F746-F767 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**392 证据 JSON**；三服务 200；master ff4dfc0（**426 连发 F335-F767 已推**）。
+- **〔弧〕**对话（F746）+ 交易（F749）+ 组队（F752）+ 行会（F755）+ 状态（F758）+ 选项（F761）+ 背包（F764）+ 装备（F767）——**F558 注册表全部 14 个窗口绘制字节级解码**，窗口绘制表面 100% 完整。
+- 落盘：window-draws-total-closure-evidence.json（F768，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 462。

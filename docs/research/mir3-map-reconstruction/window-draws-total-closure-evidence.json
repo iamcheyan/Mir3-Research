@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-draws-total-closure-2026-08-12-f768",
+  "title": "Round 462 (F768): Window draws TOTAL closure (F746-F767) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master ff4dfc0 (426 consecutive F335-F767), 392 evidence JSONs; arc: dialog (F746) + trade (F749) + party (F752) + guild (F755) + status (F758) + options (F761) + bag (F764) + equip (F767) - ALL 14 F558 registry window draws decoded byte-level, window draw surface 100% complete",
+  "date": "2026-08-12",
+  "objective": "Close the window draws total arc.",
+  "question": "Are all registry window draws documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "392 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F746": "dialog", "F749": "trade", "F752": "party", "F755": "guild", "F758": "status", "F761": "options", "F764": "bag", "F767": "equip"},
+    "draws": "ALL 14 F558 registry draws = 100%",
+    "milestone": "426 consecutive rounds F335-F767"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F767": "426 rounds pushed; all window draws decoded"
+  },
+  "contrast": {
+    "bag_vs_equip": "scrollbar+grid vs paperdoll",
+    "guild_vs_party": "9 buttons vs 5 buttons"
+  },
+  "verdict": "Window draws TOTAL closure (F768): all 14 registry draws byte-level; validation green, 426 consecutive rounds, 392 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F746-F767.",
+  "cross_refs": ["F746-F767", "F558"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "426 consecutive shipping rounds F335-F767",
+    "window draw surface 100%",
+    "next: HANDOFF refresh 66, remaining corners"
+  ]
+}
