@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-59-2026-08-12-f748",
+  "title": "Round 442 (F748): HANDOFF refresh 59 - Rounds 439-441 (F745-F747: HANDOFF 58, NPC dialog option hit/select, NPC dialog arc closure), baseline Round 438=7599abe -> Round 441=2599ac2 (406 consecutive F335-F747), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 439-441.",
+  "question": "What changed since HANDOFF refresh 58?",
+  "method": "Append Round 439-441 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 439-441 appended (3 rounds, F745-F747)",
+    "baseline": "Round 438=7599abe -> Round 441=2599ac2 (406 consecutive F335-F747)",
+    "arcs": {"dialog": "F746 option hit/select", "closure": "F747 dialog"},
+    "key": "NPC dialog complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F745": "refresh 58 baseline -> now refresh 59", "F335-F747": "406 rounds"
+  },
+  "contrast": {
+    "refresh_58_vs_59": "F746-F747 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 59 (F748): Rounds 439-441 documented (NPC dialog complete), baseline 7599abe -> 2599ac2, 406 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F746-F747 evidence.",
+  "cross_refs": ["F745: refresh 58", "F747: dialog closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 439-441 section to HANDOFF",
+  "notes": [
+    "406 consecutive shipping rounds F335-F747",
+    "next: remaining deep corners, sim polish"
+  ]
+}
