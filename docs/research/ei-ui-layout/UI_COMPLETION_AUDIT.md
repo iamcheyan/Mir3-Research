@@ -2817,3 +2817,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（背包全交互；下一弧：HANDOFF 刷新 82/剩余角落）。
+## Round 511 (2026-08-12) — HANDOFF 刷新 82（Finding 817）
+
+- **Round 508-510 追加 + 475 连发**（背包全交互入档）。
+- 落盘：`handoff-refresh-82-evidence.json`（F817）+ RESEARCH_LOG Round 511。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（背包全交互；下一弧：剩余深层角落/模拟器 polish）。

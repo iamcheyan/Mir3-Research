@@ -1,0 +1,34 @@
+{
+  "evidence_id": "handoff-refresh-82-2026-08-12-f817",
+  "title": "Round 511 (F817): HANDOFF refresh 82 - Rounds 508-510 (F814-F816: HANDOFF 81, bag window init/click/use, bag window arc closure), baseline Round 507=c3255fb -> Round 510=b45ce8d (475 consecutive F335-F816), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 508-510.",
+  "question": "What changed since HANDOFF refresh 81?",
+  "method": "Append Round 508-510 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 508-510 appended (3 rounds, F814-F816)",
+    "baseline": "Round 507=c3255fb -> Round 510=b45ce8d (475 consecutive F335-F816)",
+    "arcs": {"bag": "F815 init/click/use", "closure": "F816 bag arc"},
+    "key": "bag window interactive complete"
+  },
+  "exe_trace": {
+    "handoff": "doc only - compileall/diff-check pass"
+  },
+  "audit_vs_exe": {
+    "F814": "refresh 81 baseline -> now refresh 82", "F335-F816": "475 rounds"
+  },
+  "contrast": {
+    "refresh_81_vs_82": "F815-F816 (2 new findings)"
+  },
+  "verdict": "HANDOFF refreshed 82 (F817): Rounds 508-510 documented (bag interactive complete), baseline c3255fb -> b45ce8d, 475 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F815-F816 evidence.",
+  "cross_refs": ["F814: refresh 81", "F816: bag closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 508-510 section to HANDOFF",
+  "notes": [
+    "475 consecutive shipping rounds F335-F816",
+    "next: remaining deep corners, sim polish"
+  ]
+}

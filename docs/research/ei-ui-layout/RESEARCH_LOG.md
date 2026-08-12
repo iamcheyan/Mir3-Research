@@ -8204,3 +8204,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**440 证据 JSON**；三服务 200；master d59a049（**474 连发 F335-F815 已推**）。
 - **〔弧〕**背包绘制（F764）+ 切换初始化（F811）+ 点击/使用（F815）——**背包窗口完整**（滚动条 + 网格 + 拖动预览 + 初始化重置 + 点击分派 + 使用冷却门），窗口模式 0 全交互。
 - 落盘：bag-window-arc-closure-evidence.json（F816，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 510。
+## Round 511 (F817) — 2026-08-12：HANDOFF 刷新 82（Round 508-510）
+
+- **〔刷新〕**HANDOFF 追加 Round 508-510（F815-F816：背包初始化/点击/使用 + 背包窗口弧）；基线 Round 507=c3255fb → Round 510=b45ce8d（**475 连发 F335-F816**）。
+- 落盘：handoff-refresh-82-evidence.json（F817，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 511。
