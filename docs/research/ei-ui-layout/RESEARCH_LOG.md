@@ -7585,3 +7585,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔绘制〕**0x427E30（F556/F565 共享公告）：**5 行上限门**、每行 0x104 步长复制 + 0x414FA0 渲染（[0xD0C] 列表）、节点列表 [0xD10]/[0xD14]/[0xD18]/[0xD1C]（0x408/0x40C 链接、[0xD08] 计数）、**计数 > 0x50（80）剪枝**（解链 + 释放 0x4680F8）——公告系统字节级（F556/F565 连接）。
 - 落盘：notice-window-paint-evidence.json（F674，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 368。
+## Round 369 (F675) — 2026-08-12：公告系统闭合 + 服务恢复
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**297 证据 JSON**；**wilviewer 进程死亡 → 重启 8765**，四服务全 200；master 642eb5b（**333 连发 F335-F674 已推**）。
+- **〔弧〕**公告窗绘制完整（F674）——公告系统完整（渲染 + 字符串 F556 + 色 F553）。
+- 落盘：notice-system-closure-evidence.json（F675，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 369。

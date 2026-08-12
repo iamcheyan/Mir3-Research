@@ -1,0 +1,37 @@
+{
+  "evidence_id": "notice-system-closure-2026-08-12-f675",
+  "title": "Round 369 (F675): Notice system CLOSED (F674) + service restore - validation green (compileall/verify exit 0/node/JSON), services all 200 (wilviewer restarted on 8765 after process death, sim + mapviewer + sim8477 live), master 642eb5b (333 consecutive F335-F674), 297 evidence JSONs; arc: notice window paint full (F674: 5-line + node list + prune) - notice system COMPLETE (F556/F565/F553)",
+  "date": "2026-08-12",
+  "objective": "Close the notice system + restore services.",
+  "question": "Is the notice system fully documented + services healthy?",
+  "method": "Full validation + wilviewer restart + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "297 JSONs"},
+    "services": "wilviewer 8765 restarted (was dead) / sim 8765/sim + mapviewer 8899 + sim8477 all 200",
+    "arc": {"F674": "notice window paint"},
+    "notice": "render (F674) + strings (F556) + colors (F553) = COMPLETE",
+    "milestone": "333 consecutive rounds F335-F674"
+  },
+  "exe_trace": {
+    "verify": "exit 0; service health 200 x4"
+  },
+  "audit_vs_exe": {
+    "F335-F674": "333 rounds pushed; notice complete"
+  },
+  "contrast": {
+    "notice_vs_quest": "notice (F674) + quest (F671) render both complete",
+    "service_fix": "wilviewer restarted after process death"
+  },
+  "verdict": "Notice system CLOSED (F675): notice render byte-level + services restored; validation green, 333 consecutive rounds, 297 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation + service restart from tool runs; arc from F674.",
+  "cross_refs": ["F674: notice paint", "F556/F565: strings", "F553: colors"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl 8765/8899/8477",
+  "notes": [
+    "wilviewer process died -> restarted on 8765",
+    "333 consecutive shipping rounds F335-F674",
+    "next: HANDOFF refresh 36, remaining corners"
+  ]
+}
