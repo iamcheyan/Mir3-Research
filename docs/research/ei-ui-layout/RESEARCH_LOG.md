@@ -8663,3 +8663,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 613-615（F920-F921：行会成员列表初始化 + 行会成员闭合）；基线 Round 612=6771eff → Round 615=d331333（**580 连发 F335-F921**）。
 - 落盘：handoff-refresh-118-evidence.json（F922，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 616。
+## Round 617 (F923) — 2026-08-12：任务窗口初始化 + 命中（F897 依赖）
+
+- **〔任务〕**0x448640 旗标清（[0x99]/[0x14D]=0）；0x448650 **任务窗口布局 + 鼠标命中**（SetRect 0x4762B0 + 窗口矩形 0x476240/0x476234 + hwnd 0x8AB7B0 + PtInRect + 计数器 [0x60]/[0x58]）——任务窗口输入完整（F833/F671 用）。
+- 落盘：quest-window-init-hit-evidence.json（F923，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 617。

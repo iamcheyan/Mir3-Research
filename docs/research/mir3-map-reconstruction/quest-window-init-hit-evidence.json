@@ -1,0 +1,35 @@
+{
+  "evidence_id": "quest-window-init-hit-2026-08-12-f923",
+  "title": "Round 617 (F923): Quest window init + hit (F897 dep) - 0x448640 flag clear ([0x99]/[0x14D]=0, F897); 0x448650 QUEST window layout + mouse HIT (SetRect 0x4762B0 + window rect 0x476240/0x476234 + hwnd 0x8AB7B0 + PtInRect + counters [0x60]/[0x58]) - quest window input COMPLETE (F833/F671 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the quest window init + hit.",
+  "question": "How does the quest window init + hit-test?",
+  "method": "Disasm 0x448640-0x448769.",
+  "scope": "0x448640-0x448769; hit.",
+  "cell_analysis": {
+    "0x448640": "clear [0x99]/[0x14D]",
+    "0x448650": "layout + hit: SetRect + 0x476240/0x476234 + counters [0x60]/[0x58]"
+  },
+  "exe_trace": {
+    "quest_chain": "clear -> layout -> hit"
+  },
+  "audit_vs_exe": {
+    "F897": "reset", "F833": "quest draw", "F671": "quest"
+  },
+  "contrast": {
+    "clear_vs_hit": "flags + rects",
+    "layout_vs_counters": "SetRect + [0x60]/[0x58]"
+  },
+  "verdict": "Quest window init + hit PRIMARY-verified: clear + layout + hit; F833/F671 dep complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Quest init decoded from .text.",
+  "cross_refs": ["F897: reset", "F833: draw", "F671: quest"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x448640+0x10; 0x448650+0x20",
+  "notes": [
+    "clear [0x99]/[0x14D]",
+    "window rect 0x476240",
+    "hwnd 0x8AB7B0",
+    "counters [0x60]/[0x58]"
+  ]
+}

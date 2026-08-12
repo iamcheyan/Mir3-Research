@@ -3665,3 +3665,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（行会成员完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 617 (2026-08-12) — 任务窗口初始化 + 命中（Finding 923）
+
+- **旗标清 + 布局 + 命中**（任务输入完整）。
+- 落盘：`quest-window-init-hit-evidence.json`（F923）+ RESEARCH_LOG Round 617。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（任务输入完整；下一弧：剩余深层角落）。
