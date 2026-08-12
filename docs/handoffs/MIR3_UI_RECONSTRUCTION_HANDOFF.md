@@ -708,3 +708,14 @@ simulator/style.css
 **数学核弧闭合（F645）**：303 连发 + 269 证据 JSON——共享数学核完整（支撑全部渐变/绘制/投影 F588/F594/F625/F435）。
 
 **commit 基线更新**：Round 335=8909fb9 → Round 339=4ce6ee7（master 已推，304 连发 F335-F645）。
+
+
+## Round 340-343 追加交付（2026-08-12，Finding 646-649）：HANDOFF 刷新 27 + 通用 WIL blit + 主世界 blit + blit/渲染弧
+
+**HANDOFF 刷新 27（F646）**：基线更新至 Round 339=4ce6ee7（304 连发）。
+
+**blit/渲染引擎（F647-F648）**：**通用 WIL blit + RLE 解码**（0x45FD50 屏幕裁剪 0x320×0x258 + 表面 vtable[0x64] GetDC + **16 位 RLE：0xC0 跳行 / 0xC1 像素行 + 裁剪**）、**主世界 blit**（0x45E730 裁剪 + 表面 + **逐行 16 位复制** rep movsd/movsb——F591 世界 blit 阶段）。
+
+**blit/渲染弧闭合（F649）**：307 连发 + 273 证据 JSON——**渲染引擎完整（通用 RLE blit + 世界 blit + 565 混合 F629）**，支撑全部绘制路径。
+
+**commit 基线更新**：Round 339=4ce6ee7 → Round 343=aa3e93e（master 已推，308 连发 F335-F649）。

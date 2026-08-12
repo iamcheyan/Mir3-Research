@@ -7472,3 +7472,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**273 证据 JSON**；三服务 200；master 4ccdb3c（**307 连发 F335-F648 已推**）。
 - **〔弧〕**通用 WIL blit + RLE（F647）+ 主世界 blit（F648）——**渲染引擎完整（通用 RLE blit + 世界 blit + 565 混合 F629）**，支撑全部绘制路径。
 - 落盘：blit-render-arc-closure-evidence.json（F649，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 343。
+## Round 344 (F650) — 2026-08-12：HANDOFF 刷新 28（Round 340-343）
+
+- **〔刷新〕**HANDOFF 追加 Round 340-343（F647-F649：通用 RLE blit + 世界 blit + 渲染弧）；基线 Round 339=4ce6ee7 → Round 343=aa3e93e（**308 连发 F335-F649**）。
+- 落盘：handoff-refresh-28-evidence.json（F650，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 344。
