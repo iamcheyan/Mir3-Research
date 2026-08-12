@@ -1,0 +1,37 @@
+{
+  "evidence_id": "status-equip-panel-closure-2026-08-12-f819",
+  "title": "Round 513 (F819): Status/equip panel CLOSED (F758/F767/F818) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 362c6c6 (477 consecutive F335-F818), 443 evidence JSONs; arc: status draw (F758) + equip draw (F767) + detail panel (F818) - status/equip panels COMPLETE byte-level (avatar + 11 equip icons + paperdoll + detail labels + level/HP/MP/XP values), char windows modes 1/7 fully rendered",
+  "date": "2026-08-12",
+  "objective": "Close the status/equip panel arc.",
+  "question": "Is the status/equip panel fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "443 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F758": "status", "F767": "equip", "F818": "detail panel"},
+    "panel": "avatar + icons + paperdoll + values = COMPLETE",
+    "milestone": "477 consecutive rounds F335-F818"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F818": "477 rounds pushed; status/equip complete"
+  },
+  "contrast": {
+    "status_vs_equip": "avatar + paperdoll",
+    "panel_vs_values": "labels + stats"
+  },
+  "verdict": "Status/equip panel CLOSED (F819): avatar + icons + paperdoll + values all byte-level; validation green, 477 consecutive rounds, 443 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F758/F767/F818.",
+  "cross_refs": ["F758", "F767", "F818"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "477 consecutive shipping rounds F335-F818",
+    "status/equip 100%",
+    "next: HANDOFF refresh 83, remaining corners"
+  ]
+}

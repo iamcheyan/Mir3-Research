@@ -8212,3 +8212,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔面板〕**0x44BC80：字体 0x45DBA0（0x47BE18）+ 标签串 0x47C74C/0x47C748/0x47C73C/0x47C734 via 0x45DD70（0xFAE1C8 标题、0xFAFAFA 值）+ **值字段**：等级 [0x7DA108]（格式 0x47A214）、HP [0x7DA10D]/[0x7DA111]、MP [0x7DA10F]/[0x7DA113]、XP 比例 [0x7DA115]/[0x7DA119] + 0x46811C 格式 + % 缩放 0x476970——角色状态详情面板完整。
 - 落盘：equip-detail-panel-draw-evidence.json（F818，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 512。
+## Round 513 (F819) — 2026-08-12：状态/装备面板闭合（F758/F767/F818 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**443 证据 JSON**；三服务 200；master 362c6c6（**477 连发 F335-F818 已推**）。
+- **〔弧〕**状态绘制（F758）+ 装备绘制（F767）+ 详情面板（F818）——**状态/装备面板完整**（头像 + 11 装备图标 + 纸娃娃 + 详情标签 + 等级/HP/MP/XP 值），角色窗口模式 1/7 全渲染。
+- 落盘：status-equip-panel-closure-evidence.json（F819，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 513。

@@ -2833,3 +2833,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（详情面板完整；下一弧：剩余深层角落）。
+## Round 513 (2026-08-12) — 状态/装备面板闭合（Finding 819）
+
+- **477 连发 + 443 证据 + 状态/装备完整**。
+- 落盘：`status-equip-panel-closure-evidence.json`（F819）+ RESEARCH_LOG Round 513。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（状态/装备完整；下一弧：HANDOFF 刷新 83/剩余角落）。
