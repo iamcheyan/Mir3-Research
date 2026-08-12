@@ -3729,3 +3729,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（状态窗口完整；下一弧：剩余深层角落）。
+## Round 625 (2026-08-12) — 状态窗口闭合（Finding 931）
+
+- **589 连发 + 555 证据 + 状态窗口完整**。
+- 落盘：`status-window-closure-evidence.json`（F931）+ RESEARCH_LOG Round 625。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（状态窗口完整；下一弧：HANDOFF 刷新 122/剩余角落）。

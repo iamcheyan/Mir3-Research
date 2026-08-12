@@ -8697,3 +8697,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔状态〕**0x450B70 状态点击（1 控件 vtable[8] @ +0x54）；0x450BC0 **状态构造**（vtable 0x476AF0 + 单例 [0x8B1B08] + 色 0xFF00FF + 字体 0x476068）；0x450C10 析构（字体 free + 0x47625C）；0x450C40 vtable[0] 分派；0x450C70 **刷新**（0x46805C/0x468056/0x468050）——状态窗口完整（F758/F870 用）。
 - 落盘：status-window-ctor-refresh-evidence.json（F930，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 624。
+## Round 625 (F931) — 2026-08-12：状态窗口闭合（F758/F819/F930 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**555 证据 JSON**；三服务 200；master 101dfe6（**589 连发 F335-F930 已推**）。
+- **〔弧〕**状态绘制（F758）+ 详情面板（F819）+ 构造/刷新（F930）——**状态窗口完整**（ctor 单例 + 头像 + 装备图标 + 详情值 + 刷新），状态表面 100%。
+- 落盘：status-window-closure-evidence.json（F931，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 625。

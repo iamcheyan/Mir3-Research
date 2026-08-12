@@ -1,0 +1,37 @@
+{
+  "evidence_id": "status-window-closure-2026-08-12-f931",
+  "title": "Round 625 (F931): Status window CLOSED (F758/F819/F930) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 101dfe6 (589 consecutive F335-F930), 555 evidence JSONs; arc: status draw (F758) + panel (F819) + ctor/refresh (F930) - status window COMPLETE byte-level (ctor singleton + avatar + equip icons + detail values + refresh), status surface 100%",
+  "date": "2026-08-12",
+  "objective": "Close the status window arc.",
+  "question": "Is the status window fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "555 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F758": "draw", "F819": "panel", "F930": "ctor/refresh"},
+    "status": "ctor + draw + refresh = COMPLETE",
+    "milestone": "589 consecutive rounds F335-F930"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F930": "589 rounds pushed; status window complete"
+  },
+  "contrast": {
+    "draw_vs_refresh": "avatar + update",
+    "ctor_vs_values": "singleton + stats"
+  },
+  "verdict": "Status window CLOSED (F931): ctor + draw + refresh all byte-level; validation green, 589 consecutive rounds, 555 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F758/F819/F930.",
+  "cross_refs": ["F758", "F819", "F930"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "589 consecutive shipping rounds F335-F930",
+    "status window 100%",
+    "next: HANDOFF refresh 122, remaining corners"
+  ]
+}
