@@ -9096,3 +9096,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 713-715（F1020-F1021：消息发送器家族全量 + 发送器闭合）；基线 Round 712=e353c0b → Round 715=c937e7e（**679 连发 F335-F1021**）。
 - 落盘：handoff-refresh-152-evidence.json（F1022，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 716。
+## Round 717 (F1023) — 2026-08-12：recv1 坐骑/物品/封锁/公告全量（F836/F797）
+
+- **〔recv1〕**0x41F597 **坐骑**（旗标 [0x7DA060]+[0x7DA063]/[0x7DA061]+[0x7DA064] → 0x40F420 坐骑应用 @ 0x777698 + 背包刷新 0x44BC30）；0x41F604 **物品**（0x42FC20 + 列表 0x2A54AC + 0x44BB70）；0x41F6EF **封锁/解锁**（瓦片 0x43C0F0 → 0x43C1B0）；0x41F73C **公告**（0x47B960 → 0x415280）——recv1 家族完整。
+- 落盘：recv1-mount-item-block-full-evidence.json（F1023，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 717。

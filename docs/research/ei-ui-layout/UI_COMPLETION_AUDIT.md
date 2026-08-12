@@ -4465,3 +4465,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（出站 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 717 (2026-08-12) — recv1 坐骑/物品/封锁/公告全量（Finding 1023）
+
+- **坐骑 + 物品 + 封锁 + 公告**（recv1 家族完整）。
+- 落盘：`recv1-mount-item-block-full-evidence.json`（F1023）+ RESEARCH_LOG Round 717。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（recv1 家族完整；下一弧：剩余深层角落）。

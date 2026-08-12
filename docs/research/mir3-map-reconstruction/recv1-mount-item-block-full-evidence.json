@@ -1,0 +1,37 @@
+{
+  "evidence_id": "recv1-mount-item-block-full-2026-08-12-f1023",
+  "title": "Round 717 (F1023): recv1 mount/item/block/announce FULL (F836/F797) - 0x41F597 recv1 MOUNT (flags [0x7DA060]+[0x7DA063]/[0x7DA061]+[0x7DA064] -> 0x40F420 mount apply @ 0x777698 + inventory refresh 0x44BC30); 0x41F604 recv1 ITEM (0x42FC20 + list 0x2A54AC + 0x44BB70); 0x41F6EF recv1 BLOCK/UNBLOCK (tile 0x43C0F0 -> 0x43C1B0); 0x41F73C recv1 ANNOUNCE (0x47B960 -> 0x415280) - recv1 family COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 mount/item/block/announce handlers.",
+  "question": "How does recv1 handle mount + item + block + announce?",
+  "method": "Disasm 0x41F597-0x41F751.",
+  "scope": "0x41F597-0x41F751; recv1.",
+  "cell_analysis": {
+    "0x41F597": "mount flags + 0x40F420",
+    "0x41F604": "item 0x42FC20 + 0x44BB70",
+    "0x41F6EF": "block 0x43C1B0",
+    "0x41F73C": "announce 0x415280"
+  },
+  "exe_trace": {
+    "recv1_chain": "mount -> item -> block -> announce"
+  },
+  "audit_vs_exe": {
+    "F836": "mount flags", "F797": "map/name msgs"
+  },
+  "contrast": {
+    "mount_vs_item": "flags + list",
+    "block_vs_announce": "tile + text"
+  },
+  "verdict": "recv1 mount/item/block/announce FULL PRIMARY-verified: mount + item + block + announce; F836/F797 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "recv1 handlers decoded from .text.",
+  "cross_refs": ["F836: mount flags", "F797: msgs"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41F597+0x10; 0x41F604+0x20",
+  "notes": [
+    "mount 0x40F420",
+    "item 0x42FC20",
+    "block 0x43C1B0",
+    "announce 0x47B960"
+  ]
+}
