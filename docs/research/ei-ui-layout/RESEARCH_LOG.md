@@ -8785,3 +8785,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 641-643（F948-F949：组队窗口输入/消息分派 + 组队窗口闭合）；基线 Round 640=29856f5 → Round 643=1e047c0（**608 连发 F335-F949**）。
 - 落盘：handoff-refresh-128-evidence.json（F950，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 644。
+## Round 645 (F951) — 2026-08-12：交易窗口输入 + 点击（F908/F897 依赖）
+
+- **〔交易〕**0x416E70 交易输入（2 滚动条 0x417C80 @ +0x13648 stride 0x4C → 滚动 [esi*4+0x54] 0x476650 + 确认按钮 vtable[8] @ +0x7C）；0x416EF0 **点击**（字符串比对 0x47ADB4「取消」→ 0x418030 窗口 + msg 0x405；否则交易槽命中 [0x13644] → 0x417E60 槽）——交易输入完整（F749/F908 依赖）。
+- 落盘：trade-window-input-evidence.json（F951，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 645。

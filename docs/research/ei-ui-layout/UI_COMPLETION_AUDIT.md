@@ -3889,3 +3889,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（组队窗口完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 645 (2026-08-12) — 交易窗口输入 + 点击（Finding 951）
+
+- **2 滚动条 + 取消 + 槽命中**（交易输入完整）。
+- 落盘：`trade-window-input-evidence.json`（F951）+ RESEARCH_LOG Round 645。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（交易输入完整；下一弧：剩余深层角落）。

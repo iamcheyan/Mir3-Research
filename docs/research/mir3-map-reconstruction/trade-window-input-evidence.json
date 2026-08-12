@@ -1,0 +1,35 @@
+{
+  "evidence_id": "trade-window-input-2026-08-12-f951",
+  "title": "Round 645 (F951): Trade window input + click (F908/F897 dep) - 0x416E70 trade INPUT (2 scrollbars 0x417C80 @ +0x13648 stride 0x4C -> scroll [esi*4+0x54] via 0x476650 + confirm button vtable[8] @ +0x7C); 0x416EF0 trade CLICK (string cmp vs 0x47ADB4 '\\u53d6\\u6d88' cancel -> 0x418030 window + msg 0x405; else item trade slot hit [0x13644] -> 0x417E60 slot) - trade input COMPLETE (F749/F908 deps)",
+  "date": "2026-08-12",
+  "objective": "Decode the trade window input.",
+  "question": "How does the trade window route input?",
+  "method": "Disasm 0x416E70-0x416EF0.",
+  "scope": "0x416E70-0x416EF0; input.",
+  "cell_analysis": {
+    "0x416E70": "input 2 scrollbars + confirm",
+    "0x416EF0": "click cancel 0x47ADB4 + msg 0x405 + slot"
+  },
+  "exe_trace": {
+    "trade_chain": "input -> scroll/cancel/slot"
+  },
+  "audit_vs_exe": {
+    "F908": "trade slot", "F897": "reset"
+  },
+  "contrast": {
+    "scroll_vs_click": "2 + cancel",
+    "cancel_vs_slot": "0x418030 + 0x417E60"
+  },
+  "verdict": "Trade window input + click PRIMARY-verified: 2 scrollbars + cancel + slot hit; F749/F908 deps complete.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Trade input decoded from .text.",
+  "cross_refs": ["F749: trade slots", "F908: trade ops", "F897: reset"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x416E70+0x20; 0x416EF0+0x20",
+  "notes": [
+    "2 scrollbars +0x13648",
+    "cancel 0x47ADB4 + msg 0x405",
+    "slot 0x417E60",
+    "scroll [0x54]"
+  ]
+}
