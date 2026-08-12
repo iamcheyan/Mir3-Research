@@ -7779,3 +7779,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔相机〕**0x43C330 相机绘制：24×24 视口半瓦片（偶数门）、瓦片网格 [0x108] stride 0xE、类型→帧表 **@ 0x5600FC stride 0x144**（+0x38/+0x3C）、投影 x=(tx-camX)<<5-[0x138]-0x9D、y=(ty-camY)×48-[0x134]-0xC8 → blit；0x43C500 相机滚动：[0x12C]/[0x130]+=dx/dy、滚动缓冲 memcpy 0x468E90（0x900 行）、区域重渲染 0x43B9A0——地图渲染核心（F610/F613 用）。
 - 落盘：map-camera-renderer-scroll-evidence.json（F718，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 412。
+## Round 413 (F719) — 2026-08-12：瓦片碰撞 + 属性 + 方向向量
+
+- **〔碰撞〕**0x43C9F0 封锁检查（**瓦片 bit0**、stride 14B [0x10C]）；0x43CA40 属性提取（+0xC 字：**2 位类别 (>>14)&3 + 8 位值 (>>4)&0xFF**）；0x43CAF0 **8 方向偏移计算器**（+4 mod 8 环绕、jt 0x43CC04、每方向 dx/dy × 距离）——地图移动核心（F613 用）。
+- 落盘：tile-collision-attribute-direction-evidence.json（F719，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 413。

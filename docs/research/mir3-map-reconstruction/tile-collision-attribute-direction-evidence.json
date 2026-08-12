@@ -1,0 +1,36 @@
+{
+  "evidence_id": "tile-collision-attribute-direction-2026-08-12-f719",
+  "title": "Round 413 (F719): Tile collision + attribute + direction vector - 0x43C9F0 blocked check (tile bit0 @ stride 14B [0x10C]); 0x43CA40 tile attribute extract (+0xC word: 2-bit category (>>14)&3 + 8-bit value (>>4)&0xFF); 0x43CAF0 8-direction offset calculator (dir+4 mod 8 wrap, jt 0x43CC04, dx/dy per direction with dist) - map movement core (F613 use)",
+  "date": "2026-08-12",
+  "objective": "Decode tile collision + direction vector.",
+  "question": "How does tile collision + directional movement work?",
+  "method": "Disasm 0x43C9F0-0x43CC01.",
+  "scope": "0x43C9F0-0x43CC01; jt 0x43CC04.",
+  "cell_analysis": {
+    "0x43C9F0": "blocked: tile bit0 set -> blocked",
+    "0x43CA40": "attribute: +0xC word, cat (>>14)&3, val (>>4)&0xFF",
+    "0x43CAF0": "direction: +4 mod 8 wrap, jt 0x43CC04, dx/dy from dist"
+  },
+  "exe_trace": {
+    "move_chain": "blocked check -> attribute -> direction offset"
+  },
+  "audit_vs_exe": {
+    "F613": "8-direction move", "F717": "tile accessors"
+  },
+  "contrast": {
+    "blocked_vs_attr": "bit0 + +0xC word",
+    "dir_vs_move": "vector calc + move"
+  },
+  "verdict": "Tile collision + attribute + direction PRIMARY-verified: blocked bit0, +0xC attr, 8-dir vector jt; map movement core (F613).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Collision/direction decoded from .text.",
+  "cross_refs": ["F613: move", "F717: accessors", "F718: camera"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43C9F0+0x10; 0x43CAF0+0x20",
+  "notes": [
+    "blocked bit0",
+    "attr cat 2-bit / val 8-bit",
+    "dir wrap +4 mod 8",
+    "8 jt cases dx/dy"
+  ]
+}
