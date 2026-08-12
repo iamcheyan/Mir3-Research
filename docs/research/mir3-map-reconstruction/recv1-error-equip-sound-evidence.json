@@ -1,0 +1,38 @@
+{
+  "evidence_id": "recv1-mapval2-3-equip-sound-2026-08-12-f563",
+  "title": "Round 257 (F563): recv1 mapval2 + mapval3 + equip-sound dispatch - mapval2 (0x42045B): error notice '交易的时候要2个人面对面才可以.' (0x47B6C4, trade requires face-to-face) via 0x42181D tail -> 0x418030([main+0x3615B0] notice); mapval3 (0x420640): equip-use confirmed - 0x42E2D0 sound (item type byte [0x22] map 0x42E428 jt 0x42E404: 0x6C gold / 0x6F-0x71 type sounds / name strcmp '갑박'(armor 0x47BDDC)/'장갑'(gloves 0x47BDD4) -> 0x72/0x75, 0x73/0x74 others) + 0x416E20 trade-window update + clear pending [0x2A54AC] 0x30E dwords; common notice tail 0x42181D (push 0x565994 ctx + 0x418030) shared by mapval2/store errors/warehouse-denied; 0x42186D = recv2 idx0 entity-name-set tail (hero id [0x2F8784] -> vtable[0x34], else 0x41EB10) - recv1 error/equip family complete",
+  "date": "2026-08-12",
+  "objective": "Decode the recv1 mapval2/mapval3 bodies + equip-sound dispatch.",
+  "question": "What do the error and equip-use handlers do?",
+  "method": "Disasm 0x42045B/0x420640/0x42E2D0 + 0x42181D tail + decode strings.",
+  "scope": "0x42045B, 0x420640, 0x42E2D0, 0x42181D; sound map 0x42E428.",
+  "cell_analysis": {
+    "mapval2": {"0x42045B": "error notice '交易的时候要2个人面对面才可以.' (0x47B6C4, trade face-to-face)", "tail": "0x42181D -> 0x418030([main+0x3615B0])"},
+    "mapval3": {"0x420640": "equip-use confirm: 0x42E2D0 sound + 0x416E20 trade update + clear [0x2A54AC] 0x30E dwords"},
+    "sound_dispatch": {"0x42E2D0": "item type byte [0x22] <= 0x1F -> map 0x42E428 -> jt 0x42E404", "cases": "0x6C gold, 0x6F-0x71 types, name strcmp 갑박 (0x47BDDC armor)/장갑 (0x47BDD4 gloves) -> 0x72/0x75, 0x73/0x74 others", "send": "0x45AFC0([0x8AB130], soundid)"},
+    "notice_tail": "0x42181D: push 0x565994 ctx + 0x418030([main+0x3615B0]) - shared mapval2/store/warehouse",
+    "recv2_idx0_tail": "0x42186D: entity name set (hero id [0x2F8784] -> vtable[0x34], else 0x41EB10)"
+  },
+  "exe_trace": {
+    "equip_chain": "server equip-use ack -> sound (type-based) + trade update + pending clear"
+  },
+  "audit_vs_exe": {
+    "F520": "mapval2 error / mapval3 equip semantics", "F470": "0x42E2D0 sound dispatcher", "F557": "trade family", "F553": "recv2 idx0"
+  },
+  "contrast": {
+    "error_vs_notice": "mapval2 = error prompt; store/warehouse use same notice tail",
+    "sound_types": "gold 0x6C vs armor/gloves by name vs generic types"
+  },
+  "verdict": "recv1 mapval2/3 PRIMARY-verified: trade-error notice, equip-use (sound dispatch by type byte [0x22], armor/gloves by name, gold 0x6C) + trade update + pending clear; common notice tail 0x42181D shared across handlers.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handlers + sound map + strings decoded from .text/.data.",
+  "cross_refs": ["F520: recv1 semantics", "F470: sound dispatch", "F557: trade", "F553: recv2 idx0"],
+  "tool": "capstone disasm + string decode",
+  "reproduce": "disasm 0x42045B+0x8; 0x420640+0x10; 0x42E2D0+0x20; 0x42181D+0x10",
+  "notes": [
+    "0x42E2D0 = F470 sound dispatcher (type byte [0x22] map)",
+    "갑박/장갑 = armor/gloves (cp949)",
+    "0x416E20 = trade window refresh",
+    "0x3615B0 = notice queue"
+  ]
+}

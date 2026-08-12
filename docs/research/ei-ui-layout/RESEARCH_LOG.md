@@ -7042,3 +7042,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 248-255（F554-F561：recv1 商店/制作/交易族 + 窗口系统弧 + 模式表修正）；基线 Round 247=01e92a1 → Round 255=ce24497（**220 连发 F335-F561**）。
 - 落盘：handoff-refresh-7-evidence.json（F562，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 256。
+## Round 257 (F563) — 2026-08-12：recv1 mapval2/3 + 装备音效分派
+
+- **〔mapval2〕**0x42045B：错误公告 '交易的时候要2个人面对面才可以.'（0x47B6C4，交易需面对面）经公共尾 0x42181D → 0x418030([main+0x3615B0])。
+- **〔mapval3〕**0x420640：装备使用确认 = 0x42E2D0 音效 + 0x416E20 交易刷新 + 清待装备 [0x2A54AC]（0x30E 双字）。
+- **〔音效分派〕**0x42E2D0：物品类型字节 [0x22] ≤ 0x1F → 映射 0x42E428 → jt 0x42E404（0x6C 金币、0x6F-0x71 类型、名字比对 **갑박**（0x47BDDC 盔甲）/**장갑**（0x47BDD4 手套）→ 0x72/0x75、其余 0x73/0x74）；发送 0x45AFC0([0x8AB130], soundid)。
+- **〔公共尾〕**0x42181D（push 0x565994 上下文 + 0x418030）被 mapval2/商店错/仓库拒共用。
+- **〔recv2 idx0 尾〕**0x42186D：实体名设置（hero id [0x2F8784] → vtable[0x34]，否则 0x41EB10）。
+- 落盘：recv1-error-equip-sound-evidence.json（F563，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 257。
