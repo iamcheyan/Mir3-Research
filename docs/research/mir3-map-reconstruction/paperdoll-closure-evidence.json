@@ -1,0 +1,37 @@
+{
+  "evidence_id": "paperdoll-closure-2026-08-12-f988",
+  "title": "Round 682 (F988): Equipment/paperdoll CLOSED (F767/F933/F987) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 6072363 (646 consecutive F335-F987), 611 evidence JSONs; arc: 2-page paperdoll (F767) + input/ctor (F933) + ctor/paperdoll full (F987) - equipment COMPLETE byte-level (11 slots + paperdoll frames 0xA1/0xA2 + input + detail); equipment+paperdoll surfaces 100%",
+  "date": "2026-08-12",
+  "objective": "Close the equipment/paperdoll arc.",
+  "question": "Is the equipment + paperdoll fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "611 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F767": "paperdoll", "F933": "input", "F987": "ctor full"},
+    "equipment": "11 slots + paperdoll + input = COMPLETE",
+    "milestone": "646 consecutive rounds F335-F987"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F987": "646 rounds pushed; equipment complete"
+  },
+  "contrast": {
+    "paperdoll_vs_input": "draw + hit",
+    "ctor_vs_draw": "init + frames"
+  },
+  "verdict": "Equipment/paperdoll CLOSED (F988): 11 slots + paperdoll + input all byte-level; validation green, 646 consecutive rounds, 611 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F767/F933/F987.",
+  "cross_refs": ["F767", "F933", "F987"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "646 consecutive shipping rounds F335-F987",
+    "equipment + paperdoll 100%",
+    "next: HANDOFF refresh 141, remaining corners"
+  ]
+}

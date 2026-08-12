@@ -8945,3 +8945,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔装备〕**0x44AF50 装备构造（0x423CA0 + 2 控件 0x4686C4 @ +0x58 + **11 物品槽** 0x4686C4 @ +0x2F4 stride 0xC24 + 0x430920 @ +0x8884 + 0x44B0B0 初始化 → vtable 0x476A70）；0x44AFF0/0x44B010 析构链（0x44B110 + 0x403AC0 + 0x468306 + 0x423CF0）；0x44B0B0 初始化（清 0x1C0/0x2F4/0x8880/0x270 + 2 基础构造 0x4175F0）；0x44B130 **纸娃娃绘制**（0x423B30 + 帧 0xA1/0xA2 @ [ebx+0xD4]/[edi+0x12A]…）——装备完整（F767 纸娃娃）。
 - 落盘：equipment-ctor-paperdoll-full-evidence.json（F987，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 681。
+## Round 682 (F988) — 2026-08-12：装备/纸娃娃闭合（F767/F933/F987 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**611 证据 JSON**；三服务 200；master 6072363（**646 连发 F335-F987 已推**）。
+- **〔弧〕**2 页纸娃娃（F767）+ 输入/构造（F933）+ 构造/纸娃娃全量（F987）——**装备完整**（11 槽 + 纸娃娃帧 0xA1/0xA2 + 输入 + 详情）；装备 + 纸娃娃表面 100%。
+- 落盘：paperdoll-closure-evidence.json（F988，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 682。

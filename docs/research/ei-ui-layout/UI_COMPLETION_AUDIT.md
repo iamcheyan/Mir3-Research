@@ -4185,3 +4185,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（装备完整；下一弧：剩余深层角落）。
+## Round 682 (2026-08-12) — 装备/纸娃娃闭合（Finding 988）
+
+- **646 连发 + 611 证据 + 装备/纸娃娃完整**。
+- 落盘：`paperdoll-closure-evidence.json`（F988）+ RESEARCH_LOG Round 682。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（装备 + 纸娃娃 100%；下一弧：HANDOFF 刷新 141/剩余角落）。
