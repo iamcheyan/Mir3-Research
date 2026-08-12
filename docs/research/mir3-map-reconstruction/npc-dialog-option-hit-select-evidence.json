@@ -1,0 +1,37 @@
+{
+  "evidence_id": "npc-dialog-option-hit-select-2026-08-12-f746",
+  "title": "Round 440 (F746): NPC dialog option list hit-test + select - 0x448490 (F731 forward target for [0x516EC]): list head [0x1E4]/count [0x1F4]/idx [0x1F0], node rect @ +0x218 relative hit-test -> selected [0x1DC]; 0x448580 ACTIVATE: nodes [0x208]=0, selected+0x208=1, [0x68]=1, send 0x451A10 with node msg; 0x448650 dialog layout (SetRect [0x18] + window rect 0x476240/0x476234 + hwnd 0x8AB7B0); 0x448640 clear flags [0x99]/[0x14D] - NPC dialog options UI (F598/F731 use)",
+  "date": "2026-08-12",
+  "objective": "Decode the NPC dialog option hit-test + select.",
+  "question": "How do NPC dialog options work?",
+  "method": "Disasm 0x448490-0x448700.",
+  "scope": "0x448490-0x448700; list [0x1E4].",
+  "cell_analysis": {
+    "0x448490": "hit-test: list [0x1E4]/count [0x1F4], node rect +0x218 -> [0x1DC]",
+    "0x448580": "activate: [0x208]=1 selected + [0x68] + send 0x451A10",
+    "0x448650": "layout: SetRect + window rect 0x476240/0x476234 + hwnd 0x8AB7B0",
+    "0x448640": "clear: [0x99]/[0x14D]=0"
+  },
+  "exe_trace": {
+    "dialog_chain": "layout -> hit-test -> activate -> send"
+  },
+  "audit_vs_exe": {
+    "F598": "NPC dialog render", "F731": "forward target"
+  },
+  "contrast": {
+    "hit_vs_activate": "rect test + select/send",
+    "layout_vs_clear": "SetRect + flags"
+  },
+  "verdict": "NPC dialog option list PRIMARY-verified: hit-test + activate + send; dialog options UI complete (F598/F731).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Dialog options decoded from .text.",
+  "cross_refs": ["F598: dialog", "F731: forward"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x448490+0x10; 0x448580+0x10",
+  "notes": [
+    "node rect +0x218",
+    "activate [0x208]",
+    "send 0x451A10",
+    "hwnd 0x8AB7B0"
+  ]
+}

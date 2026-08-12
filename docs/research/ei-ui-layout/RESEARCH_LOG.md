@@ -7896,3 +7896,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 436-438（F743-F744：技能记录/显示槽 + 技能家族闭合）；基线 Round 435=6cd1af5 → Round 438=7599abe（**403 连发 F335-F744**）。
 - 落盘：handoff-refresh-58-evidence.json（F745，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 439。
+## Round 440 (F746) — 2026-08-12：NPC 对话选项命中/选择
+
+- **〔对话〕**0x448490（F731 转发目标 [0x516EC]）：列表头 [0x1E4]/计数 [0x1F4]/索引 [0x1F0]、**节点矩形 @ +0x218 相对命中** → 选中 [0x1DC]；0x448580 **激活**（节点 [0x208]=0、选中 +0x208=1、[0x68]=1、发送 0x451A10）；0x448650 对话布局（SetRect + 窗口矩形 0x476240/0x476234 + hwnd 0x8AB7B0）；0x448640 清旗标 [0x99]/[0x14D]——NPC 对话选项 UI（F598/F731 用）。
+- 落盘：npc-dialog-option-hit-select-evidence.json（F746，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 440。
