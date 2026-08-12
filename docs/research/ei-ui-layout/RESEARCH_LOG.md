@@ -6705,3 +6705,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔字段〕**记录 = 名称 8B（+0，0x09 填充）+ 统计固定偏移：+0x12=0x0B（等级?）、+0x26=0xD4、+0x2A=0x1A、+0x30=0xA9、+0x34=0x6A、+0x48=0x35、+0x4A=0x65/0x0E（字）、+0x4D=0x21/0x03（字）。
 - **〔名称编码〕**cp949/euc-kr = 총핀헥뇨（无意义）、GBK = 乱码、xor80/互转全失败——**自定义/加密名称移位**（非标准字符集），解码延迟；客户端不受影响（数据包驱动 F450）。
 - 落盘：monster-dat-stat-fields-evidence.json（F494，primary + inference）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 188。
+## Round 189 (F495) — 2026-08-12：服务端数据库弧闭合（F492-F494 3 轮汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效；三服务 200；master d8c9240（**154 连发已推**）。
+- **〔弧汇总〕**monster.dat 432 槽 × 0xFC（F492）/ stditem.dat 1143 物品 [inference]（F493）/ monster.dat 统计字段偏移（F494）；**关键发现：客户端零本地名引用——记录存储全包驱动，服务端 .dat = KR 遗留自定义字符集**。
+- 落盘：server-db-arc-closure-evidence.json（F495，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 189。

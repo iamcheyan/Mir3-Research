@@ -1,0 +1,36 @@
+{
+  "evidence_id": "server-db-arc-closure-2026-08-12-f495",
+  "title": "Round 189 (F495): Server-DB arc CLOSED (F492-F494, 3 rounds) - full validation green (compileall/verify exit 0/node/JSON), services 200, master d8c9240 (154 shipping rounds F335-F494); arc consolidated: monster.dat structure 432 slots x 0xFC (F492), stditem.dat 1143 items [inference] (F493), monster.dat stat fields fixed offsets (F494); KEY FINDING: client has ZERO local monster/item name refs - both record stores (0x8AA5A8 monster / 0xC20 items) are PACKET-FED, server .dat = KR legacy custom-shifted charset (decode deferred, client unaffected)",
+  "date": "2026-08-12",
+  "objective": "Close the server-DB survey arc with validation + summary.",
+  "question": "Is the repo healthy after the 3-round server-DB arc?",
+  "method": "Full validation + service health + repo state.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "layout.json + matrix valid"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master d8c9240; only untracked goal_watchdog.sh.bak",
+    "arc_summary": {"F492": "monster.dat 432 slots x 0xFC + stats; client zero local names (packet-fed)", "F493": "stditem.dat 1143 items [inference], same legacy charset", "F494": "stat field offsets extracted (+0x12 level?/+0x26/+0x2A HP/+0x4A/+0x4D words); name = custom shift (undecodable)"},
+    "key_finding": "client 0x8AA5A8 + 0xC20 records fully packet-driven; server .dat = KR legacy custom charset"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F494": "154 rounds pushed; server DB picture complete"
+  },
+  "contrast": {
+    "server_vs_client": "server DBs (custom charset) vs client (packet-fed) - clean separation",
+    "closed_vs_deferred": "arc closed; .dat name charset = single deferred low-priority"
+  },
+  "verdict": "Server-DB arc CLOSED (F492-F494): validation green, services live, 154 shipping rounds pushed. Server monster/item DBs surveyed; client confirmed packet-driven (no local name tables).",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F492-F494.",
+  "cross_refs": ["F492-F494: arc", "F184: prior housekeeping"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next arcs: mapviewer alignment with client tile store, remaining sim enhancements, HANDOFF refresh",
+    "154 shipping rounds + user quest-design commits all pushed"
+  ]
+}
