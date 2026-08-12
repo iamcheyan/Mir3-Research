@@ -8412,3 +8412,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**488 证据 JSON**；三服务 200；master 74b0ef1（**522 连发 F335-F863 已推**）。
 - **〔弧〕**行列表核心（F677）+ 公告添加（F734）+ 基类构造/清除（F863）——**行列表基类完整**（构造 + 添加修剪 + 析构 free + 头/尾），列表家族表面闭合。
 - 落盘：line-list-base-closure-evidence.json（F864，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 558。
+## Round 559 (F865) — 2026-08-12：HANDOFF 刷新 98（Round 556-558）
+
+- **〔刷新〕**HANDOFF 追加 Round 556-558（F863-F864：基础行列表 + 行列表基类闭合）；基线 Round 555=8d5f502 → Round 558=1e2d1b2（**523 连发 F335-F864**）。
+- 落盘：handoff-refresh-98-evidence.json（F865，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 559。
