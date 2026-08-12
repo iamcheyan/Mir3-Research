@@ -1,0 +1,35 @@
+{
+  "evidence_id": "chat-dialog-arc-closure-2026-08-12-f601",
+  "title": "Round 295 (F601): Chat/NPC-dialog arc CLOSED (F598-F600) - validation green (compileall/verify exit 0/node/JSON), services 200, master d9db77d (259 consecutive F335-F600), 226 evidence JSONs; arc: NPC dialog 4-type render (F598: text wrap/Gulim font/skip/script tags FCOLOR-NPCIMG-NOTCLOSE) + chat window render (F599: 19-line ring + scrollbar + controls) + chat command table (F600: @拒绝私聊/!~喊话/编组喊话 + gold prompt) - ENTIRE chat/NPC-dialog interaction layer byte-level",
+  "date": "2026-08-12",
+  "objective": "Close the chat/NPC-dialog arc.",
+  "question": "Is the chat + NPC-dialog layer fully documented?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "226 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim 200",
+    "arc": {"F598": "NPC dialog 4-type + tags", "F599": "chat window render", "F600": "chat command table"},
+    "milestone": "259 consecutive rounds F335-F600"
+  },
+  "exe_trace": {
+    "verify": "exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F600": "259 rounds pushed; chat/NPC-dialog complete"
+  },
+  "contrast": {
+    "chat_vs_npc": "chat window + NPC dialog both complete",
+    "render_vs_commands": "render (F598/599) + command table (F600)"
+  },
+  "verdict": "Chat/NPC-dialog arc CLOSED (F601): NPC 4-type render + chat window + command table all byte-level; validation green, 259 consecutive rounds, 226 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F598-F600.",
+  "cross_refs": ["F598: NPC dialog", "F599: chat render", "F600: commands"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "259 consecutive shipping rounds F335-F600",
+    "next: HANDOFF refresh 16, remaining corners"
+  ]
+}

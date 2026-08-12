@@ -1701,9 +1701,14 @@ git diff --check
 - **8 命令串 + 金币提示**（F355 扩展，CN GBK + KR 源）。
 - 落盘：`chat-command-table-evidence.json`（F600）+ RESEARCH_LOG Round 294。
 
+## Round 295 (2026-08-12) — 聊天/NPC 对话弧闭合（Finding 601）
+
+- **259 连发 + 226 证据 + 聊天/NPC 层完整**。
+- 落盘：`chat-dialog-arc-closure-evidence.json`（F601）+ RESEARCH_LOG Round 295。
+
 ## Pending（未阻塞，持续队列）
 
-- 无阻塞项（聊天命令闭合；下一弧：剩余深层角落）。
+- 无阻塞项（聊天/NPC 完整；下一弧：HANDOFF 刷新 16/剩余角落）。
 - 0x45DC70 拼接目标 0x8AB7A8 之后 BSS（0x8AB7A8/0x8B187C 内容不可读）→ 存盘路径全链仍缺 BSS 侧直读。
 - 0x42C9E0 busy 定时状态显示的渲染侧（0x2A548C 方法，输出目标未解码）。
 - write-only 显示状态槽（0x35B251–0x35B258 / 0x35B1F0 / 0x35A34A–0x35A34E）的渲染侧消费者推测在未解码渲染表/数据驱动 UI 中——sim HUD 层按契约消费。

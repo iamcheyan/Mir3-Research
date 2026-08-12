@@ -7237,3 +7237,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔命令〕**0x47ACB8 族（F355 分派）：'@拒绝私聊'（0x47ACC2/0x47AD70）、'@拒绝行会聊天'（0x47AD60）、'!~喊话)'（0x47ACDA 行会喊话）、'编组 喊话(!!喊话)'（0x47ACE4/0x47ACEE 组队喊话）、'!!'（0x47AD80）、'!~'（0x47AD7C）、'/%s '（0x47AD28 斜杠命令格式）；**金币交易提示 '您要付给对方多少金币?'**（0x47AD98，cp949 KR 源）+ '금전'（0x47ADB4 F549）。
 - 落盘：chat-command-table-evidence.json（F600，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 294。
+## Round 295 (F601) — 2026-08-12：聊天/NPC 对话弧闭合（F598-F600 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**226 证据 JSON**；三服务 200；master d9db77d（**259 连发 F335-F600 已推**）。
+- **〔弧〕**NPC 对话 4 类型渲染（F598）+ 聊天窗渲染（F599）+ 聊天命令表（F600）——**整个聊天/NPC 对话交互层字节级**。
+- 落盘：chat-dialog-arc-closure-evidence.json（F601，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 295。
