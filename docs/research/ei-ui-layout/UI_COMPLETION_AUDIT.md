@@ -741,6 +741,11 @@ git diff --check
 - **三条渲染 + 1.5s 振荡验证**（F350 rects）。
 - 落盘：`bar-animation-verification-evidence.json`（F408）+ RESEARCH_LOG Round 102。
 
+## Round 103 (2026-08-12) — 背包提示框（Finding 409）
+
+- **46 槽 + 7 图标验证**；0x42FAB0 → 0x42F240 → 0x4341F0 链（F340）。
+- 落盘：`bag-tooltip-verification-evidence.json`（F409）+ RESEARCH_LOG Round 103。
+
 ## Pending（未阻塞，持续队列）
 
 - 0x43B1E0 滚动 blit 的 [0x4762B0] 目标（0x8AB7A8）与 0x43B440 渲染缓冲 [+0x1B2] 的合成路径运行时验证（静态已闭合，动态待验）。

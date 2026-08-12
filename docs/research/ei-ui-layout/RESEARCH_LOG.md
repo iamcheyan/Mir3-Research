@@ -6250,3 +6250,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔条〕**HP 44px（100×0.5 竖条半宽）、MP 50px、EXP 129px（339 全宽）——primary-static rects（F350）。
 - **〔动画〕**1500ms 演示振荡（STATE.hp/mp % 101 夹 20）；原版 = 帧=值元素选择（0x40A8A0）。
 - 落盘：bar-animation-verification-evidence.json（F408，derived-tooling；rects primary-static F350）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 102。
+## Round 103 (F409) — 2026-08-12：背包提示框验证（46 槽 + 7 图标 + 0x4341F0 链）
+
+- **〔槽〕**46 槽（F293 证据 desc）+ 7 Equip 图标槽（i%7）；原版提示链 0x42FAB0 → 0x42F240 → 0x4341F0（F340，底板 0x329696）。
+- 落盘：bag-tooltip-verification-evidence.json（F409，derived-tooling；链 primary-static F340）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 103。

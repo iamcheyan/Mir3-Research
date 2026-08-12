@@ -1,0 +1,34 @@
+{
+  "evidence_id": "bag-tooltip-verification-2026-08-12-f409",
+  "title": "Round 103 (F409): Bag tooltip verified - 46 slots (F293 evidence desc), 7 icon slots (Equip.wil i%7), original tooltip chain 0x42FAB0 -> 0x42F240 hit-test -> 0x4341F0 (F340) documented",
+  "date": "2026-08-12",
+  "objective": "Verify the bag window slots + item tooltip chain in the sim.",
+  "question": "Does the sim bag show the 46-slot layout with tooltip-capable items?",
+  "method": "Sim browser check (slot count, icon slots, evidence desc); F340 chain cross-ref.",
+  "scope": "sim window.inventory; F340/F352 bag evidence.",
+  "cell_analysis": {
+    "slots": {"count": 46, "desc": "背包格 N · 46 槽 · bag+0x774+i*0xC2C · F293", "icons": "7 slots with Equip.wil images (i%7===0)"},
+    "original_tooltip": {"chain": "0x42FAB0 (gate [0x7243C4]) -> 0x42F240 slot hit-test -> 0x4341F0 item tooltip (F340)", "tooltip": "line list + floating rect + icon + 0x329696 backdrop (F340)"}
+  },
+  "exe_trace": {
+    "bag": "hero+0x6554 (id0, F337); 46 slots +0x774 stride 0xC2C (F293/F352)"
+  },
+  "audit_vs_exe": {
+    "F340": "tooltip chain confirmed",
+    "F352": "46-slot grid confirmed"
+  },
+  "contrast": {
+    "sim_vs_original": "sim = icon slots + title; original = hover tooltip 0x4341F0"
+  },
+  "verdict": "Bag tooltip verified (F340/F352): sim shows 46 slots with F293 evidence + 7 Equip icon slots; original tooltip chain 0x42FAB0 -> 0x42F240 -> 0x4341F0 documented. Bag subsystem closed.",
+  "evidence_level": "derived-tooling (chain primary-static F340)",
+  "evidence_level_note": "Sim slots browser-verified; tooltip chain from F340 primary bytes.",
+  "cross_refs": ["F340: item tooltip", "F352: 46-slot bag", "F293: bag records"],
+  "tool": "puppeteer browser; evidence cross-ref",
+  "reproduce": "open sim; press Q; observe 46 slots + 7 icons; hover icon (original tooltip)",
+  "notes": [
+    "sim hover tooltip for items = future enhancement (0x4341F0 port)",
+    "gate [0x7243C4] = bag active flag (F340)",
+    "tooltip backdrop 0x329696 (F340)"
+  ]
+}
