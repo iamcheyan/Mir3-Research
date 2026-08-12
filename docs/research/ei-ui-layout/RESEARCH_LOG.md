@@ -7293,3 +7293,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔移动〕**0x41A9D0：门 [0x35B1D0]/[0x35B1D4] + 计时器 [0x2F8870]、英雄 vtable[0x18] + **0x410840 移动**（方向 [0x2F8841]、状态 [0x35B148] 0x1D 变体）、世界坐标 [0x2F884C]/[0x2F8850] → **0x43CC30 地图移动**（[0xF5200]）+ [0x2F8809]==7 + [0x35B268] → 0x410840(0xB) 特例。
 - **〔目标〕**点击目标实体 [0x364450]：类型 [0x88] 门 + 名比对（0x468BF0）+ GetAsyncKeyState 0x476278/0x476250 + [0x61C70] 动画——英雄移动 + 点击目标相机字节级（F591 阶段连接）。
 - 落盘：hero-movement-camera-evidence.json（F612，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 306。
+## Round 307 (F613) — 2026-08-12：地图移动 + 碰撞
+
+- **〔移动〕**0x43CC30：**8 方向 jt 0x43CD94**（dir ≤ 7，dx/dy 数学）→ 0x43C9F0 碰撞 → 结果 [out] = 新 x/y。
+- **〔碰撞〕**实体列表 [0x560070]/[0x560080] 遍历：类型 [0x88] 门（0/1/3）+ [0xC0] 状态（0x13/4）+ [0x61C74] 旗标 + 坐标匹配 [0xCC]/[0xD0] → 阻挡。
+- **〔计数〕**0x43CDC0：地图信息计数器 [0x1B01B4..0x1B01BC]（阈值 0x96/0x19/0x32）——地图移动 + 碰撞字节级（F612 连接）。
+- 落盘：map-move-collision-evidence.json（F613，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 307。
