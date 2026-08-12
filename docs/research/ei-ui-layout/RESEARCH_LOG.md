@@ -9126,3 +9126,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔实体名字〕**0x422F7A 从实体链表 [0xE1158] 头 [0xE1168] 遍历，匹配节点 +4 的包 ID；将名字复制到实体 +0x620A0，调用 0x40BA60 格式化，并清零超时 [0x6209C]——非主角名字分支完整。
 - 落盘：recv2-entity-name-update-evidence.json（F1029，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 723。
+## Round 724 (F1030) — 2026-08-12：recv2 名字更新闭合（F797/F800/F1026/F1029 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**651 证据 JSON**；三服务 200；master 60aae6d（**687 连发 F335-F1029 已推**）。
+- **〔弧〕**主角名字 [0x35A820] + 非主角实体名字 [0x620A0] + 共享格式化 0x40BA60 + 超时清零 [0x6209C]——**recv2 名字处理完整**。
+- 落盘：recv2-name-closure-evidence.json（F1030，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 724。

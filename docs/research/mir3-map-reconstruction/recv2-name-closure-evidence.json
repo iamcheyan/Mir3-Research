@@ -1,0 +1,26 @@
+{
+  "evidence_id": "recv2-name-closure-2026-08-12-f1030",
+  "title": "Round 724 (F1030): recv2 name-update CLOSED (F797/F800/F1026/F1029) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master 60aae6d (687 consecutive F335-F1029), 651 evidence JSONs; arc: hero name [0x35A820] + non-hero entity name [0x620A0] + formatter 0x40BA60 + timeout clear [0x6209C]; recv2 name handling COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Close the recv2 name-update arc.",
+  "question": "Is recv2 name handling fully documented for hero and non-hero entities?",
+  "method": "Full validation + arc consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "651 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F797": "map/name messages", "F800": "name formatter", "F1026": "hero/title branch", "F1029": "non-hero entity branch"},
+    "name": "hero + non-hero = COMPLETE",
+    "milestone": "687 consecutive rounds F335-F1029"
+  },
+  "exe_trace": {"verify": "exit 0"},
+  "audit_vs_exe": {"F335-F1029": "687 rounds pushed; recv2 name handling complete"},
+  "contrast": {"hero_vs_nonhero": "[0x35A820] vs entity +0x620A0", "shared": "0x40BA60 formatter"},
+  "verdict": "recv2 name-update CLOSED (F1030): hero and non-hero name paths are byte-level documented; validation green, 687 consecutive rounds, 651 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F797/F800/F1026/F1029.",
+  "cross_refs": ["F797", "F800", "F1026", "F1029"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": ["687 consecutive shipping rounds F335-F1029", "recv2 name handling 100%", "next: HANDOFF refresh 155, remaining deep corners"]
+}

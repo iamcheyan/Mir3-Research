@@ -4521,3 +4521,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（recv2 名字更新完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 724 (2026-08-12) — recv2 名字更新闭合（Finding 1030）
+
+- **687 连发 + 651 证据 + recv2 名字处理完整**（主角/非主角路径）。
+- 落盘：`recv2-name-closure-evidence.json`（F1030）+ RESEARCH_LOG Round 724。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（recv2 名字处理 100%；下一弧：HANDOFF 刷新 155/剩余深层角落）。
