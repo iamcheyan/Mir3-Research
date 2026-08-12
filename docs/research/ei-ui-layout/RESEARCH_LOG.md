@@ -7032,3 +7032,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔输入路由〕**模式 → 处理器：0→0x42FAB0 **背包悬停**（门 [0x7243C4]=hero+0x20、槽 0x42F240、物品 [背包+0x774+槽*0xC20]、提示 0x4341F0 F464）；3→0x416790 **交易悬停**（PtInRect [edi+0x5C]、槽 0x416950 F544、物品 [交易+0x5B8+槽*0xC20]、提示 0x4341F0）；1→0x44B6B0、2→0x44E650、7→0x450AC0。
 - **〔标记〕**背包 [0x2C4] 600 字（0xFFFF 空；0x42FB20 按 id 清 0x258 项，+0x3E8）。
 - 落盘：window-hit-test-input-router-evidence.json（F560，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 254。
+## Round 255 (F561) — 2026-08-12：窗口系统弧闭合（F550-F560 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**186 证据 JSON**；三服务 200；master 41bbb62（**219 连发 F335-F560 已推**）。
+- **〔弧〕**开关分派器 0x42ADB0 16 模式 + 开窗列表（F550）、交易族 + 模式 3 修正（F557）、绘制分派器 0x4280F0 **权威注册表**（F558）、14 窗口全定名（F559）、命中测试 0x42AAB0 + 输入路由（F560）——**整个窗口系统（开/关/绘/输入）字节级**。
+- **〔注册表〕**0 背包/1 装备/2 商店/3 交易/4 行会/6 组队/7 角色状态/8 公告/9 NPC 对话/B 任务/C 选项/D 坐骑/E 技能书/F 行会公告编辑。
+- 落盘：window-system-arc-closure-evidence.json（F561，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 255。

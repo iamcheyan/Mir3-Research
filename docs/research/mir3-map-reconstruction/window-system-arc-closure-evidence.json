@@ -1,0 +1,37 @@
+{
+  "evidence_id": "window-system-arc-closure-2026-08-12-f561",
+  "title": "Round 255 (F561): Window system arc CLOSED (F550-F560) - full validation green (compileall/verify exit 0/node/JSON), services 200, master 41bbb62 (219 consecutive F335-F560), 186 evidence JSONs; arc: dispatcher 0x42ADB0 16 modes (F550) + paint dispatcher 0x4280F0 definitive registry (F558) + all 14 windows named (F559: bag/equip/store/trade/guild/party/char-status/notice/NPC-dialog/quest/option/horse/skillbook/guild-notice-editor) + hit-test 0x42AAB0 + input router (F560) + corrections (mode3 trade F557, guild=4 party=6 notice=8) - ENTIRE window system (open/close/paint/input) byte-level",
+  "date": "2026-08-12",
+  "objective": "Close the window system arc with validation + consolidated summary.",
+  "question": "Is the window system fully documented?",
+  "method": "Full validation + service health + arc consolidation.",
+  "scope": "Tools/, docs/, services 8765/8899.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "app.js OK", "json": "valid", "evidence": "186 JSONs"},
+    "services": "wilviewer 8765 200 / mapviewer 8899 200 / sim 200",
+    "repo": "master 41bbb62; only untracked goal_watchdog.sh.bak",
+    "arc": {"F550": "toggle dispatcher 0x42ADB0 16 modes + open list [0xD24..0xD38]", "F557": "trade family + mode3 correction", "F558": "paint dispatcher 0x4280F0 registry", "F559": "14 windows named", "F560": "hit-test 0x42AAB0 + input router"},
+    "registry": "0 bag/1 equip/2 store/3 trade/4 guild/6 party/7 char-status/8 notice/9 NPC-dialog/B quest/C option/D horse/E skillbook/F guild-notice-editor",
+    "significance": "ENTIRE window system (open/close/paint/input) byte-level"
+  },
+  "exe_trace": {
+    "verify": "ALLOWED_LEVEL_PREFIXES incl 'derived' - exit 0"
+  },
+  "audit_vs_exe": {
+    "F335-F560": "219 rounds pushed; window system complete"
+  },
+  "contrast": {
+    "window_system_vs_packets": "UI window system (F550-560) + protocol layer (F524) both complete",
+    "corrected": "mode3 trade (F557), guild=4 party=6 notice=8 (F558)"
+  },
+  "verdict": "Window system arc CLOSED (F561): validation green, services live, 219 consecutive rounds pushed, 186 evidence JSONs. Entire window system (toggle/paint/registry/input) byte-level documented.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F550-F560.",
+  "cross_refs": ["F550-F560: window arc", "F524: protocol closure"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": [
+    "next: HANDOFF refresh, remaining recv1 bodies, sim polish",
+    "219 consecutive shipping rounds F335-F560"
+  ]
+}
