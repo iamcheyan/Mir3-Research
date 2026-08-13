@@ -1,0 +1,32 @@
+{
+  "evidence_id": "widget-runtime-core-2026-08-12-f1052",
+  "title": "Round 746 (F1052): window-base widget runtime core DECODED (F1051 follow-up) - 0x423CA0 base init = zero [obj+4..+0x44] + SetRect(0) at +8 and +0x18 + zero +0x48/+0x4C (base window size >= 0x50, 11 fields); 0x423CF0 CORRECTED (was 'dispatch' F1041) = 2-instruction virtual-slot+4 forwarder 'mov eax,[ecx]; jmp [eax+4]' (dtor epilogue calls it after vptr reset -> resolves to base init); 0x4268B0 = 'jmp 0x423CF0' linker thunk (shared slot x6); 0x423D00 draw fallback alpha math closed: fild(byte [+0x50]/[+0x51]) x float [0x47639C] = 1/255 normalize (verified 0.0039215688), fallback quad 0x4542A0 fill over rect [+8..+0x14], WIL path blit 0x460240 when [0x8B1874]!=0 and frame [0x2C] valid via 0x466130; 0x423E80 geometry setter (ret 0x14): stores frame idx [+0x28], validates, SetRect inner +0x18 from frame dims + centers, sizes [+0x40]/[+0x44], SetRect outer +8; 0x423FA0 move/center virtual (SetRect x2, centering halving math); 0x4268C0 = FIVE-BUTTON WINDOW TEMPLATE: 0x423B30 geometry ctor + control ctor 0x417550 x5 at subobjects +0x54/+0x108/+0x1BC/+0x270/+0x324 (stride 0xB4), frame pairs (0xA1,0xA2) (0x35C,0x35D) (0x35E,0x35F) (0x360,0x361) (0x362,0x363); 0x4269C0 = matching teardown (virtual slot+0xC + 0x417830 x5)",
+  "date": "2026-08-12",
+  "objective": "Decode the shared runtime of the >=32-class window-base family.",
+  "question": "What exactly do the shared base functions (init, forwarder, draw fallback, geometry, 5-button template) do?",
+  "method": "Disasm 0x423CA0/0x423CF0/0x4268B0/0x423D00/0x423E80/0x423FA0/0x4268C0/0x4269C0; read float 0x47639C.",
+  "scope": "widget core 0x423CA0-0x424030 + 0x4268B0-0x426A30.",
+  "cell_analysis": {
+    "base_init": {"fn": "0x423CA0", "actions": ["zero +4,+0x28,+0x40,+0x44,+0x2C..+0x3C", "SetRect(+8,0,0,0,0)", "SetRect(+0x18,0,0,0,0)", "zero +0x48/+0x4C"], "implies": "base window >= 0x50 bytes; +8 outer rect, +0x18 inner rect"},
+    "forwarder": {"fn": "0x423CF0", "body": "mov eax,[ecx]; jmp [eax+4]", "meaning": "virtual slot+4 forwarder (dtor epilogue post-reset resolves to base init)"},
+    "thunk": "0x4268B0 jmp 0x423CF0",
+    "draw_fallback": {"fn": "0x423D00", "alpha": "fild(byte [+0x50]) x (1/255) and byte [+0x51] x (1/255)", "fallback": "quad 0x4542A0 color fill rect [+8..+0x14] via 0x4542F0", "wil_path": "frame [+0x2C] via 0x466130 -> blit 0x460240 at [+8]/[+0xC]"},
+    "geometry": {"fn": "0x423E80", "ret": "0x14 (5 args)", "sets": "[+0x28]=frame idx; SetRect inner from frame dims centered; [+0x40]/[+0x44] sizes; SetRect outer"},
+    "move": {"fn": "0x423FA0", "body": "SetRect outer x2 with centering halving math"},
+    "five_button_template": {"fn": "0x4268C0", "subobjects": "+0x54,+0x108,+0x1BC,+0x270,+0x324 (stride 0xB4)", "frames": "(0xA1,0xA2),(0x35C,0x35D),(0x35E,0x35F),(0x360,0x361),(0x362,0x363)", "ctor": "0x417550 per button", "teardown": "0x4269C0 (slot+0xC virtual + 0x417830 x5)"}
+  },
+  "exe_trace": {"ctor_chain": "derived ctor: mov [esi],0x476624 -> 0x423CA0 zero-init -> subobject array -> mov [esi],derived -> derived init", "dtor_chain": "derived dtor: teardown -> mov [esi],0x476624 -> 0x423CF0 -> jmp [base+4] -> 0x423CA0"},
+  "audit_vs_exe": {
+    "F1041": "CORRECTED: 0x423CF0 'dispatch' is a slot+4 forwarder; 0x4268B0 its thunk; fallback color alpha now exact 1/255",
+    "F1038": "0x423E80 is the generic geometry re-setter beside ctor 0x423B30",
+    "F558": "button frame pairs 0xA1/A2 + 0x35C-0x363 = GameInter control frames (5-button standard window)"
+  },
+  "contrast": {"direct_vs_virtual": "ctor calls 0x423CA0 directly; dtor goes through 0x423CF0 virtual forwarder", "wil_vs_fallback": "frame blit when valid, else alpha-normalized color quad"},
+  "verdict": "Widget runtime core fully decoded: zero-init contract (>=0x50 base), forwarder semantics, 1/255 alpha fallback draw, geometry/move setters, and the 5-button window template shared by the group/list window family.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All bodies decoded from .text; 0x47639C float read from .rdata.",
+  "cross_refs": ["F1051: vtable pool map", "F1041: shared family", "F1038: window geometry ctor"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423CA0+0x4A; 0x423D00+0xD0; 0x4268C0+0x100",
+  "notes": ["0x47639C = 1/255 exact", "base window size >= 0x50", "707 consecutive rounds F335-F1052"]
+}

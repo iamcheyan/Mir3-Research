@@ -4688,3 +4688,7 @@ git diff --check
 - **48 引用地址 / 34 数组 / 引用边界法**；窗口基类 0x476624（≥32 派生 + ctor/dtor 模板逐字节）；列表节点家族扩至 12；实体/英雄/物品行/装备分类全定。
 - F1041 勘误两条（基类地址、装备锚点）。
 - 落盘：`vtable-pool-full-map-evidence.json`（F1051）+ RESEARCH_LOG Round 745。
+## Round 746 (2026-08-12) — 窗口基类 runtime 核心解码（Finding 1052）
+
+- 零初始化契约（≥0x50）+ 虚槽转发器语义（F1041 勘误）+ 1/255 alpha 回退 + 几何/移动 setter + 五按钮窗口模板（0xB4 步长子对象 ×5，帧对 0xA1/A2 + 0x35C-0x363）。
+- 落盘：`widget-runtime-core-evidence.json`（F1052）+ RESEARCH_LOG Round 746。

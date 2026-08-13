@@ -9232,3 +9232,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实体/英雄/物品行/装备〕**实体 0x4767A8 + 0x476884（slot1 = 0x435030 实体分派 F1017）；英雄核心 0x47671C（34 槽最大）；物品行 0x476984-0x476A2C（0x443110 ×5）；装备链 0x476A54 → 终端 0x476A70 [44AFF0 44B0B0 423CF0 423D00]。
 - **〔F1041 勘误〕**基类 vtable 实为 0x476624（非 0x476610）；装备锚 0x476A50 → 真起点 0x476A54。
 - 落盘：vtable-pool-full-map-evidence.json（F1051，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 745。
+## Round 746 (F1052) — 2026-08-12：窗口基类 widget runtime 核心解码（F1051 后续）
+
+- **〔基类构造 0x423CA0〕**零初始化契约：清零 +4..+0x44 + SetRect(0) @ +8（外框）与 +0x18（内框）+ 清零 +0x48/+0x4C——基类 ≥0x50 字节。
+- **〔0x423CF0 勘误（F1041）〕**非「分派」——2 指令**虚槽+4 转发器** `mov eax,[ecx]; jmp [eax+4]`；dtor 尾声经它解析到基类零初始化；0x4268B0 = 其 jmp thunk（共享槽 ×6）。
+- **〔回退色块 alpha 闭合〕**0x423D00：fild(字节 [+0x50]/[+0x51]) × float [0x47639C] = **1/255**（实测 0.0039215688）；WIL 路径 [0x8B1874]≠0 且帧有效 → 0x460240 blit，否则 0x4542A0/0x4542F0 四边形填充。
+- **〔几何/移动〕**0x423E80（ret 0x14）：[+0x28]=帧号、帧尺寸居中 SetRect 内框、[+0x40]/[+0x44] 尺寸、外框 SetRect；0x423FA0 = 移动/居中（双 SetRect 减半居中数学）。
+- **〔五按钮窗口模板 0x4268C0〕**0x423B30 几何构造 + 控件构造 0x417550 ×5 @ +0x54/+0x108/+0x1BC/+0x270/+0x324（步长 0xB4），帧对 (0xA1,0xA2)(0x35C,0x35D)(0x35E,0x35F)(0x360,0x361)(0x362,0x363)；0x4269C0 对应拆解（虚槽+0xC + 0x417830 ×5）。
+- 落盘：widget-runtime-core-evidence.json（F1052，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 746。
