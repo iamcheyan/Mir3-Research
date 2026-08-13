@@ -4770,3 +4770,7 @@ git diff --check
 
 - 方法族（变换/逆变换/邻步/方向/移动验证器）+ 双活实例（screen 内联 + 英雄 [0x62A58]）+ 0x574118 永未加载死对象定案（F1070 生成器运行时死）。
 - 落盘：`mapobj-dual-instance-evidence.json`（F1071）+ RESEARCH_LOG Round 765。
+## Round 766 (2026-08-12) — 格占用 + 英雄步引擎（Finding 1072）
+
+- byte9/11 占用标记系统 + 8 向接近扫描 + 步进包 + 滚动步进消费——移动栈闭合（双占用体系：实体链 + 格位标记）。
+- 落盘：`hero-step-occupancy-evidence.json`（F1072）+ RESEARCH_LOG Round 766。

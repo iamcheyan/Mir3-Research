@@ -9361,3 +9361,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔双实例〕**活 = screen+0xF5200（ebp 证明 @0x422A92）+ 英雄指针 [entity+0x62A58]（0x4108F7 八向步进循环→0x43C150/0x43C0F0→发送 0x452170；0x419C66 验证后实体链 [0xE1158] 匹配 [node+0xCC/0xD0]=占用查询）；**死 = 0x574118 固定全局**（38 引用全 mov ecx+call，零字段写入、零拷贝、零加载→**永未加载**）。
 - **〔F1070 判定修订〕**0x43C9F0 未加载/越界 → ret **1**（默认可走）→ 死对象上 FX 撞击生成器 test al,jne **恒跳 → 永不生成**——继 F1061 后第二个载荷级死代码族；16 变换/7 邻步/3 逆变换/1 方向/2 验证器全挂死对象。0x405479 内联变换副本直读 [0x574244..250]（登录期固定网格〔推断〕）。
 - 落盘：mapobj-dual-instance-evidence.json（F1071，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 765。
+## Round 766 (F1072) — 2026-08-12：格占用系统 + 英雄接近步引擎（F1069 字节 9-11 锚定）
+
+- **〔格占用字段〕**byte9 = bit7 占用 + bits0-6 占用者 ID（0x43C0F0 越界/无位→0）；byte11 bit7 = 扫描标记（0x43C1B0 在 18×18 窗 x−8..x+10/y−8..y+10 内把 (byte9&0x7F)==id 的格打标）；**0x43C150 自占测试**：空格或已打标→1，他占未标→0；0x43C270 同族面积探测。
+- **〔英雄接近步引擎 0x41087A-0x411391〕**命令分派（≤0x1F，索引表 0x4113CC/jt 0x4113A8）；路径 A：dir 0..7 { 0x43CC30（走+占用验证）→ 0x43C150（自占测试）→ 命中 } → 0x43C0F0 取占用者 ID → 发送 0x452170(outX,outY,id) @ [0x8AB828]（接近步〔推断〕）；发送后存目标格 [0x62ADC]/[0x62AE0]、置位 [0x62A50]/[0x62A54]=1、[0xEC]=1、虚槽+0x10、**0x43B880 滚动步进**（F1065 消费点）。路径 B：[0xEC]=2/3 行走态。
+- **〔实体新字段〕**[0x62A58] 图指针、[0xC0] 状态（0x13 跳过）、[0xC1]/[0xC2] 方向字节、[0xB4]/[0xC4]、[0xCC]/[0xD0] 当前格、[0xEC] 移动态。
+- 落盘：hero-step-occupancy-evidence.json（F1072，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 766。

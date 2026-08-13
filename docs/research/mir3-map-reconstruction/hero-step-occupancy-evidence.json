@@ -1,0 +1,33 @@
+{
+  "evidence_id": "hero-step-occupancy-2026-08-12-f1072",
+  "title": "Round 766 (F1072): CELL CLAIM SYSTEM + hero APPROACH-STEP engine decoded - (F1069's 'unread bytes 9-11' now anchored) (1) CELL CLAIM fields in the 14-byte record: byte+9 = bit7 OCCUPIED flag + bits0-6 OCCUPANT ID (0x43C0F0: in-bounds + byte9 bit7 set -> ret id = byte9 & 0x7F, else ret 0); byte+11 bit7 = SCAN-MATCH MARK (0x43C1B0: area scan x-8..x+10 / y-8..y+10, for each cell if (byte9 & 0x7F) == arg_id -> set byte11 |= 0x80 - marks all cells owned by a given entity id in an 18x18 window); 0x43C150 = SELF-CLAIM TEST: ret 1 if byte9.7 clear (unoccupied) OR (byte9.7 set AND byte11.7 set), ret 0 if occupied-and-unmarked (occupied by OTHER); 0x43C270 = sibling area probe (same family); (2) HERO APPROACH-STEP ENGINE (function window 0x41087A-0x411391, command dispatcher): entry gates state [esi+0xC0]!=0x13 + 0x404DA0 + command byte [esp+0x24] <= 0x1F -> index table 0x4113CC + jump table 0x4113A8; PATH A (0x4108BA, target [edi] via 0x4121F0 gate): dir loop 0..7 { 0x43CC30(map [esi+0x62A58], dir, x=[edi], y=[edi+4], 1, &out) walk+occupancy-validator; 0x43C150(map, outX, outY) self-claim test; je -> found } - picks the FIRST direction whose neighbor cell passes the claim test, then 0x43C0F0 -> occupant id, send 0x452170 @ [0x8AB828] with (outX, outY, id) = step-toward-occupied-cell (approach/attack-approach [INFERENCE from packet shape]); post-send: [esi+0x62ADC]=[esi+0xCC], [esi+0x62AE0]=[esi+0xD0] (target cell store), [esi+0x62A50]=[esi+0x62A54]=1, [esi+0x62AE4]=[esi+0xC1], virtual [vtable+0x10], [esi+0xEC]=1, then 0x43B880(map, dir [esi+0xC2], y [esi+0xB4], [esi+0xC4]-[esi+0xB4]) = SCROLL STEP with the move (F1065's 8-dir scroll stepper consumed here), [esi+0x62A4C]=0; PATH B (0x4109EC): [esi+0xEC] = 2 or 3 (walk states), single 0x43CC30(map, 1, x=[esi+0xCC], y=[esi+0xD0], cmd, &out) then same dir-scan pattern; (3) net-new entity fields: [entity+0x62A58] map-object pointer, [esi+0xC0] state (0x13 = skip), [esi+0xC1]/[esi+0xC2] dir bytes, [esi+0xB4]/[esi+0xC4] y/scroll pair, [esi+0xCC]/[esi+0xD0] current cell x/y, [esi+0xEC] move-state byte",
+  "date": "2026-08-12",
+  "objective": "Decode the hero step engine and the cell claim/reservation system.",
+  "question": "How does the hero pick a step, and what do cell bytes 9/11 do?",
+  "method": "Disasm 0x41087A-0x4109EC + 0x43C0F0/0x43C150/0x43C1B0; jump-table read 0x4113A8/0x4113CC.",
+  "scope": "hero movement window 0x4108xx; cell claim accessors 0x43C0F0-0x43C270.",
+  "cell_analysis": {
+    "byte9": "bit7 occupied, bits0-6 occupant id (0x43C0F0)",
+    "byte11": "bit7 scan-match mark set by 0x43C1B0 for (byte9&0x7F)==id over 18x18 window",
+    "self_claim_test": "0x43C150: 1 = free or self-marked; 0 = occupied by other",
+    "area_scan": "0x43C1B0 x-8..x+10, y-8..y+10",
+    "dir_loop": "8 dirs via 0x43CC30 then 0x43C150; first passing neighbor wins",
+    "send": "0x452170(outX, outY, occupant_id) @ [0x8AB828]",
+    "scroll_step": "0x43B880(map, dir, y, dy) after move",
+    "cmd_dispatch": {"index": "0x4113CC (<=0x1F)", "jt": "0x4113A8"}
+  },
+  "exe_trace": {"step": "cmd dispatch -> target gate -> dir scan -> send + state stores + scroll step"},
+  "audit_vs_exe": {
+    "F1069": "cell bytes 9-11 READ-path anchored (claim system); bytes 10, 12-13 remain unmapped",
+    "F1071": "0x43CC30 live-caller semantics confirmed (hero map ptr [0x62A58]); 0x43B880 consumed post-move",
+    "F1057": "adjacent to action-state machine; [esi+0xEC] move states 1/2/3"
+  },
+  "contrast": {"validator_0x43CC30": "walkable + entity-chain occupancy", "claim_0x43C150": "cell-record flag occupancy"},
+  "verdict": "Movement stack closed: two independent occupancy systems (entity dlist + cell-record claim bits) gate an 8-direction approach scan that emits the step packet and drives the map scroll stepper.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Claim accessors + step loop decoded from .text; approach-vs-attack intent inferred from packet shape.",
+  "cross_refs": ["F1071: validator + map ptr", "F1069: cell bytes", "F1065: 0x43B880", "F1057: entity state region"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41087A+0x120, 0x43C0F0+0xB0, 0x43C150+0x58, 0x43C1B0+0xB8",
+  "notes": ["18x18 claim-scan window (x-8..x+10)", "byte9 id width 7 bits", "727 consecutive rounds F335-F1072"]
+}
