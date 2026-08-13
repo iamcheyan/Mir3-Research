@@ -36,6 +36,21 @@ window.APP_TEMPLATE = `
             {{ total }} 行 · 保存只写 JSON 工作区 + git，写库须点「同步到数据库」
           </span>
         </div>
+        <!-- 分类筛选：所有可用轴（物品=类型/稀有度/职业…，怪物=BOSS/不死/AI…，技能=职业/系别…） -->
+        <div v-if="activeFacets.length" class="facet-bar"
+             style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px; align-items:flex-start">
+          <div v-for="fc in activeFacets" :key="fc.field" class="facet-group">
+            <div class="facet-title">{{ fc.zh }}</div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap; max-width:340px">
+              <span v-for="([v, n]) in fc.values.slice(0, 24)" :key="v"
+                    class="facet-chip" :class="{ on: facetSel[fc.field] && facetSel[fc.field].has(v) }"
+                    @click="toggleFacet(fc.field, v)">
+                {{ v }}<i v-if="n" style="opacity:.55; font-style:normal; font-size:10px"> {{ n }}</i>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <el-table v-if="!isMobile" :data="rows" border stripe @sort-change="resort" height="calc(100vh - 190px)"
                   @selection-change="s => selection = s">
           <el-table-column type="selection" width="42"></el-table-column>

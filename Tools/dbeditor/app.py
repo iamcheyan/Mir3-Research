@@ -499,11 +499,61 @@ def status() -> dict:
 
 @APP.get("/api/categories")
 def categories() -> list[dict]:
-    return [{
-        "key": c["key"], "zh": c["zh"],
-        "count": len(STORE.tables.get(c["key"], {})),
-        "subs": c["subs"],
-    } for c in CATEGORIES]
+    """分类轴自动发现：对该类目所有行扫描，把适合当筛选的字段全部聚合成 facets。
+    规则：① meta 里声明为 enum 的字段；② 布尔字段；③ 低基数(≤30 个不同值)的
+    int/string 字段。跳过 Index/名字/数值范围型(如等级)/引用型。"""
+    SKIP = {"Index", "Image", "Icon", "FaceImage", "Shape"}
+    out = []
+    for c in CATEGORIES:
+        entry = {
+            "key": c["key"], "zh": c["zh"],
+            "count": len(STORE.tables.get(c["key"], {})),
+            "subs": c["subs"],
+        }
+        trows = list(STORE.tables.get(c["key"], {}).values())
+        tmeta = STORE.meta.get(c["key"], {}).get("fields", {})
+        facets = []
+        if trows:
+            for field, fdef in tmeta.items():
+                if field in SKIP or field.startswith("_"):
+                    continue
+                ftype = str(fdef.get("type", ""))
+                kind = fdef.get("kind", "")
+                if kind in ("ref", "reflist", "stats"):
+                    continue
+                is_enum = ftype == "enum"
+                is_bool = ftype == "bool"
+                if not (is_enum or is_bool or ftype in ("int", "string")):
+                    continue
+                counts: dict[str, int] = {}
+                for r in trows:
+                    v = r.get(field)
+                    if v is None:
+                        continue
+                    if isinstance(v, bool):
+                        key = "是" if v else "否"
+                    elif isinstance(v, (int, float)) and not is_enum:
+                        # 低基数整数(如 AI 编号)可当分类；连续数值(等级/伤害)跳过
+                        key = str(v)
+                    elif isinstance(v, str):
+                        key = v
+                    else:
+                        continue
+                    counts[key] = counts.get(key, 0) + 1
+                # 枚举/布尔全收；int/string 只收低基数(≤30 值且 ≥2 值)
+                if is_enum or is_bool:
+                    if len(counts) >= 1:
+                        zh = fdef.get("zh") or field
+                        facets.append({"field": field, "zh": zh,
+                                       "values": sorted(counts.items(), key=lambda x: -x[1])})
+                elif 2 <= len(counts) <= 30:
+                    zh = fdef.get("zh") or field
+                    facets.append({"field": field, "zh": zh,
+                                   "values": sorted(counts.items(),
+                                                    key=lambda x: (len(x[0]), x[0]))})
+        entry["facets"] = facets
+        out.append(entry)
+    return out
 
 
 @APP.get("/api/meta")
@@ -531,11 +581,23 @@ def options(table: str) -> list[dict]:
 
 @APP.get("/api/table/{table}")
 def table_rows(table: str, page: int = 1, per: int = 50, q: str = "",
-               sort: str = "Index", dir: str = "asc") -> dict:
+               sort: str = "Index", dir: str = "asc", facet: str = "") -> dict:
     rows = STORE.tables.get(table)
     if rows is None:
         raise HTTPException(404, f"未知表 {table}")
     items = list(rows.values())
+    if facet:
+        # facet 格式: "字段=值" 或多选 "字段=值1,值2"（多轴用 ; 分隔：Type=Book;Rarity=Elite）
+        for part in facet.split(";"):
+            if "=" not in part:
+                continue
+            f, vals = part.split("=", 1)
+            allowed = set(vals.split(","))
+            def _facet_v(v):
+                if isinstance(v, bool):
+                    return "是" if v else "否"
+                return str(v)
+            items = [r for r in items if _facet_v(r.get(f)) in allowed]
     if q:
         ql = q.lower()
 

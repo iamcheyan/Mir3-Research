@@ -47,7 +47,27 @@ const app = createApp({
     const total = ref(0);
     const page = ref(1);
     const per = ref(50);
+
     const query = ref("");
+    // ---- 分类筛选（facets）----
+    const facetSel = reactive({});   // { 字段: Set(值) }，仅当前类目的轴生效
+    const facetQuery = computed(() => {
+      const parts = [];
+      for (const [f, vals] of Object.entries(facetSel)) {
+        if (vals && vals.size) parts.push(`${f}=${[...vals].join(",")}`);
+      }
+      return parts.join(";");
+    });
+    const activeFacets = computed(() => {
+      const c = cats.value.find(x => x.key === activeCat.value);
+      return (c && c.facets) || [];
+    });
+    function toggleFacet(field, val) {
+      if (!facetSel[field]) facetSel[field] = new Set();
+      const s = facetSel[field];
+      s.has(val) ? s.delete(val) : s.add(val);
+      page.value = 1; loadTable();
+    }
     const sortKey = ref("Index");
     const sortDir = ref("asc");
     const selection = ref([]);
@@ -93,9 +113,10 @@ const app = createApp({
       loading.value = true;
       view.value = "list";
       try {
-        const u = `/api/table/${activeCat.value}?page=${page.value}&per=${per.value}`
-          + `&sort=${encodeURIComponent(sortKey.value)}&dir=${sortDir.value}`
-          + (query.value ? `&q=${encodeURIComponent(query.value)}` : "");
+        let u = `/api/table/${activeCat.value}?page=${page.value}&per=${per.value}`
+          + `&sort=${encodeURIComponent(sortKey.value)}&dir=${sortDir.value}`;
+        if (query.value) u += `&q=${encodeURIComponent(query.value)}`;
+        if (facetQuery.value) u += `&facet=${encodeURIComponent(facetQuery.value)}`;
         const d = await api.get(u);
         rows.value = d.rows; total.value = d.count;
         if (!metaCache[activeCat.value]) {
@@ -119,7 +140,11 @@ const app = createApp({
       return optionsCache[table];
     }
 
-    function switchCat(key) { activeCat.value = key; page.value = 1; query.value = ""; sortKey.value = "Index"; loadTable(); }
+    function switchCat(key) {
+      activeCat.value = key; page.value = 1; query.value = ""; sortKey.value = "Index";
+      Object.keys(facetSel).forEach(k => delete facetSel[k]);   // 切类目清空筛选
+      loadTable();
+    }
     function search() { page.value = 1; loadTable(); }
     function resort(col) {
       if (col.prop && col.prop !== "__name" && col.prop !== "__icon"
@@ -411,6 +436,7 @@ const app = createApp({
       rows, total, page, per, query, selection, listCols,
       displayCell, rowIcon, iconError, switchCat, search, resort, zhName,
       isMobile, rowName, monActionSrc,
+      facetSel, activeFacets, toggleFacet,
       detail, mainFields, refOptions, subMetas, markDirty,
       saveDetail, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
       openDetail, duplicateRow, deleteRow, createRow,
