@@ -1,0 +1,51 @@
+{
+    "evidence_id": "occupancy-overlay-cell-dispatch-2026-08-13-f1082",
+    "title": "Round 776 (F1082): OCCUPANCY OVERLAY closed - screen+0x154 is a 24x24x1600-byte per-cell overlay (0xE1000 exact, cleared at map change): slot+0x000 = up to 100 entity pointers (dispatcher 0x41CBD0 with type-arm table), slot+0x320 and slot+0x4B0 = two cell-FX records (0x41CA20/0x41C860, timeGetTime expiry); F1075 blend-ticker CORRECTED (thresholds 150/25/50 not 25/50/75; counters are the first three of eight dt accumulators; per-byte wrap period = byte index)",
+    "date": "2026-08-13",
+    "objective": "Resolve the per-cell entity/FX dispatch in the world driver and the scroll integrator 0x43CDC0 left from F1081.",
+    "question": "What is the screen+0x154 region cleared at map change, how do 0x41CBD0/0x41C860/0x41CA20 index it, and what are the ticker's real thresholds?",
+    "method": "disasm 0x43CDC0+0xC0 (ticker), 0x41CBD0+0x1D8 (dispatcher), 0x41C860+0x90 (FX rec A), 0x41CA20+0x40 (FX rec B); dump byte table 0x41CD1C and dword table 0x41CD0C; stride arithmetic decode of the lea chains.",
+    "scope": "occupancy overlay array; per-cell entity draw dispatcher; cell FX records; blend animation ticker parameters.",
+    "cell_analysis": {
+        "overlay_identity": "index math (both dispatchers): offset = 1600*b + 38400*a = 1600*(b + 24*a) [lea x3, lea ecx+*8 => a+24b chain then *25<<6 => 1600]; array spans screen+0x154 .. screen+0xE1154 = 0xE1000 = 24*24*1600 EXACT; this is the region memset 0x38400 dwords at map change (F1078 flow 0x422B37) - one 1600-byte slot per cell of the 24x24 anchor window",
+        "slot_layout": "+0x000: 100 entity pointer dwords (loop add ebx,4 / cmp eax,0x64); +0x320: FX record family B (0x41CA20 base 0x474); +0x4B0: FX record family A (0x41C860 base 0x604); remaining ~0x180 bytes unmapped",
+        "dispatcher_0x41cbd0": "for each entity ptr in slot: gates = flag [ent+0x61C74] (arg-dependent), word([ent+0x8B]<<8|[ent+0x8A]) != 0x7F, selected-entity [screen+0x364444] match sets highlight flag; TYPE byte [ent+0x88] (<=0x32 else skip) -> byte table 0x41CD1C -> dword table 0x41CD0C: types 0,1 (hero/player, absent from byte map -> arm0 0x41CC8E) = vslot 0x7C(map, sel, dt, 1) + 0x40B180 + 0x40CE20 FULL HERO CHAIN; type 3 -> arm1 0x41CCD7 = vslot only; type 50 (0x32) -> arm2 0x41CCB6 = vslot + 0x40B180; types 2,4..49 -> arm3 = SKIP (drawn via the +0xE11A0 draw chain instead)",
+        "fx_records": "0x41C860 (slot+0x4B0): {word+8 = frame idx, word+0xA = lifetime ms, dword+0xC = start timeGetTime, dword+0x14 = world x}; gate timeGetTime([0x47630C]) - [+0xC] > [+0xA] -> expired skip; frame resolve 0x466130(0x566DD4, word[+8]) - 0x566DD4 = 0x5600FC + 324*86 = FIXED atlas slot 86 (FX library); screen pos = ([+0x14]-[screen+0xF532C])*3<<4 = *48 minus scroll; 0x41CA20 = twin at slot+0x320",
+        "ticker_0x43cdc0": "adds dt to ALL EIGHT dwords at map+0x1B01B4 every frame; group tick gates: [+0x1B01B4] > 0x96(150) -> 16 bytes @+0x1B01D4, [+0x1B01B8] > 0x19(25) -> @+0x1B01E4, [+0x1B01BC] > 0x32(50) -> @+0x1B01F4; on tick each byte k: byte++ then if byte >= k -> 0 (cmp edx,k / jl skip-reset) => PER-BYTE WRAP PERIOD = ITS INDEX (byte 0/1 degenerate constants, byte k cycles 0..k-1)",
+        "state_byte_consistency": "the dispatcher's [ent+0x88] type byte is the SAME byte R771's entity-chain walker gated on (al<=1 hero path / al==3) - one state/type byte drives both tick and draw paths"
+    },
+    "exe_trace": {
+        "frame": "driver cell pass -> 0x41CBD0(dx,dy) walks slot entities -> type dispatch (hero chain / vslot) -> 0x41C860/0x41CA20 draw the two cell FX records (time-expiry gated)"
+    },
+    "audit_vs_exe": {
+        "F1075": "CORRECTED x3: (1) thresholds 150/25/50 not 25/50/75; (2) group tick counters are the FIRST THREE of the eight dt accumulators (+0x1B01B4/B8/BC), not +0x1B01B8/BC/C0; (3) wrap is per-byte period=index, NOT uniform +1 mod 16 - the blend lo-nibble selects BOTH the byte and its cycle length",
+        "F1078": "the 0x38400-dword memset at map change now identified: the 24x24x1600 occupancy overlay at screen+0x154",
+        "F1072": "the [screen+0x154] region hero-step references now resolve to this overlay; [ent+0x61C74] flag reappears as dispatcher gate",
+        "F1069": "hero chain 0x40B180/0x40CE20 caller context closed: per-cell dispatcher arm0 for types 0/1"
+    },
+    "contrast": {
+        "types_0_1": "full hero draw chain (vslot 0x7C + 0x40B180 + 0x40CE20)",
+        "type_3": "map-relative vslot only",
+        "type_50": "vslot + 0x40B180",
+        "types_2_4_49": "skipped here (drawn via +0xE11A0 chain)"
+    },
+    "verdict": "The map-change-cleared screen+0x154 region is a 24x24-cell occupancy overlay with 1600-byte slots: 100 entity pointers per cell dispatched by state byte [ent+0x88] through a four-arm table (hero full-chain / vslot-only / vslot+nameplate / skip), plus two time-expired cell-FX records per slot drawn from fixed atlas slot 86; the blend ticker's real parameters are thresholds 150/25/50 over the first three of eight dt accumulators with per-byte-period wrap.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "All from .text disasm + data-table dumps; overlay size identity is exact arithmetic (24*24*1600 = 0xE1000).",
+    "cross_refs": [
+        "F1081: driver pass ordering (these are the cell-pass callees)",
+        "F1078: map-change memset (region identified)",
+        "F1075: ticker (parameters corrected)",
+        "F1072: hero step engine + [0x61C74] flag",
+        "F1069: hero chain callers"
+    ],
+    "tool": "capstone disasm + table dumps (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "disasm 0x43CDC0+0xC0, 0x41CBD0+0x1D8, 0x41C860+0x90, 0x41CA20+0x40; dump bytes 0x41CD1C[0..0x32] and dwords 0x41CD0C[0..3]",
+    "notes": [
+        "byte table map: {3:1, 2:3, 4..49:3, 50:2}; absent types (0,1) -> arm0 via zero-filled default",
+        "0x566DD4 = 0x5600FC + 324*86 (atlas slot 86) - fixed FX atlas for cell effects",
+        "eight dt accumulators at +0x1B01B4..+0x1B01D0: first three double as group tick counters; remaining five are free timers (unchecked here)",
+        "per-byte period semantics: byte k of a group counts 0..k-1 - the blend nibble lo = phase count selector",
+        "737 consecutive rounds F335-F1082"
+    ]
+}

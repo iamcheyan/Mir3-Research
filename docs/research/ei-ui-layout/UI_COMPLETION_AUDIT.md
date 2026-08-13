@@ -4810,3 +4810,7 @@ git diff --check
 
 - 0x41C450 全序闭合（贴花→MID/FRONT 双层→占格 FX→大对象双循环→视口 0xA8→选中实体 0x7C=表面合成入口）；F1069 MID/FRONT 命名对调勘误（byte3=后层 byte4=前层）；滚动 0x43C500（英雄 0x411D3A 调用+跳转重锚 0x43C9C0）；小图=直 blit 0x460240 无表面。
 - 落盘：`world-composite-driver-evidence.json`（F1081）+ RESEARCH_LOG Round 775。
+## Round 776 (2026-08-13) — 占格覆盖层与逐格分派（Finding 1082）
+
+- screen+0x154=24×24×1600B 占格覆盖层（0xE1000 精确，换图清零定性）；槽内 100 实体指针+两格特效记录；分派器 0x41CBD0 四臂类型表（0/1 英雄全链/3 仅 vslot/50 vslot+0x40B180/其余跳过）；F1075 ticker 三勘误（150/25/50、计数器 B4/B8/BC、每字节周期=下标）。
+- 落盘：`occupancy-overlay-cell-dispatch-evidence.json`（F1082）+ RESEARCH_LOG Round 776。

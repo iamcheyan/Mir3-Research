@@ -9435,3 +9435,12 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔滚动步进 0x43C500〕**门 [map]≠0；锚 [0x12C]/[0x130] += 调用参量；子格累加器 [0x134]/[0x138] 复位；[0x18C]≠0 → 维护分支 0x43C54B+（条带拷贝族 0x43C57E-0x43C8FF，方向按参量符号分流）。E8 调用者：**0x411D3A**（英雄步进引擎，ecx=[entity+0x62A58] 缓存图指针，参量 [entity+0xE0]/[0xDC]）=F1072 滚动消费点精确化；0x422B1F/0x41082D→**0x43C9C0 跳转重锚**（设锚+清累加器）；0x41BCA4→0x43C330 占格探测；0x41F732/0x41F794→0x43C1B0/0x43C270 坐标变换。
 - **〔小图路径〕**0x43C355-0x43C4FF：逐格直 blit **0x460240**（裁剪 ctx 0x8AB7A8、src=[slot+0x560138]、0x320/0x1EC 尺寸、(x−锚)·48−0xC8 数学含子格偏移 [0x134]/[0x138]）——**不经表面**；[0x18C]==0（w/h<100）时用。
 - 落盘：world-composite-driver-evidence.json（F1081，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 775。
+## Round 776 (F1082) — 2026-08-13：占格覆盖层数组闭合 + 逐格实体分派/格特效 + F1075 ticker 三处勘误
+
+- **〔覆盖层同一性〕**0x41CBD0/0x41C860/0x41CA20 共用索引数学 `1600·b+38400·a`（lea×3→a+24b→×25<<6）；数组 screen+0x154..+0xE1154 = **0xE1000 = 24×24×1600 精确**——即换图时 memset 0x38400 双字的区域（F1078 流 0x422B37 定性）：24×24 锚窗、**每格槽 1600 字节**。
+- **〔槽布局〕**+0x000=100 个实体指针双字（循环 cmp 0x64）；+0x320=格特效记录 B（0x41CA20 基址 0x474）；+0x4B0=格特效记录 A（0x41C860 基址 0x604）。
+- **〔分派器 0x41CBD0〕〕每实体门：旗 [ent+0x61C74]（随参量分支）、word([0x8B]<<8|[0x8A])≠0x7F、选中实体 [screen+0x364444] 高亮置位；**类型字节 [ent+0x88]**（>0x32 跳过）→字节表 0x41CD1C→双字表 0x41CD0C：**类型 0/1（英雄/玩家，表缺省→arm0 0x41CC8E）= vslot 0x7C+0x40B180+0x40CE20 全链（F1069 英雄链调用语境闭合）**；类型 3→arm1 仅 vslot；类型 50→arm2 vslot+0x40B180；类型 2/4-49→arm3 跳过（走 +0xE11A0 绘制链）。
+- **〔格特效记录〕〕{word+8=帧 idx, word+0xA=寿命 ms, dword+0xC=起始 timeGetTime, dword+0x14=世界 x}；门 timeGetTime−[+0xC]>[+0xA] 过期跳过；帧解析 0x466130(**0x566DD4=0x5600FC+324·86 固定图集槽 86**, word[+8])；屏位 (x−[0xF532C])·48。
+- **〔F1075 ticker 三勘误〕〕0x43CDC0 每帧向 **全部 8 个** dt 累加器(+0x1B01B4..+0x1B01D0)加 dt；组 tick 门 [B4]>**150**(0x96)/[B8]>25(0x19)/[BC]>50(0x32)——非 25/50/75；组计数器=8 累加器**前三个**（非 B8/BC/C0）；环回=**每字节周期=自身下标**（byte k 计 0..k-1，`cmp 新值,k; jl 跳过复位`；byte 0/1 退化为常量）——非统一 mod 16，blend lo 半字节同时选字节与周期长度。
+- **〔一致性〕**分派器 [ent+0x88] 与 R771 实体链 tick 门（≤1/==3）同一状态/类型字节——一字节驱动 tick 与 draw 双路径。
+- 落盘：occupancy-overlay-cell-dispatch-evidence.json（F1082，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 776。
