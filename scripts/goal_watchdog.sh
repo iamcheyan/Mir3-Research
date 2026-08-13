@@ -65,13 +65,14 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
-  "019feb87-4104-7000-8548-3a0adb440578|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-10T11-55-37-604Z_019feb87-4104-7000-8548-3a0adb440578.jsonl|zircon|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019feb87.state"
   "019ff331-5ca2-7000-869c-ab301d561150|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-11T23-38-46-306Z_019ff331-5ca2-7000-869c-ab301d561150.jsonl|dbviewer|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff331.state"
   "019ff34c-b48e-7000-b3f9-0bf36fa2ad54|/home/tetsuya/.omp/agent/sessions/-development-mir3-website/2026-08-12T00-42-14-194Z_019ff34c-b48e-7000-b3f9-0bf36fa2ad54.jsonl|mir3site|/home/tetsuya/development/mir3-website|/home/tetsuya/.omp/goal-watchdog.019ff34c.state"
   "019ff444-b5f7-7000-af5b-3288f2608d49|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-12T04-39-31-575Z_019ff444-b5f7-7000-af5b-3288f2608d49.jsonl|questdesign|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff444.state"
   "019ff47d-4e2e-7000-9d9b-008f5e47c431|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-12T05-41-20-558Z_019ff47d-4e2e-7000-9d9b-008f5e47c431.jsonl|questv2|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff47d.state"
   "019ff4a1-be55-7000-abbc-751c955fb272|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-12T06-21-08-565Z_019ff4a1-be55-7000-abbc-751c955fb272.jsonl|questv3|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff4a1.state"
   "019ffb10-2bc7-7000-9ba0-49352606156b|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-13T12-19-28-839Z_019ffb10-2bc7-7000-9ba0-49352606156b.jsonl|dbeditor|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ffb10.state"
+  "019ffba6-950c-7000-be7c-358ead847cb8|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-13T15-03-46-188Z_019ffba6-950c-7000-be7c-358ead847cb8.jsonl|zircon|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ffba6.state"
+  "019ffbaf-4c8d-7000-a36c-76336908116a|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-13T15-13-17-453Z_019ffbaf-4c8d-7000-a36c-76336908116a.jsonl|botgoal|/home/tetsuya/development/zircon|/home/tetsuya/.omp/goal-watchdog.019ffbaf.state"
 )
 
 CHECK_ONLY=0
