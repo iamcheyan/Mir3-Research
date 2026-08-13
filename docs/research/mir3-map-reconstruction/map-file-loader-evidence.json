@@ -1,0 +1,30 @@
+{
+  "evidence_id": "map-file-loader-2026-08-12-f1065",
+  "title": "Round 759 (F1065): client .map FILE LOADER decoded (F1064 follow-up) - 0x43B600: sprintf path 0x47C404 + name -> [obj+4]; CreateFileA GENERIC_READ via [0x4760DC] (-1 -> ret 0); 0x43B820 reset: zero header 7 dwords @ [obj+0x110], zero [obj+0x1B2] 0x6C000 dwords (tile cache 0x1B0000 bytes), free old bufs [0x108]/[0x10C], clear loaded [obj]; ReadFile HEADER 0x1C bytes -> [obj+0x110] (width word +0x126, height word +0x128, lib-group byte +0x124); CHUNK1 = ((w*h+3)>>2)*3 bytes -> buf [obj+0x108] (6 bits per cell packed 3B/4cells); CHUNK2 = w*h*14 bytes -> buf [obj+0x10C] (14-byte cell records); loaded=1, small maps (<100x100) -> [0x18C]=0; reset 0x144-stride lib objects 0x5612B4-0x565994 (56 slots, 0x465FE0); TILE LIBRARY LOOP: count = (byte[0x124]+1)*0xE, per lib: object 0x5600FC+idx*0x144, name string 0x56B22C+idx*0x104, load 0x4660E0 / reset 0x465FE0 retry; [0x18C]!=0 -> aux load 0x43B440; CloseHandle ret 1; CORRECTIONS vs F1064/F1008: 0x43C9C0 = VIEW ANCHOR SETTER ([0x12C]/[0x130]=x/y, zero scroll [0x134]/[0x138]); the walkable check is 0x43C9F0: gates loaded + x<width + y<height + buf2, idx=(width*x+y)*14, ret = !(byte0 & 1) - bit0 blocked, stride 14 CONFIRMS F1008; BONUS 0x43CA40 = CELL ATTR GET: word [cell+0xC], 0 -> invalid ret 0; else ret 1 + out word = attr>>4 (low nibble frame-ish) + bits 14-15 (file index) - the client-side map cell decoder; 0x43B880 = 8-direction scroll step (jt 0x43B978) writing [0x134]/[0x138] from coeff table [0x15C]/[0x160]",
+  "date": "2026-08-12",
+  "objective": "Decode the client-side .map file loader and cell accessors.",
+  "question": "How does the client parse a .map file, and what is the cell record layout?",
+  "method": "Disasm 0x43B600/0x43B820/0x43C9C0/0x43C9F0/0x43CA40/0x43B880.",
+  "scope": "map object @ [screen+0xF5200]; loader 0x43B600-0x43B878.",
+  "cell_analysis": {
+    "file_format": {"header": "0x1C bytes @ obj+0x110 (w +0x126, h +0x128, lib group +0x124)", "chunk1": "ceil(w*h/4)*3 B @ [0x108] (6b/cell)", "chunk2": "w*h*14 B @ [0x10C] (cell records)"},
+    "cell_record": {"stride": "14", "byte0_bit0": "blocked flag (0x43C9F0)", "word_C": "attr: bits14-15 file idx, >>4 nibble frame-ish (0x43CA40)"},
+    "tile_libs": {"count": "(byte[0x124]+1)*0xE", "obj_table": "0x5600FC stride 0x144", "name_table": "0x56B22C stride 0x104", "load": "0x4660E0"},
+    "anchor": "0x43C9C0 sets view anchor + zeros scroll; 0x43B880 8-dir scroll steps (jt 0x43B978, coeffs [0x15C]/[0x160])"
+  },
+  "exe_trace": {"load": "open -> reset -> read header -> read chunk1 -> read chunk2 -> mark loaded -> reset lib slots -> load (group+1)*14 libs -> aux -> close"},
+  "audit_vs_exe": {
+    "F1064": "CORRECTED: 0x43C9C0 is the anchor setter, not the walkable check",
+    "F1008": "CONFIRMED bit0 blocked + stride 0xE; check fn = 0x43C9F0",
+    "F1012": "type table 0x5600FC stride 0x144 reappears as the lib object table",
+    "tools_maps": "client-side 14B cell + 0.75B/cell chunk now byte-anchored [consistent with Tools/maps format conclusions]"
+  },
+  "contrast": {"anchor_vs_walkable": "0x43C9C0 view math vs 0x43C9F0 cell bit0", "chunk1_vs_chunk2": "6-bit packed vs full 14B records"},
+  "verdict": "Map file I/O closed client-side: header/chunk layout, cell record semantics (blocked bit + attr word), per-map tile library binding, and the anchor/scroll accessors - the exact counterpart of the repo's map tooling.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Loader + accessors decoded from .text; sizes from arithmetic.",
+  "cross_refs": ["F1064: enter-map caller", "F1008: bit0 stride", "F1012: 0x5600FC table"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43B600+0x21F; 0x43C9F0+0x4C; 0x43CA40+0x9E",
+  "notes": ["cell stride 14 = 0xE", "tile libs per map = (group+1)*14", "720 consecutive rounds F335-F1065"]
+}

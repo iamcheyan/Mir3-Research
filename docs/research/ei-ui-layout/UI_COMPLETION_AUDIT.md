@@ -4742,3 +4742,7 @@ git diff --check
 
 - 双包协议（0x32 名字 → 0x33 执行）+ 按图路由（含跨图实体转发 + 0x21 重发门）+ 世界重置全字段表 + 传送/载图/瓦片缓存清零/BGM/地板色调。
 - 落盘：`enter-map-full-path-evidence.json`（F1064）+ RESEARCH_LOG Round 758。
+## Round 759 (2026-08-12) — .map 加载器（Finding 1065）
+
+- 头/chunk 布局 + 14 字节格记录语义（bit0 封锁 + 属性字文件号 bits14-15）+ 每图 (组+1)×14 瓦片库绑定 + 锚点/滚动访问器——与仓库地图工具链格式结论互证。
+- 落盘：`map-file-loader-evidence.json`（F1065）+ RESEARCH_LOG Round 759。

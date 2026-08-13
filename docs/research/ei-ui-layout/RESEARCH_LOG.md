@@ -9312,3 +9312,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x422960 完整进图（msg 0x33/0x27A）〕**门（[0x2F8840]==3 行节流 + [0x4279A4] 忙）→ D3D present ×2 → [0x4279A4]=0x5DC → **世界清零 16+ 字段**（[0x428220]=1.0f 缩放、[0x35A329]=10 行）→ **玩家传送** [p+6]/[p+8]→[0x2F884C]/[0x2F8850] + 英雄 0x410100 + 虚槽+0x10 → 地图标题 base64 0x400B + **0x43C9C0 瓦片可走 + 0x43B600 载图** → **瓦片缓存 [0x154] 0x38400 字节清零** → BGM 字节 [p+0xA] 比对缓存 [0x35B2BD] → PlaySound；地图类型 0/1/2 → 地板色 0xFFFFFF/0xF0F0F/0x555555 → 受击闪光网格 0x434610 → 聊天/HUD/双列表 [0xE11D0]/[0xE11B8] 清 + 小地图关闭 → 旗标。
 - **〔勘误〕**F1060 msg 0x21；F1061 默认分支语义；0x32 是名字阶段、0x33 才是执行。
 - 落盘：enter-map-full-path-evidence.json（F1064，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 758。
+## Round 759 (F1065) — 2026-08-12：客户端 .map 文件加载器全解（F1064 后续）
+
+- **〔0x43B600 加载器〕**sprintf 路径 0x47C404 → CreateFileA（GENERIC_READ [0x4760DC]）→ 0x43B820 复位（头 7 双字 @ +0x110、瓦片缓存 [0x1B2] 0x6C000 双字 = 0x1B0000 字节、释放旧缓冲）→ **头 0x1C 字节**（宽 +0x126 / 高 +0x128 / 库组字节 +0x124）→ **chunk1 = ceil(w×h/4)×3 字节** @ [0x108]（6bit/格）→ **chunk2 = w×h×14 字节** @ [0x10C]（格记录）→ 库对象 0x5612B4-0x565994 复位（56 槽 0x144 步长）→ **瓦片库 (组+1)×0xE 个**：对象 0x5600FC+idx×0x144、名串 0x56B22C+idx×0x104、0x4660E0 加载。
+- **〔勘误 F1064/F1008〕**0x43C9C0 = **视图锚点设置**（[0x12C]/[0x130]，清滚动 [0x134]/[0x138]）；可走检查实为 **0x43C9F0**：idx=(宽×x+y)×14，ret = !(byte0 bit0)——F1008 bit0/步长 0xE 双确认。
+- **〔0x43CA40 格属性读取器〕**word [cell+0xC]：0→无效；否则 bits14-15 = 文件号、>>4 低 nibble = 帧族——客户端版格解码器。
+- **〔0x43B880〕**8 方向滚动步进（jt 0x43B978，系数表 [0x15C]/[0x160]）。
+- 落盘：map-file-loader-evidence.json（F1065，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 759。
