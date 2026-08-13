@@ -35,3 +35,54 @@ body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-s
 .clickable:hover { text-decoration: underline; }
 .dirty { color: var(--el-color-warning); }
 .field-label-zh { color: var(--el-text-color-secondary); font-size: 11px; }
+
+/* ---------------- 移动端适配（≤768px）：内容优先，一切可收缩 ---------------- */
+@media (max-width: 768px) {
+  .layout-body { flex-direction: column; }
+  /* 顶栏收缩：一行 = 菜单按钮 + 标题 + 同步按钮（其余收进抽屉） */
+  .topbar { padding: 6px 10px; gap: 8px; }
+  .topbar h3 { font-size: 15px; flex: 1; min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+  .topbar .el-tag { display: none !important; }
+  .topbar .el-badge .el-button { padding: 8px; }
+  .topbar > .el-button--primary { padding: 8px 12px; }
+  /* 侧栏 → 顶部横向滚动分类条（贴顶、单行、胶囊样式） */
+  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--el-border-color-light);
+    display: flex; overflow-x: auto; padding: 0 6px; flex-shrink: 0;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .sidebar .cat { flex-shrink: 0; padding: 8px 10px; border-right: none;
+    font-size: 13px; gap: 4px; }
+  .sidebar .cat .el-tag { transform: scale(.85); }
+  .sidebar .cat.active { border-right: none; border-bottom: 2px solid var(--el-color-primary); }
+  .main { flex: 1; min-height: 0; padding: 8px 10px; overflow: auto;
+    -webkit-overflow-scrolling: touch; }
+  /* 工具行收缩：搜索框占满，新增/批量收成图标按钮 */
+  .main .toolbar { flex-wrap: wrap; gap: 6px; }
+  .main .toolbar .el-input { width: 100% !important; }
+  .main .toolbar .hint { display: none; }   /* "1078 行·保存只写 JSON..." 提示手机隐藏 */
+  /* 手机卡片列表 */
+  .card-list { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; }
+  .card-item { background: #fff; border: 1px solid var(--el-border-color-lighter);
+    border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .card-item:active { background: var(--el-fill-color-light); }
+  .card-item img { width: 36px; height: 36px; image-rendering: pixelated;
+    background: #111; border-radius: 6px; object-fit: contain; flex-shrink: 0; }
+  .card-item .ci-main { flex: 1; min-width: 0; }
+  .card-item .ci-name { font-weight: 600; font-size: 13px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+  .card-item .ci-zh { color: var(--el-text-color-secondary); font-size: 11px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card-item .ci-idx { color: var(--el-text-color-placeholder); font-size: 10px; flex-shrink: 0; }
+  /* 分页贴底居中 */
+  .main .el-pagination { justify-content: center !important; }
+  /* 详情：表单单列、返回条吸顶 */
+  .detail-bar { position: sticky; top: -8px; z-index: 5; background: #fff;
+    padding: 6px 0; margin-bottom: 8px; }
+  .el-col { max-width: 100% !important; flex: 0 0 100% !important; }
+  .el-form-item__label { font-size: 12px; }
+  .big-icon { width: 44px; height: 44px; }
+  /* 子表横向滚动而非挤碎 */
+  .sub-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}

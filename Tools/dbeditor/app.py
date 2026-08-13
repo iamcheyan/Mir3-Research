@@ -475,8 +475,17 @@ def table_rows(table: str, page: int = 1, per: int = 50, q: str = "",
         items.reverse()
     total = len(items)
     start = (page - 1) * per
+    out = []
+    for r in items[start:start + per]:
+        rr = dict(r)
+        rr["__zh"] = _zh(table, _name_of(table, r))   # 中文名（db_names.json）
+        if table == "ItemInfo":
+            cur = _currency_image(table, r["Index"])  # 货币物品真实图标帧（同步注入，无闪烁）
+            if cur is not None:
+                rr["__frame"] = cur
+        out.append(rr)
     return {"count": total, "page": page, "per": per,
-            "rows": items[start:start + per]}
+            "rows": out}
 
 
 @APP.get("/api/row/{table}/{index}")
@@ -504,7 +513,13 @@ def row_detail(table: str, index: int) -> dict:
                     key=lambda r: r["Index"])
                 subs[t] = {"readonly": bool(s.get("readonly")), "parent_field": pf,
                            "rows": matched}
-    return {"row": row, "subs": subs, "meta": STORE.meta.get(table)}
+    row_out = dict(row)
+    row_out["__zh"] = _zh(table, _name_of(table, row))   # 详情页也带中文名
+    if table == "ItemInfo":
+        cur = _currency_image(table, index)               # 货币物品真实图标帧
+        if cur is not None:
+            row_out["__frame"] = cur
+    return {"row": row_out, "subs": subs, "meta": STORE.meta.get(table)}
 
 
 def _apply_subs(parent_table: str, parent_index: int, subs: dict[str, list[dict]]) -> str:
@@ -793,6 +808,86 @@ def sync_execute() -> dict:
 
 APP.mount("/static", StaticFiles(directory=STATIC), name="static")
 APP.mount("/icons", StaticFiles(directory=ICONS_DIR), name="icons")
+
+# ---------------------------------------------------------------- 实时 ZL 图标解码
+# 缓存目录的 PNG 偏蓝（dbeditor goal 生成时未做 BGRA→RGBA 交换）且帧不全；
+# 这里改用 Tools/common/zlsdk.py（wilviewer 同款）实时解 Storeitems.Zl / MonImg.Zl，
+# 解码结果落盘缓存 item-icons-live/，保证颜色正确。
+_LIVE_ICONS = DBEDITOR / "item-icons-live"
+_LIVE_ICONS.mkdir(exist_ok=True)
+_zl_libs: dict[str, Any] = {}
+_zl_lock = threading.Lock()
+
+
+def _get_zl_lib(lib_file: str):
+    """lib_file: 'Storeitems.Zl' / 'MonImg.Zl' —— 按 wilviewer 方式加载 zlsdk.ZlLibrary。"""
+    import sys as _sys
+    if str(REPO / "Tools" / "common") not in _sys.path:
+        _sys.path.insert(0, str(REPO / "Tools" / "common"))
+    with _zl_lock:
+        if lib_file not in _zl_libs:
+            import zlsdk
+            path = ZIRCON / "Debug" / "Client" / "Data" / lib_file
+            _zl_libs[lib_file] = zlsdk.ZlLibrary(str(path))
+        return _zl_libs[lib_file]
+
+
+def _currency_image(table: str, index: int) -> int | None:
+    """货币物品的真实图标（客户端 IsCurrencyItem→CurrencyImage 逻辑）：
+    CurrencyInfo.DropItem == 该物品 → 取 CurrencyInfoImage 中 Amount 最大的档位 Image。
+    非货币返回 None。"""
+    try:
+        currencies = STORE.tables.get("CurrencyInfo", {})
+        images = STORE.tables.get("CurrencyInfoImage", {})
+        for cur in currencies.values():
+            drop = cur.get("DropItem") or {}
+            if isinstance(drop, dict) and drop.get("Index") == index:
+                best = max(
+                    (img for img in images.values()
+                     if (img.get("Currency") or {}).get("Index") == cur.get("Index")),
+                    key=lambda x: x.get("Amount", 0), default=None)
+                if best is not None and isinstance(best.get("Image"), int):
+                    return best["Image"]
+    except Exception:
+        pass
+    return None
+
+
+@APP.get("/api/icon/{table}/{index}")
+def api_icon(table: str, index: int) -> dict:
+    """返回某行的真实图标帧号（货币物品走 CurrencyInfoImage 换算）。
+    前端拿帧号再请求 /zl/{lib}/{frame}.png。"""
+    rows = STORE.tables.get(table, {})
+    row = rows.get(index)
+    if row is None or not isinstance(row.get("Image"), int):
+        raise HTTPException(404, "no image")
+    if table == "ItemInfo":
+        cur = _currency_image(table, index)
+        if cur is not None:
+            return {"frame": cur, "lib": "Storeitems"}
+    return {"frame": row["Image"], "lib": "Storeitems" if table == "ItemInfo" else "MonImg"}
+
+
+@APP.get("/zl/{lib}/{frame:int}.png")
+def zl_icon(lib: str, frame: int):
+    """实时解码 ZL 库指定帧。
+
+    物品图标必须用 StoreItem.Zl —— 客户端 DXItemCell.ItemLibraryFile 默认就是
+    StoreItem（2370 帧），Inventory.Zl 是另一套帧序（直接当物品图标=张冠李戴）。
+    怪物用 MonImg.Zl。颜色通道由 zlsdk 正确处理（BGRA→RGBA）。
+    """
+    cache = _LIVE_ICONS / f"{lib}_{frame}.png"
+    if cache.exists():
+        return FileResponse(cache, media_type="image/png")
+    try:
+        lib_obj = _get_zl_lib(lib if lib.endswith(".Zl") else lib + ".Zl")
+        img = lib_obj.decode(frame)
+    except Exception as exc:  # 库缺失/帧越界 → 1x1 透明
+        raise HTTPException(404, f"decode failed: {exc}") from exc
+    if img is None:
+        raise HTTPException(404, "no frame")
+    img.save(cache, format="PNG")
+    return FileResponse(cache, media_type="image/png")
 
 
 @APP.get("/")

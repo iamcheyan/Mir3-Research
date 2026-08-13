@@ -39,6 +39,9 @@ const app = createApp({
     const status = ref({});
     const changeCount = ref(0);
     const loading = ref(false);
+    // 移动端检测（≤768px）：手机卡片列表 + 单列表单，浏览为主
+    const isMobile = ref(window.innerWidth <= 768);
+    window.addEventListener("resize", () => { isMobile.value = window.innerWidth <= 768; });
 
     const rows = ref([]);
     const total = ref(0);
@@ -168,10 +171,13 @@ const app = createApp({
 
     const iconErr = new Set();
     function rowIcon(row) {
-      if (typeof row.Image !== "number" || iconErr.has(row.Image)) return null;
-      return `/icons/${row.Image}.png`;
+      if (typeof row.Image !== "number" || iconErr.has(row.Index)) return null;
+      // 物品图标 = Storeitems.Zl（客户端 DXItemCell 默认图库）；货币物品的 Image 是假的，
+      // 后端已在列表/详情注入真实帧号 __frame（客户端 CurrencyImage 同款逻辑）。
+      const lib = activeCat.value === "MonsterInfo" ? "MonImg" : "Storeitems";
+      return `/zl/${lib}/${row.__frame ?? row.Image}.png`;
     }
-    function iconError(row) { iconErr.add(row.Image); row.__noicon = true; }
+    function iconError(row) { iconErr.add(row.Index); row.__noicon = true; }
 
     // ---------- 详情 ----------
     async function openDetail(index) {
@@ -383,6 +389,7 @@ const app = createApp({
       view, cats, activeCat, catZh, status, changeCount, loading,
       rows, total, page, per, query, selection, listCols,
       displayCell, rowIcon, iconError, switchCat, search, resort, zhName,
+      isMobile, rowName,
       detail, mainFields, refOptions, subMetas, markDirty,
       saveDetail, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
       openDetail, duplicateRow, deleteRow, createRow,

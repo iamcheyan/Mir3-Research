@@ -13,7 +13,6 @@ window.APP_TEMPLATE = `
     </el-badge>
     <el-button type="primary" @click="doSync" :disabled="!!status.server_running">同步到数据库</el-button>
   </div>
-
   <div class="layout-body">
     <div class="sidebar">
       <div v-for="c in cats" :key="c.key" class="cat"
@@ -25,7 +24,7 @@ window.APP_TEMPLATE = `
     <div class="main" v-loading="loading">
       <!-- 列表 -->
       <template v-if="view === 'list'">
-        <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center">
+        <div class="toolbar" style="display:flex; gap:10px; margin-bottom:10px; align-items:center">
           <el-input v-model="query" placeholder="搜索：名称 / 中文名 / Index" clearable
                     style="width:320px" @keyup.enter="search" @clear="search">
             <template #append><el-button @click="search"><el-icon><search /></el-icon></el-button></template>
@@ -33,11 +32,11 @@ window.APP_TEMPLATE = `
           <el-button @click="createRow" type="success" plain>新增</el-button>
           <el-button @click="openBulk" type="warning" plain>批量修改</el-button>
           <div style="flex:1"></div>
-          <span style="color:#909399; font-size:12px">
+          <span class="hint" style="color:#909399; font-size:12px">
             {{ total }} 行 · 保存只写 JSON 工作区 + git，写库须点「同步到数据库」
           </span>
         </div>
-        <el-table :data="rows" border stripe @sort-change="resort" height="calc(100vh - 190px)"
+        <el-table v-if="!isMobile" :data="rows" border stripe @sort-change="resort" height="calc(100vh - 190px)"
                   @selection-change="s => selection = s">
           <el-table-column type="selection" width="42"></el-table-column>
           <el-table-column v-for="c in listCols" :key="c.prop" :prop="c.prop"
@@ -60,14 +59,27 @@ window.APP_TEMPLATE = `
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination style="margin-top:10px; justify-content:flex-end"
+        <!-- 手机卡片列表：图标 + 英文名 + 中文名，点击进详情（只看效果优先） -->
+        <div v-else class="card-list">
+          <div v-for="r in rows" :key="r.Index" class="card-item" @click="openDetail(r.Index)">
+            <img v-if="rowIcon(r) && !r.__noicon" :src="rowIcon(r)" @error="iconError(r)" />
+            <img v-else src="" style="display:none" />
+            <div class="ci-main">
+              <div class="ci-name">{{ rowName(activeCat, r) }}</div>
+              <div class="ci-zh" v-if="r.__zh && r.__zh !== rowName(activeCat, r)">{{ r.__zh }}</div>
+            </div>
+            <div class="ci-idx">#{{ r.Index }}</div>
+          </div>
+        </div>
+        <el-pagination style="margin-top:10px" :small="isMobile"
           v-model:current-page="page" :page-size="per" :total="total"
-          layout="total, prev, pager, next, jumper" @current-change="loadTable" />
+          :layout="isMobile ? 'prev, pager, next' : 'total, prev, pager, next, jumper'"
+          @current-change="loadTable" />
       </template>
 
       <!-- 详情 -->
       <template v-else-if="view === 'detail'">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
+        <div class="detail-bar" style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
           <el-button @click="backToList">← 返回</el-button>
           <h3 style="margin:0">{{ catZh }} #{{ detail.index }}</h3>
           <el-tag v-if="detail.dirty" type="warning">未保存</el-tag>
