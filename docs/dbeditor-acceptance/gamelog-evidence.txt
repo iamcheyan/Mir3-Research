@@ -1,0 +1,8 @@
+# dbeditor 游戏内验收日志摘录（2026-08-13 23:04:47, 客户端连接真实服务端, 库版本 2026.08.13.6）
+# 商城 Y 键打开, DBEDITOR_VERIFY_ITEM 钩子自动翻页到目标商品页
+
+[Select] *** StartGame 成功! 进入游戏 ***
+[GameStore] 列表: 30 Mark Of Destruction [T] | 显示价: 12,345
+[GameStore] 验收钩子: 'Mark Of Destruction [T]' 在第 4 页, 自动翻页
+[GameStore] 行渲染: Mark Of Destruction [T] | 显示价: 12,345
+[Game] 进入游戏! 玩家: TestHero, 位置: (135,151), 方向: UpLeft, 地图: 6

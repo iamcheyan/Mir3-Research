@@ -106,6 +106,7 @@ cd Tools/dbeditor && ./run.sh          # http://127.0.0.1:8810/
      - `docs/dbeditor-acceptance/dbed_02_after_price12345.png`（改动后商城全屏）
      - `docs/dbeditor-acceptance/dbed_03_price_zoom_12345.png`（价格区放大，橙色 5 位数字 = 12,345）
      - `docs/dbeditor-acceptance/dbed_04_mall_dialog.png`（商城对话框裁剪）
+     - `docs/dbeditor-acceptance/gamelog-evidence.txt`（日志摘录）+ `dbed_05_fresh_log_run.png`（复测截屏）
    - 像素佐证：价格标签橙色数字为 **5 段**（"12,345"），改前为 3 位（"200"）
 
 无头验证操作要点：`xdotool windowfocus --sync <WID>` 后按键才进游戏；鼠标点击用 XTEST
