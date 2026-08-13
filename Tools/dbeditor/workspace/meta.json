@@ -862,6 +862,11 @@
         "zh": "头像",
         "type": "int"
       },
+      "Category": {
+        "zh": "分类",
+        "type": "enum",
+        "to": "NPCCategory"
+      },
       "GoodsIndex": {
         "zh": "商店编号",
         "type": "int"
