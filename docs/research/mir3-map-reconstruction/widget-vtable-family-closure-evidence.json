@@ -1,0 +1,26 @@
+{
+  "evidence_id": "widget-vtable-family-closure-2026-08-12-f1042",
+  "title": "Round 736 (F1042): shared widget vtable family CLOSED (F752/F917/F987/F1041) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master d3d353b (697 consecutive F335-F1041), 662 evidence JSONs; arc: party member draw (F917) -> shared slot pair mapping (F1041) with party/equipment/window-base anchors; shared widget render layer COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Close the shared widget vtable family arc.",
+  "question": "Is the shared widget render layer fully documented?",
+  "method": "Full validation + family consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "662 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F917": "party member draw", "F752": "party teardown anchor", "F987": "equipment anchor", "F1041": "shared slot pair x15 vtables"},
+    "family": "draw 0x423D00 + set-frame 0x423F80 + dispatch 0x423CF0 = COMPLETE",
+    "milestone": "697 consecutive rounds F335-F1041"
+  },
+  "exe_trace": {"verify": "exit 0"},
+  "audit_vs_exe": {"F335-F1041": "697 rounds pushed; shared widget render layer complete"},
+  "contrast": {"specific_vs_shared": "F917 party-specific reading -> F1041 shared family", "alive_vs_dead": "0x423F80 14 slots vs 0x423F90 0 refs"},
+  "verdict": "Shared widget vtable family CLOSED (F1042): draw/set-frame/dispatch slots, 15-vtable distribution, and anchors are byte-level documented; validation green, 697 consecutive rounds, 662 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F917/F752/F987/F1041.",
+  "cross_refs": ["F917", "F752", "F987", "F1041"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": ["697 consecutive shipping rounds F335-F1041", "shared widget render layer 100%", "next: HANDOFF refresh 159, remaining corners"]
+}

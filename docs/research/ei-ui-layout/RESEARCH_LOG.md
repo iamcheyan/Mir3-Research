@@ -9179,3 +9179,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔vtable 家族〕**槽位对 {draw 0x423D00, set-frame 0x423F80 [+0x30]} 跨 ≥15 个 vtable 重复（imm32 扫描 15/14 命中）：0x476610 窗口基类（+0x08/+0x0C，并在 +0x20/+0x38 子对象前缀重复）、0x4767D0 组队窗（dtor 0x4245A0 = F752）、0x476A50 装备窗（0x44AFF0/0x44B0B0 = F987）；分派 0x423CF0 占 0x47662C/0x476A78 两槽；0x423F90 写 [+0x34] 零引用（死 thunk）。
 - **〔升格〕**0x423D00 由 F917「组队成员绘制」升格为**共享 widget 帧绘制**（帧 [0x30] 经 [0x28] WIL blit 0x460240，回退色块 0x4542A0/0x4542F0 alpha [0x50]/[0x51]）。
 - 落盘：shared-widget-vtable-family-evidence.json（F1041，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 735。
+## Round 736 (F1042) — 2026-08-12：共享 widget vtable 家族闭合（F917/F752/F987/F1041 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**662 证据 JSON**；三服务 200；master d3d353b（**697 连发 F335-F1041 已推**）。
+- **〔弧〕**组队成员绘制（F917）→ 共享槽位对全图（F1041：draw 0x423D00 ×15 + set-frame 0x423F80 ×14 + 分派 0x423CF0 ×2，组队/装备/窗口基类锚定）——**共享 widget 渲染层完整**。
+- 落盘：widget-vtable-family-closure-evidence.json（F1042，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 736。
