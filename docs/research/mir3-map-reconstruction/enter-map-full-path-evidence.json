@@ -1,0 +1,29 @@
+{
+  "evidence_id": "enter-map-full-path-2026-08-12-f1064",
+  "title": "Round 758 (F1064): DEFAULT branch + full ENTER-MAP path decoded (F1063 follow-up, 2 corrections to F1060/F1061) - DEFAULT 0x422875 is ROUTING BY MAP ID: packet dword [p] == current map [0x2F8784] -> local handling: MSG 0x21 = DUNGEON-CANDIDATE RESEND GATE (F1060 'unhandled' CORRECTED): timeGetTime [0x47630C] - [0x35B278] >= 0x1F4 -> update words [0x35B1F5/F9] + [0x35A34A/34C] from [p+6]/[p+8], free, call 0x40A1E0 @ [0x2F8780]; else push [screen+0x2F8870] queue (delay 500ms); other types -> 0x40A1E0 @ [0x2F8780]; packet for ANOTHER map -> walk entity dlist [0xE1158] match node payload id [node+4] -> 0x40A1E0 @ that entity + push [entity+0xF0] (cross-map forward to that entity's queue); no match -> screen fallback 0x422580 else free; loop tail: count-bounded (jb [esp+0x10] vs [ebp]) batch drain; MSG 0x33/0x27A -> 0x422960 = FULL ENTER-MAP EXECUTION: gate [0x2F8840]==3 && line [0x35A31C]-[0x35A320] < [0x35A329]-1 -> re-push [screen+0x364458] ([0x35B2B8]=1, delay); else if [0x4279A4]==0 -> run: notice sink 0x42E1F0 @ [0x2A548C] (notices [0x2F8788]), D3D present 0x45B1D0/0x45B3D0 @ 0x8AB130, [0x4279A4]=0x5DC timer, ZERO world: [0x4279A8]/[0x42820C]/[0x35A320]/[0x35A31C]/[0x428210]/[0x428214]/[0x428218]/[0x42821C]/[0x35A324]/[0x35A328], [0x428220]=1.0f, [0x35A329]=0xA (10 lines), [0x35A338]/[0x35A400]/[0x35B1D0]/[0x35B1D4], byte [0x2F886C], block [0x2F8854..0x2F8860], PLAYER TELEPORT: words [p+6]->[0x35B25C]+[0x2F884C], [p+8]->[0x35B260]+[0x2F8850], hero reset 0x410100 @ [screen+0xF5200] + virtual slot+0x10 (mode byte [0x2F8841]), map title 0x452810 base64 0x400B @ [p+0xC], MAP LOAD: player pos - 0xC -> 0x43C9C0 (tile walkable check F1008 region) + name 0x43B600 @ [screen+0xF5200], ZERO tile cache [screen+0x154] 0x38400 bytes (22528 dwords), BGM: byte [p+0xA] vs cached [0x35B2BD] -> PlaySound 0x47624C via [0x8AB7B0]; map type 0/1/2 -> floor color 0xFFFFFF/0xF0F0F/0x555555 -> hit-flash grid 0x434610 @ [0x35B2C0], chat reset 0x41C1E0, minimap open ([0x2AB9A4]!=0 -> close 0x451770 @ 0x8AB828), window resets 0x4195C0/0x419570, WIPE list [0xE11D0] (+[0xE11D4]/[0xE11E0]) and list [0xE11B8] (+[0xE11BC]/[0xE11C8]), zero [0x364444..0x364450], free packet, [0x35B2B8]=1, [0x428044]=1, [0x428048]=0",
+  "date": "2026-08-12",
+  "objective": "Decode the screen dispatcher default routing and the real enter-map executor.",
+  "question": "How do non-switch screen messages route, and what does entering a map actually do?",
+  "method": "Disasm 0x422875-0x422956 + 0x422960-0x422CBB.",
+  "scope": "0x4227F0 tail + enter-map executor.",
+  "cell_analysis": {
+    "default_routing": {"same_map": "msg 0x21 = timed resend gate (500ms) -> local update or re-queue [0x2F8870]", "other_map": "entity dlist [0xE1158] match by payload id -> forward to [entity+0xF0]", "fallback": "0x422580 else free", "batch": "bounded loop drain"},
+    "enter_map": {"gates": "[0x2F8840]==3 line throttling; [0x4279A4]!=0 busy", "world_zero": "16+ fields incl [0x428220]=1.0f zoom, [0x35A329]=10", "teleport": "words [p+6]/[p+8] -> [0x2F884C]/[0x2F8850] + hero 0x410100 + slot+0x10", "map_load": "title base64 0x400B; 0x43C9C0 walkable + 0x43B600 @ [0xF5200]; tile cache [0x154] 0x38400B zero", "bgm": "byte [p+0xA] diff -> PlaySound [0x8AB7B0] via [0x47624C]; map type -> floor color 0xFFFFFF/0xF0F0F/0x555555 -> grid 0x434610", "wipe": "lists [0xE11D0]/[0xE11B8] freed + [0x364444..50] zero; minimap closed 0x451770"},
+    "msg_0x33": "0x422960 (same as 0x27A) - the actual enter-map trigger"
+  },
+  "exe_trace": {"sequence": "recv 0x33/0x27A (or 0x32 names first) -> gates -> D3D present -> zero world -> teleport player -> load map + wipe tile cache -> BGM + floor tint -> reset HUD lists -> flags"},
+  "audit_vs_exe": {
+    "F1060": "CORRECTED: msg 0x21 = dungeon-candidate timed resend gate (not unhandled)",
+    "F1061": "CORRECTED: default = map-id routing incl. cross-map entity forwarding",
+    "F1063": "0x422CC0 (msg 0x32) = name/title stage; 0x422960 (msg 0x33/0x27A) = the real map-switch executor",
+    "F1044": "notice color sink 0x42E1F0 consumer [0x2F8788] appears here"
+  },
+  "contrast": {"name_stage_vs_exec": "0x32 sets strings, 0x33 performs the switch", "same_map_vs_forward": "local update vs cross-map entity queue"},
+  "verdict": "Enter-map lifecycle closed end-to-end: dual-packet protocol (0x32 names then 0x33 execute), map-id routing with 500ms resend gate, full world reset field list, player teleport, tile-cache wipe, BGM + floor tint by map type.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Full dispatcher tail + executor decoded from .text.",
+  "cross_refs": ["F1063: 0x32 handler", "F1061: dispatcher", "F1008: tile check", "F1005: hit-flash grid"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422875+0xE1; 0x422960+0x35B",
+  "notes": ["msg 0x21 resend gate 500ms [0x35B278]", "tile cache zero 0x38400 bytes @ [screen+0x154]", "719 consecutive rounds F335-F1064"]
+}

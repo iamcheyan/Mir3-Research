@@ -9306,3 +9306,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x2F0 状态旗标 0x423070〕**byte [p]→word [0x35B251]、[p+6..0xB]→[0x35B253..258]。
 - **〔新〕**push 家族变体 0x4230E0/0x423180（节点 vtable 0x4767C0）+ 内联 vtable 复位 thunk 0x4230D0。
 - 落盘：screen-dispatch-handlers-evidence.json（F1063，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 757。
+## Round 758 (F1064) — 2026-08-12：默认分支路由 + 完整进图执行器（F1063 后续，两处勘误）
+
+- **〔默认分支 = 按图 ID 路由〕**[p]==当前图 [0x2F8784] → 本地：**0x21 = 副本候选重发门（F1060「未处理」勘误）**——timeGetTime−[0x35B278] ≥ 0x1F4 才更新字组并消费，否则重推 [screen+0x2F8870] 延迟 500ms；异图包 → 遍历实体链 [0xE1158] 匹配 payload id → **转发 [entity+0xF0] 跨图队列**；无匹配 → 0x422580 兜底 else 释放；批量有界排水。
+- **〔0x422960 完整进图（msg 0x33/0x27A）〕**门（[0x2F8840]==3 行节流 + [0x4279A4] 忙）→ D3D present ×2 → [0x4279A4]=0x5DC → **世界清零 16+ 字段**（[0x428220]=1.0f 缩放、[0x35A329]=10 行）→ **玩家传送** [p+6]/[p+8]→[0x2F884C]/[0x2F8850] + 英雄 0x410100 + 虚槽+0x10 → 地图标题 base64 0x400B + **0x43C9C0 瓦片可走 + 0x43B600 载图** → **瓦片缓存 [0x154] 0x38400 字节清零** → BGM 字节 [p+0xA] 比对缓存 [0x35B2BD] → PlaySound；地图类型 0/1/2 → 地板色 0xFFFFFF/0xF0F0F/0x555555 → 受击闪光网格 0x434610 → 聊天/HUD/双列表 [0xE11D0]/[0xE11B8] 清 + 小地图关闭 → 旗标。
+- **〔勘误〕**F1060 msg 0x21；F1061 默认分支语义；0x32 是名字阶段、0x33 才是执行。
+- 落盘：enter-map-full-path-evidence.json（F1064，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 758。

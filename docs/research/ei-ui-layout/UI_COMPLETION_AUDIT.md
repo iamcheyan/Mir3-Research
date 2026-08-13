@@ -4738,3 +4738,7 @@ git diff --check
 
 - 0x32 进图（实体世界整体重置 + 0x51 请求）/ 0x34 称号块 / 0x2F0 旗标块全解。
 - 落盘：`screen-dispatch-handlers-evidence.json`（F1063）+ RESEARCH_LOG Round 757。
+## Round 758 (2026-08-12) — 完整进图路径（Finding 1064）
+
+- 双包协议（0x32 名字 → 0x33 执行）+ 按图路由（含跨图实体转发 + 0x21 重发门）+ 世界重置全字段表 + 传送/载图/瓦片缓存清零/BGM/地板色调。
+- 落盘：`enter-map-full-path-evidence.json`（F1064）+ RESEARCH_LOG Round 758。
