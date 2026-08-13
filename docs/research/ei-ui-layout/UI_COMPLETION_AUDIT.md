@@ -4766,3 +4766,7 @@ git diff --check
 
 - 可走性消费者=特效放置门；0x5600B8/0x5600BC/0x5600C8 = FX 节点链、0x5600E8/0x5600EC/0x5600F8 = 效果记录链（F1054 线索闭合）；第二图对象实例 0x574118。
 - 落盘：`fx-impact-spawner-evidence.json`（F1070）+ RESEARCH_LOG Round 764。
+## Round 765 (2026-08-12) — 双图对象定案（Finding 1071）
+
+- 方法族（变换/逆变换/邻步/方向/移动验证器）+ 双活实例（screen 内联 + 英雄 [0x62A58]）+ 0x574118 永未加载死对象定案（F1070 生成器运行时死）。
+- 落盘：`mapobj-dual-instance-evidence.json`（F1071）+ RESEARCH_LOG Round 765。

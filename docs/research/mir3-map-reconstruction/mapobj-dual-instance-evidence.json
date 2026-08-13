@@ -1,0 +1,32 @@
+{
+  "evidence_id": "mapobj-dual-instance-2026-08-12-f1071",
+  "title": "Round 765 (F1071): DUAL map-object architecture + transform/validator method family decoded, F1070 lead closed with a DEAD-OBJECT verdict - (1) METHOD FAMILY (map obj methods, all take ecx=obj): 0x43CFD0 world->screen {x=(wx-[obj+0x12C])*48-[obj+0x134]-0xC8, y=(wy-[obj+0x130])*32-[obj+0x138]-0x9D} (16 callers); 0x43D020 screen->world INVERSE {wx=(sx+0xC8)/48+ax (0x2AAAAAAB magic), wy=(sy+0x9D)/32+ay} (3); 0x43D070 distance+direction: sqrt(dx^2+dy^2) vs float [0x476450], octant codes 0/4/8/0xC, 9-entry float direction-blend table 1.0/0.98/0.925/0.83/0.665/0.555/0.385/0.195/0.0125 (1); 0x43CAF0 8-dir neighbor step (dir 0-3 -> +4 reverse; jt 8 entries) (7); 0x43CC30 MOVEMENT VALIDATOR: dir 0-7 -> neighbor cell via jt 0x43CD94 -> 0x43C9F0 walkable -> if blocked ret 0; then ENTITY OCCUPANCY via global chains [0x560080]/[0x560070]: walk nodes, payload [eax+0x88] type, [eax+0xC0] state (0x13 or 3+flags [eax+0x61C74]) gates -> occupied ret 0, free ret walkable (46 callers); (2) DUAL INSTANCES: LIVE = screen inline obj +0xF5200 (loaded by enter-map 0x43B600, ebp=[esi+0xF5200] PROVEN at 0x422A92) and hero pointer [entity+0x62A58] (0x4108F7: 8-direction step loop al<8 -> validate -> 0x43C150/0x43C0F0 -> send 0x452170; 0x419C66: screen map validate then entity-at-cell via dlist [0xE1158] payload match [node+0xCC]/[node+0xD0] vs (x,y) -> ret 1 = occupied); DEAD = fixed .data global 0x574118 (zero-init beyond .data raw 0x47F000): ALL 38 imm32 refs are 'mov ecx,0x574118; call method' - ZERO field writers, ZERO struct copies, ZERO loader calls (only 0x43B600 caller is 0x422B2B with ecx=screen+0xF5200) -> PERMANENTLY UNLOADED; consequences: 0x43C9F0 on it always ret 1 (unloaded default = walkable, so the F1070 FX impact spawner NEVER fires - second load-bearing dead family after F1061), 0x43CC30 on it always ret 0, transforms read anchor=scroll=0 fixed grid; inline transform copy at 0x405479-0x4054C6 reads [0x574244..0x574250] directly (login-era fixed-grid use [INFERENCE]); (3) CORRECTION to F1065/F1070: 0x43C9F0 semantics = ret 1 walkable/OK when unloaded OR out-of-bounds OR no buf2 OR bit0 clear; ret 0 ONLY when loaded+in-bounds+bit0 set (F1065 formula !(byte0&1) correct, but unloaded-default now explicit)",
+  "date": "2026-08-12",
+  "objective": "Close the 0x574118 writer question and decode the map-object method family.",
+  "question": "Is 0x574118 ever loaded, and what do the map-object methods do?",
+  "method": "Exhaustive imm32 scan of 0x574118 + field addresses 0x574244-0x574250; E8 caller scans with ecx-source classification; disasm 0x43CAF0/0x43CC30/0x43CFD0/0x43D020/0x43D070, 0x4108E0, 0x419C58; ebp trace in 0x422960.",
+  "scope": "map-object method family 0x43CAF0-0x43D290; global 0x574118; hero movement 0x4108xx; occupancy 0x419C58.",
+  "cell_analysis": {
+    "transforms": {"world_to_screen": "0x43CFD0: (w-a)*48-scroll-0xC8 / (w-a)*32-scroll-0x9D", "screen_to_world": "0x43D020: (s+0xC8)/48+a / (s+0x9D)/32+a"},
+    "direction": {"distance": "sqrt(dx^2+dy^2) vs [0x476450]", "octants": "0/4/8/0xC", "blend_table": "1.0..0.0125 9 floats"},
+    "neighbor": "0x43CAF0 dir<4 -> +4 reverse; 8-entry jt",
+    "validator": "0x43CC30: dir->neighbor->walkable->occupancy chains [0x560080]/[0x560070], entity [0x88] type / [0xC0] state / [0x61C74] gates",
+    "instances": {"live_inline": "screen+0xF5200", "live_hero_ptr": "[entity+0x62A58]", "dead_global": "0x574118 (zero writers, never loaded)"},
+    "occupancy_lookup": "0x419C5F: dlist [0xE1158], payload [node+0xCC]=x / [node+0xD0]=y match"
+  },
+  "exe_trace": {"hero_step": "for dir 0..8: 0x43CC30(map@[esi+0x62A58]) -> 0x43C150 -> 0x43C0F0 -> send 0x452170"},
+  "audit_vs_exe": {
+    "F1070": "VERDICT REVISED: the 0x4379xx impact spawner checks the never-loaded 0x574118 -> walkable check always ret 1 -> jne always taken -> spawner dead at runtime",
+    "F1065": "0x43C9F0 unloaded-default semantics made explicit (ret 1)",
+    "F1064": "loader target proven ebp=screen+0xF5200 (0x422A92)",
+    "F1051": "[entity+0x62A58] map pointer sits near the combat-state block (+0x629C8..+0x62A3C)"
+  },
+  "contrast": {"live_map": "screen+0xF5200 + hero [0x62A58]", "dead_map": "0x574118 fixed global"},
+  "verdict": "Map subsystem architecture closed: one live loaded object (render + movement + occupancy), one never-loaded global whose entire consumer family (16 transforms, 7 neighbors, 3 inverses, 1 direction, 2 validators, 5 walkable checks, 2 D290 classifiers) is runtime-dead.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Exhaustive imm32 + E8 scans; methods decoded from .text; dead verdict is absence-of-writers proof.",
+  "cross_refs": ["F1070: spawner + 0x574118 lead", "F1065: accessor family", "F1064: loader call", "F1061: prior dead family"],
+  "tool": "capstone disasm + imm32/E8 scans",
+  "reproduce": "scan imm32 0x574118 & 0x574244-250 in .text; E8 scan 0x43CC30 with ecx-source window",
+  "notes": ["0x43CC30 total callers 46: 2 dead-object + 44 live (hero 0x4108xx-0x4130xx, UI 0x419Cxx-0x41AFxx)", "direction blend floats: 0x3F800000 0x3F7B14BA 0x3F6C8366 0x3F54DB38 0x3F3504F7 0x3F0E39D6 0x3EC3EF07 0x3E47C5AC", "726 consecutive rounds F335-F1071"]
+}
