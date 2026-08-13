@@ -4701,3 +4701,8 @@ git diff --check
 
 - 实体层次（7 vtable）+ 控件基类（x9）+ 列表第 13 员 + **FX 链节点 0x476448 ×114**（全局 [0x560088]/[0x56008C]/[0x560098]，与 F296 闭环）。
 - 落盘：`vtable-block-4763xx-evidence.json`（F1054）+ RESEARCH_LOG Round 748。
+## Round 749 (2026-08-12) — vtable 普查闭合（Finding 1055）
+
+- 全区域唯一块 0x476360-0x476C80（87 数组/425 引用）；列表 17 员终数；渲染设备/静态初始化/CRT 尾全定。
+- vtable 弧（F1041→F1051→F1052→F1053→F1054→F1055）**全闭合**。
+- 落盘：`vtable-census-closure-evidence.json`（F1055）+ RESEARCH_LOG Round 749。

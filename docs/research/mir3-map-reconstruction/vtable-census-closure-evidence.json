@@ -1,0 +1,30 @@
+{
+  "evidence_id": "vtable-census-closure-2026-08-12-f1055",
+  "title": "Round 749 (F1055): vtable CENSUS CLOSED - full [0x475000,0x47A000) sweep finds exactly ONE contiguous block 0x476360-0x476C80 (87 referenced arrays, 425 refs; no vtables exist outside it in the swept region); tail 0x476A80-0x476C80 mapped: window family continues 0x476A88 [44D090 44D150 4268B0 423D00 423F80 450140...] with suffix chain 0x476AD4/AD8/ADC/AF0/AF4/AF8/AFC/B00; LIST family extends to 17 members (0x476A9C, 0x476AB8, 0x476B2C, 0x476B48 - all [dtors | 42E700 423450 4048B0]); 0x476BC4 block carries 0x401380 (F1035 one-time registration callback) as a vtable slot alongside 0x45A2B0/0x45A860/0x45A9E0/0x45A9F0/0x45AA00 x2 - static-initializer object family; 0x476C2C = RENDER DEVICE vtable [45E1B0 45CDD0 45D6C0 45CBE0 45CD90 45CDC0 45CDE0 45CCF0] (0x45Cxxx/0x45Dxxx/0x45Exxx D3D region, cf. ground blit 0x45E8E0 F1011); 0x476C58 [469438 x2 465DD0 465E80 465F20] and 0x476C7C/0x476C80 = CRT/iostream tail; 0x469438 = purecall filler (also x3 in 0x476984)",
+  "date": "2026-08-12",
+  "objective": "Close the vtable census with a full-region sweep.",
+  "question": "Do any vtables exist outside the mapped 0x476300-0x476A80 range?",
+  "method": "imm32 ref scan of .text into [0x475000,0x47A000); block grouping; dump unmapped arrays.",
+  "scope": "0x475000-0x47A000; 87 arrays / 425 refs / 1 contiguous block.",
+  "cell_analysis": {
+    "census": {"region": "[0x475000,0x47A000)", "arrays": 87, "refs": 425, "block": "0x476360-0x476C80 (single)"},
+    "tail_block": {"window_suffixes": ["0x476A88", "0x476AD4", "0x476AD8", "0x476ADC", "0x476AF0", "0x476AF4", "0x476AF8", "0x476AFC", "0x476B00", "0x476B74", "0x476B78", "0x476B7C"], "lists": ["0x476A9C", "0x476AB8", "0x476B2C", "0x476B48"], "static_init": "0x476BC4 (slot 0x401380)", "render_device": "0x476C2C", "crt_tail": ["0x476C58", "0x476C7C", "0x476C80"]},
+    "family_totals": {"list_members": 17, "entity_vtables": 7, "window_family": "0x47660C-0x476B00 region"},
+    "purecall": "0x469438 filler"
+  },
+  "exe_trace": {"sweep": "text-pointer-word refs from .text; group by 0x100 proximity -> single block"},
+  "audit_vs_exe": {
+    "F1051": "pool 0x476600-0x476A80 subsumed by full census",
+    "F1054": "block 0x476300-0x476600 subsumed",
+    "F1035": "0x401380 appears as static-object vtable slot (0x476BC4) - the registration callback is itself a virtual dtor-family member",
+    "F1011": "render device vtable 0x476C2C contains the 0x45Exxx blit region"
+  },
+  "contrast": {"widget_region": "0x476360-0x476B00 (window/list/entity/control)", "runtime_tail": "0x476BC4-0x476C80 (static-init, render device, CRT)"},
+  "verdict": "Vtable census closed: the client's entire polymorphic class universe in the swept region is one contiguous 0x476360-0x476C80 block - 87 arrays, 425 ctor/dtor refs; list family final count 17; render-device and static-initializer vtables identified.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Exhaustive imm32 sweep of the full region.",
+  "cross_refs": ["F1051", "F1054", "F1035", "F1011"],
+  "tool": "capstone disasm + imm32 sweep",
+  "reproduce": "scan .text imm32 into [0x475000,0x47A000); group blocks; compare vs 0x476300-0x476A80",
+  "notes": ["no vtables outside the single block", "710 consecutive rounds F335-F1055"]
+}

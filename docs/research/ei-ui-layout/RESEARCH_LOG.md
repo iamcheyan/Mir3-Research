@@ -9254,3 +9254,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔列表基类 0x476378〕**第 13 个 LIST 成员（4 析构 + 三元组）。
 - **〔FX 节点 vtable 0x476448 ×114〕**全部 `mov [eax],imm32`：分配 → vtable → payload [+4] → 链入全局表 head [0x560088] / tail [0x56008C] / count [0x560098]++——**F296 名牌注记「FX 入 0x560088 效果链」双向闭环**（消费者 F296 + 生产者 0x476448）；姊妹 0x476454 x19。
 - 落盘：vtable-block-4763xx-evidence.json（F1054，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 748。
+## Round 749 (F1055) — 2026-08-12：vtable 普查闭合（F1051/F1054 收官）
+
+- **〔普查〕**[0x475000,0x47A000) 全扫：**唯一连续块 0x476360-0x476C80**（87 数组 / 425 引用）——块外无任何 vtable。
+- **〔尾部 0x476A80-0x476C80〕**窗口家族延续（0x476A88 + 后缀链 0x476AD4-B00）；**列表家族终数 17 员**（0x476A9C/AB8/B2C/B48）；**0x476BC4 静态初始化对象族**（0x401380 注册回调本身是虚槽——F1035 闭环）；0x476C2C = 渲染设备 vtable（0x45Cxxx/0x45Dxxx/0x45Exxx，参 F1011 地面 blit）；0x476C58/C7C/C80 = CRT 尾；0x469438 = purecall 填充。
+- 落盘：vtable-census-closure-evidence.json（F1055，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 749。
