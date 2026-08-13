@@ -9201,3 +9201,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**666 证据 JSON**；三服务 200；master a23a03c（**700 连发 F335-F1045 已推**）。
 - **〔弧〕**8 色表 0x401390 + 9/9 调用点（登录/聊天×2/recv/任务×2/地图×2/移动警告）+ bg/fg 成对约定 + 0x427E30 汇聚——**公告颜色层完整**。
 - 落盘：notice-color-closure-evidence.json（F1046，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 740。
+## Round 741 (F1047) — 2026-08-12：HANDOFF 刷新 160（Round 738-740）
+
+- **〔刷新〕**HANDOFF 追加 Round 738-740（F1044-F1046：公告颜色约定全量 + 聊天族颜色点补全 + 公告颜色层闭合 + **700 连发里程碑**）；基线 Round 736=7cc0d35 → Round 740=7def42c（**701 连发 F335-F1046**，666 证据 JSON）。
+- 落盘：handoff-refresh-160-evidence.json（F1047，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 741。

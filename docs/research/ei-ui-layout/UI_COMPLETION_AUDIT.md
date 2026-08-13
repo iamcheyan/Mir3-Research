@@ -4657,3 +4657,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告颜色层 100%；下一弧：HANDOFF 刷新 160/剩余深层角落）。
+## Round 741 (2026-08-12) — HANDOFF 刷新 160（Finding 1047）
+
+- **Round 738-740 追加 + 701 连发 + 700 里程碑**（公告颜色层完整入档）。
+- 落盘：`handoff-refresh-160-evidence.json`（F1047）+ RESEARCH_LOG Round 741。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告颜色层 100%；下一弧：剩余深层角落/模拟器 polish）。

@@ -1,0 +1,25 @@
+{
+  "evidence_id": "handoff-refresh-160-2026-08-12-f1047",
+  "title": "Round 741 (F1047): HANDOFF refresh 160 - Rounds 738-740 (F1044-F1046: notice color convention full, chat-family sites, notice color closure + 700-round milestone), baseline Round 736=7cc0d35 -> Round 740=7def42c (701 consecutive F335-F1046), 666 evidence JSONs, doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 738-740.",
+  "question": "What changed since HANDOFF refresh 159?",
+  "method": "Append Round 738-740 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 738-740 appended (3 rounds, F1044-F1046)",
+    "baseline": "Round 736=7cc0d35 -> Round 740=7def42c (701 consecutive F335-F1046)",
+    "arcs": {"convention": "F1044 9-site map", "sites": "F1045 9/9 resolved", "closure": "F1046 notice color layer"},
+    "milestone": "700 consecutive rounds reached (F1046)"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1043": "refresh 159 baseline -> now refresh 160", "F335-F1046": "701 rounds"},
+  "contrast": {"refresh_159_vs_160": "F1044-F1046 (3 new findings)"},
+  "verdict": "HANDOFF refreshed 160 (F1047): Rounds 738-740 documented (notice color layer complete, 700-round milestone), baseline 7cc0d35 -> 7def42c, 701 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1044-F1046 evidence.",
+  "cross_refs": ["F1043: refresh 159", "F1046: notice color closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 738-740 section to HANDOFF",
+  "notes": ["701 consecutive shipping rounds F335-F1046", "notice color layer 100%", "700-round milestone recorded"]
+}
