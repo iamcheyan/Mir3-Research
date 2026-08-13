@@ -4706,3 +4706,7 @@ git diff --check
 - 全区域唯一块 0x476360-0x476C80（87 数组/425 引用）；列表 17 员终数；渲染设备/静态初始化/CRT 尾全定。
 - vtable 弧（F1041→F1051→F1052→F1053→F1054→F1055）**全闭合**。
 - 落盘：`vtable-census-closure-evidence.json`（F1055）+ RESEARCH_LOG Round 749。
+## Round 750 (2026-08-12) — 渲染设备 vtable 槽位语义（Finding 1056）
+
+- 9 槽全解：消息处理/模式调整/640×480×16 重置（丢失旗标）/内缩/timer；浮点尾勘误。
+- 落盘：`render-device-vtable-evidence.json`（F1056）+ RESEARCH_LOG Round 750。

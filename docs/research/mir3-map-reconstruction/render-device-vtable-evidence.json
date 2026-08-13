@@ -1,0 +1,37 @@
+{
+  "evidence_id": "render-device-vtable-2026-08-12-f1056",
+  "title": "Round 750 (F1056): render device wrapper vtable 0x476C2C decoded (9 slots, F1055 follow-up) - boundary CORRECTED: words [9]/[10] are float constants 0.3/0.6 (0x3E99999A/0x3F19999A), not slots; SLOT[0] 0x45E1B0 = delegate-4-args to target [obj+0x78] vtbl+0xC (fallback self) ret 0x10; SLOT[1] 0x45CDD0 = jmp thunk 0x467CE0 (CRT); SLOT[2] 0x45D6C0 = windowed-mode adjust: flag [esi+0x2C] bit0 -> release surfaces [esi+0x48]/[esi+0x50] via [0x47627C]/[0x4762E8] else GetSystemMetrics(0/1) [0x476288] -> SetRect [esi+0x48] screen rect; SLOT[3] 0x45CBE0 = MESSAGE HANDLER switch on arg3: 5 (WM_SIZE) -> vtbl+0x10, 1 -> 0x467CB0, 2 (WM_DESTROY) -> ShowCursor 0/1 [0x4762C8] + vtbl+4, 3 -> vtbl+0x14, 0x20/0x104/0x312 special-cased, default -> 0x467CB0; SLOT[4] 0x45CD90 = pause/minimize: arg in {1,4} -> [+0x40]=0 else 1, then vtbl+8; SLOT[5] 0x45CDC0 = tick via vtbl+8 ret; SLOT[6] 0x45CDE0 = reset handler: arg==0xD -> mode reset 0x45D270(0x280=640, 0x1E0=480, 0x10 bpp, mode 5|2|1 by flag [esi+0x2C] bit0) + error dialog 0x47AFCC/0x47B004 + [esi+0x44]=1; SLOT[7] 0x45CCF0 = client-rect inset: GetSystemMetrics(0x20/0x21) + words [+0x58]/[+0x5A] -> writes [ecx+0x18..0x24] stride offsets; SLOT[8] 0x45CD70 = timer arm [0x4762D8](0,0x7F00) -> [0x4762D4]",
+  "date": "2026-08-12",
+  "objective": "Decode the render device wrapper vtable slots.",
+  "question": "What does each slot of the 0x476C2C render device vtable do?",
+  "method": "Full slot dump 0x476C2C-0x476C58 + 14-instr disasm head per slot.",
+  "scope": "render device wrapper 0x45CBE0-0x45E1F0.",
+  "cell_analysis": {
+    "slots": {
+      "0x00": "delegate 4 args to [obj+0x78] target vtbl+0xC (fallback self vtbl+0xC), ret 0x10",
+      "0x01": "thunk jmp 0x467CE0 (CRT)",
+      "0x02": "windowed adjust: bit0 of [0x2C] -> release [0x48]/[0x50] or SetRect screen metrics",
+      "0x03": "WndProc-style message switch (WM_SIZE/WM_DESTROY ShowCursor/WM_MOVE + 0x20/0x104/0x312)",
+      "0x04": "pause flag: arg in {1,4} -> [0x40]=0 else 1, tick",
+      "0x05": "bare tick via vtbl+8",
+      "0x06": "reset: mode 0x45D270(640,480,16bpp,mode) + error dialog + [0x44]=1",
+      "0x07": "client-rect inset math -> [0x18..0x24]",
+      "0x08": "timer arm 0x7F00"
+    },
+    "float_tail": "0.3 / 0.6 constants follow the table (not slots)"
+  },
+  "exe_trace": {"reset_path": "0x45CDE0: WM(0xD) -> 0x45D270(640x480x16, 5|2|1) -> [esi+0x44]=1 lost flag"},
+  "audit_vs_exe": {
+    "F1055": "render device vtable boundary corrected to 9 slots (float tail excluded)",
+    "F310": "screen object (screen+0x6214 minimap etc.) sits above this wrapper",
+    "F1011": "0x45E8E0 ground blit lives in the same 0x45Exxx region as slot 0"
+  },
+  "contrast": {"windowed_vs_fullscreen": "bit0 of [0x2C] branches release vs metrics", "pause_states": "args 1/4 clear the busy flag"},
+  "verdict": "Render device wrapper closed at slot level: message handling, mode/windowed adjust, 640x480x16 reset path with lost-device flag, client-rect inset, timer arm - the substrate beneath the screen object.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All slots disassembled from .text; constants inline.",
+  "cross_refs": ["F1055: census", "F310: screen chain", "F1011: 0x45Exxx blit region"],
+  "tool": "capstone disasm",
+  "reproduce": "dump 0x476C2C words; disasm each of 9 slots +0x40",
+  "notes": ["vtable length 9 (not 11) - 0.3/0.6 floats follow", "reset mode 640x480 bpp16", "711 consecutive rounds F335-F1056"]
+}

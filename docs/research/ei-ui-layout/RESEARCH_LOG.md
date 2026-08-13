@@ -9259,3 +9259,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔普查〕**[0x475000,0x47A000) 全扫：**唯一连续块 0x476360-0x476C80**（87 数组 / 425 引用）——块外无任何 vtable。
 - **〔尾部 0x476A80-0x476C80〕**窗口家族延续（0x476A88 + 后缀链 0x476AD4-B00）；**列表家族终数 17 员**（0x476A9C/AB8/B2C/B48）；**0x476BC4 静态初始化对象族**（0x401380 注册回调本身是虚槽——F1035 闭环）；0x476C2C = 渲染设备 vtable（0x45Cxxx/0x45Dxxx/0x45Exxx，参 F1011 地面 blit）；0x476C58/C7C/C80 = CRT 尾；0x469438 = purecall 填充。
 - 落盘：vtable-census-closure-evidence.json（F1055，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 749。
+## Round 750 (F1056) — 2026-08-12：渲染设备包装 vtable 0x476C2C 全槽位（F1055 后续）
+
+- **〔边界勘误〕**9 槽（[9]/[10] 为浮点常量 0.3/0.6 非指针）。
+- **〔槽位语义〕**[0] 委托 4 参至 [obj+0x78] 目标设备；[1] CRT thunk；[2] 窗口模式调整（[0x2C] bit0 → 释放表面 [0x48]/[0x50] 或 GetSystemMetrics → SetRect）；[3] **WndProc 式消息开关**（WM_SIZE/WM_DESTROY ShowCursor/WM_MOVE + 0x20/0x104/0x312）；[4] 暂停旗标（arg∈{1,4} → [0x40]=0）；[5] 裸 tick；[6] **重置路径 0x45D270(640×480, 16bpp, 模式 5|2|1) + 丢失设备旗标 [0x44]**；[7] 客户区内缩 → [0x18..0x24]；[8] timer 0x7F00。
+- 落盘：render-device-vtable-evidence.json（F1056，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 750。
