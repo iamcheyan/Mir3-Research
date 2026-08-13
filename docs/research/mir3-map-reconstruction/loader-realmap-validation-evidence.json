@@ -1,0 +1,29 @@
+{
+  "evidence_id": "loader-realmap-validation-2026-08-12-f1066",
+  "title": "Round 760 (F1066): loader math VALIDATED against real .map files (F1065 empirical check) - formula file_size == 0x1C + ((w*h+3)>>2)*3 + w*h*14 with header fields {lib-group byte @0x14, width word @0x16, height word @0x18}: 505/544 maps BYTE-EXACT (Map/ dir, MIR3_EI_ROOT); 39 mismatches form a clean second family: 0_00xx event submaps + d6xx/d6xxx quest maps where file_size == 0x1C + ((w*h+3)>>2)*3 + w*h*13 EXACTLY (verified 0_002: 28+300+5200=5528; d601: 28+46875+812500=859403) - i.e. 13-byte cell records; the client loader 0x43B600 HARDCODES 14 B/cell (imul 8x-x shl), so those 39 maps would read short/garbage tail in buf2 [INFERENCE: server-gated or legacy data never loaded]; lib-group byte distribution among valid maps: 0 x491, 1 x14 -> client loads (group+1)*14 tile libs (14 or 28); tile-lib NAME table 0x56B22C lies beyond the raw file mapping (offset 0x16B22C > file size 0x80000) -> populated at runtime by an initializer (open lead)",
+  "date": "2026-08-12",
+  "objective": "Empirically validate the decoded loader formula on real data.",
+  "question": "Does the client loader math reproduce the real .map files byte-for-byte?",
+  "method": "Sweep all 544 Map/*.map: parse header at 0x14/0x16/0x18, compute 0x1C+ceil(w*h/4)*3+w*h*14, compare to file size; solve mismatches for alternate cell stride.",
+  "scope": "Map/*.map (544 files, MIR3_EI_ROOT).",
+  "cell_analysis": {
+    "formula_14b": {"maps": 505, "result": "byte-exact"},
+    "family_13b": {"maps": 39, "names": "0_0011/0_002/0_0021/0_0031-33/d601/d602/...", "formula": "0x1C + ceil(w*h/4)*3 + w*h*13", "verified": ["0_002: 5528", "0_0031: 5473", "d601/d602: 859403"]},
+    "lib_groups": {"0": 491, "1": 14},
+    "name_table": {"addr": "0x56B22C stride 0x104", "status": "beyond raw file (runtime-filled), open lead"}
+  },
+  "exe_trace": {"sweep": "544 files parsed; 505 exact; 39 fit stride-13 formula exactly"},
+  "audit_vs_exe": {
+    "F1065": "loader header/chunk layout EMPIRICALLY CONFIRMED on 505 real maps",
+    "tools_maps": "client formula now anchored to the same data the repo tooling parses",
+    "F1008": "14B stride matches the 505-map majority; 13B family documented as data-side variant"
+  },
+  "contrast": {"majority_14b": "505 maps", "family_13b": "39 maps (0_00xx + d6xxx)"},
+  "verdict": "Loader decoded AND empirically validated: 505/544 byte-exact; the 39-map 13-byte-cell family is a genuine data-format variant the hardcoded client loader does not cover - documented as data-vs-client divergence.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Formula from primary-bytes F1065; validation by file sweep on original client data.",
+  "cross_refs": ["F1065: loader", "F1008: stride", "F1012: lib tables"],
+  "tool": "python sweep",
+  "reproduce": "for f in Map/*.map: size == 0x1C+((w*h+3)>>2)*3+w*h*(14|13)",
+  "notes": ["505 exact at stride 14, 39 exact at stride 13, 0 unexplained", "lib-group byte: 0x491 / 1x14", "721 consecutive rounds F335-F1066"]
+}

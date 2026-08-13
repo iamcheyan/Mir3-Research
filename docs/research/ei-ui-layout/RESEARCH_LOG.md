@@ -9319,3 +9319,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x43CA40 格属性读取器〕**word [cell+0xC]：0→无效；否则 bits14-15 = 文件号、>>4 低 nibble = 帧族——客户端版格解码器。
 - **〔0x43B880〕**8 方向滚动步进（jt 0x43B978，系数表 [0x15C]/[0x160]）。
 - 落盘：map-file-loader-evidence.json（F1065，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 759。
+## Round 760 (F1066) — 2026-08-12：加载器数学实测验证（F1065 经验闭合）
+
+- **〔505/544 字节级精确〕**`文件大小 == 0x1C + ceil(w×h/4)×3 + w×h×14`（头字段：库组字节 @0x14、宽 @0x16、高 @0x18）在 Map/ 全部 544 图上验证。
+- **〔39 图 13 字节格族〕**0_00xx 事件图 + d6xx/d6xxx 任务图精确满足 `... + w×h×13`（0_002: 28+300+5200=5528 ✓；d601/d602: 859403 ✓）——客户端 0x43B600 硬编码 14B/格，该族为真实数据版式分歧（推断服务端门控或遗留数据）。
+- **〔库组分布〕**有效图中组 0 ×491、组 1 ×14 → 客户端载 (组+1)×14 库（14 或 28）。
+- **〔开放线索〕**瓦片库名表 0x56B22C 超出原始文件映射（运行时填充，初始化器待查）。
+- 落盘：loader-realmap-validation-evidence.json（F1066，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 760。

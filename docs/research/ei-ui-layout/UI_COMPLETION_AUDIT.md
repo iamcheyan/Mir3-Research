@@ -4746,3 +4746,7 @@ git diff --check
 
 - 头/chunk 布局 + 14 字节格记录语义（bit0 封锁 + 属性字文件号 bits14-15）+ 每图 (组+1)×14 瓦片库绑定 + 锚点/滚动访问器——与仓库地图工具链格式结论互证。
 - 落盘：`map-file-loader-evidence.json`（F1065）+ RESEARCH_LOG Round 759。
+## Round 760 (2026-08-12) — 加载器实测验证（Finding 1066）
+
+- 505/544 字节级精确 + 39 图 13B 格族（数据侧变体）+ 库组分布——客户端公式与原版数据互证。
+- 落盘：`loader-realmap-validation-evidence.json`（F1066）+ RESEARCH_LOG Round 760。
