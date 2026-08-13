@@ -76,7 +76,6 @@ GOALS=(
   "019ffd4e-bf5c-7000-bb0e-fe5c7d455096|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-13T22-47-04-284Z_019ffd4e-bf5c-7000-bb0e-fe5c7d455096.jsonl|yomu|/home/tetsuya/development/yomu|Yomu书籍列表搜索目录修复"
   "019ffd4e-be3d-7000-9ac1-b9c69972a531|/home/tetsuya/.omp/agent/sessions/-development-fudoki/2026-08-13T22-47-03-997Z_019ffd4e-be3d-7000-9ac1-b9c69972a531.jsonl|fudoki|/home/tetsuya/development/fudoki|Fudoki备份IIFE-TTS同步修复"
   "019ffd44-2ca2-7000-afa0-5c4b34b5d047|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-13T22-35-31-362Z_019ffd44-2ca2-7000-afa0-5c4b34b5d047.jsonl|zdocs|/home/tetsuya/development/zircon|Zircon全代码文档化"
-  "019ffbaf-4c8d-7000-a36c-76336908116a|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-13T15-13-17-453Z_019ffbaf-4c8d-7000-a36c-76336908116a.jsonl|botgoal|/home/tetsuya/development/zircon|/home/tetsuya/.omp/goal-watchdog.019ffbaf.state"
   "019ffbbb-cff3-7000-8893-29882c9c7c6f|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-13T15-26-57-523Z_019ffbbb-cff3-7000-8893-29882c9c7c6f.jsonl|ghaudit|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ffbbb.state"
 )
 
@@ -264,7 +263,48 @@ watch_one_goal() {
   # with "继续" immediately (short PAUSED_NUDGE_SECONDS), so the agent never
   # stops unless the goal reaches a truly terminal status.
   if [ -n "$goal_status" ] && [ "$goal_status" != "active" ] && [ "$goal_status" != "paused" ]; then
-    log "goal status='$goal_status' (not active); disabling watchdog for this goal"
+    # --- 自动清理已完成的 goal：杀进程 + 杀 tmux + 记录回看日志 -----------------
+    # 资源回收: terminal 状态的 goal 不再需要 omp 进程(bun ~4% 内存/个)和 tmux。
+    # 转录 jsonl 保留(omp 自己的会话历史,可 --resume 回看),只回收运行时资源。
+    cleanup_completed() {
+      local gid="$1" sess="$2" label="$3"
+      local ts
+      ts=$(date '+%F %T')
+      # 找该 goal 的 omp 进程
+      local pids
+      pids=$(pgrep -f "omp.*--resume $gid" 2>/dev/null)
+      if [ -n "$pids" ]; then
+        echo "$pids" | while read -r p; do kill "$p" 2>/dev/null; done
+        log "cleanup: killed omp pid(s) [$pids] for completed goal $gid"
+      fi
+      # 杀 tmux 会话(只有该会话属于此 goal 时;会话名在 GOALS 里登记过)
+      if [ -n "$sess" ] && tmux has-session -t "$sess" 2>/dev/null; then
+        tmux kill-session -t "$sess" 2>/dev/null
+        log "cleanup: killed tmux session '$sess' for completed goal $gid"
+      fi
+      # 记录到完成日志(追加,便于回看)
+      local done_log=/home/tetsuya/.omp/logs/goal-completed.log
+      {
+        echo "[$ts] goal=$gid label=${label:-$sess} status=$goal_status"
+        echo "  transcript=$(basename "$GOAL_SESSION_FILE")"
+        echo "  workdir=$WORKDIR"
+        echo "  resume_cmd: $OMP --resume $gid --auto-approve"
+        echo ""
+      } >> "$done_log"
+      log "cleanup: recorded completed goal $gid in $done_log"
+    }
+    # 只在第一次检测到终态时清理一次(state 里记 marker 防重复)
+    local already
+    already=$(st_get CLEANED)
+    if [ "$already" != "1" ]; then
+      if [ "$DRY_RUN" = 1 ]; then
+        echo "TEST would cleanup: goal=$gid session=$TMUX_SESSION (status=$goal_status)"
+      else
+        cleanup_completed "$GOAL_ID" "$TMUX_SESSION" "$LABEL"
+        st_set CLEANED 1
+      fi
+    fi
+    log "goal status='$goal_status' (terminal); disabling watchdog for this goal"
     touch "$GOAL_OFF_FILE"
     return 0
   fi
@@ -484,7 +524,8 @@ watch_one_goal() {
 
 # ── 主循环:遍历所有 goal ────────────────────────────────────────────────────
 for goal_line in "${GOALS[@]}"; do
-  IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR STATE <<< "$goal_line"
+  IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR STATE LABEL <<< "$goal_line"
+  LABEL=${LABEL:-$STATE}   # 第5字段可选：label(人类可读任务名)或旧式 state 文件路径
   GOAL_TAG=${GOAL_ID:0:8}
   GOAL_OFF_FILE="/home/tetsuya/.omp/mir3-goal-watchdog.$GOAL_TAG.off"
   # 每 goal kill-switch: touch 此文件禁用该 goal 的 watchdog。
