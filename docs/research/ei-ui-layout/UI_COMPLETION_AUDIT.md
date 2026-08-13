@@ -4601,3 +4601,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口几何 100%；下一弧：HANDOFF 刷新 158/剩余深层角落）。
+## Round 734 (2026-08-12) — HANDOFF 刷新 158（Finding 1040）
+
+- **Round 731-733 追加 + 696 连发**（窗口几何完整入档）。
+- 落盘：`handoff-refresh-158-evidence.json`（F1040）+ RESEARCH_LOG Round 734。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口几何 100%；下一弧：剩余深层角落/模拟器 polish）。

@@ -9170,3 +9170,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**660 证据 JSON**；三服务 200；master c1b33bd（**696 连发 F335-F1038 已推**）。
 - **〔弧〕**几何摘要（F284）+ 窗口基类（F713）+ 原始构造体（F1038）——WIL 尺寸回退、居中外框/内容框、尺寸字段与 style 颜色全部完整。
 - 落盘：window-geometry-closure-evidence.json（F1039，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 733。
+## Round 734 (F1040) — 2026-08-12：HANDOFF 刷新 158（Round 731-733）
+
+- **〔刷新〕**HANDOFF 追加 Round 731-733（F1038-F1039：窗口几何构造体全量 + 窗口几何闭合）；基线 Round 730=c210ddd → Round 733=5c60ecc（**696 连发 F335-F1038**，660 证据 JSON）；用户提交 2793dec 保留。
+- 落盘：handoff-refresh-158-evidence.json（F1040，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 734。

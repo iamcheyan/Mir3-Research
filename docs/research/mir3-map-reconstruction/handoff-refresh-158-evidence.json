@@ -1,0 +1,26 @@
+{
+  "evidence_id": "handoff-refresh-158-2026-08-12-f1040",
+  "title": "Round 734 (F1040): HANDOFF refresh 158 - Rounds 731-733 (F1037-F1039: HANDOFF 157, window geometry ctor body, window geometry closure), baseline Round 730=c210ddd -> Round 733=5c60ecc (696 consecutive F335-F1038), 660 evidence JSONs, current master includes preserved user commit 2793dec, doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 731-733.",
+  "question": "What changed since HANDOFF refresh 157?",
+  "method": "Append Round 731-733 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 731-733 appended (3 rounds, F1037-F1039)",
+    "baseline": "Round 730=c210ddd -> Round 733=5c60ecc (696 consecutive F335-F1038)",
+    "arcs": {"geometry": "F1038 raw ctor", "closure": "F1039 window geometry"},
+    "key": "window geometry 100%",
+    "user_work": "2793dec preserved"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1037": "refresh 157 baseline -> now refresh 158", "F335-F1038": "696 rounds"},
+  "contrast": {"refresh_157_vs_158": "F1038-F1039 (2 new findings)"},
+  "verdict": "HANDOFF refreshed 158 (F1040): Rounds 731-733 documented (window geometry complete), baseline c210ddd -> 5c60ecc, 696 consecutive rounds pushed; user commit 2793dec preserved.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1038-F1039 evidence and observed commit history.",
+  "cross_refs": ["F1037: refresh 157", "F1039: window geometry closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 731-733 section to HANDOFF",
+  "notes": ["696 consecutive shipping rounds F335-F1038", "window geometry 100%", "preserved user commit 2793dec"]
+}
