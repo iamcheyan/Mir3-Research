@@ -30,6 +30,7 @@ function rowName(table, row) {
 }
 
 const app = createApp({
+  template: window.APP_TEMPLATE,
   setup() {
     // ---------- 全局状态 ----------
     const view = ref("list");            // list | detail | changes
