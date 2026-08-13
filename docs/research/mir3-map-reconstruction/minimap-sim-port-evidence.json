@@ -1,0 +1,34 @@
+{
+  "evidence_id": "minimap-sim-port-2026-08-12-f1050",
+  "title": "Round 744 (F1050): minimap scroll math + marker taxonomy PORTED to simulator (F1048/F1049 -> Tools/mir3_client_simulator/app.js) - widget block rewritten: scroll-center source window (mmClampScroll: left<0->0, right>=dim->dim-view floor 0), view 128 with x2 source (scale 0.5) for zoom [0x290] OR wide view-size [0x294]; marker layer: player 4x4 blink (0x320 wrap, green 0x64FA64 window 0x1F4 else gray 0x646464), monsters white 0xFFFF 2x2 no window test, npc/other-player green 0x64C864 3x3 at (x-1,y-1) gated by player-centered half-view window; corner toggles [0x298] gray 0xC8C8C8 zoom + [0x2A8] blue 0x96C8FF view 128<->256; ticker advances blink +100ms. Browser-verified live on wilviewer /sim/ origin: scroll = 480-64 = 416px exact (surface 1200x800 at (-416,-336)); player marker dead-center (64,64); blink sampled green(200)->gray(600)->green(100 wrapped); NPC exclusion |dx|=90 >= 64 exercised; zoom toggle view 128->256 with surface width 1200->600 (k=0.5); toggles restore to defaults",
+  "date": "2026-08-12",
+  "objective": "Port the closed minimap math into the simulator and verify live.",
+  "question": "Does the simulator now reproduce the original scroll/clamp/marker/toggle behavior?",
+  "method": "app.js rewrite (widget block + layoutMinimap/mmViewPx/mmClampScroll + ticker) + style.css (.mm-btn/.mm-markers) + headless Chromium DOM verification on :8765/sim/.",
+  "scope": "Tools/mir3_client_simulator/app.js, style.css.",
+  "cell_analysis": {
+    "port": {"scroll": "mmClampScroll = clamp(pos - view/2, 0, max(0,surf-view))", "view": "128; 256 when zoom || !small", "scale": "k = panelW/view"},
+    "markers": {"player": "4x4 blink", "monster": "white 2x2 unclipped", "second": "green 3x3 window-gated"},
+    "toggles": {"zoom": "right:20 bottom:10 #c8c8c8", "view": "right:10 bottom:10 #96c8ff"}
+  },
+  "exe_trace": {
+    "live_check_1": "scroll math: px=320/800*1200=480, scroll=416, surface left:-416px top:-336px (py=300/600*800=400-64=336) EXACT",
+    "live_check_2": "player marker rect (64,64,4,4) = panel center",
+    "live_check_3": "blink: 200->#64fa64, 600->#646464, 100(wrapped)->#64fa64",
+    "live_check_4": "npc.guild |dx|=90>=64 excluded (window test), monsters projected incl. off-panel (-26) like original unclipped blit",
+    "live_check_5": "zoom toggle: view 128->256, surface width 1200px->600px (k=0.5); both toggles restore defaults"
+  },
+  "audit_vs_exe": {
+    "F1048": "scroll/clamp/blink constants now executable in sim",
+    "F1049": "marker taxonomy + corner toggles interactive",
+    "screenshot_note": "headless screenshot pipeline returns blank frames (page-level, not sim-specific) - DOM-level numeric verification used instead"
+  },
+  "contrast": {"old_sim": "fixed object-fit:cover crop, no markers/toggles", "new_sim": "scroll window + taxonomy + toggles + blink"},
+  "verdict": "Simulator minimap now byte-derived from 0x43D850/0x43DA80 and live-verified: scroll exact to the pixel, blink phase transitions observed, window test and both toggles exercised.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Simulator port of primary-bytes F1048/F1049; behavior verified in headless Chromium DOM.",
+  "cross_refs": ["F1048: scroll math", "F1049: taxonomy + toggles"],
+  "tool": "edit + browser (headless Chromium)",
+  "reproduce": "open http://127.0.0.1:8765/sim/, evaluate mmViewPx()/mmClampScroll(480,1200,128), click .mm-btn corners",
+  "notes": ["node --check OK", "sim served at wilviewer /sim/ (same-origin /api/image); :8477 http.server lacks /api (images 404) - pre-existing", "704 consecutive rounds F335-F1050"]
+}

@@ -4679,3 +4679,7 @@ git diff --check
 - **标记全分类**（怪物白 2×2 / 第二链表绿 3×3 窗口测试 / 玩家 4×4 闪烁）+ 角落双切换按钮 + Ctrl 平移。
 - 小地图 widget **全闭合**（投影数学 + 分类学 + 交互）。
 - 落盘：`minimap-marker-taxonomy-evidence.json`（F1049）+ RESEARCH_LOG Round 743。
+## Round 744 (2026-08-12) — 小地图数学移植模拟器（Finding 1050）
+
+- **app.js/style.css**：滚动窗口 + 标记分类学 + 角落切换 + 闪烁全部可执行；浏览器实测逐像素对上。
+- 落盘：`minimap-sim-port-evidence.json`（F1050）+ RESEARCH_LOG Round 744。

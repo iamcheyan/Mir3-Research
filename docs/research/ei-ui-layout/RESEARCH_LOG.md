@@ -9218,3 +9218,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔角落按钮〕**[0x298]=(right−20,bottom−10,right−10,bottom) 灰 0xC8C8C8 = 缩放切换 [0x290]（scale 0.5）；[0x2A8]=(right−10,bottom−10,right,bottom) 蓝 0x96C8FF = 视图尺寸切换 [0x294] → 0x43D5F0(128×128 / 256×256)。
 - **〔命中/拖拽〕**0x43DDB0 PtInRect + Ctrl(0x11) → 抓取偏移 [0x2F0]/[0x2F4]；0x43DEB0 LMB+Ctrl → SetRect 目标矩形平移（尺寸保持）；ctor 0x43DF40 载入库 0x47C428/0x47C414。
 - 落盘：minimap-marker-taxonomy-evidence.json（F1049，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 743。
+## Round 744 (F1050) — 2026-08-12：小地图滚动数学 + 标记分类学移植模拟器（F1048/F1049 执行化）
+
+- **〔移植〕**app.js 小地图块重写：mmClampScroll（scroll = pos − view/2，双向钳制 floor 0）+ 视图 128（缩放 [0x290] 或宽视图 [0x294] → 源 256/k=0.5）+ layoutMinimap 标记层（玩家 4×4 闪烁 0x320/0x1F4、怪物白 2×2 无窗口测试、NPC 绿 3×3 中心半视图门）+ 角落切换按钮（灰缩放/蓝视图）+ ticker 闪烁推进 100ms。
+- **〔浏览器实测〕**wilviewer /sim/ 同源：scroll 480−64=416px 逐像素精确（surface 1200×800 @ (−416,−336)）；玩家标记正中 (64,64)；闪烁 200→绿、600→灰、回绕 100→绿；NPC |Δx|=90≥64 正确排除；缩放切换 surface 1200→600px（k=0.5）；双切换还原默认。
+- **〔注〕**:8477 http.server 无 /api（图片 404，先前已存在）——验证走 8765/sim/；headless 截图管线输出空白页（页面级问题），以 DOM 数值验证代替。
+- 落盘：minimap-sim-port-evidence.json（F1050，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 744。

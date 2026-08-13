@@ -36,6 +36,7 @@ const STATE = {
   tradeSplit: [0, 0],           // [+0x54]/[+0x58] = top visible DATA ROW per pane (Finding 301: row offset, not px; 94-scale, usable [0,34])
   loginStage: 0,                // Round 43 (F349): [0x8B1878]-style stage machine - 0 intro / 1 char-select / 2 in-game
   charStage: 0,                 // [0x930] char-select stage (0 list, 1 creating, 2 login anim, 3 enter, 4 anim done)
+  mm: { zoom: false, small: true, blink: 0 },  // Round 744 (F1048/F1049): zoom [0x290], view-size [0x294] (small=128), blink counter [+0x300]
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -248,21 +249,38 @@ function renderHud() {
     hudEl.appendChild(btn);
   }
 
-  // minimap widget
+  // minimap widget — Round 744 (F1048/F1049 port): scroll-center source
+  // window + clamps (0x43D850) + marker taxonomy (0x43DA80) + corner toggles.
   const mm = hud.minimap;
   const mmEl = document.createElement("div");
   mmEl.className = "minimap";
   mmEl.style.cssText = `left:${mm.rect[0]}px;top:${mm.rect[1]}px;width:${mm.rect[2] - mm.rect[0]}px;height:${mm.rect[3] - mm.rect[1]}px`;
   const mapMm = STATE.data.maps.find((q) => q.id === "map.minimap");
   const mmImg = makeImg(mapMm ? mapMm.library : "FMMap.wil", mapMm ? mapMm.frame : 0);
-  mmImg.style.cssText = "width:100%;height:100%;object-fit:cover"; // panel = 128x128 crop window over 1.5/1.0 px/tile surface (Finding 277)
-  mmEl.style.overflow = "hidden";
-  mmEl.appendChild(mmImg);
+  mmImg.className = "mm-surface";
+  const mmMark = document.createElement("div");
+  mmMark.className = "mm-markers";
+  mmEl.append(mmImg, mmMark);
+  // corner toggles (F1049): [0x298]=(right-20,bottom-10,right-10,bottom) gray
+  // zoom scale 0.5; [0x2A8]=(right-10,bottom-10,right,bottom) blue view 128<->256.
+  const mmZoomBtn = document.createElement("div");
+  mmZoomBtn.className = "mm-btn";
+  mmZoomBtn.style.cssText = "right:20px;bottom:10px;background:#c8c8c8";
+  mmZoomBtn.title = "缩放切换 [0x290] scale 0.5 · F1049";
+  const mmViewBtn = document.createElement("div");
+  mmViewBtn.className = "mm-btn";
+  mmViewBtn.style.cssText = "right:10px;bottom:10px;background:#96c8ff";
+  mmViewBtn.title = "视图尺寸切换 [0x294] 128↔256 · F1049";
+  mmZoomBtn.addEventListener("pointerup", () => { STATE.mm.zoom = !STATE.mm.zoom; layoutMinimap(); });
+  mmViewBtn.addEventListener("pointerup", () => { STATE.mm.small = !STATE.mm.small; layoutMinimap(); });
+  mmEl.append(mmZoomBtn, mmViewBtn);
   mmEl.dataset.evidence = mm.evidence_level;
   mmEl.dataset.rect = mm.rect.join(",");
-  mmEl.dataset.desc = "固定小地图 (672,0)-(800,128)";
+  mmEl.dataset.desc = "小地图 (672,0)-(800,128) · 滚动源窗口 F1048 + 标记 F1049";
   mmEl.title = `小地图 · ${STATE.currentMap.name || ""} · ${mapMm ? mapMm.library + " F" + mapMm.frame : ""} · ${mm.evidence_level}`;
+  mmImg.onload = () => layoutMinimap();
   hudEl.appendChild(mmEl);
+  layoutMinimap();
 
   // chat region
   const chat = hud.chat_region;
@@ -288,6 +306,71 @@ function renderHud() {
 
   pushChat("[系统] 欢迎使用 Mir3 EI 3.0 原版客户端模拟器");
   pushChat("[系统] 点击场景中的怪物/NPC 设置目标，底部按钮打开窗口");
+}
+
+/* ------------------------------------------- minimap scroll math (F1048/F1049) */
+// Source window over the minimap surface (0x43D850): scroll = pos - view/2,
+// clamped: left<0 -> 0 (right=min(dim,view)); right>=dim -> left=dim-view
+// (floor 0). View = 128, doubled (scale 0.5) when zoom [0x290] or the
+// 128<->256 view-size toggle [0x294] is in the wide state.
+function mmViewPx() {
+  return (STATE.mm.zoom || !STATE.mm.small) ? 256 : 128;
+}
+
+function mmClampScroll(pos, surf, view) {
+  let left = pos - view / 2;
+  if (left < 0) return 0;
+  const max = surf - view;
+  return left >= max ? Math.max(0, max) : left;
+}
+
+function layoutMinimap() {
+  const box = hudEl.querySelector(".minimap");
+  if (!box) return;
+  const img = box.querySelector(".mm-surface");
+  const marks = box.querySelector(".mm-markers");
+  if (!img || !marks) return;
+  const sw = img.naturalWidth, sh = img.naturalHeight;
+  if (!sw || !sh) return; // surface not decoded yet
+  const mmr = STATE.data.hud.minimap.rect;
+  const pw = mmr[2] - mmr[0], ph = mmr[3] - mmr[1];
+  const view = mmViewPx();
+  const k = pw / view; // source px -> panel px
+  // sim scene (800x600) projected proportionally onto the real frame surface
+  // (original: X *1.5 px/tile float [0x476904], Y *1.0 -> uniform scene/32)
+  const ents = STATE.data.entities || [];
+  const p = ents.find((e) => e.kind === "player") || { x: 400, y: 300 };
+  const px = (p.x / 800) * sw, py = (p.y / 600) * sh;
+  const sx = mmClampScroll(px, sw, view);
+  const sy = mmClampScroll(py, sh, view);
+  img.style.cssText =
+    `position:absolute;image-rendering:auto;left:${-sx * k}px;top:${-sy * k}px;` +
+    `width:${sw * k}px;height:${sh * k}px`;
+  // marker taxonomy (F1049): player 4x4 blink [+0x300] (green 0x64FA64 while
+  // 0<c<0x1F4 of the 0x320 period, else gray 0x646464); monsters white 0xFFFF
+  // 2x2 (type 0x32, no window test); second list green 0x64C864 3x3 at
+  // (x-1,y-1) only within the player-centered half-view window.
+  marks.innerHTML = "";
+  const put = (mx, my, size, off, color) => {
+    const d = document.createElement("div");
+    d.style.cssText =
+      `position:absolute;background:${color};` +
+      `left:${Math.round((mx - sx) * k + off * k)}px;` +
+      `top:${Math.round((my - sy) * k + off * k)}px;` +
+      `width:${Math.max(1, Math.round(size * k))}px;` +
+      `height:${Math.max(1, Math.round(size * k))}px;`;
+    marks.appendChild(d);
+  };
+  put(px, py, 4, 0, STATE.mm.blink < 500 ? "#64fa64" : "#646464");
+  for (const e of ents) {
+    const mx = (e.x / 800) * sw, my = (e.y / 600) * sh;
+    if (e.kind === "monster") put(mx, my, 2, 0, "#ffffff");
+    else if (e.kind === "npc" || (e.kind === "player" && e.id !== "player")) {
+      if (Math.abs(mx - px) < view / 2 && Math.abs(my - py) < view / 2) {
+        put(mx, my, 3, -1, "#64c864");
+      }
+    }
+  }
 }
 
 function pushChat(line) {
@@ -1209,10 +1292,11 @@ function setCurrentMap(index) {
   renderScene();
   const mmEl = hudEl.querySelector(".minimap img");
   const mmBox = hudEl.querySelector(".minimap");
-  if (mmEl) mmEl.src = imgUrl(b.library, b.frame);
+  if (mmEl) { mmEl.onload = () => layoutMinimap(); mmEl.src = imgUrl(b.library, b.frame); }
   const t = `小地图 · ${b.name} · ${b.library} F${b.frame} · derived`;
   if (mmEl) mmEl.title = t;
   if (mmBox) mmBox.title = t;
+  layoutMinimap();
   const wh = (b.w && b.h) ? ` ${b.w}×${b.h}` : "";
   pushChat(`[地图] ${b.name} (${b.map}${wh}) → ${b.library} F${b.frame}`);
 }
@@ -1609,6 +1693,10 @@ async function boot() {
         im.alt = `${e.library} F${f}`;
       }
     }
+    // minimap blink counter [+0x300] (F1048): += delta, wrap at 0x320 (800ms);
+    // player marker green 0x64FA64 while 0<c<0x1F4, else gray 0x646464.
+    STATE.mm.blink = (STATE.mm.blink + 100) % 800;
+    layoutMinimap();
   }, 100);
 }
 
