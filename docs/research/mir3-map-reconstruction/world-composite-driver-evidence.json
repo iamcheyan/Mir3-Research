@@ -1,0 +1,49 @@
+{
+    "evidence_id": "world-composite-driver-2026-08-13-f1081",
+    "title": "Round 775 (F1081): WORLD COMPOSITE DRIVER 0x41C450 closed - full pass ordering (decal 0x43CA40 -> cell loops MID+FRONT via 0x43BB10/0x43BE00 -> occupied-cell entity FX 0x41CBD0/0x41C860 -> hero map-object draw 0x41C829 via vtable slot 0x7C); scroll stepper 0x43C500 (hero-path caller 0x411D3A) drives strip copies + [0x18C]-gated maintenance; small-map path = direct per-cell blit 0x460240 (no surface); F1069 MID/FRONT naming CORRECTED (swapped)",
+    "date": "2026-08-13",
+    "objective": "Close the world composite pass ordering and the surface-to-screen handoff left open in F1080.",
+    "question": "In what order does 0x41C450 draw the world, where does the prerender surface reach the screen, and how does the small-map path differ?",
+    "method": "disasm 0x41C450-0x41C853 (driver full), 0x43CA40+0x30 (decal reader), 0x43BB10+0xB0 (layer selector), 0x43C460 region (small-map blit), 0x43C500+0x60 (scroll stepper entry), 0x411D10+0x50 (hero caller); E8 caller census into 0x43C100-0x43CA40.",
+    "scope": "frame driver 0x41C450; scroll stepper 0x43C500; small-map direct path; hero map-draw vslot.",
+    "cell_analysis": {
+        "driver_entry_0x41c450": "ecx=screen, arg dt@+0x24; gate [map+0]==0 skip; 0x43CDC0(map, dt) scroll integrate; anchor window x=[0xF5330]-0xA..+0x22 (44x44? -> actually y range 0x22+0xA=44), y=[0xF532C]-0xA..+0x22; bounds vs [0xF5328]/[0xF5326] (map w/h at screen copy) and >=0",
+        "pass_order": "PER CELL (outer x loop 0x41C48B, inner y 0x41C49F): (1) 0x43CA40(map,x,y,&attr) -> attribute record {dword0 !=0, word4: lo=nibble attr 0..9, hi=file idx (<4)}; gates nibble<4 && hi<0xA; lookup [screen+0xF5390+nibble] + [screen+0xF5395/6] byte pair -> 0x434A20(scene 0x35B2C0, sx,sy, floats 1.0) decal; (2) 0x43BB10(map,y,x,0) MID; (3) 0x43BB10(map,y,x,1) FRONT; (4) if cell within anchor 0x18 window: 0x41CBD0(screen, dx,dy) occupied-cell FX; SECOND LOOP (0x41C60D, x range +0x2C=44+? window, y +0x18): 0x43BE00 x2 (large-object MID then FRONT), occupied -> 0x41C860+0x41CA20 hero-area effects; tail: viewport object [screen+0x2F8780] vslot 0xA8 with size class {0xA,6} set at [screen+0x35A3D8/DC]; selected entity [0x364444] gets [+0x61C58]=0xA/[+0x61C5C]=5 and vslot 0x7C(ecx=entity, push map@0xF5200) = hero draws ITS view of the map object (surface composite entry)",
+        "layer_selector_0x43bb10": "cell14=[0x10C]+14*(y*h+x); word[cell+3]==0xFFFF skip; arg3==0: file=word[cell+3]>>8 (byte3), frame=word[cell+5]; arg3==1: file=word[cell+3]&0xFF (byte4), frame=word[cell+7]; v=file+file/14 gate v%14>=3 (object layer, complement of F1079 tile gate), v<=0x45; caller passes (0,y,x,0) then (...,1) => MID drawn first, FRONT second (correct occlusion)",
+        "f1069_correction": "F1069 labeled byte3=MID byte4=FRONT; the arg3==0 path (called FIRST) uses byte3, arg3==1 (called SECOND, drawn on top) uses byte4 -> byte3=BACK/mid-layer file, byte4=FRONT file. F1069's names were swapped; its file/frame field extraction was otherwise exact",
+        "scroll_stepper_0x43c500": "entry: gate [map]!=0; moves anchors [0x12C]+=dx,[0x130]+=dy from caller args; resets sub-cell accumulators [0x134]/[0x138]; [0x18C]!=0 -> maintenance branch 0x43C54B+ (strip-copy family 0x43C57E-0x43C8FF: surface rows via lea [reg+reg+0x1B2] memcpy 0x468E90, direction split ecx vs edi sign); E8 callers: 0x411D3A (hero step engine: ecx=[entity+0x62A58] cached map ptr, args from [entity+0xE0]/[0xDC]) = F1072's scroll consumption point; 0x422B1F/0x41082D -> 0x43C9C0 jump-reanchor (set [0x12C]/[0x130] + zero accumulators); 0x41BCA4 -> 0x43C330 occupied-cell probe; 0x41F732/0x41F794 -> 0x43C1B0/0x43C270 coordinate transforms",
+        "small_map_path": "0x43C355-0x43C4FF loop: per-cell direct blit 0x460240(clip ctx 0x8AB7A8, src=[slot+0x560138], frameW/H, 0x320/0x1EC, (x-[0x12C])*48-0xC8 style math via [0x134]/[0x138] sub-cell offsets) - NO surface involvement; used when [0x18C]==0 (w or h <100)",
+        "viewport_slots": "[screen+0x35A3D8]=0xA/[0x35A3DC]=6 during the viewport vslot 0xA8 call = draw-size/priority class pair; selected-entity highlight [+0x61C58]/[+0x61C5C] pair {0xA,5} set around its 0x7C call"
+    },
+    "exe_trace": {
+        "frame": "dt -> 0x43CDC0 integrate -> driver 0x41C450: cell window {decal, MID, FRONT, cell FX} -> large-object window {MID2, FRONT2, hero-area FX} -> viewport object slot 0xA8 -> selected entity slot 0x7C (map-object draw; surface path when big map)"
+    },
+    "audit_vs_exe": {
+        "F1069": "MID/FRONT naming CORRECTED (byte3=back drawn first, byte4=front drawn second); '渲染驱动器 0x41C460' actual entry 0x41C450; decal 0x434A20 caller chain confirmed",
+        "F1080": "surface-to-screen handoff located: selected entity vslot 0x7C receives the map object; small maps bypass the surface entirely (direct 0x460240 per-cell)",
+        "F1072": "0x43B880 scroll consumption now exact: hero step engine calls 0x43C500 with cached map ptr [0x62A58]",
+        "F1078": "0x43C9C0 = the jump-reanchor variant called at map-change (0x422B1F) and hero jump (0x41082D)"
+    },
+    "contrast": {
+        "big_map": "surface composited via selected-entity vslot 0x7C + strip-copy scroll maintenance",
+        "small_map": "direct per-cell 0x460240 blits each frame (no prerender)"
+    },
+    "verdict": "World composite driver closed end to end: per-cell decal+MID+FRONT+occupied-FX passes, large-object twin pass, viewport draw (vslot 0xA8), and the selected entity's vslot 0x7C receiving the map object (the prerender-surface composite for big maps); scrolling is driven by the hero step engine through 0x43C500 (anchors + strip-copy maintenance) with 0x43C9C0 as the jump-reanchor variant; small maps take the direct per-cell path.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "All from .text disasm; F1069 correction is branch-order evidence (arg3 0 drawn before arg3 1).",
+    "cross_refs": [
+        "F1069: cell layer blits + decal table (naming corrected here)",
+        "F1080: prerender surface (consumer vslot 0x7C located)",
+        "F1079: buffer indexing + gates",
+        "F1072: hero step engine (scroll consumption exacted)",
+        "F1078: map-change flow (0x43C9C0 reanchor)"
+    ],
+    "tool": "capstone disasm + E8 census + boundary scan (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "disasm 0x41C450+0x404 (driver), 0x43BB10+0xB0 (selector), 0x43C500+0x60 (stepper), 0x411D10+0x40 (hero caller), 0x43C460+0x30 (small-map blit); E8 census 0x43C100-0x43CA40",
+    "notes": [
+        "decal record from 0x43CA40: dword0 nonzero gate, word4 lo=attr nibble(0..3 used), hi=file idx(<0xA); tables at screen+0xF5390 (+byte pair 0xF5395/6)",
+        "cell window is [0xF5330]-0xA..+0x22 (x) and [0xF532C]-0xA..+0x22 (y) = 44x44 visible area minus clamp; second loop x +0x2C window",
+        "selected entity [screen+0x364444] highlight slots {0xA,5} at entity+0x61C58/0x61C5C",
+        "736 consecutive rounds F335-F1081"
+    ]
+}

@@ -9428,3 +9428,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔滚动条带拷贝 0x43C57E-0x43C8FF〕**表面行按 `lea reg,[reg+reg+0x1B2]`（基址+行×stride）取址、memcpy 0x468E90 条带平移——F1065 滚动累加器 [0x134]/[0x138] 的视觉消费端，避免全量重建。
 - **〔管线〕**装载→[0x18C]门→大图全量重建/小图跳过→帧循环：滚动→条带拷贝+单块增量→世界渲染器合成表面（瓦片层已预合成）+buffer2 对象层（F1069 blit）逐帧叠加。
 - 落盘：map-prerender-surface-evidence.json（F1080，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 774。
+## Round 775 (F1081) — 2026-08-13：世界合成驱动器 0x41C450 全景闭合 + F1069 MID/FRONT 命名对调勘误
+
+- **〔驱动器全序〕**0x41C450(ecx=screen, arg=dt)：门 [map]≠0 → 0x43CDC0(map,dt) 滚动积分 → 单元窗 x∈[0xF5330]−0xA..+0x22 / y∈[0xF532C]−0xA..+0x22（钳制 [0xF5328]/[0xF5326]）逐格：(1) **0x43CA40** 属性记录 {dword0≠0, word4 lo=nibble 0..3/hi=文件 idx<0xA} → 表 [screen+0xF5390+nibble]+字节对 [0xF5395/6] → **0x434A20**(场景 0x35B2C0) 贴花；(2) **0x43BB10(map,y,x,0)** 后层；(3) **0x43BB10(...,1)** 前层；(4) 格在锚 0x18 窗内 → **0x41CBD0** 占格特效。第二循环（x +0x2C 窗）：**0x43BE00×2** 大对象双层 → **0x41C860+0x41CA20** 英雄区特效。尾部：视口对象 [screen+0x2F8780] vslot 0xA8（尺寸类 {[0x35A3D8]=0xA,[0x35A3DC]=6}）；选中实体 [0x364444] 高亮对 {[+0x61C58]=0xA,[+0x61C5C]=5} + **vslot 0x7C(ecx=entity, push map)**=实体绘制其地图视图（大图=表面合成入口，F1080 消费端定位）。
+- **〔F1069 勘误〕**0x43BB10 arg3==0 分支取 **byte3**（file=word[3]>>8,帧=word[5]）、arg3==1 取 **byte4**（file=word[3]&0xFF,帧=word[7]）；调用序 0 先 1 后（正确遮挡序）→ **byte3=后/中层、byte4=前层**——F1069 的 MID/FRONT 标签对调；其 file/frame 字段抽取本就精确。门 v%14≥3（对象层，与 F1079 瓦片 ≤2 互补）、v≤0x45 复证。
+- **〔滚动步进 0x43C500〕**门 [map]≠0；锚 [0x12C]/[0x130] += 调用参量；子格累加器 [0x134]/[0x138] 复位；[0x18C]≠0 → 维护分支 0x43C54B+（条带拷贝族 0x43C57E-0x43C8FF，方向按参量符号分流）。E8 调用者：**0x411D3A**（英雄步进引擎，ecx=[entity+0x62A58] 缓存图指针，参量 [entity+0xE0]/[0xDC]）=F1072 滚动消费点精确化；0x422B1F/0x41082D→**0x43C9C0 跳转重锚**（设锚+清累加器）；0x41BCA4→0x43C330 占格探测；0x41F732/0x41F794→0x43C1B0/0x43C270 坐标变换。
+- **〔小图路径〕**0x43C355-0x43C4FF：逐格直 blit **0x460240**（裁剪 ctx 0x8AB7A8、src=[slot+0x560138]、0x320/0x1EC 尺寸、(x−锚)·48−0xC8 数学含子格偏移 [0x134]/[0x138]）——**不经表面**；[0x18C]==0（w/h<100）时用。
+- 落盘：world-composite-driver-evidence.json（F1081，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 775。
