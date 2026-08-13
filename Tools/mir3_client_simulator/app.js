@@ -372,10 +372,11 @@ function layoutMinimap() {
   img.style.cssText =
     `position:absolute;image-rendering:auto;left:${-sx * k}px;top:${-sy * k}px;` +
     `width:${sw * k}px;height:${sh * k}px`;
-  // marker taxonomy (F1049): player 4x4 blink [+0x300] (green 0x64FA64 while
-  // 0<c<0x1F4 of the 0x320 period, else gray 0x646464); monsters white 0xFFFF
-  // 2x2 (type 0x32, no window test); second list green 0x64C864 3x3 at
-  // (x-1,y-1) only within the player-centered half-view window.
+  // marker taxonomy (F1049 + F1061 runtime correction): player 4x4 blink
+  // [+0x300] (green 0x64FA64 while 0<c<0x1F4 of the 0x320 period, else gray
+  // 0x646464); monsters white 0xFFFF 2x2 (type 0x32, no window test). The
+  // original second list [0x5600A0] has NO producer in the shipped binary
+  // (.bss NULL forever) - its green markers are dead code and not drawn.
   marks.innerHTML = "";
   const put = (mx, my, size, off, color) => {
     const d = document.createElement("div");
@@ -389,13 +390,8 @@ function layoutMinimap() {
   };
   put(px, py, 4, 0, STATE.mm.blink < 500 ? "#64fa64" : "#646464");
   for (const e of ents) {
-    const mx = (e.x / 800) * sw, my = (e.y / 600) * sh;
-    if (e.kind === "monster") put(mx, my, 2, 0, "#ffffff");
-    else if (e.kind === "npc" || (e.kind === "player" && e.id !== "player")) {
-      if (Math.abs(mx - px) < view / 2 && Math.abs(my - py) < view / 2) {
-        put(mx, my, 3, -1, "#64c864");
-      }
-    }
+    if (e.kind !== "monster") continue;
+    put((e.x / 800) * sw, (e.y / 600) * sh, 2, 0, "#ffffff");
   }
 }
 

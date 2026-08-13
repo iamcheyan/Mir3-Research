@@ -9294,3 +9294,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔screen 级分派器 0x4227F0〕**pop screen 队列，类型字 [p+4]：0x32→0x422CC0、0x34→0x423000、0x2F0→0x423070、0x33/0x27A 跳过、默认走虚调用。
 - **〔死代码定案〕**[0x5600A0] 全 .text 仅消费者一址（0x43DCDA）、零写入者、.bss 零初值（文件 0x80000 之外）→ **F1049 第二链表绿 3×3 标记循环永不可达**；模拟器 F1050 绿色 NPC/玩家标记为解释性实现，已标注。
 - 落盘：queue-producers-dead-list-evidence.json（F1061，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 755。
+## Round 756 (F1062) — 2026-08-12：模拟器标记集按死代码定案修正（F1061 执行化）
+
+- **〔修正〕**layoutMinimap 移除第二链表绿 3×3 分支（原版 [0x5600A0] 无生产者 → 永不绘制）；保留玩家闪烁 4×4 + 怪物白 2×2；注释引用 F1049 + F1061。
+- **〔浏览器实测〕**5 标记（1×闪烁 4px + 4×白 2px）、双角落按钮在位、pan 状态完好（本数据集 NPC 本就被窗口测试排除，视觉无差、契约对齐）。
+- 落盘：sim-dead-marker-fix-evidence.json（F1062，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 756。

@@ -4730,3 +4730,7 @@ git diff --check
 
 - 共享环形队列（entity+0xF0 / screen+0x364458）+ recv1 生产者族 + screen 分派器；**[0x5600A0] 第二链表死代码**（F1049 运行时修正）。
 - 落盘：`queue-producers-dead-list-evidence.json`（F1061）+ RESEARCH_LOG Round 755。
+## Round 756 (2026-08-12) — 模拟器死标记修正（Finding 1062）
+
+- 绿色第二链表标记移除；标记层与原版二进制行为逐字节对齐。
+- 落盘：`sim-dead-marker-fix-evidence.json`（F1062）+ RESEARCH_LOG Round 756。

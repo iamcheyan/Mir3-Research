@@ -1,0 +1,20 @@
+{
+  "evidence_id": "sim-dead-marker-fix-2026-08-12-f1062",
+  "title": "Round 756 (F1062): simulator marker set corrected per F1061 dead-code verdict - removed the second-list green 3x3 branch (npc/other-player, window test) from layoutMinimap; original [0x5600A0] list has no producer (.bss NULL) so those markers never render in the shipped binary; remaining taxonomy = player 4x4 blink (green 0x64FA64 window 0x1F4 / gray 0x646464) + monsters white 0xFFFF 2x2 unclipped; comment updated to cite F1049 + F1061. Browser-verified: 5 marks (1 blink 4px + 4 white 2px), both corner toggles present, pan state intact",
+  "date": "2026-08-12",
+  "objective": "Align the simulator marker layer with the F1061 dead-code verdict.",
+  "question": "Does the sim now draw exactly the original marker set?",
+  "method": "app.js layoutMinimap branch removal + headless verification.",
+  "scope": "Tools/mir3_client_simulator/app.js.",
+  "cell_analysis": {"removed": "npc/other-player green 3x3 window-test branch", "kept": "player blink + monster white 2x2", "note": "dataset NPCs were already window-excluded, so visual delta is nil here - contract now exact"},
+  "exe_trace": {"live": "5 marks: rgb(100,250,100) 4px + 4x rgb(255,255,255) 2px; 2 toggles; pan [0,0]"},
+  "audit_vs_exe": {"F1061": "dead code no longer emulated", "F1050": "sim fidelity corrected (greens were interpretive)"},
+  "contrast": {"before": "7 potential marks incl. greens", "after": "5 marks, original contract"},
+  "verdict": "Simulator minimap now byte-faithful to the shipped binary's marker behavior.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Sim correction per primary-bytes F1061; DOM-verified.",
+  "cross_refs": ["F1061: dead list", "F1050: sim port"],
+  "tool": "edit + browser",
+  "reproduce": "reload /sim/, count .mm-markers div backgrounds",
+  "notes": ["717 consecutive rounds F335-F1062"]
+}
