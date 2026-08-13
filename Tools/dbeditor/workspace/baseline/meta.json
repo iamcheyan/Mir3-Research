@@ -1,0 +1,3191 @@
+{
+  "MonsterInfo": {
+    "zh": "怪物",
+    "identity": [
+      "MonsterName"
+    ],
+    "fields": {
+      "MonsterName": {
+        "zh": "怪物名称",
+        "type": "string"
+      },
+      "Image": {
+        "zh": "图像",
+        "type": "enum",
+        "to": "MonsterImage"
+      },
+      "AI": {
+        "zh": "AI",
+        "type": "int"
+      },
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "ViewRange": {
+        "zh": "视野",
+        "type": "int"
+      },
+      "CoolEye": {
+        "zh": "反隐形",
+        "type": "int"
+      },
+      "Experience": {
+        "zh": "经验",
+        "type": "number"
+      },
+      "Undead": {
+        "zh": "亡灵",
+        "type": "bool"
+      },
+      "CanPush": {
+        "zh": "可推动",
+        "type": "bool"
+      },
+      "CanTame": {
+        "zh": "可捕捉",
+        "type": "bool"
+      },
+      "AttackDelay": {
+        "zh": "攻击间隔",
+        "type": "int"
+      },
+      "MoveDelay": {
+        "zh": "移动间隔",
+        "type": "int"
+      },
+      "IsBoss": {
+        "zh": "Boss",
+        "type": "bool"
+      },
+      "Flag": {
+        "zh": "标志",
+        "type": "enum",
+        "to": "MonsterFlag"
+      },
+      "FaceImage": {
+        "zh": "头像",
+        "type": "int"
+      },
+      "MonsterInfoStats": {
+        "zh": "属性加成",
+        "type": "reflist",
+        "to": "MonsterInfoStat"
+      },
+      "Respawns": {
+        "zh": "刷新点",
+        "type": "reflist",
+        "to": "RespawnInfo"
+      },
+      "Drops": {
+        "zh": "掉落",
+        "type": "reflist",
+        "to": "DropInfo"
+      },
+      "Events": {
+        "zh": "事件",
+        "type": "reflist",
+        "to": "MonsterEventTrigger"
+      },
+      "QuestDetails": {
+        "zh": "任务明细",
+        "type": "reflist",
+        "to": "QuestTaskMonsterDetails"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "stats"
+      }
+    }
+  },
+  "MonsterInfoStat": {
+    "zh": "怪物属性加成",
+    "identity": [
+      "Monster",
+      "Stat"
+    ],
+    "fields": {
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "DropInfo": {
+    "zh": "掉落",
+    "identity": [
+      "Monster",
+      "Item"
+    ],
+    "fields": {
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Chance": {
+        "zh": "概率",
+        "type": "int"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "DropSet": {
+        "zh": "掉落组",
+        "type": "int"
+      },
+      "PartOnly": {
+        "zh": "仅部件掉落",
+        "type": "bool"
+      },
+      "EasterEvent": {
+        "zh": "节日事件",
+        "type": "bool"
+      }
+    }
+  },
+  "RespawnInfo": {
+    "zh": "刷新点",
+    "identity": [
+      "Monster",
+      "Region"
+    ],
+    "fields": {
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "EventSpawn": {
+        "zh": "事件刷新",
+        "type": "bool"
+      },
+      "Delay": {
+        "zh": "延迟",
+        "type": "int"
+      },
+      "Count": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "DropSet": {
+        "zh": "掉落组",
+        "type": "int"
+      },
+      "Announce": {
+        "zh": "Announce",
+        "type": "bool"
+      },
+      "EasterEventChance": {
+        "zh": "EasterEventChance",
+        "type": "int"
+      },
+      "RespawnIndex": {
+        "zh": "RespawnIndex",
+        "type": "int"
+      }
+    }
+  },
+  "ItemInfo": {
+    "zh": "物品",
+    "identity": [
+      "ItemName"
+    ],
+    "fields": {
+      "ItemName": {
+        "zh": "物品名称",
+        "type": "string"
+      },
+      "ItemType": {
+        "zh": "物品类型",
+        "type": "enum",
+        "to": "ItemType"
+      },
+      "RequiredClass": {
+        "zh": "职业要求",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "RequiredGender": {
+        "zh": "性别要求",
+        "type": "enum",
+        "to": "RequiredGender"
+      },
+      "RequiredType": {
+        "zh": "类型要求",
+        "type": "enum",
+        "to": "RequiredType"
+      },
+      "RequiredAmount": {
+        "zh": "需要等级/数量",
+        "type": "int"
+      },
+      "Shape": {
+        "zh": "外形",
+        "type": "int"
+      },
+      "ItemEffect": {
+        "zh": "物品效果",
+        "type": "enum",
+        "to": "ItemEffect"
+      },
+      "ExteriorEffect": {
+        "zh": "外观效果",
+        "type": "enum",
+        "to": "ExteriorEffect"
+      },
+      "Image": {
+        "zh": "图像",
+        "type": "int"
+      },
+      "Durability": {
+        "zh": "耐久",
+        "type": "int"
+      },
+      "Price": {
+        "zh": "价格",
+        "type": "int"
+      },
+      "Weight": {
+        "zh": "重量",
+        "type": "int"
+      },
+      "StackSize": {
+        "zh": "堆叠数量",
+        "type": "int"
+      },
+      "StartItem": {
+        "zh": "初始物品",
+        "type": "bool"
+      },
+      "SellRate": {
+        "zh": "出售倍率",
+        "type": "number"
+      },
+      "CanRepair": {
+        "zh": "可修理",
+        "type": "bool"
+      },
+      "CanSell": {
+        "zh": "可出售",
+        "type": "bool"
+      },
+      "CanStore": {
+        "zh": "可存仓",
+        "type": "bool"
+      },
+      "CanTrade": {
+        "zh": "可交易",
+        "type": "bool"
+      },
+      "CanDrop": {
+        "zh": "可掉落",
+        "type": "bool"
+      },
+      "CanDeathDrop": {
+        "zh": "死亡掉落",
+        "type": "bool"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Rarity": {
+        "zh": "稀有度",
+        "type": "enum",
+        "to": "Rarity"
+      },
+      "CanAutoPot": {
+        "zh": "自动喝药",
+        "type": "bool"
+      },
+      "BuffIcon": {
+        "zh": "状态图标",
+        "type": "int"
+      },
+      "PartCount": {
+        "zh": "部件数量",
+        "type": "int"
+      },
+      "Set": {
+        "zh": "套装",
+        "type": "ref",
+        "to": "SetInfo"
+      },
+      "ItemStats": {
+        "zh": "属性加成",
+        "type": "reflist",
+        "to": "ItemInfoStat"
+      },
+      "Drops": {
+        "zh": "掉落",
+        "type": "reflist",
+        "to": "DropInfo"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "stats"
+      }
+    }
+  },
+  "ItemInfoStat": {
+    "zh": "物品属性加成",
+    "identity": [
+      "Item",
+      "Stat"
+    ],
+    "fields": {
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "SetInfo": {
+    "zh": "套装",
+    "identity": [
+      "SetName"
+    ],
+    "fields": {
+      "SetName": {
+        "zh": "套装名称",
+        "type": "string"
+      },
+      "Items": {
+        "zh": "Items",
+        "type": "reflist",
+        "to": "ItemInfo"
+      },
+      "SetStats": {
+        "zh": "SetStats",
+        "type": "reflist",
+        "to": "SetInfoStat"
+      }
+    }
+  },
+  "SetInfoStat": {
+    "zh": "套装属性",
+    "identity": [
+      "Set",
+      "Stat",
+      "Class",
+      "Level"
+    ],
+    "fields": {
+      "Set": {
+        "zh": "套装",
+        "type": "ref",
+        "to": "SetInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      }
+    }
+  },
+  "WeaponCraftStatInfo": {
+    "zh": "武器锻造属性",
+    "identity": [
+      "RequiredClass",
+      "Stat",
+      "Weight"
+    ],
+    "fields": {
+      "RequiredClass": {
+        "zh": "职业要求",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "MinValue": {
+        "zh": "最小值",
+        "type": "int"
+      },
+      "MaxValue": {
+        "zh": "最大值",
+        "type": "int"
+      },
+      "Weight": {
+        "zh": "重量",
+        "type": "int"
+      }
+    }
+  },
+  "MagicInfo": {
+    "zh": "魔法",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Magic": {
+        "zh": "魔法类型",
+        "type": "enum",
+        "to": "MagicType"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "MirClass"
+      },
+      "School": {
+        "zh": "派系",
+        "type": "enum",
+        "to": "MagicSchool"
+      },
+      "Property": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "MagicProperty"
+      },
+      "Icon": {
+        "zh": "图标",
+        "type": "int"
+      },
+      "MinBasePower": {
+        "zh": "最小威力",
+        "type": "int"
+      },
+      "MaxBasePower": {
+        "zh": "最大威力",
+        "type": "int"
+      },
+      "MinLevelPower": {
+        "zh": "每级最小成长",
+        "type": "int"
+      },
+      "MaxLevelPower": {
+        "zh": "每级最大成长",
+        "type": "int"
+      },
+      "BaseCost": {
+        "zh": "基础消耗",
+        "type": "int"
+      },
+      "LevelCost": {
+        "zh": "每级耗蓝成长",
+        "type": "int"
+      },
+      "NeedLevel1": {
+        "zh": "1级需求",
+        "type": "int"
+      },
+      "NeedLevel2": {
+        "zh": "2级需求",
+        "type": "int"
+      },
+      "NeedLevel3": {
+        "zh": "3级需求",
+        "type": "int"
+      },
+      "Experience1": {
+        "zh": "1级熟练度",
+        "type": "int"
+      },
+      "Experience2": {
+        "zh": "2级熟练度",
+        "type": "int"
+      },
+      "Experience3": {
+        "zh": "3级熟练度",
+        "type": "int"
+      },
+      "Delay": {
+        "zh": "延迟",
+        "type": "int"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      }
+    }
+  },
+  "MapInfo": {
+    "zh": "地图",
+    "identity": [
+      "FileName"
+    ],
+    "fields": {
+      "FileName": {
+        "zh": "文件名",
+        "type": "string"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "MiniMap": {
+        "zh": "小地图",
+        "type": "int"
+      },
+      "Light": {
+        "zh": "光照",
+        "type": "enum",
+        "to": "LightSetting"
+      },
+      "Weather": {
+        "zh": "天气",
+        "type": "enum",
+        "to": "Weather"
+      },
+      "Fight": {
+        "zh": "Fight",
+        "type": "enum",
+        "to": "FightSetting"
+      },
+      "AllowRT": {
+        "zh": "允许RT",
+        "type": "bool"
+      },
+      "SkillDelay": {
+        "zh": "技能延迟",
+        "type": "int"
+      },
+      "CanHorse": {
+        "zh": "可骑马",
+        "type": "bool"
+      },
+      "CanAutoPath": {
+        "zh": "可自动寻路",
+        "type": "bool"
+      },
+      "AllowTT": {
+        "zh": "允许TT",
+        "type": "bool"
+      },
+      "CanMine": {
+        "zh": "可挖矿",
+        "type": "bool"
+      },
+      "CanMarriageRecall": {
+        "zh": "可夫妻召唤",
+        "type": "bool"
+      },
+      "AllowRecall": {
+        "zh": "允许召唤",
+        "type": "bool"
+      },
+      "MinimumLevel": {
+        "zh": "最低等级",
+        "type": "int"
+      },
+      "MaximumLevel": {
+        "zh": "最高等级",
+        "type": "int"
+      },
+      "ReconnectMap": {
+        "zh": "ReconnectMap",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Music": {
+        "zh": "Music",
+        "type": "enum",
+        "to": "SoundIndex"
+      },
+      "Background": {
+        "zh": "背景",
+        "type": "int"
+      },
+      "MonsterHealth": {
+        "zh": "怪物生命",
+        "type": "int"
+      },
+      "MonsterDamage": {
+        "zh": "怪物伤害",
+        "type": "int"
+      },
+      "DropRate": {
+        "zh": "掉落倍率",
+        "type": "int"
+      },
+      "ExperienceRate": {
+        "zh": "经验倍率",
+        "type": "int"
+      },
+      "GoldRate": {
+        "zh": "金币倍率",
+        "type": "int"
+      },
+      "MaxMonsterHealth": {
+        "zh": "怪物生命上限",
+        "type": "int"
+      },
+      "MaxMonsterDamage": {
+        "zh": "怪物伤害上限",
+        "type": "int"
+      },
+      "MaxDropRate": {
+        "zh": "掉落倍率上限",
+        "type": "int"
+      },
+      "MaxExperienceRate": {
+        "zh": "经验倍率上限",
+        "type": "int"
+      },
+      "MaxGoldRate": {
+        "zh": "金币倍率上限",
+        "type": "int"
+      },
+      "RequiredClass": {
+        "zh": "职业要求",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "Guards": {
+        "zh": "守卫",
+        "type": "reflist",
+        "to": "GuardInfo"
+      },
+      "Regions": {
+        "zh": "区域",
+        "type": "reflist",
+        "to": "MapRegion"
+      },
+      "Mining": {
+        "zh": "矿点",
+        "type": "reflist",
+        "to": "MineInfo"
+      },
+      "Castles": {
+        "zh": "沙巴克",
+        "type": "reflist",
+        "to": "CastleInfo"
+      },
+      "BuffStats": {
+        "zh": "属性加成",
+        "type": "reflist",
+        "to": "MapInfoStat"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "stats"
+      }
+    }
+  },
+  "MapRegion": {
+    "zh": "地图区域",
+    "identity": [
+      "Map",
+      "Description"
+    ],
+    "fields": {
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "SourceMovements": {
+        "zh": "SourceMovements",
+        "type": "reflist",
+        "to": "MovementInfo"
+      },
+      "DestinationMovements": {
+        "zh": "DestinationMovements",
+        "type": "reflist",
+        "to": "MovementInfo"
+      },
+      "NPCs": {
+        "zh": "NPCs",
+        "type": "reflist",
+        "to": "NPCInfo"
+      },
+      "Respawns": {
+        "zh": "刷新点",
+        "type": "reflist",
+        "to": "RespawnInfo"
+      },
+      "SafeZones": {
+        "zh": "SafeZones",
+        "type": "reflist",
+        "to": "SafeZoneInfo"
+      },
+      "BindSafeZones": {
+        "zh": "BindSafeZones",
+        "type": "reflist",
+        "to": "SafeZoneInfo"
+      },
+      "QuestTasks": {
+        "zh": "QuestTasks",
+        "type": "reflist",
+        "to": "QuestTask"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "PointRegion": {
+        "zh": "区域点阵",
+        "type": "points"
+      },
+      "RegionType": {
+        "zh": "区域类型",
+        "type": "enum",
+        "to": "RegionType"
+      },
+      "Size": {
+        "zh": "尺寸",
+        "type": "int"
+      }
+    }
+  },
+  "MovementInfo": {
+    "zh": "传送点",
+    "identity": [
+      "SourceRegion",
+      "DestinationRegion"
+    ],
+    "fields": {
+      "SourceRegion": {
+        "zh": "起点区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "DestinationRegion": {
+        "zh": "终点区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "Icon": {
+        "zh": "图标",
+        "type": "enum",
+        "to": "MapIcon"
+      },
+      "NeedItem": {
+        "zh": "需要物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "NeedSpawn": {
+        "zh": "需要刷新点",
+        "type": "ref",
+        "to": "RespawnInfo"
+      },
+      "NeedHole": {
+        "zh": "需要洞口",
+        "type": "bool"
+      },
+      "NeedInstance": {
+        "zh": "需要副本",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "Effect": {
+        "zh": "效果",
+        "type": "enum",
+        "to": "MovementEffect"
+      },
+      "RequiredClass": {
+        "zh": "职业要求",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "SkipValidation": {
+        "zh": "跳过校验",
+        "type": "bool"
+      }
+    }
+  },
+  "NPCInfo": {
+    "zh": "NPC",
+    "identity": [
+      "Region",
+      "NPCName"
+    ],
+    "fields": {
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "NPCName": {
+        "zh": "NPC名称",
+        "type": "string"
+      },
+      "Image": {
+        "zh": "图像",
+        "type": "int"
+      },
+      "FaceImage": {
+        "zh": "头像",
+        "type": "int"
+      },
+      "GoodsIndex": {
+        "zh": "商店编号",
+        "type": "int"
+      },
+      "MapIcon": {
+        "zh": "地图图标",
+        "type": "enum",
+        "to": "MapIcon"
+      },
+      "EntryPage": {
+        "zh": "入口页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "StartQuests": {
+        "zh": "可接任务",
+        "type": "reflist",
+        "to": "QuestInfo"
+      },
+      "FinishQuests": {
+        "zh": "可交任务",
+        "type": "reflist",
+        "to": "QuestInfo"
+      },
+      "Requirements": {
+        "zh": "需求",
+        "type": "reflist",
+        "to": "NPCRequirement"
+      }
+    }
+  },
+  "NPCPage": {
+    "zh": "NPC 页面",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "DialogType": {
+        "zh": "对话框类型",
+        "type": "enum",
+        "to": "NPCDialogType"
+      },
+      "Say": {
+        "zh": "台词",
+        "type": "string"
+      },
+      "SuccessPage": {
+        "zh": "成功页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "Arguments": {
+        "zh": "参数",
+        "type": "string"
+      },
+      "Currency": {
+        "zh": "货币",
+        "type": "ref",
+        "to": "CurrencyInfo"
+      },
+      "Checks": {
+        "zh": "检查",
+        "type": "reflist",
+        "to": "NPCCheck"
+      },
+      "Actions": {
+        "zh": "动作",
+        "type": "reflist",
+        "to": "NPCAction"
+      },
+      "Buttons": {
+        "zh": "按钮",
+        "type": "reflist",
+        "to": "NPCButton"
+      },
+      "Goods": {
+        "zh": "商品",
+        "type": "reflist",
+        "to": "NPCGood"
+      },
+      "Types": {
+        "zh": "类型",
+        "type": "reflist",
+        "to": "NPCType"
+      },
+      "Values": {
+        "zh": "值",
+        "type": "reflist",
+        "to": "NPCValue"
+      }
+    }
+  },
+  "NPCGood": {
+    "zh": "NPC 商品",
+    "identity": [],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Rate": {
+        "zh": "倍率",
+        "type": "number"
+      },
+      "GoodsIndex": {
+        "zh": "商店编号",
+        "type": "int"
+      }
+    }
+  },
+  "NPCButton": {
+    "zh": "NPC 按钮",
+    "identity": [
+      "ButtonID"
+    ],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "ButtonID": {
+        "zh": "按钮ID",
+        "type": "int"
+      },
+      "DestinationPage": {
+        "zh": "目标页面",
+        "type": "ref",
+        "to": "NPCPage"
+      }
+    }
+  },
+  "NPCCheck": {
+    "zh": "NPC 检查",
+    "identity": [],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "CheckType": {
+        "zh": "检查类型",
+        "type": "enum",
+        "to": "NPCCheckType"
+      },
+      "Operator": {
+        "zh": "运算符",
+        "type": "enum",
+        "to": "Operator"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "IntParameter1": {
+        "zh": "整数参数1",
+        "type": "int"
+      },
+      "IntParameter2": {
+        "zh": "整数参数2",
+        "type": "int"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "StatParameter1": {
+        "zh": "属性参数1",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "FailPage": {
+        "zh": "失败页面",
+        "type": "ref",
+        "to": "NPCPage"
+      }
+    }
+  },
+  "NPCAction": {
+    "zh": "NPC 动作",
+    "identity": [],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "ActionType": {
+        "zh": "动作类型",
+        "type": "enum",
+        "to": "NPCActionType"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "IntParameter1": {
+        "zh": "整数参数1",
+        "type": "int"
+      },
+      "IntParameter2": {
+        "zh": "整数参数2",
+        "type": "int"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "StatParameter1": {
+        "zh": "属性参数1",
+        "type": "enum",
+        "to": "Stat"
+      }
+    }
+  },
+  "NPCType": {
+    "zh": "NPC 类型",
+    "identity": [],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "ItemType": {
+        "zh": "物品类型",
+        "type": "enum",
+        "to": "ItemType"
+      }
+    }
+  },
+  "NPCValue": {
+    "zh": "NPC 值",
+    "identity": [],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "NPCPage"
+      },
+      "ValueID": {
+        "zh": "值ID",
+        "type": "int"
+      },
+      "ValueType": {
+        "zh": "值类型",
+        "type": "enum",
+        "to": "NPCValueType"
+      },
+      "DataCategory": {
+        "zh": "数据分类",
+        "type": "string"
+      },
+      "DataType": {
+        "zh": "数据类型",
+        "type": "enum",
+        "to": "NPCDataType"
+      },
+      "FieldType": {
+        "zh": "字段类型",
+        "type": "enum",
+        "to": "NPCFieldType"
+      }
+    }
+  },
+  "NPCRequirement": {
+    "zh": "NPC 需求",
+    "identity": [],
+    "fields": {
+      "NPC": {
+        "zh": "NPC",
+        "type": "ref",
+        "to": "NPCInfo"
+      },
+      "Requirement": {
+        "zh": "需求类型",
+        "type": "enum",
+        "to": "NPCRequirementType"
+      },
+      "IntParameter1": {
+        "zh": "整数参数1",
+        "type": "int"
+      },
+      "QuestParameter": {
+        "zh": "任务参数",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "DaysOfWeek": {
+        "zh": "星期",
+        "type": "enum",
+        "to": "DaysOfWeek"
+      }
+    }
+  },
+  "GuardInfo": {
+    "zh": "守卫",
+    "identity": [
+      "Map",
+      "Monster",
+      "X",
+      "Y"
+    ],
+    "fields": {
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "X": {
+        "zh": "X",
+        "type": "int"
+      },
+      "Y": {
+        "zh": "Y",
+        "type": "int"
+      },
+      "Direction": {
+        "zh": "方向",
+        "type": "enum",
+        "to": "MirDirection"
+      }
+    }
+  },
+  "SafeZoneInfo": {
+    "zh": "安全区",
+    "identity": [
+      "Region"
+    ],
+    "fields": {
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "BindRegion": {
+        "zh": "绑定区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "StartClass": {
+        "zh": "起始职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "RedZone": {
+        "zh": "红区",
+        "type": "bool"
+      },
+      "Border": {
+        "zh": "边界",
+        "type": "bool"
+      }
+    }
+  },
+  "MineInfo": {
+    "zh": "矿点",
+    "identity": [
+      "Map",
+      "Item"
+    ],
+    "fields": {
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Chance": {
+        "zh": "概率",
+        "type": "int"
+      },
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "Quantity": {
+        "zh": "Quantity",
+        "type": "int"
+      },
+      "RestockTimeInMinutes": {
+        "zh": "RestockTimeInMinutes",
+        "type": "int"
+      }
+    }
+  },
+  "QuestInfo": {
+    "zh": "任务",
+    "identity": [
+      "QuestName"
+    ],
+    "fields": {
+      "QuestName": {
+        "zh": "任务名称",
+        "type": "string"
+      },
+      "QuestType": {
+        "zh": "任务类型",
+        "type": "enum",
+        "to": "QuestType"
+      },
+      "AcceptText": {
+        "zh": "接取文本",
+        "type": "string"
+      },
+      "ProgressText": {
+        "zh": "进度文本",
+        "type": "string"
+      },
+      "CompletedText": {
+        "zh": "完成文本",
+        "type": "string"
+      },
+      "ArchiveText": {
+        "zh": "归档文本",
+        "type": "string"
+      },
+      "Requirements": {
+        "zh": "需求",
+        "type": "reflist",
+        "to": "QuestRequirement"
+      },
+      "StartNPC": {
+        "zh": "接取NPC",
+        "type": "ref",
+        "to": "NPCInfo"
+      },
+      "FinishNPC": {
+        "zh": "完成NPC",
+        "type": "ref",
+        "to": "NPCInfo"
+      },
+      "Rewards": {
+        "zh": "奖励",
+        "type": "reflist",
+        "to": "QuestReward"
+      },
+      "Tasks": {
+        "zh": "任务步骤",
+        "type": "reflist",
+        "to": "QuestTask"
+      }
+    }
+  },
+  "QuestTask": {
+    "zh": "任务步骤",
+    "identity": [],
+    "fields": {
+      "Quest": {
+        "zh": "任务",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Task": {
+        "zh": "任务类型",
+        "type": "enum",
+        "to": "QuestTaskType"
+      },
+      "ItemParameter": {
+        "zh": "物品参数",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "RegionParameter": {
+        "zh": "区域参数",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "MobDescription": {
+        "zh": "怪物描述",
+        "type": "string"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "MonsterDetails": {
+        "zh": "怪物明细",
+        "type": "reflist",
+        "to": "QuestTaskMonsterDetails"
+      }
+    }
+  },
+  "QuestTaskMonsterDetails": {
+    "zh": "任务怪物明细",
+    "identity": [],
+    "fields": {
+      "Task": {
+        "zh": "任务类型",
+        "type": "ref",
+        "to": "QuestTask"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Chance": {
+        "zh": "概率",
+        "type": "int"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "DropSet": {
+        "zh": "掉落组",
+        "type": "int"
+      }
+    }
+  },
+  "QuestReward": {
+    "zh": "任务奖励",
+    "identity": [],
+    "fields": {
+      "Quest": {
+        "zh": "任务",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "Choice": {
+        "zh": "可自选",
+        "type": "bool"
+      },
+      "Bound": {
+        "zh": "绑定",
+        "type": "bool"
+      },
+      "Duration": {
+        "zh": "持续时间",
+        "type": "int"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      }
+    }
+  },
+  "QuestRequirement": {
+    "zh": "任务需求",
+    "identity": [],
+    "fields": {
+      "Quest": {
+        "zh": "任务",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Requirement": {
+        "zh": "需求类型",
+        "type": "enum",
+        "to": "QuestRequirementType"
+      },
+      "IntParameter1": {
+        "zh": "整数参数1",
+        "type": "int"
+      },
+      "QuestParameter": {
+        "zh": "任务参数",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      }
+    }
+  },
+  "BaseStat": {
+    "zh": "基础属性",
+    "identity": [
+      "Class",
+      "Level"
+    ],
+    "fields": {
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "MirClass"
+      },
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "Health": {
+        "zh": "生命",
+        "type": "int"
+      },
+      "Mana": {
+        "zh": "魔法",
+        "type": "int"
+      },
+      "BagWeight": {
+        "zh": "背包负重",
+        "type": "int"
+      },
+      "WearWeight": {
+        "zh": "穿戴负重",
+        "type": "int"
+      },
+      "HandWeight": {
+        "zh": "手持负重",
+        "type": "int"
+      },
+      "Accuracy": {
+        "zh": "命中",
+        "type": "int"
+      },
+      "Agility": {
+        "zh": "敏捷",
+        "type": "int"
+      },
+      "MinAC": {
+        "zh": "最小物防",
+        "type": "int"
+      },
+      "MaxAC": {
+        "zh": "最大物防",
+        "type": "int"
+      },
+      "MinMR": {
+        "zh": "最小魔防",
+        "type": "int"
+      },
+      "MaxMR": {
+        "zh": "最大魔防",
+        "type": "int"
+      },
+      "MinDC": {
+        "zh": "最小物攻",
+        "type": "int"
+      },
+      "MaxDC": {
+        "zh": "最大物攻",
+        "type": "int"
+      },
+      "MinMC": {
+        "zh": "最小魔攻",
+        "type": "int"
+      },
+      "MaxMC": {
+        "zh": "最大魔攻",
+        "type": "int"
+      },
+      "MinSC": {
+        "zh": "最小道术",
+        "type": "int"
+      },
+      "MaxSC": {
+        "zh": "最大道术",
+        "type": "int"
+      }
+    }
+  },
+  "CurrencyInfo": {
+    "zh": "货币",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Abbreviation": {
+        "zh": "缩写",
+        "type": "string"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "CurrencyType"
+      },
+      "Category": {
+        "zh": "分类",
+        "type": "enum",
+        "to": "CurrencyCategory"
+      },
+      "DropItem": {
+        "zh": "掉落物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "ExchangeRate": {
+        "zh": "汇率",
+        "type": "number"
+      },
+      "Images": {
+        "zh": "Images",
+        "type": "reflist",
+        "to": "CurrencyInfoImage"
+      }
+    }
+  },
+  "CurrencyInfoImage": {
+    "zh": "货币图标",
+    "identity": [],
+    "fields": {
+      "Currency": {
+        "zh": "货币",
+        "type": "ref",
+        "to": "CurrencyInfo"
+      },
+      "Image": {
+        "zh": "图像",
+        "type": "int"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "FameInfo": {
+    "zh": "声望",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Shape": {
+        "zh": "外形",
+        "type": "int"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Cost": {
+        "zh": "价格",
+        "type": "int"
+      },
+      "Order": {
+        "zh": "顺序",
+        "type": "int"
+      },
+      "BuffStats": {
+        "zh": "属性加成",
+        "type": "reflist",
+        "to": "FameInfoStat"
+      },
+      "ItemRewards": {
+        "zh": "物品奖励",
+        "type": "reflist",
+        "to": "FameInfoReward"
+      }
+    }
+  },
+  "FameInfoStat": {
+    "zh": "声望属性",
+    "identity": [
+      "Fame",
+      "Stat"
+    ],
+    "fields": {
+      "Fame": {
+        "zh": "声望",
+        "type": "ref",
+        "to": "FameInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "FameInfoReward": {
+    "zh": "声望奖励",
+    "identity": [
+      "Fame",
+      "Item"
+    ],
+    "fields": {
+      "Fame": {
+        "zh": "声望",
+        "type": "ref",
+        "to": "FameInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "CompanionInfo": {
+    "zh": "宠物",
+    "identity": [
+      "MonsterInfo"
+    ],
+    "fields": {
+      "MonsterInfo": {
+        "zh": "MonsterInfo",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Price": {
+        "zh": "价格",
+        "type": "int"
+      },
+      "Currency": {
+        "zh": "货币",
+        "type": "ref",
+        "to": "CurrencyInfo"
+      },
+      "Available": {
+        "zh": "可用",
+        "type": "bool"
+      },
+      "UnlockItem": {
+        "zh": "UnlockItem",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "CompanionSpeeches": {
+        "zh": "CompanionSpeeches",
+        "type": "reflist",
+        "to": "CompanionSpeech"
+      }
+    }
+  },
+  "CompanionLevelInfo": {
+    "zh": "宠物等级",
+    "identity": [
+      "Level"
+    ],
+    "fields": {
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "MaxExperience": {
+        "zh": "最大经验",
+        "type": "int"
+      },
+      "InventorySpace": {
+        "zh": "背包格数",
+        "type": "int"
+      },
+      "InventoryWeight": {
+        "zh": "背包负重",
+        "type": "int"
+      },
+      "MaxHunger": {
+        "zh": "最大饥饿",
+        "type": "int"
+      }
+    }
+  },
+  "CompanionSkillInfo": {
+    "zh": "宠物技能",
+    "identity": [
+      "Level",
+      "StatType"
+    ],
+    "fields": {
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "StatType": {
+        "zh": "属性类型",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "MaxAmount": {
+        "zh": "最大数量",
+        "type": "int"
+      },
+      "Weight": {
+        "zh": "重量",
+        "type": "int"
+      }
+    }
+  },
+  "CompanionSpeech": {
+    "zh": "宠物台词",
+    "identity": [
+      "Action",
+      "Speech"
+    ],
+    "fields": {
+      "Companion": {
+        "zh": "Companion",
+        "type": "ref",
+        "to": "CompanionInfo"
+      },
+      "Action": {
+        "zh": "Action",
+        "type": "enum",
+        "to": "CompanionAction"
+      },
+      "Speech": {
+        "zh": "Speech",
+        "type": "string"
+      }
+    }
+  },
+  "DisciplineInfo": {
+    "zh": "修炼",
+    "identity": [
+      "Level"
+    ],
+    "fields": {
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "RequiredLevel": {
+        "zh": "需求等级",
+        "type": "int"
+      },
+      "RequiredExperience": {
+        "zh": "需求经验",
+        "type": "int"
+      },
+      "RequiredGold": {
+        "zh": "需求金币",
+        "type": "int"
+      },
+      "FocusPoints": {
+        "zh": "专注点",
+        "type": "int"
+      }
+    }
+  },
+  "CastleInfo": {
+    "zh": "沙巴克城堡",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "StartTime": {
+        "zh": "开始时间",
+        "type": "other"
+      },
+      "Duration": {
+        "zh": "持续时间",
+        "type": "other"
+      },
+      "CastleRegion": {
+        "zh": "CastleRegion",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "ObjectiveRegion": {
+        "zh": "ObjectiveRegion",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "AttackSpawnRegion": {
+        "zh": "AttackSpawnRegion",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Discount": {
+        "zh": "折扣",
+        "type": "number"
+      },
+      "Flags": {
+        "zh": "Flags",
+        "type": "reflist",
+        "to": "CastleFlagInfo"
+      },
+      "Gates": {
+        "zh": "Gates",
+        "type": "reflist",
+        "to": "CastleGateInfo"
+      },
+      "Guards": {
+        "zh": "守卫",
+        "type": "reflist",
+        "to": "CastleGuardInfo"
+      }
+    }
+  },
+  "CastleFlagInfo": {
+    "zh": "沙巴克旗帜",
+    "identity": [
+      "Castle",
+      "Monster",
+      "X",
+      "Y"
+    ],
+    "fields": {
+      "Castle": {
+        "zh": "Castle",
+        "type": "ref",
+        "to": "CastleInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "X": {
+        "zh": "X",
+        "type": "int"
+      },
+      "Y": {
+        "zh": "Y",
+        "type": "int"
+      }
+    }
+  },
+  "CastleGateInfo": {
+    "zh": "沙巴克城门",
+    "identity": [
+      "Castle",
+      "Monster",
+      "X",
+      "Y"
+    ],
+    "fields": {
+      "Castle": {
+        "zh": "Castle",
+        "type": "ref",
+        "to": "CastleInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "X": {
+        "zh": "X",
+        "type": "int"
+      },
+      "Y": {
+        "zh": "Y",
+        "type": "int"
+      },
+      "RepairCost": {
+        "zh": "RepairCost",
+        "type": "int"
+      }
+    }
+  },
+  "CastleGuardInfo": {
+    "zh": "沙巴克守卫",
+    "identity": [
+      "Castle",
+      "Monster",
+      "X",
+      "Y"
+    ],
+    "fields": {
+      "Castle": {
+        "zh": "Castle",
+        "type": "ref",
+        "to": "CastleInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "X": {
+        "zh": "X",
+        "type": "int"
+      },
+      "Y": {
+        "zh": "Y",
+        "type": "int"
+      },
+      "Direction": {
+        "zh": "方向",
+        "type": "enum",
+        "to": "MirDirection"
+      },
+      "RepairCost": {
+        "zh": "RepairCost",
+        "type": "int"
+      }
+    }
+  },
+  "SystemDatabaseInfo": {
+    "zh": "数据库信息",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Version": {
+        "zh": "Version",
+        "type": "string"
+      }
+    }
+  },
+  "BaseEventAction": {
+    "zh": "事件动作（基类）",
+    "identity": [],
+    "fields": {
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "EventActionType"
+      },
+      "Restrict": {
+        "zh": "Restrict",
+        "type": "bool"
+      },
+      "TriggerValue": {
+        "zh": "TriggerValue",
+        "type": "int"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "MonsterParameter1": {
+        "zh": "MonsterParameter1",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "RespawnParameter1": {
+        "zh": "RespawnParameter1",
+        "type": "ref",
+        "to": "RespawnInfo"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "CalculatedStats": {
+        "zh": "CalculatedStats",
+        "type": "stats"
+      }
+    }
+  },
+  "BundleInfo": {
+    "zh": "礼包",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "BundleType"
+      },
+      "SlotSize": {
+        "zh": "SlotSize",
+        "type": "int"
+      },
+      "AutoOpen": {
+        "zh": "AutoOpen",
+        "type": "bool"
+      },
+      "LootBox": {
+        "zh": "LootBox",
+        "type": "bool"
+      },
+      "Contents": {
+        "zh": "Contents",
+        "type": "reflist",
+        "to": "BundleItemInfo"
+      }
+    }
+  },
+  "BundleItemInfo": {
+    "zh": "礼包物品",
+    "identity": [],
+    "fields": {
+      "Bundle": {
+        "zh": "Bundle",
+        "type": "ref",
+        "to": "BundleInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "DungeonInfo": {
+    "zh": "地下城",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "SpawnMultiplier": {
+        "zh": "SpawnMultiplier",
+        "type": "number"
+      },
+      "Maps": {
+        "zh": "Maps",
+        "type": "reflist",
+        "to": "DungeonMapInfo"
+      }
+    }
+  },
+  "DungeonMapInfo": {
+    "zh": "地下城地图",
+    "identity": [
+      "Dungeon",
+      "Map"
+    ],
+    "fields": {
+      "Dungeon": {
+        "zh": "Dungeon",
+        "type": "ref",
+        "to": "DungeonInfo"
+      },
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Floor": {
+        "zh": "Floor",
+        "type": "int"
+      },
+      "Role": {
+        "zh": "Role",
+        "type": "enum",
+        "to": "DungeonMapRole"
+      }
+    }
+  },
+  "FishingDropInfo": {
+    "zh": "钓鱼掉落",
+    "identity": [],
+    "fields": {
+      "Fishing": {
+        "zh": "Fishing",
+        "type": "ref",
+        "to": "FishingInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Chance": {
+        "zh": "概率",
+        "type": "int"
+      },
+      "ThrowQuality": {
+        "zh": "ThrowQuality",
+        "type": "int"
+      },
+      "PerfectCatch": {
+        "zh": "PerfectCatch",
+        "type": "bool"
+      }
+    }
+  },
+  "FishingInfo": {
+    "zh": "钓鱼",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "Drops": {
+        "zh": "掉落",
+        "type": "reflist",
+        "to": "FishingDropInfo"
+      }
+    }
+  },
+  "HelpInfo": {
+    "zh": "帮助",
+    "identity": [
+      "Title"
+    ],
+    "fields": {
+      "Title": {
+        "zh": "Title",
+        "type": "string"
+      },
+      "Order": {
+        "zh": "顺序",
+        "type": "int"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Pages": {
+        "zh": "Pages",
+        "type": "reflist",
+        "to": "HelpPageInfo"
+      }
+    }
+  },
+  "HelpItemInfo": {
+    "zh": "帮助条目",
+    "identity": [
+      "Title",
+      "Content"
+    ],
+    "fields": {
+      "Page": {
+        "zh": "页面",
+        "type": "ref",
+        "to": "HelpPageInfo"
+      },
+      "Title": {
+        "zh": "Title",
+        "type": "string"
+      },
+      "Order": {
+        "zh": "顺序",
+        "type": "int"
+      },
+      "Content": {
+        "zh": "Content",
+        "type": "string"
+      }
+    }
+  },
+  "HelpPageInfo": {
+    "zh": "帮助页面",
+    "identity": [
+      "Title"
+    ],
+    "fields": {
+      "Help": {
+        "zh": "Help",
+        "type": "ref",
+        "to": "HelpInfo"
+      },
+      "Title": {
+        "zh": "Title",
+        "type": "string"
+      },
+      "Order": {
+        "zh": "顺序",
+        "type": "int"
+      },
+      "Items": {
+        "zh": "Items",
+        "type": "reflist",
+        "to": "HelpItemInfo"
+      }
+    }
+  },
+  "InstanceInfo": {
+    "zh": "副本",
+    "identity": [
+      "Name"
+    ],
+    "fields": {
+      "Name": {
+        "zh": "名称",
+        "type": "string"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "InstanceType"
+      },
+      "MaxInstances": {
+        "zh": "MaxInstances",
+        "type": "int"
+      },
+      "ShowOnDungeonFinder": {
+        "zh": "ShowOnDungeonFinder",
+        "type": "bool"
+      },
+      "SafeZoneOnly": {
+        "zh": "SafeZoneOnly",
+        "type": "bool"
+      },
+      "AllowRejoin": {
+        "zh": "AllowRejoin",
+        "type": "bool"
+      },
+      "AllowTeleport": {
+        "zh": "AllowTeleport",
+        "type": "bool"
+      },
+      "SavePlace": {
+        "zh": "SavePlace",
+        "type": "bool"
+      },
+      "MinPlayerLevel": {
+        "zh": "MinPlayerLevel",
+        "type": "int"
+      },
+      "MaxPlayerLevel": {
+        "zh": "MaxPlayerLevel",
+        "type": "int"
+      },
+      "MinPlayerCount": {
+        "zh": "MinPlayerCount",
+        "type": "int"
+      },
+      "MaxPlayerCount": {
+        "zh": "MaxPlayerCount",
+        "type": "int"
+      },
+      "RequiredItem": {
+        "zh": "RequiredItem",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "RequiredItemSingleUse": {
+        "zh": "RequiredItemSingleUse",
+        "type": "bool"
+      },
+      "ConnectRegion": {
+        "zh": "ConnectRegion",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "ReconnectRegion": {
+        "zh": "ReconnectRegion",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "CooldownTimeInMinutes": {
+        "zh": "CooldownTimeInMinutes",
+        "type": "int"
+      },
+      "TimeLimitInMinutes": {
+        "zh": "TimeLimitInMinutes",
+        "type": "int"
+      },
+      "ShowTimer": {
+        "zh": "ShowTimer",
+        "type": "bool"
+      },
+      "Maps": {
+        "zh": "Maps",
+        "type": "reflist",
+        "to": "InstanceMapInfo"
+      },
+      "BuffStats": {
+        "zh": "属性加成",
+        "type": "reflist",
+        "to": "InstanceInfoStat"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "stats"
+      }
+    }
+  },
+  "InstanceInfoStat": {
+    "zh": "副本属性",
+    "identity": [
+      "Instance",
+      "Stat"
+    ],
+    "fields": {
+      "Instance": {
+        "zh": "副本",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "InstanceMapInfo": {
+    "zh": "副本地图",
+    "identity": [
+      "Instance",
+      "Map"
+    ],
+    "fields": {
+      "Instance": {
+        "zh": "副本",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RespawnIndex": {
+        "zh": "RespawnIndex",
+        "type": "int"
+      }
+    }
+  },
+  "LootBoxInfo": {
+    "zh": "宝箱",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Currency": {
+        "zh": "货币",
+        "type": "ref",
+        "to": "CurrencyInfo"
+      },
+      "Contents": {
+        "zh": "Contents",
+        "type": "reflist",
+        "to": "LootBoxItemInfo"
+      }
+    }
+  },
+  "LootBoxItemInfo": {
+    "zh": "宝箱物品",
+    "identity": [],
+    "fields": {
+      "LootBox": {
+        "zh": "LootBox",
+        "type": "ref",
+        "to": "LootBoxInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "MapInfoStat": {
+    "zh": "地图属性加成",
+    "identity": [
+      "Map",
+      "Stat"
+    ],
+    "fields": {
+      "Map": {
+        "zh": "地图",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "MilestoneInfo": {
+    "zh": "里程碑",
+    "identity": [
+      "Title"
+    ],
+    "fields": {
+      "Title": {
+        "zh": "Title",
+        "type": "string"
+      },
+      "Category": {
+        "zh": "分类",
+        "type": "string"
+      },
+      "Grade": {
+        "zh": "Grade",
+        "type": "enum",
+        "to": "MilestoneGrade"
+      },
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Task": {
+        "zh": "任务类型",
+        "type": "string"
+      },
+      "ShowCount": {
+        "zh": "ShowCount",
+        "type": "bool"
+      },
+      "RequiredClass": {
+        "zh": "职业要求",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "Reward": {
+        "zh": "Reward",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "RewardAmount": {
+        "zh": "RewardAmount",
+        "type": "int"
+      },
+      "Tasks": {
+        "zh": "任务步骤",
+        "type": "reflist",
+        "to": "MilestoneInfoTask"
+      }
+    }
+  },
+  "MilestoneInfoTask": {
+    "zh": "里程碑任务",
+    "identity": [
+      "Milestone",
+      "Type",
+      "Class",
+      "Item",
+      "Monster",
+      "Currency",
+      "Region",
+      "Instance",
+      "Quest",
+      "Magic",
+      "Amount"
+    ],
+    "fields": {
+      "Milestone": {
+        "zh": "Milestone",
+        "type": "ref",
+        "to": "MilestoneInfo"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "MilestoneType"
+      },
+      "Class": {
+        "zh": "职业",
+        "type": "enum",
+        "to": "RequiredClass"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "Currency": {
+        "zh": "货币",
+        "type": "ref",
+        "to": "CurrencyInfo"
+      },
+      "Region": {
+        "zh": "区域",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "Instance": {
+        "zh": "副本",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "Quest": {
+        "zh": "任务",
+        "type": "ref",
+        "to": "QuestInfo"
+      },
+      "Magic": {
+        "zh": "魔法类型",
+        "type": "ref",
+        "to": "MagicInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "MonsterEventAction": {
+    "zh": "怪物事件动作",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "MonsterEventInfo"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "reflist",
+        "to": "MonsterEventInfoTriggerStat"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "EventActionType"
+      },
+      "Restrict": {
+        "zh": "Restrict",
+        "type": "bool"
+      },
+      "TriggerValue": {
+        "zh": "TriggerValue",
+        "type": "int"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "MonsterParameter1": {
+        "zh": "MonsterParameter1",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "RespawnParameter1": {
+        "zh": "RespawnParameter1",
+        "type": "ref",
+        "to": "RespawnInfo"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "CalculatedStats": {
+        "zh": "CalculatedStats",
+        "type": "stats"
+      }
+    }
+  },
+  "MonsterEventInfo": {
+    "zh": "怪物事件",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "TrackingType": {
+        "zh": "TrackingType",
+        "type": "enum",
+        "to": "EventTrackingType"
+      },
+      "MaxValue": {
+        "zh": "最大值",
+        "type": "int"
+      },
+      "ResetWhenMax": {
+        "zh": "ResetWhenMax",
+        "type": "bool"
+      },
+      "Triggers": {
+        "zh": "Triggers",
+        "type": "reflist",
+        "to": "MonsterEventTrigger"
+      },
+      "Actions": {
+        "zh": "动作",
+        "type": "reflist",
+        "to": "MonsterEventAction"
+      }
+    }
+  },
+  "MonsterEventInfoTriggerStat": {
+    "zh": "怪物事件触发属性",
+    "identity": [
+      "Action",
+      "Stat"
+    ],
+    "fields": {
+      "Action": {
+        "zh": "Action",
+        "type": "ref",
+        "to": "MonsterEventAction"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "MonsterEventTrigger": {
+    "zh": "怪物事件触发器",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "MonsterEventInfo"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "MonsterEventTriggerType"
+      },
+      "Monster": {
+        "zh": "怪物",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "DropSet": {
+        "zh": "掉落组",
+        "type": "int"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "Value": {
+        "zh": "Value",
+        "type": "int"
+      },
+      "MaxTriggers": {
+        "zh": "MaxTriggers",
+        "type": "int"
+      }
+    }
+  },
+  "PlayerEventAction": {
+    "zh": "玩家事件动作",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "PlayerEventInfo"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "reflist",
+        "to": "PlayerEventInfoTriggerStat"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "EventActionType"
+      },
+      "Restrict": {
+        "zh": "Restrict",
+        "type": "bool"
+      },
+      "TriggerValue": {
+        "zh": "TriggerValue",
+        "type": "int"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "MonsterParameter1": {
+        "zh": "MonsterParameter1",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "RespawnParameter1": {
+        "zh": "RespawnParameter1",
+        "type": "ref",
+        "to": "RespawnInfo"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "CalculatedStats": {
+        "zh": "CalculatedStats",
+        "type": "stats"
+      }
+    }
+  },
+  "PlayerEventInfo": {
+    "zh": "玩家事件",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "TrackingType": {
+        "zh": "TrackingType",
+        "type": "enum",
+        "to": "EventTrackingType"
+      },
+      "MaxValue": {
+        "zh": "最大值",
+        "type": "int"
+      },
+      "ResetWhenMax": {
+        "zh": "ResetWhenMax",
+        "type": "bool"
+      },
+      "Triggers": {
+        "zh": "Triggers",
+        "type": "reflist",
+        "to": "PlayerEventTrigger"
+      },
+      "Actions": {
+        "zh": "动作",
+        "type": "reflist",
+        "to": "PlayerEventAction"
+      }
+    }
+  },
+  "PlayerEventInfoTriggerStat": {
+    "zh": "玩家事件触发属性",
+    "identity": [
+      "Action",
+      "Stat"
+    ],
+    "fields": {
+      "Action": {
+        "zh": "Action",
+        "type": "ref",
+        "to": "PlayerEventAction"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "PlayerEventTrigger": {
+    "zh": "玩家事件触发器",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "PlayerEventInfo"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "PlayerEventTriggerType"
+      },
+      "Value": {
+        "zh": "Value",
+        "type": "int"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "MaxTriggers": {
+        "zh": "MaxTriggers",
+        "type": "int"
+      }
+    }
+  },
+  "StoreInfo": {
+    "zh": "商店",
+    "identity": [
+      "Item"
+    ],
+    "fields": {
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Price": {
+        "zh": "价格",
+        "type": "int"
+      },
+      "HuntGoldPrice": {
+        "zh": "猎金价格",
+        "type": "int"
+      },
+      "Filter": {
+        "zh": "筛选",
+        "type": "string"
+      },
+      "Available": {
+        "zh": "可用",
+        "type": "bool"
+      },
+      "Duration": {
+        "zh": "持续时间",
+        "type": "int"
+      }
+    }
+  },
+  "WorldEventAction": {
+    "zh": "世界事件动作",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "WorldEventInfo"
+      },
+      "Stats": {
+        "zh": "属性",
+        "type": "reflist",
+        "to": "WorldEventInfoTriggerStat"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "EventActionType"
+      },
+      "Restrict": {
+        "zh": "Restrict",
+        "type": "bool"
+      },
+      "TriggerValue": {
+        "zh": "TriggerValue",
+        "type": "int"
+      },
+      "StringParameter1": {
+        "zh": "字符串参数1",
+        "type": "string"
+      },
+      "MonsterParameter1": {
+        "zh": "MonsterParameter1",
+        "type": "ref",
+        "to": "MonsterInfo"
+      },
+      "RespawnParameter1": {
+        "zh": "RespawnParameter1",
+        "type": "ref",
+        "to": "RespawnInfo"
+      },
+      "MapParameter1": {
+        "zh": "地图参数1",
+        "type": "ref",
+        "to": "MapInfo"
+      },
+      "RegionParameter1": {
+        "zh": "RegionParameter1",
+        "type": "ref",
+        "to": "MapRegion"
+      },
+      "InstanceParameter1": {
+        "zh": "副本参数1",
+        "type": "ref",
+        "to": "InstanceInfo"
+      },
+      "ItemParameter1": {
+        "zh": "物品参数1",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "CalculatedStats": {
+        "zh": "CalculatedStats",
+        "type": "stats"
+      }
+    }
+  },
+  "WorldEventInfo": {
+    "zh": "世界事件",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "MaxValue": {
+        "zh": "最大值",
+        "type": "int"
+      },
+      "ResetWhenMax": {
+        "zh": "ResetWhenMax",
+        "type": "bool"
+      },
+      "Triggers": {
+        "zh": "Triggers",
+        "type": "reflist",
+        "to": "WorldEventTrigger"
+      },
+      "Actions": {
+        "zh": "动作",
+        "type": "reflist",
+        "to": "WorldEventAction"
+      }
+    }
+  },
+  "WorldEventInfoTriggerStat": {
+    "zh": "世界事件触发属性",
+    "identity": [
+      "Action",
+      "Stat"
+    ],
+    "fields": {
+      "Action": {
+        "zh": "Action",
+        "type": "ref",
+        "to": "WorldEventAction"
+      },
+      "Stat": {
+        "zh": "属性",
+        "type": "enum",
+        "to": "Stat"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "WorldEventTrigger": {
+    "zh": "世界事件触发器",
+    "identity": [],
+    "fields": {
+      "Event": {
+        "zh": "Event",
+        "type": "ref",
+        "to": "WorldEventInfo"
+      },
+      "Type": {
+        "zh": "类型",
+        "type": "enum",
+        "to": "WorldEventTriggerType"
+      },
+      "Value": {
+        "zh": "Value",
+        "type": "int"
+      },
+      "MaxTriggers": {
+        "zh": "MaxTriggers",
+        "type": "int"
+      }
+    }
+  }
+}

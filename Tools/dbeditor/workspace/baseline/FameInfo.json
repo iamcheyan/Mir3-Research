@@ -1,0 +1,322 @@
+{
+  "count": 9,
+  "rows": [
+    {
+      "Index": 1,
+      "_Identity": "Unknown Novice",
+      "Name": "Unknown Novice",
+      "Shape": 1,
+      "Description": "You are just starting your journey and are relatively unknown in the world.",
+      "Cost": 1000,
+      "Order": 0,
+      "BuffStats": [
+        {
+          "Index": 1,
+          "Name": "Unknown Novice / MinDC"
+        },
+        {
+          "Index": 2,
+          "Name": "Unknown Novice / MaxDC"
+        },
+        {
+          "Index": 3,
+          "Name": "Unknown Novice / MinMC"
+        },
+        {
+          "Index": 4,
+          "Name": "Unknown Novice / MaxMC"
+        },
+        {
+          "Index": 5,
+          "Name": "Unknown Novice / MinSC"
+        },
+        {
+          "Index": 6,
+          "Name": "Unknown Novice / MaxSC"
+        }
+      ]
+    },
+    {
+      "Index": 2,
+      "_Identity": "Village Explorer",
+      "Name": "Village Explorer",
+      "Shape": 2,
+      "Description": "You have gained some recognition within the local village.",
+      "Cost": 500,
+      "Order": 1,
+      "BuffStats": [
+        {
+          "Index": 7,
+          "Name": "Village Explorer / MinDC"
+        },
+        {
+          "Index": 8,
+          "Name": "Village Explorer / MaxDC"
+        },
+        {
+          "Index": 9,
+          "Name": "Village Explorer / MinMC"
+        },
+        {
+          "Index": 10,
+          "Name": "Village Explorer / MaxMC"
+        },
+        {
+          "Index": 11,
+          "Name": "Village Explorer / MinSC"
+        },
+        {
+          "Index": 12,
+          "Name": "Village Explorer / MaxSC"
+        }
+      ]
+    },
+    {
+      "Index": 3,
+      "_Identity": "Regional Apprentice",
+      "Name": "Regional Apprentice",
+      "Shape": 3,
+      "Description": "Your skills and deeds are becoming known across a broader region.",
+      "Cost": 2000,
+      "Order": 2,
+      "BuffStats": [
+        {
+          "Index": 13,
+          "Name": "Regional Apprentice / MinAC"
+        },
+        {
+          "Index": 14,
+          "Name": "Regional Apprentice / MaxAC"
+        },
+        {
+          "Index": 15,
+          "Name": "Regional Apprentice / MinMR"
+        },
+        {
+          "Index": 16,
+          "Name": "Regional Apprentice / MaxMR"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 1,
+          "Name": "Regional Apprentice / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 4,
+      "_Identity": "Province Seeker",
+      "Name": "Province Seeker",
+      "Shape": 4,
+      "Description": "You are gaining popularity within an entire province, drawing attention from various communities.",
+      "Cost": 1000,
+      "Order": 3,
+      "BuffStats": [
+        {
+          "Index": 17,
+          "Name": "Province Seeker / MinAC"
+        },
+        {
+          "Index": 18,
+          "Name": "Province Seeker / MaxAC"
+        },
+        {
+          "Index": 19,
+          "Name": "Province Seeker / MinMR"
+        },
+        {
+          "Index": 20,
+          "Name": "Province Seeker / MaxMR"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 2,
+          "Name": "Province Seeker / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 5,
+      "_Identity": "Landmarked Warrior",
+      "Name": "Landmarked Warrior",
+      "Shape": 5,
+      "Description": "Your exploits are becoming well-known and associated with specific landmarks and regions.",
+      "Cost": 2000,
+      "Order": 4,
+      "BuffStats": [
+        {
+          "Index": 21,
+          "Name": "Landmarked Warrior / MinAC"
+        },
+        {
+          "Index": 22,
+          "Name": "Landmarked Warrior / MaxAC"
+        },
+        {
+          "Index": 23,
+          "Name": "Landmarked Warrior / MinMR"
+        },
+        {
+          "Index": 24,
+          "Name": "Landmarked Warrior / MaxMR"
+        },
+        {
+          "Index": 25,
+          "Name": "Landmarked Warrior / MinDC"
+        },
+        {
+          "Index": 26,
+          "Name": "Landmarked Warrior / MaxDC"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 3,
+          "Name": "Landmarked Warrior / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 6,
+      "_Identity": "Celestial Guardian",
+      "Name": "Celestial Guardian",
+      "Shape": 6,
+      "Description": "Your fame reaches beyond earthly realms, capturing the attention of celestial beings and powerful entities.",
+      "Cost": 4000,
+      "Order": 5,
+      "BuffStats": [
+        {
+          "Index": 27,
+          "Name": "Celestial Guardian / MinAC"
+        },
+        {
+          "Index": 28,
+          "Name": "Celestial Guardian / MaxAC"
+        },
+        {
+          "Index": 29,
+          "Name": "Celestial Guardian / MinMR"
+        },
+        {
+          "Index": 30,
+          "Name": "Celestial Guardian / MaxMR"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 4,
+          "Name": "Celestial Guardian / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 7,
+      "_Identity": "Imperial Champion",
+      "Name": "Imperial Champion",
+      "Shape": 7,
+      "Description": "You have earned recognition from the imperial court and a central governing authority.",
+      "Cost": 8000,
+      "Order": 6,
+      "BuffStats": [
+        {
+          "Index": 31,
+          "Name": "Imperial Champion / MinDC"
+        },
+        {
+          "Index": 32,
+          "Name": "Imperial Champion / MaxDC"
+        },
+        {
+          "Index": 33,
+          "Name": "Imperial Champion / MinMC"
+        },
+        {
+          "Index": 34,
+          "Name": "Imperial Champion / MaxMC"
+        },
+        {
+          "Index": 35,
+          "Name": "Imperial Champion / MinSC"
+        },
+        {
+          "Index": 36,
+          "Name": "Imperial Champion / MaxSC"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 5,
+          "Name": "Imperial Champion / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 8,
+      "_Identity": "Epic Legend",
+      "Name": "Epic Legend",
+      "Shape": 8,
+      "Description": "Your deeds have become the stuff of legends, known far and wide across the entire realm.",
+      "Cost": 12000,
+      "Order": 7,
+      "BuffStats": [
+        {
+          "Index": 37,
+          "Name": "Epic Legend / MinAC"
+        },
+        {
+          "Index": 38,
+          "Name": "Epic Legend / MaxAC"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 6,
+          "Name": "Epic Legend / Gold"
+        }
+      ]
+    },
+    {
+      "Index": 9,
+      "_Identity": "Mythical Sensei",
+      "Name": "Mythical Sensei",
+      "Shape": 9,
+      "Description": "You have reached the pinnacle of fame, becoming a mythical figure with tales of your adventures passed down through generations.",
+      "Cost": 20000,
+      "Order": 8,
+      "BuffStats": [
+        {
+          "Index": 39,
+          "Name": "Mythical Sensei / MinDC"
+        },
+        {
+          "Index": 40,
+          "Name": "Mythical Sensei / MaxDC"
+        },
+        {
+          "Index": 41,
+          "Name": "Mythical Sensei / MinMC"
+        },
+        {
+          "Index": 42,
+          "Name": "Mythical Sensei / MaxMC"
+        },
+        {
+          "Index": 43,
+          "Name": "Mythical Sensei / MinSC"
+        },
+        {
+          "Index": 44,
+          "Name": "Mythical Sensei / MaxSC"
+        }
+      ],
+      "ItemRewards": [
+        {
+          "Index": 7,
+          "Name": "Mythical Sensei / Gold"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4105 @@
+{
+  "count": 288,
+  "rows": [
+    {
+      "Index": 2,
+      "Page": {
+        "Index": 25,
+        "Name": "Well"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 11,
+      "Page": {
+        "Index": 34,
+        "Name": "Teleport to BanyaVillage"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 197,
+      "IntParameter2": 162,
+      "MapParameter1": {
+        "Index": 6,
+        "Name": "2"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 12,
+      "Page": {
+        "Index": 33,
+        "Name": "Teleport to Sabuk Keep"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 55,
+      "IntParameter2": 220,
+      "MapParameter1": {
+        "Index": 7,
+        "Name": "3"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 13,
+      "Page": {
+        "Index": 32,
+        "Name": "Teleport to Lost Paradise"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 135,
+      "IntParameter2": 210,
+      "MapParameter1": {
+        "Index": 5,
+        "Name": "1"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 14,
+      "Page": {
+        "Index": 31,
+        "Name": "Teleport to Bichon Town"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 140,
+      "IntParameter2": 265,
+      "MapParameter1": {
+        "Index": 1,
+        "Name": "0"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 15,
+      "Page": {
+        "Index": 37,
+        "Name": "Teleport to Numa Village"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 205,
+      "IntParameter2": 155,
+      "MapParameter1": {
+        "Index": 8,
+        "Name": "4"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 16,
+      "Page": {
+        "Index": 35,
+        "Name": "Teleport to MudWall"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 70,
+      "IntParameter2": 200,
+      "MapParameter1": {
+        "Index": 9,
+        "Name": "5"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 17,
+      "Page": {
+        "Index": 36,
+        "Name": "Teleport to Banya Island"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 175,
+      "IntParameter2": 280,
+      "MapParameter1": {
+        "Index": 292,
+        "Name": "12"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 21,
+      "Page": {
+        "Index": 66,
+        "Name": "BI 10K and Level 25+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 22,
+      "Page": {
+        "Index": 63,
+        "Name": "LP 10K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 23,
+      "Page": {
+        "Index": 60,
+        "Name": "NV 10K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 24,
+      "Page": {
+        "Index": 57,
+        "Name": "BV 10K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 25,
+      "Page": {
+        "Index": 50,
+        "Name": "BT 10K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 26,
+      "Page": {
+        "Index": 51,
+        "Name": "BT 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 27,
+      "Page": {
+        "Index": 53,
+        "Name": "SK 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 28,
+      "Page": {
+        "Index": 55,
+        "Name": "MW 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 29,
+      "Page": {
+        "Index": 58,
+        "Name": "BV 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 30,
+      "Page": {
+        "Index": 61,
+        "Name": "NV 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 31,
+      "Page": {
+        "Index": 64,
+        "Name": "LP 5K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 32,
+      "Page": {
+        "Index": 52,
+        "Name": "BT 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 33,
+      "Page": {
+        "Index": 65,
+        "Name": "LP 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 34,
+      "Page": {
+        "Index": 62,
+        "Name": "NV 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 35,
+      "Page": {
+        "Index": 59,
+        "Name": "BV 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 36,
+      "Page": {
+        "Index": 56,
+        "Name": "MW 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 37,
+      "Page": {
+        "Index": 54,
+        "Name": "SK 3K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 3000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 38,
+      "Page": {
+        "Index": 70,
+        "Name": "Teleport Banya Hall"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 39,
+      "Page": {
+        "Index": 75,
+        "Name": "Weapon Refiner - Change Element - Complete - Fire"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 40,
+      "Page": {
+        "Index": 75,
+        "Name": "Weapon Refiner - Change Element - Complete - Fire"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 41,
+      "Page": {
+        "Index": 78,
+        "Name": "Weapon Refiner - Change Element - Complete - Ice"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 2,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 42,
+      "Page": {
+        "Index": 78,
+        "Name": "Weapon Refiner - Change Element - Complete - Ice"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 43,
+      "Page": {
+        "Index": 79,
+        "Name": "Weapon Refiner - Change Element - Complete - Lightning"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 44,
+      "Page": {
+        "Index": 79,
+        "Name": "Weapon Refiner - Change Element - Complete - Lightning"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 45,
+      "Page": {
+        "Index": 80,
+        "Name": "Weapon Refiner - Change Element - Complete - Wind"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 4,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 46,
+      "Page": {
+        "Index": 80,
+        "Name": "Weapon Refiner - Change Element - Complete - Wind"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 47,
+      "Page": {
+        "Index": 81,
+        "Name": "Weapon Refiner - Change Element - Complete - Holy"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 5,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 48,
+      "Page": {
+        "Index": 81,
+        "Name": "Weapon Refiner - Change Element - Complete - Holy"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 49,
+      "Page": {
+        "Index": 83,
+        "Name": "Weapon Refiner - Change Element - Complete - Phantom"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 7,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 50,
+      "Page": {
+        "Index": 83,
+        "Name": "Weapon Refiner - Change Element - Complete - Phantom"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 51,
+      "Page": {
+        "Index": 82,
+        "Name": "Weapon Refiner - Change Element - Complete - Dark"
+      },
+      "ActionType": "ChangeElement",
+      "StringParameter1": "",
+      "IntParameter1": 6,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 52,
+      "Page": {
+        "Index": 82,
+        "Name": "Weapon Refiner - Change Element - Complete - Dark"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 53,
+      "Page": {
+        "Index": 105,
+        "Name": "NV 1K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 54,
+      "Page": {
+        "Index": 106,
+        "Name": "II 50K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 50000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 55,
+      "Page": {
+        "Index": 107,
+        "Name": "Teleport to Infernal Island"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 34,
+      "IntParameter2": 159,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 56,
+      "Page": {
+        "Index": 115,
+        "Name": "Inner SK 1K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 57,
+      "Page": {
+        "Index": 117,
+        "Name": "Inner MW 1k"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 58,
+      "Page": {
+        "Index": 116,
+        "Name": "Teleport to Inner Sabuk Keep"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 223,
+      "IntParameter2": 120,
+      "MapParameter1": {
+        "Index": 7,
+        "Name": "3"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 59,
+      "Page": {
+        "Index": 118,
+        "Name": "Teleport to Inner Mud Wall"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 228,
+      "IntParameter2": 129,
+      "MapParameter1": {
+        "Index": 9,
+        "Name": "5"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 60,
+      "Page": {
+        "Index": 120,
+        "Name": "Brown Horse - Buy"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 61,
+      "Page": {
+        "Index": 125,
+        "Name": "White Horse - Buy"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 2,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 62,
+      "Page": {
+        "Index": 127,
+        "Name": "Black Horse - Buy"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 4,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 63,
+      "Page": {
+        "Index": 126,
+        "Name": "Red Horse - Buy"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 66,
+      "Page": {
+        "Index": 127,
+        "Name": "Black Horse - Buy"
+      },
+      "ActionType": "Message",
+      "StringParameter1": "[Username] is now the proud owner of a new Black Horse",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 67,
+      "Page": {
+        "Index": 140,
+        "Name": "Horse Sell - Brown"
+      },
+      "ActionType": "GiveGold",
+      "StringParameter1": "",
+      "IntParameter1": 250000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 68,
+      "Page": {
+        "Index": 140,
+        "Name": "Horse Sell - Brown"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 69,
+      "Page": {
+        "Index": 142,
+        "Name": "Horse Sell - White"
+      },
+      "ActionType": "GiveGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 70,
+      "Page": {
+        "Index": 142,
+        "Name": "Horse Sell - White"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 71,
+      "Page": {
+        "Index": 143,
+        "Name": "Horse Sell - Red"
+      },
+      "ActionType": "GiveGold",
+      "StringParameter1": "",
+      "IntParameter1": 50000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 72,
+      "Page": {
+        "Index": 143,
+        "Name": "Horse Sell - Red"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 73,
+      "Page": {
+        "Index": 144,
+        "Name": "Horse Sell - Black"
+      },
+      "ActionType": "GiveGold",
+      "StringParameter1": "",
+      "IntParameter1": 300000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 74,
+      "Page": {
+        "Index": 144,
+        "Name": "Horse Sell - Black"
+      },
+      "ActionType": "ChangeHorse",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 75,
+      "Page": {
+        "Index": 120,
+        "Name": "Brown Horse - Buy"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 500000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 76,
+      "Page": {
+        "Index": 125,
+        "Name": "White Horse - Buy"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 20000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 77,
+      "Page": {
+        "Index": 126,
+        "Name": "Red Horse - Buy"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 78,
+      "Page": {
+        "Index": 127,
+        "Name": "Black Horse - Buy"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 600000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 80,
+      "Page": {
+        "Index": 156,
+        "Name": "Marriage - Request End"
+      },
+      "ActionType": "Marriage",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 82,
+      "Page": {
+        "Index": 160,
+        "Name": "Marriage - Divorce End"
+      },
+      "ActionType": "Divorce",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 83,
+      "Page": {
+        "Index": 161,
+        "Name": "Marriage - Remove Ring End"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 200000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 84,
+      "Page": {
+        "Index": 161,
+        "Name": "Marriage - Remove Ring End"
+      },
+      "ActionType": "RemoveWeddingRing",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 85,
+      "Page": {
+        "Index": 160,
+        "Name": "Marriage - Divorce End"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 86,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 20000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 87,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 829,
+        "Name": "Fragment"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 88,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 89,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 90,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 50000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 91,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 25,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 92,
+      "Page": {
+        "Index": 178,
+        "Name": "Weapon Refiner - Reset Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 93,
+      "Page": {
+        "Index": 178,
+        "Name": "Weapon Refiner - Reset Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 828,
+        "Name": "Refinement Stone"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 94,
+      "Page": {
+        "Index": 178,
+        "Name": "Weapon Refiner - Reset Start"
+      },
+      "ActionType": "ResetWeapon",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 95,
+      "Page": {
+        "Index": 184,
+        "Name": "Teleport to Taoist Temple"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 280,
+      "IntParameter2": 190,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 96,
+      "Page": {
+        "Index": 183,
+        "Name": "TT 10K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 97,
+      "Page": {
+        "Index": 189,
+        "Name": "Teleport to Frost Village"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 240,
+      "IntParameter2": 165,
+      "MapParameter1": {
+        "Index": 241,
+        "Name": "8"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 98,
+      "Page": {
+        "Index": 186,
+        "Name": "LP 20K"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 20000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 99,
+      "Page": {
+        "Index": 187,
+        "Name": "FV 20K and Level 45+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 20000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 100,
+      "Page": {
+        "Index": 193,
+        "Name": "BC 10K and Level 45+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 10000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 101,
+      "Page": {
+        "Index": 192,
+        "Name": "Teleport to Bichon Castle"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 350,
+      "IntParameter2": 340,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 103,
+      "Page": {
+        "Index": 201,
+        "Name": "Rusty Accessory - Signet Of Myrmidon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 640,
+        "Name": "Rusty Signet Of Myrmidon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 104,
+      "Page": {
+        "Index": 201,
+        "Name": "Rusty Accessory - Signet Of Myrmidon - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 105,
+      "Page": {
+        "Index": 202,
+        "Name": "Rusty Accessory - Signet Of Myrmidon - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 658,
+        "Name": "Signet Of Myrmidon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 106,
+      "Page": {
+        "Index": 207,
+        "Name": "Rusty Accessory - Signet Of Evoker - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 641,
+        "Name": "Rusty Signet Of Evoker"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 107,
+      "Page": {
+        "Index": 207,
+        "Name": "Rusty Accessory - Signet Of Evoker - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 108,
+      "Page": {
+        "Index": 208,
+        "Name": "Rusty Accessory - Signet Of Evoker - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 659,
+        "Name": "Signet Of Evoker"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 109,
+      "Page": {
+        "Index": 210,
+        "Name": "Rusty Accessory - Signet Of Vicar - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 660,
+        "Name": "Signet Of Vicar"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 110,
+      "Page": {
+        "Index": 209,
+        "Name": "Rusty Accessory - Signet Of Vicar - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 642,
+        "Name": "Rusty Signet Of Vicar"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 111,
+      "Page": {
+        "Index": 209,
+        "Name": "Rusty Accessory - Signet Of Vicar - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 112,
+      "Page": {
+        "Index": 211,
+        "Name": "Rusty Accessory - Charm Of The Destroyer - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 643,
+        "Name": "Rusty Charm Of The Destroyer"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 113,
+      "Page": {
+        "Index": 211,
+        "Name": "Rusty Accessory - Charm Of The Destroyer - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 114,
+      "Page": {
+        "Index": 212,
+        "Name": "Rusty Accessory - Charm Of The Destroyer - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 661,
+        "Name": "Charm Of The Destroyer"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 115,
+      "Page": {
+        "Index": 213,
+        "Name": "Rusty Accessory - Amulet Of Dark Sorcery - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 644,
+        "Name": "Rusty Amulet Of Dark Sorcery"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 116,
+      "Page": {
+        "Index": 213,
+        "Name": "Rusty Accessory - Amulet Of Dark Sorcery - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 117,
+      "Page": {
+        "Index": 214,
+        "Name": "Rusty Accessory - Amulet Of Dark Sorcery - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 662,
+        "Name": "Amulet Of Dark Sorcery"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 118,
+      "Page": {
+        "Index": 220,
+        "Name": "Rusty Accessory - Pendant Of Purification - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 645,
+        "Name": "Rusty Pendant Of Purification"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 119,
+      "Page": {
+        "Index": 220,
+        "Name": "Rusty Accessory - Pendant Of Purification - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 120,
+      "Page": {
+        "Index": 221,
+        "Name": "Rusty Accessory - Pendant Of Purification - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 663,
+        "Name": "Pendant Of Purification"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 121,
+      "Page": {
+        "Index": 222,
+        "Name": "Rusty Accessory - Bracer Of Revelation - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 646,
+        "Name": "Rusty Bracer Of Revelation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 122,
+      "Page": {
+        "Index": 222,
+        "Name": "Rusty Accessory - Bracer Of Revelation - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 123,
+      "Page": {
+        "Index": 223,
+        "Name": "Rusty Accessory - Bracer Of Revelation - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 664,
+        "Name": "Bracer Of Revelation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 124,
+      "Page": {
+        "Index": 226,
+        "Name": "Rusty Accessory - Bracelet Of Ascension - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 648,
+        "Name": "Rusty Bracelet Of Ascension"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 125,
+      "Page": {
+        "Index": 226,
+        "Name": "Rusty Accessory - Bracelet Of Ascension - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 126,
+      "Page": {
+        "Index": 224,
+        "Name": "Rusty Accessory - Ring Of Enlightenment - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 647,
+        "Name": "Rusty Ring Of Enlightenment"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 127,
+      "Page": {
+        "Index": 224,
+        "Name": "Rusty Accessory - Ring Of Enlightenment - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 1000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 128,
+      "Page": {
+        "Index": 225,
+        "Name": "Rusty Accessory - Ring Of Enlightenment - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 665,
+        "Name": "Ring Of Enlightenment"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 129,
+      "Page": {
+        "Index": 227,
+        "Name": "Rusty Accessory - Bracelet Of Ascension - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 8155,
+      "ItemParameter1": {
+        "Index": 666,
+        "Name": "Bracelet Of Ascension"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 130,
+      "Page": {
+        "Index": 229,
+        "Name": "HP 30K and Lv 45+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 30000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 131,
+      "Page": {
+        "Index": 230,
+        "Name": "Teleport to Holy Palace"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 104,
+      "IntParameter2": 116,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 132,
+      "Page": {
+        "Index": 231,
+        "Name": "MS Freedom Pass"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 483,
+        "Name": "Freedom Pass"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 133,
+      "Page": {
+        "Index": 232,
+        "Name": "Teleport to Mystery Ship"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 42,
+      "IntParameter2": 65,
+      "MapParameter1": {
+        "Index": 68,
+        "Name": "D1401"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 134,
+      "Page": {
+        "Index": 234,
+        "Name": "Teleport to Lava Area "
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 22,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 135,
+      "Page": {
+        "Index": 233,
+        "Name": "LA Freedom Pass and Lv 45+"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 483,
+        "Name": "Freedom Pass"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 136,
+      "Page": {
+        "Index": 235,
+        "Name": "BC Freedom Pass and Lv 45+"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 483,
+        "Name": "Freedom Pass"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 137,
+      "Page": {
+        "Index": 236,
+        "Name": "Teleport to Banyo Cave"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 163,
+      "IntParameter2": 204,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 138,
+      "Page": {
+        "Index": 246,
+        "Name": "Rusty Accessory - Seal Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 868,
+        "Name": "Rusty Seal Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 140,
+      "Page": {
+        "Index": 246,
+        "Name": "Rusty Accessory - Seal Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 869,
+        "Name": "Cracked Seal Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 141,
+      "Page": {
+        "Index": 246,
+        "Name": "Rusty Accessory - Seal Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 870,
+        "Name": "Worn Seal Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 142,
+      "Page": {
+        "Index": 247,
+        "Name": "Rusty Accessory - Seal Of Overlord - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 923,
+        "Name": "Seal Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 143,
+      "Page": {
+        "Index": 246,
+        "Name": "Rusty Accessory - Seal Of Overlord - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 144,
+      "Page": {
+        "Index": 248,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 871,
+        "Name": "Rusty Bracelet Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 145,
+      "Page": {
+        "Index": 248,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 872,
+        "Name": "Cracked Bracelet Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 146,
+      "Page": {
+        "Index": 248,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 873,
+        "Name": "Worn Bracelet Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 147,
+      "Page": {
+        "Index": 248,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 874,
+        "Name": "Scratched Bracelet Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 148,
+      "Page": {
+        "Index": 248,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 149,
+      "Page": {
+        "Index": 249,
+        "Name": "Rusty Accessory - Bracelet Of Overlord - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 924,
+        "Name": "Bracelet Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 150,
+      "Page": {
+        "Index": 251,
+        "Name": "Rusty Accessory - Medallion Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 875,
+        "Name": "Rusty Medallion Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 151,
+      "Page": {
+        "Index": 251,
+        "Name": "Rusty Accessory - Medallion Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 876,
+        "Name": "Cracked Medallion Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 152,
+      "Page": {
+        "Index": 251,
+        "Name": "Rusty Accessory - Medallion Of Overlord - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 877,
+        "Name": "Worn Medallion Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 153,
+      "Page": {
+        "Index": 251,
+        "Name": "Rusty Accessory - Medallion Of Overlord - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 154,
+      "Page": {
+        "Index": 252,
+        "Name": "Rusty Accessory - Medallion Of Overlord - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 925,
+        "Name": "Medallion Of Overlord"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 155,
+      "Page": {
+        "Index": 254,
+        "Name": "Rusty Accessory - Arcanist's Band Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 888,
+        "Name": "Rusty Band Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 156,
+      "Page": {
+        "Index": 254,
+        "Name": "Rusty Accessory - Arcanist's Band Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 889,
+        "Name": "Cracked Band Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 157,
+      "Page": {
+        "Index": 254,
+        "Name": "Rusty Accessory - Arcanist's Band Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 890,
+        "Name": "Worn Band Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 158,
+      "Page": {
+        "Index": 254,
+        "Name": "Rusty Accessory - Arcanist's Band Of Dignity - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 159,
+      "Page": {
+        "Index": 255,
+        "Name": "Rusty Accessory - Arcanist's Band Of Dignity - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 926,
+        "Name": "Arcanist's Band Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 160,
+      "Page": {
+        "Index": 256,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 891,
+        "Name": "Rusty Bracelet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 161,
+      "Page": {
+        "Index": 256,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 892,
+        "Name": "Cracked Bracelet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 162,
+      "Page": {
+        "Index": 256,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 893,
+        "Name": "Worn Bracelet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 163,
+      "Page": {
+        "Index": 256,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 894,
+        "Name": "Scratched Bracelet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 164,
+      "Page": {
+        "Index": 256,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 165,
+      "Page": {
+        "Index": 257,
+        "Name": "Rusty Accessory - Arcanist's Bracelet Of Dignity - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 927,
+        "Name": "Arcanist's Bracelet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 166,
+      "Page": {
+        "Index": 258,
+        "Name": "Rusty Accessory - Arcanist's Amulet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 895,
+        "Name": "Rusty Amulet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 167,
+      "Page": {
+        "Index": 258,
+        "Name": "Rusty Accessory - Arcanist's Amulet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 896,
+        "Name": "Cracked Amulet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 168,
+      "Page": {
+        "Index": 258,
+        "Name": "Rusty Accessory - Arcanist's Amulet Of Dignity - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 897,
+        "Name": "Worn Amulet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 169,
+      "Page": {
+        "Index": 258,
+        "Name": "Rusty Accessory - Arcanist's Amulet Of Dignity - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 170,
+      "Page": {
+        "Index": 259,
+        "Name": "Rusty Accessory - Arcanist's Amulet Of Dignity - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 928,
+        "Name": "Arcanist's Amulet Of Dignity"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 171,
+      "Page": {
+        "Index": 260,
+        "Name": "Rusty Accessory - Hierophant's Signet Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 878,
+        "Name": "Rusty Signet Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 172,
+      "Page": {
+        "Index": 260,
+        "Name": "Rusty Accessory - Hierophant's Signet Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 879,
+        "Name": "Cracked Signet Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 173,
+      "Page": {
+        "Index": 260,
+        "Name": "Rusty Accessory - Hierophant's Signet Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 880,
+        "Name": "Worn Signet Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 174,
+      "Page": {
+        "Index": 260,
+        "Name": "Rusty Accessory - Hierophant's Signet Of Moon - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 175,
+      "Page": {
+        "Index": 261,
+        "Name": "Rusty Accessory - Hierophant's Signet Of Moon - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 929,
+        "Name": "Hierophant's Signet Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 176,
+      "Page": {
+        "Index": 262,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 881,
+        "Name": "Rusty Bracer Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 177,
+      "Page": {
+        "Index": 262,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 882,
+        "Name": "Cracked Bracer Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 178,
+      "Page": {
+        "Index": 262,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 883,
+        "Name": "Worn Bracer Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 179,
+      "Page": {
+        "Index": 262,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 884,
+        "Name": "Scratched Bracer Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 180,
+      "Page": {
+        "Index": 262,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 181,
+      "Page": {
+        "Index": 263,
+        "Name": "Rusty Accessory - Hierophant's Bracer Of Moon - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 930,
+        "Name": "Hierophant's Bracer Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 182,
+      "Page": {
+        "Index": 264,
+        "Name": "Rusty Accessory - Hierophant's Pendant Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 885,
+        "Name": "Rusty Pendant Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 183,
+      "Page": {
+        "Index": 264,
+        "Name": "Rusty Accessory - Hierophant's Pendant Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 886,
+        "Name": "Cracked Pendant Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 184,
+      "Page": {
+        "Index": 264,
+        "Name": "Rusty Accessory - Hierophant's Pendant Of Moon - Start"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 887,
+        "Name": "Worn Pendant Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 185,
+      "Page": {
+        "Index": 264,
+        "Name": "Rusty Accessory - Hierophant's Pendant Of Moon - Start"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 2000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 186,
+      "Page": {
+        "Index": 265,
+        "Name": "Rusty Accessory - Hierophant's Pendant Of Moon - End"
+      },
+      "ActionType": "GiveItemExperience",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 455,
+      "ItemParameter1": {
+        "Index": 931,
+        "Name": "Hierophant's Pendant Of Moon"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 187,
+      "Page": {
+        "Index": 274,
+        "Name": "Weapon Craft - Yellow Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 978,
+        "Name": "Yellow Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 188,
+      "Page": {
+        "Index": 274,
+        "Name": "Weapon Craft - Yellow Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 189,
+      "Page": {
+        "Index": 274,
+        "Name": "Weapon Craft - Yellow Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 984,
+        "Name": "Yellow Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 190,
+      "Page": {
+        "Index": 284,
+        "Name": "Weapon Craft - Grey Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 983,
+        "Name": "Grey Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 191,
+      "Page": {
+        "Index": 284,
+        "Name": "Weapon Craft - Grey Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 192,
+      "Page": {
+        "Index": 284,
+        "Name": "Weapon Craft - Grey Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 989,
+        "Name": "Grey Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 193,
+      "Page": {
+        "Index": 282,
+        "Name": "Weapon Craft - Green Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 982,
+        "Name": "Green Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 194,
+      "Page": {
+        "Index": 282,
+        "Name": "Weapon Craft - Green Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 195,
+      "Page": {
+        "Index": 282,
+        "Name": "Weapon Craft - Green Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 988,
+        "Name": "Green Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 196,
+      "Page": {
+        "Index": 280,
+        "Name": "Weapon Craft - Purple Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 981,
+        "Name": "Purple Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 197,
+      "Page": {
+        "Index": 280,
+        "Name": "Weapon Craft - Purple Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 198,
+      "Page": {
+        "Index": 280,
+        "Name": "Weapon Craft - Purple Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 987,
+        "Name": "Purple Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 199,
+      "Page": {
+        "Index": 278,
+        "Name": "Weapon Craft - Red Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 980,
+        "Name": "Red Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 200,
+      "Page": {
+        "Index": 278,
+        "Name": "Weapon Craft - Red Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 201,
+      "Page": {
+        "Index": 278,
+        "Name": "Weapon Craft - Red Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 986,
+        "Name": "Red Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 202,
+      "Page": {
+        "Index": 276,
+        "Name": "Weapon Craft - Blue Orb"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 979,
+        "Name": "Blue Orb"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 203,
+      "Page": {
+        "Index": 276,
+        "Name": "Weapon Craft - Blue Orb"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 204,
+      "Page": {
+        "Index": 276,
+        "Name": "Weapon Craft - Blue Orb"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 985,
+        "Name": "Blue Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 205,
+      "Page": {
+        "Index": 285,
+        "Name": "Weapon Craft - Grey Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 989,
+        "Name": "Grey Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 206,
+      "Page": {
+        "Index": 285,
+        "Name": "Weapon Craft - Grey Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 207,
+      "Page": {
+        "Index": 285,
+        "Name": "Weapon Craft - Grey Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 977,
+        "Name": "Grey Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 208,
+      "Page": {
+        "Index": 283,
+        "Name": "Weapon Craft - Green Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 988,
+        "Name": "Green Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 209,
+      "Page": {
+        "Index": 283,
+        "Name": "Weapon Craft - Green Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 210,
+      "Page": {
+        "Index": 283,
+        "Name": "Weapon Craft - Green Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 976,
+        "Name": "Green Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 211,
+      "Page": {
+        "Index": 281,
+        "Name": "Weapon Craft - Purple Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 987,
+        "Name": "Purple Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 212,
+      "Page": {
+        "Index": 281,
+        "Name": "Weapon Craft - Purple Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 213,
+      "Page": {
+        "Index": 281,
+        "Name": "Weapon Craft - Purple Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 975,
+        "Name": "Purple Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 214,
+      "Page": {
+        "Index": 279,
+        "Name": "Weapon Craft - Red Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 986,
+        "Name": "Red Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 215,
+      "Page": {
+        "Index": 279,
+        "Name": "Weapon Craft - Red Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 216,
+      "Page": {
+        "Index": 279,
+        "Name": "Weapon Craft - Red Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 974,
+        "Name": "Red Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 217,
+      "Page": {
+        "Index": 277,
+        "Name": "Weapon Craft - Blue Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 985,
+        "Name": "Blue Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 218,
+      "Page": {
+        "Index": 277,
+        "Name": "Weapon Craft - Blue Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 219,
+      "Page": {
+        "Index": 277,
+        "Name": "Weapon Craft - Blue Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 973,
+        "Name": "Blue Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 220,
+      "Page": {
+        "Index": 275,
+        "Name": "Weapon Craft - Yellow Trinket"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 984,
+        "Name": "Yellow Trinket"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 221,
+      "Page": {
+        "Index": 275,
+        "Name": "Weapon Craft - Yellow Trinket"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 100000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 222,
+      "Page": {
+        "Index": 275,
+        "Name": "Weapon Craft - Yellow Trinket"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 972,
+        "Name": "Yellow Cube"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 223,
+      "Page": {
+        "Index": 287,
+        "Name": "LL 30K and Level 35+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 30000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 224,
+      "Page": {
+        "Index": 288,
+        "Name": "Teleport to Lost Land"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 111,
+      "IntParameter2": 359,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 225,
+      "Page": {
+        "Index": 296,
+        "Name": "Weapon Refiner - Special Refine - Health A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 226,
+      "Page": {
+        "Index": 296,
+        "Name": "Weapon Refiner - Special Refine - Health A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 227,
+      "Page": {
+        "Index": 296,
+        "Name": "Weapon Refiner - Special Refine - Health A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 228,
+      "Page": {
+        "Index": 296,
+        "Name": "Weapon Refiner - Special Refine - Health A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 229,
+      "Page": {
+        "Index": 296,
+        "Name": "Weapon Refiner - Special Refine - Health A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 75,
+      "IntParameter2": 0,
+      "StatParameter1": "Health"
+    },
+    {
+      "Index": 230,
+      "Page": {
+        "Index": 298,
+        "Name": "Weapon Refiner - Special Refine - Mana A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 231,
+      "Page": {
+        "Index": 298,
+        "Name": "Weapon Refiner - Special Refine - Mana A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 232,
+      "Page": {
+        "Index": 298,
+        "Name": "Weapon Refiner - Special Refine - Mana A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 233,
+      "Page": {
+        "Index": 298,
+        "Name": "Weapon Refiner - Special Refine - Mana A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 234,
+      "Page": {
+        "Index": 298,
+        "Name": "Weapon Refiner - Special Refine - Mana A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 40,
+      "IntParameter2": 0,
+      "StatParameter1": "Mana"
+    },
+    {
+      "Index": 235,
+      "Page": {
+        "Index": 301,
+        "Name": "Weapon Refiner - Special Refine - Accuracy A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 236,
+      "Page": {
+        "Index": 301,
+        "Name": "Weapon Refiner - Special Refine - Accuracy A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 237,
+      "Page": {
+        "Index": 301,
+        "Name": "Weapon Refiner - Special Refine - Accuracy A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 238,
+      "Page": {
+        "Index": 301,
+        "Name": "Weapon Refiner - Special Refine - Accuracy A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 239,
+      "Page": {
+        "Index": 301,
+        "Name": "Weapon Refiner - Special Refine - Accuracy A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "Accuracy"
+    },
+    {
+      "Index": 240,
+      "Page": {
+        "Index": 303,
+        "Name": "Weapon Refiner - Special Refine - Agility A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 241,
+      "Page": {
+        "Index": 303,
+        "Name": "Weapon Refiner - Special Refine - Agility A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 242,
+      "Page": {
+        "Index": 303,
+        "Name": "Weapon Refiner - Special Refine - Agility A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 243,
+      "Page": {
+        "Index": 303,
+        "Name": "Weapon Refiner - Special Refine - Agility A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 244,
+      "Page": {
+        "Index": 303,
+        "Name": "Weapon Refiner - Special Refine - Agility A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "Agility"
+    },
+    {
+      "Index": 245,
+      "Page": {
+        "Index": 305,
+        "Name": "Weapon Refiner - Special Refine - AC A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 246,
+      "Page": {
+        "Index": 305,
+        "Name": "Weapon Refiner - Special Refine - AC A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 247,
+      "Page": {
+        "Index": 305,
+        "Name": "Weapon Refiner - Special Refine - AC A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 248,
+      "Page": {
+        "Index": 305,
+        "Name": "Weapon Refiner - Special Refine - AC A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 249,
+      "Page": {
+        "Index": 305,
+        "Name": "Weapon Refiner - Special Refine - AC A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 5,
+      "IntParameter2": 0,
+      "StatParameter1": "MaxAC"
+    },
+    {
+      "Index": 250,
+      "Page": {
+        "Index": 307,
+        "Name": "Weapon Refiner - Special Refine - MR A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 251,
+      "Page": {
+        "Index": 307,
+        "Name": "Weapon Refiner - Special Refine - MR A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 252,
+      "Page": {
+        "Index": 307,
+        "Name": "Weapon Refiner - Special Refine - MR A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 253,
+      "Page": {
+        "Index": 307,
+        "Name": "Weapon Refiner - Special Refine - MR A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 30,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 254,
+      "Page": {
+        "Index": 307,
+        "Name": "Weapon Refiner - Special Refine - MR A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 5,
+      "IntParameter2": 0,
+      "StatParameter1": "MaxMR"
+    },
+    {
+      "Index": 255,
+      "Page": {
+        "Index": 310,
+        "Name": "Weapon Refiner - Special Refine - Critical Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 256,
+      "Page": {
+        "Index": 310,
+        "Name": "Weapon Refiner - Special Refine - Critical Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 257,
+      "Page": {
+        "Index": 310,
+        "Name": "Weapon Refiner - Special Refine - Critical Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 258,
+      "Page": {
+        "Index": 310,
+        "Name": "Weapon Refiner - Special Refine - Critical Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 60,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 259,
+      "Page": {
+        "Index": 310,
+        "Name": "Weapon Refiner - Special Refine - Critical Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "CriticalChance"
+    },
+    {
+      "Index": 260,
+      "Page": {
+        "Index": 312,
+        "Name": "Weapon Refiner - Special Refine - Critical Damage A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 261,
+      "Page": {
+        "Index": 312,
+        "Name": "Weapon Refiner - Special Refine - Critical Damage A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 262,
+      "Page": {
+        "Index": 312,
+        "Name": "Weapon Refiner - Special Refine - Critical Damage A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 263,
+      "Page": {
+        "Index": 312,
+        "Name": "Weapon Refiner - Special Refine - Critical Damage A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 60,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 264,
+      "Page": {
+        "Index": 312,
+        "Name": "Weapon Refiner - Special Refine - Critical Damage A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 5,
+      "IntParameter2": 0,
+      "StatParameter1": "CriticalDamage"
+    },
+    {
+      "Index": 265,
+      "Page": {
+        "Index": 314,
+        "Name": "Weapon Refiner - Special Refine - Attack Speed A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 266,
+      "Page": {
+        "Index": 314,
+        "Name": "Weapon Refiner - Special Refine - Attack Speed A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 267,
+      "Page": {
+        "Index": 314,
+        "Name": "Weapon Refiner - Special Refine - Attack Speed A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 268,
+      "Page": {
+        "Index": 314,
+        "Name": "Weapon Refiner - Special Refine - Attack Speed A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 60,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 269,
+      "Page": {
+        "Index": 314,
+        "Name": "Weapon Refiner - Special Refine - Attack Speed A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "AttackSpeed"
+    },
+    {
+      "Index": 270,
+      "Page": {
+        "Index": 316,
+        "Name": "Weapon Refiner - Special Refine - Life Steal A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 271,
+      "Page": {
+        "Index": 316,
+        "Name": "Weapon Refiner - Special Refine - Life Steal A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 272,
+      "Page": {
+        "Index": 316,
+        "Name": "Weapon Refiner - Special Refine - Life Steal A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 273,
+      "Page": {
+        "Index": 316,
+        "Name": "Weapon Refiner - Special Refine - Life Steal A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 60,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 274,
+      "Page": {
+        "Index": 316,
+        "Name": "Weapon Refiner - Special Refine - Life Steal A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 3,
+      "IntParameter2": 0,
+      "StatParameter1": "LifeSteal"
+    },
+    {
+      "Index": 275,
+      "Page": {
+        "Index": 318,
+        "Name": "Weapon Refiner - Special Refine - Paralysis Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 276,
+      "Page": {
+        "Index": 318,
+        "Name": "Weapon Refiner - Special Refine - Paralysis Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 277,
+      "Page": {
+        "Index": 318,
+        "Name": "Weapon Refiner - Special Refine - Paralysis Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 278,
+      "Page": {
+        "Index": 318,
+        "Name": "Weapon Refiner - Special Refine - Paralysis Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 279,
+      "Page": {
+        "Index": 318,
+        "Name": "Weapon Refiner - Special Refine - Paralysis Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "ParalysisChance"
+    },
+    {
+      "Index": 280,
+      "Page": {
+        "Index": 320,
+        "Name": "Weapon Refiner - Special Refine - Slow Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 281,
+      "Page": {
+        "Index": 320,
+        "Name": "Weapon Refiner - Special Refine - Slow Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 282,
+      "Page": {
+        "Index": 320,
+        "Name": "Weapon Refiner - Special Refine - Slow Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 283,
+      "Page": {
+        "Index": 320,
+        "Name": "Weapon Refiner - Special Refine - Slow Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 284,
+      "Page": {
+        "Index": 320,
+        "Name": "Weapon Refiner - Special Refine - Slow Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "SlowChance"
+    },
+    {
+      "Index": 285,
+      "Page": {
+        "Index": 322,
+        "Name": "Weapon Refiner - Special Refine - Silence Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 286,
+      "Page": {
+        "Index": 322,
+        "Name": "Weapon Refiner - Special Refine - Silence Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 287,
+      "Page": {
+        "Index": 322,
+        "Name": "Weapon Refiner - Special Refine - Silence Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 288,
+      "Page": {
+        "Index": 322,
+        "Name": "Weapon Refiner - Special Refine - Silence Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 289,
+      "Page": {
+        "Index": 322,
+        "Name": "Weapon Refiner - Special Refine - Silence Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "SilenceChance"
+    },
+    {
+      "Index": 290,
+      "Page": {
+        "Index": 324,
+        "Name": "Weapon Refiner - Special Refine - Block Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 291,
+      "Page": {
+        "Index": 324,
+        "Name": "Weapon Refiner - Special Refine - Block Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 292,
+      "Page": {
+        "Index": 324,
+        "Name": "Weapon Refiner - Special Refine - Block Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 293,
+      "Page": {
+        "Index": 324,
+        "Name": "Weapon Refiner - Special Refine - Block Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 294,
+      "Page": {
+        "Index": 324,
+        "Name": "Weapon Refiner - Special Refine - Block Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "BlockChance"
+    },
+    {
+      "Index": 295,
+      "Page": {
+        "Index": 326,
+        "Name": "Weapon Refiner - Special Refine - Evasion Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 50,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 327,
+        "Name": "Crystal"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 296,
+      "Page": {
+        "Index": 326,
+        "Name": "Weapon Refiner - Special Refine - Evasion Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 297,
+        "Name": "Oil Of Conservation"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 297,
+      "Page": {
+        "Index": 326,
+        "Name": "Weapon Refiner - Special Refine - Evasion Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 298,
+        "Name": "Oil Of The War God"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 298,
+      "Page": {
+        "Index": 326,
+        "Name": "Weapon Refiner - Special Refine - Evasion Chance A"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 299,
+      "Page": {
+        "Index": 326,
+        "Name": "Weapon Refiner - Special Refine - Evasion Chance A"
+      },
+      "ActionType": "SpecialRefine",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "StatParameter1": "EvasionChance"
+    },
+    {
+      "Index": 300,
+      "Page": {
+        "Index": 330,
+        "Name": "Teleport to Western Arids"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 228,
+      "IntParameter2": 768,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 301,
+      "Page": {
+        "Index": 331,
+        "Name": "Teleport to Arid Flats"
+      },
+      "ActionType": "Teleport",
+      "StringParameter1": "",
+      "IntParameter1": 63,
+      "IntParameter2": 178,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 302,
+      "Page": {
+        "Index": 328,
+        "Name": "WA 5M and Level 60+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 303,
+      "Page": {
+        "Index": 329,
+        "Name": "AF 5mil and Freedom Pass and Level 60+"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 5000000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 304,
+      "Page": {
+        "Index": 329,
+        "Name": "AF 5mil and Freedom Pass and Level 60+"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 483,
+        "Name": "Freedom Pass"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 305,
+      "Page": {
+        "Index": 333,
+        "Name": "Rebirth Act"
+      },
+      "ActionType": "Rebirth",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 306,
+      "Page": {
+        "Index": 336,
+        "Name": "Fame Act"
+      },
+      "ActionType": "PromoteFame",
+      "StringParameter1": "",
+      "IntParameter1": 0,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    }
+  ]
+}

@@ -1,0 +1,995 @@
+{
+  "count": 110,
+  "rows": [
+    {
+      "Index": 2,
+      "_Identity": "All / Health / 50",
+      "RequiredClass": "All",
+      "Stat": "Health",
+      "MinValue": 50,
+      "MaxValue": 150,
+      "Weight": 50
+    },
+    {
+      "Index": 3,
+      "_Identity": "All / Health / 20",
+      "RequiredClass": "All",
+      "Stat": "Health",
+      "MinValue": 100,
+      "MaxValue": 250,
+      "Weight": 20
+    },
+    {
+      "Index": 4,
+      "_Identity": "All / Health / 10",
+      "RequiredClass": "All",
+      "Stat": "Health",
+      "MinValue": 150,
+      "MaxValue": 400,
+      "Weight": 10
+    },
+    {
+      "Index": 5,
+      "_Identity": "All / Health / 1",
+      "RequiredClass": "All",
+      "Stat": "Health",
+      "MinValue": 200,
+      "MaxValue": 600,
+      "Weight": 1
+    },
+    {
+      "Index": 7,
+      "_Identity": "All / Mana / 50",
+      "RequiredClass": "All",
+      "Stat": "Mana",
+      "MinValue": 50,
+      "MaxValue": 150,
+      "Weight": 50
+    },
+    {
+      "Index": 8,
+      "_Identity": "All / Mana / 20",
+      "RequiredClass": "All",
+      "Stat": "Mana",
+      "MinValue": 100,
+      "MaxValue": 250,
+      "Weight": 20
+    },
+    {
+      "Index": 9,
+      "_Identity": "All / Mana / 10",
+      "RequiredClass": "All",
+      "Stat": "Mana",
+      "MinValue": 150,
+      "MaxValue": 400,
+      "Weight": 10
+    },
+    {
+      "Index": 10,
+      "_Identity": "All / Mana / 1",
+      "RequiredClass": "All",
+      "Stat": "Mana",
+      "MinValue": 200,
+      "MaxValue": 600,
+      "Weight": 1
+    },
+    {
+      "Index": 12,
+      "_Identity": "All / HealthPercent / 50",
+      "RequiredClass": "All",
+      "Stat": "HealthPercent",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 13,
+      "_Identity": "All / HealthPercent / 20",
+      "RequiredClass": "All",
+      "Stat": "HealthPercent",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 14,
+      "_Identity": "All / HealthPercent / 10",
+      "RequiredClass": "All",
+      "Stat": "HealthPercent",
+      "MinValue": 1,
+      "MaxValue": 5,
+      "Weight": 10
+    },
+    {
+      "Index": 15,
+      "_Identity": "All / HealthPercent / 1",
+      "RequiredClass": "All",
+      "Stat": "HealthPercent",
+      "MinValue": 3,
+      "MaxValue": 7,
+      "Weight": 1
+    },
+    {
+      "Index": 17,
+      "_Identity": "All / ManaPercent / 50",
+      "RequiredClass": "All",
+      "Stat": "ManaPercent",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 18,
+      "_Identity": "All / ManaPercent / 20",
+      "RequiredClass": "All",
+      "Stat": "ManaPercent",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 19,
+      "_Identity": "All / ManaPercent / 10",
+      "RequiredClass": "All",
+      "Stat": "ManaPercent",
+      "MinValue": 1,
+      "MaxValue": 5,
+      "Weight": 10
+    },
+    {
+      "Index": 20,
+      "_Identity": "All / ManaPercent / 1",
+      "RequiredClass": "All",
+      "Stat": "ManaPercent",
+      "MinValue": 3,
+      "MaxValue": 7,
+      "Weight": 1
+    },
+    {
+      "Index": 22,
+      "_Identity": "AssWar / MaxDC / 50",
+      "RequiredClass": "AssWar",
+      "Stat": "MaxDC",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 23,
+      "_Identity": "AssWar / MaxDC / 20",
+      "RequiredClass": "AssWar",
+      "Stat": "MaxDC",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 24,
+      "_Identity": "AssWar / MaxDC / 10",
+      "RequiredClass": "AssWar",
+      "Stat": "MaxDC",
+      "MinValue": 15,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 25,
+      "_Identity": "AssWar / MaxDC / 2",
+      "RequiredClass": "AssWar",
+      "Stat": "MaxDC",
+      "MinValue": 20,
+      "MaxValue": 30,
+      "Weight": 2
+    },
+    {
+      "Index": 27,
+      "_Identity": "AssWar / DCPercent / 50",
+      "RequiredClass": "AssWar",
+      "Stat": "DCPercent",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 28,
+      "_Identity": "AssWar / DCPercent / 20",
+      "RequiredClass": "AssWar",
+      "Stat": "DCPercent",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 29,
+      "_Identity": "AssWar / DCPercent / 10",
+      "RequiredClass": "AssWar",
+      "Stat": "DCPercent",
+      "MinValue": 1,
+      "MaxValue": 5,
+      "Weight": 10
+    },
+    {
+      "Index": 30,
+      "_Identity": "AssWar / DCPercent / 1",
+      "RequiredClass": "AssWar",
+      "Stat": "DCPercent",
+      "MinValue": 3,
+      "MaxValue": 7,
+      "Weight": 1
+    },
+    {
+      "Index": 32,
+      "_Identity": "Wizard / MaxMC / 50",
+      "RequiredClass": "Wizard",
+      "Stat": "MaxMC",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 33,
+      "_Identity": "Wizard / MaxMC / 20",
+      "RequiredClass": "Wizard",
+      "Stat": "MaxMC",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 34,
+      "_Identity": "Wizard / MaxMC / 10",
+      "RequiredClass": "Wizard",
+      "Stat": "MaxMC",
+      "MinValue": 15,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 35,
+      "_Identity": "Wizard / MaxMC / 1",
+      "RequiredClass": "Wizard",
+      "Stat": "MaxMC",
+      "MinValue": 20,
+      "MaxValue": 30,
+      "Weight": 1
+    },
+    {
+      "Index": 37,
+      "_Identity": "Wizard / MCPercent / 50",
+      "RequiredClass": "Wizard",
+      "Stat": "MCPercent",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 38,
+      "_Identity": "Wizard / MCPercent / 20",
+      "RequiredClass": "Wizard",
+      "Stat": "MCPercent",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 39,
+      "_Identity": "Wizard / MCPercent / 10",
+      "RequiredClass": "Wizard",
+      "Stat": "MCPercent",
+      "MinValue": 1,
+      "MaxValue": 5,
+      "Weight": 10
+    },
+    {
+      "Index": 40,
+      "_Identity": "Wizard / MCPercent / 1",
+      "RequiredClass": "Wizard",
+      "Stat": "MCPercent",
+      "MinValue": 3,
+      "MaxValue": 7,
+      "Weight": 1
+    },
+    {
+      "Index": 42,
+      "_Identity": "Taoist / MaxSC / 50",
+      "RequiredClass": "Taoist",
+      "Stat": "MaxSC",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 43,
+      "_Identity": "Taoist / MaxSC / 20",
+      "RequiredClass": "Taoist",
+      "Stat": "MaxSC",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 44,
+      "_Identity": "Taoist / MaxSC / 10",
+      "RequiredClass": "Taoist",
+      "Stat": "MaxSC",
+      "MinValue": 15,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 45,
+      "_Identity": "Taoist / MaxSC / 1",
+      "RequiredClass": "Taoist",
+      "Stat": "MaxSC",
+      "MinValue": 20,
+      "MaxValue": 30,
+      "Weight": 1
+    },
+    {
+      "Index": 47,
+      "_Identity": "Taoist / SCPercent / 50",
+      "RequiredClass": "Taoist",
+      "Stat": "SCPercent",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 48,
+      "_Identity": "Taoist / SCPercent / 20",
+      "RequiredClass": "Taoist",
+      "Stat": "SCPercent",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 49,
+      "_Identity": "Taoist / SCPercent / 10",
+      "RequiredClass": "Taoist",
+      "Stat": "SCPercent",
+      "MinValue": 1,
+      "MaxValue": 5,
+      "Weight": 10
+    },
+    {
+      "Index": 50,
+      "_Identity": "Taoist / SCPercent / 1",
+      "RequiredClass": "Taoist",
+      "Stat": "SCPercent",
+      "MinValue": 3,
+      "MaxValue": 7,
+      "Weight": 1
+    },
+    {
+      "Index": 52,
+      "_Identity": "All / CriticalChance / 50",
+      "RequiredClass": "All",
+      "Stat": "CriticalChance",
+      "MinValue": 1,
+      "MaxValue": 4,
+      "Weight": 50
+    },
+    {
+      "Index": 53,
+      "_Identity": "All / CriticalChance / 20",
+      "RequiredClass": "All",
+      "Stat": "CriticalChance",
+      "MinValue": 2,
+      "MaxValue": 6,
+      "Weight": 20
+    },
+    {
+      "Index": 54,
+      "_Identity": "All / CriticalChance / 10",
+      "RequiredClass": "All",
+      "Stat": "CriticalChance",
+      "MinValue": 3,
+      "MaxValue": 8,
+      "Weight": 10
+    },
+    {
+      "Index": 55,
+      "_Identity": "All / CriticalChance / 1",
+      "RequiredClass": "All",
+      "Stat": "CriticalChance",
+      "MinValue": 4,
+      "MaxValue": 10,
+      "Weight": 1
+    },
+    {
+      "Index": 57,
+      "_Identity": "All / CriticalDamage / 50",
+      "RequiredClass": "All",
+      "Stat": "CriticalDamage",
+      "MinValue": 10,
+      "MaxValue": 30,
+      "Weight": 50
+    },
+    {
+      "Index": 58,
+      "_Identity": "All / CriticalDamage / 20",
+      "RequiredClass": "All",
+      "Stat": "CriticalDamage",
+      "MinValue": 10,
+      "MaxValue": 40,
+      "Weight": 20
+    },
+    {
+      "Index": 59,
+      "_Identity": "All / CriticalDamage / 10",
+      "RequiredClass": "All",
+      "Stat": "CriticalDamage",
+      "MinValue": 25,
+      "MaxValue": 50,
+      "Weight": 10
+    },
+    {
+      "Index": 60,
+      "_Identity": "All / CriticalDamage / 1",
+      "RequiredClass": "All",
+      "Stat": "CriticalDamage",
+      "MinValue": 30,
+      "MaxValue": 100,
+      "Weight": 1
+    },
+    {
+      "Index": 62,
+      "_Identity": "AssWar / AttackSpeed / 50",
+      "RequiredClass": "AssWar",
+      "Stat": "AttackSpeed",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 63,
+      "_Identity": "AssWar / AttackSpeed / 20",
+      "RequiredClass": "AssWar",
+      "Stat": "AttackSpeed",
+      "MinValue": 1,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 64,
+      "_Identity": "AssWar / AttackSpeed / 10",
+      "RequiredClass": "AssWar",
+      "Stat": "AttackSpeed",
+      "MinValue": 2,
+      "MaxValue": 3,
+      "Weight": 10
+    },
+    {
+      "Index": 65,
+      "_Identity": "AssWar / AttackSpeed / 1",
+      "RequiredClass": "AssWar",
+      "Stat": "AttackSpeed",
+      "MinValue": 2,
+      "MaxValue": 4,
+      "Weight": 1
+    },
+    {
+      "Index": 67,
+      "_Identity": "AssWar / Accuracy / 50",
+      "RequiredClass": "AssWar",
+      "Stat": "Accuracy",
+      "MinValue": 1,
+      "MaxValue": 4,
+      "Weight": 50
+    },
+    {
+      "Index": 68,
+      "_Identity": "AssWar / Accuracy / 20",
+      "RequiredClass": "AssWar",
+      "Stat": "Accuracy",
+      "MinValue": 2,
+      "MaxValue": 5,
+      "Weight": 20
+    },
+    {
+      "Index": 69,
+      "_Identity": "AssWar / Accuracy / 10",
+      "RequiredClass": "AssWar",
+      "Stat": "Accuracy",
+      "MinValue": 3,
+      "MaxValue": 6,
+      "Weight": 10
+    },
+    {
+      "Index": 70,
+      "_Identity": "AssWar / Accuracy / 1",
+      "RequiredClass": "AssWar",
+      "Stat": "Accuracy",
+      "MinValue": 3,
+      "MaxValue": 8,
+      "Weight": 1
+    },
+    {
+      "Index": 72,
+      "_Identity": "All / Strength / 50",
+      "RequiredClass": "All",
+      "Stat": "Strength",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 50
+    },
+    {
+      "Index": 73,
+      "_Identity": "All / Strength / 20",
+      "RequiredClass": "All",
+      "Stat": "Strength",
+      "MinValue": 2,
+      "MaxValue": 2,
+      "Weight": 20
+    },
+    {
+      "Index": 74,
+      "_Identity": "All / Strength / 10",
+      "RequiredClass": "All",
+      "Stat": "Strength",
+      "MinValue": 2,
+      "MaxValue": 3,
+      "Weight": 10
+    },
+    {
+      "Index": 75,
+      "_Identity": "All / Strength / 1",
+      "RequiredClass": "All",
+      "Stat": "Strength",
+      "MinValue": 2,
+      "MaxValue": 4,
+      "Weight": 1
+    },
+    {
+      "Index": 77,
+      "_Identity": "All / Luck / 50",
+      "RequiredClass": "All",
+      "Stat": "Luck",
+      "MinValue": 3,
+      "MaxValue": 3,
+      "Weight": 50
+    },
+    {
+      "Index": 78,
+      "_Identity": "All / Luck / 20",
+      "RequiredClass": "All",
+      "Stat": "Luck",
+      "MinValue": 3,
+      "MaxValue": 3,
+      "Weight": 20
+    },
+    {
+      "Index": 79,
+      "_Identity": "All / Luck / 10",
+      "RequiredClass": "All",
+      "Stat": "Luck",
+      "MinValue": 3,
+      "MaxValue": 3,
+      "Weight": 10
+    },
+    {
+      "Index": 80,
+      "_Identity": "All / Luck / 1",
+      "RequiredClass": "All",
+      "Stat": "Luck",
+      "MinValue": 3,
+      "MaxValue": 4,
+      "Weight": 1
+    },
+    {
+      "Index": 82,
+      "_Identity": "AssWar / LifeSteal / 50",
+      "RequiredClass": "AssWar",
+      "Stat": "LifeSteal",
+      "MinValue": 4,
+      "MaxValue": 4,
+      "Weight": 50
+    },
+    {
+      "Index": 83,
+      "_Identity": "AssWar / LifeSteal / 20",
+      "RequiredClass": "AssWar",
+      "Stat": "LifeSteal",
+      "MinValue": 4,
+      "MaxValue": 4,
+      "Weight": 20
+    },
+    {
+      "Index": 84,
+      "_Identity": "AssWar / LifeSteal / 10",
+      "RequiredClass": "AssWar",
+      "Stat": "LifeSteal",
+      "MinValue": 4,
+      "MaxValue": 4,
+      "Weight": 10
+    },
+    {
+      "Index": 85,
+      "_Identity": "AssWar / LifeSteal / 1",
+      "RequiredClass": "AssWar",
+      "Stat": "LifeSteal",
+      "MinValue": 1,
+      "MaxValue": 10,
+      "Weight": 1
+    },
+    {
+      "Index": 97,
+      "_Identity": "Wizard / FireAttack / 50",
+      "RequiredClass": "Wizard",
+      "Stat": "FireAttack",
+      "MinValue": 2,
+      "MaxValue": 6,
+      "Weight": 50
+    },
+    {
+      "Index": 98,
+      "_Identity": "Wizard / FireAttack / 20",
+      "RequiredClass": "Wizard",
+      "Stat": "FireAttack",
+      "MinValue": 3,
+      "MaxValue": 8,
+      "Weight": 20
+    },
+    {
+      "Index": 99,
+      "_Identity": "Wizard / FireAttack / 10",
+      "RequiredClass": "Wizard",
+      "Stat": "FireAttack",
+      "MinValue": 4,
+      "MaxValue": 10,
+      "Weight": 10
+    },
+    {
+      "Index": 100,
+      "_Identity": "Wizard / FireAttack / 1",
+      "RequiredClass": "Wizard",
+      "Stat": "FireAttack",
+      "MinValue": 5,
+      "MaxValue": 15,
+      "Weight": 1
+    },
+    {
+      "Index": 102,
+      "_Identity": "Taoist / HolyAttack / 50",
+      "RequiredClass": "Taoist",
+      "Stat": "HolyAttack",
+      "MinValue": 2,
+      "MaxValue": 6,
+      "Weight": 50
+    },
+    {
+      "Index": 103,
+      "_Identity": "Taoist / HolyAttack / 20",
+      "RequiredClass": "Taoist",
+      "Stat": "HolyAttack",
+      "MinValue": 3,
+      "MaxValue": 8,
+      "Weight": 20
+    },
+    {
+      "Index": 104,
+      "_Identity": "Taoist / HolyAttack / 10",
+      "RequiredClass": "Taoist",
+      "Stat": "HolyAttack",
+      "MinValue": 4,
+      "MaxValue": 10,
+      "Weight": 10
+    },
+    {
+      "Index": 105,
+      "_Identity": "Taoist / HolyAttack / 1",
+      "RequiredClass": "Taoist",
+      "Stat": "HolyAttack",
+      "MinValue": 5,
+      "MaxValue": 15,
+      "Weight": 1
+    },
+    {
+      "Index": 107,
+      "_Identity": "All / ExperienceRate / 50",
+      "RequiredClass": "All",
+      "Stat": "ExperienceRate",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 108,
+      "_Identity": "All / ExperienceRate / 20",
+      "RequiredClass": "All",
+      "Stat": "ExperienceRate",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 109,
+      "_Identity": "All / ExperienceRate / 10",
+      "RequiredClass": "All",
+      "Stat": "ExperienceRate",
+      "MinValue": 20,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 110,
+      "_Identity": "All / ExperienceRate / 1",
+      "RequiredClass": "All",
+      "Stat": "ExperienceRate",
+      "MinValue": 25,
+      "MaxValue": 30,
+      "Weight": 1
+    },
+    {
+      "Index": 112,
+      "_Identity": "All / DropRate / 50",
+      "RequiredClass": "All",
+      "Stat": "DropRate",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 113,
+      "_Identity": "All / DropRate / 20",
+      "RequiredClass": "All",
+      "Stat": "DropRate",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 114,
+      "_Identity": "All / DropRate / 10",
+      "RequiredClass": "All",
+      "Stat": "DropRate",
+      "MinValue": 20,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 115,
+      "_Identity": "All / DropRate / 1",
+      "RequiredClass": "All",
+      "Stat": "DropRate",
+      "MinValue": 25,
+      "MaxValue": 30,
+      "Weight": 1
+    },
+    {
+      "Index": 117,
+      "_Identity": "All / GoldRate / 50",
+      "RequiredClass": "All",
+      "Stat": "GoldRate",
+      "MinValue": 10,
+      "MaxValue": 15,
+      "Weight": 50
+    },
+    {
+      "Index": 118,
+      "_Identity": "All / GoldRate / 20",
+      "RequiredClass": "All",
+      "Stat": "GoldRate",
+      "MinValue": 15,
+      "MaxValue": 20,
+      "Weight": 20
+    },
+    {
+      "Index": 119,
+      "_Identity": "All / GoldRate / 10",
+      "RequiredClass": "All",
+      "Stat": "GoldRate",
+      "MinValue": 20,
+      "MaxValue": 25,
+      "Weight": 10
+    },
+    {
+      "Index": 120,
+      "_Identity": "All / GoldRate / 1",
+      "RequiredClass": "All",
+      "Stat": "GoldRate",
+      "MinValue": 25,
+      "MaxValue": 30,
+      "Weight": 1
+    },
+    {
+      "Index": 121,
+      "_Identity": "All / Health / 100",
+      "RequiredClass": "All",
+      "Stat": "Health",
+      "MinValue": 10,
+      "MaxValue": 50,
+      "Weight": 100
+    },
+    {
+      "Index": 122,
+      "_Identity": "All / Mana / 100",
+      "RequiredClass": "All",
+      "Stat": "Mana",
+      "MinValue": 10,
+      "MaxValue": 50,
+      "Weight": 100
+    },
+    {
+      "Index": 123,
+      "_Identity": "All / HealthPercent / 100",
+      "RequiredClass": "All",
+      "Stat": "HealthPercent",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 124,
+      "_Identity": "All / ManaPercent / 100",
+      "RequiredClass": "All",
+      "Stat": "ManaPercent",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 125,
+      "_Identity": "AssWar / MaxDC / 100",
+      "RequiredClass": "AssWar",
+      "Stat": "MaxDC",
+      "MinValue": 5,
+      "MaxValue": 10,
+      "Weight": 100
+    },
+    {
+      "Index": 126,
+      "_Identity": "AssWar / DCPercent / 100",
+      "RequiredClass": "AssWar",
+      "Stat": "DCPercent",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 127,
+      "_Identity": "Wizard / MaxMC / 100",
+      "RequiredClass": "Wizard",
+      "Stat": "MaxMC",
+      "MinValue": 5,
+      "MaxValue": 10,
+      "Weight": 100
+    },
+    {
+      "Index": 128,
+      "_Identity": "Wizard / MCPercent / 100",
+      "RequiredClass": "Wizard",
+      "Stat": "MCPercent",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 129,
+      "_Identity": "Taoist / MaxSC / 100",
+      "RequiredClass": "Taoist",
+      "Stat": "MaxSC",
+      "MinValue": 5,
+      "MaxValue": 10,
+      "Weight": 100
+    },
+    {
+      "Index": 130,
+      "_Identity": "Taoist / SCPercent / 100",
+      "RequiredClass": "Taoist",
+      "Stat": "SCPercent",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 131,
+      "_Identity": "All / CriticalChance / 100",
+      "RequiredClass": "All",
+      "Stat": "CriticalChance",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 100
+    },
+    {
+      "Index": 132,
+      "_Identity": "All / CriticalDamage / 100",
+      "RequiredClass": "All",
+      "Stat": "CriticalDamage",
+      "MinValue": 10,
+      "MaxValue": 20,
+      "Weight": 100
+    },
+    {
+      "Index": 133,
+      "_Identity": "AssWar / AttackSpeed / 100",
+      "RequiredClass": "AssWar",
+      "Stat": "AttackSpeed",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 134,
+      "_Identity": "AssWar / Accuracy / 100",
+      "RequiredClass": "AssWar",
+      "Stat": "Accuracy",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 100
+    },
+    {
+      "Index": 135,
+      "_Identity": "All / Strength / 100",
+      "RequiredClass": "All",
+      "Stat": "Strength",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 136,
+      "_Identity": "All / Luck / 100",
+      "RequiredClass": "All",
+      "Stat": "Luck",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 137,
+      "_Identity": "AssWar / LifeSteal / 100",
+      "RequiredClass": "AssWar",
+      "Stat": "LifeSteal",
+      "MinValue": 1,
+      "MaxValue": 1,
+      "Weight": 100
+    },
+    {
+      "Index": 138,
+      "_Identity": "Wizard / FireAttack / 100",
+      "RequiredClass": "Wizard",
+      "Stat": "FireAttack",
+      "MinValue": 1,
+      "MaxValue": 4,
+      "Weight": 100
+    },
+    {
+      "Index": 139,
+      "_Identity": "Taoist / HolyAttack / 100",
+      "RequiredClass": "Taoist",
+      "Stat": "HolyAttack",
+      "MinValue": 1,
+      "MaxValue": 4,
+      "Weight": 100
+    },
+    {
+      "Index": 140,
+      "_Identity": "All / ExperienceRate / 100",
+      "RequiredClass": "All",
+      "Stat": "ExperienceRate",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 100
+    },
+    {
+      "Index": 141,
+      "_Identity": "All / DropRate / 100",
+      "RequiredClass": "All",
+      "Stat": "DropRate",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 100
+    },
+    {
+      "Index": 142,
+      "_Identity": "All / GoldRate / 100",
+      "RequiredClass": "All",
+      "Stat": "GoldRate",
+      "MinValue": 1,
+      "MaxValue": 2,
+      "Weight": 100
+    }
+  ]
+}

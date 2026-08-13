@@ -1,0 +1,389 @@
+{
+  "count": 48,
+  "rows": [
+    {
+      "Index": 1,
+      "_Identity": "3 / MaxAC",
+      "Level": 3,
+      "StatType": "MaxAC",
+      "MaxAmount": 10,
+      "Weight": 7
+    },
+    {
+      "Index": 2,
+      "_Identity": "3 / MaxMR",
+      "Level": 3,
+      "StatType": "MaxMR",
+      "MaxAmount": 10,
+      "Weight": 7
+    },
+    {
+      "Index": 3,
+      "_Identity": "3 / MaxDC",
+      "Level": 3,
+      "StatType": "MaxDC",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 4,
+      "_Identity": "3 / MaxMC",
+      "Level": 3,
+      "StatType": "MaxMC",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 5,
+      "_Identity": "3 / MaxSC",
+      "Level": 3,
+      "StatType": "MaxSC",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 6,
+      "_Identity": "3 / Health",
+      "Level": 3,
+      "StatType": "Health",
+      "MaxAmount": 200,
+      "Weight": 5
+    },
+    {
+      "Index": 7,
+      "_Identity": "3 / Mana",
+      "Level": 3,
+      "StatType": "Mana",
+      "MaxAmount": 100,
+      "Weight": 5
+    },
+    {
+      "Index": 8,
+      "_Identity": "3 / Comfort",
+      "Level": 3,
+      "StatType": "Comfort",
+      "MaxAmount": 4,
+      "Weight": 5
+    },
+    {
+      "Index": 9,
+      "_Identity": "5 / BagWeight",
+      "Level": 5,
+      "StatType": "BagWeight",
+      "MaxAmount": 200,
+      "Weight": 10
+    },
+    {
+      "Index": 10,
+      "_Identity": "5 / Accuracy",
+      "Level": 5,
+      "StatType": "Accuracy",
+      "MaxAmount": 10,
+      "Weight": 10
+    },
+    {
+      "Index": 11,
+      "_Identity": "5 / Agility",
+      "Level": 5,
+      "StatType": "Agility",
+      "MaxAmount": 10,
+      "Weight": 10
+    },
+    {
+      "Index": 12,
+      "_Identity": "5 / ExperienceRate",
+      "Level": 5,
+      "StatType": "ExperienceRate",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 13,
+      "_Identity": "5 / DropRate",
+      "Level": 5,
+      "StatType": "DropRate",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 14,
+      "_Identity": "5 / GoldRate",
+      "Level": 5,
+      "StatType": "GoldRate",
+      "MaxAmount": 10,
+      "Weight": 5
+    },
+    {
+      "Index": 15,
+      "_Identity": "5 / AttackSpeed",
+      "Level": 5,
+      "StatType": "AttackSpeed",
+      "MaxAmount": 5,
+      "Weight": 5
+    },
+    {
+      "Index": 16,
+      "_Identity": "7 / Health",
+      "Level": 7,
+      "StatType": "Health",
+      "MaxAmount": 300,
+      "Weight": 10
+    },
+    {
+      "Index": 17,
+      "_Identity": "7 / Mana",
+      "Level": 7,
+      "StatType": "Mana",
+      "MaxAmount": 150,
+      "Weight": 10
+    },
+    {
+      "Index": 18,
+      "_Identity": "7 / MaxAC",
+      "Level": 7,
+      "StatType": "MaxAC",
+      "MaxAmount": 15,
+      "Weight": 7
+    },
+    {
+      "Index": 19,
+      "_Identity": "7 / MaxMR",
+      "Level": 7,
+      "StatType": "MaxMR",
+      "MaxAmount": 15,
+      "Weight": 7
+    },
+    {
+      "Index": 20,
+      "_Identity": "7 / MaxDC",
+      "Level": 7,
+      "StatType": "MaxDC",
+      "MaxAmount": 20,
+      "Weight": 5
+    },
+    {
+      "Index": 21,
+      "_Identity": "7 / MaxMC",
+      "Level": 7,
+      "StatType": "MaxMC",
+      "MaxAmount": 20,
+      "Weight": 5
+    },
+    {
+      "Index": 22,
+      "_Identity": "7 / MaxSC",
+      "Level": 7,
+      "StatType": "MaxSC",
+      "MaxAmount": 20,
+      "Weight": 5
+    },
+    {
+      "Index": 23,
+      "_Identity": "10 / Luck",
+      "Level": 10,
+      "StatType": "Luck",
+      "MaxAmount": 1,
+      "Weight": 2
+    },
+    {
+      "Index": 24,
+      "_Identity": "10 / CriticalChance",
+      "Level": 10,
+      "StatType": "CriticalChance",
+      "MaxAmount": 10,
+      "Weight": 2
+    },
+    {
+      "Index": 25,
+      "_Identity": "10 / LifeSteal",
+      "Level": 10,
+      "StatType": "LifeSteal",
+      "MaxAmount": 5,
+      "Weight": 1
+    },
+    {
+      "Index": 26,
+      "_Identity": "10 / FireResistance",
+      "Level": 10,
+      "StatType": "FireResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 27,
+      "_Identity": "10 / IceResistance",
+      "Level": 10,
+      "StatType": "IceResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 28,
+      "_Identity": "10 / LightningResistance",
+      "Level": 10,
+      "StatType": "LightningResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 29,
+      "_Identity": "10 / WindResistance",
+      "Level": 10,
+      "StatType": "WindResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 30,
+      "_Identity": "10 / HolyResistance",
+      "Level": 10,
+      "StatType": "HolyResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 31,
+      "_Identity": "10 / DarkResistance",
+      "Level": 10,
+      "StatType": "DarkResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 32,
+      "_Identity": "10 / PhantomResistance",
+      "Level": 10,
+      "StatType": "PhantomResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 33,
+      "_Identity": "10 / PhysicalResistance",
+      "Level": 10,
+      "StatType": "PhysicalResistance",
+      "MaxAmount": 5,
+      "Weight": 2
+    },
+    {
+      "Index": 34,
+      "_Identity": "11 / FireAttack",
+      "Level": 11,
+      "StatType": "FireAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 35,
+      "_Identity": "11 / IceAttack",
+      "Level": 11,
+      "StatType": "IceAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 36,
+      "_Identity": "11 / LightningAttack",
+      "Level": 11,
+      "StatType": "LightningAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 37,
+      "_Identity": "11 / WindAttack",
+      "Level": 11,
+      "StatType": "WindAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 38,
+      "_Identity": "11 / HolyAttack",
+      "Level": 11,
+      "StatType": "HolyAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 39,
+      "_Identity": "11 / DarkAttack",
+      "Level": 11,
+      "StatType": "DarkAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 40,
+      "_Identity": "11 / PhantomAttack",
+      "Level": 11,
+      "StatType": "PhantomAttack",
+      "MaxAmount": 55,
+      "Weight": 2
+    },
+    {
+      "Index": 41,
+      "_Identity": "13 / BlockChance",
+      "Level": 13,
+      "StatType": "BlockChance",
+      "MaxAmount": 7,
+      "Weight": 2
+    },
+    {
+      "Index": 42,
+      "_Identity": "13 / EvasionChance",
+      "Level": 13,
+      "StatType": "EvasionChance",
+      "MaxAmount": 7,
+      "Weight": 2
+    },
+    {
+      "Index": 43,
+      "_Identity": "13 / HealthPercent",
+      "Level": 13,
+      "StatType": "HealthPercent",
+      "MaxAmount": 10,
+      "Weight": 2
+    },
+    {
+      "Index": 44,
+      "_Identity": "13 / Health",
+      "Level": 13,
+      "StatType": "Health",
+      "MaxAmount": 750,
+      "Weight": 2
+    },
+    {
+      "Index": 45,
+      "_Identity": "13 / CriticalDamage",
+      "Level": 13,
+      "StatType": "CriticalDamage",
+      "MaxAmount": 50,
+      "Weight": 2
+    },
+    {
+      "Index": 46,
+      "_Identity": "15 / ParalysisChance",
+      "Level": 15,
+      "StatType": "ParalysisChance",
+      "MaxAmount": 7,
+      "Weight": 2
+    },
+    {
+      "Index": 47,
+      "_Identity": "15 / SilenceChance",
+      "Level": 15,
+      "StatType": "SilenceChance",
+      "MaxAmount": 7,
+      "Weight": 2
+    },
+    {
+      "Index": 48,
+      "_Identity": "15 / SlowChance",
+      "Level": 15,
+      "StatType": "SlowChance",
+      "MaxAmount": 40,
+      "Weight": 2
+    }
+  ]
+}
