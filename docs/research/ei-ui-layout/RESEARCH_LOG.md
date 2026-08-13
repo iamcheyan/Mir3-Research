@@ -9271,3 +9271,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔0x40ED60 服务器消息分派器〕**队列头 [ebx+0xF0]（pop 0x456270）；消息类型字 [p+4]：jt 0x40EF70（6..0x18）→ 虚槽 0x94/0x98/0x5C/0x44/0x90/0x48/0xA0；0x1F/0x21 → 0x60/0x54；0x27D/0x27E → 0x9C/0xA4；0x320/0x321/0x326 → 0x78/0x74；0x51A-0x51C → 0x64；**0x51D → 槽 0x60 + 克隆 0x40C 字节包改类型 0x1F 重入队**；尾部 [0x61C74]≠0 → 槽 0x10 (0x13) + dec [0xB8]。
 - **〔0x40C5B0 析构链〕**→ 0x40C5D0（mov [esi],0x476480 → 0x40C700 → 0x4049D0）。
 - 落盘：entity-message-dispatcher-evidence.json（F1057，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 751。
+## Round 752 (F1058) — 2026-08-12：小地图 Ctrl 拖拽平移移植模拟器（F1049 hit/drag 执行化）
+
+- **〔移植〕**STATE.mm.pan 源像素偏移加进滚动中心（钳制前）；pointerdown 门 ctrlKey && button 0，move 时 pan = grab.pan − delta/k（k = 面板 px/源 px），dblclick 复位 [0,0]；setPointerCapture 加 try/catch 守卫（合成 pointer 抛异常）。
+- **〔浏览器实测〕**拖 (+32,+16) → pan [−32,−16]、surface left −416→−384 / top −336→−320（view 128 k=1 精确 1:1）；dblclick 复位；无 Ctrl 拖动 pan 保持 [0,0]。
+- 落盘：minimap-pan-port-evidence.json（F1058，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 752。

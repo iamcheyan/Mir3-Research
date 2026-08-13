@@ -36,7 +36,7 @@ const STATE = {
   tradeSplit: [0, 0],           // [+0x54]/[+0x58] = top visible DATA ROW per pane (Finding 301: row offset, not px; 94-scale, usable [0,34])
   loginStage: 0,                // Round 43 (F349): [0x8B1878]-style stage machine - 0 intro / 1 char-select / 2 in-game
   charStage: 0,                 // [0x930] char-select stage (0 list, 1 creating, 2 login anim, 3 enter, 4 anim done)
-  mm: { zoom: false, small: true, blink: 0 },  // Round 744 (F1048/F1049): zoom [0x290], view-size [0x294] (small=128), blink counter [+0x300]
+  mm: { zoom: false, small: true, blink: 0, pan: [0, 0] },  // Round 752 (F1049): Ctrl+drag pan offset in source px (grab offset [0x2F0]/[0x2F4]); blink [+0x300]; zoom [0x290]; view [0x294]
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -274,6 +274,30 @@ function renderHud() {
   mmZoomBtn.addEventListener("pointerup", () => { STATE.mm.zoom = !STATE.mm.zoom; layoutMinimap(); });
   mmViewBtn.addEventListener("pointerup", () => { STATE.mm.small = !STATE.mm.small; layoutMinimap(); });
   mmEl.append(mmZoomBtn, mmViewBtn);
+  // Round 752 (F1049 hit/drag port): Ctrl+LMB inside the panel grabs and
+  // pans the view (original: hit 0x43DDB0 Ctrl(0x11) -> grab offset
+  // [0x2F0]/[0x2F4], drag 0x43DEB0 SetRect pan). Double-click re-centers.
+  mmEl.addEventListener("pointerdown", (ev) => {
+    if (!ev.ctrlKey || ev.button !== 0) return;
+    const view = mmViewPx();
+    const img = mmEl.querySelector(".mm-surface");
+    if (!img || !img.naturalWidth) return;
+    const k = (mm.rect[2] - mm.rect[0]) / view; // panel px per source px
+    const grab = { x: ev.clientX, y: ev.clientY, pan: [...STATE.mm.pan] };
+    try { mmEl.setPointerCapture(ev.pointerId); } catch (e) { /* synthetic pointers cannot be captured */ }
+    const move = (mv) => {
+      STATE.mm.pan[0] = grab.pan[0] - Math.round((mv.clientX - grab.x) / k);
+      STATE.mm.pan[1] = grab.pan[1] - Math.round((mv.clientY - grab.y) / k);
+      layoutMinimap();
+    };
+    const up = () => {
+      mmEl.removeEventListener("pointermove", move);
+      mmEl.removeEventListener("pointerup", up);
+    };
+    mmEl.addEventListener("pointermove", move);
+    mmEl.addEventListener("pointerup", up);
+  });
+  mmEl.addEventListener("dblclick", () => { STATE.mm.pan = [0, 0]; layoutMinimap(); });
   mmEl.dataset.evidence = mm.evidence_level;
   mmEl.dataset.rect = mm.rect.join(",");
   mmEl.dataset.desc = "小地图 (672,0)-(800,128) · 滚动源窗口 F1048 + 标记 F1049";
@@ -341,8 +365,10 @@ function layoutMinimap() {
   const ents = STATE.data.entities || [];
   const p = ents.find((e) => e.kind === "player") || { x: 400, y: 300 };
   const px = (p.x / 800) * sw, py = (p.y / 600) * sh;
-  const sx = mmClampScroll(px, sw, view);
-  const sy = mmClampScroll(py, sh, view);
+  // Round 752 (F1049 drag): pan offsets the scroll center (original pans the
+  // dest rect via grab offset [0x2F0]/[0x2F4]; here the source window moves).
+  const sx = mmClampScroll(px + STATE.mm.pan[0], sw, view);
+  const sy = mmClampScroll(py + STATE.mm.pan[1], sh, view);
   img.style.cssText =
     `position:absolute;image-rendering:auto;left:${-sx * k}px;top:${-sy * k}px;` +
     `width:${sw * k}px;height:${sh * k}px`;

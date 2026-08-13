@@ -1,0 +1,32 @@
+{
+  "evidence_id": "minimap-pan-port-2026-08-12-f1058",
+  "title": "Round 752 (F1058): Ctrl+drag minimap pan PORTED to simulator (F1049 hit 0x43DDB0 / drag 0x43DEB0 port) - STATE.mm.pan source-px offset added to the scroll center before mmClampScroll (grab-offset analog [0x2F0]/[0x2F4]); pointerdown gated on ctrlKey && button==0 inside panel, pointermove updates pan = grab.pan - delta/k (k = panel px per source px), dblclick re-centers pan=[0,0]; setPointerCapture guarded (synthetic pointers throw). Browser-verified live: drag +32/+16 panel px -> pan [-32,-16] -> surface left -416px -> -384px top -336px -> -320px (exact 1:1 at view 128); dblclick restores [-416px] pan [0,0]; plain drag without Ctrl leaves pan [0,0]",
+  "date": "2026-08-12",
+  "objective": "Port the F1049 Ctrl-pan interaction into the simulator.",
+  "question": "Does the simulator minimap now support the original Ctrl+drag pan?",
+  "method": "app.js: STATE.mm.pan + scroll-center offset + pointer handlers; headless Chromium synthetic pointer verification.",
+  "scope": "Tools/mir3_client_simulator/app.js.",
+  "cell_analysis": {
+    "pan_math": "pan = grab.pan - round(delta_panel_px / k); scroll = clamp(px + pan - view/2)",
+    "gates": "ctrlKey && button 0; dblclick resets; non-Ctrl drag inert",
+    "capture_guard": "try/catch around setPointerCapture (synthetic PointerEvent ids throw)"
+  },
+  "exe_trace": {
+    "live_1": "drag (+32,+16) @ view 128 k=1 -> pan [-32,-16], surface left -416->-384 top -336->-320",
+    "live_2": "dblclick -> pan [0,0], surface left back to -416px",
+    "live_3": "no-ctrl drag (+40,+40) -> pan stays [0,0]"
+  },
+  "audit_vs_exe": {
+    "F1049": "hit/drag handler pair fully interactive in sim",
+    "F1050": "scroll/toggle layer extended with the pan axis",
+    "fix": "setPointerCapture guard added after first synthetic test failed (handler aborted)"
+  },
+  "contrast": {"player_centered": "pan [0,0] follows player", "free_pan": "Ctrl+drag offsets the source window until dblclick"},
+  "verdict": "Minimap interaction set complete in simulator: scroll math + taxonomy + toggles + blink + Ctrl-pan, all live-verified.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Simulator port of F1049; synthetic-pointer DOM verification.",
+  "cross_refs": ["F1049: hit/drag", "F1050: scroll port"],
+  "tool": "edit + browser",
+  "reproduce": "dispatch ctrlKey pointerdown/move/up on .minimap; read STATE.mm.pan and img.style.left",
+  "notes": ["713 consecutive rounds F335-F1058"]
+}

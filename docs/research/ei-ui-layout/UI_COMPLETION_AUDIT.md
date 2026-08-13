@@ -4714,3 +4714,7 @@ git diff --check
 
 - 战斗暂存块 + 动作状态机（含移动回显 0x82/0x83）+ 全消息分派器（14 虚槽 + 0x51D 克隆重入队规则）。
 - 落盘：`entity-message-dispatcher-evidence.json`（F1057）+ RESEARCH_LOG Round 751。
+## Round 752 (2026-08-12) — 小地图 Ctrl 平移移植（Finding 1058）
+
+- 滚动数学 + 标记 + 切换 + 闪烁 + Ctrl 平移全交互集完成；合成指针三态实测。
+- 落盘：`minimap-pan-port-evidence.json`（F1058）+ RESEARCH_LOG Round 752。
