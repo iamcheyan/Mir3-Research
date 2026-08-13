@@ -1,0 +1,28 @@
+{
+  "evidence_id": "screen-dispatch-handlers-2026-08-12-f1063",
+  "title": "Round 757 (F1063): screen dispatcher handlers decoded (F1061 follow-up) - MSG 0x32 -> 0x422CC0 = ENTER-MAP SWITCH: dword [p] -> map id [screen+0x2F8784], bytes [p+0xA]/[p+0xB] -> flags ([0x35A354]), base64 0x452810 decode 0x10 bytes @ [p+0xC] + 5 bytes @ [p+0x22], name/title set via vtbl+0x8C (mode 0 or 0x1D, words [p+6]/[p+8]), copy default string 0x47EEE4 -> global 0x7776A0, gate [screen+0x2ED0B0]=1|0, THEN TEARDOWN OF THE ENTIRE ENTITY LIST [screen+0xE1188] (walk + free payload + node dtor = F1032 pattern), reset [0xE1188]/[0xE118C]/[0xE1198], reinit 0x417FB0 @ [screen+0x3615B0], SEND 0x51 via 0x451660 @ 0x8AB828, [screen+0x35B2B8]=1; MSG 0x34 -> 0x423000 = TITLE/NAME BLOCK: dword [p] -> [0x35B1E8], byte [p+6] -> [0x35B1E4], base64 decode 0x61 bytes @ [p+0xC] -> [0x35B1F0], words [0x35B1F5/F7/F9] -> [0x35A34C/34E/34A]; MSG 0x2F0 -> 0x423070 = STATE FLAGS: byte [p] (zxw) -> word [0x35B251], bytes [p+6..0xB] -> [0x35B253..0x35B258]; BONUS push-family variants 0x4230E0/0x423180 (node vtable 0x4767C0) + inline vtable-reset thunk 0x4230D0 (mov [ecx],0x4766F0)",
+  "date": "2026-08-12",
+  "objective": "Decode the screen-level queue handlers.",
+  "question": "What do screen messages 0x32, 0x34, 0x2F0 do?",
+  "method": "Disasm 0x422CC0/0x423000/0x423070.",
+  "scope": "0x422CC0-0x422E25, 0x423000-0x4230C6.",
+  "cell_analysis": {
+    "enter_map": {"msg": "0x32", "fn": "0x422CC0", "map_id": "[screen+0x2F8784]", "strings": "base64 0x10B @ [p+0xC], 5B @ [p+0x22]", "entity_wipe": "free whole list [0xE1188] (F1032 pattern), reset [0xE1188]/[0xE118C]/[0xE1198]", "after": "0x417FB0 @ [0x3615B0]; send 0x51 (0x451660 @ 0x8AB828); [0x35B2B8]=1"},
+    "title_block": {"msg": "0x34", "fn": "0x423000", "decode": "0x61 bytes base64 -> [0x35B1F0]", "words": "[0x35B1F5/F7/F9] -> [0x35A34C/34E/34A]"},
+    "state_flags": {"msg": "0x2F0", "fn": "0x423070", "store": "word [0x35B251] + bytes [0x35B253..258]"}
+  },
+  "exe_trace": {"map_switch": "msg 0x32 -> id+names -> wipe entities -> reinit -> request 0x51"},
+  "audit_vs_exe": {
+    "F1026": "0x422E30 name handler sits in the same family; 0x422CC0 is the full map-switch entry",
+    "F1032": "entity-list teardown loop = the documented dtor pattern, first full caller seen",
+    "F1061": "screen dispatcher handlers complete"
+  },
+  "contrast": {"map_switch_vs_title": "destructive entity wipe vs pure field decode", "flags_vs_names": "7 raw bytes vs base64 strings"},
+  "verdict": "Screen-level messaging closed: map-switch packet (with entity-world reset + 0x51 request), title/name block, and the 7-flag state packet all decoded byte-level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Handler bodies decoded from .text.",
+  "cross_refs": ["F1061: screen dispatcher", "F1032: dtor pattern", "F1026: map title"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x422CC0+0x165; 0x423000+0x64; 0x423070+0x56",
+  "notes": ["msg 0x32 wipes the whole entity list on map switch", "718 consecutive rounds F335-F1063"]
+}

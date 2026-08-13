@@ -9299,3 +9299,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔修正〕**layoutMinimap 移除第二链表绿 3×3 分支（原版 [0x5600A0] 无生产者 → 永不绘制）；保留玩家闪烁 4×4 + 怪物白 2×2；注释引用 F1049 + F1061。
 - **〔浏览器实测〕**5 标记（1×闪烁 4px + 4×白 2px）、双角落按钮在位、pan 状态完好（本数据集 NPC 本就被窗口测试排除，视觉无差、契约对齐）。
 - 落盘：sim-dead-marker-fix-evidence.json（F1062，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 756。
+## Round 757 (F1063) — 2026-08-12：screen 分派器处理器三连（F1061 后续）
+
+- **〔0x32 进图切换 0x422CC0〕**dword [p]→图 ID [0x2F8784]；base64 0x452810 解码 0x10B@[p+0xC] + 5B@[p+0x22]；经 vtbl+0x8C 设名字（模式 0/0x1D，字 [p+6]/[p+8]）；默认串 0x47EEE4→全局 0x7776A0；**整体清空实体链表 [0xE1188]**（F1032 析构模式全量调用方）+ 复位 [0xE1188]/[0xE118C]/[0xE1198] + 0x417FB0 @ [0x3615B0] + **发送 0x51**（0x451660 @ 0x8AB828）+ [0x35B2B8]=1。
+- **〔0x34 称号/名字块 0x423000〕**[p]→[0x35B1E8]、[p+6]→[0x35B1E4]、base64 0x61B@[p+0xC]→[0x35B1F0]、字三连→[0x35A34A/34C/34E]。
+- **〔0x2F0 状态旗标 0x423070〕**byte [p]→word [0x35B251]、[p+6..0xB]→[0x35B253..258]。
+- **〔新〕**push 家族变体 0x4230E0/0x423180（节点 vtable 0x4767C0）+ 内联 vtable 复位 thunk 0x4230D0。
+- 落盘：screen-dispatch-handlers-evidence.json（F1063，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 757。

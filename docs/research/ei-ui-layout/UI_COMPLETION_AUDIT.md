@@ -4734,3 +4734,7 @@ git diff --check
 
 - 绿色第二链表标记移除；标记层与原版二进制行为逐字节对齐。
 - 落盘：`sim-dead-marker-fix-evidence.json`（F1062）+ RESEARCH_LOG Round 756。
+## Round 757 (2026-08-12) — screen 分派处理器（Finding 1063）
+
+- 0x32 进图（实体世界整体重置 + 0x51 请求）/ 0x34 称号块 / 0x2F0 旗标块全解。
+- 落盘：`screen-dispatch-handlers-evidence.json`（F1063）+ RESEARCH_LOG Round 757。
