@@ -1,0 +1,29 @@
+{
+  "evidence_id": "lib-availability-chunk1-domain-2026-08-12-f1068",
+  "title": "Round 762 (F1068): bootstrap vs shipped-data availability + chunk1 value domain measured - (a) 140 existence checks (70 libs x wil+wix, case-insensitive, Windows-like): 54 present / 86 MISSING: root group ALL 14 present; Wood 8/14 (missing tiles30c/smtilesc/cliffsc/furnituresc/object1c/object2c); Sand 5/14; Forest & Snow dirs use a RENAMED family without the c suffix (Tiles/Tiles30/tiles5/Walls/Cliffs/Dungeons/Houses/SmObjects/SmTiles/furnitures/inners/Animations) -> 0/14 by exe names - i.e. the shipped EI 3.0 pack cannot fully serve the exe's hardcoded bootstrap; failed opens leave libs zero and the 0x466640 ret 0 path skips those blits (graceful degradation) [INFERENCE]; (b) chunk1 value domain over 114 valid 14B-cell maps (1.85M cells): v in {0,1,2,15,30,255}: 0/1/2 = root-group tile layers (v=1 dominant 1.27M cells), 255 = none-sentinel (393 cells, skipped by the cmp 0x45 gate - gate purpose CONFIRMED), frames word: 1846227 valid vs 387 0xFFFF-empty; (c) group-byte correlation: byte-0 maps reference cross-group value 15 (in 14-27 Wood range) x4 maps, byte-1 maps reference value 30 (in 28-41 Sand range) x8 maps - every non-tile-layer reference falls INSIDE the (byte+1) group range -> F1067 group mapping EMPIRICALLY CONFIRMED both directions; only bytes 0/1 occur in the 544-map corpus (Forest/Snow groups never selected)",
+  "date": "2026-08-12",
+  "objective": "Empirically validate bootstrap names against shipped data and chunk1 semantics against real cells.",
+  "question": "Do the 70 hardcoded lib names exist in the client pack, and do real chunk1 values match the decoded domain?",
+  "method": "Case-insensitive existence sweep of Data/ tree (140 checks); parse chunk1 of 114 valid maps, tally value domain + frame words; correlate cross-group values with header group byte.",
+  "scope": "Data/ root+4 subdirs; Map/*.map 14B-cell subset.",
+  "cell_analysis": {
+    "libs": {"present": 54, "missing": 86, "root_group": "14/14", "Wood": "8/14", "Sand": "5/14", "Forest_Snow": "renamed no-suffix family, 0/14 by exe names"},
+    "chunk1_domain": {"0": "311570", "1": "1268953", "2": "231283", "15": "3310", "30": "31105", "255": "393 (sentinel)"},
+    "frames": {"valid": 1846227, "empty_0xFFFF": 387},
+    "group_byte": {"0": "uses v15 (Wood range) x4 maps", "1": "uses v30 (Sand range) x8 maps", "2_3": "absent from corpus"}
+  },
+  "exe_trace": {"sweep": "names from F1067 bootstrap order; chunk1 parsed per F1065 layout"},
+  "audit_vs_exe": {
+    "F1067": "group mapping (byte+1 -> name index range) confirmed empirically",
+    "F1065": "chunk1 3B/4cell layout + lib-index byte confirmed on real data",
+    "F1067_gate": "cmp 0x45 exists to skip the 0xFF none-sentinel"
+  },
+  "contrast": {"exe_names": "70 hardcoded", "data_reality": "54/140 present; terrain dirs partial/renamed"},
+  "verdict": "chunk1 semantics and group mapping hold on real data; the shipped pack diverges from the exe's hardcoded terrain-lib expectations (renamed Forest/Snow sets, partial Wood/Sand) - the client degrades gracefully per the decoded failure path.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "File sweep + map parses on original client data; layout from primary-bytes F1065/F1067.",
+  "cross_refs": ["F1067: bootstrap", "F1065: loader/chunk1", "F1066: sweep"],
+  "tool": "python sweep",
+  "reproduce": "case-insensitive walk of Data/; parse Map/*.map chunk1 tallies",
+  "notes": ["v=1 (tiles30 root layer) carries 69% of all cells", "Forest/Snow never selected by any real map", "723 consecutive rounds F335-F1068"]
+}

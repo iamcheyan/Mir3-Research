@@ -9334,3 +9334,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔WIL 对象/条目布局〕**对象 {+4 模式、+8 wil 句柄、+0xC wix 索引（0x20/条）、+0x10 数、+0x38 条目、+0x3C 像素、+0x40 名}；条目 {+0 last-use、+4 偏移、+8 w、+0xA h、+0x15 word×2=像素字节、+0x1C 缓存}；0x466640 惰性取帧 + LRU 0x466770（5 分钟释放、15 秒扫描门 0x3A98）；0x466720 内存模式访问器（w/h ≤ 0x1000）。
 - **〔0x43B440 再确认〕**chunk1 值 v∈[0,0x45]=70 库索引（门 cmp 0x45）；(v+v/45)%14≤2 → 瓦片层 k0-2（tilesc/tiles30/Tiles5）进 1152×768 预渲染；边界怪例 v=55/69（k=13）亦通过。
 - 落盘：tilelib-bootstrap-evidence.json（F1067，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 761。
+## Round 762 (F1068) — 2026-08-12：引导名 vs 实发数据 + chunk1 值域实测
+
+- **〔140 项存在性（大小写不敏感）〕**54 在 / 86 缺：根组 **14/14 全在**；Wood 8/14（缺 tiles30c/smtilesc/cliffsc/furnituresc/object1c/object2c）；Sand 5/14；Forest/Snow 目录为**无 c 后缀改名族**（Tiles/Tiles30/tiles5/…）→ 按 exe 名 0/14。实发包无法完全满足 exe 硬编码引导；失败开启→库零→0x466640 ret 0→跳过 blit（优雅降级）〔推断〕。
+- **〔chunk1 值域（114 图 / 1.85M 格）〕**v∈{0,1,2,15,30,255}：0/1/2=根组瓦片层（v=1 占 69%）；255=空 sentinel（393 格，cmp 0x45 门即为此）；帧 word 1,846,227 有效 vs 387 个 0xFFFF。
+- **〔组映射双向经验确认〕**字节 0 图引 v15（Wood 组内 ×4 图）、字节 1 图引 v30（Sand 组内 ×8 图）——全部跨组引用都落在 (字节+1) 组范围内；语料仅字节 0/1（Forest/Snow 组从未被选）。
+- 落盘：lib-availability-chunk1-evidence.json（F1068，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 762。

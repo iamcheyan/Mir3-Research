@@ -4754,3 +4754,7 @@ git diff --check
 
 - 名字表启动填充 + 70 库 5 地形组索引序 + WIL/WIX 惰性帧 + LRU + chunk1 库索引门——瓦片库子系统端到端闭合。
 - 落盘：`tilelib-bootstrap-evidence.json`（F1067）+ RESEARCH_LOG Round 761。
+## Round 762 (2026-08-12) — 库可用性 + chunk1 实测（Finding 1068）
+
+- 54/140 库存在（根组全、地形组缺/改名）；chunk1 值域与 (字节+1) 组映射双向实测确认。
+- 落盘：`lib-availability-chunk1-evidence.json`（F1068）+ RESEARCH_LOG Round 762。
