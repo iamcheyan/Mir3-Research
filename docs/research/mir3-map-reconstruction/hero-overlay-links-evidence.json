@@ -1,0 +1,47 @@
+{
+    "evidence_id": "hero-overlay-links-2026-08-13-f1083",
+    "title": "Round 777 (F1083): HERO OVERLAY LINKS closed - 0x40B180 = name plate (class-indexed 0x434A20 text blits, three arms + shadow variant 0xF2/0x190, scene ctx 0x7DA1D8), 0x40CE20 = overhead icon (chat bubble/state: flag gate [ent+0x61C68]&0x100000 + 1700ms time gate, atlas slot 5 via 0x566780, icon base 0x352/0x355 by state 0xF, color 0x3B808081 tint, D3D-style render slots 0x40/0x14/0x30); hero draw slot table started (0x40DA40 = spawn parser slot 0x7C misassoc ruled out)",
+    "date": "2026-08-13",
+    "objective": "Identify the two hero-chain links called by the occupancy dispatcher (F1082) beyond the vslot draw.",
+    "question": "What do 0x40B180 and 0x40CE20 draw, and through which scene contexts?",
+    "method": "disasm 0x40B180+0x134 (name plate both halves), 0x40CE20+0x190 (icon), 0x40DA40+0x70 (candidate slot probe), .rdata vtable scans for slot-0x7C code pointers with dtor slot0.",
+    "scope": "hero overlay rendering; entity vslot table first pass.",
+    "cell_analysis": {
+        "name_plate_0x40b180": "arg gate (esp+4 nonzero -> live path, zero -> 0x40B254); class byte [ent+0x61BD4]: ==2 -> 0x434A20(0x7DA1D8, pos=([ent+0x94]+0x18,[ent+0x98]+0x10), sizes 100,100,100, type 4); ==0 -> 5,5,0xA,type 4; ==8 -> 0xFF,0xFF,0xFF type 8; default -> 0xA type; shadow half pushes 0xF2,0x190 same arms; scene ctx = 0x7DA1D8 (separate text/scene ctx, not 0x8AB7A8)",
+        "overhead_icon_0x40ce20": "gates: [ent+0x61C68] & 0x100000; timeGetTime([0x47630C]) - [ent+0x62A2C] > 0x6A4 (1700 ms); icon idx = [ent+0x62A24] + 0x352 (+3 more if state [ent+0xC0]==0xF -> 0x355); atlas = fixed slot 5 (0x566780 = 0x5600FC+324*5), frame resolve 0x466130; render object [0x8AB7BC] vslots 0x40 (setup), 0x14 (state/flush with float coords), 0x30 (matrix/view), plus 0x466800 float-init and tint color 0x3B808081 at the D3D vertex struct (+0xA8 stack slot); world->screen floats: ([0x5667B8] frame pivot scaled by [0x476364], +[ent+0xE4]/[ent+0xE8] entity screen offsets, -[0x476474]/-[0x476470] anchor constants)",
+        "spawn_parser_0x40da40": "NOT the hero draw: parses a spawn packet {word+6 -> [ent+0xCC], word+8 -> [+0xD0], byte+0xA local, byte+0xB -> [+0x61BD4] class}, then calls vslots 0x24/0x10 with type 0x13, special-case word+4==0x20 sets [ent+0x61C74]=1 and [ent+0xC4]=[ent+0xB8]-1 - it sits at .rdata 0x476458 slot 0x7C only by coincidence of scan (0x476458 = FX base vtable; R771 slot map stands)",
+        "entity_vtables_first_pass": "vtables with dtor slot0 0x40EA60: 0x476458 (FX base, slot0x7C=0x40DA40), 0x476528 (0x40DDD0), 0x4765F0 (0x423F80=CList leak), 0x4767A8 (pair node); hero entity vtable not yet isolated - its slot 0x7C receives (map, sel, dt, 1) from the F1082 dispatcher and is the surface-composite entry for the selected hero",
+        "scene_contexts": "0x8AB7A8 = clip blit ctx (tiles/FX), 0x7DA1D8 = name-plate/text scene ctx, [0x8AB7BC] = render device object (vslots 0x40/0x14/0x30/0x10...)"
+    },
+    "exe_trace": {
+        "draw": "F1082 dispatcher arm0: vslot 0x7C (sprite body) -> 0x40B180 name plate (0x7DA1D8 ctx) -> 0x40CE20 overhead icon (device [0x8AB7BC], atlas slot 5)"
+    },
+    "audit_vs_exe": {
+        "F1069": "hero chain 0x40B180/0x40CE20 semantics now concrete: name plate + overhead icon (not 'hero chain' drawing proper - the body is vslot 0x7C)",
+        "F1082": "dispatcher arm0 fully decoded; [ent+0x61BD4] = class byte shared with the spawn parser (0x40DA40 writes it from packet byte 0xB)",
+        "F1081": "selected-entity vslot 0x7C surface-composite association refined: 0x7C = entity body draw taking the map object; hero vtable TBD next round"
+    },
+    "contrast": {
+        "0x40b180": "class-indexed name plate, three arms + shadow variant",
+        "0x40ce20": "time-gated overhead icon with D3D float pipeline",
+        "vslot_0x7c": "entity body (per-vtable)"
+    },
+    "verdict": "The F1082 hero overlay chain decomposes into name plate (0x40B180, class byte [0x61BD4] -> 0x434A20 text blits on scene ctx 0x7DA1D8) and overhead icon (0x40CE20, flag+1700ms gates, atlas slot 5, D3D-style float render via device [0x8AB7BC] vslots 0x40/0x14/0x30 with tint 0x3B808081); the entity body itself is vslot 0x7C whose hero implementation and the hero vtable identity remain the next target.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "Disasm-only; hero vtable isolation deferred (scan produced only sibling vtables).",
+    "cross_refs": [
+        "F1082: dispatcher arm0 (this is its callees)",
+        "F1069: hero chain",
+        "F1081: vslot 0x7C context",
+        "F1077: FX base vtable 0x476458"
+    ],
+    "tool": "capstone disasm + .rdata vtable scans (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "disasm 0x40B180+0x134, 0x40CE20+0x190, 0x40DA40+0x70; scan .rdata for slot0x7C code ptrs under dtor-slot0 vtables",
+    "notes": [
+        "name plate class arms: 2 -> (100,100,100,4), 0 -> (5,5,0xA,4), 8 -> (0xFF,0xFF,0xFF,8), default (0xA); shadow half (0xF2,0x190)",
+        "icon base 0x352 (+0x355 when state 0xF) on atlas slot 5 = UI/interface atlas family",
+        "float consts: [0x476364] scale, [0x476474]/[0x476470] anchor offsets - values readable from .rdata next round",
+        "0x40DA40 special word+4==0x20 -> [0x61C74]=1 (the dispatcher's flag gate from F1082) - packet-driven highlight",
+        "738 consecutive rounds F335-F1083"
+    ]
+}

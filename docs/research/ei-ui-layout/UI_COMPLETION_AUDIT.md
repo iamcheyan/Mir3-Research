@@ -4814,3 +4814,7 @@ git diff --check
 
 - screen+0x154=24×24×1600B 占格覆盖层（0xE1000 精确，换图清零定性）；槽内 100 实体指针+两格特效记录；分派器 0x41CBD0 四臂类型表（0/1 英雄全链/3 仅 vslot/50 vslot+0x40B180/其余跳过）；F1075 ticker 三勘误（150/25/50、计数器 B4/B8/BC、每字节周期=下标）。
 - 落盘：`occupancy-overlay-cell-dispatch-evidence.json`（F1082）+ RESEARCH_LOG Round 776。
+## Round 777 (2026-08-13) — 英雄覆盖双环（Finding 1083）
+
+- 0x40B180=名条（职业字节三臂 0x434A20→ctx 0x7DA1D8+影子变体）；0x40CE20=头顶图标（旗+1700ms 门，图集槽 5，设备 [0x8AB7BC] 浮点管线，顶点色 0x3B808081）；0x40DA40 勘误排除=spawn 解析器（[0x61BD4]/[0x61C74] 写入者）；英雄 vtable 未隔离（下轮）。
+- 落盘：`hero-overlay-links-evidence.json`（F1083）+ RESEARCH_LOG Round 777。

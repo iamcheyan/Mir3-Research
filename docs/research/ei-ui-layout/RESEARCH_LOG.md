@@ -9444,3 +9444,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F1075 ticker 三勘误〕〕0x43CDC0 每帧向 **全部 8 个** dt 累加器(+0x1B01B4..+0x1B01D0)加 dt；组 tick 门 [B4]>**150**(0x96)/[B8]>25(0x19)/[BC]>50(0x32)——非 25/50/75；组计数器=8 累加器**前三个**（非 B8/BC/C0）；环回=**每字节周期=自身下标**（byte k 计 0..k-1，`cmp 新值,k; jl 跳过复位`；byte 0/1 退化为常量）——非统一 mod 16，blend lo 半字节同时选字节与周期长度。
 - **〔一致性〕**分派器 [ent+0x88] 与 R771 实体链 tick 门（≤1/==3）同一状态/类型字节——一字节驱动 tick 与 draw 双路径。
 - 落盘：occupancy-overlay-cell-dispatch-evidence.json（F1082，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 776。
+## Round 777 (F1083) — 2026-08-13：英雄覆盖双环语义闭合——名条 0x40B180 + 头顶图标 0x40CE20
+
+- **〔名条 0x40B180〕**参量门（esp+4 非零=实体路径/零=0x40B254 影子变体 push 0xF2/0x190）；**职业字节 [ent+0x61BD4]** 三臂 + 默认：==2→0x434A20(场景 **0x7DA1D8**, pos=([+0x94]+0x18,[+0x98]+0x10), 尺寸 100,100,100, 类型 4)；==0→5,5,0xA,4；==8→0xFF×3,8；默认 0xA。0x7DA1D8=文本/名条场景 ctx（区别于瓦片裁剪 ctx 0x8AB7A8）。
+- **〔头顶图标 0x40CE20〕〕双门：[ent+0x61C68]&0x100000 + timeGetTime−[ent+0x62A2C]>0x6A4（1700ms）；图标 idx=[ent+0x62A24]+0x352（状态 [+0xC0]==0xF → +3=0x355）；图集=**固定槽 5**（0x566780=0x5600FC+324·5）；渲染走设备对象 **[0x8AB7BC]** vslot 0x40（setup）/0x14（浮点坐标 flush）/0x30（矩阵）+0x466800 浮点初始化 + 顶点色 **0x3B808081**；世界→屏幕浮点链：帧 pivot×[0x476364] 缩放 +[ent+0xE4]/[+0xE8] 实体屏偏 −[0x476474]/[0x476470] 锚常量。
+- **〔0x40DA40 勘误排除〕**其非英雄绘制而是 **spawn 包解析器**：{word+6→[+0xCC], word+8→[+0xD0], byte+0xB→[+0x61BD4] 职业字节（即名条分派键的写入者）}+vslot 0x24/0x10 调用（type 0x13）；特例 word+4==0x20→**[ent+0x61C74]=1**（F1082 分派器旗门的包驱动写入者）+[+0xC4]=[+0xB8]−1。
+- **〔实体 vtable 首查〕**slot0=0x40EA60 析构族：0x476458(FX 基, slot7C=0x40DA40)/0x476528(0x40DDD0)/0x4765F0/0x4767A8(配对节点)——**英雄 vtable 未隔离**（其 slot 0x7C=实体本体绘制，接收 (map,sel,dt,1)），下一轮目标。
+- **〔场景 ctx 总账〕**0x8AB7A8=瓦片/FX 裁剪 blit；0x7DA1D8=名条/文本；[0x8AB7BC]=渲染设备对象（vslot 0x40/0x14/0x30/0x10…）。
+- 落盘：hero-overlay-links-evidence.json（F1083，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 777。
