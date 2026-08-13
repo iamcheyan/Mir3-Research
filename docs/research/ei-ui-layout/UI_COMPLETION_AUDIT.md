@@ -4758,3 +4758,7 @@ git diff --check
 
 - 54/140 库存在（根组全、地形组缺/改名）；chunk1 值域与 (字节+1) 组映射双向实测确认。
 - 落盘：`lib-availability-chunk1-evidence.json`（F1068）+ RESEARCH_LOG Round 762。
+## Round 763 (2026-08-12) — 格对象层渲染（Finding 1069）
+
+- 14B 格记录字节 0-8 + 属性字双端锚定（数据侧工具互证）；mod-14 层族分裂补全；blend/动画偏移表 + 48×32 尺寸门 + 800×492 裁剪窗。
+- 落盘：`cell-layer-render-evidence.json`（F1069）+ RESEARCH_LOG Round 763。

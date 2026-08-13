@@ -1,0 +1,37 @@
+{
+  "evidence_id": "cell-layer-render-2026-08-12-f1069",
+  "title": "Round 763 (F1069): per-cell OBJECT-LAYER render pair decoded (0x43BB10 + 0x43BE00, twin functions) - cell record bytes 1-8 FULLY client-anchored, cross-validated byte-exact against repo tooling's independent data-side mapping (survey_mir3_maps mid/front fields): word@cell+3 = 0xFFFF -> empty; flag0 -> file = word[3]>>8 (= byte4, MID), frame = word@cell+5 (bytes 5-6); flag1 -> file = word[3]&0xFF (= byte3, FRONT), frame = word@cell+7 (bytes 7-8); v-transform v = file + file/45 (0x6DB6DB6D magic, same as F1067) with gates v%14 >= 3 (COMPLEMENTARY to the prerender's <=2: k 0-2 = tile layers, k>=3 = object layers - mod-14 family split complete), v <= 0x45, frame != 0xFFFF; 0x466130(lib, frame) fetch then sprite-size gate: 0x43BB10 requires EXACTLY w==0x30 && h==0x20 (48x32 objects), 0x43BE00 skips 48x32 (draws large/tall objects) - four draws per cell in the render driver (mid+front x small+large, Z-ordered by pass); BLEND byte cell+(flag?2:1) (byte2=mid, byte1=front): != 0xFF -> nibbles: hi&7 (0-7) *16 + lo (0-15) -> anim-offset table @ mapobj+0x1B01D4 -> frame += table[idx]; bit7 0x80 -> float/rotated render path (fild coordinates); screen pos: x = (cellX-anchorX)*48 - scrollX - 0xC8, y = (cellY-anchorY)*32 - scrollY - 0x7D; blit 0x460240 @ 0x8AB7A8 clip window 0x320 x 0x1EC (800x492) flags 0xFFFF/0xFFFF; RENDER DRIVER 0x41C460-0x41C7B9 identified (not chat): screen obj esi, map obj [esi+0xF5200], camera [esi+0xF5330]/[esi+0xF532C], map dims aliased at [esi+0xF5326]/[esi+0xF5328] (= mapobj+0x126/0x128), loop window anchor-0xA .. anchor+0x22 (34x34 cells) calling 0x43CA40 attr consumer: attr nibble (word@cell+0xC >>4) 0..9 -> per-map 10-entry tables @ mapobj+0xF5390 (1B/entry) and +0xF5394 (3B/entry) -> decal renderer 0x434A20 with 32/48 pitch math (F1065 anchor + these tables = the cell detail/decal system); second loop window 0x18 with player-cell check [esi+0x2F884C/0x2F8850] -> 0x41C860/0x41CA20 enter-effects + hero chain 0x40B180/0x40CE20",
+  "date": "2026-08-12",
+  "objective": "Bind every cell-record byte to its client consumer.",
+  "question": "Which client code reads each of the 14 cell bytes, and what do they do?",
+  "method": "E8 caller scan of accessors; disasm 0x43BB10/0x43BE00 (layer blit twins), 0x41C460+ (render driver); cross-check with Tools/maps/survey_mir3_maps.py field offsets.",
+  "scope": "cell record bytes 0-8 + word@0xC consumers; render driver loops.",
+  "cell_analysis": {
+    "byte0": "bit0 blocked (F1065/F1008)",
+    "byte1": "FRONT layer blend (hi&7*16+lo -> anim table @+0x1B01D4; bit7 float path)",
+    "byte2": "MID layer blend (same)",
+    "byte3": "FRONT file (word[3] & 0xFF)",
+    "byte4": "MID file (word[3] >> 8)",
+    "bytes5_6": "MID frame word",
+    "bytes7_8": "FRONT frame word",
+    "bytes9_11": "unread by these paths (open)",
+    "word_C": "attr: nibble>>4 0..9 -> decal tables +0xF5390/+0xF5394 (F1065/F41C4DA)",
+    "mod14_family": "k<=2 tiles (prerender F1067) / k>=3 objects (this round)",
+    "size_gates": "0x43BB10 exact 48x32; 0x43BE00 non-48x32 (large)",
+    "screen_math": "x=(cx-ax)*48-scrollX-0xC8, y=(cy-ay)*32-scrollY-0x7D, clip 800x492"
+  },
+  "exe_trace": {"driver": "0x41C460: 34x34 attr/decal pass + 0x43BB10 x2, then 0x18 window + 0x43BE00 x2 + hero chain"},
+  "audit_vs_exe": {
+    "F1067": "mod-14 split now complete both halves",
+    "F1065": "cell stride 14 + word@0xC reconfirmed; anchor fields +0x12C/+0x130 = camera",
+    "tools_maps_survey": "mid_file@4 / mid_frame@5:7 / front_file@3 / front_frame@7:9 BYTE-EXACT match, independent corroboration"
+  },
+  "contrast": {"prerender_pass": "tiles k0-2 into 1152x768 cache", "object_passes": "k>=3 mid/front, small/large split"},
+  "verdict": "Cell record anatomy closed for bytes 0-8 + attr word with both producers (map data) and consumers (client render) anchored; bytes 9-11 remain the only unread record fields.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Twin blit functions + render driver decoded from .text; offsets cross-checked against repo data-side tooling.",
+  "cross_refs": ["F1065: cell stride/attr", "F1067: lib idx/v-transform", "F1008: bit0", "F1063/F1064: enter-map context"],
+  "tool": "capstone disasm + E8 scan",
+  "reproduce": "disasm 0x43BB10+0x2E2, 0x43BE00+0x2D9, 0x41C460+0x359",
+  "notes": ["blend anim table @ mapobj+0x1B01D4 (128 entries, 1B)", "clip window 800x492 (0x320 x 0x1EC)", "724 consecutive rounds F335-F1069"]
+}

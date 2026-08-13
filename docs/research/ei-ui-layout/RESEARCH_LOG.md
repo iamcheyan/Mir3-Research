@@ -9340,3 +9340,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔chunk1 值域（114 图 / 1.85M 格）〕**v∈{0,1,2,15,30,255}：0/1/2=根组瓦片层（v=1 占 69%）；255=空 sentinel（393 格，cmp 0x45 门即为此）；帧 word 1,846,227 有效 vs 387 个 0xFFFF。
 - **〔组映射双向经验确认〕**字节 0 图引 v15（Wood 组内 ×4 图）、字节 1 图引 v30（Sand 组内 ×8 图）——全部跨组引用都落在 (字节+1) 组范围内；语料仅字节 0/1（Forest/Snow 组从未被选）。
 - 落盘：lib-availability-chunk1-evidence.json（F1068，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 762。
+## Round 763 (F1069) — 2026-08-12：格记录对象层渲染对 + 渲染驱动器（字节 0-8 全锚定）
+
+- **〔0x43BB10/0x43BE00 孪生 blit〕**word@cell+3=0xFFFF→空；flag0→文件=word[3]>>8（byte4 MID）帧=word@5；flag1→文件=word[3]&0xFF（byte3 FRONT）帧=word@7——与仓库 survey_mir3_maps 的 mid/front 字段**逐字节吻合**（独立互证）。
+- **〔层族补全〕**v=文件+文件/45（同 F1067 魔数），门 v%14≥3（与预渲染 ≤2 互补：k0-2 瓦片层/k≥3 对象层）、v≤0x45、帧≠0xFFFF；0x466130 取帧后 **48×32 精确门**（BB10）/非 48×32 大对象（BE00）——每格四次绘制（mid+front × 小+大）。
+- **〔blend 字节〕**cell+1=front/cell+2=mid：≠0xFF → (hi&7)×16+lo → 动画偏移表 @图对象+0x1B01D4 → 帧偏移；bit7→浮点旋转路径。
+- **〔屏幕数学〕**x=(格X-锚X)×48−scrollX−0xC8，y=(格Y-锚Y)×32−scrollY−0x7D；0x460240 @0x8AB7A8 裁剪窗 **800×492**。
+- **〔渲染驱动器 0x41C460-0x41C7B9〕**34×34 窗口 0x43CA40 属性 nibble 0-9 → 表 +0xF5390/+0xF5394 → 0x434A20 贴花；第二循环 0x18 窗 + 玩家格判定 [0x2F884C/0x2F8850] → 进格特效 + 英雄链 0x40B180/0x40CE20。
+- 落盘：cell-layer-render-evidence.json（F1069，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 763。
