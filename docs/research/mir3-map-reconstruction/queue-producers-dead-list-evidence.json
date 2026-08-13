@@ -1,0 +1,29 @@
+{
+  "evidence_id": "queue-producers-dead-list-2026-08-12-f1061",
+  "title": "Round 755 (F1061): ring buffer is a SHARED COMPONENT + minimap second list is DEAD CODE (runtime correction to F1049) - E8 call scan: 0x4561B0 push x9 sites (0x40A290/0x40A424 entity-internal, 0x40EF20 clone path, 0x410698, 0x421D3A + 0x422799/0x4228E5/0x42292E/0x4229B6 recv1 family), 0x456270 pop x14 sites; TWO instantiations: entity+0xF0 (lea ecx,[esi+0xF0] @ 0x422793) AND screen+0x364458 (lea ecx,[ebx+0x364458] @ 0x421D34, pop @ 0x422815) -> reusable queue class, not entity-only; SCREEN-LEVEL DISPATCHER 0x4227F0: pops screen queue, msg type word [p+4] -> 0x33/0x27A special, 0x32 -> 0x422CC0, 0x34 -> 0x423000, 0x2F0 -> 0x423070, default virtual; DEAD LIST: [0x5600A0] has exactly ONE reference in the entire .text (the minimap consumer 0x43DCDA), zero writers, and lies in .bss (file offset past EOF, zero-initialized) -> the F1049 second-list green 3x3 marker loop can never execute (head always NULL, je exit) - the green markers in that layer are dead code in the shipped binary; sim F1050 npc/other-player green markers remain as interpretation, flagged",
+  "date": "2026-08-12",
+  "objective": "Identify queue producers and validate the second minimap list at runtime.",
+  "question": "Who feeds the entity ring buffer, and does the second minimap list ever populate?",
+  "method": "E8 rel32 call-site scan for 0x4561B0/0x456270; imm32 ref census for 0x560060-0x5600C0; .bss extent check (file size 0x80000); producer context disasm.",
+  "scope": "producers/consumers of the ring class; global list block 0x560088-0x5600BC.",
+  "cell_analysis": {
+    "producers": {"entity_queue": "0x422793 lea ecx,[esi+0xF0]", "screen_queue": "0x421D34 lea ecx,[ebx+0x364458]", "other": "0x40A290/0x40A424/0x410698/0x40EF20(clone)"},
+    "screen_dispatcher": {"fn": "0x4227F0", "queue": "[esi+0x364458]", "types": "0x32 -> 0x422CC0, 0x34 -> 0x423000, 0x2F0 -> 0x423070, 0x33/0x27A skip-free, default virtual"},
+    "dead_list": {"addr": "0x5600A0", "refs": "1 (consumer 0x43DCDA only)", "writers": "0", "storage": ".bss past EOF (zero-init)", "consequence": "second-list marker loop unreachable"}
+  },
+  "exe_trace": {"recv_path": "recv1 handler builds packet -> push screen/entity queue -> tick pops -> type word [p+4] switch"},
+  "audit_vs_exe": {
+    "F1049": "RUNTIME CORRECTION: second-list green markers = dead code (no producer, NULL head)",
+    "F1050": "sim green npc/player markers = interpretive, not original behavior",
+    "F1060": "queue class now known shared (2+ instantiations)",
+    "F1023": "recv1 handlers confirmed as queue producers"
+  },
+  "contrast": {"live_lists": "0x560070 (entity dlist, writers exist) / 0x560088 FX chain", "dead_list": "0x5600A0 consumer-only"},
+  "verdict": "Messaging substrate fully traced: shared ring class (entity+0xF0, screen+0x364458) with recv1 producers and two dispatchers; minimap second list proven dead - F1049 corrected at runtime level.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Exhaustive E8/imm32 scans + file-extent check.",
+  "cross_refs": ["F1060: ring mechanics", "F1057: entity dispatcher", "F1049: marker taxonomy", "F1023: recv1"],
+  "tool": "capstone disasm + E8/imm32 scans",
+  "reproduce": "scan E8 rel32 to 0x4561B0/0x456270; census refs 0x5600A0; check file size vs 0x5600A0 offset",
+  "notes": ["file size 0x80000 - 0x5600A0 is .bss", "716 consecutive rounds F335-F1061"]
+}

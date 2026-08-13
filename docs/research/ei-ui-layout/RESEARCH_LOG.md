@@ -9287,3 +9287,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F1057 三处勘误〕**0x27D/0x27E 槽位对调；0x21 未处理；0x10 仅释放。
 - **〔新〕**0x456310 = 一次性注册第 5 实例。
 - 落盘：entity-msg-queue-full-evidence.json（F1060，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 754。
+## Round 755 (F1061) — 2026-08-12：环形缓冲共享组件 + 小地图第二链表死代码（F1049 运行时修正）
+
+- **〔E8 扫描〕**0x4561B0 push ×9（recv1 族 0x421D3A/0x422799/0x4228E5/0x42292E/0x4229B6 + 实体内部 0x40A290/0x40A424 + 克隆 0x40EF20 + 0x410698）；0x456270 pop ×14。
+- **〔共享组件〕**两处实例化：entity+0xF0（lea ecx,[esi+0xF0]）与 **screen+0x364458**（lea ecx,[ebx+0x364458]）——可复用队列类，非实体专属。
+- **〔screen 级分派器 0x4227F0〕**pop screen 队列，类型字 [p+4]：0x32→0x422CC0、0x34→0x423000、0x2F0→0x423070、0x33/0x27A 跳过、默认走虚调用。
+- **〔死代码定案〕**[0x5600A0] 全 .text 仅消费者一址（0x43DCDA）、零写入者、.bss 零初值（文件 0x80000 之外）→ **F1049 第二链表绿 3×3 标记循环永不可达**；模拟器 F1050 绿色 NPC/玩家标记为解释性实现，已标注。
+- 落盘：queue-producers-dead-list-evidence.json（F1061，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 755。

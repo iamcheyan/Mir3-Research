@@ -4726,3 +4726,7 @@ git diff --check
 
 - 环形缓冲（10 万槽 + CS 锁 + 丢弃策略）+ 消息→虚槽全表（含 F1057 三处勘误）。
 - 落盘：`entity-msg-queue-full-evidence.json`（F1060）+ RESEARCH_LOG Round 754。
+## Round 755 (2026-08-12) — 队列生产者 + 死代码定案（Finding 1061）
+
+- 共享环形队列（entity+0xF0 / screen+0x364458）+ recv1 生产者族 + screen 分派器；**[0x5600A0] 第二链表死代码**（F1049 运行时修正）。
+- 落盘：`queue-producers-dead-list-evidence.json`（F1061）+ RESEARCH_LOG Round 755。
