@@ -401,6 +401,15 @@ class ZlLibrary:
             "offsetY": hdr.offset_y,
         }
 
+    def is_blank(self, index: int) -> bool:
+        """空白帧判定 (供 wilsdk.is_blank 委托):
+        无 header / 宽高<=0 / ZL2 无载荷 entry (position=-1 稀疏帧,
+        C# 客户端 TryGetTexture 对这些帧同样取不到纹理)。"""
+        hdr = self.headers.get(index)
+        if hdr is None or hdr.width <= 0 or hdr.height <= 0:
+            return True
+        return self.is_zl2 and hdr.position not in self.entries
+
     def decode(self, index: int) -> "Image.Image | None":
         if Image is None:
             return None

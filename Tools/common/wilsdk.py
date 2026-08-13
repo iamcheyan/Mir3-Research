@@ -331,8 +331,12 @@ def make_gif(imgs: list, fps: int, scale: int, bg="checker") -> bytes:
 
 # ------------------------------------------------------------- scan helpers
 def is_blank(lib: WilLibrary, index: int) -> bool:
-    """Blank placeholder = wix offset 0 / bad header / zero-size.  Header-only,
-    O(1) per frame — same basis the grid's hide-blank uses (plus pixel probe)."""
+    """Blank placeholder = wix offset 0 / bad header / zero-size (WIL), or
+    ZL 库无载荷帧 (header 有效但 position 无 entry)。Header-only, O(1) per
+    frame — same basis the grid's hide-blank uses (plus pixel probe)."""
+    fn = getattr(lib, "is_blank", None)      # ZlLibrary provides its own
+    if fn is not None:
+        return fn(index)
     hdr = lib.header(index)
     return hdr is None or hdr["width"] <= 0 or hdr["height"] <= 0
 

@@ -1328,23 +1328,24 @@ function selectLib(name, updateHash = true){
   $('#astart').value = 0; $('#acount').value = 12;
   gw.scrollTop = 0;
   $('#grid').innerHTML = '';
-  loadRanges();
-  loadMore();
+  loadRanges(loadMore);
   renderSelUI();
   if (updateHash) saveHash();
 }
 // ---------------------------------------------------------------- ranges / blank
-async function loadRanges(){
-  try {
-    const r = await fetch(`/api/ranges?f=${encodeURIComponent(STATE.lib)}`);
-    const d = await r.json();
-    STATE.ranges = d.ranges || [];
-    const bs = new Set(); let prev = 0;
-    for (const rg of STATE.ranges){ for (let i=prev;i<rg.start;i++) bs.add(i); prev = rg.end; }
-    for (let i=prev;i<STATE.count;i++) bs.add(i);
-    STATE.blankSet = bs;
-    fillRangeSelect();
-  } catch (e) { STATE.blankSet = null; }
+function loadRanges(after){
+  fetch(`/api/ranges?f=${encodeURIComponent(STATE.lib)}`)
+    .then(r => r.json())
+    .then(d => {
+      STATE.ranges = d.ranges || [];
+      const bs = new Set(); let prev = 0;
+      for (const rg of STATE.ranges){ for (let i=prev;i<rg.start;i++) bs.add(i); prev = rg.end; }
+      for (let i=prev;i<STATE.count;i++) bs.add(i);
+      STATE.blankSet = bs;
+      fillRangeSelect();
+    })
+    .catch(() => { STATE.blankSet = null; })
+    .finally(() => { if (after) after(); });   // blankSet 就绪后再建格子 (hide-blank 依赖)
 }
 function fillRangeSelect(){
   const s = $('#arange'); s.innerHTML = '';
