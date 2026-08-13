@@ -27,18 +27,56 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
 
 import wilsdk  # noqa: E402
+
+# --- Zircon .Zl library support -------------------------------------------
+# ZlLibrary 与 WilLibrary 接口对齐 (header/decode/decode_scaled/count/name),
+# 仅缺 wil_path 属性 — 这里补一个适配包装。
+try:
+    import zlsdk
+
+    def _open_zl(path: str):
+        lib = zlsdk.ZlLibrary(path)
+        # WilLibrary 兼容: 补 wil_path 属性 (count 本来就是 int, 直接可用)
+        lib.wil_path = path
+        lib._is_zl = True
+        return lib
+
+    ZL_SUPPORT = True
+except ImportError:
+    ZL_SUPPORT = False
+    _open_zl = None
+
+def _is_library_file(name: str) -> bool:
+    return name.lower().endswith((".wil", ".zl"))
+
+
+def _scan_zl_libraries(root: str) -> list:
+    """Find every .Zl library under root (top level only)."""
+    if not ZL_SUPPORT:
+        return []
+    libs = []
+    for entry in sorted(os.listdir(root)):
+        if entry.lower().endswith(".zl"):
+            try:
+                libs.append(_open_zl(os.path.join(root, entry)))
+            except Exception:
+                continue
+    return libs
 
 DEFAULT_ROOT = None  # resolved by _default_root() below
 
 
 def _default_root() -> str:
-    """Pick the mir3ei root: $MIR3EI_ROOT, then ../ of this file, then known NAS path."""
+    """Pick the current Zircon client first, then explicit/legacy EI roots."""
     candidates = []
-    env = os.environ.get("MIR3EI_ROOT")
-    if env:
-        candidates.append(env)
+    for var in ("MIR3_ZIRCON_CLIENT", "MIR3EI_ROOT"):
+        env = os.environ.get(var)
+        if env:
+            candidates.append(env)
+    candidates.append("/home/tetsuya/development/zircon/Debug/Client")
     here = os.path.dirname(os.path.abspath(__file__))
     candidates.append(os.path.normpath(os.path.join(here, "..", "..")))
     candidates.append("/home/tetsuya/NAS/TMP/mir3ei")
@@ -140,7 +178,7 @@ def _looks_like_client(p: str) -> bool:
     try:
         n = 0
         for e in os.scandir(p):
-            if e.is_file() and e.name.lower().endswith(".wil"):
+            if e.is_file() and _is_library_file(e.name):
                 return True
             n += 1
             if n > 200:
@@ -191,8 +229,9 @@ def switch_root(root: str) -> tuple[str | None, str | None]:
         entries = os.listdir(data_dir)
     except OSError as e:
         return None, str(e)
-    if not any(f.lower().endswith(".wil") for f in entries):
-        return None, f"no .wil libraries under {data_dir}"
+    if not any(f.lower().endswith(".wil") for f in entries) and not any(
+            f.lower().endswith(".zl") for f in entries):
+        return None, f"no .wil/.Zl libraries under {data_dir}"
     with INDEX_LOCK:
         wilsdk.open_library.cache_clear()   # drop file handles from the old root
         thumb_bytes.cache_clear()           # thumbnails keyed by lib name only
@@ -212,9 +251,12 @@ class AssetIndex:
             cand = os.path.join(parent, SOUND_DIR)
             if os.path.isdir(cand):
                 self.sound_dir = cand
-        self.libs = {}  # name -> WilLibrary
+        self.libs = {}  # name -> WilLibrary/ZlLibrary
         self._lock = threading.Lock()
         for lib in wilsdk.scan_libraries(self.data_dir):
+            self.libs[lib.name] = lib
+        for lib in _scan_zl_libraries(self.data_dir):
+            # Zl 库名去掉扩展名与 wil 一致 (e.g. "Inventory.Zl" -> "Inventory")
             self.libs[lib.name] = lib
 
     def files_payload(self) -> dict:
@@ -286,7 +328,7 @@ def thumb_bytes(data_dir: str, lib_name: str, index: int, size: int):
     if lib is None:
         return png_bytes(Image_transparent_1x1())
     try:
-        im = lib.decode(index)
+        im = _decode_for_thumb(lib, index, size)
     except Exception:
         im = None
     if im is None or im.getbbox() is None:  # blank placeholder or no opaque pixel
@@ -301,6 +343,17 @@ def thumb_bytes(data_dir: str, lib_name: str, index: int, size: int):
     return png_bytes(im)
 
 
+def _decode_for_thumb(lib, index: int, size: int):
+    """Full decode for small cells is wasteful on big frames (DXT 软解).
+    先按 size 选块采样 scale, decode_scaled 与 decode+NEAREST 同源。"""
+    hdr = lib.header(index)
+    if hdr is not None:
+        scale = max(1, max(hdr["width"], hdr["height"]) // max(1, size))
+        if scale > 1 and hasattr(lib, "decode_scaled"):
+            im = lib.decode_scaled(index, scale)
+            if im is not None:
+                return im
+    return lib.decode(index)
 @lru_cache(maxsize=512)
 def thumb_strip_bytes(data_dir: str, lib_name: str, start: int, count: int, size: int):
     """One PNG strip of `count` thumbnails starting at `start` (single request
@@ -319,7 +372,7 @@ def thumb_strip_bytes(data_dir: str, lib_name: str, start: int, count: int, size
         if wilsdk.is_blank(lib, i):
             continue
         try:
-            im = lib.decode(i)
+            im = _decode_for_thumb(lib, i, size)
         except Exception:
             continue
         if im is None or im.getbbox() is None:
@@ -345,7 +398,7 @@ def lib_from_dir(data_dir: str, name: str) -> wilsdk.WilLibrary | None:
     if idx is None:
         # Not seen yet: try a quick scan without switching the active root.
         if os.path.isdir(data_dir) and any(
-                f.lower().endswith(".wil") for f in os.listdir(data_dir)):
+                _is_library_file(f) for f in os.listdir(data_dir)):
             with INDEX_LOCK:
                 idx = AssetIndex(data_dir)
                 ROOTS[data_dir] = idx
@@ -464,7 +517,7 @@ class Handler(BaseHTTPRequestHandler):
                         r = cand
                 idx = ROOTS.get(r)
                 if idx is None and os.path.isdir(r) and any(
-                        f.lower().endswith(".wil") for f in os.listdir(r)):
+                        _is_library_file(f) for f in os.listdir(r)):
                     with INDEX_LOCK:
                         idx = AssetIndex(r)
                         ROOTS[r] = idx
