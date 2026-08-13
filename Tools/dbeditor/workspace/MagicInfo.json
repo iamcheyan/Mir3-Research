@@ -1,5 +1,5 @@
 {
-  "count": 174,
+  "count": 175,
   "rows": [
     {
       "Index": 1,
@@ -4176,6 +4176,30 @@
       "Experience3": 40000,
       "Delay": 0,
       "Description": "All chained targets are slowed. At level 1 or above damage done to the leader will be dealt to all targets they're chained to. At level 2 or above continuous fire damage will be dealt to all targets. At level 3 or above will inflict damage in a 3x3 radius when the leader dies."
+    },
+    {
+      "Index": 175,
+      "_Identity": "Swordsmanship-副本",
+      "Name": "Swordsmanship-副本",
+      "Magic": "Swordsmanship",
+      "Class": "Warrior",
+      "School": "Passive",
+      "Property": "Passive",
+      "Icon": 4,
+      "MinBasePower": 0,
+      "MaxBasePower": 0,
+      "MinLevelPower": 10,
+      "MaxLevelPower": 10,
+      "BaseCost": 0,
+      "LevelCost": 0,
+      "NeedLevel1": 7,
+      "NeedLevel2": 9,
+      "NeedLevel3": 11,
+      "Experience1": 100,
+      "Experience2": 200,
+      "Experience3": 300,
+      "Delay": 0,
+      "Description": "A skill that increases your accuracy. The skill becomes more effective as you train."
     }
   ]
 }
