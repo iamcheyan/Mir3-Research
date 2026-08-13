@@ -4794,3 +4794,7 @@ git diff --check
 
 - 双注册表架构定案：.data 三账本（A/B/EFX）纯追加无读端（穷尽 imm32 扫描）；真实生命周期在 screen 内嵌 CList 家族（+0xE1154/E116C/E1184），帧函数 0x41B5D0 两趟循环（0x41BCC4 slot3 tick+完成摘删 / 0x41BFA5 slot4 移动）+拆除排空 0x419570 +死亡 purge 0x42280/0x41B570；F1076 vtable/slot/记录大小三处勘误。
 - 落盘：`fx-active-chain-drain-evidence.json`（F1077）+ RESEARCH_LOG Round 771。
+## Round 772 (2026-08-13) — 内嵌地图对象生命周期（Finding 1078）
+
+- +0xF5200 = screen 内嵌地图对象（F1071 指针→内嵌勘误；ctor 0x43AF90/装载 0x43B600/换图流 0x422A92 全闭合）；内嵌容器家族六员全图；+0xE11A0 = 实体类型分派绘制链。
+- 落盘：`screen-map-embedded-load-path-evidence.json`（F1078）+ RESEARCH_LOG Round 772。

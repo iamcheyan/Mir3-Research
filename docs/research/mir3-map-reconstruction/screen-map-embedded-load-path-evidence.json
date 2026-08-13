@@ -1,0 +1,49 @@
+{
+    "evidence_id": "screen-map-embedded-load-path-2026-08-13-f1078",
+    "title": "Round 772 (F1078): SCREEN+0xF5200 is an EMBEDDED map object (not a pointer) - ctor/dtor/loader chain closed; .map file loader 0x43B600 from network map-change handler; embedded container family completed (6 CLists, +0xE11A0 = entity type-dispatch draw chain)",
+    "date": "2026-08-13",
+    "objective": "Close F1071's open thread (writer/loader of the live map object) and F1077's secondary thread (+0xE11A0 chain semantics).",
+    "question": "How does the live map object come into existence and get loaded, and what are the remaining embedded chains?",
+    "method": "disp32 census 0xF5200 (24 sites classified read/write/lea); disasm screen ctor region 0x418B96-0x418C60 and dtor 0x418E40-0x418E90; disasm map ctor 0x43AF70/0x43AF90-0x43B118, dtor jmp 0x43AF80->0x43B190; disasm map-change site 0x422A60-0x422B40 and loader 0x43B600-0x43B6C0; disp32 census 0xE11A0/0xE1188/0xE11D0; disasm draw walk 0x41A0C3-0x41A160, dedup walks 0x420E4A/0x42121B.",
+    "scope": "screen member layout from +0xE1154 to +0x2A548C; map object lifecycle; network map-change flow; entity draw chain.",
+    "cell_analysis": {
+        "f5200_embedded": "ALL 22 .text sites use lea [reg+0xF5200] (address-of) except one read mov eax,[esi+0xF5200] @0x41C45B (first-dword loaded-flag test) - the live map is an EMBEDDED member of screen, not a heap pointer; screen ctor 0x418B00 family: lea ecx,[esi+0xF5200]; call 0x43AF70 (stage byte 7) @0x418C26; dtor stage 7: call 0x43AF80 @0x418E6B; 0x43AF70 = wrapper (call 0x43AF90; ret), 0x43AF80 = jmp 0x43B190; real ctor ENTRY = 0x43AF90 (F1075's 'ctor 0x43B120' was a mid-function address in the same body); next screen member after map = +0x2A548C -> map size ~0x1B0290, matching in-ctor zeroing: 0x6C000 dwords (0x1B0000 bytes) at +0x1B2 + 8 dwords @+0x1B01B4 + 0x20 dwords @+0x1B01D4 (F1075 ticker arrays) + 0x300 tail",
+        "map_ctor_defaults": "0x43AF90 sets viewport defaults {+0x16C=0x18, +0x174=0x20, +0x178=0x15, +0x17C=0x28, +0x180=0x1B, +0x184=0x30, +0x188=0x20} and config bytes +0x190..+0x1B1 (4,8,0xC,0x14,0xD6,0xC6,0xAD,0xA5,0x8C,0x5A,0x39,0x63,0xDE,0xFF-fill 0x1A1-0x1B1)",
+        "map_change_flow": "network handler 0x422A92: ebp=&screen.map; [screen+0x35B25C]=mapIdx(eax); anchors [screen+0x2F884C]/[+0x2F8850]=word from packet; 0x43C9C0(map, ax-0xC, ay-0xC) sets scroll anchor around player; 0x43B600(map, packet-string) loads the file; then 0x38400-byte memset at screen+0x154 region (overlay clear); name string decoded via 0x452810 (base64 decode) capped 0x400",
+        "map_loader_0x43B600": "sprintf(map->name@+4, fmt@0x47C404, filename); CreateFileA via [0x4760DC] with GENERIC_READ(0x80000000); invalid handle -> 0x43B812; 0x43B820(map) reset; ReadFile via [0x4760C4] 0x1C-byte header into map+0x110; width=word[map+0x126], height=word[map+0x128]; alloc((w*h rounded /4)*3) then further layered reads - cell arrays are multiple heap buffers, only the 0x1B0000-byte static zero area lives inside the object",
+        "container_family_complete": "screen ctor 0x418B00 lays out SIX embedded CList containers + one string member: +0xE1154(vt 0x4766F0, head +0xE1158 entity chain), +0xE116C(vt 0x4766D4, head +0xE1170 FX-active), +0xE1184(vt 0x4766B8, head +0xE1188), +0xE119C(vt 0x4766D4, head +0xE11A0 entity-draw), +0xE11B4(vt 0x47669C, head +0xE11B8), +0xE11CC(vt 0x476680, head +0xE11D0 pair-dedup), +0xE11E4(ctor 0x4529B0, string); layout per container {vt@0, head@+4, tail@+8, count@+0x14}",
+        "chain_e11a0_semantics": "walked at draw time 0x41A0C3 with type switch on word[obj+0x10]: group A {0x10,0x16,0x3F,0x14A,0x14B,0x14C,0x14D,0x14E,0x48} vs group B {9,0x35,0x150} -> different draw paths; ALSO membership dedup scans in network spawn handlers 0x420E4A and 0x42121B (find link whose [link+4]==obj before re-spawn)",
+        "chain_e11d0": "pair-node dedup registry (0x420E90 scan from F1076/R771), container vt 0x476680",
+        "hero_map_ptr": "[entity+0x62A58] has 47 disp32 sites concentrated in 0x4100xx-0x4130xx (hero step engine reads) - the hero entity caches &screen.map at spawn; consistent with embedded model (address-of, not refcounted)"
+    },
+    "exe_trace": {
+        "lifecycle": "screen ctor stage 7 -> map ctor 0x43AF90 (defaults + static zero) -> network map-change msg -> anchor store -> 0x43C9C0 scroll anchor -> 0x43B600 file load (header+cells into heap arrays) -> frame walkers consume -> screen dtor stage 7 -> 0x43B190 map dtor (frees the two buffers per F1075)"
+    },
+    "audit_vs_exe": {
+        "F1071": "CORRECTED: 'live = [screen+0xF5200] (ebp proof)' -> +0xF5200 is an embedded object (all uses are lea); the dead 0x574118 verdict STANDS (separate .data instance, zero loaders)",
+        "F1075": "CORRECTED: map ctor entry is 0x43AF90, not 0x43B120 (mid-function address); the zeroing template description was accurate",
+        "F1077": "extended: embedded family is SIX containers + string member; +0xE11A0 = entity type-dispatch draw chain; +0xE11D0 = pair dedup"
+    },
+    "contrast": {
+        "embedded_map": "in-place member, staged ctor/dtor, file-loaded cell arrays on heap",
+        "static_0x574118": "unloaded .data twin (F1071 dead verdict unchanged)"
+    },
+    "verdict": "Map subsystem lifecycle closed: the live map object is an embedded screen member (+0xF5200, ~0x1B0290 bytes) constructed at screen-ctor stage 7 and loaded by 0x43B600 from the network-supplied filename inside the map-change handler (0x422A92) which also sets the player-centered scroll anchor via 0x43C9C0; the embedded container family is fully enumerated and +0xE11A0 is the entity draw/type-dispatch chain with spawn-dedup reuse.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "All census + disasm from .text bytes; F1071 correction is a classification change (pointer -> embedded), evidence is the lea-vs-mov census.",
+    "cross_refs": [
+        "F1071: dual instance (dead verdict stands, live-side model corrected)",
+        "F1075: map ctor zeroing template (entry address corrected)",
+        "F1077: embedded container family (completed to six)",
+        "F1069: screen math consumers of the map object",
+        "F307: type 0x10/0x16 entity spawn (now seen in draw dispatch group A)"
+    ],
+    "tool": "capstone disasm + disp32 census (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "scan disp32 0x000F5200/0x000E11A0/0x000E1188/0x000E11D0/0x00062A58 in .text; disasm 0x418C10+0x50 (ctor stage 7), 0x418E40+0x50 (dtor), 0x43AF70+0x150 (map ctor), 0x422A60+0xE0 (map change), 0x43B600+0xC0 (loader), 0x41A0C3+0xE0 (draw walk)",
+    "notes": [
+        "map header 0x1C bytes at map+0x110; width/height words at +0x126/+0x128 (signed reads)",
+        "cell storage: heap alloc ((w*h)/4)*3 bytes first buffer - exact layer layout (14-byte records per F1074 are file-side; in-memory layout is split arrays) deferred to next round",
+        "0x41C45B reads [screen+0xF5200] first dword as loaded-flag before lea - consistent with ctor zeroing dword@0",
+        "733 consecutive rounds F335-F1078"
+    ]
+}
