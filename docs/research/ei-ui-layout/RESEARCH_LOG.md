@@ -9224,3 +9224,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔浏览器实测〕**wilviewer /sim/ 同源：scroll 480−64=416px 逐像素精确（surface 1200×800 @ (−416,−336)）；玩家标记正中 (64,64)；闪烁 200→绿、600→灰、回绕 100→绿；NPC |Δx|=90≥64 正确排除；缩放切换 surface 1200→600px（k=0.5）；双切换还原默认。
 - **〔注〕**:8477 http.server 无 /api（图片 404，先前已存在）——验证走 8765/sim/；headless 截图管线输出空白页（页面级问题），以 DOM 数值验证代替。
 - 落盘：minimap-sim-port-evidence.json（F1050，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 744。
+## Round 745 (F1051) — 2026-08-12：vtable 池 0x476600-0x476A80 全表（F1041 收官）
+
+- **〔边界方法〕**imm32 引用扫描 48 个引用地址 = 数组起点 + MSVC 继承 suffix 子 vptr；朴素连续 text 指针 run 会越过边界（F1041 dump 假象）。
+- **〔窗口基类 = 0x476624〕**32/32 引用全为 `mov [reg],imm32`；位于 12 槽数组 @0x476620 内（415030 4150D0 423CA0 ctor 423CF0 dtor 423D00 draw 423F80 set-frame ...）。**≥32 派生类共享 ctor 模板**：`mov [esi],0x476624` → 0x423CA0 基类构造 → 子对象数组 [+0x54] 0xB4 步长 ×2（0x4686C4，回调 0x404690/0x4046B0）→ `mov [esi],<派生 vtable>`；dtor 尾声 `mov [esi],0x476624` → 0x423CF0。
+- **〔列表节点家族 ×12〕**统一布局 [4×析构 thunk | {0x42E700, 0x423450, 0x4048B0}]：0x476680/69C/6B8/6D4/6F0（F1032）+ 0x4767E0/800/814/834/848 + 0x4768E4 + 0x47691C。
+- **〔实体/英雄/物品行/装备〕**实体 0x4767A8 + 0x476884（slot1 = 0x435030 实体分派 F1017）；英雄核心 0x47671C（34 槽最大）；物品行 0x476984-0x476A2C（0x443110 ×5）；装备链 0x476A54 → 终端 0x476A70 [44AFF0 44B0B0 423CF0 423D00]。
+- **〔F1041 勘误〕**基类 vtable 实为 0x476624（非 0x476610）；装备锚 0x476A50 → 真起点 0x476A54。
+- 落盘：vtable-pool-full-map-evidence.json（F1051，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 745。

@@ -1,0 +1,37 @@
+{
+  "evidence_id": "vtable-pool-full-map-2026-08-12-f1051",
+  "title": "Round 745 (F1051): vtable pool 0x476600-0x476A80 FULL MAP (F1041 completion) - authoritative boundaries via imm32 refs (48 referenced addresses = array starts + MSVC inheritance suffix sub-vptrs); WINDOW BASE = 0x476624 (32/32 refs are mov [reg],imm32 ctor-prologue/dtor-epilogue resets; suffix inside 12-slot array @0x476620 [415030 4150D0 423CA0 423CF0 423D00 423F80 4155A0 415710 415820 4268B0 423D00 423F80]) - >=32 derived widget classes share the ctor template: mov [esi],0x476624 -> call 0x423CA0 (base ctor) -> subobject array [+0x54] 0xB4 stride x2 via 0x4686C4 (callbacks 0x404690/0x4046B0) -> mov [esi],<derived vtable> -> derived init; dtor: body -> mov [esi],0x476624 -> call 0x423CF0 (base dtor); LIST-NODE family x10 (uniform [4 dtor thunks + {0x42E700, 0x423450, 0x4048B0}]): 0x476680/69C/6B8/6D4/6F0 (F1032) + 0x4767E0/800/814/834/848 (group/list region) + 0x4768E4 + 0x47691C; ENTITY vtables: 0x4767A8 [40EA60 435030 403AC0 4381A0 4382C0 435A20] + 0x476884 [435000 435030 403AC0 436B60 435DD0 435A20] both slot1=0x435030 (entity dispatch F1017); HERO core 0x47671C (34 slots, largest: frame advance 0x40C420/0x40C4B0, name-plate 0x40B750/0x40B850); ITEM-ROW family 0x476984/9A0/9CC/9EC/A10/A2C (shared base 0x443110 x5, 0x442210 x3, 0x443BF0 x3); EQUIPMENT chain 0x476A54 -> suffixes 0x476A68/6C/70, terminal 0x476A70 [44AFF0 44B0B0 423CF0 423D00]",
+  "date": "2026-08-12",
+  "objective": "Complete the vtable pool full slot map with authoritative boundaries.",
+  "question": "What are the exact vtable arrays, their boundaries, and the class taxonomy of the 0x476600-0x476A80 pool?",
+  "method": "imm32 reference scan of .text for pool addresses; ref-boundary segmentation (naive text-pointer runs overrun boundaries); classification by shared slots + ctor/dtor prologue disasm.",
+  "scope": "0x476600-0x476A80 (0x480 bytes, 288 words); 48 referenced addresses; 34 distinct arrays.",
+  "cell_analysis": {
+    "boundary_rule": "each referenced pool address starts (or suffix-points into) an array; naive consecutive-text-pointer runs overran boundaries (F1041 dump artifact)",
+    "window_base": {"vptr": "0x476624", "array": "0x476620 (12 slots)", "slots": "415030 4150D0 423CA0(ctor) 423CF0(dtor) 423D00(draw) 423F80(set-frame) 4155A0 415710 415820 4268B0 423D00 423F80", "derived": ">=32 classes (32 reset sites)", "prologue": "mov [esi],0x476624; call 0x423CA0; array [+0x54] x2 stride 0xB4 via 0x4686C4 cb 0x404690/0x4046B0; mov [esi],derived"},
+    "list_node_family": {"layout": "[dtor x4 | 0x42E700 0x423450 0x4048B0]", "members": ["0x476680", "0x47669C", "0x4766B8", "0x4766D4", "0x4766F0", "0x4767E0", "0x476800", "0x476814", "0x476834", "0x476848", "0x4768E4", "0x47691C"]},
+    "entity": {"0x4767A8": "slot1 0x435030", "0x476884": "slot1 0x435030"},
+    "hero_core": "0x47671C 34 slots",
+    "item_rows": "0x476984-0x476A2C shared 0x443110 x5",
+    "equipment": "0x476A54 array -> 0x476A70 terminal [44AFF0 44B0B0 423CF0 423D00]"
+  },
+  "exe_trace": {
+    "sample_dtor": "0x413E60 (class 0x47660C): mov [esi],0x47660C (own) ... mov [esi],0x476624 -> call 0x423CF0 base dtor",
+    "sample_ctor": "0x413DAF (class 0x47660C): mov [esi],0x476624 -> 0x423CA0 -> subobject array x2 (0xB4) -> mov [esi],0x47660C -> 0x413F30",
+    "minimap_match": "0x43DF40 ctor (F1049) uses the identical 0x476624 prologue -> 0x476908"
+  },
+  "audit_vs_exe": {
+    "F1041": "CORRECTED: base vtable is 0x476624 (inside array @0x476620), not 0x476610; equipment anchor 0x476A50 -> true array start 0x476A54; draw x15 count consistent (13 sites here + 0x476950 + 0x476A70)",
+    "F1032": "8 dtor-thunk vtables confirmed as list-node family (4-dtor + trio layout), now 12 members",
+    "F1017": "0x435030 entity dispatch confirmed at slot1 of both entity vtables",
+    "F987": "equipment methods 0x44AFF0/0x44B0B0 in terminal vtable 0x476A70"
+  },
+  "contrast": {"array_start_vs_suffix": "ctor/dtor store full starts; suffix refs = MSVC base-subobject vptrs", "listnode_vs_window": "trio {42E700,423450,4048B0} vs pair {423D00,423F80}"},
+  "verdict": "Vtable pool fully mapped with authoritative boundaries: window base 0x476624 (>=32 derived, canonical ctor/dtor template), 12-member list-node family, entity/hero/item-row/equipment taxonomy complete; F1041 anchors corrected.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "imm32 scan + ref-boundary segmentation + prologue disasm, all from .text/.rdata bytes.",
+  "cross_refs": ["F1041: shared widget family", "F1032: dtor thunks", "F1017: entity dispatch 0x435030", "F987: equipment"],
+  "tool": "capstone disasm + imm32 scan",
+  "reproduce": "scan .text for imm32 in [0x476600,0x476A80); segment arrays at referenced addresses; disasm 0x413DAF/0x413E60",
+  "notes": ["naive text-pointer runs overrun vtable boundaries - refs are authoritative", "706 consecutive rounds F335-F1051"]
+}

@@ -4683,3 +4683,8 @@ git diff --check
 
 - **app.js/style.css**：滚动窗口 + 标记分类学 + 角落切换 + 闪烁全部可执行；浏览器实测逐像素对上。
 - 落盘：`minimap-sim-port-evidence.json`（F1050）+ RESEARCH_LOG Round 744。
+## Round 745 (2026-08-12) — vtable 池全表（Finding 1051）
+
+- **48 引用地址 / 34 数组 / 引用边界法**；窗口基类 0x476624（≥32 派生 + ctor/dtor 模板逐字节）；列表节点家族扩至 12；实体/英雄/物品行/装备分类全定。
+- F1041 勘误两条（基类地址、装备锚点）。
+- 落盘：`vtable-pool-full-map-evidence.json`（F1051）+ RESEARCH_LOG Round 745。
