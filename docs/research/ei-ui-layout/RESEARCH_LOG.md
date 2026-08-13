@@ -9184,3 +9184,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**662 证据 JSON**；三服务 200；master d3d353b（**697 连发 F335-F1041 已推**）。
 - **〔弧〕**组队成员绘制（F917）→ 共享槽位对全图（F1041：draw 0x423D00 ×15 + set-frame 0x423F80 ×14 + 分派 0x423CF0 ×2，组队/装备/窗口基类锚定）——**共享 widget 渲染层完整**。
 - 落盘：widget-vtable-family-closure-evidence.json（F1042，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 736。
+## Round 737 (F1043) — 2026-08-12：HANDOFF 刷新 159（Round 735-736）
+
+- **〔刷新〕**HANDOFF 追加 Round 735-736（F1041-F1042：共享 widget vtable 家族全量 + 家族闭合）；基线 Round 733=5c60ecc → Round 736=7cc0d35（**698 连发 F335-F1042**，662 证据 JSON）。
+- 落盘：handoff-refresh-159-evidence.json（F1043，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 737。

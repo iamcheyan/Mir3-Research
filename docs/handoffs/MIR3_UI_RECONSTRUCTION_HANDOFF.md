@@ -2147,3 +2147,12 @@ simulator/style.css
 **窗口几何闭合（F1039）**：696 连发 + 660 证据 JSON——资源查找、尺寸回退、居中矩形、尺寸字段与 style 颜色完整。
 
 **commit 基线更新**：Round 730=c210ddd → Round 733=5c60ecc（master 已推，696 连发 F335-F1038）。
+
+
+## Round 735-736 追加交付（2026-08-12，Finding 1041-1042）：共享 widget vtable 家族全量 + 家族闭合
+
+**共享 widget vtable 家族全量（F1041，F752/F917/F987 扩展）**：槽位对 {draw 0x423D00, set-frame 0x423F80 [+0x30]} 跨 ≥15 个 vtable（imm32 扫描 15/14 命中）；0x476610 窗口基类、0x4767D0 组队窗（0x4245A0）、0x476A50 装备窗（0x44AFF0/0x44B0B0）锚定；分派 0x423CF0 ×2；**0x423D00 由「组队成员绘制」升格为共享 widget 帧绘制**（WIL [0x30] blit 0x460240 + 回退色块 0x4542A0/0x4542F0）；0x423F90 写 [+0x34] 零引用（死 thunk）。
+
+**共享 widget vtable 家族闭合（F1042）**：697 连发 + 662 证据 JSON——draw/set-frame/分派槽位、15-vtable 分布与锚点完整，共享 widget 渲染层 100%。
+
+**commit 基线更新**：Round 733=5c60ecc → Round 736=7cc0d35（master 已推，698 连发 F335-F1042）。

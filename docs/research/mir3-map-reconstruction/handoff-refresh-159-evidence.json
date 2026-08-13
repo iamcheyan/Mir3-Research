@@ -1,0 +1,25 @@
+{
+  "evidence_id": "handoff-refresh-159-2026-08-12-f1043",
+  "title": "Round 737 (F1043): HANDOFF refresh 159 - Rounds 735-736 (F1041-F1042: shared widget vtable family full, family closure), baseline Round 733=5c60ecc -> Round 736=7cc0d35 (698 consecutive F335-F1042), 662 evidence JSONs, doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 735-736.",
+  "question": "What changed since HANDOFF refresh 158?",
+  "method": "Append Round 735-736 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 735-736 appended (2 rounds, F1041-F1042)",
+    "baseline": "Round 733=5c60ecc -> Round 736=7cc0d35 (698 consecutive F335-F1042)",
+    "arcs": {"family": "F1041 shared slot pair x15 vtables", "closure": "F1042 widget render layer"},
+    "key": "shared widget render layer 100%; 0x423D00 upgraded to shared draw"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1040": "refresh 158 baseline -> now refresh 159", "F335-F1042": "698 rounds"},
+  "contrast": {"refresh_158_vs_159": "F1041-F1042 (2 new findings)"},
+  "verdict": "HANDOFF refreshed 159 (F1043): Rounds 735-736 documented (shared widget render layer complete), baseline 5c60ecc -> 7cc0d35, 698 consecutive rounds pushed.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1041-F1042 evidence.",
+  "cross_refs": ["F1040: refresh 158", "F1042: family closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 735-736 section to HANDOFF",
+  "notes": ["698 consecutive shipping rounds F335-F1042", "shared widget render layer 100%", "next: remaining deep corners, sim polish"]
+}

@@ -4625,3 +4625,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（共享 widget 渲染层 100%；下一弧：HANDOFF 刷新 159/剩余深层角落）。
+## Round 737 (2026-08-12) — HANDOFF 刷新 159（Finding 1043）
+
+- **Round 735-736 追加 + 698 连发**（共享 widget 渲染层完整入档）。
+- 落盘：`handoff-refresh-159-evidence.json`（F1043）+ RESEARCH_LOG Round 737。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（共享 widget 渲染层 100%；下一弧：剩余深层角落/模拟器 polish）。
