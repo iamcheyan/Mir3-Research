@@ -4697,3 +4697,7 @@ git diff --check
 - 12 个成员列表 widget 共享的侵入式双向链表全解：remove/find/remove-first + push 对 + 节点/容器布局 + 删除析构内存契约。
 - 新候选：0x4763xx 更早 vtable 块。
 - 落盘：`list-container-semantics-evidence.json`（F1053）+ RESEARCH_LOG Round 747。
+## Round 748 (2026-08-12) — 0x4763xx vtable 块全图（Finding 1054）
+
+- 实体层次（7 vtable）+ 控件基类（x9）+ 列表第 13 员 + **FX 链节点 0x476448 ×114**（全局 [0x560088]/[0x56008C]/[0x560098]，与 F296 闭环）。
+- 落盘：`vtable-block-4763xx-evidence.json`（F1054）+ RESEARCH_LOG Round 748。

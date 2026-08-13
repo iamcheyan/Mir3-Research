@@ -1,0 +1,31 @@
+{
+  "evidence_id": "vtable-block-4763xx-2026-08-12-f1054",
+  "title": "Round 748 (F1054): vtable block 0x476300-0x476600 mapped (F1053 discovery) - ENTITY CLASS HIERARCHY: base 0x4763C0/0x4763E8 (slots shared with hero core 0x47671C: 0x404A30/0x404D60/0x404FB0/0x4058E0/0x405E20/0x40AFD0/0x4069C0) + subclasses 0x476458 [40EA60 435030 403AC0 4378E0 437DF0 435A20], 0x476480 (42 slots, 0x40C5B0/0x40C620/0x40CA20/0x40ED60 movement family), 0x476528 [40EA60 435030 403AC0 437430 437610 435A20], 0x476544 (43 slots, 0x40FF00-0x411AB0), 0x4765F0 [40EA60 435030 403AC0 4389F0]; CONTROL BASE 0x4763A8 (x9 refs, [4046C0 417640 417780 4177C0 4177F0], adjacent to control ctor 0x417550); LIST BASE 0x476378 (13th list member, [4048F0 404700 4047A0 404840 | trio]); FX NODE VTABLE 0x476448 x114 (all mov [eax],imm32): node = alloc 0x468B1A -> vtable -> payload [+4] -> link global chain head [0x560088] tail [0x56008C] count [0x560098]++ - CONFIRMS F296 nameplate note 'FX enters 0x560088 effect chain'; sibling 0x476454 x19; 0x413D60/0x413D80 = deleting dtors; 0x413DA0 ctor = 9-control window (array [+0x6C] x9 stride 0xB4)",
+  "date": "2026-08-12",
+  "objective": "Map the newly discovered 0x4763xx-0x4765xx vtable block.",
+  "question": "What classes live in the 0x476300-0x476600 block, and what is the x114 hot vtable?",
+  "method": "imm32 ref-boundary scan of [0x476300,0x476600) + ref-site opcode census + context disasm.",
+  "scope": "0x476300-0x476600 (16 referenced arrays).",
+  "cell_analysis": {
+    "entity_hierarchy": {"base": ["0x4763C0 (10 slots)", "0x4763E8 (24 slots)"], "subclasses": ["0x476458", "0x476480 (42)", "0x476528", "0x476544 (43)", "0x4765F0"], "shared_head": "40EA60 435030 403AC0 (= F1051 entity pair)"},
+    "control_base": {"vtable": "0x4763A8", "refs": "x9", "slots": "4046C0 417640 417780 4177C0 4177F0"},
+    "list_base": {"vtable": "0x476378", "layout": "[4 dtors | trio]", "family_size": "13 members total"},
+    "fx_node": {"vtable": "0x476448", "refs": "x114 all mov [reg],imm32", "node": "+0 vtable +4 payload(effect) +8 prev +0xC next", "chain": "head [0x560088] tail [0x56008C] count [0x560098]", "dtor": "0x413D60 (reset self + optional free)"},
+    "hot_sibling": "0x476454 x19"
+  },
+  "exe_trace": {"append_fx": "0x406C1A: alloc -> [eax]=0x476448 -> [+4]=payload -> tail/head link via [0x56008C]/[0x560088] -> [0x560098]++"},
+  "audit_vs_exe": {
+    "F296": "'FX enters 0x560088' nameplate note CONFIRMED as the 0x476448-node global chain",
+    "F1005": "hit-flash effect (0x4344E0 ctor) is one of the 114 append sites [INFERENCE from address family]",
+    "F1051": "entity pair 0x4767A8/0x476884 now part of a 7-member entity vtable set",
+    "F1035": "one-time registration instances continue (0x404930, 0x42E7E0)"
+  },
+  "contrast": {"entity_subclasses": "5 distinct tails (4378E0/437DF0 vs 437430/437610 vs 4389F0 vs 42/43-slot method sets)", "list_vs_fx_node": "member-list widgets vs global FX chain node"},
+  "verdict": "0x476300-0x476600 block closed: entity class hierarchy (7 vtables), control base (x9 derived), 13th list member, and the FX-chain node vtable 0x476448 (x114) wiring the global effect list [0x560088]/[0x56008C]/[0x560098].",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ref scan + opcode census (114/114 mov) + context disasm from .text.",
+  "cross_refs": ["F296: nameplate FX note", "F1051: vtable pool", "F1053: list container"],
+  "tool": "capstone disasm + imm32 scan",
+  "reproduce": "scan [0x476300,0x476600) refs; census 0x476448 ref opcodes; disasm 0x406C0A+0x40",
+  "notes": ["[0x560088] FX chain confirmed two ways (F296 consumer + 0x476448 producer)", "709 consecutive rounds F335-F1054"]
+}

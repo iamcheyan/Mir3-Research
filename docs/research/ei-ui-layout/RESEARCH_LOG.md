@@ -9247,3 +9247,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔push 对〕**0x423570 push-front / 0x4234D0 push-back：0x468B1A 分配 0x10 字节节点（vtable 0x4767C4），payload=[eax+4]，count++，ret al=1/0。
 - **〔新发现〕**删除析构揭示**更早 vtable 块 0x4763xx**（0x476378/0x4763BC/0x4763C0）；0x404930 + 0x42E7E0 = 一次性注册第 3/4 实例（[0x917C1C] + 0x401380）。
 - 落盘：list-container-semantics-evidence.json（F1053，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 747。
+## Round 748 (F1054) — 2026-08-12：vtable 块 0x476300-0x476600 全图（F1053 新发现）
+
+- **〔实体类层次〕**基 0x4763C0/0x4763E8（槽位与英雄核心 0x47671C 共享）+ 子类 0x476458/0x476480(42 槽)/0x476528/0x476544(43 槽)/0x4765F0——与 F1051 实体对合计 7 个实体 vtable，头三槽统一 [40EA60 435030 403AC0]。
+- **〔控件基类 0x4763A8〕**x9 引用（[4046C0 417640 417780 4177C0 4177F0]，邻控件构造 0x417550）。
+- **〔列表基类 0x476378〕**第 13 个 LIST 成员（4 析构 + 三元组）。
+- **〔FX 节点 vtable 0x476448 ×114〕**全部 `mov [eax],imm32`：分配 → vtable → payload [+4] → 链入全局表 head [0x560088] / tail [0x56008C] / count [0x560098]++——**F296 名牌注记「FX 入 0x560088 效果链」双向闭环**（消费者 F296 + 生产者 0x476448）；姊妹 0x476454 x19。
+- 落盘：vtable-block-4763xx-evidence.json（F1054，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 748。
