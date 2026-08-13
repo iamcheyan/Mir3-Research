@@ -9157,3 +9157,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**657 证据 JSON**；三服务 200；master b5d66ea（**693 连发 F335-F1035 已推**）。
 - **〔弧〕**5 个列表 + 节点链接/插入/解除链接（F336/F440）+ 8 个析构 vtable（F1032）+ 守卫回调注册表（F1035）——**实体/列表生命周期与注册完整**。
 - 落盘：entity-list-lifecycle-registration-closure-evidence.json（F1036，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 730。
+## Round 731 (F1037) — 2026-08-12：HANDOFF 刷新 157（Round 728-730）
+
+- **〔刷新〕**HANDOFF 追加 Round 728-730（F1035-F1036：实体/列表一次性注册全量 + 生命周期与注册闭合）；基线 Round 727=691b7c4 → Round 730=c210ddd（**693 连发 F335-F1035**）。当前 master 观察为用户命名规则提交 2793dec，未触碰用户/sibling 改动。
+- 落盘：handoff-refresh-157-evidence.json（F1037，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 731。

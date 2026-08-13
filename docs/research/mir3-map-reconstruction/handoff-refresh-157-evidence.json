@@ -1,0 +1,26 @@
+{
+  "evidence_id": "handoff-refresh-157-2026-08-12-f1037",
+  "title": "Round 731 (F1037): HANDOFF refresh 157 - Rounds 728-730 (F1034-F1036: HANDOFF 156, entity/list init registration, entity/list lifecycle+registration closure), baseline Round 727=691b7c4 -> Round 730=c210ddd (693 consecutive F335-F1035), current master observed 2793dec, doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 728-730.",
+  "question": "What changed since HANDOFF refresh 156?",
+  "method": "Append Round 728-730 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Round 728-730 appended (3 rounds, F1034-F1036)",
+    "baseline": "Round 727=691b7c4 -> Round 730=c210ddd (693 consecutive F335-F1035)",
+    "current_master": "2793dec observed after Round 730; user naming-rule commit, not modified",
+    "arcs": {"registration": "F1035 guarded callback registry", "closure": "F1036 lifecycle + registration"},
+    "key": "entity/list lifecycle and registration 100%"
+  },
+  "exe_trace": {"handoff": "doc only - compileall/diff-check pass"},
+  "audit_vs_exe": {"F1034": "refresh 156 baseline -> now refresh 157", "F335-F1035": "693 rounds"},
+  "contrast": {"refresh_156_vs_157": "F1035-F1036 (2 new findings)"},
+  "verdict": "HANDOFF refreshed 157 (F1037): Rounds 728-730 documented (entity/list lifecycle and registration complete), baseline 691b7c4 -> c210ddd, current master 2793dec observed without touching user work.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1034-F1036 evidence and observed git log.",
+  "cross_refs": ["F1034: refresh 156", "F1036: lifecycle+registration closure"],
+  "tool": "edit / bash",
+  "reproduce": "append Round 728-730 section to HANDOFF",
+  "notes": ["693 consecutive shipping rounds F335-F1035", "entity/list lifecycle + registration 100%", "preserved user commit 2793dec and sibling work"]
+}

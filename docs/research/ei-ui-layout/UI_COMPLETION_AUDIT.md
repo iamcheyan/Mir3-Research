@@ -4577,3 +4577,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体/列表生命周期与注册 100%；下一弧：HANDOFF 刷新 157/剩余深层角落）。
+## Round 731 (2026-08-12) — HANDOFF 刷新 157（Finding 1037）
+
+- **Round 728-730 追加 + 693 连发**（实体/列表生命周期与注册完整入档）。
+- 落盘：`handoff-refresh-157-evidence.json`（F1037）+ RESEARCH_LOG Round 731。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（实体/列表生命周期与注册 100%；下一弧：剩余深层角落/模拟器 polish）。
