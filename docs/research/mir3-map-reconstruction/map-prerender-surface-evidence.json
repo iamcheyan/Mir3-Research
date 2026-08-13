@@ -1,0 +1,49 @@
+{
+    "evidence_id": "map-prerender-surface-2026-08-13-f1080",
+    "title": "Round 774 (F1080): MAP PRERENDER SURFACE closed - map+0x1B2 is an embedded 1152x768 16bpp offscreen (0x1B0000 bytes = 0x480*0x300*2, exact match); big-map path 0x43B440 = full rebuild (clear + 24x24-block window blit), 0x43B9A0/0x43C3CE = single-block incremental refresh, scroll strip-copy family 0x43C57E-0x43C8FF via memcpy 0x468E90",
+    "date": "2026-08-13",
+    "objective": "Identify the 0x1B0000-byte static area zeroed by the map ctor (F1075) and its role in the tile render pipeline.",
+    "question": "What is map+0x1B2, who writes it, and how does it interact with scrolling?",
+    "method": "disasm 0x43B440-0x43B5F8 (big-map path), 0x45E8E0+0xA0 (blit arg roles), disp32 census of 0x1B2 in map region 0x43A000-0x43E000 (13 sites), disasm strip-copy sites 0x43C57E/0x43C697/0x43C7BE/0x43C8DE.",
+    "scope": "prerender surface lifecycle: ctor zero, loader rebuild, incremental refresh, scroll copy.",
+    "cell_analysis": {
+        "surface_identity": "map+0x1B2, size 0x1B0000 bytes = 0x6C000 dwords (ctor 0x43AF90 zeroing @0x43B0C0, F1075) = 1152*768*2 -> 16bpp offscreen, width 0x480 height 0x300 (dimensions pushed alongside the surface pointer in BOTH blit call sites)",
+        "blit_signature": "0x45E8E0(ecx=clip-ctx 0x8AB7A8, frame, 0xFFFF, 0xFFFF, dest=map+0x1B2, 0x300, 0x480, srcLib=[slot+0x3C], frameW, frameH, x*48, y*32) - arg order from push sequence @0x43BA8F-0x43BAF9 and @0x43B571-0x43B5C2 (identical); 0x45E8E0 is a clip-adjusting generic blit (negative coord + edge clamp math @0x45E8E6-0x45E97B)",
+        "big_map_rebuild_0x43b440": "gated by [map+0x18C]!=0 (maps >= 100x100, set by loader); FIRST clears the whole surface (rep stosd 0x6C000 @0x43B45C), then double loop x=[map+0x12C]..+0x18 / y=[map+0x130]..+0x18 (24x24 blocks = 1152x768 px window) over buffer1 with the F1079 gate family (v=b+b/14, v%14<=2, v<=0x45, frame!=0xFFFF), blitting each tile INTO the surface at (x-[anchorX])*48,(y-[anchorY])*32",
+        "single_block_refresh": "0x43B9A0 and twin 0x43C3CE blit ONE 2x2 block (even coords only) into the surface with the same gates - incremental update path (scroll by one block)",
+        "scroll_strip_copy": "0x43C57E-0x43C8FF: surface rows addressed as reg+reg+0x1B2 (base+row*stride) and copied via memcpy 0x468E90 - the prerender surface is shifted in strips on scroll (consumers of the F1065 scroll accumulators), avoiding full rebuilds",
+        "reset_variant_0x43b83x": "0x43B83A region: clear surface + reload loop from buffer1 (lea edi,[esi+0x1B2]; rep stosd; mov eax,[esi+0x108]) - post-load full refresh entry near 0x43B830",
+        "allocator_note": "surface is EMBEDDED (no alloc/free) - dtor 0x43B190 only frees the two heap buffers (+0x108/+0x10C); consistent with F1075 '释放两缓冲'"
+    },
+    "exe_trace": {
+        "pipeline": "load 0x43B600 -> [0x18C] gate -> big-map rebuild 0x43B440 (or small-map skip) -> frame loop: scroll accumulators [0x134]/[0x138] -> strip copy 0x43C57E family + single-block refresh 0x43B9A0/0x43C3CE -> world renderer composites surface + buffer2 object layers (F1069 blits)"
+    },
+    "audit_vs_exe": {
+        "F1075": "RESOLVED: the '0x6C000 dword zero area' = the 1152x768 16bpp prerender surface; its purpose was open",
+        "F1079": "buffer1's consumers now fully traced: full rebuild (0x43B440), single-block refresh (0x43B9A0/0x43C3CE), reset variant (0x43B83x)",
+        "F1069": "the object-layer blits (14B records) composite ON TOP of this prerendered tile surface",
+        "F1065": "scroll stepper 0x43B880 family drives accumulators; strip-copy family is the visual consumer"
+    },
+    "contrast": {
+        "big_map": ">=100x100: full 24x24-block prerender surface + strip scrolls",
+        "small_map": "<100x100: [0x18C]=0, no prerender surface use (direct per-frame path inferred)"
+    },
+    "verdict": "The map object's static 0x1B0000-byte area is a 1152x768 16bpp prerender surface: big maps (>=100x100) get a full 24x24-block rebuild at load (0x43B440) and on reset (0x43B83x), incremental single-block refresh during scroll (0x43B9A0/0x43C3CE), and memcpy strip shifts (0x43C57E family) - the tile layer is composited once and scrolled, with object layers (buffer2) blitted per frame on top.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "Disasm-only; surface dims proven by the 0x300/0x480 pushes paired with the surface pointer at both call sites plus exact byte-size identity.",
+    "cross_refs": [
+        "F1075: ctor zero template (purpose now resolved)",
+        "F1079: buffer1 gates + slot table",
+        "F1069: object-layer blits + screen math",
+        "F1065: scroll stepper consumers",
+        "F1078: loader + [0x18C] small-map gate"
+    ],
+    "tool": "capstone disasm + disp32 census (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "disasm 0x43B440+0x1B8 (rebuild), 0x45E8E0+0xA0 (blit args), 0x43C57E/0x43C697/0x43C7BE/0x43C8DE (strip copies); census disp32 0x000001B2 in 0x43A000-0x43E000",
+    "notes": [
+        "surface at map+0x1B2 (unaligned by 2 on purpose: +0x1B2 follows the 0x1B1 config byte)",
+        "24x24 blocks * 48x32 px = 1152x768 exactly; anchors [0x12C]/[0x130] are block-granular scroll anchors",
+        "strip-copy sites use two-term lea (base+row) meaning stride rows, not per-pixel",
+        "735 consecutive rounds F335-F1080"
+    ]
+}

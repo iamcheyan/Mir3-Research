@@ -4802,3 +4802,7 @@ git diff --check
 
 - 双堆缓冲闭合：buffer2=14B/格文件记录直存（byte0 bit0 封锁）、buffer1=3B/2×2 块预渲染瓦片层（v=b+b/14, v%14≤2）；均列主序 stride h；0x5600FC=324B/图集文件槽表（实体+瓦片共用）；blit 0x43B9A0/孪生 0x43C3CE。
 - 落盘：`map-memory-cell-layout-evidence.json`（F1079）+ RESEARCH_LOG Round 773。
+## Round 774 (2026-08-13) — 地图预渲染表面（Finding 1080）
+
+- map+0x1B2 = 1152×768 16bpp 内嵌离屏（0x1B0000=0x480·0x300·2 精确）；大图(≥100×100)装载全量重建 0x43B440（24×24 块窗）+滚动条带 memcpy 平移+单块增量 0x43B9A0/0x43C3CE；F1075 静态区用途定案。
+- 落盘：`map-prerender-surface-evidence.json`（F1080）+ RESEARCH_LOG Round 774。

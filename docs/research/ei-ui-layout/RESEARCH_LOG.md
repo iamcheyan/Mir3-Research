@@ -9420,3 +9420,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔装载器尾部〕**临界区初始化循环 0x5612B4..0x565994 stride 0x144 共 56 个（0x465FE0）+ 槽表区间再占（伴随数组 0x56B22C stride 0x104，0x4660E0）；**小图门**：w<100 或 h<100→[map+0x18C]=0（禁用大图路径 0x43B440）；[map]=1；CloseHandle [0x4760E4]；ret 1（打开失败 ret 0 @0x43B812）。
 - **〔滚动步进族〕**跳转表 0x43B976（0x43B8CC/0x43B8F2/0x43B932/0x43B94A/0x43B960）=速度·dt→[map+0x134]/[+0x138] 累加器（F1065 消费点补全）。
 - 落盘：map-memory-cell-layout-evidence.json（F1079，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 773。
+## Round 774 (F1080) — 2026-08-13：地图预渲染表面闭合——map+0x1B2 = 1152×768 16bpp 离屏（F1075 静态区用途定案）
+
+- **〔表面同一性〕**map+0x1B2 尺寸 0x1B0000 字节（ctor 0x6C000 双字清零，F1075）= **1152×768×2 精确闭合**；两处 blit 调用点 push 序列一致：`0x45E8E0(ecx=裁剪ctx 0x8AB7A8, frame, 0xFFFF,0xFFFF, dest=map+0x1B2, 高0x300, 宽0x480, srcLib=[slot+0x3C], frameW,frameH, x·48, y·32)`——0x45E8E0=带负坐标/边缘钳制的通用裁剪 blit。
+- **〔大图重建 0x43B440〕**门 [map+0x18C]≠0（w,h≥100，装载器置位）；先整面清（rep stosd 0x6C000）再双循环 x∈[0x12C]..+0x18 / y∈[0x130]..+0x18（**24×24 块=1152×768px 窗**）走 buffer1，F1079 门族（v=b+b/14、v%14≤2、v≤0x45、帧≠0xFFFF）逐块 blit 入表面 ((x−锚X)·48,(y−锚Y)·32)。
+- **〔增量刷新〕**0x43B9A0 + 孪生 0x43C3CE=单 2×2 块刷新（偶坐标门）；**重置变体 0x43B83x**（清表面+buffer1 重灌，装载后全量刷新）。
+- **〔滚动条带拷贝 0x43C57E-0x43C8FF〕**表面行按 `lea reg,[reg+reg+0x1B2]`（基址+行×stride）取址、memcpy 0x468E90 条带平移——F1065 滚动累加器 [0x134]/[0x138] 的视觉消费端，避免全量重建。
+- **〔管线〕**装载→[0x18C]门→大图全量重建/小图跳过→帧循环：滚动→条带拷贝+单块增量→世界渲染器合成表面（瓦片层已预合成）+buffer2 对象层（F1069 blit）逐帧叠加。
+- 落盘：map-prerender-surface-evidence.json（F1080，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 774。
