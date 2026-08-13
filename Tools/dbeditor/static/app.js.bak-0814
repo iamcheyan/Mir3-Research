@@ -145,11 +145,9 @@ const app = createApp({
         cols.push({ prop: "Price", label: "价格", width: 90, sortable: "custom" });
         cols.push({ prop: "Rarity", label: "稀有度", width: 110 });
       } else if (activeCat.value === "MonsterInfo") {
-        cols.push({ prop: "__icon", label: "图标", width: 70 });
         cols.push({ prop: "Level", label: "等级", width: 80, sortable: "custom" });
         cols.push({ prop: "Health", label: "HP", width: 110 });
       } else if (activeCat.value === "MagicInfo") {
-        cols.push({ prop: "__icon", label: "图标", width: 70 });
         cols.push({ prop: "Class", label: "职业", width: 90 });
         cols.push({ prop: "NeedLevel1", label: "需求等级", width: 90 });
       } else if (activeCat.value === "DropInfo") {
@@ -172,33 +170,14 @@ const app = createApp({
     }
 
     const iconErr = new Set();
-    // 图标图库按分类分发：物品=Storeitems.Zl、怪物=Mon-N.Zl（后端注入 __lib，来自
-    // MonsterLookup 映射）、技能=MIcon.Zl（MagicInfo.Icon 直取）。
-    // 帧号统一用后端同步注入的 __frame（货币物品换算/怪物 Shape*1000+40），无则回退 Image。
-    function rowLib(row) {
-      if (row.__lib) return row.__lib;
-      if (activeCat.value === "MonsterInfo") return "MonImg";   // 兜底（无映射时不显示）
-      return "Storeitems";
-    }
     function rowIcon(row) {
-      if (iconErr.has(row.Index)) return null;
-      if (activeCat.value === "MagicInfo") {
-        if (typeof row.Icon !== "number" || (!row.__frame && row.__frame !== 0)) return null;
-        return `/zl/MIcon/${row.__frame ?? row.Icon}.png`;
-      }
-      if (typeof row.Image !== "number" && !row.__frame && row.__frame !== 0) return null;
+      if (typeof row.Image !== "number" || iconErr.has(row.Index)) return null;
       // 物品图标 = Storeitems.Zl（客户端 DXItemCell 默认图库）；货币物品的 Image 是假的，
       // 后端已在列表/详情注入真实帧号 __frame（客户端 CurrencyImage 同款逻辑）。
-      // 怪物 = 后端注入 __lib(Mon-N) + __frame；无映射（Image 枚举不在 MonsterLookup）不显示。
-      if (activeCat.value === "MonsterInfo" && !row.__lib) return null;
-      const lib = activeCat.value === "MonsterInfo" ? row.__lib : "Storeitems";
-      const frame = row.__frame ?? row.Image;
-      if (typeof frame !== "number") return null;
-      return `/zl/${lib}/${frame}.png`;
+      const lib = activeCat.value === "MonsterInfo" ? "MonImg" : "Storeitems";
+      return `/zl/${lib}/${row.__frame ?? row.Image}.png`;
     }
     function iconError(row) { iconErr.add(row.Index); row.__noicon = true; }
-    // 怪物详情页动作预览：站立 8 方向 + 行走/攻击/死亡序列（逐帧请求 /zl/）
-    function monActionSrc(a) { return `/zl/${a.lib}/${a.frame}.png`; }
 
     // ---------- 详情 ----------
     async function openDetail(index) {
@@ -410,7 +389,7 @@ const app = createApp({
       view, cats, activeCat, catZh, status, changeCount, loading,
       rows, total, page, per, query, selection, listCols,
       displayCell, rowIcon, iconError, switchCat, search, resort, zhName,
-      isMobile, rowName, monActionSrc,
+      isMobile, rowName,
       detail, mainFields, refOptions, subMetas, markDirty,
       saveDetail, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
       openDetail, duplicateRow, deleteRow, createRow,

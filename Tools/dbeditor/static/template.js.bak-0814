@@ -93,34 +93,6 @@ window.APP_TEMPLATE = `
           <span style="color:#909399; font-size:12px">Image = {{ detail.row.Image }}</span>
         </div>
 
-        <!-- 怪物详情：大图 + 动作帧预览（站立/行走/攻击，Mon-N.Zl 按 MonsterLookup 映射） -->
-        <div v-if="detail.table === 'MonsterInfo' && rowIcon(detail.row)"
-             style="margin-bottom:10px">
-          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px">
-            <img :src="rowIcon(detail.row)" @error="iconError(detail.row)" class="big-icon"
-                 style="width:64px; height:64px; image-rendering:pixelated; background:#111; border-radius:6px; object-fit:contain" />
-            <span style="color:#909399; font-size:12px">
-              {{ detail.row.Image }} → {{ detail.row.__lib }} 帧 {{ detail.row.__frame }}（站立·正面）
-            </span>
-          </div>
-          <div v-if="detail.row.__actions && detail.row.__actions.length"
-               style="display:flex; gap:4px; flex-wrap:wrap; align-items:flex-end;
-                      background:#111; padding:8px; border-radius:6px; max-width:640px">
-            <img v-for="(a, i) in detail.row.__actions" :key="i"
-                 :src="monActionSrc(a)" :title="a.label" @error="e => e.target.style.display='none'"
-                 style="width:40px; height:48px; image-rendering:pixelated; object-fit:contain" />
-          </div>
-          <div style="color:#909399; font-size:11px; margin-top:4px">动作序列：站立4帧·8方向 → 行走6帧·8方向 → 攻击6帧·8方向</div>
-        </div>
-
-        <!-- 技能详情：大图（MIcon.Zl） -->
-        <div v-if="detail.table === 'MagicInfo' && rowIcon(detail.row)"
-             style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
-          <img :src="rowIcon(detail.row)" @error="iconError(detail.row)" class="big-icon"
-               style="width:64px; height:64px; image-rendering:pixelated; background:#111; border-radius:6px; object-fit:contain" />
-          <span style="color:#909399; font-size:12px">Icon = {{ detail.row.Icon }}（MIcon.Zl）</span>
-        </div>
-
         <el-form label-width="180px" label-position="left">
           <el-row>
             <el-col v-for="f in mainFields" :key="f.key" :span="8">

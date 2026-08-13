@@ -78,90 +78,6 @@ TABLE_TO_ZH_CAT = {
     "NPCInfo": "npcs", "MapInfo": "maps",
 }
 
-# ---------------------------------------------------------------- 怪物图库映射
-# GodotClient 渲染怪物的真实方案（只读参考，勿改 zircon）：
-#   ObjectRenderer.CreateMonster → MonsterLookup.Map[mi.Image] → (LibraryFile, BodyShape)
-#   帧号 = Shape*1000 + 动作Start + FrameIndex + 方向*10（FrameSet.DefaultMonster，
-#   全部怪物统一：Standing Start=0 Count=4、Walking 80/6、Combat1 160/6、Die 320/10）。
-#   方向 MirDirection: 0=Up(背面)…4=Down(正面)。封面帧用 dir4 站立第 0 帧 = Shape*1000+40。
-# MonImg.Zl（2150 帧）是旧版图鉴页用的整合库，帧序与 MonsterInfo.Image 无对应关系，
-# 之前"怪物接 MonImg"的做法是错的 —— GodotClient 实际按 Mon-N.Zl 分库渲染。
-# MonsterLookup.cs 由 Client/Models/MonsterObject.cs UpdateLibraries() 自动提取，
-# 333 条（含 EI 新怪 600+）；运行时从 zircon 源码正则解析，避免手工转录 333 行。
-_MONSTER_LOOKUP_SRC = ZIRCON / "GodotClient" / "Formats" / "MonsterLookup.cs"
-_monster_lookup: dict[str, tuple[str, int]] | None = None   # MonsterImage名 -> (Mon-N, Shape)
-
-
-def _load_monster_lookup() -> dict[str, tuple[str, int]]:
-    global _monster_lookup
-    if _monster_lookup is None:
-        import re
-        out: dict[str, tuple[str, int]] = {}
-        try:
-            src = _MONSTER_LOOKUP_SRC.read_text(encoding="utf-8")
-            for m in re.finditer(
-                    r"\{\s*MonsterImage\.(\w+),\s*\(LibraryFile\.(\w+),\s*(\d+)\)\s*\}", src):
-                lib, shape = m.group(2), int(m.group(3))
-                # LibraryFile.Mon_3 → 文件名 Mon-3（Libraries.cs: Data\Mon-3.Zl）
-                fn = lib.replace("Mon_", "Mon-") if lib.startswith("Mon_") else lib
-                out[m.group(1)] = (fn, shape)
-        except Exception:
-            pass
-        _monster_lookup = out
-    return _monster_lookup
-
-
-# FrameSet.DefaultMonster（LibraryCore/FrameSet.cs 136 行起）—— GodotClient 所有怪物共用
-_MONSTER_FRAMES = {
-    # 动作: (Start, Count) —— 帧间距 = 方向偏移 10
-    "stand": (0, 4), "walk": (80, 6), "attack": (160, 6),
-    "struck": (240, 2), "die": (320, 10),
-}
-
-
-def _monster_icon(table: str, row: dict) -> dict | None:
-    """怪物封面图标：{lib, frame}。Image 是 MonsterImage 枚举名 → MonsterLookup
-    → (Mon-N.Zl, Shape)。封面 = 站立 dir4（正面）第 0 帧 = Shape*1000 + 40。
-    无映射（如 None/SummonPuppet）返回 None。"""
-    if table != "MonsterInfo":
-        return None
-    image = row.get("Image")
-    if not isinstance(image, str):
-        return None
-    ent = _load_monster_lookup().get(image)
-    if not ent:
-        return None
-    lib, shape = ent
-    return {"lib": lib, "frame": shape * 1000 + 40}
-
-
-def _monster_actions(table: str, row: dict) -> list[dict] | None:
-    """详情页动作预览帧序列：站立 8 方向 + 行走(dir4) 6 帧 + 攻击(dir4) 6 帧 + 死亡 10 帧。"""
-    if table != "MonsterInfo":
-        return None
-    image = row.get("Image")
-    if not isinstance(image, str):
-        return None
-    ent = _load_monster_lookup().get(image)
-    if not ent:
-        return None
-    lib, shape = ent
-    base = shape * 1000
-    seq: list[dict] = []
-    for d in range(8):     # 站立 8 方向（0=背面 … 4=正面）
-        seq.append({"lib": lib, "frame": base + _MONSTER_FRAMES["stand"][0] + d * 10,
-                    "label": f"站立·{'背面' if d == 0 else ('正面' if d == 4 else f'方向{d}')}"})
-    for i in range(_MONSTER_FRAMES["walk"][1]):     # 行走序列（正面 dir4）
-        seq.append({"lib": lib, "frame": base + _MONSTER_FRAMES["walk"][0] + 40 + i,
-                    "label": f"行走{i + 1}"})
-    for i in range(_MONSTER_FRAMES["attack"][1]):   # 攻击序列（正面 dir4）
-        seq.append({"lib": lib, "frame": base + _MONSTER_FRAMES["attack"][0] + 40 + i,
-                    "label": f"攻击{i + 1}"})
-    for i in range(_MONSTER_FRAMES["die"][1]):      # 死亡序列
-        seq.append({"lib": lib, "frame": base + _MONSTER_FRAMES["die"][0] + i,
-                    "label": f"死亡{i + 1}"})
-    return seq
-
 MAX_INT = 2_147_483_647
 NAME_FIELDS = ("ItemName", "MonsterName", "Name", "SetName")
 
@@ -567,13 +483,6 @@ def table_rows(table: str, page: int = 1, per: int = 50, q: str = "",
             cur = _currency_image(table, r["Index"])  # 货币物品真实图标帧（同步注入，无闪烁）
             if cur is not None:
                 rr["__frame"] = cur
-        elif table == "MonsterInfo":
-            icon = _monster_icon(table, r)            # 怪物封面（Mon-N.Zl 站立正面帧）
-            if icon:
-                rr["__frame"], rr["__lib"] = icon["frame"], icon["lib"]
-        elif table == "MagicInfo":
-            if isinstance(r.get("Icon"), int):        # 技能图标 = MIcon.Zl[MagicInfo.Icon]
-                rr["__frame"], rr["__lib"] = r["Icon"], "MIcon"
         out.append(rr)
     return {"count": total, "page": page, "per": per,
             "rows": out}
@@ -610,16 +519,6 @@ def row_detail(table: str, index: int) -> dict:
         cur = _currency_image(table, index)               # 货币物品真实图标帧
         if cur is not None:
             row_out["__frame"] = cur
-    elif table == "MonsterInfo":
-        icon = _monster_icon(table, row)                  # 封面帧 + 动作预览序列
-        if icon:
-            row_out["__frame"], row_out["__lib"] = icon["frame"], icon["lib"]
-        actions = _monster_actions(table, row)
-        if actions:
-            row_out["__actions"] = actions
-    elif table == "MagicInfo":
-        if isinstance(row.get("Icon"), int):
-            row_out["__frame"], row_out["__lib"] = row["Icon"], "MIcon"
     return {"row": row_out, "subs": subs, "meta": STORE.meta.get(table)}
 
 
@@ -956,29 +855,17 @@ def _currency_image(table: str, index: int) -> int | None:
 
 @APP.get("/api/icon/{table}/{index}")
 def api_icon(table: str, index: int) -> dict:
-    """返回某行的真实图标帧号+图库（货币物品走 CurrencyInfoImage 换算）。
+    """返回某行的真实图标帧号（货币物品走 CurrencyInfoImage 换算）。
     前端拿帧号再请求 /zl/{lib}/{frame}.png。"""
     rows = STORE.tables.get(table, {})
     row = rows.get(index)
-    if row is None:
-        raise HTTPException(404, "no row")
+    if row is None or not isinstance(row.get("Image"), int):
+        raise HTTPException(404, "no image")
     if table == "ItemInfo":
-        if not isinstance(row.get("Image"), int):
-            raise HTTPException(404, "no image")
         cur = _currency_image(table, index)
         if cur is not None:
             return {"frame": cur, "lib": "Storeitems"}
-        return {"frame": row["Image"], "lib": "Storeitems"}
-    if table == "MonsterInfo":
-        icon = _monster_icon(table, row)
-        if not icon:
-            raise HTTPException(404, "no image")
-        return icon
-    if table == "MagicInfo":
-        if not isinstance(row.get("Icon"), int):
-            raise HTTPException(404, "no image")
-        return {"frame": row["Icon"], "lib": "MIcon"}
-    raise HTTPException(404, "no image")
+    return {"frame": row["Image"], "lib": "Storeitems" if table == "ItemInfo" else "MonImg"}
 
 
 @APP.get("/zl/{lib}/{frame:int}.png")
@@ -987,14 +874,8 @@ def zl_icon(lib: str, frame: int):
 
     物品图标必须用 StoreItem.Zl —— 客户端 DXItemCell.ItemLibraryFile 默认就是
     StoreItem（2370 帧），Inventory.Zl 是另一套帧序（直接当物品图标=张冠李戴）。
-    怪物 = Mon-N.Zl（GodotClient MonsterLookup 分库渲染，帧号=Shape*1000+偏移）。
-    技能 = MIcon.Zl（LibraryFile.MagicIcon，MagicBar/MagicDialog 取 Info.Icon）。
-    颜色通道由 zlsdk 正确处理（BGRA→RGBA）。
-    lib 只允许 Data 目录下的 .Zl 文件名（防路径穿越）。
+    怪物用 MonImg.Zl。颜色通道由 zlsdk 正确处理（BGRA→RGBA）。
     """
-    import re as _re
-    if not _re.fullmatch(r"[A-Za-z0-9_\-]+", lib):
-        raise HTTPException(404, "bad lib")
     cache = _LIVE_ICONS / f"{lib}_{frame}.png"
     if cache.exists():
         return FileResponse(cache, media_type="image/png")
