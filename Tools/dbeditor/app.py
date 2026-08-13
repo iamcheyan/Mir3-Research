@@ -557,7 +557,9 @@ def row_save(table: str, index: int, body: RowSave) -> dict:
             raise HTTPException(404, f"未知表 {table}")
         if index not in rows:
             raise HTTPException(404, f"{table}#{index} 不存在")
-        row = dict(body.row)
+        # 合并语义：提交中**缺席**的键 = 未编辑，保留工作区现值（防部分提交清字段）；
+        # 显式提交 null/None = 有意清空。前端全量提交时行为不变。
+        row = {**rows[index], **body.row}
         row["Index"] = index
         # 派生回链（reflist）字段以工作区当前值为准，不接受提交
         for k, fm in STORE.fields(table).items():
