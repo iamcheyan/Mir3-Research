@@ -1,0 +1,52 @@
+{
+    "evidence_id": "map-memory-cell-layout-2026-08-13-f1079",
+    "title": "Round 773 (F1079): MAP MEMORY LAYOUT closed - loader 0x43B600 reads TWO cell arrays (buffer1 [map+0x108] = 3 bytes per 2x2 block = prerendered tile layer, buffer2 [map+0x10C] = 14 bytes per cell = raw file records), both column-major stride h; 0x5600FC = per-atlas-file 324-byte slot array semantics settled; prerender tile blit 0x43B9A0",
+    "date": "2026-08-13",
+    "objective": "Map the in-memory cell layout written by loader 0x43B600 and reconcile with the file-side 14-byte cell record (F1074).",
+    "question": "What do the two heap buffers hold, how are they indexed, and who consumes buffer1?",
+    "method": "disasm 0x43B6BA-0x43B81D (loader tail: two allocs + reads + crit-section loop + big-map path), 0x43C9F0-0x43CA3C (walkability reader indexing), census of [reg+0x108]/[reg+0x10C] reads in 0x43A000-0x43E000, disasm consumers 0x43B9A0-0x43BB03 (prerender tile blit) and 0x43C3A0-0x43C420 (twin), boundary scan for entry 0x43B9A0.",
+    "scope": "map object heap buffers +0x108/+0x10C; slot array 0x5600FC; prerender blit path.",
+    "cell_analysis": {
+        "buffer2_0x10c": "alloc(w*h*14) [0x43B6ED: (w*h)*8-(w*h) <<1 = 14*wh]; raw 14-byte file records, NO transform; index = 14*(arg1*h + arg2) (0x43CA1F imul eax(h),arg1; add arg2; lea*8-sub <<1 = *14) - column-major stride h; walkability = test byte[cell+0],1 (set=blocked, ret 0; clear/unloaded/oob = ret 1 walkable) - matches F1074 byte0 bit0",
+        "buffer1_0x108": "alloc((w*h)/4*3) [0x43B6A7: (w*h+3)>>2 *3] = 3 bytes per 2x2 cell block; block index = h*(x>>1) + (y>>1) (0x43BA31-0x43BA4E: (x)>>1 * h + (y)>>1) - column-major stride h, SAME convention as buffer2; entry {byte0 = atlas file index b, word1..2 = frame/aux}",
+        "prerender_gate": "v = b + b/14 (0x6DB6DB6D magic div 14, add-back at 0x43BA65-0x43BA73); GATES: v%14 <= 2 (tile layer, 0x43BA78 idiv 14 cmp edx,2 jg exit), v <= 0x45, frame word != 0xFFFF - the exact complement of F1069's object-layer gates (v%14>=3) on the same math family",
+        "slot_array_0x5600fc": "ebx = v*9*9*4 = 324*v (0x43BA8C-0x43BA93); slot = 0x5600FC + 324*v; [slot+0x38]/[slot+0x3C] = sub-library pointers (0x43BAA9/0x43BAC0); 0x466130(slot, frame) = frame resolve (F1069); settles R771's secondary note: ONE array serves BOTH entity type-slots (idx=byte[ent+0x8C], stored to [ent+0x90]) AND per-atlas-file draw slots - it is the atlas/asset slot table, stride 0x144",
+        "blit": "screen pos x=(sx-[map+0x12C])*48 / y=(sy-[map+0x130])*32 (0x43BADA-0x43BAF3: sub anchors, shl 5 / *3*16); dest window 0x8AB7A8; draw call 0x45E8E0 with clip 0xFFFF pair + size push 0x300/0x480",
+        "entry_0x43b9a0": "prerender tile blit entry: ecx=map, args (x bounded by w AND x%2==0, y bounded by h AND y%2==0, y >= [map+0x130]+0x18) - only even coords = 2x2 block corners; preceded by jump table 0x43B976 (scroll-step helper family 0x43B8CC/0x43B8F2/0x43B932... = velocity*dt -> [map+0x134]/[map+0x138] accumulators, F1065 consumers)",
+        "loader_tail": "crit-section init loop 0x43B756: 56 objects at 0x5612B4..0x565994 stride 0x144 (0x465FE0=enter); per-load re-seize loop over slot table ranges (0x5600FC+324*k with companion array 0x56B22C stride 0x104, 0x4660E0); small-map check: if w<100 or h<100 -> [map+0x18C]=0 (disables big-map path 0x43B440); [map]=1 loaded; CloseHandle [0x4760E4]; ret 1 (0x43B812 = open-fail ret 0)",
+        "twin_consumer_0x43c3ce": "0x43C3A0-region repeats the same buffer1 read + v%14<=2 gate (function family twin of 0x43B9A0)"
+    },
+    "exe_trace": {
+        "read_path": "frame render -> prerender blit 0x43B9A0(even x,y) -> buffer1 block -> atlas slot 0x5600FC+324*v -> 0x466130 frame -> 0x45E8E0 to window; object layers walk buffer2 via F1069 blits; walkability via 0x43C9F0 on buffer2"
+    },
+    "audit_vs_exe": {
+        "F1074": "file-side 14B record map confirmed as an in-memory passthrough (buffer2 = raw records, no re-encoding)",
+        "F1069": "its '预渲染 <=2 瓦片层' source now identified: buffer1 per-2x2-block atlas index with the SAME v=b+b/14 family and complementary gate",
+        "F1071": "buffer pointers live INSIDE the embedded map object at +0x108/+0x10C (consistent with embedded model; dtor 0x43B190 frees them per F1075)",
+        "R771_note": "0x5600FC stride-324 array = atlas/asset slot table used by both entity spawn (idx=byte[ent+0x8C]) and tile draw (idx=v) - NOT an FX array"
+    },
+    "contrast": {
+        "buffer1": "3B per 2x2 block, prerendered tile layer (k0-2), column-major stride h",
+        "buffer2": "14B per cell, raw file records incl. object layers + walkability, column-major stride h"
+    },
+    "verdict": "In-memory map layout closed: the loader images the file into buffer2 (14B/cell, column-major stride h, byte0 bit0 = blocked) and builds buffer1 (3B per 2x2 block = prerendered tile layer: atlas file byte + frame word, gate v=b+b/14 with v%14<=2, v<=0x45) consumed by blit 0x43B9A0 and its twin 0x43C3CE via the 324-byte-per-file atlas slot array at 0x5600FC; both buffers and the slot table now have producers and consumers fully paired.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "All from .text disasm; buffer1 block-stride reads as h*[(x>>1)]+(y>>1) per byte-level instruction sequence.",
+    "cross_refs": [
+        "F1074: 14-byte cell record (file side)",
+        "F1069: cell layer render + screen math + 0x466130",
+        "F1078: loader entry + header fields",
+        "F1075: dtor frees the two buffers",
+        "F1065: scroll accumulators [0x134]/[0x138]",
+        "F1067: v+div45 atlas family (same magic-div pattern)"
+    ],
+    "tool": "capstone disasm + boundary scan (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "disasm 0x43B6BA+0x100 (loader tail), 0x43B9A0+0x164 (prerender blit), 0x43C9F0+0x40 (walk reader), 0x43C3A0+0x80 (twin); census [reg+0x108]/[reg+0x10C] in 0x43A000-0x43E000",
+    "notes": [
+        "buffer1 block math: idx = h*(x>>1) + (y>>1); entry {b, frame-word, aux-word}; frame gate 0xFFFF sentinel",
+        "crit-loop init at 0x5612B4..0x565994 stride 0x144 = 56 slot-table critical sections; companion array 0x56B22C stride 0x104",
+        "small maps (<100 in either dim) skip the 0x43B440 big-map path via [map+0x18C]=0",
+        "jump table 0x43B976 entries 0x43B8CC/0x43B8F2/0x43B932/0x43B94A/0x43B960 = scroll velocity helpers (velocity*dt -> [0x134]/[0x138])",
+        "734 consecutive rounds F335-F1079"
+    ]
+}

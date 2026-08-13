@@ -4798,3 +4798,7 @@ git diff --check
 
 - +0xF5200 = screen 内嵌地图对象（F1071 指针→内嵌勘误；ctor 0x43AF90/装载 0x43B600/换图流 0x422A92 全闭合）；内嵌容器家族六员全图；+0xE11A0 = 实体类型分派绘制链。
 - 落盘：`screen-map-embedded-load-path-evidence.json`（F1078）+ RESEARCH_LOG Round 772。
+## Round 773 (2026-08-13) — 地图内存格布局（Finding 1079）
+
+- 双堆缓冲闭合：buffer2=14B/格文件记录直存（byte0 bit0 封锁）、buffer1=3B/2×2 块预渲染瓦片层（v=b+b/14, v%14≤2）；均列主序 stride h；0x5600FC=324B/图集文件槽表（实体+瓦片共用）；blit 0x43B9A0/孪生 0x43C3CE。
+- 落盘：`map-memory-cell-layout-evidence.json`（F1079）+ RESEARCH_LOG Round 773。

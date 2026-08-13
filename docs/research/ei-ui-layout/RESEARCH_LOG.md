@@ -9411,3 +9411,12 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔容器家族全图〕**screen ctor 0x418B00 铺设**六内嵌 CList + 字符串成员**：+0xE1154(vt 0x4766F0,head+0xE1158 实体)、+0xE116C(vt 0x4766D4,head+0xE1170 FX 活跃)、+0xE1184(vt 0x4766B8,head+0xE1188)、+0xE119C(vt 0x4766D4,head+**0xE11A0**)、+0xE11B4(vt 0x47669C,head+0xE11B8)、+0xE11CC(vt 0x476680,head+0xE11D0 配对去重)、+0xE11E4(ctor 0x4529B0 字符串)。
 - **〔+0xE11A0 语义〕**实体绘制分派链：0x41A0C3 按类型字 [obj+0x10] 大开关——组A {0x10,0x16,0x3F,0x14A-0x14E,0x48} vs 组B {9,0x35,0x150} 两路绘制；兼作生成去重（0x420E4A/0x42121B 找 [link+4]==obj）。英雄 [entity+0x62A58] 47 引用集中于 0x4100xx-0x4130xx 步进引擎（缓存 &screen.map）。
 - 落盘：screen-map-embedded-load-path-evidence.json（F1078，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 772。
+## Round 773 (F1079) — 2026-08-13：地图内存格布局闭合——双堆缓冲语义/索引/消费端全配对（F1078 装载器续）
+
+- **〔双缓冲布局〕**装载器 0x43B600 读两段：**buffer2 [map+0x10C]=alloc(14·w·h)**=文件 14 字节格记录**原样直存**（零变换；0x43B6ED `(wh·8−wh)<<1`）；**buffer1 [map+0x108]=alloc((w·h/4)·3)**=**每 2×2 格块 3 字节**（byte0=图集文件号 b、word1-2=帧/辅助）。两缓冲**均列主序 stride=h**：buffer2 idx=14·(a·h+b)（0x43CA1F）；buffer1 idx=h·(x>>1)+(y>>1)（0x43BA31-4E，仅偶坐标=块角）。
+- **〔可走性索引实证〕**0x43C9F0：`test byte[cell+0],1`（置位=封锁 ret 0；清零/未载/越界 ret 1 默认可走）——F1074 byte0 bit0 内存侧确认。
+- **〔预渲染瓦片层 blit 0x43B9A0〕**门族与 F1069 完全一致：**v=b+b/14**（0x6DB6DB6D 魔数除 14+回加）、**v%14≤2**（=瓦片层，与 F1069 对象层 ≥3 互补）、v≤0x45、帧 word≠0xFFFF；屏幕坐标 x=(sx−[map+0x12C])·48 / y=(sy−[map+0x130])·32；blit 0x45E8E0→窗 0x8AB7A8。孪生消费者 0x43C3CE 同门。F1069「预渲染 ≤2 瓦片层」数据源定案=buffer1。
+- **〔0x5600FC 槽表语义定案〕**stride 0x144=324·v（0x43BA8C-93），[slot+0x38]/[+0x3C]=子库指针，0x466130(slot,帧)=帧解析——**每图集文件槽表**，实体生成（idx=byte[ent+0x8C]→[ent+0x90]）与瓦片绘制（idx=v）共用同一数组；R771 次级注记升格为定案。
+- **〔装载器尾部〕**临界区初始化循环 0x5612B4..0x565994 stride 0x144 共 56 个（0x465FE0）+ 槽表区间再占（伴随数组 0x56B22C stride 0x104，0x4660E0）；**小图门**：w<100 或 h<100→[map+0x18C]=0（禁用大图路径 0x43B440）；[map]=1；CloseHandle [0x4760E4]；ret 1（打开失败 ret 0 @0x43B812）。
+- **〔滚动步进族〕**跳转表 0x43B976（0x43B8CC/0x43B8F2/0x43B932/0x43B94A/0x43B960）=速度·dt→[map+0x134]/[+0x138] 累加器（F1065 消费点补全）。
+- 落盘：map-memory-cell-layout-evidence.json（F1079，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 773。
