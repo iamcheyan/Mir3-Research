@@ -4649,3 +4649,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告颜色约定 9/9；下一弧：公告系统收尾/模拟器 polish）。
+## Round 740 (2026-08-12) — 公告颜色层闭合（Finding 1046）
+
+- **700 连发 + 666 证据 + 公告颜色层完整**（表 + 9 站点 + 约定）。
+- 落盘：`notice-color-closure-evidence.json`（F1046）+ RESEARCH_LOG Round 740。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告颜色层 100%；下一弧：HANDOFF 刷新 160/剩余深层角落）。

@@ -9196,3 +9196,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔补全〕**0x41E831 = 移动警告公告 (2,3)+fmt 0x47B110，计数门 [0x428224]（>2 触发后归零，交替路径递减）；0x41EE07 = 聊天发送回显 (2,3)+sprintf 缓冲（fmt 0x47B9D0=F876、标签 [0x35B1FD]）→ 0x427E30；尾部 0x41EE34+ 兼任物品使用路径（0x430920/0x430940/0x42FC20）。F1044 站点表 9/9 全解。
 - 落盘：chat-notice-color-sites-evidence.json（F1045，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 739。
+## Round 740 (F1046) — 2026-08-12：公告颜色层闭合（F553/F797/F873/F1044/F1045 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**666 证据 JSON**；三服务 200；master a23a03c（**700 连发 F335-F1045 已推**）。
+- **〔弧〕**8 色表 0x401390 + 9/9 调用点（登录/聊天×2/recv/任务×2/地图×2/移动警告）+ bg/fg 成对约定 + 0x427E30 汇聚——**公告颜色层完整**。
+- 落盘：notice-color-closure-evidence.json（F1046，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 740。

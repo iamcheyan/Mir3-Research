@@ -1,0 +1,26 @@
+{
+  "evidence_id": "notice-color-closure-2026-08-12-f1046",
+  "title": "Round 740 (F1046): notice color convention CLOSED (F553/F797/F873/F1044/F1045) - validation green (compileall/verify exit 0/node/JSON), services 200 (wilviewer/mapviewer/sim8477), master a23a03c (700 consecutive F335-F1045), 666 evidence JSONs; arc: 8-color table + 9/9 call sites (login/chat x2/recv/quest x2/map x2/movement) + pair convention into 0x427E30 - notice color layer COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Close the notice color convention arc.",
+  "question": "Is the notice color layer fully documented?",
+  "method": "Full validation + color-layer consolidation.",
+  "scope": "Tools/, docs/, services.",
+  "cell_analysis": {
+    "validators": {"compileall": "OK", "verify": "exit 0", "node": "OK", "json": "valid", "evidence": "666 JSONs"},
+    "services": "wilviewer 8765 / mapviewer 8899 / sim8477 200",
+    "arc": {"F553": "table + recv2", "F797": "map announce", "F873": "chat", "F1044": "9-site map", "F1045": "9/9 resolved"},
+    "layer": "table + sites + convention = COMPLETE",
+    "milestone": "700 consecutive rounds F335-F1045"
+  },
+  "exe_trace": {"verify": "exit 0"},
+  "audit_vs_exe": {"F335-F1045": "700 rounds pushed; notice color layer complete"},
+  "contrast": {"fixed_vs_dynamic": "8 fixed pairs vs packet-driven (0x422EEB)", "gated_vs_free": "movement counter vs unconditional"},
+  "verdict": "Notice color layer CLOSED (F1046): 0x401390 table, all 9 sites, pair convention, and 0x427E30 sink documented byte-level; validation green, 700 consecutive rounds, 666 evidence JSONs.",
+  "evidence_level": "derived-tooling (validators) + secondary (services)",
+  "evidence_level_note": "Validation from tool runs; arc content from F553/F797/F873/F1044/F1045.",
+  "cross_refs": ["F553", "F797", "F873", "F1044", "F1045"],
+  "tool": "compileall / verify / node / json.tool / curl / git",
+  "reproduce": "python3 -m compileall -q Tools; verify_mir3_ui_evidence.py --client EI_ROOT; curl services",
+  "notes": ["700 consecutive shipping rounds F335-F1045", "notice color layer 100%", "next: HANDOFF refresh 160, remaining corners"]
+}
