@@ -4790,3 +4790,7 @@ git diff --check
 
 - 三链架构 + 六活生产者 + 重试重链模式 + 节点 init/ticker 生命周期 + 0x43D190 勘误；链 B/EFX 排空路径为开放线索。
 - 落盘：`fx-chain-triage-evidence.json`（F1076）+ RESEARCH_LOG Round 770。
+## Round 771 (2026-08-13) — FX 活跃链排空（Finding 1077）
+
+- 双注册表架构定案：.data 三账本（A/B/EFX）纯追加无读端（穷尽 imm32 扫描）；真实生命周期在 screen 内嵌 CList 家族（+0xE1154/E116C/E1184），帧函数 0x41B5D0 两趟循环（0x41BCC4 slot3 tick+完成摘删 / 0x41BFA5 slot4 移动）+拆除排空 0x419570 +死亡 purge 0x42280/0x41B570；F1076 vtable/slot/记录大小三处勘误。
+- 落盘：`fx-active-chain-drain-evidence.json`（F1077）+ RESEARCH_LOG Round 771。

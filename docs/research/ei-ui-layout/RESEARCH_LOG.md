@@ -9394,3 +9394,12 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔F1071 勘误〕**0x43D190 = 纯方向计算（象限 0/2/4/6 + 比率混合表 1.0/0.925/0.665/0.385，wrap 8，不读 ecx）→ 0x4378A8 处 mov ecx,0x574118 为残留；死图方法调用计数 38→37。
 - **〔开放线索〕**链 B/EFX 在 .text 仅生产者引用（18/18、21/21；容器 cb/ctx 槽 0x5600C0/C4 零引用）→ 排空经虚分派自另一注册表〔推断〕，遍历器未定位。
 - 落盘：fx-chain-triage-evidence.json（F1076，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 770。
+## Round 771 (F1077) — 2026-08-13：FX 活跃链排空闭合 + 三账本写入态定案（F1076 遗留线索闭合）
+
+- **〔排空定位〕**帧函数 **0x41B5D0**（dt 累加 [screen+0x428208]、门字节 [+0x428204]，唯一 E8 调用者 0x41C1C7=渲染/驱动区）内两趟循环走 **screen 内嵌 CList 容器 +0xE1170**（链接 {obj@4, prev@8, next@0xC}，0x10 链节点 vt 0x476448 与账本 B 同款）：pass A **0x41BCC4**（类型字 [obj+0x10]∈{0x96,0x48} → **vtable slot3** 调用 → 完成字节 [obj+4]==2 → 容器 slot5 摘链 + slot0 删除析构）；pass B **0x41BFA5**（**slot4** 移动步进）；实体链 **+0xE1158** 同函数 0x41BF2F 循环（状态字节 [obj+0x88] ≤1/==3 门 → 0x40A8A0/0x40BB00/slot 0x80）。
+- **〔账本写入态定案〕**A/B/EFX 三 .data 容器 **全 .text 引用均为尾插代码**（每插 3 引用：cmp 读 head、写回 head、重读 head 存 tail；A≈44 插入函数/B=6/EFX=7），严格遍历形状扫描（slot 虚调+[+0xC] 步进+回跳+无 head 写回）零命中；.data/.rdata 无指针表 → **纯追加账本（影子登记/泄漏式设计〔推断〕），不存在排空**。
+- **〔容器家族〕**screen 内嵌三容器 ctor 0x418B00：+0xE1154（vt 0x4766F0,head+0xE1158 实体）/+0xE116C（vt 0x4766D4,head+0xE1170 FX 活跃）/+0xE1184（vt 0x4766B8,head+0xE1188）；布局 {vt@0,head@+4,tail@+8,count@+0x14}；push_back=slot1（0x4232A0）/remove=slot5（0x423450）；活跃链插入点 0x418EAD（实体激活区，独立于账本插入）。
+- **〔生命周期全链〕**生产者→init 0x438100/0x437850→账本尾插（只写）+活跃链 push_back→帧 passA slot3 tick+完成摘删→passB slot4 移动→**拆除批量排空 0x419570**（整链逐节点容器摘除+虚析构删除）；实体死亡 purge 0x42280（类型门 {0x1E,0x1D,0x323,0x279}）→0x41B570 清属主回指 [obj+0x14]/[obj+0x18]（扫 +0xE1170 与 +0xE11A0 双链）+清选中槽 [screen+0x364444/48/4C/50]。
+- **〔F1076 勘误×2〕**①「ticker 0x4378E0 经 0x4767A8 分派」双错：0x4378E0 是 **FX 基类 vtable 0x476458** 的 slot3（R770 误读相邻链节点析构 vtable 0x476454 的槽区）；实体对类 slot3 覆写为 0x4381A0、slot4=0x4382C0；帧分派来自 0x41BCC4 循环。②「EFX 记录 0x20B」→实为 **0x20 字节**（0x437AE7/0x407398 `push 0x20`）。
+- **〔次级〕**0x5600FC 非 FX：步长 324 槽表（lea [edx*4+0x5600fc], idx=byte[ent+0x8C]→[ent+0x90] @0x405875）+消息缓冲参数（push 0x5600fc+索引→0x40A4D0）。
+- 落盘：fx-active-chain-drain-evidence.json（F1077，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 771。

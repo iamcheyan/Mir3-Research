@@ -1,0 +1,52 @@
+{
+    "evidence_id": "fx-active-chain-drain-2026-08-13-f1077",
+    "title": "Round 771 (F1077): FX ACTIVE-CHAIN DRAIN closed - the per-frame walkers live on SCREEN-EMBEDDED CList containers (+0xE1154/+0xE116C/+0xE1184), NOT on the three .data ledgers; ledgers A/B/EFX proven write-only (append-only shadows); R770 vtable/slot corrections",
+    "date": "2026-08-13",
+    "objective": "Locate the drain/walker R770 could not find for FX chains B/EFX.",
+    "question": "Who ticks and removes the 0x144B FX pair-nodes and 0x20 effect records, if .text never reads the ledger heads?",
+    "method": "imm32 census 0x560000-0x560120 (all sections incl .data pointer-table scan); insert-vs-walker classification of every ledger ref (head writeback / [+0xC] step / backjmp heuristics); disp32 scan 0xE1158/0xE1170/0xE116C/0xE11D0 for screen-relative chains; vtable family dump 0x476430-0x4768B0; disasm 0x41B5D0-0x41C0D0 (frame update), 0x419570 (teardown drain), 0x42280+0x41B570 (death purge), 0x418B00 (container-family ctor), 0x4232A0 (push_back).",
+    "scope": "screen-embedded container family; frame walker loops; ledger write-only proof; FX vtable family re-map.",
+    "cell_analysis": {
+        "ledger_census": "every imm32 ref to 0x560088/8C/98 (A), 0x5600B8/BC/C8 (B), 0x5600E8/EC/F8 (EFX) in .text is insert-path code (3 refs per tail-insert: cmp-read of head, head writeback, head re-read for tail store) => A~44 insert functions, B=6 producers, EFX=7 producers; ZERO walk/drain/unlink loops (strict shape scan: slot-vcall + [+0xC] step + backjmp + no head writeback = 0 hits; drain-loop scan hits were spawn-loop false positives); .data/.rdata contain no pointer tables to these containers (census over all sections)",
+        "screen_container_family_ctor_0x418B00": "screen embeds vtabled CList containers: +0xE1154 (vt 0x4766F0, head +0xE1158, entity chain), +0xE116C (vt 0x4766D4, head +0xE1170, FX-active chain), +0xE1184 (vt 0x4766B8, head +0xE1188); container layout {vt@0, head@+4, tail@+8, count@+0x14}; link nodes are the same 0x10B {vt 0x476448, obj@4, prev@8, next@0xC} as ledger B; push_back=slot1 (0x4232A0: alloc 0x10, vtable 0x476448, tail-insert, count++), remove=slot5 (0x423450)",
+        "frame_walker_passA_0x41BCC4": "walks +0xE1170 links {obj=[link+4], next=[link+0xC]}; type word [obj+0x10] in {0x96, 0x48} -> vtable SLOT 3 call (0x41BCEF/0x41BD05 call [vt+0xC]); result byte [obj+4]==2 -> container remove (call [vt_cont+0x14] push link) + delete (slot 0, push 1)",
+        "frame_walker_passB_0x41BFA5": "same chain, calls vtable SLOT 4 (call [vt+0x10]) on every obj = movement stepper (base 0x437DF0 / pair 0x4382C0); sibling loop 0x41BF2F walks entity chain +0xE1158 with state byte [obj+0x88] gates (<=1, ==3) calling 0x40A8A0/0x40BB00/slot 0x80",
+        "teardown_drain_0x419570": "bulk delete of whole +0xE1170 chain: per link container-remove (slot 5) + obj deleting dtor (slot 0, push 1); reached from scene teardown flow",
+        "death_purge_0x42280_0x41B570": "entity-removal purge: type-gated {0x1E,0x1D,0x323,0x279} on word[obj+4] over +0xE1158 links; 0x41B570 nulls owner back-pointers [obj+0x14]/[obj+0x18] across BOTH +0xE1170 and +0xE11A0 chains; also clears select slots [screen+0x364444/48/4C/50]",
+        "frame_driver": "0x41B5D0 (entry): dt arg accumulates into [screen+0x428208], gated by byte [screen+0x428204] (0=early out, 1=2500ms threshold path); sole E8 caller 0x41C1C7 (0x41Cxxx render/tick driver region)",
+        "active_chain_insert": "0x418EAD (lea ecx,[esi+0xE116C] family push_back call) in the entity-spawn region 0x418Exx - the migration into the active chain happens at spawn/activation, separate from the ledger inserts"
+    },
+    "exe_trace": {
+        "lifecycle": "network/spawn producer -> init 0x438100/0x437850 -> ledger tail-insert (A/B/EFX, write-only) AND/OR active push_back (+0xE116C slot 1 @0x418EAD region) -> frame pass A slot-3 tick + done-byte removal (0x41BCC4) -> frame pass B slot-4 movement (0x41BFA5) -> teardown bulk delete (0x419570)",
+        "slot_dispatch": "frame loops dispatch vtable slots 3/4 on the OBJECT's vtable: FX-base 0x476458 {0x40EA60 dtor, 0x435030 base-dtor, 0x403AC0, slot3=0x4378E0 tick, slot4=0x437DF0 move, 0x435A20}; entity-pair 0x4767A8 {slot3=0x4381A0, slot4=0x4382C0 overrides}"
+    },
+    "audit_vs_exe": {
+        "F1076": "CORRECTED x2: (1) 'ticker 0x4378E0 dispatched via vtable 0x4767A8' - wrong on both counts: 0x4378E0 is slot 3 of the FX-BASE vtable 0x476458 (R770 read slots of the ADJACENT link-dtor vtable 0x476454); pair nodes override slot 3 with 0x4381A0; frame dispatch comes from walker 0x41BCC4. (2) 'EFX records 0x20B' - actually 0x20 bytes (push 0x20 @0x437AE7 and @0x407398); 0x20B was a misparse",
+        "F1053": "container shape refined: embedded family layout {vt@0, head@+4, tail@+8, count@+0x14} (push_back 0x4232A0); .data ledgers use {head@0, tail@+4, count@+0x10}",
+        "F1054": "link-node vtable 0x476448 serves ledgers AND embedded containers (single link class); 0x476454 is the EFX-ledger link dtor variant",
+        "F1070": "spawner-produced 0x20 records live only in the write-only EFX ledger - never ticked; active lifecycle belongs to 0x144B-class nodes on +0xE1170"
+    },
+    "contrast": {
+        "ledgers_A_B_EFX": "write-only append registries (no reader anywhere in .text/.data): bookkeeping shadows or leak-by-design",
+        "active_chains": "screen-embedded containers ticked every frame by 0x41BCC4 (slot 3 + removal) / 0x41BFA5 (slot 4) and drained at teardown 0x419570"
+    },
+    "verdict": "R770's missing drain located: the FX lifecycle runs entirely on the screen-embedded CList family (+0xE1154/+0xE116C/+0xE1184) driven by frame function 0x41B5D0 (caller 0x41C1C7) - pass A slot-3 tick with done-byte unlink+delete, pass B slot-4 movement, teardown bulk delete, entity-death owner-pointer purge; the three .data ledgers are proven write-only shadows with no drain at all.",
+    "evidence_level": "primary-bytes",
+    "evidence_level_note": "All census scans + disasm from .text/.rdata bytes; ledger write-only claim is an exhaustive-imm32-scan result (absence proof within static image).",
+    "cross_refs": [
+        "F1076: FX chain triage (producer census stands; vtable/slot/drain conclusions corrected here)",
+        "F1070: EFX spawner (record size corrected 0x20B -> 0x20)",
+        "F1053: container layout",
+        "F1054: link node vtables",
+        "F1065/F1069: frame/render driver region 0x41Cxxx"
+    ],
+    "tool": "capstone disasm + imm32/disp32 census + E8 caller scan (Tools/reverse-engineering/disasm_capstone.py PeImage)",
+    "reproduce": "scan imm32 0x560000-0x560120 across all sections; scan disp32 0x000E1158/0x000E1170/0x000E116C/0x000E11D0; disasm 0x41B5D0+0x40 (entry/dt gate), 0x41BCC4+0x90 (pass A), 0x41BF2F+0x60 (entity walk), 0x41BFA5+0x40 (pass B), 0x419570+0x44 (teardown), 0x418B00+0xA0 (ctor), 0x4232A0+0x50 (push_back), 0x42280+0xE0 (death purge)",
+    "notes": [
+        "0x144B-class nodes: ctor 0x434EF0 writes base vtable 0x476884; network spawn overrides [obj]=0x4767A8 @0x420EE8; alloc sizes seen 0x144 (network 0x420EBF) and 0x13C (manager 0x40D09/0x407448/0x40983F) - two sizes coexist",
+        "done byte [obj+4] initialized to 2 by ctor 0x434EF0; pass A checks it AFTER slot-3 call (slot 3 is expected to clear/set it)",
+        "secondary: 0x5600FC is NOT an FX array - stride-324 slot table (lea [edx*4+0x5600fc], idx=byte[ent+0x8C], stored to [ent+0x90] @0x405875) plus message-buffer args (push 0x5600fc + index, call 0x40A4D0 @0x40E411/0x40E458/0x40E49E)",
+        "EFX producer record fields: {+0xC time (call [0x47630C]=timeGetTime), +0x10 lifetime 0xEA60/0x2710 by producer, +0x14 x, +0x18 y, word+8 (0xDC or RNG), +0x1C 1}",
+        "732 consecutive rounds F335-F1077"
+    ]
+}
