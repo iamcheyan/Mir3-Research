@@ -1,0 +1,40 @@
+{
+  "evidence_id": "shared-widget-vtable-family-2026-08-12-f1041",
+  "title": "Round 735 (F1041): shared widget vtable family FULL (F752/F917/F987 extension) - slot pair {draw 0x423D00, set-frame 0x423F80 [+0x30]} recurs across >=15 vtables (imm32 scan 15/14 hits): 0x476610 window base (+0x08/+0x0C, repeats +0x20/+0x24, +0x38/+0x3C sub-object prefixes), 0x4767D0 party (dtor 0x4245A0 = F752 teardown), 0x476A50 equipment (dtor 0x44AFF0/init 0x44B0B0 = F987); dispatch 0x423CF0 in 2 slots (0x47662C/0x476A78); 0x423F90 sets [+0x34] with 0 refs (dead thunk); 0x423D00 = SHARED widget frame draw (WIL frame [0x30] via [0x28], blit 0x460240, fallback color quad 0x4542A0/0x4542F0 alpha [0x50]/[0x51]) - not party-member-specific",
+  "date": "2026-08-12",
+  "objective": "Map the shared widget vtable family and its slot layout.",
+  "question": "Which vtables share the 0x423D00 draw and 0x423F80 set-frame slots?",
+  "method": "Disasm setters 0x423F80/0x423F90 + imm32 whole-.text scan for method refs + vtable dumps 0x476610/0x4767D0/0x476A50.",
+  "scope": "0x423F80-0x423F97; vtables 0x476610/0x4767D0/0x476A50 + 12 more.",
+  "cell_analysis": {
+    "0x423F80": "set frame: [ecx+0x30] = arg (14 vtable slots)",
+    "0x423F90": "set [+0x34] = arg (0 refs - dead thunk)",
+    "draw_pair": "0x423D00 at 0x476618/630/648/668/7D8/80C/840/87C/8DC/914/95C/A60 (+15 total)",
+    "vtable_476610": "base 0x413F30/0x414010; pair at +0x08, +0x20, +0x38 (sub-object prefixes)",
+    "vtable_4767D0": "party: dtor 0x4245A0 (F752) + pair at +0x08",
+    "vtable_476A50": "equipment: 0x44AFF0/0x44B0B0 (F987) + pair at +0x2C/+0x30",
+    "dispatch": "0x423CF0 at 0x47662C + 0x476A78 (2 slots)"
+  },
+  "exe_trace": {"widget_chain": "set-frame 0x423F80 -> [0x30] -> draw 0x423D00 blit 0x460240 / quad fallback"},
+  "audit_vs_exe": {
+    "F917": "0x423D00 party-member draw -> now shared family draw",
+    "F752": "0x4245A0 teardown anchors 0x4767D0",
+    "F987": "0x44AFF0/0x44B0B0 anchor 0x476A50"
+  },
+  "contrast": {
+    "party_vs_equipment": "same draw/set-frame slots, different class bodies",
+    "alive_vs_dead": "0x423F80 14 slots vs 0x423F90 0 refs"
+  },
+  "verdict": "Shared widget vtable family PRIMARY-verified: draw 0x423D00 + set-frame 0x423F80 slot pair recurs across >=15 window vtables (party/equipment/window-base confirmed anchors); 0x423D00 upgraded from party-member draw to SHARED widget frame draw; 0x423F90 dead.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Setter bodies + imm32 vtable scan + vtable dumps decoded from .text/.rdata.",
+  "cross_refs": ["F917: member draw", "F752: party teardown", "F987: equipment ctor"],
+  "tool": "capstone disasm + struct scan",
+  "reproduce": "disasm 0x423F80+0x8; scan imm32 0x423D00/0x423F80; dump 0x476610/0x4767D0/0x476A50",
+  "notes": [
+    "draw 0x423D00 x15 vtables",
+    "set-frame 0x423F80 x14",
+    "set [+0x34] 0x423F90 dead",
+    "party 0x4767D0 / equipment 0x476A50 anchors"
+  ]
+}

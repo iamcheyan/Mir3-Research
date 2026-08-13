@@ -4609,3 +4609,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口几何 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 735 (2026-08-12) — 共享 widget vtable 家族全量（Finding 1041）
+
+- **draw/set-frame 槽位对跨 ≥15 vtable**（组队/装备/窗口基类锚定）；0x423D00 升格共享绘制；0x423F90 死 thunk。
+- 落盘：`shared-widget-vtable-family-evidence.json`（F1041）+ RESEARCH_LOG Round 735。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（共享 widget vtable 家族完整；下一弧：窗口系统弧复核/模拟器 polish）。
