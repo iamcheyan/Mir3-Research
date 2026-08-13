@@ -9348,3 +9348,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔屏幕数学〕**x=(格X-锚X)×48−scrollX−0xC8，y=(格Y-锚Y)×32−scrollY−0x7D；0x460240 @0x8AB7A8 裁剪窗 **800×492**。
 - **〔渲染驱动器 0x41C460-0x41C7B9〕**34×34 窗口 0x43CA40 属性 nibble 0-9 → 表 +0xF5390/+0xF5394 → 0x434A20 贴花；第二循环 0x18 窗 + 玩家格判定 [0x2F884C/0x2F8850] → 进格特效 + 英雄链 0x40B180/0x40CE20。
 - 落盘：cell-layer-render-evidence.json（F1069，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 763。
+## Round 764 (F1070) — 2026-08-12：可走性消费者分类 + 第二全局链语义闭合（F1054 线索）
+
+- **〔0x4379xx = FX 撞击生成器〕**实体类型字 [esi+0x10]∈{9,0x35} → 目标格 (x=[esi+0xB0], y=[esi+0xB4]) 在**第二图对象 0x574118** 上经 0x43C9F0 查可走；**不可走（阻挡面）才生成**。类型 9：定时器推进至 [esi+0xF8]−0x30、RNG 0x401670(330..334)、0x144B 节点（ctor 0x434EF0，vtable **0x4767A8**=F1051 实体对家族）、init 0x438100(...,0x2710,...) → 推入 **FX 链 [0x5600B8]/[0x5600BC]/计数 [0x5600C8]**（链节点 vtable **0x476448**=F1054 ×114 家族确认）；随后 0x20B 效果记录 {+0xC time、+0x10=0x2710、+0x14 x、+0x18 y、word+8=0xDC 或 RNG+0x104、+0x1C=1} → 效果链 [0x5600E8]/[0x5600EC]/计数 [0x5600F8]（vtable 0x476454）。类型 0x35：同门直建记录。
+- **〔F1049/F1054 遗留线索闭合〕**「第二全局链 0x5600B8/0x5600BC 语义」= FX 节点链 + 效果记录链。
+- **〔消费者全分类〕**0x43799A/0x437BE9（本生成器）、0x437E72/0x437F25（同族变体）、0x43CCE9（图内矩形探测）；0x43B880 滚动步进调用者 = 英雄移动区 0x4105xx-0x4120xx。**可走性是特效放置门，非寻路**。
+- **〔第二图对象〕**固定 .data 实例 0x574118（≠ [screen+0xF5200]，写入者待查）。
+- 落盘：fx-impact-spawner-evidence.json（F1070，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 764。

@@ -1,0 +1,33 @@
+{
+  "evidence_id": "fx-impact-spawner-2026-08-12-f1070",
+  "title": "Round 764 (F1070): walkable-check consumers identified - 0x4379xx family = FX IMPACT SPAWNER keyed by entity word type [esi+0x10] in {9, 0x35}: target cell (x=[esi+0xB0], y=[esi+0xB4]) checked on a SECOND map object instance 0x574118 via 0x43C9F0; spawn fires only when the cell is NOT walkable (test al,al / jne skip -> blocked-cell = impact surface); type 9 path: timers [esi+0xF8]/[esi+0xFC] advance to [esi+0xF8]-0x30, RNG 0x401670(0x14A,0x14E)=330..334, alloc 0x144-byte node, ctor 0x434EF0, vtable 0x4767A8 (F1051 entity-pair family), init 0x438100(node, rand, 0, 0, x, y, 0x2710, 0, 0) -> pushed into FX chain [0x5600B8](head)/[0x5600BC](tail)/[0x5600C8](count) with 16-byte list node vtable 0x476448 (F1054's x114 FX-node vtable CONFIRMED as this chain's link nodes); then a 0x20-byte effect record {+0/+4 links, +0xC timeGetTime, +0x10 = 0x2710, +0x14 x, +0x18 y, word +8 = 0xDC (220) or rand+0x104 (260+), +0x1C = 1} -> effect chain [0x5600E8]/[0x5600EC]/count [0x5600F8], node vtable 0x476454 (F1054 FX family); type 0x35 path: same walkable gate, direct 0x20-record with word+8 = RNG+0x104 -> same effect chain; RESOLVES the F1049/F1054 open lead 'second global chains 0x5600B8/0x5600BC semantics' = FX node list + effect record list; walkable-check caller set fully triaged: 0x43799A/0x437BE9 (this spawner), 0x437E72/0x437F25 (same family variants), 0x43CCE9 (map-internal rect probe); 0x43B880 scroll-step callers = hero movement region 0x4105xx-0x4120xx; map object at fixed .data 0x574118 distinct from [screen+0xF5200] (second instance, writer TBD)",
+  "date": "2026-08-12",
+  "objective": "Triage all walkable-check consumers and close the second-global-chain lead.",
+  "question": "Who consumes walkability, and what are the 0x5600B8/0x5600BC chains?",
+  "method": "E8 caller scan (F1069 follow-up); disasm 0x437900-0x437C90; map node vtables to F1051/F1054 families.",
+  "scope": "0x4379xx spawner; FX chains [0x5600B8/BC/C8] and [0x5600E8/EC/F8]; second map object 0x574118.",
+  "cell_analysis": {
+    "gate": "0x43C9F0(map2, x, y) == 0 (blocked) -> spawn",
+    "entity_keys": {"type_word": "[esi+0x10]", "values": [9, 53]},
+    "rng": "0x401670(min,max) inclusive",
+    "fx_node": {"size": "0x144", "vtable": "0x4767A8 (F1051 pair)", "ctor": "0x434EF0", "init": "0x438100(...,0x2710,...)"},
+    "fx_chain": {"head": "[0x5600B8]", "tail": "[0x5600BC]", "count": "[0x5600C8]", "node_vtable": "0x476448"},
+    "effect_record": {"size": "0x20", "fields": "+0xC time, +0x10 0x2710, +0x14 x, +0x18 y, +8 word type (0xDC | rand+0x104), +0x1C 1"},
+    "effect_chain": {"head": "[0x5600E8]", "tail": "[0x5600EC]", "count": "[0x5600F8]", "node_vtable": "0x476454"},
+    "map_object2": "0x574118 (fixed .data instance)"
+  },
+  "exe_trace": {"spawn": "type 9/0x35 entity ticks -> cell blocked? -> RNG node -> FX chain + effect record chain"},
+  "audit_vs_exe": {
+    "F1054": "0x476448 x114 = FX chain [0x5600B8] link nodes; 0x476454 = effect-record chain [0x5600E8] - lead CLOSED",
+    "F1051": "entity-pair vtable 0x4767A8 reappears as the 0x144B spawned node",
+    "F1065": "0x43C9F0 walkability consumer semantics: impact-surface gating"
+  },
+  "contrast": {"walkable_1": "no spawn (open ground)", "walkable_0_blocked": "impact FX spawns"},
+  "verdict": "Walkability consumers are effect-placement gates, not pathfinding; the second global chain pair is the runtime FX list + effect-record list with full node layouts; a second fixed map object instance exists at 0x574118 (writer TBD).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Spawner + chains decoded from .text; vtable identities from prior primary-bytes rounds.",
+  "cross_refs": ["F1069: accessor", "F1065: walkable check", "F1054: FX node vtables", "F1051: entity pair"],
+  "tool": "capstone disasm + E8 scan",
+  "reproduce": "disasm 0x437900+0x3C0; vtable lookup 0x4767A8/0x476448/0x476454",
+  "notes": ["0x5600C8/0x5600F8 = live counts (inc on push)", "0x2710 = 10000 constant in both node init and record", "725 consecutive rounds F335-F1070"]
+}

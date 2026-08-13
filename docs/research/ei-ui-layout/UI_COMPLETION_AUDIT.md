@@ -4762,3 +4762,7 @@ git diff --check
 
 - 14B 格记录字节 0-8 + 属性字双端锚定（数据侧工具互证）；mod-14 层族分裂补全；blend/动画偏移表 + 48×32 尺寸门 + 800×492 裁剪窗。
 - 落盘：`cell-layer-render-evidence.json`（F1069）+ RESEARCH_LOG Round 763。
+## Round 764 (2026-08-12) — FX 撞击生成器（Finding 1070）
+
+- 可走性消费者=特效放置门；0x5600B8/0x5600BC/0x5600C8 = FX 节点链、0x5600E8/0x5600EC/0x5600F8 = 效果记录链（F1054 线索闭合）；第二图对象实例 0x574118。
+- 落盘：`fx-impact-spawner-evidence.json`（F1070）+ RESEARCH_LOG Round 764。
