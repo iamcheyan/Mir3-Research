@@ -4750,3 +4750,7 @@ git diff --check
 
 - 505/544 字节级精确 + 39 图 13B 格族（数据侧变体）+ 库组分布——客户端公式与原版数据互证。
 - 落盘：`loader-realmap-validation-evidence.json`（F1066）+ RESEARCH_LOG Round 760。
+## Round 761 (2026-08-12) — 瓦片库引导（Finding 1067）
+
+- 名字表启动填充 + 70 库 5 地形组索引序 + WIL/WIX 惰性帧 + LRU + chunk1 库索引门——瓦片库子系统端到端闭合。
+- 落盘：`tilelib-bootstrap-evidence.json`（F1067）+ RESEARCH_LOG Round 761。

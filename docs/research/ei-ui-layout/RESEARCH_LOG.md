@@ -9326,3 +9326,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔库组分布〕**有效图中组 0 ×491、组 1 ×14 → 客户端载 (组+1)×14 库（14 或 28）。
 - **〔开放线索〕**瓦片库名表 0x56B22C 超出原始文件映射（运行时填充，初始化器待查）。
 - 落盘：loader-realmap-validation-evidence.json（F1066，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 760。
+## Round 761 (F1067) — 2026-08-12：瓦片库启动引导全解（F1066 开放线索闭合）
+
+- **〔0x452B20 名字拷贝器〕**70 个内联 strcpy 块（repne scasb + rep movsd）把 .rdata 串拷入 [this+0xB130+i×0x104]；管理器基 0x5600FC + 0xB130 = **0x56B22C** 与加载器 lea 精确重合 → 名字表非死表，启动时填充。
+- **〔组序〕**索引序 = 拷贝序（串降序）：[0-13] 默认根组（k: 0=tilesc…13=object2）、[14-27] Wood、[28-41] Sand、[42-55] Forest、[56-69] Snow；open-all 循环 @ 0x452AF7（模式 0）。
+- **〔加载器复位区间勘正〕**0x5612B4-0x565994 = **恰好槽 14-69**（56 个地形组对象）；默认组 0-13 启动后保持打开；每图重开组 (字节[0x124]+1)。
+- **〔WIL 对象/条目布局〕**对象 {+4 模式、+8 wil 句柄、+0xC wix 索引（0x20/条）、+0x10 数、+0x38 条目、+0x3C 像素、+0x40 名}；条目 {+0 last-use、+4 偏移、+8 w、+0xA h、+0x15 word×2=像素字节、+0x1C 缓存}；0x466640 惰性取帧 + LRU 0x466770（5 分钟释放、15 秒扫描门 0x3A98）；0x466720 内存模式访问器（w/h ≤ 0x1000）。
+- **〔0x43B440 再确认〕**chunk1 值 v∈[0,0x45]=70 库索引（门 cmp 0x45）；(v+v/45)%14≤2 → 瓦片层 k0-2（tilesc/tiles30/Tiles5）进 1152×768 预渲染；边界怪例 v=55/69（k=13）亦通过。
+- 落盘：tilelib-bootstrap-evidence.json（F1067，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 761。

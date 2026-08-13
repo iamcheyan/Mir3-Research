@@ -1,0 +1,32 @@
+{
+  "evidence_id": "tilelib-bootstrap-2026-08-12-f1067",
+  "title": "Round 761 (F1067): tile-library BOOTSTRAP decoded - F1066 open lead CLOSED: name table 0x56B22C IS runtime-filled by 0x452B20 (70 inline strcpy blocks: repne scasb strlen + rep movsd copy of each .rdata string -> [this+0xB130 + i*0x104]); manager base 0x5600FC + 0xB130 = 0x56B22C EXACT match with the map-loader lea, stride 0x104 both -> name array is manager+0xB130; NAME ORDER (index = copy order, strings descending 0x47D51C..0x47CE24): [0..13] default root group (k: 0=tilesc,1=tiles30,2=Tiles5,3=smtiles,4=houses,5=cliffs,6=dungeons,7=inners,8=furnitures,9=walls,10=smobjects,11=animations,12=object1,13=object2), [14..27]=Wood subdir, [28..41]=Sand, [42..55]=Forest, [56..69]=Snow; open-all loop at 0x452AF7-0x452B14 (prev fn tail: push 0/mode0 0x4660E0, esi+=0x104, edi+=0x144, dec ebx); map-loader reset range 0x5612B4-0x565994 = EXACTLY slots 14-69 (56 terrain-group objects; default group 0-13 kept open from boot) - so per-map the loader resets all terrain libs and reopens only group (byte[0x124]+1); WIL OBJECT layout (from 0x466160/0x466640/0x466720): +4 mode, +8 .wil handle, +0xC .wix index array (0x20/entry), +0x10 frame count, +0x14 last sweep time, +0x38 last entry ptr, +0x3C last pixels ptr, +0x40 name copy; WIL ENTRY (0x20B): +0 last-use, +4 file offset, +8 word width, +0xA word height, +0x15 (unaligned word, x2 = pixel bytes), +0x1C pixel cache ptr (0=uncached); 0x466640 = LAZY FRAME FETCH (bounds vs count, seek [0x4761EC], read 0x11B header into entry+8, alloc size, read pixels) + LRU: sweep 0x466770 frees frames unused >= 0x493E0 (5 min), sweep gate 0x3A98 (15 s); 0x466720 = memory-mode accessor (index [+0x30] + base [+0x34], w/h <= 0x1000 gates); 0x43B440 re-interpretation CONFIRMED: chunk1 record value v in 0..0x45 (70 libs, cmp 0x45 gate) = lib index v (0x5600FC + v*0x144), gate (v + v/45) % 14 <= 2 selects tile layers k=0/1/2 (tilesc/tiles30/Tiles5) for the 1152x768 bg prerender (48x32 pitch), boundary quirk: v=55/69 (k=13 object2) also pass",
+  "date": "2026-08-12",
+  "objective": "Resolve who fills the tile-lib name table and map lib index semantics.",
+  "question": "Where do the 70 tile-library names come from, and how do map cell values index them?",
+  "method": "imm32 scan of string blob refs; disasm 0x452B20 (name copier), 0x452AF7 tail (open-all), 0x466640/0x466720/0x466770 (WIL accessors/LRU), cross-check loader leas and reset range arithmetic.",
+  "scope": "0x452A00-0x453650 bootstrap family; WIL object/entry layout; lib table 0x5600FC.",
+  "cell_analysis": {
+    "bootstrap": {"name_copier": "0x452B20 (ret 8)", "dest": "this+0xB130+i*0x104", "manager_base": "0x5600FC [INFERENCE: matches loader lea 0x56B22C and stride]", "count": 70},
+    "group_index": {"0": "default root .\\Data\\*.wil", "1": "Wood", "2": "Sand", "3": "Forest", "4": "Snow"},
+    "loader_reset": "slots 14-69 exactly (0x5612B4-0x565994)",
+    "wil_object": {"+4": "mode", "+8": "wil handle", "+0xC": "wix index (0x20/entry)", "+0x10": "count", "+0x38": "last entry", "+0x3C": "last pixels", "+0x40": "name"},
+    "wil_entry": {"+0": "last-use", "+4": "offset", "+8": "w", "+0xA": "h", "+0x15": "word x2 = pixel bytes", "+0x1C": "cache ptr"},
+    "lru": {"free_after": "0x493E0 ms (5 min)", "sweep_gate": "0x3A98 ms (15 s)", "sweeper": "0x466770"},
+    "cell_gate": "(v + v/45) % 14 <= 2 -> tile layers k0-2; quirk v=55/69 pass"
+  },
+  "exe_trace": {"boot": "fill 70 names -> open-all mode0 -> per map enter: reset slots 14-69, reopen group (byte+1)"},
+  "audit_vs_exe": {
+    "F1066": "open lead CLOSED: names boot-filled by 0x452B20",
+    "F1065": "loader lib loop now fully meaningful (names valid at runtime); (group+1)*14 semantics confirmed",
+    "F1049": "lib object table 0x5600FC stride 0x144 family reconfirmed"
+  },
+  "contrast": {"dead_table_assumption": "refuted", "boot_filled": "confirmed"},
+  "verdict": "Tile-library subsystem closed end-to-end: 70 libs in 5 terrain groups, names boot-copied into manager+0xB130, per-map group reopen, WIL/WIX split with lazy frame fetch + 5-min LRU, and chunk1 cell values = lib index with a tile-layer-only mod gate for the background prerender.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All layouts from .text disasm; manager base tie is arithmetic-strong inference.",
+  "cross_refs": ["F1065: loader", "F1066: open lead", "F1008: cell stride", "F1049: lib table"],
+  "tool": "capstone disasm + imm32 scan",
+  "reproduce": "disasm 0x452B20+0x40; 0x466640+0xE0; scan refs into 0x47CE00-0x47D600",
+  "notes": ["name[0]=tilesc .. name[13]=object2 per group", "default group never re-selected by loader (byte+1 >= 1)", "722 consecutive rounds F335-F1067"]
+}
