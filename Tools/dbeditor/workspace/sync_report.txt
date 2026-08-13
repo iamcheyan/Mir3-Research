@@ -1,7 +1,18 @@
-[2026-08-13 21:44:43] 库版本(同步前): 2026.08.13.4
-[2026-08-13 21:44:43] 服务端库: /tmp/rt_db/System.db
-[2026-08-13 21:44:43] 客户端库: /home/tetsuya/development/zircon/Debug/Client/Data/System.db
-[2026-08-13 21:44:43] 阶段A校验通过（解析/枚举/范围/帧号）。
-[2026-08-13 21:44:43] 差异应用: 新增 0 / 修改 0 / 删除 0
-[2026-08-13 21:44:43] 阶段B引用完整性校验通过。
-[2026-08-13 21:44:43] CHECK OK: 工作区可安全同步（新增 0 / 修改 0 / 删除 0）。
+[2026-08-13 21:58:29] 库版本(同步前): 2026.08.13.4
+[2026-08-13 21:58:29] 服务端库: /home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db
+[2026-08-13 21:58:29] 客户端库: /home/tetsuya/development/zircon/Debug/Client/Data/System.db
+[2026-08-13 21:58:29] 阶段A校验通过（解析/枚举/范围/帧号）。
+[2026-08-13 21:58:29] 差异应用: 新增 0 / 修改 1 / 删除 0
+[2026-08-13 21:58:29] 阶段B引用完整性校验通过。
+[2026-08-13 21:58:29] 服务端库备份 -> /home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/dbeditor-20260813-215829/System.db
+[2026-08-13 21:58:29] 客户端库备份 -> /home/tetsuya/development/zircon/Debug/Client/Data/Backup/dbeditor-20260813-215829/System.db
+[2026-08-13 21:58:29] 已写服务端库，版本 2026.08.13.4 -> 2026.08.13.5
+[2026-08-13 21:58:29] 客户端库已更新 <- /home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db
+[2026-08-13 21:58:29] ROUND-TRIP OK: 22272 条记录逐字段读回验证通过（11 张受管表）。
+
+---- 变更明细 ----
+  修改 StoreInfo#30: Price
+---- 备份 ----
+  服务端: /home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/dbeditor-20260813-215829/System.db
+  客户端: /home/tetsuya/development/zircon/Debug/Client/Data/Backup/dbeditor-20260813-215829/System.db
+round-trip: 通过 (22272 条)
