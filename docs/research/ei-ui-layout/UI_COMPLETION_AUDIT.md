@@ -4774,3 +4774,7 @@ git diff --check
 
 - byte9/11 占用标记系统 + 8 向接近扫描 + 步进包 + 滚动步进消费——移动栈闭合（双占用体系：实体链 + 格位标记）。
 - 落盘：`hero-step-occupancy-evidence.json`（F1072）+ RESEARCH_LOG Round 766。
+## Round 767 (2026-08-12) — 占用系统勘误（Finding 1073）
+
+- 零写入者证明 + 3.35M 格实测 → byte9=静态 ID/byte10=旗标/byte11=运行时标记；F1072「动态占用」修订为「静态 ID 高亮」。
+- 落盘：`claim-producer-empirical-evidence.json`（F1073）+ RESEARCH_LOG Round 767。

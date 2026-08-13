@@ -9367,3 +9367,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔英雄接近步引擎 0x41087A-0x411391〕**命令分派（≤0x1F，索引表 0x4113CC/jt 0x4113A8）；路径 A：dir 0..7 { 0x43CC30（走+占用验证）→ 0x43C150（自占测试）→ 命中 } → 0x43C0F0 取占用者 ID → 发送 0x452170(outX,outY,id) @ [0x8AB828]（接近步〔推断〕）；发送后存目标格 [0x62ADC]/[0x62AE0]、置位 [0x62A50]/[0x62A54]=1、[0xEC]=1、虚槽+0x10、**0x43B880 滚动步进**（F1065 消费点）。路径 B：[0xEC]=2/3 行走态。
 - **〔实体新字段〕**[0x62A58] 图指针、[0xC0] 状态（0x13 跳过）、[0xC1]/[0xC2] 方向字节、[0xB4]/[0xC4]、[0xCC]/[0xD0] 当前格、[0xEC] 移动态。
 - 落盘：hero-step-occupancy-evidence.json（F1072，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 766。
+## Round 767 (F1073) — 2026-08-12：占用声明生产者定案（F1072 勘误：静态 ID 高亮系统）
+
+- **〔穷尽写入者扫描〕**cell byte9 全寻址形式（直址/SIB/word-imm@+8）零写入者；唯一命中 0x437B1A=F1070 效果记录 imm 0xDC（非地图格）；or/and 0x80/0x7F 形式全 .text 不存在。
+- **〔3.35M 格实测（60 图）〕**byte9 bit7 仅 282 格（0.008%）；byte9&0x7F 非零 ~10,156 格，值聚簇 {11:2761,10:2227,9:2047,60:968,1:889,58:851,61:194}——稀疏静态格 ID（门/触发器〔推断〕）；**byte11 bit7 文件中 0/3.35M 恒零**（纯运行时标记，0x43C1B0 置/0x43C270 清）；byte10∈{0,0x04}（9,971 格）静态旗标。
+- **〔语义修订〕**0x43C1B0/0x43C270 = 按静态 byte9-ID 匹配的 18×18 窗打标/清标（高亮某对象全部格）；F1072 接近步引擎走向「静态 ID 已标格」（门/触发接近），非动态实体占用。
+- **〔格记录总账〕**字节 0-9、11、word 0xC 锚定；byte10=静态旗标；仅 12-13 未映射。
+- 落盘：claim-producer-empirical-evidence.json（F1073，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 767。

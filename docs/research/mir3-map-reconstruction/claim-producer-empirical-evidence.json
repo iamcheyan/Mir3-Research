@@ -1,0 +1,30 @@
+{
+  "evidence_id": "claim-producer-empirical-2026-08-12-f1073",
+  "title": "Round 767 (F1073): claim-system CORRECTION via exhaustive writer scan + real-data measurement - F1072's 'dynamic entity claim' interpretation REVISED to a STATIC-ID HIGHLIGHT system: (1) exhaustive .text writer scans for cell byte9 (all addressing forms: mod01 reg-direct 88/80, SIB 44/4C/54/5C/64/6C/74/7C, word-imm at +8) find ZERO byte9 writers - the only hits are the effect-record init 0x437B1A (mov word[edi+8],0xDC - the F1070 0x20B record, not a map cell) and unaligned false positives; no or/and-0x80/0x7F forms exist at all; (2) real-data measurement over 60 valid 14B-cell maps (3,352,976 cells): byte9 bit7 set on only 282 cells (0.008%); byte9 & 0x7F nonzero on ~10,156 cells with clustered values {11:2761, 10:2227, 9:2047, 60:968, 1:889, 58:851, 61:194} - a sparse static per-cell id field (door/trigger/object ids [INFERENCE]); byte11 bit7 NEVER set in any file (0/3.35M) = pure runtime mark, consistent with 0x43C1B0 set / 0x43C270 clear; byte10 in {0, 4} only (0x04 on 9,971 cells) = static flag byte; (3) REVISED SEMANTICS: 0x43C1B0(x,y,id) marks all cells in the 18x18 window whose STATIC byte9-id equals the argument id (e.g. highlight every cell belonging to object/door id N), 0x43C270 unmarks them, 0x43C150 'free-or-marked' gate + 0x43C0F0 id read feed the hero approach-step scan against these static ids - so the F1072 step engine walks toward cells tagged with a given static id (door/trigger approach), not toward dynamically-claimed entity cells; (4) net cell-record state after F1065/F1069/F1072/F1073: bytes 0-9 + 11 + word 0xC anchored; byte10 = static flag (0x04); bytes 12-13 (high word of attr dword) still unmapped",
+  "date": "2026-08-12",
+  "objective": "Find the occupancy writers and measure the claim bytes on real data.",
+  "question": "Who writes byte9, and what do bytes 9-11 contain in real map files?",
+  "method": "Exhaustive instruction-pattern scan (direct/SIB/word-imm forms) over .text; byte9/10/11 histogram over 3.35M cells from 60 valid maps.",
+  "scope": "cell bytes 9-11 producers; 0x437B1A disambiguation.",
+  "cell_analysis": {
+    "byte9": "static id (99.7% zero; cluster {9,10,11,58,60,61,1}); bit7 rare (282/3.35M)",
+    "byte10": "static flag byte, values {0, 0x04}",
+    "byte11_bit7": "never set in files - runtime mark only (0x43C1B0/0x43C270 pair)",
+    "writers": "none in .text (0x437B1A = effect record, not cell)",
+    "mark_unmark": "0x43C1B0 / 0x43C270 keyed by static byte9-id match in 18x18 window"
+  },
+  "exe_trace": {"scan": "3 pattern families x .text; 60-map byte histogram"},
+  "audit_vs_exe": {
+    "F1072": "CORRECTED: 'occupant id' is a static map-data id; no runtime claim writers exist; approach-step targets static-id-marked cells",
+    "F1069": "byte10 now anchored (static flag 0x04); remaining unmapped: bytes 12-13",
+    "F1070": "0x437B1A correctly attributed to the effect record (mov word[edi+8],0xDC)"
+  },
+  "contrast": {"dynamic_claim_hypothesis": "refuted (zero writers)", "static_id_highlight": "confirmed (file data + mark/unmark pair)"},
+  "verdict": "The occupancy/claim layer is a static-id highlight system: map data carries sparse per-cell ids, runtime code marks/unmarks matching cells in an 18x18 window, and the hero approach scan walks toward marked cells.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Absence-of-writers proof via exhaustive pattern scan; byte semantics from 3.35M-cell measurement on original client data.",
+  "cross_refs": ["F1072: claim accessors + step engine", "F1069: cell anatomy", "F1070: effect record"],
+  "tool": "pattern scan + python histogram",
+  "reproduce": "scan 88/80 mod01+SIB disp8=9 and 66 C7 +8 over .text; histogram buf[i+9..i+11] over Map/*.map",
+  "notes": ["byte9-id cluster {9,10,11,58,60,61} suggests grouped object/trigger ids", "byte10 = 0x04 on 9,971 cells", "728 consecutive rounds F335-F1073"]
+}
