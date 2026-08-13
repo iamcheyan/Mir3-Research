@@ -1,0 +1,33 @@
+{
+  "evidence_id": "fx-chain-triage-2026-08-12-f1076",
+  "title": "Round 770 (F1076): FX CHAIN ARCHITECTURE full triage - three global chains, producer/consumer census: (A) MAIN FX LIST [0x560088]/[0x56008C]/[0x560098] - 100+ .text refs across the FX-manager region 0x406Bxx-0x40A0xx (producers AND walkers, the F296 name-plate/F1054 x114 family core); (B) ENTITY-PAIR NODE LIST [0x5600B8]/[0x5600BC]/[0x5600C8] - 0x144-byte nodes (ctor 0x434EF0, vtable 0x4767A8, init 0x438100), SIX live producer sites + the one dead spawner from F1070: (1) screen message region 0x420F2D/0x42106F/0x42132D - network-driven spawns incl. a RETRY pattern (0x420F3A: on failure RNG 0x401670(1,8) bumps timer [obj+0xFC] then RE-LINKS the object into chain B, else dtor) so chain B doubles as a pending/retry queue, (2) entity virtual slot+0x18 spawn 0x4137C0 (args word [esi+0x62B24], [esi+0xCC]), (3) FX-manager batch loop (fn at 0x40A770: array stride walk -> 0x437850 per element -> push), (4) dead 0x437A4D (F1070/F1071); NODE INITIALIZER 0x437850 decoded: wraps main ctor 0x435030, stores arg word->[+0x13C], dwords->[+0x140]/[+0x144], then 0x43D190 direction byte ->[+0x120]; NODE TICKER 0x4378E0 (zero direct E8 callers -> invoked via node vtable 0x4767A8 virtual dispatch): dt advances [+0xD8]/[+0xE4], lifetime cmp vs [+0xE0]/word[+0x13C], expiry dispatches on type word [+0x10] (9/0x35 -> the F1070 dead impact path; [esi+0x130]<5 -> send 0x45B140 with constant type*10+0x2711 @ sender 0x8AB130); (C) EFFECT-RECORD LIST [0x5600E8]/[0x5600EC]/[0x5600F8] - 0x20-byte records (vtable 0x476454), live producers 0x4072F7/0x4083C8/0x40E13C/0x4211E9/0x437B2C/0x437C5D paired with node spawns; CORRECTION to F1071: 0x43D190 is a PURE direction calculator (4 args, octant base 0/2/4/6 + ratio blend over float table 1.0/0.925/0.665/0.385, wrap 8, ret 0x10) - it never reads ecx, so the 'mov ecx,0x574118' at 0x4378A8 is VESTIGIAL: dead-map method-call count 38 -> 37; CONSUMER GAP (open lead): within .text, chain B and EFX globals are referenced ONLY by producer push sequences (18/18 and 21/21 refs) and the container-layout slots 0x5600C0/0x5600C4 (F1053 {cb,ctx} if base 0x5600B4) have zero refs - no direct head-walking loop exists, so draining happens via virtual dispatch from another registry that also holds these nodes (entity/manager structures) [INFERENCE], exact walker unresolved",
+  "date": "2026-08-12",
+  "objective": "Triage all three FX global chains: producers, consumers, node lifecycle.",
+  "question": "Which FX chains are live, who feeds them, and who drains them?",
+  "method": "imm32 scans of all 9 chain globals + 6 gap/container addresses; disasm 0x40A770, 0x4137B8, 0x420F30-0x421480, 0x437840-0x4378E0, 0x43D190; E8 caller scans for 0x4378E0/0x438100/0x43D190.",
+  "scope": "chains A/B/EFX; node ctor/init/ticker; screen-region producers 0x420Fxx-0x4214xx.",
+  "cell_analysis": {
+    "chain_A": "[0x560088/8C/98] main FX list, 100+ refs, manager region 0x406Bxx-0x40A0xx",
+    "chain_B": {"nodes": "0x144B vtable 0x4767A8", "live_producers": "0x420F2D/0x42106F/0x42132D (network+retry), 0x4137C0 (entity vslot+0x18), 0x40A770 batch -> 0x437850", "dead_producer": "0x437A4D (F1070)"},
+    "efx_chain": "0x20B records vtable 0x476454; live producers 0x4072F7/0x4083C8/0x40E13C/0x4211E9/0x437B2C/0x437C5D",
+    "retry_pattern": "0x420F3A: fail -> timer += RNG(1..8) -> re-link into chain B; else dtor",
+    "node_init_0x437850": "0x435030 ctor + args -> [+0x13C]/[+0x140]/[+0x144] + 0x43D190 dir byte ->[+0x120]",
+    "ticker_0x4378E0": "dt advance [+0xD8]/[+0xE4]; lifetime vs [+0xE0]/word[+0x13C]; type dispatch word[+0x10]",
+    "dir_calc_0x43D190": "pure octant calc (ignores ecx): base 0/2/4/6 + blend table 1.0/0.925/0.665/0.385, wrap 8"
+  },
+  "exe_trace": {"spawn": "msg -> alloc 0x144 -> ctor 0x434EF0 -> init 0x438100/0x437850 -> push chain B (+ paired EFX record)"},
+  "audit_vs_exe": {
+    "F1071": "CORRECTED: 0x43D190 is not a map method (ignores ecx) - dead-map method refs 38 -> 37; the dead verdict for 0x574118 itself stands",
+    "F1070": "spawner deadness reconfirmed; but chain B itself is LIVE with 6 producer sites",
+    "F1054": "0x476448 link nodes serve chains A and B; 0x476454 records serve EFX",
+    "F1053": "chain globals match the {head,tail,pad2,count} container shape; cb/ctx slots unused"
+  },
+  "contrast": {"chain_A": "full producer+consumer manager", "chain_B_EFX": "producer-only in .text (drain via virtual dispatch, walker open)"},
+  "verdict": "FX subsystem architecture mapped: three global intrusive lists, network-driven spawn with retry re-queue, entity-virtual spawn, batch spawn, and a vtable-dispatched node ticker with lifetime and type dispatch; the only unresolved piece is the indirect drain path for chains B/EFX.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All scans + disasm from .text; drain mechanism flagged as inference/open.",
+  "cross_refs": ["F1070: dead spawner", "F1071: dead map + method family", "F1054: link node vtables", "F1053: container layout"],
+  "tool": "capstone disasm + imm32/E8 scans",
+  "reproduce": "scan imm32 0x560088-0x5600F8; disasm 0x437850+0x80, 0x4378E0+0x60, 0x43D190+0xF8",
+  "notes": ["retry re-queue = chain B doubles as pending queue", "type*10+0x2711 constant in 0x45B140 send", "731 consecutive rounds F335-F1076"]
+}

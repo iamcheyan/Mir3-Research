@@ -9386,3 +9386,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔动画 ticker 0x43CDF0+〕**三组各 16 字节计数器（+0x1B01D4/E4/F4），组 tick 计数器 @+0x1B01B8/BC/C0；阈值 **25/50/75 tick**，到点组内全字节 +1 mod 16 环回。
 - **〔消费端闭合〕**blend 索引 (hi&7)×16+lo（0..127）跨三组——nibble = （速度组 0-7，帧相位 0-15）→ 帧 += 计数器 = 慢/中/快三档动画瓦片与对象（水/旗/火把〔推断〕）。
 - 落盘：blend-anim-ticker-evidence.json（F1075，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 769。
+## Round 770 (F1076) — 2026-08-12：FX 链三族全分类 + 节点生命周期
+
+- **〔三链普查〕**A [0x560088/8C/98] 主 FX 链（100+ 引用，管理器区 0x406Bxx-0x40A0xx 生产+遍历）；B [0x5600B8/BC/C8] 实体对节点链（0x144B，vtable 0x4767A8）；EFX [0x5600E8/EC/F8] 0x20B 效果记录链（0x476454）。
+- **〔链 B 六个活生产者〕**网络消息区 0x420F2D/0x42106F/0x42132D（含 **重试模式**：失败→timer+=RNG(1..8)→重链回 B，否则析构——B 兼作 pending 队列）；实体虚槽+0x18（0x4137C0）；管理器批量 0x40A770→0x437850；死生产者 0x437A4D（F1070）。
+- **〔节点生命周期〕**初始化器 0x437850（0x435030 ctor + 参数→[+0x13C/140/144] + 0x43D190 方向字节→[+0x120]）；ticker 0x4378E0（零直接调用者→经 vtable 0x4767A8 虚分派；dt 推进 [+0xD8/0xE4]，寿命比 [+0xE0]/word[+0x13C]，到期按类型字 [+0x10] 分派，[+0x130]<5→发 0x45B140 常量 type×10+0x2711）。
+- **〔F1071 勘误〕**0x43D190 = 纯方向计算（象限 0/2/4/6 + 比率混合表 1.0/0.925/0.665/0.385，wrap 8，不读 ecx）→ 0x4378A8 处 mov ecx,0x574118 为残留；死图方法调用计数 38→37。
+- **〔开放线索〕**链 B/EFX 在 .text 仅生产者引用（18/18、21/21；容器 cb/ctx 槽 0x5600C0/C4 零引用）→ 排空经虚分派自另一注册表〔推断〕，遍历器未定位。
+- 落盘：fx-chain-triage-evidence.json（F1076，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 770。

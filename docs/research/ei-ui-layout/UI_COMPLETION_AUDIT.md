@@ -4786,3 +4786,7 @@ git diff --check
 
 - +0x1B01D4 = 运行时帧计数器组（ctor 零化 + 25/50/75 tick 三组模 16 + blend 索引消费）——动画通道端到端闭合。
 - 落盘：`blend-anim-ticker-evidence.json`（F1075）+ RESEARCH_LOG Round 769。
+## Round 770 (2026-08-12) — FX 链全分类（Finding 1076）
+
+- 三链架构 + 六活生产者 + 重试重链模式 + 节点 init/ticker 生命周期 + 0x43D190 勘误；链 B/EFX 排空路径为开放线索。
+- 落盘：`fx-chain-triage-evidence.json`（F1076）+ RESEARCH_LOG Round 770。
