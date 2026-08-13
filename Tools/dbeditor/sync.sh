@@ -16,6 +16,17 @@ REPORT="$WS/sync_report.txt"
 
 main() {
 echo "==================== 同步 $(date '+%F %T') ===================="
+# 构建重试：同机并发 dotnet build（兄弟会话）会偶发 CS0006 ref 程序集竞态
+build_retry() {
+  local i
+  for i in 1 2 3 4 5; do
+    if dotnet build "$1" -v q; then return 0; fi
+    echo "[!] 构建失败（第 $i 次），10s 后重试：$1"
+    sleep 10
+  done
+  echo "[X] 构建最终失败：$1"
+  return 1
+}
 
 # ---------- 1) 端口检测 ----------
 if python3 -c "
@@ -32,7 +43,7 @@ fi
 echo "[1/7] 端口检测通过（服务端已停止）"
 
 # ---------- 2) 导入器：校验 + 写临时副本 ----------
-dotnet build "$DBEDITOR/importer/DBImporter.csproj" -v q
+build_retry "$DBEDITOR/importer/DBImporter.csproj"
 rm -f "$REPORT.importer"
 dotnet run --project "$DBEDITOR/importer" --no-build -- \
   --workspace "$WS" --src "$SERVER_DB" --report "$REPORT.importer"
@@ -46,7 +57,7 @@ DB_OUT="$(grep -oP '(?<=^DB_OUT=).*' "$REPORT.importer" | tail -1)"
 [ -n "$DB_OUT" ] || { echo "[X] 导入器未产出数据库"; exit 11; }
 
 # ---------- 3) probe 重导出写出的库 ----------
-dotnet build "$REPO/Tools/SystemDbProbe/SystemDbProbe.csproj" -v q
+build_retry "$REPO/Tools/SystemDbProbe/SystemDbProbe.csproj"
 RT_DIR="$(mktemp -d /tmp/dbeditor_rt.XXXXXX)"
 trap 'rm -rf "$RT_DIR"' EXIT
 cp "$DB_OUT" "$RT_DIR/System.db"

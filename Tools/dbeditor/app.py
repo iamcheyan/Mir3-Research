@@ -777,6 +777,12 @@ def sync_execute() -> dict:
     rp = WORKSPACE / "sync_report.txt"
     if rp.exists():
         report = rp.read_text(encoding="utf-8")
+    if r.returncode == 0:
+        # 同步成功后基线已被 sync.sh 重置 → 重载内存态
+        if (WORKSPACE / "baseline.json").exists():
+            STORE.baseline = json.loads(
+                (WORKSPACE / "baseline.json").read_text(encoding="utf-8"))
+        STORE.load_all()
     return {"ok": r.returncode == 0, "code": r.returncode,
             "stdout": r.stdout[-8000:], "stderr": r.stderr[-4000:], "report": report}
 
