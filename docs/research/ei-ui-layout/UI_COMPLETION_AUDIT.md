@@ -4718,3 +4718,7 @@ git diff --check
 
 - 滚动数学 + 标记 + 切换 + 闪烁 + Ctrl 平移全交互集完成；合成指针三态实测。
 - 落盘：`minimap-pan-port-evidence.json`（F1058）+ RESEARCH_LOG Round 752。
+## Round 753 (2026-08-12) — HANDOFF 刷新 161（Finding 1059）
+
+- Round 742-752（11 轮）追加；714 连发；681 证据。
+- 落盘：`handoff-refresh-161-evidence.json`（F1059）+ RESEARCH_LOG Round 753。

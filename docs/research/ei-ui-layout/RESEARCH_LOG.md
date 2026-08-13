@@ -9276,3 +9276,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔移植〕**STATE.mm.pan 源像素偏移加进滚动中心（钳制前）；pointerdown 门 ctrlKey && button 0，move 时 pan = grab.pan − delta/k（k = 面板 px/源 px），dblclick 复位 [0,0]；setPointerCapture 加 try/catch 守卫（合成 pointer 抛异常）。
 - **〔浏览器实测〕**拖 (+32,+16) → pan [−32,−16]、surface left −416→−384 / top −336→−320（view 128 k=1 精确 1:1）；dblclick 复位；无 Ctrl 拖动 pan 保持 [0,0]。
 - 落盘：minimap-pan-port-evidence.json（F1058，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 752。
+## Round 753 (F1059) — 2026-08-12：HANDOFF 刷新 161（Round 742-752）
+
+- **〔刷新〕**HANDOFF 追加 Round 742-752（F1048-F1058：小地图弧闭合含 P12 + 模拟器双移植、vtable 普查闭合、渲染设备槽位、实体消息分派器）；基线 Round 741=05325c0 → Round 752=0ea567e（**714 连发 F335-F1058**，681 证据 JSON）。
+- 落盘：handoff-refresh-161-evidence.json（F1059，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 753。

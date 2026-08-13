@@ -1,0 +1,24 @@
+{
+  "evidence_id": "handoff-refresh-161-2026-08-12-f1059",
+  "title": "Round 753 (F1059): HANDOFF refresh 161 - Rounds 742-752 (F1048-F1058: minimap arc closed incl. P12 + simulator ports, vtable census closed 0x476360-0x476C80, render device slots, entity message dispatcher), baseline Round 741=05325c0 -> Round 752=0ea567e (714 consecutive F335-F1058, 681 evidence JSONs), doc maintenance",
+  "date": "2026-08-12",
+  "objective": "Refresh the HANDOFF with Rounds 742-752.",
+  "question": "What changed since HANDOFF refresh 160?",
+  "method": "Append Round 742-752 summary to MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "scope": "docs/handoffs/MIR3_UI_RECONSTRUCTION_HANDOFF.md.",
+  "cell_analysis": {
+    "refresh": "Rounds 742-752 appended (11 rounds, F1048-F1058)",
+    "arcs": {"minimap": "F1048 math (P12 closed) + F1049 taxonomy + F1050 sim port + F1058 pan port", "vtable": "F1051-F1055 census closed", "deep": "F1056 render device + F1057 entity dispatcher"},
+    "baseline": "Round 741=05325c0 -> Round 752=0ea567e"
+  },
+  "exe_trace": {"handoff": "doc only"},
+  "audit_vs_exe": {"F1047": "refresh 160 -> now refresh 161", "F335-F1058": "714 rounds"},
+  "contrast": {"refresh_160_vs_161": "F1048-F1058 (11 new findings)"},
+  "verdict": "HANDOFF refreshed 161 (F1059): minimap + vtable arcs documented as closed, baseline advanced to 0ea567e.",
+  "evidence_level": "derived-tooling (doc maintenance)",
+  "evidence_level_note": "Doc update; content from F1048-F1058 evidence.",
+  "cross_refs": ["F1047: refresh 160", "F1055: vtable census", "F1058: pan port"],
+  "tool": "bash append",
+  "reproduce": "append Round 742-752 section to HANDOFF",
+  "notes": ["714 consecutive shipping rounds F335-F1058", "681 evidence JSONs"]
+}
