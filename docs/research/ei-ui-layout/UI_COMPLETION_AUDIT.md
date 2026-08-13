@@ -4585,3 +4585,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（实体/列表生命周期与注册 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 732 (2026-08-12) — 窗口几何构造体全量（Finding 1038）
+
+- **WIL 尺寸回退 + 居中矩形 + style 颜色**（窗口几何构造完整）。
+- 落盘：`window-geometry-ctor-body-evidence.json`（F1038）+ RESEARCH_LOG Round 732。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口几何构造完整；下一弧：剩余深层角落/模拟器 polish）。

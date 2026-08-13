@@ -1,0 +1,26 @@
+{
+  "evidence_id": "window-geometry-ctor-body-2026-08-12-f1038",
+  "title": "Round 732 (F1038): window geometry ctor body FULL (F284/F713/F1037 extension) - 0x423B30 loads frame dimensions via 0x466130, resolves explicit width/height or defaults to WIL dimensions into [+0x40]/[+0x44], centers outer [+0x8] and content [+0x18] RECTs through SetRect 0x4762B0, and maps style byte low8 to border colors [+0x50]/[+0x51] = 0x96/0xB4/0xD2/caller byte; geometry ctor COMPLETE",
+  "date": "2026-08-12",
+  "objective": "Decode the complete window geometry constructor body.",
+  "question": "How does the window base compute dimensions, centering, and style colors?",
+  "method": "Disasm 0x423B30-0x423C87.",
+  "scope": "0x423B30-0x423C87; window geometry base.",
+  "cell_analysis": {
+    "frame": "0x466130 loads WIL resource dimensions from resource descriptor",
+    "dimensions": "explicit width/height if nonzero; otherwise WIL width/height",
+    "rects": "SetRect 0x4762B0 writes centered outer [+0x8] and content [+0x18] rectangles",
+    "stored_size": "[+0x40]/[+0x44] store resolved width/height",
+    "style": "style & 0xFF dispatch: 0=0x96, 1=0xB4, 2=0xD2, default=caller byte"
+  },
+  "exe_trace": {"geometry": "resource dimensions -> resolve size -> center rects -> style color"},
+  "audit_vs_exe": {"F284": "trade geometry summary", "F713": "window base ctor", "F1038": "raw geometry ctor body"},
+  "contrast": {"default_size": "WIL dimensions", "explicit_size": "caller dimensions", "outer_vs_content": "centered [+0x8] vs inset/content [+0x18]"},
+  "verdict": "Window geometry ctor FULL PRIMARY-verified: frame lookup, dimension fallback, centered rectangles, stored size, and style-color dispatch decoded.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Constructor body decoded directly from .text.",
+  "cross_refs": ["F284: trade geometry", "F713: window base ctor", "F1037: HANDOFF refresh"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423B30+0x50",
+  "notes": ["resource helper 0x466130", "SetRect 0x4762B0", "size [+0x40]/[+0x44]", "style [+0x50]/[+0x51]"]
+}

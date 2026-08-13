@@ -9161,3 +9161,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 728-730（F1035-F1036：实体/列表一次性注册全量 + 生命周期与注册闭合）；基线 Round 727=691b7c4 → Round 730=c210ddd（**693 连发 F335-F1035**）。当前 master 观察为用户命名规则提交 2793dec，未触碰用户/sibling 改动。
 - 落盘：handoff-refresh-157-evidence.json（F1037，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 731。
+## Round 732 (F1038) — 2026-08-12：窗口几何构造体全量（F284/F713 扩展）
+
+- **〔几何〕**0x423B30 经 0x466130 读取 WIL 帧尺寸；调用者宽/高非零则优先，否则回退资源尺寸，写入 [+0x40]/[+0x44]；通过 SetRect 0x4762B0 写居中的外框 [+0x8] 与内容框 [+0x18]；style 低 8 位将 [+0x50]/[+0x51] 设为 0x96/0xB4/0xD2 或调用者字节。
+- 落盘：window-geometry-ctor-body-evidence.json（F1038，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 732。
