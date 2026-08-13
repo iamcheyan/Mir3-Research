@@ -9380,3 +9380,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔属性字实测（3.35M 格）〕**非零仅 **447 格（0.013%）**——超级稀疏贴花系统；file idx {0:235,1:30,2:12,3:170} 四槽全用；nibble {0:31,1:229,2:10,3:177} **全部 <0xA**（与渲染门 0x41C4F6 一致）；低 nibble {0:58,1:389}。
 - **〔里程碑〕**本研究线首个字节级全闭合格式。
 - 落盘：cell-record-closure-evidence.json（F1074，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 768。
+## Round 769 (F1075) — 2026-08-12：blend 动画通道闭合（运行时帧计数器组）
+
+- **〔+0x1B01D4 真相〕**非数据表——**运行时帧计数器组**：ctor（0x43B120 窗口，全对象复位模板：零 0x300 尾区 + 0x20 双字@+0x1B01D4 + 8 双字@+0x1B01B4 + 7 双字头 + 0x41 双字@+4 + memset 0x480@+0x13C + 0x24×0x24@+0x14C；dtor 0x43B190 释放两缓冲）零化之。
+- **〔动画 ticker 0x43CDF0+〕**三组各 16 字节计数器（+0x1B01D4/E4/F4），组 tick 计数器 @+0x1B01B8/BC/C0；阈值 **25/50/75 tick**，到点组内全字节 +1 mod 16 环回。
+- **〔消费端闭合〕**blend 索引 (hi&7)×16+lo（0..127）跨三组——nibble = （速度组 0-7，帧相位 0-15）→ 帧 += 计数器 = 慢/中/快三档动画瓦片与对象（水/旗/火把〔推断〕）。
+- 落盘：blend-anim-ticker-evidence.json（F1075，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 769。

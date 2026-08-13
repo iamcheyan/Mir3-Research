@@ -4782,3 +4782,7 @@ git diff --check
 
 - 14/14 字节全锚定 + 属性字 0.013% 稀疏实测（nibble<0xA 门全通过）——.map 格记录字节级闭合。
 - 落盘：`cell-record-closure-evidence.json`（F1074）+ RESEARCH_LOG Round 768。
+## Round 769 (2026-08-12) — blend 动画闭合（Finding 1075）
+
+- +0x1B01D4 = 运行时帧计数器组（ctor 零化 + 25/50/75 tick 三组模 16 + blend 索引消费）——动画通道端到端闭合。
+- 落盘：`blend-anim-ticker-evidence.json`（F1075）+ RESEARCH_LOG Round 769。

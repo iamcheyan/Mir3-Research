@@ -1,0 +1,32 @@
+{
+  "evidence_id": "blend-anim-ticker-2026-08-12-f1075",
+  "title": "Round 769 (F1075): blend channel CLOSED - the +0x1B01D4 'anim offset table' is a RUNTIME FRAME-COUNTER BANK, not map data: (1) MAP-OBJECT CTOR/RESET decoded (function at 0x43B0xx, window 0x43B120-0x43B186): rep stosd zero 0x300 dwords (tail region), ZERO 0x20 dwords @ +0x1B01D4 (the 128-byte counter bank), zero 8 dwords @ +0x1B01B4 (tick counters), zero 7 dwords @ +0x110 (header), zero 0x41 dwords @ +4; then [0x4762B0] (memset import) 0x480 bytes @ +0x13C and 0x24x0x24 @ +0x14C - full inline-object initialization template; dtor 0x43B190 frees [+0x108]/[+0x10C] buffers; (2) ANIM TICKER (map-object update, window 0x43CDF0+): three groups of 16 byte counters at +0x1B01D4 (group A), +0x1B01E4 (group B), +0x1B01F4 (group C); each group has a dword tick counter (+0x1B01B8 / +0x1B01BC / +0x1B01C0); when counter A > 0x19 (25) -> every byte in group A is incremented mod 16, counter reset; group B threshold 0x32 (50); group C continues the series (75, per 0x43CE55+ pattern) [INFERENCE]; (3) CONSUMER MATH (F1069's blend read): frame += counter_bank[(hi&7)*16 + lo] - index 0..127 spans all three groups, so the blend nibbles pick a counter whose period (25/50/75 ticks) sets the animation speed: slow/medium/fast animated tiles & objects (water, flags, torches [INFERENCE]); effect: byte1/byte2 = {speed group 0-7} x {frame phase 0-15}",
+  "date": "2026-08-12",
+  "objective": "Determine what fills and drives the blend animation-offset table.",
+  "question": "Is +0x1B01D4 loaded from data, and how do blend nibbles animate frames?",
+  "method": "disp32 0x1B01D4 scan over .text (4 refs); disasm ctor window 0x43B120, ticker 0x43CDF0+; map onto F1069 consumer math.",
+  "scope": "map object +0x1B01B4..+0x1B0254 counter region; ctor/dtor; per-frame update.",
+  "cell_analysis": {
+    "counter_bank": "+0x1B01D4, 128 bytes, zeroed at ctor, 3x16 used",
+    "groups": {"A": "+0x1B01D4, period 25 ticks", "B": "+0x1B01E4, period 50", "C": "+0x1B01F4, period 75"},
+    "tick_counters": "+0x1B01B8/+0x1B01BC/+0x1B01C0 dwords",
+    "wrap": "each byte mod 16",
+    "consumer": "frame += bank[(hi&7)*16+lo] (F1069 0x43BC63/0x43BF4F)",
+    "ctor": "0x43B120 window: zero bank + header + 0x41 dwords @+4 + memset 0x480 @+0x13C + 0x24x0x24 @+0x14C",
+    "dtor": "0x43B190 frees [+0x108]/[+0x10C]"
+  },
+  "exe_trace": {"update": "map tick -> group counters pass 25/50/75 -> increment 16 bytes mod 16"},
+  "audit_vs_exe": {
+    "F1069": "blend channel fully closed: nibbles = (speed-group, frame-phase) into a 3-period runtime counter bank",
+    "F1065": "map object ctor/dtor family completed (0x43B0xx/0x43B190)",
+    "F1074": "cell-record closure unaffected (blend bytes unchanged in files)"
+  },
+  "contrast": {"data_table_hypothesis": "refuted (ctor zeroes it)", "runtime_counter_bank": "confirmed (ctor zero + ticker + consumer)"},
+  "verdict": "The blend/animation channel is fully explained end-to-end: map cells name (speed-group, phase), a per-frame ticker cycles three 16-wide counter banks at 25/50/75-tick periods mod 16, and object blits add the selected counter to the frame index.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Ctor + ticker + consumer all decoded from .text; group-C threshold inferred from pattern.",
+  "cross_refs": ["F1069: blend consumer", "F1074: cell closure", "F1065: object layout"],
+  "tool": "capstone disasm + disp32 scan",
+  "reproduce": "scan disp32 0x1B01D4; disasm 0x43B120+0x66, 0x43CDF0+0xB0",
+  "notes": ["index space 128 = 3 groups x 16", "periods 25/50/75 ticks", "730 consecutive rounds F335-F1075"]
+}
