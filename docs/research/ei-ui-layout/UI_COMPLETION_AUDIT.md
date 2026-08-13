@@ -4665,3 +4665,12 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告颜色层 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 742 (2026-08-12) — 小地图滚动数学全量 + P12 闭合（Finding 1048）
+
+- **滚动中心公式 + 双向钳制 + 闪烁计数器 + 缩放 + 实体标记**（小地图 widget 全数学闭合）。
+- **EVIDENCE-INVENTORY pending 全清**（P12 为最后一项）。
+- 落盘：`minimap-scroll-math-evidence.json`（F1048）+ RESEARCH_LOG Round 742。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（pending 清零；下一弧：EVIDENCE-INVENTORY P12 行更新/模拟器 polish）。

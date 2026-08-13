@@ -85,7 +85,7 @@
 | P9 | ~~EI 素材中帧 offset（+4/+6）非零值的分布~~ → **已闭合（C24）**：地图层 98.8% 非零（统一常量），C5 零读取为有意约定 | offset-distribution-evidence.json（Finding 276） |
 | P10 | ~~22 个库仅有保留标记帧（0xFF00+）引用、无解码帧；3 个库全部引用幻影帧（无数据）~~ → **已细化（C26/C27）**：0xFF00+ = 普通越界不绘制（精确 0xFFFF 比较）；22 库纯保留+混合引用全在 13B 探针图；『3 库全幻影』不可复现（空占位引用） | reserved-frame-markers-evidence.json（Finding 278） |
 | P11 | ~~98 个 .gen 怪物名中 4 个无法匹配 MonItems（夜行鬼09/异界之门/葛贰厘面0/诺玛教主2/魔神怪8）~~ → **已闭合（C30）**：夜行鬼09（Index 186）/异界之门（Index 187）FOUND（Race 19 → Mon-2.wil 块 9）；葛贰厘面0/诺玛教主2（近邻 诺玛教主 Index 282）/魔神怪8（有 魔神怪1/2/10/20）服务端 monster.dat 缺失 = 服务器数据缺口 | monster-dat-evidence.json（Finding 280） |
-| P12 | 小地图源窗口滚动（客户端随玩家滚动 128×128 面板内的源窗口）的精确 scroll 数学 | C25 面板/公式已定，scroll 偏移需运行时捕获（candidate） |
+| P12 | ~~小地图源窗口滚动（客户端随玩家滚动 128×128 面板内的源窗口）的精确 scroll 数学~~ → **已闭合（F1048，静态推导）**：scroll = pos×1.5 − min(地图维,128)/2；钳制 left<0→0 / right≥地图维→left=地图维−128（floor 0）；源窗 [0x2D0]/[0x2D4]，闪烁 [0x300] 周期 0x320 绿窗 0x1F4，缩放 [0x290]→0.5；实体标记走 [0x560070]——运行时捕获不再需要 | minimap-scroll-math-evidence.json（Finding 1048，primary-bytes） |
 
 ## 工具链
 

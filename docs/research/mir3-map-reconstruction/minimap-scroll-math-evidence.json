@@ -1,0 +1,38 @@
+{
+  "evidence_id": "minimap-scroll-math-2026-08-12-f1048",
+  "title": "Round 742 (F1048): minimap source-window scroll math FULL (P12 CLOSED, F310/C25 extension) - 0x43D850: stores args to [0x2F8]/[0x2FC], computes scroll = arg1*1.5 (float 0x476904) minus half of min([0x2E8] mapW*1.5, [0x2B8] view 128) and arg2 minus half of min([0x2EC] mapH, [0x2BC] 128); SetRect source window [0x2D0]=(scrollX, scrollY, +128, +128); CLAMPS: left<0 -> 0 + right=min(mapDim,128); right>=mapDim -> right=mapDim, left=mapDim-128 (floor 0); same for Y via [0x2D4]/[0x2DC]; dest rect [0x2C0] renormalized to source size; mapid>=0x3E8 -> frame mapid-1000 blit 0x465560 else MMap frame; edge repaint via vtable+0x14 (0x400x100 scratch). 0x43DA80 marker layer: matrix 0x466800 from [0x2C0] dest pos + view dims + 0.586 floats, zoom [0x290] -> scale 0.5 (0x3F2FAFB0) else 1.0; quad 0x4542F0; PLAYER marker x = [0x2F8]*1.5 + [0x2C0].x - [0x2D0].left - const 0x476868, y = [0x2FC] - [0x2D4].top + [0x2C4] - 2; BLINK [0x300] += delta, wrap >0x320 -> 0, green 0x64FA64 while 0<c<0x1F4 else gray 0x646464 (fill 0x45E570); entity markers walk list [0x560070]",
+  "date": "2026-08-12",
+  "objective": "Close pending P12: derive the minimap scroll math statically.",
+  "question": "What is the exact scroll/clamp/marker math of the minimap widget?",
+  "method": "Disasm 0x43D850-0x43DA79 (update) + 0x43DA80-0x43DC63 (marker layer).",
+  "scope": "0x43D850-0x43DC63; widget fields [0x2B8]-[0x300].",
+  "cell_analysis": {
+    "fields": {"0x2B8/0x2BC": "view size 128x128", "0x2C0/0x2C4": "dest rect pos (672,0)", "0x2D0/0x2D4": "source window L/T", "0x2D8/0x2DC": "source R/B", "0x2E8/0x2EC": "map dims (W*1.5, H)", "0x2F8/0x2FC": "player pos (x1.5 axis / vertical)", "0x300": "blink counter", "0x290": "zoom flag", "0x28C": "mapid (-1 skip)"},
+    "scroll": "scroll = pos*1.5 - min(mapDim,128)/2 per axis",
+    "clamp": "left<0 -> 0/right=min; right>=mapDim -> left=mapDim-128 (floor 0)",
+    "marker": "player x = p*1.5 + destX - srcLeft - c(0x476868); y = p - srcTop + destY - 2",
+    "blink": "[0x300] += delta; wrap 0x320; green 0x64FA64 in (0,0x1F4) else gray 0x646464",
+    "zoom": "[0x290] != 0 -> 0.5 scale else 1.0",
+    "entities": "list [0x560070] walk for entity markers"
+  },
+  "exe_trace": {"minimap_chain": "player pos -> scroll center -> clamp -> source rect -> blit -> markers (player blink + entities)"},
+  "audit_vs_exe": {
+    "F310": "widget field map confirmed; scroll math now closed",
+    "C25": "1.5 px/tile horizontal confirmed as 0x476904 float",
+    "F336": "entity list 0x560070 marker consumer"
+  },
+  "contrast": {"center_vs_edge": "centered scroll vs clamped edges", "blink_on_vs_off": "green (0,500) vs gray rest of 800ms period"},
+  "verdict": "Minimap scroll math PRIMARY-verified (P12 CLOSED): scroll-center formula, dual clamp, source/dest rects, blink counter, zoom scale, and entity marker walk all byte-level; runtime capture no longer required.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Both bodies decoded from .text; constants from .rdata.",
+  "cross_refs": ["F310: widget chain", "C25: placement formula", "F336: entity containers"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43D850+0x120; 0x43DA80+0x140",
+  "notes": [
+    "scroll = pos*1.5 - min(mapDim,128)/2",
+    "clamp: left<0 -> 0; right>=mapDim -> left=mapDim-128",
+    "blink [0x300] period 0x320, green window 0x1F4",
+    "zoom [0x290] -> 0.5 scale",
+    "P12 CLOSED - last pending inventory item resolved"
+  ]
+}

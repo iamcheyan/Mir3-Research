@@ -9205,3 +9205,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 738-740（F1044-F1046：公告颜色约定全量 + 聊天族颜色点补全 + 公告颜色层闭合 + **700 连发里程碑**）；基线 Round 736=7cc0d35 → Round 740=7def42c（**701 连发 F335-F1046**，666 证据 JSON）。
 - 落盘：handoff-refresh-160-evidence.json（F1047，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 741。
+## Round 742 (F1048) — 2026-08-12：小地图源窗口滚动数学全量（P12 闭合，F310/C25 扩展）
+
+- **〔滚动〕**0x43D850：scroll = pos×1.5（float 0x476904）− min(地图维, 128)/2；源窗 [0x2D0]/[0x2D4] = (scrollX, scrollY, +128, +128)；**钳制**：left<0 → 0 + right=min(地图维,128)；right≥地图维 → right=地图维、left=地图维−128（下限 0）；目标矩形 [0x2C0] 重整为源尺寸；mapid≥0x3E8 → 帧 mapid−1000，否则 MMap 帧，blit 0x465560。
+- **〔标记层〕**0x43DA80：矩阵 0x466800（目标位 + 视口 + 0.586 floats），缩放旗标 [0x290] → 0.5 否则 1.0；玩家标记 x = [0x2F8]×1.5 + [0x2C0].x − [0x2D0].left − 常量，y = [0x2FC] − [0x2D4].top + [0x2C4] − 2；**闪烁** [0x300] += delta、>0x320 回绕，(0,0x1F4) 绿 0x64FA64 否则灰 0x646464；实体标记遍历 [0x560070]。
+- **〔P12 闭合〕**EVIDENCE-INVENTORY 最后一个 pending 项解决——无需运行时捕获。
+- 落盘：minimap-scroll-math-evidence.json（F1048，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 742。
