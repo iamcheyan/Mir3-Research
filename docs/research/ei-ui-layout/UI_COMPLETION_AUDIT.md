@@ -4692,3 +4692,8 @@ git diff --check
 
 - 零初始化契约（≥0x50）+ 虚槽转发器语义（F1041 勘误）+ 1/255 alpha 回退 + 几何/移动 setter + 五按钮窗口模板（0xB4 步长子对象 ×5，帧对 0xA1/A2 + 0x35C-0x363）。
 - 落盘：`widget-runtime-core-evidence.json`（F1052）+ RESEARCH_LOG Round 746。
+## Round 747 (2026-08-12) — 链表容器语义闭合（Finding 1053）
+
+- 12 个成员列表 widget 共享的侵入式双向链表全解：remove/find/remove-first + push 对 + 节点/容器布局 + 删除析构内存契约。
+- 新候选：0x4763xx 更早 vtable 块。
+- 落盘：`list-container-semantics-evidence.json`（F1053）+ RESEARCH_LOG Round 747。

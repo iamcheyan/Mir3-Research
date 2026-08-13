@@ -9240,3 +9240,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔几何/移动〕**0x423E80（ret 0x14）：[+0x28]=帧号、帧尺寸居中 SetRect 内框、[+0x40]/[+0x44] 尺寸、外框 SetRect；0x423FA0 = 移动/居中（双 SetRect 减半居中数学）。
 - **〔五按钮窗口模板 0x4268C0〕**0x423B30 几何构造 + 控件构造 0x417550 ×5 @ +0x54/+0x108/+0x1BC/+0x270/+0x324（步长 0xB4），帧对 (0xA1,0xA2)(0x35C,0x35D)(0x35E,0x35F)(0x360,0x361)(0x362,0x363)；0x4269C0 对应拆解（虚槽+0xC + 0x417830 ×5）。
 - 落盘：widget-runtime-core-evidence.json（F1052，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 746。
+## Round 747 (F1053) — 2026-08-12：侵入式双向链表容器语义闭合（F1032/F1051 后续）
+
+- **〔三元组〕**0x423450 = remove(node)（头/中/尾解链 → 节点标量析构 flags=1 → free → count−− → 返回 payload）；0x4048B0 = find(cb)（遍历 [+4] 头，`cb([this+0x10], arg, payload)` 命中返回 payload）；0x42E700 = remove-first-matching（find+unlink+dtor+count−−）。
+- **〔布局〕**节点 {+0 vtable, +4 payload, +8 prev, +0xC next}；容器 {+4 head, +8 tail, +0xC 比较回调, +0x10 回调上下文, +0x14 count}。
+- **〔push 对〕**0x423570 push-front / 0x4234D0 push-back：0x468B1A 分配 0x10 字节节点（vtable 0x4767C4），payload=[eax+4]，count++，ret al=1/0。
+- **〔新发现〕**删除析构揭示**更早 vtable 块 0x4763xx**（0x476378/0x4763BC/0x4763C0）；0x404930 + 0x42E7E0 = 一次性注册第 3/4 实例（[0x917C1C] + 0x401380）。
+- 落盘：list-container-semantics-evidence.json（F1053，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 747。

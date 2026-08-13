@@ -1,0 +1,31 @@
+{
+  "evidence_id": "list-container-semantics-2026-08-12-f1053",
+  "title": "Round 747 (F1053): intrusive doubly-linked list container semantics CLOSED (F1032/F1051 follow-up) - shared trio decoded: 0x423450 = REMOVE(node): unlink head/mid/tail ([+8]=prev [+0xC]=next), call node scalar deleting dtor ([vtable+0], flags=1 -> free 0x4680F8 = F1032 bit0), count-- [+0x14], return payload [node+4]; 0x4048B0 = FIND(callback): walk [+4] head, call [this+0xC]([this+0x10] context, arg, payload) return payload on match else 0; 0x42E700 = REMOVE-FIRST-MATCHING = find + unlink + dtor + count--; NODE {+0 vtable, +4 payload, +8 prev, +0xC next}; CONTAINER {+0 vtable, +4 head, +8 tail, +0xC compare-callback, +0x10 callback-context, +0x14 count}; BONUS push ops 0x423570 (push-front) / 0x4234D0 (push-back): alloc 0x10 bytes via 0x468B1A, node vtable 0x4767C4, payload [eax+4]=arg, link head/tail, count++, ret al=1; inline vtable-reset thunks 0x4234C0 (mov [ecx],0x4766B8); deleting dtors reveal EARLIER vtable block 0x4763xx (0x476378/0x4763BC/0x4763C0 - future scope); 0x42E810 ctor confirms base template with subobject array [+0x5C] x3 stride 0xB4",
+  "date": "2026-08-12",
+  "objective": "Decode the shared list-node trio semantics.",
+  "question": "What do the three shared list-node vtable functions do, and what is the node/container layout?",
+  "method": "Disasm 0x423450/0x4048B0/0x42E700 (+0x4234C0/0x4234D0/0x423570 push ops, 0x42E7A0-0x42E860 dtors/ctor).",
+  "scope": "list container ops 0x423450-0x423570, 0x4048B0-0x4048E9, 0x42E700-0x42E792.",
+  "cell_analysis": {
+    "remove": {"fn": "0x423450", "ret": "payload [node+4]", "unlinks": "head/mid/tail via prev[+8]/next[+0xC]", "dtor": "[vtable+0] flags=1 (deleting -> free)", "count": "--[+0x14]"},
+    "find": {"fn": "0x4048B0", "call": "[this+0xC]([this+0x10], userArg, payload)", "ret": "payload | 0"},
+    "remove_first_matching": {"fn": "0x42E700", "combo": "find walk + unlink + dtor + count--"},
+    "node_layout": {"+0": "vtable", "+4": "payload", "+8": "prev", "+0xC": "next"},
+    "container_layout": {"+0": "vtable", "+4": "head", "+8": "tail", "+0xC": "compare callback", "+0x10": "callback context", "+0x14": "count"},
+    "push": {"push_front": "0x423570", "push_back": "0x4234D0", "alloc": "0x468B1A size 0x10", "node_vtable": "0x4767C4", "ret": "al=1/0"}
+  },
+  "exe_trace": {"walk": "for (n=[c+4]; n; n=n->[0xC]) cb([c+0x10], arg, n->[4])"},
+  "audit_vs_exe": {
+    "F1032": "dtor-thunk flags=1 free path confirmed as remove()'s deleting call",
+    "F1051": "12-member list-node family now has full op semantics (remove/find/remove-first + push pair)",
+    "F1035": "0x404930 + 0x42E7E0 = two more one-time-registration instances ([0x917C1C] + 0x401380 via 0x468467)"
+  },
+  "contrast": {"remove_by_node_vs_by_match": "0x423450 direct vs 0x42E700 callback-matched", "push_front_vs_back": "link at [+4] head vs [+8] tail"},
+  "verdict": "List container closed: intrusive doubly-linked list with payload/prev/next nodes, callback-driven find/remove, deleting-dtor memory contract, and push pair - the shared backbone of all 12 member-list widgets.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All ops decoded from .text.",
+  "cross_refs": ["F1032: dtor thunks", "F1051: vtable pool", "F917/F918: party member list consumer"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x423450+0x66; 0x4048B0+0x39; 0x42E700+0x93",
+  "notes": ["node alloc = 0x10 bytes", "earlier vtable block 0x4763xx discovered (0x476378/0x4763BC/0x4763C0)", "708 consecutive rounds F335-F1053"]
+}
