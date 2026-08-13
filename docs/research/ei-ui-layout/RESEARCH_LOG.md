@@ -9211,3 +9211,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔标记层〕**0x43DA80：矩阵 0x466800（目标位 + 视口 + 0.586 floats），缩放旗标 [0x290] → 0.5 否则 1.0；玩家标记 x = [0x2F8]×1.5 + [0x2C0].x − [0x2D0].left − 常量，y = [0x2FC] − [0x2D4].top + [0x2C4] − 2；**闪烁** [0x300] += delta、>0x320 回绕，(0,0x1F4) 绿 0x64FA64 否则灰 0x646464；实体标记遍历 [0x560070]。
 - **〔P12 闭合〕**EVIDENCE-INVENTORY 最后一个 pending 项解决——无需运行时捕获。
 - 落盘：minimap-scroll-math-evidence.json（F1048，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 742。
+## Round 743 (F1049) — 2026-08-12：小地图标记分类学 + 角落切换按钮 + 命中/拖拽处理器全量（F1048 扩展）
+
+- **〔怪物标记〕**链表 [0x560070] 过滤类型字节 [edi+0x88]==0x32，pos +0xCC/+0xD0；投影同玩家公式；矩形 (x,y,x+2,y+2) 2×2 **白色 0xFFFF**（无窗口测试）。
+- **〔第二链表〕**[0x5600A0] pos +4/+8：绿色 0x64C864 3×3 (x−1..x+2)，带玩家中心窗口测试 |dx|<[0x2B8]/2 且 |dy|<[0x2BC]/2。
+- **〔角落按钮〕**[0x298]=(right−20,bottom−10,right−10,bottom) 灰 0xC8C8C8 = 缩放切换 [0x290]（scale 0.5）；[0x2A8]=(right−10,bottom−10,right,bottom) 蓝 0x96C8FF = 视图尺寸切换 [0x294] → 0x43D5F0(128×128 / 256×256)。
+- **〔命中/拖拽〕**0x43DDB0 PtInRect + Ctrl(0x11) → 抓取偏移 [0x2F0]/[0x2F4]；0x43DEB0 LMB+Ctrl → SetRect 目标矩形平移（尺寸保持）；ctor 0x43DF40 载入库 0x47C428/0x47C414。
+- 落盘：minimap-marker-taxonomy-evidence.json（F1049，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 743。

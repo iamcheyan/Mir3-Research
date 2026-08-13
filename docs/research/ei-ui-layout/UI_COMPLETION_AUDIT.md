@@ -4674,3 +4674,8 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（pending 清零；下一弧：EVIDENCE-INVENTORY P12 行更新/模拟器 polish）。
+## Round 743 (2026-08-12) — 小地图标记分类学 + 交互闭合（Finding 1049）
+
+- **标记全分类**（怪物白 2×2 / 第二链表绿 3×3 窗口测试 / 玩家 4×4 闪烁）+ 角落双切换按钮 + Ctrl 平移。
+- 小地图 widget **全闭合**（投影数学 + 分类学 + 交互）。
+- 落盘：`minimap-marker-taxonomy-evidence.json`（F1049）+ RESEARCH_LOG Round 743。

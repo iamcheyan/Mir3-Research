@@ -1,0 +1,37 @@
+{
+  "evidence_id": "minimap-marker-taxonomy-2026-08-12-f1049",
+  "title": "Round 743 (F1049): minimap marker taxonomy + corner toggle buttons + hit/drag handlers FULL (F1048 extension) - entity walk [0x560070] filter type byte [edi+0x88]==0x32, pos [edi+0xCC]/[edi+0xD0], marker x=pos*1.5+destX-srcLeft-c(0x476658), y=pos-srcTop+destY-1, rect (x,y,x+2,y+2) 2x2 WHITE 0xFFFF fill 0x45E570 (no window test); second list [0x5600A0] pos +4/+8: same projection, center-hit test |dx|<[0x2B8]/2 AND |dy|<[0x2BC]/2 vs player marker [esp+0x14]/[esp+0x18], rect (x-1,y-1,x+2,y+2) 3x3 GREEN 0x64C864; corner buttons: [0x298]=(right-20,bottom-10,right-10,bottom) 10x10 gray 0xC8C8C8 = ZOOM toggle [0x290] (scale 0.5), [0x2A8]=(right-10,bottom-10,right,bottom) 10x10 light blue 0x96C8FF = VIEW SIZE toggle [0x294] -> 0x43D5F0(128x128) when set else (256x256); hit 0x43DDB0: PtInRect dest [0x2C0] + Ctrl(0x11 via [0x476278]) -> store grab offset [0x2F0]/[0x2F4]=(x-left,y-bottom... x-dest.left) ret 1; drag 0x43DEB0: LMB(1)+Ctrl(0x11) in [0x2C0] -> SetRect dest=(x-xoff, y-yoff, x+(W-xoff), y+(H-yoff)) pan; ctor 0x43DF40 loads libs 0x47C428/0x47C414 via 0x4660E0, vtable 0x476624/0x476908",
+  "date": "2026-08-12",
+  "objective": "Complete the minimap marker layer beyond the player marker.",
+  "question": "What markers does the minimap draw (entities, second list), and what interactive affordances exist?",
+  "method": "Disasm 0x43DC54-0x43DDA9 (marker tail), 0x43DDB0-0x43DEAD (hit/drag), 0x43DF40+ (ctor).",
+  "scope": "0x43DA80-0x43DF40 widget family.",
+  "cell_analysis": {
+    "monsters": {"list": "0x560070", "filter": "type byte [edi+0x88]==0x32", "pos": "+0xCC/+0xD0", "shape": "2x2", "color": "0xFFFF white", "window_test": "none"},
+    "second_list": {"list": "0x5600A0", "pos": "+4/+8", "shape": "3x3 (x-1..x+2)", "color": "0x64C864 green", "window_test": "|dx|<W/2 AND |dy|<H/2 vs player marker"},
+    "player": {"shape": "4x4", "color": "blink 0x64FA64/0x646464"},
+    "buttons": {"zoom": "[0x298]=(right-20,bottom-10,right-10,bottom) gray 0xC8C8C8 toggles [0x290] scale 0.5", "view": "[0x2A8]=(right-10,bottom-10,right,bottom) blue 0x96C8FF toggles [0x294] -> 0x43D5F0(128|256)"},
+    "hit": "0x43DDB0 PtInRect [0x2C0] + Ctrl -> grab offset [0x2F0]/[0x2F4]",
+    "drag": "0x43DEB0 LMB+Ctrl -> SetRect dest pan (size preserved)",
+    "ctor": "0x43DF40 libs 0x47C428/0x47C414 (0x4660E0), vtable 0x476624 base / 0x476908 live"
+  },
+  "exe_trace": {"layer_order": "map blit -> border -> corner buttons -> player blink -> monsters -> second list"},
+  "audit_vs_exe": {
+    "F1048": "scroll/marker math extended with full taxonomy + interactions",
+    "F336": "entity list 0x560070 confirmed as marker source",
+    "F1035": "0x43E0B0 second one-time registration site (guard [0x917C1C] + cb 0x401380 via 0x468467)"
+  },
+  "contrast": {"monster_vs_second": "white 2x2 untested vs green 3x3 center-windowed", "zoom_vs_view": "scale 0.5 vs 128<->256 resize"},
+  "verdict": "Minimap widget fully closed: projection math (F1048) + complete marker taxonomy + interactive corner toggles + Ctrl-pan hit/drag all primary-bytes.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All decoded from .text; constants inline.",
+  "cross_refs": ["F1048: scroll math", "F336: entity containers", "F310: widget chain"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x43DC54+0x160; 0x43DDB0+0x100",
+  "notes": [
+    "monsters: type 0x32, white 2x2, no window test",
+    "second list green 3x3 within player-centered half-view window",
+    "two corner buttons: zoom scale + view 128<->256",
+    "Ctrl+drag pans dest rect (grab offset [0x2F0]/[0x2F4])"
+  ]
+}
