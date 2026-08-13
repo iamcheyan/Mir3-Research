@@ -1,0 +1,27 @@
+{
+  "evidence_id": "entity-msg-queue-full-2026-08-12-f1060",
+  "title": "Round 754 (F1060): entity message queue CLOSED (F1057 follow-up) - 0x4561B0 push / 0x456270 pop = thread-safe RING BUFFER: CRITICAL_SECTION at [q+0x61A8C] (enter [0x47610C] / leave [0x476110]), capacity 0x186A0 (100000) entries, layout {+0 count, +4 write idx, +8 read idx, +0xC.. slot array}; push: full when write+1==read (or wrap w+1==cap && read==0) -> DROP ret 0, else slot[write]=p, write++ (wrap), count++, ret 1; pop: read==cap -> 0; read==write -> EMPTY ret 0; else read++, count--, ret slot[read]; queue object embedded at entity+0xF0 (F1057 lea ecx,[ebx+0xF0]); FULL DISPATCH MAP (jt 0x40EF70 + inline compares): 0x06->slot 0x94, 0x07->0x98, 0x08/0x0E/0x0F/0x12/0x13/0x18/0x51A-0x51C->0x64, 0x09->0x5C, 0x0A->0x48, 0x0B->0x44, 0x0C->0xA4, 0x0D->0x90, 0x10->free-only (no virtual), 0x11->0xA0, 0x1F->0x60, 0x20/0x22->0x54, 0x21 UNHANDLED (falls to skip), 0x27D->0xA4, 0x27E->0x9C, 0x320/0x326->0x78, 0x321->0x74, 0x51D->0x60 + clone 0x40C bytes requeue as 0x1F; CORRECTIONS vs F1057: 0x27D/0x27E slot pair was reversed, 0x21 is unhandled; BONUS 0x456310 = 5th one-time registration instance ([0x917C1C] + 0x401380)",
+  "date": "2026-08-12",
+  "objective": "Close the entity message queue mechanics and full dispatch map.",
+  "question": "How does the packet queue work, and what is the complete msg->virtual-slot map?",
+  "method": "Disasm 0x4561B0/0x456270 + jt 0x40EF70 dump + inline branch trace.",
+  "scope": "0x4561B0-0x456307, jt 0x40EF70 (14 entries).",
+  "cell_analysis": {
+    "queue": {"obj": "entity+0xF0", "cs": "[q+0x61A8C]", "cap": "0x186A0", "layout": "+0 count / +4 write / +8 read / +0xC slots", "push_full": "write+1==read -> drop ret 0", "pop_empty": "read==write -> ret 0"},
+    "dispatch_map": {"0x06": "v94", "0x07": "v98", "0x08/0x0E/0x0F/0x12/0x13/0x18/0x51A-0x51C": "v64", "0x09": "v5C", "0x0A": "v48", "0x0B": "v44", "0x0C": "vA4", "0x0D": "v90", "0x10": "free-only", "0x11": "vA0", "0x1F": "v60", "0x20/0x22": "v54", "0x21": "unhandled", "0x27D": "vA4", "0x27E": "v9C", "0x320/0x326": "v78", "0x321": "v74", "0x51D": "v60 + clone-requeue 0x1F"}
+  },
+  "exe_trace": {"push": "CS.enter -> full? drop : slot[w]=p,w=(w+1)%cap,count++ -> CS.leave -> ret ok", "pop": "CS.enter -> empty? 0 : r=(r+1)%cap,count--,p=slot[r] -> CS.leave -> ret p"},
+  "audit_vs_exe": {
+    "F1057": "queue mechanics + full map added; corrections: 0x27D<->0x27E slots, 0x21 unhandled, 0x10 free-only",
+    "F1023": "recv1/recv2 handlers are the producer side of this ring [INFERENCE from consumer]",
+    "F1035": "0x456310 = 5th registration instance"
+  },
+  "contrast": {"drop_policy": "full ring silently drops (ret 0), no growth", "clone_rule": "only 0x51D clones + rewrites type"},
+  "verdict": "Entity messaging fully closed: bounded lock-guarded ring (100k slots) + complete msg->virtual-slot dispatch table with three F1057 corrections.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Queue bodies + jt dumped from .text/.rdata.",
+  "cross_refs": ["F1057: dispatcher", "F1023: recv feed", "F1035: registration family"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x4561B0+0xA4; 0x456270+0x86; dump jt 0x40EF70",
+  "notes": ["ring cap 0x186A0", "715 consecutive rounds F335-F1060"]
+}

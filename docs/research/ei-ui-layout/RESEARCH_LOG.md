@@ -9280,3 +9280,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 742-752（F1048-F1058：小地图弧闭合含 P12 + 模拟器双移植、vtable 普查闭合、渲染设备槽位、实体消息分派器）；基线 Round 741=05325c0 → Round 752=0ea567e（**714 连发 F335-F1058**，681 证据 JSON）。
 - 落盘：handoff-refresh-161-evidence.json（F1059，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 753。
+## Round 754 (F1060) — 2026-08-12：实体消息队列闭合 + 全分派表（F1057 后续）
+
+- **〔环形缓冲 0x4561B0/0x456270〕**线程安全：CRITICAL_SECTION @ [q+0x61A8C]（enter [0x47610C]/leave [0x476110]），容量 **0x186A0 (100000)**，布局 {+0 count, +4 write, +8 read, +0xC 槽}；满（write+1==read）静默丢弃 ret 0；空 pop ret 0；队列对象嵌 entity+0xF0。
+- **〔全分派表〕**jt 0x40EF70 + 内联：0x06→v94, 0x07→v98, 0x08/0E/0F/12/13/18/51A-51C→v64, 0x09→v5C, 0x0A→v48, 0x0B→v44, 0x0C→vA4, 0x0D→v90, 0x10→仅释放（无虚调用）, 0x11→vA0, 0x1F→v60, 0x20/0x22→v54, **0x21 未处理**, 0x27D→vA4, 0x27E→v9C, 0x320/0x326→v78, 0x321→v74, 0x51D→v60+克隆重入队 0x1F。
+- **〔F1057 三处勘误〕**0x27D/0x27E 槽位对调；0x21 未处理；0x10 仅释放。
+- **〔新〕**0x456310 = 一次性注册第 5 实例。
+- 落盘：entity-msg-queue-full-evidence.json（F1060，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 754。

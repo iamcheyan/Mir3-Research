@@ -4722,3 +4722,7 @@ git diff --check
 
 - Round 742-752（11 轮）追加；714 连发；681 证据。
 - 落盘：`handoff-refresh-161-evidence.json`（F1059）+ RESEARCH_LOG Round 753。
+## Round 754 (2026-08-12) — 实体消息队列闭合（Finding 1060）
+
+- 环形缓冲（10 万槽 + CS 锁 + 丢弃策略）+ 消息→虚槽全表（含 F1057 三处勘误）。
+- 落盘：`entity-msg-queue-full-evidence.json`（F1060）+ RESEARCH_LOG Round 754。
