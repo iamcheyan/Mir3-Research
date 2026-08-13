@@ -497,60 +497,85 @@ def status() -> dict:
     }
 
 
+def _level_bucket(value: Any) -> str | None:
+    """把怪物等级映射到稳定的筛选标签。"""
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return None
+    if value <= 10:
+        return "0-10"
+    if value <= 25:
+        return "11-25"
+    if value <= 50:
+        return "26-50"
+    if value <= 100:
+        return "51-100"
+    return "100+"
+
+
 @APP.get("/api/categories")
 def categories() -> list[dict]:
-    """分类轴自动发现：对该类目所有行扫描，把适合当筛选的字段全部聚合成 facets。
-    规则：① meta 里声明为 enum 的字段；② 布尔字段；③ 低基数(≤30 个不同值)的
-    int/string 字段。跳过 Index/名字/数值范围型(如等级)/引用型。"""
-    SKIP = {"Index", "Image", "Icon", "FaceImage", "Shape"}
+    """发现实用的分类筛选轴，并按频次返回值。
+
+    枚举/布尔轴必须至少有两个值；枚举唯一值达到行数一半时跳过。
+    int/string 轴通常要求不超过 30 个值，但允许高基数轴在前 20 个值
+    覆盖至少 60% 行时出现（用于 MonsterInfo.AI）。高基数轴只展示前 20 个值。
+    """
+    SKIP = {"Index", "Image", "Icon", "FaceImage", "Shape", "Level"}
     out = []
     for c in CATEGORIES:
-        entry = {
-            "key": c["key"], "zh": c["zh"],
-            "count": len(STORE.tables.get(c["key"], {})),
-            "subs": c["subs"],
-        }
-        trows = list(STORE.tables.get(c["key"], {}).values())
-        tmeta = STORE.meta.get(c["key"], {}).get("fields", {})
+        table = c["key"]
+        entry = {"key": table, "zh": c["zh"],
+                 "count": len(STORE.tables.get(table, {})), "subs": c["subs"]}
+        trows = list(STORE.tables.get(table, {}).values())
+        tmeta = STORE.meta.get(table, {}).get("fields", {})
         facets = []
         if trows:
+            # MonsterInfo.Level 是特例：连续值本身不显示，但等级段作为实用轴显示。
+            if table == "MonsterInfo":
+                bucket_counts: dict[str, int] = {}
+                for r in trows:
+                    b = _level_bucket(r.get("Level"))
+                    if b:
+                        bucket_counts[b] = bucket_counts.get(b, 0) + 1
+                if len(bucket_counts) >= 2:
+                    order = {"0-10": 0, "11-25": 1, "26-50": 2, "51-100": 3, "100+": 4}
+                    facets.append({"field": "LevelBucket", "zh": "等级段",
+                                   "values": sorted(bucket_counts.items(), key=lambda x: order[x[0]])})
             for field, fdef in tmeta.items():
                 if field in SKIP or field.startswith("_"):
                     continue
                 ftype = str(fdef.get("type", ""))
                 kind = fdef.get("kind", "")
-                if kind in ("ref", "reflist", "stats"):
+                if kind in ("ref", "reflist", "stats") or ftype not in ("enum", "bool", "int", "string"):
                     continue
-                is_enum = ftype == "enum"
-                is_bool = ftype == "bool"
-                if not (is_enum or is_bool or ftype in ("int", "string")):
-                    continue
+                is_enum, is_bool = ftype == "enum", ftype == "bool"
                 counts: dict[str, int] = {}
                 for r in trows:
                     v = r.get(field)
                     if v is None:
                         continue
-                    if isinstance(v, bool):
-                        key = "是" if v else "否"
-                    elif isinstance(v, (int, float)) and not is_enum:
-                        # 低基数整数(如 AI 编号)可当分类；连续数值(等级/伤害)跳过
-                        key = str(v)
-                    elif isinstance(v, str):
-                        key = v
-                    else:
-                        continue
+                    if isinstance(v, bool): key = "是" if v else "否"
+                    elif isinstance(v, (int, float)) and not is_enum: key = str(v)
+                    elif isinstance(v, str): key = v
+                    else: continue
                     counts[key] = counts.get(key, 0) + 1
-                # 枚举/布尔全收；int/string 只收低基数(≤30 值且 ≥2 值)
-                if is_enum or is_bool:
-                    if len(counts) >= 1:
-                        zh = fdef.get("zh") or field
-                        facets.append({"field": field, "zh": zh,
-                                       "values": sorted(counts.items(), key=lambda x: -x[1])})
-                elif 2 <= len(counts) <= 30:
-                    zh = fdef.get("zh") or field
-                    facets.append({"field": field, "zh": zh,
-                                   "values": sorted(counts.items(),
-                                                    key=lambda x: (len(x[0]), x[0]))})
+                nvalues = len(counts)
+                if nvalues < 2:
+                    continue
+                ranked = sorted(counts.items(), key=lambda x: -x[1])
+                if is_enum:
+                    if nvalues >= len(trows) * 0.5:
+                        continue
+                    values = ranked
+                elif is_bool:
+                    values = ranked
+                else:
+                    coverage = sum(n for _, n in ranked[:20]) / len(trows)
+                    if nvalues > 30 and coverage < 0.60:
+                        continue
+                    values = ranked[:20] if nvalues > 30 else ranked
+                facets.append({"field": field, "zh": fdef.get("zh") or field,
+                               "values": values})
         entry["facets"] = facets
         out.append(entry)
     return out
@@ -597,7 +622,11 @@ def table_rows(table: str, page: int = 1, per: int = 50, q: str = "",
                 if isinstance(v, bool):
                     return "是" if v else "否"
                 return str(v)
-            items = [r for r in items if _facet_v(r.get(f)) in allowed]
+            def _matches(r):
+                if f == "LevelBucket":
+                    return _level_bucket(r.get("Level")) in allowed
+                return _facet_v(r.get(f)) in allowed
+            items = [r for r in items if _matches(r)]
     if q:
         ql = q.lower()
 

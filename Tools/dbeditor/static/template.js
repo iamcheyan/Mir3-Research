@@ -37,16 +37,20 @@ window.APP_TEMPLATE = `
           </span>
         </div>
         <!-- 分类筛选：所有可用轴（物品=类型/稀有度/职业…，怪物=BOSS/不死/AI…，技能=职业/系别…） -->
-        <div v-if="activeFacets.length" class="facet-bar"
-             style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px; align-items:flex-start">
-          <div v-for="fc in activeFacets" :key="fc.field" class="facet-group">
-            <div class="facet-title">{{ fc.zh }}</div>
-            <div style="display:flex; gap:4px; flex-wrap:wrap; max-width:340px">
-              <span v-for="([v, n]) in fc.values.slice(0, 24)" :key="v"
-                    class="facet-chip" :class="{ on: facetSel[fc.field] && facetSel[fc.field].has(v) }"
-                    @click="toggleFacet(fc.field, v)">
-                {{ v }}<i v-if="n" style="opacity:.55; font-style:normal; font-size:10px"> {{ n }}</i>
-              </span>
+        <div v-if="activeFacets.length" class="facet-bar" :class="{ 'facet-collapsed': isMobile && !facetOpen }">
+          <button v-if="isMobile" class="facet-toggle" type="button" @click="facetOpen = !facetOpen">
+            筛选({{ selectedFacetCount }}) <span>{{ facetOpen ? '▴' : '▾' }}</span>
+          </button>
+          <div v-show="!isMobile || facetOpen" class="facet-content">
+            <div v-for="fc in activeFacets" :key="fc.field" class="facet-group">
+              <div class="facet-title">{{ fc.zh }}</div>
+              <div class="facet-values">
+                <span v-for="pair in (fc.values || []).slice(0, 24)" :key="pair[0]"
+                      class="facet-chip" :class="{ on: facetSel[fc.field] && facetSel[fc.field].has(pair[0]) }"
+                      @click="toggleFacet(fc.field, pair[0])">
+                  {{ pair[0] }}<i v-if="pair[1]" style="opacity:.55; font-style:normal; font-size:10px"> {{ pair[1] }}</i>
+                </span>
+              </div>
             </div>
           </div>
         </div>

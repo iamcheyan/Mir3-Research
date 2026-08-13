@@ -39,6 +39,9 @@ body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-s
 /* ---------------- 分类筛选 chips ---------------- */
 .facet-bar { background: var(--el-fill-color-lighter); border: 1px solid var(--el-border-color-lighter);
   border-radius: 8px; padding: 8px 12px; }
+.facet-content { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+.facet-values { display:flex; gap:4px; flex-wrap:wrap; max-width:340px; }
+.facet-toggle { display:none; }
 .facet-title { font-size: 11px; color: var(--el-text-color-secondary); margin-bottom: 4px; }
 .facet-chip { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px;
   background: #fff; border: 1px solid var(--el-border-color); cursor: pointer; user-select: none; }
@@ -68,6 +71,13 @@ body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-s
     -webkit-overflow-scrolling: touch; }
   /* 工具行收缩：搜索框占满，新增/批量收成图标按钮 */
   .main .toolbar { flex-wrap: wrap; gap: 6px; }
+  /* 手机 facet 默认折叠为一行，展开后显示所有筛选轴 */
+  .facet-bar { padding: 5px 8px; margin-bottom: 8px; }
+  .facet-bar.facet-collapsed { min-height: 28px; }
+  .facet-toggle { display:flex; width:100%; border:0; background:transparent; color:var(--el-text-color-regular);
+    font-size:13px; padding:2px 0; align-items:center; justify-content:space-between; cursor:pointer; }
+  .facet-content { display:flex; flex-direction:column; gap:8px; margin-top:7px; }
+  .facet-values { max-width:none; }
   .main .toolbar .el-input { width: 100% !important; }
   .main .toolbar .hint { display: none; }   /* "1078 行·保存只写 JSON..." 提示手机隐藏 */
   /* 手机卡片列表 */

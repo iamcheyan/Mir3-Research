@@ -60,8 +60,11 @@ const app = createApp({
     });
     const activeFacets = computed(() => {
       const c = cats.value.find(x => x.key === activeCat.value);
-      return (c && c.facets) || [];
+      return Array.isArray(c && c.facets) ? c.facets : [];
     });
+    const facetOpen = ref(false);
+    const selectedFacetCount = computed(() =>
+      Object.values(facetSel).reduce((n, s) => n + (s instanceof Set ? s.size : 0), 0));
     function toggleFacet(field, val) {
       if (!facetSel[field]) facetSel[field] = new Set();
       const s = facetSel[field];
@@ -436,8 +439,8 @@ const app = createApp({
       rows, total, page, per, query, selection, listCols,
       displayCell, rowIcon, iconError, switchCat, search, resort, zhName,
       isMobile, rowName, monActionSrc,
-      facetSel, activeFacets, toggleFacet,
-      detail, mainFields, refOptions, subMetas, markDirty,
+      facetSel, activeFacets, toggleFacet, facetOpen, selectedFacetCount,
+ detail, mainFields, refOptions, subMetas, markDirty,
       saveDetail, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
       openDetail, duplicateRow, deleteRow, createRow,
       bulkDialog, openBulk, runBulk, bulkFieldDef, bulkEnums,
