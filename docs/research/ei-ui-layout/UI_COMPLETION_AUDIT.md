@@ -4593,3 +4593,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（窗口几何构造完整；下一弧：剩余深层角落/模拟器 polish）。
+## Round 733 (2026-08-12) — 窗口几何闭合（Finding 1039）
+
+- **696 连发 + 660 证据 + 窗口几何完整**（资源查找/尺寸回退/居中矩形/style）。
+- 落盘：`window-geometry-closure-evidence.json`（F1039）+ RESEARCH_LOG Round 733。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（窗口几何 100%；下一弧：HANDOFF 刷新 158/剩余深层角落）。

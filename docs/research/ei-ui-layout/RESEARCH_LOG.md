@@ -9165,3 +9165,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔几何〕**0x423B30 经 0x466130 读取 WIL 帧尺寸；调用者宽/高非零则优先，否则回退资源尺寸，写入 [+0x40]/[+0x44]；通过 SetRect 0x4762B0 写居中的外框 [+0x8] 与内容框 [+0x18]；style 低 8 位将 [+0x50]/[+0x51] 设为 0x96/0xB4/0xD2 或调用者字节。
 - 落盘：window-geometry-ctor-body-evidence.json（F1038，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 732。
+## Round 733 (F1039) — 2026-08-12：窗口几何闭合（F284/F713/F1038 汇总）
+
+- **〔验证〕**compileall OK、verify exit 0、node OK、JSON 有效、**660 证据 JSON**；三服务 200；master c1b33bd（**696 连发 F335-F1038 已推**）。
+- **〔弧〕**几何摘要（F284）+ 窗口基类（F713）+ 原始构造体（F1038）——WIL 尺寸回退、居中外框/内容框、尺寸字段与 style 颜色全部完整。
+- 落盘：window-geometry-closure-evidence.json（F1039，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 733。
