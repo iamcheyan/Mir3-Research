@@ -1,0 +1,39 @@
+{
+  "evidence_id": "cell-record-closure-2026-08-12-f1074",
+  "title": "Round 768 (F1074): 14-byte cell record 100% CLOSED (14/14 bytes mapped) - F1073 note CORRECTED: bytes 12-13 ARE the attr word @+0xC already anchored by F1065 (0x43CA40 reads word[+0xC]; there is no separate 'attr dword high word'), so after F1065 (byte0, word@3, word@5, word@7, word@0xC), F1069 (blend bytes 1-2), F1072 (bytes 9, 11) and F1073 (byte10) the record is fully mapped: byte0 bit0 blocked; byte1 front-blend (hi&7*16+lo anim offset, bit7 float path); byte2 mid-blend; byte3 front file; byte4 mid file; bytes5-6 mid frame; bytes7-8 front frame; byte9 static id (cluster {9,10,11,58,60,61}) + rare bit7 (282 cells); byte10 static flag (0/0x04); byte11 runtime mark bit7; bytes12-13 attr word (bits14-15 file idx 0-3, nibble>>4 decal class, low nibble) - EMPIRICAL attr-word measurement over 3,352,976 cells (60 maps): nonzero on only 447 cells (0.013%, super-sparse decal/detail cells); file-idx distribution {0:235, 1:30, 2:12, 3:170} (all four sprite-file slots used); nibble>>4 in {0:31, 1:229, 2:10, 3:177} - ALL < 0xA, consistent with the render driver gate (0x41C4F6 cmp 0xA jge skip); low nibble in {0:58, 1:389}; decal tables mapobj+0xF5390 (1B) / +0xF5394 (3B) indexed by nibble feed 0x434A20",
+  "date": "2026-08-12",
+  "objective": "Close the cell-record byte map and validate the attr word on real data.",
+  "question": "Is any cell-record byte still unmapped, and how sparse is the attr word in real maps?",
+  "method": "Cross-check F1065/F1069/F1072/F1073 field lists against the 14-byte layout; histogram word@0xC over 3.35M cells.",
+  "scope": "full cell record; attr word consumers (0x43CA40, 0x41C460 driver).",
+  "cell_analysis": {
+    "final_layout": {
+      "0": "bit0 blocked",
+      "1": "front blend (hi&7*16+lo -> anim table @+0x1B01D4; bit7 float)",
+      "2": "mid blend",
+      "3": "front file",
+      "4": "mid file",
+      "5-6": "mid frame",
+      "7-8": "front frame",
+      "9": "static id + rare bit7",
+      "10": "static flag 0/0x04",
+      "11": "runtime mark bit7",
+      "12-13": "attr word: bits14-15 file idx, nibble>>4 decal class 0-9, low nibble"
+    },
+    "attr_word": {"nonzero": "447/3352976 (0.013%)", "file_idx": "{0:235,1:30,2:12,3:170}", "nibble": "{0:31,1:229,2:10,3:177} all <0xA", "low": "{0:58,1:389}"}
+  },
+  "exe_trace": {"measure": "word@0xC histogram over 60 valid maps"},
+  "audit_vs_exe": {
+    "F1073": "note CORRECTED: bytes 12-13 = attr word (mapped since F1065), not an open field",
+    "F1065": "word@0xC consumer + >>4 nibble + bits14-15 reconfirmed empirically",
+    "F1069": "decal-class nibble <0xA gate empirically satisfied on all 447 populated cells"
+  },
+  "contrast": {"sparse_layers": "attr word 447 cells vs chunk1 1.85M populated vs blend bytes", "closure": "14/14 bytes"},
+  "verdict": "The client .map cell record is byte-for-byte fully explained: blocking, two blend/anim channels, two object layers (file+frame), static id/flag, runtime mark, and the attr/decal word - all with .text consumers and real-data distributions.",
+  "evidence_level": "derived-tooling",
+  "evidence_level_note": "Layout assembled from prior primary-bytes rounds; attr-word stats from original client data.",
+  "cross_refs": ["F1065: loader + attr", "F1069: blend/layers", "F1072: bytes 9/11", "F1073: byte10 + correction"],
+  "tool": "python histogram",
+  "reproduce": "struct.unpack_from('<H', buf, i+12) over Map/*.map chunk2; compare F1065-F1073 field tables",
+  "notes": ["first format fully closed at byte granularity in this research line", "decal cells 0.013% - special-cell system", "729 consecutive rounds F335-F1074"]
+}

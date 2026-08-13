@@ -4778,3 +4778,7 @@ git diff --check
 
 - 零写入者证明 + 3.35M 格实测 → byte9=静态 ID/byte10=旗标/byte11=运行时标记；F1072「动态占用」修订为「静态 ID 高亮」。
 - 落盘：`claim-producer-empirical-evidence.json`（F1073）+ RESEARCH_LOG Round 767。
+## Round 768 (2026-08-12) — 格记录闭合（Finding 1074）
+
+- 14/14 字节全锚定 + 属性字 0.013% 稀疏实测（nibble<0xA 门全通过）——.map 格记录字节级闭合。
+- 落盘：`cell-record-closure-evidence.json`（F1074）+ RESEARCH_LOG Round 768。

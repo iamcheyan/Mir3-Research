@@ -9374,3 +9374,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔语义修订〕**0x43C1B0/0x43C270 = 按静态 byte9-ID 匹配的 18×18 窗打标/清标（高亮某对象全部格）；F1072 接近步引擎走向「静态 ID 已标格」（门/触发接近），非动态实体占用。
 - **〔格记录总账〕**字节 0-9、11、word 0xC 锚定；byte10=静态旗标；仅 12-13 未映射。
 - 落盘：claim-producer-empirical-evidence.json（F1073，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 767。
+## Round 768 (F1074) — 2026-08-12：14 字节格记录 100% 闭合（14/14 字节）
+
+- **〔F1073 注记勘误〕**字节 12-13 即 word@0xC（F1065 0x43CA40 已锚定），无独立高位字——格记录全量闭合：byte0 bit0 封锁；byte1/2 前/中 blend（动画偏移+bit7 浮点）；byte3/4 前/中文件；5-6/7-8 帧；byte9 静态 ID+稀 bit7；byte10 静态旗标；byte11 运行时标记；byte12-13 属性字。
+- **〔属性字实测（3.35M 格）〕**非零仅 **447 格（0.013%）**——超级稀疏贴花系统；file idx {0:235,1:30,2:12,3:170} 四槽全用；nibble {0:31,1:229,2:10,3:177} **全部 <0xA**（与渲染门 0x41C4F6 一致）；低 nibble {0:58,1:389}。
+- **〔里程碑〕**本研究线首个字节级全闭合格式。
+- 落盘：cell-record-closure-evidence.json（F1074，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 768。
