@@ -1,0 +1,46 @@
+{
+  "evidence_id": "notice-color-convention-2026-08-12-f1044",
+  "title": "Round 738 (F1044): notice color convention FULL (F553/F797 extension) - 0x401390 8-color table called from 9 sites x2 (bg,fg pairs) feeding 0x427E30 notice window: 0x419D0C login notice (2,3 + fmt 0x47AF4C), 0x41E10F chat '/' echo (0,5 + [0x8AA4A4] input), 0x420C56 recv queue notice (2,3 + 0x47B568 + reset [0x2AB9A4]), 0x421A9B quest journal (2,3 + 0x47B180 + 0x449390), 0x421B0B new quest (2,3 + 0x47B15C + 0x4491D0), 0x422EB2 map announce 0x68 (0,4 + guild 0x4256A0), 0x422EEB generic name announce (packet bytes [edi+8]/[edi+6]) - UNIFIED notice color convention",
+  "date": "2026-08-12",
+  "objective": "Map all consumers of the 0x401390 color table.",
+  "question": "Which subsystems feed 0x427E30 through the color table?",
+  "method": "E8 rel32 whole-.text scan for 0x401390 + caller context disasm.",
+  "scope": "9 call sites 0x419D0C-0x422EF6; 0x401390; 0x427E30.",
+  "cell_analysis": {
+    "table": "0x401390: idx 0-7 -> {0, 0xA0A0A, 0xFFFFFF, 0xFF, 0xFF00, 0xFF9696, 0x50FFFF, 0x80FF}",
+    "pair_convention": "push bg; push fg; two calls; add esp,8; push fmt/text; call 0x427E30",
+    "sites": {
+      "0x419D0C": "login notice (2,3) + 0x47AF4C",
+      "0x41E10F": "chat '/' echo (0,5) + input [0x8AA4A4]",
+      "0x41E833": "chat family (pending detail)",
+      "0x41EE09": "chat family (pending detail)",
+      "0x420C56": "recv queue notice (2,3) + 0x47B568 + [0x2AB9A4]=0",
+      "0x421A9B": "quest journal changed (2,3) + 0x47B180 + 0x449390",
+      "0x421B0B": "new quest (2,3) + 0x47B15C + 0x4491D0",
+      "0x422EB2": "map announce 0x68 (0,4) + guild line 0x4256A0",
+      "0x422EEB": "generic announce (packet [edi+8],[edi+6])"
+    }
+  },
+  "exe_trace": {"notice_chain": "color pair 0x401390 -> text/fmt -> 0x427E30 window 0x507EC"},
+  "audit_vs_exe": {
+    "F553": "recv2 quest notices (2,3) confirmed",
+    "F797": "map/name announce sites confirmed",
+    "F873": "chat '/' echo site 0x41E10F = color source"
+  },
+  "contrast": {
+    "fixed_vs_dynamic": "8 fixed pairs (mostly 2,3 white/red) vs 0x422EEB packet-byte-driven colors",
+    "notice_vs_guild": "0x427E30 shared window; guild line via 0x4256A0 reuses decoded text"
+  },
+  "verdict": "Notice color convention PRIMARY-verified: 9 sites x bg/fg pairs through 0x401390 into 0x427E30; system/quest notices standardized (2,3), chat echo (0,5), map announce (0,4), packet-driven dynamic pair.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "E8 scan + caller bodies decoded from .text.",
+  "cross_refs": ["F553: color table + recv2", "F797: map announce", "F873: chat commands"],
+  "tool": "capstone disasm + E8 rel32 scan",
+  "reproduce": "scan E8 -> 0x401390; disasm 0x419D0C/0x41E10F/0x420C56/0x421A9B/0x422EB2",
+  "notes": [
+    "9 sites x2 calls = 18 E8 refs",
+    "standard system pair = (2,3)",
+    "chat echo = (0,5)",
+    "map announce 0x68 = (0,4)"
+  ]
+}

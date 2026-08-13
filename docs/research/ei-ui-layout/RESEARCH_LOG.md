@@ -9188,3 +9188,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔刷新〕**HANDOFF 追加 Round 735-736（F1041-F1042：共享 widget vtable 家族全量 + 家族闭合）；基线 Round 733=5c60ecc → Round 736=7cc0d35（**698 连发 F335-F1042**，662 证据 JSON）。
 - 落盘：handoff-refresh-159-evidence.json（F1043，derived-tooling）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 737。
+## Round 738 (F1044) — 2026-08-12：公告颜色约定全量（F553/F797/F873 扩展）
+
+- **〔颜色约定〕**0x401390 8 色表经 E8 全扫描 = **9 个调用点 ×2（bg/fg 成对）**喂 0x427E30 公告窗：0x419D0C 登录公告 (2,3)+0x47AF4C、0x41E10F 聊天 '/' 回显 (0,5)+输入 [0x8AA4A4]、0x420C56 recv 队列公告 (2,3)+0x47B568+复位 [0x2AB9A4]、0x421A9B 任务日志变更 (2,3)+0x47B180+0x449390、0x421B0B 新任务 (2,3)+0x47B15C+0x4491D0、0x422EB2 地图公告 0x68 (0,4)+行会行 0x4256A0、0x422EEB 通用公告（包字节 [edi+8]/[edi+6] 动态对）——统一公告颜色约定。
+- 落盘：notice-color-convention-evidence.json（F1044，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 738。

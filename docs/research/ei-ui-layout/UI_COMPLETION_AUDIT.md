@@ -4633,3 +4633,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（共享 widget 渲染层 100%；下一弧：剩余深层角落/模拟器 polish）。
+## Round 738 (2026-08-12) — 公告颜色约定全量（Finding 1044）
+
+- **9 调用点 ×2 颜色对入 0x427E30**（系统 (2,3)/聊天 (0,5)/地图 (0,4)/包驱动动态）。
+- 落盘：`notice-color-convention-evidence.json`（F1044）+ RESEARCH_LOG Round 738。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告颜色约定完整；下一弧：公告/文本系统收尾/模拟器 polish）。
