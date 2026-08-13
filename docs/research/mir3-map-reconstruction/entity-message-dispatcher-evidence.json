@@ -1,0 +1,29 @@
+{
+  "evidence_id": "entity-message-dispatcher-2026-08-12-f1057",
+  "title": "Round 751 (F1057): entity subclass 0x476480 core methods decoded (F1054 follow-up) - 0x40C5B0 = deleting dtor -> 0x40C5D0 real dtor (mov [esi],0x476480 -> 0x40C700 base chain -> 0x4049D0); 0x40C620 = COMBAT STATE BLOCK RESET: call 0x404A30 (hero base) then zero ~0x78 bytes at [+0x629C8..+0x62A3C] (flags +0x629CD..+0x629D3, dwords +0x629D4/+0x629D8, two 0x10 zero blocks +0x629DC/+0x629EC/+0x629FC, dword array +0x62A0C-0x62A2C, word +0x62A30, [+0x62A38]=-1) - per-entity combat scratch region; 0x40CA20 = ACTION STATE MACHINE: gate [0xB4]+1==[0xC4] && [0xC0]==0xF -> dir lookup byte [0x61C79] via table 0x40CC5C + jt 0x40CC50 -> slots 0x46/0x47/0x48/0x49 (+0xA when [0x8A]==3); anim-step [0xC4]==[0xB4]+2 -> 0x8A/0x8C; frame 0x13 -> 0x90; walk-run states [0xC0] in 9..0xE/0x10/0x11 -> pending-flag slots 0x89 ([0x629D3])/0x8C ([0x629D1])/0x8D ([0x629D2]); move echo: [0x629D0]==2 -> send 0x82 (main) or 0x83 (hero [0x88]!=0) coords [0xCC]/[0xD0] via 0x45AFC0 @ object 0x8AB130, then clear; 0x40ED60 = SERVER MESSAGE DISPATCHER (ret via 0x4680F8 free): queue head [ebx+0xF0] (0x456270 pop), msg type word [p+4]: switch jt 0x40EF70 for 6..0x18 -> virtual slots [0x94]/[0x98]/[0x5C]/[0x44]/[0x90]/[0x48]/[0xA0]; 0x1F/0x21 -> [0x60]/[0x54]; 0x27D/0x27E -> [0x9C]/[0xA4]; 0x320/0x321/0x326 -> [0x78]/[0x74]; 0x51A-0x51C -> [0x64]; 0x51D -> [0x60] then CLONE packet (0x40C bytes via 0x468B1A) rewrite type 0x1F re-enqueue 0x4561B0; tail: [0x61C74]!=0 -> slot [0x10] (0x13, [0xC1]), dec [0xB8]",
+  "date": "2026-08-12",
+  "objective": "Decode the 0x476480 entity subclass movement/dispatch methods.",
+  "question": "What do 0x40C5B0/0x40C620/0x40CA20/0x40ED60 do?",
+  "method": "Disasm all four bodies + jump-table reads (0x40CC50, 0x40EF70).",
+  "scope": "0x40C5B0-0x40C760, 0x40CA20-0x40CBBE, 0x40ED60-0x40EF70.",
+  "cell_analysis": {
+    "dtor": "0x40C5B0 -> 0x40C5D0: mov [esi],0x476480 -> 0x40C700 (base chain 0x404D60 + slot 4) -> 0x4049D0",
+    "combat_reset": {"fn": "0x40C620", "region": "[+0x629C8..+0x62A3C] ~0x78 bytes", "special": "[+0x62A38] = -1"},
+    "action_sm": {"fn": "0x40CA20", "slots": "0x46-0x49 (+0xA if [0x8A]==3), 0x8A, 0x8C, 0x8D, 0x90", "echo": "move 0x82/0x83 via 0x45AFC0 @ 0x8AB130"},
+    "dispatcher": {"fn": "0x40ED60", "queue": "[ebx+0xF0] pop 0x456270 / push 0x4561B0", "msg_type": "word [p+4]", "jt": "0x40EF70 (6..0x18) + inline compares 0x1F..0x51D", "virtual_slots": "0x44/0x48/0x54/0x5C/0x60/0x64/0x74/0x78/0x8A?? no - 0x90/0x94/0x98/0x9C/0xA0/0xA4/0x10", "clone_rule": "msg 0x51D: clone 0x40C bytes, rewrite type 0x1F, re-enqueue"}
+  },
+  "exe_trace": {"dispatch_loop": "pop [ebx+0xF0] -> switch(word[p+4]) -> [vtable+slot](this, p) -> free p -> tail state"},
+  "audit_vs_exe": {
+    "F1017": "entity ctor dispatch 0x435030 is the ctor-side entry; 0x40ED60 is the per-message dispatcher completing the entity message path",
+    "F1023": "recv1 handlers ultimately feed this queue [INFERENCE from queue pattern]",
+    "F800": "combat state block at +0x629C8 explains the 8-state nameplate gates"
+  },
+  "contrast": {"clone_requeue": "0x51D -> 0x1F re-enqueue = protocol message rewriting", "hero_vs_main": "0x82 vs 0x83 move echo by [0x88]"},
+  "verdict": "Entity runtime core completed: per-entity combat scratch block, action state machine with server-echoed move sends, and the full server-message dispatcher (type word [p+4] -> 14 virtual slots + clone-requeue rule).",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "All four bodies + both jump tables decoded from .text.",
+  "cross_refs": ["F1054: entity hierarchy", "F1017: 0x435030 ctor dispatch", "F1023: recv1 feed"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x40C620+0xD8; 0x40CA20+0x19E; 0x40ED60+0x110",
+  "notes": ["combat scratch +0x629C8 (0x78 bytes, [+0x62A38]=-1)", "dispatcher queue [this+0xF0] pop/push 0x456270/0x4561B0", "712 consecutive rounds F335-F1057"]
+}

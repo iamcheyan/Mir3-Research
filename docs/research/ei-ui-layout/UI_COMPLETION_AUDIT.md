@@ -4710,3 +4710,7 @@ git diff --check
 
 - 9 槽全解：消息处理/模式调整/640×480×16 重置（丢失旗标）/内缩/timer；浮点尾勘误。
 - 落盘：`render-device-vtable-evidence.json`（F1056）+ RESEARCH_LOG Round 750。
+## Round 751 (2026-08-12) — 实体消息分派器 + 动作状态机（Finding 1057）
+
+- 战斗暂存块 + 动作状态机（含移动回显 0x82/0x83）+ 全消息分派器（14 虚槽 + 0x51D 克隆重入队规则）。
+- 落盘：`entity-message-dispatcher-evidence.json`（F1057）+ RESEARCH_LOG Round 751。
