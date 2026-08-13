@@ -4641,3 +4641,11 @@ git diff --check
 ## Pending（未阻塞，持续队列）
 
 - 无阻塞项（公告颜色约定完整；下一弧：公告/文本系统收尾/模拟器 polish）。
+## Round 739 (2026-08-12) — 聊天族公告颜色点补全（Finding 1045）
+
+- **移动警告（计数门）+ 聊天回显**（F1044 站点表 9/9 全解）。
+- 落盘：`chat-notice-color-sites-evidence.json`（F1045）+ RESEARCH_LOG Round 739。
+
+## Pending（未阻塞，持续队列）
+
+- 无阻塞项（公告颜色约定 9/9；下一弧：公告系统收尾/模拟器 polish）。

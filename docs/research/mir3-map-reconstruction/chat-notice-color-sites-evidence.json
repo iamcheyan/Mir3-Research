@@ -1,0 +1,24 @@
+{
+  "evidence_id": "chat-notice-color-sites-2026-08-12-f1045",
+  "title": "Round 739 (F1045): chat-family notice color sites FULL (F1044 completion) - 0x41E831 movement notice (2,3) + fmt 0x47B110, gated by counter [0x428224] (suppress after >2, decrement alternate path, reset via edi); 0x41EE07 chat-send echo (2,3) + sprintf buffer [esp+0x9C] (fmt 0x47B9D0, [0x35B1FD] tag) -> 0x427E30; both follow bg/fg pair convention - 9/9 color sites resolved",
+  "date": "2026-08-12",
+  "objective": "Resolve the two chat-family color call sites left pending in F1044.",
+  "question": "What do 0x41E833 and 0x41EE09 announce?",
+  "method": "Disasm caller contexts 0x41E81D-0x41E8B9 and 0x41EDF3-0x41EE2F.",
+  "scope": "0x41E831-0x41E86D; 0x41EE07-0x41EE2F; counter [0x428224].",
+  "cell_analysis": {
+    "0x41E831": {"pair": "(2,3)", "fmt": "0x47B110", "gate": "counter [0x428224]: inc; >2 -> notice + reset to edi(0); alt path dec, <0 -> reset", "context": "chat/heartbeat family; resets [0x42821C]/[0x428218], stores args to [0x428210]/[0x428214]"},
+    "0x41EE07": {"pair": "(2,3)", "text": "sprintf buffer [esp+0x9C] (fmt 0x47B9D0 = F876 chat fmt, tag [0x35B1FD])", "sink": "0x427E30 via [ebx+0x2A548C]"},
+    "tail": "0x41EE34+ = item-record parse (0x452810 0x5F + ctor 0x430920/0x430940 + bag fill 0x42FC20) - chat handler doubles as item-use path"
+  },
+  "exe_trace": {"chain": "counter gate -> color pair -> fmt -> 0x427E30 notice window"},
+  "audit_vs_exe": {"F1044": "9/9 sites now resolved", "F876": "chat sprintf fmt 0x47B9D0", "F293": "0x42FC20 bag fill in tail"},
+  "contrast": {"gated_vs_ungated": "movement notice counter-limited vs chat echo unconditional", "same_pair": "both use system (2,3)"},
+  "verdict": "Chat-family notice sites PRIMARY-verified: movement warning (counter-gated) + chat-send echo, both (2,3); F1044 site table complete 9/9.",
+  "evidence_level": "primary-bytes",
+  "evidence_level_note": "Caller bodies decoded from .text.",
+  "cross_refs": ["F1044: color convention", "F876: chat send", "F293: bag fill"],
+  "tool": "capstone disasm",
+  "reproduce": "disasm 0x41E831+0x40; 0x41EE07+0x30",
+  "notes": ["movement notice counter [0x428224]", "fmt 0x47B110 / 0x47B9D0", "both (2,3)", "chat handler doubles as item-use path"]
+}

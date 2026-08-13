@@ -9192,3 +9192,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔颜色约定〕**0x401390 8 色表经 E8 全扫描 = **9 个调用点 ×2（bg/fg 成对）**喂 0x427E30 公告窗：0x419D0C 登录公告 (2,3)+0x47AF4C、0x41E10F 聊天 '/' 回显 (0,5)+输入 [0x8AA4A4]、0x420C56 recv 队列公告 (2,3)+0x47B568+复位 [0x2AB9A4]、0x421A9B 任务日志变更 (2,3)+0x47B180+0x449390、0x421B0B 新任务 (2,3)+0x47B15C+0x4491D0、0x422EB2 地图公告 0x68 (0,4)+行会行 0x4256A0、0x422EEB 通用公告（包字节 [edi+8]/[edi+6] 动态对）——统一公告颜色约定。
 - 落盘：notice-color-convention-evidence.json（F1044，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 738。
+## Round 739 (F1045) — 2026-08-12：聊天族公告颜色点补全（F1044 收尾）
+
+- **〔补全〕**0x41E831 = 移动警告公告 (2,3)+fmt 0x47B110，计数门 [0x428224]（>2 触发后归零，交替路径递减）；0x41EE07 = 聊天发送回显 (2,3)+sprintf 缓冲（fmt 0x47B9D0=F876、标签 [0x35B1FD]）→ 0x427E30；尾部 0x41EE34+ 兼任物品使用路径（0x430920/0x430940/0x42FC20）。F1044 站点表 9/9 全解。
+- 落盘：chat-notice-color-sites-evidence.json（F1045，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 739。
