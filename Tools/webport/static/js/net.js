@@ -406,6 +406,7 @@ export function readClientUserItemFull(r) {
     maxDurability: r.int32(), count: r.int64(), slot: r.int32(),
     level: r.int32(),
   };
+  r.skip(16);              // Experience: decimal 16B
   o.colour = r.int32();     // Colour: Color (int32 ARGB)
   r.int64();                // SpecialRepairCoolDown: TimeSpan 8B
   r.int64();                // ResetCoolDown: TimeSpan 8B
@@ -1046,6 +1047,7 @@ export const S = {
     return { grid: r.int32(), slot: r.int32(), count: r.int64(), newSlot: r.int32(), success: r.bool() };
   },
   ItemUseDelay(r) { return { delay: r.int64() }; },
+  ItemDurability(r) { return { gridType: r.int32(), slot: r.int32(), currentDurability: r.int32() }; }, // ServerPackets.cs:627-632
   ItemLock(r) { return { grid: r.int32(), slot: r.int32(), locked: r.bool() }; },
   ItemStatsChanged(r) { return { gridType: r.int32(), slot: r.int32(), newStats: readStats(r) }; },
   ItemStatsRefreshed(r) { return { gridType: r.int32(), slot: r.int32(), newStats: readStats(r) }; },
@@ -1164,6 +1166,7 @@ export const S = {
   },
   GameStoreTopItems(r) { return { items: r.list((rr) => rr.int32()) }; },
   GameStoreFavouriteChanged(r) { return { index: r.int32(), favourited: r.bool() }; },
+  GameStoreGift(r) { return { result: r.byte() }; }, // ServerPackets.cs:904-907
   CompanionUpdate(r) { return { level: r.int32(), experience: r.int32(), hunger: r.int32() }; },
   CompanionWeightUpdate(r) { return { bagWeight: r.int32(), maxBagWeight: r.int32(), inventorySize: r.int32() }; },
   CompanionAdopt(r) { return { userCompanion: readClientUserCompanion(r) }; },
