@@ -759,3 +759,30 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   两个不同 null 语义: 占位 null 请求, 售罄 item-null 不请求)。
 - `CDP 验收` 套件 +APPLYERS 组 → 16/16: 全量 2 条 → 单条增量 (Index 11 价变 250,
   Index 10 保留, 无重复行) → Changed count=0 移除 → Buy 售罄 (价格消失+加载中+不移位)。
+
+## R30 — par-move (A路): 心法面板全量 (BuildAttributePanel :384-456 / RefreshDiscipline :804-819)
+
+- `缺口` win-char 心法页自标 "简化": 静态图 215 + 空标签 + 无门闩按钮。Godot 有:
+  RefreshDiscipline (等级/经验/下一级需求文案/RequiredLevel 门闩/图标 215+level) +
+  RefreshDisciplineMagicIcons (:770-788, School=Discipline+职业过滤+NeedLevel1 排序
+  取 4, learned 高亮) + ClearDisciplineMagic (:790-802, 点图标清 4 组快捷键)。
+- `实现` win-char.js: refreshDiscipline 全逻辑 (GameDB.disciplineRows 新 accessor;
+  discLabel 需求文案三态; btnImprove RequiredLevel 门闩; discImage.index=215+clamp);
+  4 心法技能图标格 (MIcon 帧 + learned 亮度区分 + 点击 sendMagicKey 清键);
+  store.on stats/magics 重刷。itemstore.js: +disciplineUpdate 监听
+  (S → info.discipline + emit stats)。gamedb.js: +magicRows/disciplineRows。
+- `真数据发现` 测试账号 DisciplineInfo 4 行 (lv1 需求: 等级70/经验0/金币 1000000 —
+  验收文案逐字段对上); MagicInfo 无 School=Discipline 行 → 4 图标格灰态 (Godot 同源
+  行为, 非缺陷)。
+- `CDP 验收` 套件 +DISCIPLINE 组 → 17/17: lv0 需求文案+lv1 人物门闩禁用 → lv1 心法
+  +lv80 启用+经验 500/0 → 提升发 C 153。
+- `排查记录 (教训)`:
+  1. import 插入用 PUT 11.=11 (替换) 覆盖了 net.js import → winChar 整模块
+     "GRID is not defined" 被 install 的 console.warn 吞 → char 窗从注册表消失;
+     经 __winWarns 捕获定位。插入必须 PUT <N / PUT >N。
+  2. CharacterDialog ui_tree 原生标签 ("修炼：0级" 等) 与动态标签文本重叠 — 探针
+     按文本断言会读到原生快照 → 动态标签加 __discLabel 等类名锚点。
+  3. 空 payload 包 (IncreaseDiscipline 帧 6B) 被 byteLength>6 过滤 — 包 id 断言
+     用 >=6。
+  4. (CDP 玄学, 未定根因) Runtime.evaluate 内 try{...}catch{return} 的 async IIFE
+     偶发整体返回 undefined — 探针不用 try/catch 包裹, 让异常裸抛更易定位。

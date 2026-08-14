@@ -9,6 +9,8 @@ import { WindowManager } from './windows.js';
 import { DXControl, DXLabel, DXButton, DXImageControl } from './dx.js';
 import { DXItemGrid } from './dxgrid.js';
 import { GRID, STAT, STAT_NAMES, CLASS_NAMES } from './net.js';
+import { skin } from './skin.js';
+import { GameDB } from './gamedb.js';
 
 // SlotPositions (CharacterDialog.cs:76-94) — [x, y]
 const SLOT_POS = [
@@ -150,15 +152,73 @@ export async function winChar(scene, store, reg) {
   // ---- 心法页 (BuildAttributePanel :364-454 简化) ----
   const discPanel = new DXControl({ location: [0, 0], size: [331, 443], isControl: false, visible: false });
   content.addControl(discPanel);
-  discPanel.addControl(new DXImageControl({ library: 'Interface', index: 215, location: [37, 64], isControl: false, fixedSize: true, size: [257, 193] }));
-  const discLevel = mkLabel(discPanel, '等级: -', 116, 314);
-  const discExp = mkLabel(discPanel, '经验: -', 14, 336);
+  const discImage = new DXImageControl({ library: 'Interface', index: 215, location: [37, 64], isControl: false, fixedSize: true, size: [257, 193] });   // Index=215+clamp(level,0,20) (:810)
+  discPanel.addControl(discImage);
+  const discLevelHint = mkLabel(discPanel, '等级', 13, 313);
+  const discLevel = mkLabel(discPanel, '0', 116, 314);   // _disciplineLevelValue (:397)
+  const discExpHint = mkLabel(discPanel, '经验', 13, 336);
+  const discExp = mkLabel(discPanel, '0/0', 14, 336);   // _disciplineExperienceLabel (:410)
+  const discLabel = mkLabel(discPanel, '未修炼心法', 14, 358);   // _disciplineLabel (:422)
+  discLabel.el.classList.add('__discLabel');   // 探针锚点 (避开 ui_tree 原生同名文本)
+  discExp.el.classList.add('__discExp');
+  discLevel.el.classList.add('__discLevel');
+  discLevelHint.el.style.opacity = discExpHint.el.style.opacity = '.8';
   const btnImprove = new DXButton({
     text: '提升心法', fontSize: 9, library: 'Interface', index: -1,
     location: [182, 266], size: [120, 27],
-    onClick: () => scene.conn.sendIncreaseDiscipline(),
+    onClick: () => scene.conn.sendIncreaseDiscipline(),   // SendIncreaseDiscipline (:425)
   });
+  btnImprove.enabled = false;
   discPanel.addControl(btnImprove);
+  // 4 心法技能格 (BuildAttributePanel :429-443: MagicIcon 36x36, 点击清快捷键 ClearDisciplineMagic :790)
+  const discMagicIcons = [];
+  for (let i = 0; i < 4; i++) {
+    const icon = new DXControl({ location: [51 + i * 62, 380], size: [36, 36], isControl: true });
+    icon.el.style.cssText += 'background-size:contain;background-repeat:no-repeat;image-rendering:pixelated;cursor:pointer;border:1px solid rgba(255,255,255,.15);';
+    icon.el.addEventListener('click', async () => {   // ClearDisciplineMagic :790-802
+      const info = icon.__magicInfo;
+      if (!info) return;
+      const m = store.magics.get(info.Index);
+      if (!m) return;
+      m.set1Key = 0; m.set2Key = 0; m.set3Key = 0; m.set4Key = 0;   // SpellKey.None
+      scene.conn.sendMagicKey(info.Magic, 0, 0, 0, 0);
+      scene.addChat(`已清除心法技能 ${info.zh ?? info.Name ?? info.Index} 的快捷键`, 'system');
+    });
+    discPanel.addControl(icon);
+    discMagicIcons.push(icon);
+  }
+  // RefreshDiscipline (:804-819) + RefreshDisciplineMagicIcons (:770-788)
+  async function refreshDiscipline() {
+    const disc = store.info?.discipline ?? null;
+    const level = disc?.level ?? 0;
+    let next = null, disciplineRows = [];
+    try { disciplineRows = await GameDB.disciplineRows(); } catch { /* 表缺失 → Max 语义 */ }
+    next = disciplineRows.find(x => x.Level === level + 1) ?? null;
+    discImage.index = 215 + Math.min(Math.max(level, 0), 20);
+    discLevel.text = String(level);
+    discExp.text = next == null ? `${Number(disc?.experience ?? 0)}/Max` : `${Number(disc?.experience ?? 0)}/${next.RequiredExperience}`;
+    discLabel.text = next == null
+      ? (disc == null ? '未修炼心法' : `心法等级 ${level} 当前经验 ${Number(disc.experience)}`)
+      : `需要: 等级 ${next.RequiredLevel} 经验 ${next.RequiredExperience} 金币 ${next.RequiredGold}`;
+    btnImprove.enabled = next != null && (store.level ?? 0) >= next.RequiredLevel;   // :818
+    // 心法技能图标: School=Discipline+职业过滤, NeedLevel1 排序, 取 4 (:773-777)
+    let magics = [];
+    try {
+      magics = (await GameDB.magicRows())
+        .filter(x => x.School === 'Discipline' && (x.Class == null || x.Class === store.info?.class))
+        .sort((a, b) => (a.NeedLevel1 ?? 0) - (b.NeedLevel1 ?? 0));
+    } catch { /* MagicInfo 缺失 → 空格 */ }
+    for (let i = 0; i < discMagicIcons.length; i++) {
+      const icon = discMagicIcons[i];
+      const info = i < magics.length ? magics[i] : null;
+      icon.__magicInfo = info ?? null;
+      icon.el.style.backgroundImage = '';
+      if (info?.Icon != null) skin.frame('MIcon', info.Icon).then(f => { if (f) icon.el.style.backgroundImage = `url(${f.url})`; });
+      icon.el.style.filter = info && store.magics.has(info.Index) ? '' : 'grayscale(1) brightness(0.5)';   // learned 高亮 (:784)
+    }
+  }
+  refreshDiscipline();
+  store.on((kind) => { if (kind === 'stats' || kind === 'magics') refreshDiscipline(); });   // DisciplineUpdate/magic key 变化
 
   // ---- 内功页 (BuildHermitPanel :438-454) ----
   const hermitPanel = new DXControl({ location: [0, 0], size: [331, 443], isControl: false, visible: false });

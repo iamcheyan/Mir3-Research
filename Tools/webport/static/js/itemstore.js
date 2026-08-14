@@ -111,6 +111,10 @@ export class ItemStore {
     const c = this.conn;
 
     c.addEventListener('itemsGained', (e) => this.#onItemsGained(e.detail));      // :6743
+    c.addEventListener('disciplineUpdate', (e) => {   // S.DisciplineUpdate → StartInfo.Discipline (CharacterDialog.RefreshDiscipline 输入)
+      this.info.discipline = e.detail?.discipline ?? null;
+      this.#emit('stats');
+    });
     c.addEventListener('itemMove', (e) => this.#onItemMove(e.detail));            // :6866
     c.addEventListener('itemChanged', (e) => this.#onItemChanged(e.detail));      // :7114
     c.addEventListener('itemsChanged', (e) => this.#onItemsChanged(e.detail));    // :7222

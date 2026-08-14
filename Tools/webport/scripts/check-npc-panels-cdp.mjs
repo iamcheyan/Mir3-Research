@@ -521,6 +521,45 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('APPLYERS', d.afterFull && d.merged && d.noDup && d.removed && d.soldOut, r);
 }
 
+// ============ 17. 心法面板 (BuildAttributePanel :384-456 / RefreshDiscipline :804) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { WindowManager } = await import('/static/js/windows.js');
+    const win = reg.win('char');   // registry wins: name → DXWindow 本身
+    if (!win) return { err: 'no-char-win', names: [...reg.wins.keys()] };
+    WindowManager.open(win, s.hudLayer);
+    ;[...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === '心法')?.__ctl?.onClick?.();   // selectTab(1)
+    await new Promise(r => setTimeout(r, 400));
+    const store = reg.itemStore; const conn = s.conn;
+    const q = (c) => win.el.querySelector('.' + c)?.textContent ?? '';
+    const btn = () => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.includes('提升心法'))?.__ctl;
+    // 1) lv0 心法 (真服初始 discipline 已有 → 置 null 模拟未修炼): 需求文案 + 低等级门闩禁用
+    store.level = 1; store.info.discipline = null;
+    conn.dispatchEvent(new CustomEvent('disciplineUpdate', { detail: { discipline: null } }));
+    await new Promise(r => setTimeout(r, 900));
+    const idleMain = q('__discLabel');
+    const gateIdle = btn()?.enabled === false;
+    // 2) lv1 心法 + 人物 lv80 → 需求文案 + 按钮启用
+    store.level = 80; store.info.discipline = { infoIndex: 1, level: 1, experience: 500n, magics: [] };
+    conn.dispatchEvent(new CustomEvent('disciplineUpdate', { detail: { discipline: store.info.discipline } }));
+    await new Promise(r => setTimeout(r, 900));
+    const lvMain = q('__discLabel'); const lvExp = q('__discExp');
+    const lv2 = lvMain.includes('需要: 等级');
+    const expShown = /^500\\//.test(lvExp);
+    const gateOpen = btn()?.enabled === true;
+    // 3) 提升按钮 → C_INCREASEDISCIPLINE 153
+    let sentId = 0; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength >= 6) { const id = new DataView(b.buffer, b.byteOffset).getInt16(4, true); if (id === 153) sentId = id; } return b; };   // IncreaseDiscipline 空 payload (帧头 6B)
+    btn()?.onClick?.();
+    await new Promise(r => setTimeout(r, 200));
+    conn.send = orig;
+    return { idleOk: idleMain.length > 0, gateIdle, lv2, expShown, gateOpen, sentId, idleMain: idleMain.slice(0, 26), lvExp };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('DISCIPLINE', d.idleOk && d.gateIdle && d.lv2 && d.gateOpen && d.sentId === 153, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);
