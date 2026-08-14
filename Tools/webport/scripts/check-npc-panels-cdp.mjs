@@ -264,6 +264,24 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('E2E', Array.isArray(d.chat) && d.chat.length > 0, r);
 }
 
+// ============ 9. 右键快路由 (TryRouteItem :155-162): MasterRefine 面板开着, 右键碎片入桶 ============
+{
+  const r = await npcRun(168, ['评估', '从背包导入'], [[0, 829, 10], [1, 830, 10]], `
+    // 模拟背包右键: 直接走 routeHandlers 链 (win-inventory grid.onQuickRoute 同源); inv 由 ctx 提供
+    const mkCell = (slot) => ({ item: inv.get(slot), gridType: 1, slot });
+    const routed1 = reg.routeHandlers.some(fn => fn(mkCell(0)));   // 碎片I → f1
+    const routed2 = reg.routeHandlers.some(fn => fn(mkCell(1)));   // 碎片II → f2
+    const boxTxt = pc.el.querySelector('div[style*="overflow-y"]')?.textContent ?? '';
+    const lockedOk = store.isLocked(1, 0) && store.isLocked(1, 1);
+    // WeddingRing 面板路由校验 (非 Ring 拒绝): 开 155 页右键碎片 → false
+    conn.dispatchEvent(new CustomEvent('npcResponse', { detail: { index: 155, objectID: 1, values: [] } }));
+    await new Promise(r => setTimeout(r, 400));
+    const rejected = !reg.routeHandlers.some(fn => fn(mkCell(0)));
+    return { routed1, routed2, inBuckets: boxTxt.includes('碎片（一） (1)') && boxTxt.includes('碎片（二） (1)'), lockedOk, rejected };`);
+  const d = typeof r === 'object' ? r : {};
+  report('ROUTE', d.routed1 && d.routed2 && d.inBuckets && d.lockedOk && d.rejected, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

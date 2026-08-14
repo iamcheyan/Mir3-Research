@@ -580,6 +580,19 @@ export async function winNpc(scene, store, reg) {
         for (const k of Object.keys(links)) links[k] = [];
         render();
       },
+      route(cell) {   // TryRouteItem (NPCDialog.cs:161 → advanced): 右键物品入桶 (面板可见时)
+        if (!panel.visible || !w.visible || !cell?.item) return false;
+        const info = D().itemsById?.[cell.item.infoIndex];
+        const hit = cfg.buckets.find(([, , , match]) => match?.(info, cell.item));
+        if (!hit) return false;
+        const [key, , cap] = hit;
+        if (links[key].length >= cap) return false;
+        if (links[key].some(l => l.gridType === cell.gridType && l.slot === cell.slot)) return false;
+        links[key].push({ gridType: cell.gridType, slot: cell.slot, count: cell.item.count ?? 1 });
+        store.lock(cell.gridType, cell.slot);
+        render();
+        return true;
+      },
     };
   }
 
@@ -727,6 +740,41 @@ export async function winNpc(scene, store, reg) {
     if (companionPanel.visible) renderCompanions();
     scene.addChat(`伙伴 #${idx} 已放生`, 'system');
   });
+  // ---------- 右键快路由注册 (NPCDialog.cs:155-162 TryRouteItem 对照) ----------
+  // repair 在下方单独注册; 此处: 单链接面板 (SubmitSingle 本地校验 :1002-1003) +
+  // 精炼三桶 (importRefine 同分类) + 4 个 multi-bucket 面板。
+  reg.routeHandlers.push((cell) => {   // 单链接: WeddingRing=Ring / AccessoryReset=Ring|Bracelet|Necklace
+    if (!singlePanel.visible || !w.visible || !singleMode || !cell?.item) return false;
+    const max = SINGLE_DEFS[singleMode][1];
+    if (singleLinks.length >= max) return false;
+    if (singleLinks.some(l => l.gridType === cell.gridType && l.slot === cell.slot)) return false;
+    const info = D().itemsById?.[cell.item.infoIndex];
+    if (singleMode === 'AccessoryReset' && !['Ring', 'Bracelet', 'Necklace'].includes(info?.type)) return false;
+    if (singleMode === 'WeddingRing' && info?.type !== 'Ring') return false;
+    singleLinks.push({ gridType: cell.gridType, slot: cell.slot, count: cell.item.count ?? 1 });
+    store.lock(cell.gridType, cell.slot);
+    renderSingle();
+    return true;
+  });
+  reg.routeHandlers.push((cell) => {   // 精炼: ItemType 分桶 (importRefine 同源)
+    if (!refinePanel.visible || !w.visible || !cell?.item) return false;
+    const info = D().itemsById?.[cell.item.infoIndex];
+    const ACCESSORY = new Set(['Necklace', 'Bracelet', 'Ring', 'Amulet']);
+    const bucket = info?.type === 'Ore' ? 'ores'
+      : info?.type === 'RefineSpecial' ? 'specials'
+      : ACCESSORY.has(info?.type) ? 'items' : null;
+    if (!bucket) return false;
+    const cap = { ores: 5, items: 3, specials: 1 }[bucket];
+    if (refineLinks[bucket].length >= cap) return false;
+    if (refineLinks[bucket].some(l => l.gridType === cell.gridType && l.slot === cell.slot)) return false;
+    refineLinks[bucket].push({ gridType: cell.gridType, slot: cell.slot, count: cell.item.count ?? 1 });
+    store.lock(cell.gridType, cell.slot);
+    renderRefine();
+    return true;
+  });
+  for (const p of [stonePanel, masterPanel, accLevelPanel, craftPanel]) {
+    reg.routeHandlers.push((cell) => p.route(cell));
+  }
 
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');

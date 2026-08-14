@@ -637,3 +637,15 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - 教训入档: `await ev(IIFE 内 await __npcRun(...))` 双层边界 → 返回值序列化成 {} —
   helper 调用必须顶层直发。
 - PARITY_CHECKLIST 补记 NPC 高级面板行 + 结论区 NPC 链闭环声明 (含 6 类型不可达审计)。
+
+## R22 — par-move (A路): 新面板右键快路由 (TryRouteItem 补齐)
+
+- `对照` NPCDialog.cs:155-162 TryRouteItem: NPC 对话可见时物品 (拖/右键) 路由到
+  _advanced 面板对应链接格; repair/trade 已注册 routeHandlers, R16-R18 新面板缺。
+- `实现` win-npc.js: buildMultiBucket 引擎 +route(cell) (面板可见 + cfg.buckets
+  match 分桶 + 上限 + 去重 + store.lock); 注册链 — 单链接 (SubmitSingle :1002-1003
+  本地校验: WeddingRing=Ring / AccessoryReset=Ring|Bracelet|Necklace)、精炼三桶
+  (importRefine 同分类)、4 multi-bucket 面板。与 repair/trade 同通道
+  (win-inventory grid.onQuickRoute → reg.routeHandlers)。
+- `CDP 验收` 套件 +ROUTE 组 → 9/9: MasterRefine 开启右键 碎片I/II → 各入桶
+  (碎片（一）(1)/碎片（二）(1)) + 格锁; WeddingRing 页右键非 Ring → 拒绝 (不误吞)。
