@@ -84,6 +84,7 @@ export const GameDB = {
 
   // 全部任务 (QuestDialog 可接任务页)
   async allQuests() { return (await table('QuestInfo')).rows; },
+  async questRequirements() { return (await table('QuestRequirement')).rows; },
 
   itemZhSync(index, itemsById) {   // 不走缓存的同步兜底 (data.js items.json 已有)
     const it = itemsById?.[index];

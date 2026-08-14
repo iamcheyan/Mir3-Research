@@ -786,3 +786,20 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
      用 >=6。
   4. (CDP 玄学, 未定根因) Runtime.evaluate 内 try{...}catch{return} 的 async IIFE
      偶发整体返回 undefined — 探针不用 try/catch 包裹, 让异常裸抛更易定位。
+
+## R31 — par-move (A路): 任务可接过滤全量 (CanAcceptQuest GameScene.cs:149-183)
+
+- `缺口` win-quest 可接页自标 "简化: 未接 + 等级" (实际连等级都没判): 只排除已接。
+  Godot 6 类 Requirement 全量: MinLevel/MaxLevel/NotAccepted/HaveCompleted/
+  HaveNotCompleted/Class (RequiredClass 位判定 :179)。
+- `数据` dbeditor 快照 QuestRequirement 表 70 行 (HaveNotCompleted 38/MinLevel 16/
+  HaveCompleted 12/Class 4); QuestInfo.Requirements 是 {Index} 引用需二次查表。
+- `实现` win-quest.js: canAcceptQuest 全逻辑 (CLASS_BIT 位表 Enum.cs:65;
+  reqRowCache 惰性拉表; :151 StartNPC/FinishNPC 空判 + :152 已接判先行);
+  questRows page1 换用真过滤。gamedb.js: +questRequirements accessor。
+- `CDP 验收` 套件 +QUESTREQ 组 → 18/18: lv1 时 MinLevel 20/13 任务隐藏 → lv80
+  战士双任务可见 → 法师隐藏战士专属 (位判定) → 已完成 q9 后 Pt.1 永久隐藏且
+  Pt.2 (HaveCompleted 链) 正确解锁。
+- 教训: (1) 任务名断言必须全名精确 — 库内 'Pt. 1' 多任务同名后缀, 'Curing the
+  Poison' 子串在 q9 完成后会误中正确解锁的 Pt.2; (2) 窗口内 ui_tree 原生按钮与
+  动态按钮同名共存 — 按钮查找必须加 __ctl?.onClick 过滤 (原生无 onClick)。

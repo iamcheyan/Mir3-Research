@@ -560,6 +560,54 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('DISCIPLINE', d.idleOk && d.gateIdle && d.lv2 && d.gateOpen && d.sentId === 153, r);
 }
 
+// ============ 18. 任务可接过滤 (CanAcceptQuest GameScene.cs:149-183) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { WindowManager } = await import('/static/js/windows.js');
+    const win = reg.win('quest');
+    if (!win) return { err: 'no-quest-win' };
+    WindowManager.open(win, s.hudLayer);
+    const store = reg.itemStore;
+    // 切到 可接 页 (tab 文本)
+    const tabBtn = [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.includes('可接') && b.__ctl?.onClick)?.__ctl;   // ui_tree 原生同名按钮无 onClick, 须过滤
+    tabBtn?.onClick?.();
+    await new Promise(r => setTimeout(r, 800));   // allQuests+questRequirements 拉表
+    const listTxt = () => win.el.textContent;
+    // 1) lv1: MinLevel 20 的 quest 9 (Curing the Poison Pt.1) 与 MinLevel 13 的 63 (望海楼·战士) 均不可见
+    store.level = 1;
+    tabBtn?.onClick?.();
+    await new Promise(r => setTimeout(r, 800));
+    const lv1 = listTxt();
+    const q9HiddenAt1 = !lv1.includes('Curing the Poison');
+    const q63HiddenAt1 = !lv1.includes('望海楼');
+    // 2) lv80 战士: 两者可见
+    store.level = 80; store.info.class = 'Warrior';
+    tabBtn?.onClick?.();
+    await new Promise(r => setTimeout(r, 800));
+    const lv80 = listTxt();
+    const q9Shown = lv80.includes('Curing the Poison');
+    const q63Shown = lv80.includes('望海楼之约（战士）');
+    // 3) lv80 法师: 望海楼(战士) 消失 (Class 位判定 :179)
+    store.info.class = 'Wizard';
+    tabBtn?.onClick?.();
+    await new Promise(r => setTimeout(r, 800));
+    const q63WizardHidden = !listTxt().includes('望海楼之约（战士）');
+    // 4) HaveNotCompleted(self): 已完成 quest 9 → Pt.1 永久不可接 (:167-169);
+    //    同时 Pt.2 (HaveCompleted q9) 正确解锁 — 断言必须区分 Pt. 1/Pt. 2
+    store.info.class = 'Warrior';
+    store.quests.set(999, { index: 999, questIndex: 9, completed: true });
+    tabBtn?.onClick?.();
+    await new Promise(r => setTimeout(r, 800));
+    const q9DoneHidden = !listTxt().includes('Curing the Poison Pt. 1');   // 全名精确 (库里另有 Crushing the Remains Pt. 1, 且 Pt.2 此时应正确出现)
+    store.quests.delete(999);
+    store.info.class = 'Warrior';
+    return { q9HiddenAt1, q63HiddenAt1, q9Shown, q63Shown, q63WizardHidden, q9DoneHidden };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('QUESTREQ', d.q9HiddenAt1 && d.q63HiddenAt1 && d.q9Shown && d.q63Shown && d.q63WizardHidden && d.q9DoneHidden, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

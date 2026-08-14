@@ -83,18 +83,55 @@ export async function winQuest(scene, store, reg) {
     render();
   }
 
+  // CanAcceptQuest (GameScene.cs:149-183): 6 类 Requirement 全量判定
+  const CLASS_BIT = { None: 0, Warrior: 1, Wizard: 2, Taoist: 4, Assassin: 8, WarWizTao: 7, WizTao: 6, AssWar: 9, All: 15 };   // RequiredClass Enum.cs:65
+  let reqRowCache = null;
+  async function canAcceptQuest(info) {
+    if (!info?.StartNPC || !info?.FinishNPC) return false;   // :151
+    if ([...store.quests.values()].some(q => q.questIndex === info.Index)) return false;   // :152
+    if (!info.Requirements?.length) return true;
+    if (reqRowCache == null) {
+      try { reqRowCache = await GameDB.questRequirements(); } catch { reqRowCache = []; }
+    }
+    const byIdx = new Map(reqRowCache.map(r => [r.Index, r]));
+    for (const ref of info.Requirements) {
+      const req = byIdx.get(ref?.Index);
+      if (!req) continue;
+      switch (req.Requirement) {
+        case 'MinLevel': if (store.level < (req.IntParameter1 ?? 0)) return false; break;   // :157
+        case 'MaxLevel': if (store.level > (req.IntParameter1 ?? 0)) return false; break;   // :158
+        case 'NotAccepted':   // :160-162
+          if (req.QuestParameter != null && [...store.quests.values()].some(q => q.questIndex === req.QuestParameter.Index)) return false;
+          break;
+        case 'HaveCompleted': {   // :163-166
+          const uq = req.QuestParameter != null ? [...store.quests.values()].find(q => q.questIndex === req.QuestParameter.Index) : null;
+          if (req.QuestParameter == null || !uq?.completed) return false;
+          break;
+        }
+        case 'HaveNotCompleted': {   // :167-169
+          const uq2 = req.QuestParameter != null ? [...store.quests.values()].find(q => q.questIndex === req.QuestParameter.Index) : null;
+          if (req.QuestParameter != null && uq2?.completed) return false;
+          break;
+        }
+        case 'Class': {   // :170-179: (requirement.Class & required) != required
+          const reqBit = CLASS_BIT[req.Class] ?? 0;
+          const mine = CLASS_BIT[store.info?.class] ?? 0;
+          if (reqBit !== 0 && (reqBit & mine) !== mine) return false;
+          break;
+        }
+      }
+    }
+    return true;
+  }
+
   async function questRows() {
     const D_ = D();
     if (page === 1) {
-      // 可接: 全部 QuestInfo - 已接 (CanAcceptQuest 简化: 未接 + 等级)
+      // 可接: 全部 QuestInfo 过 CanAcceptQuest (GameScene.cs:149)
       const all = await GameDB.allQuests();
       const out = [];
       for (const info of all) {
-        const uq = [...store.quests.values()].find(q => q.questIndex === info.Index);
-        if (uq) continue;
-        if ((info.MinLevel ?? info.MinLevel) != null) {
-          void D_;
-        }
+        if (!await canAcceptQuest(info)) continue;
         out.push({ info, uq: null });
       }
       return out.sort((a, b) =>

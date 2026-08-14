@@ -149,7 +149,7 @@ export async function winChar(scene, store, reg) {
   });
   equipPanel.addControl(weightLabel);
 
-  // ---- 心法页 (BuildAttributePanel :364-454 简化) ----
+  // ---- 心法页 (BuildAttributePanel :384-456 / RefreshDiscipline :804-819) ----
   const discPanel = new DXControl({ location: [0, 0], size: [331, 443], isControl: false, visible: false });
   content.addControl(discPanel);
   const discImage = new DXImageControl({ library: 'Interface', index: 215, location: [37, 64], isControl: false, fixedSize: true, size: [257, 193] });   // Index=215+clamp(level,0,20) (:810)
