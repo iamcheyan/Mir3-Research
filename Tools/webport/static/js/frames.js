@@ -111,6 +111,14 @@ NPC_SPECIAL_DATA.push([156, { start: 0, count: 16, ms: 200 }]);
 export const NPC_SPECIAL = new Map(NPC_SPECIAL_DATA);
 export const DEFAULT_ITEM = { standing: F(0, 1, 0, 1000) };
 
+// ---- MirAction (Enum.cs:463) ----
+export const MIR_ACTION = {
+  Standing: 0, Moving: 1, Pushed: 2, Attack: 3, RangeAttack: 4, Spell: 5,
+  Harvest: 6, Struck: 7, Die: 8, Dead: 9, Show: 10, Hide: 11, Mount: 12,
+  Mining: 13, Fishing: 14, Taming: 15, Idle: 16,
+};
+export const SPELL_ACTION = MIR_ACTION.Spell;
+
 // ---- MagicType 数值 (Enum.cs 脚本自动提取, /tmp/magic_js.txt) ----
 export const MAGIC = {
   Slaying: 102, Thrusting: 103, FlamingSword: 106, DefensiveBlow: 130,

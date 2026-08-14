@@ -11,6 +11,7 @@ import {
   MAGIC, getAttackAnimation, getMagicAnimation, directionFromPoint, chebyshev,
   armourShift as assassinShift, CLASS_ASSASSIN,
   DIR_UP, DIR_UPRIGHT, DIR_RIGHT, DIR_DOWNRIGHT, DIR_DOWN, DIR_DOWNLEFT, DIR_LEFT, DIR_UPLEFT,
+  MIR_ACTION,
 } from './frames.js';
 
 const DIRS = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
@@ -952,6 +953,12 @@ export class World {
       this.keys.add(k);
       if (k === 'escape') this.#setTarget(null);
       if (k === 'tab') { ev.preventDefault(); this.#targetNearest(); }
+      const fk = /^f([1-8])$/.exec(k);   // F1..F8 施法 (KeyBind 后续接入)
+      if (fk) {
+        ev.preventDefault();
+        const slot = this.spellSlots()[+fk[1] - 1];
+        if (slot?.type) this.castMagic(slot.type);
+      }
     });
     addEventListener('keyup', (ev) => this.keys.delete(ev.key.toLowerCase()));
 
@@ -1066,6 +1073,30 @@ export class World {
     this.player.dir = dir;
     this.player.playCombat(0);            // 本地预测 (GameScene.cs:1003)
     this.conn.sendAttack(dir, 0);
+    return true;
+  }
+
+  // ---- 技能释放 (GameScene.cs OnSpellInput → C.Magic) ----
+  #magicTypeFor(infoIndex) { // MagicInfo.Index → MagicType 枚举值
+    const rec = data.D().magics?.find(m => m.id === infoIndex);
+    return rec ? (MAGIC[rec.key] ?? 0) : 0;
+  }
+  spellSlots() { // F1..F8: 已学技能前 8 (后续由技能窗口覆盖)
+    const learned = (this.info?.magics ?? []).map(m => m.infoIndex);
+    return learned.slice(0, 8).map(idx => {
+      const rec = data.D().magics?.find(m => m.id === idx);
+      return rec ? { index: idx, name: rec.zh, type: MAGIC[rec.key] ?? 0 } : null;
+    }).filter(Boolean);
+  }
+  castMagic(type, target = this.target) {
+    if (!this.conn || !this.player || this.player.dead) return false;
+    const tx = target?.x ?? this.player.x, ty = target?.y ?? this.player.y;
+    const dir = directionFromPoint(this.player.x, this.player.y, tx, ty);
+    this.player.dir = dir;
+    const anim = getMagicAnimation(type);
+    if (anim) this.player.setAnimation(anim, true);  // 本地预测: Spell 抬手
+    else this.player.playCombat(type);
+    this.conn.sendMagic(dir, type, target?.objectID ?? 0, tx, ty);
     return true;
   }
   #combatTick(now) {

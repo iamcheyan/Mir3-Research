@@ -1048,6 +1048,9 @@ export const S = {
   },
   ItemUseDelay(r) { return { delay: r.int64() }; },
   ItemDurability(r) { return { gridType: r.int32(), slot: r.int32(), currentDurability: r.int32() }; }, // ServerPackets.cs:627-632
+  GuildConquestDate(r) { return { index: r.int32(), warTime: r.int64() }; }, // ServerPackets.cs:1124 (TimeSpan 8B)
+  GuildConquestStarted(r) { return { index: r.int32() }; },
+  GuildConquestFinished(r) { return { index: r.int32() }; },
   ItemLock(r) { return { grid: r.int32(), slot: r.int32(), locked: r.bool() }; },
   ItemStatsChanged(r) { return { gridType: r.int32(), slot: r.int32(), newStats: readStats(r) }; },
   ItemStatsRefreshed(r) { return { gridType: r.int32(), slot: r.int32(), newStats: readStats(r) }; },

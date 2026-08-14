@@ -148,6 +148,9 @@ const DISPATCH = {
   [ID.S_GUILDWARSTARTED]: ['guildWarStarted', S.GuildWarStarted],
   [ID.S_GUILDWARFINISHED]: ['guildWarFinished', S.GuildWarFinished],
   [ID.S_GUILDCASTLEINFO]: ['guildCastleInfo', S.GuildCastleInfo],
+  [ID.S_GUILDCONQUESTDATE]: ['guildConquestDate', S.GuildConquestDate],
+  [ID.S_GUILDCONQUESTSTARTED]: ['guildConquestStarted', S.GuildConquestStarted],
+  [ID.S_GUILDCONQUESTFINISHED]: ['guildConquestFinished', S.GuildConquestFinished],
   [ID.S_GUILDCREATE]: ['guildCreate', S.GuildCreate],
   [ID.S_GUILDKICK]: ['guildKick', S.GuildKick],
   // 婚姻/社交

@@ -63,8 +63,10 @@ async def headers(request, call_next):
     resp = await call_next(request)
     resp.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     resp.headers["Access-Control-Allow-Origin"] = "*"
-    # 静态 JS/CSS 开发期不缓存; /res /ui 资源长缓存
-    resp.headers["Cache-Control"] = "no-cache" if request.url.path.startswith("/static") \
+    # 静态 JS/CSS 与 data JSON 开发期不缓存 (data 会被 webres 重建);
+    # 瓦片/精灵帧内容寻址不变 → 长缓存
+    path = request.url.path
+    resp.headers["Cache-Control"] = "no-cache" if (path.startswith("/static") or path.startswith("/res/data")) \
         else "public, max-age=86400"
     return resp
 
@@ -98,7 +100,8 @@ def data_file(name: str):
     p = ROOT / "data" / name
     if not p.is_file():
         raise HTTPException(404, f"{name}")
-    return FileResponse(p, media_type="application/json" if name.endswith(".json") else "application/octet-stream")
+    return FileResponse(p, media_type="application/json" if name.endswith(".json") else "application/octet-stream",
+                        headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/res/walk/{stem}.bin")

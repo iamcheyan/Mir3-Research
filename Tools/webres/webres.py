@@ -458,7 +458,7 @@ def cmd_data(args) -> int:
         key = row.get("Magic", "")
         eff = magic_effects.get(key)
         rec = {
-            "id": row["Index"], "name": en, "zh": names["magics"].get(en, en),
+            "id": row["Index"], "key": row.get("Magic", ""), "name": en, "zh": names["magics"].get(en, en),
             "cls": row.get("Class") or "Warrior", "icon": row.get("Icon") or 0,
             "effect": None, "proj": None, "impact": None,
         }
