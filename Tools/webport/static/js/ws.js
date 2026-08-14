@@ -290,6 +290,7 @@ export class GameConnection extends EventTarget {
       if (entry) {
         const [evName, parse] = entry;
         const p = parse(r);
+        if (id === ID.S_LOGIN) this.isGM = !!p.isGM; // ServerConnection.cs:389 Globals.IsGM
         this.#emit(evName, p);
         return;
       }

@@ -339,6 +339,14 @@ export class Reader {
   }
   point() { return { x: this.int32(), y: this.int32() }; }
   skip(n) { this.p += n; return this; }
+  decimal() { // .NET decimal 16B: lo/mid/hi i32 + flags(scale 16-23, sign 31)
+    const lo = this.uint32(), mid = this.uint32(), hi = this.uint32(), flags = this.uint32();
+    let v = (BigInt(lo) | (BigInt(mid) << 32n) | (BigInt(hi) << 64n));
+    const scale = (flags >> 16) & 0xff;
+    if (scale) v /= 10n ** BigInt(scale);
+    const n = Number(v);
+    return (flags & 0x80000000) ? -n : n;
+  }
 }
 
 // ---- 流式拆帧 (wsgateway WS 消息 ≠ 包边界; login_client.py:88-113 同款) ----
@@ -639,7 +647,7 @@ export function readStartInformation(r) {
   o.armourColour = r.int32();           // Color
   o.armourEffect = r.byte(); o.emblemEffect = r.byte();
   o.weaponEffect = r.byte(); o.shieldEffect = r.byte();
-  r.skip(16);                           // Experience decimal
+  o.experience = r.decimal();           // Experience decimal → 经验条
   o.currentHP = r.int32(); o.currentMP = r.int32(); o.currentFP = r.int32();
   o.attackMode = r.byte(); o.petMode = r.byte();
   o.onlineState = r.byte();
@@ -676,7 +684,6 @@ export function readStartInformation(r) {
   return o;
 }
 
-// ---- C 包构造 ----
 export const C = {
   Connected: () => new Writer().build(ID.G_CONNECTED),
   Ping: () => new Writer().build(ID.G_PING),
@@ -989,13 +996,14 @@ export const S = {
   },
   ManaChanged(r) { return { objectID: r.uint32(), change: r.int32() }; },
   FocusChanged(r) { return { objectID: r.uint32(), change: r.int32() }; },
-  LevelChanged(r) {
+  LevelChanged(r) { // ServerPackets.cs:680 — Level + Experience + MaxExperience
     const o = { level: r.int32() };
-    r.skip(32); // Experience + MaxExperience (2×decimal 16B)
+    o.experience = r.decimal();
+    o.maxExperience = r.decimal();
     return o;
   },
-  GainedExperience(r) { r.skip(16); return {}; }, // decimal
-  InformMaxExperience(r) { r.skip(16); return {}; },
+  GainedExperience(r) { return { amount: r.decimal() }; },
+  InformMaxExperience(r) { return { maxExperience: r.decimal() }; },
   MagicLeveled(r) { return { infoIndex: r.int32(), level: r.int32(), experience: r.int64() }; },
   MagicCooldown(r) { return { infoIndex: r.int32(), delay: r.int32() }; },
   MagicToggle(r) { return { magic: r.int32(), canUse: r.bool() }; },
