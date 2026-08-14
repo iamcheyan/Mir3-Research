@@ -274,8 +274,8 @@ export class MiniMapDialog extends DXWindow {
     this.scaleX = 1; this.scaleY = 1;
     this._objectMarkers = new Map();  // DXControl per objectID
     this._staticMarkers = [];
-    this._pressPos = null;
-
+    this.onBigMap = opts.onBigMap ?? (() => {});
+    this._pressPos = null;   // GM 点击判定基点 (mousedown 时重设)
     // Panel: ClientArea 向外扩 6px (MiniMapDialog.cs:49-55 → Panel Clip)
     this.panel = new DXControl({ location: [-6, 18], size: [212, 188], clip: true, isControl: false });
     this.addControl(this.panel);
@@ -610,8 +610,8 @@ export function fallbackWindow(type, scene) {
         const b = new DXButton({ text, fontSize: 9, library: 'Interface', index: -1, location: [10, y], size: [160, 24], onClick: fn });
         body.addControl(b);
       };
-      mk('攻击模式: 切换', 30, () => scene.conn.sendChangeAttackMode(((scene.attackMode ?? 0) + 1) % 6));
-      mk('宠物模式: 切换', 60, () => scene.conn.sendChangePetMode(((scene.petMode ?? 0) + 1) % 8));
+      mk('攻击模式: 切换', 30, () => scene.conn.sendChangeAttackMode(((scene.attackMode ?? 0) + 1) % 5)); // AttackMode 0-4
+      mk('宠物模式: 切换', 60, () => scene.conn.sendChangePetMode(((scene.petMode ?? 0) + 1) % 5));       // PetMode 0-4
       mk('退出游戏', 90, () => scene.conn.sendLogout());
       break;
     }

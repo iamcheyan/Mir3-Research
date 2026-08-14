@@ -208,7 +208,7 @@ class MapObject {
   // ---- 绘制 (子类覆盖 drawAt) ----
   async draw(ctx, ax, ay, now) { this._sx = ax; this._sy = ay; this._w = data.CELL_W; this._h = data.CELL_H; }
 
-  drawName(ctx, ax, ay) {
+  drawName(ctx, ax, ay, now = performance.now()) {
     const name = this.displayName();
     if (!name) return;
     ctx.font = '12px "Noto Sans CJK SC","Noto Sans CJK",sans-serif';
@@ -501,8 +501,8 @@ class PlayerObject extends MapObject {
   }
   nameBaseline() { return 46; }
   nameCss() { return argbToCss(this.nameColour, this.isSelf ? '#7fd4ff' : '#fff'); }
-  drawName(ctx, ax, ay) {
-    super.drawName(ctx, ax, ay);
+  drawName(ctx, ax, ay, now) {
+    super.drawName(ctx, ax, ay, now);
     if (this.guildName) {
       ctx.font = '10px "Noto Sans CJK SC"';
       ctx.fillStyle = 'rgba(0,0,0,.65)'; ctx.fillText(this.guildName, ax + 1, ay - 33);
@@ -643,7 +643,18 @@ export class World {
     this.objects.set(this.player.objectID, this.player);
     this.camera.centerOn(this.player.x * data.CELL_W, this.player.y * data.CELL_H);
     this.hooks.onPosChange?.(this.player);
-    this.hooks.onStats?.(this.#selfStats());
+    // 回放竞态期缓存的 S.StatsUpdate (登录 burst 早于 enterWorld 完成)
+    if (this._pendingStats) {
+      const d = this._pendingStats; this._pendingStats = null;
+      const s = d.stats;
+      if (s?.values) for (const [k, v] of s.values) {
+        if (k === 2) { this.player.hp = v; this.player.maxHp = Math.max(this.player.maxHp, v); }
+        else if (k === 3) { this.player.mp = v; this.player.maxMp = Math.max(this.player.maxMp, v); }
+        else if (k === 16) this.attackSpeed = v;
+      }
+      this.hooks.onStats?.(this.#selfStats());
+      this.hooks.onRawStats?.(d);
+    }
     // 血条贴图
     for (const n of [79, 80]) {
       spriteFrame('Interface', n).then(fr => { if (fr) this.interfaceFrames[n] = fr; });
@@ -858,7 +869,7 @@ export class World {
       this.hooks.onStats?.(this.#selfStats());
     });
     c.addEventListener('statsUpdate', (e) => {
-      if (!this.player) return;
+      if (!this.player) { this._pendingStats = e.detail; return; }  // 竞态: statsUpdate 早于 enterWorld → 缓存回放
       const s = e.detail.stats;
       if (s?.values) {
         for (const [k, v] of s.values) {
@@ -1515,7 +1526,7 @@ export class World {
     for (const o of list) {
       const a = this.#anchor(o);
       jobs.push(Promise.resolve(o.draw(ctx, a.x, a.y, now)).then(() => {
-        o.drawName(ctx, a.x, a.y);
+        o.drawName(ctx, a.x, a.y, now);
         o.drawHealthBar(ctx, a.x, a.y, now);
         // 目标高亮
         if (this.target === o) {

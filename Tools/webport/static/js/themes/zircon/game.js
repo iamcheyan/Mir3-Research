@@ -3,6 +3,7 @@
 // + MainPanel/ChatTextBox/MiniMap 数据注入 (InitHudData/On* 处理器对照)。
 // 控件实现: hud.js (MainPanel/MiniMap) + chat.js (ChatTextBox/ChatLogPanel)。
 import { DXControl, DXLabel, DXImageControl } from '../../dx.js';
+import { World } from '../../world.js';
 import { WindowManager, UiScaleNow, setUiScale } from '../../windows.js';
 import { statsToObj, STAT, MsgTypeName, MsgTypeColour, MSG, C } from '../../net.js';
 import { MainPanel, MiniMapDialog, fallbackWindow } from './hud.js';
@@ -84,8 +85,11 @@ export class GameScene {
     };
     this.hudLayer.addControl(this.miniMap);
     this.miniMap.visible = true;
-    if (this.world.mapMeta) this.#applyMiniMap();
-
+    if (this.world.mapMeta) { clearInterval(this._mmWait); this.#applyMiniMap(); }
+    // world 数据异步加载: 首图 meta 未就绪时, 等 enterWorld 完成后再挂小地图
+    this._mmWait = setInterval(() => {
+      if (this.world.mapMeta) { clearInterval(this._mmWait); this.#applyMiniMap(); }
+    }, 300);
     // 世界坐标显示 (调试, 对应 Godot DebugLabel)
     this.posLabel = new DXLabel({
       fontSize: 9, textColour: [255, 255, 255, 255], drawOutline: true,
