@@ -7,6 +7,7 @@ import { World } from '../../world.js';
 import { WindowManager, UiScaleNow, setUiScale } from '../../windows.js';
 import { statsToObj, STAT, MsgTypeName, MsgTypeColour, MSG, C } from '../../net.js';
 import { getAction, KeyBindAction as KA } from '../../keybinds.js';
+import { installWindows } from '../../win-registry.js';
 import { MainPanel, MiniMapDialog, fallbackWindow } from './hud.js';
 import { ChatTextBox, ChatLogPanel } from './chat.js';
 
@@ -41,8 +42,8 @@ export class GameScene {
     for (const k of ['player', 'objects', 'stem', 'mapMeta', 'moveLock']) {
       Object.defineProperty(this, k, { get: () => this.world[k] });
     }
+    this._winInstall = installWindows(this);   // par-win 15 模块并行安装 (异步, 不阻塞 HUD)
     this.#buildHud();
-    this.#wireNet();
   }
 
   // ---- CreateHud (GameScene.cs:4264-4468) ----
@@ -123,9 +124,11 @@ export class GameScene {
   }
 
   // 窗口统一入口: par-win 注册 → ui_tree; 未注册 → fallbackWindow (真实数据)
-  #openWindow(type) {
+  async #openWindow(type) {
     let w = this._openWins.get(type);
     if (!w) {
+      // par-win 模块安装是异步的 (ui_tree 逐窗构建); 首次开窗等它就绪再决定接管/兜底
+      try { await this._winInstall; } catch { /* 安装失败走兜底 */ }
       w = window.__WEBPORT_WIN?.(type, this) ?? fallbackWindow(type, this); // par-win 接口层
       this._openWins.set(type, w);
       w.onClose = () => {};
