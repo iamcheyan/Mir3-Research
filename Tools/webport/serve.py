@@ -92,6 +92,18 @@ def ui_file(name: str):
         raise HTTPException(404, name)
     return FileResponse(p, media_type="application/json")
 
+@app.get("/res/data/db/{table}.json")
+def db_table(table: str):
+    # 静态 DB 快照 (dbeditor workspace 导出 JSON, 只读) — NPCPage/QuestInfo/NPCGood 等
+    # 窗口数据 join 用 (Globals.NPCPageList 等价)。表名白名单 = 工作区存在的 .json。
+    if "/" in table or ".." in table or not table or not table.replace("_", "").isalnum():
+        raise HTTPException(400, "bad name")
+    p = _MIR3 / "Tools" / "dbeditor" / "workspace" / f"{table}.json"
+    if not p.is_file():
+        raise HTTPException(404, f"no such table {p}")
+    return FileResponse(p, media_type="application/json",
+                        headers={"Cache-Control": "no-cache"})
+
 
 @app.get("/res/data/{name}")
 def data_file(name: str):

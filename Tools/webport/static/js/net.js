@@ -825,6 +825,26 @@ export const C = {
   LootBoxOpen: (slot) => new Writer().int32(slot).build(ID.C_LOOTBOXOPEN),
   BundleOpen: (slot) => new Writer().int32(slot).build(ID.C_BUNDLEOPEN),
   BundleConfirm: (slot, choice) => new Writer().int32(slot).int32(choice).build(ID.C_BUNDLECONFIRM),
+  // ---- 行会扩展 (ClientPackets.cs:562-628) [par-win] ----
+  GuildInviteMember: (name) => new Writer().string(name).build(ID.C_GUILDINVITEMEMBER),
+  GuildKickMember: (index) => new Writer().int32(index).build(ID.C_GUILDKICKMEMBER),
+  GuildEditMember: (index, rank, permission) =>
+    new Writer().int32(index).string(rank).int32(permission).build(ID.C_GUILDEDITMEMBER),
+  GuildTax: (tax) => new Writer().int64(tax).build(ID.C_GUILDTAX),
+  GuildIncreaseMember: () => new Writer().build(ID.C_GUILDINCREASEMEMBER),
+  GuildIncreaseStorage: () => new Writer().build(ID.C_GUILDINCREASESTORAGE),
+  GuildWar: (guildName) => new Writer().string(guildName).build(ID.C_GUILDWAR),
+  GuildRequestConquest: (index) => new Writer().int32(index).build(ID.C_GUILDREQUESTCONQUEST),
+  GuildColour: (colour) => new Writer().int32(colour).build(ID.C_GUILDCOLOUR),
+  GuildFlag: (flag) => new Writer().int32(flag).build(ID.C_GUILDFLAG),
+  GuildToggleCastleGates: () => new Writer().build(ID.C_GUILDTOGGLECASTLEGATES),
+  GuildRepairCastleGates: () => new Writer().build(ID.C_GUILDREPAIRCASTLEGATES),
+  GuildRepairCastleGuards: () => new Writer().build(ID.C_GUILDREPAIRCASTLEGUARDS),
+  JoinStarterGuild: () => new Writer().build(ID.C_JOINSTARTERGUILD),
+  MarriageResponse: (accept) => new Writer().bool(accept).build(ID.C_MARRIAGERESPONSE),
+  TradeRequest: () => new Writer().build(ID.C_TRADEREQUEST),
+  MilestoneNotify: (receive) => new Writer().bool(receive).build(ID.C_MILESTONENOTIFY),
+  IncreaseDiscipline: () => new Writer().build(ID.C_INCREASEDISCIPLINE),
 };
 
 // Dictionary<BuffType(int32),int32> — Dictionary 也是 class → 1B null 标志 + i32 count + (k,v)
@@ -1122,6 +1142,9 @@ export const S = {
   GuildWarStarted(r) { return { guildName: r.string(), duration: r.int64() }; },
   GuildWarFinished(r) { return { guildName: r.string() }; },
   GuildCastleInfo(r) { return { index: r.int32(), owner: r.string() }; },
+  GuildMemberContribution(r) { return { index: r.int32(), contribution: r.int64() }; }, // ServerPackets.cs:1088
+  GuildDayReset(r) { return {}; },
+  GuildWar(r) { return { success: r.bool() }; },  // ServerPackets.cs:1114
   MarriageInfo(r) { return { partner: readClientPlayerInfo(r) }; },
   MarriageInvite(r) { return { name: r.string() }; },
   FriendAdd(r) { return { info: readClientFriendInfo(r) }; },

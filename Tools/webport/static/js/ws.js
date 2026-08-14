@@ -153,6 +153,12 @@ const DISPATCH = {
   [ID.S_GUILDCONQUESTFINISHED]: ['guildConquestFinished', S.GuildConquestFinished],
   [ID.S_GUILDCREATE]: ['guildCreate', S.GuildCreate],
   [ID.S_GUILDKICK]: ['guildKick', S.GuildKick],
+  [ID.S_GUILDDAYRESET]: ['guildDayReset', S.GuildDayReset],
+  [ID.S_GUILDINCREASEMEMBER]: ['guildIncreaseMember', S.GuildIncreaseMember ?? (() => ({}))],
+  [ID.S_GUILDINCREASESTORAGE]: ['guildIncreaseStorage', S.GuildIncreaseStorage ?? (() => ({}))],
+  [ID.S_GUILDINVITEMEMBER]: ['guildInviteMember', S.GuildInviteMember ?? (() => ({}))],
+  [ID.S_GUILDMEMBERCONTRIBUTION]: ['guildMemberContribution', S.GuildMemberContribution],
+  [ID.S_GUILDWAR]: ['guildWar', S.GuildWar],
   // 婚姻/社交
   [ID.S_MARRIAGEINFO]: ['marriageInfo', S.MarriageInfo],
   [ID.S_MARRIAGEINVITE]: ['marriageInvite', S.MarriageInvite],
@@ -290,7 +296,7 @@ export class GameConnection extends EventTarget {
       if (entry) {
         const [evName, parse] = entry;
         const p = parse(r);
-        if (id === ID.S_LOGIN) this.isGM = !!p.isGM; // ServerConnection.cs:389 Globals.IsGM
+        if (id === ID.S_LOGIN) { this.isGM = !!p.isGM; this.loginItems = p.items ?? []; } // PendingStorageItems (ServerConnection.cs:383)
         this.#emit(evName, p);
         return;
       }
@@ -364,4 +370,65 @@ export class GameConnection extends EventTarget {
   sendRankSearch(name) { this.send(C.RankSearch(name)); }
   sendMarketPlaceSearch(name, itemTypeFilter, itemType, sort) { this.send(C.MarketPlaceSearch(name, itemTypeFilter, itemType, sort)); }
   sendLogout() { this.send(C.Logout()); }
-}
+  sendInspect(index, ranking = false) { this.send(C.Inspect(index, ranking)); }
+  sendMount() { this.send(C.Mount()); }
+  sendTradeRequest() { this.send(new Writer().build(ID.C_TRADEREQUEST)); }
+  sendChangeAttackMode(mode) { this.send(C.ChangeAttackMode(mode)); }
+  sendChangePetMode(mode) { this.send(C.ChangePetMode(mode)); }
+  sendTeleportRing(x, y, index = 0) { this.send(C.TeleportRing(x, y, index)); }
+  sendMagicKey(magic, s1, s2, s3, s4) { this.send(C.MagicKey(magic, s1, s2, s3, s4)); }
+  sendHelmetToggle(hide) { this.send(C.HelmetToggle(hide)); }
+  sendMarriageTeleport() { this.send(new Writer().build(ID.C_MARRIAGETELEPORT)); }
+  sendGroupLFGUpdate(enabled, name, type, maxCount) { this.send(C.GroupLFGUpdate(enabled, name, type, maxCount)); }
+  sendFortuneCheck(itemIndex) { this.send(C.FortuneCheck(itemIndex)); }
+  sendCompanionAdopt(index, name) { this.send(C.CompanionAdopt(index, name)); }
+  sendCompanionRetrieve(index) { this.send(C.CompanionRetrieve(index)); }
+  sendCompanionRelease(index) { this.send(C.CompanionRelease(index)); }
+  sendJoinInstance(index) { this.send(C.JoinInstance(index)); }
+  sendMilestoneClaim(index) { this.send(C.MilestoneClaim(index)); }
+  sendMilestoneActive(index, active) { this.send(C.MilestoneActive(index, active)); }
+  sendFriendAdd(name) { this.send(C.FriendAdd(name)); }
+  sendBlockAdd(name) { this.send(C.BlockAdd(name)); }
+  sendBlockRemove(index) { this.send(C.BlockRemove(index)); }
+  sendMailSend(links, recipient, subject, message, gold) { this.send(C.MailSend(links, recipient, subject, message, gold)); }
+  sendMailGetItem(index, slot) { this.send(C.MailGetItem(index, slot)); }
+  sendMailDelete(index) { this.send(C.MailDelete(index)); }
+  sendMarketPlaceConsign(link, price, message = '', guildFunds = false) { this.send(C.MarketPlaceConsign(link, price, message, guildFunds)); }
+  sendMarketPlaceCancelConsign(index, count) { this.send(C.MarketPlaceCancelConsign(index, count)); }
+  sendMarketPlaceBuy(index, count, guildFunds = false) { this.send(C.MarketPlaceBuy(index, count, guildFunds)); }
+  sendMarketPlaceHistory(index, display = 0, partIndex = 0) { this.send(C.MarketPlaceHistory(index, display, partIndex)); }
+  sendGameStoreGift(index, count, useHuntGold, recipient) { this.send(C.GameStoreGift(index, count, useHuntGold, recipient)); }
+  sendGameStoreFavouriteToggle(index) { this.send(C.GameStoreFavouriteToggle(index)); }
+  sendHermit(stat) { this.send(C.Hermit(stat)); }
+  sendMagicToggle(magic, canUse) { this.send(C.MagicToggle(magic, canUse)); }
+  sendBeltLinkChanged(slot, linkIndex, linkItemIndex) { this.send(C.BeltLinkChanged(slot, linkIndex, linkItemIndex)); }
+  sendAutoPotionLinkChanged(slot, linkIndex, health, mana, enabled) { this.send(C.AutoPotionLinkChanged(slot, linkIndex, health, mana, enabled)); }
+  sendTownRevive() { this.send(C.TownRevive()); }
+  sendObserverRequest(name) { this.send(C.ObserverRequest(name)); }
+  sendObservableSwitch(allow) { this.send(C.ObservableSwitch(allow)); }
+  // ---- par-win 窗口发送器 ----
+  sendGuildInviteMember(name) { this.send(C.GuildInviteMember(name)); }
+  sendGuildKickMember(index) { this.send(C.GuildKickMember(index)); }
+  sendGuildEditMember(index, rank, permission) { this.send(C.GuildEditMember(index, rank, permission)); }
+  sendGuildTax(tax) { this.send(C.GuildTax(tax)); }
+  sendGuildIncreaseMember() { this.send(C.GuildIncreaseMember()); }
+  sendGuildIncreaseStorage() { this.send(C.GuildIncreaseStorage()); }
+  sendGuildWar(guildName) { this.send(C.GuildWar(guildName)); }
+  sendGuildRequestConquest(index) { this.send(C.GuildRequestConquest(index)); }
+  sendGuildColour(colour) { this.send(C.GuildColour(colour)); }
+  sendGuildFlag(flag) { this.send(C.GuildFlag(flag)); }
+  sendGuildToggleCastleGates() { this.send(C.GuildToggleCastleGates()); }
+  sendGuildRepairCastleGates() { this.send(C.GuildRepairCastleGates()); }
+  sendGuildRepairCastleGuards() { this.send(C.GuildRepairCastleGuards()); }
+  sendJoinStarterGuild() { this.send(C.JoinStarterGuild()); }
+  sendMarriageResponse(accept) { this.send(C.MarriageResponse(accept)); }
+  sendTradeRequest() { this.send(C.TradeRequest()); }
+  sendMilestoneNotify(receive) { this.send(C.MilestoneNotify(receive)); }
+  sendMilestoneClaim(index) { this.send(C.MilestoneClaim(index)); }
+  sendMilestoneActive(index, active) { this.send(C.MilestoneActive(index, active)); }
+  sendIncreaseDiscipline() { this.send(C.IncreaseDiscipline()); }
+  sendMagicKey(magic, s1, s2, s3, s4) { this.send(C.MagicKey(magic, s1, s2, s3, s4)); }
+  sendHelmetToggle(hide) { this.send(C.HelmetToggle(hide)); }
+  sendGroupLfgUpdate(enabled, name, type, maxCount) { this.send(C.GroupLFGUpdate(enabled, name, type, maxCount)); }
+  sendMount() { this.send(C.Mount()); }
+ }
