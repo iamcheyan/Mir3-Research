@@ -201,3 +201,20 @@
 
 残留: 重绑 UI (KeyBindDialog 网页版) 属 par-win ConfigWindow 范围, keybinds.js
 数据层 (getBind/mutate/save/resetDefaults) 已就绪待接。
+
+## 2026-08-15 00:3x — R4 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `dd4a4b2` watchdog: parity 会话修正为 par-move, 注册 par-keys, 移除
+  par-anim/par-hud → **B/C/D 三路已终态回收**, 存活: par-move(A) + par-keys(E)。
+
+### 合并动作
+
+- 无冲突; 领先1已 push。check-keybinds.mjs 回归 557 全过。
+
+### 局势
+
+- par-move 剩余: MiniMap/BuffDialog/QuestTracker + ChatLogPanel/ChatTextBox 全量
+  + P1 Windows×5 (其在制, 会话活跃)。等 A 路终态后做五路总验收 (REPORT.md,
+  计划§五: 军团长 E 合并出最终验证)。
