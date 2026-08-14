@@ -150,6 +150,14 @@ export const MAGIC = {
   ElementalHurricane: 232, PoisonousCloud: 404, SummonPuppet: 415, Containment: 449,
   FourWheels: 456, CrescentMoon: 457, DragonRepulse: 430, ThunderKick: 324,
   CombatKick: 311, Shuriken: 132,
+  // [par-anim] GetMagicAnimation 剩余组 (Functions.cs:287-341) + Moving 用 (PlayerObject.cs:614)
+  ShoulderDash: 105, Assault: 115, HundredFist: 133, SwiftBlade: 114,
+  SeismicSlam: 124, CrushingWave: 126, WraithGrip: 409, HellFire: 411,
+  Rake: 413, TheNewBeginning: 427, DarkConversion: 429, Abyss: 433,
+  FlashOfLight: 434, Evasion: 436, RagingWind: 437, MagicCombustion: 444,
+  Chain: 446, Concentration: 447, BurningFire: 452, Defiance: 111,
+  Might: 113, ReflectDamage: 117, Fetter: 118, Endurance: 116,
+  Invincibility: 125, Spiritualism: 327, Cloak: 406,
 };
 
 // MirClass (Enum.cs)
@@ -184,9 +192,8 @@ const MAGIC_C1 = new Set([
   'Resilience', 'MassInvisibility', 'GreaterEvilSlayer', 'GreaterFrozenEarth', 'Parasite',
   'ElementalSuperiority', 'BloodLust', 'LifeSteal', 'ImprovedExplosiveTalisman', 'Neutralize',
   'CorpseExploder', 'SoulResonance', 'SearingLight', 'BindingTalisman', 'BrainStorm',
-  'Hemorrhage', 'FlamingDaggers', 'Shredding',
-]);
-// Combat2 组 (指向/召唤/辅助系) — Functions.cs:238-283
+].map(n => MAGIC[n]));
+// Combat2 组 (指向/召唤/辅助系) — Functions.cs:238-283; 组集合统一存 MagicType 数值
 const MAGIC_C2 = new Set([
   'Interchange', 'ElementalSwords', 'TaecheonSword', 'FireSword', 'Repulsion', 'ElectricShock',
   'LightningWave', 'Cyclone', 'Teleportation', 'FireWall', 'FireStorm', 'BlowEarth', 'ExpelUndead',
@@ -197,18 +204,34 @@ const MAGIC_C2 = new Set([
   'SummonSkeleton', 'SummonJinSkeleton', 'SummonShinsu', 'StrengthOfFaith', 'CelestialLight',
   'AugmentPoisonDust', 'SummonDemonicCreature', 'DemonExplosion', 'CursedDoll', 'DarkSoulPrison',
   'SummonDead', 'HeavenlySky', 'PoisonCloud',
-]);
-const MAGIC_C14 = new Set(['PoisonousCloud', 'SummonPuppet', 'Containment', 'FourWheels', 'CrescentMoon']);
+].map(n => MAGIC[n]));
+// Combat14 组 — Functions.cs:290-295
+const MAGIC_C14 = new Set(['PoisonousCloud', 'SummonPuppet', 'Containment', 'FourWheels', 'CrescentMoon'].map(n => MAGIC[n]));
+// Combat9 组 (刺客 buff 系) — Functions.cs:307-318
+const MAGIC_C9 = new Set([
+  'Cloak', 'WraithGrip', 'HellFire', 'TheNewBeginning', 'DarkConversion', 'Abyss',
+  'Evasion', 'RagingWind', 'Concentration', 'BurningFire', 'Chain',
+].map(n => MAGIC[n]));
+// Combat15 组 (战士/道士 buff 系) — Functions.cs:327-335
+const MAGIC_C15 = new Set(['Defiance', 'Might', 'ReflectDamage', 'Fetter', 'Endurance', 'Invincibility', 'Spiritualism'].map(n => MAGIC[n]));
+// Combat3 组 (弓手近战系) — Functions.cs:337-341
+const MAGIC_C3B = new Set(['Shuriken', 'SwiftBlade', 'SeismicSlam', 'CrushingWave'].map(n => MAGIC[n]));
 
-// ---- GetMagicAnimation (Functions.cs:190-302) ----
+// ---- GetMagicAnimation (Functions.cs:185-346, 全表) ----
 export function getMagicAnimation(magicType) {
-  if (magicType === MAGIC.ElementalHurricane) return 'channellingStart';
-  if (MAGIC_C14.has(magicType)) return 'combat14';
-  if (magicType === MAGIC.DragonRepulse) return 'dragonRepulseStart';
-  if (magicType === MAGIC.ThunderKick || magicType === MAGIC.CombatKick) return 'combat7';
-  for (const name of MAGIC_C1) if (MAGIC[name] === magicType) return 'combat1';
-  for (const name of MAGIC_C2) if (MAGIC[name] === magicType) return 'combat2';
-  return 'combat1'; // PlaySpell 容错 (PlayerRenderer.cs:317-341)
+  if (magicType === MAGIC.ElementalHurricane) return 'channellingStart';   // :287
+  if (MAGIC_C14.has(magicType)) return 'combat14';                        // :290-295
+  if (magicType === MAGIC.DragonRepulse) return 'dragonRepulseStart';     // :297
+  if (magicType === MAGIC.ThunderKick || magicType === MAGIC.CombatKick) return 'combat7'; // :300
+  if (magicType === MAGIC.HundredFist) return 'combat8';                  // :304
+  if (MAGIC_C9.has(magicType)) return 'combat9';                          // :307-318
+  if (magicType === MAGIC.Rake || magicType === MAGIC.MagicCombustion) return 'combat5'; // :320-322
+  if (magicType === MAGIC.FlashOfLight) return 'combat10';                // :324
+  if (MAGIC_C15.has(magicType)) return 'combat15';                        // :327-335
+  if (MAGIC_C3B.has(magicType)) return 'combat3';                         // :337-341
+  if (MAGIC_C1.has(magicType)) return 'combat1';
+  if (MAGIC_C2.has(magicType)) return 'combat2';
+  return 'combat1'; // C# default: NotImplementedException; Godot 容错 Combat1 (PlayerRenderer.cs:322-323)
 }
 
 // ---- DirectionFromPoint / Distance (Functions.cs:414-464) ----
