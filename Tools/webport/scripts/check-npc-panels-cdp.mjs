@@ -392,6 +392,56 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('CONSIGN', d.popupShown && d.errNoItem && d.priceAfter === '7000' && d.confirm2 && d.sentIds?.includes(213) && d.lockedOk && d.unlockedOk, r);
 }
 
+// ============ 14. 寄售搜索参数 (Search :294-304): 排序切换/类型过滤/历史链 ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current;
+    const { winConsign } = await import('/static/js/win-consign.js');
+    const sh = await winConsign(s);
+    const win = sh.win; const conn = s.conn;
+    const ctl = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.includes(t))?.__ctl;   // DXButton 实例 (DOM click 不可靠)
+    const pkts = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength > 6) { const dv = new DataView(b.buffer, b.byteOffset); pkts.push({ id: dv.getInt16(4, true), hex: [...b.slice(6, Math.min(b.byteLength, 44))].map(x => x.toString(16).padStart(2, '0')).join('') }); } return b; };
+    ctl('搜索购买')?.onClick();   // 前组 CONSIGN 停在 mine 页 — 先回 search 页 (否则行不渲染)
+    await new Promise(r => setTimeout(r, 150));
+    // 排序二态 (:91-92): 最新 → 最低价格 (直调 onClick)
+    const sortCtl = ctl('最新');
+    sortCtl?.onClick();
+    await new Promise(r => setTimeout(r, 150));
+    const toggled = !!ctl('最低价格');
+    // 类型过滤: 选武器(2) → 搜索 C 219
+    const sel = win.el.querySelector('select');
+    sel.value = '2'; sel.dispatchEvent(new Event('change'));
+    await new Promise(r => setTimeout(r, 150));
+    conn.send = orig;
+    const searchPkt = pkts.filter(p => p.id === 219).pop();   // 取最后一次 (typeSel change 的)
+    // 历史链: S search 结果 → 选中行 → 成交记录 C 216 → 双门闩回填
+    conn.dispatchEvent(new CustomEvent('marketPlaceSearch', { detail: { results: [{ index: 7, item: { infoIndex: 160, count: 1 }, price: 500 }] } }));
+    await new Promise(r => setTimeout(r, 400));
+    const rows = [...win.el.querySelectorAll('div')].filter(d => d.children.length === 0 && d.textContent.includes('500'));
+    rows[0]?.click();
+    await new Promise(r => setTimeout(r, 250));
+    const histCtl = ctl('成交记录');
+    const histEnabled = !!histCtl?.enabled;
+    let histSent = false;
+    conn.send = (b) => { if (new DataView(b.buffer, b.byteOffset).getInt16(4, true) === 216) histSent = true; return b; };
+    histCtl?.onClick();
+    await new Promise(r => setTimeout(r, 300));
+    conn.send = orig;
+    conn.dispatchEvent(new CustomEvent('marketPlaceHistory', { detail: { index: 160, display: 99, saleCount: 1n, lastPrice: 1n, averagePrice: 1n } }));
+    await new Promise(r => setTimeout(r, 150));
+    const gateBlocked = !win.el.textContent.includes('销量: 1');
+    conn.dispatchEvent(new CustomEvent('marketPlaceHistory', { detail: { index: 160, display: 1, saleCount: 42n, lastPrice: 500n, averagePrice: 480n } }));
+    await new Promise(r => setTimeout(r, 150));
+    const filled = win.el.textContent.includes('销量: 42') && win.el.textContent.includes('最近成交: 500') && win.el.textContent.includes('平均价: 480');
+    return { toggled, searchPkt, histEnabled, histSent, gateBlocked, filled };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  // C 219 由 typeSel change 触发: name=''(00) bool(01) itemType=Weapon(02) sort=3 LE (03000000)
+  const pktOk = d.searchPkt?.hex === '00010203000000';
+  report('SRCHHIST', d.toggled && pktOk && d.histEnabled && d.histSent && d.gateBlocked && d.filled, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

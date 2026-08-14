@@ -712,3 +712,22 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   (12000-5000=7000)→手续费二次确认→C_MARKETPLACECONSIGN 213→锁 1:5→S 回包解锁。
 - 教训: 跨组测试数据共享背包 — 探针断言锁槽位时必须用独占物品 id (前组 UPGRADE
   在 slot 0 留了同款 160, 行点击选中 slot 0 而非注入的 slot 5)。
+
+## R27 — par-move (A路): 寄售搜索参数化 + 成交记录 (Search/TypeFilter/MarketHistory)
+
+- `缺口` R26 重写后搜索仍固定 (name, false, 0, 0) — Godot Search() :294-304 带
+  sort + itemTypeFilter; 搜索页还有排序切换 (:91-92)、ItemType 37 项过滤列
+  (BuildTypeFilter :306-328)、成交记录按钮 (:129 → ShowHistory :497-502)。
+- `实现` win-consign.js: btnSort 二态切换 (Newest=0↔LowestPrice=3, Enum.cs:1642,
+  int32 序列化 — Packet.cs:209 枚举按底层类型); typeFilter <select> 37 项中文
+  (ItemType byte 序列化), 变更即 doSearch (AddTypeButton 语义); doSearch =
+  Search() 对照 (trim+filter+sort); 成交记录链 — showHistory (选中行门闩 :499,
+  display++ 防串扰 :45) → MarketHistoryDialog 4 行弹窗 (ShowFor :37-50) →
+  C 216 → S marketPlaceHistory 双门闩 (index+display) 回填销量/最近成交/平均价
+  (Apply :52-57)。
+- `CDP 验收` 套件 +SRCHHIST 组 → 14/14: 排序标签切换、类型过滤包 C 219 字节
+  00010203000000 (name=''+bool true+byte 2+int32 3) 逐字节、历史按钮选中门闩、
+  C 216 发送、display≠ 门闩拒绝回填、正确门闩三行填充。
+- 教训: (1) DXButton 的 DOM el.click() 在 headless 下不可靠 — 探针一律走
+  el.__ctl.onClick() (win-consign 前两组走原生 <button> 所以没踩过);
+  (2) 套件内跨组共享窗口单例 — 探针先归位页签再断言行渲染。

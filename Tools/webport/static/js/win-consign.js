@@ -52,12 +52,42 @@ export async function winConsign(scene) {
   const searchBox = document.createElement('div');
   searchBox.style.cssText = 'position:absolute;top:54px;left:0;right:0;bottom:56px;overflow-y:auto;';
   body.el.appendChild(searchBox);
-  const nameInput = new DXTextInput({ location: [8, 28], size: [200, 20], fontSize: 9 });
+  // 排序 (Godot :91-92: Newest↔LowestPrice 二态切换; MarketPlaceSort int 序列化)
+  let sortMode = 0;   // 0=Newest 3=LowestPrice (Enum.cs:1642)
+  const btnSort = new DXButton({ text: '最新', fontSize: 9, library: 'Interface', index: -1,
+    location: [8, 8], size: [72, 20], onClick: () => {
+      sortMode = sortMode === 0 ? 3 : 0;
+      btnSort.text = sortMode === 0 ? '最新' : '最低价格';
+      doSearch();
+    } });
+  body.addControl(btnSort);
+  // 类型过滤 (BuildTypeFilter :306-328: 全部+ItemType 37 项; ItemType byte 序列化)
+  let typeFilter = null;   // null=全部 (AddTypeButton null 语义)
+  const typeSel = document.createElement('select');
+  typeSel.style.cssText = 'position:absolute;left:88px;top:30px;font:11px \'Noto Sans CJK SC\',sans-serif;background:#1b2233;color:#eee;border:1px solid #567;padding:1px 2px;';
+  const TYPE_ZH = { 1: '消耗品', 2: '武器', 3: '护甲', 4: '火把', 5: '头盔', 6: '项链', 7: '手镯', 8: '戒指', 9: '鞋', 10: '毒药', 11: '护身符', 12: '肉', 13: '矿石', 14: '书', 15: '卷轴', 16: '暗石', 17: '精炼特殊', 18: '马甲', 19: '花', 20: '伙伴食品', 21: '伙伴包', 22: '伙伴头饰', 23: '伙伴背饰', 24: '系统', 25: '物品部件', 26: '勋章', 27: '盾牌', 28: '时装', 29: '鱼钩', 30: '鱼漂', 31: '鱼饵', 32: '寻物器', 33: '渔线轮', 34: '货币', 35: '捆绑包', 36: '战利品箱', 37: '宝石' };
+  const optAll = document.createElement('option');
+  optAll.value = ''; optAll.textContent = '全部类型';
+  typeSel.appendChild(optAll);
+  for (const [v, zh] of Object.entries(TYPE_ZH)) {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = zh;
+    typeSel.appendChild(o);
+  }
+  typeSel.onchange = () => { typeFilter = typeSel.value === '' ? null : parseInt(typeSel.value, 10); doSearch(); };   // AddTypeButton → BuildTypeFilter+Search
+  body.el.appendChild(typeSel);
+  const doSearch = () => conn.sendMarketPlaceSearch((nameInput.text ?? '').trim(), typeFilter != null, typeFilter ?? 0, sortMode);   // Search() :294-304
+  const nameInput = new DXTextInput({ location: [216, 8], size: [150, 20], fontSize: 9 });
   const btnSearch = new DXButton({ text: '搜索', fontSize: 9, library: 'Interface', index: -1,
-    location: [216, 28], size: [60, 20], onClick: () => conn.sendMarketPlaceSearch(nameInput.text ?? '', false, 0, 0) });
+    location: [372, 8], size: [60, 20], onClick: () => doSearch() });
   body.addControl(nameInput); body.addControl(btnSearch);
-  const searchCount = new DXLabel({ text: '', fontSize: 9, textColour: [255, 213, 115, 255], location: [284, 28], size: [120, 18], isControl: false });
+  const searchCount = new DXLabel({ text: '', fontSize: 9, textColour: [255, 213, 115, 255], location: [8, 30], size: [80, 18], isControl: false });
   body.addControl(searchCount);
+  // 成交记录 (history :129 → ShowHistory :497: 选中行物品开 MarketHistoryDialog)
+  const btnHistory = new DXButton({ text: '成交记录', fontSize: 9, library: 'Interface', index: -1,
+    location: [76, 272], size: [90, 22], visible: false, onClick: () => showHistory() });
+  btnHistory.enabled = false;
+  body.addControl(btnHistory);
 
   // ---- 我的寄售页 ----
   const mineBox = document.createElement('div');
@@ -255,6 +285,45 @@ export async function winConsign(scene) {
       c => conn.sendMarketPlaceCancelConsign(info.index, c));
   }
 
+  // ---- 成交记录 (ShowHistory :497-502 → MarketHistoryDialog.cs ShowFor :37-50) ----
+  let histItemIndex = -1, histDisplay = 0;
+  async function showHistory() {
+    const info = results[selectedSearch];
+    if (!info?.item) return;   // :499 未选中直接 return
+    histItemIndex = info.item.infoIndex;
+    histDisplay++;   // _display++ (Apply 防串扰 :53)
+    const layer = openModal();
+    const box = document.createElement('div');
+    box.style.cssText = BOX_CSS + 'min-width:220px;';
+    const nm = await itemName(histItemIndex);
+    const mk = (label, val) => {
+      const d = document.createElement('div');
+      d.textContent = val == null ? label : `${label} ${val}`;
+      if (val != null) d.style.color = '#9cf';
+      return d;
+    };
+    box.appendChild(mk(nm));
+    const sales = mk('查询销量中…'); box.appendChild(sales);
+    const last = mk(''); box.appendChild(last);
+    const avg = mk(''); box.appendChild(avg);
+    const closeB = document.createElement('button');
+    closeB.textContent = '关闭';
+    closeB.style.cssText = MBTN_CSS.replace('#2a4', '#444').replace('#7d7', '#888');
+    closeB.onclick = closeModal;
+    box.appendChild(closeB);
+    layer.appendChild(box);
+    histRefs = { sales, last, avg };
+    conn.sendMarketPlaceHistory(histItemIndex, histDisplay, 0);   // SendMarketHistory (:50; PartIndex=AddedStats 物品部件, web 无 AddedStats → 0)
+  }
+  let histRefs = null;
+  conn.addEventListener('marketPlaceHistory', (e) => {   // Apply :52-57: index+display 双门闩
+    const d = e.detail;
+    if (!histRefs || d.index !== histItemIndex || d.display !== histDisplay) return;
+    histRefs.sales.textContent = `销量: ${d.saleCount}`;
+    histRefs.last.textContent = `最近成交: ${Number(d.lastPrice).toLocaleString()}`;
+    histRefs.avg.textContent = `平均价: ${Number(d.averagePrice).toLocaleString()}`;
+  });
+
   // ---- 行渲染 (行点击=选中 :选中态高亮, 底部按钮启用) ----
   const rowEl = (text, onClick) => {
     const d = document.createElement('div');
@@ -277,6 +346,7 @@ export async function winConsign(scene) {
     btnSearch.el.style.display = page === 'search' ? '' : 'none';
     searchCount.el.style.display = page === 'search' ? '' : 'none';
     btnBuy.el.style.display = page === 'search' ? '' : 'none';
+    btnHistory.el.style.display = page === 'search' ? '' : 'none';
     btnRemove.el.style.display = page === 'mine' ? '' : 'none';
     btnConsign.el.style.display = page === 'mine' ? '' : 'none';
     guildCheck.disabled = !store.guild;   // :132/:164 Enabled = HasGuild
@@ -288,7 +358,7 @@ export async function winConsign(scene) {
         const nm = r0.item ? await itemName(r0.item.infoIndex) : '?';
         const d = rowEl(`${nm} x${r0.item?.count ?? 1}  ${r0.price.toLocaleString()} 金`);
         if (i === selectedSearch) d.style.cssText += SEL_CSS;
-        d.onclick = () => { selectedSearch = i; btnBuy.enabled = true; render(); };   // 选中 → Buy 启用 (:126)
+        d.onclick = () => { selectedSearch = i; btnBuy.enabled = true; btnHistory.enabled = true; render(); };   // 选中 → Buy/History 启用 (:126/:129)
         searchBox.appendChild(d);
       }
     }
@@ -306,7 +376,7 @@ export async function winConsign(scene) {
   };
 
   // ---- S 包 ----
-  conn.addEventListener('marketPlaceSearch', (e) => { results = e.detail?.results ?? []; selectedSearch = -1; btnBuy.enabled = false; render(); });
+  conn.addEventListener('marketPlaceSearch', (e) => { results = e.detail?.results ?? []; selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false; render(); });   // Search() 清选中 (:298-299)
   conn.addEventListener('marketPlaceSearchCount', (e) => { searchCount.text = `共 ${e.detail?.count ?? 0} 件`; });
   conn.addEventListener('marketPlaceConsign', (e) => {
     mine = e.detail?.consignments ?? [];
