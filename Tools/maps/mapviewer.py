@@ -661,11 +661,17 @@ _POOL: dict[str, ProcessPoolExecutor] = {}
 _POOL_MU = threading.Lock()
 _WORKER_DATA_DIR: str | None = None
 _WORKER_LIBS: dict[str, WilLibrary | ZlLibrary] = {}
+_WORKER_MC: "MapCache | None" = None      # tile-prewarm worker state
+_WORKER_POOL: "FramePool | None" = None
 
 
 def _init_worker(data_dir: str):
     global _WORKER_DATA_DIR
     _WORKER_DATA_DIR = data_dir
+    try:
+        os.nice(5)   # 后台批量渲染让位交互请求/游戏服务器
+    except OSError:
+        pass
 
 
 def _decode_frame_worker(args: tuple) -> tuple | None:
@@ -712,6 +718,37 @@ def _get_pool(data_dir: str) -> ProcessPoolExecutor:
                 max_workers=min(10, os.cpu_count() or 2),
                 initializer=_init_worker, initargs=(data_dir,))
         return pool
+
+def _render_tile_worker(args: tuple) -> tuple | None:
+    """Render one whole tile in a pool worker -> (key, png_bytes) | None.
+
+    每个 worker 持有自己的 MapCache/FramePool（地图 LRU + 帧字节预算），
+    完整复用 render_tile 的解码与合成逻辑；主进程只收字节落盘，不被
+    CPU 密集的渲染阻塞（HTTP 响应由主进程承担）。"""
+    map_path, key = args
+    map_name, tx, ty, z, layout, om = key
+    global _WORKER_MC, _WORKER_POOL
+    try:
+        if _WORKER_MC is None or _WORKER_MC.maps_dir != os.path.dirname(map_path):
+            _WORKER_MC = MapCache(os.path.dirname(map_path))
+            _WORKER_POOL = FramePool(_WORKER_DATA_DIR)
+        data = render_tile(_WORKER_MC, _WORKER_POOL, map_name, tx, ty, z,
+                           True, True, True, layout=layout, offset_mode=om)
+        return (key, data) if data else None
+    except Exception:
+        return None
+
+
+def tile_cache_path(cache_dir: str, layout: str, map_name: str,
+                    tx: int, ty: int, z: int, g: bool, m: bool, f: bool,
+                    om: str) -> str:
+    """Disk path for one rendered tile (handler 与预渲染共用)."""
+    safe = map_name.replace("/", "_").replace("\\", "_")
+    ext = "png" if z == 0 else "jpg"
+    tag = "r" if layout == LAYOUT_RECT else "i"
+    omt = "n" if om == OFFSET_NONE else ("a" if om == OFFSET_ALL else "m")
+    return os.path.join(cache_dir, safe,
+                        f"{tag}_{tx}_{ty}_{z}_{int(g)}{int(m)}{int(f)}{omt}.{ext}")
 
 
 # ------------------------------------------------------------------ geometry
@@ -1847,52 +1884,78 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         // ---- tile mode: dynamically load /tile images covering the viewport ----
+        // 增量瓦片管理: 以 URL 为键复用已存在的 <img>, 只增删变化的瓦片,
+        // 并向视口四周预加载一圈 (拖拽时新瓦片已就位)。滚动不再整层重建。
+        const tileEls = new Map();   // url -> <img>
+        let tileSpacer = null;
+        function tileUrl(mi, tx, ty, z) {
+            return "/tile?map=" + encodeURIComponent(mi.name) + "&tx=" + tx + "&ty=" + ty +
+                   "&z=" + z + "&g=" + gOn() + "&m=" + mOn() + "&f=" + fOn();
+        }
+        function clearTiles() {
+            tileLayer.innerHTML = "";
+            tileEls.clear();
+            tileSpacer = null;
+        }
         function drawTiles() {
             const mi = curMap();
-            if (!mi || !isTileMode()) { tileLayer.innerHTML = ""; return; }
+            if (!mi || !isTileMode()) { clearTiles(); return; }
             const s = curScale();
             const z = curZ();
             const TILE = 512 / s;   // tile size in screen px at this zoom
             // world px visible in viewport (scroll position is screen px at 1:1 of current scale)
             const vx0 = vp.scrollLeft * s, vy0 = vp.scrollTop * s;
             const vx1 = vx0 + vp.clientWidth * s, vy1 = vy0 + vp.clientHeight * s;
-            const tx0 = Math.floor(vx0 / 512), ty0 = Math.floor(vy0 / 512);
-            const tx1 = Math.floor(vx1 / 512), ty1 = Math.floor(vy1 / 512);
+            const M = 1;  // preload margin ring (tiles) so drags reveal instantly
+            const tx0 = Math.floor(vx0 / 512) - M, ty0 = Math.floor(vy0 / 512) - M;
+            const tx1 = Math.floor(vx1 / 512) + M, ty1 = Math.floor(vy1 / 512) + M;
             const tileH = Math.floor(worldH / 512) + 1;
             const tileW = Math.floor(worldW / 512) + 1;
             const v = version;
             const layer = tileLayer;
-            layer.innerHTML = "";
             layer.style.width = (worldW / s) + "px";
             layer.style.height = (worldH / s) + "px";
             // spacer: makes viewport scrollable to the full world at this zoom
-            const spacer = document.createElement("div");
-            spacer.style.width = (worldW / s) + "px";
-            spacer.style.height = (worldH / s) + "px";
-            spacer.style.position = "absolute";
-            spacer.style.left = "0"; spacer.style.top = "0";
-            layer.appendChild(spacer);
+            if (!tileSpacer || !tileSpacer.isConnected) {
+                tileSpacer = document.createElement("div");
+                tileSpacer.style.width = (worldW / s) + "px";
+                tileSpacer.style.height = (worldH / s) + "px";
+                tileSpacer.style.position = "absolute";
+                tileSpacer.style.left = "0"; tileSpacer.style.top = "0";
+                layer.appendChild(tileSpacer);
+            } else {
+                tileSpacer.style.width = (worldW / s) + "px";
+                tileSpacer.style.height = (worldH / s) + "px";
+            }
+            const need = new Set();
             for (let ty = ty0; ty <= ty1; ty++) {
                 if (ty < 0 || ty >= tileH) continue;
                 for (let tx = tx0; tx <= tx1; tx++) {
                     if (tx < 0 || tx >= tileW) continue;
+                    const url = tileUrl(mi, tx, ty, z);
+                    need.add(url);
+                    if (tileEls.has(url)) continue;      // already on screen/loading
                     const img = document.createElement("img");
                     img.style.left = (tx * 512 / s) + "px";
                     img.style.top = (ty * 512 / s) + "px";
                     img.style.width = TILE + "px";
                     img.style.height = TILE + "px";
-                    img.loading = "lazy";
-                    img.onload = () => { if (v !== version) img.remove(); };
+                    img.onload = () => { if (v !== version) { img.remove(); tileEls.delete(url); } };
                     img.onerror = () => {
-                        if (v !== version) { img.remove(); return; }
+                        if (v !== version) { img.remove(); tileEls.delete(url); return; }
                         // retry once after a delay
                         img.removeAttribute("src");
-                        setTimeout(() => { if (v === version) img.src = "/tile?map=" + encodeURIComponent(mi.name) + "&tx=" + tx + "&ty=" + ty + "&z=" + z + "&g=" + gOn() + "&m=" + mOn() + "&f=" + fOn(); }, 800);
+                        setTimeout(() => {
+                            if (v === version && tileEls.get(url) === img) img.src = url;
+                        }, 800);
                     };
-                    img.src = "/tile?map=" + encodeURIComponent(mi.name) + "&tx=" + tx + "&ty=" + ty +
-                              "&z=" + z + "&g=" + gOn() + "&m=" + mOn() + "&f=" + fOn();
+                    img.src = url;
                     layer.appendChild(img);
+                    tileEls.set(url, img);
                 }
+            }
+            for (const [url, img] of tileEls) {
+                if (!need.has(url)) { img.remove(); tileEls.delete(url); }
             }
         }
 
@@ -1959,7 +2022,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             anchorX = worldW / 2; anchorY = worldH / 2;
             version++;
             imgEl.src = "";
-            tileLayer.innerHTML = "";
+            clearTiles();
             loadMini();
             loadRoutes(mi);
             loadEntities(mi);
@@ -3351,6 +3414,21 @@ BATCH_PROGRESS = {
     "percent": 0
 }
 
+# 瓦片预渲染进度 (合并进 /api/progress; 字段与 BATCH_PROGRESS 同构,
+# 前端进度条直接复用; batch (整图重建) 优先显示)
+TILE_PREWARM = {
+    "running": False,
+    "total": 0,
+    "current": 0,
+    "current_map": "",
+    "done": 0,
+    "failed": 0,
+    "percent": 0,
+    "phase": "tiles",   # tiles = 瓦片预生成 (z0 全量 -> z1 全量)
+}
+
+_API_MAPS_CACHE: dict = {}   # (maps_dir, layout) -> 编码后 JSON; /api/maps 免重复扫描
+
 
 KNOWN_CANDIDATE_ROOTS = [
     "/home/tetsuya/development/Zircon/Debug/Client",
@@ -3564,6 +3642,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", ctype)
             self.send_header("Cache-Control", "no-cache")
             self.send_header("Content-Length", str(len(body)))
+
             self.end_headers()
             self.wfile.write(body)
 
@@ -3577,23 +3656,24 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.wfile.write(body)
 
         elif self.path == "/api/maps":
-            maps = scan_maps(self.map_cache.maps_dir, self.layout)
-            for m in maps:
-                fid = m["name"][:-4] if m["name"].endswith(".map") else m["name"]
-                cn = MAP_CN.get(fid)
-                if not cn or cn.startswith("EI ") or cn == fid:
-                    cn = map_cn(fid)
-                m["cn"] = cn
-                m["cat"] = map_category(fid)
-            body = json.dumps(maps).encode("utf-8")
+            body = api_maps_payload(self.map_cache.maps_dir, self.layout)
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
-
         elif self.path == "/api/progress":
-            body = json.dumps(BATCH_PROGRESS).encode("utf-8")
+            merged = dict(BATCH_PROGRESS)
+            if TILE_PREWARM["running"]:
+                merged["tiles"] = {k: TILE_PREWARM[k] for k in
+                                   ("total", "current", "done", "failed", "percent")}
+                if not merged["running"]:   # batch 优先展示
+                    merged.update({k: TILE_PREWARM[k] for k in
+                                   ("running", "total", "current", "current_map",
+                                    "done", "failed", "percent")})
+                    merged["current_map"] = "瓦片 " + str(merged["current_map"])
+            body = json.dumps(merged).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
@@ -4025,7 +4105,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
                         os.replace(tmp, dp)
                 self.send_response(200)
                 self.send_header("Content-Type", "image/png" if z == 0 else "image/jpeg")
-                self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+                self.send_header("Cache-Control", "public, max-age=86400")
                 self.send_header("Content-Length", str(len(data)))
                 self.end_headers()
                 self.wfile.write(data)
@@ -4036,11 +4116,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
 
     def _tile_path(self, key: tuple) -> str:
         map_name, tx, ty, z, g, m, f, om = key
-        safe = map_name.replace("/", "_").replace("\\", "_")
-        ext = "png" if z == 0 else "jpg"
-        tag = "r" if self.layout == LAYOUT_RECT else "i"
-        omt = "n" if om == OFFSET_NONE else ("a" if om == OFFSET_ALL else "m")
-        return os.path.join(self.cache_dir, safe, f"{tag}_{tx}_{ty}_{z}_{int(g)}{int(m)}{int(f)}{omt}.{ext}")
+        return tile_cache_path(self.cache_dir, self.layout, map_name,
+                               tx, ty, z, g, m, f, om)
 
     def _fullmap_path(self, key: tuple) -> str:
         map_name, z, g, m, f, om = key
@@ -4066,6 +4143,24 @@ def map_category(fid: str) -> str:
     if f.isdigit() or up.startswith("E") or up.startswith("GM"):
         return "town"
     return "other"
+
+
+def api_maps_payload(maps_dir: str, layout: str) -> bytes:
+    """构建并缓存 /api/maps 响应 (地图集服务期内静态; 首扫 627 头约 3~25s)。"""
+    ck = (maps_dir, layout)
+    body = _API_MAPS_CACHE.get(ck)
+    if body is None:
+        maps = scan_maps(maps_dir, layout)
+        for m in maps:
+            fid = m["name"][:-4] if m["name"].endswith(".map") else m["name"]
+            cn = MAP_CN.get(fid)
+            if not cn or cn.startswith("EI ") or cn == fid:
+                cn = map_cn(fid)
+            m["cn"] = cn
+            m["cat"] = map_category(fid)
+        body = json.dumps(maps).encode("utf-8")
+        _API_MAPS_CACHE[ck] = body
+    return body
 
 
 def scan_maps(maps_dir: str, layout: str = LAYOUT_RECT) -> list[dict]:
@@ -4518,6 +4613,86 @@ def write_map_links_v2(atlas: dict, path: str) -> bool:
         return False
 
 
+def prewarm_tiles(maps_dir: str, data_dir: str, cache_dir: str,
+                  layout: str = LAYOUT_RECT, layers: tuple = (True, True, True),
+                  offset_mode: str = OFFSET_NONE) -> None:
+    """后台守护线程：把瓦片模式 (z=1 全量 -> z=0 全量) 预渲染进磁盘缓存。
+
+    拖拽卡顿的根因是冷瓦片现场渲染（纯 Python 解码 0.8~9s/块）。磁盘缓存
+    本就永久生效（.tilecache-v3），这里只是提前把全库 627 张地图的瓦片
+    批量生成完：只补缺失文件，进程池并行（worker 各持 MapCache/FramePool，
+    复用 render_tile），主进程只落盘。重启时已完成的直接跳过。
+    只生成默认视图组合（g/m/f 全开、无 offset 实验），其它组合按需渲染。"""
+    if not cache_dir:
+        return
+
+    def work():
+        import concurrent.futures as cf
+        try:
+            g, m_, f_ = layers   # 默认图层组合 (全开)
+            maps = sorted(scan_maps(maps_dir, layout),
+                          key=lambda m: m["world_w"] * m["world_h"])
+            # 待办清单: [(map_path, key, disk_path)]; z0 (1:1 拖拽主视图) 优先, z1 随后
+            todo = []
+            for z in (0, 1):
+                for m in maps:
+                    tw = m["world_w"] // 512 + 1
+                    th = m["world_h"] // 512 + 1
+                    for ty in range(th):
+                        for tx in range(tw):
+                            dp = tile_cache_path(cache_dir, layout, m["name"],
+                                                 tx, ty, z, g, m_, f_, offset_mode)
+                            if not os.path.exists(dp):
+                                todo.append((os.path.join(maps_dir, m["name"]),
+                                             (m["name"], tx, ty, z, layout, offset_mode),
+                                             dp))
+            if not todo:
+                print("[*] Tile prewarm: cache already complete")
+                return
+            print(f"[*] Tile prewarm: {len(todo)} tiles to render "
+                  f"({len(maps)} maps, z1+z0, {layout})")
+            TILE_PREWARM.update(running=True, total=len(todo), current=0,
+                                done=0, failed=0, percent=0, current_map="")
+            pool = _get_pool(data_dir)
+            # 滑动窗口限并发: 与交互请求/同机服务 (ServerCore 等) 抢资源时
+            # 保持温和; worker 已 nice(5), 这里再限制在途任务数。
+            WINDOW = 3
+            pending: list = []   # [(future, map_path, key, disk_path)]
+            ti = 0
+            while ti < len(todo) or pending:
+                while ti < len(todo) and len(pending) < WINDOW:
+                    mp, key, dp = todo[ti]
+                    pending.append((pool.submit(_render_tile_worker, (mp, key)), mp, key, dp))
+                    ti += 1
+                fut, mp, key, dp = pending.pop(0)
+                try:
+                    res = fut.result()
+                    if res:
+                        _, data = res
+                        os.makedirs(os.path.dirname(dp), exist_ok=True)
+                        tmp = dp + ".tmp"
+                        with open(tmp, "wb") as fh:
+                            fh.write(data)
+                        os.replace(tmp, dp)
+                        TILE_PREWARM["done"] += 1
+                    else:
+                        TILE_PREWARM["failed"] += 1
+                except Exception:
+                    TILE_PREWARM["failed"] += 1
+                TILE_PREWARM["current"] += 1
+                TILE_PREWARM["percent"] = int(TILE_PREWARM["current"] / len(todo) * 100)
+                TILE_PREWARM["current_map"] = f"{key[0]} z{key[3]} ({key[1]},{key[2]})"
+            TILE_PREWARM.update(running=False, current_map="完成",
+                                percent=100)
+            print(f"[*] Tile prewarm done: {TILE_PREWARM['done']} rendered, "
+                  f"{TILE_PREWARM['failed']} failed")
+        except Exception as ex:
+            TILE_PREWARM["running"] = False
+            print(f"[!] Tile prewarm disabled: {ex}")
+
+    threading.Thread(target=work, daemon=True, name="tile-prewarm").start()
+
+
 def prewarm_thumbs(maps_dir: str, data_dir: str, thumbs_dir: str) -> None:
     """后台守护线程：为总览视图逐张预渲染缩略图（/tmp/wiki_thumbs，磁盘缓存）。
 
@@ -4715,6 +4890,8 @@ def main():
                         help="Map projection: rect (axis-aligned, original Mir3.exe) or iso (legacy diamond)")
     parser.add_argument("--connections", default=DEFAULT_CONNECTIONS,
                         help="JSON exported by export_map_connections.py")
+    parser.add_argument("--no-prewarm-tiles", action="store_true",
+                        help="Disable background tile prewarm (z1+z0 for all maps)")
     args = parser.parse_args()
 
     if not args.maps_dir:
@@ -4798,6 +4975,13 @@ def main():
             ViewerHandler.entities = []
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
     prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
+    # 瓦片模式预生成（守护线程，只补缺失文件；拖拽冷区秒开的关键）
+    if not args.no_prewarm_tiles:
+        prewarm_tiles(args.maps_dir, data_dir, cache_dir,
+                      layout=args.layout)
+    # /api/maps 首扫慢 (NAS 627 头), 启动即后台预热缓存
+    threading.Thread(target=lambda: api_maps_payload(args.maps_dir, args.layout),
+                     daemon=True, name="api-maps-warm").start()
     print(f"[*] Tile cache: {cache_dir}")
 
     server = ThreadingHTTPServer(("0.0.0.0", args.port), ViewerHandler)
