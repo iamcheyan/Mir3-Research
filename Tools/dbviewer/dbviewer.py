@@ -497,7 +497,7 @@ def main():
     parser.add_argument("--data", default=DEFAULT_DATA,
                         help="SystemDbProbe --json 导出的数据目录（默认 %(default)s）")
     parser.add_argument("--port", type=int, default=8800, help="HTTP 端口（默认 8800）")
-    parser.add_argument("--host", default="127.0.0.1", help="监听地址（默认 127.0.0.1）")
+    parser.add_argument("--host", default="0.0.0.0", help="监听地址（默认 0.0.0.0，局域网+tailscale 可达）")
     args = parser.parse_args()
 
     data_dir = os.path.abspath(args.data)
