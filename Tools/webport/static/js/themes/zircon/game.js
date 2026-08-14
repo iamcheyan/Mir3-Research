@@ -8,7 +8,7 @@ import { WindowManager, UiScaleNow, setUiScale } from '../../windows.js';
 import { statsToObj, STAT, MsgTypeName, MsgTypeColour, MSG, C } from '../../net.js';
 import { getAction, KeyBindAction as KA } from '../../keybinds.js';
 import { installWindows } from '../../win-registry.js';
-import { MainPanel, MiniMapDialog, fallbackWindow } from './hud.js';
+import { MainPanel, MiniMapDialog, fallbackWindow, BuffDialog, QuestTracker } from './hud.js';
 import { ChatTextBox, ChatLogPanel } from './chat.js';
 
 const BASE_W = 1024, BASE_H = 768;
@@ -44,6 +44,7 @@ export class GameScene {
     }
     this._winInstall = installWindows(this);   // par-win 15 模块并行安装 (异步, 不阻塞 HUD)
     this.#buildHud();
+    this.#wireNet();
   }
 
   // ---- CreateHud (GameScene.cs:4264-4468) ----
@@ -85,6 +86,23 @@ export class GameScene {
       this.conn.send(C.TeleportRing(x, y, mapIndex));
     };
     WindowManager.open(this.miniMap, this.hudLayer);   // DXWindow 语义: 入 WindowManager (Esc/M 可关)
+
+    // BuffDialog: 小地图左侧 (GameScene.cs:4732 LayoutHud + BuffDialog.LayoutNeeded)
+    this.buffDialog = new BuffDialog();
+    this.hudLayer.addControl(this.buffDialog);
+    this._selfBuffs = new Map();
+    for (const b of this.info.buffs ?? []) if (b) this._selfBuffs.set(b.index, b);
+    this.#refreshBuffs();
+
+    // QuestTracker: 小地图下方 (QuestTrackerDialog.cs)
+    this.questTracker = new QuestTracker();
+    this.hudLayer.addControl(this.questTracker);
+    this._winInstall?.then?.((reg) => {
+      const store = reg?.itemStore ?? this.itemStore;
+      const off = store.on(() => this.#refreshQuests());
+      this._qtOff = off;
+      this.#refreshQuests();
+    });
     if (this.world.mapMeta) { clearInterval(this._mmWait); this.#applyMiniMap(); }
     // world 数据异步加载: 首图 meta 未就绪时, 等 enterWorld 完成后再挂小地图
     this._mmWait = setInterval(() => {
@@ -111,6 +129,23 @@ export class GameScene {
       if (this.chatBox) this.chatBox.location = [Math.max(0, mp.location[0]), Math.max(0, mp.location[1] - this.chatBox.size[1] - 2)];
     }
     if (this.miniMap) this.miniMap.location = [Math.max(0, vp[0] - this.miniMap.size[0]), 0];
+    // BuffDialog 锚小地图左侧; QuestTracker 锚小地图下方 (GameScene.cs:4731-4736)
+    if (this.buffDialog) this.buffDialog.location = [Math.max(4, (this.miniMap?.location?.[0] ?? vp[0]) - this.buffDialog.size[0] - 8), 0];
+    if (this.questTracker) this.questTracker.location = [Math.max(0, vp[0] - this.questTracker.size[0] - 4), (this.miniMap?.location?.[1] ?? 0) + (this.miniMap?.size?.[1] ?? 0) + 8];
+  }
+
+  // ---- Buffs (GameScene.cs:5107-5159 OnBuff*) ----
+  #refreshBuffs() {
+    if (!this.buffDialog) return;
+    this.buffDialog.buffsChanged([...this._selfBuffs.values()]);
+    this.#layoutHud();   // BuffDialog.LayoutNeeded → 重锚 (BuffDialog.cs:23)
+  }
+
+  async #refreshQuests() {
+    if (!this.questTracker) return;
+    const store = this.itemStore;
+    const questInfo = (i) => import('../../gamedb.js').then(m => m.GameDB.questInfo(i)).catch(() => null);
+    await this.questTracker.refresh(store?.quests, questInfo);
   }
 
   // ---- 主面板 9 键 → 窗口开关 (GameScene.cs:4432-4463 CreateHud 绑定) ----
@@ -156,9 +191,24 @@ export class GameScene {
     const c = this.conn;
     c.addEventListener('chat', (e) => {
       const p = e.detail;
+      if (p.overheadOnly) return;   // 仅头顶气泡, 不进日志 (GameScene.cs:2538)
       const o = this.world.objects.get(p.objectID);
       const sender = o?.name ?? (p.objectID === this.info.objectID ? this.info.name : '系统');
       this.#receiveChat(p.text, p.type, sender);
+    });
+    c.addEventListener('buffAdd', (e) => {       // OnBuffAdd (GameScene.cs:5107)
+      if (e.detail?.buff) { this._selfBuffs.set(e.detail.buff.index, e.detail.buff); this.#refreshBuffs(); }
+    });
+    c.addEventListener('buffRemove', (e) => {    // OnBuffRemove
+      this._selfBuffs.delete(e.detail.index); this.#refreshBuffs();
+    });
+    c.addEventListener('buffTime', (e) => {      // OnBuffTime: 服务端校时
+      const b = this._selfBuffs.get(e.detail.index);
+      if (b) { b.remainingTime = e.detail.time; this.#refreshBuffs(); }
+    });
+    c.addEventListener('buffPaused', (e) => {    // OnBuffPaused
+      const b = this._selfBuffs.get(e.detail.index);
+      if (b) { b.pause = e.detail.paused; this.#refreshBuffs(); }
     });
     c.addEventListener('levelChanged', (e) => {   // OnLevelChanged (GameScene.cs:5071-5078)
       const p = e.detail;

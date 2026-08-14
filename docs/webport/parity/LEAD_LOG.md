@@ -218,3 +218,27 @@
 - par-move 剩余: MiniMap/BuffDialog/QuestTracker + ChatLogPanel/ChatTextBox 全量
   + P1 Windows×5 (其在制, 会话活跃)。等 A 路终态后做五路总验收 (REPORT.md,
   计划§五: 军团长 E 合并出最终验证)。
+
+## R5 — par-move (A路): 聊天双渲染修复 + BuffDialog + QuestTracker
+
+- `聊天双渲染根因` world.js:718 与 game.js #wireNet 双监听 'chat'。手术: world 只留
+  头顶气泡副作用 (o.chatText/chatUntil), 日志归 game.js 唯一路径 + overheadOnly
+  guard (GameScene.cs:2538)。CDP: 一次 sendChat delta=1。
+- `发现` "Name: Name: text" 双名是 Godot 原版行为: 服务端 PlayerObject.cs:1808
+  已把 Name 拼进 Text, Godot OnChat (GameScene.cs:2536) 再拼 sender — 网页与原版
+  结构一致, 非 bug。中文 label 空是 MsgTypeName[0]='' 本地化选择。
+- `BuffDialog` (BuffDialog.cs:15-120) hud.js: buffAdd/Remove/Time/Paused 全接线,
+  过滤 Ranking/Developer, 剩余时间降序, 27px 栅格≤6列, Pause=IndianRed,
+  <10s 白→CadetBlue 渐变, 锚小地图左侧+LayoutNeeded 重锚。CBIcon webres 未导出
+  →着色瓦片暂代 (首字+title 提示), 后续 webres 补 CBIcon 库可直换 DXImageControl。
+- `QuestTracker` hud.js: itemStore.quests (QuestChanged/Cancelled 维护) +
+  gamedb QuestInfo 名称, 完成✓前缀, 点击切换追踪 localStorage 持久, 锚小地图下方;
+  itemStore.on() 订阅变更重绘 (observers 是 Set, 勿 push)。
+- `CDP 验收` pmv-buff-qt.mjs (独立新号注册→建角→进图): 9 键 PASS×, KeyW/N/Z
+  开窗 PASS, BuffDialog visible@[759,0], QuestTracker 注入任务 rows=[任务#9001,
+  ✓任务#9002], 0 页面异常。
+- `坑` game.js 尾部曾被并发重写打断成 class 提前闭合 (#receiveChat 变悬空 private
+  field → 全站白屏)。修复后 node --check 放过 (script vs module 差异), ESM 语法
+  验收必须 cp 到 /tmp/*.mjs 再 --check。已修: 149/150 行双闭合。
+- `提交` 聊天/Buff/QuestTracker 三件套 + checklist 3 行 ✅。uitree.js(M) 是
+  par-win 的 DXItemCell graft, dialogs.js/gamedata.js 未跟踪, 归 par-win 仲裁不变。

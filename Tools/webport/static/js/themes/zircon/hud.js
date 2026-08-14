@@ -631,3 +631,135 @@ export function fallbackWindow(type, scene) {
   }
   return win;
 }
+
+
+// ====================================================================
+// BuffDialog (BuffDialog.cs:15-120) — 小地图左侧 buff 图标栅格
+// CBIcon 库 webres 未导出 → 着色瓦片 (Godot: 27px 格 ×6列, 剩余时间降序,
+// Pause=IndianRed, <10s 向 CadetBlue 渐变, 永久=白)。
+// ====================================================================
+export const BUFF_TYPE_NAMES = {
+  1: '服务器', 2: '狩猎金', 3: '可观察', 4: '褐名', 5: 'PK 点', 6: '红名诅咒',
+  7: '救赎', 8: '伙伴', 9: '城堡', 10: '物品增益', 11: '永久增益', 14: '老兵',
+  15: '地图效果', 16: '副本效果', 17: '行会', 19: '声望',
+  20: '红宝石', 21: '蓝宝石', 22: '诅咒宝石',
+  100: '反抗', 101: '威力', 102: '坚韧', 103: '反弹伤害', 104: '无敌',
+  105: '防御打击', 106: '冲锋', 107: '元素剑',
+  200: '放弃', 201: '魔法盾', 202: '天堂审判', 203: '元素风暴', 204: '强化魔法盾',
+  205: '冰咬', 206: '龙卷',
+  300: '治疗', 301: '隐身',
+};
+const TICKS_PER_SEC = 1e7;   // TimeSpan.Ticks
+const PERMANENT = 9e18;
+const INDIAN_RED = 'rgba(204,92,92,.92)', CADET_BLUE = 'rgba(94,158,160,.92)', WHITE = 'rgba(240,240,240,.92)';
+
+export class BuffDialog extends DXWindow {
+  constructor(opts = {}) {
+    super({ title: '', size: [30, 30], hasTitle: false, hasFooter: false, ...opts });
+    this.el.classList.add('buffdialog');
+    this.el.style.opacity = '0.6';
+    this._buffs = [];
+    this._timer = setInterval(() => this.#tickSec(), 1000);
+    this.visible = false;
+  }
+
+  // BuffsChanged (BuffDialog.cs:38): 全量刷新 (Godot 过滤 Ranking/Developer)
+  buffsChanged(list) {
+    this._buffs = (list ?? [])
+      .filter(b => b && b.type !== 12 && b.type !== 13)
+      .map(b => ({
+        type: b.type, pause: !!b.pause,
+        secs: b.remainingTime >= PERMANENT ? Infinity : Math.max(0, Number(b.remainingTime) / TICKS_PER_SEC),
+      }))
+      .sort((a, b) => (b.secs ?? 0) - (a.secs ?? 0));   // 剩余时间降序 (BuffDialog.cs:66)
+    this.#render();
+  }
+
+  #render() {
+    const n = this._buffs.length;
+    const cols = Math.min(6, Math.max(1, n)), rows = Math.max(1, Math.ceil(n / 6));
+    this.size = [3 + cols * 27, 3 + rows * 27];
+    this.el.style.width = `${this.size[0]}px`; this.el.style.height = `${this.size[1]}px`;
+    this.el.replaceChildren();
+    this._buffs.forEach((b, i) => {
+      const d = document.createElement('div');
+      const name = BUFF_TYPE_NAMES[b.type] ?? `增益#${b.type}`;
+      const secsTxt = b.secs === Infinity ? '永久' : `${Math.ceil(b.secs)}s`;
+      // ColorBuffIcon (BuffDialog.cs:110-127)
+      let colour = WHITE;
+      if (b.pause) colour = INDIAN_RED;
+      else if (b.secs !== Infinity && b.secs < 10) {
+        const t = b.secs / 10;
+        colour = t < 0.5 ? CADET_BLUE : `rgba(${Math.round(240 - (1 - t) * 146)},${Math.round(240 - (1 - t) * 82)},${Math.round(240 - (1 - t) * 80)},.92)`;
+      }
+      d.style.cssText =
+        `position:absolute;left:${3 + (i % 6) * 27}px;top:${3 + Math.floor(i / 6) * 27}px;` +
+        `width:24px;height:24px;background:${colour};border:1px solid #222;border-radius:3px;` +
+        `font:9px/24px 'Noto Sans CJK SC',sans-serif;color:#111;text-align:center;cursor:default;` +
+        `text-shadow:none;`;
+      d.textContent = name.slice(0, 1);
+      d.title = `${name} (${b.pause ? '暂停' : secsTxt})`;
+      this.el.appendChild(d);
+    });
+    this.visible = n > 0;
+  }
+
+  #tickSec() {   // 剩余时间倒计时 + 颜色衰减 (无需服务端包)
+    if (!this.visible) return;
+    for (const b of this._buffs) if (b.secs !== Infinity && !b.pause) b.secs = Math.max(0, b.secs - 1);
+    this.#render();
+  }
+
+  dispose() { clearInterval(this._timer); }
+}
+
+// ====================================================================
+// QuestTracker (QuestTrackerDialog.cs) — 右侧进行中任务列表
+// 数据: itemStore.quests (S.QuestChanged/Cancelled 维护) + gamedb QuestInfo 名称。
+// 点击任务 = 切换追踪 (Godot: QuestDialog 勾选 Tracked → Tracker 只显示勾选项;
+// web 以 localStorage 持久勾选, 默认全显)。
+// ====================================================================
+export class QuestTracker extends DXWindow {
+  constructor(opts = {}) {
+    super({ title: '任务', size: [220, 120], hasFooter: false, ...opts });
+    this.list = document.createElement('div');
+    this.list.style.cssText = 'position:absolute;inset:24px 4px 4px;overflow-y:auto;';
+    this.el.appendChild(this.list);
+    this._tracked = new Set(JSON.parse(localStorage.getItem('ZirconQuestTracked') ?? '[]'));
+  }
+
+  async refresh(quests, questInfo) {
+    this.list.replaceChildren();
+    const entries = [...(quests?.values() ?? [])].filter(Boolean);
+    if (!entries.length) {
+      this.list.appendChild(this.#row('(无进行中任务)', null));
+      this.visible = false;
+      return;
+    }
+    this.visible = true;
+    for (const q of entries) {
+      const info = await questInfo(q.questIndex ?? q.index);
+      const name = info?.zh ?? info?.name ?? `任务#${q.questIndex ?? q.index}`;
+      const row = this.#row(`${q.completed ? '✓ ' : ''}${name}`, q);
+      this.list.appendChild(row);
+    }
+  }
+
+  #row(text, q) {
+    const d = document.createElement('div');
+    d.textContent = text;
+    d.style.cssText =
+      `padding:2px 4px;font:11px 'Noto Sans CJK SC',sans-serif;color:#eee;` +
+      `text-shadow:1px 1px 0 #000;cursor:pointer;`;
+    if (q) {
+      d.onclick = () => {
+        const key = q.questIndex ?? q.index;
+        if (this._tracked.has(key)) this._tracked.delete(key); else this._tracked.add(key);
+        localStorage.setItem('ZirconQuestTracked', JSON.stringify([...this._tracked]));
+        d.style.color = this._tracked.has(key) ? '#8fd4ff' : '#eee';
+      };
+      d.style.color = this._tracked.has(q.questIndex ?? q.index) ? '#8fd4ff' : '#eee';
+    }
+    return d;
+  }
+}

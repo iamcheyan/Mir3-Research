@@ -716,10 +716,11 @@ export class World {
       this.hooks.onPosChange?.(this.player);
     });
     c.addEventListener('chat', (e) => {
+      // 头顶气泡 (GameScene.cs:2536 OnChat → ObjectRenderer.ChatText);
+      // 日志渲染由 game.js #wireNet 唯一负责, 这里不再 addChat (双渲染根因)
       const p = e.detail;
       const o = obj(p.objectID);
       if (o && !p.overheadOnly) { o.chatText = p.text.length > 30 ? p.text.slice(0, 30) + '…' : p.text; o.chatUntil = performance.now() + 5000; }
-      this.addChat(p.text);
     });
     c.addEventListener('mapChanged', async (e) => {
       if (!this.player) return;

@@ -35,8 +35,8 @@
 | Esc 关最上层窗口 (CloseTop 语义) | ✅ | t11 每窗开→Esc 关; 无窗时 Esc 不拦截 |
 | HP/MP/专注/经验条 | ✅ | #onRawStats→setMaxHealth 链路, 验收时无异常 |
 | 小地图右上+玩家跟随+3 悬停按钮 | 🟡 | miniMap 存在+GM 传送接线; 悬停按钮未逐个 CDP |
-| BuffDialog | ❌ | 未实现 |
-| QuestTracker | ❌ | 未实现 (dialogs.js 有草稿) |
+| BuffDialog | ✅ | hud.js BuffDialog (BuffDialog.cs:15-120): buffAdd/Remove/Time/Paused 全接线, 剩余时间降序 27px 栅格×6列, Pause=红/<10s→蓝渐变/永久白, 锚小地图左侧; CBIcon webres 未导出→着色瓦片暂代; pmv-buff-qt: visible@[759,0] |
+| QuestTracker | ✅ | hud.js QuestTracker: itemStore.quests + gamedb QuestInfo 名称, 完成前缀✓, 点击切换追踪(localStorage), 锚小地图下方; 注入任务渲染 rows=[任务#9001,✓任务#9002] |
 
 ### 聊天 (ChatTextBox.cs 对照)
 
@@ -45,7 +45,7 @@
 | Enter/Space 开聊天, 发送回显 | ✅ | smoke4 T5/T6 |
 | 频道循环 (ChangeChatMode 键) | 🟡 | cycleMode 接线, 未逐频道验证 |
 | 历史 ↑↓ + 草稿恢复 | 🟡 | chat.js history 实现, 未 CDP 逐键 |
-| 已知缺口: 自发消息双行显示 | ❌ | chat.js 本地回显 + S.Chat 回显双渲染, 归 par-hud |
+| 单渲染 (双行缺口已修) | ✅ | world.js chat 只留头顶气泡, game.js #wireNet 唯一日志路径+overheadOnly guard; pmv-buff-qt: 一次 sendChat delta=1; "Name: Name: text" 双名是 Godot OnChat 同款 (服务端 PlayerObject.cs:1808 已拼名, 客户端再拼) |
 
 ### 键位分发 (KeyBindManager.cs + GameScene.cs:1876 对照)
 
