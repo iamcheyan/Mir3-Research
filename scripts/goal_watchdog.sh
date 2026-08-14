@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "019ffeb7-4306-7000-97c7-d29d1d9be29c|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T05-20-50-950Z_019ffeb7-4306-7000-97c7-d29d1d9be29c.jsonl|svctools|/home/tetsuya/development/svc-dashboard|运维全家桶"
   "019ffea9-735a-7000-a536-241dc099e4f2|/home/tetsuya/.omp/agent/sessions/-development-miyako/2026-08-14T05-05-45-818Z_019ffea9-735a-7000-a536-241dc099e4f2.jsonl|miyako2|/home/tetsuya/development/miyako|miyako第二轮收尾"
   "019ffe6a-aa56-7000-9ba2-587f4b39cf5b|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T03-57-11-126Z_019ffe6a-aa56-7000-9ba2-587f4b39cf5b.jsonl|svcux|/home/tetsuya/development/svc-dashboard|主界面UX重构"
   "019ffe60-7fb9-7000-bcba-afb49c84a047|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T03-46-04-857Z_019ffe60-7fb9-7000-bcba-afb49c84a047.jsonl|yomufont|/home/tetsuya/development/yomu|yomu字体系统"
