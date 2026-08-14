@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "019ffe2f-ed77-7000-91fa-53a750b53425|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T02-53-01-687Z_019ffe2f-ed77-7000-91fa-53a750b53425.jsonl|svcmobile|/home/tetsuya/development/svc-dashboard|面板移动端深度适配"
   "019ffe20-9eb7-7000-afe9-873c023b3514|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T02-36-18-487Z_019ffe20-9eb7-7000-afe9-873c023b3514.jsonl|mobile|/home/tetsuya/development/yomu|yomu+fudoki移动端优化"
   "019ffe1e-bf33-7000-99cf-97f6773c73d0|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T02-34-15-731Z_019ffe1e-bf33-7000-99cf-97f6773c73d0.jsonl|questdata|/home/tetsuya/development/Mir3-Research|任务落地资料补齐"
   "019ffdd7-af02-7000-9ecc-bbfdcc701201|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T01-16-38-530Z_019ffdd7-af02-7000-9ecc-bbfdcc701201.jsonl|webclient|/home/tetsuya/development/Mir3-Research|静态Web客户端测试台"
