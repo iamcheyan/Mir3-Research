@@ -124,6 +124,7 @@ export class GameConnection extends EventTarget {
         break;
       }
       case ID.S_MAPCHANGED: this.#emit('mapChanged', S.MapChanged(r)); break;
+      case ID.S_DAYCHANGED: this.#emit('dayTime', S.DayChanged(r).dayTime); break;
       case ID.S_USERLOCATION: this.#emit('userLocation', S.UserLocation(r)); break;
       case ID.S_OBJECTMOVE: this.#emit('objectMove', S.ObjectMove(r)); break;
       case ID.S_OBJECTTURN: this.#emit('objectTurn', S.ObjectTurn(r)); break;

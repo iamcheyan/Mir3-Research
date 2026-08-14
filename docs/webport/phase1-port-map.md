@@ -16,7 +16,24 @@
 | 对象同步 | S.ObjectPlayer/Monster/NPC 精确解析（视野内 21-26 对象渲染）✓ |
 | Zircon 模式回归 | 重构后全链路复测 ✓ |
 | EI 模式 | 同链路（共享 world.js）✓，模式切换器 localStorage 持久化 ✓ |
-| 截图 | `screenshots/webport/phase1/` 6 张 1024×768（两模式 × login/select/game） |
+| **Godot 并排对比** | Godot 客户端 Xvfb 截图 ×3 + 并排合成图 + 量化指标（见 §一.1）✓ |
+
+### 一.1 与 Godot 客户端并排对比（验收核心项）
+
+Godot 截图方式：`xvfb-run` 1024×768 + `godot-mono --path GodotClient`
+（login=空参 / select=`--user ... --char 不存在名`卡选人 / game=`--char TestHero
+--screenshot-after-enter`→`/tmp/zircon-game-audit.png`，客户端自带审计截图）。
+
+| 场景 | 量化 (256×192 降采样) | 判定 |
+|---|---|---|
+| login | 平均像素差 MAD=5.8/255，结构相关 r=0.972 | 一致率肉眼 ≥95% ✓ |
+| select | 静态框架区 MAD≈1-9（右列/标题）；行边框 y 坐标偏差 ≤10px；差异集中在角色预览动画相位与列表面板内容 | 布局位置对齐 ✓ |
+| game(修正前) | MAD=53.6, r≈0 | 发现环境光缺失 |
+| game(加光照后) | MAD=11.4, r=0.468；世界均亮 24 vs Godot 30（此前 94） | 全局色调对齐 ✓（灯径向光为已记录偏差） |
+
+光照为对比驱动出的补移植：`MapLightLayer.AmbientFor`(MapLightLayer.cs:105-112)
+→ `world.js #applyLight`（Light/Night/Twilight 固定环境光；Default 跟随
+S.DayChanged→dayTime；渲染循环在对象层之上叠 `rgba(0,0,0,1-ambient)`）。
 
 测试账号 test@test.com / test123 / TestHero(GM)。
 **联调纪律**：跑 webport 前确认无 BotRunner 在登录同一账号（占号会触发
@@ -70,7 +87,8 @@ S.Login AlreadyLoggedIn + G.Disconnect AnotherUser 踢线，实测踩过）。
 | Scripts/MouseWalker.cs:56,262 | `world.js` 600ms/段键盘节拍 + 绕行 |
 | Controls/MainPanel.cs:31-55 | `themes/zircon/game.js #buildHud` — GameInter[50] 主面板、HP/MP/经验条、9 宫功能按钮 |
 | Scripts/GameScene.cs:4698-4790 (LayoutHud) | 主面板底部居中锚定 |
-| ChatTextBox.cs:43-70 | 聊天面板/输入框 (400x150/-29, 400x25) |
+| Scripts/MapLightLayer.cs:105-124 | `world.js #applyLight` | AmbientFor 环境光 + 渲染层叠暗；径向光见偏差 #10 |
+| Scripts/GameScene.cs:1822-1825 | `world.js` dayTime 事件 | S.DayChanged→环境光更新 |
 
 ### 协议层
 
@@ -86,8 +104,7 @@ S.Login AlreadyLoggedIn + G.Disconnect AnotherUser 踢线，实测踩过）。
 | Globals.cs:333-343 (SelectInfo) | `readSelectInfo` | 实包验证 |
 | Globals.cs:345-452 (StartInformation) | `readStartInformation` | |
 | ServerConnection.cs:364-373 | `ws.js` 握手 | G.Connected 回显→SelectLanguage |
-| ServerConnection.cs:379 | `ws.js` G.Ping→回显 | 20s 超时踢 |
-| SConnection.cs:43-64 | wsgateway 透传 (已有工具) | |
+| ServerPackets.cs:436-439 (S.DayChanged, id=66) | `S.DayChanged` | float dayTime；server 昼夜周期 |
 
 ### 数据/渲染
 
@@ -120,6 +137,12 @@ S.Login AlreadyLoggedIn + G.Disconnect AnotherUser 踢线，实测踩过）。
    断线重连属 Phase 4。
 9. **双实例模块陷阱**（实现细节）：浏览器对 `/skin.js` 与 `/skin.js?v=1`
    视为两个模块实例——调试时统一 URL 后再 hook。
+10. **地图光照仅环境光**：Godot MapLightLayer 除环境光外还有 .map 逐格光与
+    物体光的径向光源（_Draw L162-174，灯圈）；webres 管线未导出逐格 light
+    数据，webport 仅做全局环境光乘法（比奇夜景全局均亮已对齐 24↔30，
+    灯圈缺失）。逐格光数据导出属 webres 数据管线扩展，留待后续 Phase。
+11. **game 对比相关系数仅 0.468**：剩余差异=灯圈(偏差 #10)+动画相位+
+    NPC/玩家位置随时间漂移（两次截图间隔数分钟）；HUD 静态区与全局色调已对齐。
 
 ## 五、运行手册
 

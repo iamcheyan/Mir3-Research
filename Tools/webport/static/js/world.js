@@ -41,6 +41,7 @@ export class World {
     this.stem = stem;
     this.mapMeta = maps[stem];
     this.walk = await data.walkBits(stem);
+    this.#applyLight();
     this.npcById = new Map((data.D().npcs ?? []).map(n => [n.id, n]));
     // 自己入对象表
     this.player = {
@@ -103,7 +104,27 @@ export class World {
         this.hooks.onMapChange?.(m);
       }
     });
+    c.addEventListener('dayTime', (e) => { // OnDayTimeChanged (GameScene.cs:1822-1825)
+      this.dayTime = Math.min(1, Math.max(0, e.detail));
+      this.#applyLight();
+    });
     c.addEventListener('disconnected', () => this.addChat('连接已断开', 'system'));
+  }
+
+  // ---- 地图光照 (MapLightLayer.cs:105-112 AmbientFor 移植) ----
+  // 环境光 = f(LightSetting, dayTime); Light/Night/Twilight 固定, Default 跟随服务器昼夜。
+  // 偏差: Godot 还有 .map 格子光/物体光的径向光源 (MapLightLayer._Draw 162-174),
+  // webport 无逐格 light 数据 (webres 未导出), 仅做全局环境光乘法近似。
+  #applyLight() {
+    const NIGHT = 0.25, TWILIGHT = 100 / 255;      // MapLightLayer.cs:15-16
+    if (this.dayTime === undefined) this.dayTime = this.info?.dayTime ?? 1;
+    const setting = this.mapMeta?.light ?? 'Default';
+    let ambient;
+    if (setting === 'Light') ambient = 1;
+    else if (setting === 'Night') ambient = NIGHT;
+    else if (setting === 'Twilight') ambient = TWILIGHT;
+    else ambient = Math.min(1, Math.max(NIGHT, this.dayTime));
+    this.lightAlpha = 1 - ambient;
   }
 
   #onObjectPlayer(p) {
@@ -216,6 +237,12 @@ export class World {
     this.camera.y += (this.player.y * data.CELL_H - this.camera.y) * 0.25;
     this.camera.drawMap(this.stem, this.mapMeta.tiles);
     this.#drawObjects();
+    // 环境光覆盖 (MapLightLayer: 世界之上、UI 之下)
+    if (this.lightAlpha > 0.001) {
+      const ctx = this.camera.ctx;
+      ctx.fillStyle = `rgba(0,0,0,${this.lightAlpha})`;
+      ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   };
 
   async #drawObjects() {

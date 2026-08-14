@@ -18,7 +18,7 @@ export const ID = {
   C_DELETECHARACTER: 67, S_DELETECHARACTER: 68,
   C_SELECTLANGUAGE: 343,
   C_STARTGAME: 349, S_STARTGAME: 348,
-  S_MAPCHANGED: 208, S_USERLOCATION: 373,
+  S_MAPCHANGED: 208, S_USERLOCATION: 373, S_DAYCHANGED: 66,
   C_MOVE: 240, C_TURN: 372, C_CHAT: 76,
   S_OBJECTMOVE: 299, S_OBJECTTURN: 316, S_OBJECTREMOVE: 308,
   S_OBJECTPLAYER: 303, S_OBJECTMONSTER: 297, S_OBJECTNPC: 300, S_OBJECTITEM: 293,
@@ -462,6 +462,7 @@ export const S = {
     };
   },
   Chat(r) { return { type: r.byte(), message: r.string(), objectID: r.uint32() }; },
+  DayChanged(r) { return { dayTime: r.float() }; }, // ServerPackets.cs:436-439
 };
 
 // packet id → 名 (诊断)
