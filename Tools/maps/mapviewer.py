@@ -16,6 +16,7 @@ import io
 import json
 import math
 import os
+import time
 import re
 import struct
 import sys
@@ -1559,6 +1560,85 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             z-index:99999; flex-direction:column; align-items:center; justify-content:center; color:#fff; }
         .spinner { width:52px; height:52px; border:4px solid rgba(61,232,138,0.15); border-top-color:#3de88a;
             border-radius:50%; animation:spin 0.8s linear infinite; box-shadow:0 0 16px rgba(61,232,138,0.3); }
+
+        /* ---- 地图工坊六大增强 ---- */
+        #view-tabs { display:flex; gap:2px; background:#1a1a20; border:1px solid #3a3a46; border-radius:5px; padding:2px; }
+        .vtab { font-size:12px; min-width:0; padding:3px 9px; border-radius:4px; background:transparent; border:none; color:#9a9aa5; }
+        .vtab.active { background:#2f6a44; color:#d2ffe4; }
+        #heat-canvas { position:absolute; top:0; left:0; pointer-events:none; z-index:3; }
+        #quest-svg, #pick-svg { position:absolute; left:0; top:0; pointer-events:none; z-index:4; overflow:visible; }
+        #route-svg circle.port { pointer-events:auto; cursor:pointer; }   /* 父层 pointer-events:none 会继承，出口圆点需显式恢复 */
+        @keyframes qpulse { 0% { r:6; opacity:1; } 50% { r:11; opacity:.55; } 100% { r:6; opacity:1; } }
+        #quest-svg circle.qkill { animation:qpulse 1.2s ease-in-out infinite; }
+        #heat-tooltip { position:fixed; background:rgba(10,12,16,.95); border:1px solid #ff8f6b; border-radius:6px;
+            padding:6px 9px; font-size:12px; color:#ffe; z-index:130; pointer-events:none; max-width:280px;
+            line-height:1.6; box-shadow:0 4px 16px rgba(0,0,0,.6); display:none; }
+        #quest-panel { position:fixed; right:10px; top:250px; width:250px; max-height:44vh; overflow:auto;
+            background:rgba(10,12,16,.92); border:1px solid #ffd54a; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; z-index:75; display:none; line-height:1.5; }
+        #quest-panel h4 { margin:0 0 6px; font-size:13px; color:#ffd54a; }
+        #quest-panel .qstep { margin:4px 0; padding:4px 6px; border-left:3px solid #555; background:#171922; border-radius:3px; }
+        #quest-panel .qstep.kill { border-color:#ff5b5b; }
+        #quest-panel .qstep.visit { border-color:#ffd54a; }
+        #quest-panel .qstep.item { border-color:#e8963d; }
+        #quest-panel .qmap { color:#8cf; cursor:pointer; text-decoration:underline; padding:1px 0; display:inline-block; }
+        #quest-panel .qmap:hover { color:#bff; }
+        #pick-panel { position:fixed; left:10px; bottom:64px; background:rgba(10,12,16,.93); border:1px solid #72d6ff;
+            border-radius:6px; padding:8px 12px; font-size:13px; color:#cfe; z-index:85; display:none;
+            font-family:ui-monospace,monospace; line-height:1.7; box-shadow:0 4px 12px rgba(0,0,0,.5); }
+        #pick-panel .pick-copy { font-size:12px; padding:2px 10px; margin-left:8px; background:#1d3a4a; border-color:#72d6ff; color:#cfe; }
+        #pick-panel .pick-dist { color:#ffd54a; }
+        #pick-panel .pick-hint { color:#6a6a75; font-size:11px; }
+        #overview-view, #graph-view { position:absolute; top:40px; left:0; right:0; bottom:0; overflow:auto;
+            background:#0b0b0f; display:none; padding:12px; }
+        #ov-filters { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:10px; position:sticky; top:0;
+            background:#0b0b0f; padding:6px 0; z-index:5; }
+        .ov-chip { font-size:12px; padding:3px 11px; border-radius:12px; background:#232329; color:#aaa;
+            border:1px solid #3a3a46; cursor:pointer; }
+        .ov-chip.active { background:#2f6a44; color:#d2ffe4; border-color:#3de88a; }
+        #ov-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(148px, 1fr)); gap:10px; }
+        .ov-card { background:#15161c; border:1px solid #2a2b33; border-radius:6px; overflow:hidden; cursor:pointer; }
+        .ov-card:hover { border-color:#5a8f6a; }
+        .ov-thumb { position:relative; aspect-ratio:4/3; background:#0d0e12; display:flex; align-items:center;
+            justify-content:center; overflow:hidden; }
+        .ov-thumb img { width:100%; height:100%; object-fit:contain; image-rendering:pixelated; }
+        .ov-thumb .ph { color:#3c3d46; font-size:22px; }
+        .ov-thumb .ov-crown { position:absolute; top:3px; right:5px; font-size:14px; text-shadow:0 1px 2px #000; }
+        .ov-thumb .ov-nofile { position:absolute; bottom:2px; left:4px; font-size:10px; color:#e8963d; }
+        .ov-name { font-size:12px; color:#e8e8f0; padding:4px 7px 1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .ov-name .ov-id { color:#6a6a75; font-family:ui-monospace,monospace; font-size:10px; }
+        .ov-meta { font-size:10.5px; color:#8a8a98; padding:0 7px 5px; }
+        .ov-meta .lv { font-weight:600; }
+        .tier-low { color:#8fce8f; } .tier-mid { color:#e8d95a; } .tier-high { color:#f0a05a; }
+        .tier-max { color:#f07575; } .tier-none { color:#7a7a85; }
+        .ov-card .ov-bar { height:3px; }
+        .bar-low { background:#7a9a78; } .bar-mid { background:#d9c34a; } .bar-high { background:#e8963d; }
+        .bar-max { background:#e05555; } .bar-none { background:#3a3a44; }
+        #ov-audit { margin-top:16px; }
+        #ov-audit h3 { color:#3de88a; font-size:14px; margin:12px 0 6px; }
+        #audit-table { width:100%; border-collapse:collapse; font-size:12px; background:#13141a; border-radius:6px; }
+        #audit-table th, #audit-table td { padding:5px 9px; border-bottom:1px solid #23242c; text-align:left; }
+        #audit-table th { color:#8a8a98; font-weight:600; position:sticky; top:0; background:#1a1b22; }
+        .audit-miss { color:#ff5b5b; font-weight:700; }
+        .audit-ok { color:#8fce8f; }
+        #graph-view svg { display:block; }
+        #graph-stats { font-size:12px; color:#8a8a98; margin-bottom:6px; }
+        #graph-stats b { color:#e8e8f0; }
+        #graph-stats .g-isl { color:#ff5b5b; } #graph-stats .g-cut { color:#ffd54a; }
+        .gnode { cursor:pointer; } .gnode text { font-size:9px; fill:#9a9aa5; paint-order:stroke; stroke:#0b0b0f; stroke-width:2px; }
+        #legend-panel .lg-block { display:inline-block; width:14px; height:9px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+        @media (max-width:640px) {
+            #toolbar { flex-wrap:wrap; height:auto; min-height:40px; padding:4px 6px; gap:4px 8px; }
+            #viewport, #overview-view, #graph-view { top:0; position:relative; }
+            body { display:flex; flex-direction:column; height:100vh; }
+            #toolbar { flex:none; order:0; } #viewport, #overview-view, #graph-view { flex:1 1 auto; order:1; min-height:0; }
+            #map-sel-btn { min-width:120px; max-width:170px; font-size:12px; }
+            #quest-sel { max-width:130px; font-size:12px; }
+            .msel-pop { min-width:240px; }
+            #conn-panel, #quest-panel { width:46vw; max-width:250px; max-height:36vh; }
+            #minimap { display:none; }
+            #overview-view { padding:6px; } #ov-grid { grid-template-columns:repeat(auto-fill, minmax(108px, 1fr)); gap:6px; }
+        }
     </style>
 </head>
 <body>
@@ -1585,6 +1665,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
 
     <div id="toolbar">
+        <div id="view-tabs" title="视图切换">
+            <button class="vtab active" data-view="map" type="button">🗺️ 地图</button>
+            <button class="vtab" data-view="overview" type="button">📋 总览</button>
+            <button class="vtab" data-view="graph" type="button">🕸️ 连通</button>
+        </div>
         <span>🗺️ 地图:</span>
         <div class="msel" id="map-sel">
             <button id="map-sel-btn" type="button" title="选择地图">
@@ -1603,6 +1688,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <label><input type="checkbox" id="chk-f" checked> Front</label>
         <label><input type="checkbox" id="chk-grid"> 网格</label>
         <label><input type="checkbox" id="chk-ents" checked title="显示 NPC/传送点"> NPC</label>
+        <label><input type="checkbox" id="chk-resp" title="怪物刷新热力图层"> 怪物刷新</label>
+        <select id="quest-sel" title="任务叠加模式" style="max-width:170px; font-size:12px; background:#2b2b31; color:#eee; border:1px solid #4a4a55; border-radius:4px; padding:3px 5px;">
+            <option value="">📜 任务叠加…</option>
+        </select>
         <button id="btn-legend" title="图例说明">❓</button>
         <span id="status"></span>
 
@@ -1617,7 +1706,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         <button id="btn-clear-cache" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄 重新生成</button>
     </div>
-    <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
+    <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="heat-canvas" width="0" height="0"></canvas><svg id="quest-svg" aria-hidden="true"></svg><svg id="pick-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
+    <div id="overview-view">
+        <div id="ov-filters">
+            <span style="color:#8a8a98;">📋 全库地图总览</span>
+            <span class="ov-chip active" data-f="all">全部</span>
+            <span class="ov-chip" data-f="town">城镇</span>
+            <span class="ov-chip" data-f="cave">洞穴</span>
+            <span class="ov-chip" data-f="boss">👑 BOSS</span>
+            <span class="ov-chip" data-f="hasmob">有怪</span>
+            <span class="ov-chip active" data-c="lvl">按等级染色</span>
+            <span class="ov-chip" data-c="npc">按 NPC 数染色</span>
+        </div>
+        <div id="ov-grid"></div>
+        <div id="ov-audit"><h3>🏪 NPC 功能覆盖审计</h3><div id="audit-table-box">加载中…</div></div>
+    </div>
+    <div id="graph-view">
+        <div id="graph-stats">加载连通图谱中…</div>
+        <div id="graph-box"></div>
+    </div>
     <div id="cat-panel"></div>
     <div id="conn-panel"></div>
     <div id="minimap">
@@ -1628,8 +1735,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div id="legend-panel" style="display:none"></div>
     <div id="port-tooltip" style="display:none"></div>
     <div id="ent-tooltip" style="display:none"></div>
-
+    <div id="heat-tooltip"></div>
+    <div id="quest-panel"></div>
+    <div id="pick-panel"></div>
     <script>
+
         // Static full-map viewer: the server pre-renders the whole map at each
         // zoom ladder level once (disk-cached JPEG); the browser only displays
         // images. No tile requests, no canvas compositing.
@@ -2553,6 +2663,520 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     (e.clientY - r.top) / r.height * worldH);
         });
         window.addEventListener("mouseup", () => { miniDrag = false; });
+
+        // ============================================================ 地图工坊
+        // 六大增强：刷怪热力 / 任务叠加 / 等级总览 / 连通图谱 / NPC 审计 / 坐标拾取
+
+        // ---- 视图切换（地图 / 总览 / 连通） ----
+        const viewTabs = document.querySelectorAll(".vtab");
+        let curView = "map";
+        const ovView = document.getElementById("overview-view");
+        const gvView = document.getElementById("graph-view");
+        const mapOnlyEls = () => ["#minimap", "#statusbar", "#cat-panel", "#conn-panel", "#quest-panel",
+            "#pick-panel", "#port-tooltip", "#ent-tooltip", "#heat-tooltip"].map(s => document.querySelector(s));
+        function showView(v) {
+            curView = v;
+            viewTabs.forEach(t => t.classList.toggle("active", t.dataset.view === v));
+            vp.style.display = v === "map" ? "" : "none";
+            ovView.style.display = v === "overview" ? "block" : "none";
+            gvView.style.display = v === "graph" ? "block" : "none";
+            if (v !== "map") {
+                mapOnlyEls().forEach(el => { if (el) el.style.display = "none"; });
+            } else {
+                document.getElementById("statusbar").style.display = "flex";
+                document.getElementById("minimap").style.display = "";
+                if (questData) questPanel.style.display = "block";
+                if (pickA) pickPanel.style.display = "block";
+                for (const id of ["cat-panel", "conn-panel"]) {
+                    const el = document.getElementById(id);
+                    if (el && el.innerHTML.trim()) el.style.display = "block";
+                }
+            }
+            if (v === "overview") { initOverview(); }
+            if (v === "graph") { initGraph(); }
+        }
+        viewTabs.forEach(t => t.addEventListener("click", () => showView(t.dataset.view)));
+
+        const heatCanvas = document.getElementById("heat-canvas");
+        const heatCtx = heatCanvas.getContext("2d");
+        const heatTooltip = document.getElementById("heat-tooltip");
+        const chkResp = document.getElementById("chk-resp");
+        const HEAT_FILL = { t1: "rgba(96,210,96,.26)", t2: "rgba(255,213,74,.28)",
+                            t3: "rgba(255,140,50,.30)", t4: "rgba(255,60,60,.32)" };
+        const HEAT_EDGE = { t1: "rgba(96,210,96,.7)", t2: "rgba(255,213,74,.75)",
+                            t3: "rgba(255,140,50,.8)", t4: "rgba(255,60,60,.85)" };
+        let respCache = {};      // map name -> {groups:[{x,y,half,entries[]}], raw}
+        async function loadRespawns(mi) {
+            if (respCache[mi.name]) { drawHeat(); return; }
+            try {
+                const res = await fetch("/api/respawns?map=" + encodeURIComponent(mi.name));
+                const d = await res.json();
+                if (!d.ok) { chkResp.disabled = true; chkResp.title = "刷怪数据不可用（workspace RespawnInfo 缺失）"; respCache[mi.name] = null; return; }
+                // 同 Region 的多条 respawn 合成一个色块（tier 取最高），tooltip 列全部怪物
+                const gmap = {};
+                for (const r of d.respawns) {
+                    const k = r.x + "," + r.y + "," + r.half;
+                    const g = gmap[k] = gmap[k] || { x: r.x, y: r.y, half: r.half, entries: [] };
+                    g.entries.push(r);
+                }
+                const groups = Object.values(gmap).map(g => {
+                    const best = g.entries.reduce((a, b) => a.count >= b.count ? a : b);
+                    return { ...g, tier: best.tier };
+                });
+                respCache[mi.name] = { groups, raw: d.respawns };
+            } catch (e) { respCache[mi.name] = null; }
+            drawHeat();
+        }
+        function drawHeat() {
+            const mi = curMap();
+            const d = mi ? respCache[mi.name] : null;
+            if (!chkResp.checked || !d) { heatCanvas.width = 0; heatCanvas.height = 0; return; }
+            const s = curScale();
+            const dpr = window.devicePixelRatio || 1;
+            const w = vp.clientWidth, h = vp.clientHeight;
+            heatCanvas.width = w * dpr; heatCanvas.height = h * dpr;
+            heatCanvas.style.width = w + "px"; heatCanvas.style.height = h + "px";
+            const ctx = heatCtx;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, w, h);
+            // Region 方块：质心 (x,y) ± half 格（世界格 -> 屏幕：x*48/s, y*32/s）
+            for (const g of d.groups) {
+                const cx = g.x * 48 / s - vp.scrollLeft, cy = g.y * 32 / s - vp.scrollTop;
+                const bw = g.half * 2 * 48 / s, bh = g.half * 2 * 32 / s;
+                if (cx + bw / 2 < 0 || cy + bh / 2 < 0 || cx - bw / 2 > w || cy - bh / 2 > h) continue;
+                ctx.fillStyle = HEAT_FILL[g.tier]; ctx.strokeStyle = HEAT_EDGE[g.tier];
+                ctx.lineWidth = 1;
+                ctx.fillRect(cx - bw / 2, cy - bh / 2, bw, bh);
+                ctx.strokeRect(cx - bw / 2, cy - bh / 2, bw, bh);
+            }
+        }
+        // 悬停命中检测（世界格坐标 -> 最近 Region 方块）
+        vp.addEventListener("mousemove", (e) => {
+            if (!chkResp.checked || curView !== "map") { heatTooltip.style.display = "none"; return; }
+            const mi = curMap();
+            const d = mi ? respCache[mi.name] : null;
+            if (!d) { heatTooltip.style.display = "none"; return; }
+            const rect = vp.getBoundingClientRect();
+            const s = curScale();
+            const wx = (vp.scrollLeft + e.clientX - rect.left) * s;
+            const wy = (vp.scrollTop + e.clientY - rect.top) * s;
+            const cx = wx / 48, cy = wy / 32;
+            let best = null;
+            for (const g of d.groups) {
+                if (Math.abs(cx - g.x) <= g.half && Math.abs(cy - g.y) <= g.half) {
+                    if (!best || g.half < best.half) best = g;
+                }
+            }
+            if (!best) { heatTooltip.style.display = "none"; return; }
+            heatTooltip.innerHTML = "<b>👹 刷新区</b> " + MAP_CN[mi.name.replace(/\\.map$/i, "")] +
+                "<br>" + best.entries.map(r =>
+                    `${r.mc} ×${r.count} · 刷新延迟 ${r.delay}s · DropSet ${r.dropset}` +
+                    (r.boss ? " · 👑BOSS" : "")).join("<br>");
+            heatTooltip.style.display = "block";
+            heatTooltip.style.left = Math.min(e.clientX + 14, window.innerWidth - 300) + "px";
+            heatTooltip.style.top = Math.max(4, e.clientY - 20) + "px";
+        });
+        vp.addEventListener("mouseleave", () => { heatTooltip.style.display = "none"; });
+        chkResp.addEventListener("change", () => { drawHeat(); });
+
+        // ---- 2. 任务叠加模式（VisitRegion 金框 / KillMonster·GainItem 红色脉冲） ----
+        const questSvg = document.getElementById("quest-svg");
+        const questPanel = document.getElementById("quest-panel");
+        const questSel = document.getElementById("quest-sel");
+        let questList = null, questData = null;   // questData = 当前选中任务覆盖层
+        async function loadQuests() {
+            if (questList) return;
+            try {
+                const res = await fetch("/api/quests");
+                const d = await res.json();
+                if (!d.ok) {
+                    questSel.innerHTML = '<option value="">📜 任务数据不可用</option>';
+                    questSel.disabled = true; questSel.title = "workspace QuestInfo 缺失";
+                    return;
+                }
+                questList = d.quests;
+                for (const q of questList) {
+                    const opt = document.createElement("option");
+                    opt.value = q.id;
+                    opt.textContent = `📜 ${q.name} (${q.kinds.join("+")})`;
+                    questSel.appendChild(opt);
+                }
+            } catch (e) { questSel.innerHTML = '<option value="">📜 任务数据不可用</option>'; questSel.disabled = true; }
+        }
+        questSel.addEventListener("change", async () => {
+            const id = questSel.value;
+            if (!id) { questData = null; drawQuest(); questPanel.style.display = "none"; return; }
+            try {
+                const res = await fetch("/api/quest?id=" + encodeURIComponent(id));
+                const d = await res.json();
+                questData = d.ok ? d : null;
+            } catch (e) { questData = null; }
+            drawQuest(); renderQuestPanel();
+        });
+        function drawQuest() {
+            const mi = curMap();
+            questSvg.setAttribute("width", vp.clientWidth);
+            questSvg.setAttribute("height", vp.clientHeight);
+            if (!mi || !questData) { questSvg.innerHTML = ""; return; }
+            const s = curScale();
+            const hereStem = mi.name.replace(/\\.map$/i, "");
+            const px = v => v * 48 / s - vp.scrollLeft;
+            const py = v => v * 32 / s - vp.scrollTop;
+            let html = "";
+            // VisitRegion -> 金色描边 + 半透明填充
+            for (const r of (questData.regions || [])) {
+                if (String(r.map) !== hereStem) continue;
+                const bw = r.half * 2 * 48 / s, bh = r.half * 2 * 32 / s;
+                const x = px(r.x) - bw / 2, y = py(r.y) - bh / 2;
+                html += `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="rgba(255,213,74,.18)" stroke="#ffd54a" stroke-width="2.5"><title>任务区域：${r.desc || r.idx}</title></rect>`;
+            }
+            // KillMonster/GainItem 怪物点位 -> 红色/橙色脉冲
+            for (const m of (questData.monsters || [])) {
+                const color = m.kind === "KillMonster" ? "#ff4b4b" : "#ff9b3d";
+                for (const p of (m.points || [])) {
+                    if (String(p.map) !== hereStem) continue;
+                    const cx = px(p.x), cy = py(p.y);
+                    if (cx < -40 || cy < -40 || cx > vp.clientWidth + 40 || cy > vp.clientHeight + 40) continue;
+                    html += `<g class="qmarker"><circle class="qkill" data-jmap="${p.map}" data-x="${p.x}" data-y="${p.y}" cx="${cx}" cy="${cy}" r="7" fill="${color}" stroke="#fff" stroke-width="1.5" opacity=".95"><title>${m.m} ×${p.count}${m.item ? " · 掉 " + m.item : ""}</title></circle></g>`;
+                }
+            }
+            questSvg.innerHTML = html;
+        }
+        questSvg.addEventListener("click", (e) => {
+            const c = e.target.closest("circle.qkill");
+            if (c) e.stopPropagation();
+        });
+        function renderQuestPanel() {
+            if (!questData) { questPanel.style.display = "none"; return; }
+            const q = questData.quest;
+            const kindLabel = { KillMonster: "讨伐", GainItem: "收集", VisitRegion: "探访" };
+            let html = `<h4>📜 ${q.name}</h4>`;
+            for (const m of (questData.monsters || [])) {
+                const byMap = {};
+                for (const p of (m.points || [])) (byMap[p.map] = byMap[p.map] || []).push(p);
+                const spots = Object.keys(byMap).map(st => {
+                    const exists = maps.some(x => x.name === st + ".map");
+                    const jump = exists ? ` class="qmap" data-jmap="${st}" data-x="${byMap[st][0].x}" data-y="${byMap[st][0].y}"` : "";
+                    return `<span${jump}>${MAP_CN[st] || st}${exists ? "" : " (无图文件)"}</span>`;
+                }).join(" · ");
+                html += `<div class="qstep ${m.kind === "KillMonster" ? "kill" : "item"}">` +
+                    `<b>${m.item || m.m}</b> ${kindLabel[m.kind] || m.kind} ×${m.amount}` +
+                    `<br><span style="color:#8a8a98">怪物：</span>${m.m}` +
+                    (spots ? `<br><span style="color:#8a8a98">位置：</span>${spots}` : "（无刷新点数据）") + `</div>`;
+            }
+            for (const r of (questData.regions || [])) {
+                html += `<div class="qstep visit"><b>探访区域</b>：${MAP_CN[r.map] || r.map} · ${r.desc || r.idx}</div>`;
+            }
+            if (!questData.monsters.length && !questData.regions.length) html += '<div class="qstep">该任务无地理步骤</div>';
+            questPanel.innerHTML = html;
+            questPanel.style.display = "block";
+            questPanel.querySelectorAll(".qmap").forEach(el => el.addEventListener("click", () => {
+                showView("map");
+                history.replaceState(null, "", `#map=${encodeURIComponent(el.dataset.jmap + ".map")}&cur=0&x=${Math.round(Number(el.dataset.x) * 48)}&y=${Math.round(Number(el.dataset.y) * 32)}&g=1&m=1&f=1`);
+                init();
+            }));
+        }
+
+        // ---- 6. 坐标拾取器（点击取格坐标 / Shift 双点曼哈顿距离） ----
+        const pickSvg = document.getElementById("pick-svg");
+        const pickPanel = document.getElementById("pick-panel");
+        let pickA = null, pickB = null, pickDown = null;
+        vp.addEventListener("mousedown", (e) => { pickDown = [e.clientX, e.clientY]; });
+        vp.addEventListener("click", (e) => {
+            if (pickDown && (Math.abs(e.clientX - pickDown[0]) + Math.abs(e.clientY - pickDown[1])) > 5) return;  // 拖拽后的 click
+            const mi = curMap();
+            if (!mi) return;
+            const rect = vp.getBoundingClientRect();
+            const s = curScale();
+            const cx = Math.floor((vp.scrollLeft + e.clientX - rect.left) * s / 48);
+            const cy = Math.floor((vp.scrollTop + e.clientY - rect.top) * s / 32);
+            if (e.shiftKey) { pickB = [cx, cy]; if (!pickA) pickA = [cx, cy]; }
+            else { pickA = [cx, cy]; pickB = null; }
+            renderPick();
+        });
+        function renderPick() {
+            pickSvg.setAttribute("width", vp.clientWidth);
+            pickSvg.setAttribute("height", vp.clientHeight);
+            const s = curScale();
+            const dot = (p, label, color) => {
+                const x = p[0] * 48 / s + 24 - vp.scrollLeft, y = p[1] * 32 / s + 16 - vp.scrollTop;
+                return `<circle cx="${x}" cy="${y}" r="8" fill="none" stroke="${color}" stroke-width="2.5"><title>${label} (${p[0]},${p[1]})</title></circle>` +
+                    `<text x="${x + 11}" y="${y + 4}" font-size="12" font-weight="700" fill="${color}" style="paint-order:stroke;stroke:#000;stroke-width:2px">${label}</text>`;
+            };
+            pickSvg.innerHTML = (pickA ? dot(pickA, "A", "#72d6ff") : "") + (pickB ? dot(pickB, "B", "#3de88a") : "") +
+                ((pickA && pickB) ? `<line x1="${pickA[0] * 48 / s + 24 - vp.scrollLeft}" y1="${pickA[1] * 32 / s + 16 - vp.scrollTop}" x2="${pickB[0] * 48 / s + 24 - vp.scrollLeft}" y2="${pickB[1] * 32 / s + 16 - vp.scrollTop}" stroke="#ffd54a" stroke-dasharray="5 4" stroke-width="1.5" opacity=".8"/>` : "");
+            if (!pickA) { pickPanel.style.display = "none"; return; }
+            const copyBtn = (t, label) => `<button class="pick-copy" data-copy="${t}">复制${label || ""}</button>`;
+            let html = `🎯 拾取 A: <b>(${pickA[0]}, ${pickA[1]})</b>${copyBtn(pickA[0] + ", " + pickA[1])}`;
+            if (pickB) {
+                const dist = Math.abs(pickB[0] - pickA[0]) + Math.abs(pickB[1] - pickA[1]);
+                html += `<br>🎯 拾取 B: <b>(${pickB[0]}, ${pickB[1]})</b>${copyBtn(pickB[0] + ", " + pickB[1])}` +
+                    `<br><span class="pick-dist">📏 曼哈顿距离：${dist} 格${copyBtn(String(dist), "距离")}</span>`;
+            }
+            html += `<br><span class="pick-hint">点击取 A · Shift+点击取 B 测距 · 双击清除</span>`;
+            pickPanel.innerHTML = html;
+            pickPanel.style.display = "block";
+            attachCopy(pickPanel);
+        }
+        vp.addEventListener("dblclick", () => { pickA = pickB = null; renderPick(); });
+
+        // ---- 3. 等级分层总览 + 5. NPC 审计 ----
+        let ovData = null, ovAudit = null, ovFilter = "all", ovColorMode = "lvl", ovObserver = null;
+        const NPC_TIERS = [
+            { max: 0, cls: "none", label: "0" }, { max: 5, cls: "low", label: "1-5" },
+            { max: 15, cls: "mid", label: "6-15" }, { max: 10000, cls: "high", label: "16+" }];
+        function attachCopy(panel) {
+            panel.querySelectorAll(".pick-copy").forEach(b => b.addEventListener("click", () => {
+                const t = b.dataset.copy;
+                const done = () => { b.textContent = "✅ 已复制"; setTimeout(() => b.textContent = "复制", 1200); };
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(t).then(done, () => fallbackCopy(t, done));
+                } else fallbackCopy(t, done);
+            }));
+        }
+        function fallbackCopy(text, done) {
+            const ta = document.createElement("textarea");
+            ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); } catch (e) {}
+            ta.remove(); if (done) done();
+        }
+        async function initOverview() {
+            if (!ovData) {
+                try {
+                    const res = await fetch("/api/overview");
+                    const d = await res.json();
+                    ovData = d.ok ? d.maps : [];
+                } catch (e) { ovData = []; }
+                document.querySelector("#ov-filters span").textContent =
+                    `📋 全库地图总览（${ovData.length} 张，缩略图后台生成中）`;
+            }
+            renderOvGrid();
+            if (!ovAudit) {
+                const box = document.getElementById("audit-table-box");
+                try {
+                    const res = await fetch("/api/npc_audit");
+                    const d = await res.json();
+                    ovAudit = d.ok ? d.rows : [];
+                    const funcs = d.funcs || ["药店", "仓库", "修理", "传送"];
+                    let html = '<table id="audit-table"><tr><th>地图</th><th>NPC数</th>';
+                    for (const f of funcs) html += `<th>${f}</th>`;
+                    html += "</tr>";
+                    for (const r of ovAudit) {
+                        if (!r.total) continue;
+                        html += `<tr><td>${r.cn} <span style="color:#6a6a75">${r.map}</span></td><td>${r.total}</td>`;
+                        for (const f of funcs) {
+                            const names = (r.funcs || {})[f] || [];
+                            html += `<td>${names.length
+                                ? `<span class="audit-ok">✓ ${names.slice(0, 2).join("、")}${names.length > 2 ? "…" : ""}</span>`
+                                : `<span class="audit-miss">✗ 缺</span>`}</td>`;
+                        }
+                        html += "</tr>";
+                    }
+                    box.innerHTML = html + "</table>";
+                } catch (e) { box.textContent = "NPC 审计数据不可用"; }
+            }
+        }
+        function renderOvGrid() {
+            const grid = document.getElementById("ov-grid");
+            const items = ovData.filter(m => {
+                if (ovFilter === "boss") return m.boss;
+                if (ovFilter === "hasmob") return m.resp > 0;
+                if (ovFilter === "town" || ovFilter === "cave") return m.cat === ovFilter;
+                return true;
+            });
+            if (ovObserver) ovObserver.disconnect();
+            ovObserver = new IntersectionObserver((ents) => {
+                for (const en of ents) {
+                    if (en.isIntersecting) {
+                        const img = en.target.querySelector("img[data-src]");
+                        if (img) { img.src = img.dataset.src; delete img.dataset.src; }
+                        ovObserver.unobserve(en.target);
+                    }
+                }
+            }, { root: ovView, rootMargin: "500px 0px" });
+            const LVL_LABEL = { low: "Lv1-15", mid: "Lv16-30", high: "Lv31-50", max: "Lv51+", none: "无怪" };
+            grid.innerHTML = items.map(m => {
+                let cls;
+                if (ovColorMode === "npc") {
+                    const t = NPC_TIERS.find(t => m.npcs <= t.max);
+                    cls = t.cls;
+                } else cls = m.tier;
+                const meta = ovColorMode === "npc"
+                    ? `NPC <span class="tier-${cls}">${m.npcs}</span> · 怪 ${m.resp}`
+                    : `<span class="lv tier-${m.tier}">${LVL_LABEL[m.tier]}${m.lvl != null ? " · 均" + m.lvl : ""}</span> · 怪 ${m.resp} · NPC ${m.npcs}`;
+                return `<div class="ov-card" data-map="${m.id}" data-file="${m.file ? 1 : 0}">` +
+                    `<div class="ov-thumb">${m.file
+                        ? `<img data-src="/thumb?map=${encodeURIComponent(m.id + ".map")}" alt="" loading="lazy">`
+                        : `<span class="ph">🗺️</span><span class="ov-nofile">无图文件</span>`}` +
+                    (m.boss ? `<span class="ov-crown" title="BOSS 刷新点">👑</span>` : "") + `</div>` +
+                    `<div class="ov-name" title="${m.cn} (${m.id})">${m.cn} <span class="ov-id">${m.id}</span></div>` +
+                    `<div class="ov-meta">${meta}</div>` +
+                    `<div class="ov-bar bar-${cls}"></div></div>`;
+            }).join("");
+            grid.querySelectorAll(".ov-card").forEach(card => {
+                ovObserver.observe(card);
+                card.addEventListener("click", () => {
+                    if (card.dataset.file !== "1") return;
+                    showView("map");
+                    history.replaceState(null, "", `#map=${encodeURIComponent(card.dataset.map + ".map")}&cur=0&g=1&m=1&f=1`);
+                    init();
+                });
+            });
+        }
+        document.querySelectorAll("#ov-filters .ov-chip").forEach(chip => {
+            chip.addEventListener("click", () => {
+                if (chip.dataset.f) {
+                    ovFilter = chip.dataset.f;
+                    document.querySelectorAll('#ov-filters .ov-chip[data-f]').forEach(c => c.classList.toggle("active", c === chip));
+                } else {
+                    ovColorMode = chip.dataset.c;
+                    document.querySelectorAll('#ov-filters .ov-chip[data-c]').forEach(c => c.classList.toggle("active", c === chip));
+                }
+                if (ovData) renderOvGrid();
+            });
+        });
+
+        // ---- 4. 连通性图谱（力导向 + 孤岛红标 + 割点黄标） ----
+        let graphInit = false;
+        async function initGraph() {
+            if (graphInit) return;
+            const statsEl = document.getElementById("graph-stats");
+            const box = document.getElementById("graph-box");
+            let d;
+            try { d = await (await fetch("/api/graph")).json(); } catch (e) { d = null; }
+            if (!d || !d.ok) { statsEl.textContent = "连通数据不可用（workspace MovementInfo 缺失）"; return; }
+            graphInit = true;
+            const nodes = new Map(d.nodes.map(n => [n.id, n]));
+            const linked = d.nodes.filter(n => !n.isolated);
+            const isolated = d.nodes.filter(n => n.isolated);
+            // FR 力导向（有边节点）；孤岛节点外圈环形排布
+            const W = 1600, H = 1100;
+            const pos = new Map();
+            linked.forEach((n, i) => {
+                const a = i * 2.399963;   // 黄金角散布
+                const r = 60 + 90 * Math.sqrt(i / Math.max(1, linked.length));
+                pos.set(n.id, [W / 2 + r * Math.cos(a) * 2.2, H / 2 + r * Math.sin(a)]);
+            });
+            const adj = new Map(d.nodes.map(n => [n.id, new Set()]));
+            for (const [a, b] of d.edges) {
+                if (a === b || !adj.has(a) || !adj.has(b)) continue;
+                adj.get(a).add(b); adj.get(b).add(a);
+            }
+            const k = Math.sqrt(W * H / Math.max(1, linked.length)) * 0.16;
+            for (let it = 0; it < 260; it++) {
+                const disp = new Map(linked.map(n => [n.id, [0, 0]]));
+                for (let i = 0; i < linked.length; i++) {
+                    for (let j = i + 1; j < linked.length; j++) {
+                        const a = linked[i].id, b = linked[j].id;
+                        let dx = pos.get(a)[0] - pos.get(b)[0], dy = pos.get(a)[1] - pos.get(b)[1];
+                        let dist = Math.max(1, Math.hypot(dx, dy));
+                        const f = k * k / dist;
+                        disp.get(a)[0] += dx / dist * f; disp.get(a)[1] += dy / dist * f;
+                        disp.get(b)[0] -= dx / dist * f; disp.get(b)[1] -= dy / dist * f;
+                    }
+                }
+                for (const [a, nbrs] of adj) {
+                    for (const b of nbrs) {
+                        if (!pos.has(a) || !pos.has(b)) continue;
+                        let dx = pos.get(a)[0] - pos.get(b)[0], dy = pos.get(a)[1] - pos.get(b)[1];
+                        let dist = Math.max(1, Math.hypot(dx, dy));
+                        const f = dist * dist / k;
+                        if (disp.has(a)) { disp.get(a)[0] -= dx / dist * f; disp.get(a)[1] -= dy / dist * f; }
+                    }
+                }
+                const t = Math.max(2, 30 * (1 - it / 260));
+                for (const [id, dp] of disp) {
+                    const p = pos.get(id);
+                    const dl = Math.max(1, Math.hypot(dp[0], dp[1]));
+                    p[0] = Math.min(W, Math.max(0, p[0] + dp[0] / dl * Math.min(dl, t)));
+                    p[1] = Math.min(H, Math.max(0, p[1] + dp[1] / dl * Math.min(dl, t)));
+                }
+            }
+            isolated.forEach((n, i) => {
+                const a = i * 2.399963;
+                pos.set(n.id, [W / 2 + (W * 0.62) * Math.cos(a), H / 2 + (H * 0.62) * Math.sin(a)]);
+            });
+            // 渲染 SVG
+            const islands = d.nodes.filter(n => n.island).length;
+            const cuts = d.nodes.filter(n => n.cut).length;
+            statsEl.innerHTML = `<b>${d.nodes.length}</b> 节点 · <b>${d.edges.length}</b> 边 · ` +
+                `<span class="g-isl">孤岛(入度0) ${islands}</span> · <span class="g-cut">割点(必经) ${cuts}</span>` +
+                ` · 拖拽平移 / 滚轮缩放 · 点击节点跳转`;
+            let svg = `<svg id="graph-svg" viewBox="0 0 ${W} ${H}" style="width:100%; height:calc(100vh - 120px); cursor:grab; touch-action:none;">`;
+            for (const [a, b] of d.edges) {
+                if (!pos.has(a) || !pos.has(b)) continue;
+                svg += `<line x1="${pos.get(a)[0]}" y1="${pos.get(a)[1]}" x2="${pos.get(b)[0]}" y2="${pos.get(b)[1]}" stroke="#3a4a5a" stroke-width="1" opacity=".8"/>`;
+            }
+            for (const n of d.nodes) {
+                const p = pos.get(n.id);
+                const fill = n.island ? "#ff5b5b" : (d.spawn_stems || []).includes(n.id) ? "#3de88a" : "#5a8fd0";
+                const stroke = n.cut ? "#ffd54a" : "#111";
+                const sw = n.cut ? 3 : 1.5;
+                const r = n.isolated ? 3 : (n.indeg + n.outdeg > 8 ? 8 : 5);
+                svg += `<g class="gnode" data-id="${n.id}" data-file="${n.file ? 1 : 0}">` +
+                    `<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}">` +
+                    `<title>${n.cn} (${n.id}) · 入${n.indeg}/出${n.outdeg}${n.island ? " · 孤岛" : ""}${n.cut ? " · 割点(必经之路)" : ""}${n.file ? "" : " · 无图文件"}</title></circle>` +
+                    `${r > 4 ? `<text x="${p[0] + 9}" y="${p[1] + 3}">${n.cn}</text>` : ""}</g>`;
+            }
+            svg += "</svg>";
+            box.innerHTML = svg;
+            const gsvg = document.getElementById("graph-svg");
+            let vb = [0, 0, W, H], gDrag = null;
+            gsvg.addEventListener("wheel", (e) => {
+                e.preventDefault();
+                const f = e.deltaY > 0 ? 1.15 : 0.87;
+                vb = [vb[0] + vb[2] * (1 - f) / 2, vb[1] + vb[3] * (1 - f) / 2, vb[2] * f, vb[3] * f];
+                gsvg.setAttribute("viewBox", vb.join(" "));
+            }, { passive: false });
+            gsvg.addEventListener("mousedown", (e) => { gDrag = [e.clientX, e.clientY, ...vb]; });
+            window.addEventListener("mousemove", (e) => {
+                if (!gDrag) return;
+                const sc = vb[2] / gsvg.clientWidth;
+                vb = [gDrag[2] - (e.clientX - gDrag[0]) * sc, gDrag[3] - (e.clientY - gDrag[1]) * sc, gDrag[4], gDrag[5]];
+                gsvg.setAttribute("viewBox", vb.join(" "));
+            });
+            window.addEventListener("mouseup", () => { gDrag = null; });
+            gsvg.addEventListener("click", (e) => {
+                const g = e.target.closest(".gnode");
+                if (!g || g.dataset.file !== "1") return;
+                showView("map");
+                history.replaceState(null, "", `#map=${encodeURIComponent(g.dataset.id + ".map")}&cur=0&g=1&m=1&f=1`);
+                init();
+            });
+        }
+
+        // ---- 钩子：地图渲染/滚动/缩放时同步重绘三个叠加层 ----
+        const _renderBase = render;
+        render = function (keepAnchor) {
+            _renderBase(keepAnchor);
+            drawHeat(); drawQuest(); renderPick();
+        };
+        vp.addEventListener("scroll", () => { drawHeat(); drawQuest(); renderPick(); });
+        window.addEventListener("resize", () => { drawHeat(); drawQuest(); renderPick(); });
+        const _loadMapBase = loadMap;
+        loadMap = function () {
+            _loadMapBase();
+            const mi = curMap();
+            if (mi) { loadRespawns(mi); drawQuest(); renderQuestPanelSafe(); }
+        };
+        function renderQuestPanelSafe() {
+            if (questData) questPanel.style.display = "block"; else questPanel.style.display = "none";
+        }
+        loadQuests();
+
+        // 图例补充：热力分级 + 任务标记 + 拾取
+        const legendPanel = document.getElementById("legend-panel");
+        legendPanel.innerHTML +=
+            '<hr style="border-color:#2e2e36;">' +
+            '<div class="lg-row"><span class="lg-block" style="background:rgba(96,210,96,.5);"></span>刷怪 &lt;10</div>' +
+            '<div class="lg-row"><span class="lg-block" style="background:rgba(255,213,74,.55);"></span>刷怪 10-49</div>' +
+            '<div class="lg-row"><span class="lg-block" style="background:rgba(255,140,50,.55);"></span>刷怪 50-149</div>' +
+            '<div class="lg-row"><span class="lg-block" style="background:rgba(255,60,60,.55);"></span>刷怪 ≥150</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ff4b4b;box-shadow:0 0 6px #ff4b4b;"></span> 任务讨伐怪物刷新点（脉冲）</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ff9b3d;"></span> 任务收集掉落怪物点位</div>' +
+            '<div class="lg-row"><span class="lg-block" style="background:rgba(255,213,74,.3);border:1px solid #ffd54a;"></span> 任务探访区域</div>' +
+            '<div class="lg-row"><span style="color:#aaa;font-size:11px;">🎯 点击地图拾取格坐标 · Shift+点击测距</div>';
     </script>
 </body>
 </html>
@@ -2607,7 +3231,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
     entities: list = []         # Mud3 Envir entity data (load_entities)
     connections: list = []      # exported System.db movement records
     db_names: dict = {}         # db_names.json: npcs/maps en->zh 显示名
-    conn_index: dict = {}       # map stem -> links touching the map (含未匹配)
+    atlas: dict = {}            # 地图工坊索引（build_atlas：热力/任务/总览/连通/NPC审计）
+    _thumb_map_cache = None     # MapCache13（13B 旧格式回退），/thumb 与预渲染共享
 
     @classmethod
     def _render_lock(cls, key: tuple):
@@ -2616,6 +3241,28 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if lk is None:
                 lk = cls.render_locks[key] = threading.Lock()
             return lk
+
+
+    def _json_200(self, body: bytes):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    @classmethod
+    def _thumb_mc(cls):
+        """缩略图专用 MapCache：MapCache13 支持 13 字节旧格式地图回退。"""
+        mc = cls._thumb_map_cache
+        if mc is None:
+            try:
+                from thumb_gen import MapCache13
+                mc = MapCache13(cls.map_cache.maps_dir, max_keep=4)
+            except Exception:
+                mc = cls.map_cache
+            cls._thumb_map_cache = mc
+        return mc
 
     def do_POST(self):
         from urllib.parse import parse_qs, urlparse
@@ -2845,6 +3492,95 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
+        # ------------------------------------------------ 地图工坊端点
+        # 全部优雅降级：atlas 缺失（workspace 表不全）时返回 ok=False + 200，
+        # 前端禁用对应图层并提示，不崩。
+        elif self.path.startswith("/api/respawns?"):
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            stem = os.path.splitext(os.path.basename(qs.get("map", [""])[0]))[0]
+            respawns = (self.atlas or {}).get("respawns_by_map", {}).get(stem, [])
+            body = json.dumps({"ok": True, "map": stem, "count": len(respawns),
+                               "respawns": respawns}, ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.startswith("/api/quests"):
+            quests = (self.atlas or {}).get("quests") or []
+            body = json.dumps({"ok": bool(quests), "count": len(quests),
+                               "quests": [{"id": q["id"], "name": q["name"],
+                                           "type": q["type"],
+                                           "kinds": sorted({t["type"] for t in q["tasks"]})}
+                                          for q in quests]},
+                              ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.startswith("/api/quest?"):
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            atlas = self.atlas or {}
+            try:
+                qid = int(qs.get("id", ["0"])[0])
+            except ValueError:
+                qid = 0
+            quest = next((q for q in atlas.get("quests", []) if q["id"] == qid), None)
+            if quest is None:
+                body = json.dumps({"ok": False, "error": "quest_not_found"},
+                                  ensure_ascii=False).encode("utf-8")
+            else:
+                # 解析任务 -> 覆盖层：VisitRegion 金框 / KillMonster·GainItem
+                # 怪物刷新点（跨地图）。点位取 respawns_by_monster 反查。
+                rbm = atlas.get("respawns_by_monster", {})
+                regions, monsters = [], []
+                seen_m = set()
+                for t in quest["tasks"]:
+                    if t["type"] == "VisitRegion" and t.get("region"):
+                        regions.append(t["region"])
+                    for men in t["monsters"]:
+                        if men in seen_m:
+                            continue
+                        seen_m.add(men)
+                        monsters.append({
+                            "m": men, "kind": t["type"],
+                            "item": t.get("item_cn") or t.get("item"),
+                            "amount": t["amount"],
+                            "points": rbm.get(men, []),
+                        })
+                body = json.dumps({"ok": True, "quest": quest,
+                                   "regions": regions, "monsters": monsters},
+                                  ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.startswith("/api/overview"):
+            overview = (self.atlas or {}).get("overview") or []
+            body = json.dumps({"ok": bool(overview), "count": len(overview),
+                               "maps": overview}, ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.split("?")[0] == "/api/map_links_v2.json":
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_links_v2.json")
+            try:
+                with open(path, "rb") as f:
+                    body = f.read()
+            except OSError:
+                body = json.dumps((self.atlas or {}).get("links_v2") or
+                                  {"ok": False, "error": "links_v2_not_generated"},
+                                  ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.startswith("/api/graph"):
+            graph = (self.atlas or {}).get("graph") or {}
+            body = json.dumps({"ok": bool(graph), **graph},
+                              ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+        elif self.path.startswith("/api/npc_audit"):
+            rows = (self.atlas or {}).get("npc_audit") or []
+            body = json.dumps({"ok": bool(rows), "count": len(rows), "rows": rows,
+                               "funcs": [f for f, _, _ in NPC_FUNC_RULES]},
+                              ensure_ascii=False).encode("utf-8")
+            self._json_200(body)
+
+
         elif self.path.startswith("/api/cell?"):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
@@ -2960,13 +3696,18 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if not os.path.exists(thumb_path):
                 # On-demand render + disk cache (one-time, ~seconds to tens of
                 # seconds for large maps; shared with WikiServer/thumb_gen).
-                try:
-                    from thumb_gen import render_one
-                    w, h, _ = self.map_cache.get(map_name)
-                    render_one(self.map_cache, self.pool, self.thumbs_dir, map_name, w, h)
-                except Exception as ex:
-                    self.send_error(500, f"thumb render failed: {ex}")
-                    return
+                # 13B 旧格式地图经 MapCache13 回退解析；与后台预渲染共享 per-map
+                # 锁，避免并发写坏 PNG。
+                with self._render_lock(("thumb", map_name)):
+                    if not os.path.exists(thumb_path):
+                        try:
+                            from thumb_gen import render_one
+                            mc = self._thumb_mc()
+                            w, h, _ = mc.get(map_name)
+                            render_one(mc, self.pool, self.thumbs_dir, map_name, w, h)
+                        except Exception as ex:
+                            self.send_error(500, f"thumb render failed: {ex}")
+                            return
             try:
                 with open(thumb_path, "rb") as f:
                     body = f.read()
@@ -3215,14 +3956,14 @@ def _ws_rows(workspace: str, table: str) -> list[dict]:
 
 
 def load_db_names(path: str) -> dict:
-    """db_names.json -> {'npcs': {en: zh}, 'maps': {en: zh}} (zh 优先, en 兜底)."""
-    out: dict[str, dict] = {"npcs": {}, "maps": {}}
+    """db_names.json -> {npcs/maps/monsters/items: {en: zh}} (zh 优先, en 兜底)."""
+    out: dict[str, dict] = {k: {} for k in ("npcs", "maps", "monsters", "items")}
     if not path or not os.path.exists(path):
         return out
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
-        for section in ("npcs", "maps"):
+        for section in ("npcs", "maps", "monsters", "items"):
             sec = data.get(section) or {}
             for en, entry in sec.items():
                 zh = entry.get("zh") if isinstance(entry, dict) else None
@@ -3287,6 +4028,348 @@ def load_workspace_connections(workspace: str) -> list[dict]:
         links.append({"index": m.get("Index"), "icon": str(m.get("Icon") or "None"),
                       "source": src, "destination": dst})
     return links
+
+
+# ------------------------------------------------------ 地图工坊 atlas
+# 启动时对 workspace/*.json（System.db 全表导出）做一次全量 JOIN，构建内存
+# 索引：地图号 -> [regions/respawns/npcs]，怪物 -> 刷新点，任务 -> 覆盖层，
+# MovementInfo -> 连通图谱 + map_links_v2.json。所有端点 O(1) 查询，无每请求
+# 全表扫描。MapRegion 无显式矩形（只有 PointRegion 质心 + Size 格数），色块
+# 以质心为中心、边长 = sqrt(Size) 格的方块近似。
+
+# 出生点地图（连通图谱孤岛判定排除项）
+SPAWN_STEMS = {"0"}
+# 守卫类怪物等级（Guard/Archer = 250）不参与地图等级均值 —— 否则每张城图
+# 都被守卫拉成 51+ 红区，总览分层失去意义。
+GUARD_LEVEL_CAP = 200
+
+# NPC 功能覆盖审计规则：先按 EntryPage 匹配，再按中/英文名关键词兜底。
+NPC_FUNC_RULES = [
+    ("药店", ("Basic Potion",), ("药", "Potion", "Pharmacy")),
+    ("仓库", ("Storage",), ("仓", "Storage", "Warehouse")),
+    ("修理", ("Weapon Refiner", "Repair"), ("修理", "铁匠", "Repair", "Refin", "Smith")),
+    ("传送", ("Teleport",), ("传送", "Teleport")),
+]
+
+
+def _region_block(reg: dict) -> tuple[int, int, int] | None:
+    """MapRegion -> (CenterX, CenterY, half_side_cells) 或 None（无质心）。"""
+    pr = reg.get("PointRegion") or {}
+    x, y = pr.get("CenterX"), pr.get("CenterY")
+    if x is None or y is None:
+        return None
+    size = reg.get("Size") or pr.get("PointCount") or 1
+    half = max(1, round((size ** 0.5) / 2))
+    return int(x), int(y), half
+
+
+def level_tier(avg: float | None) -> str:
+    """总览染色分层：1-15 灰绿 / 16-30 黄 / 31-50 橙 / 51+ 红 / 无怪 灰。"""
+    if avg is None:
+        return "none"
+    if avg <= 15:
+        return "low"
+    if avg <= 30:
+        return "mid"
+    if avg <= 50:
+        return "high"
+    return "max"
+
+
+def respawn_tier(count: int) -> str:
+    """刷怪热力分级：绿<10 黄<50 橙<150 红>=150。"""
+    if count < 10:
+        return "t1"
+    if count < 50:
+        return "t2"
+    if count < 150:
+        return "t3"
+    return "t4"
+
+
+def _articulation_points(nodes: set, adj: dict) -> set:
+    """无向图割点（Tarjan）。adj 为双向邻接表。"""
+    seen, disc, low = set(), {}, {}
+    cut = set()
+    timer = [0]
+
+    def dfs(u: int, parent: int):
+        seen.add(u)
+        disc[u] = low[u] = timer[0]
+        timer[0] += 1
+        children = 0
+        for v in adj.get(u, ()):
+            if v == parent:
+                continue
+            if v in seen:
+                low[u] = min(low[u], disc[v])
+            else:
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                children += 1
+                if parent != -1 and low[v] >= disc[u]:
+                    cut.add(u)
+        if parent == -1 and children > 1:
+            cut.add(u)
+
+    order = sorted(nodes)   # 确定性遍历顺序
+    for n in order:
+        if n not in seen:
+            dfs(n, -1)
+    return cut
+
+
+def build_atlas(workspace: str, db_names: dict, maps_dir: str) -> dict:
+    """workspace 全表 JOIN -> 地图工坊六大功能的内存索引（见模块注释）。"""
+    regions = {r.get("Index"): r for r in _ws_rows(workspace, "MapRegion")}
+    monsters = {m.get("Index"): m for m in _ws_rows(workspace, "MonsterInfo")}
+    m_cn = db_names.get("monsters", {})
+    i_cn = db_names.get("items", {})
+    n_cn = db_names.get("npcs", {})
+    npc_stems = db_names.get("maps", {})
+
+    def cn_of_map(stem: str, desc: str = "") -> str:
+        return MAP_CN.get(stem) or npc_stems.get(desc) or desc or stem
+
+    atlas: dict = {
+        "respawns_by_map": {}, "regions_by_map": {}, "respawns_by_monster": {},
+        "quests": [], "overview": [], "npc_audit": [], "links_v2": {},
+        "graph": {}, "item_droppers": {},
+    }
+
+    # ---- MapRegion：地图号 -> 区域块（质心 + Size 方块近似） ----
+    for reg in regions.values():
+        blk = _region_block(reg)
+        if blk is None:
+            continue
+        stem = str((reg.get("Map") or {}).get("Name", ""))
+        if not stem:
+            continue
+        x, y, half = blk
+        atlas["regions_by_map"].setdefault(stem, []).append({
+            "idx": reg.get("Index"), "desc": reg.get("Description", ""),
+            "x": x, "y": y, "half": half,
+        })
+
+    # ---- RespawnInfo × MapRegion × MonsterInfo -> 刷怪热力 ----
+    for r in _ws_rows(workspace, "RespawnInfo"):
+        reg = regions.get((r.get("Region") or {}).get("Index")) or {}
+        blk = _region_block(reg)
+        if blk is None:
+            continue
+        stem = str((reg.get("Map") or {}).get("Name", ""))
+        if not stem:
+            continue
+        x, y, half = blk
+        men = (r.get("Monster") or {}).get("Name") or ""
+        minfo = monsters.get((r.get("Monster") or {}).get("Index")) or {}
+        count = int(r.get("Count") or 0)
+        entry = {
+            "m": men, "mc": m_cn.get(men, men), "x": x, "y": y, "half": half,
+            "count": count, "delay": r.get("Delay"), "dropset": r.get("DropSet"),
+            "tier": respawn_tier(count),
+            "level": minfo.get("Level"), "boss": bool(minfo.get("IsBoss")),
+        }
+        atlas["respawns_by_map"].setdefault(stem, []).append(entry)
+        atlas["respawns_by_monster"].setdefault(men, []).append(
+            {"map": stem, "x": x, "y": y, "count": count})
+
+    # ---- DropInfo 反查：物品 -> 掉落怪物（GainItem 任务兜底） ----
+    for d in _ws_rows(workspace, "DropInfo"):
+        item = (d.get("Item") or {}).get("Name") or ""
+        mon = (d.get("Monster") or {}).get("Name") or ""
+        if item and mon:
+            s = atlas["item_droppers"].setdefault(item, set())
+            s.add(mon)
+
+    # ---- QuestInfo × QuestTask × QuestTaskMonsterDetails -> 任务叠加 ----
+    qtasks = {t.get("Index"): t for t in _ws_rows(workspace, "QuestTask")}
+    qdetails = {t.get("Index"): t for t in _ws_rows(workspace, "QuestTaskMonsterDetails")}
+    for q in _ws_rows(workspace, "QuestInfo"):
+        tasks = []
+        for tref in q.get("Tasks") or []:
+            t = qtasks.get(tref.get("Index"))
+            if not t:
+                continue
+            monsters = []
+            for dref in t.get("MonsterDetails") or []:
+                det = qdetails.get(dref.get("Index")) or {}
+                m = (det.get("Monster") or {}).get("Name")
+                if m:
+                    monsters.append(m)
+            item = (t.get("ItemParameter") or {}).get("Name") or None
+            # GainItem 无 MonsterDetails 时用 DropInfo 反查兜底
+            if item and t.get("Task") == "GainItem" and not monsters:
+                monsters = sorted(atlas["item_droppers"].get(item, ()))
+            reg_param = t.get("RegionParameter") or {}
+            reg = regions.get(reg_param.get("Index")) or {}
+            rblk = _region_block(reg)
+            tasks.append({
+                "type": t.get("Task"), "amount": t.get("Amount") or 0,
+                "item": item, "item_cn": i_cn.get(item, item) if item else None,
+                "monsters": monsters,
+                "region": {
+                    "map": str((reg.get("Map") or {}).get("Name", "")),
+                    "x": rblk[0], "y": rblk[1], "half": rblk[2], "idx": reg.get("Index"),
+                    "desc": reg.get("Description", ""),
+                } if rblk else None,
+            })
+        start = (q.get("StartNPC") or {}).get("Name") or ""
+        atlas["quests"].append({
+            "id": q.get("Index"), "name": q.get("QuestName") or f"Quest {q.get('Index')}",
+            "type": q.get("QuestType"), "start": start, "tasks": tasks,
+        })
+
+    # ---- NPCInfo -> NPC 审计（功能覆盖检查按地图聚合） ----
+    audit: dict[str, dict] = {}
+    for n in _ws_rows(workspace, "NPCInfo"):
+        reg = regions.get((n.get("Region") or {}).get("Index")) or {}
+        stem = str((reg.get("Map") or {}).get("Name", ""))
+        if not stem:
+            continue
+        en = n.get("NPCName") or ""
+        page = (n.get("EntryPage") or {}).get("Name") or ""
+        zh = n_cn.get(en, en)
+        row = audit.setdefault(stem, {"map": stem, "npcs": [], "funcs": {k: [] for k, _, _ in NPC_FUNC_RULES}})
+        row["npcs"].append({"en": en, "cn": zh, "page": page})
+        for func, page_pats, name_pats in NPC_FUNC_RULES:
+            if any(p in page for p in page_pats) or any(p in zh for p in name_pats) or any(p in en for p in name_pats):
+                row["funcs"][func].append(zh or en)
+    map_files = set()
+    if maps_dir and os.path.isdir(maps_dir):
+        map_files = {f[:-4] for f in os.listdir(maps_dir) if f.lower().endswith(".map")}
+    npc_counts = {s: len(r["npcs"]) for s, r in audit.items()}
+    for stem in sorted(audit):
+        row = audit[stem]
+        row["cn"] = cn_of_map(stem)
+        row["total"] = len(row["npcs"])
+        row["missing"] = [f for f, _, _ in NPC_FUNC_RULES if not row["funcs"][f]]
+        row["file"] = stem in map_files
+        atlas["npc_audit"].append(row)
+    atlas["npc_audit"].sort(key=lambda r: -r["total"])
+
+    # ---- MapInfo + 刷怪等级 -> 总览（627 张图） ----
+    for mi in _ws_rows(workspace, "MapInfo"):
+        stem = str(mi.get("FileName") or "")
+        if not stem:
+            continue
+        desc = mi.get("Description") or ""
+        respawns = atlas["respawns_by_map"].get(stem) or []
+        lv_sum = lv_n = 0
+        boss = False
+        seen_m = set()
+        for e in respawns:
+            boss = boss or e["boss"]
+            if e["m"] in seen_m or e["level"] is None:
+                continue
+            seen_m.add(e["m"])
+            if e["level"] < GUARD_LEVEL_CAP:
+                lv_sum += e["level"]
+                lv_n += 1
+        avg = round(lv_sum / lv_n, 1) if lv_n else None
+        atlas["overview"].append({
+            "id": stem, "cn": cn_of_map(stem, desc), "desc": desc,
+            "file": stem in map_files, "lvl": avg, "tier": level_tier(avg),
+            "boss": boss, "resp": len(respawns), "npcs": npc_counts.get(stem, 0),
+            "cat": map_category(stem),
+        })
+
+    # ---- MovementInfo -> 连通图谱 + map_links_v2 ----
+    edges: set[tuple[str, str]] = set()
+    for m in _ws_rows(workspace, "MovementInfo"):
+        s = str((regions.get((m.get("SourceRegion") or {}).get("Index")) or {}).get("Map", {}).get("Name", ""))
+        d = str((regions.get((m.get("DestinationRegion") or {}).get("Index")) or {}).get("Map", {}).get("Name", ""))
+        if s and d:
+            edges.add((s, d))
+    names = {row["id"]: row["cn"] for row in atlas["overview"]}
+    d_edges = sorted([list(e) for e in edges if e[0].startswith("D") or e[1].startswith("D") or e[0].startswith("d") or e[1].startswith("d")])
+    atlas["links_v2"] = {
+        "names": names,
+        "links": sorted([list(e) for e in edges]),
+        "_meta": {
+            "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "source": "System.db MovementInfo (Tools/dbeditor/workspace/MovementInfo.json)",
+            "movement_rows": len(_ws_rows(workspace, "MovementInfo")),
+            "unique_links": len(edges),
+            "d_series_links": len(d_edges),
+            "note": "地图号对齐 MapInfo.FileName；names 覆盖全部 MapInfo 地图",
+        },
+    }
+    # 图谱统计：孤岛（入度0且非出生点）/ 割点（无向割点=必经之路）
+    indeg = {s: 0 for s in names}
+    outdeg = {s: 0 for s in names}
+    undirected: set[frozenset] = set()
+    for a, b in edges:
+        if a == b:
+            continue
+        outdeg[a] = outdeg.get(a, 0) + 1
+        indeg[b] = indeg.get(b, 0) + 1
+        undirected.add(frozenset((a, b)))
+    adj: dict[str, set] = {}
+    for e in undirected:
+        a, b = tuple(e)
+        adj.setdefault(a, set()).add(b)
+        adj.setdefault(b, set()).add(a)
+    cut = _articulation_points(set(names), adj)
+    graph_nodes = []
+    for stem in names:
+        island = indeg.get(stem, 0) == 0 and stem not in SPAWN_STEMS
+        graph_nodes.append({
+            "id": stem, "cn": names[stem],
+            "indeg": indeg.get(stem, 0), "outdeg": outdeg.get(stem, 0),
+            "island": island, "isolated": stem not in adj,
+            "cut": stem in cut,
+            "file": stem in map_files, "npcs": npc_counts.get(stem, 0),
+        })
+    atlas["graph"] = {
+        "nodes": graph_nodes, "edges": sorted([list(e) for e in edges]),
+        "spawn_stems": sorted(SPAWN_STEMS),
+    }
+    return atlas
+
+
+def write_map_links_v2(atlas: dict, path: str) -> bool:
+    """把 links_v2 落盘到 Tools/maps/map_links_v2.json（git 跟踪的产出物）。"""
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(atlas["links_v2"], f, ensure_ascii=False, indent=1)
+        return True
+    except OSError:
+        return False
+
+
+def prewarm_thumbs(maps_dir: str, data_dir: str, thumbs_dir: str) -> None:
+    """后台守护线程：为总览视图逐张预渲染缩略图（/tmp/wiki_thumbs，磁盘缓存）。
+
+    只渲染缺失项，已存在的跳过；与 /thumb 端点共享 per-map 渲染锁避免并发
+    写坏 PNG。"""
+    def work():
+        try:
+            from thumb_gen import render_one, MapCache13
+            mc = MapCache13(maps_dir, max_keep=4)
+            pool = FramePool(data_dir)
+            names = sorted(f for f in os.listdir(maps_dir) if f.lower().endswith(".map"))
+            done = 0
+            for name in names:
+                out = os.path.join(thumbs_dir, name + ".png")
+                if os.path.exists(out):
+                    continue
+                lock = ViewerHandler._render_lock(("thumb", name))
+                try:
+                    with lock:
+                        if os.path.exists(out):
+                            continue
+                        w, h, _ = mc.get(name)
+                        render_one(mc, pool, thumbs_dir, name, w, h)
+                        done += 1
+                except Exception as ex:
+                    print(f"[!] thumb prewarm {name}: {ex}")
+            if done:
+                print(f"[*] Thumb prewarm: {done} new thumbnails rendered")
+        except Exception as ex:
+            print(f"[!] Thumb prewarm disabled: {ex}")
+
+    threading.Thread(target=work, daemon=True, name="thumb-prewarm").start()
 
 
 _DROPS_CACHE: dict[str, list[dict]] = {}
@@ -3504,6 +4587,26 @@ def main():
             if stem:
                 conn_index.setdefault(stem, []).append(link)
     ViewerHandler.conn_index = conn_index
+    # 地图工坊 atlas：workspace 全表 JOIN（热力/任务/总览/连通/NPC 审计）
+    try:
+        t0 = time.time()
+        ViewerHandler.atlas = build_atlas(args.db_workspace, ViewerHandler.db_names, args.maps_dir)
+        lv2 = ViewerHandler.atlas.get("links_v2") or {}
+        graph = ViewerHandler.atlas.get("graph") or {}
+        islands = sum(1 for n in graph.get("nodes", []) if n.get("island"))
+        cuts = sum(1 for n in graph.get("nodes", []) if n.get("cut"))
+        print(f"[*] Atlas built in {time.time()-t0:.1f}s: "
+              f"{len(ViewerHandler.atlas.get('overview', []))} maps / "
+              f"{sum(len(v) for v in ViewerHandler.atlas.get('respawns_by_map', {}).values())} respawns / "
+              f"{len(ViewerHandler.atlas.get('quests', []))} quests / "
+              f"{len(lv2.get('links', []))} links (D系 {lv2.get('_meta', {}).get('d_series_links', 0)}) / "
+              f"islands {islands} / cut {cuts}")
+        if write_map_links_v2(ViewerHandler.atlas, os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "map_links_v2.json")):
+            print("[*] map_links_v2.json written to Tools/maps/")
+    except Exception as ex:
+        ViewerHandler.atlas = {}
+        print(f"[!] Atlas build failed (layers disabled): {ex}")
     if ViewerHandler.catalog:
         print(f"[*] Catalog: {len(ViewerHandler.catalog)} maps loaded")
     print(f"[*] Connections: {len(ViewerHandler.connections)} movements loaded ({len(conn_index)} maps indexed)")
@@ -3513,8 +4616,8 @@ def main():
     else:
         if not ws_ents:
             ViewerHandler.entities = []
-    os.makedirs(args.thumbs_dir, exist_ok=True)
-    print(f"[*] Thumbnails: {args.thumbs_dir}")
+    # 总览缩略图后台预渲染（守护线程，只补缺失项）
+    prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
     print(f"[*] Tile cache: {cache_dir}")
 
     server = ThreadingHTTPServer(("0.0.0.0", args.port), ViewerHandler)
