@@ -1448,7 +1448,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <title>Zircon / Mir3 EI 地图浏览器</title>
     <link rel="stylesheet" href="/_webui/tokens.css">
     <link rel="stylesheet" href="/_webui/mobile-shell.css">
-    <script src="/_webui/gesture.js"></script>
+    <script src="/_webui/gesture.js?v=2"></script>
     <style>
         body { margin:0; padding:0; background:#111; color:#eee; font-family:sans-serif; overflow:hidden; user-select:none; }
         #toolbar { height:40px; background:#222; display:flex; align-items:center; padding:0 10px; gap:10px; border-bottom:1px solid #333; }
@@ -1585,6 +1585,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #quest-panel .qstep.kill { border-color:#ff5b5b; }
         #quest-panel .qstep.visit { border-color:#ffd54a; }
         #quest-panel .qstep.item { border-color:#e8963d; }
+        #quest-panel .qstep.current { background:#26314a; border-left-color:#72d6ff; box-shadow:0 0 0 1px #72d6ff inset; }
+        #quest-panel .qstep .qplay { float:right; background:#1d3a4a; border:1px solid #72d6ff; color:#cfe;
+            border-radius:3px; cursor:pointer; font-size:11px; padding:1px 7px; }
+        #quest-panel .qstep .qplay:hover { background:#2a4a5e; }
+        #quest-panel .qnav { display:flex; gap:6px; margin:8px 0 4px; }
+        #quest-panel .qnav button { flex:1; font-size:12px; padding:4px 0; }
         #quest-panel .qmap { color:#8cf; cursor:pointer; text-decoration:underline; padding:1px 0; display:inline-block; }
         #quest-panel .qmap:hover { color:#bff; }
         #pick-panel { position:fixed; left:10px; bottom:64px; background:rgba(10,12,16,.93); border:1px solid #72d6ff;
@@ -1904,8 +1910,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 imgEl.style.display = "none";
                 imgEl.src = "";
                 tileLayer.style.display = "block";
-                drawTiles();
-                updateStatusBar();
+                drawTiles();          // 先建 spacer（可滚动域）再落点
+                applyAnchor();        // hash 深链/锚点在 tile 模式同样生效（此前漏掉 → 深链落在左上角）
+                drawQuest();          // 按新视口重算任务标记（剔除逻辑依赖 scroll）
+                drawTiles();          // 滚动后按新视口补瓦片（scroll 事件亦会触发）
                 drawMini();
                 drawGrid();
                 drawRoutes();
@@ -2893,11 +2901,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const c = e.target.closest("circle.qkill");
             if (c) e.stopPropagation();
         });
+        // 步骤序列（MAP-P1-01）：monster 步骤 + region 步骤展开成可播放单元
+        let questSteps = [], questStepIdx = -1;
+        function questStepList() {
+            // 与面板 .qstep 行一一对应：每个 monster 取首个有图文件的点，每个 region 一步
+            const hasMap = st => maps.some(x => x.name === String(st) + ".map");
+            const steps = [];
+            for (const m of (questData.monsters || [])) {
+                const p = (m.points || [])[0];   // 与面板 ▶定位 按钮同一判定
+                if (p && hasMap(p.map)) steps.push({ kind: m.kind, label: (m.item || m.m) + " ×" + m.amount, map: String(p.map), x: +p.x, y: +p.y });
+            }
+            for (const r of (questData.regions || []))
+                if (hasMap(r.map)) steps.push({ kind: "VisitRegion", label: "探访 " + (MAP_CN[r.map] || r.map), map: String(r.map), x: +r.x, y: +r.y });
+            return steps;
+        }
+        function gotoQuestStep(i) {
+            if (!questSteps.length) return;
+            questStepIdx = (i + questSteps.length) % questSteps.length;   // 循环播放
+            const st = questSteps[questStepIdx];
+            showView("map");
+            history.replaceState(null, "", `#map=${encodeURIComponent(st.map + ".map")}&cur=0&x=${Math.round(st.x * 48)}&y=${Math.round(st.y * 32)}&g=1&m=1&f=1`);
+            init();
+            markCurrentStep();
+        }
+        function markCurrentStep() {
+            questPanel.querySelectorAll(".qstep").forEach(el => {
+                el.classList.toggle("current", el.dataset.step !== undefined && +el.dataset.step === questStepIdx);
+            });
+        }
         function renderQuestPanel() {
             if (!questData) { questPanel.style.display = "none"; return; }
             const q = questData.quest;
             const kindLabel = { KillMonster: "讨伐", GainItem: "收集", VisitRegion: "探访" };
             let html = `<h4>📜 ${q.name}</h4>`;
+            html += `<div class="qnav"><button id="qprev" type="button">⏮ 上一步</button>` +
+                `<button id="qplay-all" type="button">▶ 逐步播放</button>` +
+                `<button id="qnext" type="button">下一步 ⏭</button></div>`;
+            let stepNo = 0;
             for (const m of (questData.monsters || [])) {
                 const byMap = {};
                 for (const p of (m.points || [])) (byMap[p.map] = byMap[p.map] || []).push(p);
@@ -2906,17 +2946,38 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     const jump = exists ? ` class="qmap" data-jmap="${st}" data-x="${byMap[st][0].x}" data-y="${byMap[st][0].y}"` : "";
                     return `<span${jump}>${MAP_CN[st] || st}${exists ? "" : " (无图文件)"}</span>`;
                 }).join(" · ");
-                html += `<div class="qstep ${m.kind === "KillMonster" ? "kill" : "item"}">` +
+                const firstPt = (m.points || [])[0];
+                const playable = firstPt && maps.some(x => x.name === String(firstPt.map) + ".map");
+                const playBtn = playable ? `<button class="qplay" type="button" data-step="${stepNo}">▶ 定位</button>` : "";
+                html += `<div class="qstep ${m.kind === "KillMonster" ? "kill" : "item"}"${playable ? ` data-step="${stepNo}"` : ""}>${playBtn}` +
                     `<b>${m.item || m.m}</b> ${kindLabel[m.kind] || m.kind} ×${m.amount}` +
                     `<br><span style="color:#8a8a98">怪物：</span>${m.m}` +
                     (spots ? `<br><span style="color:#8a8a98">位置：</span>${spots}` : "（无刷新点数据）") + `</div>`;
+                stepNo++;
             }
             for (const r of (questData.regions || [])) {
-                html += `<div class="qstep visit"><b>探访区域</b>：${MAP_CN[r.map] || r.map} · ${r.desc || r.idx}</div>`;
+                const exists = maps.some(x => x.name === String(r.map) + ".map");
+                const playBtn = exists ? `<button class="qplay" type="button" data-step="${stepNo}">▶ 定位</button>` : "";
+                html += `<div class="qstep visit"${exists ? ` data-step="${stepNo}"` : ""}>${playBtn}<b>探访区域</b>：${MAP_CN[r.map] || r.map} · ${r.desc || r.idx}</div>`;
+                stepNo++;
             }
             if (!questData.monsters.length && !questData.regions.length) html += '<div class="qstep">该任务无地理步骤</div>';
             questPanel.innerHTML = html;
             questPanel.style.display = "block";
+            questSteps = questStepList();
+            // 播放控制
+            const prev = questPanel.querySelector("#qprev"), next = questPanel.querySelector("#qnext"), playAll = questPanel.querySelector("#qplay-all");
+            if (prev) prev.addEventListener("click", () => gotoQuestStep(questStepIdx < 0 ? 0 : questStepIdx - 1));
+            if (next) next.addEventListener("click", () => gotoQuestStep(questStepIdx + 1));
+            if (playAll) playAll.addEventListener("click", () => {
+                if (window.__qTimer) { clearInterval(window.__qTimer); window.__qTimer = null; playAll.textContent = "▶ 逐步播放"; return; }
+                gotoQuestStep(0);
+                playAll.textContent = "⏸ 停止";
+                window.__qTimer = setInterval(() => gotoQuestStep(questStepIdx + 1), 4000);
+            });
+            questPanel.querySelectorAll(".qplay").forEach(b =>
+                b.addEventListener("click", (e) => { e.stopPropagation(); if (window.__qTimer) { clearInterval(window.__qTimer); window.__qTimer = null; } gotoQuestStep(+b.dataset.step); }));
+            markCurrentStep();
             questPanel.querySelectorAll(".qmap").forEach(el => el.addEventListener("click", () => {
                 showView("map");
                 history.replaceState(null, "", `#map=${encodeURIComponent(el.dataset.jmap + ".map")}&cur=0&x=${Math.round(Number(el.dataset.x) * 48)}&y=${Math.round(Number(el.dataset.y) * 32)}&g=1&m=1&f=1`);

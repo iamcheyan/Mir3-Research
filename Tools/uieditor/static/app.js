@@ -648,6 +648,25 @@ async function boot() {
   if (mb.redo) mb.redo.onclick = doRedo;
   if (mb.save) mb.save.onclick = saveOverlay;
   if (mb.reset) mb.reset.onclick = () => $("#btn-reset").click();   // 复用桌面逻辑（含确认）
+
+  // ---- 画布触控（UIE-P1-01）：单指平移 / 双指阶梯缩放 / 双击放大（桌面鼠标路径不变） ----
+  if (window.WU && window.matchMedia && matchMedia("(pointer:coarse)").matches) {
+    const cvp = $("#canvas-viewport");
+    const ZOOMS = [0.5, 1, 2];
+    WU.gesture(cvp, {
+      pan: (dx, dy) => { cvp.scrollLeft -= dx; cvp.scrollTop -= dy; },
+      pinch: (step) => {
+        const cur = ZOOMS.indexOf(state.zoom);
+        const next = Math.max(0, Math.min(ZOOMS.length - 1, (cur < 0 ? 1 : cur) + step));
+        if (next !== cur) { state.zoom = ZOOMS[next]; applyZoom(); }
+      },
+      doubleTap: () => {
+        const cur = ZOOMS.indexOf(state.zoom);
+        state.zoom = ZOOMS[Math.min(ZOOMS.length - 1, (cur < 0 ? 1 : cur) + 1)];
+        applyZoom();
+      }
+    });
+  }
   window.addEventListener("keydown", onKeyDown);
   // 默认选中背包（无头验证主对象）
   const first = state.tree.windows.find(w => w.className === "InventoryDialog") || state.tree.windows[0];

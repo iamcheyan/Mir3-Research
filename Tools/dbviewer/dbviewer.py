@@ -94,7 +94,8 @@ class DataStore:
         self.map_cn = load_map_cn()
         self._load_meta()
         self._load_all()
-        self._build_inverted()
+        self._build_region_index()
+
 
     # ---------- 加载 ----------
     def _load_meta(self):
@@ -114,6 +115,40 @@ class DataStore:
                 "count": 0,
             }
         self.meta = {"collections": collections}
+
+    def _build_region_index(self):
+        """MapRegion 全行索引（DBV-P1-02）：Region 引用是 {Index, Name} 桩，
+        坐标在 MapRegion.Map.Name + PointRegion.CenterX/CenterY，需解析。"""
+        self._regions = self.data.get("MapRegion", {}).get("byIndex", {})
+
+    LOC_TYPES = {"RespawnInfo": ("Region", "刷怪"), "NPCInfo": ("Region", "NPC"),
+                 "MovementInfo": ("SourceRegion", "传送"), "SafeZoneInfo": ("Region", "安全区")}
+
+    def loc_of(self, t: str, row: dict):
+        """位置类数据 -> {map:{Name}, x, y, kind, name}；非位置类/解析失败返回 None。"""
+        spec = self.LOC_TYPES.get(t)
+        if not spec:
+            return None
+        field, kind = spec
+        stub = row.get(field)
+        if not isinstance(stub, dict):
+            return None
+        full = self._regions.get(stub.get("Index"))
+        if full is None:
+            return None
+        m = full.get("Map")
+        if not isinstance(m, dict) or m.get("Name") is None:
+            return None
+        pt = full.get("PointRegion") or {}
+        name = ""
+        if t == "NPCInfo":
+            name = row.get("NPCName") or ""
+        elif t == "RespawnInfo":
+            mon = row.get("Monster")
+            name = mon.get("Name") if isinstance(mon, dict) else ""
+        return {"map": {"Name": m["Name"]},
+                "x": pt.get("CenterX"), "y": pt.get("CenterY"),
+                "kind": kind, "name": name}
 
     def _load_all(self):
         for fname in sorted(os.listdir(self.data_dir)):
@@ -345,33 +380,31 @@ class DataStore:
             return e
 
         for r in layers["respawns"]:
-            reg = r.get("Region")
-            if not isinstance(reg, dict) or reg.get("CenterX") is None:
+            loc = self.loc_of("RespawnInfo", r)
+            if loc is None or loc["x"] is None:
                 continue
-            mon = r.get("Monster")
-            name = mon.get("Name") if isinstance(mon, dict) else ""
-            out.append(ent(stem, reg["CenterX"], reg["CenterY"], "monster",
-                           name or ("#" + str(r.get("Index"))), r.get("Count")))
+            out.append(ent(stem, loc["x"], loc["y"], "monster",
+                           loc["name"] or ("#" + str(r.get("Index"))), r.get("Count")))
         for r in layers["npcs"]:
-            reg = r.get("Region")
-            if not isinstance(reg, dict) or reg.get("CenterX") is None:
+            loc = self.loc_of("NPCInfo", r)
+            if loc is None or loc["x"] is None:
                 continue
-            out.append(ent(stem, reg["CenterX"], reg["CenterY"], "npc",
-                           r.get("NPCName") or ("#" + str(r.get("Index")))))
+            out.append(ent(stem, loc["x"], loc["y"], "npc",
+                           loc["name"] or ("#" + str(r.get("Index")))))
         for r in layers["guards"]:
             mon = r.get("Monster")
             name = mon.get("Name") if isinstance(mon, dict) else "守卫"
             out.append(ent(stem, r.get("X"), r.get("Y"), "monster", name))
         for r in layers["movements"]:
-            reg = r.get("SourceRegion")
-            if not isinstance(reg, dict) or reg.get("CenterX") is None:
+            loc = self.loc_of("MovementInfo", r)
+            if loc is None or loc["x"] is None:
                 continue
-            out.append(ent(stem, reg["CenterX"], reg["CenterY"], "npc", "传送点"))
+            out.append(ent(stem, loc["x"], loc["y"], "npc", "传送点"))
         for r in layers["safezones"]:
-            reg = r.get("Region")
-            if not isinstance(reg, dict) or reg.get("CenterX") is None:
+            loc = self.loc_of("SafeZoneInfo", r)
+            if loc is None or loc["x"] is None:
                 continue
-            out.append(ent(stem, reg["CenterX"], reg["CenterY"], "npc", "安全区"))
+            out.append(ent(stem, loc["x"], loc["y"], "npc", "安全区"))
         return out
 
 
@@ -454,7 +487,13 @@ class Handler(BaseHTTPRequestHandler):
         sort = qs.get("sort", [""])[0]
         dirn = 1 if qs.get("dir", ["1"])[0] != "-1" else -1
         q = qs.get("q", [""])[0]
-        self._json(self.store.list_rows(t, page, per, sort, dirn, q))
+        result = self.store.list_rows(t, page, per, sort, dirn, q)
+        if t in self.store.LOC_TYPES:   # DBV-P1-02：注入解析后的位置（Region 桩无坐标）
+            for r in result["rows"]:
+                loc = self.store.loc_of(t, r)
+                if loc:
+                    r["__loc"] = loc
+        self._json(result)
 
     def _api_row(self, qs):
         t = qs.get("type", [""])[0]
@@ -467,7 +506,11 @@ class Handler(BaseHTTPRequestHandler):
         if row is None:
             self._json({"error": "not found"}, 404)
             return
-        self._json({"__type": t, "row": row})
+        payload = {"__type": t, "row": row}
+        loc = self.store.loc_of(t, row)
+        if loc:
+            payload["row"] = dict(row, __loc=loc)
+        self._json(payload)
 
     def _api_related(self, qs):
         t = qs.get("type", [""])[0]
@@ -480,6 +523,13 @@ class Handler(BaseHTTPRequestHandler):
         if rel is None:
             self._json({"error": "not found"}, 404)
             return
+        layer_types = {"respawns": "RespawnInfo", "npcs": "NPCInfo", "movements": "MovementInfo",
+                       "safezones": "SafeZoneInfo"}
+        for key, lt in layer_types.items():   # DBV-P1-02：地图图层行带解析位置
+            for r in (rel.get("mapLayers") or {}).get(key, []):
+                loc = self.store.loc_of(lt, r)
+                if loc:
+                    r["__loc"] = loc
         self._json(rel)
 
     def _api_search(self, qs):
@@ -489,7 +539,12 @@ class Handler(BaseHTTPRequestHandler):
             limit = int(qs.get("limit", ["200"])[0])
         except ValueError:
             pass
-        self._json({"results": self.store.search(q, limit)})
+        results = self.store.search(q, limit)
+        for r in results:   # DBV-P1-02：搜索结果带位置
+            loc = self.store.loc_of(r["type"], r["row"])
+            if loc:
+                r["row"]["__loc"] = loc
+        self._json({"results": results})
 
 
 def main():

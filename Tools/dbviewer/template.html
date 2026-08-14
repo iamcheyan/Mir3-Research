@@ -280,6 +280,7 @@ function valueHtml(fieldMeta, v) {
 
 /* 位置提取：从行数据里找 (mapFile, x, y, kindLabel) */
 function extractLocation(type, row) {
+  if (row.__loc) return row.__loc;   // 服务端已解析（Region 桩无坐标，见 dbviewer.loc_of）
   const tryLoc = (mapObj, x, y) => {
     if (mapObj && mapObj.Index != null && (x != null || y != null)) return { map: mapObj, x, y };
     return null;
@@ -351,7 +352,12 @@ async function loadAll() {
   const [metaRes] = await Promise.all([fetch("api/meta")]);
   META = await metaRes.json();
   renderTree();
-  await loadCollection(Object.keys(META.collections).find(t => t === "MonsterInfo") || Object.keys(META.collections)[0]);
+  const h = location.hash;
+  if (h.startsWith("#/detail/") || h.startsWith("#/table/") || h === "#stats") {
+    route();   // 深链直达（此前被默认集合渲染覆盖）
+  } else {
+    await loadCollection(Object.keys(META.collections).find(t => t === "MonsterInfo") || Object.keys(META.collections)[0]);
+  }
   $("#loading").style.display = "none";
 }
 

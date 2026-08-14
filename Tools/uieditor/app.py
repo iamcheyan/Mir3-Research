@@ -38,7 +38,8 @@ FRAME_CACHE.mkdir(exist_ok=True)
 APP = FastAPI(title="uieditor", docs_url=None, redoc_url=None)
 
 APP.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
-
+# 共享移动端壳（Tools/common/webui/），见 TOOLS_MOBILE_ENHANCE_GOAL §3.1
+APP.mount("/_webui", StaticFiles(directory=str(REPO / "Tools" / "common" / "webui")), name="webui")
 
 # ---------------------------------------------------------------- zl 实时解码
 _zl_lock = threading.Lock()

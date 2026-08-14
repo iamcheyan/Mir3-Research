@@ -175,5 +175,4 @@ aside {
     background: var(--bg2); border-top: 1px solid var(--line); }
   #mobile-actions button { flex: 1; min-height: 44px; font-size: 16px; margin: 0; }
   #mobile-actions button.primary { flex: 1.6; }
-  #main { padding-bottom: 58px; }
-  #canvas-viewport { flex: 1; }
+  #canvas-viewport { flex: 1; touch-action: none; }   /* 画布手势由 gesture.js 接管（UIE-P1-01） */
