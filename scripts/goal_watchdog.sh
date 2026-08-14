@@ -66,6 +66,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
   "01a0007a-e0db-7000-aa8c-7ff6380acb67|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T13-34-08-091Z_01a0007a-e0db-7000-aa8c-7ff6380acb67.jsonl|yomudesign|/home/tetsuya/development/yomu|Yomu无框单页视觉重构"
+  "01a00239-3d0a-7000-bb94-9c32abee22ac|/home/tetsuya/.omp/agent/sessions/-development-fudoki/2026-08-14T21-41-40-746Z_01a00239-3d0a-7000-bb94-9c32abee22ac.jsonl|fudokiredesign|/home/tetsuya/development/fudoki|Fudoki本地化+Linear式UI重构"
   "01a00067-cf2d-7000-9ed8-0494986a6555|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-13-18-381Z_01a00067-cf2d-7000-9ed8-0494986a6555.jsonl|par-move|/home/tetsuya/development/Mir3-Research|webport行为等价冲刺"
   "01a0006d-d954-7000-af1c-97be5d78b738|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-54-196Z_01a0006d-d954-7000-af1c-97be5d78b738.jsonl|par-keys|/home/tetsuya/development/Mir3-Research|webport按键系统"
   "01a0006d-4e8b-7000-833d-ca644ca86904|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-18-667Z_01a0006d-4e8b-7000-833d-ca644ca86904.jsonl|par-win|/home/tetsuya/development/Mir3-Research|webport窗口系统"
