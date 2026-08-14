@@ -18,6 +18,7 @@ import { D } from './data.js';
 import { GRID } from './net.js';
 import { GameDB } from './gamedb.js';
 import { DXItemGrid, itemAmountDialog } from './dxgrid.js';
+import { winConsign } from './win-consign.js';
 
 // NPCDialogType (Enum.cs:564+)
 const DIALOG_TYPE = ['None', 'BuySell', 'Repair', 'Refine', 'RefineRetrieve', 'CompanionManage',
@@ -399,8 +400,8 @@ export async function winNpc(scene, store, reg) {
       repairPanel.location = [0, w.size[1]];
       repairPanel.visible = true;
     }
-
     WindowManager.open(w, scene.hudLayer);
+    if (dtype === 19) { await winConsign(scene); }   // Consignment → OpenConsignmentDialog (NPCDialog.cs:116)
     if (dtype === 0) await openQuestList(response.objectID);   // (:118-119)
     else closeQuestDialogs();
   }

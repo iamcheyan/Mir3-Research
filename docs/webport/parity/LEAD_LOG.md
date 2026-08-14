@@ -429,3 +429,17 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 ### 局势
 
 - A 路收尾动作明显 (仲裁清理+图标+邮箱), 等终态 → REPORT.md 总验收。
+
+## R14 — par-move (A路): P2 寄售行 ConsignmentDialog (最后长尾窗)
+
+- `缺口` Consignment (摆摊/寄售) 无任何 UI: Godot 经 NPC 页 DialogType=
+  Consignment → OpenConsignmentDialog (NPCDialog.cs:116, GameScene.cs:628),
+  web 侧 win-npc showPage 未路由 dtype 19。
+- `实现` win-consign.js (新模块, 单例语义=GameScene._consignmentDialog):
+  两页 — 搜索购买 (C.MarketPlaceSearch → S.results 渲染, 点击 prompt 数量
+  → C.MarketPlaceBuy) / 我的寄售 (S.MarketPlaceConsign 列表, 右键下架 →
+  C.MarketPlaceCancelConsign, 寄售背包首格 prompt 价格 → C.MarketPlaceConsign
+  cellLink{GridType,Slot,Count})。win-npc showPage +dtype===19 路由。
+- `CDP 验收` winConsign 开窗: 搜索页注入 2 结果 → 行渲染 "x3 5,000 金"/
+  "x1 120,000 金"; 切我的寄售页 → 注入 consignments 渲染 "我的寄售 1 件";
+  0 异常。(探针断言曾用 '5000' 对 '5,000' toLocaleString — 测量口径问题)
