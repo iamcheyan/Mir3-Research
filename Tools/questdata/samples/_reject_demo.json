@@ -1,0 +1,52 @@
+{
+  "_说明": "拒绝样例（demo 用）：故意带四类非法引用——不存在的前置任务 / 不存在的物品 / 不存在的区域 / 与库内冲突的任务名。quest_apply 必须整体拒绝且不落一笔。",
+  "quests": [
+    {
+      "quest_name": "坏样板·前置悬空",
+      "quest_type": "Story",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [
+        {"requirement": "Class", "class": "Warrior"},
+        {"requirement": "HaveCompleted", "quest_parameter": {"quest_name": "M3M_PW4_MINERESCUE"}}
+      ],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 1766}, "amount": 1}
+      ],
+      "rewards": [{"item": {"Index": 1}, "amount": 1}]
+    },
+    {
+      "quest_name": "坏样板·物品悬空",
+      "quest_type": "Story",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [{"requirement": "MinLevel", "int_parameter1": 10}],
+      "tasks": [
+        {"task": "KillMonster", "amount": 1, "monster_details": [{"monster": {"Index": 29}, "chance": 1, "amount": 1}]}
+      ],
+      "rewards": [{"item": {"Index": 99999}, "amount": 1}]
+    },
+    {
+      "quest_name": "坏样板·区域悬空",
+      "quest_type": "Story",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 9999}, "amount": 1}
+      ],
+      "rewards": []
+    },
+    {
+      "quest_name": "Curing the Poison Pt. 1",
+      "quest_type": "General",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 1766}, "amount": 1}
+      ],
+      "rewards": []
+    }
+  ]
+}

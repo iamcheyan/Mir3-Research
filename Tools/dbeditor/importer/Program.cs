@@ -184,7 +184,8 @@ DBObject ByIndex(ADBCollection c, int idx)
     return null;
 }
 
-// ---------- 6) 应用变更（先删 → 改 → 增） ----------
+// ---------- 6) 应用变更（先删 → 改 → 增【两阶段：先建后填，Index 重映射】） ----------
+var remap = new Dictionary<string, Dictionary<int, int>>();   // 工作区 Index → MirDB 真实 Index
 int applied = 0;
 foreach (var (table, op, index, _) in changes.Where(c => c.op == "del").OrderBy(c => c.index))
 {
@@ -193,23 +194,76 @@ foreach (var (table, op, index, _) in changes.Where(c => c.op == "del").OrderBy(
     target.Delete();
     applied++; Log($"[-] {table}#{index}");
 }
-foreach (var (table, op, index, row) in changes.Where(c => c.op == "mod").OrderBy(c => c.index))
+// 修改：跨表前向引用（mod 引用本批 Add 的新行，如 NPCInfo.EntryPage → 新 NPCPage）
+// 无法在 mod 阶段满足 → 先试改；若仅因「引用目标缺失」失败则整体延后，Add 后重放。
+var modList = changes.Where(c => c.op == "mod").OrderBy(c => c.index).ToList();
+var deferred = new List<(string table, int index, JsonElement row)>();
+foreach (var (table, op, index, row) in modList)
 {
     var target = ByIndex(Col(table), index);
     if (target == null) { errors.Add($"修改 {table}#{index}: 目标不存在"); continue; }
+    int errBefore = errors.Count;
     ApplyRow(table, types[table], target, row);
-    applied++; Log($"[~] {table}#{index}");
-}
-foreach (var (table, op, index, row) in changes.Where(c => c.op == "add").OrderBy(c => c.index))
-{
-    var ob = NewObj(Col(table));
-    if (ob.Index != index)
+    bool missingRefs = errors.Skip(errBefore).Any(e => e.Contains("引用目标缺失") || e.Contains("元素缺失"));
+    if (missingRefs)
     {
-        errors.Add($"新增 {table}#{index}: MirDB 分配 Index={ob.Index} 与工作区不一致（表内可能有 Index 空洞）");
+        // 撤销本轮已写字段成本高（部分字段已生效）——直接记录，不回滚；
+        // Add 后重放会覆盖全部字段，最终态正确。
+        deferred.Add((table, index, row));
+        // 引用缺失只是「暂时」错误：从 errors 移除，重放失败才最终算错
+        errors.RemoveRange(errBefore, errors.Count - errBefore);
+        Log($"[~] {table}#{index} → 前向引用，延后到 Add 之后重放");
         continue;
     }
+    applied++; Log($"[~] {table}#{index}");
+}
+// 阶段 A：先创建全部新行（CreateNew 由 MirDB 按表内计数器分配真实 Index——
+// 工作区 max+1 可能落后于计数器（历史删除留下的空洞），记录 工作区→真实 映射。
+var addList = changes.Where(c => c.op == "add").OrderBy(c => c.index).ToList();
+foreach (var g in addList.GroupBy(c => c.table))
+{
+    var map = new Dictionary<int, int>();
+    foreach (var c in g)
+    {
+        var ob = NewObj(Col(c.table));
+        // QuestInfo.OnCreated() 会自动补一条 HaveNotCompleted-self QuestRequirement
+        //（引擎防重复接取惯例）。工作区行已显式含该条 → 删掉自动条目防重复入库。
+        if (c.table == "QuestInfo")
+            foreach (var auto in ((Library.SystemModels.QuestInfo)ob).Requirements.ToList())
+                auto.Delete();
+        map[c.index] = ob.Index;
+    }
+    remap[g.Key] = map;
+}
+// 阶段 B：填充字段；引用目标若是本批新行，按映射改指真实 Index
+foreach (var (table, op, index, row) in addList)
+{
+    var real = remap[table][index];
+    var ob = ByIndex(Col(table), real);
+    if (ob == null) { errors.Add($"新增 {table}#{index}: 创建后找不到对象"); continue; }
     ApplyRow(table, types[table], ob, row);
-    applied++; Log($"[+] {table}#{index}（Index 自洽）");
+    applied++;
+    Log(real == index
+        ? $"[+] {table}#{index}（Index 自洽）"
+        : $"[+] {table}#{index} → 重映射 #{real}");
+}
+// 重放修改：引用了本批新行的 mod（如 NPCInfo.EntryPage → 新 NPCPage）
+if (deferred.Count > 0)
+{
+    foreach (var (table, index, row) in deferred)
+    {
+        var target = ByIndex(Col(table), index);
+        if (target == null) { errors.Add($"修改 {table}#{index}: 目标不存在"); continue; }
+        ApplyRow(table, types[table], target, row);
+        applied++; Log($"[~] {table}#{index}（前向引用重放）");
+    }
+}
+// 输出重映射表（供 sync.sh 的 round-trip 对比换算工作区 Index）
+foreach (var (t, m) in remap)
+{
+    var moved = m.Where(kv => kv.Key != kv.Value).ToList();
+    if (moved.Count > 0)
+        Log("REMAP=" + t + ":" + string.Join(",", moved.Select(kv => $"{kv.Key}={kv.Value}")));
 }
 if (errors.Count > 0)
 {
@@ -265,18 +319,19 @@ void ApplyRow(string table, Type type, DBObject ob, JsonElement row)
                 case "float":
                 case "number":
                     Set(prop, field, ob, Convert.ChangeType(p.Value.GetDouble(), memberType)); break;
-                case "string":
-                    Set(prop, field, ob, p.Value.ValueKind == JsonValueKind.Null ? null : p.Value.GetString()); break;
-                case "enum":
-                    Set(prop, field, ob, Enum.Parse(memberType, p.Value.GetString())); break;
                 case "ref":
                 {
                     if (p.Value.ValueKind == JsonValueKind.Null) { Set(prop, field, ob, null); break; }
-                    var target = ByIndex(Col(to), p.Value.GetProperty("Index").GetInt32());
+                    int refIdx = p.Value.GetProperty("Index").GetInt32();
+                    if (remap.TryGetValue(to ?? "", out var m) && m.TryGetValue(refIdx, out var realIdx))
+                        refIdx = realIdx;
+                    var target = ByIndex(Col(to), refIdx);
                     if (target == null) { errors.Add($"{table}#{ob.Index}.{p.Name}: 引用目标缺失"); break; }
                     Set(prop, field, ob, target);
                     break;
                 }
+                case "enum":
+                    Set(prop, field, ob, Enum.Parse(memberType, p.Value.GetString())); break;
                 case "stats":
                 {
                     var stats = (Stats)(prop != null ? prop.GetValue(ob) : field.GetValue(ob));
@@ -295,12 +350,17 @@ void ApplyRow(string table, Type type, DBObject ob, JsonElement row)
                     list.Clear();
                     foreach (var el in p.Value.EnumerateArray())
                     {
-                        var target = ByIndex(Col(to), el.GetProperty("Index").GetInt32());
+                        int elIdx = el.GetProperty("Index").GetInt32();
+                        if (remap.TryGetValue(to ?? "", out var m) && m.TryGetValue(elIdx, out var realIdx))
+                            elIdx = realIdx;
+                        var target = ByIndex(Col(to), elIdx);
                         if (target == null) { errors.Add($"{table}#{ob.Index}.{p.Name}[]: 元素缺失"); break; }
                         list.Add(target);
                     }
                     break;
                 }
+                case "string":
+                    Set(prop, field, ob, p.Value.ValueKind == JsonValueKind.Null ? null : p.Value.GetString()); break;
                 default:
                     errors.Add($"{table}#{ob.Index}.{p.Name}: 类型 {ft} 暂不支持写入（改动被拒绝）");
                     break;

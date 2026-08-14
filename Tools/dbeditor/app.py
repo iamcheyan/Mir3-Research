@@ -996,6 +996,319 @@ def sync_execute() -> dict:
             "stdout": r.stdout[-8000:], "stderr": r.stderr[-4000:], "report": report}
 
 
+# ---------------------------------------------------------------- 任务批量落地
+
+
+class QuestApplyReq(BaseModel):
+    """任务落地载荷：一批 QuestInfo + 子表（requirements/tasks/rewards）。
+
+    语义（zdocs/quest-system.md + PlayerObject.QuestCanAccept 实证）：
+      - Requirements 全部 AND；
+      - Rewards 只发物品（引擎无独立金币/经验奖励，经验经伪物品发放）；
+      - Tasks 仅 KillMonster / GainItem / VisitRegion 三型；
+      - 缺失 HaveNotCompleted-self 时自动补（引擎惯例，防重复接取）。
+    """
+    quests: list[dict[str, Any]]
+    dry_run: bool = False
+
+
+def _qa_check_ref(value: Any, table: str, path: str, errors: list[str],
+                  name_field: str = "Name") -> dict | None:
+    """校验 {Index: n} 引用存在；返回规范化引用（带目标行名）。"""
+    if not isinstance(value, dict) or not isinstance(value.get("Index"), int):
+        errors.append(f"{path}: 需要 {{\"Index\": <int>}}")
+        return None
+    tgt = STORE.tables.get(table, {})
+    if value["Index"] not in tgt:
+        errors.append(f"{path}: 引用的 {table}#{value['Index']} 不存在")
+        return None
+    row = tgt[value["Index"]]
+    name = row.get("_Identity")
+    if not name:
+        for k in ("ItemName", "MonsterName", "NPCName", "QuestName", "FileName"):
+            if row.get(k):
+                name = row[k]
+                break
+    return {"Index": value["Index"], "Name": name}
+
+
+def _qa_int(payload: dict[str, Any], key: str, default: int, lo: int, hi: int,
+            path: str, errors: list[str]) -> int:
+    v = payload.get(key, default)
+    if not isinstance(v, int) or isinstance(v, bool) or not (lo <= v <= hi):
+        errors.append(f"{path}.{key}: 需要整数 [{lo},{hi}]")
+        return default
+    return v
+
+
+def _qa_enum(payload: dict[str, Any], key: str, enum: str, default: str,
+             path: str, errors: list[str]) -> str:
+    v = payload.get(key, default)
+    if v not in STORE.enums.get(enum, []):
+        errors.append(f"{path}.{key}: {v!r} 不在枚举 {enum} 中")
+        return default
+    return v
+
+
+def _qa_text(payload: dict[str, Any], key: str, path: str, errors: list[str],
+             required: bool = False) -> str | None:
+    v = payload.get(key)
+    if v is None:
+        if required:
+            errors.append(f"{path}.{key}: 缺失（必填）")
+        return None
+    if not isinstance(v, str):
+        errors.append(f"{path}.{key}: 需要字符串")
+        return None
+    return v
+
+
+@APP.post("/api/quest_apply")
+def quest_apply(body: QuestApplyReq) -> dict:
+    """校验并落地一批任务到工作区（写 JSON + git commit；同步仍走 /api/sync）。
+
+    校验全部通过才写（无部分写入）：前置任务存在 / 物品存在 / 区域存在 /
+    怪物与 NPC 存在 / 任务名不冲突 / 任务类型与枚举合法。
+    """
+    with STORE.lock:
+        errors: list[str] = []
+        quests_out: list[dict[str, Any]] = []
+        # 任务名 → 本批分配的 QuestInfo Index（供批内前置引用）
+        quest_rows = STORE.tables.get("QuestInfo", {})
+        existing_names = {r.get("QuestName") for r in quest_rows.values()}
+        batch_index: dict[str, int] = {}
+        next_qi = STORE.next_index("QuestInfo")
+        for qi, q in enumerate(body.quests):
+            base = f"quests[{qi}]"
+            name = _qa_text(q, "quest_name", base, errors, required=True)
+            if not name:
+                continue
+            if name in existing_names:
+                errors.append(f"{base}.quest_name: 任务名「{name}」已存在（Index 冲突）")
+            if name in batch_index:
+                errors.append(f"{base}.quest_name: 批内重复任务名「{name}」")
+            else:
+                batch_index[name] = next_qi + len(batch_index)
+
+        def resolve_quest_param(v: Any, path: str) -> dict | None:
+            """前置引用：{'Index': n}（已有）或 {'quest_name': str}（本批新建/库内按名）。"""
+            if isinstance(v, dict) and isinstance(v.get("Index"), int):
+                if v["Index"] not in quest_rows:
+                    errors.append(f"{path}: 前置任务 QuestInfo#{v['Index']} 不存在")
+                    return None
+                return {"Index": v["Index"], "Name": quest_rows[v["Index"]].get("QuestName")}
+            if isinstance(v, dict) and isinstance(v.get("quest_name"), str):
+                nm = v["quest_name"]
+                if nm in batch_index:
+                    return {"Index": batch_index[nm], "Name": nm}
+                if nm in existing_names:
+                    idx = next(i for i, r in quest_rows.items() if r.get("QuestName") == nm)
+                    return {"Index": idx, "Name": nm}
+                errors.append(f"{path}: 前置任务「{nm}」不存在（既不在库中也不在本批）")
+                return None
+            errors.append(f"{path}: 需要 {{\"Index\": int}} 或 {{\"quest_name\": str}}")
+            return None
+
+        # ---- 全量校验（收集所有错误后再决定写入）
+        for qi, q in enumerate(body.quests):
+            base = f"quests[{qi}]"
+            _qa_enum(q, "quest_type", "QuestType", "Story", base, errors)
+            for k in ("accept_text", "progress_text", "completed_text", "archive_text"):
+                _qa_text(q, k, base, errors)
+            for k in ("start_npc", "finish_npc"):
+                _qa_check_ref(q.get(k), "NPCInfo", f"{base}.{k}", errors)
+            reqs = q.get("requirements") or []
+            if not isinstance(reqs, list):
+                errors.append(f"{base}.requirements: 需要数组")
+                reqs = []
+            for ri, rq in enumerate(reqs):
+                rp = f"{base}.requirements[{ri}]"
+                rt = _qa_enum(rq, "requirement", "QuestRequirementType", "", rp, errors)
+                if rt in ("HaveCompleted", "HaveNotCompleted", "NotAccepted"):
+                    resolve_quest_param(rq.get("quest_parameter"), f"{rp}.quest_parameter")
+                elif rt in ("MinLevel", "MaxLevel"):
+                    _qa_int(rq, "int_parameter1", 0, 0, 1000, rp, errors)
+                elif rt == "Class":
+                    _qa_enum(rq, "class", "RequiredClass", "All", rp, errors)
+            tasks = q.get("tasks") or []
+            if not isinstance(tasks, list):
+                errors.append(f"{base}.tasks: 需要数组")
+                tasks = []
+            if not tasks:
+                errors.append(f"{base}.tasks: 至少一个任务步骤（引擎三型之一）")
+            for ti, tk in enumerate(tasks):
+                tp = f"{base}.tasks[{ti}]"
+                tt = _qa_enum(tk, "task", "QuestTaskType", "", tp, errors)
+                _qa_int(tk, "amount", 1, 1, 100000, tp, errors)
+                _qa_text(tk, "mob_description", tp, errors)
+                if tt == "VisitRegion":
+                    _qa_check_ref(tk.get("region_parameter"), "MapRegion",
+                                  f"{tp}.region_parameter", errors)
+                elif tt == "GainItem":
+                    _qa_check_ref(tk.get("item_parameter"), "ItemInfo",
+                                  f"{tp}.item_parameter", errors)
+                elif tt == "KillMonster":
+                    mds = tk.get("monster_details") or []
+                    if not mds:
+                        errors.append(f"{tp}.monster_details: KillMonster 至少一条怪物明细")
+                    for mi, md in enumerate(mds):
+                        mp = f"{tp}.monster_details[{mi}]"
+                        _qa_check_ref(md.get("monster"), "MonsterInfo",
+                                      f"{mp}.monster", errors)
+                        if md.get("map") is not None:
+                            _qa_check_ref(md.get("map"), "MapInfo", f"{mp}.map", errors)
+                        _qa_int(md, "chance", 1, 1, 1000, mp, errors)
+                        _qa_int(md, "amount", 1, 1, 1000, mp, errors)
+            rewards = q.get("rewards") or []
+            if not isinstance(rewards, list):
+                errors.append(f"{base}.rewards: 需要数组")
+                rewards = []
+            for ri, rw in enumerate(rewards):
+                rp = f"{base}.rewards[{ri}]"
+                _qa_check_ref(rw.get("item"), "ItemInfo", f"{rp}.item", errors)
+                _qa_int(rw, "amount", 1, 1, 100000, rp, errors)
+                for k in ("choice", "bound"):
+                    if k in rw and not isinstance(rw[k], bool):
+                        errors.append(f"{rp}.{k}: 需要布尔值")
+                _qa_int(rw, "duration", 0, 0, 100000, rp, errors)
+                _qa_enum(rw, "class", "RequiredClass", "All", rp, errors)
+
+        if errors:
+            return JSONResponse(status_code=400,
+                                content={"ok": False, "errors": errors[:100],
+                                         "error_count": len(errors)})
+
+        if body.dry_run:
+            # 预演 Index：按写入顺序推演（不触碰内存态，可重复调用）
+            preview, counters = [], {"QuestRequirement": STORE.next_index("QuestRequirement"),
+                                     "QuestTask": STORE.next_index("QuestTask"),
+                                     "QuestReward": STORE.next_index("QuestReward"),
+                                     "QuestTaskMonsterDetails":
+                                         STORE.next_index("QuestTaskMonsterDetails")}
+            for q in body.quests:
+                reqs = list(q.get("requirements") or [])
+                if not any(isinstance(r, dict)
+                           and r.get("requirement") == "HaveNotCompleted"
+                           and isinstance(r.get("quest_parameter"), dict)
+                           and r["quest_parameter"].get("quest_name") == q["quest_name"]
+                           for r in reqs):
+                    reqs = [None] + reqs
+                req_idx = list(range(counters["QuestRequirement"],
+                                     counters["QuestRequirement"] + len(reqs)))
+                counters["QuestRequirement"] += len(reqs)
+                tsk_idx = list(range(counters["QuestTask"],
+                                     counters["QuestTask"] + len(q.get("tasks") or [])))
+                counters["QuestTask"] += len(q.get("tasks") or [])
+                rwd_idx = list(range(counters["QuestReward"],
+                                     counters["QuestReward"] + len(q.get("rewards") or [])))
+                counters["QuestReward"] += len(q.get("rewards") or [])
+                preview.append({"quest_name": q["quest_name"],
+                                "quest_index": batch_index[q["quest_name"]],
+                                "requirements": req_idx, "tasks": tsk_idx,
+                                "rewards": rwd_idx})
+            return {"ok": True, "dry_run": True, "would_apply": preview, "errors": []}
+
+        # ---- 写入（全部校验通过；QuestInfo Index 先分配，子表按表各自顺延）
+        touched: set[str] = set()
+        for q in body.quests:
+            name = q["quest_name"]
+            qidx = batch_index[name]
+            qref = {"Index": qidx, "Name": name}
+            npc = STORE.tables["NPCInfo"]
+            reqs = list(q.get("requirements") or [])
+            if not any(r.get("requirement") == "HaveNotCompleted"
+                       and isinstance(r.get("quest_parameter"), dict)
+                       and (r["quest_parameter"].get("quest_name") == name
+                            or r["quest_parameter"].get("Index") == qidx)
+                       for r in reqs):
+                reqs = [{"requirement": "HaveNotCompleted",
+                         "quest_parameter": {"quest_name": name}}] + reqs
+            req_rows, task_rows, reward_rows = [], [], []
+            for rq in reqs:
+                row: dict[str, Any] = {
+                    "Index": STORE.next_index("QuestRequirement"),
+                    "Quest": qref,
+                    "Requirement": rq.get("requirement", "MinLevel"),
+                    "IntParameter1": rq.get("int_parameter1", 0) or 0,
+                    "QuestParameter": None,
+                    "Class": rq.get("class") or "None"}
+                if row["Requirement"] in ("HaveCompleted", "HaveNotCompleted", "NotAccepted"):
+                    row["QuestParameter"] = resolve_quest_param(rq.get("quest_parameter"), "")
+                STORE.tables["QuestRequirement"][row["Index"]] = row
+                STORE.recompute_identity("QuestRequirement", row)
+                req_rows.append(row["Index"])
+            for tk in q.get("tasks") or []:
+                trow: dict[str, Any] = {
+                    "Index": STORE.next_index("QuestTask"),
+                    "Quest": qref, "Task": tk["task"],
+                    "ItemParameter": None, "RegionParameter": None,
+                    "MobDescription": tk.get("mob_description") or "",
+                    "Amount": tk.get("amount", 1), "MonsterDetails": []}
+                if tk["task"] == "VisitRegion":
+                    trow["RegionParameter"] = _qa_check_ref(
+                        tk["region_parameter"], "MapRegion", "", errors)
+                elif tk["task"] == "GainItem":
+                    trow["ItemParameter"] = _qa_check_ref(
+                        tk["item_parameter"], "ItemInfo", "", errors)
+                md_rows = []
+                for md in tk.get("monster_details") or []:
+                    mrow = {"Index": STORE.next_index("QuestTaskMonsterDetails"),
+                            "Task": {"Index": trow["Index"], "Name": None},
+                            "Monster": _qa_check_ref(md["monster"], "MonsterInfo", "", errors),
+                            "Map": _qa_check_ref(md["map"], "MapInfo", "", errors)
+                                   if md.get("map") is not None else None,
+                            "Chance": md.get("chance", 1),
+                            "Amount": md.get("amount", 1),
+                            "DropSet": md.get("drop_set", 0)}
+                    STORE.tables["QuestTaskMonsterDetails"][mrow["Index"]] = mrow
+                    STORE.recompute_identity("QuestTaskMonsterDetails", mrow)
+                    md_rows.append(mrow["Index"])
+                    touched.add("QuestTaskMonsterDetails")
+                trow["MonsterDetails"] = [{"Index": i, "Name": None} for i in md_rows]
+                STORE.tables["QuestTask"][trow["Index"]] = trow
+                STORE.recompute_identity("QuestTask", trow)
+                task_rows.append(trow["Index"])
+            for rw in q.get("rewards") or []:
+                rrow = {"Index": STORE.next_index("QuestReward"),
+                        "Quest": qref,
+                        "Item": _qa_check_ref(rw["item"], "ItemInfo", "", errors),
+                        "Amount": rw.get("amount", 1),
+                        "Choice": bool(rw.get("choice", False)),
+                        "Bound": bool(rw.get("bound", True)),
+                        "Duration": rw.get("duration", 0) or 0,
+                        "Class": rw.get("class") or "All"}
+                STORE.tables["QuestReward"][rrow["Index"]] = rrow
+                STORE.recompute_identity("QuestReward", rrow)
+                reward_rows.append(rrow["Index"])
+            qi_row = {
+                "Index": qidx, "_Identity": name, "QuestName": name,
+                "QuestType": q.get("quest_type", "Story"),
+                "AcceptText": q.get("accept_text") or "",
+                "ProgressText": q.get("progress_text") or "",
+                "CompletedText": q.get("completed_text") or "",
+                "ArchiveText": q.get("archive_text") or "",
+                "Requirements": [{"Index": i, "Name": None} for i in req_rows],
+                "StartNPC": {"Index": q["start_npc"]["Index"],
+                             "Name": npc[q["start_npc"]["Index"]].get("_Identity")},
+                "FinishNPC": {"Index": q["finish_npc"]["Index"],
+                              "Name": npc[q["finish_npc"]["Index"]].get("_Identity")},
+                "Rewards": [{"Index": i, "Name": None} for i in reward_rows],
+                "Tasks": [{"Index": i, "Name": None} for i in task_rows],
+            }
+            STORE.tables["QuestInfo"][qidx] = qi_row
+            quests_out.append({"quest_name": name, "quest_index": qidx,
+                               "requirements": req_rows, "tasks": task_rows,
+                               "rewards": reward_rows})
+            touched.update(("QuestInfo", "QuestRequirement", "QuestTask", "QuestReward"))
+
+        for t in touched:
+            STORE.persist(t)
+        STORE.git_commit(f"任务落地 {len(quests_out)} 个（"
+                         + "、".join(x["quest_name"] for x in quests_out[:5])
+                         + ("…" if len(quests_out) > 5 else "") + "）")
+        return {"ok": True, "dry_run": False, "applied": quests_out, "errors": []}
+
+
 # ---------------------------------------------------------------- 静态
 
 APP.mount("/static", StaticFiles(directory=STATIC), name="static")

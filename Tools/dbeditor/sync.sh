@@ -66,7 +66,7 @@ dotnet run --project "$REPO/Tools/SystemDbProbe" --no-build -- \
 echo "[3/7] round-trip 导出完成"
 
 # ---------- 4) 语义对比 ----------
-python3 "$DBEDITOR/compare_sync.py" "$WS" "$RT_DIR/out"
+python3 "$DBEDITOR/compare_sync.py" "$WS" "$RT_DIR/out" "$REPORT.importer"
 echo "[4/7] round-trip 语义对比通过"
 
 # ---------- 5) 备份双库 ----------

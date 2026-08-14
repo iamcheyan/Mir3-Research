@@ -1,0 +1,31 @@
+{
+  "_说明": "样板②：M3K_WAR_SKEWER 刺杀剑术觉醒（简单觉醒，单任务）。设计原文 04-主线任务详解-技能觉醒 §2.1。占位说明见 _notes。",
+  "quests": [
+    {
+      "quest_name": "刺杀剑术觉醒",
+      "quest_type": "Story",
+      "_notes": "设计 ID M3K_WAR_SKEWER。骷髅战将按 D1 语义图消歧为 MonsterInfo#29 Skeleton Warrior（骷髅战士，多候选 0.5 置信，见 semantic_map.json monsters.骷髅战将）；接取 NPC 老矿工·陈永年未落地，占位为边境城市·龙血先生；「骨粉」物品与「祭坛旧址」区域未落地（D1 孤儿清单），步骤仅保留杀怪；狩猎币物品缺失，奖励保留技能书+金币。",
+      "accept_text": "老矿工陈永年兑现\"一刺保命\"的承诺：请[PLAYERNAME]以骷髅祭坛旧址为靶，猎取骷髅战将的骨粉，磨砺\"洞穴里活命的一刺\"。",
+      "progress_text": "前往骷髅祭坛旧址，击杀骷髅战将（0/6），收集骨粉（0/3）。",
+      "completed_text": "骨粉入怀，老矿工以矿镐为剑，演示那记千年矿洞里磨出来的刺杀：\"怪物扑来时，怕的人先死。这一刺，要快，要狠，要往它最软的地方去。\"",
+      "archive_text": "老矿工将毕生保命的一刺传予[PLAYERNAME]，刺杀剑术习得。矿洞之约，兑现。",
+      "start_npc": {"Index": 160},
+      "finish_npc": {"Index": 160},
+      "requirements": [
+        {"requirement": "Class", "class": "Warrior"},
+        {"requirement": "MinLevel", "int_parameter1": 19}
+      ],
+      "tasks": [
+        {"task": "KillMonster", "amount": 6,
+         "mob_description": "击杀骷髅战将（Skeleton Warrior 骷髅战士）×6",
+         "monster_details": [
+           {"monster": {"Index": 29}, "chance": 1, "amount": 1, "drop_set": 0}
+         ]}
+      ],
+      "rewards": [
+        {"item": {"Index": 5}, "amount": 1, "bound": true},
+        {"item": {"Index": 1}, "amount": 3000, "bound": false}
+      ]
+    }
+  ]
+}

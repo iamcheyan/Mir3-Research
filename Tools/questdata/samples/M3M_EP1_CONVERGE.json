@@ -1,0 +1,74 @@
+{
+  "_说明": "样板①：M3M_EP1_CONVERGE 望海楼之约 —— 三线其一（OR）语义按 16 号审计拆成三职业版。设计原文 02-主线任务详解 §5.1。占位说明见各任务 _notes。",
+  "quests": [
+    {
+      "quest_name": "望海楼之约（战士）",
+      "quest_type": "Story",
+      "_notes": "设计 ID M3M_EP1_CONVERGE 战士版。设计任务步骤中的「船歌谣·残片」物品未落地（D1 孤儿清单 items），样板以 VisitRegion 单步呈现；奖励以 Gold 伪物品发金币 5000。",
+      "accept_text": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "progress_text": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "completed_text": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "archive_text": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [
+        {"requirement": "Class", "class": "Warrior"},
+        {"requirement": "MinLevel", "int_parameter1": 13}
+      ],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 1766},
+         "amount": 1, "mob_description": "赴望海楼之约（样板占位：边境城市·上官小姐处）"}
+      ],
+      "rewards": [
+        {"item": {"Index": 1}, "amount": 5000, "bound": false},
+        {"item": {"Index": 133}, "amount": 2, "bound": true}
+      ]
+    },
+    {
+      "quest_name": "望海楼之约（法师）",
+      "quest_type": "Story",
+      "_notes": "M3M_EP1_CONVERGE 法师版（Class=Wizard）。其余同战士版。",
+      "accept_text": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "progress_text": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "completed_text": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "archive_text": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [
+        {"requirement": "Class", "class": "Wizard"},
+        {"requirement": "MinLevel", "int_parameter1": 13}
+      ],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 1766},
+         "amount": 1, "mob_description": "赴望海楼之约（样板占位：边境城市·上官小姐处）"}
+      ],
+      "rewards": [
+        {"item": {"Index": 1}, "amount": 5000, "bound": false},
+        {"item": {"Index": 133}, "amount": 2, "bound": true}
+      ]
+    },
+    {
+      "quest_name": "望海楼之约（道士）",
+      "quest_type": "Story",
+      "_notes": "M3M_EP1_CONVERGE 道士版（Class=Taoist）。其余同战士版。",
+      "accept_text": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "progress_text": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "completed_text": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "archive_text": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "start_npc": {"Index": 155},
+      "finish_npc": {"Index": 155},
+      "requirements": [
+        {"requirement": "Class", "class": "Taoist"},
+        {"requirement": "MinLevel", "int_parameter1": 13}
+      ],
+      "tasks": [
+        {"task": "VisitRegion", "region_parameter": {"Index": 1766},
+         "amount": 1, "mob_description": "赴望海楼之约（样板占位：边境城市·上官小姐处）"}
+      ],
+      "rewards": [
+        {"item": {"Index": 1}, "amount": 5000, "bound": false},
+        {"item": {"Index": 133}, "amount": 2, "bound": true}
+      ]
+    }
+  ]
+}

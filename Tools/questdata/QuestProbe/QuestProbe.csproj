@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>QuestProbe</AssemblyName>
+    <RootNamespace>Mir3Research.QuestProbe</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 只读引用 zircon 协议库（绝不修改 zircon 仓库） -->
+    <ProjectReference Include="/home/tetsuya/development/zircon/LibraryCore/LibraryCore.csproj" />
+  </ItemGroup>
+
+</Project>

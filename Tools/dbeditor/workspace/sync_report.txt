@@ -1,48 +1,23 @@
-==================== 同步 2026-08-14 12:57:45 ====================
+==================== 同步 2026-08-14 13:39:51 ====================
 [1/7] 端口检测通过（服务端已停止）
 
 已成功生成。
     0 个警告
     0 个错误
 
-已用时间 00:00:47.78
-[*] 变更 29 处：QuestRequirement×12, QuestTask×4, QuestReward×8, QuestTaskMonsterDetails×1, QuestInfo×4
+已用时间 00:00:27.46
+[*] 变更 4 处：NPCInfo×2, NPCPage×2
 [*] 引用完整性校验通过。
-[+] QuestInfo#63（Index 自洽）
-[+] QuestInfo#64（Index 自洽）
-[+] QuestInfo#65（Index 自洽）
-[+] QuestInfo#66（Index 自洽）
-[+] QuestTask#75（Index 自洽）
-[+] QuestTask#76（Index 自洽）
-[+] QuestTask#77（Index 自洽）
-[+] QuestTask#78（Index 自洽）
-[+] QuestTaskMonsterDetails#98（Index 自洽）
-[+] QuestRequirement#138 → 重映射 #148
-[+] QuestRequirement#139 → 重映射 #149
-[+] QuestRequirement#140 → 重映射 #150
-[+] QuestRequirement#141 → 重映射 #151
-[+] QuestReward#141 → 重映射 #142
-[+] QuestRequirement#142 → 重映射 #152
-[+] QuestReward#142 → 重映射 #143
-[+] QuestRequirement#143 → 重映射 #153
-[+] QuestReward#143 → 重映射 #144
-[+] QuestRequirement#144 → 重映射 #154
-[+] QuestReward#144 → 重映射 #145
-[+] QuestRequirement#145 → 重映射 #155
-[+] QuestReward#145 → 重映射 #146
-[+] QuestRequirement#146 → 重映射 #156
-[+] QuestReward#146 → 重映射 #147
-[+] QuestRequirement#147 → 重映射 #157
-[+] QuestReward#147 → 重映射 #148
-[+] QuestRequirement#148 → 重映射 #158
-[+] QuestReward#148 → 重映射 #149
-[+] QuestRequirement#149 → 重映射 #159
-REMAP=QuestRequirement:138=148,139=149,140=150,141=151,142=152,143=153,144=154,145=155,146=156,147=157,148=158,149=159
-REMAP=QuestReward:141=142,142=143,143=144,144=145,145=146,146=147,147=148,148=149
-[*] 新版本: 2026.08.14.3
-[*] 已保存: /tmp/dbeditor_import_12eaa68525ad4ee6910877990e9ed618/System.db
-[*] 应用 29/29 处变更。
-DB_OUT=/tmp/dbeditor_import_12eaa68525ad4ee6910877990e9ed618/System.db
+[~] NPCInfo#155 → 前向引用，延后到 Add 之后重放
+[~] NPCInfo#160 → 前向引用，延后到 Add 之后重放
+[+] NPCPage#339（Index 自洽）
+[+] NPCPage#340（Index 自洽）
+[~] NPCInfo#155（前向引用重放）
+[~] NPCInfo#160（前向引用重放）
+[*] 新版本: 2026.08.14.4
+[*] 已保存: /tmp/dbeditor_import_32f78d6db867408496269ea54eab3477/System.db
+[*] 应用 4/4 处变更。
+DB_OUT=/tmp/dbeditor_import_32f78d6db867408496269ea54eab3477/System.db
 [2/7] 导入器执行完成
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/LibraryCore/obj/Debug/net10.0/ref/LibraryCore.dll” [/home/tetsuya/development/Mir3-Research/ServerLibrary/ServerLibrary.csproj]
 
@@ -52,7 +27,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:22.18
+已用时间 00:00:12.74
 [!] 构建失败（第 1 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/ServerLibrary/obj/Debug/net10.0/ref/ServerLibrary.dll” [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -62,7 +37,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:24.63
+已用时间 00:00:24.07
 [!] 构建失败（第 2 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 /home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(785,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -72,11 +47,11 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     1 个警告
     0 个错误
 
-已用时间 00:00:08.16
+已用时间 00:00:13.18
 [3/7] round-trip 导出完成
 [OK] round-trip 语义一致
 [4/7] round-trip 语义对比通过
-[5/7] 已备份：Backup/System/System 2026-08-14 13-02.db.gz（含客户端副本）
-[6/7] 已安装双库：server=d25d1c5947c224c02d6ff53ca3a1ec01 client=d25d1c5947c224c02d6ff53ca3a1ec01
-[7/7] 基线已重置（版本 2026.08.14.3，下次 diff 从新库算起）
-同步成功：ee9258a455feb09772dda32cabe16bf5 → d25d1c5947c224c02d6ff53ca3a1ec01
+[5/7] 已备份：Backup/System/System 2026-08-14 13-43.db.gz（含客户端副本）
+[6/7] 已安装双库：server=038c6d698d334062ab1b8c6dd39ba9da client=038c6d698d334062ab1b8c6dd39ba9da
+[7/7] 基线已重置（版本 2026.08.14.4，下次 diff 从新库算起）
+同步成功：d25d1c5947c224c02d6ff53ca3a1ec01 → 038c6d698d334062ab1b8c6dd39ba9da

@@ -18,6 +18,22 @@
 4. **新增任务物品及资产规格**：`船歌谣·残片`、`船长吊坠`等不在 1078 条 `ItemInfo` 中，不能作为 `QuestTask.ItemParameter` 或 `QuestReward.Item`；还缺 ItemInfo 完整字段、图标帧和导入方案。
 5. **System.db 安全写入/回滚/验证闭环**：目前资料指导“读”和设计 JSON，但没有仓库内稳定的任务专用 JSON→MirDB 导入器、引用校验、服务端/客户端双库写入、round-trip 和游戏内验收脚本。
 
+### 2026-08-14 落地状态更新（D1/D2/D3 交付）
+
+缺口 1/2/5 已补齐，缺口 3/4 部分缓解（首批 4 任务用占位对象落地）：
+
+| 缺口 | 状态 | 交付物 |
+|---|---|---|
+| 1. 语义映射 | ✅ 已补齐 | `Tools/questdata/gen_semantic_map.py` → `docs/quest-design/data/semantic_map.json`：五表覆盖率 ≥99.66%，21/21 抽检通过，261 项歧义单列（含沃玛/祖玛命名修正） |
+| 2. 任务 manifest | ✅ 已补齐 | `Tools/questdata/gen_quest_manifest.py` → `docs/quest-design/data/quest_manifest.json`：341/341（M3M 44 / M3K 224 / M3S 57 / M3P 16），核心字段 341/341，0 解析错误 |
+| 3. 剧情地点登记 | ◐ 首批占位 | `望海楼` 无现成 MapRegion；首批任务以「上官小姐」现有区域 1766（01 边境城市 461,257）作 VisitRegion 占位，正式登记表仍待人工 |
+| 4. 新物品及资产 | ◐ 首批占位 | `船歌谣·残片` 等未建 ItemInfo；首批以 Gold 伪物品 + 金创药（小）#133 占位并在 `_notes` 记录，正式物品清单仍待拍板 |
+| 5. DB 写入闭环 | ✅ 已补齐 | dbeditor `POST /api/quest_apply`（存在性/名称/枚举校验 + dry-run + 自动 HaveNotCompleted-self + git 提交）+ `Tools/questdata/import_quest.py` 客户端 + `sync.sh` 双库写入/round-trip 对比 + QuestProbe 无头游戏内验收 |
+
+**首批 4 任务已游戏内验收**：QuestInfo #63–66（望海楼之约·战/法/道 + 刺杀剑术觉醒）经 QuestProbe 无头客户端在 zircon 服务器实际接取成功（S.QuestChanged 下发），证据见 `docs/quest-design/evidence/quest6*_accept_*.json` 与 `quest_ingame_bordercity.png（docs/quest-design/evidence/）`；悬空引用拒绝演示（4 类错误、exit 1、不落库）见 `Tools/questdata/samples/_reject_demo.json`。
+
+落地过程中新发现并已修复的工程缺口：① 地图 01 全部光通 NPC 无 EntryPage（`NPCObject.NPCCall` 遇 `page==null` 静默返回，任务图标/对话均不可达）→ 已为 NPC#155/#160 建 NPCPage#339/#340 并绑定；② 导入器跨表前向引用（mod 引用本批 add 的新行）失败 → 已加前向引用延后重放；③ round-trip 对比对 ref 的 Name 展示字段过敏 → 已改为仅比 Index。
+
 ## 二、资料盘点：文档作用与含金量
 
 评级：**A=可直接作为设计输入；B=结构完整但需要转换/核验；C=研究或叙事参考，不能直接配置。**
