@@ -1,11 +1,11 @@
-==================== 同步 2026-08-14 12:51:05 ====================
+==================== 同步 2026-08-14 12:57:45 ====================
 [1/7] 端口检测通过（服务端已停止）
 
 已成功生成。
     0 个警告
     0 个错误
 
-已用时间 00:00:14.37
+已用时间 00:00:47.78
 [*] 变更 29 处：QuestRequirement×12, QuestTask×4, QuestReward×8, QuestTaskMonsterDetails×1, QuestInfo×4
 [*] 引用完整性校验通过。
 [+] QuestInfo#63（Index 自洽）
@@ -40,9 +40,9 @@
 REMAP=QuestRequirement:138=148,139=149,140=150,141=151,142=152,143=153,144=154,145=155,146=156,147=157,148=158,149=159
 REMAP=QuestReward:141=142,142=143,143=144,144=145,145=146,146=147,147=148,148=149
 [*] 新版本: 2026.08.14.3
-[*] 已保存: /tmp/dbeditor_import_0cac3236e597410fb5bd589b99a17b2f/System.db
+[*] 已保存: /tmp/dbeditor_import_12eaa68525ad4ee6910877990e9ed618/System.db
 [*] 应用 29/29 处变更。
-DB_OUT=/tmp/dbeditor_import_0cac3236e597410fb5bd589b99a17b2f/System.db
+DB_OUT=/tmp/dbeditor_import_12eaa68525ad4ee6910877990e9ed618/System.db
 [2/7] 导入器执行完成
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/LibraryCore/obj/Debug/net10.0/ref/LibraryCore.dll” [/home/tetsuya/development/Mir3-Research/ServerLibrary/ServerLibrary.csproj]
 
@@ -52,7 +52,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:23.61
+已用时间 00:00:22.18
 [!] 构建失败（第 1 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/ServerLibrary/obj/Debug/net10.0/ref/ServerLibrary.dll” [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -62,7 +62,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:40.67
+已用时间 00:00:24.63
 [!] 构建失败（第 2 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 /home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(785,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -72,74 +72,11 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     1 个警告
     0 个错误
 
-已用时间 00:00:15.33
+已用时间 00:00:08.16
 [3/7] round-trip 导出完成
-[X] QuestInfo#9.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#9.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#10.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#10.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#11.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#11.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#12.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#12.FinishNPC: {"Index": 15, "Name": "0 / Potion Store / David"} != {"Index": 15, "Name": "0 / 0 / Potion Store / David"}
-[X] QuestInfo#13.StartNPC: {"Index": 15, "Name": "0 / Potion Store / David"} != {"Index": 15, "Name": "0 / 0 / Potion Store / David"}
-[X] QuestInfo#13.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#14.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#14.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
-[X] QuestInfo#16.StartNPC: {"Index": 21, "Name": "1 / Weapon Store / Hardy"} != {"Index": 21, "Name": "1 / 1 / Weapon Store / Hardy"}
-[X] QuestInfo#16.FinishNPC: {"Index": 21, "Name": "1 / Weapon Store / Hardy"} != {"Index": 21, "Name": "1 / 1 / Weapon Store / Hardy"}
-[X] QuestInfo#17.StartNPC: {"Index": 30, "Name": "2 / Weapon Store / Mr. Kim"} != {"Index": 30, "Name": "2 / 2 / Weapon Store / Mr. Kim"}
-[X] QuestInfo#17.FinishNPC: {"Index": 30, "Name": "2 / Weapon Store / Mr. Kim"} != {"Index": 30, "Name": "2 / 2 / Weapon Store / Mr. Kim"}
-[X] QuestInfo#34.StartNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#34.FinishNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#35.StartNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#35.FinishNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#36.StartNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#36.FinishNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#37.StartNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#37.FinishNPC: {"Index": 25, "Name": "1 / Accessory Store / Flora"} != {"Index": 25, "Name": "1 / 1 / Accessory Store / Flora"}
-[X] QuestInfo#39.StartNPC: {"Index": 16, "Name": "0 / Essential Store / Lennard"} != {"Index": 16, "Name": "0 / 0 / Essential Store / Lennard"}
-[X] QuestInfo#39.FinishNPC: {"Index": 16, "Name": "0 / Essential Store / Lennard"} != {"Index": 16, "Name": "0 / 0 / Essential Store / Lennard"}
-[X] QuestInfo#40.StartNPC: {"Index": 16, "Name": "0 / Essential Store / Lennard"} != {"Index": 16, "Name": "0 / 0 / Essential Store / Lennard"}
-[X] QuestInfo#40.FinishNPC: {"Index": 16, "Name": "0 / Essential Store / Lennard"} != {"Index": 16, "Name": "0 / 0 / Essential Store / Lennard"}
-[X] QuestInfo#42.StartNPC: {"Index": 15, "Name": "0 / Potion Store / David"} != {"Index": 15, "Name": "0 / 0 / Potion Store / David"}
-[X] QuestInfo#42.FinishNPC: {"Index": 15, "Name": "0 / Potion Store / David"} != {"Index": 15, "Name": "0 / 0 / Potion Store / David"}
-[X] QuestInfo#43.StartNPC: {"Index": 23, "Name": "1 / Potion Store / Haylee"} != {"Index": 23, "Name": "1 / 1 / Potion Store / Haylee"}
-[X] QuestInfo#43.FinishNPC: {"Index": 23, "Name": "1 / Potion Store / Haylee"} != {"Index": 23, "Name": "1 / 1 / Potion Store / Haylee"}
-[X] QuestInfo#44.StartNPC: {"Index": 32, "Name": "2 / Potion Store / Kacy"} != {"Index": 32, "Name": "2 / 2 / Potion Store / Kacy"}
-[X] QuestInfo#44.FinishNPC: {"Index": 32, "Name": "2 / Potion Store / Kacy"} != {"Index": 32, "Name": "2 / 2 / Potion Store / Kacy"}
-[X] QuestInfo#45.StartNPC: {"Index": 20, "Name": "0 / Butcher Store / Murphy"} != {"Index": 20, "Name": "0 / 0 / Butcher Store / Murphy"}
-[X] QuestInfo#45.FinishNPC: {"Index": 20, "Name": "0 / Butcher Store / Murphy"} != {"Index": 20, "Name": "0 / 0 / Butcher Store / Murphy"}
-[X] QuestInfo#46.StartNPC: {"Index": 22, "Name": "1 / Book Store / Gresham"} != {"Index": 22, "Name": "1 / 1 / Book Store / Gresham"}
-[X] QuestInfo#46.FinishNPC: {"Index": 22, "Name": "1 / Book Store / Gresham"} != {"Index": 22, "Name": "1 / 1 / Book Store / Gresham"}
-[X] QuestInfo#47.StartNPC: {"Index": 14, "Name": "0 / Book Store / Isaac"} != {"Index": 14, "Name": "0 / 0 / Book Store / Isaac"}
-[X] QuestInfo#47.FinishNPC: {"Index": 14, "Name": "0 / Book Store / Isaac"} != {"Index": 14, "Name": "0 / 0 / Book Store / Isaac"}
-[X] QuestInfo#48.StartNPC: {"Index": 31, "Name": "2 / Book Store / Henry"} != {"Index": 31, "Name": "2 / 2 / Book Store / Henry"}
-[X] QuestInfo#48.FinishNPC: {"Index": 31, "Name": "2 / Book Store / Henry"} != {"Index": 31, "Name": "2 / 2 / Book Store / Henry"}
-[X] QuestInfo#50.StartNPC: {"Index": 19, "Name": "0 / Armour Store / Linda"} != {"Index": 19, "Name": "0 / 0 / Armour Store / Linda"}
-[X] QuestInfo#50.FinishNPC: {"Index": 19, "Name": "0 / Armour Store / Linda"} != {"Index": 19, "Name": "0 / 0 / Armour Store / Linda"}
-[X] QuestInfo#51.StartNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
-[X] QuestInfo#51.FinishNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
-[X] QuestInfo#52.StartNPC: {"Index": 27, "Name": "1 / Armour Store / Melisa"} != {"Index": 27, "Name": "1 / 1 / Armour Store / Melisa"}
-[X] QuestInfo#52.FinishNPC: {"Index": 27, "Name": "1 / Armour Store / Melisa"} != {"Index": 27, "Name": "1 / 1 / Armour Store / Melisa"}
-[X] QuestInfo#53.StartNPC: {"Index": 18, "Name": "0 / Collector Store / Loy"} != {"Index": 18, "Name": "0 / 0 / Collector Store / Loy"}
-[X] QuestInfo#53.FinishNPC: {"Index": 18, "Name": "0 / Collector Store / Loy"} != {"Index": 18, "Name": "0 / 0 / Collector Store / Loy"}
-[X] QuestInfo#54.StartNPC: {"Index": 35, "Name": "2 / Collector Store / Murray"} != {"Index": 35, "Name": "2 / 2 / Collector Store / Murray"}
-[X] QuestInfo#54.FinishNPC: {"Index": 35, "Name": "2 / Collector Store / Murray"} != {"Index": 35, "Name": "2 / 2 / Collector Store / Murray"}
-[X] QuestInfo#55.StartNPC: {"Index": 26, "Name": "1 / Collector Store / Max"} != {"Index": 26, "Name": "1 / 1 / Collector Store / Max"}
-[X] QuestInfo#55.FinishNPC: {"Index": 26, "Name": "1 / Collector Store / Max"} != {"Index": 26, "Name": "1 / 1 / Collector Store / Max"}
-[X] QuestInfo#56.StartNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#56.FinishNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#57.StartNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#57.FinishNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#58.StartNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#58.FinishNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#59.StartNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#59.FinishNPC: {"Index": 33, "Name": "2 / Essential Store / Seven"} != {"Index": 33, "Name": "2 / 2 / Essential Store / Seven"}
-[X] QuestInfo#60.StartNPC: {"Index": 27, "Name": "1 / Armour Store / Melisa"} != {"Index": 27, "Name": "1 / 1 / Armour Store / Melisa"}
-[X] QuestInfo#60.FinishNPC: {"Index": 27, "Name": "1 / Armour Store / Melisa"} != {"Index": 27, "Name": "1 / 1 / Armour Store / Melisa"}
-[X] QuestInfo#61.StartNPC: {"Index": 19, "Name": "0 / Armour Store / Linda"} != {"Index": 19, "Name": "0 / 0 / Armour Store / Linda"}
-[X] QuestInfo#61.FinishNPC: {"Index": 19, "Name": "0 / Armour Store / Linda"} != {"Index": 19, "Name": "0 / 0 / Armour Store / Linda"}
-[X] QuestInfo#62.StartNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
-[X] QuestInfo#62.FinishNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
-[FAIL] 68 处 round-trip 差异
+[OK] round-trip 语义一致
+[4/7] round-trip 语义对比通过
+[5/7] 已备份：Backup/System/System 2026-08-14 13-02.db.gz（含客户端副本）
+[6/7] 已安装双库：server=d25d1c5947c224c02d6ff53ca3a1ec01 client=d25d1c5947c224c02d6ff53ca3a1ec01
+[7/7] 基线已重置（版本 2026.08.14.3，下次 diff 从新库算起）
+同步成功：ee9258a455feb09772dda32cabe16bf5 → d25d1c5947c224c02d6ff53ca3a1ec01

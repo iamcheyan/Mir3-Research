@@ -1,5 +1,5 @@
 {
-  "count": 58,
+  "count": 70,
   "rows": [
     {
       "Index": 16,
@@ -763,6 +763,150 @@
       },
       "Requirement": "MinLevel",
       "IntParameter1": 5,
+      "Class": "None"
+    },
+    {
+      "Index": 138,
+      "Quest": {
+        "Index": 63,
+        "Name": "望海楼之约（战士）"
+      },
+      "Requirement": "HaveNotCompleted",
+      "IntParameter1": 0,
+      "QuestParameter": {
+        "Index": 63,
+        "Name": "望海楼之约（战士）"
+      },
+      "Class": "None"
+    },
+    {
+      "Index": 139,
+      "Quest": {
+        "Index": 63,
+        "Name": "望海楼之约（战士）"
+      },
+      "Requirement": "Class",
+      "IntParameter1": 0,
+      "QuestParameter": null,
+      "Class": "Warrior"
+    },
+    {
+      "Index": 140,
+      "Quest": {
+        "Index": 63,
+        "Name": "望海楼之约（战士）"
+      },
+      "Requirement": "MinLevel",
+      "IntParameter1": 13,
+      "QuestParameter": null,
+      "Class": "None"
+    },
+    {
+      "Index": 141,
+      "Quest": {
+        "Index": 64,
+        "Name": "望海楼之约（法师）"
+      },
+      "Requirement": "HaveNotCompleted",
+      "IntParameter1": 0,
+      "QuestParameter": {
+        "Index": 64,
+        "Name": "望海楼之约（法师）"
+      },
+      "Class": "None"
+    },
+    {
+      "Index": 142,
+      "Quest": {
+        "Index": 64,
+        "Name": "望海楼之约（法师）"
+      },
+      "Requirement": "Class",
+      "IntParameter1": 0,
+      "QuestParameter": null,
+      "Class": "Wizard"
+    },
+    {
+      "Index": 143,
+      "Quest": {
+        "Index": 64,
+        "Name": "望海楼之约（法师）"
+      },
+      "Requirement": "MinLevel",
+      "IntParameter1": 13,
+      "QuestParameter": null,
+      "Class": "None"
+    },
+    {
+      "Index": 144,
+      "Quest": {
+        "Index": 65,
+        "Name": "望海楼之约（道士）"
+      },
+      "Requirement": "HaveNotCompleted",
+      "IntParameter1": 0,
+      "QuestParameter": {
+        "Index": 65,
+        "Name": "望海楼之约（道士）"
+      },
+      "Class": "None"
+    },
+    {
+      "Index": 145,
+      "Quest": {
+        "Index": 65,
+        "Name": "望海楼之约（道士）"
+      },
+      "Requirement": "Class",
+      "IntParameter1": 0,
+      "QuestParameter": null,
+      "Class": "Taoist"
+    },
+    {
+      "Index": 146,
+      "Quest": {
+        "Index": 65,
+        "Name": "望海楼之约（道士）"
+      },
+      "Requirement": "MinLevel",
+      "IntParameter1": 13,
+      "QuestParameter": null,
+      "Class": "None"
+    },
+    {
+      "Index": 147,
+      "Quest": {
+        "Index": 66,
+        "Name": "刺杀剑术觉醒"
+      },
+      "Requirement": "HaveNotCompleted",
+      "IntParameter1": 0,
+      "QuestParameter": {
+        "Index": 66,
+        "Name": "刺杀剑术觉醒"
+      },
+      "Class": "None"
+    },
+    {
+      "Index": 148,
+      "Quest": {
+        "Index": 66,
+        "Name": "刺杀剑术觉醒"
+      },
+      "Requirement": "Class",
+      "IntParameter1": 0,
+      "QuestParameter": null,
+      "Class": "Warrior"
+    },
+    {
+      "Index": 149,
+      "Quest": {
+        "Index": 66,
+        "Name": "刺杀剑术觉醒"
+      },
+      "Requirement": "MinLevel",
+      "IntParameter1": 19,
+      "QuestParameter": null,
       "Class": "None"
     }
   ]
