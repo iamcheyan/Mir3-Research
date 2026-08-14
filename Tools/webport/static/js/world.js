@@ -13,6 +13,9 @@ import {
   DIR_UP, DIR_UPRIGHT, DIR_RIGHT, DIR_DOWNRIGHT, DIR_DOWN, DIR_DOWNLEFT, DIR_LEFT, DIR_UPLEFT,
   MIR_ACTION,
 } from './frames.js';
+import { C, GRID } from './net.js';
+import { MouseWalker } from './mouse.js';
+
 
 const DIRS = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
 export { DIRS };
@@ -634,6 +637,7 @@ export class World {
       this.player.x = p.x; this.player.y = p.y;
       this.player.moving = false; this.player.offX = this.player.offY = 0;
       this.moveLock = false;
+      this._moveServerLockUntil = 0;   // 服务端纠正(拒绝移动)同样解除门控 (GameScene.cs:1868)
       this.camera.centerOn(p.x * data.CELL_W, p.y * data.CELL_H);
       this.hooks.onPosChange?.(this.player);
     });
@@ -744,8 +748,8 @@ export class World {
       const s = e.detail.stats;
       if (s?.values) {
         for (const [k, v] of s.values) {
-          if (k === 2) { this.player.hp = v; }         // STAT.HEALTH
-          else if (k === 3) { this.player.mp = v; }    // STAT.MANA
+          if (k === 2) { this.player.hp = v; this.player.maxHp = Math.max(this.player.maxHp ?? 0, v); }   // STAT.HEALTH (InitHudData 语义: max 未知前取当前)
+          else if (k === 3) { this.player.mp = v; this.player.maxMp = Math.max(this.player.maxMp ?? 0, v); } // STAT.MANA
           else if (k === 16) { this.attackSpeed = v; } // STAT.ATTACKSPEED
         }
       }
@@ -768,6 +772,7 @@ export class World {
       // 服务端确认: 校正预测 (距离>1 或不一致时瞬移)
       const dist = chebyshev(this.player.x, this.player.y, p.x, p.y);
       if (dist > 1 || p.mapChanged) { this.player.x = p.x; this.player.y = p.y; this.player.moving = false; }
+      this._moveServerLockUntil = 0;   // GameScene.cs:3135 权威位置应用即解锁
       this.moveLock = false;
       this.hooks.onPosChange?.(this.player);
     } else {
@@ -945,73 +950,157 @@ export class World {
     return null;
   }
 
-  // ---- 输入 ----
+  // ---- 输入 (MouseWalker.cs + CombatController.cs 精确移植) ----
   #bindInput() {
     this.keys = new Set();
-    addEventListener('keydown', (ev) => {
-      const k = ev.key.toLowerCase();
-      this.keys.add(k);
-      if (k === 'escape') this.#setTarget(null);
-      if (k === 'tab') { ev.preventDefault(); this.#targetNearest(); }
-      const fk = /^f([1-8])$/.exec(k);   // F1..F8 施法 (KeyBind 后续接入)
-      if (fk) {
-        ev.preventDefault();
-        const slot = this.spellSlots()[+fk[1] - 1];
-        if (slot?.type) this.castMagic(slot.type);
-      }
+    this.mouseWalker = new MouseWalker({
+      world: this,
+      canvas: this.canvas,
+      // GameScene.cs:970-987 接线
+      mouseOverUi: () => this.#mouseOverUiAt(this._lastMouse),
+      blockLeftWalk: () => {   // GameScene.cs:971-975: 鼠标下有可点物体 → 点击逻辑接管
+        const m = this.mouseObject;
+        return !!m && (m instanceof ItemObject
+          || (!m.dead && !(m instanceof MonsterObject && m.petOwner)));
+      },
+      blockLeftMouse: () => false,
+      blockRightMouse: () => false,
+      getRunSteps: () => this.getRunSteps(),
+      canPlayerMove: () => this.canPlayerMove(),
+      canPlayerTurn: () => this.canPlayerTurn(),
+      sendMove: (dir, dist, run) => this.stepMove(dir, dist, run),
+      sendTurn: (dir) => this.mouseSendTurn(dir),
+      awaitingServer: () => performance.now() < this._moveServerLockUntil,
+      shift: () => this.shiftHeld ?? false,
+      alt: () => this.altHeld ?? false,
     });
-    addEventListener('keyup', (ev) => this.keys.delete(ev.key.toLowerCase()));
+    this.mouseObject = null;      // CombatController.MouseObject (悬停)
+    this._canRun = false;         // GameScene.cs:815 — 站立后第一段先走
+    this._moveServerLockUntil = 0;
+    this.autoRun = false;
+
+    addEventListener('keydown', (ev) => {
+      this.keys.add(ev.code);
+      this.shiftHeld = ev.shiftKey;
+      this.altHeld = ev.altKey;
+    });
+    addEventListener('keyup', (ev) => {
+      this.keys.delete(ev.code);
+      this.shiftHeld = ev.shiftKey;
+      this.altHeld = ev.altKey;
+    });
+    addEventListener('mousemove', (ev) => {
+      this.shiftHeld = ev.shiftKey; this.altHeld = ev.altKey;
+      this._lastMouse = { clientX: ev.clientX, clientY: ev.clientY };
+      // 悬停物体 (CombatController._Process:198)
+      this.mouseObject = this.#pickAtClient(ev.clientX, ev.clientY);
+    });
 
     this.canvas.addEventListener('mousedown', (ev) => {
       if (!this.player) return;
-      const rect = this.canvas.getBoundingClientRect();
-      const px = (ev.clientX - rect.left) * (this.canvas.width / rect.width);
-      const py = (ev.clientY - rect.top) * (this.canvas.height / rect.height);
-      const hit = this.#pickObject(px, py);
-      this.mouseHeld = true;
-      if (ev.shiftKey) {           // Shift 原地攻击 (CombatController.cs:241-244)
-        const w = this.camera.screenToWorld(ev.clientX, ev.clientY);
-        this.#tryAttack(directionFromPoint(this.player.x, this.player.y,
-          Math.floor(w.x / data.CELL_W), Math.floor(w.y / data.CELL_H)));
-        return;
-      }
-      if (hit instanceof ItemObject) {          // 拾取 (相邻直接, 否则走过去)
-        if (chebyshev(this.player.x, this.player.y, hit.x, hit.y) <= 1) {
-          this.conn.sendPickUp();
-        } else {
-          this.pickupTarget = hit;
-        }
-        return;
-      }
-      if (hit instanceof NPCObject) {           // NPC 交互 (C.NPCCall)
-        if (chebyshev(this.player.x, this.player.y, hit.x, hit.y) <= 2) {
-          this.conn.sendNPCCall(hit.objectID);
-        } else {
-          this.pickupTarget = null;
-          this.#stepTowards(hit.x, hit.y);
-        }
-        return;
-      }
-      if (hit instanceof MonsterObject && !hit.dead && !hit.petOwner) {
-        this.#setTarget(hit);                   // 选中即自动攻击循环
-        this.pickupTarget = null;
-        return;
-      }
-      if (hit instanceof PlayerObject) { this.#setTarget(hit); return; }
-      // 空地: 走路
-      this.#setTarget(null);
-      this.pickupTarget = null;
-      if (!this.moveLock) {
-        const w = this.camera.screenToWorld(ev.clientX, ev.clientY);
-        this.#stepTowards(Math.floor(w.x / data.CELL_W), Math.floor(w.y / data.CELL_H));
-      }
+      // 鼠标在 UI 上 → 点击是界面操作 (CombatController.cs:327)
+      if (this.#mouseOverUi(ev)) return;
+      if (ev.button === 0) this.#combatClick(ev);
+      else if (ev.button === 2) this.#rightClick(ev);
     });
     addEventListener('mouseup', () => { this.mouseHeld = false; });
-    this.canvas.addEventListener('contextmenu', (ev) => {
-      ev.preventDefault();
-      this.#setTarget(null);   // 右键 DeTarget
+    this.canvas.addEventListener('contextmenu', (ev) => ev.preventDefault());
+
+    // 悬停光标样式: 可点物体 → pointer (CheckCursor)
+    this.canvas.addEventListener('mousemove', () => {
+      this.canvas.style.cursor = this.mouseObject ? 'pointer' : 'default';
     });
-    this.lastKeyStep = 0;
+  }
+
+  #mouseOverUi(ev) {
+    return this.#mouseOverUiAt(ev ? { clientX: ev.clientX, clientY: ev.clientY } : this._lastMouse);
+  }
+
+  #mouseOverUiAt(pos) {
+    // GameScene.IsMouseOverUi: 悬停元素是 DX 控件 → true
+    if (!pos) return false;
+    const el = document.elementFromPoint(pos.clientX, pos.clientY);
+    return !!el?.closest?.('.dxctl');
+  }
+
+  // CombatController._Input (左键) + GameScene._UnhandledInput (脚下拾取/NPC/物品)
+  #combatClick(ev) {
+    const hit = this.#pickAtClient(ev.clientX, ev.clientY);
+    const rect = this.canvas.getBoundingClientRect();
+    const w = this.camera.screenToWorld(ev.clientX, ev.clientY);
+    const cell = [Math.floor(w.x / data.CELL_W), Math.floor(w.y / data.CELL_H)];
+    const shift = ev.shiftKey;
+    this.mouseHeld = true;
+
+    // ShouldDeferForMapPickup: 非 Shift 点击玩家当前格 → 脚下拾取优先 (CombatController.cs:86-88)
+    if (!shift && cell[0] === this.player.x && cell[1] === this.player.y) {
+      this.conn.sendPickUp();
+      return;
+    }
+
+    // Shift 且未选中 → 朝鼠标方向原地攻击 (CombatController.cs:240-244)
+    if (shift && !this.target) {
+      const dir = directionFromPoint(this.player.x, this.player.y, cell[0], cell[1]);
+      this.#tryAttack(dir);
+      return;
+    }
+
+    // CanAttackObject: 活着的怪物/玩家
+    const attackable = hit && !hit.dead &&
+      (hit instanceof MonsterObject || hit instanceof PlayerObject) && hit !== this.player;
+    if (!attackable) {
+      if (hit instanceof ItemObject) {
+        // 掉落物: 相邻直接拾取, 否则走过去 (原版 PickUp 分支)
+        if (chebyshev(this.player.x, this.player.y, hit.x, hit.y) <= 1) this.conn.sendPickUp();
+        else this.pickupTarget = hit;
+        return;
+      }
+      if (hit instanceof NPCObject) {
+        // NPC: 按下记录, 相邻 NPCCall (GameScene.cs:10189-10199 + TrySendNpcCall 1s 节流)
+        this._pendingNpcId = hit.objectID;
+        if (chebyshev(this.player.x, this.player.y, hit.x, hit.y) <= 2) this.#tryNpcCall(hit.objectID);
+        return;
+      }
+      // 空地 → 取消选中 (CanAttack 未通过)
+      this.#setTarget(null);
+      this._clearMagicLock?.();
+      return;
+    }
+    this.pickupTarget = null;
+    this.#setTarget(hit);   // 选中; 相邻攻击/追击由 _combatTick 驱动 (原版 _Process)
+  }
+
+  #rightClick(ev) {
+    // GameScene.cs:10166-10187: Ctrl+右键 = 观察玩家 (2.5s 节流)
+    const hit = this.#pickAtClient(ev.clientX, ev.clientY);
+    if (ev.ctrlKey && hit instanceof PlayerObject && hit !== this.player) {
+      const now = performance.now();
+      if (now >= (this._nextInspectMs ?? 0)) {
+        this._nextInspectMs = now + 2500;
+        this.conn.send(C.Inspect(hit.characterIndex ?? 0, false));   // 观察玩家
+      }
+      return;
+    }
+    // RightClickDeTarget (CombatController.cs:388-398): 只清怪物目标
+    if (this.target instanceof MonsterObject) {
+      this.#setTarget(null);
+      this._clearMagicLock?.();
+    }
+  }
+
+  // TrySendNpcCall (GameScene.cs:10236-10244): 1s 节流
+  #tryNpcCall(objectId) {
+    const now = performance.now();
+    if (now < (this._nextNpcCallMs ?? 0)) return;
+    this.conn.sendNPCCall(objectId);
+    this._nextNpcCallMs = now + 1000;
+  }
+
+  #pickAtClient(cx, cy) {
+    const rect = this.canvas.getBoundingClientRect();
+    const px = (cx - rect.left) * (this.canvas.width / rect.width);
+    const py = (cy - rect.top) * (this.canvas.height / rect.height);
+    return this.#pickObject(px, py);
   }
 
   #targetNearest() {
@@ -1033,31 +1122,48 @@ export class World {
     const p = this.player;
     let dx = Math.sign(tx - p.x), dy = Math.sign(ty - p.y);
     if (dx === 0 && dy === 0) return;
-    this.#tryMove(this.#dirIndex(dx, dy));
+    this.stepMove(this.#dirIndex(dx, dy), 1, false);
   }
-  #tryMove(dir) {
-    if (this.moveLock) return;
-    const p = this.player;
-    const nx = p.x + DIRS[dir][0], ny = p.y + DIRS[dir][1];
-    if (this.walk && !data.walkable(this.walk, nx, ny, this.mapMeta.w)) {
-      const alts = [dir, this.#dirIndex(DIRS[dir][0], 0), this.#dirIndex(0, DIRS[dir][1])];
-      for (const d of alts) {
-        const ax = p.x + DIRS[d][0], ay = p.y + DIRS[d][1];
-        if (data.walkable(this.walk, ax, ay, this.mapMeta.w)) { this.#sendMove(d, ax, ay); return; }
-      }
-      return;
-    }
-    this.#sendMove(dir, nx, ny);
-  }
-  #sendMove(dir, nx, ny) {
-    this.moveLock = true;
+
+  // SendMouseMove (GameScene.cs:7847-7916): 发包即预测 — 权威格跳终点 + 起点反向偏移 + 插值。
+  // running&&distance>=2 → 跑步动画 (相同 600ms 移 2 格)。
+  stepMove(dir, distance = 1, running = false) {
+    if (!this.player || this.player.dead) return false;
+    if (performance.now() < this._moveServerLockUntil) return false;
     const p = this.player;
     p.startX = p.x; p.startY = p.y;
-    p.startMove(1, dir);           // 本地预测: 走路动画 + 插值
-    this.conn.sendMove(dir, 1);
+    // 跳到预测终点, 反向 Offset (原版 SetAction(Moving))
+    const nx = p.x + DIRS[dir][0] * distance, ny = p.y + DIRS[dir][1] * distance;
+    p.x = nx; p.y = ny;
+    p.dir = dir;
+    p.startMove(distance, dir, running && distance >= 2);
+    p.offX = (p.startX - nx) * data.CELL_W;
+    p.offY = (p.startY - ny) * data.CELL_H;
+    p.moveStartMs = performance.now();
+    this.conn.sendMove(dir, distance);
+    // AttemptAction 末尾 ServerTime = Now+5s (GameScene.cs:7899)
+    this._moveServerLockUntil = performance.now() + 5000;
+    this._canRun = true;   // 发包后立即允许下一段 Run (原版语义)
     this.hooks.onPosChange?.(p);
-    setTimeout(() => { if (this.moveLock) this.moveLock = false; }, 5000);
+    return true;
   }
+
+  // GetRunSteps (GameScene.cs:7918-7935): 站立后第一段走; 未超重才跑; 骑马 3 格
+  getRunSteps() {
+    const gd = this.gameData;
+    const bagOk = !gd || gd.bagWeight <= gd.maxBagWeight();
+    const wearOk = !gd || gd.wearWeight <= gd.maxWearWeight();
+    const steps = (this._canRun && bagOk && wearOk) ? 2 : 1;
+    return (steps > 1 && this.player?.horse > 0) ? steps + 1 : steps;
+  }
+
+  // MouseWalker 发送回调 (MouseWalker._Process 178)
+  mouseSendMove(dir, distance, running) { return this.stepMove(dir, distance, running); }
+  mouseSendTurn(dir) { this.conn.sendTurn(dir); this.player.dir = dir; }
+  canPlayerMove() {
+    return !this.player?.dead && !this.player?.mountLock;
+  }
+  canPlayerTurn() { return !this.player?.dead; }
 
   // ---- 攻击 (CombatController.cs:216-231) ----
   #attackInterval() {
@@ -1081,12 +1187,48 @@ export class World {
     const rec = data.D().magics?.find(m => m.id === infoIndex);
     return rec ? (MAGIC[rec.key] ?? 0) : 0;
   }
-  spellSlots() { // F1..F8: 已学技能前 8 (后续由技能窗口覆盖)
-    const learned = (this.info?.magics ?? []).map(m => m.infoIndex);
-    return learned.slice(0, 8).map(idx => {
-      const rec = data.D().magics?.find(m => m.id === idx);
-      return rec ? { index: idx, name: rec.zh, type: MAGIC[rec.key] ?? 0 } : null;
-    }).filter(Boolean);
+  // UseMagicSlot (GameScene.cs:9650): F1-F12/Shift+F1-F12 → SpellKey → 当前 Set 绑定的技能
+  useMagicSlot(slot) {
+    if (slot < 0 || slot > 23) return false;
+    if (!this.conn || !this.player || this.player.dead) return false;
+    const key = slot + 1;   // Spell01 = 1
+    const set = this.spellSet ?? 1;
+    let magic = null;
+    for (const m of (this.info?.magics ?? [])) {
+      if (!m) continue;
+      const k = set === 1 ? m.set1Key : set === 2 ? m.set2Key : set === 3 ? m.set3Key : m.set4Key;
+      if (k === key) { magic = m; break; }
+    }
+    if (!magic) {
+      this.addChat(`没有绑定按键 ${key} 的技能 (Set${set})`, 'hint');
+      return false;
+    }
+    const type = this.#magicTypeFor(magic.infoIndex);
+    if (!type) return false;
+    return this.castMagic(type);
+  }
+  setSpellSet(n) {   // SpellSet01-04 (GameScene.cs:1883-1888)
+    this.spellSet = n;
+    this.addChat(`技能栏切换到 Set${n}`, 'hint');
+  }
+  spellSlots() { // 展示用: 当前 Set 绑定的 24 键位 → 技能
+    const set = this.spellSet ?? 1;
+    const out = new Array(24).fill(null);
+    for (const m of (this.info?.magics ?? [])) {
+      if (!m) continue;
+      const k = set === 1 ? m.set1Key : set === 2 ? m.set2Key : set === 3 ? m.set3Key : m.set4Key;
+      if (k >= 1 && k <= 24 && !out[k - 1]) {
+        const rec = data.D().magics?.find(x => x.id === m.infoIndex);
+        out[k - 1] = rec ? { index: m.infoIndex, name: rec.zh, type: MAGIC[rec.key] ?? 0, level: m.level } : null;
+      }
+    }
+    return out;
+  }
+  // UseBeltKey (GameScene.cs:9823): Shift+1..0 → 药品栏格物品
+  useBeltSlot(slot) {
+    const belt = this.gameData?.beltLinks?.get?.(slot);
+    if (!belt) return false;
+    return !!this.conn.sendItemUse(GRID.BELT, slot);
   }
   castMagic(type, target = this.target) {
     if (!this.conn || !this.player || this.player.dead) return false;
@@ -1100,35 +1242,84 @@ export class World {
     return true;
   }
   #combatTick(now) {
+    // CombatController._Process (193-302) 逐分支移植
     if (!this.player || this.player.dead) return;
-    // 拾取目标逼近
+
+    // 拾取目标逼近 (原版 PickUp 分支的走近语义)
     if (this.pickupTarget) {
       const t = this.pickupTarget;
       if (!this.objects.has(t.objectID)) { this.pickupTarget = null; return; }
       const d = chebyshev(this.player.x, this.player.y, t.x, t.y);
       if (d <= 1) { this.conn.sendPickUp(); this.pickupTarget = null; }
-      else if (now - this.lastChaseMs > 600 && !this.moveLock) {
+      else if (now - this.lastChaseMs > 600) {
         this.lastChaseMs = now;
         this.#stepTowards(t.x, t.y);
       }
       return;
     }
+
     const t = this.target;
     if (!t) return;
     if (!this.objects.has(t.objectID)) { this.#setTarget(null); return; }
+    if (t.dead) return;   // 目标死亡保留选中 (D15)
     const d = chebyshev(this.player.x, this.player.y, t.x, t.y);
-    if (t instanceof MonsterObject && !t.dead && !t.petOwner) {
-      if (d === 1) {
-        const dir = directionFromPoint(this.player.x, this.player.y, t.x, t.y);
-        this.#tryAttack(dir);
-      } else if (d > 1 && this.mouseHeld) {   // 追击 (按住左键, CombatController.cs:246-249)
-        if (now - this.lastChaseMs > 600 && !this.moveLock) {
-          this.lastChaseMs = now;
-          this.#stepTowards(t.x, t.y);
-          this.nextAttackMs = now + 600;
-        }
+    const isMonster = t instanceof MonsterObject;
+
+    // 玩家/宠物目标: 未按 Shift 只选中不追击 (CombatController.cs:270-272)
+    if (!isMonster && !this.shiftHeld) return;
+    if (isMonster && t.petOwner && !this.shiftHeld) return;
+
+    if (d <= 1) return;   // 相邻交给顶部自动攻击
+
+    // 顶部自动攻击前置: 相邻(=1)已在下方处理 — 这里 d>1
+    void d;
+
+    // 追击: 600ms/段 (原版 NextActionTime; CombatController.cs:296-301)
+    if (now - this.lastChaseMs > 600) {
+      this.lastChaseMs = now;
+      let dir = directionFromPoint(this.player.x, this.player.y, t.x, t.y);
+      if (!this.#stepClear(dir)) {
+        const best = this.#bestApproach(dir, t);
+        if (best === dir) { this.conn.sendTurn(dir); return; }
+        dir = best;
       }
+      this.stepMove(dir, 1, false);
+      this.nextAttackMs = now + 600;
     }
+  }
+
+  // 自动攻击: 目标相邻 && 冷却到 (CombatController.cs:217-231 顶部分支)
+  #autoAttackTick(now) {
+    const t = this.target;
+    if (!t || t.dead || !this.objects.has(t.objectID)) return;
+    if (!(t instanceof MonsterObject) && !this.shiftHeld) return;
+    if (t instanceof MonsterObject && t.petOwner && !this.shiftHeld) return;
+    const d = chebyshev(this.player.x, this.player.y, t.x, t.y);
+    if (d !== 1 || now < this.nextAttackMs) return;
+    const dir = directionFromPoint(this.player.x, this.player.y, t.x, t.y);
+    this.#tryAttack(dir);
+  }
+
+  #stepClear(dir) {
+    const nx = this.player.x + DIRS[dir][0], ny = this.player.y + DIRS[dir][1];
+    if (this.walk && !data.walkable(this.walk, nx, ny, this.mapMeta.w)) return false;
+    for (const o of this.objects.values()) {
+      if (o.x === nx && o.y === ny && !o.dead && o !== this.player) return false;
+    }
+    return true;
+  }
+
+  // BestApproachDirection (CombatController.cs:419-433)
+  #bestApproach(direct, t) {
+    if (this.#stepClear(direct)) return direct;
+    const angle0 = Math.atan2(t.x - this.player.x, -(t.y - this.player.y)) * 180 / Math.PI;
+    let angle = angle0 < 0 ? angle0 + 360 : angle0;
+    let best = Math.floor(angle / 45);
+    if (best === direct) best = ((direct + 1) % 8 + 8) % 8;
+    const next = ((direct - best + direct) % 8 + 8) % 8;
+    if (this.#stepClear(best)) return best;
+    if (this.#stepClear(next)) return next;
+    return direct;
   }
 
   sendChat(text) { this.conn.sendChat(text); }
@@ -1141,25 +1332,34 @@ export class World {
   _frame = () => {
     requestAnimationFrame(this._frame);
     const now = performance.now();
-    // 键盘连续走路 (600ms/段)
-    if (this.player && this.walk && !this.target) {
+    if (!this.player) return;
+
+    // MouseWalker (按住左键走 / 按住右键跑) — 每帧 tick
+    if (this.mouseWalker) {
+      this.mouseWalker.tick(now);
+    }
+
+    // 键盘方向键连续走 (GameScene.cs:9902-9915: 仅 Arrow 键; WASD 是窗口快捷键)
+    if (this.walk) {
       const k = this.keys;
-      let dx = 0, dy = 0;
-      if (k.has('arrowup') || k.has('w')) dy = -1;
-      else if (k.has('arrowdown') || k.has('s')) dy = 1;
-      if (k.has('arrowleft') || k.has('a')) dx = -1;
-      else if (k.has('arrowright') || k.has('d')) dx = 1;
-      if ((dx || dy) && now - this.lastKeyStep > 600 && !this.moveLock) {
-        this.lastKeyStep = now;
-        this.#tryMove(this.#dirIndex(dx, dy));
+      let dir = null;
+      if (k.has('ArrowUp')) dir = 0;
+      else if (k.has('ArrowRight')) dir = 2;
+      else if (k.has('ArrowDown')) dir = 4;
+      else if (k.has('ArrowLeft')) dir = 6;
+      if (dir !== null && now - this.lastKeyStep > 600) {
+        if (this.stepMove(dir, 1, false)) this.lastKeyStep = now;
       }
     }
-    if (!this.player) return;
+
+    // 战斗: 顶部自动攻击 + 追击 (CombatController._Process)
+    this.#autoAttackTick(now);
     this.#combatTick(now);
+
     // 对象 tick
     for (const o of this.objects.values()) o.tick(now);
     // 相机跟随 (插值)
-    const targetX = (this.player.x + DIRS[this.player.dir][0] * (this.player.moving ? 0 : 0)) * data.CELL_W + (this.player.offX ?? 0);
+    const targetX = this.player.x * data.CELL_W + (this.player.offX ?? 0);
     const targetY = this.player.y * data.CELL_H + (this.player.offY ?? 0);
     this.camera.x += (targetX - this.camera.x) * 0.25;
     this.camera.y += (targetY - this.camera.y) * 0.25;
@@ -1172,7 +1372,6 @@ export class World {
       ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
   };
-
   #anchor(o) {
     const wx = o.x * data.CELL_W + data.CELL_W / 2 + (o.offX ?? 0);
     const wy = (o.y + 1) * data.CELL_H + (o.offY ?? 0);
