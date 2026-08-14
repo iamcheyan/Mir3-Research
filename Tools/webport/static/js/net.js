@@ -146,8 +146,8 @@ S_USERLOCATION: 373, S_USERMILESTONES: 374, S_WEIGHTUPDATE: 375,
 
 // ---- 枚举 (LibraryCore/Enum.cs) ----
 export const LoginResultText = {
-  0: '账号不存在', 1: '密码错误', 2: '账号已禁用', 3: '被踢下线', 4: '已在游戏中',
-  5: '信息不完整', 6: '账号被封禁', 7: '服务器繁忙', 8: '系统错误', 9: '加载失败',
+  0: '登录被禁用', 1: '邮箱不合法', 2: '密码不合法', 3: '账号不存在', 4: '账号未激活',
+  5: '密码错误', 6: '账号被封禁', 7: '已在此处登录', 8: '已登录(密码确认)', 9: '已登录(管理员)',
   10: '成功',
 };
 export const LOGIN_SUCCESS = 10;
@@ -155,15 +155,22 @@ export const StartGameResultText = {
   0: '角色被禁用', 1: '角色已删除', 2: '冷却中,3秒后重试', 3: '无法出生', 4: '角色不存在', 5: '成功',
 };
 export const STARTGAME_SUCCESS = 5, STARTGAME_DELAYED = 2;
+// DeleteCharacterResult (Enum.cs:2332): Disabled/AlreadyDeleted/NotFound/Success
 export const DELETECHARACTER_SUCCESS = 3;
 export const DeleteCharacterResultText = { 0: '禁止删除', 1: '已被删除', 2: '角色不存在', 3: '成功' };
-export const NewCharacterResultText = { 0: '禁止创建', 1: '名字已存在', 2: '名字不合法', 3: '成功' };
-export const NEWCHARACTER_SUCCESS = 3;
-export const NewAccountResultText = {
-  0: '禁止创建', 1: '邮箱已存在', 2: '邮箱不合法', 3: '密码不合法', 4: '邮箱不可用',
-  5: '姓名不合法', 6: '成功', 7: '已存在', 8: '引用人无效', 9: '系统错误',
+// NewCharacterResult (Enum.cs:2317): Success=10, AlreadyExists=9
+export const NewCharacterResultText = {
+  0: '禁止创建', 1: '名字不合法', 2: '性别不合法', 3: '职业不合法', 4: '发型不合法',
+  5: '发色不合法', 6: '衣服颜色不合法', 7: '职业未开放', 8: '角色已满', 9: '名字已存在',
+  10: '成功',
 };
-export const NEWACCOUNT_SUCCESS = 6, NEWACCOUNT_ALREADY = 7;
+export const NEWCHARACTER_SUCCESS = 10;
+// NewAccountResult (Enum.cs:2240): AlreadyExists=4, Success=8
+export const NewAccountResultText = {
+  0: '禁止注册', 1: '邮箱不合法', 2: '密码不合法', 3: '真实姓名不合法', 4: '邮箱已存在',
+  5: '推荐人不合法', 6: '推荐人未找到', 7: '推荐人未激活', 8: '成功',
+};
+export const NEWACCOUNT_SUCCESS = 8, NEWACCOUNT_ALREADY = 4;
 export const DisconnectReasonText = {
   0: '未知', 1: '超时', 2: '版本不符', 3: '服务器关闭', 4: '另一处登录', 5: '被踢', 6: '崩溃',
 };

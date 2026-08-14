@@ -370,7 +370,7 @@ export class GameConnection extends EventTarget {
   sendRankSearch(name) { this.send(C.RankSearch(name)); }
   sendMarketPlaceSearch(name, itemTypeFilter, itemType, sort) { this.send(C.MarketPlaceSearch(name, itemTypeFilter, itemType, sort)); }
   sendLogout() { this.send(C.Logout()); }
-  sendMailOpened(index) { this.send(C.MailOpened(index)); }
+  sendItemLock(grid, slot, locked) { this.send(C.ItemLock(grid, slot, locked)); }
   sendInspect(index, ranking = false) { this.send(C.Inspect(index, ranking)); }
   sendMount() { this.send(C.Mount()); }
   sendTradeRequest() { this.send(new Writer().build(ID.C_TRADEREQUEST)); }

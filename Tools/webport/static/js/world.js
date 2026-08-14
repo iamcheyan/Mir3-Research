@@ -1119,6 +1119,7 @@ export class World {
     this._canRun = false;         // GameScene.cs:815 — 站立后第一段先走
     this._moveServerLockUntil = 0;
     this.autoRun = false;
+    this.lastKeyStep = 0;         // 键盘连续走节流 (GameScene.cs:9902)
 
     addEventListener('keydown', (ev) => {
       // Godot 语义: 输入控件聚焦时键盘事件归控件 (ChatTextBox 打字), 不驱动移动

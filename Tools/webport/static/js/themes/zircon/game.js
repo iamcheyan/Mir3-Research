@@ -6,6 +6,7 @@ import { DXControl, DXLabel, DXImageControl } from '../../dx.js';
 import { World } from '../../world.js';
 import { WindowManager, UiScaleNow, setUiScale } from '../../windows.js';
 import { statsToObj, STAT, MsgTypeName, MsgTypeColour, MSG, C } from '../../net.js';
+import { getAction, KeyBindAction as KA } from '../../keybinds.js';
 import { MainPanel, MiniMapDialog, fallbackWindow } from './hud.js';
 import { ChatTextBox, ChatLogPanel } from './chat.js';
 
@@ -26,8 +27,7 @@ export class GameScene {
     this.canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated;';
     this.root.appendChild(this.canvas);
     this.hud = document.createElement('div');
-    this.hud.style.cssText = 'position:absolute;inset:0;pointer-events:none;';
-    this.hudLayer = new DXControl({ size: [BASE_W, BASE_H], isControl: true });
+    this.hudLayer = new DXControl({ size: [BASE_W, BASE_H], isControl: false }); // 根层 MouseFilter.IGNORE; 交互由子控件自理
     this.hud.appendChild(this.hudLayer.el);
 
     this.world = new World(conn, startInfo, this.canvas, {
@@ -83,8 +83,7 @@ export class GameScene {
       // GM 点击小地图传送 (MiniMapDialog.cs:148 SendTeleportRing)
       this.conn.send(C.TeleportRing(x, y, mapIndex));
     };
-    this.hudLayer.addControl(this.miniMap);
-    this.miniMap.visible = true;
+    WindowManager.open(this.miniMap, this.hudLayer);   // DXWindow 语义: 入 WindowManager (Esc/M 可关)
     if (this.world.mapMeta) { clearInterval(this._mmWait); this.#applyMiniMap(); }
     // world 数据异步加载: 首图 meta 未就绪时, 等 enterWorld 完成后再挂小地图
     this._mmWait = setInterval(() => {
@@ -231,16 +230,96 @@ export class GameScene {
     this.#layoutHud();
   }
 
-  // ---- 全局键 (GameScene _Input → ChatTextBox.HandleGlobalKey + KeyBind 窗口) ----
+  // ---- 全局键 (GameScene._Input:9842 → ChatTextBox.HandleGlobalKey → GetAction 分发) ----
   #bindGlobalKeys() {
+    // KeyBindAction → 窗口类型 (fallbackWindow/par-win __WEBPORT_WIN 通用小写类型)
+    const WIN = {
+      [KA.MenuWindow]: 'menu', [KA.HelpWindow]: 'help', [KA.ConfigWindow]: 'config',
+      [KA.CharacterWindow]: 'character', [KA.InventoryWindow]: 'inventory',
+      [KA.MagicWindow]: 'spell', [KA.MagicBarWindow]: 'spell',
+      [KA.DungeonFinderWindow]: 'dungeonfinder', [KA.StorageWindow]: 'storage',
+      [KA.BeltWindow]: 'belt', [KA.AutoPotionWindow]: 'autopotion',
+      [KA.CurrencyWindow]: 'currency', [KA.FilterDropWindow]: 'filterdrop',
+      [KA.FortuneWindow]: 'fortune', [KA.QuestTrackerWindow]: 'questtracker',
+      [KA.MapBigWindow]: 'bigmap', [KA.RankingWindow]: 'ranking',
+      [KA.GameStoreWindow]: 'cashshop', [KA.CompanionWindow]: 'companion',
+      [KA.GroupWindow]: 'group', [KA.GuildWindow]: 'guild',
+      [KA.MailBoxWindow]: 'mail', [KA.MailSendWindow]: 'mail', [KA.BlockListWindow]: 'mail',
+      [KA.QuestLogWindow]: 'quest', [KA.ChatOptionsWindow]: 'chatoptions',
+      [KA.ExitGameWindow]: 'exit',
+    };
     this._keyHandler = (ev) => {
-      // 聊天框已聚焦: 只拦分发 (ChatTextBox.cs:128)
+      // 聊天框已聚焦: 只拦分发 (ChatTextBox.cs:128 HandleGlobalKey 先于键位)
       if (this.chatBox?.handleGlobalKey?.(ev)) { ev.preventDefault(); return; }
       if (ev.repeat) return;
-      // Esc: 关最上层窗口 (WindowManager)
-      if (ev.code === 'Escape') { if (WindowManager.closeTop()) ev.preventDefault(); return; }
+      // Escape: 先关最上层窗口; 真关掉才拦截 (GameScene.cs:9855 CloseTop 语义)
+      if (ev.code === 'Escape') {
+        if (WindowManager.closeTop()) { ev.preventDefault(); return; }
+      }
+      const a = getAction(ev);
+      if (!a) return;
+      ev.preventDefault();
+      if (WIN[a]) return this.#openWindow(WIN[a]);
+      switch (a) {
+        case KA.MapMiniWindow: return WindowManager.toggle(this.miniMap, this.hudLayer);
+        case KA.ItemPickUp: return this.conn.sendPickUp();
+        case KA.GroupAllowSwitch:
+          this.allowGroup = !this.allowGroup;
+          this.conn.sendGroupSwitch(this.allowGroup);
+          return this.addChat(`允许组队: ${this.allowGroup ? '开' : '关'}`, 'hint');
+        case KA.GroupTarget: {
+          // 组队协助: 以当前目标为协助对象 (GroupDialog.cs GroupTarget 语义)
+          const t = this.world.target;
+          if (!t) return this.addChat('没有选中目标', 'hint');
+          return this.addChat(`协助目标: ${t.name}`, 'hint');
+        }
+        case KA.TradeRequest:
+          if (!this.world.target) return this.addChat('先选中交易对象', 'hint');
+          return this.conn.sendTradeRequest();
+        case KA.TradeAllowSwitch:
+          this.allowTrade = !this.allowTrade;
+          return this.addChat(`允许交易: ${this.allowTrade ? '开' : '关'}`, 'hint');
+        case KA.PartnerTeleport: return this.conn.sendMarriageTeleport();
+        case KA.MountToggle: return this.conn.sendMount();
+        case KA.AutoRunToggle: {
+          const mw = this.world.mouseWalker;
+          if (mw) { mw.autoRun = !mw.autoRun; this.addChat(`自动跑步: ${mw.autoRun ? '开' : '关'}`, 'hint'); }
+          return;
+        }
+        case KA.ChangeChatMode: return this.chatBox?.cycleMode?.();
+        case KA.ToggleItemLock:
+          // Godot: 锁定当前选中物品格 (LockItem); 无选中 = 无操作
+          return void this.#toggleItemLock();
+        case KA.ChangeAttackMode:
+          this.attackMode = ((this.attackMode ?? 0) + 1) % 5;
+          this.conn.sendChangeAttackMode(this.attackMode);
+          return this.addChat(`攻击模式: ${['全体', '和平', '组队', '行会', '善恶'][this.attackMode]}`, 'hint');
+        case KA.ChangePetMode:
+          this.petMode = ((this.petMode ?? 0) + 1) % 5;
+          this.conn.sendChangePetMode(this.petMode);
+          return this.addChat(`宠物模式: ${['全体', '和平', '组队', '行会', '善恶'][this.petMode]}`, 'hint');
+        default: {
+          if (a >= KA.SpellSet01 && a <= KA.SpellSet04) return this.world.setSpellSet(a - KA.SpellSet01 + 1);
+          if (a >= KA.SpellUse01 && a <= KA.SpellUse24) return this.world.useMagicSlot(a - KA.SpellUse01);
+          if (a >= KA.UseBelt01 && a <= KA.UseBelt10) return this.world.useBeltSlot(a - KA.UseBelt01);
+        }
+      }
     };
     addEventListener('keydown', this._keyHandler);
+  }
+  // par-win dxgrid / uitree 两套 DXItemCell 的选中格 → 锁定 (ToggleItemLock)
+  async #toggleItemLock() {
+    for (const mod of ['/static/js/dxgrid.js', '/static/js/uitree.js']) {
+      try {
+        const m = await import(mod);
+        const c = m.DXItemCell?.SelectedCell;
+        if (c && c.grid != null && c.slot >= 0) {
+          this.conn.sendItemLock(c.grid, c.slot, !c.item?.locked);
+          return;
+        }
+      } catch { /* 模块缺失时忽略 */ }
+    }
+    this.addChat('先在物品栏选中物品', 'hint');
   }
 
   addChat(text, type = 'say') { this.#receiveChat(text, type); }
