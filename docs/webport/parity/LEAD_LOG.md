@@ -521,3 +521,26 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `50aa7f5` par-move R17: NPC 精炼面板 (RefineType 单选/品质循环/三桶导入/提交 257)
 
 ### E路回归: 557 ✓; 无冲突; 已 push。A 路 P2 持续 (精炼体系)。
+
+## R18 — par-move (A路): NPC 高级面板终批 (dtype 5/7/8/12/14) — NPC 面板全类型闭环
+
+- `对照` NPCAdvancedPanels.cs: RefinementStone :324-352 (五桶 4/4/4/2/1 + 金币
+  DXNumberField) / MasterRefine :431-478 + SubmitMaster :479-516 (Frag I/II 恰 10 +
+  III≥1 + 石≥1 逐项校验) / AccessoryLevel :686-711 (目标+材料 21 格) /
+  WeaponCraft :801-829 + CycleClass :946 (7 CellLink + RequiredClass); 伙伴寄存
+  NPCCompanionStorageDialog.cs (寄存/取回/放生, SetCompanions)。
+- `协议` net.js +6 builder (NPCRefinementStone 261 / NPCMasterRefine 254 /
+  NPCMasterRefineEvaluate 256 / NPCAccessoryLevelUp 242 / NPCWeaponCraft 274 /
+  CompanionStore 52); ws.js +6 sender。
+- `实现` win-npc.js buildMultiBucket 引擎 (桶+可选单选组+可选金币输入+动作钮,
+  ItemType/name match 分桶, initialized 门闩避 TDZ); 4 面板 + companionPanel
+  (store.info.companions 渲染/选择/三动作); showPage MULTI_MAP dtype 7/8/12/14 + 5。
+  修复: DXTextInput 漏 import (winNpc 整模块静默安装失败, registry console.warn 吞错
+  — CDP 直装定位); goldInput 漏 addControl; getWindow import 被 dx 行覆盖。
+- `CDP 验收` (/tmp/pm-smoke/pmv-single.mjs) R18 5 面板全 visible 且内容正确;
+  MASTER: 注入 碎片I x10/II x10/III x1/精炼石 x1 → 分桶逐项正确 → 选攻击 →
+  sentIds=[254]; STONE: 五桶分桶+金币输入 → [261]; CRAFT: CycleClass→战士 → [274]。
+  回归 pmv-buff-qt ALL-9/REFINE/CONSIGN/MAIL 全绿。
+- 至此 NPCPage DB 21 DialogType 中 14 个真实使用类型全部真实现 (DB 审计: 剩余
+  WeaponReset/AccessoryRefine/RollDie/RollYut/Socketing/SocketCombine 在本服
+  NPCPage 0 行引用, 无可达入口)。

@@ -359,6 +359,12 @@ export class GameConnection extends EventTarget {
   sendMarriageMakeRing(slot) { this.send(C.MarriageMakeRing(slot)); }
   sendNPCAccessoryUpgrade(target, refineType) { this.send(C.NPCAccessoryUpgrade(target, refineType)); }
   sendNPCAccessoryReset(cell) { this.send(C.NPCAccessoryReset(cell)); }
+  sendNPCRefinementStone(iron, silver, diamond, goldOre, crystal, gold) { this.send(C.NPCRefinementStone(iron, silver, diamond, goldOre, crystal, gold)); }
+  sendNPCMasterRefine(refineType, f1, f2, f3, stone, special) { this.send(C.NPCMasterRefine(refineType, f1, f2, f3, stone, special)); }
+  sendNPCMasterRefineEvaluate(refineType, f1, f2, f3, stone, special) { this.send(C.NPCMasterRefineEvaluate(refineType, f1, f2, f3, stone, special)); }
+  sendNPCAccessoryLevelUp(target, links) { this.send(C.NPCAccessoryLevelUp(target, links)); }
+  sendNPCWeaponCraft(cls, template, yellow, blue, red, purple, green, grey) { this.send(C.NPCWeaponCraft(cls, template, yellow, blue, red, purple, green, grey)); }
+  sendCompanionStore(index) { this.send(C.CompanionStore(index)); }
   sendItemMove(fromGrid, toGrid, fromSlot, toSlot, mergeItem = false) {
     this.send(C.ItemMove(fromGrid, toGrid, fromSlot, toSlot, mergeItem));
   }

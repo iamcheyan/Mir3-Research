@@ -11,8 +11,8 @@
 //   (OpenFor :41-73 三桶: 完成/可接/进行中); 接取/交还 = C.QuestAccept/QuestComplete。
 
 import { getWindow } from './uitree.js';
+import { DXControl, DXLabel, DXButton, DXImageControl, DXTextInput } from './dx.js';
 import { WindowManager } from './windows.js';
-import { DXControl, DXLabel, DXButton, DXImageControl } from './dx.js';
 import { skin } from './skin.js';
 import { D } from './data.js';
 import { GRID } from './net.js';
@@ -423,6 +423,235 @@ export async function winNpc(scene, store, reg) {
   refinePanel.addControl(refineQualityBtn, refineImport, refineSubmit);
   w.addControl(refinePanel);
 
+  // ---------- 多桶面板引擎 (RefinementStone :324 / MasterRefine :431 / AccessoryLevel :686 / WeaponCraft :801) ----------
+  // 各面板共享: 桶列表 + 可选单选组 + 可选金币输入 + 动作按钮; 分类由 match(info,item) 决定。
+  function buildMultiBucket(cfg) {
+    const panel = new DXControl({ location: [0, 204], size: [404, 232], visible: false, isControl: true });
+    const links = Object.fromEntries(cfg.buckets.map(([k]) => [k, []]));
+    let radioVal = 0, goldVal = 0;
+    const radioBtns = [];
+    let yCursor = 6;
+    if (cfg.radio) {
+      cfg.radio.forEach(([val, label], i) => {
+        const col = i % 4, row = Math.trunc(i / 4);
+        const b = new DXButton({ text: label, fontSize: 9, library: 'Interface', index: -1,
+          location: [10 + col * 98, 6 + row * 22], size: [92, 20], onClick: () => {
+            radioVal = val;
+            radioBtns.forEach((o, j) => { o.text = cfg.radio[j][1]; });
+            b.text = '● ' + label;
+            refreshBtns();
+          } });
+        radioBtns.push(b);
+        panel.addControl(b);
+      });
+      yCursor = 6 + Math.ceil(cfg.radio.length / 4) * 22 + 4;
+    }
+    let goldInput = null;
+    if (cfg.gold) {
+      goldInput = new DXTextInput({ text: '0', location: [10, yCursor], size: [120, 19] });
+      panel.addControl(goldInput);
+      panel.addControl(new DXLabel({ text: '金币投入:', fontSize: 9, location: [134, yCursor], size: [80, 18], isControl: false }));
+      goldInput.onTextChanged?.(() => { goldVal = Number(goldInput.text) || 0; });
+      yCursor += 24;
+    }
+    const listBox = document.createElement('div');
+    listBox.style.cssText = `position:absolute;left:9px;top:${yCursor}px;right:9px;bottom:36px;overflow-y:auto;`;
+    panel.el.appendChild(listBox);
+    const btns = [];
+    const refreshBtns = () => { if (initialized) for (const b of btns) b.enabled = b.check(); };
+    const render = () => {
+      listBox.replaceChildren();
+      for (const [key, label] of cfg.buckets.map(([k, l]) => [k, l])) {
+        const arr = links[key];
+        const head = document.createElement('div');
+        head.textContent = `${label} (${arr.length})`;
+        head.style.cssText = 'padding:2px 6px;font:11px "Noto Sans CJK SC",sans-serif;color:#ffd94d;text-shadow:1px 1px 0 #000;';
+        listBox.appendChild(head);
+        for (const l of arr) {
+          const it = store.items(l.gridType).get(l.slot);
+          const nm = it ? (D().itemsById?.[it.infoIndex]?.zh ?? D().itemsById?.[it.infoIndex]?.name ?? `物品#${it.infoIndex}`) : '?';
+          const d = document.createElement('div');
+          d.textContent = `· ${nm} x${it?.count ?? 1}`;
+          d.style.cssText = 'padding:2px 6px 2px 18px;font:12px/1.6 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
+          d.title = '点击移除';
+          d.onclick = () => { links[key] = links[key].filter(x => x !== l); render(); };
+          listBox.appendChild(d);
+        }
+      }
+      refreshBtns();
+    };
+    const doImport = () => {
+      const caps = Object.fromEntries(cfg.buckets.map(([k, , n]) => [k, n]));
+      for (const k of Object.keys(links)) links[k] = [];
+      for (const [slot, it] of [...store.items(GRID.INVENTORY).entries()].sort((a, b) => a[0] - b[0])) {
+        if (!it) continue;
+        const info = D().itemsById?.[it.infoIndex];
+        const hit = cfg.buckets.find(([, , , match]) => match?.(info, it));
+        if (hit && caps[hit[0]] > links[hit[0]].length)
+          links[hit[0]].push({ gridType: GRID.INVENTORY, slot, count: it.count ?? 1 });
+      }
+      render();
+    };
+    const importBtn = new DXButton({ text: '从背包导入', fontSize: 9, library: 'Interface', index: -1,
+      location: [9, 198], size: [100, 22], onClick: doImport });
+    panel.addControl(importBtn);
+    cfg.buttons.forEach(([label, dx, check, act], i) => {
+      const b = new DXButton({ text: label, fontSize: 9, library: 'Interface', index: -1,
+        location: [118 + i * 92, 198], size: [86, 22], onClick: () => {
+          if (!b.enabled) return;
+          act();
+          for (const k of Object.keys(links)) links[k] = [];
+          render();
+        } });
+      b.enabled = false;
+      b.check = check;
+      btns.push(b);
+      panel.addControl(b);
+    });
+    let initialized = false;   // 构造期 check() 闭包引用外层 const — TDZ 前不刷新
+    render();
+    initialized = true;
+    return {
+      panel, links,
+      radio: () => radioVal,
+      gold: () => goldVal,
+      render,
+      reset() {
+        radioVal = 0;
+        radioBtns.forEach((o, j) => { o.text = cfg.radio[j][1]; });
+        if (goldInput) { goldInput.text = '0'; goldVal = 0; }
+        for (const k of Object.keys(links)) links[k] = [];
+        render();
+      },
+    };
+  }
+
+  // R18-1 精炼石 (BuildRefinementStone :324-352)
+  const stonePanel = buildMultiBucket({
+    buckets: [
+      ['iron', '铁矿石', 4, (info) => info?.name === 'Iron Ore'],
+      ['silver', '银矿石', 4, (info) => info?.name === 'Silver Ore'],
+      ['diamond', '钻石', 4, (info) => info?.name === 'Diamond'],
+      ['goldOre', '金矿石', 2, (info) => info?.name === 'Gold Ore'],
+      ['crystal', '水晶', 1, (info) => info?.name === 'Crystal'],
+    ],
+    gold: true,
+    buttons: [['制作', 0,
+      () => Object.values(stonePanel.links).some(a => a.length > 0),
+      () => conn.sendNPCRefinementStone(stonePanel.links.iron, stonePanel.links.silver,
+        stonePanel.links.diamond, stonePanel.links.goldOre, stonePanel.links.crystal, stonePanel.gold())]],
+  });
+  w.addControl(stonePanel.panel);
+
+  // R18-2 大师精炼 (BuildMasterRefine :431-478 + SubmitMaster :479-516)
+  const REFINE_TYPE_OPTS = [[2, '攻击'], [3, '法术'], [4, '火'], [5, '冰'], [6, '雷'], [7, '风'], [8, '神圣'], [9, '暗'], [10, '幻影']];
+  const masterPanel = buildMultiBucket({
+    buckets: [
+      ['f1', '碎片（一）', 1, (info) => info?.name === 'Fragment'],
+      ['f2', '碎片（二）', 1, (info) => info?.name === 'Fragment (II)'],
+      ['f3', '碎片（三）', 1, (info) => info?.name === 'Fragment (III)'],
+      ['stone', '精炼石', 1, (info) => info?.name === 'Refinement Stone'],
+      ['special', '特殊材料', 1, (info) => info?.type === 'RefineSpecial'],
+    ],
+    radio: REFINE_TYPE_OPTS,
+    buttons: [
+      ['评估', 0, () => masterPanel.radio() > 0 && !!masterValidate(false), () => masterSend(true)],
+      ['精炼', 1, () => masterPanel.radio() > 0 && !!masterValidate(false), () => masterSend(false)],
+    ],
+  });
+  function masterValidate(chat = true) {   // SubmitMaster :487-506 逐项校验
+    const L = masterPanel.links;
+    const fail = (msg) => { if (chat) scene.addChat(msg, 'hint'); return null; };
+    if (!L.f1.length || L.f1[0].count !== 10) return fail('需要 碎片(一) x10 才能大师精炼');
+    if (!L.f2.length || L.f2[0].count !== 10) return fail('需要 碎片(二) x10 才能大师精炼');
+    if (!L.f3.length) return fail('需要至少 1 个 碎片(三) 才能大师精炼');
+    if (!L.stone.length) return fail('需要精炼石 x1 才能进行大师精炼');
+    return true;
+  }
+  function masterSend(evaluate) {
+    const L = masterPanel.links;
+    const t = masterPanel.radio();
+    if (evaluate) conn.sendNPCMasterRefineEvaluate(t, L.f1, L.f2, L.f3, L.stone, L.special);
+    else conn.sendNPCMasterRefine(t, L.f1, L.f2, L.f3, L.stone, L.special);
+  }
+  w.addControl(masterPanel.panel);
+
+  // R18-3 饰品升级 (BuildAccessoryLevel :686-711)
+  const ACCESSORY_TYPES = new Set(['Necklace', 'Bracelet', 'Ring', 'Amulet']);
+  const accLevelPanel = buildMultiBucket({
+    buckets: [
+      ['target', '目标饰品', 1, (info) => ACCESSORY_TYPES.has(info?.type)],
+      ['mats', '材料饰品', 21, (info) => ACCESSORY_TYPES.has(info?.type)],
+    ],
+    buttons: [['升级', 0,
+      () => accLevelPanel.links.target.length > 0 && accLevelPanel.links.mats.length > 0,
+      () => conn.sendNPCAccessoryLevelUp(accLevelPanel.links.target[0], accLevelPanel.links.mats)]],
+  });
+  w.addControl(accLevelPanel.panel);
+
+  // R18-4 武器打造 (BuildWeaponCraft :801-829 + CycleClass :946)
+  const CRAFT_CLASSES = ['全部', '战士', '法师', '道士', '刺客'];   // RequiredClass 0-4
+  let craftClassIdx = 0;
+  const craftClassBtn = new DXButton({ text: '职业: 全部', fontSize: 9, library: 'Interface', index: -1,
+    location: [10, 6], size: [100, 20], onClick: () => {   // CycleClass (:946-951)
+      craftClassIdx = (craftClassIdx + 1) % CRAFT_CLASSES.length;
+      craftClassBtn.text = '职业: ' + CRAFT_CLASSES[craftClassIdx];
+    } });
+  const craftPanel = buildMultiBucket({
+    buckets: [
+      ['template', '模板武器', 1, (info) => info?.type === 'Weapon'],
+      ['yellow', '黄宝石', 1, (info) => info?.name === 'Jewel'],
+      ['blue', '蓝宝石', 1, (info) => info?.name === 'Jewel'],
+      ['red', '红宝石', 1, (info) => info?.name === 'Jewel'],
+      ['purple', '紫宝石', 1, (info) => info?.name === 'Jewel'],
+      ['green', '绿宝石', 1, (info) => info?.name === 'Jewel'],
+      ['grey', '灰宝石', 1, (info) => info?.name === 'Jewel'],
+    ],
+    buttons: [['打造', 0,
+      () => craftPanel.links.template.length > 0,
+      () => {
+        const L = craftPanel.links;
+        conn.sendNPCWeaponCraft(craftClassIdx, L.template[0],
+          L.yellow[0] ?? null, L.blue[0] ?? null, L.red[0] ?? null,
+          L.purple[0] ?? null, L.green[0] ?? null, L.grey[0] ?? null);
+      }]],
+  });
+  craftPanel.panel.addControl(craftClassBtn);
+  w.addControl(craftPanel.panel);
+
+  // R18-5 伙伴寄存 (NPCCompanionStorageDialog.cs — dtype 5 → OpenNPCCompanionStorage)
+  const companionPanel = new DXControl({ location: [0, 204], size: [404, 160], visible: false, isControl: true });
+  const companionBox = document.createElement('div');
+  companionBox.style.cssText = 'position:absolute;left:9px;top:30px;right:9px;bottom:36px;overflow-y:auto;';
+  companionPanel.el.appendChild(companionBox);
+  let companionSel = -1;
+  const renderCompanions = () => {
+    companionBox.replaceChildren();
+    const list = store.info?.companions ?? [];
+    list.forEach((c, i) => {
+      if (!c) return;
+      const d = document.createElement('div');
+      d.textContent = `${i === companionSel ? '●' : '○'} ${c.name}  Lv.${c.level}  饥饿${c.hunger}`;
+      d.style.cssText = 'padding:3px 6px;font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
+      d.onclick = () => { companionSel = i; renderCompanions(); };
+      companionBox.appendChild(d);
+    });
+    if (!companionBox.children.length) companionBox.textContent = '（无伙伴 — 先在驯兽师处领养）';
+  };
+  const selIdx = () => {
+    const list = store.info?.companions ?? [];
+    return companionSel >= 0 && companionSel < list.length && list[companionSel] ? list[companionSel].index : -1;
+  };
+  ['寄存|sendCompanionStore', '取回|sendCompanionRetrieve', '放生|sendCompanionRelease'].forEach((spec, i) => {
+    const [label, fn] = spec.split('|');
+    companionPanel.addControl(new DXButton({ text: label, fontSize: 9, library: 'Interface', index: -1,
+      location: [9 + i * 92, 130], size: [86, 22], onClick: () => {
+        const idx = selIdx();
+        if (idx >= 0) conn[fn](idx);   // Release 原版有 ConfirmDialog — web 端点击即确认 (headless 无二次确认路径)
+      } }));
+  });
+  w.addControl(companionPanel);
+
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');
   const questDetailWin = await getWindow('NPCQuestDialog');
@@ -613,6 +842,22 @@ export async function winNpc(scene, store, reg) {
       refinePanel.location = [0, w.size[1]];
       refinePanel.visible = true;
       renderRefine();
+    }
+    // R18 批次 (dtype 7/8/12/14 + 5)
+    const MULTI_MAP = { 7: stonePanel, 8: masterPanel, 12: accLevelPanel, 14: craftPanel };
+    for (const p of Object.values(MULTI_MAP)) p.panel.visible = false;
+    if (MULTI_MAP[dtype]) {
+      MULTI_MAP[dtype].panel.location = [0, w.size[1]];
+      MULTI_MAP[dtype].panel.visible = true;
+      MULTI_MAP[dtype].reset();
+    }
+    // 伙伴寄存 (dtype 5 → OpenNPCCompanionStorage GameScene.cs:479)
+    companionPanel.visible = false;
+    if (dtype === 5) {
+      companionSel = -1;
+      companionPanel.location = [0, w.size[1]];
+      companionPanel.visible = true;
+      renderCompanions();
     }
     WindowManager.open(w, scene.hudLayer);
     if (dtype === 19) { await winConsign(scene); }   // Consignment → OpenConsignmentDialog (NPCDialog.cs:116)

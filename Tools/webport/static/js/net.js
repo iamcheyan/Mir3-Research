@@ -800,6 +800,26 @@ export const C = {
     .list(specials, (w2, l) => w2.cellLink(l))
     .build(ID.C_NPCREFINE),
   NPCAccessoryReset: (cell) => new Writer().cellLink(cell).build(ID.C_NPCACCESSORYRESET),
+  // R18 批次 (ClientPackets.cs:314/296/305/333/750)
+  NPCRefinementStone: (iron, silver, diamond, goldOre, crystal, gold) => new Writer()
+    .list(iron, (w2, l) => w2.cellLink(l)).list(silver, (w2, l) => w2.cellLink(l))
+    .list(diamond, (w2, l) => w2.cellLink(l)).list(goldOre, (w2, l) => w2.cellLink(l))
+    .list(crystal, (w2, l) => w2.cellLink(l)).int64(BigInt(gold || 0)).build(ID.C_NPCREFINEMENTSTONE),
+  NPCMasterRefine: (refineType, f1, f2, f3, stone, special) => new Writer()
+    .byte(refineType)
+    .list(f1, (w2, l) => w2.cellLink(l)).list(f2, (w2, l) => w2.cellLink(l)).list(f3, (w2, l) => w2.cellLink(l))
+    .list(stone, (w2, l) => w2.cellLink(l)).list(special, (w2, l) => w2.cellLink(l)).build(ID.C_NPCMASTERREFINE),
+  NPCMasterRefineEvaluate: (refineType, f1, f2, f3, stone, special) => new Writer()
+    .byte(refineType)
+    .list(f1, (w2, l) => w2.cellLink(l)).list(f2, (w2, l) => w2.cellLink(l)).list(f3, (w2, l) => w2.cellLink(l))
+    .list(stone, (w2, l) => w2.cellLink(l)).list(special, (w2, l) => w2.cellLink(l)).build(ID.C_NPCMASTERREFINEEVALUATE),
+  NPCAccessoryLevelUp: (target, links) => new Writer()
+    .cellLink(target).list(links, (w2, l) => w2.cellLink(l)).build(ID.C_NPCACCESSORYLEVELUP),
+  NPCWeaponCraft: (cls, template, yellow, blue, red, purple, green, grey) => new Writer()
+    .byte(cls)
+    .cellLink(template).cellLink(yellow).cellLink(blue).cellLink(red)
+    .cellLink(purple).cellLink(green).cellLink(grey).build(ID.C_NPCWEAPONCRAFT),
+  CompanionStore: (index) => new Writer().int32(index).build(ID.C_COMPANIONSTORE),
   // 社交
   FriendAdd: (name) => new Writer().string(name).build(ID.C_FRIENDADD),
   FriendRemove: (index) => new Writer().int32(index).build(ID.C_FRIENDREMOVE),
