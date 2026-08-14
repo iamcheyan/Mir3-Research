@@ -487,3 +487,12 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `CDP 验收` (/tmp/pm-smoke/pmv-single.mjs) 4 dtype 面板全 visible+标题正确; 注入背包物品→
   导入 rows=2 → submitEnabled → 真包出站 packetSent → 清单 remainingRows=0; 0 异常。
   全链路回归 (pmv-buff-qt) ALL-9/REFINE/CONSIGN/MAIL 全绿。
+
+## 2026-08-15 03:0x — R9 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `8b546c6` par-move R16: NPC 单链接面板×4 (WeddingRing/ItemFragment/
+  AccessoryUpgrade/AccessoryReset) + cellLink BigInt 修复
+
+### E路回归: 557 ✓; 无冲突; 已 push。A 路仍在 P2 铺面。
