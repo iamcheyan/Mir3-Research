@@ -387,3 +387,15 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   字段序对照 ClientPackets.cs:505-512 (Links/Recipient/Subject/Message/Gold) ✓。
 - `CDP 验收` pmv-buff-qt: 注入 mailList 渲染 ●/金币 100/附物品 全显; 写邮件
   handler 触发 composeSent:true (真包出站), 0 异常。
+
+## R12 — par-move (A路): BuffDialog 真图标 (CBIcons.Zl) 替换着色瓦片
+
+- `发现` CBIcons.Zl webres 其实已导出 (WebData/sprites/CBIcons/ 200 帧, 所需
+  24 帧全在) — R5 当时误判"未导出"(curl 的是 CBIcon 无 s 库名)。serve.py
+  /res/sprites/CBIcons/{frame}.webp 200 OK。
+- `实现` buff-icons.js: GetBuffIcon switch 表照抄 (BuffDialog.cs:144-220:
+  Castle=242/Observable=172/Heal=78/MagicShield=100/Partner=137/...兜底 73);
+  BuffDialog 渲染 img.pixelated + CSS filter 模拟 SelfModulate (Pause=
+  sepia红, <10s=hue-rotate/saturate 蓝渐变, 永久=原色)。
+- `CDP 验收` 注入 4 buff: srcs=[100,137,78,229] 与 switch 表逐项吻合, 剩余
+  时间降序排列, pause 红/<10s 蓝滤镜生效, visible ✓。

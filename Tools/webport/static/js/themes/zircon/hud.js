@@ -6,9 +6,9 @@ import { skin } from '../../skin.js';
 import { DXWindow, WindowManager, setHint } from '../../windows.js';
 import { getKeyBindLabel, KeyBindAction } from '../../keybinds.js';
 import { CLASS_NAMES, C } from '../../net.js';
+import { BUFF_TYPE_NAMES, buffIconUrl } from './buff-icons.js';
 
 const F = (lib, idx) => skin.frame(lib, idx);
-const rgba = (c) => `rgba(${c[0]},${c[1]},${c[2]},${(c[3] ?? 255) / 255})`;
 
 // Lang.MainPanel*Hint (ChineseMessages.cs:620-629): {0}=键位标签
 const HINT = (s, a) => s.replace('{0}', getKeyBindLabel(a));
@@ -871,23 +871,11 @@ export function fallbackWindow(type, scene) {
 
 // ====================================================================
 // BuffDialog (BuffDialog.cs:15-120) — 小地图左侧 buff 图标栅格
-// CBIcon 库 webres 未导出 → 着色瓦片 (Godot: 27px 格 ×6列, 剩余时间降序,
-// Pause=IndianRed, <10s 向 CadetBlue 渐变, 永久=白)。
+// 图标: CBIcons.Zl (webres 已导出, GetBuffIcon switch 表在 buff-icons.js);
+// 27px 格 ×6列, 剩余时间降序, Pause=IndianRed, <10s 向 CadetBlue 渐变。
 // ====================================================================
-export const BUFF_TYPE_NAMES = {
-  1: '服务器', 2: '狩猎金', 3: '可观察', 4: '褐名', 5: 'PK 点', 6: '红名诅咒',
-  7: '救赎', 8: '伙伴', 9: '城堡', 10: '物品增益', 11: '永久增益', 14: '老兵',
-  15: '地图效果', 16: '副本效果', 17: '行会', 19: '声望',
-  20: '红宝石', 21: '蓝宝石', 22: '诅咒宝石',
-  100: '反抗', 101: '威力', 102: '坚韧', 103: '反弹伤害', 104: '无敌',
-  105: '防御打击', 106: '冲锋', 107: '元素剑',
-  200: '放弃', 201: '魔法盾', 202: '天堂审判', 203: '元素风暴', 204: '强化魔法盾',
-  205: '冰咬', 206: '龙卷',
-  300: '治疗', 301: '隐身',
-};
 const TICKS_PER_SEC = 1e7;   // TimeSpan.Ticks
 const PERMANENT = 9e18;
-const INDIAN_RED = 'rgba(204,92,92,.92)', CADET_BLUE = 'rgba(94,158,160,.92)', WHITE = 'rgba(240,240,240,.92)';
 
 export class BuffDialog extends DXWindow {
   constructor(opts = {}) {
@@ -918,22 +906,23 @@ export class BuffDialog extends DXWindow {
     this.el.style.width = `${this.size[0]}px`; this.el.style.height = `${this.size[1]}px`;
     this.el.replaceChildren();
     this._buffs.forEach((b, i) => {
-      const d = document.createElement('div');
       const name = BUFF_TYPE_NAMES[b.type] ?? `增益#${b.type}`;
       const secsTxt = b.secs === Infinity ? '永久' : `${Math.ceil(b.secs)}s`;
-      // ColorBuffIcon (BuffDialog.cs:110-127)
-      let colour = WHITE;
-      if (b.pause) colour = INDIAN_RED;
-      else if (b.secs !== Infinity && b.secs < 10) {
-        const t = b.secs / 10;
-        colour = t < 0.5 ? CADET_BLUE : `rgba(${Math.round(240 - (1 - t) * 146)},${Math.round(240 - (1 - t) * 82)},${Math.round(240 - (1 - t) * 80)},.92)`;
-      }
+      const d = document.createElement('div');
       d.style.cssText =
         `position:absolute;left:${3 + (i % 6) * 27}px;top:${3 + Math.floor(i / 6) * 27}px;` +
-        `width:24px;height:24px;background:${colour};border:1px solid #222;border-radius:3px;` +
-        `font:9px/24px 'Noto Sans CJK SC',sans-serif;color:#111;text-align:center;cursor:default;` +
-        `text-shadow:none;`;
-      d.textContent = name.slice(0, 1);
+        `width:24px;height:24px;`;
+      const img = document.createElement('img');
+      img.src = buffIconUrl(b.type);
+      img.style.cssText = 'width:24px;height:24px;image-rendering:pixelated;display:block;';
+      // ColorBuffIcon (BuffDialog.cs:110-127): SelfModulate 着色 → CSS filter
+      if (b.pause) img.style.filter = 'sepia(1) saturate(3) hue-rotate(-30deg) brightness(.85)';   // IndianRed
+      else if (b.secs !== Infinity && b.secs < 10) {
+        const t = Math.max(0, Math.min(1, b.secs / 10));
+        // 白 → CadetBlue: 降温+去饱 (t=0 全蓝, t=1 原色)
+        img.style.filter = `hue-rotate(${(1 - t) * 180}deg) saturate(${0.35 + t * 0.65}) brightness(${0.8 + t * 0.2})`;
+      }
+      d.appendChild(img);
       d.title = `${name} (${b.pause ? '暂停' : secsTxt})`;
       this.el.appendChild(d);
     });
