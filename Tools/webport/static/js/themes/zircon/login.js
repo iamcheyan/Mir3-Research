@@ -87,11 +87,11 @@ export class LoginScene {
     });
     const btnRanking = new DXButton({
       text: '排行榜', fontSize: 9, textColour: gold, library: 'Interface', index: 153,
-      location: [20, 0], size: [68, 32], onClick: () => this.setStatus('排行榜: 网页版暂未实现'),
+      location: [20, 0], size: [68, 32], onClick: () => this.#toggleLoginRanking(),
     });
     const btnOptions = new DXButton({
       text: '选项', fontSize: 9, textColour: gold, library: 'Interface', index: 153,
-      location: [93, 0], size: [68, 32], onClick: () => this.setStatus('选项: 网页版暂未实现'),
+      location: [93, 0], size: [68, 32], onClick: () => this.#toggleLoginOptions(),
     });
     this.btnRegister = new DXButton({
       text: '注册新账号', fontSize: 10, textColour: gold, library: 'Interface', index: 152,
@@ -99,7 +99,7 @@ export class LoginScene {
     });
     const btnChange = new DXButton({
       text: '修改密码', fontSize: 10, textColour: gold, library: 'Interface', index: 152,
-      location: [625, 0], size: [136, 32], onClick: () => this.setStatus('修改密码: 网页版暂未实现'),
+      location: [625, 0], size: [136, 32], onClick: () => this.#promptChangePassword(),
     });
     d.addControl(this.btnLogin);
     d.addControl(btnExit);
@@ -122,7 +122,7 @@ export class LoginScene {
     forgot.el.style.cursor = 'pointer';
     forgot.el.addEventListener('mouseenter', () => forgot.el.style.color = '#fff');
     forgot.el.addEventListener('mouseleave', () => forgot.el.style.color = 'rgb(255,191,64)');
-    forgot.el.addEventListener('click', () => this.setStatus('忘记密码: 网页版暂未实现'));
+    forgot.el.addEventListener('click', () => this.#promptPasswordReset());
     d.addControl(forgot);
 
     // 记住账号 (LoginScene.cs:505-509)
@@ -135,7 +135,7 @@ export class LoginScene {
     // 激活账号 (LoginScene.cs:512-514)
     const btnActivation = new DXButton({
       text: '激活账号', fontSize: 9, textColour: orange, library: 'Interface', index: -1,
-      location: [20, 36], size: [72, 20], onClick: () => this.setStatus('激活账号: 网页版暂未实现'),
+      location: [20, 36], size: [72, 20], onClick: () => this.#promptActivation(),
     });
     d.addControl(btnActivation);
 
@@ -171,6 +171,12 @@ export class LoginScene {
     });
     this.conn.addEventListener('loginResult', (e) => this.#onLoginResult(e.detail));
     this.conn.addEventListener('newAccountResult', (e) => this.#onNewAccount(e.detail));
+    // 账号操作结果 → 状态行 (LoginScene.cs:211-221 OnChangePasswordResult 等对照)
+    this.conn.addEventListener('changePasswordResult', (e) => this.setStatus(`修改密码结果: ${e.detail?.result ?? '?'}${e.detail?.message ? ` (${e.detail.message})` : ''}`));
+    this.conn.addEventListener('requestPasswordResetResult', (e) => this.setStatus(`密码重置申请: ${e.detail?.result ?? '?'}${e.detail?.message ? ` (${e.detail.message})` : ''}`));
+    this.conn.addEventListener('resetPasswordResult', (e) => this.setStatus(`重置密码结果: ${e.detail?.result ?? '?'}`));
+    this.conn.addEventListener('activationResult', (e) => this.setStatus(`激活结果: ${e.detail?.result ?? '?'}`));
+    this.conn.addEventListener('requestActivationKeyResult', (e) => this.setStatus(`激活键请求结果: ${e.detail?.result ?? '?'}`));
     this.conn.addEventListener('disconnected', () => {
       this.setStatus('与服务器的连接已断开'); // Lang.LoginUi459Label
       if (this.btnLogin) this.btnLogin.enabled = false;
@@ -184,6 +190,99 @@ export class LoginScene {
       if (ev.key === 'Enter' && this.btnLogin?.enabled) this.#onLogin();
 
     });
+  }
+
+  // ---- 排行榜 (LoginScene.cs:281-286 ToggleLoginRanking) ----
+  #toggleLoginRanking() {
+    if (!this._rankWin) {
+      const win = document.createElement('div');
+      win.style.cssText =
+        'position:absolute;left:312px;top:170px;width:400px;height:260px;z-index:60;' +
+        'background:rgba(20,16,12,.94);border:2px solid #6b5a3e;box-shadow:0 4px 16px #000;';
+      const title = document.createElement('div');
+      title.textContent = '排行榜 (仅在线)';
+      title.style.cssText = 'padding:6px 10px;font:bold 13px \'Noto Sans CJK SC\',sans-serif;color:#ffd573;border-bottom:1px solid #6b5a3e;';
+      const list = document.createElement('div');
+      list.style.cssText = 'position:absolute;top:32px;left:0;right:0;bottom:0;overflow-y:auto;';
+      list.textContent = '（等待服务器响应...）';
+      const close = document.createElement('div');
+      close.textContent = '×';
+      close.style.cssText = 'position:absolute;top:2px;right:8px;cursor:pointer;color:#c9a;font:16px sans-serif;';
+      close.onclick = () => { win.style.display = 'none'; };
+      win.append(title, list, close);
+      this.root.appendChild(win);
+      this._rankWin = win;
+      this._rankList = list;
+      const onRanks = (e) => {
+        const ranks = e.detail?.ranks ?? [];
+        list.replaceChildren();
+        if (!ranks.length) { list.textContent = '（暂无上榜角色）'; return; }
+        for (const r0 of ranks) {
+          const d = document.createElement('div');
+          d.textContent = `#${r0.rank} ${r0.name} Lv.${r0.level}`;
+          d.style.cssText = 'padding:2px 10px;font:12px \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;';
+          list.appendChild(d);
+        }
+      };
+      this.conn.addEventListener('rankings', onRanks);
+    }
+    const show = this._rankWin.style.display === 'none';
+    this._rankWin.style.display = show ? '' : 'none';
+    if (show) this.conn.sendRankRequest(0, true, 0);   // ServerConnection.cs:1077 RequiredClass.None
+  }
+
+  // ---- 选项 (LoginScene.cs:522 ConfigDialog) — 网页设置: UI 缩放/音量占位 ----
+  #toggleLoginOptions() {
+    if (!this._optWin) {
+      const win = document.createElement('div');
+      win.style.cssText =
+        'position:absolute;left:322px;top:169px;width:380px;height:190px;z-index:60;' +
+        'background:rgba(20,16,12,.94);border:2px solid #6b5a3e;box-shadow:0 4px 16px #000;';
+      win.innerHTML =
+        '<div style="padding:6px 10px;font:bold 13px \'Noto Sans CJK SC\',sans-serif;color:#ffd573;border-bottom:1px solid #6b5a3e">选项</div>' +
+        '<div style="padding:10px;font:12px \'Noto Sans CJK SC\',sans-serif;color:#eee">' +
+        '  <label>UI 缩放 <select id="wp-ui-scale"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select></label>' +
+        '</div>';
+      const close = document.createElement('div');
+      close.textContent = '×';
+      close.style.cssText = 'position:absolute;top:2px;right:8px;cursor:pointer;color:#c9a;font:16px sans-serif;';
+      close.onclick = () => { win.style.display = 'none'; };
+      win.appendChild(close);
+      const sel = () => win.querySelector('#wp-ui-scale');
+      win.addEventListener('change', () => {
+        const v = parseFloat(sel().value) || 1;
+        localStorage.setItem('webport_ui_scale', String(v));
+        document.documentElement.style.setProperty('--webport-scale', String(v));
+        window.dispatchEvent(new CustomEvent('webport-ui-scale', { detail: v }));
+      });
+      sel().value = localStorage.getItem('webport_ui_scale') ?? '1';
+      this.root.appendChild(win);
+      this._optWin = win;
+    }
+    this._optWin.style.display = this._optWin.style.display === 'none' ? '' : 'none';
+  }
+
+  // ---- 账号操作 (LoginScene.cs:51-55 AddAccountButton 系列) ----
+  #promptChangePassword() {   // SendChangePassword(email, current, next)
+    const email = prompt('修改密码 — 邮箱:', this.emailInput.text) ?? '';
+    if (!email) return;
+    const current = prompt('当前密码:') ?? '';
+    const next = prompt('新密码:') ?? '';
+    if (!current || !next) return;
+    this.conn.sendChangePassword(email, current, next);
+    this.setStatus('正在提交修改密码...');
+  }
+  #promptPasswordReset() {    // SendRequestPasswordReset(email)
+    const email = prompt('忘记密码 — 输入注册邮箱申请重置:', this.emailInput.text) ?? '';
+    if (!email) return;
+    this.conn.sendRequestPasswordReset(email);
+    this.setStatus('已申请密码重置 (若邮箱有效将下发重置键)...');
+  }
+  #promptActivation() {       // SendActivation(key) / SendRequestActivationKey(email)
+    const email = prompt('激活账号 — 邮箱 (留空则直接输入激活键):', this.emailInput.text) ?? '';
+    if (!email) return;
+    if (email.includes('@')) { this.conn.sendRequestActivationKey(email); this.setStatus('已请求激活键...'); }
+    else { this.conn.sendActivation(email); this.setStatus('正在激活...'); }
   }
 
   #onLogin() { // OnLoginPressed (LoginScene.cs:244-264) — 网页测试台: 忽略输入框, 固定测试账号直进

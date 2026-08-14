@@ -26,6 +26,12 @@ const DISPATCH = {
   [ID.S_NEWCHARACTER]: ['newCharacterResult', S.NewCharacter],
   [ID.S_DELETECHARACTER]: ['deleteCharacterResult', S.DeleteCharacter],
   [ID.S_STARTGAME]: ['startGameResult', S.StartGame],
+  // 账号操作结果 (LoginScene.cs:110-123 On*Result 对照; byte 枚举直读)
+  [ID.S_CHANGEPASSWORD]: ['changePasswordResult', (r) => ({ result: r.byte(), message: r.string(), duration: r.int64() })],
+  [ID.S_REQUESTPASSWORDRESET]: ['requestPasswordResetResult', (r) => ({ result: r.byte(), message: r.string(), duration: r.int64() })],
+  [ID.S_RESETPASSWORD]: ['resetPasswordResult', (r) => ({ result: r.byte() })],
+  [ID.S_ACTIVATION]: ['activationResult', (r) => ({ result: r.byte() })],
+  [ID.S_REQUESTACTIVATIONKEY]: ['requestActivationKeyResult', (r) => ({ result: r.byte(), duration: r.int64() })],
   [ID.S_MAPCHANGED]: ['mapChanged', S.MapChanged],
   [ID.S_USERLOCATION]: ['userLocation', S.UserLocation],
   [ID.S_OBJECTMOVE]: ['objectMove', S.ObjectMove],
@@ -323,6 +329,12 @@ export class GameConnection extends EventTarget {
   // ---- 高层 API (ServerConnection SendXxx 等价) ----
   sendLogin(email, password) { this.send(C.Login(email, password, this.checkSum)); }
   sendNewAccount(email, password) { this.send(C.NewAccount(email, password, this.checkSum)); }
+  // 账号操作 (ServerConnection.cs:897-905)
+  sendChangePassword(email, current, next) { this.send(C.ChangePassword(email, current, next, this.checkSum)); }
+  sendRequestPasswordReset(email) { this.send(C.RequestPasswordReset(email, this.checkSum)); }
+  sendResetPassword(key, next) { this.send(C.ResetPassword(key, next, this.checkSum)); }
+  sendActivation(key) { this.send(C.Activation(key, this.checkSum)); }
+  sendRequestActivationKey(email) { this.send(C.RequestActivationKey(email, this.checkSum)); }
   sendNewCharacter(name, cls, gender, hairType = 1, hairColour = -16777216, armourColour = -1) {
     this.send(C.NewCharacter(name, cls, gender, hairType, hairColour, armourColour, this.checkSum));
   }

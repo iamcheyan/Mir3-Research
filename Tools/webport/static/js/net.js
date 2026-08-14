@@ -793,7 +793,17 @@ export const C = {
   Inspect: (index, ranking = false) => new Writer().int32(index).bool(ranking).build(ID.C_INSPECT),
   ObserverRequest: (name) => new Writer().string(name).build(ID.C_OBSERVERREQUEST),
   ObservableSwitch: (allow) => new Writer().bool(allow).build(ID.C_OBSERVABLESWITCH),
-  // 排行/寄售/商城
+  // 账号操作 (ClientPackets.cs:17-49, Login 场景可达: Godot ServerConnection.cs:897-905)
+  ChangePassword: (email, current, next, checkSum) =>
+    new Writer().string(email).string(current).string(next).string(checkSum).build(ID.C_CHANGEPASSWORD),
+  RequestPasswordReset: (email, checkSum) =>
+    new Writer().string(email).string(checkSum).build(ID.C_REQUESTPASSWORDRESET),
+  ResetPassword: (key, next, checkSum) =>
+    new Writer().string(key).string(next).string(checkSum).build(ID.C_RESETPASSWORD),
+  Activation: (key, checkSum) =>
+    new Writer().string(key).string(checkSum).build(ID.C_ACTIVATION),
+  RequestActivationKey: (email, checkSum) =>
+    new Writer().string(email).string(checkSum).build(ID.C_REQUESTACTIVATIONKEY),
   RankRequest: (cls = 255, onlineOnly = false, startIndex = 0) =>
     new Writer().byte(cls).bool(onlineOnly).int32(startIndex).build(ID.C_RANKREQUEST),
   RankSearch: (name) => new Writer().string(name).build(ID.C_RANKSEARCH),

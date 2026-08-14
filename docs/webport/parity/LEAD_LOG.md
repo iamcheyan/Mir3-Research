@@ -336,3 +336,21 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `验收` check-keybinds-cdp v2: 70/70 toggleOk (含 ExitGameWindow — 上一轮
   "fail" 是套件顺序伪影), exceptions=[]; 全链路新号注册→进图 0 异常
   (pmv-move-edge 复跑)。
+
+## R10 — par-move (A路): Login 场景 5 按钮 "暂未实现" 清零 (铁律违规)
+
+- `发现` login.js 4 处 onClick + 忘记密码 = setStatus('xx: 网页版暂未实现') — 违反
+  冲刺铁律 1 (禁止"暂未实现"按钮)。Godot LoginScene.cs 全有真实现:
+  排行榜→RankingDialog+SendRankings(:281-286), 选项→ConfigDialog(:522),
+  修改密码/忘记密码/激活→C.ChangePassword/RequestPasswordReset/Activation 系
+  (ServerConnection.cs:897-905, LoginScene.cs:51-55)。
+- `协议` net.js +5 builder (ClientPackets.cs:17-49 字段序), ws.js +5 sender +5
+  result 监听 (ServerPackets.cs:18-60: ChangePassword/RequestPasswordReset 带
+  message+duration, RequestActivationKey 带 duration, 其余仅 result byte)。
+- `实现` login.js: #toggleLoginRanking (窗口+rankings 事件渲染+SendRankings
+  RequiredClass.None), #toggleLoginOptions (UI 缩放持久), #promptChangePassword/
+  PasswordReset/Activation (prompt 链→真包→结果事件改状态行)。
+- `CDP 验收` pmv-login-btns.mjs: 排行榜开窗渲染"(暂无上榜角色)"(服务器 total:0
+  真响应); 选项缩放 1.25 持久; 修改密码 prompt×3→包发出→服务器回 result:4
+  (WrongPassword — 假旧密码, 枚举语义正确); 忘记密码/激活 prompt→包发出;
+  0 页面异常。
