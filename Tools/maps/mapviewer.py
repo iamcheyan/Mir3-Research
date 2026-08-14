@@ -46,6 +46,14 @@ FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
 DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
 DEFAULT_CONNECTIONS = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "../../docs/database/data/map-connections.json"))
+# dbeditor JSON 工作区（System.db 全表导出，编辑器保存即更新）——NPC 位置与
+# 地图连接的第一数据源（NPCInfo 294 行 × MapRegion 5009 行 × MovementInfo
+# 1039 行，PointRegion 质心坐标 0 缺失，且包含 NpcMover 修正后的 EI 坐标）。
+DEFAULT_DBWORKSPACE = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), "../dbeditor/workspace"))
+# 客户端显示名映射表（方案 B 本地化）：NPC/地图 中文名，zh 优先、英文兜底。
+DEFAULT_DB_NAMES = os.path.expanduser(
+    "~/development/zircon/GodotClient/translations/db_names.json")
 # Full chinese-name map: {map stem -> cn}.  Generated from DBserver/Envir
 # MapInfo.txt + System.db descriptions + mapnames rules (see gen_static_maps.py).
 MAP_CN_FILE = "/tmp/map_cn_full.json"
@@ -1465,6 +1473,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #cat-panel .lib { font-family:ui-monospace,monospace; }
         #cat-panel .lib .oob { color:#ff8f6b; }
         #cat-panel::-webkit-scrollbar { width:8px; } #cat-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
+        #conn-panel { position:fixed; left:10px; top:50px; width:300px; max-height:60vh; overflow:auto;
+            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; z-index:70; display:none; line-height:1.5; }
+        #conn-panel h4 { margin:0 0 6px; font-size:13px; color:#3de88a; }
+        #conn-panel .conn-row { display:flex; gap:8px; align-items:baseline; padding:2px 0; }
+        #conn-panel .conn-row.link { cursor:pointer; }
+        #conn-panel .conn-row.link:hover { background:#2a2e38; border-radius:3px; }
+        #conn-panel .conn-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        #conn-panel .conn-dir { color:#ffd54a; font-family:ui-monospace,monospace; font-size:11px; }
+        #conn-panel .conn-file { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
+        #conn-panel .conn-empty { color:#6a6a75; }
+        #conn-panel::-webkit-scrollbar { width:8px; } #conn-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
         #info { font-size:12px; color:#aaa; white-space:nowrap; }
         #status { margin-left:auto; font-size:12px; color:#e90; white-space:nowrap; }
         button { font-size:14px; min-width:32px; padding:4px 9px; white-space:nowrap; cursor:pointer; background:#333; color:#eee; border:1px solid #555; border-radius:3px; }
@@ -1599,6 +1619,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
     <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
     <div id="cat-panel"></div>
+    <div id="conn-panel"></div>
     <div id="minimap">
         <div class="mm-title">全图</div>
         <div id="mm-box"><img id="mm-img" draggable="false" alt=""><div id="mm-rect" style="display:none"></div></div>
@@ -1860,39 +1881,54 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             routeSvg.setAttribute("width", vp.clientWidth);
             routeSvg.setAttribute("height", vp.clientHeight);
             const vw = vp.clientWidth, vh = vp.clientHeight;
-            routeSvg.innerHTML = routes.map(r => {
-                const sourceHere = String(r.source.map).replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
-                const destHere = String(r.destination.map).replace(/\\.map$/i, "") === mi.name.replace(/\\.map$/i, "");
-                if ((!sourceHere && !destHere)) return "";
-                const sx = sourceHere && r.source.x != null ? px(r.source) : null;
-                const sy = sourceHere && r.source.x != null ? py(r.source) : null;
-                const dx = destHere && r.destination.x != null ? px(r.destination) : null;
-                const dy = destHere && r.destination.x != null ? py(r.destination) : null;
+            const hereStem = mi.name.replace(/\\.map$/i, "");
+            // 聚合：同 (方向, 对面地图, icon) 的多条 movement（如逐格排列的传送门）
+            // 合成一个出口标记，位置取本图端点质心 —— 否则地图边缘会出现几十个
+            // 重叠圆点。movement 源数据 = System.db MovementInfo (workspace 最新)。
+            const groups = {};
+            for (const r of routes) {
+                if (!r.source || !r.destination) continue;
+                const sourceHere = String(r.source.map).replace(/\\.map$/i, "") === hereStem;
+                const destHere = String(r.destination.map).replace(/\\.map$/i, "") === hereStem;
+                if (!sourceHere && !destHere) continue;
+                const here = sourceHere ? r.source : r.destination;
+                const other = sourceHere ? r.destination : r.source;
+                if (here.x == null) continue;   // 本图端点无坐标，无法定位出口
+                const otherStem = String(other.map).replace(/\\.map$/i, "");
+                const dir = sourceHere ? "O" : "I";
+                const key = dir + "|" + otherStem + "|" + (r.icon || "None");
+                const g = groups[key] = groups[key] || {
+                    dir, otherStem, icon: r.icon || "None",
+                    sx: 0, sy: 0, n: 0, ox: other.x, oy: other.y, hasO: other.x != null,
+                };
+                g.sx += Number(here.x); g.sy += Number(here.y); g.n++;
+                if (other.x != null) { g.ox = other.x; g.oy = other.y; }
+            }
+            routeSvg.innerHTML = Object.values(groups).map(g => {
+                const cx = px({ x: g.sx / g.n }), cy = py({ y: g.sy / g.n });
+                if (cx < -60 || cy < -60 || cx > vw + 60 || cy > vh + 60) return "";
+                const tcn = MAP_CN[g.otherStem] || g.otherStem;
                 // color by icon type: Cave/Down=red, Building=green, Exit/Up=blue, Province=yellow
                 let color = "#72d6ff";
-                if (/Cave|Down/.test(r.icon)) color = "#ff6b6b";
-                else if (/Building/.test(r.icon)) color = "#7CFF7C";
-                else if (/Province/.test(r.icon)) color = "#ffd54a";
-                const targetMap = sourceHere ? r.destination : r.source;
-                const targetName = String(targetMap.map).replace(/\\.map$/i, "");
-                const otherName = sourceHere ? String(r.destination.map) : String(r.source.map);
-                const tcn = MAP_CN[targetName] || targetName;
-                const parts = [];
-                if (sourceHere && sx != null) {
-                    const info = `${tcn} · 格 ${Math.round(targetMap.x)},${Math.round(targetMap.y)}`;
-                    parts.push(`<circle class="port" data-srcmap="${mi.name}" data-dstmap="${encodeURIComponent(otherName)}" data-dstx="${Math.round(targetMap.x)}" data-dsty="${Math.round(targetMap.y)}" data-dstcn="${encodeURIComponent(tcn)}" cx="${sx}" cy="${sy}" r="6" fill="${color}" stroke="#111" stroke-width="2"><title>${info}</title></circle>`);
-                }
-                if (destHere && dx != null) {
-                    parts.push(`<circle cx="${dx}" cy="${dy}" r="5" fill="#ffd54a" stroke="#111" stroke-width="2" opacity=".7"><title>入口</title></circle>`);
-                }
-                return parts.join("");
+                if (/Cave|Down/.test(g.icon)) color = "#ff6b6b";
+                else if (/Building/.test(g.icon)) color = "#7CFF7C";
+                else if (/Province/.test(g.icon)) color = "#ffd54a";
+                const arrow = g.dir === "O" ? "→" : "←";   // 出口/入口方向
+                const label = g.otherStem === hereStem
+                    ? `本图内传送 · ${g.n} 处`
+                    : `${g.dir === "O" ? "通往" : "来自"} ${tcn} · ${g.n} 处`;
+                const dstAttr = (g.ox != null)
+                    ? ` data-dstmap="${g.otherStem}" data-dstx="${Math.round(g.ox)}" data-dsty="${Math.round(g.oy)}" data-dstcn="${encodeURIComponent(tcn)}"`
+                    : "";
+                return `<g class="port-wrap"><circle class="port"${dstAttr} cx="${cx}" cy="${cy}" r="7" fill="${color}" stroke="#111" stroke-width="2" opacity=".92"><title>${label}${g.ox != null ? ` · 对面格 ${Math.round(g.ox)},${Math.round(g.oy)}` : ""}</title></circle>` +
+                    `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="10" fill="#fff" pointer-events="none">${arrow}</text></g>`;
             }).join("");
         }
         // hover portal -> show destination map thumbnail
         routeSvg.addEventListener("mouseover", (e) => {
             const c = e.target.closest("circle.port");
-            if (!c) { portTooltip.style.display = "none"; return; }
-            const dst = c.dataset.dstmap, dx = c.dataset.dstx, dy = c.dataset.dsty, cn = decodeURIComponent(c.dataset.dstcn);
+            if (!c || !c.dataset.dstmap) { portTooltip.style.display = "none"; return; }
+            const dst = c.dataset.dstmap, dx = c.dataset.dstx, dy = c.dataset.dsty, cn = decodeURIComponent(c.dataset.dstcn || dst);
             const dstName = dst + ".map";
             portTooltip.innerHTML = `<b>${cn}</b> · 格 ${dx},${dy}<br><img src="/thumb?map=${encodeURIComponent(dstName)}" alt="">`;
             portTooltip.style.display = "block";
@@ -1906,8 +1942,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         // click portal -> jump to destination map
         routeSvg.addEventListener("click", (e) => {
             const c = e.target.closest("circle.port");
-            if (!c) return;
-            const dst = c.dataset.dstmap, dx = c.dataset.dstx, dy = c.dataset.dsty;
+            if (!c || !c.dataset.dstmap) return;
+            const dst = c.dataset.dstmap, dx = c.dataset.dstx || 0, dy = c.dataset.dsty || 0;
             if (maps.some(m => m.name === dst + ".map")) {
                 history.replaceState(null, '', `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(dx * 48)}&y=${Math.round(dy * 32)}&g=1&m=1&f=1`);
                 init();
@@ -1919,6 +1955,61 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const data = await res.json(); routeCache[mi.name] = data.links || [];
             } catch (e) { routeCache[mi.name] = []; }
             drawRoutes();
+            renderConnPanel(mi);
+        }
+        // ---- 连接列表面板：本图 ↔ 哪些图互连（中文地图名，点击跳转） ----
+        function renderConnPanel(mi) {
+            const panel = document.getElementById("conn-panel");
+            if (!panel) return;
+            const hereStem = mi.name.replace(/\\.map$/i, "");
+            const routes = routeCache[mi.name] || [];
+            const groups = {};
+            for (const r of routes) {
+                if (!r.source || !r.destination) continue;
+                const sourceHere = String(r.source.map).replace(/\\.map$/i, "") === hereStem;
+                const destHere = String(r.destination.map).replace(/\\.map$/i, "") === hereStem;
+                if (!sourceHere && !destHere) continue;
+                const other = sourceHere ? r.destination : r.source;
+                const otherStem = String(other.map).replace(/\\.map$/i, "");
+                const g = groups[otherStem] = groups[otherStem] ||
+                    { out: 0, in: 0, ox: other.x, oy: other.y };
+                if (sourceHere) g.out++; else g.in++;
+                if (other.x != null) { g.ox = other.x; g.oy = other.y; }
+            }
+            const stems = Object.keys(groups).sort((a, b) =>
+                (groups[b].out + groups[b].in) - (groups[a].out + groups[a].in));
+            const cn = st => MAP_CN[st] || st;
+            let html = `<h4>🔗 地图连接 (${stems.length})</h4>`;
+            if (!stems.length) {
+                html += `<div class="conn-empty">无连接数据</div>`;
+            } else {
+                for (const st of stems) {
+                    const g = groups[st];
+                    const exists = maps.some(m => m.name === st + ".map");
+                    const jump = (exists && g.ox != null)
+                        ? ` data-jump="${st}" data-x="${Math.round(g.ox)}" data-y="${Math.round(g.oy)}"`
+                        : "";
+                    const dirs = [];
+                    if (g.out) dirs.push(`→${g.out}`);
+                    if (g.in) dirs.push(`←${g.in}`);
+                    html += `<div class="conn-row${jump ? " link" : ""}"${jump}>` +
+                        `<span class="conn-name">${cn(st)}</span>` +
+                        `<span class="conn-dir">${dirs.join(" ")}</span>` +
+                        `${st !== hereStem ? `<span class="conn-file">${st}</span>` : "<span class='conn-file'>本图内</span>"}` +
+                        `</div>`;
+                }
+            }
+            panel.innerHTML = html;
+            panel.style.display = "block";
+            panel.querySelectorAll(".conn-row.link").forEach(row => {
+                row.addEventListener("click", () => {
+                    const dst = row.dataset.jump;
+                    if (!dst) return;
+                    history.replaceState(null, '',
+                        `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(Number(row.dataset.x) * 48)}&y=${Math.round(Number(row.dataset.y) * 32)}&g=1&m=1&f=1`);
+                    init();
+                });
+            });
         }
 
         // ---- entities (NPC / spawn / monsters) from Mud3 Envir ----
@@ -1981,6 +2072,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const d = await res.json();
                 entCache[mi.name] = d.ok ? d.entities : [];
             } catch (e) { entCache[mi.name] = []; }
+            // 首次打开且用户未指定视点时，默认居中到 NPC/出生点质心（城镇区），
+            // 而不是地图几何中心（大图中心常是无人区，NPC 标记全在视口外）。
+            if (!window.__userAnchor && entCache[mi.name] && entCache[mi.name].length) {
+                let sx = 0, sy = 0, n = 0;
+                for (const e of entCache[mi.name]) {
+                    if (e.kind === "npc" || e.kind === "spawn") { sx += Number(e.x); sy += Number(e.y); n++; }
+                }
+                if (n > 0) {
+                    anchorX = (sx / n) * 48 + 24;
+                    anchorY = (sy / n) * 32 + 16;
+                    applyAnchor();
+                    if (isTileMode()) drawTiles();
+                    drawRoutes();
+                    drawEntities();
+                    drawGrid();
+                    drawMini();
+                    updateUrlHash();
+                }
+            }
             drawEntities();
         }
 
@@ -2220,8 +2330,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             let targetY = null;
             const st = loadState();
             const hasHash = !!location.hash;
-
             window.__hlName = null;
+            window.__userAnchor = false;   // 用户显式指定视点后不再自动居中到 NPC 质心
             if (hasHash) {
                 const matchMap = location.hash.match(/map=([^&]+)/);
                 const matchCur = location.hash.match(/cur=(\\d+)/);
@@ -2253,6 +2363,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (targetX !== null && targetY !== null) {
                 anchorX = targetX;
                 anchorY = targetY;
+                window.__userAnchor = true;
             }
             render(true);
             updateUrlHash();   // 立即用实际加载的地图/坐标回写 URL(自愈坏 hash)
@@ -2348,11 +2459,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             panel.style.display = panel.style.display === "none" ? "block" : "none";
         });
         document.getElementById("legend-panel").innerHTML =
-            '<div class="lg-row"><span class="lg-dot" style="background:#8cf;box-shadow:0 0 4px #8cf;"></span> 功能 NPC / 出生点</div>' +
-            '<div class="lg-row"><span class="lg-dot" style="background:#ffd54a;box-shadow:0 0 4px #ffd54a;"></span> 出生点</div>' +
-            '<div class="lg-row"><span class="lg-dot" style="background:#ff6b6b;box-shadow:0 0 4px #ff6b6b;"></span> 怪物刷新 / 洞穴入口</div>' +
-            '<div class="lg-row"><span class="lg-dot" style="background:#72d6ff;box-shadow:0 0 4px #72d6ff;"></span> 城镇 / 出口</div>' +
-            '<div class="lg-row"><span class="lg-dot" style="background:#7CFF7C;box-shadow:0 0 4px #7CFF7C;"></span> 小房间 / 建筑入口</div>';
+            '<div class="lg-row"><span class="lg-dot" style="background:#8cf;box-shadow:0 0 4px #8cf;"></span> NPC（db_names 中文名）</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#7CFF7C;box-shadow:0 0 4px #7CFF7C;"></span> 商店类 NPC / 建筑 (Building)</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ffd54a;box-shadow:0 0 4px #ffd54a;"></span> 出生点 / 省际传送 (Province)</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#ff6b6b;box-shadow:0 0 4px #ff6b6b;"></span> 怪物刷新 / 洞穴入口 (Cave/Down)</div>' +
+            '<div class="lg-row"><span class="lg-dot" style="background:#72d6ff;box-shadow:0 0 4px #72d6ff;"></span> 城镇出口 (Exit/Up)</div>' +
+            '<div class="lg-row"><span style="color:#aaa;font-size:11px;">→ 出口（通往对面图） · ← 入口（从对面图来）<br>圆点可点击跳转对面地图 · 左上面板=连接列表</div>';
 
         // ---- right-bottom status bar: coord + zoom + map ----
         const coordEl = document.getElementById("coord-info");
@@ -2494,6 +2606,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
     catalog: dict = {}          # map_name -> catalog doc (build_map_catalog.py)
     entities: list = []         # Mud3 Envir entity data (load_entities)
     connections: list = []      # exported System.db movement records
+    db_names: dict = {}         # db_names.json: npcs/maps en->zh 显示名
+    conn_index: dict = {}       # map stem -> links touching the map (含未匹配)
 
     @classmethod
     def _render_lock(cls, key: tuple):
@@ -2691,10 +2805,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
             map_name = os.path.splitext(os.path.basename(qs.get("map", [""])[0]))[0]
-            links = [x for x in self.connections
-                     if os.path.splitext(x.get("source", {}).get("map", ""))[0] == map_name
-                     or os.path.splitext(x.get("destination", {}).get("map", ""))[0] == map_name]
-            body = json.dumps({"ok": True, "links": links}, ensure_ascii=False).encode("utf-8")
+            links = self.conn_index.get(map_name, [])
+            body = json.dumps({"ok": True, "map": map_name, "links": links}, ensure_ascii=False).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Cache-Control", "no-store")
@@ -2706,7 +2818,10 @@ class ViewerHandler(BaseHTTPRequestHandler):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
             map_name = os.path.basename(qs.get("map", [""])[0])
-            ents = [e for e in self.entities if e["map"] == map_name]
+            map_stem = os.path.splitext(map_name)[0]
+            # 兼容 "0.map"（Envir 实体）与 "0"（workspace 实体）两种命名
+            ents = [e for e in self.entities
+                    if e.get("map") == map_name or e.get("map") == map_stem]
             # 合并 System.db 位置实体（dbviewer 服务 8800 运行时启用）：
             # 刷怪点 / NPC / 守卫 / 传送点 / 安全区，格式与 Envir 实体一致。
             try:
@@ -3083,6 +3198,97 @@ def load_connections(path: str) -> list[dict]:
         return []
 
 
+# ------------------------------------------------ dbeditor workspace 直读
+# NPC 位置与地图连接的第一数据源：Tools/dbeditor/workspace/*.json 是
+# System.db 的全表 JSON 导出（dbeditor 保存即更新 / NpcMover 坐标修正同样
+# 落在这里）。坐标取 MapRegion.PointRegion 质心（CenterX/CenterY，游戏格）。
+
+def _ws_rows(workspace: str, table: str) -> list[dict]:
+    p = os.path.join(workspace, table + ".json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+        rows = data.get("rows") if isinstance(data, dict) else data
+        return rows or []
+    except (OSError, ValueError, TypeError):
+        return []
+
+
+def load_db_names(path: str) -> dict:
+    """db_names.json -> {'npcs': {en: zh}, 'maps': {en: zh}} (zh 优先, en 兜底)."""
+    out: dict[str, dict] = {"npcs": {}, "maps": {}}
+    if not path or not os.path.exists(path):
+        return out
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        for section in ("npcs", "maps"):
+            sec = data.get(section) or {}
+            for en, entry in sec.items():
+                zh = entry.get("zh") if isinstance(entry, dict) else None
+                out[section][en] = zh if zh else en
+    except (OSError, ValueError, TypeError, AttributeError):
+        pass
+    return out
+
+
+def load_workspace_entities(workspace: str, db_names: dict | None = None) -> list[dict]:
+    """NPCInfo x MapRegion -> [{map,x,y,kind:'npc',name,name_en}].
+
+    name 为中文名（db_names.npcs 命中时），name_en 保留 DB 原名；坐标为
+    Region.PointRegion 质心（EI 坐标系，NpcMover 修正后的最新值）。"""
+    npc_names = (db_names or {}).get("npcs", {})
+    regions = {r.get("Index"): r for r in _ws_rows(workspace, "MapRegion")}
+    out: list[dict] = []
+    for n in _ws_rows(workspace, "NPCInfo"):
+        reg = regions.get((n.get("Region") or {}).get("Index"))
+        if not reg:
+            continue
+        pr = reg.get("PointRegion") or {}
+        x, y = pr.get("CenterX"), pr.get("CenterY")
+        if x is None or y is None:
+            continue
+        en = n.get("NPCName") or ""
+        out.append({
+            "map": str((reg.get("Map") or {}).get("Name", "")),
+            "x": x, "y": y, "kind": "npc",
+            "name": npc_names.get(en, en) or en,
+            "name_en": en,
+        })
+    return out
+
+
+def load_workspace_connections(workspace: str) -> list[dict]:
+    """MovementInfo x MapRegion -> links（与 map-connections.json 同 schema）.
+
+    Region 质心坐标直接从 workspace MapRegion 取（0 缺失），比 8月11 的
+    Markdown 导出（155 端点 x=null）完整；MovementInfo 1039 行含 D 系地下城
+    连接。"""
+    regions = {r.get("Index"): r for r in _ws_rows(workspace, "MapRegion")}
+
+    def endpoint(ref) -> dict:
+        reg = regions.get((ref or {}).get("Index")) or {}
+        pr = reg.get("PointRegion") or {}
+        x, y = pr.get("CenterX"), pr.get("CenterY")
+        return {
+            "map": str((reg.get("Map") or {}).get("Name", "")),
+            "region": (ref or {}).get("Index"),
+            "description": reg.get("Description", ""),
+            "x": x if x is not None else None,
+            "y": y if y is not None else None,
+        }
+
+    links = []
+    for m in _ws_rows(workspace, "MovementInfo"):
+        src = endpoint(m.get("SourceRegion"))
+        dst = endpoint(m.get("DestinationRegion"))
+        if not src["map"] or not dst["map"]:
+            continue
+        links.append({"index": m.get("Index"), "icon": str(m.get("Icon") or "None"),
+                      "source": src, "destination": dst})
+    return links
+
+
 _DROPS_CACHE: dict[str, list[dict]] = {}
 
 
@@ -3236,6 +3442,10 @@ def main():
                         help="map-catalog.json dir from build_map_catalog.py (enables /api/catalog)")
     parser.add_argument("--envir", default=None,
                         help="Mud3 server Envir dir (enables /api/entities: spawn/NPC/monster positions)")
+    parser.add_argument("--db-workspace", default=DEFAULT_DBWORKSPACE,
+                        help="dbeditor workspace dir (NPCInfo/MapRegion/MovementInfo JSON; default: %(default)s)")
+    parser.add_argument("--db-names", default=DEFAULT_DB_NAMES,
+                        help="db_names.json (NPC/地图中文名映射; default: %(default)s)")
     parser.add_argument("--thumbs-dir", default=THUMBS_DIR,
                         help="Full-map thumbnail dir (shared with WikiServer/thumb_gen)")
     parser.add_argument("--layout", choices=[LAYOUT_RECT, LAYOUT_ISO], default=LAYOUT_RECT,
@@ -3274,14 +3484,35 @@ def main():
     ViewerHandler.layout = args.layout
     ViewerHandler.catalog = load_catalog(args.catalog)
     ViewerHandler.connections = load_connections(args.connections)
+    ViewerHandler.db_names = load_db_names(args.db_names)
+    # dbeditor workspace 直读：NPCInfo + MapRegion 质心坐标（NpcMover 修正后
+    # 的 EI 坐标）+ MovementInfo 连接。workspace 数据比 8月11 的 Markdown 导出
+    # 新（294 NPC / 1039 movement / 坐标 0 缺失），作为第一数据源。
+    ws_ents = load_workspace_entities(args.db_workspace, ViewerHandler.db_names)
+    if ws_ents:
+        ViewerHandler.entities = ws_ents + ViewerHandler.entities
+        print(f"[*] Workspace NPCs: {len(ws_ents)} loaded from {args.db_workspace}")
+    ws_links = load_workspace_connections(args.db_workspace)
+    if ws_links:
+        ViewerHandler.connections = ws_links
+        print(f"[*] Workspace movements: {len(ws_links)} (override Markdown export)")
+    # 连接索引：map stem -> links（/api/connections O(1) 查询用）
+    conn_index: dict[str, list] = {}
+    for link in ViewerHandler.connections:
+        for side in ("source", "destination"):
+            stem = os.path.splitext(str((link.get(side) or {}).get("map", "")))[0]
+            if stem:
+                conn_index.setdefault(stem, []).append(link)
+    ViewerHandler.conn_index = conn_index
     if ViewerHandler.catalog:
         print(f"[*] Catalog: {len(ViewerHandler.catalog)} maps loaded")
-    print(f"[*] Connections: {len(ViewerHandler.connections)} movements loaded")
+    print(f"[*] Connections: {len(ViewerHandler.connections)} movements loaded ({len(conn_index)} maps indexed)")
     if args.envir:
-        ViewerHandler.entities = load_entities(args.envir)
+        ViewerHandler.entities = load_entities(args.envir) + ViewerHandler.entities
         print(f"[*] Envir entities: {len(ViewerHandler.entities)} loaded")
     else:
-        ViewerHandler.entities = []
+        if not ws_ents:
+            ViewerHandler.entities = []
     os.makedirs(args.thumbs_dir, exist_ok=True)
     print(f"[*] Thumbnails: {args.thumbs_dir}")
     print(f"[*] Tile cache: {cache_dir}")
