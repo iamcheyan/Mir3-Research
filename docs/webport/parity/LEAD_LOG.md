@@ -262,3 +262,17 @@
   (InstanceInfo db 0 行 → 空态), KeyL toggle true/restored true。前置每窗 Esc 清场
   (否则 closeTop 抢走 exit 的 Escape — 测试序列问题非产品 bug)。
 - `数据现状` InstanceInfo workspace 表 0 行 (dbeditor 快照如此), 副本窗显示空态为真。
+
+## R7 — par-move (A路): P0 残留 🟡 三项 CDP 清零
+
+- `小地图 3 悬停按钮` (MiniMapDialog.cs:89-117): mouseenter 显示 Size(132)/
+  Transparency(130)/BigMap(137), mouseleave 隐藏 — CDP shown[3×true]/hidden[3×false];
+  Size 点击 200→300→200 (getAcceptableResize 150-300 clamp); Transparency 窗级
+  Opacity ''→0.5 (Godot ToggleTransparency 447-452 同款窗级, 非 image 级); BigMap
+  开窗 vis=true。
+- `聊天频道循环` (ChatTextBox.cs:73-77): cycleMode ×6 = 普通|私聊|编组|行会|喊话|
+  全局 循环回到起点; ChangeChatMode 键 (game.js:351) 接线在位。
+- `聊天历史 ↑↓ + 草稿` (ChatTextBox.cs:25/62-70): ↑ 取最新→次新, ↓ 回退, 半句
+  输入后 ↑↓↓ 精确恢复草稿 — CDP 全 PASS。
+- `回归` check-keybinds.mjs 557 断言全过 (WIN 表改动后); pmv-buff-qt 全链路
+  (9键+11窗+KeyL+聊天) 单脚本全绿。
