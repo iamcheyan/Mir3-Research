@@ -165,3 +165,39 @@
   4 格/1.4s。**E 路: dispatch 已可端到端逐键回归。**
 - 详表: `docs/webport/parity/PARITY_CHECKLIST.md` (P0 达成; P1 余 ~15 窗待
   par-win 吸收 dialogs.js 草稿; BuffDialog/QuestTracker/聊天双行=已知缺口)。
+## 2026-08-15 00:1x — R3 合并轮 (par-keys)
+
+### 新增 commit (5)
+
+- `ebc8066` [shared] world.js 聊天聚焦时不驱动移动 / `24c74c9` par-hud 登录竞态+小地图轮询
+- `10378b2` mapviewer 快池钳制 / **`4128435` par-move 移动/键位全链路+真机验收**
+  (mouse.js 入库; net.js NewCharacterResult/NewAccountResult 枚举协议级修正;
+  world.js lastKeyStep 初始化; **game.js #bindGlobalKeys 完整 HandleKeyBind 分发,
+  Escape=CloseTop 语义采纳 R0 仲裁#1**)
+- `945f4c7` par-move 在 LEAD_LOG 交接: dialogs.js(34KB 未跟踪,15窗口草稿)/
+  gamedata.js(已被 itemstore.js 取代,可删)/uitree.js diff(+136 行) → **par-win 仲裁**
+
+### 合并动作
+
+- origin 无分叉; 本地领先 3 已 push。无冲突, index.html 不需 bump
+  (路由改动均在 ESM 内部, serve.py /static no-cache)。
+
+### E路 dispatch 级逐键回归 — **全绿** (新脚本 check-keybinds-cdp.mjs)
+
+独立账号注册→登录→建角→进比奇城真服全链路后, 对 keybinds.js 全部 70 条默认绑定
+逐个 CDP Input.dispatchKeyEvent (含 Ctrl/Shift 修饰键掩码):
+
+- **70/70 按键分发, 0 页面异常**
+- **28/28 窗口类绑定全部开窗且二次按键关闭 (toggle✓)** — 27 个窗口键 + Escape
+  (ExitGameWindow); 含 Ctrl+P/C/F/R/B/O 修饰键组合、`,`/`.` 标点键
+- Escape 无窗可关时打开 ExitDialog — **R0 仲裁#1 行为确认落地**
+- 非窗口类 42 键 (UseBelt×10/SpellUse×24/SpellSet×4/ItemPickUp/
+  ChangeAttackMode/ChangePetMode/ToggleItemLock): 无窗口变化、无异常 —
+  新号空 belt/无技能, 与 Godot 空槽位静默语义一致; 键→action 匹配已由
+  check-keybinds.mjs 557 断言覆盖。
+- 证据: `docs/webport/parity/keys/cdp-dispatch-r3.txt` + `cdp-matrix-r3.json`
+
+### E路职责1 状态: **dispatch 级验证完成** (manager 级 R1 完成, browser 级 R1 完成)
+
+残留: 重绑 UI (KeyBindDialog 网页版) 属 par-win ConfigWindow 范围, keybinds.js
+数据层 (getBind/mutate/save/resetDefaults) 已就绪待接。
