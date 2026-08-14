@@ -27,3 +27,7 @@ Tools/maps/static_out/out/
 Tools/maps/static_out/index.json
 LibraryCore
 ServerLibrary
+
+# 手工备份文件不进 git
+*.bak
+*.bak-*
