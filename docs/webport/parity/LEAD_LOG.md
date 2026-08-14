@@ -688,3 +688,27 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   尾字节=16 逐字节 (cellLink(target).byte(refineType))。
 - 教训: DOM 探针按 textContent.includes 匹配会点到祖先容器 — 选项类断言必须
   children.length===0 && 精确文本。
+
+## R26 — par-move (A路): 寄售行去 prompt 化全链 (ConsignmentDialog/ConsignItemDialog 补齐)
+
+- `缺口` R14 的 win-consign.js 是 prompt 子集 (代码自标 "Web 子集: 全格子 UI 属 P3"):
+  寄售=取背包第一格 prompt 价格、购买=prompt 数量、下架=右键直发无确认。
+  Godot 全链: 行选中→底部按钮 (Buy/Remove/Consign/GuildFunds)→ItemAmountDialog
+  (数量+实时总价)→ConfirmDialog→发包; 寄售走独立 ConsignItemDialog (:531-589:
+  物品格+名称标签+单价+±5000+二次确认含手续费)。
+- `实现` win-consign.js 全重写 (328 行): 行点击选中态高亮+按钮启用门闩
+  (:126/:161 selected 才 enabled); amountConfirm 两段弹窗 (BuySelected :456-475
+  总价预览/RemoveSelected :504-520); openConsignPopup (背包列表选择=linked grid
+  拖入等价, ItemChanged 名称标签 :566, ±5000 :558-561, 未选物品/价格无效聊天错误
+  :575/:580, 手续费二次确认 :585 — MarketPlaceFee=0 Globals.cs:109); 确认后
+  store.lock 来源格 + pendingConsignLink (:268-270), S marketPlaceConsign 库存回包
+  解锁; guildCheck disabled=!HasGuild (:132/:164)。
+- `顺手修掉的 2 个 R14 潜伏 bug`:
+  1) itemName helper 读 gamedb 快照的 .name/.zh — dbeditor JSON 字段是 ItemName
+     → 所有寄售行显示 "· undefined x1";
+  2) 寄售按钮读 grids.get(0) — GRID 0=None, 背包是 1 (net.js:204) → 永远"背包为空"。
+  两个都被新 CONSIGN 断言当场逼出。
+- `CDP 验收` 套件 +CONSIGN 组 → 13/13: 弹窗开→未选物品聊天错误→选行+±5000
+  (12000-5000=7000)→手续费二次确认→C_MARKETPLACECONSIGN 213→锁 1:5→S 回包解锁。
+- 教训: 跨组测试数据共享背包 — 探针断言锁槽位时必须用独占物品 id (前组 UPGRADE
+  在 slot 0 留了同款 160, 行点击选中 slot 0 而非注入的 slot 5)。

@@ -342,6 +342,56 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('UPGRADE', d.gateBefore && d.optCount && d.gateAfter && d.optNow && d.sentIds?.includes(246) && d.lastByte === 16, r);
 }
 
+// ============ 13. 寄售行全链 (ConsignmentDialog/ConsignItemDialog): 弹窗+校验+包+锁+S 解锁 ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { winConsign } = await import('/static/js/win-consign.js');
+    const sh = await winConsign(s);
+    const win = sh.win; const store = reg.itemStore; const conn = s.conn;
+    const captured = []; const origChat = s.addChat.bind(s);
+    s.addChat = (t, k) => { captured.push(String(t)); return origChat(t, k); };
+    const btn = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.includes(t));
+    btn('我的寄售')?.click(); await new Promise(r => setTimeout(r, 300));
+    const inv = reg.itemStore.grids.get(1);
+    inv.set(5, { infoIndex: 165, slot: 5, count: 2, currentDura: 1, maxDura: 1 });   // 165 Horned Ring (独占物品, 前组 slot 0 有 160 同名行)
+    btn('寄售物品')?.click();
+    await new Promise(r => setTimeout(r, 500));
+    const q = (t) => [...win.el.querySelectorAll('button')].filter(b => b.textContent.trim() === t);
+    const leaf = (p) => [...win.el.querySelectorAll('div')].filter(d => d.children.length === 0 && p(d));
+    const popupShown = leaf(d => d.textContent.includes('单价') === false && d.textContent.startsWith('·')).length >= 0 && !!q('确认')[0];
+    // 1) 未选物品确认 → 聊天错误 (:575)
+    q('确认')[0]?.click(); await new Promise(r => setTimeout(r, 150));
+    const errNoItem = captured.some(t => t.includes('未选择物品'));
+    // 2) 选物品 (按 160 的名字定位行 — 前组在 slot 0-2 有残留物品) + 价格 ±5000 (:558-561)
+    const { D } = await import('/static/js/data.js');
+    const ringNm = D().itemsById?.[165]?.zh ?? D().itemsById?.[165]?.name ?? '物品#165';   // win-consign itemName 同源
+    leaf(d => d.textContent.startsWith('·') && d.textContent.includes(ringNm))[0]?.click();
+    await new Promise(r => setTimeout(r, 150));
+    const priceInp = [...win.el.querySelectorAll('input')].filter(i => i.type === 'text').pop();   // 弹窗价格框 (nameInput 的 input 在 DOM 前面)
+    priceInp.value = '12000';
+    [...win.el.querySelectorAll('button')].find(b => b.textContent === '-5000')?.click();
+    await new Promise(r => setTimeout(r, 100));
+    const priceAfter = priceInp.value;
+    // 3) 确认 → 二次确认框 (手续费) → 发包 C_MARKETPLACECONSIGN 213 + 锁来源 (:266-270)
+    const sentIds = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength > 6) sentIds.push(new DataView(b.buffer, b.byteOffset).getInt16(4, true)); return b; };
+    q('确认')[0]?.click(); await new Promise(r => setTimeout(r, 200));
+    const confirm2 = win.el.textContent.includes('手续费');
+    q('确认')[0]?.click(); await new Promise(r => setTimeout(r, 300));
+    conn.send = orig;
+    const lockedOk = store.isLocked(1, 5);
+    // 4) S 库存回包 → 解锁 (:270 注释)
+    conn.dispatchEvent(new CustomEvent('marketPlaceConsign', { detail: { consignments: [] } }));
+    await new Promise(r => setTimeout(r, 200));
+    const unlockedOk = !store.isLocked(1, 5);
+    s.addChat = origChat;
+    return { popupShown, errNoItem, priceAfter, confirm2, sentIds, lockedOk, unlockedOk };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('CONSIGN', d.popupShown && d.errNoItem && d.priceAfter === '7000' && d.confirm2 && d.sentIds?.includes(213) && d.lockedOk && d.unlockedOk, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);
