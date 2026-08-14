@@ -1,0 +1,89 @@
+{
+  "state": {
+    "x": 239,
+    "y": 178,
+    "anim": "standing",
+    "cls": 2,
+    "weapon": 65,
+    "objs": 64
+  },
+  "skills": {
+    "FireBall-201-C1": {
+      "anim": "stance",
+      "stanceLeftSec": 2,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "Heal-300-C2": {
+      "anim": "combat2",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "PoisonousCloud-404-C14": {
+      "anim": "combat14",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": false
+    },
+    "ThunderKick-324-C7": {
+      "anim": "combat7",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "ElementalHurricane-232-Channelling": {
+      "anim": "channellingStart",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "DragonRepulse-430-DRStart": {
+      "anim": "dragonRepulseStart",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "Defiance-111-C15": {
+      "anim": "combat15",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "FlashOfLight-434-C10": {
+      "anim": "combat10",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    },
+    "Cloak-406-C9-Creep": {
+      "anim": "combat9",
+      "stanceLeftSec": 3,
+      "buffs": [
+        2
+      ],
+      "drawWeapon": true
+    }
+  },
+  "attack": {
+    "anim": "combat3",
+    "stanceMs": 2679
+  },
+  "attackSlaying": "combat3"
+}
