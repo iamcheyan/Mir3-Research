@@ -1,0 +1,37 @@
+[*] 变更 29 处：QuestRequirement×12, QuestTask×4, QuestReward×8, QuestTaskMonsterDetails×1, QuestInfo×4
+[*] 引用完整性校验通过。
+[+] QuestInfo#63（Index 自洽）
+[+] QuestInfo#64（Index 自洽）
+[+] QuestInfo#65（Index 自洽）
+[+] QuestInfo#66（Index 自洽）
+[+] QuestTask#75（Index 自洽）
+[+] QuestTask#76（Index 自洽）
+[+] QuestTask#77（Index 自洽）
+[+] QuestTask#78（Index 自洽）
+[+] QuestTaskMonsterDetails#98（Index 自洽）
+[+] QuestRequirement#138 → 重映射 #148
+[+] QuestRequirement#139 → 重映射 #149
+[+] QuestRequirement#140 → 重映射 #150
+[+] QuestRequirement#141 → 重映射 #151
+[+] QuestReward#141 → 重映射 #142
+[+] QuestRequirement#142 → 重映射 #152
+[+] QuestReward#142 → 重映射 #143
+[+] QuestRequirement#143 → 重映射 #153
+[+] QuestReward#143 → 重映射 #144
+[+] QuestRequirement#144 → 重映射 #154
+[+] QuestReward#144 → 重映射 #145
+[+] QuestRequirement#145 → 重映射 #155
+[+] QuestReward#145 → 重映射 #146
+[+] QuestRequirement#146 → 重映射 #156
+[+] QuestReward#146 → 重映射 #147
+[+] QuestRequirement#147 → 重映射 #157
+[+] QuestReward#147 → 重映射 #148
+[+] QuestRequirement#148 → 重映射 #158
+[+] QuestReward#148 → 重映射 #149
+[+] QuestRequirement#149 → 重映射 #159
+REMAP=QuestRequirement:138=148,139=149,140=150,141=151,142=152,143=153,144=154,145=155,146=156,147=157,148=158,149=159
+REMAP=QuestReward:141=142,142=143,143=144,144=145,145=146,146=147,147=148,148=149
+[*] 新版本: 2026.08.14.3
+[*] 已保存: /tmp/dbeditor_import_4e42bd505bac420e9572948e49f04a57/System.db
+[*] 应用 29/29 处变更。
+DB_OUT=/tmp/dbeditor_import_4e42bd505bac420e9572948e49f04a57/System.db
