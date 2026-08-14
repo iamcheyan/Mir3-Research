@@ -110,10 +110,35 @@ tr.hl-item td { background: #fff8e1; }
 .stat-card .lbl { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
 .empty { color: var(--muted); text-align: center; padding: 40px; }
-#loading { position: fixed; inset: 0; background: rgba(255,255,255,.85); display: flex;
-           align-items: center; justify-content: center; font-size: 16px; z-index: 99; }
-#toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333;
-         color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 13px; display: none; z-index: 100; }
+
+/* ---------- 移动端（≤760px）：侧栏抽屉 + 详情卡片单列（DBV-P0-01） ---------- */
+#side-toggle { display: none; }
+#side-backdrop { display: none; }
+@media (max-width: 760px) {
+  #app { position: relative; }
+  #side-toggle { display: flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px; border: 1px solid var(--border); background: var(--panel);
+    border-radius: 6px; cursor: pointer; font-size: 16px; position: fixed; top: 10px; right: 10px; z-index: 60; }
+  #side-backdrop { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    z-index: 50; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  #side-backdrop.open { opacity: 1; pointer-events: auto; }
+  #sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: min(84vw, 300px); min-width: 0;
+    z-index: 55; transform: translateX(-102%); transition: transform .22s ease;
+    box-shadow: 8px 0 24px rgba(0,0,0,.25); }
+  #sidebar.open { transform: translateX(0); }
+  #main { padding: 12px 12px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  #toolbar input[type=text] { width: 100%; }
+  #toolbar h2 { font-size: 16px; }
+  /* 详情字段卡片：单列、k 上 v 下（380px 网格与 150px 标签列在 390px 必溢出） */
+  .detail-grid { grid-template-columns: 1fr; padding: 8px 12px; }
+  .fld { flex-direction: column; align-items: stretch; gap: 1px; padding: 7px 0; }
+  .fld .k { width: auto; }
+  .fld .v { font-size: 13.5px; }
+  /* 宽表：容器内横向滚动，不撑破页面 */
+  .panel .body { overflow-x: auto; }
+  table.data th, table.data td { white-space: normal; max-width: 240px; }
+  .btn, #pager button { min-height: 40px; }
+}
 </style>
 </head>
 <body>
@@ -133,6 +158,8 @@ tr.hl-item td { background: #fff8e1; }
     <div id="content"></div>
   </div>
 </div>
+<button id="side-toggle" title="数据分类">☰</button>
+<div id="side-backdrop"></div>
 <div id="loading">加载数据中…</div>
 <div id="toast"></div>
 
@@ -618,6 +645,18 @@ document.addEventListener("click", e => {
   }
 });
 
+/* 移动端侧栏抽屉（DBV-P0-01）：选分类后自动收起 */
+(function () {
+  const side = $("#sidebar"), tg = $("#side-toggle"), bd = $("#side-backdrop");
+  if (!side || !tg) return;
+  const sheet = (open) => { side.classList.toggle("open", open); bd.classList.toggle("open", open); };
+  tg.addEventListener("click", (e) => { e.stopPropagation(); sheet(!side.classList.contains("open")); });
+  bd.addEventListener("click", () => sheet(false));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") sheet(false); });
+  side.addEventListener("click", (e) => {
+    if (e.target.closest(".coll, .cat-head")) setTimeout(() => sheet(false), 120);
+  });
+})();
 loadAll();
 </script>
 </body>

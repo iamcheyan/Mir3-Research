@@ -94,7 +94,20 @@ body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-s
   .card-item .ci-zh { color: var(--el-text-color-secondary); font-size: 11px;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .card-item .ci-idx { color: var(--el-text-color-placeholder); font-size: 10px; flex-shrink: 0; }
-  /* 分页贴底居中 */
+  /* 底部常驻操作栏让出空间（DBE-P0-01） */
+  .main { padding-bottom: 84px; }
+  .mobile-actions { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    display: flex; gap: 8px; align-items: center;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: #fff; border-top: 1px solid var(--el-border-color-light);
+    box-shadow: 0 -2px 10px rgba(0,0,0,.07); }
+  .mobile-actions .ma-btn { flex: 1; margin: 0 !important; min-height: 44px; }
+  .mobile-actions .ma-btn + .ma-btn { margin-left: 0 !important; }
+  .mobile-actions .ma-dirty { margin: 0 2px; flex-shrink: 0; }
+  /* 弹窗/确认框收进视口（DBE-P0-02：同步 720px / 批量 460px / MessageBox 420px） */
+  .el-dialog { width: 94vw !important; max-width: 94vw !important; margin: 5vh auto 0 !important; }
+  .el-message-box { width: 88vw !important; max-width: 88vw !important; }
+  .el-message-box__message { word-break: break-all; }
   .main .el-pagination { justify-content: center !important; }
   /* 详情：表单单列、返回条吸顶 */
   .detail-bar { position: sticky; top: -8px; z-index: 5; background: #fff;
@@ -102,6 +115,7 @@ body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-s
   .el-col { max-width: 100% !important; flex: 0 0 100% !important; }
   .el-form-item__label { font-size: 12px; }
   .big-icon { width: 44px; height: 44px; }
-  /* 子表横向滚动而非挤碎 */
+  /* 子表横向滚动而非挤碎（容器内滚动，页面不溢出） */
   .sub-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sub-table-wrap .el-table { min-width: 560px; }   /* 保持可读列宽，容器内滚动 */
 }

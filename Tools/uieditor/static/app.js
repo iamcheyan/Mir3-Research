@@ -629,6 +629,25 @@ async function boot() {
     renderCanvas(); renderTree(); renderProps();
     toast("已清除（记得同步）");
   };
+
+  // ---- 移动端底部操作栏（UIE-P0-01）----
+  const leftPanel = $("#left");
+  const mbPanel = $("#mb-panel");
+  if (mbPanel && leftPanel) {
+    mbPanel.onclick = () => leftPanel.classList.toggle("open");
+    // 选窗口后自动收起，让画布成为焦点
+    const _renderWinList = renderWinList;
+    renderWinList = function(q){ _renderWinList(q); };
+    leftPanel.addEventListener("click", (e) => {
+      const li = e.target.closest("#win-list li");
+      if (li) setTimeout(() => leftPanel.classList.remove("open"), 150);
+    });
+  }
+  const mb = { undo: $("#mb-undo"), redo: $("#mb-redo"), reset: $("#mb-reset"), save: $("#mb-save") };
+  if (mb.undo) mb.undo.onclick = doUndo;
+  if (mb.redo) mb.redo.onclick = doRedo;
+  if (mb.save) mb.save.onclick = saveOverlay;
+  if (mb.reset) mb.reset.onclick = () => $("#btn-reset").click();   // 复用桌面逻辑（含确认）
   window.addEventListener("keydown", onKeyDown);
   // 默认选中背包（无头验证主对象）
   const first = state.tree.windows.find(w => w.className === "InventoryDialog") || state.tree.windows[0];

@@ -246,6 +246,7 @@ const app = createApp({
       } catch (e) { ElMessage.error(String(e)); }
       loading.value = false;
     }
+    function backToList() { view.value = "list"; }
 
     // 主表字段分类
     const editFields = computed(() => {
@@ -441,7 +442,7 @@ const app = createApp({
       isMobile, rowName, monActionSrc,
       facetSel, activeFacets, toggleFacet, facetOpen, selectedFacetCount,
  detail, mainFields, refOptions, subMetas, markDirty,
-      saveDetail, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
+      saveDetail, backToList, subZh, subReadonly, subEditableCols, addSubRow, delSubRow,
       openDetail, duplicateRow, deleteRow, createRow,
       bulkDialog, openBulk, runBulk, bulkFieldDef, bulkEnums,
       changesData, openChanges, rollbackRow, fmtVal,

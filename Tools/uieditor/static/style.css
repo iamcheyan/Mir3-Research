@@ -151,12 +151,29 @@ aside {
   border-radius: 6px; padding: 8px 18px; z-index: 99;
 }
 #toast.err { background: #4d1f1f; border-color: #7d2e2e; color: #f2c9c9; }
+/* 移动端底部操作栏：桌面默认隐藏（≤700px 内覆盖为 flex） */
+#mobile-actions { display: none; }
 
-/* ---- 移动端浏览模式（≤700px）：只保留窗口列表 + 画布 ---- */
+/* ---- 移动端浏览模式（≤700px）：底部操作栏 + 窗口树/画布切换（UIE-P0-01） ---- */
 @media (max-width: 700px) {
   #right { display: none; }
-  #left { width: 148px; }
-  .hid-desktop { display: none; }
   #topbar { gap: 6px; }
-  #win-title { display: none; }
-}
+  #win-title, #win-sub { display: none; }
+  /* 桌面专用项收进底部栏 */
+  .tb-item, #save-state, #btn-panel-toggle { display: none !important; }
+  #main { position: relative; }
+  /* 窗口树：默认画布优先，☰ 呼出 */
+  #left { position: absolute; inset: 0 auto 0 0; width: min(78vw, 300px); z-index: 30;
+    background: var(--bg2); transform: translateX(-102%); transition: transform .22s ease;
+    box-shadow: 8px 0 20px rgba(0,0,0,.45); }
+  #left.open { transform: translateX(0); }
+  #canvas-viewport { background: #0c0d10; }
+  /* 底部常驻操作栏 */
+  #mobile-actions { display: flex; gap: 6px; align-items: center;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: var(--bg2); border-top: 1px solid var(--line); }
+  #mobile-actions button { flex: 1; min-height: 44px; font-size: 16px; margin: 0; }
+  #mobile-actions button.primary { flex: 1.6; }
+  #main { padding-bottom: 58px; }
+  #canvas-viewport { flex: 1; }

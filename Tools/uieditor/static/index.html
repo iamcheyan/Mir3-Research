@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zircon UI 编辑器</title>
-<link rel="stylesheet" href="/static/style.css?v=2">
+<link rel="stylesheet" href="/static/style.css?v=4">
 </head>
 <body>
 <div id="app">
@@ -12,19 +12,20 @@
     <span id="win-title">Zircon UI 编辑器</span>
     <span id="win-sub" class="dim"></span>
     <span class="spacer"></span>
-    <label class="chk"><input type="checkbox" id="opt-grid"> 2px 网格吸附</label>
-    <label class="chk"><input type="checkbox" id="opt-edge"> 边缘吸附</label>
-    <label class="chk"><input type="checkbox" id="opt-under"> 截图底图</label>
-    <select id="under-opacity" class="hid-desktop">
-      <option value="0.3">底图 30%</option>
-      <option value="0.5" selected>底图 50%</option>
-      <option value="0.8">底图 80%</option>
+    <label class="chk tb-item"><input type="checkbox" id="opt-grid"> 网格</label>
+    <label class="chk tb-item"><input type="checkbox" id="opt-edge"> 边缘</label>
+    <label class="chk tb-item"><input type="checkbox" id="opt-under"> 底图</label>
+    <select id="under-opacity" class="hid-desktop tb-item">
+      <option value="0.3">30%</option>
+      <option value="0.5" selected>50%</option>
+      <option value="0.8">80%</option>
     </select>
-    <button id="btn-undo" title="Ctrl+Z">撤销</button>
-    <button id="btn-redo" title="Ctrl+Y">重做</button>
-    <button id="btn-reset" title="清除本窗口全部改动">重置窗口</button>
-    <button id="btn-save" class="primary">同步到游戏（F12 热重载）</button>
+    <button id="btn-undo" class="tb-item" title="Ctrl+Z">撤销</button>
+    <button id="btn-redo" class="tb-item" title="Ctrl+Y">重做</button>
+    <button id="btn-reset" class="tb-item" title="清除本窗口全部改动">重置</button>
+    <button id="btn-save" class="primary tb-item">同步</button>
     <span id="save-state" class="dim"></span>
+    <button id="btn-panel-toggle" title="窗口树 / 画布">☰ 窗口</button>
   </header>
   <div id="main">
     <aside id="left">
@@ -56,8 +57,17 @@
       <div id="props"></div>
     </aside>
   </div>
+
+<!-- 移动端底部操作栏（UIE-P0-01：撤销/重做/重置/同步 常驻、≥44px） -->
+<div id="mobile-actions">
+  <button id="mb-panel" title="窗口树">☰</button>
+  <button id="mb-undo" title="撤销">↶</button>
+  <button id="mb-redo" title="重做">↷</button>
+  <button id="mb-reset" title="清除本窗口全部改动">⟲</button>
+  <button id="mb-save" class="primary" title="同步到游戏（F12 热重载）">⇅ 同步</button>
+</div>
 </div>
 <div id="toast" class="hid"></div>
-<script src="/static/app.js?v=2"></script>
+<script src="/static/app.js?v=3"></script>
 </body>
 </html>

@@ -8,10 +8,10 @@ window.APP_TEMPLATE = `
       {{ status.server_running ? '服务端运行中（禁同步）' : '服务端已停止（可同步）' }}
     </el-tag>
     <div class="spacer"></div>
-    <el-badge :value="changeCount" :hidden="!changeCount" type="warning">
+    <el-badge v-if="!isMobile" :value="changeCount" :hidden="!changeCount" type="warning">
       <el-button @click="openChanges">改动追踪</el-button>
     </el-badge>
-    <el-button type="primary" @click="doSync" :disabled="!!status.server_running">同步到数据库</el-button>
+    <el-button v-if="!isMobile" type="primary" @click="doSync" :disabled="!!status.server_running">同步到数据库</el-button>
   </div>
   <div class="layout-body">
     <div class="sidebar">
@@ -99,11 +99,11 @@ window.APP_TEMPLATE = `
       <!-- 详情 -->
       <template v-else-if="view === 'detail'">
         <div class="detail-bar" style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
-          <el-button @click="backToList">← 返回</el-button>
+          <el-button v-if="!isMobile" @click="backToList">← 返回</el-button>
           <h3 style="margin:0">{{ catZh }} #{{ detail.index }}</h3>
           <el-tag v-if="detail.dirty" type="warning">未保存</el-tag>
           <div style="flex:1"></div>
-          <el-button type="primary" @click="saveDetail" :disabled="!detail.dirty">保存</el-button>
+          <el-button v-if="!isMobile" type="primary" @click="saveDetail" :disabled="!detail.dirty">保存</el-button>
         </div>
 
         <div v-if="detail.table === 'ItemInfo' && rowIcon(detail.row)"
@@ -186,7 +186,7 @@ window.APP_TEMPLATE = `
               <el-tag size="small" type="info">{{ v.rows.length }}</el-tag>
             </h4>
             <el-button v-if="!subReadonly(t)" size="small" @click="addSubRow(t)">+ 行</el-button>
-          </div>
+          <div class="sub-table-wrap">
           <el-table :data="v.rows" border size="small" max-height="360">
             <el-table-column type="index" width="42" label="#"></el-table-column>
             <el-table-column v-for="c in subEditableCols(t)" :key="c.key"
@@ -222,22 +222,22 @@ window.APP_TEMPLATE = `
                 <el-button size="small" type="danger" @click="delSubRow(t, scope.$index)">✕</el-button>
               </template>
             </el-table-column>
-            <template #empty>（无）</template>
           </el-table>
+          </div>
         </template>
       </template>
 
       <!-- 改动 -->
       <template v-else-if="view === 'changes'">
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
-          <el-button @click="backToList">← 返回</el-button>
+          <el-button v-if="!isMobile" @click="backToList">← 返回</el-button>
           <h3 style="margin:0">改动追踪</h3>
           <el-tag type="danger">新增 {{ changesData ? changesData.summary.added : 0 }}</el-tag>
           <el-tag type="warning">修改 {{ changesData ? changesData.summary.modified : 0 }}</el-tag>
           <el-tag type="info">删除 {{ changesData ? changesData.summary.deleted : 0 }}</el-tag>
         </div>
         <template v-for="(entries, t) in (changesData ? changesData.tables : {})" :key="t">
-          <div class="sub-title"><h4>{{ t }}</h4></div>
+          <div class="sub-table-wrap">
           <el-table :data="entries" border size="small">
             <el-table-column prop="index" label="Index" width="100"></el-table-column>
             <el-table-column prop="op" label="操作" width="90">
@@ -266,12 +266,29 @@ window.APP_TEMPLATE = `
               <template #default="scope">
                 <el-button size="small" @click="rollbackRow(t, scope.row.index)">回滚</el-button>
               </template>
-            </el-table-column>
           </el-table>
+          </div>
         </template>
         <el-empty v-if="!changeCount" description="工作区与基线一致，无改动"></el-empty>
       </template>
     </div>
+
+  <!-- 手机底部常驻操作栏（DBE-P0-01：保存/撤销/同步 390px 下始终可见） -->
+  <div v-if="isMobile" class="mobile-actions">
+    <template v-if="view === 'detail'">
+      <el-button class="ma-btn" @click="backToList">← 返回</el-button>
+      <el-tag v-if="detail.dirty" type="warning" class="ma-dirty">未保存</el-tag>
+      <div style="flex:1"></div>
+      <el-button class="ma-btn" type="primary" @click="saveDetail" :disabled="!detail.dirty">保存</el-button>
+    </template>
+    <template v-else-if="view === 'changes'">
+      <el-button class="ma-btn" @click="backToList">← 返回列表</el-button>
+    </template>
+    <template v-else>
+      <el-button class="ma-btn" @click="openChanges">改动追踪 ({{ changeCount }})</el-button>
+      <el-button class="ma-btn" type="primary" @click="doSync" :disabled="!!status.server_running">同步到数据库</el-button>
+    </template>
+  </div>
   </div>
 </div>
 
