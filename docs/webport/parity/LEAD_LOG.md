@@ -579,3 +579,12 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - 排障记录: CDP 探针进 GameScene 后 Data.loadAll 尚在顺序拉取 (manifest→…→items),
   itemsById 空 → 导入分桶 0 — 非 bug, 探针需等数据就绪; 另 Runtime.evaluate 需
   awaitPromise (returnPromise 无效 → promise 序列化成 {})。
+
+## 2026-08-15 04:2x — R12 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `6a53b00` par-move R19: NPC 精炼系回包反馈 (S 解析×9+监听×9+取回/伙伴联动),
+  真服 e2e 254→聊天验证
+
+### E路回归: 557 ✓; 无冲突; 已 push。A 路在制: win-npc.js (回包联动后续)。
