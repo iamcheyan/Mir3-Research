@@ -3,7 +3,7 @@
 // + MainPanel/ChatTextBox/MiniMap 数据注入 (InitHudData/On* 处理器对照)。
 // 控件实现: hud.js (MainPanel/MiniMap) + chat.js (ChatTextBox/ChatLogPanel)。
 import { DXControl, DXLabel, DXImageControl } from '../../dx.js';
-import { World } from '../../world.js';
+import { WindowManager, UiScaleNow, setUiScale } from '../../windows.js';
 import { statsToObj, STAT, MsgTypeName, MsgTypeColour, MSG, C } from '../../net.js';
 import { MainPanel, MiniMapDialog, fallbackWindow } from './hud.js';
 import { ChatTextBox, ChatLogPanel } from './chat.js';

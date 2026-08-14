@@ -51,17 +51,19 @@ export class ChatLogPanel extends DXControl {
     }, { passive: false });
     this.scrollEl.addEventListener('scroll', () => this.#updateLines());
 
-    this.#raf = requestAnimationFrame(this.#tick);
+    this._rafId = requestAnimationFrame(this._fadeTick);
   }
 
-  // _Process (ChatLogPanel.cs:73-92): 空闲计时 + 淡出
-  #tick = () => {
+
+  // _Process (ChatLogPanel.cs:73-92): 空闲计时 + 淡出 (箭头函数属性, 类字段合法)
+  _fadeTick = () => {
     this.idleSeconds = (performance.now() - this._lastActivity) / 1000;
     const opacity = this.fadeOut && this.transparent && this.idleSeconds > 10 ? 0.15 : 1;
     this.textArea.el.style.opacity = opacity;
-    this.scrollEl.style.display = opacity >= 1 && this.#hasScroll() ? 'block' : 'none';
-    requestAnimationFrame(this.#tick);
+    this.scrollEl.style.display = opacity >= 1 && this.scrollEl.scrollHeight > this.scrollEl.clientHeight + 2 ? 'block' : 'none';
+    requestAnimationFrame(this._fadeTick);
   };
+
 
   #hasScroll() { return this.scrollEl.scrollHeight > this.scrollEl.clientHeight + 2; }
 
