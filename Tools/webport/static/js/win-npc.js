@@ -338,6 +338,91 @@ export async function winNpc(scene, store, reg) {
   singlePanel.addControl(singleLabel, singleImport, singleSubmit);
   w.addControl(singlePanel);
 
+  // ---------- 精炼面板 (NPCAdvancedPanels.cs:383-429 BuildRefine) ----------
+  // 黑铁矿×5 + 饰品×3 + 特殊×1 → 选 RefineType(9 单选) → 品质循环(Rush..Precise) → 提交。
+  const refinePanel = new DXControl({ location: [0, 204], size: [404, 220], visible: false, isControl: true });
+  const REFINE_TYPES = [   // (RefineType enum: None,0 Durability,1 DC,2 SpellPower,3 Fire,4 Ice,5 Lightning,6 Wind,7 Holy,8 Dark,9 Phantom,10)
+    [2, '攻击 DC'], [3, '法术'], [4, '火'], [5, '冰'], [6, '雷'], [7, '风'], [8, '神圣'], [9, '暗'], [10, '幻影'],
+  ];
+  const REFINE_QUALITIES = ['Rush 立即', 'Quick 30分', 'Standard 1时', 'Careful 6时', 'Precise 1天'];   // RefineQuality 0-4
+  const REFINE_SLOTS = [
+    ['ores', '黑铁矿', 5], ['items', '饰品', 3], ['specials', '特殊', 1],
+  ];   // GridType 7/8/9, 上限对照 AddGrid 行×列
+  let refineType = 0;      // RefineType.None
+  let refineQuality = 0;   // Rush
+  const refineLinks = { ores: [], items: [], specials: [] };
+  const refineTypeBtns = [];
+  REFINE_TYPES.forEach(([val, label], i) => {
+    const col = i % 3, row = Math.trunc(i / 3);
+    const b = new DXButton({ text: '', fontSize: 9, library: 'Interface', index: -1,
+      location: [10 + col * 120, 6 + row * 22], size: [110, 20],
+      onClick: () => {
+        refineType = val;
+        refineTypeBtns.forEach((o, j) => { o.text = REFINE_TYPES[j][1]; });
+        b.text = '● ' + label;
+        refineSubmit.enabled = true;
+      } });
+    b.text = label;
+    refineTypeBtns.push(b);
+    refinePanel.addControl(b);
+  });
+  const refineQualityBtn = new DXButton({ text: REFINE_QUALITIES[0], fontSize: 9, library: 'Interface', index: -1,
+    location: [376, 6], size: [100, 20], onClick: () => {   // CycleQuality (:936-944)
+      refineQuality = (refineQuality + 1) % REFINE_QUALITIES.length;
+      refineQualityBtn.text = REFINE_QUALITIES[refineQuality];
+    } });
+  const refineListBox = document.createElement('div');
+  refineListBox.style.cssText = 'position:absolute;left:9px;top:76px;right:9px;bottom:36px;overflow-y:auto;';
+  refinePanel.el.appendChild(refineListBox);
+  const refineImport = new DXButton({ text: '从背包导入', fontSize: 9, library: 'Interface', index: -1,
+    location: [9, 186], size: [100, 22], onClick: () => importRefine() });
+  const refineSubmit = new DXButton({ text: '开始精炼', fontSize: 9, library: 'Interface', index: -1,
+    location: [120, 186], size: [90, 22], onClick: () => {
+      if (!refineType) return;
+      const total = refineLinks.ores.length + refineLinks.items.length + refineLinks.specials.length;
+      if (!total) return;   // BeginSubmit 空组不发
+      conn.sendNPCRefine(refineType, refineQuality, refineLinks.ores, refineLinks.items, refineLinks.specials);
+      refineLinks.ores = []; refineLinks.items = []; refineLinks.specials = [];
+      renderRefine();
+    } });
+  const renderRefine = async () => {
+    refineListBox.replaceChildren();
+    for (const [key, label] of REFINE_SLOTS.map(([k, l]) => [k, l])) {
+      const arr = refineLinks[key];
+      const head = document.createElement('div');
+      head.textContent = `${label} (${arr.length})`;
+      head.style.cssText = 'padding:2px 6px;font:11px "Noto Sans CJK SC",sans-serif;color:#ffd94d;text-shadow:1px 1px 0 #000;';
+      refineListBox.appendChild(head);
+      for (const l of arr) {
+        const it = store.items(l.gridType).get(l.slot);
+        const nm = it ? (D().itemsById?.[it.infoIndex]?.zh ?? D().itemsById?.[it.infoIndex]?.name ?? `物品#${it.infoIndex}`) : '?';
+        const d = document.createElement('div');
+        d.textContent = `· ${nm} x${it?.count ?? 1}`;
+        d.style.cssText = 'padding:2px 6px 2px 18px;font:12px/1.6 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
+        d.title = '点击移除';
+        d.onclick = () => { refineLinks[key] = refineLinks[key].filter(x => x !== l); renderRefine(); };
+        refineListBox.appendChild(d);
+      }
+    }
+  };
+  function importRefine() {
+    const caps = Object.fromEntries(REFINE_SLOTS.map(([k, , n]) => [k, n]));
+    for (const k of Object.keys(refineLinks)) refineLinks[k] = [];
+    const ACCESSORY = new Set(['Necklace', 'Bracelet', 'Ring', 'Amulet']);   // ItemType 6/7/8/11
+    for (const [slot, it] of [...store.items(GRID.INVENTORY).entries()].sort((a, b) => a[0] - b[0])) {
+      if (!it) continue;
+      const info = D().itemsById?.[it.infoIndex];
+      const bucket = info?.type === 'Ore' ? 'ores'
+        : info?.type === 'RefineSpecial' ? 'specials'
+        : ACCESSORY.has(info?.type) ? 'items' : null;
+      if (bucket && caps[bucket] > refineLinks[bucket].length)
+        refineLinks[bucket].push({ gridType: GRID.INVENTORY, slot, count: it.count ?? 1 });
+    }
+    renderRefine();
+  }
+  refinePanel.addControl(refineQualityBtn, refineImport, refineSubmit);
+  w.addControl(refinePanel);
+
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');
   const questDetailWin = await getWindow('NPCQuestDialog');
@@ -516,6 +601,18 @@ export async function winNpc(scene, store, reg) {
       singlePanel.location = [0, w.size[1]];
       singlePanel.visible = true;
       renderSingle();
+    }
+    // 精炼面板 (BuildRefine: dtype 3)
+    refinePanel.visible = false;
+    if (dtype === 3) {
+      refineType = 0;
+      refineQuality = 0;
+      refineQualityBtn.text = REFINE_QUALITIES[0];
+      refineLinks.ores = []; refineLinks.items = []; refineLinks.specials = [];
+      refineSubmit.enabled = false;
+      refinePanel.location = [0, w.size[1]];
+      refinePanel.visible = true;
+      renderRefine();
     }
     WindowManager.open(w, scene.hudLayer);
     if (dtype === 19) { await winConsign(scene); }   // Consignment → OpenConsignmentDialog (NPCDialog.cs:116)

@@ -496,3 +496,20 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   AccessoryUpgrade/AccessoryReset) + cellLink BigInt 修复
 
 ### E路回归: 557 ✓; 无冲突; 已 push。A 路仍在 P2 铺面。
+
+## R17 — par-move (A路): NPC 精炼面板 (BuildRefine, dtype 3)
+
+- `对照` NPCAdvancedPanels.cs:383-429 BuildRefine: 黑铁矿×5+饰品×3+特殊×1 三组链接 +
+  9 RefineType 单选 (DC/SpellPower/Fire/Ice/Lightning/Wind/Holy/Dark/Phantom) +
+  品质循环 (CycleQuality :936, Rush/Quick/Standard/Careful/Precise, RefineTimes
+  Globals.cs:318) + 提交 (SendNPCRefine GameScene.cs:6304)。
+- `协议` net.js +NPCRefine builder (ClientPackets.cs:288: RefineType b + RefineQuality b +
+  Ores/Items/Specials 3×List<CellLink>); ws.js +sendNPCRefine; 恢复 R15
+  sendNPCRefineRetrieve (插入冲突覆盖, CDP 回归当场捕获)。
+- `实现` win-npc.js refinePanel: 类型按钮组 (点击置 ● + 互斥)、品质循环钮 (文本带时长)、
+  三桶列表 ( ItemType 分类: Ore→ores / RefineSpecial→specials /
+  Necklace|Bracelet|Ring|Amulet→items, 上限 5/3/1)、导入/移除/提交后清空。
+- `CDP 验收` (/tmp/pm-smoke/pmv-single.mjs REFINE-P) dtype3 面板 visible; 注入黑铁矿
+  infoIndex=541 → 导入分桶 "黑铁矿 (1)· 黑铁矿石 x5" (类型+中文名双验); 选 DC → ●;
+  提交 sentIds=[257] (C_NPCREFINE 逐字节验证: len40=1 item+2 空 list); 提交后清单清空;
+  0 异常。全套回归: SUBMIT sentIds=[253] + pmv-buff-qt ALL-9/REFINE/CONSIGN/MAIL 全绿。

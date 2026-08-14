@@ -354,6 +354,7 @@ export class GameConnection extends EventTarget {
   sendNPCSell(links) { this.send(C.NPCSell(links)); }
   sendNPCRepair(links, special, guildFunds = false) { this.send(C.NPCRepair(links, special, guildFunds)); }
   sendNPCRefineRetrieve(index) { this.send(C.NPCRefineRetrieve(index)); }
+  sendNPCRefine(refineType, quality, ores, items, specials) { this.send(C.NPCRefine(refineType, quality, ores, items, specials)); }
   sendNPCFragment(links) { this.send(C.NPCFragment(links)); }
   sendMarriageMakeRing(slot) { this.send(C.MarriageMakeRing(slot)); }
   sendNPCAccessoryUpgrade(target, refineType) { this.send(C.NPCAccessoryUpgrade(target, refineType)); }

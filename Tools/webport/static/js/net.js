@@ -792,6 +792,13 @@ export const C = {
   MarriageMakeRing: (slot) => new Writer().int32(slot).build(ID.C_MARRIAGEMAKERING),
   NPCAccessoryUpgrade: (target, refineType) =>
     new Writer().cellLink(target).byte(refineType).build(ID.C_NPCACCESSORYUPGRADE),
+  // 精炼提交 (ClientPackets.cs:288 NPCRefine{RefineType b, RefineQuality b, Ores/Items/Specials})
+  NPCRefine: (refineType, quality, ores, items, specials) => new Writer()
+    .byte(refineType).byte(quality)
+    .list(ores, (w2, l) => w2.cellLink(l))
+    .list(items, (w2, l) => w2.cellLink(l))
+    .list(specials, (w2, l) => w2.cellLink(l))
+    .build(ID.C_NPCREFINE),
   NPCAccessoryReset: (cell) => new Writer().cellLink(cell).build(ID.C_NPCACCESSORYRESET),
   // 社交
   FriendAdd: (name) => new Writer().string(name).build(ID.C_FRIENDADD),
