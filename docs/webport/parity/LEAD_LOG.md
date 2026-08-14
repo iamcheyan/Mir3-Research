@@ -616,3 +616,11 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 
 ### E路回归: 557 ✓; 无冲突; 已 push。A 路自述: 六提交回归全绿,
 下一步"真机对照验收或继续剩余长尾" — 接近终态。
+
+## 2026-08-15 05:1x — R14 终轮: REPORT.md 总验收出具 (par-keys)
+
+- A 路停于 recap 提示符 (04:30 起, 核心全绿后待用户定夺), B/C/D 已终态。
+- 最终 CDP sweep (账号 pkmste11tc): 70 键 / 28 toggle ✓ / 0 异常 / Escape 1 窗 /
+  V·L HUD ✓ — 与 R5/R6/R7 一致, 键位域稳定收口。
+- **`docs/webport/parity/REPORT.md` 出具**: 五路终态 + E 路三层验证 + 仲裁记录 +
+  合并履历 + 残留清单。E 路职责 1/2 全部交付, goal 收官。

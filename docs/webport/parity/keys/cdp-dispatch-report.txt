@@ -1,0 +1,100 @@
+S1 versionOK
+S2 registered pkmste11tc@test.com
+S3 logged in → SelectScene
+S4 character created
+S5 IN-GAME
+  MenuWindow             n           -> dxctl dxwindow [toggle✓]
+  HelpWindow             h           -> dxctl dxwindow [toggle✓]
+  ConfigWindow           o           -> dxctl dxwindow [toggle✓]
+  CharacterWindow        q           -> dxctl dxwindow [toggle✓]
+  InventoryWindow        w           -> dxctl dxwindow [toggle✓]
+  MagicWindow            e           -> dxctl dxwindow [toggle✓]
+  MagicBarWindow         x           -> dxctl dxwindow [toggle✓]
+  DungeonFinderWindow    j           -> dxctl dxwindow [toggle✓]
+  StorageWindow          s           -> dxctl dxwindow [toggle✓]
+  BeltWindow             z           -> dxctl dxwindow [toggle✓]
+  AutoPotionWindow       p           -> dxctl dxwindow [toggle✓]
+  CurrencyWindow         c           -> dxctl dxwindow [toggle✓]
+  FilterDropWindow       f           -> dxctl dxwindow [toggle✓]
+  FortuneWindow          r           -> dxctl dxwindow [toggle✓]
+  ItemPickUp             tab         -> (无窗口变化)
+  QuestTrackerWindow     l           -> dxctl dxwindow [toggle✓]
+  MapMiniWindow          v           -> dxctl dxwindow [toggle✓]
+  MapBigWindow           b           -> dxctl dxwindow [toggle✓]
+  RankingWindow          r           -> dxctl dxwindow [toggle✓]
+  GameStoreWindow        y           -> dxctl dxwindow [toggle✓]
+  CompanionWindow        u           -> dxctl dxwindow [toggle✓]
+  GroupWindow            p           -> dxctl dxwindow [toggle✓]
+  GuildWindow            g           -> dxctl dxwindow [toggle✓]
+  MailBoxWindow          ,           -> dxctl dxwindow [toggle✓]
+  MailSendWindow         .           -> dxctl dxwindow [toggle✓]
+  BlockListWindow        b           -> dxctl dxwindow [toggle✓]
+  QuestLogWindow         k           -> dxctl dxwindow [toggle✓]
+  ChatOptionsWindow      o           -> dxctl dxwindow [toggle✓]
+  ExitGameWindow         escape      -> dxctl dxwindow [toggle✓]
+  UseBelt01              1           -> (无窗口变化)
+  UseBelt02              2           -> (无窗口变化)
+  UseBelt03              3           -> (无窗口变化)
+  UseBelt04              4           -> (无窗口变化)
+  UseBelt05              5           -> (无窗口变化)
+  UseBelt06              6           -> (无窗口变化)
+  UseBelt07              7           -> (无窗口变化)
+  UseBelt08              8           -> (无窗口变化)
+  UseBelt09              9           -> (无窗口变化)
+  UseBelt10              0           -> (无窗口变化)
+  ChangeAttackMode       h           -> (无窗口变化)
+  ChangePetMode          a           -> (无窗口变化)
+  ToggleItemLock         scrolllock  -> (无窗口变化)
+  SpellSet01             f1          -> (无窗口变化)
+  SpellSet02             f2          -> (无窗口变化)
+  SpellSet03             f3          -> (无窗口变化)
+  SpellSet04             f4          -> (无窗口变化)
+  SpellUse01             f1          -> (无窗口变化)
+  SpellUse02             f2          -> (无窗口变化)
+  SpellUse03             f3          -> (无窗口变化)
+  SpellUse04             f4          -> (无窗口变化)
+  SpellUse05             f5          -> (无窗口变化)
+  SpellUse06             f6          -> (无窗口变化)
+  SpellUse07             f7          -> (无窗口变化)
+  SpellUse08             f8          -> (无窗口变化)
+  SpellUse09             f9          -> (无窗口变化)
+  SpellUse10             f10         -> (无窗口变化)
+  SpellUse11             f11         -> (无窗口变化)
+  SpellUse12             f12         -> (无窗口变化)
+  SpellUse13             f1          -> (无窗口变化)
+  SpellUse14             f2          -> (无窗口变化)
+  SpellUse15             f3          -> (无窗口变化)
+  SpellUse16             f4          -> (无窗口变化)
+  SpellUse17             f5          -> (无窗口变化)
+  SpellUse18             f6          -> (无窗口变化)
+  SpellUse19             f7          -> (无窗口变化)
+  SpellUse20             f8          -> (无窗口变化)
+  SpellUse21             f9          -> (无窗口变化)
+  SpellUse22             f10         -> (无窗口变化)
+  SpellUse23             f11         -> (无窗口变化)
+  SpellUse24             f12         -> (无窗口变化)
+
+SUMMARY {
+ "account": "pkmste11tc@test.com",
+ "total": 70,
+ "openedWindows": 28,
+ "toggleVerified": 28,
+ "pageExceptions": 0,
+ "hudToggles": {
+  "miniMap": {
+   "before": false,
+   "after": true,
+   "toggled": true
+  },
+  "questTracker": {
+   "before": false,
+   "after": true,
+   "toggled": true
+  }
+ },
+ "escNoWindowOpens": [
+  "dxctl dxwindow"
+ ],
+ "exceptions": []
+}
+MATRIX [{"action":"MenuWindow","key":"n","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"HelpWindow","key":"h","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"ConfigWindow","key":"o","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"CharacterWindow","key":"q","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"InventoryWindow","key":"w","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MagicWindow","key":"e","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MagicBarWindow","key":"x","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"DungeonFinderWindow","key":"j","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"StorageWindow","key":"s","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"BeltWindow","key":"z","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"AutoPotionWindow","key":"p","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"CurrencyWindow","key":"c","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"FilterDropWindow","key":"f","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"FortuneWindow","key":"r","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"ItemPickUp","key":"tab","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"QuestTrackerWindow","key":"l","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MapMiniWindow","key":"v","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MapBigWindow","key":"b","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"RankingWindow","key":"r","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"GameStoreWindow","key":"y","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"CompanionWindow","key":"u","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"GroupWindow","key":"p","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"GuildWindow","key":"g","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MailBoxWindow","key":",","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"MailSendWindow","key":".","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"BlockListWindow","key":"b","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"QuestLogWindow","key":"k","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"ChatOptionsWindow","key":"o","ctrl":true,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"ExitGameWindow","key":"escape","ctrl":false,"alt":false,"shift":false,"windowsAfter":["dxctl dxwindow"],"opened":true,"toggleOk":true},{"action":"UseBelt01","key":"1","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt02","key":"2","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt03","key":"3","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt04","key":"4","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt05","key":"5","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt06","key":"6","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt07","key":"7","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt08","key":"8","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt09","key":"9","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"UseBelt10","key":"0","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"ChangeAttackMode","key":"h","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"ChangePetMode","key":"a","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"ToggleItemLock","key":"scrolllock","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellSet01","key":"f1","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellSet02","key":"f2","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellSet03","key":"f3","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellSet04","key":"f4","ctrl":true,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse01","key":"f1","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse02","key":"f2","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse03","key":"f3","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse04","key":"f4","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse05","key":"f5","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse06","key":"f6","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse07","key":"f7","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse08","key":"f8","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse09","key":"f9","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse10","key":"f10","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse11","key":"f11","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse12","key":"f12","ctrl":false,"alt":false,"shift":false,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse13","key":"f1","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse14","key":"f2","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse15","key":"f3","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse16","key":"f4","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse17","key":"f5","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse18","key":"f6","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse19","key":"f7","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse20","key":"f8","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse21","key":"f9","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse22","key":"f10","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse23","key":"f11","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true},{"action":"SpellUse24","key":"f12","ctrl":false,"alt":false,"shift":true,"windowsAfter":[],"opened":false,"toggleOk":true}]
