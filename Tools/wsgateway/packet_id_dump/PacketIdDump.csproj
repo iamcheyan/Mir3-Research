@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>PacketIdDump</AssemblyName>
+    <!-- 只读引用服务器实际使用的 LibraryCore.dll，不改动 zircon 仓库 -->
+    <ReferencePath>/home/tetsuya/development/zircon/Debug/ServerCore</ReferencePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LibraryCore">
+      <HintPath>/home/tetsuya/development/zircon/Debug/ServerCore/LibraryCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
