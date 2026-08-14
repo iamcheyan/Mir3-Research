@@ -74,3 +74,24 @@
 - 客户端整体状态: 游戏场景已能完整加载 (道士255/比奇城/聊天公告全渲染)。
 - **dispatch 级仍缺**: par-move 分解 game.js 后 handleKeyBind/getAction 尚未在新
   结构落地 — CDP 实测按 q 无反应。属 A 路在制, 继续等待, R0 仲裁备忘仍然有效。
+
+## 2026-08-14 23:3x — R2 合并轮 (par-keys)
+
+### 新增 commit (3)
+
+- `338aaa1` par-anim: GM 号实测全技能施法动画证据 (10 技能×分派+特效截图)
+- `0d78c66` mapviewer: 瓦片全量后台预生成 + 拖拽请求根治 + /api/maps 缓存
+- `000ce70` par-win: 13 窗口模块全量落地 (win-registry + 11 个 win-*.js)
+
+### 合并动作
+
+- origin 无分叉; 本地领先已 push。无冲突。index.html 未 bump (v4 仍最新 —
+  本轮合并不改 ESM 入口 URL; serve.py /static 本就 no-cache)。
+
+### E路状态
+
+- `check-keybinds.mjs` 回归: **557 项全过**。
+- getAction 消费方仍缺: 全仓库无 import — par-move todo 明确列有
+  "Keybind dispatch (HandleKeyBind port) into world" (其 phase I 0/4, 会话活跃,
+  23:31 仍在跑 readiness probe), 不越权代写, 等 A 路落地后做 CDP 逐键验证。
+- 窗口侧就绪: par-win 11 个 win-*.js 已入库, dispatch 一落地即可端到端逐键对照。
