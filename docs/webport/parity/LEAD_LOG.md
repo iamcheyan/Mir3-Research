@@ -1,0 +1,35 @@
+# LEAD_LOG — webport 五路并行军团长(E路 par-keys 兼)合并与进度日志
+
+> 职责: 每 20-30 分钟 git pull --rebase 合并四路 commit; 冲突按 Godot 源码行为仲裁;
+> index.html 版本号 bump; 记录各路进度。格式: 每轮一节, 倒序追加在本文件顶部读最方便,
+> 但为 git diff 友好按时间正序追加在文件尾部。
+
+---
+
+## 2026-08-14 22:2x — R0 起步轮 (par-keys)
+
+### E路职责1: keybinds.js 全表移植 — **完成**
+
+- 基础: par-move 已提交未 commit 的 keybinds.js 初版(70 条默认表+getAction+label),
+  与 KeyBindManager.cs 逐条核对**完全一致**, 按目标要求"以功能全为准"保留其表,
+  补齐缺失的 Manager 层:
+  - `load()/save()/resetDefaults()` — localStorage `ZirconKeyBinds.ini`
+    (对照 C# ConfigFile user:// 语义: 缺 section 跳过、缺字段用当前值/默认值, C#:184-238)
+  - Defaults 快照 + cloneBind (C#:181, 240-247); 模块加载即 load() (对照 GameScene.cs:919)
+  - `getBind(action)` 重绑数据层 (KeyBindDialog.cs 直接改公有字段的 JS 等价)
+  - getKeyText 修正为 C# ToString 域: `,`→Comma, `.`→Period, scrolllock→Scrolllock,
+    null→None, Up/Down/Left/Right 显式映射
+- 修复初版 bug: ACTION_NAMES 类型过滤反了(typeof 'string' → 'number'), 会导致
+  load() 把所有 section 读成 undefined 键、互相覆盖。
+- **验证**: `Tools/webport/scripts/check-keybinds.mjs` — 直接解析 KeyBindManager.cs
+  的 enum+默认表与 JS 逐条 diff(C# 漂移即 fail), 逐绑定 GetAction 正例×70+负例×280、
+  冲突键位语义(p/Ctrl+P 等 8 组)、小键盘归一(Kp4≡Digit4)、Key2 双键、
+  持久化往返(改绑→save→新实例 load→resetDefaults)。**557 项断言全过**,
+  证据 `docs/webport/parity/keys/verify-keybinds.txt`。
+- game.js(par-move) 对 keybinds.js 的既有 import 不受影响(导出全集保留)。
+
+### 合并状态
+
+- 工作区快照: master@0791190 与 origin 同步; 未提交 = par-move(game.js/world.js/
+  mouse.js/gamedata.js) + par-win(windows.js/uitree.js?) 的在制品, **不代提交**。
+- 四路 commit: 尚无(起步阶段)。index.html `main.js?v=3 → v=4`(E路 keybinds 入口)。

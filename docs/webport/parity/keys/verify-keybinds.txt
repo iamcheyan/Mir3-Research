@@ -1,0 +1,13 @@
+[1] C# enum 解析: 78 个动作 (None 除外)
+[2] C# 默认表解析: 70 条绑定
+[3] enum 逐名比对
+[4] 默认表逐条比对 (action/key/修饰键/Key2)
+[5] GetAction 正例 (逐绑定)
+[6] GetAction 负例 (修饰键翻转)
+[7] 冲突键位语义
+[8] normalizeCode / 小键盘归一
+[9] GetKeyText / GetKeyBindLabel
+[10] Key2 双键
+[11] Load/Save/ResetDefaults (localStorage 往返)
+
+✓ 全部通过: 557 项断言
