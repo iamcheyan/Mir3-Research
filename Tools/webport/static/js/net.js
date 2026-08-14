@@ -341,10 +341,11 @@ export class Reader {
   skip(n) { this.p += n; return this; }
   decimal() { // .NET decimal 16B: lo/mid/hi i32 + flags(scale 16-23, sign 31)
     const lo = this.uint32(), mid = this.uint32(), hi = this.uint32(), flags = this.uint32();
-    let v = (BigInt(lo) | (BigInt(mid) << 32n) | (BigInt(hi) << 64n));
+    const raw = BigInt(lo) | (BigInt(mid) << 32n) | (BigInt(hi) << 64n);
     const scale = (flags >> 16) & 0xff;
-    if (scale) v /= 10n ** BigInt(scale);
-    const n = Number(v);
+    const div = 10n ** BigInt(scale);
+    const quot = raw / div, rem = raw % div; // 保留小数部分 (BigInt 整除会截断)
+    const n = Number(quot) + Number(rem) / Number(div);
     return (flags & 0x80000000) ? -n : n;
   }
 }
