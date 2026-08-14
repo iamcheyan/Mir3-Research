@@ -456,3 +456,19 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   dtype===4 显隐 + renderRetrieve; w.addControl 挂载。
 - `CDP 验收` 注入 refineList 2 条 → 行渲染 "80/100"/"50/100"+品质; 点击行选中;
   取回选中按钮 → 真包出站 (packetSent:true); 0 异常。
+
+## 2026-08-15 02:3x — R8 合并轮 (par-keys)
+
+### 新增 commit (2, par-move P2 长尾)
+
+- `2a1b6ee` R14: P2 寄售行 win-consign (搜索购买/我的寄售/下架/寄售) + NPC dtype19 路由
+- `8ca9d50` R15: NPC 精炼取回面板 (refineList 渲染/选中/取回发包)
+
+### E路回归
+
+- 557 manager 断言 ✓ (P2 改动不触 keybinds.js)。合并无冲突, 已 push。
+
+### 局势
+
+- A 路进入 P2 长尾 (寄售/精炼), 超出核心 CHECKLIST; 五路中唯 A 路未终态。
+  E 路继续 20-30min 节奏值守合并, 直至 A 路终态出 REPORT.md。
