@@ -588,3 +588,21 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   真服 e2e 254→聊天验证
 
 ### E路回归: 557 ✓; 无冲突; 已 push。A 路在制: win-npc.js (回包联动后续)。
+
+## R20 — par-move (A路): NPC 提交锁生命周期 (BeginSubmit/CompleteLinks/CancelLinks)
+
+- `对照` NPCAdvancedPanels.cs: BeginSubmit :1039-1060 (pending 防重 + 来源格 Locked) /
+  CompleteLinks :1062-1069 (S 回包解锁+清格) / CancelLinks :560-572 (Configure 重配清场);
+  itemstore 已有 locked Set (moveItem 同源), dxgrid isLocked 已渲染锁态。
+- `实现` win-npc.js: pendingNpcLinks + beginNpcSubmit (组扁平去重, 全组 store.lock) /
+  completeNpcLinks (Set 差减 pending + unlockPublic) / cancelNpcLinks; 接线:
+  submitSingle/refineSubmit/buildMultiBucket 按钮统一走 beginNpcSubmit (pending 非空
+  直接不发); R19 六个 S 监听补 completeNpcLinks; showPage 重配时 cancelNpcLinks。
+- `CDP 验收` (pmv-r19.mjs LOCKS, 拦截发送隔离真服时序): 提交→4 格全锁
+  lockedAfterSubmit ✓; pending 期二次提交被挡 (sentIds 不增) ✓; 注入
+  npcMasterRefineResult→全解锁 ✓; 解锁后重导入再提交 sentIds=[254,254] ✓。
+  回归: pmv-single (SINGLE×4/253/257/254/261+274) + pmv-buff-qt 全绿。
+- 修复: R20 排障中恢复被误删的 retrievePanel/retrieveBox 声明 (注释清理时
+  PUT 范围吞行 → 模块静默安装失败, CDP warn 捕获定位) — 教训: 注释行清理
+  必须重新 node --check + CDP 冒烟, registry 的 console.warn 吞错要用
+  Page.addScriptToEvaluateOnNewDocument 捕获才能看到。

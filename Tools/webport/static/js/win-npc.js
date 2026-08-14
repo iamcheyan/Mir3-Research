@@ -239,8 +239,8 @@ export async function winNpc(scene, store, reg) {
   }
 
   // ---------- 精炼取回面板 (NPCAdvancedPanels.cs:518-527 BuildRetrieve) ----------
-  // S.RefineList → 列表渲染; 刷新=C.NPCCall(重复对话, 服务端推 RefineList);
-  // 取回=C.NPCRefineRetrieve{Index} (ClientPackets.cs:328)。
+  // S.RefineList 由服务端在打开页面/精炼完成后主动推 (PlayerObject.cs:1110/12531);
+  // 刷新按钮只重渲染本地行 (RequestNPCRefineList→RebuildRetrieveRows :543, 不发包);
   const retrievePanel = new DXControl({ location: [0, 204], size: [404, 300], visible: false, isControl: true });
   const retrieveBox = document.createElement('div');
   retrieveBox.style.cssText = 'position:absolute;left:9px;top:37px;width:491px;height:302px;overflow-y:auto;';
@@ -284,20 +284,28 @@ export async function winNpc(scene, store, reg) {
   // 物品消耗由 itemstore itemsChanged 通道统一处理 (ConsumeNpcLinks→OnItemsChanged 同源);
   // 这里只做聊天反馈 + 面板态同步。
   conn.addEventListener('npcRefineResult', (e) => {   // OnNPCRefine :2699-2704
+    completeNpcLinks([...(e.detail?.ores ?? []), ...(e.detail?.items ?? []), ...(e.detail?.specials ?? [])]);
     scene.addChat(e.detail?.success ? '精炼请求已受理，请稍后取回' : '精炼请求被拒绝', 'system');
   });
   conn.addEventListener('npcMasterRefineResult', (e) => {   // OnNPCMasterRefine :2706-2711
+    completeNpcLinks([...(e.detail?.fragment1s ?? []), ...(e.detail?.fragment2s ?? []),
+      ...(e.detail?.fragment3s ?? []), ...(e.detail?.stones ?? []), ...(e.detail?.specials ?? [])]);
     scene.addChat(e.detail?.success ? '大师精炼成功' : '大师精炼失败', 'system');
   });
-  conn.addEventListener('npcRefinementStoneResult', () => {   // OnNPCRefinementStone :2691-2697
+  conn.addEventListener('npcRefinementStoneResult', (e) => {   // OnNPCRefinementStone :2691-2697
+    completeNpcLinks([...(e.detail?.ironOres ?? []), ...(e.detail?.silverOres ?? []),
+      ...(e.detail?.diamondOres ?? []), ...(e.detail?.goldOres ?? []), ...(e.detail?.crystal ?? [])]);
     scene.addChat('精炼石制作请求已受理', 'system');
   });
   conn.addEventListener('npcWeaponCraftResult', (e) => {   // OnNPCWeaponCraft :2734-2739
+    completeNpcLinks(['template', 'yellow', 'blue', 'red', 'purple', 'green', 'grey'].map(k => e.detail?.[k]));
     scene.addChat(e.detail?.success ? '武器打造成功' : '武器打造失败', 'system');
   });
-  conn.addEventListener('npcAccessoryLevelUpResult', () => {   // OnNPCAccessoryLevelUp :2713-2719 (仅解锁, 无聊天)
+  conn.addEventListener('npcAccessoryLevelUpResult', (e) => {   // OnNPCAccessoryLevelUp :2713-2719 (ReleaseNpcLinksWithoutConsuming)
+    completeNpcLinks([e.detail?.target, ...(e.detail?.links ?? [])]);
   });
-  conn.addEventListener('npcAccessoryUpgradeResult', (e) => {   // OnNPCAccessoryUpgrade :2721-2722
+  conn.addEventListener('npcAccessoryUpgradeResult', (e) => {   // OnNPCAccessoryUpgrade :2721-2722 (无 ItemsChanged)
+    completeNpcLinks([e.detail?.target]);
     scene.addChat(e.detail?.success ? '饰品强化成功' : '饰品强化失败', 'system');
   });
   conn.addEventListener('npcRefineRetrieveResult', (e) => {   // OnNPCRefineRetrieve :2741-2746 RemoveRefine
@@ -355,9 +363,31 @@ export async function winNpc(scene, store, reg) {
     if (!singleLinks.length) singleBox.textContent = '（点"从背包导入"或稍后拖入）';
     singleSubmit.enabled = singleLinks.length > 0;
   };
+  // ---- 提交锁 (BeginSubmit :1039-1060 / CompleteLinks :1062 / CancelLinks :560 对照) ----
+  // 提交期锁背包来源格 (拖不动), S 回包 (CompleteLinks) 或面板重配 (CancelLinks) 解锁;
+  // 服务端 ParseLinks 失败静默 return 时锁保留至重配 — 与 Godot 行为一致。
+  let pendingNpcLinks = [];
+  function beginNpcSubmit(groups) {
+    if (pendingNpcLinks.length) return null;   // 提交中禁重复 (:1041)
+    const flat = groups.flat().filter(Boolean);
+    const links = [...new Map(flat.map(l => [`${l.gridType}:${l.slot}`, l])).values()];
+    if (!links.length) return null;
+    pendingNpcLinks = links;
+    for (const l of links) store.lock(l.gridType, l.slot);
+    return links;
+  }
+  function completeNpcLinks(links) {
+    const arr = (links ?? []).filter(Boolean);
+    const keys = new Set(arr.map(l => `${l.gridType}:${l.slot}`));
+    pendingNpcLinks = pendingNpcLinks.filter(l => !keys.has(`${l.gridType}:${l.slot}`));
+    for (const l of arr) store.unlockPublic(l.gridType, l.slot);
+  }
+  function cancelNpcLinks() { completeNpcLinks(pendingNpcLinks.slice()); }
+
   function submitSingle() {
-    if (!singleMode || !singleLinks.length) return;
-    SINGLE_DEFS[singleMode][2](singleLinks);
+    const links = beginNpcSubmit([singleLinks]);
+    if (!links) return;
+    SINGLE_DEFS[singleMode][2](links);
     singleLinks = [];
     renderSingle();
   }
@@ -405,8 +435,8 @@ export async function winNpc(scene, store, reg) {
   const refineSubmit = new DXButton({ text: '开始精炼', fontSize: 9, library: 'Interface', index: -1,
     location: [120, 186], size: [90, 22], onClick: () => {
       if (!refineType) return;
-      const total = refineLinks.ores.length + refineLinks.items.length + refineLinks.specials.length;
-      if (!total) return;   // BeginSubmit 空组不发
+      const links = beginNpcSubmit([refineLinks.ores, refineLinks.items, refineLinks.specials]);
+      if (!links) return;   // 空组或提交中不发
       conn.sendNPCRefine(refineType, refineQuality, refineLinks.ores, refineLinks.items, refineLinks.specials);
       refineLinks.ores = []; refineLinks.items = []; refineLinks.specials = [];
       renderRefine();
@@ -525,6 +555,7 @@ export async function winNpc(scene, store, reg) {
       const b = new DXButton({ text: label, fontSize: 9, library: 'Interface', index: -1,
         location: [118 + i * 92, 198], size: [86, 22], onClick: () => {
           if (!b.enabled) return;
+          if (!beginNpcSubmit([Object.values(links).flat()])) return;   // 提交锁 (BeginSubmit)
           act();
           for (const k of Object.keys(links)) links[k] = [];
           render();
@@ -820,7 +851,7 @@ export async function winNpc(scene, store, reg) {
     const types = [];   // 工作区快照 NPCPage 无 Types 链接列 → 不按类型过滤
     const selling = dtype === 1 && types.length > 0;
 
-    if (!selling) reg.handlers.get('inventory')?.normalMode?.();   // EndInventoryNpcSale (:55)
+    if (!selling) { reg.handlers.get('inventory')?.normalMode?.(); cancelNpcLinks(); }   // EndInventoryNpcSale (:55) + CancelLinks (Configure 对照)
 
     // 值替换 <id:default> (:56-62)
     const raw = (page.Say ?? '').replace(/<(?<id>\d+):(?<def>[^<>]+?)>/g, (whole, id, def) => {
