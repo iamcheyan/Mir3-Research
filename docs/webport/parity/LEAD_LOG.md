@@ -399,3 +399,15 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   sepia红, <10s=hue-rotate/saturate 蓝渐变, 永久=原色)。
 - `CDP 验收` 注入 4 buff: srcs=[100,137,78,229] 与 switch 表逐项吻合, 剩余
   时间降序排列, pause 红/<10s 蓝滤镜生效, visible ✓。
+
+## R13 — par-move (A路): par-win 仲裁遗留制品清理 (终态收尾)
+
+- `仲裁执行` LEAD_LOG R3 登记的 dialogs.js(34KB)/gamedata.js 未跟踪草稿
+  归 par-win 仲裁 ("吸收进 win-*.js 模式或删"); par-win goal 已终态且无人
+  认领 → 吸收已完备 (win-*.js 11 模块 + fallbackWindow 12 窗 + itemstore/
+  gamedb/dxgrid 全覆盖, DXItemCell 正典在 dxgrid.js:250, win-*.js 只用
+  uitree 的 getWindow) → 删两草稿 + revert uitree.js 未提交的 +136 行
+  DXItemCell graft (孤儿重复实现, 唯一消费者是 dialogs.js)。
+- `验收` 清理后全链路 CDP 复跑: 9 键 PASS / Buff 图标 srcs 吻合 / 邮箱
+  compose 真包 / 11 窗全开 — 无任何模块引用被删文件, 0 异常。
+- `仓库状态` Tools/webport/static/js/ 下无未跟踪/未提交 JS; 冲刺工作区干净。
