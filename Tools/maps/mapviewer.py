@@ -1444,7 +1444,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Zircon / Mir3 EI 地图浏览器</title>
+    <link rel="stylesheet" href="/_webui/tokens.css">
+    <link rel="stylesheet" href="/_webui/mobile-shell.css">
+    <script src="/_webui/gesture.js"></script>
     <style>
         body { margin:0; padding:0; background:#111; color:#eee; font-family:sans-serif; overflow:hidden; user-select:none; }
         #toolbar { height:40px; background:#222; display:flex; align-items:center; padding:0 10px; gap:10px; border-bottom:1px solid #333; }
@@ -1627,21 +1631,59 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #graph-stats .g-isl { color:#ff5b5b; } #graph-stats .g-cut { color:#ffd54a; }
         .gnode { cursor:pointer; } .gnode text { font-size:9px; fill:#9a9aa5; paint-order:stroke; stroke:#0b0b0f; stroke-width:2px; }
         #legend-panel .lg-block { display:inline-block; width:14px; height:9px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+        /* ---- 移动端共享壳接入（桌面 fine-pointer/宽屏零影响，Goal MAP-P0-01） ---- */
+        #layer-group { display:contents; }            /* 桌面：包裹不改变工具栏 flex 布局 */
+        #layer-group .lg-title { display:none; }
+        #btn-layers { display:none; }
         @media (max-width:640px) {
-            #toolbar { flex-wrap:wrap; height:auto; min-height:40px; padding:4px 6px; gap:4px 8px; }
-            #viewport, #overview-view, #graph-view { top:0; position:relative; }
-            body { display:flex; flex-direction:column; height:100vh; }
-            #toolbar { flex:none; order:0; } #viewport, #overview-view, #graph-view { flex:1 1 auto; order:1; min-height:0; }
-            #map-sel-btn { min-width:120px; max-width:170px; font-size:12px; }
-            #quest-sel { max-width:130px; font-size:12px; }
-            .msel-pop { min-width:240px; }
-            #conn-panel, #quest-panel { width:46vw; max-width:250px; max-height:36vh; }
+            html, body { height:100%; }
+            body { display:flex; flex-direction:column; height:100dvh; }
+            #toolbar { position:static; height:auto; min-height:44px; flex:none; order:0;
+                       flex-wrap:wrap; padding:6px 8px; gap:6px 8px; }
+            #map-lbl { display:none; }
+            #viewport, #overview-view, #graph-view {
+                position:relative; top:auto; left:auto; right:auto; bottom:auto;
+                flex:1 1 auto; order:1; min-height:0;
+                margin-bottom:calc(54px + var(--safe-bottom,0px));
+            }
+            /* 视图切换 → 底部导航（≥44px 触控目标） */
+            #view-tabs { position:fixed; left:0; right:0; bottom:0; z-index:95; margin:0;
+                         background:rgba(16,18,24,.97); border-top:1px solid #3a3a46;
+                         border-radius:0; padding:4px 6px calc(4px + var(--safe-bottom,0px)); }
+            .vtab { flex:1; min-height:48px; font-size:13px; border-radius:8px; }
+            /* 图层/任务/图例控件 → 底部抽屉 */
+            #btn-layers { display:inline-flex; align-items:center; gap:4px; }
+            #layer-group { display:none; position:fixed; left:0; right:0; bottom:0; z-index:96;
+                           max-height:70dvh; overflow-y:auto; flex-wrap:wrap; gap:8px 10px; align-items:center;
+                           background:rgba(16,18,24,.98); border-top:1px solid #3a3a46;
+                           border-radius:14px 14px 0 0; padding:12px 14px calc(14px + var(--safe-bottom,0px)); }
+            #layer-group.open { display:flex; }
+            #layer-group .lg-title { display:block; flex-basis:100%; color:#ffd54a; font-size:13px; }
+            .msel-pop { min-width:240px; max-width:calc(100vw - 24px); }
+            /* 固定面板收口：不允许超出 390px 视口 */
+            #cat-panel, #conn-panel, #quest-panel, #legend-panel, #pick-panel, #statusbar {
+                max-width:calc(100vw - 20px); }
+            #cat-panel   { width:auto; bottom:calc(60px + var(--safe-bottom,0px)); }
+            #legend-panel{ bottom:calc(60px + var(--safe-bottom,0px)); }
+            #pick-panel  { bottom:calc(60px + var(--safe-bottom,0px)); }
+            #conn-panel  { top:calc(52px + var(--safe-top,0px)); }
+            #quest-panel { top:auto; right:8px; bottom:calc(60px + var(--safe-bottom,0px)); max-height:40dvh; }
+            #statusbar   { bottom:calc(58px + var(--safe-bottom,0px)); right:8px; flex-wrap:wrap; gap:4px 10px; }
+            #toast-container { top:calc(52px + var(--safe-top,0px)); right:8px; left:8px; }
+            .toast { min-width:0; max-width:100%; }
             #minimap { display:none; }
-            #overview-view { padding:6px; } #ov-grid { grid-template-columns:repeat(auto-fill, minmax(108px, 1fr)); gap:6px; }
+            #overview-view { padding:6px; }
+            #ov-grid { grid-template-columns:repeat(auto-fill, minmax(108px, 1fr)); gap:6px; }
+        }
+        @media (pointer:coarse) {
+            #viewport { touch-action:none; }   /* 手势由 gesture.js 接管（MAP-P0-02） */
+            #toolbar button, #toolbar select { min-height:44px; }
+            #toolbar label { min-height:44px; display:inline-flex; align-items:center; padding:0 6px; }
+            .ov-chip { min-height:40px; display:inline-flex; align-items:center; }
         }
     </style>
 </head>
-<body>
+<body class="wu-shell">
     <!-- Toast 通知容器 -->
     <div id="toast-container"></div>
 
@@ -1670,7 +1712,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <button class="vtab" data-view="overview" type="button">📋 总览</button>
             <button class="vtab" data-view="graph" type="button">🕸️ 连通</button>
         </div>
-        <span>🗺️ 地图:</span>
+        <span id="map-lbl">🗺️ 地图:</span>
         <div class="msel" id="map-sel">
             <button id="map-sel-btn" type="button" title="选择地图">
                 <span id="map-sel-label">加载中…</span><span class="msel-caret">▾</span>
@@ -1683,6 +1725,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <button id="btn-zoom-in" title="放大 (+)">＋</button>
         <button id="btn-zoom-out" title="缩小 (-)">－</button>
         <button id="btn-fit" title="适配全图窗口大小">⛶ 适配</button>
+        <button id="btn-layers" type="button" title="图层与叠加">☰ 图层</button>
+        <div id="layer-group">
+            <div class="lg-title">图层 / 叠加</div>
         <label><input type="checkbox" id="chk-g" checked> Back</label>
         <label><input type="checkbox" id="chk-m" checked> Middle</label>
         <label><input type="checkbox" id="chk-f" checked> Front</label>
@@ -1693,6 +1738,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <option value="">📜 任务叠加…</option>
         </select>
         <button id="btn-legend" title="图例说明">❓</button>
+        </div>
         <span id="status"></span>
 
         <!-- 后台预生成实时进度条 -->
@@ -1706,6 +1752,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         <button id="btn-clear-cache" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄 重新生成</button>
     </div>
+    <div id="layer-backdrop" class="wu-backdrop"></div>
     <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="heat-canvas" width="0" height="0"></canvas><svg id="quest-svg" aria-hidden="true"></svg><svg id="pick-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
     <div id="overview-view">
         <div id="ov-filters">
@@ -3137,6 +3184,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 gsvg.setAttribute("viewBox", vb.join(" "));
             });
             window.addEventListener("mouseup", () => { gDrag = null; });
+            if (window.WU && window.matchMedia && matchMedia("(pointer:coarse)").matches) {
+                WU.gesture(gsvg, {
+                    pan: (dx, dy) => {
+                        const sc = vb[2] / gsvg.clientWidth;
+                        vb = [vb[0] - dx * sc, vb[1] - dy * sc, vb[2], vb[3]];
+                        gsvg.setAttribute("viewBox", vb.join(" "));
+                    },
+                    pinch: (step, cx, cy) => {
+                        const f = step > 0 ? 1 / 1.15 : 1.15;
+                        const sx = vb[0] + cx / gsvg.clientWidth * vb[2];
+                        const sy = vb[1] + cy / gsvg.clientHeight * vb[3];
+                        vb = [sx - (sx - vb[0]) * f, sy - (sy - vb[1]) * f, vb[2] * f, vb[3] * f];
+                        gsvg.setAttribute("viewBox", vb.join(" "));
+                    }
+                });
+            }
             gsvg.addEventListener("click", (e) => {
                 const g = e.target.closest(".gnode");
                 if (!g || g.dataset.file !== "1") return;
@@ -3177,6 +3240,41 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             '<div class="lg-row"><span class="lg-dot" style="background:#ff9b3d;"></span> 任务收集掉落怪物点位</div>' +
             '<div class="lg-row"><span class="lg-block" style="background:rgba(255,213,74,.3);border:1px solid #ffd54a;"></span> 任务探访区域</div>' +
             '<div class="lg-row"><span style="color:#aaa;font-size:11px;">🎯 点击地图拾取格坐标 · Shift+点击测距</div>';
+
+        // ---- 移动端：图层抽屉 + 触控手势（MAP-P0-01/02；桌面鼠标/滚轮路径不变） ----
+        (function () {
+            const layerGroup = document.getElementById("layer-group");
+            const layerBackdrop = document.getElementById("layer-backdrop");
+            const btnLayers = document.getElementById("btn-layers");
+            if (!layerGroup || !btnLayers) return;
+            const layerSheet = (open) => {
+                layerGroup.classList.toggle("open", open);
+                layerBackdrop.classList.toggle("open", open);
+            };
+            btnLayers.addEventListener("click", (e) => {
+                e.stopPropagation();
+                layerSheet(!layerGroup.classList.contains("open"));
+            });
+            layerBackdrop.addEventListener("click", () => layerSheet(false));
+            window.addEventListener("keydown", (e) => { if (e.key === "Escape") layerSheet(false); });
+
+            // 单指平移（滚动手感）/ 双指阶梯缩放 / 双击放大 —— 锚点逻辑与 Ctrl+滚轮一致
+            if (window.WU && window.matchMedia && matchMedia("(pointer:coarse)").matches) {
+                const zoomAt = (step, cx, cy) => {
+                    anchorX = (vp.scrollLeft + cx) * curScale();
+                    anchorY = (vp.scrollTop + cy) * curScale();
+                    if (step > 0 && cur > 0) cur--;
+                    else if (step < 0 && cur < scaleLadder.length - 1) cur++;
+                    else return;
+                    render(true); updateUrlHash(); saveState();
+                };
+                WU.gesture(vp, {
+                    pan: (dx, dy) => { vp.scrollLeft -= dx; vp.scrollTop -= dy; },
+                    pinch: (step, cx, cy) => zoomAt(step, cx, cy),
+                    doubleTap: (x, y) => zoomAt(+1, x, y)
+                });
+            }
+        })();
     </script>
 </body>
 </html>
@@ -3383,6 +3481,27 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        elif self.path.split("?")[0].startswith("/_webui/"):
+            # 共享移动端壳（Tools/common/webui/），见 TOOLS_MOBILE_ENHANCE_GOAL §3.1
+            from pathlib import Path as _P
+            name = self.path.split("?")[0][len("/_webui/"):]
+            if not name or "/" in name or ".." in name:
+                self.send_error(403)
+                return
+            f = _P(__file__).resolve().parent.parent / "common" / "webui" / name
+            if not f.is_file():
+                self.send_error(404)
+                return
+            ctype = {".css": "text/css; charset=utf-8",
+                     ".js": "application/javascript; charset=utf-8"}.get(f.suffix, "application/octet-stream")
+            body = f.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Cache-Control", "no-cache")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)

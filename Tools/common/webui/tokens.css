@@ -1,0 +1,33 @@
+/* tokens.css — Mir3 工具集共享设计令牌（Phase 1 移动端统一方案）
+ *
+ * 只定义 CSS 自定义属性，不做任何元素级样式，链接进来不会改变现有布局。
+ * 各工具按需引用：var(--touch-target) 等。移动端结构样式见 mobile-shell.css。
+ */
+:root {
+  /* 触控 */
+  --touch-target: 44px;              /* 最小触控目标（Goal §3.2 规则 3） */
+  --touch-gap: 8px;
+
+  /* 安全区（viewport-fit=cover 时生效） */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* 颜色（深色工具主题基线，仅提供未定义时的兜底值） */
+  --wu-bg: #15181d;
+  --wu-panel: #1e232b;
+  --wu-panel2: #262c36;
+  --wu-line: #333b47;
+  --wu-fg: #d7dde6;
+  --wu-dim: #8b95a3;
+  --wu-acc: #e8a33d;
+  --wu-ok: #3de88a;
+  --wu-warn: #ffcf70;
+  --wu-err: #ff5b5b;
+
+  /* 层级约定：backdrop 950 / sheet-bottom 960 / topbar 970 */
+  --wu-z-backdrop: 950;
+  --wu-z-sheet: 960;
+  --wu-z-topbar: 970;
+}

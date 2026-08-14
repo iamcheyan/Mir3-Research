@@ -1,0 +1,164 @@
+/* mobile-shell.css — Mir3 工具集共享移动端壳（Phase 1）
+ *
+ * 全部规则满足以下任一条件才生效，桌面（fine pointer + 宽屏）零影响：
+ *   1. 只作用于 .wu-* 组件类（工具显式使用才存在）；
+ *   2. 包裹在 @media (pointer:coarse) / (max-width:...) 内。
+ *
+ * 组件：
+ *   .wu-topbar      移动端顶栏（替代桌面工具栏的精简行）
+ *   .wu-bottomnav   底部导航（视图切换，≥44px 触控目标）
+ *   .wu-sheet       底部抽屉（图层/筛选等次级控制）
+ *   .wu-backdrop    抽屉/侧栏遮罩
+ *   .wu-drawer      侧滑抽屉（资源树等）
+ *   .wu-status-dot  健康状态点
+ *   .wu-badge       只读/可写、移动端等级徽标
+ *   .wu-card        数据卡片
+ */
+
+/* ---------- 组件基线（桌面也可用，不改动默认文档流） ---------- */
+
+.wu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  z-index: var(--wu-z-backdrop, 950);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.wu-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.wu-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 72dvh;
+  overflow-y: auto;
+  background: var(--wu-panel, #1e232b);
+  color: var(--wu-fg, #d7dde6);
+  border-top: 1px solid var(--wu-line, #333b47);
+  border-radius: 14px 14px 0 0;
+  padding: 14px 16px calc(16px + var(--safe-bottom, 0px));
+  z-index: var(--wu-z-sheet, 960);
+  transform: translateY(105%);
+  transition: transform .25s ease;
+}
+.wu-sheet.open { transform: translateY(0); }
+
+.wu-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(84vw, 340px);
+  background: var(--wu-panel, #1e232b);
+  color: var(--wu-fg, #d7dde6);
+  border-right: 1px solid var(--wu-line, #333b47);
+  z-index: var(--wu-z-sheet, 960);
+  transform: translateX(-102%);
+  transition: transform .25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.wu-drawer.open { transform: translateX(0); }
+
+.wu-bottomnav {
+  display: flex;
+  gap: 4px;
+  background: rgba(16, 18, 24, .97);
+  border-top: 1px solid var(--wu-line, #333b47);
+  padding: 4px 6px calc(4px + var(--safe-bottom, 0px));
+}
+.wu-bottomnav > * {
+  flex: 1;
+  min-height: var(--touch-target, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--wu-dim, #8b95a3);
+  cursor: pointer;
+}
+.wu-bottomnav > .active {
+  background: #2f4a3a;
+  color: #d2ffe4;
+}
+
+.wu-status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.wu-status-dot.up    { background: var(--wu-ok, #3de88a); box-shadow: 0 0 6px var(--wu-ok, #3de88a); }
+.wu-status-dot.down  { background: var(--wu-err, #ff5b5b); box-shadow: 0 0 6px var(--wu-err, #ff5b5b); }
+.wu-status-dot.checking { background: var(--wu-warn, #ffcf70); }
+
+.wu-badge {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--wu-line, #333b47);
+  color: var(--wu-dim, #8b95a3);
+  white-space: nowrap;
+}
+.wu-badge.ro     { color: #8cf; border-color: #3a5a7a; }
+.wu-badge.rw     { color: #ffb36b; border-color: #7a5a3a; }
+.wu-badge.mobile-ok   { color: #9fe8b5; border-color: #3a7a52; }
+.wu-badge.mobile-part { color: #ffcf70; border-color: #7a6a3a; }
+.wu-badge.mobile-no   { color: #ff9b8a; border-color: #7a3a2e; }
+
+.wu-card {
+  background: var(--wu-panel, #1e232b);
+  border: 1px solid var(--wu-line, #333b47);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+/* ---------- 触控目标（仅粗指针设备；Goal §3.2 规则 3） ---------- */
+@media (pointer: coarse) {
+  .wu-shell button,
+  .wu-shell select,
+  .wu-shell input[type="checkbox"],
+  .wu-shell input[type="radio"] {
+    min-height: var(--touch-target, 44px);
+    min-width: var(--touch-target, 44px);
+  }
+  .wu-shell label {
+    min-height: var(--touch-target, 44px);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+  }
+  /* 消除移动端 300ms 点击延迟与双击缩放 */
+  .wu-shell button, .wu-shell label, .wu-shell .cell, .wu-shell [role="button"] {
+    touch-action: manipulation;
+  }
+}
+
+/* ---------- 页面级溢出防线（Goal §3.2 规则 2） ---------- */
+/* 工具声明 .wu-noflow 后，页面自身不允许横向滚动；内部工作区自己滚动。 */
+.wu-noflow, .wu-noflow body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+/* ---------- 动效与可达性（Goal §3.2 规则 6/7） ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .wu-backdrop, .wu-sheet, .wu-drawer { transition: none; }
+  .wu-shell * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* 聚焦可见性兜底 */
+.wu-shell :focus-visible {
+  outline: 2px solid var(--wu-acc, #e8a33d);
+  outline-offset: 1px;
+}

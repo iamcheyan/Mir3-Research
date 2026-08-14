@@ -94,6 +94,7 @@ INDEX_LOCK = threading.Lock()
 ROOTS: dict[str, "AssetIndex"] = {}
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SIM_DIR = PROJECT_ROOT / "Tools/mir3_client_simulator"
+WEBUI_DIR = (PROJECT_ROOT / "Tools/common/webui").resolve()
 UI_LAYOUT_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/layout.json"
 UI_RESOURCE_ANALYSIS_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/window-resource-analysis.json"
 UI_CONTROL_RESOURCE_ANALYSIS_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/window-control-resource-analysis.json"
@@ -450,6 +451,20 @@ class Handler(BaseHTTPRequestHandler):
 
         if path == "/":
             self._send(PAGE_HTML, "text/html; charset=utf-8")
+            return
+        if path.startswith("/_webui/"):
+            # 共享移动端壳（Tools/common/webui/），见 TOOLS_MOBILE_ENHANCE_GOAL §3.1
+            name = path[len("/_webui/"):]
+            if not name or "/" in name or ".." in name:
+                self._err(403, "forbidden")
+                return
+            f = (WEBUI_DIR / name).resolve()
+            if not str(f).startswith(str(WEBUI_DIR)) or not f.is_file():
+                self._err(404, "not found")
+                return
+            ctype = {".css": "text/css; charset=utf-8",
+                     ".js": "application/javascript; charset=utf-8"}.get(f.suffix, "application/octet-stream")
+            self._send(f.read_bytes(), ctype)
             return
         if path == "/ui":
             self._send(UI_LAYOUT_HTML, "text/html; charset=utf-8")
@@ -908,7 +923,10 @@ PAGE_HTML = r"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mir3 EI Asset Viewer</title>
+<link rel="stylesheet" href="/_webui/tokens.css">
+<link rel="stylesheet" href="/_webui/mobile-shell.css">
 <style>
   :root { --bg:#15181d; --panel:#1e232b; --panel2:#262c36; --line:#333b47;
           --fg:#d7dde6; --dim:#8b95a3; --acc:#e8a33d; }
@@ -1025,12 +1043,48 @@ PAGE_HTML = r"""<!DOCTYPE html>
   .bk-row .bk-note { color:var(--dim); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #bkmodal .btn { display:inline-block; margin-top:10px; padding:6px 14px; background:var(--panel2);
       border:1px solid var(--acc); color:var(--acc); border-radius:6px; text-decoration:none; cursor:pointer; }
-  #hint { position:fixed; right:14px; bottom:10px; color:var(--dim); font-size:11px; z-index:5; pointer-events:none; }
+  /* ---- 移动端共享壳接入（桌面 ≥781px 完全不变，Goal WIL-P0-01） ---- */
+  #side-backdrop { display:none; }
+  #side-toggle { display:none; }
+  @media (max-width:780px) {
+    body { flex-direction:column; height:100dvh; }
+    #sidebar { position:fixed; top:0; bottom:0; left:0; width:min(84vw,320px); min-width:0;
+               z-index:960; transform:translateX(-102%); transition:transform .25s ease;
+               border-right:1px solid var(--line); box-shadow:8px 0 24px rgba(0,0,0,.5); }
+    #sidebar.open { transform:translateX(0); }
+    #side-backdrop { display:block; }
+    #side-toggle { display:flex; align-items:center; justify-content:center;
+                   min-width:44px; min-height:44px; padding:0 10px; }
+    #sidehead a { display:none; }                    /* compare 入口收进抽屉头部空间 */
+    #main { min-height:0; }
+    #toolbar { flex-wrap:wrap; gap:6px; padding:6px 10px; }
+    #toolbar .lbl { display:none; }                  /* 文字标签让位给控件 */
+    #toolbar input[type=range] { width:90px; }
+    #cur { flex-basis:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    #anim { padding:6px 10px; }
+    #anim img { max-height:140px; max-width:60vw; }
+    #hint { display:none; }                          /* 键盘提示在触屏无意义 */
+    /* 帧详情 modal：390px 视口内自适应（WIL-P0-01 预览适配宽度） */
+    #modal { max-width:94vw; max-height:88dvh; }
+    #modal img { max-width:86vw; max-height:46dvh; }
+    #modal .row { flex-direction:column; }
+    #meta { white-space:pre-wrap; word-break:break-all; }
+    #dbar { gap:6px; }
+    #dbar .btn, #modal .btn { min-height:44px; }
+    #hud-modal { max-width:98vw; max-height:96dvh; overflow:auto; }
+    #monitor-frame { width:100%; aspect-ratio:4/3; height:auto; }
+  }
+  @media (pointer:coarse) {
+    #toolbar button, #tabs button, #rootgo, #sndbar button { min-height:44px; }
+    #sidebar .file { min-height:44px; align-items:center; }
+    .cell { touch-action:manipulation; }
+  }
 </style>
 </head>
-<body>
+<body class="wu-shell">
+<div id="side-backdrop" class="wu-backdrop"></div>
 <aside id="sidebar">
-  <div id="sidehead">
+    <button id="side-toggle" type="button" title="打开图库目录">☰</button>
     <h1>Mir3 EI Asset Viewer</h1>
     <a href="/compare" title="跨版本资源对比">⇄ Compare</a>
   </div>
@@ -1085,7 +1139,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
     <div id="sndlist"></div>
   </div>
   <div id="loadbar">Loading…</div>
-</main>
+<script src="/_webui/gesture.js"></script>
 <div id="overlay"></div>
 <div id="modal">
   <span id="close">✕</span>
@@ -1577,7 +1631,9 @@ function renderSelUI(){
     `<button id="sel-anim" title="用选中帧定义动画">▶ 动画</button>` +
     `<button id="sel-zip" title="导出选中帧为 PNG ZIP">⤓ ZIP</button>` +
     `<button id="sel-sheet" title="导出选中帧雪碧图">▦ 雪碧图</button>` +
-    `<button id="sel-clear" title="清空选中">✕</button>`;
+    `<button id="sel-clear" title="清空选中">✕</button>` +
+    (matchMedia('(pointer:coarse)').matches ? '<button id="sel-view" title="查看选中帧详情">🔍 详情</button>' : '');
+  const sv = $('#sel-view'); if (sv) sv.onclick = () => { const f = [...STATE.sel].sort((a,b)=>a-b)[0]; if (f != null) openDetail(f); };
   $('#sel-anim').onclick = () => { selToAnim(); };
   $('#sel-zip').onclick = () => { selExport('png'); };
   $('#sel-sheet').onclick = () => { selExport('sheet'); };
@@ -1602,6 +1658,20 @@ function selExport(kind){
   a.download = kind === 'sheet' ? `${libBase()}_sheet.png` : `${libBase()}_sel_${STATE.sel.size}f.zip`;
   document.body.appendChild(a); a.click(); a.remove();
 }
+
+// ---------------------------------------------------------------- mobile shell
+// 侧栏抽屉 + 选库自动收起（桌面 ≥781px 零影响；WIL-P0-01 手机工作流）
+(function(){
+  const side = document.getElementById('sidebar');
+  const bd = document.getElementById('side-backdrop');
+  const tg = document.getElementById('side-toggle');
+  const sheet = (open) => { side.classList.toggle('open', open); bd.classList.toggle('open', open); };
+  tg.addEventListener('click', e => { e.stopPropagation(); sheet(!side.classList.contains('open')); });
+  bd.addEventListener('click', () => sheet(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') sheet(false); });
+  const _sel = selectLib;
+  selectLib = function(n, u){ _sel(n, u); sheet(false); };
+})();
 // ---------------------------------------------------------------- keyboard
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, select, textarea')) {

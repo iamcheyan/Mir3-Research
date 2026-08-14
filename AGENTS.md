@@ -27,6 +27,7 @@
 | `Tools/webclient` | 8822 | `cd Tools/webclient && mir3-venv/bin/python serve.py` | **静态世界测试台**：纯前端漫游 627 张地图+GM 满配玩家（详见其 README） | `zircon/Debug/Client/WebData/`（webres 产物，可重建） |
 | `Tools/webres` | 8821 | `serve.py`（原型服务）；`webres.py` 是构建器 | `.Zl/.map → WebP` 资源瘦身管线（WebData 的生产者） | `zircon/Debug/Client/{Data,Map}` |
 | `Tools/wsgateway` | 7001 | `mir3-venv/bin/python wsgateway.py` | WebSocket→TCP 透传网关（浏览器连 ServerCore :7000），登录包已验证 | ServerCore :7000 |
+|`Tools/portal`|8840|`python3 Tools/portal/portal.py`（纯标准库）|工具门户：五工具健康检查/数据源概要/只读标识/移动端等级；未启动服务显示启动命令（`Tools/common/webui` 共享移动壳的宿主之一）|各工具端口 TCP 探测 + `/api/files`·`/api/maps`·`/api/stats` 探针|
 
 无端口的常用工具：
 
@@ -44,7 +45,7 @@
 
 端口全景（改绑定先 `ss -tlnp` 查占用）：80 svc-dashboard / 7000 游戏服 / 7001 wsgateway /
 8765 wilviewer / 8800 dbviewer / 8810 dbeditor / 8820 uieditor / 8821 webres / 8822 webclient /
-8830 yomu / 8831 fudoki / 8899 mapviewer。
+8830 yomu / 8831 fudoki / 8840 portal / 8899 mapviewer。
 
 ## 三、数据流约定（必须先懂这个再动手）
 
