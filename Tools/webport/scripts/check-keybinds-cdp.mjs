@@ -66,15 +66,14 @@ for (let i = 0; i < 60; i++) { await sleep(1000); if ((await ev('window.__WEBPOR
 if (!ok) die('login timeout');
 console.log('S3 logged in → SelectScene');
 
-// --- stage 4: 建角 (smoke4 配方: btnCreate 兜底) ---
+// --- stage 4: 建角 (btnCreate 先开面板, 等 createPanel.visible 再确认) ---
 await sleep(800);
-await ev(`(function(){ const c = window.__WEBPORT.current; c.nameInput.text = 'PK${Date.now() % 1000}'; c.btnConfirm.onClick(); return 'sent'; })()`);
 ok = false;
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 12; i++) {
+  await ev(`(function(){ const c = window.__WEBPORT.current; if (c.createPanel && c.createPanel.visible === false && c.btnCreate) c.btnCreate.onClick(); if (c.createPanel && c.createPanel.visible === true) { c.nameInput.text = 'PK${Date.now() % 1000}'; c.btnConfirm.onClick(); return 'sent'; } return 'wait'; })()`);
   const r = await ev('window.__WEBPORT.current.characters.length');
   if (typeof r === 'number' && r > 0) { ok = true; break; }
-  if (i === 2) await ev(`(function(){ const c = window.__WEBPORT.current; if (c.createPanel && c.createPanel.visible === false && c.btnCreate) c.btnCreate.onClick(); c.nameInput.text = 'PK${Date.now() % 1000}'; c.btnConfirm.onClick(); return 'sent2'; })()`);
-  await sleep(800);
+  await sleep(1000);
 }
 if (!ok) die('create char timeout');
 console.log('S4 character created');
@@ -92,21 +91,28 @@ for (let i = 0; i < 120; i++) {
 }
 if (!ok) die('startgame timeout');
 console.log('S5 IN-GAME');
-// --- 窗口快照助手 ---
+// --- 窗口快照助手 (DXControl.visible = style.visibility, 非 display; HUD 常驻控件
+//     (buffdialog/questtracker/minimap) 在 Godot 是 _uiLayer 普通子节点, 不入册
+//     WindowManager, 排除之; Escape/CloseTop 语义只覆盖注册窗口) ---
 const SNAP = `(() => { const s = window.__WEBPORT.current;
   const wins = [...s.hudLayer.el.querySelectorAll(':scope > .dxwindow')]
-    .filter(w => w.style.display !== 'none')
+    .filter(w => w.style.visibility !== 'hidden' && w.style.display !== 'none')
+    .filter(w => !/(buffdialog|questtracker|minimap)/.test(w.className))
     .map(w => (w.dataset.type || w.className || '').toString().slice(0, 30));
   return JSON.stringify(wins); })()`;
 const snap = async () => JSON.parse(await ev(SNAP) || '[]');
 
-// 关全部窗口 (Esc 连按), 保证逐键起始态干净
+// 关全部注册窗口: Escape→CloseTop 直到窗口集合不再变化 (避免 fall-through 开 ExitDialog)
 const closeAll = async () => {
+  let prev = null;
   for (let i = 0; i < 8; i++) {
+    const cur = await snap();
+    if (cur.length === 0) break;
+    if (JSON.stringify(cur) === prev) break;
+    prev = JSON.stringify(cur);
     await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
-    await sleep(120);
-    if ((await snap()).length === 0) break;
+    await sleep(150);
   }
 };
 
@@ -161,11 +167,24 @@ await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Esca
 await sleep(500);
 const escNoWin = await snap();
 
+// --- HUD 常驻控件开关 (GameScene.cs:1891-1900): V=小地图可见性取反,
+//     L=QuestTracker 可见性取反 (均非 WindowManager 窗口) ---
+const hudProbe = {};
+for (const [key, prop] of [['KeyV', 'miniMap'], ['KeyL', 'questTracker']]) {
+  const a = await ev(`window.__WEBPORT.current.${prop}.visible`);
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: key === 'KeyV' ? 'v' : 'l', code: key, windowsVirtualKeyCode: key === 'KeyV' ? 86 : 76 });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: key === 'KeyV' ? 'v' : 'l', code: key, windowsVirtualKeyCode: key === 'KeyV' ? 86 : 76 });
+  await sleep(300);
+  const b = await ev(`window.__WEBPORT.current.${prop}.visible`);
+  hudProbe[prop] = { before: a, after: b, toggled: a !== b };
+}
+
 const summary = {
   account: EMAIL, total: results.length,
   openedWindows: results.filter(r => r.opened).length,
   toggleVerified: results.filter(r => r.opened && r.toggleOk).length,
-  pageExceptions: exc.length - excBefore,
+  pageExceptions: exc.length,
+  hudToggles: hudProbe,
   escNoWindowOpens: escNoWin,
   exceptions: exc.slice(0, 5),
 };

@@ -276,3 +276,36 @@
   输入后 ↑↓↓ 精确恢复草稿 — CDP 全 PASS。
 - `回归` check-keybinds.mjs 557 断言全过 (WIN 表改动后); pmv-buff-qt 全链路
   (9键+11窗+KeyL+聊天) 单脚本全绿。
+
+## 2026-08-15 01:1x — R5 合并轮 (par-keys)
+
+### 新增 commit (3, 全部 par-move)
+
+- `8553410` R5: 聊天双渲染修复 + BuffDialog + QuestTracker
+- `bc14aab` R6: P1 剩余 11 窗真实现 + QuestTrackerWindow 键语义
+  (GameScene.cs:1898 可见性取反, 非开窗 — 与本日志 R0 备忘#5 同源)
+- `c663e83` R7: P0 残留三项 CDP 清零 (小地图3钮/频道循环/历史草稿)
+
+### E路 dispatch 级逐键回归 v2 — **全绿** (快照口径修正后重跑)
+
+修正了 R3 版测量口径的两处缺陷 (自误非客户端误): DXControl.visible 用
+`style.visibility` 而非 display; BuffDialog/QuestTracker/MiniMap 在 Godot 是
+_uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 不关它们。
+修正后 (账号 pkmst5f4mg, 真服):
+
+- **70/70 按键, 28 窗口类绑定全部 toggle✓** (27 窗口键 + Escape→ExitDialog),
+  42 非窗口键 (belt/spell/spellset/pickup/modes/itemlock) 无异常静默 (空槽位语义)
+- **Escape 无窗时恰好开 1 个窗 (ExitDialog)** — R0 仲裁#1 终确认
+- **HUD 开关探针**: V→miniMap.visible 取反 ✓, L→questTracker.visible 取反 ✓
+  (初始 true, 对照 ClientSettings.QuestTrackerVisible 默认)
+- 证据: `keys/cdp-dispatch-r5.txt` + `keys/cdp-matrix-r5.json`
+
+### 交叉发现 (转 A 路/shared)
+
+- 启动竞态 1 例: `TypeError: null.tables @ data.js:92 pickLibs ←
+  PlayerObject.refreshLibs (world.js)` — 建号进图瞬间 data.js 表未就绪即被
+  PlayerObject 消费。不影响按键链路 (70 键照常), 但建议 data.js 加就绪门闩。
+
+### 未提交在制品 (持续跟踪, R3 起归 par-win 仲裁)
+
+- uitree.js 未提交 diff (+136); dialogs.js(34KB)/gamedata.js 未跟踪。
