@@ -544,3 +544,13 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - 至此 NPCPage DB 21 DialogType 中 14 个真实使用类型全部真实现 (DB 审计: 剩余
   WeaponReset/AccessoryRefine/RollDie/RollYut/Socketing/SocketCombine 在本服
   NPCPage 0 行引用, 无可达入口)。
+
+## 2026-08-15 03:5x — R11 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `fd6c94a` par-move R18: NPC 高级面板终批 (精炼石/大师精炼/饰品升级/武器打造/
+  伙伴寄存) — **NPC 面板全类型闭环**
+
+### E路回归: 557 ✓; 无冲突; 已 push。A 路在制品: net.js/win-npc.js/ws.js
+(NPC 终批后续), 不代提交。NPC 面板全类型闭环 = P2 收尾信号。
