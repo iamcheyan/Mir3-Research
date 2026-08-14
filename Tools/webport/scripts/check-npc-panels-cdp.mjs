@@ -318,6 +318,30 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('FRAGMENT', d.tookWeapon && d.rejectedGold && d.rejectedBook && /费用/.test(d.label ?? ''), r);
 }
 
+// ============ 12. 强化属性 19 选 (BuildAccessoryUpgrade :639-672): 选择器+门闩+包值 ============
+{
+  // 197=AccessoryRefineUpgrade 页; 160=Plain Ring
+  const r = await npcRun(197, ['强化饰品', '从背包导入', '提交'], [[0, 160, 1]], `
+    btns.find(b => b.el.textContent.includes('从背包导入'))?.onClick?.();
+    await new Promise(r => setTimeout(r, 300));
+    const sub = btns.find(b => b.el.textContent.trim() === '提交');
+    const gateBefore = !sub?.enabled;   // 未选属性 → disabled (:672)
+    const optCount = [...pc.el.querySelectorAll('div')].filter(d => /攻击 DC 1%|幻影 \+1|准确 \+1/.test(d.textContent)).length;
+    // 拦截 (id+尾字节: cellLink(target).byte(refineType) — 末字节=RefineType, Accuracy=16)
+    let lastByte = -1; const sentIds = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength > 6) { const id = new DataView(b.buffer, b.byteOffset).getInt16(4, true); sentIds.push(id); if (id === 246) lastByte = b[b.byteLength - 1]; } return b; };
+    [...pc.el.querySelectorAll('div')].find(d => d.children.length === 0 && d.textContent.trim() === '准确 +1')?.click();   // 叶子节点 (选项 div)
+    await new Promise(r => setTimeout(r, 200));
+    const optNow = [...pc.el.querySelectorAll('div')].some(d => d.children.length === 0 && d.textContent.trim() === '✓ 准确 +1');   // 重渲染后 ✓ 标记
+    const gateAfter = !!sub?.enabled;   // 选中 → enabled (:660-661)
+    sub?.onClick?.();
+    await new Promise(r => setTimeout(r, 300));
+    conn.send = orig;
+    return { gateBefore, optCount: optCount >= 3, gateAfter, optNow, sentIds, lastByte };`);
+  const d = typeof r === 'object' ? r : {};
+  report('UPGRADE', d.gateBefore && d.optCount && d.gateAfter && d.optNow && d.sentIds?.includes(246) && d.lastByte === 16, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

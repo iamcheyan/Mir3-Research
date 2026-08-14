@@ -333,8 +333,16 @@ export async function winNpc(scene, store, reg) {
     ItemFragment: ['分解物品 (可多件)', 20, (links) => conn.sendNPCFragment(links)],
     AccessoryReset: ['重置饰品 (放入 1 件)', 1, (links) => conn.sendNPCAccessoryReset(links[0])],
     WeddingRing: ['制作结婚戒指 (放入 1 枚戒指)', 1, (links) => conn.sendMarriageMakeRing(links[0].slot)],
-    AccessoryRefineUpgrade: ['强化饰品 (放入 1 件)', 1, (links) => conn.sendNPCAccessoryUpgrade(links[0], 0)],   // RefineType.None=0, 页面选单 P3
+    AccessoryRefineUpgrade: ['强化饰品 (放入 1 件, 选强化属性)', 1, (links) => conn.sendNPCAccessoryUpgrade(links[0], upgradeType)],
   };
+  // ---- 强化属性 19 选 (BuildAccessoryUpgrade :639-661; RefineType enum Enum.cs:1692) ----
+  let upgradeType = 0;   // RefineType.None
+  const UPGRADE_TYPES = [
+    [18, '攻击 DC 1%'], [19, '法术 1%'], [20, '生命 1%'], [21, '魔法 1%'],
+    [2, '攻击 DC 0-1'], [3, '法术 0-1'], [12, '生命 +10'], [13, '魔法 +10'],
+    [14, '防御 AC 1-1'], [15, '魔御 MR 1-1'], [16, '准确 +1'], [17, '敏捷 +1'],
+    [4, '火 +1'], [5, '冰 +1'], [6, '雷 +1'], [7, '风 +1'], [8, '神圣 +1'], [9, '暗 +1'], [10, '幻影 +1'],
+  ];
   // ---- 分解规则 (Globals.cs:622 CanFragment / :653 FragmentCost) ----
   let fragInfoCache = null;   // Index → {rarity, requiredAmount} (ItemInfo.db 快照)
   async function fragInfo(infoIndex) {
@@ -395,7 +403,7 @@ export async function winNpc(scene, store, reg) {
       d.onclick = () => { singleLinks = singleLinks.filter(x => x !== l); if (!pendingNpcLinks.some(p => p.gridType === l.gridType && p.slot === l.slot)) store.unlockPublic(l.gridType, l.slot); renderSingle(); };   // CancelLinks 解锁 (提交锁除外)
       singleBox.appendChild(d);
     }
-    if (!singleLinks.length) singleBox.textContent = '（点"从背包导入"或稍后拖入）';
+    if (!singleLinks.length && singleMode !== 'AccessoryRefineUpgrade') singleBox.textContent = '（点"从背包导入"或稍后拖入）';
     if (singleMode === 'ItemFragment') {   // RefreshFragment :371-381: 费用合计 + 余额门闩
       let total = 0;
       for (const l of singleLinks) {
@@ -406,6 +414,22 @@ export async function winNpc(scene, store, reg) {
       singleLabel.text = `分解物品 (可多件) — 费用: ${total.toLocaleString()} 金币${total > balance ? ' (金币不足)' : ''}`;
       singleLabel.textColour = total > balance ? [255, 80, 80, 255] : [255, 216, 77, 255];
       singleSubmit.enabled = singleLinks.length > 0 && total > 0 && total <= balance;
+    } else if (singleMode === 'AccessoryRefineUpgrade') {   // BuildAccessoryUpgrade :639-661: 19 选项互斥单选
+      const hint = document.createElement('div');
+      hint.textContent = singleLinks.length ? '选择强化属性:' : '（放入 1 件饰品并选择强化属性）';
+      hint.style.cssText = 'padding:2px 6px;color:#bbb;font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;';
+      singleBox.appendChild(hint);
+      const grid = document.createElement('div');
+      grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:2px 6px;padding:2px 4px;';
+      for (const [val, label] of UPGRADE_TYPES) {
+        const o = document.createElement('div');
+        o.textContent = (upgradeType === val ? '✓ ' : '') + label;
+        o.style.cssText = `flex:0 0 auto;min-width:82px;padding:2px 6px;font:12px/1.6 'Noto Sans CJK SC',sans-serif;color:${upgradeType === val ? '#8cf' : '#eee'};background:${upgradeType === val ? 'rgba(120,180,255,.25)' : 'rgba(0,0,0,.35)'};text-shadow:1px 1px 0 #000;cursor:pointer;`;
+        o.onclick = () => { upgradeType = val; renderSingle(); };   // Changed 互斥清它选 (:655-659)
+        grid.appendChild(o);
+      }
+      singleBox.appendChild(grid);
+      singleSubmit.enabled = singleLinks.length > 0 && upgradeType !== 0;   // :672 门闩 (type != None && item != null)
     } else {
       singleSubmit.enabled = singleLinks.length > 0;
     }
@@ -1000,6 +1024,7 @@ export async function winNpc(scene, store, reg) {
       singleLinks = [];
       singlePanel.location = [0, w.size[1]];
       singlePanel.visible = true;
+      upgradeType = 0;   // CancelLinks: 面板重配清强化属性选择 (_refineType → None)
       if (singleModeName === 'ItemFragment' && fragInfoCache == null) void fragInfo(0).then(renderSingle);   // 预热规则表后重渲染 (费用条)
       renderSingle();
     }

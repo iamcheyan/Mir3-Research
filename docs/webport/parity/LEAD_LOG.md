@@ -674,3 +674,17 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `回归捕获` SUBMIT253 原用物品 id=1 (Gold) 被新过滤正确拒绝 → rows:0 — 测试数据
   改 549 (裁决之锤 Superior Weapon, 190,000 = 38*10000/2 逐字节对表) + 探针抬余额。
 - `CDP 验收` 套件 +FRAGMENT 组 → 11/11: 武器入列 + Gold/书拒 + 费用条精确金额。
+
+## R25 — par-move (A路): 强化饰品 19 属性选择器 (BuildAccessoryUpgrade 补齐)
+
+- `缺口` R16 的 AccessoryRefineUpgrade 面板提交固定 RefineType=0 (代码标注"页面选单 P3") —
+  冲刺禁止"暂未实现", 本轮清账。Godot :635-672 有 19 选项 DXCheckButton 互斥单选。
+- `实现` win-npc.js: UPGRADE_TYPES 19 项 (值按 Enum.cs:1692: DCPercent=18..ManaPercent=21,
+  DC=2..Phantom=10, Health=12/Mana=13/AC=14/MR=15/Accuracy=16/Agility=17); renderSingle
+  upgrade 分支渲染 flex 选项格 (✓ 标记互斥, 点击 set upgradeType+重渲染); submit 门闩
+  links>0 && upgradeType!==0 (:672); SINGLE_DEFS 动作发 upgradeType; showPage 重配清零
+  (CancelLinks → _refineType=None)。
+- `CDP 验收` 套件 +UPGRADE 组 → 12/12: 未选禁用→选"准确 +1"→✓+enabled→提交 C 246
+  尾字节=16 逐字节 (cellLink(target).byte(refineType))。
+- 教训: DOM 探针按 textContent.includes 匹配会点到祖先容器 — 选项类断言必须
+  children.length===0 && 精确文本。
