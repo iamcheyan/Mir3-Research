@@ -513,3 +513,11 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   infoIndex=541 → 导入分桶 "黑铁矿 (1)· 黑铁矿石 x5" (类型+中文名双验); 选 DC → ●;
   提交 sentIds=[257] (C_NPCREFINE 逐字节验证: len40=1 item+2 空 list); 提交后清单清空;
   0 异常。全套回归: SUBMIT sentIds=[253] + pmv-buff-qt ALL-9/REFINE/CONSIGN/MAIL 全绿。
+
+## 2026-08-15 03:3x — R10 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `50aa7f5` par-move R17: NPC 精炼面板 (RefineType 单选/品质循环/三桶导入/提交 257)
+
+### E路回归: 557 ✓; 无冲突; 已 push。A 路 P2 持续 (精炼体系)。
