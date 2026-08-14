@@ -482,6 +482,45 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('LAZYIDX', d.loading === 2 && d.sellerShown && d.reqOnce && d.selBefore && d.filled && d.selReset && d.trimmed, r);
 }
 
+// ============ 16. 寄售 S 应用器 (AddConsignments :368 / Changed :385 / Buy :396) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current;
+    const { winConsign } = await import('/static/js/win-consign.js');
+    const sh = await winConsign(s);
+    const win = sh.win; const conn = s.conn;
+    const ctl = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === t)?.__ctl;
+    ctl('我的寄售')?.onClick();
+    await new Promise(r => setTimeout(r, 150));
+    // 全量 2 条 (Index 10/11) → 增量 1 条 (Index 11 更新) + 新增 (Index 12) — 合并不清空
+    conn.dispatchEvent(new CustomEvent('marketPlaceConsign', { detail: { consignments: [
+      { index: 10, item: { infoIndex: 160, count: 1 }, price: 100 },
+      { index: 11, item: { infoIndex: 165, count: 5 }, price: 200 }] } }));
+    await new Promise(r => setTimeout(r, 500));
+    const afterFull = win.el.textContent.includes('100') && win.el.textContent.includes('200');
+    conn.dispatchEvent(new CustomEvent('marketPlaceConsign', { detail: { consignments: [
+      { index: 11, item: { infoIndex: 165, count: 2 }, price: 250 }] } }));   // 单条增量 (寄售成功)
+    await new Promise(r => setTimeout(r, 500));
+    const merged = win.el.textContent.includes('250') && win.el.textContent.includes('100 金币');   // 11 更新 250, 10 保留
+    const noDup = (win.el.textContent.match(/250 金币/g) ?? []).length === 1;
+    // Changed: count<=0 → 移除 (:389)
+    conn.dispatchEvent(new CustomEvent('marketPlaceConsignChanged', { detail: { index: 10, count: 0 } }));
+    await new Promise(r => setTimeout(r, 400));
+    const removed = !win.el.textContent.includes('100 金币');
+    // Buy: search 页售罄 → 空槽不移位 (:405-407)
+    ctl('搜索购买')?.onClick();
+    await new Promise(r => setTimeout(r, 150));
+    conn.dispatchEvent(new CustomEvent('marketPlaceSearch', { detail: { count: 1, results: [{ index: 55, item: { infoIndex: 160, count: 3 }, price: 900 }] } }));
+    await new Promise(r => setTimeout(r, 500));
+    conn.dispatchEvent(new CustomEvent('marketPlaceBuy', { detail: { index: 55, count: 0, success: true } }));
+    await new Promise(r => setTimeout(r, 400));
+    const soldOut = !win.el.textContent.includes('900 金币') && win.el.textContent.includes('加载中…');   // 售罄 → item=null → 加载中标签 (:407→:445), 空槽不移位
+    return { afterFull, merged, noDup, removed, soldOut };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('APPLYERS', d.afterFull && d.merged && d.noDup && d.removed && d.soldOut, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

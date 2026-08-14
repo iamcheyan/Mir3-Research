@@ -356,9 +356,9 @@ export async function winConsign(scene) {
       searchCount.text = results.length ? `${results.length} 件在售` : '输入名字搜索';
       for (let i = 0; i < results.length; i++) {
         const r0 = results[i];
-        if (!r0) {   // null 槽: 加载中 + 惰性请求 (RefreshList :451-452)
+        if (!r0 || !r0.item) {   // null 槽或售罄 item=null (:445 加载中标签); 仅纯 null 槽请求 (:451 条件 info==null)
           const d = rowEl('加载中…');
-          if (!requestedSearchIndexes.has(i)) {
+          if (!r0 && !requestedSearchIndexes.has(i)) {
             requestedSearchIndexes.add(i);
             conn.sendMarketPlaceSearchIndex(i);
           }
@@ -412,13 +412,37 @@ export async function winConsign(scene) {
     selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false;
     render();
   });
-  conn.addEventListener('marketPlaceConsign', (e) => {
-    mine = e.detail?.consignments ?? [];
+  conn.addEventListener('marketPlaceConsign', (e) => {   // AddConsignments :368-382: 按 Index 合并 (登录全量/寄售单条增量共用)
+    const items = (e.detail?.consignments ?? []).filter(Boolean);
+    for (const info of items) {
+      const i = mine.findIndex(x => x?.index === info.index);
+      if (i >= 0) mine[i] = info; else mine.push(info);
+    }
     selectedConsign = -1; btnRemove.enabled = false;
     if (pendingConsignLink) {   // 库存回包 → 解锁来源格 (寄售确认锁的解除)
       store.unlockPublic(pendingConsignLink.gridType, pendingConsignLink.slot);
       pendingConsignLink = null;
     }
+    render();
+  });
+  conn.addEventListener('marketPlaceConsignChanged', (e) => {   // ApplyConsignChanged :385-394
+    const { index, count } = e.detail ?? {};
+    const item = mine.find(x => x?.index === index);
+    if (!item) return;
+    if (!(count > 0)) mine = mine.filter(x => x !== item); else item.item.count = Number(count);
+    selectedConsign = -1; btnRemove.enabled = false;
+    render();
+  });
+  conn.addEventListener('marketPlaceBuy', (e) => {   // ApplyBuy :396-411
+    const { index, count, success } = e.detail ?? {};
+    if (!success) {
+      btnBuy.enabled = selectedSearch >= 0 && selectedSearch < results.length && !!results[selectedSearch]?.item;
+      return;
+    }
+    const item = results.find(x => x?.index === index);
+    if (!item) return;
+    if (!(count > 0)) item.item = null; else item.item.count = Number(count);   // 售罄保留空槽不移位 (:405-407)
+    selectedSearch = -1; btnBuy.enabled = false;
     render();
   });
 

@@ -746,3 +746,16 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `CDP 验收` 套件 +LAZYIDX 组 → 15/15: count=3 实 1 条 → 2 加载中 + C 222 恰 2 次
   (去重); seller/message 显示; 选中行后回填 index=1 → 行填充+购买复位;
   searchCount trim → 占位清空。
+
+## R29 — par-move (A路): 寄售 S 应用器三件 (AddConsignments/ConsignChanged/ApplyBuy)
+
+- `缺口` webport marketPlaceConsign 监听整表替换 — Godot AddConsignments (:368-382)
+  按 Index 合并 (登录全量与寄售成功单条增量共用同一包, 替换会清空其它寄售);
+  marketPlaceConsignChanged/marketPlaceBuy 两 S 无应用器。
+- `实现` win-consign.js: consign 监听改 merge (findIndex by index, 命中替换/未命中
+  push); +ApplyConsignChanged (:385-394, count<=0 移除否则改 count, 选中复位);
+  +ApplyBuy (:396-411, 失败恢复 buy 启用按选中态, 成功 count<=0 → item=null
+  空槽不移位); render 修正 — item=null 槽显示 加载中 但不重发请求 (:445 vs :451
+  两个不同 null 语义: 占位 null 请求, 售罄 item-null 不请求)。
+- `CDP 验收` 套件 +APPLYERS 组 → 16/16: 全量 2 条 → 单条增量 (Index 11 价变 250,
+  Index 10 保留, 无重复行) → Changed count=0 移除 → Buy 售罄 (价格消失+加载中+不移位)。
