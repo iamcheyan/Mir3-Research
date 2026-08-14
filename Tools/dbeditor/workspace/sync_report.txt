@@ -1,11 +1,11 @@
-==================== 同步 2026-08-14 12:33:15 ====================
+==================== 同步 2026-08-14 12:51:05 ====================
 [1/7] 端口检测通过（服务端已停止）
 
 已成功生成。
     0 个警告
     0 个错误
 
-已用时间 00:00:38.78
+已用时间 00:00:14.37
 [*] 变更 29 处：QuestRequirement×12, QuestTask×4, QuestReward×8, QuestTaskMonsterDetails×1, QuestInfo×4
 [*] 引用完整性校验通过。
 [+] QuestInfo#63（Index 自洽）
@@ -40,9 +40,9 @@
 REMAP=QuestRequirement:138=148,139=149,140=150,141=151,142=152,143=153,144=154,145=155,146=156,147=157,148=158,149=159
 REMAP=QuestReward:141=142,142=143,143=144,144=145,145=146,146=147,147=148,148=149
 [*] 新版本: 2026.08.14.3
-[*] 已保存: /tmp/dbeditor_import_4e42bd505bac420e9572948e49f04a57/System.db
+[*] 已保存: /tmp/dbeditor_import_0cac3236e597410fb5bd589b99a17b2f/System.db
 [*] 应用 29/29 处变更。
-DB_OUT=/tmp/dbeditor_import_4e42bd505bac420e9572948e49f04a57/System.db
+DB_OUT=/tmp/dbeditor_import_0cac3236e597410fb5bd589b99a17b2f/System.db
 [2/7] 导入器执行完成
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/LibraryCore/obj/Debug/net10.0/ref/LibraryCore.dll” [/home/tetsuya/development/Mir3-Research/ServerLibrary/ServerLibrary.csproj]
 
@@ -52,7 +52,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:26.27
+已用时间 00:00:23.61
 [!] 构建失败（第 1 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/ServerLibrary/obj/Debug/net10.0/ref/ServerLibrary.dll” [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -62,7 +62,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     0 个警告
     1 个错误
 
-已用时间 00:00:36.90
+已用时间 00:00:40.67
 [!] 构建失败（第 2 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
 /home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(785,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -72,7 +72,7 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
     1 个警告
     0 个错误
 
-已用时间 00:00:22.75
+已用时间 00:00:15.33
 [3/7] round-trip 导出完成
 [X] QuestInfo#9.StartNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
 [X] QuestInfo#9.FinishNPC: {"Index": 13, "Name": "0 / Weapon Store / Mr. Kang"} != {"Index": 13, "Name": "0 / 0 / Weapon Store / Mr. Kang"}
@@ -142,16 +142,4 @@ CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3
 [X] QuestInfo#61.FinishNPC: {"Index": 19, "Name": "0 / Armour Store / Linda"} != {"Index": 19, "Name": "0 / 0 / Armour Store / Linda"}
 [X] QuestInfo#62.StartNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
 [X] QuestInfo#62.FinishNPC: {"Index": 36, "Name": "2 / Armour Store / Sara"} != {"Index": 36, "Name": "2 / 2 / Armour Store / Sara"}
-[X] QuestInfo#63.Requirements: 回链集合不一致 [148, 149, 150] != [144, 148, 149, 150]
-[X] QuestInfo#64.Requirements: 回链集合不一致 [151, 152, 153] != [145, 151, 152, 153]
-[X] QuestInfo#65.Requirements: 回链集合不一致 [154, 155, 156] != [146, 154, 155, 156]
-[X] QuestInfo#66.Requirements: 回链集合不一致 [157, 158, 159] != [147, 157, 158, 159]
-[X] QuestRequirement#148.QuestParameter: {"Index": 63, "Name": null} != {"Index": 63, "Name": "望海楼之约（战士）"}
-[X] QuestRequirement#151.QuestParameter: {"Index": 64, "Name": null} != {"Index": 64, "Name": "望海楼之约（法师）"}
-[X] QuestRequirement#154.QuestParameter: {"Index": 65, "Name": null} != {"Index": 65, "Name": "望海楼之约（道士）"}
-[X] QuestRequirement#157.QuestParameter: {"Index": 66, "Name": null} != {"Index": 66, "Name": "刺杀剑术觉醒"}
-[X] QuestRequirement#144: round-trip 多出旧行
-[X] QuestRequirement#145: round-trip 多出旧行
-[X] QuestRequirement#146: round-trip 多出旧行
-[X] QuestRequirement#147: round-trip 多出旧行
-[FAIL] 80 处 round-trip 差异
+[FAIL] 68 处 round-trip 差异
