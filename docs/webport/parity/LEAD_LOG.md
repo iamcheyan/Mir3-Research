@@ -624,3 +624,16 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   V·L HUD ✓ — 与 R5/R6/R7 一致, 键位域稳定收口。
 - **`docs/webport/parity/REPORT.md` 出具**: 五路终态 + E 路三层验证 + 仲裁记录 +
   合并履历 + 残留清单。E 路职责 1/2 全部交付, goal 收官。
+
+## R21 — par-move (A路): 验收资产固化 (R15-R20 → 仓库 scripts/)
+
+- 新 `Tools/webport/scripts/check-npc-panels-cdp.mjs` (取代 /tmp/pm-smoke 易失探针):
+  8 断言组 — SINGLE×4 显隐 / SUBMIT253 (含提交后清场) / REFINE257 (分桶+单选) /
+  R18×5 显隐 / PKTS (254/261/274 一次跑全) / R19 (取回删行+伙伴同步) /
+  LOCKS (锁三态: 提交锁→pending 拦截→回包解锁→重发) / E2E (真服 254→聊天)。
+- 探针架构: 页面侧 `__npcRun(pageIdx, sig, items, actionSrc)` helper — CDP 只传
+  JSON (DOM 句柄/类实例不可跨边界), actionSrc 在页面内 eval 拿 {pc,btns,inv,s,reg}
+  上下文; 拦截 `conn.send` 记录包 id (不真发=隔离时序 / 真发=e2e)。
+- 教训入档: `await ev(IIFE 内 await __npcRun(...))` 双层边界 → 返回值序列化成 {} —
+  helper 调用必须顶层直发。
+- PARITY_CHECKLIST 补记 NPC 高级面板行 + 结论区 NPC 链闭环声明 (含 6 类型不可达审计)。
