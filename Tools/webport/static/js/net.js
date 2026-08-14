@@ -594,7 +594,7 @@ function readClientNPCValues(r) {
 function readClientMarketPlaceInfo(r) {
   if (!r.bool()) return null;
   const o = { index: r.int32(), item: readClientUserItemFull(r), price: r.int32() };
-  r.int64(); // ConsignDate DateTime
+  o.consignDate = Number(r.int64()); // ConsignDate DateTime ticks
   o.seller = r.string(); o.message = r.string(); o.isOwner = r.bool();
   return o;
 }
@@ -844,6 +844,8 @@ export const C = {
   RankSearch: (name) => new Writer().string(name).build(ID.C_RANKSEARCH),
   MarketPlaceSearch: (name, itemTypeFilter = false, itemType = 0, sort = 0) =>
     new Writer().string(name).bool(itemTypeFilter).byte(itemType).int32(sort).build(ID.C_MARKETPLACESEARCH),
+  MarketPlaceSearchIndex: (index) =>   // ClientPackets.cs:456 { Index int32 }
+    new Writer().int32(index).build(ID.C_MARKETPLACESEARCHINDEX),
   MarketPlaceHistory: (index, display = 0, partIndex = 0) =>
     new Writer().int32(index).int32(display).int32(partIndex).build(ID.C_MARKETPLACEHISTORY),
   MarketPlaceConsign: (link, price, message = '', guildFunds = false) =>

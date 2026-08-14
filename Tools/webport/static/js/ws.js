@@ -433,6 +433,7 @@ export class GameConnection extends EventTarget {
   sendMarketPlaceCancelConsign(index, count) { this.send(C.MarketPlaceCancelConsign(index, count)); }
   sendMarketPlaceBuy(index, count, guildFunds = false) { this.send(C.MarketPlaceBuy(index, count, guildFunds)); }
   sendMarketPlaceHistory(index, display = 0, partIndex = 0) { this.send(C.MarketPlaceHistory(index, display, partIndex)); }
+  sendMarketPlaceSearchIndex(index) { this.send(C.MarketPlaceSearchIndex(index)); }
   sendGameStoreGift(index, count, useHuntGold, recipient) { this.send(C.GameStoreGift(index, count, useHuntGold, recipient)); }
   sendGameStoreFavouriteToggle(index) { this.send(C.GameStoreFavouriteToggle(index)); }
   sendHermit(stat) { this.send(C.Hermit(stat)); }

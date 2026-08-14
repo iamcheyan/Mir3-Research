@@ -333,8 +333,9 @@ export async function winConsign(scene) {
     return d;
   };
 
-  let results = [];      // MarketPlaceSearch.results
+  let results = [];      // ApplySearch 语义: 前段实数据 + null 占位到 count (索引即服务端 index, 不可压缩 :337-339)
   let mine = [];         // MarketPlaceConsign.consignments
+  const requestedSearchIndexes = new Set();   // _requestedSearchIndexes (:43) — 每索引只请求一次
   let selectedSearch = -1;
   let selectedConsign = -1;
   let pendingConsignLink = null;   // _pendingConsignLink (:270)
@@ -355,8 +356,19 @@ export async function winConsign(scene) {
       searchCount.text = results.length ? `${results.length} 件在售` : '输入名字搜索';
       for (let i = 0; i < results.length; i++) {
         const r0 = results[i];
+        if (!r0) {   // null 槽: 加载中 + 惰性请求 (RefreshList :451-452)
+          const d = rowEl('加载中…');
+          if (!requestedSearchIndexes.has(i)) {
+            requestedSearchIndexes.add(i);
+            conn.sendMarketPlaceSearchIndex(i);
+          }
+          searchBox.appendChild(d);
+          continue;
+        }
         const nm = r0.item ? await itemName(r0.item.infoIndex) : '?';
-        const d = rowEl(`${nm} x${r0.item?.count ?? 1}  ${r0.price.toLocaleString()} 金`);
+        // :446 name xcount price 金币 seller \n message
+        const d = rowEl(`${nm} x${r0.item?.count ?? 1}  ${r0.price.toLocaleString()} 金币  ${r0.seller ?? '未知'}${r0.message ? '\n' + r0.message : ''}`);
+        d.style.whiteSpace = 'pre-line';
         if (i === selectedSearch) d.style.cssText += SEL_CSS;
         d.onclick = () => { selectedSearch = i; btnBuy.enabled = true; btnHistory.enabled = true; render(); };   // 选中 → Buy/History 启用 (:126/:129)
         searchBox.appendChild(d);
@@ -367,7 +379,8 @@ export async function winConsign(scene) {
       for (let i = 0; i < mine.length; i++) {
         const c = mine[i];
         const nm = c.item ? await itemName(c.item.infoIndex) : '?';
-        const d = rowEl(`${nm} x${c.item?.count ?? 1}  ${c.price.toLocaleString()} 金`);
+        const dt = c.consignDate ? new Date(c.consignDate / 10000 - 62135596800000).toLocaleDateString() : '';
+        const d = rowEl(`${nm} x${c.item?.count ?? 1}  ${c.price.toLocaleString()} 金币  ${dt}`);   // :447 Lang 格式含 ConsignDate
         d.onclick = () => { selectedConsign = i; btnRemove.enabled = true; render(); };   // 选中 → Remove 启用 (:161)
         mineBox.appendChild(d);
       }
@@ -376,8 +389,29 @@ export async function winConsign(scene) {
   };
 
   // ---- S 包 ----
-  conn.addEventListener('marketPlaceSearch', (e) => { results = e.detail?.results ?? []; selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false; render(); });   // Search() 清选中 (:298-299)
-  conn.addEventListener('marketPlaceSearchCount', (e) => { searchCount.text = `共 ${e.detail?.count ?? 0} 件`; });
+  conn.addEventListener('marketPlaceSearch', (e) => {   // ApplySearch :334-346
+    results = (e.detail?.results ?? []).slice();
+    while (results.length < (e.detail?.count ?? 0)) results.push(null);
+    requestedSearchIndexes.clear();
+    selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false;
+    render();
+  });
+  conn.addEventListener('marketPlaceSearchCount', (e) => {   // ApplySearchCount :348-356
+    const count = e.detail?.count ?? 0;
+    while (results.length < count) results.push(null);
+    if (results.length > count) results.length = count;
+    selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false;
+    searchCount.text = `共 ${count} 件`;
+    render();
+  });
+  conn.addEventListener('marketPlaceSearchIndex', (e) => {   // ApplySearchIndex :358-366
+    const { index, result } = e.detail ?? {};
+    if (!(index >= 0)) return;
+    while (results.length <= index) results.push(null);
+    results[index] = result;
+    selectedSearch = -1; btnBuy.enabled = false; btnHistory.enabled = false;
+    render();
+  });
   conn.addEventListener('marketPlaceConsign', (e) => {
     mine = e.detail?.consignments ?? [];
     selectedConsign = -1; btnRemove.enabled = false;

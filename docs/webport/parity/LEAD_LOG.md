@@ -731,3 +731,18 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - 教训: (1) DXButton 的 DOM el.click() 在 headless 下不可靠 — 探针一律走
   el.__ctl.onClick() (win-consign 前两组走原生 <button> 所以没踩过);
   (2) 套件内跨组共享窗口单例 — 探针先归位页签再断言行渲染。
+
+## R28 — par-move (A路): 寄售搜索惰性加载 (ApplySearch/SearchCount/SearchIndex)
+
+- `缺口` webport 搜索一次性渲染 S 返回的 results — Godot 是三段模型: ApplySearch
+  (:334-346, null 占位到 count 保索引对齐) / ApplySearchCount (:348-356, pad/trim)
+  / ApplySearchIndex (:358-366, 单索引回填+选中复位); RefreshList (:451-452) 对
+  可见 null 槽按索引去重请求 C.MarketPlaceSearchIndex。
+- `实现` net.js: +C.MarketPlaceSearchIndex builder (222, int32) + readClientMarket
+  PlaceInfo 保留 consignDate ticks; ws.js: +sendMarketPlaceSearchIndex;
+  win-consign.js: 三 S 监听全语义 (requestedSearchIndexes Set 去重, null 槽渲染
+  '加载中…'+请求), 行文本补 seller/message (:446) 与 mine 行 ConsignDate (:447,
+  ticks→本地日期)。
+- `CDP 验收` 套件 +LAZYIDX 组 → 15/15: count=3 实 1 条 → 2 加载中 + C 222 恰 2 次
+  (去重); seller/message 显示; 选中行后回填 index=1 → 行填充+购买复位;
+  searchCount trim → 占位清空。

@@ -442,6 +442,46 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('SRCHHIST', d.toggled && pktOk && d.histEnabled && d.histSent && d.gateBlocked && d.filled, r);
 }
 
+// ============ 15. 搜索惰性加载 (ApplySearch/Index :334-366): null 占位+请求+回填 ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current;
+    const { winConsign } = await import('/static/js/win-consign.js');
+    const sh = await winConsign(s);
+    const win = sh.win; const conn = s.conn;
+    const ctl = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.includes(t))?.__ctl;
+    ctl('搜索购买')?.onClick();
+    await new Promise(r => setTimeout(r, 150));
+    const sent222 = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (new DataView(b.buffer, b.byteOffset).getInt16(4, true) === 222) sent222.push(b.byteLength); return b; };
+    // S search: count=3 实数据 1 条 → 2 个 null 槽
+    conn.dispatchEvent(new CustomEvent('marketPlaceSearch', { detail: { count: 3, results: [{ index: 0, item: { infoIndex: 160, count: 1 }, price: 500, seller: '甲', message: '急售' }] } }));
+    await new Promise(r => setTimeout(r, 600));   // render 循环内逐行 await itemName — 留足
+    const txt = win.el.textContent;
+    const loading = (txt.match(/加载中…/g) ?? []).length;
+    const sellerShown = txt.includes('甲') && txt.includes('急售');
+    const reqOnce = sent222.length === 2;   // index 1,2 各一次 (:451-452 去重)
+    // 选中行 0 → 回填 index=1 → 选中复位 (ApplySearchIndex :363-364)
+    const rows = [...win.el.querySelectorAll('div')].filter(d => d.children.length === 0 && d.textContent.includes('500'));
+    rows[0]?.click();
+    await new Promise(r => setTimeout(r, 200));
+    const buyCtl = [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === '购买')?.__ctl;   // 精确匹配 (tab '搜索购买' 含 '购买')
+    const selBefore = !!buyCtl?.enabled;
+    conn.dispatchEvent(new CustomEvent('marketPlaceSearchIndex', { detail: { index: 1, result: { index: 1, item: { infoIndex: 165, count: 2 }, price: 700, seller: '乙', message: '' } } }));
+    await new Promise(r => setTimeout(r, 600));
+    conn.send = orig;
+    const filled = win.el.textContent.includes('700 金币') && win.el.textContent.includes('乙');
+    const selReset = !buyCtl?.enabled;
+    // searchCount trim (:350-351)
+    conn.dispatchEvent(new CustomEvent('marketPlaceSearchCount', { detail: { count: 1 } }));
+    await new Promise(r => setTimeout(r, 400));
+    const trimmed = !win.el.textContent.includes('加载中…');
+    return { loading, sellerShown, reqOnce, selBefore, filled, selReset, trimmed };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('LAZYIDX', d.loading === 2 && d.sellerShown && d.reqOnce && d.selBefore && d.filled && d.selReset && d.trimmed, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);
