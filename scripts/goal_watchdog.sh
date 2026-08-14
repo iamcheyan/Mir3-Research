@@ -1,3 +1,5 @@
+  "01a0006d-ad7b-7000-a796-f6b592978164|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-42-971Z_01a0006d-ad7b-7000-a796-f6b592978164.jsonl|par-anim|/home/tetsuya/development/Mir3-Research|webport动作系统"
+  "01a0006d-ad7b-7000-a796-f6b592978164|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-42-971Z_01a0006d-ad7b-7000-a796-f6b592978164.jsonl|par-move|/home/tetsuya/development/Mir3-Research|webport移动手感"
 #!/usr/bin/env bash
 # goal_watchdog.sh — keep multiple omp goal sessions alive (multi-goal version).
 #
