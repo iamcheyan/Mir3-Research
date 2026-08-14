@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "019ffda1-0b2b-7000-81db-949ad4ccf0ce|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T00-16-57-643Z_019ffda1-0b2b-7000-81db-949ad4ccf0ce.jsonl|mvtoolkit|/home/tetsuya/development/Mir3-Research|mapviewer六大增强"
   "019ffd85-2226-7000-b58b-774658f3b1b2|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-13T23-46-28-518Z_019ffd85-2226-7000-b58b-774658f3b1b2.jsonl|svcdash|/home/tetsuya/development/svc-dashboard|svc-dashboard智能化改造"
   "019ffd58-c268-7000-9c80-7ce51a62cce3|/home/tetsuya/.omp/agent/sessions/-development-oh-my-desktop/2026-08-13T22-58-00-424Z_019ffd58-c268-7000-9c80-7ce51a62cce3.jsonl|omd|/home/tetsuya/development/oh-my-desktop|OMD-KNOWN-K1-K8收尾"
   "019ff331-5ca2-7000-869c-ab301d561150|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-11T23-38-46-306Z_019ff331-5ca2-7000-869c-ab301d561150.jsonl|dbviewer|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ff331.state"
