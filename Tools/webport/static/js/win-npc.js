@@ -357,7 +357,7 @@ export async function winNpc(scene, store, reg) {
       d.textContent = `· ${nm} x${it?.count ?? 1}`;
       d.style.cssText = 'padding:2px 6px;font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
       d.title = '点击移除';
-      d.onclick = () => { singleLinks = singleLinks.filter(x => x !== l); renderSingle(); };
+      d.onclick = () => { singleLinks = singleLinks.filter(x => x !== l); if (!pendingNpcLinks.some(p => p.gridType === l.gridType && p.slot === l.slot)) store.unlockPublic(l.gridType, l.slot); renderSingle(); };   // CancelLinks 解锁 (提交锁除外)
       singleBox.appendChild(d);
     }
     if (!singleLinks.length) singleBox.textContent = '（点"从背包导入"或稍后拖入）';
@@ -456,7 +456,7 @@ export async function winNpc(scene, store, reg) {
         d.textContent = `· ${nm} x${it?.count ?? 1}`;
         d.style.cssText = 'padding:2px 6px 2px 18px;font:12px/1.6 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
         d.title = '点击移除';
-        d.onclick = () => { refineLinks[key] = refineLinks[key].filter(x => x !== l); renderRefine(); };
+        d.onclick = () => { refineLinks[key] = refineLinks[key].filter(x => x !== l); if (!pendingNpcLinks.some(p => p.gridType === l.gridType && p.slot === l.slot)) store.unlockPublic(l.gridType, l.slot); renderRefine(); };   // CancelLinks 解锁 (提交锁除外)
         refineListBox.appendChild(d);
       }
     }
@@ -530,7 +530,7 @@ export async function winNpc(scene, store, reg) {
           d.textContent = `· ${nm} x${it?.count ?? 1}`;
           d.style.cssText = 'padding:2px 6px 2px 18px;font:12px/1.6 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
           d.title = '点击移除';
-          d.onclick = () => { links[key] = links[key].filter(x => x !== l); render(); };
+          d.onclick = () => { links[key] = links[key].filter(x => x !== l); if (!pendingNpcLinks.some(p => p.gridType === l.gridType && p.slot === l.slot)) store.unlockPublic(l.gridType, l.slot); render(); };   // CancelLinks 解锁 (提交锁除外)
           listBox.appendChild(d);
         }
       }

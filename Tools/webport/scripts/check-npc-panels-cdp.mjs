@@ -282,6 +282,23 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('ROUTE', d.routed1 && d.routed2 && d.inBuckets && d.lockedOk && d.rejected, r);
 }
 
+// ============ 10. 行移除解锁 (CancelLinks): 路由入桶→点击移除→格解锁 ============
+{
+  const r = await npcRun(168, ['评估', '从背包导入'], [[0, 829, 10]], `
+    const mkCell = (slot) => ({ item: inv.get(slot), gridType: 1, slot });
+    const routed = reg.routeHandlers.some(fn => fn(mkCell(0)));
+    const lockedAfterRoute = store.isLocked(1, 0);
+    // 点击 · 行 = 移除 (列表 DOM 第一个 '· ' 行)
+    const rows = [...pc.el.querySelectorAll('div')].filter(d => d.textContent.startsWith('·'));
+    rows[0]?.click();
+    await new Promise(r => setTimeout(r, 200));
+    const unlockedAfterRemove = !store.isLocked(1, 0);
+    const bucketEmpty = (pc.el.querySelector('div[style*="overflow-y"]')?.textContent ?? '').includes('碎片（一） (0)');
+    return { routed, lockedAfterRoute, unlockedAfterRemove, bucketEmpty };`);
+  const d = typeof r === 'object' ? r : {};
+  report('RMVLOCK', d.routed && d.lockedAfterRoute && d.unlockedAfterRemove && d.bucketEmpty, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

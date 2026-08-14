@@ -649,3 +649,14 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   (win-inventory grid.onQuickRoute → reg.routeHandlers)。
 - `CDP 验收` 套件 +ROUTE 组 → 9/9: MasterRefine 开启右键 碎片I/II → 各入桶
   (碎片（一）(1)/碎片（二）(1)) + 格锁; WeddingRing 页右键非 Ring → 拒绝 (不误吞)。
+
+## R23 — par-move (A路): 行移除解锁 (CancelLinks 补齐)
+
+- `缺口` R16-R18 面板列表行"点击移除"只删行不解锁来源格 — repair (onUnlink :141-148)
+  有 unlock, 新面板漏; Godot CancelLinks/ClearLinkedItems (:546-558) 均清 Locked。
+- `修复` 三处 (single/refine/multi-bucket) 移除 handler 补
+  `unlockPublic(gridType, slot)` (pendingNpcLinks 提交锁内除外 — 提交期移除不可能,
+  防御性保留)。
+- `CDP 验收` 套件 +RMVLOCK 组 → 10/10: 路由入桶→格锁→点击 · 行移除→解锁+桶清空。
+- 教训: 单行塞长语句时 // 注释必须放语句末 — 本次注释吞了 `renderSingle(); };`
+  导致文件断裂 (node --check 即刻捕获, 未上线)。
