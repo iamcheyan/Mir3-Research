@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>浏览器世界观测试台 — Mir3 Zircon</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部工具条 -->
+    <header id="topbar">
+      <span class="brand">Mir3 浏览器测试台</span>
+      <span id="mapname" class="mapname">加载中…</span>
+      <span id="pos" class="pos"></span>
+      <span class="spacer"></span>
+      <button class="tb-btn" data-panel="gm" title="GM 面板 (G)">GM</button>
+      <button class="tb-btn" data-panel="skills" title="技能栏 (S)">技能</button>
+      <button class="tb-btn" data-panel="equip" title="装备/纸娃娃 (E)">装备</button>
+      <button class="tb-btn" data-panel="settings" title="显示设置 (Esc)">设置</button>
+      <button class="tb-btn" id="btn-bigmap" title="大地图 (B)">大地图</button>
+    </header>
+
+    <!-- 主画布区 -->
+    <div id="viewport">
+      <canvas id="game"></canvas>
+      <div id="loading-overlay"><div class="spinner"></div><span id="loading-text">加载资源…</span></div>
+      <div id="fade"></div>
+      <!-- 小地图 -->
+      <div id="minimap-box"><canvas id="minimap" width="160" height="160"></canvas></div>
+      <!-- 伙伴/召唤物信息 -->
+      <div id="pet-box"></div>
+      <!-- 拾取提示 -->
+      <div id="pickup-toast"></div>
+    </div>
+
+    <!-- 聊天框 -->
+    <div id="chat">
+      <div id="chat-log"></div>
+      <div id="chat-cmd-row">
+        <input id="chat-input" placeholder="@命令 (回车执行) / Esc 关闭" maxlength="200">
+      </div>
+    </div>
+
+    <!-- 腰带栏 Shift+1..8 -->
+    <div id="belt">
+      <div class="belt-slot" data-slot="0"></div><div class="belt-slot" data-slot="1"></div>
+      <div class="belt-slot" data-slot="2"></div><div class="belt-slot" data-slot="3"></div>
+      <div class="belt-slot" data-slot="4"></div><div class="belt-slot" data-slot="5"></div>
+      <div class="belt-slot" data-slot="6"></div><div class="belt-slot" data-slot="7"></div>
+    </div>
+
+    <!-- 自动药水 (M8 演示) -->
+    <div id="autopot" class="panel hidden">
+      <div class="panel-title">自动药水 <button class="close">×</button></div>
+      <div class="panel-body">
+        <label>HP 触发 <input type="range" id="ap-hp" min="10" max="90" value="50"> <span id="ap-hp-v">50%</span></label>
+        <label>MP 触发 <input type="range" id="ap-mp" min="10" max="90" value="30"> <span id="ap-mp-v">30%</span></label>
+        <label class="chk"><input type="checkbox" id="ap-on"> 启用</label>
+        <div class="hint">演示: HP/MP 条按触发线自动嗑药 (腰带栏)</div>
+      </div>
+    </div>
+
+    <!-- HP/MP 球 -->
+    <div id="orbs">
+      <div class="orb" id="orb-hp"><div class="fill"></div><span>HP 255/255</span></div>
+      <div class="orb" id="orb-mp"><div class="fill"></div><span>MP 255/255</span></div>
+    </div>
+
+    <!-- 面板: GM / 技能 / 装备 / 设置 由 js 动态填充 -->
+    <div id="panel-gm" class="panel hidden"></div>
+    <div id="panel-skills" class="panel hidden"></div>
+    <div id="panel-equip" class="panel hidden"></div>
+    <div id="panel-settings" class="panel hidden"></div>
+
+    <!-- 大地图 -->
+    <div id="bigmap" class="hidden"><canvas id="bigmap-canvas"></canvas><div id="bigmap-info"></div></div>
+
+    <!-- 对象信息浮窗 -->
+    <div id="objinfo" class="hidden"></div>
+  </div>
+  <script src="/static/js/shot.js"></script>
+  <script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

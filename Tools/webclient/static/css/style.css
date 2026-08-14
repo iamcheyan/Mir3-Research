@@ -1,0 +1,161 @@
+/* 浏览器世界观测试台 — 原生 CSS, 无框架 */
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+html, body { height: 100%; overflow: hidden; background: #000; }
+body { font: 13px/1.4 "Microsoft YaHei", "PingFang SC", sans-serif; color: #ddd; }
+
+#app { display: flex; flex-direction: column; height: 100%; }
+
+/* ---- 顶栏 ---- */
+#topbar { display: flex; align-items: center; gap: 8px; padding: 4px 10px;
+  background: linear-gradient(#3a3223, #241f16); border-bottom: 1px solid #6b5a33; z-index: 30; }
+.brand { color: #e8c96a; font-weight: bold; letter-spacing: 1px; }
+.mapname { color: #fff; }
+.pos { color: #9c8f6f; font-family: monospace; }
+.spacer { flex: 1; }
+.tb-btn { background: #2e2817; color: #d8c690; border: 1px solid #6b5a33; border-radius: 3px;
+  padding: 2px 10px; cursor: pointer; font-size: 12px; }
+.tb-btn:hover { background: #4a3f24; color: #ffe9a8; }
+.tb-btn.active { background: #6b5a33; color: #fff; }
+
+/* ---- 画布 ---- */
+#viewport { position: relative; flex: 1; overflow: hidden; background: #101014; }
+#game { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+#loading-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
+  align-items: center; justify-content: center; background: rgba(8,8,10,.88); z-index: 20;
+  transition: opacity .3s; }
+#loading-overlay.done { opacity: 0; pointer-events: none; }
+.spinner { width: 42px; height: 42px; border: 4px solid #444; border-top-color: #e8c96a;
+  border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none;
+  transition: opacity .35s; z-index: 15; }
+
+/* ---- 小地图 ---- */
+#minimap-box { position: absolute; top: 8px; right: 8px; border: 1px solid #6b5a33;
+  background: rgba(10,10,12,.75); z-index: 10; }
+#minimap { display: block; }
+
+/* ---- 聊天 ---- */
+#chat { position: absolute; left: 8px; bottom: 76px; width: 460px; max-width: 60vw; z-index: 12; }
+#chat-log { max-height: 150px; overflow-y: auto; background: rgba(8,8,10,.55);
+  border: 1px solid #3a3223; padding: 4px 8px; font-size: 12px; }
+#chat-log .sys { color: #8fd18f; }
+#chat-log .gm { color: #e8c96a; }
+#chat-log .err { color: #e07a7a; }
+#chat-input { width: 100%; margin-top: 2px; background: rgba(8,8,10,.7); border: 1px solid #3a3223;
+  color: #eee; padding: 3px 6px; font-size: 12px; display: none; }
+#chat.cmd-open #chat-input { display: block; }
+
+/* ---- 腰带栏 ---- */
+#belt { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px; z-index: 12; }
+.belt-slot { width: 44px; height: 44px; background: rgba(20,18,12,.85); border: 1px solid #6b5a33;
+  position: relative; cursor: pointer; }
+.belt-slot img { width: 100%; height: 100%; object-fit: contain; }
+.belt-slot .key { position: absolute; top: 0; left: 2px; font-size: 10px; color: #9c8f6f; }
+.belt-slot .cd { position: absolute; inset: 0; background: rgba(0,0,0,.6);
+  transform-origin: bottom; pointer-events: none; }
+.belt-slot.empty .key::after { content: "空"; color: #555; margin-left: 4px; }
+
+/* ---- HP/MP ---- */
+#orbs { position: absolute; bottom: 8px; right: 8px; display: flex; gap: 6px; z-index: 12; }
+.orb { width: 74px; height: 74px; border-radius: 50%; border: 2px solid #6b5a33;
+  background: #1a150c; position: relative; overflow: hidden; }
+.orb .fill { position: absolute; bottom: 0; left: 0; right: 0; transition: height .3s; }
+#orb-hp .fill { background: #8c1f1f; }
+#orb-mp .fill { background: #1f3f8c; }
+.orb span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #fff; text-shadow: 0 1px 2px #000; }
+
+/* ---- 面板 ---- */
+.panel { position: absolute; top: 40px; width: 320px; max-height: calc(100vh - 130px);
+  background: linear-gradient(#2e2817f2, #1c180ef5); border: 1px solid #6b5a33; border-radius: 4px;
+  z-index: 25; display: flex; flex-direction: column; box-shadow: 0 4px 18px #000a; }
+.panel.hidden { display: none; }
+#panel-gm { right: 8px; width: 360px; }
+#panel-skills { left: 8px; top: 40px; width: 300px; }
+#panel-equip { right: 8px; width: 340px; }
+#panel-settings { right: 8px; width: 330px; }
+#autopot { left: 8px; bottom: 240px; width: 240px; }
+.panel-title { padding: 5px 10px; background: #3a3223; color: #e8c96a; font-weight: bold;
+  display: flex; justify-content: space-between; border-bottom: 1px solid #6b5a33; }
+.panel-title .close { cursor: pointer; color: #aaa; background: none; border: none; font-size: 14px; }
+.panel-body { padding: 8px 10px; overflow-y: auto; flex: 1; }
+.panel-body label { display: block; margin: 6px 0; }
+.panel-body .hint { color: #8a7d5f; font-size: 11px; margin-top: 4px; }
+.panel-body input[type="range"] { width: 130px; vertical-align: middle; }
+.panel-body select, .panel-body input[type="text"] { background: #14110a; color: #eee;
+  border: 1px solid #6b5a33; padding: 2px 4px; }
+.panel-body .row { display: flex; gap: 6px; align-items: center; margin: 6px 0; flex-wrap: wrap; }
+button.act { background: #2e2817; color: #d8c690; border: 1px solid #6b5a33; padding: 2px 8px;
+  cursor: pointer; font-size: 12px; border-radius: 2px; }
+button.act:hover { background: #4a3f24; }
+button.act.on { background: #6b5a33; color: #fff; }
+
+/* 技能列表 */
+.magic-list { overflow-y: auto; max-height: 50vh; }
+.magic-group h4 { color: #e8c96a; margin: 6px 0 2px; font-size: 12px; border-bottom: 1px dashed #55492e; }
+.magic-row { display: flex; align-items: center; gap: 6px; padding: 2px 4px; cursor: pointer; border-radius: 2px; }
+.magic-row:hover { background: #ffffff14; }
+.magic-row img { width: 26px; height: 26px; }
+.magic-row .zh { color: #fff; }
+.magic-row .en { color: #7d7259; font-size: 11px; }
+.magic-row.active { background: #6b5a3366; outline: 1px solid #e8c96a; }
+
+/* 装备面板 */
+.eq-grid { display: grid; grid-template-columns: repeat(5, 54px); gap: 6px; }
+.eq-slot { width: 54px; height: 54px; background: #14110a; border: 1px solid #55492e;
+  position: relative; cursor: pointer; }
+.eq-slot img { width: 100%; height: 100%; object-fit: contain; }
+.eq-slot .lbl { position: absolute; bottom: 0; width: 100%; text-align: center; font-size: 9px;
+  color: #9c8f6f; background: #0008; }
+.eq-slot.worn { border-color: #e8c96a; }
+.item-list { max-height: 200px; overflow-y: auto; margin-top: 6px; }
+.item-row { display: flex; align-items: center; gap: 6px; padding: 2px; cursor: pointer; }
+.item-row:hover { background: #ffffff14; }
+.item-row img { width: 24px; height: 24px; }
+.item-row .zh { color: #ddd; }
+
+/* GM 面板 */
+.gm-sec { margin-bottom: 10px; }
+.gm-sec h4 { color: #e8c96a; font-size: 12px; margin-bottom: 4px; border-bottom: 1px dashed #55492e; }
+#gm-map-results { max-height: 180px; overflow-y: auto; }
+.gm-map-row { padding: 2px 4px; cursor: pointer; display: flex; gap: 6px; }
+.gm-map-row:hover { background: #ffffff14; }
+.gm-map-row .cn { color: #fff; }
+.mon-list { max-height: 160px; overflow-y: auto; }
+.mon-row { display: flex; gap: 6px; align-items: center; padding: 1px 4px; cursor: pointer; }
+.mon-row:hover { background: #ffffff14; }
+.mon-row img { width: 26px; height: 30px; object-fit: contain; }
+.cmd-table { font-size: 11px; width: 100%; border-collapse: collapse; }
+.cmd-table td { padding: 2px 4px; border-bottom: 1px solid #3a3223; }
+.cmd-table td:first-child { color: #e8c96a; font-family: monospace; cursor: pointer; }
+.cmd-table td:first-child:hover { text-decoration: underline; }
+
+/* ---- 大地图 ---- */
+#bigmap { position: absolute; inset: 36px 0 0 0; background: #0b0b0eee; z-index: 40;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; }
+#bigmap.hidden { display: none; }
+#bigmap-canvas { border: 1px solid #6b5a33; cursor: crosshair; max-width: 94vw; max-height: 78vh; }
+#bigmap-info { color: #9c8f6f; margin-top: 6px; }
+
+/* ---- 对象信息 ---- */
+#objinfo { position: absolute; z-index: 35; background: #1c180ef8; border: 1px solid #6b5a33;
+  padding: 6px 10px; border-radius: 3px; max-width: 260px; }
+#objinfo.hidden { display: none; }
+#objinfo h5 { color: #e8c96a; }
+#objinfo .boss { color: #ff7a7a; font-weight: bold; }
+#objinfo .meta { color: #9c8f6f; font-size: 11px; }
+
+/* 伙伴 */
+#pet-box { position: absolute; left: 8px; top: 8px; z-index: 10; }
+#pickup-toast { position: absolute; top: 12%; left: 50%; transform: translateX(-50%);
+  color: #ffe9a8; text-shadow: 0 1px 2px #000; z-index: 18; pointer-events: none; }
+
+/* 移动端 */
+@media (max-width: 560px) {
+  #chat { width: 70vw; bottom: 96px; }
+  #chat-log { max-height: 90px; }
+  .panel { width: calc(100vw - 16px) !important; left: 8px; right: 8px; }
+  #minimap-box canvas { width: 110px; height: 110px; }
+}
