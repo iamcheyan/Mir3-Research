@@ -52,6 +52,12 @@ function enterSelect(characters) {
   current = select;
   mountScene(select.root);
   applyScale();
+  // ?demo=1: 选人后 1.2s 自动开始第一个角色
+  if (DEMO && characters.length > 0) {
+    setTimeout(() => {
+      if (current === select) conn.sendStartGame(characters[0].characterIndex);
+    }, 1200);
+  }
 }
 
 function enterGame(startInfo) {
@@ -86,3 +92,20 @@ window.__WEBPORT = {
 
 mountModeSwitcher();
 loadTheme().then(enterLogin);
+
+// ?demo=1 一键直进: 自动登录测试号并选第一个角色 (仅测试便利, 不改协议层)
+const DEMO = new URLSearchParams(location.search).has('demo');
+if (DEMO) {
+  const DEMO_EMAIL = 'test@test.com', DEMO_PASS = 'test123';
+  const waitLogin = setInterval(() => {
+    if (!conn?.ws || conn.ws.readyState !== 1) return;      // 等网关连上
+    if (current?.btnLogin?.enabled === false) return;        // 等登录按钮就绪
+    clearInterval(waitLogin);
+    console.log('[webport] demo 模式: 自动登录', DEMO_EMAIL);
+    setTimeout(() => {
+      current.emailInput.text = DEMO_EMAIL;
+      current.passwordInput.text = DEMO_PASS;
+      current.btnLogin.onClick?.();          // 走正式登录按钮路径
+    }, 400);
+  }, 300);
+}
