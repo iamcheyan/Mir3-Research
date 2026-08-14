@@ -657,11 +657,12 @@ class FramePool:
 # so full-map renders of big maps (00.map z3 needs ~23k unique frames)
 # parallelise decode across cores; compositing stays single-process in
 # painter order.
-_POOL: dict[str, ProcessPoolExecutor] = {}
+_POOL: dict[str, ProcessPoolExecutor] = {}        # 慢池: 后台预渲染 (worker nice 5)
+_FAST_POOL: dict[str, ProcessPoolExecutor] = {}   # 快池: 交互冷块现场渲染 (nice 0)
 _POOL_MU = threading.Lock()
 _WORKER_DATA_DIR: str | None = None
 _WORKER_LIBS: dict[str, WilLibrary | ZlLibrary] = {}
-_WORKER_MC: "MapCache | None" = None      # tile-prewarm worker state
+_WORKER_MC: "MapCache | None" = None      # tile worker (快/慢池同构) 的地图 LRU
 _WORKER_POOL: "FramePool | None" = None
 
 
@@ -672,6 +673,11 @@ def _init_worker(data_dir: str):
         os.nice(5)   # 后台批量渲染让位交互请求/游戏服务器
     except OSError:
         pass
+
+
+def _init_fast_worker(data_dir: str):
+    global _WORKER_DATA_DIR
+    _WORKER_DATA_DIR = data_dir   # 交互现场渲染, 不降优先级
 
 
 def _decode_frame_worker(args: tuple) -> tuple | None:
@@ -711,12 +717,24 @@ def _decode_frame_worker(args: tuple) -> tuple | None:
 
 
 def _get_pool(data_dir: str) -> ProcessPoolExecutor:
+    """慢池 (预渲染): nice(5), 让位同机游戏服务器。"""
     with _POOL_MU:
         pool = _POOL.get(data_dir)
         if pool is None:
             pool = _POOL[data_dir] = ProcessPoolExecutor(
                 max_workers=min(10, os.cpu_count() or 2),
                 initializer=_init_worker, initargs=(data_dir,))
+        return pool
+
+
+def _get_fast_pool(data_dir: str) -> ProcessPoolExecutor:
+    """快池 (交互冷块): nice(0), 用户正在等, 不让路。"""
+    with _POOL_MU:
+        pool = _FAST_POOL.get(data_dir)
+        if pool is None:
+            pool = _FAST_POOL[data_dir] = ProcessPoolExecutor(
+                max_workers=min(10, os.cpu_count() or 2),
+                initializer=_init_fast_worker, initargs=(data_dir,))
         return pool
 
 def _render_tile_worker(args: tuple) -> tuple | None:
@@ -1909,8 +1927,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const M = 1;  // preload margin ring (tiles) so drags reveal instantly
             const tx0 = Math.floor(vx0 / 512) - M, ty0 = Math.floor(vy0 / 512) - M;
             const tx1 = Math.floor(vx1 / 512) + M, ty1 = Math.floor(vy1 / 512) + M;
-            const tileH = Math.floor(worldH / 512) + 1;
-            const tileW = Math.floor(worldW / 512) + 1;
+            const tileH = Math.ceil(worldH / 512);   // ceil: 整除时无幻影空块
+            const tileW = Math.ceil(worldW / 512);
             const v = version;
             const layer = tileLayer;
             layer.style.width = (worldW / s) + "px";
@@ -3425,7 +3443,12 @@ TILE_PREWARM = {
     "failed": 0,
     "percent": 0,
     "phase": "tiles",   # tiles = 瓦片预生成 (z0 全量 -> z1 全量)
+    "focus": "",        # 用户正在浏览的地图 -> 预渲染插队跟进
 }
+
+_TILE_INTERACTIVE = [0]                       # 在途交互瓦片渲染数
+_INTERACTIVE_LOCK = threading.Lock()          # 预渲染让路依据
+
 
 _API_MAPS_CACHE: dict = {}   # (maps_dir, layout) -> 编码后 JSON; /api/maps 免重复扫描
 
@@ -4077,6 +4100,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
 
             try:
                 key = (map_name, tx, ty, z, g, m, f, om)
+                TILE_PREWARM["focus"] = map_name   # 预渲染优先跟进用户正在看的地图
                 with self.tile_cache_lock:
                     data = self.tile_cache.get(key)
                 if data is None and self.cache_dir:
@@ -4090,8 +4114,25 @@ class ViewerHandler(BaseHTTPRequestHandler):
                     except FileNotFoundError:
                         data = None
                 if data is None:
-                    data = render_tile(self.map_cache, self.pool, map_name, tx, ty, z, g, m, f,
-                                       layout=self.layout, offset_mode=om)
+                    # 交互冷块: 默认图层组合整块下放快池渲染 (绕开主进程
+                    # GIL 串行; 与预渲染共用 worker 代码, 输出一致已验证)
+                    with _INTERACTIVE_LOCK:
+                        _TILE_INTERACTIVE[0] += 1
+                    try:
+                        if g and m and f:
+                            fp = _get_fast_pool(self.pool.data_dir)
+                            res = fp.submit(_render_tile_worker, (
+                                os.path.join(self.map_cache.maps_dir, map_name),
+                                (map_name, tx, ty, z, self.layout, om))).result()
+                            if res:
+                                data = res[1]
+                        if data is None:
+                            data = render_tile(self.map_cache, self.pool, map_name,
+                                               tx, ty, z, g, m, f,
+                                               layout=self.layout, offset_mode=om)
+                    finally:
+                        with _INTERACTIVE_LOCK:
+                            _TILE_INTERACTIVE[0] -= 1
                     with self.tile_cache_lock:
                         self.tile_cache[key] = data
                         while len(self.tile_cache) > CACHE_TILES_MAX:
@@ -4627,7 +4668,6 @@ def prewarm_tiles(maps_dir: str, data_dir: str, cache_dir: str,
         return
 
     def work():
-        import concurrent.futures as cf
         try:
             g, m_, f_ = layers   # 默认图层组合 (全开)
             maps = sorted(scan_maps(maps_dir, layout),
@@ -4653,18 +4693,73 @@ def prewarm_tiles(maps_dir: str, data_dir: str, cache_dir: str,
                   f"({len(maps)} maps, z1+z0, {layout})")
             TILE_PREWARM.update(running=True, total=len(todo), current=0,
                                 done=0, failed=0, percent=0, current_map="")
-            pool = _get_pool(data_dir)
-            # 滑动窗口限并发: 与交互请求/同机服务 (ServerCore 等) 抢资源时
-            # 保持温和; worker 已 nice(5), 这里再限制在途任务数。
+            pool = _get_pool(data_dir)   # 慢池: nice(5), 后台专用
+            # 交互优先调度:
+            # 1) 用户正在浏览的地图 (focus) 插队 — 拖到哪, 哪先变热;
+            # 2) 交互冷块在途时暂停提交新任务 (focus 除外 — 它直接服务
+            #    用户接下来的拖拽), 把 CPU 让给用户正在等的那批瓦片;
+            # 3) 提交前复查磁盘, 交互请求顺手渲染过的直接跳过。
             WINDOW = 3
-            pending: list = []   # [(future, map_path, key, disk_path)]
-            ti = 0
-            while ti < len(todo) or pending:
-                while ti < len(todo) and len(pending) < WINDOW:
-                    mp, key, dp = todo[ti]
-                    pending.append((pool.submit(_render_tile_worker, (mp, key)), mp, key, dp))
-                    ti += 1
-                fut, mp, key, dp = pending.pop(0)
+            pending: list = []          # [(future, key, dp)]
+            by_map: dict = {}           # map_name -> [todo 索引]
+            for i, (_, key, _) in enumerate(todo):
+                by_map.setdefault(key[0], []).append(i)
+            seq = 0                     # 顺序指针 (面积升序兜底)
+            focus_q: list = []
+            last_focus = None
+            done_idx: set = set()
+
+            def pick_next():
+                nonlocal seq, last_focus, focus_q
+                fm = TILE_PREWARM.get("focus") or ""
+                if fm and fm in by_map and fm != last_focus:
+                    last_focus = fm
+                    focus_q = [i for i in by_map[fm] if i not in done_idx]
+                while focus_q:
+                    i = focus_q.pop(0)
+                    if i not in done_idx:
+                        return i
+                while seq < len(todo):
+                    i = seq
+                    seq += 1
+                    if i not in done_idx:
+                        return i
+                return None
+
+            def focus_pending():
+                fm = TILE_PREWARM.get("focus") or ""
+                return fm in by_map and any(i not in done_idx
+                                             for i in by_map.get(fm, ()))
+
+            while True:
+                yield_since = None
+                while _TILE_INTERACTIVE[0] > 0:
+                    # 交互潮期间完全让路 (交互冷块是用户正在等的);
+                    # 仅当用户连续浏览超 45s (马拉松拖拽) 才恢复 focus
+                    # 跟进, 让后台追上用户即将到达的区域。
+                    if yield_since is None:
+                        yield_since = time.time()
+                    elif (time.time() - yield_since > 45
+                          and focus_pending()):
+                        break
+                    time.sleep(0.2)
+                while len(pending) < WINDOW:
+                    i = pick_next()
+                    if i is None:
+                        break
+                    mp, key, dp = todo[i]
+                    done_idx.add(i)
+                    if os.path.exists(dp):   # 交互请求已顺手渲染
+                        TILE_PREWARM["current"] += 1
+                        TILE_PREWARM["done"] += 1
+                        TILE_PREWARM["percent"] = int(
+                            TILE_PREWARM["current"] / len(todo) * 100)
+                        continue
+                    pending.append((pool.submit(_render_tile_worker, (mp, key)),
+                                    key, dp))
+                if not pending:
+                    break
+                fut, key, dp = pending.pop(0)
                 try:
                     res = fut.result()
                     if res:
