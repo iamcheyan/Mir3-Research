@@ -22,6 +22,8 @@ export class GameScene {
     this.world = new World(conn, startInfo, this.canvas, {
       onChat: (text, type) => this.addChat(text, type),
       onPosChange: () => this.#updatePos(),
+      onStats: (s) => this.#updateStats(s),
+      onTarget: (o) => this.#updateTarget(o),
     });
     // 代理共享字段 (HUD/调试读取)
     for (const k of ['player', 'objects', 'stem', 'mapMeta', 'moveLock']) {
@@ -142,6 +144,15 @@ export class GameScene {
     const p = this.world.player;
     if (p && this.posLabel)
       this.posLabel.text = `${this.world.mapMeta?.name_cn ?? this.world.stem} ${p.x},${p.y}`;
+  }
+
+  #updateStats(s) {
+    if (s.maxHp > 0) this.setBarPct(this.healthFill, s.hp / s.maxHp);
+    if (s.maxMp > 0) this.setBarPct(this.manaFill, s.mp / s.maxMp);
+  }
+
+  #updateTarget(o) {
+    if (o) this.addChat(`选中: ${o.name}${o.dead ? ' (尸体)' : ''}`, 'hint');
   }
 
   addChat(text, type = 'say') {

@@ -98,15 +98,15 @@ export function pickLibs({ cls, gender, armourShape, weaponShape, helmetShape })
 
   let body = isSin ? (isFemale ? 'WM_HumA' : 'M_HumA') : (isFemale ? 'WM_Hum' : 'M_Hum');
   if (armourShape != null) {
-    const lib = t.armour[armourShape / 11 + femaleOff + sinOff];
+    const lib = t.armour[Math.floor(armourShape / 11) + femaleOff + sinOff];
     if (lib) body = lib;
   }
   let weapon = 'M_Weapon1';
   if (weaponShape != null && weaponShape >= 0) {
-    weapon = t.weapon[weaponShape / 10 + femaleOff] || 'M_Weapon1';
+    weapon = t.weapon[Math.floor(weaponShape / 10) + femaleOff] || 'M_Weapon1';
   }
   let helmet = null;
-  if (helmetShape > 0) helmet = t.helmet[(helmetShape - 1) / 10 + femaleOff + sinOff] || null;
+  if (helmetShape > 0) helmet = t.helmet[Math.floor((helmetShape - 1) / 10) + femaleOff + sinOff] || null;
   const hair = isSin ? (isFemale ? 'WM_HairA' : 'M_HairA') : (isFemale ? 'WM_Hair' : 'M_Hair');
   return {
     body: libs[body], weapon: libs[weapon], helmet: helmet ? libs[helmet] : null,
