@@ -411,3 +411,21 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `验收` 清理后全链路 CDP 复跑: 9 键 PASS / Buff 图标 srcs 吻合 / 邮箱
   compose 真包 / 11 窗全开 — 无任何模块引用被删文件, 0 异常。
 - `仓库状态` Tools/webport/static/js/ 下无未跟踪/未提交 JS; 冲刺工作区干净。
+
+## 2026-08-15 02:1x — R7 合并轮 (par-keys)
+
+### 新增 commit (4, par-move R11-R13)
+
+- `5fa4e0f` R11: Mail 真邮箱 (列表/阅读/删除/撰写) + MailSend BigInt 修复
+- `cc0cb9d`+`b3d4148` R12: BuffDialog 真图标 (CBIcons.Zl + GetBuffIcon switch 表)
+- `007815a` R13: **par-win 仲裁制品清理落地** — dialogs.js/gamedata.js 删除,
+  uitree graft 还原 (R3 起跟踪的三件交接全部闭环, webport 工作区归零)
+
+### E路回归
+
+- 557 manager 断言 ✓; CDP 70 键: 28/28 toggle, 0 异常, Escape→1 窗 ✓
+  (`keys/cdp-dispatch-r7.txt`)。工作区首次完全干净。
+
+### 局势
+
+- A 路收尾动作明显 (仲裁清理+图标+邮箱), 等终态 → REPORT.md 总验收。
