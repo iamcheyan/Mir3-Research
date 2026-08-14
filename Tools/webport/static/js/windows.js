@@ -15,7 +15,7 @@ export const WindowManager = {
     if (w.visible) { this.bringToFront(w); return; }
     if (!this.OpenWindows.includes(w)) this.OpenWindows.push(w);
     w.showWindow(parent);
-    this.#refreshZ();
+    refreshZ(this);
   },
 
   close(w) {
@@ -23,7 +23,7 @@ export const WindowManager = {
     const i = this.OpenWindows.indexOf(w);
     if (i >= 0) this.OpenWindows.splice(i, 1);
     w.close();
-    this.#refreshZ();
+    refreshZ(this);
   },
 
   toggle(w, parent) {
@@ -47,15 +47,15 @@ export const WindowManager = {
     if (!w || !w.visible) return;
     const i = this.OpenWindows.indexOf(w);
     if (i >= 0) { this.OpenWindows.splice(i, 1); this.OpenWindows.push(w); }
-    this.#refreshZ();
-  },
-
-  #refreshZ() {
-    for (const w of this.OpenWindows) w.el.style.zIndex = w.el.style.zIndex ?? '';
-    // DOM append 顺序即 Z 序; z-index 统一放 100+ (与 C# BaseZ 对齐)
-    this.OpenWindows.forEach((w, i) => { w.el.style.zIndex = 100 + i; });
+    refreshZ(this);
   },
 };
+
+// 对象字面量里的 #private 方法非法 (浏览器报 "must be declared in an enclosing class") — 提为普通函数
+function refreshZ(wm) {
+  // DOM append 顺序即 Z 序; z-index 统一放 100+ (与 C# BaseZ 对齐)
+  wm.OpenWindows.forEach((w, i) => { w.el.style.zIndex = 100 + i; });
+}
 
 // ---- DXWindow (DXWindow.cs) ----
 export class DXWindow extends DXControl {
