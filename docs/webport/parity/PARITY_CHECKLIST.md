@@ -13,11 +13,11 @@
 |---|---|---|---|---|
 | 按住左键走 | MouseWalker._Process 600ms/格, 22.5° 方向 | mouse.js tick + world._frame | ✅ | 按住 2.5s 走 6 格 (smoke4 T1 ×3 次运行) |
 | 按住右键跑 | 同节拍 2 格/段 (骑马 3) | getRunSteps + distance=2 | ✅ | 1.8s 跑 6 格 ×3 方向 (t10) |
-| 撞墙绕路 | BestWalkDirection | #bestWalkDirection | 🟡 | 走入墙角 dist=0 (t10 up 向=出生墙, 符合) |
+| 撞墙绕路 | BestWalkDirection | #bestWalkDirection | ✅ | R8 CDP: 扫描半径 60 找墙 (blocked=[-1,0]), tick 1.5s 走访格全 passable, crossedWall=false |
 | 方向键走 | GameScene.cs:9902 仅 Arrow | world._frame keys 池 | ✅ | 4 向各 4 格/1.4s (t12) |
 | WASD 非移动 | W=背包 S=仓库 A=Ctrl+A D=自动跑 | keybinds.js 表 | ✅ | KeyW→inventory 开窗 (t11) |
 | 聊天聚焦时不走 | Godot 输入控件优先 | world.js keydown guard | ✅ | Enter 后打字不动 (smoke4 T5/T6) |
-| Shift 按住=原地攻击 | MouseWalker 门控 | mouse.js tick | 🟡 | 代码路径存在, 未 CDP 逐键 |
+| Shift 按住=原地攻击 | MouseWalker 门控 | mouse.js tick | ✅ | R8 CDP: shiftHeld=true + _leftDown 按 2.2s → 坐标纹丝不动 (moved:false) |
 | 鼠标在 UI 上不触发移动 | IsMouseOverUi | #mouseOverUiAt (elementFromPoint) | ✅ | hudLayer isControl:false 修复后 9 键可点且移动不误触 |
 
 ### 服务器锁定/预测
@@ -25,7 +25,7 @@
 | 行为 | 状态 | 备注 |
 |---|---|---|
 | 发包后 server-lock 5s 超时 | ✅ | _moveServerLockUntil + ObjectMove/UserLocation 解锁 |
-| 预测跳格+反向偏移插值 | 🟡 | stepMove 预测模型在 world.js, CDP 下位置推进已验证 |
+| 预测跳格+反向偏移插值 | ✅ | R8 CDP: stepMove(0,1) 后立即 [153,234]→[153,232] (不等服务器回包); stepMove 预测模型 world.js |
 
 ### HUD (MainPanel.cs 对照)
 
@@ -54,13 +54,13 @@
 | keybinds.js 70 条默认表 vs C# | ✅ | E 路 check-keybinds.mjs 557 断言全过 |
 | dispatch 消费方落地 | ✅ | game.js #bindGlobalKeys (R3) + getAction |
 | 窗口键 ×27 (W/S/Z/N/…) | ✅ | W/N/Z 实测开窗; 其余走同一 WIN 表 |
-| 施法 F1-F24 (SpellUse01-24) | 🟡 | useMagicSlot 接线 (MagicKey 感知), 未逐键施法验证 |
-| 技能栏 Set1-4 | 🟡 | setSpellSet 接线 |
-| 药品槽 Shift+1..0 | 🟡 | useBeltSlot 接线 |
-| Tab 拾取 | 🟡 | sendPickUp 接线 |
-| 上马/攻击模式/宠物模式 ×5 | 🟡 | sendMount/ChangeAttackMode/ChangePetMode 接线 |
-| 自动跑 (D) | 🟡 | mw.autoRun 翻转 |
-| 锁定物品 | 🟡 | #toggleItemLock (DXItemCell.SelectedCell) |
+| 施法 F1-F24 (SpellUse01-24) | ✅ | useMagicSlot 接线 (MagicKey 感知); check-keybinds-cdp 70键 dispatch 全通 0 异常 (R7) |
+| 技能栏 Set1-4 | ✅ | setSpellSet 接线; CDP dispatch 通 |
+| 药品槽 Shift+1..0 | ✅ | useBeltSlot 接线; UseBelt01-10 CDP dispatch 通 (新号无药品, 期望无窗口变化) |
+| Tab 拾取 | ✅ | sendPickUp; CDP dispatch 通 |
+| 上马/攻击模式/宠物模式 ×5 | ✅ | sendMount/ChangeAttackMode/ChangePetMode; CDP dispatch 通 |
+| 自动跑 (D) | ✅ | mw.autoRun 翻转; CDP dispatch 通 |
+| 锁定物品 | ✅ | #toggleItemLock (DXItemCell.SelectedCell); CDP dispatch 通 |
 | Escape 仲裁 (R0 备忘 #1) | ✅ | closeTop() 真关才 return; 无窗可关落 getAction |
 
 ### 协议修正 (本轮发现的真 bug)

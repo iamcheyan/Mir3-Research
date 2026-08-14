@@ -309,3 +309,19 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 ### 未提交在制品 (持续跟踪, R3 起归 par-win 仲裁)
 
 - uitree.js 未提交 diff (+136); dialogs.js(34KB)/gamedata.js 未跟踪。
+
+## R8 — par-move (A路): 移动残留 🟡 三项 CDP 清零 → CHECKLIST 全 ✅
+
+- `Shift 原地攻击门控` (mouse.js tick: d.shift() 检查): shiftHeld=true + 左键按住
+  2.2s 驱动 tick → 坐标 moved:false。
+- `预测跳格` (world.stepMove): stepMove(0,1,false) 调用瞬间本地 y-2 (153,234)→
+  (153,232), 不等服务器; server-lock 5s 超时+ObjectMove 解锁在位。
+- `撞墙绕路` (#bestWalkDirection, MouseWalker.cs:250-266): 出生点开阔 → 半径 60
+  螺旋扫描找墙 (blocked=[-1,0]), 鼠标指向墙 tick 1.5s, 走访格逐格校验 walkable
+  全过, crossedWall=false。
+- `键位 70 键 CDP 回归` check-keybinds-cdp.mjs 复跑: 70/70 dispatch 0 页面异常,
+  toggle 69/70 — 唯一 ExitGameWindow escape "fail" 是套件顺序伪影 (前窗未关,
+  Escape 被 closeTop 语义消费 = Godot 9864 同款行为; 单测 R6 已证无窗时正常开
+  退出框)。
+- `CHECKLIST 状态` 全表 ✅ (P0 移动×8/HUD×6/聊天×4/协议×5/键位×10 + P1 46 窗)。
+  dialogs.js/gamedata.js 未跟踪草稿归 par-win 仲裁 (仅 belt 细化吸收价值)。
