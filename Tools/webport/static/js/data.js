@@ -89,6 +89,9 @@ export function npcFrame(image, frameIdx) {
 
 // ---- 库选择 (RefreshLibraries 移植; appearance.json 带 C# switch 表) ----
 export function pickLibs({ cls, gender, armourShape, weaponShape, helmetShape }) {
+  // 竞态防护: 建号进图瞬间 appearance.json 可能未就绪 (par-keys R5 转来)。
+  // 返回 null-libs 骨架, world.#enterWorld loadAll 后统一 refreshLibs 重解析。
+  if (!Data.appearance) return { body: null, weapon: null, helmet: null, hair: null };
   const t = Data.appearance.tables;
   const libs = Data.appearance.libraries;
   const isFemale = gender === 'F';

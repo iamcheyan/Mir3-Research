@@ -325,3 +325,14 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   退出框)。
 - `CHECKLIST 状态` 全表 ✅ (P0 移动×8/HUD×6/聊天×4/协议×5/键位×10 + P1 46 窗)。
   dialogs.js/gamedata.js 未跟踪草稿归 par-win 仲裁 (仅 belt 细化吸收价值)。
+
+## R9 — par-move (A路): data.js 启动竞态修复 (par-keys R5 转办)
+
+- `竞态` 建号进图瞬间 ObjectPlayer 包先于 appearance.json 就绪 → pickLibs 读
+  Data.appearance.tables 抛 TypeError (data.js:92)。修两层:
+  1) data.pickLibs 就绪门闩 — appearance 未载入返回 null-libs 骨架 (渲染层
+     `if (!lib) continue` 已 null-safe, 玩家先无名壳后补图层);
+  2) world.#enterWorld loadAll 后对 objects 全量 refreshLibs 重解析。
+- `验收` check-keybinds-cdp v2: 70/70 toggleOk (含 ExitGameWindow — 上一轮
+  "fail" 是套件顺序伪影), exceptions=[]; 全链路新号注册→进图 0 异常
+  (pmv-move-edge 复跑)。

@@ -616,6 +616,9 @@ export class World {
 
   async #enterWorld() {
     await data.loadAll();
+    // 竞态修复: loadAll 前到达的 ObjectPlayer/PlayerObject 拿到 null-libs 骨架
+    // (data.pickLibs 防护), 数据就绪后统一重解析 (par-keys R5 转来的启动竞态)
+    for (const o of this.objects?.values?.() ?? []) if (o?.refreshLibs) o.refreshLibs();
     const maps = data.D().maps;
     let stem = null;
     for (const [s, m] of Object.entries(maps)) if (m.id === this.info.mapIndex) { stem = s; break; }
