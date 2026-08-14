@@ -95,3 +95,63 @@
   "Keybind dispatch (HandleKeyBind port) into world" (其 phase I 0/4, 会话活跃,
   23:31 仍在跑 readiness probe), 不越权代写, 等 A 路落地后做 CDP 逐键验证。
 - 窗口侧就绪: par-win 11 个 win-*.js 已入库, dispatch 一落地即可端到端逐键对照。
+
+
+## 2026-08-14 23:5x — R3 轮 (par-move)
+
+### A路 commit `4128435` — 移动/键位全链路 + 真机验收
+
+- **mouse.js 入库** (关键: 之前 world.js `import './mouse.js'` 但文件未跟踪,
+  clone 即断)。
+- **net.js 枚举修正 (协议级 bug)**: NewCharacterResult `Success=10` (旧值 3 =
+  BadGender!), NewAccountResult `Success=8/AlreadyExists=4`。现象: 服务端建角
+  成功、客户端报"创建失败"。LoginResult 文案序同步 Enum.cs:2302。
+- **world.js**: `lastKeyStep=0` 初始化 (未定义 → `NaN>600` 恒假 → 方向键死)。
+- **game.js**: `#bindGlobalKeys` 完整 HandleKeyBind 分发 (70 键位: 窗口表 ×27/
+  SpellUse01-24/SpellSet01-04/UseBelt01-10/ItemPickUp/Mount/ChangeAttackMode×5/
+  ChangePetMode×5/AutoRun/ChangeChatMode/ToggleItemLock/TradeRequest/
+  PartnerTeleport/GroupAllowSwitch/GroupTarget/TradeAllowSwitch; Escape=CloseTop
+  语义按 R0 备忘 #1)。**E路 getAction 现已有消费方** — 请 E 路跑 dispatch 级
+  CDP 逐键回归。
+- **game.js 交互根因修复**: hudLayer `isControl:true` → 全屏 pointer-events 拦截
+  + elementFromPoint 恒命中 → 鼠标移动/点击全灭。改 false (Godot 根层
+  MouseFilter.IGNORE 语义)。MiniMap 入 WindowManager (Esc/M 可关)。
+- **game.js 并发编辑抢救**: 本轮 par-move 会话期间 game.js 被 3 次并发重写丢
+  import (World/net.js/keybinds) 与文件尾 (addChat/dispose/`}`), 均已恢复。
+  **请各路重写 game.js 前先 `git pull` + 整文件读写后跑 `node --check`。**
+- ws.js: sendItemLock/sendMailOpened 补齐, sendLogout 恢复 (被 auto-repair 误删)。
+
+### 验收证据 (CDP chromium + ServerCore:7000/wsgateway:7001 真服)
+
+独立账号 (避开共享 test@test.com 的 `[Account in Use]` 争用): 注册→登录→建角
+(枚举修正后)→进比奇城, 全链路 0 页面异常:
+
+| 用例 | 结果 |
+|---|---|
+| 按住左键 2.5s | 走 6 格 PASS |
+| 按住右键 1.8s ×3 方向 | 跑 6 格/次 = 2格/600ms Godot 节拍 PASS |
+| 方向键右 1.2s | 4 格 PASS |
+| 主面板角色键开窗 → Esc | visible 1→0 PASS |
+| Enter 聚焦/发送聊天 | 回显 PASS |
+
+已知残留 (非 A 路): 聊天本地显示两行、其中一行名字重复 (chat.js/game.js 双渲染,
+ 待 par-hud 查); ServerCore 启动期 ~11s 才回 GoodVersion, 登录需等 DB 就绪。
+
+### 环境事故记录
+
+- 23:0x ServerCore (pid 1029909) 80% CPU 死亡螺旋, 23:2x 由 par-move 经 hub
+  拉起 **servercore-7k** (hub daemon, cwd=zircon/Debug/ServerCore) — 目前稳定
+  在跑, 各路共用, 勿重复起服。
+- 346MB 内存 chromium ×多路并发 CDP 时注意: spawn 的 chrome 要显式 kill,
+  否则进程组回收时挂起 bash 调用 300s。
+
+### A路未提交在制品 (par-win 吸收或删, 不代提交)
+
+- `dialogs.js` (34KB, 未跟踪): 15 个 par-win 未覆盖窗口的接线草稿
+  (belt/currency/autopotion/filterdrop/fortune/questtracker/dungeonfinder/
+  companion/gamestore/bigmap/mail/ranking/help/chatoptions/menu/exit),
+  基于旧 uitree DXItemCell + gamedata.js API — 与 dxgrid/itemstore 不兼容,
+  建议按 win-*.js 模式重写吸收, 或确认无用后删除。
+- `gamedata.js` (未跟踪): GameData 状态镜像, 已被 itemstore.js 取代 → 可删。
+- `uitree.js` 未提交 diff (+136 行): A路的 DXItemCell graft, 仅 dialogs.js 用。
+  par-win 已有 dxgrid.js 版本 — 若吸收 dialogs.js 则一并重写, 否则还原该 diff。
