@@ -280,6 +280,32 @@ export async function winNpc(scene, store, reg) {
   });
   retrievePanel.addControl(retrieveLabel, refreshBtn, retrieveBtn);
   w.addControl(retrievePanel);   // 挂载 (与 repairPanel 同位)
+  // ---------- R19: 精炼系回包反馈 (GameScene.cs:2691-2752 对照) ----------
+  // 物品消耗由 itemstore itemsChanged 通道统一处理 (ConsumeNpcLinks→OnItemsChanged 同源);
+  // 这里只做聊天反馈 + 面板态同步。
+  conn.addEventListener('npcRefineResult', (e) => {   // OnNPCRefine :2699-2704
+    scene.addChat(e.detail?.success ? '精炼请求已受理，请稍后取回' : '精炼请求被拒绝', 'system');
+  });
+  conn.addEventListener('npcMasterRefineResult', (e) => {   // OnNPCMasterRefine :2706-2711
+    scene.addChat(e.detail?.success ? '大师精炼成功' : '大师精炼失败', 'system');
+  });
+  conn.addEventListener('npcRefinementStoneResult', () => {   // OnNPCRefinementStone :2691-2697
+    scene.addChat('精炼石制作请求已受理', 'system');
+  });
+  conn.addEventListener('npcWeaponCraftResult', (e) => {   // OnNPCWeaponCraft :2734-2739
+    scene.addChat(e.detail?.success ? '武器打造成功' : '武器打造失败', 'system');
+  });
+  conn.addEventListener('npcAccessoryLevelUpResult', () => {   // OnNPCAccessoryLevelUp :2713-2719 (仅解锁, 无聊天)
+  });
+  conn.addEventListener('npcAccessoryUpgradeResult', (e) => {   // OnNPCAccessoryUpgrade :2721-2722
+    scene.addChat(e.detail?.success ? '饰品强化成功' : '饰品强化失败', 'system');
+  });
+  conn.addEventListener('npcRefineRetrieveResult', (e) => {   // OnNPCRefineRetrieve :2741-2746 RemoveRefine
+    const idx = e.detail?.index;
+    if (idx != null) refineList = refineList.filter(x => x.index !== idx);
+    if (retrievePanel.visible) renderRetrieve();
+    scene.addChat(`精炼物品 #${idx} 已取回`, 'system');
+  });
 
   // ---------- 单链接面板 (NPCAdvancedPanels.cs:621-633 BuildSingleGrid/Target + SubmitSingle:997) ----------
   // ItemFragment(多格)/AccessoryReset/WeddingRing/AccessoryUpgrade — 背包拖入或点击导入, 提交发真包。
@@ -651,6 +677,25 @@ export async function winNpc(scene, store, reg) {
       } }));
   });
   w.addControl(companionPanel);
+  // R19: 伙伴结果同步 (OnCompanionRetrieve/Release GameScene.cs:2612-2627 对照)
+  conn.addEventListener('companionRetrieveResult', (e) => {
+    const idx = e.detail?.index;
+    const list = store.info?.companions ?? [];
+    if (idx != null) store.info.companion = idx;   // GameScene.Companion = Companions.FirstOrDefault(Index)
+    companionSel = list.findIndex(c => c?.index === idx);
+    if (companionPanel.visible) renderCompanions();
+    scene.addChat(`伙伴 #${idx} 已取回`, 'system');
+  });
+  conn.addEventListener('companionReleaseResult', (e) => {   // RemoveAll + RemoveCompanion
+    const idx = e.detail?.index;
+    const list = store.info?.companions ?? [];
+    const at = list.findIndex(c => c?.index === idx);
+    if (at >= 0) list.splice(at, 1);
+    if (store.info.companion === idx) store.info.companion = 0;
+    companionSel = -1;
+    if (companionPanel.visible) renderCompanions();
+    scene.addChat(`伙伴 #${idx} 已放生`, 'system');
+  });
 
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');

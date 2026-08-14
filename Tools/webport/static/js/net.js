@@ -1224,6 +1224,42 @@ export const S = {
   CurrencyChanged(r) { return { currencyIndex: r.int32(), amount: r.int64() }; },
   FortuneUpdate(r) { return { fortunes: r.list(readClientFortuneInfo) }; },
   RefineList(r) { return { list: r.list(readClientRefineInfo) }; },
+  // ---- NPC 精炼系回包 (R19: ServerPackets.cs:676-728/1364-1375 + 1180-1190) ----
+  NPCRefineResult(r) {   // S.NPCRefine :684
+    const o = { refineType: r.byte(), refineQuality: r.byte() };
+    o.ores = r.list(readCellLinkInfo); o.items = r.list(readCellLinkInfo); o.specials = r.list(readCellLinkInfo);
+    o.success = r.bool();
+    return o;
+  },
+  NPCMasterRefineResult(r) {   // S.NPCMasterRefine :693
+    const o = {};
+    o.fragment1s = r.list(readCellLinkInfo); o.fragment2s = r.list(readCellLinkInfo);
+    o.fragment3s = r.list(readCellLinkInfo); o.stones = r.list(readCellLinkInfo); o.specials = r.list(readCellLinkInfo);
+    o.success = r.bool();
+    return o;
+  },
+  NPCRefinementStoneResult(r) {   // S.NPCRefinementStone :676 (无 Success, 消耗由 ItemsChanged 表达)
+    return {
+      ironOres: r.list(readCellLinkInfo), silverOres: r.list(readCellLinkInfo),
+      diamondOres: r.list(readCellLinkInfo), goldOres: r.list(readCellLinkInfo),
+      crystal: r.list(readCellLinkInfo),
+    };
+  },
+  NPCWeaponCraftResult(r) {   // S.NPCWeaponCraft :1364
+    const o = {};
+    for (const k of ['template', 'yellow', 'blue', 'red', 'purple', 'green', 'grey']) o[k] = readCellLinkInfo(r);
+    o.success = r.bool();
+    return o;
+  },
+  NPCAccessoryLevelUpResult(r) {   // S.NPCAccessoryLevelUp :712
+    return { target: readCellLinkInfo(r), links: r.list(readCellLinkInfo) };
+  },
+  NPCAccessoryUpgradeResult(r) {   // S.NPCAccessoryUpgrade :721
+    return { target: readCellLinkInfo(r), refineType: r.byte(), success: r.bool() };
+  },
+  NPCRefineRetrieveResult(r) { return { index: r.int32() }; },   // :721/743
+  CompanionRetrieveResult(r) { return { index: r.int32() }; },   // :1180
+  CompanionReleaseResult(r) { return { index: r.int32() }; },    // :1184
   Inspect(r) {
     const o = { name: r.string(), guildName: r.string(), guildRank: r.string(), guildFlag: r.int32(), guildColour: r.int32(), partner: r.string(), class: r.byte(), level: r.int32(), gender: r.byte() };
     o.stats = readStats(r); o.hermitStats = readStats(r); o.hermitPoints = r.int32();

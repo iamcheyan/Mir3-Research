@@ -554,3 +554,28 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 
 ### E路回归: 557 ✓; 无冲突; 已 push。A 路在制品: net.js/win-npc.js/ws.js
 (NPC 终批后续), 不代提交。NPC 面板全类型闭环 = P2 收尾信号。
+
+## R19 — par-move (A路): NPC 精炼系回包反馈 (S 解析×9 + UI 联动) — 闭环"发包→真服→反馈"
+
+- `对照` GameScene.cs: OnNPCRefine :2699 / OnNPCMasterRefine :2706 / OnNPCRefinementStone
+  :2691 / OnNPCWeaponCraft :2734 / OnNPCAccessoryLevelUp :2713 (仅解锁) /
+  OnNPCAccessoryUpgrade :2721 / OnNPCRefineRetrieve :2741 (RemoveRefine) /
+  OnCompanionRetrieve/Release :2612-2627; ConsumeNpcLinks :2674 (物品消耗统一走
+  ItemsChanged 通道 — web 侧 itemstore 已有, 同源)。
+- `协议` net.js S 解析 +9 (NPCRefineResult/MasterRefine/RefinementStone/WeaponCraft/
+  AccessoryLevelUp/AccessoryUpgrade/RefineRetrieve/CompanionRetrieve/CompanionRelease,
+  ServerPackets.cs:676-728/1364-1375/1180-1190 逐字段); ws.js 监听表 +9 行。
+- `实现` win-npc.js: 7 精炼系监听 (聊天反馈, 精炼取回同步删 refineList 行并重渲染);
+  2 伙伴监听 (Release: store.info.companions splice + 重渲染; Retrieve: companion=
+  index + 选中态同步)。
+- `CDP 验收` (/tmp/pm-smoke/pmv-r19.mjs)
+  - E2E 真服: 注入材料→分桶→选攻击→C.NPCMasterRefine 254 出站→**真服回包
+    S.NPCMasterRefine→解析→监听→聊天 "大师精炼失败"** (假物品被服务端正确拒绝,
+    反馈链路与 Godot ReceiveChat 对齐);
+  - 事件注入: npcRefineRetrieveResult{101} → refineList 行删除 (removed101/kept102) +
+    聊天; companionReleaseResult{7} → 列表收缩; companionRetrieveResult{8} → ● 选中。
+  - 回归: pmv-single 全绿 (SINGLE×4/SUBMIT 253/REFINE-P 257/MASTER 254/STONECRFT
+    261+274) + pmv-buff-qt ALL-9/REFINE/CONSIGN/MAIL 全绿。
+- 排障记录: CDP 探针进 GameScene 后 Data.loadAll 尚在顺序拉取 (manifest→…→items),
+  itemsById 空 → 导入分桶 0 — 非 bug, 探针需等数据就绪; 另 Runtime.evaluate 需
+  awaitPromise (returnPromise 无效 → promise 序列化成 {})。
