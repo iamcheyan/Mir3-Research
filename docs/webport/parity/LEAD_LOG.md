@@ -660,3 +660,17 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `CDP 验收` 套件 +RMVLOCK 组 → 10/10: 路由入桶→格锁→点击 · 行移除→解锁+桶清空。
 - 教训: 单行塞长语句时 // 注释必须放语句末 — 本次注释吞了 `renderSingle(); };`
   导致文件断裂 (node --check 即刻捕获, 未上线)。
+
+## R24 — par-move (A路): 分解规则补齐 (CanFragment/FragmentCost/RefreshFragment)
+
+- `缺口` ItemFragment 面板 (dtype 10) 此前"从背包导入"无过滤全收, 无费用合计 —
+  Godot BuildItemFragment :355-382 有 CanFragment 过滤 (SelectAll :364) +
+  FragmentCost 费用条 + 余额门闩 (:371-381)。
+- `实现` win-npc.js: fragInfo() 拉 /res/data/db/ItemInfo.json (Rarity/RequiredAmount/
+  ItemType) 建缓存 (showPage 预热 + importSingle 兜底 await); canFragmentSync
+  (Globals.cs:622: NonRefinable|Worthless flag 位, Common req<=15 拒, 7 装备类型白名单);
+  fragmentCost (:653: Common req*10000/9, Superior /2, Elite 定额表); renderSingle
+  ItemFragment 分支显示 "费用: N 金币" + 不足红字 + submit 三重门闩 (total>0 && <=balance)。
+- `回归捕获` SUBMIT253 原用物品 id=1 (Gold) 被新过滤正确拒绝 → rows:0 — 测试数据
+  改 549 (裁决之锤 Superior Weapon, 190,000 = 38*10000/2 逐字节对表) + 探针抬余额。
+- `CDP 验收` 套件 +FRAGMENT 组 → 11/11: 武器入列 + Gold/书拒 + 费用条精确金额。

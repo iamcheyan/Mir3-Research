@@ -106,7 +106,10 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
 
 // ============ 2. ItemFragment 提交 → C.NPCFragment 253 ============
 {
-  const r = await npcRun(171, ['分解', '从背包导入', '提交'], [[0, 1, 1]], `
+  const r = await npcRun(171, ['分解', '从背包导入', '提交'], [[0, 549, 1]], `
+    if (!store.currency(0)) store.currencies.push({ currencyIndex: 0, amount: 0n });
+    store.currency(0).amount = 999999n;   // 抬高余额满足 RefreshFragment 门闩 (:379)
+    await new Promise(r => setTimeout(r, 400));   // 等 fragInfo 预热 (showPage 异步)
     btns.find(b => b.el.textContent.includes('从背包导入'))?.onClick?.();
     await new Promise(r => setTimeout(r, 300));
     const rows = [...pc.el.querySelectorAll('div')].filter(d => d.textContent.startsWith('·')).length;
@@ -297,6 +300,22 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
     return { routed, lockedAfterRoute, unlockedAfterRemove, bucketEmpty };`);
   const d = typeof r === 'object' ? r : {};
   report('RMVLOCK', d.routed && d.lockedAfterRoute && d.unlockedAfterRemove && d.bucketEmpty, r);
+}
+
+// ============ 11. 分解规则 (CanFragment/FragmentCost :622/:653 + RefreshFragment :371) ============
+{
+  // 549=裁决之锤 Superior Weapon req38 → cost 38*10000/2=190000, 可分解; 1=Gold Currency → 拒
+  const r = await npcRun(171, ['分解', '从背包导入', '提交'], [[0, 549, 1], [1, 1, 100], [2, 2, 1]], `
+    btns.find(b => b.el.textContent.includes('从背包导入'))?.onClick?.();
+    await new Promise(r => setTimeout(r, 600));   // 等 fragInfo 预热+重渲染
+    const boxTxt = pc.el.querySelector('div[style*="overflow-y"]')?.textContent ?? '';
+    const labelTxt = pc.el.textContent.match(/费用[^）]*/) ?? [''] ;
+    const tookWeapon = boxTxt.includes('裁决之锤');
+    const rejectedGold = !boxTxt.includes('Gold') && !boxTxt.includes('金币 x');
+    const rejectedBook = !boxTxt.includes('基本剑术') && !boxTxt.includes('剑术');
+    return { tookWeapon, rejectedGold, rejectedBook, label: labelTxt[0].slice(0, 40) };`);
+  const d = typeof r === 'object' ? r : {};
+  report('FRAGMENT', d.tookWeapon && d.rejectedGold && d.rejectedBook && /费用/.test(d.label ?? ''), r);
 }
 
 // ---- 汇总 ----

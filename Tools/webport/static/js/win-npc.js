@@ -335,12 +335,47 @@ export async function winNpc(scene, store, reg) {
     WeddingRing: ['制作结婚戒指 (放入 1 枚戒指)', 1, (links) => conn.sendMarriageMakeRing(links[0].slot)],
     AccessoryRefineUpgrade: ['强化饰品 (放入 1 件)', 1, (links) => conn.sendNPCAccessoryUpgrade(links[0], 0)],   // RefineType.None=0, 页面选单 P3
   };
-  function importSingle() {
+  // ---- 分解规则 (Globals.cs:622 CanFragment / :653 FragmentCost) ----
+  let fragInfoCache = null;   // Index → {rarity, requiredAmount} (ItemInfo.db 快照)
+  async function fragInfo(infoIndex) {
+    if (fragInfoCache == null) {
+      try {
+        const d = await fetch('/res/data/db/ItemInfo.json').then(r => r.json());
+        fragInfoCache = new Map(d.rows.map(r => [r.Index, { rarity: r.Rarity, requiredAmount: r.RequiredAmount ?? 0, itemType: r.ItemType }]));
+      } catch { fragInfoCache = new Map(); }
+    }
+    return fragInfoCache.get(infoIndex) ?? null;
+  }
+  function canFragmentSync(it, fi) {   // :622-651 (flags: NonRefinable=8? — web it.flags 位由 itemstore 锁定/婚姻位管理; Worthless=4/NonRefinable=8 按服务端 UserItemFlags)
+    if (!it || !fi) return false;
+    if ((it.flags ?? 0) & 8 || (it.flags ?? 0) & 4) return false;   // NonRefinable | Worthless
+    if (fi.rarity === 'Common' && fi.requiredAmount <= 15) return false;
+    return ['Weapon', 'Armour', 'Helmet', 'Necklace', 'Bracelet', 'Ring', 'Shoes'].includes(fi.itemType);
+  }
+  function fragmentCost(fi) {   // :653-705
+    if (!fi) return 0;
+    const FRAG_TYPES = ['Weapon', 'Armour', 'Helmet', 'Necklace', 'Bracelet', 'Ring', 'Shoes'];
+    if (fi.rarity === 'Common') return FRAG_TYPES.includes(fi.itemType) ? Math.trunc(fi.requiredAmount * 10000 / 9) : 0;
+    if (fi.rarity === 'Superior') return FRAG_TYPES.includes(fi.itemType) ? Math.trunc(fi.requiredAmount * 10000 / 2) : 0;
+    if (fi.rarity === 'Elite') {
+      if (fi.itemType === 'Weapon' || fi.itemType === 'Armour') return 250000;
+      if (fi.itemType === 'Helmet') return 50000;
+      if (fi.itemType === 'Necklace' || fi.itemType === 'Bracelet' || fi.itemType === 'Ring') return 150000;
+      if (fi.itemType === 'Shoes') return 30000;
+    }
+    return 0;
+  }
+  async function importSingle() {
     if (!singleMode) return;
+    if (singleMode === 'ItemFragment' && fragInfoCache == null) await fragInfo(0);   // 规则表未就绪先拉 (SelectAll 依赖)
     const max = SINGLE_DEFS[singleMode][1];
     singleLinks = [];
     for (const [slot, it] of [...store.items(GRID.INVENTORY).entries()].sort((a, b) => a[0] - b[0])) {
       if (!it) continue;
+      if (singleMode === 'ItemFragment') {   // SelectAll 只收 CanFragment (:364-367)
+        const fi = fragInfoCache?.get(it.infoIndex);
+        if (!canFragmentSync(it, fi)) continue;
+      }
       singleLinks.push({ gridType: GRID.INVENTORY, slot, count: it.count ?? 1 });
       if (singleLinks.length >= max) break;
     }
@@ -361,7 +396,19 @@ export async function winNpc(scene, store, reg) {
       singleBox.appendChild(d);
     }
     if (!singleLinks.length) singleBox.textContent = '（点"从背包导入"或稍后拖入）';
-    singleSubmit.enabled = singleLinks.length > 0;
+    if (singleMode === 'ItemFragment') {   // RefreshFragment :371-381: 费用合计 + 余额门闩
+      let total = 0;
+      for (const l of singleLinks) {
+        const it = store.items(l.gridType).get(l.slot);
+        total += fragmentCost(fragInfoCache?.get(it?.infoIndex));
+      }
+      const balance = Number(store.gold());
+      singleLabel.text = `分解物品 (可多件) — 费用: ${total.toLocaleString()} 金币${total > balance ? ' (金币不足)' : ''}`;
+      singleLabel.textColour = total > balance ? [255, 80, 80, 255] : [255, 216, 77, 255];
+      singleSubmit.enabled = singleLinks.length > 0 && total > 0 && total <= balance;
+    } else {
+      singleSubmit.enabled = singleLinks.length > 0;
+    }
   };
   // ---- 提交锁 (BeginSubmit :1039-1060 / CompleteLinks :1062 / CancelLinks :560 对照) ----
   // 提交期锁背包来源格 (拖不动), S 回包 (CompleteLinks) 或面板重配 (CancelLinks) 解锁;
@@ -953,6 +1000,7 @@ export async function winNpc(scene, store, reg) {
       singleLinks = [];
       singlePanel.location = [0, w.size[1]];
       singlePanel.visible = true;
+      if (singleModeName === 'ItemFragment' && fragInfoCache == null) void fragInfo(0).then(renderSingle);   // 预热规则表后重渲染 (费用条)
       renderSingle();
     }
     // 精炼面板 (BuildRefine: dtype 3)
