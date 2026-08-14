@@ -606,3 +606,13 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   PUT 范围吞行 → 模块静默安装失败, CDP warn 捕获定位) — 教训: 注释行清理
   必须重新 node --check + CDP 冒烟, registry 的 console.warn 吞错要用
   Page.addScriptToEvaluateOnNewDocument 捕获才能看到。
+
+## 2026-08-15 04:4x — R13 合并轮 (par-keys)
+
+### 新增 commit (1)
+
+- `18f82dc` par-move R20: NPC 提交锁生命周期 (BeginSubmit/CompleteLinks/
+  CancelLinks 三态), CDP 锁断言 4/4
+
+### E路回归: 557 ✓; 无冲突; 已 push。A 路自述: 六提交回归全绿,
+下一步"真机对照验收或继续剩余长尾" — 接近终态。
