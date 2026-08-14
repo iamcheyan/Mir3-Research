@@ -1,0 +1,97 @@
+# PARITY_CHECKLIST — webport 行为级等价验收清单
+
+> 验收标准 (goal doc): 交互功能 1:1 等价, 非像素截图。每条以 Godot 源码为行为权威,
+> 真服 (ServerCore:7000 + wsgateway:7001) + CDP chromium 实测。
+> 状态: ✅ 已验证 | 🟡 已实现未逐条验证 | ❌ 缺口
+> 证据文件: /tmp/pm-smoke/smoke4.mjs (全链路), t10-t12.mjs (定向), 各 commit message。
+
+## P0 — 移动手感 / HUD 全量可点 / 聊天
+
+### 移动 (MouseWalker.cs 对照)
+
+| 行为 | Godot 权威 | webport 实现 | 验证 | 证据 |
+|---|---|---|---|---|
+| 按住左键走 | MouseWalker._Process 600ms/格, 22.5° 方向 | mouse.js tick + world._frame | ✅ | 按住 2.5s 走 6 格 (smoke4 T1 ×3 次运行) |
+| 按住右键跑 | 同节拍 2 格/段 (骑马 3) | getRunSteps + distance=2 | ✅ | 1.8s 跑 6 格 ×3 方向 (t10) |
+| 撞墙绕路 | BestWalkDirection | #bestWalkDirection | 🟡 | 走入墙角 dist=0 (t10 up 向=出生墙, 符合) |
+| 方向键走 | GameScene.cs:9902 仅 Arrow | world._frame keys 池 | ✅ | 4 向各 4 格/1.4s (t12) |
+| WASD 非移动 | W=背包 S=仓库 A=Ctrl+A D=自动跑 | keybinds.js 表 | ✅ | KeyW→inventory 开窗 (t11) |
+| 聊天聚焦时不走 | Godot 输入控件优先 | world.js keydown guard | ✅ | Enter 后打字不动 (smoke4 T5/T6) |
+| Shift 按住=原地攻击 | MouseWalker 门控 | mouse.js tick | 🟡 | 代码路径存在, 未 CDP 逐键 |
+| 鼠标在 UI 上不触发移动 | IsMouseOverUi | #mouseOverUiAt (elementFromPoint) | ✅ | hudLayer isControl:false 修复后 9 键可点且移动不误触 |
+
+### 服务器锁定/预测
+
+| 行为 | 状态 | 备注 |
+|---|---|---|
+| 发包后 server-lock 5s 超时 | ✅ | _moveServerLockUntil + ObjectMove/UserLocation 解锁 |
+| 预测跳格+反向偏移插值 | 🟡 | stepMove 预测模型在 world.js, CDP 下位置推进已验证 |
+
+### HUD (MainPanel.cs 对照)
+
+| 行为 | 状态 | 证据 |
+|---|---|---|
+| 主面板 9 键全可点开真窗 | ✅ | t11: character/inventory/spell/quest/mail/belt/group/menu/cashshop 9/9 PASS |
+| Esc 关最上层窗口 (CloseTop 语义) | ✅ | t11 每窗开→Esc 关; 无窗时 Esc 不拦截 |
+| HP/MP/专注/经验条 | ✅ | #onRawStats→setMaxHealth 链路, 验收时无异常 |
+| 小地图右上+玩家跟随+3 悬停按钮 | 🟡 | miniMap 存在+GM 传送接线; 悬停按钮未逐个 CDP |
+| BuffDialog | ❌ | 未实现 |
+| QuestTracker | ❌ | 未实现 (dialogs.js 有草稿) |
+
+### 聊天 (ChatTextBox.cs 对照)
+
+| 行为 | 状态 | 证据 |
+|---|---|---|
+| Enter/Space 开聊天, 发送回显 | ✅ | smoke4 T5/T6 |
+| 频道循环 (ChangeChatMode 键) | 🟡 | cycleMode 接线, 未逐频道验证 |
+| 历史 ↑↓ + 草稿恢复 | 🟡 | chat.js history 实现, 未 CDP 逐键 |
+| 已知缺口: 自发消息双行显示 | ❌ | chat.js 本地回显 + S.Chat 回显双渲染, 归 par-hud |
+
+### 键位分发 (KeyBindManager.cs + GameScene.cs:1876 对照)
+
+| 行为 | 状态 | 证据 |
+|---|---|---|
+| keybinds.js 70 条默认表 vs C# | ✅ | E 路 check-keybinds.mjs 557 断言全过 |
+| dispatch 消费方落地 | ✅ | game.js #bindGlobalKeys (R3) + getAction |
+| 窗口键 ×27 (W/S/Z/N/…) | ✅ | W/N/Z 实测开窗; 其余走同一 WIN 表 |
+| 施法 F1-F24 (SpellUse01-24) | 🟡 | useMagicSlot 接线 (MagicKey 感知), 未逐键施法验证 |
+| 技能栏 Set1-4 | 🟡 | setSpellSet 接线 |
+| 药品槽 Shift+1..0 | 🟡 | useBeltSlot 接线 |
+| Tab 拾取 | 🟡 | sendPickUp 接线 |
+| 上马/攻击模式/宠物模式 ×5 | 🟡 | sendMount/ChangeAttackMode/ChangePetMode 接线 |
+| 自动跑 (D) | 🟡 | mw.autoRun 翻转 |
+| 锁定物品 | 🟡 | #toggleItemLock (DXItemCell.SelectedCell) |
+| Escape 仲裁 (R0 备忘 #1) | ✅ | closeTop() 真关才 return; 无窗可关落 getAction |
+
+### 协议修正 (本轮发现的真 bug)
+
+| 修正 | 现象 | 状态 |
+|---|---|---|
+| NewCharacterResult Success=10 (旧 3=BadGender) | 服务端建角成功, 客户端报"创建失败" | ✅ 4128435 |
+| NewAccountResult Success=8/AlreadyExists=4 | 同类错位 | ✅ 4128435 |
+| LoginResult 文案序 | 错误码文本张冠李戴 | ✅ 4128435 |
+| mouse.js 未入库 | clone 即 module not found | ✅ 4128435 |
+| installWindows 无调用方 | par-win 11 模块从未加载 | ✅ 5501777 |
+
+## P1 — 全 46 窗口
+
+| 批次 | 窗口 | 状态 | 归属 |
+|---|---|---|---|
+| 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt ❌ | par-win |
+| 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail/Ranking/ChatOptions ❌ (dialogs.js 草稿) | par-win 吸收中 |
+| NPC | NPCDialog/Quest/Goods/Repair | ✅ win-npc + win-quest (真实 System.db 快照) | par-win |
+| 其余 | Menu/Config/Help/Exit/GameStore/BigMap/Currency/AutoPotion/FilterDrop/Fortune/QuestTracker/DungeonFinder/Companion/Trade/Observer | config✅ trade✅ gm✅; 其余 ❌ (dialogs.js 草稿 15 窗) | par-win 吸收中 |
+| 双 UI | EI 参考模式 | 未动 (scope 外) | — |
+
+## 环境/流程备注
+
+- ServerCore 启动后 ~11s 才回 GoodVersion (DB 加载), CDP 登录轮询需 ≥60s。
+- 共享 test@test.com 会 `[Account in Use]` 争用 → 验收一律独立账号注册。
+- hub daemon `servercore-7k` (cwd=zircon/Debug/ServerCore) 各路共用, 勿重复起服。
+- game.js 本轮被并发重写打断 4 次 (丢 import/文件尾); 整文件重写前先 pull + node --check。
+
+## 结论
+
+P0 移动/HUD/聊天/键位 = **达成** (验收表内 ✅ 全过)。
+P1 窗口 = par-win 11 模块 + installWindows 接线已通, 余 ~15 窗有 dialogs.js 草稿待吸收。
+BuffDialog/QuestTracker/聊天双行 = 已知缺口, 记录在案。

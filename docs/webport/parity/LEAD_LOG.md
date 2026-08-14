@@ -155,3 +155,13 @@
 - `gamedata.js` (未跟踪): GameData 状态镜像, 已被 itemstore.js 取代 → 可删。
 - `uitree.js` 未提交 diff (+136 行): A路的 DXItemCell graft, 仅 dialogs.js 用。
   par-win 已有 dxgrid.js 版本 — 若吸收 dialogs.js 则一并重写, 否则还原该 diff。
+
+### R3 续 (~00:1x) — installWindows 断线修复 (commit 5501777)
+
+- **根因**: par-win 的 `installWindows` 全仓库无调用方 — 11 个 win-*.js 从未加载,
+  一切开窗走 fallback。game.js 构造即 `installWindows(this)`, #openWindow 改
+  async 等安装完再决定接管/兜底。
+- CDP 复验: 主面板 9/9 按钮开真窗+Esc 关; 键位 W/N/Z 与默认表一致; 方向键 4 向
+  4 格/1.4s。**E 路: dispatch 已可端到端逐键回归。**
+- 详表: `docs/webport/parity/PARITY_CHECKLIST.md` (P0 达成; P1 余 ~15 窗待
+  par-win 吸收 dialogs.js 草稿; BuffDialog/QuestTracker/聊天双行=已知缺口)。
