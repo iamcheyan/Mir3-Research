@@ -1121,6 +1121,9 @@ export class World {
     this.autoRun = false;
 
     addEventListener('keydown', (ev) => {
+      // Godot 语义: 输入控件聚焦时键盘事件归控件 (ChatTextBox 打字), 不驱动移动
+      const t = ev.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
       this.keys.add(ev.code);
       this.shiftHeld = ev.shiftKey;
       this.altHeld = ev.altKey;
