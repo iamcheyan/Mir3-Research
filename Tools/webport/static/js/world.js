@@ -88,9 +88,8 @@ export class World {
       this.hooks.onPosChange?.(this.player);
     });
     c.addEventListener('chat', (e) => {
-      const p = e.detail;
-      const o = this.objects.get(p.objectID);
-      this.addChat(o?.name ? `${o.name}: ${p.message}` : p.message);
+      // 服务端 Text 已含发送者名 (TestHero: xxx), 不再重复前缀
+      this.addChat(e.detail.text);
     });
     c.addEventListener('mapChanged', async (e) => {
       if (!this.player) return;
