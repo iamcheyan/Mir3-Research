@@ -1,5 +1,5 @@
 {
-  "count": 34,
+  "count": 38,
   "rows": [
     {
       "Index": 9,
@@ -1341,6 +1341,198 @@
       "Tasks": [
         {
           "Index": 74,
+          "Name": null
+        }
+      ]
+    },
+    {
+      "Index": 63,
+      "_Identity": "望海楼之约（战士）",
+      "QuestName": "望海楼之约（战士）",
+      "QuestType": "Story",
+      "AcceptText": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "ProgressText": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "CompletedText": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "ArchiveText": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "Requirements": [
+        {
+          "Index": 138,
+          "Name": null
+        },
+        {
+          "Index": 139,
+          "Name": null
+        },
+        {
+          "Index": 140,
+          "Name": null
+        }
+      ],
+      "StartNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "FinishNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "Rewards": [
+        {
+          "Index": 141,
+          "Name": null
+        },
+        {
+          "Index": 142,
+          "Name": null
+        }
+      ],
+      "Tasks": [
+        {
+          "Index": 75,
+          "Name": null
+        }
+      ]
+    },
+    {
+      "Index": 64,
+      "_Identity": "望海楼之约（法师）",
+      "QuestName": "望海楼之约（法师）",
+      "QuestType": "Story",
+      "AcceptText": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "ProgressText": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "CompletedText": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "ArchiveText": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "Requirements": [
+        {
+          "Index": 141,
+          "Name": null
+        },
+        {
+          "Index": 142,
+          "Name": null
+        },
+        {
+          "Index": 143,
+          "Name": null
+        }
+      ],
+      "StartNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "FinishNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "Rewards": [
+        {
+          "Index": 143,
+          "Name": null
+        },
+        {
+          "Index": 144,
+          "Name": null
+        }
+      ],
+      "Tasks": [
+        {
+          "Index": 76,
+          "Name": null
+        }
+      ]
+    },
+    {
+      "Index": 65,
+      "_Identity": "望海楼之约（道士）",
+      "QuestName": "望海楼之约（道士）",
+      "QuestType": "Story",
+      "AcceptText": "万事通在望海楼设宴相邀。[PLAYERNAME]携本线的神舰线索赴约，与万事通对谈，拼出老矿工\"三态\"之谜，获赠船歌谣残片，正式接入共享主线。",
+      "ProgressText": "前往比奇城望海楼，与万事通会面（0/1）。",
+      "CompletedText": "三态之谜拼成：老矿工陈永年，肉身在比奇矿、神志在废矿、魂锁在白日门矿井——同一人，三种状态，全是\"船\"留下的伤。万事通把一枚旧铜哨推到你面前：\"这是船上的规矩。船，要开了。\"",
+      "ArchiveText": "望海楼之约，[PLAYERNAME]拼出老矿工三态之谜，得知\"海上大船是牢笼\"的真相，自万事通处获赠船歌谣残片。共享主线自此开启。",
+      "Requirements": [
+        {
+          "Index": 144,
+          "Name": null
+        },
+        {
+          "Index": 145,
+          "Name": null
+        },
+        {
+          "Index": 146,
+          "Name": null
+        }
+      ],
+      "StartNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "FinishNPC": {
+        "Index": 155,
+        "Name": "01 / 万事通 / 14Doctor_Kugkyung"
+      },
+      "Rewards": [
+        {
+          "Index": 145,
+          "Name": null
+        },
+        {
+          "Index": 146,
+          "Name": null
+        }
+      ],
+      "Tasks": [
+        {
+          "Index": 77,
+          "Name": null
+        }
+      ]
+    },
+    {
+      "Index": 66,
+      "_Identity": "刺杀剑术觉醒",
+      "QuestName": "刺杀剑术觉醒",
+      "QuestType": "Story",
+      "AcceptText": "老矿工陈永年兑现\"一刺保命\"的承诺：请[PLAYERNAME]以骷髅祭坛旧址为靶，猎取骷髅战将的骨粉，磨砺\"洞穴里活命的一刺\"。",
+      "ProgressText": "前往骷髅祭坛旧址，击杀骷髅战将（0/6），收集骨粉（0/3）。",
+      "CompletedText": "骨粉入怀，老矿工以矿镐为剑，演示那记千年矿洞里磨出来的刺杀：\"怪物扑来时，怕的人先死。这一刺，要快，要狠，要往它最软的地方去。\"",
+      "ArchiveText": "老矿工将毕生保命的一刺传予[PLAYERNAME]，刺杀剑术习得。矿洞之约，兑现。",
+      "Requirements": [
+        {
+          "Index": 147,
+          "Name": null
+        },
+        {
+          "Index": 148,
+          "Name": null
+        },
+        {
+          "Index": 149,
+          "Name": null
+        }
+      ],
+      "StartNPC": {
+        "Index": 160,
+        "Name": "01 / 龙血先生 / 15Magic_Kugkyung1"
+      },
+      "FinishNPC": {
+        "Index": 160,
+        "Name": "01 / 龙血先生 / 15Magic_Kugkyung1"
+      },
+      "Rewards": [
+        {
+          "Index": 147,
+          "Name": null
+        },
+        {
+          "Index": 148,
+          "Name": null
+        }
+      ],
+      "Tasks": [
+        {
+          "Index": 78,
           "Name": null
         }
       ]
