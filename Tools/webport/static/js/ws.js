@@ -406,6 +406,7 @@ export class GameConnection extends EventTarget {
   sendMailSend(links, recipient, subject, message, gold) { this.send(C.MailSend(links, recipient, subject, message, gold)); }
   sendMailGetItem(index, slot) { this.send(C.MailGetItem(index, slot)); }
   sendMailDelete(index) { this.send(C.MailDelete(index)); }
+  sendMailOpened(index) { this.send(C.MailOpened(index)); }
   sendMarketPlaceConsign(link, price, message = '', guildFunds = false) { this.send(C.MarketPlaceConsign(link, price, message, guildFunds)); }
   sendMarketPlaceCancelConsign(index, count) { this.send(C.MarketPlaceCancelConsign(index, count)); }
   sendMarketPlaceBuy(index, count, guildFunds = false) { this.send(C.MarketPlaceBuy(index, count, guildFunds)); }

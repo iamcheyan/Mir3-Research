@@ -376,3 +376,14 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 
 - A 路 (par-move) CHECKLIST 定稿全✅, 会话仍在做最终复核 (mailbox render/compose)。
   待其终态后: E 路写总验收 `docs/webport/parity/REPORT.md` (计划§五) 并收官。
+
+## R11 — par-move (A路): Mail 窗升级真邮箱 + MailSend BigInt 修复
+
+- `mail` fallback 从"好友列表只读"升级为真邮箱 (CommunicationDialog 语义):
+  S.MailList/MailNew/mailDelete 事件驱动列表 (未读●/金币/附件标记), 点击阅读
+  → C.MailOpened, 右键删除 → C.MailDelete, 写邮件 prompt 链 → C.MailSend。
+- `协议 bug` net.js MailSend gold 参数 int64(BigInt64Array) 传 Number 抛
+  "Cannot convert 0 to a BigInt" — 包从未发出。修: BigInt(gold) 归一。
+  字段序对照 ClientPackets.cs:505-512 (Links/Recipient/Subject/Message/Gold) ✓。
+- `CDP 验收` pmv-buff-qt: 注入 mailList 渲染 ●/金币 100/附物品 全显; 写邮件
+  handler 触发 composeSent:true (真包出站), 0 异常。

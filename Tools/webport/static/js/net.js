@@ -782,7 +782,7 @@ export const C = {
   MailOpened: (index) => new Writer().int32(index).build(ID.C_MAILOPENED),
   MailSend: (links, recipient, subject, message, gold = 0) =>
     new Writer().list(links, (w, l) => w.cellLink(l))
-      .string(recipient).string(subject).string(message).int64(gold).build(ID.C_MAILSEND),
+      .string(recipient).string(subject).string(message).int64(BigInt(gold)).build(ID.C_MAILSEND),
   MailGetItem: (index, slot) => new Writer().int32(index).int32(slot).build(ID.C_MAILGETITEM),
   MailDelete: (index) => new Writer().int32(index).build(ID.C_MAILDELETE),
   // 社交

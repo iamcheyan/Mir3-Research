@@ -584,9 +584,63 @@ export function fallbackWindow(type, scene) {
       for (const q of quests.slice(0, 14)) row(`· 任务#${q.index} ${q.complete ? '[已完成]' : '[进行中]'}`);
       break;
     }
-    case 'mail': {
-      row(`好友 ${(info.friends ?? []).length} 人`, '#ffd573');
-      for (const f of (info.friends ?? []).slice(0, 14)) row(`· ${f.name} ${f.online ? '(在线)' : ''}`);
+    case 'mail': {   // CommunicationDialog: 邮箱 (S.MailList/MailNew 推送) + 好友 + 撰写
+      const list = document.createElement('div');
+      list.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:34px;overflow-y:auto;';
+      body.el.appendChild(list);
+      let mails = [];   // ClientMailInfo[] (S.MailList 推送 / S.MailNew 增量)
+      const renderMails = () => {
+        list.replaceChildren();
+        if (!mails.length) {
+          const d = document.createElement('div');
+          d.textContent = '（邮箱为空）';
+          d.style.cssText = 'font:12px \'Noto Sans CJK SC\',sans-serif;color:#aaa;padding:0 4px;';
+          list.appendChild(d);
+        }
+        for (const m of mails) {
+          const d = document.createElement('div');
+          d.textContent = `${m.opened ? '' : '● '}${m.sender ?? '?'}: ${m.subject ?? ''}${m.gold ? ` [金币 ${m.gold}]` : ''}${m.hasItem ? ' [附物品]' : ''}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;cursor:pointer;';
+          d.onclick = () => {
+            alert(`发件人: ${m.sender}\n主题: ${m.subject}\n\n${m.message}`);
+            if (!m.opened) scene.conn.sendMailOpened(m.index);
+            m.opened = true;
+            renderMails();
+          };
+          d.oncontextmenu = (ev2) => {
+            ev2.preventDefault();
+            if (confirm(`删除来自 ${m.sender} 的「${m.subject}」?`)) {
+              scene.conn.sendMailDelete(m.index);
+              mails = mails.filter(x => x.index !== m.index);
+              renderMails();
+            }
+          };
+          list.appendChild(d);
+        }
+      };
+      const onMailList = (e) => { mails = e.detail?.mail ?? []; renderMails(); };
+      const onMailNew = (e) => { if (e.detail?.mail) { mails.unshift(e.detail.mail); renderMails(); } };
+      const onMailDel = (e) => { mails = mails.filter(x => x.index !== e.detail.index); renderMails(); };
+      scene.conn.addEventListener('mailList', onMailList);
+      scene.conn.addEventListener('mailNew', onMailNew);
+      scene.conn.addEventListener('mailDelete', onMailDel);
+      win.onClose = () => {
+        scene.conn.removeEventListener('mailList', onMailList);
+        scene.conn.removeEventListener('mailNew', onMailNew);
+        scene.conn.removeEventListener('mailDelete', onMailDel);
+      };
+      renderMails();
+      // 撰写 (C.MailSend: links, recipient, subject, message, gold)
+      const btnCompose = new DXButton({ text: '写邮件', fontSize: 9, library: 'Interface', index: -1, location: [10, 258], size: [80, 22], onClick: () => {
+        const recipient = prompt('收件人:') ?? '';
+        if (!recipient) return;
+        const subject = prompt('主题:', '') ?? '';
+        const message = prompt('正文:', '') ?? '';
+        scene.conn.sendMailSend([], recipient, subject, message, 0);
+        row('邮件已发送 (若收件人存在)', '#8f8');
+      } });
+      body.addControl(btnCompose);
+      row(`好友 ${(info.friends ?? []).length} 人`, '#888');
       break;
     }
     case 'belt': {
