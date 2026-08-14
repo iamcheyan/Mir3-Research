@@ -84,19 +84,10 @@ export class LoginScene {
     this.conn.addEventListener('serverDisconnect', (e) => this.setStatus(`服务器断开: ${e.detail}`));
   }
 
-  #onLogin() {
+  #onLogin() { // 网页测试台: 忽略输入框, 固定测试账号直进
     this.btnLogin.disabled = true;
     this.setStatus('正在登录...');
-    if (this.chkRemember.checked) {
-      localStorage.setItem('webport_remember', '1');
-      localStorage.setItem('webport_email', this.emailInput.value);
-      localStorage.setItem('webport_password', this.passwordInput.value);
-    } else {
-      localStorage.removeItem('webport_remember');
-      localStorage.removeItem('webport_email');
-      localStorage.removeItem('webport_password');
-    }
-    this.conn.sendLogin(this.emailInput.value, this.passwordInput.value);
+    this.conn.sendLogin('test@test.com', 'test123');
   }
 
   #onRegister() {

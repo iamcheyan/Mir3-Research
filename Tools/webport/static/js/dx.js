@@ -269,7 +269,7 @@ export class DXTextInput extends DXControl {
     super(opts);
     this.input = document.createElement('input');
     this.input.type = opts.secret ? 'password' : 'text';
-    this.input.maxLength = opts.maxLength ?? 0;
+    if (opts.maxLength) this.input.maxLength = opts.maxLength;  // 不传=不限 (DOM maxLength=0 会吞掉全部输入)
     this.input.style.cssText =
       `width:100%;height:100%;border:none;outline:none;background:transparent;` +
       `color:#e8dcc0;font-family:'Noto Sans CJK SC','Noto Sans CJK',sans-serif;` +

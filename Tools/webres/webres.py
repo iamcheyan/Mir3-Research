@@ -797,6 +797,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="webres — 浏览器测试台构建工具")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
+    sub.add_parser("data", help="生成数据清单 (地图/NPC/怪物/技能/物品 + walk 位图)")
+
     p = sub.add_parser("maps", help="批量渲染地图瓦片 (断点续跑)")
     p.add_argument("--stems", default="", help="逗号分隔或 @文件: 只渲染这些图")
     p.add_argument("--limit", type=int, default=0)

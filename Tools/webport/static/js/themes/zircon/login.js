@@ -186,21 +186,10 @@ export class LoginScene {
     });
   }
 
-  #onLogin() { // OnLoginPressed (LoginScene.cs:244-264)
+  #onLogin() { // OnLoginPressed (LoginScene.cs:244-264) — 网页测试台: 忽略输入框, 固定测试账号直进
     this.btnLogin.enabled = false;
     this.setStatus('正在登录...');     // Lang.LoginLoginLabel4
-    const email = this.emailInput.text;
-    const password = this.passwordInput.text;
-    if (this.chkRemember?.checked) {
-      localStorage.setItem('webport_remember', '1');
-      localStorage.setItem('webport_email', email);
-      localStorage.setItem('webport_password', password);
-    } else {
-      localStorage.removeItem('webport_remember');
-      localStorage.removeItem('webport_email');
-      localStorage.removeItem('webport_password');
-    }
-    this.conn.sendLogin(email, password);
+    this.conn.sendLogin('test@test.com', 'test123');
   }
 
   #onRegister() { // OnRegisterPressed (LoginScene.cs:266-271)
