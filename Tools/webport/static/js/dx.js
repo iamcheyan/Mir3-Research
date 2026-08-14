@@ -95,6 +95,11 @@ export class DXImageControl extends DXControl {
     this._hover = false; this._pressed = false;
     this.el.classList.add('dximg');
     this.el.style.imageRendering = 'pixelated';
+    // [shared] opts.onClick 直连 (MainPanel 九键等图标按钮; DXButton 之外的图控也可点)
+    if (opts.onClick) {
+      this.onClick = opts.onClick;
+      this.el.addEventListener('click', () => { if (this._enabled && this.onClick) this.onClick(); });
+    }
     if (opts.mouseFilter === 'ignore') { this.isControl = false; this.applyBase(); }
     if (this._index >= 0) this._renderImg();
   }
