@@ -25,6 +25,7 @@
 | `Tools/web/wilviewer.py` | 8765 | `mir3-venv/bin/python Tools/web/wilviewer.py --root /tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端 --port 8765` | WIL **和 .Zl** 图库浏览器（帧预览/解码走 zlsdk+zldecode） | 客户端图库目录（NAS 或 `zircon/Debug/Client/Data`） |
 | `Tools/uieditor` | 8820 | `cd Tools/uieditor && ./run.sh`（FastAPI，venv） | Godot 客户端 UI 所见即所得编辑器；改完点同步→游戏内 F12 热重载 | `zircon/GodotClient/UI/ui_tree.json`（需先 `--ui-export` 导出） |
 | `Tools/webclient` | 8822 | `cd Tools/webclient && mir3-venv/bin/python serve.py` | **静态世界测试台**：纯前端漫游 627 张地图+GM 满配玩家（详见其 README） | `zircon/Debug/Client/WebData/`（webres 产物，可重建） |
+| `Tools/webport` | 8823 | `cd Tools/webport && /home/tetsuya/mir3-venv/bin/python serve.py` | **双 UI 参考模式网页客户端**（Zircon 主线=DXControl+Interface.Zl 贴图 / EI 参考=webclient 风格，右上角切换）；注册→登录→选人→进比奇→走路全链路真服联调已通 | wsgateway :7001→ServerCore :7000；`zircon/Debug/Client/WebData`；对照文档 `docs/webport/phase1-port-map.md` |
 | `Tools/webres` | 8821 | `serve.py`（原型服务）；`webres.py` 是构建器 | `.Zl/.map → WebP` 资源瘦身管线（WebData 的生产者） | `zircon/Debug/Client/{Data,Map}` |
 | `Tools/wsgateway` | 7001 | `mir3-venv/bin/python wsgateway.py` | WebSocket→TCP 透传网关（浏览器连 ServerCore :7000），登录包已验证 | ServerCore :7000 |
 |`Tools/portal`|8840|`python3 Tools/portal/portal.py`（纯标准库）|工具门户：五工具健康检查/数据源概要/只读标识/移动端等级；未启动服务显示启动命令（`Tools/common/webui` 共享移动壳的宿主之一）|各工具端口 TCP 探测 + `/api/files`·`/api/maps`·`/api/stats` 探针|
@@ -45,9 +46,7 @@
 
 端口全景（改绑定先 `ss -tlnp` 查占用）：80 svc-dashboard / 7000 游戏服 / 7001 wsgateway /
 8765 wilviewer / 8800 dbviewer / 8810 dbeditor / 8820 uieditor / 8821 webres / 8822 webclient /
-8830 yomu / 8831 fudoki / 8840 portal / 8899 mapviewer。
-
-## 三、数据流约定（必须先懂这个再动手）
+8823 webport / 8830 yomu / 8831 fudoki / 8840 portal / 8899 mapviewer。
 
 1. **`Tools/dbeditor/workspace/*.json` = System.db 的导出快照 + 编辑缓冲区**。
    - 由 SystemDbProbe `--json` 导出（每表一个 JSON，`_baseline/` 是基线）；

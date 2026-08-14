@@ -1,0 +1,61 @@
+/* style.css — webport: 逻辑画布 1024x768 (UiScaler 缩放居中) */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: 'Noto Sans CJK SC', 'Noto Sans CJK', sans-serif;
+  -webkit-user-select: none; user-select: none;
+}
+#viewport { position: fixed; inset: 0; background: #000; overflow: hidden; }
+#stage {
+  position: absolute;
+  left: 0; top: 0;
+  width: 1024px; height: 768px;
+  transform-origin: 0 0;
+  background: #000;
+}
+/* 登录/选人阶段 canvas 未挂; 游戏阶段 canvas 在 #stage 内铺满视口 */
+body.ingame #stage {
+  width: 100vw; height: 100vh;
+  transform: none !important;
+}
+
+.dxctl { position: absolute; }
+.dximg {
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.dxlabel {
+  pointer-events: none;
+  text-shadow: none;
+}
+.dxbtn { cursor: pointer; }
+.dxbtn:disabled { cursor: default; }
+input { outline: none; }
+
+/* ---- 双 UI 模式切换器 (shell.js; 两模式共用) ---- */
+#mode-switcher {
+  position: fixed; top: 8px; right: 10px; z-index: 9999;
+  background: #2e2817; color: #d8c690; border: 1px solid #6b5a33; border-radius: 3px;
+  padding: 3px 12px; cursor: pointer; font-size: 12px;
+  font-family: 'Noto Sans CJK SC', 'Noto Sans CJK', sans-serif;
+}
+#mode-switcher:hover { background: #4a3f24; color: #ffe9a8; }
+#mode-menu {
+  position: fixed; top: 36px; right: 10px; z-index: 9999; display: none;
+  background: #2e2817; border: 1px solid #6b5a33; border-radius: 3px;
+  box-shadow: 0 4px 18px #000a; overflow: hidden; min-width: 140px;
+}
+#mode-menu .mode-item {
+  padding: 7px 14px; color: #d8c690; cursor: pointer; font-size: 12px;
+  font-family: 'Noto Sans CJK SC', 'Noto Sans CJK', sans-serif;
+}
+#mode-menu .mode-item:hover { background: #4a3f24; color: #ffe9a8; }
+#mode-menu .mode-item.active { background: #6b5a33; color: #fff; }
+
+/* EI 模式: 流式布局 (不用 1024x768 逻辑画布缩放) */
+body[data-uimode="ei"] #stage {
+  width: 100vw; height: 100vh;
+  transform: none !important;
+}
