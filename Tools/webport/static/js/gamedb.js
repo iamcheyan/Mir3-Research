@@ -40,6 +40,9 @@ export const GameDB = {
   async questInfo(index) { return (await table('QuestInfo')).byIndex.get(index) ?? null; },
   async itemInfo(index) { return (await table('ItemInfo')).byIndex.get(index) ?? null; },
   async magicInfo(index) { return (await table('MagicInfo')).byIndex.get(index) ?? null; },
+  async currencyList() { return (await table('CurrencyInfo')).rows; },
+  async companionList() { return (await table('CompanionInfo')).rows; },
+  async instanceList() { return (await table('InstanceInfo')).rows.filter(i => i.ShowOnDungeonFinder); },
 
   async npcGoods(pageIndex) {
     const t = await table('NPCGood');

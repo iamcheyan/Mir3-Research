@@ -148,6 +148,15 @@ export class GameScene {
     await this.questTracker.refresh(store?.quests, questInfo);
   }
 
+  // QuestTrackerWindow 键 (GameScene.cs:1898): 可见性取反, 非开窗
+  #toggleQuestTracker() {
+    if (!this.questTracker) return;
+    const q = this.itemStore?.quests;
+    // 无任务时 refresh 会隐藏 → 强制显示空态 (Godot: Visible 纯 UI 状态)
+    this.questTracker.visible = !this.questTracker.visible;
+    if (this.questTracker.visible && (!q || q.size === 0)) this.questTracker.showEmpty();
+  }
+
   // ---- 主面板 9 键 → 窗口开关 (GameScene.cs:4432-4463 CreateHud 绑定) ----
   #onMainButton(name) {
     const MAP = {
@@ -293,7 +302,7 @@ export class GameScene {
       [KA.DungeonFinderWindow]: 'dungeonfinder', [KA.StorageWindow]: 'storage',
       [KA.BeltWindow]: 'belt', [KA.AutoPotionWindow]: 'autopotion',
       [KA.CurrencyWindow]: 'currency', [KA.FilterDropWindow]: 'filterdrop',
-      [KA.FortuneWindow]: 'fortune', [KA.QuestTrackerWindow]: 'questtracker',
+      [KA.FortuneWindow]: 'fortune',
       [KA.MapBigWindow]: 'bigmap', [KA.RankingWindow]: 'ranking',
       [KA.GameStoreWindow]: 'cashshop', [KA.CompanionWindow]: 'companion',
       [KA.GroupWindow]: 'group', [KA.GuildWindow]: 'guild',
@@ -315,7 +324,7 @@ export class GameScene {
       if (WIN[a]) return this.#openWindow(WIN[a]);
       switch (a) {
         case KA.MapMiniWindow: return WindowManager.toggle(this.miniMap, this.hudLayer);
-        case KA.ItemPickUp: return this.conn.sendPickUp();
+        case KA.QuestTrackerWindow: return this.#toggleQuestTracker();   // GameScene.cs:1898 Visible 取反
         case KA.GroupAllowSwitch:
           this.allowGroup = !this.allowGroup;
           this.conn.sendGroupSwitch(this.allowGroup);

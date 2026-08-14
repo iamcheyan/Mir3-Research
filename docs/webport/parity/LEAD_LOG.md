@@ -242,3 +242,23 @@
   验收必须 cp 到 /tmp/*.mjs 再 --check。已修: 149/150 行双闭合。
 - `提交` 聊天/Buff/QuestTracker 三件套 + checklist 3 行 ✅。uitree.js(M) 是
   par-win 的 DXItemCell graft, dialogs.js/gamedata.js 未跟踪, 归 par-win 仲裁不变。
+
+## R6 — par-move (A路): P1 剩余 11 窗 fallbackWindow 真实现 + questtracker 键语义修正
+
+- `缺口` WIN 表 27 键映射的窗口类型中 11 个走 fallbackWindow 空壳 (help/dungeonfinder/
+  autopotion/currency/filterdrop/fortune/ranking/companion/chatoptions/exit + bigmap
+  旧实现仅图)。dialogs.js 草稿是旧 gamedata.js 世代, 直接接线会与 par-win 11 模块
+  冲突 → 决策: 在 fallbackWindow 内补真实现 (数据源全部用现行 itemstore/gamedb/
+  conn 事件), dialogs.js 保持未跟踪待 par-win 仲裁。
+- `实现` hud.js fallbackWindow +9 case + ranking 空态修正; gamedb.js +3 helper
+  (currencyList/companionList/instanceList); game.js: QuestTrackerWindow 从 WIN 表
+  移出 → #toggleQuestTracker() 可见性取反 (GameScene.cs:1898 语义, 非 WindowManager)。
+- `协议对照` C.RankRequest(cls,onlineOnly,startIndex) Godot 默认 RequiredClass.None=0
+  (ServerConnection.cs:1077); S.Rankings.ranks (非 rankings); Companion 领养=
+  sendCompanionAdopt(index,name)。
+- `CDP 验收` pmv-buff-qt.mjs (独立新号): 12/12 窗 vis=true 且内容非空 — help=键位表
+  (1144字), currency=Gold/GameGold..., companion=Pig 500000 等 10 行, chatoptions=
+  9 频道开关, exit=确认框, ranking=(服务器 total:0 → 空态文案), dungeonfinder=
+  (InstanceInfo db 0 行 → 空态), KeyL toggle true/restored true。前置每窗 Esc 清场
+  (否则 closeTop 抢走 exit 的 Escape — 测试序列问题非产品 bug)。
+- `数据现状` InstanceInfo workspace 表 0 行 (dbeditor 快照如此), 副本窗显示空态为真。

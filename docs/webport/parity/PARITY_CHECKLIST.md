@@ -77,10 +77,11 @@
 
 | 批次 | 窗口 | 状态 | 归属 |
 |---|---|---|---|
-| 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt ❌ | par-win |
-| 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail/Ranking/ChatOptions ❌ (dialogs.js 草稿) | par-win 吸收中 |
+| 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt → fallback (beltLinks 真数据) | par-win |
+| 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail→fallback(好友列表); Ranking✅/ChatOptions✅ fallbackWindow (开窗即 C.RankRequest + rankings 事件渲染; 频道开关直改 chatLog.enabledTypes) | par-move R6 |
 | NPC | NPCDialog/Quest/Goods/Repair | ✅ win-npc + win-quest (真实 System.db 快照) | par-win |
-| 其余 | Menu/Config/Help/Exit/GameStore/BigMap/Currency/AutoPotion/FilterDrop/Fortune/QuestTracker/DungeonFinder/Companion/Trade/Observer | config✅ trade✅ gm✅; 其余 ❌ (dialogs.js 草稿 15 窗) | par-win 吸收中 |
+| 功能 | Help/Exit/BigMap/Currency/AutoPotion/FilterDrop/Fortune/QuestTracker/DungeonFinder/Companion | ✅ 全部 fallbackWindow 真实现 (R6): Help=键位表; Exit=确认→sendLogout; BigMap=MiniMap 瓦片; Currency=CurrencyInfo×itemStore; AutoPotion=autoPotionLinks+AutoPotionLinkChanged; FilterDrop=localStorage 名单; Fortune=fortuneUpdate; QuestTracker=KeyL 可见性切换 (GameScene.cs:1898); DungeonFinder=InstanceInfo (db 空→空态); Companion=CompanionInfo+sendCompanionAdopt | par-move R6 |
+| 其余 | Menu/Config/GameStore/Trade/Observer | config✅ trade✅ gm✅ (par-win); Menu/GameStore→fallback (menu: 攻击/宠物模式+退出; cashshop: gameStoreItems) | par-win |
 | 双 UI | EI 参考模式 | 未动 (scope 外) | — |
 
 ## 环境/流程备注
@@ -93,5 +94,5 @@
 ## 结论
 
 P0 移动/HUD/聊天/键位 = **达成** (验收表内 ✅ 全过)。
-P1 窗口 = par-win 11 模块 + installWindows 接线已通, 余 ~15 窗有 dialogs.js 草稿待吸收。
-BuffDialog/QuestTracker/聊天双行 = 已知缺口, 记录在案。
+P1 窗口 = par-win 11 模块 + installWindows 接线已通; par-move R6 把 11 个 fallback 空壳补成真实现 (CDP 12/12 内容非空), dialogs.js 草稿仅剩 belt 细化吸收价值。
+BuffDialog/QuestTracker/聊天双行 = ✅ 已修 (R5)。

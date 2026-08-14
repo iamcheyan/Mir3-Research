@@ -1,7 +1,7 @@
 // hud.js — par-hud C 路: MainPanel.cs + MiniMapDialog.cs 逐方法移植
 // 行为权威: GodotClient/Controls/MainPanel.cs, MiniMapDialog.cs (行号随注)。
 // 按钮/坐标: MainPanel.cs CreateButton/CreateStatImage 原值; Interface.Zl→WebP 帧号经 skin.js。
-import { DXControl, DXImageControl, DXLabel, DXButton } from '../../dx.js';
+import { DXControl, DXImageControl, DXLabel, DXButton, DXTextInput } from '../../dx.js';
 import { skin } from '../../skin.js';
 import { DXWindow, WindowManager, setHint } from '../../windows.js';
 import { getKeyBindLabel, KeyBindAction } from '../../keybinds.js';
@@ -628,6 +628,188 @@ export function fallbackWindow(type, scene) {
       body.el.appendChild(img);
       break;
     }
+    case 'currency': {   // CurrencyDialog: itemStore.currencies + CurrencyInfo 名称
+      row('货币', '#ffd573');
+      const cbox = document.createElement('div');
+      cbox.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(cbox);
+      import('../../gamedb.js').then(({ GameDB }) => GameDB.currencyList()).then(list => {
+        const byIdx = new Map((list ?? []).map(c => [c.Index, c]));
+        const store = scene.itemStore;
+        const cur = store?.currencies ?? [];
+        if (!cur.length) { cbox.textContent = '（暂无货币记录）'; return; }
+        for (const cu of cur) {
+          const d = document.createElement('div');
+          d.textContent = `· ${byIdx.get(cu.currencyIndex)?.Name ?? '货币#' + cu.currencyIndex}  ${cu.amount}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;';
+          cbox.appendChild(d);
+        }
+      }).catch(() => { cbox.textContent = '（货币数据加载失败）'; });
+      break;
+    }
+    case 'chatoptions': {   // ChatOptionsDialog: 频道开关 → chatLog.enabledTypes 实时过滤
+      row('聊天频道显示', '#ffd573');
+      const names = { 0: '普通', 1: '喊话', 2: '密语', 5: '组队', 6: '世界', 7: '提示', 8: '系统', 9: '公告', 12: '行会' };
+      const log = scene.chatLog;
+      for (const [k, n] of Object.entries(names)) {
+        const t = +k;
+        const b = new DXButton({ text: `${n}: ${log?.enabledTypes?.has(t) ? '开' : '关'}`, fontSize: 9, library: 'Interface', index: -1, location: [10 + (t % 3) * 110, 26 + Math.floor(t / 3) * 28], size: [100, 24] });
+        b.onClick = () => {
+          if (!log?.enabledTypes) return;
+          if (log.enabledTypes.has(t)) log.enabledTypes.delete(t); else log.enabledTypes.add(t);
+          b.el.querySelector('.dxbtn-label').textContent = `${n}: ${log.enabledTypes.has(t) ? '开' : '关'}`;
+        };
+        body.addControl(b);
+      }
+      row('(系统/战斗频道常开 — ChatLogPanel.cs:478)', '#888');
+      break;
+    }
+    case 'help': {   // HelpDialog: 键位速查 (KeyBindManager 默认表)
+      row('键位速查', '#ffd573');
+      const hbox = document.createElement('div');
+      hbox.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(hbox);
+      Promise.all([import('../../keybinds.js'), import('../../keybinds.js')]).then(([{ KeyBinds, getKeyBindLabel }, { KeyBindAction }]) => {
+        const NAME = Object.fromEntries(Object.entries(KeyBindAction ?? {}).map(([k, v]) => [v, k]));
+        for (const b of KeyBinds ?? []) {
+          const d = document.createElement('div');
+          d.textContent = `${String(b.key1 ?? '').toUpperCase().replace('KEY', '')} → ${NAME[b.action] ?? b.action}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#ccc;text-shadow:1px 1px 0 #000;padding:0 4px;';
+          hbox.appendChild(d);
+        }
+        if (!hbox.children.length) hbox.textContent = '（键位表为空）';
+      }).catch(() => { hbox.textContent = '键位表加载失败'; });
+      break;
+    }
+    case 'filterdrop': {   // FilterDropDialog: 掉落过滤名单 (Godot: 持久化 string[], 无其它消费者)
+      row('掉落过滤', '#ffd573');
+      const KEY = 'ZirconDropFilters';
+      const filters = new Set(JSON.parse(localStorage.getItem(KEY) ?? '[]'));
+      const fbox = document.createElement('div');
+      fbox.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:36px;overflow-y:auto;';
+      body.el.appendChild(fbox);
+      const render = () => {
+        fbox.replaceChildren();
+        for (const f of filters) {
+          const d = document.createElement('div');
+          d.textContent = `· ${f}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;cursor:pointer;';
+          d.title = '点击移除';
+          d.onclick = () => { filters.delete(f); localStorage.setItem(KEY, JSON.stringify([...filters])); render(); };
+          fbox.appendChild(d);
+        }
+        if (!fbox.children.length) fbox.textContent = '（无过滤项）';
+      };
+      render();
+      const inp = new DXTextInput({ location: [10, 258], size: [200, 22], fontSize: 9 });
+      const add = new DXButton({ text: '添加', fontSize: 9, library: 'Interface', index: -1, location: [220, 258], size: [60, 22], onClick: () => {
+        const t = (inp.text ?? '').trim();
+        if (t) { filters.add(t); localStorage.setItem(KEY, JSON.stringify([...filters])); inp.text = ''; render(); }
+      } });
+      body.addControl(inp); body.addControl(add);
+      break;
+    }
+    case 'exit': {   // ExitDialog: 退出前确认
+      row('退出前确认', '#ffd573');
+      row('确定要退出游戏吗？');
+      const yes = new DXButton({ text: '退出游戏', fontSize: 9, library: 'Interface', index: -1, location: [60, 60], size: [100, 24], onClick: () => scene.conn.sendLogout() });
+      const no = new DXButton({ text: '取消', fontSize: 9, library: 'Interface', index: -1, location: [180, 60], size: [100, 24], onClick: () => win.close() });
+      body.addControl(yes); body.addControl(no);
+      break;
+    }
+    case 'ranking': {   // RankingDialog: 开窗即请求 + rankings 事件渲染
+      row('排行榜', '#ffd573');
+      const box = document.createElement('div');
+      box.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(box);
+      let loaded = false;
+      const render = (list) => {
+        box.replaceChildren();
+        for (const r0 of list ?? []) {
+          const d = document.createElement('div');
+          d.textContent = `#${r0.rank} ${r0.name} Lv.${r0.level} ${CLASS_NAMES[r0.class] ?? ''}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;cursor:pointer;';
+          d.onclick = () => scene.conn.sendInspect(r0.index, true);   // Inspect(ranking:true) 查看装备
+          box.appendChild(d);
+        }
+        if (!box.children.length) box.textContent = loaded ? '（暂无上榜角色）' : '（等待服务器响应...）';
+      };
+      render(null);
+      const onRank = (e) => { loaded = true; render(e.detail?.ranks ?? []); };
+      scene.conn.addEventListener('rankings', onRank);
+      win.onClose = () => scene.conn.removeEventListener('rankings', onRank);
+      scene.conn.sendRankRequest(0, true, 0);
+      break;
+    }
+    case 'autopotion': {   // AutoPotionDialog: autoPotionLinks + AutoPotionLinkChanged
+      row('自动喝药', '#ffd573');
+      const links = info.autoPotionLinks ?? [];
+      links.slice(0, 3).forEach((l, i) => {
+        const b = new DXButton({ text: `槽${l.slot} HP<${l.health}% ${l.enabled ? '开' : '关'}`, fontSize: 9, library: 'Interface', index: -1, location: [10, 26 + i * 28], size: [200, 24] });
+        b.onClick = () => {
+          const en = !l.enabled;
+          scene.conn.sendAutoPotionLinkChanged(l.slot, l.linkItemIndex, en ? l.health : 0, en ? l.mana : 0, en);
+          l.enabled = en;
+          b.el.querySelector('.dxbtn-label').textContent = `槽${l.slot} HP<${l.health}% ${en ? '开' : '关'}`;
+        };
+        body.addControl(b);
+      });
+      if (!links.length) row('（无自动喝药配置）', '#aaa');
+      break;
+    }
+    case 'fortune': {   // FortuneCheckerDialog: fortuneUpdate 事件渲染
+      row('幸运查询', '#ffd573');
+      const box = document.createElement('div');
+      box.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(box);
+      const render = (d) => {
+        box.replaceChildren();
+        if (!d) { box.textContent = '（打开商店物品链接可查询幸运值）'; return; }
+        const div = document.createElement('div');
+        div.textContent = `物品#${d.itemIndex} 幸运进度 ${d.progress ?? '?'}%`;
+        div.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;';
+        box.appendChild(div);
+      };
+      render(null);
+      const onF = (e) => render(e.detail);
+      scene.conn.addEventListener('fortuneUpdate', onF);
+      win.onClose = () => scene.conn.removeEventListener('fortuneUpdate', onF);
+      break;
+    }
+    case 'companion': {   // CompanionDialog: CompanionInfo 列表 + 认领/收回
+      row('伙伴', '#ffd573');
+      const box = document.createElement('div');
+      box.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(box);
+      import('../../gamedb.js').then(({ GameDB }) => GameDB.companionList?.()).then(list => {
+        for (const c of list ?? []) {
+          const d = document.createElement('div');
+          d.textContent = `· ${c.MonsterInfo?.Name ?? c._Identity ?? '#' + c.Index}  价格 ${c.Price ?? '?'}${c.Available ? '' : ' (不可用)'}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;cursor:pointer;';
+          d.onclick = () => scene.conn.sendCompanionAdopt(c.Index, `伙伴${c.Index}`);
+          box.appendChild(d);
+        }
+        if (!box.children.length) box.textContent = '（无伙伴数据）';
+      }).catch(() => { box.textContent = '（伙伴数据加载失败）'; });
+      break;
+    }
+    case 'dungeonfinder': {   // DungeonFinderDialog: InstanceInfo.ShowOnDungeonFinder
+      row('副本查找 (按等级排序)', '#ffd573');
+      const box = document.createElement('div');
+      box.style.cssText = 'position:absolute;top:22px;left:0;right:0;bottom:0;overflow-y:auto;';
+      body.el.appendChild(box);
+      import('../../gamedb.js').then(({ GameDB }) => GameDB.instanceList?.()).then(list => {
+        const rows0 = [...(list ?? [])].sort((a, b) => (b.MinPlayerLevel ?? 0) - (a.MinPlayerLevel ?? 0));
+        for (const it of rows0) {
+          const d = document.createElement('div');
+          d.textContent = `· ${it.Name ?? '#' + it.Index}  Lv.${it.MinPlayerLevel ?? '?'}-${it.MaxPlayerLevel ?? '?'}  人数 ${it.MinPlayerCount ?? '?'}-${it.MaxPlayerCount ?? '?'}`;
+          d.style.cssText = 'font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;padding:0 4px;';
+          box.appendChild(d);
+        }
+        if (!box.children.length) box.textContent = '（当前数据库无开放副本）';
+      }).catch(() => { box.textContent = '（副本数据加载失败）'; });
+      break;
+    }
   }
   return win;
 }
@@ -743,6 +925,12 @@ export class QuestTracker extends DXWindow {
       const row = this.#row(`${q.completed ? '✓ ' : ''}${name}`, q);
       this.list.appendChild(row);
     }
+  }
+
+  showEmpty() {   // 手动显示 (Godot Visible 纯 UI 态, 与数据驱动隐藏解耦)
+    this.list.replaceChildren();
+    this.list.appendChild(this.#row('(无进行中任务)', null));
+    this.el.style.display = '';
   }
 
   #row(text, q) {
