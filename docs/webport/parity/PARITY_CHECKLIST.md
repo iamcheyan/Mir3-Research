@@ -80,6 +80,7 @@
 | 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt → fallback (beltLinks 真数据) | par-win |
 | 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail→fallback(好友列表); Ranking✅/ChatOptions✅ fallbackWindow (开窗即 C.RankRequest + rankings 事件渲染; 频道开关直改 chatLog.enabledTypes) | par-move R6 |
 | NPC | NPCDialog/Quest/Goods/Repair | ✅ win-npc + win-quest (真实 System.db 快照) | par-win |
+| NPC 高级面板 | Refine/RefineRetrieve/RefinementStone/MasterRefine/AccessoryLevel/AccessoryUpgrade/AccessoryReset/ItemFragment/WeddingRing/WeaponCraft/CompanionManage | ✅ R15-R18: DB 引用的 14 DialogType 全真实现 (BuildRefine :383/BuildRetrieve :518/BuildRefinementStone :324/BuildMasterRefine :431/BuildAccessoryLevel :686/BuildWeaponCraft :801/BuildSingleGrid :621/NPCCompanionStorageDialog); 提交锁三态 R20 (BeginSubmit :1039); 回包反馈 R19 (S 解析×9+聊天+取回删行+伙伴同步); 真服 e2e 254→聊天验证 | par-move R15-R20 |
 | 功能 | Help/Exit/BigMap/Currency/AutoPotion/FilterDrop/Fortune/QuestTracker/DungeonFinder/Companion | ✅ 全部 fallbackWindow 真实现 (R6): Help=键位表; Exit=确认→sendLogout; BigMap=MiniMap 瓦片; Currency=CurrencyInfo×itemStore; AutoPotion=autoPotionLinks+AutoPotionLinkChanged; FilterDrop=localStorage 名单; Fortune=fortuneUpdate; QuestTracker=KeyL 可见性切换 (GameScene.cs:1898); DungeonFinder=InstanceInfo (db 空→空态); Companion=CompanionInfo+sendCompanionAdopt | par-move R6 |
 | 其余 | Menu/Config/GameStore/Trade/Observer | config✅ trade✅ gm✅ (par-win); Menu/GameStore→fallback (menu: 攻击/宠物模式+退出; cashshop: gameStoreItems) | par-win |
 | 双 UI | EI 参考模式 | 未动 (scope 外) | — |
@@ -96,3 +97,8 @@
 P0 移动/HUD/聊天/键位 = **达成** (验收表内 ✅ 全过, R5-R8 逐项 CDP 复核)。
 P1 窗口 = par-win 11 模块 + installWindows 接线已通; par-move R6 把 11 个 fallback 空壳补成真实现 (CDP 12/12 内容非空), dialogs.js 草稿仅剩 belt 细化吸收价值; R10 Login 5 按钮 (排行/选项/改密/忘记密码/激活) 真实现清零"暂未实现"。
 BuffDialog/QuestTracker/聊天双行 = ✅ 已修 (R5)。**全表 ✅** (2026-08-15)。
+NPC 面板链 = **闭环** (R15-R20): DB 双快照 (dbeditor workspace + dbviewer 活库导出) 交叉审计,
+14 个真实引用 DialogType 全部真实现; 发包→真服→S 回包→UI 反馈→提交锁解锁全链路 CDP 验证
+(含真服 e2e: C.NPCMasterRefine 254 出站→S 回包→聊天"大师精炼失败")。
+剩余 6 类型 (WeaponReset/AccessoryRefine/RollDie/RollYut/Socketing/SocketCombine) 双快照零行
+引用、Godot 无旁路入口 (Socketing 仅 NPCDialog.cs:121 DialogType 路由) → 不可达, 无需实现。
