@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "019fffa3-62ad-7000-a861-af664e6f24f5|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T09-38-45-549Z_019fffa3-62ad-7000-a861-af664e6f24f5.jsonl|webaudit|/home/tetsuya/development/Mir3-Research|webport像素审计"
   "019fff5a-3510-7000-9fb4-1612ba008826|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T08-18-49-744Z_019fff5a-3510-7000-9fb4-1612ba008826.jsonl|svcui2|/home/tetsuya/development/svc-dashboard|面板UI改造二批"
   "019fff0e-cd73-7000-a336-2771e3ba262b|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T06-56-28-019Z_019fff0e-cd73-7000-a336-2771e3ba262b.jsonl|webport|/home/tetsuya/development/Mir3-Research|网页客户端Phase1"
   "019ffbaf-4c8d-7000-a36c-76336908116a|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-13T15-13-17-453Z_019ffbaf-4c8d-7000-a36c-76336908116a.jsonl|botgoal|/home/tetsuya/development/zircon|机器人拟真行为"
