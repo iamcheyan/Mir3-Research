@@ -281,6 +281,63 @@ export async function winNpc(scene, store, reg) {
   retrievePanel.addControl(retrieveLabel, refreshBtn, retrieveBtn);
   w.addControl(retrievePanel);   // 挂载 (与 repairPanel 同位)
 
+  // ---------- 单链接面板 (NPCAdvancedPanels.cs:621-633 BuildSingleGrid/Target + SubmitSingle:997) ----------
+  // ItemFragment(多格)/AccessoryReset/WeddingRing/AccessoryUpgrade — 背包拖入或点击导入, 提交发真包。
+  const singlePanel = new DXControl({ location: [0, 204], size: [404, 220], visible: false, isControl: true });
+  const singleBox = document.createElement('div');
+  singleBox.style.cssText = 'position:absolute;left:9px;top:30px;right:9px;bottom:40px;overflow-y:auto;';
+  singlePanel.el.appendChild(singleBox);
+  const singleLabel = new DXLabel({ text: '', fontSize: 9, textColour: [255, 216, 77, 255],
+    drawOutline: true, location: [9, 8], size: [380, 18], isControl: false });
+  const singleImport = new DXButton({ text: '从背包导入', fontSize: 9, library: 'Interface', index: -1,
+    location: [9, 182], size: [100, 22], onClick: () => importSingle() });
+  const singleSubmit = new DXButton({ text: '提交', fontSize: 9, library: 'Interface', index: -1,
+    location: [120, 182], size: [70, 22], onClick: () => submitSingle() });
+  let singleMode = null;          // 'ItemFragment' | 'AccessoryReset' | 'WeddingRing' | 'AccessoryRefineUpgrade'
+  let singleLinks = [];           // CellLinkInfo[]
+  const SINGLE_DEFS = {   // (title, 最大格数, 提交动作)
+    ItemFragment: ['分解物品 (可多件)', 20, (links) => conn.sendNPCFragment(links)],
+    AccessoryReset: ['重置饰品 (放入 1 件)', 1, (links) => conn.sendNPCAccessoryReset(links[0])],
+    WeddingRing: ['制作结婚戒指 (放入 1 枚戒指)', 1, (links) => conn.sendMarriageMakeRing(links[0].slot)],
+    AccessoryRefineUpgrade: ['强化饰品 (放入 1 件)', 1, (links) => conn.sendNPCAccessoryUpgrade(links[0], 0)],   // RefineType.None=0, 页面选单 P3
+  };
+  function importSingle() {
+    if (!singleMode) return;
+    const max = SINGLE_DEFS[singleMode][1];
+    singleLinks = [];
+    for (const [slot, it] of [...store.items(GRID.INVENTORY).entries()].sort((a, b) => a[0] - b[0])) {
+      if (!it) continue;
+      singleLinks.push({ gridType: GRID.INVENTORY, slot, count: it.count ?? 1 });
+      if (singleLinks.length >= max) break;
+    }
+    renderSingle();
+  }
+  const renderSingle = async () => {
+    singleBox.replaceChildren();
+    if (!singleMode) return;
+    singleLabel.text = SINGLE_DEFS[singleMode][0];
+    for (const l of singleLinks) {
+      const it = store.items(l.gridType).get(l.slot);
+      const nm = it ? (D().itemsById?.[it.infoIndex]?.zh ?? D().itemsById?.[it.infoIndex]?.name ?? `物品#${it.infoIndex}`) : '?';
+      const d = document.createElement('div');
+      d.textContent = `· ${nm} x${it?.count ?? 1}`;
+      d.style.cssText = 'padding:2px 6px;font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
+      d.title = '点击移除';
+      d.onclick = () => { singleLinks = singleLinks.filter(x => x !== l); renderSingle(); };
+      singleBox.appendChild(d);
+    }
+    if (!singleLinks.length) singleBox.textContent = '（点"从背包导入"或稍后拖入）';
+    singleSubmit.enabled = singleLinks.length > 0;
+  };
+  function submitSingle() {
+    if (!singleMode || !singleLinks.length) return;
+    SINGLE_DEFS[singleMode][2](singleLinks);
+    singleLinks = [];
+    renderSingle();
+  }
+  singlePanel.addControl(singleLabel, singleImport, singleSubmit);
+  w.addControl(singlePanel);
+
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');
   const questDetailWin = await getWindow('NPCQuestDialog');
@@ -449,6 +506,16 @@ export async function winNpc(scene, store, reg) {
       retrievePanel.location = [0, w.size[1]];
       retrievePanel.visible = true;
       renderRetrieve();
+    }
+    // 单链接面板 (BuildSingleGrid/Target: dtype 6/10/11/13)
+    singlePanel.visible = false;
+    const singleModeName = { 6: 'WeddingRing', 10: 'ItemFragment', 11: 'AccessoryRefineUpgrade', 13: 'AccessoryReset' }[dtype];
+    if (singleModeName) {
+      singleMode = singleModeName;
+      singleLinks = [];
+      singlePanel.location = [0, w.size[1]];
+      singlePanel.visible = true;
+      renderSingle();
     }
     WindowManager.open(w, scene.hudLayer);
     if (dtype === 19) { await winConsign(scene); }   // Consignment → OpenConsignmentDialog (NPCDialog.cs:116)

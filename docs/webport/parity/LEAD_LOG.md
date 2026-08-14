@@ -472,3 +472,18 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 
 - A 路进入 P2 长尾 (寄售/精炼), 超出核心 CHECKLIST; 五路中唯 A 路未终态。
   E 路继续 20-30min 节奏值守合并, 直至 A 路终态出 REPORT.md。
+
+## R16 — par-move (A路): NPC 单链接面板 ×4 (BuildSingleGrid/Target + SubmitSingle)
+
+- `对照` NPCAdvancedPanels.cs:621-633 (BuildSingleGrid/BuildSingleTarget) + SubmitSingle:997-1016;
+  DB 审计: 4 个 dtype 页面真实在用 (WeddingRing=155/ItemFragment=171/AccessoryRefineUpgrade=197/AccessoryReset=266)。
+- `协议` net.js +4 builder: NPCFragment(List<CellLink>)/MarriageMakeRing(int slot)/
+  NPCAccessoryUpgrade(CellLink+RefineType byte)/NPCAccessoryReset(CellLink);
+  ws.js +4 sender。
+- `实现` win-npc.js 通用 singlePanel (标题+背包导入+列表+提交), showPage dtype 6/10/11/13 显隐;
+  importSingle 按 SINGLE_DEFS 上限从背包 GridType=1 导入, 提交后清空 (BeginSubmit 对照)。
+- `修复` cellLink Count int64 需 BigInt (与 R11 MailSend gold 同类): net.js cellLink
+  源头统一 BigInt(link.count ?? 1) — NPCSell/NPCRepair/ItemDrop/ItemUse 等全部受益。
+- `CDP 验收` (/tmp/pm-smoke/pmv-single.mjs) 4 dtype 面板全 visible+标题正确; 注入背包物品→
+  导入 rows=2 → submitEnabled → 真包出站 packetSent → 清单 remainingRows=0; 0 异常。
+  全链路回归 (pmv-buff-qt) ALL-9/REFINE/CONSIGN/MAIL 全绿。

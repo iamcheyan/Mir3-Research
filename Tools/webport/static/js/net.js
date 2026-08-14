@@ -289,7 +289,7 @@ export class Writer {
   point(x, y) { return this.int32(x).int32(y); }
   cellLink(link) { // CellLinkInfo (Globals.cs:862): GridType i32 + Slot i32 + Count i64
     if (!link) return this.bool(false);
-    return this.bool(true).int32(link.gridType).int32(link.slot).int64(link.count);
+    return this.bool(true).int32(link.gridType).int32(link.slot).int64(BigInt(link.count ?? 1));
   }
   list(items, writeElem) { // List<T>: 1B null + i32 count + 元素
     if (items == null) return this.bool(false);
@@ -787,6 +787,12 @@ export const C = {
   MailDelete: (index) => new Writer().int32(index).build(ID.C_MAILDELETE),
   // 精炼取回 (ClientPackets.cs:328 NPCRefineRetrieve{Index})
   NPCRefineRetrieve: (index) => new Writer().int32(index).build(ID.C_NPCREFINERETRIEVE),
+  // NPC 单链接面板 (ClientPackets.cs:275/338/678/746, SubmitSingle 对照)
+  NPCFragment: (links) => new Writer().list(links, (w2, l) => w2.cellLink(l)).build(ID.C_NPCFRAGMENT),
+  MarriageMakeRing: (slot) => new Writer().int32(slot).build(ID.C_MARRIAGEMAKERING),
+  NPCAccessoryUpgrade: (target, refineType) =>
+    new Writer().cellLink(target).byte(refineType).build(ID.C_NPCACCESSORYUPGRADE),
+  NPCAccessoryReset: (cell) => new Writer().cellLink(cell).build(ID.C_NPCACCESSORYRESET),
   // 社交
   FriendAdd: (name) => new Writer().string(name).build(ID.C_FRIENDADD),
   FriendRemove: (index) => new Writer().int32(index).build(ID.C_FRIENDREMOVE),
