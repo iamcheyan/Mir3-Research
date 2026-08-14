@@ -354,3 +354,25 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   真响应); 选项缩放 1.25 持久; 修改密码 prompt×3→包发出→服务器回 result:4
   (WrongPassword — 假旧密码, 枚举语义正确); 忘记密码/激活 prompt→包发出;
   0 页面异常。
+
+## 2026-08-15 01:4x — R6 合并轮 (par-keys)
+
+### 新增 commit (4, 全部 par-move)
+
+- `fa5cb30` R8: 移动残留清零, CHECKLIST 全 ✅
+- `a5e9f58` R9: **data.js 启动竞态修复** (pickLibs 门闩 + loadAll 后重解析,
+  即 R5 转交的交叉发现), 70 键 CDP 复测全绿
+- `285413b` R10: Login 5 按钮真实现, "暂未实现"清零
+- `d522807`: PARITY_CHECKLIST 结论定稿 — **全表 ✅ (P0+P1 46 窗)**
+
+### E路终态回归 (合并后 master)
+
+- manager 级: 557/557 ✓
+- CDP dispatch 级 (独立新账号, 真服): 70 键 / 28 窗口 toggle 全✓ /
+  **0 页面异常 (竞态修复生效)** / Escape 无窗→恰好 1 个 ExitDialog /
+  V·L HUD 取反 ✓。证据 `keys/cdp-dispatch-final.txt` + `cdp-matrix-final.json`。
+
+### 局势
+
+- A 路 (par-move) CHECKLIST 定稿全✅, 会话仍在做最终复核 (mailbox render/compose)。
+  待其终态后: E 路写总验收 `docs/webport/parity/REPORT.md` (计划§五) 并收官。
