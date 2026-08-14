@@ -49,3 +49,28 @@
 - 工作区快照: master@0791190 与 origin 同步; 未提交 = par-move(game.js/world.js/
   mouse.js/gamedata.js) + par-win(windows.js/uitree.js?) 的在制品, **不代提交**。
 - 四路 commit: 尚无(起步阶段)。index.html `main.js?v=3 → v=4`(E路 keybinds 入口)。
+
+## 2026-08-14 23:0x — R1 合并轮 (par-keys)
+
+### 新增 commit (3)
+
+- `0ecc65e` par-hud [shared]: windows.js #refreshZ 语法修复 (R0 期间浏览器报的
+  "Private field '#refreshZ' must be declared in an enclosing class" 根因, 已消)
+- `6d434ae` par-anim [shared]: world.js 接线 anims.js 全动作分派
+- `86a5788` par-hud: game.js UiScaleNow 导入 + chat.js 类字段私有语法修复
+
+### 合并动作
+
+- `git fetch` + `git pull --rebase`: origin 无新提交 (四路同树本地提交), 本地领先1
+  (R0 备忘 commit) 已 push。无冲突。
+
+### E路状态
+
+- `check-keybinds.mjs` 回归: **557 项全过** (合并后无退化)。
+- **浏览器内 E2E (真 bundle, :8823)**: keybinds.js 模块加载 ✓; enum 79 项 ✓;
+  getAction: Q=CharacterWindow(4), Ctrl+P=AutoPotionWindow(11), Shift+F1=SpellUse13(67),
+  Shift+小键盘4=UseBelt04(42) ✓; 标签 Ctrl+H / Comma ✓;
+  **localStorage 改绑往返**: HelpWindow→Alt+F24 save→新实例命中→resetDefaults 恢复 H ✓。
+- 客户端整体状态: 游戏场景已能完整加载 (道士255/比奇城/聊天公告全渲染)。
+- **dispatch 级仍缺**: par-move 分解 game.js 后 handleKeyBind/getAction 尚未在新
+  结构落地 — CDP 实测按 q 无反应。属 A 路在制, 继续等待, R0 仲裁备忘仍然有效。
