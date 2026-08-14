@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "01a00016-563a-7000-8be7-04a48d298af0|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T11-44-19-002Z_01a00016-563a-7000-8be7-04a48d298af0.jsonl|webp23|/home/tetsuya/development/Mir3-Research|webport二三期冲刺"
   "019ffff2-a2d7-7000-9dcb-0943df61bbaf|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T11-05-19-319Z_019ffff2-a2d7-7000-9dcb-0943df61bbaf.jsonl|svcglass|/home/tetsuya/development/svc-dashboard|iOS玻璃重构"
   "019fffa6-769b-7000-8202-c1ea6d10c204|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T09-42-07-259Z_019fffa6-769b-7000-8202-c1ea6d10c204.jsonl|svcfile|/home/tetsuya/development/svc-dashboard|文件浏览器"
   "019fffa3-62ad-7000-a861-af664e6f24f5|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T09-38-45-549Z_019fffa3-62ad-7000-a861-af664e6f24f5.jsonl|webaudit|/home/tetsuya/development/Mir3-Research|webport像素审计"
