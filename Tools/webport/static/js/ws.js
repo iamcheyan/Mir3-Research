@@ -353,6 +353,7 @@ export class GameConnection extends EventTarget {
   sendNPCBuy(index, amount, guildFunds = false) { this.send(C.NPCBuy(index, amount, guildFunds)); }
   sendNPCSell(links) { this.send(C.NPCSell(links)); }
   sendNPCRepair(links, special, guildFunds = false) { this.send(C.NPCRepair(links, special, guildFunds)); }
+  sendNPCRefineRetrieve(index) { this.send(C.NPCRefineRetrieve(index)); }
   sendItemMove(fromGrid, toGrid, fromSlot, toSlot, mergeItem = false) {
     this.send(C.ItemMove(fromGrid, toGrid, fromSlot, toSlot, mergeItem));
   }

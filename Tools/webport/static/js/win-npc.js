@@ -238,6 +238,49 @@ export async function winNpc(scene, store, reg) {
     updateRepairCost();
   }
 
+  // ---------- 精炼取回面板 (NPCAdvancedPanels.cs:518-527 BuildRetrieve) ----------
+  // S.RefineList → 列表渲染; 刷新=C.NPCCall(重复对话, 服务端推 RefineList);
+  // 取回=C.NPCRefineRetrieve{Index} (ClientPackets.cs:328)。
+  const retrievePanel = new DXControl({ location: [0, 204], size: [404, 300], visible: false, isControl: true });
+  const retrieveBox = document.createElement('div');
+  retrieveBox.style.cssText = 'position:absolute;left:9px;top:37px;width:491px;height:302px;overflow-y:auto;';
+  retrievePanel.el.appendChild(retrieveBox);
+  const retrieveLabel = new DXLabel({ text: '', fontSize: 9, textColour: [255, 216, 77, 255],
+    drawOutline: true, location: [9, 10], size: [380, 18], isControl: false });
+  const refreshBtn = new DXButton({ text: '刷新', fontSize: 9, library: 'Interface', index: -1,
+    location: [110, 155], size: [80, 24], onClick: () => renderRetrieve() });
+  const retrieveBtn = new DXButton({ text: '取回选中', fontSize: 9, library: 'Interface', index: -1,
+    location: [214, 155], size: [90, 24], onClick: () => {
+      if (retrieveSelected != null) conn.sendNPCRefineRetrieve(retrieveSelected);
+    } });
+  let refineList = [];       // ClientRefineInfo[] (S.RefineList)
+  let retrieveSelected = null;
+  const renderRetrieve = async () => {
+    retrieveBox.replaceChildren();
+    retrieveSelected = null;
+    refineList.forEach((rf) => {
+      const nm = rf.weapon ? (D().itemsById?.[rf.weapon.infoIndex]?.zh ?? D().itemsById?.[rf.weapon.infoIndex]?.name ?? `物品#${rf.weapon.infoIndex}`) : '?';
+      const readyTxt = rf.readyTime ? '' : ' (精炼中)';
+      const d = document.createElement('div');
+      d.textContent = `${nm}  品质${rf.quality} 成功率 ${rf.chance}/${rf.maxChance}${readyTxt}`;
+      d.style.cssText = 'padding:3px 6px;font:12px/1.7 \'Noto Sans CJK SC\',sans-serif;color:#eee;text-shadow:1px 1px 0 #000;cursor:pointer;';
+      d.onclick = () => {
+        retrieveSelected = rf.index;
+        for (const c of retrieveBox.children) c.style.background = '';
+        d.style.background = 'rgba(120,180,255,.25)';
+      };
+      retrieveBox.appendChild(d);
+    });
+    if (!refineList.length) retrieveBox.textContent = '（无精炼记录 — 点刷新）';
+    retrieveLabel.text = `精炼物品取回 (${refineList.length})`;
+  };
+  conn.addEventListener('refineList', (e) => {
+    refineList = e.detail?.list ?? [];
+    if (retrievePanel.visible) renderRetrieve();
+  });
+  retrievePanel.addControl(retrieveLabel, refreshBtn, retrieveBtn);
+  w.addControl(retrievePanel);   // 挂载 (与 repairPanel 同位)
+
   // ---------- 任务列表/详情 (NPCQuestDialogs.cs) ----------
   const questListWin = await getWindow('NPCQuestListDialog');
   const questDetailWin = await getWindow('NPCQuestDialog');
@@ -399,6 +442,13 @@ export async function winNpc(scene, store, reg) {
       repairTypes = types;
       repairPanel.location = [0, w.size[1]];
       repairPanel.visible = true;
+    }
+    // 精炼取回面板 (NPCAdvancedPanels.cs:190-192 Configure → BuildRetrieve)
+    retrievePanel.visible = false;
+    if (dtype === 4) {
+      retrievePanel.location = [0, w.size[1]];
+      retrievePanel.visible = true;
+      renderRetrieve();
     }
     WindowManager.open(w, scene.hudLayer);
     if (dtype === 19) { await winConsign(scene); }   // Consignment → OpenConsignmentDialog (NPCDialog.cs:116)

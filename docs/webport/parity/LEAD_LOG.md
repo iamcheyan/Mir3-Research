@@ -443,3 +443,16 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - `CDP 验收` winConsign 开窗: 搜索页注入 2 结果 → 行渲染 "x3 5,000 金"/
   "x1 120,000 金"; 切我的寄售页 → 注入 consignments 渲染 "我的寄售 1 件";
   0 异常。(探针断言曾用 '5000' 对 '5,000' toLocaleString — 测量口径问题)
+
+## R15 — par-move (A路): NPC 精炼取回面板 (RefineRetrieve, dtype 4)
+
+- `对照` NPCAdvancedPanels.cs:190-192 Configure→BuildRetrieve (:518-527):
+  列表 491x302 + 刷新按钮(RequestNPCRefineList) + 取回选中; SetRefineList
+  (GameScene.cs:2776 OnRefineList → NPCDialog)。
+- `协议` net.js +NPCRefineRetrieve builder (ClientPackets.cs:328 {Index}),
+  ws.js +sendNPCRefineRetrieve; S.RefineList 监听已有 (readClientRefineInfo:
+  index/weapon/type/quality/chance/maxChance/ReadyDuration)。
+- `实现` win-npc.js retrievePanel (列表+刷新+取回选中, 选中高亮), showPage
+  dtype===4 显隐 + renderRetrieve; w.addControl 挂载。
+- `CDP 验收` 注入 refineList 2 条 → 行渲染 "80/100"/"50/100"+品质; 点击行选中;
+  取回选中按钮 → 真包出站 (packetSent:true); 0 异常。

@@ -785,6 +785,8 @@ export const C = {
       .string(recipient).string(subject).string(message).int64(BigInt(gold)).build(ID.C_MAILSEND),
   MailGetItem: (index, slot) => new Writer().int32(index).int32(slot).build(ID.C_MAILGETITEM),
   MailDelete: (index) => new Writer().int32(index).build(ID.C_MAILDELETE),
+  // 精炼取回 (ClientPackets.cs:328 NPCRefineRetrieve{Index})
+  NPCRefineRetrieve: (index) => new Writer().int32(index).build(ID.C_NPCREFINERETRIEVE),
   // 社交
   FriendAdd: (name) => new Writer().string(name).build(ID.C_FRIENDADD),
   FriendRemove: (index) => new Writer().int32(index).build(ID.C_FRIENDREMOVE),
