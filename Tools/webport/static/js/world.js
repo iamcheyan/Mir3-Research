@@ -13,6 +13,12 @@ import {
   DIR_UP, DIR_UPRIGHT, DIR_RIGHT, DIR_DOWNRIGHT, DIR_DOWN, DIR_DOWNLEFT, DIR_LEFT, DIR_UPLEFT,
   MIR_ACTION,
 } from './frames.js';
+// [par-anim] 动作分派唯一权威 — PlayerObject.cs:578-803 / Functions.cs:119-346 逐行移植
+import {
+  AnimAction, PlayerAnimState, BUFF_DRAGON_REPULSE,
+  actionFromRangeAttack, actionFromMagic, actionFromMining, actionFromFishing,
+  actionFromTaming, actionFromDash,
+} from './anims.js';
 import { C, GRID } from './net.js';
 import { MouseWalker } from './mouse.js';
 
@@ -26,7 +32,8 @@ const ONE_SHOT = new Set(['combat1', 'combat2', 'combat3', 'combat4', 'combat5',
   'combat7', 'combat8', 'combat9', 'combat10', 'combat11', 'combat12', 'combat13', 'combat14',
   'combat15', 'struck', 'pushed', 'harvest', 'fishingCast', 'fishingReel', 'tamingCast',
   'channellingStart', 'channellingEnd', 'dragonRepulseStart', 'dragonRepulseEnd', 'die', 'dead']);
-const KEEP_ON_FINISH = new Set(['die', 'dead', 'channellingMiddle', 'dragonRepulseMiddle']);
+// [par-anim] 钓鱼/驯兽等待态播完保持 (PlayerObject.cs:639/644 状态机)
+const KEEP_ON_FINISH = new Set(['die', 'dead', 'channellingMiddle', 'dragonRepulseMiddle', 'fishingWait', 'tamingWait']);
 
 // ---- 帧资源 (sprite + manifest 锚点, 同 webclient sprites.js) ----
 const frameCache = new Map();
@@ -95,6 +102,7 @@ class MapObject {
       || name === 'creepWalkFast' || name === 'creepWalkSlow') {
       this.moving = true;
     }
+    this.animState && (this.animState.currentAnimation = name);   // [par-anim] 状态机跟随 (Fishing/Taming/DragonRepulse 依赖)
   }
 
   // 入队 (PlayerRenderer.cs:246-258): 忙碌时排队
@@ -142,7 +150,8 @@ class MapObject {
     const f = this.tables[this.animName];
     if (!f || f.count <= 1 || (this.animName !== 'walking' && this.animName !== 'running'
       && this.animName !== 'horseWalking' && this.animName !== 'horseRunning'
-      && this.animName !== 'creepWalkFast' && this.animName !== 'creepWalkSlow')) {
+      && this.animName !== 'creepWalkFast' && this.animName !== 'creepWalkSlow'
+      && this.animName !== 'combat8')) {   // [par-anim] 冲锋 Combat8 滑行 (StaticSpeed, PlayerObject.cs:614)
       this.moving = false; this.offX = 0; this.offY = 0; return;
     }
     const t = Math.min(1, Math.max(0, (now - this.moveStartMs) / this.moveDurMs));
@@ -161,6 +170,16 @@ class MapObject {
   // 播完后调度的钩子 (MapObjectNode._Process 215-235)
   tick(now) {
     this.updateOffset(now);
+    // [par-anim] ChannellingStart(元素风暴起手) 播完 → 引导中段 (PlayerRenderer.cs:720-725)
+    if (this.animState && this.animName === 'channellingStart' && this.finished()
+      && this.animState.hasBuff(203)) {
+      this.setAnimation('channellingMiddle', true);
+    }
+    // [par-anim] DragonRepulseStart 播完 → 中段 (buff 仍在时)
+    if (this.animState && this.animName === 'dragonRepulseStart' && this.finished()
+      && this.animState.hasBuff(408)) {
+      this.setAnimation('dragonRepulseMiddle', true);
+    }
     const interrupted = (this.animName === 'standing' || this.animName === 'dead')
       && (this.actionQueue.length || this.moveQueue.length);
     if (this.finished() || interrupted) {
@@ -367,7 +386,15 @@ class PlayerObject extends MapObject {
     this.dead = p.dead ?? false; this.poison = p.poison ?? 0;
     this.level = p.level;
     this.tables = PLAYERS;
-    this.stanceUntil = 0;
+    // [par-anim] 动作分派状态 (PlayerObject.cs:578-803 逐行移植, 见 anims.js)
+    this.animState = new PlayerAnimState();
+    this.animState.horse = this.horse;
+    if (Array.isArray(p.buffs)) {          // StartInformation: ClientBuffInfo[] (自带 index)
+      this._buffTypes = new Map();
+      for (const b of p.buffs) if (b) { this._buffTypes.set(b.index, b.type); this.animState.addBuff(b.type); }
+    } else if (p.buffs) {                  // ObjectPlayer: Dictionary<BuffType,int>
+      for (const t of Object.keys(p.buffs)) this.animState.addBuff(+t);
+    }
     this.setAnimation(this.dead ? 'dead' : this.standAnim(), true);
     this.refreshLibs();
   }
@@ -379,19 +406,54 @@ class PlayerObject extends MapObject {
       armourShape: this.armour, weaponShape: this.weapon, helmetShape: this.helmet,
     });
   }
-  // Stand 优先级 (PlayerRenderer.cs:344-363)
+  // ---- [par-anim] anims.js 分派接入 (唯一权威: PlayerObject.cs:578-803) ----
+  syncAnimState() {
+    this.animState.horse = this.horse;
+    this.animState.currentAnimation = this.animName;
+  }
+  // 包/预测动作 → 全分派 (SetAnimation+SetFrame 合并语义; Attack/Spell 后 StanceTime=+3s)
+  applyAnimAction(action) {
+    action.cls = this.class;
+    action.weaponShape = this.weapon;
+    this.syncAnimState();
+    const sel = this.animState.apply(action, performance.now());
+    if (!sel) return null;
+    this.setAnimation(sel.anim, true);
+    return sel;
+  }
+  // Standing 分派 (PlayerObject.cs:585-605): 引导>龙威>骑马>潜行>Stance>普通
   standAnim() {
-    if (this.horse) return 'horseStanding';
-    if (performance.now() < this.stanceUntil) return 'stance';
-    return 'standing';
+    this.syncAnimState();
+    const sel = this.animState.selectAnimation(
+      new AnimAction(MIR_ACTION.Standing, this.dir, { x: this.x, y: this.y }), performance.now());
+    return sel ? sel.anim : 'standing';
   }
-  moveAnim() { return this.horse ? 'horseWalking' : 'walking'; }
+  // Moving 分派 (PlayerObject.cs:606-624): 冲锋Combat8 > 潜行步(CreepWalk) > 跑/走 > 骑马
+  startMove(dist, dir, _running = false) {
+    this.dir = dir;
+    this.syncAnimState();
+    const sel = this.animState.selectAnimation(
+      new AnimAction(MIR_ACTION.Moving, dir, { x: this.x, y: this.y }, [dist, this._movingMagic ?? 0]), performance.now());
+    this.animState.currentAnimation = sel.anim;
+    const [dx, dy] = DIRS[dir];
+    this.startX = this.x; this.startY = this.y;
+    this.x += dx * dist; this.y += dy * dist;
+    const tbl = this.tables[sel.anim] ?? this.tables.walking ?? this.tables.standing;
+    this.moveDurMs = Math.max(1, tbl.sum);   // 位移时长=动画帧总长 (PlayerRenderer.cs:747)
+    this.moveStartMs = performance.now();
+    this.moveDist = dist;
+    this._movingMagic = 0;
+    this.setAnimation(sel.anim, true);
+  }
   playCombat(magic = 0) {
-    this.stanceUntil = performance.now() + 3000;
-    const anim = getAttackAnimation(this.class, this.weapon, magic);
-    this.setAnimation(anim, true);
+    this.applyAnimAction(new AnimAction(MIR_ACTION.Attack, this.dir, { x: this.x, y: this.y }, [0, magic, 0]));
   }
-  playStruck() { this.play('struck'); }
+  playStruck() {   // Struck 分派 (PlayerObject.cs:664-668): 骑马→HorseStruck
+    this.syncAnimState();
+    const sel = this.animState.selectAnimation(
+      new AnimAction(MIR_ACTION.Struck, this.dir, { x: this.x, y: this.y }), performance.now());
+    this.play(sel ? sel.anim : 'struck');
+  }
   playDie() { this.dead = true; this.setAnimation('die', true); }
 
   // 帧公式 (PlayerRenderer.cs:808-845)
@@ -405,7 +467,8 @@ class PlayerObject extends MapObject {
     const costumeBlock = this.costume >= 0 ? this.costume % 10 : null;
     const armourBlock = costumeBlock ?? (this.armour % 11);
     const wshape = this.weapon >= 1000 ? this.weapon - 1000 : this.weapon;
-    const hideWeapon = costumeBlock != null && [6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18].includes(costumeBlock);
+    const hideWeapon = this.animState.drawWeapon === false   // [par-anim] PoisonousCloud 施法藏武器 (PlayerObject.cs:657)
+      || (costumeBlock != null && [6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18].includes(costumeBlock));
 
     const jobs = [];
     const backDirs = [DIR_UP, DIR_DOWNLEFT, DIR_LEFT, DIR_UPLEFT];
@@ -572,7 +635,7 @@ export class World {
       weapon: this.info.weapon, shield: this.info.shield, armour: this.info.armour,
       costume: this.info.costume, armourColour: this.info.armourColour,
       helmet: this.info.helmet ?? -1, horse: this.info.horse, horseShape: this.info.horseShape ?? 0,
-      dead: false, poison: 0,
+      dead: false, poison: 0, buffs: this.info.buffs,
     }, true);
     this.self = this.player;
     this.player.hp = this.info.hp; this.player.maxHp = this.info.hp;
@@ -707,9 +770,60 @@ export class World {
       const o = obj(e.detail.objectID);
       if (o) o.poison = e.detail.poison;
     });
-    c.addEventListener('objectMount', (e) => {
+    c.addEventListener('objectMount', (e) => {   // [par-anim] Mount: 改 Horse 后走 Standing 分派 (CConnection.cs:1045-1067)
       const o = obj(e.detail.objectID);
-      if (o instanceof PlayerObject) { o.horse = e.detail.horse; o.setAnimation(o.standAnim(), true); }
+      if (o instanceof PlayerObject) { o.horse = e.detail.horse; o.syncAnimState(); o.setAnimation(o.standAnim(), true); }
+    });
+    // ---- [par-anim] Mining/Fishing/Taming/Dash (CConnection.cs:1075-1297 各 Process) ----
+    c.addEventListener('objectMining', (e) => {   // Mining → GetAttackAnimation(None) (PlayerObject.cs:632-634)
+      const o = obj(e.detail.objectID);
+      if (o instanceof PlayerObject) {
+        o.x = e.detail.location.x; o.y = e.detail.location.y; o.dir = e.detail.direction;
+        o.applyAnimAction(actionFromMining(e.detail));
+      }
+    });
+    c.addEventListener('objectFishing', (e) => {  // Fishing Cast↔Wait↔Reel 状态机 (PlayerObject.cs:635-642)
+      const o = obj(e.detail.objectID);
+      if (o instanceof PlayerObject) {
+        o.dir = e.detail.direction;
+        o.applyAnimAction(actionFromFishing(e.detail));
+      }
+    });
+    c.addEventListener('objectTaming', (e) => {   // Taming Cast→Wait 保持 (PlayerObject.cs:643-648)
+      const o = obj(e.detail.objectID);
+      if (o instanceof PlayerObject) {
+        o.dir = e.detail.direction;
+        o.applyAnimAction(actionFromTaming(e.detail));
+      }
+    });
+    c.addEventListener('objectDash', (e) => {     // Dash: 距离>0 → StanceTime 3s + Moving(1, magic) (CConnection.cs:1218-1241)
+      const o = obj(e.detail.objectID);
+      if (!o) return;
+      const d = e.detail;
+      if (d.distance > 0 && o instanceof PlayerObject) {
+        o.x = d.location.x; o.y = d.location.y; o.dir = d.direction;
+        o._movingMagic = d.magic ?? 0;    // Moving Extra[1] (Combat8/Assault 特效)
+        // 权威格已到终点, 从起点回拉 (StartMove 语义); 距离按包
+        o.startMove(Math.max(1, d.distance), d.direction);
+        o.applyAnimAction(actionFromDash(d));
+      }
+    });
+    // ---- [par-anim] Buff 状态 → 动画 (GameScene.cs:5107-5159 OnBuffAdd/OnObjectBuffAdd) ----
+    c.addEventListener('objectBuffAdd', (e) => {
+      const o = obj(e.detail.objectID);
+      if (o instanceof PlayerObject) {
+        o.animState.addBuff(e.detail.type);
+        // 龙威/引导立即切中段姿态; 潜行待 Stand 时生效 (PlayerObject.cs:591-603)
+        if (e.detail.type === BUFF_DRAGON_REPULSE && o.animName === 'standing') o.setAnimation(o.standAnim(), true);
+      }
+    });
+    c.addEventListener('objectBuffRemove', (e) => {
+      const o = obj(e.detail.objectID);
+      if (o instanceof PlayerObject) {
+        o.animState.removeBuff(e.detail.type);
+        // 龙威结束: 中段 → End (PlayerRenderer.cs:366-369 PlayDragonRepulseEnd)
+        if (e.detail.type === BUFF_DRAGON_REPULSE && o.animName === 'dragonRepulseMiddle') o.setAnimation('dragonRepulseEnd', true);
+      }
     });
     c.addEventListener('objectNameColour', (e) => {
       const o = obj(e.detail.objectID);
@@ -755,6 +869,23 @@ export class World {
       }
       this.hooks.onStats?.(this.#selfStats());
       this.hooks.onRawStats?.(e.detail);
+    });
+    // ---- [par-anim] 自身 Buff (S.BuffAdd/BuffRemove → PlayerRenderer 状态, GameScene.cs:5107-5159) ----
+    c.addEventListener('buffAdd', (e) => {
+      const b = e.detail.buff;
+      if (!b || !this.player) return;
+      this.player.animState.addBuff(b.type);
+      (this.player._buffTypes ??= new Map()).set(b.index, b.type);
+      if (b.type === BUFF_DRAGON_REPULSE && this.player.animName === 'standing') this.player.setAnimation(this.player.standAnim(), true);
+    });
+    c.addEventListener('buffRemove', (e) => {
+      if (!this.player) return;
+      const idx = e.detail.index;
+      const type = this.player._buffTypes?.get(idx);
+      if (type == null) return;
+      this.player._buffTypes.delete(idx);
+      this.player.animState.removeBuff(type);
+      if (type === BUFF_DRAGON_REPULSE && this.player.animName === 'dragonRepulseMiddle') this.player.setAnimation('dragonRepulseEnd', true);
     });
     c.addEventListener('magicCooldown', (e) => {
       (this.magics ??= new Map());
@@ -834,7 +965,7 @@ export class World {
     const atk = this.objects.get(p.objectID);
     if (atk) {
       atk.x = p.location.x; atk.y = p.location.y; atk.dir = p.direction;
-      if (atk instanceof PlayerObject) atk.setAnimation('combat1', true);
+      if (atk instanceof PlayerObject) atk.applyAnimAction(actionFromRangeAttack(p));  // [par-anim] RangeAttack→Combat1 (PlayerObject.cs:649-651)
       else atk.setAnimation('combat1', true);
       // Shuriken 弹道 (MagicEx 1270,3)
       if (p.attackMagic === MAGIC.Shuriken && atk !== this.player) {
@@ -881,11 +1012,10 @@ export class World {
     const caster = this.objects.get(p.objectID);
     if (caster) {
       caster.x = p.location.x; caster.y = p.location.y; caster.dir = p.direction;
-      if (caster instanceof PlayerObject) {
-        caster.setAnimation(getMagicAnimation(p.type), true);
-      } else {
-        caster.setAnimation(p.type ? 'combat3' : 'combat3', true);
-      }
+      if (caster instanceof PlayerObject)
+        caster.applyAnimAction(actionFromMagic(p));   // [par-anim] Spell 全分派 (PlayerObject.cs:652-663)
+      else
+        caster.setAnimation('combat3', true);
     }
     if (!p.cast) return;   // 不播释放
     // 目标受击
@@ -1234,10 +1364,8 @@ export class World {
     if (!this.conn || !this.player || this.player.dead) return false;
     const tx = target?.x ?? this.player.x, ty = target?.y ?? this.player.y;
     const dir = directionFromPoint(this.player.x, this.player.y, tx, ty);
-    this.player.dir = dir;
-    const anim = getMagicAnimation(type);
-    if (anim) this.player.setAnimation(anim, true);  // 本地预测: Spell 抬手
-    else this.player.playCombat(type);
+    this.player.applyAnimAction(new AnimAction(MIR_ACTION.Spell, dir,   // [par-anim] 本地预测: Spell 抬手全分派
+      { x: this.player.x, y: this.player.y }, [type]));
     this.conn.sendMagic(dir, type, target?.objectID ?? 0, tx, ty);
     return true;
   }
