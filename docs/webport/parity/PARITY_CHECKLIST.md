@@ -93,6 +93,6 @@
 
 ## 结论
 
-P0 移动/HUD/聊天/键位 = **达成** (验收表内 ✅ 全过)。
-P1 窗口 = par-win 11 模块 + installWindows 接线已通; par-move R6 把 11 个 fallback 空壳补成真实现 (CDP 12/12 内容非空), dialogs.js 草稿仅剩 belt 细化吸收价值。
-BuffDialog/QuestTracker/聊天双行 = ✅ 已修 (R5)。
+P0 移动/HUD/聊天/键位 = **达成** (验收表内 ✅ 全过, R5-R8 逐项 CDP 复核)。
+P1 窗口 = par-win 11 模块 + installWindows 接线已通; par-move R6 把 11 个 fallback 空壳补成真实现 (CDP 12/12 内容非空), dialogs.js 草稿仅剩 belt 细化吸收价值; R10 Login 5 按钮 (排行/选项/改密/忘记密码/激活) 真实现清零"暂未实现"。
+BuffDialog/QuestTracker/聊天双行 = ✅ 已修 (R5)。**全表 ✅** (2026-08-15)。
