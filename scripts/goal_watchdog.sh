@@ -97,6 +97,9 @@ GOALS=(
   "019ffba6-950c-7000-be7c-358ead847cb8|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-13T15-03-46-188Z_019ffba6-950c-7000-be7c-358ead847cb8.jsonl|zircon|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ffba6.state"
   "019ffd44-2ca2-7000-afa0-5c4b34b5d047|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-13T22-35-31-362Z_019ffd44-2ca2-7000-afa0-5c4b34b5d047.jsonl|zdocs|/home/tetsuya/development/zircon|Zircon全代码文档化"
   "019ffbbb-cff3-7000-8893-29882c9c7c6f|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-13T15-26-57-523Z_019ffbbb-cff3-7000-8893-29882c9c7c6f.jsonl|ghaudit|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.019ffbbb.state"
+  "01a0027c-d8e4-7000-b0fd-68346df6cae0|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T22-55-31-556Z_01a0027c-d8e4-7000-b0fd-68346df6cae0.jsonl|fixA|/home/tetsuya/development/svc-dashboard|svcfix-A 移动端遮挡+状态色",
+  "01a0027c-d919-7000-894b-f7344aa23a8a|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T22-55-31-609Z_01a0027c-d919-7000-894b-f7344aa23a8a.jsonl|fixB|/home/tetsuya/development/svc-dashboard|svcfix-B 桌面可达+布局",
+  "01a0027c-de53-7000-aa7c-d7d5e9a4bfed|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T22-55-32-947Z_01a0027c-de53-7000-aa7c-d7d5e9a4bfed.jsonl|fixC|/home/tetsuya/development/svc-dashboard|svcfix-C 服务表+工具页",
 )
 
 CHECK_ONLY=0
