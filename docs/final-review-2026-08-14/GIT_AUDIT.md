@@ -57,7 +57,11 @@
 | zircon | 7d95d8e | chore: 82 运行配置 + Godot .cs.uid + 引用校验脚本 + gitignore 备份 |
 | Mir3-Research | 01cf988 | dbeditor 实况图标缓存补全 + watchdog 注册 botgoal |
 | Mir3-Research | 0f5e80b | chore: 移除误入库 .bak(git rm --cached) + gitignore |
-| Mir3-Research | (本 commit) | docs: GIT_AUDIT.md 全仓库收尾审计 |
+| Mir3-Research | 54d4850 | docs: GIT_AUDIT.md 全仓库收尾审计 |
+| Mir3-Research | 1464483 | dbeditor: 实况图标缓存增量(Storeitems 12枚, 终验时 live 服务新产出) |
+
+终验(全部 push 后 ls-remote 复核): 7/7 仓库 local==remote, stash=0, 工作区仅余兄弟审计
+agent 的 review 截图/证据目录(docs/final-review-2026-08-14/*.png, review_goals/*)待总收尾统一入库。
 
 ## 遗留(不阻塞)
 
