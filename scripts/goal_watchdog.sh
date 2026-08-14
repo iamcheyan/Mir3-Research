@@ -67,9 +67,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 GOALS=(
   "01a0007a-e0db-7000-aa8c-7ff6380acb67|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T13-34-08-091Z_01a0007a-e0db-7000-aa8c-7ff6380acb67.jsonl|yomudesign|/home/tetsuya/development/yomu|Yomu无框单页视觉重构"
   "01a00067-cf2d-7000-9ed8-0494986a6555|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-13-18-381Z_01a00067-cf2d-7000-9ed8-0494986a6555.jsonl|parity|/home/tetsuya/development/Mir3-Research|webport行为等价冲刺"
-  "01a0006d-7ba0-7000-8f56-f1ff7b743aa6|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-30-208Z_01a0006d-7ba0-7000-8f56-f1ff7b743aa6.jsonl|par-hud|/home/tetsuya/development/Mir3-Research|webport HUD聊天"
   "01a0006d-4e8b-7000-833d-ca644ca86904|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-18-667Z_01a0006d-4e8b-7000-833d-ca644ca86904.jsonl|par-win|/home/tetsuya/development/Mir3-Research|webport窗口系统"
-  "01a0006d-ad7b-7000-a796-f6b592978164|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-42-971Z_01a0006d-ad7b-7000-a796-f6b592978164.jsonl|par-anim|/home/tetsuya/development/Mir3-Research|webport动作系统"
   "019ffff2-a2d7-7000-9dcb-0943df61bbaf|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T11-05-19-319Z_019ffff2-a2d7-7000-9dcb-0943df61bbaf.jsonl|svcglass|/home/tetsuya/development/svc-dashboard|iOS玻璃重构"
   "019fffa6-769b-7000-8202-c1ea6d10c204|/home/tetsuya/.omp/agent/sessions/-development-svc-dashboard/2026-08-14T09-42-07-259Z_019fffa6-769b-7000-8202-c1ea6d10c204.jsonl|svcfile|/home/tetsuya/development/svc-dashboard|文件浏览器"
   "019fffa3-62ad-7000-a861-af664e6f24f5|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T09-38-45-549Z_019fffa3-62ad-7000-a861-af664e6f24f5.jsonl|webaudit|/home/tetsuya/development/Mir3-Research|webport像素审计"
