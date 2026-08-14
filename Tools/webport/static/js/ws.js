@@ -370,6 +370,7 @@ export class GameConnection extends EventTarget {
   sendRankSearch(name) { this.send(C.RankSearch(name)); }
   sendMarketPlaceSearch(name, itemTypeFilter, itemType, sort) { this.send(C.MarketPlaceSearch(name, itemTypeFilter, itemType, sort)); }
   sendLogout() { this.send(C.Logout()); }
+  sendMailOpened(index) { this.send(C.MailOpened(index)); }
   sendInspect(index, ranking = false) { this.send(C.Inspect(index, ranking)); }
   sendMount() { this.send(C.Mount()); }
   sendTradeRequest() { this.send(new Writer().build(ID.C_TRADEREQUEST)); }
@@ -422,13 +423,8 @@ export class GameConnection extends EventTarget {
   sendGuildRepairCastleGuards() { this.send(C.GuildRepairCastleGuards()); }
   sendJoinStarterGuild() { this.send(C.JoinStarterGuild()); }
   sendMarriageResponse(accept) { this.send(C.MarriageResponse(accept)); }
-  sendTradeRequest() { this.send(C.TradeRequest()); }
+  sendSelectLanguage(lang) { this.send(C.SelectLanguage(lang)); }
   sendMilestoneNotify(receive) { this.send(C.MilestoneNotify(receive)); }
-  sendMilestoneClaim(index) { this.send(C.MilestoneClaim(index)); }
-  sendMilestoneActive(index, active) { this.send(C.MilestoneActive(index, active)); }
+  sendGuildEditNotice(notice) { this.send(C.GuildEditNotice(notice)); }
   sendIncreaseDiscipline() { this.send(C.IncreaseDiscipline()); }
-  sendMagicKey(magic, s1, s2, s3, s4) { this.send(C.MagicKey(magic, s1, s2, s3, s4)); }
-  sendHelmetToggle(hide) { this.send(C.HelmetToggle(hide)); }
-  sendGroupLfgUpdate(enabled, name, type, maxCount) { this.send(C.GroupLFGUpdate(enabled, name, type, maxCount)); }
-  sendMount() { this.send(C.Mount()); }
  }

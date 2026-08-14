@@ -62,11 +62,13 @@ export class DXControl {
   set visible(v) { this._visible = v; this.applyBase(); }
   get enabled() { return this._enabled; }
   set enabled(v) { this._enabled = v; this.applyBase(); this.applyEnabled?.(); }
-  addControl(c) {
-    this.children.push(c);
-    c.parent = this;
-    this.el.appendChild(c.el);
-    return c;
+  addControl(...ctls) {   // [shared] 变参 (Godot AddControl 单参; web 侧多模块惯用双参)
+    for (const c of ctls) {
+      this.children.push(c);
+      c.parent = this;
+      this.el.appendChild(c.el);
+    }
+    return ctls.length === 1 ? ctls[0] : ctls;
   }
   removeControl(c) {
     const i = this.children.indexOf(c);
@@ -239,6 +241,11 @@ export class DXButton extends DXImageControl {
       `pointer-events:none;text-shadow:1px 1px 0 #000;`;
     this.el.appendChild(l);
   }
+  // [shared] 动态 text/textColour 需刷新标签 span (par-win 各窗口页签/开关用)
+  set text(v) { this._text = v ?? ''; const l = this.el?.querySelector('.dxbtn-label'); if (l) l.textContent = this._text; }
+  get text() { return this._text; }
+  set textColour(v) { this._textColour = v; const l = this.el?.querySelector('.dxbtn-label'); if (l) l.style.color = rgba(v); }
+  get textColour() { return this._textColour; }
   // Index=-1: Interface 左/中/右三片拼按钮 (DXButton.cs:187-203 parts 16/18/17)
   async #renderGenerated() {
     if (this._index >= 0 || !this.size[0] || !this.size[1]) return;
@@ -269,6 +276,8 @@ export class DXTextInput extends DXControl {
     super(opts);
     this.input = document.createElement('input');
     this.input.type = opts.secret ? 'password' : 'text';
+    if (opts.placeholder) this.input.placeholder = opts.placeholder;   // [shared] par-win GM 面板等
+    if (opts.readOnly) this.input.readOnly = true;
     if (opts.maxLength) this.input.maxLength = opts.maxLength;  // 不传=不限 (DOM maxLength=0 会吞掉全部输入)
     this.input.style.cssText =
       `width:100%;height:100%;border:none;outline:none;background:transparent;` +

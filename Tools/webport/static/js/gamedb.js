@@ -60,6 +60,8 @@ export const GameDB = {
 
   // CurrencyInfo: Index→Row (0=Gold,1=GameGold …; Type 用于物品货币 DropItem)
   async currencies() { return (await table('CurrencyInfo')).rows; },
+  // NPCInfo: Index → row (StartQuests/FinishQuests 外键数组)
+  async npcInfo(index) { return (await table('NPCInfo')).byIndex.get(index) ?? null; },
 
   // NPCInfo: 找 NPC 的 StartQuests/FinishQuests ( quests 反向索引)
   async npcInfoByQuest(questIndex) {

@@ -228,6 +228,24 @@ export class ItemStore {
       if (this.guild) this.guild.guildFunds = this.guildFunds;
       this.#emit('guild');
     });
+    c.addEventListener('guildNewItem', (e) => {   // ApplyGuildNewItem — 行会仓库存入
+      if (!this.guild) this.guild = { members: [], storage: [] };
+      this.guild.storage ??= [];
+      this.guild.storage[e.detail.slot] = e.detail.item;
+      this.#emit('guild');
+    });
+    c.addEventListener('guildGetItem', (e) => {   // 行会仓库取出
+      if (this.guild?.storage) { this.guild.storage[e.detail.slot] = null; this.#emit('guild'); }
+    });
+    c.addEventListener('guildDayReset', (e) => {  // 每日贡献/增长清零
+      if (this.guild) {
+        this.guild.dailyGrowth = 0;
+        this.guild.dailyContribution = 0;
+        for (const m of this.guild.members ?? []) { m.dailyContribution = 0; m.dailyGrowth = 0; }
+        this.#emit('guild');
+      }
+      void e;
+    });
   }
 
   // AddItems (GameScene.cs:6743): 叠加 → 首空格; slot 字段已由服务端写好 (走 else 分支兜底)
@@ -353,27 +371,17 @@ export class ItemStore {
 
   // ---- 移动意图 (DXItemCell.MoveItem): 本地乐观 + 发包, 服务端 echo 校正 ----
   moveItem(fromGrid, fromSlot, toGrid, toSlot, merge = false) {
-    // Storage parts 伪 GridType: 服务端没有 PartsStorage GridType — 移动用 slot 偏移表达
     if (this.sendItemMove) this.sendItemMove(fromGrid, toGrid, fromSlot, toSlot, merge);
     this.lock(fromGrid, fromSlot);
   }
+
+  unlockPublic(g, slot) { this.locked.delete(`${g}:${slot}`); this.#emit('items'); }
 
   // ---- 负重 ----
   maxBagWeight() { return this.stats[STAT_BAGWEIGHT] ?? 0; }
   maxWearWeight() { return this.stats[STAT_WEARWEIGHT] ?? 0; }
   maxHandWeight() { return this.stats[STAT_HANDWEIGHT] ?? 0; }
-  sumBagWeight() {   // RefreshInventoryWeights 本地兜底 (:5416)
-    let w = 0n;
-    for (const it of this.grids.get(GRID.INVENTORY).values()) {
-      const info = ItemStore.itemInfo(it.infoIndex);
-      if (info) w += BigInt(Math.round((infoWeight(info) * Number(it.count)) * 100)) / 100n;
-    }
-    return Number(w);
-  }
+  sumBagWeight() { return this.bagWeight; }   // S.WeightUpdate 权威; 本地不估算 (items.json 无 weight)
 }
 
-// 物品重量: items.json 无 weight 字段 — 兜底 0 (S.WeightUpdate 才是权威)
-function infoWeight() { return 0; }
-
-// 兜底 PartsStorage GridType 常量 (net.js GRID 无此值; slot+2000 协议由窗口层处理)
-ItemStore.prototype.PARTS_OFF = PARTS_OFF;
+// PartsStorage 槽位 = slot + PARTS_OFF (2000) — 协议表达, 见 dxgrid/win-storage

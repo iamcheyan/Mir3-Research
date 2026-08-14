@@ -6,8 +6,10 @@
 
 import { DXControl, DXLabel } from './dx.js';
 import { skin } from './skin.js';
-import { GRID, ITEM_FLAGS, RarityColour } from './net.js';
+import { GRID, ITEM_FLAGS } from './net.js';
 import { setHint } from './windows.js';
+import { D } from './data.js';
+import { ItemStore } from './itemstore.js';
 
 export const CELL = 36, STEP = 37;
 
@@ -296,10 +298,9 @@ export class DXItemCell extends DXControl {
       this.#applyBorder();
       return;
     }
-    const info = this.store?.constructor.itemInfo?.(it.infoIndex)
-      ?? (this.store ? this.store.constructor.itemInfo(it.infoIndex) : null);
+    const info = D().itemsById?.[it.infoIndex];
     if (info && info.image > 0) {
-      skin.frame('Items', info.image).then(f => {
+      skin.frame('Storeitem', info.image).then(f => {
         if (this.item === it && f) this.icon.style.backgroundImage = `url(${f.url})`;
       }).catch(() => {});
     } else this.icon.style.backgroundImage = '';
@@ -311,14 +312,13 @@ export class DXItemCell extends DXControl {
       this.duraBar.style.width = `${Math.round(pct * 100)}%`;
       this.duraBar.style.background = pct > 0.5 ? '#5fbf5f' : pct > 0.25 ? '#d9a73a' : '#d94545';
     } else this.duraBar.style.display = 'none';
-    // tooltip (DXItemCell tooltip: 名称+稀有度颜色+数量+耐久)
-    const zh = this.store?.constructor.itemZh ? this.store.constructor.itemZh(it.infoIndex) : '';
+    // tooltip (DXItemCell tooltip: 名称+数量+耐久+类型)
+    const zh = ItemStore.itemZh(it.infoIndex);
     const parts = [zh];
     if (Number(it.count) > 1) parts.push(`数量: ${it.count}`);
     if (it.maxDurability > 0) parts.push(`耐久: ${it.currentDurability}/${it.maxDurability}`);
     if (info?.type) parts.push(info.type);
     this.el.dataset.hint = parts.join('\n');
-    this.#applyBorder();
   }
 
   #applyBorder() {
@@ -327,14 +327,7 @@ export class DXItemCell extends DXControl {
     else if (this.locked) b = '1px solid #d94545';
     else if (this._hover && this.item) b = '1px solid #ffdb8e';
     this.el.style.border = b;
-    // 稀有度底色微调
-    const it = this.item;
-    if (it) {
-      const info = this.store?.constructor.itemInfo?.(it.infoIndex);
-      const rar = info?.rarity ?? 0;
-      if (rar >= 2) this.el.style.background = 'rgba(40,30,70,.35)';
-      else this.el.style.background = 'rgba(0,0,0,.25)';
-    } else this.el.style.background = 'rgba(0,0,0,.25)';
+    this.el.style.background = 'rgba(0,0,0,.25)';
   }
 
   #hover(on) { this._hover = on; this.#applyBorder(); }
@@ -400,6 +393,9 @@ export class DXItemCell extends DXControl {
   #moveTo(target, ev) {
     const src = this.item;
     if (!src) return;
+    // 链接格 (Trade/Repair): 不走 ItemMove — 由宿主 onOffer 发专属包 (C.TradeAddItem/修理链接)
+    if (target.grid?.linked) { target.grid.onOffer?.(this, target); return; }
+    if (this.grid?.linked) { this.grid.onUnlink?.(this); return; }   // 从链接格拖出 = 取消链接
     const fromG = this.gridType, fromS = this.slot;
     const toG = target.gridType, toS = target.slot;
     if (fromG === toG && fromS === toS) return;
@@ -436,7 +432,8 @@ export class DXItemCell extends DXControl {
   }
 
   #dropOutside(ev) {
-    // 拖到窗口外 = 丢弃 (ItemDrop; Godot: 拖到地面丢)
+    // 拖到窗口外 = 丢弃 (ItemDrop; Godot: 拖到地面丢); 链接格拖出 = 取消链接不丢
+    if (this.grid?.linked) { this.grid.onUnlink?.(this); return; }
     const src = this.item;
     if (!src || this.locked) return;
     confirmDialog(`确定丢弃 ${this.store.constructor.itemZh(src.infoIndex)} 吗？`, '丢弃', () => {
