@@ -1,0 +1,724 @@
+{
+ "frameSets": {
+  "players": {
+   "standing": {
+    "start": 0,
+    "count": 4,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   },
+   "walking": {
+    "start": 80,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "running": {
+    "start": 160,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "creepStanding": {
+    "start": 1680,
+    "count": 4,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   },
+   "creepWalkSlow": {
+    "start": 1760,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 200
+   },
+   "creepWalkFast": {
+    "start": 1760,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "pushed": {
+    "start": 240,
+    "count": 6,
+    "offset": 10,
+    "reversed": true,
+    "staticSpeed": true,
+    "ms": 50
+   },
+   "stance": {
+    "start": 400,
+    "count": 3,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   },
+   "harvest": {
+    "start": 480,
+    "count": 2,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 300
+   },
+   "combat1": {
+    "start": 560,
+    "count": 5,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100,
+    "delays": {
+     "1": 200
+    }
+   },
+   "combat2": {
+    "start": 640,
+    "count": 5,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100,
+    "delays": {
+     "3": 200
+    }
+   },
+   "combat3": {
+    "start": 720,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat4": {
+    "start": 800,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat5": {
+    "start": 880,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "combat6": {
+    "start": 960,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "combat7": {
+    "start": 1040,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat8": {
+    "start": 1120,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": true,
+    "ms": 50
+   },
+   "combat9": {
+    "start": 1200,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat10": {
+    "start": 1280,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "combat11": {
+    "start": 1360,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "combat12": {
+    "start": 1440,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "combat13": {
+    "start": 1520,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat14": {
+    "start": 1600,
+    "count": 8,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat15": {
+    "start": 400,
+    "count": 3,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 200
+   },
+   "dragonRepulseStart": {
+    "start": 1600,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "dragonRepulseMiddle": {
+    "start": 1605,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   },
+   "dragonRepulseEnd": {
+    "start": 1606,
+    "count": 2,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "struck": {
+    "start": 1840,
+    "count": 3,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "die": {
+    "start": 1920,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "dead": {
+    "start": 1929,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   },
+   "fishingCast": {
+    "start": 2000,
+    "count": 8,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "fishingWait": {
+    "start": 2080,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 120
+   },
+   "fishingReel": {
+    "start": 2160,
+    "count": 8,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "horseStanding": {
+    "start": 2240,
+    "count": 4,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   },
+   "horseWalking": {
+    "start": 2320,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "horseRunning": {
+    "start": 2400,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "horseStruck": {
+    "start": 2480,
+    "count": 3,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "channellingStart": {
+    "start": 560,
+    "count": 4,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "channellingMiddle": {
+    "start": 563,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   },
+   "channellingEnd": {
+    "start": 0,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 60
+   },
+   "tamingCast": {
+    "start": 720,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "tamingWait": {
+    "start": 725,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   }
+  },
+  "defaultMonster": {
+   "standing": {
+    "start": 0,
+    "count": 4,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   },
+   "walking": {
+    "start": 80,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "pushed": {
+    "start": 80,
+    "count": 6,
+    "offset": 10,
+    "reversed": true,
+    "staticSpeed": true,
+    "ms": 50
+   },
+   "combat1": {
+    "start": 160,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat2": {
+    "start": 160,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "combat3": {
+    "start": 160,
+    "count": 6,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "struck": {
+    "start": 240,
+    "count": 2,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "die": {
+    "start": 320,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "dead": {
+    "start": 329,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   },
+   "skeleton": {
+    "start": 880,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   },
+   "show": {
+    "start": 640,
+    "count": 10,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "hide": {
+    "start": 640,
+    "count": 10,
+    "offset": 10,
+    "reversed": true,
+    "staticSpeed": false,
+    "ms": 100
+   },
+   "stoneStanding": {
+    "start": 640,
+    "count": 1,
+    "offset": 10,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 500
+   }
+  },
+  "defaultNPC": {
+   "standing": {
+    "start": 0,
+    "count": 4,
+    "offset": 0,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   }
+  },
+  "defaultItem": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "reversed": false,
+    "staticSpeed": false,
+    "ms": 1000
+   }
+  }
+ },
+ "armourShift": {
+  "standing": 0,
+  "walking": 1600,
+  "running": 1600,
+  "creepStanding": 240,
+  "creepWalkSlow": 240,
+  "creepWalkFast": 240,
+  "pushed": 160,
+  "stance": 160,
+  "harvest": 160,
+  "combat1": -400,
+  "combat2": 0,
+  "combat3": 0,
+  "combat4": 80,
+  "combat5": 400,
+  "combat6": 400,
+  "combat7": 400,
+  "combat8": 720,
+  "combat9": -960,
+  "combat10": -480,
+  "combat11": -400,
+  "combat12": -400,
+  "combat13": -400,
+  "combat14": 0,
+  "combat15": 0,
+  "dragonRepulseStart": 0,
+  "dragonRepulseMiddle": 0,
+  "dragonRepulseEnd": 0,
+  "struck": -640,
+  "die": -400,
+  "dead": -400,
+  "fishingCast": 80,
+  "fishingWait": 80,
+  "fishingReel": 80,
+  "horseStanding": 80,
+  "horseWalking": 80,
+  "horseRunning": 80,
+  "horseStruck": 80,
+  "channellingStart": 0,
+  "channellingMiddle": 0,
+  "channellingEnd": 0,
+  "tamingCast": 0,
+  "tamingWait": 0
+ },
+ "npcSpecial": {
+  "56": {
+   "standing": {
+    "start": 0,
+    "count": 12,
+    "offset": 0,
+    "ms": 200
+   }
+  },
+  "57": {
+   "standing": {
+    "start": 0,
+    "count": 12,
+    "offset": 0,
+    "ms": 200
+   }
+  },
+  "64": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "65": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "91": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "92": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "93": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "156": {
+   "standing": {
+    "start": 0,
+    "count": 16,
+    "offset": 0,
+    "ms": 200
+   }
+  },
+  "157": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "158": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "160": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "165": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "166": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "168": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "208": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "209": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "210": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "211": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "212": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "213": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "214": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "231": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  },
+  "234": {
+   "standing": {
+    "start": 0,
+    "count": 1,
+    "offset": 0,
+    "ms": 3600000,
+    "static": true
+   }
+  }
+ }
+}
