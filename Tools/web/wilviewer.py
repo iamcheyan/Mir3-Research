@@ -1159,6 +1159,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
     <button id="btn-hud" style="color:#e8a33d; border-color:#e8a33d; font-weight:bold;">🖥️ UI 组装预览</button>
     <button id="btn-anim">▶ Animate</button>
   </div>
+  <div id="anim" style="display:none">
     <span class="lbl">Start</span><input type="number" id="astart" min="0" value="0">
     <span class="lbl">Frames</span><input type="number" id="acount" min="1" value="12">
     <span class="lbl">fps</span><input type="number" id="afps" min="1" max="60" value="8">
