@@ -171,6 +171,26 @@ def load_ui_evidence() -> dict:
             "resource_path_table": resource_path_table,
             "resource_family_catalog": resource_family_catalog}
 
+# --- Frame formulas (E3: 与 webport 共读的单一数据源) ----------------------
+FRAME_FORMULAS_PATH = PROJECT_ROOT / "Tools/resedit/frame-formulas.json"
+_ff_cache: dict = {"mtime": -1.0, "data": None}
+
+
+def load_frame_formulas() -> dict:
+    """读 Tools/resedit/frame-formulas.json (mtime 缓存; 提取器重跑后自动刷新)。"""
+    try:
+        mtime = FRAME_FORMULAS_PATH.stat().st_mtime
+    except OSError:
+        return {"error": f"missing {FRAME_FORMULAS_PATH} — run Tools/resedit/frameformulas.py"}
+    if _ff_cache["mtime"] == mtime and _ff_cache["data"] is not None:
+        return _ff_cache["data"]
+    try:
+        data = json.loads(FRAME_FORMULAS_PATH.read_text(encoding="utf-8"))
+    except ValueError as exc:
+        return {"error": f"bad JSON: {exc}"}
+    _ff_cache.update(mtime=mtime, data=data)
+    return data
+
 
 def _looks_like_client(p: str) -> bool:
     """A dir with Data/ or .wil files directly inside."""
@@ -510,6 +530,9 @@ class Handler(BaseHTTPRequestHandler):
                 ctype = "image/png"
             self._send(f.read_bytes(), ctype)
             return
+        if path == "/api/frame-formulas":
+            self._send(json_bytes(load_frame_formulas()), "application/json; charset=utf-8")
+            return
         if path == "/api/ui-layout":
             self._send(json_bytes(load_ui_evidence()), "application/json; charset=utf-8")
             return
@@ -785,7 +808,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         f = self._qstr(q, "f")
         scale = min(max(self._qint(q, "scale", 1), 1), 8)
-        kind = self._qstr(q, "kind", "png")   # png | sheet
+        kind = self._qstr(q, "kind", "png")   # png | sheet | webp
         cols = min(max(self._qint(q, "cols", 24), 1), 60)
         bg = self._qstr(q, "bg", "transparent")
         idxs: list[int] = []
@@ -832,7 +855,9 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self._send(data, "image/png")
             return
-        # zip of individual PNGs + manifest.json (mirrors wilextract --meta)
+        # zip of individual frames + manifest.json (mirrors wilextract --meta)
+        # kind=png → PNG 逐帧; kind=webp → 无损 WebP 逐帧 (与 webres 管线同编码器)
+        as_webp = kind == "webp"
         buf = BytesIO()
         manifest = []
         with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
@@ -848,12 +873,19 @@ class Handler(BaseHTTPRequestHandler):
                 if scale > 1:
                     im = im.resize((im.width * scale, im.height * scale), Image_NEAREST)
                 hdr = lib.header(i)
-                z.writestr(f"{f.replace('.wil', '')}_{i:05d}.png", png_bytes(im))
+                if as_webp:
+                    wbuf = BytesIO()
+                    im.save(wbuf, format="WEBP", lossless=True, method=4)
+                    z.writestr(f"{f.replace('.wil', '')}_{i:05d}.webp", wbuf.getvalue())
+                else:
+                    z.writestr(f"{f.replace('.wil', '')}_{i:05d}.png", png_bytes(im))
                 manifest.append({
-                    "index": i, "width": hdr["width"], "height": hdr["height"],
-                    "offsetX": hdr["offsetX"], "offsetY": hdr["offsetY"],
-                    "shadow": hdr["shadow"], "shadowX": hdr["shadowX"],
-                    "shadowY": hdr["shadowY"], "words": hdr["words"],
+                    "index": i, "width": hdr.get("width"), "height": hdr.get("height"),
+                    "offsetX": hdr.get("offsetX"), "offsetY": hdr.get("offsetY"),
+                    # WIL 有 shadow 元数据, ZL header 无 (zlsdk.header 不含该键)
+                    "shadow": hdr.get("shadow", False),
+                    "shadowX": hdr.get("shadowX", 0), "shadowY": hdr.get("shadowY", 0),
+                    "words": hdr.get("words", 0),
                 })
             z.writestr("manifest.json", json_bytes(manifest))
         data = buf.getvalue()
@@ -1020,6 +1052,17 @@ PAGE_HTML = r"""<!DOCTYPE html>
       repeating-conic-gradient(#2a2f38 0% 25%, #232830 0% 50%) 0 0/16px 16px; border:1px solid var(--line);
       max-width:70vw; max-height:60vh; }
   #meta { font-size:12px; color:var(--dim); white-space:pre; }
+  #ffpanel { font-size:12px; margin-top:8px; max-width:360px; }
+  #ffpanel .ff-head { color:var(--acc); font-weight:bold; margin-bottom:4px; }
+  #ffpanel .ff-src { color:var(--dim); font-weight:normal; font-size:11px; }
+  #ffpanel .ff-role { color:var(--dim); margin-bottom:4px; }
+  #ffpanel .ff-row { padding:2px 0; border-top:1px solid #2c3340; }
+  #ffpanel .ff-row b { color:#cfe3ff; }
+  #ffpanel .ff-note { color:var(--dim); }
+  #ffpanel .ff-seq { float:right; color:var(--acc); cursor:pointer; text-decoration:underline; }
+  #ffpanel .ff-formula { color:#9fb8d8; font-family:monospace; font-size:11px; padding-top:2px; }
+  #ffpanel .ff-none { color:var(--dim); }
+  #ffpanel .ff-err { color:#e88; }
   #modal .btn { display:inline-block; margin-top:10px; padding:6px 14px; background:var(--panel2);
       border:1px solid var(--acc); color:var(--acc); border-radius:6px; text-decoration:none; cursor:pointer;
       font-size:13px; }
@@ -1116,7 +1159,6 @@ PAGE_HTML = r"""<!DOCTYPE html>
     <button id="btn-hud" style="color:#e8a33d; border-color:#e8a33d; font-weight:bold;">🖥️ UI 组装预览</button>
     <button id="btn-anim">▶ Animate</button>
   </div>
-  <div id="anim">
     <span class="lbl">Start</span><input type="number" id="astart" min="0" value="0">
     <span class="lbl">Frames</span><input type="number" id="acount" min="1" value="12">
     <span class="lbl">fps</span><input type="number" id="afps" min="1" max="60" value="8">
@@ -1147,6 +1189,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
   <div class="row">
     <div><img id="mimg" alt=""></div>
     <div id="meta"></div>
+    <div id="ffpanel"></div>
   </div>
   <div id="dbar">
     <button class="btn" id="mprev">◀ 上一帧</button>
@@ -1630,12 +1673,14 @@ function renderSelUI(){
   bar.innerHTML = `<span class="lbl">选中 <b style="color:var(--acc)">${n}</b></span>` +
     `<button id="sel-anim" title="用选中帧定义动画">▶ 动画</button>` +
     `<button id="sel-zip" title="导出选中帧为 PNG ZIP">⤓ ZIP</button>` +
+    `<button id="sel-webp" title="导出选中帧为无损 WebP ZIP (E3)">⤓ WebP</button>` +
     `<button id="sel-sheet" title="导出选中帧雪碧图">▦ 雪碧图</button>` +
     `<button id="sel-clear" title="清空选中">✕</button>` +
     (matchMedia('(pointer:coarse)').matches ? '<button id="sel-view" title="查看选中帧详情">🔍 详情</button>' : '');
   const sv = $('#sel-view'); if (sv) sv.onclick = () => { const f = [...STATE.sel].sort((a,b)=>a-b)[0]; if (f != null) openDetail(f); };
   $('#sel-anim').onclick = () => { selToAnim(); };
   $('#sel-zip').onclick = () => { selExport('png'); };
+  $('#sel-webp').onclick = () => { selExport('webp'); };
   $('#sel-sheet').onclick = () => { selExport('sheet'); };
   $('#sel-clear').onclick = () => { STATE.sel.clear(); refreshCellClasses(); renderSelUI(); queueHash(); };
 }
@@ -1737,6 +1782,7 @@ function renderDetail(){
     $('#mnext').style.visibility = i < STATE.count - 1 ? 'visible' : 'hidden';
     const bk = (getBookmarks()[STATE.lib] || {})[i];
     $('#bookmark-note').value = bk || '';
+    renderFrameFormulas(i);   // E3: 帧公式对照面板 (与 renderDetail 并行渲染)
     if (h.blank){ $('#meta').textContent = 'Blank placeholder frame (index 0)'; }
     else {
       $('#meta').textContent =
@@ -1745,6 +1791,143 @@ Anchor: x=${h.offsetX}  y=${h.offsetY}
 Shadow: ${h.shadow?'yes':'no'} (${h.shadowX}, ${h.shadowY})
 Data: ${h.words} words (${h.bytes} B)`;
     }
+  });
+}
+
+// ---------------------------------------------------------------- frame formulas (E3)
+// 帧公式对照: 反查当前帧命中的动画表项 (数据源 = Tools/resedit/frame-formulas.json,
+// 由 frameformulas.py 从 Zircon C# 提取; webport frames.js 读同一份文件)
+let FF = null;
+async function ensureFF(){
+  if (FF !== null) return FF;
+  try {
+    const r = await fetch('/api/frame-formulas');
+    FF = await r.json();
+  } catch (e) { FF = {error: String(e)}; }
+  return FF;
+}
+
+const DIR_NAMES = ['上','右上','右','右下','下','左下','左','左上'];
+// 库类型启发 (ZL 客户端命名: M-Hum/Mon-1/P-*/NPC/Ground)
+const LIB_HINTS = [
+  {re:/hum/i,     table:'players', role:'玩家身体/铠甲 (ArmourFrame)'},
+  {re:/hair/i,    table:'players', role:'玩家头发 (HairFrame)'},
+  {re:/helm/i,    table:'players', role:'玩家头盔 (HelmetFrame)'},
+  {re:/weapon/i,  table:'players', role:'玩家武器 (WeaponFrame)'},
+  {re:/^npc/i,    table:'defaultNPC', role:'NPC (Image×100+帧)'},
+  {re:/^ground/i, table:'defaultItem', role:'地面物品 (frame=Image)'},
+  {re:/^mon-/i,   table:'defaultMonster', role:'怪物 (Shape×1000+DrawFrame)'},
+  {re:/^p-/i,     table:'defaultMonster', role:'怪物/NPC 图库 (Shape×1000+DrawFrame)'},
+];
+function libTableHint(libName){
+  const n = (libName||'').toLowerCase();
+  for (const h of LIB_HINTS) if (h.re.test(n)) return h;
+  return null;
+}
+
+// 反查: 帧号 i 在表 tableName 中命中的动画项
+function frameHitsInTable(tableName, i, offsetBase){
+  const sets = FF.frameSets || {};
+  const table = sets[tableName];
+  if (!table) return [];
+  const out = [];
+  for (const [anim, e] of Object.entries(table)){
+    const off = e.offset || 0;
+    if (off > 0){
+      // 8 方向布局: [start + d*off, start + d*off + count)
+      for (let d = 0; d < 8; d++){
+        const s = e.start + d * off;
+        if (i >= s && i < s + e.count){
+          out.push({table: tableName, anim, dir: d, idx: i - s, count: e.count,
+                    ms: e.ms, reversed: e.reversed,
+                    seqStart: e.start + d * off, seqEnd: e.start + d * off + e.count - 1});
+        }
+      }
+    } else if (i >= e.start && i < e.start + e.count){
+      out.push({table: tableName, anim, dir: null, idx: i - e.start, count: e.count,
+                ms: e.ms, reversed: e.reversed,
+                seqStart: e.start, seqEnd: e.start + e.count - 1});
+    }
+  }
+  return out;
+}
+
+// 纸娃娃层公式换算 (players 命中时): DrawFrame → 各层帧号
+function paperdollLines(i, hits){
+  if (!FF.paperdoll || !hits.length) return [];
+  const pd = FF.paperdoll;
+  const shapeOff = pd.shapeOffset;   // {default:5000, Assassin:3000}
+  const lines = [`公式: DrawFrame = FrameIndex + Start + OffSet×Dir`,
+    `铠甲: + (ArmourShape%11)×${shapeOff.default}${shapeOff.Assassin !== shapeOff.default ? ` (刺${shapeOff.Assassin})` : ''} + ArmourShift(刺)`,
+    `武器: + (WeaponShape%10)×5000 · 头发: + (HairType-1)×5000 · 头盔: + ((HelmetShape-1)%10)×Off`];
+  const hideSet = pd.costumeShapeHideWeapon || [];
+  if (hideSet.length) lines.push(`时装藏武器 CostumeShape ∈ {${hideSet.join(',')}}`);
+  return lines;
+}
+
+async function renderFrameFormulas(i){
+  const panel = $('#ffpanel');
+  if (!panel) return;
+  await ensureFF();
+  if (FF.error){ panel.innerHTML = `<div class="ff-err">帧公式不可用: ${esc(FF.error)}</div>`; return; }
+  const libName = STATE.lib || '';
+  const hint = libTableHint(libName);
+  const rows = [];
+  // 怪物/NPC 按 body 反推 shape 再查表内偏移
+  if (hint && hint.table === 'defaultMonster'){
+    const shape = Math.floor(i / 1000);
+    const rel = i - shape * 1000;
+    for (const h of frameHitsInTable('defaultMonster', rel)) {
+      const shapeOff = shape * 1000;
+      rows.push({...h, note: `Shape=${shape}`,
+                 seqStart: h.seqStart + shapeOff, seqEnd: h.seqEnd + shapeOff});
+    }
+  } else if (hint && hint.table === 'defaultNPC'){
+    const image = Math.floor(i / 100);
+    const rel = i - image * 100;
+    const special = (FF.npcSpecial || {})[String(image)];
+    if (special && special.standing){
+      const s = special.standing;
+      if (rel >= s.start && rel < s.start + s.count)
+        rows.push({table: 'npcSpecial', anim: 'standing', dir: null, idx: rel,
+                   count: s.count, ms: s.ms, note: `NPC 特例 image=${image}`,
+                   seqStart: image*100 + s.start, seqEnd: image*100 + s.start + s.count - 1});
+    }
+    for (const h of frameHitsInTable('defaultNPC', rel)) {
+      const imageOff = image * 100;
+      rows.push({...h, note: `Image=${image}`,
+                 seqStart: h.seqStart + imageOff, seqEnd: h.seqEnd + imageOff});
+    }
+  } else if (hint){
+    for (const h of frameHitsInTable(hint.table, i)) rows.push(h);
+  } else {
+    for (const t of ['players','defaultMonster','defaultNPC','defaultItem'])
+      for (const h of frameHitsInTable(t, i)) rows.push(h);
+  }
+
+  let html = `<div class="ff-head">帧公式对照 <span class="ff-src">frame-formulas.json (C# 提取)</span></div>`;
+  if (hint) html += `<div class="ff-role">${esc(libName)} → ${esc(hint.role)} [${esc(hint.table)}]</div>`;
+  if (!rows.length){
+    html += `<div class="ff-none">该帧未命中任何动画表项 (可能为装备/特效变体帧)</div>`;
+  } else {
+    for (const r of rows.slice(0, 12)){
+      const dir = r.dir != null ? `方向=${DIR_NAMES[r.dir]}(${r.dir}) ` : '';
+      const note = r.note ? ` <span class="ff-note">${esc(r.note)}</span>` : '';
+      html += `<div class="ff-row"><b>${esc(r.table)}.${esc(r.anim)}</b> 第${r.idx}/${r.count}帧 ${dir}· ${r.ms}ms/帧${r.reversed ? ' · 倒放' : ''}${note}` +
+        `<a class="ff-seq" data-s="${r.seqStart}" data-e="${r.seqEnd}" title="导出该动画全部帧 (WebP ZIP)">⤓ ${r.seqStart}-${r.seqEnd}</a></div>`;
+    }
+    if (rows.some(r => r.table === 'players'))
+      for (const l of paperdollLines(i, rows)) html += `<div class="ff-formula">${esc(l)}</div>`;
+  }
+  panel.innerHTML = html;
+  panel.querySelectorAll('.ff-seq').forEach(a => a.onclick = ev => {
+    ev.preventDefault();
+    const s = +a.dataset.s, e2 = +a.dataset.e;
+    if (isNaN(s) || isNaN(e2)) return;
+    const url = `/api/export?f=${encodeURIComponent(STATE.lib)}&kind=webp&scale=${Math.max(1, Math.min(8, Math.round(+$('#zoom').value)))}&i=${s}-${e2}`;
+    const dl = document.createElement('a'); dl.href = url;
+    dl.download = `${libBase()}_anim_${s}-${e2}.zip`;
+    document.body.appendChild(dl); dl.click(); dl.remove();
   });
 }
 $('#dscale').onchange = renderDetail;
