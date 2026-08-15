@@ -88,8 +88,9 @@
   COMPLETED 判定，卡住发「继续」，死了 `omp --resume --auto-approve` 拉起，完成自动
   kill-switch 回收，记 ~/.omp/logs/goal-completed.log）
 - GOALS 数组行格式：`<session-id>|<jsonl绝对路径>|<tmux名>|<workdir>|<中文标签>`
-- 现役：E0 基础设施（ed-infra）/ E1 地图编辑器（ed-map）/ E3 资源编辑器（ed-res）；
-  E2 NPC 摆放等 E1 拆完 mapviewer 模块再插；E4 Magic Lab 待启动（文档已就绪）
+- 现役：E0 基础设施（ed-infra）/ E1 地图编辑器（ed-map，已完成）/ E3 资源编辑器
+  （ed-res，已完成）/ E4 Magic Lab（ed-magic）；**E2 NPC 摆放（ed-npc）已完成
+  （2026-08-16，验收全过，存证 `docs/editor/e2-proof/`，链路图见任务书 §6 头注）**
 - 任务书：`docs/editor/EDITOR_GOALS_MASTER.md`（E0-E3）+ `docs/magiclab/MAGIC_LAB_GOAL.md`（E4）
 - 冲突协议：文件领地制；mapviewer.py 是 E1/E2 交汇点（E1 先拆模块）；共享文件小改标 `[shared]`
 
@@ -163,10 +164,13 @@ omp 会话即文件，三层保存法：
    任何机器/任何会话 `git pull` 即得。AGENTS.md 已被 omp 自动加载，可在其开头
    加一行指向本文档（见下方"待办"）
 
-## 十一、当前状态快照（2026-08-15 会话末）
-
+## 十一、当前状态快照（2026-08-16 E2 收口后）
 - 本机已推 fork：`62f6499`、`eae891d`、`880771b`（Magic Lab goal）、`e1f493f`（心智模型）、
-  E5 goal（本次）；**Zircon 已推 `8d1a6a3b`（光照特殊态）**
-- 82 已跑：E0/E1/E3（ed-infra/ed-map/ed-res）+ E4（ed-magic）；E5（ed-light）部署中
-- webport：冻结，UI 错位已修（R34）
-- 待办：E2（等 E1 拆模块）；Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照
+  E5 goal；E2 收口推至 `554eb8b`（2026-08-16）；**Zircon 已推 `8d1a6a3b`（光照特殊态）**
+- 82 已跑：E0/E1/E3/E4；**E2（ed-npc）2026-08-16 完成收口**；E5（ed-light）部署中
+- webport：冻结，UI 错位已修（R34）——E2 端到端终验复用它进图实测（GM @MOVE），未改其代码
+- E2 关键沉淀（全录任务书 §3.11）：阻挡格(flag&3!=3) spawn 的 NPC 游戏内不可见
+  （摆放引擎已写前校验）；MapRegion.PointRegion 工作区是质心有损摘要（importer
+  已支持单点无损/多点整体平移两档）；dbeditor 启动载内存、外部写盘须 POST
+  /api/reload
+- 待办：Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照
