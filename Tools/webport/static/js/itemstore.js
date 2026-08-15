@@ -38,6 +38,9 @@ export class ItemStore {
     this.quests = new Map();                       // index → ClientUserQuest
     this.milestones = startInfo.milestones ?? [];
     this.guild = null;                             // ClientGuildInfo
+    this.friends = (startInfo.friends ?? []).filter(Boolean);   // ClientFriendInfo[] (S.FriendAdd/Update/Remove 维护)
+    this.blocks = [];                              // ClientBlockInfo[] (S.BlockAdd/Remove 维护)
+    this.mails = [];                               // ClientMailInfo[] (S.MailList/MailNew/MailDelete/MailItemDelete 维护)
     this.guildFunds = 0n;
     this.storageSize = Math.max(1, startInfo.storageSize || STORAGE_SIZE);
 
@@ -111,6 +114,20 @@ export class ItemStore {
     const c = this.conn;
 
     c.addEventListener('itemsGained', (e) => this.#onItemsGained(e.detail));      // :6743
+    c.addEventListener('mailList', (e) => { this.mails = (e.detail?.mail ?? []).filter(Boolean).slice(); this.#emit('mail'); });   // CommunicationDialog.SetMails
+    c.addEventListener('mailNew', (e) => { const m = e.detail?.mail; if (m) { this.mails = [m, ...this.mails.filter(x => x.index !== m.index)]; this.#emit('mail'); } });   // AddMail
+    c.addEventListener('mailDelete', (e) => { this.mails = this.mails.filter(x => x.index !== e.detail?.index); this.#emit('mail'); });   // RemoveMail
+    c.addEventListener('friendAdd', (e) => {   // ApplyFriend :232
+      const f = e.detail?.info; if (!f) return;
+      this.friends = [...this.friends.filter(x => x.index !== f.index), f]; this.#emit('friends');
+    });
+    c.addEventListener('friendUpdate', (e) => {
+      const f = e.detail?.info; if (!f) return;
+      this.friends = [...this.friends.filter(x => x.index !== f.index), f]; this.#emit('friends');
+    });
+    c.addEventListener('friendRemove', (e) => { this.friends = this.friends.filter(x => x.index !== e.detail?.index); this.#emit('friends'); });
+    c.addEventListener('blockAdd', (e) => { const b = e.detail?.info ?? e.detail; if (b?.index != null) { this.blocks = [...this.blocks.filter(x => x.index !== b.index), b]; this.#emit('blocks'); } });
+    c.addEventListener('blockRemove', (e) => { this.blocks = this.blocks.filter(x => x.index !== e.detail?.index); this.#emit('blocks'); });
     c.addEventListener('disciplineUpdate', (e) => {   // S.DisciplineUpdate → StartInfo.Discipline (CharacterDialog.RefreshDiscipline 输入)
       this.info.discipline = e.detail?.discipline ?? null;
       this.#emit('stats');

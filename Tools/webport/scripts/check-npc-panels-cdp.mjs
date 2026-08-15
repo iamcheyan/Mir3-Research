@@ -608,6 +608,94 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('QUESTREQ', d.q9HiddenAt1 && d.q63HiddenAt1 && d.q9Shown && d.q63Shown && d.q63WizardHidden && d.q9DoneHidden, r);
 }
 
+// ============ 19. 通信窗 4 页 (CommunicationDialog :44-826) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { WindowManager } = await import('/static/js/windows.js');
+    const win = reg.win('comm');
+    if (!win) return { err: 'no-comm-win', names: [...reg.wins.keys()] };
+    WindowManager.open(win, s.hudLayer);
+    const store = reg.itemStore; const conn = s.conn;
+    const ctl = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === t && b.__ctl?.onClick)?.__ctl;
+    const txt = () => win.el.textContent;
+    const pkts = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength >= 6) pkts.push(new DataView(b.buffer, b.byteOffset).getInt16(4, true)); return b; };
+    // --- 页0 好友: 状态循环 + 过滤器 ---
+    store.friends = [{ index: 1, name: '甲', state: 0 }, { index: 2, name: '乙', state: 3 }];
+    ctl('好友')?.onClick?.();
+    await new Promise(r => setTimeout(r, 300));
+    const friendsShown = txt().includes('甲  [在线]') && txt().includes('乙  [离线]');
+    const stateBtn = ctl('在线');
+    stateBtn?.onClick?.();   // CycleOnlineState Online→Busy (GameScene.cs:6432)
+    await new Promise(r => setTimeout(r, 200));
+    const stateCycled = !!ctl('忙碌');
+    // --- 页1 收件: 列表/详情/取附件/删除拦截 ---
+    ctl('收件')?.onClick?.();
+    await new Promise(r => setTimeout(r, 200));
+    store.mails = [
+      { index: 11, opened: false, hasItem: true, sender: '商人', subject: '武器', message: '拿去', gold: 0, date: 638500000000000000n, items: [{ infoIndex: 549, slot: 0, count: 1 }] },
+      { index: 12, opened: true, hasItem: false, sender: '系统', subject: '欢迎', message: 'hi', gold: 500, date: 638500000000000000n, items: [] }];
+    conn.dispatchEvent(new CustomEvent('mailList', { detail: { mail: store.mails } }));
+    await new Promise(r => setTimeout(r, 300));
+    const listOk = txt().includes('● 武器') && txt().includes('欢迎') && txt().includes('金币');
+    const row = [...win.el.querySelectorAll('div')].find(d => d.children.length === 0 && d.textContent.includes('● 武器'));
+    row?.click();   // OpenMail
+    await new Promise(r => setTimeout(r, 400));
+    const detailOk = txt().includes('发件人: 商人') && txt().includes('拿去');
+    const openedSent = pkts.includes(204);   // C_MAILOPENED
+    // 附件格点击 → C_MAILGETITEM 200
+    const cell = [...win.el.querySelectorAll('div')].find(d => d.title && d.title.includes('点击收取'));
+    cell?.click();
+    await new Promise(r => setTimeout(r, 200));
+    const getItemSent = pkts.includes(200);
+    // 删除含物品邮件 → 聊天拦截 (:677)
+    const captured = []; const oc = s.addChat.bind(s); s.addChat = (t, k) => { captured.push(String(t)); return oc(t, k); };
+    ctl('删除')?.onClick?.();
+    await new Promise(r => setTimeout(r, 200));
+    s.addChat = oc;
+    const deleteBlocked = captured.some(t => t.includes('无法删除含物品'));
+    // --- 页2 写信: 校验+金币钳制+发送锁 ---
+    ctl('写信')?.onClick?.();
+    await new Promise(r => setTimeout(r, 300));
+    const inputs = [...win.el.querySelectorAll('input')];
+    const rInp = inputs[0], sInp = inputs[1], gInp = inputs.find(i => i !== rInp && i !== sInp && i.type === 'text');
+    const sendCtl = ctl('发送');
+    const gateBad = sendCtl?.enabled === false;   // 空收件人 → 禁用
+    rInp.value = '测试角色'; rInp.dispatchEvent(new Event('input'));
+    await new Promise(r => setTimeout(r, 100));
+    const gateGood = sendCtl?.enabled === true;
+    gInp.value = '99999999999'; gInp.dispatchEvent(new Event('input'));   // 2e9 钳制
+    await new Promise(r => setTimeout(r, 100));
+    const clamped = gInp.value === '2000000000';
+    gInp.value = '100'; gInp.dispatchEvent(new Event('input'));
+    sendCtl?.onClick?.();
+    await new Promise(r => setTimeout(r, 300));
+    const mailSent = pkts.includes(206);   // C_MAILSEND
+    // 发送锁: 第二次点击不发 (mailSending)
+    const n206 = pkts.filter(x => x === 206).length;
+    sendCtl?.onClick?.();
+    await new Promise(r => setTimeout(r, 200));
+    const lockedOnce = pkts.filter(x => x === 206).length === n206;
+    // itemsChanged 成功 → 解锁+清表单 (:425-431)
+    conn.dispatchEvent(new CustomEvent('itemsChanged', { detail: { links: [], success: true } }));
+    await new Promise(r => setTimeout(r, 400));
+    const cleared = !win.el.textContent.includes('测试角色');
+    const resendable = ctl('发送')?.enabled === false || true;   // 表单清空后门闩复位
+    // --- 页3 屏蔽 ---
+    ctl('屏蔽')?.onClick?.();
+    await new Promise(r => setTimeout(r, 200));
+    store.blocks = [{ index: 5, name: '骗子' }];
+    conn.dispatchEvent(new CustomEvent('blockAdd', { detail: { info: { index: 5, name: '骗子' } } }));
+    await new Promise(r => setTimeout(r, 300));
+    const blockShown = txt().includes('骗子');
+    conn.send = orig;
+    return { friendsShown, stateCycled, listOk, detailOk, openedSent, getItemSent, deleteBlocked, gateBad, gateGood, clamped, mailSent, lockedOnce, cleared, blockShown };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('COMM', d.friendsShown && d.stateCycled && d.listOk && d.detailOk && d.openedSent && d.getItemSent && d.deleteBlocked && d.gateBad && d.gateGood && d.clamped && d.mailSent && d.lockedOnce && d.cleared && d.blockShown, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

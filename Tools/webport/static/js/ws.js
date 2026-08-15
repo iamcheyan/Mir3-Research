@@ -423,6 +423,8 @@ export class GameConnection extends EventTarget {
   sendMilestoneClaim(index) { this.send(C.MilestoneClaim(index)); }
   sendMilestoneActive(index, active) { this.send(C.MilestoneActive(index, active)); }
   sendFriendAdd(name) { this.send(C.FriendAdd(name)); }
+  sendFriendRemove(index) { this.send(C.FriendRemove(index)); }
+  sendChangeOnlineState(state) { this.send(C.ChangeOnlineState(state)); }
   sendBlockAdd(name) { this.send(C.BlockAdd(name)); }
   sendBlockRemove(index) { this.send(C.BlockRemove(index)); }
   sendMailSend(links, recipient, subject, message, gold) { this.send(C.MailSend(links, recipient, subject, message, gold)); }

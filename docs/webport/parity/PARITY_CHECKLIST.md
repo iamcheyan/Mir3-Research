@@ -78,7 +78,7 @@
 | 批次 | 窗口 | 状态 | 归属 |
 |---|---|---|---|
 | 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt → fallback (beltLinks 真数据) | par-win |
-| 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail→fallback(好友列表); Ranking✅/ChatOptions✅ fallbackWindow (开窗即 C.RankRequest + rankings 事件渲染; 频道开关直改 chatLog.enabledTypes) | par-move R6 |
+| 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail→win-comm 4 页全量 (R32); Ranking✅/ChatOptions✅ fallbackWindow (开窗即 C.RankRequest + rankings 事件渲染; 频道开关直改 chatLog.enabledTypes) | par-move R6/R32 |
 | NPC | NPCDialog/Quest/Goods/Repair | ✅ win-npc + win-quest (真实 System.db 快照) | par-win |
 | NPC 高级面板 | Refine/RefineRetrieve/RefinementStone/MasterRefine/AccessoryLevel/AccessoryUpgrade/AccessoryReset/ItemFragment/WeddingRing/WeaponCraft/CompanionManage | ✅ R15-R18: DB 引用的 14 DialogType 全真实现 (BuildRefine :383/BuildRetrieve :518/BuildRefinementStone :324/BuildMasterRefine :431/BuildAccessoryLevel :686/BuildWeaponCraft :801/BuildSingleGrid :621/NPCCompanionStorageDialog); 提交锁三态 R20 (BeginSubmit :1039); 回包反馈 R19 (S 解析×9+聊天+取回删行+伙伴同步); 真服 e2e 254→聊天验证 | par-move R15-R20 |
 | 寄售行 (长尾闭环) | ConsignmentDialog/ConsignItemDialog/MarketHistoryDialog | ✅ R26-R29 (R14 prompt 子集清零): 全链弹窗化 (行选中→Buy/Remove/Consign/GuildFunds→数量+总价确认→二次确认→发包+锁); 寄售弹窗 (±5000/物品校验/手续费); 搜索参数化 (排序 Newest↔LowestPrice 二态 + ItemType 37 项过滤, C 219 字节验证); 成交记录链 (C 216 + index/display 双门闩); 惰性加载三段模型 (ApplySearch/Count/Index + C 222 去重请求); S 三应用器 (AddConsignments Index 合并/ConsignChanged 移除/ApplyBuy 售罄空槽不移位); 顺手修 R14 潜伏 bug ×2 (itemName 字段名 + GRID 0) | par-move R26-R29 |

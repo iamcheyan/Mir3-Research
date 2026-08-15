@@ -803,3 +803,28 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
 - 教训: (1) 任务名断言必须全名精确 — 库内 'Pt. 1' 多任务同名后缀, 'Curing the
   Poison' 子串在 q9 完成后会误中正确解锁的 Pt.2; (2) 窗口内 ui_tree 原生按钮与
   动态按钮同名共存 — 按钮查找必须加 __ctl?.onClick 过滤 (原生无 onClick)。
+
+## R32 — 通信窗全量 (CommunicationDialog 4 页, 消灭最后 fallback 大户)
+- `Gap` 主面板 mail 键此前走 fallbackWindow 的简化好友列表; Godot CommunicationDialog.cs
+  827 行 4 页 (好友/收件/写信/屏蔽) 全无对应。
+- `实现` 新增 win-comm.js (~440 行, win-registry MODULES.comm + TYPE_MAP mail→comm):
+  - 页0 好友: 状态钮 Online→Busy→Away 循环 (GameScene.cs:6432, C.ChangeOnlineState) /
+    过滤器 3 态 / 行选中启用删除 / 右键直删 (C.FriendRemove) / 添加两段流 (输入框→提交)。
+  - 页1 收件: 表头+未读金色+按 Date 降序; OpenMail 已读不重发 MailOpened (:683);
+    详情 sender/subject/日期/正文+金币; 7 附件格点击 C.MailGetItem+pendingMailItemGets
+    去重; 删除拦截含物品邮件 (:677); 全部收取≤15 封逐附件 (:143); 回复回填 RE: 主题 (:666)。
+  - 页2 写信: 收件人正则+边框色绿红 (:753-754); 主题≤30; 正文≤300; 5 附件格 (背包点选
+    加入=linked 拖入等价, lock+link, 点格移除解锁); 金币 2e9 钳制 (:758) + 余额门闩;
+    PrepareMailSend 锁生命周期 (:398-416): 发送锁单飞 / itemsChanged 成功清表单失败保留
+    (:418-436) / close 事件回滚 (:438)。
+  - 页3 屏蔽: 添加两段流 / 行选中删除 (C.BlockAdd/Remove)。
+  - itemstore.js: friends/blocks/mails 三数组 + 8 个 S 监听 (mailList/mailNew/mailDelete/
+    friendAdd/friendUpdate/friendRemove/blockAdd/blockRemove) 统一维护; ws.js 补
+    sendFriendRemove/sendChangeOnlineState (net.js builder 早已在)。
+- `坑` (1) registry install 是 mod(scene, store, reg) 三参 — 签名只收 scene 时尾部
+  reg.wins.set 抛 ReferenceError, promise 永不 resolve, 窗口从注册表静默消失 (cm6 探针
+  resolved:false 定位); (2) Array.sort comparator 返回 BigInt → ToNumber(BigInt) TypeError,
+  单元素数组不触发比较所以单邮件 dbg 过双邮件挂 — ticks 比较必须 Number() 包裹;
+  (3) 残留 chrome 39 个会拖死 CDP 套件 (两次 290s 超时), 先 pkill -9 chrome 再跑。
+- `验证` 套件 +COMM 组 14 断言 (状态循环/列表渲染/详情/MailOpened/附件包/删除拦截/
+  门闩两态/2e9 钳制/发送锁单飞/表单清除/屏蔽行) → 19/19 PASS; 回归 pmv-buff-qt ALL-9-PASS。
