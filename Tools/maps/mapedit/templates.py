@@ -3290,7 +3290,7 @@ EDIT_UI_JS = r"""
                 + '<button id="npc-rollback-all" style="width:100%;margin-top:4px">回滚全部至基线</button>';
             el.innerHTML = h;
             el.querySelectorAll('[data-rt]').forEach(b => b.onclick = async () => {
-                if (!confirm('回滚表 ' + b.dataset.rt + ' 至基线？')) return;
+                if (!confirm(`回滚表 ${b.dataset.rt} 至基线？（连带撤销该表上所有人的未同步改动，含其它会话）`)) return;
                 const d2 = await npcPost('rollback', {table: b.dataset.rt});
                 if (d2.ok) npcRefresh(); else alert('回滚失败: ' + (d2.error || '?'));
             });
@@ -3305,6 +3305,12 @@ EDIT_UI_JS = r"""
         function npcRenderPanel() {
             const p = npcPanel();
             if (!editOn) { p.style.display = 'none'; entLayer.classList.remove('npc-edit'); return; }
+            // 表单值跨重渲染保留（armed 切换会重建 innerHTML）
+            const keep = {};
+            for (const id of ['npc-new-name', 'npc-new-img', 'npc-new-page']) {
+                const el = document.getElementById(id);
+                if (el) keep[id] = el.value;
+            }
             p.style.display = 'block';
             entLayer.classList.add('npc-edit');
             const mi = curMap() || {name: curName, cn: ''};
@@ -3331,6 +3337,10 @@ EDIT_UI_JS = r"""
                 + `<button id="npc-arm" style="width:100%;margin-top:4px">${npcArmed ? '取消放置' : '点图放置新 NPC'}</button>`;
             h += '<hr style="border-color:#333;margin:6px 0"><div id="npc-diff-box"></div>';
             p.innerHTML = h;
+            for (const [id, v] of Object.entries(keep)) {
+                const el = document.getElementById(id);
+                if (el && v != null && v !== '') el.value = v;
+            }
             const del = p.querySelector('#npc-del');
             if (del) del.onclick = async () => {
                 if (!confirm(`删除 NPC #${npcSel.index} ${npcSel.name}？（Region 若无他人引用一并删）`)) return;
