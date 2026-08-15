@@ -341,7 +341,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
         self._json_200(json.dumps(body, ensure_ascii=False).encode("utf-8"))
 
     def do_GET(self):
-        if self.path == "/" or self.path == "/index.html":
+        if self.path.split("?")[0] in ("/", "/index.html"):
             from mapedit.templates import EDIT_UI_JS
             lib_json = json.dumps({**KR_ORDER, 255: "无"}, ensure_ascii=False)
             body = (HTML_TEMPLATE
