@@ -1,0 +1,4562 @@
+{
+ "_meta": {
+  "generated": "2026-08-15",
+  "source": "Tools/dbeditor/workspace/{MapInfo,ItemInfo,ItemInfoStat}.json",
+  "mapCount": 627,
+  "lightItemCount": 24,
+  "lightDist": {
+   "Default": 580,
+   "Light": 3,
+   "Night": 44
+  },
+  "weatherDist": {
+   "None": 627
+  },
+  "lightAmountDist": {
+   "15": 2,
+   "25": 22
+  },
+  "refs": {
+   "ambientFor": "GodotClient/Scripts/MapLightLayer.cs AmbientFor",
+   "weather": "GodotClient/Scripts/MapWeatherLayer.cs",
+   "originals": "Client/Scenes/Views/MapControl.cs; Client/Models/Particles/Weather/"
+  }
+ },
+ "maps": [
+  {
+   "Index": 1,
+   "FileName": "0",
+   "Description": "Bichon Town",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 2,
+   "FileName": "0_000",
+   "Description": "Town Hall",
+   "Light": "Light",
+   "Weather": "None"
+  },
+  {
+   "Index": 3,
+   "FileName": "0_001",
+   "Description": "Left Wing",
+   "Light": "Light",
+   "Weather": "None"
+  },
+  {
+   "Index": 4,
+   "FileName": "0_002",
+   "Description": "Right Wing",
+   "Light": "Light",
+   "Weather": "None"
+  },
+  {
+   "Index": 5,
+   "FileName": "1",
+   "Description": "Lost Paradise",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 6,
+   "FileName": "2",
+   "Description": "Banya Village",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 7,
+   "FileName": "3",
+   "Description": "Sabuk Keep",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 8,
+   "FileName": "4",
+   "Description": "Numa Village",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 9,
+   "FileName": "5",
+   "Description": "Desert Mud Fortress",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 12,
+   "FileName": "D001",
+   "Description": "Phantom Forest",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 13,
+   "FileName": "D002",
+   "Description": "Desert",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 14,
+   "FileName": "D003",
+   "Description": "Lost Paradise Forest",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 16,
+   "FileName": "D1001",
+   "Description": "Banya Temple Lv 1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 17,
+   "FileName": "D1002",
+   "Description": "Banya Temple Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 18,
+   "FileName": "D10031",
+   "Description": "Banya Temple Lv 3-W",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 19,
+   "FileName": "D10032",
+   "Description": "Banya Temple Lv 3-E",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 20,
+   "FileName": "D1004",
+   "Description": "Banya Temple Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 29,
+   "FileName": "D1011",
+   "Description": "Banya Temple Lv 10",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 30,
+   "FileName": "D1012",
+   "Description": "Banya Temple",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 33,
+   "FileName": "D1101",
+   "Description": "Zuma Temple Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 34,
+   "FileName": "D1102",
+   "Description": "Zuma Temple Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 36,
+   "FileName": "D1104",
+   "Description": "Zuma Temple Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 37,
+   "FileName": "D1105",
+   "Description": "Zuma Temple Lv 5",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 52,
+   "FileName": "D12031",
+   "Description": "Jinchon Palace Lv 4-S",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 53,
+   "FileName": "D12032",
+   "Description": "Jinchon Palace Lv 4-E",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 57,
+   "FileName": "D1205",
+   "Description": "Jinchon Palace Lv 6",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 62,
+   "FileName": "D1301",
+   "Description": "Black Palace Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 65,
+   "FileName": "D1303",
+   "Description": "Black Palace Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 66,
+   "FileName": "D1304",
+   "Description": "Black Palace Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 67,
+   "FileName": "D1305",
+   "Description": "Black Palace",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 68,
+   "FileName": "D1401",
+   "Description": "Phantom Ship Ent",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 69,
+   "FileName": "D1402",
+   "Description": "Phantom Ship Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 70,
+   "FileName": "D1403",
+   "Description": "Phantom Ship Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 71,
+   "FileName": "D1404",
+   "Description": "Phantom Ship Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 72,
+   "FileName": "D1405",
+   "Description": "Phantom Ship Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 137,
+   "FileName": "D202",
+   "Description": "Deserted Mine Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 138,
+   "FileName": "D203",
+   "Description": "Deserted Mine Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 142,
+   "FileName": "D401",
+   "Description": "Ant Cave North",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 143,
+   "FileName": "D402",
+   "Description": "Ant Cave South",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 144,
+   "FileName": "D403",
+   "Description": "Ant Cave West",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 145,
+   "FileName": "D404",
+   "Description": "Ant Cave East",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 146,
+   "FileName": "D501",
+   "Description": "Uma Temple Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 147,
+   "FileName": "D502",
+   "Description": "Uma Temple Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 148,
+   "FileName": "D503",
+   "Description": "Uma Temple Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 149,
+   "FileName": "D504",
+   "Description": "Uma Temple",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 150,
+   "FileName": "D601",
+   "Description": "Banya Stone Cave Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 151,
+   "FileName": "D602",
+   "Description": "Banya Stone Cave Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 152,
+   "FileName": "D603",
+   "Description": "Banya Stone Cave Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 153,
+   "FileName": "D604",
+   "Description": "Banya Stone Cave Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 154,
+   "FileName": "D605",
+   "Description": "Banya Stone Cave Lv 5",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 155,
+   "FileName": "D701",
+   "Description": "Carved Stone Tomb Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 160,
+   "FileName": "D801",
+   "Description": "Despair Valley Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 161,
+   "FileName": "D802",
+   "Description": "Despair Valley Lv 2",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 162,
+   "FileName": "D803",
+   "Description": "Despair Valley Lv 3",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 163,
+   "FileName": "D804",
+   "Description": "Despair Valley Lv 4",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 164,
+   "FileName": "D805",
+   "Description": "Life Death Hall",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 165,
+   "FileName": "D901",
+   "Description": "Red Moon Valley Lv 1",
+   "Light": "Night",
+   "Weather": "None"
+  },
+  {
+   "Index": 241,
+   "FileName": "8",
+   "Description": "Frost Village",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 292,
+   "FileName": "12",
+   "Description": "Banya Island",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 610,
+   "FileName": "01",
+   "Description": "边境城市",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 611,
+   "FileName": "0150",
+   "Description": "沙巴克城堡",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 612,
+   "FileName": "0157",
+   "Description": "祖玛神殿大厅",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 613,
+   "FileName": "01_001",
+   "Description": "志善屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 614,
+   "FileName": "01_002",
+   "Description": "EI 01_002",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 615,
+   "FileName": "01_003",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 616,
+   "FileName": "02",
+   "Description": "银杏山谷",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 617,
+   "FileName": "02_001",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 618,
+   "FileName": "02_002",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 619,
+   "FileName": "02_003",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 620,
+   "FileName": "02_004",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 621,
+   "FileName": "02_005",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 622,
+   "FileName": "02_006",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 623,
+   "FileName": "02_010",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 624,
+   "FileName": "02_011",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 625,
+   "FileName": "02_012",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 626,
+   "FileName": "02_013",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 627,
+   "FileName": "02_014",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 628,
+   "FileName": "0_0011",
+   "Description": "EI 0_0011",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 629,
+   "FileName": "0_0021",
+   "Description": "EI 0_0021",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 630,
+   "FileName": "0_003",
+   "Description": "比奇县",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 631,
+   "FileName": "0_0031",
+   "Description": "EI 0_0031",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 632,
+   "FileName": "0_0032",
+   "Description": "EI 0_0032",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 633,
+   "FileName": "0_0033",
+   "Description": "EI 0_0033",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 634,
+   "FileName": "121",
+   "Description": "EI 121",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 635,
+   "FileName": "122",
+   "Description": "灌木林",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 636,
+   "FileName": "123",
+   "Description": "EI 123",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 637,
+   "FileName": "124",
+   "Description": "EI 124",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 638,
+   "FileName": "125",
+   "Description": "灌木林",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 639,
+   "FileName": "1_001",
+   "Description": "武器仓库",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 640,
+   "FileName": "1_002",
+   "Description": "本馆",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 641,
+   "FileName": "1_003",
+   "Description": "洗衣住居",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 642,
+   "FileName": "1_004",
+   "Description": "书房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 643,
+   "FileName": "1_005",
+   "Description": "物品研究所",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 644,
+   "FileName": "1_006",
+   "Description": "药剂师住居",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 645,
+   "FileName": "1_007",
+   "Description": "仓库",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 646,
+   "FileName": "1_008",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 647,
+   "FileName": "1_009",
+   "Description": "无名老人隐居地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 648,
+   "FileName": "1_010",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 649,
+   "FileName": "1_011",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 650,
+   "FileName": "1_012",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 651,
+   "FileName": "1_013",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 652,
+   "FileName": "1_014",
+   "Description": "试练场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 653,
+   "FileName": "1_015",
+   "Description": "困魔咒空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 654,
+   "FileName": "1_016",
+   "Description": "困魔咒空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 655,
+   "FileName": "1_017",
+   "Description": "困魔咒空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 656,
+   "FileName": "1_018",
+   "Description": "困魔咒空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 657,
+   "FileName": "1_019",
+   "Description": "困魔咒空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 658,
+   "FileName": "1_020",
+   "Description": "蜈蚣洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 659,
+   "FileName": "1_021",
+   "Description": "蜈蚣洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 660,
+   "FileName": "1_022",
+   "Description": "蜈蚣洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 661,
+   "FileName": "1_023",
+   "Description": "蜈蚣洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 662,
+   "FileName": "31",
+   "Description": "祖玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 663,
+   "FileName": "41",
+   "Description": "诺玛沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 664,
+   "FileName": "42",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 665,
+   "FileName": "43",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 666,
+   "FileName": "44",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 667,
+   "FileName": "4_001",
+   "Description": "武器店",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 668,
+   "FileName": "4_002",
+   "Description": "民家",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 669,
+   "FileName": "4_003",
+   "Description": "中药商",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 670,
+   "FileName": "4_004",
+   "Description": "布匹店",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 671,
+   "FileName": "4_005",
+   "Description": "占卜屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 672,
+   "FileName": "50",
+   "Description": "EI 50",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 673,
+   "FileName": "50_001",
+   "Description": "EI 50_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 674,
+   "FileName": "5_0011",
+   "Description": "贵族屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 675,
+   "FileName": "5_0012",
+   "Description": "贵族屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 676,
+   "FileName": "5_0013",
+   "Description": "贵族屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 677,
+   "FileName": "5_002",
+   "Description": "武器商",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 678,
+   "FileName": "5_003",
+   "Description": "药房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 679,
+   "FileName": "5_004",
+   "Description": "服饰店",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 680,
+   "FileName": "5_005",
+   "Description": "饰品店",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 681,
+   "FileName": "5_006",
+   "Description": "仓库",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 682,
+   "FileName": "6",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 683,
+   "FileName": "71",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 684,
+   "FileName": "72",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 685,
+   "FileName": "73",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 686,
+   "FileName": "74",
+   "Description": "盟重县",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 687,
+   "FileName": "75",
+   "Description": "石阁庙",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 688,
+   "FileName": "76",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 689,
+   "FileName": "77",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 690,
+   "FileName": "78",
+   "Description": "沙漠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 691,
+   "FileName": "81",
+   "Description": "流放岛",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 692,
+   "FileName": "B010",
+   "Description": "EI B010",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 693,
+   "FileName": "B011",
+   "Description": "EI B011",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 694,
+   "FileName": "B101",
+   "Description": "EI B101",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 695,
+   "FileName": "B102",
+   "Description": "EI B102",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 696,
+   "FileName": "B103",
+   "Description": "EI B103",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 697,
+   "FileName": "B103_001",
+   "Description": "NPC休息室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 698,
+   "FileName": "B104",
+   "Description": "EI B104",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 699,
+   "FileName": "B105",
+   "Description": "EI B105",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 700,
+   "FileName": "B105_001",
+   "Description": "EI B105_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 701,
+   "FileName": "B106",
+   "Description": "EI B106",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 702,
+   "FileName": "B106_001",
+   "Description": "EI B106_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 703,
+   "FileName": "B106_002",
+   "Description": "EI B106_002",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 704,
+   "FileName": "B106_003",
+   "Description": "EI B106_003",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 705,
+   "FileName": "B107",
+   "Description": "EI B107",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 706,
+   "FileName": "B108",
+   "Description": "EI B108",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 707,
+   "FileName": "B109",
+   "Description": "EI B109",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 708,
+   "FileName": "B109_001",
+   "Description": "EI B109_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 709,
+   "FileName": "B110",
+   "Description": "EI B110",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 710,
+   "FileName": "B111",
+   "Description": "EI B111",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 711,
+   "FileName": "B112",
+   "Description": "EI B112",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 712,
+   "FileName": "B113",
+   "Description": "EI B113",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 713,
+   "FileName": "B114",
+   "Description": "EI B114",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 714,
+   "FileName": "B115",
+   "Description": "EI B115",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 715,
+   "FileName": "B115_001",
+   "Description": "矿石空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 716,
+   "FileName": "B116",
+   "Description": "EI B116",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 717,
+   "FileName": "B117",
+   "Description": "EI B117",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 718,
+   "FileName": "B118",
+   "Description": "EI B118",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 719,
+   "FileName": "B118_001",
+   "Description": "EI B118_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 720,
+   "FileName": "B119",
+   "Description": "EI B119",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 721,
+   "FileName": "B119_001",
+   "Description": "EI B119_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 722,
+   "FileName": "B120",
+   "Description": "EI B120",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 723,
+   "FileName": "B121",
+   "Description": "EI B121",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 724,
+   "FileName": "B122",
+   "Description": "EI B122",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 725,
+   "FileName": "B123",
+   "Description": "EI B123",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 726,
+   "FileName": "B124",
+   "Description": "EI B124",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 727,
+   "FileName": "B125",
+   "Description": "EI B125",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 728,
+   "FileName": "B125_001",
+   "Description": "EI B125_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 729,
+   "FileName": "B126",
+   "Description": "EI B126",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 730,
+   "FileName": "B127",
+   "Description": "EI B127",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 731,
+   "FileName": "B128",
+   "Description": "EI B128",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 732,
+   "FileName": "B129",
+   "Description": "EI B129",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 733,
+   "FileName": "B130",
+   "Description": "EI B130",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 734,
+   "FileName": "B131",
+   "Description": "EI B131",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 735,
+   "FileName": "B131_001",
+   "Description": "EI B131_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 736,
+   "FileName": "B132",
+   "Description": "EI B132",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 737,
+   "FileName": "B132_001",
+   "Description": "GM活动室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 738,
+   "FileName": "B133",
+   "Description": "EI B133",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 739,
+   "FileName": "B134",
+   "Description": "EI B134",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 740,
+   "FileName": "B134_001",
+   "Description": "EI B134_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 741,
+   "FileName": "B135",
+   "Description": "EI B135",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 742,
+   "FileName": "B136",
+   "Description": "EI B136",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 743,
+   "FileName": "B136_001",
+   "Description": "EI B136_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 744,
+   "FileName": "B136_002",
+   "Description": "EI B136_002",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 745,
+   "FileName": "B136_003",
+   "Description": "EI B136_003",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 746,
+   "FileName": "B137",
+   "Description": "EI B137",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 747,
+   "FileName": "B138",
+   "Description": "EI B138",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 748,
+   "FileName": "B138_001",
+   "Description": "EI B138_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 749,
+   "FileName": "B139",
+   "Description": "EI B139",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 750,
+   "FileName": "B139_001",
+   "Description": "暗黑封印",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 751,
+   "FileName": "B140",
+   "Description": "EI B140",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 752,
+   "FileName": "B140_001",
+   "Description": "EI B140_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 753,
+   "FileName": "D001_001",
+   "Description": "半兽勇士洞",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 754,
+   "FileName": "D002_001",
+   "Description": "骷髅精灵洞",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 755,
+   "FileName": "D011",
+   "Description": "天然洞穴1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 756,
+   "FileName": "D012",
+   "Description": "天然洞穴2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 757,
+   "FileName": "D012_001",
+   "Description": "天然洞穴2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 758,
+   "FileName": "D021",
+   "Description": "沃玛神殿入口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 759,
+   "FileName": "D022",
+   "Description": "沃玛神殿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 760,
+   "FileName": "D022_001",
+   "Description": "沃玛神殿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 761,
+   "FileName": "D023",
+   "Description": "沃玛神殿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 762,
+   "FileName": "D023_001",
+   "Description": "沃玛神殿师徒关",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 763,
+   "FileName": "D023_002",
+   "Description": "沃玛神殿师徒关",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 764,
+   "FileName": "D024",
+   "Description": "沃玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 765,
+   "FileName": "D032",
+   "Description": "沃玛神殿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 766,
+   "FileName": "D033",
+   "Description": "沃玛神殿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 767,
+   "FileName": "D042",
+   "Description": "沃玛神殿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 768,
+   "FileName": "D043",
+   "Description": "沃玛神殿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 769,
+   "FileName": "D052",
+   "Description": "沃玛神殿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 770,
+   "FileName": "D053",
+   "Description": "沃玛神殿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 771,
+   "FileName": "D10011",
+   "Description": "EI D10011",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 772,
+   "FileName": "D10012",
+   "Description": "EI D10012",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 773,
+   "FileName": "D10013",
+   "Description": "EI D10013",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 774,
+   "FileName": "D10051",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 775,
+   "FileName": "D10052",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 776,
+   "FileName": "D10053",
+   "Description": "EI D10053",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 777,
+   "FileName": "D10054",
+   "Description": "EI D10054",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 778,
+   "FileName": "D10061",
+   "Description": "EI D10061",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 779,
+   "FileName": "D10062",
+   "Description": "EI D10062",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 780,
+   "FileName": "D10071",
+   "Description": "EI D10071",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 781,
+   "FileName": "D10131",
+   "Description": "赤月山谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 782,
+   "FileName": "D10132",
+   "Description": "赤月山谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 783,
+   "FileName": "D1014",
+   "Description": "赤月山谷4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 784,
+   "FileName": "D10151",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 785,
+   "FileName": "D10152",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 786,
+   "FileName": "D10162",
+   "Description": "赤月恶魔洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 787,
+   "FileName": "D1021",
+   "Description": "赤月山谷1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 788,
+   "FileName": "D1022",
+   "Description": "赤月山谷2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 789,
+   "FileName": "D10231",
+   "Description": "赤月山谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 790,
+   "FileName": "D10232",
+   "Description": "赤月山谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 791,
+   "FileName": "D1024",
+   "Description": "赤月山谷4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 792,
+   "FileName": "D10251",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 793,
+   "FileName": "D10252",
+   "Description": "赤月山谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 794,
+   "FileName": "D10261",
+   "Description": "EI D10261",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 795,
+   "FileName": "D10262",
+   "Description": "EI D10262",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 796,
+   "FileName": "D10271",
+   "Description": "EI D10271",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 797,
+   "FileName": "D11031",
+   "Description": "潘夜神殿3层西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 798,
+   "FileName": "D11032",
+   "Description": "潘夜神殿3层东部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 799,
+   "FileName": "D1110",
+   "Description": "潘夜神殿大厅",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 800,
+   "FileName": "D1111",
+   "Description": "潘夜神殿4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 801,
+   "FileName": "D1112",
+   "Description": "潘夜神殿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 802,
+   "FileName": "D1113",
+   "Description": "潘夜神殿6层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 803,
+   "FileName": "D11141",
+   "Description": "潘夜神殿7层西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 804,
+   "FileName": "D11142",
+   "Description": "潘夜神殿7层东部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 805,
+   "FileName": "D1115",
+   "Description": "潘夜神殿8层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 806,
+   "FileName": "D1116",
+   "Description": "潘夜神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 807,
+   "FileName": "D1201",
+   "Description": "罪孽洞穴1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 808,
+   "FileName": "D1202",
+   "Description": "罪孽洞穴2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 809,
+   "FileName": "D1204",
+   "Description": "罪孽洞穴4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 810,
+   "FileName": "D1211",
+   "Description": "潘夜石窟1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 811,
+   "FileName": "D12121",
+   "Description": "潘夜石窟2层西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 812,
+   "FileName": "D12122",
+   "Description": "EI D12122",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 813,
+   "FileName": "D1213",
+   "Description": "潘夜石窟3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 814,
+   "FileName": "D1214",
+   "Description": "潘夜石窟4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 815,
+   "FileName": "D1215",
+   "Description": "潘夜石窟5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 816,
+   "FileName": "D1302",
+   "Description": "东部银杏废矿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 817,
+   "FileName": "D1311",
+   "Description": "北部银杏废矿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 818,
+   "FileName": "D1312",
+   "Description": "北部银杏废矿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 819,
+   "FileName": "D1313",
+   "Description": "北部银杏废矿3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 820,
+   "FileName": "D1314",
+   "Description": "北部银杏废矿4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 821,
+   "FileName": "D1315",
+   "Description": "北部银杏废矿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 822,
+   "FileName": "D1321",
+   "Description": "西部银杏废矿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 823,
+   "FileName": "D1322",
+   "Description": "西部银杏废矿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 824,
+   "FileName": "D1323",
+   "Description": "西部银杏废矿3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 825,
+   "FileName": "D1324",
+   "Description": "西部银杏废矿4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 826,
+   "FileName": "D1325",
+   "Description": "西部银杏废矿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 827,
+   "FileName": "D1411",
+   "Description": "北部石矿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 828,
+   "FileName": "D1412",
+   "Description": "北部石矿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 829,
+   "FileName": "D1413",
+   "Description": "北部石矿3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 830,
+   "FileName": "D1414",
+   "Description": "北部石矿4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 831,
+   "FileName": "D1415",
+   "Description": "北部石矿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 832,
+   "FileName": "D1421",
+   "Description": "西部石矿1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 833,
+   "FileName": "D1422",
+   "Description": "西部石矿2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 834,
+   "FileName": "D1423",
+   "Description": "西部石矿3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 835,
+   "FileName": "D1424",
+   "Description": "西部石矿4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 836,
+   "FileName": "D1425",
+   "Description": "西部石矿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 837,
+   "FileName": "D2011",
+   "Description": "EI D2011",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 838,
+   "FileName": "D2012",
+   "Description": "EI D2012",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 839,
+   "FileName": "D400_001",
+   "Description": "神圣战甲术空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 840,
+   "FileName": "D401_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 841,
+   "FileName": "D402_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 842,
+   "FileName": "D403_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 843,
+   "FileName": "D404_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 844,
+   "FileName": "D404_002",
+   "Description": "废矿矿山地下2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 845,
+   "FileName": "D405",
+   "Description": "矿石储藏所",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 846,
+   "FileName": "D405_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 847,
+   "FileName": "D406",
+   "Description": "废矿南部洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 848,
+   "FileName": "D406_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 849,
+   "FileName": "D411",
+   "Description": "地下1层第一间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 850,
+   "FileName": "D412",
+   "Description": "天桥2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 851,
+   "FileName": "D413",
+   "Description": "地下1层第二间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 852,
+   "FileName": "D414",
+   "Description": "地下1层第三间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 853,
+   "FileName": "D415",
+   "Description": "天桥1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 854,
+   "FileName": "D416",
+   "Description": "天桥3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 855,
+   "FileName": "D420_001",
+   "Description": "神圣战甲术空间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 856,
+   "FileName": "D421",
+   "Description": "矿山1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 857,
+   "FileName": "D421_001",
+   "Description": "EI D421_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 858,
+   "FileName": "D422",
+   "Description": "矿山2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 859,
+   "FileName": "D422_001",
+   "Description": "EI D422_001",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 860,
+   "FileName": "D422_002",
+   "Description": "矿山2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 861,
+   "FileName": "D423",
+   "Description": "EI D423",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 862,
+   "FileName": "D431",
+   "Description": "北部矿山入口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 863,
+   "FileName": "D431_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 864,
+   "FileName": "D432",
+   "Description": "北部矿山东面洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 865,
+   "FileName": "D432_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 866,
+   "FileName": "D433",
+   "Description": "北部地下1层采矿所",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 867,
+   "FileName": "D433_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 868,
+   "FileName": "D434",
+   "Description": "北部地下2层采矿所",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 869,
+   "FileName": "D434_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 870,
+   "FileName": "D434_002",
+   "Description": "EI D434_002",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 871,
+   "FileName": "D435",
+   "Description": "北部矿石储藏所",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 872,
+   "FileName": "D435_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 873,
+   "FileName": "D436",
+   "Description": "北部废矿南面洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 874,
+   "FileName": "D436_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 875,
+   "FileName": "D441",
+   "Description": "北部地下1层第一间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 876,
+   "FileName": "D442",
+   "Description": "北部天桥2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 877,
+   "FileName": "D443",
+   "Description": "北部地下1层第二间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 878,
+   "FileName": "D444",
+   "Description": "北部地下1层第三间房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 879,
+   "FileName": "D445",
+   "Description": "北部天桥1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 880,
+   "FileName": "D446",
+   "Description": "北部天桥3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 881,
+   "FileName": "D451",
+   "Description": "南部矿山1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 882,
+   "FileName": "D451_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 883,
+   "FileName": "D452",
+   "Description": "南部矿山2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 884,
+   "FileName": "D452_001",
+   "Description": "尸王房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 885,
+   "FileName": "D505",
+   "Description": "祖玛神殿5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 886,
+   "FileName": "D5061",
+   "Description": "祖玛阁",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 887,
+   "FileName": "D5062",
+   "Description": "EI D5062",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 888,
+   "FileName": "D5063",
+   "Description": "EI D5063",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 889,
+   "FileName": "D5064",
+   "Description": "EI D5064",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 890,
+   "FileName": "D5065",
+   "Description": "EI D5065",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 891,
+   "FileName": "D5066",
+   "Description": "EI D5066",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 892,
+   "FileName": "D5067",
+   "Description": "EI D5067",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 893,
+   "FileName": "D5068",
+   "Description": "EI D5068",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 894,
+   "FileName": "D5069",
+   "Description": "EI D5069",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 895,
+   "FileName": "D5071",
+   "Description": "祖玛神殿7层大厅",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 896,
+   "FileName": "D5072",
+   "Description": "祖玛神殿7层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 897,
+   "FileName": "D5073",
+   "Description": "祖玛神殿7层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 898,
+   "FileName": "D5074",
+   "Description": "祖玛神殿7层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 899,
+   "FileName": "d511",
+   "Description": "祖玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 900,
+   "FileName": "d512",
+   "Description": "祖玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 901,
+   "FileName": "d513",
+   "Description": "祖玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 902,
+   "FileName": "d514",
+   "Description": "祖玛神殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 903,
+   "FileName": "d515",
+   "Description": "祖玛教主宫廷",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 904,
+   "FileName": "d60011",
+   "Description": "绝命谷1层南部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 905,
+   "FileName": "d60012",
+   "Description": "绝命谷1层西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 906,
+   "FileName": "d60013",
+   "Description": "绝命谷1层北部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 907,
+   "FileName": "d60021",
+   "Description": "绝命谷2层西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 908,
+   "FileName": "d60022",
+   "Description": "绝命谷2层北部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 909,
+   "FileName": "d6003",
+   "Description": "EI d6003",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 910,
+   "FileName": "d6004",
+   "Description": "绝命谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 911,
+   "FileName": "d6011",
+   "Description": "万年谷",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 912,
+   "FileName": "D6012",
+   "Description": "万年原谷",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 913,
+   "FileName": "D60131",
+   "Description": "万年谷中部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 914,
+   "FileName": "D60132",
+   "Description": "万年谷南部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 915,
+   "FileName": "D60133",
+   "Description": "万年谷西部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 916,
+   "FileName": "D60134",
+   "Description": "万年谷北部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 917,
+   "FileName": "D60135",
+   "Description": "万年谷东部",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 918,
+   "FileName": "D6014",
+   "Description": "万年独孤关",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 919,
+   "FileName": "d6015",
+   "Description": "生死关",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 920,
+   "FileName": "d6021",
+   "Description": "虫峡谷1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 921,
+   "FileName": "d6022",
+   "Description": "虫峡谷2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 922,
+   "FileName": "D6023",
+   "Description": "虫峡谷3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 923,
+   "FileName": "d6024",
+   "Description": "虫峡谷4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 924,
+   "FileName": "D6025",
+   "Description": "虫峡谷5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 925,
+   "FileName": "d606",
+   "Description": "奇岩石屋",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 926,
+   "FileName": "d607",
+   "Description": "奇岩通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 927,
+   "FileName": "d608",
+   "Description": "EI d608",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 928,
+   "FileName": "d609",
+   "Description": "EI d609",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 929,
+   "FileName": "d610",
+   "Description": "EI d610",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 930,
+   "FileName": "d611",
+   "Description": "EI d611",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 931,
+   "FileName": "D612",
+   "Description": "EI D612",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 932,
+   "FileName": "D613",
+   "Description": "EI D613",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 933,
+   "FileName": "D614",
+   "Description": "EI D614",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 934,
+   "FileName": "D615",
+   "Description": "EI D615",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 935,
+   "FileName": "D616",
+   "Description": "EI D616",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 936,
+   "FileName": "D617",
+   "Description": "EI D617",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 937,
+   "FileName": "D618",
+   "Description": "EI D618",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 938,
+   "FileName": "D619",
+   "Description": "EI D619",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 939,
+   "FileName": "d7101",
+   "Description": "石阁入口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 940,
+   "FileName": "d7102",
+   "Description": "石阁入口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 941,
+   "FileName": "d711",
+   "Description": "石阁1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 942,
+   "FileName": "d712",
+   "Description": "石阁2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 943,
+   "FileName": "d713",
+   "Description": "石阁3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 944,
+   "FileName": "d714",
+   "Description": "石阁4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 945,
+   "FileName": "D715",
+   "Description": "石阁5层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 946,
+   "FileName": "D716",
+   "Description": "石阁6层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 947,
+   "FileName": "D71601",
+   "Description": "EI D71601",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 948,
+   "FileName": "D71602",
+   "Description": "EI D71602",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 949,
+   "FileName": "D71603",
+   "Description": "EI D71603",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 950,
+   "FileName": "D71604",
+   "Description": "EI D71604",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 951,
+   "FileName": "D71605",
+   "Description": "EI D71605",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 952,
+   "FileName": "D71606",
+   "Description": "EI D71606",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 953,
+   "FileName": "D71607",
+   "Description": "EI D71607",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 954,
+   "FileName": "D71608",
+   "Description": "EI D71608",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 955,
+   "FileName": "D71609",
+   "Description": "EI D71609",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 956,
+   "FileName": "D71610",
+   "Description": "EI D71610",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 957,
+   "FileName": "D71611",
+   "Description": "EI D71611",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 958,
+   "FileName": "D71612",
+   "Description": "EI D71612",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 959,
+   "FileName": "D71613",
+   "Description": "EI D71613",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 960,
+   "FileName": "D71614",
+   "Description": "EI D71614",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 961,
+   "FileName": "D71615",
+   "Description": "EI D71615",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 962,
+   "FileName": "D71616",
+   "Description": "EI D71616",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 963,
+   "FileName": "D71617",
+   "Description": "EI D71617",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 964,
+   "FileName": "D71618",
+   "Description": "EI D71618",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 965,
+   "FileName": "D71619",
+   "Description": "EI D71619",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 966,
+   "FileName": "D71620",
+   "Description": "EI D71620",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 967,
+   "FileName": "D71621",
+   "Description": "EI D71621",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 968,
+   "FileName": "D71622",
+   "Description": "EI D71622",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 969,
+   "FileName": "D71623",
+   "Description": "EI D71623",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 970,
+   "FileName": "D71624",
+   "Description": "EI D71624",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 971,
+   "FileName": "D71625",
+   "Description": "EI D71625",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 972,
+   "FileName": "D71650",
+   "Description": "EI D71650",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 973,
+   "FileName": "D71651",
+   "Description": "EI D71651",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 974,
+   "FileName": "D71652",
+   "Description": "EI D71652",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 975,
+   "FileName": "D71653",
+   "Description": "EI D71653",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 976,
+   "FileName": "D717",
+   "Description": "石阁7层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 977,
+   "FileName": "D8001",
+   "Description": "南部蚂蚁洞4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 978,
+   "FileName": "D8002",
+   "Description": "南部蚂蚁洞1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 979,
+   "FileName": "D8003",
+   "Description": "南部蚂蚁洞2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 980,
+   "FileName": "D8004",
+   "Description": "南部蚂蚁洞3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 981,
+   "FileName": "D8021",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 982,
+   "FileName": "d8022",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 983,
+   "FileName": "D8031",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 984,
+   "FileName": "D8032",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 985,
+   "FileName": "d8033",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 986,
+   "FileName": "D8041",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 987,
+   "FileName": "d8051",
+   "Description": "EI d8051",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 988,
+   "FileName": "D806",
+   "Description": "南部蚂蚁洞穴3层2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 989,
+   "FileName": "D8061",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 990,
+   "FileName": "d8062",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 991,
+   "FileName": "d807",
+   "Description": "南部蚂蚁洞穴3层3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 992,
+   "FileName": "d8071",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 993,
+   "FileName": "d8072",
+   "Description": "南部蚂蚁洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 994,
+   "FileName": "d808",
+   "Description": "南部蚂蚁洞穴3层4",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 995,
+   "FileName": "D8101",
+   "Description": "北部蚂蚁洞穴1层4",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 996,
+   "FileName": "D8102",
+   "Description": "北部蚂蚁洞穴1层1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 997,
+   "FileName": "D8103",
+   "Description": "北部蚂蚁洞穴1层2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 998,
+   "FileName": "D8104",
+   "Description": "北部蚂蚁洞穴1层3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 999,
+   "FileName": "D811",
+   "Description": "EI D811",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1000,
+   "FileName": "d812",
+   "Description": "EI d812",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1001,
+   "FileName": "D8121",
+   "Description": "EI D8121",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1002,
+   "FileName": "d8122",
+   "Description": "EI d8122",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1003,
+   "FileName": "d813",
+   "Description": "EI d813",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1004,
+   "FileName": "D8131",
+   "Description": "EI D8131",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1005,
+   "FileName": "D8132",
+   "Description": "EI D8132",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1006,
+   "FileName": "d8133",
+   "Description": "EI d8133",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1007,
+   "FileName": "D814",
+   "Description": "EI D814",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1008,
+   "FileName": "D8141",
+   "Description": "EI D8141",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1009,
+   "FileName": "D815",
+   "Description": "EI D815",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1010,
+   "FileName": "d8151",
+   "Description": "EI d8151",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1011,
+   "FileName": "D816",
+   "Description": "EI D816",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1012,
+   "FileName": "D8161",
+   "Description": "EI D8161",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1013,
+   "FileName": "d8162",
+   "Description": "EI d8162",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1014,
+   "FileName": "d817",
+   "Description": "EI d817",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1015,
+   "FileName": "d8171",
+   "Description": "EI d8171",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1016,
+   "FileName": "d8172",
+   "Description": "EI d8172",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1017,
+   "FileName": "d818",
+   "Description": "EI d818",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1018,
+   "FileName": "D8201",
+   "Description": "东部蚂蚁洞穴1层4",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1019,
+   "FileName": "D8202",
+   "Description": "东部蚂蚁洞穴1层1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1020,
+   "FileName": "D8203",
+   "Description": "东部蚂蚁洞穴1层2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1021,
+   "FileName": "D8204",
+   "Description": "东部蚂蚁洞穴1层3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1022,
+   "FileName": "D821",
+   "Description": "EI D821",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1023,
+   "FileName": "d822",
+   "Description": "EI d822",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1024,
+   "FileName": "D8221",
+   "Description": "EI D8221",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1025,
+   "FileName": "d8222",
+   "Description": "EI d8222",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1026,
+   "FileName": "d823",
+   "Description": "EI d823",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1027,
+   "FileName": "D8231",
+   "Description": "EI D8231",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1028,
+   "FileName": "D8232",
+   "Description": "EI D8232",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1029,
+   "FileName": "d8233",
+   "Description": "EI d8233",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1030,
+   "FileName": "D824",
+   "Description": "EI D824",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1031,
+   "FileName": "D8241",
+   "Description": "EI D8241",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1032,
+   "FileName": "D825",
+   "Description": "EI D825",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1033,
+   "FileName": "d8251",
+   "Description": "EI d8251",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1034,
+   "FileName": "D826",
+   "Description": "EI D826",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1035,
+   "FileName": "D8261",
+   "Description": "EI D8261",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1036,
+   "FileName": "d8262",
+   "Description": "EI d8262",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1037,
+   "FileName": "d827",
+   "Description": "EI d827",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1038,
+   "FileName": "d8271",
+   "Description": "EI d8271",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1039,
+   "FileName": "d8272",
+   "Description": "EI d8272",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1040,
+   "FileName": "d828",
+   "Description": "EI d828",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1041,
+   "FileName": "D900",
+   "Description": "神舰入口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1042,
+   "FileName": "D9021",
+   "Description": "神舰地下2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1043,
+   "FileName": "D90211",
+   "Description": "医务室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1044,
+   "FileName": "D90212",
+   "Description": "机械室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1045,
+   "FileName": "D90213",
+   "Description": "EI D90213",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1046,
+   "FileName": "D90214",
+   "Description": "EI D90214",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1047,
+   "FileName": "D90216",
+   "Description": "EI D90216",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1048,
+   "FileName": "D9022",
+   "Description": "神舰地下2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1049,
+   "FileName": "D90221",
+   "Description": "医务室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1050,
+   "FileName": "D90222",
+   "Description": "厨房",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1051,
+   "FileName": "D90223",
+   "Description": "士兵食堂",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1052,
+   "FileName": "D90224",
+   "Description": "EI D90224",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1053,
+   "FileName": "D9031",
+   "Description": "参谋室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1054,
+   "FileName": "D9032",
+   "Description": "长官食堂",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1055,
+   "FileName": "D90321",
+   "Description": "EI D90321",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1056,
+   "FileName": "D90322",
+   "Description": "EI D90322",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1057,
+   "FileName": "D90323",
+   "Description": "海图室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1058,
+   "FileName": "DM001",
+   "Description": "奸商",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1059,
+   "FileName": "DM002",
+   "Description": "王陵",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1060,
+   "FileName": "DM011",
+   "Description": "洞穴奸商",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1061,
+   "FileName": "E001",
+   "Description": "行会大战",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1062,
+   "FileName": "E002",
+   "Description": "半兽天然洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1063,
+   "FileName": "E002_001",
+   "Description": "半兽天然洞穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1064,
+   "FileName": "E401",
+   "Description": "连接通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1065,
+   "FileName": "E402",
+   "Description": "连接通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1066,
+   "FileName": "E402_001",
+   "Description": "连接通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1067,
+   "FileName": "E403",
+   "Description": "连接通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1068,
+   "FileName": "E404",
+   "Description": "连接通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1069,
+   "FileName": "E601",
+   "Description": "竞技场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1070,
+   "FileName": "E602",
+   "Description": "竞技场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1071,
+   "FileName": "E603",
+   "Description": "废矿秘密通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1072,
+   "FileName": "E604",
+   "Description": "废矿秘密通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1073,
+   "FileName": "E605",
+   "Description": "废矿秘密通路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1074,
+   "FileName": "kt0000",
+   "Description": "EI kt0000",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1075,
+   "FileName": "kt0001",
+   "Description": "混乱PK赛场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1076,
+   "FileName": "kt0002",
+   "Description": "EI kt0002",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1077,
+   "FileName": "kt0003",
+   "Description": "EI kt0003",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1078,
+   "FileName": "kt0004",
+   "Description": "EI kt0004",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1079,
+   "FileName": "kt0005",
+   "Description": "EI kt0005",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1080,
+   "FileName": "kt0006",
+   "Description": "EI kt0006",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1081,
+   "FileName": "kt0007",
+   "Description": "EI kt0007",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1082,
+   "FileName": "kt0008",
+   "Description": "EI kt0008",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1083,
+   "FileName": "kt0009",
+   "Description": "EI kt0009",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1084,
+   "FileName": "kt0010",
+   "Description": "EI kt0010",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1085,
+   "FileName": "kt0011",
+   "Description": "EI kt0011",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1086,
+   "FileName": "kt0012",
+   "Description": "EI kt0012",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1087,
+   "FileName": "kt0013",
+   "Description": "EI kt0013",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1088,
+   "FileName": "kt0014",
+   "Description": "EI kt0014",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1089,
+   "FileName": "kt0015",
+   "Description": "EI kt0015",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1090,
+   "FileName": "kt0016",
+   "Description": "EI kt0016",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1091,
+   "FileName": "kt00161",
+   "Description": "EI kt00161",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1092,
+   "FileName": "kt0017",
+   "Description": "EI kt0017",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1093,
+   "FileName": "kt0018",
+   "Description": "EI kt0018",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1094,
+   "FileName": "kt00181",
+   "Description": "EI kt00181",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1095,
+   "FileName": "z010",
+   "Description": "销售房间",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1096,
+   "FileName": "z014",
+   "Description": "监狱",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1097,
+   "FileName": "02_0011",
+   "Description": "法师职业PK场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1098,
+   "FileName": "E007",
+   "Description": "PK赛场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1099,
+   "FileName": "d15023",
+   "Description": "真天宫1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1100,
+   "FileName": "d15033",
+   "Description": "真天宫2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1101,
+   "FileName": "d15054",
+   "Description": "真天宫3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1102,
+   "FileName": "d1506",
+   "Description": "真天宫",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1103,
+   "FileName": "d1510",
+   "Description": "黑度宫1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1104,
+   "FileName": "d15111",
+   "Description": "黑度宫2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1105,
+   "FileName": "d1512",
+   "Description": "黑度宫3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1106,
+   "FileName": "d1513",
+   "Description": "黑度宫4层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1107,
+   "FileName": "d903",
+   "Description": "神舰地下1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1108,
+   "FileName": "d904",
+   "Description": "调控室",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1109,
+   "FileName": "d1602",
+   "Description": "诺玛遗址",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1110,
+   "FileName": "d1606",
+   "Description": "诺玛墓穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1111,
+   "FileName": "d2001",
+   "Description": "西沙漠1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1112,
+   "FileName": "d20023",
+   "Description": "西沙漠2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1113,
+   "FileName": "d2005",
+   "Description": "地下魔宫",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1114,
+   "FileName": "d2004",
+   "Description": "地底宫殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1115,
+   "FileName": "82",
+   "Description": "冰原雪城",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1116,
+   "FileName": "d005",
+   "Description": "冰天雪地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1117,
+   "FileName": "d2101",
+   "Description": "冰原地下1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1118,
+   "FileName": "d2104",
+   "Description": "冰原地下2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1119,
+   "FileName": "d21051",
+   "Description": "冰原通道",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1120,
+   "FileName": "d2106",
+   "Description": "冰宫之颠",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1121,
+   "FileName": "d2107",
+   "Description": "天空之城",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1122,
+   "FileName": "8_002",
+   "Description": "绝情塔口",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1123,
+   "FileName": "D2201",
+   "Description": "绝情塔1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1124,
+   "FileName": "D2204",
+   "Description": "绝情塔2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1125,
+   "FileName": "D2205",
+   "Description": "绝情宫殿",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1126,
+   "FileName": "D0002_001",
+   "Description": "飞天武术馆",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1127,
+   "FileName": "D0002_002",
+   "Description": "魔界·虚幻",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1128,
+   "FileName": "D0002_003",
+   "Description": "魔界·暗影",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1129,
+   "FileName": "D0002_004",
+   "Description": "魔界·终极决斗",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1130,
+   "FileName": "D2701",
+   "Description": "群魔终结路①",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1131,
+   "FileName": "D2702",
+   "Description": "群魔终结路②",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1132,
+   "FileName": "Yanmums",
+   "Description": "群魔王陵",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1133,
+   "FileName": "d9091",
+   "Description": "异界地下3层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1134,
+   "FileName": "d90921",
+   "Description": "异界地下2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1135,
+   "FileName": "d90922",
+   "Description": "异界地下1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1136,
+   "FileName": "d9093",
+   "Description": "异界神灵之地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1137,
+   "FileName": "d9094",
+   "Description": "异界神灵",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1138,
+   "FileName": "D006",
+   "Description": "邪恶之地①",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1139,
+   "FileName": "D007",
+   "Description": "邪恶之地②",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1140,
+   "FileName": "D2900",
+   "Description": "邪恶之地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1141,
+   "FileName": "D2902",
+   "Description": "BOSS集中营",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1142,
+   "FileName": "D29051",
+   "Description": "玛法.四象",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1143,
+   "FileName": "D29031",
+   "Description": "经验.之地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1144,
+   "FileName": "D29032",
+   "Description": "玛法.之地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1145,
+   "FileName": "D008",
+   "Description": "深度雪原",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1146,
+   "FileName": "D30011",
+   "Description": "龙穴溪谷①",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1147,
+   "FileName": "D30013",
+   "Description": "龙穴溪谷②",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1148,
+   "FileName": "D3005",
+   "Description": "龙穴生死堂",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1149,
+   "FileName": "14",
+   "Description": "月河城",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1150,
+   "FileName": "D009",
+   "Description": "月河渊",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1151,
+   "FileName": "D3101",
+   "Description": "卧龙寺",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1152,
+   "FileName": "D3102",
+   "Description": "卧龙宫",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1153,
+   "FileName": "D010",
+   "Description": "鬼域林",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1154,
+   "FileName": "EV002",
+   "Description": "黑暗巢穴",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1155,
+   "FileName": "E003",
+   "Description": "青青草原",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1156,
+   "FileName": "TNakwon_001",
+   "Description": "幽暗森林",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1157,
+   "FileName": "E004",
+   "Description": "钓鱼岛",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1158,
+   "FileName": "D2901",
+   "Description": "会员练级",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1159,
+   "FileName": "ID1_001",
+   "Description": "桃园小路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1160,
+   "FileName": "ID1_002",
+   "Description": "桃园歧路",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1161,
+   "FileName": "ID1_003",
+   "Description": "桃园广场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1162,
+   "FileName": "ID2_001",
+   "Description": "桃园仙境1层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1163,
+   "FileName": "ID2_002",
+   "Description": "桃园仙境2层",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1164,
+   "FileName": "ID2_003",
+   "Description": "桃园大厅",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1165,
+   "FileName": "02_0061",
+   "Description": "竞技骑兵",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1166,
+   "FileName": "02_0062",
+   "Description": "唯我独尊",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1167,
+   "FileName": "1_0141",
+   "Description": "双倍经验",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1168,
+   "FileName": "1_0142",
+   "Description": "双倍暴率",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1169,
+   "FileName": "D35041",
+   "Description": "修罗密道1",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1170,
+   "FileName": "D35042",
+   "Description": "修罗密道2",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1171,
+   "FileName": "D35043",
+   "Description": "修罗密道3",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1172,
+   "FileName": "D35044",
+   "Description": "修罗密道4",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1173,
+   "FileName": "D3505",
+   "Description": "修罗禁地",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1174,
+   "FileName": "D3701",
+   "Description": "兵马佣通道",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1175,
+   "FileName": "D3702",
+   "Description": "兵马佣广场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1176,
+   "FileName": "D3703",
+   "Description": "兵马佣兵场",
+   "Light": "Default",
+   "Weather": "None"
+  },
+  {
+   "Index": 1177,
+   "FileName": "D3704",
+   "Description": "兵马佣禁地",
+   "Light": "Default",
+   "Weather": "None"
+  }
+ ],
+ "lightItems": [
+  {
+   "ItemIndex": 157,
+   "Name": "Bright Candle",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 159,
+   "Name": "Bright Torch",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 727,
+   "Name": "Mark Of Dark [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 717,
+   "Name": "Mark Of Dark [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 719,
+   "Name": "Mark Of Destruction [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 709,
+   "Name": "Mark Of Destruction [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 722,
+   "Name": "Mark Of Fire [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 712,
+   "Name": "Mark Of Fire [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 726,
+   "Name": "Mark Of Holy [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 716,
+   "Name": "Mark Of Holy [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 723,
+   "Name": "Mark Of Ice [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 713,
+   "Name": "Mark Of Ice [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 724,
+   "Name": "Mark Of Lightning [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 714,
+   "Name": "Mark Of Lightning [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 720,
+   "Name": "Mark Of Nature [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 710,
+   "Name": "Mark Of Nature [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 728,
+   "Name": "Mark Of Phantom [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 718,
+   "Name": "Mark Of Phantom [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 721,
+   "Name": "Mark Of Spirit [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 711,
+   "Name": "Mark Of Spirit [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 725,
+   "Name": "Mark Of Wind [P]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 715,
+   "Name": "Mark Of Wind [T]",
+   "ItemType": "Torch",
+   "Light": 25
+  },
+  {
+   "ItemIndex": 132,
+   "Name": "Candle",
+   "ItemType": "Torch",
+   "Light": 15
+  },
+  {
+   "ItemIndex": 158,
+   "Name": "Torch",
+   "ItemType": "Torch",
+   "Light": 15
+  }
+ ]
+}

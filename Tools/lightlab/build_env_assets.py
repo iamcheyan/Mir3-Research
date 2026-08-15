@@ -101,9 +101,10 @@ def build_snapshot() -> dict:
     print(f"  env-snapshot.json: {len(maps_out)} maps, {len(torches_out)} light items")
     print(f"  Light dist: {dict(light_dist)}")
     print(f"  Weather dist: {dict(weather_dist)}")
-    print(f"  Light amount dist: { {str(k): v for k, v in sorted(amount_dist.items())} }")
-    return snap
-
+    # web 前端镜像 (webclient /static 下可直接 fetch; docs/ 版本入仓库为权威)
+    mirror = MIR3 / "Tools" / "webclient" / "static" / "assets" / "env-snapshot.json"
+    mirror.parent.mkdir(parents=True, exist_ok=True)
+    mirror.write_text(json.dumps(snap, ensure_ascii=False, indent=1))
 
 def main() -> None:
     print("[1/2] ProgUse.Zl 天气帧 -> WebP")
