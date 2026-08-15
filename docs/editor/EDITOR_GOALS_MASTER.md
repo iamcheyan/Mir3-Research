@@ -215,6 +215,36 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
   （§5.2 格式表已并入）。serialize 用模板补丁策略（template=原文件逐字节保留未建模
   字节）才让 A/C 检查全绿；重建式序列化对截断图必然字节级不等。
 
+### 3.10 技能特效事实源与截图回归的坑（E4 实证，2026-08-16）
+
+- **原版有两个 Spell 特效 switch**：release 段 `MapObject.cs:768`（`if (!MagicCast)
+  break`）+ start 段 `:3603`（SetAction 内，无条件播）。只提一个会系统性漏 start 段
+  起手特效（Godot 的 `Source`/`CastAtSource` 字段对应它）。union=138 技能有特效。
+- **网页截图回归的指纹别用截图字节**：CDP `Page.captureScreenshot` 的 webp 编码在
+  同一画面上有 ± 噪声（连拍同画面 hash 会漂）。**指纹用页面内
+  `getImageData` 像素 hash**，截图只给人看画廊。
+- **canvas 确定性 = 时间定点化 + 帧就绪探针 + 失败不缓存三件套**：`dt` 浮点累加会让
+  特效帧号骑在 `idx` 边界 ±ε 抖动（取整 `Math.round(dt*1000)`）；`play()` 把 labT
+  对齐固定相位（500ms）；异步 sprite 解码要 `framesReady()` 逐项轮询（特效/纸娃娃/
+  木桩），且 **null/失败结果禁止进缓存**（否则一次 404 毒化整轮截图，且毒帧跨会话
+  复现成"永远 changed"）。仍剩 ~1/30 冷启动闪失 → diff 不一致**当场复拍一次**自愈。
+- **`ready` 判真后画布未必已画上**：解码刚完成当帧 rAF 还没跑。hash 采样前等 ≥2 帧
+  （sleep 250ms）。
+- **headless chrome 硬杀（kill -9）会损坏持久 user-data-dir**：下轮
+  `SingletonLock` 残留 → 启动即 `FATAL: lab not ready`。一次性 profile
+  (`/home/.../chrome-$$`) + 退出 `rmSync`。
+- **裸 GameScene 反射驱动的运行时审计抓不到弹道 Arrival 段**：
+  `_mapView==null` → `ComputeEffectScreenPos` 恒 Zero → 弹道 `duration==0` 同帧
+  Complete，命中特效节点生命周期极短。Arrival 段断言走**表定义**三元组，运行时
+  断言只覆盖非弹道承载段（MapTestScene `--magic-spot-audit` 的双层口径）。
+- **`DirectionStartIndices` 只有 `ImpactDef` 有**：`CastEffect` 上同名属性不存在
+  （CS0117）。需要方向帧表的主特效放进 `Source`（Source 非空时主特效自动跳过地面
+  播放，见 LightningBeam 先例）。
+- **`MirEffectNode` 不记录图库枚举**：审计要比 `(lib,start,count)` 三元组先补
+  `public LibraryFile File`（Setup/SetupTarget 各赋值一次）。
+- **`OriginalSpellCases` 白名单口径 = "原版 switch 有 case 且创建了特效"**：纯音效
+  case（CombatKick/JudgementOfHeaven，只 `Play` 无 `MirEffect`）归
+  `NoVisualSpellCases`，混进白名单会把覆盖率审计搞成假阳性。
 ---
 
 ## 4. 环境引导（82 机器，一次性）
