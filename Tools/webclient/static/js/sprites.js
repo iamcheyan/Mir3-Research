@@ -9,10 +9,11 @@ import { PLAYER_ANIMS, MONSTER_ANIMS, drawFrame, armourShift } from './data.js';
 
 const metaWaiters = new Map();
 
-async function metaOf(lib) {
+function metaOf(lib) {
   if (metaWaiters.has(lib)) return metaWaiters.get(lib);
   const p = frameMeta(lib);
   metaWaiters.set(lib, p);
+  p.catch(() => { metaWaiters.delete(lib); });  // 失败不缓存 (manifest 生成偶发失败不可毒化)
   return p;
 }
 

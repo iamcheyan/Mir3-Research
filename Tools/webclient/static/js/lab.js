@@ -47,7 +47,7 @@ const S = {
   targetCount: 3,
   camX: 0, camY: 0, // 视口左上角的世界像素
   tiles: new Map(), // 瓦片缓存
-  manifest: null, dummySprites: [], casterSprites: {},
+  manifest: null, dummySprites: [], dummyFrames: [], casterSprites: {},
 };
 const CELL_ANCHOR = (gx, gy) => ({ x: gx * CELL_W + CELL_W / 2 - S.camX, y: (gy + 1) * CELL_H - S.camY });
 
@@ -126,9 +126,9 @@ async function paperdoll(look, animName, frameIdx, dir) {
   const libs = pickLibs(look);
   const ws = look.weaponShape >= 1000 ? look.weaponShape - 1000 : look.weaponShape;
   const jobs = [
-    spriteFrame(libs.body, base + (look.armourShape % 11) * off + shift),
-    look.hairType > 0 ? spriteFrame(libs.hair, base + (look.hairType - 1) * 5000) : null,
-    look.weaponShape >= 0 ? spriteFrame(libs.weapon, base + (ws % 10) * 5000) : null,
+    frameSprite(libs.body, base + (look.armourShape % 11) * off + shift),
+    look.hairType > 0 ? frameSprite(libs.hair, base + (look.hairType - 1) * 5000) : null,
+    look.weaponShape >= 0 ? frameSprite(libs.weapon, base + (ws % 10) * 5000) : null,
   ];
   const [body, hair, weapon] = await Promise.all(jobs);
   return { body, head: hair, weapon, dir, backDirs: [0, 5, 6, 7], frontDirs: [1, 2, 3, 4] };
@@ -189,7 +189,7 @@ async function frameSprite(lib, frame) {
   if (_frameCache.has(key)) return _frameCache.get(key);
   const p = spriteFrame(lib, frame);
   _frameCache.set(key, p);
-  p.catch(() => {});
+  p.then((v) => { if (v == null) _frameCache.delete(key); }).catch(() => { _frameCache.delete(key); });  // 失败/缺帧不缓存, 下次重试 (截图确定性)
   return p;
 }
 function drawFx() {
@@ -202,8 +202,8 @@ function drawFx() {
       ? fr.idx + f.frame + f.dir16 * (f.skip ?? 10)
       : fr?.drawFrame;
     if (drawFrameNo == null) continue;
-    frameSprite(f.lib, drawFrameNo).then((s) => { if (s) f._last = s; });
-    const s = f._last;
+    frameSprite(f.lib, drawFrameNo).then((s) => { f._last = s ?? false; f._lastFrameNo = drawFrameNo; });
+    const s = f._last;  // undefined=未就绪, false=已确认缺帧(原版空帧), 对象=可用
     if (s) {
       const sx = pos.wx - S.camX, sy = pos.wy - S.camY;
       ctx.globalAlpha = 0.92;
@@ -215,7 +215,6 @@ function drawFx() {
 
 // ---------- 施法编排 ----------
 function effectsOf(entry, seg) { return entry?.[seg]?.effects || []; }
-
 function playSkill(magic) {
   const key = magic.key;
   const entry = S.table[key];
@@ -229,7 +228,7 @@ function playSkill(magic) {
   S.fx = [];
   S.events = [];
   const targets = DUMMIES.slice(0, S.targetCount);
-  log(0, `▶ ${magic.zh} (${key}) anim=${anim} release@${relDelay}ms`, 'seg');
+  S.cast0 = S.labT;
 
   const casterPx = { x: CASTER.x * CELL_W + CELL_W / 2, y: (CASTER.y + 1) * CELL_H };
   const targetPx = (i) => ({ x: DUMMIES[i].x * CELL_W + CELL_W / 2, y: (DUMMIES[i].y + 1) * CELL_H });
@@ -358,17 +357,14 @@ function drawMap() {
     }
   }
 }
-let dummyTick = 0;
 function drawScene(dtReal) {
-  // 木桩 (站立 4 帧循环, 125ms)
-  dummyTick = (dummyTick + dtReal) % 500;
-  const dFrame = Math.floor(dummyTick / 125) % 4;
-  const mons = S.monsters || [];
+  // 木桩 (站立 4 帧循环, 125ms) — 相位由 labT 派生, freeze 定格后逐字节可复现
+  const dFrame = Math.floor((S.labT % 500) / 125) % 4;
+  const dummyNo = drawFrame(MONSTER_ANIMS.standing, dFrame, 2);
   for (let i = 0; i < DUMMIES.length; i++) {
     const d = DUMMIES[i];
     const a = CELL_ANCHOR(d.x, d.y);
-    const anim = MONSTER_ANIMS.standing;
-    frameSprite('Mon-5', 0 * 1000 + drawFrame(anim, dFrame, 2)).then((s) => { if (s) S.dummySprites[i] = s; });
+    frameSprite('Mon-5', dummyNo).then((s) => { S.dummySprites[i] = s ?? false; S.dummyFrames[i] = dummyNo; });
     if (i < S.targetCount) {
       ctx.strokeStyle = 'rgba(255,90,90,.35)';
       ctx.strokeRect(a.x - 24, a.y - 60, 48, 60);
@@ -376,21 +372,31 @@ function drawScene(dtReal) {
     const s = S.dummySprites[i];
     if (s) drawFramed(ctx, s, a.x, a.y);
   }
-  // 施法者
+  // 施法者 — 动画相位由 (labT - cast0) 派生, 不用真实时间累加器
   const ca = CELL_ANCHOR(CASTER.x, CASTER.y);
   const st = S.casterAnims[0];
   if (st) {
-    st.t += dtReal * 1000 * S.timeScale;
-    while (st.t >= st.delays[st.frameIdx]) {
-      st.t -= st.delays[st.frameIdx];
-      if (st.frameIdx + 1 < st.delays.length) st.frameIdx++;
-      else { // 播完回站姿
-        st.anim = 'stance'; st.frameIdx = 0; st.t = 0;
-        st.delays = frameDelays(FF.frame('stance') || { count: 4, ms: 200 });
-      }
+    let t = Math.max(0, S.labT - (S.cast0 ?? S.labT));
+    let anim = st.anim, frameIdx = 0;
+    const delaysOf = (a) => frameDelays(FF.frame(a) || { count: 4, ms: 200 });
+    let delays = delaysOf(anim);
+    while (t >= delays[frameIdx]) {
+      t -= delays[frameIdx];
+      if (frameIdx + 1 < delays.length) frameIdx++;
+      else { anim = 'stance'; frameIdx = 0; delays = delaysOf('stance'); }
     }
-    paperdoll(st.look, st.anim, st.frameIdx, st.dir).then((p) => { S.casterSprites.cur = p; });
-    drawPaperdoll(S.casterSprites.cur, ca.x, ca.y);
+    const look = st.look;
+    const req = JSON.stringify([anim, frameIdx, st.dir, look.cls]);
+    S._pdReq = req;
+    paperdoll(look, anim, frameIdx, st.dir).then((p) => {
+      // 部件 (body/head/weapon) 任何一个瞬时缺失都拒绝结算: 服务器抽帧偶发 5xx 会让
+      // null 被当成合法 settle → 截图缺部件 → 跨会话 changed 误报。重试直到全齐。
+      const ok = p && p.body && (!p.head || p.head) && (!p.weapon || p.weapon);
+      if (S._pdReq === req) {
+        S.casterSprites.cur = p;
+        if (ok) S._pdGot = req;
+      }
+    }).catch(() => {});   // 拒绝不缓存, 下一 tick 重试; framesReady 持续等待
   }
   ctx.font = '11px sans-serif';
   ctx.fillStyle = '#9fe0a8';
@@ -432,9 +438,8 @@ function tick(ts) {
   const dtReal = Math.min(0.1, (ts - lastTs) / 1000 || 0);
   lastTs = ts;
   if (!S.paused) {
-    const dt = dtReal * 1000 * S.timeScale;
-    S.labT += dt;
-    updateFx(dt);
+    const dt = Math.round(dtReal * 1000 * S.timeScale);  // 定点化: 浮点累加会让 t 骑在 idx 边界 ±ε 抖动
+    if (dt > 0) { S.labT += dt; updateFx(dt); }
   }
   drawMap();
   drawScene(S.paused ? 0 : dtReal * S.timeScale);
@@ -570,3 +575,50 @@ function bindControls() {
 main().catch((e) => {
   document.body.innerHTML = `<pre style="color:#f88;padding:20px">Magic Lab 启动失败: ${e}\n${e.stack}</pre>`;
 });
+
+// ---------- 验收钩子 (batch_run.mjs / CDP 使用) ----------
+window.__LAB = {
+  S, playSkill,
+  magicByKey: (k) => S.magics.find((m) => m.key === k),
+  play(key) {
+    const m = this.magicByKey(key);
+    if (!m) return false;
+    // labT 对齐 500ms 边界: 木桩等一切 labT 派生相位在 freeze 时刻绝对确定
+    this._cast0 = Math.ceil(S.labT / 500) * 500;
+    S.labT = this._cast0;
+    S.paused = false;
+    S.fx = []; S.events = [];
+    showInfo(m, S.table[m.key]);   // 与 DOM 点击行为一致
+    playSkill(m);
+    return true;
+  },
+  freezeAt(offsetMs) {  // 暂停并把 lab-time 定位到施法开始后 offsetMs (确定性截图)
+    S.paused = true;
+    S.labT = (this._cast0 ?? S.labT) + offsetMs;
+    updateFx(0);
+  },
+  framesReady() {  // 当前 labT 下特效/纸娃娃/木桩的当帧是否已解码 (排除异步竞态)
+    for (const f of S.fx) {
+      const t = S.labT - f.t0;
+      if (t < 0) continue;
+      let no;
+      if (f.flight) {
+        const idx = Math.min(f.count - 1, Math.floor(t / f.delay));
+        no = idx + f.frame + f.dir16 * (f.skip ?? 10);
+      } else {
+        const idx = Math.floor(t / f.delay);
+        if (idx >= f.count) continue;
+        no = idx + f.frame + f.dir * (f.skip ?? 10);
+      }
+      if (f._last === undefined || f._lastFrameNo !== no) return false;
+    }
+    const dFrame = Math.floor((S.labT % 500) / 125) % 4;
+    const dummyNo = drawFrame(MONSTER_ANIMS.standing, dFrame, 2);
+    for (let i = 0; i < DUMMIES.length; i++) {
+      // 帧号已结算且 sprite 真值: 冷启动抽帧失败 (null→false) 不算就绪, 重试直到画上
+      if (S.dummyFrames[i] !== dummyNo || !S.dummySprites[i]) return false;
+    }
+    return true;
+  },
+  resumeRealtime() { S.paused = false; },
+};

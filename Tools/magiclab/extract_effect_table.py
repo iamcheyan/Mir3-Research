@@ -250,7 +250,7 @@ class CaseParser:
             if ch == "{":
                 inner, end = balanced(src, i, "{", "}")
                 head = src[max(0, i - 200):i]
-                if "CompleteAction +=" in head[-60:] or re.search(r"CompleteAction\s*\+=\s*\(?[^;]*$", head):
+                if re.search(r"CompleteAction\s*(\+=|=)\s*(\(\)\s*=>)?\s*$", head):
                     ctx.append({"t": "arrival"})
                     self._scan_body(inner, i + 1, ctx, events)
                     ctx.pop()
