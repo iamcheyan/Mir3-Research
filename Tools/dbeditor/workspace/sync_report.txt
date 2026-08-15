@@ -1,36 +1,18 @@
-==================== 同步 2026-08-16 00:19:04 ====================
+==================== 同步 2026-08-16 00:28:56 ====================
 [1/7] 端口检测通过（服务端已停止）
 
 已成功生成。
     0 个警告
     0 个错误
 
-已用时间 00:00:05.40
-[*] 变更 19 处：MapRegion×3, MapInfo×16
+已用时间 00:00:04.24
+[*] 变更 1 处：MapRegion×1
 [*] 引用完整性校验通过。
-[~] MapInfo#2
-[~] MapInfo#1122
-[~] MapInfo#1123
-[~] MapInfo#1124
-[~] MapInfo#1125
-[~] MapInfo#1138
-[~] MapInfo#1139
-[~] MapInfo#1140
-[~] MapInfo#1141
-[~] MapInfo#1142
-[~] MapInfo#1145
-[~] MapInfo#1148
-[~] MapInfo#1149
-[~] MapInfo#1150
-[~] MapInfo#1151
-[~] MapInfo#1158
-[~] MapRegion#1281
-[~] MapRegion#1297
-[~] MapRegion#1766
-[*] 新版本: 2026.08.16.1
-[*] 已保存: /tmp/dbeditor_import_440c490aeeae44acbe242399c151fb8a/System.db
-[*] 应用 19/19 处变更。
-DB_OUT=/tmp/dbeditor_import_440c490aeeae44acbe242399c151fb8a/System.db
+[~] MapRegion#24
+[*] 新版本: 2026.08.16.2
+[*] 已保存: /tmp/dbeditor_import_dc8822e57c8845f2a871a7732afa7cf3/System.db
+[*] 应用 1/1 处变更。
+DB_OUT=/tmp/dbeditor_import_dc8822e57c8845f2a871a7732afa7cf3/System.db
 [2/7] 导入器执行完成
 /home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(788,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
@@ -40,11 +22,11 @@ DB_OUT=/tmp/dbeditor_import_440c490aeeae44acbe242399c151fb8a/System.db
     1 个警告
     0 个错误
 
-已用时间 00:00:01.93
+已用时间 00:00:01.55
 [3/7] round-trip 导出完成
 [OK] round-trip 语义一致
 [4/7] round-trip 语义对比通过
-[5/7] 已备份：Backup/System/System 2026-08-16 00-19.db.gz（含客户端副本）
-[6/7] 已安装双库：server=ae2e90a1733f5ddd7595800d74103be3 client=ae2e90a1733f5ddd7595800d74103be3
-[7/7] 基线已重置（版本 2026.08.16.1，下次 diff 从新库算起）
-同步成功：e0108a7d99c6fddb551cf2e73434f7a8 → ae2e90a1733f5ddd7595800d74103be3
+[5/7] 已备份：Backup/System/System 2026-08-16 00-29.db.gz（含客户端副本）
+[6/7] 已安装双库：server=8d3394ca477ca4fba3cd293ef6700b3a client=8d3394ca477ca4fba3cd293ef6700b3a
+[7/7] 基线已重置（版本 2026.08.16.2，下次 diff 从新库算起）
+同步成功：ae2e90a1733f5ddd7595800d74103be3 → 8d3394ca477ca4fba3cd293ef6700b3a
