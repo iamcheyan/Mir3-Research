@@ -960,6 +960,18 @@ def changes() -> dict:
         return STORE.diff()
 
 
+# [shared] E2 NPC 摆放（mapedit / NpcMover）直接落 workspace JSON 后调用：
+# 让内存态重新读盘，避免 dbeditor 下一次 persist 用旧内存覆写外部编辑。
+@APP.post("/api/reload")
+def reload_workspace() -> dict:
+    with STORE.lock:
+        STORE.load_all()
+        if (WORKSPACE / "baseline.json").exists():
+            STORE.baseline = json.loads(
+                (WORKSPACE / "baseline.json").read_text(encoding="utf-8"))
+        return {"ok": True, "tables": len(STORE.tables)}
+
+
 @APP.post("/api/rollback")
 def rollback(body: RollbackReq) -> dict:
     with STORE.lock:

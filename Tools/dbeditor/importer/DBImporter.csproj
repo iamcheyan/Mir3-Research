@@ -10,7 +10,7 @@
   <PropertyGroup>
     <!-- Zircon sources: from MIR3_ZIRCON_ROOT env (see AGENTS.md), fallback to old in-Zircon layout -->
     <ZirconRoot Condition="'$(ZirconRoot)' == '' and '$(MIR3_ZIRCON_ROOT)' != ''">$(MIR3_ZIRCON_ROOT)</ZirconRoot>
-    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..</ZirconRoot>
+    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..\..</ZirconRoot>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(ZirconRoot)\LibraryCore\LibraryCore.csproj" />

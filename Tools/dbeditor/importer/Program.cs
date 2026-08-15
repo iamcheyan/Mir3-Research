@@ -17,6 +17,7 @@ using Library.SystemModels;
 using Library.MirDB;
 using MirDB;
 using System.Net.Sockets;
+using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -356,6 +357,58 @@ void ApplyRow(string table, Type type, DBObject ob, JsonElement row)
                         var target = ByIndex(Col(to), elIdx);
                         if (target == null) { errors.Add($"{table}#{ob.Index}.{p.Name}[]: 元素缺失"); break; }
                         list.Add(target);
+                    }
+                    break;
+                }
+                case "points":
+                {
+                    // [shared E2] 点阵字段（MapRegion.PointRegion）。工作区 JSON 是
+                    // 质心摘要（SystemDbProbe 导出只留 PointCount/CenterX/CenterY）：
+                    //   单点区域（NPC 摆放）无损写回 Point[]{(cx,cy)}；
+                    //   多点区域允许不变（质心一致则跳过）或整体平移（形状保持，
+                    //     delta = 新质心 - 库内质心，平移后质心恰为新值，round-trip 一致）；
+                    //   点数不一致（外部改形）→ 拒绝。
+                    int n = p.Value.GetProperty("PointCount").GetInt32();
+                    int cx = p.Value.GetProperty("CenterX").GetInt32();
+                    int cy = p.Value.GetProperty("CenterY").GetInt32();
+                    var live = (Array)(prop != null ? prop.GetValue(ob) : field.GetValue(ob));
+                    long sx = 0, sy = 0; int ln = 0;
+                    if (live != null)
+                        foreach (var pt in live)
+                        {
+                            if (pt == null) continue;
+                            sx += (int)pt.GetType().GetProperty("X").GetValue(pt);
+                            sy += (int)pt.GetType().GetProperty("Y").GetValue(pt);
+                            ln++;
+                        }
+                    if (n == 1 && ln > 1)
+                    {
+                        errors.Add($"{table}#{ob.Index}.{p.Name}: 库内 {ln} 点区域不可缩为单点（质心摘要无法重建形状）");
+                    }
+                    else if (n == 1 && (ln != 1 || (int)sx != cx || (int)sy != cy))
+                    {
+                        Set(prop, field, ob, new Point[] { new Point(cx, cy) });
+                    }
+                    else if (ln == n && (ln == 0 || (sx / ln == cx && sy / ln == cy)))
+                    {
+                        // 与库内一致（或双方皆空）：跳过，保持原点阵
+                    }
+                    else if (ln == n)
+                    {
+                        var shifted = new Point[ln];
+                        int dx = (int)(cx - sx / ln), dy = (int)(cy - sy / ln), i = 0;
+                        foreach (var pt in live)
+                        {
+                            var px = (int)pt.GetType().GetProperty("X").GetValue(pt);
+                            var py = (int)pt.GetType().GetProperty("Y").GetValue(pt);
+                            shifted[i++] = new Point(px + dx, py + dy);
+                        }
+                        Set(prop, field, ob, shifted);
+                        Log($"[p] {table}#{ob.Index}.{p.Name} 平移 ({dx},{dy})，{ln} 点");
+                    }
+                    else
+                    {
+                        errors.Add($"{table}#{ob.Index}.{p.Name}: 点数不一致(工作区{n} vs 库{ln})，多点改形不支持经工作区编辑");
                     }
                     break;
                 }
