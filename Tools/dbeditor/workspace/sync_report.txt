@@ -1,57 +1,32 @@
-==================== 同步 2026-08-14 13:39:51 ====================
+==================== 同步 2026-08-15 17:13:17 ====================
 [1/7] 端口检测通过（服务端已停止）
 
 已成功生成。
     0 个警告
     0 个错误
 
-已用时间 00:00:27.46
-[*] 变更 4 处：NPCInfo×2, NPCPage×2
+已用时间 00:00:16.42
+[*] 变更 1 处：MapInfo×1
 [*] 引用完整性校验通过。
-[~] NPCInfo#155 → 前向引用，延后到 Add 之后重放
-[~] NPCInfo#160 → 前向引用，延后到 Add 之后重放
-[+] NPCPage#339（Index 自洽）
-[+] NPCPage#340（Index 自洽）
-[~] NPCInfo#155（前向引用重放）
-[~] NPCInfo#160（前向引用重放）
-[*] 新版本: 2026.08.14.4
-[*] 已保存: /tmp/dbeditor_import_32f78d6db867408496269ea54eab3477/System.db
-[*] 应用 4/4 处变更。
-DB_OUT=/tmp/dbeditor_import_32f78d6db867408496269ea54eab3477/System.db
+[~] MapInfo#1166
+[*] 新版本: 2026.08.15.1
+[*] 已保存: /tmp/dbeditor_import_9fae4644b17647b1b48517f49fb64756/System.db
+[*] 应用 1/1 处变更。
+DB_OUT=/tmp/dbeditor_import_9fae4644b17647b1b48517f49fb64756/System.db
 [2/7] 导入器执行完成
-CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/LibraryCore/obj/Debug/net10.0/ref/LibraryCore.dll” [/home/tetsuya/development/Mir3-Research/ServerLibrary/ServerLibrary.csproj]
-
-生成失败。
-
-CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/LibraryCore/obj/Debug/net10.0/ref/LibraryCore.dll” [/home/tetsuya/development/Mir3-Research/ServerLibrary/ServerLibrary.csproj]
-    0 个警告
-    1 个错误
-
-已用时间 00:00:12.74
-[!] 构建失败（第 1 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
-CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/ServerLibrary/obj/Debug/net10.0/ref/ServerLibrary.dll” [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
-
-生成失败。
-
-CSC : error CS0006: 未能找到元数据文件“/home/tetsuya/development/Mir3-Research/ServerLibrary/obj/Debug/net10.0/ref/ServerLibrary.dll” [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
-    0 个警告
-    1 个错误
-
-已用时间 00:00:24.07
-[!] 构建失败（第 2 次），10s 后重试：/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj
-/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(785,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(788,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
 已成功生成。
 
-/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(785,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(788,19): warning CS8321: 声明了本地函数“ItemCategory”，但从未使用过 [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
     1 个警告
     0 个错误
 
-已用时间 00:00:13.18
+已用时间 00:00:15.79
 [3/7] round-trip 导出完成
 [OK] round-trip 语义一致
 [4/7] round-trip 语义对比通过
-[5/7] 已备份：Backup/System/System 2026-08-14 13-43.db.gz（含客户端副本）
-[6/7] 已安装双库：server=038c6d698d334062ab1b8c6dd39ba9da client=038c6d698d334062ab1b8c6dd39ba9da
-[7/7] 基线已重置（版本 2026.08.14.4，下次 diff 从新库算起）
-同步成功：d25d1c5947c224c02d6ff53ca3a1ec01 → 038c6d698d334062ab1b8c6dd39ba9da
+[5/7] 已备份：Backup/System/System 2026-08-15 17-16.db.gz（含客户端副本）
+[6/7] 已安装双库：server=85970aef60959a919f11f9228a4e4870 client=85970aef60959a919f11f9228a4e4870
+[7/7] 基线已重置（版本 2026.08.15.1，下次 diff 从新库算起）
+同步成功：038c6d698d334062ab1b8c6dd39ba9da → 85970aef60959a919f11f9228a4e4870
