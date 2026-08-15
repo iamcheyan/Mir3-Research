@@ -142,3 +142,14 @@ COLL BaseStat: 360
 - 两次尝试代修一行导入均被 E1 的并发写入覆盖（api.py 是其热编辑文件），已按 §9.2
   用 tmux 注入 ed-map 会话移交完整清单；E0 不再抢该文件。
 - `make serve-mapviewer` 主树链路待 E1 补导入后即通（services.sh/Makefile 本身已验证）。
+
+### 2026-08-15 第三轮（E1 补导入完成，主树链路收口 ✅）
+
+- E1 `8450b3` 修复 3 个 constants 导入（提交信息明确认领「E0移交3个constants导入修复」）。
+- **主树 `services.sh start mapviewer` → :8899 就绪**：`/api/maps` 808 图全带中文名
+  （0.map=比奇城）、`/minimap?map=0.map` 200·388KB；`make serve-mapviewer`（幂等识别
+  已运行）、`make status`（正确报 pid）均验证。
+- E1 拆分后布局变更下 `make cache` 复跑仍 627/200/627 双写正常（mapnames.py /
+  workspace 路径未受影响）。
+- 至此 E0 的全部交付物在主树闭环：`make cache` / `make roundtrip`（20/20）/
+  `make serve-mapviewer` / `services.sh status` 四链路全绿。:8899 验收后已释放。
