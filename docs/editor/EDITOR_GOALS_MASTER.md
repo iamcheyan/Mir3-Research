@@ -149,6 +149,12 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 - **webport 曾有第三份帧公式手抄**：`data.js` 的 PLAYER_ANIMS/armourShift 是残缺副本
   （armourShift 6 项 vs 全表 37 项）——消灭双份维护时必须 grep 全库找齐所有副本，
   只改 frames.js 会留暗漂移。现已全部收编（frames.js 读 JSON，data.js 投影 frames.js）。
+- **565→888 换算两种流派**：zlsdk BC1 解码用等比 `(v*255)//31`，常见实现（含 GPU
+  文档示例）用低位复制。写回工具最近邻索引重算若用低位复制，80 帧抽验只有 51 帧
+  字节恒等；统一为解码同款等比公式后 100%。**编解码两侧色板数值必须逐位一致**。
+- **zlsdk 的 `hdr.codec` 对 legacy ZL 库是假象**：`_parse_v1` 不解析 codec，值来自
+  `ZlImageHeader` 构造默认 4 (Png)，而 decode legacy 分支按 `version` 选 BC1/BC3，
+  根本不看 codec。统计库载荷格式要以 decode 实际路径为准，别信 header 字段。
 
 ---
 
@@ -310,10 +316,15 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
   详见 `Tools/resedit/README.md` 与 `docs/resedit/proof/`
 - [x] 批量导出可用 —— `/api/export?kind=webp`（无损 WebP ZIP，较 PNG 小 45%）+
   选中条 WebP 按钮 + 面板「⤓ 区间」一键导出动全面帧
-- [ ] （若做写回）往返验证 + 原库备份链 —— 未做（总纲允许；风险/收益论证见
-  `Tools/resedit/README.md`「ZL 帧写回」节）
 
----
+- [x] 调色板/透明色检查（任务 3）—— wilviewer 详情弹窗「透明键对照 Godot ZlReader 移植」
+  四格面板（无键/特效键 32/天气键 96/雾键 192，连通 BFS + 逐像素键全移植），与 C#
+  `ZlReader.BuildRgbaData` 原文独立编译比对**四模式字节级一致**；`/api/keystats` 给
+  决策提示（暗色主体被误删 → 建议 NoColourKey=true）
+- [x] （任务 4）ZL 帧写回 legacy DXT1 —— `Tools/resedit/zlwrite.py` 块级手术
+  （未改块字节不动 → 零容器重排），4 库抽验 decode→重编码 100% 字节恒等，
+  备份链 + 独立验证 + 原子替换 + 误差报告；ZL2（PNG 载荷）不做，论证见
+  `Tools/resedit/README.md`「ZL 帧写回」节
 
 ## 8. Goal E0 — 基础设施（最先跑，半天量级）
 

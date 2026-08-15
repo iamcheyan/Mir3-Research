@@ -191,6 +191,59 @@ def load_frame_formulas() -> dict:
     _ff_cache.update(mtime=mtime, data=data)
     return data
 
+# --- 透明键对照 (E3 任务3: NoColourKey 机制) -------------------------------
+# 逐行移植 GodotClient/Formats/ZlReader.cs BuildRgbaData + RemoveConnectedEffectBackground
+KEY_MODES = {
+    # mode: (per-pixel RGB 阈值, 连通清除容差, 说明)
+    "off":     (None, None, "无键 (NoColourKey=true / GetImageTexture): 仅靠压缩纹理 alpha"),
+    "effect":  (32, 72, "特效键 (默认 MirEffect): 四角连通清除(tol72) + RGB≤32 抠除"),
+    "weather": (96, 72, "天气键: 四角连通清除(tol72) + RGB≤96 (雷电帧540特例 tol180)"),
+    "fog":     (192, 40, "雾键: 四角连通清除(tol40) + RGB≤192"),
+}
+
+
+def _remove_connected_effect_background(px: bytearray, w: int, h: int, tolerance: int):
+    """ZlReader.RemoveConnectedEffectBackground 移植: 四角种子 BFS,
+    与种子色差的欧氏距离平方 ≤ tol² 的连通像素 alpha 置 0。"""
+    from collections import deque
+    visited = bytearray(w * h)
+    for sx, sy in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)):
+        seed_off = (sy * w + sx) * 4
+        sb, sg, sr = px[seed_off], px[seed_off + 1], px[seed_off + 2]
+        pending = deque([sy * w + sx])
+        while pending:
+            cur = pending.popleft()
+            if visited[cur]:
+                continue
+            off = cur * 4
+            db = px[off] - sb
+            dg = px[off + 1] - sg
+            dr = px[off + 2] - sr
+            if db * db + dg * dg + dr * dr > tolerance * tolerance:
+                continue
+            visited[cur] = 1
+            px[off + 3] = 0
+            x, y = cur % w, cur // w
+            if x > 0: pending.append(cur - 1)
+            if x + 1 < w: pending.append(cur + 1)
+            if y > 0: pending.append(cur - w)
+            if y + 1 < h: pending.append(cur + w)
+
+
+def apply_colour_key(im, mode: str):
+    """对 PIL RGBA 帧应用 Godot 透明键管线; 返回 (新图, 统计 dict)。"""
+    tol, conn_tol, _ = KEY_MODES[mode]
+    w, h = im.size
+    px = bytearray(im.tobytes())   # PIL RGBA 字节序 (C# 是 BGRA, 只做 alpha 抠除无妨)
+    if tol is not None:
+        _remove_connected_effect_background(px, w, h, conn_tol)
+        for i in range(3, w * h * 4, 4):
+            if px[i] != 0 and px[i - 3] <= tol and px[i - 2] <= tol and px[i - 1] <= tol:
+                px[i] = 0
+    out = _PILImage.frombytes("RGBA", (w, h), bytes(px))
+    alpha0 = sum(1 for i in range(3, w * h * 4, 4) if px[i] == 0)
+    return out, {"width": w, "height": h, "alpha0": alpha0, "total": w * h}
+
 
 def _looks_like_client(p: str) -> bool:
     """A dir with Data/ or .wil files directly inside."""
@@ -533,6 +586,12 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/frame-formulas":
             self._send(json_bytes(load_frame_formulas()), "application/json; charset=utf-8")
             return
+        if path == "/api/keyview":
+            self.api_keyview(q)
+            return
+        if path == "/api/keystats":
+            self.api_keystats(q)
+            return
         if path == "/api/ui-layout":
             self._send(json_bytes(load_ui_evidence()), "application/json; charset=utf-8")
             return
@@ -691,6 +750,55 @@ class Handler(BaseHTTPRequestHandler):
             return
         extra = {"Content-Disposition": f'attachment; filename="{lib.name}_{i:05d}.png"'} if download else None
         self._send(data, "image/png", extra)
+
+    def api_keyview(self, q):
+        """透明键对照预览: 对帧应用 Godot ZlReader 透明键管线后出 PNG。"""
+        lib = self._lib_or_404(q)
+        if lib is None:
+            return
+        i = self._qint(q, "i", 0)
+        mode = self._qstr(q, "mode", "effect")
+        if mode not in KEY_MODES:
+            self._err(400, f"mode ∈ {list(KEY_MODES)}")
+            return
+        scale = min(max(self._qint(q, "scale", 2), 1), 8)
+        try:
+            im = lib.decode(i)
+            if im is None:
+                im = Image_transparent_1x1()
+            out, _ = apply_colour_key(im, mode)
+            if scale > 1:
+                out = out.resize((out.width * scale, out.height * scale), Image_NEAREST)
+            data = png_bytes(out)
+        except Exception as e:
+            self._err(500, str(e))
+            return
+        self._send(data, "image/png")
+
+    def api_keystats(self, q):
+        """四档透明键统计: 各模式抠掉的像素数 (NoColourKey 决策依据)。"""
+        lib = self._lib_or_404(q)
+        if lib is None:
+            return
+        i = self._qint(q, "i", 0)
+        try:
+            im = lib.decode(i)
+        except Exception as e:
+            self._err(500, str(e))
+            return
+        if im is None:
+            self._send(json_bytes({"blank": True}), "application/json; charset=utf-8")
+            return
+        stats = {}
+        base_alpha0 = None
+        for mode in KEY_MODES:
+            _, s = apply_colour_key(im, mode)
+            if base_alpha0 is None:
+                base_alpha0 = s["alpha0"]
+            s["keyed"] = s["alpha0"] - base_alpha0   # 该模式额外抠掉的像素
+            stats[mode] = s
+        stats["isZl"] = bool(getattr(lib, "_is_zl", False))
+        self._send(json_bytes(stats), "application/json; charset=utf-8")
 
     def api_info(self, q):
         lib = self._lib_or_404(q)
@@ -1072,6 +1180,16 @@ PAGE_HTML = r"""<!DOCTYPE html>
   #dbar { display:flex; align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap; }
   #dbar select, #dbar input[type=number] { padding:4px 6px; background:var(--panel2); border:1px solid var(--line);
       color:var(--fg); border-radius:5px; }
+  #keypanel { font-size:12px; margin-top:8px; max-width:360px; }
+  #keypanel .kv-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin:4px 0; }
+  #keypanel .kv-cell { text-align:center; padding:4px; border:1px solid #2c3340; border-radius:6px;
+      background:var(--panel2); }
+  #keypanel .kv-cell.kv-warn { border-color:#c66; }
+  #keypanel .kv-cell img { image-rendering:pixelated; background:#232830; max-width:100%; }
+  #keypanel .kv-label { color:var(--acc); font-weight:bold; margin-top:3px; }
+  #keypanel .kv-stat { color:#cfe3ff; }
+  #keypanel .kv-desc { color:var(--dim); font-size:10px; }
+  #keypanel .kv-hint { color:#9fb8d8; border-top:1px solid #2c3340; padding-top:4px; }
   #dbar input[type=number] { width:70px; }
   #bookmark-note { padding:4px 6px; background:var(--panel2); border:1px solid var(--line); color:var(--fg);
       border-radius:5px; width:180px; }
@@ -1191,6 +1309,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
     <div><img id="mimg" alt=""></div>
     <div id="meta"></div>
     <div id="ffpanel"></div>
+    <div id="keypanel"></div>
   </div>
   <div id="dbar">
     <button class="btn" id="mprev">◀ 上一帧</button>
@@ -1784,6 +1903,7 @@ function renderDetail(){
     const bk = (getBookmarks()[STATE.lib] || {})[i];
     $('#bookmark-note').value = bk || '';
     renderFrameFormulas(i);   // E3: 帧公式对照面板 (与 renderDetail 并行渲染)
+    renderKeyView(i);         // E3: 透明键对照 (NoColourKey 机制)
     if (h.blank){ $('#meta').textContent = 'Blank placeholder frame (index 0)'; }
     else {
       // WIL header 带 shadow/words; ZL header 无这些字段 (zlsdk.header 只回
@@ -1932,6 +2052,50 @@ async function renderFrameFormulas(i){
     dl.download = `${libBase()}_anim_${s}-${e2}.zip`;
     document.body.appendChild(dl); dl.click(); dl.remove();
   });
+}
+
+// ---- 透明键对照 (E3 任务3: NoColourKey 机制, 移植 ZlReader BuildRgbaData) ----
+const KEY_MODES = [
+  {id:'off',     label:'无键', desc:'NoColourKey=true · 仅 alpha 通道'},
+  {id:'effect',  label:'特效键 32', desc:'MirEffect 默认 · 连通72 + RGB≤32'},
+  {id:'weather', label:'天气键 96', desc:'ProgUse · 连通72 + RGB≤96 (雷电540→180)'},
+  {id:'fog',     label:'雾键 192', desc:'Fog · 连通40 + RGB≤192'},
+];
+async function renderKeyView(i){
+  const panel = $('#keypanel');
+  if (!panel || !STATE.lib || i == null || i < 0) return;
+  panel.innerHTML = '<div class="ff-head">透明键对照 <span class="ff-src">ZlReader 移植</span></div><div class="ff-none">统计中…</div>';
+  let st;
+  try {
+    st = await (await fetch(`/api/keystats?f=${encodeURIComponent(STATE.lib)}&i=${i}`)).json();
+  } catch (e) { panel.innerHTML = ''; return; }
+  if (st.blank){ panel.innerHTML = ''; return; }
+  if (!st.isZl){
+    panel.innerHTML = `<div class="ff-head">透明键对照</div>` +
+      `<div class="ff-none">WIL 库透明 = RGB565 纯黑键 (值 0), 已内建于解码 — 无多档键可对照</div>`;
+    return;
+  }
+  let html = `<div class="ff-head">透明键对照 <span class="ff-src">Godot ZlReader 移植</span></div>`;
+  html += `<div class="kv-grid">`;
+  for (const m of KEY_MODES){
+    const s = st[m.id] || {};
+    const pct = s.total ? (100 * s.keyed / s.total).toFixed(1) : '0';
+    const cls = s.keyed > s.total * 0.4 && m.id !== 'off' ? 'kv-warn' : '';
+    html += `<div class="kv-cell ${cls}">` +
+      `<img src="/api/keyview?f=${encodeURIComponent(STATE.lib)}&i=${i}&mode=${m.id}&scale=2" alt="${m.id}">` +
+      `<div class="kv-label">${m.label}</div>` +
+      `<div class="kv-stat">抠 ${s.keyed} px (${pct}%)</div>` +
+      `<div class="kv-desc">${m.desc}</div></div>`;
+  }
+  html += `</div>`;
+  // 决策提示: 原始 alpha 已有大量透明 + 特效键又抠掉 >40% → 主体被误删, 应 NoColourKey=true
+  const offA0 = st.off ? st.off.alpha0 / (st.off.total || 1) : 0;
+  const effKeyed = st.effect ? st.effect.keyed / (st.effect.total || 1) : 0;
+  if (offA0 > 0.1 && effKeyed > 0.4)
+    html += `<div class="kv-hint">⚠ 原始 alpha 已 ${(offA0*100).toFixed(0)}% 透明, 特效键再抠 ${ (effKeyed*100).toFixed(0)}% — 疑似暗色主体被误删, 建议 NoColourKey=true</div>`;
+  else
+    html += `<div class="kv-hint">原始 alpha 透明 ${(offA0*100).toFixed(0)}% · 特效键额外抠 ${(effKeyed*100).toFixed(0)}%</div>`;
+  panel.innerHTML = html;
 }
 $('#dscale').onchange = renderDetail;
 $('#dbg').onchange = renderDetail;

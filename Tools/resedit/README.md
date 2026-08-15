@@ -1,7 +1,8 @@
 # resedit — 资源编辑器工具集 (Goal E3)
 
 > 目标: 消灭「动画帧表/纸娃娃公式」的 JS/C# 双份手工维护 (总纲 §7.1 任务 1)。
-> 状态: **已完成** (2026-08-15)。ZL 帧写回为高风险后置项，未做 (见文末)。
+> 状态: **全部完成** (2026-08-15) — 含任务 3 透明键对照 (wilviewer) 与任务 4 ZL 帧
+> 写回 (`zlwrite.py`, legacy DXT1 库; ZL2 未做, 见文末)。
 
 ## 组成
 
@@ -11,6 +12,7 @@
 | `frame-formulas.json` | **单一数据源**: 94 帧表 560 项 / 221 MagicType / 攻击+魔法分派全表 / 纸娃娃层公式 / NPC 特例 23 项 / ArmourShift / 方向分组 |
 | `legacy-frames-baseline.json` | 旧 webport frames.js 手抄表的机器导出基线 (提取器交叉核对桥, 防提取 bug) |
 | `e3-verify.mjs` | webport 全链路验收 (真服: 注册→登录→建角→进图 + 数据面断言) |
+| `zlwrite.py` | ZL 帧 (legacy DXT1) 像素写回: 备份→块手术→独立验证→原子替换 |
 
 ## 事实源 → JSON 映射
 
@@ -56,6 +58,11 @@ node Tools/resedit/e3-verify.mjs
 - **wilviewer 面板**: M-Hum#82→players.walking 第2/6帧 方向=上; NPC#5600→
   npcSpecial 特例(12帧200ms)+defaultNPC 绝对帧号; Mon-1#1682→Shape=1+hide 倒放
 - **批量导出**: `/api/export?kind=webp` 无损 WebP ZIP (比 PNG 小 45%), PNG 路径无回归
+- **透明键对照 (任务3)**: `Magic.Zl#1900` — off 模式 alpha 透明 87% (NoColourKey=true
+  案例, 仅 DXT alpha), 特效键 32/天气键 96/雾键 192 分别再抠 931/1015/1300 px;
+  Python 移植与 C# `ZlReader.BuildRgbaData` 原文独立编译比对 **四模式字节级一致**
+- **ZL 帧写回 (任务4)**: 副本库上 `Mon-1#1013` 涂 8x8 红 → 6 块重编码 (114 块字节不动),
+  未触帧 decode 逐像素一致, 备份还原字节级一致; 真库零触碰
 
 截图/证据: `docs/resedit/proof/`
 
@@ -74,10 +81,27 @@ node Tools/resedit/e3-verify.mjs
    (armourShift 只有 6 项 vs 全表 37 项) — 已收编为 frames.js 投影, 否则只消灭两份
    仍留一处暗漂移。
 
-## ZL 帧写回 (未做, 高风险后置)
+## ZL 帧写回 (任务 4, 已做: legacy DXT1; 未做: ZL2)
 
-总纲 §7.1 任务 4 允许不做。理由: ZL2 容器 (BC7/DXT 压缩纹理) 写回需重新编码压缩块 +
-round-trip 字节级验证 + 原库备份链, 工作量与风险远超本期收益; 且当前无「改帧像素」的
-产品需求 (编辑器场景改的是帧表/坐标, 不是贴图内容)。若要做: 参照 §5.2 map 写回纪律
-(备份→副本→独立 parse round-trip→原子替换), 解码器复用 `Tools/item_icon_extractor`
-的 BC7 路径。
+`zlwrite.py` 覆盖 **legacy ZL 容器** (M-Hum/Magic/Mon-*/NPC 等, payload=DXT1 定长块):
+
+```bash
+python3 Tools/resedit/zlwrite.py write <lib.Zl> <frame> <target.png>   # 写回一帧
+python3 Tools/resedit/zlwrite.py roundtrip <lib.Zl> --samples 200      # 未改像素字节恒等验证
+```
+
+- **块级手术**: 只重写被改像素所在 4x4 块 (8B/块), 未触块字节原样; 文件大小/每帧
+  position/meta 不变 → 零容器重排, 不存在「写坏结构」。
+- **编码策略**: 原块色板 + 最近邻重算索引优先 (未改像素 → 字节恒等, 4 库 × 80~200 帧
+  抽验 100% byte-identical); 新像素超出色板表达 (通道误差 >16) 才重选色 (min/max + punch-through)。
+- **纪律** (§5.2 同款): `备份 .bak-<ts>` → 写 `.new` → 独立 zlsdk 重开验证
+  (meta/帧区间外字节/未改帧 decode 三重比对) → `os.replace` 原子替换 → 误差报告
+  (changed_blocks / max_channel_err / mean_err / alpha_mismatch_px)。
+- **已知质量边界**: BC1 块压缩 4 色板 — 改动块内**未直接修改的邻接像素**也可能随色板
+  重选轻微变化 (实测 Mon-1#1013: 未改像素 96% 逐像素一致, 受波及 4% 平均误差 <1 级);
+  红色与原图色系差异大时 max_channel_err 可到 ~60。写回报告透明给出这些数。
+- **尺寸变更不支持**: 改帧尺寸需重写 meta + 移动后续帧 payload, 本期不做 (报错拒绝)。
+
+**ZL2 容器 (Interface.Zl 等, PNG 载荷) 写回未做**: 需全量重建 43B 头 + payload + index
+(23B/entry) + v2 meta (含 stored_size/bc7_size/atlas 字段), 并对 Godot `ZlReader` 读端
+做兼容性实测; 当前无改 UI 贴图的产品需求 (uieditor 领地), 收益不抵验证成本。

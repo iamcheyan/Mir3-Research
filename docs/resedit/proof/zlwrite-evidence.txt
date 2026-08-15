@@ -1,0 +1,46 @@
+== E3 任务3/4 验收证据 (2026-08-15) ==
+
+--- 任务3: 透明键对照 (keystats, Magic.Zl#1900 暗色火焰帧) ---
+{
+    "off": {
+        "width": 256,
+        "height": 64,
+        "alpha0": 14215,
+        "total": 16384,
+        "keyed": 0
+    },
+    "effect": {
+        "width": 256,
+        "height": 64,
+        "alpha0": 15146,
+        "total": 16384,
+        "keyed": 931
+    },
+    "weather": {
+        "width": 256,
+        "height": 64,
+        "alpha0": 15230,
+        "total": 16384,
+        "keyed": 1015
+    },
+    "fog": {
+        "width": 256,
+        "height": 64,
+        "alpha0": 15515,
+        "total": 16384,
+        "keyed": 1300
+    },
+    "isZl": true
+}
+
+--- 任务3: C# ZlReader.BuildRgbaData 原文独立编译 vs Python 移植, 四模式字节级一致 ---
+off/effect/weather/fog: 4×65536B cmp 一致 (验证程序: /tmp/keyvalidate, 已随验收结束清理)
+
+--- 任务4: zlwrite roundtrip (未改像素 decode→重编码 字节恒等) ---
+{'lib': '/tmp/rt_M-Hum.Zl', 'checked': 200, 'byte_identical': 200, 'mismatch': []}
+{'lib': '/tmp/rt_Magic.Zl', 'checked': 200, 'byte_identical': 200, 'mismatch': []}
+{'lib': '/tmp/rt_NPC.Zl', 'checked': 200, 'byte_identical': 200, 'mismatch': []}
+{'lib': '/tmp/mon1_test.Zl', 'checked': 80, 'byte_identical': 80, 'mismatch': []}
+
+--- 任务4: 端到端写回 (Mon-1#1013 涂 8x8 红, 副本库) ---
+{'frame': 1013, 'size': (32, 60), 'changed_blocks': 6, 'untouched_blocks': 114, 'max_channel_err': 61, 'mean_err': 0.9078125, 'alpha_mismatch_px': 0, 'backup': '/tmp/e2e2.Zl.bak-20260815-164626', 'installed': '/tmp/e2e2.Zl'}
