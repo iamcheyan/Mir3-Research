@@ -161,7 +161,10 @@ def load_workspace_entities(workspace: str, db_names: dict | None = None) -> lis
             "x": x, "y": y, "kind": "npc",
             "name": npc_names.get(en, en) or en,
             "name_en": en,
-            # NPC 形象：NPCInfo.Image = BodyShape，站立帧 = Image*100
+            # [E2] 摆放编辑需要：DB 行索引（NPCInfo.Index / 所在 MapRegion.Index）
+            "npc_index": n.get("Index"),
+            "region": reg.get("Index"),
+            # NPC 形象：NPCInfo.Image = Body Shape，站立帧 = Image*100
             # （原版 NPCObject.BodyFrame = DrawFrame + Image*BodyOffSet(100)，
             #   库 = LibraryFile.NPC：ZL 客户端 NPC.Zl / EI 客户端 NPC.wil）
             "img": n.get("Image") or 0,
@@ -200,6 +203,8 @@ def load_workspace_guards(workspace: str, db_names: dict | None = None) -> list[
             "x": g.get("X"), "y": g.get("Y"), "kind": "guard",
             "name": mon_names.get(en, en) or en,
             "name_en": en,
+            # [E2] 摆放编辑需要：GuardInfo.Index
+            "guard_index": g.get("Index"),
             "lib": lib,
             "frame": (shape * 1000 + 10 * d) if lib else None,
         })

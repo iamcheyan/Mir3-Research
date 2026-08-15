@@ -1378,7 +1378,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         ` onerror="this.style.display='none';this.nextElementSibling.classList.remove('hide')">` +
                         `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
                 }
-                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px">${icon}<span class="ent-label">${label}</span></div>`;
+                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}"` +
+                    (e.npc_index != null ? ` data-npc="${e.npc_index}"` : '') +
+                    (e.region != null ? ` data-region="${e.region}"` : '') +
+                    (e.guard_index != null ? ` data-guard="${e.guard_index}"` : '') +
+                    ` style="left:${px}px;top:${py}px">${icon}<span class="ent-label">${label}</span></div>`;
             }).join("");
         }
         // hover entity -> tooltip
@@ -3159,5 +3163,212 @@ EDIT_UI_JS = r"""
                 : setTimeout(waitMap, 300);
             waitMap();
         }
+        // ============================ NPC 摆放 (E2) ============================
+        let npcArmed = false;            // 待放置：下一次点图 = 新建 NPC 落点
+        let npcSel = null;                // 点击选中的 NPC/卫士 {kind,index,name,region,x,y}
+        let npcPageMap = {};              // EntryPage datalist: 显示名 -> Index
+
+        function npcPanel() {
+            let p = document.getElementById('npc-edit-panel');
+            if (!p) {
+                p = document.createElement('div');
+                p.id = 'npc-edit-panel';
+                p.style.cssText = 'position:fixed;right:10px;top:50px;width:308px;max-height:82vh;overflow:auto;'
+                    + 'background:rgba(10,12,16,.94);border:1px solid #3a5a3a;border-radius:6px;'
+                    + 'padding:8px 10px;font-size:12px;color:#c8c8d2;z-index:89;line-height:1.5';
+                document.body.appendChild(p);
+            }
+            return p;
+        }
+
+        async function npcPost(op, payload) {
+            const r = await fetch('/npc/' + op, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload || {})
+            });
+            return r.json();
+        }
+
+        async function npcRefresh() {
+            const mi = curMap();
+            if (!mi) return;
+            await loadEntities(mi);       // 重取 /api/entities（服务端已刷新 workspace）
+            drawEntities();
+            renderNpcPanel(mi);
+            npcDiffRender();
+        }
+
+        // ---- 拖拽移动（NPC / 卫士），格吸附 ----
+        if (!document.getElementById('npc-edit-style')) {
+            const st = document.createElement('style');
+            st.id = 'npc-edit-style';
+            st.textContent = '#ent-layer.npc-edit .ent{pointer-events:auto;cursor:grab}'
+                + '#ent-layer.npc-edit .ent:active{cursor:grabbing}'
+                + '#npc-edit-panel button{background:#333;color:#eee;border:1px solid #555;border-radius:3px;cursor:pointer;padding:2px 8px}'
+                + '#npc-edit-panel input,#npc-edit-panel select{background:#222;color:#eee;border:1px solid #444;border-radius:3px;padding:1px 4px}'
+                + '#npc-ghost{position:absolute;z-index:6;pointer-events:none;outline:2px dashed #3de88a;outline-offset:2px;opacity:.85}';
+            document.head.appendChild(st);
+        }
+        entLayer.addEventListener('mousedown', (e) => {
+            const el = e.target.closest('.ent');
+            if (!editOn || !el || !entLayer.classList.contains('npc-edit')) return;
+            const kind = el.dataset.kind;
+            if (kind !== 'npc' && kind !== 'guard') return;
+            e.stopPropagation();          // 不触发 E1 的选格
+            const idx = Number(kind === 'npc' ? el.dataset.npc : el.dataset.guard);
+            if (!idx) return;
+            const name = el.dataset.name || '';
+            const sx = e.clientX, sy = e.clientY;
+            const ox = el.offsetLeft, oy = el.offsetTop;
+            let moved = false;
+            const ghost = el.cloneNode(true);
+            ghost.id = 'npc-ghost';
+            const mv = (ev) => {
+                if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 4) return;
+                if (!moved) { moved = true; entLayer.appendChild(ghost); el.style.visibility = 'hidden'; }
+                ghost.style.left = (ox + ev.clientX - sx) + 'px';
+                ghost.style.top = (oy + ev.clientY - sy) + 'px';
+            };
+            const up = async (ev) => {
+                document.removeEventListener('mousemove', mv);
+                document.removeEventListener('mouseup', up);
+                ghost.remove();
+                el.style.visibility = '';
+                if (!moved) { npcShowDetail({kind, index: idx, name, region: el.dataset.region}); return; }
+                const cell = editScreenToCell(ev);
+                const mi = curMap();
+                if (!mi || cell.x < 0 || cell.y < 0 || cell.x >= mi.w || cell.y >= mi.h) return;
+                const op = kind === 'npc' ? 'move' : 'guard_move';
+                const key = kind === 'npc' ? 'npc' : 'guard';
+                const d = await npcPost(op, {[key]: idx, x: cell.x, y: cell.y});
+                if (!d.ok) { alert('移动失败: ' + (d.error || '?')); return; }
+                await npcRefresh();
+            };
+            document.addEventListener('mousemove', mv);
+            document.addEventListener('mouseup', up);
+        });
+
+        function npcShowDetail(sel) {
+            npcSel = sel;
+            npcRenderPanel();
+        }
+
+        async function npcEnsurePages() {
+            if (npcPageMap.__loaded) return;
+            const d = await (await fetch('/npc/pages')).json();
+            if (d.ok) {
+                npcPageMap = {__loaded: true};
+                const dl = document.getElementById('npc-page-list');
+                if (dl) dl.innerHTML = d.pages.map(p => {
+                    npcPageMap['#' + p.Index + ' ' + p.Name] = p.Index;
+                    return `<option value="#${p.Index} ${p.Name}">`;
+                }).join('');
+            }
+        }
+
+        async function npcDiffRender() {
+            const el = document.getElementById('npc-diff-box');
+            if (!el) return;
+            let d;
+            try { d = await (await fetch('/npc/diff')).json(); } catch (e) { return; }
+            const s = d.summary || {added: 0, modified: 0, deleted: 0};
+            const total = s.added + s.modified + s.deleted;
+            let h = `<b style="color:#ffd54a">待同步变更</b> `
+                + (total ? `<span style="color:#ff8f6b">+${s.added} ~${s.modified} -${s.deleted}</span>` : '<span style="color:#3de88a">无</span>');
+            for (const [table, entries] of Object.entries(d.tables || {})) {
+                h += `<div style="margin-top:3px"><b>${table}</b>`
+                    + ` <button data-rt="${table}" style="float:right">回滚表</button>`;
+                for (const en of entries.slice(0, 6)) {
+                    const fl = en.fields ? Object.keys(en.fields).join(',') : '';
+                    h += `<div style="color:#8a8a98;font-size:11px"> #${en.index} ${{
+                        added: '新增', modified: '改 ' + fl, deleted: '删除'}[en.op]}</div>`;
+                }
+                if (entries.length > 6) h += `<div style="color:#8a8a98;font-size:11px"> …等 ${entries.length} 条</div>`;
+                h += '</div>';
+            }
+            if (total) h += '<div style="color:#8a8a98;font-size:11px;margin-top:4px">落库：停服后 dbeditor「同步」或 bash Tools/dbeditor/sync.sh</div>'
+                + '<button id="npc-rollback-all" style="width:100%;margin-top:4px">回滚全部至基线</button>';
+            el.innerHTML = h;
+            el.querySelectorAll('[data-rt]').forEach(b => b.onclick = async () => {
+                if (!confirm('回滚表 ' + b.dataset.rt + ' 至基线？')) return;
+                const d2 = await npcPost('rollback', {table: b.dataset.rt});
+                if (d2.ok) npcRefresh(); else alert('回滚失败: ' + (d2.error || '?'));
+            });
+            const ra = el.querySelector('#npc-rollback-all');
+            if (ra) ra.onclick = async () => {
+                if (!confirm('回滚全部工作区改动至基线？（含其它会话的未同步改动）')) return;
+                const d2 = await npcPost('rollback', {});
+                if (d2.ok) npcRefresh(); else alert('回滚失败: ' + (d2.error || '?'));
+            };
+        }
+
+        function npcRenderPanel() {
+            const p = npcPanel();
+            if (!editOn) { p.style.display = 'none'; entLayer.classList.remove('npc-edit'); return; }
+            p.style.display = 'block';
+            entLayer.classList.add('npc-edit');
+            const mi = curMap() || {name: curName, cn: ''};
+            let h = '<div style="display:flex;justify-content:space-between;align-items:center">'
+                + '<b style="color:#7ee88a">NPC 摆放</b>'
+                + (npcArmed ? '<span style="color:#ff8f6b">点击地图放置…</span>' : '')
+                + '</div>'
+                + '<div style="color:#8a8a98;font-size:11px">' + mi.name + ' · 拖拽 NPC/卫士移动，单击看详情</div>';
+            // 选中详情
+            if (npcSel) {
+                h += '<hr style="border-color:#333;margin:6px 0">'
+                    + `<div><b>${npcSel.kind === 'guard' ? '卫士' : 'NPC'}</b> #${npcSel.index} ${npcSel.name}</div>`
+                    + (npcSel.region ? `<div style="color:#8a8a98;font-size:11px">Region #${npcSel.region}</div>` : '')
+                    + (npcSel.kind === 'npc'
+                        ? '<button id="npc-del" style="margin-top:4px;color:#ff8f6b">删除 NPC</button>' : '');
+            }
+            // 新建
+            h += '<hr style="border-color:#333;margin:6px 0"><b>新建 NPC</b>'
+                + '<div class="ef-row"><span>名称</span><input id="npc-new-name" style="flex:1" placeholder="如：铁匠师傅"></div>'
+                + '<div class="ef-row"><span>Image</span><input id="npc-new-img" type="number" value="0" style="width:60px">'
+                + '<span style="color:#8a8a98;font-size:11px">体型(帧=Image×100)</span></div>'
+                + '<div class="ef-row"><span>对话页</span><input id="npc-new-page" list="npc-page-list" style="flex:1" placeholder="搜索 EntryPage…">'
+                + '<datalist id="npc-page-list"></datalist></div>'
+                + `<button id="npc-arm" style="width:100%;margin-top:4px">${npcArmed ? '取消放置' : '点图放置新 NPC'}</button>`;
+            h += '<hr style="border-color:#333;margin:6px 0"><div id="npc-diff-box"></div>';
+            p.innerHTML = h;
+            const del = p.querySelector('#npc-del');
+            if (del) del.onclick = async () => {
+                if (!confirm(`删除 NPC #${npcSel.index} ${npcSel.name}？（Region 若无他人引用一并删）`)) return;
+                const d = await npcPost('delete', {npc: npcSel.index});
+                if (d.ok) { npcSel = null; npcRefresh(); } else alert('删除失败: ' + (d.error || '?'));
+            };
+            p.querySelector('#npc-arm').onclick = () => { npcArmed = !npcArmed; npcEnsurePages(); npcRenderPanel(); };
+            p.querySelector('#npc-new-page').onfocus = npcEnsurePages;
+            npcDiffRender();
+        }
+
+        // 点图放置（armed）挂在 vp 捕获阶段，先于 E1 选格
+        vp.addEventListener('mousedown', async (e) => {
+            if (!editOn || !npcArmed || e.button !== 0) return;
+            const p = npcPanel();
+            const name = (p.querySelector('#npc-new-name') || {}).value || '';
+            const img = Number((p.querySelector('#npc-new-img') || {}).value || 0);
+            const pageRaw = (p.querySelector('#npc-new-page') || {}).value || '';
+            const pageIdx = npcPageMap[pageRaw] != null ? npcPageMap[pageRaw]
+                : (pageRaw.startsWith('#') ? Number(pageRaw.slice(1).split(' ')[0]) : null);
+            const cell = editScreenToCell(e);
+            const mi = curMap();
+            if (!mi || !name.trim()) { alert('先填 NPC 名称'); return; }
+            const mapStem = curName.replace(/\.map$/i, '');
+            const d = await npcPost('create', {map: mapStem, x: cell.x, y: cell.y,
+                name: name.trim(), image: img, entry_page: Number.isFinite(pageIdx) ? pageIdx : null});
+            if (!d.ok) { alert('创建失败: ' + (d.error || '?')); return; }
+            npcArmed = false;
+            npcRefresh();
+        }, true);
+
+        // 编辑模式开关联动 E1（editStart/editStop 是函数声明，可重绑）
+        {
+            const _start = editStart, _stop = editStop;
+            editStart = async function (q) { await _start(q); npcRenderPanel(); };
+            editStop = function () { _stop(); npcArmed = false; npcSel = null; npcRenderPanel(); };
+        }
+        // ========================== NPC 摆放结束 ==========================
+
         // ========================== 编辑模式结束 ==========================
 """

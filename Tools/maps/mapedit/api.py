@@ -117,7 +117,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
     connections: list = []      # exported System.db movement records
     db_names: dict = {}         # db_names.json: npcs/maps en->zh 显示名
     atlas: dict = {}            # 地图工坊索引（build_atlas：热力/任务/总览/连通/NPC审计）
-    _thumb_map_cache = None     # MapCache13（13B 旧格式回退），/thumb 与预渲染共享
+    db_workspace_path: str = ""   # [E2] dbeditor workspace（NPC 摆放写目标）
+    base_entities: list = []      # [E2] 非 workspace 实体（Envir），刷新时保留
 
     @classmethod
     def _render_lock(cls, key: tuple):
@@ -260,6 +261,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
+        elif self.path.startswith("/npc/"):
+            self._handle_npc()
+
         elif self.path.startswith("/edit/"):
             self._handle_edit()
         else:
@@ -339,6 +343,81 @@ class ViewerHandler(BaseHTTPRequestHandler):
         except FileNotFoundError:
             body = {"ok": False, "error": "map_not_found"}
         self._json_200(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+
+    # ------------------------------------------------ E2 NPC 摆放编辑
+
+    def _npc_editor(self):
+        """WorkspaceEditor 工厂：maps_dir 供越界校验。"""
+        from mapedit import npcedit
+        return npcedit.WorkspaceEditor(self.db_workspace_path,
+                                       maps_dir=self.map_cache.maps_dir)
+
+    def _handle_npc(self):
+        """E2 NPC/Region 摆放端点（JSON POST，body 见 npcedit.WorkspaceEditor）。
+
+        /npc/move /npc/create /npc/delete /npc/guard_move
+        /npc/safezone_move /npc/region_size /npc/rollback
+        写 workspace JSON（不碰 .db），成功后刷新实体索引并通知 dbeditor reload。
+        """
+        from mapedit import npcedit
+        try:
+            length = int(self.headers.get("Content-Length") or "0")
+            payload = json.loads(self.rfile.read(length) or b"{}")
+        except ValueError:
+            self._json_200(json.dumps({"ok": False, "error": "bad_json"}).encode())
+            return
+        op = self.path.split("?")[0].split("/", 2)[2]
+        map_stem = None
+        try:
+            ed = self._npc_editor()
+            if op == "move":
+                body = {"ok": True, "result": ed.move_npc(
+                    int(payload["npc"]), int(payload["x"]), int(payload["y"]),
+                    payload.get("map"))}
+                map_stem = body["result"]["to"]["map"]
+            elif op == "create":
+                body = {"ok": True, "result": ed.create_npc(
+                    str(payload["map"]), int(payload["x"]), int(payload["y"]),
+                    str(payload.get("name") or ""), image=int(payload.get("image") or 0),
+                    entry_page=(int(payload["entry_page"])
+                                if payload.get("entry_page") is not None else None))}
+                map_stem = payload["map"]
+            elif op == "delete":
+                body = {"ok": True, "result": ed.delete_npc(int(payload["npc"]))}
+            elif op == "guard_move":
+                body = {"ok": True, "result": ed.move_guard(
+                    int(payload["guard"]), int(payload["x"]), int(payload["y"]),
+                    payload.get("map"))}
+                map_stem = body["result"]["to"]["map"]
+            elif op == "safezone_move":
+                body = {"ok": True, "result": ed.move_safezone(
+                    int(payload["safezone"]), int(payload["x"]), int(payload["y"]))}
+            elif op == "region_size":
+                body = {"ok": True, "result": ed.set_region_size(
+                    int(payload["region"]), int(payload["size"]))}
+            elif op == "rollback":
+                body = {"ok": True, "result": npcedit.workspace_rollback(
+                    self.db_workspace_path, payload.get("table"))}
+            else:
+                body = {"ok": False, "error": "unknown_op"}
+            if body.get("ok"):
+                ed.commit(f"NPC摆放 {op}")
+                self.refresh_workspace_entities()
+                body["diff"] = npcedit.workspace_diff(
+                    self.db_workspace_path)["summary"]
+        except npcedit.NpcEditError as ex:
+            body = {"ok": False, "error": str(ex)}
+        except (KeyError, TypeError, ValueError) as ex:
+            body = {"ok": False, "error": f"参数错误: {ex}"}
+        self._json_200(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+
+    @classmethod
+    def refresh_workspace_entities(cls):
+        """重载 workspace NPCs/guards 实体（编辑后 /api/entities 立即可见新坐标）。"""
+        ws_ents = load_workspace_entities(cls.db_workspace_path, cls.db_names)
+        ws_guards = load_workspace_guards(cls.db_workspace_path, cls.db_names)
+        cls.entities = ws_guards + ws_ents + cls.base_entities
+
 
     def do_GET(self):
         if self.path.split("?")[0] in ("/", "/index.html"):
@@ -943,6 +1022,34 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 self.wfile.write(data)
             except Exception as ex:
                 self.send_error(500, str(ex))
+        elif self.path.split("?")[0].startswith("/npc/"):
+            from urllib.parse import parse_qs, urlparse
+            from mapedit import npcedit
+            qs = parse_qs(urlparse(self.path).query)
+            op = self.path.split("?")[0][len("/npc/"):]
+            try:
+                ed = self._npc_editor()
+                if op == "pages":
+                    body = json.dumps({"ok": True, "pages": ed.npc_pages(
+                        qs.get("q", [""])[0])}, ensure_ascii=False)
+                elif op == "diff":
+                    body = json.dumps(npcedit.workspace_diff(
+                        self.db_workspace_path), ensure_ascii=False)
+                elif op == "region":
+                    body = json.dumps({"ok": True, **ed.region_detail(
+                        int(qs.get("index", ["0"])[0]))}, ensure_ascii=False)
+                elif op == "overview":
+                    map_stem = os.path.splitext(
+                        os.path.basename(qs.get("map", [""])[0]))[0]
+                    body = json.dumps({"ok": True, "npcs": ed.npc_overview(
+                        map_stem or None)}, ensure_ascii=False)
+                else:
+                    self.send_error(404)
+                    return
+                self._json_200(body.encode("utf-8"))
+            except (npcedit.NpcEditError, ValueError) as ex:
+                self._json_200(json.dumps(
+                    {"ok": False, "error": str(ex)}, ensure_ascii=False).encode())
         else:
             self.send_error(404)
 
@@ -1079,6 +1186,11 @@ def main():
     else:
         if not ws_ents:
             ViewerHandler.entities = []
+    # [E2] 摆放编辑：workspace 路径 + 非 workspace 实体底座（刷新时保留）
+    ViewerHandler.db_workspace_path = args.db_workspace
+    ws_idx = len(load_workspace_guards(args.db_workspace, ViewerHandler.db_names)) \
+        + len(ws_ents)
+    ViewerHandler.base_entities = ViewerHandler.entities[ws_idx:]
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
     if not args.no_prewarm_thumbs:
         from mapedit.prewarm import prewarm_thumbs
