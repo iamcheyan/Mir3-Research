@@ -107,46 +107,7 @@ UI_RESOURCE_HANDLE_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/window-reso
 UI_GLOBAL_CONTROLS_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/global-control-constructor-catalog.json"
 UI_RESOURCE_PATH_TABLE_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/resource-path-table.json"
 UI_RESOURCE_FAMILY_CATALOG_PATH = PROJECT_ROOT / "docs/research/ei-ui-layout/resource-family-catalog.json"
-ZIRCON_UI_TREE_PATH = Path(os.environ.get(
-    "ZIRCON_UI_TREE",
-    os.path.join(os.environ.get("MIR3_ZIRCON_ROOT", "/home/tetsuya/development/zircon"), "GodotClient", "UI", "ui_tree.json"),
-))
 
-_zircon_tree_cache: dict = {"mtime": -1.0, "data": None}
-
-def load_zircon_ui_tree() -> dict:
-    """Load the Godot UI export used by the Zircon preview."""
-    try:
-        mtime = ZIRCON_UI_TREE_PATH.stat().st_mtime
-    except OSError:
-        return {"error": f"missing {ZIRCON_UI_TREE_PATH} — run Godot --ui-export"}
-    if _zircon_tree_cache["mtime"] == mtime and _zircon_tree_cache["data"] is not None:
-        return _zircon_tree_cache["data"]
-    try:
-        data = json.loads(ZIRCON_UI_TREE_PATH.read_text(encoding="utf-8"))
-    except (OSError, ValueError) as exc:
-        return {"error": f"cannot read {ZIRCON_UI_TREE_PATH}: {exc}"}
-    _zircon_tree_cache.update(mtime=mtime, data=data)
-    return data
-
-def find_ei_data_root() -> str:
-    """Find an EI client Data directory without changing the active root."""
-    candidates = []
-    for key in ("MIR3_EI_ROOT", "MIR3EI_ROOT"):
-        value = os.environ.get(key)
-        if value:
-            candidates.append(value)
-    candidates.extend((
-        "/home/tetsuya/NAS/TMP/mir3ei",
-        "/home/tetsuya/NAS/TMP/EI传奇3.0客户端",
-    ))
-    for candidate in candidates:
-        data = Path(candidate)
-        if data.name.lower() != "data":
-            data /= "Data"
-        if (data / "GameInter.wil").is_file():
-            return str(data)
-    return ""
 
 def load_ui_evidence() -> dict:
     """Load the generated evidence catalog without modifying original assets."""
@@ -633,15 +594,6 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path == "/api/ui-layout":
             self._send(json_bytes(load_ui_evidence()), "application/json; charset=utf-8")
-            return
-        if path == "/api/zircon-ui":
-            self._send(json_bytes(load_zircon_ui_tree()), "application/json; charset=utf-8")
-            return
-        if path == "/api/ui-assets":
-            self._send(json_bytes({
-                "eiRoot": find_ei_data_root(),
-                "zirconRoot": str(ZIRCON_UI_TREE_PATH.parent.parent.parent),
-            }), "application/json; charset=utf-8")
             return
         if path == "/compare":
             self._send(COMPARE_HTML, "text/html; charset=utf-8")
@@ -1388,17 +1340,12 @@ PAGE_HTML = r"""<!DOCTYPE html>
 <!-- 模拟显示屏与 UI 拼装预览 Modal -->
 <div id="hud-modal" style="position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#181c24; border:2px solid #e8a33d; border-radius:12px; padding:20px; z-index:60; display:none; max-width:95vw; max-height:95vh; box-shadow:0 0 35px rgba(0,0,0,0.9);">
   <span id="hud-close" style="float:right; cursor:pointer; color:#aaa; font-size:22px; font-weight:bold;">✕</span>
-  <h3 style="color:#e8a33d; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-    <span>🖥️ UI 组装预览</span>
-    <span id="hud-version-toggle" style="display:flex; gap:4px;">
-      <button id="hud-ei-btn" class="btn" type="button">EI 3.0 原版</button>
-      <button id="hud-zircon-btn" class="btn" type="button">Zircon Godot</button>
-    </span>
+  <h3 style="color:#e8a33d; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
+    <span>🖥️ EI 3.0 原版客户端 UI 界面 控件热区与坐标边框拆解</span>
     <label style="font-size:13px; color:#fff; cursor:pointer; font-weight:normal; margin-right:20px;">
-      <input type="checkbox" id="chk-show-borders" checked onchange="toggleControlBorders(this.checked)"> 显隐控件碰撞框
+      <input type="checkbox" id="chk-show-borders" checked onchange="toggleControlBorders(this.checked)"> 显隐控件碰撞红框 (Show Red Bounding Boxes)
     </label>
   </h3>
-  <div id="hud-ei">
 
   <!-- 800x600 模拟显示器 -->
   <div id="monitor-frame" style="width:800px; height:600px; background:#000; border:12px solid #2a2e38; border-radius:6px; position:relative; overflow:hidden; box-shadow:inset 0 0 20px #000;">
@@ -1451,28 +1398,6 @@ PAGE_HTML = r"""<!DOCTYPE html>
       💡 提示：已开启 [红框/彩框] 控件检测，悬停或点击任意红框查看控件响应矩形 Rect(X, Y, W, H)。
     </div>
     <div style="color:#e8a33d; font-size:12px;">Standard Resolution: 800 × 600</div>
-  </div>
-  </div>
-  <div id="hud-zircon" style="display:none;">
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; color:#aaa; font-size:12px;">
-      <span style="color:#8ad4ff; font-weight:bold;">Zircon Godot UI</span>
-      <span>逻辑画布 1024 × 768 · 数据源: GodotClient/UI/ui_tree.json</span>
-      <label style="margin-left:auto;">窗口
-        <select id="zircon-window" style="margin-left:4px; max-width:260px;"></select>
-      </label>
-    </div>
-    <div id="zircon-stage-wrap" style="width:min(1024px, 90vw); aspect-ratio:4/3; overflow:hidden; background:#10151b; border:1px solid #3e5668; position:relative;">
-      <div id="zircon-stage" style="position:absolute; left:0; top:0; width:1024px; height:768px; transform-origin:top left; background:linear-gradient(135deg,#182733 0%,#0b1016 62%,#101820 100%); overflow:hidden;">
-        <div style="position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 4px);"></div>
-        <div style="position:absolute; left:18px; top:18px; color:#77a0b8; font:14px monospace; pointer-events:none;">[Zircon Godot Client · 1024 × 768 logical viewport]</div>
-        <div id="zircon-hud" style="position:absolute; left:0; top:0; width:1024px; height:768px;"></div>
-        <div id="zircon-window-layer" style="position:absolute; inset:0; pointer-events:none;"></div>
-      </div>
-    </div>
-    <div style="margin-top:8px; display:flex; justify-content:space-between; gap:12px; align-items:center;">
-      <div id="zircon-inspector" style="font-size:12px; color:#aaa; font-family:monospace;">Zircon HUD：MainPanel 的坐标和贴图直接取 Godot C# 实现。</div>
-      <div style="color:#8ad4ff; font-size:12px;">Zircon UI Export</div>
-    </div>
   </div>
 </div>
 <div id="hint">双击帧看详情 · Shift 点击区间选择 · Ctrl 点击追加 · ←→↑↓ 移动 · Enter 详情 · G 跳帧 · Esc 关闭</div>
@@ -2364,191 +2289,25 @@ function toggleControlBorders(visible){
     el.style.outline = visible ? '' : 'none';
     el.style.borderWidth = visible ? '1.5px' : '0px';
   });
-  document.querySelectorAll('[data-zc-control]').forEach(el => {
-    el.style.outline = visible ? '1px dashed rgba(138,212,255,.28)' : 'none';
-  });
 }
-let HUD_VERSION = localStorage.getItem('hud_preview_version') || 'ei';
-let ZIRCON_UI = null;
-let EI_DATA_ROOT = '';
-let UI_ASSET_ROOTS_PROMISE = null;
-
-function loadUiAssetRoots(){
-  if (!UI_ASSET_ROOTS_PROMISE){
-    UI_ASSET_ROOTS_PROMISE = fetch('/api/ui-assets').then(r=>r.json()).then(d=>{
-      EI_DATA_ROOT = d.eiRoot || '';
-      return d;
-    }).catch(()=>({}));
-  }
-  return UI_ASSET_ROOTS_PROMISE;
-}
-
-function eiAssetQuery(){
-  return EI_DATA_ROOT ? `&r=${encodeURIComponent(EI_DATA_ROOT)}` : '';
-}
-
-function setHudVersion(version){
-  HUD_VERSION = version === 'zircon' ? 'zircon' : 'ei';
-  localStorage.setItem('hud_preview_version', HUD_VERSION);
-  $('#hud-ei').style.display = HUD_VERSION === 'ei' ? '' : 'none';
-  $('#hud-zircon').style.display = HUD_VERSION === 'zircon' ? '' : 'none';
-  $('#hud-ei-btn').style.background = HUD_VERSION === 'ei' ? '#8a5b1d' : '';
-  $('#hud-zircon-btn').style.background = HUD_VERSION === 'zircon' ? '#245b78' : '';
-  if (HUD_VERSION === 'zircon') loadZirconPreview();
-  queueHash();
-}
-
-$('#hud-ei-btn').onclick = () => setHudVersion('ei');
-$('#hud-zircon-btn').onclick = () => setHudVersion('zircon');
-
-function zirconImage(library, index, x, y, title, parent){
-  if (!library || index == null || index < 0) return;
-  const img = document.createElement('img');
-  img.className = 'zc-part';
-  img.dataset.zcControl = '1';
-  img.src = `/api/image?f=${encodeURIComponent(library + '.Zl')}&i=${index}&scale=1`;
-  img.alt = title || `${library}[${index}]`;
-  img.title = img.alt;
-  img.style.cssText = `position:absolute;left:${x}px;top:${y}px;z-index:2;image-rendering:auto;`;
-  parent.appendChild(img);
-  return img;
-}
-
-function zirconLabel(text, x, y, width, parent, colour='#e7edf2'){
-  const el = document.createElement('div');
-  el.dataset.zcControl = '1';
-  el.textContent = text;
-  el.title = text;
-  el.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${width}px;color:${colour};font:12px "MirSkin","Microsoft YaHei",sans-serif;text-shadow:1px 1px #000;z-index:4;white-space:nowrap;`;
-  parent.appendChild(el);
-  return el;
-}
-
-function renderZirconHud(){
-  const hud = $('#zircon-hud');
-  hud.innerHTML = '';
-  const add = (lib, idx, x, y, title) => zirconImage(lib, idx, x, y, title, hud);
-  add('GameInter', 50, 0, 700, 'MainPanel 背景 GameInter[50] · MainPanel.cs:34');
-  add('GameInter', 51, 17, 703, '经验条 GameInter[51] · MainPanel.cs:36-38');
-  [[52,35,722,'生命条'],[54,35,736,'魔法条'],[58,35,750,'专注条']].forEach(([idx,x,y,t])=>add('GameInter',idx,x,y,`${t} GameInter[${idx}]`));
-  [[82,650,723,'人物'],[87,689,723,'背包'],[92,728,723,'技能'],[112,767,723,'任务'],[97,806,723,'邮件'],[107,845,723,'腰带'],[102,884,723,'组队'],[117,923,723,'菜单'],[122,972,716,'商城']].forEach(([idx,x,y,t])=>add('GameInter',idx,x,y,`${t}按钮 GameInter[${idx}]`));
-  [[70,277,725,'职业'],[71,277,745,'等级'],[72,362,725,'战斗力'],[73,362,745,'贡献'],[66,445,725,'AC'],[65,445,745,'DC'],[63,531,725,'MAC'],[62,541,745,'MC'],[64,547,745,'SC']].forEach(([idx,x,y,t])=>add('GameInter',idx,x,y,`${t}图标 GameInter[${idx}]`));
-  zirconLabel('道士', 300, 724, 60, hud);
-  zirconLabel('255', 300, 744, 60, hud);
-  zirconLabel('255', 385, 724, 60, hud);
-  zirconLabel('0', 385, 744, 60, hud);
-  zirconLabel('0', 470, 724, 60, hud);
-  zirconLabel('0', 470, 744, 60, hud);
-  zirconLabel('0', 567, 724, 60, hud);
-  zirconLabel('0', 567, 744, 60, hud);
-  zirconLabel('0', 567, 744, 60, hud);
-  const chat = document.createElement('div');
-  chat.dataset.zcControl = '1';
-  chat.title = 'ChatLogPanel / ChatTextBox · GameScene.LayoutHud';
-  chat.style.cssText = 'position:absolute;left:300px;top:620px;width:400px;height:72px;border:1px dashed rgba(130,210,240,.75);background:rgba(0,0,0,.18);z-index:1;';
-  hud.appendChild(chat);
-  $('#zircon-inspector').textContent = 'Zircon HUD：MainPanel 的坐标和贴图直接取 Godot C# 实现。点击组件查看来源。';
-}
-
-function renderZirconWindow(){
-  const layer = $('#zircon-window-layer');
-  layer.innerHTML = '';
-  const cls = $('#zircon-window').value;
-  if (!cls || !ZIRCON_UI) return;
-  const w = ZIRCON_UI.windows.find(x => x.className === cls);
-  if (!w) return;
-  const [ww, wh] = w.size || [0, 0];
-  const root = document.createElement('div');
-  root.dataset.zcControl = '1';
-  root.style.cssText = `position:absolute;left:${Math.max(0,(1024-ww)/2)}px;top:${Math.max(0,(768-wh)/2)}px;width:${Math.max(1,ww)}px;height:${Math.max(1,wh)}px;background:rgba(15,18,24,.94);border:1px solid #8ad4ff;z-index:20;pointer-events:auto;`;
-  root.title = `${w.className} · ${w.title || ''} · ${ww}×${wh}`;
-  const heading = document.createElement('div');
-  heading.textContent = `${w.className} · ${w.title || 'Zircon Window'} · ${ww}×${wh}`;
-  heading.style.cssText = 'position:absolute;left:6px;top:-20px;color:#8ad4ff;font:12px monospace;white-space:nowrap;';
-  root.appendChild(heading);
-  const renderNode = (node, parent) => {
-    if (node.visible === false) return;
-    const [x,y] = node.location || [0,0];
-    const [nw,nh] = node.size || [0,0];
-    const el = document.createElement('div');
-    el.dataset.zcControl = '1';
-    el.title = `${node.path || node.type} · Rect(${x}, ${y}, ${nw}, ${nh})`;
-    el.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${Math.max(1,nw)}px;height:${Math.max(1,nh)}px;z-index:3;overflow:visible;`;
-    if (node.image && node.image.library && node.image.index >= 0){
-      const img = document.createElement('img');
-      img.src = `/api/image?f=${encodeURIComponent(node.image.library + '.Zl')}&i=${node.image.index}&scale=1`;
-      img.alt = `${node.image.library}[${node.image.index}]`;
-      img.style.cssText = 'display:block;max-width:none;max-height:none;';
-      el.appendChild(img);
-    }
-    if (node.text){
-      const label = document.createElement('span');
-      label.textContent = node.text;
-      label.style.cssText = `color:${node.textColour ? `rgba(${node.textColour[0]},${node.textColour[1]},${node.textColour[2]},${(node.textColour[3] ?? 255)/255})` : '#fff'};font:${Math.max(8,node.fontSize || 10)}px "MirSkin","Microsoft YaHei",sans-serif;text-shadow:1px 1px #000;white-space:nowrap;`;
-      el.appendChild(label);
-    }
-    el.addEventListener('mouseenter', () => {
-      $('#zircon-inspector').textContent = `${node.path || node.type} · ${node.type} · Rect(${x}, ${y}, ${nw}, ${nh})`;
-    });
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      $('#zircon-inspector').textContent = `${node.path || node.type} · ${node.type} · Rect(${x}, ${y}, ${nw}, ${nh})`;
-    });
-    parent.appendChild(el);
-    (node.children || []).forEach(child => renderNode(child, el));
-  };
-  (w.controls || []).forEach(node => renderNode(node, root));
-  layer.appendChild(root);
-  toggleControlBorders($('#chk-show-borders').checked);
-}
-
-async function loadZirconPreview(){
-  if (!ZIRCON_UI){
-    try {
-      const r = await fetch('/api/zircon-ui');
-      ZIRCON_UI = await r.json();
-      if (ZIRCON_UI.error) throw new Error(ZIRCON_UI.error);
-      const select = $('#zircon-window');
-      select.innerHTML = '<option value="">仅显示 Zircon HUD</option>';
-      for (const w of ZIRCON_UI.windows || []){
-        const o = document.createElement('option');
-        o.value = w.className;
-        o.textContent = `${w.className} · ${w.title || ''} · ${w.controlCount} controls`;
-        select.appendChild(o);
-      }
-      select.onchange = renderZirconWindow;
-    } catch (e) {
-      $('#zircon-inspector').textContent = `Zircon UI 导出读取失败：${e.message}`;
-    }
-  }
-  renderZirconHud();
-  renderZirconWindow();
-  const wrap = $('#zircon-stage-wrap');
-  $('#zircon-stage').style.transform = `scale(${wrap.clientWidth / 1024})`;
-}
-
 function openHudPreview(){
   const lib = 'GameInter.wil';
   const frames = [[50,'part-bg'],[60,'part-hp-ball'],[61,'part-mp-ball'],[63,'part-exp-line']];
+  // 跨版本适配: 帧缺失(空白)时显示占位说明而不是裂图
+  frames.forEach(([fr, id]) => {
+    fetch(`/api/info?f=${encodeURIComponent(lib)}&i=${fr}`).then(r=>r.json()).then(h=>{
+      const el = document.getElementById(id);
+      if (h.blank || h.width <= 0){
+        el.src = '';
+        el.title = `GameInter[${fr}] 在当前 root 为空白帧 (版本差异)`;
+      } else {
+        el.src = `/api/image?f=${encodeURIComponent(lib)}&i=${fr}&scale=1`;
+        el.title = `GameInter[${fr}]`;
+      }
+    }).catch(()=>{});
+  });
   $('#overlay').style.display = 'block';
   $('#hud-modal').style.display = 'block';
-  setHudVersion(HUD_VERSION);
-  loadUiAssetRoots().then(() => {
-    // EI 资源从独立 EI Data 根读取，不切换当前 Zircon 资源浏览根。
-    frames.forEach(([fr, id]) => {
-      const query = `f=${encodeURIComponent(lib)}&i=${fr}${eiAssetQuery()}`;
-      fetch(`/api/info?${query}`).then(r=>r.json()).then(h=>{
-        const el = document.getElementById(id);
-        if (h.blank || h.width <= 0){
-          el.src = '';
-          el.title = `GameInter[${fr}] 在 EI root 中为空白帧`;
-        } else {
-          el.src = `/api/image?${query}&scale=1`;
-          el.title = `EI GameInter[${fr}]`;
-        }
-      }).catch(()=>{});
-    });
-  });
   localStorage.setItem('hud_preview_open', '1');
   queueHash();
 }
