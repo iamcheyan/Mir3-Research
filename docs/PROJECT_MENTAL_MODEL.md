@@ -101,7 +101,13 @@ switch 决定，Godot/webport/webclient 三份手抄各自漂移，无系统验�
 原版 switch 提取 `magic-effect-table.json` 唯一事实源 + Godot 表生成/校验闭环 +
 174 技能批量截图画廊回归。P0 提取 JSON（含 Godot 表对账报告）→ P1 实验室 UI
 （四职业技能列表+木桩+慢放/逐帧/轨迹）→ P2 回归画廊 → P3 Godot 闭环 →
-P4 伤害预览（二期）。
+P4 伤害预览（二期）。**✅ 已完成（2026-08-16，commits 2658d17/fde6a87/5efb926/
+8712602 + Zircon 0dc1321）**：JSON 138 技能 272 特效（双 switch :768+:3603）；
+Godot 表闭环（gen_cs_table.py 校验 66 违规→0，AdamantineFireBall/ImprovedExplosiveTalisman/
+Summon 系修正 + 补 CrushingWave/FrostBite/Rake/SeismicSlam/Spiritualism，
+OriginalSpellCases 136=原版全集，--magic-spot-audit 5/5 PASS）。
+后续特效相关改动一律：改 JSON（extractor）→ gen_cs_table --check → 实验室目验 →
+batch_run 回归 → Zircon 表同步。
 
 ## 八.5、E5 Light Lab 摘要（2026-08-15 定案，详见 docs/lightlab/LIGHT_LAB_GOAL.md）
 

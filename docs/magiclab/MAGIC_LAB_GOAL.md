@@ -98,13 +98,15 @@
 
 ## 4. 验收标准
 
-- [ ] P0：`magic-effect-table.json` 覆盖原版 switch 全部 case；
-      `GODOT_TABLE_DIFF.md` 产出（Godot 缺口清单）
-- [ ] P1：实验室可点放 174 技能，人物动作+弹道+命中+范围四段齐全；
-      慢放/逐帧/轨迹可视化可用
-- [ ] P2：批量画廊 174 张 + diff 报告；故意改坏一个 JSON 条目能被 diff 抓到（自证有效）
-- [ ] P3：生成/校验闭环跑通；Godot build 通过；游戏内 5 技能抽测对照一致
-- [ ] 证据全部落 `docs/magiclab/`；新坑回写总纲 §3
+- [x] P0：`magic-effect-table.json` 覆盖原版 switch 全部 case（138：release :768 ∪ start :3603）；
+      `GODOT_TABLE_DIFF.md` 产出（Godot 缺口清单）；zlsdk 帧可解交叉验证 `FRAME_VERIFY.md`（536 检查 0 问题）
+- [x] P1：实验室可点放 174 技能，人物动作+弹道+命中+范围四段齐全；
+      慢放/逐帧/轨迹可视化可用（webclient `/lab` :8822）
+- [x] P2：批量画廊 174 张 + diff 报告；故意改坏一个 JSON 条目能被 diff 抓到（自证有效）
+      （`REGRESSION.md`，全量复跑 174/174 一致；指纹=canvas 像素 hash）
+- [x] P3：生成/校验闭环跑通（`gen_cs_table.py`，66 违规→0）；Godot build 通过（0 错误）；
+      无头 Godot 5 技能抽测对照一致（`--magic-spot-audit` 5/5 PASS，证据 `P3_GODOT_CLOSURE.md`）
+- [x] 证据全部落 `docs/magiclab/`；新坑回写总纲 §3（§3.10）
 
 ## 5. 领地与协作
 
