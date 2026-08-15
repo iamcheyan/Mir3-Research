@@ -1,0 +1,7 @@
+=== 游戏内验证（MapTestScene = 真实 Godot 客户端 MirMap 解析+渲染路径）===
+基线  : [MapTest] 20x20 区域: 背景=100, 中层=399, 前景=400
+编辑后: [MapTest] 20x20 区域: 背景=100, 中层=400, 前景=400  ← mapedit 管线改 0.map 格(0,0) mid=(smtilesc,#20)，引擎读盘直接生效
+还原后: [MapTest] 20x20 区域: 背景=100, 中层=399, 前景=400  ← 逆向编辑还原，与基线一致
+
+编辑命令: EditSession(0.map).apply([(0,0) mid_file 0→3, mid_img 65535→20]) → save_session(confirm=True)
+证据图 : game-verify-edited.png (Xvfb:97 + scrot, 编辑态运行时截图)

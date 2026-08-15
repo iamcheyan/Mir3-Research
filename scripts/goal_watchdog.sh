@@ -371,7 +371,7 @@ watch_one_goal() {
       return
     fi
     tmux send-keys -t "$pane" C-c 2>/dev/null
-    tmux send-keys -t "$pane" "cd $WORKDIR && $OMP --resume $gid --auto-approve" Enter 2>>"$LOG"
+    tmux send-keys -t "$pane" "cd $WORKDIR && PATH=/home/tetsuya/.bun/bin:\$PATH $OMP --resume $gid --auto-approve" Enter 2>>"$LOG"
     # 等 omp 进程起来(bun 冷启动 + 加载大 transcript 需要数秒),再多等几秒让
     # TUI 就绪,否则「继续」会被启动期吞掉或落进 shell 缓冲。
     for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
@@ -548,8 +548,11 @@ watch_one_goal() {
 
 # ── 主循环:遍历所有 goal ────────────────────────────────────────────────────
 for goal_line in "${GOALS[@]}"; do
-  IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR STATE LABEL <<< "$goal_line"
-  LABEL=${LABEL:-$STATE}   # 第5字段可选：label(人类可读任务名)或旧式 state 文件路径
+  IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR F5 LABEL <<< "$goal_line"
+  # 第5字段两种历史形态: 旧式=state 文件路径(/开头), 新式=label(中文任务名)。
+  # label 形态时 STATE 用标准路径, 否则熔断计数写进 ~/中文文件名(2026-08-15 实测事故)。
+  if [[ "$F5" == /* ]]; then STATE="$F5"; LABEL=${LABEL:-$F5};
+  else STATE="/home/tetsuya/.omp/goal-watchdog.${GOAL_ID:0:8}.state"; LABEL=${LABEL:-$F5}; fi
   GOAL_TAG=${GOAL_ID:0:8}
   GOAL_OFF_FILE="/home/tetsuya/.omp/mir3-goal-watchdog.$GOAL_TAG.off"
   # 每 goal kill-switch: touch 此文件禁用该 goal 的 watchdog。
