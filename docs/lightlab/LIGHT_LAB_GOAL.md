@@ -112,13 +112,23 @@ E5 复用同一基底，新增**环境面板**：Light/DayTime/Weather/光源四
 
 ## 6. 验收标准
 
-- [ ] P0：天气素材 WebP 可显示；env-snapshot.json 627 图 + 24 火把数据齐全
-- [ ] P1：四维面板实时联动（环境光/天气粒子/光源/特殊态），叠加顺序与 Godot 一致；
+- [x] P0：天气素材 WebP 可显示；env-snapshot.json 627 图 + 24 火把数据齐全
+  —— `Tools/webclient/static/assets/weather/` 9 帧 + `env-snapshot.json`（docs 权威+
+  static 镜像）；生成器 `Tools/lightlab/build_env_assets.py`
+- [x] P1：四维面板实时联动（环境光/天气粒子/光源/特殊态），叠加顺序与 Godot 一致；
       死亡红染=IndianRed(205,92,92) 相乘、深渊=全黑+46.08 半径微光（对照 Godot 8d1a6a3b）
-- [ ] P2：web 采样画廊 + Godot 无头对照截图（含 dead/abyss stage）+ PARITY_REPORT.md
-- [ ] P3：选一张测试地图改 Weather=RainFogLightning 经 dbeditor 管线写回，游戏内
+  —— 入口 `http://127.0.0.1:8822/static/env.html`；实测记录见 `ACCEPTANCE.md`
+    （像素锚点：死亡 R/G=2.47、深渊玩家全亮/远处纯黑、火把光圈暖 tint）
+- [x] P2：web 采样画廊 + Godot 无头对照截图（含 dead/abyss stage）+ PARITY_REPORT.md
+  —— `gallery/` 27 张 + `godot/` 6 张（82 机 llvmpipe，abyss 探针 0.369<0.5 属
+    软渲染阈值偏紧，非产品差异）+ 18 项三方对照（2 条 Godot/原版真实偏差待用户拍板）
+- [x] P3：选一张测试地图改 Weather=RainFogLightning 经 dbeditor 管线写回，游戏内
       `[Light]` 日志 + 截图证实天气生效（测试图选无关紧要的图，改完可回滚）
-- [ ] P4：两份文档更新；证据全部落 `docs/lightlab/`
+  —— 02_0062 全管线实测（双库 85970aef→回滚 e0108a7d），
+    `ingame_020062_rainfoglightning.png`；附带发现夜图闪电固有不可见
+- [x] P4：两份文档更新；证据全部落 `docs/lightlab/`
+  —— GODOT_WEATHER_DAYLIGHT_GUIDE §1/§5/§6/§12 + 总纲 §3.8 六坑 + 心智模型；
+    汇总 `ACCEPTANCE.md`
 
 ## 7. 特殊态（Godot 端已实现，实验室提供检测面）
 
