@@ -130,6 +130,26 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 
 工具从 Zircon 抽到 Mir3-Research 后，csproj 用 `$(MIR3_ZIRCON_ROOT)` 环境变量解析 Zircon 源码引用（`Tools/SystemDbProbe/SystemDbProbe.csproj` 已改好，是模板；其它 `Tools/*.csproj` 断链时照此修）。**不要用根目录符号链接方案**——MSBuild 对物理路径/链接路径产生项目身份混乱，编译必炸。
 
+### 3.7 帧公式单一数据源的坑（E3 实证，2026-08-15）
+
+- **FastAPI 中间件统一覆盖 Cache-Control**：路由 handler 里给 `FileResponse` 设的
+  `no-cache` 头会被 `@app.middleware("http")` 末尾的无条件 `max-age=86400` **覆盖**。
+  后果：`/frame-formulas.json` 被浏览器缓存 24h，重跑提取器后 webport「看不到变化」，
+  drift 实验假阴性。规则：**凡中间件管响应头，路由内设同类头无效，条件全部写在中间件里**
+  （webport serve.py 已把 `/frame-formulas.json` 加进 no-cache 白名单）。这与 §7 坑 3
+  （异端缓存）同根：改数据不改 JS 时，第一怀疑响应头，第二才是进程。
+- **ZL 库 header 无 shadow 元数据**：`zlsdk.header()` 只返回宽高+锚点；WIL 才有
+  shadow/words。wilviewer export 的 manifest 硬取 `hdr["shadow"]` 对 ZL 库必
+  KeyError（该路径此前只对 WIL 用过）——**WIL/ZL 双态工具所有 header 字段用 `.get()`**。
+- **C# switch 源码解析**：连续 `case A: case B: <body>` 产生空段，分段要累积合并；
+  嵌套 `switch(@class)` 的 `default:` 会干扰外层 case 分段，先摘出嵌套块再解析
+  （frameformulas.py 的 `_split_cases`/`_balanced_block` 是现成实现）。
+- **MirClass 本 fork 只有 4 职业**（Enum.cs 无 Archer）；webport `CLASS_ARCHER=4`
+  是上游遗留别名，分派只特判刺客，无行为影响，但提取表时别指望枚举里有它。
+- **webport 曾有第三份帧公式手抄**：`data.js` 的 PLAYER_ANIMS/armourShift 是残缺副本
+  （armourShift 6 项 vs 全表 37 项）——消灭双份维护时必须 grep 全库找齐所有副本，
+  只改 frames.js 会留暗漂移。现已全部收编（frames.js 读 JSON，data.js 投影 frames.js）。
+
 ---
 
 ## 4. 环境引导（82 机器，一次性）
@@ -283,9 +303,15 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
 
 ### 7.2 验收标准
 
-- [ ] 帧公式 JSON 导出 + webport frames.js 改为读它（一处改两边变，验证 drift 消灭）
-- [ ] 批量导出可用
-- [ ] （若做写回）往返验证 + 原库备份链
+- [x] 帧公式 JSON 导出 + webport frames.js 改为读它（一处改两边变，验证 drift 消灭）
+  —— E3 完成 2026-08-15：`Tools/resedit/frameformulas.py` 提取 94 表 560 项；
+  webport frames.js/data.js 全部改读 JSON；drift 实验（JSON 6→8 → 页面双读 8）+
+  真服全链路 + test-anims 71/71。wilviewer 帧公式对照面板 + WebP/PNG 批量导出同交付。
+  详见 `Tools/resedit/README.md` 与 `docs/resedit/proof/`
+- [x] 批量导出可用 —— `/api/export?kind=webp`（无损 WebP ZIP，较 PNG 小 45%）+
+  选中条 WebP 按钮 + 面板「⤓ 区间」一键导出动全面帧
+- [ ] （若做写回）往返验证 + 原库备份链 —— 未做（总纲允许；风险/收益论证见
+  `Tools/resedit/README.md`「ZL 帧写回」节）
 
 ---
 
