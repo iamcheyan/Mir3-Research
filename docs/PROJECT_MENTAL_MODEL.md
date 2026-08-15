@@ -103,6 +103,22 @@ switch 决定，Godot/webport/webclient 三份手抄各自漂移，无系统验�
 （四职业技能列表+木桩+慢放/逐帧/轨迹）→ P2 回归画廊 → P3 Godot 闭环 →
 P4 伤害预览（二期）。
 
+## 八.5、E5 Light Lab 摘要（2026-08-15 定案，详见 docs/lightlab/LIGHT_LAB_GOAL.md）
+
+天气/昼夜/光照模拟器：定性=**静态配置系统**（天气纯客户端读 MapInfo.Weather 位标志，
+无网络包；昼夜服务器 DayCycleCount=3；火把光 ItemStats→Stat.Light，无燃烧消耗；
+627 图 Weather 全 None 所以游戏内看不到天气）。基底并入 E4 webclient（env-lab.js
+独立模块）。边界：不改服务器昼夜算法、不做动态天气、不加 Godot 测试后门、
+格子光编辑归 E1、dbeditor 之外禁写库。
+
+**特殊光照态已由主会话实现并推送（Zircon 8d1a6a3b）**：死亡→全屏 IndianRed(205,92,92)
+相乘红染；深渊中毒→全黑+玩家微光(半径46.08逻辑px)+Abyss 特效 980ms 循环；二者白天也
+强制渲染、死亡优先。`MapLightLayer.SetPlayerState` + shader global_tint；渲染审计
+扩为 5 stage（`MapTestScene -- --light-render-audit`，用户参数必须 `--` 分隔）全 PASS，
+dead 探针 0xcd5c5c 精确匹配。E5 实验室做同规格 web 预览供检测，不再改 Godot。
+审计探针曾因 LightProbeArea(700,350) 在逻辑 512×384 视口外被钳到屏幕边缘——已修
+(300,200)，night 探针由 0.096 险败修正为精确 0.251。
+
 ## 九、方法论（用户认可的工作节奏）
 
 1. 主会话摸透：读代码/实证（跑起来看）→ 形成诊断
@@ -125,10 +141,8 @@ omp 会话即文件，三层保存法：
 
 ## 十一、当前状态快照（2026-08-15 会话末）
 
-- 本机已推 fork：`62f6499`（mapviewer NPC 面板+overlay 修复、webport UiScaler 修复、
-  csproj 修复）、`eae891d`（编辑器总纲）、`880771b`（Magic Lab goal）
-- 82 已跑：E0/E1/E3 三 goal（ed-infra/ed-map/ed-res），watchdog 已注册
-- E4 Magic Lab：文档就绪未启动（等用户指令或 82 直接开）
+- 本机已推 fork：`62f6499`、`eae891d`、`880771b`（Magic Lab goal）、`e1f493f`（心智模型）、
+  E5 goal（本次）；**Zircon 已推 `8d1a6a3b`（光照特殊态）**
+- 82 已跑：E0/E1/E3（ed-infra/ed-map/ed-res）+ E4（ed-magic）；E5（ed-light）部署中
 - webport：冻结，UI 错位已修（R34）
-- 待办：E2（等 E1 拆模块）；AGENTS.md 加指向本文档的行；vision 模型
-  openai-codex/gpt-5.6-luna 已配好
+- 待办：E2（等 E1 拆模块）；Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照
