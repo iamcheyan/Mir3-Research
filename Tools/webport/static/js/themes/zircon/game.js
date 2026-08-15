@@ -363,7 +363,7 @@ export class GameScene {
         default: {
           if (a >= KA.SpellSet01 && a <= KA.SpellSet04) return this.world.setSpellSet(a - KA.SpellSet01 + 1);
           if (a >= KA.SpellUse01 && a <= KA.SpellUse24) return this.world.useMagicSlot(a - KA.SpellUse01);
-          if (a >= KA.UseBelt01 && a <= KA.UseBelt10) return this.world.useBeltSlot(a - KA.UseBelt01);
+          if (a >= KA.UseBelt01 && a <= KA.UseBelt10) return !!this.itemStore?.beltUse(a - KA.UseBelt01);   // UseBeltKey :9823 → 解析回背包格 (DXItemCell.UseItem :1123)
         }
       }
     };

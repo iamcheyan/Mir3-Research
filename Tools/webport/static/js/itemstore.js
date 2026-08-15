@@ -41,6 +41,7 @@ export class ItemStore {
     this.friends = (startInfo.friends ?? []).filter(Boolean);   // ClientFriendInfo[] (S.FriendAdd/Update/Remove 维护)
     this.blocks = [];                              // ClientBlockInfo[] (S.BlockAdd/Remove 维护)
     this.mails = [];                               // ClientMailInfo[] (S.MailList/MailNew/MailDelete/MailItemDelete 维护)
+    this.beltLinks = (startInfo.beltLinks ?? []).filter(Boolean).map(l => ({ ...l }));   // ClientBeltLink[10] (C.BeltLinkChanged 客户端维护, 服务端只存)
     this.guildFunds = 0n;
     this.storageSize = Math.max(1, startInfo.storageSize || STORAGE_SIZE);
 
@@ -399,6 +400,53 @@ export class ItemStore {
   unlockPublic(g, slot) { this.locked.delete(`${g}:${slot}`); this.#emit('items'); }
 
   // ---- 负重 ----
+  // ---- 腰带 (BeltDialog.cs / PlayerObject.cs:8517) ----
+  // ShouldLinkInfo (ItemInfo.cs:458): StackSize>1 || Consumable || Scroll → 按类型链接; 否则按物品实例
+  shouldLinkInfo(infoIndex) {
+    const info = ItemStore.itemInfo(infoIndex);
+    return !!info && (Number(info.stack) > 1 || info.type === 'Consumable' || info.type === 'Scroll');
+  }
+  // 腰带格 → 展示物品 (BeltDialog.UpdateLinks :183-197 + 数量合计 :361-367)
+  beltDisplay(slot) {
+    const link = this.beltLinks.find(l => l.slot === slot);
+    if (!link) return null;
+    const inv = this.items(GRID.INVENTORY);
+    if (link.linkInfoIndex > 0) {
+      let sum = 0, infoIndex = link.linkInfoIndex;
+      for (const it of inv.values()) if (it && it.infoIndex === infoIndex) sum += Number(it.count ?? 1);
+      return sum > 0 ? { infoIndex, count: sum } : null;   // 类型链接: 合计数量 (背包空了显示空)
+    }
+    if (link.linkItemIndex > 0) {
+      for (const [s, it] of inv.entries()) if (it && Number(it.index) === link.linkItemIndex) return it;
+      return null;   // 实例已被消耗 → 空显示 (链接保留, Godot 同行为)
+    }
+    return null;
+  }
+  // 腰带格使用 (DXItemCell.UseItem :1123-1134): 解析回背包格再 ItemUse — 服务器 ItemUse 不收 GridType.Belt
+  beltUse(slot) {
+    const link = this.beltLinks.find(l => l.slot === slot);
+    if (!link) return false;
+    const inv = this.items(GRID.INVENTORY);
+    let target = null;
+    if (link.linkInfoIndex > 0) {
+      for (const [s, it] of inv.entries()) if (it && it.infoIndex === link.linkInfoIndex) { target = [s, it]; break; }
+    } else if (link.linkItemIndex > 0) {
+      for (const [s, it] of inv.entries()) if (it && Number(it.index) === link.linkItemIndex) { target = [s, it]; break; }
+    }
+    if (!target) return false;
+    this.conn.sendItemUse(GRID.INVENTORY, target[0], target[1].count);
+    return true;
+  }
+  // 建链/清链 (DXItemCell.MoveItem 腰带分支 :745-782): 本地维护 + C.BeltLinkChanged 持久化
+  setBeltLink(slot, infoIdx, itemIdx) {
+    if (slot < 0 || slot > 9) return;
+    const link = this.beltLinks.find(l => l.slot === slot);
+    if (link) { link.linkInfoIndex = infoIdx; link.linkItemIndex = itemIdx; }
+    else this.beltLinks.push({ slot, linkInfoIndex: infoIdx, linkItemIndex: itemIdx });
+    this.conn.sendBeltLinkChanged(slot, infoIdx, itemIdx);
+    this.#emit('items');
+  }
+
   maxBagWeight() { return this.stats[STAT_BAGWEIGHT] ?? 0; }
   maxWearWeight() { return this.stats[STAT_WEARWEIGHT] ?? 0; }
   maxHandWeight() { return this.stats[STAT_HANDWEIGHT] ?? 0; }

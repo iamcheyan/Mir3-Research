@@ -696,6 +696,64 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('COMM', d.friendsShown && d.stateCycled && d.listOk && d.detailOk && d.openedSent && d.getItemSent && d.deleteBlocked && d.gateBad && d.gateGood && d.clamped && d.mailSent && d.lockedOnce && d.cleared && d.blockShown, r);
 }
 
+// ============ 20. 腰带栏 (BeltDialog.cs :14-199 + DXItemCell :745-782/:1123) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { WindowManager } = await import('/static/js/windows.js');
+    const win = reg.win('belt');
+    if (!win) return { err: 'no-belt-win', names: [...reg.wins.keys()] };
+    WindowManager.open(win, s.hudLayer);
+    const store = reg.itemStore; const conn = s.conn;
+    const pkts = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength >= 6) { const dv = new DataView(b.buffer, b.byteOffset); pkts.push({ id: dv.getInt16(4, true), len: b.byteLength }); } return b; };
+    const grid = [...reg.handlers.keys()].includes('belt') ? reg.handler('belt').grid : null;
+    // 角标 1-9,0
+    const labels = grid.cells.map(c => c.el.lastChild?.textContent);
+    const labelsOk = labels.join('') === '1234567890';
+    // 建链 A (类型链接): 金创药小 id=133 Consumable stack>1 → ShouldLinkInfo=true → linkInfoIndex
+    const inv = store.items(1);
+    inv.clear();
+    inv.set(3, { index: 777, infoIndex: 133, count: 25 });
+    const srcCell = { item: inv.get(3), grid: { gridType: 1 } };
+    grid.onOffer(srcCell, grid.cells[2]);
+    await new Promise(r => setTimeout(r, 200));
+    const linkType = store.beltLinks.some(l => l.slot === 2 && l.linkInfoIndex === 133 && l.linkItemIndex === -1);
+    const pkt17a = pkts.filter(p => p.id === 17).length >= 1;
+    const shown = store.beltDisplay(2);
+    const displayOk = !!shown && shown.infoIndex === 133 && Number(shown.count) === 25;
+    // 使用: 解析回背包格 → C_ITEMUSE (DXItemCell.UseItem :1123)
+    const ok = store.beltUse(2);
+    await new Promise(r => setTimeout(r, 150));
+    const usedOk = ok && pkts.some(p => p.id === 174);
+    // 交换: 槽2 → 槽5 (内部交换两包, :757-773)
+    const n17 = pkts.filter(p => p.id === 17).length;
+    grid.onOffer(grid.cells[2], grid.cells[5]);
+    await new Promise(r => setTimeout(r, 200));
+    const swapOk = store.beltLinks.some(l => l.slot === 5 && l.linkInfoIndex === 133) && !store.beltLinks.some(l => l.slot === 2 && l.linkInfoIndex === 133) && pkts.filter(p => p.id === 17).length >= n17 + 2;
+    // 建链 B (实例链接): 541 黑铁矿 (非 ShouldLinkInfo) → linkItemIndex
+    const srcB = { item: { index: 999, infoIndex: 541, count: 1 }, grid: { gridType: 1 } };
+    grid.onOffer(srcB, grid.cells[7]);
+    await new Promise(r => setTimeout(r, 200));
+    const linkItem = store.beltLinks.some(l => l.slot === 7 && l.linkInfoIndex === -1 && l.linkItemIndex === 999);
+    // 清链: onUnlink → -1,-1 (Godot 移除包 :9098)
+    grid.onUnlink(grid.cells[5]);
+    await new Promise(r => setTimeout(r, 200));
+    const cleared = !store.beltLinks.some(l => l.slot === 5 && l.linkInfoIndex === 133);
+    // 键位 UseBelt01 分流 (game.js:366 → beltUse)
+    store.setBeltLink(0, 133, -1);
+    await new Promise(r => setTimeout(r, 150));
+    const nUse = pkts.filter(p => p.id === 174).length;
+    const kb = store.beltUse(0);
+    await new Promise(r => setTimeout(r, 150));
+    const kbOk = kb && pkts.filter(p => p.id === 174).length === nUse + 1;
+    conn.send = orig;
+    return { labelsOk, linkType, pkt17a, displayOk, usedOk, swapOk, linkItem, cleared, kbOk };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('BELT', d.labelsOk && d.linkType && d.pkt17a && d.displayOk && d.usedOk && d.swapOk && d.linkItem && d.cleared && d.kbOk, r);
+}
+
 // ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);

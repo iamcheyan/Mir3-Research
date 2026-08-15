@@ -1373,12 +1373,6 @@ export class World {
     }
     return out;
   }
-  // UseBeltKey (GameScene.cs:9823): Shift+1..0 → 药品栏格物品
-  useBeltSlot(slot) {
-    const belt = this.gameData?.beltLinks?.get?.(slot);
-    if (!belt) return false;
-    return !!this.conn.sendItemUse(GRID.BELT, slot);
-  }
   castMagic(type, target = this.target) {
     if (!this.conn || !this.player || this.player.dead) return false;
     const tx = target?.x ?? this.player.x, ty = target?.y ?? this.player.y;

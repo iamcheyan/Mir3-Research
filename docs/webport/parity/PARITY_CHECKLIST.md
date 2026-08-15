@@ -77,7 +77,7 @@
 
 | 批次 | 窗口 | 状态 | 归属 |
 |---|---|---|---|
-| 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); belt → fallback (beltLinks 真数据) | par-win |
+| 核心 | Inventory/Character/Magic/Belt/Storage | ✅ win-inventory/char/skill/storage (par-win 000ce70); Belt→win-belt 全量 (R33) | par-win R33 |
 | 社交 | Group/Guild/Mail/Ranking/ChatOptions | party✅ guild✅; Mail→win-comm 4 页全量 (R32); Ranking✅/ChatOptions✅ fallbackWindow (开窗即 C.RankRequest + rankings 事件渲染; 频道开关直改 chatLog.enabledTypes) | par-move R6/R32 |
 | NPC | NPCDialog/Quest/Goods/Repair | ✅ win-npc + win-quest (真实 System.db 快照) | par-win |
 | NPC 高级面板 | Refine/RefineRetrieve/RefinementStone/MasterRefine/AccessoryLevel/AccessoryUpgrade/AccessoryReset/ItemFragment/WeddingRing/WeaponCraft/CompanionManage | ✅ R15-R18: DB 引用的 14 DialogType 全真实现 (BuildRefine :383/BuildRetrieve :518/BuildRefinementStone :324/BuildMasterRefine :431/BuildAccessoryLevel :686/BuildWeaponCraft :801/BuildSingleGrid :621/NPCCompanionStorageDialog); 提交锁三态 R20 (BeginSubmit :1039); 回包反馈 R19 (S 解析×9+聊天+取回删行+伙伴同步); 真服 e2e 254→聊天验证 | par-move R15-R20 |

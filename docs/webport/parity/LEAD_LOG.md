@@ -828,3 +828,16 @@ _uiLayer 普通子节点 (GameScene.cs:4284-4296), 不入 WindowManager, Escape 
   (3) 残留 chrome 39 个会拖死 CDP 套件 (两次 290s 超时), 先 pkill -9 chrome 再跑。
 - `验证` 套件 +COMM 组 14 断言 (状态循环/列表渲染/详情/MailOpened/附件包/删除拦截/
   门闩两态/2e9 钳制/发送锁单飞/表单清除/屏蔽行) → 19/19 PASS; 回归 pmv-buff-qt ALL-9-PASS。
+
+## R33 — 腰带栏全量 (BeltDialog + 顺手修 useBeltSlot 潜伏 bug)
+- `Gap` belt 主面板键走 fallback 文本列表; world.js:1377 useBeltSlot 发 sendItemUse(GRID.BELT, slot)
+  但服务器 ItemUse (PlayerObject.cs:6335) 只收 Inventory/PartsStorage/Companion×2 — Belt 直接
+  default return 静默吞包, Shift+1..0 从未真正可用 = 潜伏 bug 而非仅简化。
+- `实现` win-belt.js: 无标题 10×1 linked 格 + 角标 (slot+1)%10 金色 (AddSlotLabels :120-138);
+  建链 ShouldLinkInfo 分流 (ItemInfo.cs:458 StackSize>1||Consumable||Scroll → 类型链接合计数量
+  :361-367, 否则实例链接); 内部交换两包 (DXItemCell :757-773); 拖出/清链 -1,-1 (:9098);
+  使用 beltUse 解析回背包格 (UseItem :1123-1134)。itemstore.js: beltLinks 状态 +
+  beltDisplay/beltUse/setBeltLink/shouldLinkInfo; dxgrid.js: grid.onUse 钩子 (双击/右键默认
+  使用前分流); game.js:366 键位改走 beltUse; world.js 死码 useBeltSlot 删除。
+- `验证` 套件 +BELT 组 9 断言 (角标序/类型链 133/实例链 541/数量合计/C.174 使用解析/内部交换双包/
+  清链/键位分流) → 20/20 PASS; 回归 ALL-9-PASS。

@@ -22,6 +22,7 @@ import { winTrade } from './win-trade.js';
 import { winConfig } from './win-config.js';
 import { winGm } from './win-gm.js';
 import { winComm } from './win-comm.js';
+import { winBelt } from './win-belt.js';
 
 const MODULES = {
   inventory: winInventory,     // 背包 (InventoryDialog.cs)
@@ -36,13 +37,14 @@ const MODULES = {
   config: winConfig,           // 设置 (ConfigDialog.cs)
   gm: winGm,                   // GM面板 (@命令 GUI; 仅 isGM)
   comm: winComm,               // 通信 (CommunicationDialog.cs 好友/邮件/屏蔽)
+  belt: winBelt,               // 腰带 (BeltDialog.cs 10 格链接栏)
 };
 
 // game.js MainPanel 按钮名 → 本注册表窗口名
 const TYPE_MAP = {
   character: 'char', inventory: 'inventory', spell: 'skill', quest: 'quest',
   group: 'party', guild: 'guild', trade: 'trade', config: 'config',
-  storage: 'storage', options: 'config', gm: 'gm', mail: 'comm',
+  storage: 'storage', options: 'config', gm: 'gm', mail: 'comm', belt: 'belt',
 };
 
 // showWindow/close 装饰: 模块声明的 onShow/onHide 副作用在 WindowManager 开关时触发

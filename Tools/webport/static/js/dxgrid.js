@@ -467,7 +467,8 @@ export class DXItemCell extends DXControl {
     if (!it || this.grid?.readOnly) return;
     if (this.locked) return;
     if (this.locked) return;
-    // 使用/装备 (DXItemCell: 双击 = Use)
+    // 使用/装备 (DXItemCell: 双击 = Use); grid.onUse 分流 (腰带: 解析回背包格 UseItem :1123)
+    if (this.grid?.onUse) return this.grid.onUse(this);
     const g = this.#protoGrid(this.gridType);
     if (this.gridType === GRID.EQUIPMENT) {
       // 装备格双击 = 卸下到背包
@@ -495,7 +496,8 @@ export class DXItemCell extends DXControl {
       return;
     }
     if (this.grid.onQuickRoute) { this.grid.onQuickRoute(this); return; }
-    // 默认: 使用
+    // 默认: 使用 (grid.onUse 分流: 腰带解析回背包格)
+    if (this.grid?.onUse) return this.grid.onUse(this);
     this.store.conn.sendItemUse(this.#protoGrid(this.gridType), this.slot, it.count);
   }
 }
