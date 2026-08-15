@@ -8,10 +8,15 @@
     <AssemblyName>QuestProbe</AssemblyName>
     <RootNamespace>Mir3Research.QuestProbe</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Zircon sources: from MIR3_ZIRCON_ROOT env (see AGENTS.md), fallback to old in-Zircon layout -->
+    <ZirconRoot Condition="'$(ZirconRoot)' == '' and '$(MIR3_ZIRCON_ROOT)' != ''">$(MIR3_ZIRCON_ROOT)</ZirconRoot>
+    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..</ZirconRoot>
+  </PropertyGroup>
 
   <ItemGroup>
     <!-- 只读引用 zircon 协议库（绝不修改 zircon 仓库） -->
-    <ProjectReference Include="/home/tetsuya/development/zircon/LibraryCore/LibraryCore.csproj" />
+    <ProjectReference Include="$(ZirconRoot)\LibraryCore\LibraryCore.csproj" />
   </ItemGroup>
 
 </Project>

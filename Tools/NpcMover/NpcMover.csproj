@@ -6,7 +6,12 @@
     <AssemblyName>NpcMover</AssemblyName>
     <RootNamespace>NpcMover</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Zircon sources: from MIR3_ZIRCON_ROOT env (see AGENTS.md), fallback to old in-Zircon layout -->
+    <ZirconRoot Condition="'$(ZirconRoot)' == '' and '$(MIR3_ZIRCON_ROOT)' != ''">$(MIR3_ZIRCON_ROOT)</ZirconRoot>
+    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..</ZirconRoot>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="/home/tetsuya/development/zircon/LibraryCore/LibraryCore.csproj" />
+    <ProjectReference Include="$(ZirconRoot)\LibraryCore\LibraryCore.csproj" />
   </ItemGroup>
 </Project>

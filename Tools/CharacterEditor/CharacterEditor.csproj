@@ -5,8 +5,13 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Zircon sources: from MIR3_ZIRCON_ROOT env (see AGENTS.md), fallback to old in-Zircon layout -->
+    <ZirconRoot Condition="'$(ZirconRoot)' == '' and '$(MIR3_ZIRCON_ROOT)' != ''">$(MIR3_ZIRCON_ROOT)</ZirconRoot>
+    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..</ZirconRoot>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LibraryCore\LibraryCore.csproj" />
-    <ProjectReference Include="..\..\ServerLibrary\ServerLibrary.csproj" />
+    <ProjectReference Include="$(ZirconRoot)\LibraryCore\LibraryCore.csproj" />
+    <ProjectReference Include="$(ZirconRoot)\ServerLibrary\ServerLibrary.csproj" />
   </ItemGroup>
 </Project>

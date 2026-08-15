@@ -5,12 +5,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Zircon sources: from MIR3_ZIRCON_ROOT env (see AGENTS.md), fallback to old in-Zircon layout -->
+    <ZirconRoot Condition="'$(ZirconRoot)' == '' and '$(MIR3_ZIRCON_ROOT)' != ''">$(MIR3_ZIRCON_ROOT)</ZirconRoot>
+    <ZirconRoot Condition="'$(ZirconRoot)' == ''">..\..</ZirconRoot>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LibraryCore\LibraryCore.csproj" />
+    <ProjectReference Include="$(ZirconRoot)\LibraryCore\LibraryCore.csproj" />
     <!-- ServerLibrary is built by the solution/server build. Keeping this as a binary
          reference avoids pulling the server's full restore graph into this small tool. -->
     <Reference Include="ServerLibrary">
-      <HintPath>..\..\ServerLibrary\bin\Debug\net10.0\ServerLibrary.dll</HintPath>
+      <HintPath>$(ZirconRoot)\ServerLibrary\bin\Debug\net10.0\ServerLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
