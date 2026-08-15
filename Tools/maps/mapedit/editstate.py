@@ -153,6 +153,28 @@ class EditSession:
             return 0
 
 
+_SESSIONS: dict[str, EditSession] = {}
+_LOCK = threading.Lock()
+
+
+def _key(maps_dir: str, map_name: str) -> str:
+    return os.path.join(maps_dir, os.path.basename(map_name))
+
+
+def get_session(maps_dir: str, map_name: str, create: bool = True) -> EditSession | None:
+    k = _key(maps_dir, map_name)
+    with _LOCK:
+        s = _SESSIONS.get(k)
+        if s is None and create:
+            s = _SESSIONS[k] = EditSession(k)
+        return s
+
+
+def drop_session(maps_dir: str, map_name: str) -> bool:
+    with _LOCK:
+        return _SESSIONS.pop(_key(maps_dir, map_name), None) is not None
+
+
 def _expect_from_log(template: bytes, w: int, h: int,
                      log: list[tuple]) -> "_rt.IndepMap":
     m = indep_parse(template)
