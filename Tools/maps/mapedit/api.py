@@ -15,7 +15,7 @@ from PIL import Image
 
 from zlsdk import ZlLibrary
 
-from mapedit.constants import (CACHE_TILES_MAX, CACHE_VERSION,
+from mapedit.constants import (_TOOLS_MAPS_DIR, CACHE_TILES_MAX, CACHE_VERSION,
                                DEFAULT_CACHE_MOUNT, DEFAULT_CACHE_ROOT,
                                DEFAULT_CLIENT_ROOT, DEFAULT_CONNECTIONS,
                                DEFAULT_DBWORKSPACE, DEFAULT_DB_NAMES,
@@ -465,7 +465,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self._json_200(body)
 
         elif self.path.split("?")[0] == "/api/map_links_v2.json":
-            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_links_v2.json")
+            path = os.path.join(_TOOLS_MAPS_DIR, "map_links_v2.json")
             try:
                 with open(path, "rb") as f:
                     body = f.read()
