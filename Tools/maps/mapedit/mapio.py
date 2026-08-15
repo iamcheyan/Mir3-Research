@@ -81,6 +81,62 @@ def parse_map(path: str) -> tuple[int, int, list[list[MapCell]]]:
     return w, h, cells
 
 
+def serialize_map(w: int, h: int, cells: list[list[MapCell]],
+                  template: bytes | None = None) -> bytes:
+    """MapCell matrix -> .map bytes; the strict inverse of parse_map.
+
+    Frame index convention (original Client/Scenes/Views/MapControl.cs:526-527
+    confirmed): the middle/front u16 on disk stores the raw frame index — the
+    client reads +1 into memory and draws -1 — so MapCell.img values are written
+    back verbatim, no offset (the +1/-1 lesson of outline §3.2 does not apply to
+    the disk format itself).
+
+    Byte-exactness strategy: when template (original file bytes) is passed in, copy
+    and patch in place —
+      - the last 5 bytes of each cell record (+9..+13, containing Light@+12 and
+        padding) are not modeled by MapCell, preserved as-is;
+      - the header's first 22 bytes are preserved as-is;
+      - released maps where the record area is truncated (43 of them, e.g.
+        kt0005/D601/d608) are written back with the same truncation length.
+    template=None synthesizes a canonical all-zero header/record-tail map (for
+    tests/new maps).
+    """
+    seg1 = (w // 2) * (h // 2) * 3
+    if template is None:
+        out = bytearray(28 + seg1 + w * h * 14)
+        struct.pack_into("<HH", out, 22, w, h)
+    else:
+        out = bytearray(template)
+        if len(out) < 28 + seg1:
+            raise ValueError("template too short for width/height")
+    # Segment 1: Back half-resolution table (3B/entry, only even cells are stored)
+    off = 28
+    for x in range(w // 2):
+        for y in range(h // 2):
+            c = cells[x * 2][y * 2]
+            out[off] = c.back_file
+            struct.pack_into("<H", out, off + 1, c.back_img)
+            off += 3
+    # Segment 2: full-resolution records (column-major x*Height+y), each 14B,
+    # only the first 9 bytes are modeled; the number of written records = same
+    # truncation length as the template (a full copy when there is no template).
+    n = w * h if template is None else min(
+        w * h, max(0, (len(out) - 28 - seg1) // 14))
+    base = 28 + seg1
+    for i in range(n):
+        x, y = divmod(i, h)
+        o = base + i * 14
+        c = cells[x][y]
+        out[o] = c.flag
+        out[o + 1] = c.anim_a
+        out[o + 2] = c.anim_b
+        out[o + 3] = c.front_file
+        out[o + 4] = c.mid_file
+        struct.pack_into("<H", out, o + 5, c.mid_img)
+        struct.pack_into("<H", out, o + 7, c.front_img)
+    return bytes(out)
+
+
 class MapCache:
     """LRU of parsed maps + two cell indexes.
 

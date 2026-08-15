@@ -6,6 +6,11 @@ import json
 import os
 import re
 
+# 拆分前 mapviewer.py 位于 Tools/maps/；本包在 Tools/maps/mapedit/，相对
+# 路径常量需回到上一级目录解析（行为等价于拆分前）。
+_PKG_DIR = os.path.dirname(os.path.abspath(__file__))
+_TOOLS_MAPS_DIR = os.path.dirname(_PKG_DIR)
+
 TILE_SZ = 512          # tile size in screen pixels
 CACHE_MAPS_MAX = 3     # decoded maps kept in memory
 CACHE_TILES_MAX = 400  # rendered tiles (PNG bytes) kept in memory
@@ -27,7 +32,7 @@ THUMBS_DIR = os.path.join(DEFAULT_CACHE_ROOT, "thumbs")  # shared with WikiServe
 
 # 共享文本缓存（小地图索引/地图中文名）：仓库 Tools/cache/ 优先，/tmp 兜底；
 # scripts/gen_caches.sh 两处同写（§3.4 脆弱点治理）。env MIR3_CACHE_DIR 可强制。
-_REPO_CACHE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "cache"))
+_REPO_CACHE_DIR = os.path.abspath(os.path.join(_TOOLS_MAPS_DIR, "..", "cache"))
 
 
 def _cache_file(name: str) -> str:
@@ -42,12 +47,12 @@ MAX_FULL_DIM = 16384   # full-map single image: longest side cap (px)
 FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
 DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
 DEFAULT_CONNECTIONS = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "../../docs/database/data/map-connections.json"))
+    _TOOLS_MAPS_DIR, "../../docs/database/data/map-connections.json"))
 # dbeditor JSON 工作区（System.db 全表导出，编辑器保存即更新）——NPC 位置与
 # 地图连接的第一数据源（NPCInfo 294 行 × MapRegion 5009 行 × MovementInfo
 # 1039 行，PointRegion 质心坐标 0 缺失，且包含 NpcMover 修正后的 EI 坐标）。
 DEFAULT_DBWORKSPACE = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "../dbeditor/workspace"))
+    _TOOLS_MAPS_DIR, "../dbeditor/workspace"))
 # 客户端显示名映射表（方案 B 本地化）：NPC/地图 中文名，zh 优先、英文兜底。
 DEFAULT_DB_NAMES = os.path.expanduser(
     "~/development/zircon/GodotClient/translations/db_names.json")

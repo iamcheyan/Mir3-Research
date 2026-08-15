@@ -21,7 +21,8 @@ from mapedit.constants import (CACHE_FRAMES_BYTES, CACHE_MAPS_MAX, CACHE_TILES_M
                                OFFSET_MODES, OFFSET_NONE, THUMBS_DIR, TILE_SZ)
 from mapedit.constants import _load_map_cn, default_tile_cache_dir, _nas_cache_available
 
-from mapedit.mapio import MapCache, MapCell, parse_map, parse_map_header
+from mapedit.mapio import (MapCache, MapCell, parse_map, parse_map_header,
+                           serialize_map)
 from mapedit.frames import FramePool, _find_library_path
 from mapedit.geom import cell_anchor, map_ladder, world_bounds
 from mapedit.render import (LIB_IDS, PARALLEL_MIN_FRAMES, _blit,
