@@ -245,6 +245,37 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 - **`OriginalSpellCases` 白名单口径 = "原版 switch 有 case 且创建了特效"**：纯音效
   case（CombatKick/JudgementOfHeaven，只 `Play` 无 `MirEffect`）归
   `NoVisualSpellCases`，混进白名单会把覆盖率审计搞成假阳性。
+
+### 3.11 NPC 摆放写链路的坑（E2 实证，2026-08-16）
+
+- **阻挡格 spawn 的 NPC 游戏内不可见**：服务器 `Spawn(region)` 的 `GetCell` 只查
+  边界不查 flag——NPC 在阻挡格(flag&3!=3)会正常「出生」（无 Failed to spawn 日志）
+  但玩家端永远收不到广播。把 Mr.Kang 拖进比奇建筑墙(396,352)实测：服务器对象在、
+  客户端 0 公里也不显示。**摆放编辑必须在写 workspace 前校验通行**（npcedit
+  `_cell_blocked` 按 Segment2 布局直读 flag，与 E1 mapio 同约定；force 可旁路）。
+- **workspace 的 MapRegion.PointRegion 是质心摘要有损**（SystemDbProbe 只导出
+  PointCount/CenterX/CenterY）：DBImporter 原来对 points 类型一律拒绝。已扩展三档：
+  单点无损写回 `Point[]{(cx,cy)}`；多点区域**整体平移**（delta=新质心-库内质心，
+  形状保持，平移后质心恰为新值——安全区拖动即此）；点数不一致/多点改形/多点缩单点
+  拒绝。round-trip 用 probe 重导出的摘要对比兜底。
+- **_baseline 与 DB 真值会静默漂移**：外部工具直改过 .db（如 MapRegion 1281/1297
+  归属修正）后，workspace/_baseline 仍是旧值——sync.sh 的 baseline rebase 只 copy
+  workspace 文件，不重导出。平时无害（importer 只应用 diff），但**一旦该表出现
+  pending 改动，round-trip 对比必炸**；更阴的是「回滚表」会把陈旧行从 _baseline
+  带回 workspace。治法：用 SystemDbProbe 导出现库对齐漂移行，sync 成功一次后
+  baseline 重置即永久愈合（E2 于 2026.08.16.2 完成）。
+- **workspace 回滚是整表粒度**：`回滚 MapInfo` 会把表上**所有人**的 pending
+  （如 15 条 MiniMap 指派）一起抹掉。E2 实测踩中，从 git 恢复（dbeditor 每次
+  persist 自动 commit 是救命的）。工具/UI 已加警示文案；精细回滚应 PUT 旧值而非
+  整表还原（§3.8 dbeditor rollback 同理）。
+- **dbeditor 是启动时全量载内存**：外部写 workspace JSON 后，其下一次 persist 会用
+  旧内存覆写。写方必须 POST /api/reload（E2 已加端点，78 表实测）。
+- **82 机 headless_shell 的 `page.click`（CDP 真实鼠标）静默不触发**（§3.9
+  dispatchMouseEvent wedge 的补充实证）：同页面 `evaluate(()=>el.click())` 一切
+  正常。无头验收一律合成事件。
+  另：调头浏览器再连时旧 page 关闭可能留 `[Account in Use]` 在线锁，等 ~40s 服务器
+  心跳踢线再登。
+
 ---
 
 ## 4. 环境引导（82 机器，一次性）
@@ -361,6 +392,13 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
 
 **一句话**：在 mapviewer 上拖拽摆放/移动 NPC（及守卫、安全区、矿山 Region），经 dbeditor 既有管线安全写回 System.db。
 
+> **状态：✅ 完成（2026-08-16，验收全过，存证 `docs/editor/e2-proof/`）**。
+> 链路：mapviewer 编辑模式拖拽/点图放置（通行格校验）→ mapedit `/npc/*` →
+> npcedit 引擎写 workspace JSON（自动 git commit）→ dbeditor `/api/reload` 同步
+> 内存 → 停服 `sync.sh` 入库（DBImporter points 三档写回）→ 起服游戏内生效。
+> CLI 旁路：`Tools/NpcMover/place.py`（list/move/new/del/guard-move/diff/rollback，
+> `--maps-dir --force`）。坑与数据模型事实见 §3.11。
+
 **领地**：`Tools/maps/mapviewer.py` 的 NPC 编辑部分（与 E1 同文件！见 §9.2 冲突协议——E2 等 E1 拆模块后再动手，或先在独立分支）、`Tools/NpcMover/`（已有坐标修正工具，扩展它）。
 
 ### 6.1 现状（已具备）
@@ -383,10 +421,18 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
 
 ### 6.3 验收标准
 
-- [ ] 拖拽移动 NPC → sync → 重启服务器 → 游戏内 NPC 位置与编辑一致（截图存证）
-- [ ] 新建 NPC 全流程（含 EntryPage 绑定）可用
-- [ ] baseline diff 正确；sync 失败时 workspace 可回滚
-- [ ] 全程未直写 .db（sync_report.txt 为证）
+- [x] 拖拽移动 NPC → sync → 重启服务器 → 游戏内 NPC 位置与编辑一致（截图存证）
+  —— 2026-08-16 完成：UI 拖拽 Mr.Kang → (398,351)（通行格，阻挡格校验拦下
+  (396,352)）→ sync 2026.08.16.3 → 起服 → webport `@MOVE 0 394 353` 实测视野内
+  NPCObject 恰在 (398,351) → 截图 `docs/editor/e2-proof/ingame-npc-moved.png`
+  → 还原 (402,356) → sync 2026.08.16.4 → workspace diff=0。
+- [x] 新建 NPC 全流程（含 EntryPage 绑定）可用 —— UI「点图放置」（名称/Image/
+  EntryPage 搜索 datalist）+ CLI `place.py create` 均实测（无头浏览器
+  `ui-create-npc.png`；引擎级 create→importer→round-trip 语义一致）。
+- [x] baseline diff 正确；sync 失败时 workspace 可回滚 —— /npc/diff 与 dbeditor
+  /api/changes 同语义；表级/全量回滚可用（警示文案见 §3.11 整表粒度坑）。
+- [x] 全程未直写 .db（sync_report.txt 为证）—— 4 次 sync 全走 sync.sh
+  （校验→临时副本→round-trip→备份→双库安装），零直写。
 
 ---
 
