@@ -3475,6 +3475,17 @@ def get_client_roots() -> list[dict]:
     return roots
 
 
+class ViewerHTTPServer(ThreadingHTTPServer):
+    """静默客户端断连噪音; 死连接不过度堆积。"""
+    daemon_threads = True
+    request_queue_size = 128
+
+    def handle_error(self, request, client_address):
+        exc = sys.exc_info()[1]
+        if isinstance(exc, (ConnectionError, TimeoutError)):
+            return   # 浏览器中止轮询/关标签页: 正常噪音, 不刷栈
+        super().handle_error(request, client_address)
+
 class ViewerHandler(BaseHTTPRequestHandler):
     map_cache: MapCache
     pool: FramePool
@@ -5079,13 +5090,28 @@ def main():
                      daemon=True, name="api-maps-warm").start()
     print(f"[*] Tile cache: {cache_dir}")
 
-    server = ThreadingHTTPServer(("0.0.0.0", args.port), ViewerHandler)
+    server = ViewerHTTPServer(("0.0.0.0", args.port), ViewerHandler)
     print(f"[*] Map Viewer running on http://127.0.0.1:{args.port}/")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\n[*] Stopping server.")
-
+    while True:
+        try:
+            server.serve_forever(poll_interval=0.5)
+            break   # 干净关闭 (shutdown() 被调用)
+        except KeyboardInterrupt:
+            break
+        except Exception:
+            # 服务循环意外异常 (如客户端中断引发的处理链错误):
+            # 记录并续命, 不让单次异常杀死整个查看器
+            import traceback
+            traceback.print_exc()
+            try:
+                with open(os.path.join(cache_dir, "server-crash.log"), "a") as fh:
+                    fh.write(f"\n==== {time.strftime('%F %T')} ====\n")
+                    traceback.print_exc(file=fh)
+            except OSError:
+                pass
+            time.sleep(1)
+    server.server_close()
+    print("[*] Server stopped.")
 
 if __name__ == "__main__":
     main()
