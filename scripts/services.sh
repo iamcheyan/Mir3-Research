@@ -90,12 +90,13 @@ svc_start() {
             fi ;;
     esac
     echo "[+] $name 启动中（端口 $(port_of "$name")）…"
-    ( cd "$REPO" && nohup bash -c "$(cmd_of "$name")" >>"$RUN/$name.log" 2>&1 &
-      echo $! >"$RUN/$name.pid" )
+    ( cd "$REPO" && setsid nohup bash -c "$(cmd_of "$name")" >>"$RUN/$name.log" 2>&1 </dev/null &
+      disown; echo $! >"$RUN/$name.pid" )
     # 就绪等待（TCP 通即认为就绪；zircon-core 要等 DB 加载 ~11s+）
     local deadline=$(( SECONDS + $(timeout_of "$name") ))
     while (( SECONDS < deadline )); do
         local pid; pid="$(port_pid "$name")"
+        [ -n "$pid" ] && echo "$pid" >"$RUN/$name.pid"   # 记真实监听 pid（$! 可能是包装子壳）
         if is_up "$name"; then echo "[✓] $name 就绪 :$(port_of "$name") (pid ${pid:-$(cat "$RUN/$name.pid" 2>/dev/null)})"; return 0; fi
         sleep 1
     done

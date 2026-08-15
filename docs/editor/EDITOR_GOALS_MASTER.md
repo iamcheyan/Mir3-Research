@@ -99,7 +99,26 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 | `/tmp/map_cn_full.json` | workspace MapInfo.json + `Tools/maps/mapnames.py resolve` | 地图中文名全丢（"比奇城"变"0"） |
 | `/tmp/wiki_thumbs` | mapviewer prewarm | 总览缩略图重建（慢，不致命） |
 
-（mapviewer 读这些用 `@lru_cache`——重生成后**必须重启进程**。）
+（E0 已固化：`bash scripts/gen_caches.sh` 或 `make cache` 一键重建，产物双写
+`Tools/cache/`（入仓库，主）+ `/tmp/`（兜底镜像）；工具读取顺序
+`MIR3_CACHE_DIR` > `Tools/cache/` > `/tmp`。重建后仍须重启进程——`@lru_cache`。）
+
+### 3.4.1 82 机环境差异坑（E0 实证，2026-08-15）
+
+- **NAS 路径**：82 机实际挂载在 **`/data/NAS`**（cifs）；旧机 `/home/tetsuya/NAS`
+  是指向 `/tmp/nas_mnt/NAS` 的**悬空符号链接**。硬编码旧路径的工具在 82 上
+  静默失败（mapviewer 甚至起不来）。已修：mapviewer 按
+  `MIR3_NAS_TMP` env > `/data/NAS/TMP` > 旧路径 解析；脚本统一读
+  `MIR3_EI_ROOT`/`MIR3_MUD3_ROOT`/`MIR3_ZIRCON_ROOT`（gen_caches.sh/services.sh 内置 82 默认值兜底）。
+- **/tmp 是 7.9G tmpfs，常态接近满**：chrome 默认把 profile 写 /tmp，空间不足时
+  渲染进程直接崩（puppeteer 报 "Session closed. Most likely the page has been closed"）。
+  无头验收一律给 `userDataDir` 指到磁盘（如 `~/.cache/xxx-profile`）；大文件中转用
+  /home 而不是 /tmp。
+- **MirDB Session root 拼接**：`Session(SystemPath)` 是 `root + "System.db"` 字符串拼接，
+  **root 无尾分隔符 → 打开 `…DataSystem.db`**，不存在时 0 表假成功（SystemDbProbe
+  曾 0 条 minimap）。已在 SystemDbProbe 入口归一化尾分隔符；新工具照防。
+- **mawk 不支持 `match($0, re, arr)` 三参**（gawk 扩展）：Debian 默认 awk 是 mawk，
+  shell 脚本解析 `ss -tlnp` pid 用 `grep -o 'pid=[0-9]*'` 替代。
 
 ### 3.5 hub 服务管理教训
 
@@ -145,9 +164,14 @@ python3 -c "import sys; sys.path.insert(0,'Tools/maps'); import mapviewer"  # �
 
 测试号：`test@test.com / test123 / TestHero`（GM，Admin=True）。webport 一键直进：`http://127.0.0.1:8823/?demo=1`。**共享账号并发登录会 `[Account in Use]`，多 goal 同时验收各自注册独立账号。**
 
-### 4.3 缓存生成（E0 会做成一键；临时手动）
+### 4.3 缓存生成（E0 已做成一键）
 
 见 §3.4 三条命令。生成后重启对应服务。
+
+E0 落地后：`make cache`（= `scripts/gen_caches.sh`，产物入 `Tools/cache/` + `/tmp` 镜像），
+服务起停用 `scripts/services.sh <start|stop|restart|status|log> [name…]` 或 Makefile
+的 `serve-mapviewer` 等短路目标。services.sh 为 nohup+pidfile 自治实现（hub socket
+对 shell 不公开，omp 会话内仍可用 hub 工具，两套按端口互认互不冲突）。
 
 ### 4.4 无头 Godot 对照配方（验收 UI/渲染用）
 

@@ -60,10 +60,10 @@
      （含 NpcMover 坐标修正）。`wiki_all.json` 是静态快照会过期，只做兜底。
 2. **NAS 资源环境变量**（素材不在仓库，靠这些解析）：
    ```bash
-   export MIR3_EI_ROOT=/home/tetsuya/NAS/TMP/EI传奇3.0客户端   # 82服务器实际用 /tmp/nas_mnt/NAS/TMP/...
+   export MIR3_EI_ROOT=/home/tetsuya/NAS/TMP/EI传奇3.0客户端   # 82服务器实际用 /data/NAS/TMP/...
    export MIR3_MUD3_ROOT=/home/tetsuya/NAS/TMP/Mud3             # 原版服务端文本配置(GB18030!)
    export MIR3_ZIRCON_ROOT=/home/tetsuya/development/Zircon     # 注意 zircon 实际目录是小写
-   ```
+   export MIR3_NAS_TMP=/data/NAS/TMP                            # [shared E0] 82机NAS挂载点(旧机是/home/tetsuya/NAS→/tmp/nas_mnt,82上已悬空); mapviewer瓦片缓存等按它解析
    NAS 上还有 `EI3.0英雄杀服务端/Mud3/Envir/`（MapInfo.txt/Mongen.txt 等权威文本，
    **GB18030 编码**，Python 读先 `bytes → decode('gb18030')`）。
 3. **Python 环境统一用 `/home/tetsuya/mir3-venv/bin/python`**（Python 3.13.5，装了
@@ -143,6 +143,15 @@ cd ~/development/zircon && godot-mono --path GodotClient res://Scenes/UITestScen
 
 # 重建 WebData
 cd Tools/webres && mir3-venv/bin/python webres.py data && mir3-venv/bin/python webres.py sprites --what all
+```
+
+```bash
+# [shared E0] 一键重建 /tmp 脆弱缓存三件套（Tools/cache/ + /tmp 双写）
+make cache          # = bash scripts/gen_caches.sh（--thumbs 连总览缩略图）
+
+# [shared E0] 统一服务管理（11个服务注册表；hub socket 对 shell 不公开故 nohup+pidfile 自治）
+bash scripts/services.sh status
+bash scripts/services.sh start mapviewer     # start/stop/restart/log 同构, 无参=全部
 ```
 
 ## 九、别做什么
