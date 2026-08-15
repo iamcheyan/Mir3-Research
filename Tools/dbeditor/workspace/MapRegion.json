@@ -433,8 +433,8 @@
       "Description": "0 / Weapon Store",
       "PointRegion": {
         "PointCount": 1,
-        "CenterX": 396,
-        "CenterY": 352
+        "CenterX": 402,
+        "CenterY": 356
       },
       "RegionType": "None",
       "Size": 1
@@ -9861,21 +9861,21 @@
     },
     {
       "Index": 1281,
-      "_Identity": "D10031 / Teleport Stone",
+      "_Identity": "D11031 / D11031 / Teleport Stone",
       "Map": {
-        "Index": 18,
-        "Name": "D10031"
+        "Index": 797,
+        "Name": "D11031"
       },
       "NPCs": [
         {
           "Index": 89,
-          "Name": "D10031 / Teleport Stone / Hexa Holy Stone"
+          "Name": "D11031 / D11031 / Teleport Stone / Hexa Holy Stone"
         }
       ],
-      "Description": "Teleport Stone",
+      "Description": "D11031 / Teleport Stone",
       "PointRegion": {
         "PointCount": 1,
-        "CenterX": 199,
+        "CenterX": 197,
         "CenterY": 257
       },
       "RegionType": "None",
@@ -10213,22 +10213,22 @@
     },
     {
       "Index": 1297,
-      "_Identity": "0_000 / Administrator",
+      "_Identity": "0 / 0 / Administrator",
       "Map": {
-        "Index": 2,
-        "Name": "0_000"
+        "Index": 1,
+        "Name": "0"
       },
       "NPCs": [
         {
           "Index": 105,
-          "Name": "0_000 / Administrator / Administrator"
+          "Name": "0 / 0 / Administrator / Administrator"
         }
       ],
-      "Description": "Administrator",
+      "Description": "0 / Administrator",
       "PointRegion": {
         "PointCount": 1,
-        "CenterX": 44,
-        "CenterY": 27
+        "CenterX": 386,
+        "CenterY": 288
       },
       "RegionType": "None",
       "Size": 1
@@ -10940,6 +10940,20 @@
         {
           "Index": 156,
           "Name": "01 / 上官小姐 / 14Quest_KugKyung1"
+        }
+      ],
+      "QuestTasks": [
+        {
+          "Index": 75,
+          "Name": null
+        },
+        {
+          "Index": 76,
+          "Name": null
+        },
+        {
+          "Index": 77,
+          "Name": null
         }
       ],
       "Description": "上官小姐",
