@@ -857,6 +857,8 @@ export const C = {
   GameStoreGift: (index, count, useHuntGold, recipient) =>
     new Writer().int32(index).int64(count).bool(useHuntGold).string(recipient).build(ID.C_GAMESTOREGIFT),
   GameStoreFavouriteToggle: (index) => new Writer().int32(index).build(ID.C_GAMESTOREFAVOURITETOGGLE),
+  MarketPlaceStoreBuy: (index, count, useHuntGold) =>
+    new Writer().int32(index).int64(BigInt(count)).bool(useHuntGold).build(ID.C_MARKETPLACESTOREBUY),
   // 技能
   MagicKey: (magic, set1, set2, set3, set4) =>
     new Writer().int32(magic).byte(set1).byte(set2).byte(set3).byte(set4).build(ID.C_MAGICKEY),
@@ -1292,6 +1294,7 @@ export const S = {
   GameStoreTopItems(r) { return { items: r.list((rr) => rr.int32()) }; },
   GameStoreFavouriteChanged(r) { return { index: r.int32(), favourited: r.bool() }; },
   GameStoreGift(r) { return { result: r.byte() }; }, // ServerPackets.cs:904-907
+  MarketPlaceStoreBuy(r) { return {}; },   // ServerPackets.cs:883 空载荷
   CompanionUpdate(r) { return { level: r.int32(), experience: r.int32(), hunger: r.int32() }; },
   CompanionWeightUpdate(r) { return { bagWeight: r.int32(), maxBagWeight: r.int32(), inventorySize: r.int32() }; },
   CompanionAdopt(r) { return { userCompanion: readClientUserCompanion(r) }; },

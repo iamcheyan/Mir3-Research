@@ -754,7 +754,80 @@ const report = (name, pass, detail) => { results.push({ name, pass }); console.l
   report('BELT', d.labelsOk && d.linkType && d.pkt17a && d.displayOk && d.usedOk && d.swapOk && d.linkItem && d.cleared && d.kbOk, r);
 }
 
-// ---- 汇总 ----
+// ============ 21. 商城 (GameStoreDialog.cs :12-468) ============
+{
+  const r = await ev(`(async () => {
+    const s = __WEBPORT.current; const reg = await s._winInstall;
+    const { WindowManager } = await import('/static/js/windows.js');
+    const win = reg.win('store');
+    if (!win) return { err: 'no-store-win', names: [...reg.wins.keys()] };
+    WindowManager.open(win, s.hudLayer);
+    const conn = s.conn;
+    const pkts = []; const orig = conn.send.bind(conn);
+    conn.send = (b) => { if (b?.byteLength >= 6) pkts.push(new DataView(b.buffer, b.byteOffset).getInt16(4, true)); return b; };
+    const ctl = (t) => [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === t && b.__ctl?.onClick)?.__ctl;
+    const btnTxt = () => win.el.textContent;
+    const pageOf = (t) => { const i = t.indexOf(' / '); if (i < 0) return 'NONE'; let a = i; while (a > 0 && t[a-1] >= '0' && t[a-1] <= '9') a--; let b = i + 3; while (b < t.length && t[b] >= '0' && t[b] <= '9') b++; return t.slice(a, b); };
+    await new Promise(r => setTimeout(r, 500));
+    const zh = (await import('/static/js/data.js')).D().itemsById[709]?.zh;
+    // 数据加载 (store.json 92 行) + 分类树 + 首页
+    const t0 = btnTxt();
+    const dataOk = t0.includes('全部') && t0.includes('装备') && t0.includes('消耗品') && pageOf(t0) !== 'NONE' && pageOf(t0) !== '1 / 1';
+    // 分类: 装备 → 类型展开 (AddTypeFilters :252)
+    ctl('装备').onClick();
+    await new Promise(r => setTimeout(r, 300));
+    const equipFilter = ctl('Weapon') != null;
+    ctl('全部').onClick();
+    await new Promise(r => setTimeout(r, 200));
+    // 排序菜单 4 态 (:71-91)
+    ctl('名称').onClick();
+    await new Promise(r => setTimeout(r, 200));
+    const sortMenuOk = btnTxt().includes('价格从高到低') && btnTxt().includes('收藏');
+    ctl('价格从低到高').onClick();
+    await new Promise(r => setTimeout(r, 200));
+    const sortApplied = ctl('价格从低到高') != null;   // 按钮文本已切换
+    // 搜索 (名称含 zh 或 en; :123 ItemName.Contains)
+    const inp = win.el.querySelector('input');
+    inp.value = 'Mark Of Destruction'; inp.dispatchEvent(new Event('input'));
+    ctl('搜索').onClick();
+    await new Promise(r => setTimeout(r, 300));
+    const t1 = btnTxt();
+    const searchOk = pageOf(t1) === '1 / 1' && t1.includes(zh);
+    inp.value = ''; inp.dispatchEvent(new Event('input'));
+    ctl('搜索').onClick();
+    await new Promise(r => setTimeout(r, 300));
+    // 数量 1-10 (:344-382) + 购买确认 → C_MARKETPLACESTOREBUY 224
+    ctl('1').onClick();
+    await new Promise(r => setTimeout(r, 200));
+    const qtyMenuOk = ctl('3') != null;
+    ctl('3').onClick();
+    await new Promise(r => setTimeout(r, 200));
+    const qtySet = [...win.el.querySelectorAll('.dxbtn')].some(b => b.textContent.trim() === '3' && b.__ctl?.onClick);
+    ctl('购买').onClick();
+    await new Promise(r => setTimeout(r, 300));
+    const okBtn = [...document.querySelectorAll('button')].find(b => b.textContent.trim() === '确定');
+    okBtn?.click();
+    await new Promise(r => setTimeout(r, 300));
+    const buySent = pkts.includes(224);
+    // 收藏: 只发 toggle, UI 由 S 回包驱动 (:341 不乐观更新)
+    const fav = [...win.el.querySelectorAll('.dxbtn')].find(b => b.textContent.trim() === '☆');
+    fav.onClick();
+    await new Promise(r => setTimeout(r, 200));
+    const favToggleSent = pkts.includes(86);
+    const optimistic = [...win.el.querySelectorAll('.dxbtn')].some(b => b.textContent.trim() === '★');
+    // S 回包 → 星标点亮 (:394 SetFavourite)
+    const anyId = 30;
+    conn.dispatchEvent(new CustomEvent('gameStoreFavouriteChanged', { detail: { index: anyId, favourited: true } }));
+    await new Promise(r => setTimeout(r, 300));
+    const favAfterS = [...win.el.querySelectorAll('.dxbtn')].some(b => b.textContent.trim() === '★');
+    conn.send = orig;
+    return { dataOk, equipFilter, sortMenuOk, sortApplied, searchOk, qtyMenuOk, qtySet, buySent, favToggleSent, optimistic, favAfterS, zh };
+  })()`);
+  const d = typeof r === 'object' ? r : {};
+  report('STORE', d.dataOk && d.equipFilter && d.sortMenuOk && d.sortApplied && d.searchOk && d.qtyMenuOk && d.qtySet && d.buySent && d.favToggleSent && d.optimistic === false && d.favAfterS, r);
+}
+
+// ---- 汇总 ----// ---- 汇总 ----
 const failed = results.filter(x => !x.pass);
 console.log(`\nNPC PANELS: ${results.length - failed.length}/${results.length} PASS${failed.length ? ' — FAIL: ' + failed.map(f => f.name).join(', ') : ''}`);
 if (logs.length) console.log('PAGE LOGS:', logs.slice(0, 6).join('\n'));

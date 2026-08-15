@@ -489,6 +489,18 @@ def cmd_data(args) -> int:
         })
     write_json(out / "items.json", items)
 
+    # ---- Store 92 ---- (GameStoreDialog: System.db StoreInfo 快照)
+    store = []
+    for row in ws_rows("StoreInfo"):
+        item = row.get("Item") or {}
+        store.append({
+            "id": row["Index"], "item": item.get("Index") or 0, "name": item.get("Name") or "",
+            "price": row.get("Price") or 0, "huntGoldPrice": row.get("HuntGoldPrice") or 0,
+            "filter": row.get("Filter") or "", "available": bool(row.get("Available")),
+            "duration": row.get("Duration") or 0,
+        })
+    write_json(out / "store.json", store)
+
     # ---- 外观模型 (库选择表, 客户端 JS 同公式计算帧号) ----
     appearance = {
         "libraries": enum2file,

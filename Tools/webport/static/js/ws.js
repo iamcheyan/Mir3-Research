@@ -215,6 +215,7 @@ const DISPATCH = {
   [ID.S_MARKETPLACECONSIGNCHANGED]: ['marketPlaceConsignChanged', S.MarketPlaceConsignChanged],
   [ID.S_GAMESTOREDATA]: ['gameStoreData', S.GameStoreData],
   [ID.S_GAMESTORETOPITEMS]: ['gameStoreTopItems', S.GameStoreTopItems],
+  [ID.S_MARKETPLACESTOREBUY]: ['gameStoreBuy', S.MarketPlaceStoreBuy],
   [ID.S_GAMESTOREFAVOURITECHANGED]: ['gameStoreFavouriteChanged', S.GameStoreFavouriteChanged],
   [ID.S_GAMESTOREGIFT]: ['gameStoreGift', S.GameStoreGift],
   [ID.S_COMPANIONUPDATE]: ['companionUpdate', S.CompanionUpdate],
@@ -436,6 +437,7 @@ export class GameConnection extends EventTarget {
   sendMarketPlaceBuy(index, count, guildFunds = false) { this.send(C.MarketPlaceBuy(index, count, guildFunds)); }
   sendMarketPlaceHistory(index, display = 0, partIndex = 0) { this.send(C.MarketPlaceHistory(index, display, partIndex)); }
   sendMarketPlaceSearchIndex(index) { this.send(C.MarketPlaceSearchIndex(index)); }
+  sendGameStoreBuy(index, count, useHuntGold) { this.send(C.MarketPlaceStoreBuy(index, count, useHuntGold)); }
   sendGameStoreGift(index, count, useHuntGold, recipient) { this.send(C.GameStoreGift(index, count, useHuntGold, recipient)); }
   sendGameStoreFavouriteToggle(index) { this.send(C.GameStoreFavouriteToggle(index)); }
   sendHermit(stat) { this.send(C.Hermit(stat)); }

@@ -107,20 +107,33 @@ def probe_detail(tool: dict) -> str:
     return ""
 
 
-def health_payload() -> dict:
+def display_host(fallback: str | None = None) -> str:
+    """浏览器可见主机名: 取请求 Host 头, 缺省回退本机局域网 IP (本机探测 HOST 仍为 127.0.0.1)。"""
+    if fallback:
+        return fallback.rsplit(":", 1)[0] or HOST
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("10.255.255.255", 1))
+            return s.getsockname()[0]
+    except OSError:
+        return HOST
+
+
+def health_payload(host: str | None = None) -> dict:
+    shown = display_host(host)
     tools = []
     for t in TOOLS:
         up = tcp_up(t["port"])
         entry = {
             "id": t["id"], "name": t["name"], "port": t["port"],
-            "url": f"http://{HOST}:{t['port']}/", "up": up,
+            "url": f"http://{shown}:{t['port']}/", "up": up,
             "ro": t["ro"], "desc": t["desc"],
             "mob": t["mob"], "mobLabel": t["mobLabel"], "start": t["start"],
         }
         if up:
             entry["detail"] = probe_detail(t)
         tools.append(entry)
-    return {"ok": True, "host": HOST, "tools": tools}
+    return {"ok": True, "host": shown, "tools": tools}
 
 
 PAGE_HTML = r"""<!DOCTYPE html>
@@ -228,7 +241,8 @@ class PortalHandler(BaseHTTPRequestHandler):
             self._send(PAGE_HTML.encode("utf-8"), "text/html; charset=utf-8")
             return
         if path == "/api/health":
-            self._send(json.dumps(health_payload(), ensure_ascii=False).encode("utf-8"),
+            req_host = (self.headers.get("Host") or "").rsplit(":", 1)[0] or None
+            self._send(json.dumps(health_payload(req_host), ensure_ascii=False).encode("utf-8"),
                        "application/json; charset=utf-8")
             return
         if path.startswith("/_webui/"):
