@@ -2698,9 +2698,456 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     doubleTap: (x, y) => zoomAt(+1, x, y)
                 });
             }
+        /*__EDIT_UI__*/
         })();
     </script>
 </body>
 </html>
 """
 
+
+# ---------------------------------------------------------------------------
+# 编辑模式 UI（E1）：注入主模板闭包的 JS 模块。api.py 在服务 "/" 时把
+# /*__EDIT_UI__*/ 替换为本常量。功能：格选中/六字段侧栏/三图层帧选择器
+# （/sprite 实时预览）/flag 着色网格/笔刷（单格·矩形·同值替换）/撤销重做/
+# 未保存提醒/保存管线调用（副本→独立验证→备份→原子替换）。
+EDIT_UI_JS = r"""
+        // ============================ 编辑模式 (E1) ============================
+        const LIB_NAMES = __LIB_JSON__;
+
+        let editOn = false, editSess = null;   // {w,h,dirty,undo,redo}
+        let editSel = null;                     // {x,y}
+        let editBrush = 'cell';                 // cell | rect | same
+        let editRectA = null, editRectB = null; // rect 拖拽角点
+        let editSameSrc = null;                 // same 模式源格
+        let editRev = 0;                        // 客户端瓦片 URL 换新计数
+        let editFlags = null;                   // Uint8Array flag 图
+
+        function editPanel() {
+            let p = document.getElementById('edit-panel');
+            if (!p) {
+                p = document.createElement('div');
+                p.id = 'edit-panel';
+                p.style.cssText = 'position:fixed;right:10px;top:50px;width:308px;max-height:82vh;overflow:auto;'
+                    + 'background:rgba(10,12,16,.94);border:1px solid #3a3a46;border-radius:6px;'
+                    + 'padding:8px 10px;font-size:12px;color:#c8c8d2;z-index:90;line-height:1.5';
+                document.body.appendChild(p);
+            }
+            return p;
+        }
+
+        async function editPost(op, payload) {
+            const r = await fetch('/edit/' + op, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(Object.assign({map: curName}, payload || {}))
+            });
+            return r.json();
+        }
+
+        async function editLoadFlags() {
+            const r = await fetch('/edit/flags?map=' + encodeURIComponent(curName));
+            const d = await r.json();
+            if (d.ok) {
+                const bin = atob(d.flags);
+                editFlags = new Uint8Array(bin.length);
+                for (let i = 0; i < bin.length; i++) editFlags[i] = bin.charCodeAt(i);
+            } else editFlags = null;
+        }
+
+        function editScreenToCell(e) {
+            const rect = vp.getBoundingClientRect();
+            const s = curScale();
+            return {
+                x: Math.floor((vp.scrollLeft + e.clientX - rect.left) * s / 48),
+                y: Math.floor((vp.scrollTop + e.clientY - rect.top) * s / 32)
+            };
+        }
+
+        function editDrawOverlay() {
+            let c = document.getElementById('edit-canvas');
+            if (!c) {
+                c = document.createElement('canvas');
+                c.id = 'edit-canvas';
+                c.style.cssText = 'position:absolute;left:0;top:0;z-index:5;pointer-events:none;';
+                vp.appendChild(c);
+            }
+            c.width = vp.clientWidth; c.height = vp.clientHeight;
+            const ctx = c.getContext('2d');
+            const s = curScale(), sx = s / 48, sy = s / 32;
+            const x0 = Math.floor(vp.scrollLeft * sx), y0 = Math.floor(vp.scrollTop * sy);
+            const x1 = Math.ceil((vp.scrollLeft + vp.clientWidth) * sx);
+            const y1 = Math.ceil((vp.scrollTop + vp.clientHeight) * sy);
+            const toScr = (gx, gy) => [Math.floor(gx * 48 / s - vp.scrollLeft), Math.floor(gy * 32 / s - vp.scrollTop)];
+            // flag 着色：不可通行格红色薄层（服务器判定 flag&3!=3 即阻挡）
+            if (editFlags && curMap()) {
+                const mi = curMap();
+                ctx.fillStyle = 'rgba(255,48,48,.30)';
+                for (let gx = Math.max(0, x0); gx < Math.min(mi.w, x1); gx++) {
+                    for (let gy = Math.max(0, y0); gy < Math.min(mi.h, y1); gy++) {
+                        if ((editFlags[gx * mi.h + gy] & 3) !== 3) {
+                            const [px, py] = toScr(gx, gy);
+                            ctx.fillRect(px, py, Math.ceil(48 / s), Math.ceil(32 / s));
+                        }
+                    }
+                }
+            }
+            // 网格（z<=1 才画，避免高级别过密）
+            if (curZ() <= 1) {
+                ctx.strokeStyle = 'rgba(255,255,255,.14)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                for (let gx = Math.max(0, x0); gx <= x1; gx++) {
+                    const [px] = toScr(gx, 0);
+                    ctx.moveTo(px + .5, 0); ctx.lineTo(px + .5, c.height);
+                }
+                for (let gy = Math.max(0, y0); gy <= y1; gy++) {
+                    const [, py] = toScr(0, gy);
+                    ctx.moveTo(0, py + .5); ctx.lineTo(c.width, py + .5);
+                }
+                ctx.stroke();
+            }
+            // 选中格
+            const box = (cell, color, label) => {
+                const [px, py] = toScr(cell.x, cell.y);
+                ctx.strokeStyle = color; ctx.lineWidth = 2;
+                ctx.strokeRect(px + 1, py + 1, Math.ceil(48 / s) - 2, Math.ceil(32 / s) - 2);
+                if (label) { ctx.fillStyle = color; ctx.font = '11px ui-monospace'; ctx.fillText(label, px + 3, py + 12); }
+            };
+            if (editSameSrc) box(editSameSrc, '#ffb84d', '源');
+            if (editRectA && editRectB) {
+                const a = {x: Math.min(editRectA.x, editRectB.x), y: Math.min(editRectA.y, editRectB.y)};
+                const b = {x: Math.max(editRectA.x, editRectB.x), y: Math.max(editRectA.y, editRectB.y)};
+                const [px, py] = toScr(a.x, a.y);
+                ctx.strokeStyle = '#3de88a'; ctx.lineWidth = 2;
+                ctx.strokeRect(px + 1, py + 1, (b.x - a.x + 1) * 48 / s - 2, (b.y - a.y + 1) * 32 / s - 2);
+            }
+            if (editSel && !(editBrush === 'same' && editSameSrc && editSel.x === editSameSrc.x && editSel.y === editSameSrc.y))
+                box(editSel, '#72d6ff');
+        }
+
+        function editRefreshTiles() {
+            editRev++;
+            document.querySelectorAll('#tile-layer img').forEach(img => {
+                const u = new URL(img.src, location.href);
+                if (u.searchParams.get('e') !== String(editRev)) {
+                    u.searchParams.set('e', String(editRev));
+                    img.src = u.pathname + '?' + u.searchParams.toString();
+                }
+            });
+        }
+
+        function editLibSel(id, val) {
+            const sel = document.createElement('select');
+            sel.id = id;
+            const keys = Object.keys(LIB_NAMES).map(Number).sort((a, b) => a - b);
+            for (const k of keys) {
+                const o = document.createElement('option');
+                o.value = k; o.textContent = k === 255 ? '255 无' : k + ' ' + LIB_NAMES[k];
+                sel.appendChild(o);
+            }
+            sel.value = String(val);
+            return sel;
+        }
+
+        async function editShowCell(cell) {
+            editSel = cell;
+            const r = await fetch('/api/cell?map=' + encodeURIComponent(curName)
+                + '&x=' + cell.x + '&y=' + cell.y);
+            const d = await r.json();
+            if (!d.ok) { editRenderPanel(); return; }
+            editCellData = d;
+            editRenderPanel();
+        }
+
+        let editCellData = null;
+
+        function editFieldRow(name, label, val, isNum) {
+            return '<div class="ef-row"><span>' + label + '</span>'
+                + '<input id="ef-' + name + '" type="number" value="' + val + '"></div>';
+        }
+
+        function editRenderPanel() {
+            const p = editPanel();
+            if (!editOn) { p.style.display = 'none'; return; }
+            p.style.display = 'block';
+            const mi = curMap() || {name: curName};
+            let h = '<div style="display:flex;justify-content:space-between;align-items:center">'
+                + '<b style="color:#ffd54a">编辑模式</b><span>'
+                + (editSess && editSess.dirty ? '<span style="color:#ff8f6b">未保存 ' + editSess.dirty + '</span>' : '<span style="color:#3de88a">无改动</span>')
+                + '</span></div>'
+                + '<div style="color:#8a8a98;font-size:11px">' + mi.name + (mi.cn ? ' · ' + mi.cn : '') + '</div>';
+            // 工具行
+            h += '<div class="ef-row" style="margin-top:6px"><span>笔刷</span><select id="ef-brush">'
+                + '<option value="cell"' + (editBrush === 'cell' ? ' selected' : '') + '>单格</option>'
+                + '<option value="rect"' + (editBrush === 'rect' ? ' selected' : '') + '>矩形</option>'
+                + '<option value="same"' + (editBrush === 'same' ? ' selected' : '') + '>同值替换</option>'
+                + '</select></div>';
+            h += '<div class="ef-row"><span>操作</span>'
+                + '<button id="ef-undo">↶撤销(' + (editSess ? editSess.undo : 0) + ')</button>'
+                + '<button id="ef-redo">↷重做(' + (editSess ? editSess.redo : 0) + ')</button></div>';
+            if (editBrush === 'same')
+                h += '<div style="color:#ffb84d;font-size:11px">先点源格(黄框)，再涂抹目标区域：只替换与源格三图层相同的格</div>';
+            if (editBrush === 'rect')
+                h += '<div style="color:#8a8a98;font-size:11px">拖拽画矩形后点「应用矩形」</div>';
+            // 选中格信息
+            if (editCellData && editSel) {
+                const d = editCellData;
+                const passable = (d.flag & 3) === 3;
+                h += '<hr style="border-color:#333;margin:6px 0">'
+                    + '<div><b>格 (' + d.x + ',' + d.y + ')</b> · '
+                    + '<span style="color:' + (passable ? '#3de88a' : '#ff8f6b') + '">'
+                    + (passable ? '通行' : '阻挡') + '</span>'
+                    + ' <button id="ef-flag" style="margin-left:6px">切换</button></div>';
+                for (const layer of ['back', 'mid', 'front']) {
+                    const L = d[layer];
+                    h += '<div class="ef-layer">' + layer.toUpperCase()
+                        + ': <span class="lib">' + (L.lib || '') + '</span> #' + L.frame + '</div>'
+                        + '<div class="ef-row"><span>' + layer + ' 库</span><span id="ef-' + layer + '-file"></span>'
+                        + '<input id="ef-' + layer + '-img" type="number" style="width:70px" value="' + L.frame + '"'
+                        + (layer === 'back' ? '' : '') + '>'
+                        + '<img id="ef-' + layer + '-prev" style="height:40px;max-width:52px;object-fit:contain;background:#222">'
+                        + '</div>';
+                }
+                h += '<div class="ef-row"><span>anim_a/anim_b</span>'
+                    + '<input id="ef-aa" type="number" style="width:52px" value="' + d.anim[0] + '">'
+                    + '<input id="ef-ab" type="number" style="width:52px" value="' + d.anim[1] + '"></div>';
+                h += '<button id="ef-apply" style="width:100%;margin-top:4px">应用到此格</button>';
+            } else {
+                h += '<hr style="border-color:#333;margin:6px 0"><div style="color:#8a8a98">点击地图格查看/编辑</div>';
+            }
+            if (editRectA && editRectB) {
+                h += '<button id="ef-rectapply" style="width:100%;margin-top:4px">应用矩形 ' 
+                    + '(' + Math.min(editRectA.x, editRectB.x) + ',' + Math.min(editRectA.y, editRectB.y) + ')-('
+                    + Math.max(editRectA.x, editRectB.x) + ',' + Math.max(editRectA.y, editRectB.y) + ')</button>';
+            }
+            h += '<hr style="border-color:#333;margin:6px 0">'
+                + '<button id="ef-save" style="width:100%">保存（副本→验证→备份→原子替换）</button>'
+                + '<button id="ef-discard" style="width:100%;margin-top:4px">放弃修改</button>';
+            p.innerHTML = h;
+            // 事件
+            p.querySelector('#ef-brush').onchange = (e) => { editBrush = e.target.value; editRectA = editRectB = null; editRenderPanel(); };
+            p.querySelector('#ef-undo').onclick = () => editOp('undo');
+            p.querySelector('#ef-redo').onclick = () => editOp('redo');
+            const fl = p.querySelector('#ef-flag');
+            if (fl) fl.onclick = () => {
+                const d = editCellData;
+                const nf = ((d.flag & 3) === 3) ? (d.flag & ~3) : (d.flag | 3);
+                editApply([{x: d.x, y: d.y, fields: {flag: nf & 255}}]);
+            };
+            for (const layer of ['back', 'mid', 'front']) {
+                const holder = p.querySelector('#ef-' + layer + '-file');
+                if (holder) {
+                    holder.appendChild(editLibSel(layer, editCellData[layer].file));
+                    const imgIn = p.querySelector('#ef-' + layer + '-img');
+                    const upd = () => editPreview(layer,
+                        Number(p.querySelector('#ef-' + layer + '-file').value), Number(imgIn.value));
+                    p.querySelector('#ef-' + layer + '-file').onchange = upd;
+                    imgIn.onchange = upd;
+                    upd();
+                }
+            }
+            const ap = p.querySelector('#ef-apply');
+            if (ap) ap.onclick = () => {
+                const d = editCellData;
+                const fields = {};
+                for (const layer of ['back', 'mid', 'front']) {
+                    const f = Number(p.querySelector('#ef-' + layer + '-file').value);
+                    const i = Number(p.querySelector('#ef-' + layer + '-img').value);
+                    const cur = d[layer];
+                    if (f !== cur.file || i !== cur.frame) {
+                        fields[layer + '_file'] = f; fields[layer + '_img'] = i;
+                    }
+                }
+                const aa = Number(p.querySelector('#ef-aa').value), ab = Number(p.querySelector('#ef-ab').value);
+                if (aa !== d.anim[0]) fields.anim_a = aa;
+                if (ab !== d.anim[1]) fields.anim_b = ab;
+                if (!Object.keys(fields).length) return;
+                editApply([{x: d.x, y: d.y, fields}]);
+            };
+            const ra = p.querySelector('#ef-rectapply');
+            if (ra) ra.onclick = () => {
+                const d = editCellData;
+                const x0 = Math.min(editRectA.x, editRectB.x), x1 = Math.max(editRectA.x, editRectB.x);
+                const y0 = Math.min(editRectA.y, editRectB.y), y1 = Math.max(editRectA.y, editRectB.y);
+                if ((x1 - x0 + 1) * (y1 - y0 + 1) > 20000) { alert('矩形过大（>20000 格）'); return; }
+                const fields = {};
+                if (d) {
+                    for (const layer of ['back', 'mid', 'front']) {
+                        const f = p.querySelector('#ef-' + layer + '-file');
+                        if (!f) continue;
+                        const fv = Number(f.value), iv = Number(p.querySelector('#ef-' + layer + '-img').value);
+                        if (fv !== d[layer].file || iv !== d[layer].frame) {
+                            fields[layer + '_file'] = fv; fields[layer + '_img'] = iv;
+                        }
+                    }
+                    const aa = Number(p.querySelector('#ef-aa').value), ab = Number(p.querySelector('#ef-ab').value);
+                    if (aa !== d.anim[0]) fields.anim_a = aa;
+                    if (ab !== d.anim[1]) fields.anim_b = ab;
+                }
+                editRectApply(x0, y0, x1, y1, fields);
+            };
+            p.querySelector('#ef-save').onclick = editSave;
+            p.querySelector('#ef-discard').onclick = () => {
+                if (editSess && editSess.dirty && !confirm('放弃全部未保存修改？')) return;
+                editOp('discard').then(() => { editRefreshTiles(); editDrawOverlay(); });
+            };
+        }
+
+        async function editPreview(layer, file, img) {
+            const el = document.getElementById('ef-' + layer + '-prev');
+            if (!el) return;
+            if (file === 255 || !(img > 0) || img >= 65535) { el.src = ''; el.style.visibility = 'hidden'; return; }
+            el.style.visibility = 'visible';
+            el.src = '/sprite?lib=' + encodeURIComponent(LIB_NAMES[file])
+                + '&frame=' + img + '&e=' + editRev;
+        }
+
+        async function editOp(op) {
+            const d = await editPost(op);
+            if (d.ok) {
+                editSess = d;
+                if (op === 'discard') { editSess = {dirty: 0, undo: 0, redo: 0}; editFlags = null; await editLoadFlags(); }
+                if (editCellData && op !== 'discard') await editShowCell(editSel);
+                else editRenderPanel();
+                editRefreshTiles();
+                editDrawOverlay();
+            } else alert('操作失败: ' + (d.error || '?'));
+        }
+
+        async function editApply(edits) {
+            const d = await editPost('set', {edits});
+            if (!d.ok) { alert('编辑被拒绝: ' + (d.error || '?')); return; }
+            editSess = d;
+            await editLoadFlags();          // flag 变化重取着色
+            if (editSel) await editShowCell(editSel);
+            editRefreshTiles();
+            editDrawOverlay();
+        }
+
+        async function editRectApply(x0, y0, x1, y1, fields) {
+            const payload = {x0, y0, x1, y1, fields};
+            if (editBrush === 'same' && editSameSrc) payload.src = editSameSrc;
+            const d = await editPost('brush', payload);
+            if (!d.ok) { alert(d.error === 'no_match' ? '无匹配格' : '笔刷失败: ' + (d.error || '?')); return; }
+            editSess = {dirty: d.dirty, undo: d.undo, redo: d.redo};
+            await editLoadFlags();
+            editRefreshTiles();
+            editDrawOverlay();
+            editRenderPanel();
+        }
+
+        async function editSave() {
+            if (!editSess || !editSess.dirty) { alert('没有未保存的修改'); return; }
+            if (!confirm('保存将写入地图文件（自动备份原文件）。继续？')) return;
+            const d = await editPost('save', {confirm: true});
+            if (d.ok) {
+                editSess.dirty = 0;
+                alert('已保存\\n备份: ' + d.backup + '\\n字节数: ' + d.bytes);
+                await editLoadFlags();
+                editRefreshTiles();
+                editRenderPanel();
+                render(true);
+            } else alert('保存失败: ' + (d.error || '?'));
+        }
+
+        async function editStart() {
+            editOn = true;
+            const d = await editPost('open');
+            if (!d.ok) { alert('打开编辑会话失败: ' + (d.error || '?')); editOn = false; return; }
+            editSess = d;
+            await editLoadFlags();
+            editRenderPanel();
+            editDrawOverlay();
+        }
+
+        function editStop() {
+            editOn = false;
+            const c = document.getElementById('edit-canvas');
+            if (c) c.remove();
+            editPanel().style.display = 'none';
+        }
+
+        // ---- 挂接：工具栏按钮 / 视口事件 / 滚动重绘 / 切图提醒 ----
+        if (!document.getElementById('edit-panel-style')) {
+            const st = document.createElement('style');
+            st.id = 'edit-panel-style';
+            st.textContent = '#edit-panel .ef-row{display:flex;align-items:center;gap:6px;margin:2px 0}'
+                + '#edit-panel .ef-row>span:first-child{color:#8a8a98;min-width:64px}'
+                + '#edit-panel .ef-layer{font-size:11px;color:#d8e6ff}'
+                + '#edit-panel .lib{font-family:ui-monospace,monospace;color:#72d6ff}'
+                + '#edit-panel button{background:#333;color:#eee;border:1px solid #555;border-radius:3px;cursor:pointer;padding:2px 8px}'
+                + '#edit-panel input[type=number]{width:80px;background:#222;color:#eee;border:1px solid #444;border-radius:3px;padding:1px 4px}'
+                + '#edit-panel select{background:#333;color:#eee;border:1px solid #555;border-radius:3px;padding:1px 4px;max-width:150px}';
+            document.head.appendChild(st);
+        }
+        const editBtn = document.createElement('button');
+        editBtn.textContent = '编辑地图';
+        editBtn.title = '进入/退出编辑模式（E1 地图编辑器）';
+        editBtn.style.cssText = 'background:#4a3810;color:#ffd54a;border:1px solid #7a6020;border-radius:3px;cursor:pointer;';
+        document.getElementById('toolbar').appendChild(editBtn);
+        editBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!editOn) await editStart();
+            else {
+                if (editSess && editSess.dirty && !confirm('有未保存修改，退出编辑模式？（修改保留在服务器会话，重进可继续）')) return;
+                editStop();
+            }
+        });
+
+        vp.addEventListener('scroll', () => { if (editOn) editDrawOverlay(); });
+        vp.addEventListener('mousedown', (e) => {
+            if (!editOn || e.button !== 0) return;
+            const cell = editScreenToCell(e);
+            if (!curMap() || cell.x < 0 || cell.y < 0 || cell.x >= curMap().w || cell.y >= curMap().h) return;
+            if (editBrush === 'rect') {
+                editRectA = editRectB = cell;
+                const mv = (ev) => { editRectB = editScreenToCell(ev); editDrawOverlay(); };
+                const up = () => {
+                    vp.removeEventListener('mousemove', mv);
+                    vp.removeEventListener('mouseup', up);
+                    editDrawOverlay(); editRenderPanel();
+                };
+                vp.addEventListener('mousemove', mv);
+                vp.addEventListener('mouseup', up);
+                editDrawOverlay();
+                return;
+            }
+            if (editBrush === 'same') {
+                if (!editSameSrc || e.shiftKey) { editSameSrc = cell; editShowCell(cell); editDrawOverlay(); return; }
+                // 点击即以当前面板值替换该格（若匹配源格）
+                editRectApply(cell.x, cell.y, cell.x, cell.y, editPanelFields());
+                return;
+            }
+            editShowCell(cell);
+            editDrawOverlay();
+        });
+        function editPanelFields() {
+            const p = editPanel();
+            const fields = {};
+            for (const layer of ['back', 'mid', 'front']) {
+                const f = p.querySelector('#ef-' + layer + '-file');
+                if (!f) continue;
+                fields[layer + '_file'] = Number(f.value);
+                fields[layer + '_img'] = Number(p.querySelector('#ef-' + layer + '-img').value);
+            }
+            return fields;
+        }
+
+        // 切图未保存提醒：包一层 pick（同闭包内函数声明可重绑定）
+        {
+            const _origPick = pick;
+            pick = function (name) {
+                if (editOn && editSess && editSess.dirty
+                    && !confirm('当前图有未保存修改，切换地图将保留在会话（不丢失）。继续切换？'))
+                    return;
+                if (editOn) { editFlags = null; editCellData = null; editSel = null; editSameSrc = null; editRectA = editRectB = null; }
+                return _origPick(name);
+            };
+        }
+        window.addEventListener('beforeunload', (e) => {
+            if (editOn && editSess && editSess.dirty) { e.preventDefault(); e.returnValue = ''; }
+        });
+        // URL ?edit=1 直进编辑模式
+        if (/[?&]edit=1\b/.test(location.search)) editStart();
+        // ========================== 编辑模式结束 ==========================
+"""
