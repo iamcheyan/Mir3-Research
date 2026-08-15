@@ -260,8 +260,85 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
+        elif self.path.startswith("/edit/"):
+            self._handle_edit()
         else:
             self.send_error(404)
+
+    def _handle_edit(self):
+        """编辑模式端点（JSON POST，body: {map, ...}）。
+
+        /edit/open /edit/set /edit/brush /edit/undo /edit/redo
+        /edit/save /edit/discard
+        """
+        from mapedit import editstate as es
+        try:
+            length = int(self.headers.get("Content-Length") or "0")
+        except ValueError:
+            length = 0
+        try:
+            payload = json.loads(self.rfile.read(length) or b"{}")
+        except ValueError:
+            self._json_200(json.dumps({"ok": False, "error": "bad_json"}).encode())
+            return
+        map_name = os.path.basename(str(payload.get("map", "")))
+        if not map_name.lower().endswith(".map"):
+            self._json_200(json.dumps({"ok": False, "error": "map_required"}).encode())
+            return
+        maps_dir = self.map_cache.maps_dir
+        op = self.path.split("?")[0].split("/", 2)[2]
+        try:
+            if op == "open":
+                s = es.get_session(maps_dir, map_name)
+                body = {"ok": True, "w": s.w, "h": s.h, "dirty": s.dirty,
+                        "undo": len(s.undo), "redo": len(s.redo)}
+            elif op == "set":
+                s = es.get_session(maps_dir, map_name)
+                plan = s.apply(payload.get("edits") or [])
+                body = {"ok": True, "applied": len(plan), "dirty": s.dirty,
+                        "undo": len(s.undo), "redo": len(s.redo)}
+            elif op == "brush":
+                s = es.get_session(maps_dir, map_name)
+                src = payload.get("src")
+                n = s.brush(int(payload.get("x0", 0)), int(payload.get("y0", 0)),
+                            int(payload.get("x1", 0)), int(payload.get("y1", 0)),
+                            payload.get("fields") or {},
+                            (int(src["x"]), int(src["y"])) if src else None)
+                body = {"ok": bool(n), "applied": n,
+                        "error": None if n else "no_match",
+                        "dirty": s.dirty, "undo": len(s.undo), "redo": len(s.redo)}
+            elif op == "undo":
+                s = es.get_session(maps_dir, map_name)
+                n = s.step_undo()
+                body = {"ok": True, "reverted": n, "dirty": s.dirty,
+                        "undo": len(s.undo), "redo": len(s.redo)}
+            elif op == "redo":
+                s = es.get_session(maps_dir, map_name)
+                n = s.step_redo()
+                body = {"ok": True, "reapplied": n, "dirty": s.dirty,
+                        "undo": len(s.undo), "redo": len(s.redo)}
+            elif op == "discard":
+                es.drop_session(maps_dir, map_name)
+                body = {"ok": True}
+            elif op == "save":
+                s = es.get_session(maps_dir, map_name)
+                if s.dirty == 0:
+                    body = {"ok": False, "error": "nothing_to_save"}
+                else:
+                    rep = es.save_session(s, confirm=bool(payload.get("confirm")))
+                    self.map_cache.invalidate(map_name)
+                    es.invalidate_caches(self.cache_dir, map_name)
+                    with self.tile_cache_lock:
+                        for k in [k for k in self.tile_cache if k[0] == map_name]:
+                            self.tile_cache.pop(k, None)
+                    body = {"ok": True, **rep}
+            else:
+                body = {"ok": False, "error": "unknown_op"}
+        except es.EditError as ex:
+            body = {"ok": False, "error": str(ex)}
+        except FileNotFoundError:
+            body = {"ok": False, "error": "map_not_found"}
+        self._json_200(json.dumps(body, ensure_ascii=False).encode("utf-8"))
 
     def do_GET(self):
         if self.path == "/" or self.path == "/index.html":
