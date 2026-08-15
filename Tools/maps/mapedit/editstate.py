@@ -151,6 +151,7 @@ class EditSession:
                 edits.append({"x": x, "y": y, "fields": fields})
         if not edits:
             return 0
+        return len(self.apply(edits))
 
 
 _SESSIONS: dict[str, EditSession] = {}
@@ -209,13 +210,17 @@ def save_session(s: EditSession, confirm: bool = False) -> dict:
         if bad is not None:
             x, y = divmod(bad, expect.h)
             errs.append(f"{field} @({x},{y}) 期望 {ea[bad]} 实得 {ga[bad]}")
-    # 未编辑字节零变化（模板补丁承诺：diff 仅允许命中已编辑记录的前 9 字节）
-    touched = {x * s.h + y for x, y, *_ in s.log}
+    # 未编辑字节零变化（模板补丁承诺：diff 仅允许命中已编辑格的
+    # 全分辨率记录前 9 字节 + back 字段编辑命中 seg1 半分辨率表项 3 字节）
     seg1 = (s.w // 2) * (s.h // 2) * 3
     base = 28 + seg1
     allowed = set()
-    for i in touched:
+    for x, y, field, _old, _new in s.log:
+        i = x * s.h + y
         allowed.update(base + i * 14 + d for d in range(9))
+        if field in ("back_file", "back_img") and x % 2 == 0 and y % 2 == 0:
+            off = 28 + (x // 2) * (s.h // 2) * 3 + (y // 2) * 3
+            allowed.update(range(off, off + 3))
     raw = s.template
     stray = [k for k in range(min(len(raw), len(data)))
              if raw[k] != data[k] and k not in allowed]
