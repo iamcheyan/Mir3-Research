@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magic Lab — 技能特效实验室</title>
+<link rel="stylesheet" href="/static/css/lab.css?v=1">
+</head>
+<body>
+<div id="lab">
+  <header id="lab-top">
+    <b>Magic Lab</b>
+    <span class="dim">特效事实源：原版 Client/MapObject.cs 双段 Spell switch</span>
+    <span id="lab-stat" class="dim"></span>
+    <span class="spacer"></span>
+    <label>速度
+      <select id="lab-speed">
+        <option value="0.25">0.25×</option>
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+      </select>
+    </label>
+    <button id="lab-pause">暂停</button>
+    <button id="lab-step" disabled>+1帧</button>
+    <label><input type="checkbox" id="lab-trace"> 弹道轨迹</label>
+    <label><input type="checkbox" id="lab-loop" checked> 循环重放</label>
+    <button id="lab-clear">清场</button>
+    <a href="/" class="dim">«漫游模式</a>
+  </header>
+  <div id="lab-main">
+    <aside id="lab-list">
+      <input id="lab-search" placeholder="搜索 中文名 / 英文名 / MagicType…">
+      <div id="lab-groups"></div>
+    </aside>
+    <div id="lab-stage-wrap">
+      <canvas id="lab-stage" width="1280" height="720"></canvas>
+      <div id="lab-info"></div>
+      <div id="lab-events"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="/static/js/lab.js?v=1"></script>
+</body>
+</html>

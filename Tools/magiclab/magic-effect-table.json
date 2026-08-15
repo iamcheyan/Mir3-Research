@@ -320,7 +320,8 @@
      "colour": "Lightning",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 906,
      "target": "target",
@@ -334,7 +335,8 @@
     {
      "name": "ThunderBoltEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -379,8 +381,10 @@
    "start": [
     "ThunderBoltStart"
    ],
+   "end": [
+    "ThunderBoltEnd"
+   ],
    "travel": [
-    "ThunderBoltEnd",
     "ThunderBoltTravel"
    ]
   }
@@ -1424,14 +1428,15 @@
      "colour": "Wind",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1171,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     },
     {
      "frame": 1990,
@@ -1462,7 +1467,8 @@
      "colour": "Wind",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 1192,
      "target": "target",
@@ -1734,14 +1740,15 @@
      "colour": "Ice",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1279,
      "target": "point",
      "extra": {
       "Opacity": 0.8
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
@@ -1825,19 +1832,23 @@
      "endLight": 80,
      "colour": "Wind",
      "kind": "effect",
-     "ctx": [],
+     "ctx": [
+      "arrival"
+     ],
      "line": 1315,
      "target": "finalPoint",
      "extra": {
       "Blend": true
      },
-     "segment": "castEffect"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "BlowEarthEnd",
-     "ctx": []
+     "ctx": [
+      "arrival"
+     ]
     },
     {
      "name": "BlowEarthTravel",
@@ -1880,8 +1891,10 @@
    "start": [
     "BlowEarthStart"
    ],
+   "end": [
+    "BlowEarthEnd"
+   ],
    "travel": [
-    "BlowEarthEnd",
     "BlowEarthTravel"
    ]
   }
@@ -2276,14 +2289,15 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1436,
      "target": "point",
      "extra": {
       "Opacity": 0.8
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
@@ -2443,14 +2457,15 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1489,
      "target": "eff.MapTarget",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [],
@@ -2623,21 +2638,23 @@
      "colour": "Ice",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1562,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "IceBoltEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     }
    ],
@@ -2677,7 +2694,7 @@
    "start": [
     "LightningStrikeStart"
    ],
-   "travel": [
+   "end": [
     "IceBoltEnd"
    ]
   }
@@ -3246,7 +3263,8 @@
      "colour": "Dark",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 1770,
      "target": "target",
@@ -3260,7 +3278,8 @@
     {
      "name": "ExplosiveTalismanEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -3305,8 +3324,10 @@
    "start": [
     "ExplosiveTalismanStart"
    ],
+   "end": [
+    "ExplosiveTalismanEnd"
+   ],
    "travel": [
-    "ExplosiveTalismanEnd",
     "ExplosiveTalismanTravel"
    ]
   }
@@ -3367,7 +3388,8 @@
      "colour": "Holy",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 1814,
      "target": "target",
@@ -3381,7 +3403,8 @@
     {
      "name": "HolyStrikeEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -3426,8 +3449,10 @@
    "start": [
     "HolyStrikeStart"
    ],
+   "end": [
+    "HolyStrikeEnd"
+   ],
    "travel": [
-    "HolyStrikeEnd",
     "HolyStrikeTravel"
    ]
   }
@@ -3467,21 +3492,23 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1847,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "MagicResistanceEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     },
     {
@@ -3518,8 +3545,10 @@
   },
   "castAnim": "Combat1",
   "sound": {
+   "end": [
+    "MagicResistanceEnd"
+   ],
    "travel": [
-    "MagicResistanceEnd",
     "MagicResistanceTravel"
    ]
   }
@@ -3559,21 +3588,23 @@
      "colour": "Phantom",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1880,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "MassInvisibilityEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     },
     {
@@ -3610,8 +3641,10 @@
   },
   "castAnim": "Combat1",
   "sound": {
+   "end": [
+    "MassInvisibilityEnd"
+   ],
    "travel": [
-    "MassInvisibilityEnd",
     "MassInvisibilityTravel"
    ]
   }
@@ -3672,7 +3705,8 @@
      "colour": "Holy",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 1923,
      "target": "target",
@@ -3686,7 +3720,8 @@
     {
      "name": "ImprovedHolyStrikeEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -3731,8 +3766,10 @@
    "start": [
     "ImprovedHolyStrikeStart"
    ],
+   "end": [
+    "ImprovedHolyStrikeEnd"
+   ],
    "travel": [
-    "ImprovedHolyStrikeEnd",
     "ImprovedHolyStrikeTravel"
    ]
   }
@@ -3772,21 +3809,23 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1957,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "ResilienceEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     },
     {
@@ -3823,8 +3862,10 @@
   },
   "castAnim": "Combat1",
   "sound": {
+   "end": [
+    "ResilienceEnd"
+   ],
    "travel": [
-    "ResilienceEnd",
     "ResilienceTravel"
    ]
   }
@@ -3915,21 +3956,23 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 1999,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "BloodLustEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     },
     {
@@ -3966,8 +4009,10 @@
   },
   "castAnim": "Combat1",
   "sound": {
+   "end": [
+    "BloodLustEnd"
+   ],
    "travel": [
-    "BloodLustEnd",
     "BloodLustTravel"
    ]
   }
@@ -4078,21 +4123,23 @@
      "colour": "Dark",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 2051,
      "target": "point",
      "extra": {
       "Blend": true
      },
-     "segment": "aoe"
+     "segment": "hitEffect"
     }
    ],
    "sounds": [
     {
      "name": "BloodLustEnd",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ]
     },
     {
@@ -4129,8 +4176,10 @@
   },
   "castAnim": "Combat1",
   "sound": {
+   "end": [
+    "BloodLustEnd"
+   ],
    "travel": [
-    "BloodLustEnd",
     "BloodLustTravel"
    ]
   }
@@ -4531,7 +4580,8 @@
      "colour": "Dark",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2185,
      "target": "target",
@@ -4545,7 +4595,8 @@
     {
      "name": "FireStormEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -4590,8 +4641,10 @@
    "start": [
     "ExplosiveTalismanStart"
    ],
+   "end": [
+    "FireStormEnd"
+   ],
    "travel": [
-    "FireStormEnd",
     "ExplosiveTalismanTravel"
    ]
   }
@@ -4652,7 +4705,8 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2228,
      "target": "target",
@@ -4764,7 +4818,8 @@
      "colour": "Fire",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2267,
      "target": "target",
@@ -4778,7 +4833,8 @@
     {
      "name": "NeutralizeEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -4823,8 +4879,10 @@
    "start": [
     "ExplosiveTalismanStart"
    ],
+   "end": [
+    "NeutralizeEnd"
+   ],
    "travel": [
-    "NeutralizeEnd",
     "NeutralizeTravel"
    ]
   }
@@ -4921,7 +4979,8 @@
      "colour": "Fire",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2322,
      "target": "location",
@@ -4935,7 +4994,8 @@
     {
      "name": "CorpseExploderEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -4980,8 +5040,10 @@
    "start": [
     "ExplosiveTalismanStart"
    ],
+   "end": [
+    "CorpseExploderEnd"
+   ],
    "travel": [
-    "CorpseExploderEnd",
     "ExplosiveTalismanTravel"
    ]
   }
@@ -5365,7 +5427,8 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2486,
      "target": "target",
@@ -5380,7 +5443,8 @@
     {
      "name": "BrainStorm",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     }
    ],
@@ -5422,7 +5486,7 @@
    "start": [
     "BindingTalisman"
    ],
-   "travel": [
+   "end": [
     "BrainStorm"
    ]
   }
@@ -5766,7 +5830,8 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2710,
      "target": "target",
@@ -5780,7 +5845,8 @@
     {
      "name": "ElementalSwordsEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     }
    ],
@@ -5789,7 +5855,7 @@
   "notes": "MapObject.cs:2687(release)",
   "castAnim": "Combat5",
   "sound": {
-   "travel": [
+   "end": [
     "ElementalSwordsEnd"
    ]
   }
@@ -5848,7 +5914,8 @@
      "colour": "Fire",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2748,
      "target": "target",
@@ -6278,7 +6345,8 @@
      "colour": "Color.Purple",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2936,
      "target": "target",
@@ -6293,7 +6361,8 @@
     {
      "name": "FireBallEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -6306,8 +6375,10 @@
   "notes": "MapObject.cs:2912(release)",
   "castAnim": null,
   "sound": {
+   "end": [
+    "FireBallEnd"
+   ],
    "travel": [
-    "FireBallEnd",
     "FireBallTravel"
    ]
   }
@@ -6368,7 +6439,8 @@
      "colour": "Color.GreenYellow",
      "kind": "effect",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ],
      "line": 2981,
      "target": "target",
@@ -6383,7 +6455,8 @@
     {
      "name": "FireBallEnd",
      "ctx": [
-      "target"
+      "target",
+      "arrival"
      ]
     },
     {
@@ -6396,8 +6469,10 @@
   "notes": "MapObject.cs:2957(release)",
   "castAnim": null,
   "sound": {
+   "end": [
+    "FireBallEnd"
+   ],
    "travel": [
-    "FireBallEnd",
     "FireBallTravel"
    ]
   }
@@ -8655,7 +8730,9 @@
      "endLight": 0,
      "colour": "None",
      "kind": "effect",
-     "ctx": [],
+     "ctx": [
+      "arrival"
+     ],
      "line": 5063,
      "target": "Functions.Move(Functions.Move(CurrentLocation, MirDirection.Down, 0), MirDirection.Right, 5)",
      "extra": {
@@ -8700,7 +8777,9 @@
      "endLight": 0,
      "colour": "None",
      "kind": "effect",
-     "ctx": [],
+     "ctx": [
+      "arrival"
+     ],
      "line": 5083,
      "target": "Functions.Move(CurrentLocation, MirDirection.Right, 5)",
      "extra": {
@@ -8809,7 +8888,8 @@
      "colour": "None",
      "kind": "effect",
      "ctx": [
-      "point"
+      "point",
+      "arrival"
      ],
      "line": 5125,
      "target": "eff.MapTarget",

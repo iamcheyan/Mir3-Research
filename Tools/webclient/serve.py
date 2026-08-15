@@ -64,8 +64,9 @@ async def headers(request, call_next):
     resp = await call_next(request)
     resp.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     resp.headers["Access-Control-Allow-Origin"] = "*"
-    # 静态 JS/CSS 开发期不缓存; /res 资源 (瓦片/帧, 内容不可变) 长缓存
-    resp.headers["Cache-Control"] = "no-cache" if request.url.path.startswith("/static") \
+    # 静态 JS/CSS 与 /lab 数据 (事实源会再生成) 不缓存; /res 资源 (瓦片/帧, 内容不可变) 长缓存
+    p = request.url.path
+    resp.headers["Cache-Control"] = "no-cache" if (p.startswith("/static") or p.startswith("/lab")) \
         else "public, max-age=86400"
     return resp
 
@@ -73,6 +74,31 @@ async def headers(request, call_next):
 @app.get("/")
 def index():
     return FileResponse(STATIC / "static" / "index.html")
+
+@app.get("/lab")
+def lab_index():
+    return FileResponse(STATIC / "static" / "lab.html")
+
+
+@app.get("/lab/table")
+def lab_table():
+    """技能特效事实源 (magiclab 提取自原版 Client MapObject.cs)。"""
+    p = _MIR3 / "Tools" / "magiclab" / "magic-effect-table.json"
+    return FileResponse(p, media_type="application/json")
+
+
+@app.get("/lab/frame-formulas")
+def lab_frame_formulas():
+    """帧公式单一数据源 (E3 frameformulas.py 生成, webport 同源)。"""
+    p = _MIR3 / "Tools" / "resedit" / "frame-formulas.json"
+    return FileResponse(p, media_type="application/json")
+
+
+@app.get("/lab/magicinfo")
+def lab_magicinfo():
+    """MagicInfo 全字段 (dbeditor workspace 快照, 只读)。"""
+    p = _MIR3 / "Tools" / "dbeditor" / "workspace" / "MagicInfo.json"
+    return FileResponse(p, media_type="application/json")
 
 
 @app.get("/api/disk")
