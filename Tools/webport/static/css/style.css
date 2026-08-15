@@ -15,11 +15,10 @@ html, body {
   transform-origin: 0 0;
   background: #000;
 }
-/* 登录/选人阶段 canvas 未挂; 游戏阶段 canvas 在 #stage 内铺满视口 */
-body.ingame #stage {
-  width: 100vw; height: 100vh;
-  transform: none !important;
-}
+/* 游戏阶段同登录/选人: #stage 保持 1024x768 逻辑画布, UiScaler 整体缩放居中
+   (Godot project.godot: window/size 1024x768 固定窗口, 世界+HUD 同画布)。
+   旧规则 body.ingame #stage{width:100vw;transform:none!important} 会让世界
+   canvas 铺满视口而 HUD 留在未缩放逻辑坐标 → UI 整体错位 (R34)。 */
 
 .dxctl { position: absolute; }
 .dximg {

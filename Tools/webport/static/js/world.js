@@ -21,6 +21,7 @@ import {
 } from './anims.js';
 import { C, GRID } from './net.js';
 import { MouseWalker } from './mouse.js';
+import { BASE_W, BASE_H } from './dx.js';
 
 
 const DIRS = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
@@ -590,10 +591,11 @@ export class World {
     this.objects = new Map();
     this.moveLock = false;
     this.camera = new Camera(canvas);
-    this.camera.setResolution(innerWidth, innerHeight);
+    // 逻辑分辨率固定 1024x768 (Godot window/size); 视口放大交给 #stage UiScaler (R34)
+    this.camera.setResolution(BASE_W, BASE_H);
     this.camera.setZoom(1);
     addEventListener('resize', () => {
-      this.camera.setResolution(innerWidth, innerHeight);
+      this.camera.setResolution(BASE_W, BASE_H);
       this.camera.setZoom(1);
     });
     this.effects = [];         // EffectNode

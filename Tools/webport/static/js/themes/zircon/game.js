@@ -25,6 +25,8 @@ export class GameScene {
     this.root = document.createElement('div');
     this.root.style.cssText = 'position:absolute;inset:0;background:#000;';
     this.canvas = document.createElement('canvas');
+    // Godot 基准: 世界渲染进 1024x768 逻辑画布 (project.godot window/size),
+    // 视口放大由 #stage 的 UiScaler transform 纯视觉缩放完成 (R34)
     this.canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated;';
     this.root.appendChild(this.canvas);
     this.hud = document.createElement('div');

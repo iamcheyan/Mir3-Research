@@ -12,6 +12,7 @@ Maps KR Library IDs (0..55) to Wemade WIL / ZL image libraries (KROrder table).
 from __future__ import annotations
 
 import argparse
+import hashlib
 import io
 import json
 import math
@@ -41,7 +42,9 @@ TILE_SZ = 512          # tile size in screen pixels
 CACHE_MAPS_MAX = 3     # decoded maps kept in memory
 CACHE_TILES_MAX = 400  # rendered tiles (PNG bytes) kept in memory
 CACHE_FRAMES_BYTES = 256 * 1024 * 1024  # decoded frames LRU budget (per process)
-THUMBS_DIR = "/tmp/wiki_thumbs"  # pre-rendered full-map thumbnails (shared with WikiServer/thumb_gen)
+DEFAULT_CACHE_ROOT = "/home/tetsuya/NAS/TMP/mir3-mapviewer-cache"
+DEFAULT_CACHE_MOUNT = "/home/tetsuya/NAS/TMP"
+THUMBS_DIR = os.path.join(DEFAULT_CACHE_ROOT, "thumbs")  # shared with WikiServer/thumb_gen
 MAX_FULL_DIM = 16384   # full-map single image: longest side cap (px)
 FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
 DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
@@ -70,6 +73,24 @@ MAP_CN = _load_map_cn()
 # Bump whenever map parsing/library mapping changes.  Old cached JPGs can be
 # visually valid files but represent the pre-Sabak or pre-cell-offset parser.
 CACHE_VERSION = "v3"
+
+
+def default_tile_cache_dir(maps_dir: str) -> str:
+    """Return a NAS-backed, source-isolated tile cache directory."""
+    source = os.path.realpath(os.path.abspath(maps_dir))
+    source_id = hashlib.sha256(source.encode("utf-8")).hexdigest()[:12]
+    label = re.sub(r"[^A-Za-z0-9._-]+", "-", os.path.basename(source)).strip("-") or "maps"
+    return os.path.join(DEFAULT_CACHE_ROOT, "tiles", CACHE_VERSION,
+                        f"{label}-{source_id}")
+
+
+def _nas_cache_available() -> bool:
+    """NAS 缓存挂载可用性。os.path.ismount 对 reparse=nfs 的 CIFS 转义
+    挂载会误报 False（内核 mount 表存在、Python 判定无），故 ismount 通过
+    或缓存根目录可访问任一成立即视为可用。"""
+    if os.path.ismount(DEFAULT_CACHE_MOUNT):
+        return True
+    return os.path.isdir(DEFAULT_CACHE_ROOT)
 
 # Layout modes.  Mir3.exe (EI 2002) renders the map grid axis-aligned:
 # every draw call projects cell (x,y) with a single-axis term (x*48, y*32)
@@ -1236,14 +1257,13 @@ let player = { x: -1, y: -1 };         // player cell (spawn point when availabl
 const entStyle = {
     player:   { src: "/sprite?lib=M-Hum.wil&frame=0&scale=1", label: "我" },
     npc:      { src: "/sprite?lib=NPC.wil&frame=0&scale=1",    label: "" },
+    guard:    { src: "/sprite?lib=Mon-3.wil&frame=6040&scale=1", label: "" },
     monster:  { src: "/sprite?lib=Mon-1.wil&frame=0&scale=1", label: "" },
 };
 
 async function init() {
     const res = await fetch("/api/maps");
     maps = await res.json();
-    selMap.innerHTML = maps.map(m =>
-        `<option value="${m.name.replace(/"/g, "&quot;")}">${(m.cn || "") + " " + m.name}</option>`).join("");
     // hash: #sim=3.map&c=200,300&z=2
     let target = maps[0] && maps[0].name;
     const h = location.hash.match(/sim=([^&]+)/);
@@ -1503,10 +1523,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <title>Zircon / Mir3 EI 地图浏览器</title>
     <link rel="stylesheet" href="/_webui/tokens.css">
     <link rel="stylesheet" href="/_webui/mobile-shell.css">
-    <script src="/_webui/gesture.js?v=2"></script>
     <style>
         body { margin:0; padding:0; background:#111; color:#eee; font-family:sans-serif; overflow:hidden; user-select:none; }
         #toolbar { height:40px; background:#222; display:flex; align-items:center; padding:0 10px; gap:10px; border-bottom:1px solid #333; }
+        #toolbar button { font-size:13px; padding:4px 8px; }
+        .tb-ico { min-width:30px !important; width:30px; height:28px; padding:0 !important;
+            display:inline-flex; align-items:center; justify-content:center; border-radius:4px; }
+        #toolbar label { font-size:12px; gap:3px; display:inline-flex; align-items:center; }
+        #map-sel-btn { max-width:220px; }
         #viewport { position:absolute; top:40px; left:0; right:0; bottom:0; overflow:auto; background:#0b0b0f; cursor:grab; }
         #viewport.dragging { cursor:grabbing; }
         #map-img { display:block; background:#000; }
@@ -1517,11 +1541,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #tile-layer img { position:absolute; image-rendering:pixelated; }
         #ent-layer .ent { position:absolute; transform:translate(-50%,-100%); text-align:center; cursor:default; }
         #ent-layer .ent .ent-icon { display:block; width:28px; height:28px; margin:0 auto; image-rendering:pixelated; }
+        #ent-layer .ent .ent-icon.hide { display:none; }
+        #ent-layer .ent .ent-sprite { display:block; margin:0 auto; image-rendering:pixelated;
+            filter:drop-shadow(0 2px 3px rgba(0,0,0,.55)); }
+        #ent-layer .ent.target .ent-sprite { filter:drop-shadow(0 0 0 2px #ffd23d) drop-shadow(0 0 8px #ffd23d); }
         #ent-layer .ent .ent-label { font-size:11px; color:#fff; text-shadow:0 1px 2px #000, 0 0 3px #000; background:rgba(0,0,0,.45); border-radius:2px; padding:0 3px; white-space:nowrap; }
-        #ent-layer .ent.npc .ent-icon { filter:drop-shadow(0 0 3px rgba(114,214,255,.8)); }
         #ent-layer .ent.spawn .ent-icon { filter:drop-shadow(0 0 3px rgba(255,213,74,.9)); }
         #ent-layer .ent.npc .ent-label { color:#8cf; }
         #ent-layer .ent.spawn .ent-label { color:#ffd54a; }
+        #ent-layer .ent.target .ent-icon { box-shadow:0 0 0 3px #ffd23d, 0 0 10px #ffd23d !important; }
+        #ent-layer .ent.target .ent-label { color:#ffd23d; background:rgba(64,48,0,.75); }
         #cat-panel { position:fixed; left:10px; bottom:10px; width:330px; max-height:46vh; overflow:auto;
             background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
             font-size:12px; color:#c8c8d2; z-index:60; display:none; line-height:1.45; }
@@ -1541,10 +1570,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #conn-panel .conn-row.link { cursor:pointer; }
         #conn-panel .conn-row.link:hover { background:#2a2e38; border-radius:3px; }
         #conn-panel .conn-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        #cat-panel { position:fixed; left:10px; bottom:10px; width:330px; max-height:46vh; overflow:auto;
+            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; z-index:60; display:none; line-height:1.45; }
+        #ent-layer .ent.npc .ent-icon { filter:drop-shadow(0 0 3px rgba(114,214,255,.8)); }
+        #conn-panel { position:fixed; left:10px; top:50px; width:300px; max-height:60vh; overflow:auto;
+            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; z-index:70; display:none; line-height:1.5; }
         #conn-panel .conn-dir { color:#ffd54a; font-family:ui-monospace,monospace; font-size:11px; }
         #conn-panel .conn-file { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
         #conn-panel .conn-empty { color:#6a6a75; }
         #conn-panel::-webkit-scrollbar { width:8px; } #conn-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
+        /* 右侧面板列：小地图(#minimap) 与状态栏之间，NPC 面板贴底、刷新面板在其上 */
+        #right-panels { position:fixed; right:10px; bottom:44px; top:212px; display:flex; flex-direction:column;
+            justify-content:flex-end; gap:8px; z-index:70; pointer-events:none; }
+        #right-panels > div { pointer-events:auto; min-height:0; }
+        #npc-panel { position:static; width:280px; max-height:42vh; overflow:auto; flex-shrink:1;
+            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; display:none; line-height:1.5; }
+        #npc-panel h4 { margin:0 0 6px; font-size:13px; color:#8cf; }
+        #npc-panel .npc-row { display:flex; gap:8px; align-items:baseline; padding:2px 0; cursor:pointer; }
+        #npc-panel .npc-row:hover { background:#2a2e38; border-radius:3px; }
+        #npc-panel .npc-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        #npc-panel .npc-xy { color:#8cf; font-family:ui-monospace,monospace; font-size:11px; }
+        #npc-panel .npc-en { display:block; color:#6a6a75; font-size:10px; }
+        #npc-panel .npc-empty { color:#6a6a75; }
+        #npc-panel::-webkit-scrollbar { width:8px; } #npc-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
+        #resp-panel { position:static; width:280px; max-height:42vh; overflow:auto; flex-shrink:1;
+            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
+            font-size:12px; color:#c8c8d2; display:none; line-height:1.5; }
+        #resp-panel h4 { margin:0 0 6px; font-size:13px; color:#ff9b6b; }
+        #resp-panel .resp-row { display:flex; gap:8px; align-items:baseline; padding:2px 0; cursor:pointer; }
+        #resp-panel .resp-row:hover { background:#2a2e38; border-radius:3px; }
+        #resp-panel .resp-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        #resp-panel .resp-meta { color:#ffd54a; font-family:ui-monospace,monospace; font-size:11px; }
+        #resp-panel .resp-xy { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
+        #resp-panel .resp-empty { color:#6a6a75; }
+        #resp-panel::-webkit-scrollbar { width:8px; } #resp-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
         #info { font-size:12px; color:#aaa; white-space:nowrap; }
         #status { margin-left:auto; font-size:12px; color:#e90; white-space:nowrap; }
         button { font-size:14px; min-width:32px; padding:4px 9px; white-space:nowrap; cursor:pointer; background:#333; color:#eee; border:1px solid #555; border-radius:3px; }
@@ -1572,14 +1634,40 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #ent-tooltip { position:fixed; background:rgba(10,12,16,.95); border:1px solid #72d6ff; border-radius:5px;
             padding:5px 9px; font-size:12px; color:#cfe; z-index:120; pointer-events:none; box-shadow:0 3px 12px rgba(0,0,0,.6); }
         /* custom map selector */
-        .msel { position:relative; }
-        #map-sel-btn { display:flex; align-items:center; gap:8px; min-width:180px; max-width:260px; background:#2b2b31;
-            color:#eee; border:1px solid #4a4a55; border-radius:4px; padding:4px 9px; cursor:pointer; font-size:13px; }
-        #map-sel-btn:hover { background:#34343b; border-color:#5c5c6a; }
+        #resp-panel::-webkit-scrollbar { width:8px; } #resp-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
+        /* 面板拖拽：标题即手柄；拖拽中半透明浮起 */
+        #npc-panel h4, #resp-panel h4, #conn-panel h4, #cat-panel h4,
+        #quest-panel h4, #legend-panel h4, #minimap .mm-title { cursor:move; user-select:none; }
+        #npc-panel h4::after, #resp-panel h4::after, #conn-panel h4::after,
+        #cat-panel h4::after, #quest-panel h4::after, #legend-panel h4::after {
+            content:" ⠿"; color:#55555f; font-size:10px; }
+        .panel-dragging { opacity:.85 !important; box-shadow:0 10px 28px rgba(0,0,0,.65) !important; }
+        /* 传送点详情弹窗（两段式点击：选中 → 对面小地图 → 再点跳转） */
+        #port-detail { position:fixed; z-index:95; width:208px; cursor:pointer;
+            background:rgba(10,12,16,.94); border:1px solid #3a3a46; border-radius:6px;
+            padding:8px; font-size:12px; color:#c8c8d2; line-height:1.45; }
+        #port-detail .pd-head { color:#3de88a; font-weight:700; margin-bottom:4px; }
+        #port-detail .pd-close { float:right; color:#888; padding:0 3px; }
+        #port-detail .pd-close:hover { color:#fff; }
+        #port-detail img { width:100%; border-radius:4px; display:block; margin:4px 0; background:#000; }
+        #port-detail .pd-meta { color:#8a8a98; font-family:ui-monospace,monospace; font-size:11px; }
+        #map-sel-btn { background:#2b2b31; color:#eee; border:1px solid #4a4a55; border-radius:4px; padding:4px 9px; cursor:pointer; font-size:13px; }
+        #port-detail { position:fixed; z-index:9000; width:208px; cursor:pointer;
+            background:rgba(10,12,16,.94); border:1px solid #3a3a46; border-radius:6px;
+            padding:8px; font-size:12px; color:#c8c8d2; line-height:1.45; }
         #map-sel-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
-        .msel-caret { color:#8a8a95; font-size:10px; }
+        .msel { position:relative; }
+        #map-sel-filter { width:100%; box-sizing:border-box; padding:7px 9px; background:#1c1c21; color:#eee;
+            border:none; border-bottom:1px solid #3a3a44; outline:none; font-size:13px; }
+        .msel-tabs { display:flex; gap:4px; padding:6px 8px 4px; flex-wrap:wrap; background:#1e1e24; border-bottom:1px solid #2e2e36; }
+        .msel-tab { font-size:11px !important; padding:3px 8px !important; min-width:0 !important; height:auto !important;
+            border-radius:10px; background:#26262c; border:1px solid #3a3a44; color:#9a9aa5; }
+        .msel-tab.active { background:#2f6a44; border-color:#3de88a; color:#d2ffe4; }
+        .msel-tab i { font-style:normal; opacity:.65; font-size:10px; }
+        .msel-npcdot { width:6px; height:6px; border-radius:50%; background:#3de88a; display:inline-block;
+            box-shadow:0 0 4px #3de88a; flex:none; align-self:center; }
         .msel-pop { position:absolute; top:calc(100% + 4px); left:0; min-width:280px; max-width:380px; background:#232329;
-            border:1px solid #4a4a55; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,.6); z-index:100; overflow:hidden; }
+            border:1px solid #4a4a55; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,.6); z-index:10000; overflow:hidden; }
         #map-sel-filter { width:100%; box-sizing:border-box; padding:7px 9px; background:#1c1c21; color:#eee;
             border:none; border-bottom:1px solid #3a3a44; outline:none; font-size:13px; }
         #map-sel-filter::placeholder { color:#6a6a75; }
@@ -1724,7 +1812,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             /* 固定面板收口：不允许超出 390px 视口 */
             #cat-panel, #conn-panel, #quest-panel, #legend-panel, #pick-panel, #statusbar {
                 max-width:calc(100vw - 20px); }
-            #cat-panel   { width:auto; bottom:calc(60px + var(--safe-bottom,0px)); }
+            #right-panels { left:8px; right:8px; top:auto; bottom:calc(60px + var(--safe-bottom,0px)); max-height:40dvh; }
+            #npc-panel, #resp-panel { width:auto; }
             #legend-panel{ bottom:calc(60px + var(--safe-bottom,0px)); }
             #pick-panel  { bottom:calc(60px + var(--safe-bottom,0px)); }
             #conn-panel  { top:calc(52px + var(--safe-top,0px)); }
@@ -1769,36 +1858,36 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     <div id="toolbar">
         <div id="view-tabs" title="视图切换">
-            <button class="vtab active" data-view="map" type="button">🗺️ 地图</button>
-            <button class="vtab" data-view="overview" type="button">📋 总览</button>
-            <button class="vtab" data-view="graph" type="button">🕸️ 连通</button>
+            <button class="vtab active" data-view="map" type="button">地图</button>
+            <button class="vtab" data-view="overview" type="button">总览</button>
+            <button class="vtab" data-view="graph" type="button">连通</button>
         </div>
-        <span id="map-lbl">🗺️ 地图:</span>
         <div class="msel" id="map-sel">
             <button id="map-sel-btn" type="button" title="选择地图">
                 <span id="map-sel-label">加载中…</span><span class="msel-caret">▾</span>
             </button>
             <div class="msel-pop" id="map-sel-pop" hidden>
+                <div class="msel-tabs" id="msel-tabs"></div>
                 <input id="map-sel-filter" type="text" placeholder="搜索地图文件名或中文名…" autocomplete="off">
                 <div class="msel-list" id="map-sel-list"></div>
             </div>
         </div>
-        <button id="btn-zoom-in" title="放大 (+)">＋</button>
-        <button id="btn-zoom-out" title="缩小 (-)">－</button>
-        <button id="btn-fit" title="适配全图窗口大小">⛶ 适配</button>
-        <button id="btn-layers" type="button" title="图层与叠加">☰ 图层</button>
+        <button id="btn-zoom-out" class="tb-ico" title="缩小 (-)">－</button>
+        <button id="btn-zoom-in" class="tb-ico" title="放大 (+)">＋</button>
+        <button id="btn-fit" class="tb-ico" title="适配全图窗口大小">⛶</button>
+        <button id="btn-layers" class="tb-ico" type="button" title="图层与叠加">☰</button>
         <div id="layer-group">
             <div class="lg-title">图层 / 叠加</div>
-        <label><input type="checkbox" id="chk-g" checked> Back</label>
-        <label><input type="checkbox" id="chk-m" checked> Middle</label>
-        <label><input type="checkbox" id="chk-f" checked> Front</label>
+        <label title="地面层"><input type="checkbox" id="chk-g" checked> 底</label>
+        <label title="中层"><input type="checkbox" id="chk-m" checked> 中</label>
+        <label title="前景层"><input type="checkbox" id="chk-f" checked> 前</label>
         <label><input type="checkbox" id="chk-grid"> 网格</label>
-        <label><input type="checkbox" id="chk-ents" checked title="显示 NPC/传送点"> NPC</label>
-        <label><input type="checkbox" id="chk-resp" title="怪物刷新热力图层"> 怪物刷新</label>
-        <select id="quest-sel" title="任务叠加模式" style="max-width:170px; font-size:12px; background:#2b2b31; color:#eee; border:1px solid #4a4a55; border-radius:4px; padding:3px 5px;">
+        <label><input type="checkbox" id="chk-ents" checked title="显示 NPC/卫士/传送点"> NPC</label>
+        <label><input type="checkbox" id="chk-resp" title="怪物刷新热力图层"> 刷怪</label>
+        <select id="quest-sel" title="任务叠加模式" style="max-width:150px; font-size:12px; background:#2b2b31; color:#eee; border:1px solid #4a4a55; border-radius:4px; padding:3px 5px;">
             <option value="">📜 任务叠加…</option>
         </select>
-        <button id="btn-legend" title="图例说明">❓</button>
+        <button id="btn-legend" class="tb-ico" title="图例说明">❓</button>
         </div>
         <span id="status"></span>
 
@@ -1811,7 +1900,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span id="progress-text" style="font-family:monospace;">0% (0/0)</span>
         </div>
 
-        <button id="btn-clear-cache" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄 重新生成</button>
+        <button id="btn-clear-cache" class="tb-ico" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄</button>
     </div>
     <div id="layer-backdrop" class="wu-backdrop"></div>
     <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="heat-canvas" width="0" height="0"></canvas><svg id="quest-svg" aria-hidden="true"></svg><svg id="pick-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
@@ -1835,12 +1924,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
     <div id="cat-panel"></div>
     <div id="conn-panel"></div>
+    <div id="right-panels">
+        <div id="resp-panel"></div>
+        <div id="npc-panel"></div>
+    </div>
     <div id="minimap">
         <div class="mm-title">全图</div>
         <div id="mm-box"><img id="mm-img" draggable="false" alt=""><div id="mm-rect" style="display:none"></div></div>
     </div>
     <div id="statusbar"><span id="coord-info"></span><span id="zoom-info"></span><span id="map-info"></span></div>
     <div id="legend-panel" style="display:none"></div>
+    <div id="port-detail" style="display:none"></div>
     <div id="port-tooltip" style="display:none"></div>
     <div id="ent-tooltip" style="display:none"></div>
     <div id="heat-tooltip"></div>
@@ -1903,7 +1997,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         // ---- tile mode: dynamically load /tile images covering the viewport ----
         // 增量瓦片管理: 以 URL 为键复用已存在的 <img>, 只增删变化的瓦片,
-        // 并向视口四周预加载一圈 (拖拽时新瓦片已就位)。滚动不再整层重建。
         const tileEls = new Map();   // url -> <img>
         let tileSpacer = null;
         function tileUrl(mi, tx, ty, z) {
@@ -2083,11 +2176,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         function drawGrid() {
             const s = curScale();
             if (!gridOn() || !imgEl.naturalWidth) { gridCanvas.width = 0; gridCanvas.height = 0; return; }
-            // canvas is a child of #viewport (position:absolute), so imgRect
-            // (viewport-relative) maps 1:1 to canvas coordinates
+            // canvas 是 #viewport(滚动容器) 的子元素：需用内容坐标（视口相对 +
+            // scroll 偏移）才能与地图图像永久对齐，滚动后无需重绘。
             const vpRect = vp.getBoundingClientRect();
             const imgRect = imgEl.getBoundingClientRect();
-            const ox = imgRect.left - vpRect.left, oy = imgRect.top - vpRect.top;
+            const ox = imgRect.left - vpRect.left + vp.scrollLeft;
+            const oy = imgRect.top - vpRect.top + vp.scrollTop;
             gridCanvas.style.left = ox + "px";
             gridCanvas.style.top = oy + "px";
             const cw = imgRect.width, ch = imgRect.height;
@@ -2119,14 +2213,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const routes = routeCache[mi?.name] || [];
             if (!mi) { routeSvg.innerHTML = ""; return; }
             const s = curScale();
-            // overlay is viewport-relative; world->screen: cell*48/s - scrollLeft
-            const px = p => Number(p.x) * 48 / s - vp.scrollLeft;
-            const py = p => Number(p.y) * 32 / s - vp.scrollTop;
+            // overlay 是 #viewport(overflow:auto) 的子元素，随内容滚动 —— 必须用
+            // 内容坐标（cell*48/s），不能减 scrollLeft（否则双重偏移飞出视口）。
+            const px = p => Number(p.x) * 48 / s;
+            const py = p => Number(p.y) * 32 / s;
             routeSvg.style.left = "0px";
             routeSvg.style.top = "0px";
             routeSvg.setAttribute("width", vp.clientWidth);
             routeSvg.setAttribute("height", vp.clientHeight);
             const vw = vp.clientWidth, vh = vp.clientHeight;
+            const sl = vp.scrollLeft, st = vp.scrollTop;
             const hereStem = mi.name.replace(/\\.map$/i, "");
             // 聚合：同 (方向, 对面地图, icon) 的多条 movement（如逐格排列的传送门）
             // 合成一个出口标记，位置取本图端点质心 —— 否则地图边缘会出现几十个
@@ -2152,7 +2248,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
             routeSvg.innerHTML = Object.values(groups).map(g => {
                 const cx = px({ x: g.sx / g.n }), cy = py({ y: g.sy / g.n });
-                if (cx < -60 || cy < -60 || cx > vw + 60 || cy > vh + 60) return "";
+                if (cx < sl - 60 || cy < st - 60 || cx > sl + vw + 60 || cy > st + vh + 60) return "";
                 const tcn = MAP_CN[g.otherStem] || g.otherStem;
                 // color by icon type: Cave/Down=red, Building=green, Exit/Up=blue, Province=yellow
                 let color = "#72d6ff";
@@ -2166,9 +2262,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const dstAttr = (g.ox != null)
                     ? ` data-dstmap="${g.otherStem}" data-dstx="${Math.round(g.ox)}" data-dsty="${Math.round(g.oy)}" data-dstcn="${encodeURIComponent(tcn)}"`
                     : "";
-                return `<g class="port-wrap"><circle class="port"${dstAttr} cx="${cx}" cy="${cy}" r="7" fill="${color}" stroke="#111" stroke-width="2" opacity=".92"><title>${label}${g.ox != null ? ` · 对面格 ${Math.round(g.ox)},${Math.round(g.oy)}` : ""}</title></circle>` +
+                const keyAttr = ` data-key="${g.dir}|${g.otherStem}|${g.icon}"`;
+                const selRing = (window.__hlPort === g.dir + "|" + g.otherStem + "|" + g.icon)
+                    ? `<circle cx="${cx}" cy="${cy}" r="13" fill="none" stroke="#fff" stroke-width="2.5" pointer-events="none"><animate attributeName="r" values="11;15;11" dur="1.2s" repeatCount="indefinite"/></circle>` : "";
+                return `${selRing}<g class="port-wrap"><circle class="port"${keyAttr}${dstAttr} cx="${cx}" cy="${cy}" r="7" fill="${color}" stroke="#111" stroke-width="2" opacity=".92"><title>${label}${g.ox != null ? ` · 对面格 ${Math.round(g.ox)},${Math.round(g.oy)}` : ""} · 点击查看对面小地图</title></circle>` +
                     `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="10" fill="#fff" pointer-events="none">${arrow}</text></g>`;
             }).join("");
+            positionPortDetail();
         }
         // hover portal -> show destination map thumbnail
         routeSvg.addEventListener("mouseover", (e) => {
@@ -2185,15 +2285,93 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         routeSvg.addEventListener("mouseout", (e) => {
             if (!e.target.closest("circle.port")) portTooltip.style.display = "none";
         });
-        // click portal -> jump to destination map
-        routeSvg.addEventListener("click", (e) => {
-            const c = e.target.closest("circle.port");
-            if (!c || !c.dataset.dstmap) return;
-            const dst = c.dataset.dstmap, dx = c.dataset.dstx || 0, dy = c.dataset.dsty || 0;
-            if (maps.some(m => m.name === dst + ".map")) {
-                history.replaceState(null, '', `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(dx * 48)}&y=${Math.round(dy * 32)}&g=1&m=1&f=1`);
+        // click portal -> 两段式：第一次选中并展示对面小地图，第二次跳转
+        let portSelKey = null;
+        const portDetail = document.getElementById("port-detail");
+        function hidePortDetail() {
+            portDetail.style.display = "none";
+            portSelKey = null;
+            window.__hlPort = null;
+        }
+        function showPortDetail(c) {
+            const dst = c.dataset.dstmap, cn = decodeURIComponent(c.dataset.dstcn || dst);
+            portDetail.innerHTML =
+                `<div class="pd-head">🚩 ${cn}<span class="pd-close" title="关闭">✕</span></div>` +
+                `<img src="/thumb?map=${encodeURIComponent(dst + ".map")}" alt="">` +
+                `<div class="pd-meta">对面格 ${c.dataset.dstx},${c.dataset.dsty}</div>` +
+                `<div class="pd-meta" style="color:#ffd54a;">再点一次传送点 · 跳转过去</div>`;
+            portDetail.dataset.dstmap = dst;
+            portDetail.dataset.dstx = c.dataset.dstx || 0;
+            portDetail.dataset.dsty = c.dataset.dsty || 0;
+            portDetail.style.display = "block";
+            positionPortDetail();
+        }
+        function positionPortDetail() {
+            if (!portDetail || portDetail.style.display === "none" || !portSelKey) return;
+            const c = document.querySelector('#route-svg circle.port[data-key="' + (window.CSS && CSS.escape ? CSS.escape(portSelKey) : portSelKey) + '"]');
+            if (!c) return;
+            const r = c.getBoundingClientRect();
+            portDetail.style.left = Math.min(r.x + 18, window.innerWidth - 240) + "px";
+            portDetail.style.top = Math.min(r.y + 18, window.innerHeight - 280) + "px";
+        }
+        // 自动关闭：鼠标移出标记/弹窗 250ms 后消失（缓冲让鼠标能移进弹窗），
+        // 点击空白处立即消失。
+        let pdHideTimer = null;
+        function schedulePdHide() {
+            clearTimeout(pdHideTimer);
+            pdHideTimer = setTimeout(() => {
+                if (portDetail.style.display !== "none") { hidePortDetail(); drawRoutes(); }
+            }, 250);
+        }
+        function cancelPdHide() { clearTimeout(pdHideTimer); }
+        portDetail.addEventListener("mouseenter", cancelPdHide);
+        portDetail.addEventListener("mouseleave", schedulePdHide);
+        document.addEventListener("click", (e) => {
+            if (portDetail.style.display === "none") return;
+            if (portDetail.contains(e.target)) return;
+            if (e.target.closest && e.target.closest("circle.port")) return;
+            hidePortDetail();
+            drawRoutes();
+        });
+        // 悬停关闭改用 document mousemove 探测：showPortDetail 后 drawRoutes 重建了
+        // SVG，原 circle 被销毁导致 mouseout 不会触发 —— 必须以坐标实时判定。
+        document.addEventListener("mousemove", (e) => {
+            if (portDetail.style.display === "none") return;
+            if (portDetail.contains(e.target)) { cancelPdHide(); return; }
+            const c = e.target.closest && e.target.closest("circle.port");
+            if (c && portSelKey && c.dataset.key === portSelKey) { cancelPdHide(); return; }
+            schedulePdHide();
+        });
+        vp.addEventListener("scroll", () => {   // 滚动后弹窗与标记错位，直接关
+            if (portDetail.style.display !== "none" && !pdHideTimer) hidePortDetail(), drawRoutes();
+        });
+        portDetail.addEventListener("click", (e) => {
+            if (e.target.classList.contains("pd-close")) { hidePortDetail(); drawRoutes(); return; }
+            const dst = portDetail.dataset.dstmap;
+            if (dst && maps.some(m => m.name === dst + ".map")) {
+                hidePortDetail();
+                history.replaceState(null, '', `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(Number(portDetail.dataset.dstx) * 48)}&y=${Math.round(Number(portDetail.dataset.dsty) * 32)}&g=1&m=1&f=1`);
                 init();
             }
+        });
+        routeSvg.addEventListener("click", (e) => {
+            const c = e.target.closest("circle.port");
+            if (!c) { if (portSelKey) { hidePortDetail(); drawRoutes(); } return; }
+            if (!c.dataset.dstmap) return;
+            if (portSelKey && portSelKey === c.dataset.key) {
+                // 第二次点击：跳转对面
+                const dst = c.dataset.dstmap;
+                hidePortDetail();
+                if (maps.some(m => m.name === dst + ".map")) {
+                    history.replaceState(null, '', `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(Number(c.dataset.dstx || 0) * 48)}&y=${Math.round(Number(c.dataset.dsty || 0) * 32)}&g=1&m=1&f=1`);
+                    init();
+                }
+                return;
+            }
+            portSelKey = c.dataset.key;      // 第一次点击：选中 + 对面小地图
+            window.__hlPort = c.dataset.key;
+            showPortDetail(c);
+            drawRoutes();
         });
         async function loadRoutes(mi) {
             try {
@@ -2209,51 +2387,74 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (!panel) return;
             const hereStem = mi.name.replace(/\\.map$/i, "");
             const routes = routeCache[mi.name] || [];
+            // 与 drawRoutes 同一聚合键（dir|otherStem|icon）：一行 ↔ 一个出口标记
             const groups = {};
             for (const r of routes) {
                 if (!r.source || !r.destination) continue;
                 const sourceHere = String(r.source.map).replace(/\\.map$/i, "") === hereStem;
                 const destHere = String(r.destination.map).replace(/\\.map$/i, "") === hereStem;
                 if (!sourceHere && !destHere) continue;
+                const here = sourceHere ? r.source : r.destination;
                 const other = sourceHere ? r.destination : r.source;
                 const otherStem = String(other.map).replace(/\\.map$/i, "");
-                const g = groups[otherStem] = groups[otherStem] ||
-                    { out: 0, in: 0, ox: other.x, oy: other.y };
+                const dir = sourceHere ? "O" : "I";
+                const key = dir + "|" + otherStem + "|" + (r.icon || "None");
+                const g = groups[key] = groups[key] || {
+                    key, dir, otherStem, out: 0, in: 0,
+                    sx: 0, sy: 0, n: 0, hasL: false,
+                    ox: other.x, oy: other.y, hasO: other.x != null,
+                };
                 if (sourceHere) g.out++; else g.in++;
-                if (other.x != null) { g.ox = other.x; g.oy = other.y; }
+                if (here.x != null) { g.sx += Number(here.x); g.sy += Number(here.y); g.n++; g.hasL = true; }
+                if (other.x != null) { g.ox = other.x; g.oy = other.y; g.hasO = true; }
             }
-            const stems = Object.keys(groups).sort((a, b) =>
-                (groups[b].out + groups[b].in) - (groups[a].out + groups[a].in));
+            const rows = Object.values(groups).sort((a, b) => (b.out + b.in) - (a.out + a.in));
             const cn = st => MAP_CN[st] || st;
-            let html = `<h4>🔗 地图连接 (${stems.length})</h4>`;
-            if (!stems.length) {
+            let html = `<h4>🔗 ${cn(hereStem)} · 传送点 (${rows.length})</h4>`;
+            if (!rows.length) {
                 html += `<div class="conn-empty">无连接数据</div>`;
             } else {
-                for (const st of stems) {
-                    const g = groups[st];
-                    const exists = maps.some(m => m.name === st + ".map");
-                    const jump = (exists && g.ox != null)
-                        ? ` data-jump="${st}" data-x="${Math.round(g.ox)}" data-y="${Math.round(g.oy)}"`
-                        : "";
+                for (const g of rows) {
+                    const exists = maps.some(m => m.name === g.otherStem + ".map");
+                    const lx = g.hasL ? Math.round(g.sx / g.n) : null;
+                    const ly = g.hasL ? Math.round(g.sy / g.n) : null;
+                    // 有本图端点 -> 点击跳到本图出口格并选中标记（再点标记两下过去）；
+                    // 无本图坐标 -> 兜底直接跳对面。
+                    let attr = "", tail;
+                    if (lx != null) {
+                        attr = ` data-lx="${lx}" data-ly="${ly}" data-pkey="${g.key}"`;
+                        tail = `<span class="conn-file" title="本图出入口格">⇩ ${lx},${ly}</span>`;
+                    } else if (exists && g.hasO) {
+                        attr = ` data-jump="${g.otherStem}" data-x="${Math.round(g.ox)}" data-y="${Math.round(g.oy)}"`;
+                        tail = `<span class="conn-file">${g.otherStem}</span>`;
+                    } else {
+                        tail = `<span class="conn-file">${g.otherStem !== hereStem ? g.otherStem : "本图内"}</span>`;
+                    }
                     const dirs = [];
                     if (g.out) dirs.push(`→${g.out}`);
                     if (g.in) dirs.push(`←${g.in}`);
-                    html += `<div class="conn-row${jump ? " link" : ""}"${jump}>` +
-                        `<span class="conn-name">${cn(st)}</span>` +
+                    html += `<div class="conn-row${attr ? " link" : ""}"${attr}>` +
+                        `<span class="conn-name">${cn(g.otherStem)}</span>` +
                         `<span class="conn-dir">${dirs.join(" ")}</span>` +
-                        `${st !== hereStem ? `<span class="conn-file">${st}</span>` : "<span class='conn-file'>本图内</span>"}` +
-                        `</div>`;
+                        tail + `</div>`;
                 }
             }
             panel.innerHTML = html;
             panel.style.display = "block";
             panel.querySelectorAll(".conn-row.link").forEach(row => {
                 row.addEventListener("click", () => {
-                    const dst = row.dataset.jump;
-                    if (!dst) return;
-                    history.replaceState(null, '',
-                        `#map=${encodeURIComponent(dst + ".map")}&cur=0&x=${Math.round(Number(row.dataset.x) * 48)}&y=${Math.round(Number(row.dataset.y) * 32)}&g=1&m=1&f=1`);
-                    init();
+                    if (row.dataset.lx != null) {
+                        // 跳到本图出口格 + 高亮标记；不预置 portSelKey——
+                        // 用户点标记第 1 次看对面小地图，第 2 次才跳转
+                        jumpToCell(row.dataset.lx, row.dataset.ly, null);
+                        window.__hlPort = row.dataset.pkey;
+                        window.__hlName = null;
+                        drawRoutes();
+                    } else if (row.dataset.jump) {
+                        history.replaceState(null, '',
+                            `#map=${encodeURIComponent(row.dataset.jump + ".map")}&cur=0&x=${Math.round(Number(row.dataset.x) * 48)}&y=${Math.round(Number(row.dataset.y) * 32)}&g=1&m=1&f=1`);
+                        init();
+                    }
                 });
             });
         }
@@ -2265,6 +2466,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         function entColor(kind, name) {
             if (kind === "spawn") return "#ffd54a";
             if (kind === "monster") return "#ff6b6b";
+            if (kind === "guard") return "#ff9b3d";
             const n = name || "";
             // merchant / storage / function NPC -> green, else blue
             if (/仓|商|卖|买|功能|保管|商店|铺|店/.test(n)) return "#7CFF7C";
@@ -2284,20 +2486,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             entLayer.style.top = "0px";
             entLayer.style.width = vp.clientWidth + "px";
             entLayer.style.height = vp.clientHeight + "px";
+            // 内容坐标（cell*48/s）：ent-layer 随 #viewport 内容滚动，减 scrollLeft 会双重偏移
             const vw = vp.clientWidth, vh = vp.clientHeight;
+            const sl = vp.scrollLeft, st = vp.scrollTop;
             const hlName = window.__hlName || null;
             entLayer.innerHTML = ents.map(e => {
-                const px = Number(e.x) * 48 / s - vp.scrollLeft;
-                const py = Number(e.y) * 32 / s - vp.scrollTop;
+                const px = Number(e.x) * 48 / s;
+                const py = Number(e.y) * 32 / s;
                 // wide culling: entities are few, keep visible beyond viewport edges
-                if (px < -200 || py < -200 || px > vw + 200 || py > vh + 200) return "";
+                if (px < sl - 200 || py < st - 200 || px > sl + vw + 200 || py > st + vh + 200) return "";
                 const kind = e.kind || "npc";
                 const color = entColor(kind, e.name);
                 const shape = entShape(kind);
                 const label = e.name || "";
                 const d = e.drops ? ` · 掉落 ${e.drops.length} 种` : "";
                 const hlCls = (hlName && e.name === hlName) ? " target" : "";
-                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px"><span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span><span class="ent-label">${label}</span></div>`;
+                let icon = `<span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
+                if (kind === "npc" && e.img != null) {
+                    const fr = Number(e.img) * 100;
+                    icon = `<img class="ent-sprite" src="/sprite?lib=NPC&frame=${fr}" alt="" style="zoom:${1 / s}"` +
+                        ` onerror="this.style.display='none';this.nextElementSibling.classList.remove('hide')">` +
+                        `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
+                }
+                if (kind === "guard" && e.lib && e.frame != null) {
+                    // 卫士：帧已按朝向算好（shape*1000 + 10*dir），库由服务端给出
+                    icon = `<img class="ent-sprite" src="/sprite?lib=${encodeURIComponent(e.lib)}&frame=${e.frame}" alt="" style="zoom:${1 / s}"` +
+                        ` onerror="this.style.display='none';this.nextElementSibling.classList.remove('hide')">` +
+                        `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
+                }
+                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}" style="left:${px}px;top:${py}px">${icon}<span class="ent-label">${label}</span></div>`;
             }).join("");
         }
         // hover entity -> tooltip
@@ -2338,10 +2555,94 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 }
             }
             drawEntities();
+            renderNpcPanel(mi);
+        }
+
+        // ---- NPC 列表面板：服务端 NPCInfo 位置直读，点击跳转 + 高亮 ----
+        function jumpToCell(x, y, hlName) {
+            window.__userAnchor = true;         // 用户显式指定视点，停用质心自动居中
+            window.__hlRegion = null;           // 刷新区高亮随新跳转清除
+            if (typeof portSelKey !== "undefined" && portSelKey) hidePortDetail();
+            anchorX = Number(x) * 48 + 24;      // 格中心（与 applyAnchor/URL hash 同一约定）
+            anchorY = Number(y) * 32 + 16;
+            if (hlName) window.__hlName = hlName;
+            applyAnchor();
+            if (isTileMode()) drawTiles();
+            drawRoutes(); drawEntities(); drawGrid(); drawMini();
+            updateUrlHash();
+        }
+        function renderNpcPanel(mi) {
+            const panel = document.getElementById("npc-panel");
+            if (!mi) { panel.style.display = "none"; return; }
+            const npcs = (entCache[mi.name] || []).filter(e => {
+                const k = e.kind || "npc";
+                return k === "npc" || k === "guard";   // NPC + 城镇卫士
+            });
+            const cn = st => MAP_CN[st] || st;
+            const stem = mi.name.replace(/\\.map$/i, "");
+            const nGuard = npcs.filter(e => e.kind === "guard").length;
+            let html = `<h4>🏪 ${cn(stem)} · NPC ${npcs.length - nGuard} · 卫士 ${nGuard}</h4>`;
+            if (!npcs.length) {
+                html += `<div class="npc-empty">本图无 NPC 数据</div>`;
+            } else {
+                npcs.sort((a, b) => String(a.name).localeCompare(String(b.name), "zh"));
+                for (const e of npcs) {
+                    const nm = String(e.name || "").replace(/"/g, "&quot;");
+                    const en = e.name_en && e.name_en !== e.name
+                        ? `<span class="npc-en">${String(e.name_en).replace(/</g, "&lt;")}</span>` : "";
+                    html += `<div class="npc-row" data-name="${nm}" data-x="${e.x}" data-y="${e.y}">` +
+                        `<span class="npc-name">${nm}${en}</span>` +
+                        `<span class="npc-xy">${e.x},${e.y}</span></div>`;
+                }
+            }
+            panel.innerHTML = html;
+            panel.style.display = "block";
+            panel.querySelectorAll(".npc-row").forEach(row => {
+                row.addEventListener("click", () => {
+                    jumpToCell(row.dataset.x, row.dataset.y, row.dataset.name);
+                });
+            });
+        }
+
+        // ---- 怪物刷新面板：respCache 分组区域列表，点击跳转 + 热力高亮 ----
+        function renderRespPanel(mi) {
+            const panel = document.getElementById("resp-panel");
+            if (!panel) return;
+            if (!mi || !chkResp || !chkResp.checked) { panel.style.display = "none"; return; }
+            const d = respCache[mi.name];
+            if (!d || !d.groups || !d.groups.length) { panel.style.display = "none"; return; }
+            const cn = st => MAP_CN[st] || st;
+            const stem = mi.name.replace(/\\.map$/i, "");
+            let html = `<h4>👾 ${cn(stem)} · 刷新区 (${d.groups.length})</h4>`;
+            const groups = [...d.groups].sort((a, b) =>
+                b.entries.reduce((s, e) => s + (e.count || 0), 0) -
+                a.entries.reduce((s, e) => s + (e.count || 0), 0));
+            for (const g of groups) {
+                const total = g.entries.reduce((s, e) => s + (e.count || 0), 0);
+                const names = g.entries.map(e => e.mc || e.m || "?");
+                const lv = Math.max(...g.entries.map(e => e.level || 0));
+                const boss = g.entries.some(e => e.boss) ? " 👑" : "";
+                const main = names[0] + (names.length > 1 ? ` 等${names.length}种` : "");
+                html += `<div class="resp-row" data-x="${g.x}" data-y="${g.y}" data-half="${g.half}"` +
+                    ` title="${names.join(" / ")}">` +
+                    `<span class="resp-name">${main}${boss} <span style="color:#6a6a75;">Lv${lv}</span></span>` +
+                    `<span class="resp-meta">×${total}</span>` +
+                    `<span class="resp-xy">${g.x},${g.y}</span></div>`;
+            }
+            panel.innerHTML = html;
+            panel.style.display = "block";
+            panel.querySelectorAll(".resp-row").forEach(row => {
+                row.addEventListener("click", () => {
+                    jumpToCell(row.dataset.x, row.dataset.y, null);
+                    window.__hlRegion = row.dataset.x + "," + row.dataset.y + "," + row.dataset.half;
+                    window.__hlName = null;
+                    drawHeat();
+                });
+            });
         }
 
         // ---- cursor cell coordinate readout (rect: world px -> cell) ----
-        vp.addEventListener("scroll", () => { drawRoutes(); drawEntities(); });
+        vp.addEventListener("scroll", () => { drawRoutes(); drawEntities(); drawHeat(); drawQuest(); });
         window.addEventListener("resize", () => { drawGrid(); drawRoutes(); drawEntities(); });
 
         // ---- catalog info panel ----
@@ -2393,48 +2694,63 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         // ---- custom map dropdown ----
         function mselLabelOf(m) { return m ? (m.cn ? m.cn + " — " : "") + m.name : "加载中…"; }
-        function mselOpen() { mselPop.hidden = false; mselFilter.value = ""; renderMselList(); mselFilter.focus(); }
+        function mselOpen() {
+            mselPop.hidden = false; mselFilter.value = ""; renderMselTabs(); renderMselList(); mselFilter.focus();
+            ensureNpcSet().then(renderMselList);   // NPC 小点懒加载完成后重绘
+        }
         function mselClose() { mselPop.hidden = true; }
+        let mselCat = "all";                       // 分类标签筛选（all/town/cave/room/other）
+        let npcMapSet = null;                      // 有 NPC 的地图 stem 集合（懒加载）
+        async function ensureNpcSet() {
+            if (npcMapSet) return npcMapSet;
+            npcMapSet = new Set();
+            try {
+                const d = await (await fetch("/api/npc_audit")).json();
+                for (const row of (d.rows || [])) {
+                    if (row.npcs && row.npcs.length) npcMapSet.add(row.map);
+                }
+            } catch (e) {}
+            return npcMapSet;
+        }
         function mselFiltered() {
             const q = mselFilter.value.trim().toLowerCase();
-            if (!q) return maps;
             return maps.filter(m =>
-                m.name.toLowerCase().includes(q) || (m.cn || "").toLowerCase().includes(q));
+                (mselCat === "all" || (m.cat || "other") === mselCat) &&
+                (!q || m.name.toLowerCase().includes(q) || (m.cn || "").toLowerCase().includes(q)));
         }
         const CAT_LABEL = { town: "🏘️ 城镇", cave: "⛰️ 洞穴/地牢", room: "🚪 小房间/建筑", other: "📦 其他" };
+        const mselItem = (m) => {
+            const stem = m.name.replace(/\\.map$/i, "");
+            const dot = npcMapSet && npcMapSet.has(stem) ? '<span class="msel-npcdot" title="有 NPC"></span>' : "";
+            return '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
+                dot + '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>';
+        };
+        function renderMselTabs() {
+            const tabs = document.getElementById("msel-tabs");
+            if (!tabs) return;
+            const counts = { all: maps.length };
+            for (const m of maps) { const c = m.cat || "other"; counts[c] = (counts[c] || 0) + 1; }
+            tabs.innerHTML = [["all", "全部"]].concat(Object.keys(CAT_LABEL).map(c => [c, CAT_LABEL[c]]))
+                .map(([c, label]) =>
+                    `<button type="button" class="msel-tab${mselCat === c ? " active" : ""}" data-cat="${c}">${label}${counts[c] ? ` <i>${counts[c]}</i>` : ""}</button>`)
+                .join("");
+            tabs.querySelectorAll(".msel-tab").forEach(t => t.addEventListener("click", () => {
+                mselCat = t.dataset.cat;
+                renderMselTabs(); renderMselList();
+            }));
+        }
         function renderMselList() {
             const items = mselFiltered();
             if (items.length === 0) {
                 mselList.innerHTML = '<div class="msel-item empty">没有匹配的地图</div>';
                 return;
             }
-            const q = mselFilter.value.trim().toLowerCase();
-            if (q) {
-                // search mode: flat list
-                mselList.innerHTML = items.map(m =>
-                    '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
-                    '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>'
-                ).join("");
-            } else {
-                // browse mode: grouped by category
-                const groups = {};
-                for (const m of items) {
-                    const c = m.cat || "other";
-                    (groups[c] = groups[c] || []).push(m);
-                }
-                let html = "";
-                for (const c of ["town", "cave", "room", "other"]) {
-                    const g = groups[c];
-                    if (!g || !g.length) continue;
-                    html += `<div class="msel-cat">${CAT_LABEL[c]} (${g.length})</div>`;
-                    html += g.map(m =>
-                        '<div class="msel-item" data-name="' + m.name.replace(/"/g, "&quot;") + '">' +
-                        '<span class="msel-cn">' + (m.cn || "") + '</span><span>' + m.name + '</span></div>'
-                    ).join("");
-                }
-                mselList.innerHTML = html;
+            if (npcMapSet) {
+                // 有 NPC 的排前（同类内），方便扫一眼
+                items.sort((a, b) => (npcMapSet.has(b.name.replace(/\\.map$/i, "")) ? 1 : 0) -
+                                     (npcMapSet.has(a.name.replace(/\\.map$/i, "")) ? 1 : 0));
             }
-            // scroll active/current item into view
+            mselList.innerHTML = items.map(mselItem).join("");
             const cur = mselList.querySelector('.msel-item[data-name="' + curName + '"]');
             if (cur) { cur.classList.add("active"); cur.scrollIntoView({ block: "nearest" }); }
         }
@@ -2486,7 +2802,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const g = document.getElementById("chk-g").checked ? 1 : 0;
             const m = document.getElementById("chk-m").checked ? 1 : 0;
             const f = document.getElementById("chk-f").checked ? 1 : 0;
-            const hash = `#map=${encodeURIComponent(curMap().name)}&cur=${cur}&x=${ax}&y=${ay}&g=${g}&m=${m}&f=${f}`;
+            const hash = `#map=${encodeURIComponent(curMap().name)}&cur=${cur}&x=${ax}&y=${ay}&g=${g}&m=${m}&f=${f}` +
+                (window.__hlName ? `&hl=${encodeURIComponent(window.__hlName)}` : "");
             history.replaceState(null, '', hash);
             saveState();
         }
@@ -2554,6 +2871,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     cur: cur,
                     ax: Math.round(anchorX), ay: Math.round(anchorY),
                     g: gOn(), m: mOn(), f: fOn(),
+                    // 图层开关与面板布局一并记住（"记住最后状态"）
+                    ents: document.getElementById("chk-ents").checked,
+                    resp: document.getElementById("chk-resp").checked,
+                    grid: document.getElementById("chk-grid").checked,
+                    panels: loadPanelLayoutRaw(),
                 }));
             } catch (e) {}
         }
@@ -2562,6 +2884,86 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const raw = localStorage.getItem(STATE_KEY);
                 return raw ? JSON.parse(raw) : null;
             } catch (e) { return null; }
+        }
+
+        // ---- 面板拖拽：按住标题拖动，8px 网格对齐，位置持久化 ----
+        const DRAG_PANELS = ["conn-panel", "cat-panel", "quest-panel", "legend-panel",
+                             "pick-panel", "npc-panel", "resp-panel", "minimap"];
+        const DRAG_GRID = 8;
+        const _snap = v => Math.round(v / DRAG_GRID) * DRAG_GRID;
+        function _dragHandle(el, panel) {
+            if (!el) return false;
+            if (panel.id === "minimap") return el.classList && el.classList.contains("mm-title");
+            return el.tagName === "H4";
+        }
+        function loadPanelLayoutRaw() {
+            const L = {};
+            for (const id of DRAG_PANELS) {
+                const p = document.getElementById(id);
+                if (p && p.style.position === "fixed" && p.style.left) {
+                    L[id] = { l: p.style.left, t: p.style.top };
+                }
+            }
+            return L;
+        }
+        function savePanelLayout() {
+            try {
+                const st = loadState() || {};
+                st.panels = loadPanelLayoutRaw();
+                localStorage.setItem(STATE_KEY, JSON.stringify(st));
+            } catch (e) {}
+        }
+        function applyPanelLayout(L) {
+            for (const id in (L || {})) {
+                const p = document.getElementById(id);
+                const v = L[id];
+                if (p && v && v.l && v.t) {
+                    p.style.position = "fixed";
+                    p.style.left = v.l; p.style.top = v.t;
+                    p.style.right = "auto"; p.style.bottom = "auto";
+                    p.style.zIndex = 100;
+                }
+            }
+        }
+        function _panelDragStart(ev) {
+            const panel = ev.currentTarget;
+            if (!_dragHandle(ev.target, panel)) return;
+            if (ev.button !== undefined && ev.button !== 0) return;
+            const touch = ev.touches && ev.touches[0];
+            if (ev.type === "touchstart" && ev.touches.length > 1) return;
+            const cx = touch ? touch.clientX : ev.clientX;
+            const cy = touch ? touch.clientY : ev.clientY;
+            const r = panel.getBoundingClientRect();
+            const offX = cx - r.left, offY = cy - r.top;
+            panel.classList.add("panel-dragging");
+            const move = (e2) => {
+                const t = e2.touches && e2.touches[0];
+                const x = t ? t.clientX : e2.clientX, y = t ? t.clientY : e2.clientY;
+                panel.style.position = "fixed";     // 脱离原布局（含 flex 面板列）
+                panel.style.left = _snap(Math.max(0, Math.min(window.innerWidth - r.width, x - offX))) + "px";
+                panel.style.top = _snap(Math.max(0, Math.min(window.innerHeight - 40, y - offY))) + "px";
+                panel.style.right = "auto";
+                panel.style.bottom = "auto";
+                panel.style.zIndex = 100;
+                if (t) e2.preventDefault();
+            };
+            const up = () => {
+                panel.classList.remove("panel-dragging");
+                document.removeEventListener("mousemove", move);
+                document.removeEventListener("mouseup", up);
+                document.removeEventListener("touchmove", move);
+                document.removeEventListener("touchend", up);
+                savePanelLayout();
+            };
+            document.addEventListener("mousemove", move);
+            document.addEventListener("mouseup", up);
+            document.addEventListener("touchmove", move, { passive: false });
+            document.addEventListener("touchend", up);
+            ev.preventDefault();
+        }
+        for (const id of DRAG_PANELS) {
+            const p = document.getElementById(id);
+            if (p) { p.addEventListener("mousedown", _panelDragStart); p.addEventListener("touchstart", _panelDragStart, { passive: false }); }
         }
 
         async function init() {
@@ -2599,6 +3001,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 targetCur = st.cur;
                 targetX = st.ax;
                 targetY = st.ay;
+            }
+            // 恢复 UI 状态（面板布局 + 图层开关），与 hash 深链不冲突
+            if (st) {
+                applyPanelLayout(st.panels);
+                if (typeof st.ents === "boolean") document.getElementById("chk-ents").checked = st.ents;
+                if (typeof st.resp === "boolean") document.getElementById("chk-resp").checked = st.resp;
+                if (typeof st.grid === "boolean") document.getElementById("chk-grid").checked = st.grid;
             }
 
             mselPick(targetMap);
@@ -2698,12 +3107,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         document.getElementById("chk-g").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
         document.getElementById("chk-m").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
         document.getElementById("chk-f").addEventListener("change", () => { render(); updateUrlHash(); saveState(); });
-        document.getElementById("chk-grid").addEventListener("change", () => { drawGrid(); });
-        document.getElementById("chk-ents").addEventListener("change", () => { drawEntities(); drawRoutes(); });
+        document.getElementById("chk-ents").addEventListener("change", () => { drawEntities(); saveState(); });
+        document.getElementById("chk-grid").addEventListener("change", () => { drawGrid(); saveState(); });
         document.getElementById("btn-legend").addEventListener("click", () => {
-            const panel = document.getElementById("legend-panel");
-            panel.style.display = panel.style.display === "none" ? "block" : "none";
-        });
         document.getElementById("legend-panel").innerHTML =
             '<div class="lg-row"><span class="lg-dot" style="background:#8cf;box-shadow:0 0 4px #8cf;"></span> NPC（db_names 中文名）</div>' +
             '<div class="lg-row"><span class="lg-dot" style="background:#7CFF7C;box-shadow:0 0 4px #7CFF7C;"></span> 商店类 NPC / 建筑 (Building)</div>' +
@@ -2711,6 +3117,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             '<div class="lg-row"><span class="lg-dot" style="background:#ff6b6b;box-shadow:0 0 4px #ff6b6b;"></span> 怪物刷新 / 洞穴入口 (Cave/Down)</div>' +
             '<div class="lg-row"><span class="lg-dot" style="background:#72d6ff;box-shadow:0 0 4px #72d6ff;"></span> 城镇出口 (Exit/Up)</div>' +
             '<div class="lg-row"><span style="color:#aaa;font-size:11px;">→ 出口（通往对面图） · ← 入口（从对面图来）<br>圆点可点击跳转对面地图 · 左上面板=连接列表</div>';
+        });
 
         // ---- right-bottom status bar: coord + zoom + map ----
         const coordEl = document.getElementById("coord-info");
@@ -2808,8 +3215,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         let curView = "map";
         const ovView = document.getElementById("overview-view");
         const gvView = document.getElementById("graph-view");
-        const mapOnlyEls = () => ["#minimap", "#statusbar", "#cat-panel", "#conn-panel", "#quest-panel",
-            "#pick-panel", "#port-tooltip", "#ent-tooltip", "#heat-tooltip"].map(s => document.querySelector(s));
+        const mapOnlyEls = () => ["#minimap", "#statusbar", "#cat-panel", "#conn-panel", "#npc-panel", "#resp-panel", "#quest-panel",
+            "#pick-panel", "#port-tooltip", "#port-detail", "#ent-tooltip", "#heat-tooltip"].map(s => document.querySelector(s));
         function showView(v) {
             curView = v;
             viewTabs.forEach(t => t.classList.toggle("active", t.dataset.view === v));
@@ -2823,10 +3230,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 document.getElementById("minimap").style.display = "";
                 if (questData) questPanel.style.display = "block";
                 if (pickA) pickPanel.style.display = "block";
-                for (const id of ["cat-panel", "conn-panel"]) {
+                for (const id of ["cat-panel", "conn-panel", "npc-panel"]) {
                     const el = document.getElementById(id);
                     if (el && el.innerHTML.trim()) el.style.display = "block";
                 }
+                renderRespPanel(curMap());   // 刷新面板按开关/数据状态恢复
             }
             if (v === "overview") { initOverview(); }
             if (v === "graph") { initGraph(); }
@@ -2843,7 +3251,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                             t3: "rgba(255,140,50,.8)", t4: "rgba(255,60,60,.85)" };
         let respCache = {};      // map name -> {groups:[{x,y,half,entries[]}], raw}
         async function loadRespawns(mi) {
-            if (respCache[mi.name]) { drawHeat(); return; }
+            if (respCache[mi.name]) { drawHeat(); renderRespPanel(mi); return; }
             try {
                 const res = await fetch("/api/respawns?map=" + encodeURIComponent(mi.name));
                 const d = await res.json();
@@ -2862,6 +3270,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 respCache[mi.name] = { groups, raw: d.respawns };
             } catch (e) { respCache[mi.name] = null; }
             drawHeat();
+            renderRespPanel(mi);
         }
         function drawHeat() {
             const mi = curMap();
@@ -2870,6 +3279,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const s = curScale();
             const dpr = window.devicePixelRatio || 1;
             const w = vp.clientWidth, h = vp.clientHeight;
+            // canvas 随内容滚动，钉在可视区（left/top=scroll），内容保持视口相对坐标；
+            // 滚动事件里重绘（见 vp scroll 监听）。
+            heatCanvas.style.left = vp.scrollLeft + "px";
+            heatCanvas.style.top = vp.scrollTop + "px";
             heatCanvas.width = w * dpr; heatCanvas.height = h * dpr;
             heatCanvas.style.width = w + "px"; heatCanvas.style.height = h + "px";
             const ctx = heatCtx;
@@ -2884,6 +3297,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 ctx.lineWidth = 1;
                 ctx.fillRect(cx - bw / 2, cy - bh / 2, bw, bh);
                 ctx.strokeRect(cx - bw / 2, cy - bh / 2, bw, bh);
+                if (window.__hlRegion === g.x + "," + g.y + "," + g.half) {
+                    // 面板点击的刷新区：白框高亮
+                    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3;
+                    ctx.strokeRect(cx - bw / 2, cy - bh / 2, bw, bh);
+                }
             }
         }
         // 悬停命中检测（世界格坐标 -> 最近 Region 方块）
@@ -2913,7 +3331,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             heatTooltip.style.top = Math.max(4, e.clientY - 20) + "px";
         });
         vp.addEventListener("mouseleave", () => { heatTooltip.style.display = "none"; });
-        chkResp.addEventListener("change", () => { drawHeat(); });
+        chkResp.addEventListener("change", () => { drawHeat(); renderRespPanel(curMap()); });
 
         // ---- 2. 任务叠加模式（VisitRegion 金框 / KillMonster·GainItem 红色脉冲） ----
         const questSvg = document.getElementById("quest-svg");
@@ -2956,8 +3374,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (!mi || !questData) { questSvg.innerHTML = ""; return; }
             const s = curScale();
             const hereStem = mi.name.replace(/\\.map$/i, "");
-            const px = v => v * 48 / s - vp.scrollLeft;
-            const py = v => v * 32 / s - vp.scrollTop;
+            const px = v => v * 48 / s;   // 内容坐标：svg 随 #viewport 内容滚动
+            const py = v => v * 32 / s;
             let html = "";
             // VisitRegion -> 金色描边 + 半透明填充
             for (const r of (questData.regions || [])) {
@@ -2972,7 +3390,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 for (const p of (m.points || [])) {
                     if (String(p.map) !== hereStem) continue;
                     const cx = px(p.x), cy = py(p.y);
-                    if (cx < -40 || cy < -40 || cx > vp.clientWidth + 40 || cy > vp.clientHeight + 40) continue;
+                    if (cx < vp.scrollLeft - 40 || cy < vp.scrollTop - 40 || cx > vp.scrollLeft + vp.clientWidth + 40 || cy > vp.scrollTop + vp.clientHeight + 40) continue;
                     html += `<g class="qmarker"><circle class="qkill" data-jmap="${p.map}" data-x="${p.x}" data-y="${p.y}" cx="${cx}" cy="${cy}" r="7" fill="${color}" stroke="#fff" stroke-width="1.5" opacity=".95"><title>${m.m} ×${p.count}${m.item ? " · 掉 " + m.item : ""}</title></circle></g>`;
                 }
             }
@@ -3088,12 +3506,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             pickSvg.setAttribute("height", vp.clientHeight);
             const s = curScale();
             const dot = (p, label, color) => {
-                const x = p[0] * 48 / s + 24 - vp.scrollLeft, y = p[1] * 32 / s + 16 - vp.scrollTop;
+                const x = p[0] * 48 / s + 24, y = p[1] * 32 / s + 16;   // 内容坐标：svg 随内容滚动
                 return `<circle cx="${x}" cy="${y}" r="8" fill="none" stroke="${color}" stroke-width="2.5"><title>${label} (${p[0]},${p[1]})</title></circle>` +
                     `<text x="${x + 11}" y="${y + 4}" font-size="12" font-weight="700" fill="${color}" style="paint-order:stroke;stroke:#000;stroke-width:2px">${label}</text>`;
             };
             pickSvg.innerHTML = (pickA ? dot(pickA, "A", "#72d6ff") : "") + (pickB ? dot(pickB, "B", "#3de88a") : "") +
-                ((pickA && pickB) ? `<line x1="${pickA[0] * 48 / s + 24 - vp.scrollLeft}" y1="${pickA[1] * 32 / s + 16 - vp.scrollTop}" x2="${pickB[0] * 48 / s + 24 - vp.scrollLeft}" y2="${pickB[1] * 32 / s + 16 - vp.scrollTop}" stroke="#ffd54a" stroke-dasharray="5 4" stroke-width="1.5" opacity=".8"/>` : "");
+                ((pickA && pickB) ? `<line x1="${pickA[0] * 48 / s + 24}" y1="${pickA[1] * 32 / s + 16}" x2="${pickB[0] * 48 / s + 24}" y2="${pickB[1] * 32 / s + 16}" stroke="#ffd54a" stroke-dasharray="5 4" stroke-width="1.5" opacity=".8"/>` : "");
             if (!pickA) { pickPanel.style.display = "none"; return; }
             const copyBtn = (t, label) => `<button class="pick-copy" data-copy="${t}">复制${label || ""}</button>`;
             let html = `🎯 拾取 A: <b>(${pickA[0]}, ${pickA[1]})</b>${copyBtn(pickA[0] + ", " + pickA[1])}`;
@@ -3493,6 +3911,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
     tile_cache_lock = threading.Lock()
     protocol_version = "HTTP/1.1"
     cache_dir: str = ""   # disk cache root; empty disables persistence
+    cache_dir_override: str | None = None
     thumbs_dir: str = THUMBS_DIR  # full-map thumbnail dir (shared with WikiServer)
     render_locks: dict = {}       # per-fullmap-key render locks (dedupe work)
     render_locks_mu = threading.Lock()
@@ -3546,7 +3965,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 ViewerHandler.map_cache = MapCache(found["map_dir"])
                 ViewerHandler.pool = FramePool(found["data_dir"])
                 ViewerHandler.current_root_path = found["path"]
-                ViewerHandler.cache_dir = os.path.join(found["map_dir"], ".tilecache")
+                ViewerHandler.cache_dir = (ViewerHandler.cache_dir_override
+                                           if ViewerHandler.cache_dir_override is not None
+                                           else default_tile_cache_dir(found["map_dir"]))
                 body = json.dumps({"ok": True, "current": found}).encode("utf-8")
             else:
                 body = json.dumps({"ok": False, "error": "not_found"}).encode("utf-8")
@@ -3953,17 +4374,38 @@ class ViewerHandler(BaseHTTPRequestHandler):
             except ValueError:
                 self.send_error(400, "frame/scale must be ints")
                 return
-            if not lib_name.lower().endswith(".wil"):
-                self.send_error(400, "lib must be a .wil file")
-                return
-            lib_path = os.path.join(self.pool.data_dir, lib_name)
-            if not os.path.exists(lib_path):
-                self.send_error(404, "lib not found in data dir")
-                return
+            # 库解析：带扩展名按扩展（.wil=wilsdk / .Zl=zlsdk）；裸名（如 NPC）
+            # 自动探测 data_dir 下的 <name>.Zl / <name>.wil（ZL 客户端与 EI
+            # 客户端的 NPC 库文件名不同）。
+            lib_path = None
+            is_zl = False
+            low = lib_name.lower()
+            if low.endswith(".wil") or low.endswith(".zl"):
+                p = os.path.join(self.pool.data_dir, lib_name)
+                if not os.path.exists(p):
+                    self.send_error(404, "lib not found in data dir")
+                    return
+                lib_path, is_zl = p, low.endswith(".zl")
+            else:
+                for ext, zl in ((".Zl", True), (".wil", False)):
+                    p = os.path.join(self.pool.data_dir, lib_name + ext)
+                    if os.path.exists(p):
+                        lib_path, is_zl = p, zl
+                        break
+                if lib_path is None:
+                    self.send_error(404, f"lib {lib_name}(.Zl/.wil) not found in data dir")
+                    return
             try:
-                from wilsdk import open_library as _open_wil
-                lib = _open_wil(lib_path)
-                img = lib.decode(frame) if frame < lib.count else None
+                if is_zl:
+                    lib = ZlLibrary(lib_path)
+                    count = lib.count
+                    def _decode(fr, _l=lib): return _l.decode(fr)
+                else:
+                    from wilsdk import open_library as _open_wil
+                    lib = _open_wil(lib_path)
+                    count = lib.count
+                    def _decode(fr, _l=lib): return _l.decode(fr)
+                img = _decode(frame) if frame < count else None
                 if img is None:
                     self.send_error(404, f"frame {frame} blank or out of range")
                     return
@@ -4317,11 +4759,55 @@ def load_workspace_entities(workspace: str, db_names: dict | None = None) -> lis
         if x is None or y is None:
             continue
         en = n.get("NPCName") or ""
+        if not en:
+            # 装饰性 NPC（水井/火盆等）NPCName 为空，兜底 EntryPage 名
+            en = str((n.get("EntryPage") or {}).get("Name") or "") or "未命名"
         out.append({
             "map": str((reg.get("Map") or {}).get("Name", "")),
             "x": x, "y": y, "kind": "npc",
             "name": npc_names.get(en, en) or en,
             "name_en": en,
+            # NPC 形象：NPCInfo.Image = BodyShape，站立帧 = Image*100
+            # （原版 NPCObject.BodyFrame = DrawFrame + Image*BodyOffSet(100)，
+            #   库 = LibraryFile.NPC：ZL 客户端 NPC.Zl / EI 客户端 NPC.wil）
+            "img": n.get("Image") or 0,
+        })
+    return out
+
+
+# 城镇卫士（GuardInfo）：MonsterInfo.Image(MonsterImage 枚举名) -> (库 stem, BodyShape)。
+# 客户端规则（MonsterObject.cs）：BodyFrame = DrawFrame + (BodyShape%10)*1000，
+# DefaultMonster Standing = Frame(0,4,10) -> DrawFrame = 10 * (int)Direction。
+GUARD_MONSTER_LIBS = {
+    "Guard": ("Mon-3", 6),
+}
+MIR_DIRECTION_INDEX = {"Up": 0, "UpRight": 1, "Right": 2, "DownRight": 3,
+                       "Down": 4, "DownLeft": 5, "Left": 6, "UpLeft": 7}
+
+
+def load_workspace_guards(workspace: str, db_names: dict | None = None) -> list[dict]:
+    """GuardInfo x MonsterInfo -> [{map,x,y,kind:'guard',name,name_en,lib,frame}].
+
+    坐标为 GuardInfo.X/Y（服务端摆放的精确格），帧按朝向算好：
+    frame = shape*1000 + 10*dirIndex（见 GUARD_MONSTER_LIBS 注释）。"""
+    mon_names = (db_names or {}).get("monsters", {})
+    monsters = {m.get("MonsterName"): m for m in _ws_rows(workspace, "MonsterInfo")}
+    out: list[dict] = []
+    for g in _ws_rows(workspace, "GuardInfo"):
+        m = monsters.get((g.get("Monster") or {}).get("Name"))
+        if not m:
+            continue
+        image = str(m.get("Image") or "")
+        lib, shape = GUARD_MONSTER_LIBS.get(image, (None, 0))
+        en = str((g.get("Monster") or {}).get("Name") or "") or "Guard"
+        d = MIR_DIRECTION_INDEX.get(str(g.get("Direction") or "Down"), 4)
+        out.append({
+            "map": str((g.get("Map") or {}).get("Name", "")),
+            "x": g.get("X"), "y": g.get("Y"), "kind": "guard",
+            "name": mon_names.get(en, en) or en,
+            "name_en": en,
+            "lib": lib,
+            "frame": (shape * 1000 + 10 * d) if lib else None,
         })
     return out
 
@@ -4981,7 +5467,7 @@ def main():
     parser.add_argument("--data", help="Folder containing WIL / ZL libraries", default=None)
     parser.add_argument("--port", type=int, default=8766, help="HTTP Server Port")
     parser.add_argument("--cache-dir", default=None,
-                        help="Disk tile cache dir (default: <maps_dir>/.tilecache; empty disables)")
+                        help=f"Disk tile cache dir (default: {DEFAULT_CACHE_ROOT}/tiles/{CACHE_VERSION}/<source>; empty disables)")
     parser.add_argument("--catalog", default=None,
                         help="map-catalog.json dir from build_map_catalog.py (enables /api/catalog)")
     parser.add_argument("--envir", default=None,
@@ -5004,6 +5490,9 @@ def main():
         args.maps_dir = os.path.join(args.client_root, "Map")
     if not os.path.isdir(args.maps_dir):
         parser.error(f"maps directory not found: {args.maps_dir}")
+    if ((args.cache_dir is None or args.thumbs_dir == THUMBS_DIR)
+            and not _nas_cache_available()):
+        parser.error(f"NAS cache mount is not available: {DEFAULT_CACHE_MOUNT}")
 
     data_dir = args.data
     if not data_dir:
@@ -5024,7 +5513,9 @@ def main():
     print(f"[*] Maps directory: {args.maps_dir}")
     ViewerHandler.map_cache = MapCache(args.maps_dir)
     ViewerHandler.pool = FramePool(data_dir)
-    cache_dir = args.cache_dir if args.cache_dir is not None else os.path.join(args.maps_dir, f".tilecache-{CACHE_VERSION}")
+    cache_dir = (args.cache_dir if args.cache_dir is not None
+                 else default_tile_cache_dir(args.maps_dir))
+    ViewerHandler.cache_dir_override = args.cache_dir
     ViewerHandler.cache_dir = cache_dir
     ViewerHandler.thumbs_dir = args.thumbs_dir
     ViewerHandler.layout = args.layout
@@ -5038,6 +5529,10 @@ def main():
     if ws_ents:
         ViewerHandler.entities = ws_ents + ViewerHandler.entities
         print(f"[*] Workspace NPCs: {len(ws_ents)} loaded from {args.db_workspace}")
+    ws_guards = load_workspace_guards(args.db_workspace, ViewerHandler.db_names)
+    if ws_guards:
+        ViewerHandler.entities = ws_guards + ViewerHandler.entities
+        print(f"[*] Workspace guards: {len(ws_guards)} loaded from GuardInfo")
     ws_links = load_workspace_connections(args.db_workspace)
     if ws_links:
         ViewerHandler.connections = ws_links
