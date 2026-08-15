@@ -31,7 +31,23 @@ from urllib.parse import parse_qs, urlparse
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(ROOT, "template.html")
 DEFAULT_DATA = "/tmp/dbviewer_data"
-MAP_CN_FILE = "/tmp/map_cn_full.json"
+
+def _cache_file(name: str) -> str:
+    """共享缓存文件路径：MIR3_CACHE_DIR > 仓库 Tools/cache/ > /tmp
+    （scripts/gen_caches.sh 两处同写；见总纲 §3.4）。"""
+    cands = [d for d in (
+        os.environ.get("MIR3_CACHE_DIR"),
+        os.path.join(ROOT, "..", "cache"),
+        "/tmp",
+    ) if d]
+    for d in cands:
+        p = os.path.normpath(os.path.join(d, name))
+        if os.path.isfile(p):
+            return p
+    return os.path.normpath(os.path.join(cands[0], name))
+
+
+MAP_CN_FILE = _cache_file("map_cn_full.json")
 
 # 每页默认行数 / 上限
 DEFAULT_PER = 50

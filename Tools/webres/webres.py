@@ -185,12 +185,16 @@ def load_db_names() -> dict[str, dict[str, str]]:
 
 
 def map_cn_names() -> dict[str, str]:
-    """地图中文名: /tmp/map_cn_full.json (gen_static_maps.py) -> map_links_v2 names 兜底。"""
+    """地图中文名: Tools/cache/map_cn_full.json > /tmp/map_cn_full.json
+    (scripts/gen_caches.sh 同写两处) -> map_links_v2 names 兜底。"""
     out = {}
-    try:
-        out.update(json.loads(Path("/tmp/map_cn_full.json").read_text(encoding="utf-8")))
-    except Exception:
-        pass
+    for cand in (_TOOLS / "cache" / "map_cn_full.json",
+                 Path("/tmp/map_cn_full.json")):
+        try:
+            out.update(json.loads(cand.read_text(encoding="utf-8")))
+            break
+        except Exception:
+            pass
     try:
         d = json.loads((_TOOLS / "maps" / "map_links_v2.json").read_text(encoding="utf-8"))
         for stem, cn in d.get("names", {}).items():
