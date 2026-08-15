@@ -153,6 +153,8 @@ foreach (string table in cfg.Managed)
         if (rows.ContainsKey(idx)) errs.Add($"{table}: 工作区存在重复 Index {idx}");
         rows[idx] = r;
     }
+    ws[table] = rows;
+}
 // 基线行（首次导出的原始工作区）: 区分「用户引入的脏数据」与「库中原有的历史脏数据」
 // 优先 _baseline/（dbeditor app.py ensure_baseline 生成），兼容 baseline/
 var baselineDir = Directory.Exists(Path.Combine(workspace, "_baseline"))
