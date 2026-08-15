@@ -7,15 +7,25 @@ import json
 import os
 import sys
 import threading
+import time
+import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from PIL import Image
 
 from zlsdk import ZlLibrary
 
-from mapedit.constants import (CACHE_TILES_MAX, KR_ORDER, LAYOUT_RECT,
+from mapedit.constants import (CACHE_TILES_MAX, CACHE_VERSION,
+                               DEFAULT_CACHE_MOUNT, DEFAULT_CACHE_ROOT,
+                               DEFAULT_CLIENT_ROOT, DEFAULT_CONNECTIONS,
+                               DEFAULT_DBWORKSPACE, DEFAULT_DB_NAMES,
+                               KR_ORDER, LAYOUT_ISO, LAYOUT_RECT,
                                OFFSET_MODES, OFFSET_NONE, THUMBS_DIR)
-from mapedit.data import MAP_CN, NPC_FUNC_RULES, api_maps_payload, scan_maps
+from mapedit.data import (MAP_CN, NPC_FUNC_RULES, api_maps_payload,
+                          build_atlas, load_catalog, load_connections,
+                          load_db_names, load_entities, load_workspace_connections,
+                          load_workspace_entities, load_workspace_guards,
+                          scan_maps, write_map_links_v2)
 from mapedit.frames import FramePool
 from mapedit.geom import map_ladder
 from mapedit.mapio import MapCache
@@ -927,7 +937,7 @@ def main():
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
     if not args.no_prewarm_thumbs:
         from mapedit.prewarm import prewarm_thumbs
-    prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
+        prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
     # 瓦片模式预生成（守护线程，只补缺失文件；拖拽冷区秒开的关键）
     if not args.no_prewarm_tiles:
         from mapedit.prewarm import prewarm_tiles
