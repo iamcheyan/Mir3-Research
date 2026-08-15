@@ -129,9 +129,16 @@ COLL BaseStat: 360
 - `gen_caches.sh --thumbs` 输出目录修正：默认渲染到 mapviewer 实际读取的
   `${MIR3_NAS_TMP:-/data/NAS/TMP}/mir3-mapviewer-cache/thumbs`（`MIR3_THUMBS_DIR` 可改），
   原先误写 `/tmp/wiki_thumbs`（那是 WikiServer 的目录）。
-- **E1 拆分缺口（非 E0，移交 E1）**：`mapedit/api.py:813` 引用 `DEFAULT_CLIENT_ROOT`
-  但未 `from .constants import`（constants.py:43 有定义）→ 主树 `make serve-mapviewer`
-  当前 NameError。E0 验收不受影响（用 E0 自己的 commit 验收通过）。E1 的回归实例在
-  :18998 独立跑，未受影响。
 - 主树 mapviewer shim 导入自检通过（`import mapviewer` OK, MAP_CN=627——E0 的
   缓存路径常量在 E1 拆分中被完整保留）。
+
+### 2026-08-15 第二轮（E1 已修 DEFAULT_CLIENT_ROOT，又现 3 个同类缺口）
+
+- E1 `0e651d9` 修了 `DEFAULT_CLIENT_ROOT` 并落地 `map_roundtrip.py`——**`make roundtrip`
+  经 E0 的 Makefile 入口实跑 20/20 通过**（含动画格 15 张/截断 6 张）。
+- 但默认启动路径仍炸：`api.py` 还缺 3 个 constants 导入（`_nas_cache_available`:882、
+  `default_tile_cache_dir`:163/905、`OFFSET_ALL`:841）。E1 的 :18998 回归全部带
+  `--cache-dir` 参数，绕过默认路径故测不到。**回归建议：每次加跑一次无参默认启动。**
+- 两次尝试代修一行导入均被 E1 的并发写入覆盖（api.py 是其热编辑文件），已按 §9.2
+  用 tmux 注入 ed-map 会话移交完整清单；E0 不再抢该文件。
+- `make serve-mapviewer` 主树链路待 E1 补导入后即通（services.sh/Makefile 本身已验证）。
