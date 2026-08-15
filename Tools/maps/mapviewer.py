@@ -42,9 +42,34 @@ TILE_SZ = 512          # tile size in screen pixels
 CACHE_MAPS_MAX = 3     # decoded maps kept in memory
 CACHE_TILES_MAX = 400  # rendered tiles (PNG bytes) kept in memory
 CACHE_FRAMES_BYTES = 256 * 1024 * 1024  # decoded frames LRU budget (per process)
-DEFAULT_CACHE_ROOT = "/home/tetsuya/NAS/TMP/mir3-mapviewer-cache"
-DEFAULT_CACHE_MOUNT = "/home/tetsuya/NAS/TMP"
+
+def _nas_tmp_dir() -> str:
+    """NAS TMP 根目录：env MIR3_NAS_TMP 优先，其次 82 机的 /data/NAS 挂载，
+    最后旧机 /home/tetsuya/NAS 符号链接（82 上指向 /tmp/nas_mnt 已悬空）。
+    换机器只改 env，不改代码（总纲 §9.4）。"""
+    for cand in (os.environ.get("MIR3_NAS_TMP"), "/data/NAS/TMP",
+                 "/home/tetsuya/NAS/TMP"):
+        if cand and os.path.isdir(cand):
+            return cand
+    return "/home/tetsuya/NAS/TMP"
+
+DEFAULT_CACHE_MOUNT = _nas_tmp_dir()
+DEFAULT_CACHE_ROOT = os.path.join(DEFAULT_CACHE_MOUNT, "mir3-mapviewer-cache")
 THUMBS_DIR = os.path.join(DEFAULT_CACHE_ROOT, "thumbs")  # shared with WikiServer/thumb_gen
+
+# 共享文本缓存（小地图索引/地图中文名）：仓库 Tools/cache/ 优先，/tmp 兜底；
+# scripts/gen_caches.sh 两处同写（§3.4 脆弱点治理）。env MIR3_CACHE_DIR 可强制。
+_REPO_CACHE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "cache"))
+
+
+def _cache_file(name: str) -> str:
+    """按 优先级 返回缓存文件路径：MIR3_CACHE_DIR > Tools/cache > /tmp。"""
+    cands = [d for d in (os.environ.get("MIR3_CACHE_DIR"), _REPO_CACHE_DIR, "/tmp") if d]
+    for d in cands:
+        if os.path.isfile(os.path.join(d, name)):
+            return os.path.join(d, name)
+    return os.path.join(cands[0], name)
+
 MAX_FULL_DIM = 16384   # full-map single image: longest side cap (px)
 FIT_FULL_DIM = 2048    # full-map "fit" level: longest side target (px)
 DEFAULT_CLIENT_ROOT = "/home/tetsuya/development/Zircon/Debug/Client"
@@ -60,7 +85,7 @@ DEFAULT_DB_NAMES = os.path.expanduser(
     "~/development/zircon/GodotClient/translations/db_names.json")
 # Full chinese-name map: {map stem -> cn}.  Generated from DBserver/Envir
 # MapInfo.txt + System.db descriptions + mapnames rules (see gen_static_maps.py).
-MAP_CN_FILE = "/tmp/map_cn_full.json"
+MAP_CN_FILE = _cache_file("map_cn_full.json")
 
 def _load_map_cn() -> dict:
     try:
@@ -117,8 +142,8 @@ OFFSET_MODES = (OFFSET_NONE, OFFSET_ALL, OFFSET_MIDFRONT)
 # MapInfo.MiniMap (System.db, via Tools/SystemDbProbe --minimap) maps a map
 # file stem -> frame index in the MiniMap library.  The library lives next to
 # the other map-tile libs in the data dir.
-MINIMAP_MAP_FILE = "/tmp/minimap_map.txt"    # 2017 ZL client: {stem -> frame} dump (244 maps)
-MINIMAP_EI_FILE = "/tmp/minimap_map_ei.txt"  # EI client: {stem -> libname -> frame} dump (182 maps)
+MINIMAP_MAP_FILE = _cache_file("minimap_map.txt")    # 2017 ZL client: {stem -> frame} dump (244 maps)
+MINIMAP_EI_FILE = _cache_file("minimap_map_ei.txt")  # EI client: {stem -> libname -> frame} dump (182 maps)
 MINIMAP_LIB_NAME = "MiniMap.Zl"             # 2017 ZL client
 MINIMAP_EI_LIBS = ("FMMap.wil", "MMap.wil") # EI client: FMMap = full/overland, MMap = dungeon
 
@@ -5484,6 +5509,8 @@ def main():
                         help="JSON exported by export_map_connections.py")
     parser.add_argument("--no-prewarm-tiles", action="store_true",
                         help="Disable background tile prewarm (z1+z0 for all maps)")
+    parser.add_argument("--no-prewarm-thumbs", action="store_true",
+                        help="Disable background thumbnail prewarm (regression/test runs)")
     args = parser.parse_args()
 
     if not args.maps_dir:
@@ -5575,7 +5602,8 @@ def main():
         if not ws_ents:
             ViewerHandler.entities = []
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
-    prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
+    if not args.no_prewarm_thumbs:
+        prewarm_thumbs(args.maps_dir, data_dir, args.thumbs_dir)
     # 瓦片模式预生成（守护线程，只补缺失文件；拖拽冷区秒开的关键）
     if not args.no_prewarm_tiles:
         prewarm_tiles(args.maps_dir, data_dir, cache_dir,
