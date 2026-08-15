@@ -1,72 +1,31 @@
-// data.js — 数据清单加载 + 帧号公式 (与 GodotClient 端 C# 对齐)
-// 公式依据:
-//   FrameSet.cs Players/Standing(0,4) Walking(80,6) Running(160,6) Combat2(640,5) ...
-//   PlayerRenderer.cs DrawFrame = i + start + dir*10;
-//     ArmourFrame = DrawFrame + (ArmourShape%11)*Off(5000|3000刺) + ArmourShift
-//     WeaponFrame = DrawFrame + (WeaponShape%10)*5000 (WeaponShape=Shape>=1000?Shape-1000:Shape)
-//     HairFrame = DrawFrame + (HairType-1)*5000
-//     HelmetFrame = DrawFrame + ((HelmetShape-1)%10)*Off + ArmourShift
-//   ObjectRenderer.cs 怪物帧 = Shape*1000 + i + start + dir*10; NPC帧 = Image*100 + i
+// data.js — 数据清单加载 + 帧号公式 (从 frames.js 单一数据源派生)
+// 公式事实源: Tools/resedit/frame-formulas.json (frameformulas.py 从 Zircon C# 提取)
+//   DrawFrame = i + start + offset*dir;  ArmourFrame = DrawFrame + (ArmourShape%11)*Off + Shift
+//   WeaponFrame = DrawFrame + (WeaponShape%10)*5000;  HairFrame = DrawFrame + (HairType-1)*5000
+//   HelmetFrame = DrawFrame + ((HelmetShape-1)%10)*Off + Shift
+//   怪物帧 = Shape*1000 + DrawFrame;  NPC帧 = Image*100 + i
+import { PLAYERS, DEFAULT_MONSTER, armourShift as _armourShift } from './frames.js';
 
 export const TILE = 512;
 export const CELL_W = 48, CELL_H = 32;
 
-export const PLAYER_ANIMS = {
-  standing: { start: 0, count: 4, ms: 500 },
-  walking: { start: 80, count: 6, ms: 100 },
-  running: { start: 160, count: 6, ms: 100 },
-  combat2: { start: 640, count: 5, ms: 100 },
-  struck: { start: 1840, count: 3, ms: 100 },
-  die: { start: 1920, count: 10, ms: 100 },
-};
-export const MONSTER_ANIMS = {
-  standing: { start: 0, count: 4, ms: 500 },
-  walking: { start: 80, count: 6, ms: 100 },
-  combat1: { start: 160, count: 6, ms: 100 },
-  die: { start: 320, count: 10, ms: 100 },
-};
+// ---- 帧公式 (懒投影: ensureLoaded() 后可用; 旧 API 签名不变) ----
+const project = (getTable) => new Proxy({}, {
+  get: (_, name) => {
+    const f = getTable()?.[name];
+    return f ? { start: f.start, count: f.count, offset: f.offset, ms: f.delays[0] } : undefined;
+  },
+});
+export const PLAYER_ANIMS = project(() => PLAYERS);
+export const MONSTER_ANIMS = project(() => DEFAULT_MONSTER);
 
-const Data = {
-  manifest: null, maps: {}, npcs: [], monsters: [], respawns: {}, magics: [], items: [],
-  appearance: null, monstersById: {}, itemsById: {},
-};
-
-export async function loadAll(progress) {
-  const get = async (url) => (await fetch(url)).json();
-  const step = async (label, fn) => {
-    if (progress) progress(label);
-    const r = await fn();
-    return r;
-  };
-  Data.manifest = await step('地图清单', () => get('/res/data/maps_manifest.json'));
-  Data.maps = Data.manifest?.maps ?? {};
-  Data.npcs = await step('NPC 数据', () => get('/res/data/npcs.json'));
-  Data.monsters = await step('怪物数据', () => get('/res/data/monsters.json'));
-  Data.respawns = await step('刷怪数据', () => get('/res/data/respawns.json'));
-  Data.magics = await step('技能数据', () => get('/res/data/magics.json'));
-  Data.items = await step('物品数据', () => get('/res/data/items.json'));
-  Data.appearance = await step('外观表', () => get('/res/data/appearance.json'));
-  for (const m of Data.monsters) Data.monstersById[m.id] = m;
-  for (const it of Data.items) Data.itemsById[it.id] = it;
-  return Data;
-}
-
-export const D = () => Data;
-
-window.__D = D;   // 调试/验收脚本入口 (不经模块导出)
-
-// ---- 帧公式 ----
 export function drawFrame(anim, frameIdx, dir) {
-  return frameIdx + anim.start + dir * 10;
+  return frameIdx + anim.start + anim.offset * dir;
 }
-
-export function armourShift(animName, isAssassin) {
-  if (!isAssassin) return 0;
-  return { standing: 0, walking: 1600, running: 1600, combat2: 0, struck: -640, die: -400 }[animName] ?? 0;
-}
+export const armourShift = (animName, isAssassin) => _armourShift(animName, isAssassin);
 
 export function playerFrames(animName, { frameIdx, dir, armourShape = 0, isAssassin = false }) {
-  const anim = PLAYER_ANIMS[animName];
+  const anim = PLAYER_ANIMS[animName] || PLAYER_ANIMS.standing;
   const base = drawFrame(anim, frameIdx, dir);
   const off = isAssassin ? 3000 : 5000;
   const shift = armourShift(animName, isAssassin);
@@ -86,6 +45,34 @@ export function monsterFrame(shape, animName, frameIdx, dir) {
 export function npcFrame(image, frameIdx) {
   return image * 100 + frameIdx;   // DefaultNPC Standing(0,4) 无方向偏移
 }
+
+// ---- 数据清单 ----
+const Data = {
+  manifest: null, maps: {}, npcs: [], monsters: [], respawns: {}, magics: [], items: [],
+  appearance: null, monstersById: {}, itemsById: {},
+};
+
+export async function loadAll(progress) {
+  const get = async (url) => (await fetch(url)).json();
+  const step = async (label, fn) => {
+    if (progress) progress(label);
+    return fn();
+  };
+  Data.manifest = await step('地图清单', () => get('/res/data/maps_manifest.json'));
+  Data.maps = Data.manifest?.maps ?? {};
+  Data.npcs = await step('NPC 数据', () => get('/res/data/npcs.json'));
+  Data.monsters = await step('怪物数据', () => get('/res/data/monsters.json'));
+  Data.respawns = await step('刷怪数据', () => get('/res/data/respawns.json'));
+  Data.magics = await step('技能数据', () => get('/res/data/magics.json'));
+  Data.items = await step('物品数据', () => get('/res/data/items.json'));
+  Data.appearance = await step('外观表', () => get('/res/data/appearance.json'));
+  for (const m of Data.monsters) Data.monstersById[m.id] = m;
+  for (const it of Data.items) Data.itemsById[it.id] = it;
+  return Data;
+}
+
+export const D = () => Data;
+window.__D = D;   // 调试/验收脚本入口 (不经模块导出)
 
 // ---- 库选择 (RefreshLibraries 移植; appearance.json 带 C# switch 表) ----
 export function pickLibs({ cls, gender, armourShape, weaponShape, helmetShape }) {

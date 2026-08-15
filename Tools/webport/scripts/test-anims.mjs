@@ -7,6 +7,8 @@ import { AnimAction, PlayerAnimState, ANIM, BUFF_CLOAK, BUFF_GHOST_WALK,
   actionFromMagic, actionFromMove, actionFromDash, actionFromPushed, actionFromStruck,
   actionFromHarvest } from '../static/js/anims.js';
 import { MIR_ACTION, MAGIC, CLASS_WARRIOR, CLASS_ASSASSIN } from '../static/js/frames.js';
+import * as frames from '../static/js/frames.js';
+await frames.ensureLoaded();   // 帧公式单一数据源 (node 分支直读 Tools/resedit/frame-formulas.json)
 
 const NOW = 1_000_000; const A = MIR_ACTION;
 let pass = 0, fail = 0;

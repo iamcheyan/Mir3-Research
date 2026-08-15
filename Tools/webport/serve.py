@@ -66,7 +66,9 @@ async def headers(request, call_next):
     # 静态 JS/CSS 与 data JSON 开发期不缓存 (data 会被 webres 重建);
     # 瓦片/精灵帧内容寻址不变 → 长缓存
     path = request.url.path
-    resp.headers["Cache-Control"] = "no-cache" if (path.startswith("/static") or path.startswith("/res/data")) \
+    # 帧公式 JSON 会被重新生成 (改 C# → 重跑提取器), 必须与 /static 同级 no-cache
+    resp.headers["Cache-Control"] = "no-cache" \
+        if (path.startswith("/static") or path.startswith("/res/data") or path == "/frame-formulas.json") \
         else "public, max-age=86400"
     return resp
 
@@ -90,6 +92,16 @@ def ui_file(name: str):
     p = GODOT_UI / name
     if not p.is_file():
         raise HTTPException(404, name)
+    return FileResponse(p, media_type="application/json")
+
+@app.get("/frame-formulas.json")
+def frame_formulas():
+    # 帧公式单一数据源 (Tools/resedit/frame-formulas.json, 由 frameformulas.py
+    # 从 Zircon C# 事实源生成) — webport frames.js 运行时读它 (总纲 §7.1 任务1)
+    p = _MIR3 / "Tools" / "resedit" / "frame-formulas.json"
+    if not p.is_file():
+        raise HTTPException(500, "frame-formulas.json missing — run Tools/resedit/frameformulas.py")
+    # 缓存头由 headers 中间件统一管 (no-cache) — 数据会被重新生成, 不能长缓存
     return FileResponse(p, media_type="application/json")
 
 @app.get("/res/data/db/{table}.json")

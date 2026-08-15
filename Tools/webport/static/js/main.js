@@ -1,5 +1,6 @@
 // main.js — 场景流转 (LoginScene → SelectScene → GameScene, 对照各 Scene.cs)
 // 双 UI 参考模式 (总纲 §一): 按 localStorage 选择主题; 逻辑层 (ws/net/data/world) 两模式共用。
+import { ensureLoaded } from './frames.js';
 import { GameConnection } from './ws.js';
 import { getMode } from './mode.js';
 import { mountModeSwitcher } from './shell.js';
@@ -90,8 +91,14 @@ window.__WEBPORT = {
   get mode() { return getMode(); },
 };
 
-mountModeSwitcher();
-loadTheme().then(enterLogin);
+ensureLoaded().catch((err) => {
+  // fail-loud: 帧公式 JSON 是动画系统唯一数据源, 缺失时所有动画黑屏 — 页面横幅 + console
+  console.error('[webport] frame-formulas.json 加载失败:', err);
+  const div = document.createElement('div');
+  div.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#5c1d1d;color:#ffd7d7;padding:8px 12px;font:13px monospace';
+  div.textContent = `帧公式数据加载失败: ${err.message} — 请确认 serve.py 已启动且 Tools/resedit/frame-formulas.json 存在`;
+  document.body.appendChild(div);
+}).finally(() => loadTheme().then(enterLogin));
 
 // ?demo=1 一键直进: 自动登录测试号并选第一个角色 (仅测试便利, 不改协议层)
 const DEMO = new URLSearchParams(location.search).has('demo');
