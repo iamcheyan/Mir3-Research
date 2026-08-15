@@ -1785,11 +1785,13 @@ function renderDetail(){
     renderFrameFormulas(i);   // E3: 帧公式对照面板 (与 renderDetail 并行渲染)
     if (h.blank){ $('#meta').textContent = 'Blank placeholder frame (index 0)'; }
     else {
+      // WIL header 带 shadow/words; ZL header 无这些字段 (zlsdk.header 只回
+      // index/宽高/offset), 缺失时省略整行而不是拼出 undefined。
       $('#meta').textContent =
 `Size: ${h.width} × ${h.height}
 Anchor: x=${h.offsetX}  y=${h.offsetY}
-Shadow: ${h.shadow?'yes':'no'} (${h.shadowX}, ${h.shadowY})
-Data: ${h.words} words (${h.bytes} B)`;
+${h.words != null ? `Shadow: ${h.shadow?'yes':'no'} (${h.shadowX}, ${h.shadowY})
+Data: ${h.words} words (${h.bytes} B)` : 'Format: ZL (无 shadow/words 字段)'}`;
     }
   });
 }
