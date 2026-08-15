@@ -68,7 +68,8 @@ GOALS=(
   # ---- 2026-08-15 编辑器军团（旧 goal 已完结，条目归档于 git 历史）----
   "01a00412-62a0-7000-b4a4-04d0853ab6b8|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-28-896Z_01a00412-62a0-7000-b4a4-04d0853ab6b8.jsonl|ed-infra|/home/tetsuya/development/Mir3-Research|编辑器E0基础设施"
   "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
-  "01a00412-8721-7000-acd4-2f2e7932b250|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-38-241Z_01a00412-8721-7000-acd4-2f2e7932b250.jsonl|ed-res|/home/tetsuya/development/Mir3-Research|编辑器E3资源编辑器"
+  "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
+  "01a0044a-2f56-7000-b330-0934538791ee|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T07-19-25-782Z_01a0044a-2f56-7000-b330-0934538791ee.jsonl|ed-light|/home/tetsuya/development/Mir3-Research|编辑器E5环境实验室"
   # [archived] "01a0007a-e0db-7000-aa8c-7ff6380acb67|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T13-34-08-091Z_01a0007a-e0db-7000-aa8c-7ff6380acb67.jsonl|yomudesign|/home/tetsuya/development/yomu|Yomu无框单页视觉重构"
   # [archived] "01a00239-3d0a-7000-bb94-9c32abee22ac|/home/tetsuya/.omp/agent/sessions/-development-fudoki/2026-08-14T21-41-40-746Z_01a00239-3d0a-7000-bb94-9c32abee22ac.jsonl|fudokiredesign|/home/tetsuya/development/fudoki|Fudoki本地化+Linear式UI重构"
   # [archived] "01a0006d-4e8b-7000-833d-ca644ca86904|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-14T13-19-18-667Z_01a0006d-4e8b-7000-833d-ca644ca86904.jsonl|par-win|/home/tetsuya/development/Mir3-Research|webport窗口系统"
