@@ -72,6 +72,9 @@ for (int i = 0; i < args.Length; i++)
     root = args[i];
 }
 if (!Path.IsPathRooted(root)) root = Path.GetFullPath(root);
+// MirDB Session 用字符串拼接 root + "System.db"：归一化为尾部分隔符，
+// 免得 "…/Data"（无斜杠）静默打开不存在的 "DataSystem.db"（0 表假成功）。
+root = Path.TrimEndingDirectorySeparator(root) + Path.DirectorySeparatorChar;
 
 if (bc7Lib != null)
 {
