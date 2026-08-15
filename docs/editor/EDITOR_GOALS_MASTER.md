@@ -182,6 +182,39 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
   GPU 机器全 PASS，82 机 Xvfb+llvmpipe 读 0.369——同一份代码两种结果。无头验收结论
   要标注渲染器；断言阈值对软渲染偏紧不算产品 bug。
 
+### 3.9 共享 mapviewer 代码与无头验收的坑（E1 实证，2026-08-15）
+
+- **多会话热编辑同一文件互覆**：mapedit/api.py 在 E1 手里被重建 `_handle_edit` 三次——
+  并发会话（E0）patch 同文件后保存，未提交的工作直接蒸发；事后 git log 显示"已提交"但
+  实际缺函数。**规则：改共享热点文件后立刻 commit+push，验证以运行中进程为准，不信
+  `git log`。**
+- **共享 checkout 推送用 plumbing**：`GIT_INDEX_FILE=/tmp/xx + read-tree origin/master +
+  update-index --cacheinfo + write-tree + commit-tree -p origin/master + push SHA:master`，
+  完全不碰工作树与他人脏文件，避开 rebase 冲突（E5 §3.8 的根治版）。
+- **/tmp 是 7.9G tmpfs 且多 goal 共享**：本轮被并行 goal 填到 100%，chromium 写不进
+  profile 直接崩（Target closed）。**大文件/浏览器 profile 一律放 `~/.e1-scratch/`**
+  （根盘 159G），别用 /tmp。
+- **82 机 full chromium 起不来（GCM 后台网络挂死连 about:blank 都阻塞）**：用
+  `chromium_headless_shell-1208/chrome-headless-shell` + `--remote-debugging-port` +
+  puppeteer `connect()`（不要 `launch()`，launch 的 flag 组合会挂）。CLI
+  `--dump-dom --timeout=20000` 可用但**千万别加 `--virtual-time-budget`**（挂起网络
+  请求时虚拟时钟永不耗尽）。
+- **headless 下 `alert()/confirm()` 阻塞整个页面的 CDP evaluate**：`?edit=1` 自启失败
+  弹 alert → 渲染线程假死 180s 超时。**自动化可达路径上的用户交互只能 console.warn 或
+  显式 dialog handler；自启/后台路径一律 quiet 模式。**
+- **CDP `Input.dispatchMouseEvent`（puppeteer mouse.click）在本机 headless_shell 会
+  卡死**：渲染进程 CPU≈0（非忙循环），是输入通道 wedge。**用 `evaluate()` 派发合成
+  MouseEvent + `element.click()` 代替真实鼠标事件。**
+- **HTML 里 span 容器与内部 select 撞 id**：`querySelector('#x').value` 取到 span 的
+  undefined → Number()=NaN → JSON null → 后端 `int(None)` 500。容器 id 加 `-hold`
+  后缀，控件独占语义 id。
+- **回归基线要选"拆分前最后一个好提交"的干净树**（worktree 检出 879a05d 到
+  `~/.e1-scratch/basewt`），不要用共享工作树跑基线——基线采集 11 分钟窗口内 E0 又
+  改了 mapviewer（082baa1），对照就废了。
+- **43 张发行图是截断文件**（尾部记录缺失）+ **+12 偏移是 Light`(b&0x0F)*2`**
+  （§5.2 格式表已并入）。serialize 用模板补丁策略（template=原文件逐字节保留未建模
+  字节）才让 A/C 检查全绿；重建式序列化对截断图必然字节级不等。
+
 ---
 
 ## 4. 环境引导（82 机器，一次性）
@@ -262,6 +295,13 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
 ```
 
 **⚠️ 写回前必做**：读原版 `Client/` 的 MapControl.cs 确认帧索引是否带 +1 存储（§3.2 教训）；确认填充 9..14 字节原样保留。
+
+> **E1 完成状态（2026-08-15）**：mapviewer.py 已拆为 `Tools/maps/mapedit/` 包（12 模块，
+> 垫片保持 `import mapviewer` 兼容）；`serialize_map` 模板补丁策略（未编辑字节零变化，
+> 含 Light@+12 与截断布局）；`map_roundtrip.py` 独立验证 20/20（报告
+> `docs/maps/edit-proof/roundtrip-report.json`）；编辑会话/保存管线/编辑 UI 全链路实测
+> 通过（存证 edit-ui-cell.png / edit-ui-saved.png）。**E2 请直接在 mapedit 包上开发**
+> （api.py 加端点、templates.py EDIT_UI_JS 加面板、editstate.py 加会话类型）。
 
 ### 5.3 任务分解
 

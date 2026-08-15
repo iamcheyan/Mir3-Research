@@ -2902,7 +2902,7 @@ EDIT_UI_JS = r"""
                     const L = d[layer];
                     h += '<div class="ef-layer">' + layer.toUpperCase()
                         + ': <span class="lib">' + (L.lib || '') + '</span> #' + L.frame + '</div>'
-                        + '<div class="ef-row"><span>' + layer + ' 库</span><span id="ef-' + layer + '-file"></span>'
+                        + '<div class="ef-row"><span>' + layer + ' 库</span><span id="ef-' + layer + '-file-hold"></span>'
                         + '<input id="ef-' + layer + '-img" type="number" style="width:70px" value="' + L.frame + '"'
                         + (layer === 'back' ? '' : '') + '>'
                         + '<img id="ef-' + layer + '-prev" style="height:40px;max-width:52px;object-fit:contain;background:#222">'
@@ -2935,9 +2935,9 @@ EDIT_UI_JS = r"""
                 editApply([{x: d.x, y: d.y, fields: {flag: nf & 255}}]);
             };
             for (const layer of ['back', 'mid', 'front']) {
-                const holder = p.querySelector('#ef-' + layer + '-file');
+                const holder = p.querySelector('#ef-' + layer + '-file-hold');
                 if (holder) {
-                    holder.appendChild(editLibSel(layer, editCellData[layer].file));
+                    holder.appendChild(editLibSel('ef-' + layer + '-file', editCellData[layer].file));
                     const imgIn = p.querySelector('#ef-' + layer + '-img');
                     const upd = () => editPreview(layer,
                         Number(p.querySelector('#ef-' + layer + '-file').value), Number(imgIn.value));
@@ -3050,10 +3050,15 @@ EDIT_UI_JS = r"""
             } else alert('保存失败: ' + (d.error || '?'));
         }
 
-        async function editStart() {
+        async function editStart(quiet) {
             editOn = true;
             const d = await editPost('open');
-            if (!d.ok) { alert('打开编辑会话失败: ' + (d.error || '?')); editOn = false; return; }
+            if (!d.ok) {
+                editOn = false;
+                if (quiet) console.warn('editStart:', d.error || '?');   // 自启失败不 alert（headless 会阻塞）
+                else alert('打开编辑会话失败: ' + (d.error || '?'));
+                return;
+            }
             editSess = d;
             await editLoadFlags();
             editRenderPanel();
@@ -3133,21 +3138,26 @@ EDIT_UI_JS = r"""
             return fields;
         }
 
-        // 切图未保存提醒：包一层 pick（同闭包内函数声明可重绑定）
+        // 切图未保存提醒：包一层 loadMap（主模板的切图入口；pick 是 /sim 的）
         {
-            const _origPick = pick;
-            pick = function (name) {
+            const _origLoad = loadMap;
+            loadMap = function () {
                 if (editOn && editSess && editSess.dirty
                     && !confirm('当前图有未保存修改，切换地图将保留在会话（不丢失）。继续切换？'))
                     return;
                 if (editOn) { editFlags = null; editCellData = null; editSel = null; editSameSrc = null; editRectA = editRectB = null; }
-                return _origPick(name);
+                return _origLoad();
             };
         }
         window.addEventListener('beforeunload', (e) => {
             if (editOn && editSess && editSess.dirty) { e.preventDefault(); e.returnValue = ''; }
         });
-        // URL ?edit=1 直进编辑模式
-        if (/[?&]edit=1\b/.test(location.search)) editStart();
+        // URL ?edit=1 直进编辑模式（等地图真加载完再开，自启失败只 console.warn）
+        if (/[?&]edit=1\b/.test(location.search)) {
+            const waitMap = () => curName && curName.endsWith('.map')
+                ? editStart(true)
+                : setTimeout(waitMap, 300);
+            waitMap();
+        }
         // ========================== 编辑模式结束 ==========================
 """
