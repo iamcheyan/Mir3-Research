@@ -427,6 +427,17 @@ class Store:
 STORE = Store()
 APP = FastAPI(title="dbeditor", docs_url=None, redoc_url=None)
 
+# [shared] E5 Light Lab: webclient(:8822) 环境实验室面板需要跨源调用写回管线
+# (GET /api/row + PUT /api/row + POST /api/sync)。只放行本机 webclient 两个来源。
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+
+APP.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"^https?://(127\.0\.0\.1|localhost|\[::1\]):8822$",
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
+
 
 # ---------------------------------------------------------------- 模型
 

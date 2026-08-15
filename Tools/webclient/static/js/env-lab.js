@@ -630,7 +630,9 @@ function bindApply() {
       const r0 = await fetch(`${DBEDITOR}/api/row/MapInfo/${row.Index}`);
       if (!r0.ok) throw new Error(`读取当前行失败 HTTP ${r0.status}`);
       const { row: full } = await r0.json();   // dbeditor 返回 {row, subs, meta}
-      const body = { ...full, Weather: $('#ap-weather').value };
+      const body = { ...full };
+      for (const k of Object.keys(body)) if (k.startsWith('__')) delete body[k];  // 剔除 __zh 等注入显示字段
+      body.Weather = $('#ap-weather').value;
       const lt = $('#ap-light').value;
       if (lt) body.Light = lt;
       const r1 = await fetch(`${DBEDITOR}/api/row/MapInfo/${row.Index}`, {
