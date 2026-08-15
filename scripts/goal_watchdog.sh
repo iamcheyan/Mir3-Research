@@ -67,7 +67,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 GOALS=(
   # ---- 2026-08-15 编辑器军团（旧 goal 已完结，条目归档于 git 历史）----
   # [archived 2026-08-15 E1完成] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
-  "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
+  # [archived 2026-08-16 E4完成] "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
   # [archived 2026-08-16 E2完成] "01a005d1-6557-7000-82be-86b96d3a7d36|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T14-26-44-183Z_01a005d1-6557-7000-82be-86b96d3a7d36.jsonl|ed-npc|/home/tetsuya/development/Mir3-Research|编辑器E2NPC摆放编辑"
   # [archived] "01a0007a-e0db-7000-aa8c-7ff6380acb67|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T13-34-08-091Z_01a0007a-e0db-7000-aa8c-7ff6380acb67.jsonl|yomudesign|/home/tetsuya/development/yomu|Yomu无框单页视觉重构"
   # [archived] "01a00239-3d0a-7000-bb94-9c32abee22ac|/home/tetsuya/.omp/agent/sessions/-development-fudoki/2026-08-14T21-41-40-746Z_01a00239-3d0a-7000-bb94-9c32abee22ac.jsonl|fudokiredesign|/home/tetsuya/development/fudoki|Fudoki本地化+Linear式UI重构"
