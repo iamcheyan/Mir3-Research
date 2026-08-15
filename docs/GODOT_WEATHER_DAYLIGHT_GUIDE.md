@@ -4,12 +4,13 @@
 
 ## 1. 结论摘要
 
-- 天气由 `MapInfo.Weather` 决定，不会因为进入夜晚而自动出现。
-- 当前数据库中的 244 张地图 `Weather` 全部是 `None`；Godot 测试模式会对 5 个主要城镇临时随机覆盖天气，方便验证天气效果。
-- 环境光由 `MapInfo.Light` 和服务器下发的 `DayTime` 共同决定。
+- 天气由 `MapInfo.Weather` 决定，纯客户端本地读取位标志（无服务器参与、无网络包），不会因为进入夜晚而自动出现。
+- 当前数据库 627 张地图 `Weather` 全部为 `None`——游戏内看不到天气；历史上的 `TownWeatherTestMode` 城镇随机覆盖测试模式**已移除**（污染客户端，加过又删）。想看天气须改库（走 dbeditor 管线）或用 web 预览实验室。
+- **web 环境实验室（Goal E5）**：`http://127.0.0.1:8822/static/env.html`（Light Lab）可零成本实时预览四维（环境光/天气/光源/特殊态），改库前先用它看效果；三方对照与已知偏差见 `docs/lightlab/PARITY_REPORT.md`。
+- 环境光由 `MapInfo.Light` 和服务器下发的 `DayTime` 共同决定（`AmbientFor`，见 §6）。
 - `TimeOfDay` 主要表示 Dawn/Day/Dusk/Night 阶段和小地图图标；客户端环境亮度实际使用 `LightSetting` 或 `DayTime`。
 - 夜间局部光源来自玩家、其他玩家、带光照属性的对象、地图格子光和技能/特效光。
-
+- **特殊光照态**（死亡红染/深渊黑视）已实现，见 §8。
 ## 2. 天气类型
 
 天气定义在 `LibraryCore/Enum.cs` 的 `[Flags] Weather`：
@@ -117,38 +118,25 @@ UI、小地图等界面层
 3. 重置生成计时器
 4. 重新生成雾
 5. 按新地图天气位生成雨、雪、闪电
+## 5. 当前地图天气配置
 
-## 5. 当前地图天气配置与城镇测试随机天气
-
-当前导出的 `MapInfo` 数据共 244 张地图：
+当前导出的 `MapInfo` 数据共 **627** 张地图（2026-08-15 快照，权威源 `docs/lightlab/env-snapshot.json`）：
 
 | Weather | 地图数量 |
 |---|---:|
-| `None` | 244 |
+| `None` | 627 |
 | 其他天气或组合 | 0 |
 
-数据库没有天气的主要城镇目前由 Godot 测试模式临时覆盖。以下地图每次进入或切换时，会从 `1..15` 随机选择一个非空天气位组合：
+> 历史注：本文旧版记录的「Godot 测试模式对 5 个城镇随机覆盖天气」(`TownWeatherTestMode`) 已删除——
+> 该后门污染客户端真实行为，教训记录在案；**不要再加客户端测试后门**。要看天气：
+>
+> 1. 零成本预览：Light Lab（§1）四开关任意组合实时渲染；
+> 2. 真改库：dbeditor 管线改 `MapInfo.Weather`（如 `RainFogLightning`），停服→备份→写库→round-trip→
+>    重启进图。E5 已全流程实测：`02_0062` 改 `RainFogLightning` 后游戏内日志
+>    `[Light] map=02_0062 setting=Default weather=RainFogLightning dayTime=0`（证据
+>    `docs/lightlab/ingame_020062_rainfoglightning.png`），验证后已回滚。
 
-| 文件名 | 地图 |
-|---|---|
-| `0` | Bichon Town |
-| `1` | Lost Paradise |
-| `2` | Banya Village |
-| `3` | Sabuk Keep |
-| `4` | Numa Village |
-
-随机范围包含单天气和组合天气，但不包含 `None`，因此进入这些城镇一定能看到至少一种天气。其他地图仍使用数据库原始配置，服务端数据库不会被修改。
-
-关闭测试覆盖时，将 `GameScene.cs` 中的 `TownWeatherTestMode` 改为 `false`。
-
-不使用 Godot 测试覆盖时，也可以在 MapInfo 中把某张地图改成例如：
-
-- `Rain`
-- `Snow`
-- `Fog`
-- `RainFogLightning`
-
-保存数据库后重新进入地图，客户端会在日志中输出：
+把某张地图 Weather 改为非 None 保存数据库后重新进入地图，客户端日志会输出：
 
 ```text
 [Light] map=... setting=... weather=... dayTime=...
@@ -156,40 +144,38 @@ UI、小地图等界面层
 
 其中 `weather=None` 就表示该地图没有配置天气，不是客户端没有加载成功。
 
-## 6. 环境光四种模式
+**注意（E5 实测定性）**：夜晚环境下闪电几乎不可见——闪电纹理（ProgUse 帧 540）不透明区平均
+亮度约 77/255，经夜晚环境光 0.25 相乘后 ≈19，与夜间背景同量级；闪电只在 Default 白天或
+Light 地图上才明显。雨/雾在夜间可见度也大幅下降。
+## 6. 环境光四种模式（AmbientFor，MapLightLayer.cs）
 
-当前客户端为了保证夜间仍能看清地图，最低环境光设为 `100/255`（约 39.2%）。旧端曾存在约 `15/255` 的极暗档，但本 Godot 客户端已明确不再使用；`Night` 和 `Twilight` 都落到这个最低值，普通 DayTime 也会经过同一底线。
-
-定义在 `LibraryCore/Enum.cs` 的 `LightSetting`：
-
-| 模式 | 环境亮度 | 旧端实现 | Godot 实现 |
+| 模式 | 环境亮度 | 原版实现 (MapControl.cs) | Godot 实现 |
 |---|---:|---|---|
-| `Light` | 100% | `(255,255,255)` | `1.0` |
-| `Night` | 使用 Twilight | `(15,15,15)`（旧端） | `100/255` |
-| `Twilight` | 约39.2% | `(100,100,100)` | `0.39` |
-| `Default` | 使用 `DayTime` | `255 * DayTime` | `DayTime` |
+| `Light` | 100% | `(255,255,255)`（层不渲染） | `1.0`（≥0.999 跳过） |
+| `Night` | 25% | `(15,15,15)` ≈ 5.9% | `0.25`（柔和月夜，**刻意偏差**） |
+| `Twilight` | 约 39.2% | `(100,100,100)` | `100/255 ≈ 0.39` |
+| `Default` | 随昼夜 | `255 × DayTime`（无下限） | `max(0.25, DayTime)` |
 
-当前 Godot 客户端不再使用旧端最黑的视觉档。`Night` 会使用第三档 `Twilight` 的亮度；`Default` 地图即使服务器下发 `DayTime=0`，也会被限制到同样的 Twilight 下限。
+当前客户端为了保证夜间仍能看清地图，最低环境光取 `0.25`（注释明示"柔和月夜"）。
+原版 `Night` 是 `(15,15,15)` 接近全黑、`Default` 无下限——两端在这两档存在**已知的刻意偏差**
+（完整对照与「原版严格模式」预览见 `docs/lightlab/PARITY_REPORT.md` #1/#2）。
 
-固定模式优先级如下：
+固定模式优先级：
 
 ```text
-MapInfo.Light == Light  -> 100%
-MapInfo.Light == Night  -> Twilight 下限
-MapInfo.Light == Twilight -> 约39.2%
-MapInfo.Light == Default -> 使用服务器 DayTime
+MapInfo.Light == Light    -> 100%（光照层不渲染）
+MapInfo.Light == Night    -> 25%（原版 15/255，刻意调亮）
+MapInfo.Light == Twilight -> 100/255
+MapInfo.Light == Default  -> max(0.25, 服务器 DayTime)
 ```
 
-所以进入一个 `Night` 地图时会使用 Twilight 亮度；进入 `Default` 地图时仍随服务器昼夜循环变化，但不会低于 Twilight 亮度。
-
-当前 244 张地图的环境光配置统计：
+当前 627 张地图的环境光配置统计（2026-08-15 快照）：
 
 | LightSetting | 地图数量 |
 |---|---:|
-| `Default` | 67 |
-| `Light` | 10 |
-| `Night` | 165 |
-| `Twilight` | 2 |
+| `Default` | 580 |
+| `Night` | 44 |
+| `Light` | 3 |
 
 ## 7. 服务器昼夜循环
 
@@ -321,3 +307,20 @@ _lightLayer.SetDayTime(DayTime);
 - 旧端天气：`Client/Models/Particles/Weather/`
 - 旧端环境光：`Client/Scenes/Views/MapControl.cs`
 - 当前地图数据：`docs/research/ei2-research/data/MapInfo.md`
+
+## 12. 特殊光照态（死亡红染 / 深渊黑视，2026-08-15 Zircon 8d1a6a3b）
+
+对照原版 `Client/Scenes/Views/MapControl.cs` Light.OnClearTexture 补齐，`MapLightLayer.PlayerLightState`
+（`GameScene.SetPlayerState` 驱动）+ shader `global_tint`：
+
+| 态 | 视觉 | 规格 |
+|---|---|---|
+| 死亡 | 整层 `IndianRed (205,92,92)` 相乘红染 | **白天也强制渲染**；**优先于深渊**；无光源恢复 |
+| 深渊中毒 | 全黑 (ambient=0) + 玩家微光 | 微光半径 `256×(0.1+4×0.02)=46.08` 逻辑 px；`GameScene` 每 980ms 循环施放 Abyss 环绕特效（MagicEx4 帧 2000 起 14 帧 × 70ms） |
+
+渲染审计：`MapTestScene -- --light-render-audit` 5 stage（night/twilight/default/dead/abyss）；
+dead 探针 `0xcd5c5c` 精确等于 IndianRed。web 对照预览：Light Lab 特殊态按钮（§1）。
+
+已知偏差（只记录，改不改由用户拍板，见 PARITY_REPORT #15）：原版把 Abyss 环绕特效画进
+光照层纹理（黑暗中全屏可见）；Godot 端特效节点 ZIndex=3301 < LightOverlay=3401，被全黑
+层压暗、仅微光圈内可见。

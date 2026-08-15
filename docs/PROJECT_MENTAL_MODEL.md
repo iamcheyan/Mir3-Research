@@ -119,6 +119,24 @@ dead 探针 0xcd5c5c 精确匹配。E5 实验室做同规格 web 预览供检测
 审计探针曾因 LightProbeArea(700,350) 在逻辑 512×384 视口外被钳到屏幕边缘——已修
 (300,200)，night 探针由 0.096 险败修正为精确 0.251。
 
+**E5 已完成（2026-08-15，证据全在 `docs/lightlab/`）**：
+- 入口 `http://127.0.0.1:8822/static/env.html`（Light Lab，env.html+env-lab.js+env-lab.css
+  独立页面，零改 E4 文件）；四维面板（环境光四档+DayTime+原版严格 Night=15/255、天气四开关
+  照抄 MapWeatherLayer 粒子参数、火把 24 选+微光×N+特效光+格子光、死亡红染/深渊黑视）
+  全部实测联动；叠加序对齐 Godot（天气 Z850<光照 Z900）。
+- P0 素材：ProgUse.Zl 9 帧 WebP（`Tools/webclient/static/assets/weather/`）+
+  env-snapshot.json（627 图+24 光源物品，docs 权威+static 镜像双写，生成器
+  `Tools/lightlab/build_env_assets.py`）。
+- P2 证据：27 张 web 采样画廊 + Godot 无头 5 stage 审计 + PARITY_REPORT 18 项三方对照。
+  **两条 Godot/原版真实偏差**：①深渊环绕特效 Godot 被光照层压暗（Z3301<3401）而原版画进
+  光照层黑暗全可见；②Default 环境光原版无下限（255×DayTime 可到 0）。已知刻意偏差 Night
+  25% vs 原版 15/255。多光源 web 乘性擦除 vs Godot max（交叠处 web 略暗）。
+- P3 出口：面板「应用到地图」走 dbeditor 管线（PUT row→/api/sync）实测 02_0062 改
+  RainFogLightning 成功写双库，游戏内 `[Light]` 日志+截图证实，验证后已回滚。
+  实测发现：**夜图闪电固有不可见**（闪电纹理亮度 77×0.25≈背景）。
+- 新坑回写总纲 §3.8：hub 自愈复活 vs services.sh stop、rollback 在 baseline 重置后失效、
+  GET row 带 __zh 注入字段、多 goal 共享工作树 git 互踩、pull 后必须 build、llvmpipe 探针阈值。
+
 ## 九、方法论（用户认可的工作节奏）
 
 1. 主会话摸透：读代码/实证（跑起来看）→ 形成诊断

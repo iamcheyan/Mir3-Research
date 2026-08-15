@@ -159,6 +159,29 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
   `ZlImageHeader` 构造默认 4 (Png)，而 decode legacy 分支按 `version` 选 BC1/BC3，
   根本不看 codec。统计库载荷格式要以 decode 实际路径为准，别信 header 字段。
 
+### 3.8 写库窗口与多 goal 并发的坑（E5 实证，2026-08-15）
+
+- **hub 管的服务会自愈复活**：`services.sh stop zircon-core` 只杀 pid，hub daemon 按 restart
+  策略把它拉回来（`hub ps` 可见 `restarts` 计数）——sync.sh 的端口检测窗口正好撞上复活，
+  白白 409 两次。**停 hub 管的服务必须用 `hub stop zircon-core`**（services.sh 停不住它；
+  反过来 hub 停的 services.sh status 会正确显示停止）。
+- **dbeditor `/api/rollback` 在 sync 成功后是空操作**：sync 成功即重置 baseline 为当前库，
+  rollback 恢复的是「新 baseline」= 改动后状态，diff=0 → sync skipped。**回滚改动要显式
+  PUT 旧值再 sync**，不要指望 rollback API。
+- **dbeditor GET `/api/row` 返回注入字段**：`__zh`/`__frame` 等显示字段不在 schema，PUT
+  回写前必须剔除（`k.startsWith('__')` 剔除），否则 400「字段不在 schema 中」。
+- **多 goal 共享同一工作树的 git 互相踩**：并行会话在同一 checkout 直接 commit/merge，
+  `git pull --rebase` 会把别人的提交排进自己的队列且在 dbeditor 自动提交（workspace 子树）
+  上频繁冲突。经验：rebase 冲突即 `--abort` 改 merge；merge 前的未暂存变更（多数是别的
+  会话活跃编辑）用整树 stash→merge→checkout stash 还原，**stash pop 不全时必须手动
+  `git checkout stash@{0} -- <files>` 补齐**，否则丢别家未暂存编辑。
+- **zircon git pull 后必须 dotnet build**（老坑新形态）：源码 fast-forward 到 8d1a6a3 后
+  直接跑 `MapTestScene --light-render-audit`，跑的还是旧 dll——5 stage 只跑了 3。
+  二进制行为与 git 状态脱钩，先 build 再验收。
+- **llvmpipe 软渲染下探针阈值偏紧**：`--light-render-audit` 的 abyss 探针断言 0.5 在
+  GPU 机器全 PASS，82 机 Xvfb+llvmpipe 读 0.369——同一份代码两种结果。无头验收结论
+  要标注渲染器；断言阈值对软渲染偏紧不算产品 bug。
+
 ---
 
 ## 4. 环境引导（82 机器，一次性）
