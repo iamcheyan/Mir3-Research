@@ -1,5 +1,5 @@
 {
-  "count": 5009,
+  "count": 5010,
   "rows": [
     {
       "Index": 1,
@@ -108604,6 +108604,28 @@
       },
       "RegionType": "Connection",
       "Size": 1
+    },
+    {
+      "Index": 6306,
+      "Map": {
+        "Index": 1,
+        "Name": "0"
+      },
+      "Description": "0 / E2验证商人",
+      "PointRegion": {
+        "PointCount": 1,
+        "CenterX": 402,
+        "CenterY": 356
+      },
+      "RegionType": "None",
+      "Size": 1,
+      "_Identity": "0 / 0 / E2验证商人",
+      "NPCs": [
+        {
+          "Index": 368,
+          "Name": "0 / 0 / E2验证商人 / E2验证商人"
+        }
+      ]
     }
   ]
 }
