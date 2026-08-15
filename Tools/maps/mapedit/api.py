@@ -19,8 +19,10 @@ from mapedit.constants import (_TOOLS_MAPS_DIR, CACHE_TILES_MAX, CACHE_VERSION,
                                DEFAULT_CACHE_MOUNT, DEFAULT_CACHE_ROOT,
                                DEFAULT_CLIENT_ROOT, DEFAULT_CONNECTIONS,
                                DEFAULT_DBWORKSPACE, DEFAULT_DB_NAMES,
-                               KR_ORDER, LAYOUT_ISO, LAYOUT_RECT,
-                               OFFSET_MODES, OFFSET_NONE, THUMBS_DIR)
+                               KR_ORDER, LAYOUT_ISO, LAYOUT_RECT, OFFSET_ALL,
+                               OFFSET_MIDFRONT, OFFSET_MODES, OFFSET_NONE,
+                               THUMBS_DIR, _nas_cache_available,
+                               default_tile_cache_dir)
 from mapedit.data import (MAP_CN, NPC_FUNC_RULES, api_maps_payload,
                           build_atlas, load_catalog, load_connections,
                           load_db_names, load_entities, load_workspace_connections,
@@ -263,8 +265,13 @@ class ViewerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/" or self.path == "/index.html":
-            body = HTML_TEMPLATE.replace("/*__MAP_CN__*/",
-                    json.dumps(MAP_CN, ensure_ascii=False)).encode("utf-8")
+            from mapedit.templates import EDIT_UI_JS
+            lib_json = json.dumps({**KR_ORDER, 255: "无"}, ensure_ascii=False)
+            body = (HTML_TEMPLATE
+                    .replace("/*__MAP_CN__*/",
+                             json.dumps(MAP_CN, ensure_ascii=False))
+                    .replace("/*__EDIT_UI__*/", EDIT_UI_JS)
+                    .replace("__LIB_JSON__", lib_json)).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
@@ -489,6 +496,28 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self._json_200(body)
 
 
+        elif self.path.startswith("/edit/flags?"):
+            # 编辑模式 flag 着色图：w*h 字节 base64（反映未保存编辑）
+            from urllib.parse import parse_qs, urlparse
+            from mapedit import editstate as _es
+            import base64
+            qs = parse_qs(urlparse(self.path).query)
+            map_name = os.path.basename(qs.get("map", [""])[0])
+            s = _es.get_session(self.map_cache.maps_dir, map_name, create=False)
+            if s is None:
+                body = json.dumps({"ok": False, "error": "no_session"}).encode()
+            else:
+                flags = bytearray(s.w * s.h)
+                i = 0
+                for x in range(s.w):
+                    col = s.cells[x]
+                    for y in range(s.h):
+                        flags[x * s.h + y] = col[y].flag
+                body = json.dumps({"ok": True, "w": s.w, "h": s.h,
+                                   "flags": base64.b64encode(bytes(flags)).decode()
+                                   }).encode()
+            self._json_200(body)
+
         elif self.path.startswith("/api/cell?"):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
@@ -499,8 +528,14 @@ class ViewerHandler(BaseHTTPRequestHandler):
             except ValueError:
                 self.send_error(400, "x/y must be ints")
                 return
+            # 编辑会话优先（含未保存编辑的格语义）
+            from mapedit import editstate as _es
+            sess = _es.get_session(self.map_cache.maps_dir, map_name, create=False)
             try:
-                w, h, cells = self.map_cache.get(map_name)
+                if sess is not None:
+                    w, h, cells = sess.w, sess.h, sess.cells
+                else:
+                    w, h, cells = self.map_cache.get(map_name)
             except Exception as ex:
                 self.send_error(404, f"map not readable: {ex}")
                 return
@@ -690,10 +725,26 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if om not in OFFSET_MODES:
                 om = OFFSET_NONE
             try:
+                from mapedit import editstate as _es
+                _sess = _es.get_session(self.map_cache.maps_dir, map_name,
+                                        create=False)
+                _live = _sess is not None and _sess.dirty > 0
                 w, h, _ = self.map_cache.get(map_name)
                 ladder = map_ladder(w, h, self.layout)
                 if ladder:
                     z = min(max(z, ladder[0]), ladder[-1])
+                if _live:
+                    # 编辑态：会话 cells 现场渲染，绕过一切缓存（读写都不）
+                    data = render_full_map(_es.SessionMapCache(_sess),
+                                           self.pool, map_name, z, g, m, f,
+                                           layout=self.layout, offset_mode=om)
+                    self.send_response(200)
+                    self.send_header("Content-Type", "image/jpeg")
+                    self.send_header("Cache-Control", "no-store")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
                 key = (map_name, z, g, m, f, om)
                 dp = self._fullmap_path(key)
                 try:
@@ -745,6 +796,23 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 om = OFFSET_NONE
 
             try:
+                from mapedit import editstate as _es
+                _sess = _es.get_session(self.map_cache.maps_dir, map_name,
+                                        create=False)
+                if _sess is not None and _sess.dirty > 0:
+                    # 编辑态：会话 cells 现场渲染（快池 worker 读盘会丢编辑，
+                    # 故主进程直接渲），且不读写任何缓存
+                    data = render_tile(_es.SessionMapCache(_sess), self.pool,
+                                       map_name, tx, ty, z, g, m, f,
+                                       layout=self.layout, offset_mode=om)
+                    self.send_response(200)
+                    self.send_header("Content-Type",
+                                     "image/png" if z == 0 else "image/jpeg")
+                    self.send_header("Cache-Control", "no-store")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
                 key = (map_name, tx, ty, z, g, m, f, om)
                 TILE_PREWARM["focus"] = map_name   # 预渲染优先跟进用户正在看的地图
                 with self.tile_cache_lock:

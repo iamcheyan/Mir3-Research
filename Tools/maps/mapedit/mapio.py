@@ -187,6 +187,16 @@ class MapCache:
                             self._rys.pop(k, None)
         return self._store[name]
 
+    def invalidate(self, name: str) -> None:
+        """丢弃该图的解析缓存（编辑保存后调用，下次 get 重读文件）。"""
+        with self._lock:
+            self._store.pop(name, None)
+            self._buckets.pop(name, None)
+            self._bxs.pop(name, None)
+            self._rows.pop(name, None)
+            self._rys.pop(name, None)
+        self._build_locks.pop(name, None)
+
     def sparse(self, name: str) -> tuple[list, list]:
         """(buckets, bxs): buckets[s] = [(x, cell), ...] sorted by x, with
         parallel x-only lists for bisect. s = x + y in [0, w+h-2]."""
