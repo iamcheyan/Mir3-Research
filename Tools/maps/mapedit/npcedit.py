@@ -162,8 +162,8 @@ class WorkspaceEditor:
                 return r
         raise NpcEditError(f"地图 {map_stem!r} 不在 MapInfo 中")
 
-    def _bounds(self, map_stem: str) -> tuple[int, int] | None:
-        """读 .map 头（u16 LE w@22 h@24）做边界校验；maps_dir 未配置则跳过。"""
+    def _map_header(self, map_stem: str) -> tuple[int, int, str] | None:
+        """(w, h, path)；maps_dir 未配置或文件缺失返回 None（跳过校验）。"""
         if not self.maps_dir:
             return None
         p = os.path.join(self.maps_dir, os.path.basename(map_stem) + ".map")
@@ -172,11 +172,34 @@ class WorkspaceEditor:
                 head = f.read(26)
             if len(head) < 26:
                 return None
-            return int.from_bytes(head[22:24], "little"), int.from_bytes(head[24:26], "little")
+            return (int.from_bytes(head[22:24], "little"),
+                    int.from_bytes(head[24:26], "little"), p)
         except OSError:
             return None
 
-    def _check_xy(self, map_stem: str, x: int, y: int) -> None:
+    def _bounds(self, map_stem: str) -> tuple[int, int] | None:
+        hdr = self._map_header(map_stem)
+        return (hdr[0], hdr[1]) if hdr else None
+
+    def _cell_blocked(self, map_stem: str, x: int, y: int) -> bool:
+        """按 Segment2 布局取格 flag（与 E1 mapio.parse_map 同约定）：
+        第 i 格 → x=i//h, y=i%h，每格 14B，flag@+0。flag&3!=3 即阻挡。
+        服务器实证（2026-08-16）：NPC spawn 在阻挡格 = 游戏内不可见
+        （对象存在但不广播），摆放编辑必须在写 workspace 前拒绝。"""
+        hdr = self._map_header(map_stem)
+        if not hdr:
+            return False
+        w, h, p = hdr
+        try:
+            with open(p, "rb") as f:
+                f.seek(28 + (w // 2) * (h // 2) * 3 + (x * h + y) * 14)
+                flag = f.read(1)[0]
+            return (flag & 3) != 3
+        except (OSError, IndexError):
+            return False
+
+    def _check_xy(self, map_stem: str, x: int, y: int,
+                  require_passable: bool = False) -> None:
         if not isinstance(x, int) or not isinstance(y, int) or x < 0 or y < 0:
             raise NpcEditError(f"坐标必须是非负整数：({x},{y})")
         dims = self._bounds(map_stem)
@@ -184,6 +207,10 @@ class WorkspaceEditor:
             w, h = dims
             if x >= w or y >= h:
                 raise NpcEditError(f"({x},{y}) 超出 {map_stem} 边界 {w}x{h}")
+        if require_passable and self._cell_blocked(map_stem, x, y):
+            raise NpcEditError(
+                f"({x},{y}) 是阻挡格（flag&3!=3）——服务器 spawn 后游戏内不可见，"
+                "请选通行格（可加 force=1 强制）")
 
     @staticmethod
     def _region_single(reg: dict) -> None:
@@ -252,7 +279,7 @@ class WorkspaceEditor:
         reg["PointRegion"] = {"PointCount": 1, "CenterX": x, "CenterY": y}
 
     def move_npc(self, npc_index: int, x: int, y: int,
-                 map_stem: str | None = None) -> dict:
+                 map_stem: str | None = None, force: bool = False) -> dict:
         npc = self._require("NPCInfo").get(npc_index)
         if npc is None:
             raise NpcEditError(f"NPCInfo#{npc_index} 不存在")
@@ -261,7 +288,7 @@ class WorkspaceEditor:
             raise NpcEditError(f"NPCInfo#{npc_index} 的 Region 缺失")
         cur_map = str((reg.get("Map") or {}).get("Name") or "")
         target_map = map_stem or cur_map
-        self._check_xy(target_map, x, y)
+        self._check_xy(target_map, x, y, require_passable=not force)
         old = (reg.get("PointRegion") or {}).get("CenterX"), (reg.get("PointRegion") or {}).get("CenterY")
         self._set_region_point(reg, x, y)
         moved_map = False
@@ -299,12 +326,12 @@ class WorkspaceEditor:
 
     def create_npc(self, map_stem: str, x: int, y: int, name: str,
                    image: int = 0, entry_page: int | None = None,
-                   description: str | None = None) -> dict:
+                   description: str | None = None, force: bool = False) -> dict:
         name = (name or "").strip()
         if not name:
             raise NpcEditError("NPCName 不能为空")
         self._map_row(map_stem)          # 地图存在性
-        self._check_xy(map_stem, x, y)
+        self._check_xy(map_stem, x, y, require_passable=not force)
         mi = self._map_row(map_stem)
         if entry_page is not None:
             if entry_page not in self._require("NPCPage"):
@@ -369,14 +396,14 @@ class WorkspaceEditor:
                 "region_deleted": drop_region}
 
     def move_guard(self, guard_index: int, x: int, y: int,
-                   map_stem: str | None = None) -> dict:
+                   map_stem: str | None = None, force: bool = False) -> dict:
         guards = self._require("GuardInfo")
         g = guards.get(guard_index)
         if g is None:
             raise NpcEditError(f"GuardInfo#{guard_index} 不存在")
         cur_map = str((g.get("Map") or {}).get("Name") or "")
         target = map_stem or cur_map
-        self._check_xy(target, x, y)
+        self._check_xy(target, x, y, require_passable=not force)
         old = (g.get("X"), g.get("Y"), cur_map)
         g["X"], g["Y"] = x, y
         if target != cur_map:
@@ -388,7 +415,8 @@ class WorkspaceEditor:
                 "from": {"map": old[2], "x": old[0], "y": old[1]},
                 "to": {"map": target, "x": x, "y": y}}
 
-    def move_safezone(self, safezone_index: int, x: int, y: int) -> dict:
+    def move_safezone(self, safezone_index: int, x: int, y: int,
+                       force: bool = False) -> dict:
         szs = self._require("SafeZoneInfo")
         sz = szs.get(safezone_index)
         if sz is None:
@@ -398,7 +426,7 @@ class WorkspaceEditor:
         if reg is None:
             raise NpcEditError(f"SafeZoneInfo#{safezone_index} 的 Region 缺失")
         map_stem = str((reg.get("Map") or {}).get("Name") or "")
-        self._check_xy(map_stem, x, y)
+        self._check_xy(map_stem, x, y, require_passable=not force)
         old = ((reg.get("PointRegion") or {}).get("CenterX"),
                (reg.get("PointRegion") or {}).get("CenterY"))
         self._set_region_point(reg, x, y, allow_multi=True)

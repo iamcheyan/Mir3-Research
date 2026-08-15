@@ -373,25 +373,27 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if op == "move":
                 body = {"ok": True, "result": ed.move_npc(
                     int(payload["npc"]), int(payload["x"]), int(payload["y"]),
-                    payload.get("map"))}
+                    payload.get("map"), force=bool(payload.get("force")))}
                 map_stem = body["result"]["to"]["map"]
             elif op == "create":
                 body = {"ok": True, "result": ed.create_npc(
                     str(payload["map"]), int(payload["x"]), int(payload["y"]),
                     str(payload.get("name") or ""), image=int(payload.get("image") or 0),
                     entry_page=(int(payload["entry_page"])
-                                if payload.get("entry_page") is not None else None))}
+                                if payload.get("entry_page") is not None else None),
+                    force=bool(payload.get("force")))}
                 map_stem = payload["map"]
             elif op == "delete":
                 body = {"ok": True, "result": ed.delete_npc(int(payload["npc"]))}
             elif op == "guard_move":
                 body = {"ok": True, "result": ed.move_guard(
                     int(payload["guard"]), int(payload["x"]), int(payload["y"]),
-                    payload.get("map"))}
+                    payload.get("map"), force=bool(payload.get("force")))}
                 map_stem = body["result"]["to"]["map"]
             elif op == "safezone_move":
                 body = {"ok": True, "result": ed.move_safezone(
-                    int(payload["safezone"]), int(payload["x"]), int(payload["y"]))}
+                    int(payload["safezone"]), int(payload["x"]), int(payload["y"]),
+                    force=bool(payload.get("force")))}
             elif op == "region_size":
                 body = {"ok": True, "result": ed.set_region_size(
                     int(payload["region"]), int(payload["size"]))}

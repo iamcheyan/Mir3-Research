@@ -37,7 +37,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="NPC 摆放（workspace JSON，经 sync 入库）")
     ap.add_argument("--workspace", default=DEFAULT_WS)
     ap.add_argument("--maps-dir", default=DEFAULT_MAPS or None,
-                    help=".map 目录（越界校验；默认不校验）")
+                    help=".map 目录（越界/阻挡校验；默认不校验）")
+    ap.add_argument("--force", action="store_true",
+                    help="允许落在阻挡格（游戏内 NPC 不可见，慎用）")
     sub = ap.add_subparsers(dest="op", required=True)
     p = sub.add_parser("move"); p.add_argument("npc", type=int)
     p.add_argument("x", type=int); p.add_argument("y", type=int)
@@ -74,14 +76,14 @@ def main() -> int:
     ed = npcedit.WorkspaceEditor(a.workspace, maps_dir=a.maps_dir)
     try:
         if a.op == "move":
-            r = ed.move_npc(a.npc, a.x, a.y, a.map)
+            r = ed.move_npc(a.npc, a.x, a.y, a.map, force=a.force)
         elif a.op == "guard":
-            r = ed.move_guard(a.guard, a.x, a.y, a.map)
+            r = ed.move_guard(a.guard, a.x, a.y, a.map, force=a.force)
         elif a.op == "safezone":
-            r = ed.move_safezone(a.safezone, a.x, a.y)
+            r = ed.move_safezone(a.safezone, a.x, a.y, force=a.force)
         elif a.op == "create":
             r = ed.create_npc(a.map, a.x, a.y, a.name, image=a.image,
-                              entry_page=a.entry_page)
+                              entry_page=a.entry_page, force=a.force)
         elif a.op == "delete":
             r = ed.delete_npc(a.npc)
     except npcedit.NpcEditError as ex:
