@@ -90,9 +90,14 @@ done
 # ---- 4. 总览缩略图（可选，慢；mapviewer 后台 prewarm 可自愈） ----
 if [ "${1:-}" = "--thumbs" ]; then
     step "wiki_thumbs <- thumb_gen.py（全量渲染，慢）"
+    # mapviewer 的 THUMBS_DIR 是 NAS 缓存里的 mir3-mapviewer-cache/thumbs
+    # （非 /tmp/wiki_thumbs —— 那是 WikiServer 的目录），默认渲染到 mapviewer 读的位置
+    THUMBS_OUT="${MIR3_THUMBS_DIR:-${MIR3_NAS_TMP:-/data/NAS/TMP}/mir3-mapviewer-cache/thumbs}"
+    mkdir -p "$THUMBS_OUT"
     exec "$PY" Tools/maps/thumb_gen.py \
         --maps "$MIR3_ZIRCON_ROOT/Debug/Client/Map" \
-        --data "$MIR3_ZIRCON_ROOT/Debug/Client/Data"
+        --data "$MIR3_ZIRCON_ROOT/Debug/Client/Data" \
+        --out "$THUMBS_OUT"
 fi
 
 cat <<'EOF'

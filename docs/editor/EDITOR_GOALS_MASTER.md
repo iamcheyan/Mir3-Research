@@ -130,6 +130,9 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 
 工具从 Zircon 抽到 Mir3-Research 后，csproj 用 `$(MIR3_ZIRCON_ROOT)` 环境变量解析 Zircon 源码引用（`Tools/SystemDbProbe/SystemDbProbe.csproj` 已改好，是模板；其它 `Tools/*.csproj` 断链时照此修）。**不要用根目录符号链接方案**——MSBuild 对物理路径/链接路径产生项目身份混乱，编译必炸。
 
+（E0 已批量应用：11 个 `Tools/**.csproj` 于 2026-08-15 套此模板，构建全绿；硬编码
+绝对路径形态一并统一为 env 解析。）
+
 ### 3.7 帧公式单一数据源的坑（E3 实证，2026-08-15）
 
 - **FastAPI 中间件统一覆盖 Cache-Control**：路由 handler 里给 `FileResponse` 设的

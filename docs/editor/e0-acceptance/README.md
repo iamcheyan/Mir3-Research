@@ -117,11 +117,21 @@ COLL BaseStat: 360
 | mapviewer/dbviewer/webres | 路径健壮化：`MIR3_NAS_TMP` env + `/data/NAS` 探测 + Tools/cache 优先 |
 | 11 × `Tools/**/**.csproj` | `$(MIR3_ZIRCON_ROOT)` 模板 |
 | SystemDbProbe/Program.cs | root 参数尾分隔符归一化（防 `DataSystem.db` 0 表假成功） |
+| `Tools/DBImporter/Program.cs` | 补回出生即丢的 `ws[table] = rows; }`（HEAD 从未编译通过）——至此 **11/11 构建全绿**（构建级验证；写库工具不做实跑验收） |
 | 总纲 §3.4/§3.4.1/§4.3 | 新坑回写（NAS 路径 / tmpfs 满 / MirDB root 拼接 / mawk） |
 
 ## 遗留与移交
 
-- `Tools/DBImporter`（根目录遗留副本）HEAD 即损坏，建议删除（另有一说留作历史）——主会话定夺。
-- E1 拆分 `mapedit/` 合入后：`make serve-mapviewer` 直接走主树；`make roundtrip` 的
-  `Tools/maps/map_roundtrip.py` 入口已留好（E1 落地文件即可用）。
-- :8899 验收进程在验收完成后已停止，端口交还 E1。
+### 2026-08-15 补充（watchdog 续跑轮）
+
+- `Tools/DBImporter/Program.cs` 已修复并构建通过（见交付物表）——「是否删除」不再紧迫，
+  与 `dbeditor/importer` 并存即可，主会话仍可决定去留。
+- `gen_caches.sh --thumbs` 输出目录修正：默认渲染到 mapviewer 实际读取的
+  `${MIR3_NAS_TMP:-/data/NAS/TMP}/mir3-mapviewer-cache/thumbs`（`MIR3_THUMBS_DIR` 可改），
+  原先误写 `/tmp/wiki_thumbs`（那是 WikiServer 的目录）。
+- **E1 拆分缺口（非 E0，移交 E1）**：`mapedit/api.py:813` 引用 `DEFAULT_CLIENT_ROOT`
+  但未 `from .constants import`（constants.py:43 有定义）→ 主树 `make serve-mapviewer`
+  当前 NameError。E0 验收不受影响（用 E0 自己的 commit 验收通过）。E1 的回归实例在
+  :18998 独立跑，未受影响。
+- 主树 mapviewer shim 导入自检通过（`import mapviewer` OK, MAP_CN=627——E0 的
+  缓存路径常量在 E1 拆分中被完整保留）。
