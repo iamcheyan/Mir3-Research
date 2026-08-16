@@ -3375,6 +3375,34 @@ EDIT_UI_JS = r"""
             p.querySelector('#npc-arm').onclick = () => { npcArmed = !npcArmed; npcEnsurePages(); npcRenderPanel(); };
             p.querySelector('#npc-new-page').onfocus = npcEnsurePages;
             npcDiffRender();
+            npcListRender();
+        }
+
+        // [E6 P1-2] /npc/list 面板列表：拉取 → 渲染 → 点击选中联动
+        async function npcListRender() {
+            const box = document.getElementById('npc-list');
+            if (!box) return;
+            const stem = curName.replace(/\\.map$/i, '');
+            let d;
+            try { d = await (await fetch('/npc/list?map=' + encodeURIComponent(stem))).json(); }
+            catch (e) { box.innerHTML = ''; return; }
+            if (!d.ok) { box.innerHTML = '<div style="color:#ff8f6b;font-size:11px">加载失败</div>'; return; }
+            const cnt = document.getElementById('npc-list-count');
+            if (cnt) cnt.textContent = d.count + ' 个';
+            if (!d.npcs.length) { box.innerHTML = '<div style="color:#6a6a75;font-size:11px">本图无 NPC（workspace）</div>'; return; }
+            box.innerHTML = d.npcs.map(n =>
+                `<div class="npc-row" data-i="${n.npc_index}" data-x="${n.x}" data-y="${n.y}"
+                     data-name="${String(n.name || '').replace(/"/g, '&quot;')}" data-region="${n.region}"
+                     style="display:flex;gap:6px;padding:2px 0;cursor:pointer;${npcSel && npcSel.kind === 'npc' && npcSel.index === n.npc_index ? 'background:#2a4222;' : ''}">
+                 <span style="color:#7ee88a">#${n.npc_index}</span>
+                 <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.name || '?'}</span>
+                 <span style="color:#72d6ff;font-family:ui-monospace;font-size:11px">${n.x},${n.y}</span></div>`).join('');
+            box.querySelectorAll('.npc-row').forEach(row => row.onclick = () => {
+                npcShowDetail({kind: 'npc', index: +row.dataset.i,
+                    name: row.dataset.name, region: +row.dataset.region,
+                    x: +row.dataset.x, y: +row.dataset.y});
+                jumpToCell(+row.dataset.x, +row.dataset.y, row.dataset.name);
+            });
         }
 
         // 点图放置（armed）挂在 vp 捕获阶段，先于 E1 选格
