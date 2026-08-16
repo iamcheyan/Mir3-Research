@@ -32,6 +32,7 @@ _SPRITE_LIB_ALIASES = {
     "tiles30": "tiles30c", "tiles30c": "tiles30c", "tiles5": "tiles5c",
     "smtiles": "smtilesc", "smobjects": "smobjectsc",
     "objects": "object1c", "objects1": "object1c", "objects2": "object2c",
+    "mon": "mon-5",
     "houses": "housesc", "walls": "wallsc",
     "cliff": "cliffsc", "cliffs": "cliffsc",
     "dungeon": "dungeonsc", "dungeons": "dungeonsc",
