@@ -3148,15 +3148,30 @@ EDIT_UI_JS = r"""
             return fields;
         }
 
-        // 切图未保存提醒：包一层 loadMap（主模板的切图入口；pick 是 /sim 的）
+        // 切图事务边界 [E6 P1-3]：mselPick 先改 curName，再调用 loadMap。
+        // 确认若放在 loadMap，取消后选择器/curName 已是 B 而画面/会话仍是 A。
+        // 必须在状态改写前拦截；loadMap 只处理真正切换后的会话重置。
         {
-            const _origLoad = loadMap;
-            loadMap = function () {
-                if (editOn && editSess && editSess.dirty
+            const _origPick = mselPick;
+            mselPick = function (name) {
+                if (editOn && editSess && editSess.dirty && name !== curName
                     && !confirm('当前图有未保存修改，切换地图将保留在会话（不丢失）。继续切换？'))
                     return;
-                if (editOn) { editFlags = null; editCellData = null; editSel = null; editSameSrc = null; editRectA = editRectB = null; }
-                return _origLoad();
+                return _origPick(name);
+            };
+            const _origLoad = loadMap;
+            loadMap = function () {
+                if (editOn) {
+                    // UI 会话必须随地图显式失效；服务器各图会话独立保留，
+                    // 切回 A 时 editStart 会恢复 A 的 dirty/undo 状态。
+                    editSess = null;
+                    editFlags = null; editCellData = null; editSel = null;
+                    editSameSrc = null; editRectA = editRectB = null;
+                }
+                const r = _origLoad();
+                if (editOn && curName && curName.endsWith('.map'))
+                    editStart(true);   // 为新图重开会话（quiet；失败只 console.warn）
+                return r;
             };
         }
         window.addEventListener('beforeunload', (e) => {
@@ -3325,6 +3340,10 @@ EDIT_UI_JS = r"""
                 + (npcArmed ? '<span style="color:#ff8f6b">点击地图放置…</span>' : '')
                 + '</div>'
                 + '<div style="color:#8a8a98;font-size:11px">' + mi.name + ' · 拖拽 NPC/卫士移动，单击看详情</div>';
+            // 本图 NPC 列表（/npc/list，点击联动选中详情+视口跳转）
+            h += '<hr style="border-color:#333;margin:6px 0"><b>本图 NPC</b>'
+                + ' <span id="npc-list-count" style="color:#8a8a98;font-size:11px"></span>'
+                + '<div id="npc-list" style="margin-top:4px;max-height:180px;overflow:auto"></div>';
             // 选中详情
             if (npcSel) {
                 h += '<hr style="border-color:#333;margin:6px 0">'

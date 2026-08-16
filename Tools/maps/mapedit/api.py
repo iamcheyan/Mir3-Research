@@ -1078,6 +1078,15 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 if op == "pages":
                     body = json.dumps({"ok": True, "pages": ed.npc_pages(
                         qs.get("q", [""])[0])}, ensure_ascii=False)
+                elif op == "list":
+                    # [E6 P1-2] 编辑 UI 的 NPC 列表数据源（审计实证浏览器
+                    # 请求过 /npc/list 404）。map 省略 = 全库概览。
+                    map_stem = os.path.splitext(
+                        os.path.basename(qs.get("map", [""])[0]))[0]
+                    npcs = ed.npc_overview(map_stem or None)
+                    body = json.dumps({"ok": True, "map": map_stem or None,
+                                       "count": len(npcs), "npcs": npcs},
+                                      ensure_ascii=False)
                 elif op == "diff":
                     body = json.dumps(npcedit.workspace_diff(
                         self.db_workspace_path), ensure_ascii=False)
