@@ -12,3 +12,6 @@ lib=Tile&frame=999999          404
 lib=NoSuch&frame=0             404
 
 # 注: Object1c.Zl 前段为空帧段(首有效帧~5000), frame<5000 返回 404 是库本身稀疏
+lib=Mon&frame=1                200
+
+# 逻辑类别名 Mon 通过别名映射到 Mon-5；frame=1 是该稀疏库的有效帧。
