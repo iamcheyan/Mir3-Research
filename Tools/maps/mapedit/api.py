@@ -32,8 +32,10 @@ from mapedit.frames import FramePool
 from mapedit.geom import map_ladder
 from mapedit.mapio import MapCache
 from mapedit.minimap import MiniMapSource
-from mapedit.render import (_get_fast_pool, _render_tile_worker, render_full_map,
-                            render_offset_strip, render_tile, tile_cache_path)
+from mapedit.render import (_POOL_WORKERS, _TILE_SUBMIT_TIMEOUT,
+                            _get_fast_pool, _render_tile_worker, prewarm_pools,
+                            render_full_map, render_offset_strip, render_tile,
+                            tile_cache_path)
 from mapedit.templates import HTML_TEMPLATE, SIM_TEMPLATE
 
 BATCH_PROGRESS = {
@@ -991,13 +993,31 @@ class ViewerHandler(BaseHTTPRequestHandler):
                     with _INTERACTIVE_LOCK:
                         _TILE_INTERACTIVE[0] += 1
                     try:
+                        timed_out = False
                         if g and m and f:
                             fp = _get_fast_pool(self.pool.data_dir)
-                            res = fp.submit(_render_tile_worker, (
-                                os.path.join(self.map_cache.maps_dir, map_name),
-                                (map_name, tx, ty, z, self.layout, om))).result()
+                            try:
+                                res = fp.submit(_render_tile_worker, (
+                                    os.path.join(self.map_cache.maps_dir, map_name),
+                                    (map_name, tx, ty, z, self.layout, om))
+                                    ).result(timeout=_TILE_SUBMIT_TIMEOUT)
+                            except TimeoutError:
+                                # [E6 P0-1] 瓦片渲染超预算：503 让前端占位，
+                                # 绝不无限等待拖死请求线程
+                                timed_out = True
+                                res = None
                             if res:
                                 data = res[1]
+                        if timed_out:
+                            # finally 统一递减 _TILE_INTERACTIVE，此处只回包
+                            self.send_response(503)
+                            self.send_header("Retry-After", "5")
+                            self.send_header("Cache-Control", "no-store")
+                            body = b'{"ok": false, "error": "tile_timeout"}'
+                            self.send_header("Content-Length", str(len(body)))
+                            self.end_headers()
+                            self.wfile.write(body)
+                            return
                         if data is None:
                             data = render_tile(self.map_cache, self.pool, map_name,
                                                tx, ty, z, g, m, f,
@@ -1193,6 +1213,18 @@ def main():
     ws_idx = len(load_workspace_guards(args.db_workspace, ViewerHandler.db_names)) \
         + len(ws_ents)
     ViewerHandler.base_entities = ViewerHandler.entities[ws_idx:]
+    # [E6 P0-1] 进程池预建：此刻主进程尚无后台线程（fork 继承的锁快照是
+    # 干净的），把快/慢池全部 worker fork+预热到位。此后请求/prewarm 线程
+    # submit 不再触发 os.fork，import 锁死锁的入口被整体封死。
+    n_warm = prewarm_pools(data_dir)
+    print(f"[*] Render pools warmed: {n_warm} workers "
+          f"({_POOL_WORKERS}x2 configured)")
+
+    # [E6 P0-1/P2] 端口先于后台预热就绪：server 构造即绑定，prewarm 线程
+    # 在其后启动，保证服务可达不因 NAS 慢 I/O 排队。
+    print(f"[*] Tile cache: {cache_dir}")
+    server = ViewerHTTPServer(("0.0.0.0", args.port), ViewerHandler)
+    print(f"[*] Map Viewer running on http://127.0.0.1:{args.port}/")
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
     if not args.no_prewarm_thumbs:
         from mapedit.prewarm import prewarm_thumbs
@@ -1205,10 +1237,6 @@ def main():
     # /api/maps 首扫慢 (NAS 627 头), 启动即后台预热缓存
     threading.Thread(target=lambda: api_maps_payload(args.maps_dir, args.layout),
                      daemon=True, name="api-maps-warm").start()
-    print(f"[*] Tile cache: {cache_dir}")
-
-    server = ViewerHTTPServer(("0.0.0.0", args.port), ViewerHandler)
-    print(f"[*] Map Viewer running on http://127.0.0.1:{args.port}/")
     while True:
         try:
             server.serve_forever(poll_interval=0.5)

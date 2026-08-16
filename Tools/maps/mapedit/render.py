@@ -26,6 +26,18 @@ from mapedit.mapio import MapCache
 # so full-map renders of big maps (00.map z3 needs ~23k unique frames)
 # parallelise decode across cores; compositing stays single-process in
 # painter order.
+#
+# [E6 P0-1] 死锁教训：fork 自多线程服务进程会继承 fork 瞬间的解释器 import 锁
+# 快照——若此刻有线程正在 lazy import（PIL 插件 preinit 是重灾区），子进程里
+# 该锁永远无人释放，worker 首次解码 PIL Image.open 时死等（审计 py-spy 实证
+# importlib._lock_unlock_module 栈）。对策三条（缺一不可）：
+#   1) initializer 里显式预载 PIL 插件并解码一帧（warm_worker）；
+#   2) 服务启动期、一切后台线程起来之前 prewarm_pools() 把两个池的全部
+#      worker 预 fork 出来——此后请求线程 submit 不再触发 os.fork；
+#   3) 交互瓦片 submit 加超时，超时 503，绝无限等待。
+_POOL_WORKERS = min(4, os.cpu_count() or 2)   # 快/慢池统一规模（2-4 档）
+_TILE_SUBMIT_TIMEOUT = 20.0                    # 单瓦片交互渲染预算（秒）
+
 _POOL: dict[str, ProcessPoolExecutor] = {}        # 慢池: 后台预渲染 (worker nice 5)
 _FAST_POOL: dict[str, ProcessPoolExecutor] = {}   # 快池: 交互冷块现场渲染 (nice 0)
 _POOL_MU = threading.Lock()
@@ -35,6 +47,32 @@ _WORKER_MC: "MapCache | None" = None      # tile worker (快/慢池同构) 的�
 _WORKER_POOL: "FramePool | None" = None
 
 
+def warm_worker(data_dir: str):
+    """Worker 预热：fork 后立刻完成所有 lazy import 并解码/编码一帧。
+
+    PIL 的 PNG/JPEG 插件、zlsdk 的解码路径全部走一遍，worker 此后不再
+    触碰 import 机制（import 锁死锁的根除手段）。任何失败只忽略——
+    预热失败顶多退化回旧行为，不能拖死 worker 启动。"""
+    try:
+        import io as _io
+        from PIL import Image
+        import PIL.PngImagePlugin   # 解码 (ZL2 PNG 载荷) + 编码 (z0 tile)
+        import PIL.JpegImagePlugin  # 编码 (z>=1 tile)
+        lib_name = KR_ORDER.get(0) or "tilesc"
+        path = _find_library_path(data_dir, lib_name)
+        if path:
+            lib = (ZlLibrary(path) if path.lower().endswith(".zl")
+                   else WilLibrary(path))
+            im = lib.decode(0)
+            if im is not None:
+                buf = _io.BytesIO()
+                im.save(buf, format="PNG")
+                im.resize((max(1, im.width // 2), max(1, im.height // 2)),
+                          Image.NEAREST).save(buf, format="JPEG")
+    except Exception:
+        pass
+
+
 def _init_worker(data_dir: str):
     global _WORKER_DATA_DIR
     _WORKER_DATA_DIR = data_dir
@@ -42,11 +80,13 @@ def _init_worker(data_dir: str):
         os.nice(5)   # 后台批量渲染让位交互请求/游戏服务器
     except OSError:
         pass
+    warm_worker(data_dir)
 
 
 def _init_fast_worker(data_dir: str):
     global _WORKER_DATA_DIR
     _WORKER_DATA_DIR = data_dir   # 交互现场渲染, 不降优先级
+    warm_worker(data_dir)
 
 
 def _decode_frame_worker(args: tuple) -> tuple | None:
@@ -91,7 +131,7 @@ def _get_pool(data_dir: str) -> ProcessPoolExecutor:
         pool = _POOL.get(data_dir)
         if pool is None:
             pool = _POOL[data_dir] = ProcessPoolExecutor(
-                max_workers=min(10, os.cpu_count() or 2),
+                max_workers=_POOL_WORKERS,
                 initializer=_init_worker, initargs=(data_dir,))
         return pool
 
@@ -102,9 +142,35 @@ def _get_fast_pool(data_dir: str) -> ProcessPoolExecutor:
         pool = _FAST_POOL.get(data_dir)
         if pool is None:
             pool = _FAST_POOL[data_dir] = ProcessPoolExecutor(
-                max_workers=min(10, os.cpu_count() or 2),
+                max_workers=_POOL_WORKERS,
                 initializer=_init_fast_worker, initargs=(data_dir,))
         return pool
+
+
+def _warm_noop() -> None:
+    return None
+
+
+def prewarm_pools(data_dir: str, timeout: float = 30.0) -> int:
+    """启动期一次性预建快/慢池，并把全部 worker fork + 预热到位。
+
+    必须在服务端口就绪前、任何后台线程（prewarm/api-maps-warm）启动前
+    调用：此刻主进程只有单线程，fork 出的子进程继承干净的锁状态。
+    返回预热成功的 worker 数。失败不抛——池坏了后续 submit 自会暴露。"""
+    ok = 0
+    for get in (_get_pool, _get_fast_pool):
+        try:
+            pool = get(data_dir)
+            futs = [pool.submit(_warm_noop) for _ in range(_POOL_WORKERS)]
+            for f in futs:
+                try:
+                    f.result(timeout=timeout)
+                    ok += 1
+                except Exception:
+                    pass
+        except Exception:
+            pass
+    return ok
 
 def _render_tile_worker(args: tuple) -> tuple | None:
     """Render one whole tile in a pool worker -> (key, png_bytes) | None.

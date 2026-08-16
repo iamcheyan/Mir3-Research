@@ -918,11 +918,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     img.onload = () => { if (v !== version) { img.remove(); tileEls.delete(url); } };
                     img.onerror = () => {
                         if (v !== version) { img.remove(); tileEls.delete(url); return; }
-                        // retry once after a delay
-                        img.removeAttribute("src");
-                        setTimeout(() => {
-                            if (v === version && tileEls.get(url) === img) img.src = url;
-                        }, 800);
+                        // [E6 P0-1] 服务端 503/超预算：占位纹理 + 退避重试（最多 2 次），
+                        // 之后保留占位等下次滚动/切图重触发，绝不再打服务
+                        const tries = (img.__tries = (img.__tries || 0) + 1);
+                        img.style.background =
+                            "repeating-linear-gradient(45deg,#1a1c22 0 8px,#23252d 8px 16px)";
+                        if (tries <= 2) {
+                            img.removeAttribute("src");
+                            setTimeout(() => {
+                                if (v === version && tileEls.get(url) === img) img.src = url;
+                            }, 800 * tries);
+                        }
                     };
                     img.src = url;
                     layer.appendChild(img);
