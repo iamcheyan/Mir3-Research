@@ -1,257 +1,258 @@
 #!/usr/bin/env python3
-"""gen_cs_table.py — Godot MagicEffectTable.cs 与事实源的对账/修复闭环 (E4/P3).
+"""gen_cs_table.py — E5 cutover 后的特效表对账门禁 (v2)。
 
-事实源: Tools/magiclab/magic-effect-table.json (extract_effect_table.py 从原版
-MapObject.cs 两段 Spell switch 提取; 本脚本不复用 extractor 代码, 独立解析)。
+历史: E4/P3 版本对账 GodotClient/Scripts/MagicEffectTable.cs 硬编码表 ↔ 事实源 JSON,
+并用 --fix 做过一次 JSON→C# 修复闭环 (zircon 0dc1321)。
+E5/B4 cutover 后硬编码字典本体已删 (保留类/API 壳), 数据唯一来源是
+zircon/ClientData/magic-effects.json (DataLayer 运行时装载)。
+本工具的口径随之升级:
 
-用法:
-  gen_cs_table.py --check   只对账, 违规全列, 有违规退出码 1 (CI 语义)
-  gen_cs_table.py --fix     幂等修复 MagicEffectTable.cs (校验先行: 每条修复
-                            仅在其对应的违规仍存在时应用)
+  --check  双重对账:
+           (1) 文件层: ClientData/magic-effects.json godot 段三元组 vs 原版段
+               (帧数据事实源, ACCEPTABLE 清单兜底) — 与 merge_effects 同口径独立实现;
+           (2) 运行时层: headless Godot --table-snapshot 导出运行中客户端的全部表,
+               与 ClientData JSON godot 段逐字段全等 (loader 保真证明)。
+           运行时层需要 godot-mono (本机验收路径); --skip-runtime 只跑文件层。
 
-对账口径 (与 docs/magiclab/GODOT_TABLE_DIFF.md 一致):
-  1. 共有技能: (lib, StartIndex, FrameCount) 三元组集合跨段合并去重比较
-  2. A 类: 原版有 start 特效而 Godot _table 缺条目的玩家技能, 必须补条目
-  3. OriginalSpellCases 白名单 == 原版 switch 全集 (138)
-  4. 已判定可接受差异 (随机帧/补画/怪物段缺失) 走 ACCEPTABLE, 不算违规
+  --fix    已退役 (codegen 路线被 E5 架构否决, 编辑回写直接改 JSON)。
 """
 from __future__ import annotations
 
 import json
-import re
+import os
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CS = ROOT.parent / "zircon" / "GodotClient" / "Scripts" / "MagicEffectTable.cs"
-# E5: canonical 数据层 (zircon/ClientData), 旧 Tools/magiclab 副本已删
-JSON = Path(__import__("os").environ.get(
-    "MIR3_ZIRCON_ROOT", str(ROOT.parent / "zircon"))).resolve() / "ClientData" / "magic-effects.json"
+ZIRCON = Path(os.environ.get("MIR3_ZIRCON_ROOT", str(ROOT.parent / "zircon"))).resolve()
+CD = ZIRCON / "ClientData"
+ME = CD / "magic-effects.json"
+GODOT_PROJECT = ZIRCON / "GodotClient"
+DISPLAY = os.environ.get("E5_DISPLAY", ":77")
 
-# GODOT_TABLE_DIFF.md 人工判读保留的差异 (非回归):
-#  - ScortchedEarth/MonsterScortchedEarth: 原版动态随机帧 2450+Random(5)*10, Godot 固定 2450
-#  - AugmentPoisonDust/ThunderStrike: Godot 补画 (原版 start 段只有音效/无特效)
-#  - DoomClaw*/GreenSludgeBall: 怪物第二段缺失, 玩家不可见, 后续单独补
+# GODOT_TABLE_DIFF.md 人工判读 (可接受差异) — 与 merge_effects.py 保持同口径
 ACCEPTABLE = {
     "ScortchedEarth", "MonsterScortchedEarth", "AugmentPoisonDust", "ThunderStrike",
     "DoomClawLeftPinch", "DoomClawRightPinch", "GreenSludgeBall",
 }
-# A 类: 原版有特效、Godot _table 曾缺条目的玩家技能 (修复后必须存在)
-MUST_EXIST = ["CrushingWave", "FrostBite", "Rake", "SeismicSlam", "Spiritualism"]
 
-
-# ---------- 独立解析: C# 表 ----------
-def parse_cs(text: str) -> tuple[dict[str, set], set[str]]:
-    """返回 (_table 三元组: {skill: {(lib,start,count)}}, OriginalSpellCases 集合)."""
-    # OriginalSpellCases 块
-    m = re.search(r"OriginalSpellCases\s*=\s*new\(\)\s*\{(.*?)\}", text, re.S)
-    whitelist = set(re.findall(r"MagicType\.(\w+)", m.group(1))) if m else set()
-
-    # _table 字典区 (从声明到配对的 "};")
-    t = re.search(r"Dictionary<MagicType,\s*CastEffect>\s*_table\s*=\s*new\(\)\s*\{", text)
-    if not t:
-        raise SystemExit("FATAL: _table 声明未找到")
-    i = text.index("{", t.start())
-    depth, j = 0, i
-    while j < len(text):
-        if text[j] == "{":
-            depth += 1
-        elif text[j] == "}":
-            depth -= 1
-            if depth == 0:
-                break
-        j += 1
-    body = text[i:j]
-
-    triples: dict[str, set] = {}
-    # 每个 [MagicType.X] = new CastEffect { ... } 条目: 括号配平取体
-    for em in re.finditer(r"\[MagicType\.(\w+)\]\s*=\s*new\s+CastEffect\s*\{", body):
-        k = em.group(1)
-        p = body.index("{", em.start())
-        d, q = 0, p
-        while q < len(body):
-            if body[q] == "{":
-                d += 1
-            elif body[q] == "}":
-                d -= 1
-                if d == 0:
-                    break
-            q += 1
-        entry = body[p:q]
-        found = set(re.findall(r"File\s*=\s*LibraryFile\.(\w+),\s*StartIndex\s*=\s*(\d+),\s*FrameCount\s*=\s*(\d+)", entry))
-        triples[k] = {(lib, int(s), int(c)) for lib, s, c in found}
-    return triples, whitelist
-
-
-def parse_json() -> dict[str, set]:
-    """{skill: 三元组集合}; E5: 读 ClientData/magic-effects.json 的 original 段。
-    纯音效 case (零特效) 保留键但空集。"""
-    d = json.loads(JSON.read_text(encoding="utf-8"))
-    skills = d["skills"]
-    out = {}
-    for key, sk in skills.items():
-        if not sk.get("original"):
-            continue  # Godot-only 条目不在原版对账口径 (与旧 JSON 键集语义一致)
-        entry = sk["original"]
-        s = set()
-        for seg in ("start", "release"):
-            for fx in (entry.get(seg) or {}).get("effects", []):
-                lib, frame, cnt = fx.get("lib"), fx.get("frame"), fx.get("count")
-                if lib is None or frame is None or cnt is None:
-                    continue  # 动态帧表达式 → ACCEPTABLE 兜底
-                s.add((lib, frame, cnt))
-        out[key] = s
+# (1) 文件层 -----------------------------------------------------------
+def triples(entry: dict) -> set:
+    out = set()
+    for seg in ("start", "release"):
+        for fx in (entry.get(seg) or {}).get("effects", []):
+            lib, frame, cnt = fx.get("lib"), fx.get("frame"), fx.get("count")
+            if lib is None or frame is None or cnt is None:
+                continue
+            out.add((lib, frame, cnt))
     return out
 
 
-def visual_keys(js: dict[str, set]) -> set[str]:
-    """白名单口径: 原版 switch 有 case 且创建了特效 (纯音效 case 归 NoVisualSpellCases)。"""
-    return {k for k, s in js.items() if s}
-
-
-# ---------- 对账 ----------
-def check(cs_triples: dict[str, set], whitelist: set[str], js: dict[str, set]) -> list[str]:
-    v = []
-    common = set(cs_triples) & set(js)
-    for k in sorted(common):
-        if k in ACCEPTABLE:
+def check_file(doc: dict) -> list[str]:
+    v: list[str] = []
+    for name, sk in doc["skills"].items():
+        if name in ACCEPTABLE:
             continue
-        if cs_triples[k] != js[k]:
-            miss = js[k] - cs_triples[k]
-            extra = cs_triples[k] - js[k]
-            for t in sorted(miss):
-                v.append(f"参数错配 {k}: 原版有 Godot 无 {t[0]} #{t[1]} x{t[2]}")
-            for t in sorted(extra):
-                v.append(f"参数错配 {k}: Godot 有 原版无 {t[0]} #{t[1]} x{t[2]}")
-    for k in MUST_EXIST:
-        if k not in cs_triples:
-            v.append(f"缺失条目 {k}: 原版 start 段有特效, _table 无条目")
-        elif k not in ACCEPTABLE and k in js and cs_triples[k] != js[k]:
-            v.append(f"新增条目 {k} 参数与原版不符: {sorted(cs_triples[k])} != {sorted(js[k])}")
-    want = visual_keys(js)
-    if whitelist != want:
-        for k in sorted(want - whitelist):
-            v.append(f"白名单缺 {k} (原版 switch 有 case)")
-        for k in sorted(whitelist - want):
-            v.append(f"白名单多 {k} (原版 switch 无 case)")
+        o, g = sk.get("original"), sk.get("godot")
+        if o and g:
+            to = triples(o)
+            if not to:
+                continue
+            tg = set()
+            def walk(x):
+                if isinstance(x, dict):
+                    if "file" in x and isinstance(x.get("startIndex"), int):
+                        tg.add((x["file"], x["startIndex"], x["frameCount"]))
+                    for vv in x.values():
+                        walk(vv)
+                elif isinstance(x, list):
+                    for vv in x:
+                        walk(vv)
+            walk(g)
+            if to != tg:
+                v.append(f"{name}: 原版{sorted(to)} != godot段{sorted(tg)}")
+    # 白名单口径: 有原版特效的技能必须在 originalSpellCases
+    wl = set(doc["originalSpellCases"])
+    want = {k for k, sk in doc["skills"].items() if triples(sk.get("original") or {})}
+    for k in sorted(want - wl):
+        v.append(f"白名单缺 {k}")
+    for k in sorted(wl - want):
+        v.append(f"白名单多 {k}")
     return v
 
 
-# ---------- 修复 (幂等) ----------
-NEW_ENTRIES = """        // ---- E4/P3 补齐: 原版 start 段 (MapObject.cs:3603) 有特效而本表缺失的玩家技能 ----
-        // 依据 Tools/magiclab/magic-effect-table.json; 与 _attackTable 的 Attack 表同素材,
-        // 此处为 Spell 施法表现 (start 段 Target=this → CastAtSource)。
-        [MagicType.CrushingWave] = new CastEffect { File = LibraryFile.MagicEx6, StartIndex = 100, FrameCount = 6, Colour = Lightning, CastAtSource = true },
-        [MagicType.FrostBite] = new CastEffect { File = LibraryFile.MagicEx5, StartIndex = 500, FrameCount = 16, DelayMs = 60, Colour = Ice, CastAtSource = true },
-        [MagicType.Rake] = new CastEffect
-        {
-            File = LibraryFile.MagicEx4, StartIndex = 1200, FrameCount = 9, Colour = Ice,
-            Source = new ImpactDef
-            {
-                File = LibraryFile.MagicEx4, StartIndex = 1200, FrameCount = 9, DelayMs = 100, Colour = Ice,
-                DirectionStartIndices = new[] { 1200, 1210, 1220, 1230, 1240, 1200, 1200, 1200 },
-            },
-        },
-        [MagicType.SeismicSlam] = new CastEffect { File = LibraryFile.MagicEx5, StartIndex = 4900, FrameCount = 6, Colour = Lightning, CastAtSource = true },
-        [MagicType.Spiritualism] = new CastEffect { File = LibraryFile.MagicEx2, StartIndex = 1580, FrameCount = 11, Colour = None, CastAtSource = true },
-"""
-
-def fix(text: str, violations: list[str], js: dict[str, set]) -> str:
-    # 1. AdamantineFireBall: 原版与 FireBounce/MeteorShower 共用 1640 弹道 + 1800 命中
-    #    (MapObject.cs:1040 fall-through 组); Godot 曾误抄 FireBall 的 420/580。
-    bad = """        [MagicType.AdamantineFireBall] = new CastEffect
-        {
-            File = LibraryFile.Magic, StartIndex = 420, FrameCount = 5, Colour = Fire,
-            DirectionFromCast = true,
-            Source = new ImpactDef { File = LibraryFile.Magic, StartIndex = 1560, FrameCount = 9, DelayMs = 65, Colour = Fire },
-            Projectile = new ProjectileDef { File = LibraryFile.Magic, StartIndex = 420, FrameCount = 5, Colour = Fire },
-            Impact = new ImpactDef { File = LibraryFile.Magic, StartIndex = 580, FrameCount = 10, Colour = Fire },
-        },"""
-    good = """        [MagicType.AdamantineFireBall] = new CastEffect
-        {
-            File = LibraryFile.Magic, StartIndex = 1640, FrameCount = 6, Colour = Fire,
-            DirectionFromCast = true,
-            Source = new ImpactDef { File = LibraryFile.Magic, StartIndex = 1560, FrameCount = 9, DelayMs = 65, Colour = Fire },
-            Projectile = new ProjectileDef { File = LibraryFile.Magic, StartIndex = 1640, FrameCount = 6, Colour = Fire },
-            Impact = new ImpactDef { File = LibraryFile.Magic, StartIndex = 1800, FrameCount = 10, Colour = Fire },
-        },"""
-    if bad in text:
-        text = text.replace(bad, good)
-
-    # 2. ImprovedExplosiveTalisman: 原版 start 段是 MagicEx2#980 (Godot Source 误写 Magic#980)
-    bad2 = "Source = new ImpactDef { File = LibraryFile.Magic, StartIndex = 980, FrameCount = 6, DelayMs = 80, Colour = Dark },"
-    good2 = "Source = new ImpactDef { File = LibraryFile.MagicEx2, StartIndex = 980, FrameCount = 6, DelayMs = 80, Colour = Dark },"
-    if bad2 in text:
-        text = text.replace(bad2, good2)
-
-    # 3. Summon 系: 原版 start 740x10 60ms (Godot 误用 750 且缺 60ms)
-    text = text.replace(
-        "[MagicType.SummonSkeleton] = new CastEffect { File = LibraryFile.Magic, StartIndex = 750, FrameCount = 10, Colour = Phantom },",
-        "[MagicType.SummonSkeleton] = new CastEffect { File = LibraryFile.Magic, StartIndex = 740, FrameCount = 10, DelayMs = 60, Colour = Phantom, CastAtSource = true },")
-    text = text.replace(
-        "[MagicType.SummonJinSkeleton] = new CastEffect { File = LibraryFile.Magic, StartIndex = 750, FrameCount = 10, Colour = Phantom },",
-        "[MagicType.SummonJinSkeleton] = new CastEffect { File = LibraryFile.Magic, StartIndex = 740, FrameCount = 10, DelayMs = 60, Colour = Phantom, CastAtSource = true },")
-
-    # 4a. Rake: DirectionStartIndices 仅 ImpactDef 支持 → 由 Source 承载 (Source 非空时主特效跳过)
-    bad_rake = """        [MagicType.Rake] = new CastEffect
-        {
-            File = LibraryFile.MagicEx4, StartIndex = 1200, FrameCount = 9, Colour = Ice, CastAtSource = true,
-            DirectionStartIndices = new[] { 1200, 1210, 1220, 1230, 1240, 1200, 1200, 1200 },
-        },"""
-    good_rake = """        [MagicType.Rake] = new CastEffect
-        {
-            File = LibraryFile.MagicEx4, StartIndex = 1200, FrameCount = 9, Colour = Ice,
-            Source = new ImpactDef
-            {
-                File = LibraryFile.MagicEx4, StartIndex = 1200, FrameCount = 9, DelayMs = 100, Colour = Ice,
-                DirectionStartIndices = new[] { 1200, 1210, 1220, 1230, 1240, 1200, 1200, 1200 },
-            },
-        },"""
-    if bad_rake in text:
-        text = text.replace(bad_rake, good_rake)
-
-    # 4. 补 A 类 5 条 (锚在 SummonJinSkeleton 行后)
-    anchor = "[MagicType.SummonJinSkeleton] = new CastEffect"
-    if anchor in text and "[MagicType.CrushingWave] = new CastEffect" not in text:
-        i = text.index(anchor)
-        j = text.index("\n", i) + 1
-        text = text[:j] + NEW_ENTRIES + text[j:]
-
-    # 5. OriginalSpellCases := 原版有特效的 case 全集 (json 键, 排序, C# 风格折行)
-    names = sorted(visual_keys(js))
-    lines, row = [], []
-    for n in names:
-        row.append(f"MagicType.{n}")
-        if len(row) == 3:
-            lines.append("        " + ", ".join(row) + ",")
-            row = []
-    if row:
-        lines.append("        " + ", ".join(row) + ",")
-    lines[-1] = lines[-1].rstrip(",")
-    block = "OriginalSpellCases = new()\n    {\n" + "\n".join(lines) + "\n    };"
-    return re.sub(r"OriginalSpellCases\s*=\s*new\(\)\s*\{.*?\};", block, text, count=1, flags=re.S)
+# (2) 运行时层 ---------------------------------------------------------
+# 运行时快照 PascalCase ↔ JSON camelCase (与 DataLayer/extract_godot_table 同映射)
+FIELD_MAP = {
+    "File": "file", "StartIndex": "startIndex", "FrameCount": "frameCount",
+    "DelayMs": "delayMs", "Colour": "colour", "Blend": "blend",
+    "BlendRate": "blendRate", "Opacity": "opacity", "Skip": "skip",
+    "FrameLight": "frameLight", "DrawType": "drawType",
+    "StartDelayMs": "startDelayMs", "DistanceDelayMs": "distanceDelayMs",
+    "DirectionFromSource": "directionFromSource", "DirectionFromCast": "directionFromCast",
+    "CastAtSource": "castAtSource", "Source": "source", "SourceAdditional": "sourceAdditional",
+    "SourcePerLocation": "sourcePerLocation", "NoTargetVisual": "noTargetVisual",
+    "NoLocationVisual": "noLocationVisual", "ReleaseAtCaster": "releaseAtCaster",
+    "ProjectileLastLocationOnly": "projectileLastLocationOnly",
+    "Projectile": "projectile", "TargetProjectile": "targetProjectile",
+    "Impact": "impact", "TargetEffect": "targetEffect", "MapImpact": "mapImpact",
+    "Additional": "additional", "AdditionalMapEffects": "additionalMapEffects",
+    "AdditionalProjectiles": "additionalProjectiles",
+    "TargetAdditionalProjectiles": "targetAdditionalProjectiles",
+    "ProjectileDelayStepMs": "projectileDelayStepMs", "NoColourKey": "noColourKey",
+    "Has16Directions": "has16Directions", "Explode": "explode",
+    "OriginOffsetX": "originOffsetX", "OriginOffsetY": "originOffsetY",
+    "OriginFromTarget": "originFromTarget", "Arrival": "arrival",
+    "ArrivalSound": "arrivalSound", "CompletionSound": "completionSound",
+    "SoundFrame": "soundFrame", "SoundFrameSound": "soundFrameSound",
+    "DirectionStartIndices": "directionStartIndices",
+    "OffsetX": "offsetX", "OffsetY": "offsetY",
+}
+# JSON 缺省时的 C# 默认值 (与类初始化器逐一对齐; nullable 单对象缺省 = None)
+CAST_DEFAULTS = {"blend": True, "blendRate": 0.7, "opacity": 1.0, "skip": 10,
+                 "frameLight": 10, "drawType": "Object", "delayMs": 100,
+                 "startDelayMs": 0.0, "distanceDelayMs": 0,
+                 "castAtSource": False, "directionFromSource": False,
+                 "directionFromCast": False, "noTargetVisual": False,
+                 "noLocationVisual": False, "releaseAtCaster": False,
+                 "projectileLastLocationOnly": False, "projectileDelayStepMs": 0.0,
+                 "noColourKey": False,
+                 "sourceAdditional": [], "sourcePerLocation": [], "additional": [],
+                 "additionalMapEffects": [], "additionalProjectiles": [],
+                 "targetAdditionalProjectiles": [],
+                 "source": None, "projectile": None, "targetProjectile": None,
+                 "impact": None, "targetEffect": None, "mapImpact": None}
+PROJ_DEFAULTS = {"delayMs": 100, "blendRate": 0.7, "opacity": 1.0, "skip": 10,
+                 "drawType": "Object", "frameLight": 35, "has16Directions": True,
+                 "explode": False, "originFromTarget": False, "startDelayMs": 0.0,
+                 "noColourKey": False,
+                 "arrivalSound": "None", "completionSound": "None",
+                 "originOffsetX": 0, "originOffsetY": 0, "arrival": None}
+IMPACT_DEFAULTS = {"delayMs": 100, "blendRate": 0.7, "opacity": 1.0, "skip": 10,
+                   "drawType": "Object", "frameLight": 10, "soundFrame": -1,
+                   "soundFrameSound": "None", "directionStartIndices": None,
+                   "startDelayMs": 0.0, "distanceDelayMs": 0,
+                   "directionFromSource": False, "directionFromCast": False,
+                   "noColourKey": False}
 
 
-def main() -> None:
-    mode = sys.argv[1] if len(sys.argv) > 1 else "--check"
-    js = parse_json()
-    text = CS.read_text(encoding="utf-8")
+def detect_kind(entry: dict) -> str:
+    """JSON 侧看 _type; 运行时快照侧看 C# 类特有字段。"""
+    t = entry.get("_type")
+    if t == "CastEffect":
+        return "cast"
+    if t == "ProjectileDef":
+        return "proj"
+    if t == "OffsetImpactDef":
+        return "offset"
+    if t == "ImpactDef":
+        return "impact"
+    ks = set(entry)
+    if ks & {"CastAtSource", "ProjectileDelayStepMs", "SourceAdditional"}:
+        return "cast"
+    if ks & {"Has16Directions", "ArrivalSound"}:
+        return "proj"
+    if ks & {"OffsetX", "OffsetY"}:
+        return "offset"
+    return "impact"
 
-    if mode == "--fix":
-        # 修复操作各自幂等 (文本锚点命中才改), 无条件执行: 部分修复 (如 Rake 的
-        # ImpactDef 形状) 不改变三元组, 靠 check 违规门控会漏掉。
-        CS.write_text(fix(text, None, js), encoding="utf-8")
-        print(f"fixed -> {CS}")
 
-    cs_t, wl = parse_cs(CS.read_text(encoding="utf-8"))
-    viol = check(cs_t, wl, js)
-    if viol:
-        print(f"CHECK FAIL ({len(viol)} 违规):")
-        for v in viol:
-            print(" -", v)
-        sys.exit(1)
-    print(f"OK: _table {len(cs_t)} 条, 白名单 {len(wl)} == 原版 switch {len(js)}; "
-          f"共有 {len(set(cs_t) & set(js))} 技能三元组全一致 (可接受差异 {len(ACCEPTABLE)})")
+OFFSET_DEFAULTS = dict(IMPACT_DEFAULTS, offsetX=0, offsetY=0)
+DEFAULTS = {"cast": CAST_DEFAULTS, "proj": PROJ_DEFAULTS,
+            "impact": IMPACT_DEFAULTS, "offset": OFFSET_DEFAULTS}
+
+
+def norm_entry(entry: dict, colors: dict) -> dict:
+    """运行时/JSON 任一侧的 def 条目 → 统一 camelCase + 默认补全 + colour 数值化。"""
+    kind = detect_kind(entry)
+    out: dict = dict(DEFAULTS[kind])
+    for k, v in entry.items():
+        if k == "_type":
+            continue
+        ck = FIELD_MAP.get(k, k)
+        if isinstance(v, dict):
+            out[ck] = norm_entry(v, colors)
+        elif isinstance(v, list):
+            out[ck] = [norm_entry(x, colors) if isinstance(x, dict) else x for x in v]
+        else:
+            out[ck] = v
+    c = out.get("colour")
+    if isinstance(c, str):
+        out["colour"] = colors[c]
+    elif isinstance(c, list) and len(c) == 3:
+        out["colour"] = c + [1]
+    return out
+
+
+def check_runtime(doc: dict) -> list[str]:
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tf:
+        snap_path = tf.name
+    env = dict(os.environ)
+    env["DISPLAY"] = DISPLAY
+    r = subprocess.run(
+        ["godot-mono", "--path", str(GODOT_PROJECT), "--headless",
+         "res://Scenes/MapTestScene.tscn", "--", f"--table-snapshot={snap_path}"],
+        capture_output=True, text=True, timeout=240, env=env, cwd=str(GODOT_PROJECT))
+    if "TableSnapshot] PASS" not in r.stdout:
+        Path(snap_path).unlink(missing_ok=True)
+        return [f"运行时快照失败: {r.stdout[-300:]} {r.stderr[-300:]}"]
+    snap = json.loads(Path(snap_path).read_text(encoding="utf-8"))
+    Path(snap_path).unlink(missing_ok=True)
+    met = snap["magicEffectTable"]
+    colors = {k: v for k, v in met.get("colors", {}).items()}
+
+    def kind_of(entry: dict) -> str:
+        if "has16Directions" in entry or "arrivalSound" in entry:
+            return "proj"
+        if "offsetX" in entry or "offsetY" in entry:
+            return "offset"
+        return "impact"
+
+    v: list[str] = []
+    # _table
+    snap_table = met["_table"]
+    json_table = {k: s["godot"] for k, s in doc["skills"].items() if s.get("godot")}
+    if set(snap_table) != set(json_table):
+        v.append(f"技能集不等: 快照缺 {sorted(set(json_table) - set(snap_table))}, "
+                 f"快照多 {sorted(set(snap_table) - set(json_table))}")
+    for k in sorted(set(snap_table) & set(json_table)):
+        a = norm_entry(snap_table[k], colors)
+        b = norm_entry(json_table[k], colors)
+        if a != b:
+            v.append(f"{k}: 运行时 != JSON")
+    # _attackTable
+    snap_at = met["_attackTable"]
+    json_at = doc["attackTable"]
+    if set(snap_at) != set(json_at):
+        v.append(f"attackTable 技能集不等")
+    for k in sorted(set(snap_at) & set(json_at)):
+        a = norm_entry(snap_at[k], colors)
+        b = norm_entry(json_at[k], colors)
+        if a != b:
+            v.append(f"attackTable.{k}: 运行时 != JSON")
+    return v
+
+
+def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] == "--fix":
+        print("--fix 已退役 (E5 架构: 编辑回写直接改 ClientData JSON, 无 codegen)", file=sys.stderr)
+        return 2
+    doc = json.loads(ME.read_text(encoding="utf-8"))
+    v = check_file(doc)
+    print(f"文件层: {len(doc['skills'])} 技能, 白名单 {len(doc['originalSpellCases'])}, "
+          f"可接受差异 {len(ACCEPTABLE)}, 违规 {len(v)}")
+    if not v and "--skip-runtime" not in sys.argv:
+        v += check_runtime(doc)
+        print(f"运行时层: {'全等 ✓' if not v else '不等 ✗'}")
+    if v:
+        print("CHECK FAIL:", file=sys.stderr)
+        for x in v[:20]:
+            print(" -", x, file=sys.stderr)
+        return 1
+    print("OK: ClientData/magic-effects.json 文件层+运行时层全绿 ✓")
+    return 0
 
 
 if __name__ == "__main__":

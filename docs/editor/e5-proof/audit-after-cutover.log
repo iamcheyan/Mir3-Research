@@ -1,0 +1,87 @@
+Godot Engine v4.6.3.stable.mono.official.7d41c59c4 - https://godotengine.org
+
+[DataLayer] frame-formulas: 94 表 552 项
+[DataLayer] magic-effects: cast=146 attack=26
+[DataLayer] sounds: 731 / 159 / 118
+[DataLayer] OK dir=/home/tetsuya/development/zircon/ClientData
+[DB] 加载 System.db 从: /home/tetsuya/development/zircon/Debug/Client/Data/
+[DB] 加载完成: 物品 1078, 地图 627, 怪物 434, 魔法 174, 货币 5
+[MapTest] 加载: /home/tetsuya/development/zircon/Debug/Client/Map/0.map
+[MapTest] 地图: 800x800
+[MapTest] 20x20 区域: 背景=100, 中层=399, 前景=400
+[MapTest] 渲染完成
+[TransparencyAudit] PASS mode=sample file=all range=0..end libraries=313 frames=3187 transparentFrames=2516 cornerPollution=0
+[WeatherAudit] PASS frame=500 size=16x16 productionTransparent=0 productionVisible=256 keyedTransparent=170 keyedVisible=86 legacyTransparent=0 legacyVisible=256 alphaMismatch=0
+[WeatherAudit] PASS frame=509 size=16x16 productionTransparent=241 productionVisible=15 keyedTransparent=249 keyedVisible=7 legacyTransparent=241 legacyVisible=15 alphaMismatch=0
+[WeatherAudit] PASS frame=510 size=16x16 productionTransparent=184 productionVisible=72 keyedTransparent=244 keyedVisible=12 legacyTransparent=184 legacyVisible=72 alphaMismatch=0
+[WeatherAudit] PASS frame=511 size=16x16 productionTransparent=163 productionVisible=93 keyedTransparent=239 keyedVisible=17 legacyTransparent=163 legacyVisible=93 alphaMismatch=0
+[WeatherAudit] PASS frame=512 size=32x16 productionTransparent=360 productionVisible=152 keyedTransparent=499 keyedVisible=13 legacyTransparent=360 legacyVisible=152 alphaMismatch=0
+[WeatherAudit] PASS frame=513 size=32x32 productionTransparent=898 productionVisible=126 keyedTransparent=1013 keyedVisible=11 legacyTransparent=898 legacyVisible=126 alphaMismatch=0
+[WeatherAudit] PASS frame=514 size=32x32 productionTransparent=893 productionVisible=131 keyedTransparent=1015 keyedVisible=9 legacyTransparent=893 legacyVisible=131 alphaMismatch=0
+[WeatherAudit] PASS frame=540 size=256x512 productionTransparent=72538 productionVisible=58534 keyedTransparent=114813 keyedVisible=16259 legacyTransparent=72538 legacyVisible=58534 alphaMismatch=0
+[WeatherAudit] PASS frame=550 size=512x512 productionTransparent=0 productionVisible=262144 keyedTransparent=259327 keyedVisible=2817 legacyTransparent=0 legacyVisible=262144 alphaMismatch=0
+[WeatherAudit] PASS all=9/9 weatherFrames=500,509-514,540,550
+[TransparencyModeAudit] Magic frame=830 size=128x64 ordinaryTransparent=5294 keyedTransparent=7146
+[TransparencyModeAudit] MagicEx2 frame=1900 size=256x128 ordinaryTransparent=21919 keyedTransparent=28955
+[TransparencyModeAudit] Magic frame=831 size=128x64 ordinaryTransparent=3612 keyedTransparent=5454
+[TransparencyModeAudit] MagicEx2 frame=1901 size=256x128 ordinaryTransparent=25240 keyedTransparent=29765
+[LayerOrderAudit] PASS legacy row/local-player ordering + floor-below-rows-and-objects
+[MagicCoverageAudit] castConfigured=146 attackOnly=6 missingOriginalSpell=0 noMapEffect=68
+[MagicCoverageAudit] intentionalOrEffectHandled=PotionMastery,ShoulderDash,AugmentDestructiveSurge,AugmentDefiance,AugmentReflectDamage,AdvancedPotionMastery,DefensiveMastery,PhysicalImmunity,MagicImmunity,ElementalSwords,Shuriken,OffensiveBlow,FlameArt,JudgementOfHeaven,ElementalHurricane,Burning,Shocked,Storm,UnityWithNature,SpiritSword,CombatKick,EmpoweredHealing,AugmentExplosiveTalisman,AugmentEvilSlayer,AugmentPurification,AugmentResurrection,DemonExplosion,Infection,DemonicRecovery,AugmentNeutralize,SupremeHealing,WillowDance,VineTreeDance,Discipline,FullBloom,WhiteLotus,CalamityOfFullMoon,RedLotus,PledgeOfBlood,SweetBrier,Karma,TouchOfTheDeparted,WaningMoon,GhostWalk,ElementalPuppet,Rejuvenation,Resolution,ChangeOfSeasons,Release,BloodyFlower,DanceOfSwallow,DarkConversion,AdventOfDemon,AdventOfDevil,Stealth,Unused,Massacre,ArtOfShadows,FatalBlow,LastStand,Vitality,DualWeaponSkills,DragonWave,ChainOfFire,ManaBurn,DoomClawWave,RushingMount,AscendingMount
+[MagicFrameAudit] PASS skills=146 originalResourceExceptions=1 (GreenSludgeBall impact dir0-only verified)
+[SoundAudit] SKIP requested for action-only audit
+[SpellTimingAudit] PASS animation=Combat1 releaseDelay=400ms total=600ms
+[ActionAudit] START Walking: anim=Walking count=6 sum=600ms
+[PlayerView] 首帧诊断: body=/home/tetsuya/development/zircon/Debug/Client/Data/M-Hum.Zl hair=/home/tetsuya/development/zircon/Debug/Client/Data/M-Hair.Zl helmet=null weapon1=/home/tetsuya/development/zircon/Debug/Client/Data/M-Weapon1.Zl dir=Right frame=0 anim=Walking DrawFrame=100 ArmourFrame=100 HairFrame=100 Cell=(0,0) Pos=(0, 0)
+[ActionAudit] PASS Walking: observed=0,1,2,3,4,5
+[ActionAudit] START Running: anim=Running count=6 sum=600ms
+[ActionAudit] PASS Running: observed=0,1,2,3,4,5
+[ActionAudit] START HorseWalking: anim=HorseWalking count=6 sum=600ms
+[ActionAudit] PASS HorseWalking: observed=0,1,2,3,4,5
+[ActionAudit] START HorseRunning: anim=HorseRunning count=6 sum=600ms
+[ActionAudit] PASS HorseRunning: observed=0,1,2,3,4,5
+[ActionAudit] START Combat: anim=Combat3 count=6 sum=600ms
+[ActionAudit] PASS Combat: observed=1,2,3,4,5
+[ActionAudit] START ActionQueue: anim=Combat3 count=6 sum=600ms
+[ActionAudit] PASS ActionQueue: observed=1,2,3,4,5
+[ActionAudit] START RangeAttack: anim=Combat1 count=5 sum=600ms
+[ActionAudit] PASS RangeAttack: observed=1,2,3,4
+[ActionAudit] START ShoulderDash: anim=Combat8 count=6 sum=300ms
+[ActionAudit] PASS ShoulderDash: observed=1,2,3,4,5
+[ActionAudit] START Spell: anim=Combat3 count=6 sum=600ms
+[ActionAudit] PASS Spell: observed=1,2,3,4,5
+[ActionAudit] START CrushingWave: anim=Combat3 count=6 sum=600ms
+[ActionAudit] PASS CrushingWave: observed=1,2,3,4,5
+[ActionAudit] START OffensiveBlow: anim=Combat4 count=6 sum=600ms
+[ActionAudit] PASS OffensiveBlow: observed=1,2,3,4,5
+[ActionAudit] START ChannelStart: anim=ChannellingStart count=4 sum=400ms
+[ActionAudit] PASS ChannelStart: observed=1,2,3
+[ActionAudit] START ChannelEnd: anim=ChannellingEnd count=1 sum=60ms
+[ActionAudit] PASS ChannelEnd: observed=
+[ActionAudit] START Struck: anim=Struck count=3 sum=300ms
+[ActionAudit] PASS Struck: observed=1,2
+[ActionAudit] START Pushed: anim=Pushed count=6 sum=300ms
+[ActionAudit] PASS Pushed: observed=0,1,2,3,4,5
+[ActionAudit] START Harvest: anim=Harvest count=2 sum=600ms
+[ActionAudit] PASS Harvest: observed=1
+[ActionAudit] START Mining: anim=Combat3 count=6 sum=600ms
+[ActionAudit] PASS Mining: observed=1,2,3,4,5
+[ActionAudit] START FishingCast: anim=FishingCast count=8 sum=800ms
+[ActionAudit] PASS FishingCast: observed=1,2,3,4,5,6,7
+[ActionAudit] START FishingWait: anim=FishingWait count=6 sum=720ms
+[ActionAudit] PASS FishingWait: observed=0,1,2,3,4,5
+[ActionAudit] START FishingReel: anim=FishingReel count=8 sum=800ms
+[ActionAudit] PASS FishingReel: observed=1,2,3,4,5,6,7
+[ActionAudit] START TamingCast: anim=TamingCast count=6 sum=600ms
+[ActionAudit] PASS TamingCast: observed=1,2,3,4,5
+[ActionAudit] START TamingWait: anim=TamingWait count=1 sum=100ms
+[ActionAudit] PASS TamingWait: observed=
+[ActionAudit] START CloakBuff: anim=CreepStanding count=4 sum=2000ms
+[ActionAudit] PASS CloakBuff: observed=0,1,2,3
+[ActionAudit] START DragonRepulseMiddle: anim=DragonRepulseMiddle count=1 sum=1000ms
+[ActionAudit] PASS DragonRepulseMiddle: observed=
+[ActionAudit] START DragonRepulseEnd: anim=DragonRepulseEnd count=2 sum=200ms
+[ActionAudit] PASS DragonRepulseEnd: observed=1
+[ActionAudit] START Dead: anim=Die count=10 sum=1000ms
+[ActionAudit] PASS Dead: observed=1,2,3,4,5,6,7,8,9
+[ActionAudit] PASS all action sequences
