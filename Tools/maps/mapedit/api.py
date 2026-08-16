@@ -441,7 +441,15 @@ class ViewerHandler(BaseHTTPRequestHandler):
 
 
     def do_GET(self):
-        if self.path.split("?")[0] in ("/", "/index.html"):
+        path = self.path.split("?")[0]
+        if path == "/favicon.ico":
+            # [E6 P2] 浏览器自动探测不应污染日志，也不应返回无意义 404。
+            self.send_response(204)
+            self.send_header("Cache-Control", "public, max-age=86400")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if path in ("/", "/index.html"):
             from mapedit.templates import EDIT_UI_JS
             lib_json = json.dumps({**KR_ORDER, 255: "无"}, ensure_ascii=False)
             body = (HTML_TEMPLATE
@@ -1159,7 +1167,15 @@ def main():
         parser.error(f"maps directory not found: {args.maps_dir}")
     if ((args.cache_dir is None or args.thumbs_dir == THUMBS_DIR)
             and not _nas_cache_available()):
-        parser.error(f"NAS cache mount is not available: {DEFAULT_CACHE_MOUNT}")
+        # [E6 P2] parser.error 会把整段 argparse usage 倾倒到日志，
+        # 82 机排障只看到参数表，真正原因反而被淹没。
+        print(
+            f"[!] mapviewer 无法启动：默认 NAS 缓存目录不可用："
+            f"{DEFAULT_CACHE_MOUNT}\n"
+            "    请检查 NAS 挂载，或设置 MIR3_NAS_TMP；"
+            "临时验证可同时指定 --cache-dir 和 --thumbs-dir。",
+            file=sys.stderr)
+        raise SystemExit(2)
 
     data_dir = args.data
     if not data_dir:
@@ -1246,18 +1262,18 @@ def main():
     ws_idx = len(load_workspace_guards(args.db_workspace, ViewerHandler.db_names)) \
         + len(ws_ents)
     ViewerHandler.base_entities = ViewerHandler.entities[ws_idx:]
-    # [E6 P0-1] 进程池预建：此刻主进程尚无后台线程（fork 继承的锁快照是
-    # 干净的），把快/慢池全部 worker fork+预热到位。此后请求/prewarm 线程
-    # submit 不再触发 os.fork，import 锁死锁的入口被整体封死。
-    n_warm = prewarm_pools(data_dir)
-    print(f"[*] Render pools warmed: {n_warm} workers "
-          f"({_POOL_WORKERS}x2 configured)")
 
     # [E6 P0-1/P2] 端口先于后台预热就绪：server 构造即绑定，prewarm 线程
     # 在其后启动，保证服务可达不因 NAS 慢 I/O 排队。
     print(f"[*] Tile cache: {cache_dir}")
     server = ViewerHTTPServer(("0.0.0.0", args.port), ViewerHandler)
     print(f"[*] Map Viewer running on http://127.0.0.1:{args.port}/")
+    # [E6 P0-1] 进程池预建：此刻主进程尚无后台线程（fork 继承的锁快照是
+    # 干净的），把快/慢池全部 worker fork+预热到位。此后请求/prewarm 线程
+    # submit 不再触发 os.fork，import 锁死锁的入口被整体封死。
+    n_warm = prewarm_pools(data_dir)
+    print(f"[*] Render pools warmed: {n_warm} workers "
+          f"({_POOL_WORKERS}x2 configured)")
     # 总览缩略图后台预渲染（守护线程，只补缺失项）
     if not args.no_prewarm_thumbs:
         from mapedit.prewarm import prewarm_thumbs

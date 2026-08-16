@@ -1,0 +1,27 @@
+# E6 P2 启动与 favicon 验收（2026-08-16）
+
+## 复现
+
+- 修复前 `GET /favicon.ico`：HTTP 404。
+- 修复前 NAS 缓存不可用路径进入 `argparse`：日志输出整段 usage，末尾只有 `mapviewer.py: error: NAS cache mount is not available: ...`。
+
+## 修复后
+
+- `GET /favicon.ico`：HTTP 204，响应体 0B，`Cache-Control: public, max-age=86400`。
+- NAS 缓存检查输出人话：
+
+```text
+[!] mapviewer 无法启动：默认 NAS 缓存目录不可用：/data/NAS/TMP
+    请检查 NAS 挂载，或设置 MIR3_NAS_TMP；临时验证可同时指定 --cache-dir 和 --thumbs-dir。
+EXIT 2
+```
+
+- 启动顺序日志：
+
+```text
+[*] Tile cache: /data/NAS/TMP/mir3-mapviewer-cache/tiles/v3/Map-c0490652488c
+[*] Map Viewer running on http://127.0.0.1:8899/
+[*] Render pools warmed: 8 workers (4x2 configured)
+```
+
+`ViewerHTTPServer` 构造绑定端口后才执行 `prewarm_pools`；后台缩略图/瓦片预热仍在 `serve_forever` 前启动，避免请求线程在进程池尚未预建时触发 fork。生产服务 `:8899` 重启后 `/api/progress`=200，服务状态运行中。
