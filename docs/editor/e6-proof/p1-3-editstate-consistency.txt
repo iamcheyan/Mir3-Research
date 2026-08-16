@@ -1,0 +1,17 @@
+# E6 P1-3 切图取消 editstate 一致性验收（2026-08-16）
+
+浏览器：chromium_headless_shell-1208 + puppeteer-core，页面 `/?edit=1#map=3.map`，pageerrors=0。
+
+场景：
+
+1. 3.map 编辑一格 flag：dirty=1。
+2. 选择 0.map 并接受确认：页面地图=0.map，当前编辑会话 dirty=null/无改动；没有携带 3.map 的 dirty/undo 状态。
+3. 切回 3.map：页面地图=3.map，服务端按图独立保留的会话恢复 dirty=1。
+4. 在 3.map dirty=1 时把 `window.confirm` 注入为 false，再选择 0.map：切换被拒绝，页面仍为 3.map，dirty 仍为 1。
+5. 点击 discard：dirty=null；未写入地图文件。
+
+同一轮还验证：
+- P1-2 NPC 列表 3.map=9 条，点击 #275 后详情显示 `NPC #275 Hexa Holy Stone`，视口从 `[8846,3946]` 跳至 `[9988,3402]`。
+- P0-2 `tilesc`/`smtilesc`/`object1c` sprite naturalWidth 全部 >0，面板真实预览加载成功。
+
+截图：`p1-3-switched-clean.png`、`p1-3-final.png`。
