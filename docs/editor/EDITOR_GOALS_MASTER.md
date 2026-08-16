@@ -120,6 +120,11 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
 - **mawk 不支持 `match($0, re, arr)` 三参**（gawk 扩展）：Debian 默认 awk 是 mawk，
   shell 脚本解析 `ss -tlnp` pid 用 `grep -o 'pid=[0-9]*'` 替代。
 
+### 3.4.2 mapviewer 进程池与启动顺序坑（E6 实证，2026-08-16）
+
+- Linux `fork` 的 `ProcessPoolExecutor` 不能在 HTTP/prewarm 线程首次 `submit` 时懒启动：父进程另一线程若正处于 PIL 插件导入，子进程会继承持有中的 `importlib` 锁，worker 永久卡在 `PIL.Image.preinit`，请求线程随后全部堆死。规则：服务启动主线程先完成 PIL/ZL 解码预导入，单例快/慢池固定 worker 数并预热，再启动任何后台预热/HTTP 请求；交互 `Future.result()` 必须有有限超时。
+- `ViewerHTTPServer` 构造即 bind/listen。启动耗时的池预建应放在构造之后，日志明确 `Map Viewer running` 先于 `Render pools warmed`；这样服务管理器可先观察到端口，慢 NAS I/O 不会伪装成“服务未启动”。HTTP 处理仍在 `serve_forever` 之后开始，避免未预热池接受渲染请求。
+- 编辑器新增实体列表端点时，旧 `/npc/` GET 分支的 `pages/diff/region/overview` 不能被重排破坏；新增 `list` 必须复用 `WorkspaceEditor.npc_overview`，并用真实浏览器验证列表、选中详情和视口跳转，而非只 curl 200。
 ### 3.5 hub 服务管理教训
 
 - hub daemon 的 cwd 参数对 `dotnet xxx.dll` 相对路径不可靠 → 用 `bash -c "cd <目录> && exec dotnet xxx.dll"` 包装
