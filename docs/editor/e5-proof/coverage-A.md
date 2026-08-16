@@ -1,10 +1,10 @@
 # E5 阶段 A 覆盖率对账报告
 
-生成: 2026-08-16 12:03 · coverage_audit.py (独立解析, 不复用生成器)
+生成: 2026-08-16 12:30 · coverage_audit.py (独立解析, 不复用生成器)
 
 ## 1. FrameSet.cs ↔ frame-formulas.json frameSets
 - FrameSet.cs 赋值字典: **94**; JSON frameSets: **94**; 另有 2 个声明未赋值的死声明 ['LobsterSpawn', 'ShinsuBig'] (原版即如此, 不入数据层)
-- JSON 帧表项总数: 560
+- JSON 帧表项总数: 552
 - ✓ 100% 双向覆盖 (camelCase 映射)
 
 ## 2. MagicEffectTable.cs ↔ magic-effects.json (godot 段)

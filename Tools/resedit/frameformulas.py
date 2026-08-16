@@ -364,12 +364,36 @@ def parse_objects(src: str) -> dict:
 
 
 # ------------------------------------------------------------------- main
+def _strip_csharp_comments(src: str) -> str:
+    """去 // 与 /* */ 注释 (保换行) — E5 实证: SDMob19/21/22/23 的 Show/Hide
+    在源码里是注释掉的, 不去注释会把注释当数据抽出 (快照等价对账抓出)。"""
+    out = []
+    i, n = 0, len(src)
+    while i < n:
+        c = src[i]
+        if c == "/" and i + 1 < n and src[i + 1] == "/":
+            j = src.find("\n", i)
+            j = n if j < 0 else j
+            out.append(" " * (j - i))
+            i = j
+        elif c == "/" and i + 1 < n and src[i + 1] == "*":
+            j = src.find("*/", i + 2)
+            j = n - 2 if j < 0 else j
+            seg = src[i:j + 2]
+            out.append("".join(ch if ch == "\n" else " " for ch in seg))
+            i = j + 2
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
 def build(zircon: Path) -> dict:
-    enum_src = (zircon / "LibraryCore/Enum.cs").read_text(encoding="utf-8")
-    fs_src = (zircon / "LibraryCore/FrameSet.cs").read_text(encoding="utf-8")
-    fn_src = (zircon / "LibraryCore/Functions.cs").read_text(encoding="utf-8")
-    pr_src = (zircon / "GodotClient/Scripts/PlayerRenderer.cs").read_text(encoding="utf-8")
-    or_src = (zircon / "GodotClient/Scripts/ObjectRenderer.cs").read_text(encoding="utf-8")
+    enum_src = _strip_csharp_comments((zircon / "LibraryCore/Enum.cs").read_text(encoding="utf-8"))
+    fs_src = _strip_csharp_comments((zircon / "LibraryCore/FrameSet.cs").read_text(encoding="utf-8"))
+    fn_src = _strip_csharp_comments((zircon / "LibraryCore/Functions.cs").read_text(encoding="utf-8"))
+    pr_src = (zircon / "GodotClient/Scripts/PlayerRenderer.cs").read_text(encoding="utf-8")  # 注释锚点解析, 不去注释
+    or_src = _strip_csharp_comments((zircon / "GodotClient/Scripts/ObjectRenderer.cs").read_text(encoding="utf-8"))
 
     global MIR_DIRECTION_NAMES
     mir_direction = parse_enum_block(enum_src, "MirDirection")
