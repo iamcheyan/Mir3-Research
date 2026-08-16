@@ -201,6 +201,9 @@ function drawScene(dtReal) {
       }
     }).catch(() => {});   // 拒绝不缓存, 下一 tick 重试; framesReady 持续等待
   }
+  // E5/C5: 施法者纸娃娃实际绘制 (部件就绪才画, 问题 3b)
+  const cur = S.casterSprites.cur;
+  if (cur) drawPaperdoll(cur, ca.x, ca.y);
   ctx.font = '11px sans-serif';
   ctx.fillStyle = '#9fe0a8';
   ctx.fillText('施法者', ca.x - 18, ca.y + 14);

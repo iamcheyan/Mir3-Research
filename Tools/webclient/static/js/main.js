@@ -450,6 +450,7 @@ class Game {
       return;
     }
     this.input.update(dt);
+    this.world.update(dt);   // E5/C3: 动画推进接回主循环 (旧代码从未调用, combat 动作卡死在第0帧)
     this.autoPotion();
     // 镜头跟随
     const p = this.world.player;

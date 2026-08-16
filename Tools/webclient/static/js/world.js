@@ -96,18 +96,26 @@ export class World {
     return null;
   }
 
+  // 帧推进: 移动/动画 (E5: 逐帧延迟来自 frame-formulas; 施法后 3s Stance, 原版 SetFrame 语义)
   update(dt) {
     const p = this.player;
     p.animT += dt * p.speed;
-    const f = PLAYER_ANIMS[p.anim] || PLAYER_ANIMS.standing;
-    const delay = f.delays?.[p.animFrame] ?? f.ms;
-    if (p.animT >= delay) {
-      p.animT -= delay;
-      p.animFrame++;
-      if (p.animFrame >= f.count) {
-        if (p.anim === 'die') { p.animFrame = f.count - 1; }
-        else {
-          p.anim = 'standing'; p.animFrame = 0; p.inCombat = false;
+    if (p.anim === 'stance') {
+      p.animFrame = 0;
+      p.animT = 0;
+      if (p.stanceUntil && performance.now() >= p.stanceUntil) {
+        p.anim = 'standing'; p.stanceUntil = 0; p.inCombat = false;
+      }
+    } else {
+      const f = PLAYER_ANIMS[p.anim] || PLAYER_ANIMS.standing;
+      const delay = f.delays?.[p.animFrame] ?? f.ms;
+      if (p.animT >= delay) {
+        p.animT -= delay;
+        p.animFrame++;
+        if (p.animFrame >= f.count) {
+          if (p.anim === 'die') { p.animFrame = f.count - 1; }
+          else if (p.inCombat) { p.anim = 'stance'; p.stanceUntil = performance.now() + 3000; }
+          else { p.anim = 'standing'; p.animFrame = 0; }
         }
       }
     }

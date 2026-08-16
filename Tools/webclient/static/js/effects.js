@@ -136,7 +136,7 @@ export function createFxEngine(opts) {
       point: typeof attach === 'object' ? attach.point : undefined,
       at, kind: e.kind || e.segment, label: `${e.lib}#${frame}`,
       blend: e.extra?.Blend !== false && (e.extra?.Blend ?? true) !== false,
-      blendRate: e.extra?.BlendRate ?? 0.92,
+      blendRate: e.extra?.BlendRate ?? 0.7,
       opacity: e.extra?.Opacity ?? 1,
       layer: String(e.extra?.DrawType || 'Object').toLowerCase(),
       colour: e.colour && e.colour !== 'None' ? e.colour : null,
@@ -185,7 +185,7 @@ export function createFxEngine(opts) {
           attach: null, point: caster,
           flight: { fromX: casterPx.x, fromY: casterPx.y, toX: to.x, toY: to.y, dur },
           at: relDelay, kind: 'projectile', label: `弹道 ${e.lib}#${fr}`,
-          blend: e.extra?.Blend !== false, blendRate: 0.92, opacity: 1,
+          blend: e.extra?.Blend !== false, blendRate: e.extra?.BlendRate ?? 0.7, opacity: 1,
           layer: 'object', colour: e.colour !== 'None' ? e.colour : null,
           onDone: [],
         };
