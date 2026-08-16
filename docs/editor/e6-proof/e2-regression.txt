@@ -1,0 +1,12 @@
+# E6 E2 回归抽测（2026-08-16）
+
+服务：mapviewer :8899，workspace 基线 diff 为空。
+
+NPC #275（3.map，region 5090）基线坐标 `(222,119)`。
+
+1. `POST /npc/move` `{npc:275,map:"3",x:223,y:119,force:true}`：200，返回 from `(222,119)` → to `(223,119)`，diff `modified=1`。
+2. `POST /npc/move` 恢复 `{npc:275,map:"3",x:222,y:119,force:true}`：200，diff `added=0, modified=0, deleted=0`。
+3. 再次 move 到 `(223,119)` 后，`POST /npc/rollback` `{table:"MapRegion"}`：200，返回 `restored:["MapRegion"]`，diff 立即恢复全 0。
+4. 最终 `GET /npc/diff`：`{"tables":{},"summary":{"added":0,"modified":0,"deleted":0}}`。
+
+未修改 Users.db 或 System.db；验证只经过 mapedit workspace POST 管线。
