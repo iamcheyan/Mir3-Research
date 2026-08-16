@@ -259,10 +259,13 @@ function playSkill(magic) {
     } else if (e.segment === 'aoe') {
       // MagicLocations 语义: 落点地面特效 (实验室取主木桩格)
       // 原版 StartTime = Now + N ms (距离延迟) → 实验室近似 +N
-      let delay0 = 0;
-      const st = String(e.extra?.StartTime ?? '');
-      const stm = st.match(/AddMilliseconds\((\d+)/);
-      if (stm) delay0 = +stm[1];
+      // E5: 提取器已结构化 (StartDelayMs/DistanceDelayMs), 旧 StartTime 字符串兜底
+      let delay0 = e.extra?.StartDelayMs ?? 0;
+      if (!delay0) {
+        const st = String(e.extra?.StartTime ?? '');
+        const stm = st.match(/AddMilliseconds\((\d+)/);
+        if (stm) delay0 = +stm[1];
+      }
       spawnFromEffect(e, { attach: { point: DUMMIES[0] }, at: at + delay0, dir });
       log(at + delay0, `◉ 地面 ${e.lib}#${e.frame ?? e.frameExpr}×${e.count}`, 'seg');
     } else if (e.segment === 'hitEffect' && !e.ctx?.includes('arrival')) {

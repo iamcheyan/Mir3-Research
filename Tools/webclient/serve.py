@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import os
+import json
 import sys
 import threading
 from pathlib import Path
@@ -80,17 +81,37 @@ def lab_index():
     return FileResponse(STATIC / "static" / "lab.html")
 
 
+def _client_data() -> Path:
+    """zircon/ClientData (E5 数据层 canonical, MIR3_ZIRCON_ROOT 解析)。"""
+    zr = Path(os.environ.get("MIR3_ZIRCON_ROOT",
+                             str(_MIR3.parent / "zircon"))).resolve()
+    return zr / "ClientData"
+
+
 @app.get("/lab/table")
 def lab_table():
-    """技能特效事实源 (magiclab 提取自原版 Client MapObject.cs)。"""
-    p = _MIR3 / "Tools" / "magiclab" / "magic-effect-table.json"
-    return FileResponse(p, media_type="application/json")
+    """技能特效事实源 (E5: zircon/ClientData/magic-effects.json, 双端共读)。
+    服务端投影回旧扁平结构 (start/release/castAnim/sound 摊平), lab.js 兼容。"""
+    p = _client_data() / "magic-effects.json"
+    if not p.exists():
+        raise HTTPException(500, "ClientData/magic-effects.json 缺失 — "
+                                 "运行 Tools/magiclab/merge_effects.py")
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    flat = {}
+    for name, sk in doc["skills"].items():
+        o = sk.get("original") or {}
+        flat[name] = {"castAnim": sk.get("castAnim"), "notes": sk.get("notes"),
+                      "sound": sk.get("sound"), **o}
+    return JSONResponse(flat)
 
 
 @app.get("/lab/frame-formulas")
 def lab_frame_formulas():
-    """帧公式单一数据源 (E3 frameformulas.py 生成, webport 同源)。"""
-    p = _MIR3 / "Tools" / "resedit" / "frame-formulas.json"
+    """帧公式单一数据源 (E5: zircon/ClientData/frame-formulas.json, 双端共读)。"""
+    p = _client_data() / "frame-formulas.json"
+    if not p.exists():
+        raise HTTPException(500, "ClientData/frame-formulas.json 缺失 — "
+                                 "运行 Tools/resedit/frameformulas.py")
     return FileResponse(p, media_type="application/json")
 
 

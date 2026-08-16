@@ -211,7 +211,10 @@ def load_ui_evidence() -> dict:
             "resource_family_catalog": resource_family_catalog}
 
 # --- Frame formulas (E3: 与 webport 共读的单一数据源) ----------------------
-FRAME_FORMULAS_PATH = PROJECT_ROOT / "Tools/resedit/frame-formulas.json"
+# [shared E5] 帧公式单一数据源迁 zircon/ClientData (MIR3_ZIRCON_ROOT 解析)
+FRAME_FORMULAS_PATH = Path(os.environ.get(
+    "MIR3_ZIRCON_ROOT", str(PROJECT_ROOT.parent / "zircon"))).resolve() \
+    / "ClientData" / "frame-formulas.json"
 _ff_cache: dict = {"mtime": -1.0, "data": None}
 
 

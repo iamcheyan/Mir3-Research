@@ -96,9 +96,11 @@ def ui_file(name: str):
 
 @app.get("/frame-formulas.json")
 def frame_formulas():
-    # 帧公式单一数据源 (Tools/resedit/frame-formulas.json, 由 frameformulas.py
+    # [shared E5] 帧公式单一数据源迁 zircon/ClientData (由 frameformulas.py
     # 从 Zircon C# 事实源生成) — webport frames.js 运行时读它 (总纲 §7.1 任务1)
-    p = _MIR3 / "Tools" / "resedit" / "frame-formulas.json"
+    p = Path(os.environ.get(
+        "MIR3_ZIRCON_ROOT", str(_MIR3.parent / "zircon"))).resolve() \
+        / "ClientData" / "frame-formulas.json"
     if not p.is_file():
         raise HTTPException(500, "frame-formulas.json missing — run Tools/resedit/frameformulas.py")
     # 缓存头由 headers 中间件统一管 (no-cache) — 数据会被重新生成, 不能长缓存

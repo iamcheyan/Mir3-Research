@@ -63,8 +63,10 @@ export async function ensureLoaded() {
     } else {
       // node (测试脚本/工具): 直接读仓库内文件
       const { readFile } = await import('node:fs/promises');
-      j = JSON.parse(await readFile(
-        new URL('../../../resedit/frame-formulas.json', import.meta.url), 'utf8'));
+      // [shared E5] 单一数据源迁 zircon/ClientData
+      const zr = process.env.MIR3_ZIRCON_ROOT ||
+        new URL('../../../../zircon', import.meta.url).pathname;
+      j = JSON.parse(await readFile(`${zr}/ClientData/frame-formulas.json`, 'utf8'));
     }
     PLAYERS = table(j.frameSets.players);
     DEFAULT_MONSTER = table(j.frameSets.defaultMonster);
