@@ -23,6 +23,23 @@ from mapedit.constants import (_TOOLS_MAPS_DIR, CACHE_TILES_MAX, CACHE_VERSION,
                                OFFSET_MIDFRONT, OFFSET_MODES, OFFSET_NONE,
                                THUMBS_DIR, _nas_cache_available,
                                default_tile_cache_dir)
+
+# [E6 P0-2] /sprite 编辑器逻辑名 → KR_ORDER 物理库名（MapControl 语义）。
+# 大小写不敏感（查询侧 lower）。 KR_ORDER 真名（tilesc 等）与带扩展名
+# 请求不经此表，由 _find_library_path 直接解析。
+_SPRITE_LIB_ALIASES = {
+    "tile": "tilesc", "tiles": "tilesc", "tile30": "tiles30c",
+    "tiles30": "tiles30c", "tiles30c": "tiles30c", "tiles5": "tiles5c",
+    "smtiles": "smtilesc", "smobjects": "smobjectsc",
+    "objects": "object1c", "objects1": "object1c", "objects2": "object2c",
+    "houses": "housesc", "walls": "wallsc",
+    "cliff": "cliffsc", "cliffs": "cliffsc",
+    "dungeon": "dungeonsc", "dungeons": "dungeonsc",
+    "inner": "innersc", "inners": "innersc",
+    "furniture": "furnituresc", "furnitures": "furnituresc",
+    "animation": "animationsc", "animations": "animationsc",
+    "sabak": "sabak",
+}
 from mapedit.data import (MAP_CN, NPC_FUNC_RULES, api_maps_payload,
                           build_atlas, load_catalog, load_connections,
                           load_db_names, load_entities, load_workspace_connections,
@@ -756,33 +773,37 @@ class ViewerHandler(BaseHTTPRequestHandler):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
             lib_name = os.path.basename(qs.get("lib", [""])[0])
+            low = lib_name.lower()
             try:
                 frame = int(qs.get("frame", ["0"])[0])
                 scale = int(qs.get("scale", ["1"])[0])
             except ValueError:
                 self.send_error(400, "frame/scale must be ints")
                 return
-            # 库解析：带扩展名按扩展（.wil=wilsdk / .Zl=zlsdk）；裸名（如 NPC）
-            # 自动探测 data_dir 下的 <name>.Zl / <name>.wil（ZL 客户端与 EI
-            # 客户端的 NPC 库文件名不同）。
+            # 库解析 [E6 P0-2]：与渲染层同一条路径表——_find_library_path
+            # 覆盖 data_dir 根 + "Map Data" + wood/sand/snow/forest 子目录
+            # （Tile 类库全在子目录里，旧实现只查根目录导致编辑面板三图层
+            # 预览全裂）。另支持编辑器逻辑名（Tile/SmTiles/Objects…）→
+            # KR_ORDER 物理名的别名表，杜绝 /sprite 与 render.py 两份映射。
+            from mapedit.frames import _find_library_path
             lib_path = None
             is_zl = False
-            low = lib_name.lower()
             if low.endswith(".wil") or low.endswith(".zl"):
                 p = os.path.join(self.pool.data_dir, lib_name)
                 if not os.path.exists(p):
+                    p = _find_library_path(self.pool.data_dir, lib_name.rsplit(".", 1)[0])
+                if p is None:
                     self.send_error(404, "lib not found in data dir")
                     return
-                lib_path, is_zl = p, low.endswith(".zl")
+                lib_path, is_zl = p, p.lower().endswith(".zl")
             else:
-                for ext, zl in ((".Zl", True), (".wil", False)):
-                    p = os.path.join(self.pool.data_dir, lib_name + ext)
-                    if os.path.exists(p):
-                        lib_path, is_zl = p, zl
-                        break
-                if lib_path is None:
-                    self.send_error(404, f"lib {lib_name}(.Zl/.wil) not found in data dir")
+                probe = _SPRITE_LIB_ALIASES.get(low) or lib_name
+                p = _find_library_path(self.pool.data_dir, probe)
+                if p is None:
+                    self.send_error(404, f"lib {lib_name} not found "
+                                         f"(data_dir + Map Data, alias={probe})")
                     return
+                lib_path, is_zl = p, p.lower().endswith(".zl")
             try:
                 if is_zl:
                     lib = ZlLibrary(lib_path)

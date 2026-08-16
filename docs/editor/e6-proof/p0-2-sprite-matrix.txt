@@ -1,0 +1,14 @@
+# P0-2 /sprite 验证矩阵 (2026-08-16, 修复后)
+# curl http://127.0.0.1:8899/sprite?...
+lib=Tile&frame=0               200
+lib=SmTiles&frame=5            200
+lib=Objects&frame=5000         200
+lib=Mon-5&frame=0              200
+lib=NPC&frame=100              200
+lib=object1c&frame=5000        200
+lib=sabak&frame=0              200
+lib=Tiles30c.wil&frame=0       200
+lib=Tile&frame=999999          404
+lib=NoSuch&frame=0             404
+
+# 注: Object1c.Zl 前段为空帧段(首有效帧~5000), frame<5000 返回 404 是库本身稀疏
