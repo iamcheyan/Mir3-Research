@@ -549,6 +549,112 @@ watch_one_goal() {
   return 0
 }
 
+# ── 归档 goal 回收器 ─────────────────────────────────────────────────────
+# 背景: cleanup_completed() 只对「数组里未注释且 status=terminal」的行生效。
+# agent 完成后常自己归档(数组行注释掉 + touch .off), 注释行不在 ${GOALS[@]}
+# 里, watchdog 从此看不到它 → 残留的 omp 进程(0.3-0.5G)/tmux/子进程(chrome
+# 等)无人回收(2026-08-16 E6 实测泄漏: 344020 + tmux e6-fix 挂了 1h+)。
+# 本函数扫描脚本自身的 '# [archived...]' 行, 回收这些已完成 goal 的运行时残留。
+#
+# 安全阀:
+#   1. 只杀「cmdline 挂着该归档 session」的 omp(--resume <gid> 或 tty→
+#      terminal-sessions 映射命中该 jsonl), 绝不按进程名杀;
+#   2. tmux 会话只在「其内已无任何 omp 进程」时才杀 —— 防误杀用户正 attach
+#      的、与旧归档行 tmux 字段同名的会话(如 zircon);
+#   3. 幂等: 无残留零动作零日志。
+kill_tree() {  # $1=pid 递归 TERM 整棵进程树(omp 的 chrome/node 子孙都要收)
+  local kids
+  kids=$(pgrep -P "$1" 2>/dev/null)
+  local k; for k in $kids; do kill_tree "$k"; done
+  kill "$1" 2>/dev/null
+}
+kill_tree9() {  # TERM 后仍活的兜底 KILL
+  local kids
+  kids=$(pgrep -P "$1" 2>/dev/null)
+  local k; for k in $kids; do kill_tree9 "$k"; done
+  kill -9 "$1" 2>/dev/null
+}
+tree_rss_mb() {  # $@=pids 进程树 RSS 合计(MB, 粗估含共享页)
+  local seen="" total=0 pid kids k kb
+  local stack=("$@")
+  while [ ${#stack[@]} -gt 0 ]; do
+    pid=${stack[${#stack[@]}-1]}; stack=("${stack[@]:0:${#stack[@]}-1}")
+    case " $seen " in *" $pid "*) continue;; esac
+    seen="$seen $pid"
+    kb=$(ps -o rss= -p "$pid" 2>/dev/null | tr -d ' ')
+    [ -n "$kb" ] && total=$((total + kb))
+    kids=$(pgrep -P "$pid" 2>/dev/null)
+    for k in $kids; do stack+=("$k"); done
+  done
+  echo $((total / 1024))
+}
+reclaim_archived_goals() {
+  local lines gid jsonl sess workdir label tag
+  # 归档行: '  # [archived ...] "gid|jsonl|tmux|workdir|label"' → 取引号内字段
+  lines=$(grep -oE '^ *# *\[archived[^]]*\] "[^"]+"' "$0" 2>/dev/null \
+          | grep -oE '"[^"]+"' | tr -d '"')
+  [ -z "$lines" ] && return 0
+  while IFS='|' read -r gid jsonl sess workdir label; do
+    [ -z "$gid" ] && continue
+    tag=${gid:0:8}
+    GOAL_TAG=$tag
+    # ── 活进程通道A: --resume <gid>(重启过的会话) ──
+    local pids="" p t
+    for p in $(pgrep -f -- "--resume $gid" 2>/dev/null); do
+      pids="$pids $p"
+    done
+    # ── 通道B: tty→terminal-sessions 映射命中该 jsonl(prompt 启动的会话) ──
+    for p in $(pgrep -f '/home/tetsuya/\.bun/bin/omp' 2>/dev/null); do
+      t=$(ps -o tty= -p "$p" 2>/dev/null | tr -d ' ')
+      { [ -z "$t" ] || [ "$t" = "?" ]; } && continue
+      t=$(ttykey "$t")
+      if [ -f "$TERM_SESS_DIR/$t" ] && [ "$(session_of_tty "$t")" = "$jsonl" ]; then
+        case " $pids " in *" $p "*) ;; *) pids="$pids $p";; esac
+      fi
+    done
+    pids=$(printf '%s' "$pids" | xargs)
+    [ -z "$pids" ] && continue    # 无残留 → 幂等跳过
+    # 只回收确实归档过的(双保险: .off 存在 或 数组无该 gid 活跃行)
+    local mb
+    mb=$(tree_rss_mb $pids)
+    log "reclaimed: goal $tag (${label:-$sess}) completed-and-archived; killing omp tree [$pids] (~${mb}MB rss)"
+    if [ "$DRY_RUN" = 1 ]; then
+      echo "TEST reclaim $tag: would kill [$pids] (~${mb}MB) sess=${sess:-none}"
+      continue
+    fi
+    for p in $pids; do kill_tree "$p"; done
+    sleep 3
+    for p in $pids; do kill -0 "$p" 2>/dev/null && kill_tree9 "$p"; done
+    # tmux 会话: 其内已无任何 omp 才杀(防误杀同名活跃会话, 如用户的 zircon)
+    if [ -n "$sess" ] && tmux has-session -t "$sess" 2>/dev/null; then
+      local sess_ttys has_omp=0 pt st
+      sess_ttys=$(tmux list-panes -t "$sess" -F '#{pane_tty}' 2>/dev/null)
+      for p in $(pgrep -f '/home/tetsuya/\.bun/bin/omp' 2>/dev/null); do
+        pt=$(ps -o tty= -p "$p" 2>/dev/null | tr -d ' ')
+        for st in $sess_ttys; do [ -n "$pt" ] && [ "/dev/$pt" = "$st" ] && has_omp=1; done
+      done
+      if [ "$has_omp" = 0 ]; then
+        tmux kill-session -t "$sess" 2>/dev/null
+        log "reclaimed: killed tmux session '$sess' for archived goal $tag"
+      else
+        log "reclaimed: tmux '$sess' still has live omp; session kept"
+      fi
+    fi
+    # 台账补写: agent 自归档的块常缺 resume_cmd, dashboard 解析不出 → 补标准块
+    local done_log=/home/tetsuya/.omp/logs/goal-completed.log
+    if ! grep "goal=$gid" "$done_log" 2>/dev/null | head -1 | grep -q . || \
+       ! awk -v g="$gid" '$0 ~ "goal="g {for(i=0;i<4;i++){getline l; if(l~/resume_cmd:/) f=1}} END{exit f?0:1}' "$done_log" 2>/dev/null; then
+      {
+        echo "[$(date '+%F %T')] goal=$gid label=${label:-$sess} status=complete"
+        echo "  transcript=$jsonl"
+        echo "  workdir=${workdir:-?}"
+        echo "  resume_cmd: $OMP --resume $gid --auto-approve"
+        echo ""
+      } >> "$done_log"
+      log "reclaimed: recorded completed goal $gid in $done_log"
+    fi
+  done <<< "$lines"
+}
 # ── 主循环:遍历所有 goal ────────────────────────────────────────────────────
 for goal_line in "${GOALS[@]}"; do
   IFS='|' read -r GOAL_ID GOAL_SESSION_FILE TMUX_SESSION WORKDIR F5 LABEL <<< "$goal_line"
@@ -564,5 +670,8 @@ for goal_line in "${GOALS[@]}"; do
   fi
   watch_one_goal "${1:-}"
 done
+
+# 主监控循环之外: 回收已完成归档 goal 的残留进程/tmux(E6 类自归档泄漏的根治)
+[ "$CHECK_ONLY" = 1 ] || reclaim_archived_goals
 
 exit 0
