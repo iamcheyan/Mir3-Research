@@ -1,13 +1,14 @@
 // main.js — 浏览器世界观测试台入口
 // 职责: 组装 world/render/input/ui, 主循环 (V-Sync 开关= rAF vs 定时器),
 //       地图切换过场, GM 命令解析, 设置持久化, 大地图/小地图, 自动药水。
-import { loadAll, D, CELL_W, CELL_H } from './data.js';
+import { loadAll, D, CELL_W, CELL_H, TILE } from './data.js';
 import { Camera } from './camera.js';
 import { World } from './world.js';
 import { Renderer } from './render.js';
 import { Input, STEP } from './input.js';
 import { UI, CLASS_NAMES } from './ui.js';
 import { pendingCount, tileURL, loadTile } from './res.js';
+import { makeFF, createFxEngine, dir8To, frameDelays } from './effects.js';
 
 class Game {
   constructor() {
@@ -88,6 +89,12 @@ class Game {
   async init() {
     this.ui.setLoadingText('加载地图清单…');
     await loadAll((label) => this.ui.setLoadingText(`加载${label}…`));
+    // E5: 特效引擎 + 帧公式 (ClientData 同源)
+    this.FF = makeFF(D().frameFormulas || {});
+    this.fx = createFxEngine({
+      toScreen: (wx, wy) => this.cam.worldToScreen(wx, wy),
+    });
+    this.renderer.fxEngine = this.fx;
     this.applySettings();
     this.ui.fillBelt();
     this.input.bind();
@@ -95,20 +102,31 @@ class Game {
       this.ui.setMapLabel(stem, m);
       this.ui.log(`进入 [${m.name_cn}] (${stem})`, 'sys');
     };
+    // E5/C2: 位置持久化 — 每图记忆最后坐标 (localStorage wc_pos:<stem>)
     const sp = D().manifest.spawn;
-    await this.world.enterMap(sp.map, sp.x, sp.y);
+    let sx = sp.x, sy = sp.y;
+    try {
+      const saved = JSON.parse(localStorage.getItem(`wc_pos:${sp.map}`) || 'null');
+      if (saved && Number.isInteger(saved.x) && Number.isInteger(saved.y)) { sx = saved.x; sy = saved.y; }
+    } catch { /* 忽略坏档 */ }
+    await this.world.enterMap(sp.map, sx, sy);
+    this.savePos();
     this.centerCamera();
     this.ui.hideLoading();
     this.ui.log('欢迎来到 Mir3 浏览器世界观测试台 (GM 满配 255 级)', 'sys');
-    this.ui.log('方向键/WASD 移动 · B 大地图 · G GM面板 · S 技能 · E 装备 · Enter @命令', 'sys');
+    this.ui.log('方向键/WASD 移动 · S 技能(点地面/怪物选目标施放) · B 大地图 · G GM面板 · Enter @命令', 'sys');
     this.restartLoop();
+  }
+
+  savePos() {
+    const p = this.world.player;
+    try { localStorage.setItem(`wc_pos:${this.world.map}`, JSON.stringify({ x: p.x, y: p.y })); } catch { }
   }
 
   centerCamera() {
     const p = this.world.player;
     this.cam.centerOn(p.x * CELL_W + CELL_W / 2, p.y * CELL_H + CELL_H / 2);
   }
-
   // ---- 移动一步 ----
   tryStep(dir) {
     const w = this.world;
@@ -121,7 +139,7 @@ class Game {
       return;
     }
     p.x = nx; p.y = ny;
-    this.ui.setPos(p.x, p.y);
+    this.savePos();
     // 出口?
     const exit = w.exitAt(nx, ny);
     if (exit && !w.transitioning) {
@@ -145,6 +163,7 @@ class Game {
     this._lastSwitchMs = performance.now();
     this.cam.tileImgs.clear();     // 换图: 旧瓦片全部失效
     await w.enterMap(exit.to, exit.tx, exit.ty);
+    this.savePos();
     // 等首批瓦片
     const waitStart = performance.now();
     await new Promise((r) => {
@@ -170,6 +189,7 @@ class Game {
     try {
       this.cam.tileImgs.clear();   // 换图: 旧瓦片全部失效
       await w.enterMap(stem, x ?? undefined, y ?? undefined);
+      this.savePos();
       this.centerCamera();        // 直接对准落点 (不走渐近跟随, 避免扫过途中区域)
       const waitStart = performance.now();
       await new Promise((r) => {
@@ -188,30 +208,39 @@ class Game {
     w.transitioning = false;
   }
 
-  // ---- 施法 ----
+  // ---- 施法 (E5/C3: 帧公式分派动作 + ClientData 特效编排) ----
   castMagic(m) {
     const p = this.world.player;
-    p.anim = 'combat2'; p.animFrame = 0; p.animT = 0;
-    const a = this.renderer.cellAnchor(this.cam, p.x, p.y);
-    if (m.effect || m.proj || m.impact) {
-      this.world.effects.push({
-        x: p.x, y: p.y, t: 0,
-        effect: m.effect, proj: null, impact: m.impact,
-        particles: true,
+    const table = D().magicEffects || {};
+    const entry = table[m.key];
+    const hasVisual = entry && (entry.start || entry.release);
+    const anim = this.FF ? this.FF.animOf(m.key) : 'combat2';
+    // 目标选择: 悬停实体优先 (怪物/召唤物), 否则悬停格为落点, 否则面前 3 格
+    let target = null, point = null;
+    const hover = this.hoverEnt || null;
+    if (hover && (hover.kind === 'mon' || hover.kind === 'npc')) target = { x: hover.x, y: hover.y };
+    else if (this.hoverCell && this.world.canWalk(this.hoverCell.x, this.hoverCell.y))
+      point = { ...this.hoverCell };
+    else {
+      const [dx, dy] = STEP[p.dir];
+      point = { x: p.x + dx * 3, y: p.y + dy * 3 };
+    }
+    const aim = target || point;
+    p.dir = dir8To(p, aim);
+    p.anim = anim; p.animFrame = 0; p.animT = 0; p.inCombat = true;
+
+    if (hasVisual) {
+      this.fx.playFromEntry(entry, {
+        magicKey: m.key, caster: { x: p.x, y: p.y }, target, point,
+        ff: this.FF, aoeRadius: 2,
+        log: (ms, text) => this.ui.log(`  ${text}`, 'sys'),
       });
-      // 弹道: 飞向面前 3 格
-      if (m.proj) {
-        const [dx, dy] = STEP[p.dir];
-        this.world.effects.push({
-          x: p.x + dx * 3, y: p.y + dy * 3, t: -300,
-          effect: null, proj: m.proj, impact: null, particles: false,
-        });
-      }
+      this.ui.log(`施法 [${m.zh}] ${anim} → (${aim.x},${aim.y})`, 'sys');
     } else {
       // 兜底: 图标放大动画
       this.world.effects.push({ fallbackIcon: m.icon, x: p.x, y: p.y, t: 0 });
+      this.ui.log(`施法 [${m.zh}] (无特效数据, 图标兜底)`, 'sys');
     }
-    this.ui.log(`施法 [${m.zh}]`, 'sys');
   }
 
   // ---- GM 命令解析 ----

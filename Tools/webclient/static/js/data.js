@@ -43,10 +43,18 @@ export async function loadAll(progress) {
   Data.monsters = await step('怪物数据', () => get('/res/data/monsters.json'));
   Data.respawns = await step('刷怪数据', () => get('/res/data/respawns.json'));
   Data.magics = await step('技能数据', () => get('/res/data/magics.json'));
-  Data.items = await step('物品数据', () => get('/res/data/items.json'));
+  Data.magicEffects = await step('特效表 (ClientData)', () => get('/lab/table').catch(() => ({})));
+  Data.frameFormulas = await step('帧公式 (ClientData)', () => get('/lab/frame-formulas').catch(() => null));
   Data.appearance = await step('外观表', () => get('/res/data/appearance.json'));
-  for (const m of Data.monsters) Data.monstersById[m.id] = m;
   for (const it of Data.items) Data.itemsById[it.id] = it;
+  // frame-formulas → PLAYER_ANIMS 就地合并 (combat1..15/channelling 等全套施法动作可用)
+  if (Data.frameFormulas?.frameSets?.players) {
+    for (const [name, f] of Object.entries(Data.frameFormulas.frameSets.players)) {
+      if (!PLAYER_ANIMS[name] || PLAYER_ANIMS[name].ms !== f.ms || PLAYER_ANIMS[name].count !== f.count)
+        PLAYER_ANIMS[name] = f;
+      else PLAYER_ANIMS[name].delays = f.delays;
+    }
+  }
   return Data;
 }
 

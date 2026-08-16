@@ -92,6 +92,7 @@ export class Input {
 
   onHover(e) {
     this.game.hoverCell = this.cellFromEvent(e);
+    this.game.hoverEnt = this.game.hitTest(e) || null;   // E5/C3: 施法目标 (实体优先)
   }
 
   onClick(e) {

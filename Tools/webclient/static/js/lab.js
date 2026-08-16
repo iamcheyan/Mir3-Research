@@ -11,9 +11,10 @@
 //                          (Direction16 由等距校正坐标 y/32*48 计算, 原版 Functions.cs:593)
 //   PlayerObject.Spell     animation = GetMagicAnimation(type) (frame-formulas magicDispatch)
 //   spellRelease           前 min(3,count-1) 帧延迟和 (PlayerRenderer.cs 语义)
-import { loadSprite, frameMeta } from './res.js';
-import { spriteFrame, drawFramed } from './sprites.js';
+import { drawFramed } from './sprites.js';
 import { pickLibs, D, CELL_W, CELL_H, MONSTER_ANIMS, drawFrame } from './data.js';
+import { makeFF, createFxEngine, frameSpriteCached, frameDelays,
+         spellReleaseDelayMs, direction16, dir8To } from './effects.js';
 
 const $ = (s) => document.querySelector(s);
 const stage = $('#lab-stage');
@@ -21,9 +22,6 @@ const ctx = stage.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 
 // ---------- 常量 ----------
-const DIRS8 = [
-  [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1],
-]; // MirDirection Up..UpLeft (格向量近似, Y 等距)
 const CLASS_ORDER = ['Warrior', 'Wizard', 'Taoist', 'Assassin', 'Archer'];
 const CLASS_ZH = { Warrior: '战士', Wizard: '法师', Taoist: '道士', Assassin: '刺客', Archer: '弓手', Universal: '通用' };
 
@@ -52,60 +50,15 @@ const S = {
 const CELL_ANCHOR = (gx, gy) => ({ x: gx * CELL_W + CELL_W / 2 - S.camX, y: (gy + 1) * CELL_H - S.camY });
 
 // ---------- 工具 ----------
-function direction16(sx, sy, dx, dy) {
-  // 原版 Functions.Direction16 (Functions.cs:593): 等距校正 + 余弦定理角度 + 22.5° 量化
-  const y0 = Math.round(sy / 32) * 48, y1 = Math.round(dy / 32) * 48;
-  const c = { x: sx, y: y0 }, b = { x: dx, y: y1 };
-  const bc = Math.hypot(b.x - c.x, b.y - c.y);
-  if (bc === 0) return 4; // Down
-  const a = { x: c.x, y: 0 };
-  const bb = { x: b.x, y: b.y + bc };
-  const ab = Math.hypot(bb.x - a.x, bb.y - a.y);
-  const cos = (bc * bc + bc * bc - ab * ab) / (2 * bc * bc);
-  let ang = Math.acos(Math.max(-1, Math.min(1, cos))) * 180 / Math.PI;
-  if (dx < c.x) ang = 360 - ang;
-  ang += 11.25;
-  if (ang > 360) ang -= 360;
-  return Math.floor(ang / 22.5) % 16;
-}
-function dir8To(from, to) {
-  let best = 0, bd = 1e9;
-  DIRS8.forEach((d, i) => {
-    const px = d[0], py = d[1] * 32 / 48; // 屏幕方向感 (Y 压扁)
-    const dd = (px * 48 - (to.x - from.x)) ** 2 + (py * 48 - (to.y - from.y)) ** 2;
-    if (dd < bd) { bd = dd; best = i; }
-  });
-  return best;
-}
 function log(t, text, cls = '') {
   S.events.push({ t, text, cls });
   if (S.events.length > 40) S.events.shift();
 }
 
 // ---------- 帧公式 (frame-formulas) ----------
-const FF = {
-  players: null, magicDispatch: null, armourShift: null,
-  animOf(magicKey) {
-    const g = this.magicDispatch?.groups || [];
-    for (const grp of g) if (grp.magics?.includes(magicKey)) return grp.anim;
-    return this.magicDispatch?.default || 'combat1';
-  },
-  frame(name) { return this.players?.[name] || null; },
-};
-function frameDelays(f) { // Frame → [ms per frame]
-  const out = [];
-  for (let i = 0; i < f.count; i++) out.push(f.delays?.[i] ?? f.ms);
-  return out;
-}
-function spellReleaseDelayMs(animName) {
-  const f = FF.frame(animName);
-  if (!f) return 400;
-  const d = frameDelays(f);
-  const n = Math.min(3, Math.max(1, f.count - 1));
-  let s = 0;
-  for (let i = 0; i < n; i++) s += d[i];
-  return s;
-}
+const FF = makeFF({});
+// E5/C4: 引擎统一到 effects.js (与漫游端共用一套编排/绘制/混合)
+const ENGINE = createFxEngine({ toScreen: null });   // toScreen 由 drawFx 每帧传入
 
 // ---------- 纸娃娃 ----------
 const LOOKS = {
@@ -126,9 +79,9 @@ async function paperdoll(look, animName, frameIdx, dir) {
   const libs = pickLibs(look);
   const ws = look.weaponShape >= 1000 ? look.weaponShape - 1000 : look.weaponShape;
   const jobs = [
-    frameSprite(libs.body, base + (look.armourShape % 11) * off + shift),
-    look.hairType > 0 ? frameSprite(libs.hair, base + (look.hairType - 1) * 5000) : null,
-    look.weaponShape >= 0 ? frameSprite(libs.weapon, base + (ws % 10) * 5000) : null,
+    frameSpriteCached(libs.body, base + (look.armourShape % 11) * off + shift),
+    look.hairType > 0 ? frameSpriteCached(libs.hair, base + (look.hairType - 1) * 5000) : null,
+    look.weaponShape >= 0 ? frameSpriteCached(libs.weapon, base + (ws % 10) * 5000) : null,
   ];
   const [body, hair, weapon] = await Promise.all(jobs);
   return { body, head: hair, weapon, dir, backDirs: [0, 5, 6, 7], frontDirs: [1, 2, 3, 4] };
@@ -145,73 +98,6 @@ function drawPaperdoll(spr, sx, sy) {
 // inst: {lib,frame,count,delay,skip,dir,dir16,has16,colour,
 //        attach:'caster'|'target:i'|'point'|{x,y}, t0, kind, label,
 //        flight:{from,to,dur}|null, onDone:[]}
-function spawnFx(def) { S.fx.push({ t0: S.labT, ...def }); }
-
-function fxFrame(inst, t) {
-  const idx = Math.floor(t / inst.delay);
-  if (idx >= inst.count) return null;
-  const dirOff = inst.has16 ? inst.dir16 * (inst.skip ?? 10) : inst.dir * (inst.skip ?? 10);
-  return { idx, drawFrame: idx + inst.frame + dirOff };
-}
-function fxPos(inst, t) {
-  if (inst.flight) {
-    const p = Math.min(1, t / inst.flight.dur);
-    const wx = inst.flight.fromX + (inst.flight.toX - inst.flight.fromX) * p;
-    const wy = inst.flight.fromY + (inst.flight.toY - inst.flight.fromY) * p;
-    return { wx, wy };
-  }
-  let gx, gy;
-  if (inst.attach === 'caster') ({ x: gx, y: gy } = CASTER);
-  else if (typeof inst.attach === 'number') { const d = DUMMIES[inst.attach]; ({ x: gx, y: gy } = d); }
-  else ({ x: gx, y: gy } = inst.point);
-  return { wx: gx * CELL_W + CELL_W / 2, wy: (gy + 1) * CELL_H };
-}
-
-function updateFx(dt) {
-  for (let i = S.fx.length - 1; i >= 0; i--) {
-    const f = S.fx[i];
-    const t = S.labT - f.t0;
-    if (t < 0) continue;
-    if (f.flight && t >= f.flight.dur) {
-      for (const cb of f.onDone || []) cb();
-      S.fx.splice(i, 1);
-      continue;
-    }
-    if (!f.flight && t >= f.count * f.delay) {
-      for (const cb of f.onDone || []) cb();
-      S.fx.splice(i, 1);
-    }
-  }
-}
-const _frameCache = new Map();
-async function frameSprite(lib, frame) {
-  const key = `${lib}:${frame}`;
-  if (_frameCache.has(key)) return _frameCache.get(key);
-  const p = spriteFrame(lib, frame);
-  _frameCache.set(key, p);
-  p.then((v) => { if (v == null) _frameCache.delete(key); }).catch(() => { _frameCache.delete(key); });  // 失败/缺帧不缓存, 下次重试 (截图确定性)
-  return p;
-}
-function drawFx() {
-  for (const f of S.fx) {
-    const t = S.labT - f.t0;
-    if (t < 0) continue;
-    const pos = fxPos(f, t);
-    const fr = f.flight ? { idx: Math.min(f.count - 1, Math.floor(t / f.delay)), drawFrame: null } : fxFrame(f, t);
-    let drawFrameNo = f.flight
-      ? fr.idx + f.frame + f.dir16 * (f.skip ?? 10)
-      : fr?.drawFrame;
-    if (drawFrameNo == null) continue;
-    frameSprite(f.lib, drawFrameNo).then((s) => { f._last = s ?? false; f._lastFrameNo = drawFrameNo; });
-    const s = f._last;  // undefined=未就绪, false=已确认缺帧(原版空帧), 对象=可用
-    if (s) {
-      const sx = pos.wx - S.camX, sy = pos.wy - S.camY;
-      ctx.globalAlpha = 0.92;
-      drawFramed(ctx, s, sx, sy);
-      ctx.globalAlpha = 1;
-    }
-  }
-}
 
 // ---------- 施法编排 ----------
 function effectsOf(entry, seg) { return entry?.[seg]?.effects || []; }
@@ -220,112 +106,26 @@ function playSkill(magic) {
   const entry = S.table[key];
   S.lastPlay = magic;
   const anim = FF.animOf(key);
-  const relDelay = spellReleaseDelayMs(anim);
   const cls = magic.cls === 'Universal' ? 'Wizard' : magic.cls;
   const look = LOOKS[cls] || LOOKS.Wizard;
   const dir = dir8To(CASTER, DUMMIES[0]);
   S.casterAnims = [{ anim, frameIdx: 0, t: 0, delays: frameDelays(FF.frame(anim) || { count: 5, ms: 100 }), look, dir }];
-  S.fx = [];
+  ENGINE.st.fx.length = 0;
   S.events = [];
-  const targets = DUMMIES.slice(0, S.targetCount);
   S.cast0 = S.labT;
 
-  const casterPx = { x: CASTER.x * CELL_W + CELL_W / 2, y: (CASTER.y + 1) * CELL_H };
-  const targetPx = (i) => ({ x: DUMMIES[i].x * CELL_W + CELL_W / 2, y: (DUMMIES[i].y + 1) * CELL_H });
-
-  // start 段 (t=0)
-  for (const e of effectsOf(entry, 'start')) spawnFromEffect(e, { attach: 'caster', at: 0, dir });
-
-  // release 段 (t=relDelay)
-  for (const e of effectsOf(entry, 'release')) {
-    const at = relDelay;
-    if (e.kind === 'projectile') {
-      const tg = e.target === 'point' ? null : 0; // point 弹道飞向主木桩格 (MagicLocations 单点)
-      const ti = tg ?? 0;
-      const to = targetPx(ti);
-      const d16 = direction16(casterPx.x, casterPx.y, to.x, to.y);
-      const dur = Math.max(1, Math.hypot(to.x - casterPx.x, to.y - casterPx.y));
-      const skip = e.extra?.Skip ?? 10;
-      const has16 = e.extra?.Has16Directions !== false;
-      spawnFx({
-        lib: e.lib, frame: e.frame ?? e.directionFrames?.[0], count: e.count, delay: e.delayMs || 100,
-        skip, dir: 0, dir16: has16 ? d16 : Math.floor(d16 / 2), has16: false, // DrawFrame 已含 dir16
-        attach: null, point: CASTER,
-        flight: { fromX: casterPx.x, fromY: casterPx.y, toX: to.x, toY: to.y, dur },
-        t0: S.labT + at, kind: 'projectile', label: `弹道 ${e.lib}#${e.frame}`,
-        onDone: [],
-      });
-      log(at, `→ 弹道 ${e.lib}#${e.frame}×${e.count} dir16=${d16} ${Math.round(dur)}ms`, 'seg');
-    } else if (e.segment === 'aoe') {
-      // MagicLocations 语义: 落点地面特效 (实验室取主木桩格)
-      // 原版 StartTime = Now + N ms (距离延迟) → 实验室近似 +N
-      // E5: 提取器已结构化 (StartDelayMs/DistanceDelayMs), 旧 StartTime 字符串兜底
-      let delay0 = e.extra?.StartDelayMs ?? 0;
-      if (!delay0) {
-        const st = String(e.extra?.StartTime ?? '');
-        const stm = st.match(/AddMilliseconds\((\d+)/);
-        if (stm) delay0 = +stm[1];
-      }
-      spawnFromEffect(e, { attach: { point: DUMMIES[0] }, at: at + delay0, dir });
-      log(at + delay0, `◉ 地面 ${e.lib}#${e.frame ?? e.frameExpr}×${e.count}`, 'seg');
-    } else if (e.segment === 'hitEffect' && !e.ctx?.includes('arrival')) {
-      // release 段直接命中特效 (无弹道承载): 目标身上/落点
-      const at2 = at;
-      for (let i = 0; i < targets.length; i++) {
-        spawnFromEffect(e, { attach: e.target === 'point' ? { point: DUMMIES[0] } : i, at: at2, dir });
-      }
-      log(at, `✦ ${e.lib}#${e.frame}×${e.count} → ${e.target === 'point' ? '落点' : targets.length + '目标'}`, 'seg');
-    }
-    // arrival 类 (弹道 CompleteAction) 由 projectile onDone 触发, 见下
-  }
-
-  // arrival: release 段 ctx 含 arrival 的特效挂在 projectile 到达后
-  const arrivals = effectsOf(entry, 'release').filter((e) => e.ctx?.includes('arrival'));
-  const endSounds = (S.table[key]?.sound?.end) || [];
-  if (arrivals.length || endSounds.length) {
-    // 计算最长弹道到达时刻: relDelay + max(dur)
-    let maxDur = 0;
-    for (const e of effectsOf(entry, 'release')) if (e.kind === 'projectile') {
-      const to = targetPx(0);
-      maxDur = Math.max(maxDur, Math.hypot(to.x - casterPx.x, to.y - casterPx.y));
-    }
-    const tHit = relDelay + Math.max(maxDur, 1);
-    for (const e of arrivals) {
-      for (let i = 0; i < targets.length; i++) {
-        spawnFromEffect(e, { attach: i, at: tHit, dir });
-      }
-      log(tHit, `✸ 命中 ${e.lib}#${e.frame}×${e.count}`, 'seg');
-    }
-    for (const sname of endSounds) log(tHit, `♪ ${sname}`, 'snd');
-  }
-  for (const sname of S.table[key]?.sound?.start || []) log(0, `♪ ${sname}`, 'snd');
-  for (const sname of S.table[key]?.sound?.travel || []) log(relDelay, `♪ ${sname}`, 'snd');
+  // E5/C4: 编排统一走 effects.js 引擎 (lab 语义: 单落点=主木桩, aoeRadius 0=不扩散)
+  ENGINE.playFromEntry(entry, {
+    magicKey: key, caster: CASTER, target: null, point: DUMMIES[0],
+    targets: DUMMIES.slice(0, S.targetCount), aoeRadius: 0, ff: FF,
+    log: (t, text) => log(t, text, text.startsWith('♪') ? 'snd' : 'seg'),
+  });
 
   const total = 3000;
   if (S.loop) {
     clearTimeout(S._loopTimer);
     S._loopTimer = setTimeout(() => { if (S.loop && S.lastPlay === magic && !S.paused) playSkill(magic); }, total / S.timeScale);
   }
-}
-
-function spawnFromEffect(e, { attach, at, dir }) {
-  let frame = e.frame ?? e.directionFrames?.[dir] ?? e.directionFrames?.[0];
-  if (frame == null && e.frameExpr) {
-    // 动态帧表达式: 随机组取首组基址 (如 2450 + Random(5)*10 → 2450)
-    const m = String(e.frameExpr).match(/(\d+)/);
-    if (m) frame = +m[1];
-  }
-  if (frame == null) return;
-  const skip = e.extra?.Skip ?? 10;
-  const useDir = e.extra?.Direction != null ? (typeof e.extra.Direction === 'number' ? e.extra.Direction : dir) : 0;
-  spawnFx({
-    lib: e.lib, frame, count: e.count, delay: e.delayMs || 100, skip,
-    dir: useDir, dir16: 0, has16: false,
-    attach: typeof attach === 'object' ? null : attach,
-    point: typeof attach === 'object' ? attach.point : undefined,
-    t0: S.labT + at, kind: e.segment, label: `${e.lib}#${frame}`,
-    onDone: [],
-  });
 }
 
 // ---------- 场景渲染 ----------
@@ -367,7 +167,7 @@ function drawScene(dtReal) {
   for (let i = 0; i < DUMMIES.length; i++) {
     const d = DUMMIES[i];
     const a = CELL_ANCHOR(d.x, d.y);
-    frameSprite('Mon-5', dummyNo).then((s) => { S.dummySprites[i] = s ?? false; S.dummyFrames[i] = dummyNo; });
+    frameSpriteCached('Mon-5', dummyNo).then((s) => { S.dummySprites[i] = s ?? false; S.dummyFrames[i] = dummyNo; });
     if (i < S.targetCount) {
       ctx.strokeStyle = 'rgba(255,90,90,.35)';
       ctx.strokeRect(a.x - 24, a.y - 60, 48, 60);
@@ -442,12 +242,15 @@ function tick(ts) {
   lastTs = ts;
   if (!S.paused) {
     const dt = Math.round(dtReal * 1000 * S.timeScale);  // 定点化: 浮点累加会让 t 骑在 idx 边界 ±ε 抖动
-    if (dt > 0) { S.labT += dt; updateFx(dt); }
+    if (dt > 0) { ENGINE.update(dt); S.labT = ENGINE.st.t; }
   }
   drawMap();
   drawScene(S.paused ? 0 : dtReal * S.timeScale);
   drawTrace();
-  drawFx();
+  const toScr = (wx, wy) => ({ x: wx - S.camX, y: wy - S.camY });
+  ENGINE.draw(ctx, 'floor', toScr);
+  ENGINE.draw(ctx, 'object', toScr);
+  ENGINE.draw(ctx, 'final', toScr);
   drawEvents();
   requestAnimationFrame(tick);
 }
@@ -565,12 +368,12 @@ function bindControls() {
   };
   $('#lab-step').onclick = () => {
     const dt = 100; // 一帧 @100ms
-    S.labT += dt;
-    updateFx(dt);
+    ENGINE.update(dt);
+    S.labT = ENGINE.st.t;
   };
   $('#lab-trace').onchange = (e) => { S.trace = e.target.checked; };
   $('#lab-loop').onchange = (e) => { S.loop = e.target.checked; };
-  $('#lab-clear').onclick = () => { S.fx = []; S.events = []; S.casterAnims = []; };
+  $('#lab-clear').onclick = () => { ENGINE.st.fx.length = 0; S.events = []; S.casterAnims = []; };
   $('#lab-search').oninput = buildList;
 }
 
@@ -589,8 +392,9 @@ window.__LAB = {
     // labT 对齐 500ms 边界: 木桩等一切 labT 派生相位在 freeze 时刻绝对确定
     this._cast0 = Math.ceil(S.labT / 500) * 500;
     S.labT = this._cast0;
+    ENGINE.st.t = S.labT;
     S.paused = false;
-    S.fx = []; S.events = [];
+    ENGINE.st.fx.length = 0; S.events = [];
     showInfo(m, S.table[m.key]);   // 与 DOM 点击行为一致
     playSkill(m);
     return true;
@@ -598,10 +402,10 @@ window.__LAB = {
   freezeAt(offsetMs) {  // 暂停并把 lab-time 定位到施法开始后 offsetMs (确定性截图)
     S.paused = true;
     S.labT = (this._cast0 ?? S.labT) + offsetMs;
-    updateFx(0);
+    ENGINE.st.t = S.labT;
   },
   framesReady() {  // 当前 labT 下特效/纸娃娃/木桩的当帧是否已解码 (排除异步竞态)
-    for (const f of S.fx) {
+    for (const f of ENGINE.st.fx) {
       const t = S.labT - f.t0;
       if (t < 0) continue;
       let no;
@@ -613,6 +417,7 @@ window.__LAB = {
         if (idx >= f.count) continue;
         no = idx + f.frame + f.dir * (f.skip ?? 10);
       }
+      // 引擎记录的结算帧号
       if (f._last === undefined || f._lastFrameNo !== no) return false;
     }
     const dFrame = Math.floor((S.labT % 500) / 125) % 4;

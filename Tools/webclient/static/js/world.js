@@ -1,5 +1,5 @@
 // world.js — 世界状态: 玩家/实体/地图切换/移动/拾取
-import { CELL_W, CELL_H, D, walkable, walkBits, pickLibs } from './data.js';
+import { CELL_W, CELL_H, D, walkable, walkBits, pickLibs, PLAYER_ANIMS } from './data.js';
 import { loadSprite } from './res.js';
 
 export class World {
@@ -96,15 +96,20 @@ export class World {
     return null;
   }
 
-  // 帧推进: 移动/动画
   update(dt) {
     const p = this.player;
     p.animT += dt * p.speed;
-    const animLen = { standing: 500, walking: 600, running: 600, combat2: 500, struck: 300, die: 1000 }[p.anim] || 500;
-    if (p.animT >= animLen / 6) {
-      p.animT -= animLen / 6;
-      p.animFrame = (p.animFrame + 1) % 6;
-      if (p.anim === 'combat2' && p.animFrame === 0) p.anim = 'standing';
+    const f = PLAYER_ANIMS[p.anim] || PLAYER_ANIMS.standing;
+    const delay = f.delays?.[p.animFrame] ?? f.ms;
+    if (p.animT >= delay) {
+      p.animT -= delay;
+      p.animFrame++;
+      if (p.animFrame >= f.count) {
+        if (p.anim === 'die') { p.animFrame = f.count - 1; }
+        else {
+          p.anim = 'standing'; p.animFrame = 0; p.inCombat = false;
+        }
+      }
     }
     for (const mo of this.mons) {
       mo.animT += dt;

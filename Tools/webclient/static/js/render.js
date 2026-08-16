@@ -1,6 +1,5 @@
 // render.js — 主渲染循环: 地图瓦片 + 实体 (Y 排序) + 特效 + 名称
 import { CELL_W, CELL_H, D } from './data.js';
-import { loadSprite, frameMeta } from './res.js';
 import { monsterSprite, npcSprite, itemSprite, playerSprites, drawFramed, drawPlayer } from './sprites.js';
 
 const DIR_VEC = [
@@ -34,15 +33,28 @@ export class Renderer {
     const { world, cam, ctx } = game;
     this.lastFrameStats.draw++;
 
+    // 0. 特效引擎推进 (E5/C4: ClientData 编排, floor 层在实体之下)
+    if (game.fx) game.fx.update(dt);
+
     // 1. 地图 (缺瓦片后台加载, 本帧占位)
     const m = D().manifest.maps[world.map];
     const missing = cam.drawMap(world.map, m.tiles, m.w * CELL_W, m.h * CELL_H);
 
-    // 2. 实体收集 (Y 排序); 精灵异步解析, 就绪后由下一帧绘制 (不阻塞)
+    // 2. 地面层特效 (AOE/地面波纹)
+    if (this.drawEffects && game.fx)
+      game.fx.draw(ctx, 'floor', (wx, wy) => cam.worldToScreen(wx, wy));
+
+    // 3. 实体收集 (Y 排序); 精灵异步解析, 就绪后由下一帧绘制 (不阻塞)
     const ents = this.collectEntities();
     ents.sort((a, b) => a.y - b.y);
     this.lastEnts = ents;
     this.drawEntities(ctx, cam, ents, dt);
+
+    // 4. 对象层 + 顶层特效 (弹道/命中/光环)
+    if (this.drawEffects && game.fx) {
+      game.fx.draw(ctx, 'object', (wx, wy) => cam.worldToScreen(wx, wy));
+      game.fx.draw(ctx, 'final', (wx, wy) => cam.worldToScreen(wx, wy));
+    }
 
     return missing;
   }
@@ -109,8 +121,6 @@ export class Renderer {
     }
     if (this.entitySpr.size > 800) this.entitySpr.clear();
     this.lastFrameStats.entities = drawn;
-    // 施法特效
-    if (this.drawEffects) this.drawEffectsNow(ctx, cam, _dt);
     // 悬停格
     if (this.game.hoverCell) {
       const a = this.cellAnchor(cam, this.game.hoverCell.x, this.game.hoverCell.y);
@@ -153,65 +163,6 @@ export class Renderer {
       ctx.strokeRect(cx - w / 2, cy - h / 2, w, h);
     }
   }
-
-  drawEffectsNow(ctx, cam, dt) {
-    const world = this.game.world;
-    for (let i = world.effects.length - 1; i >= 0; i--) {
-      const fx = world.effects[i];
-      fx.t += dt;
-      const done = this.renderEffect(ctx, cam, fx);
-      if (done) world.effects.splice(i, 1);
-    }
-  }
-
-  renderEffect(ctx, cam, fx) {
-    const a = this.cellAnchor(cam, fx.x, fx.y);
-    let allDone = true;
-    for (const layer of [fx.effect, fx.proj, fx.impact]) {
-      if (!layer) continue;
-      const idx = Math.floor(fx.t / layer.ms);
-      if (idx >= layer.count) { if (layer === fx.impact || !fx.loop) continue; }
-      const frame = layer.start + Math.min(idx, layer.count - 1);
-      const fr = spriteFrameSync(layer.lib, frame);
-      // 前瞻: 预取后 3 帧, 避免动画播放中途缺帧
-      for (let k = 1; k <= 3 && idx + k < layer.count; k++)
-        spriteFrameSync(layer.lib, layer.start + idx + k);
-      if (fr) {
-        ctx.globalAlpha = 0.9;
-        ctx.drawImage(fr.img, a.x + fr.ox, a.y - fr.h / 2 + fr.oy, fr.w, fr.h);
-        ctx.globalAlpha = 1;
-      }
-      if (idx < layer.count) allDone = false;
-    }
-    // 粒子开关演示 (简单火花)
-    if (this.drawParticles && fx.particles) {
-      for (let k = 0; k < 6; k++) {
-        const ang = (k / 6) * Math.PI * 2 + fx.t / 300;
-        const rad = 20 + 14 * Math.sin(fx.t / 200 + k);
-        ctx.fillStyle = 'rgba(255,200,90,.6)';
-        ctx.fillRect(a.x + Math.cos(ang) * rad, a.y - 20 + Math.sin(ang) * rad, 3, 3);
-      }
-    }
-    return allDone && fx.t > 200;
-  }
-}
-
-// 特效帧同步缓存: key = "lib:frame" -> {img,w,h,ox,oy} | undefined (预取中)
-const _fxCache = new Map();
-function spriteFrameSync(lib, frame) {
-  const key = `${lib}:${frame}`;
-  if (_fxCache.has(key)) return _fxCache.get(key);
-  _fxCache.set(key, undefined);      // 先占位防重
-  Promise.all([loadSprite(lib, frame), frameMeta(lib)]).then(([im, meta]) => {
-    if (!im) return;
-    const m = meta[frame];
-    _fxCache.set(key, {
-      img: im,
-      w: m ? m[0] : im.width, h: m ? m[1] : im.height,
-      ox: m ? m[2] : 0, oy: m ? m[3] : 0,
-    });
-  }).catch(() => {});
-  return undefined;
 }
 
 export { DIR_VEC };

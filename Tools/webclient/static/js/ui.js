@@ -247,7 +247,7 @@ export class UI {
     el.innerHTML = `
       <div class="panel-title">技能 (${D().magics.length}) <button class="close">×</button></div>
       <div class="panel-body">
-        <div class="hint">点击技能 → 在脚下播放施法特效 (${D().magics.filter((m) => m.effect).length} 个有原版特效映射, 其余用图标放大动画兜底)</div>
+        <div class="hint">点击技能 → 施法 (悬停怪物/地面选目标) (${Object.keys(D().magicEffects || {}).length} 个接 ClientData 特效编排, 其余图标兜底)</div>
         <div class="magic-list">${Object.entries(groups).map(([cls, list]) => `
           <div class="magic-group"><h4>${zh[cls] || cls} (${list.length})</h4>
             ${list.map((m) => `
