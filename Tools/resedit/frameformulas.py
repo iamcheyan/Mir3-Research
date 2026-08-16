@@ -438,9 +438,13 @@ def build(zircon: Path) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--zircon", type=Path, default=DEFAULT_ZIRCON)
-    ap.add_argument("--out", type=Path, default=HERE / "frame-formulas.json")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="默认 zircon/ClientData/frame-formulas.json (E5 canonical)")
     ap.add_argument("--check", action="store_true", help="校验现有 JSON 与源一致 (CI 门禁)")
     args = ap.parse_args()
+    if args.out is None:
+        args.out = Path(__import__("os").environ.get(
+            "MIR3_ZIRCON_ROOT", str(DEFAULT_ZIRCON))).resolve() / "ClientData" / "frame-formulas.json"
 
     doc = build(args.zircon)
     if args.check:

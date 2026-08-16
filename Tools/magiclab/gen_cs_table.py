@@ -24,7 +24,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CS = ROOT.parent / "zircon" / "GodotClient" / "Scripts" / "MagicEffectTable.cs"
-JSON = Path(__file__).resolve().parent / "magic-effect-table.json"
+# E5: canonical 数据层 (zircon/ClientData), 旧 Tools/magiclab 副本已删
+JSON = Path(__import__("os").environ.get(
+    "MIR3_ZIRCON_ROOT", str(ROOT.parent / "zircon"))).resolve() / "ClientData" / "magic-effects.json"
 
 # GODOT_TABLE_DIFF.md 人工判读保留的差异 (非回归):
 #  - ScortchedEarth/MonsterScortchedEarth: 原版动态随机帧 2450+Random(5)*10, Godot 固定 2450
@@ -82,12 +84,15 @@ def parse_cs(text: str) -> tuple[dict[str, set], set[str]]:
 
 
 def parse_json() -> dict[str, set]:
-    """{skill: 三元组集合}; 纯音效 case (零特效) 保留键但空集。"""
+    """{skill: 三元组集合}; E5: 读 ClientData/magic-effects.json 的 original 段。
+    纯音效 case (零特效) 保留键但空集。"""
     d = json.loads(JSON.read_text(encoding="utf-8"))
+    skills = d["skills"]
     out = {}
-    for key, entry in d.items():
-        if key == "_meta":
-            continue
+    for key, sk in skills.items():
+        if not sk.get("original"):
+            continue  # Godot-only 条目不在原版对账口径 (与旧 JSON 键集语义一致)
+        entry = sk["original"]
         s = set()
         for seg in ("start", "release"):
             for fx in (entry.get(seg) or {}).get("effects", []):

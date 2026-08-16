@@ -28,7 +28,8 @@ if not (ZIRCON / "Client").exists():
 
 MAPOBJ = ZIRCON / "Client" / "Models" / "MapObject.cs"
 FUNCTIONS = ZIRCON / "LibraryCore" / "Functions.cs"
-OUT = REPO / "Tools" / "magiclab" / "magic-effect-table.json"
+# E5: 中间产物落 ClientData/_meta (canonical 见 merge_effects.py 产出的 magic-effects.json)
+OUT = ZIRCON / "ClientData" / "_meta" / "original-effects.json"
 
 CASE_RE = re.compile(r"^\s*case MagicType\.([A-Za-z0-9_]+):\s*$")
 
@@ -202,9 +203,9 @@ def parse_initializer(init_src: str) -> dict:
         if not m:
             continue
         name, op, val = m.group(1), m.group(2), m.group(3).strip()
-        if name in ("MapTarget", "Target", "Direction", "Blend", "Skip", "Has16Directions",
+        if name in ("MapTarget", "Target", "Blend", "Skip", "Has16Directions",
                     "Explode", "BlendRate", "Opacity", "Reversed", "Loop", "UseOffSet",
-                    "Delay", "Speed", "StartTime", "AdditionalOffSet"):
+                    "Delay", "Speed", "AdditionalOffSet"):
             v = val
             if re.fullmatch(r"true|false", v):
                 v = v == "true"
@@ -213,6 +214,38 @@ def parse_initializer(init_src: str) -> dict:
             elif re.fullmatch(r"-?[\d.]+F", v):
                 v = float(v[:-1])
             props[name] = v
+        # ---- E5/A1 全字段化: 时序/方向/绘层语义表达式 → 结构化字段 ----
+        elif name == "StartTime" and "AddMilliseconds" in val:
+            mm = re.search(r"AddMilliseconds\((.+)\)", val)
+            expr = mm.group(1).strip()
+            # 常量延迟 N
+            cm = re.fullmatch(r"(\d+)", expr)
+            # 距离延迟 base + Distance(...)*per  或纯 Distance(...)*per
+            dm = re.fullmatch(r"(?:(\d+)\s*\+\s*)?Functions\.Distance\([^)]*\)\s*\*\s*(\d+)", expr)
+            dm2 = re.fullmatch(r"Functions\.Distance\([^)]*\)\s*\*\s*(\d+)", expr)
+            if cm:
+                props["StartDelayMs"] = int(cm.group(1))
+            elif dm:
+                props["StartDelayMs"] = int(dm.group(1) or 0)
+                props["DistanceDelayMs"] = int(dm.group(2))
+            elif dm2:
+                props["DistanceDelayMs"] = int(dm2.group(1))
+            else:
+                props["StartDelayExpr"] = expr  # 变量表达式 (如 delay)
+        if name == "Direction" and isinstance(val, str):
+            sem = {
+                "Functions.DirectionFromPoint(CurrentLocation, point)": "fromCasterToTarget",
+                "Functions.DirectionFromPoint(CurrentLocation, attackTarget.CurrentLocation)": "fromCasterToTarget",
+                "action.Direction": "castDirection",
+                "attackTarget.Direction": "targetDirection",
+                "Direction": "castDirection",
+            }.get(re.sub(r"\s+", "", val))
+            if sem:
+                props["DirectionSemantic"] = sem
+        if name == "DrawType" and isinstance(val, str):
+            dm = re.fullmatch(r"DrawType\.(\w+)", val)
+            if dm:
+                props["DrawType"] = dm.group(1)
     return props
 
 
@@ -439,9 +472,8 @@ def main():
                     am = re.match(r"\s*([a-zA-Z_]\w*)\s*=\s*(-?\d+)\s*;", ln)
                     if am:
                         cur_vals.append(int(am.group(2)))
-                    bm = re.match(r"\s*break;\s*$", ln)
+                    bm = re.match(r"^\s*break;\s*$", ln)
                     if bm and cur_vals:
-                        var = am.group(1) if am else None
                         dir_map.setdefault("_vals", []).extend(cur_vals)
                         cur_vals = []
                 vals = sorted(set(dir_map.get("_vals", [])))
@@ -471,8 +503,8 @@ def main():
                     snd[key].append(s["name"])
         if snd:
             entry["sound"] = snd
-
     meta = {
+        "schema": "magic-effects/original-2",
         "source": {
             "MapObject.cs": str(MAPOBJ),
             "releaseSwitch": list(regions["release"]),
@@ -485,6 +517,7 @@ def main():
                            len(e.get("start", {}).get("effects", [])) for e in table.values()),
         "animCoverage": sum(1 for e in table.values() if e.get("castAnim")),
     }
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"_meta": meta, **table}, ensure_ascii=False, indent=1),
                    encoding="utf-8")
     print(f"OK {len(table)} magics -> {OUT}")
