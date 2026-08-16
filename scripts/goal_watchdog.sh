@@ -103,6 +103,7 @@ GOALS=(
   # [archived] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
   # [archived] "01a00412-8721-7000-acd4-2f2e7932b250|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-38-241Z_01a00412-8721-7000-acd4-2f2e7932b250.jsonl|ed-res|/home/tetsuya/development/Mir3-Research|编辑器E3资源编辑器"
   "01a00878-9625-7000-a1a0-4efc341cb9cb|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T02-48-35-621Z_01a00878-9625-7000-a1a0-4efc341cb9cb.jsonl|e5-data|/home/tetsuya/development/Mir3-Research|编辑器E5参数数据层化"
+  "01a0088b-76a3-7000-be68-9a857beba360|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T03-09-12-739Z_01a0088b-76a3-7000-be68-9a857beba360.jsonl|e6-fix|/home/tetsuya/development/Mir3-Research|编辑器E6审计问题修复"
 )
 
 CHECK_ONLY=0
