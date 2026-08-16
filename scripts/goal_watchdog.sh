@@ -68,6 +68,7 @@ GOALS=(
   # ---- 2026-08-15 编辑器军团（旧 goal 已完结，条目归档于 git 历史）----
   # [archived 2026-08-15 E1完成] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
   # [archived 2026-08-16 E4完成] "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
+  "01a00ae4-397f-7000-b925-3874f8a8bca8|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-16T14-05-24-223Z_01a00ae4-397f-7000-b925-3874f8a8bca8.jsonl|zreview|/home/tetsuya/development/zircon|Zircon仓库CodeReview"
   # [archived 2026-08-16 E2完成] "01a005d1-6557-7000-82be-86b96d3a7d36|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T14-26-44-183Z_01a005d1-6557-7000-82be-86b96d3a7d36.jsonl|ed-npc|/home/tetsuya/development/Mir3-Research|编辑器E2NPC摆放编辑"
   # [archived] "01a0007a-e0db-7000-aa8c-7ff6380acb67|/home/tetsuya/.omp/agent/sessions/-development-yomu/2026-08-14T13-34-08-091Z_01a0007a-e0db-7000-aa8c-7ff6380acb67.jsonl|yomudesign|/home/tetsuya/development/yomu|Yomu无框单页视觉重构"
   # [archived] "01a00239-3d0a-7000-bb94-9c32abee22ac|/home/tetsuya/.omp/agent/sessions/-development-fudoki/2026-08-14T21-41-40-746Z_01a00239-3d0a-7000-bb94-9c32abee22ac.jsonl|fudokiredesign|/home/tetsuya/development/fudoki|Fudoki本地化+Linear式UI重构"
@@ -102,7 +103,7 @@ GOALS=(
   # [archived] "01a00412-62a0-7000-b4a4-04d0853ab6b8|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-28-896Z_01a00412-62a0-7000-b4a4-04d0853ab6b8.jsonl|ed-infra|/home/tetsuya/development/Mir3-Research|编辑器E0基础设施"
   # [archived] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
   # [archived] "01a00412-8721-7000-acd4-2f2e7932b250|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-38-241Z_01a00412-8721-7000-acd4-2f2e7932b250.jsonl|ed-res|/home/tetsuya/development/Mir3-Research|编辑器E3资源编辑器"
-  "01a00878-9625-7000-a1a0-4efc341cb9cb|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T02-48-35-621Z_01a00878-9625-7000-a1a0-4efc341cb9cb.jsonl|e5-data|/home/tetsuya/development/Mir3-Research|编辑器E5参数数据层化"
+  # [archived 2026-08-16 E5完成] "01a00878-9625-7000-a1a0-4efc341cb9cb|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T02-48-35-621Z_01a00878-9625-7000-a1a0-4efc341cb9cb.jsonl|e5-data|/home/tetsuya/development/Mir3-Research|编辑器E5参数数据层化"
   # [archived 2026-08-16 E6完成] "01a0088b-76a3-7000-be68-9a857beba360|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T03-09-12-739Z_01a0088b-76a3-7000-be68-9a857beba360.jsonl|e6-fix|/home/tetsuya/development/Mir3-Research|编辑器E6审计问题修复"
 )
 
