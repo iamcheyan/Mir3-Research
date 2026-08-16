@@ -463,7 +463,10 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if not name or "/" in name or ".." in name:
                 self.send_error(403)
                 return
-            f = _P(__file__).resolve().parent.parent / "common" / "webui" / name
+            # [E6 P1-1] 共享移动端壳在 Tools/common/webui/（api.py 位于
+            # Tools/maps/mapedit/，需回溯三层；旧代码两层算到
+            # Tools/maps/common/webui 导致移动端壳 CSS/JS 全 404）
+            f = _P(__file__).resolve().parent.parent.parent / "common" / "webui" / name
             if not f.is_file():
                 self.send_error(404)
                 return
