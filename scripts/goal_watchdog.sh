@@ -65,14 +65,15 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
-  "01a00e6b-8b6b-7000-9f95-5993316b5ad6|/home/tetsuya/.omp/agent/sessions/-development-rime-optimize/2026-08-17T06-32-04-203Z_01a00e6b-8b6b-7000-9f95-5993316b5ad6.jsonl|rimeopt|/home/tetsuya/development/rime-optimize|Rime词库优化分支"
-  "01a00e63-a668-7000-965d-2b0d3bf43380|/home/tetsuya/.omp/agent/sessions/-development-rime-study/2026-08-17T06-23-26-824Z_01a00e63-a668-7000-965d-2b0d3bf43380.jsonl|rimereview|/home/tetsuya/development/rime-study|Rime词库深度review"
+  # [archived 2026-08-18 goal-completed 08-17] "01a00e6b-8b6b-7000-9f95-5993316b5ad6|/home/tetsuya/.omp/agent/sessions/-development-rime-optimize/2026-08-17T06-32-04-203Z_01a00e6b-8b6b-7000-9f95-5993316b5ad6.jsonl|rimeopt|/home/tetsuya/development/rime-optimize|Rime词库优化分支"
+  # [archived 2026-08-18 goal-completed 08-17] "01a00e63-a668-7000-965d-2b0d3bf43380|/home/tetsuya/.omp/agent/sessions/-development-rime-study/2026-08-17T06-23-26-824Z_01a00e63-a668-7000-965d-2b0d3bf43380.jsonl|rimereview|/home/tetsuya/development/rime-study|Rime词库深度review"
   # [archived 2026-08-17 用户验收终结] "01a00d6b-922f-7000-bf01-4c0f9e803354|/home/tetsuya/.omp/agent/sessions/-development-chishiki/2026-08-17T01-52-28-719Z_01a00d6b-922f-7000-bf01-4c0f9e803354.jsonl|chishiki-ui|/home/tetsuya/development/chishiki|chishiki前端日式编辑部UI"
   # ---- 2026-08-15 编辑器军团（旧 goal 已完结，条目归档于 git 历史）----
   # [archived 2026-08-15 E1完成] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
   # [archived 2026-08-16 E4完成] "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
-  "01a00ae4-397f-7000-b925-3874f8a8bca8|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-16T14-05-24-223Z_01a00ae4-397f-7000-b925-3874f8a8bca8.jsonl|zreview|/home/tetsuya/development/zircon|Zircon仓库CodeReview"
-  "01a00dac-1ace-7000-808e-92fdfab3da6a|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-17T03-02-57-998Z_01a00dac-1ace-7000-808e-92fdfab3da6a.jsonl|handoff-server|/home/tetsuya/development/zircon|Zircon服务端超级详细接手文档"
+  # [archived 2026-08-18 goal-completed 08-16] "01a00ae4-397f-7000-b925-3874f8a8bca8|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-16T14-05-24-223Z_01a00ae4-397f-7000-b925-3874f8a8bca8.jsonl|zreview|/home/tetsuya/development/zircon|Zircon仓库CodeReview"
+  # [archived 2026-08-18 goal-completed 08-17] "01a00dac-1ace-7000-808e-92fdfab3da6a|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-17T03-02-57-998Z_01a00dac-1ace-7000-808e-92fdfab3da6a.jsonl|handoff-server|/home/tetsuya/development/zircon|Zircon服务端超级详细接手文档"
+  "01a00f98-abb7-7000-a88c-3338d40e7808|/home/tetsuya/.omp/agent/sessions/-chezmoi/2026-08-17T12-00-58-807Z_01a00f98-abb7-7000-a88c-3338d40e7808.jsonl|chezmoi|/home/tetsuya/chezmoi|密钥管理入Bitwarden"
   "01a00dac-1b6b-7000-a135-07021658e6a3|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-17T03-02-58-155Z_01a00dac-1b6b-7000-a135-07021658e6a3.jsonl|handoff-client|/home/tetsuya/development/zircon|Zircon原版C#客户端超级详细接手文档"
   "01a00dac-1b9e-7000-a3fd-cf29a9e6ac53|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-08-17T03-02-58-206Z_01a00dac-1b9e-7000-a3fd-cf29a9e6ac53.jsonl|handoff-godot|/home/tetsuya/development/zircon|Zircon Godot客户端超级详细接手文档"
   # [archived 2026-08-16 E2完成] "01a005d1-6557-7000-82be-86b96d3a7d36|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T14-26-44-183Z_01a005d1-6557-7000-82be-86b96d3a7d36.jsonl|ed-npc|/home/tetsuya/development/Mir3-Research|编辑器E2NPC摆放编辑"
