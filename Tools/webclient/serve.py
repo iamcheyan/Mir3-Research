@@ -22,8 +22,21 @@ import threading
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
+
+_EMPTY_WEBP = None   # 1x1 透明 lossless (惰性生成, E5/C6 库内空帧 200 响应用)
+
+
+def _empty_webp() -> bytes:
+    global _EMPTY_WEBP
+    if _EMPTY_WEBP is None:
+        import io
+        from PIL import Image
+        buf = io.BytesIO()
+        Image.new("RGBA", (1, 1), (0, 0, 0, 0)).save(buf, format="WEBP", lossless=True)
+        _EMPTY_WEBP = buf.getvalue()
+    return _EMPTY_WEBP
 
 _MIR3 = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_MIR3 / "Tools" / "webres"))
@@ -114,6 +127,101 @@ def lab_frame_formulas():
                                  "运行 Tools/resedit/frameformulas.py")
     return FileResponse(p, media_type="application/json")
 
+_SAVE_TOP_KEYS = {"frame", "count", "delayMs", "lib", "colour", "kind", "segment", "target",
+                  "ctx", "line", "origin", "particle", "startLight", "endLight",
+                  "frameExpr", "directionFrames"}
+_SAVE_EXTRA_KEYS = {"Blend", "BlendRate", "Opacity", "DrawType", "Skip", "StartDelayMs",
+                    "DistanceDelayMs", "Direction", "DirectionSemantic",
+                    "Has16Directions", "StartTime"}
+
+
+@app.post("/lab/save")
+def lab_save(body: dict):
+    """E5/C7 编辑闭环: 网页编辑 → 写回 ClientData/magic-effects.json original 段
+    (帧三元组同步 godot 段) → .bak → 回显校验 → gen_cs_table --check 自检。
+    自检失败自动回滚并返回失败详情。"""
+    import copy
+    import subprocess
+
+    key, entry = body.get("key"), body.get("entry")
+    if not key or not isinstance(entry, dict):
+        raise HTTPException(400, "body: {key, entry}")
+    p = _client_data() / "magic-effects.json"
+    if not p.exists():
+        raise HTTPException(500, "ClientData/magic-effects.json 缺失")
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    sk = doc["skills"].get(key)
+    if not sk or not sk.get("original"):
+        raise HTTPException(404, f"技能 {key} 无 original 段")
+
+    def clean_effects(effects):
+        out = []
+        for e in effects if isinstance(effects, list) else []:
+            if not isinstance(e, dict):
+                continue
+            ne = {k: e[k] for k in e if k in _SAVE_TOP_KEYS}
+            if isinstance(e.get("extra"), dict):
+                ne["extra"] = {k: v for k, v in e["extra"].items() if k in _SAVE_EXTRA_KEYS}
+            out.append(ne)
+        return out
+
+    new_start = clean_effects(entry.get("start", {}).get("effects", []))
+    new_release = clean_effects(entry.get("release", {}).get("effects", []))
+    if not new_start and not new_release:
+        raise HTTPException(400, "空 effects, 拒绝保存")
+
+    def triples(*effects_lists):
+        t = []
+        for effects in effects_lists:
+            for e in effects:
+                if isinstance(e.get("frame"), int):
+                    t.append((e.get("lib"), e["frame"], e.get("count")))
+        return sorted(t)
+
+    orig = sk["original"]
+    old_t = triples(orig.get("start", {}).get("effects", []),
+                    orig.get("release", {}).get("effects", []))
+    new_t = triples(new_start, new_release)
+    if len(old_t) != len(new_t):
+        raise HTTPException(422, "三元组数量变化 (增删特效不支持), 拒绝保存")
+
+    if old_t != new_t and sk.get("godot"):
+        mapping = dict(zip(old_t, new_t))   # 排序后按位对应; check_file 是最终守门
+        def sync(x):
+            if isinstance(x, dict):
+                if isinstance(x.get("startIndex"), int):
+                    k3 = (x.get("file"), x["startIndex"], x.get("frameCount"))
+                    if k3 in mapping:
+                        x["file"], x["startIndex"], x["frameCount"] = mapping[k3]
+                for v in x.values():
+                    sync(v)
+            elif isinstance(x, list):
+                for v in x:
+                    sync(v)
+        g2 = copy.deepcopy(sk["godot"])
+        sync(g2)
+        sk["godot"] = g2
+
+    bak = p.with_suffix(".json.bak")
+    bak.write_text(p.read_text(encoding="utf-8"), encoding="utf-8")
+    orig.setdefault("start", {})["effects"] = new_start
+    orig.setdefault("release", {})["effects"] = new_release
+    text = json.dumps(doc, ensure_ascii=False, indent=1) + "\n"   # 与 merge_effects 同格式
+    p.write_text(text, encoding="utf-8")
+    try:
+        if json.loads(p.read_text(encoding="utf-8")) != doc:
+            raise RuntimeError("回显不一致")
+        rc = subprocess.run(
+            [sys.executable, str(_MIR3 / "Tools" / "magiclab" / "gen_cs_table.py"),
+             "--check", "--skip-runtime"],
+            capture_output=True, text=True, timeout=120)
+        if rc.returncode != 0:
+            raise RuntimeError(f"gen_cs_table --check 失败:\n{rc.stdout[-600:]}{rc.stderr[-300:]}")
+    except Exception as ex:   # 自检失败 → 回滚
+        p.write_text(bak.read_text(encoding="utf-8"), encoding="utf-8")
+        return JSONResponse({"ok": False, "error": str(ex)[:900], "rolled_back": True})
+    return {"ok": True, "check": "pass", "key": key, "triples": [list(t) for t in new_t]}
+
 
 @app.get("/lab/magicinfo")
 def lab_magicinfo():
@@ -202,6 +310,11 @@ def sprite_frame(lib: str, frame: str):
         if not p.is_file():
             n = webres.extract_frame(lib, int(frame), ROOT / "sprites" / lib)
             if n < 0:
+                # E5/C6: 库内空帧 → 200 透明 (X-Empty-Frame 标记); 界外 → 404 (原版 Draw 同样静默)
+                if webres.frame_state(lib, int(frame)) == "blank":
+                    resp = Response(_empty_webp(), media_type="image/webp")
+                    resp.headers["X-Empty-Frame"] = "1"
+                    return resp
                 raise HTTPException(404, f"{lib}/{frame}")
     return FileResponse(p, media_type="image/webp")
 

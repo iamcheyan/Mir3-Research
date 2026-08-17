@@ -58,3 +58,16 @@ html, body { height: 100%; background: #0b0b10; color: #d8d8e0;
 #lab-events .t { color: #6a6a88; }
 #lab-events .snd { color: #7ab8ff; }
 #lab-events .seg { color: #ffcf5c; }
+
+/* E5/C7 参数编辑器 */
+.lab-edit { margin-top: 8px; max-height: 42vh; overflow-y: auto; }
+.lab-edit h5 { color: #8fd0ff; margin: 4px 0; }
+.ef-row { border-left: 2px solid #2c3a52; padding: 3px 0 3px 8px; margin: 4px 0; }
+.ef-tag { color: #9aa3c0; font-size: 11px; display: block; }
+.ef-tag i { color: #5f6f8f; font-style: normal; }
+.ef-fields { display: flex; flex-wrap: wrap; gap: 4px; }
+.ef { display: flex; align-items: center; gap: 2px; color: #6f7f9f; font-size: 11px; }
+.ef input[type=number] { width: 56px; background: #141822; color: #cfe0ff; border: 1px solid #2c3a52; border-radius: 3px; padding: 1px 3px; font-size: 11px; }
+.ef select { background: #141822; color: #cfe0ff; border: 1px solid #2c3a52; border-radius: 3px; font-size: 11px; }
+#lab-save { margin-top: 6px; background: #23405e; color: #cfe8ff; border: 1px solid #3a5a82; border-radius: 4px; padding: 3px 10px; cursor: pointer; }
+#lab-save:hover { background: #2d5076; }

@@ -80,10 +80,43 @@ def load_godot() -> dict:
     return extract_godot_table.parse_table()
 
 
+def check_cutover() -> int:
+    """cutover 后 --check: ClientData/magic-effects.json 内部一致性
+    (original↔godot 三元组, ACCEPTABLE 除外; 白名单对账)。"""
+    doc = json.loads(CLIENT_DATA.read_text(encoding="utf-8"))
+    bad: list[str] = []
+    for name, sk in doc["skills"].items():
+        if name in ACCEPTABLE or not (sk.get("original") and sk.get("godot")):
+            continue
+        to_ = triples_original(sk["original"])
+        if to_ and to_ != triples_godot(sk["godot"]):
+            bad.append(f"{name}: 原版{sorted(to_)} != godot{sorted(triples_godot(sk['godot']))}")
+    wl = set(doc.get("originalSpellCases") or [])
+    want = {k for k, sk in doc["skills"].items() if triples_original(sk.get("original") or {})}
+    for k in sorted(want - wl):
+        bad.append(f"白名单缺 {k}")
+    for k in sorted(wl - want):
+        bad.append(f"白名单多 {k}")
+    if bad:
+        print("FATAL: ClientData/magic-effects.json 内部不一致:", file=sys.stderr)
+        for b in bad:
+            print(" ", b, file=sys.stderr)
+        return 1
+    print(f"magic-effects.json 内部一致 ✓ (cutover 模式, {len(doc['skills'])} 技能, "
+          f"可接受差异 {len(ACCEPTABLE)})")
+    return 0
+
 def main() -> int:
     check = "--check" in sys.argv
+    # --check 演化为 ClientData 内部一致性自检 (original↔godot 三元组 + 白名单,
+    # 与 gen_cs_table 文件层同口径但独立实现 — C7 网页编辑后 JSON 有意偏离源)
+    try:
+        godot = load_godot()
+    except Exception:
+        if not check:
+            raise
+        return check_cutover()
     original = json.loads(ORIGINAL.read_text(encoding="utf-8"))
-    godot = load_godot()
 
     conflicts: list[str] = []
     skills: dict[str, dict] = {}

@@ -34,6 +34,8 @@ const chrome = spawn(CHROME, [
 ], { stdio: 'ignore' });
 
 const die = (m) => { try { chrome.kill(9); } catch {} console.error('FATAL:', m); process.exit(1); };
+mkdirSync(GALLERY, { recursive: true });
+if (SET_BASELINE) mkdirSync(BASELINE, { recursive: true });
 
 let page = null;
 for (let i = 0; i < 30; i++) {
