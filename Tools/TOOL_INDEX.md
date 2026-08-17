@@ -185,7 +185,7 @@ Mir3-Research/Tools/
 - `Mir3-Research/LibraryCore` / `ServerLibrary` 是 **symlink → zircon 同名目录**：C# 工具直接
   复用游戏模型类编译；zircon 代码变更会传导到本仓库工具。
 - 工具运行时数据（System.db / 图库 / WebData）都在 zircon 的 `Debug/` 下。
-- 改 zircon C# 后必须重新 `dotnet build`（服务端还要 `-o Debug/ServerExe` 覆盖运行目录）。
+- 改 zircon C# 后必须重新 `dotnet build`（服务端还要 `-o Debug/ServerCore` 覆盖运行目录）。
 - zircon 仓库内部保留的兼容转发：`zircon/scripts/*.py` → `Tools/i18n/`（2026-08-17 迁移）。
 
 ## 八、新工具入驻规范
