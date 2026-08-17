@@ -2,6 +2,9 @@
 
 `Tools/` 是项目工具区，不是正式客户端/服务端源码。工具源文件按用途分区；仓库根部仍保留少量兼容转发入口，因此历史命令不会因为目录整理失效。
 
+> **总目录入口：[TOOL_INDEX.md](TOOL_INDEX.md)** —— 全部辅助开发工具的分类详解、
+> 启动命令、端口表、写库纪律、已知坑。找工具先看它。
+
 ## 逆向与资源：`reverse-engineering/`
 
 - `disasm_mir3_ui.py`、`extract_mir3_*.py`、`analyze_mir3_*.py`：原版 EXE、窗口、控件和资源证据提取。
