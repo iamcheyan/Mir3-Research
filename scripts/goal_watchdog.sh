@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "01a00d6b-922f-7000-bf01-4c0f9e803354|/home/tetsuya/.omp/agent/sessions/-development-chishiki/2026-08-17T01-52-28-719Z_01a00d6b-922f-7000-bf01-4c0f9e803354.jsonl|chishiki-ui|/home/tetsuya/development/chishiki|chishiki前端日式编辑部UI"
   # ---- 2026-08-15 编辑器军团（旧 goal 已完结，条目归档于 git 历史）----
   # [archived 2026-08-15 E1完成] "01a00412-74a4-7000-bd16-37667d96da85|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-33-508Z_01a00412-74a4-7000-bd16-37667d96da85.jsonl|ed-map|/home/tetsuya/development/Mir3-Research|编辑器E1地图编辑器"
   # [archived 2026-08-16 E4完成] "01a0041d-7c61-7000-aeaa-019ff9f8d404|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-30-36-385Z_01a0041d-7c61-7000-aeaa-019ff9f8d404.jsonl|ed-magic|/home/tetsuya/development/Mir3-Research|编辑器E4技能实验室"
