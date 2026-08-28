@@ -111,6 +111,7 @@ GOALS=(
   # [archived] "01a00412-8721-7000-acd4-2f2e7932b250|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-15T06-18-38-241Z_01a00412-8721-7000-acd4-2f2e7932b250.jsonl|ed-res|/home/tetsuya/development/Mir3-Research|编辑器E3资源编辑器"
   # [archived 2026-08-16 E5完成] "01a00878-9625-7000-a1a0-4efc341cb9cb|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T02-48-35-621Z_01a00878-9625-7000-a1a0-4efc341cb9cb.jsonl|e5-data|/home/tetsuya/development/Mir3-Research|编辑器E5参数数据层化"
   # [archived 2026-08-16 E6完成] "01a0088b-76a3-7000-be68-9a857beba360|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-08-16T03-09-12-739Z_01a0088b-76a3-7000-be68-9a857beba360.jsonl|e6-fix|/home/tetsuya/development/Mir3-Research|编辑器E6审计问题修复"
+  # [active 2026-08-28] "01a04700-67cc-7000-ae6e-6d9bc99df455|/home/tetsuya/.omp/agent/sessions/-rime/2026-08-28T06-13-24-044Z_01a04700-67cc-7000-ae6e-6d9bc99df455.jsonl|rime-ext|/home/tetsuya/rime|SBZR外部词频参考"
 )
 
 CHECK_ONLY=0
