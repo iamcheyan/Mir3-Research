@@ -9480,3 +9480,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔底部栏〕**截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot-to-testhero-bottom.png` 保存了底部 `ChatLogPanel` 的 `[Normal] Bot01: ...` 普通文本。
 - **〔F350〕**截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot-to-testhero-f350-proof.png` 保存了 `LegacyChatDialog`/F350 中的 `[Normal] Bot01: Bot01: BOTPING，我叫Bot01。`；入口通过 `R` 打开，随后可正常关闭。
 - **〔结论〕**底部聊天栏的生产接收链、同视野服务端分派、F350 详细历史均已闭合。之前“空栏”根因是测试角色不在服务端 `SeenByPlayers`/`MaxViewRange` 有效闭环内，而非 `ReceiveChat` 或 `_chatLog.AddMessage` 缺失。普通聊天验收阻塞解除；经验实时包和人物实际装备替换仍按 Round 779/780 的独立阻塞保留。
+
+## Round 782 (F350 text-input focus closure) — 2026-09-25：点击输入与 R 字符不再被 EI 快捷键吞掉
+
+- **〔代码根因〕**`DXTextInput` 外层 `DXControl` 接收鼠标按下后没有把焦点交给内部 `LineEdit`；同时 `GameScene._Input()` 在文本焦点保护之前无条件处理裸 `R`，导致管理员命令 `@monster Chicken 1` 被记录为 `@monsteChicken 1`，首个空格还会触发重新打开聊天窗。
+- **〔修复〕**`DXTextInput._GuiInput()` 在左键按下时显式聚焦内部编辑器；`GameScene._Input()` 仅在 F350 输入框未聚焦时处理裸 `R` 显隐，聚焦时将 `R` 留给文本编辑器。
+- **〔运行证据〕**`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`、本地 `/home/tetsuya/mir2ei/Data`；修复后点击 F350 输入区提交 `@monster Chicken 1`，`Debug/ServerCore/Chat Logs.txt` 记录完整文本（20:28:52），服务器返回系统命令不存在提示但输入链本身完整。构建 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功。
+- **〔边界〕**本轮未冒称经验包已实际增加：`--operation-audit-ext` 在 S13 邮件自发收件人场景先失败退出，未到 S16 战斗；经验实时更新仍保持独立未闭合状态。
