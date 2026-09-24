@@ -9568,3 +9568,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔夹具〕**临时从 Zircon 已有 `Debug/Client/Data/Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 复制到严格运行根 `/home/tetsuya/mir2ei/Data`；复测结束后三个文件已删除，运行根恢复原状。
 - **〔运行〕**`test@test.com` 在 1024×768、`--legacy-ui --legacy-hud --operation-audit-ext` 下真实登录成功并收到 `S.StartGame Result=Success`、`S.InformMaxExperience`，但审计在 S13 邮件阶段因 `server_success=false` 结束，未进入 S16 战斗阶段。
 - **〔边界〕**本轮不猜测或输出服务端主密码，也不把未进入战斗的运行记为 `GainedExperience` 验收。Round 786 的管理员真实击杀、两次 `GainedExperience`、经验条更新截图仍是该网络链路的有效证据；本轮只确认标准账号无法独立复现该阶段。
+
+## Round 796 (inventory protocol semantics) — 2026-09-25：核对 EI cell-table 与 Zircon 包体字段边界
+
+- **〔Zircon 包体〕**`ClientUserItem` 仅下发 `Index`、`InfoIndex`、耐久、数量、`Slot`、等级/经验、颜色、附加属性、标记、过期时间和宝石记录；`C.ItemMove`/`S.ItemMove` 仅携带网格、源/目标槽位、合并标记和成功状态。`UserItem.Slot` 是服务端持久化字段，`UserItem.ToClientInfo()` 原样复制到客户端。
+- **〔服务端行为〕**`SConnection.Process(C.ItemMove)` 直接转交 `PlayerObject.ItemMove()`；后者按 `GridType` 选择数组、按 `FromSlot`/`ToSlot` 取值并交换，随后回写目标协议槽位。该链没有接收或发送 EI 六列 WORD cell-table、footprint 宽高或首格 `slot+0x3E8` 标记。
+- **〔EI 对照〕**`bag-list-fill-chain-evidence.json` 已闭合 EI `0x42FC20`/`0x42F440`：46 条记录位于 `bag+0x774`、步长 `0xC2C`，另有 `[bag+0x324]` 六列 cell-table；证据的 pending 项只剩服务器语义和运行包配对，不证明 Zircon 协议含有对应字段。
+- **〔裁决〕**当前没有可安全补齐的协议映射。`DXItemGrid.UseLegacyFootprints` 的本地 first-fit 重建仍是唯一不伪造 EI 网络语义的实现；不新增协议字段、不改服务端槽位模型，也不把当前布局宣称为原版 cell-table 还原。
+- **〔运行边界〕**Round 794 的真实 Armour 跨 2 列×3 行和 48 槽滚动证据继续有效；本轮是静态协议核对，未修改生产代码。
