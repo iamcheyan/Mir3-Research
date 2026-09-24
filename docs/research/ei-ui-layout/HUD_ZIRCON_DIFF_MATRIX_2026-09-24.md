@@ -25,11 +25,11 @@
 
 ## 未闭合项目
 
-1. 经验条比例绘制代码已修；独立 HUD 实验场已用第二组经验值完成动态填充复测：`experience-render-quarter.png` 与 `experience-render-threequarter.png`。实时登录客户端的经验包/命令增量仍未取得，不能把实验场结果冒称网络链路验收。
+1. 经验条比例绘制代码已修；独立 HUD 实验场已用第二组经验值完成动态填充复测：`experience-render-quarter.png` 与 `experience-render-threequarter.png`。2026-09-25 使用本地临时 `Mon-*.Zl` 夹具完成真实击杀，客户端收到两次 `GainedExperience`，经验网络更新链闭合；证据见 `RESEARCH_LOG.md` Round 786 与 Zircon `.artifacts/ui-acceptance-2026-09-24/experience-after-gained-runtime.png`。标准运行根仍需提供 `Mon-*.Zl` 才能复现。
 2. 已取得 F350 直达、HUD MailButton 鼠标打开、关闭按钮关闭、R 关闭后再次打开的真实截图；入口点击坐标为完整 1024×768 窗口中的 `845,659`，截图保存在 `.artifacts/ui-acceptance-2026-09-24/`。
-3. 经验条动态复测尝试使用实际登录客户端和 `@level 2`；服务端日志确认测试账号 `Admin=False`，命令未产生等级/经验更新，前后 HUD bar crop 像素无变化；独立实验场已证明渲染器在 25%/75% 两个值下按比例裁切。
+3. 经验条早期动态复测曾使用实际登录客户端和 `@level 2`；该次因测试账号 `Admin=False` 未产生更新，不能作为经验验收证据。后续 Round 786 已通过管理员刷怪/真实击杀收到 `GainedExperience`，以 Round 786 记录为准。
 4. F280 两个根因均已闭合：旧版窗口布局应用晚于 `ConfigureLegacyInventoryGrid()`，以及 `DXButton.CanBePressed=false` 在 `DXControl` 进入 Movable 拖拽前吞掉滑块左键；分别由 `a96e4941`、`90a4b151` 修复。独立客户端临时测试将真实 `Gold` `ClientUserItem` 复制到 48 槽位，验证 8 行、范围 0..2、滚轮内容换行、下边界稳定、拖柄回顶；临时注入已回退。
-5. 人物收起/展开真实截图已通过；本次补齐 `Weapon`、`Armour`、`Necklace` 三个大 hit record 及全部 11 个 EI 装备槽的窗口相对尺寸；截图 `character-equipment-slots-w-continue.png`、`character-equipment-slots-expanded-continue.png`。当前角色装备数组无可兼容装备，不能冒称服务端拖放成功。
+5. 人物收起/展开真实截图已通过；本次补齐 `Weapon`、`Armour`、`Necklace` 三个大 hit record 及全部 11 个 EI 装备槽的窗口相对尺寸；截图 `character-equipment-slots-w-continue.png`、`character-equipment-slots-expanded-continue.png`。2026-09-25 使用 `Wood Sword` 完成真实背包前移/回移、卸下/穿戴/恢复原装备及失败操作保护，服务端 `ItemMove` 回包和最终断言均通过；证据见 `RESEARCH_LOG.md` Round 787。
 6. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
 7. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
 8. 2026-09-25 继续验收闭合：先启动 BotRunner 的 Bot01，再启动 TestHero 图形客户端，使 `SeenByPlayers` 建立；两者 map index 1、约 `(119,231)` 同一 `MaxViewRange` 内。TestHero 日志收到 `Net 入队: Chat`，底部截图 `chat-bot-to-testhero-bottom.png` 显示 `[Normal] Bot01: ...`，F350 截图 `chat-bot-to-testhero-f350-proof.png` 同样显示普通文本。此前同图但视野列表未建立/角色超出范围的截图不作为反例；聊天验收阻塞解除。
