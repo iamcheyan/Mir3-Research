@@ -25,7 +25,7 @@
 
 ## 当前仍保留的限制
 
-1. 经验条比例绘制和 `GainedExperience` 网络更新链已闭合；标准运行根若要复现真实击杀仍需提供与当前怪物数据匹配的 `Mon-*.Zl` 夹具。该项是运行资源覆盖限制，不是 HUD 绘制逻辑阻塞。
+1. 经验条比例绘制和 `GainedExperience` 网络更新链已由 Round 786 的管理员真实击杀闭合；标准账号 Round 795 在 S13 邮件阶段因 `server_success=false` 未进入 S16，标准运行根若要复现真实击杀仍需提供与当前怪物数据匹配的 `Mon-*.Zl` 夹具。该项是运行资源/账号路径限制，不是 HUD 绘制逻辑阻塞。
 2. 背包已通过真实 Armour 跨 2 列×3 行截图和 48 槽滚动夹具验证 footprint/滚动表现；EI 服务端原始六列 cell-table 与 Zircon 现代协议记录槽位之间的完整语义仍未能交叉映射，因此当前实现继续采用有证据约束的 first-fit 重建。
 3. 人物属性中 `魔法躲避`、`毒物躲避`、`中毒恢复`、`生命恢复`、`魔法恢复` 的原始字段尚未获得独立 Zircon `Stat` 语义映射，继续显示 `—`。原版 `魔法`、`魔法防御力` 在该绘制区间为 label-only，不绘制值占位符。
 4. 属性验收日志中的 `ERR_CANT_OPEN` 已确认来自 `drivers/alsa/audio_driver_alsa.cpp:90`，Xvfb 无音频设备时回退 dummy driver；不属于 UI 资源阻塞，记录于 `RESEARCH_LOG.md` Round 793。
