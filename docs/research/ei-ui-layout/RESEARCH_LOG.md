@@ -6894,7 +6894,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - 落盘：handoff-refresh-3-evidence.json（F533，derived）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 227。
 ## Round 228 (F534) — 2026-08-12：技能书详情页
 
-- **〔解析〕**0x43A440：技能名匹配 + 详情解析（token 0x468BF0 '' 分隔、'#' 等级门、';' 终止、匹配旗标 [esp+0x13]）；**详情请求 msg 0xA5**（0x45E200）+ 多行缓冲（0x100 stride）。
+- **〔解析〕**0x43A440：技能名匹配 + 详情解析（token 0x468BF0 '
+' 分隔、'#' 等级门、';' 终止、匹配旗标 [esp+0x13]）；**详情请求 msg 0xA5**（0x45E200）+ 多行缓冲（0x100 stride）。
 - 落盘：skill-book-detail-page-evidence.json（F534，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 228。
 ## Round 229 (F535) — 2026-08-12：行会窗渲染细节
 
@@ -9452,3 +9453,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实体 vtable 首查〕**slot0=0x40EA60 析构族：0x476458(FX 基, slot7C=0x40DA40)/0x476528(0x40DDD0)/0x4765F0/0x4767A8(配对节点)——**英雄 vtable 未隔离**（其 slot 0x7C=实体本体绘制，接收 (map,sel,dt,1)），下一轮目标。
 - **〔场景 ctx 总账〕**0x8AB7A8=瓦片/FX 裁剪 blit；0x7DA1D8=名条/文本；[0x8AB7BC]=渲染设备对象（vslot 0x40/0x14/0x30/0x10…）。
 - 落盘：hero-overlay-links-evidence.json（F1083，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 777。
+## Round 778 (HUD chat runtime continuation) — 2026-09-25：Bot 普通聊天服务端链路闭合，视野范围阻塞保持
+
+- **〔发送端〕**启动本地 ServerCore 与 `BotRunner`（2 bots），客户端运行根固定为 `/home/tetsuya/mir2ei/Data`。`BotRunner/BotAgent.cs` 的 `C.Chat` 语料定时器实际触发；服务端 `Chat Logs.txt` 新增 2026-09-24 19:06–19:14 的 Bot01/Bot02 普通文本记录（如“大家好，我叫Bot02。”、“来人组队刷Pig, 差你一个”）。
+- **〔分派链〕**`ServerLibrary/Models/PlayerObject.cs:1820-1838` 明确普通文本包装为 `Name: text`，仅发送给 `SeenByPlayers` 且要求 `Functions.InRange(CurrentLocation, player.CurrentLocation, Config.MaxViewRange)`；发送者自身不接收。这解释了单客户端和两个相距较远角色截图中 `ChatLogPanel` 仍为空，不是 `ReceiveChat → _chatLog.AddMessage` 接收链丢失。
+- **〔运行结果〕**Bot01 客户端在比奇县完整进入游戏；Bot02 同图实际发送普通文本；服务端日志证明发送和记录成功。当前截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot02-nearby-continue.png` 未显示普通文本，因两个角色未进入 `MaxViewRange`，不冒称为底部栏视觉闭环。
+- **〔结论〕**普通聊天的生产接收链和服务端发送链均有独立证据；剩余阻塞严格收窄为需要把两个角色置于同一 `MaxViewRange` 内，或使用观察者路径后再做截图验收。未修改生产代码，未发送命令模板或拒绝/喊话文本。

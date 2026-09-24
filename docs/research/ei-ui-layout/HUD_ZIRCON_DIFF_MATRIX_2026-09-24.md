@@ -32,3 +32,4 @@
 5. 人物收起/展开真实截图已通过；Weapon/Armour/Necklace 大 hit record 行为仍未迁移。
 6. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
 7. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
+8. 2026-09-25 继续验收：BotRunner 的 `C.Chat` 普通文本已由服务端 `Chat Logs.txt` 记录，`PlayerObject.Chat()` 也已核实按 `SeenByPlayers` 与 `Config.MaxViewRange` 分派且不回发发送者；Bot01/Bot02 同图但距离超出视野，`chat-bot02-nearby-continue.png` 仍无底部普通文本。因此接收链问题已排除，普通聊天视觉闭环仍阻塞于可见范围/观察者路径。
