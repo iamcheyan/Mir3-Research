@@ -33,3 +33,5 @@
 6. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
 7. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
 8. 2026-09-25 继续验收闭合：先启动 BotRunner 的 Bot01，再启动 TestHero 图形客户端，使 `SeenByPlayers` 建立；两者 map index 1、约 `(119,231)` 同一 `MaxViewRange` 内。TestHero 日志收到 `Net 入队: Chat`，底部截图 `chat-bot-to-testhero-bottom.png` 显示 `[Normal] Bot01: ...`，F350 截图 `chat-bot-to-testhero-f350-proof.png` 同样显示普通文本。此前同图但视野列表未建立/角色超出范围的截图不作为反例；聊天验收阻塞解除。
+
+9. 2026-09-25 F350 输入焦点补修：`DXTextInput._GuiInput()` 左键按下显式聚焦内部 `LineEdit`；`GameScene._Input()` 在 F350 输入框聚焦时不再吞裸 `R`。修复后点击输入区提交 `@monster Chicken 1` 的服务端日志文本完整，截图 `f350-input-complete.png`、`f350-command-complete.png`；服务端命令本身因当前命令表返回不存在提示，不将其误记为刷怪/经验验收。
