@@ -9499,3 +9499,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实验〕**临时移除 S16 客户端 `MonsterInfo.AI >= 0` 筛选，并跳过 S13 邮件阶段，仅用于确认是否存在被 AI 字段过滤掉的可见怪物；实验结束后筛选和阶段逻辑均已恢复。
 - **〔结果〕**客户端仍先报告 `S16 no monster in view`；随后收到若干 `ObjectAttack/ObjectDied`，但没有目标重建、攻击审计记录或 `GainedExperience`，重试仍以 `FAIL no monster in view for combat audit` 结束。
 - **〔结论〕**当前可见对象不足以构成 TestHero 的可控击杀样本；不能把后台对象死亡包误记为本角色经验增量。正式源码最终构建成功，仅保留既有警告。
+
+## Round 785 (admin spawn and world-resource boundary) — 2026-09-25：已闭合管理员刷怪权限，阻塞点转为本地怪物图库
+
+- **〔权限〕**使用服务端配置的非邮箱主密码登录路径，以角色名 `TestHero` 登录成功；客户端收到 `StartGame Result=Success`，并可执行 `@monster`，服务端向该会话发送 `ObjectMonster`/`DataObjectMonster`。
+- **〔运行结果〕**管理员刷怪命令确实生成了 `TigerSnake`/`OmaHero`/`Chicken` 的对象包，但当前运行资源根严格为 `/home/tetsuya/mir2ei/Data`，其中只有原始 `Mon-*.wil/.wix`，没有 Zircon 客户端所需的 `Mon-*.Zl`。
+- **〔代码证据〕**`ObjectRenderer.CreateMonster()` 按 `MonsterLookup` 取 `Mon_3/Mon_12/Mon_13.Zl`，`LibraryCache.Get()` 只读取 `.Zl`；运行日志重复记录 `怪物图库加载失败: Mon_3/Mon_12/Mon_13`，对象因此未进入 `GameScene._objects`，S16 无法建立可攻击目标。
+- **〔结论〕**管理员权限与刷怪链已验证；经验实时包仍不能验收，当前实际阻塞是“符合硬性资源根的世界怪物 Zl 缺失”，不是账号权限或 AI/HP 目标筛选。所有客户端临时实验代码已回退。
