@@ -9538,3 +9538,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔证据〕**`status-window-render-evidence.json` 的原版第二列记录显示：“魔法”在 `0x007DA149` 读取一个 `word`；“魔法防御力”标签下读取六个独立 `word` 字段，并明确要求保留原始字段，不能直接命名为 MR 范围。
 - **〔修正〕**`CharacterDialog.BuildLegacyExpandedPanel()` 不再将“魔法”映射为 `Stat.MinMC/MaxMC`，也不再将“魔法防御力”映射为 `Stat.MinMR/MaxMR`；两项均显示 `—`，直到原版字段与服务端语义有独立交叉证据。`RefreshLegacyAttributeLabels()` 的 null 显示语义同步改为 `—`。
 - **〔验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过；真实登录 `--legacy-open=character-expanded` 成功，截图保存为 `.artifacts/ui-acceptance-2026-09-24/character-attributes-conservative-runtime.png`。正式 Zircon 提交为 `503fb261`。
+
+## Round 791 (status label-only correction) — 2026-09-25：纠正魔法/魔防值绘制口径并同步 Godot
+
+- **〔证据复核〕**`status-option-names-evidence.json` 对 `0x0044BC80–0x0044CCCC` 的调用计数闭合为 30 个值绘制、32 个标签绘制；`魔法` 与 `魔法防御力` 均只有标签绘制，没有紧随其后的值绘制。先前 Round 790 将相邻 raw word load 记录误读为这两行的值绘制，现撤回该语义。
+- **〔证据修正〕**`status-window-render-evidence.json` 为两行增加 `value_draw_status=label-only`，相邻 raw loads 保留为未分类证据，不再命名为 MC/MR 或范围字段。服务端 `Stat.MinMC/MaxMC/MinMR/MaxMR` 仍未与该原版窗口字段闭合。
+- **〔代码修正〕**`CharacterDialog.RefreshLegacyAttributeLabels()` 对 `Stat? == null` 的扩展行只保留原版标签，不再显示 `—` 占位值；已证的防御、攻击和七个元素攻击行仍按当前已闭合字段显示。
+- **〔运行验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告；使用 `/home/tetsuya/mir2ei`、`DISPLAY=:100`、1024×768、`--legacy-open=character-expanded` 真实登录成功。修复前直达展开时扩展标签未在切换后刷新；补充 `ToggleLegacyView()` 刷新后，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-attributes-label-only-final.png` 显示 `防御 11-34`、`攻击 33-46`、元素攻击值，以及 `魔法`/`魔法防御力` 无值占位符。

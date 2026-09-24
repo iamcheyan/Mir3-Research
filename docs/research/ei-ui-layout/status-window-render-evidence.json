@@ -881,6 +881,7 @@
         {
           "label": "魔法",
           "format_va": "0x0044C591",
+        "value_draw_status": "label-only in 0x0044BC80-0x0044CCCC; no value draw follows this label (confirmed by status-option-names-evidence.json)",
           "sources": [
             {
               "address": "0x007DA149",
@@ -968,6 +969,7 @@
         },
         {
           "label": "魔法防御力",
+        "value_draw_status": "label-only in 0x0044BC80-0x0044CCCC; no value draw follows this label (confirmed by status-option-names-evidence.json)",
           "format_va": "0x0044CA5F",
           "sources": [
             {
@@ -1001,11 +1003,11 @@
               "load_va": "0x0044CC73"
             }
           ],
-          "note": "The tail of the routine renders six resistance/defense sub-values under this label family; retain each raw field until the formatter/label grouping is verified."
+          "note": "The tail of the routine has no value draw for this label in 0x0044BC80-0x0044CCCC; the adjacent raw loads are retained as unclassified evidence and must not be mapped to an MR range."
         }
       ]
     },
-    "interpretation": "These are original GBK strings passed through the status attribute helper. They prove the semantic labels, two-column relative text baselines, and the exact raw global operands loaded at each formatter call. The fields are deliberately not renamed to modern server concepts until cross-references establish that mapping."
+    "interpretation": "These are original GBK strings passed through the status attribute helper. They prove the semantic labels, two-column relative text baselines, and the exact raw global operands loaded at each formatter call. The separate status-option-names evidence closes the draw-count reconciliation: 魔法 and 魔法防御力 are label-only in this paint region. The adjacent raw loads remain unclassified and are deliberately not renamed to modern server concepts."
   },
   "item_record_and_draw_chain": {
     "hit_test_va": "0x0044B6B0",
