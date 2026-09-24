@@ -9550,3 +9550,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔索引修正〕**`layout.json` 的 `attribute_text_draw_chain` 与 `value_field_sources` 同步加入首列 `魔法躲避`，并修正 `毒物躲避`、`中毒恢复`、`生命恢复`、`魔法恢复` 的原始地址与加载宽度；没有把这些 raw fields 冒称为 Zircon `Stat`。
 - **〔口径〕**索引解释明确记录第二列 `魔法`/`魔法防御力` 在该绘制区间为 label-only；属性窗口仍按 Round 791 的保守显示策略渲染。
+
+## Round 793 (runtime warning classification) — 2026-09-25：确认属性验收 ERR_CANT_OPEN 来源
+
+- **〔日志复核〕**属性窗口真实运行日志中的 `ERR_CANT_OPEN` 紧邻 `drivers/alsa/audio_driver_alsa.cpp:90`，随后 Godot 明确输出 `All audio drivers failed, falling back to the dummy driver`；该警告来自无音频设备的 Xvfb/无头运行环境，不是人物窗口、WIL、布局或属性字段资源加载失败。
+- **〔结论〕**不修改 UI 代码或资源路径；将其记录为运行环境噪声。客户端仍完成 `StartGame Result=Success`、`LegacyOpen size=(520,328)`，属性截图验收有效。
