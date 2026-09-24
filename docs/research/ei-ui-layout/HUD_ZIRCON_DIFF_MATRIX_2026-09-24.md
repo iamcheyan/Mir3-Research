@@ -10,16 +10,16 @@
 | 经验条 | `hud-bars-render-evidence.json`：F63；`primary-main-hud-setrect.md`：屏幕 `(61,586)-(400,597)`，相对 HUD `(61,121)`，填充按经验比例 | `MainPanel.ExperienceBar` 使用 F63、339×11、`(61,121)`，`DrawExperienceFill` 按当前/最大经验裁切绘制 | 旧根自动尺寸为 1024×68 时，F63 位于根外，形成“经验条错位/不可见”；当前已固定 800×136 | 代码已修；本轮因客户端存在重复登录/选择场景覆盖，未取得新 HUD 像素截图；高 |
 | 底部聊天栏 | `chat-window-unified-model.json`、`chat-window-render-evidence.json`：F350 是独立详细窗；HUD 聊天显示与消息接收分开 | `GameScene.ReceiveChat → _chatLog.AddMessage`，同时转发 `_legacyChatDialog`；legacy 初始化保持 `_chatLog` 可见；隐藏设置不再误隐藏 legacy HUD | 原实现把 `HideChatBar` 直接作用于 legacy `_chatLog`，可导致“接收链有数据但栏为空” | 已修；需用普通聊天文本做 runtime 复测；高 |
 | 右侧聊天入口 | EI cap9/id8 进入 F350；F350 根 572×388、19 行历史、输入框和 6 个命令控件 | `MainPanel.MailButton` 在 legacy 分支调用 `_legacyChatDialog.OpenChat/CloseChat`；R 键仍走同一窗口 | 原实现只切换 `_chatLog.Visible`，未打开 F350 | 已修；点击/R/关闭后再次点击需 runtime 验收；高 |
-| 背包根框/网格 | `inventory-window-render-evidence.json`：F250，根 284×324，六列、六行可视区；记录表与可视占位格分离 | `InventoryDialog` F250、284×324、六列六行可视；`ConfigureLegacyInventoryGrid` 按注入记录数量计算总行数 | 记录索引仍直接作为 `DXItemCell.Slot`；跨格 footprint/占位表尚无协议模型字段，不能声称完全 EI 等价 | F250/视口已对齐；滚动路径已接线；footprint 仍阻断；高 |
-| F280 滚动控件 | `inventory-window-render-evidence.json::paint_geometry[0]`：GameInter F280，16×424；六行视口；滚动值参与行扫描 | 加入 F280 track，位置 `(248,-165)`；透明 hit/drag 控件使用 `DXVScrollBar`，`VisibleSize=6`、`Change=1`，ValueChanged 写回 `Grid.ScrollValue` | 轨道资源与交互已分离；原版 94 定点 gauge 与完整占位扫描仍未完全重建 | 已修可滚动语义的可达部分；需运行拖动/滚轮/边界验收；高 |
+| 背包根框/网格 | `inventory-window-render-evidence.json`：F250，根 284×324，六列、六行可视区；记录表与可视占位格分离；`bag-list-fill-chain-evidence.json`：46 条记录、首格标记和跨格占位 | `InventoryDialog` F250、284×324、六列六行可视；legacy `DXItemGrid.UseLegacyFootprints` 使用 `Inventory.wil` 帧尺寸 first-fit 生成占位锚点并将 `ItemLibraryFile` 切到 `Inventory.wil`，`DXItemCell` 将记录槽位与可视格索引分离 | 服务器模型仍只提供记录槽位，未提供 EI 原始列/行字段；本地资源已按 selector 归属加载，但原始服务端位置和逐物品 footprint 仍未完全重建 | 占位/footprint 代码已修；离线布局截图已确认 F250/F280 同屏，需运行多格物品、拖放和滚动验收；高 |
+| F280 滚动控件 | `inventory-window-render-evidence.json::paint_geometry[0]`：GameInter F280，16×424；六行视口；滚动值参与行扫描 | 加入 F280 track，位置 `(248,-165)`；透明 hit/drag 控件使用 `DXVScrollBar`，`VisibleSize=6`、`Change=1`、`UseLegacyFootprints` 动态计算实际行数，ValueChanged 写回 `Grid.ScrollValue` | 轨道资源与交互已分离；原版 94 定点 gauge 与记录列/行服务端位置仍未完全重建 | 滚动语义可达部分已修；需运行拖动/滚轮/边界验收；高 |
 | 人物装备栏 | `status-window-render-evidence.json`：F200/F201；确认装备槽 Shoes `(64,264)`、Poison `(103,264)` 等 | `CharacterDialog` 保留 F200/F201 背景切换、8 个已证槽位和 F168/F171 切换按钮 | Weapon/Armour/Necklace 三个大 hit record 的完整拖放仍未迁移 | 几何已修；行为仍待验；高 |
 | 人物属性面板 | `status-window-render-evidence.json`：第一列 13 个标签/格式项，起点 `(x+0xFF,y+0x43)`、行距 15；第二列 11 项，起点 `(x+0x17F,y+0x1E)`、行距 15 | 扩展态创建两列共 24 个可见文本项，使用 `PlayerStats`、当前 HP/MP、经验和负重；无法映射的中毒恢复显示 `—`，不猜值 | 旧实现为 7 项/12 项、22px 单列，且和 F201 艺术层重叠；原版部分全局字段与服务器 Stat 语义未闭合 | 几何/字段覆盖已改；未映射字段与原版多值魔法防御仍待独立证据；高 |
 
 ## 本轮静态核对
 
 - 构建：`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过；仅保留既有 CS8632/CS0219 警告。
-- 本地资源：`MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；实际 WIL fallback 日志确认 `GameInter.wil` 从该目录加载。
-- 运行：本地服务端监听 7000；客户端收到 `S.StartGame(Result=Success)`、`MapView` 首帧和 `LegacyHud` 诊断。客户端日志同时出现重复 Login/Select 流程，导致选择场景覆盖截图，故本轮不把选择场景截图冒称 HUD 验收。
+- 本地资源：运行环境使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；客户端日志确认 `GameInter.wil` 从该目录回退加载，离线 `LegacyHudLayoutLab --legacy-open=inventory` 截图确认 F250 与 F280 可见。
+- 运行：既有完整运行记录收到 `S.StartGame(Result=Success)`、`MapView` 首帧；本轮清理会话后重跑时服务端完成 `StartGame player.StartGame()`，但客户端只收到 Ping，未收到 `S.StartGame`，因此完整游戏 HUD 像素验收保持阻塞。
 
 ## 未闭合项目
 
