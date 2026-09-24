@@ -1,0 +1,68 @@
+{
+  "evidence_id": "chat-runtime-acceptance-2026-09-24",
+  "title": "Zircon legacy F350 runtime acceptance on the isolated 1024x768 desktop",
+  "date": "2026-09-24",
+  "scope": "Godot legacy login path with --legacy-open=chat; this is Zircon runtime evidence, not EI-original runtime evidence.",
+  "code_root": "/home/tetsuya/development/zircon-legacy-layout-lab",
+  "runtime_resource_root": "/home/tetsuya/development/zircon/Debug/Client/Data",
+  "runtime_resource_identity": {
+    "GameInter.Zl": {
+      "sha256": "32157af8ec3bd8506f6ef9488610f9090e54e6266d2d8df6a6af82e24f3fa09d",
+      "present": true
+    },
+    "GameInter.wil": {"present": false},
+    "GameInter.wix": {"present": false},
+    "expected_ei_root": "/home/tetsuya/mir3ei/LegacyEI/Data",
+    "expected_ei_wil": {"present": false},
+    "expected_ei_wix": {"present": false},
+    "identity_verdict": "EI WIL/WIX identity is not proved. The normal GameInter.Zl is not used as EI frame evidence."
+  },
+  "server": {
+    "endpoint": "127.0.0.1:7000",
+    "process_root": "/tmp/zircon-ei-server",
+    "database_policy": "isolated copy only; no production Users.db/System.db was written"
+  },
+  "command": "DISPLAY=:100 godot-mono --path /home/tetsuya/development/zircon-legacy-layout-lab/GodotClient -- --server 127.0.0.1 --port 7000 --user test@test.com --pass test123 --char TestHero --window --legacy-ui --legacy-hud --legacy-open=chat",
+  "stdout": {
+    "login": "S.StartGame Result=Success; [Game] 进入游戏! 玩家: TestHero",
+    "legacy_open": "[LegacyOpen] requested=chat type=LegacyChatDialog visible=True size=(572, 388) location=(225, 175) inputFocus=True",
+    "viewport": "[UiScaler] scale=1 viewport=(1022, 739) offset=(0, 0); window chrome screenshot is 1024x768"
+  },
+  "screenshots": {
+    "full_viewport_initial": "/tmp/legacy-chat-f350-full-20260924.png",
+    "full_viewport_after_enter": "/tmp/legacy-chat-f350-after-enter-20260924.png",
+    "full_viewport_clean_safe_chat": "/tmp/legacy-chat-f350-clean-input-20260924.png",
+    "note": "Screenshots are outside either repository and are not committed."
+  },
+  "observations": {
+    "full_viewport": "PASS: complete 1024x768 desktop captured; F350 root allocation and input focus are present in stdout.",
+    "background_and_buttons": "BLOCKED: the runtime root is allocated, but the normal ZL library has no frame 350 header and its same-number frames 360-383 have dimensions that do not match the EI evidence. The six EI buttons, close control, and scrollbar cannot be accepted from this resource root.",
+    "safe_plain_chat": "PASS: one ordinary non-command string safe-chat-0924 was entered and submitted with Return; the screenshot shows [Normal] TestHero: safe-chat-0924 in history and the input line cleared. No template command was sent.",
+    "scrolling": "NOT ACCEPTED: the available runtime root does not provide the EI controls, and only a small existing history was used; no button, wheel, track-drag, or new-message-anchor claim is made.",
+    "template_commands": "NOT SENT: @拒绝, !, !!, !~, @拒绝私聊, and @拒绝行会聊天 were not entered."
+  },
+  "static_cross_check": {
+    "normal_zl_headers": {
+      "350": null,
+      "360": [196, 8],
+      "361": [120, 8],
+      "362": [36, 34],
+      "363": [36, 34],
+      "364": [36, 34],
+      "365": [36, 34],
+      "366": null,
+      "367": [16, 14],
+      "368": [44, 14],
+      "369": [44, 14],
+      "370": [16, 16],
+      "371": [16, 16],
+      "380": [380, 140],
+      "381": [380, 20],
+      "382": [380, 64],
+      "383": null
+    },
+    "method": "independent read-only zlsdk header inspection of GameInter.Zl; no EI conclusion is inferred from these normal-ZL values",
+    "expected_ei_static_reference": "chat-window-render-evidence.json and chat-scrollbar-verification-evidence.json remain the primary-static EI reference for F350, six 36x34 buttons, and the 16x502 track."
+  },
+  "verdict": "Input focus and safe plain-chat send are runtime-verified in Zircon. F350 visual controls and scrolling remain blocked by unavailable EI WIL/WIX resources; normal GameInter.Zl is explicitly insufficient evidence."
+}
