@@ -9545,3 +9545,8 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔证据修正〕**`status-window-render-evidence.json` 补入 `魔法躲避`（字符串 `0x0047C6E4`、标签绘制 `0x0044C1A7`、值字段 `0x007DA169` word），并校正首列尾部字段顺序：`毒物躲避=0x007DA16D`、`中毒恢复=0x007DA16E`、`生命恢复=0x007DA16F`、`魔法恢复=0x007DA170`。相邻 raw loads 不自动命名为当前 `Stat`；`魔法`/`魔法防御力` 增加 `value_draw_status=label-only`。
 - **〔代码修正〕**`CharacterDialog` 补齐 `魔法躲避` 标签；`魔法躲避`、`毒物躲避`、三项恢复因当前没有独立语义映射统一显示 `—`，撤回先前把 `Stat.PoisonResistance` 冒称为毒物躲避；`魔法`/`魔法防御力` 只保留标签。
 - **〔运行验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告；使用 `/home/tetsuya/mir2ei`、`DISPLAY=:100`、1024×768、`--legacy-open=character-expanded` 真实登录成功（`StartGame Result=Success`、`LegacyOpen size=(520,328)`）。补充 `ToggleLegacyView()` 刷新后，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-attributes-first-column-final.png` 显示 14 个首列标签、已证数值和 `魔法躲避/毒物躲避/三项恢复` 的 `—`；右列显示 `防御 11-34`、`攻击 33-46`、元素攻击值，`魔法`/`魔法防御力` 无值占位符。日志另有一条 Godot `ERR_CANT_OPEN` 资源打开提示，未影响登录或窗口验收。
+
+## Round 792 (layout index synchronization) — 2026-09-25：同步人物属性布局索引
+
+- **〔索引修正〕**`layout.json` 的 `attribute_text_draw_chain` 与 `value_field_sources` 同步加入首列 `魔法躲避`，并修正 `毒物躲避`、`中毒恢复`、`生命恢复`、`魔法恢复` 的原始地址与加载宽度；没有把这些 raw fields 冒称为 Zircon `Stat`。
+- **〔口径〕**索引解释明确记录第二列 `魔法`/`魔法防御力` 在该绘制区间为 label-only；属性窗口仍按 Round 791 的保守显示策略渲染。

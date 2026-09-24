@@ -18433,28 +18433,34 @@
             "y_offset": 187
           },
           {
+            "text": "魔法躲避",
+            "string_va": "0x0047C6E4",
+            "draw_va": "0x0044C1A7",
+            "y_offset": 202
+          },
+          {
             "text": "毒物躲避",
             "string_va": "0x0047C6D8",
             "draw_va": "0x0044C20F",
-            "y_offset": 202
+            "y_offset": 217
           },
           {
             "text": "中毒恢复",
             "string_va": "0x0047C6CC",
             "draw_va": "0x0044C28B",
-            "y_offset": 217
+            "y_offset": 232
           },
           {
             "text": "生命恢复",
             "string_va": "0x0047C6C0",
             "draw_va": "0x0044C307",
-            "y_offset": 232
+            "y_offset": 247
           },
           {
             "text": "魔法恢复",
             "string_va": "0x0047C6B0",
             "draw_va": "0x0044C37F",
-            "y_offset": 247
+            "y_offset": 262
           }
         ],
         "second_column_labels": [
@@ -18672,7 +18678,7 @@
               "argument_order": "the two byte-like values are formatted by 0x0046811C"
             },
             {
-              "label": "毒物躲避",
+              "label": "魔法躲避",
               "format_va": null,
               "sources": [
                 {
@@ -18683,7 +18689,7 @@
               ]
             },
             {
-              "label": "中毒恢复",
+              "label": "毒物躲避",
               "format_va": null,
               "sources": [
                 {
@@ -18694,7 +18700,7 @@
               ]
             },
             {
-              "label": "生命恢复",
+              "label": "中毒恢复",
               "format_va": null,
               "sources": [
                 {
@@ -18705,13 +18711,24 @@
               ]
             },
             {
-              "label": "魔法恢复",
+              "label": "生命恢复",
               "format_va": null,
               "sources": [
                 {
                   "address": "0x007DA16F",
                   "width": "byte",
                   "load_va": "0x0044C327"
+                }
+              ]
+            },
+            {
+              "label": "魔法恢复",
+              "format_va": null,
+              "sources": [
+                {
+                  "address": "0x007DA170",
+                  "width": "dword_low8",
+                  "load_va": "0x0044C399"
                 }
               ]
             }
@@ -18872,7 +18889,7 @@
             }
           ]
         },
-        "interpretation": "These are original GBK strings passed through the status attribute helper. They prove the semantic labels, two-column relative text baselines, and the exact raw global operands loaded at each formatter call. The fields are deliberately not renamed to modern server concepts until cross-references establish that mapping."
+        "interpretation": "These are original GBK strings passed through the status attribute helper. They prove the semantic labels, two-column relative text baselines, and exact raw global operands loaded at each formatter call. The first-column sequence includes 魔法躲避; the tail fields are corrected to 毒物躲避/中毒恢复/生命恢复/魔法恢复. The separate status-option-names evidence closes the draw-count reconciliation: 魔法 and 魔法防御力 are label-only in this paint region. Raw fields remain unclassified until server semantic cross-references are proven."
       },
       "item_record_and_draw_chain": {
         "hit_test_va": "0x0044B6B0",
