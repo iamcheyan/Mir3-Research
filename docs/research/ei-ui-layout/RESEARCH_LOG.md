@@ -9487,3 +9487,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔修复〕**`DXTextInput._GuiInput()` 在左键按下时显式聚焦内部编辑器；`GameScene._Input()` 仅在 F350 输入框未聚焦时处理裸 `R` 显隐，聚焦时将 `R` 留给文本编辑器。
 - **〔运行证据〕**`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`、本地 `/home/tetsuya/mir2ei/Data`；修复后点击 F350 输入区提交 `@monster Chicken 1`，`Debug/ServerCore/Chat Logs.txt` 记录完整文本（20:28:52），服务器返回系统命令不存在提示但输入链本身完整。构建 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功。
 - **〔边界〕**本轮未冒称经验包已实际增加：`--operation-audit-ext` 在 S13 邮件自发收件人场景先失败退出，未到 S16 战斗；经验实时更新仍保持独立未闭合状态。
+
+## Round 783 (experience packet boundary) — 2026-09-25：临时跳过 S13 后仍未取得 GainedExperience
+
+- **〔实验〕**为隔离 S13 邮件失败，临时修改运行时审计分支仅进入 S16 战斗，并加入临时 `OnGainedExperience` 日志；实验结束后所有临时源码已完全回退，正式分支无该诊断/跳过逻辑。
+- **〔结果〕**S16 记录玩家位置 `{X=119,Y=231}`、攻击参数 `dc=33-46`、攻击间隔 `1359ms`，但视野内没有可选怪物；客户端尝试 `@monster TigerSnake 3 (TempAdmin)` 后仍为空，最终 `FAIL no monster in view for combat audit`，未发送攻击，也没有 `GainedExperience`。
+- **〔结论〕**当前服务端运行会话对 `test@test.com` 记录 `Admin: False`；既有测试账号不能通过管理员刷怪命令建立独立战斗样本。经验条独立实验场的 25%/75% 渲染证据仍有效，但实时 `GainedExperience` 网络验收继续阻塞。
