@@ -5,7 +5,7 @@
 本仓库不包含原版客户端、WIL/MAP/DAT 大型资源或 `Debug/`、`Resource/` 运行时目录。资源通过环境变量从 NAS 提供：
 
 ```bash
-export MIR3_EI_ROOT=/home/tetsuya/NAS/TMP/EI传奇3.0客户端
+export MIR3_EI_ROOT=/home/tetsuya/mir3ei
 export MIR3_MUD3_ROOT=/home/tetsuya/NAS/TMP/Mud3
 export MIR3_ZIRCON_ROOT=/home/tetsuya/development/Zircon
 ```
