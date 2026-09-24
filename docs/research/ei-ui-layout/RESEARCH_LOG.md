@@ -9506,3 +9506,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔运行结果〕**管理员刷怪命令确实生成了 `TigerSnake`/`OmaHero`/`Chicken` 的对象包，但当前运行资源根严格为 `/home/tetsuya/mir2ei/Data`，其中只有原始 `Mon-*.wil/.wix`，没有 Zircon 客户端所需的 `Mon-*.Zl`。
 - **〔代码证据〕**`ObjectRenderer.CreateMonster()` 按 `MonsterLookup` 取 `Mon_3/Mon_12/Mon_13.Zl`，`LibraryCache.Get()` 只读取 `.Zl`；运行日志重复记录 `怪物图库加载失败: Mon_3/Mon_12/Mon_13`，对象因此未进入 `GameScene._objects`，S16 无法建立可攻击目标。
 - **〔结论〕**管理员权限与刷怪链已验证；经验实时包仍不能验收，当前实际阻塞是“符合硬性资源根的世界怪物 Zl 缺失”，不是账号权限或 AI/HP 目标筛选。所有客户端临时实验代码已回退。
+
+## Round 786 (runtime GainedExperience closure) — 2026-09-25：真实击杀收到经验包并完成战斗审计
+
+- **〔夹具〕**为验证网络链路，临时将本地 Zircon 已有的 `Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 放入严格运行根 `/home/tetsuya/mir2ei/Data`；客户端仍只从该运行根读取。实验后三个临时文件已删除，未改变仓库源码。
+- **〔运行结果〕**主密码管理员会话成功渲染附近怪物，S16 选中相邻 `鸡`，真实发送攻击并收到 `ObjectDied`、两次 `GainedExperience`；日志显示 `attacks=2`、`cadence=true`、`combat=true`、`pass=true`。
+- **〔完整审计结果〕**`[OperationAuditExt] RESULT rings=true bracelets=true beltCleared=true autoCleared=true mailLifecycle=true companion=false guild=false combat=true pass=true`。经验包边界与经验条网络更新链已闭合；截图保存于 Zircon `.artifacts/ui-acceptance-2026-09-24/experience-after-gained-runtime.png`。
+- **〔清理与边界〕**S13 跳过仅为本轮临时隔离，实验结束后已回退；正式 `GameScene.cs` 无差异，正式构建成功。若要复现，运行根仍需提供对应 `Mon-*.Zl`，否则仅能收到对象包而无法创建客户端怪物节点。
