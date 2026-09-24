@@ -9493,3 +9493,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔实验〕**为隔离 S13 邮件失败，临时修改运行时审计分支仅进入 S16 战斗，并加入临时 `OnGainedExperience` 日志；实验结束后所有临时源码已完全回退，正式分支无该诊断/跳过逻辑。
 - **〔结果〕**S16 记录玩家位置 `{X=119,Y=231}`、攻击参数 `dc=33-46`、攻击间隔 `1359ms`，但视野内没有可选怪物；客户端尝试 `@monster TigerSnake 3 (TempAdmin)` 后仍为空，最终 `FAIL no monster in view for combat audit`，未发送攻击，也没有 `GainedExperience`。
 - **〔结论〕**当前服务端运行会话对 `test@test.com` 记录 `Admin: False`；既有测试账号不能通过管理员刷怪命令建立独立战斗样本。经验条独立实验场的 25%/75% 渲染证据仍有效，但实时 `GainedExperience` 网络验收继续阻塞。
+
+## Round 784 (monster-filter isolation) — 2026-09-25：排除客户端 AI 过滤后仍无可用战斗目标
+
+- **〔实验〕**临时移除 S16 客户端 `MonsterInfo.AI >= 0` 筛选，并跳过 S13 邮件阶段，仅用于确认是否存在被 AI 字段过滤掉的可见怪物；实验结束后筛选和阶段逻辑均已恢复。
+- **〔结果〕**客户端仍先报告 `S16 no monster in view`；随后收到若干 `ObjectAttack/ObjectDied`，但没有目标重建、攻击审计记录或 `GainedExperience`，重试仍以 `FAIL no monster in view for combat audit` 结束。
+- **〔结论〕**当前可见对象不足以构成 TestHero 的可控击杀样本；不能把后台对象死亡包误记为本角色经验增量。正式源码最终构建成功，仅保留既有警告。
