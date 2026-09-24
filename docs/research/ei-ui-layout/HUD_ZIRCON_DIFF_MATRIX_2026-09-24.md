@@ -11,7 +11,7 @@
 | 底部聊天栏 | `chat-window-unified-model.json`、`chat-window-render-evidence.json`：F350 是独立详细窗；HUD 聊天显示与消息接收分开 | `GameScene.ReceiveChat → _chatLog.AddMessage`，同时转发 `_legacyChatDialog`；legacy 初始化保持 `_chatLog` 可见；F350 真实截图中可见服务端 Announcement 文本 | 原实现把 `HideChatBar` 直接作用于 legacy `_chatLog`，可导致“接收链有数据但栏为空”；普通公开聊天不回显发送者自身，单客户端无法用普通文本闭合发送者视觉回显 | 接收链已修；F350/Announcement 已 runtime 验证；普通公开聊天需第二个可见玩家或观察者，当前环境未强行伪造 |
 | 右侧聊天入口 | EI cap9/id8 进入 F350；F350 根 572×388、19 行历史、输入框和 6 个命令控件 | `MainPanel.MailButton` 在 legacy 分支调用 `_legacyChatDialog.OpenChat/CloseChat`；R 键在焦点保护前切换同一窗口，关闭时释放 Viewport focus；入口打开和 R 重开均在 deferred redraw 后刷新窗口子树 | 旧实现的重复显示路径漏掉 `WindowManager.Open` 的显示刷新，并且自定义 `Close` 未显式清理可见状态；现已统一窗口打开刷新、关闭清理和启动后重挂载 | HUD MailButton 首次打开、R 关闭/重开、关闭按钮关闭均 runtime 通过；`f350-button-entry-final-clean.png`、`f350-button-r-closed.png`、`f350-button-r-reopened.png` |
 | 背包根框/网格 | `inventory-window-render-evidence.json`：F250，根 284×324，六列、六行可视区；记录表与可视占位格分离；`bag-list-fill-chain-evidence.json`：46 条记录、首格标记和跨格占位 | `InventoryDialog` F250、284×324、六列六行可视；legacy `DXItemGrid.UseLegacyFootprints` 使用 `Inventory.wil` 帧尺寸 first-fit 生成占位锚点并将 `ItemLibraryFile` 切到 `Inventory.wil`，`DXItemCell` 将记录槽位与可视格索引分离 | 服务器模型仍只提供记录槽位，未提供 EI 原始列/行字段；本地资源已按 selector 归属加载，但原始服务端位置和逐物品 footprint 仍未完全重建 | 占位/footprint 代码已修；离线布局截图已确认 F250/F280 同屏，需运行多格物品、拖放和滚动验收；高 |
-| F280 滚动控件 | `inventory-window-render-evidence.json::paint_geometry[0]`：GameInter F280，16×424；六行视口；滚动值参与行扫描 | 加入 F280 track，位置 `(248,-165)`；透明 hit/drag 控件使用 `DXVScrollBar`，`VisibleSize=6`、`Change=1`、`UseLegacyFootprints` 动态计算实际行数，ValueChanged 写回 `Grid.ScrollValue` | 轨道资源与交互已分离；原版 94 定点 gauge 与记录列/行服务端位置仍未完全重建；本轮 Xvfb 拖柄注入使窗口消失，未据此宣称滚动通过 | 滚动语义代码已修；F250/F280 和真实物品布局已截图；拖柄、滚轮、边界行为仍待稳定输入复测 |
+| F280 滚动控件 | `inventory-window-render-evidence.json::paint_geometry[0]`：GameInter F280，16×424；六行视口；滚动值参与行扫描 | 加入 F280 track，位置 `(248,-165)`；透明 hit/drag 控件使用 `DXVScrollBar`，`VisibleSize=6`、`Change=1`、`UseLegacyFootprints` 动态计算实际行数，ValueChanged 写回 `Grid.ScrollValue` | 单机开发模式注入满级物品后，真实窗口显示 6×6 可视格；当前 first-fit 行数恰为 6，因此 `MaxValue-VisibleSize=0`，滚轮和下箭头稳定钳在 0，但没有移动范围。需超过 6 行的独立测试数据才能验证拖柄比例、内容移动和边界写回 | 轨道、六行裁剪和稳定无溢出边界已 runtime 验证；`inventory-dev-scroll-before.png`、`inventory-dev-scroll-wheel.png`、`inventory-dev-scroll-down-arrow.png`；移动行为仍阻塞 |
 | 人物装备栏 | `status-window-render-evidence.json`：F200/F201；确认装备槽 Shoes `(64,264)`、Poison `(103,264)` 等 | `CharacterDialog` 保留 F200/F201 背景切换、8 个已证槽位和 F168/F171 切换按钮 | Weapon/Armour/Necklace 三个大 hit record 的完整拖放仍未迁移 | 收起/展开真实截图已通过：`character-runtime-collapsed.png`、`character-runtime-expanded.png`；装备拖放行为仍待验 |
 | 人物属性面板 | `status-window-render-evidence.json`：第一列 13 个标签/格式项，起点 `(x+0xFF,y+0x43)`、行距 15；第二列 11 项，起点 `(x+0x17F,y+0x1E)`、行距 15 | 扩展态创建两列共 24 个可见文本项，使用 `PlayerStats`、当前 HP/MP、经验和负重；无法映射的中毒恢复显示 `—`，不猜值 | 旧实现为 7 项/12 项、22px 单列，且和 F201 艺术层重叠；原版部分全局字段与服务器 Stat 语义未闭合 | 几何/字段覆盖已改；未映射字段与原版多值魔法防御仍待独立证据；高 |
 
@@ -28,7 +28,7 @@
 1. 经验条比例绘制代码已修，当前运行截图确认 HUD/F63 几何；需用独立第二经验值确认不同填充宽度，当前环境普通账号 `Admin=False`，未用命令伪造。
 2. 已取得 F350 直达、HUD MailButton 鼠标打开、关闭按钮关闭、R 关闭后再次打开的真实截图；入口点击坐标为完整 1024×768 窗口中的 `845,659`，截图保存在 `.artifacts/ui-acceptance-2026-09-24/`。
 3. 经验条不同经验值尚未独立复测；背包拖柄/滚轮边界和人物大 hit record/全局属性字段仍未闭合，详见上表。
-4. 背包真实物品布局已截图，F280 轨道可见；本轮拖柄/滚轮注入导致窗口消失，未宣称滚动和边界通过；服务端记录索引到 EI 原始列/行仍未完全重建。
+4. F280 轨道和 6×6 物品布局已用单机开发模式真实截图；滚轮/下箭头操作不再导致窗口消失，但当前 first-fit 没有超过 6 行，无法宣称内容滚动和拖柄边界通过。
 5. 人物收起/展开真实截图已通过；Weapon/Armour/Necklace 大 hit record 行为仍未迁移。
 6. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
 7. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
