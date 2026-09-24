@@ -1,0 +1,42 @@
+{
+  "evidence_id": "chat-runtime-rerun-2026-09-24",
+  "title": "Zircon current checkout F350 runtime rerun",
+  "date": "2026-09-24",
+  "source_evidence": "chat-runtime-acceptance-2026-09-24.json",
+  "scope": "Godot legacy login path in the requested /home/tetsuya/development/zircon checkout; this is Zircon runtime evidence, not EI-original runtime evidence.",
+  "code_root": "/home/tetsuya/development/zircon",
+  "runtime_resource_root": "/home/tetsuya/development/zircon/Debug/Client/Data",
+  "runtime_resource_identity": {
+    "GameInter.Zl": {
+      "sha256": "32157af8ec3bd8506f6ef9488610f9090e54e6266d2d8df6a6af82e24f3fa09d",
+      "present": true
+    },
+    "GameInter.wil": {"present": false},
+    "GameInter.wix": {"present": false},
+    "EI_WIL_WIX_identity_proved": false
+  },
+  "server": {
+    "endpoint": "127.0.0.1:7000",
+    "process_root": "/tmp/zircon-ei-server",
+    "database_policy": "isolated copy only; no production Users.db/System.db was written"
+  },
+  "command": "DISPLAY=:100 godot-mono --path /home/tetsuya/development/zircon/GodotClient -- --server 127.0.0.1 --port 7000 --user test@test.com --pass test123 --char TestHero --window --legacy-ui --legacy-hud --legacy-open=chat",
+  "stdout": {
+    "legacy_open": "[LegacyOpen] requested=chat type=LegacyChatDialog visible=True size=(572, 388) location=(225, 175) inputFocus=True",
+    "login": "[Game] 进入游戏! 玩家: TestHero",
+    "viewport": "[UiScaler] scale=1 viewport=(1022, 739); desktop screenshot is 1024x768"
+  },
+  "screenshots": {
+    "full_viewport_initial": "/tmp/legacy-chat-f350-full-current.png",
+    "full_viewport_clean_safe_chat": "/tmp/legacy-chat-f350-clean-current.png",
+    "note": "Screenshots are outside both repositories and are not committed."
+  },
+  "observations": {
+    "full_viewport": "PASS: complete desktop screenshot captured; F350 allocation and inputFocus=true are in stdout.",
+    "safe_plain_chat": "PASS: safe-chat-current-0924 was entered with Return; screenshot shows [Normal] TestHero: safe-chat-current-0924 and the input line is cleared.",
+    "template_commands": "NOT SENT: @拒绝, !, !!, !~, @拒绝私聊, and @拒绝行会聊天 were not entered.",
+    "f350_visual_controls": "NOT ACCEPTED: ordinary GameInter.Zl is not proven EI and does not provide the EI F350/380 evidence frames.",
+    "scrolling": "NOT ACCEPTED: no claim is made for button, wheel, track-drag, or new-message-anchor behavior without the EI resource root."
+  },
+  "verdict": "Current checkout reproduces runtime focus and safe plain-chat send. EI F350 visual controls and scrolling remain blocked by missing, unproven GameInter.wil/.wix resources."
+}
