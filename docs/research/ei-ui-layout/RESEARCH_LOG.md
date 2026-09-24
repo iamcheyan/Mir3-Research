@@ -9555,3 +9555,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔日志复核〕**属性窗口真实运行日志中的 `ERR_CANT_OPEN` 紧邻 `drivers/alsa/audio_driver_alsa.cpp:90`，随后 Godot 明确输出 `All audio drivers failed, falling back to the dummy driver`；该警告来自无音频设备的 Xvfb/无头运行环境，不是人物窗口、WIL、布局或属性字段资源加载失败。
 - **〔结论〕**不修改 UI 代码或资源路径；将其记录为运行环境噪声。客户端仍完成 `StartGame Result=Success`、`LegacyOpen size=(520,328)`，属性截图验收有效。
+
+## Round 794 (inventory multi-cell runtime closure) — 2026-09-25：真实背包多格物品验收
+
+- **〔源码〕**`DXItemGrid.UseLegacyFootprints` 使用 `Inventory.wil` 帧尺寸执行六列 first-fit；`DXItemCell` 对 footprint 占位格复用锚点记录并跳过重复图标绘制。服务端记录槽位与可视 cell 索引保持分离。
+- **〔运行〕**使用本地 `/home/tetsuya/mir2ei` 资源、`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --legacy-open=inventory` 完整登录成功；日志为 `StartGame Result=Success`、`LegacyOpen size=(284,324)`、`Inventory -> /home/tetsuya/mir2ei/Data/inventory.wil (1440 frames)`。
+- **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/inventory-multicell-runtime.png` 中真实 Armour 图标跨 2 列×3 行，覆盖 cell 保留命中区但未重复绘制图标；本项多格 footprint 运行表现闭合。
+- **〔限制〕**EI 原始六列 cell-table 与 Zircon 现代协议记录槽位之间没有独立服务端字段交叉映射，继续保留 first-fit 重建限制，不将当前映射宣称为原版网络布局还原。
