@@ -9472,3 +9472,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔运行〕**在 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --ui-diagnostic-borders`、运行资源 `/home/tetsuya/mir2ei/Data` 下完整登录成功；W 键打开人物窗口，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-equipment-slots-w-continue.png` 显示 11 个槽；点击 F168 展开后截图 `character-equipment-slots-expanded-continue.png` 显示 F201 及双列属性面板。
 - **〔限制〕**当前 `TestHero` 的角色装备数组无可兼容的已装备物品，无法通过生产回包闭合一次实际服务端装备替换；本次不改数据库、不伪造拖放成功。几何、命中区域和本地拖放入口已由证据与源码闭合。
 - **〔拖放审计〕**运行 `--operation-audit` 完整登录后，源码审计自动选取首个可移动物品 `Healing Potion (II)`，但 `StartOperationAudit()` 正确报告 `FAIL no compatible occupied equipment slot` 并退出；这独立证明本地角色状态没有可用于装备替换的兼容已装备物品，而不是把失败误判为坐标或命中链错误。
+## Round 781 (HUD chat runtime closure) — 2026-09-25：同视野 Bot 普通聊天已在底栏与 F350 双重验收
+
+- **〔运行环境〕**使用 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`，运行资源固定为 `/home/tetsuya/mir2ei/Data`；Godot 用户调试标签仅用于确认双方同图坐标，验收后恢复为关闭。
+- **〔可见性前置〕**先启动 BotRunner 的 Bot01，再启动 TestHero 图形客户端，使服务端 `SeenByPlayers` 建立；两者在 map index 1、约 `(119,231)` 同一 `MaxViewRange` 内。此前同图但启动/传送顺序不正确时，服务端普通聊天仍可能只到发送者，故不以“同坐标截图”替代可见列表证据。
+- **〔普通聊天包〕**BotRunner 实际发出 `C.Chat`；TestHero 客户端日志记录 `Net 入队: Chat`，服务器仍落盘 `Bot01: BOTPING，我叫Bot01。`。该路径不是命令、拒绝模板或喊话文本。
+- **〔底部栏〕**截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot-to-testhero-bottom.png` 保存了底部 `ChatLogPanel` 的 `[Normal] Bot01: ...` 普通文本。
+- **〔F350〕**截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot-to-testhero-f350-proof.png` 保存了 `LegacyChatDialog`/F350 中的 `[Normal] Bot01: Bot01: BOTPING，我叫Bot01。`；入口通过 `R` 打开，随后可正常关闭。
+- **〔结论〕**底部聊天栏的生产接收链、同视野服务端分派、F350 详细历史均已闭合。之前“空栏”根因是测试角色不在服务端 `SeenByPlayers`/`MaxViewRange` 有效闭环内，而非 `ReceiveChat` 或 `_chatLog.AddMessage` 缺失。普通聊天验收阻塞解除；经验实时包和人物实际装备替换仍按 Round 779/780 的独立阻塞保留。
