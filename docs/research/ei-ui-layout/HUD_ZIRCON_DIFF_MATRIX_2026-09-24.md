@@ -17,14 +17,16 @@
 
 ## 本轮静态核对
 
-- 构建：`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过；仅保留既有 CS8632/CS0219 警告。
-- 本地资源：运行环境使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；客户端日志确认 `GameInter.wil` 从该目录回退加载，离线 `LegacyHudLayoutLab --legacy-open=inventory` 截图确认 F250 与 F280 可见。
-- 运行：既有完整运行记录收到 `S.StartGame(Result=Success)`、`MapView` 首帧；本轮清理会话后重跑时服务端完成 `StartGame player.StartGame()`，但客户端只收到 Ping，未收到 `S.StartGame`，因此完整游戏 HUD 像素验收保持阻塞。
+ - 构建：`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过；仅保留既有 CS8632/CS0219 警告。服务端 `dotnet build ServerCore/ServerCore.csproj --no-restore` 通过，0 警告、0 错误。
+ - 本地资源：最终运行使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；客户端日志确认 `GameInter.wil` 从该目录加载。运行服务端必须以 `/home/tetsuya/development/Debug/ServerCore` 为工作目录，否则相对 `Map/` 路径会导致地图加载为空并返回 `UnableToSpawn`。
+ - 运行：在正确服务端工作目录和 Xvfb `:100` 下，客户端完整登录收到 `S.StartGame(Result=Success, Magics=174)`，并输出 `LegacyHud PASS`、`MapView 加载 D202: 200x200`。最终基线截图保存在 Zircon `.artifacts/ui-acceptance-2026-09-24/game-final-correct-cwd.png`。
+ - 重复场景防护：`LoginScene`、`SelectScene` 增加静态活动实例守卫，提交 `f1ec4d5e`；`DXWindow.ShowWindow` 增加子树重绘和 deferred 重绘，避免首次打开延迟纹理空白。
 
 ## 未闭合项目
 
-1. 需要隔离客户端重复 Login/Select 实例后，重新取得完整 1024×768 游戏 HUD 截图。
-2. 需要普通安全聊天文本闭合 `ReceiveChat → ChatLogPanel` 的视觉验收，并保存 F350 三路径截图。
-3. 背包需补齐原版记录索引与占位表、跨格物品 footprint、F280 原版数值比例；当前实现明确不冒充已完成。
-4. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需证据；当前 `—` 是阻塞标记，不是猜测值。
-5. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
+1. 经验条需在完整 HUD 截图中以不同经验值复核填充长度和方向；当前静态 `LegacyHud PASS` 已确认 F63/339×11/(61,121)。
+2. 需要普通安全聊天文本闭合 `ReceiveChat → ChatLogPanel` 的视觉验收，并保存 F350 点击/R/关闭后再次打开三路径截图。
+3. 背包需运行多格物品、拖放、滚轮、拖柄和边界验收；当前离线截图已确认 F250/F280 资源与 6×6 视口，服务端记录索引到 EI 原始列/行仍未完全重建。
+4. 人物装备栏需在真实游戏中验收；当前已保留 F200/F201、8 个已证槽位和切换按钮，Weapon/Armour/Necklace 大 hit record 行为仍未迁移。
+5. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
+6. 本地 F50 资源帧头尺寸与 EI primary 记录存在版本/资源差异，需用独立 WIL 对照决定是否存在正确 EI F50 资源族。
