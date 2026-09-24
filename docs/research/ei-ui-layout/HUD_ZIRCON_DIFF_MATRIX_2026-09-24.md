@@ -7,7 +7,7 @@
 | 项目 | EI 原版证据 | 当前 Zircon 实现 | 差异 / 根因 | 状态与优先级 |
 |---|---|---|---|---|
 | 主 HUD 根框 | `primary-main-hud-setrect.md`：`GameInter[50]`、逻辑底部 HUD `800×136`，根坐标相对 `(0,465)` | `MainPanel` 使用 F50；本轮把根尺寸固定为 `LegacyHudLayout.LogicalWidth/Height`（800×136），避免本地 WIL 帧头尺寸直接把根压成 `1024×68` | 本地 `/home/tetsuya/mir2ei/Data/GameInter.wil` 的 F50 头尺寸与 EI 证据记录不同；不能把帧画布尺寸当作目标根 RECT | 代码已修；需重启后像素复核；高 |
-| 经验条 | `hud-bars-render-evidence.json`：F63；`primary-main-hud-setrect.md`：屏幕 `(61,586)-(400,597)`，相对 HUD `(61,121)`，填充按经验比例 | `MainPanel.ExperienceBar` 使用 F63、339×11、`(61,121)`；`DrawImage=false`，由 `DrawExperienceFill` 按当前/最大经验裁切绘制 | 旧根自动尺寸为 1024×68 时，F63 位于根外，且 DXImageControl 默认整帧绘制会覆盖 BeforeDraw 的比例裁切；当前已固定 800×136 并禁止默认整帧覆盖 | 比例绘制代码已修，commit `c6655f37`；`experience-fixed-initial.png` 已确认运行 HUD 几何，第二经验值/不同填充长度仍未独立复核 |
+| 经验条 | `hud-bars-render-evidence.json`：F63；`primary-main-hud-setrect.md`：屏幕 `(61,586)-(400,597)`，相对 HUD `(61,121)`，填充按经验比例 | `MainPanel.ExperienceBar` 使用 F63、339×11、`(61,121)`；`DrawImage=false`，由 `DrawExperienceFill` 按当前/最大经验裁切绘制 | 旧根自动尺寸为 1024×68 时，F63 位于根外，且 DXImageControl 默认整帧绘制会覆盖 BeforeDraw 的比例裁切；当前已固定 800×136 并禁止默认整帧覆盖 | 比例绘制代码已修，commit `c6655f37`；独立 HUD 实验场以 `(250,1000)` 与 `(750,1000)` 分别运行，截图中填充连续段为 `x=99..202`（25%）与 `x=99..411`（75%），方向和长度均通过；实时网络经验增量来源仍未闭合 |
 | 底部聊天栏 | `chat-window-unified-model.json`、`chat-window-render-evidence.json`：F350 是独立详细窗；HUD 聊天显示与消息接收分开 | `GameScene.ReceiveChat → _chatLog.AddMessage`，同时转发 `_legacyChatDialog`；legacy 初始化保持 `_chatLog` 可见；F350 真实截图中可见服务端 Announcement 文本 | 原实现把 `HideChatBar` 直接作用于 legacy `_chatLog`，可导致“接收链有数据但栏为空”；普通公开聊天不回显发送者自身，单客户端无法用普通文本闭合发送者视觉回显 | 接收链已修；F350/Announcement 已 runtime 验证；普通公开聊天需第二个可见玩家或观察者，当前环境未强行伪造 |
 | 右侧聊天入口 | EI cap9/id8 进入 F350；F350 根 572×388、19 行历史、输入框和 6 个命令控件 | `MainPanel.MailButton` 在 legacy 分支调用 `_legacyChatDialog.OpenChat/CloseChat`；R 键在焦点保护前切换同一窗口，关闭时释放 Viewport focus；入口打开和 R 重开均在 deferred redraw 后刷新窗口子树 | 旧实现的重复显示路径漏掉 `WindowManager.Open` 的显示刷新，并且自定义 `Close` 未显式清理可见状态；现已统一窗口打开刷新、关闭清理和启动后重挂载 | HUD MailButton 首次打开、R 关闭/重开、关闭按钮关闭均 runtime 通过；`f350-button-entry-final-clean.png`、`f350-button-r-closed.png`、`f350-button-r-reopened.png` |
 | 背包根框/网格 | `inventory-window-render-evidence.json`：F250，根 284×324，六列、六行可视区；记录表与可视占位格分离；`bag-list-fill-chain-evidence.json`：46 条记录、首格标记和跨格占位 | `InventoryDialog` F250、284×324、六列六行可视；legacy `DXItemGrid.UseLegacyFootprints` 使用 `Inventory.wil` 帧尺寸 first-fit 生成占位锚点并将 `ItemLibraryFile` 切到 `Inventory.wil`，`DXItemCell` 将记录槽位与可视格索引分离 | 服务器模型仍只提供记录槽位，未提供 EI 原始列/行字段；本地资源已按 selector 归属加载，但原始服务端位置和逐物品 footprint 仍未完全重建 | 占位/footprint 代码已修；离线布局截图已确认 F250/F280 同屏，需运行多格物品、拖放和滚动验收；高 |
@@ -25,9 +25,9 @@
 
 ## 未闭合项目
 
-1. 经验条比例绘制代码已修，当前运行截图确认 HUD/F63 几何；需用独立第二经验值确认不同填充宽度，当前环境普通账号 `Admin=False`，未用命令伪造。
+1. 经验条比例绘制代码已修；独立 HUD 实验场已用第二组经验值完成动态填充复测：`experience-render-quarter.png` 与 `experience-render-threequarter.png`。实时登录客户端的经验包/命令增量仍未取得，不能把实验场结果冒称网络链路验收。
 2. 已取得 F350 直达、HUD MailButton 鼠标打开、关闭按钮关闭、R 关闭后再次打开的真实截图；入口点击坐标为完整 1024×768 窗口中的 `845,659`，截图保存在 `.artifacts/ui-acceptance-2026-09-24/`。
-3. 经验条动态复测尝试使用实际登录客户端和 `@level 2`；服务端日志确认测试账号 `Admin=False`，命令未产生等级/经验更新，前后 HUD bar crop 像素无变化。F63 几何和比例裁切代码已保留，动态长度仍需可控经验增量来源。
+3. 经验条动态复测尝试使用实际登录客户端和 `@level 2`；服务端日志确认测试账号 `Admin=False`，命令未产生等级/经验更新，前后 HUD bar crop 像素无变化；独立实验场已证明渲染器在 25%/75% 两个值下按比例裁切。
 4. F280 轨道和 6×6 物品布局已用单机开发模式真实截图；滚轮/下箭头操作不再导致窗口消失，但当前 first-fit 没有超过 6 行，无法宣称内容滚动和拖柄边界通过。
 5. 人物收起/展开真实截图已通过；Weapon/Armour/Necklace 大 hit record 行为仍未迁移。
 6. 人物属性原始全局字段到 Zircon `Stat` 的完整语义映射仍需独立证据；无法映射字段继续显示 `—`，不猜值。
