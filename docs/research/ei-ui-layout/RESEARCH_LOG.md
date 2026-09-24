@@ -9513,3 +9513,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔运行结果〕**主密码管理员会话成功渲染附近怪物，S16 选中相邻 `鸡`，真实发送攻击并收到 `ObjectDied`、两次 `GainedExperience`；日志显示 `attacks=2`、`cadence=true`、`combat=true`、`pass=true`。
 - **〔完整审计结果〕**`[OperationAuditExt] RESULT rings=true bracelets=true beltCleared=true autoCleared=true mailLifecycle=true companion=false guild=false combat=true pass=true`。经验包边界与经验条网络更新链已闭合；截图保存于 Zircon `.artifacts/ui-acceptance-2026-09-24/experience-after-gained-runtime.png`。
 - **〔清理与边界〕**S13 跳过仅为本轮临时隔离，实验结束后已回退；正式 `GameScene.cs` 无差异，正式构建成功。若要复现，运行根仍需提供对应 `Mon-*.Zl`，否则仅能收到对象包而无法创建客户端怪物节点。
+
+## Round 787 (equipment drag audit closure) — 2026-09-25：人物装备拖放真实回包闭合
+
+- **〔夹具〕**临时将 `--operation-audit` 的起始物品选择限制为“背包中存在可穿戴物品且存在同类型已占用装备槽”，避免首个普通药水遮蔽装备拖放路径；实验后已完全回退 `GameScene.cs`，正式源码无差异。
+- **〔运行结果〕**本地 `TestHero` 完整登录成功；审计选择背包槽 8 的 `Wood Sword`、装备槽 0 的原武器和空背包槽 18，依次完成背包前移/回移、卸下原装备、穿戴、卸下新装备、恢复原装备，并收到每一步 `ItemMove` 回包。
+- **〔完整断言〕**`[OperationAudit] RESULT forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；人物装备拖放运行路径已闭合。运行使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`。
+- **〔验证〕**临时夹具构建通过；回退后 `git diff --check`、`git diff --exit-code -- GodotClient/Scripts/GameScene.cs` 和 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 均通过，仅保留既有警告。
