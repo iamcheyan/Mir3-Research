@@ -9530,5 +9530,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 ## Round 789 (unmapped attribute fields) — 2026-09-25：移除人物属性页无证据 Stat 映射
 
 - **〔代码核对〕**`CharacterDialog.RefreshLegacyAttributeLabels()` 原先把原版“生命恢复/魔法恢复”分别映射到 Zircon `Stat.Healing`（Total Healing）和 `Stat.HealingCap`（Max Heal per Tick）；`LibraryCore/Stat.cs` 的 `StatDescription` 证明这两个字段不是原版状态页的生命/魔法恢复语义。
-- **〔修正〕**保留已有“中毒恢复”占位，三项无法由当前 EI primary 字段与 Zircon `Stat` 交叉闭合的值统一显示 `—`；未修改已闭合的 HP/MP、负重、攻击、防御、元素和 MR/MC 行。
+- **〔修正〕**保留已有“中毒恢复”占位，三项无法由当前 EI primary 字段与 Zircon `Stat` 交叉闭合的值统一显示 `—`；HP/MP、负重、攻击、防御和元素行保持原有已证映射。原先保留的 MC/MR 范围映射已由 Round 790 的字段形状复核撤回。
 - **〔运行验证〕**使用 `/home/tetsuya/mir2ei` 运行根、1024×768 窗口和 `--legacy-open=character-expanded` 完整登录，`LegacyOpen` 报告 `CharacterDialog size=(520,328)`；截图保存为 Zircon `.artifacts/ui-acceptance-2026-09-24/character-attributes-unmapped-runtime.png`。正式构建与推送提交为 `e3b75105`。
+
+## Round 790 (MC/MR source-shape correction) — 2026-09-25：停止把原版单字段/多字段误写成 MC/MR 范围
+
+- **〔证据〕**`status-window-render-evidence.json` 的原版第二列记录显示：“魔法”在 `0x007DA149` 读取一个 `word`；“魔法防御力”标签下读取六个独立 `word` 字段，并明确要求保留原始字段，不能直接命名为 MR 范围。
+- **〔修正〕**`CharacterDialog.BuildLegacyExpandedPanel()` 不再将“魔法”映射为 `Stat.MinMC/MaxMC`，也不再将“魔法防御力”映射为 `Stat.MinMR/MaxMR`；两项均显示 `—`，直到原版字段与服务端语义有独立交叉证据。`RefreshLegacyAttributeLabels()` 的 null 显示语义同步改为 `—`。
+- **〔验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过；真实登录 `--legacy-open=character-expanded` 成功，截图保存为 `.artifacts/ui-acceptance-2026-09-24/character-attributes-conservative-runtime.png`。正式 Zircon 提交为 `503fb261`。
