@@ -9459,3 +9459,16 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔分派链〕**`ServerLibrary/Models/PlayerObject.cs:1820-1838` 明确普通文本包装为 `Name: text`，仅发送给 `SeenByPlayers` 且要求 `Functions.InRange(CurrentLocation, player.CurrentLocation, Config.MaxViewRange)`；发送者自身不接收。这解释了单客户端和两个相距较远角色截图中 `ChatLogPanel` 仍为空，不是 `ReceiveChat → _chatLog.AddMessage` 接收链丢失。
 - **〔运行结果〕**Bot01 客户端在比奇县完整进入游戏；Bot02 同图实际发送普通文本；服务端日志证明发送和记录成功。当前截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot02-nearby-continue.png` 未显示普通文本，因两个角色未进入 `MaxViewRange`，不冒称为底部栏视觉闭环。
 - **〔结论〕**普通聊天的生产接收链和服务端发送链均有独立证据；剩余阻塞严格收窄为需要把两个角色置于同一 `MaxViewRange` 内，或使用观察者路径后再做截图验收。未修改生产代码，未发送命令模板或拒绝/喊话文本。
+## Round 779 (经验条实时链路继续核对) — 2026-09-25：包处理链已闭合，管理员测试前置仍阻塞
+
+- **〔服务端产生〕**`ServerLibrary/Models/PlayerObject.cs` 在累计经验刷新时入队 `S.GainedExperience`，等级/进入游戏路径入队 `S.InformMaxExperience`。
+- **〔客户端接收〕**`ServerConnection.Process(S.GainedExperience)` 与 `Process(S.InformMaxExperience)` 分别触发 `GainedExperienceEvent` / `InformMaxExperienceEvent`；`GameScene.OnGainedExperience()`、`OnInformMaxExperience()` 更新 `_playerExperience` / `_playerMaxExperience` 并调用 `MainPanel.SetExperience()`。经验包到 HUD 的生产链有源码闭环。
+- **〔命令权限〕**`@level` 定义在 `Envir/Commands/Command/Admin/Level.cs`，由 `AdminCommandHandler.IsAllowedByPlayer()` 限制为 `Account.Admin || Account.TempAdmin`。本次本地 ServerCore 日志实际记录测试账号 `Admin=False`，`@level 2` 未产生等级或经验变化；未改数据库、未泄露或尝试猜测 `MasterPassword`。
+- **〔结论〕**实时网络经验值仍不能验收；独立 HUD 25%/75% 渲染证据继续有效，网络增量需可用管理员/经验产生场景后再复测。
+## Round 780 (人物装备栏几何与运行复核) — 2026-09-25：11 个 EI 装备 hit record 已迁移
+
+- **〔证据〕**`equipment-slots-evidence.json` 明确确认 client slot record 与 `EquipmentSlot` 0..10 一一对应；Weapon `(86,114)-(146,204)`、Armour `(38,70)-(91,154)`、Necklace `(94,71)-(143,104)`，以及 8 个 38×38 槽位均为窗口相对坐标。
+- **〔代码〕**Zircon `CharacterDialog.ApplyLegacyEiLayout()` 现按证据为 11 个 `DXItemCell` 设置位置和尺寸，不再只显示此前 8 个小槽；`AuditLegacyEiLayout()` 同步检查 11 个槽及各自尺寸。通用 `DXItemCell.MoveItem()` / `ToEquipment()` 拖放发送链保持不变。
+- **〔运行〕**在 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --ui-diagnostic-borders`、运行资源 `/home/tetsuya/mir2ei/Data` 下完整登录成功；W 键打开人物窗口，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-equipment-slots-w-continue.png` 显示 11 个槽；点击 F168 展开后截图 `character-equipment-slots-expanded-continue.png` 显示 F201 及双列属性面板。
+- **〔限制〕**当前 `TestHero` 的角色装备数组无可兼容的已装备物品，无法通过生产回包闭合一次实际服务端装备替换；本次不改数据库、不伪造拖放成功。几何、命中区域和本地拖放入口已由证据与源码闭合。
+- **〔拖放审计〕**运行 `--operation-audit` 完整登录后，源码审计自动选取首个可移动物品 `Healing Potion (II)`，但 `StartOperationAudit()` 正确报告 `FAIL no compatible occupied equipment slot` 并退出；这独立证明本地角色状态没有可用于装备替换的兼容已装备物品，而不是把失败误判为坐标或命中链错误。
