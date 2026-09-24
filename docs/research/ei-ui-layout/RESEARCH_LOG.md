@@ -9526,3 +9526,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔独立读取〕**使用 `Tools/common/wilsdk.py` 直接读取严格运行资源根 `/home/tetsuya/mir2ei/Data/GameInter.wil/.wix`，未通过 Godot 运行时或 Zircon 布局常量推导：库计数 `1103`，F50 头部为 `800×136`、offset `(-24,-16)`；F60/F61 均为 `56×110`，F63 为 `164×6`。
 - **〔结论〕**当前本地运行资源的 F50/F60/F61/F63 帧头与 EI primary HUD 证据一致；之前矩阵中“本地 F50 头尺寸不同”的描述已过时，主 HUD 根框固定 `800×136` 仍是正确的逻辑 RECT，不能回退为运行时自动取帧头尺寸。
 - **〔边界〕**本轮未修改 Zircon 代码或运行资源；经验验收仍保留 `Mon-*.Zl` 缺失导致的可复现性前置条件，人物属性未映射字段仍按证据显示 `—`。
+
+## Round 789 (unmapped attribute fields) — 2026-09-25：移除人物属性页无证据 Stat 映射
+
+- **〔代码核对〕**`CharacterDialog.RefreshLegacyAttributeLabels()` 原先把原版“生命恢复/魔法恢复”分别映射到 Zircon `Stat.Healing`（Total Healing）和 `Stat.HealingCap`（Max Heal per Tick）；`LibraryCore/Stat.cs` 的 `StatDescription` 证明这两个字段不是原版状态页的生命/魔法恢复语义。
+- **〔修正〕**保留已有“中毒恢复”占位，三项无法由当前 EI primary 字段与 Zircon `Stat` 交叉闭合的值统一显示 `—`；未修改已闭合的 HP/MP、负重、攻击、防御、元素和 MR/MC 行。
+- **〔运行验证〕**使用 `/home/tetsuya/mir2ei` 运行根、1024×768 窗口和 `--legacy-open=character-expanded` 完整登录，`LegacyOpen` 报告 `CharacterDialog size=(520,328)`；截图保存为 Zircon `.artifacts/ui-acceptance-2026-09-24/character-attributes-unmapped-runtime.png`。正式构建与推送提交为 `e3b75105`。
