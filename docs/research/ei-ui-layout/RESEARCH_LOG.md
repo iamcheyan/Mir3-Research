@@ -9520,3 +9520,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔运行结果〕**本地 `TestHero` 完整登录成功；审计选择背包槽 8 的 `Wood Sword`、装备槽 0 的原武器和空背包槽 18，依次完成背包前移/回移、卸下原装备、穿戴、卸下新装备、恢复原装备，并收到每一步 `ItemMove` 回包。
 - **〔完整断言〕**`[OperationAudit] RESULT forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；人物装备拖放运行路径已闭合。运行使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`。
 - **〔验证〕**临时夹具构建通过；回退后 `git diff --check`、`git diff --exit-code -- GodotClient/Scripts/GameScene.cs` 和 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 均通过，仅保留既有警告。
+
+## Round 788 (local GameInter header cross-check) — 2026-09-25：F50 资源帧头差异复核闭合
+
+- **〔独立读取〕**使用 `Tools/common/wilsdk.py` 直接读取严格运行资源根 `/home/tetsuya/mir2ei/Data/GameInter.wil/.wix`，未通过 Godot 运行时或 Zircon 布局常量推导：库计数 `1103`，F50 头部为 `800×136`、offset `(-24,-16)`；F60/F61 均为 `56×110`，F63 为 `164×6`。
+- **〔结论〕**当前本地运行资源的 F50/F60/F61/F63 帧头与 EI primary HUD 证据一致；之前矩阵中“本地 F50 头尺寸不同”的描述已过时，主 HUD 根框固定 `800×136` 仍是正确的逻辑 RECT，不能回退为运行时自动取帧头尺寸。
+- **〔边界〕**本轮未修改 Zircon 代码或运行资源；经验验收仍保留 `Mon-*.Zl` 缺失导致的可复现性前置条件，人物属性未映射字段仍按证据显示 `—`。
