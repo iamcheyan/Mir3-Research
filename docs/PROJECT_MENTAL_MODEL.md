@@ -43,10 +43,11 @@
 | 服务器逻辑 | **共享** | ServerCore :7000 | 瘦客户端架构，战斗/移动全在服务端 |
 | 素材（贴图/帧） | **共享数据** | .Zl/.wil 库 | webport 消费 webres 转的 WebP（Debug/Client/WebData，702M）|
 | 线协议 | **双份手工** | `LibraryCore/Network/Packet.cs` | webport `net.js` 手抄；**C# 加删包类 → packet id 全表移位**，靠 packet_id_dump 反射表对齐 |
-| 动画帧表 | **双份手工→正在合并** | `Functions.cs`/`PlayerObject.cs` | webport `frames.js`/`anims.js`（逐行移植，最准的 JS 版）；E3 正在做 JSON 事实源 |
+| 动画帧表 | **共享 JSON** | `zircon/ClientData/frame-formulas.json` | `Functions.cs`/`PlayerObject.cs` 独立抽取覆盖校验；Godot 与 webclient/webport 读同一份 |
 | UI 布局 | 单向导出 | `GodotClient/UI/ui_tree.json` | UiTreeExporter 产物，webport 只读 |
-| 技能特效 | **三份手工→E4 合并中** | 原版 `Client/Models/MapObject.cs:768` 巨型 switch | MagicInfo 表**没有**特效字段！Godot MagicEffectTable.cs（697 行，95 技能+白名单）是手工提取 |
-| 渲染/输入 | 必然两份 | — | Godot 引擎 vs DOM，运行时不同 |
+| 技能特效 | **共享 JSON 双语义层** | `zircon/ClientData/magic-effects.json` | `original`=原版运行语义，`godot`=Godot 结构语义；Godot DataLayer 与 Magic Lab/webclient 共读 |
+| 音效目录 | **共享 JSON** | `zircon/ClientData/sounds.json` | 三 catalog 由独立抽取器覆盖校验，Godot loader 与网页共读 |
+| 渲染/输入 | 必然两份 | — | Godot 引擎节点 vs DOM，运行时不同 |
 
 ## 四、坐标系与渲染约定（一天里踩过两次的雷）
 
@@ -143,6 +144,24 @@ dead 探针 0xcd5c5c 精确匹配。E5 实验室做同规格 web 预览供检测
   实测发现：**夜图闪电固有不可见**（闪电纹理亮度 77×0.25≈背景）。
 - 新坑回写总纲 §3.8：hub 自愈复活 vs services.sh stop、rollback 在 baseline 重置后失效、
   GET row 带 __zh 注入字段、多 goal 共享工作树 git 互踩、pull 后必须 build、llvmpipe 探针阈值。
+## 八.6、E5 客户端参数数据层化（2026-08-16）
+
+E5 已完成 A/B/C 三阶段，目标是让 Godot、Magic Lab 与静态 webclient
+“内容一份，两个壳”：
+
+- `zircon/ClientData/{magic-effects,sounds,frame-formulas}.json` 是 canonical；
+  `ClientData/_meta/` 保存原版/Godot 抽取中间证据。旧工具 JSON 副本已删除。
+- Godot `DataLayer.cs` 在 `NetworkManager._Ready` 首位加载三 JSON，清空后重填
+  `MagicEffectTable`、`SoundCatalog`、`MagicSoundCatalog`、`MonsterSoundCatalog`
+  和 `FrameSet` 静态表；`TableSnapshotTool` 证明 cutover 前后快照全等。
+- `gen_cs_table.py --check` 保留为独立门禁：文件层检查 JSON 的 original↔godot
+  三元组，运行层用 headless Godot 快照与 godot 段比对；不再生成 C# 硬编码表。
+- webclient `:8822` 读同一 ClientData；`effects.js` 是网页施法/逐帧/图层混合
+  的共享引擎，`POST /lab/save` 只接受定长三元组，白名单过滤、备份、自检失败回滚。
+- C6 174 技能批量基线采用自己的 `_baseline/manifest.json`，首轮重建
+  `174 个技能 / 0 errors`；`freezeAt` 回拨后必须强制重结算，否则 framesReady
+  会因旧 `_lastNo` 永远不匹配。
+
 
 ## 九、方法论（用户认可的工作节奏）
 
@@ -164,13 +183,17 @@ omp 会话即文件，三层保存法：
    任何机器/任何会话 `git pull` 即得。AGENTS.md 已被 omp 自动加载，可在其开头
    加一行指向本文档（见下方"待办"）
 
-## 十一、当前状态快照（2026-08-16 E2 收口后）
-- 本机已推 fork：`62f6499`、`eae891d`、`880771b`（Magic Lab goal）、`e1f493f`（心智模型）、
-  E5 goal；E2 收口推至 `554eb8b`（2026-08-16）；**Zircon 已推 `8d1a6a3b`（光照特殊态）**
-- 82 已跑：E0/E1/E3/E4；**E2（ed-npc）2026-08-16 完成收口**；E5（ed-light）部署中
-- webport：冻结，UI 错位已修（R34）——E2 端到端终验复用它进图实测（GM @MOVE），未改其代码
-- E2 关键沉淀（全录任务书 §3.11）：阻挡格(flag&3!=3) spawn 的 NPC 游戏内不可见
-  （摆放引擎已写前校验）；MapRegion.PointRegion 工作区是质心有损摘要（importer
-  已支持单点无损/多点整体平移两档）；dbeditor 启动载内存、外部写盘须 POST
-  /api/reload
-- 待办：Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照
+## 十一、当前状态快照（2026-08-16 E5 收口）
+- E5 客户端参数数据层化 A/B/C 全部完成：A 抽取与覆盖率、B Godot 快照全等
+  与 cutover、C webclient 共读/编辑回写/174 技能回归基线均已验收。
+- 关键证据：`docs/editor/e5-proof/{coverage-A.md,C7-edit-loop.md,
+  snapshot-before.json,snapshot-after.json,snapshot-cutover.json}`；
+  `docs/magiclab/gallery/_baseline/manifest.json` 为 174 技能、0 errors 首次基线。
+- 运行门禁：`gen_cs_table.py --check`、`merge_effects.py --check`、
+  `frameformulas.py --check`、`extract_sound_catalogs.py --check` 均保持绿；
+  Godot DataLayer cutover 前后稳定快照全等。
+- Magic Lab 当前静态客户端行为：`effects.js` 统一施法/逐帧/图层混合，
+  `freezeAt` 强制按固定 lab-time 重结算；`POST /lab/save` 做白名单、备份、
+  三元组自检和失败回滚。
+- webport 仍冻结，只修参考价值 bug；E0/E1/E2/E3/E4 已收口。
+- 待办：Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照。

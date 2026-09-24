@@ -43,7 +43,7 @@ SERVICES=(
     "webclient|8822|20|cd Tools/webclient && exec $PY serve.py"
     "webport|8823|25|exec $PY Tools/webport/serve.py"
     "portal|8840|15|exec $SYS_PY Tools/portal/portal.py --port 8840"
-    "mapviewer|8899|40|exec $PY Tools/maps/mapviewer.py --port 8899"
+    "mapviewer|8899|40|exec $PY Tools/maps/mapviewer.py --port 8899 --no-prewarm-tiles"
 )
 ORDER=(zircon-core wsgateway wilviewer dbviewer dbeditor uieditor webres webclient webport portal mapviewer)
 

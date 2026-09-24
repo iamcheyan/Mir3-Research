@@ -405,6 +405,8 @@ def cmd_data(args) -> int:
     write_json(out / "maps_manifest.json", maps_manifest)
 
     # ---- NPC 294 ----
+    npc_lib = get_lib("NPC")
+    npc_lib_max = max(npc_lib.headers, default=-1) if npc_lib else -1
     npcs = []
     for row in ws_rows("NPCInfo"):
         reg = regions.get(row["Region"]["Index"]) if row.get("Region") else None
@@ -413,15 +415,17 @@ def cmd_data(args) -> int:
         p = reg.get("PointRegion") or {}
         if p.get("CenterX") in (None, 0):
             continue
-        en = row.get("NPCName") or f"NPC{row['Index']}"
+        img = row.get("Image") or 0
         npcs.append({
             "id": row["Index"], "name": en, "zh": names["npcs"].get(en, en),
             "map": reg["Map"]["Name"], "x": int(p["CenterX"]), "y": int(p["CenterY"]),
-            "image": row.get("Image") or 0, "face": row.get("FaceImage") or 0,
+            "image": img, "face": row.get("FaceImage") or 0,
             "cat": reg.get("Description") or "",
+            # E5/C6: 帧号超出 NPC 库 (如行会旗帜 Image=10000) → 原版 MirLibrary.Draw
+            # 界外静默跳过, 网页端同语义不请求 (消灭 4xx 噪声)
+            "noVisual": img * 100 > npc_lib_max,
         })
     write_json(out / "npcs.json", npcs)
-
     # ---- Monster 434 ----
     mons = []
     for row in ws_rows("MonsterInfo"):
@@ -749,6 +753,15 @@ def cmd_sprites(args) -> int:
 # 逐库精灵清单 (帧元数据: 宽/高/偏移), 供客户端锚定合成; 惰性生成后落盘复用。
 
 
+def frame_state(lib_name: str, frame: int) -> str:
+    """帧三态: ok=可抽 / blank=库内空帧 (原版画不出) / missing=界外或无库。
+    E5/C6: 供 serve.py 区分 200-透明 (已标记空帧) 与 404 (界外)。"""
+    lib = get_lib(lib_name)
+    if lib is None or frame not in lib.headers:
+        return "missing"
+    return "blank" if lib.is_blank(frame) else "ok"
+
+
 def cmd_manifest(args) -> int:
     lib_name = args.lib
     lib = get_lib(lib_name)
@@ -756,12 +769,18 @@ def cmd_manifest(args) -> int:
         print(f"[manifest] 找不到库: {lib_name}")
         return 1
     out = {}
+    empty = []
     for idx in sorted(lib.headers):
+        if lib.is_blank(idx):
+            empty.append(idx)          # E5/C6: 库内空帧显式标记, 客户端预分类免 4xx 噪声
+            continue
         h = lib.header(idx)
         if h:
             out[str(idx)] = [h["width"], h["height"], h["offsetX"], h["offsetY"]]
+    out["_empty"] = empty              # 空帧索引列表 (200-透明)
+    out["_max"] = max(lib.headers)     # 界外判定线 (原版 MirLibrary.Draw 界外静默跳过)
     write_json(WEB / "sprites" / lib_name / "manifest.json", out)
-    print(f"[manifest] {lib_name}: {len(out)} 帧元数据")
+    print(f"[manifest] {lib_name}: {len(out) - 2} 帧元数据, 空帧 {len(empty)}, max={out['_max']}")
     return 0
 
 

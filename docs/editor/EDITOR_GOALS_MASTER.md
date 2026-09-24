@@ -187,6 +187,34 @@ webport（:8823 网页客户端）已完成行为级 parity 冲刺（`docs/webpo
   GPU 机器全 PASS，82 机 Xvfb+llvmpipe 读 0.369——同一份代码两种结果。无头验收结论
   要标注渲染器；断言阈值对软渲染偏紧不算产品 bug。
 
+### 3.8.1 客户端参数数据层化与 Magic Lab 验收坑（E5 实证，2026-08-16）
+
+- **三份表必须分清事实层**：`zircon/ClientData/magic-effects.json` 的
+  `skills[*].original` 保留原版 `MapObject.cs` 运行语义，`godot` 保留
+  `MagicEffectTable.cs` 结构语义；网页编辑器只写 `godot` 对应字段，并同步
+  original 的帧号，禁止重新生成/覆盖原版段。`sounds.json`、`frame-formulas.json`
+  同样是 ClientData canonical，旧 `Tools/**` JSON 副本必须删除。
+- **DataLayer 的初始化顺序是契约**：Godot `NetworkManager._Ready` 首位加载
+  ClientData，再进入 `DatabaseLoader.Load()`；loader 必须先 `Clear()` 三个
+  静态表再填充，否则 domain reload/重启测试会残留旧项。路径按
+  `ZIRCON_CLIENT_DATA` → `res://ClientData` → Zircon 根目录解析，禁止硬编码
+  大写 `Zircon`。
+- **快照等价必须在 cutover 前后都跑**：`TableSnapshotTool` 的稳定序列化快照
+  是行为证据；`gen_cs_table.py --check` 在 cutover 后改为 ClientData 内部一致性
+  门禁，不能再调用已删除的 C# 表体做生成式自参照。覆盖率工具必须独立解析 C#。
+- **Magic Lab 回归的冻结时钟坑**：`freezeAt()` 会把 lab-time 从实时值回拨到
+  固定偏移；特效引擎必须在回拨后强制按新时间重结算并预取当前帧，否则 `_lastNo`
+  停留在回拨前帧，`framesReady()` 永远 false。`framesReady` 读取的字段必须与
+  `effects.js` 写入的 `_lastNo` 一致；这是一次实际造成 46/174 技能超时的 bug。
+- **174 技能基线要独立且可重建**：`batch_run.mjs --baseline` 只写
+  `docs/magiclab/gallery/_baseline/` 和回归报告；不要覆盖历史脏
+  `docs/magiclab/gallery/*.webp`。长跑进程用 hub 或 `setsid` 托管，单纯
+  `nohup ... &` 会被工具调用进程组回收。基线目录必须先 `mkdir -p`，否则
+  末尾复制 `REGRESSION.md` 会在全部截图完成后才失败。
+- **编辑回写只允许定长三元组**：`POST /lab/save` 通过字段白名单、三元组数量/
+  顺序校验、`.bak`、重读和 `gen_cs_table --check` 自检；任意异常自动恢复。
+  `/lab/save` 加完必须重启 webclient，旧 uvicorn 仍会稳定返回 404。
+
 ### 3.9 共享 mapviewer 代码与无头验收的坑（E1 实证，2026-08-15）
 
 - **多会话热编辑同一文件互覆**：mapedit/api.py 在 E1 手里被重建 `_handle_edit` 三次——

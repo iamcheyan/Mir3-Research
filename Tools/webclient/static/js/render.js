@@ -73,6 +73,7 @@ export class Renderer {
     });
     if (this.showNpcs) {
       for (const n of world.npcs) {
+        if (n.noVisual) continue;   // E5/C6: 界外帧 NPC (行会旗帜类) 原版同语义不绘制
         ents.push({ y: n.y, x: n.x, kind: 'npc', e: n, key: `npc:${this.game.world.map}:${n.mid ?? n.image}:${n.x}:${n.y}`,
           spr: npcSprite(D().appearance.npc_lib, n.image, 0),
           name: n.zh, color: '#7de27d', info: n });

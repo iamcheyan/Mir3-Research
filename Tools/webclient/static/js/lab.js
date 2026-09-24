@@ -59,6 +59,7 @@ function log(t, text, cls = '') {
 const FF = makeFF({});
 // E5/C4: 引擎统一到 effects.js (与漫游端共用一套编排/绘制/混合)
 const ENGINE = createFxEngine({ toScreen: null });   // toScreen 由 drawFx 每帧传入
+window.__ENGINE = ENGINE;   // 调试/batch_run 诊断侧信道
 
 // ---------- 纸娃娃 ----------
 const LOOKS = {
@@ -357,7 +358,73 @@ function showInfo(m, entry) {
   const snd = Object.entries(entry.sound || {}).map(([k, v]) => `${k}: ${v.join(',')}`);
   if (snd.length) rows.push(['音效', snd.join('<br>')]);
   rows.push(['MagicInfo', `Lv${m.need1 ?? ''} Cost${m.cost ?? '?'} ${m.desc?.slice(0, 40) || ''}`]);
-  info.innerHTML = `<h4>${m.zh} (${m.key})</h4><table>${rows.map((r) => `<tr><td class="k">${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`;
+  info.innerHTML = `<h4>${m.zh} (${m.key})</h4><table>${rows.map((r) => `<tr><td class="k">${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`
+    + buildEditor(m, entry);
+  bindEditor(m, entry);
+}
+
+// ---------- E5/C7 参数编辑器 (即时预览 + 写回 ClientData) ----------
+const COLOURS = ['None', 'Fire', 'Ice', 'Lightning', 'Wind', 'Holy', 'Dark', 'Phantom'];
+const DRAW_TYPES = ['Object', 'Floor', 'Final'];
+function buildEditor(m, entry) {
+  const segs = [['start', '起手'], ['release', '释放']].filter(([s]) => effectsOf(entry, s).length);
+  if (!segs.length) return '';
+  const fieldRow = (seg, i, e) => {
+    const num = (label, val, step, key, extraKey) => `
+      <label class="ef">${label}<input type="number" step="${step}" data-seg="${seg}" data-i="${i}"
+        data-f="${key}"${extraKey ? ` data-x="1"` : ''} value="${val ?? 0}"></label>`;
+    const ex = e.extra || {};
+    return `<div class="ef-row" data-seg="${seg}" data-i="${i}">
+      <span class="ef-tag">${seg === 'start' ? '起' : '放'}${i + 1} ${e.lib}#${e.frame ?? e.frameExpr ?? '?'} <i>${e.kind || e.segment || ''}</i></span>
+      <div class="ef-fields">
+      ${num('帧', e.frame, 1, 'frame')}
+      ${num('数量', e.count, 1, 'count')}
+      ${num('间隔ms', e.delayMs, 10, 'delayMs')}
+      ${num('skip', ex.Skip, 1, 'Skip', 1)}
+      ${num('blendRate', ex.BlendRate, 0.05, 'BlendRate', 1)}
+      ${num('opacity', ex.Opacity, 0.05, 'Opacity', 1)}
+      ${num('startDelay', ex.StartDelayMs, 50, 'StartDelayMs', 1)}
+      ${num('distDelay', ex.DistanceDelayMs, 10, 'DistanceDelayMs', 1)}
+      <label class="ef">混合<input type="checkbox" data-seg="${seg}" data-i="${i}" data-f="Blend" data-x="1" data-chk="1" ${ex.Blend !== false ? 'checked' : ''}></label>
+      <label class="ef">色<select data-seg="${seg}" data-i="${i}" data-f="colour">${COLOURS.map((c) => `<option ${e.colour === c ? 'selected' : ''}>${c}</option>`).join('')}</select></label>
+      <label class="ef">层<select data-seg="${seg}" data-i="${i}" data-f="DrawType" data-x="1">${DRAW_TYPES.map((d) => `<option ${(ex.DrawType || 'Object') === d ? 'selected' : ''}>${d}</option>`).join('')}</select></label>
+      </div></div>`;
+  };
+  const rows = segs.flatMap(([seg]) => effectsOf(entry, seg).map((e, i) => fieldRow(seg, i, e))).join('');
+  return `<div class="lab-edit"><h5>参数编辑 (E5/C7 · 改动即时预览)</h5>${rows}
+    <button id="lab-save">保存到 ClientData</button>
+    <span id="lab-save-status" class="dim"></span></div>`;
+}
+function bindEditor(m, entry) {
+  const box = $('#lab-info .lab-edit');
+  if (!box) return;
+  let replayTimer = 0;
+  box.addEventListener('input', (ev) => {
+    const t = ev.target;
+    const seg = t.dataset.seg, i = +t.dataset.i, f = t.dataset.f;
+    if (!seg || f == null) return;
+    const e = effectsOf(entry, seg)[i];
+    if (!e) return;
+    const val = t.type === 'checkbox' ? t.checked : (t.tagName === 'SELECT' ? t.value : parseFloat(t.value));
+    if (t.dataset.x) { (e.extra ||= {})[f] = val; }
+    else if (f === 'colour') e.colour = val;
+    else e[f] = val;
+    // 即时预览 (去抖 400ms)
+    clearTimeout(replayTimer);
+    replayTimer = setTimeout(() => playSkill(m), 400);
+  });
+  $('#lab-save').onclick = async () => {
+    const st = $('#lab-save-status');
+    st.textContent = '保存中 (写 ClientData + gen_cs_table 自检)...';
+    try {
+      const r = await fetch('/lab/save', { method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: m.key, entry: { start: entry.start || {}, release: entry.release || {} } }) });
+      const j = await r.json();
+      if (r.ok && j.ok) { st.textContent = `✓ 已写入 zircon/ClientData/magic-effects.json (自检过, ${j.triples.length} 三元组)`; st.style.color = '#7de27d'; }
+      else { st.textContent = `✗ ${j.error || j.detail || r.status}`; st.style.color = '#ff7a7a'; }
+    } catch (ex) { st.textContent = `✗ ${ex.message}`; st.style.color = '#ff7a7a'; }
+  };
 }
 
 // ---------- 控件 ----------
@@ -405,7 +472,7 @@ window.__LAB = {
   freezeAt(offsetMs) {  // 暂停并把 lab-time 定位到施法开始后 offsetMs (确定性截图)
     S.paused = true;
     S.labT = (this._cast0 ?? S.labT) + offsetMs;
-    ENGINE.st.t = S.labT;
+    ENGINE.update(0, S.labT);   // 时钟回拨 → 强制按新 labT 重结算/预取当帧
   },
   framesReady() {  // 当前 labT 下特效/纸娃娃/木桩的当帧是否已解码 (排除异步竞态)
     for (const f of ENGINE.st.fx) {
@@ -421,7 +488,7 @@ window.__LAB = {
         no = idx + f.frame + f.dir * (f.skip ?? 10);
       }
       // 引擎记录的结算帧号
-      if (f._last === undefined || f._lastFrameNo !== no) return false;
+      if (f._last === undefined || f._lastNo !== no) return false;
     }
     const dFrame = Math.floor((S.labT % 500) / 125) % 4;
     const dummyNo = drawFrame(MONSTER_ANIMS.standing, dFrame, 2);

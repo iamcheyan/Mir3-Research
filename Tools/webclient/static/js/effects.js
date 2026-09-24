@@ -235,8 +235,9 @@ export function createFxEngine(opts) {
   }
 
   // ---------- 帧推进 ----------
-  function update(dt) {
-    st.t += dt;
+  function update(dt, tOverride) {
+    if (tOverride != null) st.t = tOverride;   // lab freezeAt: 时钟回拨后强制重结算当帧
+    else st.t += dt;
     for (let i = st.fx.length - 1; i >= 0; i--) {
       const f = st.fx[i];
       const t = st.t - f.t0;
@@ -249,11 +250,29 @@ export function createFxEngine(opts) {
       if (!f.flight && t >= f.count * f.delay) {
         for (const cb of f.onDone) cb();
         st.fx.splice(i, 1);
+        continue;
       }
+      // 帧预取与结算层无关 (floor/final 层特效也须就绪 — 截图确定性依赖)
+      let idx, dirOff;
+      if (f.flight) {
+        idx = Math.min(f.count - 1, Math.floor(t / f.delay));
+        dirOff = f.dir16 * (f.skip ?? 10);
+      } else {
+        idx = Math.floor(t / f.delay);
+        if (idx >= f.count) continue;
+        dirOff = f.dir * (f.skip ?? 10);
+      }
+      if (idx < 0) continue;
+      const frameNo = f.frame + idx + dirOff;
+      frameSpriteCached(f.lib, frameNo)
+        .then((s) => { f._last = s ?? false; f._lastNo = frameNo; })
+        .catch(() => {});
+      for (let k = 1; k <= 3 && idx + k < f.count; k++)
+        frameSpriteCached(f.lib, f.frame + idx + k + dirOff);
     }
   }
 
-  // ---------- 绘制 (分层: floor < object < final) ----------
+  // ---------- 绘制 (分层: floor < object < final; 帧由 update 预取结算) ----------
   function draw(ctx, layer, toScreen) {
     const scr = toScreen || opts.toScreen;
     for (const f of st.fx) {
@@ -276,11 +295,6 @@ export function createFxEngine(opts) {
       }
       if (idx < 0) continue;
       const frameNo = f.frame + idx + dirOff;
-      frameSpriteCached(f.lib, frameNo)
-        .then((s) => { f._last = s ?? false; f._lastNo = frameNo; })
-        .catch(() => {});
-      for (let k = 1; k <= 3 && idx + k < f.count; k++)
-        frameSpriteCached(f.lib, f.frame + idx + k + dirOff);
       const s = f._lastNo === frameNo ? f._last : null;
       if (!s) continue;
       const p = scr(wx, wy);
