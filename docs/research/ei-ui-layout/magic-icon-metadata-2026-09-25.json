@@ -1,0 +1,2797 @@
+{
+  "evidence_id": "magic-icon-map-2026-09-25",
+  "source_command": "dotnet run --project Tools/MagicInfoDump/MagicInfoDump.csproj -- /home/tetsuya/development/zircon/Debug/Client/Data/ --icons",
+  "db_source": "/home/tetsuya/development/zircon/Debug/Client/Data/System.db",
+  "runtime_asset": "/home/tetsuya/mir2ei/Data/MIcon.wil/.wix",
+  "record_count": 174,
+  "unique_icon_count": 164,
+  "records": [
+    {
+      "magic": "Swordsmanship",
+      "name": "Swordsmanship",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 4,
+      "need_level1": 7
+    },
+    {
+      "magic": "PotionMastery",
+      "name": "Potion Mastery",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 262,
+      "need_level1": 12
+    },
+    {
+      "magic": "Slaying",
+      "name": "Slaying",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 12,
+      "need_level1": 14
+    },
+    {
+      "magic": "Thrusting",
+      "name": "Thrusting",
+      "class": "Warrior",
+      "school": "Toggle",
+      "icon": 22,
+      "need_level1": 19
+    },
+    {
+      "magic": "HalfMoon",
+      "name": "Half Moon",
+      "class": "Warrior",
+      "school": "Toggle",
+      "icon": 48,
+      "need_level1": 24
+    },
+    {
+      "magic": "ShoulderDash",
+      "name": "Shoulder Dash",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 52,
+      "need_level1": 27
+    },
+    {
+      "magic": "FlamingSword",
+      "name": "Flaming Sword",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 50,
+      "need_level1": 32
+    },
+    {
+      "magic": "DragonRise",
+      "name": "Dragon Rise",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 68,
+      "need_level1": 35
+    },
+    {
+      "magic": "BladeStorm",
+      "name": "Blade Storm",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 66,
+      "need_level1": 38
+    },
+    {
+      "magic": "DestructiveSurge",
+      "name": "Destructive Surge",
+      "class": "Warrior",
+      "school": "Toggle",
+      "icon": 204,
+      "need_level1": 40
+    },
+    {
+      "magic": "Interchange",
+      "name": "Interchange",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 212,
+      "need_level1": 42
+    },
+    {
+      "magic": "Defiance",
+      "name": "Defiance",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 202,
+      "need_level1": 44
+    },
+    {
+      "magic": "Beckon",
+      "name": "Beckon",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 214,
+      "need_level1": 46
+    },
+    {
+      "magic": "Might",
+      "name": "Might",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 210,
+      "need_level1": 48
+    },
+    {
+      "magic": "SwiftBlade",
+      "name": "Swift Blade",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 260,
+      "need_level1": 49
+    },
+    {
+      "magic": "Assault",
+      "name": "Assault",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 216,
+      "need_level1": 50
+    },
+    {
+      "magic": "Endurance",
+      "name": "Endurance",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 254,
+      "need_level1": 51
+    },
+    {
+      "magic": "ReflectDamage",
+      "name": "Reflect Damage",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 250,
+      "need_level1": 53
+    },
+    {
+      "magic": "Fetter",
+      "name": "Fetter",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 258,
+      "need_level1": 55
+    },
+    {
+      "magic": "AugmentDestructiveSurge",
+      "name": "Advanced Destructive Surge",
+      "class": "Warrior",
+      "school": "Toggle",
+      "icon": 526,
+      "need_level1": 84
+    },
+    {
+      "magic": "AugmentDefiance",
+      "name": "Advanced Defiance",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 388,
+      "need_level1": 80
+    },
+    {
+      "magic": "AugmentReflectDamage",
+      "name": "Advanced Reflect Damage",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 458,
+      "need_level1": 82
+    },
+    {
+      "magic": "AdvancedPotionMastery",
+      "name": "Advanced Potion Mastery",
+      "class": "Warrior",
+      "school": "None",
+      "icon": 262,
+      "need_level1": 40
+    },
+    {
+      "magic": "MassBeckon",
+      "name": "Mass Beckon",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 386,
+      "need_level1": 60
+    },
+    {
+      "magic": "SeismicSlam",
+      "name": "Seismic Slam",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 434,
+      "need_level1": 83
+    },
+    {
+      "magic": "Invincibility",
+      "name": "Invincibility",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 442,
+      "need_level1": 65
+    },
+    {
+      "magic": "CrushingWave",
+      "name": "Crushing Wave",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 450,
+      "need_level1": 90
+    },
+    {
+      "magic": "DefensiveMastery",
+      "name": "Defensive Mastery",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 466,
+      "need_level1": 70
+    },
+    {
+      "magic": "PhysicalImmunity",
+      "name": "Physical Immunity",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 468,
+      "need_level1": 80
+    },
+    {
+      "magic": "MagicImmunity",
+      "name": "Magic Immunity",
+      "class": "Warrior",
+      "school": "Passive",
+      "icon": 470,
+      "need_level1": 80
+    },
+    {
+      "magic": "DefensiveBlow",
+      "name": "Defensive Blow",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 488,
+      "need_level1": 86
+    },
+    {
+      "magic": "ElementalSwords",
+      "name": "Elemental Swords",
+      "class": "Warrior",
+      "school": "Active",
+      "icon": 502,
+      "need_level1": 95
+    },
+    {
+      "magic": "FireBall",
+      "name": "Fire Ball",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 0,
+      "need_level1": 7
+    },
+    {
+      "magic": "LightningBall",
+      "name": "Lightning Ball",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 80,
+      "need_level1": 8
+    },
+    {
+      "magic": "IceBolt",
+      "name": "Ice Bolt",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 76,
+      "need_level1": 9
+    },
+    {
+      "magic": "GustBlast",
+      "name": "Gust Blast",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 132,
+      "need_level1": 10
+    },
+    {
+      "magic": "Repulsion",
+      "name": "Repulsion",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 14,
+      "need_level1": 12
+    },
+    {
+      "magic": "ElectricShock",
+      "name": "Electric Shock",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 38,
+      "need_level1": 13
+    },
+    {
+      "magic": "Teleportation",
+      "name": "Teleportation",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 40,
+      "need_level1": 14
+    },
+    {
+      "magic": "AdamantineFireBall",
+      "name": "Adamantine Fire Ball",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 8,
+      "need_level1": 15
+    },
+    {
+      "magic": "ThunderBolt",
+      "name": "Thunder Bolt",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 20,
+      "need_level1": 16
+    },
+    {
+      "magic": "IceBlades",
+      "name": "Ice Blades",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 78,
+      "need_level1": 17
+    },
+    {
+      "magic": "Cyclone",
+      "name": "Cyclone",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 146,
+      "need_level1": 18
+    },
+    {
+      "magic": "ScortchedEarth",
+      "name": "Scorched Earth",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 16,
+      "need_level1": 20
+    },
+    {
+      "magic": "LightningBeam",
+      "name": "Lightning Beam",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 18,
+      "need_level1": 21
+    },
+    {
+      "magic": "FrozenEarth",
+      "name": "Frozen Earth",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 104,
+      "need_level1": 22
+    },
+    {
+      "magic": "BlowEarth",
+      "name": "Blow Earth",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 144,
+      "need_level1": 23
+    },
+    {
+      "magic": "FireWall",
+      "name": "Fire Wall",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 42,
+      "need_level1": 24
+    },
+    {
+      "magic": "ExpelUndead",
+      "name": "Expel Undead",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 62,
+      "need_level1": 26
+    },
+    {
+      "magic": "GeoManipulation",
+      "name": "Geo Manipulation",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 206,
+      "need_level1": 27
+    },
+    {
+      "magic": "MagicShield",
+      "name": "Magic Shield",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 60,
+      "need_level1": 29
+    },
+    {
+      "magic": "FireStorm",
+      "name": "Fire Storm",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 44,
+      "need_level1": 32
+    },
+    {
+      "magic": "LightningWave",
+      "name": "Lightning Wave",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 46,
+      "need_level1": 33
+    },
+    {
+      "magic": "IceStorm",
+      "name": "Ice Storm",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 64,
+      "need_level1": 34
+    },
+    {
+      "magic": "DragonTornado",
+      "name": "Dragon Tornado",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 142,
+      "need_level1": 35
+    },
+    {
+      "magic": "GreaterFrozenEarth",
+      "name": "Greater Frozen Earth",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 218,
+      "need_level1": 38
+    },
+    {
+      "magic": "ChainLightning",
+      "name": "Chain Lightning",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 220,
+      "need_level1": 40
+    },
+    {
+      "magic": "MeteorShower",
+      "name": "Meteor Shower",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 224,
+      "need_level1": 43
+    },
+    {
+      "magic": "Renounce",
+      "name": "Renounce",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 222,
+      "need_level1": 46
+    },
+    {
+      "magic": "Tempest",
+      "name": "Tempest",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 226,
+      "need_level1": 49
+    },
+    {
+      "magic": "JudgementOfHeaven",
+      "name": "Judgement Of Heaven",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 264,
+      "need_level1": 52
+    },
+    {
+      "magic": "ThunderStrike",
+      "name": "Thunder Storm",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 266,
+      "need_level1": 54
+    },
+    {
+      "magic": "FireBounce",
+      "name": "Fire Bounce",
+      "class": "Wizard",
+      "school": "None",
+      "icon": 0,
+      "need_level1": 15
+    },
+    {
+      "magic": "ElementalHurricane",
+      "name": "Elemental Hurricane",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 436,
+      "need_level1": 83
+    },
+    {
+      "magic": "SuperiorMagicShield",
+      "name": "Superior Magic Shield",
+      "class": "Wizard",
+      "school": "Phantom",
+      "icon": 444,
+      "need_level1": 65
+    },
+    {
+      "magic": "Burning",
+      "name": "Burning",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 484,
+      "need_level1": 76
+    },
+    {
+      "magic": "Shocked",
+      "name": "Shock",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 532,
+      "need_level1": 85
+    },
+    {
+      "magic": "LightningStrike",
+      "name": "Lightning Strike",
+      "class": "Wizard",
+      "school": "Lightning",
+      "icon": 452,
+      "need_level1": 90
+    },
+    {
+      "magic": "MirrorImage",
+      "name": "Mirror Image",
+      "class": "Wizard",
+      "school": "None",
+      "icon": 252,
+      "need_level1": 56
+    },
+    {
+      "magic": "IceRain",
+      "name": "Ice Rain",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 486,
+      "need_level1": 82
+    },
+    {
+      "magic": "FrostBite",
+      "name": "Frost Bite",
+      "class": "Wizard",
+      "school": "Ice",
+      "icon": 390,
+      "need_level1": 58
+    },
+    {
+      "magic": "Asteroid",
+      "name": "Asteroid",
+      "class": "Wizard",
+      "school": "Fire",
+      "icon": 392,
+      "need_level1": 80
+    },
+    {
+      "magic": "Storm",
+      "name": "Storm",
+      "class": "Wizard",
+      "school": "None",
+      "icon": 492,
+      "need_level1": 86
+    },
+    {
+      "magic": "Tornado",
+      "name": "Tornado",
+      "class": "Wizard",
+      "school": "Wind",
+      "icon": 508,
+      "need_level1": 95
+    },
+    {
+      "magic": "Heal",
+      "name": "Heal",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 2,
+      "need_level1": 7
+    },
+    {
+      "magic": "SpiritSword",
+      "name": "Spirit Sword",
+      "class": "Taoist",
+      "school": "Physical",
+      "icon": 6,
+      "need_level1": 8
+    },
+    {
+      "magic": "PoisonDust",
+      "name": "Poison Dust",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 10,
+      "need_level1": 12
+    },
+    {
+      "magic": "ExplosiveTalisman",
+      "name": "Explosive Talisman",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 24,
+      "need_level1": 13
+    },
+    {
+      "magic": "EvilSlayer",
+      "name": "Evil Slayer",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 72,
+      "need_level1": 14
+    },
+    {
+      "magic": "Invisibility",
+      "name": "Invisibility",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 34,
+      "need_level1": 20
+    },
+    {
+      "magic": "MagicResistance",
+      "name": "Magic Resistance",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 26,
+      "need_level1": 21
+    },
+    {
+      "magic": "MassInvisibility",
+      "name": "Mass Invisibility",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 36,
+      "need_level1": 23
+    },
+    {
+      "magic": "GreaterEvilSlayer",
+      "name": "Greater Evil Slayer",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 74,
+      "need_level1": 24
+    },
+    {
+      "magic": "Resilience",
+      "name": "Resilience",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 28,
+      "need_level1": 25
+    },
+    {
+      "magic": "TrapOctagon",
+      "name": "Trap Octagon",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 30,
+      "need_level1": 27
+    },
+    {
+      "magic": "CombatKick",
+      "name": "Combat Kick",
+      "class": "Taoist",
+      "school": "Physical",
+      "icon": 70,
+      "need_level1": 28
+    },
+    {
+      "magic": "ElementalSuperiority",
+      "name": "Elemental Superiority",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 176,
+      "need_level1": 29
+    },
+    {
+      "magic": "MassHeal",
+      "name": "Mass Heal",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 56,
+      "need_level1": 31
+    },
+    {
+      "magic": "BloodLust",
+      "name": "Blood Lust",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 186,
+      "need_level1": 34
+    },
+    {
+      "magic": "Resurrection",
+      "name": "Resurrection",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 152,
+      "need_level1": 35
+    },
+    {
+      "magic": "Purification",
+      "name": "Purification",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 238,
+      "need_level1": 38
+    },
+    {
+      "magic": "Transparency",
+      "name": "Transparency",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 240,
+      "need_level1": 43
+    },
+    {
+      "magic": "CelestialLight",
+      "name": "Celestial Light",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 242,
+      "need_level1": 46
+    },
+    {
+      "magic": "EmpoweredHealing",
+      "name": "Empowered Healing",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 256,
+      "need_level1": 47
+    },
+    {
+      "magic": "LifeSteal",
+      "name": "Life Steal",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 270,
+      "need_level1": 48
+    },
+    {
+      "magic": "ImprovedExplosiveTalisman",
+      "name": "Improved Explosive Talisman",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 246,
+      "need_level1": 49
+    },
+    {
+      "magic": "AugmentPoisonDust",
+      "name": "Empowered Poison Dust",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 268,
+      "need_level1": 50
+    },
+    {
+      "magic": "CursedDoll",
+      "name": "Cursed Doll",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 272,
+      "need_level1": 52
+    },
+    {
+      "magic": "ThunderKick",
+      "name": "Thunder Kick",
+      "class": "Taoist",
+      "school": "Physical",
+      "icon": 248,
+      "need_level1": 54
+    },
+    {
+      "magic": "SoulResonance",
+      "name": "Soul Resonance",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 482,
+      "need_level1": 84
+    },
+    {
+      "magic": "Parasite",
+      "name": "Parasite",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 396,
+      "need_level1": 62
+    },
+    {
+      "magic": "Spiritualism",
+      "name": "Spiritualism",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 394,
+      "need_level1": 80
+    },
+    {
+      "magic": "AugmentExplosiveTalisman",
+      "name": "Empowered Explosive Talisman",
+      "class": "Taoist",
+      "school": "None",
+      "icon": 24,
+      "need_level1": 17
+    },
+    {
+      "magic": "AugmentEvilSlayer",
+      "name": "Empowered Evil Slayer",
+      "class": "Taoist",
+      "school": "None",
+      "icon": 72,
+      "need_level1": 17
+    },
+    {
+      "magic": "AugmentPurification",
+      "name": "Empowered Purification",
+      "class": "Taoist",
+      "school": "None",
+      "icon": 238,
+      "need_level1": 55
+    },
+    {
+      "magic": "AugmentResurrection",
+      "name": "Empowered Resurrection",
+      "class": "Taoist",
+      "school": "None",
+      "icon": 152,
+      "need_level1": 75
+    },
+    {
+      "magic": "SummonSkeleton",
+      "name": "Summon Skeleton",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 32,
+      "need_level1": 17
+    },
+    {
+      "magic": "SummonShinsu",
+      "name": "Summon Shinsu",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 58,
+      "need_level1": 30
+    },
+    {
+      "magic": "SummonJinSkeleton",
+      "name": "Summon Jin Skeleton",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 208,
+      "need_level1": 33
+    },
+    {
+      "magic": "StrengthOfFaith",
+      "name": "Strength Of Faith",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 244,
+      "need_level1": 40
+    },
+    {
+      "magic": "SummonDemonicCreature",
+      "name": "Summon Demonic Creature",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 304,
+      "need_level1": 50
+    },
+    {
+      "magic": "DemonExplosion",
+      "name": "Demon Explosion",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 306,
+      "need_level1": 52
+    },
+    {
+      "magic": "Infection",
+      "name": "Infection",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 446,
+      "need_level1": 65
+    },
+    {
+      "magic": "DemonicRecovery",
+      "name": "Demonic Recovery",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 536,
+      "need_level1": 48
+    },
+    {
+      "magic": "Neutralize",
+      "name": "Neutralize",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 480,
+      "need_level1": 80
+    },
+    {
+      "magic": "AugmentNeutralize",
+      "name": "Empowered Neutralize",
+      "class": "Taoist",
+      "school": "None",
+      "icon": 480,
+      "need_level1": 80
+    },
+    {
+      "magic": "DarkSoulPrison",
+      "name": "Dark Soul Prison",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 454,
+      "need_level1": 90
+    },
+    {
+      "magic": "SearingLight",
+      "name": "Searing Light",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 438,
+      "need_level1": 83
+    },
+    {
+      "magic": "AugmentCelestialLight",
+      "name": "Empowered Celestial Light",
+      "class": "Taoist",
+      "school": "Holy",
+      "icon": 462,
+      "need_level1": 82
+    },
+    {
+      "magic": "CorpseExploder",
+      "name": "Corpse Exploder",
+      "class": "Taoist",
+      "school": "Dark",
+      "icon": 490,
+      "need_level1": 86
+    },
+    {
+      "magic": "SummonDead",
+      "name": "Summon Dead",
+      "class": "Taoist",
+      "school": "Phantom",
+      "icon": 514,
+      "need_level1": 95
+    },
+    {
+      "magic": "WillowDance",
+      "name": "Willow Dance",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 308,
+      "need_level1": 7
+    },
+    {
+      "magic": "VineTreeDance",
+      "name": "Vine Tree Dance",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 310,
+      "need_level1": 10
+    },
+    {
+      "magic": "Discipline",
+      "name": "Discipline",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 314,
+      "need_level1": 12
+    },
+    {
+      "magic": "PoisonousCloud",
+      "name": "Poisonous Cloud",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 312,
+      "need_level1": 14
+    },
+    {
+      "magic": "FullBloom",
+      "name": "Full Bloom",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 328,
+      "need_level1": 19
+    },
+    {
+      "magic": "Cloak",
+      "name": "Cloak",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 324,
+      "need_level1": 20
+    },
+    {
+      "magic": "WhiteLotus",
+      "name": "White Lotus",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 330,
+      "need_level1": 22
+    },
+    {
+      "magic": "CalamityOfFullMoon",
+      "name": "Calamity Of Full Moon",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 340,
+      "need_level1": 22
+    },
+    {
+      "magic": "WraithGrip",
+      "name": "Wraith Grip",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 316,
+      "need_level1": 24
+    },
+    {
+      "magic": "RedLotus",
+      "name": "Red Lotus",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 332,
+      "need_level1": 24
+    },
+    {
+      "magic": "HellFire",
+      "name": "Hell Fire",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 318,
+      "need_level1": 26
+    },
+    {
+      "magic": "PledgeOfBlood",
+      "name": "Pledge Of Blood",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 352,
+      "need_level1": 26
+    },
+    {
+      "magic": "Rake",
+      "name": "Rake",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 376,
+      "need_level1": 26
+    },
+    {
+      "magic": "SweetBrier",
+      "name": "Sweetbrier",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 334,
+      "need_level1": 27
+    },
+    {
+      "magic": "SummonPuppet",
+      "name": "Summon Puppet",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 326,
+      "need_level1": 30
+    },
+    {
+      "magic": "Karma",
+      "name": "Karma",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 342,
+      "need_level1": 30
+    },
+    {
+      "magic": "TouchOfTheDeparted",
+      "name": "Touch Of The Departed",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 354,
+      "need_level1": 30
+    },
+    {
+      "magic": "WaningMoon",
+      "name": "Waning Moon",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 350,
+      "need_level1": 32
+    },
+    {
+      "magic": "GhostWalk",
+      "name": "Ghost Walk",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 356,
+      "need_level1": 32
+    },
+    {
+      "magic": "ElementalPuppet",
+      "name": "Elemental Puppet",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 358,
+      "need_level1": 34
+    },
+    {
+      "magic": "Rejuvenation",
+      "name": "Rejuvenation",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 336,
+      "need_level1": 35
+    },
+    {
+      "magic": "Resolution",
+      "name": "Resolution",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 344,
+      "need_level1": 35
+    },
+    {
+      "magic": "ChangeOfSeasons",
+      "name": "Change Of Seasons",
+      "class": "Assassin",
+      "school": "None",
+      "icon": 360,
+      "need_level1": 36
+    },
+    {
+      "magic": "Release",
+      "name": "Release",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 378,
+      "need_level1": 36
+    },
+    {
+      "magic": "FlameSplash",
+      "name": "Flame Splash",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 320,
+      "need_level1": 38
+    },
+    {
+      "magic": "BloodyFlower",
+      "name": "Bloody Flower",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 374,
+      "need_level1": 12
+    },
+    {
+      "magic": "TheNewBeginning",
+      "name": "The New Beginning",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 346,
+      "need_level1": 40
+    },
+    {
+      "magic": "DanceOfSwallow",
+      "name": "Dance Of Swallow",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 362,
+      "need_level1": 40
+    },
+    {
+      "magic": "DarkConversion",
+      "name": "Dark Conversion",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 364,
+      "need_level1": 42
+    },
+    {
+      "magic": "DragonRepulse",
+      "name": "Dragon Repulse",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 322,
+      "need_level1": 45
+    },
+    {
+      "magic": "AdventOfDemon",
+      "name": "Advent Of Demon",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 338,
+      "need_level1": 45
+    },
+    {
+      "magic": "AdventOfDevil",
+      "name": "Advent Of Devil",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 348,
+      "need_level1": 45
+    },
+    {
+      "magic": "Abyss",
+      "name": "Abyss",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 366,
+      "need_level1": 45
+    },
+    {
+      "magic": "FlashOfLight",
+      "name": "Flash Of Light",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 368,
+      "need_level1": 45
+    },
+    {
+      "magic": "Stealth",
+      "name": "Stealth",
+      "class": "Assassin",
+      "school": "Assassination",
+      "icon": 380,
+      "need_level1": 45
+    },
+    {
+      "magic": "Evasion",
+      "name": "Evasion",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 370,
+      "need_level1": 47
+    },
+    {
+      "magic": "RagingWind",
+      "name": "Raging Wind",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 372,
+      "need_level1": 47
+    },
+    {
+      "magic": "Unused",
+      "name": "_Blank_",
+      "class": "Assassin",
+      "school": "None",
+      "icon": 0,
+      "need_level1": 0
+    },
+    {
+      "magic": "Massacre",
+      "name": "Massacre",
+      "class": "Assassin",
+      "school": "None",
+      "icon": 382,
+      "need_level1": 65
+    },
+    {
+      "magic": "ArtOfShadows",
+      "name": "Art of Shadows",
+      "class": "Assassin",
+      "school": "None",
+      "icon": 396,
+      "need_level1": 75
+    },
+    {
+      "magic": "DragonBlood",
+      "name": "Dragon Blood",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 382,
+      "need_level1": 60
+    },
+    {
+      "magic": "FatalBlow",
+      "name": "Fatal Blow",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 474,
+      "need_level1": 60
+    },
+    {
+      "magic": "LastStand",
+      "name": "Last Stand",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 448,
+      "need_level1": 65
+    },
+    {
+      "magic": "MagicCombustion",
+      "name": "Magic Combustion",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 478,
+      "need_level1": 70
+    },
+    {
+      "magic": "Vitality",
+      "name": "Vitality",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 472,
+      "need_level1": 70
+    },
+    {
+      "magic": "Chain",
+      "name": "Chain",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 476,
+      "need_level1": 75
+    },
+    {
+      "magic": "Concentration",
+      "name": "Concentration",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 384,
+      "need_level1": 80
+    },
+    {
+      "magic": "DualWeaponSkills",
+      "name": "Dual Weapon Skills",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 464,
+      "need_level1": 82
+    },
+    {
+      "magic": "Containment",
+      "name": "Containment",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 440,
+      "need_level1": 83
+    },
+    {
+      "magic": "DragonWave",
+      "name": "Dragon Wave",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 542,
+      "need_level1": 85
+    },
+    {
+      "magic": "Hemorrhage",
+      "name": "Hemorrhage",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 494,
+      "need_level1": 86
+    },
+    {
+      "magic": "BurningFire",
+      "name": "Burning Fire",
+      "class": "Assassin",
+      "school": "Kill",
+      "icon": 456,
+      "need_level1": 90
+    },
+    {
+      "magic": "ChainOfFire",
+      "name": "Chain Of Fire",
+      "class": "Assassin",
+      "school": "Atrocity",
+      "icon": 520,
+      "need_level1": 95
+    }
+  ],
+  "frames": {
+    "4": {
+      "header": {
+        "index": 4,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "262": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "12": {
+      "header": {
+        "index": 12,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "22": {
+      "header": {
+        "index": 22,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "48": {
+      "header": {
+        "index": 48,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "52": {
+      "header": {
+        "index": 52,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "50": {
+      "header": {
+        "index": 50,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "68": {
+      "header": {
+        "index": 68,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "66": {
+      "header": {
+        "index": 66,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "204": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "212": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "202": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "214": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "210": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "260": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "216": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "254": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "250": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "258": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "526": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "388": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "458": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "386": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "434": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "442": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "450": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "466": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "468": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "470": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "488": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "502": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "0": {
+      "header": {
+        "index": 0,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "80": {
+      "header": {
+        "index": 80,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "76": {
+      "header": {
+        "index": 76,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "132": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "14": {
+      "header": {
+        "index": 14,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "38": {
+      "header": {
+        "index": 38,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "40": {
+      "header": {
+        "index": 40,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "8": {
+      "header": {
+        "index": 8,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "20": {
+      "header": {
+        "index": 20,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "78": {
+      "header": {
+        "index": 78,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "146": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "16": {
+      "header": {
+        "index": 16,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "18": {
+      "header": {
+        "index": 18,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "104": {
+      "header": {
+        "index": 104,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "144": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "42": {
+      "header": {
+        "index": 42,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "62": {
+      "header": {
+        "index": 62,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "206": {
+      "header": {
+        "index": 206,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "60": {
+      "header": {
+        "index": 60,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "44": {
+      "header": {
+        "index": 44,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "46": {
+      "header": {
+        "index": 46,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "64": {
+      "header": {
+        "index": 64,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "142": {
+      "header": {
+        "index": 142,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "218": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "220": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "224": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "222": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "226": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "264": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "266": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "436": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "444": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "484": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "532": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "452": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "252": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "486": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "390": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "392": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "492": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "508": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "2": {
+      "header": {
+        "index": 2,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "6": {
+      "header": {
+        "index": 6,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "10": {
+      "header": {
+        "index": 10,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "24": {
+      "header": {
+        "index": 24,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "72": {
+      "header": {
+        "index": 72,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "34": {
+      "header": {
+        "index": 34,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "26": {
+      "header": {
+        "index": 26,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "36": {
+      "header": {
+        "index": 36,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1779,
+        "bytes": 3558
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "74": {
+      "header": {
+        "index": 74,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "28": {
+      "header": {
+        "index": 28,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "30": {
+      "header": {
+        "index": 30,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "70": {
+      "header": {
+        "index": 70,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "176": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "56": {
+      "header": {
+        "index": 56,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "186": {
+      "header": {
+        "index": 186,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "152": {
+      "header": {
+        "index": 152,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "238": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "240": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "242": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "256": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "270": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "246": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "268": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "272": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "248": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "482": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "396": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "394": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "32": {
+      "header": {
+        "index": 32,
+        "width": 40,
+        "height": 40,
+        "offsetX": 2,
+        "offsetY": 4,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "58": {
+      "header": {
+        "index": 58,
+        "width": 40,
+        "height": 40,
+        "offsetX": -296,
+        "offsetY": -224,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "208": {
+      "header": {
+        "index": 208,
+        "width": 40,
+        "height": 40,
+        "offsetX": 2,
+        "offsetY": 4,
+        "shadow": false,
+        "shadowX": -296,
+        "shadowY": -104,
+        "words": 1778,
+        "bytes": 3556
+      },
+      "alpha_bbox": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "244": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "304": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "306": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "446": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "536": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "480": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "454": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "438": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "462": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "490": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "514": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "308": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "310": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "314": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "312": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "328": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "324": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "330": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "340": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "316": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "332": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "318": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "352": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "376": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "334": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "326": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "342": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "354": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "350": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "356": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "358": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "336": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "344": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "360": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "378": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "320": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "374": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "346": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "362": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "364": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "322": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "338": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "348": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "366": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "368": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "380": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "370": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "372": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "382": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "474": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "448": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "478": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "472": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "476": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "384": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "464": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "440": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "542": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "494": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "456": {
+      "header": null,
+      "alpha_bbox": null
+    },
+    "520": {
+      "header": null,
+      "alpha_bbox": null
+    }
+  },
+  "evidence_level": "current-client-db + primary-resource-frame-metadata"
+}

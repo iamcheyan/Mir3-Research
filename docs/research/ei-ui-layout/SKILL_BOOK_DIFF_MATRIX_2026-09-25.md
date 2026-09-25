@@ -21,7 +21,7 @@
 | 右页换行/裁剪 | 旧 parser 工件记 wrap 宽度 0xA5；较新 Finding 272 证明本构建 formatter 路径 count 恒 1、每行一条记录。两者存在语义冲突 | `LegacySkillDetailView` 按 165px 宽度逐字符测量换行，最多绘制到 y=290；父窗 Clip | 选择符合用户验收的 165px 行宽换行，同时把“原版实际是否扩展行”列为证据冲突；不声称 byte parity | `skill-book-selected-2026-09-25.png` 中英文说明分两行且没有越过右页；更长描述/底边截断仍需专门数据态 | primary geometry; wrap conflict |
 | 翻页按钮与计数 | F410/411 `(61,303)`、F412/413 `(366,303)`；页码候选 x117/y299、x118/y309；F440/441 `(399,340)` 业务未决 | F410/F412 映射前后页，按 6 行分页；F440/441 静态显示为不可交互辅助控件；计数由详情控件绘制 | 前后页边界 clamp；F440/441 不伪造动作。分页总数按当前运行列表，不能证明 EI `/3` 记录算法完全相同 | `skill-book-page2-2026-09-25.png` 日志 `page=2/2 school=Fire`，页码/箭头状态实屏通过；前翻与边界未单独截图 | primary geometry; runtime page |
 | 分类数量/职业 | EI 分类顺序 primary；`Magic.exp` 50 条 ID/名称/属性/元素/等级/说明，职业仅 semantic candidate；当前 `MagicInfo.Class/School` | 仍按当前 DB `Class` 过滤、按 `NeedLevel1/Name` 排序；所有 8 类按钮恒显示 | 移除固定 12 格；仍缺目标 EI 逐职业分类链表和排序的独立交叉证据 | Fire/ Ice/Phantom/Physical 实屏切换成功并记录 count；本次未切换职业，职业差异仍 pending | primary source records; runtime partial |
-| 技能图标映射 | `skill-tab-header-draw-evidence.json`：原版图标帧 `[skill+6]`，MIcon/WIL 0x566C90；本机 MIcon.wil/wix | 行/现代栏使用 `MirSkin.GetTexture(MagicIcon, info.Icon)`，legacy 资源根会读 `/home/tetsuya/mir2ei/Data/MIcon.wil` | 禁止用 F410..F421 冒充图标；`MagicInfo.Icon`→EI `[skill+6]` 映射尚未由当前 DB 与 50 条 EI ID逐项闭合 | 日志确认 `MagicIcon -> /home/tetsuya/mir2ei/Data/MIcon.wil`；Fire/Ice/Physical 截图显示不同真实图标；逐项 offset/alpha bbox 仍 pending | primary source; runtime resource |
+| 技能图标映射 | `skill-tab-header-draw-evidence.json`：原版类别图标帧 `[skill+6]`，MIcon/WIL 0x566C90；本机 MIcon.wil/wix | 行/现代栏使用 `MirSkin.GetTexture(MagicIcon, info.Icon)`，legacy 资源根读 `/home/tetsuya/mir2ei/Data/MIcon.wil`；已导出当前 DB 174 条记录、164 个唯一帧的 header offset/尺寸/alpha bbox（见 `magic-icon-metadata-2026-09-25.json`） | 当前 Zircon 的 `MagicInfo.Icon`→MIcon 资源链已逐项可复现；这不是 EI `Magic.exp` 的 `[skill+6]` 逐项证明，禁止把现代同号帧宣称为原版帧 | 最终实屏 `skill-book-final-selected-recheck-2026-09-25.png` 显示真实 MIcon 与详情；EI 逐项 ID/帧仍阻塞 | primary source + current-resource metadata; runtime visual |
 | 常驻快捷栏关系 | `skill-button-click-evidence.json` 描述独立 9-button skill bar；技能书是 id14/F400，二者不是同一窗口 | `MagicBar` 是独立 Control，当前仍显示现代 12/24 槽栏；技能书不再把导航帧当快捷栏图标 | 不把 `MagicBar` 伪装成技能书组成部分；是否在 EI 模式隐藏/改成 9 槽仍需产品/原版运行证据 | 初始、关闭、重开截图均同时显示独立快捷栏；书页关闭后快捷栏继续可见，层级关系通过 | primary distinct-object; runtime visual |
 | 键位入口 | `window-paint-and-hotkey-dispatch-evidence.json`：裸 E/Ctrl+E→id14；F1-F12 原版技能动作证据与书内绑定仍未闭合 | legacy GameScene 预处理裸 E/Ctrl+E 打开技能书；MagicDialog 选中后处理 F1-F12/Shift+F1-F12；Ctrl/Alt 排除；Ctrl+F1..F4 在开窗时由 GameScene 先切栏组 | 修复 parent/hover 双目标绑定；Ctrl+F1..F4 不再被书内绑定吞掉；F1-F12 仍是当前实现推断，不声称 EI 等价 | 裸 E 打开/关闭实屏通过；日志记录 `bind skill=Ice Bolt ... Spell01`；Shift/Ctrl+F1..F4 代码路径已审查但截图/日志证据不足 | primary entrance; runtime partial |
 | 关闭/重开 | 原版窗口初始 hidden；选择 ID ctor 初始 -1；关闭/状态复位完整调用链未闭合 | close button、Esc、E/Ctrl+E 均走 WindowManager；选中/类别/页状态存于窗口实例，刷新时失效项清理 | 保留窗口实例状态，切类别/页清空选中；实屏重开保留类别、重置选中/页 | `skill-book-closed-2026-09-25.png` 与 `skill-book-reopen-2026-09-25.png`：书页关闭/重开有效，Ice 类页1重建且无旧详情；Esc 未单独截图 | primary lifecycle; runtime visual |
@@ -35,12 +35,12 @@
 - 映射 F410/F412 前后页控件，保留 F440/F441 静态不可交互控件。
 - 清除分类/分页后的残留选中项，阻止 legacy `MagicCellView` 抢 F 键。
 - 允许 Ctrl+F1..F4 在技能书打开时切换快捷栏组。
-- 本地 1024×768 实屏已验证：打开、选择、详情、翻页、类别切换、少于一页、关闭、重开；完整截图索引见 `.artifacts/ui-acceptance-2026-09-24/SKILL_BOOK_ACCEPTANCE_2026-09-25.md`。
+- 本地 1024×768 实屏已验证：打开、选择、详情、翻页、类别切换、少于一页、关闭、重开；构建后最终复核为 `skill-book-final-open-recheck-2026-09-25.png` 与 `skill-book-final-selected-recheck-2026-09-25.png`，完整截图索引见 Zircon `.artifacts/ui-acceptance-2026-09-24/SKILL_BOOK_ACCEPTANCE_2026-09-25.md`。
 
 ## 阻塞项
 
 1. F400 最终根 RECT：296×332 primary initializer 与 452×380 派生/资源配准冲突；需目标 EI 运行时窗口对象或更深的 0x423B30 分支证据。
 2. 六个左页 hit RECT 的具体写入值、真实分类链表成员/排序、三控件 click handler 尚未闭合。
-3. `MagicInfo.Icon` 与 EI `[skill+6]` 的逐项映射、offset/alpha bbox 对照尚未完成。
+3. EI `Magic.exp` 的 `[skill+6]` 与当前 `MagicInfo.Icon` 的逐项 ID/帧对应仍未证明；当前 Zircon 资源链的 174 条映射、164 个唯一帧及 header offset/alpha bbox 已导出到 `magic-icon-metadata-2026-09-25.json`，不能冒充 EI 对照。
 4. `Magic.exp` 详情 wrap 的“165px intended”与“实际 count 恒1”静态记录冲突；当前实现采用 165px 安全裁剪，不能称像素级原版。
 5. 原版书内 F1-F12/Shift/Ctrl 绑定链和重开状态复位仍需实机/输入路径证据。
