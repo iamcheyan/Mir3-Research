@@ -53,7 +53,8 @@
 ## 5. 怪物刷新流水线
 
 - 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":1958,"pending-review":517}`；match status `{"zircon-only":1825,"conflict":133,"matched":517}`。
-- 本地缺少原始 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件；当前仅接入 recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 刷新计划，共 **742** 行。该计划没有 range 字段，所有唯一坐标匹配仍为 `pending-review`，不作为写库目标。
+- 本轮外部源审计：当前工作站 `/home/tetsuya/NAS` 为空，无法读取原始 Mud3 `Envir/Mon_Def`；`iamcheyan/mir2ei` `main` 的递归 Git tree 仅公开 `data/report_full.json`（Git blob `3f7cff6218853e4809c8a13bd4a3c47632e2bffe`，来源 URL `https://raw.githubusercontent.com/iamcheyan/mir2ei/main/data/report_full.json`）及百科派生数据，未发现 `Mon_Def`、`MonGen` 或逐点 range 文件。该公开快照只提供地图级刷新名称/数量，不能替代原始刷新点范围。
+- recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行刷新计划，但没有 range 字段；它仅作为坐标审计输入，不是 Hero-kill 原始刷新源，不能解除 `range` 门禁。
 - 刷新缺口：Hero-kill/YXS-only **124**，Zircon-only **1825**，coordinate conflict **101**；这些清单只用于人工复核，不是删除建议。
 - `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
 
@@ -91,4 +92,4 @@ python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-u
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `c76622a5a61a020302ef77513b1da1db7351ccf8`；Zircon `54fb215ed41d9b95b0065750d53b2e8c92f7d92a3`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `df53b7c0a59875462b7e6e5168815d2f735673a9`；Zircon `965d0537c64f4a492eee40896a78669f8a70a86a`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
