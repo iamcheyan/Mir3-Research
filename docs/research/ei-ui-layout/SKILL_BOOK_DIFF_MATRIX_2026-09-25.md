@@ -24,7 +24,7 @@
 | 技能图标映射 | `skill-tab-header-draw-evidence.json`：原版类别图标帧 `[skill+6]`，MIcon/WIL 0x566C90；本机 MIcon.wil/wix | 行/现代栏使用 `MirSkin.GetTexture(MagicIcon, info.Icon)`，legacy 资源根读 `/home/tetsuya/mir2ei/Data/MIcon.wil`；已导出当前 DB 174 条记录、164 个唯一帧的 header offset/尺寸/alpha bbox（见 `magic-icon-metadata-2026-09-25.json`） | 当前 Zircon 的 `MagicInfo.Icon`→MIcon 资源链已逐项可复现；这不是 EI `Magic.exp` 的 `[skill+6]` 逐项证明，禁止把现代同号帧宣称为原版帧 | 当前提交构建 `skill-book-current-selected-audit-2026-09-25.png` 与日志 `MagicIcon -> /home/tetsuya/mir2ei/Data/MIcon.wil (1106 frames)` 显示真实 MIcon；EI 逐项 ID/帧仍阻塞 | primary source + current-resource metadata; runtime visual |
 | 常驻快捷栏关系 | `skill-button-click-evidence.json` 描述独立 9-button skill bar；技能书是 id14/F400，二者不是同一窗口 | `MagicBar` 是独立 Control，当前仍显示现代 12/24 槽栏；技能书不再把导航帧当快捷栏图标 | 不把 `MagicBar` 伪装成技能书组成部分；是否在 EI 模式隐藏/改成 9 槽仍需产品/原版运行证据 | 初始、关闭、重开截图均同时显示独立快捷栏；书页关闭后快捷栏继续可见，层级关系通过 | primary distinct-object; runtime visual |
 | 键位入口 | `window-paint-and-hotkey-dispatch-evidence.json`：裸 E/Ctrl+E→id14；F1-F12 原版技能动作证据与书内绑定仍未闭合 | legacy GameScene 预处理裸 E/Ctrl+E 打开技能书；MagicDialog 选中后处理 F1-F12/Shift+F1-F12；Ctrl/Alt 排除；Ctrl+F1..F4 在开窗时由 GameScene 先切栏组 | 修复 parent/hover 双目标绑定；Ctrl+F1..F4 不再被书内绑定吞掉；F1-F12 仍是当前实现推断，不声称 EI 等价 | 裸 E 打开/关闭实屏通过；日志记录 `bind skill=Ice Bolt ... Spell01`；Shift/Ctrl+F1..F4 代码路径已审查但截图/日志证据不足 | primary entrance; runtime partial |
-| 关闭/重开 | 原版窗口初始 hidden；选择 ID ctor 初始 -1；关闭/状态复位完整调用链未闭合 | close button、Esc、E/Ctrl+E 均走 WindowManager；选中/类别/页状态存于窗口实例，刷新时失效项清理 | 保留窗口实例状态，切类别/页清空选中；实屏重开保留类别、重置选中/页 | `skill-book-closed-2026-09-25.png` 与 `skill-book-reopen-2026-09-25.png`：书页关闭/重开有效，Ice 类页1重建且无旧详情；Esc 未单独截图 | primary lifecycle; runtime visual |
+| 关闭/重开 | 原版窗口初始 hidden；选择 ID ctor 初始 -1；关闭/状态复位完整调用链未闭合 | close button、Esc、E/Ctrl+E 均走 WindowManager；当前窗口实例保留 `_selectedSchool`、`_legacyPage`、`_legacySelectedSkill`，刷新时只清理失效项 | 当前实现明确保留实例状态；类别/翻页会清理选中，但单纯关闭再打开不会主动清空；不把旧“重开重置”截图误称为同一状态路径 | 当前提交构建 `skill-book-current-closed-audit-2026-09-25.png` 与 `skill-book-current-reopen-audit-2026-09-25.png`：关闭后 HUD 保留，重开回 Fire 页1并保留 Fire Ball 详情；原版复位语义仍阻塞 | primary lifecycle; runtime visual; reset semantics unresolved |
 | 滚动/现代列表 | 原版证据是 6 个 RECT + 类别分页/页计数，不支持现代垂直滚动窗 | legacy 隐藏 `_list` 与 `_scrollBar`，使用 6 行/前后页 | 已移除 legacy 滚动路径；现代非 legacy 列表保留，不混入 EI 书 | 所有技能书截图无现代滚动条；Fire 两页使用箭头、Physical 三条使用空槽 | primary distinction; runtime visual |
 
 ## 已实现项（实屏已验收的部分）
@@ -43,4 +43,4 @@
 2. 六个左页 hit RECT 的具体写入值、真实分类链表成员/排序、三控件 click handler 尚未闭合。
 3. EI `Magic.exp` 的 `[skill+6]` 与当前 `MagicInfo.Icon` 的逐项 ID/帧对应仍未证明；当前 Zircon 资源链的 174 条映射、164 个唯一帧及 header offset/alpha bbox 已导出到 `magic-icon-metadata-2026-09-25.json`，不能冒充 EI 对照。
 4. `Magic.exp` 详情 wrap 的“165px intended”与“实际 count 恒1”静态记录冲突；当前实现采用 165px 安全裁剪，不能称像素级原版。
-5. 原版书内 F1-F12/Shift/Ctrl 绑定链和重开状态复位仍需实机/输入路径证据。
+5. 原版书内 F1-F12/Shift/Ctrl 绑定链和重开状态复位仍需实机/输入路径证据；当前实现的入口与实例状态已有运行证据，但不能称 EI byte parity。
