@@ -69,7 +69,7 @@
 
 - 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":1958,"pending-review":517}`；match status `{"zircon-only":1825,"conflict":133,"matched":517}`。
 - 本轮外部源审计：当前工作站 `/home/tetsuya/NAS` 为空，无法读取原始 Mud3 `Envir/Mon_Def`；`iamcheyan/mir2ei` `main` 的递归 Git tree 仅公开 `data/report_full.json`（Git blob `3f7cff6218853e4809c8a13bd4a3c47632e2bffe`，来源 URL `https://raw.githubusercontent.com/iamcheyan/mir2ei/main/data/report_full.json`）及百科派生数据，未发现 `Mon_Def`、`MonGen` 或逐点 range 文件。重新解析该快照确认只有 544 张 EI 地图、3221 条地图级刷新汇总、293 张有刷新地图和 312 个怪物种类，没有逐点 x/y/range；不能替代原始刷新点范围。另从 `https://www.mirfiles.co.uk/resources/mir3/MSRF%20EI%20Mud3.exe` 下载到 `/tmp/msrf-ei-mud3.exe`（SHA-256 `7763eaef02b24c655bc2efd31d9bacfc4f08c68c727cc2838978d79630501c27`），包内有 56 个 `Mon_def/*.gen`、`MonGen.txt`，独立解析得到 5517 条刷新行、312 个怪物名、279 张地图；但内置 `Readme 2.9BETA.txt` 表明它是旧版 beta 配置，不是当前 EI 3.0 英雄杀刷新源，且与 recovered 742 行计划仅有 22 张地图名交集、12 个地图坐标交集；仅作为格式/历史语义证据，不能解除目标源门禁。
-- recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行刷新计划，但没有 range 字段；其 `notes.mapSources` 只记录预期来源 `EI client Map/ + hero server Mud3/Map/`，当前工作站没有对应的英雄服务器 `Mud3/Map/` 原始目录；该文件仅作为坐标审计输入，不是 Hero-kill 原始刷新源，不能解除 `range` 门禁。
+- recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行刷新计划；逐条检查确认所有行的字段集合都只有 `map/x/y/monster/count`，没有 `range`、`radius`、`size` 或 `interval` 字段；其 `notes.mapSources` 只记录预期来源 `EI client Map/ + hero server Mud3/Map/`，当前工作站没有对应的英雄服务器 `Mud3/Map/` 原始目录；该文件仅作为坐标和数量审计输入，不是 Hero-kill 原始刷新源，不能解除 `range` 门禁。
 - 刷新缺口：Hero-kill/YXS-only **124**，Zircon-only **1825**，coordinate conflict **101**；这些清单只用于人工复核，不是删除建议。
 - `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
 
