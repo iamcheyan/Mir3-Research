@@ -78,3 +78,9 @@
 停止客户端后再次经同一 `login_game.sh legacy` 入口登录 `TestHero`，最终构建复测 stdout 记录 `S.StartGame Result=Success` 与 D202 加载；`status-relogin-final2.png` 与最新 `status-relogin-final3-open.png` 证明重新登录后状态窗可以重新打开并显示装备页，且无关闭前遗留 tooltip。截图只证明重新建立窗口的可用性，不证明跨进程展开态持久化；原版是否持久化仍无独立语义证据。
 
 当前状态标记结论不变：EI 专用耐久、强化、绑定、职业/等级限制角标仍缺少目标版独立贴图与绘制链，不能以现代 ZL 或自绘 fallback 宣称像素一致。对应 Zircon 归档：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/status-map-before.png`、`status-map-after.png`、`status-relogin-final2.png`、`status-relogin-final3-open.png`。
+## STATUS-03 最终源码构建与登录冒烟（2026-09-25）
+
+恢复临时 `OperationAudit` 选择夹具后的正式源码执行 `dotnet build GodotClient/ZirconClient.csproj --no-incremental`，0 errors（仅现有 nullable/unused warnings）。随后在 `DISPLAY=:100`、1024×768 窗口、`/home/tetsuya/mir2ei` 资源环境下直接登录 `TestHero`；stdout 记录 `S.StartGame Result=Success`、`进入游戏`、`[LegacyCharacter] ... root=(244,328) ... hitRecords=11` 与 `[ProductionScreenshot] PASS ... viewport=1022x739`。归档 `status-runtime-final-2026-09-25.png` 是 Zircon runtime evidence，不是 EI 原版截图；退出仅见 Godot renderer RID 泄漏诊断，无人物面板异常、ERROR/Exception/FAIL。
+## STATUS-04 装备往返证据边界（2026-09-25）
+
+恢复源码后直接运行 `--operation-audit`，登录与窗口初始化成功；诊断夹具按背包首件选到 `Healing Potion (II)`，因没有兼容的已装备目标而安全退出，未发送装备移动包。此前同一源码链使用临时、可回退的 Wood Sword 选择夹具完成六步往返，stdout 断言 `forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；夹具已恢复、正式源码无差异。该记录证明 DXItemCell/GameScene 安全往返链，不构成 EI 状态角标贴图证据；耐久/强化/绑定/职业等级限制贴图与绘制链仍阻塞。
