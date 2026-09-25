@@ -75,6 +75,7 @@
 - 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 307 条 YXS-only 与 44 条冲突、NPC 仍有 190 条人工复核、variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
+- `NpcMover approved`：已在临时数据库副本执行空批准计划烟测；服务端/客户端备份、双库复制和 round-trip 均通过，真实 System.db 尚未执行。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
 
 ## 8. 未决项与人工复核
@@ -101,4 +102,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `5c7e326f394e9ad960cd119341dda7390a494f78`；Zircon `c07cd0973e05c27f1078a74a2ea47f9894754dc0`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `8164d380f0681c564d89554f7ffde6e448f6ebf4`；Zircon `19fd46cf221bd1ac8b4d48ea77f34c7be6d5566c`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
