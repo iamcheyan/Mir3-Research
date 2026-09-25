@@ -17,9 +17,9 @@ namespace NpcMover
 {
     // 用法:
     //   NpcMover dump <db_root> <out_json>            导出 MapInfo + NPCInfo(含 Region/坐标) 快照
-    //   NpcMover plan  <db_root> <plan_tsv> [apply]   按 TSV 计划移动 NPC: npcIndex <TAB> mapIndex <TAB> x <TAB> y
-    //                                                  独占区域原位改 Map/PointRegion; 共享区域新建 MapRegion
-    //   NpcMover approved <db_root> <approved_plan.json> [apply]
+    //   NpcMover plan  <db_root> <plan_tsv> [apply]   按 TSV 计划移动 NPC
+    //   NpcMover approved <db_root> <approved_plan.json> [apply] [client_System.db] [scope]
+    //                                                  scope=npc/respawn/all；默认 all，NPC 与怪物可分别执行
     //                                                  应用人工批准的 NPC + RespawnInfo 位置计划
     class Program
     {
@@ -63,6 +63,12 @@ namespace NpcMover
             if (mode == "approved")
             {
                 bool apply = args.Length > 3 && args[3].Equals("apply", StringComparison.OrdinalIgnoreCase);
+                string scope = args.Length > 5 ? args[5].ToLowerInvariant() : "all";
+                if (scope != "all" && scope != "npc" && scope != "respawn")
+                {
+                    Console.WriteLine("拒绝：scope 必须为 all、npc 或 respawn");
+                    return 1;
+                }
                 using JsonDocument document = JsonDocument.Parse(File.ReadAllText(args[2]));
                 JsonElement plan = document.RootElement;
                 if (!plan.TryGetProperty("mode", out var planMode) || planMode.GetString() != "approved-offline-plan"
@@ -78,6 +84,8 @@ namespace NpcMover
                 var errors = new List<string>();
                 var npcMoves = plan.TryGetProperty("npc_moves", out var npcMoveArray) ? npcMoveArray.EnumerateArray().ToList() : new List<JsonElement>();
                 var respawnUpdates = plan.TryGetProperty("respawn_updates", out var respawnArray) ? respawnArray.EnumerateArray().ToList() : new List<JsonElement>();
+                var selectedNpcMoves = scope == "respawn" ? new List<JsonElement>() : npcMoves;
+                var selectedRespawnUpdates = scope == "npc" ? new List<JsonElement>() : respawnUpdates;
 
                 int RequiredInt(JsonElement row, string name, string label)
                 {
@@ -137,7 +145,7 @@ namespace NpcMover
                     return 1;
                 }
 
-                Console.WriteLine($"批准计划：NPC {npcMoves.Count} 条，RespawnInfo {respawnUpdates.Count} 条，模式={(apply ? "写库" : "干跑")}");
+                Console.WriteLine($"批准计划：NPC {selectedNpcMoves.Count} 条，RespawnInfo {selectedRespawnUpdates.Count} 条，scope={scope}，模式={(apply ? "写库" : "干跑")}");
                 if (!apply)
                 {
                     Console.WriteLine("(干跑，未写库)");
@@ -204,7 +212,7 @@ namespace NpcMover
                 }
 
                 int movedNpc = 0, movedRespawn = 0, createdRegions = 0;
-                foreach (var row in npcMoves)
+                foreach (var row in selectedNpcMoves)
                 {
                     int index = row.GetProperty("npc_index").GetInt32();
                     var npc = npcs[index];
@@ -229,7 +237,7 @@ namespace NpcMover
                     movedNpc++;
                 }
 
-                foreach (var row in respawnUpdates)
+                foreach (var row in selectedRespawnUpdates)
                 {
                     int index = row.GetProperty("respawn_index").GetInt32();
                     var respawn = respawns[index];
@@ -278,14 +286,14 @@ namespace NpcMover
                         && (!size.HasValue || region.Size == size.Value);
                 }
 
-                foreach (var row in npcMoves)
+                foreach (var row in selectedNpcMoves)
                 {
                     int index = row.GetProperty("npc_index").GetInt32();
                     if (!roundTripNpcs.TryGetValue(index, out var npc)
                         || !RegionMatches(npc.Region, row.GetProperty("map_index").GetInt32(), row.GetProperty("x").GetInt32(), row.GetProperty("y").GetInt32()))
                         roundTripErrors.Add($"NPC#{index} 位置回读不一致");
                 }
-                foreach (var row in respawnUpdates)
+                foreach (var row in selectedRespawnUpdates)
                 {
                     int index = row.GetProperty("respawn_index").GetInt32();
                     if (!roundTripRespawns.TryGetValue(index, out var respawn)
@@ -311,7 +319,7 @@ namespace NpcMover
                     Console.WriteLine($"备份保留：{serverBackup}; {clientBackup}");
                     return 3;
                 }
-                Console.WriteLine($"round-trip 通过：NPC {npcMoves.Count}，RespawnInfo {respawnUpdates.Count}，双库 SHA-256 一致");
+                Console.WriteLine($"round-trip 通过：NPC {selectedNpcMoves.Count}，RespawnInfo {selectedRespawnUpdates.Count}，scope={scope}，双库 SHA-256 一致");
                 return 0;
             }
 
