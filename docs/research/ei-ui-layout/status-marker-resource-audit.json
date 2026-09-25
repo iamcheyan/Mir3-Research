@@ -13,10 +13,17 @@
       "occupied_gate": "item_record_dword_at_current_base != 0",
       "item_draw_helper": "0x00430A40",
       "figure_draw_helper": "0x0045FD50 via 0x00466130",
+      "item_helper_disassembly": {
+        "range": "0x00430A40-0x00430B69",
+        "resource_selection": "item_record+0x22 selects element contexts 82/83/139 (0x5668C4/0x566A08/0x56B0E8)",
+        "draw_call": "0x00460240",
+        "state_marker_call": null,
+        "interpretation": "The helper selects an item image and composites it; its closed path contains no durability, enhancement, binding, restriction, badge, or marker draw branch."
+      },
       "separate_marker_helper": null,
       "marker_state_branch": null
     },
-    "interpretation": "在已确认的 11 槽循环中，装备记录只进入物品图标 helper 或人物 PaperDoll 绘制链；没有独立的状态标记 helper、状态帧选择分支或标记矩形。"
+    "interpretation": "在已确认的 11 槽循环中，装备记录只进入物品图标 helper 或人物 PaperDoll 绘制链；0x00430A40 的闭合 helper 也只有图库选择和物品图像合成，没有独立的状态标记 helper、状态帧选择分支或标记矩形。"
   },
   "resource_probe": {
     "root": "/home/tetsuya/mir2ei/Data",
