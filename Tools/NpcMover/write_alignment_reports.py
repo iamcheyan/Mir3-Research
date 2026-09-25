@@ -478,7 +478,7 @@ def main() -> int:
         "",
         "## 8. 未决项与人工复核",
         "",
-        "1. 继续补充缺少的 Hero-kill 地图文件并复核 309 条 matched 刷新；当前 18 条独立源地图可读且目标可行走的刷新已批准，1 条源坐标 fail 保持 needs-evidence。",
+        "1. 已搜索 `/home/tetsuya/NAS/**/*.map`、研究仓库地图路径及本地资源根；缺失 Hero-kill 源图仍未找到（development/zircon 命中的同名文件是 Zircon Map，不冒充 Hero-kill 源）。继续补充源图并复核 309 条 matched 刷新；当前 18 条独立源地图可读且目标可行走的刷新已批准，1 条源坐标 fail 保持 needs-evidence。",
         f"2. NPC 复核队列仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence（含 {review_summary['counts']['npc_pending_review']} 条 NPC）；确认 Merchant 固定坐标、地标转换和目标点后才能生成 NPC 批准项。",
         "3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。",
         "4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。",
