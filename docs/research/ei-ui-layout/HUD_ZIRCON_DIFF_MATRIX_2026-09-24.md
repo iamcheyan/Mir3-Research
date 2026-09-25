@@ -54,3 +54,18 @@
 2. F280 初始化顺序、滚轮、拖柄、边界和多行内容均已真实验证。
 3. 人物 11 个装备槽、装备拖放往返、属性窗口收起/展开及保守字段显示均已真实验证。
 4. F50/F60/F61/F63 资源帧头已由独立 WIL/WIX 读取闭合；运行资源固定为 `/home/tetsuya/mir2ei/Data`。
+
+## 人物状态面板最终复测（2026-09-25）
+
+本轮复测只使用 Zircon `ui/legacy-layout-lab`、`/home/tetsuya/mir2ei/login_game.sh legacy`、本地资源 `/home/tetsuya/mir2ei/Data`、Xvfb `:100` 和完整 `1024×768` viewport。`S.StartGame(Result=Success)` 后 stdout 记录 `hitRecords=11 paperDoll=(122,164)`、F200 `(244,328)`、F201 `(520,328)`；未见 ERROR/Exception/FAIL。
+
+| 验收项 | 运行证据 | 结论 |
+|---|---|---|
+| 根框/人物/装备 | `status-equipment-final.png`、`status-body-hit-hover.png` | 收起态 F200 244×328、展开态 F201 520×328；Weapon 大命中区悬停出现真实 `Moonlight, Light in the Darkness` 物品详情，证明纸娃娃之上的 60×90 hit proxy 生效 |
+| 属性双列与动态值 | `status-attributes-final.png` | 左列 14 标签/值，右列 11 标签；HP/MP 当前/上限、经验百分比、包袱/装备负重使用现有协议数据；无独立语义的字段不填假值 |
+| 关闭/重开/Esc | `status-esc-final.png`、`status-reopen-final.png` | Esc 关闭后无残留 hover tooltip；再次打开保留 F201 展开态 |
+| 装备格交互边界 | 源码 `CharacterDialog.cs`、`DXItemCell.cs` | 11 条 hit record 均由 DXItemCell 承载；锁定格中键解锁守卫已修正。为避免写入测试装备，本轮只做 hover/命中验证，未重复执行左键取下/替换 |
+
+对应 Zircon 归档目录：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/`。EI 专用耐久/强化/绑定角标仍无独立贴图证据，继续保持证据边界，不以现代 ZL 或自绘 fallback 宣称像素一致。
+
+注：表中早先“无证字段显示 `—`”的措辞以本轮实现为准更正为“标签保留、值控件为空且隐藏”；截图 `status-attributes-final.png` 为最终行为证据。
