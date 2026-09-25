@@ -73,7 +73,7 @@
 跨地图/重新登录后的窗口状态保持、本轮左键装备拖放未重复执行；研究矩阵既有 Round 787 Wood Sword 往返记录仍有效但不属于本轮 hover-only 复测。目标 EI 专用状态角标和限制标记的独立贴图/绘制证据仍缺失，因此该部分不宣布像素级闭合。
 ## STATUS-02 跨地图/重新登录回归补证（2026-09-25）
 
-在 `DISPLAY=:100`、完整 `1024×768` viewport、本地 `/home/tetsuya/mir2ei/login_game.sh legacy` 会话中，人物面板保持 F201 展开态后执行 `@move D202`。stdout 记录 `MapIndex=137 -> D202 (Deserted Mine Lv 2)` 与 `MapView 加载 D202: 200x200`；`status-map-before.png` / `status-map-after.png` 证明切图后人物窗口仍可见，装备区域和属性显示未被窗口重建清空。前置 `@move D201` 因本地服务端没有对应地图索引而失败，该尝试不计入通过。
+在 `DISPLAY=:100`、完整 `1024×768` viewport、本地 `/home/tetsuya/mir2ei/login_game.sh legacy` 会话中，人物窗口保持 F200 属性态后执行 `@move D202`。stdout 记录 `MapIndex=137 -> D202 (Deserted Mine Lv 2)` 与 `MapView 加载 D202: 200x200`；`status-map-before.png` / `status-map-after.png` 证明切图后人物窗口仍可见，F200 属性态、装备区域和属性显示未被窗口重建清空。前置 `@move D201` 因本地服务端没有对应地图索引而失败，该尝试不计入通过。
 
 停止客户端后再次经同一 `login_game.sh legacy` 入口登录 `TestHero`，最终构建复测 stdout 记录 `S.StartGame Result=Success` 与 D202 加载；`status-relogin-final2.png` 与最新 `status-relogin-final3-open.png` 证明重新登录后状态窗可以重新打开并显示装备页，且无关闭前遗留 tooltip。截图只证明重新建立窗口的可用性，不证明跨进程展开态持久化；原版是否持久化仍无独立语义证据。
 
