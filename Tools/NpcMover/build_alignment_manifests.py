@@ -1350,6 +1350,7 @@ def main() -> int:
     (args.out / "monster_four_way_evidence.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": identity_meta["stats"], "evidence": identity_meta["four_way_evidence"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_tsv(args.out / "monster_four_way_evidence.tsv", identity_meta["four_way_evidence"])
     write_tsv(args.out / "monster_identity_manifest.tsv", monster_identity)
+    (args.out / "monster_identity_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": identity_meta["stats"], "monsters": monster_identity}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_tsv(args.out / "monster_respawn_manifest.tsv", monster_respawns)
     write_tsv(args.out / "hero_kill_refresh_manifest.tsv", hero_refreshes)
     write_tsv(args.out / "yxs_only_refresh.tsv", yxs_only_refresh)
