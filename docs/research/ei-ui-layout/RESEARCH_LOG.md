@@ -9605,3 +9605,4 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔入口验证〕**鼠标点击 `MainPanel.MailButton` 命中 `LegacyOpen requested=chat`，F350 打开；关闭后 HUD 消息仍保留。F350 与 HUD 共享接收消息链但不共享根框/裁剪/输入状态。
 - **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-fixed-baseline.png`、`chat-hud-fixed-focus.png`、`chat-hud-r-input-fixed.png`、`chat-hud-r-message-final.png`、`chat-hud-long-input-fixed.png`、`chat-hud-long-message-fixed.png`、`chat-hud-right-button-open-f350.png`、`chat-hud-f350-closed-final.png`。
 - **〔构建〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告。运行日志中的 ALSA `ERR_CANT_OPEN` 属于 Xvfb dummy audio，不影响登录或 HUD。
+- **〔中文输入边界〕**XTest 注入单个中文 `中` 可在主 HUD 输入条显示并保留光标，截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-chinese-input.png`、`chat-hud-chinese-input-final.png`；当前 Xvfb 无可用 IME，未把无法注入完整多字串归因于客户端。
