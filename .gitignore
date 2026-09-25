@@ -32,3 +32,7 @@ ServerLibrary
 
 # 本机私有参考源（原始 Mud3/EI 文件不进入公开仓库）
 local-reference-data/
+
+# 手工备份文件不进 git
+*.bak
+*.bak-*
