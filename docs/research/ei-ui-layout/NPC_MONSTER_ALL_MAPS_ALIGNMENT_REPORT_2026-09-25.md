@@ -103,4 +103,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `bf6e3761b249815b96a109309fc3d981f326dbd5`；Zircon `8599414a3691be6bca2b64fe92ebf54d604f5b60`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `c217f2bedf51f37b7b15d1ec55267e37e45e5a8a`；Zircon `bc09b73d703fe8e2817979392d0c6f432c6e52fd`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
