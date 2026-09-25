@@ -89,3 +89,6 @@
 新增 `status-marker-resource-audit.json`，复核 `0x0044B560-0x0044B6AD` 的 11 槽循环：记录只进入 `0x00430A40` 物品图标 helper 或 `0x00466130/0x0045FD50` PaperDoll 链，没有独立状态标记 helper、状态帧选择分支或标记矩形。对本地 `Interface1c.wil`、`GameInter.wil`、`inventory.wil` 的小帧扫描只能排除误认，不能赋予候选帧耐久/强化/绑定语义。
 
 因此 Zircon `DXItemCell` 增加 `DrawItemBadgesEnabled`，EI `CharacterDialog` 装备槽明确关闭通用 `Interface` 47/48/49/103 角标；背包等非 EI 状态窗口不变。该改动是证据边界修复，不是新增 EI 角标。目标版各状态的独立贴图、调用链和逐状态运行截图仍阻塞像素级闭合。
+## STATUS-06 装备槽悬停/按下运行证据（2026-09-25）
+
+真实 `/home/tetsuya/mir2ei/login_game.sh legacy`、1024×768 会话中对空 Torch 槽 `(177,70,38×38)` 做中心悬停和鼠标按下；`status-slot-hover-guard.png`、`status-slot-pressed-guard.png` 归档于 Zircon `.artifacts/ui-acceptance-2026-09-24/`。两态均保持同一 38×38 命中矩形，未触发物品移动或写库。当前绿色边框/半透明红底来自 `DXItemCell.UpdateBorder` fallback；EI 选中覆盖层只有 `status-window-render-evidence.json` 的 primary-static-candidate 资源选择证据，未宣称像素级一致。
