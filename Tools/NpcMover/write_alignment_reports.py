@@ -16,6 +16,8 @@ def main() -> int:
     ap.add_argument("--manifest", type=Path, required=True)
     ap.add_argument("--verification", type=Path, required=True)
     ap.add_argument("--report-dir", type=Path, required=True)
+    ap.add_argument("--research-remote-sha", default="pending")
+    ap.add_argument("--zircon-remote-sha", default="pending")
     args = ap.parse_args()
     data = json.loads(args.manifest.read_text(encoding="utf-8"))
     verify = json.loads(args.verification.read_text(encoding="utf-8"))
@@ -161,7 +163,7 @@ def main() -> int:
         "",
         "## 10. 远端 SHA 与提交",
         "",
-        "- 本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked，不能把工作树或旧证据 SHA 当作本轮最终数据对齐证明。",
+        f"- 数据对齐证据源提交：Mir3-Research `{args.research_remote_sha}`；Zircon `{args.zircon_remote_sha}`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。",
     ]
     report_path = args.report_dir / "NPC_MONSTER_ALL_MAPS_ALIGNMENT_REPORT_2026-09-25.md"
     report_path.write_text("\n".join(report) + "\n", encoding="utf-8")
