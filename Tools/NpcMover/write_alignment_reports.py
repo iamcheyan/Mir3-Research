@@ -363,6 +363,12 @@ def main() -> int:
         if client_smoke_path.exists()
         else {}
     )
+    source_search_path = args.manifest.parent / "hero-kill-map-source-search-audit.json"
+    source_search = (
+        json.loads(source_search_path.read_text(encoding="utf-8"))
+        if source_search_path.exists()
+        else {}
+    )
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -425,6 +431,7 @@ def main() -> int:
         f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；当前决定 `{j(review_decisions)}`，批准 Respawn **{review_decisions.get('approve', 0)}** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `{approved_plan_path.name if approved_plan_path.exists() else '未生成'}` |",
         f"| 生产 Respawn 分支 | 已写入 **{production_apply.get('respawn_updates_applied', 0)}** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |",
         f"| 客户端登录烟测 | {'登录/StartGame通过，但全量地图验收阻塞' if client_smoke else '未执行'} | `artifacts/.../client-login-smoke.json` |",
+        f"| Hero-kill 地图源搜索 | {'已完成；未发现新增二进制源图' if source_search else '未执行'} | `artifacts/.../hero-kill-map-source-search-audit.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
@@ -489,6 +496,7 @@ def main() -> int:
         f"- round-trip：生产 Respawn 分支通过；生产 SHA-256 一致={production_apply.get('server_client_sha_equal', False)}；完整 NPC/Respawn 全量 round-trip 未完成。",
         "- `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。",
         f"- 客户端部分烟测：{client_smoke.get('server_start_game', '未执行')}；{client_smoke.get('map_loaded', '未执行')}；{client_smoke.get('client_render_observation', '')}。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。",
+        f"- Hero-kill 地图源搜索审计：本地 EI 运行时源图 {source_search.get('searched_roots', {}).get('/home/tetsuya/mir2ei/Map', {}).get('map_file_count', '未知')} 个；匹配刷新中无本地源图 {source_search.get('manifest_counts', {}).get('matched_respawns_without_local_source', '未知')} 条；未发现新的研究缓存、NAS 或独立归档源图。",
         "",
         "## 8. 未决项与人工复核",
         "",

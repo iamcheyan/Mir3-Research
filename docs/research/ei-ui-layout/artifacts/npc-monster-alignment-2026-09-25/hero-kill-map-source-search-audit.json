@@ -1,0 +1,43 @@
+{
+  "audit_id": "HERO-KILL-MAP-SOURCE-SEARCH-2026-09-25",
+  "searched_roots": {
+    "/home/tetsuya/mir2ei/Map": {
+      "exists": true,
+      "map_file_count": 544,
+      "role": "local EI runtime map source"
+    },
+    "/home/tetsuya/mir3-reference": {
+      "exists": true,
+      "map_file_count": 0,
+      "role": "reference cache"
+    },
+    "/home/tetsuya/development/Mir3-Research": {
+      "exists": true,
+      "map_file_count": 0,
+      "role": "research workspace"
+    },
+    "/tmp/nas_mnt/NAS": {
+      "exists": true,
+      "map_file_count": 0,
+      "role": "NAS mount target"
+    },
+    "/home/tetsuya/development/zircon/Debug": {
+      "exists": true,
+      "map_file_count": 1970,
+      "role": "Zircon maps, excluded as Hero-kill evidence"
+    }
+  },
+  "hero_kill_source_dirs": [
+    "docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir",
+    "docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/mud3/Envir"
+  ],
+  "manifest_counts": {
+    "pending_map_relations_without_local_source": 71,
+    "matched_respawns": 328,
+    "matched_respawns_with_local_source": 19,
+    "matched_respawns_without_local_source": 309,
+    "independently_approved_respawns": 18
+  },
+  "source_presence_rule": "case-insensitive exact stem match against /home/tetsuya/mir2ei/Map/*.map; Zircon Debug maps are not substituted",
+  "conclusion": "No new Hero-kill binary map source or independent map archive was found. The 309 matched refresh rows without local Hero-kill map files remain needs-evidence; the 18 rows with readable local source and walkable targets remain the only approved refresh subset."
+}

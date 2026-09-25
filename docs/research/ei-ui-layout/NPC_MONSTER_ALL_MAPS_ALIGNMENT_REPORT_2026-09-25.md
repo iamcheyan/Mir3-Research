@@ -16,6 +16,7 @@
 | 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":587,"retain-current":2060,"approve":18}`，批准 Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
 | 生产 Respawn 分支 | 已写入 **18** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |
 | 客户端登录烟测 | 登录/StartGame通过，但全量地图验收阻塞 | `artifacts/.../client-login-smoke.json` |
+| Hero-kill 地图源搜索 | 已完成；未发现新增二进制源图 | `artifacts/.../hero-kill-map-source-search-audit.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
 ## 2. 地图对应与坐标变换
@@ -80,6 +81,7 @@
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
 - `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。
 - 客户端部分烟测：pass；MapIndex=1 -> 0 (Bichon Town)；MapView 首帧无可绘制格子; missingLibraries=2152; missingTextures=0。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。
+- Hero-kill 地图源搜索审计：本地 EI 运行时源图 544 个；匹配刷新中无本地源图 309 条；未发现新的研究缓存、NAS 或独立归档源图。
 
 ## 8. 未决项与人工复核
 
@@ -105,4 +107,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `2df1c2fac1c5c1dc7785dee2c9cebcb0eec02075`；Zircon `fecc8e14fdf842cd967ac79d15433b15dbbccc0a`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `0756737d195d20b8949e2c2725f95a0d88d25af1`；Zircon `fecc8e14fdf842cd967ac79d15433b15dbbccc0a`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
