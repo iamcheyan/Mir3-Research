@@ -13,6 +13,7 @@
 | 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；地图文件格式/截断发现 0 个 | `artifacts/.../independent-verification.json` |
 | dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
+| 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
 ## 2. 地图对应与坐标变换
@@ -96,4 +97,4 @@ python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-u
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `3e0ff409`；Zircon `404d6303`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `6750cde258caa4eb053b2676d876d7880605131`；Zircon `404d630393df5226f8bb82d4d2b57b574e2a49bc`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。

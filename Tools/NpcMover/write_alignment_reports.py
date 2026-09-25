@@ -72,6 +72,71 @@ def build_dry_run_plan(data: dict) -> dict:
             "command": "Tools/DBImporter --mode sync --workspace <approved-workspace>",
         },
     }
+def build_manual_review_summary(data: dict) -> dict:
+    """Emit compact, actionable review rows without approving any change."""
+    npc_rows = [
+        {
+            "kind": "npc",
+            "status": row["apply_status"],
+            "index": row["current_npc_index"],
+            "name": row["current_npc_name"],
+            "old": {"map": row["old_map"], "xy": row["old_xy"]},
+            "target": {"map": row["hero_kill_map"], "xy": row["hero_kill_xy"]},
+            "map_relation": row["map_relation"],
+            "match_method": row["match_method"],
+            "confidence": row["confidence"],
+            "walkable": row["walkable"],
+            "overlap_with": row["overlap_with"],
+            "placement_rule": row["auto_placement_rule"],
+            "candidates": row["auto_placement_candidates"],
+            "warnings": row["warnings"],
+            "identity_source": row["identity_source"],
+        }
+        for row in data["npcs"]
+        if row["apply_status"] == "pending-review"
+    ]
+    respawn_rows = [
+        {
+            "kind": "respawn",
+            "status": row["apply_status"],
+            "review_class": row["match_status"],
+            "respawn_index": row["old_respawn"]["index"],
+            "monster_index": row["mapped_zircon_monster_index"],
+            "monster_name": row["mapped_zircon_monster_name"],
+            "hero_kill": {
+                "map": row["hero_kill_map"],
+                "xy": row["hero_kill_xy"],
+                "range": row["hero_kill_range"],
+                "count": row["hero_kill_count"],
+                "interval": row["hero_kill_interval"],
+                "monster_name": row["hero_kill_monster_name"],
+            },
+            "old_respawn": row["old_respawn"],
+            "new_respawn": row["new_respawn"],
+            "mapping_method": row["mapping_method"],
+            "confidence": row["confidence"],
+            "walkable": row["walkable"],
+            "hero_kill_walkable": row["hero_kill_walkable"],
+            "overlap": row["overlap"],
+            "range_note": row["range_note"],
+        }
+        for row in data["monster_respawns"]
+        if row["apply_status"] in {"blocked", "pending-review"}
+    ]
+    return {
+        "review_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
+        "mode": "offline-review-queue",
+        "database_write": False,
+        "approval_required": True,
+        "counts": {
+            "npc_pending_review": len(npc_rows),
+            "respawn_pending_review": sum(1 for row in respawn_rows if row["status"] == "pending-review"),
+            "respawn_blocked": sum(1 for row in respawn_rows if row["status"] == "blocked"),
+            "respawn_total": len(respawn_rows),
+        },
+        "npc_rows": npc_rows,
+        "respawn_rows": respawn_rows,
+    }
 
 
 def main() -> int:
@@ -102,6 +167,9 @@ def main() -> int:
     dry_run_plan = build_dry_run_plan(data)
     plan_path = args.manifest.parent / "dry-run-apply-plan.json"
     plan_path.write_text(json.dumps(dry_run_plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    review_summary = build_manual_review_summary(data)
+    review_path = args.manifest.parent / "manual-review-summary.json"
+    review_path.write_text(json.dumps(review_summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -161,6 +229,7 @@ def main() -> int:
         "| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |",
         f"| 独立校验 | 逻辑通过；地图文件格式/截断发现 {verify['format_issue_count']} 个 | `artifacts/.../independent-verification.json` |",
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
+        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
