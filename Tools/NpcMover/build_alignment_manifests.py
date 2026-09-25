@@ -413,8 +413,152 @@ EXPLICIT_MONSTER_MAP = {
 }
 
 
+# Direct semantic aliases from the tracked YXS/Mud3 naming set to stable
+# MonsterInfo identities.  Ambiguous legacy families remain pending above.
+SOURCE_MONSTER_ALIAS_MAP: dict[str, tuple[int | None, str | None, str, str]] = {
+    "钻卡树": (479, "Zuan Ka Tree", "source-semantic-alias", "high"),
+    "鸡": (8, "Chicken", "source-semantic-alias", "high"),
+    "牛": (11, "Cow", "source-semantic-alias", "high"),
+    "猪": (9, "Pig", "source-semantic-alias", "high"),
+    "羊": (12, "Sheep", "source-semantic-alias", "high"),
+    "红野猪": (125, "Red Boar", "source-semantic-alias", "high"),
+    "黑野猪": (127, "Black Boar", "source-semantic-alias", "high"),
+    "蝎蛇": (126, "Claw Serpent", "source-semantic-alias", "medium"),
+    "楔蛾": (124, "Wedge Moth", "source-semantic-alias", "high"),
+    "角蝇": (472, "Fly", "source-semantic-alias", "high"),
+    "恶灵弓箭手": (429, "Evil Spirit Archer", "source-semantic-alias", "high"),
+    "恶灵士兵": (428, "Evil Spirit Soldier", "source-semantic-alias", "high"),
+    "恶灵武士": (430, "Evil Spirit Warrior", "source-semantic-alias", "high"),
+    "潘夜战士": (186, "Banyo Warrior", "verified-alias", "high"),
+    "潘夜牛魔王": (113, "Flame Minotaur", "verified-alias", "medium"),
+    "玛法上将": (452, "Mafa General", "source-semantic-alias", "high"),
+    "玛法战士": (454, "Mafa Warrior", "source-semantic-alias", "high"),
+    "玛法巫师": (453, "Mafa Wizard", "source-semantic-alias", "high"),
+    "玛法法师": (455, "Mafa Mage", "source-semantic-alias", "high"),
+    "玛法道士": (456, "Mafa Taoist", "source-semantic-alias", "high"),
+    "异界海神将领": (409, "Otherworld Sea General", "source-semantic-alias", "high"),
+    "异界海神将领1": (410, "Otherworld Sea General 1", "source-semantic-alias", "high"),
+    "异界海神将领3": (411, "Otherworld Sea General 3", "source-semantic-alias", "high"),
+    "异界爆毒神魔": (412, "Otherworld Poison Demon", "source-semantic-alias", "high"),
+    "异界爆毒神魔1": (413, "Otherworld Poison Demon 1", "source-semantic-alias", "high"),
+    "异界爆毒神魔2": (414, "Otherworld Poison Demon 2", "source-semantic-alias", "high"),
+    "异界爆毒神魔3": (415, "Otherworld Poison Demon 3", "source-semantic-alias", "high"),
+    "异界神舰守卫": (416, "Otherworld Ship Guard", "source-semantic-alias", "high"),
+    "异界神舰守卫1": (417, "Otherworld Ship Guard 1", "source-semantic-alias", "high"),
+    "异界红衣法师": (418, "Otherworld Red Mage", "source-semantic-alias", "high"),
+    "异界红衣法师1": (419, "Otherworld Red Mage 1", "source-semantic-alias", "high"),
+    "异界红衣法师2": (420, "Otherworld Red Mage 2", "source-semantic-alias", "high"),
+    "异界触角神魔": (421, "Otherworld Tentacle Demon", "source-semantic-alias", "high"),
+    "异界触角神魔1": (422, "Otherworld Tentacle Demon 1", "source-semantic-alias", "high"),
+    "异界触角神魔2": (423, "Otherworld Tentacle Demon 2", "source-semantic-alias", "high"),
+    "异界触角神魔3": (424, "Otherworld Tentacle Demon 3", "source-semantic-alias", "high"),
+    "异界轻甲守卫": (425, "Otherworld Light Guard", "source-semantic-alias", "high"),
+    "异界轻甲守卫1": (426, "Otherworld Light Guard 1", "source-semantic-alias", "high"),
+    "异界轻甲守卫2": (483, "Otherworld Light Guard 2", "source-semantic-alias", "high"),
+    "异界轻甲守卫3": (427, "Otherworld Light Guard 3", "source-semantic-alias", "high"),
+    "月河幽灵": (433, "Moon River Ghost", "source-semantic-alias", "high"),
+    "月河幽魂": (434, "Moon River Phantom", "source-semantic-alias", "high"),
+    "月河罗汉": (435, "Moon River Arhat", "source-semantic-alias", "high"),
+    "月河鼠仙": (436, "Moon River Rat Immortal", "source-semantic-alias", "high"),
+    "人马战士": (362, "Centaur Warrior", "source-semantic-alias", "high"),
+    "树人精灵": (438, "Tree Elf", "source-semantic-alias", "high"),
+    "战马将军": (431, "War Horse General", "source-semantic-alias", "high"),
+    "触角神魔": (421, "Otherworld Tentacle Demon", "source-semantic-alias", "medium"),
+    "冰宫守卫": (373, "Ice Palace Guard", "source-semantic-alias", "high"),
+    "冰宫射手": (374, "Ice Palace Archer", "source-semantic-alias", "high"),
+    "冰宫巫师": (375, "Ice Palace Wizard", "source-semantic-alias", "high"),
+    "冰宫法师": (376, "Ice Palace Mage", "source-semantic-alias", "high"),
+    "冰宫骑士": (377, "Ice Palace Knight", "source-semantic-alias", "high"),
+    "冰魂武士": (378, "Ice Soul Warrior", "source-semantic-alias", "high"),
+    "冰魂武将": (379, "Ice Soul General", "source-semantic-alias", "high"),
+    "冰城帝王": (372, "Ice City Emperor", "source-semantic-alias", "high"),
+    "冰原勇士": (485, "Ice Plain Warrior", "source-semantic-alias", "high"),
+    "冰原战士": (486, "Ice Plain Soldier", "source-semantic-alias", "high"),
+    "冰原豪猪": (370, "Ice Plain Boar", "source-semantic-alias", "high"),
+    "冰原雪狼": (371, "Ice Plain Snow Wolf", "source-semantic-alias", "high"),
+    "冰原狼王": (369, "Ice Plain Wolf King", "source-semantic-alias", "high"),
+    "修罗战士": (364, "Xiuluo Warrior", "source-semantic-alias", "high"),
+    "修罗法师": (365, "Xiuluo Mage", "source-semantic-alias", "high"),
+    "修罗道士": (366, "Xiuluo Taoist", "source-semantic-alias", "high"),
+    "诺玛装甲兵": (165, "Numa Armored Soldier", "source-semantic-alias", "high"),
+    "诺玛司令": (166, "Numa Assault Captain", "source-semantic-alias", "high"),
+    "诺玛抛石兵": (163, "Numa Stone Thrower", "source-semantic-alias", "high"),
+    "诺玛斧兵": (89, "Numa Grunt", "source-semantic-alias", "medium"),
+    "诺玛突击队长": (166, "Numa Assault Captain", "source-semantic-alias", "high"),
+    "绝情红姬": (466, "Heartless Red Lady", "source-semantic-alias", "high"),
+    "绝情绿姬": (467, "Heartless Green Lady", "source-semantic-alias", "high"),
+    "绝情护卫": (464, "Heartless Guard", "source-semantic-alias", "high"),
+    "绝情殿主": (465, "Heartless Palace Master", "source-semantic-alias", "high"),
+    "火焰魔兵": (449, "Flame Demon Soldier", "source-semantic-alias", "high"),
+    "破冰魔兵": (458, "Ice Break Demon Soldier", "source-semantic-alias", "high"),
+    "雷神魔兵": (480, "Thunder Demon Soldier", "source-semantic-alias", "high"),
+    "旋风魔兵": (432, "Whirlwind Demon Soldier", "source-semantic-alias", "high"),
+    "霜石狰": (481, "Frost Stone Beast", "source-semantic-alias", "high"),
+    "丛林猛犸": (361, "Jungle Mammoth", "source-semantic-alias", "high"),
+    "独角犀": (450, "Unicorn Rhino", "source-semantic-alias", "high"),
+    "绝地殍": (463, "Desolation Corpse", "source-semantic-alias", "high"),
+    "深潭泥人": (447, "Deep Mud Man", "source-semantic-alias", "high"),
+    "群魔伙头兵": (468, "Demon Horde Cook", "source-semantic-alias", "high"),
+    "群魔勇士": (469, "Demon Horde Warrior", "source-semantic-alias", "high"),
+    "群魔御医": (470, "Demon Horde Healer", "source-semantic-alias", "high"),
+    "群魔霸王": (471, "Demon Horde Overlord", "source-semantic-alias", "high"),
+    "凶悍僧侣": (380, "Fierce Monk", "source-semantic-alias", "high"),
+    "凶悍多角虫": (381, "Fierce Centipede", "source-semantic-alias", "high"),
+    "凶悍尸王": (382, "Fierce Corpse King", "source-semantic-alias", "high"),
+    "凶悍恶魔": (383, "Fierce Demon", "source-semantic-alias", "high"),
+    "凶悍树魔": (384, "Fierce Tree Demon", "source-semantic-alias", "high"),
+    "凶悍毒龙": (385, "Fierce Poison Dragon", "source-semantic-alias", "high"),
+    "凶悍沃玛": (386, "Fierce Woma", "source-semantic-alias", "high"),
+    "凶悍狂牛": (387, "Fierce Mad Bull", "source-semantic-alias", "high"),
+    "凶悍猎鹰": (388, "Fierce Falcon", "source-semantic-alias", "high"),
+    "凶悍石人": (389, "Fierce Stone Man", "source-semantic-alias", "high"),
+    "凶悍风魔": (390, "Fierce Wind Demon", "source-semantic-alias", "high"),
+    "凶悍骷髅": (391, "Fierce Skeleton", "source-semantic-alias", "high"),
+    "凶悍魔神": (392, "Fierce Demon God", "source-semantic-alias", "high"),
+    "凶悍鱼魔": (393, "Fierce Fish Demon", "source-semantic-alias", "high"),
+    "凶悍黑野猪": (394, "Fierce Black Boar", "source-semantic-alias", "high"),
+    "地牢女神1": (395, "Dungeon Goddess 1", "source-semantic-alias", "high"),
+    "地牢女神2": (396, "Dungeon Goddess 2", "source-semantic-alias", "high"),
+    "地牢女神3": (397, "Dungeon Goddess 3", "source-semantic-alias", "high"),
+    "地牢女神4": (398, "Dungeon Goddess 4", "source-semantic-alias", "high"),
+    "大法老": (399, "Great Pharaoh", "source-semantic-alias", "high"),
+    "守护剑信徒": (400, "Guardian Sword Disciple", "source-semantic-alias", "high"),
+    "守护术信徒": (401, "Guardian Spell Disciple", "source-semantic-alias", "high"),
+    "守护火信徒": (402, "Guardian Fire Disciple", "source-semantic-alias", "high"),
+    "寒冰守护神": (403, "Frost Guardian God", "source-semantic-alias", "high"),
+    "骨鬼将": (404, "Corpse Bone Spirit", "source-semantic-alias", "high"),
+    "异界守护神": (405, "Otherworld Guardian", "source-semantic-alias", "high"),
+    "异界守护神1": (406, "Otherworld Guardian 1", "source-semantic-alias", "high"),
+    "异界守护神2": (407, "Otherworld Guardian 2", "source-semantic-alias", "high"),
+    "异界守护神3": (408, "Otherworld Guardian 3", "source-semantic-alias", "high"),
+    "邪恶唤雷者": (473, "Evil Thunderer", "source-semantic-alias", "high"),
+    "邪恶堕落者": (474, "Evil Fallen", "source-semantic-alias", "high"),
+    "邪恶复仇者": (475, "Evil Avenger", "source-semantic-alias", "high"),
+    "邪恶审判者": (476, "Evil Judge", "source-semantic-alias", "high"),
+    "邪恶惩戒者": (477, "Evil Punisher", "source-semantic-alias", "high"),
+    "邪恶镇魂者": (478, "Evil Soul Sealer", "source-semantic-alias", "high"),
+    "朱雀四天王": (437, "Suzaku Heavenly King", "source-semantic-alias", "high"),
+    "玄武四天王": (451, "Xuanwu Heavenly King", "source-semantic-alias", "high"),
+    "白虎四天王": (457, "Baihu Heavenly King", "source-semantic-alias", "high"),
+    "青龙四天王": (482, "Qinglong Heavenly King", "source-semantic-alias", "high"),
+    "桃园骑兵": (444, "Taoyuan Cavalry", "source-semantic-alias", "high"),
+    "桃园步兵": (441, "Taoyuan Infantry", "source-semantic-alias", "high"),
+    "桃园火毒花": (443, "Taoyuan Fire Flower", "source-semantic-alias", "high"),
+    "桃园火凤凰": (442, "Taoyuan Fire Phoenix", "source-semantic-alias", "high"),
+    "桃园冰毒花": (440, "Taoyuan Ice Flower", "source-semantic-alias", "high"),
+    "桃园冰凤凰": (439, "Taoyuan Ice Phoenix", "source-semantic-alias", "high"),
+    "秦王步兵刀手": (459, "Qin Sword Infantry", "source-semantic-alias", "high"),
+    "秦王步兵矛手": (460, "Qin Spear Infantry", "source-semantic-alias", "high"),
+    "秦王骑战刀手": (461, "Qin Sword Cavalry", "source-semantic-alias", "high"),
+    "秦王骑战矛手": (462, "Qin Spear Cavalry", "source-semantic-alias", "high"),
+    "火焰狮子": (448, "Flame Lion", "source-semantic-alias", "high"),
+    "石像狮子": (484, "Stone Lion", "source-semantic-alias", "high"),
+    "伤魂尸": (363, "Wounded Soul Corpse", "source-semantic-alias", "high"),
+}
+
+
 def norm_name(value: str) -> str:
-    return re.sub(r"[^a-z0-9]", "", value.casefold())
+    return re.sub(r"[^\w]", "", value.casefold(), flags=re.UNICODE)
 
 
 def stat_value(monster: dict[str, Any], key: str) -> int | None:
@@ -587,7 +731,7 @@ def build_monster_identity(
     for source in source_nonempty:
         name = str(source.get("Name", ""))
         catalog_entry = legacy_catalog.get(int(source.get("Index", 0)))
-        mapping = EXPLICIT_MONSTER_MAP.get(name)
+        mapping = EXPLICIT_MONSTER_MAP.get(name) or SOURCE_MONSTER_ALIAS_MAP.get(name)
         if mapping is None and catalog_entry and catalog_entry.get("tag") == "changed":
             catalog_match = re.search(r"→\s*(.*?)\s+\(id=(\d+)\)", str(catalog_entry.get("note", "")))
             if catalog_match:
@@ -740,7 +884,7 @@ def load_raw_gen_spawns(
     for row in identity_rows:
         identity_by_name[norm_name(str(row.get("hero_kill_monster_name", "")))].append(row)
     current_by_name = {norm_name(str(m.get("MonsterName", ""))): m for m in monsters}
-    explicit_names = EXPLICIT_MONSTER_MAP
+    explicit_names = {**SOURCE_MONSTER_ALIAS_MAP, **EXPLICIT_MONSTER_MAP}
     rows_out: list[dict[str, Any]] = []
     parse_warnings = 0
     active_paths = [Path(p) for p in meta["active_gen_files"]]

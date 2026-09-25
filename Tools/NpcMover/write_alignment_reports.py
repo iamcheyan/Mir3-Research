@@ -11,6 +11,69 @@ def j(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
 
 
+def build_dry_run_plan(data: dict) -> dict:
+    """Build an auditable plan without mutating either System.db copy."""
+    npc_rows = data["npcs"]
+    respawn_rows = data["monster_respawns"]
+    npc_candidates = [
+        {
+            "npc_index": row["current_npc_index"],
+            "npc_name": row["current_npc_name"],
+            "old": {"map": row["old_map"], "xy": row["old_xy"]},
+            "new": {"map": row["hero_kill_map"], "xy": row["hero_kill_xy"]},
+            "apply_status": row["apply_status"],
+            "match_method": row["match_method"],
+            "confidence": row["confidence"],
+        }
+        for row in npc_rows
+        if row["apply_status"] == "dry-run"
+    ]
+    respawn_candidates = [
+        {
+            "respawn_index": row["old_respawn"]["index"],
+            "monster_index": row["mapped_zircon_monster_index"],
+            "monster_name": row["mapped_zircon_monster_name"],
+            "old": row["old_respawn"],
+            "new": row["new_respawn"],
+            "apply_status": row["apply_status"],
+            "match_status": row["match_status"],
+            "mapping_method": row["mapping_method"],
+            "confidence": row["confidence"],
+        }
+        for row in respawn_rows
+        if row["match_status"] == "matched"
+    ]
+    return {
+        "plan_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
+        "mode": "offline-dry-run",
+        "database_write": False,
+        "scope": {
+            "npc_position_field": "NPCInfo.Region",
+            "respawn_position_field": "RespawnInfo.Region",
+            "npc_non_position_fields": "untouched",
+            "monster_info_business_fields": "untouched",
+        },
+        "preconditions": [
+            "stop ServerCore and verify TCP port 7000 is not listening",
+            "backup server and client System.db before any sync",
+            "complete pending-review NPC and RespawnInfo rows",
+            "run DBImporter validation and round-trip after an approved plan",
+        ],
+        "npc_candidates": npc_candidates,
+        "respawn_candidates": respawn_candidates,
+        "blocked_counts": {
+            "npc_pending_review": sum(1 for row in npc_rows if row["apply_status"] == "pending-review"),
+            "respawn_blocked": sum(1 for row in respawn_rows if row["apply_status"] == "blocked"),
+            "respawn_pending_review": sum(1 for row in respawn_rows if row["apply_status"] == "pending-review"),
+        },
+        "round_trip": {
+            "status": "not-run",
+            "tool": "Tools/DBImporter",
+            "command": "Tools/DBImporter --mode sync --workspace <approved-workspace>",
+        },
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", type=Path, required=True)
@@ -26,6 +89,19 @@ def main() -> int:
     npc_stats = data["npc_stats"]
     mon_stats = data["monster_identity_stats"]
     resp_stats = data["monster_respawn_stats"]
+    hero_source = data.get("raw_source_metadata", {}).get("hero_kill", {})
+    mud3_source = data.get("raw_source_metadata", {}).get("mud3_secondary", {})
+    hero_source_status = (
+        f"source present: {hero_source.get('path')} "
+        f"({hero_source.get('active_gen_file_count', 0)} active Mon_Def files; "
+        f"{hero_source.get('parsed_refresh_row_count', 0)} parsed rows; "
+        f"parse_warnings={hero_source.get('parse_warning_count', 0)})"
+        if hero_source.get("present")
+        else "source unavailable"
+    )
+    dry_run_plan = build_dry_run_plan(data)
+    plan_path = args.manifest.parent / "dry-run-apply-plan.json"
+    plan_path.write_text(json.dumps(dry_run_plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -72,7 +148,7 @@ def main() -> int:
     report = [
         "# NPC + 怪物全地图对齐报告（2026-09-25）",
         "",
-        "> 状态：**离线 manifest / dry-run 阶段，未写 System.db**。本报告不把缺失的 Hero-kill `Mon_Def/*.gen`/`MonGen` 配置伪装成已完成对齐。",
+        "> 状态：**离线 manifest / dry-run 阶段，未写 System.db**。Hero-kill/YXS 文本源已固定并保留 SHA；本报告不把未唯一匹配的刷新点伪装成已完成对齐。",
         "",
         "## 1. 交付物和状态",
         "",
@@ -81,9 +157,10 @@ def main() -> int:
         "| MAP-BASELINE | 已生成 | `MAP_HERO_KILL_BASELINE_2026-09-25.md` + `artifacts/.../map_manifest.{json,tsv}` |",
         "| NPC 全量 manifest | 已生成 dry-run | `artifacts/.../npc_manifest.{json,tsv}` |",
         "| 怪物身份 manifest | 已生成，绝大多数 pending | `artifacts/.../monster_identity_manifest.{json,tsv}` |",
-        "| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，并接入 recovered EI import plan；缺少原始 Mon_Def/MonGen range | `artifacts/.../monster_respawn_manifest.{json,tsv}` |",
+        "| 怪物刷新 manifest | 已接入 Hero-kill/YXS `Mon_Def/*.gen`；保留 range/count/interval、源文件和源行号；逐点唯一匹配仍需复核 | `artifacts/.../monster_respawn_manifest.{json,tsv}` |",
         "| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |",
         "| 独立校验 | 逻辑通过；发现 50 个 malformed/truncated 地图文件 | `artifacts/.../independent-verification.json` |",
+        "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
@@ -121,11 +198,13 @@ def main() -> int:
         "| Boss/变体 | 多种同族模板 | attributes/resource/drop/spawn evidence 尚未齐全 | conflict/pending |",
         "",
         "- 全量来源：`monster_identity_manifest.json/tsv`；冲突列表位于 manifest `conflicts`。目前没有自动删除、创建或改写 MonsterInfo。",
+        "- 四方证据覆盖：Legacy Atlas、Hero-kill `monster.dat`、当前 `MonsterInfo`、当前 `monsters_zircon.json`；资源 shape 证据与业务身份分开记录。",
+        "",
         "",
         "## 5. 怪物刷新流水线",
         "",
         f"- 当前 Zircon RespawnInfo **{resp_stats['respawn_count']}** 条；旧地图中心点独立检查 `{j(resp_stats['walkable_counts'])}`；apply status `{j(resp_stats['apply_status_counts'])}`；match status `{j(resp_stats['match_status_counts'])}`。",
-        f"- 本地缺少原始 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件；当前仅接入 recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 刷新计划，共 **{resp_stats.get('hero_kill_refresh_count', 0)}** 行。该计划没有 range 字段，所有唯一坐标匹配仍为 `pending-review`，不作为写库目标。",
+        f"- Hero-kill/YXS 源：{hero_source_status}；Mud3 secondary raw source={'present' if mud3_source.get('present') else 'unavailable'}。解析行 **{resp_stats.get('hero_kill_refresh_count', 0)}**，唯一匹配当前 RespawnInfo **{resp_stats.get('hero_kill_matched_count', 0)}**。",
         f"- 刷新缺口：Hero-kill/YXS-only **{resp_stats.get('yxs_only_refresh_count', 0)}**，Zircon-only **{resp_stats.get('zircon_only_refresh_count', 0)}**，coordinate conflict **{resp_stats.get('refresh_conflict_count', 0)}**；这些清单只用于人工复核，不是删除建议。",
         "- `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。",
         "",
@@ -139,14 +218,15 @@ def main() -> int:
         "## 7. dry-run、写库、round-trip和游戏验收",
         "",
         "- dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。",
-        f"- 备份：未执行；写库前置条件未满足（原始 Hero-kill Mon_Def/MonGen 与 range 缺失、Merchant 坐标虽已接入但仅 {npc_stats.get('merchant_match_count', 0)} 条脚本唯一匹配、variant/replacement 人工抽查缺失）。",
+        f"- dry-run 应用计划：NPC 可直接候选 **{len(dry_run_plan['npc_candidates'])}** 条；Hero-kill 唯一刷新匹配 **{len(dry_run_plan['respawn_candidates'])}** 条但仍为 pending-review；计划明确 `database_write=false`，不包含删除/创建 MonsterInfo。",
+        f"- 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 {resp_stats.get('yxs_only_refresh_count', 0)} 条 YXS-only 与 {resp_stats.get('refresh_conflict_count', 0)} 条冲突、NPC 仍有 {npc_stats['apply_status_counts'].get('pending-review', 0)} 条人工复核、variant/replacement 人工抽查缺失）。",
         "- 双库写入：未执行；NPC 与怪物均无 apply commit。",
         "- round-trip：未执行；不能声称双库逐条一致。",
         "- 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。",
         "",
         "## 8. 未决项与人工复核",
         "",
-        "1. 提供并固定 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件及格式说明，补齐每个刷新点的 range，并核对 recovered import plan 的 742 行。",
+        "1. 复核 Hero-kill/YXS 679 条 active refresh 与当前 RespawnInfo 的身份、地图、坐标、range/count/interval；处理 1 条 malformed name 警告和所有 YXS-only/conflict。",
         f"2. 复核 Merchant 快照的固定坐标记录与 {npc_stats.get('merchant_match_count', 0)} 条脚本/地图唯一匹配，确认其余 NPC 的身份和目标点。",
         "3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。",
         "4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。",
@@ -156,8 +236,9 @@ def main() -> int:
         "",
         "```bash",
         "cd /home/tetsuya/development/Mir3-Research",
-        "python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-spawn /home/tetsuya/development/zircon/Tools/DbMigrationTool/data/import_plan_v2.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25",
+        "python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir --mud3-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/mud3/Envir --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25",
         "python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json",
+        "python3 Tools/NpcMover/write_alignment_reports.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --verification docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json --report-dir docs/research/ei-ui-layout",
         "python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox",
         "```",
         "",
@@ -167,7 +248,7 @@ def main() -> int:
     ]
     report_path = args.report_dir / "NPC_MONSTER_ALL_MAPS_ALIGNMENT_REPORT_2026-09-25.md"
     report_path.write_text("\n".join(report) + "\n", encoding="utf-8")
-    print(json.dumps({"baseline": str(baseline_path), "report": str(report_path), "map_rows": len(maps), "npc_rows": len(data["npcs"]), "monster_identity_rows": len(data["monster_identity"]), "monster_respawn_rows": len(data["monster_respawns"])}, ensure_ascii=False, indent=2))
+    print(json.dumps({"baseline": str(baseline_path), "report": str(report_path), "dry_run_plan": str(plan_path), "map_rows": len(maps), "npc_rows": len(data["npcs"]), "monster_identity_rows": len(data["monster_identity"]), "monster_respawn_rows": len(data["monster_respawns"])}, ensure_ascii=False, indent=2))
     return 0
 
 

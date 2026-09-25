@@ -1,6 +1,6 @@
 # NPC + 怪物全地图对齐报告（2026-09-25）
 
-> 状态：**离线 manifest / dry-run 阶段，未写 System.db**。本报告不把缺失的 Hero-kill `Mon_Def/*.gen`/`MonGen` 配置伪装成已完成对齐。
+> 状态：**离线 manifest / dry-run 阶段，未写 System.db**。Hero-kill/YXS 文本源已固定并保留 SHA；本报告不把未唯一匹配的刷新点伪装成已完成对齐。
 
 ## 1. 交付物和状态
 
@@ -9,9 +9,10 @@
 | MAP-BASELINE | 已生成 | `MAP_HERO_KILL_BASELINE_2026-09-25.md` + `artifacts/.../map_manifest.{json,tsv}` |
 | NPC 全量 manifest | 已生成 dry-run | `artifacts/.../npc_manifest.{json,tsv}` |
 | 怪物身份 manifest | 已生成，绝大多数 pending | `artifacts/.../monster_identity_manifest.{json,tsv}` |
-| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，并接入公开跟踪的 Hero-kill/Mud3 文本源；逐点匹配仍 pending，保留 range/数量/间隔及源行号 | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
+| 怪物刷新 manifest | 已接入 Hero-kill/YXS `Mon_Def/*.gen`；保留 range/count/interval、源文件和源行号；逐点唯一匹配仍需复核 | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
 | 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；发现 50 个 malformed/truncated 地图文件 | `artifacts/.../independent-verification.json` |
+| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
 ## 2. 地图对应与坐标变换
@@ -36,22 +37,8 @@
 
 ## 4. 怪物身份流水线
 
-- 当前 Zircon MonsterInfo **434**；英雄杀解码定义 **432**（记录 0 为占位头，不计入）。可靠映射 **6**，pending **426**，Zircon-only identity **428**。公开 `monster-dat-catalog.json` 的 **432/432** 条记录已写入每条 `monster_four_way_evidence`，原始 `monster.dat` 仍只记录本机私有路径和 SHA，不进入公开仓库。
-
-### 资料库四方对应（重点案例）
-
-| 英雄杀/Legacy Atlas | 版本标签与老版属性（Lv/HP/DC/Exp） | 当前 MonsterInfo（Index/Name/Image/Lv） | `monsters_zircon.json` 当前属性 | 图片/shape 证据 |
-|---|---|---|---|---|
-| 半兽人 | `changed`；13/30/4-8/30 | `22 / Oma / Oma / 13` | HP25/DC3-8/Exp59 | 老版 `Appr=83 → Mon-8.wil#3040`；当前 `MonsterImage.Oma=33 → Mon_3 shape=3`；id18 Oma Warrior 共享同一 Image/shape，不能靠图片单独消歧，采用 Atlas changed→id22 |
-| 祖玛教主 | `changed`；94/14000/70-175/10500 | `81 / Zuma King / ZumaKing / 250` | HP21000/DC255-360/Exp780000 | `Appr=102 → Mon-10.wil#2040`；`MonsterImage.ZumaKing=95 → Mon_9 shape=5` |
-| 白野猪 | `old-only`；75/4500/44-66/1250 | 无可靠对应 | 无可靠对应 | `Appr=208 → Mon-20.wil#8040`；无当前 MonsterImage/shape 对应，保持 pending；不把 Wild Boar 等模糊候选写成身份 |
-| 赤月恶魔 | `changed`；93/13000/90-180/9750 | `75 / Red Moon The Fallen / RedMoonTheFallen / 250` | HP19500/DC240-345/Exp487500 | `Appr=115 → Mon-11.wil#5040`；`MonsterImage.RedMoonTheFallen=114 → Mon_11 shape=4` |
-| 沃玛教主 | `changed`；90/8000/99-143/6000 | `65 / Uma King / UmaKing / 250` | HP13500/DC210-315/Exp195000 | `Appr=92 → Mon-9.wil#2040`；`MonsterImage.UmaKing=55 → Mon_5 shape=5` |
-| 骷髅教主 | `changed`；91/10000/121-187/7500 | `121 / Arch Lich Taedu / ArchLichTaedu / 250` | HP15000/DC225-330/Exp370500 | `Appr=225 → Mon-22.wil#5040`；`MonsterImage.ArchLichTaedu=151 → Mon_15 shape=1` |
-| 霸王教主 | `changed`；96/20000/145-245/12000 | `115 / Emperor Sa'Woo / EmperorSaWoo / 250` | HP21000/DC255-360/Exp585000 | `Appr=226 → Mon-22.wil#6040`；`MonsterImage.EmperorSaWoo=149 → Mon_14 shape=9` |
-
-- 该表同时保留老版 `monster.dat` 定义、Legacy Atlas 标签、当前 `MonsterInfo` 业务实体、当前资料库属性和两套资源坐标；老版 `Appr/frame` 与 Zircon `MonsterImage/LibraryFile/shape` 是不同资源系统，不能直接把帧号当作 Zircon shape。
-- 其余 426 条保持 pending；229 条 `old-only` 和 197 条 `unverified` 不因同名、等级或资源帧相似而自动迁移。
+- 当前 Zircon MonsterInfo **434**；英雄杀解码定义 **432**（记录 0 为占位头，不计入）。可靠映射 **41**，pending **391**，Zircon-only identity **394**。
+- 现阶段只使用精确脚本名、现有已验证快照 ID 和明确别名；不按模糊中文名或数字 ID 自动迁移业务引用。MonsterInfo.Index 保持稳定；显示翻译独立记录。
 
 ### 高风险冲突案例
 
@@ -62,15 +49,17 @@
 | 白野猪 | 无直接可靠 Zircon 名称 | conflict-no-direct-zircon-name / pending | pending，禁止模糊映射 |
 | Boss/变体 | 多种同族模板 | attributes/resource/drop/spawn evidence 尚未齐全 | conflict/pending |
 
-- 全量来源：`monster_identity_manifest.json/tsv` 与 `monster_four_way_evidence.json/tsv`；冲突列表位于 manifest `conflicts`。目前没有自动删除、创建或改写 MonsterInfo。
+- 全量来源：`monster_identity_manifest.json/tsv`；冲突列表位于 manifest `conflicts`。目前没有自动删除、创建或改写 MonsterInfo。
+- 四方证据覆盖：Legacy Atlas、Hero-kill `monster.dat`、当前 `MonsterInfo`、当前 `monsters_zircon.json`；资源 shape 证据与业务身份分开记录。
+
 
 ## 5. 怪物刷新流水线
 
-- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；本轮 raw source 运行保持全部 `apply_status=blocked`，因为尚未形成唯一 Hero-kill↔Zircon 刷新匹配。
-- 正式源为 `docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/`，其说明和来源 SHA 见 `LOCAL_YXS_MUD3_TEXT_SOURCES_2026-09-25.md`。YXS `Mongen.txt` 激活 **17/18** 个 `Mon_Def/*.gen`，解析 **679** 条 active refresh rows，1 条 parse warning；未激活的 `会员练级.gen` 保留在源目录并不伪装为 active 配置。Mud3 文本目录作为 secondary raw evidence。
-- 本轮 raw-source 缺口：Hero-kill/YXS-only **679**，Zircon-only **2475**，refresh conflict **0**，Hero-kill matched **0**。这是源文件接入后的事实结果，不是删除或创建建议；身份、地图对应和坐标冲突仍需人工复核。
-- `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行旧审计计划，但字段集合只有 `map/x/y/monster/count`，没有 `range`、`radius`、`size` 或 `interval`；本轮不把它当作 Hero-kill 原始刷新源，也不让它覆盖公开文本源。
-- `Mon_Def` 逐点记录的 range/count/interval 保留 `source_file`、`source_line` 和 `range_note`；若源记录缺少 range，manifest 明确标记 `range_pending`，不以 `PointRegion.Size` 代替，不推断写入半径。
+- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":2147,"pending-review":328}`；match status `{"zircon-only":2058,"conflict":89,"matched":328}`。
+- Hero-kill/YXS 源：source present: docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir (17 active Mon_Def files; 679 parsed rows; parse_warnings=1)；Mud3 secondary raw source=present。解析行 **679**，唯一匹配当前 RespawnInfo **328**。
+- 刷新缺口：Hero-kill/YXS-only **307**，Zircon-only **2058**，coordinate conflict **44**；这些清单只用于人工复核，不是删除建议。
+- `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
+
 ## 6. 独立范围/可行走/重叠检查
 
 - 独立 parser logical errors=0；NPC target rows=294；NPC overlap cells=0。
@@ -81,14 +70,15 @@
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- 备份：未执行；写库前置条件未满足（公开文本源虽已固定，但 679 条刷新尚未与 Zircon RespawnInfo 建立唯一匹配；NPC 仍有 123 条人工复核，variant/replacement 人工抽查缺失）。
+- dry-run 应用计划：NPC 可直接候选 **171** 条；Hero-kill 唯一刷新匹配 **328** 条但仍为 pending-review；计划明确 `database_write=false`，不包含删除/创建 MonsterInfo。
+- 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 307 条 YXS-only 与 44 条冲突、NPC 仍有 123 条人工复核、variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
 
 ## 8. 未决项与人工复核
 
-1. 公开文本源已固定并带来源说明/SHA；继续逐条复核 679 条 active YXS refresh 与 Zircon RespawnInfo 的身份、地图、坐标匹配，处理 1 条解析 warning 和缺失 range 的 `range_pending` 项。
+1. 复核 Hero-kill/YXS 679 条 active refresh 与当前 RespawnInfo 的身份、地图、坐标、range/count/interval；处理 1 条 malformed name 警告和所有 YXS-only/conflict。
 2. 复核 Merchant 快照的固定坐标记录与 130 条脚本/地图唯一匹配，确认其余 NPC 的身份和目标点。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
@@ -100,9 +90,10 @@
 cd /home/tetsuya/development/Mir3-Research
 python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir --mud3-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/mud3/Envir --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
+python3 Tools/NpcMover/write_alignment_reports.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --verification docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json --report-dir docs/research/ei-ui-layout
 python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
 ```
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据基线：Mir3-Research 最新公开文本源接入提交 `d067b97ccd63b886a9d5a587bf54341f9acedc4f`；对应 Zircon 进度提交 `c1fc75c74fcd9368a0af1ab47b5d85fadb50f5b1`。两仓库分支均已 push 并以 `git ls-remote` 核对；本轮仍为离线证据，写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `pending`；Zircon `pending`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。

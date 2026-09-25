@@ -3,19 +3,19 @@
   "stats": {
     "zircon_monster_count": 434,
     "hero_kill_definition_count": 432,
-    "mapped_count": 6,
-    "pending_count": 426,
-    "conflict_count": 0,
-    "zircon_only_count": 428,
+    "mapped_count": 41,
+    "pending_count": 391,
+    "conflict_count": 1,
+    "zircon_only_count": 394,
     "four_way_evidence_status_counts": {
       "legacy-atlas-old-only-no-automatic-map": 229,
       "legacy-atlas-unverified": 197,
       "legacy-atlas-changed-confirmed": 6
     },
-    "image_shape_resolved_count": 6,
+    "image_shape_resolved_count": 41,
     "legacy_catalog_entry_count": 432,
     "monster_dat_catalog_entry_count": 432,
-    "zircon_catalog_entry_count": 6
+    "zircon_catalog_entry_count": 21
   },
   "evidence": [
     {
@@ -711,7 +711,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 448,
+        "name": "Flame Lion",
+        "image": "FlameLion",
+        "level": 55,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -722,8 +739,13 @@
           "frame": 4040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "FlameLion",
+          "enum_value": 605,
+          "library_file": "Mon_22",
+          "shape": 5
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -1051,8 +1073,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 126,
+        "name": "Claw Serpent",
+        "image": "ClawSerpent",
+        "level": 30,
+        "is_boss": false,
+        "stats": {
+          "Health": 280,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 9,
+          "MaxMR": 9,
+          "MinDC": 28,
+          "MaxDC": 49,
+          "Accuracy": 19,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 126,
+        "name": "Claw Serpent",
+        "level": 30,
+        "stats": "性：生命 +280 · 魔防 9-9 · 物攻 28-49 · 命中 +19 · 敏捷 +18",
+        "feat": "征：亡灵、可推动 · 视野 9 · 攻击间隔 2000ms · 经验 1365"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 81,
@@ -1062,8 +1107,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "ClawSerpent",
+          "enum_value": 89,
+          "library_file": "Mon_8",
+          "shape": 9
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -4349,7 +4399,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 421,
+        "name": "Otherworld Tentacle Demon",
+        "image": "TaintedTerror",
+        "level": 100,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -4360,8 +4427,13 @@
           "frame": 8040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "TaintedTerror",
+          "enum_value": 207,
+          "library_file": "Mon_20",
+          "shape": 7
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -4735,7 +4807,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 399,
+        "name": "Great Pharaoh",
+        "image": "GreatPharaoh",
+        "level": 50,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -4746,8 +4835,13 @@
           "frame": 4040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "GreatPharaoh",
+          "enum_value": 608,
+          "library_file": "Mon_1",
+          "shape": 3
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -5203,7 +5297,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 395,
+        "name": "Dungeon Goddess 1",
+        "image": "DungeonGoddess1",
+        "level": 55,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -5214,8 +5325,13 @@
           "frame": 8040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "DungeonGoddess1",
+          "enum_value": 601,
+          "library_file": "Mon_16",
+          "shape": 2
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-old-only-no-automatic-map",
       "mapping_is_identity_not_translation": true
@@ -5351,7 +5467,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 396,
+        "name": "Dungeon Goddess 2",
+        "image": "DungeonGoddess2",
+        "level": 55,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -5362,8 +5495,13 @@
           "frame": 9040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "DungeonGoddess2",
+          "enum_value": 602,
+          "library_file": "Mon_16",
+          "shape": 3
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-old-only-no-automatic-map",
       "mapping_is_identity_not_translation": true
@@ -7535,7 +7673,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 404,
+        "name": "Corpse Bone Spirit",
+        "image": "WoundedSoulCorpse",
+        "level": 250,
+        "is_boss": true,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -7546,8 +7701,13 @@
           "frame": 7040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "WoundedSoulCorpse",
+          "enum_value": 636,
+          "library_file": "Mon_36",
+          "shape": 8
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -8201,8 +8361,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 127,
+        "name": "Black Boar",
+        "image": "BlackBoar",
+        "level": 30,
+        "is_boss": false,
+        "stats": {
+          "Health": 200,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 12,
+          "MaxMR": 12,
+          "MinDC": 28,
+          "MaxDC": 41,
+          "Accuracy": 19,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 127,
+        "name": "Black Boar",
+        "level": 30,
+        "stats": "性：生命 +200 · 魔防 12-12 · 物攻 28-41 · 命中 +19 · 敏捷 +18",
+        "feat": "征：亡灵、可推动 · 视野 9 · 攻击间隔 2000ms · 经验 897"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 81,
@@ -8212,8 +8395,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "BlackBoar",
+          "enum_value": 87,
+          "library_file": "Mon_8",
+          "shape": 7
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -8571,8 +8759,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 125,
+        "name": "Red Boar",
+        "image": "RedBoar",
+        "level": 30,
+        "is_boss": false,
+        "stats": {
+          "Health": 200,
+          "MinAC": 3,
+          "MaxAC": 3,
+          "MinMR": 6,
+          "MaxMR": 6,
+          "MinDC": 28,
+          "MaxDC": 41,
+          "Accuracy": 19,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 125,
+        "name": "Red Boar",
+        "level": 30,
+        "stats": "性：生命 +200 · 物防 3-3 · 魔防 6-6 · 物攻 28-41 · 命中 +19 · 敏捷 +18",
+        "feat": "征：亡灵、可推动 · 视野 9 · 攻击间隔 2000ms · 经验 897"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 81,
@@ -8582,8 +8793,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "RedBoar",
+          "enum_value": 86,
+          "library_file": "Mon_8",
+          "shape": 6
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -10173,8 +10389,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 8,
+        "name": "Chicken",
+        "image": "Chicken",
+        "level": 5,
+        "is_boss": false,
+        "stats": {
+          "Health": 7,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 2,
+          "MaxMR": 2,
+          "MinDC": null,
+          "MaxDC": 1,
+          "Accuracy": 6,
+          "Agility": 5
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 8,
+        "name": "Chicken",
+        "level": 5,
+        "stats": "性：生命 +7 · 魔防 2-2 · 物攻 +1 · 命中 +6 · 敏捷 +5",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 3000ms · 经验 11"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 31,
@@ -10184,8 +10423,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "Chicken",
+          "enum_value": 30,
+          "library_file": "Mon_3",
+          "shape": 0
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -11609,7 +11853,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 472,
+        "name": "Fly",
+        "image": "Beetle",
+        "level": 30,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -11620,8 +11881,13 @@
           "frame": 3040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "Beetle",
+          "enum_value": 73,
+          "library_file": "Mon_7",
+          "shape": 3
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -15677,8 +15943,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 9,
+        "name": "Pig",
+        "image": "Pig",
+        "level": 6,
+        "is_boss": false,
+        "stats": {
+          "Health": 15,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 2,
+          "MaxMR": 2,
+          "MinDC": null,
+          "MaxDC": 2,
+          "Accuracy": 8,
+          "Agility": 5
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 9,
+        "name": "Pig",
+        "level": 6,
+        "stats": "性：生命 +15 · 魔防 2-2 · 物攻 +2 · 命中 +8 · 敏捷 +5",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 3000ms · 经验 15"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 52,
@@ -15688,8 +15977,13 @@
           "frame": 2040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "Pig",
+          "enum_value": 129,
+          "library_file": "Mon_12",
+          "shape": 9
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -21305,8 +21599,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 89,
+        "name": "Numa Grunt",
+        "image": "NumaGrunt",
+        "level": 35,
+        "is_boss": false,
+        "stats": {
+          "Health": 340,
+          "MinAC": 1,
+          "MaxAC": 1,
+          "MinMR": 13,
+          "MaxMR": 13,
+          "MinDC": 18,
+          "MaxDC": 44,
+          "Accuracy": 21,
+          "Agility": 16
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 89,
+        "name": "Numa Grunt",
+        "level": 35,
+        "stats": "性：生命 +340 · 物防 1-1 · 魔防 13-13 · 物攻 18-44 · 命中 +21 · 敏捷 +16 · 冰抗 +1 · 风抗 -1 · 神圣抗性 +1 · 暗黑抗性 -1",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 1800ms · 经验 1560"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 128,
@@ -21316,8 +21633,13 @@
           "frame": 8040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "NumaGrunt",
+          "enum_value": 138,
+          "library_file": "Mon_13",
+          "shape": 8
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -21823,8 +22145,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 163,
+        "name": "Numa Stone Thrower",
+        "image": "NumaStoneThrower",
+        "level": 72,
+        "is_boss": false,
+        "stats": {
+          "Health": 1500,
+          "MinAC": 9,
+          "MaxAC": 9,
+          "MinMR": 28,
+          "MaxMR": 28,
+          "MinDC": 50,
+          "MaxDC": 68,
+          "Accuracy": 22,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 163,
+        "name": "Numa Stone Thrower",
+        "level": 72,
+        "stats": "性：生命 +1500 · 物防 9-9 · 魔防 28-28 · 物攻 50-68 · 命中 +22 · 敏捷 +18 · 火抗 +4 · 冰抗 +2 · 风抗 -3 · 神圣抗性 -2 · 暗黑抗性 +5 · 幻影抗性 -4 · 神圣亲和 +1",
+        "feat": "征：可推动 · 视野 10 · 攻击间隔 2000ms · 经验 58500"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 126,
@@ -21834,8 +22179,13 @@
           "frame": 6040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "NumaStoneThrower",
+          "enum_value": 193,
+          "library_file": "Mon_19",
+          "shape": 3
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -21971,8 +22321,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 166,
+        "name": "Numa Assault Captain",
+        "image": "NumaRoyalGuard",
+        "level": 72,
+        "is_boss": true,
+        "stats": {
+          "Health": 7700,
+          "MinAC": 53,
+          "MaxAC": 53,
+          "MinMR": 70,
+          "MaxMR": 70,
+          "MinDC": 138,
+          "MaxDC": 238,
+          "Accuracy": 25,
+          "Agility": 23
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 166,
+        "name": "Numa Assault Captain",
+        "level": 72,
+        "stats": "性：生命 +7700 · 物防 53-53 · 魔防 70-70 · 物攻 138-238 · 命中 +25 · 敏捷 +23 · 火抗 +4 · 冰抗 +4 · 雷抗 +4 · 风抗 +3 · 神圣抗性 +3 · 暗黑抗性 +4 · 幻影抗性 +4 · 火亲和 +1",
+        "feat": "征：Boss、可推动 · 视野 10 · 攻击间隔 1600ms · 经验 370500"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 127,
@@ -21982,8 +22355,13 @@
           "frame": 7040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "NumaRoyalGuard",
+          "enum_value": 195,
+          "library_file": "Mon_19",
+          "shape": 5
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -22045,8 +22423,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 166,
+        "name": "Numa Assault Captain",
+        "image": "NumaRoyalGuard",
+        "level": 72,
+        "is_boss": true,
+        "stats": {
+          "Health": 7700,
+          "MinAC": 53,
+          "MaxAC": 53,
+          "MinMR": 70,
+          "MaxMR": 70,
+          "MinDC": 138,
+          "MaxDC": 238,
+          "Accuracy": 25,
+          "Agility": 23
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 166,
+        "name": "Numa Assault Captain",
+        "level": 72,
+        "stats": "性：生命 +7700 · 物防 53-53 · 魔防 70-70 · 物攻 138-238 · 命中 +25 · 敏捷 +23 · 火抗 +4 · 冰抗 +4 · 雷抗 +4 · 风抗 +3 · 神圣抗性 +3 · 暗黑抗性 +4 · 幻影抗性 +4 · 火亲和 +1",
+        "feat": "征：Boss、可推动 · 视野 10 · 攻击间隔 1600ms · 经验 370500"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 128,
@@ -22056,8 +22457,13 @@
           "frame": 8040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "NumaRoyalGuard",
+          "enum_value": 195,
+          "library_file": "Mon_19",
+          "shape": 5
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -22267,8 +22673,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 165,
+        "name": "Numa Armored Soldier",
+        "image": "NumaArmoredSoldier",
+        "level": 72,
+        "is_boss": false,
+        "stats": {
+          "Health": 2000,
+          "MinAC": 12,
+          "MaxAC": 12,
+          "MinMR": 27,
+          "MaxMR": 27,
+          "MinDC": 75,
+          "MaxDC": 100,
+          "Accuracy": 22,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 165,
+        "name": "Numa Armored Soldier",
+        "level": 72,
+        "stats": "性：生命 +2000 · 物防 12-12 · 魔防 27-27 · 物攻 75-100 · 命中 +22 · 敏捷 +18 · 火抗 +2 · 冰抗 +3 · 雷抗 +1 · 风抗 -2 · 神圣抗性 -4 · 暗黑抗性 +5 · 幻影抗性 -3",
+        "feat": "征：可推动 · 视野 10 · 攻击间隔 1300ms · 经验 33930"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 81,
@@ -22278,8 +22707,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "NumaArmoredSoldier",
+          "enum_value": 191,
+          "library_file": "Mon_19",
+          "shape": 1
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -22933,8 +23367,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 113,
+        "name": "Flame Minotaur",
+        "image": "FlameMinotaur",
+        "level": 45,
+        "is_boss": false,
+        "stats": {
+          "Health": 1200,
+          "MinAC": 4,
+          "MaxAC": 4,
+          "MinMR": 12,
+          "MaxMR": 12,
+          "MinDC": 43,
+          "MaxDC": 64,
+          "Accuracy": 22,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 113,
+        "name": "Flame Minotaur",
+        "level": 45,
+        "stats": "性：生命 +1200 · 物防 4-4 · 魔防 12-12 · 物攻 43-64 · 命中 +22 · 敏捷 +18 · 火抗 +3 · 冰抗 -4 · 雷抗 +5 · 风抗 -1 · 神圣抗性 -3 · 暗黑抗性 +5 · 幻影抗性 +1 · 火亲和 +1",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 2200ms · 经验 5070"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 215,
@@ -22944,8 +23401,13 @@
           "frame": 5040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "FlameMinotaur",
+          "enum_value": 146,
+          "library_file": "Mon_14",
+          "shape": 6
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -23303,8 +23765,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 186,
+        "name": "Banyo Warrior",
+        "image": "LightArmedSoldier",
+        "level": 80,
+        "is_boss": false,
+        "stats": {
+          "Health": 5650,
+          "MinAC": 30,
+          "MaxAC": 30,
+          "MinMR": 60,
+          "MaxMR": 60,
+          "MinDC": 150,
+          "MaxDC": 165,
+          "Accuracy": 30,
+          "Agility": 24
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 186,
+        "name": "Banyo Warrior",
+        "level": 80,
+        "stats": "性：生命 +5650 · 物防 30-30 · 魔防 60-60 · 物攻 150-165 · 命中 +30 · 敏捷 +24 · 冰抗 -2 · 雷抗 +4 · 风抗 +5 · 神圣抗性 +3 · 暗黑抗性 +5 · 幻影抗性 +5",
+        "feat": "征：可推动 · 视野 16 · 攻击间隔 1500ms · 经验 146250"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 97,
@@ -23314,8 +23799,13 @@
           "frame": 7040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "LightArmedSoldier",
+          "enum_value": 16,
+          "library_file": "Mon_1",
+          "shape": 6
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -26795,7 +27285,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 484,
+        "name": "Stone Lion",
+        "image": "RazorTusk",
+        "level": 55,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -26806,8 +27313,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "RazorTusk",
+          "enum_value": 160,
+          "library_file": "Mon_16",
+          "shape": 0
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -29691,8 +30203,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 124,
+        "name": "Wedge Moth",
+        "image": "WedgeMoth",
+        "level": 30,
+        "is_boss": false,
+        "stats": {
+          "Health": 240,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 9,
+          "MaxMR": 9,
+          "MinDC": 28,
+          "MaxDC": 28,
+          "Accuracy": 19,
+          "Agility": 18
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 124,
+        "name": "Wedge Moth",
+        "level": 30,
+        "stats": "性：生命 +240 · 魔防 9-9 · 物攻 28-28 · 命中 +19 · 敏捷 +18 · 幻影抗性 +1 · 暗黑亲和 +1",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 2500ms · 经验 1268"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 105,
@@ -29702,8 +30237,13 @@
           "frame": 5040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "WedgeMoth",
+          "enum_value": 85,
+          "library_file": "Mon_8",
+          "shape": 5
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -30759,8 +31299,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 12,
+        "name": "Sheep",
+        "image": "Sheep",
+        "level": 9,
+        "is_boss": false,
+        "stats": {
+          "Health": 20,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 2,
+          "MaxMR": 2,
+          "MinDC": 1,
+          "MaxDC": 2,
+          "Accuracy": 7,
+          "Agility": 8
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 12,
+        "name": "Sheep",
+        "level": 9,
+        "stats": "性：生命 +20 · 魔防 2-2 · 物攻 1-2 · 命中 +7 · 敏捷 +8",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 3000ms · 经验 27"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 52,
@@ -30770,8 +31333,13 @@
           "frame": 2040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "Sheep",
+          "enum_value": 68,
+          "library_file": "Mon_6",
+          "shape": 8
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -31227,8 +31795,31 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
-      "zircon_catalog_entry": null,
+      "current_monster_info": {
+        "index": 11,
+        "name": "Cow",
+        "image": "Cow",
+        "level": 8,
+        "is_boss": false,
+        "stats": {
+          "Health": 25,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": 2,
+          "MaxMR": 2,
+          "MinDC": 1,
+          "MaxDC": 4,
+          "Accuracy": 10,
+          "Agility": 5
+        }
+      },
+      "zircon_catalog_entry": {
+        "id": 11,
+        "name": "Cow",
+        "level": 8,
+        "stats": "性：生命 +25 · 魔防 2-2 · 物攻 1-4 · 命中 +10 · 敏捷 +5",
+        "feat": "征：可推动 · 视野 9 · 攻击间隔 3000ms · 经验 39"
+      },
       "image_shape_evidence": {
         "legacy": {
           "appr": 52,
@@ -31238,8 +31829,13 @@
           "frame": 2040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "Cow",
+          "enum_value": 131,
+          "library_file": "Mon_13",
+          "shape": 1
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32123,7 +32719,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 374,
+        "name": "Ice Palace Archer",
+        "image": "IcePalaceArcher",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32134,8 +32747,13 @@
           "frame": 4040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "IcePalaceArcher",
+          "enum_value": 612,
+          "library_file": "Mon_20",
+          "shape": 0
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32197,7 +32815,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 372,
+        "name": "Ice City Emperor",
+        "image": "SonicLizard",
+        "level": 200,
+        "is_boss": true,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32208,8 +32843,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "SonicLizard",
+          "enum_value": 205,
+          "library_file": "Mon_20",
+          "shape": 5
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32271,7 +32911,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 375,
+        "name": "Ice Palace Wizard",
+        "image": "MutantLizard",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32282,8 +32939,13 @@
           "frame": 3040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "MutantLizard",
+          "enum_value": 203,
+          "library_file": "Mon_20",
+          "shape": 3
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32345,7 +33007,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 485,
+        "name": "Ice Plain Warrior",
+        "image": "GiantLizard",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32356,8 +33035,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "GiantLizard",
+          "enum_value": 206,
+          "library_file": "Mon_20",
+          "shape": 6
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32419,7 +33103,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 377,
+        "name": "Ice Palace Knight",
+        "image": "VenomSpitter",
+        "level": 80,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32430,8 +33131,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "VenomSpitter",
+          "enum_value": 204,
+          "library_file": "Mon_20",
+          "shape": 4
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32493,7 +33199,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 369,
+        "name": "Ice Plain Wolf King",
+        "image": "TaintedTerror",
+        "level": 80,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32504,8 +33227,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "TaintedTerror",
+          "enum_value": 207,
+          "library_file": "Mon_20",
+          "shape": 7
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32567,7 +33295,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 371,
+        "name": "Ice Plain Snow Wolf",
+        "image": "DeathLordJichon",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32578,8 +33323,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "DeathLordJichon",
+          "enum_value": 208,
+          "library_file": "Mon_20",
+          "shape": 8
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32641,7 +33391,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 486,
+        "name": "Ice Plain Soldier",
+        "image": "CrazedLizard",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32652,8 +33419,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "CrazedLizard",
+          "enum_value": 209,
+          "library_file": "Mon_20",
+          "shape": 9
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32715,7 +33487,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 376,
+        "name": "Ice Palace Mage",
+        "image": "SawToothLizard",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32726,8 +33515,13 @@
           "frame": 4040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "SawToothLizard",
+          "enum_value": 202,
+          "library_file": "Mon_20",
+          "shape": 2
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32789,7 +33583,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 373,
+        "name": "Ice Palace Guard",
+        "image": "StoneGriffin",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32800,8 +33611,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "StoneGriffin",
+          "enum_value": 170,
+          "library_file": "Mon_17",
+          "shape": 0
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32863,7 +33679,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 370,
+        "name": "Ice Plain Boar",
+        "image": "MutantCaptain",
+        "level": 75,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32874,8 +33707,13 @@
           "frame": 1040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "MutantCaptain",
+          "enum_value": 171,
+          "library_file": "Mon_17",
+          "shape": 1
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
@@ -32937,7 +33775,24 @@
         "death_block_hit": true,
         "evidence_level": "derived"
       },
-      "current_monster_info": null,
+      "current_monster_info": {
+        "index": 403,
+        "name": "Frost Guardian God",
+        "image": "PinkGoddess",
+        "level": 180,
+        "is_boss": false,
+        "stats": {
+          "Health": null,
+          "MinAC": null,
+          "MaxAC": null,
+          "MinMR": null,
+          "MaxMR": null,
+          "MinDC": null,
+          "MaxDC": null,
+          "Accuracy": null,
+          "Agility": null
+        }
+      },
       "zircon_catalog_entry": null,
       "image_shape_evidence": {
         "legacy": {
@@ -32948,8 +33803,13 @@
           "frame": 8040,
           "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape"
         },
-        "current": null,
-        "status": "current-image-not-in-MonsterLookup"
+        "current": {
+          "monster_image": "PinkGoddess",
+          "enum_value": 172,
+          "library_file": "Mon_17",
+          "shape": 2
+        },
+        "status": "resolved"
       },
       "evidence_status": "legacy-atlas-unverified",
       "mapping_is_identity_not_translation": true
