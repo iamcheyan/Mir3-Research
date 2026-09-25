@@ -14,6 +14,7 @@ import csv
 import hashlib
 import json
 import math
+import html
 import re
 import struct
 from collections import Counter, defaultdict
@@ -424,20 +425,171 @@ def stat_value(monster: dict[str, Any], key: str) -> int | None:
             except (TypeError, ValueError):
                 return None
     return None
+def load_legacy_monster_catalog(path: Path | None) -> dict[int, dict[str, Any]]:
+    """Read the rendered Legacy Atlas monster table without inventing mappings."""
+    if path is None or not path.exists():
+        return {}
+    text = path.read_text(encoding="utf-8")
+    section_match = re.search(r'<section class="catalog-section"><h2>.*?老版怪物.*?</section>', text, re.S)
+    if not section_match:
+        return {}
+    section = section_match.group(0)
+    out: dict[int, dict[str, Any]] = {}
+    for tags, body in re.findall(r'<tr data-tags="([^"]+)">(.*?)</tr>', section, re.S):
+        cells = [
+            re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", cell))).strip()
+            for cell in re.findall(r"<td.*?>(.*?)</td>", body, re.S)
+        ]
+        if len(cells) < 7 or not cells[0].isdigit():
+            continue
+        index = int(cells[0])
+        out[index] = {
+            "index": index,
+            "name": cells[1],
+            "level": cells[2],
+            "hp": cells[3],
+            "dc": cells[4],
+            "exp": cells[5],
+            "tag": tags,
+            "note": cells[6],
+        }
+    return out
 
 
-def build_monster_identity(monsters: list[dict[str, Any]], source_records: list[dict[str, Any]], snapshot: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def load_monster_image_shape(enum_path: Path | None, lookup_path: Path | None) -> dict[str, dict[str, Any]]:
+    """Parse the authoritative MonsterImage enum and generated library/shape table."""
+    if enum_path is None or lookup_path is None or not enum_path.exists() or not lookup_path.exists():
+        return {}
+    enum_text = enum_path.read_text(encoding="utf-8")
+    enum_body = enum_text.split("public enum MonsterImage", 1)[-1].split("}", 1)[0]
+    enum_values: dict[str, int] = {}
+    value = -1
+    for line in enum_body.splitlines():
+        line = line.split("//", 1)[0].strip()
+        match = re.match(r"([A-Za-z][A-Za-z0-9_]*)\s*(?:=\s*(\d+))?\s*,", line)
+        if not match:
+            continue
+        value = int(match.group(2)) if match.group(2) is not None else value + 1
+        enum_values[match.group(1)] = value
+    lookup_text = lookup_path.read_text(encoding="utf-8")
+    out: dict[str, dict[str, Any]] = {}
+    for image, library, shape in re.findall(
+        r"\{\s*MonsterImage\.([A-Za-z][A-Za-z0-9_]*)\s*,\s*\(LibraryFile\.([A-Za-z0-9_]+),\s*(\d+)\)\s*\}",
+        lookup_text,
+    ):
+        out[image] = {
+            "monster_image": image,
+            "enum_value": enum_values.get(image),
+            "library_file": library,
+            "shape": int(shape),
+        }
+    return out
+
+
+def source_attribute_subset(source: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: source.get(key)
+        for key in (
+            "Index", "Name", "Appr", "Race", "RaceImg", "Level", "HP", "Exp",
+            "ACMin", "ACMax", "MAC", "DCMin", "DCMax", "DropTable", "tag", "tag_note",
+        )
+    }
+
+
+def current_monster_evidence(monster: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not monster:
+        return None
+    return {
+        "index": monster.get("Index"),
+        "name": monster.get("MonsterName"),
+        "image": monster.get("Image"),
+        "level": monster.get("Level"),
+        "is_boss": monster.get("IsBoss"),
+        "stats": {
+            key: stat_value(monster, key)
+            for key in ("Health", "MinAC", "MaxAC", "MinMR", "MaxMR", "MinDC", "MaxDC", "Accuracy", "Agility")
+        },
+    }
+
+
+def legacy_visual_evidence(source: dict[str, Any]) -> dict[str, Any]:
+    appr = source.get("Appr")
+    return {
+        "appr": appr,
+        "race": source.get("Race"),
+        "race_img": source.get("RaceImg"),
+        "library_file": f"Mon-{int(appr) // 10}.wil" if isinstance(appr, int) and appr > 0 else None,
+        "frame": (int(appr) % 10) * 1000 + 40 if isinstance(appr, int) and appr > 0 else None,
+        "note": "legacy Appr/frame convention from dat_integrate.py; not a Zircon MonsterImage shape",
+    }
+
+
+def build_four_way_evidence(
+    source: dict[str, Any],
+    catalog_entry: dict[str, Any] | None,
+    mapped: dict[str, Any] | None,
+    zircon_catalog: dict[int, dict[str, Any]],
+    image_shape: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    current = current_monster_evidence(mapped)
+    image_name = str(mapped.get("Image", "")) if mapped else ""
+    current_shape = image_shape.get(image_name)
+    wiki = zircon_catalog.get(int(mapped["Index"])) if mapped and str(mapped.get("Index", "")).lstrip("-").isdigit() else None
+    tag = (catalog_entry or {}).get("tag") or source.get("tag") or "unverified"
+    if tag == "changed" and mapped:
+        status = "legacy-atlas-changed-confirmed"
+    elif tag == "old-only":
+        status = "legacy-atlas-old-only-no-automatic-map"
+    elif tag == "unverified":
+        status = "legacy-atlas-unverified"
+    elif mapped:
+        status = "mapped-without-atlas-change-tag"
+    else:
+        status = "pending-no-four-way-identity"
+    return {
+        "legacy_atlas_entry": catalog_entry,
+        "hero_kill_definition": source_attribute_subset(source),
+        "current_monster_info": current,
+        "zircon_catalog_entry": wiki,
+        "image_shape_evidence": {
+            "legacy": legacy_visual_evidence(source),
+            "current": current_shape,
+            "status": "resolved" if current_shape else "current-image-not-in-MonsterLookup",
+        },
+        "evidence_status": status,
+        "mapping_is_identity_not_translation": True,
+    }
+
+
+def build_monster_identity(
+    monsters: list[dict[str, Any]],
+    source_records: list[dict[str, Any]],
+    snapshot: list[dict[str, Any]],
+    legacy_catalog: dict[int, dict[str, Any]] | None = None,
+    zircon_catalog: dict[int, dict[str, Any]] | None = None,
+    image_shape: dict[str, dict[str, Any]] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    legacy_catalog = legacy_catalog or {}
+    zircon_catalog = zircon_catalog or {}
+    image_shape = image_shape or {}
     by_name = {norm_name(str(m.get("MonsterName", ""))): m for m in monsters}
+    by_index = {int(m["Index"]): m for m in monsters}
     old_by_name = {norm_name(str(m.get("name", ""))): m for m in snapshot}
     rows_out = []
+    four_way_rows = []
     used: dict[int, list[str]] = defaultdict(list)
     source_nonempty = [r for r in source_records if int(r.get("Index", 0)) != 0]
     for source in source_nonempty:
         name = str(source.get("Name", ""))
+        catalog_entry = legacy_catalog.get(int(source.get("Index", 0)))
         mapping = EXPLICIT_MONSTER_MAP.get(name)
+        if mapping is None and catalog_entry and catalog_entry.get("tag") == "changed":
+            catalog_match = re.search(r"→\s*(.*?)\s+\(id=(\d+)\)", str(catalog_entry.get("note", "")))
+            if catalog_match:
+                mapping = (int(catalog_match.group(2)), catalog_match.group(1), "legacy-atlas-changed-id", "high")
         method, confidence, mapped = "pending", "pending", None
         if mapping:
-            mapped = next((m for m in monsters if m.get("Index") == mapping[0]), None) if mapping[0] is not None else None
+            mapped = by_index.get(int(mapping[0])) if mapping[0] is not None else None
             method, confidence = mapping[2], mapping[3]
         else:
             exact = by_name.get(norm_name(name))
@@ -445,30 +597,50 @@ def build_monster_identity(monsters: list[dict[str, Any]], source_records: list[
                 mapped, method, confidence = exact, "exact-script-name", "high"
             elif norm_name(name) in old_by_name:
                 old = old_by_name[norm_name(name)]
-                mapped = next((m for m in monsters if int(m.get("Index", -1)) == int(old.get("id", -2))), None)
+                mapped = by_index.get(int(old.get("id", -2)))
                 method, confidence = "existing-zircon-snapshot-id", "medium" if mapped else "pending"
         if mapped:
             idx = int(mapped["Index"])
             used[idx].append(name)
+        four_way = build_four_way_evidence(source, catalog_entry, mapped, zircon_catalog, image_shape)
+        four_way_rows.append({
+            "hero_kill_monster_id": source.get("Index"),
+            "hero_kill_monster_name": name,
+            **four_way,
+        })
         rows_out.append({
             "hero_kill_monster_id": source.get("Index"),
             "hero_kill_monster_name": name,
             "hero_kill_attributes": {k: source.get(k) for k in ("Appr", "Race", "Level", "HP", "Exp", "ACMin", "ACMax", "MAC", "DCMin", "DCMax", "DropTable")},
+            "legacy_atlas_tag": catalog_entry.get("tag") if catalog_entry else source.get("tag"),
+            "legacy_atlas_note": catalog_entry.get("note") if catalog_entry else source.get("tag_note"),
             "mapped_zircon_monster_index": mapped.get("Index") if mapped else None,
             "mapped_zircon_monster_name": mapped.get("MonsterName") if mapped else None,
             "mapping_method": method,
             "confidence": confidence,
+            "four_way_evidence": four_way,
             "display_name_note": "identity mapping is separate from display translation",
             "status": "mapped" if mapped else "pending-review",
         })
     conflicts = []
     for idx, names in used.items():
         if len(names) > 1:
-            conflicts.append({"zircon_monster_index": idx, "zircon_monster_name": next(m["MonsterName"] for m in monsters if int(m["Index"]) == idx), "hero_kill_names": names, "reason": "multiple source identities map to one Zircon index"})
+            conflicts.append({"zircon_monster_index": idx, "zircon_monster_name": by_index[idx]["MonsterName"], "hero_kill_names": names, "reason": "multiple source identities map to one Zircon index"})
     mapped_ids = set(used)
     zircon_only = [{"zircon_monster_index": m.get("Index"), "zircon_monster_name": m.get("MonsterName"), "reason": "no reliable hero-kill identity mapping"} for m in monsters if int(m.get("Index", -1)) not in mapped_ids]
-    stats = {"zircon_monster_count": len(monsters), "hero_kill_definition_count": len(source_nonempty), "mapped_count": sum(1 for r in rows_out if r["status"] == "mapped"), "pending_count": sum(1 for r in rows_out if r["status"] != "mapped"), "conflict_count": len(conflicts), "zircon_only_count": len(zircon_only)}
-    return rows_out, {"stats": stats, "conflicts": conflicts, "zircon_only": zircon_only}
+    stats = {
+        "zircon_monster_count": len(monsters),
+        "hero_kill_definition_count": len(source_nonempty),
+        "mapped_count": sum(1 for r in rows_out if r["status"] == "mapped"),
+        "pending_count": sum(1 for r in rows_out if r["status"] != "mapped"),
+        "conflict_count": len(conflicts),
+        "zircon_only_count": len(zircon_only),
+        "four_way_evidence_status_counts": dict(Counter(r["evidence_status"] for r in four_way_rows)),
+        "image_shape_resolved_count": sum(1 for r in four_way_rows if r["image_shape_evidence"]["status"] == "resolved"),
+        "legacy_catalog_entry_count": sum(1 for r in four_way_rows if r["legacy_atlas_entry"] is not None),
+        "zircon_catalog_entry_count": sum(1 for r in four_way_rows if r["zircon_catalog_entry"] is not None),
+    }
+    return rows_out, {"stats": stats, "conflicts": conflicts, "zircon_only": zircon_only, "four_way_evidence": four_way_rows}
 def load_hero_spawn_plan(path: Path | None, monsters: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
     """Load the recovered EI import plan without treating it as a DB write plan."""
     if path is None or not path.exists():
@@ -678,6 +850,11 @@ def main() -> int:
     ap.add_argument("--merchant-source", type=Path, default=None)
     ap.add_argument("--monster-source", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monster.json")
     ap.add_argument("--monster-snapshot", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monsters_zircon.json")
+    ap.add_argument("--monster-atlas-catalog", type=Path, default=Path(__file__).parents[2] / "docs/legacy-atlas/content/catalog-mud3.html")
+    ap.add_argument("--monster-atlas-page", type=Path, default=Path(__file__).parents[2] / "docs/legacy-atlas/content/monsters.html")
+    ap.add_argument("--monster-zircon-catalog", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monsters_zircon.json")
+    ap.add_argument("--monster-enum", type=Path, default=Path("/home/tetsuya/development/zircon/LibraryCore/Enum.cs"))
+    ap.add_argument("--monster-lookup", type=Path, default=Path("/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs"))
     ap.add_argument("--hero-spawn", type=Path, default=None)
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
@@ -702,7 +879,22 @@ def main() -> int:
     )
     source_records = load(args.monster_source)["records"] if args.monster_source.exists() else []
     snapshot = load(args.monster_snapshot) if args.monster_snapshot.exists() else []
-    monster_identity, identity_meta = build_monster_identity(monsters, source_records, snapshot)
+    legacy_catalog = load_legacy_monster_catalog(args.monster_atlas_catalog)
+    zircon_catalog_raw = load(args.monster_zircon_catalog) if args.monster_zircon_catalog.exists() else []
+    zircon_catalog = {
+        int(entry["id"]): entry
+        for entry in zircon_catalog_raw
+        if isinstance(entry, dict) and str(entry.get("id", "")).lstrip("-").isdigit()
+    }
+    image_shape = load_monster_image_shape(args.monster_enum, args.monster_lookup)
+    monster_identity, identity_meta = build_monster_identity(
+        monsters,
+        source_records,
+        snapshot,
+        legacy_catalog,
+        zircon_catalog,
+        image_shape,
+    )
     hero_source_records, spawn_status = load_hero_spawn_plan(args.hero_spawn, monsters)
     source_by_key = hero_source_index(hero_source_records)
     monster_respawns, respawn_stats = build_respawns(
@@ -725,10 +917,11 @@ def main() -> int:
         "mode": "offline-dry-run",
         "database_write": False,
         "coordinate_unit": "logical map grid",
-        "sources": {"workspace": str(args.workspace), "hero_kill_maps": str(args.hero_map_dir), "zircon_maps": str(args.zircon_map_dir), "npc_audit": str(args.audit), "merchant_source": str(args.merchant_source) if args.merchant_source else None, "merchant_status": merchant_status, "hero_kill_monster_definitions": str(args.monster_source), "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None},
+        "sources": {"workspace": str(args.workspace), "hero_kill_maps": str(args.hero_map_dir), "zircon_maps": str(args.zircon_map_dir), "npc_audit": str(args.audit), "merchant_source": str(args.merchant_source) if args.merchant_source else None, "merchant_status": merchant_status, "hero_kill_monster_definitions": str(args.monster_source), "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None, "legacy_monster_catalog": str(args.monster_atlas_catalog), "legacy_monster_page": str(args.monster_atlas_page), "zircon_monster_catalog": str(args.monster_zircon_catalog), "monster_image_enum": str(args.monster_enum), "monster_image_lookup": str(args.monster_lookup)},
         "map_stats": map_stats,
         "npc_stats": npc_stats,
         "monster_identity_stats": identity_meta["stats"],
+        "monster_four_way_evidence": identity_meta["four_way_evidence"],
         "monster_respawn_stats": respawn_stats,
         "maps": maps,
         "npcs": npc_manifest,
@@ -753,6 +946,8 @@ def main() -> int:
     (args.out / "refresh_gap_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": refresh_stats, "yxs_only_refresh": yxs_only_refresh, "zircon_only_refresh": zircon_only_refresh, "conflicts": refresh_conflicts}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_tsv(args.out / "map_manifest.tsv", maps)
     write_tsv(args.out / "npc_manifest.tsv", npc_manifest)
+    (args.out / "monster_four_way_evidence.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": identity_meta["stats"], "evidence": identity_meta["four_way_evidence"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_tsv(args.out / "monster_four_way_evidence.tsv", identity_meta["four_way_evidence"])
     write_tsv(args.out / "monster_identity_manifest.tsv", monster_identity)
     write_tsv(args.out / "monster_respawn_manifest.tsv", monster_respawns)
     write_tsv(args.out / "hero_kill_refresh_manifest.tsv", hero_refreshes)

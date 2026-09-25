@@ -37,7 +37,22 @@
 ## 4. 怪物身份流水线
 
 - 当前 Zircon MonsterInfo **434**；英雄杀解码定义 **432**（记录 0 为占位头，不计入）。可靠映射 **6**，pending **426**，Zircon-only identity **428**。
-- 现阶段只使用精确脚本名、现有已验证快照 ID 和明确别名；不按模糊中文名或数字 ID 自动迁移业务引用。MonsterInfo.Index 保持稳定；显示翻译独立记录。
+- 资料库第二权威已接入：Legacy Atlas `catalog-mud3.html` / `monster.json` 共 **432** 条非占位英雄杀定义，版本标签 `old-only=229`、`unverified=197`、`changed=6`；`monsters.html` 是 309 条当前百科快照，不能覆盖 workspace 中包含变体/附加实体的 434 条 `MonsterInfo`。`monsters_zircon.json` 提供当前百科属性，`MonsterInfo.json` 提供当前业务 Index/Image/Stats，`LibraryCore/Enum.cs` + `GodotClient/Formats/MonsterLookup.cs` 提供 MonsterImage 数值、图库和 shape。四方证据写入 `monster_four_way_evidence.{json,tsv}`，不是只按中文字符串或当前 MonsterInfo 猜测。
+
+### 资料库四方对应（重点案例）
+
+| 英雄杀/Legacy Atlas | 版本标签与老版属性（Lv/HP/DC/Exp） | 当前 MonsterInfo（Index/Name/Image/Lv） | `monsters_zircon.json` 当前属性 | 图片/shape 证据 |
+|---|---|---|---|---|
+| 半兽人 | `changed`；13/30/4-8/30 | `22 / Oma / Oma / 13` | HP25/DC3-8/Exp59 | 老版 `Appr=83 → Mon-8.wil#3040`；当前 `MonsterImage.Oma=33 → Mon_3 shape=3`；id18 Oma Warrior 共享同一 Image/shape，不能靠图片单独消歧，采用 Atlas changed→id22 |
+| 祖玛教主 | `changed`；94/14000/70-175/10500 | `81 / Zuma King / ZumaKing / 250` | HP21000/DC255-360/Exp780000 | `Appr=102 → Mon-10.wil#2040`；`MonsterImage.ZumaKing=95 → Mon_9 shape=5` |
+| 白野猪 | `old-only`；75/4500/44-66/1250 | 无可靠对应 | 无可靠对应 | `Appr=208 → Mon-20.wil#8040`；无当前 MonsterImage/shape 对应，保持 pending；不把 Wild Boar 等模糊候选写成身份 |
+| 赤月恶魔 | `changed`；93/13000/90-180/9750 | `75 / Red Moon The Fallen / RedMoonTheFallen / 250` | HP19500/DC240-345/Exp487500 | `Appr=115 → Mon-11.wil#5040`；`MonsterImage.RedMoonTheFallen=114 → Mon_11 shape=4` |
+| 沃玛教主 | `changed`；90/8000/99-143/6000 | `65 / Uma King / UmaKing / 250` | HP13500/DC210-315/Exp195000 | `Appr=92 → Mon-9.wil#2040`；`MonsterImage.UmaKing=55 → Mon_5 shape=5` |
+| 骷髅教主 | `changed`；91/10000/121-187/7500 | `121 / Arch Lich Taedu / ArchLichTaedu / 250` | HP15000/DC225-330/Exp370500 | `Appr=225 → Mon-22.wil#5040`；`MonsterImage.ArchLichTaedu=151 → Mon_15 shape=1` |
+| 霸王教主 | `changed`；96/20000/145-245/12000 | `115 / Emperor Sa'Woo / EmperorSaWoo / 250` | HP21000/DC255-360/Exp585000 | `Appr=226 → Mon-22.wil#6040`；`MonsterImage.EmperorSaWoo=149 → Mon_14 shape=9` |
+
+- 该表同时保留老版 `monster.dat` 定义、Legacy Atlas 标签、当前 `MonsterInfo` 业务实体、当前资料库属性和两套资源坐标；老版 `Appr/frame` 与 Zircon `MonsterImage/LibraryFile/shape` 是不同资源系统，不能直接把帧号当作 Zircon shape。
+- 其余 426 条保持 pending；229 条 `old-only` 和 197 条 `unverified` 不因同名、等级或资源帧相似而自动迁移。
 
 ### 高风险冲突案例
 
@@ -48,7 +63,7 @@
 | 白野猪 | 无直接可靠 Zircon 名称 | conflict-no-direct-zircon-name / pending | pending，禁止模糊映射 |
 | Boss/变体 | 多种同族模板 | attributes/resource/drop/spawn evidence 尚未齐全 | conflict/pending |
 
-- 全量来源：`monster_identity_manifest.json/tsv`；冲突列表位于 manifest `conflicts`。目前没有自动删除、创建或改写 MonsterInfo。
+- 全量来源：`monster_identity_manifest.json/tsv` 与 `monster_four_way_evidence.json/tsv`；冲突列表位于 manifest `conflicts`。目前没有自动删除、创建或改写 MonsterInfo。
 
 ## 5. 怪物刷新流水线
 
