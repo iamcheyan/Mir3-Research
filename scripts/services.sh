@@ -43,7 +43,7 @@ SERVICES=(
     "webclient|8822|20|cd Tools/webclient && exec $PY serve.py"
     "webport|8823|25|exec $PY Tools/webport/serve.py"
     "portal|8840|15|exec $SYS_PY Tools/portal/portal.py --port 8840"
-    "mapviewer|8899|40|exec $PY Tools/maps/mapviewer.py --port 8899"
+    "mapviewer|8899|40|exec $PY Tools/maps/mapviewer.py '$MIR3_ZIRCON_ROOT/Debug/Client/Map' --port 8899"
 )
 ORDER=(zircon-core wsgateway wilviewer dbviewer dbeditor uieditor webres webclient webport portal mapviewer)
 
@@ -90,7 +90,10 @@ svc_start() {
             fi ;;
     esac
     echo "[+] $name 启动中（端口 $(port_of "$name")）…"
-    ( cd "$REPO" && setsid nohup bash -c "$(cmd_of "$name")" >>"$RUN/$name.log" 2>&1 </dev/null &
+    # macOS 没有 setsid；缺它时退回 nohup + 后台（pidfile 已记录 pid）。
+    local detach=""
+    command -v setsid >/dev/null 2>&1 && detach="setsid"
+    ( cd "$REPO" && $detach nohup bash -c "$(cmd_of "$name")" >>"$RUN/$name.log" 2>&1 </dev/null &
       disown; echo $! >"$RUN/$name.pid" )
     # 就绪等待（TCP 通即认为就绪；zircon-core 要等 DB 加载 ~11s+）
     local deadline=$(( SECONDS + $(timeout_of "$name") ))
