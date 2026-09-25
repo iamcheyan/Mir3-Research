@@ -13,7 +13,7 @@
 | 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；地图文件格式/截断发现 0 个 | `artifacts/.../independent-verification.json` |
 | dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
-| 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":589,"retain-current":2058,"approve":18}`，批准 Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
+| 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":587,"retain-current":2060,"approve":18}`，批准 Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
 | 生产 Respawn 分支 | 已写入 **18** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
@@ -73,7 +73,7 @@
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
 - dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新候选 **328** 条，其中批准计划当前收敛为 **18** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。
-- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **18** 条、NPC **0** 条；备份哈希匹配写入前状态=True，仍有 589 条 needs-evidence 和 2058 条 zircon-only retain-current，不能把部分写入误称为全量对齐。
+- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **18** 条、NPC **0** 条；备份哈希匹配写入前状态=True，仍有 587 条 needs-evidence 和 2060 条 zircon-only retain-current，不能把部分写入误称为全量对齐。
 - 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。
 - 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
@@ -83,7 +83,7 @@
 ## 8. 未决项与人工复核
 
 1. 已搜索 `/home/tetsuya/NAS/**/*.map`、研究仓库地图路径及本地资源根；缺失 Hero-kill 源图仍未找到（development/zircon 命中的同名文件是 Zircon Map，不冒充 Hero-kill 源）。继续补充源图并复核 309 条 matched 刷新；当前 18 条独立源地图可读且目标可行走的刷新已批准，1 条源坐标 fail 保持 needs-evidence。
-2. NPC 复核队列仍有 589 条 needs-evidence（含 190 条 NPC）；确认 Merchant 固定坐标、地标转换和目标点后才能生成 NPC 批准项。
+2. NPC 复核队列仍有 587 条 needs-evidence（含 190 条 NPC）；确认 Merchant 固定坐标、地标转换和目标点后才能生成 NPC 批准项。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
 5. 地图格式独立校验当前为 0 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。
@@ -104,4 +104,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `60ca44b7f2b001aa41c57dd67c517361ca2328b5`；Zircon `e21cdb9ba70b2ae8a1d85874869898ce583f1e83`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `012f5cbb046a069185b3d46ea723f937290ecf62`；Zircon `e21cdb9ba70b2ae8a1d85874869898ce583f1e83`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
