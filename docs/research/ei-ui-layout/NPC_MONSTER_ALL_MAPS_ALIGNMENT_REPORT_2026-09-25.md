@@ -85,6 +85,7 @@
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
 5. 地图格式独立校验当前为 0 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。
 6. `manual-review-summary.tsv` 必须逐条填写并通过 `validate_manual_review.py`；校验器通过前不得执行 DBImporter sync。
+7. 校验通过后才会生成 `approved-offline-plan.json`；该计划仍标记 `database_write=false`，必须经过独立地图检查和停服/备份门禁。
 
 ## 9. 复现命令
 
@@ -93,10 +94,10 @@ cd /home/tetsuya/development/Mir3-Research
 python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir --mud3-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/mud3/Envir --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
 python3 Tools/NpcMover/write_alignment_reports.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --verification docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json --report-dir docs/research/ei-ui-layout
-python3 Tools/NpcMover/validate_manual_review.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --review docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manual-review-summary.tsv --out /tmp/manual-review-validation.json
+python3 Tools/NpcMover/validate_manual_review.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --review docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manual-review-summary.tsv --out /tmp/manual-review-validation.json --plan-out /tmp/approved-offline-plan.json
 python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
 ```
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `c25e11f36758b64dbc99f9df9e6d59b787af224d`；Zircon `223b321b92f0b2956c42ca08d4942abc58f55580`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `c188065cb3efe2812665ba681b74d65597cf7c11`；Zircon `223b321b92f0b2956c42ca08d4942abc58f55580`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
