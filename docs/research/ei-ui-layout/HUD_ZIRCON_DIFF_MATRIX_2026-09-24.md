@@ -69,3 +69,5 @@
 对应 Zircon 归档目录：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/`。EI 专用耐久/强化/绑定角标仍无独立贴图证据，继续保持证据边界，不以现代 ZL 或自绘 fallback 宣称像素一致。
 
 注：表中早先“无证字段显示 `—`”的措辞以本轮实现为准更正为“标签保留、值控件为空且隐藏”；截图 `status-attributes-final.png` 为最终行为证据。
+
+跨地图/重新登录后的窗口状态保持、本轮左键装备拖放未重复执行；研究矩阵既有 Round 787 Wood Sword 往返记录仍有效但不属于本轮 hover-only 复测。目标 EI 专用状态角标和限制标记的独立贴图/绘制证据仍缺失，因此该部分不宣布像素级闭合。
