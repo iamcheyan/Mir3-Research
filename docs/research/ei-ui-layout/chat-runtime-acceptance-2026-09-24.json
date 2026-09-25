@@ -3,43 +3,49 @@
   "title": "Zircon legacy F350 runtime acceptance on the isolated 1024x768 desktop",
   "date": "2026-09-24",
   "scope": "Godot legacy login path with --legacy-open=chat; this is Zircon runtime evidence, not EI-original runtime evidence.",
-  "code_root": "/home/tetsuya/development/zircon-legacy-layout-lab",
-  "runtime_resource_root": "/home/tetsuya/development/zircon/Debug/Client/Data",
+  "code_root": "/home/tetsuya/development/zircon",
+  "runtime_resource_root": "/home/tetsuya/mir2ei/Data",
   "runtime_resource_identity": {
-    "GameInter.Zl": {
+    "GameInter.wil": {"present": true, "source": "/home/tetsuya/mir2ei/Data/GameInter.wil"},
+    "GameInter.wix": {"present": true, "source": "/home/tetsuya/mir2ei/Data/GameInter.wix"},
+    "normal_GameInter.Zl": {
       "sha256": "32157af8ec3bd8506f6ef9488610f9090e54e6266d2d8df6a6af82e24f3fa09d",
-      "present": true
+      "present": true,
+      "used_for_f350": false
     },
-    "GameInter.wil": {"present": false},
-    "GameInter.wix": {"present": false},
     "expected_ei_root": "/home/tetsuya/mir3ei/LegacyEI/Data",
-    "expected_ei_wil": {"present": false},
-    "expected_ei_wix": {"present": false},
-    "identity_verdict": "EI WIL/WIX identity is not proved. The normal GameInter.Zl is not used as EI frame evidence."
+    "identity_verdict": "Local GameInter.wil/.wix are runtime resources and their byte identity with the research EI primary-static target is not proved; normal GameInter.Zl is not used as F350 evidence."
   },
   "server": {
     "endpoint": "127.0.0.1:7000",
     "process_root": "/tmp/zircon-ei-server",
     "database_policy": "isolated copy only; no production Users.db/System.db was written"
   },
-  "command": "DISPLAY=:100 godot-mono --path /home/tetsuya/development/zircon-legacy-layout-lab/GodotClient -- --server 127.0.0.1 --port 7000 --user test@test.com --pass test123 --char TestHero --window --legacy-ui --legacy-hud --legacy-open=chat",
+  "command": "DISPLAY=:101 godot-mono --path /home/tetsuya/development/zircon/GodotClient -- --server 127.0.0.1 --port 7000 --user test@test.com --pass test123 --char TestHero --window --legacy-ui --legacy-hud --legacy-open=chat",
   "stdout": {
     "login": "S.StartGame Result=Success; [Game] 进入游戏! 玩家: TestHero",
-    "legacy_open": "[LegacyOpen] requested=chat type=LegacyChatDialog visible=True size=(572, 388) location=(225, 175) inputFocus=True",
-    "viewport": "[UiScaler] scale=1 viewport=(1022, 739) offset=(0, 0); window chrome screenshot is 1024x768"
+    "resource_load": "[MirSkin] legacy UI WIL fallback: GameInter -> /home/tetsuya/mir2ei/Data/GameInter.wil (1103 frames)",
+    "legacy_open": "[LegacyOpen] requested=chat type=LegacyChatDialog visible=True size=(572, 388) location=(226, 190) inputFocus=True",
+    "viewport": "[UiScaler] scale=1 viewport=(1024, 768) offset=(0, 0)"
   },
   "screenshots": {
-    "full_viewport_initial": "/tmp/legacy-chat-f350-full-20260924.png",
-    "full_viewport_after_enter": "/tmp/legacy-chat-f350-after-enter-20260924.png",
-    "full_viewport_clean_safe_chat": "/tmp/legacy-chat-f350-clean-input-20260924.png",
-    "note": "Screenshots are outside either repository and are not committed."
+    "directory": "/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/",
+    "full_viewport_initial": "chat-f350-repaired-before-close-full.png",
+    "full_viewport_closed": "chat-f350-repaired-closed-full.png",
+    "full_viewport_r_open": "chat-f350-repaired-r-open-full.png",
+    "full_viewport_overflow_bottom": "chat-f350-scroll-final-bottom-full.png",
+    "full_viewport_scroll_up": "chat-f350-scroll-up-full.png",
+    "full_viewport_anchor": "chat-f350-scroll-anchor-safe-full.png",
+    "full_viewport_drag_top": "chat-f350-scroll-final-drag-top-full.png",
+    "full_viewport_drag_bottom": "chat-f350-scroll-final-drag-bottom-full.png",
+    "note": "All listed files are complete 1024x768 Zircon viewport captures; they are not EI-original runtime captures."
   },
   "observations": {
     "full_viewport": "PASS: complete 1024x768 desktop captured; F350 root allocation and input focus are present in stdout.",
-    "background_and_buttons": "BLOCKED: the runtime root is allocated, but the normal ZL library has no frame 350 header and its same-number frames 360-383 have dimensions that do not match the EI evidence. The six EI buttons, close control, and scrollbar cannot be accepted from this resource root.",
-    "safe_plain_chat": "PASS: one ordinary non-command string safe-chat-0924 was entered and submitted with Return; the screenshot shows [Normal] TestHero: safe-chat-0924 in history and the input line cleared. No template command was sent.",
-    "scrolling": "NOT ACCEPTED: the available runtime root does not provide the EI controls, and only a small existing history was used; no button, wheel, track-drag, or new-message-anchor claim is made.",
-    "template_commands": "NOT SENT: @拒绝, !, !!, !~, @拒绝私聊, and @拒绝行会聊天 were not entered."
+    "background_and_buttons": "RUNTIME PASS for the local GameInter.wil resource: F350 background, close control, six local template buttons, and entry/reopen paths are visible and clickable. EI-original byte identity and pixel parity remain unproved.",
+    "safe_plain_chat": "PASS: safe ordinary strings were submitted with Return; F350 history and the lower HUD chat bar show [Normal] TestHero messages, and the input line clears.",
+    "scrolling": "PASS in Zircon runtime: 22-message overflow shows bottom anchoring; up/down controls, wheel, rail click, and explicit rail drag change the visible range; after manual scroll, scroll-anchor-safe remains at the user's history position when a new message arrives.",
+    "template_commands": "NOT SENT: @拒绝, !, !!, !~, @拒绝私聊, and @拒绝行会聊天 were only wired to local input-template insertion and were not submitted."
   },
   "static_cross_check": {
     "normal_zl_headers": {
@@ -64,5 +70,5 @@
     "method": "independent read-only zlsdk header inspection of GameInter.Zl; no EI conclusion is inferred from these normal-ZL values",
     "expected_ei_static_reference": "chat-window-render-evidence.json and chat-scrollbar-verification-evidence.json remain the primary-static EI reference for F350, six 36x34 buttons, and the 16x502 track."
   },
-  "verdict": "Input focus and safe plain-chat send are runtime-verified in Zircon. F350 visual controls and scrolling remain blocked by unavailable EI WIL/WIX resources; normal GameInter.Zl is explicitly insufficient evidence."
+  "verdict": "Zircon local runtime verifies F350 input focus, safe plain-chat display, close/reopen, clickable local templates, overflow scrolling, rail interaction, and new-message anchoring. EI-original WIL/WIX byte identity and pixel-level parity remain blocked and are not claimed."
 }

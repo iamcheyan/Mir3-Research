@@ -9576,3 +9576,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔EI 对照〕**`bag-list-fill-chain-evidence.json` 已闭合 EI `0x42FC20`/`0x42F440`：46 条记录位于 `bag+0x774`、步长 `0xC2C`，另有 `[bag+0x324]` 六列 cell-table；证据的 pending 项只剩服务器语义和运行包配对，不证明 Zircon 协议含有对应字段。
 - **〔裁决〕**当前没有可安全补齐的协议映射。`DXItemGrid.UseLegacyFootprints` 的本地 first-fit 重建仍是唯一不伪造 EI 网络语义的实现；不新增协议字段、不改服务端槽位模型，也不把当前布局宣称为原版 cell-table 还原。
 - **〔运行边界〕**Round 794 的真实 Armour 跨 2 列×3 行和 48 槽滚动证据继续有效；本轮是静态协议核对，未修改生产代码。
+## 2026-09-25：CHAT-02/CHAT-04 Zircon F350 运行闭环补证
+
+- 运行根固定为本地 `/home/tetsuya/mir2ei`，环境 `ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；未使用 NAS 运行资源。Zircon 分支为 `ui/legacy-layout-lab`，完整 viewport 为1024×768。
+- `GameScene.ReceiveChat/OnChat → ChatLogPanel.AddMessage + LegacyChatDialog.AddMessage` 的消息链在真实客户端中显示普通 `[Normal] TestHero` 文本；22条安全普通文本形成溢出历史。底部自动锚定、上滚后新消息不抢用户位置、上/下按钮、滚轮、轨道点击和显式轨道拖动均有完整viewport截图。
+- 发现 `LegacyChatDialog.CreateSpriteButton()` 将 F350 关闭、上下滚动和六个本地模板按钮设为 `CanBePressed=false`，导致 `DXButton._GuiInput`提前吞掉点击；已改为可点击。轨道改用显式鼠标按下/移动/释放处理，避免依赖通用控件拖动状态。
+- 只验证模板按钮把字符串写入本地输入框；未提交 `@拒绝`、`!`、`!!`、`!~`、`@拒绝私聊` 或 `@拒绝行会聊天`，避免副作用。
+- 截图和机器可读运行记录：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/` 与 `chat-runtime-acceptance-2026-09-24.json`。本轮只证明 Zircon 使用的本地 `GameInter.wil/.wix` 行为；该资源与研究 primary-static EI WIL/WIX 的字节身份、像素级同版关系仍未证明，不能升级为 EI 原版 parity。
