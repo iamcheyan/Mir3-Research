@@ -30,6 +30,5 @@ Tools/maps/static_out/index.json
 LibraryCore
 ServerLibrary
 
-# 手工备份文件不进 git
-*.bak
-*.bak-*
+# 本机私有参考源（原始 Mud3/EI 文件不进入公开仓库）
+local-reference-data/
