@@ -476,7 +476,7 @@ def main() -> int:
         "",
         "- dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。",
         f"- dry-run 应用计划：NPC 可直接候选 **{len(dry_run_plan['npc_candidates'])}** 条；Hero-kill 唯一刷新候选 **{len(dry_run_plan['respawn_candidates'])}** 条，其中批准计划当前收敛为 **{review_decisions.get('approve', 0)}** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。",
-        f"- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **{production_apply.get('respawn_updates_applied', 0)}** 条、NPC **{production_apply.get('npc_updates_applied', 0)}** 条；备份哈希匹配写入前状态={production_apply.get('backup_hashes_match_before', False)}，仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence 和 {review_decisions.get('retain-current', 0)} 条 zircon-only retain-current，不能把部分写入误称为全量对齐。",
+        f"- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **{production_apply.get('respawn_updates_applied', 0)}** 条、NPC **{production_apply.get('npc_updates_applied', 0)}** 条；备份哈希匹配写入前状态={production_apply.get('backup_hashes_match_before', False)}，仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence 和 {review_decisions.get('retain-current', 0)} 条 retain-current，不能把部分写入误称为全量对齐。",
         "- 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。",
         "- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。",
         f"- round-trip：生产 Respawn 分支通过；生产 SHA-256 一致={production_apply.get('server_client_sha_equal', False)}；完整 NPC/Respawn 全量 round-trip 未完成。",

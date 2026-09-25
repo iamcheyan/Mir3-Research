@@ -73,7 +73,7 @@
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
 - dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新候选 **328** 条，其中批准计划当前收敛为 **18** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。
-- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **18** 条、NPC **0** 条；备份哈希匹配写入前状态=True，仍有 587 条 needs-evidence 和 2060 条 zircon-only retain-current，不能把部分写入误称为全量对齐。
+- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **18** 条、NPC **0** 条；备份哈希匹配写入前状态=True，仍有 587 条 needs-evidence 和 2060 条 retain-current，不能把部分写入误称为全量对齐。
 - 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。
 - 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
@@ -104,4 +104,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `012f5cbb046a069185b3d46ea723f937290ecf62`；Zircon `e21cdb9ba70b2ae8a1d85874869898ce583f1e83`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `171be481b7d04b7738f3661d3c5a01e9957a005b`；Zircon `e21cdb9ba70b2ae8a1d85874869898ce583f1e83`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
