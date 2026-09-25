@@ -9606,3 +9606,10 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-fixed-baseline.png`、`chat-hud-fixed-focus.png`、`chat-hud-r-input-fixed.png`、`chat-hud-r-message-final.png`、`chat-hud-long-input-fixed.png`、`chat-hud-long-message-fixed.png`、`chat-hud-right-button-open-f350.png`、`chat-hud-f350-closed-final.png`。
 - **〔构建〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告。运行日志中的 ALSA `ERR_CANT_OPEN` 属于 Xvfb dummy audio，不影响登录或 HUD。
 - **〔中文输入边界〕**XTest 注入单个中文 `中` 可在主 HUD 输入条显示并保留光标，截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-chinese-input.png`、`chat-hud-chinese-input-final.png`；当前 Xvfb 无可用 IME，未把无法注入完整多字串归因于客户端。
+ 
+## Round 800 (HUD chat visual parity) — 2026-09-25：主HUD消息文字与底色视觉复核
+
+- **〔视觉根因〕**`ChatLogPanel` 的 legacy 行继承了通用消息背景色：System/Announcement 的配置背景为白色，导致 F50 聊天槽内出现逐条白色矩形；主 HUD 原版槽的底色和边框来自 `GameInter.wil F50`，消息行本身不应再绘制消息底。
+- **〔代码修复〕**legacy `_chatLog` 行固定使用 8px 字体、14px 行高、关闭 outline/阴影；legacy 行 `BackColour=Transparent`，普通聊天维持现有 `LocalTextForeColour=White`，HUD 文本保持不透明，避免用降低整块控件透明度掩盖可读性。
+- **〔运行证据〕**使用本地 `/home/tetsuya/mir2ei`、完整 1024×768 viewport、`login_game.sh all legacy` 重启客户端；日志再次确认 `StartGame 成功`。普通文本 `HUD_STYLE_FINAL` 提交后主 HUD 显示发送者一次且输入清空；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-style-final.png`。对比 `chat-hud-visual-baseline-clean.png`，最终行字形/亮度恢复为可读白色，且不再显示逐条白底。
+- **〔证据边界〕**当前公开 EI 静态 JSON 已闭合主 HUD 根 RECT、F50 聊天槽、裁剪和层级，但未提供主 HUD 文本颜色字节；白色普通聊天色的选择标注为 Zircon 原有配置 + 运行视觉证据，不升级为 `primary-static`。
