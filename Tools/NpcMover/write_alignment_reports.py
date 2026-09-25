@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from pathlib import Path
 
@@ -10,6 +11,44 @@ from pathlib import Path
 def j(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
 
+
+REVIEW_COLUMNS = [
+    "kind",
+    "status",
+    "review_class",
+    "index",
+    "name",
+    "old_map",
+    "old_x",
+    "old_y",
+    "target_map",
+    "target_x",
+    "target_y",
+    "monster_index",
+    "monster_name",
+    "hero_kill_map",
+    "hero_kill_x",
+    "hero_kill_y",
+    "hero_kill_range",
+    "hero_kill_count",
+    "hero_kill_interval",
+    "match_method",
+    "mapping_method",
+    "confidence",
+    "walkable",
+    "hero_kill_walkable",
+    "placement_rule",
+    "review_decision",
+    "approved_map",
+    "approved_x",
+    "approved_y",
+    "review_note",
+    "reason",
+    "source",
+    "candidates_json",
+    "warnings_json",
+    "range_note",
+]
 
 def build_dry_run_plan(data: dict) -> dict:
     """Build an auditable plan without mutating either System.db copy."""
@@ -139,6 +178,98 @@ def build_manual_review_summary(data: dict) -> dict:
     }
 
 
+def build_manual_review_tsv_rows(data: dict) -> list[dict]:
+    """Flatten pending rows into an editable, one-record-per-line review sheet."""
+    rows: list[dict] = []
+
+    def xy_value(value: object, axis: str) -> object:
+        return value.get(axis) if isinstance(value, dict) else None
+
+    def add(values: dict) -> None:
+        rows.append({key: values.get(key, "") for key in REVIEW_COLUMNS})
+
+    for row in data["npcs"]:
+        if row["apply_status"] != "pending-review":
+            continue
+        add({
+            "kind": "npc",
+            "status": row["apply_status"],
+            "review_class": row["map_relation"],
+            "index": row["current_npc_index"],
+            "name": row["current_npc_name"],
+            "old_map": row["old_map"],
+            "old_x": xy_value(row["old_xy"], "x"),
+            "old_y": xy_value(row["old_xy"], "y"),
+            "target_map": row["hero_kill_map"],
+            "target_x": xy_value(row["hero_kill_xy"], "x"),
+            "target_y": xy_value(row["hero_kill_xy"], "y"),
+            "match_method": row["match_method"],
+            "confidence": row["confidence"],
+            "walkable": j(row["walkable"]),
+            "placement_rule": row["auto_placement_rule"],
+            "reason": row["target_reason"],
+            "source": row["identity_source"],
+            "candidates_json": j(row["auto_placement_candidates"]),
+            "warnings_json": j(row["warnings"]),
+            "review_decision": "",
+            "approved_map": "",
+            "approved_x": "",
+            "approved_y": "",
+            "review_note": "",
+            "range_note": "not-applicable",
+        })
+
+    for row in data["monster_respawns"]:
+        if row["apply_status"] not in {"blocked", "pending-review"}:
+            continue
+        old = row["old_respawn"]
+        old_xy = old.get("xy")
+        hero_xy = row["hero_kill_xy"]
+        add({
+            "kind": "respawn",
+            "status": row["apply_status"],
+            "review_class": row["match_status"],
+            "index": old["index"],
+            "name": row["mapped_zircon_monster_name"],
+            "old_map": old.get("map"),
+            "old_x": xy_value(old_xy, "x"),
+            "old_y": xy_value(old_xy, "y"),
+            "target_map": row["hero_kill_map"],
+            "target_x": xy_value(hero_xy, "x"),
+            "target_y": xy_value(hero_xy, "y"),
+            "monster_index": row["mapped_zircon_monster_index"],
+            "monster_name": row["mapped_zircon_monster_name"],
+            "hero_kill_map": row["hero_kill_map"],
+            "hero_kill_x": xy_value(hero_xy, "x"),
+            "hero_kill_y": xy_value(hero_xy, "y"),
+            "hero_kill_range": row["hero_kill_range"],
+            "hero_kill_count": row["hero_kill_count"],
+            "hero_kill_interval": row["hero_kill_interval"],
+            "hero_kill_walkable": row["hero_kill_walkable"],
+            "mapping_method": row["mapping_method"],
+            "confidence": row["confidence"],
+            "walkable": row["walkable"],
+            "reason": row["range_note"],
+            "source": row["mapping_method"],
+            "warnings_json": j(row["overlap"]),
+            "range_note": row["range_note"],
+            "review_decision": "",
+            "approved_map": "",
+            "approved_x": "",
+            "approved_y": "",
+            "review_note": "",
+        })
+    return rows
+
+
+def write_manual_review_tsv(path: Path, data: dict) -> None:
+    rows = build_manual_review_tsv_rows(data)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=REVIEW_COLUMNS, delimiter="\t", lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", type=Path, required=True)
@@ -170,6 +301,8 @@ def main() -> int:
     review_summary = build_manual_review_summary(data)
     review_path = args.manifest.parent / "manual-review-summary.json"
     review_path.write_text(json.dumps(review_summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    review_tsv_path = args.manifest.parent / "manual-review-summary.tsv"
+    write_manual_review_tsv(review_tsv_path, data)
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -229,7 +362,7 @@ def main() -> int:
         "| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |",
         f"| 独立校验 | 逻辑通过；地图文件格式/截断发现 {verify['format_issue_count']} 个 | `artifacts/.../independent-verification.json` |",
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
-        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json` |",
+        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json`；逐条编辑模板 `artifacts/.../manual-review-summary.tsv` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
