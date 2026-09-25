@@ -91,7 +91,12 @@ def main() -> int:
         if actual != r["walkable"]:
             errors.append(f"Respawn {old['index']}: builder walkable={r['walkable']} independent={actual}")
         if r.get("new_respawn") is not None:
-            errors.append(f"Respawn {old['index']}: pending source has unexpected new target")
+            if r.get("match_status") != "matched":
+                errors.append(f"Respawn {old['index']}: new target without unique source match")
+            if r.get("apply_status") != "pending-review":
+                errors.append(f"Respawn {old['index']}: new target has unsafe apply status")
+        elif r.get("match_status") == "matched":
+            errors.append(f"Respawn {old['index']}: unique source match missing new target")
         if r.get("apply_status") not in {"blocked", "pending-review"}:
             errors.append(f"Respawn {old['index']}: unsafe apply status {r.get('apply_status')}")
     map_checks = Counter()

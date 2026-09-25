@@ -412,13 +412,147 @@ def build_monster_identity(monsters: list[dict[str, Any]], source_records: list[
     zircon_only = [{"zircon_monster_index": m.get("Index"), "zircon_monster_name": m.get("MonsterName"), "reason": "no reliable hero-kill identity mapping"} for m in monsters if int(m.get("Index", -1)) not in mapped_ids]
     stats = {"zircon_monster_count": len(monsters), "hero_kill_definition_count": len(source_nonempty), "mapped_count": sum(1 for r in rows_out if r["status"] == "mapped"), "pending_count": sum(1 for r in rows_out if r["status"] != "mapped"), "conflict_count": len(conflicts), "zircon_only_count": len(zircon_only)}
     return rows_out, {"stats": stats, "conflicts": conflicts, "zircon_only": zircon_only}
+def load_hero_spawn_plan(path: Path | None, monsters: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
+    """Load the recovered EI import plan without treating it as a DB write plan."""
+    if path is None or not path.exists():
+        return [], "pending: Hero-kill Mon_Def/*.gen/MonGen source unavailable locally; no refresh coordinates invented"
+    raw = load(path)
+    rows_in = raw.get("respawns", []) if isinstance(raw, dict) else raw
+    by_name = {norm_name(str(m.get("MonsterName", ""))): m for m in monsters}
+    rows_out: list[dict[str, Any]] = []
+    for row in rows_in:
+        name = str(row.get("monster", ""))
+        mapped = by_name.get(norm_name(name))
+        if mapped is None:
+            explicit = EXPLICIT_MONSTER_MAP.get(name)
+            if explicit and explicit[0] is not None:
+                mapped = next((m for m in monsters if int(m.get("Index", -1)) == explicit[0]), None)
+        copied = dict(row)
+        copied["_mapped_zircon_index"] = mapped.get("Index") if mapped else None
+        copied["_mapped_zircon_name"] = mapped.get("MonsterName") if mapped else None
+        rows_out.append(copied)
+    return rows_out, f"source present: {path} ({len(rows_out)} refresh rows; range not present)"
 
 
-def build_respawns(respawns: list[dict[str, Any]], regions: list[dict[str, Any]], monsters: list[dict[str, Any]], maps: list[dict[str, Any]], zircon_root: Path, source_status: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def refresh_key(map_name: str, monster_name: str, x: int | None, y: int | None) -> tuple[str, str, int | None, int | None]:
+    return str(map_name).casefold(), norm_name(monster_name), x, y
+
+
+def build_refresh_gap_audit(
+    source_rows: list[dict[str, Any]],
+    current_rows: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
+    source_by_key: dict[tuple[str, str, int | None, int | None], list[dict[str, Any]]] = defaultdict(list)
+    for row in source_rows:
+        source_by_key[refresh_key(row.get("map", ""), str(row.get("_mapped_zircon_name") or row.get("monster", "")), row.get("x"), row.get("y"))].append(row)
+    current_by_key: dict[tuple[str, str, int | None, int | None], list[dict[str, Any]]] = defaultdict(list)
+    for row in current_rows:
+        old = row.get("old_respawn") or {}
+        xy = old.get("xy") or {}
+        current_by_key[refresh_key(old.get("map", ""), row.get("mapped_zircon_monster_name", ""), xy.get("x"), xy.get("y"))].append(row)
+
+    hero_rows: list[dict[str, Any]] = []
+    yxs_only: list[dict[str, Any]] = []
+    conflicts: list[dict[str, Any]] = []
+    matched_current: set[int] = set()
+    for source in source_rows:
+        key = refresh_key(source.get("map", ""), str(source.get("_mapped_zircon_name") or source.get("monster", "")), source.get("x"), source.get("y"))
+        candidates = current_by_key.get(key, [])
+        status = "matched" if len(candidates) == 1 else "conflict" if candidates else "yxs-only"
+        hero = {
+            "hero_kill_map": source.get("map"),
+            "hero_kill_xy": {"x": source.get("x"), "y": source.get("y")},
+            "hero_kill_range": None,
+            "hero_kill_count": source.get("count"),
+            "hero_kill_monster_name": source.get("monster"),
+            "mapped_zircon_monster_index": source.get("_mapped_zircon_index"),
+            "mapped_zircon_monster_name": source.get("_mapped_zircon_name"),
+            "current_respawn_indices": [int(x["old_respawn"]["index"]) for x in candidates],
+            "status": status,
+            "source": "DbMigrationTool/data/import_plan_v2.json",
+            "confidence": "medium" if status == "matched" else "pending",
+            "range_note": "source plan has count but no radius/range field; do not infer write target",
+        }
+        hero_rows.append(hero)
+        if status == "yxs-only":
+            yxs_only.append(hero)
+        elif status == "conflict":
+            conflicts.append(hero)
+        else:
+            matched_current.add(int(candidates[0]["old_respawn"]["index"]))
+
+    zircon_only: list[dict[str, Any]] = []
+    for key, candidates in current_by_key.items():
+        source_candidates = source_by_key.get(key, [])
+        for current in candidates:
+            index = int(current["old_respawn"]["index"])
+            if len(source_candidates) == 0:
+                zircon_only.append({
+                    "zircon_respawn_index": index,
+                    "map": current["old_respawn"].get("map"),
+                    "xy": current["old_respawn"].get("xy"),
+                    "monster": current.get("mapped_zircon_monster_name"),
+                    "reason": "no exact coordinate/name match in recovered EI plan",
+                })
+            elif len(source_candidates) > 1 or len(candidates) > 1:
+                if not any(index in item["current_respawn_indices"] for item in conflicts):
+                    conflicts.append({
+                        "hero_kill_map": current["old_respawn"].get("map"),
+                        "hero_kill_xy": current["old_respawn"].get("xy"),
+                        "mapped_zircon_monster_name": current.get("mapped_zircon_monster_name"),
+                        "current_respawn_indices": [int(x["old_respawn"]["index"]) for x in candidates],
+                        "status": "conflict",
+                        "reason": "duplicate source/current coordinate key",
+                    })
+    stats = {
+        "hero_kill_refresh_count": len(hero_rows),
+        "hero_kill_matched_count": len(matched_current),
+        "yxs_only_refresh_count": len(yxs_only),
+        "zircon_only_refresh_count": len(zircon_only),
+        "refresh_conflict_count": len(conflicts),
+    }
+    return hero_rows, yxs_only, zircon_only, conflicts, stats
+
+
+def hero_source_index(source_rows: list[dict[str, Any]]) -> dict[tuple[str, str, int | None, int | None], list[dict[str, Any]]]:
+    out: dict[tuple[str, str, int | None, int | None], list[dict[str, Any]]] = defaultdict(list)
+    for row in source_rows:
+        mapped_name = str(row.get("_mapped_zircon_name") or row.get("monster", ""))
+        out[refresh_key(row.get("map", ""), mapped_name, row.get("x"), row.get("y"))].append(row)
+    return out
+
+
+def hero_walkable(hero_root: Path, map_name: str, x: int | None, y: int | None) -> str:
+    return walkable(map_files(hero_root).get(str(map_name).casefold()), x, y)
+
+
+def build_respawns(
+    respawns: list[dict[str, Any]],
+    regions: list[dict[str, Any]],
+    monsters: list[dict[str, Any]],
+    maps: list[dict[str, Any]],
+    zircon_root: Path,
+    source_status: str,
+    source_by_key: dict[tuple[str, str, int | None, int | None], list[dict[str, Any]]] | None = None,
+    hero_root: Path | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     rby = {int(r["Index"]): r for r in regions}
     mby = {int(m["Index"]): m for m in monsters}
     mapby = {m["original_map"].casefold(): m for m in maps}
     zfiles = map_files(zircon_root)
+    source_by_key = source_by_key or {}
+    hero_root = hero_root or Path("/nonexistent")
+    current_key_counts: Counter[tuple[str, str, int | None, int | None]] = Counter()
+    for candidate in respawns:
+        candidate_region = rby.get(int((candidate.get("Region") or {}).get("Index", -1)), {})
+        candidate_point = candidate_region.get("PointRegion") or {}
+        candidate_monster = mby.get(int((candidate.get("Monster") or {}).get("Index", -1)), {})
+        current_key_counts[refresh_key(
+            str((candidate_region.get("Map") or {}).get("Name", "")),
+            str(candidate_monster.get("MonsterName", "")),
+            candidate_point.get("CenterX"),
+            candidate_point.get("CenterY"),
+        )] += 1
     out = []
     for r in sorted(respawns, key=lambda x: int(x["Index"])):
         region = rby.get(int((r.get("Region") or {}).get("Index", -1)), {})
@@ -426,29 +560,44 @@ def build_respawns(respawns: list[dict[str, Any]], regions: list[dict[str, Any]]
         p = region.get("PointRegion") or {}
         x, y = p.get("CenterX"), p.get("CenterY")
         size = region.get("Size", p.get("PointCount"))
-        approx_range = round(math.sqrt(max(int(size or 0), 0) / math.pi), 2) if size is not None else None
         monster = mby.get(int((r.get("Monster") or {}).get("Index", -1)), {})
         zfile = zfiles.get(map_name.casefold())
         walk = walkable(zfile, int(x) if x is not None else None, int(y) if y is not None else None)
+        key = refresh_key(map_name, str(monster.get("MonsterName", "")), x, y)
+        source_candidates = source_by_key.get(key, [])
+        source = source_candidates[0] if len(source_candidates) == 1 and current_key_counts[key] == 1 else None
+        hero_map = source.get("map") if source else None
+        hero_xy = {"x": source.get("x"), "y": source.get("y")} if source else None
+        match_status = "matched" if source else "conflict" if source_candidates else "zircon-only"
         out.append({
-            "hero_kill_map": None,
-            "hero_kill_xy": None,
+            "hero_kill_map": hero_map,
+            "hero_kill_xy": hero_xy,
             "hero_kill_range": None,
-            "hero_kill_count": None,
-            "hero_kill_monster_name": None,
+            "hero_kill_count": source.get("count") if source else None,
+            "hero_kill_monster_name": source.get("monster") if source else None,
             "mapped_zircon_monster_index": monster.get("Index"),
             "mapped_zircon_monster_name": monster.get("MonsterName"),
             "old_respawn": {"index": r.get("Index"), "map": map_name, "xy": {"x": x, "y": y} if x is not None else None, "region_index": region.get("Index"), "region_name": region.get("_Identity"), "region_size": size, "count": r.get("Count"), "delay": r.get("Delay"), "respawn_index": r.get("RespawnIndex")},
-            "new_respawn": None,
-            "mapping_method": "hero-kill-refresh-source-unavailable",
-            "confidence": "pending",
+            "new_respawn": {"map": hero_map, "xy": hero_xy, "count": source.get("count"), "range": None} if source else None,
+            "confidence": "medium" if source else "pending",
             "walkable": walk,
+            "hero_kill_walkable": hero_walkable(hero_root, hero_map, source.get("x"), source.get("y")) if source else "pending",
             "overlap": [],
-            "apply_status": "blocked",
-            "source_status": source_status,
-            "range_note": "approximate radius derived from PointRegion size; not a write target",
+            "apply_status": "pending-review" if source else "blocked",
+            "mapping_method": "hero-kill-plan-exact-coordinate" if match_status == "matched" else "hero-kill-plan-ambiguous-coordinate" if match_status == "conflict" else "zircon-only-refresh-no-exact-plan-match",
+            "match_status": match_status,
+            "range_note": "source plan has count but no radius/range field; do not infer write target",
         })
-    return out, {"respawn_count": len(out), "source_status": source_status, "walkable_counts": dict(Counter(x["walkable"] for x in out)), "apply_status_counts": dict(Counter(x["apply_status"] for x in out))}
+    return out, {
+        "respawn_count": len(out),
+        "source_status": source_status,
+        "walkable_counts": dict(Counter(x["walkable"] for x in out)),
+        "hero_kill_walkable_counts": dict(Counter(x["hero_kill_walkable"] for x in out)),
+        "apply_status_counts": dict(Counter(x["apply_status"] for x in out)),
+        "match_status_counts": dict(Counter(x["match_status"] for x in out)),
+    }
+
+
 
 
 def write_tsv(path: Path, records: list[dict[str, Any]]) -> None:
@@ -487,11 +636,23 @@ def main() -> int:
     source_records = load(args.monster_source)["records"] if args.monster_source.exists() else []
     snapshot = load(args.monster_snapshot) if args.monster_snapshot.exists() else []
     monster_identity, identity_meta = build_monster_identity(monsters, source_records, snapshot)
-    if args.hero_spawn and args.hero_spawn.exists():
-        spawn_status = f"source present but parser not enabled for unknown format: {args.hero_spawn}"
-    else:
-        spawn_status = "pending: Hero-kill Mon_Def/*.gen/MonGen source unavailable locally; no refresh coordinates invented"
-    monster_respawns, respawn_stats = build_respawns(respawns, regions, monsters, maps, args.zircon_map_dir, spawn_status)
+    hero_source_records, spawn_status = load_hero_spawn_plan(args.hero_spawn, monsters)
+    source_by_key = hero_source_index(hero_source_records)
+    monster_respawns, respawn_stats = build_respawns(
+        respawns,
+        regions,
+        monsters,
+        maps,
+        args.zircon_map_dir,
+        spawn_status,
+        source_by_key,
+        args.hero_map_dir,
+    )
+    hero_refreshes, yxs_only_refresh, zircon_only_refresh, refresh_conflicts, refresh_stats = build_refresh_gap_audit(
+        hero_source_records,
+        monster_respawns,
+    )
+    respawn_stats.update(refresh_stats)
     manifest = {
         "manifest_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
         "mode": "offline-dry-run",
@@ -506,21 +667,31 @@ def main() -> int:
         "npcs": npc_manifest,
         "monster_identity": monster_identity,
         "monster_respawns": monster_respawns,
+        "hero_kill_refreshes": hero_refreshes,
+        "yxs_only_refresh": yxs_only_refresh,
+        "zircon_only_refresh": zircon_only_refresh,
+        "refresh_conflicts": refresh_conflicts,
         "monster_conflicts": identity_meta["conflicts"],
         "zircon_only_monsters": identity_meta["zircon_only"],
-        "missing_yxs_refresh": [],
-        "missing_yxs_refresh_status": "pending: hero-kill refresh configuration unavailable; cannot classify YXS-only versus Zircon-only refresh rows",
-        "shared_checks": {"npc_monster_overlap": "pending: no target monster coordinates", "independent_parser": "this tool parses map cell records independently; verifier runs a second implementation"},
+        "missing_yxs_refresh": yxs_only_refresh,
+        "missing_yxs_refresh_status": spawn_status,
+        "shared_checks": {"npc_monster_overlap": "pending: refresh source has points but no source range/radius", "independent_parser": "this tool parses map cell records independently; verifier runs a second implementation"},
     }
     (args.out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (args.out / "map_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": map_stats, "maps": maps}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (args.out / "npc_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": npc_stats, "npcs": npc_manifest}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (args.out / "monster_gap_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "yxs_only_refresh": None, "yxs_only_status": manifest["missing_yxs_refresh_status"], "zircon_only_identity": identity_meta["zircon_only"], "conflicts": identity_meta["conflicts"], "refresh_source": spawn_status}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (args.out / "monster_gap_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "yxs_only_refresh": yxs_only_refresh, "zircon_only_refresh": zircon_only_refresh, "refresh_conflicts": refresh_conflicts, "yxs_only_status": spawn_status, "zircon_only_identity": identity_meta["zircon_only"], "conflicts": identity_meta["conflicts"], "refresh_source": spawn_status}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (args.out / "monster_respawn_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": respawn_stats, "respawns": monster_respawns}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (args.out / "hero_kill_refresh_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": refresh_stats, "refreshes": hero_refreshes}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (args.out / "refresh_gap_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": refresh_stats, "yxs_only_refresh": yxs_only_refresh, "zircon_only_refresh": zircon_only_refresh, "conflicts": refresh_conflicts}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_tsv(args.out / "map_manifest.tsv", maps)
     write_tsv(args.out / "npc_manifest.tsv", npc_manifest)
     write_tsv(args.out / "monster_identity_manifest.tsv", monster_identity)
     write_tsv(args.out / "monster_respawn_manifest.tsv", monster_respawns)
+    write_tsv(args.out / "hero_kill_refresh_manifest.tsv", hero_refreshes)
+    write_tsv(args.out / "yxs_only_refresh.tsv", yxs_only_refresh)
+    write_tsv(args.out / "zircon_only_refresh.tsv", zircon_only_refresh)
+    write_tsv(args.out / "refresh_conflicts.tsv", refresh_conflicts)
     print(json.dumps({"out": str(args.out), "map_stats": map_stats, "npc_stats": npc_stats, "monster_identity_stats": identity_meta["stats"], "monster_respawn_stats": respawn_stats}, ensure_ascii=False, indent=2))
     return 0
 

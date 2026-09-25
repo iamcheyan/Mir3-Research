@@ -9,8 +9,8 @@
 | MAP-BASELINE | 已生成 | `MAP_HERO_KILL_BASELINE_2026-09-25.md` + `artifacts/.../map_manifest.{json,tsv}` |
 | NPC 全量 manifest | 已生成 dry-run | `artifacts/.../npc_manifest.{json,tsv}` |
 | 怪物身份 manifest | 已生成，绝大多数 pending | `artifacts/.../monster_identity_manifest.{json,tsv}` |
-| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，Hero-kill 刷新源 pending | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
-| 怪物缺口清单 | YXS-only refresh 明确 pending；Zircon-only identity/conflict 已列出 | `artifacts/.../monster_gap_manifest.json` |
+| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，并接入 recovered EI import plan；缺少原始 Mon_Def/MonGen range | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
+| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；发现 50 个 malformed/truncated 地图文件 | `artifacts/.../independent-verification.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
@@ -52,10 +52,10 @@
 
 ## 5. 怪物刷新流水线
 
-- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；全部 `{"blocked":2475}`。
-- Hero-kill `Mon_Def/*.gen`/`MonGen` 原始刷新配置在本地研究仓库和运行资源中不可用；因此 hero_kill_map/x/y/range/count/name、new_respawn 全部保持 null，且不生成伪造的 YXS-only 清单。
-- `missing_yxs_refresh_status`：pending: hero-kill refresh configuration unavailable; cannot classify YXS-only versus Zircon-only refresh rows。Zircon-only 刷新清单是当前 2475 行 `monster_respawn_manifest.tsv`，不是删除建议。
-- `PointRegion.Size` 只能派生近似半径，记录为 `range_note`，不当作 Hero-kill range 写入。
+- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":1958,"pending-review":517}`；match status `{"zircon-only":1825,"conflict":133,"matched":517}`。
+- 本地缺少原始 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件；当前仅接入 recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 刷新计划，共 **742** 行。该计划没有 range 字段，所有唯一坐标匹配仍为 `pending-review`，不作为写库目标。
+- 刷新缺口：Hero-kill/YXS-only **124**，Zircon-only **1825**，coordinate conflict **101**；这些清单只用于人工复核，不是删除建议。
+- `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
 
 ## 6. 独立范围/可行走/重叠检查
 
@@ -67,14 +67,14 @@
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- 备份：未执行；写库前置条件未满足（Hero-kill刷新源、Merchant源和 variant/replacement人工抽查缺失）。
+- 备份：未执行；写库前置条件未满足（原始 Hero-kill Mon_Def/MonGen 与 range 缺失、Merchant 源缺失、variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
 
 ## 8. 未决项与人工复核
 
-1. 提供并固定 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件及格式说明，重新生成每个刷新点的 map/x/y/range/count/name。
+1. 提供并固定 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件及格式说明，补齐每个刷新点的 range，并核对 recovered import plan 的 742 行。
 2. 提供原版 Merchant/NPC 坐标快照，复核 294 条 NPC 身份，尤其 36 pending 和 123 pending-review。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
@@ -84,13 +84,11 @@
 
 ```bash
 cd /home/tetsuya/development/Mir3-Research
-python3 Tools/NpcMover/build_alignment_manifests.py --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
+python3 Tools/NpcMover/build_alignment_manifests.py --hero-spawn /home/tetsuya/development/zircon/Tools/DbMigrationTool/data/import_plan_v2.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
 python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
 ```
 
 ## 10. 远端 SHA 与提交
 
-- Mir3-Research `ei-ui-audit-2026-09-24`：离线产物 commit `131f90bb608e254619d215333d78690b75cd465c`；SHA回填 commit `6a5e72e9788b8335889fab3057feb59b2e83d86f`；两者均已 push，当前分支最终 HEAD 以交付核对为准。
-- Zircon `ui/legacy-layout-lab`：`c77e5f62873ccc11c897ad849ebc537b67b4b695`（已 push；origin 已提示仓库迁移到 `iamcheyan/Zircon-Godot`）。
-- 本阶段离线基准、NPC/怪物 manifest、独立校验、sandbox 和报告已提交并推送；写库、客户端验收仍因 Hero-kill 刷新源/Merchant 坐标源缺失而 blocked。
+- 本阶段只记录离线证据；写库、客户端验收和 push 仍 blocked。最终远端 SHA 必须在各仓库独立 commit/push 后补录，不能用工作树 SHA 冒充远端 SHA。
