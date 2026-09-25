@@ -85,7 +85,7 @@
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
 5. 地图格式独立校验当前为 0 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。
 6. `manual-review-summary.tsv` 必须逐条填写并通过 `validate_manual_review.py`；校验器通过前不得执行 DBImporter sync。
-7. 校验通过后才会生成 `approved-offline-plan.json`；该计划仍标记 `database_write=false`，必须经过独立地图检查和停服/备份门禁。
+7. 校验通过后才会生成 `approved-offline-plan.json`；用 `NpcMover approved` 做二次干跑和 round-trip 计划校验，仍需独立地图检查、停服、备份后才可加 `apply`。
 
 ## 9. 复现命令
 
@@ -95,9 +95,10 @@ python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/resea
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
 python3 Tools/NpcMover/write_alignment_reports.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --verification docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json --report-dir docs/research/ei-ui-layout
 python3 Tools/NpcMover/validate_manual_review.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --review docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manual-review-summary.tsv --out /tmp/manual-review-validation.json --plan-out /tmp/approved-offline-plan.json
-python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
+dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon/Debug/ServerCore/Database /tmp/approved-offline-plan.json
+dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon/Debug/ServerCore/Database /tmp/approved-offline-plan.json apply /home/tetsuya/development/zircon/Debug/Client/Data/System.db
 ```
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `0ee41b74f08e094d8a12a8c7907d283d94932f88`；Zircon `153c0322e18cc059a389933b1a6c75a980995f12`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `5c7e326f394e9ad960cd119341dda7390a494f78`；Zircon `c07cd0973e05c27f1078a74a2ea47f9894754dc0`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
