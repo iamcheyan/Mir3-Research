@@ -9,7 +9,7 @@
 | MAP-BASELINE | 已生成 | `MAP_HERO_KILL_BASELINE_2026-09-25.md` + `artifacts/.../map_manifest.{json,tsv}` |
 | NPC 全量 manifest | 已生成 dry-run | `artifacts/.../npc_manifest.{json,tsv}` |
 | 怪物身份 manifest | 已生成，绝大多数 pending | `artifacts/.../monster_identity_manifest.{json,tsv}` |
-| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，并接入 recovered EI import plan；缺少原始 Mon_Def/MonGen range | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
+| 怪物刷新 manifest | 已盘点 Zircon 旧刷新，并接入公开跟踪的 Hero-kill/Mud3 文本源；逐点匹配仍 pending，保留 range/数量/间隔及源行号 | `artifacts/.../monster_respawn_manifest.{json,tsv}` |
 | 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；发现 50 个 malformed/truncated 地图文件 | `artifacts/.../independent-verification.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
@@ -36,8 +36,7 @@
 
 ## 4. 怪物身份流水线
 
-- 当前 Zircon MonsterInfo **434**；英雄杀解码定义 **432**（记录 0 为占位头，不计入）。可靠映射 **6**，pending **426**，Zircon-only identity **428**。
-- 资料库第二权威已接入：Legacy Atlas `catalog-mud3.html` / `monster.json` 共 **432** 条非占位英雄杀定义，版本标签 `old-only=229`、`unverified=197`、`changed=6`；`monsters.html` 是 309 条当前百科快照，不能覆盖 workspace 中包含变体/附加实体的 434 条 `MonsterInfo`。`monsters_zircon.json` 提供当前百科属性，`MonsterInfo.json` 提供当前业务 Index/Image/Stats，`LibraryCore/Enum.cs` + `GodotClient/Formats/MonsterLookup.cs` 提供 MonsterImage 数值、图库和 shape。四方证据写入 `monster_four_way_evidence.{json,tsv}`，不是只按中文字符串或当前 MonsterInfo 猜测。
+- 当前 Zircon MonsterInfo **434**；英雄杀解码定义 **432**（记录 0 为占位头，不计入）。可靠映射 **6**，pending **426**，Zircon-only identity **428**。公开 `monster-dat-catalog.json` 的 **432/432** 条记录已写入每条 `monster_four_way_evidence`，原始 `monster.dat` 仍只记录本机私有路径和 SHA，不进入公开仓库。
 
 ### 资料库四方对应（重点案例）
 
@@ -67,12 +66,11 @@
 
 ## 5. 怪物刷新流水线
 
-- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":1958,"pending-review":517}`；match status `{"zircon-only":1825,"conflict":133,"matched":517}`。
-- 本轮外部源审计：当前工作站 `/home/tetsuya/NAS` 为空，无法读取原始 Mud3 `Envir/Mon_Def`；`iamcheyan/mir2ei` `main` 的递归 Git tree 仅公开 `data/report_full.json`（Git blob `3f7cff6218853e4809c8a13bd4a3c47632e2bffe`，来源 URL `https://raw.githubusercontent.com/iamcheyan/mir2ei/main/data/report_full.json`）及百科派生数据，未发现 `Mon_Def`、`MonGen` 或逐点 range 文件。重新解析该快照确认只有 544 张 EI 地图、3221 条地图级刷新汇总、293 张有刷新地图和 312 个怪物种类，没有逐点 x/y/range；不能替代原始刷新点范围。另从 `https://www.mirfiles.co.uk/resources/mir3/MSRF%20EI%20Mud3.exe` 下载到 `/tmp/msrf-ei-mud3.exe`（SHA-256 `7763eaef02b24c655bc2efd31d9bacfc4f08c68c727cc2838978d79630501c27`），包内有 56 个 `Mon_def/*.gen`、`MonGen.txt`，独立解析得到 5517 条刷新行、312 个怪物名、279 张地图；但内置 `Readme 2.9BETA.txt` 表明它是旧版 beta 配置，不是当前 EI 3.0 英雄杀刷新源，且与 recovered 742 行计划仅有 22 张地图名交集、12 个地图坐标交集；仅作为格式/历史语义证据，不能解除目标源门禁。
-- recovered `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行刷新计划；逐条检查确认所有行的字段集合都只有 `map/x/y/monster/count`，没有 `range`、`radius`、`size` 或 `interval` 字段；其 `notes.mapSources` 只记录预期来源 `EI client Map/ + hero server Mud3/Map/`，当前工作站没有对应的英雄服务器 `Mud3/Map/` 原始目录；该文件仅作为坐标和数量审计输入，不是 Hero-kill 原始刷新源，不能解除 `range` 门禁。
-- 刷新缺口：Hero-kill/YXS-only **124**，Zircon-only **1825**，coordinate conflict **101**；这些清单只用于人工复核，不是删除建议。
-- `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
-
+- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；本轮 raw source 运行保持全部 `apply_status=blocked`，因为尚未形成唯一 Hero-kill↔Zircon 刷新匹配。
+- 正式源为 `docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/`，其说明和来源 SHA 见 `LOCAL_YXS_MUD3_TEXT_SOURCES_2026-09-25.md`。YXS `Mongen.txt` 激活 **17/18** 个 `Mon_Def/*.gen`，解析 **679** 条 active refresh rows，1 条 parse warning；未激活的 `会员练级.gen` 保留在源目录并不伪装为 active 配置。Mud3 文本目录作为 secondary raw evidence。
+- 本轮 raw-source 缺口：Hero-kill/YXS-only **679**，Zircon-only **2475**，refresh conflict **0**，Hero-kill matched **0**。这是源文件接入后的事实结果，不是删除或创建建议；身份、地图对应和坐标冲突仍需人工复核。
+- `Tools/DbMigrationTool/data/import_plan_v2.json` 仍含 **742** 行旧审计计划，但字段集合只有 `map/x/y/monster/count`，没有 `range`、`radius`、`size` 或 `interval`；本轮不把它当作 Hero-kill 原始刷新源，也不让它覆盖公开文本源。
+- `Mon_Def` 逐点记录的 range/count/interval 保留 `source_file`、`source_line` 和 `range_note`；若源记录缺少 range，manifest 明确标记 `range_pending`，不以 `PointRegion.Size` 代替，不推断写入半径。
 ## 6. 独立范围/可行走/重叠检查
 
 - 独立 parser logical errors=0；NPC target rows=294；NPC overlap cells=0。
@@ -83,14 +81,14 @@
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- 备份：未执行；写库前置条件未满足（原始 Hero-kill Mon_Def/MonGen 与 range 缺失、Merchant 坐标虽已接入但仅 130 条脚本唯一匹配、variant/replacement 人工抽查缺失）。
+- 备份：未执行；写库前置条件未满足（公开文本源虽已固定，但 679 条刷新尚未与 Zircon RespawnInfo 建立唯一匹配；NPC 仍有 123 条人工复核，variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
 
 ## 8. 未决项与人工复核
 
-1. 提供并固定 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件及格式说明，补齐每个刷新点的 range，并核对 recovered import plan 的 742 行。
+1. 公开文本源已固定并带来源说明/SHA；继续逐条复核 679 条 active YXS refresh 与 Zircon RespawnInfo 的身份、地图、坐标匹配，处理 1 条解析 warning 和缺失 range 的 `range_pending` 项。
 2. 复核 Merchant 快照的固定坐标记录与 130 条脚本/地图唯一匹配，确认其余 NPC 的身份和目标点。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
@@ -100,7 +98,7 @@
 
 ```bash
 cd /home/tetsuya/development/Mir3-Research
-python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-spawn /home/tetsuya/development/zircon/Tools/DbMigrationTool/data/import_plan_v2.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
+python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir --mud3-source-dir docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/mud3/Envir --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
 python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
 ```

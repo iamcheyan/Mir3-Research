@@ -529,12 +529,14 @@ def build_four_way_evidence(
     catalog_entry: dict[str, Any] | None,
     mapped: dict[str, Any] | None,
     zircon_catalog: dict[int, dict[str, Any]],
+    dat_catalog: dict[int, dict[str, Any]],
     image_shape: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     current = current_monster_evidence(mapped)
     image_name = str(mapped.get("Image", "")) if mapped else ""
     current_shape = image_shape.get(image_name)
     wiki = zircon_catalog.get(int(mapped["Index"])) if mapped and str(mapped.get("Index", "")).lstrip("-").isdigit() else None
+    dat_entry = dat_catalog.get(int(source["Index"])) if str(source.get("Index", "")).lstrip("-").isdigit() else None
     tag = (catalog_entry or {}).get("tag") or source.get("tag") or "unverified"
     if tag == "changed" and mapped:
         status = "legacy-atlas-changed-confirmed"
@@ -549,6 +551,7 @@ def build_four_way_evidence(
     return {
         "legacy_atlas_entry": catalog_entry,
         "hero_kill_definition": source_attribute_subset(source),
+        "monster_dat_catalog_entry": dat_entry,
         "current_monster_info": current,
         "zircon_catalog_entry": wiki,
         "image_shape_evidence": {
@@ -567,10 +570,12 @@ def build_monster_identity(
     snapshot: list[dict[str, Any]],
     legacy_catalog: dict[int, dict[str, Any]] | None = None,
     zircon_catalog: dict[int, dict[str, Any]] | None = None,
+    dat_catalog: dict[int, dict[str, Any]] | None = None,
     image_shape: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     legacy_catalog = legacy_catalog or {}
     zircon_catalog = zircon_catalog or {}
+    dat_catalog = dat_catalog or {}
     image_shape = image_shape or {}
     by_name = {norm_name(str(m.get("MonsterName", ""))): m for m in monsters}
     by_index = {int(m["Index"]): m for m in monsters}
@@ -602,7 +607,7 @@ def build_monster_identity(
         if mapped:
             idx = int(mapped["Index"])
             used[idx].append(name)
-        four_way = build_four_way_evidence(source, catalog_entry, mapped, zircon_catalog, image_shape)
+        four_way = build_four_way_evidence(source, catalog_entry, mapped, zircon_catalog, dat_catalog, image_shape)
         four_way_rows.append({
             "hero_kill_monster_id": source.get("Index"),
             "hero_kill_monster_name": name,
@@ -638,9 +643,203 @@ def build_monster_identity(
         "four_way_evidence_status_counts": dict(Counter(r["evidence_status"] for r in four_way_rows)),
         "image_shape_resolved_count": sum(1 for r in four_way_rows if r["image_shape_evidence"]["status"] == "resolved"),
         "legacy_catalog_entry_count": sum(1 for r in four_way_rows if r["legacy_atlas_entry"] is not None),
+        "monster_dat_catalog_entry_count": sum(1 for r in four_way_rows if r["monster_dat_catalog_entry"] is not None),
         "zircon_catalog_entry_count": sum(1 for r in four_way_rows if r["zircon_catalog_entry"] is not None),
     }
     return rows_out, {"stats": stats, "conflicts": conflicts, "zircon_only": zircon_only, "four_way_evidence": four_way_rows}
+def source_text(path: Path) -> tuple[str, str]:
+    raw = path.read_bytes()
+    for encoding in ("utf-8", "gb18030", "utf-16", "big5"):
+        try:
+            return raw.decode(encoding), encoding
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace"), "utf-8-replace"
+
+
+def file_source_meta(path: Path | None, role: str) -> dict[str, Any]:
+    if path is None or not path.exists():
+        return {"present": False, "path": str(path) if path else None, "role": role, "bytes": None, "sha256": None}
+    return {"present": True, "path": str(path), "role": role, "bytes": path.stat().st_size, "sha256": sha256(path)}
+
+
+def source_inventory(envir_dir: Path | None) -> dict[str, Any]:
+    """Inventory a local server source tree without modifying it."""
+    if envir_dir is None or not envir_dir.exists():
+        return {"present": False, "path": str(envir_dir) if envir_dir else None}
+    control = next(
+        (p for p in envir_dir.iterdir() if p.is_file() and p.name.casefold() == "mong en.txt".replace(" ", "")),
+        None,
+    )
+    if control is None:
+        control = next(
+            (p for p in envir_dir.iterdir() if p.is_file() and p.name.casefold() == "mongen.txt"),
+            None,
+        )
+    active_names: list[str] = []
+    control_encoding = None
+    if control is not None:
+        control_text, control_encoding = source_text(control)
+        active_names = re.findall(r'^\s*loadgen\s+"([^"]+)"', control_text, re.IGNORECASE | re.MULTILINE)
+    gen_dir = envir_dir / "Mon_Def"
+    all_gen = sorted(gen_dir.glob("*.gen")) if gen_dir.exists() else []
+    by_name = {p.name.casefold(): p for p in all_gen}
+    active_gen = [by_name[name.casefold()] for name in active_names if name.casefold() in by_name]
+    if not active_gen:
+        active_gen = all_gen
+    files = ([control] if control else []) + all_gen
+    file_records = [
+        {
+            "path": str(p),
+            "relative_path": str(p.relative_to(envir_dir.parent.parent)) if len(p.parts) >= 2 else p.name,
+            "bytes": p.stat().st_size,
+            "sha256": sha256(p),
+            "role": "control" if p == control else "mon_def",
+        }
+        for p in files
+    ]
+    aggregate = hashlib.sha256()
+    for record, p in zip(file_records, files):
+        aggregate.update(record["relative_path"].encode("utf-8"))
+        aggregate.update(b"\0")
+        aggregate.update(p.read_bytes())
+        aggregate.update(b"\0")
+    return {
+        "present": True,
+        "path": str(envir_dir),
+        "control_file": str(control) if control else None,
+        "control_encoding": control_encoding,
+        "all_gen_file_count": len(all_gen),
+        "active_gen_file_count": len(active_gen),
+        "all_gen_files": [str(p) for p in all_gen],
+        "active_gen_files": [str(p) for p in active_gen],
+        "file_count": len(files),
+        "files": file_records,
+        "aggregate_sha256": aggregate.hexdigest(),
+    }
+
+
+def numeric_token(value: str) -> int | float | None:
+    try:
+        number = float(value)
+    except ValueError:
+        return None
+    return int(number) if number.is_integer() else number
+
+
+def load_raw_gen_spawns(
+    envir_dir: Path | None,
+    identity_rows: list[dict[str, Any]],
+    monsters: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], str, dict[str, Any]]:
+    """Parse active Mon_Def/*.gen files as read-only spawn evidence."""
+    meta = source_inventory(envir_dir)
+    if not meta.get("present"):
+        return [], f"pending: raw Mon_Def source unavailable: {envir_dir}", meta
+    identity_by_name: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in identity_rows:
+        identity_by_name[norm_name(str(row.get("hero_kill_monster_name", "")))].append(row)
+    current_by_name = {norm_name(str(m.get("MonsterName", ""))): m for m in monsters}
+    explicit_names = EXPLICIT_MONSTER_MAP
+    rows_out: list[dict[str, Any]] = []
+    parse_warnings = 0
+    active_paths = [Path(p) for p in meta["active_gen_files"]]
+    for path in active_paths:
+        text, encoding = source_text(path)
+        for line_number, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            if not stripped or stripped.startswith(";") or stripped.startswith("["):
+                continue
+            tokens = stripped.split()
+            if len(tokens) < 7 or not re.fullmatch(r"-?\d+", tokens[1]) or not re.fullmatch(r"-?\d+", tokens[2]):
+                continue
+            numeric_tail: list[int | float] = []
+            while len(numeric_tail) < 4 and len(tokens) - len(numeric_tail) - 1 >= 3:
+                value = numeric_token(tokens[-len(numeric_tail) - 1])
+                if value is None:
+                    break
+                numeric_tail.insert(0, value)
+            if len(numeric_tail) < 3:
+                continue
+            name_end = len(tokens) - len(numeric_tail)
+            raw_name = " ".join(tokens[3:name_end]).strip()
+            warning = None
+            if not raw_name or any('"' in token or "'" in token for token in tokens[3:name_end]):
+                warning = "malformed-monster-name"
+                parse_warnings += 1
+            fields = {
+                "range": numeric_tail[0],
+                "count": numeric_tail[1],
+                "interval": numeric_tail[2],
+            }
+            if len(numeric_tail) == 4:
+                fields["c_ratio"] = numeric_tail[3]
+            identity_matches = identity_by_name.get(norm_name(raw_name), [])
+            mapped_index = None
+            mapped_name = None
+            mapping_status = "pending"
+            if len(identity_matches) == 1:
+                mapped_index = identity_matches[0].get("mapped_zircon_monster_index")
+                mapped_name = identity_matches[0].get("mapped_zircon_monster_name")
+                mapping_status = identity_matches[0].get("status", "pending")
+            elif len(identity_matches) > 1:
+                mapping_status = "ambiguous-source-identity"
+            elif norm_name(raw_name) in current_by_name:
+                current = current_by_name[norm_name(raw_name)]
+                mapped_index = current.get("Index")
+                mapped_name = current.get("MonsterName")
+                mapping_status = "exact-current-name"
+            elif raw_name in explicit_names:
+                mapping = explicit_names[raw_name]
+                if mapping[0] is not None:
+                    mapped_index = mapping[0]
+                    mapped_name = mapping[1]
+                mapping_status = mapping[2]
+            rows_out.append({
+                "map": tokens[0],
+                "x": int(tokens[1]),
+                "y": int(tokens[2]),
+                "monster": raw_name,
+                **fields,
+                "source_file": str(path),
+                "source_line": line_number,
+                "source_encoding": encoding,
+                "source_format": "Mon_Def.gen",
+                "parse_warning": warning,
+                "_mapped_zircon_index": mapped_index,
+                "_mapped_zircon_name": mapped_name,
+                "_raw_identity_status": mapping_status,
+            })
+    range_count = sum(1 for row in rows_out if row.get("range") is not None)
+    status = (
+        f"source present: {envir_dir} "
+        f"({len(rows_out)} active Mon_Def refresh rows; "
+        f"{meta['active_gen_file_count']}/{meta['all_gen_file_count']} active .gen files; "
+        f"range/count parsed; parse_warnings={parse_warnings})"
+    )
+    meta["parsed_refresh_row_count"] = len(rows_out)
+    meta["parsed_range_row_count"] = range_count
+    meta["parse_warning_count"] = parse_warnings
+    meta["unique_monster_name_count"] = len({str(row["monster"]) for row in rows_out})
+    meta["mapped_refresh_row_count"] = sum(1 for row in rows_out if row.get("_mapped_zircon_name"))
+    return rows_out, status, meta
+
+
+def spawn_identity_evidence(
+    rows: list[dict[str, Any]],
+    source_name: str,
+) -> dict[str, Any]:
+    counts = Counter(str(row.get("_raw_identity_status", "pending")) for row in rows)
+    names = sorted({str(row.get("monster", "")) for row in rows})
+    return {
+        "source": source_name,
+        "row_count": len(rows),
+        "unique_monster_names": len(names),
+        "identity_status_counts": dict(counts),
+        "sample_names": names[:50],
+    }
+
+
 def load_hero_spawn_plan(path: Path | None, monsters: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
     """Load the recovered EI import plan without treating it as a DB write plan."""
     if path is None or not path.exists():
@@ -691,16 +890,19 @@ def build_refresh_gap_audit(
         hero = {
             "hero_kill_map": source.get("map"),
             "hero_kill_xy": {"x": source.get("x"), "y": source.get("y")},
-            "hero_kill_range": None,
+            "hero_kill_range": source.get("range"),
             "hero_kill_count": source.get("count"),
+            "hero_kill_interval": source.get("interval"),
             "hero_kill_monster_name": source.get("monster"),
             "mapped_zircon_monster_index": source.get("_mapped_zircon_index"),
             "mapped_zircon_monster_name": source.get("_mapped_zircon_name"),
             "current_respawn_indices": [int(x["old_respawn"]["index"]) for x in candidates],
             "status": status,
-            "source": "DbMigrationTool/data/import_plan_v2.json",
+            "source": source.get("source_file") or "DbMigrationTool/data/import_plan_v2.json",
+            "source_line": source.get("source_line"),
             "confidence": "medium" if status == "matched" else "pending",
-            "range_note": "source plan has count but no radius/range field; do not infer write target",
+            "range_note": "parsed from local Mon_Def source" if source.get("range") is not None else "source has no radius/range field; do not infer write target",
+            "parse_warning": source.get("parse_warning"),
         }
         hero_rows.append(hero)
         if status == "yxs-only":
@@ -801,21 +1003,22 @@ def build_respawns(
         out.append({
             "hero_kill_map": hero_map,
             "hero_kill_xy": hero_xy,
-            "hero_kill_range": None,
+            "hero_kill_range": source.get("range") if source else None,
             "hero_kill_count": source.get("count") if source else None,
+            "hero_kill_interval": source.get("interval") if source else None,
             "hero_kill_monster_name": source.get("monster") if source else None,
             "mapped_zircon_monster_index": monster.get("Index"),
             "mapped_zircon_monster_name": monster.get("MonsterName"),
             "old_respawn": {"index": r.get("Index"), "map": map_name, "xy": {"x": x, "y": y} if x is not None else None, "region_index": region.get("Index"), "region_name": region.get("_Identity"), "region_size": size, "count": r.get("Count"), "delay": r.get("Delay"), "respawn_index": r.get("RespawnIndex")},
-            "new_respawn": {"map": hero_map, "xy": hero_xy, "count": source.get("count"), "range": None} if source else None,
+            "new_respawn": {"map": hero_map, "xy": hero_xy, "count": source.get("count"), "range": source.get("range")} if source else None,
             "confidence": "medium" if source else "pending",
             "walkable": walk,
             "hero_kill_walkable": hero_walkable(hero_root, hero_map, source.get("x"), source.get("y")) if source else "pending",
             "overlap": [],
             "apply_status": "pending-review" if source else "blocked",
-            "mapping_method": "hero-kill-plan-exact-coordinate" if match_status == "matched" else "hero-kill-plan-ambiguous-coordinate" if match_status == "conflict" else "zircon-only-refresh-no-exact-plan-match",
+            "mapping_method": "hero-kill-gen-exact-coordinate" if match_status == "matched" and source.get("source_format") == "Mon_Def.gen" else "hero-kill-plan-exact-coordinate" if match_status == "matched" else "hero-kill-plan-ambiguous-coordinate" if match_status == "conflict" else "zircon-only-refresh-no-exact-plan-match",
             "match_status": match_status,
-            "range_note": "source plan has count but no radius/range field; do not infer write target",
+            "range_note": "parsed from local Mon_Def source" if source and source.get("range") is not None else "source has no radius/range field; do not infer write target",
         })
     return out, {
         "respawn_count": len(out),
@@ -850,11 +1053,15 @@ def main() -> int:
     ap.add_argument("--merchant-source", type=Path, default=None)
     ap.add_argument("--monster-source", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monster.json")
     ap.add_argument("--monster-snapshot", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monsters_zircon.json")
+    ap.add_argument("--monster-dat-catalog", type=Path, default=Path(__file__).parents[2] / "docs/research/ei-ui-layout/monster-dat-catalog.json")
+    ap.add_argument("--monster-dat-path", type=Path, default=Path("/home/tetsuya/mir3-reference/2026-09-25/mud3/Envir/monster.dat"))
     ap.add_argument("--monster-atlas-catalog", type=Path, default=Path(__file__).parents[2] / "docs/legacy-atlas/content/catalog-mud3.html")
     ap.add_argument("--monster-atlas-page", type=Path, default=Path(__file__).parents[2] / "docs/legacy-atlas/content/monsters.html")
     ap.add_argument("--monster-zircon-catalog", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monsters_zircon.json")
     ap.add_argument("--monster-enum", type=Path, default=Path("/home/tetsuya/development/zircon/LibraryCore/Enum.cs"))
     ap.add_argument("--monster-lookup", type=Path, default=Path("/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs"))
+    ap.add_argument("--hero-source-dir", type=Path, default=None, help="EI/YXS Envir directory containing Mongen.txt and Mon_Def/*.gen")
+    ap.add_argument("--mud3-source-dir", type=Path, default=None, help="Mud3 Envir directory retained as secondary raw evidence")
     ap.add_argument("--hero-spawn", type=Path, default=None)
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
@@ -879,6 +1086,12 @@ def main() -> int:
     )
     source_records = load(args.monster_source)["records"] if args.monster_source.exists() else []
     snapshot = load(args.monster_snapshot) if args.monster_snapshot.exists() else []
+    dat_catalog_doc = load(args.monster_dat_catalog) if args.monster_dat_catalog.exists() else {}
+    dat_catalog = {
+        int(entry["Index"]): entry
+        for entry in dat_catalog_doc.get("records", [])
+        if isinstance(entry, dict) and str(entry.get("Index", "")).lstrip("-").isdigit()
+    }
     legacy_catalog = load_legacy_monster_catalog(args.monster_atlas_catalog)
     zircon_catalog_raw = load(args.monster_zircon_catalog) if args.monster_zircon_catalog.exists() else []
     zircon_catalog = {
@@ -893,9 +1106,27 @@ def main() -> int:
         snapshot,
         legacy_catalog,
         zircon_catalog,
+        dat_catalog,
         image_shape,
     )
-    hero_source_records, spawn_status = load_hero_spawn_plan(args.hero_spawn, monsters)
+    mud3_source_records, mud3_spawn_status, mud3_source_meta = load_raw_gen_spawns(
+        args.mud3_source_dir,
+        monster_identity,
+        monsters,
+    ) if args.mud3_source_dir else ([], None, source_inventory(None))
+    if args.hero_source_dir:
+        hero_source_records, spawn_status, hero_source_meta = load_raw_gen_spawns(
+            args.hero_source_dir,
+            monster_identity,
+            monsters,
+        )
+    else:
+        hero_source_records, spawn_status = load_hero_spawn_plan(args.hero_spawn, monsters)
+        hero_source_meta = source_inventory(None)
+    if hero_source_meta.get("present"):
+        hero_source_meta["identity_evidence"] = spawn_identity_evidence(hero_source_records, "hero_kill_raw")
+    if mud3_source_meta.get("present"):
+        mud3_source_meta["identity_evidence"] = spawn_identity_evidence(mud3_source_records, "mud3_raw")
     source_by_key = hero_source_index(hero_source_records)
     monster_respawns, respawn_stats = build_respawns(
         respawns,
@@ -912,12 +1143,38 @@ def main() -> int:
         monster_respawns,
     )
     respawn_stats.update(refresh_stats)
+    raw_sources = {
+        "hero_kill": hero_source_meta,
+        "mud3_secondary": mud3_source_meta,
+        "monster_dat_catalog": file_source_meta(args.monster_dat_catalog, "public-derived-monster-dat-catalog"),
+        "monster_dat_private": file_source_meta(args.monster_dat_path, "private-original-monster.dat"),
+    }
+    raw_sources["mud3_secondary"]["parsed_refresh_row_count"] = len(mud3_source_records)
     manifest = {
         "manifest_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
         "mode": "offline-dry-run",
         "database_write": False,
         "coordinate_unit": "logical map grid",
-        "sources": {"workspace": str(args.workspace), "hero_kill_maps": str(args.hero_map_dir), "zircon_maps": str(args.zircon_map_dir), "npc_audit": str(args.audit), "merchant_source": str(args.merchant_source) if args.merchant_source else None, "merchant_status": merchant_status, "hero_kill_monster_definitions": str(args.monster_source), "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None, "legacy_monster_catalog": str(args.monster_atlas_catalog), "legacy_monster_page": str(args.monster_atlas_page), "zircon_monster_catalog": str(args.monster_zircon_catalog), "monster_image_enum": str(args.monster_enum), "monster_image_lookup": str(args.monster_lookup)},
+        "sources": {
+            "workspace": str(args.workspace),
+            "hero_kill_maps": str(args.hero_map_dir),
+            "zircon_maps": str(args.zircon_map_dir),
+            "npc_audit": str(args.audit),
+            "merchant_source": str(args.merchant_source) if args.merchant_source else None,
+            "merchant_status": merchant_status,
+            "hero_kill_monster_definitions": str(args.monster_source),
+            "monster_dat_catalog": str(args.monster_dat_catalog),
+            "monster_dat_private": str(args.monster_dat_path),
+            "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None,
+            "hero_kill_raw_source": str(args.hero_source_dir) if args.hero_source_dir else None,
+            "mud3_raw_source": str(args.mud3_source_dir) if args.mud3_source_dir else None,
+            "legacy_monster_catalog": str(args.monster_atlas_catalog),
+            "legacy_monster_page": str(args.monster_atlas_page),
+            "zircon_monster_catalog": str(args.monster_zircon_catalog),
+            "monster_image_enum": str(args.monster_enum),
+            "monster_image_lookup": str(args.monster_lookup),
+        },
+        "raw_source_metadata": raw_sources,
         "map_stats": map_stats,
         "npc_stats": npc_stats,
         "monster_identity_stats": identity_meta["stats"],
@@ -935,7 +1192,7 @@ def main() -> int:
         "zircon_only_monsters": identity_meta["zircon_only"],
         "missing_yxs_refresh": yxs_only_refresh,
         "missing_yxs_refresh_status": spawn_status,
-        "shared_checks": {"npc_monster_overlap": "pending: refresh source has points but no source range/radius", "independent_parser": "this tool parses map cell records independently; verifier runs a second implementation"},
+        "shared_checks": {"npc_monster_overlap": "pending: target point/range overlap requires manual closure", "independent_parser": "this tool parses map cell records independently; verifier runs a second implementation"},
     }
     (args.out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (args.out / "map_manifest.json").write_text(json.dumps({"manifest_id": manifest["manifest_id"], "stats": map_stats, "maps": maps}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
