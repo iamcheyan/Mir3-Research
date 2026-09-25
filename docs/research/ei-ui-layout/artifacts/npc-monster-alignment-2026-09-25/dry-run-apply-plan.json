@@ -16,48 +16,6 @@
   ],
   "npc_candidates": [
     {
-      "npc_index": 30,
-      "npc_name": "Mr. Kim",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 351,
-          "y": 219
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 351,
-          "y": 219
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 31,
-      "npc_name": "Henry",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 331,
-          "y": 225
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 331,
-          "y": 225
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
       "npc_index": 32,
       "npc_name": "Kacy",
       "old": {
@@ -142,27 +100,6 @@
       "confidence": "low"
     },
     {
-      "npc_index": 36,
-      "npc_name": "Sara",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 342,
-          "y": 235
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 342,
-          "y": 235
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
       "npc_index": 37,
       "npc_name": "Parker",
       "old": {
@@ -177,69 +114,6 @@
         "xy": {
           "x": 343,
           "y": 219
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 41,
-      "npc_name": "Hexa Holy Stone",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 306,
-          "y": 244
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 306,
-          "y": 244
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 44,
-      "npc_name": "Hexa Holy Stone",
-      "old": {
-        "map": "4",
-        "xy": {
-          "x": 435,
-          "y": 83
-        }
-      },
-      "new": {
-        "map": "4",
-        "xy": {
-          "x": 435,
-          "y": 83
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 65,
-      "npc_name": "Tumur",
-      "old": {
-        "map": "4",
-        "xy": {
-          "x": 438,
-          "y": 52
-        }
-      },
-      "new": {
-        "map": "4",
-        "xy": {
-          "x": 438,
-          "y": 52
         }
       },
       "apply_status": "dry-run",
@@ -286,27 +160,6 @@
       },
       "apply_status": "dry-run",
       "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 68,
-      "npc_name": "Wooshas",
-      "old": {
-        "map": "4",
-        "xy": {
-          "x": 426,
-          "y": 95
-        }
-      },
-      "new": {
-        "map": "4",
-        "xy": {
-          "x": 426,
-          "y": 95
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "pending",
       "confidence": "low"
     },
     {
@@ -373,27 +226,6 @@
       "confidence": "low"
     },
     {
-      "npc_index": 77,
-      "npc_name": "Dr. Park",
-      "old": {
-        "map": "8",
-        "xy": {
-          "x": 282,
-          "y": 224
-        }
-      },
-      "new": {
-        "map": "8",
-        "xy": {
-          "x": 282,
-          "y": 224
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
       "npc_index": 78,
       "npc_name": "Lafayette",
       "old": {
@@ -408,27 +240,6 @@
         "xy": {
           "x": 253,
           "y": 291
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 79,
-      "npc_name": "Cherrill",
-      "old": {
-        "map": "8",
-        "xy": {
-          "x": 266,
-          "y": 285
-        }
-      },
-      "new": {
-        "map": "8",
-        "xy": {
-          "x": 266,
-          "y": 285
         }
       },
       "apply_status": "dry-run",
@@ -478,69 +289,6 @@
       "confidence": "low"
     },
     {
-      "npc_index": 93,
-      "npc_name": "Notice Board",
-      "old": {
-        "map": "4",
-        "xy": {
-          "x": 428,
-          "y": 97
-        }
-      },
-      "new": {
-        "map": "4",
-        "xy": {
-          "x": 428,
-          "y": 97
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "pending",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 97,
-      "npc_name": "Wizard Teacher",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 347,
-          "y": 193
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 347,
-          "y": 193
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 98,
-      "npc_name": "Village Elder",
-      "old": {
-        "map": "4",
-        "xy": {
-          "x": 426,
-          "y": 97
-        }
-      },
-      "new": {
-        "map": "4",
-        "xy": {
-          "x": 426,
-          "y": 97
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
       "npc_index": 102,
       "npc_name": "Companion Manager",
       "old": {
@@ -580,48 +328,6 @@
       },
       "apply_status": "dry-run",
       "match_method": "pending",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 106,
-      "npc_name": "Jack",
-      "old": {
-        "map": "2",
-        "xy": {
-          "x": 314,
-          "y": 193
-        }
-      },
-      "new": {
-        "map": "2",
-        "xy": {
-          "x": 314,
-          "y": 193
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 118,
-      "npc_name": "Hexa Holy Stone",
-      "old": {
-        "map": "8",
-        "xy": {
-          "x": 288,
-          "y": 241
-        }
-      },
-      "new": {
-        "map": "8",
-        "xy": {
-          "x": 288,
-          "y": 241
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "semantic-audit",
       "confidence": "low"
     },
     {
@@ -667,27 +373,6 @@
       "confidence": "low"
     },
     {
-      "npc_index": 141,
-      "npc_name": "14Quest_Bichon",
-      "old": {
-        "map": "0_003",
-        "xy": {
-          "x": 27,
-          "y": 35
-        }
-      },
-      "new": {
-        "map": "0_003",
-        "xy": {
-          "x": 27,
-          "y": 35
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 142,
       "npc_name": "01Meet_Kugkyung",
       "old": {
@@ -702,27 +387,6 @@
         "xy": {
           "x": 425,
           "y": 274
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 143,
-      "npc_name": "02Weapon_Kugkyung",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 459,
-          "y": 279
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 459,
-          "y": 279
         }
       },
       "apply_status": "dry-run",
@@ -772,27 +436,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 146,
-      "npc_name": "05Book_Kugkyung",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 445,
-          "y": 319
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 445,
-          "y": 319
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 147,
       "npc_name": "06Inn_Kugkyung",
       "old": {
@@ -807,27 +450,6 @@
         "xy": {
           "x": 471,
           "y": 279
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 148,
-      "npc_name": "07Grocery_Kugkyung",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 433,
-          "y": 282
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 433,
-          "y": 282
         }
       },
       "apply_status": "dry-run",
@@ -856,27 +478,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 150,
-      "npc_name": "10Material_Kugkyung",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 431,
-          "y": 307
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 431,
-          "y": 307
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 151,
       "npc_name": "10ChestnutMarket_Kugkyung",
       "old": {
@@ -898,27 +499,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 152,
-      "npc_name": "13Move_Kugkyung1",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 456,
-          "y": 216
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 456,
-          "y": 216
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 153,
       "npc_name": "13Move_Kugkyung2",
       "old": {
@@ -933,27 +513,6 @@
         "xy": {
           "x": 411,
           "y": 287
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 154,
-      "npc_name": "13Move_Kugkyung3",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 463,
-          "y": 356
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 463,
-          "y": 356
         }
       },
       "apply_status": "dry-run",
@@ -996,48 +555,6 @@
         "xy": {
           "x": 461,
           "y": 257
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 157,
-      "npc_name": "14Quest_KugKyung2",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 444,
-          "y": 245
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 444,
-          "y": 245
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 158,
-      "npc_name": "14Quest_Kugkyung3",
-      "old": {
-        "map": "01",
-        "xy": {
-          "x": 476,
-          "y": 284
-        }
-      },
-      "new": {
-        "map": "01",
-        "xy": {
-          "x": 476,
-          "y": 284
         }
       },
       "apply_status": "dry-run",
@@ -1164,27 +681,6 @@
         "xy": {
           "x": 422,
           "y": 262
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 165,
-      "npc_name": "01Meet_Eunhang",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 228,
-          "y": 194
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 228,
-          "y": 194
         }
       },
       "apply_status": "dry-run",
@@ -1423,48 +919,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 177,
-      "npc_name": "14Doctor_Eunhang",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 264,
-          "y": 195
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 264,
-          "y": 195
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 178,
-      "npc_name": "14Quest_Euhang",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 264,
-          "y": 201
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 264,
-          "y": 201
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 179,
       "npc_name": "15Magic_Eunhang1",
       "old": {
@@ -1479,27 +933,6 @@
         "xy": {
           "x": 265,
           "y": 145
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 180,
-      "npc_name": "15Magic_Eunhang2",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 353,
-          "y": 212
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 353,
-          "y": 212
         }
       },
       "apply_status": "dry-run",
@@ -1525,69 +958,6 @@
       },
       "apply_status": "dry-run",
       "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 182,
-      "npc_name": "15Magic_Euhang",
-      "old": {
-        "map": "02_003",
-        "xy": {
-          "x": 91,
-          "y": 14
-        }
-      },
-      "new": {
-        "map": "02_003",
-        "xy": {
-          "x": 91,
-          "y": 14
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 183,
-      "npc_name": "15Magic_Euhang",
-      "old": {
-        "map": "02_004",
-        "xy": {
-          "x": 25,
-          "y": 41
-        }
-      },
-      "new": {
-        "map": "02_004",
-        "xy": {
-          "x": 25,
-          "y": 41
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 184,
-      "npc_name": "09Repair_Euhang",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 243,
-          "y": 234
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 243,
-          "y": 234
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
       "confidence": "medium"
     },
     {
@@ -1626,27 +996,6 @@
         "xy": {
           "x": 14,
           "y": 12
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 187,
-      "npc_name": "03Armor_DoGwan",
-      "old": {
-        "map": "1_003",
-        "xy": {
-          "x": 13,
-          "y": 16
-        }
-      },
-      "new": {
-        "map": "1_003",
-        "xy": {
-          "x": 13,
-          "y": 16
         }
       },
       "apply_status": "dry-run",
@@ -1822,27 +1171,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 196,
-      "npc_name": "15Magic_DoGwan",
-      "old": {
-        "map": "1_011",
-        "xy": {
-          "x": 91,
-          "y": 14
-        }
-      },
-      "new": {
-        "map": "1_011",
-        "xy": {
-          "x": 91,
-          "y": 14
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 197,
       "npc_name": "15Magic_DoGwan0",
       "old": {
@@ -1857,48 +1185,6 @@
         "xy": {
           "x": 44,
           "y": 25
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 198,
-      "npc_name": "15Magic_DoGwan1",
-      "old": {
-        "map": "1_013",
-        "xy": {
-          "x": 26,
-          "y": 20
-        }
-      },
-      "new": {
-        "map": "1_013",
-        "xy": {
-          "x": 26,
-          "y": 20
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 199,
-      "npc_name": "15Magic_DoGwan2",
-      "old": {
-        "map": "1_013",
-        "xy": {
-          "x": 29,
-          "y": 23
-        }
-      },
-      "new": {
-        "map": "1_013",
-        "xy": {
-          "x": 29,
-          "y": 23
         }
       },
       "apply_status": "dry-run",
@@ -1927,27 +1213,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 201,
-      "npc_name": "15Magic_DoGwan4",
-      "old": {
-        "map": "1_013",
-        "xy": {
-          "x": 35,
-          "y": 15
-        }
-      },
-      "new": {
-        "map": "1_013",
-        "xy": {
-          "x": 35,
-          "y": 15
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 202,
       "npc_name": "15Magic_DoGwan5",
       "old": {
@@ -1962,27 +1227,6 @@
         "xy": {
           "x": 26,
           "y": 26
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 203,
-      "npc_name": "15Magic_DoGwan6",
-      "old": {
-        "map": "1_013",
-        "xy": {
-          "x": 25,
-          "y": 41
-        }
-      },
-      "new": {
-        "map": "1_013",
-        "xy": {
-          "x": 25,
-          "y": 41
         }
       },
       "apply_status": "dry-run",
@@ -2095,132 +1339,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 209,
-      "npc_name": "08Astrologist_Oasis",
-      "old": {
-        "map": "4_005",
-        "xy": {
-          "x": 14,
-          "y": 22
-        }
-      },
-      "new": {
-        "map": "4_005",
-        "xy": {
-          "x": 14,
-          "y": 22
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 210,
-      "npc_name": "10Material_Oasis",
-      "old": {
-        "map": "4_003",
-        "xy": {
-          "x": 12,
-          "y": 8
-        }
-      },
-      "new": {
-        "map": "4_003",
-        "xy": {
-          "x": 12,
-          "y": 8
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 211,
-      "npc_name": "02Weapon_Samak1",
-      "old": {
-        "map": "5_002",
-        "xy": {
-          "x": 8,
-          "y": 17
-        }
-      },
-      "new": {
-        "map": "5_002",
-        "xy": {
-          "x": 8,
-          "y": 17
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 212,
-      "npc_name": "02Weapon_Samak2",
-      "old": {
-        "map": "5_002",
-        "xy": {
-          "x": 7,
-          "y": 19
-        }
-      },
-      "new": {
-        "map": "5_002",
-        "xy": {
-          "x": 7,
-          "y": 19
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 213,
-      "npc_name": "03Armor_Samak",
-      "old": {
-        "map": "5_004",
-        "xy": {
-          "x": 15,
-          "y": 15
-        }
-      },
-      "new": {
-        "map": "5_004",
-        "xy": {
-          "x": 15,
-          "y": 15
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 214,
-      "npc_name": "04Potion_Samak",
-      "old": {
-        "map": "5_003",
-        "xy": {
-          "x": 13,
-          "y": 17
-        }
-      },
-      "new": {
-        "map": "5_003",
-        "xy": {
-          "x": 13,
-          "y": 17
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 215,
       "npc_name": "06Inn_Samak",
       "old": {
@@ -2235,27 +1353,6 @@
         "xy": {
           "x": 12,
           "y": 23
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 216,
-      "npc_name": "08Accessory_Samak",
-      "old": {
-        "map": "5_005",
-        "xy": {
-          "x": 9,
-          "y": 11
-        }
-      },
-      "new": {
-        "map": "5_005",
-        "xy": {
-          "x": 9,
-          "y": 11
         }
       },
       "apply_status": "dry-run",
@@ -2284,27 +1381,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 220,
-      "npc_name": "02Weapon_Mongchon",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 354,
-          "y": 297
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 354,
-          "y": 297
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 221,
       "npc_name": "03Armor_Mongchon",
       "old": {
@@ -2326,27 +1402,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 222,
-      "npc_name": "04Potion_Mongchon",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 289,
-          "y": 289
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 289,
-          "y": 289
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 223,
       "npc_name": "06Inn_Mongchon",
       "old": {
@@ -2361,48 +1416,6 @@
         "xy": {
           "x": 323,
           "y": 310
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 224,
-      "npc_name": "07Grocery_Mongchon",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 293,
-          "y": 278
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 293,
-          "y": 278
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 225,
-      "npc_name": "08Accessory_Mongchon",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 311,
-          "y": 273
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 311,
-          "y": 273
         }
       },
       "apply_status": "dry-run",
@@ -2452,27 +1465,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 228,
-      "npc_name": "13Move_Mongchon2",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 271,
-          "y": 267
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 271,
-          "y": 267
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 229,
       "npc_name": "15Magic_Mongchon1",
       "old": {
@@ -2508,27 +1500,6 @@
         "xy": {
           "x": 290,
           "y": 299
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 231,
-      "npc_name": "15Magic_Mongchon3",
-      "old": {
-        "map": "74",
-        "xy": {
-          "x": 297,
-          "y": 295
-        }
-      },
-      "new": {
-        "map": "74",
-        "xy": {
-          "x": 297,
-          "y": 295
         }
       },
       "apply_status": "dry-run",
@@ -2599,27 +1570,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 238,
-      "npc_name": "14Quest_SkeletonCave",
-      "old": {
-        "map": "D012_001",
-        "xy": {
-          "x": 13,
-          "y": 11
-        }
-      },
-      "new": {
-        "map": "D012_001",
-        "xy": {
-          "x": 13,
-          "y": 11
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 239,
       "npc_name": "14Quest_SkeletonCave",
       "old": {
@@ -2634,27 +1584,6 @@
         "xy": {
           "x": 9,
           "y": 11
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 240,
-      "npc_name": "14Quest_SkeletonCave",
-      "old": {
-        "map": "E002",
-        "xy": {
-          "x": 65,
-          "y": 12
-        }
-      },
-      "new": {
-        "map": "E002",
-        "xy": {
-          "x": 65,
-          "y": 12
         }
       },
       "apply_status": "dry-run",
@@ -2697,153 +1626,6 @@
         "xy": {
           "x": 29,
           "y": 175
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 243,
-      "npc_name": "14Quest_ZombieCave",
-      "old": {
-        "map": "E402_001",
-        "xy": {
-          "x": 13,
-          "y": 10
-        }
-      },
-      "new": {
-        "map": "E402_001",
-        "xy": {
-          "x": 13,
-          "y": 10
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 244,
-      "npc_name": "14Quest_ZombieCave",
-      "old": {
-        "map": "D404_002",
-        "xy": {
-          "x": 22,
-          "y": 11
-        }
-      },
-      "new": {
-        "map": "D404_002",
-        "xy": {
-          "x": 22,
-          "y": 11
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 245,
-      "npc_name": "14Quest_WoomaPalace",
-      "old": {
-        "map": "D023_001",
-        "xy": {
-          "x": 17,
-          "y": 21
-        }
-      },
-      "new": {
-        "map": "D023_001",
-        "xy": {
-          "x": 17,
-          "y": 21
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 246,
-      "npc_name": "14Quest_WoomaPalace",
-      "old": {
-        "map": "D022",
-        "xy": {
-          "x": 207,
-          "y": 47
-        }
-      },
-      "new": {
-        "map": "D022",
-        "xy": {
-          "x": 207,
-          "y": 47
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 247,
-      "npc_name": "14Quest_WoomaPalace",
-      "old": {
-        "map": "D022_001",
-        "xy": {
-          "x": 64,
-          "y": 21
-        }
-      },
-      "new": {
-        "map": "D022_001",
-        "xy": {
-          "x": 64,
-          "y": 21
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 248,
-      "npc_name": "04Potion_Zuma",
-      "old": {
-        "map": "D5071",
-        "xy": {
-          "x": 20,
-          "y": 23
-        }
-      },
-      "new": {
-        "map": "D5071",
-        "xy": {
-          "x": 20,
-          "y": 23
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 249,
-      "npc_name": "02Weapon_HalfTemple",
-      "old": {
-        "map": "D1110",
-        "xy": {
-          "x": 27,
-          "y": 13
-        }
-      },
-      "new": {
-        "map": "D1110",
-        "xy": {
-          "x": 27,
-          "y": 13
         }
       },
       "apply_status": "dry-run",
@@ -2914,48 +1696,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 253,
-      "npc_name": "13Move_HalfTemple2",
-      "old": {
-        "map": "D1110",
-        "xy": {
-          "x": 28,
-          "y": 31
-        }
-      },
-      "new": {
-        "map": "D1110",
-        "xy": {
-          "x": 28,
-          "y": 31
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 255,
-      "npc_name": "04Potion_SinGiSun",
-      "old": {
-        "map": "D90221",
-        "xy": {
-          "x": 22,
-          "y": 20
-        }
-      },
-      "new": {
-        "map": "D90221",
-        "xy": {
-          "x": 22,
-          "y": 20
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 260,
       "npc_name": "14Quest_SinGiSun",
       "old": {
@@ -2977,48 +1717,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 261,
-      "npc_name": "14Quest_SinGiSun",
-      "old": {
-        "map": "D90323",
-        "xy": {
-          "x": 16,
-          "y": 8
-        }
-      },
-      "new": {
-        "map": "D90323",
-        "xy": {
-          "x": 16,
-          "y": 8
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name-map",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 262,
-      "npc_name": "01Meet_NuMa",
-      "old": {
-        "map": "41",
-        "xy": {
-          "x": 126,
-          "y": 86
-        }
-      },
-      "new": {
-        "map": "41",
-        "xy": {
-          "x": 126,
-          "y": 86
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 263,
       "npc_name": "02Weapon_Numa",
       "old": {
@@ -3033,27 +1731,6 @@
         "xy": {
           "x": 145,
           "y": 82
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 264,
-      "npc_name": "03Armor_Numa",
-      "old": {
-        "map": "41",
-        "xy": {
-          "x": 141,
-          "y": 108
-        }
-      },
-      "new": {
-        "map": "41",
-        "xy": {
-          "x": 141,
-          "y": 108
         }
       },
       "apply_status": "dry-run",
@@ -3124,27 +1801,6 @@
       "confidence": "medium"
     },
     {
-      "npc_index": 268,
-      "npc_name": "08Accessory_Numa",
-      "old": {
-        "map": "41",
-        "xy": {
-          "x": 155,
-          "y": 105
-        }
-      },
-      "new": {
-        "map": "41",
-        "xy": {
-          "x": 155,
-          "y": 105
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
       "npc_index": 269,
       "npc_name": "10Material_Numa",
       "old": {
@@ -3159,27 +1815,6 @@
         "xy": {
           "x": 141,
           "y": 90
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "exact-script-name",
-      "confidence": "medium"
-    },
-    {
-      "npc_index": 270,
-      "npc_name": "09HorseMarket_Numa",
-      "old": {
-        "map": "41",
-        "xy": {
-          "x": 147,
-          "y": 106
-        }
-      },
-      "new": {
-        "map": "41",
-        "xy": {
-          "x": 147,
-          "y": 106
         }
       },
       "apply_status": "dry-run",
@@ -3283,7 +1918,7 @@
       "new": {
         "map": "02",
         "xy": {
-          "x": 250,
+          "x": 150,
           "y": 550
         }
       },
@@ -3325,55 +1960,13 @@
       "new": {
         "map": "02",
         "xy": {
-          "x": 350,
-          "y": 50
+          "x": 50,
+          "y": 150
         }
       },
       "apply_status": "dry-run",
       "match_method": "hero-kill-extra",
       "confidence": "medium"
-    },
-    {
-      "npc_index": 311,
-      "npc_name": "升级加点",
-      "old": {
-        "map": "02",
-        "xy": {
-          "x": 245,
-          "y": 242
-        }
-      },
-      "new": {
-        "map": "02",
-        "xy": {
-          "x": 245,
-          "y": 242
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "pending",
-      "confidence": "low"
-    },
-    {
-      "npc_index": 317,
-      "npc_name": "比赛评判",
-      "old": {
-        "map": "01_003",
-        "xy": {
-          "x": 4,
-          "y": 10
-        }
-      },
-      "new": {
-        "map": "01_003",
-        "xy": {
-          "x": 4,
-          "y": 10
-        }
-      },
-      "apply_status": "dry-run",
-      "match_method": "pending",
-      "confidence": "low"
     },
     {
       "npc_index": 318,
@@ -3388,8 +1981,8 @@
       "new": {
         "map": "02_0011",
         "xy": {
-          "x": 5,
-          "y": 9
+          "x": 4,
+          "y": 8
         }
       },
       "apply_status": "dry-run",
@@ -3409,8 +2002,8 @@
       "new": {
         "map": "1_012",
         "xy": {
-          "x": 5,
-          "y": 9
+          "x": 4,
+          "y": 8
         }
       },
       "apply_status": "dry-run",
@@ -3472,8 +2065,8 @@
       "new": {
         "map": "D1115",
         "xy": {
-          "x": 385,
-          "y": 18
+          "x": 384,
+          "y": 19
         }
       },
       "apply_status": "dry-run",
@@ -3493,8 +2086,8 @@
       "new": {
         "map": "D0002_001",
         "xy": {
-          "x": 5,
-          "y": 9
+          "x": 4,
+          "y": 8
         }
       },
       "apply_status": "dry-run",
@@ -3514,8 +2107,8 @@
       "new": {
         "map": "D0002_004",
         "xy": {
-          "x": 6,
-          "y": 24
+          "x": 5,
+          "y": 23
         }
       },
       "apply_status": "dry-run",
@@ -3535,8 +2128,8 @@
       "new": {
         "map": "02_006",
         "xy": {
-          "x": 24,
-          "y": 18
+          "x": 25,
+          "y": 17
         }
       },
       "apply_status": "dry-run",
@@ -3556,8 +2149,8 @@
       "new": {
         "map": "02_0061",
         "xy": {
-          "x": 24,
-          "y": 18
+          "x": 25,
+          "y": 17
         }
       },
       "apply_status": "dry-run",
@@ -3577,8 +2170,8 @@
       "new": {
         "map": "02_0062",
         "xy": {
-          "x": 24,
-          "y": 18
+          "x": 25,
+          "y": 17
         }
       },
       "apply_status": "dry-run",
@@ -3598,8 +2191,8 @@
       "new": {
         "map": "1_014",
         "xy": {
-          "x": 24,
-          "y": 18
+          "x": 25,
+          "y": 17
         }
       },
       "apply_status": "dry-run",
@@ -14106,7 +12699,7 @@
     }
   ],
   "blocked_counts": {
-    "npc_pending_review": 123,
+    "npc_pending_review": 190,
     "respawn_blocked": 2147,
     "respawn_pending_review": 328
   },

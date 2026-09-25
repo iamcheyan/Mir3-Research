@@ -15,7 +15,7 @@ def map_grid(path: Path):
     raw = path.read_bytes()
     w, h = struct.unpack_from("<HH", raw, 22)
     start = 28 + (w // 2) * (h // 2) * 3
-    if start + w * h * 14 > len(raw):
+    if start + w * h * 13 > len(raw):
         return None
     return w, h, raw, start
 
@@ -46,7 +46,7 @@ def panel(path: Path | None, points: list[tuple[int, int, str, str]], title: str
             pass_cells = 0
             for x in range(x0, x1):
                 for y in range(y0, y1):
-                    if raw[start + (x * h + y) * 14] & 3 == 3:
+                    if raw[start + (x * h + y) * 13] & 3 == 3:
                         pass_cells += 1
             value = 180 if pass_cells * 2 >= total else 55
             draw.point((px, py), fill=(value, value, value))

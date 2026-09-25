@@ -20,7 +20,7 @@ def read_map(path: Path):
         raise ValueError(f"short map header: {path}")
     w, h = struct.unpack_from("<HH", raw, 22)
     data_start = 28 + (w // 2) * (h // 2) * 3
-    required = data_start + w * h * 14
+    required = data_start + w * h * 13
     if required > len(raw):
         raise ValueError(f"short cell segment: {path} expected={required} actual={len(raw)}")
     return w, h, data_start, raw
@@ -32,7 +32,7 @@ def flag(map_path: Path, x: int, y: int) -> tuple[str, int | None]:
         return "fail", None
     # Independent implementation: calculate the x-major record offset rather
     # than using the builder's cached cell grid.
-    off = start + (x * h + y) * 14
+    off = start + (x * h + y) * 13
     value = raw[off]
     return ("pass" if (value & 3) == 3 else "fail"), value
 

@@ -46,7 +46,7 @@ def map_meta(path: Path | None) -> dict[str, Any]:
         return {"present": True, "path": str(path), "width": None, "height": None, "bytes": len(raw), "sha256": sha256(path), "parse": "invalid-header"}
     width, height = struct.unpack_from("<HH", raw, 22)
     base = 28 + (width // 2) * (height // 2) * 3
-    expected = base + width * height * 14
+    expected = base + width * height * 13
     return {"present": True, "path": str(path), "width": width, "height": height, "bytes": len(raw), "sha256": sha256(path), "cell_base": base, "expected_bytes": expected, "parse": "ok" if expected <= len(raw) else "truncated"}
 
 
@@ -62,7 +62,7 @@ def cell_flags(path: Path | None) -> tuple[dict[str, Any], bytes] | None:
         return None
     width, height = struct.unpack_from("<HH", raw, 22)
     base = 28 + (width // 2) * (height // 2) * 3
-    if base + width * height * 14 > len(raw):
+    if base + width * height * 13 > len(raw):
         return None
     return {"width": width, "height": height, "base": base}, raw
 
@@ -74,7 +74,7 @@ def walkable(path: Path | None, x: int | None, y: int | None) -> str:
     meta, raw = parsed
     if not (0 <= x < meta["width"] and 0 <= y < meta["height"]):
         return "fail"
-    off = meta["base"] + (x * meta["height"] + y) * 14
+    off = meta["base"] + (x * meta["height"] + y) * 13
     return "pass" if raw[off] & 3 == 3 else "fail"
 
 
@@ -83,7 +83,7 @@ def walk_summary(path: Path | None) -> dict[str, Any]:
     if parsed is None:
         return {"status": "pending", "walkable_cells": None, "total_cells": None, "walkable_ratio": None}
     meta, raw = parsed
-    flags = [raw[meta["base"] + (x * meta["height"] + y) * 14] for x in range(meta["width"]) for y in range(meta["height"])]
+    flags = [raw[meta["base"] + (x * meta["height"] + y) * 13] for x in range(meta["width"]) for y in range(meta["height"])]
     count = sum(1 for flag in flags if flag & 3 == 3)
     return {"status": "pass", "walkable_cells": count, "total_cells": len(flags), "walkable_ratio": round(count / len(flags), 6) if flags else None}
 
@@ -220,7 +220,7 @@ def candidate_points(path: Path | None, anchors: list[tuple[int, int]], occupied
                     x, y = ax + dx, ay + dy
                     if not (3 <= x < width - 3 and 3 <= y < height - 3):
                         continue
-                    off = meta["base"] + (x * height + y) * 14
+                    off = meta["base"] + (x * height + y) * 13
                     if not (raw[off] & 3 == 3) or (x, y) in occupied:
                         continue
                     separation = min((abs(x - ox) + abs(y - oy) for ox, oy in occupied), default=12)

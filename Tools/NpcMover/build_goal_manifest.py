@@ -37,14 +37,14 @@ def grid(path: Path | None) -> tuple[int, int, bytearray] | None:
         return None
     width, height = struct.unpack_from("<HH", raw, 22)
     offset = 28 + (width // 2) * (height // 2) * 3
-    if offset + width * height * 14 > len(raw):
+    if offset + width * height * 13 > len(raw):
         return None
     cells = bytearray(width * height)
     for x in range(width):
-        base = offset + x * height * 14
+        base = offset + x * height * 13
         for y in range(height):
             # Checked independently against Zircon/BotRunner/BotMap.cs.
-            cells[x * height + y] = int((raw[base + y * 14] & 3) == 3)
+            cells[x * height + y] = int((raw[base + y * 13] & 3) == 3)
     return width, height, cells
 
 

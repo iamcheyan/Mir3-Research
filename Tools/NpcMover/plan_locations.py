@@ -39,9 +39,9 @@ def walkable_grid(mapfile):
     off = 28 + w * h // 4 * 3
     grid = bytearray(w * h)
     for x in range(w):
-        base = off + x * h * 14
+        base = off + x * h * 13
         for y in range(h):
-            if (d[base + y * 14] & 3) == 3: grid[x * h + y] = 1
+            if (d[base + y * 13] & 3) == 3: grid[x * h + y] = 1
     _wcache[mapfile] = (w, h, grid)
     return _wcache[mapfile]
 

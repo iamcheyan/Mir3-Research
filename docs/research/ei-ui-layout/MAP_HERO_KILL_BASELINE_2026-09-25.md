@@ -32,8 +32,8 @@
 
 ## 解析器发现
 
-- 独立解析器：`pass`；逻辑错误 **0**；地图文件格式/截断发现 **50**。格式发现保留在 `independent-verification.json`，不能当作可走性通过。
-- map 记录格式按 28-byte header、x-major 14-byte cell records、`flag & 3 == 3` 通行规则独立读取； malformed 文件保持 pending，不降级为可走。
+- 独立解析器：`pass`；逻辑错误 **0**；地图文件格式/截断发现 **0**。格式发现保留在 `independent-verification.json`，不能当作可走性通过。
+- map 记录格式按 28-byte header、x-major 13-byte cell records、`flag & 3 == 3` 通行规则独立读取；13-byte 步长与 Zircon `BotRunner/BotMap.cs` 的 `ReadBytes(13)` 一致；malformed 文件保持 pending，不降级为可走。
 
 ## 来源与边界
 

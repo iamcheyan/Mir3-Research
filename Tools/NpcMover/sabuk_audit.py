@@ -38,7 +38,7 @@ def cell_flag(info: dict[str, Any], x: int, y: int) -> int | None:
     w, h, base = info["width"], info["height"], info["cell_base"]
     if x < 0 or y < 0 or x >= w or y >= h:
         return None
-    off = base + (x * h + y) * 14
+    off = base + (x * h + y) * 13
     data = info["_data"]
     if off >= len(data):
         return None
@@ -223,7 +223,7 @@ def main() -> int:
         "## 来源与实现",
         "",
         "- 当前坐标：NpcMover 对服务端 System.db 与客户端 System.db 的 dump；MapRegion.PointRegion 单点中心即逻辑地图格。",
-        "- 可行走判定：`Tools/maps/mapedit/npcedit.py` 的规则，地图 Segment 2 每格 14 字节，`flag&3==3` 才是通行格。",
+        "- 可行走判定：`Tools/maps/mapedit/npcedit.py` 的规则，地图 Segment 2 每格 13 字节，`flag&3==3` 才是通行格。",
         "- 原版对应依据：现有 `Tools/NpcMover/audit-report.md` 将 275–283 作为“沙巴克不动”；这只能支持保留当前坐标，不能替代缺失的 EI Merchant 坐标。",
         "- NPC 名字、EntryPage、GoodsIndex、Image、FaceImage 等非位置字段未触碰。",
         "",

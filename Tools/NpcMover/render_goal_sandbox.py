@@ -12,7 +12,7 @@ def read_mask(path: Path):
     base = 28 + (width // 2) * (height // 2) * 3
     mask = [[False] * height for _ in range(width)]
     for x in range(width):
-        for y in range(height): mask[x][y] = (raw[base + (x * height + y) * 14] & 3) == 3
+        for y in range(height): mask[x][y] = (raw[base + (x * height + y) * 13] & 3) == 3
     return width, height, mask
 
 def find_map(root: Path, stem: str) -> Path | None:

@@ -26,10 +26,10 @@
 ## 3. NPC 全量流水线
 
 - NPC 总数 **294**；匹配方法 `{"semantic-audit":58,"pending":36,"exact-script-name":96,"exact-script-name-map":34,"hero-kill-extra":70}`。
-- 地图关系 `{"variant":78,"exact":165,"replacement":19,"renamed":6,"pending":26}`；target walkable `{"pass":294}`；apply status `{"pending-review":123,"dry-run":171}`；重叠行 **0**。
+- 地图关系 `{"variant":78,"exact":165,"replacement":19,"renamed":6,"pending":26}`；target walkable `{"pass":223,"fail":71}`；apply status `{"pending-review":190,"dry-run":104}`；重叠行 **0**。
 - 每条记录保留 `current_npc_index/name`、old map/xy、original identity/map/xy、Hero-kill target map/xy、match method、rule、confidence、walkable、overlap、apply_status。
 - `non_position_fields_untouched=true`；没有删除状态；不改 NPCName、EntryPage、GoodsIndex、Image、FaceImage、对话/商店业务。
-- Merchant 坐标源：`source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)`；脚本/坐标唯一匹配 **130** 条。其余仍按 audit/语义/候选规则处理；123 条进入人工复核，不能直接写库。
+- Merchant 坐标源：`source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)`；脚本/坐标唯一匹配 **130** 条。其余仍按 audit/语义/候选规则处理；190 条进入人工复核，不能直接写库。
 
 ### NPC 全量来源
 
@@ -55,7 +55,7 @@
 
 ## 5. 怪物刷新流水线
 
-- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"pass":1464,"fail":952,"pending":59}`；apply status `{"blocked":2147,"pending-review":328}`；match status `{"zircon-only":2058,"conflict":89,"matched":328}`。
+- 当前 Zircon RespawnInfo **2475** 条；旧地图中心点独立检查 `{"fail":917,"pass":1510,"pending":48}`；apply status `{"blocked":2147,"pending-review":328}`；match status `{"zircon-only":2058,"conflict":89,"matched":328}`。
 - Hero-kill/YXS 源：source present: docs/research/ei-ui-layout/sources/hero-kill-mud3-2026-09-25/yxs/Envir (17 active Mon_Def files; 679 parsed rows; parse_warnings=1)；Mud3 secondary raw source=present。解析行 **679**，唯一匹配当前 RespawnInfo **328**。
 - 刷新缺口：Hero-kill/YXS-only **307**，Zircon-only **2058**，coordinate conflict **44**；这些清单只用于人工复核，不是删除建议。
 - `PointRegion.Size` 不能替代 Hero-kill range；manifest 保留 `range_note`，不推断写入半径。
@@ -63,15 +63,15 @@
 ## 6. 独立范围/可行走/重叠检查
 
 - 独立 parser logical errors=0；NPC target rows=294；NPC overlap cells=0。
-- 发现 **50** 个 malformed/truncated Zircon `.map` 解析事件；受影响刷新点保持 pending/旧点记录，不把 fail/pending 误标 pass。
+- 发现 **0** 个 malformed/truncated Zircon `.map` 解析事件；受影响刷新点保持 pending/旧点记录，不把 fail/pending 误标 pass。
 - NPC 与怪物目标之间的联合重叠检查为 pending，因为没有 Hero-kill 怪物目标点；NPC-only overlap 已为 0。
 - sandbox 使用橙色 Hero-kill/original NPC、蓝色当前 Zircon NPC、绿色候选目标 NPC、洋红色当前 Zircon monster respawn；不是游戏截图。
 
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- dry-run 应用计划：NPC 可直接候选 **171** 条；Hero-kill 唯一刷新匹配 **328** 条但仍为 pending-review；计划明确 `database_write=false`，不包含删除/创建 MonsterInfo。
-- 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 307 条 YXS-only 与 44 条冲突、NPC 仍有 123 条人工复核、variant/replacement 人工抽查缺失）。
+- dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新匹配 **328** 条但仍为 pending-review；计划明确 `database_write=false`，不包含删除/创建 MonsterInfo。
+- 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 307 条 YXS-only 与 44 条冲突、NPC 仍有 190 条人工复核、variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
