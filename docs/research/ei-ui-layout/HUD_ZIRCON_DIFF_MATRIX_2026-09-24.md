@@ -84,3 +84,8 @@
 ## STATUS-04 装备往返证据边界（2026-09-25）
 
 恢复源码后直接运行 `--operation-audit`，登录与窗口初始化成功；诊断夹具按背包首件选到 `Healing Potion (II)`，因没有兼容的已装备目标而安全退出，未发送装备移动包。此前同一源码链使用临时、可回退的 Wood Sword 选择夹具完成六步往返，stdout 断言 `forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；夹具已恢复、正式源码无差异。该记录证明 DXItemCell/GameScene 安全往返链，不构成 EI 状态角标贴图证据；耐久/强化/绑定/职业等级限制贴图与绘制链仍阻塞。
+## STATUS-05 EI 装备状态标记资源边界（2026-09-25）
+
+新增 `status-marker-resource-audit.json`，复核 `0x0044B560-0x0044B6AD` 的 11 槽循环：记录只进入 `0x00430A40` 物品图标 helper 或 `0x00466130/0x0045FD50` PaperDoll 链，没有独立状态标记 helper、状态帧选择分支或标记矩形。对本地 `Interface1c.wil`、`GameInter.wil`、`inventory.wil` 的小帧扫描只能排除误认，不能赋予候选帧耐久/强化/绑定语义。
+
+因此 Zircon `DXItemCell` 增加 `DrawItemBadgesEnabled`，EI `CharacterDialog` 装备槽明确关闭通用 `Interface` 47/48/49/103 角标；背包等非 EI 状态窗口不变。该改动是证据边界修复，不是新增 EI 角标。目标版各状态的独立贴图、调用链和逐状态运行截图仍阻塞像素级闭合。

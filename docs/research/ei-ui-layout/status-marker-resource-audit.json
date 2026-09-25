@@ -1,0 +1,48 @@
+{
+  "evidence_id": "status-marker-resource-audit-2026-09-25",
+  "title": "EI 人物状态面板装备状态标记资源边界",
+  "date": "2026-09-25",
+  "objective": "确认人物状态面板是否存在可直接归属耐久、强化、绑定、不可穿戴或红点的 EI 装备状态标记绘制链，避免用同号 ZL Interface 帧冒充原版资源。",
+  "primary_static_evidence": {
+    "status_paint_range": "0x0044B560-0x0044B6AD",
+    "equipment_loop": {
+      "record_base": "this+0x2F8",
+      "record_stride": "0xC24",
+      "position_base": "this+0x1C0",
+      "position_stride": "0x10",
+      "occupied_gate": "item_record_dword_at_current_base != 0",
+      "item_draw_helper": "0x00430A40",
+      "figure_draw_helper": "0x0045FD50 via 0x00466130",
+      "separate_marker_helper": null,
+      "marker_state_branch": null
+    },
+    "interpretation": "在已确认的 11 槽循环中，装备记录只进入物品图标 helper 或人物 PaperDoll 绘制链；没有独立的状态标记 helper、状态帧选择分支或标记矩形。"
+  },
+  "resource_probe": {
+    "root": "/home/tetsuya/mir2ei/Data",
+    "method": "用独立 WIL 头信息扫描并查看小尺寸候选帧；扫描结果只用于排除误认，不把同号帧当作语义证据。",
+    "libraries": [
+      {"file": "Interface1c.wil", "valid_frames": 1027, "candidate_frames": [{"index": 1802, "size": [16, 16]}, {"index": 85, "size": [28, 28]}, {"index": 600, "size": [16, 64]}]},
+      {"file": "GameInter.wil", "valid_frames": 253, "candidate_frames": [{"index": 52, "size": [12, 8]}, {"index": 711, "size": [12, 12]}, {"index": 720, "size": [28, 28]}]},
+      {"file": "inventory.wil", "valid_frames": 499, "candidate_frames": [{"index": 441, "size": [16, 16]}, {"index": 448, "size": [16, 16]}]}
+    ],
+    "finding": "候选帧没有由状态窗口绘制链绑定到耐久、强化、绑定、职业/等级限制或红点语义；仅凭帧号、尺寸或外观不能建立该映射。"
+  },
+  "zircon_change": {
+    "files": ["GodotClient/Controls/DXItemCell.cs", "GodotClient/Controls/CharacterDialog.cs"],
+    "behavior": "DXItemCell 增加 DrawItemBadgesEnabled；EI CharacterDialog 装备槽关闭通用 Interface 角标绘制。背包等非 EI 状态窗口保留原有通用角标路径。",
+    "reason": "当前角标来自 Interface 帧 47/48/49/103，缺少 EI 状态窗口独立证据，继续显示会把现代 ZL fallback 误报为 EI parity。"
+  },
+  "verdict": {
+    "evidence_level": "primary-static for draw-chain absence; resource-probe for negative boundary",
+    "confirmed": ["EI 槽位图标绘制链", "人物 PaperDoll 绘制链", "未确认独立状态标记绘制链"],
+    "blocked": ["耐久/强化/绑定/限制/红点的 EI 语义帧与逐状态运行截图"],
+    "rule": "在获得独立 EI 调用链、资源映射或真实状态截图前，不新增或恢复人物状态面板装备状态角标。"
+  },
+  "cross_refs": [
+    "status-window-render-evidence.json",
+    "equip-slot-draw-evidence.json",
+    "equipment-slots-evidence.json",
+    "HUD_ZIRCON_DIFF_MATRIX_2026-09-24.md"
+  ]
+}
