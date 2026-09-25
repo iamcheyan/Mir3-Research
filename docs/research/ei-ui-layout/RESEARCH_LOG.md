@@ -9613,3 +9613,11 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔代码修复〕**legacy `_chatLog` 行固定使用 8px 字体、14px 行高、关闭 outline/阴影；legacy 行 `BackColour=Transparent`，普通聊天维持现有 `LocalTextForeColour=White`，HUD 文本保持不透明，避免用降低整块控件透明度掩盖可读性。
 - **〔运行证据〕**使用本地 `/home/tetsuya/mir2ei`、完整 1024×768 viewport、`login_game.sh all legacy` 重启客户端；日志再次确认 `StartGame 成功`。普通文本 `HUD_STYLE_FINAL` 提交后主 HUD 显示发送者一次且输入清空；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-style-final.png`。对比 `chat-hud-visual-baseline-clean.png`，最终行字形/亮度恢复为可读白色，且不再显示逐条白底。
 - **〔证据边界〕**当前公开 EI 静态 JSON 已闭合主 HUD 根 RECT、F50 聊天槽、裁剪和层级，但未提供主 HUD 文本颜色字节；白色普通聊天色的选择标注为 Zircon 原有配置 + 运行视觉证据，不升级为 `primary-static`。
+ 
+## Round 801 (current-state HUD audit) — 2026-09-25：终局现态重新构建与真实登录复核
+
+- **〔现态构建〕**在 `ui/legacy-layout-lab` 当前 HEAD 重新执行 `dotnet build GodotClient/ZirconClient.csproj --no-incremental`，构建通过；仅有既有 `CS8632`、`CS0219` 警告，无聊天相关错误。
+- **〔真实登录〕**使用 `/home/tetsuya/mir2ei`、完整 `1024×768`、`login_game.sh all legacy`；当前运行日志再次确认 `StartGame 成功`、`[LegacyHud] PASS`、HUD `(800,136)`、输入 `(354,16)`、聊天 `(354,74)`。
+- **〔消息与输入〕**重新聚焦后提交 `FINAL_AUDIT_R` 和 `FINAL_TWO` 两条普通消息；日志显示两次 `[ChatInput] focus/submit`，`[LegacyChat] hudMessages` 从 3 增长到 5，第二条为 `type=Normal`，证明输入清空后可再次聚焦提交，消息不会被下一帧清空。
+- **〔F350入口〕**当前运行点击 F102/F103 位置 `(830,664)` 打开 F350，日志为 `LegacyOpen requested=chat`、`size=(572,388)`；点击关闭控件 `(770,560)` 返回，完整视口截图保留 HUD 消息。证据归档于 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-final-audit-*.png` 与 `chat-hud-final-audit.log`。
+- **〔工作树与远端〕**Zircon 当前分支和远端 SHA 在终局审计后保持一致；Research 分支仅有既有 `Tools/wsgateway/wsgateway.log` 未跟踪，未修改。 
