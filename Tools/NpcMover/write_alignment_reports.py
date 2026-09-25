@@ -42,6 +42,9 @@ REVIEW_COLUMNS = [
     "approved_map",
     "approved_x",
     "approved_y",
+    "approved_count",
+    "approved_range",
+    "approved_interval",
     "review_note",
     "reason",
     "source",
@@ -215,6 +218,9 @@ def build_manual_review_tsv_rows(data: dict) -> list[dict]:
             "approved_map": "",
             "approved_x": "",
             "approved_y": "",
+            "approved_count": "",
+            "approved_range": "",
+            "approved_interval": "",
             "review_note": "",
             "range_note": "not-applicable",
         })
@@ -257,6 +263,9 @@ def build_manual_review_tsv_rows(data: dict) -> list[dict]:
             "approved_map": "",
             "approved_x": "",
             "approved_y": "",
+            "approved_count": "",
+            "approved_range": "",
+            "approved_interval": "",
             "review_note": "",
         })
     return rows
@@ -362,7 +371,7 @@ def main() -> int:
         "| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |",
         f"| 独立校验 | 逻辑通过；地图文件格式/截断发现 {verify['format_issue_count']} 个 | `artifacts/.../independent-verification.json` |",
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
-        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json`；逐条编辑模板 `artifacts/.../manual-review-summary.tsv` |",
+        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json`；逐条编辑模板 `artifacts/.../manual-review-summary.tsv`（填写 `review_decision`、批准坐标及刷新 `approved_count/range/interval`） |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
