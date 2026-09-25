@@ -507,7 +507,7 @@ def main() -> int:
         "",
         "## 10. 远端 SHA 与提交",
         "",
-        f"- 数据对齐证据源提交：Mir3-Research `{args.research_remote_sha}`；Zircon `{args.zircon_remote_sha}`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。",
+        f"- 数据对齐证据源提交：Mir3-Research `{args.research_remote_sha}`；Zircon `{args.zircon_remote_sha}`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。",
     ]
     report_path = args.report_dir / "NPC_MONSTER_ALL_MAPS_ALIGNMENT_REPORT_2026-09-25.md"
     report_path.write_text("\n".join(report) + "\n", encoding="utf-8")
