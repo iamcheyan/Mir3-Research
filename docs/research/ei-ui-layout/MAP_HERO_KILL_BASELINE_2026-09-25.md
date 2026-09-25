@@ -38,4 +38,4 @@
 ## 来源与边界
 
 - Zircon `MapInfo/MapRegion` 来自 `Tools/dbeditor/workspace`；英雄杀地图来自本地 `/home/tetsuya/mir2ei/Map`。
-- `map_links_v2.json` 只提供地图邻接，不被当作坐标证据；缺少 Merchant/原版坐标快照的地图保持低置信度。
+- `map_links_v2.json` 只提供地图邻接，不被当作坐标证据；Merchant 坐标源状态：`source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)`。

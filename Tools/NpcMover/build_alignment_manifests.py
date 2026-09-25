@@ -102,6 +102,23 @@ def audit_rows(path: Path) -> dict[int, dict[str, str]]:
             row = match.groupdict()
             out[int(row["idx"])] = row
     return out
+def load_merchant_snapshot(path: Path | None) -> tuple[list[dict[str, Any]], str]:
+    if path is None or not path.exists():
+        return [], "pending: Merchant coordinate snapshot unavailable"
+    data = load(path)
+    records = data.get("merchants_all") if isinstance(data, dict) else data
+    if records is None and isinstance(data, dict):
+        records = data.get("merchants", [])
+    valid = [
+        row for row in (records or [])
+        if isinstance(row, dict)
+        and row.get("map") is not None
+        and row.get("x") is not None
+        and row.get("y") is not None
+        and row.get("script")
+    ]
+    return valid, f"source present: {path} ({len(valid)} Merchant coordinates)"
+
 
 
 def relation(hero: Path | None, zircon: Path | None, hero_hashes: dict[str, list[str]]) -> tuple[str, str]:
@@ -223,10 +240,21 @@ def candidate_points(path: Path | None, anchors: list[tuple[int, int]], occupied
     return out
 
 
-def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]], maps: list[dict[str, Any]], zircon_root: Path, audit: dict[int, dict[str, str]], merchant_source: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def build_npcs(
+    npc_rows: list[dict[str, Any]],
+    region_rows: list[dict[str, Any]],
+    maps: list[dict[str, Any]],
+    zircon_root: Path,
+    audit: dict[int, dict[str, str]],
+    merchant_source: str,
+    merchant_rows: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     rby = {int(r["Index"]): r for r in region_rows}
     mby = {m["original_map"].casefold(): m for m in maps}
     zfiles = map_files(zircon_root)
+    merchant_by_script: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for merchant in merchant_rows:
+        merchant_by_script[norm_name(str(merchant.get("script", "")))].append(merchant)
     occupied: dict[str, set[tuple[int, int]]] = defaultdict(set)
     current: dict[str, list[tuple[int, int]]] = defaultdict(list)
     for n in npc_rows:
@@ -248,6 +276,8 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
         old, new = coord(audit_row.get("old")), coord(audit_row.get("new"))
         method = audit_row.get("method", "pending")
         source = audit_row.get("source", "")
+        merchant_candidates = merchant_by_script.get(norm_name(str(n.get("NPCName", ""))), [])
+        merchant = merchant_candidates[0] if len(merchant_candidates) == 1 else None
         original_identity = None
         original_map = old[0] if old else None
         ox, oy = (old[1], old[2]) if old else (None, None)
@@ -266,10 +296,21 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
         else:
             match_method = "pending"
             confidence = "low"
+        if merchant:
+            original_identity = str(n.get("NPCName", ""))
+            match_method = "exact-script-name"
+            confidence = "medium"
         mrow = mby.get(cmap.casefold())
         rel = mrow["relation"] if mrow else "pending"
         zmap = zfiles.get(cmap.casefold())
         current_walk = walkable(zmap, int(cx) if cx is not None else None, int(cy) if cy is not None else None)
+        merchant_map = str(merchant.get("map", "")) if merchant else ""
+        merchant_mrow = mby.get(merchant_map.casefold()) if merchant_map else None
+        merchant_target = merchant if merchant and merchant_mrow else None
+        target_map = merchant_map if merchant_target else cmap
+        target_mrow = merchant_mrow if merchant_target else mrow
+        target_rel = target_mrow["relation"] if target_mrow else "pending"
+        target_zmap = zfiles.get(target_map.casefold())
         rule, basis, area = infer_rule(str(n.get("NPCName", "")), str(region.get("Description", "")), str((n.get("EntryPage") or {}).get("Name", "")), original_identity)
         anchors = []
         for rr in region_rows:
@@ -292,7 +333,12 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
         target_xy = None
         target_reason = "pending target coordinate"
         candidates: list[dict[str, Any]] = []
-        if new and new[0].casefold() == cmap.casefold() and rel in {"exact", "renamed"}:
+        if merchant_target:
+            target_xy = {"x": int(merchant_target["x"]), "y": int(merchant_target["y"])}
+            candidates = [{"x": target_xy["x"], "y": target_xy["y"], "score": 0, "anchor": target_xy, "separation": 0}]
+            target_reason = "Merchant snapshot exact script/map coordinate"
+            occupied[target_map.casefold()].add((target_xy["x"], target_xy["y"]))
+        elif new and new[0].casefold() == cmap.casefold() and rel in {"exact", "renamed"}:
             target_xy = {"x": new[1], "y": new[2]}
             candidates = [{"x": new[1], "y": new[2], "score": 0, "anchor": {"x": new[1], "y": new[2]}, "separation": 0}]
             target_reason = "audit target coordinate reused only for exact/renamed map relation"
@@ -303,16 +349,16 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
                 target_xy = {"x": candidates[0]["x"], "y": candidates[0]["y"]}
                 occupied[cmap.casefold()].add((target_xy["x"], target_xy["y"]))
                 target_reason = "walkable topology candidate; manual review required"
-        target_walk = walkable(zmap, target_xy["x"], target_xy["y"]) if target_xy else "pending"
-        overlap = [prior["current_npc_index"] for prior in out if prior.get("hero_kill_map", "").casefold() == cmap.casefold() and prior.get("hero_kill_xy") == target_xy and target_xy]
+        target_walk = walkable(target_zmap, target_xy["x"], target_xy["y"]) if target_xy else "pending"
+        overlap = [prior["current_npc_index"] for prior in out if prior.get("hero_kill_map", "").casefold() == target_map.casefold() and prior.get("hero_kill_xy") == target_xy and target_xy]
         warnings = []
         if target_walk == "fail":
             warnings.append("target coordinate outside map or blocked")
         if overlap:
             warnings.append("target coordinate overlaps another NPC")
-        if rel in {"variant", "replacement", "pending"}:
+        if target_rel in {"variant", "replacement", "pending"}:
             warnings.append("map relation does not permit blind original-coordinate reuse")
-        apply_status = "dry-run" if target_xy and target_walk == "pass" and not overlap and rel in {"exact", "renamed"} else "pending-review"
+        apply_status = "dry-run" if target_xy and target_walk == "pass" and not overlap and target_rel in {"exact", "renamed"} else "pending-review"
         out.append({
             "current_npc_index": idx,
             "current_npc_name": n.get("NPCName", ""),
@@ -321,10 +367,10 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
             "original_identity": original_identity,
             "original_map": original_map,
             "original_xy": {"x": ox, "y": oy} if ox is not None else None,
-            "hero_kill_map": cmap if target_xy else None,
+            "map_relation": target_rel,
+            "hero_kill_map": target_map if target_xy else None,
             "hero_kill_xy": target_xy,
             "match_method": match_method,
-            "map_relation": rel,
             "confidence": confidence if apply_status == "dry-run" else "low",
             "walkable": {"old": current_walk, "target": target_walk},
             "overlap_with": overlap,
@@ -332,16 +378,17 @@ def build_npcs(npc_rows: list[dict[str, Any]], region_rows: list[dict[str, Any]]
             "auto_placement_rule": rule,
             "auto_placement_basis": basis + [area],
             "auto_placement_candidates": candidates,
+            "identity_source": merchant_source if merchant_target else ("NpcMover/audit-report.md" if audit_row else merchant_source),
+            "merchant_snapshot_match": bool(merchant_target),
+            "merchant_source_record": merchant_target,
             "target_reason": target_reason,
             "topology_anchors": [{"x": x, "y": y} for x, y in anchors[:20]],
-            "identity_source": merchant_source if original_identity is None else ("NpcMover/audit-report.md" if audit_row else merchant_source),
             "warnings": warnings,
             "non_position_fields_untouched": True,
             "historical_audit": audit_row,
         })
-    stats = {"npc_count": len(out), "match_method_counts": dict(Counter(x["match_method"] for x in out)), "map_relation_counts": dict(Counter(x["map_relation"] for x in out)), "target_walkable_counts": dict(Counter(x["walkable"]["target"] for x in out)), "apply_status_counts": dict(Counter(x["apply_status"] for x in out)), "overlap_rows": sum(1 for x in out if x["overlap_with"]), "merchant_source": merchant_source, "audit_row_count": len(audit)}
+    stats = {"npc_count": len(out), "match_method_counts": dict(Counter(x["match_method"] for x in out)), "map_relation_counts": dict(Counter(x["map_relation"] for x in out)), "target_walkable_counts": dict(Counter(x["walkable"]["target"] for x in out)), "apply_status_counts": dict(Counter(x["apply_status"] for x in out)), "overlap_rows": sum(1 for x in out if x["overlap_with"]), "merchant_source": merchant_source, "merchant_match_count": sum(1 for x in out if x["merchant_snapshot_match"]), "audit_row_count": len(audit)}
     return out, stats
-
 # Explicit semantic anchors for high-risk names.  No fuzzy Chinese-name rule is
 # allowed to map these families to a different identity.
 EXPLICIT_MONSTER_MAP = {
@@ -618,6 +665,7 @@ def main() -> int:
     ap.add_argument("--hero-map-dir", type=Path, default=Path("/home/tetsuya/mir2ei/Map"))
     ap.add_argument("--zircon-map-dir", type=Path, default=Path("/home/tetsuya/development/zircon/Debug/ServerCore/Map"))
     ap.add_argument("--audit", type=Path, default=Path(__file__).with_name("audit-report.md"))
+    ap.add_argument("--merchant-source", type=Path, default=None)
     ap.add_argument("--monster-source", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monster.json")
     ap.add_argument("--monster-snapshot", type=Path, default=Path(__file__).parents[2] / "docs/research/mud3-dat-decoded/monsters_zircon.json")
     ap.add_argument("--hero-spawn", type=Path, default=None)
@@ -632,7 +680,16 @@ def main() -> int:
     links_path = Path(__file__).parents[1] / "maps/map_links_v2.json"
     links = load(links_path) if links_path.exists() else {"links": []}
     maps, map_stats = build_maps(mapinfo, args.hero_map_dir, args.zircon_map_dir, links)
-    npc_manifest, npc_stats = build_npcs(npcs, regions, maps, args.zircon_map_dir, audit_rows(args.audit), "pending: Merchant.txt/parsed Merchant snapshot unavailable")
+    merchant_rows, merchant_status = load_merchant_snapshot(args.merchant_source)
+    npc_manifest, npc_stats = build_npcs(
+        npcs,
+        regions,
+        maps,
+        args.zircon_map_dir,
+        audit_rows(args.audit),
+        merchant_status,
+        merchant_rows,
+    )
     source_records = load(args.monster_source)["records"] if args.monster_source.exists() else []
     snapshot = load(args.monster_snapshot) if args.monster_snapshot.exists() else []
     monster_identity, identity_meta = build_monster_identity(monsters, source_records, snapshot)
@@ -658,7 +715,7 @@ def main() -> int:
         "mode": "offline-dry-run",
         "database_write": False,
         "coordinate_unit": "logical map grid",
-        "sources": {"workspace": str(args.workspace), "hero_kill_maps": str(args.hero_map_dir), "zircon_maps": str(args.zircon_map_dir), "npc_audit": str(args.audit), "hero_kill_monster_definitions": str(args.monster_source), "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None},
+        "sources": {"workspace": str(args.workspace), "hero_kill_maps": str(args.hero_map_dir), "zircon_maps": str(args.zircon_map_dir), "npc_audit": str(args.audit), "merchant_source": str(args.merchant_source) if args.merchant_source else None, "merchant_status": merchant_status, "hero_kill_monster_definitions": str(args.monster_source), "hero_kill_refresh": str(args.hero_spawn) if args.hero_spawn else None},
         "map_stats": map_stats,
         "npc_stats": npc_stats,
         "monster_identity_stats": identity_meta["stats"],

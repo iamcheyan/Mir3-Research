@@ -1,0 +1,2236 @@
+{
+  "source_url": "https://raw.githubusercontent.com/iamcheyan/mir2ei/main/data/report_full.json",
+  "source_repo": "iamcheyan/mir2ei",
+  "source_commit": "7297ea377d36f6d07d65e3e4b2ce0fbb49f764f3",
+  "source_blob": "3f7cff6218853e4809c8a13bd4a3c47632e2bffe",
+  "source_sha256": "b34a8ddcbd8e01dc664c6f8d1c38fca2cb4b9b18b3746bb60c5abd15a648d243",
+  "generated_at": "2026-08-11T08:43:29+00:00",
+  "merchants_all": [
+    {
+      "name": "生存游戏场美眉",
+      "map": "Island02",
+      "x": 95,
+      "y": 135,
+      "script": "17GoldenIsland_Island"
+    },
+    {
+      "name": "啊琨",
+      "map": "0",
+      "x": 459,
+      "y": 395,
+      "script": "24PR"
+    },
+    {
+      "name": "金氏",
+      "map": "0",
+      "x": 446,
+      "y": 405,
+      "script": "01Meet_Bichon1"
+    },
+    {
+      "name": "肉店老板",
+      "map": "0",
+      "x": 441,
+      "y": 404,
+      "script": "01Meet_Bichon2"
+    },
+    {
+      "name": "啊康",
+      "map": "0",
+      "x": 402,
+      "y": 356,
+      "script": "02Weapon_Bichon1"
+    },
+    {
+      "name": "老张",
+      "map": "0",
+      "x": 423,
+      "y": 395,
+      "script": "02Weapon_Bichon2"
+    },
+    {
+      "name": "怡美",
+      "map": "0",
+      "x": 480,
+      "y": 407,
+      "script": "03Armor_Bichon"
+    },
+    {
+      "name": "慧媛",
+      "map": "0",
+      "x": 478,
+      "y": 407,
+      "script": "03Shoes_Bichon"
+    },
+    {
+      "name": "药店老板",
+      "map": "0",
+      "x": 397,
+      "y": 363,
+      "script": "04Potion_Bichon1"
+    },
+    {
+      "name": "恩英",
+      "map": "0",
+      "x": 486,
+      "y": 414,
+      "script": "04Potion_Bichon2"
+    },
+    {
+      "name": "药剂师",
+      "map": "0",
+      "x": 412,
+      "y": 410,
+      "script": "04PotionMake_Bichon1"
+    },
+    {
+      "name": "老黄",
+      "map": "0",
+      "x": 413,
+      "y": 409,
+      "script": "04PotionMake_Bichon2"
+    },
+    {
+      "name": "店员",
+      "map": "0",
+      "x": 470,
+      "y": 424,
+      "script": "05Book_Bichon"
+    },
+    {
+      "name": "客栈店员",
+      "map": "0",
+      "x": 425,
+      "y": 361,
+      "script": "06Inn_Bichon"
+    },
+    {
+      "name": "杂货商",
+      "map": "0",
+      "x": 450,
+      "y": 413,
+      "script": "07Grocery_Bichon"
+    },
+    {
+      "name": "恩实",
+      "map": "0",
+      "x": 414,
+      "y": 349,
+      "script": "08Accessory_Bichon"
+    },
+    {
+      "name": "世玉",
+      "map": "0",
+      "x": 440,
+      "y": 341,
+      "script": "09Reinstatement_Bichon"
+    },
+    {
+      "name": "酒娘",
+      "map": "0",
+      "x": 420,
+      "y": 431,
+      "script": "09Tavern_Bichon"
+    },
+    {
+      "name": "老生",
+      "map": "0",
+      "x": 452,
+      "y": 297,
+      "script": "09NightMarket_Bichon"
+    },
+    {
+      "name": "啊财",
+      "map": "0",
+      "x": 408,
+      "y": 377,
+      "script": "09ChangeMoney_Bichon"
+    },
+    {
+      "name": "美容师",
+      "map": "0",
+      "x": 462,
+      "y": 420,
+      "script": "09HairDying_Bichon"
+    },
+    {
+      "name": "义贤",
+      "map": "0",
+      "x": 375,
+      "y": 304,
+      "script": "09HorseMarket_Bichon"
+    },
+    {
+      "name": "太俊",
+      "map": "0",
+      "x": 417,
+      "y": 405,
+      "script": "10Material_Bichon"
+    },
+    {
+      "name": "栗子商人",
+      "map": "0",
+      "x": 441,
+      "y": 374,
+      "script": "10ChestnutMarket_Bichon"
+    },
+    {
+      "name": "六面神石",
+      "map": "0",
+      "x": 498,
+      "y": 463,
+      "script": "13Move_Bichon1"
+    },
+    {
+      "name": "六面神石",
+      "map": "0",
+      "x": 507,
+      "y": 313,
+      "script": "13Move_Bichon2"
+    },
+    {
+      "name": "六面神石",
+      "map": "0",
+      "x": 370,
+      "y": 336,
+      "script": "13Move_Bichon3"
+    },
+    {
+      "name": "六面神石",
+      "map": "0",
+      "x": 379,
+      "y": 444,
+      "script": "13Move_Bichon4"
+    },
+    {
+      "name": "万事通",
+      "map": "0",
+      "x": 456,
+      "y": 393,
+      "script": "14Doctor_Bichon"
+    },
+    {
+      "name": "王大人",
+      "map": "0",
+      "x": 389,
+      "y": 396,
+      "script": "14Quest_Bichon1"
+    },
+    {
+      "name": "图书管理员",
+      "map": "0",
+      "x": 473,
+      "y": 428,
+      "script": "14Quest_Bichon2"
+    },
+    {
+      "name": "休班卫士1",
+      "map": "0",
+      "x": 417,
+      "y": 353,
+      "script": "14Quest_Bichon3"
+    },
+    {
+      "name": "休班卫士2",
+      "map": "0",
+      "x": 447,
+      "y": 465,
+      "script": "14Quest_Bichon4"
+    },
+    {
+      "name": "休班卫士3",
+      "map": "0",
+      "x": 502,
+      "y": 393,
+      "script": "14Quest_Bichon5"
+    },
+    {
+      "name": "比奇城城主",
+      "map": "0",
+      "x": 472,
+      "y": 361,
+      "script": "14Quest_Bichon6"
+    },
+    {
+      "name": "王小二",
+      "map": "0",
+      "x": 357,
+      "y": 273,
+      "script": "14Quest_Bichon7"
+    },
+    {
+      "name": "丽灵",
+      "map": "0",
+      "x": 356,
+      "y": 271,
+      "script": "14Quest_Bichon8"
+    },
+    {
+      "name": "啊旭",
+      "map": "0",
+      "x": 355,
+      "y": 326,
+      "script": "14Quest_Bichon9"
+    },
+    {
+      "name": "洪气霖",
+      "map": "0",
+      "x": 422,
+      "y": 429,
+      "script": "14Quest_Bichon10"
+    },
+    {
+      "name": "苏百花",
+      "map": "0",
+      "x": 483,
+      "y": 404,
+      "script": "14Quest_Bichon11"
+    },
+    {
+      "name": "母子石像",
+      "map": "0",
+      "x": 517,
+      "y": 395,
+      "script": "14Quest_Bichon12"
+    },
+    {
+      "name": "石母",
+      "map": "0_003",
+      "x": 27,
+      "y": 35,
+      "script": "14Quest_Bichon"
+    },
+    {
+      "name": "总教头",
+      "map": "0",
+      "x": 447,
+      "y": 444,
+      "script": "15Magic_Bichon1"
+    },
+    {
+      "name": "华龙断珠",
+      "map": "0",
+      "x": 462,
+      "y": 435,
+      "script": "15Magic_Bichon2"
+    },
+    {
+      "name": "比奇道长",
+      "map": "0",
+      "x": 449,
+      "y": 433,
+      "script": "15Magic_Bichon3"
+    },
+    {
+      "name": "行政官员",
+      "map": "0",
+      "x": 477,
+      "y": 366,
+      "script": "18Execution_Bichon"
+    },
+    {
+      "name": "行会旗",
+      "map": "0",
+      "x": 478,
+      "y": 367,
+      "script": "18Flag_Bichon"
+    },
+    {
+      "name": "司仪",
+      "map": "0",
+      "x": 388,
+      "y": 288,
+      "script": "21WeddingMaker_Bichon"
+    },
+    {
+      "name": "肉店金老板",
+      "map": "01",
+      "x": 425,
+      "y": 274,
+      "script": "01Meet_Kugkyung"
+    },
+    {
+      "name": "德秀",
+      "map": "01",
+      "x": 459,
+      "y": 279,
+      "script": "02Weapon_Kugkyung"
+    },
+    {
+      "name": "顺子",
+      "map": "01",
+      "x": 442,
+      "y": 296,
+      "script": "03Armor_Kugkyung"
+    },
+    {
+      "name": "尹老人",
+      "map": "01",
+      "x": 434,
+      "y": 303,
+      "script": "04Potion_Kugkyung"
+    },
+    {
+      "name": "老余",
+      "map": "01",
+      "x": 445,
+      "y": 319,
+      "script": "05Book_Kugkyung"
+    },
+    {
+      "name": "赵老头",
+      "map": "01",
+      "x": 471,
+      "y": 279,
+      "script": "06Inn_Kugkyung"
+    },
+    {
+      "name": "地摊商人",
+      "map": "01",
+      "x": 433,
+      "y": 282,
+      "script": "07Grocery_Kugkyung"
+    },
+    {
+      "name": "晓丽",
+      "map": "01",
+      "x": 444,
+      "y": 270,
+      "script": "08Accessory_Kugkyung"
+    },
+    {
+      "name": "啊辉",
+      "map": "01",
+      "x": 431,
+      "y": 307,
+      "script": "10Material_Kugkyung"
+    },
+    {
+      "name": "栗子商人",
+      "map": "01",
+      "x": 438,
+      "y": 281,
+      "script": "10ChestnutMarket_Kugkyung"
+    },
+    {
+      "name": "六面神石",
+      "map": "01",
+      "x": 456,
+      "y": 216,
+      "script": "13Move_Kugkyung1"
+    },
+    {
+      "name": "六面神石",
+      "map": "01",
+      "x": 411,
+      "y": 287,
+      "script": "13Move_Kugkyung2"
+    },
+    {
+      "name": "六面神石",
+      "map": "01",
+      "x": 463,
+      "y": 356,
+      "script": "13Move_Kugkyung3"
+    },
+    {
+      "name": "万事通",
+      "map": "01",
+      "x": 429,
+      "y": 263,
+      "script": "14Doctor_Kugkyung"
+    },
+    {
+      "name": "上官小姐",
+      "map": "01",
+      "x": 461,
+      "y": 257,
+      "script": "14Quest_KugKyung1"
+    },
+    {
+      "name": "智善",
+      "map": "01",
+      "x": 444,
+      "y": 245,
+      "script": "14Quest_KugKyung2"
+    },
+    {
+      "name": "无名商人",
+      "map": "01",
+      "x": 476,
+      "y": 284,
+      "script": "14Quest_Kugkyung3"
+    },
+    {
+      "name": "云发",
+      "map": "01_001",
+      "x": 17,
+      "y": 16,
+      "script": "14Quest_KugKyung"
+    },
+    {
+      "name": "龙血先生",
+      "map": "01",
+      "x": 456,
+      "y": 302,
+      "script": "15Magic_Kugkyung1"
+    },
+    {
+      "name": "龙血先生",
+      "map": "01_003",
+      "x": 5,
+      "y": 8,
+      "script": "15Magic_KugKyung"
+    },
+    {
+      "name": "黄河大侠",
+      "map": "01",
+      "x": 104,
+      "y": 203,
+      "script": "15Magic_Kugkyung2"
+    },
+    {
+      "name": "满多",
+      "map": "01",
+      "x": 424,
+      "y": 312,
+      "script": "17MobRush_kugkyung"
+    },
+    {
+      "name": "啊彬",
+      "map": "01",
+      "x": 422,
+      "y": 262,
+      "script": "09CancleWeapon"
+    },
+    {
+      "name": "许氏",
+      "map": "02",
+      "x": 228,
+      "y": 194,
+      "script": "01Meet_Eunhang"
+    },
+    {
+      "name": "铁匠师傅",
+      "map": "02",
+      "x": 284,
+      "y": 197,
+      "script": "02Weapon_Eunhang"
+    },
+    {
+      "name": "布店晓芙",
+      "map": "02",
+      "x": 260,
+      "y": 177,
+      "script": "03Armor_Eunhang"
+    },
+    {
+      "name": "许中医",
+      "map": "02",
+      "x": 273,
+      "y": 189,
+      "script": "04Potion_Eunhang"
+    },
+    {
+      "name": "药剂师",
+      "map": "02",
+      "x": 272,
+      "y": 189,
+      "script": "04PotionMake_Euhang"
+    },
+    {
+      "name": "才石",
+      "map": "02",
+      "x": 233,
+      "y": 222,
+      "script": "05Book_Eunhang"
+    },
+    {
+      "name": "啊雯",
+      "map": "02",
+      "x": 250,
+      "y": 190,
+      "script": "06Inn_Eunhang"
+    },
+    {
+      "name": "地摊老周",
+      "map": "02",
+      "x": 236,
+      "y": 205,
+      "script": "07Grocery_Eunhang"
+    },
+    {
+      "name": "晓兰",
+      "map": "02",
+      "x": 275,
+      "y": 222,
+      "script": "08Accessory_Eunhang"
+    },
+    {
+      "name": "啊勋",
+      "map": "02",
+      "x": 269,
+      "y": 186,
+      "script": "10Material_Eunhang"
+    },
+    {
+      "name": "栗子商人",
+      "map": "02",
+      "x": 260,
+      "y": 205,
+      "script": "10ChestnutMarket_Eunhang"
+    },
+    {
+      "name": "六面神石",
+      "map": "02",
+      "x": 249,
+      "y": 144,
+      "script": "13Move_Eunhang"
+    },
+    {
+      "name": "万事通",
+      "map": "02",
+      "x": 264,
+      "y": 195,
+      "script": "14Doctor_Eunhang"
+    },
+    {
+      "name": "南宫小姐",
+      "map": "02",
+      "x": 264,
+      "y": 201,
+      "script": "14Quest_Euhang"
+    },
+    {
+      "name": "霹雳尊者",
+      "map": "02",
+      "x": 265,
+      "y": 145,
+      "script": "15Magic_Eunhang1"
+    },
+    {
+      "name": "化天先生",
+      "map": "02",
+      "x": 353,
+      "y": 212,
+      "script": "15Magic_Eunhang2"
+    },
+    {
+      "name": "霹雳尊者",
+      "map": "02_001",
+      "x": 5,
+      "y": 8,
+      "script": "15Magic_Euhang"
+    },
+    {
+      "name": "霹雳尊者",
+      "map": "02_003",
+      "x": 91,
+      "y": 14,
+      "script": "15Magic_Euhang"
+    },
+    {
+      "name": "霹雳尊者",
+      "map": "02_004",
+      "x": 25,
+      "y": 41,
+      "script": "15Magic_Euhang"
+    },
+    {
+      "name": "光秀",
+      "map": "02",
+      "x": 243,
+      "y": 234,
+      "script": "09Repair_Euhang"
+    },
+    {
+      "name": "智善大师",
+      "map": "02",
+      "x": 247,
+      "y": 242,
+      "script": "09Bonus_Euhang"
+    },
+    {
+      "name": "钱老板",
+      "map": "1",
+      "x": 366,
+      "y": 182,
+      "script": "01Meet_DoGwan"
+    },
+    {
+      "name": "铁匠",
+      "map": "1",
+      "x": 426,
+      "y": 117,
+      "script": "02Weapon_DoGwan"
+    },
+    {
+      "name": "啊潘",
+      "map": "1_001",
+      "x": 14,
+      "y": 12,
+      "script": "02Weapon_DoGwan"
+    },
+    {
+      "name": "王铁匠",
+      "map": "1",
+      "x": 382,
+      "y": 198,
+      "script": "02Weapon_Wooma"
+    },
+    {
+      "name": "梁生",
+      "map": "1",
+      "x": 412,
+      "y": 133,
+      "script": "03Armor_DoGwan"
+    },
+    {
+      "name": "啊浩",
+      "map": "1_003",
+      "x": 13,
+      "y": 16,
+      "script": "03Armor_DoGwan"
+    },
+    {
+      "name": "华玉",
+      "map": "1",
+      "x": 363,
+      "y": 176,
+      "script": "04Potion_Wooma"
+    },
+    {
+      "name": "药中",
+      "map": "1",
+      "x": 393,
+      "y": 113,
+      "script": "04Potion_DoGwan1"
+    },
+    {
+      "name": "药神",
+      "map": "1",
+      "x": 387,
+      "y": 118,
+      "script": "04Potion_DoGwan2"
+    },
+    {
+      "name": "禄英",
+      "map": "1_006",
+      "x": 12,
+      "y": 7,
+      "script": "04PotionMake_DoGwan"
+    },
+    {
+      "name": "老药",
+      "map": "1_006",
+      "x": 9,
+      "y": 10,
+      "script": "04Potion_DoGwan"
+    },
+    {
+      "name": "书鬼",
+      "map": "1",
+      "x": 418,
+      "y": 96,
+      "script": "05Book_DoGwan"
+    },
+    {
+      "name": "书神",
+      "map": "1_004",
+      "x": 9,
+      "y": 11,
+      "script": "05Book_DoGwan"
+    },
+    {
+      "name": "啊天",
+      "map": "1",
+      "x": 396,
+      "y": 116,
+      "script": "06Inn_DoGwan"
+    },
+    {
+      "name": "小老板",
+      "map": "1",
+      "x": 391,
+      "y": 167,
+      "script": "07Grocery_DoGwan"
+    },
+    {
+      "name": "大老板",
+      "map": "1_007",
+      "x": 11,
+      "y": 14,
+      "script": "07Grocery_DoGwan"
+    },
+    {
+      "name": "秀儿",
+      "map": "1",
+      "x": 370,
+      "y": 135,
+      "script": "08Accessory_DoGwan"
+    },
+    {
+      "name": "峰儿",
+      "map": "1_005",
+      "x": 9,
+      "y": 11,
+      "script": "08Accessory_DoGwan"
+    },
+    {
+      "name": "天星",
+      "map": "1",
+      "x": 386,
+      "y": 119,
+      "script": "10Material_DoGwan"
+    },
+    {
+      "name": "栗子商人",
+      "map": "1",
+      "x": 382,
+      "y": 141,
+      "script": "10ChestnutMarket_DoGwan"
+    },
+    {
+      "name": "六面神石",
+      "map": "1",
+      "x": 416,
+      "y": 179,
+      "script": "13Move_DoGwan"
+    },
+    {
+      "name": "万事通",
+      "map": "1",
+      "x": 398,
+      "y": 127,
+      "script": "14Doctor_DoGwan"
+    },
+    {
+      "name": "士官",
+      "map": "1",
+      "x": 403,
+      "y": 132,
+      "script": "14Quest_DoGwan1"
+    },
+    {
+      "name": "书堂玄震",
+      "map": "1",
+      "x": 379,
+      "y": 214,
+      "script": "14Quest_DoGwan2"
+    },
+    {
+      "name": "无名老人",
+      "map": "1_009",
+      "x": 117,
+      "y": 25,
+      "script": "14Quest_DoGwan"
+    },
+    {
+      "name": "大悲善僧",
+      "map": "1",
+      "x": 349,
+      "y": 401,
+      "script": "15Magic_DoGwan"
+    },
+    {
+      "name": "清明子",
+      "map": "1_002",
+      "x": 11,
+      "y": 10,
+      "script": "15Magic_DoGwan"
+    },
+    {
+      "name": "清明子",
+      "map": "1_008",
+      "x": 5,
+      "y": 8,
+      "script": "15Magic_DoGwan"
+    },
+    {
+      "name": "清明子",
+      "map": "1_011",
+      "x": 91,
+      "y": 14,
+      "script": "15Magic_DoGwan"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 44,
+      "y": 25,
+      "script": "15Magic_DoGwan0"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 26,
+      "y": 20,
+      "script": "15Magic_DoGwan1"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 29,
+      "y": 23,
+      "script": "15Magic_DoGwan2"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 23,
+      "y": 23,
+      "script": "15Magic_DoGwan3"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 35,
+      "y": 15,
+      "script": "15Magic_DoGwan4"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 26,
+      "y": 26,
+      "script": "15Magic_DoGwan5"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 25,
+      "y": 41,
+      "script": "15Magic_DoGwan6"
+    },
+    {
+      "name": "变异骷髅",
+      "map": "1_013",
+      "x": 10,
+      "y": 24,
+      "script": "15Magic_DoGwan7"
+    },
+    {
+      "name": "铁匠啊力",
+      "map": "2",
+      "x": 351,
+      "y": 219,
+      "script": "02Weapon_SnakeVally"
+    },
+    {
+      "name": "金莲",
+      "map": "2",
+      "x": 342,
+      "y": 235,
+      "script": "03Armor_SankeVally"
+    },
+    {
+      "name": "金中医",
+      "map": "2",
+      "x": 334,
+      "y": 224,
+      "script": "04Potion_SnakeVally"
+    },
+    {
+      "name": "客栈保管员",
+      "map": "2",
+      "x": 346,
+      "y": 234,
+      "script": "06Inn_SnakeVally"
+    },
+    {
+      "name": "流浪卢",
+      "map": "2",
+      "x": 361,
+      "y": 226,
+      "script": "07Grocery_SnakeVally"
+    },
+    {
+      "name": "蛇谷老人",
+      "map": "2",
+      "x": 343,
+      "y": 219,
+      "script": "09NotBlocker_SnakeVally"
+    },
+    {
+      "name": "啊福",
+      "map": "2",
+      "x": 331,
+      "y": 225,
+      "script": "10Material_SnakeVally"
+    },
+    {
+      "name": "六面神石",
+      "map": "2",
+      "x": 306,
+      "y": 244,
+      "script": "13Move_SnakeVally1"
+    },
+    {
+      "name": "六面神石",
+      "map": "2",
+      "x": 314,
+      "y": 193,
+      "script": "13Move_SnakeVally2"
+    },
+    {
+      "name": "万事通",
+      "map": "2",
+      "x": 322,
+      "y": 223,
+      "script": "14Doctor_SnakeVally"
+    },
+    {
+      "name": "蛇谷老太",
+      "map": "2",
+      "x": 337,
+      "y": 223,
+      "script": "14Quest_SnakeVally1"
+    },
+    {
+      "name": "蛇谷老矿夫",
+      "map": "2",
+      "x": 360,
+      "y": 208,
+      "script": "14Quest_SnakeVally2"
+    },
+    {
+      "name": "断乔先生",
+      "map": "2",
+      "x": 347,
+      "y": 193,
+      "script": "15Magic_SnakeVally"
+    },
+    {
+      "name": "老胡",
+      "map": "3",
+      "x": 195,
+      "y": 183,
+      "script": "02Weapon_Sabuk"
+    },
+    {
+      "name": "双喜",
+      "map": "3",
+      "x": 229,
+      "y": 150,
+      "script": "03Armor_Sabuk"
+    },
+    {
+      "name": "晶晶",
+      "map": "3",
+      "x": 204,
+      "y": 196,
+      "script": "04Potion_Sabuk"
+    },
+    {
+      "name": "惠莲",
+      "map": "3",
+      "x": 214,
+      "y": 128,
+      "script": "06Inn_Sabuk"
+    },
+    {
+      "name": "园老板",
+      "map": "3",
+      "x": 229,
+      "y": 168,
+      "script": "07Grocery_Sabuk"
+    },
+    {
+      "name": "多多",
+      "map": "3",
+      "x": 211,
+      "y": 183,
+      "script": "08Accessory_Sabuk"
+    },
+    {
+      "name": "啊翔",
+      "map": "3",
+      "x": 198,
+      "y": 180,
+      "script": "09RefineWeapon"
+    },
+    {
+      "name": "俞公",
+      "map": "3",
+      "x": 203,
+      "y": 197,
+      "script": "10Material_Sabuk"
+    },
+    {
+      "name": "兵器商",
+      "map": "3",
+      "x": 168,
+      "y": 158,
+      "script": "18ShooterMarket_Sabuk"
+    },
+    {
+      "name": "沙巴克管理员",
+      "map": "3",
+      "x": 193,
+      "y": 146,
+      "script": "18Manager_Sabuk"
+    },
+    {
+      "name": "六面神石",
+      "map": "3",
+      "x": 222,
+      "y": 159,
+      "script": "13Move_Sabuk"
+    },
+    {
+      "name": "敏贞",
+      "map": "3",
+      "x": 289,
+      "y": 513,
+      "script": "04Potion_SabukWar"
+    },
+    {
+      "name": "敏国",
+      "map": "3",
+      "x": 280,
+      "y": 528,
+      "script": "06Inn_SabukWar"
+    },
+    {
+      "name": "定国",
+      "map": "3",
+      "x": 302,
+      "y": 513,
+      "script": "18ShooterMarket_Sabuk"
+    },
+    {
+      "name": "六面神石",
+      "map": "3",
+      "x": 294,
+      "y": 539,
+      "script": "13Move_Sabuk"
+    },
+    {
+      "name": "在奎",
+      "map": "3",
+      "x": 75,
+      "y": 516,
+      "script": "04Potion_SabukWar"
+    },
+    {
+      "name": "巨汉",
+      "map": "3",
+      "x": 64,
+      "y": 505,
+      "script": "06Inn_SabukWar"
+    },
+    {
+      "name": "正旱",
+      "map": "3",
+      "x": 53,
+      "y": 550,
+      "script": "18ShooterMarket_Sabuk"
+    },
+    {
+      "name": "六面神石",
+      "map": "3",
+      "x": 49,
+      "y": 566,
+      "script": "13Move_Sabuk"
+    },
+    {
+      "name": "完美",
+      "map": "3",
+      "x": 83,
+      "y": 140,
+      "script": "04Potion_SabukWar"
+    },
+    {
+      "name": "武虎",
+      "map": "3",
+      "x": 95,
+      "y": 150,
+      "script": "06Inn_SabukWar"
+    },
+    {
+      "name": "定国",
+      "map": "3",
+      "x": 72,
+      "y": 161,
+      "script": "18ShooterMarket_Sabuk"
+    },
+    {
+      "name": "六面神石",
+      "map": "3",
+      "x": 71,
+      "y": 140,
+      "script": "13Move_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 205,
+      "y": 157,
+      "script": "18MainFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 202,
+      "y": 138,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 189,
+      "y": 151,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 204,
+      "y": 146,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 195,
+      "y": 155,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 165,
+      "y": 190,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 170,
+      "y": 195,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 233,
+      "y": 196,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 237,
+      "y": 192,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 240,
+      "y": 123,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "沙巴克旗帜",
+      "map": "3",
+      "x": 236,
+      "y": 119,
+      "script": "18SubFlag_Sabuk"
+    },
+    {
+      "name": "屠夫",
+      "map": "4",
+      "x": 438,
+      "y": 52,
+      "script": "01Meet_Oasis"
+    },
+    {
+      "name": "丁铁匠",
+      "map": "4",
+      "x": 448,
+      "y": 76,
+      "script": "02Weapon_Oasis"
+    },
+    {
+      "name": "王铁匠",
+      "map": "4_001",
+      "x": 7,
+      "y": 13,
+      "script": "02Weapon_Oasis"
+    },
+    {
+      "name": "布商女店员",
+      "map": "4",
+      "x": 462,
+      "y": 91,
+      "script": "03Armor_Oasis"
+    },
+    {
+      "name": "织女",
+      "map": "4_004",
+      "x": 9,
+      "y": 8,
+      "script": "03Armor_Oasis"
+    },
+    {
+      "name": "医仙",
+      "map": "4",
+      "x": 430,
+      "y": 75,
+      "script": "04Potion_Oasis"
+    },
+    {
+      "name": "白老中医",
+      "map": "4_003",
+      "x": 10,
+      "y": 10,
+      "script": "04Potion_Oasis"
+    },
+    {
+      "name": "绿洲仓库保管员",
+      "map": "4",
+      "x": 438,
+      "y": 68,
+      "script": "06Inn_Oasis"
+    },
+    {
+      "name": "绿洲仓库管家",
+      "map": "4_003",
+      "x": 8,
+      "y": 15,
+      "script": "06Inn_Oasis"
+    },
+    {
+      "name": "洪老板",
+      "map": "4",
+      "x": 470,
+      "y": 67,
+      "script": "07Grocery_Oasis"
+    },
+    {
+      "name": "峨嵋侠",
+      "map": "4",
+      "x": 475,
+      "y": 55,
+      "script": "08Astrologist_Oasis"
+    },
+    {
+      "name": "梅山侠",
+      "map": "4_005",
+      "x": 14,
+      "y": 22,
+      "script": "08Astrologist_Oasis"
+    },
+    {
+      "name": "润京",
+      "map": "4",
+      "x": 437,
+      "y": 71,
+      "script": "10Material_Oasis"
+    },
+    {
+      "name": "石宇",
+      "map": "4_003",
+      "x": 12,
+      "y": 8,
+      "script": "10Material_Oasis"
+    },
+    {
+      "name": "六面神石",
+      "map": "4",
+      "x": 435,
+      "y": 83,
+      "script": "13Move_Oasis"
+    },
+    {
+      "name": "唯我独尊",
+      "map": "4",
+      "x": 426,
+      "y": 97,
+      "script": "15Magic_Oasis"
+    },
+    {
+      "name": "黄老板",
+      "map": "5",
+      "x": 200,
+      "y": 249,
+      "script": "01Meet_Samak"
+    },
+    {
+      "name": "铁汉",
+      "map": "5",
+      "x": 189,
+      "y": 252,
+      "script": "02Weapon_Samak"
+    },
+    {
+      "name": "勇汉",
+      "map": "5_002",
+      "x": 8,
+      "y": 17,
+      "script": "02Weapon_Samak1"
+    },
+    {
+      "name": "忠云",
+      "map": "5_002",
+      "x": 7,
+      "y": 19,
+      "script": "02Weapon_Samak2"
+    },
+    {
+      "name": "喜儿",
+      "map": "5",
+      "x": 177,
+      "y": 281,
+      "script": "03Armor_Samak"
+    },
+    {
+      "name": "晓敏",
+      "map": "5_004",
+      "x": 15,
+      "y": 15,
+      "script": "03Armor_Samak"
+    },
+    {
+      "name": "润真",
+      "map": "5",
+      "x": 181,
+      "y": 277,
+      "script": "03Shoes_Samak"
+    },
+    {
+      "name": "药郎",
+      "map": "5",
+      "x": 200,
+      "y": 237,
+      "script": "04Potion_Samak"
+    },
+    {
+      "name": "医神",
+      "map": "5_003",
+      "x": 13,
+      "y": 17,
+      "script": "04Potion_Samak"
+    },
+    {
+      "name": "老郑",
+      "map": "5",
+      "x": 198,
+      "y": 252,
+      "script": "04PotionMake_Samak"
+    },
+    {
+      "name": "沙漠仓库小管家",
+      "map": "5",
+      "x": 171,
+      "y": 265,
+      "script": "06Inn_Samak"
+    },
+    {
+      "name": "沙漠仓库管家",
+      "map": "5_006",
+      "x": 12,
+      "y": 23,
+      "script": "06Inn_Samak"
+    },
+    {
+      "name": "杂货商老李",
+      "map": "5",
+      "x": 192,
+      "y": 232,
+      "script": "07Grocery_Samak"
+    },
+    {
+      "name": "倩儿",
+      "map": "5",
+      "x": 208,
+      "y": 246,
+      "script": "08Accessory_Samak"
+    },
+    {
+      "name": "雪儿",
+      "map": "5_005",
+      "x": 9,
+      "y": 11,
+      "script": "08Accessory_Samak"
+    },
+    {
+      "name": "啊俊",
+      "map": "5_006",
+      "x": 7,
+      "y": 21,
+      "script": "09ChangeMoney_Samak"
+    },
+    {
+      "name": "啊宋",
+      "map": "5",
+      "x": 197,
+      "y": 235,
+      "script": "10Material_Samak"
+    },
+    {
+      "name": "六面神石",
+      "map": "5",
+      "x": 204,
+      "y": 289,
+      "script": "13Move_Samak1"
+    },
+    {
+      "name": "六面神石",
+      "map": "5",
+      "x": 112,
+      "y": 177,
+      "script": "13Move_Samak2"
+    },
+    {
+      "name": "武功教头",
+      "map": "5",
+      "x": 227,
+      "y": 169,
+      "script": "15Magic_Samak1"
+    },
+    {
+      "name": "小秀玉女",
+      "map": "5",
+      "x": 199,
+      "y": 203,
+      "script": "15Magic_Samak2"
+    },
+    {
+      "name": "芙蓉仙子",
+      "map": "5",
+      "x": 230,
+      "y": 188,
+      "script": "15Magic_Samak3"
+    },
+    {
+      "name": "啊全",
+      "map": "6",
+      "x": 284,
+      "y": 723,
+      "script": "07Grocery_Ant"
+    },
+    {
+      "name": "六面神石",
+      "map": "6",
+      "x": 273,
+      "y": 731,
+      "script": "13Move_Ant"
+    },
+    {
+      "name": "英龙",
+      "map": "74",
+      "x": 354,
+      "y": 297,
+      "script": "02Weapon_Mongchon"
+    },
+    {
+      "name": "晓薇",
+      "map": "74",
+      "x": 324,
+      "y": 277,
+      "script": "03Armor_Mongchon"
+    },
+    {
+      "name": "凌峰",
+      "map": "74",
+      "x": 289,
+      "y": 289,
+      "script": "04Potion_Mongchon"
+    },
+    {
+      "name": "丘叔",
+      "map": "74",
+      "x": 323,
+      "y": 310,
+      "script": "06Inn_Mongchon"
+    },
+    {
+      "name": "龙叔",
+      "map": "74",
+      "x": 293,
+      "y": 278,
+      "script": "07Grocery_Mongchon"
+    },
+    {
+      "name": "善颖",
+      "map": "74",
+      "x": 311,
+      "y": 273,
+      "script": "08Accessory_Mongchon"
+    },
+    {
+      "name": "啊贵",
+      "map": "74",
+      "x": 287,
+      "y": 290,
+      "script": "10Material_Mongchon"
+    },
+    {
+      "name": "六面神石",
+      "map": "74",
+      "x": 349,
+      "y": 329,
+      "script": "13Move_Mongchon1"
+    },
+    {
+      "name": "六面神石",
+      "map": "74",
+      "x": 271,
+      "y": 267,
+      "script": "13Move_Mongchon2"
+    },
+    {
+      "name": "武术教头",
+      "map": "74",
+      "x": 300,
+      "y": 299,
+      "script": "15Magic_Mongchon1"
+    },
+    {
+      "name": "雷翁断珠",
+      "map": "74",
+      "x": 290,
+      "y": 299,
+      "script": "15Magic_Mongchon2"
+    },
+    {
+      "name": "盟重道长",
+      "map": "74",
+      "x": 297,
+      "y": 295,
+      "script": "15Magic_Mongchon3"
+    },
+    {
+      "name": "泼皮路白",
+      "map": "74",
+      "x": 324,
+      "y": 108,
+      "script": "15Magic_Mongchon4"
+    },
+    {
+      "name": "六面神石",
+      "map": "75",
+      "x": 184,
+      "y": 90,
+      "script": "13Move_SukGak"
+    },
+    {
+      "name": "啊胜",
+      "map": "8",
+      "x": 224,
+      "y": 210,
+      "script": "02Weapon_HalfNight"
+    },
+    {
+      "name": "晓洋",
+      "map": "8",
+      "x": 249,
+      "y": 257,
+      "script": "03Armor_HalfNight"
+    },
+    {
+      "name": "成赫",
+      "map": "8",
+      "x": 282,
+      "y": 224,
+      "script": "04Potion_HalfNight"
+    },
+    {
+      "name": "满春",
+      "map": "8",
+      "x": 231,
+      "y": 260,
+      "script": "06Inn_HalfNight"
+    },
+    {
+      "name": "中叔",
+      "map": "8",
+      "x": 253,
+      "y": 291,
+      "script": "07Grocery_HalfNight"
+    },
+    {
+      "name": "晓华",
+      "map": "8",
+      "x": 266,
+      "y": 285,
+      "script": "08Accessory_HalfNight"
+    },
+    {
+      "name": "泼皮",
+      "map": "8",
+      "x": 271,
+      "y": 222,
+      "script": "10Material_HalfNight"
+    },
+    {
+      "name": "六面神石",
+      "map": "8",
+      "x": 288,
+      "y": 241,
+      "script": "13Move_HalfNight1"
+    },
+    {
+      "name": "六面神石",
+      "map": "8",
+      "x": 113,
+      "y": 463,
+      "script": "13Move_HalfNight2"
+    },
+    {
+      "name": "六面神石",
+      "map": "8",
+      "x": 668,
+      "y": 388,
+      "script": "13Move_HalfNight3"
+    },
+    {
+      "name": "六面神石",
+      "map": "8",
+      "x": 448,
+      "y": 579,
+      "script": "13Move_HalfNight4"
+    },
+    {
+      "name": "六面神石",
+      "map": "8",
+      "x": 424,
+      "y": 239,
+      "script": "13Move_HalfNight5"
+    },
+    {
+      "name": "次庸",
+      "map": "81",
+      "x": 138,
+      "y": 301,
+      "script": "04Potion_RedZone"
+    },
+    {
+      "name": "小望",
+      "map": "81",
+      "x": 119,
+      "y": 297,
+      "script": "09Lucky_RedZone"
+    },
+    {
+      "name": "六面神石",
+      "map": "81",
+      "x": 129,
+      "y": 265,
+      "script": "13Move_RedZone"
+    },
+    {
+      "name": "志成",
+      "map": "9",
+      "x": 196,
+      "y": 526,
+      "script": "02Weapon_Encore"
+    },
+    {
+      "name": "晓惠",
+      "map": "9",
+      "x": 204,
+      "y": 628,
+      "script": "03Armor_Encore"
+    },
+    {
+      "name": "幽美",
+      "map": "9",
+      "x": 215,
+      "y": 527,
+      "script": "04Potion_Encore"
+    },
+    {
+      "name": "玄浩",
+      "map": "9",
+      "x": 174,
+      "y": 581,
+      "script": "05Book_Encore"
+    },
+    {
+      "name": "宝英",
+      "map": "9",
+      "x": 209,
+      "y": 586,
+      "script": "06Inn_Encore"
+    },
+    {
+      "name": "啊成",
+      "map": "9",
+      "x": 199,
+      "y": 559,
+      "script": "07Grocery_Encore"
+    },
+    {
+      "name": "啊珠",
+      "map": "9",
+      "x": 190,
+      "y": 610,
+      "script": "08Accessory_Encore"
+    },
+    {
+      "name": "世山",
+      "map": "9",
+      "x": 264,
+      "y": 559,
+      "script": "09HorseMarket_Encore"
+    },
+    {
+      "name": "小英",
+      "map": "9",
+      "x": 160,
+      "y": 555,
+      "script": "09Lucky_Encore"
+    },
+    {
+      "name": "晓勇",
+      "map": "9",
+      "x": 223,
+      "y": 531,
+      "script": "10Material_Encore"
+    },
+    {
+      "name": "洞穴保管员",
+      "map": "D002",
+      "x": 174,
+      "y": 216,
+      "script": "06Inn_SkeletonCave"
+    },
+    {
+      "name": "奸商欧阳",
+      "map": "DM001",
+      "x": 4,
+      "y": 6,
+      "script": "07Grocery_SkeletonCave"
+    },
+    {
+      "name": "云发",
+      "map": "D012_001",
+      "x": 13,
+      "y": 11,
+      "script": "14Quest_SkeletonCave"
+    },
+    {
+      "name": "云发",
+      "map": "E002_001",
+      "x": 9,
+      "y": 11,
+      "script": "14Quest_SkeletonCave"
+    },
+    {
+      "name": "嘉登",
+      "map": "E002",
+      "x": 65,
+      "y": 12,
+      "script": "14Quest_SkeletonCave"
+    },
+    {
+      "name": "黄晶",
+      "map": "D001",
+      "x": 152,
+      "y": 355,
+      "script": "14Quest_SkeletonCave"
+    },
+    {
+      "name": "无理的道士",
+      "map": "DM002",
+      "x": 14,
+      "y": 22,
+      "script": "14Quest_SkeletonCave"
+    },
+    {
+      "name": "矿山老人",
+      "map": "D431",
+      "x": 29,
+      "y": 175,
+      "script": "09NotBlocker_ZombieCave"
+    },
+    {
+      "name": "署箭",
+      "map": "E402_001",
+      "x": 13,
+      "y": 10,
+      "script": "14Quest_ZombieCave"
+    },
+    {
+      "name": "署箭",
+      "map": "D404_002",
+      "x": 22,
+      "y": 11,
+      "script": "14Quest_ZombieCave"
+    },
+    {
+      "name": "牛老道",
+      "map": "D023_001",
+      "x": 17,
+      "y": 21,
+      "script": "14Quest_WoomaPalace"
+    },
+    {
+      "name": "石堆",
+      "map": "D022",
+      "x": 207,
+      "y": 47,
+      "script": "14Quest_WoomaPalace"
+    },
+    {
+      "name": "书架",
+      "map": "D022_001",
+      "x": 64,
+      "y": 21,
+      "script": "14Quest_WoomaPalace"
+    },
+    {
+      "name": "魂滴",
+      "map": "D5071",
+      "x": 20,
+      "y": 23,
+      "script": "04Potion_Zuma"
+    },
+    {
+      "name": "司马云天",
+      "map": "D1110",
+      "x": 27,
+      "y": 13,
+      "script": "02Weapon_HalfTemple"
+    },
+    {
+      "name": "司马武林",
+      "map": "D1110",
+      "x": 7,
+      "y": 24,
+      "script": "09WideUse_HalfTemple"
+    },
+    {
+      "name": "司马化林",
+      "map": "D1110",
+      "x": 7,
+      "y": 20,
+      "script": "09Repair_HalfTemple"
+    },
+    {
+      "name": "六面神石",
+      "map": "D1110",
+      "x": 15,
+      "y": 18,
+      "script": "13Move_HalfTemple1"
+    },
+    {
+      "name": "六面神石",
+      "map": "D1110",
+      "x": 28,
+      "y": 31,
+      "script": "13Move_HalfTemple2"
+    },
+    {
+      "name": "六面神石",
+      "map": "D11031",
+      "x": 199,
+      "y": 257,
+      "script": "13Move_HalfTemple"
+    },
+    {
+      "name": "六面神石",
+      "map": "D1105",
+      "x": 219,
+      "y": 99,
+      "script": "13Move_HalfTemple"
+    },
+    {
+      "name": "火山",
+      "map": "D9033",
+      "x": 10,
+      "y": 15,
+      "script": "02Weapon_SinGiSun"
+    },
+    {
+      "name": "花珠",
+      "map": "D9012",
+      "x": 10,
+      "y": 12,
+      "script": "02Weapon_SinGiSun"
+    },
+    {
+      "name": "花仙",
+      "map": "D90221",
+      "x": 22,
+      "y": 20,
+      "script": "04Potion_SinGiSun"
+    },
+    {
+      "name": "火龙",
+      "map": "D90211",
+      "x": 22,
+      "y": 20,
+      "script": "04Potion_SinGiSun"
+    },
+    {
+      "name": "火石",
+      "map": "D9011",
+      "x": 9,
+      "y": 13,
+      "script": "04Potion_SinGiSun"
+    },
+    {
+      "name": "火风",
+      "map": "D90222",
+      "x": 17,
+      "y": 23,
+      "script": "04Potion_SinGiSun"
+    },
+    {
+      "name": "火天",
+      "map": "D9031",
+      "x": 10,
+      "y": 15,
+      "script": "04Potion_SinGiSun"
+    },
+    {
+      "name": "火郎",
+      "map": "D9032",
+      "x": 12,
+      "y": 11,
+      "script": "02Weapon_SinGiSun"
+    },
+    {
+      "name": "霸王幽灵",
+      "map": "D903",
+      "x": 54,
+      "y": 54,
+      "script": "14Quest_SinGiSun"
+    },
+    {
+      "name": "霸王幽灵",
+      "map": "D900",
+      "x": 45,
+      "y": 58,
+      "script": "14Quest_SinGiSun"
+    },
+    {
+      "name": "霸王幽灵",
+      "map": "D90323",
+      "x": 16,
+      "y": 8,
+      "script": "14Quest_SinGiSun"
+    },
+    {
+      "name": "瓦慈",
+      "map": "41",
+      "x": 126,
+      "y": 86,
+      "script": "01Meet_NuMa"
+    },
+    {
+      "name": "图木勒",
+      "map": "41",
+      "x": 145,
+      "y": 82,
+      "script": "02Weapon_Numa"
+    },
+    {
+      "name": "儒帕",
+      "map": "41",
+      "x": 141,
+      "y": 108,
+      "script": "03Armor_Numa"
+    },
+    {
+      "name": "啊莫",
+      "map": "41",
+      "x": 168,
+      "y": 125,
+      "script": "04Potion_Numa"
+    },
+    {
+      "name": "啊勒",
+      "map": "41",
+      "x": 168,
+      "y": 84,
+      "script": "06Inn_Numa"
+    },
+    {
+      "name": "肃良佳",
+      "map": "41",
+      "x": 127,
+      "y": 118,
+      "script": "07Grocery_Numa"
+    },
+    {
+      "name": "羽霞",
+      "map": "41",
+      "x": 155,
+      "y": 105,
+      "script": "08Accessory_Numa"
+    },
+    {
+      "name": "禹老",
+      "map": "41",
+      "x": 141,
+      "y": 90,
+      "script": "10Material_Numa"
+    },
+    {
+      "name": "牢牲",
+      "map": "41",
+      "x": 147,
+      "y": 106,
+      "script": "09HorseMarket_Numa"
+    },
+    {
+      "name": "六面神石",
+      "map": "41",
+      "x": 184,
+      "y": 136,
+      "script": "13Move_Numa"
+    },
+    {
+      "name": "夏柯",
+      "map": "41",
+      "x": 148,
+      "y": 84,
+      "script": "17NuMaSahaka_Numa"
+    },
+    {
+      "name": "紫霞神女",
+      "map": "41",
+      "x": 151,
+      "y": 121,
+      "script": "17Zaha_Numa"
+    },
+    {
+      "name": "云中子",
+      "map": "02",
+      "x": 254,
+      "y": 227,
+      "script": "20Gmatch"
+    },
+    {
+      "name": "来历不明人",
+      "map": "D16063",
+      "x": 29,
+      "y": 37,
+      "script": "17Monsternpc"
+    },
+    {
+      "name": "阿龙怪1",
+      "map": "npcroom1",
+      "x": 9,
+      "y": 7,
+      "script": "17NumaMidBoss1"
+    },
+    {
+      "name": "阿龙怪2",
+      "map": "npcroom1",
+      "x": 9,
+      "y": 8,
+      "script": "17NumaMidBoss2"
+    },
+    {
+      "name": "阿龙怪3",
+      "map": "npcroom1",
+      "x": 9,
+      "y": 9,
+      "script": "17NumaMidBoss3"
+    },
+    {
+      "name": "阿龙怪4",
+      "map": "npcroom1",
+      "x": 9,
+      "y": 10,
+      "script": "17NumaMidBoss4"
+    },
+    {
+      "name": "诺玛大法老1",
+      "map": "npcroom1",
+      "x": 10,
+      "y": 7,
+      "script": "17baska1"
+    },
+    {
+      "name": "诺玛大法老2",
+      "map": "npcroom1",
+      "x": 10,
+      "y": 8,
+      "script": "17baska2"
+    },
+    {
+      "name": "诺玛大法老3",
+      "map": "npcroom1",
+      "x": 10,
+      "y": 9,
+      "script": "17baska3"
+    },
+    {
+      "name": "诺玛大法老4",
+      "map": "npcroom1",
+      "x": 10,
+      "y": 10,
+      "script": "17baska4"
+    },
+    {
+      "name": "石像1",
+      "map": "D1601",
+      "x": 81,
+      "y": 230,
+      "script": "17StoneNpc1"
+    },
+    {
+      "name": "石像2",
+      "map": "D1602",
+      "x": 193,
+      "y": 41,
+      "script": "17StoneNpc2"
+    },
+    {
+      "name": "石像3",
+      "map": "D16032",
+      "x": 57,
+      "y": 355,
+      "script": "17StoneNpc3"
+    },
+    {
+      "name": "石像4",
+      "map": "D1604",
+      "x": 305,
+      "y": 213,
+      "script": "17StoneNpc4"
+    },
+    {
+      "name": "石像5",
+      "map": "D1605",
+      "x": 202,
+      "y": 321,
+      "script": "17StoneNpc5"
+    },
+    {
+      "name": "箱子1",
+      "map": "D16064",
+      "x": 29,
+      "y": 37,
+      "script": "17StoneNpcbox1"
+    },
+    {
+      "name": "摩达",
+      "map": "D1601",
+      "x": 157,
+      "y": 93,
+      "script": "17NumaMagda"
+    },
+    {
+      "name": "摩达1",
+      "map": "D16064",
+      "x": 24,
+      "y": 49,
+      "script": "17NumaMagda1"
+    },
+    {
+      "name": "寂幻之刃",
+      "map": "D16062",
+      "x": 29,
+      "y": 37,
+      "script": "17Quest_HonChonmado"
+    }
+  ]
+}

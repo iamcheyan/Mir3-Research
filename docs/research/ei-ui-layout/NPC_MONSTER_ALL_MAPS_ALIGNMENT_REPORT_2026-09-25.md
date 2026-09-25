@@ -28,7 +28,7 @@
 - 地图关系 `{"variant":78,"exact":165,"replacement":19,"renamed":6,"pending":26}`；target walkable `{"pass":294}`；apply status `{"pending-review":123,"dry-run":171}`；重叠行 **0**。
 - 每条记录保留 `current_npc_index/name`、old map/xy、original identity/map/xy、Hero-kill target map/xy、match method、rule、confidence、walkable、overlap、apply_status。
 - `non_position_fields_untouched=true`；没有删除状态；不改 NPCName、EntryPage、GoodsIndex、Image、FaceImage、对话/商店业务。
-- Merchant.txt/解析快照缺失；130 条来自脚本名/历史审计的 exact-script-name、58 条 semantic-audit、70 条 hero-kill-extra、36 条 pending。123 条因 variant/replacement/pending 或缺少可靠身份进入人工复核，不能直接写库。
+- Merchant 坐标源：`source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)`；脚本/坐标唯一匹配 **96** 条。其余仍按 audit/语义/候选规则处理；123 条进入人工复核，不能直接写库。
 
 ### NPC 全量来源
 
@@ -67,7 +67,7 @@
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- 备份：未执行；写库前置条件未满足（原始 Hero-kill Mon_Def/MonGen 与 range 缺失、Merchant 源缺失、variant/replacement 人工抽查缺失）。
+- 备份：未执行；写库前置条件未满足（原始 Hero-kill Mon_Def/MonGen 与 range 缺失、Merchant 坐标虽已接入但仅 96 条脚本唯一匹配、variant/replacement 人工抽查缺失）。
 - 双库写入：未执行；NPC 与怪物均无 apply commit。
 - round-trip：未执行；不能声称双库逐条一致。
 - 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
@@ -75,7 +75,7 @@
 ## 8. 未决项与人工复核
 
 1. 提供并固定 Hero-kill `Mon_Def/*.gen`/`MonGen` 文件及格式说明，补齐每个刷新点的 range，并核对 recovered import plan 的 742 行。
-2. 提供原版 Merchant/NPC 坐标快照，复核 294 条 NPC 身份，尤其 36 pending 和 123 pending-review。
+2. 复核 Merchant 快照的固定坐标记录与 96 条脚本/地图唯一匹配，确认其余 NPC 的身份和目标点。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
 5. 修复或重新导出 50 个 malformed/truncated Zircon map 文件后重跑独立解析器。
@@ -84,11 +84,11 @@
 
 ```bash
 cd /home/tetsuya/development/Mir3-Research
-python3 Tools/NpcMover/build_alignment_manifests.py --hero-spawn /home/tetsuya/development/zircon/Tools/DbMigrationTool/data/import_plan_v2.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
+python3 Tools/NpcMover/build_alignment_manifests.py --merchant-source docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json --hero-spawn /home/tetsuya/development/zircon/Tools/DbMigrationTool/data/import_plan_v2.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25
 python3 Tools/NpcMover/verify_alignment_manifest.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/independent-verification.json
 python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json --hero-map-dir /home/tetsuya/mir2ei/Map --zircon-map-dir /home/tetsuya/development/zircon/Debug/ServerCore/Map --out docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/sandbox
 ```
 
 ## 10. 远端 SHA 与提交
 
-- 研究仓库 `ei-ui-audit-2026-09-24` 已推送：`7cc733baed1c56c0d5871669aa41c77714434990`；Zircon `ui/legacy-layout-lab` 已推送：`79903434e53d8c95cde6be8a8cdb582ceaed6f88`。后续只允许继续追加提交，不得把工作树 SHA 当远端 SHA。
+- 本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked，不能把工作树或旧证据 SHA 当作本轮最终数据对齐证明。
