@@ -357,6 +357,12 @@ def main() -> int:
         if production_apply_path.exists()
         else {}
     )
+    client_smoke_path = args.manifest.parent / "client-login-smoke.json"
+    client_smoke = (
+        json.loads(client_smoke_path.read_text(encoding="utf-8"))
+        if client_smoke_path.exists()
+        else {}
+    )
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -418,6 +424,7 @@ def main() -> int:
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
         f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；当前决定 `{j(review_decisions)}`，批准 Respawn **{review_decisions.get('approve', 0)}** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `{approved_plan_path.name if approved_plan_path.exists() else '未生成'}` |",
         f"| 生产 Respawn 分支 | 已写入 **{production_apply.get('respawn_updates_applied', 0)}** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |",
+        f"| 客户端登录烟测 | {'登录/StartGame通过，但全量地图验收阻塞' if client_smoke else '未执行'} | `artifacts/.../client-login-smoke.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
@@ -481,7 +488,7 @@ def main() -> int:
         "- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。",
         f"- round-trip：生产 Respawn 分支通过；生产 SHA-256 一致={production_apply.get('server_client_sha_equal', False)}；完整 NPC/Respawn 全量 round-trip 未完成。",
         "- `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。",
-        "- 游戏截图/逐地图验收：未执行；NPC 和大部分刷新仍未闭合，启动客户端会混淆数据库、地图对应、对象同步和锚点问题。",
+        f"- 客户端部分烟测：{client_smoke.get('server_start_game', '未执行')}；{client_smoke.get('map_loaded', '未执行')}；{client_smoke.get('client_render_observation', '')}。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。",
         "",
         "## 8. 未决项与人工复核",
         "",

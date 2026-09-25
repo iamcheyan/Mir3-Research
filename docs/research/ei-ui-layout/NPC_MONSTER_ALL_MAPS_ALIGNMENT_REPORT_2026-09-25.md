@@ -15,6 +15,7 @@
 | dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
 | 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":587,"retain-current":2060,"approve":18}`，批准 Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
 | 生产 Respawn 分支 | 已写入 **18** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |
+| 客户端登录烟测 | 登录/StartGame通过，但全量地图验收阻塞 | `artifacts/.../client-login-smoke.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
 ## 2. 地图对应与坐标变换
@@ -78,7 +79,7 @@
 - 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
 - `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。
-- 游戏截图/逐地图验收：未执行；NPC 和大部分刷新仍未闭合，启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
+- 客户端部分烟测：pass；MapIndex=1 -> 0 (Bichon Town)；MapView 首帧无可绘制格子; missingLibraries=2152; missingTextures=0。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。
 
 ## 8. 未决项与人工复核
 
@@ -104,4 +105,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `d45a6cbdb96e4166b6978e3ea176e8751b40079f`；Zircon `835fb0f855003a893c38e618d2efebacfb01c8d7`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `b8297aee0e80352c1ce0e2c3a81f97d56fef0aeb`；Zircon `835fb0f855003a893c38e618d2efebacfb01c8d7`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。

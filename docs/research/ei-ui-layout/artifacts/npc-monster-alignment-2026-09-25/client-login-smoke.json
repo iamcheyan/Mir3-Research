@@ -1,0 +1,16 @@
+{
+  "mode": "partial-client-login-smoke",
+  "server": "127.0.0.1:7000",
+  "account": "test@test.com",
+  "character": "TestHero",
+  "server_start_game": "pass",
+  "map_loaded": "MapIndex=1 -> 0 (Bichon Town)",
+  "client_render_observation": "MapView 首帧无可绘制格子; missingLibraries=2152; missingTextures=0",
+  "respawn_map_travel": "not_executed",
+  "full_goal_acceptance": "blocked",
+  "reason": "仅18条Respawn已写入，NPC及其余刷新未闭合；测试账号本次登录日志显示Admin=False，未执行GM传送。",
+  "system_sha_unchanged_after_smoke": true,
+  "server_stopped": true,
+  "client_stopped": true,
+  "database_write": false
+}
