@@ -25,6 +25,11 @@
       "exists": true,
       "map_file_count": 1970,
       "role": "Zircon maps, excluded as Hero-kill evidence"
+    },
+    "/home/tetsuya/development/Debug/ServerCore/Map": {
+      "exists": true,
+      "map_file_count": 258,
+      "role": "additional Zircon runtime copy; not Hero-kill evidence"
     }
   },
   "hero_kill_source_dirs": [
@@ -39,5 +44,15 @@
     "independently_approved_respawns": 18
   },
   "source_presence_rule": "case-insensitive exact stem match against /home/tetsuya/mir2ei/Map/*.map; Zircon Debug maps are not substituted",
-  "conclusion": "No new Hero-kill binary map source or independent map archive was found. The 309 matched refresh rows without local Hero-kill map files remain needs-evidence; the 18 rows with readable local source and walkable targets remain the only approved refresh subset."
+  "conclusion": "No new Hero-kill binary map source or independent map archive was found. The 309 matched refresh rows without local Hero-kill map files remain needs-evidence; the 18 rows with readable local source and walkable targets remain the only approved refresh subset.",
+  "additional_zircon_copy_check": {
+    "missing_hero_map_name_variant_count": 0,
+    "same_name_hash_differences_against_zircon": 66,
+    "conclusion": "No missing Hero-kill map name has an independent file in this additional Debug copy; differing same-name files are Zircon runtime variants."
+  },
+  "full_home_exact_basename_check": {
+    "matched_missing_names_found": 128,
+    "non_zircon_source_found": 0,
+    "note": "All exact basename hits resolve to Zircon Debug runtime copies; no independent Hero-kill source."
+  }
 }

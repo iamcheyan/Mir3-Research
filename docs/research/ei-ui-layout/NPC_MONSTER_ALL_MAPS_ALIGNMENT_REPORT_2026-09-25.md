@@ -81,7 +81,7 @@
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
 - `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。
 - 客户端部分烟测：pass；MapIndex=1 -> 0 (Bichon Town)；MapView 首帧无可绘制格子; missingLibraries=2152; missingTextures=0。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。
-- Hero-kill 地图源搜索审计：本地 EI 运行时源图 544 个；匹配刷新中无本地源图 309 条；未发现新的研究缓存、NAS 或独立归档源图。
+- Hero-kill 地图源搜索审计：本地 EI 运行时源图 544 个；匹配刷新中无本地源图 309 条；额外 Zircon Debug 副本 258 个，缺失 Hero-kill 名称的独立变体 0 个；未发现新的研究缓存、NAS 或独立归档源图。
 
 ## 8. 未决项与人工复核
 
@@ -107,4 +107,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `ce56155b72b9afee545b4393c2d627b9cac2e7f1`；Zircon `186374bdd5cb0c1ae21b654a2a1a49716ceba022`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `6394278e5664b16edceaab044f5d91b7f3945aa7`；Zircon `186374bdd5cb0c1ae21b654a2a1a49716ceba022`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
