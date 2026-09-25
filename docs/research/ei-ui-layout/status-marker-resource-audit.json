@@ -23,7 +23,14 @@
       "separate_marker_helper": null,
       "marker_state_branch": null
     },
-    "interpretation": "在已确认的 11 槽循环中，装备记录只进入物品图标 helper 或人物 PaperDoll 绘制链；0x00430A40 的闭合 helper 也只有图库选择和物品图像合成，没有独立的状态标记 helper、状态帧选择分支或标记矩形。"
+    "interaction_path": {
+      "hover_handler": "0x0044B6B0 calls 0x0044B720, then 0x004341F0 only for an occupied slot",
+      "hit_test": "0x0044B720 tests 11 window-relative rectangles and returns the slot index or -1",
+      "hover_visual_state_write": null,
+      "pressed_visual_state_write": null,
+      "interpretation": "The EI status window hover path performs hit testing and tooltip dispatch; it does not write a hover/pressed visual state or draw a cell border/fill."
+    },
+    "interpretation": "在已确认的 11 槽循环中，装备记录只进入物品图标 helper 或人物 PaperDoll 绘制链；0x00430A40 的闭合 helper 也只有图库选择和物品图像合成，没有独立的状态标记 helper、状态帧选择分支或标记矩形。0x0044B6B0 的悬停路径只做 11 槽命中测试与占用槽 tooltip 分发，没有 hover/pressed 视觉状态写入。"
   },
   "resource_probe": {
     "root": "/home/tetsuya/mir2ei/Data",
@@ -37,14 +44,24 @@
   },
   "zircon_change": {
     "files": ["GodotClient/Controls/DXItemCell.cs", "GodotClient/Controls/CharacterDialog.cs"],
-    "behavior": "DXItemCell 增加 DrawItemBadgesEnabled；EI CharacterDialog 装备槽关闭通用 Interface 角标绘制。背包等非 EI 状态窗口保留原有通用角标路径。",
-    "reason": "当前角标来自 Interface 帧 47/48/49/103，缺少 EI 状态窗口独立证据，继续显示会把现代 ZL fallback 误报为 EI parity。"
+    "behavior": "DXItemCell 增加 DrawItemBadgesEnabled 与 DrawInteractionHighlightEnabled；EI CharacterDialog 装备槽关闭通用 Interface 角标及 hover/pressed 边框/红底绘制。背包等非 EI 状态窗口保留原有通用路径。",
+    "reason": "EI 状态窗口证据只支持槽位命中、tooltip、装备图标和 PaperDoll；Interface 47/48/49/103 角标以及绿色边框/半透明红底均缺少 EI 调用链，继续显示会把现代 ZL fallback 误报为 EI parity。"
+  },
+  "runtime_verification": {
+    "command": "/home/tetsuya/mir2ei/login_game.sh legacy",
+    "viewport": "1024x768",
+    "screenshots": [
+      ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-open.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-hover.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-pressed.png"
+    ],
+    "result": "空 Torch 槽在打开、悬停、按下三态均保持原始槽框，无现代绿色边框或半透明红底；客户端正常进入游戏。"
   },
   "verdict": {
-    "evidence_level": "primary-static for draw-chain absence; resource-probe for negative boundary",
-    "confirmed": ["EI 槽位图标绘制链", "人物 PaperDoll 绘制链", "未确认独立状态标记绘制链"],
+    "evidence_level": "primary-static for draw-chain and interaction absence; resource-probe for negative boundary; runtime-verified for Zircon visual suppression",
+    "confirmed": ["EI 槽位图标绘制链", "人物 PaperDoll 绘制链", "EI 槽位 hover 仅命中/tooltip 不绘制边框或红底"],
     "blocked": ["耐久/强化/绑定/限制/红点的 EI 语义帧与逐状态运行截图"],
-    "rule": "在获得独立 EI 调用链、资源映射或真实状态截图前，不新增或恢复人物状态面板装备状态角标。"
+    "rule": "在获得独立 EI 调用链、资源映射或真实状态截图前，不新增或恢复人物状态面板装备状态角标或现代 hover/pressed fallback。"
   },
   "cross_refs": [
     "status-window-render-evidence.json",

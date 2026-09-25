@@ -91,4 +91,9 @@
 因此 Zircon `DXItemCell` 增加 `DrawItemBadgesEnabled`，EI `CharacterDialog` 装备槽明确关闭通用 `Interface` 47/48/49/103 角标；背包等非 EI 状态窗口不变。该改动是证据边界修复，不是新增 EI 角标。目标版各状态的独立贴图、调用链和逐状态运行截图仍阻塞像素级闭合。
 ## STATUS-06 装备槽悬停/按下运行证据（2026-09-25）
 
-真实 `/home/tetsuya/mir2ei/login_game.sh legacy`、1024×768 会话中对空 Torch 槽 `(177,70,38×38)` 做中心悬停和鼠标按下；`status-slot-hover-guard.png`、`status-slot-pressed-guard.png` 归档于 Zircon `.artifacts/ui-acceptance-2026-09-24/`。两态均保持同一 38×38 命中矩形，未触发物品移动或写库。当前绿色边框/半透明红底来自 `DXItemCell.UpdateBorder` fallback；EI 选中覆盖层只有 `status-window-render-evidence.json` 的 primary-static-candidate 资源选择证据，未宣称像素级一致。
+真实 `/home/tetsuya/mir2ei/login_game.sh legacy`、1024×768 会话中对空 Torch 槽 `(177,70,38×38)` 做中心悬停和鼠标按下；`status-slot-hover-guard.png`、`status-slot-pressed-guard.png` 记录了旧 fallback 的命中安全性。随后按原版 `0x0044B6B0 -> 0x0044B720` 路径关闭 EI 槽视觉高亮，新增截图见 STATUS-07；当前状态窗口不再绘制绿色边框/半透明红底，但 tooltip/拖放输入链保留。
+## STATUS-07 EI 槽 hover/pressed 视觉边界修复（2026-09-25）
+
+独立反汇编 `0x0044B6B0-0x0044B78C` 确认：悬停入口调用 `0x0044B720` 遍历 11 个槽位矩形，命中占用槽后仅调用 `0x004341F0` tooltip；没有 hover/pressed 状态写入，也没有槽边框/红底绘制分支。因此 `DXItemCell` 新增 `DrawInteractionHighlightEnabled`，EI `CharacterDialog` 对 11 个装备格关闭通用交互高亮，仍保留命中、tooltip、选择和拖放逻辑，非 EI 窗口不变。
+
+真实 `/home/tetsuya/mir2ei/login_game.sh legacy`、1024×768 运行截图：`status-no-highlight-open.png`、`status-no-highlight-hover.png`、`status-no-highlight-pressed.png`。空 Torch 槽三态均保持原始槽框，无现代绿色边框或半透明红底；客户端 `S.StartGame Result=Success`。这闭合了“当前 fallback 与 EI hover 视觉不一致”差异，但耐久/强化/绑定/职业等级限制/红点语义贴图仍无独立 EI 证据。
