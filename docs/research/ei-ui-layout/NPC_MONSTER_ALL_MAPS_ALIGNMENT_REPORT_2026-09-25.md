@@ -1,6 +1,6 @@
 # NPC + 怪物全地图对齐报告（2026-09-25）
 
-> 状态：**离线 manifest / dry-run 阶段，未写 System.db**。Hero-kill/YXS 文本源已固定并保留 SHA；本报告不把未唯一匹配的刷新点伪装成已完成对齐。
+> 状态：**离线 manifest + 审批计划阶段，生产 System.db 未写入**。18 条刷新变更已通过独立 Hero-kill/Zircon 可行走检查并进入离线批准计划；其余 NPC、冲突和缺少源地图的刷新仍保守保持不写入。
 
 ## 1. 交付物和状态
 
@@ -13,7 +13,7 @@
 | 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |
 | 独立校验 | 逻辑通过；地图文件格式/截断发现 0 个 | `artifacts/.../independent-verification.json` |
 | dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
-| 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；不含批准结果 | `artifacts/.../manual-review-summary.json`；逐条编辑模板 `artifacts/.../manual-review-summary.tsv`（填写 `review_decision`、批准坐标及刷新 `approved_count/range/interval`） |
+| 人工复核队列 | 190 条 NPC、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":589,"retain-current":2058,"approve":18}`，批准 Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
 
 ## 2. 地图对应与坐标变换
@@ -71,22 +71,23 @@
 ## 7. dry-run、写库、round-trip和游戏验收
 
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
-- dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新匹配 **328** 条但仍为 pending-review；计划明确 `database_write=false`，不包含删除/创建 MonsterInfo。
-- 备份：未执行；写库前置条件未满足（Hero-kill/YXS 仍有 307 条 YXS-only 与 44 条冲突、NPC 仍有 190 条人工复核、variant/replacement 人工抽查缺失）。
-- 双库写入：未执行；NPC 与怪物均无 apply commit。
-- round-trip：未执行；不能声称双库逐条一致。
-- `NpcMover approved`：已在临时数据库副本分别执行 `scope=npc` 与 `scope=respawn` 烟测；两次均完成服务端/客户端备份、双库复制和 round-trip，真实 System.db 尚未执行。
-- 游戏截图/逐地图验收：未执行；在目标点和刷新范围未闭合前启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
+- dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新候选 **328** 条，其中批准计划当前收敛为 **18** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。
+- 生产备份/写库：未执行；仍有 589 条 needs-evidence（NPC/冲突/缺少 Hero-kill 地图）和 2058 条 zircon-only retain-current，不能把离线批准误称为全量对齐。
+- 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。
+- 生产双库写入：未执行；生产 ServerCore 数据库和客户端 System.db 未作为 apply 目标。
+- round-trip：临时副本 Respawn 分支通过；生产库 round-trip 未执行。
+- `NpcMover approved`：此前 NPC/Respawn 空计划烟测通过；本轮 18 条审批 Respawn 临时副本验证通过。
+- 游戏截图/逐地图验收：未执行；NPC 和大部分刷新仍未闭合，启动客户端会混淆数据库、地图对应、对象同步和锚点问题。
 
 ## 8. 未决项与人工复核
 
-1. 复核 Hero-kill/YXS 679 条 active refresh 与当前 RespawnInfo 的身份、地图、坐标、range/count/interval；处理 1 条 malformed name 警告和所有 YXS-only/conflict。
-2. 复核 Merchant 快照的固定坐标记录与 130 条脚本/地图唯一匹配，确认其余 NPC 的身份和目标点。
+1. 继续补充缺少的 Hero-kill 地图文件并复核 309 条 matched 刷新；当前 18 条独立源地图可读且目标可行走的刷新已批准，1 条源坐标 fail 保持 needs-evidence。
+2. NPC 复核队列仍有 589 条 needs-evidence（含 190 条 NPC）；确认 Merchant 固定坐标、地标转换和目标点后才能生成 NPC 批准项。
 3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。
 4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。
 5. 地图格式独立校验当前为 0 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。
-6. `manual-review-summary.tsv` 必须逐条填写并通过 `validate_manual_review.py`；校验器通过前不得执行 DBImporter sync。
-7. 校验通过后才会生成 `approved-offline-plan.json`；用 `NpcMover approved` 做二次干跑和 round-trip 计划校验，仍需独立地图检查、停服、备份后才可加 `apply`。
+6. `manual-review-summary.tsv` 已完成逐条保守决定并通过 `validate_manual_review.py`；其中 18 条进入离线批准计划，其余 unresolved 风险不写库。
+7. 当前 `approved-offline-plan.json` 仅含 18 条 Respawn 更新；在独立地图检查、停服、备份和人工/证据复核完成前不得对生产库加 `apply`。
 
 ## 9. 复现命令
 
@@ -102,4 +103,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `7af76a0c86d237c345e258da72e71d81ed4ab29e`；Zircon `e582243f6cad16a33f89ee8515a7fd37b64392d4`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据源提交：Mir3-Research `72ec6a58cb00d32c284672f96bae27eec20790cc`；Zircon `bda27d71147f19a62bc2a10b9ce6adf2c61037d3`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。

@@ -1,0 +1,236 @@
+{
+  "mode": "approved-offline-plan",
+  "database_write": false,
+  "manifest_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
+  "review_file": "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manual-review-summary.tsv",
+  "scope": {
+    "npc_position_fields": [
+      "NPCInfo.Region",
+      "MapRegion.Map",
+      "MapRegion.PointRegion"
+    ],
+    "respawn_position_fields": [
+      "RespawnInfo.Region",
+      "MapRegion.Map",
+      "MapRegion.PointRegion",
+      "MapRegion.Size",
+      "RespawnInfo.Count",
+      "RespawnInfo.Delay"
+    ],
+    "monster_info_business_fields": "untouched"
+  },
+  "npc_moves": [],
+  "respawn_updates": [
+    {
+      "respawn_index": 7236,
+      "map_index": 5,
+      "map": "1",
+      "x": 379,
+      "y": 125,
+      "count": 1,
+      "range": 0,
+      "interval": 60,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7237,
+      "map_index": 755,
+      "map": "D011",
+      "x": 136,
+      "y": 210,
+      "count": 25,
+      "range": 5,
+      "interval": 5,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7238,
+      "map_index": 755,
+      "map": "D011",
+      "x": 128,
+      "y": 220,
+      "count": 25,
+      "range": 5,
+      "interval": 5,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7240,
+      "map_index": 755,
+      "map": "D011",
+      "x": 154,
+      "y": 230,
+      "count": 25,
+      "range": 5,
+      "interval": 5,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7241,
+      "map_index": 942,
+      "map": "D712",
+      "x": 234,
+      "y": 192,
+      "count": 200,
+      "range": 200,
+      "interval": 20,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7242,
+      "map_index": 942,
+      "map": "D712",
+      "x": 234,
+      "y": 192,
+      "count": 200,
+      "range": 200,
+      "interval": 20,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7244,
+      "map_index": 942,
+      "map": "D712",
+      "x": 234,
+      "y": 192,
+      "count": 100,
+      "range": 200,
+      "interval": 20,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7245,
+      "map_index": 976,
+      "map": "D717",
+      "x": 57,
+      "y": 50,
+      "count": 50,
+      "range": 100,
+      "interval": 12,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7246,
+      "map_index": 976,
+      "map": "D717",
+      "x": 57,
+      "y": 50,
+      "count": 50,
+      "range": 100,
+      "interval": 12,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7248,
+      "map_index": 976,
+      "map": "D717",
+      "x": 57,
+      "y": 50,
+      "count": 50,
+      "range": 100,
+      "interval": 12,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7249,
+      "map_index": 976,
+      "map": "D717",
+      "x": 57,
+      "y": 50,
+      "count": 20,
+      "range": 100,
+      "interval": 12,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7250,
+      "map_index": 807,
+      "map": "d1201",
+      "x": 96,
+      "y": 105,
+      "count": 50,
+      "range": 100,
+      "interval": 15,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7251,
+      "map_index": 807,
+      "map": "d1201",
+      "x": 96,
+      "y": 105,
+      "count": 50,
+      "range": 100,
+      "interval": 15,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7252,
+      "map_index": 807,
+      "map": "d1201",
+      "x": 96,
+      "y": 105,
+      "count": 50,
+      "range": 100,
+      "interval": 15,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7257,
+      "map_index": 682,
+      "map": "6",
+      "x": 400,
+      "y": 400,
+      "count": 1,
+      "range": 100,
+      "interval": 60,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7471,
+      "map_index": 897,
+      "map": "D5073",
+      "x": 42,
+      "y": 52,
+      "count": 20,
+      "range": 50,
+      "interval": 10,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7472,
+      "map_index": 897,
+      "map": "D5073",
+      "x": 42,
+      "y": 52,
+      "count": 15,
+      "range": 50,
+      "interval": 10,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    },
+    {
+      "respawn_index": 7473,
+      "map_index": 903,
+      "map": "D515",
+      "x": 20,
+      "y": 20,
+      "count": 2,
+      "range": 20,
+      "interval": 10,
+      "review_note": "独立解析 /home/tetsuya/mir2ei/Map 验证 Hero-kill 源坐标可行走，目标 Zircon 坐标可行走，地图/坐标唯一匹配；按源 count/range/interval 批准。"
+    }
+  ],
+  "decision_summary": {
+    "approved_npc": 0,
+    "approved_respawn": 18,
+    "retained": 2058,
+    "rejected_or_evidence": 589
+  },
+  "prerequisites": [
+    "run independent plan/map walkability verification",
+    "stop ServerCore and verify TCP port 7000 is not listening",
+    "backup server and client System.db",
+    "apply NPC and RespawnInfo changes separately",
+    "run round-trip verification before client acceptance"
+  ]
+}
