@@ -91,4 +91,6 @@ python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-u
 
 ## 10. 远端 SHA 与提交
 
-- 本阶段只记录离线证据；写库、客户端验收和 push 仍 blocked。最终远端 SHA 必须在各仓库独立 commit/push 后补录，不能用工作树 SHA 冒充远端 SHA。
+- Mir3-Research `ei-ui-audit-2026-09-24`：`131f90bb608e254619d215333d78690b75cd465c`（本地 HEAD = origin 分支 SHA）。
+- Zircon `ui/legacy-layout-lab`：`c77e5f62873ccc11c897ad849ebc537b67b4b695`（本地 HEAD = origin 分支 SHA；origin 已提示仓库迁移到 `iamcheyan/Zircon-Godot`，本次 push 成功）。
+- 本阶段离线基准、NPC/怪物 manifest、独立校验、sandbox 和报告已提交并推送；写库、客户端验收仍因 Hero-kill 刷新源/Merchant 坐标源缺失而 blocked。
