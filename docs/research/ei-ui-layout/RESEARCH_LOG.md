@@ -9595,3 +9595,13 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - 原实现把 F380（整条 502px 轨道）作为 F380/F381 上按钮普通帧，导致本地运行时悬停/点击可见错误的整条蓝色覆盖。`LegacyChatDialog` 现在检测按钮帧对，缺失时禁用错误精灵，只保留证据约束的 `19×14` 命中区，并输出 `[LegacyChat] scroll button frames ... unavailable`。
 - 当前构建后的真实运行日志确认：本地 GameInter 1103 帧加载、F381/F382/F383 缺失降级日志、`StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。完整 1024×768 截图覆盖初始、40 条历史溢出、上下边界、轨道拖动、滚轮、新消息锚点、HUD MailButton、Enter/Space 入口。
 - 本地 `Mir3.exe` 为 `524288` 字节；`0x414060`、`0x414700`、`0x414846`、`0x4179B0` 字节探针落在研究审计的同一聊天 VA 家族，但研究目标 NAS 文件不可访问，仍不把本地 EXE/WIL/WIX 宣称为目标资源的字节同一。
+
+## Round 799 (HUD resident chat closure) — 2026-09-25：主 HUD 常驻聊天、输入框与 F350 入口闭合
+
+- **〔根因〕**`GameScene.ReceiveChat/OnChat` 已同时写入 `ChatLogPanel` 和 `LegacyChatDialog`；此前主 HUD 空白的直接原因是 legacy `_chatLog` 仍使用现代 `400×150` 几何并锚到 F50 上方，而不是 F50 内 `(224,27,354×74)` 聊天槽。legacy `OnChat` 还会对服务端已包装的 `p.Text` 重复添加发送者/类型前缀。
+- **〔代码修复〕**主 HUD `_chatLog` 固定 `354×74`、`ClipContents=true`、相对 `_mainPanel+(224,27)`；`ChatTextBox` 固定 `354×16`、相对 `_mainPanel+(223,105)`。legacy 路径直接使用服务端聊天文本；消息仍由同一 `ReceiveChat` 事件分别送 HUD/F350。
+- **〔输入根因〕**`GameScene._Input` 的 legacy `R` 快捷键只排除了 F350 输入焦点，没有排除主 HUD `ChatTextBox`。主 HUD 输入含 `R` 时会误开 F350，后续字符进入错误窗口。新增 `ChatTextBox.InputHasFocus` 并在 R 分支同时保护两个聊天输入控件；无焦点时 R 仍打开/关闭 F350。
+- **〔真实运行〕**使用 `/home/tetsuya/mir2ei`、`DISPLAY=:100`、完整 `1024×768` viewport 和 `login_game.sh all legacy`；日志确认 `StartGame Result=Success`、`LegacyHud PASS`、`[LegacyChat] receive type=Normal`、`[ChatInput] focus/submit`。安全普通文本、含 `R` 文本、89 字长文本均提交成功，HUD 消息持续存在，提交后输入清空，未再由 R 误开 F350。
+- **〔入口验证〕**鼠标点击 `MainPanel.MailButton` 命中 `LegacyOpen requested=chat`，F350 打开；关闭后 HUD 消息仍保留。F350 与 HUD 共享接收消息链但不共享根框/裁剪/输入状态。
+- **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-fixed-baseline.png`、`chat-hud-fixed-focus.png`、`chat-hud-r-input-fixed.png`、`chat-hud-r-message-final.png`、`chat-hud-long-input-fixed.png`、`chat-hud-long-message-fixed.png`、`chat-hud-right-button-open-f350.png`、`chat-hud-f350-closed-final.png`。
+- **〔构建〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告。运行日志中的 ALSA `ERR_CANT_OPEN` 属于 Xvfb dummy audio，不影响登录或 HUD。
