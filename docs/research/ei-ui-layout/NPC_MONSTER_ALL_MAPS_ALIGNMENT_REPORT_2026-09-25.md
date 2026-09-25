@@ -107,4 +107,4 @@ python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-u
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据基线：Mir3-Research `df53b7c0a59875462b7e6e5168815d2f735673a9`；本轮外部刷新源审计提交及推送基线：Mir3-Research `9a045232799feec24c11fb80236778c358458bc8`；Zircon 当前远端：`965d0537c64f4a492eee40896a78669f8a70a86a`。本轮仍为离线证据；写库、客户端验收和双库 round-trip 继续 blocked。
+- 数据对齐证据基线：Mir3-Research `df53b7c0a59875462b7e6e5168815d2f735673a9`；外部刷新源审计提交及推送检查点：Mir3-Research `4bd4968c791d4e1964221ad5933ea852cc18ce71`、`b287199e406f0f21974a637dfe17657454d8aa73`；对应 Zircon 进度提交及推送检查点：`849a185c777b70889988eb7b61d507b37cf1809c`、`8d230881925c355eca2a81c2a70301a5caa05189`。本报告更新前已验证这些检查点与各自远端分支一致；本轮仍为离线证据，写库、客户端验收和双库 round-trip 继续 blocked。
