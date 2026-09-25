@@ -44,7 +44,7 @@
     "independently_approved_respawns": 18
   },
   "source_presence_rule": "case-insensitive exact stem match against /home/tetsuya/mir2ei/Map/*.map; Zircon Debug maps are not substituted",
-  "conclusion": "No new Hero-kill binary map source or independent map archive was found. The 309 matched refresh rows without local Hero-kill map files remain needs-evidence; the 18 rows with readable local source and walkable targets remain the only approved refresh subset.",
+  "conclusion": "No new Hero-kill binary map source or independent map archive was found. Mounts/temp caches, client packed resources, remote repository trees, and the additional Zircon runtime copy provide no recoverable Hero-kill source. The 309 matched refresh rows without local Hero-kill map files remain needs-evidence; the 18 rows with readable local source and walkable targets remain the only approved refresh subset.",
   "additional_zircon_copy_check": {
     "missing_hero_map_name_variant_count": 0,
     "same_name_hash_differences_against_zircon": 66,
@@ -54,5 +54,36 @@
     "matched_missing_names_found": 128,
     "non_zircon_source_found": 0,
     "note": "All exact basename hits resolve to Zircon Debug runtime copies; no independent Hero-kill source."
+  },
+  "additional_searches": {
+    "mounts_and_temp": {
+      "roots": [
+        "/mnt",
+        "/media",
+        "/run/user",
+        "/tmp",
+        "/var/tmp",
+        "/home/tetsuya/.e2-scratch",
+        "/home/tetsuya/.e6-scratch"
+      ],
+      "exact_missing_map_hits": 0
+    },
+    "client_root": "/home/tetsuya/mir2ei",
+    "packed_resource_name_scan": {
+      "sample_missing_names": [
+        "D2902",
+        "D3101",
+        "ID2_002",
+        "D2701",
+        "d2106"
+      ],
+      "hits": 0,
+      "scope": "map/dat/ini/bin/exe/dll/wix/wil files"
+    },
+    "remote_git_trees": {
+      "Mir3-Research_origin_branch_map_paths": 0,
+      "Zircon_origin_branch_map_paths": 0,
+      "note": "map binaries are runtime artifacts, not tracked repository source"
+    }
   }
 }
