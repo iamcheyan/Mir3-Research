@@ -38,12 +38,14 @@
     "full_viewport_anchor": "chat-f350-scroll-anchor-safe-full.png",
     "full_viewport_drag_top": "chat-f350-scroll-final-drag-top-full.png",
     "full_viewport_all_six_templates": "chat-f350-six-templates-local-full.png",
+    "full_viewport_long_row": "chat-f350-long-row-focused-full.png",
     "note": "All listed files are complete 1024x768 Zircon viewport captures; they are not EI-original runtime captures."
   },
   "observations": {
     "full_viewport": "PASS: complete 1024x768 desktop captured; F350 root allocation and input focus are present in stdout.",
     "background_and_buttons": "RUNTIME PASS for the local GameInter.wil resource: F350 background, close control, six local template buttons, and entry/reopen paths are visible and clickable. EI-original byte identity and pixel parity remain unproved.",
     "safe_plain_chat": "PASS: safe ordinary strings were submitted with Return; F350 history and the lower HUD chat bar show [Normal] TestHero messages, and the input line clears.",
+    "long_row": "PASS: a long safe ordinary string renders as one fixed 14px history row and is clipped horizontally by the history viewport; it does not wrap into adjacent rows.",
     "scrolling": "PASS in Zircon runtime: 22-message overflow shows bottom anchoring; up/down controls, wheel, rail click, and explicit rail drag change the visible range; after manual scroll, scroll-anchor-safe remains at the user's history position when a new message arrives.",
     "template_commands": "NOT SENT: @拒绝, !, !!, !~, @拒绝私聊, and @拒绝行会聊天 were only wired to local input-template insertion and were not submitted."
   },

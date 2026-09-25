@@ -9583,3 +9583,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - 发现 `LegacyChatDialog.CreateSpriteButton()` 将 F350 关闭、上下滚动和六个本地模板按钮设为 `CanBePressed=false`，导致 `DXButton._GuiInput`提前吞掉点击；已改为可点击。轨道改用显式鼠标按下/移动/释放处理，避免依赖通用控件拖动状态。
 - 只验证模板按钮把字符串写入本地输入框；未提交 `@拒绝`、`!`、`!!`、`!~`、`@拒绝私聊` 或 `@拒绝行会聊天`，避免副作用。
 - 截图和机器可读运行记录：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/` 与 `chat-runtime-acceptance-2026-09-24.json`。本轮只证明 Zircon 使用的本地 `GameInter.wil/.wix` 行为；该资源与研究 primary-static EI WIL/WIX 的字节身份、像素级同版关系仍未证明，不能升级为 EI 原版 parity。
+## Round 797 (chat fixed-row clipping) — 2026-09-25：补证 F350 长文本固定行裁剪
+
+- `LegacyChatDialog` 历史行改为 `DXLabel.AutoSize=true`；证据中的 EI 绘制链以 14px 固定行距和历史区裁剪为边界，因此长文本不应在单条记录内换行。
+- 使用本地 `/home/tetsuya/mir2ei`、`DISPLAY=:101`、1024×768、`--legacy-ui --legacy-hud --legacy-open=chat` 完整登录；日志确认 `StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。
+- 安全普通长文本真实回显为一条 `[Normal] TestHero` 历史记录，超出历史区右边界后水平裁剪；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-f350-long-row-focused-full.png`。
+- `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功；仍未证明本地 `GameInter.wil/.wix` 与研究 primary-static EI 资源的字节身份或像素级同版关系。
