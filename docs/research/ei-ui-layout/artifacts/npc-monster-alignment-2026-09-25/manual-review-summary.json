@@ -5,6 +5,7 @@
   "approval_required": true,
   "counts": {
     "npc_pending_review": 190,
+    "npc_dry_run_candidates": 104,
     "respawn_pending_review": 328,
     "respawn_blocked": 2147,
     "respawn_total": 2475
@@ -1142,6 +1143,178 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 32,
+      "name": "Kacy",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 334,
+          "y": 224
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 334,
+          "y": 224
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 334,
+          "y": 224,
+          "score": 0,
+          "anchor": {
+            "x": 334,
+            "y": 224
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 33,
+      "name": "Seven",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 361,
+          "y": 226
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 361,
+          "y": 226
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 361,
+          "y": 226,
+          "score": 0,
+          "anchor": {
+            "x": 361,
+            "y": 226
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 34,
+      "name": "Dakota",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 346,
+          "y": 234
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 346,
+          "y": 234
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 346,
+          "y": 234,
+          "score": 0,
+          "anchor": {
+            "x": 346,
+            "y": 234
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 35,
+      "name": "Murray",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 337,
+          "y": 223
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 337,
+          "y": 223
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 337,
+          "y": 223,
+          "score": 0,
+          "anchor": {
+            "x": 337,
+            "y": 223
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 36,
       "name": "Sara",
@@ -1183,6 +1356,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 37,
+      "name": "Parker",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 343,
+          "y": 219
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 343,
+          "y": 219
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 343,
+          "y": 219,
+          "score": 0,
+          "anchor": {
+            "x": 343,
+            "y": 219
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -2167,6 +2383,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 66,
+      "name": "Imari",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 424,
+          "y": 97
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 424,
+          "y": 97
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 424,
+          "y": 97,
+          "score": 0,
+          "anchor": {
+            "x": 424,
+            "y": 97
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 67,
+      "name": "Solonga",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 470,
+          "y": 67
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 470,
+          "y": 67
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 470,
+          "y": 67,
+          "score": 0,
+          "anchor": {
+            "x": 470,
+            "y": 67
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 68,
       "name": "Wooshas",
@@ -2208,6 +2510,135 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 69,
+      "name": "Wooroy",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 426,
+          "y": 99
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 426,
+          "y": 99
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 426,
+          "y": 99,
+          "score": 0,
+          "anchor": {
+            "x": 426,
+            "y": 99
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 70,
+      "name": "Pat",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 428,
+          "y": 75
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 428,
+          "y": 75
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 428,
+          "y": 75,
+          "score": 0,
+          "anchor": {
+            "x": 428,
+            "y": 75
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 76,
+      "name": "Mr. Matt",
+      "old": {
+        "map": "8",
+        "xy": {
+          "x": 224,
+          "y": 210
+        }
+      },
+      "target": {
+        "map": "8",
+        "xy": {
+          "x": 224,
+          "y": 210
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 224,
+          "y": 210,
+          "score": 0,
+          "anchor": {
+            "x": 224,
+            "y": 210
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -2257,6 +2688,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 78,
+      "name": "Lafayette",
+      "old": {
+        "map": "8",
+        "xy": {
+          "x": 253,
+          "y": 291
+        }
+      },
+      "target": {
+        "map": "8",
+        "xy": {
+          "x": 253,
+          "y": 291
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 253,
+          "y": 291,
+          "score": 0,
+          "anchor": {
+            "x": 253,
+            "y": 291
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 79,
       "name": "Cherrill",
@@ -2298,6 +2772,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 80,
+      "name": "Mindy",
+      "old": {
+        "map": "8",
+        "xy": {
+          "x": 249,
+          "y": 257
+        }
+      },
+      "target": {
+        "map": "8",
+        "xy": {
+          "x": 249,
+          "y": 257
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 249,
+          "y": 257,
+          "score": 0,
+          "anchor": {
+            "x": 249,
+            "y": 257
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -2952,6 +3469,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 92,
+      "name": "Notice Board",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 360,
+          "y": 208
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 360,
+          "y": 208
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-center-notice",
+      "candidates": [
+        {
+          "x": 360,
+          "y": 208,
+          "score": 0,
+          "anchor": {
+            "x": 360,
+            "y": 208
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 93,
       "name": "Notice Board",
@@ -3477,6 +4037,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 102,
+      "name": "Companion Manager",
+      "old": {
+        "map": "2",
+        "xy": {
+          "x": 322,
+          "y": 223
+        }
+      },
+      "target": {
+        "map": "2",
+        "xy": {
+          "x": 322,
+          "y": 223
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 322,
+          "y": 223,
+          "score": 0,
+          "anchor": {
+            "x": 322,
+            "y": 223
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 103,
+      "name": "Companion Manager",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 430,
+          "y": 77
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 430,
+          "y": 77
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 430,
+          "y": 77,
+          "score": 0,
+          "anchor": {
+            "x": 430,
+            "y": 77
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 104,
       "name": "Companion Manager",
@@ -3762,6 +4408,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 136,
+      "name": "Payton",
+      "old": {
+        "map": "4",
+        "xy": {
+          "x": 433,
+          "y": 83
+        }
+      },
+      "target": {
+        "map": "4",
+        "xy": {
+          "x": 433,
+          "y": 83
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 433,
+          "y": 83,
+          "score": 0,
+          "anchor": {
+            "x": 433,
+            "y": 83
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 140,
+      "name": "Chief Yonghyeon",
+      "old": {
+        "map": "8",
+        "xy": {
+          "x": 231,
+          "y": 260
+        }
+      },
+      "target": {
+        "map": "8",
+        "xy": {
+          "x": 231,
+          "y": 260
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "semantic-audit",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 231,
+          "y": 260,
+          "score": 0,
+          "anchor": {
+            "x": 231,
+            "y": 260
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 141,
       "name": "14Quest_Bichon",
@@ -3803,6 +4535,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 142,
+      "name": "01Meet_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 425,
+          "y": 274
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 425,
+          "y": 274
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 425,
+          "y": 274,
+          "score": 0,
+          "anchor": {
+            "x": 425,
+            "y": 274
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -3852,6 +4627,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 144,
+      "name": "03Armor_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 442,
+          "y": 296
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 442,
+          "y": 296
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 442,
+          "y": 296,
+          "score": 0,
+          "anchor": {
+            "x": 442,
+            "y": 296
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 145,
+      "name": "04Potion_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 434,
+          "y": 303
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 434,
+          "y": 303
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 434,
+          "y": 303,
+          "score": 0,
+          "anchor": {
+            "x": 434,
+            "y": 303
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 146,
       "name": "05Book_Kugkyung",
@@ -3893,6 +4754,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 147,
+      "name": "06Inn_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 471,
+          "y": 279
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 471,
+          "y": 279
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 471,
+          "y": 279,
+          "score": 0,
+          "anchor": {
+            "x": 471,
+            "y": 279
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -3942,6 +4846,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 149,
+      "name": "08Accessory_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 444,
+          "y": 270
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 444,
+          "y": 270
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 444,
+          "y": 270,
+          "score": 0,
+          "anchor": {
+            "x": 444,
+            "y": 270
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 150,
       "name": "10Material_Kugkyung",
@@ -3983,6 +4930,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 151,
+      "name": "10ChestnutMarket_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 438,
+          "y": 281
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 438,
+          "y": 281
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 438,
+          "y": 281,
+          "score": 0,
+          "anchor": {
+            "x": 438,
+            "y": 281
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -4032,6 +5022,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 153,
+      "name": "13Move_Kugkyung2",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 411,
+          "y": 287
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 411,
+          "y": 287
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 411,
+          "y": 287,
+          "score": 0,
+          "anchor": {
+            "x": 411,
+            "y": 287
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 154,
       "name": "13Move_Kugkyung3",
@@ -4073,6 +5106,92 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 155,
+      "name": "14Doctor_Kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 429,
+          "y": 263
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 429,
+          "y": 263
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 429,
+          "y": 263,
+          "score": 0,
+          "anchor": {
+            "x": 429,
+            "y": 263
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 156,
+      "name": "14Quest_KugKyung1",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 461,
+          "y": 257
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 461,
+          "y": 257
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 461,
+          "y": 257,
+          "score": 0,
+          "anchor": {
+            "x": 461,
+            "y": 257
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -4167,6 +5286,264 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 159,
+      "name": "14Quest_KugKyung",
+      "old": {
+        "map": "01_001",
+        "xy": {
+          "x": 17,
+          "y": 16
+        }
+      },
+      "target": {
+        "map": "01_001",
+        "xy": {
+          "x": 17,
+          "y": 16
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 17,
+          "y": 16,
+          "score": 0,
+          "anchor": {
+            "x": 17,
+            "y": 16
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 160,
+      "name": "15Magic_Kugkyung1",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 456,
+          "y": 302
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 456,
+          "y": 302
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 456,
+          "y": 302,
+          "score": 0,
+          "anchor": {
+            "x": 456,
+            "y": 302
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 161,
+      "name": "15Magic_KugKyung",
+      "old": {
+        "map": "01_003",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "01_003",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 5,
+          "y": 8,
+          "score": 0,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 162,
+      "name": "15Magic_Kugkyung2",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 104,
+          "y": 203
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 104,
+          "y": 203
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 104,
+          "y": 203,
+          "score": 0,
+          "anchor": {
+            "x": 104,
+            "y": 203
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 163,
+      "name": "17MobRush_kugkyung",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 424,
+          "y": 312
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 424,
+          "y": 312
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 424,
+          "y": 312,
+          "score": 0,
+          "anchor": {
+            "x": 424,
+            "y": 312
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 164,
+      "name": "09CancleWeapon",
+      "old": {
+        "map": "01",
+        "xy": {
+          "x": 422,
+          "y": 262
+        }
+      },
+      "target": {
+        "map": "01",
+        "xy": {
+          "x": 422,
+          "y": 262
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 422,
+          "y": 262,
+          "score": 0,
+          "anchor": {
+            "x": 422,
+            "y": 262
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 165,
       "name": "01Meet_Eunhang",
@@ -4208,6 +5585,479 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 166,
+      "name": "02Weapon_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 284,
+          "y": 197
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 284,
+          "y": 197
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 284,
+          "y": 197,
+          "score": 0,
+          "anchor": {
+            "x": 284,
+            "y": 197
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 167,
+      "name": "03Armor_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 260,
+          "y": 177
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 260,
+          "y": 177
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 260,
+          "y": 177,
+          "score": 0,
+          "anchor": {
+            "x": 260,
+            "y": 177
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 168,
+      "name": "04Potion_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 273,
+          "y": 189
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 273,
+          "y": 189
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 273,
+          "y": 189,
+          "score": 0,
+          "anchor": {
+            "x": 273,
+            "y": 189
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 169,
+      "name": "04PotionMake_Euhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 272,
+          "y": 189
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 272,
+          "y": 189
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 272,
+          "y": 189,
+          "score": 0,
+          "anchor": {
+            "x": 272,
+            "y": 189
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 170,
+      "name": "05Book_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 233,
+          "y": 222
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 233,
+          "y": 222
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 233,
+          "y": 222,
+          "score": 0,
+          "anchor": {
+            "x": 233,
+            "y": 222
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 171,
+      "name": "06Inn_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 250,
+          "y": 190
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 250,
+          "y": 190
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 250,
+          "y": 190,
+          "score": 0,
+          "anchor": {
+            "x": 250,
+            "y": 190
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 172,
+      "name": "07Grocery_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 236,
+          "y": 205
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 236,
+          "y": 205
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 236,
+          "y": 205,
+          "score": 0,
+          "anchor": {
+            "x": 236,
+            "y": 205
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 173,
+      "name": "08Accessory_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 275,
+          "y": 222
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 275,
+          "y": 222
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 275,
+          "y": 222,
+          "score": 0,
+          "anchor": {
+            "x": 275,
+            "y": 222
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 174,
+      "name": "10Material_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 269,
+          "y": 186
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 269,
+          "y": 186
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 269,
+          "y": 186,
+          "score": 0,
+          "anchor": {
+            "x": 269,
+            "y": 186
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 175,
+      "name": "10ChestnutMarket_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 260,
+          "y": 205
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 260,
+          "y": 205
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 260,
+          "y": 205,
+          "score": 0,
+          "anchor": {
+            "x": 260,
+            "y": 205
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 176,
+      "name": "13Move_Eunhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 249,
+          "y": 144
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 249,
+          "y": 144
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 249,
+          "y": 144,
+          "score": 0,
+          "anchor": {
+            "x": 249,
+            "y": 144
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -4302,6 +6152,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 179,
+      "name": "15Magic_Eunhang1",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 265,
+          "y": 145
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 265,
+          "y": 145
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 265,
+          "y": 145,
+          "score": 0,
+          "anchor": {
+            "x": 265,
+            "y": 145
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 180,
       "name": "15Magic_Eunhang2",
@@ -4343,6 +6236,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 181,
+      "name": "15Magic_Euhang",
+      "old": {
+        "map": "02_001",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "02_001",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 5,
+          "y": 8,
+          "score": 0,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -4482,6 +6418,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 185,
+      "name": "09Bonus_Euhang",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 247,
+          "y": 242
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 247,
+          "y": 242
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 247,
+          "y": 242,
+          "score": 0,
+          "anchor": {
+            "x": 247,
+            "y": 242
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 186,
+      "name": "02Weapon_DoGwan",
+      "old": {
+        "map": "1_001",
+        "xy": {
+          "x": 14,
+          "y": 12
+        }
+      },
+      "target": {
+        "map": "1_001",
+        "xy": {
+          "x": 14,
+          "y": 12
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 14,
+          "y": 12,
+          "score": 0,
+          "anchor": {
+            "x": 14,
+            "y": 12
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 187,
       "name": "03Armor_DoGwan",
@@ -4527,6 +6549,350 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 188,
+      "name": "04PotionMake_DoGwan",
+      "old": {
+        "map": "1_006",
+        "xy": {
+          "x": 12,
+          "y": 7
+        }
+      },
+      "target": {
+        "map": "1_006",
+        "xy": {
+          "x": 12,
+          "y": 7
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 12,
+          "y": 7,
+          "score": 0,
+          "anchor": {
+            "x": 12,
+            "y": 7
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 189,
+      "name": "04Potion_DoGwan",
+      "old": {
+        "map": "1_006",
+        "xy": {
+          "x": 9,
+          "y": 10
+        }
+      },
+      "target": {
+        "map": "1_006",
+        "xy": {
+          "x": 9,
+          "y": 10
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 9,
+          "y": 10,
+          "score": 0,
+          "anchor": {
+            "x": 9,
+            "y": 10
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 190,
+      "name": "05Book_DoGwan",
+      "old": {
+        "map": "1_004",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "target": {
+        "map": "1_004",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 9,
+          "y": 11,
+          "score": 0,
+          "anchor": {
+            "x": 9,
+            "y": 11
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 191,
+      "name": "07Grocery_DoGwan",
+      "old": {
+        "map": "1_007",
+        "xy": {
+          "x": 11,
+          "y": 14
+        }
+      },
+      "target": {
+        "map": "1_007",
+        "xy": {
+          "x": 11,
+          "y": 14
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 11,
+          "y": 14,
+          "score": 0,
+          "anchor": {
+            "x": 11,
+            "y": 14
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 192,
+      "name": "08Accessory_DoGwan",
+      "old": {
+        "map": "1_005",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "target": {
+        "map": "1_005",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 9,
+          "y": 11,
+          "score": 0,
+          "anchor": {
+            "x": 9,
+            "y": 11
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 193,
+      "name": "14Quest_DoGwan",
+      "old": {
+        "map": "1_009",
+        "xy": {
+          "x": 117,
+          "y": 25
+        }
+      },
+      "target": {
+        "map": "1_009",
+        "xy": {
+          "x": 117,
+          "y": 25
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 117,
+          "y": 25,
+          "score": 0,
+          "anchor": {
+            "x": 117,
+            "y": 25
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 194,
+      "name": "15Magic_DoGwan",
+      "old": {
+        "map": "1_002",
+        "xy": {
+          "x": 11,
+          "y": 10
+        }
+      },
+      "target": {
+        "map": "1_002",
+        "xy": {
+          "x": 11,
+          "y": 10
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 11,
+          "y": 10,
+          "score": 0,
+          "anchor": {
+            "x": 11,
+            "y": 10
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 195,
+      "name": "15Magic_DoGwan",
+      "old": {
+        "map": "1_008",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "1_008",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 5,
+          "y": 8,
+          "score": 0,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 196,
       "name": "15Magic_DoGwan",
@@ -4568,6 +6934,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 197,
+      "name": "15Magic_DoGwan0",
+      "old": {
+        "map": "1_013",
+        "xy": {
+          "x": 44,
+          "y": 25
+        }
+      },
+      "target": {
+        "map": "1_013",
+        "xy": {
+          "x": 44,
+          "y": 25
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 44,
+          "y": 25,
+          "score": 0,
+          "anchor": {
+            "x": 44,
+            "y": 25
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -4662,6 +7071,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 200,
+      "name": "15Magic_DoGwan3",
+      "old": {
+        "map": "1_013",
+        "xy": {
+          "x": 23,
+          "y": 23
+        }
+      },
+      "target": {
+        "map": "1_013",
+        "xy": {
+          "x": 23,
+          "y": 23
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 23,
+          "y": 23,
+          "score": 0,
+          "anchor": {
+            "x": 23,
+            "y": 23
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 201,
       "name": "15Magic_DoGwan4",
@@ -4707,6 +7159,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 202,
+      "name": "15Magic_DoGwan5",
+      "old": {
+        "map": "1_013",
+        "xy": {
+          "x": 26,
+          "y": 26
+        }
+      },
+      "target": {
+        "map": "1_013",
+        "xy": {
+          "x": 26,
+          "y": 26
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 26,
+          "y": 26,
+          "score": 0,
+          "anchor": {
+            "x": 26,
+            "y": 26
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 203,
       "name": "15Magic_DoGwan6",
@@ -4748,6 +7243,221 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 204,
+      "name": "15Magic_DoGwan7",
+      "old": {
+        "map": "1_013",
+        "xy": {
+          "x": 10,
+          "y": 24
+        }
+      },
+      "target": {
+        "map": "1_013",
+        "xy": {
+          "x": 10,
+          "y": 24
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 10,
+          "y": 24,
+          "score": 0,
+          "anchor": {
+            "x": 10,
+            "y": 24
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 205,
+      "name": "02Weapon_Oasis",
+      "old": {
+        "map": "4_001",
+        "xy": {
+          "x": 7,
+          "y": 13
+        }
+      },
+      "target": {
+        "map": "4_001",
+        "xy": {
+          "x": 7,
+          "y": 13
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 7,
+          "y": 13,
+          "score": 0,
+          "anchor": {
+            "x": 7,
+            "y": 13
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 206,
+      "name": "03Armor_Oasis",
+      "old": {
+        "map": "4_004",
+        "xy": {
+          "x": 9,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "4_004",
+        "xy": {
+          "x": 9,
+          "y": 8
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 9,
+          "y": 8,
+          "score": 0,
+          "anchor": {
+            "x": 9,
+            "y": 8
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 207,
+      "name": "04Potion_Oasis",
+      "old": {
+        "map": "4_003",
+        "xy": {
+          "x": 10,
+          "y": 10
+        }
+      },
+      "target": {
+        "map": "4_003",
+        "xy": {
+          "x": 10,
+          "y": 10
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 10,
+          "y": 10,
+          "score": 0,
+          "anchor": {
+            "x": 10,
+            "y": 10
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 208,
+      "name": "06Inn_Oasis",
+      "old": {
+        "map": "4_003",
+        "xy": {
+          "x": 8,
+          "y": 15
+        }
+      },
+      "target": {
+        "map": "4_003",
+        "xy": {
+          "x": 8,
+          "y": 15
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 8,
+          "y": 15,
+          "score": 0,
+          "anchor": {
+            "x": 8,
+            "y": 15
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -5022,6 +7732,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 215,
+      "name": "06Inn_Samak",
+      "old": {
+        "map": "5_006",
+        "xy": {
+          "x": 12,
+          "y": 23
+        }
+      },
+      "target": {
+        "map": "5_006",
+        "xy": {
+          "x": 12,
+          "y": 23
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 12,
+          "y": 23,
+          "score": 0,
+          "anchor": {
+            "x": 12,
+            "y": 23
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 216,
       "name": "08Accessory_Samak",
@@ -5063,6 +7816,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 217,
+      "name": "09ChangeMoney_Samak",
+      "old": {
+        "map": "5_006",
+        "xy": {
+          "x": 7,
+          "y": 21
+        }
+      },
+      "target": {
+        "map": "5_006",
+        "xy": {
+          "x": 7,
+          "y": 21
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 7,
+          "y": 21,
+          "score": 0,
+          "anchor": {
+            "x": 7,
+            "y": 21
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -5204,6 +8000,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 221,
+      "name": "03Armor_Mongchon",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 324,
+          "y": 277
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 324,
+          "y": 277
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 324,
+          "y": 277,
+          "score": 0,
+          "anchor": {
+            "x": 324,
+            "y": 277
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 222,
       "name": "04Potion_Mongchon",
@@ -5245,6 +8084,49 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 223,
+      "name": "06Inn_Mongchon",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 323,
+          "y": 310
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 323,
+          "y": 310
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 323,
+          "y": 310,
+          "score": 0,
+          "anchor": {
+            "x": 323,
+            "y": 310
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -5339,6 +8221,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 226,
+      "name": "10Material_Mongchon",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 287,
+          "y": 290
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 287,
+          "y": 290
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 287,
+          "y": 290,
+          "score": 0,
+          "anchor": {
+            "x": 287,
+            "y": 290
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 227,
+      "name": "13Move_Mongchon1",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 349,
+          "y": 329
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 349,
+          "y": 329
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 349,
+          "y": 329,
+          "score": 0,
+          "anchor": {
+            "x": 349,
+            "y": 329
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 228,
       "name": "13Move_Mongchon2",
@@ -5384,6 +8352,92 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 229,
+      "name": "15Magic_Mongchon1",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 300,
+          "y": 299
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 300,
+          "y": 299
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 300,
+          "y": 299,
+          "score": 0,
+          "anchor": {
+            "x": 300,
+            "y": 299
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 230,
+      "name": "15Magic_Mongchon2",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 290,
+          "y": 299
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 290,
+          "y": 299
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 290,
+          "y": 299,
+          "score": 0,
+          "anchor": {
+            "x": 290,
+            "y": 299
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 231,
       "name": "15Magic_Mongchon3",
@@ -5425,6 +8479,92 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 232,
+      "name": "15Magic_Mongchon4",
+      "old": {
+        "map": "74",
+        "xy": {
+          "x": 324,
+          "y": 108
+        }
+      },
+      "target": {
+        "map": "74",
+        "xy": {
+          "x": 324,
+          "y": 108
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 324,
+          "y": 108,
+          "score": 0,
+          "anchor": {
+            "x": 324,
+            "y": 108
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 233,
+      "name": "13Move_SukGak",
+      "old": {
+        "map": "75",
+        "xy": {
+          "x": 184,
+          "y": 90
+        }
+      },
+      "target": {
+        "map": "75",
+        "xy": {
+          "x": 184,
+          "y": 90
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 184,
+          "y": 90,
+          "score": 0,
+          "anchor": {
+            "x": 184,
+            "y": 90
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -5565,6 +8705,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 237,
+      "name": "07Grocery_SkeletonCave",
+      "old": {
+        "map": "DM001",
+        "xy": {
+          "x": 4,
+          "y": 6
+        }
+      },
+      "target": {
+        "map": "DM001",
+        "xy": {
+          "x": 4,
+          "y": 6
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 4,
+          "y": 6,
+          "score": 0,
+          "anchor": {
+            "x": 4,
+            "y": 6
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 238,
       "name": "14Quest_SkeletonCave",
@@ -5610,6 +8793,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 239,
+      "name": "14Quest_SkeletonCave",
+      "old": {
+        "map": "E002_001",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "target": {
+        "map": "E002_001",
+        "xy": {
+          "x": 9,
+          "y": 11
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 9,
+          "y": 11,
+          "score": 0,
+          "anchor": {
+            "x": 9,
+            "y": 11
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 240,
       "name": "14Quest_SkeletonCave",
@@ -5651,6 +8877,92 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 241,
+      "name": "14Quest_SkeletonCave",
+      "old": {
+        "map": "DM002",
+        "xy": {
+          "x": 14,
+          "y": 22
+        }
+      },
+      "target": {
+        "map": "DM002",
+        "xy": {
+          "x": 14,
+          "y": 22
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 14,
+          "y": 22,
+          "score": 0,
+          "anchor": {
+            "x": 14,
+            "y": 22
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 242,
+      "name": "09NotBlocker_ZombieCave",
+      "old": {
+        "map": "D431",
+        "xy": {
+          "x": 29,
+          "y": 175
+        }
+      },
+      "target": {
+        "map": "D431",
+        "xy": {
+          "x": 29,
+          "y": 175
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 29,
+          "y": 175,
+          "score": 0,
+          "anchor": {
+            "x": 29,
+            "y": 175
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -5970,6 +9282,135 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 250,
+      "name": "09WideUse_HalfTemple",
+      "old": {
+        "map": "D1110",
+        "xy": {
+          "x": 7,
+          "y": 24
+        }
+      },
+      "target": {
+        "map": "D1110",
+        "xy": {
+          "x": 7,
+          "y": 24
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 7,
+          "y": 24,
+          "score": 0,
+          "anchor": {
+            "x": 7,
+            "y": 24
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 251,
+      "name": "09Repair_HalfTemple",
+      "old": {
+        "map": "D1110",
+        "xy": {
+          "x": 7,
+          "y": 20
+        }
+      },
+      "target": {
+        "map": "D1110",
+        "xy": {
+          "x": 7,
+          "y": 20
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 7,
+          "y": 20,
+          "score": 0,
+          "anchor": {
+            "x": 7,
+            "y": 20
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 252,
+      "name": "13Move_HalfTemple1",
+      "old": {
+        "map": "D1110",
+        "xy": {
+          "x": 15,
+          "y": 18
+        }
+      },
+      "target": {
+        "map": "D1110",
+        "xy": {
+          "x": 15,
+          "y": 18
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 15,
+          "y": 18,
+          "score": 0,
+          "anchor": {
+            "x": 15,
+            "y": 18
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 253,
       "name": "13Move_HalfTemple2",
@@ -6106,6 +9547,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 260,
+      "name": "14Quest_SinGiSun",
+      "old": {
+        "map": "D900",
+        "xy": {
+          "x": 45,
+          "y": 58
+        }
+      },
+      "target": {
+        "map": "D900",
+        "xy": {
+          "x": 45,
+          "y": 58
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name-map",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 45,
+          "y": 58,
+          "score": 0,
+          "anchor": {
+            "x": 45,
+            "y": 58
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 261,
       "name": "14Quest_SinGiSun",
@@ -6196,6 +9680,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 263,
+      "name": "02Weapon_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 145,
+          "y": 82
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 145,
+          "y": 82
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 145,
+          "y": 82,
+          "score": 0,
+          "anchor": {
+            "x": 145,
+            "y": 82
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 264,
       "name": "03Armor_Numa",
@@ -6237,6 +9764,135 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 265,
+      "name": "04Potion_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 168,
+          "y": 125
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 168,
+          "y": 125
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 168,
+          "y": 125,
+          "score": 0,
+          "anchor": {
+            "x": 168,
+            "y": 125
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 266,
+      "name": "06Inn_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 168,
+          "y": 84
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 168,
+          "y": 84
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 168,
+          "y": 84,
+          "score": 0,
+          "anchor": {
+            "x": 168,
+            "y": 84
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 267,
+      "name": "07Grocery_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 127,
+          "y": 118
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 127,
+          "y": 118
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 127,
+          "y": 118,
+          "score": 0,
+          "anchor": {
+            "x": 127,
+            "y": 118
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -6286,6 +9942,49 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 269,
+      "name": "10Material_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 141,
+          "y": 90
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 141,
+          "y": 90
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 141,
+          "y": 90,
+          "score": 0,
+          "anchor": {
+            "x": 141,
+            "y": 90
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 270,
       "name": "09HorseMarket_Numa",
@@ -6327,6 +10026,178 @@
       "warnings": [
         "target coordinate outside map or blocked"
       ],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 271,
+      "name": "13Move_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 184,
+          "y": 136
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 184,
+          "y": 136
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 184,
+          "y": 136,
+          "score": 0,
+          "anchor": {
+            "x": 184,
+            "y": 136
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 272,
+      "name": "17NuMaSahaka_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 148,
+          "y": 84
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 148,
+          "y": 84
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 148,
+          "y": 84,
+          "score": 0,
+          "anchor": {
+            "x": 148,
+            "y": 84
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 273,
+      "name": "17Zaha_Numa",
+      "old": {
+        "map": "41",
+        "xy": {
+          "x": 151,
+          "y": 121
+        }
+      },
+      "target": {
+        "map": "41",
+        "xy": {
+          "x": 151,
+          "y": 121
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 151,
+          "y": 121,
+          "score": 0,
+          "anchor": {
+            "x": 151,
+            "y": 121
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 274,
+      "name": "20Gmatch",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 254,
+          "y": 227
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 254,
+          "y": 227
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "exact-script-name",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 254,
+          "y": 227,
+          "score": 0,
+          "anchor": {
+            "x": 254,
+            "y": 227
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)"
     },
     {
@@ -7241,6 +11112,69 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 289,
+      "name": "功能NPC",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 247,
+          "y": 191
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 150,
+          "y": 550
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 150,
+          "y": 550,
+          "score": -7.8,
+          "anchor": {
+            "x": 150,
+            "y": 550
+          },
+          "separation": 403
+        },
+        {
+          "x": 250,
+          "y": 550,
+          "score": -7.8,
+          "anchor": {
+            "x": 250,
+            "y": 550
+          },
+          "separation": 311
+        },
+        {
+          "x": 250,
+          "y": 450,
+          "score": -7.8,
+          "anchor": {
+            "x": 250,
+            "y": 450
+          },
+          "separation": 211
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 290,
       "name": "功能NPC",
@@ -7566,6 +11500,69 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 295,
+      "name": "仓库系统",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 250,
+          "y": 189
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 249,
+          "y": 189
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "same-store-cluster",
+      "candidates": [
+        {
+          "x": 249,
+          "y": 189,
+          "score": 0.35,
+          "anchor": {
+            "x": 250,
+            "y": 189
+          },
+          "separation": 1
+        },
+        {
+          "x": 251,
+          "y": 189,
+          "score": 0.35,
+          "anchor": {
+            "x": 250,
+            "y": 189
+          },
+          "separation": 1
+        },
+        {
+          "x": 259,
+          "y": 177,
+          "score": 0.35,
+          "anchor": {
+            "x": 260,
+            "y": 177
+          },
+          "separation": 1
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 296,
       "name": "仓库系统",
@@ -7692,6 +11689,69 @@
       "warnings": [
         "map relation does not permit blind original-coordinate reuse"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 299,
+      "name": "买卖商人",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 252,
+          "y": 191
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 50,
+          "y": 150
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 50,
+          "y": 150,
+          "score": -7.8,
+          "anchor": {
+            "x": 50,
+            "y": 150
+          },
+          "separation": 203
+        },
+        {
+          "x": 50,
+          "y": 250,
+          "score": -7.8,
+          "anchor": {
+            "x": 50,
+            "y": 250
+          },
+          "separation": 203
+        },
+        {
+          "x": 150,
+          "y": 350,
+          "score": -7.8,
+          "anchor": {
+            "x": 150,
+            "y": 350
+          },
+          "separation": 200
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -8761,6 +12821,195 @@
     },
     {
       "kind": "npc",
+      "status": "dry-run",
+      "index": 318,
+      "name": "比赛评判",
+      "old": {
+        "map": "02_0011",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "02_0011",
+        "xy": {
+          "x": 4,
+          "y": 8
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 4,
+          "y": 8,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 5,
+          "y": 9,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 4,
+          "y": 7,
+          "score": 0.7,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 319,
+      "name": "比赛评判",
+      "old": {
+        "map": "1_012",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "1_012",
+        "xy": {
+          "x": 4,
+          "y": 8
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 4,
+          "y": 8,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 5,
+          "y": 9,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 4,
+          "y": 7,
+          "score": 0.7,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 320,
+      "name": "My00DefaultNpc",
+      "old": {
+        "map": "z010",
+        "xy": {
+          "x": 15,
+          "y": 11
+        }
+      },
+      "target": {
+        "map": "z010",
+        "xy": {
+          "x": 14,
+          "y": 11
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 14,
+          "y": 11,
+          "score": 0.35,
+          "anchor": {
+            "x": 15,
+            "y": 11
+          },
+          "separation": 1
+        },
+        {
+          "x": 15,
+          "y": 12,
+          "score": 0.35,
+          "anchor": {
+            "x": 15,
+            "y": 11
+          },
+          "separation": 1
+        },
+        {
+          "x": 14,
+          "y": 10,
+          "score": 0.7,
+          "anchor": {
+            "x": 15,
+            "y": 11
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
       "status": "pending-review",
       "index": 321,
       "name": "道观传送",
@@ -8822,6 +13071,49 @@
       "warnings": [
         "map relation does not permit blind original-coordinate reuse"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 322,
+      "name": "传送银杏",
+      "old": {
+        "map": "02",
+        "xy": {
+          "x": 247,
+          "y": 144
+        }
+      },
+      "target": {
+        "map": "02",
+        "xy": {
+          "x": 247,
+          "y": 144
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "pending",
+      "confidence": "low",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 247,
+          "y": 144,
+          "score": 0,
+          "anchor": {
+            "x": 247,
+            "y": 144
+          },
+          "separation": 0
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -9082,6 +13374,69 @@
       "warnings": [
         "map relation does not permit blind original-coordinate reuse"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 331,
+      "name": "潘业传送4",
+      "old": {
+        "map": "D1115",
+        "xy": {
+          "x": 358,
+          "y": 353
+        }
+      },
+      "target": {
+        "map": "D1115",
+        "xy": {
+          "x": 384,
+          "y": 19
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-entrance-teleporter",
+      "candidates": [
+        {
+          "x": 384,
+          "y": 19,
+          "score": -7.8,
+          "anchor": {
+            "x": 384,
+            "y": 19
+          },
+          "separation": 360
+        },
+        {
+          "x": 36,
+          "y": 383,
+          "score": -7.8,
+          "anchor": {
+            "x": 36,
+            "y": 383
+          },
+          "separation": 352
+        },
+        {
+          "x": 200,
+          "y": 199,
+          "score": -7.8,
+          "anchor": {
+            "x": 200,
+            "y": 199
+          },
+          "separation": 312
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -9797,6 +14152,132 @@
       "warnings": [
         "map relation does not permit blind original-coordinate reuse"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 345,
+      "name": "魔界接待",
+      "old": {
+        "map": "D0002_001",
+        "xy": {
+          "x": 5,
+          "y": 8
+        }
+      },
+      "target": {
+        "map": "D0002_001",
+        "xy": {
+          "x": 4,
+          "y": 8
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 4,
+          "y": 8,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 5,
+          "y": 9,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 1
+        },
+        {
+          "x": 4,
+          "y": 7,
+          "score": 0.7,
+          "anchor": {
+            "x": 5,
+            "y": 8
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 346,
+      "name": "魔界接待1",
+      "old": {
+        "map": "D0002_004",
+        "xy": {
+          "x": 5,
+          "y": 24
+        }
+      },
+      "target": {
+        "map": "D0002_004",
+        "xy": {
+          "x": 5,
+          "y": 23
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "pass",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 5,
+          "y": 23,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 24
+          },
+          "separation": 1
+        },
+        {
+          "x": 5,
+          "y": 25,
+          "score": 0.35,
+          "anchor": {
+            "x": 5,
+            "y": 24
+          },
+          "separation": 1
+        },
+        {
+          "x": 3,
+          "y": 24,
+          "score": 0.7,
+          "anchor": {
+            "x": 5,
+            "y": 24
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     },
     {
@@ -10902,6 +15383,258 @@
       "warnings": [
         "map relation does not permit blind original-coordinate reuse"
       ],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 364,
+      "name": "血案接待",
+      "old": {
+        "map": "02_006",
+        "xy": {
+          "x": 25,
+          "y": 18
+        }
+      },
+      "target": {
+        "map": "02_006",
+        "xy": {
+          "x": 25,
+          "y": 17
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 25,
+          "y": 17,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 25,
+          "y": 19,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 23,
+          "y": 18,
+          "score": 0.7,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 365,
+      "name": "骑兵接待",
+      "old": {
+        "map": "02_0061",
+        "xy": {
+          "x": 25,
+          "y": 18
+        }
+      },
+      "target": {
+        "map": "02_0061",
+        "xy": {
+          "x": 25,
+          "y": 17
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 25,
+          "y": 17,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 25,
+          "y": 19,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 23,
+          "y": 18,
+          "score": 0.7,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 366,
+      "name": "尊者接待",
+      "old": {
+        "map": "02_0062",
+        "xy": {
+          "x": 25,
+          "y": 18
+        }
+      },
+      "target": {
+        "map": "02_0062",
+        "xy": {
+          "x": 25,
+          "y": 17
+        }
+      },
+      "map_relation": "renamed",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-service",
+      "candidates": [
+        {
+          "x": 25,
+          "y": 17,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 25,
+          "y": 19,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 23,
+          "y": 18,
+          "score": 0.7,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
+      "identity_source": "NpcMover/audit-report.md"
+    },
+    {
+      "kind": "npc",
+      "status": "dry-run",
+      "index": 367,
+      "name": "杀人掠夺",
+      "old": {
+        "map": "1_014",
+        "xy": {
+          "x": 25,
+          "y": 18
+        }
+      },
+      "target": {
+        "map": "1_014",
+        "xy": {
+          "x": 25,
+          "y": 17
+        }
+      },
+      "map_relation": "exact",
+      "match_method": "hero-kill-extra",
+      "confidence": "medium",
+      "walkable": {
+        "old": "fail",
+        "target": "pass"
+      },
+      "overlap_with": [],
+      "placement_rule": "town-safezone-extra",
+      "candidates": [
+        {
+          "x": 25,
+          "y": 17,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 25,
+          "y": 19,
+          "score": 0.35,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 1
+        },
+        {
+          "x": 23,
+          "y": 18,
+          "score": 0.7,
+          "anchor": {
+            "x": 25,
+            "y": 18
+          },
+          "separation": 2
+        }
+      ],
+      "warnings": [],
       "identity_source": "NpcMover/audit-report.md"
     }
   ],

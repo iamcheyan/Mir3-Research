@@ -53,7 +53,7 @@ def integer(value: str, field: str, key: tuple[str, str], errors: list[str]) -> 
 def expected_rows(manifest: dict) -> dict[tuple[str, str], str]:
     expected: dict[tuple[str, str], str] = {}
     for row in manifest["npcs"]:
-        if row["apply_status"] == "pending-review":
+        if row["apply_status"] in {"dry-run", "pending-review"}:
             expected[("npc", str(row["current_npc_index"]))] = row["apply_status"]
     for row in manifest["monster_respawns"]:
         if row["apply_status"] in {"blocked", "pending-review"}:

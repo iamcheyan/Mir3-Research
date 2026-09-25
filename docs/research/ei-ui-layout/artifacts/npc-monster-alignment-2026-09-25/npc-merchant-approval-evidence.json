@@ -1,0 +1,23 @@
+{
+  "review_id": "NPC-MONSTER-ALL-MAPS-2026-09-25",
+  "mode": "offline-review-queue",
+  "database_write": false,
+  "review_basis": "精确 Merchant snapshot 脚本/地图/坐标 + exact map relation + target walkable pass + no overlap",
+  "approved_npc": 73,
+  "approved_respawn": 18,
+  "held_npc_needs_evidence": 221,
+  "review_rows": 2769,
+  "validation": "/tmp/npc-merchant-review-validation.json status=pass",
+  "production_apply": "not executed",
+  "note": "仅扩展离线批准计划；未写入任何System.db。",
+  "temporary_apply_smoke": {
+    "status": "blocked",
+    "reason": "NpcMover TCP safety gate detected 127.0.0.1:7000 in use by the active zircon-npc-server session; no temporary or production DB was written."
+  },
+  "offline_npc_plan_dry_run": {
+    "status": "pass",
+    "approved_npc": 73,
+    "approved_respawn": 18,
+    "database_write": false
+  }
+}

@@ -135,7 +135,7 @@ def build_manual_review_summary(data: dict) -> dict:
             "identity_source": row["identity_source"],
         }
         for row in data["npcs"]
-        if row["apply_status"] == "pending-review"
+        if row["apply_status"] in {"dry-run", "pending-review"}
     ]
     respawn_rows = [
         {
@@ -171,7 +171,8 @@ def build_manual_review_summary(data: dict) -> dict:
         "database_write": False,
         "approval_required": True,
         "counts": {
-            "npc_pending_review": len(npc_rows),
+            "npc_pending_review": sum(1 for row in npc_rows if row["status"] == "pending-review"),
+            "npc_dry_run_candidates": sum(1 for row in npc_rows if row["status"] == "dry-run"),
             "respawn_pending_review": sum(1 for row in respawn_rows if row["status"] == "pending-review"),
             "respawn_blocked": sum(1 for row in respawn_rows if row["status"] == "blocked"),
             "respawn_total": len(respawn_rows),
@@ -192,7 +193,7 @@ def build_manual_review_tsv_rows(data: dict) -> list[dict]:
         rows.append({key: values.get(key, "") for key in REVIEW_COLUMNS})
 
     for row in data["npcs"]:
-        if row["apply_status"] != "pending-review":
+        if row["apply_status"] not in {"dry-run", "pending-review"}:
             continue
         add({
             "kind": "npc",
@@ -351,6 +352,13 @@ def main() -> int:
     review_state = read_review_state(review_tsv_path)
     review_decisions = review_state["decision_counts"]
     approved_plan_path = args.manifest.parent / "approved-offline-plan.json"
+    approved_plan = (
+        json.loads(approved_plan_path.read_text(encoding="utf-8"))
+        if approved_plan_path.exists()
+        else {}
+    )
+    approved_npc_count = len(approved_plan.get("npc_moves", []))
+    approved_respawn_count = len(approved_plan.get("respawn_updates", []))
     production_apply_path = args.manifest.parent / "production-respawn-apply.json"
     production_apply = (
         json.loads(production_apply_path.read_text(encoding="utf-8"))
@@ -361,6 +369,12 @@ def main() -> int:
     client_smoke = (
         json.loads(client_smoke_path.read_text(encoding="utf-8"))
         if client_smoke_path.exists()
+        else {}
+    )
+    npc_approval_evidence_path = args.manifest.parent / "npc-merchant-approval-evidence.json"
+    npc_approval_evidence = (
+        json.loads(npc_approval_evidence_path.read_text(encoding="utf-8"))
+        if npc_approval_evidence_path.exists()
         else {}
     )
     source_search_path = args.manifest.parent / "hero-kill-map-source-search-audit.json"
@@ -428,8 +442,9 @@ def main() -> int:
         "| 怪物缺口清单 | YXS-only、Zircon-only、coordinate conflict 均已列出；不作为删除建议 | `artifacts/.../monster_gap_manifest.json` |",
         f"| 独立校验 | 逻辑通过；地图文件格式/截断发现 {verify['format_issue_count']} 个 | `artifacts/.../independent-verification.json` |",
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
-        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；当前决定 `{j(review_decisions)}`，批准 Respawn **{review_decisions.get('approve', 0)}** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `{approved_plan_path.name if approved_plan_path.exists() else '未生成'}` |",
+        f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC pending、{review_summary['counts'].get('npc_dry_run_candidates', 0)} 条 NPC dry-run 候选、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；当前决定 `{j(review_decisions)}`；离线批准 NPC **{approved_npc_count}** 条、Respawn **{approved_respawn_count}** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `{approved_plan_path.name if approved_plan_path.exists() else '未生成'}` |",
         f"| 生产 Respawn 分支 | 已写入 **{production_apply.get('respawn_updates_applied', 0)}** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |",
+        f"| NPC 离线批准分支 | 已批准 **{approved_npc_count}** 条；临时 apply smoke={npc_approval_evidence.get('temporary_apply_smoke', {}).get('status', '未执行')}；生产写入 0 条 | `artifacts/.../approved-offline-plan.json`；`artifacts/.../npc-merchant-approval-evidence.json` |",
         f"| 客户端登录烟测 | {'登录/StartGame通过，但全量地图验收阻塞' if client_smoke else '未执行'} | `artifacts/.../client-login-smoke.json` |",
         f"| Hero-kill 地图源搜索 | {'已完成；未发现新增二进制源图' if source_search else '未执行'} | `artifacts/.../hero-kill-map-source-search-audit.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
@@ -489,9 +504,10 @@ def main() -> int:
         "## 7. dry-run、写库、round-trip和游戏验收",
         "",
         "- dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。",
-        f"- dry-run 应用计划：NPC 可直接候选 **{len(dry_run_plan['npc_candidates'])}** 条；Hero-kill 唯一刷新候选 **{len(dry_run_plan['respawn_candidates'])}** 条，其中批准计划当前收敛为 **{review_decisions.get('approve', 0)}** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。",
+        f"- dry-run 应用计划：NPC 可直接候选 **{len(dry_run_plan['npc_candidates'])}** 条；Hero-kill 唯一刷新候选 **{len(dry_run_plan['respawn_candidates'])}** 条；批准计划当前为 NPC **{approved_npc_count}** 条、Respawn **{approved_respawn_count}** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。",
         f"- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **{production_apply.get('respawn_updates_applied', 0)}** 条、NPC **{production_apply.get('npc_updates_applied', 0)}** 条；备份哈希匹配写入前状态={production_apply.get('backup_hashes_match_before', False)}，仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence 和 {review_decisions.get('retain-current', 0)} 条 retain-current，不能把部分写入误称为全量对齐。",
         "- 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。",
+        f"- NPC 离线批准验证：{approved_npc_count} 条精确 Merchant 坐标已进入批准计划；临时/生产 apply 被 TCP 7000 安全门禁阻止，未写任何 System.db。证据见 `artifacts/.../npc-merchant-approval-evidence.json`。",
         "- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。",
         f"- round-trip：生产 Respawn 分支通过；生产 SHA-256 一致={production_apply.get('server_client_sha_equal', False)}；完整 NPC/Respawn 全量 round-trip 未完成。",
         "- `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。",
@@ -501,12 +517,12 @@ def main() -> int:
         "## 8. 未决项与人工复核",
         "",
         "1. 已搜索 `/home/tetsuya/NAS/**/*.map`、研究仓库地图路径及本地资源根；缺失 Hero-kill 源图仍未找到（development/zircon 命中的同名文件是 Zircon Map，不冒充 Hero-kill 源）。继续补充源图并复核 309 条 matched 刷新；当前 18 条独立源地图可读且目标可行走的刷新已批准，1 条源坐标 fail 保持 needs-evidence。",
-        f"2. NPC 复核队列仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence（含 {review_summary['counts']['npc_pending_review']} 条 NPC）；确认 Merchant 固定坐标、地标转换和目标点后才能生成 NPC 批准项。",
+        f"2. NPC 复核队列仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence；其中 73 条精确 Merchant 脚本/地图/坐标且目标可行走的候选已进入离线批准计划，未写生产库；其余 NPC 证据不足，继续保留。",
         "3. 对 89 个非 exact/renamed 地图关系逐图确认地标/入口/安全区转换；优先沙巴克、5、D202、D901、D11031 等 replacement/variant。",
         "4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。",
         f"5. 地图格式独立校验当前为 {verify['format_issue_count']} 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。",
-        f"6. `manual-review-summary.tsv` 已完成逐条保守决定并通过 `validate_manual_review.py`；其中 {review_decisions.get('approve', 0)} 条进入离线批准计划，其余 unresolved 风险不写库。",
-        "7. 当前 `approved-offline-plan.json` 仅含 18 条 Respawn 更新；该 Respawn 分支已完成生产 apply，NPC 或 `scope=all` 在剩余证据闭合前不得执行。",
+        f"6. `manual-review-summary.tsv` 已完成逐条决定并通过 `validate_manual_review.py`；离线批准计划含 NPC **{approved_npc_count}** 条、Respawn **{approved_respawn_count}** 条，其余 unresolved 风险不写库。",
+        f"7. 当前批准计划仅为离线审查产物；生产已完成 Respawn {production_apply.get('respawn_updates_applied', 0)} 条，NPC 0 条。NPC 分支必须在服务停止、临时副本 apply smoke 通过后才可生产写入。",
         "",
         "## 9. 复现命令",
         "",
