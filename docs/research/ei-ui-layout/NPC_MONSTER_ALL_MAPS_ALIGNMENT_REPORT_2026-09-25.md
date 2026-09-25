@@ -91,4 +91,4 @@ python3 Tools/NpcMover/render_alignment_sandbox.py --manifest docs/research/ei-u
 
 ## 10. 远端 SHA 与提交
 
-- 本阶段只记录离线证据；写库、客户端验收和 push 仍 blocked。最终远端 SHA 必须在各仓库独立 commit/push 后补录，不能用工作树 SHA 冒充远端 SHA。
+- 研究仓库 `ei-ui-audit-2026-09-24` 已推送：`7cc733baed1c56c0d5871669aa41c77714434990`；Zircon `ui/legacy-layout-lab` 已推送：`79903434e53d8c95cde6be8a8cdb582ceaed6f88`。后续只允许继续追加提交，不得把工作树 SHA 当远端 SHA。
