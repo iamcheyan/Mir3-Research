@@ -351,6 +351,12 @@ def main() -> int:
     review_state = read_review_state(review_tsv_path)
     review_decisions = review_state["decision_counts"]
     approved_plan_path = args.manifest.parent / "approved-offline-plan.json"
+    production_apply_path = args.manifest.parent / "production-respawn-apply.json"
+    production_apply = (
+        json.loads(production_apply_path.read_text(encoding="utf-8"))
+        if production_apply_path.exists()
+        else {}
+    )
     map_lines = [
         "# MAP-HERO-KILL-BASELINE-2026-09-25",
         "",
@@ -397,7 +403,7 @@ def main() -> int:
     report = [
         "# NPC + 怪物全地图对齐报告（2026-09-25）",
         "",
-        "> 状态：**离线 manifest + 审批计划阶段，生产 System.db 未写入**。18 条刷新变更已通过独立 Hero-kill/Zircon 可行走检查并进入离线批准计划；其余 NPC、冲突和缺少源地图的刷新仍保守保持不写入。",
+        "> 状态：**部分生产 Respawn 写入已完成，完整对齐仍未完成**。18 条刷新变更已通过独立 Hero-kill/Zircon 可行走检查并完成服务端/客户端双库写入和 round-trip；其余 NPC、冲突和缺少源地图的刷新仍保守保持不写入。",
         "",
         "## 1. 交付物和状态",
         "",
@@ -411,6 +417,7 @@ def main() -> int:
         f"| 独立校验 | 逻辑通过；地图文件格式/截断发现 {verify['format_issue_count']} 个 | `artifacts/.../independent-verification.json` |",
         "| dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |",
         f"| 人工复核队列 | {review_summary['counts']['npc_pending_review']} 条 NPC、{review_summary['counts']['respawn_pending_review']} 条匹配刷新、{review_summary['counts']['respawn_blocked']} 条阻塞刷新；当前决定 `{j(review_decisions)}`，批准 Respawn **{review_decisions.get('approve', 0)}** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `{approved_plan_path.name if approved_plan_path.exists() else '未生成'}` |",
+        f"| 生产 Respawn 分支 | 已写入 **{production_apply.get('respawn_updates_applied', 0)}** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |",
         "| sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |",
         "",
         "## 2. 地图对应与坐标变换",
@@ -469,11 +476,11 @@ def main() -> int:
         "",
         "- dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。",
         f"- dry-run 应用计划：NPC 可直接候选 **{len(dry_run_plan['npc_candidates'])}** 条；Hero-kill 唯一刷新候选 **{len(dry_run_plan['respawn_candidates'])}** 条，其中批准计划当前收敛为 **{review_decisions.get('approve', 0)}** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。",
-        f"- 生产备份/写库：未执行；仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence（NPC/冲突/缺少 Hero-kill 地图）和 {review_decisions.get('retain-current', 0)} 条 zircon-only retain-current，不能把离线批准误称为全量对齐。",
+        f"- 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **{production_apply.get('respawn_updates_applied', 0)}** 条、NPC **{production_apply.get('npc_updates_applied', 0)}** 条；备份哈希匹配写入前状态={production_apply.get('backup_hashes_match_before', False)}，仍有 {review_decisions.get('needs-evidence', 0)} 条 needs-evidence 和 {review_decisions.get('retain-current', 0)} 条 zircon-only retain-current，不能把部分写入误称为全量对齐。",
         "- 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。",
-        "- 生产双库写入：未执行；生产 ServerCore 数据库和客户端 System.db 未作为 apply 目标。",
-        "- round-trip：临时副本 Respawn 分支通过；生产库 round-trip 未执行。",
-        "- `NpcMover approved`：此前 NPC/Respawn 空计划烟测通过；本轮 18 条审批 Respawn 临时副本验证通过。",
+        "- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。",
+        f"- round-trip：生产 Respawn 分支通过；生产 SHA-256 一致={production_apply.get('server_client_sha_equal', False)}；完整 NPC/Respawn 全量 round-trip 未完成。",
+        "- `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。",
         "- 游戏截图/逐地图验收：未执行；NPC 和大部分刷新仍未闭合，启动客户端会混淆数据库、地图对应、对象同步和锚点问题。",
         "",
         "## 8. 未决项与人工复核",
@@ -484,7 +491,7 @@ def main() -> int:
         "4. 复核半兽人/Oma、祖玛/Zuma、白野猪、Boss/变体的 race/appr/体型/等级/掉落/地图交叉证据。",
         f"5. 地图格式独立校验当前为 {verify['format_issue_count']} 个 malformed/truncated；如重新导出地图资源，必须保持 13-byte cell stride 并重跑独立解析器。",
         f"6. `manual-review-summary.tsv` 已完成逐条保守决定并通过 `validate_manual_review.py`；其中 {review_decisions.get('approve', 0)} 条进入离线批准计划，其余 unresolved 风险不写库。",
-        "7. 当前 `approved-offline-plan.json` 仅含 18 条 Respawn 更新；在独立地图检查、停服、备份和人工/证据复核完成前不得对生产库加 `apply`。",
+        "7. 当前 `approved-offline-plan.json` 仅含 18 条 Respawn 更新；该 Respawn 分支已完成生产 apply，NPC 或 `scope=all` 在剩余证据闭合前不得执行。",
         "",
         "## 9. 复现命令",
         "",

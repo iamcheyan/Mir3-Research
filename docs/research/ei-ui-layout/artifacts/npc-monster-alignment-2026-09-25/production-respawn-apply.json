@@ -1,0 +1,21 @@
+{
+  "mode": "production-copy-apply",
+  "scope": "respawn",
+  "approved_plan": "approved-offline-plan.json",
+  "respawn_updates_applied": 18,
+  "npc_updates_applied": 0,
+  "map_regions_created": 0,
+  "tcp7000_precondition": "free",
+  "server_backup": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/npc-monster-align-20260925-234737/System.db",
+  "client_backup": "/home/tetsuya/development/zircon/Debug/Client/Backup/npc-monster-align-20260925-234737/System.db",
+  "backup_hashes_match_before": true,
+  "server_client_sha_equal": true,
+  "server_sha256_after": "2973b1f21c4c703e3128a28b288332e5c348ed1510d9306640603cf3565ee9a1",
+  "client_sha256_after": "2973b1f21c4c703e3128a28b288332e5c348ed1510d9306640603cf3565ee9a1",
+  "server_sha256_before": "50db75431070117db60fd660395d21070109db867bc7fc2f3e75ba1747a51e0d",
+  "client_sha256_before": "50db75431070117db60fd660395d21070109db867bc7fc2f3e75ba1747a51e0d",
+  "production_system_changed": true,
+  "users_db_touched": false,
+  "round_trip": "pass",
+  "database_write": true
+}
