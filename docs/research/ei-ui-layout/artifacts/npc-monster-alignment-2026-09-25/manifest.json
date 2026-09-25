@@ -34,7 +34,8 @@
     "match_method_counts": {
       "semantic-audit": 58,
       "pending": 36,
-      "exact-script-name": 130,
+      "exact-script-name": 96,
+      "exact-script-name-map": 34,
       "hero-kill-extra": 70
     },
     "map_relation_counts": {
@@ -53,7 +54,7 @@
     },
     "overlap_rows": 0,
     "merchant_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
-    "merchant_match_count": 96,
+    "merchant_match_count": 130,
     "audit_row_count": 294
   },
   "monster_identity_stats": {
@@ -55998,9 +55999,9 @@
       "hero_kill_map": "02_001",
       "hero_kill_xy": {
         "x": 5,
-        "y": 9
+        "y": 8
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56016,39 +56017,25 @@
       "auto_placement_candidates": [
         {
           "x": 5,
-          "y": 9,
-          "score": 0.35,
-          "anchor": {
-            "x": 5,
-            "y": 8
-          },
-          "separation": 1
-        },
-        {
-          "x": 6,
           "y": 8,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 5,
             "y": 8
           },
-          "separation": 1
-        },
-        {
-          "x": 4,
-          "y": 9,
-          "score": 0.7,
-          "anchor": {
-            "x": 5,
-            "y": 8
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "霹雳尊者",
+        "map": "02_001",
+        "x": 5,
+        "y": 8,
+        "script": "15Magic_Euhang"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 5,
@@ -56085,10 +56072,10 @@
       "map_relation": "exact",
       "hero_kill_map": "02_003",
       "hero_kill_xy": {
-        "x": 90,
+        "x": 91,
         "y": 14
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56103,40 +56090,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 90,
-          "y": 14,
-          "score": 0.35,
-          "anchor": {
-            "x": 91,
-            "y": 14
-          },
-          "separation": 1
-        },
-        {
           "x": 91,
-          "y": 15,
-          "score": 0.35,
-          "anchor": {
-            "x": 91,
-            "y": 14
-          },
-          "separation": 1
-        },
-        {
-          "x": 92,
           "y": 14,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 91,
             "y": 14
           },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "霹雳尊者",
+        "map": "02_003",
+        "x": 91,
+        "y": 14,
+        "script": "15Magic_Euhang"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 91,
@@ -56173,10 +56146,10 @@
       "map_relation": "exact",
       "hero_kill_map": "02_004",
       "hero_kill_xy": {
-        "x": 24,
+        "x": 25,
         "y": 41
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56191,40 +56164,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 24,
+          "x": 25,
           "y": 41,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 25,
             "y": 41
           },
-          "separation": 1
-        },
-        {
-          "x": 25,
-          "y": 40,
-          "score": 0.35,
-          "anchor": {
-            "x": 25,
-            "y": 41
-          },
-          "separation": 1
-        },
-        {
-          "x": 25,
-          "y": 42,
-          "score": 0.35,
-          "anchor": {
-            "x": 25,
-            "y": 41
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "霹雳尊者",
+        "map": "02_004",
+        "x": 25,
+        "y": 41,
+        "script": "15Magic_Euhang"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 25,
@@ -56561,10 +56520,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_001",
       "hero_kill_xy": {
-        "x": 13,
+        "x": 14,
         "y": 12
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56579,40 +56538,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 13,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 14,
-            "y": 12
-          },
-          "separation": 1
-        },
-        {
           "x": 14,
-          "y": 11,
-          "score": 0.35,
-          "anchor": {
-            "x": 14,
-            "y": 12
-          },
-          "separation": 1
-        },
-        {
-          "x": 12,
           "y": 12,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 14,
             "y": 12
           },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "啊潘",
+        "map": "1_001",
+        "x": 14,
+        "y": 12,
+        "script": "02Weapon_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 14,
@@ -56649,10 +56594,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_003",
       "hero_kill_xy": {
-        "x": 12,
+        "x": 13,
         "y": 16
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56667,40 +56612,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 12,
+          "x": 13,
           "y": 16,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 13,
             "y": 16
           },
-          "separation": 1
-        },
-        {
-          "x": 13,
-          "y": 15,
-          "score": 0.35,
-          "anchor": {
-            "x": 13,
-            "y": 16
-          },
-          "separation": 1
-        },
-        {
-          "x": 13,
-          "y": 17,
-          "score": 0.35,
-          "anchor": {
-            "x": 13,
-            "y": 16
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "啊浩",
+        "map": "1_003",
+        "x": 13,
+        "y": 16,
+        "script": "03Armor_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 13,
@@ -56893,10 +56824,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_004",
       "hero_kill_xy": {
-        "x": 8,
+        "x": 9,
         "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56911,40 +56842,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 8,
+          "x": 9,
           "y": 11,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 9,
             "y": 11
           },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 10,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "书神",
+        "map": "1_004",
+        "x": 9,
+        "y": 11,
+        "script": "05Book_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 9,
@@ -56981,10 +56898,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_007",
       "hero_kill_xy": {
-        "x": 10,
+        "x": 11,
         "y": 14
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -56999,40 +56916,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 10,
+          "x": 11,
           "y": 14,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 11,
             "y": 14
           },
-          "separation": 1
-        },
-        {
-          "x": 11,
-          "y": 13,
-          "score": 0.35,
-          "anchor": {
-            "x": 11,
-            "y": 14
-          },
-          "separation": 1
-        },
-        {
-          "x": 11,
-          "y": 15,
-          "score": 0.35,
-          "anchor": {
-            "x": 11,
-            "y": 14
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "大老板",
+        "map": "1_007",
+        "x": 11,
+        "y": 14,
+        "script": "07Grocery_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 11,
@@ -57069,10 +56972,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_005",
       "hero_kill_xy": {
-        "x": 8,
+        "x": 9,
         "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -57087,40 +56990,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 8,
-          "y": 11,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
           "x": 9,
-          "y": 10,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 7,
           "y": 11,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 9,
             "y": 11
           },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "峰儿",
+        "map": "1_005",
+        "x": 9,
+        "y": 11,
+        "script": "08Accessory_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 9,
@@ -57231,10 +57120,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_002",
       "hero_kill_xy": {
-        "x": 10,
+        "x": 11,
         "y": 10
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -57249,40 +57138,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 10,
+          "x": 11,
           "y": 10,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 11,
             "y": 10
           },
-          "separation": 1
-        },
-        {
-          "x": 11,
-          "y": 9,
-          "score": 0.35,
-          "anchor": {
-            "x": 11,
-            "y": 10
-          },
-          "separation": 1
-        },
-        {
-          "x": 11,
-          "y": 11,
-          "score": 0.35,
-          "anchor": {
-            "x": 11,
-            "y": 10
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "清明子",
+        "map": "1_002",
+        "x": 11,
+        "y": 10,
+        "script": "15Magic_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 11,
@@ -57320,9 +57195,9 @@
       "hero_kill_map": "1_008",
       "hero_kill_xy": {
         "x": 5,
-        "y": 9
+        "y": 8
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -57338,39 +57213,25 @@
       "auto_placement_candidates": [
         {
           "x": 5,
-          "y": 9,
-          "score": 0.35,
-          "anchor": {
-            "x": 5,
-            "y": 8
-          },
-          "separation": 1
-        },
-        {
-          "x": 6,
           "y": 8,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 5,
             "y": 8
           },
-          "separation": 1
-        },
-        {
-          "x": 4,
-          "y": 9,
-          "score": 0.7,
-          "anchor": {
-            "x": 5,
-            "y": 8
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "清明子",
+        "map": "1_008",
+        "x": 5,
+        "y": 8,
+        "script": "15Magic_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 5,
@@ -57407,10 +57268,10 @@
       "map_relation": "exact",
       "hero_kill_map": "1_011",
       "hero_kill_xy": {
-        "x": 90,
+        "x": 91,
         "y": 14
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -57425,40 +57286,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 90,
-          "y": 14,
-          "score": 0.35,
-          "anchor": {
-            "x": 91,
-            "y": 14
-          },
-          "separation": 1
-        },
-        {
           "x": 91,
-          "y": 15,
-          "score": 0.35,
-          "anchor": {
-            "x": 91,
-            "y": 14
-          },
-          "separation": 1
-        },
-        {
-          "x": 92,
           "y": 14,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 91,
             "y": 14
           },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "清明子",
+        "map": "1_011",
+        "x": 91,
+        "y": 14,
+        "script": "15Magic_DoGwan"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 91,
@@ -58311,10 +58158,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_001",
       "hero_kill_xy": {
-        "x": 6,
+        "x": 7,
         "y": 13
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58329,40 +58176,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 6,
+          "x": 7,
           "y": 13,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 7,
             "y": 13
           },
-          "separation": 1
-        },
-        {
-          "x": 7,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 7,
-            "y": 13
-          },
-          "separation": 1
-        },
-        {
-          "x": 7,
-          "y": 11,
-          "score": 0.7,
-          "anchor": {
-            "x": 7,
-            "y": 13
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "王铁匠",
+        "map": "4_001",
+        "x": 7,
+        "y": 13,
+        "script": "02Weapon_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 7,
@@ -58399,10 +58232,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_004",
       "hero_kill_xy": {
-        "x": 8,
+        "x": 9,
         "y": 8
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58417,40 +58250,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 8,
-          "y": 8,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 8
-          },
-          "separation": 1
-        },
-        {
           "x": 9,
-          "y": 9,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 8
-          },
-          "separation": 1
-        },
-        {
-          "x": 10,
           "y": 8,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 9,
             "y": 8
           },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "织女",
+        "map": "4_004",
+        "x": 9,
+        "y": 8,
+        "script": "03Armor_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 9,
@@ -58487,10 +58306,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_003",
       "hero_kill_xy": {
-        "x": 9,
-        "y": 15
+        "x": 10,
+        "y": 10
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58505,40 +58324,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 9,
-          "y": 15,
-          "score": 0.35,
+          "x": 10,
+          "y": 10,
+          "score": 0,
           "anchor": {
-            "x": 8,
-            "y": 15
+            "x": 10,
+            "y": 10
           },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 14,
-          "score": 0.7,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 2
-        },
-        {
-          "x": 9,
-          "y": 16,
-          "score": 0.7,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "白老中医",
+        "map": "4_003",
+        "x": 10,
+        "y": 10,
+        "script": "04Potion_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 8,
@@ -58575,10 +58380,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_003",
       "hero_kill_xy": {
-        "x": 9,
-        "y": 14
+        "x": 8,
+        "y": 15
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58593,40 +58398,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 9,
-          "y": 14,
-          "score": 1.35,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 16,
-          "score": 1.35,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 1
-        },
-        {
-          "x": 10,
+          "x": 8,
           "y": 15,
-          "score": 1.35,
+          "score": 0,
           "anchor": {
             "x": 8,
             "y": 15
           },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "绿洲仓库管家",
+        "map": "4_003",
+        "x": 8,
+        "y": 15,
+        "script": "06Inn_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 8,
@@ -58663,10 +58454,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_005",
       "hero_kill_xy": {
-        "x": 12,
+        "x": 14,
         "y": 22
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58681,40 +58472,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 12,
-          "y": 22,
-          "score": 0.7,
-          "anchor": {
-            "x": 14,
-            "y": 22
-          },
-          "separation": 2
-        },
-        {
           "x": 14,
-          "y": 24,
-          "score": 0.7,
+          "y": 22,
+          "score": 0,
           "anchor": {
             "x": 14,
             "y": 22
           },
-          "separation": 2
-        },
-        {
-          "x": 15,
-          "y": 23,
-          "score": 0.7,
-          "anchor": {
-            "x": 14,
-            "y": 22
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "梅山侠",
+        "map": "4_005",
+        "x": 14,
+        "y": 22,
+        "script": "08Astrologist_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 14,
@@ -58751,10 +58528,10 @@
       "map_relation": "exact",
       "hero_kill_map": "4_003",
       "hero_kill_xy": {
-        "x": 9,
-        "y": 16
+        "x": 12,
+        "y": 8
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -58769,40 +58546,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 9,
-          "y": 16,
-          "score": 1.35,
+          "x": 12,
+          "y": 8,
+          "score": 0,
           "anchor": {
-            "x": 8,
-            "y": 15
+            "x": 12,
+            "y": 8
           },
-          "separation": 1
-        },
-        {
-          "x": 10,
-          "y": 15,
-          "score": 1.35,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 1
-        },
-        {
-          "x": 10,
-          "y": 16,
-          "score": 1.7,
-          "anchor": {
-            "x": 8,
-            "y": 15
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "石宇",
+        "map": "4_003",
+        "x": 12,
+        "y": 8,
+        "script": "10Material_Oasis"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 8,
@@ -58995,10 +58758,10 @@
       "map_relation": "exact",
       "hero_kill_map": "5_004",
       "hero_kill_xy": {
-        "x": 14,
+        "x": 15,
         "y": 15
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -59013,40 +58776,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 14,
-          "y": 15,
-          "score": 0.35,
-          "anchor": {
-            "x": 15,
-            "y": 15
-          },
-          "separation": 1
-        },
-        {
           "x": 15,
-          "y": 16,
-          "score": 0.35,
-          "anchor": {
-            "x": 15,
-            "y": 15
-          },
-          "separation": 1
-        },
-        {
-          "x": 13,
           "y": 15,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 15,
             "y": 15
           },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "晓敏",
+        "map": "5_004",
+        "x": 15,
+        "y": 15,
+        "script": "03Armor_Samak"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 15,
@@ -59084,9 +58833,9 @@
       "hero_kill_map": "5_003",
       "hero_kill_xy": {
         "x": 13,
-        "y": 18
+        "y": 17
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -59102,39 +58851,25 @@
       "auto_placement_candidates": [
         {
           "x": 13,
-          "y": 18,
-          "score": 0.35,
-          "anchor": {
-            "x": 13,
-            "y": 17
-          },
-          "separation": 1
-        },
-        {
-          "x": 11,
           "y": 17,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 13,
             "y": 17
           },
-          "separation": 2
-        },
-        {
-          "x": 13,
-          "y": 19,
-          "score": 0.7,
-          "anchor": {
-            "x": 13,
-            "y": 17
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "医神",
+        "map": "5_003",
+        "x": 13,
+        "y": 17,
+        "script": "04Potion_Samak"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 13,
@@ -59171,10 +58906,10 @@
       "map_relation": "exact",
       "hero_kill_map": "5_006",
       "hero_kill_xy": {
-        "x": 11,
+        "x": 12,
         "y": 23
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -59189,40 +58924,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 11,
+          "x": 12,
           "y": 23,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 12,
             "y": 23
           },
-          "separation": 1
-        },
-        {
-          "x": 12,
-          "y": 22,
-          "score": 0.35,
-          "anchor": {
-            "x": 12,
-            "y": 23
-          },
-          "separation": 1
-        },
-        {
-          "x": 12,
-          "y": 24,
-          "score": 0.35,
-          "anchor": {
-            "x": 12,
-            "y": 23
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "沙漠仓库管家",
+        "map": "5_006",
+        "x": 12,
+        "y": 23,
+        "script": "06Inn_Samak"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 12,
@@ -59260,9 +58981,9 @@
       "hero_kill_map": "5_005",
       "hero_kill_xy": {
         "x": 9,
-        "y": 10
+        "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -59278,39 +58999,25 @@
       "auto_placement_candidates": [
         {
           "x": 9,
-          "y": 10,
-          "score": 0.35,
+          "y": 11,
+          "score": 0,
           "anchor": {
             "x": 9,
             "y": 11
           },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 8,
-          "y": 10,
-          "score": 0.7,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "雪儿",
+        "map": "5_005",
+        "x": 9,
+        "y": 11,
+        "script": "08Accessory_Samak"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 9,
@@ -61699,10 +61406,10 @@
       "map_relation": "exact",
       "hero_kill_map": "D012_001",
       "hero_kill_xy": {
-        "x": 12,
+        "x": 13,
         "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -61717,40 +61424,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 12,
+          "x": 13,
           "y": 11,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 13,
             "y": 11
           },
-          "separation": 1
-        },
-        {
-          "x": 13,
-          "y": 10,
-          "score": 0.35,
-          "anchor": {
-            "x": 13,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 13,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 13,
-            "y": 11
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "云发",
+        "map": "D012_001",
+        "x": 13,
+        "y": 11,
+        "script": "14Quest_SkeletonCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 13,
@@ -61787,10 +61480,10 @@
       "map_relation": "exact",
       "hero_kill_map": "E002_001",
       "hero_kill_xy": {
-        "x": 8,
+        "x": 9,
         "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -61805,40 +61498,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 8,
+          "x": 9,
           "y": 11,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 9,
             "y": 11
           },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 10,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 9,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 9,
-            "y": 11
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "云发",
+        "map": "E002_001",
+        "x": 9,
+        "y": 11,
+        "script": "14Quest_SkeletonCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 9,
@@ -61875,10 +61554,10 @@
       "map_relation": "exact",
       "hero_kill_map": "E002",
       "hero_kill_xy": {
-        "x": 53,
-        "y": 53
+        "x": 65,
+        "y": 12
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -61893,40 +61572,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 53,
-          "y": 53,
-          "score": -1.8,
+          "x": 65,
+          "y": 12,
+          "score": 0,
           "anchor": {
-            "x": 50,
-            "y": 50
+            "x": 65,
+            "y": 12
           },
-          "separation": 53
-        },
-        {
-          "x": 50,
-          "y": 57,
-          "score": -0.8,
-          "anchor": {
-            "x": 50,
-            "y": 50
-          },
-          "separation": 60
-        },
-        {
-          "x": 51,
-          "y": 56,
-          "score": -0.8,
-          "anchor": {
-            "x": 50,
-            "y": 50
-          },
-          "separation": 58
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "嘉登",
+        "map": "E002",
+        "x": 65,
+        "y": 12,
+        "script": "14Quest_SkeletonCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 50,
@@ -61983,10 +61648,10 @@
       "map_relation": "exact",
       "hero_kill_map": "DM002",
       "hero_kill_xy": {
-        "x": 13,
+        "x": 14,
         "y": 22
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62001,40 +61666,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 13,
+          "x": 14,
           "y": 22,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 14,
             "y": 22
           },
-          "separation": 1
-        },
-        {
-          "x": 14,
-          "y": 21,
-          "score": 0.35,
-          "anchor": {
-            "x": 14,
-            "y": 22
-          },
-          "separation": 1
-        },
-        {
-          "x": 14,
-          "y": 23,
-          "score": 0.35,
-          "anchor": {
-            "x": 14,
-            "y": 22
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "无理的道士",
+        "map": "DM002",
+        "x": 14,
+        "y": 22,
+        "script": "14Quest_SkeletonCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 14,
@@ -62182,9 +61833,9 @@
       "hero_kill_map": "E402_001",
       "hero_kill_xy": {
         "x": 13,
-        "y": 11
+        "y": 10
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62200,39 +61851,25 @@
       "auto_placement_candidates": [
         {
           "x": 13,
-          "y": 11,
-          "score": 0.35,
+          "y": 10,
+          "score": 0,
           "anchor": {
             "x": 13,
             "y": 10
           },
-          "separation": 1
-        },
-        {
-          "x": 12,
-          "y": 11,
-          "score": 0.7,
-          "anchor": {
-            "x": 13,
-            "y": 10
-          },
-          "separation": 2
-        },
-        {
-          "x": 13,
-          "y": 12,
-          "score": 0.7,
-          "anchor": {
-            "x": 13,
-            "y": 10
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "署箭",
+        "map": "E402_001",
+        "x": 13,
+        "y": 10,
+        "script": "14Quest_ZombieCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 13,
@@ -62269,10 +61906,10 @@
       "map_relation": "exact",
       "hero_kill_map": "D404_002",
       "hero_kill_xy": {
-        "x": 21,
+        "x": 22,
         "y": 11
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62287,40 +61924,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 21,
-          "y": 11,
-          "score": 0.35,
-          "anchor": {
-            "x": 22,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
           "x": 22,
-          "y": 12,
-          "score": 0.35,
-          "anchor": {
-            "x": 22,
-            "y": 11
-          },
-          "separation": 1
-        },
-        {
-          "x": 20,
           "y": 11,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 22,
             "y": 11
           },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "署箭",
+        "map": "D404_002",
+        "x": 22,
+        "y": 11,
+        "script": "14Quest_ZombieCave"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 22,
@@ -62357,10 +61980,10 @@
       "map_relation": "exact",
       "hero_kill_map": "D023_001",
       "hero_kill_xy": {
-        "x": 16,
+        "x": 17,
         "y": 21
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62375,40 +61998,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 16,
-          "y": 21,
-          "score": 0.35,
-          "anchor": {
-            "x": 17,
-            "y": 21
-          },
-          "separation": 1
-        },
-        {
           "x": 17,
-          "y": 22,
-          "score": 0.35,
-          "anchor": {
-            "x": 17,
-            "y": 21
-          },
-          "separation": 1
-        },
-        {
-          "x": 18,
           "y": 21,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 17,
             "y": 21
           },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "牛老道",
+        "map": "D023_001",
+        "x": 17,
+        "y": 21,
+        "script": "14Quest_WoomaPalace"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 17,
@@ -62445,10 +62054,10 @@
       "map_relation": "exact",
       "hero_kill_map": "D022",
       "hero_kill_xy": {
-        "x": 247,
-        "y": 241
+        "x": 207,
+        "y": 47
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62463,40 +62072,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 247,
-          "y": 241,
-          "score": 4.2,
+          "x": 207,
+          "y": 47,
+          "score": 0,
           "anchor": {
-            "x": 250,
-            "y": 250
+            "x": 207,
+            "y": 47
           },
-          "separation": 234
-        },
-        {
-          "x": 248,
-          "y": 240,
-          "score": 4.2,
-          "anchor": {
-            "x": 250,
-            "y": 250
-          },
-          "separation": 234
-        },
-        {
-          "x": 249,
-          "y": 239,
-          "score": 4.2,
-          "anchor": {
-            "x": 250,
-            "y": 250
-          },
-          "separation": 234
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "石堆",
+        "map": "D022",
+        "x": 207,
+        "y": 47,
+        "script": "14Quest_WoomaPalace"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 250,
@@ -62573,10 +62168,10 @@
       "map_relation": "exact",
       "hero_kill_map": "D022_001",
       "hero_kill_xy": {
-        "x": 49,
-        "y": 43
+        "x": 64,
+        "y": 21
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -62591,40 +62186,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 49,
-          "y": 43,
-          "score": -7.8,
+          "x": 64,
+          "y": 21,
+          "score": 0,
           "anchor": {
-            "x": 49,
-            "y": 43
+            "x": 64,
+            "y": 21
           },
-          "separation": 37
-        },
-        {
-          "x": 48,
-          "y": 33,
-          "score": -7.8,
-          "anchor": {
-            "x": 48,
-            "y": 33
-          },
-          "separation": 28
-        },
-        {
-          "x": 57,
-          "y": 30,
-          "score": -7.8,
-          "anchor": {
-            "x": 57,
-            "y": 30
-          },
-          "separation": 16
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "书架",
+        "map": "D022_001",
+        "x": 64,
+        "y": 21,
+        "script": "14Quest_WoomaPalace"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 57,
@@ -63173,10 +62754,10 @@
       "map_relation": "variant",
       "hero_kill_map": "D11031",
       "hero_kill_xy": {
-        "x": 206,
-        "y": 332
+        "x": 199,
+        "y": 257
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "low",
       "walkable": {
         "old": "pass",
@@ -63191,40 +62772,26 @@
       ],
       "auto_placement_candidates": [
         {
-          "x": 206,
-          "y": 332,
-          "score": -1.3,
-          "anchor": {
-            "x": 206,
-            "y": 332
-          },
-          "separation": 2
-        },
-        {
-          "x": 196,
+          "x": 199,
           "y": 257,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
-            "x": 197,
+            "x": 199,
             "y": 257
           },
-          "separation": 1
-        },
-        {
-          "x": 197,
-          "y": 256,
-          "score": 0.35,
-          "anchor": {
-            "x": 197,
-            "y": 257
-          },
-          "separation": 1
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "六面神石",
+        "map": "D11031",
+        "x": 199,
+        "y": 257,
+        "script": "13Move_HalfTemple"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 197,
@@ -63284,9 +62851,9 @@
       "hero_kill_map": "D90221",
       "hero_kill_xy": {
         "x": 22,
-        "y": 21
+        "y": 20
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -63302,39 +62869,25 @@
       "auto_placement_candidates": [
         {
           "x": 22,
-          "y": 21,
-          "score": 0.35,
-          "anchor": {
-            "x": 22,
-            "y": 20
-          },
-          "separation": 1
-        },
-        {
-          "x": 20,
           "y": 20,
-          "score": 0.7,
+          "score": 0,
           "anchor": {
             "x": 22,
             "y": 20
           },
-          "separation": 2
-        },
-        {
-          "x": 21,
-          "y": 21,
-          "score": 0.7,
-          "anchor": {
-            "x": 22,
-            "y": 20
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "花仙",
+        "map": "D90221",
+        "x": 22,
+        "y": 20,
+        "script": "04Potion_SinGiSun"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 22,
@@ -63372,9 +62925,9 @@
       "hero_kill_map": "D900",
       "hero_kill_xy": {
         "x": 45,
-        "y": 59
+        "y": 58
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -63390,39 +62943,25 @@
       "auto_placement_candidates": [
         {
           "x": 45,
-          "y": 59,
-          "score": 0.35,
-          "anchor": {
-            "x": 45,
-            "y": 58
-          },
-          "separation": 1
-        },
-        {
-          "x": 46,
           "y": 58,
-          "score": 0.35,
+          "score": 0,
           "anchor": {
             "x": 45,
             "y": 58
           },
-          "separation": 1
-        },
-        {
-          "x": 44,
-          "y": 59,
-          "score": 0.7,
-          "anchor": {
-            "x": 45,
-            "y": 58
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "霸王幽灵",
+        "map": "D900",
+        "x": 45,
+        "y": 58,
+        "script": "14Quest_SinGiSun"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 45,
@@ -63460,9 +62999,9 @@
       "hero_kill_map": "D90323",
       "hero_kill_xy": {
         "x": 16,
-        "y": 9
+        "y": 8
       },
-      "match_method": "exact-script-name",
+      "match_method": "exact-script-name-map",
       "confidence": "medium",
       "walkable": {
         "old": "pass",
@@ -63478,39 +63017,25 @@
       "auto_placement_candidates": [
         {
           "x": 16,
-          "y": 9,
-          "score": 0.35,
+          "y": 8,
+          "score": 0,
           "anchor": {
             "x": 16,
             "y": 8
           },
-          "separation": 1
-        },
-        {
-          "x": 15,
-          "y": 9,
-          "score": 0.7,
-          "anchor": {
-            "x": 16,
-            "y": 8
-          },
-          "separation": 2
-        },
-        {
-          "x": 16,
-          "y": 10,
-          "score": 0.7,
-          "anchor": {
-            "x": 16,
-            "y": 8
-          },
-          "separation": 2
+          "separation": 0
         }
       ],
-      "identity_source": "NpcMover/audit-report.md",
-      "merchant_snapshot_match": false,
-      "merchant_source_record": null,
-      "target_reason": "walkable topology candidate; manual review required",
+      "identity_source": "source present: docs/research/ei-ui-layout/sources/mir2ei-report-full-merchants-2026-09-25.json (318 Merchant coordinates)",
+      "merchant_snapshot_match": true,
+      "merchant_source_record": {
+        "name": "霸王幽灵",
+        "map": "D90323",
+        "x": 16,
+        "y": 8,
+        "script": "14Quest_SinGiSun"
+      },
+      "target_reason": "Merchant snapshot exact script/map coordinate",
       "topology_anchors": [
         {
           "x": 16,
@@ -71277,8 +70802,8 @@
       "map_relation": "variant",
       "hero_kill_map": "D11031",
       "hero_kill_xy": {
-        "x": 196,
-        "y": 257
+        "x": 206,
+        "y": 332
       },
       "match_method": "pending",
       "confidence": "low",
@@ -71295,6 +70820,16 @@
       ],
       "auto_placement_candidates": [
         {
+          "x": 206,
+          "y": 332,
+          "score": -1.3,
+          "anchor": {
+            "x": 206,
+            "y": 332
+          },
+          "separation": 2
+        },
+        {
           "x": 196,
           "y": 257,
           "score": 0.35,
@@ -71307,16 +70842,6 @@
         {
           "x": 197,
           "y": 256,
-          "score": 0.35,
-          "anchor": {
-            "x": 197,
-            "y": 257
-          },
-          "separation": 1
-        },
-        {
-          "x": 197,
-          "y": 258,
           "score": 0.35,
           "anchor": {
             "x": 197,

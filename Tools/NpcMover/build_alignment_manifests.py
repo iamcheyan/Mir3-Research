@@ -278,6 +278,16 @@ def build_npcs(
         source = audit_row.get("source", "")
         merchant_candidates = merchant_by_script.get(norm_name(str(n.get("NPCName", ""))), [])
         merchant = merchant_candidates[0] if len(merchant_candidates) == 1 else None
+        merchant_match_scope = "script" if merchant else None
+        if merchant is None and old:
+            map_candidates = [
+                candidate
+                for candidate in merchant_candidates
+                if str(candidate.get("map", "")).casefold() == old[0].casefold()
+            ]
+            if len(map_candidates) == 1:
+                merchant = map_candidates[0]
+                merchant_match_scope = "script+audit-map"
         original_identity = None
         original_map = old[0] if old else None
         ox, oy = (old[1], old[2]) if old else (None, None)
@@ -298,7 +308,7 @@ def build_npcs(
             confidence = "low"
         if merchant:
             original_identity = str(n.get("NPCName", ""))
-            match_method = "exact-script-name"
+            match_method = "exact-script-name-map" if merchant_match_scope == "script+audit-map" else "exact-script-name"
             confidence = "medium"
         mrow = mby.get(cmap.casefold())
         rel = mrow["relation"] if mrow else "pending"
