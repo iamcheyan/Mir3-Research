@@ -9589,3 +9589,9 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - 使用本地 `/home/tetsuya/mir2ei`、`DISPLAY=:101`、1024×768、`--legacy-ui --legacy-hud --legacy-open=chat` 完整登录；日志确认 `StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。
 - 安全普通长文本真实回显为一条 `[Normal] TestHero` 历史记录，超出历史区右边界后水平裁剪；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-f350-long-row-focused-full.png`。
 - `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功；仍未证明本地 `GameInter.wil/.wix` 与研究 primary-static EI 资源的字节身份或像素级同版关系。
+## Round 798 (chat scroll-resource fallback) — 2026-09-25：阻止本地缺失帧误绘为滚动按钮
+
+- 独立读取本地 `/home/tetsuya/mir2ei/Data/GameInter.wil/.wix`：F350 画布为 `1024×512, offset=(7,-44)`，有效 alpha bbox 为 `(226,62)-(796,449)`；F380 为 `16×502` 锁链轨道；F381/F382/F383 在本地 WIX 中为空。F1070 为 `16×360`，不能凭同号猜测为 F350 按钮。
+- 原实现把 F380（整条 502px 轨道）作为 F380/F381 上按钮普通帧，导致本地运行时悬停/点击可见错误的整条蓝色覆盖。`LegacyChatDialog` 现在检测按钮帧对，缺失时禁用错误精灵，只保留证据约束的 `19×14` 命中区，并输出 `[LegacyChat] scroll button frames ... unavailable`。
+- 当前构建后的真实运行日志确认：本地 GameInter 1103 帧加载、F381/F382/F383 缺失降级日志、`StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。完整 1024×768 截图覆盖初始、40 条历史溢出、上下边界、轨道拖动、滚轮、新消息锚点、HUD MailButton、Enter/Space 入口。
+- 本地 `Mir3.exe` 为 `524288` 字节；`0x414060`、`0x414700`、`0x414846`、`0x4179B0` 字节探针落在研究审计的同一聊天 VA 家族，但研究目标 NAS 文件不可访问，仍不把本地 EXE/WIL/WIX 宣称为目标资源的字节同一。

@@ -23,6 +23,7 @@
  - 重复场景防护：`LoginScene`、`SelectScene` 增加静态活动实例守卫，提交 `f1ec4d5e`；`DXWindow.ShowWindow` 增加子树重绘和 deferred 重绘，避免首次打开延迟纹理空白。
  - 经验条修复：`MainPanel.ExperienceBar.DrawImage=false`，避免 F63 默认整帧覆盖比例裁切；提交 `c6655f37`。
 
+ - 聊天滚动资源复核（Round 798）：本地 `GameInter.wil` 的 F380 是 `16×502` 锁链轨道，F381/F382/F383 为空；因此 Zircon 不再把 F380 整轨误绘成上下按钮，改为证据约束的 `19×14` 透明命中区并输出缺失帧日志。轨道、滚轮、上下命中区、边界、拖动释放和手动上滚后的新消息锚点均已在当前构建真实运行中验证；EI 原版按钮具体像素仍受目标 WIL/WIX 身份不可达阻塞。
 ## 当前仍保留的限制
 
 1. 经验条比例绘制和 `GainedExperience` 网络更新链已由 Round 786 的管理员真实击杀闭合；标准账号 Round 795 在 S13 邮件阶段因 `server_success=false` 未进入 S16，标准运行根若要复现真实击杀仍需提供与当前怪物数据匹配的 `Mon-*.Zl` 夹具。该项是运行资源/账号路径限制，不是 HUD 绘制逻辑阻塞。
