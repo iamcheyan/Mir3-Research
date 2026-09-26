@@ -2,6 +2,8 @@
 
 辅助开发、原版客户端逆向研究、资源解码、地图审计、UI 证据和 HTML 模拟器仓库。
 
+**仓库边界：**这里只保存传奇3 / EI / Zircon 的源码、工具、研究资料和验证证据；Yomu、Fudoki、Miyako、svc-dashboard 等其他项目的文档、截图和审计资料不得放入本仓库。各工具运行日志也不进 Git（例如 `Tools/wsgateway/*.log`）。
+
 本仓库不包含原版客户端、WIL/MAP/DAT 大型资源或 `Debug/`、`Resource/` 运行时目录。资源通过环境变量从 NAS 提供：
 
 ```bash

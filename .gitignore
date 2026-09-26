@@ -36,3 +36,6 @@ local-reference-data/
 # 手工备份文件不进 git
 *.bak
 *.bak-*
+
+# 运行日志不进入研究仓库
+Tools/wsgateway/*.log

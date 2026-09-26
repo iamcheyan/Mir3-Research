@@ -34,7 +34,7 @@ export MIR3_ZIRCON_ROOT MIR3_EI_ROOT MIR3_MUD3_ROOT
 # start 命令里相对路径一律相对 REPO（外层已 cd "$REPO"）。
 SERVICES=(
     "zircon-core|7000|90|bash -c 'cd $MIR3_ZIRCON_ROOT/Debug/ServerCore && exec dotnet ServerCore.dll'"
-    "wsgateway|7001|15|cd Tools/wsgateway && exec $PY wsgateway.py"
+    "wsgateway|7001|15|cd /tmp && exec \"$PY\" \"$REPO/Tools/wsgateway/wsgateway.py\""
     "wilviewer|8765|25|exec $PY Tools/web/wilviewer.py --root '$MIR3_EI_ROOT' --port 8765"
     "dbviewer|8800|15|exec $SYS_PY Tools/dbviewer/dbviewer.py --data /tmp/dbviewer_data --port 8800"
     "dbeditor|8810|40|cd Tools/dbeditor && exec ./run.sh"
