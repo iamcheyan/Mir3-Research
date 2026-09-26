@@ -1,0 +1,13 @@
+isolated runtime: /tmp/mir3-game-smoke-610 (copied System.db and Users.db; production Users.db untouched)
+character setup: TestHero -> MapInfo.Index=5, FileName=1, (379,125), matching approved RespawnInfo.Region target 7236
+command: timeout 14 godot-mono --headless --path GodotClient -- --auto-login --server 127.0.0.1 --port 7000 --char TestHero --screenshot-after-enter
+result: PASS for GameScene/monster object delivery
+[Login] 版本校验通过, version=2026.09.26.2
+[Login] 登录成功, 角色数 1
+[Select] *** StartGame 成功! 进入游戏 ***
+[Net] 入队: ObjectMonster + DataObjectMonster (4 monster object/data pairs observed)
+[Game] OnObjectMonster: ObjectID=6965 MonsterIndex=479 Dead=False
+[Game] 进入游戏! 玩家: TestHero, 位置: (379,125), 方向: Right, 地图: 5
+[Game] 加载地图: MapIndex=5 -> 1 (Lost Paradise)
+assertion: MonsterIndex=479 is RespawnInfo.Index=7236.Monster; the approved target map/coordinate was accepted by server and delivered to the client.
+note: headless screenshot backend unavailable; no visual sprite assertion was claimed. Temporary Users.db was discarded; production zircon-core was restarted afterwards and 127.0.0.1:7000 is listening.

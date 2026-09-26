@@ -84,17 +84,27 @@
     "write_scope": "excluded; NpcMover approved mode opens System.db only"
   },
   "game_acceptance": {
-    "status": "partial-smoke-blocked-at-login",
-    "server_restart": "pass; zircon-core listening on 127.0.0.1:7000 after restart",
-    "web_services": "wsgateway and webport restarted",
-    "login_attempt": "webport test@test.com/test123 reached GoodVersion db=2026.09.26.2, then client disconnected before LoginResult/SelectScene",
-    "scene_reached": false,
-    "map_npc_respawn_smoke": "not-executed because login did not reach GameScene",
+    "status": "pass-official-client-and-isolated-target-map-smoke",
+    "server_restart": "pass; production zircon-core restarted after the isolated run and is listening on 127.0.0.1:7000",
+    "web_services": "wsgateway and webport were restarted for the earlier browser probe, then stopped",
+    "official_client_smoke": "pass; Godot client connected to the production server, received GoodVersion, LoginResult.Success, SelectScene, StartGame.Success, and entered GameScene on map index 9",
+    "isolated_target_map_smoke": {
+      "runtime": "/tmp/mir3-game-smoke-610",
+      "system_db": "copied current production System.db; no production database writes",
+      "users_db": "copied and discarded temporary Users.db; production Users.db untouched",
+      "npc": "pass; TestHero placed at approved target MapInfo.Index=610, FileName=01, (425,274); StartGame delivered 6 ObjectNPC packets to GameScene",
+      "respawn": "pass; TestHero placed at approved RespawnInfo target 7236 (MapInfo.Index=5, FileName=1, (379,125)); StartGame delivered MonsterIndex=479, matching RespawnInfo 7236.Monster",
+      "visual_limit": "headless renderer provided no screenshot pixels and NPC.Zl/Mon_3 were unavailable in the runtime, so sprite-pixel assertions were not claimed"
+    },
+    "users_db_mutated": false,
     "evidence": [
+      "artifacts/website-alignment-2026-09-26/official-client-smoke-20260926.log",
+      "artifacts/website-alignment-2026-09-26/isolated-map610-npc-smoke-20260926.log",
+      "artifacts/website-alignment-2026-09-26/isolated-map5-respawn-smoke-20260926.log",
       "artifacts/website-alignment-2026-09-26/production-login-disconnect-20260926.webp",
       "artifacts/website-alignment-2026-09-26/post-restart-wsgateway.log",
       "artifacts/website-alignment-2026-09-26/post-restart-zircon-core.log"
     ],
-    "required_next": ["diagnose webport login disconnect", "rerun login", "reach GameScene", "verify approved NPC and RespawnInfo targets in game"]
+    "remaining_next": "none for approved database application; production browser login disconnect remains a webport-only issue"
   }
 }

@@ -1,0 +1,14 @@
+command: timeout 18 godot-mono --headless --path GodotClient -- --auto-login --server 127.0.0.1 --port 7000 --char TestHero --interaction-audit --screenshot-after-enter
+result: PASS
+[DB] 加载完成: 物品 1078, 地图 627, 怪物 434, 魔法 174
+[Login] 版本校验通过, version=2026.09.26.2, dbKey=0
+[Login] 自动登录: test@test.com
+[Login] 登录成功, 角色数 1
+[Select] 自动进入指定角色: TestHero (idx=1)
+[Select] AutoStartGame: 发送 StartGame, charIndex=1
+[Select] *** StartGame 成功! 进入游戏 ***
+[Game] 进入游戏! 玩家: TestHero, 位置: (195,212), 方向: Right, 地图: 9
+[Game] 加载地图: MapIndex=9 -> 5 (Desert Mud Fortress)
+[Magic] 加载已有技能 174 个; 已绑定: 5
+[Net] 持续收到 Ping/PingResponse，连接保持至 smoke 超时
+note: --interaction-audit did not start because the selected character's map had no visible NPC object in the audit window; it did not mutate Users.db.

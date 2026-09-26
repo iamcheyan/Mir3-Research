@@ -1,0 +1,13 @@
+isolated runtime: /tmp/mir3-game-smoke-610 (copied System.db and Users.db; production Users.db untouched)
+character setup: TestHero -> MapInfo.Index=610, FileName=01, (425,274)
+command: timeout 18 godot-mono --headless --path GodotClient -- --auto-login --server 127.0.0.1 --port 7000 --char TestHero --interaction-audit --screenshot-after-enter
+result: PASS for GameScene/NPC object delivery
+[Login] 版本校验通过, version=2026.09.26.2
+[Login] 登录成功, 角色数 1
+[Select] *** StartGame 成功! 进入游戏 ***
+[Net] 入队: ObjectNPC (6 packets observed)
+[Game] 进入游戏! 玩家: TestHero, 位置: (425,274), 方向: Right, 地图: 610
+[Game] 加载地图: MapIndex=610 -> 01 (边境城市)
+[MapView] 加载 01: 600x600
+assertion: approved NPC target map 610 and coordinate (425,274) are accepted by the running server/client; NPC object packets reached GameScene.
+note: headless viewport was 64x64 and no screenshot pixels were available; NPC.Zl was unavailable in this runtime, so visual sprite assertion was not claimed.

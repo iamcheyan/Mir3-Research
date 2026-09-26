@@ -68,12 +68,13 @@
 - 副本通过后写入真实双库：NPC=73、RespawnInfo=18、新建 MapRegion=0；服务端和客户端均为 SHA-256=`b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`，双库一致；真实库工具 round-trip 与独立 round-trip 均通过，未批准变更=0、目标不匹配=0。
 - NpcMover 应用期间未打开或写入 `Users.db`；pending、investigate、冲突项（含网站 `mob-6 蛤蟆`）应用数=0，均 retain-current；完整机器证据见 `artifacts/website-alignment-2026-09-26/production-apply-evidence-20260926.json`。
 - 用户后续快照备份：`/home/tetsuya/.local/state/mir3-systemdb-backups/20260926-154701/`，`SHA256SUMS` 记录服务端、客户端及两份备份均为 `b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`，与当前真实双库一致。
-- 已重启 `zircon-core` 并确认 7000 监听；wsgateway/webport 也已重启。webport 登录 smoke 收到 `GoodVersion db=2026.09.26.2` 后在 `LoginResult`/`SelectScene` 前断开，未进入 GameScene，因此地图/NPC/刷新点游戏内 smoke 尚未执行；截图和日志见 `production-login-disconnect-20260926.webp`、`post-restart-wsgateway.log`、`post-restart-zircon-core.log`。Mir3-Research 与 Zircon 的无关 WIP 保留，不纳入本 Goal 文件。
+- 已重启 `zircon-core` 并确认 7000 监听；官方 Godot 客户端真实联机收到 `GoodVersion`、`LoginResult.Success`、`SelectScene`、`StartGame.Success` 并进入 `GameScene`。为避免写 `Users.db`，另用隔离副本 `/tmp/mir3-game-smoke-610` 将 `TestHero` 临时放到批准 NPC 目标 `MapInfo=610/01/(425,274)`，客户端收到 6 个 `ObjectNPC`；再放到批准 `RespawnInfo=7236` 目标 `MapInfo=5/1/(379,125)`，客户端收到 `MonsterIndex=479`（与 7236.Monster 一致）。证据见 `official-client-smoke-20260926.log`、`isolated-map610-npc-smoke-20260926.log`、`isolated-map5-respawn-smoke-20260926.log`；headless 无像素截图，未宣称精灵视觉通过。webport 早前登录断开仍是 webport-only 问题，不影响官方客户端/隔离目标地图 smoke；Mir3-Research 与 Zircon 无关 WIP 保留，不纳入本 Goal 文件。
 
 ## 9. 机器可读产物
 
 - `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。
 - 生产应用证据：`production-apply-evidence-20260926.json`（备份、临时副本 round-trip、真实应用统计、双库 SHA-256）。
+- 游戏验收日志：`official-client-smoke-20260926.log`、`isolated-map610-npc-smoke-20260926.log`、`isolated-map5-respawn-smoke-20260926.log`。
 - 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`、`item-known-contact-sheet.png`、`white-boar-resource-contact-sheet.png`、`resource-alias-candidate-contact-sheet.png`。
 
 ## 10. 物品扩展审计（只读）
@@ -105,4 +106,4 @@
 ## 14. 当前用户闸门决定
 
 - 2026-09-26 用户已批准从 dry-run 进入真实应用阶段；本次只应用 approved NPC/RespawnInfo 清单，pending/investigate/冲突项保持原状。
-- 已完成停服、原始双库备份、临时副本 apply、工具与独立 round-trip、真实双库同步及重启；游戏内 smoke 目前阻塞在 webport 登录连接断开，未宣称地图/NPC/刷新点游戏内通过。
+- 已完成生产服务重启、官方客户端登录/进图 smoke，以及不写 `Users.db` 的隔离目标地图 NPC/RespawnInfo smoke；webport 浏览器登录断开已单独记录，不作为数据库应用失败。
