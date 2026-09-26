@@ -267,3 +267,104 @@ end;
 | `TSoccerBall` / `TMineMonster`（特殊玩法怪） | 未读 |
 | 怪物与 `MonGen.txt` 的 `MonName` 匹配机制 | 未读（`MonName` → 类实例化的分派点） |
 | `Monster.dat` 的二进制表解析 | 未读 |
+
+---
+
+## 9. `TAnimal` 怪物 AI 实现（Round 831）
+
+> `ObjBase.pas` 的 `TAnimal` 实现段。这是**全源码里唯一一处 AI 实现**
+> （`astar.h` 的 A* 是死代码，从未被 `#include`）。
+
+### 9.1 两个索敌函数（唯一差别：隐身检查）
+
+**`MonsterNormalAttack`（`:17303-17322`）** 与
+**`MonsterDetecterAttack`（`:17324-17343`）** 结构完全相同，逐行对照：
+
+```pascal
+for i:=0 to VisibleActors.Count-1 do begin
+   cret := TCreature (PTVisibleActor(VisibleActors[i]).cret);
+   if (not cret.Death) and (IsProperTarget(cret)) and (not cret.BoHumHideMode or BoViewFixedHide) then begin
+      d := abs(CX-cret.CX) + abs(CY-cret.CY);   // 曼哈顿距离
+      if d < dis then begin dis := d; nearcret := cret; end;
+   end;
+end;
+if nearcret <> nil then SelectTarget (nearcret);
+```
+
+| | `MonsterNormalAttack` | `MonsterDetecterAttack` |
+|---|---|---|
+| 隐身检查 | ✅ `not cret.BoHumHideMode or BoViewFixedHide` | ❌ **无** |
+
+→ **唯一区别**：普通索敌**看不见隐身玩家**，探测型索敌**无视隐身**。
+`BoViewFixedHide`（**固定隐身可见**）是豁免开关 ——
+即某些怪物（或状态）能看破隐身。
+
+**距离度量是曼哈顿距离**（`abs(dx)+abs(dy)`，非欧氏、非切比雪夫），
+初始 `dis := 999`。
+
+### 9.2 `GotoTargetXY` —— **贪心步进寻路**（`:17351-17409`）
+
+**不是 A\***。算法：
+
+1. **方向选择**（`while TRUE` + `break` 的展开式 if 链）：
+   先比 X 再比 Y —— 目标在右侧则 `DR_RIGHT`，右上则 `DR_UPRIGHT`，依此类推。
+   8 方向判定，**优先走对角线**。
+2. `WalkTo(wantdir, FALSE)` 走一步。
+3. **卡墙处理**（`:17397-17407`）—— 最多重试 **7 次**：
+
+```pascal
+rand := Random (3);
+for i:=1 to 7 do begin
+   if (oldx = self.CX) and (oldy = self.CY) then begin
+      {앞이 막혀 있음}                        // 前方被挡
+      if rand <> 0 then Inc (wantdir)         // 2/3 概率：顺时针转向
+      else if wantdir > 0 then Dec (wantdir)  // 1/3 概率：逆时针转向
+      else wantdir := 7;                      // 下溢回绕
+      if wantdir > 7 then wantdir := 0;       // 上溢回绕
+      WalkTo (wantdir, FALSE);
+   end else break;
+end;
+```
+
+**关键**：`rand := Random(3)` **在循环外**，所以**整个重试过程转向方向一致**
+（不会来回抖）。→ **怪物绕墙是「沿固定方向转圈找路」**，
+本质是**贪心 + 随机旋向**，没有全局路径规划。
+
+`FindPathTime := GetCurrentTime`（`:17363`）—— 记录了寻路时刻，
+且上方**注释掉了节流判断**（`//if GetCurrentTime - FindPathTime > FindPathRate`）。
+
+### 9.3 `Wondering`（游荡，`:17411-17424`）—— 极简
+
+```pascal
+if Random(20) = 0 then begin          // 每 tick 5% 概率
+   if Random(4) = 1 then Turn (Random(8))   // 25%：原地随机转向
+   else WalkTo (self.Dir, FALSE);           // 75%：沿当前方向走一步
+end;
+```
+
+**每 tick 5% 概率动一次**，动的时候 3/4 概率直走、1/4 概率转 8 方向。
+→ **游荡完全无目的性**，不避障（卡住就卡住）。
+
+### 9.4 `SetTargetXY` / `TargetX`/`TargetY`
+
+最简 setter（`:17345-17349`）。配合 `GotoTargetXY` 使用 ——
+**AI 的移动目标只是一个坐标对**，没有路径缓存。
+
+### 9.5 与既有结论的对照
+
+| 项 | 结论 |
+|---|---|
+| A*（`astar.h`） | **死代码**（从未 `#include`）—— 本节**再次印证**：真寻路是贪心步进 |
+| 怪物 AI 位置 | `ObjBase.pas` 只有**基类骨架**；主体在 `ObjMon2.pas`/`ObjMon` |
+| `IsProperTarget` | 敌我判定钩子（未读实现） |
+
+### 9.6 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `IsProperTarget` 实现 | 未读（敌我/阵营判定核心） |
+| `BoViewFixedHide` 的设置点 | 未读 |
+| `SelectTarget` 实现 | 未读 |
+| `TAnimal.Attack`/`Struck`/`LoseTarget` 实现 | 未读 |
+| `ObjMon2.pas` 的具体怪物 AI | 未读（后续） |
+| `FindPathRate` 常量值 | 未找到定义（节流被注释掉） |

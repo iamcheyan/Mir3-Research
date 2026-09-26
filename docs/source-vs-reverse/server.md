@@ -1682,3 +1682,169 @@ target.SendMsg (self, RM_MERCHANTSAY, 0, 0, 0, 0, UserName + '/' + str);
 | `MakeGoodCrazyMode` vs `MakeCrazyMode` | 未读实现 |
 | `CalcUpgradeProbability` 的公式 | 未读实现 |
 | `TUserHuman` 94 个 private 方法名 | 未展开 |
+
+---
+
+## 17. `TUserHuman` 对象内部机制（Round 831）
+
+> `ObjBase.pas` 的 `TUserHuman` 构造/析构与关键实现。
+
+### 8.1 **反作弊 / 防加速体系**（`:17474-17486`）
+
+构造时初始化了一整套**时间监控计数器**：
+
+| 字段 | 语义 |
+|---|---|
+| `ClientMsgCount` | 客户端消息计数 |
+| **`ClientSpeedHackDetect`** | **加速外挂检测标志** |
+| `LatestSpellTime` / **`LatestSpellDelay`** | 最近施法时刻 / 延迟 |
+| `LatestHitTime` | 最近攻击时刻 |
+| `LatestWalkTime` | 最近行走时刻 |
+| `LatestDropTime` | 最近丢物时刻 |
+| `HitTimeOverCount` / `HitTimeOverSum` | **攻击间隔超限次数/累计** |
+| `SpellTimeOverCount` | **施法间隔超限次数** |
+| `WalkTimeOverCount` / `WalkTimeOverSum` | **行走间隔超限次数/累计** |
+| `SpeedHackTimerOverCount` | **加速计时器超限次数** |
+
+**四类操作（攻击/施法/行走/丢物）各自计时**，超限**累计**（`*Sum`）而非直接踢。
+另：`PriviousCheckCode` / **`CrackWanrningLevel`**（原文拼写 `Wanrning`）
+—— 注释「패킷 duplication같은 장난을 치는지 여부..」
+（**是否在玩包重放之类的花样**）。
+
+### 8.2 **广播炸弹防护**（`:17492-17496`）
+
+```pascal
+LatestSayStr := '';
+BombSayCount := 0;
+BombSayTime := GetTickCount;
+BoShutUpMouse := FALSE;      // 鼠标禁言
+ShutUpMouseTime := GetTickCount;
+```
+
+`BombSayCount`（喊话炸弹计数）+ **`BoShutUpMouse`（鼠标禁言）** ——
+**高频重复喊话会被禁言**。
+
+### 8.3 **存档节流（2003-08-08 改动）**（`:17442-17445`）
+
+```pascal
+// 2003-08-08 :PDS
+// 사람이 몰릴때 대비 저장시간을 5분간격으로 랜덤 조정한다.
+// 처음접속한 사람은 15분까지 저장타임이 늘어날수 있다. 그후에는 10분에 한번씩 저장
+LastSaveTime := GetTickCount + LongWord( Random( 5 * 60 * 1000 ) );
+```
+
+**⏱ 带日期的改动记录**：为应对拥挤，**存档时间按 5 分钟间隔随机打散**；
+**首次连接可延长到 15 分钟**，此后**每 10 分钟存一次**。
+→ **存档是随机抖动 + 分级频率**，避免全服同时落盘。
+
+### 8.4 关键运行参数（`:17458-17462`）
+
+| 参数 | 值 | 语义 |
+|---|---:|---|
+| `RunTime` | `GetCurrentTime` | 运行基准 |
+| **`RunNextTick`** | **250** | **逻辑帧间隔（ms）** |
+| **`SearchRate`** | **1000** | **视野搜索周期（ms）** |
+| **`ViewRange`** | **12** | **视野半径（格）** |
+
+→ **每 250ms 跑一次逻辑、每 1000ms 搜一次视野、视野 12 格**。
+
+### 8.5 跨服与延迟机制（`:17489-17507`）
+
+- **`// 2003/06/12 슬레이브 패치`**（**从属补丁**）+
+  `PrevServerSlaves: TList`（「서버 이동하면서 옮겨다니는 부하」=
+  **随服务器迁移的从属物**）→ **宠物/召唤物的跨服携带**。
+- `BoChangeServer` / `BoChangeServerNeedDelay` / `WriteChangeServerInfoCount`
+  → **换服需要延迟**（防抖）。
+- `FirstClientTime` / `FirstServerTime` → **客户端/服务端时钟对表**（用于测速）。
+
+### 8.6 子系统装配（`:17513-17526`）
+
+```pascal
+fLover := TRelationShipMgr.Create;   // 연인 사제  ← 恋人
+//   fMaster := TRelationShipMgr.Create;   ← 师傅（被注释）
+FUserMarket := TMarketItemManager.Create;;   // 玩家市场（注意双分号）
+```
+
+**⚠️「师徒系统」被注释掉** —— 只保留了**恋人**（`fMaster`/`fMaster.Free` 均注释）。
+→ 印证 §14：`MAX_LOVERCOUNT = 1`，**关系系统只实现了恋人，师徒未启用**。
+
+`GetUserMassCount`（`:17550-17553`）：`GetAreaUserCount(PEnvir, CX, CY, 10)`
+→ **以自身为中心 10 格内的玩家人数**（用于拥挤判定/经验分配？）。
+
+### 8.7 `ResetCharForRevival`（`:17555-17559`）—— 复活状态重置
+
+```pascal
+FillChar (StatusArr, sizeof(word)*STATUSARR_SIZE, #0);
+FillChar (StatusValue, sizeof(byte)*STATUSARR_SIZE, #0);  //상태 리셋 추가(sonmg 2005/06/03)
+```
+
+**⏱ 带日期/人名的改动**：**`sonmg` 于 2005/06/03 追加了 `StatusValue` 重置** ——
+说明 `StatusArr`（word）与 `StatusValue`（byte）是**两套并行状态数组**，
+早期只重置前者，是 bug 后补。
+
+### 8.8 `CheckHomePos`（`:26399-26422`）—— 回城点判定
+
+```pascal
+for i:=0 to StartPoints.Count-1 do begin
+   if PEnvir.MapName = GetStartPointMapName(i) then begin
+      if (Abs(CX - Loword(integer(StartPoints.Objects[i]))) < 50) and
+         (Abs(CY - Hiword(integer(StartPoints.Objects[i]))) < 50) then begin
+         HomeMap := ...; HomeX := Loword(...); HomeY := Hiword(...);
+      end;
+   end;
+end;
+if PKLevel >= 2 then begin  //빨갱이는 빨갱이 마을로
+   HomeMap := BADMANHOMEMAP; HomeX := BADMANSTARTX; HomeY := BADMANSTARTY;
+end;
+```
+
+**两个机制**：
+1. **回城点 = 出生点 50 格内**（`< 50`），坐标**打包进一个 integer**
+   （`Loword`=X / `Hiword`=Y）—— **Mir2 经典的坐标打包技巧**。
+2. **红名（PK）强制改回城点**：`PKLevel >= 2` →
+   `BADMANHOMEMAP = '3'`（`:52`）、`BADMANSTARTX = 845`、`BADMANSTARTY = 674`（`:53-54`）。
+   注释「**빨갱이는 빨갱이 마을로**」= **红名回红名村**。
+
+**`PKLevel` 阈值全集**（全文件唯一值）：`= 1`、`< 2`、`<= 2`、`>= 2`、`< 3`、`>= 3`
+→ **三档 PK 等级**，**2 是红名分界**、3 是更高档。
+
+另 `:4528` 注释：「**빨간색은 1/3확률로 떨어진다**」（红名 1/3 概率掉落）——
+`if PKLevel < 2 then boDropall := FALSE;` → **红名死亡掉全部物品的 1/3 概率**。
+
+### 8.9 `GetQueryUserName`（`:26427-26440`）—— 名字+称号
+
+```pascal
+uname := target.GetUserName + '/' + TUserHuman(target).GetFameName(FameGrade);
+```
+
+**名字与称号用 `/` 拼接一起发**（注释「명성호칭 붙여서 보냄」= 附上声望称号发送）
+→ **称号是名字的一部分**（对照 `GetFameName`）。
+`CretInNearXY` 失败则回 `SM_GHOST`。
+
+### 8.10 `ServerSendAdjustBonus`（`:26443-26457`）—— **三职业分支**
+
+```pascal
+case Job of
+   0: str := EncodeBuffer(@WarriorBonus, ...) + '/' + EncodeBuffer(@CurBonusAbil, ...) + '/' + ...;
+   1: str := EncodeBuffer(@WizzardBonus, ...) + ...
+   2: str := EncodeBuffer(@PriestBonus, ...)  + ...
+end;
+```
+
+**职业映射**：`0 = Warrior`（战士）/ `1 = Wizzard`（原文**双 z** 拼写，法师）/
+`2 = Priest`（道士/祭司）。
+
+**三个 `TNakedAbility` 结构体**：职业加成 + 当前加成 + 奖励加成，
+用 `/` 分隔、`EncodeBuffer` 编码。`EncodeBuffer` 即**加密传输**。
+
+### 8.11 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `ClientSpeedHackDetect` 的触发阈值与处置 | 未读（阈值判定在别处） |
+| `CrackWanrningLevel` 的升级与封号逻辑 | 未读 |
+| `BombSayCount` 的限流阈值 | 未读 |
+| `StatusArr` vs `StatusValue` 的语义分工 | 未读（只见到双数组） |
+| `TNakedAbility` 结构字段 | 未读 |
+| `GetFameName` 的称号分级表 | 未读 |
+| `RunNextTick`/`SearchRate`/`ViewRange` 是否被运行时覆盖 | 未读 |

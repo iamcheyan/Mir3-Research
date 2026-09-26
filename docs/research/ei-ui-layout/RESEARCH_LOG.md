@@ -11581,3 +11581,69 @@ vs `GaBoard*`（据点公告板）vs `TagSystem`（便条，§13）。
 **落盘**：`server.md` §16（约 150 行）、`objbase-methods.tsv`（526 行）、
 `Tools/source-read/extract_objbase_api.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 831 (全量精读续) — 2026-09-26：`TAnimal` 怪物 AI 实现 + `TUserHuman` 对象内部机制
+
+> `ObjBase.pas` 实现段。产物 `monsters.md` §9、`server.md` §17。
+
+**〔`TAnimal` 怪物 AI —— 全源码唯一一处 AI 实现〕**
+**① 两个索敌函数唯一差别是隐身检查**：
+`MonsterNormalAttack`(`:17303-17322`) 与 `MonsterDetecterAttack`(`:17324-17343`)
+逐行相同，除 `MonsterNormalAttack` 多一个 `not cret.BoHumHideMode or BoViewFixedHide`。
+→ **普通索敌看不见隐身玩家，探测型索敌无视隐身**；
+`BoViewFixedHide`（固定隐身可见）是豁免开关。
+**距离度量是曼哈顿距离**（`abs(dx)+abs(dy)`，非欧氏/切比雪夫），初始 `dis := 999`。
+
+**② `GotoTargetXY`(`:17351-17409`) 是贪心步进寻路，不是 A\***：
+方向选择用 `while TRUE`+`break` 的展开 if 链（先比 X 再比 Y，8 方向**优先对角线**）；
+卡墙处理最多重试 **7 次**，`rand := Random(3)` **在循环外**
+→ **整个重试过程转向方向一致**（2/3 顺时针、1/3 逆时针），不会来回抖
+→ **绕墙 = 沿固定方向转圈找路**，无全局路径规划。
+`FindPathTime` 记录了寻路时刻，且上方**节流判断被注释掉**。
+→ **再次印证 `astar.h` 是死代码**。
+
+**③ `Wondering`(`:17411-17424`) 极简**：每 tick `Random(20)=0`（**5% 概率**）动一次，
+动时 `Random(4)=1`（25%）原地 `Turn(Random(8))`，否则沿当前方向走一步
+→ **游荡完全无目的性、不避障**。
+
+**〔`TUserHuman` 对象内部机制〕**
+**① 反作弊/防加速体系**（`:17474-17486`）：`ClientSpeedHackDetect` +
+**四类操作各自计时**（攻击 `HitTimeOver*`/施法 `SpellTimeOverCount`/
+行走 `WalkTimeOver*`/丢物 `LatestDropTime`）+ `SpeedHackTimerOverCount`，
+超限**累计**（`*Sum`）而非直接踢；`PriviousCheckCode`/`CrackWanrningLevel`
+（原文拼写 `Wanrning`，注释「패킷 duplication같은 장난을 치는지 여부」）。
+**② 广播炸弹防护**（`:17492-17496`）：`BombSayCount` + **`BoShutUpMouse`（鼠标禁言）**
+→ 高频重复喊话被禁言。
+**③ 存档节流（2003-08-08 改动）**（`:17442-17445`）：注释「저장시간을 5분간격으로
+랜덤 조정한다. 처음접속한 사람은 15분까지 저장타임이 늘어날수 있다. 그후에는
+10분에 한번씩 저장」+ `LastSaveTime := GetTickCount + LongWord(Random(5*60*1000))`
+→ **随机抖动 + 分级频率**（首次 15 分、此后 10 分），避免全服同时落盘。
+**④ 关键运行参数**（`:17458-17462`）：**`RunNextTick = 250`**（逻辑帧 ms）、
+**`SearchRate = 1000`**（视野搜索周期 ms）、**`ViewRange = 12`**（视野半径格）。
+**⑤ 跨服**（`:17489-17507`）：**`// 2003/06/12 슬레이브 패치`** +
+`PrevServerSlaves`（「서버 이동하면서 옮겨다니는 부하」= 随服务器迁移的从属物）
+→ **宠物/召唤物跨服携带**；`BoChangeServerNeedDelay`（换服需延迟防抖）；
+`FirstClientTime`/`FirstServerTime`（时钟对表用于测速）。
+**⑥ 子系统装配**（`:17513-17526`）：`fLover := TRelationShipMgr.Create`，
+**`// fMaster := TRelationShipMgr.Create;` 被注释** → **「师徒系统」未启用**，
+只实现了恋人（印证 §14 `MAX_LOVERCOUNT = 1`）。
+**⑦ `ResetCharForRevival`**（`:17555-17559`）：**⏱ 带日期/人名改动
+「상태 리셋 추가(sonmg 2005/06/03)」** 补上 `StatusValue` 重置
+→ `StatusArr`(word) 与 `StatusValue`(byte) 是**两套并行状态数组**，早期漏重置。
+**⑧ `CheckHomePos`（`:26399-26422`）**：回城点 = **出生点 50 格内**，
+坐标**打包进一个 integer**（`Loword`=X/`Hiword`=Y，Mir2 经典技巧）；
+**红名强制改回城点**：`PKLevel >= 2` → `BADMANHOMEMAP='3'`(`:52`)、
+`BADMANSTARTX=845`、`BADMANSTARTY=674`(`:53-54`)，注释「빨갱이는 빨갱이 마을로」
+= **红名回红名村**。
+**`PKLevel` 阈值全集**（全文件唯一）：`=1`/`<2`/`<=2`/`>=2`/`<3`/`>=3`
+→ **三档 PK 等级，2 是红名分界**。另 `:4528` 注释「빨간색은 1/3확률로 떨어진다」
++ `if PKLevel < 2 then boDropall := FALSE;` → **红名死亡掉全部物品的 1/3 概率**。
+**⑨ `GetQueryUserName`**（`:26427-26440`）：`uname := GetUserName + '/' +
+GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호칭 붙여서 보냄」）。
+**⑩ `ServerSendAdjustBonus`**（`:26443-26457`）**三职业分支**：
+`0 = Warrior`（战士）/ **`1 = Wizzard`**（原文双 z，法师）/ `2 = Priest`（道士）；
+三个 `TNakedAbility` 结构（职业加成 + 当前加成 + 奖励加成）用 `/` 分隔、
+`EncodeBuffer` 加密传输。
+
+**落盘**：`monsters.md` §9（约 100 行）、`server.md` §17（约 155 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
