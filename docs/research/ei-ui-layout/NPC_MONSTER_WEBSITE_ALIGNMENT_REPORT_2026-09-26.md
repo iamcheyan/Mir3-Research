@@ -8,10 +8,10 @@
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
 - 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
-- Mir3-Research 最终生成时：HEAD=5f467a4b51f3f65badb1ed9de757b61018eccc5a；origin/ei-ui-audit-2026-09-24=5f467a4b51f3f65badb1ed9de757b61018eccc5a；工作树 dirty=True。
+- Mir3-Research 最终生成时：HEAD=b345914342fa6228892c1932adf3ce02c7d256d7；origin/ei-ui-audit-2026-09-24=5f467a4b51f3f65badb1ed9de757b61018eccc5a；工作树 dirty=True。
 - Zircon 最终生成时：HEAD=7d7943f79965690adc7c41fc9e35737dd22d8fa7；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；origin/main=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；工作树 dirty=False；未提交路径=[]；本 Goal 未修改。
-- 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/api.py", "Tools/maps/mapedit/data.py", "Tools/maps/mapedit/map_links_v2.json", "Tools/maps/mapedit/npcedit.py", "Tools/maps/mapedit/templates.py", "Tools/maps/mapedit/tests/"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
+- 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/api.py", "Tools/maps/mapedit/data.py", "Tools/maps/mapedit/map_links_v2.json", "Tools/maps/mapedit/npcedit.py", "Tools/maps/mapedit/templates.py", "Tools/maps/mapedit/tests/", "docs/research/map-editor-unknown-entities/"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
 
 ## 2. 网站索引和图片证据
 
