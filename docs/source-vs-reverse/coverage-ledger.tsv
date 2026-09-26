@@ -108,7 +108,7 @@ A/C-server	Source/GameServer/Guild.pas	3600	121469	pending
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
-A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809 MapInfo/MiniMap 解析器
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 809 MapInfo/MiniMap + Round 811 脚本关键字映射116条
 A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
 A/C-server	Source/GameServer/Magic.pas	1756	72544	pending	
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
@@ -121,7 +121,7 @@ A/C-server	Source/GameServer/ObjGuard.pas	101	2367	pending
 A/C-server	Source/GameServer/ObjMon.pas	3097	101650	pending	
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	pending	
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	pending	
-A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 808 TQuestRecord/TNormNpc 结构
+A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	partial	Round 811: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53条件+75动作opcode/GotoQuest/TakeItemFromUser；NpcSay族与TMerchant实现待读
 A/C-server	Source/GameServer/Relationship.pas	471	11946	pending	
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	

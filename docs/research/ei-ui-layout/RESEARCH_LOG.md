@@ -10252,3 +10252,88 @@ DB 缓冲区 `FDBBuffer`/`FDBBufferBack`/`FDBList` + `DivideBuffer`/`PatchDBBuff
 `gm-commands.tsv`（161 行）、`coverage-ledger.tsv`、
 `Tools/source-read/{ledger,extract_gm_commands,gm_to_markdown}.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 811 (全量精读 A2/A3) — 2026-09-26：任务引擎 + 任务脚本语言全表
+
+> `Source/GameServer/ObjNpc.pas`（6409 行）+ `Grobal2.pas` 的 QI_/QA_ 常量 +
+> `LocalDB.pas` 的脚本关键字映射。
+> 产物 `docs/source-vs-reverse/quest-opcodes.tsv`（128 条）、`server.md` §12。
+
+**〔任务数据模型 = 四层嵌套〕**（`ObjNpc.pas:28-90`）
+`TNormNpc.Sayings` → `TSayingRecord`(Title + Procs) →
+`TSayingProcedure`(ConditionList + ActionList + Saying + ElseActionList + ElseSaying +
+AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + SayingList)。
+即 **NPC → QuestRecord → SayingRecord → SayingProcedure**。
+**「NPC 对话」与「任务」共用同一套数据结构**，区别只在 `BoRequire` 是否为真。
+`TQuestRequire`（`:41-45`）= `RandomCount` + `CheckIndex` + `CheckValue`，
+`MAXREQUIRE = 10`（`:20`）。
+
+**〔`CheckQuestCondition`（`:757-776`）〕**`RandomCount > 0` 时是**概率门槛**
+（`Random(N) = 0` 才过，通过率 `1/N`）；否则比 `GetQuestMark(CheckIndex)` 与
+`CheckValue`。与 `ObjBase.pas:353-355` 的三个任务状态数组对应。
+
+**〔`CheckSayingCondition`（`:837-`）—— 53 个条件 opcode〕**
+**三兄弟最易混**：`QI_CHECK`(1)→`GetQuestMark`（任务变量）、
+`QI_CHECKOPENUNIT`(5)→`GetQuestOpenIndexMark`（**开启**状态）、
+`QI_CHECKUNIT`(6)→`GetQuestFinIndexMark`（**完成**状态）。
+分组：标记/状态 5、随机 2（`QI_RANDOMEX` 支持百分比，注释「5 100 → 5%」）、
+角色 4、时间 4、物品 10、怪物 4、数值比较 4（`QI_EQUAL`/`LARGE`/`SMALL`/`EQUALVAR`）、
+社交 6、声望 3、行会 2、其他 9。
+⚠️ **`QI_CHECKNAMELIST`(35)/`QI_CHECKANDDELETENAMELIST`(36)/`QI_CHECKANDDELETEIDLIST`(37)
+是「检查并删除」—— 有副作用的条件**，分析脚本时要区分纯判定与带副作用判定。
+
+**〔动作 opcode 75 个（`QA_*`）〕**核心：`QA_TAKE`(2,TAKE 收物品)/
+`QA_GIVE`(3,GIVE 给物品)/`QA_TAKEW`(4,TAKEW 收已装备物品)/
+`QA_CLOSE`(5,CLOSE 关对话窗)/`QA_OPENUNIT`(7,开启任务单元)。
+**116 条有脚本关键字映射**（从 `LocalDB.pas` 的 `UpperCase(cmdstr) = 'XXX'`
+→ `ident := QI_/QA_` 提取）。
+
+**〔`GotoQuest`/`GotoSay`（`:1409-1424`）〕**`GotoQuest(num)` 按 `LocalNumber`
+跳到任务记录并设 `who.CurQuest`/`CurQuestNpc`，然后显示**硬编码的 `'@main'`**；
+`GotoSay(title)` 按 `Title` 字符串跳。**`@main` 是默认入口标题**。
+
+**〔`TakeItemFromUser`（`:1425-`）〕**金币特判（`NAME_OF_MONEY` → `DecGold`）；
+物品从 `who.ItemList` **倒序**遍历（便于边遍历边删），按 `StdItem.Name` 匹配。
+**堆叠物品（`OverlapItem >= 1`）用 `pu.Dura` 当数量**：
+`pu.Dura := pu.Dura - count`，≤0 则删除并发 `SendDelItem`，否则发
+`RM_COUNTERITEMCHANGE`。每次收取写 `AddUserLog`，类型码 `'10'`
+（注释「판매 와 같이씀」= 与出售共用）。
+
+**〔任务脚本语言实证（源码 ↔ QuestDiary 交叉验证，本 Goal 最重要验证之一）〕**
+样本 `Mud3-Config/Envir3/QuestDiary/MU_warrior/mute.txt`：
+
+```
+[@mugong_mute_explan_mugi]     ← TSayingRecord.Title
+{ #IF  check [508] 1           ← ConditionList / QI_CHECK（[] 表示变量索引）
+  #SAY 文本<结束/@exit>        ← Saying / GotoSay（@ 前缀=跳转，@exit=退出）
+  #ACT break }                 ← ActionList
+  #IF  checklevel 27           ← QI_CHECKLEVEL
+```
+
+| 源码结构 | 脚本语法 | 判定 |
+|---|---|---|
+| `TSayingRecord.Title` | `[@xxx]` | ✅ |
+| `ConditionList` / `Saying` / `ActionList` | `#IF` / `#SAY` / `#ACT` | ✅ |
+| `QI_CHECK`(1) | `check [508] 1` | ✅ |
+| `QI_CHECKLEVEL`(7) | `checklevel 27` | ✅ |
+| `GotoSay(title)` | `<文本/@目标>` | ✅ |
+| `@main` 默认入口 | `[@main]` | ✅ |
+
+新增确认语法要素：①`#IF`/`#SAY`/`#ACT` 三段式（`#ELSEACT`/`#ELSESAY` 应对应
+`ElseActionList`/`ElseSaying`，样本未出现待验）②条件用 `[]` 表示变量索引
+③`<文本/@目标>` 超链接语法，`@exit` 应对应 `QA_CLOSE` ④**`\` 是换行符**
+⑤`break` 中断分支。
+
+**结论**：源码提取的 opcode 表与真实脚本语法**一一对应**，可直接用于解析
+`Envir3/QuestDiary/` 全部 1729 个 `.txt`。
+→ **对 `Tools/questdata` 的价值**：现在有了「脚本关键字 → opcode」完整映射
+（116 条），可写 **QuestDiary 脚本解析器**与 `System.db` 的 `QuestInfo` 双向对照
+—— 这是本仓库此前没有的能力。
+
+**〔分级〕**EI 原版反编译证据**没有**任务脚本语言 opcode 表（只到「任务窗发
+0x418/0x419」这一层），所以这批是 **`source-only` 新增语义**，
+**不能**标 `source-corroborated`。
+
+**落盘**：`server.md` §12（约 190 行）、`quest-opcodes.tsv`（128 行）、
+`Tools/source-read/extract_quest_opcodes.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

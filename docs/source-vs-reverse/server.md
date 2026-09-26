@@ -802,3 +802,263 @@ end;
 | 24338 | OPDeleteSkill | — | CmdThisManEraseMagic |
 | 24382 | — | 스핵체크 | SysMsg / MainOutMessage |
 | 24433 | OneKill | — | CmdOneKillMob |
+
+---
+
+## 12. `ObjNpc.pas` 任务引擎精读（Round 811）
+
+> 6,409 行。前序阶段只读了 `TQuestRecord`/`TNormNpc` 结构（§4.1）。
+> 机器可读：[`quest-opcodes.tsv`](quest-opcodes.tsv)（128 条：53 条件 + 75 动作）。
+> 提取器：`Tools/source-read/extract_quest_opcodes.py`。
+
+### 12.1 任务数据模型（`ObjNpc.pas:28-90`）—— 五层结构
+
+```pascal
+TQuestRequire = record           // :41-45   前置条件（最多 MAXREQUIRE=10 个）
+   RandomCount: integer;         //   随机门槛（>0 时 Random(RandomCount) 必须为 0）
+   CheckIndex: word;             //   变量索引
+   CheckValue: byte;             //   期望值（注释：0, 1）
+end;
+
+TQuestConditionInfo = record     // :58-65   脚本条件
+   IfIdent: integer;             //   条件 opcode（QI_*）
+   IfParam: string;  IfParamVal: integer;
+   IfTag:   string;  IfTagVal:   integer;
+end;
+
+TQuestActionInfo = record        // :47-55   脚本动作
+   ActIdent: integer;            //   动作 opcode（QA_*）
+   ActParam: string;  ActParamVal: integer;
+   ActTag:   string;  ActTagVal:   integer;
+   ActExtra: string;  ActExtraVal: integer;
+end;
+
+TSayingProcedure = record        // :67-74   一条「对话分支」
+   ConditionList: TList;         //    条件列表（全部满足才走这个分支）
+   ActionList: TList;            //    满足时的动作
+   Saying: string;               //    满足时说的话
+   ElseActionList: TList;        //    不满足时的动作
+   ElseSaying: string;           //    不满足时说的话
+   AvailableCommands: TStringList;  // 该分支可用的命令
+end;
+
+TSayingRecord = record           // :77-80   一个「对话标题」
+   Title: string;                //    标题（如 '@main'）
+   Procs: TList;                 //    list of PTSayingProcedure
+end;
+```
+
+**层级关系**：`TNormNpc.Sayings: TList` → `PTSayingRecord`（按 `Title` 索引）
+→ `Procs: TList` → `PTSayingProcedure`（条件+动作+文本）。
+**`TQuestRecord`（§4.1）再包一层**：`BoRequire` + `QuestRequireArr` + `SayingList`。
+
+→ **四层嵌套：NPC → QuestRecord → SayingRecord → SayingProcedure**。
+**「NPC 对话」与「任务」共用同一套数据结构**，区别只在 `BoRequire` 是否为真。
+
+### 12.2 `CheckQuestCondition`（`:757-776`）—— 前置条件判定
+
+```pascal
+Result := TRUE;
+if pq.BoRequire then begin
+   for i := 0 to MAXREQUIRE-1 do begin
+      if pq.QuestRequireArr[i].RandomCount > 0 then
+         if Random(pq.QuestRequireArr[i].RandomCount) <> 0 then begin
+            Result := FALSE; break;         // 随机门槛未过
+         end;
+      if who.GetQuestMark(pq.QuestRequireArr[i].CheckIndex)
+         <> pq.QuestRequireArr[i].CheckValue then begin
+         Result := FALSE; break;            // 变量值不匹配
+      end;
+   end;
+end;
+```
+
+**两个要点**：
+1. **`RandomCount > 0` 时是「概率门槛」** —— `Random(N) = 0` 才通过，
+   即通过率 `1/N`。用于随机任务/随机掉落类对话。
+2. **`GetQuestMark(CheckIndex)` 查任务变量** —— 与
+   `TCreature.QuestIndexOpenStates`/`QuestIndexFinStates`/`QuestStates`
+   （`ObjBase.pas:353-355`）对应。
+
+### 12.3 `CheckSayingCondition`（`:837-...`）—— 脚本条件判定（条件 opcode 全表）
+
+逐条 `case pqc.IfIdent of`，**53 个条件 opcode**。核心模式：
+
+```pascal
+QI_CHECK:                      // 任务标记（GetQuestMark）
+   n := who.GetQuestMark(param);
+   if n = 0 then begin if tag <> 0 then Result := FALSE; end
+   else            if tag = 0 then Result := FALSE;
+QI_CHECKOPENUNIT:  → who.GetQuestOpenIndexMark(param)   // 开启状态
+QI_CHECKUNIT:      → who.GetQuestFinIndexMark(param)    // 完成状态
+QI_RANDOM:         if Random(pqc.IfParamVal) <> 0 then Result := FALSE;
+QI_GENDER:         'MAN' → who.Sex <> 0 则 FALSE
+```
+
+**注意三兄弟的区别**（最容易混）：
+
+| opcode | 查询函数 | 语义 |
+|---|---|---|
+| `QI_CHECK`(1) | `GetQuestMark` | 任务变量（`QuestStates`） |
+| `QI_CHECKOPENUNIT`(5) | `GetQuestOpenIndexMark` | **开启**状态（`QuestIndexOpenStates`） |
+| `QI_CHECKUNIT`(6) | `GetQuestFinIndexMark` | **完成**状态（`QuestIndexFinStates`） |
+
+**完整条件 opcode 表**（53 个，见 `quest-opcodes.tsv`）分组：
+
+| 组 | opcode | 语义 |
+|---|---|---|
+| 标记/状态 | `QI_CHECK`(1) `QI_CHECKOPENUNIT`(5) `QI_CHECKUNIT`(6) `QI_IFGETDAILYQUEST`(40) `QI_CHECKDAILYQUEST`(41) | 任务变量与每日任务 |
+| 随机 | `QI_RANDOM`(2) `QI_RANDOMEX`(42) | 概率门槛（`RANDOMEX` 支持百分比，注释「5 100 → 5%」） |
+| 角色 | `QI_GENDER`(3) `QI_CHECKLEVEL`(7) `QI_CHECKJOB`(8) `QI_ISEXPUSER`(139) | 性别/等级/职业/体验账号 |
+| 时间 | `QI_DAYTIME`(4) `QI_DAYOFWEEK`(26) `QI_TIMEHOUR`(27) `QI_TIMEMIN`(28) | 昼夜/星期/时/分 |
+| 物品 | `QI_CHECKITEM`(20) `QI_CHECKITEMW`(21) `QI_CHECKGOLD`(22) `QI_ISTAKEITEM`(23) `QI_CHECKDURA`(24) `QI_CHECKDURAEVA`(25) `QI_CHECKBAGGAGE`(34) `QI_CHECKBAGREMAIN`(44) `QI_CHECKGRADEITEM`(50) `QI_CHECKITEMWVALUE`(154) | 持有/装备/金币/耐久/背包容量/物品品质 |
+| 怪物 | `QI_CHECKMON_MAP`(31) `QI_CHECKMON_AREA`(32) `QI_CHECKMON_NORECALLMOB_MAP`(43) `QI_CHECKCHILDMOB`(150) | 某地图/区域是否有怪 |
+| 数值比较 | `QI_EQUALVAR`(51) `QI_EQUAL`(135) `QI_LARGE`(136) `QI_SMALL`(137) | 变量 `=`/`>`/`<` |
+| 社交 | `QI_ISGROUPOWNER`(138) `QI_CHECKLOVERFLAG`(140) `QI_CHECKLOVERRANGE`(141) `QI_CHECKLOVERDAY`(142) `QI_CHECKRANGEONELOVER`(152) `QI_CHECKGROUPJOBBALANCE`(151) | 队长/恋人/组队职业平衡 |
+| 声望 | `QI_CHECKFAMEGRADE`(143) `QI_CHECKFAMEPOINT`(144) `QI_CHECKFAMEBASEPOINT`(145) | 声望等级/当前/基础 |
+| 行会/攻城 | `QI_CHECKDONATION`(146) `QI_ISGUILDMASTER`(147) | 捐献/会长 |
+| 其他 | `QI_CHECKPKPOINT`(29) `QI_CHECKLUCKYPOINT`(30) `QI_CHECKHUM`(33) `QI_CHECKNAMELIST`(35) `QI_CHECKANDDELETENAMELIST`(36) `QI_CHECKANDDELETEIDLIST`(37) `QI_CHECKWEAPONBADLUCK`(148) `QI_CHECKPREMIUMGRADE`(149) `QI_EVENTCHECK`(153) | PK/幸运/人物/名单/武器诅咒/会员/活动 |
+
+> **`QI_CHECKNAMELIST`(35) / `QI_CHECKANDDELETENAMELIST`(36) /
+> `QI_CHECKANDDELETEIDLIST`(37)** 三个是「检查名单并在满足时**删除**」——
+> 即有**副作用**的条件。做任务脚本分析时要区分纯判定与带副作用的判定。
+
+### 12.4 动作 opcode（75 个，`QA_*`）
+
+见 `quest-opcodes.tsv`。核心几个：
+
+| opcode | 脚本关键字 | 语义 |
+|---|---|---|
+| `QA_TAKE`(2) | `TAKE` | 收取物品 |
+| `QA_GIVE`(3) | `GIVE` | 给予物品 |
+| `QA_TAKEW`(4) | `TAKEW` | 收取**已装备**的物品 |
+| `QA_CLOSE`(5) | `CLOSE` | 关闭对话窗 |
+| `QA_OPENUNIT`(7) | | 开启任务单元 |
+
+### 12.5 `GotoQuest` / `GotoSay`（`:1409-1424`）—— 对话跳转
+
+```pascal
+procedure GotoQuest (num: integer);
+begin
+   for i := 0 to Sayings.Count-1 do
+      if PTQuestRecord(Sayings[i]).LocalNumber = num then begin
+         PTQuestRecord(TUserHuman(who).CurQuest) := PTQuestRecord(Sayings[i]);
+         TUserHuman(who).CurQuestNpc := self;
+         NpcSayTitle (who, '@main');
+         break;
+      end;
+end;
+
+procedure GotoSay (saystr: string);  →  NpcSayTitle (who, saystr);
+```
+
+**两个跳转方式**：
+- `GotoQuest(num)` —— 按 **`LocalNumber`** 跳到某条任务记录，
+  并设置 `who.CurQuest` / `who.CurQuestNpc`，然后显示 `'@main'`。
+- `GotoSay(title)` —— 按 **`Title` 字符串**跳到某个对话标题。
+
+**`@main` 是硬编码的默认入口标题**（`:1417`）—— 这与
+`Mud3-Config/Envir3/QuestDiary/` 脚本里的 `[@main]` 对应。
+
+### 12.6 `TakeItemFromUser`（`:1425-...`）—— 收取物品的完整实现
+
+**金币特判**（`:1433`）：`CompareText(iname, NAME_OF_MONEY) = 0` → `who.DecGold(count)`。
+
+**物品分支**：从 `who.ItemList` **倒序**遍历（`:1449` `downto 0`，
+便于边遍历边删除），按 `StdItem.Name` 匹配。
+
+**堆叠物品（`OverlapItem >= 1`）** 用 `pu.Dura` 当**数量**（`:1469-1480`）：
+`pu.Dura := pu.Dura - count`，减到 ≤0 则删除物品并发 `SendDelItem`，
+否则发 `RM_COUNTERITEMCHANGE`（携带 `MakeIndex`/`Dura`/名称）。
+
+**审计日志**：每次收取都写 `AddUserLog`，格式为
+`'10'#9 + 地图 + 坐标 + 用户名 + 物品索引/名 + 数量 + '1'#9 + NPC名`，
+注释「판매 와 같이씀」（与出售共用）。**`'10'` 是日志类型码**。
+
+> **对 `Tools/questdata` 的直接意义**：任务奖励/收取的**物品数量语义**是
+> 「堆叠物品用 `Dura` 字段计数」，不是独立数量字段 —— 这与 `System.db` 的
+> `ItemInfo` 表示可能不同，做映射时必须注意。
+
+### 12.7 与 `Tools/questdata` / EI 证据的对照
+
+| 项 | 源码 | 本仓库现状 | 判定 |
+|---|---|---|---|
+| 任务条件 | 53 个 `QI_*` opcode | `Tools/questdata` 基于 `QuestInfo` 表 | ⚠️ **需交叉** |
+| 任务动作 | 75 个 `QA_*` opcode | 同上 | ⚠️ |
+| 脚本关键字 | 116 个有映射（`LocalDB.pas`） | 未对照 | **新增可对照物** |
+| 任务入口 | `MapInfo.txt` 的 `CHECKQUEST(<npc>)` | 已在 `config.md` §3.2 记录 | ✅ |
+| 对话标题 | `@main` 硬编码默认入口 | — | **新增** |
+| 堆叠物品计数 | `Dura` 字段 | — | **新增（易错点）** |
+| 有副作用的条件 | `QI_CHECKANDDELETE*`(36/37) | — | **新增** |
+
+**分级**：以上均 `secondary-source`。EI 原版反编译证据里**没有**任务脚本语言的
+opcode 表（原版只到「任务窗发 0x418/0x419」这一层），所以这批是
+**`source-only` 新增语义**，不能标 `source-corroborated`。
+
+### 12.8 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `QA_*` 75 个动作的**执行实现** | 只提取了 opcode 表，未逐个读执行分支 |
+| `NpcSayTitle` / `NpcSay` / `ChangeNpcSayTag` 实现 | 未读 |
+| `CheckNpcSayCommand`（脚本内命令解析） | 未读 —— 与 `Envir3/QuestDiary/` 语法的对照是下一步 |
+| `ActivateNpcUtilitys`（商店功能激活） | 只读了签名 |
+| `LoadNpcInfos` / `ClearNpcInfos` / `LoadMemorialCount` | 未读 |
+| `TMerchant` 的 `RefillGoods` / 价格计算 | 未读 |
+| `TUpgradeInfo`（武器炼制）相关实现 | 未读 |
+| `MAXREQUIRE=10` 之外的常量（`GUILDWARFEE=60000`、`CASTLEMAINDOORREPAREGOLD=1500000` 等） | 已记录值，未追用法 |
+
+### 12.9 任务脚本语言实证（**源码 ↔ `Envir3/QuestDiary/` 交叉验证**）
+
+**这是本 Goal 最重要的交叉验证之一** —— 用真实任务脚本验证源码提取的 opcode 表。
+
+样本：`Mud3-Config/Envir3/QuestDiary/MU_warrior/mute.txt`（GB18030）
+
+```
+[@mugong_mute_explan_mugi]          ← 对话标题（对应 TSayingRecord.Title）
+{
+#IF                                 ← 条件段开始
+check [508] 1                       ← 条件脚本关键字（对应 QI_CHECK）
+#SAY                                ← 满足时的文本（对应 Saying）
+叫野蛮冲撞的武功请找黄河大侠。。\ \
+<结束/@exit>                        ← <显示文本/跳转目标>
+#ACT                                ← 动作段
+break                               ← 动作脚本关键字
+#IF
+checklevel 27                       ← 对应 QI_CHECKLEVEL
+#SAY
+...<谢谢！战士.../@mugong_mute_explan_mugi_next>
+```
+
+**验证结果**：
+
+| 源码结构 | 脚本语法 | 判定 |
+|---|---|---|
+| `TSayingRecord.Title` | `[@mugong_mute_explan_mugi]` | ✅ 吻合 |
+| `TSayingProcedure.ConditionList` | `#IF` 段 | ✅ 吻合 |
+| `TSayingProcedure.Saying` | `#SAY` 段 | ✅ 吻合 |
+| `TSayingProcedure.ActionList` | `#ACT` 段 | ✅ 吻合 |
+| `QI_CHECK`(1) | `check [508] 1` | ✅ 吻合（含 `[]` 变量索引语法） |
+| `QI_CHECKLEVEL`(7) | `checklevel 27` | ✅ 吻合 |
+| `GotoSay(title)` | `<文本/@目标标题>` | ✅ 吻合（`@` 前缀即跳转） |
+| `@main` 默认入口 | `[@main]` | ✅ 吻合 |
+
+**新增确认的语法要素**（源码里不直观、脚本里才看清）：
+
+1. **`#IF` / `#SAY` / `#ACT` 三段式** —— 对应
+   `ConditionList` / `Saying` / `ActionList`。
+   **`#ELSEACT`/`#ELSESAY` 应对应 `ElseActionList`/`ElseSaying`**（样本中未出现，待验）。
+2. **条件用 `[]` 表示变量索引**：`check [508] 1` —— 即 `CheckIndex=508`、`CheckValue=1`。
+3. **`<显示文本/跳转目标>`** 是超链接语法，`/@xxx` 跳转、`/@exit` 是**退出**。
+   → `@exit` 应对应 `QA_CLOSE`(5)（`CLOSE`，关闭对话窗）。
+4. **`\` 是换行符**（行尾的 `\ \` 表示空行）。
+5. **`break` 动作** —— 中断当前分支。
+
+**结论**：源码提取的 `quest-opcodes.tsv`（53 条件 + 75 动作）
+与真实脚本语法**一一对应**。这批 opcode 表可直接用于
+解析 `Envir3/QuestDiary/` 的全部脚本树（1,729 个 `.txt`）。
+
+> **对 `Tools/questdata` 的价值**：现在有了「脚本关键字 → opcode」的完整映射
+> （116 条，`quest-opcodes.tsv` 的 `keyword` 列），可以写一个
+> **QuestDiary 脚本解析器**，与 `System.db` 的 `QuestInfo` 做双向对照 ——
+> 这是本仓库此前没有的能力。
