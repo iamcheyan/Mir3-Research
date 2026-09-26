@@ -1,0 +1,2428 @@
+[
+  {
+    "website_name": "基本剑术",
+    "website_class": "战士",
+    "description": "很久以前，有一位武艺高强的战士创建了这门剑法，百姓们使用此剑术抵抗怪物。基本剑术学起来容易，招势简单，看起来不华丽。但是，对培养体力和练就扎实的功底有很大帮助，对战士来说入门剑术。根据修炼等级不同，攻击命中率将会得到提高。 - 1等级 : 7级开始修炼 - 2等级 : 9级开始修炼 - 3等级 : 11级开始修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun01.gif",
+      "bytes": 2937,
+      "sha256": "69296d8ead0d15a672f37da91ea39f9383ddfc0e89cab393d1b4990a8a4d145d",
+      "width": 99,
+      "height": 103,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 1,
+        "name": "Swordsmanship",
+        "class": "Warrior",
+        "icon": 4,
+        "description": "A skill that increases your accuracy. The skill becomes more effective as you train."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 4,
+        "header": {
+          "index": 4,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "1",
+      "zircon_name": "Swordsmanship",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":3,\"tag\":\"changed\",\"target\":\"Swordsmanship (id=1)\",\"current_index\":1}]",
+      "icon": "4",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":4,\"header\":{\"index\":4,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "攻杀剑术",
+    "website_class": "战士",
+    "description": "攻杀剑术也属于入门剑术，是修炼外力，内功的高级武功。基本剑术到了一定境界，就会运气自然，发出强烈的内功，瞬间爆发出好几倍的力量，能给敌人强烈打击。 - 1等级 : 14级开始修炼 - 2等级 : 16级开始修炼 - 3等级 : 18级开始修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun02.gif",
+      "bytes": 4991,
+      "sha256": "26ed9225fc0c9ae8172195a48c69130a01e7d41b6fb4de2d140526b8a51fc756",
+      "width": 99,
+      "height": 72,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 3,
+        "name": "Slaying",
+        "class": "Warrior",
+        "icon": 12,
+        "description": "A skill that increases your accuracy and damage. The skill becomes more effective as you train."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 12,
+        "header": {
+          "index": 12,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "3",
+      "zircon_name": "Slaying",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":7,\"tag\":\"changed\",\"target\":\"Slaying (id=3)\",\"current_index\":3}]",
+      "icon": "12",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":12,\"header\":{\"index\":12,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "刺杀剑术",
+    "website_class": "战士",
+    "description": "经过长时间的修炼，剑术和内功都达到一定境界，就可按照自己的意愿使剑发出剑光。使用刺杀剑术就是利用剑光对攻击范围以外的敌人进行强烈攻击。达到最高境界时，甚至可以杀死数丈之外的敌人。 - 1等级 : 19级开始修炼 - 2等级 : 21级开始修炼 - 3等级 : 23级开始修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun03.gif",
+      "bytes": 6047,
+      "sha256": "976436ab84c96b30dae9221e9c39147a97244747777f03b41dc55fd2bba0c87f",
+      "width": 99,
+      "height": 102,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 4,
+        "name": "Thrusting",
+        "class": "Warrior",
+        "icon": 22,
+        "description": "Attack enemies outside of the melee range using the energy of your weapon. The damage done increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 22,
+        "header": {
+          "index": 22,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "4",
+      "zircon_name": "Thrusting",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":12,\"tag\":\"changed\",\"target\":\"Thrusting (id=4)\",\"current_index\":4}]",
+      "icon": "22",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":22,\"header\":{\"index\":22,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "半月弯刀",
+    "website_class": "战士",
+    "description": "与刺杀剑术一样，是可以发出剑光的高级功夫。但是，与刺杀剑术不同，半月弯刀可以同时攻击邻近的多数敌人。剑光的非常有威力，再加上范围也广，所以所消耗掉的内功也相当多，所以如果内功达不到一定境界，是绝对不能使用的。 - 1等级 : 24级开始修炼 - 2等级 : 26级开始修炼 - 3等级 : 28级开始修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun04.gif",
+      "bytes": 8197,
+      "sha256": "e763c9dc24078df3af0ec1e8f9133ec91868286e501ff84e1748c82baf399ffd",
+      "width": 99,
+      "height": 120,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 5,
+        "name": "Half Moon",
+        "class": "Warrior",
+        "icon": 48,
+        "description": "An ancient skill attack that hits 4 nearby enemies with the power of wind created from the swing of a weapon. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 48,
+        "header": {
+          "index": 48,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "5",
+      "zircon_name": "Half Moon",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":25,\"tag\":\"changed\",\"target\":\"Half Moon (id=5)\",\"current_index\":5}]",
+      "icon": "48",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":48,\"header\":{\"index\":48,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "野蛮冲撞",
+    "website_class": "战士",
+    "description": "剑术和步法相结合的奇特功夫，力如泰山，向敌人箭一般地跑去。给敌人的打击不算很大，但是用强烈的力气冲撞敌人，可把敌人推入火坑，也可把自己从险境当中救出来。虽然不能像轻攻术一样快速跑动长距离，但是由于具有瞬间快速移动特点，所以在短距离移动或搅乱敌人可以得到很好的效果。一定要注意的是，修炼不足的情况下使用此武功，反而会惹祸上身。 - 1等级 : 27级开始可以修炼 - 2等级 : 29级开始可以修炼 - 3等级 : 31级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun05.gif",
+      "bytes": 3768,
+      "sha256": "d3debbe2711b5947f51ff5d01bb03f1133568a96ac813c5700136deff8a224cd",
+      "width": 99,
+      "height": 103,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 6,
+        "name": "Shoulder Dash",
+        "class": "Warrior",
+        "icon": 52,
+        "description": "A shoulder blow to push away enemies of lower levels. As you train harder, you'll be able to push more enemies."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 52,
+        "header": {
+          "index": 52,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "6",
+      "zircon_name": "Shoulder Dash",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":27,\"tag\":\"changed\",\"target\":\"Shoulder Dash (id=6)\",\"current_index\":6}]",
+      "icon": "52",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":52,\"header\":{\"index\":52,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "烈火剑法",
+    "website_class": "战士",
+    "description": "烈火剑法使用内功吸收法术将体内火热的气运聚集到丹田，再注入到武器中攻击敌人，其破坏力非常大。但是，在修炼级别低的时候有可能无法聚集内功，导致功力分散。另外，烈火剑法用的是全身潜伏的内气，所以无法连续使用。 - 1等级 : 32级开始可以修炼 - 2等级 : 34级开始可以修炼 - 3等级 : 36级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun06.gif",
+      "bytes": 5978,
+      "sha256": "e9438c85b409ca1b3ae32c9c4410cabd10f50a21b8912d001099109c4cee06d9",
+      "width": 99,
+      "height": 109,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 7,
+        "name": "Flaming Sword",
+        "class": "Warrior",
+        "icon": 50,
+        "description": "Transfer your body's energy onto the weapon to increase its damage.  The damage bonus increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 50,
+        "header": {
+          "index": 50,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "7",
+      "zircon_name": "Flaming Sword",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":26,\"tag\":\"changed\",\"target\":\"Flaming Sword (id=7)\",\"current_index\":7}]",
+      "icon": "50",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":50,\"header\":{\"index\":50,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "翔空剑法",
+    "website_class": "战士",
+    "description": "人飞向空中，从半空落下攻击敌人的剑术，由于盘旋飞上空中的气势就像升天的龙王，所以起名叫做翔空剑法。此剑法威力无比，飞得越高发出来的威力也越大。若没有坚实的内功和体力，是无法使用此剑术，发功之前需要将内气聚到丹田，不能连续过多使用。 - 1等级 : 35级开始可以修炼 - 2等级 : 37级开始可以修炼 - 3等级 : 39级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun08.jpg",
+      "bytes": 27726,
+      "sha256": "21a68fceb006432290c24d2f2c08ab3d55b88557e369b82b363fa451bfa0b5f3",
+      "width": 99,
+      "height": 124,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "8",
+      "zircon_name": "Dragon Rise",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":35,\"tag\":\"changed\",\"target\":\"Dragon Rise (id=8)\",\"current_index\":8}]",
+      "icon": "68",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":68,\"header\":{\"index\":68,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "莲月剑法",
+    "website_class": "战士",
+    "description": "莲月剑法，动作灵活猛烈，是最高剑法之一。一挥剑就会发出强烈剑光，剑光大波大起，根本不给对方还手机会，造成致命的打击。若没有坚实的内功和体力，是无法使用此剑术，发功之前需要将内气聚到丹田，不能连续过多使用。 - 1等级 : 38级开始可以修炼 - 2等级 : 40级开始可以修炼 - 3等级 : 42级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/jun07.jpg",
+      "bytes": 27103,
+      "sha256": "a19f643d4549f1e5780dbd23f13bc978b8c2eeefd0263d37e26a2e74f46db542",
+      "width": 99,
+      "height": 132,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 9,
+        "name": "Blade Storm",
+        "class": "Warrior",
+        "icon": 66,
+        "description": "A fast attack that deals 2 blows to the enemy. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 66,
+        "header": {
+          "index": 66,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "9",
+      "zircon_name": "Blade Storm",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":34,\"tag\":\"changed\",\"target\":\"Blade Storm (id=9)\",\"current_index\":9}]",
+      "icon": "66",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":66,\"header\":{\"index\":66,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "十方斩",
+    "website_class": "战士",
+    "description": "十方斩，以剑身的旋转带出一个环绕的圆型气场，气场边缘的淡蓝色剑气犹如剑刃本身般利不可挡。即使被敌人完全包围，气场造成的伤害仍可以轻易破开入侵者的铠甲。由于使用者从正面挥出武器，因此身处这点的敌人将遭受比其余点更为严重的剑气伤害。 - 1等级 : 40级开始可以修炼 - 2等级 : 43级开始可以修炼 - 3等级 : 46级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4jun01.gif",
+      "bytes": 6090,
+      "sha256": "62581158bcfcfaaf23f89696269c7ed76ddd343383b3461ecbd1f9a63584b939",
+      "width": 99,
+      "height": 124,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "10",
+      "zircon_name": "Destructive Surge",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":103,\"tag\":\"changed\",\"target\":\"Destructive Surge (id=10)\",\"current_index\":10}]",
+      "icon": "204",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":204,\"header\":{\"index\":204,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "乾坤大挪移",
+    "website_class": "战士",
+    "description": "乾坤大挪移其实是一种把身法发挥到极致的技能。使用者以自身极高的速度冲向对方所在的位置，其身法发挥时所带起的空气气流可以硬把对方迫离原来的位置。受到气流牵引影响，对方可能在毫不知情的情况下改变了所处位置。 - 1等级 : 42级开始可以修炼 - 2等级 : 45级开始可以修炼 - 3等级 : 48级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4jun02.gif",
+      "bytes": 7422,
+      "sha256": "0d1d5a3464211ac252a472cd6550daf21ef588c4615d548da9b188d713c3041e",
+      "width": 126,
+      "height": 127,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 11,
+        "name": "Interchange",
+        "class": "Warrior",
+        "icon": 212,
+        "description": "A skill that allows you to switch the location of you and your target. Its chance of success increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 212,
+        "header": {
+          "index": 212,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "11",
+      "zircon_name": "Interchange",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":107,\"tag\":\"changed\",\"target\":\"Interchange (id=11)\",\"current_index\":11}]",
+      "icon": "212",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":212,\"header\":{\"index\":212,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "铁布衫",
+    "website_class": "战士",
+    "description": "铁布衫是气功横练的一种。通过使贯注在经脉中的内家真气高度集中同时高速流动，让原本的血肉之躯变得坚硬如铁，不惧任何外来的攻击。如果说法师的魔法盾是在人体外围形成了一个防御层，铁布衫则是在人体内以气御袭。由于真气的转换集中，原本攻击依仗的真气也相应被借走，攻击力受损是在所难免的。 - 1等级 : 44级开始可以修炼 - 2等级 : 47级开始可以修炼 - 3等级 : 50级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4jun03.gif",
+      "bytes": 7386,
+      "sha256": "b8aab98f764e49a2168bfa4cd2ae7441b36a9de2084624797ee7e3f3e17fba80",
+      "width": 99,
+      "height": 124,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 12,
+        "name": "Defiance",
+        "class": "Warrior",
+        "icon": 202,
+        "description": "Significantly increase your defense and magic resistance whilst reducing attack power. Duration increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 202,
+        "header": {
+          "index": 202,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "12",
+      "zircon_name": "Defiance",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":102,\"tag\":\"changed\",\"target\":\"Defiance (id=12)\",\"current_index\":12}]",
+      "icon": "202",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":202,\"header\":{\"index\":202,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "斗转星移",
+    "website_class": "战士",
+    "description": "斗转星移，能够使用斗转星移的战士本身已是控制气场的高手。当他的身体与周围的空气融成一体时，控制空气就如同控制自己的身体那样简单。使用者只需以强大的漩涡气场吸走对方身体周围的空气，敌人将不受控制地前倾扑跌。旋涡气场的吸取能力越大，敌人扑跌的速度越快。当气场完全发挥时，敌人可能在瞬间已经被吸到使用者的面前。 - 1等级 : 46级开始可以修炼 - 2等级 : 49级开始可以修炼 - 3等级 : 52级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4jun04.gif",
+      "bytes": 7422,
+      "sha256": "0d1d5a3464211ac252a472cd6550daf21ef588c4615d548da9b188d713c3041e",
+      "width": 126,
+      "height": 127,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "13",
+      "zircon_name": "Beckon",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":108,\"tag\":\"changed\",\"target\":\"Beckon (id=13)\",\"current_index\":13}]",
+      "icon": "214",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":214,\"header\":{\"index\":214,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "破血狂杀",
+    "website_class": "战士",
+    "description": "破血狂杀，从实质来看，是铁布衫完全相反的一种形式。当一个人的意念完全用于破敌时，他将不再顾及自身的生命，所有的护体真气全部流向气海以作进攻之用。当破血狂杀被使出的时候，你将轻易觉察到使用者能够力劈华山的强大伤害力以及已近不堪一击的虚弱身体。 - 1等级 : 48级开始可以修炼 - 2等级 : 51级开始可以修炼 - 3等级 : 54级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4jun05.gif",
+      "bytes": 13780,
+      "sha256": "0a80ea9b5aaddc7a934335d2c5555a438c677543601db5ea0830403fdb54801b",
+      "width": 126,
+      "height": 127,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 10,
+        "name": "Destructive Surge",
+        "class": "Warrior",
+        "icon": 204,
+        "description": "Transfers your body's energy onto your weapon to deal damage to your enemies around you. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 204,
+        "header": {
+          "index": 204,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "14",
+      "zircon_name": "Might",
+      "zircon_class": "Warrior",
+      "catalog_evidence": "[{\"legacy_id\":106,\"tag\":\"changed\",\"target\":\"Might (id=14)\",\"current_index\":14}]",
+      "icon": "210",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":210,\"header\":{\"index\":210,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "火球术",
+    "website_class": "法师",
+    "description": "用咒语将内功转换为火球射向对方。修炼等级越高，杀伤力也越强。 - 1等级 : 7级开始可以修炼 - 2等级 : 9级开始可以修炼 - 3等级 : 11级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul01.gif",
+      "bytes": 5661,
+      "sha256": "856654afa5d7c95bd04097f2d1fa1fa4e010cc0b02b42ed9a05efda0211f6776",
+      "width": 128,
+      "height": 106,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 23,
+        "name": "Fire Ball",
+        "class": "Wizard",
+        "icon": 0,
+        "description": "The most basic Fire spell. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 0,
+        "header": {
+          "index": 0,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "23",
+      "zircon_name": "Fire Ball",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":1,\"tag\":\"both\",\"target\":\"Fire Ball (id=23)\",\"current_index\":23}]",
+      "icon": "0",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":0,\"header\":{\"index\":0,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "霹雳掌",
+    "website_class": "法师",
+    "description": "是将体内的魔法转换为电击气运，集中在掌心，向外射放的最简单的电击系列魔法。虽然威力不是很强大，但是对付死者系列的敌人很有帮助。只要掌握机会适当使用霹雳掌，能获得很好效果。 - 1等级 : 8级开始可以修炼 - 2等级 : 10级开始可以修炼 - 3等级 : 12级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul17.jpg",
+      "bytes": 23248,
+      "sha256": "c0665a9c6ffd49d897a12671a299ce9efd89fd885616543788f77c5831c11416",
+      "width": 126,
+      "height": 127,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "24",
+      "zircon_name": "Lightning Ball",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":41,\"tag\":\"both\",\"target\":\"Lightning Ball (id=24)\",\"current_index\":24}]",
+      "icon": "80",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":80,\"header\":{\"index\":80,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "冰月神掌",
+    "website_class": "法师",
+    "description": "利用法术将体内的魔法转换为冰气射放出来。虽然冰系列魔法主要对没有耐性的敌人有较大效果，但是偶尔可以让对方冻僵，使对方行动变得缓慢。修炼等级越高，杀伤力和冻僵的概率越高。 - 1等级 : 9级开始可以修炼 - 2等级 : 11级开始可以修炼 - 3等级 : 13级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul15.jpg",
+      "bytes": 24478,
+      "sha256": "dd81906c0b6d2020a6cadbc27d6fd5d6ad18f04f859a106e9a1c38c2cd643328",
+      "width": 126,
+      "height": 112,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "25",
+      "zircon_name": "Ice Bolt",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":39,\"tag\":\"both\",\"target\":\"Ice Bolt (id=25)\",\"current_index\":25}]",
+      "icon": "76",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":76,\"header\":{\"index\":76,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "风掌",
+    "website_class": "法师",
+    "description": "风系的点魔法,可以吹开等级比低很多的怪。很多怪物都怕风的,这招很适用哦 - 1等级 : 10级开始可以修炼 - 2等级 : 12级开始可以修炼 - 3等级 : 14级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul21.gif",
+      "bytes": 4556,
+      "sha256": "86807eba2de6a6ee840bd9e0bc19404d2352cd1f09149247a16a2ad1cd53a528",
+      "width": 128,
+      "height": 115,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "26",
+      "zircon_name": "Gust Blast",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":67,\"tag\":\"both\",\"target\":\"Gust Blast (id=26)\",\"current_index\":26}]",
+      "icon": "132",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":132,\"header\":{\"index\":132,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "抗拒火环",
+    "website_class": "法师",
+    "description": "抗拒火环引起火焰旋风，将身边的敌人驱逐开。被敌人包围时，可以使用此魔法。但是一定要注意，不能驱逐比自己更高等级的敌人。最多可以同时往8个方向推敌人，但是对敌人的杀伤力比较弱，只能当作护身法用。 - 1等级 : 12级开始可以修炼 - 2等级 : 14级开始可以修炼 - 3等级 : 16级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul03.gif",
+      "bytes": 8922,
+      "sha256": "1909f861e4c1925a3e4ee6891d3322bb50e864ff7c7ce602a38a6462fb1c5867",
+      "width": 126,
+      "height": 121,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 27,
+        "name": "Repulsion",
+        "class": "Wizard",
+        "icon": 14,
+        "description": "A defensive spell that allows you to push away enemies of lower level. This spell has a fixed chance for success. The range of the spell and chance of success increase with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 14,
+        "header": {
+          "index": 14,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "27",
+      "zircon_name": "Repulsion",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":8,\"tag\":\"changed\",\"target\":\"Repulsion (id=27)\",\"current_index\":27}]",
+      "icon": "14",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":14,\"header\":{\"index\":14,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "诱惑之光",
+    "website_class": "法师",
+    "description": "诱惑之光给敌人强烈的电击冲击，攻击的不是敌人的肉体，而是灵魂，是非常可怕的魔法。中了此法术，全身麻痹，无法逃脱，甚至不分敌我乱攻击。法术高明时，还可俘虏怪物的意识，将其成为自己的手下。需要记住的是诱惑之光的魔法只维持一段时间。 - 1等级 : 13级开始可以修炼 - 2等级 : 15级开始可以修炼 - 3等级 : 17级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul02.gif",
+      "bytes": 6768,
+      "sha256": "fd42ef6492d508803d0bf937f439429b44243b0da5159d25be1e4266775e29bc",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 28,
+        "name": "Electric Shock",
+        "class": "Wizard",
+        "icon": 38,
+        "description": "A spell that knocks the enemy unconscious.  Your chance of success and duration of its effect increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 38,
+        "header": {
+          "index": 38,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "28",
+      "zircon_name": "Electric Shock",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":20,\"tag\":\"both\",\"target\":\"Electric Shock (id=28)\",\"current_index\":28}]",
+      "icon": "38",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":38,\"header\":{\"index\":38,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "瞬息移动",
+    "website_class": "法师",
+    "description": "瞬息移动使用的是最黑暗最神奇领域的魔法，贯通时空的法术。可以瞬间移动到村庄附近，但是修炼等级低下时，会被移动到其他地方或者根本不移动。传说有一个法师过多使用此魔法，套在无尽的时空中，成了流浪者。 - 1等级 : 14级开始可以修炼 - 2等级 : 16级开始可以修炼 - 3等级 : 18级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul05.gif",
+      "bytes": 10310,
+      "sha256": "ab5f8b1049c8693f8f8500211a49efc486bd1b683c8a2eba66f5b07c1864994c",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 29,
+        "name": "Teleportation",
+        "class": "Wizard",
+        "icon": 40,
+        "description": "A spell that moves you to a random location. Your chance of success increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 40,
+        "header": {
+          "index": 40,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "29",
+      "zircon_name": "Teleportation",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":21,\"tag\":\"both\",\"target\":\"Teleportation (id=29)\",\"current_index\":29}]",
+      "icon": "40",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":40,\"header\":{\"index\":40,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "大火球",
+    "website_class": "法师",
+    "description": "大火球是火球术的更高境界，将相当量的火气凝聚在一点喷发出来。这时候的火焰可以熔化钢铁。 - 1等级 : 15级开始可以修炼 - 2等级 : 17级开始可以修炼 - 3等级 : 19级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul06.gif",
+      "bytes": 5858,
+      "sha256": "fdff42fa2758519154026dea58201b4bb9cb68b268c8c641081a661583aaaabd",
+      "width": 128,
+      "height": 123,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "30",
+      "zircon_name": "Adamantine Fire Ball",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":5,\"tag\":\"both\",\"target\":\"Adamantine Fire Ball (id=30)\",\"current_index\":30}]",
+      "icon": "8",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":8,\"header\":{\"index\":8,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "雷电术",
+    "website_class": "法师",
+    "description": "雷电术通过把微弱的电力射向天空，在自己所设定的地方进行雷劈。雷劈威力巨大，给敌人的打击很大，是法师必学魔法。但是，念咒文的时间比其他魔法要长，小心敌人趁机靠近你进行攻击。 - 1等级 : 16级开始可以修炼 - 2等级 : 18级开始可以修炼 - 3等级 : 20级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul04.gif",
+      "bytes": 7494,
+      "sha256": "dbf868bd2934d2860d58205b2f30b69022271e3f2dc915b76fb9f964dfa50ff7",
+      "width": 126,
+      "height": 198,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 24,
+        "name": "Lightning Ball",
+        "class": "Wizard",
+        "icon": 80,
+        "description": "The most basic Lightning spell. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 80,
+        "header": {
+          "index": 80,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "31",
+      "zircon_name": "Thunder Bolt",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":11,\"tag\":\"both\",\"target\":\"Thunder Bolt (id=31)\",\"current_index\":31}]",
+      "icon": "20",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":20,\"header\":{\"index\":20,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "冰月震天",
+    "website_class": "法师",
+    "description": "冰月震天是冰月神掌的更高境界，喷发出大冰球，击中的敌人会受到严重的冰寒攻击。另外，与冰月神掌一样可以让对方冻僵，使对方行动变得缓慢。 - 1等级 : 17级开始可以修炼 - 2等级 : 19级开始可以修炼 - 3等级 : 21级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul16.jpg",
+      "bytes": 25599,
+      "sha256": "c18f53d1bc1075dfde0a1a0969bb6bea1b779e1f4e9d487405ab48a5181f149d",
+      "width": 126,
+      "height": 94,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "32",
+      "zircon_name": "Ice Blades",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":40,\"tag\":\"both\",\"target\":\"Ice Blades (id=32)\",\"current_index\":32}]",
+      "icon": "78",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":78,\"header\":{\"index\":78,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "击风",
+    "website_class": "法师",
+    "description": "风系的点魔法,可以吹开等级比低很多的怪。很多怪物都怕风的,这招很适用哦 - 1等级 : 18级开始可以修炼 - 2等级 : 20级开始可以修炼 - 3等级 : 22级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul22.gif",
+      "bytes": 6559,
+      "sha256": "a108ceddfb5809d7acc89846ed7e84431b7a0614b4c5bd86f4aa5e5225fb929e",
+      "width": 128,
+      "height": 127,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "33",
+      "zircon_name": "Cyclone",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":74,\"tag\":\"both\",\"target\":\"Cyclone (id=33)\",\"current_index\":33}]",
+      "icon": "146",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":146,\"header\":{\"index\":146,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "地狱火",
+    "website_class": "法师",
+    "description": "地狱火直线发射强烈火焰。火焰长度不是非常长，但是可以同时攻击排成一队的多数敌人。破坏力不很强，但可以同时对最多5人进行攻击。 - 1等级 : 20级开始可以修炼 - 2等级 : 22级开始可以修炼 - 3等级 : 24级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul07.gif",
+      "bytes": 5959,
+      "sha256": "bad1c840487eb34b5aa8d4909a7a6808d5f5f1cec439020a6e3218e23b9b161c",
+      "width": 128,
+      "height": 130,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 97,
+        "name": "Hell Fire",
+        "class": "Assassin",
+        "icon": 318,
+        "description": "Summons a demon from the Flames of Fire and Brimstone to inflict fire damage to an opponent and additional fire damage over time. Its damage increases with time."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 318,
+        "header": {
+          "index": 318,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "34",
+      "zircon_name": "Scorched Earth",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":9,\"tag\":\"both\",\"target\":\"Scorched Earth (id=34)\",\"current_index\":34}]",
+      "icon": "16",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":16,\"header\":{\"index\":16,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "疾光电影",
+    "website_class": "法师",
+    "description": "疾光电影可以放射出贯通力强的闪电，对排成一对的所有敌人同时进行攻击。使用方法与地狱火相似，但是放射距离更长破坏力也更大。 - 1等级 : 21级开始可以修炼 - 2等级 : 23级开始可以修炼 - 3等级 : 25级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul09.gif",
+      "bytes": 2958,
+      "sha256": "d3473c4cba4f99fc5c71ac3f36cef57a70c68bb2454c01b0c7d933562209eda8",
+      "width": 126,
+      "height": 158,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 52,
+        "name": "Thunder Storm",
+        "class": "Wizard",
+        "icon": 266,
+        "description": "When cast, lightning strikes down randomly in a fixed area, dealing massive damage."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 266,
+        "header": {
+          "index": 266,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "35",
+      "zircon_name": "Lightning Beam",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":10,\"tag\":\"both\",\"target\":\"Lightning Beam (id=35)\",\"current_index\":35}]",
+      "icon": "18",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":18,\"header\":{\"index\":18,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "冰沙掌",
+    "website_class": "法师",
+    "description": "冰沙掌直线喷射出寒气，攻击敌人。强烈的冰气不仅打伤敌人的肉体，还使敌人动作迟钝。据说此魔法是从叫做酷寒的地方传下来的。 - 1等级 : 22级开始可以修炼 - 2等级 : 24级开始可以修炼 - 3等级 : 26级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul18.gif",
+      "bytes": 6152,
+      "sha256": "410dc410b497b1046e1301a2241ade813ccd036a6b73a507977a8f7cf9aba7e0",
+      "width": 128,
+      "height": 112,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "36",
+      "zircon_name": "Frozen Earth",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":53,\"tag\":\"both\",\"target\":\"Frozen Earth (id=36)\",\"current_index\":36}]",
+      "icon": "104",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":104,\"header\":{\"index\":104,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "火墙",
+    "website_class": "法师",
+    "description": "传说此魔法是一位怀恨去世的天才法师所创建，在特定地方点燃不灭之火。点燃的火花就跟法师心中的怨恨一样，迟迟不灭熊熊燃起，如果不赶快从中逃出，会受到严重的伤害。火化燃烧的时间和每个人的魔法力有关系。 - 1等级 : 24级开始可以修炼 - 2等级 : 26级开始可以修炼 - 3等级 : 28级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul10.gif",
+      "bytes": 9003,
+      "sha256": "709a2f73564b688f6d90f275cced697ecdd185992ffeba12a6298fdd4731a9bf",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 38,
+        "name": "Fire Wall",
+        "class": "Wizard",
+        "icon": 42,
+        "description": "A spell that creates a wall of fire in the shape of a cross damaging enemies over a period of time. Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 42,
+        "header": {
+          "index": 42,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "38",
+      "zircon_name": "Fire Wall",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":22,\"tag\":\"both\",\"target\":\"Fire Wall (id=38)\",\"current_index\":38}]",
+      "icon": "42",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":42,\"header\":{\"index\":42,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "圣言术",
+    "website_class": "法师",
+    "description": "不知名的邪恶魔魂附在具有奇异魔力的怪物身上，支配着这些死者系列怪物。但是，这些死者系列的怪物与有生命的怪物不同，一般的攻击法是得不到什么效果的。圣言术就是为了抵抗这些死者系列怪物而创建的魔法，可以一次把恶魔摘除下来。但是，另一方面对有生命的怪物，是发挥不了任何效果。 - 1等级 : 26级开始可以修炼 - 2等级 : 28级开始可以修炼 - 3等级 : 30级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul13.gif",
+      "bytes": 7310,
+      "sha256": "a7ea18abd26fdc9f352d3c0c29aa393f292e354f28de4d11bd6fec35f00d6bbf",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "39",
+      "zircon_name": "Expel Undead",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":32,\"tag\":\"both\",\"target\":\"Expel Undead (id=39)\",\"current_index\":39}]",
+      "icon": "62",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":62,\"header\":{\"index\":62,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "异形换位",
+    "website_class": "法师",
+    "description": "异形换位可在一定空间内按照自己的意愿到处移动。经过幻影术的法师过了超越空间的境界，可支配空间本身。但是，空间范围是有限的。异形换位的准确度和移动可行的范围大受魔力与幻影术修炼程度的影响，这就需要相当长的时间和努力。 - 1等级 : 27级开始可以修炼 - 2等级 : 29级开始可以修炼 - 3等级 : 31级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul19.gif",
+      "bytes": 5789,
+      "sha256": "f1f1bc484a9b2f5cb5e997f2066831383ea78eaf624047c033a7bee60579cdf0",
+      "width": 128,
+      "height": 135,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "40",
+      "zircon_name": "Geo Manipulation",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":104,\"tag\":\"both\",\"target\":\"Geo Manipulation (id=40)\",\"current_index\":40}]",
+      "icon": "206",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":206,\"header\":{\"index\":206,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "魔法盾",
+    "website_class": "法师",
+    "description": "将纯粹的魔力变换为物理上的力量，在自己周围形成保护膜，又名叫做'魔帐术'，可以吸收外部来的攻击，达到保护自己的目的。修炼等级和魔力越高，保护膜的持续时间和吸收冲击的比率月增加，每遭受打击，持续时间会越来越短。开始修炼时，会需要很多魔法力，但是对于生命力比较弱的法师来讲，这是必学魔法。 - 1等级 : 29级开始可以修炼 - 2等级 : 31级开始可以修炼 - 3等级 : 33级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul12.gif",
+      "bytes": 10883,
+      "sha256": "ecc9b1a5d820badb51d39e9841f659bf58635ba142f9a6371ca251ab73ce8453",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 41,
+        "name": "Magic Shield",
+        "class": "Wizard",
+        "icon": 60,
+        "description": "Creates a magical shield around the caster that reduces the damage taken for a set period of time. The duration of the spell increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 60,
+        "header": {
+          "index": 60,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "41",
+      "zircon_name": "Magic Shield",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":31,\"tag\":\"both\",\"target\":\"Magic Shield (id=41)\",\"current_index\":41}]",
+      "icon": "60",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":60,\"header\":{\"index\":60,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "爆裂火焰",
+    "website_class": "法师",
+    "description": "瞬间爆发出高温火焰，法师所发出来的内功迅速变成火焰造成大爆发。以攻击地点位中心，上下左右，两条斜线附近的敌人都会遭受打击，最多可以同时攻击9个敌人。虽然破坏力不很强，但是对快速移动的敌人很有效。 - 1等级 : 32级开始可以修炼 - 2等级 : 34级开始可以修炼 - 3等级 : 36级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul08.gif",
+      "bytes": 8056,
+      "sha256": "cb4f2ea15bbf0e2318b911b90200f6447aa018ec543ce9b5ddf4ed5db284f1d6",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "42",
+      "zircon_name": "Fire Storm",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":23,\"tag\":\"both\",\"target\":\"Fire Storm (id=42)\",\"current_index\":42}]",
+      "icon": "44",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":44,\"header\":{\"index\":44,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "地狱雷光",
+    "website_class": "法师",
+    "description": "瞬间发生电力，法师发出的内功迅速转变为雷电造成大爆发。以攻击地点位中心，上下左右，两条斜线附近的敌人都会遭受打击，最多可以同时攻击9个敌人。发出的闪电看上去就跟美丽的雪花一样很迷人。只攻击一个目标的其他魔法相比破坏力不很高，魔法力消耗也多，先做好判断再使用。 - 1等级 : 33级开始可以修炼 - 2等级 : 35级开始可以修炼 - 3等级 : 37级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul11.gif",
+      "bytes": 13070,
+      "sha256": "0ab7ed4b8dec3b4c907513ec4e3932d79d8edd4c5041ec7814c56bf599f7dd26",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "43",
+      "zircon_name": "Lightning Wave",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":24,\"tag\":\"both\",\"target\":\"Lightning Wave (id=43)\",\"current_index\":43}]",
+      "icon": "46",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":46,\"header\":{\"index\":46,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "冰咆哮",
+    "website_class": "法师",
+    "description": "引起冰雪暴风攻击敌人。使用此魔法，就会引起风雪，无数的冰块形成旋风。冰块旋转速度非常快，再加上刺骨的寒气，会给敌人造成不小的打击。冰咆哮与爆裂火焰一样，攻击范围是3x3，最多可同时攻击9个敌人。 - 1等级 : 34级开始可以修炼 - 2等级 : 36级开始可以修炼 - 3等级 : 38级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul14.gif",
+      "bytes": 16856,
+      "sha256": "f13e2c59ad625493537104a45b149ee8ff1c5aad8adde8f88294aefe6fe65435",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "44",
+      "zircon_name": "Ice Storm",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":33,\"tag\":\"both\",\"target\":\"Ice Storm (id=44)\",\"current_index\":44}]",
+      "icon": "64",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":64,\"header\":{\"index\":64,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "龙卷风",
+    "website_class": "法师",
+    "description": "龙卷风可在指定的地方引起旋风(3*3)攻击敌人。 达到法师最高境界，就可利用魔法引起强大的旋风，创建出此魔法。敌人在用魔法造成的狂风区域中持续受到打击，魔法的持续时间根据每个法师的能力不同有所差距。 - 1等级 : 35级开始可以修炼 - 2等级 : 37级开始可以修炼 - 3等级 : 39级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/sul20.gif",
+      "bytes": 7593,
+      "sha256": "0601f2ba29f3d683588de49214284ebfd7d07bf369d8679ae9b762aec667555b",
+      "width": 128,
+      "height": 128,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 33,
+        "name": "Cyclone",
+        "class": "Wizard",
+        "icon": 146,
+        "description": "A Cyclone attack spell that damages a single enemy. Its damage increases with training."
+      },
+      {
+        "index": 158,
+        "name": "Tornado",
+        "class": "Wizard",
+        "icon": 508,
+        "description": "Summon a tornado which damages anything in its path. The effects of the tornado increase with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 146,
+        "header": {
+          "index": 146,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      },
+      {
+        "present": true,
+        "frame": 508,
+        "header": {
+          "index": 508,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "45",
+      "zircon_name": "Dragon Tornado",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":72,\"tag\":\"both\",\"target\":\"Dragon Tornado (id=45)\",\"current_index\":45}]",
+      "icon": "142",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":142,\"header\":{\"index\":142,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "魄冰刺",
+    "website_class": "法师",
+    "description": "魄冰刺其实是冰沙掌的高阶魔法。当法师以自身自然力凝聚成一条冰柱并释放时，冰沙掌就诞生了；凝而不发，当时机来临那刻，积累的冰柱同时击出，是为魄冰刺。魄冰刺如同其他冰系魔法一样具备冰冻效果，如何发挥其最大作用是考验智慧的一大难题。 - 1等级 : 38级开始可以修炼 - 2等级 : 41级开始可以修炼 - 3等级 : 44级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4sul01.gif",
+      "bytes": 11532,
+      "sha256": "6473334d30143478268496fd62d306ed59c33615d3db2475a8e57732efb20da5",
+      "width": 126,
+      "height": 127,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "46",
+      "zircon_name": "Greater Frozen Earth",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":110,\"tag\":\"changed\",\"target\":\"Greater Frozen Earth (id=46)\",\"current_index\":46}]",
+      "icon": "218",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":218,\"header\":{\"index\":218,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "怒神霹雳",
+    "website_class": "法师",
+    "description": "怒神霹雳，消耗自身大量的MP，创造出一个雷系爆炸点。一旦爆炸点击中目标，会以迅雷不及掩耳之势散成大片霹雳向四周蔓延。被爆炸点击中固然会受到极大伤害，四散而出的霹雳也绝不好消受。幸而霹雳会随着爆炸中心的远离而减弱，否则这个可怕的魔法或许真能毁灭一个村庄乃至一个城市。 - 1等级 : 40级开始可以修炼 - 2等级 : 42级开始可以修炼 - 3等级 : 44级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4sul02.gif",
+      "bytes": 6806,
+      "sha256": "6f2f620e5e2e490fb5ed71758d2160b3316b224056808920cd4a0969d05753ff",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "47",
+      "zircon_name": "Chain Lightning",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":111,\"tag\":\"changed\",\"target\":\"Chain Lightning (id=47)\",\"current_index\":47}]",
+      "icon": "220",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":220,\"header\":{\"index\":220,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "焰天火雨",
+    "website_class": "法师",
+    "description": "焰天火雨看似是无数大火球的乱舞，但真正目睹后会为其强大的伤害力而咋舌。由于每个火球都集聚着施法者心中的怨恨和不平，伴随着焰天火雨凄惨的故事，这个魔法被人们视为永恒的传说。 - 1等级 : 43级开始可以修炼 - 2等级 : 45级开始可以修炼 - 3等级 : 47级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4sul03.gif",
+      "bytes": 7544,
+      "sha256": "986e90ecb3e8ee158ea18591e2b82dbbb9ce1be2142d99a416dd378114d7d8b0",
+      "width": 128,
+      "height": 123,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "48",
+      "zircon_name": "Meteor Shower",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":113,\"tag\":\"changed\",\"target\":\"Meteor Shower (id=48)\",\"current_index\":48}]",
+      "icon": "224",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":224,\"header\":{\"index\":224,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "凝血离魂",
+    "website_class": "法师",
+    "description": "凝血离魂，这个一度被列为禁忌的魔法拥有太多的牺牲者。为了追求极限的自然力量，一族法师支流创造了以自残获取的新鲜血液来祭奠自然之神的方法，为数众多的年轻法师因为无法掌握度衡而丧命。现在这个魔法又重现人间，其后果让人思之不寒而栗。 - 1等级 : 46级开始可以修炼 - 2等级 : 48级开始可以修炼 - 3等级 : 50级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4sul04.gif",
+      "bytes": 11223,
+      "sha256": "1ad47bfd4331f623594aa0f20c2c6bc815b82416f3d8015b271e4b95898b1fb2",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "investigate",
+    "skip_reason": "中文名未在 MagicInfo 翻译索引唯一闭合。",
+    "legacy_alignment_evidence": {
+      "zircon_index": null,
+      "zircon_name": null,
+      "zircon_class": null,
+      "catalog_evidence": "[{\"legacy_id\":112,\"tag\":\"old-only\",\"target\":\"老版特有技能，Zircon 无对应\",\"current_index\":null}]",
+      "icon": null,
+      "icon_evidence": "{\"status\":\"not-mapped\"}",
+      "match_method": "catalog-crossref-without-closed-current-icon",
+      "confidence": "pending",
+      "status": "investigate"
+    }
+  },
+  {
+    "website_name": "治愈术",
+    "website_class": "道士",
+    "description": "道士的具代表性的魔法。治愈术可以恢复自己或他人的体力。 - 1等级 : 7级开始可以修炼 - 2等级 : 9级开始可以修炼 - 3等级 : 11级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do02.gif",
+      "bytes": 3879,
+      "sha256": "9f3ef80a33830c8ec6de6e963b2faec8c4996b0fb0e99d7f6ba336162144af65",
+      "width": 104,
+      "height": 135,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 59,
+        "name": "Heal",
+        "class": "Taoist",
+        "icon": 2,
+        "description": "A spell to heal yourself or others by using your body's energy. The amount healed increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 2,
+        "header": {
+          "index": 2,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "59",
+      "zircon_name": "Heal",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":2,\"tag\":\"both\",\"target\":\"Heal (id=59)\",\"current_index\":59}]",
+      "icon": "2",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":2,\"header\":{\"index\":2,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "精神力战法",
+    "website_class": "道士",
+    "description": "虽然道士具有很多神秘的魔法，但是基本的攻击离不开剑。精神力战法含道士武功的精华，提高命中率。 - 1等级 : 8级开始可以修炼 - 2等级 : 10级开始可以修炼 - 3等级 : 12级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do01.gif",
+      "bytes": 2933,
+      "sha256": "7412a362442c5e15bd4e26127a6e0fd314af5907cc230e2fe187ab35748a9633",
+      "width": 104,
+      "height": 102,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "60",
+      "zircon_name": "Spirit Sword",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":4,\"tag\":\"changed\",\"target\":\"Spirit Sword (id=60)\",\"current_index\":60}]",
+      "icon": "6",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":6,\"header\":{\"index\":6,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "施毒术",
+    "website_class": "道士",
+    "description": "道士不仅会制作草药，还可制毒。将道士的这种能力升华为武功，就是施毒术。目前只有两种毒药，一种可以降低低人的防御力，一种可以消耗敌人的体力。不过，今后会增加毒药种类。 - 1等级 : 12级开始可以修炼 - 2等级 : 14级开始可以修炼 - 3等级 : 16级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do03.gif",
+      "bytes": 5908,
+      "sha256": "4669daa4e085f60e98c94a143e7602ef7868b276e24bf85d43e04e0e8b51b8a6",
+      "width": 104,
+      "height": 135,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 61,
+        "name": "Poison Dust",
+        "class": "Taoist",
+        "icon": 10,
+        "description": "A spell that decreases your enemy's defense or strength, depending on the Poison Powder, for a set period of time. The effect's duration increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 10,
+        "header": {
+          "index": 10,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "61",
+      "zircon_name": "Poison Dust",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":6,\"tag\":\"changed\",\"target\":\"Poison Dust (id=61)\",\"current_index\":61}]",
+      "icon": "10",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":10,\"header\":{\"index\":10,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "灵魂火符",
+    "website_class": "道士",
+    "description": "将具有爆发力的护身符发向敌人的魔法。虽然攻击力没有法师强大，但可在远距离攻击或引诱敌人，与其它魔法相结合使用，会得到多样效果。 - 1等级 : 13级开始可以修炼 - 2等级 : 15级开始可以修炼 - 3等级 : 17级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do04.gif",
+      "bytes": 2187,
+      "sha256": "7047aaf41a2fdb5f80db851615f8608bda4afc8b8afa6fd677a58ba3b091f8bc",
+      "width": 66,
+      "height": 95,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 62,
+        "name": "Explosive Talisman",
+        "class": "Taoist",
+        "icon": 24,
+        "description": "Throws an explosive talisman at the enemy. Its power is increased when used with a Dark Talisman.  Its damage increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 24,
+        "header": {
+          "index": 24,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "62",
+      "zircon_name": "Explosive Talisman",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":13,\"tag\":\"both\",\"target\":\"Explosive Talisman (id=62)\",\"current_index\":62}]",
+      "icon": "24",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":24,\"header\":{\"index\":24,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "月魂断玉",
+    "website_class": "道士",
+    "description": "古人在与邪恶的怪物进行战斗过程中创建的魔法。将体内的内功凝聚起来向外放射，威力虽不大，但是不会消耗护身符，对付死者系列的怪物很有效。 - 1等级 : 14级开始可以修炼 - 2等级 : 16级开始可以修炼 - 3等级 : 18级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do14.gif",
+      "bytes": 5686,
+      "sha256": "404ad663b3e49ac2ca52b3a22dc0ea5eefd6f88f715ea3918d69ca8249b00a44",
+      "width": 104,
+      "height": 79,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "63",
+      "zircon_name": "Evil Slayer",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":37,\"tag\":\"both\",\"target\":\"Evil Slayer (id=63)\",\"current_index\":63}]",
+      "icon": "72",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":72,\"header\":{\"index\":72,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "召唤骷髅",
+    "website_class": "道士",
+    "description": "利用强大的精神力，召唤那些死去的灵魂。被召唤的灵魂是骷髅的形状，帮助道士一起抵抗怪物。被召唤的骷髅也会成长，到了一定程度就会发挥出非常的威力。 - 1等级 : 17级开始可以修炼 - 2等级 : 19级开始可以修炼 - 3等级 : 21级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do07.gif",
+      "bytes": 6949,
+      "sha256": "210f38277f179e39e7b7758daac0da5bee218d3160c8c2db92fc5c1322597fd6",
+      "width": 104,
+      "height": 168,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 63,
+        "name": "Evil Slayer",
+        "class": "Taoist",
+        "icon": 72,
+        "description": "Harness the holy energy in your hands to throw at your enemy. Its power is increased when used with a Holy Talisman. Its damage increases with training."
+      },
+      {
+        "index": 130,
+        "name": "Summon Skeleton",
+        "class": "Taoist",
+        "icon": 32,
+        "description": "By inserting your body's energy into the talisman, you summon a powerful spirit to fight for you. The strength of your summoned spirit increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 72,
+        "header": {
+          "index": 72,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      },
+      {
+        "present": true,
+        "frame": 32,
+        "header": {
+          "index": 32,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "130",
+      "zircon_name": "Summon Skeleton",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":17,\"tag\":\"both\",\"target\":\"Summon Skeleton (id=130)\",\"current_index\":130}]",
+      "icon": "32",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":32,\"header\":{\"index\":32,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "隐身术",
+    "website_class": "道士",
+    "description": "一时隐藏自己，躲避怪物的独特技术，被很多怪物包围时，非常有用。但是只能对那些有视觉，嗅觉的怪物有效，对楔蛾这样的敏感怪物发挥不了效果。精神力越强持续的时间也越持久。 - 1等级 : 20级开始可以修炼 - 2等级 : 22级开始可以修炼 - 3等级 : 24级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do09.gif",
+      "bytes": 3764,
+      "sha256": "22d8969daa34bca92fafdb648434729c764d032b9240d71a2a3fa4171b6e6b51",
+      "width": 104,
+      "height": 161,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 64,
+        "name": "Invisibility",
+        "class": "Taoist",
+        "icon": 34,
+        "description": "Temporarily hide yourself, vanishing from your enemy's sight.  Its duration increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 34,
+        "header": {
+          "index": 34,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "64",
+      "zircon_name": "Invisibility",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":18,\"tag\":\"changed\",\"target\":\"Invisibility (id=64)\",\"current_index\":64}]",
+      "icon": "34",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":34,\"header\":{\"index\":34,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "幽灵盾",
+    "website_class": "道士",
+    "description": "利用体内的真气，防御外来的攻击。远距离驱使护身符，除了自己以外还能提高周围其他人的魔法防御能力。 - 1等级 : 21级开始可以修炼 - 2等级 : 23级开始可以修炼 - 3等级 : 25级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do05.gif",
+      "bytes": 7700,
+      "sha256": "3b9c9159187f3940e4fcee816fa87277ff63427601cd9ab13e5caaa3615d5752",
+      "width": 104,
+      "height": 122,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "65",
+      "zircon_name": "Magic Resistance",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":14,\"tag\":\"changed\",\"target\":\"Magic Resistance (id=65)\",\"current_index\":65}]",
+      "icon": "26",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":26,\"header\":{\"index\":26,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "集体隐身术",
+    "website_class": "道士",
+    "description": "是隐身术的更高境界，除了自己以外还可隐藏别人。将护身符扔掷在某目标地，会以此地方为中心一定范围之内的人们都能获得隐身效果。最多能隐藏9名，其效果和隐身术一样。精神力越强魔法的持续时间也越长。 - 1等级 : 23级开始可以修炼 - 2等级 : 25级开始可以修炼 - 3等级 : 27级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do10.gif",
+      "bytes": 7268,
+      "sha256": "c650a0064b086e0d5c95c9a402235a38507795023d1d8b0201f9c90f41420e89",
+      "width": 104,
+      "height": 161,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "66",
+      "zircon_name": "Mass Invisibility",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":19,\"tag\":\"changed\",\"target\":\"Mass Invisibility (id=66)\",\"current_index\":66}]",
+      "icon": "36",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":36,\"header\":{\"index\":36,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "月魂灵波",
+    "website_class": "道士",
+    "description": "月魂断玉更高境界的魔法。凝聚体内的真气，放射更具破坏力的魔法。与月魂断玉一样，对死者系列怪物更有效。 - 1等级 : 24级开始可以修炼 - 2等级 : 26级开始可以修炼 - 3等级 : 28级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do15.jpg",
+      "bytes": 23443,
+      "sha256": "f4eb79fff5c00099f5459ea49780c264d350410f3d9017b1ec3109eb64d80129",
+      "width": 104,
+      "height": 120,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "67",
+      "zircon_name": "Greater Evil Slayer",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":38,\"tag\":\"changed\",\"target\":\"Greater Evil Slayer (id=67)\",\"current_index\":67}]",
+      "icon": "74",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":74,\"header\":{\"index\":74,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "神圣战甲术",
+    "website_class": "道士",
+    "description": "将大自然的真气吸收到任的体内，在一定时间内提高防御力。集体打猎时，给进行格斗的战士使用此魔法，会有很好的效果。 - 1等级 : 25级开始可以修炼 - 2等级 : 27级开始可以修炼 - 3等级 : 29级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do06.gif",
+      "bytes": 10888,
+      "sha256": "352766f36b2511c40f2c5fd1f9c6c998bcef2d8808f45135d210905ffe270605",
+      "width": 104,
+      "height": 135,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "68",
+      "zircon_name": "Resilience",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":15,\"tag\":\"changed\",\"target\":\"Resilience (id=68)\",\"current_index\":68}]",
+      "icon": "28",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":28,\"header\":{\"index\":28,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "困魔咒",
+    "website_class": "道士",
+    "description": "使用护身符，在一定范围内困住敌人。被限制于咒语中的怪物与外界隔离开，只能在圈内徘徊。但是，只要谁进入圈内或攻击圈内的怪物，里面的怪物就会恢复知觉，困魔咒将失效。困魔咒维持一定时间之后将会自动消失，精神力越强，持续时间也越长。 - 1等级 : 27级开始可以修炼 - 2等级 : 29级开始可以修炼 - 3等级 : 31级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do08.gif",
+      "bytes": 12834,
+      "sha256": "a7a206775887287a2e3c6560ad3015e1d486403ef6158655c2817a5b0108fd62",
+      "width": 104,
+      "height": 161,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 69,
+        "name": "Trap Octagon",
+        "class": "Taoist",
+        "icon": 30,
+        "description": "A spell that uses a talisman to trap enemies in a small area. Its duration increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 30,
+        "header": {
+          "index": 30,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "69",
+      "zircon_name": "Trap Octagon",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":16,\"tag\":\"changed\",\"target\":\"Trap Octagon (id=69)\",\"current_index\":69}]",
+      "icon": "30",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":30,\"header\":{\"index\":30,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "空拳刀法",
+    "website_class": "道士",
+    "description": "身无寸铁的道士可以使用空拳刀法突破怪物的包围。旋转全身，踢开敌人，使用体内的真气推开周围的敌人。没有厚实的内功是无法使用此魔法的。 - 1等级 : 28级开始可以修炼 - 2等级 : 30级开始可以修炼 - 3等级 : 32级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do16.jpg",
+      "bytes": 20576,
+      "sha256": "8135f592a81ab19b3acf044de14bd50ffce7ac9c1ce81eac27430523812ea862",
+      "width": 104,
+      "height": 121,
+      "format": "JPEG",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "70",
+      "zircon_name": "Combat Kick",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":36,\"tag\":\"changed\",\"target\":\"Combat Kick (id=70)\",\"current_index\":70}]",
+      "icon": "70",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":70,\"header\":{\"index\":70,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "召唤神兽",
+    "website_class": "道士",
+    "description": "通过强大的精神力打通神界之路，召唤神兽。被召唤的神兽会区分是非，嘴里喷出的火花可以烧毁邪恶之气。平时四脚走路，在召唤自己的道士周围徘徊，但是一有敌人出现就会变得非常勇猛。 - 1等级 : 30级开始可以修炼 - 2等级 : 32级开始可以修炼 - 3等级 : 34级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do13.gif",
+      "bytes": 4583,
+      "sha256": "a8be6b1df53f4924cb8a2003e4d25248498848e5b8657366f94c8d1a27175b85",
+      "width": 104,
+      "height": 170,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 133,
+        "name": "Summon Shinsu",
+        "class": "Taoist",
+        "icon": 58,
+        "description": "By focusing your body's energy onto a talisman, you call upon the Holy Beasts to fight for you. The strength of the Holy Beast increases with training."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 58,
+        "header": {
+          "index": 58,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "133",
+      "zircon_name": "Summon Shinsu",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":30,\"tag\":\"both\",\"target\":\"Summon Shinsu (id=133)\",\"current_index\":133}]",
+      "icon": "58",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":58,\"header\":{\"index\":58,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "群体治愈术",
+    "website_class": "道士",
+    "description": "同时治愈多数人，但也正因如此消耗的真气也多，不能经常使用。遇到紧急情况，为了拯救自己的同伴，道士们还是会不顾自己的安危使用群体治愈术，是最能体现道士大公无私精神的魔法。 - 1等级 : 31级开始可以修炼 - 2等级 : 33级开始可以修炼 - 3等级 : 35级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do12.gif",
+      "bytes": 8517,
+      "sha256": "9a03010117d358fcb2ce165bce18a8d3d6999822bc1540ba676144f6a685b7a6",
+      "width": 104,
+      "height": 135,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "72",
+      "zircon_name": "Mass Heal",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":29,\"tag\":\"changed\",\"target\":\"Mass Heal (id=72)\",\"current_index\":72}]",
+      "icon": "56",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":56,\"header\":{\"index\":56,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "超强召唤骷髅",
+    "website_class": "道士",
+    "description": "长时间苦心修炼的道士可以召唤更多守护神。使用超强召唤骷髅，可在已经召唤骷髅和神兽的情况下，还能再召唤骷髅。因为道士的灵魂系列魔法的一部分转变为最后骷髅的攻击力，所以比之前召唤的骷髅更具力量。 - 1等级 : 33级开始可以修炼 - 2等级 : 35级开始可以修炼 - 3等级 : 37级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do07.gif",
+      "bytes": 6949,
+      "sha256": "210f38277f179e39e7b7758daac0da5bee218d3160c8c2db92fc5c1322597fd6",
+      "width": 104,
+      "height": 168,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "132",
+      "zircon_name": "Summon Jin Skeleton",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":105,\"tag\":\"both\",\"target\":\"Summon Jin Skeleton (id=132)\",\"current_index\":132}]",
+      "icon": "208",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":208,\"header\":{\"index\":208,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "猛虎强势",
+    "website_class": "道士",
+    "description": "猛虎强势通过给对方赋予强有力的战斗精神和力量，按照设定的攻击模式，以道士所在的位置为中心在一定范围之内的人，提高破坏力。 - 1等级 : 34级开始可以修炼 - 2等级 : 36级开始可以修炼 - 3等级 : 38级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do20.gif",
+      "bytes": 5972,
+      "sha256": "d72628cd300b154fb964a702822a3f8c79dbd65b7e9a5daa7ad8e9fcba4e8ff1",
+      "width": 104,
+      "height": 131,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "73",
+      "zircon_name": "Blood Lust",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":94,\"tag\":\"changed\",\"target\":\"Blood Lust (id=73)\",\"current_index\":73}]",
+      "icon": "186",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":186,\"header\":{\"index\":186,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "回生术",
+    "website_class": "道士",
+    "description": "道士们通过长时间的修炼，对生命有了更深的理解，大慈大悲。到达这种境界的道士就可以修炼起死回生之魔法，这就是回生术。使用回生术，必须要有 '苏醒护身符'。 - 1等级 : 35级开始可以修炼 - 2等级 : 37级开始可以修炼 - 3等级 : 39级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/do17.gif",
+      "bytes": 6509,
+      "sha256": "15c492482a4bee6c792e406c234341244f487622efbd7f33c2b8454a2c1bb97c",
+      "width": 104,
+      "height": 128,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "74",
+      "zircon_name": "Resurrection",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":77,\"tag\":\"changed\",\"target\":\"Resurrection (id=74)\",\"current_index\":74}]",
+      "icon": "152",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":152,\"header\":{\"index\":152,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "云寂术",
+    "website_class": "道士",
+    "description": "云寂术，激发人体内的真性，回复赤子般无暇的心灵。当外界的任何干扰只如过眼云烟一般时，人的本性才能被真正发挥。像道士大多辅助技能一样，于人于己都能显现出作用。 - 1等级 : 38级开始可以修炼 - 2等级 : 41级开始可以修炼 - 3等级 : 44级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4do01.gif",
+      "bytes": 7372,
+      "sha256": "6211f84e835517a21ecd8d17486a20a68b79ad52505d8d5adffb7bfd75d5eca1",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "75",
+      "zircon_name": "Purification",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":120,\"tag\":\"changed\",\"target\":\"Purification (id=75)\",\"current_index\":75}]",
+      "icon": "238",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":238,\"header\":{\"index\":238,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "移花接玉",
+    "website_class": "道士",
+    "description": "移花接玉，无数人始终坚信“存在必合理”的道理。当道士的破坏力被认定不再重要的时刻，一位前辈高人发明了这种技能。将自身的部分破坏转移到召唤怪物身上，弥补了两方面的遗憾。这个技能又是那么符合道士“舍身为他”的精神，所以广而流传。 - 1等级 : 40级开始可以修炼 - 2等级 : 42级开始可以修炼 - 3等级 : 44级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4do02.gif",
+      "bytes": 9874,
+      "sha256": "a003455560d2d24d7ad4f88ccb1b53fd900407de5c5c6ba66097bcd2360d6b96",
+      "width": 126,
+      "height": 145,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [
+      {
+        "index": 18,
+        "name": "Reflect Damage",
+        "class": "Warrior",
+        "icon": 250,
+        "description": "Returns a percentage of damage done to you back to the attacker."
+      }
+    ],
+    "icon_evidence": [
+      {
+        "present": true,
+        "frame": 250,
+        "header": {
+          "index": 250,
+          "width": 36,
+          "height": 36,
+          "offsetX": -24,
+          "offsetY": -16
+        }
+      }
+    ],
+    "status": "confirmed",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": null,
+      "zircon_name": null,
+      "zircon_class": null,
+      "catalog_evidence": "[{\"legacy_id\":123,\"tag\":\"old-only\",\"target\":\"老版特有技能，Zircon 无对应\",\"current_index\":null}]",
+      "icon": null,
+      "icon_evidence": "{\"status\":\"not-mapped\"}",
+      "match_method": "catalog-crossref-without-closed-current-icon",
+      "confidence": "pending",
+      "status": "investigate"
+    }
+  },
+  {
+    "website_name": "妙影无踪",
+    "website_class": "道士",
+    "description": "妙影无踪，道家与世无争，但伤害不可避免地降临时，如何能既保全自己又不祸及他人？妙影无踪是隐身术的进阶魔法，它将道士运用幻术的能力最大幅度的提高。除了躲开各种怪物的视觉和嗅觉监视外，幻术迷雾造成的影响使人类的眼睛也不辩真伪。 - 1等级 : 43级开始可以修炼 - 2等级 : 45级开始可以修炼 - 3等级 : 47级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4do03.gif",
+      "bytes": 7049,
+      "sha256": "915ff611b5f1e69abdaccaee40f53343bd240518beeddc27c0a9789a370d50a8",
+      "width": 128,
+      "height": 123,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "76",
+      "zircon_name": "Transparency",
+      "zircon_class": "Taoist",
+      "catalog_evidence": "[{\"legacy_id\":121,\"tag\":\"changed\",\"target\":\"Transparency (id=76)\",\"current_index\":76}]",
+      "icon": "240",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":240,\"header\":{\"index\":240,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  },
+  {
+    "website_name": "阴阳法环",
+    "website_class": "道士",
+    "description": "阴阳法环，人体为阴阳两气的调和，如何化阴阳两气为两个极端保护肉身成为历代道家真人的钻研目标。阴阳法环是道家代代杰出人士经前仆后继而创造的技能。当人体遭受致命打击以后，环绕人身的阴阳两气化为实质护架保命。被击散的两气同时回归人身并回复少量HP。 - 1等级 : 46级开始可以修炼 - 2等级 : 47级开始可以修炼 - 3等级 : 50级开始可以修炼",
+    "website_image": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/skill/pic/4do04.gif",
+      "bytes": 9425,
+      "sha256": "2a75fe7d4f843ae76bc03d1b310550926d86efe1af340bb0eac828dec2ec1634",
+      "width": 128,
+      "height": 123,
+      "format": "GIF",
+      "frames": 1
+    },
+    "zircon_candidates": [],
+    "icon_evidence": [],
+    "status": "confirmed-legacy-evidence",
+    "skip_reason": null,
+    "legacy_alignment_evidence": {
+      "zircon_index": "49",
+      "zircon_name": "Renounce",
+      "zircon_class": "Wizard",
+      "catalog_evidence": "[{\"legacy_id\":122,\"tag\":\"changed\",\"target\":\"Renounce (id=49)\",\"current_index\":49}]",
+      "icon": "222",
+      "icon_evidence": "{\"status\":\"present\",\"icon\":222,\"header\":{\"index\":222,\"width\":36,\"height\":36,\"offsetX\":-24,\"offsetY\":-16},\"library\":\"MIcon.Zl\"}",
+      "match_method": "website-name-class-plus-independent-catalog-crossref-plus-MIcon",
+      "confidence": "high",
+      "status": "confirmed"
+    }
+  }
+]

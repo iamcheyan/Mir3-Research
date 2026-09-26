@@ -1,0 +1,907 @@
+[
+  {
+    "website_id": "mission-chuji-战士",
+    "category": "初级任务",
+    "title": "初级任务（战士）",
+    "region": null,
+    "raw_step_count": 28,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "万事通",
+        "上官小姐",
+        "南宫小姐",
+        "德秀"
+      ],
+      "skill": [],
+      "item": [
+        "匕首",
+        "护身符",
+        "鸡肉"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "NPC 名字",
+      "上官 小姐",
+      "中级任务(6-16级)",
+      "初级任务(1-6级)",
+      "初级任务(1-6级) 中级任务(6-16级) 魔法技能学习任务 万事通随机任务",
+      "初级任务(1-6级) 中级任务(6-16级) 魔法技能学习任务 万事通随机任务 各种人物（战士，法师，道士）根据职业不同出生在新手村、银杏村、白日门。初级任务是为那些刚开始游戏的玩家能够更容易地掌握游戏的玩法并获得一些必需的装备和钱而设的。 初级任务可以通过新手村的 上官小姐 ，银杏村的 南宫小姐 ，白日门的 士官 NPC 完成。按照指示送汤或者搜集画护身符的鸡血，你就能学到一些基本的技能，向比奇省出发了。 如果接到 上官小姐 他们的任务之后，等级到了6级还没完成的话，只有到 白莉小姐 的考场去证明你的能力，你才能执行下一个任务。 战士：等级1-6 顺序 NPC 名字 任务内容 1 上官 小姐 接到 上官小姐 的任务之后去肉店的 金氏 那里 2 金 氏 受金氏的嘱托，把肉汤送到打铁匠 德秀 那里 3 德秀 送到肉汤，他就会给你匕首 4 金氏 送完汤，他会要你帮他找品质 10 的牛肉。给他牛肉，收到钱，然后去 上官小姐 那里。 5 上官 小姐 他会给你古籍，要你把它送到比奇省的 王大人 那里 6 王大人 传送古籍的话，他会给你辛苦费，还告诉你如果需要他帮助就来找他。 法师：等级1-6 顺序 NPC 名字 任务内容 1 南宫小姐 南宫小姐 给你任务，你到肉店 许师傅 那里 2 许 师傅 他会嘱托你送肉汤给认真做事的 金铁匠 3 金铁匠 如果送汤，他会给你匕首 4 许师傅 送完汤，他会要你帮他找品质 4 的鸡肉。给他鸡肉，收完钱，去 南宫小姐 那里 5 南宫小姐 他会给你古籍，要你把它送到比奇省的王大人那里 6 王大人 传送古籍的话，他会给你辛苦费，还告诉你如果需要他帮助就来找他。 道士：等级1-6 顺序 NPC 名字 任务内容 1 士官 接到 士官 的任务，去杂货商勇气道士那里 2 勇气道士 他会要求你把道力护身符送到武器仓库里的正鹤道士那里 3 正鹤 道士 送到道力护身符，他会给你匕首 4 勇气 送完护身符，他会要你找两瓶用于画护身符的鸡血。帮他找鸡血，收钱，然后回到 士官 那里 5 士官 他会给你古籍，要你把它送到比奇省的王大人那里 6 王大人 传送古籍的话，他会给你辛苦费，还告诉你如果需要他帮助就来找他。",
+      "勇气",
+      "勇气道士",
+      "南宫小姐",
+      "士官",
+      "德秀",
+      "正鹤 道士",
+      "王大人",
+      "许 师傅",
+      "许师傅",
+      "金 氏",
+      "金氏",
+      "金铁匠"
+    ],
+    "current_quest_start_name_hits": 18,
+    "notes": [
+      "初级任务页面首行包含导航/说明文本，保留原始字段，不把排版噪声当作任务步骤。"
+    ]
+  },
+  {
+    "website_id": "mission-chuji-法师",
+    "category": "初级任务",
+    "title": "初级任务（法师）",
+    "region": null,
+    "raw_step_count": 27,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "万事通",
+        "上官小姐",
+        "南宫小姐",
+        "德秀"
+      ],
+      "skill": [],
+      "item": [
+        "匕首",
+        "护身符",
+        "鸡肉"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "NPC 名字",
+      "上官 小姐",
+      "中级任务(6-16级)",
+      "初级任务(1-6级)",
+      "初级任务(1-6级) 中级任务(6-16级) 魔法技能学习任务 万事通随机任务",
+      "勇气",
+      "勇气道士",
+      "南宫小姐",
+      "士官",
+      "德秀",
+      "正鹤 道士",
+      "王大人",
+      "许 师傅",
+      "许师傅",
+      "金 氏",
+      "金氏",
+      "金铁匠"
+    ],
+    "current_quest_start_name_hits": 17,
+    "notes": [
+      "初级任务页面首行包含导航/说明文本，保留原始字段，不把排版噪声当作任务步骤。"
+    ]
+  },
+  {
+    "website_id": "mission-chuji-道士",
+    "category": "初级任务",
+    "title": "初级任务（道士）",
+    "region": null,
+    "raw_step_count": 26,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "万事通",
+        "上官小姐",
+        "南宫小姐",
+        "德秀"
+      ],
+      "skill": [],
+      "item": [
+        "匕首",
+        "护身符",
+        "鸡肉"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "NPC 名字",
+      "上官 小姐",
+      "中级任务(6-16级)",
+      "初级任务(1-6级)",
+      "勇气",
+      "勇气道士",
+      "南宫小姐",
+      "士官",
+      "德秀",
+      "正鹤 道士",
+      "王大人",
+      "许 师傅",
+      "许师傅",
+      "金 氏",
+      "金氏",
+      "金铁匠"
+    ],
+    "current_quest_start_name_hits": 16,
+    "notes": [
+      "初级任务页面首行包含导航/说明文本，保留原始字段，不把排版噪声当作任务步骤。"
+    ]
+  },
+  {
+    "website_id": "mission-zhongji-王大人",
+    "category": "中级任务",
+    "title": "王大人",
+    "region": null,
+    "raw_step_count": 3,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "管理员",
+        "药剂师"
+      ],
+      "skill": [],
+      "item": [],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "王大人"
+    ],
+    "current_quest_start_name_hits": 1,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-比奇省",
+    "category": "中级任务",
+    "title": "比奇省",
+    "region": null,
+    "raw_step_count": 6,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "管理员"
+      ],
+      "skill": [],
+      "item": [],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "卫士①",
+      "卫士②",
+      "卫士③",
+      "图书管理员"
+    ],
+    "current_quest_start_name_hits": 4,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-药剂师",
+    "category": "中级任务",
+    "title": "药剂师",
+    "region": null,
+    "raw_step_count": 4,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "药剂师"
+      ],
+      "skill": [],
+      "item": [
+        "牙齿"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "药剂师",
+      "金中医"
+    ],
+    "current_quest_start_name_hits": 2,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-轻型盔甲",
+    "category": "中级任务",
+    "title": "轻型盔甲",
+    "region": null,
+    "raw_step_count": 3,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [],
+      "skill": [],
+      "item": [
+        "特制轻型盔甲",
+        "轻型盔甲",
+        "铁矿"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "怡美"
+    ],
+    "current_quest_start_name_hits": 1,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-半兽人",
+    "category": "中级任务",
+    "title": "半兽人",
+    "region": null,
+    "raw_step_count": 20,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "云发",
+        "智善"
+      ],
+      "skill": [],
+      "item": [
+        "回城卷",
+        "太阳水",
+        "特制轻型盔甲",
+        "轻型盔甲",
+        "铁矿"
+      ],
+      "monster": [
+        "半兽人",
+        "半兽勇士",
+        "半兽战士",
+        "骷髅",
+        "骷髅精灵"
+      ]
+    },
+    "explicit_step_npcs": [
+      "云发",
+      "半兽人",
+      "半兽勇士",
+      "半兽战士",
+      "嘉登",
+      "智善",
+      "比奇省官员",
+      "比奇省的官员",
+      "玉芬",
+      "金铁匠",
+      "骷髅精灵"
+    ],
+    "current_quest_start_name_hits": 11,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-被盗灵魂",
+    "category": "中级任务",
+    "title": "被盗灵魂",
+    "region": null,
+    "raw_step_count": 12,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "云发",
+        "署箭"
+      ],
+      "skill": [],
+      "item": [
+        "灵魂"
+      ],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "义轩",
+      "无赖道士 ( 署箭",
+      "旭宰",
+      "比奇省官员",
+      "王大人",
+      "王女伶",
+      "王小八",
+      "黄庭"
+    ],
+    "current_quest_start_name_hits": 8,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-七点毒蛇",
+    "category": "中级任务",
+    "title": "七点毒蛇",
+    "region": null,
+    "raw_step_count": 5,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [],
+      "skill": [],
+      "item": [],
+      "monster": []
+    },
+    "explicit_step_npcs": [
+      "七点毒蛇",
+      "蛇谷奶奶",
+      "金中医"
+    ],
+    "current_quest_start_name_hits": 3,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-堕落道士",
+    "category": "中级任务",
+    "title": "堕落道士",
+    "region": null,
+    "raw_step_count": 19,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "署箭"
+      ],
+      "skill": [
+        "困魔咒"
+      ],
+      "item": [
+        "护身符"
+      ],
+      "monster": [
+        "僵尸",
+        "尸王"
+      ]
+    },
+    "explicit_step_npcs": [
+      "僧侣僵尸",
+      "比奇省官员",
+      "署箭",
+      "老矿夫",
+      "贤真",
+      "雷电僵尸"
+    ],
+    "current_quest_start_name_hits": 6,
+    "notes": []
+  },
+  {
+    "website_id": "mission-zhongji-沃玛教主",
+    "category": "中级任务",
+    "title": "沃玛教主",
+    "region": null,
+    "raw_step_count": 10,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "无名商人",
+        "无名老人",
+        "王铁匠"
+      ],
+      "skill": [],
+      "item": [
+        "修罗",
+        "沃玛修罗",
+        "灵魂"
+      ],
+      "monster": [
+        "沃玛战将",
+        "沃玛教主"
+      ]
+    },
+    "explicit_step_npcs": [
+      "无名老人(117:26)",
+      "沃玛教主",
+      "沃玛神殿",
+      "王大人",
+      "王大人(389:396)",
+      "王铁匠(383:199)"
+    ],
+    "current_quest_start_name_hits": 6,
+    "notes": []
+  },
+  {
+    "website_id": "mission-skill-战士",
+    "category": "魔法技能学习任务",
+    "title": "战士技能学习任务",
+    "region": null,
+    "raw_step_count": 0,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "王铁匠",
+        "黄河大侠",
+        "龙血先生"
+      ],
+      "skill": [
+        "刺杀剑术",
+        "攻杀剑术",
+        "野蛮冲撞"
+      ],
+      "item": [
+        "攻杀铁剑",
+        "铁剑"
+      ],
+      "monster": [
+        "沃玛战士",
+        "诺玛"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-skill-道士",
+    "category": "魔法技能学习任务",
+    "title": "道士技能学习任务",
+    "region": null,
+    "raw_step_count": 0,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "泼皮路白",
+        "清明子"
+      ],
+      "skill": [
+        "召唤骷髅",
+        "幽灵盾",
+        "施毒术",
+        "灵魂火符",
+        "神圣战甲术",
+        "精神力战法",
+        "隐身术",
+        "集体隐身术"
+      ],
+      "item": [
+        "凤凰明珠",
+        "幻影玉珠",
+        "暗黑凤凰明珠",
+        "毒蜘蛛牙齿",
+        "火把",
+        "灵魂",
+        "灵魂战衣",
+        "灵魂铁手镯",
+        "牙齿",
+        "神圣铂金戒指",
+        "神奇灵魂战衣",
+        "竹笛",
+        "蛆卵",
+        "蜡烛",
+        "蝎子尾巴",
+        "金戒指",
+        "铁手镯",
+        "铂金戒指",
+        "降妖除魔戒指"
+      ],
+      "monster": [
+        "僵尸",
+        "半兽人",
+        "半兽战士",
+        "尸王",
+        "毒蜘蛛",
+        "沃毒蜈蚣",
+        "沃玛卫士",
+        "火焰沃玛",
+        "蜈蚣",
+        "蝎子",
+        "食人花",
+        "骷髅"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-skill-法师",
+    "category": "魔法技能学习任务",
+    "title": "法师技能学习任务",
+    "region": null,
+    "raw_step_count": 0,
+    "raw_quest_count": 0,
+    "references": {
+      "npc": [
+        "南宫小姐",
+        "布店晓芙",
+        "霹雳尊者"
+      ],
+      "skill": [
+        "地狱火",
+        "大火球",
+        "抗拒火环",
+        "疾光电影",
+        "诱惑之光",
+        "雷电术"
+      ],
+      "item": [
+        "匕首",
+        "月光石手镯",
+        "树脂魔法长袍",
+        "流星天玉",
+        "闪电眼",
+        "风之黑檀项链",
+        "魔法长袍",
+        "鸡肉",
+        "黑檀项链"
+      ],
+      "monster": [
+        "七点白蛇",
+        "僵尸",
+        "半兽人",
+        "半兽战士",
+        "尸王",
+        "法老僵尸",
+        "洞蛆",
+        "火焰沃玛"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-比奇",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（比奇）",
+    "region": "比奇",
+    "raw_step_count": 0,
+    "raw_quest_count": 20,
+    "references": {
+      "npc": [
+        "万事通",
+        "奸商欧阳",
+        "管理员",
+        "药剂师"
+      ],
+      "skill": [],
+      "item": [
+        "号角",
+        "彩卷",
+        "指甲",
+        "树脂魔法长袍",
+        "沃玛号角",
+        "浪雨刀",
+        "牙齿",
+        "生命项链",
+        "白月银蛇戒指",
+        "白虎剑",
+        "祝福油",
+        "绿色项链",
+        "蚂蚁卵",
+        "跳蚤皮",
+        "金矿",
+        "银矿",
+        "银蛇",
+        "降魔",
+        "骷髅头盔",
+        "魔法强效神水",
+        "魔法长袍",
+        "黑光降魔",
+        "黑铁"
+      ],
+      "monster": [
+        "千年毒蛇",
+        "沃玛卫士",
+        "沙漠石人",
+        "火焰沃玛",
+        "稻草人",
+        "红蛇",
+        "虎蛇",
+        "骷髅"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-银杏",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（银杏）",
+    "region": "银杏",
+    "raw_step_count": 0,
+    "raw_quest_count": 12,
+    "references": {
+      "npc": [
+        "万事通",
+        "书神",
+        "化天先生",
+        "南宫小姐",
+        "啊雯",
+        "地摊老周",
+        "布店晓芙",
+        "才石",
+        "晓兰",
+        "禄英",
+        "药剂师",
+        "许中医",
+        "许氏",
+        "铁匠师傅",
+        "霹雳尊者"
+      ],
+      "skill": [
+        "地狱火"
+      ],
+      "item": [
+        "偃月",
+        "天极道衣",
+        "毒蛇胆汁",
+        "蜡烛",
+        "黑檀手镯",
+        "黑檀项链",
+        "黑铁"
+      ],
+      "monster": [
+        "七点白蛇",
+        "千年毒蛇",
+        "血巨人",
+        "食人花"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-边境",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（边境）",
+    "region": "边境",
+    "raw_step_count": 0,
+    "raw_quest_count": 3,
+    "references": {
+      "npc": [
+        "万事通",
+        "尹老人",
+        "德秀",
+        "肉店金老板"
+      ],
+      "skill": [
+        "回生术"
+      ],
+      "item": [
+        "牙齿",
+        "蜘蛛线",
+        "铁矿"
+      ],
+      "monster": [
+        "虎蛇"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-道馆",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（道馆）",
+    "region": "道馆",
+    "raw_step_count": 0,
+    "raw_quest_count": 12,
+    "references": {
+      "npc": [
+        "万事通",
+        "书神",
+        "啊浩",
+        "啊潘",
+        "大老板",
+        "峰儿",
+        "王铁匠",
+        "禄英",
+        "老药",
+        "药剂师"
+      ],
+      "skill": [
+        "困魔咒"
+      ],
+      "item": [
+        "**",
+        "修复油",
+        "修罗",
+        "号角",
+        "战神油",
+        "沃玛号角",
+        "牙齿",
+        "祝福油",
+        "蚂蚁卵",
+        "蜘蛛线",
+        "道士头盔",
+        "金矿",
+        "钢手镯",
+        "鸡肉"
+      ],
+      "monster": [
+        "火焰沃玛",
+        "触龙神"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-毒蛇",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（毒蛇）",
+    "region": "毒蛇",
+    "raw_step_count": 0,
+    "raw_quest_count": 9,
+    "references": {
+      "npc": [
+        "万事通",
+        "矿山老人"
+      ],
+      "skill": [],
+      "item": [
+        "灵魂",
+        "灵魂战衣",
+        "珍珠戒指",
+        "诅咒银蛇",
+        "金创药(特)",
+        "银矿",
+        "银蛇",
+        "魔法药(特)"
+      ],
+      "monster": [
+        "红蛇",
+        "虎蛇"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-盟重",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（盟重）",
+    "region": "盟重",
+    "raw_step_count": 0,
+    "raw_quest_count": 8,
+    "references": {
+      "npc": [
+        "万事通",
+        "丘叔",
+        "凌峰",
+        "善颖",
+        "晓薇",
+        "盟重道长",
+        "英龙",
+        "雷翁断珠",
+        "龙叔"
+      ],
+      "skill": [],
+      "item": [
+        "竹笛",
+        "蚂蚁卵",
+        "蜘蛛线",
+        "道士头盔",
+        "金矿"
+      ],
+      "monster": [
+        "千年毒蛇",
+        "诺玛"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-绿洲",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（绿洲）",
+    "region": "绿洲",
+    "raw_step_count": 0,
+    "raw_quest_count": 12,
+    "references": {
+      "npc": [
+        "万事通",
+        "梅山侠",
+        "王铁匠",
+        "白老中医",
+        "石宇",
+        "织女"
+      ],
+      "skill": [
+        "冰咆哮"
+      ],
+      "item": [
+        "**",
+        "凌风",
+        "凤凰明珠",
+        "指甲",
+        "放大镜",
+        "斗笠",
+        "牙齿",
+        "自然神水",
+        "蚂蚁卵",
+        "蜘蛛线",
+        "铁矿",
+        "黑铁"
+      ],
+      "monster": [
+        "沙漠鱼魔"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-沙漠土城",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（沙漠土城）",
+    "region": "沙漠土城",
+    "raw_step_count": 0,
+    "raw_quest_count": 8,
+    "references": {
+      "npc": [
+        "万事通",
+        "勇汉",
+        "医神",
+        "晓敏",
+        "雪儿"
+      ],
+      "skill": [],
+      "item": [
+        "修罗",
+        "宝玉",
+        "潘夜之泪",
+        "灵魂",
+        "灵魂战衣",
+        "神奇灵魂战衣",
+        "蜘蛛线",
+        "龙鳞战甲"
+      ],
+      "monster": [
+        "僵尸"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  },
+  {
+    "website_id": "mission-wanshitong-出材料地点",
+    "category": "万事通随机任务",
+    "title": "万事通随机任务（出材料地点）",
+    "region": "出材料地点",
+    "raw_step_count": 0,
+    "raw_quest_count": 25,
+    "references": {
+      "npc": [
+        "万事通"
+      ],
+      "skill": [],
+      "item": [
+        "僵尸骨头",
+        "号角",
+        "夜明珠",
+        "宝玉",
+        "指甲",
+        "攻击神水",
+        "毒蛇胆汁",
+        "毒蜘蛛牙齿",
+        "潘夜之泪",
+        "潘夜珠",
+        "灵魂",
+        "牙齿",
+        "神灵雕像",
+        "蚂蚁卵",
+        "蛆卵",
+        "蜘蛛线",
+        "跳蚤皮",
+        "骷髅骨"
+      ],
+      "monster": [
+        "僵尸",
+        "毒蜘蛛",
+        "洞蛆",
+        "蜈蚣",
+        "蝎子",
+        "食人花",
+        "骷髅"
+      ]
+    },
+    "explicit_step_npcs": [],
+    "current_quest_start_name_hits": 0,
+    "notes": []
+  }
+]
