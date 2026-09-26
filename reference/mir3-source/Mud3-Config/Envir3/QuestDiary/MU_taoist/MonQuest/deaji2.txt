@@ -1,0 +1,22 @@
+;;海メ盗
+[@MapQuest_Upac_gipokstone]
+#IF
+check [516] 1
+#ACT
+map D401
+break
+
+#IF
+check [515] 1
+#ACT
+goto @checkrootin
+break
+
+[@checkrootin]
+#IF
+random 10
+#SAY
+(原来这就是起爆石啊... 得赶快带给清明子..) \ \
+#ACT
+give 起爆石 1
+SET [516] 1

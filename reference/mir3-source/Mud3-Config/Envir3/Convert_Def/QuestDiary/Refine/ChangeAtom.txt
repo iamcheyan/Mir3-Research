@@ -1,0 +1,133 @@
+;;海メ盗
+[@ChangeAtom_1]
+{
+没有元素属性的武器不可以变更属性.\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_2]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_3]
+{
+真想把武器的元素能力换成其他数值吗？ \ \
+<换武器的元素。/@ChangeAtom_Next> \
+<结束/@exit>
+}
+
+[@ChangeAtom_4]
+{
+钱不够啊。。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_5]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_6]
+{
+挑你想要的武器的元素吧。。\ \
+<把武器的元素换成（火）元素。/@ChangeAtom_Fire> \
+<把武器的元素换成（冰）元素。/@ChangeAtom_Ice> \
+<把武器的元素换成（雷）元素。/@ChangeAtom_Light> \
+<把武器的元素换成（风）元素。/@ChangeAtom_Wind> \
+<把武器的元素换成（神圣）元素。/@ChangeAtom_Holy> \
+<把武器的元素换成（暗黑）元素。/@ChangeAtom_Dark> \
+<把武器的元素换成（幻影）元素。/@ChangeAtom_Pantom> \
+}
+
+[@ChangeAtom_7]
+{
+钱不够啊。。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_8]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_9]
+{
+武器的元素换成了（火）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_10]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_11]
+{
+武器的元素换成了（冰）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_12]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_13]
+{
+武器的元素换成了（雷）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_14]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_15]
+{
+武器的元素换成了（风）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_16]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_17]
+{
+武器的元素换成了（神圣）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_18]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_19]
+{
+武器的元素换成了（暗黑）系列。\ \
+<结束/@exit>
+}
+
+[@ChangeAtom_20]
+{
+炼制武器需要手里拿着武器!! \ \
+<结束/@exit>
+}
+
+[@ChangeAtom_21]
+{
+武器的元素换成了（幻影）系列。\ \
+<结束/@exit>
+}

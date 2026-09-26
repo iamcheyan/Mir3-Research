@@ -1,0 +1,34 @@
+;;海メ盗
+[@MapQuest_ilgang_mon1]
+#IF
+check [716] 1
+#ACT
+break
+
+#IF
+check [501] 1
+#ACT
+break
+
+#IF
+check [500] 0
+#ACT
+break
+
+#IF
+#ACT
+goto @MapQuest_ilgang_mon1_1
+
+[@MapQuest_ilgang_mon1_1]
+#IF
+#ACT
+Monclear 1_012
+set [501] 1
+goto @MapQuest_ilgang_mon1_2
+#SAY
+(噢，终于通过了学习精神力战法的测试...)
+
+[@MapQuest_ilgang_mon1_2]
+#IF
+#ACT
+mapmove  1_002   12    11

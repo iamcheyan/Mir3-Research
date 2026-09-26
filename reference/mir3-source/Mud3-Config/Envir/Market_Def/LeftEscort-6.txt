@@ -1,0 +1,30 @@
+; ===================================
+; Npc Def NPC File : LeftEscort-6
+; 
+; -----------------------------------
+; Name: Herald
+; Job: 
+; Map No: 6
+; Pos X 
+; Pos Y 
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+[@main]
+#SAY
+我会 gladly die for the general, if I can protect\
+他 by doing so.\ \
+<交谈/@talk>\
+<关闭/@exit>
+
+[@talk]
+#SAY
+You know what makes my life harder?\
+Before the relief comes I can not leave the spot freely\
+even for toilet. I wonder I might suffer from\
+constipation one day...\ \
+<关闭/@exit>
+

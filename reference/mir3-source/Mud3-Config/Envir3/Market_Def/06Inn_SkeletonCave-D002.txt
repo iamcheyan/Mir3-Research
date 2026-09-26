@@ -1,0 +1,91 @@
+;;º£¥áµÁ
+%100
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_SkeletonCave-D002.txt] @NPC_Main
+ 
+;----------------------------------------------------------
+
+[@StgPassword]
+#CALL [\PassWord\PassWord.txt] @Manage_PassWord
+
+[@PreGetback]
+#CALL [\PassWord\PassWord.txt] @Input_PassWord
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_SkeletonCave-D002.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_SkeletonCave-D002.txt] @NPC_Getback
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 209
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_SkeletonCave-D002.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @209_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @209_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_SkeletonCave-D002.txt] @NPC_TQuest_1
+
+;----------------------

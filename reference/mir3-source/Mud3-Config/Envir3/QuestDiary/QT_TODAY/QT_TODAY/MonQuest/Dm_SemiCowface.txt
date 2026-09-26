@@ -1,0 +1,53 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 320
+#ACT
+goto @umyungwisa_320
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@umyungwisa_320]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @umyungwisa_320_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@umyungwisa_320_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T320_Say
+
+#ACT
+set [308] 1
+;-----------------------------------------------------

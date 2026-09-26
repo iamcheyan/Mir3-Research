@@ -1,0 +1,250 @@
+;;海メ盗
+%100
+;necklace
++19
++20
++21
+;ring
++22
++23
+;bracelet
++24
++26
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_Main_0_0
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_Repair_complete
+
+[Goods]
+;ItemName      Volume     Hour
+指环           100     1
+牛角戒指       100     1
+蓝色水晶戒指   100     1
+金戒指         100     1
+皮制手套       100     1
+坚固手套       100     1
+金项链         100     1
+传统项链       100     1
+灯笼项链       100     1
+白色虎齿项链   100     1
+铁手镯         100     1
+小手镯         100     1
+银手镯         100     1
+钢手镯         100     1
+大手镯         100     1
+魔法手镯       100     1
+金手镯         100     1
+古铜戒指       100     1
+黑色水晶戒指   100     1
+黑珍珠戒指     100     1
+黑色水晶项链   100     1
+魔鬼项链       100     1
+蓝翡翠项链     100     1
+六绝星环       100     1
+蛇眼戒指       100     1
+魅力戒指       100     1
+火玉戒指       100     1
+黑檀项链       100     1
+琥珀项链       100     1
+放大镜         100     1
+愤怒之钟       100     1
+震天项链        50     1
+五彩项链        50     1
+黑檀手镯       100     1
+思贝儿手镯      50     1
+水晶魔戒       100     1
+珍珠戒指       100     1
+道德戒指       100     1
+天鸣戒指       100     1
+黄色水晶项链   100     1
+松笛           100     1
+凤凰明珠       100     1
+莲花宝镜        50     1
+银镜项链        50     1
+道士手镯       100     1
+三眼手镯       100     1
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 553
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 515
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 201
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 101
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @101_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @101_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_DoGwan-1_005.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\2ndClass.txt] @201_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\2ndClass.txt] @201_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @515_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @515_CHECK1
+
+;-----------------------
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @553_START
+
+[@TQuest4_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @553_CHECK1

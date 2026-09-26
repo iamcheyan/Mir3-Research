@@ -1,0 +1,410 @@
+;;º£¥áµÁ
+[@make_item_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_1
+
+;------------------------------
+
+[@make_item_main_Potion]
+#CALL [\Make_Item\Siyak.txt] @make_Potion_main
+
+;------------------------------
+
+[@make_item_main_Drug]
+#CALL [\Make_Item\Dok.txt] @make_Drug_main
+
+;------------------------------
+
+[@make_item_main_charm]
+#CALL [\Make_Item\Bujuk.txt] @make_Charm_main
+
+;------------------------------
+
+[@make_item_main_general]
+#CALL [\Make_Item\Japhwa.txt] @make_General_main
+}
+
+
+;----------------------------------------------------------------------------------
+
+;----------------------------------------------------------------------------------
+
+
+[@Help_makeitem_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_2
+
+
+;---------------------------------------------------------
+
+[@Help_makeitem_mixture]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_3
+
+
+;---------------------------------------
+
+;---------------------------------------
+
+[@Help_mixture_Potion]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_4
+
+
+;--------------------
+
+[@Help_mixture_HPPotionS]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_5
+
+
+;--------------------
+
+[@Help_mixture_HPPotionM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_6
+
+
+;--------------------
+
+[@Help_mixture_HPPotionL]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_7
+
+
+;--------------------
+
+[@Help_mixture_HPPotionXL]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_8
+
+
+;--------------------
+
+[@Help_mixture_MPPotionS]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_9
+
+
+;--------------------
+
+[@Help_mixture_MPPotionM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_10
+
+
+;--------------------
+
+[@Help_mixture_MPPotionL]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_11
+
+
+;--------------------
+
+[@Help_mixture_MPPotionXL]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_12
+
+
+;---------------------------------------
+
+;---------------------------------------
+
+[@Help_mixture_Drug]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_13
+
+
+;--------------------
+
+[@Help_mixture_GDRUG]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_14
+
+
+;--------------------
+
+[@Help_mixture_GDRUGM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_15
+
+
+;--------------------
+
+[@Help_mixture_YDRUG]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_16
+
+
+;--------------------
+
+[@Help_mixture_YDRUGM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_17
+
+
+;---------------------------------------
+
+;---------------------------------------
+
+[@Help_mixture_charm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_18
+
+
+;--------------------
+
+[@Help_mixture_Bcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_19
+
+
+;--------------------
+
+[@Help_mixture_Hcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_20
+
+
+;--------------------
+
+[@Help_mixture_Fcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_21
+
+
+;--------------------
+
+[@Help_mixture_Icharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_22
+
+
+;--------------------
+
+[@Help_mixture_Lcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_23
+
+
+;--------------------
+
+[@Help_mixture_Wcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_24
+
+
+;--------------------
+
+[@Help_mixture_Rcharm]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_25
+
+
+;--------------------
+
+[@Help_mixture_RcharmM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_26
+
+
+;---------------------------------------
+
+;---------------------------------------
+
+[@Help_mixture_general]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_27
+
+
+;--------------------
+
+[@Help_mixture_Torch]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_28
+
+
+;--------------------
+
+[@Help_mixture_TorchM]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_29
+
+
+;---------------------------------------------------------
+
+[@Help_makeitem_material]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_30
+
+
+;---------------------------------------
+
+
+[@Help_material_x001]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_31
+
+
+;--------------------
+
+[@Help_material_x002]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_32
+
+
+;--------------------
+
+[@Help_material_x003]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_33
+
+
+;--------------------
+
+[@Help_material_x004]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_34
+
+
+;--------------------
+
+[@Help_material_x005]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_35
+
+
+;--------------------
+
+[@Help_material_x006]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_36
+
+
+;--------------------
+
+[@Help_material_x007]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_37
+
+
+;--------------------
+
+[@Help_material_x008]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_38
+
+
+;--------------------
+
+[@Help_material_x009]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_39
+
+
+;--------------------
+
+[@Help_material_x010]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_40
+
+;--------------------
+
+[@Help_material_x011]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_41
+
+
+;--------------------
+
+[@Help_material_x012]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_42
+
+
+;--------------------
+
+[@Help_material_x013]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_43
+
+
+;--------------------
+
+[@Help_material_x014]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_44
+
+
+;--------------------
+
+[@Help_material_x015]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_45
+
+
+;--------------------
+
+[@Help_material_x016]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_46
+
+
+;--------------------
+
+[@Help_material_x017]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_47
+
+
+;--------------------
+
+[@Help_material_x018]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_48
+
+
+;--------------------
+
+[@Help_material_x019]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_49
+
+
+;--------------------
+
+[@Help_material_x020]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_50
+
+
+;#########################################################################################
+
+;--------------------
+
+[@Help_material_x021]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_51
+
+
+;#########################################################################################
+
+;--------------------
+
+[@Help_material_x022]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_52
+
+
+;--------------------
+
+[@Help_material_x023]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Menu.txt] @Menu_53
+
+
+;---------------------------------------------------------
+}

@@ -1,0 +1,479 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+我不愿意和你这样的人进行交易。\ \
+<结束/@exit>
+}
+
+[@NPC_Main_0_0]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_1]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_2]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_3]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_4]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_5]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_6]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_7]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_8]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_9]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_10]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_11]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_12]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_13]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_14]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_0]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_1]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_2]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_3]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_4]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_5]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_6]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_7]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_8]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_9]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_10]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<劝说/@NQuest01_1>{FCOLOR/10}加入比奇商会{FCOLOR/12}\ 
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_11]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_1>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_12]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_2>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_13]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<拿出/@NQuest02_3>{FCOLOR/10}苍蝇拍的材料{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_1_14]
+{
+欢迎光临，有什么事吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<询问/@questionprize>有关商品的事\
+<谈论/@NQuest01_2>比奇商会\ 
+<谈论/@NQuest02_4>{FCOLOR/10}苍蝇拍{FCOLOR/12}\
+<从杂货商那里/@NQuest03>{FCOLOR/10}听关于小贩{FCOLOR/12}的传闻\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Buy]
+{
+你要买什么？\ \
+<前一步/@main>
+}
+
+[@NPC_Sell]
+{
+这里有蜡烛, 随机传送卷和地牢逃脱卷等物品。\ \
+<前一步/@main>
+}
+
+[@NPC_QuestionPrize]
+{
+我们店里有<蜡烛/@candle>,<地牢逃脱卷/@teleport>,\
+<随机传送卷/@teleport2>和<修复油/@repairoil>等，还有只能从怪物那里得到的<回城卷/@steleport>\ \
+<前一步/@main>
+}
+
+[@NPC_Candle]
+{
+蜡烛是天黑时使用的，天黑了以后，没有蜡烛，就会伸手不见五指。\ \
+<前一步/@questionprize>
+}
+
+[@NPC_Teleport]
+{
+地牢逃脱卷可以使你瞬间移动到你最后去过的村子里。它的威力比回城卷弱，但它足以保住你的性命。\ \ 
+<前一步/@questionprize>
+}
+
+[@NPC_Teleport2]
+{
+随机传送卷可以使你在现在所在的地方自由移动。即，如果你在寺庙的1层，那么就在1层里，如果你在商店里，就可以在商店里自由移动。这虽然很危险，但你还有很多药，他可以为你打猎提供帮助。\ \
+<前一步/@questionprize>
+}
+
+[@NPC_sTeleport]
+{
+回城卷是古代流传下来的技术，但很可惜，现在这种技术已经失传了。但怪物那里偶尔还有，听说用了那个东西，可以使你马上回到村子里。\ \
+<前一步/@questionprize>
+}
+
+[@NPC_RepairOil]
+{
+修复油可增加武器的持久性，但不适用于特殊修理，长期使用修复油会使武器的持久性降低。使用修复油修理廉价武器，会在打猎时有所帮助。\ \
+<前一步/@questionprize>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}
+
+[@NPC_Goods]
+{
+;ItemName      Volume     Hour
+蜡烛             1000        1
+亮蜡烛           1000        1
+火把             1000        1
+亮火把           1000        1
+地牢逃脱卷       1000        1
+随机传送卷       1000        1
+回城卷		 100	     1	
+护身符（小）     100         1
+护身符（中）     100         1
+护身符（火）     100         1
+护身符（冰）     100         1
+护身符（雷）     100         1
+护身符（风）     100         1
+灵魂护身符（小） 100         1
+灵魂护身符（中） 100         1
+神圣护身符（小） 100         1
+修复油           50          1
+}
+

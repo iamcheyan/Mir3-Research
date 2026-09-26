@@ -1,0 +1,24 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkmonmap D90323 1
+#ACT
+break
+#ELSEACT
+goto @main_1
+
+[@main_1]
+#IF
+check [314] 1
+check [315] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\MonQuest\Nm_SinGikyung.txt] @NPC_Main
+#ACT
+Delaygoto [local] 10 @main_2
+
+
+[@main_2]
+#ACT
+SET [315] 1
+SET [314] 0
+mapmove D903 55 55

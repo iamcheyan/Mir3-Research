@@ -1,0 +1,74 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+ <结束/@exit>
+}
+
+[@NPC_Main_Warrior]
+{
+贫道就是清明子，专门在这里指导那些想修炼成为道士的人。\
+不过你是战士，你还是去边境城市吧。\ \
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_Wizard]
+{
+贫道就是清明子，专门在这里指导那些想修炼成为道士的人。\
+不过你是魔法师，你还是去银杏山谷吧。\ \
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_0]
+{
+贫道就是清明子。\
+那，你来找我有什么事？\
+<寻求武功指导/@chung_mugong_main>\
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+贫道是清明子。\
+你找我有什么事情吗?\ \
+<了解/@masshiding_test_start>{FCOLOR/10}小贩{FCOLOR/12}\
+<寻求武功指导/@chung_mugong_main>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_2]
+{
+贫道是清明子。\
+你找我有什么事情吗?\ \
+<公开/@masshiding_test_start>{FCOLOR/10}成致日志{FCOLOR/12}\
+<寻求武功指导/@chung_mugong_main>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_Mugong]
+{
+我可以指导你以下的武功。\
+（1 - 10 等级 修炼魔法）\
+<治愈术/@heal_test_start> , <精神力战法/@ilgang_test_start>\
+（11 - 25 等级 修炼魔法）\
+<施毒术/@poison_test_start> , <召唤骷髅/@recallskel_test_start> , <隐身术/@hiding_test_start>\
+<幽灵盾/@hangma_test_start> , <集体隐身术/@masshiding_test_start> , <神圣战甲术/@Upac_test_start>\ \
+<不寻求武功指导/@exit>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}
+

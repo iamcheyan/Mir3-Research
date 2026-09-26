@@ -1,0 +1,397 @@
+;;º£¥áµÁ
+[@Refine]
+{
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_1
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_2
+
+#ACT
+break
+
+#IF
+checkweaponmctype 0
+checkrefineweapon
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_3
+
+#ACT
+break
+
+#IF
+checkweaponmctype 1
+checkrefineweapon
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_4
+
+#ACT
+break
+
+#IF
+checkweaponmctype 2
+checkrefineweapon
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_5
+
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_6
+
+
+[@Refine_Dura]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_7
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_8
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 5
+checkrefineweapon
+#ACT
+refineWeapon 10000 1 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_9
+
+
+[@Refine_DC]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_10
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_11
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 1 3
+checkrefineweapon
+#ACT
+RefineWeapon 50000 3 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_12
+
+
+[@Refine_MC]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_13
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_14
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 2 3
+checkrefineweapon
+#ACT
+RefineWeapon 50000 3 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_15
+
+
+[@Refine_SC]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_16
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_17
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 3 3
+checkrefineweapon
+#ACT
+RefineWeapon 50000 3 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_18
+
+
+[@Refine_ALL]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_19
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_20
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 4 3
+checkrefineweapon
+#ACT
+RefineWeapon 50000 3 1
+break
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_21
+
+
+[@Refine_Atom]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_22
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_23
+
+#ACT
+break
+
+#IF
+checkrefineweapon
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_24
+
+
+[@Refine_Fire]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_25
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_26
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_27
+
+
+[@Refine_Ice]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_28
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_29
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_30
+
+
+[@Refine_Light]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_31
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_32
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_33
+
+
+[@Refine_Wind]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_34
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_35
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 4
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_36
+
+
+[@Refine_Holy]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_37
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_38
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 5
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_39
+
+
+[@Refine_Dark]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_40
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_41
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 6
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_42
+
+
+[@Refine_pantom]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_43
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_44
+
+#ACT
+break
+
+#IF
+checkitem ºÚÌú 3
+checkrefineitem 0 5
+checkrefineweapon
+#ACT
+RefineWeapon 50000 4 7
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Refine.txt] @Refine_45
+
+}

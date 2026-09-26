@@ -1,0 +1,99 @@
+;;∫£•·µ¡
+[@main]
+;		¿œ¿œ ƒ˘Ω∫∆Æ √º≈©
+#IF
+CheckDailyQuest 456
+#ACT
+goto @umgbung_T456
+break
+
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### øÏ∏∂Ω≈¿¸ ∏  π¯»£   D022
+;                        D023
+;                        D032 
+;                        D033
+;                        D042
+;                        D043
+;#### ø¿∏∂               ############
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@umgbung_T456]
+;		¿œ¿œ ƒ˘Ω∫∆Æ 456 π¯
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @umgbung_T456_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+[@umgbung_T456_1]
+#IF
+large s0 10
+#ACT
+goto @umgbung_T456_4
+#ELSEACT
+goto @umgbung_T456_2
+
+[@umgbung_T456_2]
+#IF
+large s0 2
+#ACT
+goto @umgbung_T456_3
+#ELSEACT
+mov s0 2
+goto @umgbung_T456_3
+
+
+[@umgbung_T456_3]
+#IF
+#ACT
+inc s0 1
+
+;----------------------------------------------
+[@umgbung_T456_4]
+#IF
+check [307] 1 
+check [308] 0 
+#ACT
+set [308] 1
+give Œ÷¬Í”¬ ø∫≈Ω« 1
+mov s0 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T456_Say
+#ELSEACT
+give Œ÷¬Í”¬ ø∫≈Ω« 1
+mov s0 1
+goto @umgbung_T456_5
+
+[@umgbung_T456_5]
+#IF
+check [307] 1 
+check [308] 1 
+checkitem Œ÷¬Í”¬ ø∫≈Ω« 10
+#ACT
+SET [309] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T456_Say_1
+
+;		∫Øºˆ √ ±‚»≠
+;----------------------------------------------------------

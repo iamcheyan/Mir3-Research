@@ -1,0 +1,22 @@
+;;海メ盗
+[Event_Island_GmStart_EventMsg]
+Msg1 = (!) 生存游戏探险开始了。目前的积累的奖金是 <$OUTPUT(N8)>。
+Msg2 = (!) 生存游戏探险中止。
+Msg3 = (!) 累积奖金为 <$OUTPUT(N8)> 。
+
+[@Event_Island_Gmstart_Say_1]
+{
+活动开始了。  \ \
+}
+
+[@Event_Island_Gmstart_Say_2]
+{
+正在进行其它活动。 \ \
+}
+
+[@Event_Island_Gmstart_Say_3]
+{
+你确定要结束生存游戏挑战吗？ \ \
+<是/@FinishConFirm> \
+<不/@exit> \ \
+}

@@ -1,0 +1,71 @@
+;;º£¥áµÁ
+%100
++5
++6
+
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_Main
+
+;#IF
+;checkweaponlevel 10
+;#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_Main_1
+
+;-------------------------------------------------------------------------------
+
+[@GetBack_Cmd]
+#ACT
+GetBackUpgItem
+
+[@Refine_Help_Cmd]
+#CALL [\Refine\Help.txt] @Refine_Help
+
+[@Change_Atom_Cmd]
+#CALL [\Refine\ChangeAtom.txt] @ChangeAtom
+
+[@RefineName_Cmd]
+#CALL [\Refine\RefineName.txt] @RefineName
+
+[@Refine_Cmd]
+#CALL [\Refine\Refine.txt] @Refine
+
+;-------------------------------------------------------------------------------
+
+[~@upgradenow_ok]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_upgradenow_ok
+
+[~@upgradenow_ing]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_upgradenow_ing
+
+[~@upgradenow_fail]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_upgradenow_fail
+
+[~@getbackupgnow_ok]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_getbackupgnow_ok
+
+[~@getbackupgnow_duraok]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_getbackupgnow_duraok
+
+[@Success]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_Success
+
+[~@getbackupgnow_ing]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_getbackupgnow_ing
+
+[~@getbackupgnow_fail]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_getbackupgnow_fail
+
+[~@getbackupgnow_nenoughlv]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09RefineWeapon-3.txt] @NPC_getbackupgnow_nenoughlv

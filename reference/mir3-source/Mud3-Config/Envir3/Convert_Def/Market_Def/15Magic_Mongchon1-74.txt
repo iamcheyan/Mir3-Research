@@ -1,0 +1,27 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+<结束/@exit>
+}
+
+[@NPC_Main_0]
+{
+嗯，肌肉锻炼得不错，你是战士吧，我大概看了一下，你的姿态不错，基本功也很扎实，将来一定会大有作为。不过仅仅掌握基本武功可不行，你不想让我给你指导一下吗？经过我的指导，江湖上三流的武士都能脱胎换骨成为一流的高手。不过，这得向朝廷缴点儿税。怎么样？想学吗？\
+<查看可解释的武功目录/@main_0_1>\
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+（战士魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<基本剑术/@Go_Mu_Warrior_Noatom_wesu>\ \
+（11 - 20 等级 修炼魔法）\
+<攻杀剑术/@Go_Mu_Warrior_Noatom_wedo> , <刺杀剑术/@Go_Mu_Warrior_Noatom_asword>\ \
+（21 - 30 等级 修炼魔法）\
+<半月弯刀/@Go_Mu_Warrior_Noatom_banwel> , <野蛮冲撞/@Go_Mu_Warrior_Noatom_mute>\ \
+（31 - 40 等级 修炼魔法）\
+<烈火剑法/@Go_Mu_Warrior_Noatom_fire> , <翔空剑法/@Go_Mu_Warrior_Noatom_maeng> , <莲月剑法/@Go_Mu_Warrior_Noatom_double>\ \
+<结束/@exit>
+}

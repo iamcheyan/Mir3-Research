@@ -1,0 +1,35 @@
+;;海メ盗
+[@main]
+
+#IF
+check [757] 1
+#ACT
+break
+;
+#IF
+check [524] 1
+#ACT
+break
+;
+#IF
+check [523] 1
+#SAY
+（要到银杏树村的棉布商那儿，请她给衣服上涂树脂，我在这里做什么呢？）
+#ACT
+break
+;
+#IF
+check [522] 1
+check [523] 0
+random 10
+#ACT
+goto @giveitem
+break
+
+[@giveitem]
+#IF
+#SAY
+（这是华川先生所讲的树脂吗？那么现在就要去银杏树村，请棉布商给衣服涂树脂了。）\
+#ACT
+SET [523] 1
+give 树脂 1

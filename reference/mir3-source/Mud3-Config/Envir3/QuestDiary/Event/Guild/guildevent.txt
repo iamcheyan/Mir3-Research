@@ -1,0 +1,29 @@
+;;海メ盗
+[@DuringGuildMatchTerm]
+{
+#IF
+CheckOpenGME
+#SAY
+行会大战竞技场巳开放，参与行会大战请做好准备呀，
+.\ \
+<现在移动至竞技场./@movetoGuildMatchPlace>\
+#ELSESAY
+现在是休息时间，请稍后再来.\
+
+[@movetoGuildMatchPlace]
+#IF
+!HasGuild
+#SAY
+没有参加行会的人不能参与此大战.. \ \
+<关 闭/@exit>
+#ACT
+break
+
+#IF
+CheckEnterGMEMap
+#ACT
+MoveToGMEMap
+close
+#ELSESAY
+人数巳满.\
+}

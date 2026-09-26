@@ -1,0 +1,301 @@
+;;海メ盗
+%100
+;skill book
++51
+;translate skill book
++4
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_Main
+ 
+;---------------------------------------------------------- 
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_Sell
+
+[@helpbooks]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_HelpBooks
+
+[@help_21]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_Help_21
+
+[@help_22]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_Help_22
+
+[Goods]
+;ItemName      Volume     Hour
+基本剑术     100            1
+攻杀剑术     100            1
+刺杀剑术     100            1
+半月弯刀      50            1
+野蛮冲撞      50            1
+
+火球术       100            1
+霹雳掌       100            1
+抗拒火环     100            1
+诱惑之光     100            1
+瞬息移动     100            1
+大火球       100            1
+雷电术       100            1
+地狱火       100            1
+疾光电影      50            1
+冰沙掌        50            1
+火墙          50            1
+
+治愈术       100            1
+精神力战法   100            1
+施毒术       100            1
+灵魂火符     100            1
+月魂断玉     100            1
+召唤骷髅     100            1
+隐身术       100            1
+幽灵盾       100            1
+集体隐身术   100            1
+月魂灵波      50            1
+神圣战甲术    50            1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 588
+#ACT
+goto @TQuest588_0
+break
+;
+#IF
+CheckDailyQuest 584
+#ACT
+goto @TQuest584_0
+break
+;
+#IF
+CheckDailyQuest 527
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 508
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 447
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 429
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest588_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [308] 1
+#ACT
+goto @TQUEST1_6
+break
+;
+
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest588_1
+
+;--------------
+
+[@TQuest588_1]
+;;;;;;#CALL [\QT_TODAY\5thClass.txt] @588_CHECK2
+
+;------------------------
+
+[@TQuest584_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest584_2
+break
+;
+#ELSEACT
+goto @TQuest584_1
+
+;--------------
+
+[@TQuest584_1]
+;;;;;;#CALL [\QT_TODAY\5thClass.txt] @584_START
+
+[@TQuest584_2]
+;;;;;;#CALL [\QT_TODAY\5thClass.txt] @584_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @429_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @429_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_Eunhang-02.txt] @NPC_TQuest_1
+
+;----------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\4thClass.txt] @447_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\4thClass.txt] @447_CHECK1
+
+;---------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @508_START
+
+[@TQuest3_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @508_CHECK1
+
+;----------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @527_START
+
+[@TQuest4_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @527_CHECK1
+
+;----------------------------------

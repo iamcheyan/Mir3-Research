@@ -1,0 +1,16 @@
+[@main]
+#IF
+checkitem 龙鳞 1 
+#ACT
+take 龙鳞 1
+#SAY
+<进入龙的巢穴./@tele>
+#ELSESAY
+你没有龙鳞！\\
+<取消/@exit>
+
+[@tele]
+#IF
+#ACT
+mapmove D2081 30 50
+break

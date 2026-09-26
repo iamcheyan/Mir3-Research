@@ -1,0 +1,59 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。。\ \
+<关闭/@exit>
+}
+
+[@NPC_Warrior]
+{
+本座人称霹雳尊者， 你听说过吗？\
+呵呵呵， 本座最近在指导江湖的后生们。 不过，你不是魔法师啊。\ 
+你这个战士还是去找龙血先生吧。\ \
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Taoist]
+{
+本座人称霹雳尊者， 你听说过吗？\
+呵呵呵， 本座最近在指导江湖的后生们。 不过，你不是魔法师啊。\ 
+你这个道士还是去找黛悲先生吧。\ \
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main]
+{
+本座就是霹雳尊者。\
+你找我有什么事？ \
+<寻求武功指导/@beouk_mugong_main>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_Mugong]
+{
+我可以指导你以下这些武功。\
+修炼的时候有什么问题尽管来找我。\
+（1 - 10 等级 修炼魔法）\
+<火球术/@fireball_test_start>\
+（11 - 20 等级 修炼魔法）\
+<抗拒火环/@firewind_test_start> , <诱惑之光/@lightwave_test_start> , <瞬息移动/@fly_test_start>\
+<大火球/@upfireball_test_start> , <雷电术/@lightstick_test_start> , <地狱火/@fireline_test_start>\
+（21 - 25 等级 修炼魔法）\
+<疾光电影/@lightline_test_start>\ \
+<不寻求武功指导/@exit>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}

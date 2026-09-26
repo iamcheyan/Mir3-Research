@@ -1,0 +1,261 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;-------------------
+
+[@main_0]
+#IF
+checkjob wizard
+#ACT
+BreakTimeRecall 
+goto @beouk_main
+#ELSEACT
+BreakTimeRecall 
+goto @beouk_other_class
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+
+[@beouk_other_class]
+#IF
+checkjob warrior
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_Warrior
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_Taoist
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@beouk_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_Main
+
+[@beouk_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_Main_Mugong
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+
+[@fireball_test_start]
+;;
+#IF
+#ACT
+goto @fireball_begin
+
+[@fireball_begin]
+#CALL [\MU_wizard\fireBolt.txt] @mugong_fireball
+
+;;------------------------------------------------------------------------------
+
+[@upfireball_test_start]
+;;
+#IF
+check [517] 1
+check [752] 0
+#ACT
+goto @upfireball_complete
+break
+
+#IF
+#ACT
+goto @upfireball_begin
+break
+
+[@upfireball_begin]
+#CALL [\MU_wizard\fireUpbolt.txt] @mugong_upfireball
+
+[@upfireball_complete]
+#CALL [\MU_wizard\fireUpbolt.txt] @mugong_upfireball_complete
+
+;;------------------------------------------------------------------------------
+
+[@firewind_test_start]
+;;
+#IF
+check [501] 1
+check [749] 0
+#ACT
+goto @firewind_complete
+break
+
+#IF
+#ACT
+goto @firewind_begin
+
+[@firewind_begin]
+#CALL [\MU_wizard\fireStorm.txt] @mugong_firewind
+
+[@firewind_complete]
+#CALL [\MU_wizard\fireStorm.txt] @mugong_firewind_complete
+
+;;------------------------------------------------------------------------------
+
+[@lightwave_test_start]
+;;
+#IF
+check [503] 1
+check [750] 0
+#ACT
+goto @lightwave_complete
+break
+
+#IF
+#ACT
+goto @lightwave_begin
+break
+
+[@lightwave_begin]
+#CALL [\MU_wizard\lightShock.txt] @mugong_lightwave
+
+[@lightwave_complete]
+#CALL [\MU_wizard\lightShock.txt] @mugong_lightwave_test_complete
+
+;;------------------------------------------------------------------------------
+
+[@fireline_test_start]
+;;
+#IF
+check [521] 1
+check [756] 0
+#ACT
+goto @fireline_complete
+break
+
+#IF
+#ACT
+goto @fireline_begin
+break
+
+[@fireline_begin]
+#CALL [\MU_wizard\fireLine.txt] @mugong_fireline
+
+[@fireline_complete]
+#CALL [\MU_wizard\fireLine.txt] @mugong_fireline_complete
+
+;;------------------------------------------------------------------------------
+
+[@lightstick_test_start]
+;;
+#IF
+check [519] 1
+check [753] 0
+#ACT
+goto @lightstick_complete
+break
+
+#IF
+#ACT
+goto @lightstick_begin
+break
+
+[@lightstick_begin]
+#CALL [\MU_wizard\lightRecall.txt] @mugong_lightstick
+
+[@lightstick_complete]
+#CALL [\MU_wizard\lightRecall.txt] @mugong_lightstick_complete
+
+
+;;------------------------------------------------------------------------------
+
+[@fly_test_start]
+;;
+#IF
+check [515] 1
+check [751] 0
+#ACT
+goto @fly_complete
+break
+
+#IF
+#ACT
+goto @fly_begin
+break
+
+[@fly_begin]
+#CALL [\MU_wizard\teleport.txt] @mugong_fly
+[@fly_complete]
+
+#CALL [\MU_wizard\teleport.txt] @mugong_fly_complete
+
+;;------------------------------------------------------------------------------
+
+[@lightline_test_start]
+;;
+#IF
+check [525] 1
+check [757] 0
+#ACT
+goto @lightline_test
+break
+
+#IF
+#ACT
+goto @lightline_begin
+
+[@lightline_begin]
+#CALL [\MU_wizard\lightLine.txt] @mugong_lightline
+
+[@lightline_test]
+#CALL [\MU_wizard\lightLine.txt] @mugong_lightline_test
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 118
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_TQuest
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @118_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @118_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Eunhang1-02.txt] @NPC_TQuest_1

@@ -1,0 +1,27 @@
+; ===================================
+; Market Def NPC File : GTBulletinBoard-GA0
+; 
+; -----------------------------------
+; Name: GTBulletinBoard
+; Job: 
+; Map No: GA0
+; Pos X 57
+; Pos Y 50
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+;Settings
+%100
++40
++45
++1
+
+[@main]
+#SAY
+你好<$USERNAME>!\
+这是行会领土的公告板.\ \
+<查看/@gaboardlist>行会领土公告板.\
+<关闭/@exit>行会领土公告板.

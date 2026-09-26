@@ -1,0 +1,81 @@
+;武器
+%100
++0
++42
+;对话， '*' : 对话tag
+[@main]
+这地方是做药品买卖的，你需要点什么？\
+当然，如果你要的是可卡因或其他之类精神药品的话，\
+我们可不卖。\
+对于<$OWNERGUILD>的成员我们有20%的折扣，\
+因为这座城堡是属于<$OWNERGUILD>的。\ \
+ <制作/@makedrug>药品\
+ <打听/@helpmakedrug>药品的解释\
+ <离开/@exit>\
+
+
+[@makedrug]
+请选择你要制作的药品。\
+你肯定没忘了带做药的原料，对吗？\ \
+ <返回/@main>\
+
+
+[@helpmakedrug]
+这里我们可以做2种药品..\ \
+ <灰色药粉/@helpdrug1>的效果\
+ <黄色药粉/@helpdrug2>的效果\
+ <灰色药粉/@helpmakedrug1>的成分\
+ <黄色药粉/@helpmakedrug2>的成分\ \
+ <返回/@main>\
+
+
+[@helpdrug1]
+道士在运用施毒术的时候可以使用灰色药粉。\
+如果中了毒，对手的体力值将会下降。\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpdrug2]
+道士在运用施毒术的时候可以使用黄色药粉。\
+如果中了毒，对手的防御力将会下降。\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpmakedrug1]
+制作灰色药粉(少量)，需要：\ \
+ <1个食人树果实/@helpitem1> \
+ <2颗毒蜘蛛牙齿/@helpitem1> \
+ <4片食人树叶/@helpitem1>\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpmakedrug2]
+制作黄色药粉(少量)，需要：\ \
+ <1粒蛆卵/@helpitem2> \
+ <1个蝎子尾巴/@helpitem2> \
+ <4片食人树叶/@helpitem2>\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpitem1]
+食人树果实可以从食人花上take。\
+毒蜘蛛牙齿可以在毒蜘蛛身上take。\
+食人树叶也可以从食人花上take。\ \
+<返回/@helpmakedrug1>\
+
+
+[@helpitem2]
+蛆卵可以在洞蛆身上take。\
+蝎子尾巴可以在蝎子身上take。\
+片食人树叶可以从食人花上take。\ \
+ <返回/@helpmakedrug2>\
+
+
+[goods]
+;items(cab be Zen)      pieces      hour
+黄色药粉(少量)		200	1
+灰色药粉(少量)		200	1
+黄色药粉(中量)		200	1
+灰色药粉(中量)		200	1
+黄色药粉(大量)		200	1
+灰色药粉(大量)		200	1

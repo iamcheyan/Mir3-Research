@@ -1,0 +1,41 @@
+;;º£¥áµÁ
+[@main]
+#IF
+CheckDailyQuest 115
+#ACT
+goto @T115_MonQuest
+break
+;
+
+#ELSEACT
+break
+
+[@T115_MonQuest]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+check [308] 1
+#ACT
+break
+;
+
+#IF
+check [307] 1
+#ACT
+goto @T115_MonQuest_1
+break
+;
+
+#ELSEACT
+break
+
+[@T115_MonQuest_1]
+#IF
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T115_Say

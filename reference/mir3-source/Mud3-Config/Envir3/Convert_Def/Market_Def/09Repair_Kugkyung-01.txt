@@ -1,0 +1,15 @@
+;;09Repair_Euhang-02.txt
+[@NPC_Main]
+{
+选择要修理的物品目录吧。。还有我所修理的是全部的物品都要带上去才行。\ \
+_<衣服/@SRepairFunc(0)> , <项链/@SRepairFunc(3)> , <头盔/@SRepairFunc(4)> , <鞋子/@SRepairFunc(10)>\
+_<手镯（左）/@SRepairFunc(5)>, <手镯（右）/@SRepairFunc(6)>\
+_<戒指（左）/@SRepairFunc(7)>, <戒指（右）/@SRepairFunc(8)>\
+_<不修理/@exit>
+}
+
+[@NPC_Main_else]
+{
+本人傍晚做事,其他时间休息。\ \
+<结束/@exit>
+}

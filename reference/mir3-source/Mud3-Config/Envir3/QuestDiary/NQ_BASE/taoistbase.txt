@@ -1,0 +1,347 @@
+;;海メ盗
+[@Dosa_MQ_START]
+{
+#IF
+#ACT
+goto @Dosa_MQ_START_0
+
+[@Dosa_MQ_START_0]
+#IF
+check [102] 0
+checklevel 6
+#ACT
+goto @Dosa_MQ_START_6
+#ELSEACT
+goto @Dosa_MQ_START_1
+
+[@Dosa_MQ_START_1]
+#IF
+check [102] 0
+checklevel 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_1
+
+#ELSEACT
+goto @Dosa_MQ_START_2
+
+[@Dosa_MQ_START_2]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_2
+
+
+[@Dosa_MQ_START_3_1]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_3
+
+
+[@Dosa_MQ_START_3_2]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_4
+
+
+[@Dosa_MQ_START_3_3]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_5
+
+
+[@Dosa_MQ_START_4]
+#IF
+check [102] 0
+#ACT
+set [102] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_6
+
+
+[@Dosa_MQ_START_6]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_7
+
+
+[@Dosa_MQ_START_7_1]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_8
+
+
+[@Dosa_MQ_START_7_2]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_9
+
+
+[@Dosa_MQ_START_7_3]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_10
+
+
+[@Dosa_MQ_START_8]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_11
+
+
+[@Dosa_MQ_START_9]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_12
+
+
+[@Dosa_MQ_START_10]
+#IF
+check [131] 0
+#ACT
+give 古籍 1
+give 治愈术 1
+reset [102] 28
+set [131] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_13
+
+}
+
+[@Dosa_GO_YONG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_14
+
+}
+
+[@Dosa_CQ_START1]
+{
+#IF
+#ACT
+goto @Dosa_CQ_START1_0
+[@Dosa_CQ_START1_0]
+#IF
+check [105] 1
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_15
+
+
+[@Dosa_CQ_START1_3]
+#IF
+check [105] 1
+check [131] 0
+checklevel 6
+#ACT
+goto @Dosa_CQ_START1_4
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_16
+
+
+[@Dosa_CQ_START1_4]
+#IF
+check [105] 1
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_17
+
+
+[@Dosa_CQ_START1_5]
+#IF
+check [105] 1
+check [131] 0
+#ACT
+give 古籍 1
+give 治愈术 1
+reset [102] 28
+set [131] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_18
+
+}
+
+[@Dosa_GO_WANG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_19
+
+}
+
+[@Dosa_DQ_START]
+{
+#IF
+#ACT
+goto @Dosa_DQ_START_1
+
+[@Dosa_DQ_START_1]
+#IF
+check [102] 1
+check [103] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_20
+
+
+[@Dosa_DQ_START_2]
+#IF
+check [102] 1
+check [103] 0
+#ACT
+give 道力护身符 1
+set [103] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_21
+
+}
+
+[@Dosa_GO_JUNG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_22
+
+}
+
+[@Dosa_SEARCH_PI]
+{
+#IF
+#ACT
+goto @Dosa_SEARCH_PI_1
+[@Dosa_SEARCH_PI_1]
+#IF
+check [163] 1
+check [104] 0
+#ACT
+set [104] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_23
+
+}
+
+[@Dosa_MQ_COMPLETE]
+{
+#IF
+#ACT
+goto @Dosa_MQ_COMPLETE_1
+[@Dosa_MQ_COMPLETE_1]
+#IF
+check [104] 1
+check [105] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_24
+
+[@Dosa_MQ_COMPLETE_4]
+#IF
+check [104] 1
+check [105] 0
+checkitem 鸡血 2
+#ACT
+take 鸡血 2
+give 金币 1000
+goto @Dosa_MQ_COMPLETE_5
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_25
+
+
+[@Dosa_MQ_COMPLETE_5]
+#IF
+check [104] 1
+check [105] 0
+#ACT
+set [105] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_26
+
+}
+
+[@Dosa_TAKE_BUJOUK]
+{
+#IF
+#ACT
+goto @Dosa_TAKE_BUJOUK_0
+
+[@Dosa_TAKE_BUJOUK_0]
+#IF
+checkitem 道力护身符 1
+#ACT
+goto @Dosa_TAKE_BUJOUK_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_27
+
+
+[@Dosa_TAKE_BUJOUK_1]
+#IF
+check [103] 1
+check [163] 0
+#ACT
+take 道力护身符 1
+give 匕首 1
+set [103] 0
+set [163] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_28
+
+}
+
+[@Dosa_RETURN_YONG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_29
+
+}
+
+[@Dosa_CQ_COMPLETE]
+{
+#IF
+check [131] 1
+check [164] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_30
+
+
+[@Dosa_CQ_COMPLETE_0]
+#IF
+checkitem 古籍 1
+#ACT
+takecheckitem
+give 金币 1000
+give 青铜头盔 1
+goto @Dosa_CQ_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_31
+
+
+[@Dosa_CQ_COMPLETE_1]
+#IF
+check [131] 1
+check [164] 0
+#ACT
+reset [102] 29
+set [164] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_32
+
+
+[@Dosa_CQ_COMPLETE_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_33
+
+
+[@Dosa_CQ_COMPLETE_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\taoistbase.txt] @taoistbase_34
+
+}

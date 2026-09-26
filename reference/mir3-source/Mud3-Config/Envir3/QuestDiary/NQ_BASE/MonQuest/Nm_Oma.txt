@@ -1,0 +1,73 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [199] 1
+#ACT
+break
+#IF
+check [196] 1
+#ACT
+break
+;
+#IF
+check [181] 1
+#ACT
+break
+#IF
+check [180] 1
+#ACT
+goto @oma4
+
+
+;----------------------------------------------------------
+
+[@oma4]
+#IF
+large s2 10
+#ACT
+goto @oma9
+;
+#ELSEACT
+goto @oma5
+
+;-----------------------------------------------------
+[@oma5]
+#IF
+large s2 8
+#ACT
+goto @oma8
+#ELSEACT
+goto @oma6
+
+[@oma6]
+#IF
+large s2 2
+#ACT
+goto @oma7
+#ELSEACT
+mov s2 2
+goto @oma7
+
+[@oma7]
+#IF
+#ACT
+inc s2 1
+
+[@oma8]
+#IF
+random 2
+#ACT
+inc s2 1
+;-----------------------------------------------------
+
+[@oma9]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_Oma.txt] @Nm_Oma_1
+
+#ACT
+give ÍõÌú½³µÄÌú´¸ 1
+set [181] 1
+mov s2 0

@@ -1,0 +1,350 @@
+; ===================================
+; Market Def NPC File : 3Bdr-0106
+; BichonProvince (ClothesShop)
+; -----------------------------------
+; Name: Ann
+; Job: 
+; Map 不行: 0106
+; Pos X 19
+; Pos Y 6
+; File name: *removed*
+; Comment: BichonProvince (ClothesShop)
+
+;================================================= =
+;
+; Brief Description of the switches used in this NPC.
+; [109]很高兴 tells me Liu Lao Tou the position.
+; [110] and settles down the cotton garment agreement
+; [111] snatches for golden necklace
+; [112] with settles down the cotton garment is intimate (when man)
+; [113] with settles down the cotton garment is very intimate
+; [114] starts to settle down the cotton garment sad story 
+;
+
+;Settings
+%100
++10
++11
++15
++52
++54
+
+;Pkr Tag (NPC won't 對話 to Pkrs)
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会帮助一个邪恶的人..\ \
+<确定/@exit>
+
+#ELSEACT
+goto @main-1
+
+[@main-1]
+欢迎,我可以帮你吗?\ \
+ <买/@buy>衣服\
+ <卖/@sell>衣服\
+ <修理/@repair>衣服\
+ <传送/@Tmove>出去\
+ <取消/@exit>
+
+[@Tmove]
+#IF
+random 4
+#ACT
+mapmove 0 318 303
+break
+
+#IF
+random 4
+#ACT
+mapmove 0 318 302
+break
+
+#IF
+random 4
+#ACT
+mapmove 0 307 312
+break
+
+#IF
+random 4
+#ACT
+mapmove 0 308 311
+break
+
+#ELSEACT
+goto @Tmove
+
+[@buy]
+你想买什么东西?\ \ \
+<返回主頁/@main>
+
+[@sell]
+我主要负责衣服的收购.\ 
+我会给你的物品做一个评价.\
+我们还贸易头盔等物品,\
+如果你有不需要的物品,请出售给我们.\ \
+<返回主頁/@main>
+
+[@repair]
+你可以修复衣服,头盔和头饰.\ \
+<返回主頁/@main>
+
+[~@repair]
+修理好了.\ \ \
+<返回主頁/@main>
+
+[@talkwith]
+#IF
+#ACT
+goto  @talkwith_1
+
+
+[@talkwith_1]
+#IF
+check [114] 1
+#ACT
+goto  @eppuni_sad_story
+break
+
+#IF
+check [112] 1
+#ACT
+goto  @lover_eppuni
+break
+ 
+#IF
+check [108] 1
+check [109] 0
+#ACT
+goto  @talk_eppuni
+break
+
+#IF
+daytime  day
+#SAY
+今天天气很好。”\
+我可能会去离开与我的男朋友。”\
+
+#ACT
+break
+
+#IF
+#SAY
+小心，在黑暗中，有小偷。他们\
+故意导致麻烦的道路上。我们需要摆脱\
+这些强盗们我们能尽快。\
+
+[@talk_eppuni]
+出什么事了？我必须现在。\
+<問关于出问题/@talk_yu_doctor>\ 
+
+
+[@talk_yu_doctor]
+#IF
+checkitemw 金項鏈 1
+#SAY
+哦，原来是说刘老头。\
+但我保证他不会说他任何人在哪里。\ \
+<带来的身体上的金项链。/@give_金项链>\ 
+
+#ELSESAY
+哦，原来是说刘老汉。\
+但是我答应他去看任何人，但是说，他在哪里。”很抱歉，我也没办法，\
+你还是去外面看看吧。\
+
+
+[@give_金项链]
+#IF
+checkitemw  金項鏈 1
+#SAY
+哦，我如此珍贵的东西，我谢谢你真的太感谢了，\
+这是一件我梦寐以求。\ \
+ <問刘中医一事/@talk_yu_again>\
+
+#ACT
+takew  金項鏈 1
+
+[@talk_yu_again]
+#IF
+random 5
+#SAY
+这可怎么办？我已收到了礼物，\
+也不能假装不知道，我告诉你，\
+但你千万不要说是我说的刘大爷，\
+请你一定要答应我。\ \
+ <好的/@ok_make_promise>\
+ <不谢谢/@no_make_promise>\
+
+#ELSESAY
+不好，不能说我的项链，不能因为这个吗？\
+ <要回項鏈/@getback_necklace>\
+ <如何满足/@noproblem>\
+
+
+[@getback_necklace]
+#SAY
+哼，你也只是初步的。\在那之后，以后不要再出现在这里。”\哼。
+
+#ACT
+give 金項鏈 1
+set  [109]  1
+set  [111]  1
+
+[@noproblem]
+#IF
+gender man
+random 20
+#SAY
+<$USERNAME> 你是真正的男人。”的。以后都叫你哥哥，可以这样称呼？\还有，在一起很开心跟哥哥的感觉。”下次会经过这里，一定要来看我哦。”很好？\
+
+#ACT
+set  [112] 1
+#ELSESAY
+你真是个好人。”一定要来我们店后，邻居哦。”\
+
+[@ok_make_promise]
+#SAY
+一定要做到这一点。”刘大爷在兽人洞穴，\我没有去，因此是具体的不知道。”走的时候说要住几个月在那里，\我想应该在那里。”计算发现，\千万不要提及我。\
+
+#ACT
+set  [109] 1
+
+[@no_make_promise]
+哦，这可不好。”我发誓与刘大爷。\如果他知道我不守信用，\会很失望的。”对不起。\ \
+ <中医说允许请求。/@talk_her_order>\
+
+
+[@talk_her_order]
+#SAY
+原来是这样。”\既然允许讲话，中医说，早就应该说的。\我告诉你说的是天然的洞穴地下，\你可以找他去那里。具体的我就不知道了。”我希望你能找到他。”
+
+#ACT
+set  [109]  1
+set  [110]  1
+
+
+;-----------------------------------------------------
+
+[@lover_eppuni]
+#IF
+check [109] 0
+#SAY
+<$USERNAME> 哥哥，这又有什么关系？\只要能帮助哥哥的忙，什么事都可以做。\ \”
+ <问刘老汉的事/@about_yu_2>\
+
+#ACT
+break
+
+#IF
+random 5
+#SAY
+<$USERNAME> 哥哥，我现在很疲倦。”真的对不起，我没有办法听你说。\ \
+ <还我的项链。/@give_my_necklace>\
+
+#ACT
+break
+
+#IF
+random 5
+check [113] 1
+#SAY
+<$USERNAME> 哥哥，我现在很疲倦。”真的对不起，我没有办法听你说。\ \
+ <把项链身体当做礼物送。 /@give_my_necklace>\
+ <还我的戒指/@give_my_ring>\
+
+#ACT
+break
+
+#IF
+#SAY
+<$USERNAME> 哥哥，你来得正好，我真正的启蒙无聊。\讲有趣的故事给我。\
+Good?\ \
+ <说肥龙与吸烟大宝嗝的故事。/@talk_about_oma>\
+
+#ACT
+break
+
+[@about_yu_2]
+因为你是哥哥，所以才告诉你，\刘大爷在地下天然洞穴。\我答应他不要对任何人说，\哥哥也要答应我不能够对大家说。\
+
+
+[@talk_about_oma]
+哈哈哈哈哈的…”\太有趣了，哥真的是个很有趣的人。”\
+
+[@give_my_necklace]
+#IF
+checkitemw  金項鏈
+#ACT
+takew  金項鏈
+goto  @thanks_neckl
+#ELSESAY
+哥哥也很会说笑话。”\但这句话，我已经很感激……”\
+
+
+[@thanks_neckl]
+#IF
+random 5
+#ACT
+set [113] 1
+#SAY
+哥哥，你竟然给我这样的礼物，太好了。”\我好像也有力量。”\
+#ELSESAY
+哥哥，你竟然给我这样的礼物，太好了。”\我好像也有力量。”\
+
+
+
+[@give_my_ring]
+#IF
+checkitemw  骷髅戒指
+#ACT
+takew 骷髅戒指
+#ELSESAY
+哥哥也很会说笑话。”\但这句话，我已经很感激……”\
+
+
+#IF
+istakeitem 骷髅戒指
+#ACT
+goto  @eppuni_stroy_1
+#ELSEACT
+goto  @thanks_ring
+
+[@thanks_ring]
+真的吗？真的给我吗？\哥哥，吻你\
+
+
+[@eppuni_stroy_1]
+#SAY
+嗯……”.............................. \真的谢谢你。把这么好的戒指我。\........... \对不起，突然身体不舒服……”\
+#ACT
+set [114] 1
+
+
+;-----------------------------------------------------
+;Clothing store female sales clerk's inside story...
+
+[@eppuni_sad_story]
+哥哥，不想说今天。”\对不起。下次再来……”\
+
+
+
+
+;-----------------------------------------------------
+
+[goods]
+;Item		Amount		Time
+布衣(男)		100	1	
+布衣(女)		100	1
+轻型盔甲(男)		100	1
+轻型盔甲(女)		100	1
+重盔甲(男)		100	1
+重盔甲(女)		100	1
+灵魂战衣(男)		100	1
+灵魂战衣(女)		100	1
+魔法长袍(男)		100	1
+魔法长袍(女)		100	1
+布鞋		100	1
+兽皮腰带		100	1
+

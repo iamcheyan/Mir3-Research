@@ -1,0 +1,45 @@
+;;베α돝
+[@Kygkyung_Teleport_North]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\KugKyungTele.txt] @KugKyungTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
+
+;-------------------------------------------------------------------------------
+[@Kygkyung_Teleport_West]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\KugKyungTele.txt] @KugKyungTele_2
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
+
+;-------------------------------------------------------------------------------
+
+[@Kygkyung_Teleport_East]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\KugKyungTele.txt] @KugKyungTele_3
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

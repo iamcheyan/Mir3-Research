@@ -1,0 +1,299 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;;-------------------------
+;;-------------------------
+
+[@main_root_1]
+;		check daily quest 
+#IF
+CheckDailyQuest 469
+#ACT
+goto @Main_Root_3
+#ELSEACT
+goto @Main_CheckDailyQuest
+
+[@Main_CheckDailyQuest]
+#IF
+CheckDailyQuest 439
+#ACT
+goto @main_root_3
+#ELSEACT
+goto @main_root_1_1
+
+[@main_root_1_1]
+;		check daily quest
+#IF
+CheckDailyQuest 329
+#ACT
+goto @main_root_3
+#ELSEACT
+goto @main_root_2
+
+
+[@main_root_2]
+#IF
+check [165] 1
+#ACT
+goto @main_0_5
+break
+#IF
+check [146] 1
+#ACT
+goto @NQuest01_4
+break
+#IF
+check [145] 1
+#ACT
+goto @NQuest01_3
+break
+#IF
+check [140] 1
+#ACT
+goto @NQuest01_3
+break
+#IF
+check [139] 1
+#ACT
+goto @NQuest01_3
+break
+#IF
+check [134] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [132] 1
+#ACT
+goto @NQuest01_1
+break
+#ELSEACT
+goto @main_0_0
+
+
+[@main_root_3]
+#IF
+check [165] 1
+#ACT
+goto @main_1_5
+break
+#IF
+check [146] 1
+#ACT
+goto @main_1_4
+break
+#IF
+check [145] 1
+#ACT
+goto @main_1_3
+break
+#IF
+check [140] 1
+#ACT
+goto @main_1_3
+break
+#IF
+check [139] 1
+#ACT
+goto @main_1_3
+break
+#IF
+check [134] 1
+#ACT
+goto @main_1_2
+break
+#IF
+check [132] 1
+#ACT
+goto @main_1_1
+break
+#ELSEACT
+goto @main_1_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_0
+
+[@main_0_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_5
+
+;--------------------------
+
+[@main_1_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_0
+
+[@main_1_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_1
+
+[@main_1_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_2
+
+[@main_1_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_3
+
+[@main_1_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_4
+
+[@main_1_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_Main_1_5
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_1_1
+
+[@NQuest01_1_1]
+#CALL [\NQ_BASE\bichun.txt] @BICHUN_START
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\bichun.txt] @GO_GYUNGBI
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\bichun.txt] @BICHUN_TEST1
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\bichun.txt] @BICHUN_TEST2
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 469
+#ACT
+goto @TQuest469_0
+break
+;
+#IF
+CheckDailyQuest 439
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 329
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest469_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest469_2
+break
+;
+#ELSEACT
+goto @TQuest469_1
+
+;--------------
+
+[@TQuest469_1]
+#CALL [\QT_TODAY\4thClass.txt] @469_START
+
+[@TQuest469_2]
+#CALL [\QT_TODAY\4thClass.txt] @469_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @329_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @329_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_Bichon2-0.txt] @NPC_TQuest_1
+
+;---------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\4thClass.txt] @439_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\4thClass.txt] @439_CHECK1
+
+;---------------------------

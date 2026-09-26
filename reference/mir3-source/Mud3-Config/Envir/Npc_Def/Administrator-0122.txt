@@ -1,0 +1,79 @@
+[@main]
+This is the palace of Bichon wall.\
+I am the Administrator. How may I help you ?\ \
+ <Request Guild creation/@@buildguildnow>\
+ <Request Guild war/@guildwar>\
+ <Ask how to create a Guild/@buildguildexp>\
+ <Ask about Guild war/@guildwarexp>\
+ <Request Sabuk conquest war/@requestcastlewar>\
+ <Exit/@exit>
+
+[@buildguildexp]
+In order to qualify for guild creation\
+you need to bring me several items:-\
+One million Gold & the Horn of Woomataurus, who lives\
+in deep in the Wooma Temple in Woomyon woods.\
+Please keep in mind that no special characters\
+are allowed in guild names.\
+Guilds made by using alt codes or spaces in the name\
+will be deleted and no refund made.\
+<Back/@main>
+
+[@guildwar]
+Let me know the opponent Guild you want to fight.\
+To request legal Guild war, you'll have to pay <$GUILDWARFEE> Gold.\ \
+ <Choose Guild to fight/@@guildwar>\ \
+ <Back/@main>
+
+[@guildwarexp]
+<Guild war/@guildwar2> means war done by legal request. \
+Actually, due to the number of guilds and struggles between\
+them, the government approve <legal/@warrule> guild war.\
+When <requested/@propose>, war will be allowed for 3 hours.\
+You'll have to pay <$GUILDWARFEE> Gold as request fee.\ \
+<Back/@main>
+
+[@guildwar2]
+When you request guild war, names of allies will appear in blue,\
+on the other side, enemy names will appear orange.\
+If you are connected during a Guild War, the message:\
+'War with {nnn} guild' will appear in chatting window and\
+if you kill a member of the enemy guild you will not\
+be regarded as PK.\
+<Back/@guildwarexp>
+
+[@warrule]
+Guildwar cannot take place in village.\
+It can be executed out of certain ranges from the \
+village or inside contest area (like inside some buildings).\
+However, if you are PK your ID will be red in colour,\
+even during war.\ \
+<Back/@guildwarexp>
+
+[@propose]
+Proposal of guild war only can be requested \
+by Guildchief.\ \
+<Back/@guildwarexp>
+
+[@donate]
+We are not collecting donation money yet.\ \
+ <Back/@main>
+
+[@requestcastlewar]
+To request Sabuk conquest war you should have Zuma Relic.\
+Do you have it?\
+Once you request to conquer Sabuk the fight will\
+start 2 days later.\ \
+ <Apply for Sabuk conquest/@requestcastlewarnow>\\
+ <Back/@main>
+
+[~@request_ok]
+Wall conquest war accepted.\
+Run to Sabuk wall as fast as you can\
+to ask the oldman for the date and time of the war.\ \
+<Exit/@exit>
+; time of wall conquest war is\
+; <$CASTLEWARDATE> PM 8.\
+
+
+

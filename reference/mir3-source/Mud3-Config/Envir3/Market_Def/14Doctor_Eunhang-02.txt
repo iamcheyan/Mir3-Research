@@ -1,0 +1,128 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_RedPlayer
+
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_Main
+
+;----------------------------------------------------------
+
+[@C_NQuest]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_C_NQuest
+;------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@JIYUK_2]
+#CALL [\NQ_HELP\area\wang.txt] @WANG
+
+[@JIYUK_3]
+#CALL [\NQ_HELP\area\bichun.txt] @BICHUN 
+
+[@JIYUK_4]
+#CALL [\NQ_HELP\area\yaksa.txt] @YAKSA
+
+[@JIYUK_5]
+#CALL [\NQ_HELP\area\kyunggap.txt] @KYUNGGAP
+
+[@JIYUK_6]
+#CALL [\NQ_HELP\area\oma.txt] @OMA
+
+[@JIYUK_7]
+#CALL [\NQ_HELP\area\younghon.txt] @STOLEN
+
+[@JIYUK_8]
+#CALL [\NQ_HELP\area\bamgol.txt] @SNAKE
+
+[@JIYUK_9]
+#CALL [\NQ_HELP\area\tarak.txt] @TARAK
+
+[@JIYUK_10]
+#CALL [\NQ_HELP\area\umyun.txt] @UMYUN
+
+[@JIYUK_11]
+#CALL [\NQ_HELP\area\mujun.txt] @MUJUNCS
+
+[@JIYUK_12]
+#CALL [\NQ_HELP\area\pariche.txt] @PARICHE
+
+[@JIYUK_13]
+#CALL [\NQ_HELP\area\dolumi.txt] @SUKMO
+
+;----------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@C_TQuest]
+#IF
+CheckDailyQuest 799
+;			799 : Dailyquest acquire fail
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_TQuest
+#ELSEACT
+goto @C_TQuest_0
+
+[@C_TQuest_0]
+#IF
+StartDailyQuest
+#ACT
+goto @C_TQuest_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_TQuest_1
+
+[@C_TQuest_1]
+#IF
+#ACT
+mov d1 0
+;			initialize variable
+goto @C_TQuest_1_1
+
+[@C_TQuest_1_1]
+#IF
+#ACT
+movr d1 10
+inc d1 1
+goto @C_TQuest_1_2
+
+[@C_TQuest_1_2]
+;			Dailyquest acquire fail :£¨1/5£© -> £¨1/3£©
+#IF
+equal d1 1
+#ACT
+mov d1 0
+RandSetDailyQuest 799 799
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Doctor_Eunhang-02.txt] @NPC_TQuest_2
+#ELSEACT
+mov d1 0
+goto @C_TQuest_3
+
+
+[@C_TQuest_3]
+#CALL [\QT_TODAY\SetDaily.txt] @set_Tquest
+
+;--------------------------------------------

@@ -1,0 +1,41 @@
+;;海メ盗
+[@Admin_Main]
+{
+{FCOLOR/10} 管理员菜单 {FCOLOR/12} \ \
+__<开始生存游戏挑战。/@StartIsland>\
+__<结束生存游戏挑战。/@FinishIsland>\
+__<改变地图属性(临时)/@Ch_Map> \ \
+}
+
+[@User_Main]
+{
+来，选择一下你要做什么。 \ \
+;;_<进行魔防阵游戏。/@PlayMabangJin> \ \
+_<试练屋/@PlayTestRoom> \ \
+;;_<参加行会战/@DuringGuildMatchTerm_PreView> \ \
+_<参加生存游戏挑战/@TreasureIsland> \ \
+;;_<参加智力竞赛/@EventOxQuiz> \ \
+;;_<察看行会战成绩/@GuildWarPointCheck> \ \
+}
+
+;;[@MabangJin_Main]
+;;{
+;;你要进行魔防阵游戏？ 开始之前有些东西需要先确认一下。\ \
+;;<购买进行魔防阵游戏必须的筹码。/@TradeTupe> \
+;;<进行魔防阵游戏/@PlayMabangJinGame> \
+;;<关闭/@exit>
+;;}
+
+[@TestRoom_Main]
+{
+有一些东西是只有强者才能获得的。。。\ \
+这里是考验强者的场所，你要参与考验吗？ \
+允许参与的时间如下 \
+上午 4:25-4:30 , 上午 10:25-10:30 \
+下午 4:25-4:30 , 下午 10:25-10:30  \
+一次仅限30人参加\ \
+有些事情我要事先讲清楚，我也不知道里面会发生什么事情，当然也不会对里面发生的事情负任何责任。 \ \
+<参加考验/@TestGame> \ 
+<关闭/@exit>
+}
+

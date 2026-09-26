@@ -1,0 +1,10 @@
+;;º£¥áµÁ
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_SinGiSun-D900.txt] @NPC_Main
+
+[@main_giveup]
+#IF
+#ACT
+mapmove 5 216 185

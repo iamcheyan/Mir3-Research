@@ -1,0 +1,52 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 107
+#ACT
+goto @jumawang_T107
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@jumawang_T107]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @jumawang_T107_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@jumawang_T107_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T107_Say
+
+#ACT
+set [308] 1
+;-----------------------------------------------------

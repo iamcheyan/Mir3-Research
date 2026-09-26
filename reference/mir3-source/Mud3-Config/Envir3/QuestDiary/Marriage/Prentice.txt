@@ -1,0 +1,739 @@
+;;海メ盗
+[@Prentice]
+{
+#SAY
+       58级以上可申请收徒，55级以下可申请拜师，徒弟级别升到55以上，师傅申请脱离关系，师傅可得到奖金500W，若徒弟强行脱离关系，师傅拿不到奖金，不过以后徒弟可要小心点了。基本和结婚一样操作，只是没有交换戒指。师傅在提交收徒申请后突然掉线、小退或退出游戏过，必需到这里来点击{FCOLOR/10}[取消收徒申请]{FCOLOR/12}，注意这一点很重要不然会影响另外人使用此功能。\\
+       <[知道了]/@Prentice1>\
+       <[关  闭]/@exit>
+
+[@Prentice1]
+	#Define N0{START_TUDI}          N0         ;收徒仪式标志
+	#Define N1{WEDDING_TUDI}        N1
+	#Define N3{TIME_TUDI}           N3
+	#Define N4{TRY_TUDI}            N4
+	#Define N5{WAITOUT}             N5
+	#Define N6{SHIFU}               N6         ;收徒申请标志
+	#Define N7{TUDI}                N7         ;拜师申请标志
+	
+	#Define B5{SHIFUNAME}           B5
+	#Define B6{TUDINAME}            B6
+	#Define B7{INPUTTUDINAME}       B7
+	
+	#IF
+		Equal   N0{START_TUDI}   1
+	#SAY
+	目前不能进行，请稍候。。\
+	#ELSESAY
+        以下功能链接请不要连续点击，程序会经过2-4秒的运算时间，请注意聊天对话框的系统返回信息。\\
+	<*申请收徒0.5W/@wantshoutu>\
+	<*申请拜师0.5W/@wantbaishi>\
+        <*脱离关系(师傅用)/@tltd>\
+        <*脱离关系20W(徒弟用)/@tlsf>\
+        <*查看我的师徒/@showst>\
+        <*领取师徒工资/@gxst>\
+
+	#IF
+		Equal   B5{SHIFUNAME}   %USERNAME
+	#SAY
+	<*取消收徒申请/@Cancelshoutu>\
+	
+	#IF
+		IsAdmin
+	#SAY
+	<*参数初始化/@adminVar>\
+
+        #IF
+        #SAY
+        \<[返 回]/@main>\
+         <[关 闭]/@exit>
+
+;查看我的师徒
+[@showst]
+       #IF
+       #ACT
+                FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                ReadValueSql  "TBL_CHARACTER" %A9 "FLD_CHARACTER,FLD_SHIFU,FLD_TUDI"  [@masd1]
+[@masd1()]
+       #IF
+       #ACT
+                mov  A0  %ARG(2)
+                mov  A8  %ARG(3)
+                SysMsg  "目前你的师傅：<$OUTPUT(A0)> 你的徒弟：<$OUTPUT(A8)>"
+
+;解除师徒关系
+[@tltd]
+       #IF
+                  !checklevel 58
+       #ACT
+                  SysMsg  "这里是师傅用的。"
+                  break
+
+       #IF
+       #ACT
+                  FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                  ReadValueSql  "TBL_CHARACTER" %A9 "FLD_CHARACTER,FLD_TUDI"  [@lasd]
+[@lasd()]
+        #IF
+        #ACT
+                mov  A8  %ARG(1)
+                mov  B2  %ARG(2)
+                mov  A0  %A9
+
+        #IF
+                Equal   B2   "无"
+        #ACT
+                SysMsg  "你没收徒弟。"
+        #ELSEACT
+                FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                mov  A1  "无"
+                FormatStr "FLD_TUDI='%s'" %A1
+                UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                Delaygoto [Grobal] 3 @next
+[@next]
+         #IF
+         #ACT
+                FormatStr "FLD_CHARACTER='%s'" %B2
+                ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_SHIFU,FLD_LEVEL"  [@pang]
+[@pang()]
+        #IF
+        #ACT
+                mov      A8   %ARG(1)
+                mov      D7   %ARG(2)
+                mov      D8   %ARG(3)
+                mov      A0   %A9
+
+        #IF
+                elarge  D8  54
+        #ACT
+                give 金币 5000000
+                SysMsg  " 师徒关系成功解除，你的徒弟等级己超过54级，系统奖励你500W金币。"
+        #ELSEACT
+                SysMsg  " 师徒关系成功解除，徒弟没带到55级，一无所获。"
+
+        #IF
+        #ACT
+                FormatStr "FLD_CHARACTER='%s'" %B2
+                mov  A1  "无"
+                FormatStr "FLD_SHIFU='%s'" %A1
+                UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                close
+[@tlsf]
+       #IF
+                !checkgold 200000
+       #ACT
+                SysMsg  "金币不够。"
+                close
+                break
+
+       #IF
+       #ACT
+                  FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                  ReadValueSql  "TBL_CHARACTER" %A9 "FLD_CHARACTER,FLD_SHIFU"  [@lasd1]
+[@lasd1()]
+       #IF
+       #ACT
+                mov  B2  %ARG(2)
+                mov  A0  %A9
+
+        #IF
+                Equal   B2   "无"
+        #ACT
+                SysMsg  "你没拜师傅。"
+        #ELSEACT
+                FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                mov    A1   "无"
+                FormatStr "FLD_SHIFU='%s'" %A1
+                UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                Delaygoto [Grobal] 3 @next111
+
+[@next111]
+        #IF
+        #ACT
+                FormatStr "FLD_CHARACTER='%s'" %B2
+                ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_TUDI,FLD_STOREGOLD"  [@pang1]
+[@pang1()]
+        #IF
+        #ACT
+                mov      D8   %ARG(3)
+                mov      A0   %A9
+        #IF
+        #ACT
+                mov    A1   "无"
+                inc    D8   100000
+                FormatStr "FLD_CHARACTER='%s'" %B2
+                FormatStr "FLD_TUDI='%s'" %A1
+                UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                FormatStr "FLD_STOREGOLD='%s'" %D8
+                UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                SysMsg  "师徒关系成功解除，作为叛徒的惩罚，你被没收了20W金币，师傅仓库增加了10W金币。"
+                take 金币 200000
+;Admin参数初始化
+[@adminVar]
+		#ACT
+                        SysMsg  "参数初始化成功。"
+			goto @cancelPrentice
+;取消收徒申请
+[@Cancelshoutu]
+		#ACT
+			SysMsg "您已经取消了收徒申请。"
+			goto @CancelPrentice
+;清除变量
+[@CancelPrentice]
+		#ACT
+			Mov  N0{START_TUDI}      0
+			Mov  N1(WEDDING_TUDI}    0
+			Mov  N3{TIME_TUDI}       0
+			Mov  N4{TRY_TUDI}        0
+			Mov  N5{WAITOUT}         0
+			Mov  N6{SHIFU}           0
+			Mov  N7{TUDI}            0
+			Mov  B5{SHIFUNAME}       ""
+			Mov  B6{TUDINAME}        ""
+			Mov  B7{INPUTTUDINAME}   ""
+			ClearDelayGoto
+;申请收徒
+[@wantshoutu]
+		#IF
+			!CheckLevel 58
+		#ACT
+	                SysMsg  "58级以上才可以使用此项功能。"
+                        break
+
+		#IF
+			!CheckGold   5000
+		#ACT
+			SysMsg  "收徒费用不够。"
+			break
+
+                #IF
+                #ACT
+                        FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                        ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_TUDI,FLD_SHIFU"  [@pass1]
+[@pass1()]
+                #IF
+                #ACT
+                        mov      A8   %ARG(2)
+                        mov      A7   %ARG(3)
+
+                #IF
+                        !Equal   A7   "无"
+                #ACT
+                        SysMsg  "请先脱离师傅再申请收徒。"
+			break
+
+                #IF
+                        !Equal   A8   "无"
+                #ACT
+                        SysMsg  "你已经有徒弟了。"
+			break
+                #ELSESAY
+                        <请输入徒弟的名字/@@inputtudi>\
+[@@inputtudi]
+                #IF
+                #ACT
+                        Mov   B0  %INPUTSTR
+              
+                #IF
+                        Equal  B0   %USERNAME
+                #ACT
+                        SysMsg  "你不能收自己为徒弟。"
+                        break
+             
+		#IF
+			!Equal  B0  ""
+		#SAY
+			您要招收的徒弟名字是 <$OUTPUT(B0)> 。\
+			徒弟名字正确吗？\\
+			<[正  确]/@Process1> \
+			<[不正确]/@@inputtudi>\
+[@Process1]
+		#IF
+			Equal   N6{SHIFU}     1
+		#SAY
+	                别人正在使用该功能。\
+
+		#ACT
+			break
+		
+		#IF
+			!Equal   B5{SHIFUNAME} ""
+		#SAY
+	                别人正在使用该功能。\
+
+		#ACT
+			break
+		
+		#IF
+			!Equal   B7{INPUTTUDINAME} ""
+		#SAY
+	                别人正在使用该功能。\
+
+		#ACT
+			break
+		
+		#IF
+			!CheckGold   5000
+		#ACT
+			SysMsg  "收徒费用不够。"
+			break
+		
+		#IF
+		#ACT
+			mov     N1{WEDDING_TUDI}         1
+			mov     B5{SHIFUNAME}            %USERNAME
+			mov     B7{INPUTTUDINAME}        %B0
+			mov     N6{SHIFU}                1
+			mov     N5{WAITOUT}              0
+			Delaygoto [local] 5  @startloop1
+			SysMsg  "已完成收徒申请，等徒弟也来申请拜师，就会结算收徒费用。"
+                        close
+[@wantbaishi]
+		#IF                                             
+			!Equal   N6{SHIFU}    1
+		#ACT
+			SysMsg  "师傅尚未申请收徒。"
+			break
+
+		#IF
+			!Equal   B7{INPUTTUDINAME}   %USERNAME
+		#ACT
+			SysMsg  "师傅尚未申请收徒。"
+			break
+              
+                #IF
+                        Equal    B5{SHIFUNAME}  %USERNAME
+                #ACT
+			SysMsg  "错误不能拜自己为师！！"
+			break
+
+                #IF
+                        CheckLevel 55
+                #ACT
+              		SysMsg  "等级已达到或超过55级,不能拜师。"
+			break
+
+		#IF
+			!CheckGold 5000
+                #ACT
+              		SysMsg  "金币不足。"
+			break
+
+                #IF
+                #ACT
+                        FormatStr "FLD_CHARACTER='%s'" %USERNAME
+                        ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_SHIFU"  [@PA89]
+                        close
+[@PA89()]
+                #IF
+                #ACT
+                        mov  A8  %ARG(2)
+
+                #IF
+                        !Equal   A8   "无"
+                #ACT
+                        SysMsg  "你已经有师傅<$OUTPUT(A8)>了。"
+		#ELSEACT
+			take 金币 5000
+			mov   N7{TUDI}     1
+			mov   B6{TUDINAME}  %USERNAME
+                        SysMsg  "拜师申请已接纳。"
+[@startloop1]
+		#IF
+			Equal   N0{START_TUDI}   1
+		#ACT
+			break
+
+		#IF
+			Large   N5{WAITOUT}   10
+		#ACT
+			SysMsg  "徒弟未及时报到，收徒申请结束。"
+			goto @CancelPrentice
+			break
+		
+		#IF
+			Equal   N6{SHIFU}     1
+			Equal   N7{TUDI}      0
+		#ACT
+			SysMsg  "正在等候徒弟申请拜师。"
+                        Inc     N5{WAITOUT}      1
+			Delaygoto [local] 6 @startloop1
+			break
+		
+		#IF
+			Equal   N6{SHIFU}     1
+			Equal   N7{TUDI}      1
+		#ACT
+			Take  金币   5000
+			Mov     N0{START_TUDI}   1
+			Mov     N3{TIME_TUDI}    0
+			EventMsg  "0" "马上就会举行师傅<$OUTPUT(B5)>和徒弟<$OUTPUT(B0)>拜师收徒仪式。"
+			SysMsg    "拜师收徒仪式相关准备已做好。"
+			Delaygoto [local] 10  @weddingCeremony1
+			close
+[@weddingCeremony1]
+                #IF
+                #ACT
+                        Inc  N3{TIME_TUDI} 1
+
+		#IF
+			Equal N1{WEDDING_TUDI} 0
+		#ACT
+			break
+		
+		#IF
+			Large  N3{TIME_TUDI}  30
+		#ACT
+			EventMsg  "0"  "因师傅或徒弟太长时间未作答，仪式取消。"
+                        goto @CancelPrentice
+			break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}   1
+		#ACT
+			EventMsg   "0"  "现在开始举行师傅<$OUTPUT(B5)>和徒弟<$OUTPUT(B0)>拜师收徒仪式。"
+			Mov  N1{WEDDING_TUDI}  2
+			Delaygoto [local]  10  @weddingCeremony1
+			break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}  2
+		#ACT
+			EventMsg  "0"  "师傅<$OUTPUT(B5)>发誓会在传奇3的世界里保护徒弟<$OUTPUT(B0)>吗？ 请用“是/不是”来简短回答。 "
+			Mov  N4{TRY_TUDI}    5
+			CaptureSaying   %B5  @ListenSayYes_man1
+			Mov   N1{WEDDING_TUDI}  3
+			Delaygoto [local]   10  @weddingCeremony1
+			break
+		
+		#IF
+			Equal N1{WEDDING_TUDI}  3
+		#ACT
+			EventMsg  "0"  "师傅请用“是/不是”来回答。"
+			Delaygoto [local]   10  @weddingCeremony1
+			break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}  4
+		#ACT
+			Eventmsg   "0"  "徒弟<$OUTPUT(B0)>发誓会在传奇3的世界里永远追随师傅<$OUTPUT(B5)> 吗？请用“是/不是”来简短回答。"
+			Mov  N4{TRY_TUDI}    5
+			CaptureSaying  %B0  @ListenSayYes_woman1
+			Mov  N1{WEDDING_TUDI}  5
+			Delaygoto [local]   10  @weddingCeremony1
+			break
+		
+		#IF
+			Equal N1{WEDDING_TUDI}  5
+		#ACT
+			EventMsg  "0"  "徒弟请用“是/不是”来回答。"
+			Delaygoto [local]  10  @weddingCeremony1
+			break
+
+		#IF
+			Equal N1{WEDDING_TUDI}  6
+		#ACT
+			EventMsg  "0"  "拜师收徒仪式圆满结束，最后希望师徒俩在传奇的岁月里互相帮助，共同进步。"
+                        FormatStr "FLD_CHARACTER='%s'" %B6{TUDINAME}
+                        ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_SHIFU"  [@PA889]
+                        close
+                #ELSEACT
+                        Delaygoto [local]  10  @weddingCeremony1
+[@PA889()]
+                #ACT
+                        mov   A0   %A9
+                        FormatStr "FLD_CHARACTER='%s'" %B6{TUDINAME}
+                        FormatStr "FLD_SHIFU='%s'" %B5{SHIFUNAME}
+                        UpdateValueSql "TBL_CHARACTER" %A0 %A9
+                        Delaygoto [Grobal] 3 @save_2
+[@save_2]
+                #ACT
+                        FormatStr "FLD_CHARACTER='%s'" %B5{SHIFUNAME}
+                        ReadValueSql  "TBL_CHARACTER" %A9 "FLD_CHARACTER,FLD_TUDI"  [@SOS]
+[@SOS()]
+                #ACT
+                        mov   A0   %A9
+                        FormatStr "FLD_CHARACTER='%s'" %B5{SHIFUNAME}
+                        FormatStr "FLD_TUDI='%s'" %B6{TUDINAME}
+                        Mov  N0{START_TUDI}      0
+			Mov  N1(WEDDING_TUDI}         0
+			Mov  N3{TIME_TUDI}       0
+			Mov  N4{TRY_TUDI}        0
+			Mov  N5{WAITOUT}         0
+			Mov  N6{SHIFU}           0
+			Mov  N7{TUDI}            0
+			Mov  B5{SHIFUNAME}       ""
+			Mov  B6{TUDINAME}        ""
+			Mov  B7{INPUTTUDINAME}   ""
+			ClearDelayGoto
+                        UpdateValueSql "TBL_CHARACTER" %A0 %A9
+[@ListenSayYes_man1]
+		#IF
+			Equal N1{WEDDING_TUDI}  0
+		#ACT
+			CaptureSaying ""
+			break
+		
+		#IF
+		#ACT
+			mov  B9 %INPUTSTR
+
+		#IF
+			Equal  N1{WEDDING_TUDI}  3
+			Equal  B9  "是"
+		#ACT
+			Mov  B9  ""
+			EventMsg  "0"  "师傅<$OUTPUT(B5)>回答“是”。"
+			Mov  N1{WEDDING_TUDI}  4
+			CaptureSaying  "" 
+			break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}  3
+			Equal  B9  "不是"
+		#ACT
+			Mov  B9  ""
+			EventMsg  "1"  "师傅<$OUTPUT(B5)>回答“不是”,仪式不得不取消，请这位师傅好好去考虑一下。"
+			CaptureSaying  ""
+                        goto @CancelPrentice
+			Break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI} 3
+			!Equal  B9  ""
+		#ACT
+			EventMsg  "0" "师傅请用“是/不是”来回答。"
+		
+		#IF
+			Large  N4{TRY_TUDI}  0
+		#ACT
+			SysMsg "只剩下<$OUTPUT(N4)>次的机会。请用“是/不是”来回答。"
+		#ELSEACT
+			EventMsg  "0"  "拜师收徒仪式已取消。"
+			CaptureSaying  ""
+			goto @CancelPrentice
+			Break
+		
+		#IF
+		#ACT
+			Dec   N4{TRY_TUDI}   1
+[@ListenSayYes_woman1]
+		#IF
+			Equal N1{WEDDING_TUDI}  0
+		#ACT
+			CaptureSaying ""
+			break
+		
+		#IF
+		#ACT
+			mov  B9 %INPUTSTR
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}  5
+			Equal  B9  "是"
+		#ACT
+			Mov  B9  ""
+			EventMsg  "0"  "徒弟<$OUTPUT(B0)>已回答“是”。"
+			Mov  N1{WEDDING_TUDI}  6
+			CaptureSaying  ""
+			break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI}  5
+			Equal  B9  "不是"
+		#ACT
+			Mov  B9  ""
+			EventMsg  "0"  "徒弟<$OUTPUT(B0)>回答“不是”,仪式不得不取消，请这位徒弟好好去考虑一下。"
+			CaptureSaying  ""
+                        goto @CancelPrentice
+			Break
+		
+		#IF
+			Equal  N1{WEDDING_TUDI} 5
+			!Equal  B9  ""
+		#ACT
+			EventMsg  "0" "徒弟请用“是/不是”来回答。"
+		
+		#IF
+			Large N4{TRY_TUDI}   0
+		#ACT
+			SysMsg "<只剩下$OUTPUT(N4)>次的机会。请用“是/不是”来回答。"
+		#ELSEACT
+			EventMsg  "0"  "拜师收徒仪式已取消。"
+			CaptureSaying  ""
+			goto @CancelPrentice
+			Break
+		
+		#IF
+		#ACT
+			Dec   N4{TRY_TUDI}   1
+[@gxst]
+#SAY
+     为鼓励老玩家介绍新玩家来我们的传奇世界，特推出师傅和徒弟每日发工资18W 10W \\
+     <领取工资/@gxst1>\
+     <返 回/@main>\
+
+[@gxst1]
+#IF
+#ACT
+     FormatStr "FLD_CHARACTER='%s'" %USERNAME
+     ReadValueSql  "TBL_CHARACTER" %A9 "FLD_CHARACTER,FLD_SHIFU,FLD_TUDI"  [@mir3g]
+
+[@mir3g()]
+#IF
+#ACT
+     mov  A8  %ARG(2)
+     mov  A7  %ARG(3)
+     mov  D5  0
+#IF
+     !Equal   A8   "无"
+#ACT
+      mov  D5  180000
+
+#IF
+     !Equal   A7   "无"
+#ACT
+      mov  D5  100000
+
+#IF
+     Equal   D5   0
+#ACT
+     SysMsg  "你没收徒弟也没拜师，不能领工资。"
+     break
+
+#IF
+        dayofweek sun
+        check [1391] 0
+        !Equal D5 0
+#ACT
+        set [1391] 1
+        set [1392] 0
+        set [1393] 0
+        set [1394] 0
+        set [1395] 0
+        set [1396] 0
+        set [1397] 0
+        give 金币 %D5
+        break
+#SAY
+        今天的工资已经给你啦，你拿稳了。\\
+        <返 回/@main>\
+        <谢 谢/@exit>
+
+#IF
+       !Equal D5 0
+       dayofweek mon
+       check [1392] 0
+#ACT
+       set [1391] 0
+       set [1392] 1
+       set [1393] 0
+       set [1394] 0
+       set [1395] 0
+       set [1396] 0
+       set [1397] 0
+       give 金币 %D5
+       break
+#SAY
+       今天的工资已经给你啦，你拿稳了。\\
+       <返 回/@main>\
+       <谢 谢/@exit>
+
+
+#IF
+       !Equal D5 0
+       dayofweek tue
+       check [1393] 0
+#ACT
+       set [1391] 0
+       set [1392] 0
+       set [1393] 1
+       set [1394] 0
+       set [1395] 0
+       set [1396] 0
+       set [1397] 0
+       give 金币 %D5
+       break
+#SAY
+       今天的工资已经给你啦，你拿稳了。\\
+       <返 回/@main>\
+       <谢 谢/@exit>
+
+#IF
+        !Equal D5 0
+        dayofweek wed
+        check [1394] 0
+#ACT
+        set [1391] 0
+        set [1392] 0
+        set [1393] 0
+        set [1394] 1
+        set [1395] 0
+        set [1396] 0
+        set [1397] 0
+        give 金币 %D5
+        break
+#SAY
+        今天的工资已经给你啦，你拿稳了。\\
+        <返 回/@main>\
+        <谢 谢/@exit>
+
+#IF
+        !Equal D5 0
+        dayofweek thu
+        check [1395] 0
+#ACT
+        set [1391] 0
+        set [1392] 0
+        set [1393] 0
+        set [1394] 0
+        set [1395] 1
+        set [1396] 0
+        set [1397] 0
+        give 金币 %D5
+        break
+#SAY
+        今天的工资已经给你啦，你拿稳了。\\
+        <返 回/@main>\
+        <谢 谢/@exit>
+
+#IF
+        !Equal D5 0
+        dayofweek fri
+        check [1396] 0
+#ACT
+        set [1391] 0
+        set [1392] 0
+        set [1393] 0
+        set [1394] 0
+        set [1395] 0
+        set [1396] 1
+        set [1397] 0
+        give 金币 %D5
+        break
+#SAY
+        今天的工资已经给你啦，你拿稳了。\\
+        <返 回/@main>\
+        <谢 谢/@exit>
+
+#IF
+        !Equal D5 0
+        dayofweek sat
+        check [1397] 0
+#ACT
+        set [1391] 0
+        set [1392] 0
+        set [1393] 0
+        set [1394] 0
+        set [1395] 0
+        set [1396] 0
+        set [1397] 1
+        give 金币 %D5
+#SAY
+        今天的工资已经给你啦，你拿稳了。\\
+        <返 回/@main>\
+        <谢 谢/@exit>
+#ELSESAY
+        你今天好象已经领过了啊，怎么还想再领？\\
+        <返 回/@main>\
+        <离 开/@exit>
+}

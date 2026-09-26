@@ -1,0 +1,138 @@
+;;º£¥áµÁ
+[@PARICHE_START]
+{
+#IF
+checklevel 5
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_1
+
+
+[@PARICHE_START_0]
+#IF
+check [266] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_2
+
+
+[@PARICHE_START_1]
+#IF
+check [266] 0
+#ACT
+set [266] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_3
+
+}
+
+[@PARICHE_KIM_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_4
+
+}
+
+[@PARICHE_KIM_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_5
+
+}
+
+[@PARICHE_COMPLETE]
+{
+#IF
+checkitem ²ÔÓ¬ÅÄ 1
+#ACT
+goto @PARICHE_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_6
+
+
+[@PARICHE_COMPLETE_1]
+#IF
+check [270] 1
+check [271] 0
+#ACT
+take ²ÔÓ¬ÅÄ 1
+give ²õÒíµ¶ 1
+mov S1 0
+mov S2 0
+reset [266] 4
+set [271] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_7
+
+}
+
+[@PARICHE_JABSANG_1]
+{
+#IF
+check [267] 0
+check [266] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_8
+
+
+[@PARICHE_JABSANG_1_1]
+#IF
+check [267] 0
+check [266] 1
+#ACT
+mov S1 0
+mov S2 0
+set [267] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_9
+
+}
+
+[@PARICHE_JABSANG_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_10
+
+}
+
+[@PARICHE_JABSANG_3]
+{
+#IF
+checkitem Å£Ã« 1
+#ACT
+goto @PARICHE_JABSANG_3_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_11
+
+
+[@PARICHE_JABSANG_3_1]
+#IF
+checkitem Öñ¹÷ 1
+#ACT
+goto @PARICHE_JABSANG_3_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_12
+
+
+[@PARICHE_JABSANG_3_2]
+#IF
+checkitem Å£Ã« 1
+checkitem Öñ¹÷ 1
+#ACT
+take Å£Ã« 1
+take Öñ¹÷ 1
+give ²ÔÓ¬ÅÄ 1
+set [270] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_13
+
+}
+
+[@PARICHE_JABSANG_4]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\pariche.txt] @pariche_14
+
+}

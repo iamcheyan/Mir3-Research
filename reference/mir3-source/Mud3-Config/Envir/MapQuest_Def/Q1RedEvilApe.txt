@@ -1,0 +1,30 @@
+[@main]
+#IF
+check [409] 1
+#ACT
+break
+
+#IF
+check [408] 1
+#SAY
+;이제 다시 진천자 선배님이 계신곳으로 가서 가르침을 \
+Now, I'll go back to master Thunderman \
+;얻어야 겠군. \ \
+for further information. \ \ 
+#ACT
+break
+
+#IF
+random 5
+check [407] 1
+#SAY
+;단지 바라보는 것만으로 피에 대한 갈망이 솟구친다... \ 
+Just looking at it makes me bloodthirsty... \
+;이제 다시 진천자 선배님이 계신곳으로 가서 가르침을 \
+Now, I'll go back to master Thunderman \
+;얻어야 겠군. \ \
+for further information. \ \ 
+#ACT
+give RedMoonChip 1
+SET [408] 1
+

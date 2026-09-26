@@ -1,0 +1,688 @@
+;;º£¥áµÁ
+[@Ma21]
+{
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_1
+
+
+[@Ma21_game]
+#IF
+checkhum B121 3
+#ACT
+goto @Ma21_pre_cube
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_2
+
+
+[@Ma21_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma21_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_3
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma21_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B122 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B123 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B124 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B125 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B126 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B127 10 16
+break
+}
+
+[@Ma22]
+{
+#IF
+#ACT  
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_4
+
+[@Ma22_race]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma22_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_5
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma22_cube]
+#IF
+large d0 3
+#ACT
+mapmove B130 10 16
+#ELSEACT
+goto @Ma22_move
+
+[@Ma22_move]
+#IF
+equal d0 1
+#ACT
+mapmove B123 10 16
+break                                                                
+#IF
+equal d0 2
+#ACT
+mapmove B124 10 16
+break                                                                
+#IF
+equal d0 3
+#ACT
+mapmove B125 10 16
+break
+}
+
+[@Ma23]
+{
+#IF
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_6
+
+
+[@Ma23_game]
+#IF
+checkitem ³ïÂë 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_7
+
+#ACT
+take ³ïÂë 1
+mov n1 0
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma23_dicestart]
+#IF
+small n1 3
+#ACT
+movr d0 6
+inc d0 1
+movr d1 6
+inc d1 1
+inc n1 1
+playdice 2 @Ma23_result
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_8
+
+#ELSEACT
+goto @Ma23_game
+
+[@Ma23_result]
+#ACT
+dec d0 %d1
+
+#IF
+equal d0 2
+#ACT
+goto @Ma23_pre_cube
+#ELSEACT
+goto @Ma23_dicestart
+
+[@Ma23_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma23_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_9
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma23_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B124 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B125 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B126 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B127 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B128 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B129 10 16
+break
+}
+
+[@Ma24]
+{
+#IF
+#ACT
+movr d0 3
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_10
+
+
+[@Ma24_exchange]
+#IF
+checkitem ³ïÂë 1
+equal d0 0
+#ACT
+take ³ïÂë 1
+ExchangeMap B102
+break
+
+#IF
+checkitem ³ïÂë 1
+equal d0 1
+#ACT
+take ³ïÂë 1
+ExchangeMap B115
+break
+
+#IF
+checkitem ³ïÂë 1
+equal d0 2
+#ACT
+take ³ïÂë 1
+ExchangeMap B126
+break
+
+#ELSEACT
+mapmove 01 428 314
+}
+
+[@Ma25]
+{
+#IF
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_11
+
+
+[@Ma25_buyP]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+give ½ð´´Ò©£¨ÌØ£© 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_12
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_13
+
+
+[@Ma25_buyB]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+give Ä§·¨Ò©£¨ÌØ£© 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_14
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_15
+
+
+[@Ma25_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma25_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_16
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma25_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B126 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B127 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B128 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B129 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B130 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B131 10 16
+break
+}
+
+[@Ma26]
+{
+#IF
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_17
+
+
+[@Ma26_move]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+mapmove B116 10 16
+#ELSEACT
+mapmove 01 428 314
+}
+
+[@Ma27]
+{
+#IF
+#ACT
+breaktimerecall
+movr d0 8
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_18
+
+
+[@Ma27_game]
+#IF
+equal d0 0
+#ACT
+goto @Ma27_race
+take ³ïÂë 6
+break
+
+#IF
+equal d0 1
+#ACT
+goto @Ma27_race
+give ³ïÂë 6
+break
+
+#IF
+equal d0 2
+#ACT
+mapmove B123 10 16
+break
+
+#IF
+equal d0 3
+#ACT
+mapmove B131 10 16
+break
+
+#IF
+equal d0 4
+#ACT
+goto @Ma27_race
+break
+
+#IF
+equal d0 5
+#ACT
+take ½ð±Ò 4000
+goto @Ma27_race
+break
+
+#IF
+equal d0 6
+#ACT
+take ½ð´´Ò©£¨´ó£© 5
+take Ä§·¨Ò©£¨´ó£© 5
+goto @Ma27_race
+break
+
+#IF
+equal d0 7
+#ACT
+give ½ð´´Ò©£¨´ó£© 5
+give Ä§·¨Ò©£¨´ó£© 5
+goto @Ma27_race
+break
+
+[@Ma27_race]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma27_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_19
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma27_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B128 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B129 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B130 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B131 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B132 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B133 10 16
+break
+}
+
+[@Ma28]
+{
+#IF
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_20
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma28_game]
+#IF
+checkitem ³ïÂë 12
+#ACT
+take ³ïÂë 12
+goto @Ma28_race
+
+[@Ma28_race]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_21
+
+#ELSEACT
+mapmove 01 428 314
+
+[@cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B129 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B130 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B131 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B132 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B133 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B134 10 16
+break
+}
+
+[@Ma29]
+{
+#IF
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_22
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma29_game]
+#IF
+checkitem ³ïÂë 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_23
+
+#ACT
+take ³ïÂë 1
+mov n1 0
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma29_dicestart]
+#IF
+small n1 3
+#ACT
+inc n1 1
+movr d0 6
+inc d0 1
+movr d1 6
+inc d1 1
+playdice 2 @Ma29_result
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_24
+
+#ELSEACT
+goto @Ma29_game
+
+[@Ma29_result]
+#IF
+equal d0 %d1
+#ACT
+goto @Ma29_race
+#ELSEACT
+goto @Ma29_dicestart
+
+[@Ma29_race]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma29_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_25
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma29_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B130 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B131 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B132 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B133 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B134 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B135 10 16
+break
+}
+
+[@Ma30]
+{
+#ACT
+movr d0 4
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play21_30.txt] @play21_30_26
+
+
+[@Ma30_game]
+#IF
+equal d0 0
+#ACT
+give ³ïÂë 3
+mapmove B129 10 16
+break
+
+#IF
+equal d0 1
+#ACT
+take ³ïÂë 6
+mapmove B128 10 16
+break
+
+#IF
+equal d0 2
+#ACT
+take ³ïÂë 6
+mapmove B131 10 16
+break
+
+#IF
+equal d0 3
+#ACT
+give ³ïÂë 6
+mapmove B132 10 16
+break
+}

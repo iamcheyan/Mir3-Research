@@ -1,0 +1,4271 @@
+;;海メ盗
+[@501_START]
+{
+#IF
+CheckDailyQuest 501
+#ACT
+goto @501_START_1
+
+[@501_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/10}
+你说要帮助我的事情？来得正是时候。食人花的库存量没有剩下多少了，交易的药材商人要1天以后才可以到达。在东西到达之前，{FCOLOR/10}24点之前{FCOLOR/12}可以拿来{FCOLOR/10}食人树叶10个{FCOLOR/12}吗？\ \
+ <就这么办吧。/@501_START_2>\
+ <请给些考虑的时间。/@501_START_1_1>
+
+[@501_START_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@501_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/10}
+那么如果找到{FCOLOR/10}食人树叶10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@501_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/10}
+带来我所委托的{FCOLOR/10}食人树叶10个{FCOLOR/12}了吗。\ \
+ <找回来了。/@501_CHECK1_2>\
+ <请再给些时间。/@501_CHECK1_1_1>
+
+[@501_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@501_CHECK1_2]
+#IF
+checkitem 食人树叶 10
+#ACT
+goto @501_CHECK1_3
+#ELSESAY
+{NPCIMG/10}
+年轻人为什么这么慢？快点找来{FCOLOR/10}食人树叶10个{FCOLOR/12}吧。\ \
+<结束/@exit>
+
+[@501_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 食人树叶 10
+give 金币 5000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/10}
+辛苦了，这是酬谢。\ \
+ <结束/@exit>
+}
+
+[@502_START]
+{
+#IF
+CheckDailyQuest 502
+#ACT
+goto @502_START_1
+
+[@502_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/90}
+说要帮助我的事情？那么请找来{FCOLOR/10}毒蜘蛛牙齿5个{FCOLOR/12}。但是由于用于特殊的用途，一定要在FCOLOR/10}24点之前{FCOLOR/12}采集。\ \
+ <就这么办吧。/@502_START_2>\
+ <请给些考虑的时间。/@502_START_1_1>
+
+[@502_START_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@502_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/90}
+那么如果找到{FCOLOR/10}毒蜘蛛牙齿5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@502_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/90}
+找来我所委托的{FCOLOR/10}毒蜘蛛牙齿5个{FCOLOR/12}了吗\ \
+ <找回来了。/@502_CHECK1_2>\
+ <请再给些时间。/@502_CHECK1_1_1>
+
+[@502_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@502_CHECK1_2]
+#IF
+checkitem 毒蜘蛛牙齿 5
+#ACT
+goto @502_CHECK1_3
+#ELSESAY
+{NPCIMG/90}
+怎么回事？好象没有拿来我所拜托的东西。。\ \
+ <结束/@exit>
+
+[@502_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 毒蜘蛛牙齿 5
+give 金币 7000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/90}
+哦，带来所拜托的东西了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@503_START]
+{
+#IF
+CheckDailyQuest 503
+#ACT
+goto @503_START_1
+
+[@503_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/30}
+嗯，想找事情做？正好。回城卷都用完了，请找到{FCOLOR/10}回城卷10个{FCOLOR/12}。但是一定要在{FCOLOR/10}24点之前{FCOLOR/12}找到哟。\ \
+ <就这么办吧。/@503_START_2>\
+ <请给些考虑的时间。/@503_START_1_1>
+
+[@503_START_1_1]
+#IF
+#SAY
+{NPCIMG/30}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@503_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/30}
+那么如果找到{FCOLOR/10}回城卷10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@503_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/30}
+找来我所委托的{FCOLOR/10}回城卷10个{FCOLOR/12}了吗？\ \
+ <找回来了。/@503_CHECK1_2>\
+ <请再给些时间。/@503_CHECK1_1_1>
+
+[@503_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/30}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@503_CHECK1_2]
+#IF
+checkitem 回城卷 10
+#ACT
+goto @503_CHECK1_3
+#ELSESAY
+{NPCIMG/30}
+嗯，还没拿来东西啊。快点去找来{FCOLOR/10}回城卷10个{FCOLOR/12}吧。\ \
+<结束/@exit>
+
+[@503_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 回城卷 10
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/30}
+哦，带来所拜托的东西了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@504_START]
+{
+#IF
+CheckDailyQuest 504
+#ACT
+goto @504_START_1
+
+[@504_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/0}
+你说要帮助我的事情？来得正是时候。有个很急的订单，但是铁矿的量没有剩下多少了。不可以在{FCOLOR/10}24点之前{FCOLOR/12}给我找到FCOLOR/10}纯度为10以上的铁矿2个{FCOLOR/12}吗？\ \
+ <就这么办吧。/@504_START_2>\
+ <请给些考虑的时间。/@504_START_1_1>
+
+[@504_START_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@504_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/0}
+那么如果找到{FCOLOR/10}纯度为10以上的铁矿2个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@504_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/0}
+找到我所拜托的{FCOLOR/10}纯度为10以上的铁矿2个{FCOLOR/12}了吗？\ \
+ <找回来了。/@504_CHECK1_2>\
+ <请再给些时间。/@504_CHECK1_1_1>
+
+[@504_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+今天之内一定要找回来吧。\ \
+ <结束/@exit>
+
+[@504_CHECK1_2]
+#IF
+checkitem 铁矿 2
+checkduraeva 铁矿 10
+#ACT
+goto @504_CHECK1_3
+#ELSESAY
+{NPCIMG/0}
+年轻人为什么这么慢？快点找来{FCOLOR/10}纯度为10以上的铁矿2个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@504_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 铁矿 2
+give 金币 6000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/0}
+辛苦了。这是谢礼。\ \
+ <结束/@exit>
+}
+
+[@505_START]
+{
+#IF
+CheckDailyQuest 505
+#ACT
+goto @505_START_1
+
+[@505_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/40}
+武士你说要帮助我的事情吗？那么请在{FCOLOR/10}24点之前{FCOLOR/12}拿来{FCOLOR/10}食人树的果实5个{FCOLOR/12}。\ \
+ <就这么办吧。/@505_START_2>\
+ <请给些考虑的时间。/@505_START_1_1>
+
+[@505_START_1_1]
+#IF
+#SAY
+{NPCIMG/40}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@505_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/40}
+那么如果找到{FCOLOR/10}食人树的果实5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@505_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/40}
+找到我拜托的{FCOLOR/10}食人树的果实5个{FCOLOR/12}了吗？\ \
+ <找回来了。/@505_CHECK1_2>\
+ <请再给些时间。/@505_CHECK1_1_1>
+
+[@505_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/40}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@505_CHECK1_2]
+#IF
+checkitem 食人树的果实 5
+#ACT
+goto @505_CHECK1_3
+#ELSESAY
+{NPCIMG/40}
+嗯。。还没找到{FCOLOR/10}食人树的果实5个{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@505_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 食人树的果实  5
+give 青铜斧 1
+give 金币 2000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/40}
+噢？真的找来了哟。原来是一句玩笑话。。。就那么走，我很对不起，给你这个吧！\ \
+ <结束/@exit>
+}
+
+[@506_START]
+{
+#IF
+CheckDailyQuest 506
+#ACT
+goto @506_START_1
+
+[@506_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/70}
+说要帮助我的事情吗？最近眼睛变得昏暗了，晚上做针线活儿都困难了。可以给我买{FCOLOR/10}蜡烛10个{FCOLOR/12}吗？\ \
+ <就这么办吧。/@506_START_2>\
+ <请给些考虑的时间。/@506_START_1_1>
+
+[@506_START_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@506_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/70}
+那么如果找到{FCOLOR/10}蜡烛10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@506_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/70}
+找到我拜托的{FCOLOR/10}蜡烛10个{FCOLOR/12}了吗？\ \
+ <找回来了。/@506_CHECK1_2>\
+ <请再给些时间。/@506_CHECK1_1_1>
+
+[@506_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@506_CHECK1_2]
+#IF
+checkitem 蜡烛 10
+#ACT
+goto @506_CHECK1_3
+#ELSESAY
+{NPCIMG/70}
+还没买到{FCOLOR/10}蜡烛10个{FCOLOR/12}了吗？请快点买来。\ \
+ <结束/@exit>
+
+[@506_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蜡烛 10
+give 金币 3000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/70}
+谢谢！将很好地使用。\ \
+ <结束/@exit>
+}
+
+[@507_START]
+{
+#IF
+CheckDailyQuest 507
+#ACT
+goto @507_START_1
+
+[@507_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+说要帮助我吗？正好。附近有一个宴会需要新鲜的肉，请在{FCOLOR/10}24点之前{FCOLOR/12}找来{FCOLOR/10}品质为10以上的牛肉5个{FCOLOR/12}。\ \
+ <就这么办吧。/@507_START_2>\
+ <请给些考虑的时间。/@507_START_1_1>
+
+[@507_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@507_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}品质为10以上的牛肉5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@507_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找到我拜托的{FCOLOR/10}品质为10以上的牛肉5个{FCOLOR/12}了吗？\ \
+ <找回来了。/@507_CHECK1_2>\
+ <请再给些时间。/@507_CHECK1_1_1>
+
+[@507_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@507_CHECK1_2]
+#IF
+checkitem 牛肉 5
+checkduraeva 牛肉 10
+#ACT
+goto @507_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+还没找到{FCOLOR/10}品质为10以上的牛肉5个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@507_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 牛肉 5
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+辛苦了，这是谢礼。\ \
+ <结束/@exit>
+}
+
+[@508_START]
+{
+#IF
+CheckDailyQuest 508
+#ACT
+goto @508_START_1
+
+[@508_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/20}
+你说要帮助我的事情？嗯。。。。事实上我对生活在西部地区的蚂蚁卵究竟是什么样子的很纳闷。如果在{FCOLOR/10}24点之前{FCOLOR/12}找到FCOLOR/10}蚂蚁卵10个{FCOLOR/12}，就有酬谢！\ \
+ <就这么办吧。/@508_START_2>\
+ <请给些考虑的时间。/@508_START_1_1>
+
+[@508_START_1_1]
+#IF
+#SAY
+{NPCIMG/20}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@508_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/20}
+那么如果找到{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@508_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/20}
+带来我所委托的{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}了吗。\ \
+ <找回来了。/@508_CHECK1_2>\
+ <请再给些时间。/@508_CHECK1_1_1>
+
+[@508_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/20}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@508_CHECK1_2]
+#IF
+checkitem 蚂蚁卵 10
+#ACT
+goto @508_CHECK1_3
+#ELSESAY
+{NPCIMG/20}
+年轻人为什么这么慢？快点找来{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@508_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蚂蚁卵 10
+give 雷电术 1
+give 金币 8000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/20}
+辛苦了。这是谢礼。\ \
+ <结束/@exit>
+}
+
+[@509_START]
+{
+#IF
+CheckDailyQuest 509
+#ACT
+goto @509_START_1
+
+[@509_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/120}
+说要帮助我的事情吗？有要招待贵客的事情，因此需要{FCOLOR/10}烧酒10个{FCOLOR/12}和{FCOLOR/10}品质为10以上的牛肉10个{FCOLOR/12}，在{FCOLOR/10}24点之前{FCOLOR/12}可以拿来吗？\ \
+ <就这么办吧。/@509_START_2>\
+ <请给些考虑的时间。/@509_START_1_1>
+
+[@509_START_1_1]
+#IF
+#SAY
+{NPCIMG/120}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@509_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/120}
+那么如果找到{FCOLOR/10}烧酒10个{FCOLOR/12}和{FCOLOR/10}品质为10以上的牛肉10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@509_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/120}
+找到我拜托的{FCOLOR/10}烧酒10个{FCOLOR/12}和{FCOLOR/10}品质为10以上的牛肉10个{FCOLOR/12}了吗？\ \
+ <找回来了。/@509_CHECK1_2>\
+ <请再给些时间。/@509_CHECK1_1_1>
+
+[@509_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/120}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@509_CHECK1_2]
+#IF
+checkitem 烧酒 10
+#ACT
+goto @509_CHECK1_2_1
+#ELSESAY
+{NPCIMG/120}
+还没找到{FCOLOR/10}烧酒10个{FCOLOR/12}和{FCOLOR/10}品质为10以上的牛肉10个{FCOLOR/12}了吗？请快点拿来。\ \
+ <结束/@exit>
+
+[@509_CHECK1_2_1]
+#IF
+checkitem 牛肉 10
+checkduraeva 牛肉 10
+#ACT
+goto @509_CHECK1_3
+#ELSESAY
+{NPCIMG/120}
+还没找到{FCOLOR/10}烧酒10个{FCOLOR/12}和{FCOLOR/10}品质为10以上的牛肉10个{FCOLOR/12}了吗？请快点拿来。\ \
+ <结束/@exit>
+
+[@509_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 烧酒 10
+take 牛肉 10
+give 海魂 1
+give 金币 3000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/120}
+辛苦了！将很好地使用。这是谢礼。\ \
+ <结束/@exit>
+}
+
+[@510_START]
+{
+#IF
+CheckDailyQuest 510
+#ACT
+goto @510_START_1
+
+[@510_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/60}
+要帮忙我的事情？我没有什么事情要拜托的。。。嗯，不求之前委托东西的一位客人想栽培食人花，曾经问过哪里可以找到食人树的果实。如果找到{FCOLOR/10}食人树的果实10个{FCOLOR/12}，将有酬谢！ \ \
+ <就这么办吧。/@510_START_2>\
+ <请给些考虑的时间。/@510_START_1_1>
+
+[@510_START_1_1]
+#IF
+#SAY
+{NPCIMG/60}
+那么，今天之内给我答复哟。\ \
+<结束/@exit>
+
+[@510_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/60}
+那么如果找到{FCOLOR/10}食人树的果实10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@510_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/60}
+找到我拜托的{FCOLOR/10}食人树的果实10个{FCOLOR/12}了吗？\ \
+ <找回来了。/@510_CHECK1_2>\
+ <请再给些时间。/@510_CHECK1_1_1>
+
+[@510_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/60}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@510_CHECK1_2]
+#IF
+checkitem 食人树的果实 10
+#ACT
+goto @510_CHECK1_3
+#ELSESAY
+{NPCIMG/60}
+嗯。。还没找到{FCOLOR/10}食人树的果实10个{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@510_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 食人树的果实 10
+give 黑檀项链 1
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/60}
+辛苦了，将很好地使用。这是谢礼。\ \
+ <结束/@exit>
+}
+
+[@511_START]
+{
+#IF
+CheckDailyQuest 511
+#ACT
+goto @511_START_1
+
+[@511_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/150}
+嗯。。。说为了帮助我的事情而来？来得正好。那么就讲一下将要拜托施主的事情。贫道现在急需{FCOLOR/10}食人树叶5个{FCOLOR/12}。如果在{FCOLOR/10}24点之前{FCOLOR/12}找到那些东西，将支付适当的报酬。\ \
+ <就这么办吧。/@511_START_2>\
+<请给些考虑的时间。/@511_START_1_1> 
+
+[@511_START_1_1]
+#IF
+#SAY
+{NPCIMG/150}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@511_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/150}
+那么如果找到{FCOLOR/10}食人树叶5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@511_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/150}
+找到贫道所拜托的{FCOLOR/10}食人树叶5个{FCOLOR/12}了吗？\ \
+ <找回来了。/@511_CHECK1_2>\
+ <请再给些时间。/@511_CHECK1_1_1>
+
+[@511_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/150}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@511_CHECK1_2]
+#IF
+checkitem 食人树叶 5
+#ACT
+goto @511_CHECK1_3
+#ELSESAY
+{NPCIMG/150}
+怎么回事？好像没有拿来贫道所拜托的东西。。。可以快些带来{FCOLOR/10}食人树叶5个{FCOLOR/12}吗？\ \
+ <结束/@exit>
+
+[@511_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 食人树叶 5
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/150}
+哦，带来所拜托的东西了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@512_START]
+{
+#IF
+CheckDailyQuest 512
+#ACT
+goto @512_START_1
+
+[@512_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/150}
+据说道馆附近最近狼造成的伤害正在增加。如果在道馆附近抓到狼5只，作为这个证据{FCOLOR/10}狼肉5个{FCOLOR/12}，将有适当的报酬。\ \
+ <就这么办吧。/@512_START_2>\
+ <请给些考虑的时间。/@512_START_1_1>
+
+[@512_START_1_1]
+#IF
+#SAY
+{NPCIMG/150}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@512_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/150}
+那么如果找到{FCOLOR/10}狼肉5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@512_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/150}
+找到贫道所拜托的{FCOLOR/10}狼肉5个{FCOLOR/12}了吗？\ \
+ <找回来了。/@512_CHECK1_2>\
+ <请再给些时间。/@512_CHECK1_1_1>
+
+[@512_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/150}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@512_CHECK1_2]
+#IF
+checkitem 狼肉 5
+#ACT
+goto @512_CHECK1_3
+#ELSESAY
+{NPCIMG/150}
+怎么回事？好像没有拿来贫道所拜托的东西。。。可以快些带来{FCOLOR/10}狼肉5个{FCOLOR/12}吗？\ \
+<结束/@exit>
+
+[@512_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 狼肉 5
+give 半月 1
+give 金币 1000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/150}
+哦，带来所拜托的东西了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@513_START]
+{
+#IF
+CheckDailyQuest 513
+#ACT
+goto @513_START_1
+
+[@513_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/140}
+哦哦，快点来。帮忙而来，来得正好。那么就讲一下将要拜托施主的事情。贫道现在急需{FCOLOR/10}烧酒 5个{FCOLOR/12}。当然不是为了喝。不管怎样请在{FCOLOR/10}24点之前{FCOLOR/12}找到那些东西。\ \
+ <就这么办吧。/@513_START_2>\
+ <请给些考虑的时间。/@513_START_1_1>
+
+[@513_START_1_1]
+#IF
+#SAY
+{NPCIMG/140}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@513_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/140}
+那么如果找到{FCOLOR/10}烧酒 5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+<结束/@exit>
+}
+
+[@513_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/140}
+找到贫道所拜托的{FCOLOR/10}烧酒5个{FCOLOR/12}了吗？\ \
+ <找回来了。/@513_CHECK1_2>\
+ <请再给些时间。/@513_CHECK1_1_1>
+
+[@513_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/140}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@513_CHECK1_2]
+#IF
+checkitem 烧酒 5
+#ACT
+goto @513_CHECK1_3
+#ELSESAY
+{NPCIMG/140}
+怎么回事？好像没有拿来贫道所拜托的东西。。。可以快些带来{FCOLOR/10}烧酒5个{FCOLOR/12}吗？\ \
+ <结束/@exit>
+
+[@513_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 烧酒 5
+give 金币 3000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/140}
+哦，拿来的我所委托的东西了。谢谢。\ \
+ <结束/@exit>
+}
+
+[@514_START]
+{
+#IF
+CheckDailyQuest 514
+#ACT
+goto @514_START_1
+
+[@514_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/140}
+画护身符一定要集中精力，外面猪讨厌地乱叫无法集中精力哟。可以到外面去抓{FCOLOR/10}猪10头{FCOLOR/12}吗？拜托在{FCOLOR/10}24点之前{FCOLOR/12}给解决了。哦，注意如果执行任务过程中离开，要重新从头开始再抓10条。\ \
+ <就这么办吧。/@514_START_2>\
+ <请给些考虑的时间。/@514_START_1_1>
+
+[@514_START_1_1]
+#IF
+#SAY
+{NPCIMG/140}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@514_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/140}
+那么如果抓到{FCOLOR/10}猪10头 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要抓到哟。\ \
+ <结束/@exit>
+}
+
+[@514_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/140}
+找到贫道所拜托的{FCOLOR/10}猪10头 {FCOLOR/12}了吗？\ \
+ <抓到了。/@514_CHECK1_2>\
+ <请再给些时间。/@514_CHECK1_1_1>
+
+[@514_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/140}
+希望今天之内一定要抓到。\ \
+ <结束/@exit>
+
+[@514_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @514_CHECK1_3
+#ELSESAY
+{NPCIMG/140}
+还是因为猪吵闹无法集中精力吗？快点抓住{FCOLOR/10}猪10头{FCOLOR/12}。哦，注意如果执行任务过程中离开，要重新从头开始再抓10条。\ \
+ <结束/@exit>
+
+[@514_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/140}
+哦，做好了我所委托的事情了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@515_START]
+{
+#IF
+CheckDailyQuest 515
+#ACT
+goto @515_START_1
+
+[@515_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+噢，从道士的脸面上看抓鸡是无法做的事情。。。对了，来得正好。贫道急需{FCOLOR/10}鸡肉15块{FCOLOR/12}。如果在{FCOLOR/10}24点之前{FCOLOR/12}找到那些东西，将支付适当的报酬。哦，和肉质没有任何关系，别花心思。\ \
+ <就这么办吧。/@515_START_2>\
+ <请给些考虑的时间。/@515_START_1_1>
+
+[@515_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@515_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}鸡肉15块{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@515_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找到贫道所拜托的{FCOLOR/10}鸡肉15块{FCOLOR/12}了吗？\ \
+ <找回来了。/@515_CHECK1_2>\
+ <请再给些时间。/@515_CHECK1_1_1>
+
+[@515_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@515_CHECK1_2]
+#IF
+checkitem 鸡肉 15
+#ACT
+goto @515_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+怎么回事？好像没有拿来贫道所拜托的东西。。。可以快些找到{FCOLOR/10}鸡肉 15块{FCOLOR/12}吗？哦，和肉质没有任何关系，别花心思。\ \
+ <结束/@exit>
+
+[@515_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 鸡肉 15
+give 钢手镯 1
+give 金币 7000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+哦，带来所拜托的东西了哟。谢谢！请拿报酬。\ \
+ <结束/@exit>
+}
+
+[@516_START]
+{
+#IF
+CheckDailyQuest 516
+#ACT
+goto @516_START_1
+
+[@516_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/50}
+哦，正好猪肉都用完了？啊，武士先生！说为了帮助我的事情而来？那么可以快点拿来{FCOLOR/10}猪肉4块{FCOLOR/12}吗？如果在{FCOLOR/10}24点之前{FCOLOR/12}找到那些东西，将支付适当的报酬，请辛苦一下！哦，一定要找到{FCOLOR/10}品质为8以上{FCOLOR/12}的哟。\ \
+ <就这么办吧。/@516_START_2>\
+ <请给些考虑的时间。/@516_START_1_1>
+
+[@516_START_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@516_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/50}
+那么如果找到{FCOLOR/10}品质为8以上的猪肉4块{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@516_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/50}
+找到我拜托的{FCOLOR/10}品质为8以上的猪肉4块{FCOLOR/12}了吗？\ \
+ <找回来了。/@516_CHECK1_2>\
+ <请再给些时间。/@516_CHECK1_1_1>
+
+[@516_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@516_CHECK1_2]
+#IF
+checkitem 猪肉 4
+checkduraeva 猪肉 8
+#ACT
+goto @516_CHECK1_3
+#ELSESAY
+{NPCIMG/50}
+好像没有看到我所委托的东西啊。快点拿来{FCOLOR/10}猪肉4块{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@516_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 猪肉 4
+give 道士头盔 1
+give 金币 1000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+哦，带来所拜托的东西了哟。托你的福又活了，谢谢！\ \
+ <结束/@exit>
+}
+
+[@517_START]
+{
+#IF
+CheckDailyQuest 517
+#ACT
+goto @517_START_1
+
+[@517_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/50}
+从现在卖的东西看没有什么问题。。。。我也制做毒粉来卖如何？啊，就这样！武士先生？我想试试配制毒粉，找来{FCOLOR/10}食人树叶4个{FCOLOR/12}和{FCOLOR/10}食人树的果实2个{FCOLOR/12}不可以吗？如果在24点之前找来那些东西，将给与适当的报酬，请辛苦一下！\ \
+ <就这么办吧。/@517_START_2>\
+ <请给些考虑的时间。/@517_START_1_1>
+
+[@517_START_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@517_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/50}
+那么如果找到{FCOLOR/10}食人树叶4个{FCOLOR/12}和{FCOLOR/10}食人树的果实2个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@517_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/50}
+找到我拜托的{FCOLOR/10}食人树叶4个{FCOLOR/12}和{FCOLOR/10}食人树的果实2个{FCOLOR/12}了吗？\ \
+ <找回来了。/@517_CHECK1_2>\
+ <请再给些时间。/@517_CHECK1_1_1>
+
+[@517_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@517_CHECK1_2]
+#IF
+checkitem 食人树叶 4
+checkitem 食人树的果实 2
+#ACT
+goto @517_CHECK1_3
+#ELSESAY
+{NPCIMG/50}
+好像没有看到我所委托的东西啊。{FCOLOR/10}食人树叶4个{FCOLOR/12}和{FCOLOR/10}食人树的果实2个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@517_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 食人树叶 4
+take 食人树的果实 2
+give 金币 12000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+哦，带来所拜托的东西了哟。托你的福又活了，谢谢！\ \
+ <结束/@exit>
+}
+
+[@518_START]
+{
+#IF
+CheckDailyQuest 518
+#ACT
+goto @518_START_1
+[@518_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/160}
+啊啊，他妈的。这花花绿绿的东西擦不掉哟。如果想擦干净一定要有毒蜘蛛牙齿。。。武士先生我可以拜托一件事情吗？事实上正如你所见我需要{FCOLOR/10}毒蜘蛛牙齿3个{FCOLOR/12}。如果在{FCOLOR/10}24点之前{FCOLOR/12}找来那些东西，将给与适当的报酬，请辛苦一下！\ \
+ <就这么办吧。/@518_START_2>\
+ <请给些考虑的时间。/@518_START_1_1>
+
+[@518_START_1_1]
+#IF
+#SAY
+{NPCIMG/160}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@518_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/160}
+那么如果找到{FCOLOR/10}毒蜘蛛牙齿3个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@518_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/160}
+找到我拜托的{FCOLOR/10}毒蜘蛛牙齿3个{FCOLOR/12}了吗？\ \
+ <找回来了。/@518_CHECK1_2>\
+ <请再给些时间。/@518_CHECK1_1_1>
+
+[@518_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/160}
+今天之内一定要找回来哟。\ \ 
+ <结束/@exit>
+
+[@518_CHECK1_2]
+#IF
+checkitem 毒蜘蛛牙齿 3
+#ACT
+goto @518_CHECK1_3
+#ELSESAY
+{NPCIMG/160}
+还没有看到我拜托的东西哟？请快些拿来{FCOLOR/10}毒蜘蛛牙齿3个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@518_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 毒蜘蛛牙齿 3
+give 皮制手套 1
+give 金币 4000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/160}
+哦，带来所拜托的东西了哟。真是谢谢你。这是报酬，请收下！\ \
+ <结束/@exit>
+}
+
+[@519_START]
+{
+#IF
+CheckDailyQuest 519
+#ACT
+goto @519_START_1
+
+[@519_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/160}
+啊~现在很烦洗东西~ 一会儿要做的事情为什么这么多？究竟到什么时候才开始学习魔法。。。武士先生请你千万帮帮我哟。我现在拿到寻找蝎子，并带来{FCOLOR/10}蝎子的尾巴6个{FCOLOR/12}的作业。但是要洗的东西堆积如山无法出去。替我如果在{FCOLOR/10}24点 之前{FCOLOR/12}找到那些东西，将有适当的报酬，请辛苦一下！\ \
+ <就这么办吧。/@519_START_2>\
+ <请给些考虑的时间。/@519_START_1_1>
+
+[@519_START_1_1]
+#IF
+#SAY
+{NPCIMG/160}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@519_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/160}
+那么如果找到{FCOLOR/10}蝎子的尾巴6个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@519_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/160}
+找到我拜托的{FCOLOR/10}蝎子的尾巴6个{FCOLOR/12}了吗？\ \
+ <找回来了。/@519_CHECK1_2>\
+ <请再给些时间。/@519_CHECK1_1_1>
+
+[@519_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/160}
+今天之内一定要找回来哟。\ \ 
+ <结束/@exit>
+
+[@519_CHECK1_2]
+#IF
+checkitem 蝎子的尾巴 6
+#ACT
+goto @519_CHECK1_3
+#ELSESAY
+{NPCIMG/160}
+还没有看到我拜托的东西哟？请快些拿来{FCOLOR/10}蝎子的尾巴6个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@519_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蝎子的尾巴 6
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/160}
+哦，带来所拜托的东西了哟。真是谢谢你。这是报酬，请收下！\ \
+ <结束/@exit>
+}
+
+[@520_START]
+{
+#IF
+CheckDailyQuest 520
+#ACT
+goto @520_START_1
+
+[@520_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+为了帮助我的事情而来吗？来得正是时候哟，那么就讲一下将要拜托武士先生的事情。实际上我为了去除肉的腥味正在开发新的料理方法。急需{FCOLOR/10}蛆卵1个{FCOLOR/12}，可以在{FCOLOR/10}24点之前{FCOLOR/12}找到那些东西吗？将要给适宜的报酬，请辛苦一下。\ \
+ <就这么办吧。/@520_START_2>\
+ <请给些考虑的时间。/@520_START_1_1>
+
+[@520_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@520_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}蛆卵1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@520_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找到我拜托的{FCOLOR/10}蛆卵1个{FCOLOR/12}了吗？\ \
+ <找回来了。/@520_CHECK1_2>\
+ <请再给些时间。/@520_CHECK1_1_1>
+
+[@520_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+今天之内一定要找回来哟。\ \ 
+ <结束/@exit>
+
+[@520_CHECK1_2]
+#IF
+checkitem 蛆卵 1
+#ACT
+goto @520_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+还没有看到我拜托的东西哟？请快些拿来{FCOLOR/10}蛆卵1个{FCOLOR/12}吧。\ \
+ <结束/@exit>
+
+[@520_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蛆卵 1
+give 牛肉 2
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+哦，带来所拜托的东西了哟。谢谢！这是酬谢，请收下。\ \
+ <结束/@exit>
+}
+
+[@521_START]
+{
+#IF
+CheckDailyQuest 521
+#ACT
+goto @521_START_1
+
+[@521_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+好的饮食有利于健康是广为人知的事实，但是知道食物偶尔可以治病的人好像没有多少。从不久之前开始，村子中的一位老人患了脑病。为了他需要特殊饮食，请到沙漠地方在{FCOLOR/10}24点之前{FCOLOR/12}找来{FCOLOR/10}品质为10 以上的羊肉10块{FCOLOR/12}。\ \
+ <就这么办吧。/@521_START_2>\
+ <请给些考虑的时间。/@521_START_1_1>
+
+[@521_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@521_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}品质为10 以上的羊肉10块{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@521_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找到我拜托的{FCOLOR/10}品质为10 以上的羊肉10块{FCOLOR/12}了吗？\ \
+ <找回来了。/@521_CHECK1_2>\
+ <请再给些时间。/@521_CHECK1_1_1>
+
+[@521_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+今天之内一定要找回来哟。\ \ 
+ <结束/@exit>
+
+[@521_CHECK1_2]
+#IF
+checkitem 羊肉 10
+checkduraeva 羊肉 10
+#ACT
+goto @521_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+还没找到{FCOLOR/10}品质为10 以上的羊肉10块{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@521_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 羊肉 10
+give 金币 15000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+噢噢，终于找来了羊肉。将要好好利用的。这个虽少，是我们的心意，请收下！\ \
+ <结束/@exit>
+}
+
+[@522_START]
+{
+#IF
+CheckDailyQuest 522
+#ACT
+goto @522_START_1
+
+[@522_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/10}
+来得正是时候。急需加工制做解毒剂，又需要的药材。请在 {FCOLOR/10}24点之前{FCOLOR/12}到蛇谷找到{FCOLOR/10}千年毒蛇胆汁{FCOLOR/12}。\ \
+ <就这么办吧。/@522_START_2>\
+ <请给些考虑的时间。/@522_START_1_1>
+
+[@522_START_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@522_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/10}
+那么如果找到{FCOLOR/10}千年毒蛇胆汁 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@522_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/10}
+带来我所委托的{FCOLOR/10}千年毒蛇胆汁 {FCOLOR/12}了吗。\ \
+ <找回来了。/@522_CHECK1_2>\
+ <请再给些时间。/@522_CHECK1_1_1>
+
+[@522_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@522_CHECK1_2]
+#IF
+checkitem 千年毒蛇胆汁 1
+#ACT
+goto @522_CHECK1_3
+#ELSESAY
+{NPCIMG/10}
+嗯。。还没找到{FCOLOR/10}千年毒蛇胆汁 {FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@522_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 千年毒蛇胆汁 1
+give 魔法药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/10}
+辛苦了。这是酬谢。\ \
+ <结束/@exit>
+}
+
+[@523_START]
+{
+#IF
+CheckDailyQuest 523
+#ACT
+goto @523_START_1
+
+[@523_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/30}
+我要怎样对待那些家伙们？最晚做完胜以后，整理好东西走的。早上来了以后，完全乱七八糟？无论如何好像村子附近乱窜的多钩猫所干的，请抓住那些家伙。如果可以在{FCOLOR/10}24点之前{FCOLOR/12}抓到{FCOLOR/10}多钩猫20只{FCOLOR/12}，我一定要酬谢。\ \
+ <就这么办吧。/@523_START_2>\
+ <请给些考虑的时间。/@523_START_1_1>
+
+[@523_START_1_1]
+#IF
+#SAY
+{NPCIMG/30}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@523_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/30}
+那么如果找到{FCOLOR/10}多钩猫20只{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@523_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/30}
+那么按照我拜托抓住了{{FCOLOR/10}多钩猫20只{FCOLOR/12}了吗? \ \
+ <抓到了。/@523_CHECK1_2>\
+ <请再给些时间。/@523_CHECK1_1_1>
+
+[@523_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/30}
+希望今天之内一定要抓到。\ \
+ <结束/@exit>
+
+[@523_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @523_CHECK1_3
+#ELSESAY
+{NPCIMG/30}
+还没找到{FCOLOR/10}多钩猫20只{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@523_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 乌木剑 1
+give 金币 5000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/30}
+好。 多钩猫20只全抓到了。这是我的心意，请收下。\ \
+ <结束/@exit>
+}
+
+[@524_START]
+{
+#IF
+CheckDailyQuest 524
+#ACT
+goto @524_START_1
+
+[@524_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/70}
+西部沙漠地区的防御口与比奇的防御口有很大的不同吗？想对是用什么材料加工的进行一次研究。如果可以在{FCOLOR/10}24点之前{FCOLOR/12}在盟重土城找到{FCOLOR/10}魔法头盔{FCOLOR/12}，将给酬谢哟。\ \
+ <就这么办吧。/@524_START_2>\
+ <请给些考虑的时间。/@524_START_1_1>
+
+[@524_START_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@524_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/70}
+那么如果找到{FCOLOR/10}魔法头盔{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@524_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/70}
+找到我拜托的{FCOLOR/10}魔法头盔{FCOLOR/12}了吗？\ \
+ <找回来了。/@524_CHECK1_2>\
+ <请再给些时间。/@524_CHECK1_1_1>
+
+[@524_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@524_CHECK1_2]
+#IF
+checkitem 魔法头盔 1
+#ACT
+goto @524_CHECK1_3
+#ELSESAY
+{NPCIMG/70}
+还没有在盟重土城找到{FCOLOR/10}魔法头盔{FCOLOR/12}吗？不会等太久的，请快点找来。\ \
+ <结束/@exit>
+
+[@524_CHECK1_3]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+gender man
+#ACT
+take 魔法头盔 1
+give 轻型盔甲（男） 1
+give 金币 5000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+嗯。。？那个地方用这种方式制做头盔哟。如果这样制做头盔，头盔的耐久度就提高了哟。辛苦了。这是我的心意，请收下！\ \
+ <结束/@exit>
+#ELSEACT
+take 魔法头盔 1
+give 轻型盔甲（女） 1
+give 金币 5000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+{NPCIMG/70}
+嗯。。？那个地方用这种方式制做头盔哟。如果这样制做头盔，头盔的耐久度就提高了哟。辛苦了。这是我的心意，请收下！\ \
+ <结束/@exit>
+}
+
+[@525_START]
+{
+#IF
+CheckDailyQuest 525
+#ACT
+goto @525_START_1
+
+[@525_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/90}
+正有要拜托的事情，来得正好。有要交给道馆药材商人禄英的药材，最近买药的人增多了，我侄女也离不开。因此请替我在{FCOLOR/10}24点之前{FCOLOR/12}{FCOLOR/10}向道馆药材商人禄英转交七点白蛇血{FCOLOR/12}。\ \
+ <就这么办吧。/@525_START_2>\
+ <请给些考虑的时间。/@525_START_1_1>
+
+[@525_START_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@525_START_2]
+#IF
+check [307] 0
+#ACT
+give 七点白蛇血 1
+set [307] 1
+#SAY
+{NPCIMG/90}
+那么如果{FCOLOR/10}向道馆药材商人禄英转交七点白蛇血{FCOLOR/12}，请回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}要转交。\ \
+ <结束/@exit>
+}
+
+[@525_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/90}
+按照我的拜托{FCOLOR/10}向道馆药材商人禄英转交七点白蛇血{FCOLOR/12}了吗？\ \
+ <转交了。/@525_CHECK1_2>\
+ <请再给些时间。/@525_CHECK1_1_1>
+
+[@525_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+希望今天之内一定转交。\ \
+ <结束/@exit>
+
+[@525_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @525_CHECK1_3
+#ELSESAY
+{NPCIMG/90}
+还没有去道馆药材商人禄英那儿？因为是急事，速去速回。\ \
+ <结束/@exit>
+
+[@525_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 金创药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/90}
+顺利转交东西了吗？辛苦了！这是酬谢。\ \
+<结束/@exit>
+}
+
+[@525_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/220}
+有什么事情？\ \
+ <转交七点白蛇血。/@525_CHECK2_1>
+
+[@525_CHECK2_1]
+#IF
+checkitem 七点白蛇血 1
+#ACT
+goto @525_CHECK2_2
+#ELSESAY
+{NPCIMG/220}
+你没有拿着我转交给我的七点白蛇血哟。\ \
+ <结束/@exit>
+
+[@525_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take 七点白蛇血 1
+set [308] 1
+#SAY
+{NPCIMG/220}
+请转告收到了。\ \
+ <结束/@exit>
+}
+
+[@526_START]
+{
+#IF
+CheckDailyQuest 526
+#ACT
+goto @526_START_1
+
+[@526_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/40}
+这个黑檀手镯看起来不像有瑕疵哟？要更换东西，但却没有时间。如果替我{FCOLOR/10}去比奇城装饰品店交换黑檀手镯{FCOLOR/12}，将有酬谢。但是一定要在{FCOLOR/10}24点之前{FCOLOR/12}来哟。\ \
+ <就这么办吧。/@526_START_2>\
+ <请给些考虑的时间。/@526_START_1_1>
+
+[@526_START_1_1]
+#IF
+#SAY
+{NPCIMG/40}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@526_START_2]
+#IF
+check [307] 0
+#ACT
+give 瑕疵黑檀手镯 1
+set [307] 1
+#SAY
+{NPCIMG/40}
+那么如果到{FCOLOR/10}比奇城装饰品店交换黑檀手镯{FCOLOR/12}，请回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}一定要交换哟。\ \
+ <结束/@exit>
+}
+
+[@526_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/40}
+那么按照我所拜托的{FCOLOR/10}到比奇城装饰品店交换黑檀手镯{FCOLOR/12}了吗？\ \
+ <交换了。/@526_CHECK1_2>\
+ <请再给些时间。/@526_CHECK1_1_1>
+
+[@526_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/40}
+今天之内一定要交换回来啊。\ \
+ <结束/@exit>
+
+[@526_CHECK1_2]
+#IF
+check [308] 1
+checkitem 黑檀手镯 1
+#ACT
+goto @526_CHECK1_3
+#ELSESAY
+{NPCIMG/40}
+还没有交换东西吗？请快点去比奇城装饰品店！\ \
+ <结束/@exit>
+
+[@526_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+take 黑檀手镯 1
+give 金币 14000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/40}
+交换了戒指哟！谢谢！这是对我进行帮助谢意的表示。\ \
+ <结束/@exit>
+}
+
+[@526_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/40}
+有什么事情？ \ \
+ <交换黑檀手镯。/@526_CHECK2_1>
+
+[@526_CHECK2_1]
+#IF
+checkitem 瑕疵黑檀手镯 1
+#ACT
+goto @526_CHECK2_2
+#ELSESAY
+{NPCIMG/40}
+好像没有要交换的黑檀手镯\ \
+ <结束/@exit>
+
+[@526_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take 瑕疵黑檀手镯 1
+give 黑檀手镯 1
+set [308] 1
+#SAY
+{NPCIMG/40}
+好。我交换给你吧.\ \
+ <结束/@exit>
+}
+
+[@527_START]
+{
+#IF
+CheckDailyQuest 527
+#ACT
+goto @527_START_1
+
+[@527_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/20}
+啊，来得正好。要向{FCOLOR/10}道馆书店书神转交书籍{FCOLOR/12}。由于是很贵重的书籍，千万小心不要丢了，在{FCOLOR/10}24点之前{FCOLOR/12}转交。\ \
+ <就这么办吧。/@527_START_2>\
+ <请给些考虑的时间。/@527_START_1_1>
+
+[@527_START_1_1]
+#IF
+#SAY
+{NPCIMG/20}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@527_START_2]
+#IF
+check [307] 0
+#ACT
+give 阿才的书 1
+set [307] 1
+#SAY
+{NPCIMG/20}
+那么如果向{FCOLOR/10}道馆书店书神转交了书籍{FCOLOR/12}，请回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}要转交。\ \
+ <结束/@exit>
+}
+
+[@527_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/20}
+按照我的拜托向{FCOLOR/10}道馆书店书神转交了书籍{FCOLOR/12}了吗？\ \
+ <转交了。/@527_CHECK1_2>\
+ <请再给些时间。/@527_CHECK1_1_1>
+
+[@527_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/20}
+希望今天之内一定要转交。\ \
+ <结束/@exit>
+
+[@527_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @527_CHECK1_3
+#ELSESAY
+{NPCIMG/20}
+还没向道馆书店转达了吗。快点去一趟吧。\ \
+ <结束/@exit>
+
+[@527_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 地狱火 1
+give 金币 7000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/20}
+辛苦了。这是酬谢。\ \
+ <结束/@exit>
+}
+
+[@527_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/181}
+有什么事请吗？\ \
+ <转达书籍。/@527_CHECK2_1>
+
+[@527_CHECK2_1]
+#IF
+checkitem 阿才的书 1
+#ACT
+goto @527_CHECK2_2
+#ELSESAY
+{NPCIMG/181}
+你没有拿着我转交给我的书籍哟。\ \
+ <结束/@exit>
+
+[@527_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take 阿才的书 1
+set [308] 1
+#SAY
+{NPCIMG/181}
+请转告收到了。\ \
+ <结束/@exit>
+}
+
+[@528_START]
+{
+#IF
+CheckDailyQuest 528
+#ACT
+goto @528_START_1
+
+[@528_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/60}
+很奇怪！委托了东西的客人几天没有出现了。到天然洞穴看看是否有客人不可以吗？如果他在那儿，请转告我正在找他。如果他不在那个地方，请回来告诉我一下。作为我无法确认 <$USERNAME> 是否去了天然洞穴，去了天然洞穴，请收集{FCOLOR/10}骷髅骨20个{FCOLOR/12}。但要在{FCOLOR/10}24点之前{FCOLOR/12}回来。\ \
+ <就这么办吧。/@528_START_2>\
+ <请给些考虑的时间。/@528_START_1_1>
+
+[@528_START_1_1]
+#IF
+#SAY
+{NPCIMG/60}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@528_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/60}
+那么去到{FCOLOR/10}天然洞穴{FCOLOR/12}看看，然后回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}去哟。\ \
+ <结束/@exit>
+}
+
+[@528_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/60}
+那么按照我的拜托去过{FCOLOR/10}天然洞穴 {FCOLOR/12}了吗？\ \
+<去过了。/@528_CHECK1_2>\
+ <请再给些时间。/@528_CHECK1_1_1>
+
+[@528_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/60}
+今天之内一定要去一趟吧。\ \
+ <结束/@exit>
+
+[@528_CHECK1_2]
+#IF
+checkitem 骷髅骨 20
+#ACT
+goto @528_CHECK1_3
+#ELSESAY
+{NPCIMG/60}
+还没有去{FCOLOR/10}天然洞穴{FCOLOR/12}吗？如果去了，作为确认去了的事实，请找到{FCOLOR/10}骷髅骨20个{FCOLOR/10}给我看。真的非常担心，他是否发生了什么事情？\ \
+ <结束/@exit>
+
+[@528_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 骷髅骨 20
+give 皮靴 1
+give 金币 2000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/60}
+他没有在那儿？那么究竟去哪儿了？不管怎样，辛苦了。这是酬谢。\ \
+ <结束/@exit>
+}
+
+[@529_START]
+{
+#IF
+CheckDailyQuest 529
+#ACT
+goto @529_START_1
+
+[@529_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/0}
+最近比奇县铁匠之间流传着传说中的铁匠成为幽灵的传闻。听说几天前记录他隐藏曾经使过铁锤位置的地图在蛇谷矿山出现的传闻，由于那个地方的僵尸，我无法到那个地方去。你在{FCOLOR/10}24点之前{FCOLOR/12}返回，抓到些僵尸将非常感谢。我无法确认你的行动，因此作为证据如果可以抓到{FCOLOR/10}僵尸骨头15个{FCOLOR/12}，将有酬谢！\ \
+ <就这么办吧。/@529_START_2>\
+ <请给些考虑的时间。/@529_START_1_1>
+
+[@529_START_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@529_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/0}
+那么到蛇谷矿山抓僵尸，作为证据如果抓到了{FCOLOR/10}僵尸骨头15个{FCOLOR/12}，请回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}要抓到回来。\ \
+ <结束/@exit>
+}
+
+[@529_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/0}
+那么按照我的拜托处理僵尸了吗。\ \
+ <找回来了。/@529_CHECK1_2>\
+ <请再给些时间。/@529_CHECK1_1_1>
+
+[@529_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@529_CHECK1_2]
+#IF
+checkitem 僵尸骨头 15
+#ACT
+goto @529_CHECK1_3
+#ELSESAY
+{NPCIMG/0}
+还没有充分抓到僵尸的样子哟。请在24点之前抓到{FCOLOR/10}僵尸骨头15个{FCOLOR/12}。\ \
+ <结束/@exit>
+
+[@529_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 僵尸骨头 15
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/0}
+好像充分处理了僵尸的样子。那么快点去找地图吧。这是酬谢！下一次再委托你。\ \
+ <结束/@exit>
+}
+
+[@530_START]
+{
+#IF
+CheckDailyQuest 530
+#ACT
+goto @530_START_1
+
+[@530_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/120}
+啊，来得正是时候。有一个地方急需要去，由于需要回城卷，可以买来{FCOLOR/10}随机传送卷8个和回城卷1个{FCOLOR/12}吗？但是一定要在{FCOLOR/10}24点之前{FCOLOR/12}回来。\ \
+ <就这么办吧。/@530_START_2>\
+ <请给些考虑的时间。/@530_START_1_1>
+
+[@530_START_1_1]
+#IF
+#SAY
+{NPCIMG/120}
+那么，今天之内给我答复哟。\ \
+<结束/@exit>
+
+[@530_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/120}
+那么如果找到{FCOLOR/10}随机传送卷8个和回城卷1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@530_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/120}
+找到我拜托的{FCOLOR/10}随机传送卷8个和回城卷1个{FCOLOR/12}了吗？\ \
+ <找回来了。/@530_CHECK1_2>\
+ <请再给些时间。/@530_CHECK1_1_1>
+
+[@530_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/120}
+今天之内一定要找回来吧。\ \
+ <结束/@exit>
+
+[@530_CHECK1_2]
+#IF
+checkitem 随机传送卷 8
+checkitem 回城卷 1
+#ACT
+goto @530_CHECK1_3
+#ELSESAY
+{NPCIMG/120}
+还没有找到{FCOLOR/10}随机传送卷 8个和回城卷1个{FCOLOR/12}哟。没有时间了，请快点找。\ \
+ <结束/@exit>
+
+[@530_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 随机传送卷 8
+take 回城卷 1
+give 金创药（特） 6
+give 魔法药（特） 6
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/120}
+找到回城卷了哟。谢谢！\ \
+ <结束/@exit>
+}
+
+[@531_START]
+{
+#IF
+CheckDailyQuest 531
+#ACT
+goto @531_START_1
+[@531_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/0}
+来得正好。制做武器时需要的黑铁都用完了，请在{FCOLOR/10}24点之前{FCOLOR/12}找来{FCOLOR/10}纯度为12以上的黑铁1个{FCOLOR/12}。\ \
+ <就这么办吧。/@531_START_2>\
+ <请给些考虑的时间。/@531_START_1_1>
+
+[@531_START_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@531_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/0}
+那么如果找到{FCOLOR/10}纯度为12以上的黑铁1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@531_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/0}
+找到我拜托的{FCOLOR/10}纯度为12以上的黑铁1个{FCOLOR/12}了吗？\ \
+ <找回来了。/@531_CHECK1_2>\
+ <请再给些时间。/@531_CHECK1_1_1>
+
+[@531_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@531_CHECK1_2]
+#IF
+checkitem 黑铁 1
+checkdura 黑铁 12
+#ACT
+goto @531_CHECK1_3
+#ELSESAY
+{NPCIMG/0}
+还没找到{FCOLOR/10}纯度为12以上的黑铁1个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@531_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 黑铁 1
+give 铁剑 1
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/0}
+找来了东西。谢谢！这是我们的心意，请收下！\ \
+ <结束/@exit>
+}
+
+[@532_START]
+{
+#IF
+CheckDailyQuest 532
+#ACT
+goto @532_START_1
+
+[@532_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/0}
+订做的武器几乎都制做好了，但是没有擦拭武器的无名油。可以给我找{FCOLOR/10}无名油3个{FCOLOR/12}吗？但是一定要在{FCOLOR/10}24点之前{FCOLOR/12}找来。据说{FCOLOR/10}稻草人{FCOLOR/12}们有无名油。\ \
+ <就这么办吧。/@532_START_2>\
+ <请给些考虑的时间。/@532_START_1_1>
+
+[@532_START_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+那么，今天之内给我答复吧。\ \
+ <结束/@exit>
+
+[@532_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/0}
+那么如果{FCOLOR/10}从稻草人那儿找到无名油3个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \  
+<结束/@exit>
+}
+
+[@532_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/0}
+找到我拜托的{FCOLOR/10}无名油3个{FCOLOR/12}了吗？\ \
+ <找回来了。/@532_CHECK1_2>\
+ <请再给些时间。/@532_CHECK1_1_1>
+
+[@532_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/0}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@532_CHECK1_2]
+#IF
+checkitem 无名油 3
+#ACT
+goto @532_CHECK1_3
+#ELSESAY
+{NPCIMG/0}
+还没找到我拜托的{FCOLOR/10}无名油3个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@532_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 无名油 3
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/0}
+找来了东西。谢谢！这是我们的心意，请收下！\ \
+ <结束/@exit>
+}
+
+[@533_START]
+{
+#IF
+CheckDailyQuest 533
+#ACT
+goto @533_START_1
+
+[@533_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/90}
+嗯。。。是你吗？好的，今天要帮我做事对吗？很奇特的年轻人哟。正好口渴，可以到{FCOLOR/10}比奇城酒店{FCOLOR/12}买{FCOLOR/10}烧酒5瓶{FCOLOR/12}吗？但是一定要在{FCOLOR/10}24点之前{FCOLOR/12}回来！\ \
+ <就这么办吧。/@533_START_2>\
+ <请给些考虑的时间。/@533_START_1_1>
+
+[@533_START_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@533_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/90}
+那么如果{FCOLOR/10}从比奇城酒店那儿找到烧酒5瓶{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@533_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/90}
+带来我所委托的{FCOLOR/10}烧酒5瓶{FCOLOR/12}了吗。\ \
+ <找回来了。/@533_CHECK1_2>\
+ <请再给些时间。/@533_CHECK1_1_1>
+
+[@533_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@533_CHECK1_2]
+#IF
+checkitem 烧酒 5
+#ACT
+goto @533_CHECK1_3
+#ELSESAY
+{NPCIMG/90}
+嗯。。还没找到{FCOLOR/10}烧酒5瓶{FCOLOR/12}了吗。请快点找来。\ \
+ <结束/@exit>
+
+[@533_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 烧酒 5
+give 鹤嘴锄 1
+give 金币 5000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/90}
+哈~ 酒味真好。辛苦了！这是帮忙做事的酬劳。请收下！\ \
+ <结束/@exit>
+}
+
+[@534_START]
+{
+#IF
+CheckDailyQuest 534
+#ACT
+goto @534_START_1
+
+[@534_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/90}
+上了年纪，记忆力下降了。东西放在那儿都不知道了。这附近没有看到钢手镯吗？无论如何好像{FCOLOR/10}钉耙猫{FCOLOR/12}拿去了。。。你可以找{FCOLOR/10}我的手镯{FCOLOR/12}吗？但是不要忘了一定要在{FCOLOR/10}24点之前{FCOLOR/12}找回。\ \
+ <就这么办吧。/@534_START_2>\
+ <请给些考虑的时间。/@534_START_1_1>
+
+[@534_START_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@534_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/90}
+那么如果找到{FCOLOR/10}我的手镯 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@534_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/90}
+带来我所委托的{FCOLOR/10}我的手镯 {FCOLOR/12}了吗。\ \
+ <找回来了。/@534_CHECK1_2>\
+ <请再给些时间。/@534_CHECK1_1_1>
+
+[@534_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/90}
+希望今天之内一定要找回来。\ \
+ <结束/@exit>
+
+[@534_CHECK1_2]
+#IF
+checkitem 蛇谷老人手镯 1
+#ACT
+goto @534_CHECK1_3
+#ELSESAY
+{NPCIMG/90}
+还没找到东西了。{FCOLOR/10}我的手镯{FCOLOR/12}好像被{FCOLOR/10}钉耙猫 {FCOLOR/12}拿走了，你找回来吧。\ \
+ <结束/@exit>
+
+[@534_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蛇谷老人手镯 1
+give 金币 12000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/90}
+找到我的手镯了？辛苦了！这是报酬。别推让，收下吧！\ \
+ <结束/@exit>
+}
+
+[@535_START]
+{
+#IF
+CheckDailyQuest 535
+#ACT
+goto @535_START_1
+
+[@535_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/10}
+嗯，有一件事情要拜托。知道虎蛇牙齿被用作戒毒药材料的事实吗？如果在{FCOLOR/10}24点之前{FCOLOR/12}找到 {FCOLOR/10}虎蛇牙齿1个{FCOLOR/12}，一定有报酬。\ \
+ <就这么办吧。/@535_START_2>\
+ <请给些考虑的时间。/@535_START_1_1>
+
+[@535_START_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@535_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/10}
+那么如果找到{FCOLOR/10}虎蛇牙齿1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+<结束/@exit>
+}
+
+[@535_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/10}
+带来我所委托的{FCOLOR/10}虎蛇牙齿1个{FCOLOR/12}了吗。\ \
+ <找回来了。/@535_CHECK1_2>\
+ <请再给些时间。/@535_CHECK1_1_1>
+
+[@535_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@535_CHECK1_2]
+#IF
+checkitem 虎蛇牙齿 1
+#ACT
+goto @535_CHECK1_3
+#ELSESAY
+{NPCIMG/10}
+还没找到我拜托的{FCOLOR/10}虎蛇牙齿1个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@535_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 虎蛇牙齿 1
+give 魔法药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/10}
+哦，找回来东西了吗。谢谢！这是谢礼，请收下。\ \
+<结束/@exit>
+}
+
+[@536_START]
+{
+#IF
+CheckDailyQuest 536
+#ACT
+goto @536_START_1
+
+[@536_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/10}
+说要帮助我的事情吗？药店里没有武士可以做的活儿。嗯。。想想看有一件事情可以拜托。听说蛇谷中有红的蛇生活。如果可以在24点之前找到 {FCOLOR/10}红蛇血1个{FCOLOR/12}，将有酬谢！\ \
+ <就这么办吧。/@536_START_2>\
+ <请给些考虑的时间。/@536_START_1_1>
+
+[@536_START_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@536_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/10}
+那么如果找到{FCOLOR/10}红蛇血1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@536_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/10}
+带来我所委托的{FCOLOR/10}红蛇血1个{FCOLOR/12}了吗。\ \
+ <找回来了。/@536_CHECK1_2>\
+ <请再给些时间。/@536_CHECK1_1_1>
+
+[@536_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/10}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@536_CHECK1_2]
+#IF
+checkitem 红蛇血 1
+#ACT
+goto @536_CHECK1_3
+#ELSESAY
+{NPCIMG/10}
+还没找到我拜托的{FCOLOR/10}红蛇血1个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@536_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 红蛇血 1
+give 金创药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/10}
+哦，找回来东西了吗。谢谢！这是谢礼，请收下。\ \
+ <结束/@exit>
+}
+
+[@537_START]
+{
+#IF
+CheckDailyQuest 537
+#ACT
+goto @537_START_1
+
+[@537_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/270}
+嗯，今天为了帮助我的事情而来？正好有一件要拜托的事情哟。急需加工武器，但是矿石几乎用完了。如果找到{FCOLOR/10}纯度为15以上的铁矿1个{FCOLOR/12}，将有酬谢。但是不要忘了一定要在{FCOLOR/10}24点之前{FCOLOR/12}找来。\ \
+ <就这么办吧。/@537_START_2>\
+ <请给些考虑的时间。/@537_START_1_1>
+
+[@537_START_1_1]
+#IF
+#SAY
+{NPCIMG/270}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@537_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/270}
+那么如果找到{FCOLOR/10}纯度为15以上的铁矿1个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@537_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/270}
+找来我所委托的{FCOLOR/10}纯度为15以上的铁矿1个{FCOLOR/12}了吗？ \ \
+ <找回来了。/@537_CHECK1_2>\
+ <请再给些时间。/@537_CHECK1_1_1>
+
+[@537_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/270}
+希望今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@537_CHECK1_2]
+#IF
+checkitem 铁矿 1
+checkdura 铁矿 15
+#ACT
+goto @537_CHECK1_3
+#ELSESAY
+{NPCIMG/270}
+嗯。。还没找到{FCOLOR/10}纯度为15以上的铁矿1个{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@537_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 铁矿 1
+give 短剑 1
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/270}
+终于找来东西了。谢谢！这是谢礼，不要客气。\ \
+ <结束/@exit>
+}
+
+[@538_START]
+{
+#IF
+CheckDailyQuest 538
+#ACT
+goto @538_START_1
+
+[@538_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/270}
+今天为了帮助我的事情而来？正好有一件要拜托的事情哟。明天要招待贵客，请找来{FCOLOR/10}羊肉5个{FCOLOR/12}。但是不要忘了一定要在{FCOLOR/10}24点之前{FCOLOR/12}找来。\ \
+ <就这么办吧。/@538_START_2>\
+ <请给些考虑的时间。/@538_START_1_1>
+
+[@538_START_1_1]
+#IF
+#SAY
+{NPCIMG/270}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@538_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/270}
+那么如果找到{FCOLOR/10}羊肉5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@538_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/270}
+找来我所委托的{FCOLOR/10}羊肉5个{FCOLOR/12}了吗？ \ \
+ <找回来了。/@538_CHECK1_2>\
+ <请再给些时间。/@538_CHECK1_1_1>
+
+[@538_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/270}
+希望今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@538_CHECK1_2]
+#IF
+checkitem 羊肉 5
+#ACT
+goto @538_CHECK1_3
+#ELSESAY
+{NPCIMG/270}
+嗯。。还没找到{FCOLOR/10}羊肉5个{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@538_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 羊肉 5
+give 金币 13000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/270}
+终于找来东西了。谢谢！这是谢礼，请收下。\ \
+ <结束/@exit>
+}
+
+[@539_START]
+{
+#IF
+CheckDailyQuest 539
+#ACT
+goto @539_START_1
+
+[@539_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+正如所知道的，沙漠地区的气候不适合养殖牛或者猪等家畜。但是有买牛肉或者猪肉的人，咯咯。这个地方的粮食情况如何不知道是否知道。我嘛，那些人订购，毫无办法地卖。。。。不久之前就有人说明天要急着举行宴会，想用牛肉作为野味，让买肉质好的牛肉。但是{FCOLOR/10}24点之前{FCOLOR/12}如何找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}。。。如果你可以找到，一定有酬谢！\ \
+ <就这么办吧。/@539_START_2>\
+ <请给些考虑的时间。/@539_START_1_1>
+
+[@539_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@539_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+<结束/@exit>
+}
+
+[@539_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找来我所委托的{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}了吗? \ \
+ <找回来了。/@539_CHECK1_2>\
+ <请再给些时间。/@539_CHECK1_1_1>
+
+[@539_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@539_CHECK1_2]
+#IF
+checkitem 牛肉 3
+checkduraeva 牛肉 10
+#ACT
+goto @539_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+嗯。。还没找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@539_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 牛肉 3
+give 魔法药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+东西找来了吗。谢谢！这是我的心意，请收下。\ \ \
+ <结束/@exit>
+}
+
+[@540_START]
+{
+#IF
+CheckDailyQuest 540
+#ACT
+goto @540_START_1
+
+[@540_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/110}
+正如所知道的，沙漠地区的气候不适合养殖牛或者猪等家畜。但是有买牛肉或者猪肉的人，咯咯。这个地方的粮食情况如何不知道是否知道。我嘛，那些人订购，毫无办法地卖。。。。不久之前就有人说明天要急着举行宴会，想用牛肉作为野味，让买肉质好的牛肉。但是{FCOLOR/10}24点之前{FCOLOR/12}如何找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}。。。如果你可以找到，一定有酬谢！\ \
+ <就这么办吧。/@540_START_2>\
+ <请给些考虑的时间。/@540_START_1_1>
+
+[@540_START_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@540_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/110}
+那么如果找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@540_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/110}
+找来我所委托的{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}了吗？\ \
+ <找回来了。/@540_CHECK1_2>\
+ <请再给些时间。/@540_CHECK1_1_1>
+
+[@540_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/110}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@540_CHECK1_2]
+#IF
+checkitem 猪肉 3
+checkduraeva 猪肉 10
+#ACT
+goto @540_CHECK1_3
+#ELSESAY
+{NPCIMG/110}
+嗯。。还没找到{FCOLOR/10}品质为10以上的牛肉3块{FCOLOR/12}了吗。请快点找到。\ \
+ <结束/@exit>
+
+[@540_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 猪肉 3
+give 金创药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/110}
+东西找来了吗。谢谢！这是我的心意，请收下。\ \ \
+ <结束/@exit>
+}
+
+[@541_START]
+{
+#IF
+CheckDailyQuest 541
+#ACT
+goto @541_START_1
+
+[@541_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/70}
+怎么看都是蛇哟。在这么危险的地方如何抚养孩子。即使抓到10只蛇，也是暂时的安全。。如果有时间，武士先生不可以抓蛇吗？如果在{FCOLOR/10}24点之前{FCOLOR/12}抓到{FCOLOR/10}红蛇10只{FCOLOR/12}，将有酬谢。\ \
+ <就这么办吧。/@541_START_2>\
+ <请给些考虑的时间。/@541_START_1_1>
+
+[@541_START_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@541_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/70}
+那么如果找到{FCOLOR/10}红蛇10只{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@541_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/70}
+那么按照我的拜托抓到{FCOLOR/10}红蛇10只{FCOLOR/12}了吗？\ \
+ <抓到了。/@541_CHECK1_2>\
+ <请再给些时间。/@541_CHECK1_1_1>
+
+[@541_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+今天之内要抓住。\ \
+ <结束/@exit>
+
+[@541_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @541_CHECK1_3
+#ELSESAY
+{NPCIMG/70}
+还没找到我拜托的{FCOLOR/10}红蛇10只{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@541_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 魔法头盔 1
+give 金币 4000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/70}
+辛苦了。这是约定的酬谢。\ \
+ <结束/@exit>
+}
+
+[@542_START]
+{
+#IF
+CheckDailyQuest 542
+#ACT
+goto @542_START_1
+
+[@542_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/70}
+怎么看都是蛇哟。在这么危险的地方如何抚养孩子。即使抓到10只蛇，也是暂时的安全。。如果有时间，武士先生不可以抓蛇吗？如果在{FCOLOR/10}24点之前{FCOLOR/12}抓到{FCOLOR/10}虎蛇10只{FCOLOR/12}，将有酬谢。\ \
+ <就这么办吧。/@542_START_2>\
+ <请给些考虑的时间。/@542_START_1_1>
+
+[@542_START_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@542_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/70}
+那么如果找到{FCOLOR/10}虎蛇10只{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@542_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/70}
+那么按照我的拜托抓到{FCOLOR/10}虎蛇10只{FCOLOR/12}了吗？\ \
+ <抓到了。/@542_CHECK1_2>\
+ <请再给些时间。/@542_CHECK1_1_1>
+
+[@542_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/70}
+今天之内要抓住。\ \
+ <结束/@exit>
+[@542_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @542_CHECK1_3
+#ELSESAY
+{NPCIMG/70}
+还没找到我拜托的{FCOLOR/10}虎蛇 {FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@542_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 金币 9000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/70}
+辛苦了。这是约定的酬谢。\ \
+ <结束/@exit>
+}
+
+[@543_START]
+{
+#IF
+CheckDailyQuest 543
+#ACT
+goto @543_START_1
+
+[@543_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/50}
+开采量分明比以前减少了哟。但是所有人都那么用心地挖矿，不远的将来矿就要空了。如果成了那个样子，我们村子也象废矿村一样被遗忘了。哦，我不是杞人忧天的人。村子老人们中的几位已经叫人们开始找新的矿点。找新矿点的事情不仅需要时间，还需要钱。如果武士先生对找新矿点的事情感兴趣，不捐献{FCOLOR/10}1,500钱{FCOLOR/12}吗？\ \
+ <就这么办吧。/@543_START_2>\
+ <请给些考虑的时间。/@543_START_1_1>
+
+[@543_START_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@543_START_2]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+checkgold 1500
+#ACT
+take 金币 1500
+give 金创药（特） 6
+give 魔法药（特） 8
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+谢谢！将好好利用武士先生捐献的钱。这是对捐献钱谢意的表示，虽然不多，请收下！\ \
+ <结束/@exit>
+#ELSEACT
+set [307] 1
+#ELSESAY
+{NPCIMG/50}
+现在带的钱不够哟。如果捐献{FCOLOR/10}1,500钱{FCOLOR/12}，请在{FCOLOR/10}24点之前{FCOLOR/12}决定。\ \
+ <结束/@exit>
+}
+
+[@543_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/50}
+那么按照我的拜托捐献{FCOLOR/10}1,500钱{FCOLOR/12}吗？\ \
+ <要捐献。/@543_CHECK1_2>\
+ <请再给些时间。/@543_CHECK1_1_1>
+
+[@543_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+今天之内下个决定吧。\ \
+ <结束/@exit>
+
+[@543_CHECK1_2]
+#IF
+checkgold 1500
+#ACT
+goto @543_CHECK1_3
+#ELSESAY
+{NPCIMG/50}
+现在带的钱不够哟。\ \
+ <结束/@exit>
+
+[@543_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 金币 1500
+give 金创药（特） 6
+give 魔法药（特） 8
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+谢谢！将好好利用武士先生捐献的钱。这是对捐献钱谢意的表示，虽然不多，请收下！\ \
+ <结束/@exit>
+}
+
+[@544_START]
+{
+#IF
+CheckDailyQuest 544
+#ACT
+goto @544_START_1
+[@544_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/50}
+开采量分明比以前减少了哟。但是所有人都那么用心地挖矿，不远的将来矿就要空了。如果成了那个样子，我们村子也象废矿村一样被遗忘了。哦，我不是杞人忧天的人。村子老人们中的几位已经叫人们开始找新的矿点。找新矿点的事情不仅需要时间，还需要钱。如果武士先生对找新矿点的事情感兴趣，不捐献{FCOLOR/10}1,000钱{FCOLOR/12}吗？\ \
+ <就这么办吧。/@544_START_2>\
+ <请给些考虑的时间。/@544_START_1_1>
+
+[@544_START_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@544_START_2]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+give 金创药（特） 4
+give 魔法药（特） 6
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+谢谢！将好好利用武士先生捐献的钱。这是对捐献钱谢意的表示，虽然不多，请收下！\ \
+ <结束/@exit>
+#ELSEACT
+set [307] 1
+#ELSESAY
+{NPCIMG/50}
+现在带的钱不够哟。如果捐献{FCOLOR/10}1,500钱{FCOLOR/12}，请在{FCOLOR/10}24点之前{FCOLOR/12}决定。\ \
+ <结束/@exit>
+}
+
+[@544_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/50}
+那么按照我的拜托捐献{FCOLOR/10}1,000钱{FCOLOR/12}吗？\ \
+ <要捐献。/@544_CHECK1_2>\
+ <请再给些时间。/@544_CHECK1_1_1>
+
+[@544_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/50}
+今天之内下个决定吧。\ \
+ <结束/@exit>
+
+[@544_CHECK1_2]
+#IF
+checkgold 1000
+#ACT
+goto @544_CHECK1_3
+#ELSESAY
+{NPCIMG/50}
+现在带的钱不够哟。\ \
+ <结束/@exit>
+
+[@544_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 金币 1000
+give 金创药（特） 4
+give 魔法药（特） 6
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/50}
+谢谢！将好好利用武士先生捐献的钱。这是对捐献钱谢意的表示，虽然不多，请收下！\ \
+ <结束/@exit>
+}
+
+[@545_START]
+{
+#IF
+CheckDailyQuest 545
+#ACT
+goto @545_START_1
+
+[@545_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/180}
+嗯，你在附近没有看到{FCOLOR/10}古诗秘书{FCOLOR/12}吗？有可能被风刮走了的样子。如果不是飞得很远，附近{FCOLOR/10}森林雪人{FCOLOR/12}等怪兽中的一个拿着都不知道。虽然是没有什么可看的诗句，但是对我却是重要的文字，希望在{FCOLOR/10}24点之前{FCOLOR/12}找到。\ \
+ <就这么办吧。/@545_START_2>\
+ <请给些考虑的时间。/@545_START_1_1>
+
+[@545_START_1_1]
+#IF
+#SAY
+{NPCIMG/180}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@545_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/180}
+那么如果找到{FCOLOR/10}古诗秘书 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@545_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/180}
+带来我所委托的{FCOLOR/10}古诗秘书 {FCOLOR/12}了吗。\ \
+ <找回来了。/@545_CHECK1_2>\
+ <请再给些时间。/@545_CHECK1_1_1>
+
+[@545_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/180}
+希望今天之内一定要找来哟。由于可能不知道，对附近{FCOLOR/10}森林雪人{FCOLOR/12}等怪兽进行调查看看。\ \
+ <结束/@exit>
+
+[@545_CHECK1_2]
+#IF
+checkitem 古诗秘书 1
+#ACT
+goto @545_CHECK1_3
+#ELSESAY
+{NPCIMG/180}
+嗯，还没有找到{FCOLOR/10}古诗秘书{FCOLOR/12}吗？有可能附近{FCOLOR/10}森林雪人{FCOLOR/12}怪兽中的一个拿着也不一定。。。\ \
+ <结束/@exit>
+
+[@545_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 古诗秘书 1
+give 刺杀剑术 1
+give 金币 8000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/180}
+哦，终于找来了。非常感谢。\ \
+ <结束/@exit>
+}
+
+[@546_START]
+{
+#IF
+CheckDailyQuest 546
+#ACT
+goto @546_START_1
+[@546_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/180}
+说要帮助我的事情？那么就请向{FCOLOR/10}在比奇城的祖母转交书信{FCOLOR/12}。绝对不可以偷看内容。由于是急事，请在{FCOLOR/10}24点之前{FCOLOR/12}去。\ \
+ <就这么办吧。/@546_START_2>\
+ <请给些考虑的时间。/@546_START_1_1>
+
+[@546_START_1_1]
+#IF
+#SAY
+{NPCIMG/180}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@546_START_2]
+#IF
+check [307] 0
+#ACT
+give 断交先生的书信 1
+set [307] 1
+#SAY
+{NPCIMG/180}
+那么如果向{FCOLOR/10}在比奇城的祖母转交了书信{FCOLOR/12}，就请回到我这儿。当然是在{FCOLOR/10}24点之前{FCOLOR/12}要转交。\ \
+ <结束/@exit>
+}
+
+[@546_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/180}
+那么按照我的拜托向{FCOLOR/10}在比奇城的祖母转交了书信{FCOLOR/12}吗？\ \
+ <转交了。/@546_CHECK1_2>\
+ <请再给些时间。/@546_CHECK1_1_1>
+
+[@546_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/180}
+希望金之内一定要转交。\ \
+ <结束/@exit>
+
+[@546_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @546_CHECK1_3
+#ELSESAY
+{NPCIMG/180}
+还没有去比奇城祖母处？\ \
+ <结束/@exit>
+
+[@546_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 金币 11000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/180}
+那么请转告我已经转交了书信。谢谢！这是酬劳，请收下！\ \
+ <结束/@exit>
+}
+
+[@546_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/50}
+有什么事情吗。\ \
+ <转交书信。/@546_CHECK2_1>
+
+[@546_CHECK2_1]
+#IF
+checkitem 断交先生的书信 1
+#ACT
+goto @546_CHECK2_2
+#ELSESAY
+{NPCIMG/50}
+你没有拿着给我传达的书信啊。\ \
+ <结束/@exit>
+
+[@546_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take 断交先生的书信 1
+set [308] 1
+#SAY
+{NPCIMG/50}
+请转告收到了。\ \
+ <结束/@exit>
+}
+
+[@547_START]
+{
+#IF
+CheckDailyQuest 547
+#ACT
+goto @547_START_1
+[@547_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/380}
+即使不是那样，我也正在等你。你知道装饰品中夹有特殊气的事情吧。它们中间浓烟黑檀项链是具有着火能力的项链。最近沙漠的气候越来越热哟。如果项链中的力量聚集起来，好象可以着火。找到这种项链是很不容易的哟。是将那些{FCOLOR/10}羊{FCOLOR/12}吃光了？。。。如果你可以在{FCOLOR/10}24点之前{FCOLOR/12}找到 {FCOLOR/10}浓烟黑檀项链{FCOLOR/12}，将要重谢。\ \
+ <就这么办吧。/@547_START_2>\
+ <请给些考虑的时间。/@547_START_1_1>
+
+[@547_START_1_1]
+#IF
+#SAY
+{NPCIMG/380}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@547_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/380}
+那么如果找到{FCOLOR/10}浓烟黑檀项链 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@547_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/380}
+带来我所委托的{FCOLOR/10}浓烟黑檀项链 {FCOLOR/12}了吗。\ \
+ <找回来了。/@547_CHECK1_2>\
+ <请再给些时间。/@547_CHECK1_1_1>
+
+[@547_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/380}
+希望今天之内一定要找回啦。听说有人看到{FCOLOR/10}羊{FCOLOR/12}吞下去项链。\ \
+ <结束/@exit>
+
+[@547_CHECK1_2]
+#IF
+checkitem 浓烟黑檀项链 1
+#ACT
+goto @547_CHECK1_3
+#ELSESAY
+{NPCIMG/380}
+还没找到我拜托的{FCOLOR/10}蚂蚁卵100个和皮50个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@547_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 浓烟黑檀项链 1
+give 黑色水晶项链 1
+give 黄色水晶项链 1
+give 金币 10000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/380}
+哦，终于找来东西了。辛苦了。这是约定的酬谢。\ \
+ <结束/@exit>
+}
+
+[@548_START]
+{
+#IF
+CheckDailyQuest 548
+#ACT
+goto @548_START_1
+
+[@548_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/380}
+即使不是那样，我也正在等你。今天要拜托你的事情不是那么困难。几天后有一个宴会，请在{FCOLOR/10}24点之前{FCOLOR/12}找到 {FCOLOR/10}品质为10 以上的羊肉5个{FCOLOR/12}。\ \
+ <就这么办吧。/@548_START_2>\
+ <请给些考虑的时间。/@548_START_1_1>
+
+[@548_START_1_1]
+#IF
+#SAY
+{NPCIMG/380}
+那么，今天之内给我答复哟。\ \ 
+ <结束/@exit>
+
+[@548_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/380}
+那么如果找到{FCOLOR/10}品质为10 以上的羊肉5个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \  
+<结束/@exit>
+}
+
+[@548_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/380}
+带来我所委托的{FCOLOR/10}品质为10 以上的羊肉5个{FCOLOR/12}了吗。\ \
+ <找回来了。/@548_CHECK1_2>\
+ <请再给些时间。/@548_CHECK1_1_1>
+
+[@548_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/380}
+今天之内一定要找到哟。\ \
+ <结束/@exit>
+
+[@548_CHECK1_2]
+#IF
+checkitem 羊肉 5
+checkduraeva 羊肉 10
+#ACT
+goto @548_CHECK1_3
+#ELSESAY
+{NPCIMG/380}
+还没找到我拜托的{FCOLOR/10}品质为10 以上的羊肉5个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@548_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 羊肉 5
+give 金币 9000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/380}
+哦，终于找来东西了。辛苦了。这是约定的酬谢。\ \
+ <结束/@exit>
+}
+
+[@549_START]
+{
+#IF
+CheckDailyQuest 549
+#ACT
+goto @549_START_1
+[@549_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/100}
+真是！什么都想用到药里但却没有的俗话正符合现在的情况。明天要交的药里面需要蚂蚁卵。很一般的蚂蚁卵今天找起来特别困难。如果武士先生在{FCOLOR/10}24点之前{FCOLOR/12}给我找到 {FCOLOR/10}蚂蚁卵10个{FCOLOR/12}，一定有酬劳。\ \
+ <就这么办吧。/@549_START_2>\
+ <请给些考虑的时间。/@549_START_1_1>
+
+[@549_START_1_1]
+#IF
+#SAY
+{NPCIMG/100}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@549_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+{NPCIMG/100}
+那么如果找到{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@549_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/100}
+那么找到我所拜托的{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}了吗？\ \
+ <找回来了。/@549_CHECK1_2>\
+ <请再给些时间。/@549_CHECK1_1_1>
+
+[@549_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/100}
+今天之内一定要找回来啊。\ \
+ <结束/@exit>
+
+[@549_CHECK1_2]
+#IF
+checkitem 蚂蚁卵 10
+#ACT
+goto @549_CHECK1_3
+#ELSESAY
+{NPCIMG/100}
+还没采集我所拜托的{FCOLOR/10}蚂蚁卵10个{FCOLOR/12}了吗？请快点找来。\ \
+ <结束/@exit>
+
+[@549_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take 蚂蚁卵 10
+give 金币 8000
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/100}
+终于找来东西了。辛苦了。\ \
+ <结束/@exit>
+}
+
+[@550_START]
+{
+#IF
+CheckDailyQuest 550
+#ACT
+goto @550_START_1
+
+[@550_START_1]
+#IF
+check [307] 0
+#SAY
+{NPCIMG/100}
+啊，来得正是时候。请给{FCOLOR/10}铁匠铺王铁匠送汤药{FCOLOR/12}。不要忘记了一定要在{FCOLOR/10}24点之前{FCOLOR/12}送到。\ \
+ <就这么办吧。/@550_START_2>\
+ <请给些考虑的时间。/@550_START_1_1>
+
+[@550_START_1_1]
+#IF
+#SAY
+{NPCIMG/100}
+那么，今天之内给我答复哟。\ \
+ <结束/@exit>
+
+[@550_START_2]
+#IF
+check [307] 0
+#ACT
+give 汤药 1
+set [307] 1
+#SAY
+{NPCIMG/100}
+那么向{FCOLOR/10}铁匠铺王铁匠送汤药 {FCOLOR/12}，请回到贫道这儿。当然是{FCOLOR/10}24点为止{FCOLOR/12}一定要找到哟。\ \
+ <结束/@exit>
+}
+
+[@550_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/100}
+那么按照我所委托向{FCOLOR/10}铁匠铺王铁匠送汤药 {FCOLOR/12}了吗。\ \
+ <送了。/@550_CHECK1_2>\
+ <请再给些时间。/@550_CHECK1_1_1>
+
+[@550_CHECK1_1_1]
+#IF
+#SAY
+{NPCIMG/100}
+希望金之内一定要转交。\ \
+ <结束/@exit>
+
+[@550_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @550_CHECK1_3
+#ELSESAY
+{NPCIMG/100}
+还没向铁匠铺王铁匠送汤药。请快点去一趟吧。\ \
+ <结束/@exit>
+
+[@550_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give 魔法药（特） 10
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+{NPCIMG/100}
+东西送好了。辛苦了。这是酬谢。\ \
+ <结束/@exit>
+}
+
+[@550_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+{NPCIMG/0}
+有什么事情？\ \
+ <传达汤药。/@550_CHECK2_1>
+
+[@550_CHECK2_1]
+#IF
+checkitem 汤药 1
+#ACT
+goto @550_CHECK2_2
+#ELSESAY
+{NPCIMG/0}
+你好像没有拿着给我传达的汤药。\ \
+ <结束/@exit>
+
+[@550_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take 汤药 1
+set [308] 1
+#SAY
+{NPCIMG/0}
+请转告收到了。\ \
+ <结束/@exit>
+}

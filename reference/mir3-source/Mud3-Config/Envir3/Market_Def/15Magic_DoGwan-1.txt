@@ -1,0 +1,80 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+[@main_root_1]
+#IF
+checkjob taoist
+#ACT
+BreakTimeRecall 
+goto @daebi_main
+#ELSEACT
+BreakTimeRecall 
+goto @daebi_other_class
+
+[@daebi_other_class]
+#IF
+checkjob warrior
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1.txt] @NPC_Main_Warrior
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1.txt] @NPC_Main_Wizard
+
+;-----------------------------
+
+[@daebi_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1.txt] @NPC_Main
+
+;-----------------------------
+
+[@daebi_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1.txt] @NPC_Main_Mugong
+
+;-----------------------------
+
+[@holycircle_test_start]
+#IF
+#ACT
+goto @holycircle_begin
+
+[@holycircle_begin]
+#CALL [\MU_taoist\holy.txt] @mugong_holycircle
+
+[@massheal_test_start]
+#IF
+check [526] 1
+check [730] 0
+#ACT
+goto @massheal_complete
+break
+
+#IF
+#ACT
+goto @massheal_begin
+
+;-----------------------------
+
+[@massheal_begin]
+#CALL [\MU_taoist\massheal.txt] @mugong_massheal
+
+[@massheal_complete]
+#CALL [\MU_taoist\massheal.txt] @mugong_massheal_complete
+
+[@holycircle_test_explain_again]
+#CALL [\MU_taoist\holy.txt] @mugong_holycircle_explain
+
+[@massheal_test_explain_again]
+#CALL [\MU_taoist\massheal.txt] @mugong_massheal_explain

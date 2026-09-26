@@ -1,0 +1,165 @@
+;;º£¥áµÁ
+;¹«±â
+%100
++30
++3
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_root
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Main_0_0
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Sell
+
+[@questionprize]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_QuestionPrize
+
+[@candle]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Candle
+
+[@teleport]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Teleport
+
+[@teleport2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Teleport2
+
+[@steleport]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_sTeleport
+
+[@repairoil]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_RepairOil
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 576
+#ACT
+goto @TQuest576_0
+break
+;
+#IF
+CheckDailyQuest 554
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_TQuest
+
+;------------------------
+;------------------------
+
+[@TQuest576_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest576_2
+break
+;
+#ELSEACT
+goto @TQuest576_1
+
+;--------------
+
+[@TQuest576_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @576_START
+
+[@TQuest576_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @576_CHECK1
+
+
+;------------------------
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+;--------------
+
+[@TQuest1_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @554_START
+
+[@TQuest1_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @554_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Kugkyung-01.txt] @NPC_TQuest_1
+
+;----------------------

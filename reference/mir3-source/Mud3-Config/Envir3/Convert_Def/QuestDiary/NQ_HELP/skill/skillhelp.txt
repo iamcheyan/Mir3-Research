@@ -1,0 +1,1323 @@
+;;海メ盗
+[@skillhelp_1]
+{
+现在来给想进行武功修炼的人介紹一下关于武功的基本说明吧！\
+所有的武功都是在你基本达到相应等级之后，在{FCOLOR/10}特定人物{FCOLOR/12}那儿得到{FCOLOR/10}武功密笈秘籍{FCOLOR/12}， 通过这个来进行武功的修炼。\
+这时有任务的武侠可以在得到武功密笈秘籍的同时获得奖励（现金或物品）。如果没有特别任务的话，就只能得到武功密笈。\
+要执行任务的武功进行是很困难的状况的话， 通过送给{FCOLOR/10}武林高手{FCOLOR/12}武功密笈和支付手续费就可以得知获得武功密笈秘籍的方法，但是要提前准备好需要送出的{FCOLOR/10}武功密笈和手续费{FCOLOR/12}。\
+要在仔细考虑过所有可能的方法之后，选择对自己最合适的方法！\
+<下一步/@mugong_doumi_start>
+}
+
+[@skillhelp_2]
+{
+好啦！，现在如果有什么疑问的话可以就说吧~！\ \
+<询问武功的种类和修炼方法。/@mu_guide_1>\
+<询问现在可以修炼的武功种类。/@mu_help_1>\
+<询问武林高手的位置。/@mu_gosu_1>\ \
+<结束/@exit>
+}
+
+[@skillhelp_3]
+{
+无法判断你是哪个派别的人士啊！\
+我帮不了你，还是去别的地方打听一下吧！\ \
+<结束/@exit>
+}
+
+[@skillhelp_4]
+{
+你选择了{FCOLOR/10}战士之路{FCOLOR/12}。\
+战士可以修炼的武功有以下种类。\
+在你选择了所需要的武功之后， 我会告诉你相应的{FCOLOR/10}武功说明，修炼方法，有关任务人物资料{FCOLOR/12}。\ \
+    修炼等级  7,< 基本剑术  /@mu_guide_junsa_1> \
+    修炼等级 14,< 攻杀剑术  /@mu_guide_junsa_2> \
+    修炼等级 19,< 刺杀剑术  /@mu_guide_junsa_3> \ \
+<回首页/@mugong_doumi_start>\
+}
+
+[@skillhelp_5]
+{
+*{FCOLOR/14}基本剑术{FCOLOR/12}\
+无属性，是提高自身的{FCOLOR/10}准确率（命中率）{FCOLOR/12}的武功。
+学会武功之后，投入战斗时可以自动使用和修炼该武功， 越修炼准确率就越高。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级达到{FCOLOR/10}7{FCOLOR/12}级以上， 在{FCOLOR/10}龙血先生(边境城市，456:302){FCOLOR/12}那里可以学到。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_6]
+{
+*{FCOLOR/14}攻杀剑术{FCOLOR/12}\
+无属性，熟练此武功，就可以一定程度地{FCOLOR/10}增加破坏力和命中率{FCOLOR/12}。
+越修炼命中率就越高。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}14{FCOLOR/12}以上， 找到{FCOLOR/10}龙血先生(边境城市，456:302){FCOLOR/12}，通过考验后就可以学习了。
+考验方法是配备向龙血先生借来的{FCOLOR/10}攻杀铁剑{FCOLOR/12}后，来处理测验场的骷髅。通过后可以得到{FCOLOR/10}攻杀剑术秘籍，奖金，黑珍珠戒指{FCOLOR/12}。
+一旦配备攻杀剑，直至内力消耗完为止也不会自动解除，如果遗失的话可以用一定的金额购买，这一点要牢牢记住。\
+另外，向{FCOLOR/10}武林高手{FCOLOR/12}提供攻杀剑术的武功密笈和支付手续费后，也可以得到获得攻杀剑术秘籍的方法。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_7]
+{
+*{FCOLOR/14}刺杀剑术{FCOLOR/12}\
+无属性，是通过从剑中发出的{FCOLOR/10}冲击波来刺伤在剑身杀伤范围之外的敌人{FCOLOR/12}的武功。
+越加修炼，其破坏力就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级在{FCOLOR/10}19{FCOLOR/12}以上， 找到{FCOLOR/10}龙血先生(边境城市，456:302){FCOLOR/12}通过考验后就能够学习。
+龙血先生为了证明你的实力，要求你能拿到{FCOLOR/10}沃玛寺庙中叫做沃玛战士的怪物的角{FCOLOR/12}。
+拿到角给他后，可以得到{FCOLOR/12}刺杀剑术秘籍，奖金， 龙骨戒指{FCOLOR/12}。\ 
+另外，向{FCOLOR/10}武林高手{FCOLOR/12}提供刺杀剑术的武功密笈和支付手续费后，也可以得到刺杀剑术秘籍。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_8]
+{
+*{FCOLOR/14}野蛮冲撞{FCOLOR/12}\
+无属性，是用肩膀{FCOLOR/10}撞击{FCOLOR/12}其他怪物和对手的武功。
+越修炼，可以撞击的距离就越长，可以冲撞推的对象也会增多。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}27{FCOLOR/12}以上， 找到{FCOLOR/10}黄河大侠(边境城市，104:203 ){FCOLOR/12}通过考验后就可以学习。
+黄河大侠会拜托你为绿洲城堡的隐居武士{FCOLOR/10}勤龙{FCOLOR/12}转达书信， 找到勤龙之后，再按照他的请求找到{FCOLOR/10}诺玛石5个{FCOLOR/12}，然后回到黄河大侠那里，就算通过考验。
+诺玛石在叫做{FCOLOR/10}诺玛法老{FCOLOR/12}的怪物那里，要把获得的诺玛石全都掌握住才算通过考验。
+通过后，可以得到{FCOLOR/10}野蛮冲撞秘籍，奖金，天龙环{FCOLOR/12}。\ 
+另外，向{FCOLOR/10}武林高手{FCOLOR/12}提供野蛮冲撞武功密笈和支付手续费后，也可以得到野蛮冲撞秘籍。\ \
+<…喂，稍等一会…/@mu_guide_junsa_6_1>\
+}
+
+[@skillhelp_9]
+{
+哈哈，你以为这样急着去找黄河大侠，就可以得到你想得到的东西吗？ \
+黄河大侠可不是那么随随便便的人…首先你要让他认为你已经做好了{FCOLOR/10}充分准备{FCOLOR/12}才行， 所以先去拜托在每个村庄的{FCOLOR/10}武器制造商{FCOLOR/12}为你{FCOLOR/10}修理武器{FCOLOR/12}之后再去吧。\
+商人们不会对作为战士的你的难处视而不见的，所以他们或许会告诉你一些{FCOLOR/10}对你有所帮助的话{FCOLOR/12}的。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_10]
+{
+*{FCOLOR/14}烈火剑法{FCOLOR/12}\
+无属性，是使体内真气循环时产生的气力注入剑中， 来{FCOLOR/10}增加破坏力{FCOLOR/12}的武功。
+越修炼，其破坏力也越增加。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}32{FCOLOR/12}以上，找到{FCOLOR/10}黄河大侠(边境城市，104:203 ){FCOLOR/12}后，可以打听到关于该武功的说明，再向{FCOLOR/10}武林高手{FCOLOR/12}提供武功密笈和提供手续费后， 就可以得到烈火剑法秘籍。\ \
+<上一步/@mu_guide_junsa_0>\ 
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_11]
+{
+*{FCOLOR/14}翔空剑法{FCOLOR/12}\
+无属性，是半月弯刀的上乘武功，可以利用冲击波{FCOLOR/10}攻击数名敌人{FCOLOR/12}。 
+越修炼，其破坏力就越会增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}35{FCOLOR/12}以上，向{FCOLOR/10}武林高手{FCOLOR/12}提供翔空剑法武功密笈和支付手续费后，就可以得到翔空剑法秘籍。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_12]
+{
+*{FCOLOR/14}莲月剑法{FCOLOR/12}\
+无属性，是气运丹田，瞬间以{FCOLOR/10}3连击{FCOLOR/12}的方式去攻击对方的武功。
+越修炼，其破坏力就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}38{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供莲月剑法武功密笈和支付手续费后，就可以得到莲月剑法秘籍。\ \
+<上一步/@mu_guide_junsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_13]
+{
+你选择了{FCOLOR/10}法神之路{FCOLOR/12}啊！ \
+法神可以修炼的武功有以下种类。\
+选择所需要的武功后，我就会告诉你相关的{FCOLOR/10}武功说明，修炼方法，有关人物资料{FCOLOR/12}。\ \
+    修炼等级  7, <火球术    /@mu_guide_sulsa_1>  修炼等级  8, <霹雳掌    /@mu_guide_sulsa_2> \   
+    修炼等级 12, <抗拒火环    /@mu_guide_sulsa_4>  修炼等级 13, <诱惑之光   /@mu_guide_sulsa_5> \
+    修炼等级 14, <瞬息移动  /@mu_guide_sulsa_6>  修炼等级 15, <大火球/@mu_guide_sulsa_7> \ 
+    修炼等级 16, <雷电术     /@mu_guide_sulsa_8>   \
+    修炼等级 20, <地狱火    /@mu_guide_sulsa_10> \ \
+<回首页/@mugong_doumi_start>\
+}
+
+[@skillhelp_14]
+{
+*{FCOLOR/14}火球术{FCOLOR/12}\
+无属性，是法神最{FCOLOR/10}基本{FCOLOR/12}的武功。
+越修炼，力量越会增大。\ \ 
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}7{FCOLOR/12}以上， 到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}那里就可以学得到。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_15]
+{
+*{FCOLOR/14}霹雳掌{FCOLOR/12}是\
+电属性，是最基本的电属性武功， 可以向{FCOLOR/10}狮子类怪物进行连续攻击{FCOLOR/12}。
+越修炼，其破坏力就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}8{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供霹雳掌武功密笈和支付手续费后，就可以得到霹雳掌秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_17]
+{
+*{FCOLOR/14}抗拒火环{FCOLOR/12}\
+火属性，是可以对比自己等级低的怪物或对手{FCOLOR/10}推挡护身用{FCOLOR/12}武功。
+越修炼，反弹的距离就越远。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}12{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+安然无恙的通过怪物聚集的修炼场后，就可以得到{FCOLOR/10}抗拒火环秘籍，奖金， 风之黑檀项链{FCOLOR/12}。
+值得注意的是，不能伤害任何一只有残疾的怪物。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_18]
+{
+*{FCOLOR/14}诱惑之光{FCOLOR/12}\
+幻影属性，是在瞬间之内把强烈的电击注入敌人的身躯{FCOLOR/10}导致敌人失去神志{FCOLOR/12}的武功。
+会使敌人在大脑受到强烈冲击后，{FCOLOR/10}改变成为我方成员{FCOLOR/12}
+越修炼，诱惑敌人成为我方成员的数量就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}13{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+为了证明的资格，要首先进入考场击退所有的半兽，通过考验后就能够得到{FCOLOR/10}诱惑之光秘籍，奖金，魔家项链{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_19]
+{
+*{FCOLOR/14}瞬息移动{FCOLOR/12}\
+幻影属性，是利用强烈的能量使空间场位发生扭曲，瞬间内{FCOLOR/10}向别处移动{FCOLOR/12}的武功。
+越修炼，抵达村庄之中的概率就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}14{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+不过好像那个考验有点麻烦。要5次通过分为2条路的迷路，并且5次都做出正确选择才算通过。
+嗯…要是想知道正确选择的暗示，可以直接向霹雳尊者询问。\
+通过考验，就可以得到{FCOLOR/10}瞬息移动秘籍，奖金，变形银蛇戒指{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_20]
+{
+*{FCOLOR/14}大火球{FCOLOR/12}\
+火属性，是比{FCOLOR/10}火球术还强{FCOLOR/12}的武功。
+越修炼，能量越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}15{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+用霹雳尊者给的{FCOLOR/10}焱火剑{FCOLOR/12}打败在考场的所有怪物就行， 通过考验就可以得到{FCOLOR/10}大火球秘籍，奖金，焰火项链{FCOLOR/12}。\
+值得注意的是，一旦焱火剑拿在手中的话，那么直至考验结束或者倒下之前就不会脱离。如果丢失了的话就去跟霹雳尊者用一定的钱来换取。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_21]
+{
+*{FCOLOR/14}雷电术{FCOLOR/12}\
+电属性， 是以雷击形式对怪物和对手进行{FCOLOR/10}猛烈攻击{FCOLOR/12}的武功， 可以对{FCOLOR/10}狮子类的怪物进行附加攻击{FCOLOR/12}。
+越修炼，能量越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}16{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+被送往亚空间，通过打败怪物的考验，就可以得到{FCOLOR/10}雷电术秘籍，奖金，闪电眼{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_23]
+{
+*{FCOLOR/14}地狱火{FCOLOR/12}\
+火属性，是能够以直线形式{FCOLOR/10}攻击多个敌人{FCOLOR/12}的武功。
+越修炼，能量越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}20{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+为了验证的资格，进入考场从火焰沃玛手里拿到{FCOLOR/10}新火镜{FCOLOR/12}， 通过考验的话可以得到{FCOLOR/10}地狱火秘籍，奖金，焰火手镯{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_24]
+{
+*{FCOLOR/14}疾光电影{FCOLOR/12}\
+电属性，是可以前一步发出雷击， 对{FCOLOR/10}数名怪物和对手进行强烈攻击{FCOLOR/12}的武功。可以给狮子类的怪物追加攻击，越修炼，能量就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}21{FCOLOR/12}以上， 找到{FCOLOR/10}化天先生 (银杏山谷， 353:212 ){FCOLOR/12}通过考验后就能够学习。\
+化天先生说要想学好该武功，需要拿到{FCOLOR/10}沃玛神殿{FCOLOR/12}中的{FCOLOR/10}闪电石{FCOLOR/12}，我告诉你，要想得到此物必须身着涂有树脂的衣服，往衣服上涂树脂的事情可以去请求{FCOLOR/10}银杏山谷的福氏{FCOLOR/12}的帮助。\
+给化天先生送去闪电石，就可以得到{FCOLOR/10}疾光电影秘籍，奖金，月光石手镯{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_25]
+{
+*{FCOLOR/14}冰沙掌{FCOLOR/12}\
+是可以在6范围内，对目标物进行低概率冷冻攻击的武功。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}22{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供冰沙掌武功密笈和支付手续费后，就可以得到冰沙掌秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_26]
+{
+*{FCOLOR/14}火墙{FCOLOR/12}\
+火属性，是以一点为中心，{FCOLOR/10}一定时间内以十字形式放火燃烧{FCOLOR/12}，连续攻击其周围一定范围内怪物和对手的武功。
+越修炼，持续时间和能量就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}24{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供火墙武功密笈和支付手续费后，就可以得到火墙秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_27]
+{
+*{FCOLOR/14}圣言术{FCOLOR/12}\
+幻影属性， 可以{FCOLOR/10}使狮子类的怪物一次性失去战斗力{FCOLOR/12}的武功。
+越修炼，攻击成功概率就越能增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}26{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供圣言术武功密笈和支付手续费后，就可以得到圣言术秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_28]
+{
+*{FCOLOR/14}异形换位{FCOLOR/12}\
+是可以任意移动施展者位置的武功。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}27{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供异形换位武功密笈和支付手续费后，就可以得到异形换位秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_29]
+{
+*{FCOLOR/14}魔法盾{FCOLOR/12}\
+火属性，是可以在自己周围形成保护网，{FCOLOR/10}在一定的时间内增加防御能力{FCOLOR/12}的武功。
+越修炼，持续时间越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}29{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供魔法盾武功密笈和支付手续费后，就可以得到魔法盾秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_30]
+{
+*{FCOLOR/14}爆裂火焰{FCOLOR/12}\
+火属性，是能够以指定点为中心，向{FCOLOR/10}(3 x 3)范围内的所有的怪物和对手进行攻击{FCOLOR/12}的武功。
+越修炼，能量就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}32{FCOLOR/12}以上， 找到{FCOLOR/10}霹雳尊者(银杏山谷，265:145 ){FCOLOR/12}通过考验后就能够学习。\
+霹雳尊者说掌握该武功需要一种特殊的药，因此要求拿到制备此药的材料{FCOLOR/10}千年毒蛇胆汁{FCOLOR/12}才行，因为千年毒蛇经常出没在蛇谷周围，所以要特别留意那里。通过考验就可以得到{FCOLOR/10}火焰秘籍，奖金，流星天王{FCOLOR/12}。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_31]
+{
+*{FCOLOR/14}霹雳雪花{FCOLOR/12}\
+电属性，是能够像产生电场一样，对{FCOLOR/10}发射者为中心的 (5 x 5)范围之内进行攻击{FCOLOR/12}的武功。
+可以给狮子类的怪物进行附加攻击，越修炼，能量就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}33{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供霹雳雪花武功密笈和支付手续费后，就可以得到霹雳雪花秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_32]
+{
+*{FCOLOR/14}冰咆哮{FCOLOR/12}\
+冰属性，是利用冰块，{FCOLOR/10}以一定的地点为中心，可以在 (3 x 3)范围内攻击怪物和对手{FCOLOR/12}的武功。
+越修炼，能量就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}34{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供冰咆哮武功密笈和支付手续费后，就可以得到冰咆哮秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_33]
+{
+*{FCOLOR/14}龙卷风{FCOLOR/12}\
+是能够以施展者为中心，攻击 (3 x 3)范围内敌人的武功。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}35{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供龙卷风武功密笈和支付手续费后，就可以得到龙卷风秘籍。\ \
+<上一步/@mu_guide_sulsa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_34]
+{
+原来你选择的是{FCOLOR/10}道士的人生{FCOLOR/12}。\
+道士可以修炼的魔法由下面几种。\
+请选择魔法，我将告诉你{FCOLOR/10}魔法介绍,修炼方法,相关人物介绍信息{FCOLOR/12}。\ \
+    修炼等级  7, <治愈术    /@mu_guide_dosa_1>  修炼等级  8, <精神力战法  /@mu_guide_dosa_2> \
+    修炼等级 12, <施毒术    /@mu_guide_dosa_3>  修炼等级 13, <灵魂火符    /@mu_guide_dosa_4> \
+    修炼等级 14, <月魂断玉    /@mu_guide_dosa_5>  修炼等级 17, <召唤骷髅/@mu_guide_dosa_6> \
+    修炼等级 20, <隐身术    /@mu_guide_dosa_7>  \ \
+<回首页/@mugong_doumi_start>\
+}
+
+[@skillhelp_35]
+{
+*{FCOLOR/14}治愈术{FCOLOR/12}\
+神圣属性，是可以运用真气{FCOLOR/10}治愈自己或他人{FCOLOR/12}的武功。
+越修炼，恢复量就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}7{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}，就可以学得到。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_36]
+{
+*{FCOLOR/14}精神力战法{FCOLOR/12}\
+无属性， 是能够{FCOLOR/10}提高自身命中率{FCOLOR/12}的武功。
+越修炼，命中率就越高。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}8{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学得到。\ 
+击退测验场的所有怪物，就可以得到{FCOLOR/10}精神力战法秘籍，奖金，灵魂铁手镯{FCOLOR/12}。\
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_37]
+{
+*{FCOLOR/14}施毒术{FCOLOR/12}\
+暗黑属性，是根据毒粉的毒性来{FCOLOR/10}一定程度上减少对手防御力或体力{FCOLOR/12}的武功。
+越修炼，使敌人中毒时间就越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}12{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学到。\
+清明子说首先应该掌握毒的特性才行，因此邀请你先跟测验场有毒的怪物们较量一下。
+击退毒蜘蛛，食人树，蝎子，洞蛆等后，从尸体里提取出所需原料，送给他就可以通过考验，通过的话就可以得到{FCOLOR/10}施毒术秘籍，奖金，天仙之珠{FCOLOR/12}。\
+提取方法在切肉练习的时候就应该已经很熟悉了吧。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_38]
+{
+*{FCOLOR/14}灵魂火符{FCOLOR/12}\
+暗黑属性，是通过施予爆发性巫术的{FCOLOR/10}护身符来攻击怪物或对手{FCOLOR/12}的武功。
+越修炼，能量越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}13{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供灵魂火符武功密笈和支付手续费后，就可以得到灵魂火符秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_39]
+{
+*{FCOLOR/14}月魂断玉{FCOLOR/12}\
+神圣属性，是在手中凝聚力量，对{FCOLOR/10}狮子类怪物进行强烈攻击{FCOLOR/12}的武功。
+越修炼，破坏力就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}14{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供月魂断玉武功密笈和支付手续费后，就可以得到月魂断玉秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_40]
+{
+*{FCOLOR/14}召唤骷髅{FCOLOR/12}\
+幻影属性，用自己的真气注入护身符后，召唤具有强大力量的{FCOLOR/10}灵魂，把他们改变成自己部下{FCOLOR/12}以供自己差遣的武功。
+越修炼，召唤强大灵魂的能力就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}17{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学得到。\
+在亚空间与骷髅展开激战，如果取胜的话就可以从守护神那里得到{FCOLOR/10}幻影玉珠{FCOLOR/12}， 从清明子手中得到{FCOLOR/10}召唤骷髅秘籍，奖金{FCOLOR/12}。\
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_41]
+{
+*{FCOLOR/14}隐身术{FCOLOR/12}\
+神圣属性，是可以暂时{FCOLOR/10}隐藏自己的行踪，避开怪物的视线{FCOLOR/12}的武功。
+施展之后不移动的话，怪物就无法察觉自己的位置。
+越修炼，隐藏时间就越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}20{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学得到。\
+安然无恙地通过怪物成群的修炼场，就可以得到{FCOLOR/10}隐身术秘籍，奖金，黑暗凤凰明珠{FCOLOR/12}。\
+不要去管那些看起来危险的怪物，只要装作没看见似的安全通过就可以。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_42]
+{
+*{FCOLOR/14}幽灵盾{FCOLOR/12}\
+神圣属性，是可以瞬间内集中力量，产生对外部{FCOLOR/10}自然界武功拥有强大的抵抗力{FCOLOR/12}的武功。
+越修炼，抵抗力就越强，持续时间就越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}21{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学得到。\
+清明子会要求你从{FCOLOR/10}矿区产的魔法僵尸{FCOLOR/12}那儿拿到{FCOLOR/10}灵珠{FCOLOR/12}。 拿到灵珠送给清明子就可以得到{FCOLOR/10}幽灵盾秘籍，奖金，松笛{FCOLOR/12}。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_43]
+{
+*{FCOLOR/14}群体隐身术{FCOLOR/12}\
+神圣属性，把隐身术提高到一个新的境界，{FCOLOR/10}可以把 (3 x 3)范围内的所有怪物隐身{FCOLOR/12}。
+越修炼，隐身的时间越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}23{FCOLOR/12}以上， 找到{FCOLOR/10}清明子(道馆 本馆，11:10){FCOLOR/12}后，通过考验就可以学得到。\
+这件事情可能与一个叫金宝的小伙子有关，去{FCOLOR/10}比奇县{FCOLOR/12}的{FCOLOR/10}小商贩杂货商{FCOLOR/12}那儿问问看。\
+通过清明子的考验，就可以得到{FCOLOR/10}群体隐身术秘籍，奖金，暗黑竹笛{FCOLOR/12}。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_44]
+{
+*{FCOLOR/14}月魂灵波{FCOLOR/12}\
+神圣属性，是比月魂断玉更上乘的武功，在掌中蕴集强大的真气来{FCOLOR/10}攻击狮子类怪物{FCOLOR/12}。
+越修炼，破坏力就越大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}24{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供月魂灵波武功密笈和支付手续费后，就可以得到月魂灵波秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_45]
+{
+*{FCOLOR/14}神圣战甲术{FCOLOR/12}\
+神圣属性，是通过瞬间蕴集真气对{FCOLOR/10}外部的攻击形成强大抵抗力{FCOLOR/12}的武功。
+越修炼，持续时间越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}25{FCOLOR/12}以上， 找到{FCOLOR/10}大悲善僧(道馆，349:401){FCOLOR/12}后，通过考验就可以学得到。\
+大悲善僧为了证明你的资格，会要求你拿到{FCOLOR/10}起爆石{FCOLOR/12}，拿到起爆石给他的话就可以得到{FCOLOR/10}神圣战甲术秘籍，奖励，八面太极戒指{FCOLOR/12}。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_46]
+{
+*{FCOLOR/14}困魔咒{FCOLOR/12}\
+神圣属性，是通过对一定范围内施加魔法来{FCOLOR/10}击离怪物{FCOLOR/12}的武功。
+越修炼，持续时间越长。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}27{FCOLOR/12}以上， 找到{FCOLOR/10}大悲善僧(道馆，349:401){FCOLOR/12}后，通过考验就可以学得到。\
+击退困魔咒房中的5个怪物，复原全部困魔咒石的话，就可以得到{FCOLOR/10}困魔咒秘籍，奖金，黑除魔戒指{FCOLOR/12}。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_47]
+{
+*{FCOLOR/14}空拳刀法{FCOLOR/12}\
+无属性，是用脚攻击对方，将其{FCOLOR/10}向外推离{FCOLOR/12}的武功。
+越修炼，推离的概率和破坏力就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}28{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供空拳刀法武功密笈和支付手续费后，就可以得到空拳刀法。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_48]
+{
+*{FCOLOR/14}召唤神兽术{FCOLOR/12}\
+幻影属性， 是{FCOLOR/10}能够唤具有神圣力量的禽兽{FCOLOR/12}的武功。
+越修炼，召唤强大禽兽的能力就越强。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级在{FCOLOR/10}30{FCOLOR/12}以上， 去找{FCOLOR/10}大悲善僧(道馆，349:401){FCOLOR/12}可以了解简单的说明，把召唤神兽术武功密笈给{FCOLOR/10}武林高手{FCOLOR/12}，并支付手续费后，就可以得到召唤神兽术秘籍了。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_49]
+{
+*{FCOLOR/14}群体治愈术{FCOLOR/12}\
+神圣属性，同时可以治愈{FCOLOR/10}(3 x 3)范围内的所有角色{FCOLOR/12}的武功。
+越修炼，恢复量就越增大。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级在{FCOLOR/10}31{FCOLOR/12}以上， 去找{FCOLOR/10}大悲善僧(道馆，349:401){FCOLOR/12}，通过考验就可以学到。\
+完成大悲善僧交给的任务，就可以获得{FCOLOR/10}群体治愈术秘籍，奖金，神圣铂金戒指{FCOLOR/12}。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_50]
+{
+*{FCOLOR/14}超强召唤骷髅{FCOLOR/12}\
+是比招唤骷髅更上乘的武功，能够招降超强骷髅真骨召唤手。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级{FCOLOR/10}33{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供超强召唤骷髅武功密笈和支付手续费后，就可以得到超强召唤骷髅秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_51]
+{
+*{FCOLOR/14}猛虎强势{FCOLOR/12}\
+是在一定时间内提高施展者破坏力的武功。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级在{FCOLOR/10}34{FCOLOR/12}以上，向{FCOLOR/10}武林高手{FCOLOR/12}提供猛虎强势武功密笈并支付手续费就可以得到猛虎强势秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_52]
+{
+*{FCOLOR/14}回生术{FCOLOR/12}\
+是能够让死去的人起死回生的武功。\ \
+*{FCOLOR/14}学习方法{FCOLOR/12}\
+修炼等级在{FCOLOR/10}35{FCOLOR/12}以上， 向{FCOLOR/10}武林高手{FCOLOR/12}提供回生术武功密笈并支付手续费就可以得到回生术秘籍。\ \
+<上一步/@mu_guide_dosa_0>\
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_53]
+{
+我不知道你是哪派人。 \
+看来我帮不了你什么，还是去别的地方吧。\ \
+<结束/@exit>
+}
+
+[@skillhelp_54]
+{
+你选择了战士之路啊！ \
+不过你修炼的等级还不够，还没有什么可学的武功！\ \
+<回首页/@mugong_doumi_start>
+}
+
+[@skillhelp_55]
+{
+你选择了战士之路啊！ \
+现在能修炼的武功有\ \
+    修炼等级  7, {FCOLOR/15} 基本剑法  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_56]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/15} 功杀剑术  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_57]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/15} 刺杀剑术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_58]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/10} 刺杀剑术    {FCOLOR/12} \ \
+    修炼等级 24, {FCOLOR/15} 半月弯刀  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_59]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/10} 刺杀剑术    {FCOLOR/12} \ \
+    修炼等级 24, {FCOLOR/10} 半月弯刀  {FCOLOR/12} \ \
+    修炼等级 27, {FCOLOR/15} 野蛮冲撞    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_60]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/10} 刺杀剑术    {FCOLOR/12} \ \
+    修炼等级 24, {FCOLOR/10} 半月弯刀  {FCOLOR/12} \ \
+    修炼等级 27, {FCOLOR/10} 野蛮冲撞    {FCOLOR/12} \ \
+    修炼等级 32, {FCOLOR/15} 烈火剑法    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_61]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/10} 刺杀剑术    {FCOLOR/12} \ \
+    修炼等级 24, {FCOLOR/10} 半月弯刀  {FCOLOR/12} \ \
+    修炼等级 27, {FCOLOR/10} 野蛮冲撞    {FCOLOR/12} \ \
+    修炼等级 32, {FCOLOR/10} 烈火剑法    {FCOLOR/12} \ \
+    修炼等级 35, {FCOLOR/15} 翔空剑法  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_62]
+{
+你选择了战士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 基本剑法  {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 功杀剑术  {FCOLOR/12} \ \
+    修炼等级 19, {FCOLOR/10} 刺杀剑术    {FCOLOR/12} \ \
+    修炼等级 24, {FCOLOR/10} 半月弯刀  {FCOLOR/12} \ \
+    修炼等级 27, {FCOLOR/10} 野蛮冲撞    {FCOLOR/12} \ \
+    修炼等级 32, {FCOLOR/10} 烈火剑法    {FCOLOR/12} \ \
+    修炼等级 35, {FCOLOR/10} 翔空剑法  {FCOLOR/12} \ \
+    修炼等级 38, {FCOLOR/15} 莲月剑法    {FCOLOR/12}  \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_63]
+{
+你选择了法神之路啊！\
+不过你修炼的等级还不够，还没有什么可学的武功！\ \
+<回首页/@mugong_doumi_start>
+}
+
+[@skillhelp_64]
+{
+你选择了法神之路啊！\
+现在能修炼的武功有\ \
+    修炼等级  7, {FCOLOR/15} 火球术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_65]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/15} 霹雳掌    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_66]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ 
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_67]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 10, {FCOLOR/15} 风掌      {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_68]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 10, {FCOLOR/10} 风掌      {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/15} 抗拒火环    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_69]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 10, {FCOLOR/10} 风掌      {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/15} 诱惑之光    {FCOLOR/12} \ 
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_70]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ 
+    修炼等级 14, {FCOLOR/15} 瞬息移动  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_71]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/15} 大火球{FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_72]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/15} 雷电术      {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_73]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_74]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+    修炼等级 18, {FCOLOR/15} 击风      {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_75]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/15} 地狱火    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_76]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/15} 疾光电影    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_77]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/15} 冰沙掌     {FCOLOR/12} \ \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_78]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/15} 风震天    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_79]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术    \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/15} 火墙    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_80]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12}  \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/15} 圣言术  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_81]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/15} 异形换位  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_82]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 异形换位  {FCOLOR/12} \ \
+    修炼等级 29, {FCOLOR/15} 魔法盾  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_83]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 异形换位  {FCOLOR/12} \ \
+    修炼等级 29, {FCOLOR/10} 魔法盾  {FCOLOR/12} 修炼等级 32, {FCOLOR/15} 爆裂火焰    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_84]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12}\ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 异形换位  {FCOLOR/12} \ \
+    修炼等级 29, {FCOLOR/10} 魔法盾  {FCOLOR/12} 修炼等级 32, {FCOLOR/10} 爆裂火焰    {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/15} 霹雳雪花    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_85]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 异形换位  {FCOLOR/12} \ \
+    修炼等级 29, {FCOLOR/10} 魔法盾  {FCOLOR/12} 修炼等级 32, {FCOLOR/10} 爆裂火焰    {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/10} 霹雳雪花    {FCOLOR/12} 修炼等级 34, {FCOLOR/15} 冰咆哮    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_86]
+{
+你选择了法神之路啊！\
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 火球术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 霹雳掌    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 抗拒火环    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 诱惑之光    {FCOLOR/12} \ \ 
+    修炼等级 14, {FCOLOR/10} 瞬息移动  {FCOLOR/12} 修炼等级 15, {FCOLOR/10} 大火球{FCOLOR/12} \ \
+    修炼等级 16, {FCOLOR/10} 雷电术      {FCOLOR/12} \ \
+    修炼等级 18, {FCOLOR/10} 击风      {FCOLOR/12} 修炼等级 20, {FCOLOR/10} 地狱火    {FCOLOR/12} \ \
+    修炼等级 21, {FCOLOR/10} 疾光电影    {FCOLOR/12} 修炼等级 22, {FCOLOR/10} 冰沙掌     {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 风震天    {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 火墙    {FCOLOR/12} \ \
+    修炼等级 26, {FCOLOR/10} 圣言术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 异形换位  {FCOLOR/12} \ \
+    修炼等级 29, {FCOLOR/10} 魔法盾  {FCOLOR/12} 修炼等级 32, {FCOLOR/10} 爆裂火焰    {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/10} 霹雳雪花    {FCOLOR/12} 修炼等级 34, {FCOLOR/10} 冰咆哮    {FCOLOR/12} \ \
+    修炼等级 35, {FCOLOR/15} 龙卷风    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_87]
+{
+选择了道士之路啊！ \
+不过修炼的等级太低了，现在还没有什么可学的武功。\ \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_88]
+{
+选择了道士之路啊！ \
+现在能修炼的武功有\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_89]
+{
+选择了道士之路啊！ \
+现在能修炼的武功有\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/15} 精神力战法  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_90]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/15} 施毒术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_91]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/15} 灵魂火符    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_92]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/15} 灵魂火符    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_93]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/15} 召唤骷髅{FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_94]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/15} 隐身术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_95]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/15} 幽灵盾  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_96]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/15} 集体隐身术  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_97]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/15} 月魂灵波    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_98]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/15} 神圣战甲术  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_99]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/15} 困魔咒      {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_100]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/15} 空拳刀法    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_101]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/15} 强魔震法  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_102]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/10} 强魔震法  {FCOLOR/12} \ \
+    修炼等级 30, {FCOLOR/15} 召唤神兽{FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_103]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/10} 强魔震法  {FCOLOR/12} \ \
+    修炼等级 30, {FCOLOR/10} 召唤神兽{FCOLOR/12} 修炼等级 31, {FCOLOR/15} 群体治愈术  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_104]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/10} 强魔震法  {FCOLOR/12} \ \
+    修炼等级 30, {FCOLOR/10} 召唤神兽{FCOLOR/12} 修炼等级 31, {FCOLOR/10} 群体治愈术  {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/15} 超强召唤骷髅{FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_105]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/10} 强魔震法  {FCOLOR/12} \ \
+    修炼等级 30, {FCOLOR/10} 召唤神兽{FCOLOR/12} 修炼等级 31, {FCOLOR/10} 群体治愈术  {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/10} 超强召唤骷髅{FCOLOR/12} 修炼等级 34, {FCOLOR/15} 猛虎强势  {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_106]
+{
+选择了道士之路啊！ \
+目前，你可以修炼的武功是\ \
+    修炼等级  7, {FCOLOR/10} 治愈术    {FCOLOR/12} 修炼等级  8, {FCOLOR/10} 精神力战法  {FCOLOR/12} \ \
+    修炼等级 12, {FCOLOR/10} 施毒术    {FCOLOR/12} 修炼等级 13, {FCOLOR/10} 灵魂火符    {FCOLOR/12} \ \
+    修炼等级 14, {FCOLOR/10} 灵魂火符    {FCOLOR/12} 修炼等级 17, {FCOLOR/10} 召唤骷髅{FCOLOR/12} \ \
+    修炼等级 20, {FCOLOR/10} 隐身术    {FCOLOR/12} 修炼等级 21, {FCOLOR/10} 幽灵盾  {FCOLOR/12} \ \
+    修炼等级 23, {FCOLOR/10} 集体隐身术  {FCOLOR/12} 修炼等级 24, {FCOLOR/10} 月魂灵波    {FCOLOR/12} \ \
+    修炼等级 25, {FCOLOR/10} 神圣战甲术  {FCOLOR/12} 修炼等级 27, {FCOLOR/10} 困魔咒      {FCOLOR/12} \ \
+    修炼等级 28, {FCOLOR/10} 空拳刀法    {FCOLOR/12} 修炼等级 29, {FCOLOR/10} 强魔震法  {FCOLOR/12} \ \
+    修炼等级 30, {FCOLOR/10} 召唤神兽{FCOLOR/12} 修炼等级 31, {FCOLOR/10} 群体治愈术  {FCOLOR/12} \ \
+    修炼等级 33, {FCOLOR/10} 超强召唤骷髅{FCOLOR/12} 修炼等级 34, {FCOLOR/10} 猛虎强势  {FCOLOR/12} \ \
+    修炼等级 35, {FCOLOR/15} 回生术    {FCOLOR/12} \
+<返回/@mugong_doumi_start>
+}
+
+[@skillhelp_107]
+{
+公傍甸狼 加己篮 酒林 吝夸茄 开且阑 茄促匙. \ \
+<摧  扁/@exit>
+}
+
+[@skillhelp_108]
+{
+磊匙绰 绢恫 何幅狼 荤恩牢瘤 舅 荐啊 绝焙 弊贰. \
+郴 档框阑 临荐 绝阑 淀 窍聪, 促弗 镑阑 舅酒毫林霸唱. \ \
+<摧  扁/@exit>
+}
+
+[@skillhelp_109]
+{
+如果是战士的话请找以下几位。\ \
+	总教头(比奇县，451:388) \
+	武功教头(沙漠土城，227:169) \
+	武术教头(盟重县， 300:299 ) \
+	唯我独尊(绿洲， 426:97) \
+	断乔先生(毒蛇山谷，347:193)\ \
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_110]
+{
+如果是法神的话请找以下几位。\ \
+	华龙断珠(比奇县，462:435) \ 
+	小秀玉女(沙漠土城，199: 203) \
+	雷翁断珠(盟重县，290:299) \
+	唯我独尊(绿洲， 426:97) \
+	断乔先生(毒蛇山谷，347:193)\ \
+<回首页/@mugong_doumi_start>\
+<结束/@exit>
+}
+
+[@skillhelp_111]
+{
+如果是道士的话请找以下几位。\ \
+	比奇道长(比奇县，449:433) \
+	芙蓉仙子(沙漠土城， 230:188) \
+	盟重道长(盟重县，297:285) \
+	唯我独尊(绿洲， 426:97) \
+	断乔先生(毒蛇山谷，347:193)\ \
+<回首页/@mugong_doumi_start>\	
+<结束/@exit>
+}

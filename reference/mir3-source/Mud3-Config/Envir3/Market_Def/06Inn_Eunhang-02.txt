@@ -1,0 +1,260 @@
+;;º£¥áµÁ
+%100
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Eunhang-02.txt] @NPC_Main
+ 
+;----------------------------------------------------------
+
+[@StgPassword]
+#CALL [\PassWord\PassWord.txt] @Manage_PassWord
+
+[@PreGetback]
+#CALL [\PassWord\PassWord.txt] @Input_PassWord
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Eunhang-02.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Eunhang-02.txt] @NPC_Getback
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 588
+#ACT
+goto @TQuest588_0
+break
+;
+#IF
+CheckDailyQuest 558
+#ACT
+goto @TQuest5_0
+break
+;
+#IF
+CheckDailyQuest 528
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 510
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 448
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 430
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Eunhang-02.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest588_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest588_2
+break
+;
+#ELSEACT
+goto @TQuest588_1
+
+;--------------
+
+[@TQuest588_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @588_START
+
+[@TQuest588_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @588_CHECK1
+
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @430_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @430_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Eunhang-02.txt] @NPC_TQuest_1
+
+;----------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\4thClass.txt] @448_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\4thClass.txt] @448_CHECK1
+
+
+
+;---------------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @510_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @510_CHECK1
+
+
+;----------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @528_START
+
+[@TQuest4_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @528_CHECK1
+
+;----------------------------------
+
+[@TQuest5_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+
+#IF
+check [307] 1
+#ACT
+goto @TQuest5_1
+break
+
+#ELSEACT
+goto @TQuest1_6
+break
+
+;--------------
+
+[@TQuest5_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @558_CHECK2
+
+;----------------------------------------

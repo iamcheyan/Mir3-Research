@@ -1,0 +1,166 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 490
+#ACT
+goto @Hwa_T490
+break
+;
+#IF
+CheckDailyQuest 307
+#ACT
+goto @hyumyungwi_T307
+break
+;
+#IF
+CheckDailyQuest 302
+#ACT
+goto @hyumyungwi_T302
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@Hwa_T490]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @Hwa_T490_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@Hwa_T490_1]
+#IF
+checkitem »ðÑæÎÖÂêºÅ½Ç 9
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T490_Say
+#ELSEACT
+movr s0 3
+goto @Hwa_T490_2
+
+[@Hwa_T490_2]
+#IF
+equal s0 0
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+
+;-----------------------------------------------------
+[@hyumyungwi_T307]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hyumyungwi_T307_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hyumyungwi_T307_1]
+#IF
+checkitem »ðÑæÎÖÂêºÅ½Ç 2
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T307_Say
+
+#ELSEACT
+goto @hyumyungwi_T307_2
+
+[@hyumyungwi_T307_2]
+#IF
+random 3
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@hyumyungwi_T302]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hyumyungwi_T302_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hyumyungwi_T302_1]
+#IF
+checkitem »ðÑæÎÖÂêºÅ½Ç 29
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T302_Say
+
+#ELSEACT
+goto @hyumyungwi_T302_2
+
+[@hyumyungwi_T302_2]
+#IF
+random 3
+#ACT
+give »ðÑæÎÖÂêºÅ½Ç 1
+;-----------------------------------------------------

@@ -1,0 +1,36 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkgold 10000000
+#SAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_Main
+#ELSESAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_Main_NoMoney
+
+[@BuyHorseWhite]
+#IF
+checklevel 40
+#ELSESAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_Main_NoLv
+#ELSEACT
+break
+
+#IF
+checkgold 20000000
+#ELSESAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_BuyHorseWhite_nOmONEY
+#ELSEACT
+break
+
+#IF
+checkhorse
+#SAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_BuyHorseWhite_Fail
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\convert_Def\Market_Def\09HorseMarket_Encore-9.txt] @NPC_BuyHorseWhite_Complete
+#ELSEACT
+take ½ð±Ò 20000000
+horsecall °×Âí

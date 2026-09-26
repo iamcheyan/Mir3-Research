@@ -1,0 +1,95 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 110
+#ACT
+goto @chokry_T110
+break
+;
+#IF
+CheckDailyQuest 104
+#ACT
+goto @chokry_T104
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chokry_T110]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chokry_T110_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chokry_T110_1]
+#IF
+#SAY
+（抓到触龙神了。） \ 
+#ACT
+set [308] 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chokry_T104]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chokry_T104_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chokry_T104_1]
+#IF
+#SAY
+（找到触龙神皮了。）\
+#ACT
+give 触龙神皮 1
+set [308] 1
+;-----------------------------------------------------

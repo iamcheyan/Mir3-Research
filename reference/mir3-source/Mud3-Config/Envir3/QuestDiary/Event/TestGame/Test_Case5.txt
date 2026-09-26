@@ -1,0 +1,209 @@
+;;海メ盗
+[@RushTest_Game5]
+{
+;-------------------------------------------------------------------------------
+#ACT
+MonClear RUSH1 
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 0
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 0
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 0
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 0
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "参加试练的所有勇士们。。。希望你们能熬过所有的试练。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next1_Drop
+
+[@RushTest_Game5_Next1_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（大）" 5 5
+DropItemMap "RUSH1,40,40,20" "魔法药（大）" 5 5
+DropItemMap "RUSH1,40,40,20" "金币" 1000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next1
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next1]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 4
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 2
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 40
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 4
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next2_Drop
+
+[@RushTest_Game5_Next2_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（大）" 5 5
+DropItemMap "RUSH1,40,40,20" "魔法药（大）" 5 5
+DropItemMap "RUSH1,40,40,20" "金币" 1000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next2
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next2]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 8
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 4
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 80
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 8
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next3_Drop
+
+[@RushTest_Game5_Next3_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（大）" 10 5
+DropItemMap "RUSH1,40,40,20" "魔法药（大）" 10 5
+DropItemMap "RUSH1,40,40,20" "金币" 2000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next3
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next3]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 12
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 6
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 120
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 12
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next4_Drop
+
+[@RushTest_Game5_Next4_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（大）" 10 5
+DropItemMap "RUSH1,40,40,20" "魔法药（大）" 10 5
+DropItemMap "RUSH1,40,40,20" "金币" 2000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next4
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next4]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 16
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 8
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 160
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 16
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next5_Drop
+
+[@RushTest_Game5_Next5_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（特）" 5 5
+DropItemMap "RUSH1,40,40,20" "魔法药（特）" 5 5
+DropItemMap "RUSH1,40,40,20" "金币" 4000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next5
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next5]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 20
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 10
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 200
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 20
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next6_Drop
+
+[@RushTest_Game5_Next6_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（特）" 5 5
+DropItemMap "RUSH1,40,40,20" "魔法药（特）" 5 5
+DropItemMap "RUSH1,40,40,20" "金币" 4000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next6
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next6]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 24
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 12
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 240
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 24
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "试练将会越来越难。。。请注意了。。"
+Delaygoto [Grobal] 120 @RushTest_Game5_Next7_Drop
+
+[@RushTest_Game5_Next7_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "金创药（特）" 10 5
+DropItemMap "RUSH1,40,40,20" "魔法药（特）" 10 5
+DropItemMap "RUSH1,40,40,20" "金币" 8000 10
+Delaygoto [Grobal] 30 @RushTest_Game5_Next7
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next7]
+#ACT
+MonGenP "RUSH1,40,40,30" 触角神魔 3
+MonGenP "RUSH1,40,40,30" 恶形鬼 7
+MonGenP "RUSH1,40,40,30" 犬猴魔 7
+MonGenP "RUSH1,40,40,30" 爆毒神魔 3
+MonGenP "RUSH1,40,40,30" 霸王守卫 1
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [AC] 28
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [MAC] 14
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [HP] 280
+MonPwr "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" [DC] 28
+ChangeMonLevel "RUSH1" "犬猴魔,恶形鬼,触角神魔,爆毒神魔,霸王守卫" 99
+EventMsg RUSH1 "虽然是最后一场试练，不过要坚持到底啊。。"
+Delaygoto [Grobal] 240 @RushTest_Game5_Next8
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next8]
+#IF
+checkMonMap RUSH1 1
+#ACT
+MonClear RUSH1 
+EventMsg RUSH1 "接受这次全部试练的勇士们，你们辛苦了。可是你们都没有通过试练。"
+Delaygoto [Grobal] 5 @RushTest_Game5_Next9
+#ELSEACT
+MonClear RUSH1 
+EventMsg RUSH1 "接受这次全部试练的勇士们，你们辛苦了。像通过试练的勇士们给予祝福的掌声。"
+Param1 RUSH1
+Param2 40
+Param3 40
+Param4 20
+DropItemMap "RUSH1,40,40,20" "诅咒之药水" 1 1
+DropItemMap "RUSH1,40,40,20" "祝福油" 1 10
+DropItemMap "RUSH1,40,40,20" "丸药（10000）" 1 30
+DropItemMap "RUSH1,40,40,20" "金币" 10000 50
+Delaygoto [Grobal] 60 @RushTest_Game5_Next9
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game5_Next9]
+#ACT
+mov z11 0
+mapting RUSH1 0 450 400
+;-------------------------------------------------------------------------------
+}
+

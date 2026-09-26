@@ -1,0 +1,123 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;-------------------
+
+[@main_0]
+#IF
+checkjob wizard
+#ACT
+BreakTimeRecall 
+goto @wha_main
+#ELSEACT
+BreakTimeRecall 
+goto @wha_other_class
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@wha_other_class]
+#IF
+checkjob warrior
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_Warrior
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_Taoist
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+
+[@wha_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_Main
+
+[@wha_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_Main_Mugong
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+
+[@fireware_test_start]
+;;
+#IF
+check [527] 1
+check [764] 0
+#ACT
+goto @fireware_complete
+break
+
+#IF
+#ACT
+goto @fireware_begin
+break
+
+[@fireware_begin]
+#CALL [\MU_wizard\pokyel.txt] @mugong_fireware
+
+[@fireware_complete]
+#CALL [\MU_wizard\pokyel.txt] @mugong_fireware_complete
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 111
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_TQuest
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @111_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @111_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Eunhang2-02.txt] @NPC_TQuest_1
+

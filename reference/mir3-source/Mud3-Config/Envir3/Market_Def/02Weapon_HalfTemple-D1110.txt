@@ -1,0 +1,11 @@
+;;º£¥áµÁ
+%200
++5
++6
+
+[@main]
+#SAY
+#INCLUDE [..\Convert_Def\Market_Def\02Weapon_HalfTemple-D1110.txt] @NPC_Main
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem

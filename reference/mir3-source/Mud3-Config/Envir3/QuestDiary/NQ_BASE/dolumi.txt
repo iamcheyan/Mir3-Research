@@ -1,0 +1,227 @@
+;;º£¥áµÁ
+[@SOKMO_START]
+{
+#IF
+checklevel 7
+#ACT
+goto @SOKMO_START_1
+
+[@SOKMO_START_1]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_2
+
+
+[@SOKMO_START_1_1]
+#IF
+check [259] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_3
+
+
+[@SOKMO_START_2]
+#IF
+check [259] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_4
+
+
+[@SOKMO_START_2_1]
+#IF
+check [259] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_5
+
+
+[@SOKMO_START_3]
+#IF
+check [259] 0
+#ACT
+set [259] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_6
+
+}
+
+[@SOKMO_SOKMO_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_7
+
+}
+
+[@SOKMO_SOKMO_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_8
+
+}
+
+[@SOKMO_SOKMO_3]
+{
+#IF
+check [263] 0
+check [262] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_9
+
+
+[@SOKMO_SOKMO_3_1]
+#IF
+check [263] 0
+check [262] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_10
+
+
+[@SOKMO_SOKMO_3_2]
+#IF
+check [263] 0
+check [262] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_11
+
+
+[@SOKMO_SOKMO_3_3]
+#IF
+check [263] 0
+check [262] 1
+#ACT
+set [263] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_12
+
+}
+
+[@SOKMO_COMPLETE]
+{
+#IF
+checkitem Í¯×ÓÏñ 1
+#ACT
+goto @SOKMO_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_13
+
+
+[@SOKMO_COMPLETE_1]
+#IF
+check [265] 0
+check [264] 1
+#ACT
+take Í¯×ÓÏñ 1
+give ½ð±Ò 3000
+reset [259] 5
+set [265] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_14
+
+}
+
+[@SOKMO_JUMWON_1]
+{
+#IF
+check [262] 0
+check [260] 1
+#ACT
+set [262] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_15
+
+}
+
+[@SOKMO_WONSENG_1]
+{
+#IF
+daytime night
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_16
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_17
+
+
+[@SOKMO_WONSENG_1_1]
+#IF
+check [260] 0
+check [259] 1
+#ACT
+set [260] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_18
+
+}
+
+[@SOKMO_WONSENG_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_19
+
+}
+
+[@SOKMO_WONSENG_3]
+{
+#IF
+check [264] 0
+check [263] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_20
+
+
+[@SOKMO_WONSENG_3_1]
+#IF
+check [264] 0
+check [263] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_21
+
+
+[@SOKMO_WONSENG_3_2]
+#IF
+check [264] 0
+check [263] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_22
+
+
+[@SOKMO_WONSENG_3_3]
+#IF
+check [264] 0
+check [263] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_23
+
+
+[@SOKMO_WONSENG_3_4]
+#IF
+checkitem ÖÆÄ§±¦Óñ 1
+#ACT
+take ÖÆÄ§±¦Óñ 1
+give Í¯×ÓÏñ 1
+set [264] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_24
+
+#ELSEACT
+goto @SOKMO_WONSENG_3_4_1
+
+[@SOKMO_WONSENG_3_4_1]
+#IF
+checkgold 3000
+#ACT
+take ½ð±Ò 3000
+give Í¯×ÓÏñ 1
+set [264] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_25
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\dolumi.txt] @dolumi_26
+
+}

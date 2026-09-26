@@ -1,0 +1,95 @@
+;;º£¥áµÁ
+[@BICHUN]
+{
+#IF
+check [165] 1
+#ACT
+goto @BICHUN_4
+break
+#IF
+check [146] 1
+#ACT
+goto @BICHUN_3
+break
+#IF
+check [145] 1
+#ACT
+goto @BICHUN_2
+break
+#IF
+check [140] 1
+#ACT
+goto @BICHUN_2
+break
+#IF
+check [139] 1
+#ACT
+goto @BICHUN_2
+break
+#IF
+check [134] 1
+#ACT
+goto @BICHUN_1
+break
+#ELSEACT
+goto @BICHUN_0
+[@BICHUN_0]
+#IF
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_2
+
+[@BICHUN_1]
+#IF
+check [134] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_3
+
+[@BICHUN_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_4
+
+[@BICHUN_3]
+#IF
+check [146] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_5
+
+[@BICHUN_4]
+#IF
+check [165] 1
+#ACT
+goto @BICHUN_4_1
+[@BICHUN_4_1]
+#IF
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_6
+
+#ELSEACT
+goto @BICHUN_4_2
+[@BICHUN_4_2]
+#IF
+check [166] 1
+#ACT
+goto @BICHUN_4_3
+#ELSEACT
+goto @BICHUN_4_2_1
+[@BICHUN_4_2_1]
+#IF
+check [167] 1
+#ACT
+goto @BICHUN_4_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_7
+
+[@BICHUN_4_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bichun.txt] @bichun_8
+
+}

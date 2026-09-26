@@ -1,0 +1,85 @@
+;;海メ盗
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [278] 1
+#ACT
+break
+
+#IF
+check [277] 1
+#ACT
+goto @umgzol1_1
+
+;----------------------------------------------------------
+
+[@umgzol1_1]
+#IF
+large S1 12
+#ACT
+goto @umgzol1_9
+#ELSEACT
+goto @umgzol1_2
+
+;-----------------
+
+[@umgzol1_2]
+#IF
+large S1 10
+#ACT
+goto @umgzol1_5
+#ELSEACT
+goto @umgzol1_3
+
+
+[@umgzol1_3]
+#IF
+large S1 2
+#ACT
+goto @umgzol1_4
+#ELSEACT
+mov S1 2
+goto @umgzol1_4
+
+;-----------------
+
+[@umgzol1_4]
+#IF
+#ACT
+inc S1 1
+
+[@umgzol1_5]
+#IF
+#ACT
+movr s0 2
+goto @umgzol1_5_1
+
+[@umgzol1_5_1]
+#IF
+equal s0 0
+#ACT
+inc S1 1
+;----------------------------------------------------------
+
+
+[@umgzol1_9]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaGijol1.txt] @Nm_WoomaGijol1_1
+
+#ACT
+set [278] 1
+give 无名日志 1
+mov S1 0
+mov s0 0

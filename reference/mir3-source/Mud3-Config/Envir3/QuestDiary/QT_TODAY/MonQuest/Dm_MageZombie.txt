@@ -1,0 +1,108 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 318
+#ACT
+goto @jusulgwi_T318
+break
+
+#IF
+checkDailyQuest 418
+#ACT
+goto @T418_MonQuest
+break
+
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@T418_MonQuest]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+check [309] 1
+check [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T418_Say
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+;
+
+#IF
+check [307] 1
+#ACT
+goto @T418_MonQuest_1
+break
+
+#ELSEACT
+break
+
+[@T418_MonQuest_1]
+#IF
+checkitem À×µç½©Ê¬¹Ç 1
+#ACT
+give À×µç½©Ê¬¹Ç 1
+set [308] 1
+
+
+[@jusulgwi_T318]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @jusulgwi_T318_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@jusulgwi_T318_1]
+#IF
+checkitem À×µç½©Ê¬¹Ç 9
+#ACT
+give À×µç½©Ê¬¹Ç 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T318_Say
+
+#ELSEACT
+goto @jusulgwi_T318_2
+
+[@jusulgwi_T318_2]
+#IF
+random 3
+#ACT
+give À×µç½©Ê¬¹Ç 1
+
+;-----------------------------------------------------

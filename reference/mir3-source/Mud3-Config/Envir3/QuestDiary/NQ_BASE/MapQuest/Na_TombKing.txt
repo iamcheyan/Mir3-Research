@@ -1,0 +1,79 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### D002  225,175 -> DM002  8,28       ############
+;#### DM002 7,28    -> D002  225,176     ############
+;-----------------------------------------------------
+#IF
+check [213] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [207] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [206] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_3
+
+#ACT
+enter_fail
+break
+
+#IF
+check [205] 1
+#ACT
+enter_ok
+break
+
+#IF
+check [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_4
+
+#ACT
+enter_fail
+break
+
+#IF
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_5
+
+#ACT
+enter_fail
+break
+
+#IF
+check [174] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_6
+
+#ACT
+enter_fail
+break
+
+#IF
+check [173] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_7
+
+#ACT
+enter_fail
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_TombKing.txt] @Na_TombKing_8
+
+#ELSEACT
+enter_fail

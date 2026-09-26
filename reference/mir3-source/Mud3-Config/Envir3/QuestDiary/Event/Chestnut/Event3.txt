@@ -1,0 +1,112 @@
+;;海メ盗
+;----------------------------------------
+;	GOLD Chestnut-> 5000
+;----------------------------------------
+
+[@gold1]
+{
+#IF
+!checkitem 金色栗子 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_1
+
+#ELSEACT
+goto @gold2
+
+[@gold2]
+#IF
+checkitem 金色栗子 1
+#ACT
+take 金色栗子 1
+give 金币 5000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_3
+
+}
+
+;----------------------------------------
+;	silver Chestnut-> 2000
+;----------------------------------------
+
+[@silver1]
+{
+#IF
+!checkitem 银色栗子 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_4
+
+#ELSEACT
+goto @silver2
+
+[@silver2]
+#IF
+checkitem 银色栗子 1
+#ACT
+take 银色栗子 1
+give 金币 2000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_5
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_6
+
+}
+
+;----------------------------------------
+;	copper Chestnut-> 1000
+;----------------------------------------
+
+[@copper1]
+{
+#IF
+!checkitem 铜色栗子 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_7
+
+#ELSEACT
+goto @copper2
+
+[@copper2]
+#IF
+checkitem 铜色栗子 1
+#ACT
+take 铜色栗子 1
+give 金币 1000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_8
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_9
+
+}
+
+;----------------------------------------
+;	brown Chestnut-> 500
+;----------------------------------------
+
+[@brown1]
+{
+#IF
+!checkitem 褐色栗子 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_10
+
+#ELSEACT
+goto @brown2
+
+[@brown2]
+#IF
+checkitem 褐色栗子 1
+#ACT
+take 褐色栗子 1
+give 金币 500
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_11
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Chestnut\Event3.txt] @Event3_12
+
+}

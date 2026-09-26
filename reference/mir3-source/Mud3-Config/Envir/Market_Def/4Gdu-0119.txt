@@ -1,0 +1,308 @@
+; ===================================
+; Market Def NPC File : 4Gdu-0119
+; ReagentStore ()
+; -----------------------------------
+; Name: Spencer
+; Job: 
+; Map 不行: 0119
+; Pos X 10
+; Pos Y 11
+; File name: *removed*
+; Comment: ReagentStore ()
+
+;================================================= =
+;
+; Brief Description of the switches used in this NPC.
+; [104] - Given the letter
+; [105] - Been given the 特殊药品
+; [106] - Needs to give Cannibal Fruit still
+; [107] - Has given enough Cannibal Fruit
+; [108] - The first of the empty member of the Assembly it will be shrewd, it receives 
+;
+
+;Settings
+%100
++0
++42
+
+
+;Pkr Tag (NPC won't 對話 to Pkrs)
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不想为你这样的败类提供任何帮助..\ \
+<确定/@exit>
+
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+歡迎. 有什么可以帮你?\ \
+<买/@buy>药品\
+<卖/@sell>药品\
+<對話/@talkwith>\
+<Close/@exit>
+
+
+[@buy]
+你想买什么?\ \ \
+<返回主頁/@main>
+
+[@sell]
+给我看看你的物品.\ \ \
+<返回主頁/@main>
+
+[@talkwith]
+#IF
+#ACT
+goto  @talkwith_1
+
+
+[@talkwith_1]
+; Has been given the 药剂师的信, but not handed it in yet
+#IF
+check [103] 1
+check [104] 0
+check [105] 0
+#ACT
+goto @talk_about_letter
+break
+
+; Has given the 药剂师的信 to the person
+#IF
+check  [103]  1
+check  [104]  1
+check  [106]  0
+#ACT
+goto @talk_1_1
+break
+
+; Has given the 药剂师的信, but still needs to give Fruit
+#IF
+check  [104]  1
+check  [106]  1
+check  [107]  0
+#ACT
+goto @talk_2_1
+break
+
+; Has given enough CannibleFruit (I think)
+#IF
+check  [104]  1
+check  [106]  1
+check  [107]  1
+check  [108]  0
+#ACT
+goto  @talk_3_1
+break
+
+; Has Been Given the 特殊药水 Already
+#IF
+check  [105] 1
+#SAY
+<$USERNAME> 对不起，我现在太忙。\
+可不可以下次再来?\
+很抱歉。\
+#ACT
+break
+
+#IF
+#SAY
+对不起，我现在忙，以后再来找我吧。\
+
+;-------------------------------------------------------
+; Has Been Given The Letter
+;-------------------------------------------------------
+
+[@talk_about_letter]
+...就是说你带着我父亲的信件，\
+因为什么事情给我写信的呢？\
+快把信交给我。\ \
+<传递/@give_letter> 信件.\
+<丢失/@no_give_letter> 信件.
+
+[@give_letter]
+#IF
+check [103] 1
+check [104] 0
+check [105] 0
+CHECKITEM  药剂师的信  1
+#ACT
+TAKE  药剂师的信  1
+SET   [104]   1
+break
+#SAY
+啊，我要谢谢你，这段时间以来我一直担心我的父亲\ 
+幸好他来信告诉我生病了, 他在信中说需要特殊的中药.\ 
+朋友, 现在你可以告诉我你的姓名吗?\ \
+<告诉姓名/@say_my_name>
+
+#ELSESAY
+现在没有信?\
+你是说在路上丢了？找到之后马上给我。\
+<Ok/@exit>
+
+[@no_give_letter]
+什么？把信丢了？\
+呵呵，好了，那也用不着这么客气，\
+这样一来我就变得不好意思了，\
+好了，没事了，你回去吧\
+
+[@say_my_name]
+<$USERNAME>, 谢谢你的帮助.\
+我给你一瓶特殊药水,你服下后就会增加你的能力的,\
+之后你可以帮我带药给我的父亲吗?\ \
+<可以/@ok_take_Drug>\
+<不了/@exit>\
+
+[@ok_take_Drug]
+#IF
+CHECK [104] 1
+#ACT
+SET  [105] 1
+GIVE 特殊药水 1
+break
+#SAY
+请赶快, 我担心我的父亲等着这个药水.\
+再见... 祝你好运!\ \
+<Ok/@exit>
+
+;-------------------------------------------------------
+; Has Given the Letter, Still Needs to Collect Fruit
+;-------------------------------------------------------
+[@talk_1_1]
+#IF
+check  [103]  1
+check  [104]  1
+check  [106]  0
+#SAY
+啊 <$USERNAME>, 欢迎光临 \
+你过的还好吗？\
+现在我需要食人树果实\
+如果你帮我弄到几个，我会给你好价钱的。\
+请你一定帮我。\
+那我就等你的好消息了。\
+#ACT
+SET  [106] 1
+break
+
+;-------------------------------------------------------
+; Still Given Fruit
+;-------------------------------------------------------
+
+[@talk_2_1]
+#IF
+CHECKITEM  食人树果实 1
+#SAY
+我需要大量的食人树果实.\
+我会以 600 GOLD 一个的价格来收购的.\
+我还有很多工作要做, 请赶快去找吧.\ \
+<给食人树果实/@give_sg_1>
+#ELSEACT
+goto  @talk_1_1
+
+[@give_sg_1]
+#IF
+check  [104]  1
+check  [106]  1
+check  [107]  0
+CHECKITEM  食人树果实 1
+#ACT
+take 食人树果实 1
+give GOLD 600
+goto @check_enough_1
+
+;核对 to see if they have given enough fruit
+[@check_enough_1]
+#IF
+RANDOM 10
+DAYTIME SUNSET
+#ACT
+SET  [107] 1
+#SAY
+谢谢你 <$USERNAME> 现在食人树果实已经够了。\
+这都是你的功劳。\
+现在我要开始炼药了，\
+请你为我祈祷吧。\
+再见\
+#ELSEACT
+GOTO @give_sg_2
+
+[@give_sg_2]
+#IF
+CHECKITEM 食人树果实 1
+#ACT
+GOTO @talk_2_1
+#ELSEACT
+CLOSE
+
+
+;-------------------------------------------------------
+; The empty member of the Assembly 1st will be shrewd, it is making 
+; No Idea what that means
+;-------------------------------------------------------
+
+[@talk_3_1]
+#IF
+check  [104]  1
+check  [106]  1
+check  [107]  1
+check  [108]  0
+daytime day
+#ACT
+goto  @talk_3_2
+#ELSESAY
+<$USERNAME>, 欢迎光临，我的药还没有炼成。\
+要一旦炼成了，请你一定答应我一个请求，\
+但愿快一点把药炼成。\
+
+;---------------------------------------------
+; Not sure what part of the quest this bit is
+;---------------------------------------------
+[@talk_3_2]
+<$USERNAME>, 药是已经炼成了,\
+但是还没有没有解决的部分，\
+需要向师傅请教。\
+有件事情想求你帮忙，你答应吗？\ \
+<接受请求/@ok_h_order>\
+
+[@ok_h_order]
+谢谢你，你把这个药送给我师傅刘中医，\
+请教师傅这剂药缺少什么东西。\
+我不能空着药房，\
+所以就请你辛苦一次了。\
+但是我师傅好久都没有音信，\
+很对不起，请你一定帮我这个忙。\
+<接受请求/@ok_h_order_now>\
+
+[@ok_h_order_now]
+#IF
+check  [104]  1
+check  [106]  1
+check  [107]  1
+check  [108]  0
+daytime day
+#ACT
+SET  [108] 1
+give 力量石(小) 1
+close
+#ELSESAY
+请不要使用非法手段来谋取利益\
+
+<离开/@exit>
+[goods]
+;Item		Amount		Time
+金创药(小量) 200 1	
+魔法药(小量) 200 1
+金创药(中量) 200 1
+魔法药(中量) 200 1
+强效金创药   200 1
+强效魔法药   200 1
+金创药(小)包  200  1
+金创药(中)包  200  1
+超级金创药    200  1
+魔法药(小)包  200  1
+魔法药(中)包   200  1
+超级魔法药    200  1

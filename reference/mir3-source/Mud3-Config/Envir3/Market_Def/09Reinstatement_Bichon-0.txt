@@ -1,0 +1,284 @@
+﻿;;冰月
+
+%100
++3
+
+[@main]
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_M1
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;---------------
+;---------------
+[@main_root_1]
+;		wang secret quest
+#IF
+check [169] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [152] 1
+#ACT
+goto @main_0_2
+break
+;
+#IF
+check [168] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [167] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [166] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [165] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0_0
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_Main_0
+
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_Main_1
+
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_Main_2
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_Buy
+
+[@Bingo]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_Bingo
+
+[Goods]
+;ItemName      Volume          Hour
+彩卷		100		1
+对奖券		100		1
+
+[@NQuest01_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_1_1
+
+[@NQuest01_1_1]
+#CALL [\NQ_BASE\wang.txt] @BICHUN_SANGGE1
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\wang.txt] @BICHUN_SANGGE2
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 491
+#ACT
+goto @TQuest491_0
+break
+;
+#IF
+CheckDailyQuest 438
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 328
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 233
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 213
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest491_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#ELSEACT
+goto @TQuest491_1
+
+;--------------
+
+[@TQuest491_1]
+#CALL [\QT_TODAY\4thClass.txt] @491_START
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @213_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @213_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Reinstatement_Bichon-0.txt] @NPC_TQuest_1
+
+;---------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\2ndClass.txt] @233_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\2ndClass.txt] @233_CHECK1
+
+;---------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\3rdClass.txt] @328_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\3rdClass.txt] @328_CHECK1
+;---------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+#CALL [\QT_TODAY\4thClass.txt] @438_START
+
+[@TQuest4_2]
+#CALL [\QT_TODAY\4thClass.txt] @438_CHECK1
+
+;---------------------------------

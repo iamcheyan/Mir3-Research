@@ -1,0 +1,96 @@
+;;海メ盗
+[@ShooterMarket_1]
+{
+这里是取攻城兵器的地方。。\ \
+<购买投石车/@buy_stoneshooter>\
+<购买弩车/@buy_chainshooter>\ \
+<托付攻城兵器/@leave_shooter>\
+<找回攻城兵器/@getback_shooter>\ \
+<出售攻城兵器/@kill_shooter>\
+<购买箭，石头/@buy>\ \
+}
+
+[@ShooterMarket_2]
+{
+投石车的价格是10万金币。请确认一下你带的钱。 \ \
+<结束/@exit>
+}
+
+[@ShooterMarket_3]
+{
+成功地完成了购买投石车。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_4]
+{
+你已经有攻城兵器了。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_5]
+{
+弩车的价格是10万金币。请确认一下你带的钱。\ \
+<结束/@exit>
+}
+
+[@ShooterMarket_6]
+{
+成功地完成了购买弩车。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_7]
+{
+你已经有攻城兵器了。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_8]
+{
+请放心，我会保管好攻城兵器的。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_9]
+{
+你没有攻城兵器啊。。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_10]
+{
+找回攻城兵器所需的费用是1000金币。请确认一下你带的钱。\ \
+<结束/@exit>
+}
+
+[@ShooterMarket_11]
+{
+你成功地找到了投石车。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_12]
+{
+你成功地找到了弩车。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_13]
+{
+没有以你的名字托管的攻城兵器。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_14]
+{
+你成功地出售了攻城兵器。\ \
+<前一步/@main>
+}
+
+[@ShooterMarket_15]
+{
+你没有攻城兵器啊。。\ \
+<前一步/@main>
+}
+

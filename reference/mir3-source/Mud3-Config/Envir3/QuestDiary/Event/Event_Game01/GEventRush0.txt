@@ -1,0 +1,806 @@
+;;베α돝
+[@GEventRush0_main]
+
+{
+
+#IF
+#ACT
+	LoadValue P1 "Flag_Def\Event\Event_Game\GEvent_01.txt" [0] [Open]
+#IF
+	Equal   P1     1
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0_MSG.txt" [LineMSG] [MSG01]
+linemsg "z010,z011,z012,z014" "%A0"
+break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0.txt] @NPC_AlreadyStart
+
+#ELSEACT
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [0] [Open] 1
+	LoadValue A0 "Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0_MSG.txt" [LineMSG] [MSG02]
+linemsg "z010,z011,z012,z014" "%A0"
+Delaygoto [Grobal] 60 @GEvent_0_Rush_1ST
+break
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0.txt] @NPC_Ready
+
+;; 10분뒤, 본격적인 러쉬가 개시됩니다.
+
+[@GEvent_0_Rush_1ST]
+;; 첫번째 몹러쉬입니다. 각 러쉬는 총 5단계로 시행되며,
+;; 각 단계별로 10분의 텀이 있습니다.
+;; 젠은 비천성 성문 4방향에 대해 각각 5곳의 젠지점을 두어 이들 지점에서 젠된 몬스터들이 각 성문을 향해 진군합니다.
+;; 
+;; 비천성 1시방향 성문쪽 몹러쉬
+#ACT
+	  LoadValue P1 "Flag_Def\Event\Event_Game\GEvent_01.txt" [OneDay] [Eventgen]
+#IF
+	Equal   P1     1
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0_MSG.txt" [LineMSG] [MSG03]
+linemsg "z010,z011,z012,z014" "%A0"
+goto @GEvent_0_Rush_1ST_start
+	break
+#ELSEACT
+Delaygoto [Grobal] 60 @GEvent_0_Rush_1ST ;;일분마다 몬젠뛰울지 여부 채크
+
+[@GEvent_0_Rush_1ST_start]
+#IF
+#ACT
+SetAreaAttr  "01, 400, 400, 500"  "NoLack"
+;; 본격적인 러쉬가 개시됩니다.
+;; 첫번째 몹러쉬입니다. 각 러쉬는 총 5단계로 시행되며,
+;; 젠은 비천성 성문 4방향에 대해 각각 5곳의 젠지점을 두어 이들 지점에서 젠된 몬스터들이 각 성문을 향해 진군합니다.
+;; 
+;; 비천성 1시방향 성문쪽 몹러쉬
+
+LoadValue B0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_1]
+LoadValue B1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_2]
+LoadValue B2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_3]
+LoadValue B3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_4]
+LoadValue B4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_5]
+LoadValue B5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_6]
+LoadValue B6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_7]
+LoadValue B7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_8]
+LoadValue B8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [1ST_9]
+
+LoadValue P0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_1]
+LoadValue P1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_2]
+LoadValue P2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_3]
+LoadValue P3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_4]
+LoadValue P4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_5]
+LoadValue P5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_6]
+LoadValue P6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_7]
+LoadValue P7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_8]
+LoadValue P8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [1ST_9]
+
+LoadValue B9 "GM_Def\Event\Event_Game01\0_Rush.txt" [Target] [TargetN1]
+
+
+MongenP "01,457,237,20" %B0 %P0
+MongenP "01,457,237,20" %B1 %P1
+MongenP "01,457,237,20" %B2 %P2
+MongenP "01,457,237,20" %B3 %P3
+MongenP "01,457,237,20" %B4 %P4
+MongenP "01,457,237,20" %B5 %P5
+MongenP "01,457,237,20" %B6 %P6
+MongenP "01,457,237,20" %B7 %P7
+MongenP "01,457,237,20" %B8 %P8
+
+	ApplyMonMission "01,457,237,9999" "%B0" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B1" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B2" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B3" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B4" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B5" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B6" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B7" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B8" "%B9"
+
+MongenP "01,427,242,20" %B0 %P0
+MongenP "01,427,242,20" %B1 %P1
+MongenP "01,427,242,20" %B2 %P2
+MongenP "01,427,242,20" %B3 %P3
+MongenP "01,427,242,20" %B4 %P4
+MongenP "01,427,242,20" %B5 %P5
+MongenP "01,427,242,20" %B6 %P6
+MongenP "01,427,242,20" %B7 %P7
+MongenP "01,427,242,20" %B8 %P8
+
+	ApplyMonMission "01,427,242,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B8" "%B9"
+
+MongenP "01,417,267,20" %B0 %P0
+MongenP "01,417,267,20" %B1 %P1
+MongenP "01,417,267,20" %B2 %P2
+MongenP "01,417,267,20" %B3 %P3
+MongenP "01,417,267,20" %B4 %P4
+MongenP "01,417,267,20" %B5 %P5
+MongenP "01,417,267,20" %B6 %P6
+MongenP "01,417,267,20" %B7 %P7
+MongenP "01,417,267,20" %B8 %P8
+
+	ApplyMonMission "01,417,267,9999" "%B0" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B1" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B2" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B3" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B4" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B5" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B6" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B7" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B8" "%B9"
+
+MongenP "01,422,286,20" %B0 %P0
+MongenP "01,422,286,20" %B1 %P1
+MongenP "01,422,286,20" %B2 %P2
+MongenP "01,422,286,20" %B3 %P3
+MongenP "01,422,286,20" %B4 %P4
+MongenP "01,422,286,20" %B5 %P5
+MongenP "01,422,286,20" %B6 %P6
+MongenP "01,422,286,20" %B7 %P7
+MongenP "01,422,286,20" %B8 %P8
+
+	ApplyMonMission "01,422,286,9999" "%B0" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B1" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B2" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B3" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B4" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B5" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B6" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B7" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B8" "%B9"
+
+MongenP "01,427,323,20" %B0 %P0
+MongenP "01,427,323,20" %B1 %P1
+MongenP "01,427,323,20" %B2 %P2
+MongenP "01,427,323,20" %B3 %P3
+MongenP "01,427,323,20" %B4 %P4
+MongenP "01,427,323,20" %B5 %P5
+MongenP "01,427,323,20" %B6 %P6
+MongenP "01,427,323,20" %B7 %P7
+MongenP "01,427,323,20" %B8 %P8
+
+	ApplyMonMission "01,427,323,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B8" "%B9"
+
+MongenP "01,446,336,20" %B0 %P0
+MongenP "01,446,336,20" %B1 %P1
+MongenP "01,446,336,20" %B2 %P2
+MongenP "01,446,336,20" %B3 %P3
+MongenP "01,446,336,20" %B4 %P4
+MongenP "01,446,336,20" %B5 %P5
+MongenP "01,446,336,20" %B6 %P6
+MongenP "01,446,336,20" %B7 %P7
+MongenP "01,446,336,20" %B8 %P8
+
+	ApplyMonMission "01,446,336,9999" "%B0" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B1" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B2" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B3" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B4" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B5" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B6" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B7" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B8" "%B9"
+
+Delaygoto [Grobal] 300 @GEvent_0_Rush_2ND
+
+[@GEvent_0_Rush_2ND]
+;; 비천성 1시방향 성문쪽 몹러쉬
+#IF
+#ACT
+LoadValue B0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_1]
+LoadValue B1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_2]
+LoadValue B2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_3]
+LoadValue B3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_4]
+LoadValue B4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_5]
+LoadValue B5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_6]
+LoadValue B6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_7]
+LoadValue B7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_8]
+LoadValue B8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [2ND_9]
+
+LoadValue P0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_1]
+LoadValue P1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_2]
+LoadValue P2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_3]
+LoadValue P3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_4]
+LoadValue P4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_5]
+LoadValue P5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_6]
+LoadValue P6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_7]
+LoadValue P7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_8]
+LoadValue P8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [2ND_9]
+
+LoadValue B9 "GM_Def\Event\Event_Game01\0_Rush.txt" [Target] [TargetN1]
+
+MongenP "01,457,237,20" %B0 %P0
+MongenP "01,457,237,20" %B1 %P1
+MongenP "01,457,237,20" %B2 %P2
+MongenP "01,457,237,20" %B3 %P3
+MongenP "01,457,237,20" %B4 %P4
+MongenP "01,457,237,20" %B5 %P5
+MongenP "01,457,237,20" %B6 %P6
+MongenP "01,457,237,20" %B7 %P7
+MongenP "01,457,237,20" %B8 %P8
+
+	ApplyMonMission "01,457,237,9999" "%B0" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B1" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B2" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B3" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B4" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B5" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B6" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B7" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B8" "%B9"
+
+MongenP "01,427,242,20" %B0 %P0
+MongenP "01,427,242,20" %B1 %P1
+MongenP "01,427,242,20" %B2 %P2
+MongenP "01,427,242,20" %B3 %P3
+MongenP "01,427,242,20" %B4 %P4
+MongenP "01,427,242,20" %B5 %P5
+MongenP "01,427,242,20" %B6 %P6
+MongenP "01,427,242,20" %B7 %P7
+MongenP "01,427,242,20" %B8 %P8
+
+	ApplyMonMission "01,427,242,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B8" "%B9"
+
+MongenP "01,417,267,20" %B0 %P0
+MongenP "01,417,267,20" %B1 %P1
+MongenP "01,417,267,20" %B2 %P2
+MongenP "01,417,267,20" %B3 %P3
+MongenP "01,417,267,20" %B4 %P4
+MongenP "01,417,267,20" %B5 %P5
+MongenP "01,417,267,20" %B6 %P6
+MongenP "01,417,267,20" %B7 %P7
+MongenP "01,417,267,20" %B8 %P8
+
+	ApplyMonMission "01,417,267,9999" "%B0" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B1" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B2" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B3" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B4" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B5" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B6" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B7" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B8" "%B9"
+
+MongenP "01,422,286,20" %B0 %P0
+MongenP "01,422,286,20" %B1 %P1
+MongenP "01,422,286,20" %B2 %P2
+MongenP "01,422,286,20" %B3 %P3
+MongenP "01,422,286,20" %B4 %P4
+MongenP "01,422,286,20" %B5 %P5
+MongenP "01,422,286,20" %B6 %P6
+MongenP "01,422,286,20" %B7 %P7
+MongenP "01,422,286,20" %B8 %P8
+
+	ApplyMonMission "01,422,286,9999" "%B0" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B1" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B2" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B3" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B4" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B5" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B6" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B7" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B8" "%B9"
+
+MongenP "01,427,323,20" %B0 %P0
+MongenP "01,427,323,20" %B1 %P1
+MongenP "01,427,323,20" %B2 %P2
+MongenP "01,427,323,20" %B3 %P3
+MongenP "01,427,323,20" %B4 %P4
+MongenP "01,427,323,20" %B5 %P5
+MongenP "01,427,323,20" %B6 %P6
+MongenP "01,427,323,20" %B7 %P7
+MongenP "01,427,323,20" %B8 %P8
+
+	ApplyMonMission "01,427,323,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B8" "%B9"
+
+MongenP "01,446,336,20" %B0 %P0
+MongenP "01,446,336,20" %B1 %P1
+MongenP "01,446,336,20" %B2 %P2
+MongenP "01,446,336,20" %B3 %P3
+MongenP "01,446,336,20" %B4 %P4
+MongenP "01,446,336,20" %B5 %P5
+MongenP "01,446,336,20" %B6 %P6
+MongenP "01,446,336,20" %B7 %P7
+MongenP "01,446,336,20" %B8 %P8
+
+	ApplyMonMission "01,446,336,9999" "%B0" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B1" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B2" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B3" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B4" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B5" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B6" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B7" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B8" "%B9"
+
+Delaygoto [Grobal] 600 @GEvent_0_Rush_3RD
+
+[@GEvent_0_Rush_3RD]
+#IF
+#ACT
+LoadValue B0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_1]
+LoadValue B1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_2]
+LoadValue B2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_3]
+LoadValue B3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_4]
+LoadValue B4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_5]
+LoadValue B5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_6]
+LoadValue B6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_7]
+LoadValue B7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_8]
+LoadValue B8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [3TH_9]
+
+LoadValue P0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_1]
+LoadValue P1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_2]
+LoadValue P2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_3]
+LoadValue P3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_4]
+LoadValue P4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_5]
+LoadValue P5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_6]
+LoadValue P6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_7]
+LoadValue P7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_8]
+LoadValue P8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [3TH_9]
+
+LoadValue B9 "GM_Def\Event\Event_Game01\0_Rush.txt" [Target] [TargetN1]
+
+MongenP "01,457,237,20" %B0 %P0
+MongenP "01,457,237,20" %B1 %P1
+MongenP "01,457,237,20" %B2 %P2
+MongenP "01,457,237,20" %B3 %P3
+MongenP "01,457,237,20" %B4 %P4
+MongenP "01,457,237,20" %B5 %P5
+MongenP "01,457,237,20" %B6 %P6
+MongenP "01,457,237,20" %B7 %P7
+MongenP "01,457,237,20" %B8 %P8
+
+	ApplyMonMission "01,457,237,9999" "%B0" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B1" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B2" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B3" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B4" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B5" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B6" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B7" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B8" "%B9"
+
+MongenP "01,427,242,20" %B0 %P0
+MongenP "01,427,242,20" %B1 %P1
+MongenP "01,427,242,20" %B2 %P2
+MongenP "01,427,242,20" %B3 %P3
+MongenP "01,427,242,20" %B4 %P4
+MongenP "01,427,242,20" %B5 %P5
+MongenP "01,427,242,20" %B6 %P6
+MongenP "01,427,242,20" %B7 %P7
+MongenP "01,427,242,20" %B8 %P8
+
+	ApplyMonMission "01,427,242,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B8" "%B9"
+
+MongenP "01,417,267,20" %B0 %P0
+MongenP "01,417,267,20" %B1 %P1
+MongenP "01,417,267,20" %B2 %P2
+MongenP "01,417,267,20" %B3 %P3
+MongenP "01,417,267,20" %B4 %P4
+MongenP "01,417,267,20" %B5 %P5
+MongenP "01,417,267,20" %B6 %P6
+MongenP "01,417,267,20" %B7 %P7
+MongenP "01,417,267,20" %B8 %P8
+
+	ApplyMonMission "01,417,267,9999" "%B0" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B1" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B2" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B3" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B4" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B5" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B6" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B7" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B8" "%B9"
+
+MongenP "01,422,286,20" %B0 %P0
+MongenP "01,422,286,20" %B1 %P1
+MongenP "01,422,286,20" %B2 %P2
+MongenP "01,422,286,20" %B3 %P3
+MongenP "01,422,286,20" %B4 %P4
+MongenP "01,422,286,20" %B5 %P5
+MongenP "01,422,286,20" %B6 %P6
+MongenP "01,422,286,20" %B7 %P7
+MongenP "01,422,286,20" %B8 %P8
+
+	ApplyMonMission "01,422,286,9999" "%B0" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B1" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B2" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B3" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B4" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B5" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B6" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B7" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B8" "%B9"
+
+MongenP "01,427,323,20" %B0 %P0
+MongenP "01,427,323,20" %B1 %P1
+MongenP "01,427,323,20" %B2 %P2
+MongenP "01,427,323,20" %B3 %P3
+MongenP "01,427,323,20" %B4 %P4
+MongenP "01,427,323,20" %B5 %P5
+MongenP "01,427,323,20" %B6 %P6
+MongenP "01,427,323,20" %B7 %P7
+MongenP "01,427,323,20" %B8 %P8
+
+	ApplyMonMission "01,427,323,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B8" "%B9"
+
+MongenP "01,446,336,20" %B0 %P0
+MongenP "01,446,336,20" %B1 %P1
+MongenP "01,446,336,20" %B2 %P2
+MongenP "01,446,336,20" %B3 %P3
+MongenP "01,446,336,20" %B4 %P4
+MongenP "01,446,336,20" %B5 %P5
+MongenP "01,446,336,20" %B6 %P6
+MongenP "01,446,336,20" %B7 %P7
+MongenP "01,446,336,20" %B8 %P8
+
+	ApplyMonMission "01,446,336,9999" "%B0" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B1" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B2" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B3" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B4" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B5" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B6" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B7" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B8" "%B9"
+Delaygoto [Grobal] 600 @GEvent_0_Rush_4TH
+
+[@GEvent_0_Rush_4TH]
+
+#IF
+#ACT
+LoadValue B0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_1]
+LoadValue B1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_2]
+LoadValue B2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_3]
+LoadValue B3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_4]
+LoadValue B4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_5]
+LoadValue B5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_6]
+LoadValue B6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_7]
+LoadValue B7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_8]
+LoadValue B8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [4TH_9]
+
+LoadValue P0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_1]
+LoadValue P1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_2]
+LoadValue P2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_3]
+LoadValue P3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_4]
+LoadValue P4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_5]
+LoadValue P5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_6]
+LoadValue P6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_7]
+LoadValue P7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_8]
+LoadValue P8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [4TH_9]
+
+LoadValue B9 "GM_Def\Event\Event_Game01\0_Rush.txt" [Target] [TargetN1]
+
+MongenP "01,457,237,20" %B0 %P0
+MongenP "01,457,237,20" %B1 %P1
+MongenP "01,457,237,20" %B2 %P2
+MongenP "01,457,237,20" %B3 %P3
+MongenP "01,457,237,20" %B4 %P4
+MongenP "01,457,237,20" %B5 %P5
+MongenP "01,457,237,20" %B6 %P6
+MongenP "01,457,237,20" %B7 %P7
+MongenP "01,457,237,20" %B8 %P8
+
+	ApplyMonMission "01,457,237,9999" "%B0" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B1" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B2" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B3" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B4" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B5" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B6" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B7" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B8" "%B9"
+
+MongenP "01,427,242,20" %B0 %P0
+MongenP "01,427,242,20" %B1 %P1
+MongenP "01,427,242,20" %B2 %P2
+MongenP "01,427,242,20" %B3 %P3
+MongenP "01,427,242,20" %B4 %P4
+MongenP "01,427,242,20" %B5 %P5
+MongenP "01,427,242,20" %B6 %P6
+MongenP "01,427,242,20" %B7 %P7
+MongenP "01,427,242,20" %B8 %P8
+
+	ApplyMonMission "01,427,242,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B8" "%B9"
+
+MongenP "01,417,267,20" %B0 %P0
+MongenP "01,417,267,20" %B1 %P1
+MongenP "01,417,267,20" %B2 %P2
+MongenP "01,417,267,20" %B3 %P3
+MongenP "01,417,267,20" %B4 %P4
+MongenP "01,417,267,20" %B5 %P5
+MongenP "01,417,267,20" %B6 %P6
+MongenP "01,417,267,20" %B7 %P7
+MongenP "01,417,267,20" %B8 %P8
+
+	ApplyMonMission "01,417,267,9999" "%B0" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B1" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B2" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B3" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B4" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B5" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B6" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B7" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B8" "%B9"
+
+MongenP "01,422,286,20" %B0 %P0
+MongenP "01,422,286,20" %B1 %P1
+MongenP "01,422,286,20" %B2 %P2
+MongenP "01,422,286,20" %B3 %P3
+MongenP "01,422,286,20" %B4 %P4
+MongenP "01,422,286,20" %B5 %P5
+MongenP "01,422,286,20" %B6 %P6
+MongenP "01,422,286,20" %B7 %P7
+MongenP "01,422,286,20" %B8 %P8
+
+	ApplyMonMission "01,422,286,9999" "%B0" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B1" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B2" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B3" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B4" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B5" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B6" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B7" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B8" "%B9"
+
+MongenP "01,427,323,20" %B0 %P0
+MongenP "01,427,323,20" %B1 %P1
+MongenP "01,427,323,20" %B2 %P2
+MongenP "01,427,323,20" %B3 %P3
+MongenP "01,427,323,20" %B4 %P4
+MongenP "01,427,323,20" %B5 %P5
+MongenP "01,427,323,20" %B6 %P6
+MongenP "01,427,323,20" %B7 %P7
+MongenP "01,427,323,20" %B8 %P8
+
+	ApplyMonMission "01,427,323,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B8" "%B9"
+
+MongenP "01,446,336,20" %B0 %P0
+MongenP "01,446,336,20" %B1 %P1
+MongenP "01,446,336,20" %B2 %P2
+MongenP "01,446,336,20" %B3 %P3
+MongenP "01,446,336,20" %B4 %P4
+MongenP "01,446,336,20" %B5 %P5
+MongenP "01,446,336,20" %B6 %P6
+MongenP "01,446,336,20" %B7 %P7
+MongenP "01,446,336,20" %B8 %P8
+
+	ApplyMonMission "01,446,336,9999" "%B0" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B1" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B2" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B3" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B4" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B5" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B6" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B7" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B8" "%B9"
+
+Delaygoto [Grobal] 600 @GEvent_0_Rush_5TH
+
+[@GEvent_0_Rush_5TH]
+
+#IF
+#ACT
+LoadValue B0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_1]
+LoadValue B1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_2]
+LoadValue B2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_3]
+LoadValue B3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_4]
+LoadValue B4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_5]
+LoadValue B5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_6]
+LoadValue B6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_7]
+LoadValue B7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_8]
+LoadValue B8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonName] [5TH_9]
+
+LoadValue P0 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_1]
+LoadValue P1 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_2]
+LoadValue P2 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_3]
+LoadValue P3 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_4]
+LoadValue P4 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_5]
+LoadValue P5 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_6]
+LoadValue P6 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_7]
+LoadValue P7 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_8]
+LoadValue P8 "GM_Def\Event\Event_Game01\0_Rush.txt" [MonNum] [5TH_9]
+
+LoadValue B9 "GM_Def\Event\Event_Game01\0_Rush.txt" [Target] [TargetN1]
+
+MongenP "01,457,237,20" %B0 %P0
+MongenP "01,457,237,20" %B1 %P1
+MongenP "01,457,237,20" %B2 %P2
+MongenP "01,457,237,20" %B3 %P3
+MongenP "01,457,237,20" %B4 %P4
+MongenP "01,457,237,20" %B5 %P5
+MongenP "01,457,237,20" %B6 %P6
+MongenP "01,457,237,20" %B7 %P7
+MongenP "01,457,237,20" %B8 %P8
+
+	ApplyMonMission "01,457,237,9999" "%B0" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B1" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B2" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B3" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B4" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B5" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B6" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B7" "%B9"
+	ApplyMonMission "01,457,237,9999" "%B8" "%B9"
+
+MongenP "01,427,242,20" %B0 %P0
+MongenP "01,427,242,20" %B1 %P1
+MongenP "01,427,242,20" %B2 %P2
+MongenP "01,427,242,20" %B3 %P3
+MongenP "01,427,242,20" %B4 %P4
+MongenP "01,427,242,20" %B5 %P5
+MongenP "01,427,242,20" %B6 %P6
+MongenP "01,427,242,20" %B7 %P7
+MongenP "01,427,242,20" %B8 %P8
+
+	ApplyMonMission "01,427,242,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,242,9999" "%B8" "%B9"
+
+MongenP "01,417,267,20" %B0 %P0
+MongenP "01,417,267,20" %B1 %P1
+MongenP "01,417,267,20" %B2 %P2
+MongenP "01,417,267,20" %B3 %P3
+MongenP "01,417,267,20" %B4 %P4
+MongenP "01,417,267,20" %B5 %P5
+MongenP "01,417,267,20" %B6 %P6
+MongenP "01,417,267,20" %B7 %P7
+MongenP "01,417,267,20" %B8 %P8
+
+	ApplyMonMission "01,417,267,9999" "%B0" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B1" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B2" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B3" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B4" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B5" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B6" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B7" "%B9"
+	ApplyMonMission "01,417,267,9999" "%B8" "%B9"
+
+MongenP "01,422,286,20" %B0 %P0
+MongenP "01,422,286,20" %B1 %P1
+MongenP "01,422,286,20" %B2 %P2
+MongenP "01,422,286,20" %B3 %P3
+MongenP "01,422,286,20" %B4 %P4
+MongenP "01,422,286,20" %B5 %P5
+MongenP "01,422,286,20" %B6 %P6
+MongenP "01,422,286,20" %B7 %P7
+MongenP "01,422,286,20" %B8 %P8
+
+	ApplyMonMission "01,422,286,9999" "%B0" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B1" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B2" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B3" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B4" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B5" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B6" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B7" "%B9"
+	ApplyMonMission "01,422,286,9999" "%B8" "%B9"
+
+MongenP "01,427,323,20" %B0 %P0
+MongenP "01,427,323,20" %B1 %P1
+MongenP "01,427,323,20" %B2 %P2
+MongenP "01,427,323,20" %B3 %P3
+MongenP "01,427,323,20" %B4 %P4
+MongenP "01,427,323,20" %B5 %P5
+MongenP "01,427,323,20" %B6 %P6
+MongenP "01,427,323,20" %B7 %P7
+MongenP "01,427,323,20" %B8 %P8
+
+	ApplyMonMission "01,427,323,9999" "%B0" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B1" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B2" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B3" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B4" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B5" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B6" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B7" "%B9"
+	ApplyMonMission "01,427,323,9999" "%B8" "%B9"
+
+MongenP "01,446,336,20" %B0 %P0
+MongenP "01,446,336,20" %B1 %P1
+MongenP "01,446,336,20" %B2 %P2
+MongenP "01,446,336,20" %B3 %P3
+MongenP "01,446,336,20" %B4 %P4
+MongenP "01,446,336,20" %B5 %P5
+MongenP "01,446,336,20" %B6 %P6
+MongenP "01,446,336,20" %B7 %P7
+MongenP "01,446,336,20" %B8 %P8
+
+	ApplyMonMission "01,446,336,9999" "%B0" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B1" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B2" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B3" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B4" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B5" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B6" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B7" "%B9"
+	ApplyMonMission "01,446,336,9999" "%B8" "%B9"
+
+Delaygoto [Grobal] 600 @MapAttr_Reset_Server0
+
+[@MapAttr_Reset_Server0]
+#IF
+#ACT
+SetAreaAttr  "01, 400, 400, 500"  "Clear"
+Delaygoto [Grobal] 600 @GEvent_0_Rush_6TH
+
+
+[@GEvent_0_Rush_6TH]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\Event_Game01\GEventRush0_MSG.txt" [LineMSG] [MSG04]
+linemsg "z010,z011,z012,z014" "%A0"
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [0] [Open] 0
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [Msg] [Start] 0
+
+}

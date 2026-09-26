@@ -1,0 +1,7 @@
+;;º£¥áµÁ
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\MonQuest\Nm_SinGiPachun.txt] @NPC_Main
+#ACT
+set [798] 1

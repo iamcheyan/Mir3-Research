@@ -1,0 +1,45 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+#IF
+check [301] 1
+#ACT
+break
+#IF
+check [294] 1
+#ACT
+goto @NQuest_3
+break
+#IF
+check [293] 1
+#ACT
+goto @NQuest_2
+break
+#IF
+check [289] 1
+#ACT
+goto @NQuest_1
+break
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D023_001.txt] @NPC_Main_Else
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest_1]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_UDO1
+
+[@NQuest_2]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_UDO2
+
+[@NQuest_3]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_UDO3

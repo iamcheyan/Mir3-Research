@@ -1,0 +1,320 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+;
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_M1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;;-------------------------
+;;-------------------------
+
+[@main_root_1]
+;		yaksa quest
+#IF
+check [168] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [167] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [166] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [150] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [148] 1
+#ACT
+goto @main_0_2
+break
+;
+#IF
+check [132] 1
+#ACT
+goto @main_0_1
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_0
+ 
+;-----------------------------
+
+[@main_0_1]
+#IF
+check [147] 1
+#ACT
+goto @main_0_1_2
+#ELSEACT
+goto @main_0_1_1
+
+[@main_0_1_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_1_1
+
+[@main_0_1_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_1_2
+
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_2
+
+;-----------------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_3
+
+;-----------------------------
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_Main_0_4
+ 
+;----------------------------------------------------------
+ 
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_1_1
+
+[@NQuest01_1_1]
+#CALL [\NQ_BASE\Yaksa.txt] @YAKSA_START
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\Yaksa.txt] @SEARCH_TOOTH
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\Yaksa.txt] @GIVE_TOOTH
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\Yaksa.txt] @YAKSA_COMPLETE
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 488
+#ACT
+goto @TQuest488_0
+break
+;
+#IF
+CheckDailyQuest 575
+#ACT
+goto @TQuest575_0
+break
+;
+#IF
+CheckDailyQuest 431
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 321
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 216
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest488_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest488_2
+break
+;
+#ELSEACT
+goto @TQuest488_1
+
+;--------------
+
+[@TQuest488_1]
+#CALL [\QT_TODAY\4thClass.txt] @488_START
+
+[@TQuest488_2]
+#CALL [\QT_TODAY\4thClass.txt] @488_CHECK1
+
+;------------------------
+
+[@TQuest575_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [308] 1
+#ACT
+goto @TQUEST1_6
+break
+;
+
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest575_1
+
+;--------------
+
+[@TQuest575_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @575_CHECK2
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @216_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @216_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Bichon1-0.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @321_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @321_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\4thClass.txt] @431_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\4thClass.txt] @431_CHECK1
+
+;------------------------

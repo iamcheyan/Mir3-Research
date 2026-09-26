@@ -1,0 +1,129 @@
+[@main]
+Fund of this wall is <$CASTLEGOLD> Gold, todays income is \
+<$TODAYINCOME> Gold.\
+ <Withdraw fund/@@withdrawal>\
+ <Deposit fund/@@receipts>\
+ <Gate regulation/@treatdoor>\
+ <Repair castle/@repaircastle>\
+ <Guard management/@guardcmd>\
+ <Exit/@exit>
+
+
+;--------------------------------------------------
+;gate regulation
+
+[@treatdoor]
+The gate is currently <$CASTLEDOORSTATE>.\ \
+ <Close gate/@closemaindoor>\
+ <Open gate/@openmaindoor>\ \
+ <Back/@main>
+
+[@openmaindoor]
+Gate is opened.\ \
+ <Back/@treatdoor>
+
+[@closemaindoor]
+Gate is closed.\ \
+ <Back/@treatdoor>
+
+
+;--------------------------------------------------
+;about maintenance 
+
+[@repaircastle]
+Where do you want to make repairs?\ \
+ <Repair gate/@repairdoor>\
+ <Repair inner wall/@repairwalls>\ \
+ <Back/@main>
+
+[@repairdoor]
+If you want to repair gate completely you need <$REPAIRDOORGOLD> Gold.\ \
+ <Repair gate now/@repairdoornow>\ \
+ <Back/@repaircastle>
+
+[@repairwalls]
+Repairing cost for each side of inner wall is <$REPAIRWALLGOLD> Gold.\ \
+ <Repair left side of inner wall/@repairwallnow1>\
+ <Repair center of inner wall/@repairwallnow2>\
+ <Repair right side of inner wall/@repairwallnow3>\ \
+ <Back/@repaircastle>
+
+
+;--------------------------------------------------
+;about Guard
+
+[@guardcmd]
+Do you want to hire guards?\
+ <Hire Guards/@hireguards>\
+ <Hire Archers/@hirearchers>\ \
+Current rule for Guard is <$GUARDRULE>\
+ <Change attack order/@commandorder>\ \
+ <Back/@main>
+
+
+[@hireguards]
+Where do you want to locate your hired Guard?\
+You will pay <$GUARDFEE> Gold for each Guard.\ \
+ Front Gate <left side/@hireguardnow1> or <right side/@hireguardnow2>\
+ Inner wall <left side/@hireguardnow3> or <right side/@hireguardnow4>\ \
+ <Back/@guardcmd>
+
+[@hirearchers]
+Where do you want to locate hired Archers?\
+You will pay <$ARCHERFEE> Gold for each Archer.\ \
+
+ <Left side of wall/@leftsidewall>\
+ <Right side of wall/@rightsidewall>\
+ <2nd floor of inner wall/@secondinner>\
+ <Left side of front gate/@leftfrontgate>\
+ <Right side of front gate/@rightfrontgate>\ \
+
+ <Back/@guardcmd>
+
+[@leftsidewall]
+On the left side of the wall you can hire the following:\ \
+
+ <1st archer/@hirearchernow1>,\
+ <2nd archer/@hirearchernow2>,\
+ <3rd archer/@hirearchernow3>\ \
+
+<Back/@hirearchers>
+
+[@rightsidewall]
+On the right side of the wall you can hire the following:\ \
+
+ <1st archer/@hirearchernow4>,\
+ <2nd archer/@hirearchernow5>,\
+ <3rd archer/@hirearchernow6>\ \
+
+<Back/@hirearchers>
+
+[@secondinner]
+On the 2nd floor of inner wall you can hire the following:\ \
+
+ <1st archer/@hirearchernow7>,\
+ <2rd archer/@hirearchernow8>\ \
+
+<Back/@hirearchers>
+
+[@leftfrontgate]
+On the left side of Front Gate you can hire the following:\ \
+
+ <1st archer/@hirearchernow9>,\
+ <2rd archer/@hirearchernow10>\ \
+
+<Back/@hirearchers>
+
+[@rightfrontgate]
+On the right side of Front Gate you can hire the following:\ \
+
+ <1st archer/@hirearchernow11>,\
+ <2rd archer/@hirearchernow12>\ \
+
+<Back/@hirearchers>
+
+[@commandorder]
+Do you want to change the attack rule?\ \
+ <Change attack rule/@guardrule>\ \
+ <Back/@guardcmd> \ \
+ <Exit/@exit>

@@ -1,0 +1,1005 @@
+;经典复古
+;传奇3
+;;;;;;;;;;;;;;;;
+[@messmain]
+{
+#ACT
+      LoadValue B0 "QuestDiary\system\Message\setup.ini" [Nomal] [MessName]
+      goto @dxxy
+
+[@lxx]
+#ACT
+      LoadValue D1 "QuestDiary\system\Message\setup.ini" [totalcount] [Num]
+      LoadValue D2 "QuestDiary\system\Message\setup.ini" [Act] [lock]
+      LoadValue D3 "QuestDiary\system\Message\setup.ini" [Nomal] [PostMoney]
+      LoadValue A4 "QuestDiary\system\Message\setup.ini" [Nomal] [Maxperson]
+
+#IF
+      Equal D2 1
+#SAY
+      _别人正在使用，请稍后。\\
+      _<返回/@messmain>
+#ACT
+      break
+
+#IF
+      Checkgold %D3
+#SAY
+      {FCOLOR/14}           <$OUTPUT(B0)> {FCOLOR/12}\
+      目前此系统系统默认一个玩家只保存<$OUTPUT(A4)>条短信息，要花<$OUTPUT(D3)>金币!
+      读取短信息不收费!\\
+      <[给谁发信息]/@@liuy>\\
+      <[返回]/@messmain>\
+      <[关闭]/@exit>
+#ELSESAY
+      _你没有足够金币，最低需携带<$OUTPUT(D3)>金币!\
+      _<返回/@messmain>
+
+[@@liuy]
+#ACT
+      MOV  A0  %INPUTSTR
+      LoadValue  D5 "QuestDiary\system\Message\content.txt" [%A0] [Pnum]
+      LoadValue  D6 "QuestDiary\system\Message\new.txt" [%A0] [Pmaxnum]
+
+#IF
+      Equal A0 ""
+#SAY
+      _{FCOLOR/14}输入不能为空!{FCOLOR/12}\\
+      _<返回/@messmain>\
+#ACT
+      break
+
+#IF
+      !Equal D6 0
+#ACT
+      mov A4 %D6
+
+#IF
+      Elarge D5 %A4
+#SAY
+      _{FCOLOR/1}【对方的短信息已经满,无法再接受短信息】{FCOLOR/12}\\
+      _<返回/@messmain>
+#ACT
+      break
+
+#IF
+      !Equal A0 %USERNAME
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A0
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER" [@liu_1]
+#ELSESAY
+      _{FCOLOR/14}不能给自己发信息!{FCOLOR/12}\\
+      _<返回/@messmain>
+
+[@liu_1()]
+#ACT
+      Mov  A1  %ARG(1)
+
+#IF
+      Equal A0  %A1
+#SAY
+      _<请输入你的短信息内容:/@@liupp>\\
+      _<返回/@messmain>
+#ELSESAY
+      _系统找不到你输入的用户。\\
+      _<返回/@messmain>
+
+[@@liupp]
+#ACT
+      MOV  A1  %INPUTSTR
+#IF
+      !Equal A1 ""
+#ACT
+      LoadValue D0 "QuestDiary\system\Message\setup.ini" [Act] [lock]
+      LoadValue D1 "QuestDiary\system\Message\setup.ini" [totalcount] [Num]
+      LoadValue D4 "QuestDiary\system\Message\content.txt" [%A0] [Pnum]
+      LoadValue D5 "QuestDiary\system\Message\setup.ini" [Nomal] [PostMoney]
+#ELSESAY
+      _{FCOLOR/14}输入不能为空!{FCOLOR/12}\\
+      _<返回/@messmain>
+#ELSEACT
+      break
+
+#IF
+      Equal D0 1
+#SAY
+      _别人正在使用，请稍后。\\
+      _<返回/@messmain>
+#ACT
+      break
+
+#IF
+      !Checkgold %D5
+#SAY
+     _你没有足够金币，最低需携带<$OUTPUT(D5)>金币!\\
+     _<返回/@messmain>
+#ACT
+      break
+
+#IF
+#ACT
+      inc D1 1
+      SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 1
+      SaveValue "QuestDiary\system\Message\setup.ini" [totalcount] [Num] %D1
+      inc D4 1
+      SaveValue "QuestDiary\system\Message\content.txt" [%A0] [Pnum] %D4
+      addstr A1 "{FCOLOR/14}   =>>{FCOLOR/12}From: "
+      addstr A1 %USERNAME
+      SaveValue "QuestDiary\system\Message\content.txt" [%A0] [%D4] %A1
+      SaveValue "QuestDiary\system\Message\new.txt" [%A0] [Pnew] 1
+      SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 0
+      Take 金币 %D5
+#SAY
+      _恭喜，你的短信息已经成功发出!\\
+      _<返回/@messmain>
+
+
+[@dxxy]
+#ACT
+      LoadValue D0 "QuestDiary\system\Message\content.txt" [%USERNAME] [Pnum]
+      LoadValue D9 "QuestDiary\system\Message\setup.ini" [totalcount] [Num]
+      SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew] 0
+      LoadValue  D6 "QuestDiary\system\Message\new.txt" [%USERNAME] [Pmaxnum]
+      Mov D8 1
+      LoadValue D4 "QuestDiary\system\Message\setup.ini" [Nomal] [Maxperson]
+
+#IF
+      !Equal D6 0
+#ACT
+      Mov D4 %D6
+
+#IF
+      Equal D0 0
+#SAY
+      你的收件箱还没有信息。\\
+      <发送单个短信息/@lxx>\
+      <我的好友(群发)/@SeeFriends>\
+      <添加好友/@AddFriends>\
+      <修改好友/@ModFriends>\
+      <清空收件箱/@clear1>\
+      <返回留言本/@main>\
+      <关闭/@exit>
+#ACT
+      break
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      mov A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      goto @endtosay
+#ELSEACT
+      goto @endtosay
+
+
+[@dxxyn()]
+#ACT
+      Mov D8 %ARG(1)
+      LoadValue D0 "QuestDiary\system\Message\content.txt" [%USERNAME] [Pnum]
+      LoadValue D9 "QuestDiary\system\Message\setup.ini" [totalcount] [Num]
+      SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew] 0
+      LoadValue  D6 "QuestDiary\system\Message\new.txt" [%USERNAME] [Pmaxnum]
+      LoadValue D4 "QuestDiary\system\Message\setup.ini" [Nomal] [Maxperson]
+
+#IF
+      !Equal D6 0
+#ACT
+      Mov D4 %D6
+
+#IF
+      Equal D0 0
+#SAY
+      你的收件箱还没有信息。\\
+      <发送单个短信息/@lxx>\
+      <我的好友(群发)/@SeeFriends>\
+      <添加好友/@AddFriends>\
+      <修改好友/@ModFriends>\
+      <清空收件箱/@clear1>\
+      <返回留言本/@main>\
+      <关闭/@exit>
+#ACT
+      break
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      mov A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      inc D8 1
+#ELSEACT
+      goto @endtosay
+
+#IF
+      Large D0 0
+      Esmall D8 %D0
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\content.txt" [%USERNAME] [%D8]
+      addstr A8 %D8
+      addstr A8 "） "
+      addstr A8 %A0
+      addstr A8 "\"
+      goto @endtosay
+#ELSEACT
+      goto @endtosay
+
+[@endtosay]
+#IF
+#SAY
+      {FCOLOR/10}      <$OUTPUT(B0)>  <$USERNAME>的收件箱{FCOLOR/12}\\
+      目前您有{FCOLOR/3}<$OUTPUT(D0)>{FCOLOR/12}条信息  系统共有{FCOLOR/3}<$OUTPUT(D9)>{FCOLOR/12}条信息\
+      您的收件箱最多可保留{FCOLOR/3}<$OUTPUT(D4)>{FCOLOR/12}条信息，请及时整理清除旧信息，否则将影响您接受新的信息。\\
+      <$OUTPUT(A8)>\\
+
+#IF
+       Large D0 10
+       Small D0 21
+#SAY
+      <第1页/@dxxy> <第2页/@dxxyn(11)>\\
+
+#IF
+      Large D0 20
+#SAY
+      <第1页/@dxxy> <第2页/@dxxyn(11)> <第3页/@dxxyn(21)>\\
+
+#IF
+      IsAdmin
+#SAY
+      <设置玩家保存在服务器的信息条数，输入用户名/@@setmem>\
+      <设置玩家保存在服务器的好友数量，输入用户名/@@setmem110>\
+
+#IF
+#SAY
+      <发送单个短信息/@lxx>\
+      <我的好友(群发)/@SeeFriends>\
+      <添加好友/@AddFriends>\
+      <修改好友/@ModFriends>\
+      <清空收件箱/@clear1>\
+      <返回留言本/@main>\
+      <关闭/@exit>
+
+[@@setmem]
+#ACT
+     Mov A0 %INPUTSTR
+
+#IF
+      !Equal A0 ""
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A0
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER" [@liu_2]
+#ELSESAY
+      _{FCOLOR/14}输入不能为空!{FCOLOR/12}\\
+      _<返回/@messmain>
+
+[@liu_2()]
+#ACT
+      Mov  A1  %ARG(1)
+
+#IF
+      Equal A0  %A1
+#SAY
+      _<请输入设置的信息条数，范围5-30/@@setnum>\\
+      _<返回/@messmain>
+#ELSESAY
+      _找不到你输入的用户。\\
+      _<返回/@messmain>
+
+[@@setnum]
+#ACT
+      Mov D0 %INPUTNUM
+
+#IF
+      Small D0 5
+#ACT
+      Mov D0 5
+
+#IF
+      Large D0 30
+#ACT
+      Mov D0 30
+
+#IF
+      IsAdmin
+#ACT
+      SaveValue "QuestDiary\system\Message\new.txt" [%A0] [Pmaxnum] %D0
+#SAY
+      _你已设置用户<$OUTPUT(A0)>的信息最多保存数为<$OUTPUT(D0)>\\
+      _<可重新设置该用户信息条数，范围5-30/@@setnum>\
+      _<返回/@messmain>
+#ELSESAY
+      你无权操作。
+
+
+
+[@@setmem110]
+#ACT
+     Mov A0 %INPUTSTR
+
+#IF
+      !Equal A0 ""
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A0
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER" [@liu_2100]
+#ELSESAY
+      _{FCOLOR/14}输入不能为空!{FCOLOR/12}\\
+      _<返回/@messmain>
+
+[@liu_2100()]
+#ACT
+      Mov  A1  %ARG(1)
+
+#IF
+      Equal A0  %A1
+#SAY
+      _<请输入设置的好友数量，范围5-20/@@setnum110>\\
+      _<返回/@messmain>
+#ELSESAY
+      _找不到你输入的用户。\\
+      _<返回/@messmain>
+
+[@@setnum110]
+#ACT
+      Mov D0 %INPUTNUM
+
+#IF
+      Small D0 5
+#ACT
+      Mov D0 5
+
+#IF
+      Large D0 20
+#ACT
+      Mov D0 20
+
+#IF
+      IsAdmin
+#ACT
+      SaveValue "QuestDiary\system\Message\new.txt" [%A0] [MaxQFnum] %D0
+#SAY
+      _你已设置用户<$OUTPUT(A0)>的好友最多保存数为<$OUTPUT(D0)>\\
+      _<请输入设置的好友数量，范围5-20/@@setnum110>\\
+      _<返回/@messmain>
+#ELSESAY
+      你无权操作。
+
+[@clear1]
+#ACT
+      LoadValue D0 "QuestDiary\system\Message\setup.ini" [Act] [lock]
+
+#IF
+      Equal D0 1
+#SAY
+      _别人正在使用，请稍后。\\
+      _<返回/@messmain>
+#ELSEACT
+      SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 1
+      SaveValue "QuestDiary\system\Message\content.txt" [%USERNAME] [Pnum] 0
+      SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew] 0
+      SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 0
+#ELSESAY
+      _顺利清空收件箱。\\
+      _<返回/@messmain>
+
+[@onlinecheck]
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew]
+
+#IF
+      Equal A0 1
+#SAY
+      你好<$USERNAME>，你有新短消息。\\
+      <[知道了，我马上去看]/@enter111>\
+      <[我知道了]/@exit>
+#ACT
+      SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew] 0
+#ELSEACT
+      enter_ok
+      
+[@enter111]
+#ACT
+      Mapmove 0 450 388
+
+[@startupmess]
+#ACT
+      LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] [Pnew]
+
+#IF
+      Equal A0 1
+#ACT
+      SysMsg "你好<$USERNAME>，你有新短消息。"
+
+[@AddFriends]
+#SAY
+      <请输入你要添加的好友名字:/@@fname>
+
+[@@fname]
+#ACT
+      Mov A0 %INPUTSTR
+
+#IF
+      Equal A0 ""
+#SAY
+      输入的内容不能为空。\\
+      <请输入你要添加的好友名字:/@@fname>\
+      <[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      Equal A0 %USERNAME
+#SAY
+      不能加自己为好友。\\
+      <请输入你要添加的好友名字:/@@fname>\
+      <[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A0
+      ReadValueSql "TBL_CHARACTER" %A9 "FLD_CHARACTER" [@chkname_1]
+
+[@chkname_1()]
+#ACT
+       Mov  A1  %ARG(1)
+       LoadValue D0 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+#IF
+       Equal A0  %A1
+#ACT
+       goto  @AddFriends1
+#ELSESAY
+       找不到该用户。\\
+       <[返 回]/@AddFriends>
+
+[@AddFriends1]
+#ACT
+       LoadValue A1 "QuestDiary\system\Message\new.txt" [%USERNAME] %D0
+
+#IF
+       Equal A1 %A0
+#SAY
+       不能重复添加用户~~~\\
+       <[返 回]/@addfriend>
+
+#ELSEACT
+       goto @chks
+
+[@chks]
+#IF
+        !Small D0 1
+#ACT
+        DEC  D0  1
+        Goto @AddFriends1
+#ELSEACT
+        Goto @Afend1
+
+[@Afend1]
+#ACT
+        LoadValue D1 "QuestDiary\system\Message\new.txt" [%USERNAME] [MaxQFnum]
+        LoadValue D2 "QuestDiary\system\Message\setup.ini" [Nomal] [MaxQFnum]
+        LoadValue D3 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+
+#IF
+        !Equal D1 0
+#ACT
+        Mov D2 %D1
+
+#IF
+        Small D3 %D2
+#ACT
+        Inc D3 1
+        SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] %D3 %A0
+        SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum] %D3
+#SAY
+        恭喜你<$USERNAME> 好友<$OUTPUT(A0)>已被加入\\
+        目前你已经存了{FCOLOR/10}<$output(D3)>{FCOLOR/12}个好友!你共可以存{FCOLOR/10}<$output(D2)>{FCOLOR/12}个好友!\
+        <[返回收件箱]/@messmain>
+#ELSESAY
+        {FCOLOR/1}你的好友个数已经达到了极限!{FCOLOR/12}\\
+        <[返回收件箱]/@messmain>
+
+;;查看好友模块
+[@SeeFriends]
+#ACT
+       Mov A3 ""
+       LoadValue D0 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+       Goto @SeeF1
+
+[@SeeF1]
+#IF
+       Elarge D0 1
+#ACT
+       Goto @SeeF2
+#ELSEACT
+       Goto @EndPR
+
+[@SeeF2]
+#ACT
+       LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] %D0
+       Addstr A3 "<〖"
+       Addstr A3 %A0
+       Addstr A3 "〗/@qfy("
+       Addstr A3 %D0
+       Addstr A3 ")>\"
+       Dec D0 1
+       goto @SeeF1
+
+[@EndPR]
+#SAY
+       以下是你的好友目录(点击人名可单独发送信息):\
+       <向以下好友群发信息/@qunfaxx>\
+       <[返回收件箱]/@messmain>\\
+       <$OUTPUT(A3)>\
+       </@qfy(1)> </@qfy(2)> </@qfy(3)> </@qfy(4)> </@qfy(5)>
+       </@qfy(6)> </@qfy(7)> </@qfy(8)> </@qfy(9)> </@qfy(10)>
+       </@qfy(11)> </@qfy(12)> </@qfy(13)> </@qfy(14)> </@qfy(15)>
+       </@qfy(16)> </@qfy(17)> </@qfy(18)> </@qfy(19)> </@qfy(20)>
+
+[@qfy()]
+#ACT
+      Mov P0  %ARG(1)
+      LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] %P0
+      LoadValue A4 "QuestDiary\system\Message\setup.ini" [Nomal] [Maxperson]
+      LoadValue  D6 "QuestDiary\system\Message\new.txt" [%A0] [Pmaxnum]
+      LoadValue  D5 "QuestDiary\system\Message\content.txt" [%A0] [Pnum]
+
+#IF
+      !Equal D6 0
+#ACT
+      mov A4 %D6
+
+#IF
+      Elarge D5 %A4
+#SAY
+      {FCOLOR/1}【对方的短信息已经满,无法再接受短信息】{FCOLOR/12}\\
+      <[返回收件箱]/@messmain>
+#ELSESAY
+      <请输入你的短信息内容:/@@liupp>\\
+      <[返回收件箱]/@messmain>
+
+;;修改好友模块
+[@ModFriends]
+#ACT
+       Mov A3 ""
+       LoadValue D0 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+       Goto @ModF1
+
+[@ModF1]
+#IF
+       Elarge D0 1
+#ACT
+       Goto @ModF2
+#ELSEACT
+       Goto @EndPR121
+
+[@ModF2]
+#ACT
+       LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] %D0
+       Addstr A3 "<〖"
+       Addstr A3 %A0
+       Addstr A3 "〗/@Modhy("
+       Addstr A3 %D0
+       Addstr A3 ")>\"
+       Dec D0 1
+       goto @ModF1
+
+[@EndPR121]
+#SAY
+       以下是你的好友目录(点击人名可修改好友): \
+       <[返回收件箱]/@messmain>\\
+       <$OUTPUT(A3)>\
+       </@Modhy(1)> </@Modhy(2)> </@Modhy(3)> </@Modhy(4)> </@Modhy(5)>
+       </@Modhy(6)> </@Modhy(7)> </@Modhy(8)> </@Modhy(9)> </@Modhy(10)>
+       </@Modhy(11)> </@Modhy(12)> </@Modhy(13)> </@Modhy(14)> </@Modhy(15)>
+       </@Modhy(16)> </@Modhy(17)> </@Modhy(18)> </@Modhy(19)> </@Modhy(20)>
+
+[@Modhy()]
+#ACT
+      Mov D7  %ARG(1)
+      LoadValue A8 "QuestDiary\system\Message\new.txt" [%USERNAME] %D7
+#SAY
+      你要将好友{FCOLOR/14}<$OUTPUT(A8)>{FCOLOR/12}修改成：\\
+      <[新好友名字]/@@inputnewhy>\\
+      <[名字按错了]/@ModFriends>\
+      <[返回收件箱]/@messmain>\
+      <[关      闭]/@exit>
+
+[@@inputnewhy]
+#ACT
+      Mov A0 %INPUTSTR
+
+#IF
+      Equal A0 ""
+#SAY
+      输入的内容不能为空。\\
+      <[新好友名字]/@@inputnewhy>\
+      <[返回收件箱]/@messmain>\
+      <[关      闭]/@exit>
+#ACT
+      break
+
+#IF
+      Equal A0 %USERNAME
+#SAY
+      不能加自己为好友。\\
+      <[新好友名字]/@@inputnewhy>\
+      <[返回收件箱]/@messmain>\
+      <[关      闭]/@exit>
+#ACT
+      break
+
+#IF
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A0
+      ReadValueSql "TBL_CHARACTER" %A9 "FLD_CHARACTER" [@chkname_22]
+
+[@chkname_22()]
+#ACT
+       Mov  A1  %ARG(1)
+       LoadValue D0 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+
+#IF
+       Equal A0  %A1
+#ACT
+       goto  @AddFriends120
+#ELSESAY
+       找不到该用户。\\
+       <[返 回]/@ModFriends>
+
+[@AddFriends120]
+#ACT
+       LoadValue A1 "QuestDiary\system\Message\new.txt" [%USERNAME] %D0
+
+#IF
+       Equal A1 %A0
+#SAY
+       不能重复添加用户~~~\\
+       <[返 回]/@ModFriends>
+
+#ELSEACT
+       goto @chks120
+
+[@chks120]
+#IF
+        !Small D0 1
+#ACT
+        DEC  D0  1
+        Goto @AddFriends120
+#ELSEACT
+        Goto @Afend120
+
+[@Afend120]
+#ACT
+        SaveValue "QuestDiary\system\Message\new.txt" [%USERNAME] [%D7] %A0
+
+#SAY
+        恭喜你已将好友{FCOLOR/14}<$OUTPUT(A8)>{FCOLOR/12}修改成{FCOLOR/14}<$OUTPUT(A0)>{FCOLOR/12}\\
+        <[返回收件箱]/@messmain>
+;;群发模块
+[@qunfaxx]
+#ACT
+       LoadValue P1 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+       LoadValue P2 "QuestDiary\system\Message\setup.ini" [Nomal] [PostMoney]
+       MUL P1 P2
+       Mov D7 %P9
+
+#IF
+       Esmall P1 1
+#SAY
+       好友太少，不需群发功能。\\
+       <[返回收件箱]/@messmain>
+#ACT
+       break
+
+#IF
+       checkgold %D7
+#SAY
+       本次需要<$OUTPUT(D7)>金币。\\
+       <请输入你的群发信息内容:/@@qunfaxx1>
+#ELSESAY
+       您的金币不足，本次需要<$OUTPUT(D7)>金币。\\
+       <[返回收件箱]/@messmain>
+
+[@@qunfaxx1]
+#ACT
+        LoadValue D5 "QuestDiary\system\Message\new.txt" [%USERNAME] [QFnum]
+        LoadValue D2 "QuestDiary\system\Message\setup.ini" [Act] [lock]
+        Mov A1 %INPUTSTR
+
+#IF
+      Equal D2 1
+#SAY
+      别人正在使用，请稍后。\\
+      <[返回收件箱]/@messmain>
+#ACT
+      break
+
+#IF
+        Equal A1 ""
+#SAY
+        输入的内容不能为空。\\
+        <请输入你的群发信息内容:/@@qunfaxx1>\
+        <[关 闭]/@exit>
+#ELSEACT
+        Goto @qunfait
+
+[@qunfait]
+#ACT
+        LoadValue A0 "QuestDiary\system\Message\new.txt" [%USERNAME] %D5
+        LoadValue D9 "QuestDiary\system\Message\content.txt" [%A0] [Pnum]
+        LoadValue D8 "QuestDiary\system\Message\new.txt" [%A0] [Pmaxnum]
+        LoadValue A4 "QuestDiary\system\Message\setup.ini" [Nomal] [Maxperson]
+
+#IF
+        !Equal D8 0
+#ACT
+        mov A4 %D8
+
+#IF
+#ACT
+        Goto @qunfa1
+
+[@qunfa1]
+#ACT
+        DEC D5 1
+#IF
+        !Elarge D9 %A4
+#ACT
+        Goto @fait
+#ELSEACT
+        LineMsg "Grobal" "<$OUTPUT(A0)>的信箱已经满了,他将不能收到你的信。"
+        Goto @qunfait
+
+[@fait]
+#IF
+        !Small D5 0
+#ACT
+        LoadValue D0 "QuestDiary\system\Message\setup.ini" [totalcount] [Num]
+        Inc D0 1
+        SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 1
+        SaveValue "QuestDiary\system\Message\setup.ini" [totalcount] [Num] %D0
+        Inc D9 1
+        SaveValue "QuestDiary\system\Message\content.txt" [%A0] [Pnum] %D9
+        mov A8 ""
+        addstr A8 %A1
+        addstr A8 "{FCOLOR/14}   =>>{FCOLOR/12}From: "
+        addstr A8 %USERNAME
+        SaveValue "QuestDiary\system\Message\content.txt" [%A0] [%D9] %A8
+        SaveValue "QuestDiary\system\Message\new.txt" [%A0] [Pnew] 1
+        SaveValue "QuestDiary\system\Message\setup.ini" [Act] [lock] 0
+        goto @qunfait
+#ELSEACT
+        Take 金币 %D7
+#ELSESAY
+        {FCOLOR/1}信件已经全部发出!{FCOLOR/12}\\
+        <[返回收件箱]/@messmain>
+
+}

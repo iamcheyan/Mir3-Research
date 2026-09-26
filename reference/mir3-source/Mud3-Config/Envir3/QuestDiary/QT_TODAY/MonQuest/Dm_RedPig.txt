@@ -1,0 +1,155 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 499
+#ACT
+goto @RedPig_T499
+break
+;
+
+#IF
+CheckDailyQuest 414
+#ACT
+goto @jukdon_T414
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@RedPig_T499]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+goto @RedPig_T499_Secret_1
+break
+
+#IF
+check [307] 1
+#ACT
+goto @RedPig_T499_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@RedPig_T499_1]
+#IF
+large s0 30
+#ACT
+goto @RedPig_T499_5
+#ELSEACT
+goto @RedPig_T499_2
+;-----------------
+
+[@RedPig_T499_2]
+#IF
+large s0 2
+#ACT
+goto @RedPig_T499_3
+#ELSEACT
+mov s0 2
+goto @RedPig_T499_3
+
+;-----------------
+
+[@RedPig_T499_3]
+#IF
+#ACT
+inc s0 1
+
+;-----------------------------------
+
+[@RedPig_T499_5]
+#IF
+#ACT
+set [308] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T499_Say
+
+
+[@RedPig_T499_Secret_1]
+#IF
+large s0 20
+#ACT
+goto @RedPig_T499_Secret_5
+#ELSEACT
+goto @RedPig_T499_Secret_2
+;-----------------
+
+[@RedPig_T499_Secret_2]
+#IF
+large s0 2
+#ACT
+goto @RedPig_T499_Secret_3
+#ELSEACT
+mov s0 2
+goto @RedPig_T499_Secret_3
+
+;-----------------
+
+[@RedPig_T499_Secret_3]
+#IF
+#ACT
+inc s0 1
+
+[@RedPig_T499_Secret_5]
+#IF
+#ACT
+set [309] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T499_Say_1
+
+;-----------------------------------------------------
+[@jukdon_T414]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @jukdon_T414_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@jukdon_T414_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T414_Say
+
+#ACT
+set [308] 1
+;-----------------------------------------------------

@@ -1,0 +1,51 @@
+;;海メ盗
+[@Mu_Warrior_Noatom_wesu]
+{
+#IF
+#ACT
+goto @Mu_Warrior_Noatom_wesu_next_1
+#ELSESAY
+喂，您不是已经找到基本剑术秘籍了吗。\ \
+<结束/@exit>
+[@Mu_Warrior_Noatom_wesu_next_1]
+#IF
+#SAY
+如果想学基本剑术，请支付700钱。想得到指教吗？\ \
+<请写武功秘籍！/@Mu_Warrior_Noatom_wesu_next_2>\
+<结束/@Mu_Warrior_Noatom_wesu_next_5>
+[@Mu_Warrior_Noatom_wesu_next_2]
+#IF
+checkitem 基本剑术 1
+#ACT
+goto @Mu_Warrior_Noatom_wesu_next_3
+#ELSESAY
+在可以证明你有得到武功秘籍的实力之前，我是不能给您进行指导的。请首先找到基本剑术秘籍。\ \
+<结束/@exit>
+[@Mu_Warrior_Noatom_wesu_next_3]
+#IF
+checkgold 700
+checkitem 基本剑术 1
+#ACT
+take 基本剑术 1
+take 金币 700
+goto @Mu_Warrior_Noatom_wesu_next_4
+#ELSESAY
+哦，非常抱歉！书太旧了，这是无论如何也无法看清楚。请找到保存状态好写的书！\ \
+<结束/@exit>
+[@Mu_Warrior_Noatom_wesu_next_4]
+#IF
+random 20
+#SAY
+捞芭 固救窍霸 登菌嚼聪促. 氓捞 呈公 嘲酒辑 佬带 吝俊 弊父 啊风肺 何胶矾瘤绊 富疽嚼聪促. 促弗 氓阑 备秦辑 促矫 档傈秦 焊档废 窍绞矫坷.\ \
+<摧  扁/@exit>
+#ELSESAY
+这有武功秘诀，请拿着吧！江湖是很冷酷的地方。你千万要专心于一个领域。如果不如此，不要说天下绝世武功，就是成为一名真正的人都很困难。江湖呀。。\ \
+<结束/@exit>
+#ELSEACT
+give 基本剑术（秘籍） 1
+[@Mu_Warrior_Noatom_wesu_next_5]
+#IF
+#SAY
+嗯。。你犹豫什么？千万记住要学的东西很多，年轻的岁月很短。\ \
+<结束/@exit>
+}

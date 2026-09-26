@@ -1,0 +1,202 @@
+;;╨ё╔А╣а
+[@RushTest_Game4]
+{
+;-------------------------------------------------------------------------------
+#ACT
+MonClear RUSH1 
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 0
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 0
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 0
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 0
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "╡н╪сйта╥╣дкЫспсбй©цг║ё║ё║ёоёмШдЦцгдэ╟╬╧ЩкЫсп╣дйта╥║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next1_Drop
+
+[@RushTest_Game4_Next1_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗╢Сё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗╢Сё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 1000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next1
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next1]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 4
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 2
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 40
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 4
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next2_Drop
+
+[@RushTest_Game4_Next2_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗╢Сё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗╢Сё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 1000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next2
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next2]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 8
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 4
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 80
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 8
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next3_Drop
+
+[@RushTest_Game4_Next3_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗╢Сё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗╢Сё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 2000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next3
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next3]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 12
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 6
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 120
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 12
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next4_Drop
+
+[@RushTest_Game4_Next4_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗╢Сё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗╢Сё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 2000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next4
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next4]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 16
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 8
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 160
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 16
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next5_Drop
+
+[@RushTest_Game4_Next5_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗льё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗льё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 4000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next5
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next5]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 20
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 10
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 200
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 20
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next6_Drop
+
+[@RushTest_Game4_Next6_Drop] 
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗льё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗льё╘" 5 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 4000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next6
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next6]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 24
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 12
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 240
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 24
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "йта╥╫╚╩Ат╫ю╢т╫дя║ё║ё║ёгКв╒рБак║ё║ё"
+Delaygoto [Grobal] 120 @RushTest_Game4_Next7_Drop
+
+[@RushTest_Game4_Next7_Drop]
+#ACT
+DropItemMap "RUSH1,40,40,20" "╫П╢╢р╘ё╗льё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "д╖╥╗р╘ё╗льё╘" 10 5
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 8000 10
+Delaygoto [Grobal] 30 @RushTest_Game4_Next7
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next7]
+#ACT
+MonGenP "RUSH1,40,40,30" екр╧у╫й© 8
+MonGenP "RUSH1,40,40,30" екр╧╩Пд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧тфд╖ 16
+MonGenP "RUSH1,40,40,30" екр╧ср╩╓ню 8
+MonGenP "RUSH1,40,40,30" екр╧╧М╫╚ 3
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [AC] 28
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [MAC] 14
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [HP] 280
+MonPwr "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" [DC] 28
+ChangeMonLevel "RUSH1" "екр╧у╫й©,екр╧╩Пд╖,екр╧тфд╖,екр╧ср╩╓ню,екр╧╧М╫╚" 99
+EventMsg RUSH1 "кДх╩йгвН╨Ср╩Ё║йта╥ё╛╡╩╧Щр╙╪АЁж╣╫╣в╟║║ё║ё"
+Delaygoto [Grobal] 240 @RushTest_Game4_Next8
+
+[@RushTest_Game4_Next8]
+#IF
+CheckMonMap RUSH1 10
+#ACT
+MonClear RUSH1 
+EventMsg RUSH1 "╫сйэуБ╢нх╚╡©йта╥╣дсбй©цгё╛дЦцгпа©Юак║ё©ийгдЦцг╤╪ц╩спм╗╧Щйта╥║ё"
+Delaygoto [Grobal] 5 @RushTest_Game4_Next9
+#ELSEACT
+MonClear RUSH1 
+EventMsg RUSH1 "╫сйэуБ╢нх╚╡©йта╥╣дсбй©цгё╛дЦцгпа©Юак║ёоЯм╗╧Щйта╥╣дсбй©цг╦ЬсХвё╦ё╣дуфиЫ║ё"
+DropItemMap "RUSH1,40,40,20" "вё╦ёсм" 1 5
+DropItemMap "RUSH1,40,40,20" "мХр╘ё╗10000ё╘" 1 10
+DropItemMap "RUSH1,40,40,20" "╫П╠р" 10000 30
+Delaygoto [Grobal] 60 @RushTest_Game4_Next9
+
+;-------------------------------------------------------------------------------
+[@RushTest_Game4_Next9]
+#ACT
+mov z11 0
+mapting RUSH1 0 450 400
+;-------------------------------------------------------------------------------
+}

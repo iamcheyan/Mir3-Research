@@ -1,0 +1,28 @@
+;;海メ盗
+[@main]
+#IF
+check [757] 1
+#ACT
+break
+;
+#IF
+check [525] 1
+#SAY
+(现在该回到化天先生那里了。)
+#ACT
+break
+;
+#IF
+check [524] 1
+random 20
+#ACT
+goto @giveitem
+break
+;
+[@giveitem]
+#IF
+#ACT
+give 闪电石 1
+SET [525] 1
+#SAY
+（这就是华川先生所讲的闪电石吗？如果没有涂树脂将如何提这个东西。。手上火辣辣的。）\

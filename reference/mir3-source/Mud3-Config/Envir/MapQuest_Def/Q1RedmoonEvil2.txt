@@ -1,0 +1,20 @@
+[@main]
+#IF
+check [414] 1
+#ACT
+break
+
+#IF
+check [413] 1
+checkitem EvilApeOil 1
+checkitem EvilApeHeart 1
+#ACT
+take EvilApeOil 1
+take EvilApeHeart 1
+give RedMoonSword 1
+SET [414] 1
+#SAY
+;적월마는 처단되었지만, 파관진검을 복원하는 일이 \
+RedmoonEvil is dead, now you can recover the HolySword \
+;숙제로 남았군. \ \
+

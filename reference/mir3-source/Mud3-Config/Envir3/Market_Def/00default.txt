@@ -1,0 +1,33 @@
+;;º£¥áµÁ
+[@main]
+#ACT
+goto @weather_control_sabuk
+goto @Default_Setting_Sabuk
+goto @Defult_SafeZone_Setting
+
+[@Defult_SafeZone_Setting]
+#CALL [\System\SafeZone.txt] @SafeZone
+
+[@Weather_Control_Sabuk]
+#CALL [\System\Weather.txt] @Weather
+
+[@Default_Setting_Sabuk]
+#CALL [\System\DefaultSabuk.txt] @SabukDefult
+
+[@_War_Ready_Sabuk]
+#CALL [\System\CastleWar.txt] @CastleWarReady
+
+[@_War_Start_Sabuk]
+#CALL [\System\CastleWar.txt] @CastleWarStart
+
+[@_War_Finish_Sabuk]
+#CALL [\System\CastleWar.txt] @CastleWarFinish
+
+[@_CastleOwnerChanged_Sabuk]
+#CALL [\System\Flag.txt] @ChangeFlag
+
+[@_CastleFlagChanged_Sabuk]
+#CALL [\System\Flag.txt] @ChangeFlag
+
+[@_UserLogin]
+#CALL [\system\Message\mess.txt] @startupmess

@@ -1,0 +1,31 @@
+;;베α돝
+[@Sabuk_Teleport]
+{
+#IF
+IsOnCastleWar Sabuk                    ;; 공성풀 중인지 체크 하는 부분
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SabukTele.txt] @SabukTele_1
+
+#ACT
+break
+
+#IF
+IsOnReadyCastleWar Sabuk               ;; 공성 대기시간인지 체크 하는 부분
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SabukTele.txt] @SabukTele_2
+
+#ACT
+break
+
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SabukTele.txt] @SabukTele_3
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

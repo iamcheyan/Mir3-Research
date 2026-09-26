@@ -1,0 +1,89 @@
+;;베α돝
+%100
+
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_Main
+
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_ADmin_Main
+
+;----------------------------------------------------------
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_Getback
+
+;----------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_Admin_Menu
+
+;----------------------------------------------------------
+; Break Event
+;----------------------------------------------------------
+[@BreakEvent]
+#ACT
+	LoadValue A0 "Convert_Def\Market_def\19GM_INN-Z010_Ev.txt" [LineMSG] [MSG01]
+Linemsg Grobal "%A0"
+Cleardelaygoto
+
+;----------------------------------------------------------
+; 71 , 76 Map Event
+;----------------------------------------------------------
+
+[@RushEvent1]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert71
+[@RushEvent6]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert76
+
+;----------------------------------------------------------
+;; Sau VS Umyun
+;----------------------------------------------------------
+
+[@StoryEvent1]
+;;#CALL [\Event\Story\Story1.txt] @StartEvent
+
+;----------------------------------------------------------
+;; Umyungwiwang Risk
+;----------------------------------------------------------
+
+[@StoryEvent2]
+;;#CALL [\Event\Story\Story2.txt] @Wooma
+
+;----------------------------------------------------------
+;; Pachunhwang Rebirth
+;----------------------------------------------------------
+
+[@pachon01]
+#CALL [\Event\Story\pachon01.txt] @pachon01_1
+
+;----------------------------------------------------------
+;; 릴레이 이벤트 시작
+;----------------------------------------------------------
+[@GEvent_start_oneDay]
+#CALL [Event\Event_Game01\GEvent_Msg01.txt] @GEventgrobal_Msg01
+
+
+[@GEvent_End_11]
+#ACT
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [Msg] [start] 0
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [OneDay] [Eventgen] 0
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [0] [Open] 0
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [01] [Open] 0
+	SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [00] [Open] 0
+Cleardelaygoto
+	LoadValue A0 "Convert_Def\Market_def\19GM_INN-Z010_Ev.txt" [LineMSG] [MSG02]
+linemsg "z010,z011,z012" "%A0"
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z010.txt] @NPC_GEvent_End_11
+

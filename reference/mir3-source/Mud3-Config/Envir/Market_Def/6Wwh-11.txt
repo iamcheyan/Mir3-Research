@@ -1,0 +1,622 @@
+;拱啊
+%100
+;措拳， '*' : 措拳 怕弊
+[@main]
+贫道是本舍舍监。 教学徒集体生活规则 \
+没有地方存放东西？ 嗯~ 这样好了 \
+我先暂时替你保管。 \
+最近志愿道士的人较少，有不少空房。 \
+ <保管/@storage>物品\
+ <找回/@getback>物品\
+ <兑换/@mbind>物品\
+ <离开/@exit>
+
+
+[@storage]
+需要保管什么东西？\ \ \
+ <返回/@main>
+
+
+[@getback]
+请看目录决定找什么东西。\ \ \
+ <返回/@main>
+
+
+[@Mbind]
+#IF
+#SAY
+我可以把一些药品打包，这样便可方便携带，\ 
+我也可以把金条与金币进行兑换。 \ 
+你想做些什么？\
+ <将金币兑换成金条/@changeGold>\
+ <将金条兑换成金币/@changeMoney>\
+ <金砖或金盒兑换/@GoldBarmenu>\
+ <打包其他物品/@bind> \ 
+ <离开/@exit>
+
+
+[@changeGold]
+#IF
+checkgold 1000000
+#SAY
+你说你要用金币换成金条？ \
+但是你需要支付我2000金币的费用 \ \
+ <兑换/@changeGold_1> \
+ <离开/@exit>
+#ELSESAY
+你连这点钱都没有，还换什么？\
+等你有足够的钱，再来找我吧。\ \
+ <返回/@main>
+
+
+[@changeGold_1]
+#IF 
+checkbaggage
+checkgold 1002000
+#ACT
+take 金币 1002000
+give 金条 1
+#SAY
+金币已经换好金条了。\ 
+还要继续兑换吗？\ \
+ <继续兑换/@changeGold> \
+ <返回/@exit>
+#ELSESAY
+你连这点钱都没有，还换什么？\
+等你有足够的钱，再来找我吧。\ \
+ <返回/@main>
+
+
+[@changeMoney]
+#IF
+checkitem 金条 1
+#SAY 
+你要把金条换成金币？\
+但是你需要支付我2000金币的费用 \ \
+ <兑换/@changeMoney_1> \
+ <离开/@exit>
+#ELSESAY
+你的连一根金条都没有还换什么... \
+想骗我？快滚! \ \
+ <离开/@exit>
+
+
+[@changeMoney_1]
+#IF
+checkitem 金条 1
+checkgold 14002001
+#SAY
+您不能将金条兑换成金币，\
+因为您身上的金币太多了。\ \
+ <离开/@exit>
+#ELSEACT
+goto @changeMoney_2
+
+
+[@changeMoney_2]
+#IF 
+checkitem 金条 1
+#ACT
+take 金条 1
+give 金币 998000
+#SAY
+金条已经换好金币了。 \ 
+还要继续兑换吗？\ \
+ <继续兑换/@changeMoney> \
+ <离开/@exit>
+
+
+[@bind]
+我可以捆药水合瞬间移动卷轴， \
+但是每一捆我需要收取100金币所谓酬劳。 \ 
+ <捆/@P_bind>药水 \
+ <捆/@Z_bind>卷轴 \
+
+
+[@P_bind]
+ <捆/@ch_bind1>强效金创药 \
+ <捆/@ma_bind1>强效魔法药 \ 
+ <捆/@ch_bind2>金创药(中量) \
+ <捆/@ma_bind2>魔法药(中量) \
+ <捆/@ch_bind3>金创药(小量) \
+ <捆/@ma_bind3>魔法药(小量)\
+ <返回/@bind>
+
+
+[@Z_bind]
+ <捆/@zum_bind1>地牢逃脱卷 \
+ <捆/@zum_bind2>随机传送卷 \
+ <捆/@zum_bind3>回城卷 \
+ <捆/@zum_bind4>行会回城卷 \
+ <返回/@bind>
+
+
+[@ch_bind1]
+#IF
+checkitem 强效金创药 6
+#ACT
+goto @ch_bind1_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ch_bind1_1]
+#IF 
+checkgold 100
+checkitem 强效金创药 6
+#ACT
+take 金币 100
+take 强效金创药 6
+give 超级金创药 1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind1]
+#IF
+checkitem 强效魔法药 6
+#ACT
+goto @ma_bind1_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind1_1]
+#IF 
+checkgold 100
+checkitem 强效魔法药 6
+#ACT
+take 金币 100
+take 强效魔法药 6
+give 超级魔法药 1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ch_bind2]
+#IF
+checkitem 金创药(中量) 6
+#ACT
+goto @ch_bind2_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ch_bind2_1]
+#IF 
+checkgold 100
+checkitem 金创药(中量) 6
+#ACT
+take 金币 100
+take 金创药(中量) 6
+give 金创药(中)包 1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind2]
+#IF
+checkitem 魔法药(中量) 6
+#ACT
+goto @ma_bind2_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind2_1]
+#IF 
+checkgold 100
+checkitem 魔法药(中量) 6
+#ACT
+take 金币 100
+take 魔法药(中量) 6
+give 魔法药(中)包  1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ch_bind3]
+#IF
+checkitem 金创药(小量) 6
+#ACT
+goto @ch_bind3_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ch_bind3_1]
+#IF 
+checkgold 100
+checkitem 金创药(小量) 6
+#ACT
+take 金币 100
+take 金创药(小量) 6
+give 金创药(小)包 1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind3]
+#IF
+checkitem 魔法药(小量) 6
+#ACT
+goto @ma_bind3_1
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@ma_bind3_1]
+#IF 
+checkgold 100
+checkitem 魔法药(小量) 6
+#ACT
+take 金币 100
+take 魔法药(小量) 6
+give 魔法药(小)包 1
+#SAY
+已经捆好了... 我的技术不错吧.. \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@P_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的药品或金币， \
+等你准备好需要的药品跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind1]
+#IF
+checkitem 地牢逃脱卷 6
+#ACT
+goto @zum_bind1_1
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind1_1]
+#IF 
+checkgold 100
+checkitem 地牢逃脱卷 6
+#ACT
+take 金币 100
+take 地牢逃脱卷 6
+give 地牢逃脱卷包 1
+#SAY
+已经捆好了... 我的技术不错吧！ \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@z_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind2]
+#IF
+checkitem 随机传送卷 6
+#ACT
+goto @zum_bind2_1
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind2_1]
+#IF 
+checkgold 100
+checkitem 随机传送卷 6
+#ACT
+take 金币 100
+take 随机传送卷 6
+give 随机传送卷包 1
+#SAY
+已经捆好了... 我的技术不错吧！ \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@z_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind3]
+#IF
+checkitem 回城卷 6
+#ACT
+goto @zum_bind3_1
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind3_1]
+#IF 
+checkgold 100
+checkitem 回城卷 6
+#ACT
+take 金币 100
+take 回城卷 6
+give 回城卷包 1
+#SAY
+已经捆好了... 我的技术不错吧！ \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@z_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind4]
+#IF
+checkitem 行会回城卷 6
+#ACT
+goto @zum_bind4_1
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+
+[@zum_bind4_1]
+#IF 
+checkgold 100
+checkitem 行会回城卷 6
+#ACT
+take 金币 100
+take 行会回城卷 6
+give 行会回城卷包 1
+#SAY
+已经捆好了... 我的技术不错吧！ \
+还有要捆的就拿给我吧..\ \
+ <继续捆/@z_bind> \
+ <离开/@exit>
+#ELSESAY
+你没有所需的卷轴或金币， \
+等你准备好需要的卷轴跟金币再来找我吧。 \ \
+ <离开/@exit>
+
+;-----------------------------------------------------------------------------------------
+[@GoldBarmenu]
+ <兑换/@makeGoldBarBundle>金条打包成金砖 (6000 金币) \
+ <兑换/@makegoldchestgoldbarbundle>金砖打包成金盒(6000 金币) \
+ <兑换/@makeGoldChestgoldbars>金条打包成金盒 (12000 金币) \
+ <兑换/@ExchangeGoldBarBundle>金砖兑换金条 (免费) \ 
+ <兑换/@exhangechesttobundles>金盒兑换金砖 (免费) \
+ <兑换/@exhangechesttobars>金盒兑换金条 (免费) \
+
+
+[@makeGoldBarBundle]
+#IF
+checkitem 金条 5
+#ACT
+goto @金砖_1
+#ELSESAY
+你没有所5根以上的金条或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@金砖_1]
+#IF 
+checkgold 6000
+checkitem 金条 5
+#ACT
+take 金币 6000
+take 金条 5
+give 金砖 1
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续捆/@makeGoldBarBundle> \
+ <离开/@exit>
+#ELSESAY
+你没有所5根以上的金条或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@ExchangeGoldBarBundle]
+#IF
+checkitem 金砖 1
+#ACT
+goto @ExchangeGoldBarBundle_1
+#ELSESAY
+你没金砖，让我怎么帮你兑换？ \
+你不会是想骗我吧！ \ \
+ <离开/@exit>
+
+
+[@ExchangeGoldBarBundle_1]
+#IF 
+checkitem 金砖 1
+#ACT
+take 金砖 1
+give 金条 5
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续换/@ExchangeGoldBarBundle> \
+ <离开/@exit>
+#ELSESAY
+你没金砖，让我怎么帮你兑换？ \
+你不会是想骗我吧！ \ \
+ <离开/@exit>
+
+
+[@makeGoldChestgoldbars]
+#IF
+checkitem 金条 10
+#ACT
+goto @makeGoldChestgoldbars_1
+#ELSESAY
+你没有所10根以上的金条或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@makeGoldChestgoldbars_1]
+#IF 
+checkitem 金条 10
+#ACT
+take 金币 12000
+take 金条 10
+give 金盒 1
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续换/@makeGoldChestgoldbars> \
+ <离开/@exit>
+#ELSESAY
+你没有所5根以上的金条或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@makegoldchestgoldbarbundle]
+#IF
+checkitem 金砖 2
+#ACT
+goto @makegoldchestgoldbarbundle_1
+#ELSESAY
+你没有所2块以上的金砖或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@makegoldchestgoldbarbundle_1]
+#IF 
+checkitem 金砖 2
+#ACT
+take 金币 6000
+take 金砖 2
+give 金盒 1
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续换/@makegoldchestgoldbarbundle> \
+ <离开/@exit>
+#ELSESAY
+你没有所2块以上的金砖或足够的金币， \
+请准备好所需的物品再来找我。 \ \
+ <离开/@exit>
+
+
+[@exhangechesttobundles]
+#IF
+checkitem 金盒 1
+#ACT
+goto @exhangechesttobundles_1
+#ELSESAY
+你没金盒，让我怎么帮你兑换？ \
+你不会是想骗我吧！ \ \
+ <离开/@exit>
+
+
+[@exhangechesttobundles_1]
+#IF   
+checkbaggage
+checkitem 金盒 1
+#ACT
+take 金盒 1
+give 金砖 2
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续换/@exhangechesttobundles> \
+ <离开/@exit>
+#ELSESAY
+我不能再帮你兑换了，\
+因为你的包裹里连一个空格都没有。\
+先去把你包裹里的物品清理一下，最好留出10个以上位置， \
+如果空间不够，金条或金砖有可能会掉落在地上。\ \
+ <离开/@exit>
+
+
+[@exhangechesttobars]
+#IF
+checkitem 金盒 1
+#ACT
+goto @exhangechesttobars_1
+#ELSESAY
+你没金盒，让我怎么帮你兑换？ \
+你不会是想骗我吧！ \ \
+ <离开/@exit>
+
+
+[@exhangechesttobars_1]
+#IF 
+checkbaggage
+checkitem 金盒 1
+#ACT
+take 金盒 1
+give 金条 10
+#SAY
+已经换好了，\
+还要继续兑换吗？\ \
+ <继续换/@exhangechesttobars> \
+ <离开/@exit>
+#ELSESAY
+我不能再帮你兑换了，\
+因为你的包裹里连一个空格都没有。\
+先去把你包裹里的物品清理一下，最好留出10个以上位置， \
+如果空间不够，金条或金砖有可能会掉落在地上。\ \
+ <离开/@exit>
+
+
+[goods]
+;商品 数量  时间(hour)

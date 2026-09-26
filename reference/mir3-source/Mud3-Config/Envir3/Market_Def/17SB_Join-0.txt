@@ -1,0 +1,119 @@
+;;∫£•·µ¡
+[@main]
+#IF
+CheckLevel 20
+#ACT
+Goto @main_1
+break
+
+#ELSEACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_1
+
+
+[@main_1]
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [start]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [join]
+
+#IF
+Equal  P0  1
+Equal  P1  0
+
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_2
+
+#ACT
+break
+
+#IF
+Equal  P0  1
+Equal  P1  1
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_3
+
+#ACT
+break
+
+#ELSEACT
+goto @eventoff
+break
+
+[@eventoff]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_4
+
+
+[@User_Condition_Mir]
+#IF
+!CheckItemW ±Í«π 1
+!checkItem ±Í«π 1
+!CheckItemW Ã˙«π 1
+!checkItem Ã˙«π 1
+!CheckItemW –ﬁ¿ÌΩ£ 1
+!checkItem –ﬁ¿ÌΩ£ 1
+#ACT
+goto @User_Condition_Mir_1
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_5
+
+
+#ELSEACT
+break
+
+[@User_Condition_Mir_1]
+#IF
+checkmonrecall 
+#ACT
+Goto @Join_1
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_6
+
+#ELSEACT
+break
+
+
+[@Join_1]
+#CALL [\\Event\SnowBattle\arrange.txt] @Join_Mir
+
+
+[@User_Condition_Legend]
+#IF
+!CheckItemW ±Í«π 1
+!checkItem ±Í«π 1
+!CheckItemW Ã˙«π 1
+!checkItem Ã˙«π 1
+!CheckItemW –ﬁ¿ÌΩ£ 1
+!checkItem –ﬁ¿ÌΩ£ 1
+#ACT
+goto @User_Condition_Legend_1
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_7
+
+
+#ELSEACT
+break
+
+[@User_Condition_Legend_1]
+#IF
+checkmonrecall 
+#ACT
+Goto @Join_2
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Join-0.txt] @17SB_Join-0_8
+
+#ELSEACT
+break
+
+[@Join_2]
+#CALL [\\Event\SnowBattle\arrange.txt] @Join_Legend

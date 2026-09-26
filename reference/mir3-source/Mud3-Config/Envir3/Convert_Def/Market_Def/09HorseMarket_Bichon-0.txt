@@ -1,0 +1,97 @@
+;;09HorseMarket_Bichon-0.txt
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+<结束/@exit>
+}
+
+[@NPC_Main_0]
+{
+欢迎光临。马是高价产品，请慎重选择。\
+<购买 褐色马（50万金币，需要等级25）/@BuyHorseGraw> \
+<购买 白色马（2千万金币，需要等级40）/@BuyHorseGraw2> \
+<购买 黑马  （9千万金币，需要等级50）/@BuyHorseGraw3> \
+<卖所拥有的马。/@SellHorse> \
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+欢迎光临比奇马厩。马是高价产品，请慎重选择。\
+<购买 褐色马（50万金币，需要等级15）/@BuyHorseGraw> \
+<购买 白色马（2千万金币，需要等级40）/@BuyHorseGraw2> \
+<购买 黑马  （9千万金币，需要等级50）/@BuyHorseGraw3> \
+<卖所拥有的马/@SellHorse> \
+<谈论/@NQuest01_1>{FCOLOR/10}王丽灵小姐{FCOLOR/12}\
+<结束/@exit>
+}
+
+[@NPC_Main_2]
+{
+欢迎光临比奇马厩。马是高价产品，请慎重选择。\
+<购买 褐色马（50万金币，需要等级15）/@BuyHorseGraw> \
+<购买 白色马（2千万金币，需要等级40）/@BuyHorseGraw2> \
+<购买 黑马  （9千万金币，需要等级50）/@BuyHorseGraw3> \
+<卖所拥有的马/@SellHorse> \
+关于{FCOLOR/10}半兽洞穴{FCOLOR/12}<进行谈话/@NQuest01_2> \
+<结束/@exit>
+}
+
+[@NPC_Main_3]
+{
+欢迎光临比奇马厩。马是高价产品，请慎重选择。\
+<购买 褐色马（50万金币，需要等级15）/@BuyHorseGraw> \
+<购买 白色马（2千万金币，需要等级40）/@BuyHorseGraw2> \
+<购买 黑马  （9千万金币，需要等级50）/@BuyHorseGraw3> \
+<卖所拥有的马/@SellHorse> \
+关于{FCOLOR/10}半兽洞穴{FCOLOR/12}<进行谈话/@NQuest01_3> \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw]
+{
+我不能把这么宝贵的马卖给你。你再修炼一段时间等练到15级再来吧。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw_NoMoney]
+{
+你的钱不够，准备好钱以后再来吧。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw_Fail]
+{
+你不是有马嘛，为什么还要买？\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw_Complete]
+{
+好好骑吧。\ \
+<结束/@exit>
+}
+
+[@NPC_SellHorse]
+{
+我所拥有的马已经卖出去了。\ \
+<结束/@exit>
+}
+
+[@NPC_SellHorse_Fail]
+{
+你已骑着马的情况下我不能卖给你。。你在确认一下你的马吧。。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw2]
+{
+我不能把这么宝贵的马卖给你。你再修炼一段时间等练到40级再来吧。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseGraw3]
+{
+我不能把这么宝贵的马卖给你。你再修炼一段时间等练到50级再来吧。\ \
+<结束/@exit>
+}

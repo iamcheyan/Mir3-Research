@@ -1,0 +1,94 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### D404_002  3,12  ->  D404  54,128   ############
+;#### D404    55,127  ->  D404_002  4,11 ############
+;-----------------------------------------------------
+#IF
+check [247] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [235] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_3
+
+#ACT
+enter_fail
+break
+
+#IF
+check [233] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_4
+
+#ACT
+enter_fail
+set [229] 1
+set [232] 0
+set [233] 0
+set [230] 1
+break
+
+#IF
+check [232] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_5
+
+#ACT
+enter_fail
+set [229] 1
+set [232] 0
+set [233] 0
+set [230] 1
+break
+
+#IF
+check [231] 1
+#ACT
+enter_fail
+set [232] 1
+set [231] 0
+break
+
+#IF
+check [229] 1
+#ACT
+goto @enterh_bp
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_6
+
+#ELSEACT
+enter_fail
+
+;-----------------------------------------------------
+
+[@enterh_bp]
+#IF
+checkhum D404_002 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_BichunSujun.txt] @Na_BichunSujun_7
+
+#ACT
+enter_fail
+#ELSEACT
+enter_ok
+Monclear D404_002
+set [231] 1

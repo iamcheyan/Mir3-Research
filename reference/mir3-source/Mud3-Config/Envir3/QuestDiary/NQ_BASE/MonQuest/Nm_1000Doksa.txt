@@ -1,0 +1,28 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [219] 1
+#ACT
+break
+
+#IF
+check [217] 1
+#ACT
+break
+
+#IF
+check [216] 1
+#ACT
+goto @baksa1
+
+;-------------------------
+
+[@baksa1]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_1000Doksa.txt] @Nm_1000Doksa_1
+
+#ACT
+set [217] 1
+give Ç§Äê¶¾Éßµ¨Ö­ 1

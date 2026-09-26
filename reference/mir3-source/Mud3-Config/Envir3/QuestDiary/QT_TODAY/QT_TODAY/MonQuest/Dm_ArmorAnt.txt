@@ -1,0 +1,98 @@
+;;베α돝
+[@main]
+;		일일 퀘스트 체크
+#IF
+CheckDailyQuest 454
+#ACT
+goto @gapjugaemi_T454
+break
+;
+#ELSEACT
+break
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### 개미던전 맵 번호 
+;D802
+;D8021
+;D8022
+;D803
+;D8031
+;D8032
+;D8033
+;D804
+;D8041
+;D805
+;D8051
+;D806
+;D8061
+;D8062
+;D807
+;D8071
+;D808
+;#### 갑주개미   ############
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@gapjugaemi_T454]
+;		일일 퀘스트 454 번
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @gapjugaemi_T454_1
+break
+
+#ELSEACT
+break
+
+;----------- 갑주개미 카운트 부 --------------------
+;----------- 갑주개미 15 마리째 죽을때 -------------
+[@gapjugaemi_T454_1]
+#IF
+large s0 15
+#ACT
+goto @gapjugaemi_T454_5
+#ELSEACT
+goto @gapjugaemi_T454_2
+;-----------------
+
+[@gapjugaemi_T454_2]
+#IF
+large s0 2
+#ACT
+goto @gapjugaemi_T454_3
+#ELSEACT
+mov s0 2
+goto @gapjugaemi_T454_3
+
+;-----------------
+[@gapjugaemi_T454_3]
+#IF
+#ACT
+inc s0 1
+;-----------------------------------
+[@gapjugaemi_T454_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T454_Say
+#ACT
+set [308] 1
+give 원솖쯧碌쫓 1
+mov s0 0
+;              일종의 변수 초기화
+;-------------------------------------------------------

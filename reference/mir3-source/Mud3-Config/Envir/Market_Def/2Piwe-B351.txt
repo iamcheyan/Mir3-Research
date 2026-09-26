@@ -1,0 +1,81 @@
+; ===================================
+; Market Def NPC File : 2Piwe-B351
+; PrajnaIsland (WeaponShop)
+; -----------------------------------
+; Name: Keith
+; Job: 
+; Map No: B351
+; Pos X 8
+; Pos Y 9
+; File name: *removed*
+; Comment: PrajnaIsland (WeaponShop)
+
+;================================================= =
+;
+
+;Settings
+%100
++5
++6
++43
+
+;Pkr Tag (NPC won't talk to Pkrs)
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我是不会帮助像你这样邪恶的人\ \
+<好的/@exit>
+
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+有许多有用的武器。\
+请看一看。\ \
+<买/@buy>武器\
+<卖/@sell>武器\
+<修理武器/@repair>\
+<特殊修理/@s_repair>\
+<移动出去外面/@Tmove>\
+<取消/@exit>
+
+[@Tmove]
+#IF
+#ACT
+mapmove 5 128 303
+break
+
+[@buy]
+你找到你喜欢的东西?\ \
+<上一页/@main>
+
+[@sell]
+价格源于武器的条件.\
+<上一页/@main>
+
+[@repair]
+如果你想，我会为你修复。\
+但我建议你特约维修。\ \
+<上一页/@main>
+
+[~@repair]
+这件物品不需要修理了.\ \
+<上一页/@main>
+
+[@s_repair]
+嘿家伙！你很幸运……\
+我们的材料做的专项修理，\
+相反，请记住这个价格\
+是正常的3倍的价钱。\ \
+<上一页/@main>
+
+
+[goods]
+;项目		数量		时间
+木剑     100         	1
+青铜剑	100		1 
+铁剑	100		1
+短剑 	100		1
+钢铁斧	100		1

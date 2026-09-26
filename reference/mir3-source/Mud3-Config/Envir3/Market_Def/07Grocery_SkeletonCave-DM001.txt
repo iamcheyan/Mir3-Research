@@ -1,0 +1,113 @@
+;;º£¥áµÁ
+%180
+;potion
++0
+;scroll, Spotion, lottery
++3
+;torch
++30
+;weapon
++5
++6
+;armor
++10
++11
+;dice, wood
++45
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Main
+ 
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Repair
+
+[@~repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Repair_Complete
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 309
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @309_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @309_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SkeletonCave-DM001.txt] @NPC_TQuest_1
+
+;----------------------

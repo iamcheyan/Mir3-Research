@@ -1,0 +1,19 @@
+;;02Weapon_SinGiSun-D9012.txt
+[@NPC_Main]
+{
+喂，老兄你的武器太旧了。我这里有很多工具，可以修怎么样？稍微贵一点没问题吧？\ \
+<修理/@repair>
+}
+
+[@NPC_Repair]
+{
+稍微等一下我马上给你修。\ \
+<前一步/@main>
+}
+
+[@NPC_Repair_Complete]
+{
+这程度还算满意。\ \
+<前一步/@main>
+}
+

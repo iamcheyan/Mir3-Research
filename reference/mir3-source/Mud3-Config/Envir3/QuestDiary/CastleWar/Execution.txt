@@ -1,0 +1,194 @@
+;;º£¥áµÁ
+[@Castle_Execution]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_1
+
+
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_2
+
+
+;-------------------------------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_3
+
+
+[@@*Admin_passwd]
+#ACT
+mov  A0 %INPUTSTR
+#IF
+;Nomal Admin Password
+equal A0  %PASSWD(1)
+
+;;Super Admin Password
+;;equal A0  %PASSWD(0)
+;;User Password(Store Password)
+;;equal A0  %PASSWD(9)  
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_4
+
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_5
+
+
+[@Bichon_Day]
+#ACT
+ChangeMapAttr  "0" "DAY"
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_6
+
+
+[@Bichon_Dark]
+#ACT
+ChangeMapAttr  "0" "DARK"
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_7
+
+
+;-------------------------------------------------------------------------------
+
+[@UserChangeFlag]
+#IF
+IsGuildMaster
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_8
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_9
+
+
+[@UserChangeFlag_next]
+#ACT
+SendCmd "0,478,367,1" ÐÐ»áÆì @TestUserFlag
+
+;-------------------------------------------------------------------------------
+
+[@MakeGuild]
+#IF
+HasGuild
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_10
+
+#ACT
+break
+
+#IF
+!checkgold 1000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_11
+
+#ACT
+break
+
+#IF
+checkitem ÎÖÂêºÅ½Ç 1
+checkgold 1000000
+#ACT
+EnableCmd @@buildguild
+break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_12
+
+
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_13
+
+
+[@@buildguild]
+#IF
+checkitem ÎÖÂêºÅ½Ç 1
+checkgold 1000000
+#ACT
+take ½ð±Ò 1000000
+take ÎÖÂêºÅ½Ç 1
+BuildGuild @MakeGuildOK
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_14
+
+
+[@MakeGuildOK]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_15
+
+
+[@MakeGuildOK~]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_16
+
+#ACT
+give ÎÖÂêºÅ½Ç 1
+give ½ð±Ò 1000000
+
+[@buildguildexp]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_17
+
+
+;-------------------------------------------------------------------------------
+
+[@guildwar]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_18
+
+
+[@ComfirmGuildWar]
+#IF
+checkgold 30000
+#ACT
+take ½ð±Ò 30000
+EnableCmd @@guildwar
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_19
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_20
+
+[@@GuildWar]
+#ACT
+GuildWar @GuildMakeWarOK
+
+[@GuildMakeWarOK]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_21
+
+
+[@GuildMakeWarOK~]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_22
+
+#ACT
+give ½ð±Ò 30000
+
+[@guildwarexp]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_23
+
+
+[@guildwar2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_24
+
+
+[@warrule]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_25
+
+
+[@propose]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_26
+
+
+[@donate]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Execution.txt] @Execution_27
+
+}

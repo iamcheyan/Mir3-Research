@@ -1,0 +1,87 @@
+;;海メ盗
+[@Marriage_1]
+{
+		目前不能进行，请稍候。\
+}
+
+[@Marriage_2]
+{
+		<申请结婚/@wantGetMarried>\
+		<申请离婚/@wantDivorce>\
+		<摘下结婚戒指/@TakeMarriedRing> \
+}
+
+[@Marriage_3]
+{
+		<取消结婚申请/@PreCancelWedding>\ \
+}
+
+[@Marriage_4]
+{
+		<参数初始化/@ResetWeddingVariables>\
+}
+
+[@Marriage_5]
+{
+			摘下结婚戒指需要200,000金币。 \
+			摘下要作为结婚戒指的戒指，与配偶交换，该戒指就会成为结婚戒指。 \ \
+			<即使需要支付20万金币，也要摘下结婚戒指。/@ExchangeMarriedRing> \
+}
+
+[@Marriage_6]
+{
+			您的钱不够。 \ \
+			<关  闭/@exit>
+}
+
+[@Marriage_7]
+{
+			22级以上才可以使用此项功能。\
+}
+
+[@Marriage_8]
+{
+			已婚状态下不可再婚。\
+}
+
+[@Marriage_9]
+{
+			<请输入您要迎娶的新娘的名字。/@@InputMarried_Woman>
+}
+
+[@Marriage_10]
+{
+			现在不能进行结婚申请。\ \
+			<关  闭/@exit>
+}
+
+[@Marriage_11]
+{
+			您要迎娶的新娘名字是 <$INPUTSTR> 。 \
+			新娘名字正确吗？ \ \
+			<正确/@ProcessMarried> \
+			<不正确/@wantGetMarried_man> \
+}
+
+[@Marriage_12]
+{
+			别人正在使用该功能。 1\
+}
+
+[@Marriage_13]
+{
+			别人正在使用该功能。 2\
+}
+
+[@Marriage_14]
+{
+			别人正在使用该功能。 3\
+}
+
+[@Marriage_15]
+{
+			确定要离婚吗？\
+			离婚需要支付500万金币。\ \
+			<付钱，离婚。 /@divorcenow>\
+}
+

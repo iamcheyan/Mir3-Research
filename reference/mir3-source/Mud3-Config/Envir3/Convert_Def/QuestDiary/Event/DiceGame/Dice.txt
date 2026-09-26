@@ -1,0 +1,704 @@
+;;海メ盗
+[@Dice_1]
+{
+欢迎光临！<$USERNAME>，你和我赌一把骰子游戏好吗？ \
+<挑战摇骰子/@main-1>\
+<听游戏规则/@held5>\
+<了解奖金/@held6>\
+<下一次再挑战/@exit>
+}
+
+[@Dice_2]
+{
+首先我和 <$USERNAME>来做一个游戏，根据分别摇4个骰子产生的结果来决定胜负。\ \
+骰子的点数\
+出现2个一样的点数叫做{FCOLOR/10}双牌{FCOLOR/12}\
+出现2种2个一样的点数叫做{FCOLOR/10}连双牌{FCOLOR/12}\
+出现3个一样的点数叫做{FCOLOR/10}正牌{FCOLOR/12}\
+出现4个一样的点数叫做{FCOLOR/10}宝牌{FCOLOR/12}\ \
+这几种牌从小到大递增顺序是双牌 大于 连双牌 大于 正牌 大于 宝牌。要是相同的牌，则骰点大的一方为胜；如果是一样的牌且骰点相同的话，则算作平局。我将返还给你{FCOLOR/10}全部下注金额{FCOLOR/12}。\
+若<$USERNAME>和我都没有摇出特别的牌，那么不管骰子点数如何都算做平局，我将返还{FCOLOR/10}全部下注金额{FCOLOR/12}。\
+如果<$USERNAME>赢了的话我将支付您奖金，如果输了话<$USERNAME>就得付给我奖金。\
+另外，在和我赌的过程中如果想要放弃并且重新开始的话，则要向我支付罚款{FCOLOR/10}5千金币{FCOLOR/12}。因为我不能相信还没有分出胜负就逃跑的人啊！\
+还有要是你使用骗术，想要重新开始的话就得向我支付罚款{FCOLOR/10}10万金币{FCOLOR/12} \ \
+<上一步/@main-0>\
+}
+
+[@Dice_3]
+{
+如果<$USERNAME> 赢了我的话，我将根据你所赢的牌的种类支付给你不同倍率的奖金。\ \ \ \ \
+你赢的牌是{FCOLOR/10}双牌{FCOLOR/12}的话，我将支付你相当于下注金额{FCOLOR/10}4倍{FCOLOR/12}的奖金。\
+你赢的牌是{FCOLOR/10}连双牌{FCOLOR/12}的话，我将支付你相当于下注金额{FCOLOR/10}8倍{FCOLOR/12}的奖金。\
+你赢的牌是{FCOLOR/10}正牌{FCOLOR/12}的话，我将支付你相当于下注金额{FCOLOR/10}16倍{FCOLOR/12}的奖金。\
+你赢的牌是{FCOLOR/10}宝牌{FCOLOR/12}的话，我将支付你相当于下注金额{FCOLOR/10}40倍{FCOLOR/12}的奖金。\
+相反我要是用相应的牌赢了<$USERNAME>的话，那么将得到包括下注金额在内相应倍率的金额。\
+如果出现平局的话，我将返还给你{FCOLOR/10}全部下注金额{FCOLOR/12}。\
+另外，在和我赌的过程中如果想要放弃并且重新开始的话，则要向我支付罚款{FCOLOR/10}5千金币{FCOLOR/12}。因为我不能相信还没有分出胜负就逃跑的人啊！\
+还有要是你使用骗术，想要重新开始的话就得向我支付罚款{FCOLOR/10}10万金币{FCOLOR/12}。\
+慎重考虑一下在来挑战吧~！\ \
+<上一步/@main-0>\
+}
+
+[@Dice_4]
+{
+<$USERNAME>，你如此害怕和我比试? 我不想再和你比试。\
+不过根据规则，你要是缴纳罚款的话还是可以继续挑战的。\\
+<交5千金币罚款/@main-1_0>\
+<放弃/@exit>
+}
+
+[@Dice_5]
+{
+收到罚款了。那么要重新开始挑战摇骰子游戏吗？\ \
+<挑战骰子游戏。/@main-1_3>\
+}
+
+[@Dice_6]
+{
+<$USERNAME>, 你带的金币不够啊！要想重新开始必须先交纳10万金币的罚款才行。\ \
+<结束/@exit>
+}
+
+[@Dice_7]
+{
+<$USERNAME>，你使用骗术，我是不能容纳的！ \
+不过根据规则，你要是缴纳罚款的话还是可以继续挑战的。\
+<交10万金币罚款。/@main-1_2>\
+<放弃。/@exit>
+}
+
+[@Dice_8]
+{
+收到罚款了。那么要重新开始挑战摇骰子游戏吗？\ \
+<挑战骰子游戏。/@main-1_3>\
+}
+
+[@Dice_9]
+{
+<$USERNAME>, 你带的金币不够啊！要想重新开始必须先交纳10万金币的罚款才行。\ \
+<结束/@exit>
+}
+
+[@Dice_10]
+{
+那么<$USERNAME>要下注多少金币呢？ \ \
+<压500金币。/@main-1_4>\
+<压1000金币/@main-1_5>\
+<上一步/@main-0>\
+}
+
+[@Dice_11]
+{
+<$USERNAME>, 你带的金币不够啊！ 至少要有4万金币才行啊！\ \
+<结束/@exit>
+}
+
+[@Dice_12]
+{
+<$USERNAME>, 你带的金币不够啊！ 至少要有4万金币才行啊！\ \
+<结束/@exit>
+}
+
+[@Dice_13]
+{
+<$USERNAME>, 你带的金币不够啊！请准备好金币以后再来吧。\ \
+<结束/@exit>
+}
+
+[@Dice_14]
+{
+<$USERNAME>下注了500金币， 那么准备开始摇骰子吧！\ \
+<摇骰子。/@dicestart>\
+}
+
+[@Dice_15]
+{
+<$USERNAME>下注了1000金币，那么准备开始摇骰子吧！\ \
+<摇骰子。/@dicestart>\
+}
+
+[@Dice_16]
+{
+正在摇骰子。 \ \??
+}
+
+[@Dice_17]
+{
+你的骰子是 <$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>，没有特别的牌啊！\
+那么现在轮到我摇了！\ \
+<嗯，请您摇吧！/@npcdicestart>\
+}
+
+[@Dice_18]
+{
+你的骰子是 <$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>，没有特别的牌啊！\
+<$USERNAME>， 想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_19]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>,是 {FCOLOR/10}双牌{FCOLOR/12} 啊！\
+那么现在该我来摇啦！\ \
+<嗯，请您摇吧！/@npcdicestart>\
+}
+
+[@Dice_20]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>，是 {FCOLOR/10}双牌{FCOLOR/12} 啊！\
+<$USERNAME>， 想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_21]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>,是 {FCOLOR/10}连双牌{FCOLOR/12} 啊！\
+那么现在该我来摇啦！\ \
+<嗯，请您摇吧！/@npcdicestart>\
+}
+
+[@Dice_22]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>,是 {FCOLOR/10}连双牌{FCOLOR/12} 啊！\
+<$USERNAME>， 想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_23]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>，是 {FCOLOR/10}正牌{FCOLOR/12}啊！\
+那么现在该我来摇啦！\ \
+<嗯，请您摇吧！/@npcdicestart>\
+}
+
+[@Dice_24]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>, 是{FCOLOR/10}正牌{FCOLOR/12}啊！\
+<$USERNAME>， 想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_25]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>，是 {FCOLOR/10}宝牌{FCOLOR/12}啊！\
+那么现在该我来摇啦！\ \
+<嗯，请您摇吧！/@npcdicestart>\
+}
+
+[@Dice_26]
+{
+你的骰子是<$STR(D0)>, <$STR(D1)>, <$STR(D2)>, <$STR(D3)>, 是{FCOLOR/10}宝牌{FCOLOR/12}啊！\
+<$USERNAME>， 想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_27]
+{
+骰子没有摇好，再来一次吧！ \ \
+<重新摇。/@dicestart>\
+}
+
+[@Dice_28]
+{
+正在摇骰子。 \ \
+}
+
+[@Dice_29]
+{
+你想要欺骗我吗？把金币藏了起来……我不想再继续玩了！\ \
+<结束/@exit>
+}
+
+[@Dice_30]
+{
+骰子没有摇好，再来一次吧！ \ \
+<重新摇。/@dicestart>\
+}
+
+[@Dice_31]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}。。. 所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}20000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_32]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}。。. 所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}40000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_33]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}。。. 所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_34]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}16000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_35]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}4000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_36]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_37]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是 {FCOLOR/10}2000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_38]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+我输了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是 {FCOLOR/10}4000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_39]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}20000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_40]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}40000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_41]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_42]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}16000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_43]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}4000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_44]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_45]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，不过，从点数上我输了。所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是 {FCOLOR/10}2000金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_46]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，不过，从点数上我输了。所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是 {FCOLOR/10}4000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_47]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}20000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_48]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}40000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_49]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_50]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}16000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_51]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，不过，从点数上我输了。所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}4000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_52]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，不过，从点数上我输了。 所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_53]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}20000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_54]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我输了。<$USERNAME>是{FCOLOR/10}宝牌{FCOLOR/12}，所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}40000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_55]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，不过，从点数上我输了。。。. 所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}8000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_56]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，不过，从点数上我输了。。。. 所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}16倍{FCOLOR/12}，也就是 {FCOLOR/10}16000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_57]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，不过，从点数上我输了。。。. 所以我得给你下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}20000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_58]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我输了。虽然<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，不过，从点数上我输了。。。. 所以我得给你下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，也就是 {FCOLOR/10}40000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_59]
+{
+你想骗我？ 竟然把金币藏起来。。.我不想再玩了。\\
+<结束/@exit>
+}
+
+[@Dice_60]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>。是{FCOLOR/10}双牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}1500金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_61]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}3000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_62]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}1500金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_63]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}4倍{FCOLOR/12}。。也就是我要拿走{FCOLOR/10}3000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_64]
+{
+你想骗我？ 竟然把金币藏起来，我不想再玩了。\\
+<结束/@exit>
+}
+
+[@Dice_65]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}3500金币{FCOLOR/12}。\
+<关闭 /@exit>
+}
+
+[@Dice_66]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}。。 也就是我要拿走{FCOLOR/10}7000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_67]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}3500金币{FCOLOR/12}。\
+<关闭 /@exit>
+}
+
+[@Dice_68]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}7000金币{FCOLOR/12}。\
+<关闭 /@exit>
+}
+
+[@Dice_69]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}3500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_70]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+我赢了。<$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}8倍{FCOLOR/12}，也就是我要拿走{FCOLOR/10}7000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_71]
+{
+你想骗我？ 竟然把金币藏起来，我不想再玩了。\\
+<结束/@exit>
+}
+
+[@Dice_72]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}7500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_73]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}15000金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_74]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}7500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_75]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}。。也就是我要拿走{FCOLOR/10}15000金币。\
+<结束/@exit>
+}
+
+[@Dice_76]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}7500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_77]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}。。也就是我要拿走{FCOLOR/10}15000金币。.\
+<结束/@exit>
+}
+
+[@Dice_78]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。 <$USERNAME>没什么好牌。 所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}7500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_79]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+我赢了。 <$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的 {FCOLOR/10}16倍{FCOLOR/12}。。也就是我要拿走{FCOLOR/10}15000金币。\
+<结束/@exit>
+}
+
+[@Dice_80]
+{
+你想骗我？ 竟然把金币藏起来，我不想再玩了。\\
+\\
+<结束/@exit>
+}
+
+[@Dice_81]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}19500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_82]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。虽然<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，不过，从点数上我赢了。所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}39000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_83]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}19500金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_84]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}正牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}39000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_85]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}19500金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_86]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}连双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}39000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_87]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}19500金币{FCOLOR/12}。
+<结束/@exit>
+}
+
+[@Dice_88]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。<$USERNAME>是{FCOLOR/10}双牌{FCOLOR/12}，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}39000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_89]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。 <$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}500金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}19500金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_90]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+我赢了。 <$USERNAME>没什么好牌，所以你得给我下注金额{FCOLOR/10}1000金币{FCOLOR/12}的{FCOLOR/10}40倍{FCOLOR/12}，。。 也就是我要拿走{FCOLOR/10}39000金币{FCOLOR/12}。\
+<结束/@exit>
+}
+
+[@Dice_91]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+平了。<$USERNAME>也没什么好牌，就算平了，把你的下注金额{FCOLOR/10}500金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_92]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，没什么好牌。\
+平了。<$USERNAME>也没什么好牌，就算平了，把你的下注金额{FCOLOR/10}1000金币{FCOLOR/12}还给你。
+<结束/@exit>
+}
+
+[@Dice_93]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}500金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_94]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}双牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}双牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}1000金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_95]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}500金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_96]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}连双牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}连双牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}1000金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+
+[@Dice_97]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}500金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_98]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}正牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}正牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}1000金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_99]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}500金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}
+
+[@Dice_100]
+{
+我的骰子是<$STR(D0)> , <$STR(D1)> , <$STR(D2)> , <$STR(D3)>，是{FCOLOR/10}宝牌{FCOLOR/12}。\
+平了。<$USERNAME>也是{FCOLOR/10}宝牌{FCOLOR/12}，点数也一样。把你的下注金额{FCOLOR/10}1000金币{FCOLOR/12}还给你。\
+<结束/@exit>
+}

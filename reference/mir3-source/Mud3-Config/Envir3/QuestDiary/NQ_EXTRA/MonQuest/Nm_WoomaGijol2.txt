@@ -1,0 +1,68 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [294] 1
+#ACT
+break
+
+#IF
+check [293] 1
+#ACT
+goto @umgzol2_1
+
+;-----------------------------------------------------
+
+
+[@umgzol2_1]
+#IF
+large s2 4
+#ACT
+goto @umgzol2_5
+#ELSEACT
+goto @umgzol2_2
+
+;-----------------
+
+[@umgzol2_2]
+#IF
+large s2 2
+#ACT
+goto @umgzol2_3
+#ELSEACT
+mov s2 2
+goto @umgzol2_3
+
+;-----------------
+
+[@umgzol2_3]
+#IF
+#ACT
+inc s2 1
+
+;----------------------------------------------------------
+
+[@umgzol2_5]
+#IF
+checkmonmap D023_001 3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaGijol2.txt] @Nm_WoomaGijol2_1
+
+#ELSEACT
+mov s2 0
+set [294] 1
+;
+set [291] 0
+set [290] 0
+;
+set [292] 0

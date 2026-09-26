@@ -1,0 +1,13 @@
+[@main]
+#IF
+check [407] 1
+#ACT
+break
+
+#IF
+check [406] 1
+#ACT
+SET [407] 1
+#ELSESAY
+;(이 곳에 뭔가 모르는 이상한 기운이 드는군..)
+ (I feel dizzy...)

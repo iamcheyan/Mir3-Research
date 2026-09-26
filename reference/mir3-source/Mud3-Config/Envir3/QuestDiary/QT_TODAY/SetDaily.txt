@@ -1,0 +1,4177 @@
+;;海メ盗
+[@set_Tquest]
+{
+#IF
+equal p0 1
+#ACT
+goto @Check_set_Tquest_G1
+break 
+
+#IF
+equal p0 2
+#ACT
+goto @Check_set_Tquest_G2
+break 
+
+#IF
+equal p0 3
+#ACT
+goto @Check_set_Tquest_G3
+break 
+
+#IF
+equal p0 4
+#ACT
+goto @Check_set_Tquest_G4
+break 
+
+#ELSEACT
+goto @set_Tquest_0_0
+
+;-----------------------------
+
+[@set_Tquest_0_0]
+;		dice init
+#IF
+#ACT
+mov d0 0
+goto @set_Tquest_0_1
+
+
+[@set_Tquest_0_1]
+;		
+#IF 
+checklevel 41
+#ACT
+goto @set_Tquest_1_1
+break
+;
+#IF 
+checklevel 31
+#ACT
+goto @set_Tquest_2_1
+break
+;
+#IF 
+checklevel 21
+#ACT
+goto @set_Tquest_3_1
+break
+;
+#IF 
+checklevel 11
+#ACT
+goto @set_Tquest_4_1
+;break
+;;
+;#IF 
+;checklevel 7
+;#ACT
+;goto @set_Tquest_5_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @SetDaily_NoQT
+
+;-------------------
+
+[@set_Tquest_1_1]
+;		Level 41 ~ 50
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_1_1_1
+
+[@set_Tquest_1_1_1]
+;		Level 41 ~ 50  5th class  4(4.4) %
+#IF
+small d0 5
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_1_2
+
+
+[@set_Tquest_1_2]
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_1_2_1
+
+[@set_Tquest_1_2_1]
+;		Level 41 ~ 50  4th class  14(19.4) %
+#IF
+small d0 15
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_1_3
+
+
+[@set_Tquest_1_3]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_1_3_1
+
+[@set_Tquest_1_3_1]
+;		Level 41 ~ 50  3rd class  43(48.2) %
+#IF
+small d0 44
+#ACT
+mov d0 0
+goto @set_Tquest_G3
+#ELSEACT
+mov d0 0
+goto @set_Tquest_1_4
+
+
+[@set_Tquest_1_4]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_1_4_1
+
+[@set_Tquest_1_4_1]
+;		Level 41 ~ 50  2nd class  38(21.5) %
+#IF
+small d0 39
+#ACT
+mov d0 0
+goto @set_Tquest_G2
+#ELSEACT
+mov d0 0
+goto @set_Tquest_1_5
+
+
+[@set_Tquest_1_5]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_1_5_1
+
+[@set_Tquest_1_5_1]
+;		Level 41 ~ 50  1st class  18(6.1) %
+#IF
+small d0 7
+#ACT
+mov d0 0
+goto @set_Tquest_G1
+#ELSEACT
+mov d0 0
+goto @set_Tquest_1_1
+
+
+;-------------------
+
+[@set_Tquest_2_1]
+;		Level 31 ~ 40
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_2_1_1
+
+[@set_Tquest_2_1_1]
+;		Level 31 ~ 40  5th class  11(13.2) %
+#IF
+small d0 12
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_2_2
+
+
+[@set_Tquest_2_2]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_2_2_1
+
+[@set_Tquest_2_2_1]
+;		Level 31 ~ 40  4th class  25(30.8) %
+#IF
+small d0 26
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_2_3
+
+
+[@set_Tquest_2_3]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_2_3_1
+
+[@set_Tquest_2_3_1]
+;		Level 31 ~ 40  3rd class  43(35.5) %
+#IF
+small d0 44
+#ACT
+mov d0 0
+goto @set_Tquest_G3
+#ELSEACT
+mov d0 0
+goto @set_Tquest_2_4
+
+
+[@set_Tquest_2_4]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_2_4_1
+
+[@set_Tquest_2_4_1]
+;		Level 31 ~ 40  2nd class  35(15.5) %
+#IF
+small d0 36
+#ACT
+mov d0 0
+goto @set_Tquest_G2
+#ELSEACT
+mov d0 0
+goto @set_Tquest_2_5
+
+
+[@set_Tquest_2_5]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_2_5_1
+
+[@set_Tquest_2_5_1]
+;		Level 31 ~ 40  1st class  14(4.8) %
+#IF
+small d0 15
+#ACT
+mov d0 0
+goto @set_Tquest_G1
+#ELSEACT
+mov d0 0
+goto @set_Tquest_2_1
+
+
+;-------------------
+
+
+[@set_Tquest_3_1]
+;		Level 21 ~ 30
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_3_1_1
+
+
+[@set_Tquest_3_1_1]
+;		Level 21 ~ 30  5th class  20(24.4) %
+#IF
+small d0 21
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_3_2
+
+
+[@set_Tquest_3_2]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_3_2_1
+
+[@set_Tquest_3_2_1]
+;		Level 21 ~ 30  4th class  39(41.8) %
+#IF
+small d0 40
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_3_3
+
+
+[@set_Tquest_3_3]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_3_3_1
+
+[@set_Tquest_3_3_1]
+;		Level 21 ~ 30  3rd class  33(21.8) %
+#IF
+small d0 34
+#ACT
+mov d0 0
+goto @set_Tquest_G3
+#ELSEACT
+mov d0 0
+goto @set_Tquest_3_4
+
+
+[@set_Tquest_3_4]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_3_4_1
+
+[@set_Tquest_3_4_1]
+;		Level 21 ~ 30  2nd class  18(8.2) %
+#IF
+small d0 19
+#ACT
+mov d0 0
+goto @set_Tquest_G2
+#ELSEACT
+mov d0 0
+goto @set_Tquest_3_5
+
+
+[@set_Tquest_3_5]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_3_5_1
+
+[@set_Tquest_3_5_1]
+;		Level 21 ~ 30  1st class  10(3.5) %
+#IF
+small d0 4
+#ACT
+mov d0 0
+goto @set_Tquest_G1
+#ELSEACT
+mov d0 0
+goto @set_Tquest_3_1
+
+
+;-------------------
+
+[@set_Tquest_4_1]
+;		Level 11 ~ 20
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_4_1_1
+
+
+[@set_Tquest_4_1_1]
+;		Level 11 ~ 20  5th class  52(64.2) %
+#IF
+small d0 53
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_4_2
+
+
+[@set_Tquest_4_2]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_4_2_1
+
+[@set_Tquest_4_2_1]
+;		Level 11 ~ 20  4th class  38(22.6) %
+#IF
+small d0 39
+#ACT
+mov d0 0
+goto @set_Tquest_G4
+#ELSEACT
+mov d0 0
+goto @set_Tquest_4_3
+
+
+[@set_Tquest_4_3]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_4_3_1
+
+[@set_Tquest_4_3_1]
+;		Level 11 ~ 20  3rd class  20(6.8) %
+#IF
+small d0 21
+#ACT
+mov d0 0
+goto @set_Tquest_G3
+#ELSEACT
+mov d0 0
+goto @set_Tquest_4_4
+
+
+[@set_Tquest_4_4]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_4_4_1
+
+[@set_Tquest_4_4_1]
+;		Level 11 ~ 20  2nd class  15(5.2) %
+#IF
+small d0 16
+#ACT
+mov d0 0
+goto @set_Tquest_G2
+#ELSEACT
+mov d0 0
+goto @set_Tquest_4_5
+
+
+[@set_Tquest_4_5]
+#IF 
+#ACT
+movr d0 100
+inc d0 1
+goto @set_Tquest_4_5_1
+
+[@set_Tquest_4_5_1]
+;		Level 11 ~ 20  1st class  5(1.2) %
+#IF
+small d0 6
+#ACT
+mov d0 0
+goto @set_Tquest_G1
+#ELSEACT
+mov d0 0
+goto @set_Tquest_4_1
+
+
+;-------------------
+
+;[@set_Tquest_5_1]
+;;		Level 7 ~ 10
+;#IF 
+;#ACT
+;movr d0 100
+;inc d0 1
+;goto @set_Tquest_5_1_1
+
+
+;[@set_Tquest_5_1_1]
+;;		Level 7 ~ 10  5th class  90(94.3) %
+;#IF
+;small d0 91
+;#ACT
+;mov d0 0
+;goto @set_Tquest_G4
+;#ELSEACT
+;mov d0 0
+;goto @set_Tquest_5_2
+
+
+;[@set_Tquest_5_2]
+;#IF
+;#ACT
+;movr d0 100
+;inc d0 1
+;goto @set_Tquest_5_2_1
+
+;[@set_Tquest_5_2_1]
+;;		Level 7 ~ 10  4th class  35(3.2) %
+;#IF
+;small d0 36
+;#ACT
+;mov d0 0
+;goto @set_Tquest_G4
+;#ELSEACT
+;mov d0 0
+;goto @set_Tquest_5_3
+
+
+;[@set_Tquest_5_3]
+;#IF
+;#ACT
+;movr d0 100
+;inc d0 1
+;goto @set_Tquest_5_3_1
+
+;[@set_Tquest_5_3_1]
+;;		Level 7 ~ 10  3rd class  25(2.1) %
+;#IF
+;small d0 4
+;#ACT
+;mov d0 0
+;goto @set_Tquest_G3
+;#ELSEACT
+;mov d0 0
+;goto @set_Tquest_5_4
+
+
+;[@set_Tquest_5_4]
+;#IF
+;#ACT
+;movr d0 100
+;inc d0 1
+;goto @set_Tquest_5_4_1
+
+;[@set_Tquest_5_4_1]
+;;		Level 7 ~ 10  2nd class  20(0.2) %
+;#IF
+;small d0 0
+;#ACT
+;mov d0 0
+;goto @set_Tquest_G2
+;#ELSEACT
+;mov d0 0
+;;goto @set_Tquest_5_5
+;goto @set_Tquest_5_1
+
+
+;;[@set_Tquest_5_5]
+;;#IF
+;;#ACT
+;;movr d0 100
+;;inc d0 1
+;;goto @set_Tquest_5_5_1
+
+;;[@set_Tquest_5_5_1]
+;;;		Level 7 ~ 10  1st class  0(0) %
+;;#IF
+;;small d0 1
+;;#ACT
+;;mov d0 0
+;;goto @set_Tquest_G1
+;;#ELSEACT
+;;mov d0 0
+;;goto @set_Tquest_5_1
+
+
+;-----------------------------
+
+
+
+;---------------------- Random Select Quest ---------------------
+
+[@set_Tquest_G1]
+#IF
+#ACT
+RandSetDailyQuest 101 120
+mov p0 1
+goto @Check_set_Tquest_G1
+
+;--------------
+
+[@set_Tquest_G2]
+#IF
+#ACT
+RandSetDailyQuest 201 240
+mov p0 2
+goto @Check_set_Tquest_G2
+
+;--------------
+
+[@set_Tquest_G3]
+#IF
+#ACT
+RandSetDailyQuest 301 340
+mov p0 3
+goto @Check_set_Tquest_G3
+
+;--------------
+
+[@set_Tquest_G4]
+#IF
+#ACT
+RandSetDailyQuest 401 499
+mov p0 4
+goto @Check_set_Tquest_G4
+
+
+;----------------------------------------------------------------
+
+
+;---------------- Check Seted 4th Class -------------------------
+
+[@Check_set_Tquest_G4]
+;		4th Class
+#IF
+CheckDailyQuest 401
+#ACT
+goto @Help_dokwan_mugisang1
+break
+
+#IF
+CheckDailyQuest 402
+#ACT
+goto @Help_dokwan_yakjesa1
+break
+
+#IF
+CheckDailyQuest 403
+#ACT
+goto @Help_dokwan_siyaksang1
+break
+
+#IF
+CheckDailyQuest 404
+#ACT
+goto @Help_dokwanap_daijangan
+break
+
+#IF
+CheckDailyQuest 405
+#ACT
+goto @Help_Bichun_changgo
+break
+
+#IF
+CheckDailyQuest 406
+#ACT
+goto @Help_Bichun_jabhwasang
+break
+
+#IF
+CheckDailyQuest 407
+#ACT
+goto @Help_Bichun_soujum
+break
+
+#IF
+CheckDailyQuest 408
+#ACT
+goto @Help_Bamgol_siyaksang
+break
+
+#IF
+CheckDailyQuest 409
+#ACT
+goto @Help_Bamgol_jabhwasang
+break
+
+#IF
+CheckDailyQuest 410
+#ACT
+goto @Help_Bamgol_daijangan
+break
+
+#IF
+CheckDailyQuest 411
+#ACT
+goto @Help_Bamgol_bamgolnoin
+break
+
+#IF
+CheckDailyQuest 412
+#ACT
+goto @Help_Mongchon_siyaksang
+break
+
+#IF
+CheckDailyQuest 413
+#ACT
+goto @Help_Mongchon_daijangan
+break
+
+#IF
+CheckDailyQuest 414
+#ACT
+goto @Help_Oasis_pujugan
+break
+
+#IF
+CheckDailyQuest 415
+#ACT
+goto @Help_Bamgol_pomoksang
+break
+
+#IF
+CheckDailyQuest 416
+#ACT
+goto @Help_Bamgol_changgo
+break
+
+#IF
+CheckDailyQuest 417
+#ACT
+goto @Help_Bamgol_dankyo
+break
+
+#IF
+CheckDailyQuest 418
+#ACT
+goto @Help_Oasis_jangsingu1
+break
+
+#IF
+CheckDailyQuest 419
+#ACT
+goto @Help_Oasis_siyaksang1
+break
+
+#IF
+CheckDailyQuest 420
+#ACT
+goto @Help_Oasis_pomoksang1
+break
+
+#IF
+CheckDailyQuest 421
+#ACT
+goto @Help_Eunhang_siyaksang
+break
+
+#IF
+CheckDailyQuest 422
+#ACT
+goto @Help_Eunhang_yakjesa
+break
+
+#IF
+CheckDailyQuest 423
+#ACT
+goto @Help_Eunhang_jabhwasang
+break
+
+#IF
+CheckDailyQuest 424
+#ACT
+goto @Help_Eunhang_daijangan
+break
+
+#IF
+CheckDailyQuest 425
+#ACT
+goto @Help_Eunhang_jangsingu
+break
+
+#IF
+CheckDailyQuest 426
+#ACT
+goto @Help_Eunhang_pomoksang
+break
+
+#IF
+CheckDailyQuest 427
+#ACT
+goto @Help_Eunhang_pujugan
+break
+
+#IF
+CheckDailyQuest 428
+#ACT
+goto @Help_Eunhang_namgung
+break
+
+#IF
+CheckDailyQuest 429
+#ACT
+goto @Help_Eunhang_soujum
+break
+
+#IF
+CheckDailyQuest 430
+#ACT
+goto @Help_Eunhang_changgo
+break
+
+#IF
+CheckDailyQuest 431
+#ACT
+goto @Help_Bichun_yakjesa
+break
+
+#IF
+CheckDailyQuest 432
+#ACT
+goto @Help_Bichun_siyaksang1
+break
+
+#IF
+CheckDailyQuest 433
+#ACT
+goto @Help_Bichun_jabhwasang
+break
+
+#IF
+CheckDailyQuest 434
+#ACT
+goto @Help_Bichun_daijangan
+break
+
+#IF
+CheckDailyQuest 435
+#ACT
+goto @Help_Bichun_jangsingu
+break
+
+#IF
+CheckDailyQuest 436
+#ACT
+goto @Help_Bichun_pomoksang
+break
+
+#IF
+CheckDailyQuest 437
+#ACT
+goto @Help_Bichun_pujugan1
+break
+
+#IF
+CheckDailyQuest 438
+#ACT
+goto @Help_Bichun_bokwon
+break
+
+#IF
+CheckDailyQuest 439
+#ACT
+goto @Help_Bichun_doseo
+break
+
+#IF
+CheckDailyQuest 440
+#ACT
+goto @Help_Bichun_changgo
+break
+
+#IF
+CheckDailyQuest 441
+#ACT
+goto @Help_Eunhang_pujugan
+break
+
+#IF
+CheckDailyQuest 442
+#ACT
+goto @Help_Eunhang_siyaksang
+break
+
+#IF
+CheckDailyQuest 443
+#ACT
+goto @Help_Eunhang_jabhwasang
+break
+
+#IF
+CheckDailyQuest 444
+#ACT
+goto @Help_Eunhang_pomoksang
+break
+
+#IF
+CheckDailyQuest 445
+#ACT
+goto @Help_Eunhang_yakjesa
+break
+
+#IF
+CheckDailyQuest 446
+#ACT
+goto @Help_Eunhang_jangsingu
+break
+
+#IF
+CheckDailyQuest 447
+#ACT
+goto @Help_Eunhang_soujum
+break
+
+#IF
+CheckDailyQuest 448
+#ACT
+goto @Help_Eunhang_changgo
+break
+
+#IF
+CheckDailyQuest 449
+#ACT
+goto @Help_Eunhang_daijangan
+break
+
+#IF
+CheckDailyQuest 450
+#ACT
+goto @Help_Eunhang_namgung
+break
+
+#IF
+CheckDailyQuest 451
+#ACT
+goto @Help_Bichun_wangdaein
+break
+
+#IF
+CheckDailyQuest 452
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Bichun_sinbalsang
+break
+
+#IF
+CheckDailyQuest 453
+#ACT
+goto @Help_Oasis_jaryo2
+break
+
+#IF
+CheckDailyQuest 454
+#ACT
+goto @Help_Oasis_daijangan2
+break
+
+#IF
+CheckDailyQuest 455
+#ACT
+goto @Help_Oasis_siyaksang2
+break
+
+#IF
+CheckDailyQuest 456
+#ACT
+goto @Help_dokwan_siyaksang1
+break
+
+#IF
+CheckDailyQuest 457
+#ACT
+goto @Help_dokwan_mugisang1
+break
+
+#IF
+CheckDailyQuest 458
+#ACT
+goto @Help_dokwanap_siyaksang
+break
+
+#IF
+CheckDailyQuest 459
+#ACT
+goto @Help_Mongchon_jaryo
+break
+
+#IF
+CheckDailyQuest 460
+#ACT
+goto @Help_Mongchon_jabhwasang
+break
+
+#IF
+CheckDailyQuest 461
+#ACT
+goto @Help_Mongchon_siyaksang
+break
+
+#IF
+CheckDailyQuest 462
+#ACT
+goto @Help_Bamgol_daijangan
+break
+#IF
+CheckDailyQuest 463
+#ACT
+goto @Help_Bamgol_GrandM
+break
+#IF
+CheckDailyQuest 464
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Bamgol_jabhwasang
+break
+
+#IF
+CheckDailyQuest 465
+#ACT
+goto @Help_Bamgol_OldMiner
+break
+#IF
+CheckDailyQuest 466
+#ACT
+goto @Help_Bamgol_siyaksang
+break
+#IF
+CheckDailyQuest 467
+#ACT
+goto @Help_Bamgol_pomoksang
+break
+#IF
+CheckDailyQuest 468
+#ACT
+goto @Help_Sabuk_changgo
+break
+#IF
+CheckDailyQuest 469
+#ACT
+goto @Help_Bichun_doseo
+break
+#IF
+CheckDailyQuest 470
+#ACT
+goto @Help_Bichun_jangsingu
+break
+#IF
+CheckDailyQuest 471
+#ACT
+goto @Help_Mongchon_jangsingu
+break
+#IF
+CheckDailyQuest 472
+#ACT
+goto @Help_Mongchon_daijangan
+break
+#IF
+CheckDailyQuest 473
+#ACT
+goto @Help_Mongchon_changgo
+break
+#IF
+CheckDailyQuest 474
+#ACT
+goto @Help_Mongchon_jangsingu
+break
+#IF
+CheckDailyQuest 475
+#ACT
+goto @Help_Mongchon_pomoksang
+break
+#IF
+CheckDailyQuest 476
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Oasis_changgo2
+break
+#IF
+CheckDailyQuest 477
+#ACT
+goto @Help_Oasis_pujugan
+break
+#IF
+CheckDailyQuest 478
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Oasis_jangsingu1
+break
+#IF
+CheckDailyQuest 479
+#ACT
+goto @Help_dokwan_jaryo
+break
+#IF
+CheckDailyQuest 480
+#ACT
+goto @Help_dokwanap_daijangan
+break
+#IF
+CheckDailyQuest 481
+#ACT
+goto @Help_dokwan_yakjesa2
+break
+#IF
+CheckDailyQuest 482
+#ACT
+goto @Help_dokwan_mugisang2
+break
+#IF
+CheckDailyQuest 483
+#ACT
+goto @Help_Banya_pomoksang
+break
+#IF
+CheckDailyQuest 484
+#ACT
+goto @Help_Banya_jangsingu
+break
+#IF
+CheckDailyQuest 485
+#ACT
+goto @Help_Banya_jaryo
+break
+#IF
+CheckDailyQuest 486
+#ACT
+goto @set_Tquest_G4
+;goto @Help_BiChon_EuiHyun
+break
+#IF
+CheckDailyQuest 487
+#ACT
+goto @Help_Bichun_pujugan2
+break
+#IF
+CheckDailyQuest 488
+#ACT
+goto @Help_Bichun_yakjesa
+break
+#IF
+CheckDailyQuest 489
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Bichun_mugisang
+break
+#IF
+CheckDailyQuest 490
+#ACT
+goto @Help_Bichun_jujeom
+break
+#IF
+CheckDailyQuest 491
+#ACT
+goto @Help_Bichun_bokwon
+break
+#IF
+CheckDailyQuest 492
+#ACT
+goto @Help_BiChon_Sobaekhwa
+break
+#IF
+CheckDailyQuest 493
+#ACT
+goto @set_Tquest_G4
+;goto @Help_Mongchon_changgo
+break
+#IF
+CheckDailyQuest 494
+#ACT
+goto @Help_Oasis_jangsingu2
+break
+#IF
+CheckDailyQuest 495
+#ACT
+goto @Help_Oasis_pomoksang2
+break
+#IF
+CheckDailyQuest 496
+#ACT
+goto @Help_Bamgol_siyaksang
+break
+#IF
+CheckDailyQuest 497
+#ACT
+goto @Help_Samak_pujugan
+break
+#IF
+CheckDailyQuest 498
+#ACT
+goto @Help_Mongchon_pomoksang
+break
+#IF
+CheckDailyQuest 499
+#ACT
+goto @Help_Mongchon_daijangan
+
+#ELSEACT
+goto @Check_set_Tquest_G4
+
+;----------------------------------------------------------------
+
+
+;---------------- Check Seted 3rd Class -------------------------
+
+[@Check_set_Tquest_G3]
+;		3rd Class
+#IF
+CheckDailyQuest 301
+#ACT
+goto @Help_dokwan_yakjesa1
+break
+
+#IF
+CheckDailyQuest 302
+#ACT
+goto @Help_dokwan_soujum1
+break
+
+#IF
+CheckDailyQuest 303
+#ACT
+goto @Help_dokwan_changgo
+break
+
+#IF
+CheckDailyQuest 304
+#ACT
+goto @Help_Bichun_pujugan1
+break
+
+#IF
+CheckDailyQuest 305
+#ACT
+goto @Help_Bichun_mugisang
+break
+
+#IF
+CheckDailyQuest 306
+#ACT
+goto @Help_Bichun_jangsingu
+break
+
+#IF
+CheckDailyQuest 307
+#ACT
+goto @Help_Bichun_jujeom
+break
+
+#IF
+CheckDailyQuest 308
+#ACT
+goto @Help_Bichun_miyongsa
+break
+
+#IF
+CheckDailyQuest 309
+#ACT
+goto @Help_OmaDG_jabhwasang
+break
+
+#IF
+CheckDailyQuest 310
+#ACT
+goto @Help_Bamgol_kwangsanin
+break
+
+#IF
+CheckDailyQuest 311
+#ACT
+goto @Help_Mongchon_pomoksang
+break
+
+#IF
+CheckDailyQuest 312
+#ACT
+goto @Help_Mongchon_changgo
+break
+
+#IF
+CheckDailyQuest 313
+#ACT
+goto @Help_Mongchon_jabhwasang
+break
+
+#IF
+CheckDailyQuest 314
+#ACT
+goto @Help_Oasis_yuadokjonja
+break
+
+#IF
+CheckDailyQuest 315
+#ACT
+goto @Help_Samak_daijangan1
+break
+
+#IF
+CheckDailyQuest 316
+#ACT
+goto @Help_Samak_pomoksang1
+break
+
+#IF
+CheckDailyQuest 317
+#ACT
+goto @Help_Samak_siyaksang1
+break
+
+#IF
+CheckDailyQuest 318
+#ACT
+goto @Help_Samak_changgo1
+break
+
+#IF
+CheckDailyQuest 319
+#ACT
+goto @Help_dokwanap_pujugan
+break
+
+#IF
+CheckDailyQuest 320
+#ACT
+goto @Help_Samak_pujugan
+break
+
+#IF
+CheckDailyQuest 321
+#ACT
+goto @Help_Bichun_yakjesa
+break
+
+#IF
+CheckDailyQuest 322
+#ACT
+goto @Help_Bichun_siyaksang1
+break
+
+#IF
+CheckDailyQuest 323
+#ACT
+goto @Help_Bichun_jabhwasang
+break
+
+#IF
+CheckDailyQuest 324
+#ACT
+goto @Help_Bichun_daijangan
+break
+
+#IF
+CheckDailyQuest 325
+#ACT
+goto @Help_Bichun_jangsingu
+break
+
+#IF
+CheckDailyQuest 326
+#ACT
+goto @Help_Bichun_pomoksang
+break
+
+#IF
+CheckDailyQuest 327
+#ACT
+goto @Help_Bichun_pujugan1
+break
+
+#IF
+CheckDailyQuest 328
+#ACT
+goto @Help_Bichun_bokwon
+break
+
+#IF
+CheckDailyQuest 329
+#ACT
+goto @Help_Bichun_doseo
+break
+
+#IF
+CheckDailyQuest 330
+#ACT
+goto @Help_Bichun_changgo
+break
+
+#IF
+CheckDailyQuest 331
+#ACT
+goto @Help_Samak_jangsingu1
+break
+
+#IF
+CheckDailyQuest 332
+#ACT
+goto @Help_Samak_siyaksang1
+break
+
+#IF
+CheckDailyQuest 333
+#ACT
+goto @Help_Samak_pomoksang1
+break
+
+#IF
+CheckDailyQuest 334
+#ACT
+goto @Help_Oasis_jaryo1
+break
+
+#IF
+CheckDailyQuest 335
+#ACT
+goto @Help_Oasis_jabhwasang
+break
+
+#IF
+CheckDailyQuest 336
+#ACT
+goto @Help_Oasis_siyaksang1
+break
+
+#IF
+CheckDailyQuest 337
+#ACT
+goto @Help_Oasis_daijangan1
+break
+
+#IF
+CheckDailyQuest 338
+#ACT
+goto @Help_Oasis_pomoksang1
+break
+
+#IF
+CheckDailyQuest 339
+#ACT
+goto @Help_Oasis_jangsingu1
+break
+
+#IF
+CheckDailyQuest 340
+#ACT
+goto @Help_Oasis_jaryo2
+#ELSEACT
+goto @Check_set_Tquest_G3
+
+;----------------------------------------------------------------
+
+
+;---------------- Check Seted 2nd Class -------------------------
+
+[@Check_set_Tquest_G2]
+;		2nd Class
+#IF
+CheckDailyQuest 201
+#ACT
+goto @Help_dokwan_jangsingu1
+break
+
+#IF
+CheckDailyQuest 202
+#ACT
+goto @Help_dokwan_siyaksang1
+break
+
+#IF
+CheckDailyQuest 203
+#ACT
+goto @Help_dokwan_soujum1
+break
+
+#IF
+CheckDailyQuest 204
+#ACT
+goto @Help_dokwan_changgo
+break
+
+#IF
+CheckDailyQuest 205
+#ACT
+goto @Help_dokwanap_daijangan
+break
+
+#IF
+CheckDailyQuest 206
+#ACT
+goto @Help_Bichun_pujugan2
+break
+
+#IF
+CheckDailyQuest 207
+#ACT
+goto @Help_Bichun_pomoksang
+break
+
+#IF
+CheckDailyQuest 208
+#ACT
+goto @Help_Bichun_siyaksang1
+break
+
+#IF
+CheckDailyQuest 209
+#ACT
+goto @Help_OmaDG_changgo
+break
+
+#IF
+CheckDailyQuest 210
+#ACT
+goto @Help_Oasis_daijangan1
+break
+
+#IF
+CheckDailyQuest 211
+#ACT
+goto @Help_Oasis_jabhwasang
+break
+
+#IF
+CheckDailyQuest 212
+#ACT
+goto @Help_Oasis_changgo1
+break
+
+#IF
+CheckDailyQuest 213
+#ACT
+goto @Help_Bichun_bokwon
+break
+
+#IF
+CheckDailyQuest 214
+#ACT
+goto @Help_Samak_jangsingu1
+break
+
+#IF
+CheckDailyQuest 215
+#ACT
+goto @Help_Mongchon_jangsingu
+break
+
+#IF
+CheckDailyQuest 216
+#ACT
+goto @Help_Bichun_yakjesa
+break
+
+#IF
+CheckDailyQuest 217
+#ACT
+goto @Help_Bichun_daijangan
+break
+
+#IF
+CheckDailyQuest 218
+#ACT
+goto @Help_dokwanap_pujugan
+break
+
+#IF
+CheckDailyQuest 219
+#ACT
+goto @Help_dokwanap_siyaksang
+break
+
+#IF
+CheckDailyQuest 220
+#ACT
+goto @Help_dokwanap_daijangan
+break
+
+#IF
+CheckDailyQuest 221
+#ACT
+goto @Help_Samak_jangsingu1
+break
+
+#IF
+CheckDailyQuest 222
+#ACT
+goto @Help_Samak_siyaksang1
+break
+
+#IF
+CheckDailyQuest 223
+#ACT
+goto @Help_Samak_pomoksang1
+break
+
+#IF
+CheckDailyQuest 224
+#ACT
+goto @Help_Oasis_jaryo1
+break
+
+#IF
+CheckDailyQuest 225
+#ACT
+goto @Help_Oasis_jabhwasang
+break
+
+#IF
+CheckDailyQuest 226
+#ACT
+goto @Help_Oasis_siyaksang1
+break
+
+#IF
+CheckDailyQuest 227
+#ACT
+goto @Help_Oasis_daijangan1
+break
+
+#IF
+CheckDailyQuest 228
+#ACT
+goto @Help_Oasis_pomoksang1
+break
+
+#IF
+CheckDailyQuest 229
+#ACT
+goto @Help_Oasis_jangsingu1
+break
+
+#IF
+CheckDailyQuest 230
+#ACT
+goto @Help_Oasis_jaryo2
+break
+
+#IF
+CheckDailyQuest 231
+#ACT
+goto @Help_Eunhang_daijangan
+break
+
+#IF
+CheckDailyQuest 232
+#ACT
+goto @Help_Samak_daijangan1
+break
+
+#IF
+CheckDailyQuest 233
+#ACT
+goto @Help_Bichun_bokwon
+break
+
+#IF
+CheckDailyQuest 234
+#ACT
+goto @Help_Eunhang_namgung
+break
+
+#IF
+CheckDailyQuest 235
+#ACT
+goto @Help_Mongchon_noiongdanju
+break
+
+#IF
+CheckDailyQuest 236
+#ACT
+goto @Help_Samak_sosuoknyu
+break
+
+#IF
+CheckDailyQuest 237
+#ACT
+goto @Help_Oasis_yuadokjonja
+break
+
+#IF
+CheckDailyQuest 238
+#ACT
+goto @Help_Bichun_jabhwasang
+break
+
+#IF
+CheckDailyQuest 239
+#ACT
+goto @Help_Bichun_daijangan
+break
+
+#IF
+CheckDailyQuest 240
+#ACT
+goto @Help_Bichun_jangsingu
+#ELSEACT
+goto @Check_set_Tquest_G2
+
+;----------------------------------------------------------------
+
+
+;---------------- Check Seted 1st Class -------------------------
+
+[@Check_set_Tquest_G1]
+;		1st Class
+#IF
+CheckDailyQuest 101
+#ACT
+goto @Help_dokwan_jangsingu1
+break
+
+#IF
+CheckDailyQuest 102
+#ACT
+goto @Help_dokwan_jabhwasang1
+break
+
+#IF
+CheckDailyQuest 103
+#ACT
+goto @Help_dokwan_yakjesa1
+break
+
+#IF
+CheckDailyQuest 104
+#ACT
+goto @Help_dokwan_soujum1
+break
+
+#IF
+CheckDailyQuest 105
+#ACT
+goto @Help_dokwan_changgo
+break
+
+#IF
+CheckDailyQuest 106
+#ACT
+goto @Help_dokwan_pomoksang1
+break
+
+#IF
+CheckDailyQuest 107
+#ACT
+goto @Help_dokwan_siyaksang1
+break
+
+#IF
+CheckDailyQuest 108
+#ACT
+goto @Help_Bichun_bcdokwanju
+break
+
+#IF
+CheckDailyQuest 109
+#ACT
+goto @Help_Mongchon_mcdokwanju
+break
+
+#IF
+CheckDailyQuest 110
+#ACT
+goto @Help_Samak_buyongsunja
+break
+
+#IF
+CheckDailyQuest 111
+#ACT
+goto @Help_Eunhang_hwachun
+break
+
+#IF
+CheckDailyQuest 112
+#ACT
+goto @Help_Eunhang_pomoksang
+break
+
+#IF
+CheckDailyQuest 113
+#ACT
+goto @Help_Bichun_wonseng
+break
+
+#IF
+CheckDailyQuest 114
+#ACT
+goto @Help_Samak_pomoksang1
+break
+
+#IF
+CheckDailyQuest 115
+#ACT
+goto @Help_Samak_daijangan1
+break
+
+#IF
+CheckDailyQuest 116
+#ACT
+goto @Help_Mongchon_jangsingu
+break
+
+#IF
+CheckDailyQuest 117
+#ACT
+goto @Help_Samak_jangsingu1
+break
+
+#IF
+CheckDailyQuest 118
+#ACT
+goto @Help_Eunhang_byukryuk
+break
+
+#IF
+CheckDailyQuest 119
+#ACT
+goto @Help_Mongchon_pomoksang
+break
+
+#IF
+CheckDailyQuest 120
+#ACT
+goto @Help_Oasis_jaryo1
+#ELSEACT
+goto @Check_set_Tquest_G1
+
+;----------------------------------------------------------------
+
+;---------------------------- bichun ----------------------------
+[@Help_Bichun_wangdaein]
+#IF
+#ACT
+mov p0 0
+mov s0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_wangdaein_Say
+
+[@Help_BiChon_Sobaekhwa]
+#IF
+#ACT
+mov p0 0
+mov s0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_BiChon_Sobaekhwa_Say
+
+[@Help_Bichun_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_jaryo_Say
+
+;---------------
+
+[@Help_Bichun_pujugan1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_pujugan1_Say
+
+;---------------
+
+[@Help_Bichun_pujugan2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_pujugan2_Say
+
+;---------------
+
+[@Help_Bichun_mugisang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_mugisang_Say
+
+
+;---------------
+
+[@Help_Bichun_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_daijangan_Say
+
+
+;---------------
+
+[@Help_Bichun_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_pomoksang_Say
+
+
+;---------------
+
+[@Help_Bichun_sinbalsang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_sinbalsang_Say
+
+
+;---------------
+
+[@Help_Bichun_siyaksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_siyaksang1_Say
+
+
+;---------------
+
+[@Help_Bichun_siyaksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_siyaksang2_Say
+
+
+;---------------
+
+[@Help_Bichun_yakjesa]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_yakjesa_Say
+
+;---------------
+
+[@Help_Bichun_soujum]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_soujum_Say
+
+
+;---------------
+
+[@Help_Bichun_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_changgo_Say
+
+
+;---------------
+
+[@Help_Bichun_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_jabhwasang_Say
+
+
+;---------------
+
+[@Help_Bichun_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_jangsingu_Say
+
+
+;---------------
+
+[@Help_Bichun_bokwon]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_bokwon_Say
+
+
+;---------------
+
+[@Help_Bichun_jujeom]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_jujeom_Say
+
+
+
+;-----------------------------------------
+
+[@Help_Bichun_doseo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_doseo_Say
+
+
+;---------------
+
+[@Help_Bichun_bcdokwanju]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_bcdokwanju_Say
+
+
+;---------------
+
+[@Help_Bichun_wonseng]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_wonseng_Say
+
+
+;---------------
+
+[@Help_Bichun_miyongsa]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bichun_miyongsa_Say
+
+
+
+;---------------
+
+;----------------------------------------------------------------
+
+
+;---------------------------- kukyung ---------------------------
+
+[@Help_Kukyong_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_jaryo_Say
+
+
+;---------------
+
+[@Help_Kukyong_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_pujugan_Say
+
+
+;---------------
+
+[@Help_Kukyong_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_daijangan_Say
+
+
+;---------------
+
+[@Help_Kukyong_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_pomoksang_Say
+
+
+
+;---------------
+
+[@Help_Kukyong_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_siyaksang_Say
+
+
+;---------------
+
+[@Help_Kukyong_soujum]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_soujum_Say
+
+;---------------
+
+[@Help_Kukyong_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_changgo_Say
+
+
+;---------------
+
+[@Help_Kukyong_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_jabhwasang_Say
+
+
+;---------------
+
+[@Help_Kukyong_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Kukyong_jangsingu_Say
+
+
+;----------------------------------------------------------------
+
+
+;---------------------------- enghang ---------------------------
+
+[@Help_Eunhang_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_jaryo_Say
+
+
+
+;---------------
+
+[@Help_Eunhang_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_pujugan_Say
+
+
+;---------------
+
+[@Help_Eunhang_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_daijangan_Say
+
+
+;---------------
+
+[@Help_Eunhang_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_pomoksang_Say
+
+
+;---------------
+
+[@Help_Eunhang_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_siyaksang_Say
+
+
+;---------------
+
+[@Help_Eunhang_yakjesa]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_yakjesa_Say
+
+
+;---------------
+
+[@Help_Eunhang_soujum]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_soujum_Say
+
+
+;---------------
+
+[@Help_Eunhang_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_changgo_Say
+
+
+;---------------
+
+[@Help_Eunhang_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_jabhwasang_Say
+
+;---------------
+
+[@Help_Eunhang_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_jangsingu_Say
+
+
+
+;-----------------------------------------
+
+[@Help_Eunhang_namgung]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_namgung_Say
+
+
+;---------------
+
+[@Help_Eunhang_hwachun]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_hwachun_Say
+
+
+;---------------
+
+[@Help_Eunhang_byukryuk]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Eunhang_byukryuk_Say
+
+
+;---------------
+
+;----------------------------------------------------------------
+
+
+;---------------------------- dokwan ----------------------------
+
+[@Help_dokwan_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_jaryo_Say
+
+
+;---------------
+
+[@Help_dokwan_mugisang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_mugisang1_Say
+
+
+;---------------
+
+[@Help_dokwan_mugisang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_mugisang2_Say
+
+;---------------
+
+[@Help_dokwan_pomoksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_pomoksang1_Say
+
+
+;---------------
+
+[@Help_dokwan_pomoksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_pomoksang2_Say
+
+
+;---------------
+
+[@Help_dokwan_siyaksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_siyaksang1_Say
+
+
+;---------------
+
+[@Help_dokwan_siyaksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_siyaksang2_Say
+
+
+;---------------
+
+[@Help_dokwan_yakjesa1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_yakjesa1_Say
+
+
+;---------------
+
+[@Help_dokwan_yakjesa2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_yakjesa2_Say
+
+
+
+;---------------
+
+[@Help_dokwan_soujum1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_soujum1_Say
+
+
+
+;---------------
+
+[@Help_dokwan_soujum2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_soujum2_Say
+
+
+;---------------
+
+[@Help_dokwan_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_changgo_Say
+
+
+;---------------
+
+[@Help_dokwan_jabhwasang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_jabhwasang1_Say
+
+
+;---------------
+
+[@Help_dokwan_jabhwasang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_jabhwasang2_Say
+
+
+;---------------
+
+[@Help_dokwan_jangsingu1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_jangsingu1_Say
+
+
+
+;---------------
+
+[@Help_dokwan_jangsingu2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwan_jangsingu2_Say
+
+
+
+
+;---------------
+;---------------
+
+[@Help_dokwanap_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwanap_pujugan_Say
+
+
+;---------------
+
+[@Help_dokwanap_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwanap_daijangan_Say
+
+
+
+;---------------
+
+[@Help_dokwanap_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_dokwanap_siyaksang_Say
+
+
+;----------------------------------------------------------------
+
+
+;---------------------------- bamgol ----------------------------
+[@Help_Bamgol_OldMiner]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_OldMiner_Say
+
+[@Help_Bamgol_GrandM]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_GrandM_Say
+
+[@Help_Bamgol_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_jaryo_Say
+
+
+;---------------
+
+[@Help_Bamgol_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_daijangan_Say
+
+
+
+;---------------
+
+[@Help_Bamgol_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_pomoksang_Say
+
+
+;---------------
+
+[@Help_Bamgol_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_siyaksang_Say
+
+
+
+;---------------
+
+[@Help_Bamgol_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_changgo_Say
+
+
+
+;---------------
+
+[@Help_Bamgol_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_jabhwasang_Say
+
+
+;--------------------------------
+
+[@Help_Bamgol_bamgolnoin]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_bamgolnoin_Say
+
+
+
+;---------------
+
+[@Help_Bamgol_dankyo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_dankyo_Say
+
+
+
+;---------------
+
+[@Help_Bamgol_kwangsanin]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Bamgol_kwangsanin_Say
+
+
+;----------------------------------------------------------------
+
+
+;---------------------------- sabuk -----------------------------
+
+[@Help_Sabuk_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_jaryo_Say
+
+
+
+;---------------
+
+[@Help_Sabuk_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_pujugan_Say
+
+
+;---------------
+
+[@Help_Sabuk_mugisang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_mugisang_Say
+
+
+
+;---------------
+
+[@Help_Sabuk_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_daijangan_Say
+
+
+;---------------
+
+[@Help_Sabuk_tugu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_tugu_Say
+
+
+
+;---------------
+
+[@Help_Sabuk_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_pomoksang_Say
+
+
+;---------------
+
+[@Help_Sabuk_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_siyaksang_Say
+
+;---------------
+
+;[@Help_Sabuk_yakjesa]
+;#IF
+;#ACT
+;mov p0 0
+;mov S0 0
+;set [307] 0
+;set [308] 0
+;set [309] 0
+;set [310] 0
+;reset [307] 3
+;#SAY
+;只说一遍，希望认真听好。。\ 
+;这次事情去找一下在{FCOLOR/10}沙巴克城{FCOLOR/12}里药铺的{FCOLOR/10}基德{FCOLOR/12}吧。\ 
+;基德也许在沙巴克城{FCOLOR/10}196 : 255{FCOLOR/12}附近。\ \
+;<结束/@exit>
+
+;---------------
+
+[@Help_Sabuk_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_changgo_Say
+
+
+;---------------
+
+[@Help_Sabuk_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_jabhwasang_Say
+
+
+;---------------
+
+[@Help_Sabuk_banji]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_banji_Say
+
+
+;---------------
+
+[@Help_Sabuk_paljji]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_paljji_Say
+
+
+;---------------
+
+[@Help_Sabuk_mokguli]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sabuk_mokguli_Say
+
+
+
+;----------------------------------------------------------------
+
+
+;--------------------------- oasis ------------------------------
+
+[@Help_Oasis_jaryo1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_jaryo1_Say
+
+
+;---------------
+
+[@Help_Oasis_jaryo2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_jaryo2_Say
+
+
+;---------------
+
+
+[@Help_Oasis_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_pujugan_Say
+
+
+
+;---------------
+
+[@Help_Oasis_daijangan1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_daijangan1_Say
+
+
+;---------------
+
+[@Help_Oasis_daijangan2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_daijangan2_Say
+
+
+;---------------
+
+[@Help_Oasis_pomoksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_pomoksang1_Say
+
+
+
+;---------------
+
+[@Help_Oasis_pomoksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_pomoksang2_Say
+
+
+;---------------
+
+[@Help_Oasis_siyaksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_siyaksang1_Say
+
+
+;---------------
+
+[@Help_Oasis_siyaksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_siyaksang2_Say
+
+
+
+;---------------
+
+[@Help_Oasis_changgo1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_changgo1_Say
+
+
+
+;---------------
+
+[@Help_Oasis_changgo2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_changgo2_Say
+
+
+
+;---------------
+
+[@Help_Oasis_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_jabhwasang_Say
+
+
+
+;---------------
+
+[@Help_Oasis_jangsingu1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_jangsingu1_Say
+
+;---------------
+
+[@Help_Oasis_jangsingu2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_jangsingu2_Say
+
+
+;-----------------------------------------
+
+[@Help_Oasis_yuadokjonja]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Oasis_yuadokjonja_Say
+
+
+;---------------
+
+;----------------------------------------------------------------
+
+
+;--------------------------- samakto ----------------------------
+
+[@Help_Samak_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_jaryo_Say
+
+
+;---------------
+
+
+[@Help_Samak_pujugan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_pujugan_Say
+
+
+;---------------
+
+[@Help_Samak_daijangan1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_daijangan1_Say
+
+
+;---------------
+
+[@Help_Samak_daijangan2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_daijangan2_Say
+
+
+;---------------
+
+[@Help_Samak_pomoksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_pomoksang1_Say
+
+
+
+;---------------
+
+[@Help_Samak_pomoksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_pomoksang2_Say
+
+
+
+;---------------
+
+[@Help_Samak_sinbalsang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_sinbalsang_Say
+
+
+;---------------
+
+[@Help_Samak_siyaksang1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_siyaksang1_Say
+
+
+
+;---------------
+
+[@Help_Samak_siyaksang2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_siyaksang2_Say
+
+;---------------
+
+[@Help_Samak_yakjesa]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_yakjesa_Say
+
+
+;---------------
+
+[@Help_Samak_changgo1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_changgo1_Say
+
+
+;---------------
+
+[@Help_Samak_changgo2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_changgo2_Say
+
+
+
+;---------------
+
+[@Help_Samak_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_jabhwasang_Say
+
+
+;---------------
+
+[@Help_Samak_jangsingu1]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_jangsingu1_Say
+
+
+;---------------
+
+[@Help_Samak_jangsingu2]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_jangsingu2_Say
+
+
+;-----------------------------------------
+
+[@Help_Samak_buyongsunja]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_buyongsunja_Say
+
+
+
+;---------------
+
+[@Help_Samak_sosuoknyu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Samak_sosuoknyu_Say
+
+
+;---------------
+
+;----------------------------------------------------------------
+
+
+;-------------------------- mongchonto --------------------------
+
+[@Help_Mongchon_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_jaryo_Say
+
+
+
+;---------------
+
+[@Help_Mongchon_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_daijangan_Say
+
+
+
+;---------------
+
+[@Help_Mongchon_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_pomoksang_Say
+
+
+
+;---------------
+
+[@Help_Mongchon_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_siyaksang_Say
+
+
+
+;---------------
+
+[@Help_Mongchon_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_changgo_Say
+
+
+;---------------
+
+[@Help_Mongchon_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_jabhwasang_Say
+
+
+;---------------
+
+[@Help_Mongchon_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_jangsingu_Say
+
+
+;-----------------------------------------
+
+[@Help_Mongchon_mcdokwanju]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_mcdokwanju_Say
+
+
+;---------------
+
+[@Help_Mongchon_noiongdanju]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Mongchon_noiongdanju_Say
+
+
+
+;---------------
+
+;----------------------------------------------------------------
+
+
+;---------------------------- banyado ---------------------------
+
+[@Help_Banya_jaryo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_jaryo_Say
+
+
+
+;---------------
+
+[@Help_Banya_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_daijangan_Say
+
+
+
+;---------------
+
+[@Help_Banya_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_pomoksang_Say
+
+
+
+;---------------
+
+[@Help_Banya_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_siyaksang_Say
+
+
+
+;---------------
+
+[@Help_Banya_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_changgo_Say
+
+
+;---------------
+
+[@Help_Banya_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_jabhwasang_Say
+
+
+
+;---------------
+
+[@Help_Banya_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Banya_jangsingu_Say
+
+
+
+;-----------------------------------------
+
+;----------------------------------------------------------------
+
+
+;-------------------------- jumasinjun --------------------------
+
+[@Help_Juma_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Juma_siyaksang_Say
+
+
+;----------------------------------------------------------------
+
+;-------------------------- sukgakmyo ---------------------------
+
+[@Help_Sukgak_daijangan]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sukgak_daijangan_Say
+
+
+
+;---------------
+
+[@Help_Sukgak_pomoksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sukgak_pomoksang_Say
+
+
+
+;---------------
+
+[@Help_Sukgak_siyaksang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sukgak_siyaksang_Say
+
+
+
+;---------------
+
+[@Help_Sukgak_jangsingu]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Sukgak_jangsingu_Say
+
+
+
+;----------------------------------------------------------------
+
+;--------------------------- gemigul ----------------------------
+
+[@Help_Gemi_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_Gemi_jabhwasang_Say
+
+
+
+;----------------------------------------------------------------
+
+
+;------------------------- omadonggul ---------------------------
+
+[@Help_OmaDG_changgo]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_OmaDG_changgo_Say
+
+
+;---------------
+
+[@Help_OmaDG_jabhwasang]
+#IF
+#ACT
+mov p0 0
+mov S0 0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 0
+reset [307] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\SetDailySay.txt] @Help_OmaDG_jabhwasang_Say
+
+
+
+;----------------------------------------------------------------
+}

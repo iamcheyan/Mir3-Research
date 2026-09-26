@@ -1,0 +1,156 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_SkeletonCave-E002_001.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+;-------------------
+
+[@main_0]
+#IF
+check [325] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [304] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [199] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [197] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [191] 1
+#ACT
+goto @NQuest01_13
+break
+#IF
+check [196] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [190] 1
+#ACT
+goto @NQuest01_11
+break
+#IF
+check [189] 1
+#ACT
+goto @NQuest01_10
+break
+#IF
+check [188] 1
+#ACT
+goto @NQuest01_9
+break
+#IF
+check [185] 1
+#ACT
+goto @NQuest01_8
+break
+#IF
+check [184] 1
+#ACT
+goto @NQuest01_7
+break
+#IF
+check [178] 1
+#ACT
+goto @NQuest01_6
+break
+#IF
+check [177] 1
+#ACT
+goto @NQuest01_5
+break
+#IF
+check [176] 1
+#ACT
+goto @NQuest01_4
+break
+#IF
+check [175] 1
+#ACT
+goto @NQuest01_3
+break
+#ELSESAY
+£¨¡£¡£¡£¡£¡££©\
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_SkeletonCave-E002_001.txt] @NPC_Main_1
+
+;--------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_SkeletonCave-E002_001.txt] @NPC_Main_2
+
+;--------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\14Quest_SkeletonCave-E002_001.txt] @NPC_Main_3
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\oma.txt] @SEARCH_GADEUNG1_UNBAL
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\oma.txt] @SEARCH_GADEUNG2_UNBAL
+
+[@NQuest01_5]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON1_UNBAL
+
+[@NQuest01_6]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON2_UNBAL
+
+[@NQuest01_7]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON3_UNBAL
+
+[@NQuest01_8]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON4_UNBAL
+
+[@NQuest01_9]
+#CALL [\NQ_BASE\oma.txt] @HELP_BULSA1_UNBAL
+
+[@NQuest01_10]
+#CALL [\NQ_BASE\oma.txt] @RETURN_BICHUN1_UNBAL
+
+[@NQuest01_11]
+#CALL [\NQ_BASE\oma.txt] @RETURN_BICHUN2_UNBAL
+
+[@NQuest01_12]
+#CALL [\NQ_BASE\oma.txt] @HELP_BULSA2_UNBAL
+
+[@NQuest01_13]
+#CALL [\NQ_BASE\oma.txt] @HELP_BULSA3_UNBAL

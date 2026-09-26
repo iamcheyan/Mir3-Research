@@ -1,0 +1,210 @@
+; ===================================
+; Market Def NPC File : 4Bdm-0109
+;
+; -----------------------------------
+; Name: Travis
+; Job: 
+; Map 不行: 0109
+; Pos X 4
+; Pos Y 8
+; File name: *removed*
+; Comment: MedicineRoom
+
+;================================================= =
+;
+; Brief Description of the switches used in this NPC.
+; [101] - Unknown - 
+; [102] - Unknown - 
+; [103] - Given Healer Letter
+;
+
+;Settings
+%100
++0
++42
+
+
+;Pkr Tag (NPC won't 對話 to Pkrs)
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会帮助你这样邪恶的人.\ \
+<确定/@exit>
+
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+你想做什么?\ \
+<制/@makegemlist>药\
+<取消/@exit>
+
+[@makegemlist]
+选择你想做的的藥物.\
+不用说…你把所有的配料给我?\ \
+<返回主頁/@main>
+
+
+[@helpmakedrug]
+2种毒药可以发在这里。\ \
+<灰色药粉/@helpdrug1>效果\
+<黄色药粉/@helpdrug2>效果\
+<配料/@helpmakedrug1>关于灰色药粉\
+<配料/@helpmakedrug2>关于黄色药粉\ \
+<返回主頁/@main>
+
+
+[@helpdrug1]
+道士可以在使施毒术时，用灰色毒粉，\
+中毒会减掉体力。\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpdrug2]
+道士可以在使施毒术时，用黄色毒粉，\
+中毒会减掉防御能力。\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpmakedrug1]
+制作灰色药粉(少量)，需要：\ \
+ <1个食人树果实/@helpitem1> \
+ <2颗毒蜘蛛牙齿/@helpitem1> \
+ <4片食人树叶/@helpitem1>\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpmakedrug2]
+制作黄色药粉(少量)，需要：\ \
+ <1粒蛆卵/@helpitem2> \
+ <1个蝎子尾巴/@helpitem2> \
+ <4片食人树叶/@helpitem2>\ \
+ <返回/@helpmakedrug>\
+
+
+[@helpitem1]
+食人树果实可以从食人花上获得。\
+毒蜘蛛牙齿可以在毒蜘蛛身上获得。\
+食人树叶也可以从食人花上获得。\ \
+ <返回/@helpmakedrug1>\
+
+
+[@helpitem2]
+蛆卵可以在洞蛆身上获得。\
+蝎子尾巴可以在蝎子身上获得。\
+食人树叶可以从食人花上获得。\ \
+  <返回/@helpmakedrug2>\
+
+[@talkwith]
+#IF
+#ACT
+goto  @talkwith_1
+
+[@talkwith_1] 
+哈哈哈， <$USERNAME>是个好名字。\
+我需要5个蜘蛛牙齒，能帮我去拿吗？\
+如果你能拿回来，我会给你好价钱的。\ \
+ <给5个蜘蛛牙齒/@give_st_10>\
+ <下次给找/@i_will_do_next_time>\
+
+[@give_st_10]
+#IF
+CHECKITEM 蜘蛛牙齒 5
+#ACT
+TAKE  蜘蛛牙齒 5
+GIVE  GOLD  1500
+GOTO  @give_st_10_1
+#ELSESAY
+我现在很需要5个蜘蛛牙齒，\
+请不要开玩笑，快帮我找5个。\
+
+
+[@give_st_10_1]
+#IF
+CHECK [103] 0
+RANDOM   4
+#SAY
+我还有另外一个请求，不知道你能不能答应？\
+如果答应，那就太感谢了。\ \
+ <接受请求/@ok_order_1>\
+ <拒绝请求/@no_order_1>\
+
+
+#ELSEACT
+#ELSESAY
+谢谢你，我给你一个算300元。\
+谢谢，欢迎下次再来。\
+我需要很多蜘蛛牙齒，随时都可以拿来。\
+
+
+[@ok_order_1]
+#ACT
+GIVE  药剂师的信  1
+SET   [103]  1
+#SAY
+<$USERNAME>， 你真是我的好朋友。\
+我要你帮忙的就是，\
+把这封信交给在银杏山谷的我的儿子。\
+在银杏山谷只要提起许中医，无人不知，\
+拜托了。\
+
+
+[@no_order_1]
+既然你说没时间，那我也没办法。\
+下次有时间，就帮我忙吧。\
+再见!\
+
+
+[@i_will_do_next_time]
+#ACT
+close
+
+
+[@info灰色药粉(少量)]
+Grey Poison ingredients are\\
+     1 食人树果实\
+     2 蜘蛛牙齒\
+     4 食人树叶\
+
+
+[@info灰色药粉(少量)]
+Grey Poison ingredients are\\
+     1 蛆卵\
+     1 蝎子尾巴\
+     4 食人树叶\
+
+[@info灰色药粉(中量)]
+Grey Poison ingredients are\\
+     2 食人树果实\
+     4 蜘蛛牙齒\
+     8 食人树叶\
+
+
+[@info黄色药粉(中量)]
+Grey Poison ingredients are\\
+     2 蛆卵\
+     2 蝎子尾巴\
+     8 食人树叶\
+
+[@info灰色药粉(大量)]
+Grey Poison ingredients are\\
+     3 食人树果实\
+     6 蜘蛛牙齒\
+     12 食人树叶\
+
+
+[@info黄色药粉(大量)]
+Grey Poison ingredients are\\
+     3 蛆卵\
+     3 蝎子尾巴\
+     12 食人树叶\
+
+
+[goods]
+;Item		Amount		Time
+黄色药粉(少量)  200 1
+灰色药粉(少量)  200 1
+黄色药粉(中量)  600 1
+灰色药粉(中量)  600 1

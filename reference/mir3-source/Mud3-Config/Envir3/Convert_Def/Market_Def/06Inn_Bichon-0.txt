@@ -1,0 +1,70 @@
+;;海メ盗
+[@NPC_Main_0_0]
+{
+要我帮忙吗？\\
+<寄存/@storage>物品\
+<取回/@PreGetback>寄存的物品\
+<存/@cunqian> <取/@qugold_1> <查看/@chakan> 金币\
+<仓库 密码 管理/@StgPassword>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_0_1]
+{
+要我帮忙吗？\ \
+<寄存/@storage>物品\
+<取回/@PreGetback>寄存的物品\
+<存/@cunqian> <取/@qugold_1> <查看/@chakan> 金币\
+<仓库 密码 管理/@StgPassword>\
+<听/@NQuest01_1>{FCOLOR/10}客栈职员诉苦{FCOLOR/12}\
+<结束/@exit>
+}
+
+[@NPC_Main_0_2]
+{
+要我帮忙吗？\ \
+<寄存/@storage>物品\
+<取回/@PreGetback>寄存的物品\
+<存/@cunqian> <取/@qugold_1> <查看/@chakan> 金币\
+<仓库 密码 管理/@StgPassword>\
+与客栈职员<谈话/@NQuest01_2>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_0_3]
+{
+要我帮忙吗？\ \
+<寄存/@storage>物品\
+<取回/@PreGetback>寄存的物品\
+<存/@cunqian> <取/@qugold_1> <查看/@chakan> 金币\
+<仓库 密码 管理/@StgPassword>\
+<传达/@NQuest01_3>与{FCOLOR/10}乞丐{FCOLOR/12}的对话内容\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Storage]
+{
+你想寄存什么东西？\ \
+<前一步/@main>
+}
+
+[@NPC_Getback]
+{
+你想找什么，看了目录以后再决定吧。\ \
+<前一步/@main>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}

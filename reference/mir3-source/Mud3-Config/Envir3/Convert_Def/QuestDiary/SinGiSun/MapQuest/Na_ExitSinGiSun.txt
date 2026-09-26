@@ -1,0 +1,14 @@
+;;海メ盗
+[@NPC_SinGiQuest]
+{
+（这里什么时候有了这样一扇门？）\ \
+<走入这扇门/@SinGiQuest_Start>\
+<到神舰别处去看看/@exit>
+}
+
+[@NPC_ExitSinGi]
+{
+（这里什么时候有了这样一扇门？）\ \
+<走入这扇门/@ExitSinGi>\
+<到神舰别处去看看/@exit>
+}

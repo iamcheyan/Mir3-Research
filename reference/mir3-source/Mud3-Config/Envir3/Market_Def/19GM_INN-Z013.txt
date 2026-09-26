@@ -1,0 +1,35 @@
+;;º£¥áµÁ
+%100
+
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z013.txt] @NPC_Main
+
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z013.txt] @NPC_Admin_Main
+
+;----------------------------------------------------------
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z013.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z013.txt] @NPC_GetBack
+
+;----------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z013.txt] @NPC_Admin_Menu
+;----------------------------------------------------------
+;; MonRush Event
+;----------------------------------------------------------
+[@GEvent_start_00]
+#CALL [Event\Event_Game01\GEventRush00.txt] @GEventRush00_main
+

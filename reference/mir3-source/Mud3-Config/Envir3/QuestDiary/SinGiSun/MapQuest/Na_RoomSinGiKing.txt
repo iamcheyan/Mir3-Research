@@ -1,0 +1,12 @@
+;;海メ盗
+[@main]
+#IF
+checkitem 连环明珠 1
+#ACT
+TimeRecall 120
+take 连环明珠 1
+enter_ok
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\MapQuest\Na_RoomSinGiKing.txt] @NPC_Main
+#ELSEACT
+enter_fail

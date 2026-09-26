@@ -1,0 +1,85 @@
+;;海メ盗
+[@Dying_1]
+{
+头发染成白色了。\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_2]
+{
+头发染成黑色了。\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_3]
+{
+头发染成灰色了。\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_4]
+{
+你只要选择这种方法就可以把所有的染料混合在一起染出五颜六色的头发，但有些颜色可能染不上。染发费用是一般染发的两倍，不过如果你想显示自己的个性，这种付出也是当然的。\
+<好吧，试试看/@randcolor>\
+<不想乱染/@ChangeHairColor>
+}
+
+[@Dying_5]
+{
+客官，请先付款。不过你好像没钱。\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_6]
+{
+染好了，你满意吗，客官？\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_7]
+{
+客官，请先付款。不过你好像没钱。\ \
+<前一步/@ChangeHairColor>
+}
+
+[@Dying_8]
+{
+根据你的要求把你发型改为秃头了。你的喜好真奇怪。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_9]
+{
+发型改为剪发了。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_10]
+{
+发型变为长辫子了。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_11]
+{
+发型改为短发了。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_12]
+{
+发型改为发髻了。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_13]
+{
+发型改为乱发了，不过一点也不像裴勇俊，嗬嗬嗬。\ \
+<前一步/@ChangeHairShape>
+}
+
+[@Dying_14]
+{
+客官，请先付款。不过你好像没钱。\ \
+<前一步/@changeHairShape>
+}

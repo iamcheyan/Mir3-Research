@@ -1,0 +1,67 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [294] 1
+#ACT
+break
+
+#IF
+check [293] 1
+#ACT
+goto @hwayoum1_1
+
+;-----------------------------------------------------
+
+[@hwayoum1_1]
+#IF
+large S1 4
+#ACT
+goto @hwayoum1_5
+#ELSEACT
+goto @hwayoum1_2
+
+;-----------------
+
+[@hwayoum1_2]
+#IF
+large S1 2
+#ACT
+goto @hwayoum1_3
+#ELSEACT
+mov S1 2
+goto @hwayoum1_3
+
+;-----------------
+
+[@hwayoum1_3]
+#IF
+#ACT
+inc S1 1
+;----------------------------------------------------------
+
+
+[@hwayoum1_5]
+#IF
+checkmonmap D023_001 3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaFire.txt] @Nm_WoomaFire_1
+
+#ELSEACT
+mov S1 0
+set [294] 1
+;
+set [291] 0
+set [290] 0
+;
+set [292] 0

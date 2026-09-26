@@ -1,0 +1,52 @@
+;;베α돝
+[@SnakeVally_Teleport_South]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SnakeVallyTele.txt] @SnakeVallyTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
+
+;-------------------------------------------------------------------------------
+[@SnakeVally_Teleport_North]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SnakeVallyTele.txt] @SnakeVallyTele_2
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+#IF
+!IsOnCastleWar Sabuk                                  ;; 공성풀 중이 아닐때
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SnakeVallyTele.txt] @SnakeVallyTele_3
+
+#ACT
+break
+
+#IF
+!IsOnReadyCastleWar Sabuk                             ;; 공성준비중이 아닐떄
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SnakeVallyTele.txt] @SnakeVallyTele_4
+
+#ACT
+break
+
+#IF
+#SAY                                                  ;; 그외의 조건일떄는
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SnakeVallyTele.txt] @SnakeVallyTele_5
+
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

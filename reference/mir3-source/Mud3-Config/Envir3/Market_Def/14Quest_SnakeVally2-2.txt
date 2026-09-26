@@ -1,0 +1,134 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+
+[@main_0]
+#IF
+check [248] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [237] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [247] 1
+#ACT
+goto @NQuest01_1
+break
+#IF
+check [219] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [213] 1
+#ACT
+goto @main_0_1
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_Main_0
+
+;--------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_Main_1
+
+;--------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_Main_2
+
+;--------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_Main_3
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_MINER1
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_MINER2
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 465
+#ACT
+goto @TQuest465_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest465_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest465_2
+break
+;
+#ELSEACT
+goto @TQuest465_1
+
+;--------------
+
+[@TQuest465_1]
+#CALL [\QT_TODAY\4thClass.txt] @465_START
+
+[@TQuest465_2]
+#CALL [\QT_TODAY\4thClass.txt] @465_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally2-2.txt] @NPC_TQuest_1
+
+;--------------

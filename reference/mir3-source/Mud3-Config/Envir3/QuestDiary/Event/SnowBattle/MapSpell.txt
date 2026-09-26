@@ -1,0 +1,1449 @@
+;;º£¥áµÁ
+[@MapSpellMasic]
+{
+#ACT
+	LoadValue P1 "Flag_Def\event\SnowBattle\Flag.txt" [Event_main] [finish]
+		
+#IF
+	equal P1 0
+
+#ACT
+Delaygoto [Grobal] 10 @main_2003
+break
+
+#ELSEACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\MapSpell.txt" [LineMSG] [MSG01]
+linemsg "z010" "%A0"
+break
+
+[@main_2003]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\MapSpell.txt" [LineMSG] [MSG02]
+linemsg "z010" "%A0"
+
+
+MapSpell [icewall] "snow,9,29,9,29, +d100, +t4, +h
+MapSpell [icewall] "snow,50,29,50,29, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,14,23,14, +d100, +t4, +h
+MapSpell [icewall] "snow,23,44,23,44, +d100, +t4, +h
+MapSpell [icewall] "snow,36,14,36,14, +d100, +t4, +h
+MapSpell [icewall] "snow,36,44,36,44, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main1_2003
+
+
+[@main1_2003]
+#ACT
+MapSpell [icewall] "snow,10,29,10,29, +d100, +t4, +h
+MapSpell [icewall] "snow,49,29,49,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,9,28,9,28, +d100, +t4, +h
+MapSpell [icewall] "snow,50,28,50,28, +d100, +t4, +h
+MapSpell [icewall] "snow,9,30,9,30, +d100, +t4, +h
+MapSpell [icewall] "snow,50,30,50,30, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,15,23,15, +d100, +t4, +h
+MapSpell [icewall] "snow,23,43,23,43, +d100, +t4, +h
+MapSpell [icewall] "snow,36,15,36,15, +d100, +t4, +h
+MapSpell [icewall] "snow,36,43,36,43, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main2_2003
+
+[@main2_2003]
+#ACT
+MapSpell [icewall] "snow,11,29,11,29, +d100, +t4, +h
+MapSpell [icewall] "snow,48,29,48,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,10,28,10,28, +d100, +t4, +h
+MapSpell [icewall] "snow,10,30,10,30, +d100, +t4, +h
+MapSpell [icewall] "snow,49,28,49,28, +d100, +t4, +h
+MapSpell [icewall] "snow,49,30,49,30, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,16,23,16, +d100, +t4, +h
+MapSpell [icewall] "snow,23,42,23,42, +d100, +t4, +h
+MapSpell [icewall] "snow,36,16,36,16, +d100, +t4, +h
+MapSpell [icewall] "snow,36,42,36,42, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,15,22,15, +d100, +t4, +h
+MapSpell [icewall] "snow,22,43,22,43, +d100, +t4, +h
+MapSpell [icewall] "snow,37,15,37,15, +d100, +t4, +h
+MapSpell [icewall] "snow,37,43,37,43, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main3_2003
+
+[@main3_2003]
+#ACT
+MapSpell [icewall] "snow,12,29,12,29, +d100, +t4, +h
+MapSpell [icewall] "snow,47,29,47,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,11,28,11,28, +d100, +t4, +h
+MapSpell [icewall] "snow,11,30,11,30, +d100, +t4, +h
+MapSpell [icewall] "snow,48,28,48,28, +d100, +t4, +h
+MapSpell [icewall] "snow,48,30,48,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,10,27,10,27, +d100, +t4, +h
+MapSpell [icewall] "snow,10,31,10,31, +d100, +t4, +h
+MapSpell [icewall] "snow,49,31,49,31, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,17,23,17, +d100, +t4, +h
+MapSpell [icewall] "snow,23,41,23,41, +d100, +t4, +h
+MapSpell [icewall] "snow,36,17,36,17, +d100, +t4, +h
+MapSpell [icewall] "snow,36,41,36,41, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,16,22,16, +d100, +t4, +h
+MapSpell [icewall] "snow,22,42,22,42, +d100, +t4, +h
+MapSpell [icewall] "snow,37,16,37,16, +d100, +t4, +h
+MapSpell [icewall] "snow,37,42,37,42, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main4_2003
+
+[@main4_2003]
+#ACT
+MapSpell [icewall] "snow,13,29,13,29, +d100, +t4, +h
+MapSpell [icewall] "snow,46,29,46,29, +d100, +t4, +h
+MapSpell [icewall] "snow,12,28,12,28, +d100, +t4, +h
+MapSpell [icewall] "snow,12,30,12,30, +d100, +t4, +h
+MapSpell [icewall] "snow,47,28,47,28, +d100, +t4, +h
+MapSpell [icewall] "snow,47,30,47,30, +d100, +t4, +h
+
+
+MapSpell [icewall] "snow,11,27,11,27, +d100, +t4, +h
+MapSpell [icewall] "snow,11,31,11,31, +d100, +t4, +h
+MapSpell [icewall] "snow,48,27,48,27, +d100, +t4, +h
+MapSpell [icewall] "snow,48,31,48,31, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,18,23,18, +d100, +t4, +h
+MapSpell [icewall] "snow,23,40,23,40, +d100, +t4, +h
+MapSpell [icewall] "snow,36,18,36,18, +d100, +t4, +h
+MapSpell [icewall] "snow,36,40,36,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,17,22,17, +d100, +t4, +h
+MapSpell [icewall] "snow,22,41,22,41, +d100, +t4, +h
+MapSpell [icewall] "snow,37,17,37,17, +d100, +t4, +h
+MapSpell [icewall] "snow,37,41,37,41, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,16,21,16, +d100, +t4, +h
+MapSpell [icewall] "snow,21,42,21,42, +d100, +t4, +h
+MapSpell [icewall] "snow,38,16,38,16, +d100, +t4, +h
+MapSpell [icewall] "snow,38,42,38,42, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main5_2003
+
+[@main5_2003]
+#ACT
+MapSpell [icewall] "snow,14,29,14,29, +d100, +t4, +h
+MapSpell [icewall] "snow,45,29,45,29, +d100, +t4, +h
+MapSpell [icewall] "snow,13,28,13,28, +d100, +t4, +h
+MapSpell [icewall] "snow,13,30,13,30, +d100, +t4, +h
+MapSpell [icewall] "snow,46,28,46,28, +d100, +t4, +h
+MapSpell [icewall] "snow,46,30,46,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,27,12,27, +d100, +t4, +h
+MapSpell [icewall] "snow,12,31,12,31, +d100, +t4, +h
+MapSpell [icewall] "snow,47,27,47,27, +d100, +t4, +h
+MapSpell [icewall] "snow,47,31,47,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,11,26,11,26, +d100, +t4, +h
+MapSpell [icewall] "snow,11,32,11,32, +d100, +t4, +h
+MapSpell [icewall] "snow,48,26,48,26, +d100, +t4, +h
+MapSpell [icewall] "snow,48,32,48,32, +d100, +t4, +h
+;;
+
+MapSpell [icewall] "snow,23,19,23,19, +d100, +t4, +h
+MapSpell [icewall] "snow,23,39,23,39, +d100, +t4, +h
+MapSpell [icewall] "snow,36,19,36,19, +d100, +t4, +h
+MapSpell [icewall] "snow,36,39,36,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,18,22,18, +d100, +t4, +h
+MapSpell [icewall] "snow,22,40,22,40, +d100, +t4, +h
+MapSpell [icewall] "snow,37,18,37,18, +d100, +t4, +h
+MapSpell [icewall] "snow,37,40,37,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,17,21,17, +d100, +t4, +h
+MapSpell [icewall] "snow,21,41,21,41, +d100, +t4, +h
+MapSpell [icewall] "snow,38,17,38,17, +d100, +t4, +h
+MapSpell [icewall] "snow,38,41,38,41, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main6_2003
+
+[@main6_2003]
+#ACT
+MapSpell [icewall] "snow,15,29,15,29, +d100, +t4, +h
+MapSpell [icewall] "snow,44,29,44,29, +d100, +t4, +h
+MapSpell [icewall] "snow,14,28,14,28, +d100, +t4, +h
+MapSpell [icewall] "snow,14,30,14,30, +d100, +t4, +h
+MapSpell [icewall] "snow,45,28,45,28, +d100, +t4, +h
+MapSpell [icewall] "snow,45,30,45,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,27,13,27, +d100, +t4, +h
+MapSpell [icewall] "snow,13,31,13,31, +d100, +t4, +h
+MapSpell [icewall] "snow,46,27,46,27, +d100, +t4, +h
+MapSpell [icewall] "snow,46,31,46,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,26,12,26, +d100, +t4, +h
+MapSpell [icewall] "snow,12,32,12,32, +d100, +t4, +h
+MapSpell [icewall] "snow,47,26,47,26, +d100, +t4, +h
+MapSpell [icewall] "snow,47,32,47,32, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,20,23,20, +d100, +t4, +h
+MapSpell [icewall] "snow,23,38,23,38, +d100, +t4, +h
+MapSpell [icewall] "snow,36,20,36,20, +d100, +t4, +h
+MapSpell [icewall] "snow,36,38,36,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,19,22,19, +d100, +t4, +h
+MapSpell [icewall] "snow,22,39,22,39, +d100, +t4, +h
+MapSpell [icewall] "snow,37,19,37,19, +d100, +t4, +h
+MapSpell [icewall] "snow,37,39,37,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,18,21,18, +d100, +t4, +h
+MapSpell [icewall] "snow,21,40,21,40, +d100, +t4, +h
+MapSpell [icewall] "snow,38,18,38,18, +d100, +t4, +h
+MapSpell [icewall] "snow,38,40,38,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,17,20,17, +d100, +t4, +h
+MapSpell [icewall] "snow,20,41,20,41, +d100, +t4, +h
+MapSpell [icewall] "snow,39,27,39,17, +d100, +t4, +h
+MapSpell [icewall] "snow,39,41,39,41, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main7_2003
+
+[@main7_2003]
+#ACT
+MapSpell [icewall] "snow,16,29,16,29, +d100, +t4, +h
+MapSpell [icewall] "snow,43,29,43,29, +d100, +t4, +h
+MapSpell [icewall] "snow,15,28,15,28, +d100, +t4, +h
+MapSpell [icewall] "snow,15,30,15,30, +d100, +t4, +h
+MapSpell [icewall] "snow,44,28,44,28, +d100, +t4, +h
+MapSpell [icewall] "snow,44,30,44,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,27,14,27, +d100, +t4, +h
+MapSpell [icewall] "snow,14,31,14,31, +d100, +t4, +h
+MapSpell [icewall] "snow,45,27,45,27, +d100, +t4, +h
+MapSpell [icewall] "snow,45,31,45,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,26,13,26, +d100, +t4, +h
+MapSpell [icewall] "snow,13,32,13,32, +d100, +t4, +h
+MapSpell [icewall] "snow,46,26,46,26, +d100, +t4, +h
+MapSpell [icewall] "snow,46,32,46,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,25,12,25, +d100, +t4, +h
+MapSpell [icewall] "snow,12,33,12,33, +d100, +t4, +h
+MapSpell [icewall] "snow,47,25,47,25, +d100, +t4, +h
+MapSpell [icewall] "snow,47,33,47,33, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,21,23,21, +d100, +t4, +h
+MapSpell [icewall] "snow,23,37,23,37, +d100, +t4, +h
+MapSpell [icewall] "snow,36,21,36,21, +d100, +t4, +h
+MapSpell [icewall] "snow,36,37,36,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,20,22,20, +d100, +t4, +h
+MapSpell [icewall] "snow,22,38,22,38, +d100, +t4, +h
+MapSpell [icewall] "snow,37,20,37,20, +d100, +t4, +h
+MapSpell [icewall] "snow,37,38,37,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,19,21,19, +d100, +t4, +h
+MapSpell [icewall] "snow,21,39,21,39, +d100, +t4, +h
+MapSpell [icewall] "snow,38,19,38,19, +d100, +t4, +h
+MapSpell [icewall] "snow,38,39,38,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,18,20,18, +d100, +t4, +h
+MapSpell [icewall] "snow,20,40,20,40, +d100, +t4, +h
+MapSpell [icewall] "snow,39,28,39,18, +d100, +t4, +h
+MapSpell [icewall] "snow,39,40,39,40, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main8_2003
+
+
+[@main8_2003]
+#ACT
+MapSpell [icewall] "snow,17,29,17,29, +d100, +t4, +h
+MapSpell [icewall] "snow,42,29,42,29, +d100, +t4, +h
+MapSpell [icewall] "snow,16,28,16,28, +d100, +t4, +h
+MapSpell [icewall] "snow,16,30,16,30, +d100, +t4, +h
+MapSpell [icewall] "snow,43,28,43,28, +d100, +t4, +h
+MapSpell [icewall] "snow,43,30,43,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,27,15,27, +d100, +t4, +h
+MapSpell [icewall] "snow,15,31,15,31, +d100, +t4, +h
+MapSpell [icewall] "snow,44,27,44,27, +d100, +t4, +h
+MapSpell [icewall] "snow,44,31,44,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,26,14,26, +d100, +t4, +h
+MapSpell [icewall] "snow,14,32,14,32, +d100, +t4, +h
+MapSpell [icewall] "snow,45,26,45,26, +d100, +t4, +h
+MapSpell [icewall] "snow,45,32,45,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,25,13,25, +d100, +t4, +h
+MapSpell [icewall] "snow,13,33,13,33, +d100, +t4, +h
+MapSpell [icewall] "snow,46,25,46,25, +d100, +t4, +h
+MapSpell [icewall] "snow,46,33,46,33, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,22,23,22, +d100, +t4, +h
+MapSpell [icewall] "snow,23,36,23,36, +d100, +t4, +h
+MapSpell [icewall] "snow,36,22,36,22, +d100, +t4, +h
+MapSpell [icewall] "snow,36,36,36,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,21,22,21, +d100, +t4, +h
+MapSpell [icewall] "snow,22,37,22,37, +d100, +t4, +h
+MapSpell [icewall] "snow,37,21,37,21, +d100, +t4, +h
+MapSpell [icewall] "snow,37,37,37,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,20,21,20, +d100, +t4, +h
+MapSpell [icewall] "snow,21,38,21,38, +d100, +t4, +h
+MapSpell [icewall] "snow,38,20,38,20, +d100, +t4, +h
+MapSpell [icewall] "snow,38,38,38,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,19,20,19, +d100, +t4, +h
+MapSpell [icewall] "snow,20,39,20,39, +d100, +t4, +h
+MapSpell [icewall] "snow,39,19,39,19, +d100, +t4, +h
+MapSpell [icewall] "snow,39,39,39,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,18,19,18, +d100, +t4, +h
+MapSpell [icewall] "snow,19,40,19,40, +d100, +t4, +h
+MapSpell [icewall] "snow,40,18,40,18, +d100, +t4, +h
+MapSpell [icewall] "snow,40,40,40,40, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main9_2003
+
+[@main9_2003]
+#ACT
+MapSpell [icewall] "snow,18,29,18,29, +d100, +t4, +h
+MapSpell [icewall] "snow,41,29,41,29, +d100, +t4, +h
+MapSpell [icewall] "snow,17,28,17,28, +d100, +t4, +h
+MapSpell [icewall] "snow,17,30,17,30, +d100, +t4, +h
+MapSpell [icewall] "snow,42,28,42,28, +d100, +t4, +h
+MapSpell [icewall] "snow,42,30,42,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,27,16,27, +d100, +t4, +h
+MapSpell [icewall] "snow,16,31,16,31, +d100, +t4, +h
+MapSpell [icewall] "snow,43,27,43,27, +d100, +t4, +h
+MapSpell [icewall] "snow,43,31,43,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,26,15,26, +d100, +t4, +h
+MapSpell [icewall] "snow,15,32,15,32, +d100, +t4, +h
+MapSpell [icewall] "snow,44,26,44,26, +d100, +t4, +h
+MapSpell [icewall] "snow,44,32,44,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,25,14,25, +d100, +t4, +h
+MapSpell [icewall] "snow,14,33,14,33, +d100, +t4, +h
+MapSpell [icewall] "snow,45,25,45,25, +d100, +t4, +h
+MapSpell [icewall] "snow,45,33,45,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,24,13,24, +d100, +t4, +h
+MapSpell [icewall] "snow,13,34,13,34, +d100, +t4, +h
+MapSpell [icewall] "snow,46,24,46,24, +d100, +t4, +h
+MapSpell [icewall] "snow,46,34,46,34, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,23,23,23, +d100, +t4, +h
+MapSpell [icewall] "snow,23,35,23,35, +d100, +t4, +h
+MapSpell [icewall] "snow,36,23,36,23, +d100, +t4, +h
+MapSpell [icewall] "snow,36,35,36,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,22,22,22, +d100, +t4, +h
+MapSpell [icewall] "snow,22,36,22,36, +d100, +t4, +h
+MapSpell [icewall] "snow,37,22,37,22, +d100, +t4, +h
+MapSpell [icewall] "snow,37,36,37,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,21,21,21, +d100, +t4, +h
+MapSpell [icewall] "snow,21,37,21,37, +d100, +t4, +h
+MapSpell [icewall] "snow,38,21,38,21, +d100, +t4, +h
+MapSpell [icewall] "snow,38,37,38,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,20,20,20, +d100, +t4, +h
+MapSpell [icewall] "snow,20,38,20,38, +d100, +t4, +h
+MapSpell [icewall] "snow,39,20,39,20, +d100, +t4, +h
+MapSpell [icewall] "snow,39,38,39,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,19,19,19, +d100, +t4, +h
+MapSpell [icewall] "snow,19,39,19,39, +d100, +t4, +h
+MapSpell [icewall] "snow,40,19,40,19, +d100, +t4, +h
+MapSpell [icewall] "snow,40,39,40,39, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main10_2003
+
+[@main10_2003]
+#ACT
+MapSpell [icewall] "snow,19,29,19,29, +d100, +t4, +h
+MapSpell [icewall] "snow,40,29,40,29, +d100, +t4, +h
+MapSpell [icewall] "snow,18,28,18,28, +d100, +t4, +h
+MapSpell [icewall] "snow,18,30,18,30, +d100, +t4, +h
+MapSpell [icewall] "snow,41,28,41,28, +d100, +t4, +h
+MapSpell [icewall] "snow,41,30,41,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,27,17,27, +d100, +t4, +h
+MapSpell [icewall] "snow,17,31,17,31, +d100, +t4, +h
+MapSpell [icewall] "snow,42,27,42,27, +d100, +t4, +h
+MapSpell [icewall] "snow,42,31,42,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,26,16,26, +d100, +t4, +h
+MapSpell [icewall] "snow,16,32,16,32, +d100, +t4, +h
+MapSpell [icewall] "snow,43,26,43,26, +d100, +t4, +h
+MapSpell [icewall] "snow,43,32,43,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,25,15,25, +d100, +t4, +h
+MapSpell [icewall] "snow,15,33,15,33, +d100, +t4, +h
+MapSpell [icewall] "snow,44,25,44,25, +d100, +t4, +h
+MapSpell [icewall] "snow,44,33,44,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,24,14,24, +d100, +t4, +h
+MapSpell [icewall] "snow,14,34,14,34, +d100, +t4, +h
+MapSpell [icewall] "snow,45,24,45,24, +d100, +t4, +h
+MapSpell [icewall] "snow,45,34,45,34, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,24,23,24, +d100, +t4, +h
+MapSpell [icewall] "snow,23,34,23,34, +d100, +t4, +h
+MapSpell [icewall] "snow,36,24,36,24, +d100, +t4, +h
+MapSpell [icewall] "snow,36,34,36,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,23,22,23, +d100, +t4, +h
+MapSpell [icewall] "snow,22,35,22,35, +d100, +t4, +h
+MapSpell [icewall] "snow,37,23,37,23, +d100, +t4, +h
+MapSpell [icewall] "snow,37,35,37,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,22,21,22, +d100, +t4, +h
+MapSpell [icewall] "snow,21,36,21,36, +d100, +t4, +h
+MapSpell [icewall] "snow,38,22,38,22, +d100, +t4, +h
+MapSpell [icewall] "snow,38,36,38,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,21,20,21, +d100, +t4, +h
+MapSpell [icewall] "snow,20,37,20,37, +d100, +t4, +h
+MapSpell [icewall] "snow,39,21,39,21, +d100, +t4, +h
+MapSpell [icewall] "snow,39,37,39,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,20,19,20, +d100, +t4, +h
+MapSpell [icewall] "snow,19,38,19,38, +d100, +t4, +h
+MapSpell [icewall] "snow,40,20,40,20, +d100, +t4, +h
+MapSpell [icewall] "snow,40,38,40,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,19,18,19, +d100, +t4, +h
+MapSpell [icewall] "snow,18,39,18,39, +d100, +t4, +h
+MapSpell [icewall] "snow,41,19,41,19, +d100, +t4, +h
+MapSpell [icewall] "snow,41,39,41,39, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main11_2003
+
+[@main11_2003]
+#ACT
+MapSpell [icewall] "snow,20,29,20,29, +d100, +t4, +h
+MapSpell [icewall] "snow,39,29,39,29, +d100, +t4, +h
+MapSpell [icewall] "snow,19,28,19,28, +d100, +t4, +h
+MapSpell [icewall] "snow,19,30,19,30, +d100, +t4, +h
+MapSpell [icewall] "snow,40,28,40,28, +d100, +t4, +h
+MapSpell [icewall] "snow,40,30,40,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,27,18,27, +d100, +t4, +h
+MapSpell [icewall] "snow,18,31,18,31, +d100, +t4, +h
+MapSpell [icewall] "snow,41,27,41,27, +d100, +t4, +h
+MapSpell [icewall] "snow,41,31,41,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,26,17,26, +d100, +t4, +h
+MapSpell [icewall] "snow,17,32,17,32, +d100, +t4, +h
+MapSpell [icewall] "snow,42,26,42,26, +d100, +t4, +h
+MapSpell [icewall] "snow,42,32,42,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,25,16,25, +d100, +t4, +h
+MapSpell [icewall] "snow,16,33,16,33, +d100, +t4, +h
+MapSpell [icewall] "snow,43,25,43,25, +d100, +t4, +h
+MapSpell [icewall] "snow,43,33,43,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,24,15,24, +d100, +t4, +h
+MapSpell [icewall] "snow,15,34,15,34, +d100, +t4, +h
+MapSpell [icewall] "snow,44,24,44,24, +d100, +t4, +h
+MapSpell [icewall] "snow,44,34,44,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,23,14,23, +d100, +t4, +h
+MapSpell [icewall] "snow,14,35,14,35, +d100, +t4, +h
+MapSpell [icewall] "snow,45,23,45,23, +d100, +t4, +h
+MapSpell [icewall] "snow,45,35,45,35, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,25,23,25, +d100, +t4, +h
+MapSpell [icewall] "snow,23,33,23,33, +d100, +t4, +h
+MapSpell [icewall] "snow,36,25,36,25, +d100, +t4, +h
+MapSpell [icewall] "snow,36,33,36,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,24,22,24, +d100, +t4, +h
+MapSpell [icewall] "snow,22,34,22,34, +d100, +t4, +h
+MapSpell [icewall] "snow,37,24,37,24, +d100, +t4, +h
+MapSpell [icewall] "snow,37,34,37,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,23,21,23, +d100, +t4, +h
+MapSpell [icewall] "snow,21,35,21,35, +d100, +t4, +h
+MapSpell [icewall] "snow,38,23,38,23, +d100, +t4, +h
+MapSpell [icewall] "snow,38,35,38,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,22,20,22, +d100, +t4, +h
+MapSpell [icewall] "snow,20,36,20,36, +d100, +t4, +h
+MapSpell [icewall] "snow,39,22,39,22, +d100, +t4, +h
+MapSpell [icewall] "snow,39,36,39,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,21,19,21, +d100, +t4, +h
+MapSpell [icewall] "snow,19,37,19,37, +d100, +t4, +h
+MapSpell [icewall] "snow,40,21,40,21, +d100, +t4, +h
+MapSpell [icewall] "snow,40,37,40,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,20,18,20, +d100, +t4, +h
+MapSpell [icewall] "snow,18,38,18,38, +d100, +t4, +h
+MapSpell [icewall] "snow,41,20,41,20, +d100, +t4, +h
+MapSpell [icewall] "snow,41,38,41,38, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main12_2003
+
+[@main12_2003]
+#ACT
+MapSpell [icewall] "snow,21,29,21,29, +d100, +t4, +h
+MapSpell [icewall] "snow,38,29,38,29, +d100, +t4, +h
+MapSpell [icewall] "snow,20,28,20,28, +d100, +t4, +h
+MapSpell [icewall] "snow,20,30,20,30, +d100, +t4, +h
+MapSpell [icewall] "snow,39,28,39,28, +d100, +t4, +h
+MapSpell [icewall] "snow,39,30,39,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,27,19,27, +d100, +t4, +h
+MapSpell [icewall] "snow,19,31,19,31, +d100, +t4, +h
+MapSpell [icewall] "snow,40,27,40,27, +d100, +t4, +h
+MapSpell [icewall] "snow,40,31,40,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,26,18,26, +d100, +t4, +h
+MapSpell [icewall] "snow,18,32,18,32, +d100, +t4, +h
+MapSpell [icewall] "snow,41,26,41,26, +d100, +t4, +h
+MapSpell [icewall] "snow,41,32,41,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,25,17,25, +d100, +t4, +h
+MapSpell [icewall] "snow,17,33,17,33, +d100, +t4, +h
+MapSpell [icewall] "snow,42,25,42,25, +d100, +t4, +h
+MapSpell [icewall] "snow,42,33,42,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,24,16,24, +d100, +t4, +h
+MapSpell [icewall] "snow,16,34,16,34, +d100, +t4, +h
+MapSpell [icewall] "snow,43,24,43,24, +d100, +t4, +h
+MapSpell [icewall] "snow,43,34,43,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,23,15,23, +d100, +t4, +h
+MapSpell [icewall] "snow,15,35,15,35, +d100, +t4, +h
+MapSpell [icewall] "snow,44,23,44,23, +d100, +t4, +h
+MapSpell [icewall] "snow,44,35,44,35, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,26,23,26, +d100, +t4, +h
+MapSpell [icewall] "snow,23,32,23,32, +d100, +t4, +h
+MapSpell [icewall] "snow,36,26,36,26, +d100, +t4, +h
+MapSpell [icewall] "snow,36,32,36,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,25,22,25, +d100, +t4, +h
+MapSpell [icewall] "snow,22,33,22,33, +d100, +t4, +h
+MapSpell [icewall] "snow,37,25,37,25, +d100, +t4, +h
+MapSpell [icewall] "snow,37,33,37,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,24,21,24, +d100, +t4, +h
+MapSpell [icewall] "snow,21,34,21,34, +d100, +t4, +h
+MapSpell [icewall] "snow,38,24,38,24, +d100, +t4, +h
+MapSpell [icewall] "snow,38,34,38,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,23,20,23, +d100, +t4, +h
+MapSpell [icewall] "snow,20,35,20,35, +d100, +t4, +h
+MapSpell [icewall] "snow,39,23,39,23, +d100, +t4, +h
+MapSpell [icewall] "snow,39,35,39,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,22,19,22, +d100, +t4, +h
+MapSpell [icewall] "snow,19,36,19,36, +d100, +t4, +h
+MapSpell [icewall] "snow,40,22,40,22, +d100, +t4, +h
+MapSpell [icewall] "snow,40,36,40,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,21,18,21, +d100, +t4, +h
+MapSpell [icewall] "snow,18,37,18,37, +d100, +t4, +h
+MapSpell [icewall] "snow,41,21,41,21, +d100, +t4, +h
+MapSpell [icewall] "snow,41,37,41,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,20,17,20, +d100, +t4, +h
+MapSpell [icewall] "snow,17,38,17,38, +d100, +t4, +h
+MapSpell [icewall] "snow,42,20,42,20, +d100, +t4, +h
+MapSpell [icewall] "snow,42,38,42,38, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main13_2003
+
+[@main13_2003]
+#ACT
+MapSpell [icewall] "snow,22,29,22,29, +d100, +t4, +h
+MapSpell [icewall] "snow,37,29,37,29, +d100, +t4, +h
+MapSpell [icewall] "snow,21,28,21,28, +d100, +t4, +h
+MapSpell [icewall] "snow,21,30,21,30, +d100, +t4, +h
+MapSpell [icewall] "snow,38,28,38,28, +d100, +t4, +h
+MapSpell [icewall] "snow,38,30,38,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,27,20,27, +d100, +t4, +h
+MapSpell [icewall] "snow,20,31,20,31, +d100, +t4, +h
+MapSpell [icewall] "snow,39,27,39,27, +d100, +t4, +h
+MapSpell [icewall] "snow,39,31,39,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,26,19,26, +d100, +t4, +h
+MapSpell [icewall] "snow,19,32,19,32, +d100, +t4, +h
+MapSpell [icewall] "snow,40,26,40,26, +d100, +t4, +h
+MapSpell [icewall] "snow,40,32,40,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,25,18,25, +d100, +t4, +h
+MapSpell [icewall] "snow,18,33,18,33, +d100, +t4, +h
+MapSpell [icewall] "snow,41,25,41,25, +d100, +t4, +h
+MapSpell [icewall] "snow,41,33,41,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,24,17,24, +d100, +t4, +h
+MapSpell [icewall] "snow,17,34,17,34, +d100, +t4, +h
+MapSpell [icewall] "snow,42,24,42,24, +d100, +t4, +h
+MapSpell [icewall] "snow,42,34,42,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,23,16,23, +d100, +t4, +h
+MapSpell [icewall] "snow,16,35,16,35, +d100, +t4, +h
+MapSpell [icewall] "snow,43,23,43,23, +d100, +t4, +h
+MapSpell [icewall] "snow,43,35,43,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,22,15,22, +d100, +t4, +h
+MapSpell [icewall] "snow,15,36,15,36, +d100, +t4, +h
+MapSpell [icewall] "snow,44,22,44,22, +d100, +t4, +h
+MapSpell [icewall] "snow,44,36,44,36, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,27,23,27, +d100, +t4, +h
+MapSpell [icewall] "snow,23,31,23,31, +d100, +t4, +h
+MapSpell [icewall] "snow,36,27,36,27, +d100, +t4, +h
+MapSpell [icewall] "snow,36,31,36,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,26,22,26, +d100, +t4, +h
+MapSpell [icewall] "snow,22,32,22,32, +d100, +t4, +h
+MapSpell [icewall] "snow,37,26,37,26, +d100, +t4, +h
+MapSpell [icewall] "snow,37,32,37,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,25,21,25, +d100, +t4, +h
+MapSpell [icewall] "snow,21,33,21,33, +d100, +t4, +h
+MapSpell [icewall] "snow,38,25,38,25, +d100, +t4, +h
+MapSpell [icewall] "snow,38,33,38,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,24,20,24, +d100, +t4, +h
+MapSpell [icewall] "snow,20,34,20,34, +d100, +t4, +h
+MapSpell [icewall] "snow,39,24,39,24, +d100, +t4, +h
+MapSpell [icewall] "snow,39,34,39,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,23,19,23, +d100, +t4, +h
+MapSpell [icewall] "snow,19,35,19,35, +d100, +t4, +h
+MapSpell [icewall] "snow,40,23,40,23, +d100, +t4, +h
+MapSpell [icewall] "snow,40,35,40,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,22,18,22, +d100, +t4, +h
+MapSpell [icewall] "snow,18,36,18,36, +d100, +t4, +h
+MapSpell [icewall] "snow,41,22,41,22, +d100, +t4, +h
+MapSpell [icewall] "snow,41,36,41,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,21,17,21, +d100, +t4, +h
+MapSpell [icewall] "snow,17,37,17,37, +d100, +t4, +h
+MapSpell [icewall] "snow,42,21,42,21, +d100, +t4, +h
+MapSpell [icewall] "snow,42,37,42,37, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main14_2003
+
+[@main14_2003]
+#ACT
+MapSpell [icewall] "snow,23,29,23,29, +d100, +t4, +h
+MapSpell [icewall] "snow,36,29,36,29, +d100, +t4, +h
+MapSpell [icewall] "snow,22,28,22,28, +d100, +t4, +h
+MapSpell [icewall] "snow,22,30,22,30, +d100, +t4, +h
+MapSpell [icewall] "snow,37,28,37,28, +d100, +t4, +h
+MapSpell [icewall] "snow,37,30,37,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,27,21,27, +d100, +t4, +h
+MapSpell [icewall] "snow,21,31,21,31, +d100, +t4, +h
+MapSpell [icewall] "snow,38,27,38,27, +d100, +t4, +h
+MapSpell [icewall] "snow,38,31,38,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,26,20,26, +d100, +t4, +h
+MapSpell [icewall] "snow,20,32,20,33, +d100, +t4, +h
+MapSpell [icewall] "snow,39,26,39,26, +d100, +t4, +h
+MapSpell [icewall] "snow,39,32,39,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,25,19,25, +d100, +t4, +h
+MapSpell [icewall] "snow,19,33,19,33, +d100, +t4, +h
+MapSpell [icewall] "snow,40,25,40,25, +d100, +t4, +h
+MapSpell [icewall] "snow,40,33,40,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,24,18,24, +d100, +t4, +h
+MapSpell [icewall] "snow,18,34,18,34, +d100, +t4, +h
+MapSpell [icewall] "snow,41,24,41,24, +d100, +t4, +h
+MapSpell [icewall] "snow,41,34,41,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,23,17,23, +d100, +t4, +h
+MapSpell [icewall] "snow,17,35,17,35, +d100, +t4, +h
+MapSpell [icewall] "snow,42,23,42,23, +d100, +t4, +h
+MapSpell [icewall] "snow,42,35,42,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,22,16,22, +d100, +t4, +h
+MapSpell [icewall] "snow,16,36,16,36, +d100, +t4, +h
+MapSpell [icewall] "snow,43,22,43,22, +d100, +t4, +h
+MapSpell [icewall] "snow,43,36,43,36, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,23,28,23,28, +d100, +t4, +h
+MapSpell [icewall] "snow,23,30,23,30, +d100, +t4, +h
+MapSpell [icewall] "snow,36,28,36,28, +d100, +t4, +h
+MapSpell [icewall] "snow,36,30,36,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,27,22,27, +d100, +t4, +h
+MapSpell [icewall] "snow,22,31,22,31, +d100, +t4, +h
+MapSpell [icewall] "snow,37,27,37,27, +d100, +t4, +h
+MapSpell [icewall] "snow,37,31,37,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,26,21,26, +d100, +t4, +h
+MapSpell [icewall] "snow,21,32,21,32, +d100, +t4, +h
+MapSpell [icewall] "snow,38,26,38,26, +d100, +t4, +h
+MapSpell [icewall] "snow,38,32,38,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,25,20,25, +d100, +t4, +h
+MapSpell [icewall] "snow,20,33,20,33, +d100, +t4, +h
+MapSpell [icewall] "snow,39,25,39,25, +d100, +t4, +h
+MapSpell [icewall] "snow,39,33,39,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,24,19,24, +d100, +t4, +h
+MapSpell [icewall] "snow,19,34,19,34, +d100, +t4, +h
+MapSpell [icewall] "snow,40,24,40,24, +d100, +t4, +h
+MapSpell [icewall] "snow,40,34,40,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,23,18,23, +d100, +t4, +h
+MapSpell [icewall] "snow,18,35,18,35, +d100, +t4, +h
+MapSpell [icewall] "snow,41,23,41,23, +d100, +t4, +h
+MapSpell [icewall] "snow,41,35,41,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,22,17,22, +d100, +t4, +h
+MapSpell [icewall] "snow,17,36,17,36, +d100, +t4, +h
+MapSpell [icewall] "snow,42,22,42,22, +d100, +t4, +h
+MapSpell [icewall] "snow,42,36,42,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,21,16,21, +d100, +t4, +h
+MapSpell [icewall] "snow,16,37,16,37, +d100, +t4, +h
+MapSpell [icewall] "snow,43,21,43,21, +d100, +t4, +h
+MapSpell [icewall] "snow,43,37,43,37, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main15_2003
+
+[@main15_2003]
+#ACT
+MapSpell [icewall] "snow,22,29,22,29, +d100, +t4, +h
+MapSpell [icewall] "snow,37,29,37,29, +d100, +t4, +h
+MapSpell [icewall] "snow,23,28,23,28, +d100, +t4, +h
+MapSpell [icewall] "snow,23,30,23,30, +d100, +t4, +h
+MapSpell [icewall] "snow,36,28,36,28, +d100, +t4, +h
+MapSpell [icewall] "snow,36,30,36,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,27,22,27, +d100, +t4, +h
+MapSpell [icewall] "snow,22,31,22,31, +d100, +t4, +h
+MapSpell [icewall] "snow,37,27,37,27, +d100, +t4, +h
+MapSpell [icewall] "snow,37,31,37,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,26,21,26, +d100, +t4, +h
+MapSpell [icewall] "snow,21,32,21,32, +d100, +t4, +h
+MapSpell [icewall] "snow,38,26,38,26, +d100, +t4, +h
+MapSpell [icewall] "snow,38,32,38,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,25,20,25, +d100, +t4, +h
+MapSpell [icewall] "snow,20,33,20,33, +d100, +t4, +h
+MapSpell [icewall] "snow,39,25,39,25, +d100, +t4, +h
+MapSpell [icewall] "snow,39,33,39,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,24,19,24, +d100, +t4, +h
+MapSpell [icewall] "snow,19,34,19,34, +d100, +t4, +h
+MapSpell [icewall] "snow,40,24,40,24, +d100, +t4, +h
+MapSpell [icewall] "snow,40,34,40,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,23,18,23, +d100, +t4, +h
+MapSpell [icewall] "snow,18,35,18,35, +d100, +t4, +h
+MapSpell [icewall] "snow,41,23,41,23, +d100, +t4, +h
+MapSpell [icewall] "snow,41,35,41,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,22,17,22, +d100, +t4, +h
+MapSpell [icewall] "snow,17,36,17,36, +d100, +t4, +h
+MapSpell [icewall] "snow,42,22,42,22, +d100, +t4, +h
+MapSpell [icewall] "snow,42,36,42,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,21,16,21, +d100, +t4, +h
+MapSpell [icewall] "snow,16,37,16,37, +d100, +t4, +h
+MapSpell [icewall] "snow,43,21,43,21, +d100, +t4, +h
+MapSpell [icewall] "snow,43,37,43,37, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,22,28,22,28, +d100, +t4, +h
+MapSpell [icewall] "snow,22,30,22,30, +d100, +t4, +h
+MapSpell [icewall] "snow,37,28,37,28, +d100, +t4, +h
+MapSpell [icewall] "snow,37,30,37,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,27,21,27, +d100, +t4, +h
+MapSpell [icewall] "snow,21,31,21,31, +d100, +t4, +h
+MapSpell [icewall] "snow,38,27,38,27, +d100, +t4, +h
+MapSpell [icewall] "snow,38,31,38,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,26,20,26, +d100, +t4, +h
+MapSpell [icewall] "snow,20,32,20,33, +d100, +t4, +h
+MapSpell [icewall] "snow,39,26,39,26, +d100, +t4, +h
+MapSpell [icewall] "snow,39,32,39,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,25,19,25, +d100, +t4, +h
+MapSpell [icewall] "snow,19,33,19,33, +d100, +t4, +h
+MapSpell [icewall] "snow,40,25,40,25, +d100, +t4, +h
+MapSpell [icewall] "snow,40,33,40,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,24,18,24, +d100, +t4, +h
+MapSpell [icewall] "snow,18,34,18,34, +d100, +t4, +h
+MapSpell [icewall] "snow,41,24,41,24, +d100, +t4, +h
+MapSpell [icewall] "snow,41,34,41,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,23,17,23, +d100, +t4, +h
+MapSpell [icewall] "snow,17,35,17,35, +d100, +t4, +h
+MapSpell [icewall] "snow,42,23,42,23, +d100, +t4, +h
+MapSpell [icewall] "snow,42,35,42,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,22,16,22, +d100, +t4, +h
+MapSpell [icewall] "snow,16,36,16,36, +d100, +t4, +h
+MapSpell [icewall] "snow,43,22,43,22, +d100, +t4, +h
+MapSpell [icewall] "snow,43,36,43,36, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main16_2003
+
+[@main16_2003]
+#ACT
+MapSpell [icewall] "snow,21,29,21,29, +d100, +t4, +h
+MapSpell [icewall] "snow,38,29,38,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,27,23,27, +d100, +t4, +h
+MapSpell [icewall] "snow,23,31,23,31, +d100, +t4, +h
+MapSpell [icewall] "snow,36,27,36,27, +d100, +t4, +h
+MapSpell [icewall] "snow,36,31,36,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,26,22,26, +d100, +t4, +h
+MapSpell [icewall] "snow,22,32,22,32, +d100, +t4, +h
+MapSpell [icewall] "snow,37,26,37,26, +d100, +t4, +h
+MapSpell [icewall] "snow,37,32,37,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,25,21,25, +d100, +t4, +h
+MapSpell [icewall] "snow,21,33,21,33, +d100, +t4, +h
+MapSpell [icewall] "snow,38,25,38,25, +d100, +t4, +h
+MapSpell [icewall] "snow,38,33,38,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,24,20,24, +d100, +t4, +h
+MapSpell [icewall] "snow,20,34,20,34, +d100, +t4, +h
+MapSpell [icewall] "snow,39,24,39,24, +d100, +t4, +h
+MapSpell [icewall] "snow,39,34,39,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,23,19,23, +d100, +t4, +h
+MapSpell [icewall] "snow,19,35,19,35, +d100, +t4, +h
+MapSpell [icewall] "snow,40,23,40,23, +d100, +t4, +h
+MapSpell [icewall] "snow,40,35,40,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,22,18,22, +d100, +t4, +h
+MapSpell [icewall] "snow,18,36,18,36, +d100, +t4, +h
+MapSpell [icewall] "snow,41,22,41,22, +d100, +t4, +h
+MapSpell [icewall] "snow,41,36,41,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,21,17,21, +d100, +t4, +h
+MapSpell [icewall] "snow,17,37,17,37, +d100, +t4, +h
+MapSpell [icewall] "snow,42,21,42,21, +d100, +t4, +h
+MapSpell [icewall] "snow,42,37,42,37, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,21,28,21,28, +d100, +t4, +h
+MapSpell [icewall] "snow,21,30,21,30, +d100, +t4, +h
+MapSpell [icewall] "snow,38,28,38,28, +d100, +t4, +h
+MapSpell [icewall] "snow,38,30,38,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,27,20,27, +d100, +t4, +h
+MapSpell [icewall] "snow,20,31,20,31, +d100, +t4, +h
+MapSpell [icewall] "snow,39,27,39,27, +d100, +t4, +h
+MapSpell [icewall] "snow,39,31,39,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,26,19,26, +d100, +t4, +h
+MapSpell [icewall] "snow,19,32,19,32, +d100, +t4, +h
+MapSpell [icewall] "snow,40,26,40,26, +d100, +t4, +h
+MapSpell [icewall] "snow,40,32,40,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,25,18,25, +d100, +t4, +h
+MapSpell [icewall] "snow,18,33,18,33, +d100, +t4, +h
+MapSpell [icewall] "snow,41,25,41,25, +d100, +t4, +h
+MapSpell [icewall] "snow,41,33,41,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,24,17,24, +d100, +t4, +h
+MapSpell [icewall] "snow,17,34,17,34, +d100, +t4, +h
+MapSpell [icewall] "snow,42,24,42,24, +d100, +t4, +h
+MapSpell [icewall] "snow,42,34,42,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,23,16,23, +d100, +t4, +h
+MapSpell [icewall] "snow,16,35,16,35, +d100, +t4, +h
+MapSpell [icewall] "snow,43,23,43,23, +d100, +t4, +h
+MapSpell [icewall] "snow,43,35,43,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,22,15,22, +d100, +t4, +h
+MapSpell [icewall] "snow,15,36,15,36, +d100, +t4, +h
+MapSpell [icewall] "snow,44,22,44,22, +d100, +t4, +h
+MapSpell [icewall] "snow,44,36,44,36, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main17_2003
+
+[@main17_2003]
+#ACT
+MapSpell [icewall] "snow,20,29,20,29, +d100, +t4, +h
+MapSpell [icewall] "snow,39,29,39,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,26,23,26, +d100, +t4, +h
+MapSpell [icewall] "snow,23,32,23,32, +d100, +t4, +h
+MapSpell [icewall] "snow,36,26,36,26, +d100, +t4, +h
+MapSpell [icewall] "snow,36,32,36,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,25,22,25, +d100, +t4, +h
+MapSpell [icewall] "snow,22,33,22,33, +d100, +t4, +h
+MapSpell [icewall] "snow,37,25,37,25, +d100, +t4, +h
+MapSpell [icewall] "snow,37,33,37,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,24,21,24, +d100, +t4, +h
+MapSpell [icewall] "snow,21,34,21,34, +d100, +t4, +h
+MapSpell [icewall] "snow,38,24,38,24, +d100, +t4, +h
+MapSpell [icewall] "snow,38,34,38,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,23,20,23, +d100, +t4, +h
+MapSpell [icewall] "snow,20,35,20,35, +d100, +t4, +h
+MapSpell [icewall] "snow,39,23,39,23, +d100, +t4, +h
+MapSpell [icewall] "snow,39,35,39,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,22,19,22, +d100, +t4, +h
+MapSpell [icewall] "snow,19,36,19,36, +d100, +t4, +h
+MapSpell [icewall] "snow,40,22,40,22, +d100, +t4, +h
+MapSpell [icewall] "snow,40,36,40,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,21,18,21, +d100, +t4, +h
+MapSpell [icewall] "snow,18,37,18,37, +d100, +t4, +h
+MapSpell [icewall] "snow,41,21,41,21, +d100, +t4, +h
+MapSpell [icewall] "snow,41,37,41,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,20,17,20, +d100, +t4, +h
+MapSpell [icewall] "snow,17,38,17,38, +d100, +t4, +h
+MapSpell [icewall] "snow,42,20,42,20, +d100, +t4, +h
+MapSpell [icewall] "snow,42,38,42,38, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,20,28,20,28, +d100, +t4, +h
+MapSpell [icewall] "snow,20,30,20,30, +d100, +t4, +h
+MapSpell [icewall] "snow,39,28,39,28, +d100, +t4, +h
+MapSpell [icewall] "snow,39,30,39,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,27,19,27, +d100, +t4, +h
+MapSpell [icewall] "snow,19,31,19,31, +d100, +t4, +h
+MapSpell [icewall] "snow,40,27,40,27, +d100, +t4, +h
+MapSpell [icewall] "snow,40,31,40,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,26,18,26, +d100, +t4, +h
+MapSpell [icewall] "snow,18,32,18,32, +d100, +t4, +h
+MapSpell [icewall] "snow,41,26,41,26, +d100, +t4, +h
+MapSpell [icewall] "snow,41,32,41,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,25,17,25, +d100, +t4, +h
+MapSpell [icewall] "snow,17,33,17,33, +d100, +t4, +h
+MapSpell [icewall] "snow,42,25,42,25, +d100, +t4, +h
+MapSpell [icewall] "snow,42,33,42,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,24,16,24, +d100, +t4, +h
+MapSpell [icewall] "snow,16,34,16,34, +d100, +t4, +h
+MapSpell [icewall] "snow,43,24,43,24, +d100, +t4, +h
+MapSpell [icewall] "snow,43,34,43,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,23,15,23, +d100, +t4, +h
+MapSpell [icewall] "snow,15,35,15,35, +d100, +t4, +h
+MapSpell [icewall] "snow,44,23,44,23, +d100, +t4, +h
+MapSpell [icewall] "snow,44,35,44,35, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main18_2003
+
+[@main18_2003]
+#ACT
+MapSpell [icewall] "snow,19,29,19,29, +d100, +t4, +h
+MapSpell [icewall] "snow,40,29,40,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,25,23,25, +d100, +t4, +h
+MapSpell [icewall] "snow,23,33,23,33, +d100, +t4, +h
+MapSpell [icewall] "snow,36,25,36,25, +d100, +t4, +h
+MapSpell [icewall] "snow,36,33,36,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,24,22,24, +d100, +t4, +h
+MapSpell [icewall] "snow,22,34,22,34, +d100, +t4, +h
+MapSpell [icewall] "snow,37,24,37,24, +d100, +t4, +h
+MapSpell [icewall] "snow,37,34,37,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,23,21,23, +d100, +t4, +h
+MapSpell [icewall] "snow,21,35,21,35, +d100, +t4, +h
+MapSpell [icewall] "snow,38,23,38,23, +d100, +t4, +h
+MapSpell [icewall] "snow,38,35,38,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,22,20,22, +d100, +t4, +h
+MapSpell [icewall] "snow,20,36,20,36, +d100, +t4, +h
+MapSpell [icewall] "snow,39,22,39,22, +d100, +t4, +h
+MapSpell [icewall] "snow,39,36,39,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,21,19,21, +d100, +t4, +h
+MapSpell [icewall] "snow,19,37,19,37, +d100, +t4, +h
+MapSpell [icewall] "snow,40,21,40,21, +d100, +t4, +h
+MapSpell [icewall] "snow,40,37,40,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,20,18,20, +d100, +t4, +h
+MapSpell [icewall] "snow,18,38,18,38, +d100, +t4, +h
+MapSpell [icewall] "snow,41,20,41,20, +d100, +t4, +h
+MapSpell [icewall] "snow,41,38,41,38, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,19,28,19,28, +d100, +t4, +h
+MapSpell [icewall] "snow,19,30,19,30, +d100, +t4, +h
+MapSpell [icewall] "snow,40,28,40,28, +d100, +t4, +h
+MapSpell [icewall] "snow,40,30,40,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,27,18,27, +d100, +t4, +h
+MapSpell [icewall] "snow,18,31,18,31, +d100, +t4, +h
+MapSpell [icewall] "snow,41,27,41,27, +d100, +t4, +h
+MapSpell [icewall] "snow,41,31,41,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,26,17,26, +d100, +t4, +h
+MapSpell [icewall] "snow,17,32,17,32, +d100, +t4, +h
+MapSpell [icewall] "snow,42,26,42,26, +d100, +t4, +h
+MapSpell [icewall] "snow,42,32,42,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,25,16,25, +d100, +t4, +h
+MapSpell [icewall] "snow,16,33,16,33, +d100, +t4, +h
+MapSpell [icewall] "snow,43,25,43,25, +d100, +t4, +h
+MapSpell [icewall] "snow,43,33,43,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,24,15,24, +d100, +t4, +h
+MapSpell [icewall] "snow,15,34,15,34, +d100, +t4, +h
+MapSpell [icewall] "snow,44,24,44,24, +d100, +t4, +h
+MapSpell [icewall] "snow,44,34,44,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,23,14,23, +d100, +t4, +h
+MapSpell [icewall] "snow,14,35,14,35, +d100, +t4, +h
+MapSpell [icewall] "snow,45,23,45,23, +d100, +t4, +h
+MapSpell [icewall] "snow,45,35,45,35, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main19_2003
+
+[@main19_2003]
+#ACT
+MapSpell [icewall] "snow,18,29,18,29, +d100, +t4, +h
+MapSpell [icewall] "snow,41,29,41,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,24,23,24, +d100, +t4, +h
+MapSpell [icewall] "snow,23,34,23,34, +d100, +t4, +h
+MapSpell [icewall] "snow,36,24,36,24, +d100, +t4, +h
+MapSpell [icewall] "snow,36,34,36,34, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,23,22,23, +d100, +t4, +h
+MapSpell [icewall] "snow,22,35,22,35, +d100, +t4, +h
+MapSpell [icewall] "snow,37,23,37,23, +d100, +t4, +h
+MapSpell [icewall] "snow,37,35,37,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,22,21,22, +d100, +t4, +h
+MapSpell [icewall] "snow,21,36,21,36, +d100, +t4, +h
+MapSpell [icewall] "snow,38,22,38,22, +d100, +t4, +h
+MapSpell [icewall] "snow,38,36,38,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,21,20,21, +d100, +t4, +h
+MapSpell [icewall] "snow,20,37,20,37, +d100, +t4, +h
+MapSpell [icewall] "snow,39,21,39,21, +d100, +t4, +h
+MapSpell [icewall] "snow,39,37,39,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,20,19,20, +d100, +t4, +h
+MapSpell [icewall] "snow,19,38,19,38, +d100, +t4, +h
+MapSpell [icewall] "snow,40,20,40,20, +d100, +t4, +h
+MapSpell [icewall] "snow,40,38,40,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,18,19,18,19, +d100, +t4, +h
+MapSpell [icewall] "snow,18,39,18,39, +d100, +t4, +h
+MapSpell [icewall] "snow,41,19,41,19, +d100, +t4, +h
+MapSpell [icewall] "snow,41,39,41,39, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,18,28,18,28, +d100, +t4, +h
+MapSpell [icewall] "snow,18,30,18,30, +d100, +t4, +h
+MapSpell [icewall] "snow,41,28,41,28, +d100, +t4, +h
+MapSpell [icewall] "snow,41,30,41,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,17,27,17,27, +d100, +t4, +h
+MapSpell [icewall] "snow,17,31,17,31, +d100, +t4, +h
+MapSpell [icewall] "snow,42,27,42,27, +d100, +t4, +h
+MapSpell [icewall] "snow,42,31,42,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,26,16,26, +d100, +t4, +h
+MapSpell [icewall] "snow,16,32,16,32, +d100, +t4, +h
+MapSpell [icewall] "snow,43,26,43,26, +d100, +t4, +h
+MapSpell [icewall] "snow,43,32,43,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,25,15,25, +d100, +t4, +h
+MapSpell [icewall] "snow,15,33,15,33, +d100, +t4, +h
+MapSpell [icewall] "snow,44,25,44,25, +d100, +t4, +h
+MapSpell [icewall] "snow,44,33,44,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,24,14,24, +d100, +t4, +h
+MapSpell [icewall] "snow,14,34,14,34, +d100, +t4, +h
+MapSpell [icewall] "snow,45,24,45,24, +d100, +t4, +h
+MapSpell [icewall] "snow,45,34,45,34, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main20_2003
+
+[@main20_2003]
+#ACT
+MapSpell [icewall] "snow,17,29,17,29, +d100, +t4, +h
+MapSpell [icewall] "snow,42,29,42,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,23,23,23, +d100, +t4, +h
+MapSpell [icewall] "snow,23,35,23,35, +d100, +t4, +h
+MapSpell [icewall] "snow,36,23,36,23, +d100, +t4, +h
+MapSpell [icewall] "snow,36,35,36,35, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,22,22,22, +d100, +t4, +h
+MapSpell [icewall] "snow,22,36,22,36, +d100, +t4, +h
+MapSpell [icewall] "snow,37,22,37,22, +d100, +t4, +h
+MapSpell [icewall] "snow,37,36,37,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,21,21,21, +d100, +t4, +h
+MapSpell [icewall] "snow,21,37,21,37, +d100, +t4, +h
+MapSpell [icewall] "snow,38,21,38,21, +d100, +t4, +h
+MapSpell [icewall] "snow,38,37,38,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,20,20,20, +d100, +t4, +h
+MapSpell [icewall] "snow,20,38,20,38, +d100, +t4, +h
+MapSpell [icewall] "snow,39,20,39,20, +d100, +t4, +h
+MapSpell [icewall] "snow,39,38,39,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,19,19,19, +d100, +t4, +h
+MapSpell [icewall] "snow,19,39,19,39, +d100, +t4, +h
+MapSpell [icewall] "snow,40,19,40,19, +d100, +t4, +h
+MapSpell [icewall] "snow,40,39,40,39, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,17,28,17,28, +d100, +t4, +h
+MapSpell [icewall] "snow,17,30,17,30, +d100, +t4, +h
+MapSpell [icewall] "snow,42,28,42,28, +d100, +t4, +h
+MapSpell [icewall] "snow,42,30,42,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,16,27,16,27, +d100, +t4, +h
+MapSpell [icewall] "snow,16,31,16,31, +d100, +t4, +h
+MapSpell [icewall] "snow,43,27,43,27, +d100, +t4, +h
+MapSpell [icewall] "snow,43,31,43,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,26,15,26, +d100, +t4, +h
+MapSpell [icewall] "snow,15,32,15,32, +d100, +t4, +h
+MapSpell [icewall] "snow,44,26,44,26, +d100, +t4, +h
+MapSpell [icewall] "snow,44,32,44,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,25,14,25, +d100, +t4, +h
+MapSpell [icewall] "snow,14,33,14,33, +d100, +t4, +h
+MapSpell [icewall] "snow,45,25,45,25, +d100, +t4, +h
+MapSpell [icewall] "snow,45,33,45,33, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,24,13,24, +d100, +t4, +h
+MapSpell [icewall] "snow,13,34,13,34, +d100, +t4, +h
+MapSpell [icewall] "snow,46,24,46,24, +d100, +t4, +h
+MapSpell [icewall] "snow,46,34,46,34, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main21_2003
+
+[@main21_2003]
+#ACT
+MapSpell [icewall] "snow,16,29,16,29, +d100, +t4, +h
+MapSpell [icewall] "snow,43,29,43,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,22,23,22, +d100, +t4, +h
+MapSpell [icewall] "snow,23,36,23,36, +d100, +t4, +h
+MapSpell [icewall] "snow,36,22,36,22, +d100, +t4, +h
+MapSpell [icewall] "snow,36,36,36,36, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,21,22,21, +d100, +t4, +h
+MapSpell [icewall] "snow,22,37,22,37, +d100, +t4, +h
+MapSpell [icewall] "snow,37,21,37,21, +d100, +t4, +h
+MapSpell [icewall] "snow,37,37,37,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,20,21,20, +d100, +t4, +h
+MapSpell [icewall] "snow,21,38,21,38, +d100, +t4, +h
+MapSpell [icewall] "snow,38,20,38,20, +d100, +t4, +h
+MapSpell [icewall] "snow,38,38,38,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,19,20,19, +d100, +t4, +h
+MapSpell [icewall] "snow,20,39,20,39, +d100, +t4, +h
+MapSpell [icewall] "snow,39,19,39,19, +d100, +t4, +h
+MapSpell [icewall] "snow,39,39,39,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,19,18,19,18, +d100, +t4, +h
+MapSpell [icewall] "snow,19,40,19,40, +d100, +t4, +h
+MapSpell [icewall] "snow,40,18,40,18, +d100, +t4, +h
+MapSpell [icewall] "snow,40,40,40,40, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,16,28,16,28, +d100, +t4, +h
+MapSpell [icewall] "snow,16,30,16,30, +d100, +t4, +h
+MapSpell [icewall] "snow,43,28,43,28, +d100, +t4, +h
+MapSpell [icewall] "snow,43,30,43,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,15,27,15,27, +d100, +t4, +h
+MapSpell [icewall] "snow,15,31,15,31, +d100, +t4, +h
+MapSpell [icewall] "snow,44,27,44,27, +d100, +t4, +h
+MapSpell [icewall] "snow,44,31,44,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,26,14,26, +d100, +t4, +h
+MapSpell [icewall] "snow,14,32,14,32, +d100, +t4, +h
+MapSpell [icewall] "snow,45,26,45,26, +d100, +t4, +h
+MapSpell [icewall] "snow,45,32,45,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,25,13,25, +d100, +t4, +h
+MapSpell [icewall] "snow,13,33,13,33, +d100, +t4, +h
+MapSpell [icewall] "snow,46,25,46,25, +d100, +t4, +h
+MapSpell [icewall] "snow,46,33,46,33, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main22_2003
+
+[@main22_2003]
+#ACT
+MapSpell [icewall] "snow,15,29,15,29, +d100, +t4, +h
+MapSpell [icewall] "snow,44,29,44,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,21,23,21, +d100, +t4, +h
+MapSpell [icewall] "snow,23,37,23,37, +d100, +t4, +h
+MapSpell [icewall] "snow,36,21,36,21, +d100, +t4, +h
+MapSpell [icewall] "snow,36,37,36,37, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,20,22,20, +d100, +t4, +h
+MapSpell [icewall] "snow,22,38,22,38, +d100, +t4, +h
+MapSpell [icewall] "snow,37,20,37,20, +d100, +t4, +h
+MapSpell [icewall] "snow,37,38,37,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,19,21,19, +d100, +t4, +h
+MapSpell [icewall] "snow,21,39,21,39, +d100, +t4, +h
+MapSpell [icewall] "snow,38,19,38,19, +d100, +t4, +h
+MapSpell [icewall] "snow,38,39,38,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,18,20,18, +d100, +t4, +h
+MapSpell [icewall] "snow,20,40,20,40, +d100, +t4, +h
+MapSpell [icewall] "snow,39,28,39,18, +d100, +t4, +h
+MapSpell [icewall] "snow,39,40,39,40, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,15,28,15,28, +d100, +t4, +h
+MapSpell [icewall] "snow,15,30,15,30, +d100, +t4, +h
+MapSpell [icewall] "snow,44,28,44,28, +d100, +t4, +h
+MapSpell [icewall] "snow,44,30,44,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,14,27,14,27, +d100, +t4, +h
+MapSpell [icewall] "snow,14,31,14,31, +d100, +t4, +h
+MapSpell [icewall] "snow,45,27,45,27, +d100, +t4, +h
+MapSpell [icewall] "snow,45,31,45,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,26,13,26, +d100, +t4, +h
+MapSpell [icewall] "snow,13,32,13,32, +d100, +t4, +h
+MapSpell [icewall] "snow,46,26,46,26, +d100, +t4, +h
+MapSpell [icewall] "snow,46,32,46,32, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,25,12,25, +d100, +t4, +h
+MapSpell [icewall] "snow,12,33,12,33, +d100, +t4, +h
+MapSpell [icewall] "snow,47,25,47,25, +d100, +t4, +h
+MapSpell [icewall] "snow,47,33,47,33, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main23_2003
+
+[@main23_2003]
+#ACT
+MapSpell [icewall] "snow,14,29,14,29, +d100, +t4, +h
+MapSpell [icewall] "snow,45,29,45,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,20,23,20, +d100, +t4, +h
+MapSpell [icewall] "snow,23,38,23,38, +d100, +t4, +h
+MapSpell [icewall] "snow,36,20,36,20, +d100, +t4, +h
+MapSpell [icewall] "snow,36,38,36,38, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,19,22,19, +d100, +t4, +h
+MapSpell [icewall] "snow,22,39,22,39, +d100, +t4, +h
+MapSpell [icewall] "snow,37,19,37,19, +d100, +t4, +h
+MapSpell [icewall] "snow,37,39,37,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,18,21,18, +d100, +t4, +h
+MapSpell [icewall] "snow,21,40,21,40, +d100, +t4, +h
+MapSpell [icewall] "snow,38,18,38,18, +d100, +t4, +h
+MapSpell [icewall] "snow,38,40,38,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,20,17,20,17, +d100, +t4, +h
+MapSpell [icewall] "snow,20,41,20,41, +d100, +t4, +h
+MapSpell [icewall] "snow,39,27,39,17, +d100, +t4, +h
+MapSpell [icewall] "snow,39,41,39,41, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,14,28,14,28, +d100, +t4, +h
+MapSpell [icewall] "snow,14,30,14,30, +d100, +t4, +h
+MapSpell [icewall] "snow,45,28,45,28, +d100, +t4, +h
+MapSpell [icewall] "snow,45,30,45,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,13,27,13,27, +d100, +t4, +h
+MapSpell [icewall] "snow,13,31,13,31, +d100, +t4, +h
+MapSpell [icewall] "snow,46,27,46,27, +d100, +t4, +h
+MapSpell [icewall] "snow,46,31,46,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,26,12,26, +d100, +t4, +h
+MapSpell [icewall] "snow,12,32,12,32, +d100, +t4, +h
+MapSpell [icewall] "snow,47,26,47,26, +d100, +t4, +h
+MapSpell [icewall] "snow,47,32,47,32, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main24_2003
+
+[@main24_2003]
+#ACT
+MapSpell [icewall] "snow,13,29,13,29, +d100, +t4, +h
+MapSpell [icewall] "snow,46,29,46,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,19,23,19, +d100, +t4, +h
+MapSpell [icewall] "snow,23,39,23,39, +d100, +t4, +h
+MapSpell [icewall] "snow,36,19,36,19, +d100, +t4, +h
+MapSpell [icewall] "snow,36,39,36,39, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,18,22,18, +d100, +t4, +h
+MapSpell [icewall] "snow,22,40,22,40, +d100, +t4, +h
+MapSpell [icewall] "snow,37,18,37,18, +d100, +t4, +h
+MapSpell [icewall] "snow,37,40,37,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,17,21,17, +d100, +t4, +h
+MapSpell [icewall] "snow,21,41,21,41, +d100, +t4, +h
+MapSpell [icewall] "snow,38,17,38,17, +d100, +t4, +h
+MapSpell [icewall] "snow,38,41,38,41, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,13,28,13,28, +d100, +t4, +h
+MapSpell [icewall] "snow,13,30,13,30, +d100, +t4, +h
+MapSpell [icewall] "snow,46,28,46,28, +d100, +t4, +h
+MapSpell [icewall] "snow,46,30,46,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,12,27,12,27, +d100, +t4, +h
+MapSpell [icewall] "snow,12,31,12,31, +d100, +t4, +h
+MapSpell [icewall] "snow,47,27,47,27, +d100, +t4, +h
+MapSpell [icewall] "snow,47,31,47,31, +d100, +t4, +h
+
+MapSpell [icewall] "snow,11,26,11,26, +d100, +t4, +h
+MapSpell [icewall] "snow,11,32,11,32, +d100, +t4, +h
+MapSpell [icewall] "snow,48,26,48,26, +d100, +t4, +h
+MapSpell [icewall] "snow,48,32,48,32, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main25_2003
+
+[@main25_2003]
+#ACT
+MapSpell [icewall] "snow,12,29,12,29, +d100, +t4, +h
+MapSpell [icewall] "snow,47,29,47,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,18,23,18, +d100, +t4, +h
+MapSpell [icewall] "snow,23,40,23,40, +d100, +t4, +h
+MapSpell [icewall] "snow,36,18,36,18, +d100, +t4, +h
+MapSpell [icewall] "snow,36,40,36,40, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,17,22,17, +d100, +t4, +h
+MapSpell [icewall] "snow,22,41,22,41, +d100, +t4, +h
+MapSpell [icewall] "snow,37,17,37,17, +d100, +t4, +h
+MapSpell [icewall] "snow,37,41,37,41, +d100, +t4, +h
+
+MapSpell [icewall] "snow,21,16,21,16, +d100, +t4, +h
+MapSpell [icewall] "snow,21,42,21,42, +d100, +t4, +h
+MapSpell [icewall] "snow,38,16,38,16, +d100, +t4, +h
+MapSpell [icewall] "snow,38,42,38,42, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,12,28,12,28, +d100, +t4, +h
+MapSpell [icewall] "snow,12,30,12,30, +d100, +t4, +h
+MapSpell [icewall] "snow,47,28,47,28, +d100, +t4, +h
+MapSpell [icewall] "snow,47,30,47,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,10,27,10,27, +d100, +t4, +h
+MapSpell [icewall] "snow,11,27,11,27, +d100, +t4, +h
+MapSpell [icewall] "snow,11,31,11,31, +d100, +t4, +h
+MapSpell [icewall] "snow,48,27,48,27, +d100, +t4, +h
+MapSpell [icewall] "snow,48,31,48,31, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main26_2003
+
+[@main26_2003]
+#ACT
+MapSpell [icewall] "snow,11,29,11,29, +d100, +t4, +h
+MapSpell [icewall] "snow,48,29,48,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,17,23,17, +d100, +t4, +h
+MapSpell [icewall] "snow,23,41,23,41, +d100, +t4, +h
+MapSpell [icewall] "snow,36,17,36,17, +d100, +t4, +h
+MapSpell [icewall] "snow,36,41,36,41, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,16,22,16, +d100, +t4, +h
+MapSpell [icewall] "snow,22,42,22,42, +d100, +t4, +h
+MapSpell [icewall] "snow,37,16,37,16, +d100, +t4, +h
+MapSpell [icewall] "snow,37,42,37,42, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,11,28,11,28, +d100, +t4, +h
+MapSpell [icewall] "snow,11,30,11,30, +d100, +t4, +h
+MapSpell [icewall] "snow,48,28,48,28, +d100, +t4, +h
+MapSpell [icewall] "snow,48,30,48,30, +d100, +t4, +h
+
+MapSpell [icewall] "snow,10,31,10,31, +d100, +t4, +h
+MapSpell [icewall] "snow,49,31,49,31, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main27_2003
+
+[@main27_2003]
+#ACT
+MapSpell [icewall] "snow,10,29,10,29, +d100, +t4, +h
+MapSpell [icewall] "snow,49,29,49,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,16,23,16, +d100, +t4, +h
+MapSpell [icewall] "snow,23,42,23,42, +d100, +t4, +h
+MapSpell [icewall] "snow,36,16,36,16, +d100, +t4, +h
+MapSpell [icewall] "snow,36,42,36,42, +d100, +t4, +h
+
+MapSpell [icewall] "snow,22,15,22,15, +d100, +t4, +h
+MapSpell [icewall] "snow,22,43,22,43, +d100, +t4, +h
+MapSpell [icewall] "snow,37,15,37,15, +d100, +t4, +h
+MapSpell [icewall] "snow,37,43,37,43, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,10,28,10,28, +d100, +t4, +h
+MapSpell [icewall] "snow,10,30,10,30, +d100, +t4, +h
+MapSpell [icewall] "snow,49,28,49,28, +d100, +t4, +h
+MapSpell [icewall] "snow,49,30,49,30, +d100, +t4, +h
+Delaygoto [Grobal] 2 @main28_2003
+
+[@main28_2003]
+#ACT
+MapSpell [icewall] "snow,9,29,5,29, +d100, +t4, +h
+MapSpell [icewall] "snow,50,29,50,29, +d100, +t4, +h
+
+MapSpell [icewall] "snow,23,15,23,15, +d100, +t4, +h
+MapSpell [icewall] "snow,23,43,23,43, +d100, +t4, +h
+MapSpell [icewall] "snow,36,15,36,15, +d100, +t4, +h
+MapSpell [icewall] "snow,36,43,36,43, +d100, +t4, +h
+;;
+MapSpell [icewall] "snow,9,28,9,28, +d100, +t4, +h
+MapSpell [icewall] "snow,50,28,50,28, +d100, +t4, +h
+MapSpell [icewall] "snow,9,30,9,30, +d100, +t4, +h
+MapSpell [icewall] "snow,50,30,50,30, +d100, +t4, +h
+Delaygoto [Grobal] 2 @MapSpellMasic
+
+}
+;------------------------------------------------------------------------
+
+[@SuddenDeathSpell_1]
+{
+#ACT
+MapSpell [icewall] "snow,36,14,36,44, +d100, +t120, +h
+MapSpell [icewall] "snow,50,28,50,30, +d100, +t120, +h
+MapSpell [icewall] "snow,49,28,49,31, +d100, +t120, +h
+
+
+MapSpell [icewall] "snow,23,16,23,44, +d100, +t120, +h
+MapSpell [icewall] "snow,9,28,9,30, +d100, +t120, +h
+MapSpell [icewall] "snow,10,27,10,31, +d100, +t120, +h
+
+Delaygoto [Grobal] 10 @SuddenDeathSpell_2
+
+[@SuddenDeathSpell_2]
+#ACT
+MapSpell [icewall] "snow,24,15,24,45, +d100, +t80, +h
+MapSpell [icewall] "snow,22,17,22,43, +d100, +t80, +h
+MapSpell [icewall] "snow,21,18,21,42, +d100, +t80, +h
+MapSpell [icewall] "snow,11,26,11,32, +d100, +t60, +h
+MapSpell [icewall] "snow,12,25,12,33, +d100, +t60, +h
+
+
+MapSpell [icewall] "snow,35,13,35,45, +d100, +t80, +h
+MapSpell [icewall] "snow,37,15,37,43, +d100, +t80, +h
+MapSpell [icewall] "snow,38,16,38,42, +d100, +t80, +h
+MapSpell [icewall] "snow,48,27,48,32, +d100, +t60, +h
+MapSpell [icewall] "snow,47,26,47,33, +d100, +t60, +h
+
+Delaygoto [Grobal] 10 @SuddenDeathSpell_3
+
+[@SuddenDeathSpell_3]
+#ACT
+MapSpell [icewall] "snow,25,14,25,46, +d100, +t60, +h
+MapSpell [icewall] "snow,20,19,20,41, +d100, +t60, +h
+MapSpell [icewall] "snow,19,20,19,40, +d100, +t60, +h
+MapSpell [icewall] "snow,13,24,13,34, +d100, +t60, +h
+MapSpell [icewall] "snow,14,24,14,35, +d100, +t60, +h
+
+MapSpell [icewall] "snow,34,12,34,46, +d100, +t60, +h
+MapSpell [icewall] "snow,39,18,39,41, +d100, +t60, +h
+MapSpell [icewall] "snow,40,19,40,40, +d100, +t60, +h
+MapSpell [icewall] "snow,46,25,46,34, +d100, +t60, +h
+MapSpell [icewall] "snow,45,24,45,35, +d100, +t60, +h
+
+Delaygoto [Grobal] 10 @SuddenDeathSpell_4
+
+[@SuddenDeathSpell_4]
+#ACT
+MapSpell [icewall] "snow,26,13,26,47, +d100, +t40, +h
+MapSpell [icewall] "snow,18,21,18,39, +d100, +t40, +h
+MapSpell [icewall] "snow,17,22,17,38, +d100, +t40, +h
+MapSpell [icewall] "snow,15,23,15,36, +d100, +t40, +h
+MapSpell [icewall] "snow,16,23,16,37, +d100, +t40, +h
+
+
+MapSpell [icewall] "snow,33,11,33,47, +d100, +t40, +h
+MapSpell [icewall] "snow,41,20,41,39, +d100, +t40, +h
+MapSpell [icewall] "snow,42,21,42,38, +d100, +t40, +h
+MapSpell [icewall] "snow,44,23,44,36, +d100, +t40, +h
+MapSpell [icewall] "snow,43,22,43,37, +d100, +t40, +h
+
+break
+}
+

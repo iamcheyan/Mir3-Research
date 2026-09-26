@@ -1,0 +1,20 @@
+[@main]
+#IF
+check [413] 1
+#ACT
+break
+
+#IF
+random 5
+check [412] 1
+#SAY
+;놀랍군. 심장이 스스로 움직이다니... 이것이 고동소리를 \
+That's unbelievable! \
+A heart is beating on its own... \
+my owns beat will be hidden by that hearts \
+;듣고 적혈마검을 얻을수 있겠지... \ \
+then I can get RedMoonSword... \ \ 
+
+#ACT
+give EvilApeHeart 1
+SET [413] 1

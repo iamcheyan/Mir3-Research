@@ -1,0 +1,47 @@
+; ===================================
+; Npc Def NPC File : Sailor-0
+; npc in BichonProvince (BorderVillage)
+; -----------------------------------
+; Name: Sailor
+; Job: 
+; Map No: 0
+; Pos X 
+; Pos Y 
+; File name: *removed*
+; Comment: npc in BichonProvince (BorderVillage)
+
+;================================================= =
+;
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会传送你这样的人!\ \
+<离开/@exit>
+#ELSEACT
+goto @main-1
+
+[@main-1]
+#SAY
+渡船到般若岛将要开了，请上船。\ \
+<支付2000金币上船/@brdmove>\
+<谈话/@talk>
+
+[@talk]
+般若岛充满了狂暴的怪物。\
+一些勇士可以借此机会提高和提高\
+他们的声誉。但对于当地人来说这没什么，只是地狱。\ \
+<返回/@main-1>
+ 
+[@brdmove]
+#IF
+checkgold 2000
+#ACT
+take gold 2000
+mapmove 5 124 353
+break
+#ELSESAY
+你没有足够的金币来用我的服务！\
+走开，不要再浪费我的时间！\\
+<Exit/@exit>

@@ -1,0 +1,769 @@
+;;º£¥áµÁ
+[@WANG_START]
+{
+#IF
+check [133] 1
+#ACT
+goto @WANG_START_2
+#ELSEACT
+goto @WANG_START_0
+
+[@WANG_START_0]
+#IF
+check [164] 1
+check [132] 0
+checklevel 9
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_2
+
+
+[@WANG_START_1]
+#IF
+check [164] 1
+check [132] 0
+#ACT
+set [133] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_3
+
+
+[@WANG_START_2]
+#IF
+check [164] 1
+check [132] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_4
+
+
+[@WANG_START_3]
+#IF
+check [164] 1
+check [132] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_5
+
+
+[@WANG_START_6_1]
+#IF
+check [164] 1
+check [132] 0
+#ACT
+set [133] 0
+set [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_6
+
+
+[@WANG_START_6_2]
+#IF
+check [164] 1
+check [132] 0
+#ACT
+give ½ð±Ò 3000
+set [133] 0
+set [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_7
+
+}
+
+[@INVITE_2MAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_8
+
+}
+
+[@WANG_COMPLETE]
+{
+#IF
+#ACT
+goto @WANG_COMPLETE_0
+
+[@WANG_COMPLETE_0]
+#IF
+check [168] 0
+check [165] 1
+#ACT
+goto @WANG_COMPLETE_2
+#ELSEACT
+goto @WANG_COMPLETE_1
+
+[@WANG_COMPLETE_1]
+#IF
+check [168] 0
+check [166] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_9
+
+#ELSEACT
+goto @WANG_COMPLETE_1_1
+
+[@WANG_COMPLETE_1_1]
+#IF
+check [168] 0
+check [167] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_10
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_11
+
+
+[@WANG_COMPLETE_2]
+#IF
+check [168] 0
+check [166] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_12
+
+#ELSEACT
+goto @WANG_COMPLETE_3
+
+[@WANG_COMPLETE_3]
+#IF
+check [168] 0
+check [167] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_13
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_14
+
+
+[@WANG_COMPLETE_5]
+#IF
+check [168] 0
+#ACT
+give ½ð±Ò 5000
+reset [132] 19
+set [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_15
+
+}
+
+[@WANG_H_COMPLETE]
+{
+#IF
+#ACT
+goto @WANG_H_COMPLETE_0
+
+[@WANG_H_COMPLETE_0]
+#IF
+check [169] 0
+check [152] 1
+check [155] 1
+#ACT
+goto @WANG_H_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_16
+
+
+[@WANG_H_COMPLETE_1]
+#IF
+check [169] 0
+check [152] 1
+check [157] 1
+#ACT
+goto @WANG_H_COMPLETE_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_17
+
+
+[@WANG_H_COMPLETE_2]
+#IF
+check [169] 0
+check [152] 1
+check [159] 1
+#ACT
+goto @WANG_H_COMPLETE_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_18
+
+
+[@WANG_H_COMPLETE_3]
+#IF
+check [169] 0
+check [152] 1
+check [155] 1
+check [157] 1
+check [159] 1
+#ACT
+give ½ð±Ò 25000
+reset [152] 7
+set [169] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_19
+
+}
+
+[@BICHUN_SANGGE1]
+{
+#IF
+check [169] 0
+check [168] 0
+check [165] 1
+#ACT
+goto @BICHUN_SANGGE1_1
+#ELSEACT
+goto @BICHUN_SANGGE1_2
+
+[@BICHUN_SANGGE1_1]
+#IF
+check [169] 0
+check [168] 0
+check [166] 1
+#ACT
+goto @BICHUN_SANGGE1_3
+#ELSEACT
+goto @BICHUN_SANGGE1_1_1
+
+[@BICHUN_SANGGE1_1_1]
+#IF
+check [169] 0
+check [168] 0
+check [167] 1
+#ACT
+goto @BICHUN_SANGGE1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_20
+
+
+[@BICHUN_SANGGE1_2]
+#IF
+check [169] 0
+check [168] 0
+check [166] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_21
+
+#ELSEACT
+goto @BICHUN_SANGGE1_2_1
+
+[@BICHUN_SANGGE1_2_1]
+#IF
+check [169] 0
+check [168] 0
+check [167] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_22
+
+
+[@BICHUN_SANGGE1_3]
+#IF
+check [169] 0
+check [168] 0
+check [152] 0
+#ACT
+set [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_23
+
+}
+
+[@BICHUN_SANGGE2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_24
+
+}
+
+[@INVITE_JABSANG]
+{
+#IF
+check [154] 1
+#ACT
+goto @INVITE_JABSANG_21
+break
+#IF
+check [153] 1
+#ACT
+goto @INVITE_JABSANG_14
+break
+#ELSEACT
+goto @INVITE_JABSANG_1
+
+[@INVITE_JABSANG_1]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_25
+
+
+[@INVITE_JABSANG_2]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_26
+
+
+[@INVITE_JABSANG_3]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_27
+
+
+[@INVITE_JABSANG_4]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_28
+
+
+[@INVITE_JABSANG_5]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_29
+
+
+[@INVITE_JABSANG_6]
+#IF
+checkgold 15000
+#ACT
+take ½ð±Ò 15000
+goto @INVITE_JABSANG_6_1
+#ELSEACT
+set [154] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_30
+
+
+[@INVITE_JABSANG_6_1]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+reset [153] 1
+set [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_31
+
+
+[@INVITE_JABSANG_7]
+#IF
+check [155] 0
+check [152] 1
+checkgold 12000
+#ACT
+take ½ð±Ò 12000
+goto @INVITE_JABSANG_7_1
+#ELSEACT
+set [154] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_32
+
+
+[@INVITE_JABSANG_7_1]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+reset [153] 1
+set [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_33
+
+
+[@INVITE_JABSANG_8]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+set [154] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_34
+
+
+[@INVITE_JABSANG_9]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_35
+
+
+[@INVITE_JABSANG_10]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_36
+
+
+[@INVITE_JABSANG_11]
+#IF
+check [155] 0
+check [152] 1
+checkgold 10000
+#ACT
+take ½ð±Ò 10000
+goto @INVITE_JABSANG_11_1
+#ELSEACT
+set [154] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_37
+
+
+[@INVITE_JABSANG_11_1]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+reset [153] 1
+set [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_38
+
+
+[@INVITE_JABSANG_12]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+set [154] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_39
+
+
+[@INVITE_JABSANG_13]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+set [153] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_40
+
+
+[@INVITE_JABSANG_14]
+#IF
+check [155] 0
+check [152] 1
+checkitem ÉÕ¾Æ 1
+#ACT
+take ÉÕ¾Æ 1
+goto @INVITE_JABSANG_15
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_41
+
+
+[@INVITE_JABSANG_15]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_42
+
+
+[@INVITE_JABSANG_16]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_43
+
+
+[@INVITE_JABSANG_17]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_44
+
+
+[@INVITE_JABSANG_18]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+reset [153] 1
+set [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_45
+
+
+[@INVITE_JABSANG_23]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+set [538] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_46
+
+
+[@INVITE_JABSANG_24]
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_47
+
+
+[@INVITE_JABSANG_25]
+#IF
+check [155] 0
+check [152] 1
+checkgold 30000
+#ACT
+take ½ð±Ò 20000
+goto @INVITE_JABSANG_25_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_48
+
+
+[@INVITE_JABSANG_25_1]
+#IF
+check [155] 0
+check [152] 1
+#ACT
+reset [153] 1
+set [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_49
+
+}
+
+[@JOIN_JABSANG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_50
+
+}
+
+[@GO_WANG_EUNSIL]
+{
+#IF
+check [155] 0
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_51
+
+}
+
+[@INVITE_EUNSIL1]
+{
+#IF
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_52
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_53
+
+}
+
+[@INVITE_EUNSIL2]
+{
+#IF
+#ACT
+goto @INVITE_EUNSIL2_1
+[@INVITE_EUNSIL2_1]
+#IF
+check [156] 0
+check [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_54
+
+
+[@INVITE_EUNSIL2_2]
+#IF
+check [156] 0
+check [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_55
+
+
+[@INVITE_EUNSIL2_3]
+#IF
+check [156] 0
+check [155] 1
+#ACT
+set [156] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_56
+
+}
+
+[@SHOW_BULSA]
+{
+#IF
+check [157] 0
+check [156] 1
+#ACT
+goto @SHOW_BULSA_1_0
+
+[@SHOW_BULSA_1_0]
+#IF
+checkitem ½ÇµÑ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_57
+
+#ACT
+break
+;
+#IF
+checkitem ²»ËÀÅÆ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_58
+
+#ACT
+break
+;
+#IF
+checkitem Áé»ê»¤ÎÀ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_59
+
+#ACT
+break
+;
+#IF
+checkitem »ÙÃð»¤Éí·û 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_60
+
+#ACT
+break
+;
+#IF
+checkitem ÎÖÂê½ðÅÆ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_61
+
+#ACT
+break
+;
+#IF
+checkitem µØÓüÉñÖÓ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_62
+
+#ACT
+break
+;
+#IF
+checkitem Áé»êÃ÷Öé 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_63
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_64
+
+
+
+[@SHOW_BULSA_3]
+#IF
+check [157] 0
+check [156] 1
+#ACT
+set [157] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_65
+
+}
+
+[@JOIN_EUNSIL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_66
+
+}
+
+[@GO_WANG_IBBUN]
+{
+#IF
+checklevel 11
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_67
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_68
+
+}
+
+[@INVITE_IBBUN]
+{
+#IF
+#ACT
+goto @INVITE_IBBUN_0
+[@INVITE_IBBUN_0]
+#IF
+check [158] 0
+check [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_69
+
+
+[@INVITE_IBBUN_3]
+#IF
+check [158] 0
+check [155] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_70
+
+
+[@INVITE_IBBUN_4]
+#IF
+check [158] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_71
+
+
+[@INVITE_IBBUN_5]
+#IF
+check [158] 0
+check [155] 1
+#ACT
+set [158] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_72
+
+}
+
+[@GIVE_CHOGONG]
+{
+#IF
+check [159] 0
+check [158] 1
+checkitem »Ø³Ç¾í 6
+#ACT
+take »Ø³Ç¾í 6
+goto @GIVE_CHOGONG_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_73
+
+
+[@GIVE_CHOGONG_1]
+#IF
+check [159] 0
+check [158] 1
+#ACT
+set [159] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_74
+
+}
+
+[@JOIN_IBBUN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\wang.txt] @wang_75
+
+}

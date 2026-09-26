@@ -1,0 +1,331 @@
+;;海メ盗
+%100
+;skill book
++51
+;translate skill book
++4
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Main
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Sell
+
+[@helpbooks]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_HelpBooks
+
+[@help_31]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Help_31
+
+[@help_32]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Help_32
+
+[@help_33]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_Help_33
+
+[Goods]
+;ItemName      Volume     Hour
+基本剑术     100            1
+攻杀剑术     100            1
+刺杀剑术     100            1
+半月弯刀      50            1
+野蛮冲撞      50            1
+
+火球术       100            1
+霹雳掌       100            1
+抗拒火环     100            1
+诱惑之光     100            1
+瞬息移动     100            1
+大火球       100            1
+雷电术       100            1
+地狱火       100            1
+疾光电影      50            1
+冰沙掌        50            1
+火墙          50            1
+
+治愈术       100            1
+精神力战法   100            1
+施毒术       100            1
+灵魂火符     100            1
+月魂断玉     100            1
+召唤骷髅     100            1
+隐身术       100            1
+幽灵盾       100            1
+集体隐身术   100            1
+月魂灵波      50            1
+神圣战甲术    50            1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 593
+#ACT
+goto @TQuest593_0
+break
+;
+#IF
+CheckDailyQuest 561
+#ACT
+goto @TQuest561_0
+break
+;
+#IF
+CheckDailyQuest 562
+#ACT
+goto @TQuest562_0
+break
+;
+#IF
+CheckDailyQuest 527
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 302
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 203
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 104
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest593_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest593_2
+break
+;
+#ELSEACT
+goto @TQuest593_1
+
+;--------------
+
+[@TQuest593_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @593_START
+
+[@TQuest593_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @593_CHECK1
+
+;------------------------
+
+[@TQuest561_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest561_2
+break
+;
+#ELSEACT
+goto @TQuest561_1
+
+;--------------
+
+[@TQuest561_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @561_START
+
+[@TQuest561_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @561_CHECK1
+
+;------------------------
+
+[@TQuest562_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 0
+#ACT
+goto @TQuest1_6
+break
+;
+#ELSEACT
+goto @TQuest562_1
+
+;--------------
+
+[@TQuest562_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @562_CHECK2
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @104_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @104_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\05Book_DoGwan-1_004.txt] @NPC_TQuest_1
+
+;---------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\2ndClass.txt] @203_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\2ndClass.txt] @203_CHECK1
+
+;---------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\3rdClass.txt] @302_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\3rdClass.txt] @302_CHECK1
+;---------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_1
+break
+;
+#ELSESAY
+今天没事情可拜托你了。\ \
+<结束/@exit>
+
+;--------------
+
+[@TQuest4_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @527_CHECK2
+
+;---------------------------

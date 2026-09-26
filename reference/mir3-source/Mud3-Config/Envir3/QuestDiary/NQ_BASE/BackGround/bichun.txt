@@ -1,0 +1,177 @@
+;;海メ盗
+[@BackLog_BC_M1]
+{
+#IF
+#ACT
+goto @BackLog_BC_M1_0
+[@BackLog_BC_M1_0]
+#IF
+check [258] 1
+#ACT
+goto @BackLog_BC_M1_1
+break
+#IF
+check [254] 1
+#ACT
+goto @BackLog_BC_M1_1
+break
+#IF
+check [253] 1
+#ACT
+goto @BackLog_BC_M1_B0
+break
+#ELSEACT
+goto @BackLog_BC_M1_1
+[@BackLog_BC_M1_1]
+#IF
+check [247] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [220] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [213] 1
+#ACT
+goto @BackLog_BC_M1_B5
+break
+#IF
+check [200] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [199] 1
+#ACT
+goto @BackLog_BC_M1_B4
+break
+#IF
+check [196] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [171] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [168] 1
+#ACT
+goto @BackLog_BC_M1_B3
+break
+#IF
+check [165] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [135] 1
+#ACT
+goto @BackLog_BC_M1_2
+break
+#IF
+check [134] 1
+#ACT
+goto @BackLog_BC_M1_B2
+break
+#ELSEACT
+goto @BackLog_BC_M1_2
+break
+[@BackLog_BC_M1_2]
+#IF
+check [265] 1
+#ACT
+goto @main_root
+break
+#IF
+check [261] 1
+#ACT
+goto @main_root
+break
+#IF
+check [260] 1
+#ACT
+goto @BackLog_BC_M1_B1
+break
+#ELSEACT
+goto @main_root
+break
+[@BackLog_BC_M1_B0]
+#IF
+checklevel 5
+#ACT
+goto @BackLog_BC_M1_B0_2
+#ELSEACT
+goto @BackLog_BC_M1_1
+[@BackLog_BC_M1_B0_2]
+#IF
+checkitem 气霖证书 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_1
+
+#ELSEACT
+goto @BackLog_BC_M1_1
+[@BackLog_BC_M1_B0_3]
+#IF
+check [255] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_2
+
+[@BackLog_BC_M1_B0_4]
+#IF
+#ACT
+set [254] 1
+set [255] 1
+setopen [1] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_3
+
+[@BackLog_BC_M1_B1]
+#IF
+#ACT
+set [261] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_4
+
+[@BackLog_BC_M1_B2]
+#IF
+#ACT
+set [135] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_5
+
+[@BackLog_BC_M1_B3]
+#IF
+checklevel 11
+#ACT
+set [171] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_6
+
+#ELSEACT
+goto @BackLog_BC_M1_2
+[@BackLog_BC_M1_B4]
+#IF
+checklevel 16
+#ACT
+set [200] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_7
+
+#ELSEACT
+goto @BackLog_BC_M1_2
+[@BackLog_BC_M1_B5]
+#IF
+checklevel 16
+#ACT
+set [220] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\bichun.txt] @bichun_8
+
+#ELSEACT
+goto @BackLog_BC_M1_2
+}

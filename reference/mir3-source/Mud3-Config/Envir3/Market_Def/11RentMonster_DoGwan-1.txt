@@ -1,0 +1,13 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\11RentMonster_DoGwan-1.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+;;-------------------------
+
+[@main_0_0]
+#CALL [\Taming\RentMob.txt] @Event_taming

@@ -1,0 +1,715 @@
+;;º£¥áµÁ
+[@Ma1]
+{
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_1
+
+
+[@Ma1_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma1_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_2
+
+#ELSEACT
+map B011
+
+[@Ma1_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B102 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B103 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B104 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B105 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B106 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B107 10 16
+break
+}
+
+[@Ma2]
+{
+#ACT
+breaktimerecall
+movr d0 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_3
+
+
+[@Ma2_Penalty]
+#IF
+equal d0 0
+#ACT
+goto @Ma2_pre_cube
+give »ð°Ñ 1
+break
+
+#IF
+equal d0 1
+#ACT
+goto @Ma2_pre_cube
+give µØÀÎÌÓÍÑ¾í 1
+break
+
+#IF
+equal d0 2
+#ACT
+goto @Ma2_pre_cube
+give Ì«ÑôË® 1
+break
+
+[@Ma2_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma2_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_4
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma2_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B103 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B104 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B105 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B106 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B107 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B108 10 16
+break
+}
+
+[@Ma3]
+{
+#IF
+check [799] 0
+#ACT
+MonClear B103_001
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_5
+
+#ELSEACT
+goto @Ma3_race
+
+[@Ma3_game]
+#ACT
+SET [799] 1
+mongenP "B103_001,19,19,15" Ñò 30
+TimeRecall 1
+mapmove B103_001 13 13
+
+[@Ma3_race]
+#IF
+checkmonmap B103_001 1
+#ACT
+mapmove 01 428 314
+#ELSEACT
+goto @Ma3_pre_cube
+
+[@Ma3_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+set [799] 0
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma3_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_6
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma3_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B104 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B105 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B106 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B107 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B108 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B109 10 16
+break
+}
+
+[@Ma4]
+{
+#ACT
+movr d0 6
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_7
+
+
+[@Ma4_game]
+#IF
+equal d0 0
+#ACT
+goto @Ma4_pre_cube
+take ³ïÂë 6
+break
+
+#IF
+equal d0 1
+#ACT
+goto @Ma4_pre_cube
+give ³ïÂë 6
+break
+
+#IF
+equal d0 2
+#ACT
+goto @Ma4_pre_cube
+take ³ïÂë 9
+break
+
+#IF
+equal d0 3
+#ACT
+goto @Ma4_pre_cube
+take ½ð±Ò 4000
+break
+
+#IF
+equal d0 4
+#ACT
+goto @Ma4_pre_cube
+give ½ð´´Ò©£¨ÌØ£© 2
+give Ä§·¨Ò©£¨ÌØ£© 2
+break
+
+#IF
+equal d0 5
+#ACT
+goto @Ma4_pre_cube
+give ½ð´´Ò©£¨´ó£© 2
+give Ä§·¨Ò©£¨´ó£© 2
+break
+
+[@Ma4_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma4_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_8
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma4_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B105 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B106 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B107 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B108 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B109 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B110 10 16
+break
+}
+
+[@Ma5]
+{
+#IF
+check [799] 0
+#ACT
+breaktimerecall
+MonClear B105_001
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_9
+
+#ELSEACT
+goto @Ma5_race
+
+[@Ma5_game]
+#ACT
+set [799] 1
+mongenP "B105_001,19,19,15" Ê³ÈË»¨ 30
+TimeRecall 1
+map B105_001
+
+[@Ma5_race]
+#IF
+checkitem Ê³ÈËÊ÷Ò¶ 3
+#ACT
+take Ê³ÈËÊ÷Ò¶ 1000
+goto @Ma5_pre_cube
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma5_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+set [799] 0
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma5_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_10
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma5_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B106 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B107 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B108 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B109 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B110 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B111 10 16
+break
+}
+
+[@Ma6]
+{
+#IF
+check [799] 0
+#ACT
+breaktimerecall
+MonClear B105_001
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_11
+
+#ELSEACT
+goto @Ma6_pre_cube
+
+[@Ma6_game]
+#IF
+daytime day
+#ACT
+set [799] 1
+MongenP "B106_001,20,20,20" ÷¼÷Ã 10
+MongenP "B106_001,20,20,20" ÷¼÷ÃÕ½Ê¿ 10
+TimeRecall 3
+map B106_001
+break
+
+#IF
+daytime night
+#ACT
+set [799] 1
+MongenP "B106_001,20,20,20" ÷¼÷ÃÕ½½« 10
+MongenP "B106_001,20,20,20" ÖÀ¸«÷¼÷Ã 10
+TimeRecall 3
+map B106_001
+break
+
+#ELSEACT
+set [799] 1
+MongenP "B106_001,20,20,20" ÷¼÷Ã¾«Áé 10
+TimeRecall 3
+map B106_001
+break
+
+[@Ma6_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+set [799] 0
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma6_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_12
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma6_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B107 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B108 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B109 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B110 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B111 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B112 10 16
+break
+}
+
+[@Ma7]
+{
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_13
+
+
+[@Ma7_presen]
+#CALL [\\mabangjin\game.txt] @Game
+
+[@Ma7_pre_cube]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma7_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_14
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma7_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B108 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B109 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B110 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B111 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B112 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B113 10 16
+break
+}
+
+[@Ma8]
+{
+#ACT
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_15
+
+
+[@Ma8_next]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma8_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_16
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma8_cube]
+#IF
+large d0 3
+#ACT
+mapmove B114 10 16
+#ELSEACT
+goto @Ma8_next_cube
+
+[@Ma8_next_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B109 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B110 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B111 10 16
+break
+}
+
+[@Ma9]
+{
+#IF
+check [799] 0
+#ACT
+MonClear B105_001
+ClearItemMap "B109, 30, 30, 30"  ÌØÊâÒ©Ë®
+breaktimerecall
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_17
+
+#ELSEACT
+goto @Ma9_pre_cube
+
+[@Ma9_game]
+#ACT
+SET [799] 1
+take ÌØÊâÒ©Ë® 5000
+mongenP "B109_001,50,50,50" ÖÀ¸«÷¼÷Ã62 100
+TimeRecall 3
+map B109_001
+
+[@Ma9_pre_cube]
+#IF
+checkitem ÌØÊâÒ©Ë® 1
+checkitem ³ïÂë 1
+#ACT
+set [799] 0
+take ÌØÊâÒ©Ë® 5000
+take ³ïÂë 1
+movr d0 6
+inc d0 1
+playdice 1 @Ma9_cube
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_18
+
+#ELSEACT
+mapmove 01 428 314
+
+[@Ma9_cube]
+#IF
+equal d0 1 
+#ACT
+mapmove B110 10 16
+break
+
+#IF
+equal d0 2 
+#ACT
+mapmove B111 10 16
+break
+
+#IF
+equal d0 3 
+#ACT
+mapmove B112 10 16
+break
+
+#IF
+equal d0 4 
+#ACT
+mapmove B113 10 16
+break
+
+#IF
+equal d0 5
+#ACT
+mapmove B114 10 16
+break
+
+#IF
+equal d0 6 
+#ACT
+mapmove B115 10 16
+break
+}
+
+[@Ma10]
+{
+#IF
+checkitem ³ïÂë 1
+#ACT
+breaktimerecall
+take ³ïÂë 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\play01_10.txt] @play01_10_19
+
+#ELSEACT
+breaktimerecall
+mapmove 01 428 314
+
+[@Ma10_move]
+#ACT
+mapmove B124 10 16
+}

@@ -1,0 +1,26 @@
+;;海メ盗
+[@mugong_masshiding_test]
+#IF
+check [723] 1
+#ACT
+break
+
+#IF
+check [514] 1
+#ACT
+break
+
+#IF
+check [513] 1
+#ACT
+goto @giveitem
+break
+
+[@giveitem]
+#IF
+random 20
+#ACT
+give 成致日志 1
+SET [514] 1
+#SAY
+(现在回到大飞圣僧那儿，并将 '成致日志'拿给他，就可以学习'集体隐身术'了...)\

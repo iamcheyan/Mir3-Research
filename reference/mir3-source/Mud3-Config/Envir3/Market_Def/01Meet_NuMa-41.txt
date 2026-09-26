@@ -1,0 +1,23 @@
+;;º£¥áµÁ
+%100
++40
++1
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\01Meet_NuMa-41.txt] @NPC_RedPlayer
+#ELSEACT
+        goto @main_0_0
+        break
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\01Meet_NuMa-41.txt] @NPC_Main
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\01Meet_NuMa-41.txt] @NPC_Sell
+
+[Goods]

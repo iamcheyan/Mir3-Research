@@ -1,0 +1,47 @@
+; ===================================
+; Npc Def NPC File : Sailor-5
+; npc in PrajnaIsland
+; -----------------------------------
+; Name: Sailor
+; Job: 
+; Map No: 5
+; Pos X 
+; Pos Y 
+; File name: *removed*
+; Comment: npc in PrajnaIsland
+
+;================================================= =
+;
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会传送你这样的人!\ \
+<离开/@exit>
+#ELSEACT
+goto @main-1
+
+[@main-1]
+#SAY
+任何人都想去大陆，请上船。\
+
+不用多久船就要离开了。\\
+<支付2000金币/@brdmove>上船\
+<和船员谈话/@talk>
+ 
+[@talk]
+我的船看起来很老，已经有30年历史了！\
+<返回/@main-1>
+
+[@brdmove]
+#IF
+checkgold 2000
+#ACT
+take gold 2000
+mapmove 0 252 674
+break
+#ELSESAY
+你没有足够的金币来用我的服务！\
+走开，不要再浪费我的时间！\\
+<离开/@exit>

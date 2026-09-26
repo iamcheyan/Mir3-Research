@@ -1,0 +1,74 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung2-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;-------------------
+
+[@main_0]
+#IF
+checkjob warrior
+#ACT
+BreakTimeRecall 
+goto @whang_main
+#ELSEACT
+BreakTimeRecall 
+goto @whang_other_class
+
+[@whang_other_class]
+#IF
+checkjob wizard
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung2-01.txt] @NPC_Main_Wizard
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung2-01.txt] @NPC_Main_Taoist
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@whang_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung2-01.txt] @NPC_Main
+
+[@whang_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung2-01.txt] @NPC_Main_Mugong
+
+;;------------------------------------------------------------------------------
+
+[@mutebo_test_start]
+#IF
+check [512] 1
+check [704] 0
+#ACT
+goto @mutebo_test_complete_receive
+break
+#IF
+check [509] 1
+#ACT
+goto @mutebo_retry
+break
+#IF
+#ACT
+goto @mutebo_begin
+
+[@mutebo_begin]
+#CALL [\MU_warrior\mute.txt] @mugong_mutebo
+
+[@mutebo_retry]
+#CALL [\MU_warrior\mute.txt] @mugon_mutebo_retry
+
+[@mutebo_test_complete_receive]
+#CALL [\MU_warrior\mute.txt] @mugong_mutebo_test_complete_receive

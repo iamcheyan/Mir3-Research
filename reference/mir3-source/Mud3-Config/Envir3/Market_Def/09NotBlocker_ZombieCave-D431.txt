@@ -1,0 +1,55 @@
+;;09NotBlocker_ZombieCave-D421.txt
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NotBlocker_ZombieCave-D431.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NotBlocker_ZombieCave-D431.txt] @NPC_Main
+
+[@move]
+#IF
+#ACT
+mapmove  2 343 220
+
+[@TQuest]
+#IF
+CheckDailyQuest 310
+#ACT
+goto @TQuest1_0
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NotBlocker_ZombieCave-D431.txt] @NPC_TQuest
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+
+#ELSEACT
+goto @TQuest1_1
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @310_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @310_CHECK1
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NotBlocker_ZombieCave-D431.txt] @NPC_TQuest_1

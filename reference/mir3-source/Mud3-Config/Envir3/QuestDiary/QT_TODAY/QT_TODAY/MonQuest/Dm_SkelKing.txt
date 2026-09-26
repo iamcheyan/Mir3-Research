@@ -1,0 +1,46 @@
+;;º£¥áµÁ
+[@main]
+#IF
+CheckDailyQuest 495
+#ACT
+goto @SkelKing_T495
+break
+;
+#ELSEACT
+break
+
+
+[@SkelKing_T495]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @SkelKing_T495_1
+break
+;
+#ELSEACT
+break
+;
+
+[@SkelKing_T495_1]
+#IF
+#ACT
+set [308] 1
+give ÷¼÷Ã¾«Áé¹Ç 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T495_Say
+

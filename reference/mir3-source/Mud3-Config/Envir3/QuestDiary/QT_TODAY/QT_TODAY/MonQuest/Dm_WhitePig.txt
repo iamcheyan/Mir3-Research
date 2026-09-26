@@ -1,0 +1,52 @@
+;;º£¥áµÁ
+[@main]
+#IF
+CheckDailyQuest 213
+#ACT
+goto @bakdon_T213
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@bakdon_T213]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @bakdon_T213_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@bakdon_T213_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T213_Say
+
+#ACT
+set [308] 1
+;-----------------------------------------------------

@@ -1,0 +1,31 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\
+<结束/@exit>
+}
+
+[@NPC_Main]
+{
+从你身上那种熟悉的气质来看，你一定是和我一样的魔法师。呵呵，你不用那么防备我，我是银杏山谷魔法研究会派来的华龙坛主。我离开银杏山谷来到这里，一方面为了帮助那些在修炼中遇到困难的魔法师，另一方面是为了募集魔法研究会的会费。你要是在修炼武功的过程中遇到什么困难，不要犹豫，直接来找我就行了。不过你要记住，这儿和银杏山谷一样，没有免费的午餐。\
+<查看可解释的武功目录/@main_0_1>\
+<结束/@exit>
+}
+
+[@NPC_Main_0]
+{
+（法师魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<火球术/@Go_Mu_Wizard_fire_bolt> , <霹雳掌/@Go_Mu_Wizard_light_bolt> , <风掌/@Go_Mu_Wizard_wind_jangpung>\ \
+（11 - 20 等级 修炼魔法）\
+<抗拒火环/@Go_Mu_Wizard_fire_strom> , <诱惑之光/@Go_Mu_Wizard_light_shock> , <瞬息移动/@Go_Mu_Wizard_ETC_teleport>\
+<大火球/@Go_Mu_Wizard_fire_Upbolt> , <雷电术/@Go_Mu_Wizard_light_recall> \
+<击风/@Go_Mu_Wizard_wind_kyoukpung> , <地狱火/@Go_Mu_Wizard_fire_line>\ \
+（21 - 30 等级 修炼魔法）\
+<疾光电影/@Go_Mu_Wizard_light_line> , <冰沙掌/@Go_Mu_Wizard_bingsa> ,<风震天/@Go_Mu_Wizard_wind_pungjin> , <火墙/@Go_Mu_Wizard_fire_jiyem> , <圣言术/@Go_Mu_Wizard_ETC_saja> , <异形换位/@Go_Mu_Wizard_ehyung>\
+<魔法盾/@Go_Mu_Wizard_fire_shild>\ \
+（31 - 40 等级 修炼魔法）\
+<爆裂火焰/@Go_Mu_Wizard_fire_pokyel> , <地狱雷光/@Go_Mu_Wizard_light_storm> , <冰咆哮/@Go_Mu_Wizard_ice_strom> , <龙卷风/@Go_Mu_Wizard_yongsun>\ \
+ <结束/@exit>
+}
+

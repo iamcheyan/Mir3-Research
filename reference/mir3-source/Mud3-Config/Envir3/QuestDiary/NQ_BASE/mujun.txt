@@ -1,0 +1,211 @@
+;;海メ盗
+[@MUJUN_START]
+{
+#IF
+checklevel 3
+#ACT
+goto @MUJUN_START_1
+
+[@MUJUN_START_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_1
+
+
+[@MUJUN_START_2]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_3
+
+
+[@MUJUN_START_2_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_4
+
+
+[@MUJUN_START_3]
+#IF
+#ACT
+set [249] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_5
+
+}
+
+[@MUJUN_YUKWAN_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_6
+
+}
+
+[@MUJUN_COMPLETE]
+{
+#IF
+check [250] 1
+#ACT
+goto @MUJUN_COMPLETE_1
+break
+#IF
+check [251] 1
+#ACT
+goto @MUJUN_COMPLETE_3
+break
+#ELSEACT
+goto @MUJUN_COMPLETE
+
+[@MUJUN_COMPLETE_1]
+#IF
+check [252] 0
+check [250] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_7
+
+
+[@MUJUN_COMPLETE_2]
+#IF
+check [253] 0
+check [250] 1
+#ACT
+give 耐久铁手镯 1
+reset [249] 2
+set [252] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_8
+
+
+[@MUJUN_COMPLETE_3]
+#IF
+check [253] 0
+check [251] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_9
+
+
+[@MUJUN_COMPLETE_4]
+#IF
+checkgold 1000
+#ACT
+goto @MUJUN_COMPLETE_4_1
+#ELSEACT
+goto @MUJUN_COMPLETE_4_2
+
+[@MUJUN_COMPLETE_4_1]
+#IF
+check [253] 0
+check [251] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_10
+
+
+[@MUJUN_COMPLETE_4_2]
+#IF
+check [253] 0
+check [251] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_11
+
+
+[@MUJUN_COMPLETE_5_1]
+#IF
+checkgold 1000
+#ACT
+set [592] 0
+take 金币 1000
+give 银手镯 1
+reset [249] 2
+set [253] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_12
+
+
+[@MUJUN_COMPLETE_5_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_13
+
+}
+
+[@MUJUN_HWONGGR_1]
+{
+#IF
+check [251] 0
+check [250] 0
+check [249] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_14
+
+
+[@MUJUN_HWONGGR_1_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_15
+
+
+[@MUJUN_HWONGGR_1_1]
+#IF
+check [251] 0
+check [250] 0
+check [249] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_16
+
+
+[@MUJUN_HWONGGR_1_2]
+#IF
+check [250] 0
+check [249] 1
+#ACT
+set [250] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_17
+
+
+[@MUJUN_HWONGGR_1_3]
+#IF
+check [251] 0
+check [249] 1
+#ACT
+give 气霖证书 1
+set [251] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_18
+
+}
+
+[@MUJUN_HWONGGR_2]
+{
+#IF
+check [250] 1
+#ACT
+goto @MUJUN_HWONGGR_2_1
+break
+#IF
+check [251] 1
+#ACT
+goto @MUJUN_HWONGGR_2_2
+break
+#ELSEACT
+goto @MUJUN_HWONGGR_2
+
+[@MUJUN_HWONGGR_2_1]
+#IF
+check [250] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_19
+
+
+[@MUJUN_HWONGGR_2_2]
+#IF
+check [251] 1
+#ACT
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\mujun.txt] @mujun_20
+
+}

@@ -1,0 +1,14 @@
+;;베α돝
+[@EunHang_Teleport]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\EunHangTele.txt] @EunHangTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

@@ -1,0 +1,67 @@
+;;º£¥áµÁ
+[@checkRefinePoints]
+{
+begin
+	#SAY
+	   #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_1
+
+[@CancleRefine]
+	begin
+		#IF
+		   !checkitem Ä§¾§Ê¯ 1
+		#SAY
+		   #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_2
+		#ACT
+		   break
+
+		#IF
+		   IsAdmin
+		#ACT
+		   TestRefinePoints           ;; P9¼öÄ¡¿¡ Á¦·Ã Á¡¼ö Æ÷ÀÎÆ® °è»ê
+		#SAY
+		   Refine points = <$OUTPUT(P9)>\
+		
+		#IF
+		   ESmall  P9  20
+		#SAY
+		   #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_3
+		#ACT
+		   break
+		
+		#IF
+		   ESmall  P9  30
+		#SAY
+		   #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_4
+		#ACT
+		   break
+		
+		#IF
+		#SAY
+		   #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_5
+		#ACT
+		   break
+	end
+
+[@DoResetRefine]
+	begin
+	   #IF
+         checkweaponlevel 1    ;; ¸Ç¼ÕÀ¸·Î ¿ÔÀ» °æ¿ì´Â µÇÁö ¾ÊÀ½
+      #ELSESAY
+         #INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_5_except
+      #ELSEACT
+         break
+	
+	   #IF
+	      CheckAccessory  5
+   		checkgold       1000000
+			checkitem       Ä§¾§Ê¯     1
+		#ACT
+			take Ä§¾§Ê¯ 1
+			take ½ð±Ò 1000000
+			ResetRefineWeapon
+			close
+		#ELSESAY
+			#INCLUDE [..\Convert_Def\QuestDiary\Refine\Cancle.txt] @Cancle_Say_6
+	end
+end
+}

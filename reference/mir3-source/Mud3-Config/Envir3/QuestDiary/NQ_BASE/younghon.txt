@@ -1,0 +1,589 @@
+;;∫£•·µ¡
+[@ST_HON_START]
+{
+#IF
+#ACT
+goto @ST_HON_START_0
+
+[@ST_HON_START_0]
+#IF
+check [199] 1
+check [201] 0
+checklevel 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_2
+
+
+[@ST_HON_START_1]
+#IF
+check [199] 1
+check [201] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_3
+
+
+[@ST_HON_START_2]
+#IF
+check [199] 1
+check [201] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_4
+
+
+[@ST_HON_START_3]
+#IF
+check [199] 1
+check [201] 0
+#ACT
+set [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_5
+
+}
+
+[@ST_HON_WANG_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_6
+
+}
+
+[@ST_HON_WANG_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_7
+
+}
+
+[@ST_HON_SOPAL_1]
+{
+#IF
+#ACT
+goto @ST_HON_SOPAL_1_0
+
+[@ST_HON_SOPAL_1_0]
+#IF
+check [202] 0
+check [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_8
+
+
+[@ST_HON_SOPAL_1_1]
+#IF
+check [202] 0
+check [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_9
+
+
+[@ST_HON_SOPAL_1_2]
+#IF
+check [202] 0
+check [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_10
+
+
+[@ST_HON_SOPAL_1_3]
+#IF
+check [202] 0
+check [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_11
+
+
+[@ST_HON_SOPAL_1_4]
+#IF
+check [202] 0
+check [201] 1
+#ACT
+set [202] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_12
+
+}
+
+[@ST_HON_SOPAL_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_13
+
+}
+
+[@ST_HON_SOPAL_3]
+{
+#IF
+check [211] 1
+#ACT
+goto @ST_HON_SOPAL_3_3
+#ELSEACT
+goto @ST_HON_SOPAL_3_0
+
+[@ST_HON_SOPAL_3_0]
+#IF
+check [212] 0
+check [210] 1
+#ACT
+goto @ST_HON_SOPAL_3_1
+
+[@ST_HON_SOPAL_3_1]
+#IF
+checkitem ¡ÈªÍª§Œ¿ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_14
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_15
+
+
+[@ST_HON_SOPAL_3_2]
+#IF
+checkitem ¡ÈªÍª§Œ¿ 1
+#ACT
+take ¡ÈªÍª§Œ¿ 1
+set [211] 1
+goto @ST_HON_SOPAL_3_3
+
+[@ST_HON_SOPAL_3_3]
+#IF
+check [212] 0
+check [210] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_16
+
+
+[@ST_HON_SOPAL_3_4]
+#IF
+check [212] 0
+check [210] 1
+#ACT
+give ≈£»‚ 5
+give Ω±“ 10000
+set [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_17
+
+}
+
+[@ST_HON_SOPAL_4]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_18
+
+}
+
+[@ST_HON_YORYUNG_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_19
+
+}
+
+[@ST_HON_YORYUNG_2]
+{
+#IF
+#ACT
+goto @ST_HON_YORYUNG_2_0
+
+[@ST_HON_YORYUNG_2_0]
+#IF
+check [213] 0
+check [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_20
+
+
+[@ST_HON_YORYUNG_2_1]
+#IF
+check [213] 0
+check [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_21
+
+
+[@ST_HON_YORYUNG_2_2]
+#IF
+check [213] 0
+check [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_22
+
+
+[@ST_HON_YORYUNG_2_3]
+#IF
+check [213] 0
+check [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_23
+
+
+[@ST_HON_YORYUNG_2_4]
+#IF
+check [213] 0
+check [212] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_24
+
+
+[@ST_HON_YORYUNG_2_5]
+#IF
+check [213] 0
+check [212] 1
+#ACT
+reset [200] 12
+set [213] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_25
+
+}
+
+[@ST_HON_WIHUN_1]
+{
+#IF
+#ACT
+goto @ST_HON_WIHUN_1_0
+
+[@ST_HON_WIHUN_1_0]
+#IF
+check [203] 0
+check [201] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_26
+
+
+[@ST_HON_WIHUN_1_1]
+#IF
+check [203] 0
+check [201] 1
+#ACT
+set [203] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_27
+
+}
+
+[@ST_HON_WIHUN_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_28
+
+}
+
+[@ST_HON_WIHUN_3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_29
+
+}
+
+[@ST_HON_UKJE_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_30
+
+}
+
+[@ST_HON_UKJE_2]
+{
+#IF
+#ACT
+goto @ST_HON_UKJE_2_0
+
+[@ST_HON_UKJE_2_0]
+#IF
+check [204] 0
+check [202] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_31
+
+
+[@ST_HON_UKJE_2_1]
+#IF
+check [204] 0
+check [202] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_32
+
+
+[@ST_HON_UKJE_2_2]
+#IF
+check [204] 0
+check [202] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_33
+
+
+[@ST_HON_UKJE_2_3]
+#IF
+check [204] 0
+check [202] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_34
+
+
+[@ST_HON_UKJE_2_4]
+#IF
+check [204] 0
+check [202] 1
+#ACT
+set [204] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_35
+
+}
+
+[@ST_HON_UKJE_3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_36
+
+}
+
+[@ST_HON_UKJE_4]
+{
+#IF
+#ACT
+goto @ST_HON_UKJE_4_0
+
+[@ST_HON_UKJE_4_0]
+#IF
+check [210] 0
+check [209] 1
+#ACT
+goto @ST_HON_UKJE_4_1
+
+[@ST_HON_UKJE_4_1]
+#IF
+checkitem ¡ÈªÍª§Œ¿ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_37
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_38
+
+
+[@ST_HON_UKJE_4_2]
+#IF
+check [210] 0
+check [209] 1
+#ACT
+set [210] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_39
+
+}
+
+[@ST_HON_UKJE_5]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_40
+
+}
+
+[@ST_HON_HWANGJUNG_1]
+{
+#IF
+#ACT
+goto @ST_HON_HWANGJUNG_1_0
+
+[@ST_HON_HWANGJUNG_1_0]
+#IF
+check [205] 0
+check [204] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_41
+
+
+[@ST_HON_HWANGJUNG_1_1]
+#IF
+check [205] 0
+check [204] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_42
+
+
+[@ST_HON_HWANGJUNG_1_2]
+#IF
+check [205] 0
+check [204] 1
+#ACT
+set [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_43
+
+}
+
+[@ST_HON_HWANGJUNG_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_44
+
+}
+
+[@ST_HON_HWANGJUNG_3]
+{
+#IF
+#ACT
+goto @ST_HON_HWANGJUNG_3_0
+
+[@ST_HON_HWANGJUNG_3_0]
+#IF
+check [207] 0
+check [206] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_45
+
+
+[@ST_HON_HWANGJUNG_3_1]
+#IF
+check [207] 0
+check [206] 1
+#ACT
+set [207] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_46
+
+}
+
+[@ST_HON_HWANGJUNG_4]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_47
+
+}
+
+[@ST_HON_HWANGJUNG_5]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_48
+
+}
+
+[@ST_HON_KWANRI_1]
+{
+#IF
+check [208] 1
+#ACT
+goto @ST_HON_KWANRI_1_1
+#ELSEACT
+goto @ST_HON_KWANRI_1_0
+
+[@ST_HON_KWANRI_1_0]
+#IF
+check [209] 0
+check [207] 1
+#ACT
+give ¡ÈªÍª§Œ¿ 1
+give Ω±“ 5000
+set [208] 1
+goto @ST_HON_KWANRI_1_1
+
+[@ST_HON_KWANRI_1_1]
+#IF
+check [209] 0
+check [207] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_49
+
+
+[@ST_HON_KWANRI_1_2]
+#IF
+check [209] 0
+check [207] 1
+#ACT
+set [209] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_50
+
+}
+
+[@ST_HON_KWANRI_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_51
+
+}
+
+[@ST_HON_SEOJUN_1]
+{
+#IF
+#ACT
+goto @ST_HON_SEOJUN_1_0
+
+[@ST_HON_SEOJUN_1_0]
+#IF
+check [206] 0
+check [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_52
+
+
+[@ST_HON_SEOJUN_1_1]
+#IF
+check [206] 0
+check [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_53
+
+
+[@ST_HON_SEOJUN_1_2]
+#IF
+check [206] 0
+check [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_54
+
+
+[@ST_HON_SEOJUN_1_3]
+#IF
+check [206] 0
+check [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_55
+
+
+[@ST_HON_SEOJUN_1_4]
+#IF
+check [206] 0
+check [205] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_56
+
+
+[@ST_HON_SEOJUN_1_5]
+#IF
+check [206] 0
+check [205] 1
+#ACT
+set [205] 0
+set [206] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_57
+
+}
+
+[@ST_HON_SEOJUN_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\younghon.txt] @younghon_58
+
+}

@@ -1,0 +1,32 @@
+;;海メ盗
+[@NPC_Main]
+{
+<寄存/@storage>物品\
+<取回/@getback>寄存的物品\
+}
+
+[@NPC_Admin_Main]
+{
+{FCOLOR/10}管理员命令语句:{FCOLOR/12}\
+<$@admin_menu>\ \
+}
+
+[@NPC_Storage]
+{
+您要我为您保管什么东西? \ \
+<前一步/@main>
+}
+
+[@NPC_Admin_Menu]
+{
+<准备启动边境城市春节怪物屠城活动./@GEvent_start_00> \
+}
+
+[@NPC_GetBack]
+{
+您要找回什么东西? \ \
+<前一步/@main>
+}
+
+
+

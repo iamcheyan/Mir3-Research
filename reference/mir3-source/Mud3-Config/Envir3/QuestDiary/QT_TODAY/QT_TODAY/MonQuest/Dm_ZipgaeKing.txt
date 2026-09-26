@@ -1,0 +1,93 @@
+;;∫£•·µ¡
+[@main]
+;
+#IF
+CheckDailyQuest 473
+#ACT
+goto @King_T473
+break
+;
+
+#IF
+CheckDailyQuest 313
+#ACT
+goto @wanggibge_313
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@King_T473]
+;		¿œ¿œ ƒ˘Ω∫∆Æ 473 π¯
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @King_T473_1
+break
+;
+#ELSEACT
+break
+;
+
+[@King_T473_1]
+#IF
+#ACT
+set [308] 1
+give –∞∂Ò«Ø≥Ê∆§ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T473_Say
+
+;-----------------------------------------------------
+[@wanggibge_313]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @wanggibge_313_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@wanggibge_313_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T313_Say
+
+#ACT
+set [308] 1
+;-----------------------------------------------------

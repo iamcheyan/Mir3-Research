@@ -1,0 +1,136 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### D023_001 12,17 ->  D023 65,47      ############
+;#### D023 67,48     ->  D023_001  13,18 ############
+;#### D023 67,47     ->  D023_001  13,18 ############
+;-----------------------------------------------------
+#IF
+check [302] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [301] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [299] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_3
+
+#ACT
+enter_fail
+break
+
+#IF
+check [297] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_4
+
+#ACT
+enter_fail
+break
+
+#IF
+check [296] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_5
+
+#ACT
+enter_fail
+set [289] 1
+set [291] 0
+set [296] 0
+set [295] 1
+break
+;
+#IF
+check [294] 1
+#ACT
+goto @enterh_umy
+break
+;
+#IF
+check [293] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_6
+
+#ACT
+enter_fail
+set [289] 1
+set [290] 0
+set [291] 0
+set [293] 0
+break
+;
+#IF
+check [291] 1
+#ACT
+goto @enterh_umy
+break
+;
+#IF
+check [290] 1
+#ACT
+enter_fail
+set [290] 0
+set [291] 1
+break
+;
+#IF
+check [289] 1
+#ACT
+goto @enterh_umy
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_7
+
+
+;-----------------------------------------------------
+
+[@enterh_umy]
+#IF
+checkitem ÎÖÂê½ðÅÆ 1
+#ACT
+goto @enterh_umy_0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_8
+
+#ELSEACT
+enter_fail
+
+[@enterh_umy_0]
+#IF
+checkhum D023_001 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_9
+
+#ACT
+enter_fail
+#ELSEACT
+Monclear D023_001
+goto @enterh_umy_1
+
+[@enterh_umy_1]
+#IF
+checkhum D023_002 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MapQuest\Na_RoomSaje.txt] @Na_RoomSaje_10
+
+#ACT
+enter_fail
+#ELSEACT
+enter_ok
+Monclear D023_002
+set [290] 1

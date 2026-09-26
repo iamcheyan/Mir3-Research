@@ -1,0 +1,190 @@
+;;º£¥áµÁ
+%100
++5
++6
++43
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_RedPlayer
+
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_Main_0_0
+ 
+;----------------------------------------------------------
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_Sell
+
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_Repair_Complete
+
+
+[Goods]
+;ItemName      Volume     Hour
+Ä¾½£            100        1
+Ø°Ê×            100        1
+ÇàÍ­½£          100        1
+Ìú½£            100        1
+ÎÚÄ¾½£          100        1
+¶Ì½£            100        1
+ÇàÍ­¸«          100        1
+°Ë»Ä            100        1
+Áè·ç            100        1
+Õ¶Âíµ¶          100        1
+ÐÞÂÞ            100        1
+º£»ê            100        1
+°ëÔÂ            100        1
+ÙÈÔÂ            100        1
+º£»ê            100        1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@pre_repair]
+#IF
+check [508] 1
+#ACT
+goto @pre_repair_0
+#ELSEACT
+goto @pre_repair_mutebo
+
+;--------
+
+[@pre_repair_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_pre_repair
+
+;--------
+
+[@pre_repair_mutebo]
+#IF
+checkmagic Ò°Âù³å×²
+#ACT
+goto @pre_repair_0
+#ELSEACT
+goto @pre_repair_mutebo_0
+
+[@pre_repair_mutebo_0]
+#IF
+checkjob warrior
+checklevel 27
+#ACT
+goto @pre_repair_mutebo_1
+#ELSEACT
+goto @pre_repair_0
+
+;-----------------------
+
+[@pre_repair_mutebo_1]
+#CALL [\MU_warrior\mute.txt] @mugong_mute_explan_mugi
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 482
+#ACT
+goto @TQuest482_0
+break
+;
+#IF
+CheckDailyQuest 564
+#ACT
+goto @TQuest564_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest482_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest482_2
+break
+;
+#ELSEACT
+goto @TQuest482_1
+
+;--------------
+
+[@TQuest482_1]
+#CALL [\QT_TODAY\4thClass.txt] @482_START
+
+[@TQuest482_2]
+#CALL [\QT_TODAY\4thClass.txt] @482_CHECK1
+
+;--------------
+
+[@TQuest564_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest564_2
+break
+;
+#ELSEACT
+goto @TQuest564_1
+
+;--------------
+
+[@TQuest564_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @564_START
+
+[@TQuest564_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @564_CHECK1
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_DoGwan-1.txt] @NPC_TQuest_1

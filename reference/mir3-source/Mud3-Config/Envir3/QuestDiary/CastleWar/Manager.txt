@@ -1,0 +1,466 @@
+;;海メ盗
+[@Castle_Manager]
+{
+	#IF
+		IsAdmin
+	#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_1
+
+	#IF
+		IsCastleGuild Sabuk
+		IsGuildMaster
+	#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_2
+
+
+	#IF
+	   !IsOnCastleWar SaBuk       
+	   !IsOnReadyCastleWar Sabuk  
+  		IsCastleGuild Sabuk       
+		IsGuildMaster             
+	#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_3
+
+
+	#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_4
+
+
+;-------------------------------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_5
+
+
+[@@*Admin_passwd]
+#ACT
+mov  A0 %INPUTSTR
+#IF
+;Nomal Admin Password
+equal A0  %PASSWD(1)
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_6
+
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_7
+
+
+;-------------------------------------------------------------------------------
+[@@ChangeUserName]
+#ACT
+ChangeUserName @ChangeUserNameResult
+
+[@ChangeUserNameResult]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_8
+
+
+[@ChangeUserNameResult~]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_9
+
+
+;-------------------------------------------------------------------------------
+
+[@gold_rain]
+#ACT
+DropItemMap "3, 209, 164, 40" 金币 1000  1000 
+
+[@potion_rain]
+#ACT
+DropItemMap "3, 209, 164, 40" 强效太阳水 1  100
+
+[@gold_clear]
+#ACT
+ClearItemMap "3, 209, 164, 45" 金币
+
+[@potion_clear]
+#ACT
+ClearItemMap "3, 209, 164, 45" 强效太阳水
+
+[@allitem_clear]
+#ACT
+ClearItemMap "3, 209, 164, 45"  *
+
+;-------------------------------------------------------------------------------
+	[@@DrawTax]
+	begin
+		#ACT
+			mov d1 %SABUKGOLD
+			mov d2 %INPUTNUM
+			goto @DrawTax
+   end
+
+	[@DrawTax]
+	begin
+	   #IF
+	      small d2 0    ;; 蜡历啊 - 蔼阑 涝仿阑 沁阑矫
+      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_10
+
+      #ACT
+         break
+		#IF
+			small d1 0    ;; 荤合己狼 技陛捞 绝阑 版快绰 牢免捞 登瘤 臼澜
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_11
+
+		#ACT
+			break
+		#IF
+			small d1 %d2
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_12
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_13
+
+		#ELSEACT
+			GetBackCastleGold SABUK %d2
+   end
+
+;-------------------------------------------------------------------------------
+
+[@Propse_CastleWar]
+#IF
+IsOnCastleWar SaBuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_14
+
+#ACT
+break
+
+#IF
+!IsGuildMaster
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_15
+
+#ACT
+break
+
+#IF
+IsCastleGuild Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_16
+
+#ACT
+break
+
+#IF
+!checkitem 祖玛头像 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_17
+
+#ACT
+break
+
+#IF
+CanProposeCastleWar Sabuk
+#ACT
+ProposeCastleWar  Sabuk
+take 祖玛头像 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_18
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_19
+
+
+[@requestcastlewar]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_20
+
+
+[@view_warschedule]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_21
+
+
+;-------------------------------------------------------------------------------
+
+[@FlagTest]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_22
+
+
+#IF
+IsOnCastleWar [sabuk]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_23
+
+
+#IF
+!IsOnCastleWar [sabuk]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_24
+
+
+[@DoorState1]
+;Front Door
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_25
+
+
+#IF
+CheckCastleDoor [SABUK] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_26
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_27
+
+#ELSEACT
+break
+
+#IF
+CheckCastleDoorOpen [SABUK] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_28
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_29
+
+
+[@DoorState2]
+;Left Door
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_30
+
+
+#IF
+CheckCastleDoor [SABUK] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_31
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_32
+
+#ELSEACT
+break
+
+#IF
+CheckCastleDoorOpen [SABUK] 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_33
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_34
+
+
+[@DoorState3]
+;Right
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_35
+
+
+#IF
+CheckCastleDoor [SABUK] 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_36
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_37
+
+#ELSEACT
+break
+
+#IF
+CheckCastleDoorOpen [SABUK] 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_38
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_39
+
+
+;-------------------------------------------------------------------------------
+
+[@Front_make_door]
+#IF
+!IsOnCastleWar Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_40
+
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_41
+
+
+[@Front_make_door_comfirm]
+#IF
+!checkgold 500000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_42
+
+#ACT
+break
+
+#IF
+!CheckCastleDoor [SABUK] 1
+#ACT
+take 金币 500000
+MakeCastleDoor  [SABUK]  1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_43
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_44
+
+
+;-------------------------------------------------------------------------------
+
+[@Left_make_door]
+#IF
+!IsOnCastleWar Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_45
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_46
+
+
+[@Left_make_door_comfirm]
+#IF
+!checkgold 500000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_47
+
+#ACT
+break
+
+#IF
+!CheckCastleDoor [SABUK] 3
+#ACT
+take 金币 500000
+MakeCastleDoor  [SABUK]  3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_48
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_49
+
+
+;-------------------------------------------------------------------------------
+
+[@Right_make_door]
+#IF
+!IsOnCastleWar Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_50
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_51
+
+
+[@Right_make_door_comfirm]
+#IF
+!checkgold 500000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_52
+
+#ACT
+break
+
+#IF
+!CheckCastleDoor [SABUK] 4
+#ACT
+take 金币 500000
+MakeCastleDoor  [SABUK]  4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_53
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_54
+
+
+;-------------------------------------------------------------------------------
+
+[@Front_open_door]
+#IF
+CheckCastleDoor [SABUK] 1
+!CheckCastleDoorOpen [SABUK] 1
+#ACT
+SENDCMD  "3, 235, 192, 4" 沙巴克城门1 OPEN
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_55
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_56
+
+
+[@Front_close_door]
+#IF
+CheckCastleDoor [SABUK] 1
+CheckCastleDoorOpen [SABUK] 1
+#ACT
+SENDCMD  "3, 235, 192, 4" 沙巴克城门1 CLOSE
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_57
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_58
+
+
+;-------------------------------------------------------------------------------
+
+[@Left_open_door]
+#IF
+CheckCastleDoor [SABUK] 3
+!CheckCastleDoorOpen [SABUK] 3
+#ACT
+SENDCMD    "3, 169, 191, 1" 沙巴克城门3 OPEN
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_59
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_60
+
+
+[@Left_close_door]
+#IF
+CheckCastleDoor [SABUK] 3
+CheckCastleDoorOpen [SABUK] 3
+#ACT
+SENDCMD    "3, 169, 191, 1" 沙巴克城门3 CLOSE
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_61
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_62
+
+
+;-------------------------------------------------------------------------------
+
+[@Right_Open_door]
+#IF
+CheckCastleDoor [SABUK] 4
+!CheckCastleDoorOpen [SABUK] 4
+#ACT
+SENDCMD    "3, 233, 127, 1" 沙巴克城门4 OPEN
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_63
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_64
+
+
+[@Right_Close_door]
+#IF
+CheckCastleDoor [SABUK] 4
+CheckCastleDoorOpen [SABUK] 4
+#ACT
+SENDCMD    "3, 233, 127, 1" 沙巴克城门4 CLOSE
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_65
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Manager.txt] @Manager_66
+
+}

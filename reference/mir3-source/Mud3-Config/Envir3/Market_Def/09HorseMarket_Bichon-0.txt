@@ -1,0 +1,203 @@
+;;09HorseMarket_Bichon-0.txt
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root
+
+;-------------------
+
+[@main_root]
+;              younghon quest
+#IF
+check [213] 1
+#ACT
+goto @main_0
+break
+#IF
+check [212] 1
+#ACT
+goto @main_0
+break
+;   
+#IF
+check [205] 1
+#ACT
+goto @main_0_3
+break
+;  
+#IF
+check [203] 1
+#ACT
+goto @main_0_2
+break
+;  
+#IF
+check [201] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_Main_0
+
+;-----------------------------
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_Main_1
+
+;-----------------------------
+
+[@main_0_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_Main_2
+
+;-----------------------------
+
+[@main_0_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_Main_3
+
+;----------------------------------------------------------
+
+[@BuyHorseGraw]
+#IF
+checklevel 15
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw
+#ELSEACT
+break
+
+#IF
+checkgold 500000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_NoMoney
+#ELSEACT
+break
+
+#IF
+CheckHorse
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Fail
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Complete
+#ELSEACT
+take 金币 500000
+horsecall 褐色马
+
+[@BuyHorseGraw2]
+#IF
+checklevel 40
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw2
+#ELSEACT
+break
+
+#IF
+checkgold 20000000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_NoMoney
+#ELSEACT
+break
+
+#IF
+CheckHorse
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Fail
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Complete
+
+#ELSEACT
+take 金币 20000000
+horsecall 白马
+;;--------------买黑马---------------------------------
+[@BuyHorseGraw3]
+#IF
+checklevel 50
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw3
+#ELSEACT
+break
+
+#IF
+checkgold 90000000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_NoMoney
+#ELSEACT
+break
+
+#IF
+CheckHorse
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Fail
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_BuyHorseGraw_Complete
+#ELSEACT
+take 金币 90000000
+horsecall 黑马
+
+[@SellHorse]
+#IF
+checkhorse 1
+!CheckRiding
+!CheckGold 99749999
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_SellHorse
+#ACT
+give 金币 250000
+KillHorse
+break
+
+#IF
+checkhorse 2
+!CheckRiding
+!CheckGold 89999999
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_SellHorse
+#ACT
+give 金币 10000000
+KillHorse
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HorseMarket_Bichon-0.txt] @NPC_SellHorse_Fail
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_WIHUN_1
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_WIHUN_2
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_WIHUN_3

@@ -1,0 +1,259 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 119
+#ACT
+goto @sukjangin_T119
+break
+;
+#IF
+CheckDailyQuest 219
+#ACT
+goto @sukjangin_T219
+break
+;
+#IF
+CheckDailyQuest 216
+#ACT
+goto @sukjangin_T216
+break
+;
+#IF
+CheckDailyQuest 212
+#ACT
+goto @sukjangin_T212
+break
+;
+#IF
+CheckDailyQuest 205
+#ACT
+goto @sukjangin_T205
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@sukjangin_T119]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @sukjangin_T119_1
+
+[@sukjangin_T119_1]
+#IF
+checkitem 石人心核 299
+#ACT
+give 石人心核 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T119_Say
+
+#ELSEACT
+give 石人心核 1
+
+;-----------------------------------------------------
+[@sukjangin_T219]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @sukjangin_T219_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sukjangin_T219_1]
+#IF
+checkitem 石人心核 17
+#ACT
+give 石人心核 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T219_Say
+
+#ELSEACT
+goto @sukjangin_T219_2
+
+[@sukjangin_T219_2]
+#IF
+random 3
+#ACT
+give 石人心核 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@sukjangin_T216]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @sukjangin_T216_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sukjangin_T216_1]
+#IF
+checkitem 石人心核 19
+#ACT
+give 石人心核 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T216_Say
+
+#ELSEACT
+goto @sukjangin_T216_2
+
+[@sukjangin_T216_2]
+#IF
+random 3
+#ACT
+give 石人心核 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@sukjangin_T212]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @sukjangin_T212_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sukjangin_T212_1]
+#IF
+checkitem 石人心核 24
+#ACT
+give 石人心核 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T212_Say
+
+#ELSEACT
+goto @sukjangin_T212_2
+
+[@sukjangin_T212_2]
+#IF
+random 3
+#ACT
+give 石人心核 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@sukjangin_T205]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+
+goto @sukjangin_T205_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sukjangin_T205_1]
+#IF
+checkitem 石人心核 14
+#ACT
+give 石人心核 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T205_Say
+
+#ELSEACT
+goto @sukjangin_T205_2
+
+[@sukjangin_T205_2]
+#IF
+random 3
+#ACT
+give 石人心核 1
+;-----------------------------------------------------

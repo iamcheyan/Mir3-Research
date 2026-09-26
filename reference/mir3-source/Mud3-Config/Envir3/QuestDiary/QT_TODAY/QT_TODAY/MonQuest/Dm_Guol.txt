@@ -1,0 +1,54 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 417
+#ACT
+goto @goul_T417
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@goul_T417]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @goul_T417_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@goul_T417_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T417_Say
+
+#ACT
+give Ê¬Íõ°×¹Ç 1
+set [308] 1
+;-----------------------------------------------------

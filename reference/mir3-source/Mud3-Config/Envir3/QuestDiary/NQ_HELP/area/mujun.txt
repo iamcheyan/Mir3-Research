@@ -1,0 +1,65 @@
+;;º£¥áµÁ
+[@MUJUNCS]
+{
+#IF
+check [253] 1
+#ACT
+goto @MUJUNCS_5
+break
+#IF
+check [252] 1
+#ACT
+goto @MUJUNCS_4
+break
+#IF
+check [251] 1
+#ACT
+goto @MUJUNCS_3
+break
+#IF
+check [250] 1
+#ACT
+goto @MUJUNCS_2
+break
+#IF
+check [249] 1
+#ACT
+goto @MUJUNCS_1
+break
+#ELSEACT
+goto @MUJUNCS_0
+[@MUJUNCS_0]
+#IF
+checklevel 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_2
+
+[@MUJUNCS_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_3
+
+[@MUJUNCS_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_4
+
+[@MUJUNCS_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_5
+
+[@MUJUNCS_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_6
+
+[@MUJUNCS_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\mujun.txt] @mujun_7
+
+}

@@ -1,0 +1,129 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally1-2.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+
+
+[@main_0]
+#IF
+check [219] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [217] 1
+#ACT
+goto @NQuest_3
+break
+#IF
+check [216] 1
+#ACT
+goto @NQuest_2
+break
+#IF
+check [215] 1
+#ACT
+goto @NQuest_2
+break
+#IF
+check [213] 1
+#ACT
+goto @NQuest_1
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally1-2.txt] @NPC_Main
+
+;--------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally1-2.txt] @NPC_Main_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest_1_1
+
+[@NQuest_1_1]
+#CALL [\NQ_BASE\bamgol.txt] @BAMGOL_START
+
+[@NQuest_2]
+#CALL [\NQ_BASE\bamgol.txt] @BAMGOL_NOPA
+
+[@NQuest_3]
+#CALL [\NQ_BASE\bamgol.txt] @GIVE_GALL
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 463
+#ACT
+goto @TQuest463_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally1-2.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest463_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest463_2
+break
+;
+#ELSEACT
+goto @TQuest463_1
+
+;--------------
+
+[@TQuest463_1]
+#CALL [\QT_TODAY\4thClass.txt] @463_START
+
+
+[@TQuest463_2]
+#CALL [\QT_TODAY\4thClass.txt] @463_CHECK1
+
+;--------------
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_SnakeVally1-2.txt] @NPC_TQuest_1
+
+;--------------

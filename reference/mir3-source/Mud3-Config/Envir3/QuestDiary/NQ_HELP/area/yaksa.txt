@@ -1,0 +1,69 @@
+;;º£¥áµÁ
+[@YAKSA]
+{
+#IF
+check [167] 1
+#ACT
+goto @YAKSA_3
+break
+#IF
+check [166] 1
+#ACT
+goto @YAKSA_3
+break
+#IF
+check [150] 1
+#ACT
+goto @YAKSA_2
+break
+#IF
+check [148] 1
+#ACT
+goto @YAKSA_1
+break
+#ELSEACT
+goto @YAKSA_0
+[@YAKSA_0]
+#IF
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_2
+
+[@YAKSA_1]
+#IF
+check [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_3
+
+
+[@YAKSA_2]
+#IF
+check [150] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_4
+
+[@YAKSA_3]
+#IF
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_5
+
+#ELSEACT
+goto @YAKSA_3_1
+[@YAKSA_3_1]
+#IF
+check [165] 1
+#ACT
+goto @YAKSA_3_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_6
+
+[@YAKSA_3_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\yaksa.txt] @yaksa_7
+
+}

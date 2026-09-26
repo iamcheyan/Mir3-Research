@@ -1,0 +1,546 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 488
+#ACT
+goto @Chun_T488
+break
+;
+#IF
+CheckDailyQuest 522
+#ACT
+goto @chunyundoksa_522
+break
+;
+#IF
+CheckDailyQuest 442
+#ACT
+goto @chunyundoksa_T442
+break
+;
+#IF
+CheckDailyQuest 438
+#ACT
+goto @chunyundoksa_T438
+break
+;
+#IF
+CheckDailyQuest 433
+#ACT
+goto @chunyundoksa_T433
+break
+;
+#IF
+CheckDailyQuest 431
+#ACT
+goto @chunyundoksa_T431
+break
+;
+#IF
+CheckDailyQuest 430
+#ACT
+goto @chunyundoksa_T430
+break
+;
+#IF
+CheckDailyQuest 412
+#ACT
+goto @chunyundoksa_T412
+break
+;
+#IF
+CheckDailyQuest 323
+#ACT
+goto @chunyundoksa_T323
+break
+;
+#IF
+CheckDailyQuest 322
+#ACT
+goto @chunyundoksa_T322
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@Chun_T488]
+;		ÀÏÀÏ Äù½ºÆ® 488 ¹ø
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @Chun_T488_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@Chun_T488_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑÀ³Ý 9
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T488_Say
+#ELSEACT
+movr s0 2
+goto @Chun_T488_2
+
+[@Chun_T488_2]
+#IF
+equal s0 0
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+;-----------------------------------------------------
+[@chunyundoksa_T322]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T322_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T322_1]
+#IF
+checkitem Ç§Äê¶¾Éßµ¨Ö­ 11
+#ACT
+give Ç§Äê¶¾Éßµ¨Ö­ 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T322_Say
+
+#ELSEACT
+goto @chunyundoksa_T322_2
+
+[@chunyundoksa_T322_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾Éßµ¨Ö­ 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T323]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T323_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+
+[@chunyundoksa_T323_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑÀ³Ý 14
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T323_Say
+
+#ELSEACT
+goto @chunyundoksa_T323_2
+
+[@chunyundoksa_T323_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T412]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T412_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T412_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑª 2
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T412_Say
+
+#ELSEACT
+goto @chunyundoksa_T412_2
+
+[@chunyundoksa_T412_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T430]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T430_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T430_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑª 2
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T430_Say
+
+#ELSEACT
+goto @chunyundoksa_T430_2
+
+[@chunyundoksa_T430_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T431]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T431_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T431_1]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T431_Say
+
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T433]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+
+goto @chunyundoksa_T433_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T433_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑÀ³Ý 2
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T433_Say
+
+#ELSEACT
+goto @chunyundoksa_T433_2
+
+[@chunyundoksa_T433_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@chunyundoksa_T438]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+goto @chunyundoksa_T438_3
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T438_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T438_1]
+#IF
+checkitem Ç§Äê¶¾ÉßÑª 2
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T438_Say
+
+#ELSEACT
+goto @chunyundoksa_T438_2
+
+[@chunyundoksa_T438_2]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑª 1
+
+;-----------
+
+[@chunyundoksa_T438_3]
+#IF
+checkitem Ç§Äê¶¾ÉßÑÀ³Ý 2
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T438_Say_1
+
+#ELSEACT
+goto @chunyundoksa_T438_4
+
+[@chunyundoksa_T438_4]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾ÉßÑÀ³Ý 1
+
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+
+[@chunyundoksa_T442]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T442_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T442_1]
+#IF
+random 3
+#ACT
+give Ç§Äê¶¾Éßµ¨Ö­ 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T442_Say
+
+
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+
+[@chunyundoksa_T522]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chunyundoksa_T522_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chunyundoksa_T522_1]
+#IF
+#ACT
+give Ç§Äê¶¾Éßµ¨Ö­ 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T522_Say
+
+;-----------------------------------------------------

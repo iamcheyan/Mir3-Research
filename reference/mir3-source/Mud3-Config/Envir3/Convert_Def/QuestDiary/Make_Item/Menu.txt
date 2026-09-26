@@ -1,0 +1,369 @@
+;;海メ盗
+[@Menu_1]
+{
+那，你想做什么? \
+还有， 包裹差不多满的话做的物品容易掉下来请注意哦。\ \
+<药水/@make_item_main_Potion>        ,      <药粉/@make_item_main_Drug>\
+<护身符/@make_item_main_Charm>      ,      <杂货/@make_item_main_general>\ \
+<前一步/@main>
+}
+
+[@Menu_2]
+{
+那，你想知道关于什么的事情啊? \ \
+ <问关于制作时所需要的物品。/@Help_makeitem_mixture>\
+ <问有关于材料物品的事情。/@Help_makeitem_material>\ \
+ <前一步/@main>
+}
+
+[@Menu_3]
+{
+那，你对什么东西有疑问？\ \
+<药水/@Help_mixture_Potion>        ,      <药粉/@Help_mixture_Drug>\
+<护身符/@Help_mixture_Charm>      ,      <杂货/@Help_mixture_general>\ \
+<前一步/@Help_makeitem_main>
+}
+
+[@Menu_4]
+{
+那，你想知道关于什么的药水啊？\ \
+<金创药（小）/@Help_mixture_HPPotionS>      ,    <魔法药（小）/@Help_mixture_MPPotionS>\
+<金创药（中）/@Help_mixture_HPPotionM>      ,    <魔法药（中）/@Help_mixture_MPPotionM>\
+<金创药（大）/@Help_mixture_HPPotionL>      ,    <魔法药（大）/@Help_mixture_MPPotionL>\
+<金创药（特）/@Help_mixture_HPPotionXL>      ,    <魔法药（特）/@Help_mixture_MPPotionXL>\ \
+<前一步/@Help_makeitem_mixture>
+}
+
+[@Menu_5]
+{
+金创药（小）是把毒蛇胆汁放进烧酒而提炼出来的药剂啊。\
+所需要的材料是10个当{FCOLOR/10}毒蛇胆汁 6个，烧酒 1瓶{FCOLOR/12}啊。好好记住啊。\ \
+<前一步/@Help_mixture_Potion>
+}
+
+[@Menu_6]
+{
+金创药（中）是把骷髅骨放进烧酒而提炼出来的药剂啊。\
+所需要的材料是10个当{FCOLOR/10}骷髅骨 10个，烧酒 1瓶{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_Potion>
+}
+
+[@Menu_7]
+{
+金创药（大）是把牙齿和蚂蚁卵放进烧酒而提炼出来的药剂啊。\
+所需要的材料是10个当{FCOLOR/10}牙齿 3个，烧酒 2瓶，蚂蚁卵 3个{FCOLOR/12}啊 。好好记住啊。\ \
+ <前一步/@Help_mixture_Potion>
+}
+
+[@Menu_8]
+{
+金创药（特）是利用了夜明珠和神灵雕像，还有潘夜之泪的咒术力量而提炼出来的药剂啊。\
+所需要的材料是10个当{FCOLOR/10}夜明珠 3个，烧酒 3瓶，神灵雕像 3个，潘夜之泪 4个{FCOLOR/12}啊 。好好记住啊。\ \
+<前一步/@Help_mixture_Potion>
+}
+
+[@Menu_9]
+{
+魔法药（小）是把骷髅骨放进烧酒而提炼出来的药剂啊。\
+所需要的材料是10个当 {FCOLOR/10}骷髅骨3个，烧酒 1瓶{FCOLOR/12}啊 。好好记住啊。\ \
+ <前一步/@Help_mixture_Potion>
+}
+
+[@Menu_10]
+{
+魔法药（中）是把僵尸骨头放进烧酒而提炼出来的药剂啊\
+所需要的材料是10个当 {FCOLOR/10}僵尸骨头5个，烧酒 1瓶{FCOLOR/12}啊 。好好记住啊。\ \
+<前一步/@Help_mixture_Potion>
+}
+
+[@Menu_11]
+{
+魔法药（大）是把号角和牙齿放进烧酒而提炼出来的药剂啊\
+所需要的材料是10个当 {FCOLOR/10}号角 3个，烧酒 2瓶，牙齿 3个{FCOLOR/12}啊 。好好记住啊。\ \
+<前一步/@Help_mixture_Potion>
+}
+
+[@Menu_12]
+{
+魔法药（特）是用烧酒融化了宝玉，还有神灵雕像的咒术力量而提炼出来的药剂啊\
+\所需要的材料是10个当{FCOLOR/10}烧酒 3瓶，神灵雕像 4个， 宝玉 6个{FCOLOR/12}啊。好好记住啊。 \
+ <前一步/@Help_mixture_Potion>
+}
+
+[@Menu_13]
+{
+那， 你想了解什么样的药粉啊。\ \
+<灰色药粉（小）/@Help_mixture_GDRUG>   ,   <黄色药粉（小）/@Help_mixture_YDRUG>\
+<灰色药粉（中）/@Help_mixture_GDRUGM>   ,   <黄色药粉（中）/@Help_mixture_YDRUGM>\ \
+<前一步/@Help_makeitem_mixture>
+}
+
+[@Menu_14]
+{
+灰色药粉（小）是组合了食人树叶和食人树的果实，还有毒蜘蛛牙齿而提炼出来的药剂啊。\
+所需要的材料是{FCOLOR/10}食人树叶 6个，食人树的果实 3个，毒蜘蛛牙齿 2个{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_Drug>
+}
+
+[@Menu_15]
+{
+灰色药粉（中）是组合了食人树叶和食人树的果实，还有毒蜘蛛牙齿而提炼出来的药剂啊。\
+所需要的材料是{FCOLOR/10}食人树叶 6个，食人树的果实 4个，毒蜘蛛牙齿 6个{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_Drug>
+}
+
+[@Menu_16]
+{
+黄色药粉（小）是组合了食人树叶和蛆卵，还有蝎子的尾巴而提炼出来的药剂啊。\
+所需要的材料是{FCOLOR/10}蛆卵 2个，食人树叶 2个，蝎子的尾巴 2个{FCOLOR/12}啊。好好记住啊。  \ \
+ <前一步/@Help_mixture_Drug>
+}
+
+[@Menu_17]
+{
+黄色药粉（中）是组合了食人树叶和蛆卵，还有蝎子的尾巴而提炼出来的药剂啊。\
+所需要的材料是{FCOLOR/10}蛆卵 2个， 食人树叶 6个，蝎子的尾巴 5个{FCOLOR/12}啊。好好记住啊。 \ \
+ <前一步/@Help_mixture_Drug>
+}
+
+[@Menu_18]
+{
+那，你想了解哪种护身符啊？\ \
+<护身符（小）/@Help_mixture_Bcharm>        ,    <神圣护身符（小）/@Help_mixture_Hcharm>\
+<护身符（火）/@Help_mixture_Fcharm>        ,    <护身符（冰）/@Help_mixture_Icharm>\
+<护身符（雷）/@Help_mixture_Lcharm>        ,    <护身符（风）/@Help_mixture_Wcharm>\
+<灵魂护身符（小）/@Help_mixture_Rcharm>    ,    <灵魂护身符（中）/@Help_mixture_RcharmM>\ \
+<前一步/@Help_makeitem_mixture>
+}
+
+[@Menu_19]
+{
+护身符（小）是利用骷髅骨里剩下来的灵魂的力量来制作的。把骷髅骨粉碎以后制作纸张的时候掺进去然后在上面用鸡血来写字而制作护身符的。\
+所需要的材料是{FCOLOR/10}骷髅骨 3个， 鸡血 3瓶{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_20]
+{
+神圣护身符（小）是合成了僵尸的咒术力量和鸡血的退魔属性具有强大的神圣力。\
+所需要的材料是 {FCOLOR/10}僵尸骨头 2个， 鸡血 5瓶{FCOLOR/12}啊。好好记住啊。\ \
+<前一步/@Help_mixture_charm>
+}
+
+[@Menu_21]
+{
+护身符（火）是利用了蝎子尾巴的毒性贮入了火属性而制作的。\
+所需要的材料是{FCOLOR/10}骷髅骨 4个，鸡血 4瓶，蝎子的尾巴 1个{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_22]
+{
+护身符（冰）是添加了毒蜘蛛牙齿放到毒蛇胆汁然后等它们发酵会产生很强的冷气，贮入了冰的属性制作而成的。\
+所需要的材料是 {FCOLOR/10}毒蛇胆汁 8个， 鸡血 4瓶，毒蜘蛛牙齿 2个{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_23]
+{
+护身符（雷）是替代纸使用了食人树叶还利用了这个僵尸的咒术力合散的话会发生很强的闪电式的力贮入了雷的属性而制作的。\
+所需要的材料是 {FCOLOR/10}僵尸骨头 2个， 鸡血 4瓶，食人树叶 2个{FCOLOR/12}啊。好好记住啊。 \ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_24]
+{
+护身符（风）是在骷髅骨和鸡血上添加了食人树的果实，所以跟一般的护身符不一样的。它是贮入了风的属性制作而成的。\
+所需要的材料是 {FCOLOR/10}骷髅骨 3个，食人树的果实 1个，鸡血 4瓶{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_25]
+{
+灵魂护身符（小）是在鸡血和由潘夜之泪和夜明珠制作而成的传说药水和由神灵雕像磨成而制作的纸上写字而做成的。用这种方法制作而成的护身符上嵌着灵魂，所以在召魂时能发挥强大的力量。\
+所需要的材料是 {FCOLOR/10}夜明珠 10个， 神灵雕像 5个， 潘夜之泪 3个， 鸡血 2瓶{FCOLOR/12}啊。好好记住啊。\ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_26]
+{
+灵魂护身符（中）是在鸡血和由潘夜之泪和夜明珠制作而成的传说药水和由神灵雕像磨成而制作的纸上写字而做成的。用这种方法制作而成的护身符上嵌着灵魂，所以在召魂时能发挥强大的力量。\
+所需要的材料是 {FCOLOR/10}夜明珠 30个，神灵雕像 15个，潘夜之泪 9个， 鸡血 6瓶{FCOLOR/12}啊。好好记住啊。 \ \
+ <前一步/@Help_mixture_charm>
+}
+
+[@Menu_27]
+{
+那， 你想知道关于什么的杂货啊? \ \
+<火把/@Help_mixture_Torch>    ,    <亮火把/@Help_mixture_TorchM>\ \
+<前一步/@Help_makeitem_mixture>
+}
+
+[@Menu_28]
+{
+火把是利用骷髅骨一点就燃烧的性质把它放进烧酒里氧化而制作的。\
+所需要的材料是 {FCOLOR/10}骷髅骨 3个，烧酒 1瓶{FCOLOR/12}啊。好好记住啊。\ \
+<前一步/@Help_mixture_charm>
+}
+
+[@Menu_29]
+{
+亮火把是利用僵尸骨头啊。僵尸骨头赋予着咒术的力量，所以比骷髅骨发射更亮的光。亮火把就利用了这一点。\ \
+所需要的材料是 {FCOLOR/10}僵尸骨头 4个， 烧酒 2瓶{FCOLOR/12}啊。好好记住啊。\ \
+<前一步/@Help_mixture_charm>
+}
+
+[@Menu_30]
+{
+那，你想了解什么材料啊？\ \
+<食人树叶/@Help_material_x001>  ,   <食人数的果实/@Help_material_x002>  ,   <毒蜘蛛牙齿/@Help_material_x003>\
+<蛆卵/@Help_material_x004>      ,   <蝎子的尾巴/@Help_material_x005>    ,   <毒蛇胆汁/@Help_material_x006>\
+<骷髅骨/@Help_material_x007>    ,   <僵尸骨头/@Help_material_x008>      ,   <跳蚤皮/@Help_material_x009>\
+<蚂蚁卵/@Help_material_x010>    ,   <蜘蛛线/@Help_material_x011>        ,   <号角/@Help_material_x012>\
+<潘夜珠/@Help_material_x013>    ,   <夜明珠/@Help_material_x014>        ,   <潘夜之泪/@Help_material_x015>\
+<神灵雕像/@Help_material_x016>  ,   <皮/@Help_material_x017>            ,   <牙齿/@Help_material_x018>\
+;<指甲/@Help_material_x019>     ,   <宝玉/@Help_material_x020>    ,   <灵魂/@Help_material_x021>\
+;<鸡血/@Help_material_x022>    ,   <烧酒/@Help_material_x023>\ \
+<指甲/@Help_material_x019>      ,   <宝玉/@Help_material_x020>          ,   <鸡血/@Help_material_x022>\
+ <烧酒/@Help_material_x023>\ \
+ <前一步/@Help_makeitem_main>
+}
+
+[@Menu_31]
+{
+食人树叶是切食人树而获得的。食人树在{FCOLOR/10}比奇县， 毒蛇山谷{FCOLOR/12}等地能找的到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_32]
+{
+食人树的果实是切食人树而获得的。食人树在{FCOLOR/10}比奇县， 毒蛇山谷{FCOLOR/12}等地能找的到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_33]
+{
+毒蜘蛛牙齿是切毒蜘蛛能获得。毒蜘蛛在{FCOLOR/10}比奇县，边境城市，银杏山谷，道管{FCOLOR/12}等地方能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_34]
+{
+蛆卵是切洞蛆能获得的。洞蛆在{FCOLOR/10}半兽洞穴，天然洞穴{FCOLOR/12}等地方能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_35]
+{
+蝎子的尾巴是切了蝎子而获得的。蝎子在{FCOLOR/10}半兽洞穴， 天然洞穴{FCOLOR/12}等地方能找到。
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_36]
+{
+毒蛇胆汁是抓毒蛇的话可以获得的。虽然是吃的东西可一般组合后融化其他物品时也适用。这些毒蛇在{FCOLOR/10}毒蛇山谷{FCOLOR/12}能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_37]
+{
+骷髅骨是抓骷髅的话能获得的。骷髅碎的时候变成的骨头的碎片一点的话能继续燃烧的性质做了火把。骷髅等在{FCOLOR/10}半兽洞穴，天然洞穴{FCOLOR/12}等地方能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_38]
+{
+僵尸骨头是抓僵尸的话能获得。僵尸骨头赋予着咒术的力量，所以比骷髅骨发射更亮的光。还有赋予着咒术的力量适用于许多调和物。僵尸在{FCOLOR/10}比奇废矿，毒蛇山谷废矿{FCOLOR/12}等地方能找到。
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_39]
+{
+跳蚤皮是抓跳蚤的话能获得的。跳蚤皮适用于很多装饰，还有跟蜘蛛线混合能做衣服。跳蚤在{FCOLOR/10}银杏山谷的废矿里{FCOLOR/12}能找到。
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_40]
+{
+蚂蚁卵是抓住蚂蚁的话能获得的。因蚂蚁卵能保养身体的效果，所以适用在许多方面。但它主要在制作金创药时使用。蚂蚁在{FCOLOR/10}蚂蚁洞里面能找到。
+ <前一步/@Help_makeitem_material> 
+}
+
+[@Menu_41]
+{
+蜘蛛线是抓'蜘蛛的话能获得。因蜘蛛线具有很强的张力所以制作比一般衣服要强的衣服时使用。蜘蛛在{FCOLOR/10}灌木林， 赤月山谷{FCOLOR/12}等地方能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_42]
+{
+号角是抓住沃玛的话能获得。号角是用于健康补药剂啊。沃玛等在{FCOLOR/10}沃玛神殿能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_43]
+{
+潘夜珠是抓住腐蚀人鬼的话能获得。有吃了潘夜珠的人可以长生不老的这个传说。与其它材料混合的话又可以变成液体。腐蚀人鬼在{FCOLOR/10}潘夜岛能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_44]
+{
+夜明珠是抓住潘夜战士的话能获得。据说夜明珠有驱赶恶运的功能不过它的效用还没有被传开。 潘夜战士在{FCOLOR/10}潘夜神殿{FCOLOR/12}能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_45]
+{
+潘夜之泪是抓住骷髅武士的话能获得。 潘夜之泪具有跟夜明珠类似的传说。骷髅武士在{FCOLOR/10}潘夜石窟{FCOLOR/12}能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_46]
+{
+神灵雕像是抓住祖玛卫士的话能获得。神灵雕像有着很大的咒术力量，用咒术解开那个力的话那些力量全部都会变成自己的啦。祖玛卫士在{FCOLOR/10}祖玛神殿{FCOLOR/12}能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_47]
+{
+蜈蚣皮是抓住蜈蚣的话能获得。 虽然跟跳蚤皮很相似但跳蚤皮没法跟它比的，它具有很强的韧性。蜈蚣在{FCOLOR/10}绝命谷{FCOLOR/12}等地方能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_48]
+{
+牙齿是抓住红野猪的话能获得。牙齿是用于健康保养剂啊。红野猪在{FCOLOR/10}石阁庙{FCOLOR/12}能找到。\ \
+ <前一步/@Help_makeitem_material>
+}
+
+[@Menu_49]
+{
+指甲是抓住血恶魔的话能获得。指甲能用于保养剂但不能直接吃的。还有适用于装饰。血恶魔在{FCOLOR/10}赤月山谷{FCOLOR/12}能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_50]
+{
+宝玉是抓住诺玛的话能获得。宝玉不仅有退魔能力而且还有灵魂的力量和咒术的力量。在烧酒里融化的话也能作为保养剂。诺玛等在{FCOLOR/10}沙漠{FCOLOR/12}等地方能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_51]
+{
+灵魂是抓住骷髅的话能获得。骷髅xx等在 {FCOLOR/10}骷髅岛{FCOLOR/12}能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_52]
+{
+鸡血是杀鸡的话能获得。 鸡血主要与具有退魔能力的材料混合时使用。鸡在{FCOLOR/10}比奇县，边境城市，银杏山谷，道管{FCOLOR/12}等地方能找到。\ \
+<前一步/@Help_makeitem_material>
+}
+
+[@Menu_53]
+{
+烧酒在{FCOLOR/10}比奇县朱某{FCOLOR/12}那儿可以购买。烧酒有助于与其他资料组合。\ \
+ <前一步/@Help_makeitem_material>
+}
+

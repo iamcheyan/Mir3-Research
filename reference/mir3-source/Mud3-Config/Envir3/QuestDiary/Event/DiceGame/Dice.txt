@@ -1,0 +1,14715 @@
+;;海メ盗
+[@DiceGame]
+{
+#IF
+equal d4 5
+#ACT
+goto @main-4
+break
+#IF
+equal d4 4
+#ACT
+goto @checknpcdice
+break
+#IF
+equal d4 3
+#ACT
+goto @main-3
+break
+#IF
+equal d4 2
+#ACT
+goto @checkdice
+break
+#IF
+equal d4 1
+#ACT
+goto @main-2
+break
+#ELSEACT
+goto @main-0
+[@main-0]
+#IF
+#ACT
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_1
+
+[@held5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_2
+
+[@held6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_3
+
+[@main-1]
+#IF
+check [574] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_4
+
+#ELSEACT
+goto @main-1_1
+[@main-1_0]
+#IF
+checkgold 5000
+#ACT
+take 金币 5000
+set [574] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_5
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_6
+
+[@main-1_1]
+#IF
+check [304] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_7
+
+#ELSEACT
+goto @main-1_3
+[@main-1_2]
+#IF
+checkgold 100000
+#ACT
+take 金币 100000
+set [304] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_8
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_9
+
+[@main-1_3]
+#IF
+checkgold 40000
+#ACT
+set [574] 0
+set [305] 0
+set [306] 0
+set [304] 0
+mov d0 0
+mov d1 0
+mov d2 0
+mov d3 0
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_10
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_11
+
+[@main-1_4]
+#IF
+checkgold 40000
+#ACT
+take 金币 500
+set [574] 1
+set [305] 1
+mov d4 1
+goto @main-2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_12
+
+[@main-1_5]
+#IF
+checkgold 40000
+#ACT
+take 金币 1000
+set [574] 1
+set [306] 1
+mov d4 1
+goto @main-2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_13
+
+[@main-2]
+#IF
+check [305] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_14
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_15
+
+[@dicestart]
+#IF
+#ACT
+mov d4 2
+movr d0 6
+movr d1 6
+movr d2 6
+movr d3 6
+inc d0 1
+inc d1 1
+inc d2 1
+inc d3 1
+playdice 4 @checkdice
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_16
+
+#ELSEACT
+goto @main-2
+[@checkdice]
+#IF
+equal d0 1
+#ACT
+goto @dice1
+break
+#IF
+equal d0 2
+#ACT
+goto @dice2
+break
+#IF
+equal d0 3
+#ACT
+goto @dice3
+break
+#IF
+equal d0 4
+#ACT
+goto @dice4
+break
+#IF
+equal d0 5
+#ACT
+goto @dice5
+break
+#IF
+equal d0 6
+#ACT
+goto @dice6
+break
+#ELSEACT
+goto @checkdice
+[@dice1]
+#IF
+equal d1 1
+#ACT
+goto @dice11
+break
+#IF
+equal d1 2
+#ACT
+goto @dice12
+break
+#IF
+equal d1 3
+#ACT
+goto @dice13
+break
+#IF
+equal d1 4
+#ACT
+goto @dice14
+break
+#IF
+equal d1 5
+#ACT
+goto @dice15
+break
+#IF
+equal d1 6
+#ACT
+goto @dice16
+break
+#ELSEACT
+goto @dice1
+[@dice11]
+#IF
+equal d2 1
+#ACT
+goto @dice111
+break
+#IF
+equal d2 2
+#ACT
+goto @dice112
+break
+#IF
+equal d2 3
+#ACT
+goto @dice113
+break
+#IF
+equal d2 4
+#ACT
+goto @dice114
+break
+#IF
+equal d2 5
+#ACT
+goto @dice115
+break
+#IF
+equal d2 6
+#ACT
+goto @dice116
+break
+#ELSEACT
+goto @dice11
+[@dice111]
+#IF
+equal d3 1
+#ACT
+mov d5 4
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 1
+goto @main-3
+[@dice112]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice113]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice114]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice115]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice116]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice12]
+#IF
+equal d2 1
+#ACT
+goto @dice121
+break
+#IF
+equal d2 2
+#ACT
+goto @dice122
+break
+#IF
+equal d2 3
+#ACT
+goto @dice123
+break
+#IF
+equal d2 4
+#ACT
+goto @dice124
+break
+#IF
+equal d2 5
+#ACT
+goto @dice125
+break
+#IF
+equal d2 6
+#ACT
+goto @dice126
+break
+#ELSEACT
+goto @dice12
+[@dice121]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice122]
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice123]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice124]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice125]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice126]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice13]
+#IF
+equal d2 1
+#ACT
+goto @dice131
+break
+#IF
+equal d2 2
+#ACT
+goto @dice132
+break
+#IF
+equal d2 3
+#ACT
+goto @dice133
+break
+#IF
+equal d2 4
+#ACT
+goto @dice134
+break
+#IF
+equal d2 5
+#ACT
+goto @dice135
+break
+#IF
+equal d2 6
+#ACT
+goto @dice136
+break
+#ELSEACT
+goto @dice13
+[@dice131]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice132]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice133]
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice134]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice135]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice136]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice14]
+#IF
+equal d2 1
+#ACT
+goto @dice141
+break
+#IF
+equal d2 2
+#ACT
+goto @dice142
+break
+#IF
+equal d2 3
+#ACT
+goto @dice143
+break
+#IF
+equal d2 4
+#ACT
+goto @dice144
+break
+#IF
+equal d2 5
+#ACT
+goto @dice145
+break
+#IF
+equal d2 6
+#ACT
+goto @dice146
+break
+#ELSEACT
+goto @dice14
+[@dice141]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice142]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice143]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice144]
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice145]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice146]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice15]
+#IF
+equal d2 1
+#ACT
+goto @dice151
+break
+#IF
+equal d2 2
+#ACT
+goto @dice152
+break
+#IF
+equal d2 3
+#ACT
+goto @dice153
+break
+#IF
+equal d2 4
+#ACT
+goto @dice154
+break
+#IF
+equal d2 5
+#ACT
+goto @dice155
+break
+#IF
+equal d2 6
+#ACT
+goto @dice156
+break
+#ELSEACT
+goto @dice15
+[@dice151]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice152]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice153]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice154]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice155]
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice156]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice16]
+#IF
+equal d2 1
+#ACT
+goto @dice161
+break
+#IF
+equal d2 2
+#ACT
+goto @dice162
+break
+#IF
+equal d2 3
+#ACT
+goto @dice163
+break
+#IF
+equal d2 4
+#ACT
+goto @dice164
+break
+#IF
+equal d2 5
+#ACT
+goto @dice165
+break
+#IF
+equal d2 6
+#ACT
+goto @dice166
+break
+#ELSEACT
+goto @dice16
+[@dice161]
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice162]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice163]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice164]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice165]
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice166]
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice2]
+#IF
+equal d1 1
+#ACT
+goto @dice21
+break
+#IF
+equal d1 2
+#ACT
+goto @dice22
+break
+#IF
+equal d1 3
+#ACT
+goto @dice23
+break
+#IF
+equal d1 4
+#ACT
+goto @dice24
+break
+#IF
+equal d1 5
+#ACT
+goto @dice25
+break
+#IF
+equal d1 6
+#ACT
+goto @dice26
+break
+#ELSEACT
+goto @dice2
+[@dice22]
+#IF
+equal d2 1
+#ACT
+goto @dice221
+break
+#IF
+equal d2 2
+#ACT
+goto @dice222
+break
+#IF
+equal d2 3
+#ACT
+goto @dice223
+break
+#IF
+equal d2 4
+#ACT
+goto @dice224
+break
+#IF
+equal d2 5
+#ACT
+goto @dice225
+break
+#IF
+equal d2 6
+#ACT
+goto @dice226
+break
+#ELSEACT
+goto @dice22
+[@dice222]
+#IF
+equal d3 2
+#ACT
+mov d5 4
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 2
+goto @main-3
+[@dice221]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice223]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice224]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice225]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice226]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice21]
+#IF
+equal d2 1
+#ACT
+goto @dice211
+break
+#IF
+equal d2 2
+#ACT
+goto @dice212
+break
+#IF
+equal d2 3
+#ACT
+goto @dice213
+break
+#IF
+equal d2 4
+#ACT
+goto @dice214
+break
+#IF
+equal d2 5
+#ACT
+goto @dice215
+break
+#IF
+equal d2 6
+#ACT
+goto @dice216
+break
+#ELSEACT
+goto @dice21
+[@dice211]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice212]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 12
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice213]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice214]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice215]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice216]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice23]
+#IF
+equal d2 1
+#ACT
+goto @dice231
+break
+#IF
+equal d2 2
+#ACT
+goto @dice232
+break
+#IF
+equal d2 3
+#ACT
+goto @dice233
+break
+#IF
+equal d2 4
+#ACT
+goto @dice234
+break
+#IF
+equal d2 5
+#ACT
+goto @dice235
+break
+#IF
+equal d2 6
+#ACT
+goto @dice236
+break
+#ELSEACT
+goto @dice23
+[@dice231]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice232]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice233]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice234]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice235]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice236]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice24]
+#IF
+equal d2 1
+#ACT
+goto @dice241
+break
+#IF
+equal d2 2
+#ACT
+goto @dice242
+break
+#IF
+equal d2 3
+#ACT
+goto @dice243
+break
+#IF
+equal d2 4
+#ACT
+goto @dice244
+break
+#IF
+equal d2 5
+#ACT
+goto @dice245
+break
+#IF
+equal d2 6
+#ACT
+goto @dice246
+break
+#ELSEACT
+goto @dice24
+[@dice241]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice242]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice243]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice244]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice245]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice246]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice25]
+#IF
+equal d2 1
+#ACT
+goto @dice251
+break
+#IF
+equal d2 2
+#ACT
+goto @dice252
+break
+#IF
+equal d2 3
+#ACT
+goto @dice253
+break
+#IF
+equal d2 4
+#ACT
+goto @dice254
+break
+#IF
+equal d2 5
+#ACT
+goto @dice255
+break
+#IF
+equal d2 6
+#ACT
+goto @dice256
+break
+#ELSEACT
+goto @dice25
+[@dice251]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice252]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice253]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice254]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice255]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice256]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice26]
+#IF
+equal d2 1
+#ACT
+goto @dice261
+break
+#IF
+equal d2 2
+#ACT
+goto @dice262
+break
+#IF
+equal d2 3
+#ACT
+goto @dice263
+break
+#IF
+equal d2 4
+#ACT
+goto @dice264
+break
+#IF
+equal d2 5
+#ACT
+goto @dice265
+break
+#IF
+equal d2 6
+#ACT
+goto @dice266
+break
+#ELSEACT
+goto @dice26
+[@dice261]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice262]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice263]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice264]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice265]
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice266]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice3]
+#IF
+equal d1 1
+#ACT
+goto @dice31
+break
+#IF
+equal d1 2
+#ACT
+goto @dice32
+break
+#IF
+equal d1 3
+#ACT
+goto @dice33
+break
+#IF
+equal d1 4
+#ACT
+goto @dice34
+break
+#IF
+equal d1 5
+#ACT
+goto @dice35
+break
+#IF
+equal d1 6
+#ACT
+goto @dice36
+break
+#ELSEACT
+goto @dice3
+[@dice33]
+#IF
+equal d2 1
+#ACT
+goto @dice331
+break
+#IF
+equal d2 2
+#ACT
+goto @dice332
+break
+#IF
+equal d2 3
+#ACT
+goto @dice333
+break
+#IF
+equal d2 4
+#ACT
+goto @dice334
+break
+#IF
+equal d2 5
+#ACT
+goto @dice335
+break
+#IF
+equal d2 6
+#ACT
+goto @dice336
+break
+#ELSEACT
+goto @dice33
+[@dice333]
+#IF
+equal d3 3
+#ACT
+mov d5 4
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 3
+goto @main-3
+[@dice331]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice332]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice334]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice335]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice336]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice31]
+#IF
+equal d2 1
+#ACT
+goto @dice311
+break
+#IF
+equal d2 2
+#ACT
+goto @dice312
+break
+#IF
+equal d2 3
+#ACT
+goto @dice313
+break
+#IF
+equal d2 4
+#ACT
+goto @dice314
+break
+#IF
+equal d2 5
+#ACT
+goto @dice315
+break
+#IF
+equal d2 6
+#ACT
+goto @dice316
+break
+#ELSEACT
+goto @dice31
+[@dice311]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice312]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice313]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 13
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice314]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice315]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice316]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice32]
+#IF
+equal d2 1
+#ACT
+goto @dice321
+break
+#IF
+equal d2 2
+#ACT
+goto @dice322
+break
+#IF
+equal d2 3
+#ACT
+goto @dice323
+break
+#IF
+equal d2 4
+#ACT
+goto @dice324
+break
+#IF
+equal d2 5
+#ACT
+goto @dice325
+break
+#IF
+equal d2 6
+#ACT
+goto @dice326
+break
+#ELSEACT
+goto @dice32
+[@dice321]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice322]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice323]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 23
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice324]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice325]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice326]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice34]
+#IF
+equal d2 1
+#ACT
+goto @dice341
+break
+#IF
+equal d2 2
+#ACT
+goto @dice342
+break
+#IF
+equal d2 3
+#ACT
+goto @dice343
+break
+#IF
+equal d2 4
+#ACT
+goto @dice344
+break
+#IF
+equal d2 5
+#ACT
+goto @dice345
+break
+#IF
+equal d2 6
+#ACT
+goto @dice346
+break
+#ELSEACT
+goto @dice34
+[@dice341]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice342]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice343]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice344]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice345]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice346]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice35]
+#IF
+equal d2 1
+#ACT
+goto @dice351
+break
+#IF
+equal d2 2
+#ACT
+goto @dice352
+break
+#IF
+equal d2 3
+#ACT
+goto @dice353
+break
+#IF
+equal d2 4
+#ACT
+goto @dice354
+break
+#IF
+equal d2 5
+#ACT
+goto @dice355
+break
+#IF
+equal d2 6
+#ACT
+goto @dice356
+break
+#ELSEACT
+goto @dice35
+[@dice351]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice352]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice353]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice354]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice355]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice356]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice36]
+#IF
+equal d2 1
+#ACT
+goto @dice361
+break
+#IF
+equal d2 2
+#ACT
+goto @dice362
+break
+#IF
+equal d2 3
+#ACT
+goto @dice363
+break
+#IF
+equal d2 4
+#ACT
+goto @dice364
+break
+#IF
+equal d2 5
+#ACT
+goto @dice365
+break
+#IF
+equal d2 6
+#ACT
+goto @dice366
+break
+#ELSEACT
+goto @dice36
+[@dice361]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice362]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice363]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice364]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice365]
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice366]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice4]
+#IF
+equal d1 1
+#ACT
+goto @dice41
+break
+#IF
+equal d1 2
+#ACT
+goto @dice42
+break
+#IF
+equal d1 3
+#ACT
+goto @dice43
+break
+#IF
+equal d1 4
+#ACT
+goto @dice44
+break
+#IF
+equal d1 5
+#ACT
+goto @dice45
+break
+#IF
+equal d1 6
+#ACT
+goto @dice46
+break
+#ELSEACT
+goto @dice4
+[@dice44]
+#IF
+equal d2 1
+#ACT
+goto @dice441
+break
+#IF
+equal d2 2
+#ACT
+goto @dice442
+break
+#IF
+equal d2 3
+#ACT
+goto @dice443
+break
+#IF
+equal d2 4
+#ACT
+goto @dice444
+break
+#IF
+equal d2 5
+#ACT
+goto @dice445
+break
+#IF
+equal d2 6
+#ACT
+goto @dice446
+break
+#ELSEACT
+goto @dice44
+[@dice444]
+#IF
+equal d3 4
+#ACT
+mov d5 4
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 4
+goto @main-3
+[@dice441]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice442]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice443]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice445]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice446]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice41]
+#IF
+equal d2 1
+#ACT
+goto @dice411
+break
+#IF
+equal d2 2
+#ACT
+goto @dice412
+break
+#IF
+equal d2 3
+#ACT
+goto @dice413
+break
+#IF
+equal d2 4
+#ACT
+goto @dice414
+break
+#IF
+equal d2 5
+#ACT
+goto @dice415
+break
+#IF
+equal d2 6
+#ACT
+goto @dice416
+break
+#ELSEACT
+goto @dice41
+[@dice411]
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice412]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice413]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice414]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 14
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice415]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice416]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice42]
+#IF
+equal d2 1
+#ACT
+goto @dice421
+break
+#IF
+equal d2 2
+#ACT
+goto @dice422
+break
+#IF
+equal d2 3
+#ACT
+goto @dice423
+break
+#IF
+equal d2 4
+#ACT
+goto @dice424
+break
+#IF
+equal d2 5
+#ACT
+goto @dice425
+break
+#IF
+equal d2 6
+#ACT
+goto @dice426
+break
+#ELSEACT
+goto @dice42
+[@dice421]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice422]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice423]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice424]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 24
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice425]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice426]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice43]
+#IF
+equal d2 1
+#ACT
+goto @dice431
+break
+#IF
+equal d2 2
+#ACT
+goto @dice432
+break
+#IF
+equal d2 3
+#ACT
+goto @dice433
+break
+#IF
+equal d2 4
+#ACT
+goto @dice434
+break
+#IF
+equal d2 5
+#ACT
+goto @dice435
+break
+#IF
+equal d2 6
+#ACT
+goto @dice436
+break
+#ELSEACT
+goto @dice43
+[@dice431]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice432]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice433]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice434]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 34
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice435]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice436]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice45]
+#IF
+equal d2 1
+#ACT
+goto @dice451
+break
+#IF
+equal d2 2
+#ACT
+goto @dice452
+break
+#IF
+equal d2 3
+#ACT
+goto @dice453
+break
+#IF
+equal d2 4
+#ACT
+goto @dice454
+break
+#IF
+equal d2 5
+#ACT
+goto @dice455
+break
+#IF
+equal d2 6
+#ACT
+goto @dice456
+break
+#ELSEACT
+goto @dice45
+[@dice451]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice452]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice453]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice454]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice455]
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice456]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice46]
+#IF
+equal d2 1
+#ACT
+goto @dice461
+break
+#IF
+equal d2 2
+#ACT
+goto @dice462
+break
+#IF
+equal d2 3
+#ACT
+goto @dice463
+break
+#IF
+equal d2 4
+#ACT
+goto @dice464
+break
+#IF
+equal d2 5
+#ACT
+goto @dice465
+break
+#IF
+equal d2 6
+#ACT
+goto @dice466
+break
+#ELSEACT
+goto @dice46
+[@dice461]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice462]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice463]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice464]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice465]
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice466]
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice5]
+#IF
+equal d1 1
+#ACT
+goto @dice51
+break
+#IF
+equal d1 2
+#ACT
+goto @dice52
+break
+#IF
+equal d1 3
+#ACT
+goto @dice53
+break
+#IF
+equal d1 4
+#ACT
+goto @dice54
+break
+#IF
+equal d1 5
+#ACT
+goto @dice55
+break
+#IF
+equal d1 6
+#ACT
+goto @dice56
+break
+#ELSEACT
+goto @dice5
+[@dice55]
+#IF
+equal d2 1
+#ACT
+goto @dice551
+break
+#IF
+equal d2 2
+#ACT
+goto @dice552
+break
+#IF
+equal d2 3
+#ACT
+goto @dice553
+break
+#IF
+equal d2 4
+#ACT
+goto @dice554
+break
+#IF
+equal d2 5
+#ACT
+goto @dice555
+break
+#IF
+equal d2 6
+#ACT
+goto @dice556
+break
+#ELSEACT
+goto @dice55
+[@dice555]
+#IF
+equal d3 5
+#ACT
+mov d5 4
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 5
+goto @main-3
+[@dice551]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice552]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice553]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice554]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice556]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice51]
+#IF
+equal d2 1
+#ACT
+goto @dice511
+break
+#IF
+equal d2 2
+#ACT
+goto @dice512
+break
+#IF
+equal d2 3
+#ACT
+goto @dice513
+break
+#IF
+equal d2 4
+#ACT
+goto @dice514
+break
+#IF
+equal d2 5
+#ACT
+goto @dice515
+break
+#IF
+equal d2 6
+#ACT
+goto @dice516
+break
+#ELSEACT
+goto @dice51
+[@dice511]
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice512]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice513]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice514]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice515]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 15
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice516]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice52]
+#IF
+equal d2 1
+#ACT
+goto @dice521
+break
+#IF
+equal d2 2
+#ACT
+goto @dice522
+break
+#IF
+equal d2 3
+#ACT
+goto @dice523
+break
+#IF
+equal d2 4
+#ACT
+goto @dice524
+break
+#IF
+equal d2 5
+#ACT
+goto @dice525
+break
+#IF
+equal d2 6
+#ACT
+goto @dice526
+break
+#ELSEACT
+goto @dice52
+[@dice521]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice522]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice523]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice524]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice525]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 25
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice526]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice53]
+#IF
+equal d2 1
+#ACT
+goto @dice531
+break
+#IF
+equal d2 2
+#ACT
+goto @dice532
+break
+#IF
+equal d2 3
+#ACT
+goto @dice533
+break
+#IF
+equal d2 4
+#ACT
+goto @dice534
+break
+#IF
+equal d2 5
+#ACT
+goto @dice535
+break
+#IF
+equal d2 6
+#ACT
+goto @dice536
+break
+#ELSEACT
+goto @dice53
+[@dice531]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice532]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice533]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice534]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice535]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 35
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice536]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice54]
+#IF
+equal d2 1
+#ACT
+goto @dice541
+break
+#IF
+equal d2 2
+#ACT
+goto @dice542
+break
+#IF
+equal d2 3
+#ACT
+goto @dice543
+break
+#IF
+equal d2 4
+#ACT
+goto @dice544
+break
+#IF
+equal d2 5
+#ACT
+goto @dice303
+break
+#IF
+equal d2 6
+#ACT
+goto @dice546
+break
+#ELSEACT
+goto @dice54
+[@dice541]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice542]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice543]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice544]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice545]
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 45
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice546]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice56]
+#IF
+equal d2 1
+#ACT
+goto @dice561
+break
+#IF
+equal d2 2
+#ACT
+goto @dice562
+break
+#IF
+equal d2 3
+#ACT
+goto @dice563
+break
+#IF
+equal d2 4
+#ACT
+goto @dice564
+break
+#IF
+equal d2 5
+#ACT
+goto @dice565
+break
+#IF
+equal d2 6
+#ACT
+goto @dice566
+break
+#ELSEACT
+goto @dice56
+[@dice561]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice562]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice563]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice564]
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice565]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice566]
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice6]
+#IF
+equal d1 1
+#ACT
+goto @dice61
+break
+#IF
+equal d1 2
+#ACT
+goto @dice62
+break
+#IF
+equal d1 3
+#ACT
+goto @dice63
+break
+#IF
+equal d1 4
+#ACT
+goto @dice64
+break
+#IF
+equal d1 5
+#ACT
+goto @dice65
+break
+#IF
+equal d1 6
+#ACT
+goto @dice66
+break
+#ELSEACT
+goto @dice6
+[@dice66]
+#IF
+equal d2 1
+#ACT
+goto @dice661
+break
+#IF
+equal d2 2
+#ACT
+goto @dice662
+break
+#IF
+equal d2 3
+#ACT
+goto @dice663
+break
+#IF
+equal d2 4
+#ACT
+goto @dice664
+break
+#IF
+equal d2 5
+#ACT
+goto @dice665
+break
+#IF
+equal d2 6
+#ACT
+goto @dice666
+break
+#ELSEACT
+goto @dice66
+[@dice666]
+#IF
+equal d3 6
+#ACT
+mov d5 4
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 3
+mov d6 6
+goto @main-3
+[@dice661]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice662]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice663]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice664]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice665]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice61]
+#IF
+equal d2 1
+#ACT
+goto @dice611
+break
+#IF
+equal d2 2
+#ACT
+goto @dice612
+break
+#IF
+equal d2 3
+#ACT
+goto @dice613
+break
+#IF
+equal d2 4
+#ACT
+goto @dice614
+break
+#IF
+equal d2 5
+#ACT
+goto @dice615
+break
+#IF
+equal d2 6
+#ACT
+goto @dice616
+break
+#ELSEACT
+goto @dice61
+[@dice611]
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 3
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 1
+goto @main-3
+[@dice612]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice613]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice614]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice615]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice616]
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 2
+mov d6 16
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice62]
+#IF
+equal d2 1
+#ACT
+goto @dice621
+break
+#IF
+equal d2 2
+#ACT
+goto @dice622
+break
+#IF
+equal d2 3
+#ACT
+goto @dice623
+break
+#IF
+equal d2 4
+#ACT
+goto @dice624
+break
+#IF
+equal d2 5
+#ACT
+goto @dice625
+break
+#IF
+equal d2 6
+#ACT
+goto @dice626
+break
+#ELSEACT
+goto @dice62
+[@dice621]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice622]
+#IF
+equal d3 2
+#ACT
+mov d5 3
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 2
+goto @main-3
+[@dice623]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice624]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice625]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice626]
+#IF
+equal d3 2
+#ACT
+mov d5 2
+mov d6 26
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice63]
+#IF
+equal d2 1
+#ACT
+goto @dice631
+break
+#IF
+equal d2 2
+#ACT
+goto @dice304
+break
+#IF
+equal d2 3
+#ACT
+goto @dice633
+break
+#IF
+equal d2 4
+#ACT
+goto @dice634
+break
+#IF
+equal d2 5
+#ACT
+goto @dice635
+break
+#IF
+equal d2 6
+#ACT
+goto @dice636
+break
+#ELSEACT
+goto @dice63
+[@dice631]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice632]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice633]
+#IF
+equal d3 3
+#ACT
+mov d5 3
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 3
+goto @main-3
+[@dice634]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice635]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice636]
+#IF
+equal d3 3
+#ACT
+mov d5 2
+mov d6 36
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice64]
+#IF
+equal d2 1
+#ACT
+goto @dice641
+break
+#IF
+equal d2 2
+#ACT
+goto @dice642
+break
+#IF
+equal d2 3
+#ACT
+goto @dice643
+break
+#IF
+equal d2 4
+#ACT
+goto @dice644
+break
+#IF
+equal d2 5
+#ACT
+goto @dice645
+break
+#IF
+equal d2 6
+#ACT
+goto @dice646
+break
+#ELSEACT
+goto @dice64
+[@dice641]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice642]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice643]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice644]
+#IF
+equal d3 4
+#ACT
+mov d5 3
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 4
+goto @main-3
+[@dice645]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice646]
+#IF
+equal d3 4
+#ACT
+mov d5 2
+mov d6 46
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@dice65]
+#IF
+equal d2 1
+#ACT
+goto @dice651
+break
+#IF
+equal d2 2
+#ACT
+goto @dice652
+break
+#IF
+equal d2 3
+#ACT
+goto @dice653
+break
+#IF
+equal d2 4
+#ACT
+goto @dice654
+break
+#IF
+equal d2 5
+#ACT
+goto @dice655
+break
+#IF
+equal d2 6
+#ACT
+goto @dice656
+break
+#ELSEACT
+goto @dice65
+[@dice651]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 1
+#ACT
+mov d5 1
+mov d6 1
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice652]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 2
+#ACT
+mov d5 1
+mov d6 2
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice653]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 3
+#ACT
+mov d5 1
+mov d6 3
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice654]
+#IF
+equal d3 6
+#ACT
+mov d5 1
+mov d6 6
+goto @main-3
+break
+#IF
+equal d3 5
+#ACT
+mov d5 1
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 4
+#ACT
+mov d5 1
+mov d6 4
+goto @main-3
+break
+#ELSEACT
+mov d5 5
+goto @main-3
+[@dice655]
+#IF
+equal d3 5
+#ACT
+mov d5 3
+mov d6 5
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 5
+goto @main-3
+[@dice656]
+#IF
+equal d3 5
+#ACT
+mov d5 2
+mov d6 56
+goto @main-3
+break
+#IF
+equal d3 6
+#ACT
+mov d5 3
+mov d6 6
+goto @main-3
+break
+#ELSEACT
+mov d5 1
+mov d6 6
+goto @main-3
+[@main-3]
+#IF
+equal d5 5
+#ACT
+mov d4 3
+goto @main-3_5
+break
+#IF
+equal d5 1
+#ACT
+mov d4 3
+goto @main-3_1
+break
+#IF
+equal d5 2
+#ACT
+mov d4 3
+goto @main-3_2
+break
+#IF
+equal d5 3
+#ACT
+mov d4 3
+goto @main-3_3
+break
+#IF
+equal d5 4
+#ACT
+mov d4 3
+goto @main-3_4
+break
+#IF
+equal d5 0
+#ACT
+mov d4 1
+goto @main-3_0
+break
+#ELSEACT
+goto @main-3
+[@main-3_5]
+#IF
+checkgold 39000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_17
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_18
+
+[@main-3_1]
+#IF
+checkgold 39000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_19
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_20
+
+[@main-3_2]
+#IF
+checkgold 39000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_21
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_22
+
+[@main-3_3]
+#IF
+checkgold 39000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_23
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_24
+
+[@main-3_4]
+#IF
+checkgold 39000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_25
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_26
+
+[@main-3_0]
+#IF
+#ACT
+mov d4 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_27
+
+[@npcdicestart]
+#IF
+checkgold 39000
+#ACT
+mov d4 4
+movr d0 6
+movr d1 6
+movr d2 6
+movr d3 6
+inc d0 1
+inc d1 1
+inc d2 1
+inc d3 1
+playdice 4 @checknpcdice
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_28
+
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_29
+
+[@checknpcdice]
+#IF
+equal d0 1
+#ACT
+goto @npcdice1
+break
+#IF
+equal d0 2
+#ACT
+goto @npcdice2
+break
+#IF
+equal d0 3
+#ACT
+goto @npcdice3
+break
+#IF
+equal d0 4
+#ACT
+goto @npcdice4
+break
+#IF
+equal d0 5
+#ACT
+goto @npcdice5
+break
+#IF
+equal d0 6
+#ACT
+goto @npcdice6
+break
+#ELSEACT
+goto @checknpcdice
+[@npcdice1]
+#IF
+equal d1 1
+#ACT
+goto @npcdice11
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice12
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice13
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice14
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice15
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice16
+break
+#ELSEACT
+goto @npcdice1
+[@npcdice11]
+#IF
+equal d2 1
+#ACT
+goto @npcdice111
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice112
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice113
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice114
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice115
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice116
+break
+#ELSEACT
+goto @npcdice11
+[@npcdice111]
+#IF
+equal d3 1
+#ACT
+mov d7 4
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 1
+goto @main-4
+[@npcdice112]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice113]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice114]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice115]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice116]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice12]
+#IF
+equal d2 1
+#ACT
+goto @npcdice121
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice122
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice123
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice124
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice125
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice126
+break
+#ELSEACT
+goto @npcdice12
+[@npcdice121]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice122]
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice123]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice124]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice125]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice126]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice13]
+#IF
+equal d2 1
+#ACT
+goto @npcdice131
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice132
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice133
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice134
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice135
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice136
+break
+#ELSEACT
+goto @npcdice13
+[@npcdice131]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice132]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice133]
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice134]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice135]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice136]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice14]
+#IF
+equal d2 1
+#ACT
+goto @npcdice141
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice142
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice143
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice144
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice145
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice146
+break
+#ELSEACT
+goto @npcdice14
+[@npcdice141]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice142]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice143]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice144]
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice145]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice146]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice15]
+#IF
+equal d2 1
+#ACT
+goto @npcdice151
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice152
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice153
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice154
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice155
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice156
+break
+#ELSEACT
+goto @npcdice15
+[@npcdice151]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice152]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice153]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice154]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice155]
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice156]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice16]
+#IF
+equal d2 1
+#ACT
+goto @npcdice161
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice162
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice163
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice164
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice165
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice166
+break
+#ELSEACT
+goto @npcdice16
+[@npcdice161]
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice162]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice163]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice164]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice165]
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice166]
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice2]
+#IF
+equal d1 1
+#ACT
+goto @npcdice21
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice22
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice23
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice24
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice25
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice26
+break
+#ELSEACT
+goto @npcdice2
+[@npcdice22]
+#IF
+equal d2 1
+#ACT
+goto @npcdice221
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice222
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice223
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice224
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice225
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice226
+break
+#ELSEACT
+goto @npcdice22
+[@npcdice222]
+#IF
+equal d3 2
+#ACT
+mov d7 4
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 2
+goto @main-4
+[@npcdice221]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice223]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice224]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice225]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice226]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice21]
+#IF
+equal d2 1
+#ACT
+goto @npcdice211
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice212
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice213
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice214
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice215
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice216
+break
+#ELSEACT
+goto @npcdice21
+[@npcdice211]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice212]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 12
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice213]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice214]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice215]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice216]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice23]
+#IF
+equal d2 1
+#ACT
+goto @npcdice231
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice232
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice233
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice234
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice235
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice236
+break
+#ELSEACT
+goto @npcdice23
+[@npcdice231]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice232]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice233]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice234]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice235]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice236]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice24]
+#IF
+equal d2 1
+#ACT
+goto @npcdice241
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice242
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice243
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice244
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice245
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice246
+break
+#ELSEACT
+goto @npcdice24
+[@npcdice241]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice242]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice243]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice244]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice245]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice246]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice25]
+#IF
+equal d2 1
+#ACT
+goto @npcdice251
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice252
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice253
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice254
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice255
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice256
+break
+#ELSEACT
+goto @npcdice25
+[@npcdice251]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice252]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice253]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice254]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice255]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice256]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice26]
+#IF
+equal d2 1
+#ACT
+goto @npcdice261
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice262
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice263
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice264
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice265
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice266
+break
+#ELSEACT
+goto @npcdice26
+[@npcdice261]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice262]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice263]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice264]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice265]
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice266]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice3]
+#IF
+equal d1 1
+#ACT
+goto @npcdice31
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice32
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice33
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice34
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice35
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice36
+break
+#ELSEACT
+goto @npcdice3
+[@npcdice33]
+#IF
+equal d2 1
+#ACT
+goto @npcdice331
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice332
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice333
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice334
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice335
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice336
+break
+#ELSEACT
+goto @npcdice33
+[@npcdice333]
+#IF
+equal d3 3
+#ACT
+mov d7 4
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 3
+goto @main-4
+[@npcdice331]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice332]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice334]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice335]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice336]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice31]
+#IF
+equal d2 1
+#ACT
+goto @npcdice311
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice312
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice313
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice314
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice315
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice316
+break
+#ELSEACT
+goto @npcdice31
+[@npcdice311]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice312]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice313]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 13
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice314]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice315]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice316]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice32]
+#IF
+equal d2 1
+#ACT
+goto @npcdice321
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice322
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice323
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice324
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice325
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice326
+break
+#ELSEACT
+goto @npcdice32
+[@npcdice321]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice322]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice323]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 23
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice324]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice325]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice326]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice34]
+#IF
+equal d2 1
+#ACT
+goto @npcdice341
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice342
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice343
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice344
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice345
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice346
+break
+#ELSEACT
+goto @npcdice34
+[@npcdice341]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice342]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice343]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice344]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice345]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice346]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice35]
+#IF
+equal d2 1
+#ACT
+goto @npcdice351
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice352
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice353
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice354
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice355
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice356
+break
+#ELSEACT
+goto @npcdice35
+[@npcdice351]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice352]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice353]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice354]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice355]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice356]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice36]
+#IF
+equal d2 1
+#ACT
+goto @npcdice361
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice362
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice363
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice364
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice365
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice366
+break
+#ELSEACT
+goto @npcdice36
+[@npcdice361]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice362]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice363]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice364]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice365]
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice366]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice4]
+#IF
+equal d1 1
+#ACT
+goto @npcdice41
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice42
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice43
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice44
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice45
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice46
+break
+#ELSEACT
+goto @npcdice4
+[@npcdice44]
+#IF
+equal d2 1
+#ACT
+goto @npcdice441
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice442
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice443
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice444
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice445
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice446
+break
+#ELSEACT
+goto @npcdice44
+[@npcdice444]
+#IF
+equal d3 4
+#ACT
+mov d7 4
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 4
+goto @main-4
+[@npcdice441]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice442]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice443]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice445]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice446]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice41]
+#IF
+equal d2 1
+#ACT
+goto @npcdice411
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice412
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice413
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice414
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice415
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice416
+break
+#ELSEACT
+goto @npcdice41
+[@npcdice411]
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice412]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice413]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice414]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 14
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice415]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice416]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice42]
+#IF
+equal d2 1
+#ACT
+goto @npcdice421
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice422
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice423
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice424
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice425
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice426
+break
+#ELSEACT
+goto @npcdice42
+[@npcdice421]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice422]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice423]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice424]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 24
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice425]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice426]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice43]
+#IF
+equal d2 1
+#ACT
+goto @npcdice431
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice432
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice433
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice434
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice435
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice436
+break
+#ELSEACT
+goto @npcdice43
+[@npcdice431]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice432]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice433]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice434]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 34
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice435]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice436]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice45]
+#IF
+equal d2 1
+#ACT
+goto @npcdice451
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice452
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice453
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice454
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice455
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice456
+break
+#ELSEACT
+goto @npcdice45
+[@npcdice451]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice452]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice453]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice454]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice455]
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice456]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice46]
+#IF
+equal d2 1
+#ACT
+goto @npcdice461
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice462
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice463
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice464
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice465
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice466
+break
+#ELSEACT
+goto @npcdice46
+[@npcdice461]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice462]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice463]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice464]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice465]
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice466]
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice5]
+#IF
+equal d1 1
+#ACT
+goto @npcdice51
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice52
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice53
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice54
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice55
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice56
+break
+#ELSEACT
+goto @npcdice5
+[@npcdice55]
+#IF
+equal d2 1
+#ACT
+goto @npcdice551
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice552
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice553
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice554
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice555
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice556
+break
+#ELSEACT
+goto @npcdice55
+[@npcdice555]
+#IF
+equal d3 5
+#ACT
+mov d7 4
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 5
+goto @main-4
+[@npcdice551]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice552]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice553]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice554]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice556]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice51]
+#IF
+equal d2 1
+#ACT
+goto @npcdice511
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice512
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice513
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice514
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice515
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice516
+break
+#ELSEACT
+goto @npcdice51
+[@npcdice511]
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice512]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice513]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice514]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice515]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 15
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice516]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice52]
+#IF
+equal d2 1
+#ACT
+goto @npcdice521
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice522
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice523
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice524
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice525
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice526
+break
+#ELSEACT
+goto @npcdice52
+[@npcdice521]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice522]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice523]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice524]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice525]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 25
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice526]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice53]
+#IF
+equal d2 1
+#ACT
+goto @npcdice531
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice532
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice533
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice534
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice535
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice536
+break
+#ELSEACT
+goto @npcdice53
+[@npcdice531]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice532]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice533]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice534]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice535]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 35
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice536]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice54]
+#IF
+equal d2 1
+#ACT
+goto @npcdice541
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice542
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice543
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice544
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice303
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice546
+break
+#ELSEACT
+goto @npcdice54
+[@npcdice541]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice542]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice543]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice544]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice545]
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 45
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice546]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice56]
+#IF
+equal d2 1
+#ACT
+goto @npcdice561
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice562
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice563
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice564
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice565
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice566
+break
+#ELSEACT
+goto @npcdice56
+[@npcdice561]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice562]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice563]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice564]
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice565]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice566]
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice6]
+#IF
+equal d1 1
+#ACT
+goto @npcdice61
+break
+#IF
+equal d1 2
+#ACT
+goto @npcdice62
+break
+#IF
+equal d1 3
+#ACT
+goto @npcdice63
+break
+#IF
+equal d1 4
+#ACT
+goto @npcdice64
+break
+#IF
+equal d1 5
+#ACT
+goto @npcdice65
+break
+#IF
+equal d1 6
+#ACT
+goto @npcdice66
+break
+#ELSEACT
+goto @npcdice6
+[@npcdice66]
+#IF
+equal d2 1
+#ACT
+goto @npcdice661
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice662
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice663
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice664
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice665
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice666
+break
+#ELSEACT
+goto @npcdice66
+[@npcdice666]
+#IF
+equal d3 6
+#ACT
+mov d7 4
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 3
+mov d8 6
+goto @main-4
+[@npcdice661]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice662]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice663]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice664]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice665]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice61]
+#IF
+equal d2 1
+#ACT
+goto @npcdice611
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice612
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice613
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice614
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice615
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice616
+break
+#ELSEACT
+goto @npcdice61
+[@npcdice611]
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 3
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 1
+goto @main-4
+[@npcdice612]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice613]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice614]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice615]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice616]
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 2
+mov d8 16
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice62]
+#IF
+equal d2 1
+#ACT
+goto @npcdice621
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice622
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice623
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice624
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice625
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice626
+break
+#ELSEACT
+goto @npcdice62
+[@npcdice621]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice622]
+#IF
+equal d3 2
+#ACT
+mov d7 3
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 2
+goto @main-4
+[@npcdice623]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice624]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice625]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice626]
+#IF
+equal d3 2
+#ACT
+mov d7 2
+mov d8 26
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice63]
+#IF
+equal d2 1
+#ACT
+goto @npcdice631
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice304
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice633
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice634
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice635
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice636
+break
+#ELSEACT
+goto @npcdice63
+[@npcdice631]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice632]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice633]
+#IF
+equal d3 3
+#ACT
+mov d7 3
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 3
+goto @main-4
+[@npcdice634]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice635]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice636]
+#IF
+equal d3 3
+#ACT
+mov d7 2
+mov d8 36
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice64]
+#IF
+equal d2 1
+#ACT
+goto @npcdice641
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice642
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice643
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice644
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice645
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice646
+break
+#ELSEACT
+goto @npcdice64
+[@npcdice641]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice642]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice643]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice644]
+#IF
+equal d3 4
+#ACT
+mov d7 3
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 4
+goto @main-4
+[@npcdice645]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice646]
+#IF
+equal d3 4
+#ACT
+mov d7 2
+mov d8 46
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@npcdice65]
+#IF
+equal d2 1
+#ACT
+goto @npcdice651
+break
+#IF
+equal d2 2
+#ACT
+goto @npcdice652
+break
+#IF
+equal d2 3
+#ACT
+goto @npcdice653
+break
+#IF
+equal d2 4
+#ACT
+goto @npcdice654
+break
+#IF
+equal d2 5
+#ACT
+goto @npcdice655
+break
+#IF
+equal d2 6
+#ACT
+goto @npcdice656
+break
+#ELSEACT
+goto @npcdice65
+[@npcdice651]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 1
+#ACT
+mov d7 1
+mov d8 1
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice652]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 2
+#ACT
+mov d7 1
+mov d8 2
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice653]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 3
+#ACT
+mov d7 1
+mov d8 3
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice654]
+#IF
+equal d3 6
+#ACT
+mov d7 1
+mov d8 6
+goto @main-4
+break
+#IF
+equal d3 5
+#ACT
+mov d7 1
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 4
+#ACT
+mov d7 1
+mov d8 4
+goto @main-4
+break
+#ELSEACT
+mov d7 5
+goto @main-4
+[@npcdice655]
+#IF
+equal d3 5
+#ACT
+mov d7 3
+mov d8 5
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 5
+goto @main-4
+[@npcdice656]
+#IF
+equal d3 5
+#ACT
+mov d7 2
+mov d8 56
+goto @main-4
+break
+#IF
+equal d3 6
+#ACT
+mov d7 3
+mov d8 6
+goto @main-4
+break
+#ELSEACT
+mov d7 1
+mov d8 6
+goto @main-4
+[@main-4]
+#IF
+equal d7 5
+#ACT
+mov d4 5
+goto @main-4-5
+break
+#IF
+equal d7 1
+#ACT
+mov d4 5
+goto @main-4-1
+break
+#IF
+equal d7 2
+#ACT
+mov d4 5
+goto @main-4-2
+break
+#IF
+equal d7 3
+#ACT
+mov d4 5
+goto @main-4-3
+break
+#IF
+equal d7 4
+#ACT
+mov d4 5
+goto @main-4-4
+break
+#IF
+equal d7 0
+#ACT
+mov d4 1
+goto @main-4-0
+break
+#ELSEACT
+goto @main-4
+[@main-4_0]
+#IF
+#ACT
+mov d4 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_30
+
+[@main-4-5]
+#IF
+equal d5 5
+#ACT
+goto @main-9-5
+break
+#ELSEACT
+goto @main-7-5
+[@main-4-1]
+#IF
+equal d5 4
+#ACT
+goto @main-7-1
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-1
+break
+#IF
+equal d5 2
+#ACT
+goto @main-7-1
+break
+#IF
+equal d5 1
+#ACT
+goto @main-5-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-5-1]
+#IF
+equal d8 6
+#ACT
+goto @main-5-1-6
+break
+#IF
+equal d8 5
+#ACT
+goto @main-5-1-5
+break
+#IF
+equal d8 4
+#ACT
+goto @main-5-1-4
+break
+#IF
+equal d8 3
+#ACT
+goto @main-5-1-3
+break
+#IF
+equal d8 2
+#ACT
+goto @main-5-1-2
+break
+#IF
+equal d8 1
+#ACT
+goto @main-5-1-1
+break
+#ELSEACT
+goto @main-5-1
+[@main-5-1-1]
+#IF
+equal d6 1
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-7-1
+[@main-5-1-2]
+#IF
+equal d6 6
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 3
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 2
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-5-1-3]
+#IF
+equal d6 6
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 3
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-5-1-4]
+#IF
+equal d6 6
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 4
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-5-1-5]
+#IF
+equal d6 6
+#ACT
+goto @main-7-1
+break
+#IF
+equal d6 5
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-5-1-6]
+#IF
+equal d6 6
+#ACT
+goto @main-9-1
+break
+#ELSEACT
+goto @main-8-1
+[@main-4-2]
+#IF
+equal d5 4
+#ACT
+goto @main-7-2
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-2
+break
+#IF
+equal d5 2
+#ACT
+goto @main-6-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2]
+#IF
+equal d8 56
+#ACT
+goto @main-6-2-9
+break
+#IF
+equal d8 46
+#ACT
+goto @main-6-2-8
+break
+#IF
+equal d8 45
+#ACT
+goto @main-6-2-7
+break
+#IF
+equal d8 36
+#ACT
+goto @main-6-2-7
+break
+#IF
+equal d8 35
+#ACT
+goto @main-6-2-6
+break
+#IF
+equal d8 26
+#ACT
+goto @main-6-2-6
+break
+#IF
+equal d8 34
+#ACT
+goto @main-6-2-5
+break
+#IF
+equal d8 25
+#ACT
+goto @main-6-2-5
+break
+#IF
+equal d8 16
+#ACT
+goto @main-6-2-5
+break
+#IF
+equal d8 24
+#ACT
+goto @main-6-2-4
+break
+#IF
+equal d8 15
+#ACT
+goto @main-6-2-4
+break
+#IF
+equal d8 23
+#ACT
+goto @main-6-2-3
+break
+#IF
+equal d8 14
+#ACT
+goto @main-6-2-3
+break
+#IF
+equal d8 13
+#ACT
+goto @main-6-2-2
+break
+#IF
+equal d8 12
+#ACT
+goto @main-6-2-1
+break
+#ELSEACT
+goto @main-6-2
+[@main-6-2-1]
+#IF
+equal d6 12
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-7-2
+[@main-6-2-2]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 35
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 26
+#ACT
+goto @main-7-2
+break
+#IF
+equal d8 34
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 25
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 16
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 24
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 15
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 23
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 14
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 13
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-3]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 35
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 26
+#ACT
+goto @main-7-2
+break
+#IF
+equal d8 34
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 25
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 16
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 24
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 15
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 23
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 14
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-4]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 35
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 26
+#ACT
+goto @main-7-2
+break
+#IF
+equal d8 34
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 25
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 16
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 24
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 15
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-5]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 35
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 26
+#ACT
+goto @main-7-2
+break
+#IF
+equal d8 34
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 25
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 16
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-6]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 35
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 26
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-7]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 45
+#ACT
+goto @main-9-2
+break
+#IF
+equal d6 36
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-8]
+#IF
+equal d6 56
+#ACT
+goto @main-7-2
+break
+#IF
+equal d6 46
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-6-2-9]
+#IF
+equal d6 56
+#ACT
+goto @main-9-2
+break
+#ELSEACT
+goto @main-8-2
+[@main-4-3]
+#IF
+equal d5 4
+#ACT
+goto @main-7-3
+break
+#IF
+equal d5 3
+#ACT
+goto @main-5-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-5-3]
+#IF
+equal d8 6
+#ACT
+goto @main-5-3-6
+break
+#IF
+equal d8 5
+#ACT
+goto @main-5-3-5
+break
+#IF
+equal d8 4
+#ACT
+goto @main-5-3-4
+break
+#IF
+equal d8 3
+#ACT
+goto @main-5-3-3
+break
+#IF
+equal d8 2
+#ACT
+goto @main-5-3-2
+break
+#IF
+equal d8 1
+#ACT
+goto @main-5-3-1
+break
+#ELSEACT
+goto @main-5-3
+[@main-5-3-1]
+#IF
+equal d6 1
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-7-3
+[@main-5-3-2]
+#IF
+equal d6 6
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 3
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 2
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-5-3-3]
+#IF
+equal d6 6
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 3
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-5-3-4]
+#IF
+equal d6 6
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 4
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-5-3-5]
+#IF
+equal d6 6
+#ACT
+goto @main-7-3
+break
+#IF
+equal d6 5
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-5-3-6]
+#IF
+equal d6 6
+#ACT
+goto @main-9-3
+break
+#ELSEACT
+goto @main-8-3
+[@main-4-4]
+#IF
+equal d5 4
+#ACT
+goto @main-5-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-5-4]
+#IF
+equal d8 6
+#ACT
+goto @main-5-4-6
+break
+#IF
+equal d8 5
+#ACT
+goto @main-5-4-5
+break
+#IF
+equal d8 4
+#ACT
+goto @main-5-4-4
+break
+#IF
+equal d8 3
+#ACT
+goto @main-5-4-3
+break
+#IF
+equal d8 2
+#ACT
+goto @main-5-4-2
+break
+#IF
+equal d8 1
+#ACT
+goto @main-5-4-1
+break
+#ELSEACT
+goto @main-5-4
+[@main-5-4-1]
+#IF
+equal d6 1
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-7-4
+[@main-5-4-2]
+#IF
+equal d6 6
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 3
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 2
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-5-4-3]
+#IF
+equal d6 6
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 4
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 3
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-5-4-4]
+#IF
+equal d6 6
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 5
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 4
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-5-4-5]
+#IF
+equal d6 6
+#ACT
+goto @main-7-4
+break
+#IF
+equal d6 5
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-5-4-6]
+#IF
+equal d6 6
+#ACT
+goto @main-9-4
+break
+#ELSEACT
+goto @main-8-4
+[@main-7-5]
+#IF
+equal d5 4
+#ACT
+goto @main-7-5_4
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-5_3
+break
+#IF
+equal d5 2
+#ACT
+goto @main-7-5_2
+break
+#IF
+equal d5 1
+#ACT
+goto @main-7-5_1
+break
+#ELSEACT
+goto @main-7-5
+[@main-7-5_4]
+#IF
+check [305] 1
+#ACT
+give 金币 20000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_31
+
+#ELSEACT
+give 金币 40000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_32
+
+[@main-7-5_3]
+#IF
+check [305] 1
+#ACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_33
+
+#ELSEACT
+give 金币 16000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_34
+
+[@main-7-5_2]
+#IF
+check [305] 1
+#ACT
+give 金币 4000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_35
+
+#ELSEACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_36
+
+[@main-7-5_1]
+#IF
+check [305] 1
+#ACT
+give 金币 2000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_37
+
+#ELSEACT
+give 金币 4000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_38
+
+[@main-7-1]
+#IF
+equal d5 4
+#ACT
+goto @main-7-1_4
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-1_3
+break
+#IF
+equal d5 2
+#ACT
+goto @main-7-1_2
+break
+#IF
+equal d5 1
+#ACT
+goto @main-7-1_1
+break
+#ELSEACT
+goto @main-7-1
+[@main-7-1_4]
+#IF
+check [305] 1
+#ACT
+give 金币 20000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_39
+
+#ELSEACT
+give 金币 40000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_40
+
+[@main-7-1_3]
+#IF
+check [305] 1
+#ACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_41
+
+#ELSEACT
+give 金币 16000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_42
+
+[@main-7-1_2]
+#IF
+check [305] 1
+#ACT
+give 金币 4000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_43
+
+#ELSEACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_44
+
+[@main-7-1_1]
+#IF
+check [305] 1
+#ACT
+give 金币 2000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_45
+
+#ELSEACT
+give 金币 4000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_46
+
+[@main-7-2]
+#IF
+equal d5 4
+#ACT
+goto @main-7-2_4
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-2_3
+break
+#IF
+equal d5 2
+#ACT
+goto @main-7-2_2
+break
+#ELSEACT
+goto @main-7-2
+[@main-7-2_4]
+#IF
+check [305] 1
+#ACT
+give 金币 20000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_47
+
+#ELSEACT
+give 金币 40000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_48
+
+[@main-7-2_3]
+#IF
+check [305] 1
+#ACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_49
+
+#ELSEACT
+give 金币 16000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_50
+
+[@main-7-2_2]
+#IF
+check [305] 1
+#ACT
+give 金币 4000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_51
+
+#ELSEACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_52
+
+[@main-7-3]
+#IF
+equal d5 4
+#ACT
+goto @main-7-3_4
+break
+#IF
+equal d5 3
+#ACT
+goto @main-7-3_3
+break
+#ELSEACT
+goto @main-7-3
+[@main-7-3_4]
+#IF
+check [305] 1
+#ACT
+give 金币 20000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_53
+
+#ELSEACT
+give 金币 40000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_54
+
+[@main-7-3_3]
+#IF
+check [305] 1
+#ACT
+give 金币 8000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_55
+
+#ELSEACT
+give 金币 16000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_56
+
+[@main-7-4]
+#IF
+check [305] 1
+#ACT
+give 金币 20000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_57
+
+#ELSEACT
+give 金币 40000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_58
+
+[@main-8-1]
+#IF
+checkgold 39000
+#ACT
+goto @main-8-1_0
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_59
+
+[@main-8-1_0]
+#IF
+equal d5 1
+#ACT
+goto @main-8-1_1
+break
+#IF
+equal d5 5
+#ACT
+goto @main-8-1_5
+break
+#ELSEACT
+goto @main-8-1_0
+[@main-8-1_1]
+#IF
+check [305] 1
+#ACT
+take 金币 1500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_60
+
+#ELSEACT
+take 金币 3000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_61
+
+[@main-8-1_5]
+#IF
+check [305] 1
+#ACT
+take 金币 1500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_62
+
+#ELSEACT
+take 金币 3000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_63
+
+[@main-8-2]
+#IF
+checkgold 39000
+#ACT
+goto @main-8-2_0
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_64
+
+[@main-8-2_0]
+#IF
+equal d5 2
+#ACT
+goto @main-8-2_2
+break
+#IF
+equal d5 1
+#ACT
+goto @main-8-2_1
+break
+#IF
+equal d5 5
+#ACT
+goto @main-8-2_5
+break
+#ELSEACT
+goto @main-8-2_0
+[@main-8-2_2]
+#IF
+check [305] 1
+#ACT
+take 金币 3500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_65
+
+#ELSEACT
+take 金币 7000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_66
+
+[@main-8-2_1]
+#IF
+check [305] 1
+#ACT
+take 金币 3500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_67
+
+#ELSEACT
+take 金币 7000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_68
+
+[@main-8-2_5]
+#IF
+check [305] 1
+#ACT
+take 金币 3500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_69
+
+#ELSEACT
+take 金币 7000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_70
+
+[@main-8-3]
+#IF
+checkgold 39000
+#ACT
+goto @main-8-3_0
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_71
+
+[@main-8-3_0]
+#IF
+equal d5 3
+#ACT
+goto @main-8-3_3
+break
+#IF
+equal d5 2
+#ACT
+goto @main-8-3_2
+break
+#IF
+equal d5 1
+#ACT
+goto @main-8-3_1
+break
+#IF
+equal d5 5
+#ACT
+goto @main-8-3_5
+break
+#ELSEACT
+goto @main-8-3_0
+[@main-8-3_3]
+#IF
+check [305] 1
+#ACT
+take 金币 7500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_72
+
+#ELSEACT
+take 金币 15000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_73
+
+[@main-8-3_2]
+#IF
+check [305] 1
+#ACT
+take 金币 7500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_74
+
+#ELSEACT
+take 金币 15000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_75
+
+[@main-8-3_1]
+#IF
+check [305] 1
+#ACT
+take 金币 7500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_76
+
+#ELSEACT
+take 金币 15000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_77
+
+[@main-8-3_5]
+#IF
+check [305] 1
+#ACT
+take 金币 7500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_78
+
+#ELSEACT
+take 金币 15000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_79
+
+[@main-8-4]
+#IF
+checkgold 39000
+#ACT
+goto @main-8-4_0
+#ELSEACT
+mov d4 0
+set [304] 1
+set [574] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_80
+
+[@main-8-4_0]
+#IF
+equal d5 4
+#ACT
+goto @main-8-4_4
+break
+#IF
+equal d5 3
+#ACT
+goto @main-8-4_3
+break
+#IF
+equal d5 2
+#ACT
+goto @main-8-4_2
+break
+#IF
+equal d5 1
+#ACT
+goto @main-8-4_1
+break
+#IF
+equal d5 5
+#ACT
+goto @main-8-4_5
+break
+#ELSEACT
+goto @main-8-4_0
+[@main-8-4_4]
+#IF
+check [305] 1
+#ACT
+take 金币 19500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_81
+
+#ELSEACT
+take 金币 39000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_82
+
+[@main-8-4_3]
+#IF
+check [305] 1
+#ACT
+take 金币 19500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_83
+
+#ELSEACT
+take 金币 39000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_84
+
+[@main-8-4_2]
+#IF
+check [305] 1
+#ACT
+take 金币 19500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_85
+
+#ELSEACT
+take 金币 39000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_86
+
+[@main-8-4_1]
+#IF
+check [305] 1
+#ACT
+take 金币 19500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_87
+
+#ELSEACT
+take 金币 39000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_88
+
+[@main-8-4_5]
+#IF
+check [305] 1
+#ACT
+take 金币 19500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_89
+
+#ELSEACT
+take 金币 39000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_90
+
+[@main-9-5]
+#IF
+check [305] 1
+#ACT
+give 金币 250
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_91
+
+#ELSEACT
+give 金币 1000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_92
+
+[@main-9-1]
+#IF
+check [305] 1
+#ACT
+give 金币 500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_93
+
+#ELSEACT
+give 金币 1000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_94
+
+[@main-9-2]
+#IF
+check [305] 1
+#ACT
+give 金币 500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_95
+
+#ELSEACT
+give 金币 1000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_96
+
+[@main-9-3]
+#IF
+check [305] 1
+#ACT
+give 金币 500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_97
+
+#ELSEACT
+give 金币 1000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_98
+
+[@main-9-4]
+#IF
+check [305] 1
+#ACT
+give 金币 500
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [305] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_99
+
+#ELSEACT
+give 金币 1000
+mov d4 0
+mov d5 0
+mov d6 0
+mov d7 0
+mov d8 0
+set [574] 0
+set [306] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\DiceGame\Dice.txt] @Dice_100
+
+}

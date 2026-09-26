@@ -1,0 +1,100 @@
+;;º£¥áµÁ
+[@input]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_1
+
+#ACT
+BreakTimeRecall 
+
+[@InputRoom]
+#ACT
+SET [799] 0
+map B101
+
+[@RoomExit]
+#ACT
+mapmove 01 428 314
+}
+
+[@Change]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_2
+
+
+[@ChangeGold1]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_3
+
+
+[@changeGold1_1]
+#IF 
+checkbaggage
+checkgold 1100
+#ACT
+take ½ð±Ò 1100
+give ³ïÂë 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_4
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_5
+
+
+[@ChangeGold10]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_6
+
+
+[@changeGold10_1]
+#IF 
+checkbaggage
+checkgold 11000
+#ACT
+take ½ð±Ò 11000
+give ³ïÂë 10
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_7
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_8
+
+
+[@ChangeGold50]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_9
+
+
+[@changeGold50_1]
+#IF 
+checkbaggage
+checkgold 55000
+#ACT
+take ½ð±Ò 55000
+give ³ïÂë 50
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_10
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_11
+
+
+[@ChangeMoney]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_12
+
+
+[@changeMoney_1]
+#IF
+checkitem ³ïÂë 1
+#ACT
+take ³ïÂë 1
+give ½ð±Ò 900
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_13
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Mabangjin.txt] @Mabangjin_14
+
+}

@@ -1,0 +1,67 @@
+;;º£¥áµÁ
+[@SNAKE]
+{
+#IF
+check [219] 1
+#ACT
+goto @SNAKE_4
+break
+#IF
+check [217] 1
+#ACT
+goto @SNAKE_3
+break
+#IF
+check [216] 1
+#ACT
+goto @SNAKE_2
+break
+#IF
+check [215] 1
+#ACT
+goto @SNAKE_1
+break
+#ELSEACT
+goto @SNAKE_0
+[@SNAKE_0]
+#IF
+check [213] 1
+#ACT
+goto @SNAKE_0_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_1
+
+[@SNAKE_0_1]
+#IF
+checklevel 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_3
+
+[@SNAKE_1]
+#IF
+check [215] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_4
+
+[@SNAKE_2]
+#IF
+check [216] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_5
+
+[@SNAKE_3]
+#IF
+check [217] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_6
+
+[@SNAKE_4]
+#IF
+check [219] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\bamgol.txt] @bamgol_7
+
+}

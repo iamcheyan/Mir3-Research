@@ -1,0 +1,34 @@
+;;海メ盗
+[@MapQuest_fireline_test_exit]
+#IF
+check [756] 1
+#ACT
+break
+;
+#IF
+check [521] 1
+#ACT
+break
+;
+#IF
+check [520] 0
+#ACT
+break
+;
+#IF
+#ACT
+goto @MapQuest_fireline_test_exit1
+
+[@MapQuest_fireline_test_exit1]
+#IF
+#ACT
+set [521] 1
+Monclear 02_005
+goto @MapQuest_fireline_test_exit2
+#SAY
+(嘿，终于通过了学习地狱火的测试。)\
+
+[@MapQuest_fireline_test_exit2]
+#IF
+#ACT
+mapmove 02   266   146

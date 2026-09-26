@@ -1,0 +1,46 @@
+;;海メ盗
+[@Japhwa_1]
+{
+那，你想做什么杂货？有时侯做时难免也会失败，你留意啊。\ \
+<火把/@Make_General_Torch>  ,  <亮火把/@Make_General_TorchM>\ \
+<前一步/@make_item_main> 
+<结束/@exit>
+}
+
+[@Japhwa_2]
+{
+要制作火把的话， 需要{FCOLOR/10}骷髅骨 3个，烧酒 1瓶{FCOLOR/12}啊。\
+火把是利用了骷髅骨的碎片一点的话就着火的性质把骷髅骨和烧酒混起来氧化而作成的。\ \
+ <结束/@exit>
+}
+
+[@Japhwa_3]
+{
+做的很好吗。。。消磨了{FCOLOR/10}骷髅骨 3个，烧酒 1瓶{FCOLOR/12}啊。那么， 你想继续做吗 ?\ \
+<继续 制作/@Make_General_Torch> \
+<前一步/@make_General_main> \
+<结束/@exit>
+}
+
+[@Japhwa_4]
+{
+要制作亮火把的话， 需要{FCOLOR/10}僵尸骨头 4个，烧酒 2瓶{FCOLOR/12}啊。\
+亮火把是利用僵尸骨头啊。僵尸骨头赋予着咒术的力量，所以比骷髅骨发射更亮的光。亮火把就利用了这一点。\ \
+ <结束/@exit>
+}
+
+[@Japhwa_5]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_General_TorchM> \
+<前一步/@make_General_main> \
+<结束/@exit>
+}
+
+[@Japhwa_6]
+{
+做的很好吗。。。消磨了{FCOLOR/10}僵尸骨头 4个，烧酒 2瓶{FCOLOR/12}啊。那么，你想继续做吗?\ \
+<继续 制作/@Make_General_TorchM> \
+<前一步/@make_General_main> \
+<结束/@exit>
+}

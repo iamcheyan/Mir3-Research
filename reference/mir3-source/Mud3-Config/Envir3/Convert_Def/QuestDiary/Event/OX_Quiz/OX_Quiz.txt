@@ -1,0 +1,80 @@
+;;海メ盗
+[@Admin_Event_Main]
+{
+请确认活动是否已经启动. \ \
+__< 启动'OX'猜谜活动./@OX_Quiz_Start> \ \
+__< 关闭'OX'猜谜活动./@OX_Quiz_Quit> \ \
+__< 出下一道'OX'题目./@OX_Quiz_Problem> \ \
+__< 显示活动NPC./@kyokyo> \ \
+__< 初始化'OX'猜谜活动./@OX_Quiz_Initial> \ \
+选择答案20秒后,玩家会被自动踢出.请选择正确答案啊... \ \
+__<是 'O' ./@Correct(O)> \ \
+__<是 'X' ./@Correct(X)> \ \
+}
+
+[@user_Event_Main]
+{
+欢迎你来参加'OX'猜谜活动. \ \
+<结束/@exit>
+}
+
+[@Admin_EvStart_Fail]
+{
+猜谜活动已经开始. \ \
+<结束/@exit>
+}
+
+[@User_Answer]
+{
+你确定选择'<$OUTPUT(B1)>' 吗 ? \ \
+<恭喜你./@Close_Syntex>
+}
+
+[@User_Answer_Fail]
+{
+现在不能选择答案. \ \
+<结束/@exit>
+}
+
+[@Answer_OX]
+{
+正在确认答案中. \ \
+<结束/@exit>
+}
+
+[@User_Gift]
+{
+正在给获胜者颁奖. \ \
+}
+[@Answer_Move]
+{
+<选择 'X'./@OX_Quiz_MoveX>
+}
+
+[@Move_Fail]
+{
+现在不能选择答案. \ \
+<结束/@exit>
+}
+
+[@Answer_Move_1]
+{
+<选择 'O'./@OX_Quiz_MoveO>
+}
+
+[@Join_Fail]
+{
+现在不能参加猜谜活动. \ \
+<结束/@exit>
+}
+
+[@OX_Event_Not_Start]
+{
+没有启动猜谜活动. \ \
+<结束/@exit>
+}
+
+
+
+
+

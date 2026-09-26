@@ -1,0 +1,138 @@
+;;∫£•·µ¡
+[@main]
+;
+#IF
+CheckDailyQuest 235
+#ACT
+goto @numa_T235
+break
+;
+#IF
+CheckDailyQuest 338
+#ACT
+goto @numabubro_T338
+break
+;
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@numa_T235]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @numa_T235_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@numa_T235_1]
+#IF
+large S0 49
+#ACT
+goto @numa_T235_6
+#ELSEACT
+goto @numa_T235_1_1
+
+[@numa_T235_1_1]
+#IF
+large S0 2
+#ACT
+goto @numa_T235_3
+#ELSEACT
+mov S0 2
+goto @numa_T235_3
+
+;-----------------
+
+[@numa_T235_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------
+
+[@numa_T235_6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T235_Say
+
+#ACT
+set [308] 1
+Mov S0 1
+
+;-----------------------------------------------------
+[@numabubro_T338]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+
+#ACT
+goto @numabubro_T338_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@numabubro_T338_1]
+#IF
+checkitem ≈µ¬Í∑®¿œ’‰÷È 4
+#ACT
+give ≈µ¬Í∑®¿œ’‰÷È 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T338_Say
+
+#ELSEACT
+goto @numabubro_T338_2
+
+
+[@numabubro_T338_2]
+#IF
+random 3
+#ACT
+give ≈µ¬Í∑®¿œ’‰÷È 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------

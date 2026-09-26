@@ -1,0 +1,121 @@
+;;∫£•·µ¡
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### D001_001  7,9 ->  D001  302,66     ############
+;#### D001  303,65  ->  D001_001  8,10   ############
+;-----------------------------------------------------
+#IF
+check [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [188] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_3
+
+#ACT
+enter_fail
+break
+
+#IF
+check [187] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_4
+
+#ACT
+set [186] 0
+set [187] 0
+enter_fail
+break
+
+#IF
+check [186] 1
+#ACT
+set [186] 0
+set [187] 1
+enter_fail
+break
+
+#IF
+check [185] 1
+#ACT
+goto @enterh_omay
+break
+
+#IF
+check [174] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_5
+
+#ACT
+enter_fail
+break
+
+#IF
+check [173] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_6
+
+#ACT
+enter_fail
+set [174] 1
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_7
+
+#ELSEACT
+enter_fail
+
+;-----------------------------------------------------
+
+[@enterh_omay]
+#IF
+checkhum D001_001 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_8
+
+#ACT
+enter_fail
+#ELSEACT
+goto @enterh_omay_1
+
+[@enterh_omay_1]
+#IF
+checkitem Ω«µ— 1
+#ACT
+Monclear D001_001
+Param1 D001_001
+Param2 19
+Param3 12
+MonGen ∞Î ﬁ”¬ ø61 1 1
+Param1 D001_001
+Param2 9
+Param3 13
+MonGen ∞Î ﬁ’Ω ø61 3 2
+Param1 D001_001
+Param2 13
+Param3 16
+MonGen ∞Î ﬁ’Ω ø61 4 2
+SET [186] 1
+enter_ok
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomOmaWarrior.txt] @Na_RoomOmaWarrior_9
+
+#ELSEACT
+enter_fail

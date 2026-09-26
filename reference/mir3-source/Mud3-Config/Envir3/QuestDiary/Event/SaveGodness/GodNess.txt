@@ -1,0 +1,75 @@
+;;베α돝
+[@SaveGodness]
+{
+begin
+   #ACT
+      #DEFINE      D0{USERCOUNT}     D0  ;; 유저의 카운트를 저장 하는 부분
+      #DEFINE      A0{USERNANE}      A0  ;; 유저의 이름을 저장 하는 부분
+      goto @SaveGodNessMainRootin
+
+   [@SaveGodNessMainRootin]
+   begin
+      #IF
+         IsAdmin ;; 운영자가 이벤트의 시작등을 조작함
+      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_1
+         {FCOLOR/10} 여신 이벤트 {FCOLOR/12} \ \
+         _<여신 이벤트를 시작 한다./@GMStartSaveGodNess> \ \
+         _<여신 이벤트를 종료 한다./@GMFinishSaveGodNess> \ \
+      
+      #IF
+      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_2
+         _<여신 구하기 이벤트에 참가한다./@UserInputSaveGodNess> \ 
+         _<참가하지 않는다./@exit>
+   end
+
+;;------------------------------------------------------------------------------------------------------------
+;; GM Control 부분
+;;------------------------------------------------------------------------------------------------------------
+   [@GMStartSaveGodNess]
+	   begin
+	      #ACT
+	         LoadValue P1 "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [State]
+	      
+	      #IF
+	         Equal     P1         0      ;; 이벤트가 진행중이지 않을경우만 실행됨
+	      #ACT
+	         SaveValue "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [State] 1
+	         LineMsg [Grobal] "(!)여신 구하기 이벤트 시작을 하겠습니다."
+	      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_3
+	         여신 구하는 이벤트를 시작 하겠습니다. \ \
+	         <닫  기/@exit> \
+	      #ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_4
+	         이벤트를 시작 할수가 없습니다. \ \
+	         <닫  기/@exit> \
+	   end
+   [@GMFinishSaveGodNess]
+	   begin
+	      #ACT
+	         LoadValue P1 "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [State]
+	      
+	      #IF
+	         Equal     P1         1      ;; 이벤트가 진행중이지 않을경우만 실행됨
+	      #ACT
+	         SaveValue "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [State] 0
+	         LineMsg [Grobal] "(!)여신 구하기 이벤트 종료 하겠습니다."
+	      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_5
+	         여신 구하는 이벤트를 종료 하겠습니다. \ \
+	         <닫  기/@exit> \
+	      #ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\GodNess.txt] @GodNess_6
+	         이벤트를 종료 할수가 없습니다. \ \
+	         <닫  기/@exit> \
+	   end
+
+;;------------------------------------------------------------------------------------------------------------
+;; User Control 부분
+;;------------------------------------------------------------------------------------------------------------
+   [@UserInputSaveGodNess]
+   #CALL [Event\SaveGodNess\UserSaveGodNess.txt] @UserPlay
+end
+}

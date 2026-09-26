@@ -1,0 +1,143 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\15Magic_Samak3-5.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\15Magic_Samak3-5.txt] @NPC_Main
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\15Magic_Samak3-5.txt] @NPC_Main_1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+
+[@Go_Mu_Taoist_holy_heal]
+#CALL [\MU_Total_sell\Taoist\heal.txt] @Mu_Taoist_holy_heal
+
+[@Go_Mu_Taoist_dark_ilgang]
+#CALL [\MU_Total_sell\Taoist\ilgang.txt] @Mu_Taoist_dark_ilgang
+
+[@Go_Mu_Taoist_dark_amyen]
+#CALL [\MU_Total_sell\Taoist\amyen.txt] @Mu_Taoist_dark_amyen
+
+[@Go_Mu_Taoist_dark_poksal]
+#CALL [\MU_Total_sell\Taoist\poksal.txt] @Mu_Taoist_dark_poksal
+
+[@Go_Mu_Taoist_soul_skel]
+#CALL [\MU_Total_sell\Taoist\soulSkel.txt] @Mu_Taoist_soul_skel
+
+[@Go_Mu_Taoist_dark_hiden]
+#CALL [\MU_Total_sell\Taoist\hiden.txt] @Mu_Taoist_dark_hiden
+
+[@Go_Mu_Taoist_dark_masshiden]
+#CALL [\MU_Total_sell\Taoist\masshiden.txt] @Mu_Taoist_dark_masshiden
+
+[@Go_Mu_Taoist_holy_moon]
+#CALL [\MU_Total_sell\Taoist\moon.txt] @Mu_Taoist_holy_moon
+
+[@Go_Mu_Taoist_dark_hangma]
+#CALL [\MU_Total_sell\Taoist\hangma.txt] @Mu_Taoist_dark_hangma
+
+[@Go_Mu_Taoist_dark_deaji]
+#CALL [\MU_Total_sell\Taoist\deaji.txt] @Mu_Taoist_dark_deaji
+
+[@Go_Mu_Taoist_dark_holy]
+#CALL [\MU_Total_sell\Taoist\holy.txt] @Mu_Taoist_dark_holy
+
+[@Go_Mu_Taoist_holy_Upmoon]
+#CALL [\MU_Total_sell\Taoist\Upmoon.txt] @Mu_Taoist_holy_Upmoon
+
+[@Go_Mu_Taoist_dark_musang]
+#CALL [\MU_Total_sell\Taoist\musang.txt] @Mu_Taoist_dark_musang
+
+[@Go_Mu_Taoist_holy_massheal]
+#CALL [\MU_Total_sell\Taoist\massheal.txt] @Mu_Taoist_holy_massheal
+
+[@Go_Mu_Taoist_dark_kangma]
+#CALL [\MU_Total_sell\Taoist\kangma.txt] @Mu_Taoist_dark_kangma
+
+[@Go_Mu_Taoist_soul_sinsu]
+#CALL [\MU_Total_sell\Taoist\sinsu.txt] @Mu_Taoist_soul_sinsu
+
+[@Go_Mu_Taoist_jinsoul_skel]
+#CALL [\MU_Total_sell\Taoist\jinsoulSkel.txt] @Mu_Taoist_jinsoul_skel
+
+[@Go_Mu_Taoist_mengho]
+#CALL [\MU_Total_sell\Taoist\mengho.txt] @Mu_Taoist_mengho
+
+[@Go_Mu_Taoist_soseng]
+#CALL [\MU_Total_sell\Taoist\soseng.txt] @Mu_Taoist_soseng
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 110
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\15Magic_Samak3-5.txt] @NPC_Tquest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @110_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @110_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\15Magic_Samak3-5.txt] @NPC_Tquest_1
+
+;------------------------
+
+;----------------------------------------------------------

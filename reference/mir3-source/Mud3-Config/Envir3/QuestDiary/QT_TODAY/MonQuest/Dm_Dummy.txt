@@ -1,0 +1,263 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 532
+#ACT
+goto @puppet_T532
+break
+;
+#IF
+CheckDailyQuest 450
+#ACT
+goto @puppet_T450
+break
+;
+#IF
+CheckDailyQuest 440
+#ACT
+goto @puppet_T440
+break
+;
+#IF
+CheckDailyQuest 407
+#ACT
+goto @puppet_T407
+
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@puppet_T407]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @puppet_T407_1
+break
+
+#ELSEACT
+break
+
+;----------------------------------
+
+[@puppet_T407_1]
+#IF
+large S0 40
+#ACT
+goto @puppet_T407_5
+#ELSEACT
+goto @puppet_T407_2
+;-----------------
+
+[@puppet_T407_2]
+#IF
+large S0 2
+#ACT
+goto @puppet_T407_3
+#ELSEACT
+mov S0 2
+goto @puppet_T407_3
+
+;-----------------
+
+[@puppet_T407_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@puppet_T407_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T407_Say
+
+#ACT
+set [308] 1
+mov S0 0
+
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@puppet_T440]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+;#IF
+;check [308] 1
+;#ACT
+;break
+
+#IF
+check [307] 1
+#ACT
+goto @puppet_T440_1
+break
+
+#ELSEACT
+break
+
+;----------------------------------
+
+[@puppet_T440_1]
+#IF
+checkitem 稻草人木剑 9
+#ACT
+give 稻草人木剑 1
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T440_Say
+
+#ELSEACT
+goto @puppet_T440_1_1
+
+[@puppet_T440_1_1]
+#IF
+random 3
+#ACT
+give 稻草人木剑 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@puppet_T450]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+;#IF
+;check [309] 1
+;#ACT
+;break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @puppet_T450_1
+break
+
+#ELSEACT
+break
+
+;----------------------------------
+
+[@puppet_T450_1]
+#IF
+large S0 20
+#ACT
+goto @puppet_T450_5
+#ELSEACT
+goto @puppet_T450_2
+;-----------------
+
+[@puppet_T450_2]
+#IF
+large S0 2
+#ACT
+goto @puppet_T450_3
+#ELSEACT
+mov S0 2
+goto @puppet_T450_3
+
+;-----------------
+
+[@puppet_T450_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@puppet_T450_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T450_Say
+
+#ACT
+set [308] 1
+mov S0 0
+;
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@puppet_T532]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @puppet_T532_1
+break
+
+#ELSEACT
+break
+
+;----------------------------------
+
+[@puppet_T532_1]
+#IF
+checkitem 无名油 2
+#ACT
+give 无名油 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T532_Say
+
+#ELSEACT
+goto @puppet_T532_1_1
+
+[@puppet_T532_1_1]
+#IF
+random 3
+#ACT
+give 无名油 1
+;-----------------------------------------------------

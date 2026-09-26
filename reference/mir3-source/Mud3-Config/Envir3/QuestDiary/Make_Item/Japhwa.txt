@@ -1,0 +1,72 @@
+;;º£¥áµÁ
+[@make_General_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_1
+
+
+;------------------------
+
+[@Make_General_Torch]
+#IF
+checkitem ÷¼÷Ã¹Ç 3 checkitem ÉÕ¾Æ 1
+#ACT
+take ÷¼÷Ã¹Ç 3 take ÉÕ¾Æ 1
+goto @Make_General_Torch_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_2
+
+
+[@Make_General_Torch_3]
+#IF
+#ACT
+give »ð°Ñ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_3
+
+
+;------------------------
+
+[@Make_General_TorchM]
+#IF
+checkitem ½©Ê¬¹ÇÍ· 4
+checkitem ÉÕ¾Æ 2
+#ACT
+take ½©Ê¬¹ÇÍ· 4
+take ÉÕ¾Æ 2
+mov d0 0
+goto @Make_General_TorchM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_4
+
+
+[@Make_General_TorchM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_General_TorchM_2
+
+[@Make_General_TorchM_2]
+#IF
+small d0 96
+#ACT
+goto @Make_General_TorchM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_5
+
+
+[@Make_General_TorchM_3]
+#IF
+#ACT
+give ÁÁ»ð°Ñ 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Japhwa.txt] @Japhwa_6
+
+
+;------------------------
+
+}

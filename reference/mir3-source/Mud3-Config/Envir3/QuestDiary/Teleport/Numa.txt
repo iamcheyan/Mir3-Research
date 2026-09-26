@@ -1,0 +1,14 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[@Numa_Teleport]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\Numa.txt] @Numa_1
+
+#ELSEACT
+mapmove 81 125 274
+                                    
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         
+}

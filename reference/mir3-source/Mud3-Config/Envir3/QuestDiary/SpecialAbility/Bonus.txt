@@ -1,0 +1,112 @@
+;;海メ盗
+[@LevelUpBonus]
+{
+#IF
+CheckBonus
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SpecialAbility\Bonus.txt] @Bonus_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SpecialAbility\Bonus.txt] @Bonus_2
+
+
+[@ChangeType()]
+#IF
+CheckBonus
+#ACT
+TakeBonus %ARG(1)
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SpecialAbility\Bonus.txt] @Bonus_3
+
+#ELSEACT
+break
+
+;;Check Fail
+#IF
+Equal P0  0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SpecialAbility\Bonus.txt] @Bonus_4
+
+#ACT
+close
+break
+
+#IF
+Equal P1  20
+#ACT
+SysMsg  "体力 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  21
+#ACT
+SysMsg  "魔力 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  0
+#ACT
+SysMsg  "防御力 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  1
+#ACT
+SysMsg  "魔法防御力 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  2
+#ACT
+SysMsg  "破坏力 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  3
+#ACT
+SysMsg  "自然界魔法 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  4
+#ACT
+SysMsg  "灵魂界魔法 <$OUTPUT(P2)> 上升了。"
+close
+
+#IF
+Equal P1  5
+#ELSEACT
+break
+
+#IF
+Large  P2  0
+#ACT
+SysMsg  "元素 （火） 属性 <$OUTPUT(P2)> 上升了。"
+#IF
+Large  P3  0
+#ACT
+SysMsg  "元素 （氷） 属性 <$OUTPUT(P3)> 上升了。"
+#IF
+Large  P4  0
+#ACT
+SysMsg  "元素 （雷） 属性 <$OUTPUT(P4)> 上升了。"
+#IF
+Large  P5  0
+#ACT
+SysMsg  "元素 （风） 属性 <$OUTPUT(P5)> 上升了。"
+#IF
+Large  P6  0
+#ACT
+SysMsg  "元素 （神圣） 属性 <$OUTPUT(P6)> 上升了。"
+#IF
+Large  P7  0
+#ACT
+SysMsg  "元素 （暗黑） 属性 <$OUTPUT(P7)> 上升了。"
+#IF
+Large  P8  0
+#ACT
+SysMsg  "元素 （幻影） 属性 <$OUTPUT(P8)> 上升了。"
+#IF
+#ACT
+close
+}

@@ -1,0 +1,201 @@
+;;海メ盗
+[@JEMABOOK_EUNSIL1]
+{
+#IF
+checkitem 气霖证书 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_2
+
+
+[@JEMABOOK_EUNSIL1_1]
+#IF
+#ACT
+set [256] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_3
+
+}
+
+[@JEMABOOK_EUNSIL2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_4
+
+}
+
+[@JEMABOOK_HWONGGR_1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_5
+
+}
+
+[@JEMABOOK_HWONGGR_2]
+{
+#IF
+equal d9 1
+#ACT
+goto @JEMABOOK_HWONGGR_2_6
+#ELSEACT
+goto @JEMABOOK_HWONGGR_2_1
+
+[@JEMABOOK_HWONGGR_2_1]
+#IF
+checkitem 玉指环 1
+#ACT
+goto @JEMABOOK_HWONGGR_2_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_6
+
+
+[@JEMABOOK_HWONGGR_2_2]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_7
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_8
+
+
+[@JEMABOOK_HWONGGR_2_3]
+#IF
+check [258] 0
+check [257] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_9
+
+
+[@JEMABOOK_HWONGGR_2_4]
+#IF
+checkitem 玉指环 1
+#ACT
+take 玉指环 1
+goto @JEMABOOK_HWONGGR_2_5
+#ELSEACT
+mov d9 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_10
+
+
+[@JEMABOOK_HWONGGR_2_5]
+#IF
+gender man
+#ACT
+give 制魔宝玉 1
+mov d9 0
+reset [254] 3
+set [258] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_11
+
+#ELSEACT
+give 制魔宝玉 1
+mov d9 0
+reset [254] 3
+set [258] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_12
+
+
+[@JEMABOOK_HWONGGR_2_6]
+#IF
+checkitem 玉指环 1
+#ACT
+take 玉指环 1
+goto @JEMABOOK_HWONGGR_2_7
+#ELSEACT
+mov d9 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_13
+
+
+[@JEMABOOK_HWONGGR_2_7]
+#IF
+gender man
+#ACT
+give 制魔宝玉 1
+mov d9 0
+reset [254] 3
+set [258] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_14
+
+#ELSEACT
+give 制魔宝玉 1
+mov d9 0
+reset [254] 3
+set [258] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_15
+
+}
+
+[@JEMABOOK_SOBAKHWA_1]
+{
+#IF
+checkitem 气霖证书 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_16
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_17
+
+
+[@JEMABOOK_SOBAKHWA_1_1]
+#IF
+check [257] 0
+check [256] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_18
+
+
+[@JEMABOOK_SOBAKHWA_1_2]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_19
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_20
+
+
+[@JEMABOOK_SOBAKHWA_1_3_1]
+#IF
+check [257] 0
+check [256] 1
+#ACT
+take 气霖证书 1
+give 玉指环 1
+mov d9 0
+set [257] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_21
+
+
+[@JEMABOOK_SOBAKHWA_1_3_2]
+#IF
+check [257] 0
+check [256] 1
+#ACT
+take 气霖证书 1
+give 玉指环 1
+mov d9 0
+set [257] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_22
+
+}
+
+[@JEMABOOK_SOBAKHWA_2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\jema.txt] @jema_23
+
+}

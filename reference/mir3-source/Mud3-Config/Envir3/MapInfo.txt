@@ -1,0 +1,2425 @@
+;;mapinfo.txt   don't delete the line.
+[0               比奇县                 0] horse 
+[0_003           比奇县                 0] DARK horse
+
+[Z010            慈善屋                 0] DAY SAFE
+[Z011            慈善屋                 0] DAY SAFE
+[Z012            慈善屋                 0] DAY SAFE
+[Z013            慈善屋                 0] DAY SAFE
+[Z014            慈善屋                 0] DAY SAFE
+
+[01              边境城市               0] horse
+[01_001          志善屋                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE
+[01_003          试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(01)
+
+[RUSH1           试练屋                 0] DAY FOG Fight NORECALL NOPOSITIONMOVE NORECONNECT(01)
+
+;;打雪仗地图
+[snow            打雪仗地图             0] DAY FIGHT NORANDOMMOVE NOPOSITIONMOVE NOSPACEMOVE NORECALL NORECONNECT(0) NODRUG
+
+;;生存游戏场
+[Island01        生存游戏场             0] DAY FIGHT NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE NORECONNECT(01)
+[Island02        生存游戏场             0] DAY FIGHT NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE NORECONNECT(01)
+
+[02              银杏山谷               0] horse 
+[02_001          试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_002          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_003          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_004          试练场                 0] FIGHT DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_005          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_006          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_010          试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_011          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_012          试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_013          试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+[02_014          试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(02)
+
+[1               道馆                   0] horse 
+[1_001           武器仓库               0] DAY Fight
+[1_002           本馆                   0] DAY Fight
+[1_003           洗衣住居               0] DAY Fight
+[1_004           书房                   0] DAY Fight
+[1_005           物品研究所             0] DAY Fight
+[1_006           药剂师住居             0] DAY Fight
+[1_007           仓库                   0] DAY Fight
+[1_008           试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1_002)
+[1_009           无名老人隐居地         0] Day horse NORECALL NOPOSITIONMOVE NORANDOMMOVE
+[1_010           试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1)
+[1_011           试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1)
+[1_012           试练场                 0] SAFE NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1)
+[1_013           试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1)
+[1_014           试练场                 0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(1)
+[1_015           困魔咒空间             0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[1_016           困魔咒空间             0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[1_017           困魔咒空间             0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[1_018           困魔咒空间             0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[1_019           困魔咒空间             0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[1_020           蜈蚣洞穴               0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D6014)
+[1_021           蜈蚣洞穴               0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D6014)
+[1_022           蜈蚣洞穴               0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D6014)
+[1_023           蜈蚣洞穴               0] SAFE DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D6014)
+
+[12              灌木林                 0] horse
+
+[2               毒蛇山谷               0] horse 
+
+[3               沙巴克城               0] horse
+[31              祖玛神殿               0] horse
+
+[4               绿洲                   0] horse
+[4_001           武器店                 0] DAY Fight
+[4_002           民家                   0] DAY Fight
+[4_003           中药商                 0] DAY Fight
+[4_004           布匹店                 0] DAY Fight
+[4_005           占卜屋                 0] DAY Fight
+
+;; Samak3(Oasis Expansion)                
+[41              诺玛村落               0] horse
+
+[5               沙漠土城               0] horse
+[5_0011          贵族屋                 0] DAY Fight
+[5_0012          贵族屋                 0] DAY Fight
+[5_0013          贵族屋                 0] DAY Fight
+[5_002           武器商                 0] DAY Fight
+[5_003           药房                   0] DAY Fight
+[5_004           服饰店                 0] DAY Fight
+[5_005           饰品店                 0] DAY Fight
+[5_006           仓库                   0] DAY Fight
+
+;; Samak2(gemigul ipgu)               
+[6               沙漠                   0] horse
+
+;; Samak1(silkload)               
+[71              沙漠                   0] horse
+[74              盟重县                 0] horse
+[75              石阁庙                 0] horse
+
+[8               潘夜岛                 0] horse 
+[81              流放岛                 0] horse FIGHT NORECALL NOSPACEMOVE
+
+[9               失乐园                 0] horse
+
+;; Omadogul DG                
+[D001            半兽洞穴1层            0] DARK
+[D001_001        半兽勇士洞             0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(d001)
+[D002            半兽洞穴2层            0] DARK
+[D002_001        骷髅精灵洞             0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(d002)
+[DM001           奸商                   0] DARK FIGHT
+[DM002           王陵                   0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(d002)
+[D003            半兽洞穴3层            0] DARK
+
+;; Omajayungul DG               
+[E001            半兽天然洞穴           0] DARK
+[E002            半兽天然洞穴           0] DARK
+[E002_001        半兽天然洞穴           0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(E002)
+
+;; Yungyultongro DG               
+[E401            连接通路               0] DARK
+[E402            连接通路               0] DARK
+[E402_001        连接通路               0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(E402)
+[E403            连接通路               0] DARK
+[E404            连接通路               0] DARK
+
+;; Jayundonggul DG                
+[D011            天然洞穴1层            0] DARK
+[D012            天然洞穴2层            0] DARK
+[D012_001        天然洞穴2层            0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(d012)
+[DM011           洞穴奸商               0] DARK
+
+;; Umasinjun DG               
+[D021            沃玛神殿入口           0] DARK
+[D022            沃玛神殿1层            0] DARK
+[D032            沃玛神殿1层            0] DARK
+[D042            沃玛神殿1层            0] DARK
+[D052            沃玛神殿1层            0] DARK
+[D023            沃玛神殿2层            0] DARK
+[D033            沃玛神殿2层            0] DARK
+[D043            沃玛神殿2层            0] DARK
+[D053            沃玛神殿2层            0] DARK
+[D024            沃玛神殿               0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D021)
+[D023_001        沃玛神殿师徒关         0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[D023_002        沃玛神殿师徒关         0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D023)
+[D022_001        沃玛神殿1层            0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D022)
+
+;; BichunPegwang DG               
+[D400_001        神圣战甲术空间         0] SAFE DARK NORECALL NORECONNECT(D401)
+[D401            废矿矿山入口           0] DARK MINE
+[D401_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D401)
+[D411            地下1层第一间房        0] DARK MINE
+[D413            地下1层第二间房        0] DARK MINE
+[D402            废矿东部洞穴           0] DARK MINE
+[D402_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D402)
+[D414            地下1层第三间房        0] DARK MINE
+[D403            地下1层采矿所          0] DARK MINE
+[D403_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D403)
+[D412            天桥2                  0] DARK
+[D404            地下2层采矿所          0] DARK
+[D404_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D404)
+[D404_002        废矿矿山地下2层        0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D404)
+[D416            天桥3                  0] DARK
+[D405            矿石储藏所             0] DARK
+[D405_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D405)
+[D415            天桥1                  0] DARK
+[D406            废矿南部洞穴           0] DARK
+[D406_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D406)
+
+;; BemgolPegwang DG               
+[D420_001        神圣战甲术空间         0] SAFE DARK NORECALL NORECONNECT(D421)
+[D421            矿山1层                0] DARK MINE
+[D421_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D421)
+[D422            矿山2层                0] DARK
+[D422_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D422)
+[D422_002        矿山2层                0] DARK NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(D422)
+
+;; BemgolPegwang(north) DG                
+[D431            北部矿山入口           0] DARK MINE
+[D431_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D431)
+[D441            北部地下1层第一间房    0] DARK MINE
+[D443            北部地下1层第二间房    0] DARK MINE
+[D432            北部矿山东面洞穴       0] DARK MINE
+[D432_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D432)
+[D444            北部地下1层第三间房    0] DARK MINE
+[D433            北部地下1层采矿所      0] DARK MINE
+[D433_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D433)
+[D442            北部天桥2              0] DARK
+[D434            北部地下2层采矿所      0] DARK
+[D434_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D434)
+[D446            北部天桥3              0] DARK
+[D435            北部矿石储藏所         0] DARK
+[D435_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D435)
+[D445            北部天桥1              0] DARK
+[D436            北部废矿南面洞穴       0] DARK
+[D436_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D436)
+
+;; BemgolPegwang(south) DG                
+[D451            南部矿山1层            0] DARK MINE
+[D451_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D421)
+[D452            南部矿山2层            0] DARK
+[D452_001        尸王房                 0] DARK NEEDHOLE NORECALL NORECONNECT(D422)
+
+;; BemgolPegwang Bimilgil DG                
+[E601            竞技场                 0]   DARK FIGHT NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(5)
+[E602            竞技场                 0]   DARK FIGHT NORECALL NOPOSITIONMOVE NORANDOMMOVE NORECONNECT(5)
+[E603            废矿秘密通路           0]   DARK FIGHT NORECONNECT(02)
+[E604            废矿秘密通路           0]   DARK FIGHT NORECONNECT(02)
+[E605            废矿秘密通路           0]   DARK FIGHT NORECONNECT(02)
+
+;; Jumasinjun DG                
+[0157            祖玛神殿大厅           0] 
+[D501            祖玛神殿1层            0] DARK
+[D511            祖玛神殿               0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL
+[D502            祖玛神殿2层            0] DARK
+[D512            祖玛神殿               0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL
+[D503            祖玛神殿3层            0] DARK
+[D513            祖玛神殿               0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL
+[D504            祖玛神殿4层            0] DARK
+[D514            祖玛神殿               0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL
+[D505            祖玛神殿5层            0] DARK
+[D5061           祖玛阁                 0] DARK
+[D5062           祖玛阁                 0] DARK
+[D5063           祖玛阁                 0] DARK
+[D5064           祖玛阁                 0] DARK
+[D5065           祖玛阁                 0] DARK
+[D5066           祖玛阁                 0] DARK
+[D5067           祖玛阁                 0] DARK
+[D5068           祖玛阁                 0] DARK
+[D5069           祖玛阁                 0] DARK
+[D5071           祖玛神殿7层大厅        0] DARK
+[D5072           祖玛神殿7层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D5071)
+[D5073           祖玛神殿7层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D5071)
+[D5074           祖玛神殿7层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D5071)
+[D515            祖玛教主宫廷           0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D5071)
+
+;; Manyungok (jine) DG
+[D6011           虫峡万年谷                 0] DARK
+[D6012           虫峡万年原谷               0] DARK
+[D60131          虫峡万年谷中部             0] DARK
+[D60132          虫峡万年谷南部             0] DARK
+[D60133          虫峡万年谷西部             0] DARK
+[D60134          虫峡万年谷北部             0] DARK
+[D60135          虫峡万年谷东部             0] DARK
+[D6014           虫峡万年独孤关             0] DARK
+[D6015           虫峡生死关                 0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D6014)
+
+;; Sukgakmyo                
+[D7101           石阁入口               0] DARK
+[D711            石阁1层                0] DARK
+[D712            石阁2层                0] DARK
+[D713            石阁3层                0] DARK
+[D714            石阁4层                0] DARK
+[D715            石阁5层                0] DARK
+[D716            石阁6层                0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL
+[D717            石阁7层                0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D716)
+
+;; Gemigul(south) DG                
+[D8001           蚂蚁洞穴1层4       0] DARK
+[D8002           蚂蚁洞穴1层1       0] DARK
+[D8003           蚂蚁洞穴1层2       0] DARK
+[D8004           蚂蚁洞穴1层3       0] DARK
+[D801            小虫洞             0] DARK
+[D802            垃圾场             0] DARK
+[D8021           蚂蚁洞穴           0] DARK
+[D8022           蚂蚁洞穴           0] DARK
+[D803            粮库               0] DARK
+[D8031           蚂蚁洞穴           0] DARK
+[D8032           蚂蚁洞穴           0] DARK
+[D8033           蚂蚁洞穴           0] DARK
+[D804            尘土洞             0] DARK
+[D8041           蚂蚁洞穴           0] DARK
+[D805            蚂蚁洞穴3层1       0] DARK
+[D8051           蚂蚁洞穴           0] DARK
+[D806            蚂蚁洞穴3层2       0] DARK
+[D8061           蚂蚁洞穴           0] DARK
+[D8062           蚂蚁洞穴           0] DARK
+[D807            蚂蚁洞穴3层3       0] DARK
+[D8071           蚂蚁洞穴           0] DARK
+[D8072           蚂蚁洞穴           0] DARK
+[D808            蚂蚁洞穴3层4       0] DARK
+
+
+[D900           神舰入口                0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D901           神舰地下3层             0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9011          木工室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9012          木工仓库                0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9021          神舰地下2层             0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D90211         医务室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D90212         机械室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9022          神舰地下2层             0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D90221         医务室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D90222         厨房                    0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D90223         士兵食堂                0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D903           神舰地下1层             0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9031          参谋室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9032          长官食堂                0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D9033          船长室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE 
+[D904   	调控室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE NORECONNECT(D9022) 
+[D90323         海图室                  0] day NORECALL NOPOSITIONMOVE NORANDOMMOVE NOSPACEMOVE NORECONNECT(D9022)
+
+
+;; Jukwolgok(2)               
+[D1011           赤月山谷1层            0] DARK
+[D1012           赤月山谷2层            0] DARK
+[D10131          赤月山谷3层            0] DARK
+[D10132          赤月山谷3层            0] DARK
+[D1014           赤月山谷4层            0] DARK
+[D10151          赤月山谷5层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1014)
+[D10152          赤月山谷5层            0] DARK
+[D10162          赤月恶魔洞穴           0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1014)
+
+;; Banyasinjun DG               
+[D1101           潘夜神殿1层            0] DARK
+[D1102           潘夜神殿2层            0] DARK
+[D11031          潘夜神殿3层西部        0] DARK
+[D11032          潘夜神殿3层东部        0] DARK
+[D1104           潘夜神殿4层            0] DARK
+[D1105           潘夜神殿5层            0] DARK
+[D1110           潘夜神殿大厅           0] DARK
+[D1111           潘夜神殿4层            0] DARK
+[D1112           潘夜神殿5层            0] DARK
+[D1113           潘夜神殿6层            0] DARK
+[D11141          潘夜神殿7层西部        0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1110)
+[D11142          潘夜神殿7层东部        0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1110)
+[D1115           潘夜神殿8层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1110)
+[D1116           潘夜神殿               0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1110)
+
+;; Banyasukgul                
+[D1211           潘夜石窟1层            0] DARK
+[D12121          潘夜石窟2层西部        0] DARK
+[D1213           潘夜石窟3层            0] DARK
+[D1214           潘夜石窟4层            0] DARK
+[D1215           潘夜石窟5层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1214)
+
+;; Sahwaldong(yubesum DG) DG                
+[D1201           罪孽洞穴1层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+[D1202           罪孽洞穴2层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+[D12031          罪孽洞穴3层西部        0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+[D12032          罪孽洞穴3层东部        0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+[D1204           罪孽洞穴4层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+[D1205           罪孽洞穴5层            0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(81)
+
+;; EunhangPegwang(east) (byurokDG(east))                
+[D1301           银杏废矿1层            0] DARK MINE
+[D1302           银杏废矿2层            0] DARK MINE
+[D1303           银杏废矿3层            0] DARK
+[D1304           银杏废矿4层            0] DARK
+[D1305           银杏废矿5层            0] DARK
+
+;; Misuk Gwangsan(east) (Kukyug Pegwang(east))                
+[D1401           石矿1层                0] DARK MINE2
+[D1402           石矿2层                0] DARK MINE2
+[D1403           石矿3层                0] DARK
+[D1404           石矿4层                0] DARK
+[D1405           石矿5层                0] DARK
+
+;; Jinchungung(Silnakwon DG1) DG                
+[D1500           真天宫地下1层          0] DARK
+[D15011          真天宫西馆1层          0] DARK
+[D15012          真天宫南馆1层          0] DARK
+[D15013          真天宫东馆1层          0] DARK
+[D15014          真天宫北馆1层          0] DARK
+[D15021          真天宫西馆2层          0] DARK
+[D15022          真天宫南馆2层          0] DARK
+[D15023          真天宫东馆2层          0] DARK
+[D15024          真天宫北馆2层          0] DARK
+[D15032          真天宫南馆3层          0] DARK
+[D15033          真天宫东馆3层          0] DARK
+[D15034          真天宫北馆3层          0] DARK
+[D15043          真天宫北馆4层          0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D15033)
+[D15044          真天宫北馆4层          0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D15033)
+[D15054          真天宫北馆5层          0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D15033)
+[D1506           真天宫                 0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D15033)
+
+;; Hukdogung(Silnakwon DG2) DG                
+[D1510           黑度宫1层              0] DARK
+[D15111          黑度宫2层              0] DARK
+[D15112          黑度宫2层              0] DARK
+[D1512           黑度宫3层              0] DARK
+[D1513           黑度宫4层              0] DARK
+
+;; Mabangjin                
+[B011            魔房大厅               0] DAY FIGHT NORECALL
+[B101            魔房1                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B102            魔房2                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B103            魔房3                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B104            魔房4                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B105            魔房5                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B106            魔房6                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B107            魔房7                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B108            魔房8                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B109            魔房9                  0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B110            魔房10                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B111            魔房11                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B112            魔房12                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B113            魔房13                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B114            魔房14                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B115            魔房15                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B116            魔房16                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B117            魔房17                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B118            魔房18                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B119            魔房19                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B120            魔房20                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B121            魔房21                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B122            魔房22                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B123            魔房23                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B124            魔房24                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B125            魔房25                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B126            魔房26                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B127            魔房27                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B128            魔房28                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B129            魔房29                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B130            魔房30                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B131            魔房31                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B132            魔房32                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B133            魔房33                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B134            魔房34                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B135            魔房35                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B136            魔房36                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B137            魔房37                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B138            魔房38                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B139            魔房39                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+[B140            魔房40                 0] DARK FIGHT NORECALL NORECONNECT(B011)
+
+[B103_001        富家庭院               0] DAY NORECALL NORECONNECT(B011)
+[B105_001        食人草枯洞             0] DARK NORECALL NORECONNECT(B011)
+[B106_001        十字架枯洞             0] DARK NORECALL NORECONNECT(B011)
+[B109_001        渴求空间               0] DARK NORECALL NORECONNECT(B011)
+[B115_001        矿石空间               0] DARK NORECALL NORECONNECT(B011) MINE
+[B132_001        邪恶钳虫洞             0] DARK NORECALL NORECONNECT(B011)
+[B139_001        暗黑封印               0] DARK NORECALL NORECONNECT(B011)
+
+;;诺玛遗址
+[D1601     诺玛遗址1层      0] DARK
+[D1602     诺玛遗址2层      0] DARK
+[D16031    诺玛遗址3层      0] DARK
+[D16032    诺玛遗址3层      0] DARK
+[D16033    诺玛遗址3层      0] DARK
+[D16034    诺玛遗址3层      0] DARK
+[D1604     诺玛遗址4层      0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1602)
+[D1605     诺玛遗址5层      0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1602)
+[D1606     诺玛勇士墓穴     0] DARK NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D1602)
+
+;;西沙漠
+[D2001        西沙漠地洞      0] DAY HORSE 
+[D20011       沙漠地洞1层     0] DAY HORSE 
+[D20012       沙漠地洞2层     0] DAY HORSE 
+[D2002        沙漠城市        0] DAY HORSE 
+[D20021       沙漠地下1层     0] DAY HORSE 
+[D20022       沙漠地下2层     0] DAY HORSE NORANDOMMOVE NOPOSITIONMOVE NORECALL 
+[D20023       沙漠地下3层     0] DAY HORSE NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D20021)
+[D2003        地下矿山        0] DAY NORECONNECT(D20021) NORECALL NORANDOMMOVE NOPOSITIONMOVE
+[D20031       地下矿山1层     0] DAY NORECONNECT(D20021) NORECALL NORANDOMMOVE NOPOSITIONMOVE
+[D20032       地下矿山2层     0] DAY NORECONNECT(D20021) NORECALL NORANDOMMOVE NOPOSITIONMOVE
+[D2004        地下魔宫        0] DAY NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D20021)
+[D2005        地底宫殿        0] DAY NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D20021)
+
+;4   180,778 -> D2001 282,280
+;4   181,779 -> D2001 282,280
+;4   182,780 -> D2001 282,280
+
+;D2001 283,281 -> 4 181,777
+
+D2001 25,36 -> D20011 85,194
+D20011 86,195 -> D2001 26,37
+
+D20011 275,22 -> D20012 193,247
+D20012 192,248 -> D20011 275,23
+
+D20012 207,31 -> D2002 14,386
+D2002 13,387 -> D20012 207,32
+
+D2002 390,17 -> D20021 19,205
+D20021 18,205 -> D2002 389,18
+
+D20021 190,369 -> D2003 281,31
+D2003 282,30 -> D20021 190,368
+
+D2003 29,202 -> D20031 17,32
+D20031 17,31 -> D2003 28,201
+
+D20031 277,287 -> D20032 17,28
+D20032 17,27 -> D20031 277,286
+
+D20021 367,23 -> D20022 11,321
+D20022 10,322 -> D20021 366,24
+
+D20022 389,142 -> D20023 61,327
+D20023 60,328 -> D20022 388,143
+
+D20023 331,331 -> D2004  14,38
+D2004  14,38   -> D20023 331,331
+
+D20023 369,48  -> D2005  25 55
+D2005 24 56 -> D20023 369,48
+
+;;北方雪原
+[82         北方雪原          0] DAY HORSE
+[D005       北方雪原          0] DAY HORSE
+[D2101      雪原宫殿1层       0] DAY
+[D2102      雪原宫殿2层       0] DAY
+[D2103      雪原宫殿3层       0] DAY
+[D2104      雪原宫殿4层       0] DAY
+[D2106      雪原宫殿5层       0] DAY NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D2104)
+[D2107      雪原宫殿6层       0] DAY NORANDOMMOVE NOPOSITIONMOVE NORECALL NORECONNECT(D2104)
+
+9 171 87 -> D005 152 124
+9 172 88 -> D005 151 123
+9 170 86 -> D005 153 125
+9 169 85 -> D005 150 122
+
+D005 34 34 -> 82 372 262
+D005 35 33 -> 82 373 261
+D005 36 32 -> 82 374 260
+D005 37 31 -> 82 375 259
+
+82 373 263 -> D005 35 34
+82 374 262 -> D005 36 33
+82 375 261 -> D005 37 32
+82 376 260 -> D005 38 31
+
+82 52 322 -> D2101 20 268
+D2101 19 269 -> 82 51 323
+
+D2101 278 71 -> D2102 30 31
+D2102 29 30 -> D2101 278 71
+
+D2102 279 254 -> D2103 45 22
+D2103 44 21 -> D2102 279 254
+
+D2103 266 263 -> D2104 38 175
+D2104 37 174 -> D2103 267 262
+
+D2104 285 277 -> D2106 18 45
+D2106 17 46 -> D2104 286 276
+D2106 24 27 -> D2107 43 33
+
+;;北方雪原
+
+;; Kukyug Vil - Jisun Hs
+01     447,246 -> 01_001  20,21
+01_001  19,22  -> 01     446,247
+
+;; Dokwan Vil - Dokwan Hs
+1     429,96  -> 1_002  10,17
+1_002 9,18    -> 1      428,97
+
+1     394,169 -> 1_007  6,17
+1_007 5,18    -> 1      393,170
+
+1     388,113 -> 1_006  7,15
+1_006 8,16    -> 1      389,114
+
+1     415,133 -> 1_003  8,11 
+1_003 7,12    -> 1      414,134
+
+1     429,120 -> 1_001  6,17
+1_001 5,18    -> 1      428,121
+
+1     367,134 -> 1_005  11,15
+1_005 12,16   -> 1      368,135
+
+1     415,96  -> 1_004  11,15
+1_004 12,16   -> 1      415,97
+
+;; Dokwna - Silnakwon
+1       18,564     ->      9     746,36
+1       19,565     ->      9     747,37
+1       20,566     ->      9     748,38
+1       21,567     ->      9     749,39
+1       22,568     ->      9     750,40
+
+9       747,35     ->      1     19,563
+9       748,36     ->      1     20,564
+9       749,37     ->      1     21,565
+9       750,38     ->      1     22,566
+9       751,39     ->      1     23,567
+
+;; Bichun - Kukyug
+0     333,776 -> 01     564,69 
+0     334,775 -> 01     565,68
+0     335,774 -> 01     566,67
+
+01    563,68  -> 0      332,775
+01    564,67  -> 0      333,774
+01    565,66  -> 0      335,773
+
+;; Bichun - Eunhang
+0     779,698 -> 02     30,452
+0     778,699 -> 02     29,453
+0     777,700 -> 02     28,454
+0     776,701 -> 02     27,455
+
+02    29,452  -> 0      778,698
+02    28,453  -> 0      777,699
+02    27,454  -> 0      776,700
+02    26,455  -> 0      775,701
+
+;; Bichun - Bamgol
+0     643,15  -> 2      159,369
+0     644,16  -> 2      160,370
+0     645,17  -> 2      161,371 
+0     646,18  -> 2      162,372
+
+2     158,370 -> 0      643,16
+2     159,371 -> 0      643,17
+2     160,372 -> 0      644,18
+2     161,373 -> 0      645,19
+
+;; Bamgol - Sabuksung
+2     118,55  -> 3      364,571
+2     119,56  -> 3      365,572
+2     120,57  -> 3      366,573
+2     121,58  -> 3      367,574
+
+;; SnakeVally -> ZuMa
+2     354,33  -> 31     120,256
+2     355,34  -> 31     121,257
+2     256,35  -> 31     122,258
+
+;; Zuma -> SnakeVally
+31    119,256 -> 2      353,34
+31    120,257 -> 2      354,35
+31    121,258 -> 2      355,36
+31    121,259 -> 2      357,35
+
+;; Zuma -> Sabuk
+31    23,51   -> 3      348,39
+31    24,52   -> 3      349,40
+31    25,53   -> 3      350,41
+31    26,54   -> 3      351,42
+31    27,55   -> 3      352,43
+31    28,56   -> 3      353,44
+
+;; Sabuk -> ZUma
+3     349,38  -> 31     24,50
+3     350,39  -> 31     25,51
+3     351,40  -> 31     26,52
+3     352,41  -> 31     27,53
+3     353,42  -> 31     28,54
+3     354,43  -> 31     29,55
+
+3     363,572 -> 2      118,56
+3     364,573 -> 2      119,57
+3     365,574 -> 2      120,58
+3     366,575 -> 2      121,59
+3     367,576 -> 2      122,59
+
+;; Bamgol - Jumasinjun(Field)
+2     355,33  -> 31     120,256
+2     356,34  -> 31     121,257
+2     357,35  -> 31     122,258
+
+31    119,256 -> 2      353,34
+31    120,257 -> 2      354,35
+31    121,258 -> 2      355,36
+31    121,259 -> 2      355,35
+
+;; Sabuksung - Jumasinjun(Field)
+3     349,38  -> 31     24,50
+3     350,39  -> 31     25,51
+3     351,40  -> 31     26,52
+3     352,41  -> 31     27,53
+3     353,42  -> 31     28,54
+3     354,43  -> 31     29,55
+
+31    23,51   -> 3      348,39
+31    24,52   -> 3      349,40
+31    25,53   -> 3      350,41
+31    26,54   -> 3      351,42
+31    27,55   -> 3      352,43
+31    28,56   -> 3      353,44
+
+;; Sabuksung - Hwanmokrim(122)
+3     35,264  -> 122    343,364
+3     34,265  -> 122    342,365
+3     33,266  -> 122    341,366
+3     32,267  -> 122    340,367
+3     31,268  -> 122    339,368
+
+122   340,369 ->   3     32,268
+122   341,368 ->   3     33,267
+122   342,367 ->   3     34,266
+122   343,366 ->   3     35,265
+122   344,365 ->   3     36,264
+
+;; Bichun - Dokwan
+0     209,49  -> 1      515,579
+0     208,50  -> 1      514,580
+0     207,51  -> 1      513,581
+0     206,52  -> 1      512,582
+
+1     516,580 -> 0      210,50
+1     515,581 -> 0      209,51 
+1     514,582 -> 0      208,52
+1     513,583 -> 0      207,53
+
+;; Dokwan - Hwanmokrim
+1     405,30  -> 12     123,467
+1     404,30  -> 12     122,467
+1     403,30  -> 12     121,467
+
+12    123,468 -> 1      405,31
+12    122,468 -> 1      404,31
+
+;----------------------------------
+;----------------------------------
+
+;; Kukyug - Samak1(silkload) 1
+01    86,405   -> 71     379,36
+01    87,406   -> 71     380,37
+01    88,407   -> 71     381,38
+01    89,408   -> 71     382,39
+01    90,409   -> 71     383,40
+01    91,410   -> 71     384,41
+01    92,411   -> 71     385,42
+
+71   380,36   -> 01      87,405
+71   381,37   -> 01      88,406
+71   382,38   -> 01      89,407
+71   383,39   -> 01      90,408
+71   384,40   -> 01      91,409
+71   385,41   -> 01      92,410
+71   386,42   -> 01      93,411
+
+;; Mongchonhyun - Sukgakmyo
+74    26,306   ->  75     384,214
+74    25,307   ->  75     383,215
+74    24,308   ->  75     382,216
+74    23,309   ->  75     381,217
+74    22,310   ->  75     380,218
+74    21,311   ->  75     379,219
+74    20,312   ->  75     378,220
+
+75    385,214  ->  74     27,306
+75    384,215  ->  74     26,307
+75    383,216  ->  74     25,308
+75    382,217  ->  74     24,309
+75    381,218  ->  74     23,310
+75    380,219  ->  74     22,311
+75    379,220  ->  74     21,312
+75    378,221  ->  74     21,313
+
+;----------------------------------
+
+;; Oasis Vil - Oasis hs
+4      476,57   ->   4_005  11,26
+4_005  10,27    ->   4      475,58  
+
+4      449,73   ->   4_001  13,13
+4_001  14,14    ->   4      450,74
+
+4      448,93   ->   4_002  8,15
+4_002  7,16     ->   4      447,94
+
+4      453,96   ->   4_002  14,17
+4_002  13,18    ->   4      452,96
+
+4      433,72   ->   4_003  13,13
+4_003  14,14    ->   4      434,73
+
+4      462,89   ->   4_004  8,13
+4_004  7,14     ->   4      461,90
+
+;; Samaktosung Vil - Samaktosung hs
+5      239,164  ->   5_0011 28,43
+5_0011 27,44    ->   5      238,165
+
+5      243,167  ->   5_0011 34,47
+5_0011 33,48    ->   5      242,168
+
+5      236,161  ->   5_0011 24,37
+5_0011 23,38    ->   5      235,161
+
+5      240,194  ->   5_0012 18,23
+5_0012 17,24    ->   5      239,195
+
+5      206,169  ->   5_0013 17,47
+5_0013 18,48    ->   5      207,170
+
+5      190,249  ->   5_002  13,17
+5_002  14,18    ->   5      191,250
+
+5      193,231  ->   5_003  6,21
+5_003  6,22     ->   5      194,232
+
+5      197,232  ->   5_003  16,24
+5_003  15,24    ->   5      196,232
+
+5      179,278  ->   5_004  9,21
+5_004  10,22    ->   5      179,279
+
+5      203,241  ->   5_005  6,11
+5_005  5,12     ->   5      203,242
+
+5      159,267  ->   5_006  8,23
+5_006  7,24     ->   5      158,267
+
+5      170,266  ->   5_006  19,23
+5_006  20,24    ->   5      171,267
+
+;----------------------------------
+
+;; Samak1(silkload) 8 - Samak2(gemigul ipgu)
+78    40,106  ->  6      770,555
+78    39,107  ->  6      769,556
+78    38,108  ->  6      768,557
+78    37,109  ->  6      767,558
+78    36,110  ->  6      766,559
+
+6     771,555 ->  78     41,106
+6     770,556 ->  78     40,107
+6     769,557 ->  78     39,108
+6     768,558 ->  78     38,109
+6     767,559 ->  78     37,110
+
+;; Samak2(gemigul ipgu) - Oasis
+4     180,778 ->  D2001 282,280
+4     181,779 ->  D2001 282,280
+4     182,780 ->  D2001 282,280
+
+4     283,778 ->  6      285,80
+4     282,779 ->  6      284,81
+4     281,780 ->  6      283,82
+4     280,781 ->  6      282,83
+
+4     384,768 ->  6      386,70
+4     383,769 ->  6      385,71
+4     382,770 ->  6      384,72
+
+4     471,765 ->  6      473,67
+4     470,766 ->  6      472,68
+4     469,767 ->  6      471,69
+
+
+6     179,79  ->  4      181,777
+6     180,80  ->  4      182,778
+6     181,81  ->  4      183,779
+
+6     284,79  ->  4      282,777
+6     283,80  ->  4      281,778
+6     282,81  ->  4      280,779
+6     281,82  ->  4      279,780
+
+6     385,69  ->  4      383,767
+6     384,70  ->  4      382,768
+6     383,71  ->  4      381,769
+
+6     472,66  ->  4      470,764
+6     471,67  ->  4      469,765
+6     470,68  ->  4      468,766
+
+
+;; Oasis - Samak3(Oasis Expansion)
+4      27,231      ->     41    380,345
+4      28,232      ->     41    381,346
+4      29,233      ->     41    382,347
+4      30,234      ->     41    383,348
+
+41     381,345     ->     4     28,231
+41     382,346     ->     4     29,232         
+41     383,347     ->     4     30,233
+41     384,348     ->     4     31,234
+41     385,349     ->     4     31,234
+
+;; Samak3(Oasis Expansion) 1 - 2
+41     33,137      ->     42    375,324
+41     32,138      ->     42    374,325
+41     31,139      ->     42    373,326
+41     30,140      ->     42    372,327
+41     29,141      ->     42    371,328
+
+42     376,324     ->     41     34,137
+42     375,325     ->     41     33,138
+42     374,326     ->     41     32,139
+42     373,327     ->     41     31,140
+42     372,328     ->     41     30,141
+
+;; Samak3(Oasis Expansion) 2 - 3
+42     34,189      ->     43     332,65
+42     35,190      ->     43     333,66
+42     36,191      ->     43     334,67
+42     37,192      ->     43     335,68
+42     38,193      ->     43     336,69
+
+43     333,64      ->     42     35,188
+43     334,65      ->     42     36,189
+43     335,66      ->     42     37,190
+43     336,67      ->     42     38,191
+43     337,68      ->     42     39,192
+
+;; Samak3(Oasis Expansion) 3 - 4
+43     41,204      ->     44     333,333
+43     42,205      ->     44     334,334
+43     43,206      ->     44     335,335
+43     44,207      ->     44     336,336
+43     45,208      ->     44     337,337
+43     46,209      ->     44     337,338
+
+44     334,333     ->     43     42,204
+44     335,334     ->     43     42,204
+44     336,335     ->     43     43,205
+44     337,336     ->     43     44,206
+44     338,337     ->     43     45,207
+44     338,338     ->     43     46,208 
+
+;; Oasis - Samak3(Oasis Expansion) 4
+4      73,461      ->     44     375,112
+4      72,462      ->     44     374,113
+4      71,463      ->     44     373,114
+4      70,464      ->     44     372,115
+4      69,465      ->     44     371,116
+4      68,466      ->     44     370,117
+
+44     376,112     ->     4      74,461
+44     375,113     ->     4      73,462 
+44     374,114     ->     4      72,463
+44     373,115     ->     4      71,464
+44     372,116     ->     4      70,465
+44     371,117     ->     4      69,466
+
+
+;; Oasis - Samaktosung
+4     515,639 ->  5      108,386
+4     516,638 ->  5      109,385
+4     517,637 ->  5      110,384
+4     518,636 ->  5      111,383
+
+4     458,648 ->  5      55,365
+4     459,649 ->  5      56,366
+4     460,650 ->  5      57,367
+
+4     422,547 ->  5      18,207
+4     423,548 ->  5      19,208
+4     424,549 ->  5      20,209
+
+4     447,480 ->  5      51,119
+4     448,479 ->  5      52,118
+4     449,478 ->  5      53,117
+
+4     459,422 ->  5      76,13
+4     460,423 ->  5      77,14
+4     461,424 ->  5      78,15
+4     462,425 ->  5      79,16
+
+4     563,392 ->  5      174,31
+4     562,393 ->  5      174,32
+4     561,394 ->  5      173,33
+ 
+
+5     112,384 ->  4      519,637
+5     111,385 ->  4      518,638
+5     110,386 ->  4      517,639
+5     109,387 ->  4      516,640
+
+5     54,366  ->  4      457,649
+5     55,367  ->  4      458,650
+5     56,368  ->  4      459,651
+
+5     17,208  ->  4      421,548
+5     18,209  ->  4      422,549
+5     19,210  ->  4      423,550
+
+5     50,118  ->  4      446,479
+5     51,117  ->  4      447,478
+5     52,116  ->  4      448,477
+
+5     77,12   ->  4      460,421
+5     78,13   ->  4      461,422
+5     79,14   ->  4      462,423
+5     80,15   ->  4      462,424
+
+5     174,30  ->  4      562,392
+5     173,31  ->  4      561,392
+5     172,32  ->  4      560,393
+
+
+;; field
+
+;; Omadongul(Hegol DG1)
+;; Bichun - Omadongul
+0     65,174  -> D001   151,362
+D001  149,364 -> 0      64,175
+D001  150,364 -> 0      64,175
+D001  148,366 -> 0      64,175
+
+D001  30,328  -> D002   34,323
+D002  34,322  -> D001   30,329
+
+D001  381,23  -> D002   324,16
+D002  324,15  -> D001   381,24
+
+D001  350,356 -> D002   367,351
+D002  367,350 -> D001   350,357
+
+D002  191,231 -> DM001  5,10
+DM001 6,10    -> D002   191,232
+
+D002  225,175 -> DM002  8,28
+DM002 7,28    -> D002  225,176
+
+D002  117,95  -> D003  106,83
+D003  106,82  -> D002  117,96
+
+;; Omajayungul(Omadongul - Jayundongul)
+D003  78,229    ->  E001  9,14
+E001  8,13    ->  D003  77,230
+
+E001  85,15   ->  E002  85,10
+E002  84,9    ->  E001  84,16
+
+E002  36,81   ->  D012  378,65
+D012  377,64    ->  E002  35,82
+
+;; Yungyultongro(Omadongul - Bichun Pegwang)
+D003  290,293   ->  E401  14,10
+E401  15,9    ->  D003  291,294
+
+E401    61,84   ->  E402  13,73
+E402  14,72   ->  E401  62,85
+
+E402  69,14   ->  E403  44,78
+E403  45,77   ->  E402  70,15
+
+E403  90,68   ->  E404  46,11
+E404  45,10   ->  E403  89,69
+
+E404  69,56   ->  D404  151,20
+D404  152,19    ->  E404  68,55
+
+
+;; Jayundongul(Hegol DG2)
+;; Eunhnag - Jayundongul
+02    483,322 -> D011  154,367
+D011  155,368 -> 02    481,324
+D011  155,367 -> 02    481,324
+
+D011  330,115 -> D012  337,105
+D012  337,104 -> D011  330,116
+D011  127,201 -> D012  77,198
+D012  77,197  -> D011  127,202
+
+D012  189,144 -> DM011 5,10
+DM011 6,10    -> D012  189,145
+
+ 
+;; Bichun Pegwang
+;; Bichun - Bichun Pegwang
+0      764,206 -> D401   25,181
+D401   24,182  -> 0      763,207
+
+D401   76,15   -> D411   59,8
+D411   60,7    -> D401   77,14
+
+D401   179,109 -> D413  11,8
+D413   10,7    -> D401  179,108
+
+D413   86,9    -> D402  9,146
+D402   8,147   -> D413  85,10
+
+D402   195,81  -> D414  15,78
+D414   14,79   -> D402  194,82
+
+D403   10,106  -> D414  70,20
+D414   71,19   -> D403  11,105
+
+D403   121,191 -> D412  55,24
+D412   54,23   -> D403  120,190
+
+D404   129,42  -> D412  52,53
+D412   53,52   -> D404  130,42
+
+D404   9,152   -> D416  89,17
+D416   90,16   -> D404  10,151
+
+D405   166,138 -> D416  7,55
+D416   6,54    -> D405  165,137
+
+D405   11,148  -> D415  83,17
+D415   84,16   -> D405  12,147
+
+D406   186,119 -> D415  9,85
+D415   8,86    -> D406  185,120
+
+D406   23,15   -> D411  94,48
+D411   95,49   -> D406  24,16
+
+
+;; Bamgol Pegwang(1)
+;; Bamgol - Bamgol Pegwang(1)
+2      366,200 -> D421  30,374
+D421   30,375  -> 2     365,201
+
+D421   361,19  -> D422  22,  41
+D422   22,42   -> D421  361, 20
+
+;; Bamgol Pegwang(2)
+;; Bamgol - Bamgol Pegwang(2)
+2      342,137 -> D431   25,181
+D431   24,182  -> 2      341,138
+
+D431   76,15   -> D441   59,8
+D441   60,7    -> D431   77,14
+
+D431   179,109 -> D443  11,8
+D443   10,7    -> D431  179,108
+
+D443   86,9    -> D432  9,146
+D432   8,147   -> D443  85,10
+
+D432   195,81  -> D444  15,78
+D444   14,79   -> D432  194,82
+
+D433   10,106  -> D444  70,20
+D444   71,19   -> D433  11,105
+
+D433   121,191 -> D442  55,24
+D442   54,23   -> D433  120,190
+
+D434   129,42  -> D442  52,53
+D442   53,52   -> D434  130,42
+
+D434   9,152   -> D446  89,17
+D446   90,16   -> D434  10,151
+
+D435   166,138 -> D446  7,55
+D446   6,54    -> D435  165,137
+
+D435   11,148  -> D445  83,17
+D445   84,16   -> D435  12,147
+
+D436   186,119 -> D445  9,85
+D445   8,86    -> D436  185,120
+
+D436   23,15   -> D441  94,48
+D441   95,49   -> D436  24,16
+
+
+;; Bamgol Pegwang(3)
+;; Bamgol - Bamgol Pegwang(3)
+2      350,261 -> D451  30,374
+D451   30,375  -> 2     349,262
+
+D451   361,19  -> D452  22,  41
+D452   22,42   -> D451  361, 20
+
+
+;; Gulbang Enter Position 
+;; Bichun Pegwang
+D401 80,172   ->  D401_001  15,15
+D401 81,92    ->  D401_001  15,15
+D401 127,156  ->  D401_001  15,15
+D401 152,118  ->  D401_001  15,15
+D401 120,109  ->  D401_001  15,15
+
+D402 27,116   ->  D402_001  15,15
+D402 89,62    ->  D402_001  15,15
+D402 22,105   ->  D402_001  15,15
+D402 151,16   ->  D402_001  15,15
+D402 143,75   ->  D402_001  15,15
+
+D403 28,144   ->  D403_001  15,15
+D403 86,118   ->  D403_001  15,15
+D403 88,116   ->  D403_001  15,15
+D403 160,70   ->  D403_001  15,15
+D403 146,152  ->  D403_001  15,15
+
+D404 78,80    ->  D404_001  15,15 
+D404 82,69    ->  D404_001  15,15 
+D404 150,186  ->  D404_001  15,15 
+D404 78,152   ->  D404_001  15,15 
+D404 104,99   ->  D404_001  15,15 
+
+D405 82,154   ->  D405_001  15,15 
+D405 176,61   ->  D405_001  15,15 
+D405 80,153   ->  D405_001  15,15 
+D405 69,95    ->  D405_001  15,15 
+D405 128,100  ->  D405_001  15,15 
+
+D406 142,134  ->  D406_001  15,15 
+D406 152,17   ->  D406_001  15,15 
+D406 122,79   ->  D406_001  15,15 
+D406 85,60    ->  D406_001  15,15 
+D406 79,72    ->  D406_001  15,15 
+
+;; Bamgol Pegwang(1)
+D421 196,315  ->  D421_001  15,15 
+D421 159,102  ->  D421_001  15,15 
+D421 80,202   ->  D421_001  15,15 
+D421 154,191  ->  D421_001  15,15
+D421 316,240  ->  D421_001  15,15 
+
+D422 226,304  ->  D422_001  15,15 
+D422 233,59   ->  D422_001  15,15 
+D422 273,251  ->  D422_001  15,15 
+D422 217,105  ->  D422_001  15,15 
+D422 128,101  ->  D422_001  15,15
+
+;; Bamgol Pegwang(2)
+D431 80,172   ->  D431_001  15,15
+D431 81,92    ->  D431_001  15,15
+D431 127,156  ->  D431_001  15,15
+D431 152,118  ->  D431_001  15,15
+D431 120,109  ->  D431_001  15,15
+
+D432 27,116   ->  D432_001  15,15
+D432 89,62    ->  D432_001  15,15
+D432 22,105   ->  D432_001  15,15
+D432 151,16   ->  D432_001  15,15
+D432 143,75   ->  D432_001  15,15
+
+D433 28,144   ->  D433_001  15,15
+D433 86,118   ->  D433_001  15,15
+D433 88,116   ->  D433_001  15,15
+D433 160,70   ->  D433_001  15,15
+D433 146,152  ->  D433_001  15,15
+
+D434 78,80    ->  D434_001  15,15 
+D434 82,69    ->  D434_001  15,15 
+D434 150,186  ->  D434_001  15,15 
+D434 78,152   ->  D434_001  15,15 
+D434 104,99   ->  D434_001  15,15 
+
+D435 82,154   ->  D435_001  15,15 
+D435 176,61   ->  D435_001  15,15 
+D435 80,153   ->  D435_001  15,15 
+D435 69,95    ->  D435_001  15,15 
+D435 128,100  ->  D435_001  15,15 
+
+D436 142,134  ->  D436_001  15,15 
+D436 152,17   ->  D436_001  15,15 
+D436 122,79   ->  D436_001  15,15 
+D436 85,60    ->  D436_001  15,15 
+D436 79,72    ->  D436_001  15,15 
+
+;; Bamgol Pegwang(3)
+D451 196,315  ->  D451_001  15,15 
+D451 159,102  ->  D451_001  15,15 
+D451 80,202   ->  D451_001  15,15 
+D451 154,191  ->  D451_001  15,15
+D451 316,240  ->  D451_001  15,15 
+
+D452 226,304  ->  D452_001  15,15 
+D452 233,59   ->  D452_001  15,15 
+D452 273,251  ->  D452_001  15,15 
+D452 217,105  ->  D452_001  15,15 
+D452 128,101  ->  D452_001  15,15
+
+;; Eunhang Pegwang(east) (byurok DG(east))
+;; Eunhang - Eunhang Pegwang(east)
+02     281,73      ->     D1301  358,378
+02     346,120     ->     D1301  358,378
+02     129,157     ->     D1301  358,378
+D1301  357,379     ->     02     345,121
+
+D1301  155,31      ->     D1302  367,353
+D1302  368,354     ->     D1301  156,32
+
+D1302  119,23      ->     D1303  49,362
+D1303  48,363      ->     D1302  118,24
+
+D1303  359,27      ->     D1304  69,352
+D1304  68,353      ->     D1303  358,28
+
+D1304  347,37      ->     D1305  360,354
+D1305  361,355     ->     D1304  348,38
+
+;; Misuk Gwangsan(east) (Kukyug Pegwang(east))
+;; Kukyug - Misuk Gwangsan(east)
+01     294,153     ->     D1401 92,387
+01     355,65      ->     D1401 92,387
+01     497,86      ->     D1401 92,387
+D1401  91,388      ->     01    496,87
+
+D1401  347,47      ->     D1402 314,373
+D1402  313,374     ->     D1401 346,48
+
+D1402  35,354      ->     D1403 315,354
+D1403  314,355     ->     D1402 36,355
+
+D1403  101,44      ->     D1404 50,355
+D1404  49,356      ->     D1403 100,45
+
+D1404  376,61      ->     D1405 86,365
+D1405  85,366      ->     D1404 375,62
+
+;; Umasinjun
+;; Dokwan - Umasinjunipgu
+1     54,370  -> D021  76,74
+1     54,369  -> D021  76,75
+D021  77,75   -> 1     55,371
+D021  77,76   -> 1     55,370
+
+;; Umasinjunipgu - Umasinjun1chng(1)
+D021  26,27   -> D022  338,356
+D021  26,26   -> D022  339,355
+D022  338,355 -> D021  25,26
+D022  338,354 -> D021  25,25
+
+D022  251,207 -> D023  198,195
+D022  251,206 -> D023  199,194
+D023  198,194 -> D022  250,206
+D023  198,193 -> D022  250,205
+
+D023  52,366  -> D024  16,19
+
+;; Umasinjunipgu - Umasinjun1chng(2)
+D021  47,37   -> D032  338,356
+D032  338,355 -> D021  46,36
+D032  338,354 -> D021  46,36
+
+D032  251,207 -> D033  198,195
+D032  251,206 -> D033  199,194
+D033  198,194 -> D032  250,206
+D033  198,193 -> D032  250,205
+
+D033  52,366  -> D024  47,29
+
+;; Umasinjunipgu - Umasinjun1chng(3)
+D021  34,50   -> D042  338,356
+D042  338,355 -> D021  33,49
+D042  338,354 -> D021  33,49
+
+D042  251,207 -> D043  198,195
+D042  251,206 -> D043  199,194
+D043  198,194 -> D042  250,206
+D043  198,193 -> D042  250,205
+
+D043  52,366  -> D024  29,47
+
+D052  251,207 -> D053  198,195
+D052  251,206 -> D053  199,194
+D053  198,194 -> D052  250,206
+D053  198,193 -> D052  250,205
+
+
+;; Jukwolgok(2)
+;; Hwanmokrim - Jukwolgok(2)
+12      110,31  ->      D1011   52,286
+12      334,52  ->      D1011   52,286
+12      46,143  ->      D1011   52,286
+D1011   53,287  ->      12      109,32
+
+D1011   290,76  ->      D1012   14,143
+D1012   13,144  ->      D1011   289,77
+
+D1012   274,109 ->      D10131  286,142
+D10131  287,141 ->      D1012   275,108
+
+D1012   134,15  ->      D10132  18,82
+D10132  17,83   ->      D1012   133,16
+
+D10131  11,99   ->      D1014   198,290
+D1014   199,291 ->      D10131  12,100
+
+D10132  234,25  ->      D1014   153,254
+D1014   152,255 ->      D10132  233,26
+
+D1014   208,21  ->      D10151  89,51
+D10151  88,52   ->      D1014   207,22
+
+D1014   91,12   ->      D10152  50,190
+D10152  51,191  ->      D1014   92,13
+
+D10151  152,16  ->      D10162  12,24
+
+;虫峡万年谷
+;---------------------------------
+
+74       334,72 ->  D6011  159,168
+74       78,227 ->  D6011  159,168
+74      132,503 ->  D6011  159,168
+D6011   160,169 ->  74      78,229
+
+D6011    29,32  ->  D6012   12,16
+D6012    11,15  ->  D6011   30,33
+
+D6012   202,187 ->  D60131   9,51
+D60131    8,50  ->  D6012  203,188
+
+D6012     9,182 -> D60132   70,66
+D60132   69,65  -> D6012    10,183
+
+D6012   283,232 -> D60134   25,17
+D60134   26,16  -> D6012   284,233
+
+D60132   13,19  -> D60133   63,83
+D60133   64,82  -> D60132   14,20
+
+D60134   86,17  -> D60135   44,43
+D60135   43,42  -> D60134   85,18
+
+D60131   12,13  -> D6014   150,66
+D6014   149,65  -> D60131   13,14
+
+D60133   88,75  -> D6014    14,84
+D6014    13,83  -> D60133   87,76
+
+D60135   90,11  -> D6014    52,22
+D6014    53,21  -> D60135   89,12
+
+D6014 160,170  ->  D6015  10,26
+D6015   9,25   ->  D6014 159,171
+
+;; 猪洞
+;----------------------------
+
+75     202,61  -> D7101 27,22
+D7101  26,23   -> 75   207,67
+
+D7101  25,21   -> D711 205,198
+D711   205,197 -> D7101 26,20
+
+D711   364,229 -> D712 364,226
+D712   363,227 -> D711 363,230
+
+D712   31,193  -> D713 31,191
+D713   30,192  -> D712 30,194
+
+D713   350,244 -> D714 382,190
+D714   381,191 -> D713 349,245
+
+D714   16,200  -> D715  29,344
+D715   28,345  -> D714  16,201
+
+D715   83,81   -> D716  36,17
+D716   37,16   -> D715  83,81
+
+D716   25,26   -> D717  26,74
+D717   25,75   -> D716  24,27
+
+;----------------------------------
+
+;; 绿洲<->蚂蚁洞
+6      291,719 ->   D8002  179,188
+D8002  178,189 ->   4      436,79
+4      375,119 ->   D8002  179,188
+4      476,152 ->   D8002  179,188
+
+D8002  6,43    ->   D8003  185,57
+D8003  186,58  ->   D8002  7,44
+
+D8003  119,185 ->   D8004  177,14
+D8003  29,185  ->   D8004  33,21
+D8004  178,13  ->   D8003  120,184
+D8004  34,20   ->   D8003  30,184
+
+D8004  196,142 ->   D8001  13,124
+D8004  129,178 ->   D8001  8,183
+D8001  12,125  ->   D8004  195,143
+D8001  7,184   ->   D8004  128,179
+
+D8001  159,155 ->   D801   5,18
+D801   4,17    ->   D8001  158,154
+
+D801   92,83   ->   D802   4,17
+D802   3,16    ->   D801   91,82
+
+D802   97,16   ->   D8022  9,26
+D8022  8,27    ->   D802   96,17
+
+D802   89,86   ->   D803   4,15
+D803   3,14    ->   D802   88,85
+
+D802   7,89    ->   D8021  31,14
+D8021  32,13   ->   D802   8,88
+
+D803   94,47   ->   D8031  3,7
+D8031  2,6     ->   D803   93,46
+
+D803   92,81   ->   D804   5,22
+D804   4,21    ->   D803   91,80
+
+D803   25,92   ->   D804   85,8
+D804   86,7    ->   D803   26,91
+
+D803   71,9    ->   D807   90,84
+D807   91,85   ->   D803   72,10
+
+D8031  27,27   ->   D8032  3,15
+D8032  2,14    ->   D8031  26,26
+
+D804   94,74   ->   D805   5,14
+D805   4,13    ->   D804   93,73
+
+D805   90,69   ->   D806   4,49
+D806   3,48    ->   D805   89,68
+
+D806 84,14     -> D807 30,88
+D807 30,89     -> D806 83,15
+
+D806   92,77   ->   D8061  13,17
+D8061  12,16   ->   D806   91,76
+
+D807   4,19    ->   D8071  27,26
+D8071  28,27   ->   D807   5,20
+
+D807   89,10   ->   D808   9,84
+D808   8,85    ->   D807   88,11
+
+D808   4,32    ->   D8032  27,17
+D8032  28,18   ->   D808   5,33
+
+D803 57,12     ->   D8033 9,26
+D8033 8,27     ->   D803 56,13
+
+D804 78,79     ->   D8041 13,17
+D8041 12,16    ->   D804 77,78
+
+D805 94,12     ->   D8051 9,26
+D8051 8,27     ->   D805 93,13
+
+D806 39,13     ->   D8062 9,26
+D8062 8,27     ->   D806 38,14
+
+D807 73,25     ->   D8072 9,26
+D8072 8,27     ->   D807 72,26
+
+;----------------------------------
+
+;; Zuma Palace
+
+31	175, 128 -> 0157  9,  26
+31      174, 128 -> 0157  9,  26
+0157	  8,  26 -> 31	173, 130
+0157	  9,  27 -> 31	173, 130
+
+0157   20,  15 -> D501	166, 216
+D501  165, 217 -> 0157	19,  16
+
+D501  326,  97 -> D512	20,  11
+D512   19,  11 -> D501  325,  96
+
+D501  302,  74 -> D511   29,  21
+D511   29,  22 -> D501  303,  75
+
+D502  326,  97 -> D514   20,  11
+D514   19,  11 -> D502  325,  96
+
+D502  302,  74 -> D513   29,  21
+D513   29,  22 -> D502  303,  75  
+
+0157 20,5     -> D501 166, 216
+D501 165,217  -> 0157 19, 16
+
+D501 350,170  -> D502 166, 216
+D502 165,217  -> D501 350, 171
+
+D502  112, 231  -> D503   166, 216
+D503  165, 217  -> D502   112, 232
+
+D503  295, 146  -> D504 166, 216
+D504  165, 217  -> D503 295, 147
+
+D504 51, 173  -> D505 96, 101
+D505  95, 102   -> D504 52, 174
+
+D505 123, 10    -> D5061  8,16
+D5061 7,17    -> D505 122,11
+
+D5074 77,15   -> D515   14,31
+
+D5061 7,10 -> D5065 91,43  
+D5061 14,16 -> D5065 34,11
+D5061 14,10 -> D5062 34,76 
+D5061 33,10 -> D5062 65,75 
+D5061 40,16 -> D5062 8,11  
+D5061 33,17 -> D5065 65,71 
+D5061 40,10 -> D5064 9,77  
+D5061 59,10 -> D5064 39,15 
+D5061 66,16 -> D5064 85,12 
+D5061 59,17 -> D5062 39,71 
+D5061 66,10 -> D5061 84,76 
+D5061 84,11 -> D5061 13,43 
+D5061 91,17 -> D5061 60,11 
+D5061 84,18 -> D5064 14,72 
+D5061 91,11 -> D5063 60,76 
+D5061 7,38 -> D5065 65,43  
+D5061 14,44 -> D5065 8,39  
+D5061 7,45 -> D5063 65,11  
+D5061 14,38 -> D5062 8,16  
+D5061 33,38 -> D5062 39,75 
+D5061 40,44 -> D5062 86,39 
+D5061 33,45 -> D5065 39,11 
+D5061 40,38 -> D5064 85,17 
+D5061 59,38 -> D5064 13,15 
+D5061 66,44 -> D5064 60,39 
+D5061 59,45 -> D5062 13,11 
+D5061 66,38 -> D5061 60,16 
+D5061 85,38 -> D5061 91,43 
+D5061 92,44 -> D5061 34,39 
+D5061 85,45 -> D5064 90,12 
+D5061 92,38 -> D5063 34,16 
+D5061 8,71 -> D5065 39,43  
+D5061 15,77 -> D5065 84,71 
+D5061 8,78 -> D5063 39,39  
+D5061 15,71 -> D5062 86,44 
+D5061 33,70 -> D5062 14,76 
+D5061 40,76 -> D5062 60,71 
+D5061 33,77 -> D5065 13,39 
+D5061 40,70 -> D5064 60,44 
+D5061 59,70 -> D5064 90,16 
+D5061 66,76 -> D5064 34,71 
+D5061 59,77 -> D5062 91,39 
+D5061 66,70 -> D5061 34,44 
+D5061 83,70 -> D5061 65,43 
+D5061 90,76 -> D5061 9,72  
+D5061 83,77 -> D5064 65,39 
+D5061 90,70 -> D5063 8,44  
+D5062 7,10 -> D5062 89,75  
+D5062 14,16 -> D5062 34,39 
+D5062 7,17 -> D5065 90,12  
+D5062 14,10 -> D5064 34,16 
+D5062 33,10 -> D5064 65,15 
+D5062 40,16 -> D5064 8,39  
+D5062 33,17 -> D5062 65,11 
+D5062 40,10 -> D5061 8,16  
+D5062 59,10 -> D5061 39,43 
+D5062 66,16 -> D5061 86,39 
+D5062 59,17 -> D5064 39,11 
+D5062 66,10 -> D5063 85,17 
+D5062 84,11 -> D5063 14,76 
+D5062 91,17 -> D5063 60,39 
+D5062 84,18 -> D5061 13,11 
+D5062 91,11 -> D5065 60,16 
+D5062 7,38 -> D5062 65,75  
+D5062 14,44 -> D5062 9,72  
+D5062 7,45 -> D5065 65,39  
+D5062 14,38 -> D5064 8,44  
+D5062 33,38 -> D5064 39,15 
+D5062 40,44 -> D5064 84,71 
+D5062 33,45 -> D5062 39,39 
+D5062 40,38 -> D5061 86,44 
+D5062 59,38 -> D5061 13,43 
+D5062 66,44 -> D5061 60,71 
+D5062 59,45 -> D5064 13,39 
+D5062 66,38 -> D5063 60,44 
+D5062 85,38 -> D5063 89,75 
+D5062 92,44 -> D5063 34,71 
+D5062 85,45 -> D5061 91,39 
+D5062 92,38 -> D5065 34,44 
+D5062 8,71 -> D5062 39,75  
+D5062 15,77 -> D5062 85,12 
+D5062 8,78 -> D5065 39,71  
+D5062 15,71 -> D5064 84,76 
+D5062 33,70 -> D5064 13,15 
+D5062 40,76 -> D5064 60,11 
+D5062 33,77 -> D5062 14,72 
+D5062 40,70 -> D5061 60,76 
+D5062 59,70 -> D5061 91,43 
+D5062 66,76 -> D5061 34,11 
+D5062 59,77 -> D5064 89,71 
+D5062 66,70 -> D5063 34,76 
+D5062 83,70 -> D5063 65,75 
+D5062 90,76 -> D5063 8,11  
+D5062 83,77 -> D5061 65,71 
+D5062 90,70 -> D5065 9,77  
+D5063 7,10 -> D5064 90,16  
+D5063 14,16 -> D5064 34,71 
+D5063 7,17 -> D5062 91,39  
+D5063 14,10 -> D5061 34,44 
+D5063 33,10 -> D5061 65,43 
+D5063 40,16 -> D5061 9,72  
+D5063 33,17 -> D5064 65,39 
+D5063 40,10 -> D5063 8,44  
+D5063 59,10 -> D5063 39,75 
+D5063 66,16 -> D5063 84,71 
+D5063 59,17 -> D5061 39,39 
+D5063 66,10 -> D5065 86,44 
+D5063 84,11 -> D5065 13,15 
+D5063 91,17 -> D5065 60,71 
+D5063 84,18 -> D5063 13,39 
+D5063 91,11 -> D5062 60,44 
+D5063 7,38 -> D5064 65,15  
+D5063 14,44 -> D5064 8,11  
+D5063 7,45 -> D5062 65,71  
+D5063 14,38 -> D5061 9,77  
+D5063 33,38 -> D5061 39,43 
+D5063 40,44 -> D5061 85,12 
+D5063 33,45 -> D5064 39,71 
+D5063 40,38 -> D5063 84,76 
+D5063 59,38 -> D5063 14,76 
+D5063 66,44 -> D5063 60,11 
+D5063 59,45 -> D5061 14,72 
+D5063 66,38 -> D5065 60,76 
+D5063 85,38 -> D5065 90,16 
+D5063 92,44 -> D5065 34,11 
+D5063 85,45 -> D5063 89,71 
+D5063 92,38 -> D5062 34,76 
+D5063 8,71 -> D5064 39,15  
+D5063 15,77 -> D5064 86,39 
+D5063 8,78 -> D5062 39,11  
+D5063 15,71 -> D5061 85,17 
+D5063 33,70 -> D5061 13,43 
+D5063 40,76 -> D5061 60,39 
+D5063 33,77 -> D5064 13,11 
+D5063 40,70 -> D5063 60,16 
+D5063 59,70 -> D5063 89,75 
+D5063 66,76 -> D5063 34,39 
+D5063 59,77 -> D5061 90,12 
+D5063 66,70 -> D5065 34,16 
+D5063 83,70 -> D5065 65,15 
+D5063 90,76 -> D5065 8,39  
+D5063 83,77 -> D5063 65,11 
+D5063 90,70 -> D5062 8,16  
+D5064 7,10 -> D5061 91,43  
+D5064 14,16 -> D5061 34,11 
+D5064 7,17 -> D5064 89,71  
+D5064 14,10 -> D5063 34,76 
+D5064 33,10 -> D5063 65,75 
+D5064 40,16 -> D5063 8,11  
+D5064 33,17 -> D5061 65,71 
+D5064 40,10 -> D5065 9,77  
+D5064 59,10 -> D5065 39,15 
+D5064 66,16 -> D5065 85,12 
+D5064 59,17 -> D5063 39,71 
+D5064 66,10 -> D5062 84,76 
+D5064 84,11 -> D5062 13,43 
+D5064 91,17 -> D5062 60,11 
+D5064 84,18 -> D5065 14,72 
+D5064 91,11 -> D5064 60,76 
+D5064 7,38 -> D5061 65,43  
+D5064 14,44 -> D5061 8,39  
+D5064 7,45 -> D5064 65,11  
+D5064 14,38 -> D5063 8,16  
+D5064 33,38 -> D5063 39,75 
+D5064 40,44 -> D5063 86,39 
+D5064 33,45 -> D5061 39,11 
+D5064 40,38 -> D5065 85,17 
+D5064 59,38 -> D5065 13,15 
+D5064 66,44 -> D5065 60,39 
+D5064 59,45 -> D5063 13,11 
+D5064 66,38 -> D5062 60,16 
+D5064 85,38 -> D5062 91,43 
+D5064 92,44 -> D5062 34,39 
+D5064 85,45 -> D5065 90,12 
+D5064 92,38 -> D5064 34,16 
+D5064 8,71 -> D5061 39,43  
+D5064 15,77 -> D5061 84,71 
+D5064 8,78 -> D5064 39,39  
+D5064 15,71 -> D5063 86,44 
+D5064 33,70 -> D5063 14,76 
+D5064 40,76 -> D5063 60,71 
+D5064 33,77 -> D5061 13,39 
+D5064 40,70 -> D5065 60,44 
+D5064 59,70 -> D5065 90,16 
+D5064 66,76 -> D5065 34,71 
+D5064 59,77 -> D5063 91,39 
+D5064 66,70 -> D5062 34,44 
+D5064 83,70 -> D5062 65,43 
+D5064 90,76 -> D5062 9,72  
+D5064 83,77 -> D5065 65,39 
+D5064 90,70 -> D5064 8,44  
+D5065 7,10 -> D5063 89,75  
+D5065 14,16 -> D5063 34,39 
+D5065 7,17 -> D5061 90,12  
+D5065 14,10 -> D5065 34,16 
+D5065 33,10 -> D5065 65,15 
+D5065 40,16 -> D5065 8,39  
+D5065 33,17 -> D5063 65,11 
+D5065 40,10 -> D5062 8,16  
+D5065 59,10 -> D5062 39,43 
+D5065 66,16 -> D5062 86,39 
+D5065 59,17 -> D5065 39,11 
+D5065 66,10 -> D5064 85,17 
+D5065 84,11 -> D5064 14,76 
+D5065 91,17 -> D5064 60,39 
+D5065 84,18 -> D5062 13,11 
+D5065 91,11 -> D5061 60,16 
+D5065 7,38 -> D5063 65,75  
+D5065 14,44 -> D5063 9,72  
+D5065 7,45 -> D5061 65,39  
+D5065 14,38 -> D5065 8,44  
+D5065 33,38 -> D5065 39,15 
+D5065 40,44 -> D5065 84,71 
+D5065 33,45 -> D5063 39,39 
+D5065 40,38 -> D5062 86,44 
+D5065 59,38 -> D5062 13,43 
+D5065 66,44 -> D5062 60,71 
+D5065 59,45 -> D5065 13,39 
+D5065 66,38 -> D5064 60,44 
+D5065 85,38 -> D5064 89,75 
+D5065 92,44 -> D5064 34,71 
+D5065 85,45 -> D5062 91,39 
+D5065 92,38 -> D5061 34,44 
+D5065 8,71 -> D5063 39,75  
+D5065 15,77 -> D5063 85,12 
+D5065 8,78 -> D5061 39,71  
+D5065 15,71 -> D5065 84,76 
+D5065 33,70 -> D5065 13,15 
+D5065 40,76 -> D5065 60,11 
+D5065 33,77 -> D5063 14,72 
+D5065 40,70 -> D5062 60,76 
+D5065 59,70 -> D5062 91,43 
+D5065 66,76 -> D5062 34,11 
+D5065 59,77 -> D5065 89,71 
+D5065 66,70 -> D5064 34,76 
+D5065 83,70 -> D5064 65,75
+D5065 83,77 -> D5062 65,71 
+D5065 90,70 -> D5061 9,77  
+
+D5065 90,76 ->  D5071  8,10
+D5071 7,9   ->  D5065  89,75
+
+D5071 39,43 -> D5072  7,51
+D5072 6,50  -> D5071  38,42
+
+D5072 90,20 -> D5073  10,69
+D5073 9,70  -> D5072  89,21
+
+D5073 60,9  -> D5074  47,90
+D5074 48,91 -> D5073  59,10
+
+
+;; Banyasinjun
+
+;; Banyado - Banyasinjun1chng
+8      692,358 ->  D1101  135,180
+D1101  134,181 ->  8      691,359
+
+D1101  222,228 ->  D1102  141,141
+D1102  140,140 ->  D1101  221,227
+
+D1102  255,254 ->  D11031 207,333
+D11031 206,332 ->  D1102  254,253
+
+D1102  51,46   ->  D11032 35,64
+D11032 36,63   ->  D1102  52,45
+
+D11032 62,36   ->  D1104  106,94
+D1104  107,93  ->  D11032 63,35
+
+D1104  157,152 ->  D1105  105,216
+D1105  106,217 ->  D1104  158,153
+
+D1110  25,22   ->  D1111  221,224
+D1111  220,225 ->  D1110  24,23
+
+D1111  111,112 ->  D1112  156,157
+D1112  155,156 ->  D1111  110,111
+
+D1112  373,378 ->  D1113  35,27
+D1113  34,26   ->  D1112  372,377
+
+D1113  376,50  ->  D11141 40,108
+D11141 39,109  ->  D1113  375,51
+
+D1113  38,373  ->  D11142 93,127
+D11142 94,128  ->  D1113  39,374
+
+D1113  375,369 ->  D1115  379,382
+D1115  380,383 ->  D1113  376,370
+
+D11141 125,63  ->  D1115  384,19
+D1115  385,18  ->  D11141 126,62
+
+D11142 25,30   ->  D1115  35,382
+D1115  36,383  ->  D11142 26,31
+
+D1115  200,199 ->  D1116  90,14
+
+;----------------------------------
+
+;; Banyasukgul
+
+;; Banyado - Banyasukgul1chng
+8      416,553  ->  D1211  128,172
+D1211  127,173  ->  8      415,554
+
+D1211  10,96    ->  D12121  281,61
+D12121 282,62   ->  D1211   11,97
+
+;D12121 27,23    ->  D12122  79,84
+;D12122 80,85    ->  D12121  28,24
+
+D12121 281,258  ->  D1213   268,275
+D1213  267,276  ->  D12121  280,259
+
+D1213  107,130  ->  D1214   59,284
+D1214  59,285   ->  D1213   106,131
+
+D1214  226,16   ->  D1215   371,47
+D1215  371,48   ->  D1214   227,17
+
+;----------------------------------
+
+;; Sahwaldong
+
+;; Yubesum - Sahwaldong1chng
+81     156,135  ->  D1201  19,147
+D1201  18,148   ->  81     155,136
+
+D1201  17,23    ->  D1202  179,182
+D1202  179,183  ->  D1201  18,24
+                
+D1202  120,87   ->  D12032 18,186
+D12032 17,187   ->  D1202  119,88
+                
+D12032 29,35    ->  D1204  24,267
+D1204  23,268   ->  D12032 28,36
+
+D1202  16,24    ->  D12031 50,80
+D12031 51,81    ->  D1202  17,25
+
+D12031 91,168   ->  D1204  172,39
+D1204  173,40   ->  D12031 92,169             
+                
+D1204  265,253  ->  D1205  75,201
+D1205  74,202   ->  D1204  264,254
+
+
+;; Silnakwon
+
+;; (east)Gemigul1chng1 - Silnakwon
+D8002   39,175   ->      9       732,676
+D8002   40,176   ->      9       732,676
+
+9       732,674  ->      D8002   40,175       
+9       733,674  ->      D8002   40,175
+
+;----------------------------------
+
+;; Hukdogung
+
+;; Silnakwon - Hukdogung1chng
+9        208,91     ->    D1510   14,45 
+9        208,92     ->    D1510   14,45 
+
+D1510    13,46      ->    9       207,92     
+D1510    14,47      ->    9       207,92
+
+D1510     9,172     ->    D15111   178,34  
+D1510    10,173     ->    D15111   178,34 
+
+D15111   180,33     ->    D1510    10,171
+D15111   179,33     ->    D1510    10,171
+
+D1510    189,188    ->    D15112   95,59   
+D1510    190,181    ->    D15112   95,59
+
+D15112   94,58      ->    D1510    189,186
+D15112   95,58      ->    D1510    189,186
+
+D15111   31,186     ->    D1512    38,23
+D15111   32,187     ->    D1512    38,23
+
+D1512    39,22      ->    D15111   32,185 
+D1512    40,22      ->    D15111   32,185 
+
+D15112   30,181     ->    D1512    186,19
+D15112   31,182     ->    D1512    186,19
+
+D1512    188,18     ->    D15112   31,180
+D1512    187,18     ->    D15112   31,180
+
+D1512    15,186     ->    D1513    180,28
+D1512    16,187     ->    D1513    180,28
+
+D1513    182,27     ->    D1512    16,185
+D1513    181,27     ->    D1512    16,185
+
+;; Hukdogung3chng - Jinchungung2chng(south)
+D1512    183,170    ->    D15022   166,63
+D1512    184,169    ->    D15022   166,63
+
+D15022   165,62     ->    D1512    183,168
+D15022   166,62     ->    D1512    183,168
+
+;; Hukdogung4chng - Jinchungung3chng(east)
+D1513    13,124     ->    D15033   280,54
+D1513    14,125     ->    D15033   280,54
+
+D15033   282,53     ->    D1513    14,123
+D15033   281,53     ->    D1513    14,123
+
+;----------------------------------
+
+;; Jinchungung
+
+;; Silnakwon - Jinchungung1chng
+9       388,305     ->    D1500   172,224    
+9       388,306     ->    D1500   172,224     
+
+D1500   171,225     ->     9      387,306 
+D1500   172,226     ->     9      387,306
+
+9       398,308     ->    D1500    195,224
+9       399,308     ->    D1500    195,224
+
+D1500    195,226     ->     9      399,310
+D1500    195,225     ->     9      399,310
+
+D1500    351,382    ->    D15013   40,38 
+D1500    352,381    ->    D15013   40,38
+
+D15013   39,37      ->    D1500    351,380
+D15013   40,37      ->    D1500    351,380
+
+D1500    15,45      ->    D15011   268,90
+D1500    16,45      ->    D15011   268,90
+
+D15011   268,92     ->    D1500    16,46
+D15011   269,91     ->    D1500    16,46
+
+D1500    27,369     ->    D15012   240,27
+D1500    28,370     ->    D15012   240,27
+
+D15012   241,26     ->    D1500    28,368
+D15012   242,26     ->    D1500    28,368
+
+D1500    355,41     ->    D15014   119,198
+D1500    356,41     ->    D15014   119,198
+
+D15014   118,199    ->    D1500    354,42
+D15014   119,200    ->    D1500    354,42
+
+;; Jinchungung1chng(west) - Jinchungung2chng(west)
+D15011   16,276    ->    D15021    242,21    
+D15011   17,277    ->    D15021    242,21    
+
+D15021   243,20    ->    D15011    17,275
+D15021   244,20    ->    D15011    17,275
+
+;; Jinchungung2chng(west) - Jinchungung2chng(south)
+D15021   119,262   ->    D15022    18,18
+D15021   120,261   ->    D15022    18,18
+
+D15022   17,17     ->    D15021    119,260
+D15022   18,17     ->    D15021    119,260
+
+;; Jinchungung2chng(south) - Jinchungung3chng(south)
+D15022   245,265   ->    D15032    14,19
+D15022   246,264   ->    D15032    14,19
+
+D15032   13,18     ->    D15022    245,263
+D15032   14,18     ->    D15022    245,263
+
+;; Jinchungung3chng(south) - Jinchungung3chng(east)
+D15032   269,238   ->    D15033    66,204
+D15032   270,238   ->    D15033    66,204
+
+D15033   65,205    ->    D15032    268,239
+D15033   66,206    ->    D15032    268,239
+
+;; Jinchungung(east)
+
+D15013   149,152   ->    D15023    160,152
+D15013   150,152   ->    D15023    160,152
+
+D15023   161,153   ->    D15013    150,153
+D15023   160,154   ->    D15013    150,153
+
+D15023   259,275   ->    D15033    30,34 
+D15023   258,276   ->    D15033    30,34
+
+D15033   29,33     ->    D15023    258,274
+D15033   30,33     ->    D15023    258,274
+
+D15033   286,289   ->    D15043    12,20
+D15033   285,290   ->    D15043    12,20
+
+D15043   11,19     ->    D15033    285,288
+D15043   12,19     ->    D15033    285,288
+
+D15043   255,259   ->    D15044    22,267
+D15043   256,259   ->    D15044    22,267
+
+D15044   21,268    ->    D15043    254,260
+D15044   22,269    ->    D15043    254,260
+
+;; Jinchungung(north)
+
+D15014   258,35    ->    D15024    122,132
+D15014   259,35    ->    D15024    122,132
+
+D15024   121,133   ->    D15014    257,36
+D15024   122,134   ->    D15014    257,36
+ 
+D15024   217,285   ->    D15034    267,36
+D15024   218,286   ->    D15034    267,36
+
+D15034   268,35    ->    D15024    218,284
+D15034   269,35    ->    D15024    218,284
+
+;; 3chng - 4chng Not Linked
+
+D15044   245,20    ->    D15054    181,183
+D15044   246,20    ->    D15054    181,183
+
+D15054   181,185   ->    D15044    246,21
+D15054   182,184   ->    D15044    246,21
+
+D15054   285,288   ->    D1506     44,63 
+D15054   286,288   ->    D1506     44,63
+
+;----------------------------------
+;; Sinkisun DG                     
+                                   
+D900   48,59   ->   D901   22,83
+                                   
+D901   159,93  ->   D9021  160,94  
+D9021  159,93  ->   D901   160,94  
+                                   
+D901   122,149 ->   D9011  9,18    
+D9011  8,19    ->   D901   121 150 
+                                   
+D901   140,129 ->   D9012  9,18    
+D9012  8,19    ->   D901   139,130 
+                                   
+D9021  57,21   ->   D9022  34,69   
+D9022  33,68   ->   D9021  58,22   
+                                   
+D9021  100,52  ->   D90211 28,24   
+D90211 29,25   ->   D9021  100,53  
+                                   
+D9021  38,61   ->   D90212 14,18   
+D90212 15,19   ->   D9021  39,62   
+                                   
+D9022  172,152 ->   D903   187,150 
+D903   187,149 ->   D9022  172 153 
+
+D90221 29,25   ->   D9022  112,147 
+                                   
+D9022  157,95  ->   D90222 22,26   
+D90222 23,27   ->   D9022  156 96  
+                                   
+D9022  74,26   ->   D90223 14,18   
+D90223 15,19   ->   D9022 75,27    
+                                   
+D903   53,51   ->   D904   54,25   
+D904   54,24   ->   D903   53,52   
+                                   
+D903   144,179 ->   D9031  10,22   
+D9031  11,23   ->   D903   144,180
+                                   
+D903   72,60   ->   D9032  7,16    
+D9032  6,17    ->   D903   72,60   
+
+D9033  17,19   ->   D903   86,118
+D903   47,41   ->   z013    10,10  
+                                
+D9021  52,110   ->   D9011  18,11  
+D9021  157,134  ->   D9012  11,12  
+D9021  95,155   ->   D901   107,161
+D9021  126,77   ->   D901   120,140
+D9021  117,173  ->   D901   105,131
+D9021  119,84   ->   D901   149,149
+D9021  116,87   ->   D901   149,149
+D9021  69,126   ->   D901   88,51  
+D9021  75,71    ->   D901   88,51  
+D9021  92,114   ->   D901   169,121
+                                   
+D9021   67,21   ->   D90221 12,33
+D9021   30,75   ->   D90221 12,33
+D9021   90,145  ->   D9033  19,11
+D9021   126,77  ->   D9033  19,11
+                                   
+D903   61,92    ->   D90221 12,33
+D903   172,110  ->   D90221 12,33
+D903   181,151  ->   D9033  19,11
+D903   126,185  ->   D9022  19,11
+D903   105,132  ->   D9022  98,151
+
+;;诺玛遗址
+41     115,72    ->  D1601    39,149
+41     169,56    ->  D1601    313,45
+41     140,139   ->  D1601    91,345
+41     189,112   ->  D1601    352,253
+
+D1601  39,149    ->  41       115,72
+D1601  313,45    ->  41       169,56
+D1601  91,345    ->  41       140,139
+D1601  352,253   ->  41       189,112
+
+D1601   207,202  ->  D1602    194,200
+D1602   195,199  ->  D1601    208,201
+
+D1602   383,205  ->  D16031   357,368
+D16031  356,368  ->  D1602    382,204
+
+D1602   199,14   ->  D16032   341,78
+D16032  340,79   ->  D1602    198,15
+
+D1602   12,194   ->  D16033   42,54   
+D16033  43,55    ->  D1602    13,195
+
+D1602   188,385  ->  D16034   62,356
+D16034  63,355   ->  D1602    189,384
+
+D16031  199,219  ->  D1604    190,177
+D1604   191,177  ->  D16031   200,220
+
+D16032  200,217  ->  D1604    191,186
+D1604   192,185  ->  D16032   201,216
+
+D16033  198,218  ->  D1604    199,185
+D1604   199,184  ->  D16033   197,217
+
+D16034  199,217  ->  D1604    200,176
+D1604   199,177  ->  D16034   198,218
+
+D1604   23,194   ->  D1604  372,208
+D1604   191,30   ->  D1604  372,208
+D1604   345,208  ->  D1604  228,138
+D1604   248,208  ->  D1604  139,307
+D1604   167,203  ->  D1604  276,108
+D1604   276,108  ->  D1604  232,71
+D1604   232,71   ->  D1604  23,194
+D1604   178,82   ->  D1604  136,145
+D1604   136,145  ->  D1604  80,248
+D1604   80,248   ->  D1604  135,245
+D1604   135,245  ->  D1604  132,119
+D1604   132,119  ->  D1604  228,138
+D1604   228,138  ->  D1604  32,203
+D1604   32,203   ->  D1604  167,203
+D1604   372,208  ->  D1604  363,199
+D1604   363,199  ->  D1604  238,200
+D1604   238,200  ->  D1604  345,208
+D1604   345,208  ->  D1604  228,138
+D1604   139,307  ->  D1604  130,298
+
+D1604   211,296  ->  D1605  167,377
+D1605   166,378  ->  D1604  210,297
+
+D1605   196,326  ->  D1605  183,321
+D1605   140,342  ->  D1605  127,337
+D1605   156,286  ->  D1605  139,285
+D1605   96,306   ->  D1605  91,294
+D1605   112,251  ->  D1605  103,243
+D1605   248,76   ->  D1605  243,64
+D1605   48,237   ->  D1605  35,233
+D1605   28,218   ->  D1605  31,198
+D1605   228,57   ->  D1605  215,53
+D1605   208,38   ->  D1605  199,30
+D1605   228,57   ->  D1605  215,53
+D1605   68,256   ->  D1605  63,224
+D1605   63,224   ->  D1605  196,326
+D1605   215,53   ->  D1605  96,306
+D1605   35,233   ->  D1605  228,57
+D1605   199,30   ->  D1605  140,342
+
+D1605   112,96   ->  D1606   23,52
+;----------------------------------
+
+;; Jayundongul2chng - Unbalbang
+D012_001  8,7 ->  d012   228,356
+d012  229,355 ->  D012_001   9,8
+
+;; OmaJayungul2chng - Gadungbang
+E002_001  12,9  ->  E002   64,13
+E002  63,12 ->  E002_001   11,10
+E002  63,11 ->  E002_001   11,10
+
+;; Omadonggul1chng - Omayongsabang
+D001_001  7,9 ->  d001  302,66
+d001  303,65  ->  D001_001  8,10
+
+;; Omadonggul2chng - Hagoltusabang
+D002_001  7,9 ->  d002   254,282
+d002  255,281 ->  D002_001   8,10
+
+;; Yungyoltongro(2) - (Sujunbang1)
+E402_001  26,12 ->  E402  63,72
+E402  62,71 ->  E402_001  25,12
+
+;; (Bichun Pegwang2) - (Sujunbang2)
+D404_002  3,12  ->  D404  54,128
+D404    55,127  ->  D404_002  4,11
+
+;; Bamgol gwangsan2 - (Sujunbang3)
+D422_002  31,8  ->  D422  168,189
+D422  167,190 ->  D422_002  30,9
+
+;------------------------------------
+;; Quest
+;------------------------------------
+
+;; Dokwan - Mumyungnoin
+1    185,64    ->   1_009      39,135
+1    185,65    ->   1_009      41,137
+1    185,66    ->   1_009      40,136
+1_009   43,138 ->      1       186,67
+1_009   43,139 ->      1       188,67
+1_009   44,139 ->      1       188,68
+
+;; Umasinjun1chng - (Bimilbang)
+D022_001 63,74 ->   D022 145,112
+D022_001 64,74 ->   D022 145,112
+D022_001 64,73 ->   D022 145,112
+D022_001 65,73 ->   D022 145,112
+D022_001 65,72 ->   D022 145,112
+D022_001 66,72 ->   D022 145,112
+D022_001 66,71 ->   D022 145,112
+
+;; Umasinjun2chng - Sajekwan(1)
+D023_001 12,17 ->   D023 65,47
+D023 67,48     ->   D023_001  13,18
+D023 67,47     ->   D023_001  13,18
+
+;; Umasinjun2chng <- Sajekwan(2)
+D023_002  12,17     ->   D023 65,47
+
+;; Bichun Vil - (Dolumi Map)
+0_003 24,31    -> 0      514,391
+
+0_003 25,31    -> 0      515,391
+0_003 26,31    -> 0      516,391
+0_003 27,31    -> 0      517,391
+0_003 28,31    -> 0      518,391
+0_003 29,31    -> 0      519,391
+
+0_003 24,32    -> 0      514,392
+0_003 24,33    -> 0      514,393
+0_003 24,34    -> 0      514,394
+0_003 24,35    -> 0      514,395
+0_003 24,36    -> 0      514,396
+0_003 24,37    -> 0      514,397
+0_003 24,38    -> 0      514,398
+
+0_003 24,39    -> 0      514,399
+
+0_003 25,39    -> 0      515,399
+0_003 26,39    -> 0      516,399
+0_003 27,39    -> 0      517,399
+0_003 28,39    -> 0      518,399
+0_003 29,39    -> 0      519,399
+
+0_003 30,39    -> 0      520,399
+
+0_003 30,32    -> 0      520,392
+0_003 30,33    -> 0      520,393
+0_003 30,34    -> 0      520,394
+0_003 30,35    -> 0      520,395
+0_003 30,36    -> 0      520,396
+0_003 30,37    -> 0      520,397
+0_003 30,38    -> 0      520,398
+
+0_003 30,31    -> 0      520,391
+
+;----------------------------------
+
+;; Massheal(Dehwoiboksul)
+1_020   172,173 -> 1_021  24,40
+1_020   172,174 -> 1_021  24,40
+1_020   172,175 -> 1_021  24,40
+1_021   22,42 -> 1_020  169,172
+1_021   22,43 -> 1_020  169,172
+1_021   22,44 -> 1_020  169,172
+1_021   23,44 -> 1_020  169,172
+;;
+1_021  10,12  -> 1_022  163,30
+1_021  10,13  -> 1_022  163,30
+1_021  11,12  -> 1_022  163,30
+1_022  166,33  -> 1_021  12,14
+1_022  166,34  -> 1_021  12,14
+1_022  166,35  -> 1_021  12,14
+1_022  165,36  -> 1_021  12,14
+;;
+1_022  11,12  -> 1_023   40,36
+1_022  11,13  -> 1_023   40,36
+1_022  11,14  -> 1_023   40,36
+1_022  12,12  -> 1_023   40,36
+1_023  42,38  -> 1_022  13,13
+1_023  42,39  -> 1_022  13,13
+1_023  42,40  -> 1_022  13,13
+1_023  41,40  -> 1_022  13,13
+
+;----------------------------------
+
+;; Holy(Gyulge)
+
+;; Test - Umasinjun3chng(1)
+D023   371,366  -> 1_015   10,17
+D023   371,367  -> 1_015   10,17
+D023   372,366  -> 1_015   10,17
+
+1_015   28,33 -> 1_016   10,17
+1_015   29,33 -> 1_016   10,17
+1_015   29,32 -> 1_016   10,17
+1_015   30,32 -> 1_016   10,17
+
+1_016   28,33 -> 1_017   10,17
+1_016   29,33 -> 1_017   10,17
+1_016   29,32 -> 1_017   10,17
+1_016   30,32 -> 1_017   10,17
+
+1_017   28,33 -> 1_018   10,17
+1_017   29,33 -> 1_018   10,17
+1_017   29,32 -> 1_018   10,17
+1_017   30,32 -> 1_018   10,17
+
+1_018   28,33 -> 1_019   13,17
+1_018   29,33 -> 1_019   13,17
+1_018   29,32 -> 1_019   13,17
+1_018   30,32 -> 1_019   13,17
+
+1_019   39,40 -> 1    350,402
+1_019   40,40 -> 1    350,402
+1_019   38,41 -> 1    350,402
+1_019   39,41 -> 1    350,402
+
+;----------------------------------
+
+;; Hiden(Eunsinsul)
+
+;; Test(1) -> Test(2)
+1_010  90,15  -> 1_011   22,83
+1_010  90,16  -> 1_011   22,83
+1_010  91,14  -> 1_011   22,83
+1_010  91,15  -> 1_011   22,83
+1_010  91,16  -> 1_011   22,83
+1_010  92,13  -> 1_011   22,83
+1_010  92,14  -> 1_011   22,83
+1_010  92,15  -> 1_011   22,83
+
+;----------------------------------
+
+;; FireStorm(Hwayumpung)
+
+;; Test(1) -> Test(2)
+02_002  90,15  -> 02_003     22,83
+02_002  90,16  -> 02_003     22,83
+02_002  91,14  -> 02_003     22,83
+02_002  91,15  -> 02_003     22,83
+02_002  91,16  -> 02_003     22,83
+02_002  92,13  -> 02_003     22,83
+02_002  92,14  -> 02_003     22,83
+02_002  92,15  -> 02_003     22,83

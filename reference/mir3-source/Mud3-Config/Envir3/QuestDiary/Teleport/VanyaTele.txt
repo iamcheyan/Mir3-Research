@@ -1,0 +1,31 @@
+;;베α돝
+[@HalfNight_Contry]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\VanyaTele.txt] @VanyaTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
+
+;-------------------------------------------------------------------------------
+[@HalfNight_Cave]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\VanyaTele.txt] @VanyaTele_2
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

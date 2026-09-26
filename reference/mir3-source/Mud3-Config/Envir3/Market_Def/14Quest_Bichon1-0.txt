@@ -1,0 +1,690 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+[@main_0]
+#IF
+check [302] 1
+#ACT
+goto @main_a1
+break
+#IF
+check [301] 1
+#ACT
+goto @main_a1
+break
+#IF
+check [274] 1
+#ACT
+goto @main_c1
+break
+#IF
+check [213] 1
+#ACT
+goto @main_a1
+break
+#IF
+check [199] 1
+#ACT
+goto @main_b1
+break
+#IF
+check [169] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [168] 1
+#ACT
+goto @main_a1
+break
+#ELSEACT
+goto @main_Q3
+
+
+[@main_a1]
+#IF
+check [152] 1
+#ACT
+goto @main_Q3
+#ELSEACT
+goto @npc_base
+
+[@main_c1]
+#IF
+check [169] 1
+#ACT
+goto @main_c2       
+break
+#IF
+check [152] 1
+#ACT
+goto @main_c3
+break
+#ELSEACT
+goto @main_c2
+
+[@main_c2]
+#IF
+check [248] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [247] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [221] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [213] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [201] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [199] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [169] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [168] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [132] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [164] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [131] 1
+#ACT
+goto @main_0_1
+break
+#ELSEACT
+goto @main_Q1
+
+[@main_c3]
+#IF
+check [248] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [247] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [221] 1
+#ACT
+goto @main_Q1
+break
+#IF
+check [213] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [201] 1
+#ACT
+goto @main_0_5
+break
+#IF
+check [199] 1
+#ACT
+goto @main_0_5
+break
+#IF
+check [168] 1
+#ACT
+goto @main_0_4
+break
+#ELSEACT
+goto @main_0_4
+
+[@main_b1]
+#IF
+check [248] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [247] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [221] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [169] 1
+#ACT
+goto @main_Q2
+break
+#IF
+check [152] 1
+#ACT
+goto @main_0_6
+break
+#ELSEACT
+goto @main_Q2
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_1
+
+[@main_0_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_2
+
+[@main_0_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_3
+
+[@main_0_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_4
+
+[@main_0_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_5
+
+[@main_0_6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Main_6
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@main_Q1]
+;
+#IF
+check [302] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [301] 1
+#ACT
+goto @npc_base
+break
+;
+#IF
+check [286] 1
+#ACT
+goto @NQuest_28
+break
+#IF
+check [284] 1
+#ACT
+goto @NQuest_27
+break
+#IF
+check [283] 1
+#ACT
+goto @NQuest_26
+break
+#IF
+check [282] 1
+#ACT
+goto @NQuest_25
+break
+#IF
+check [281] 1
+#ACT
+goto @NQuest_24
+break
+#IF
+check [280] 1
+#ACT
+goto @NQuest_23
+break
+;
+#IF
+check [276] 1
+#ACT
+goto @NQuest_22
+break
+#IF
+check [274] 1
+#ACT
+goto @NQuest_21
+break
+;
+#ELSEACT
+goto @main_0
+
+
+
+
+[@main_Q2]
+;
+#IF
+check [213] 1
+#ACT
+goto @npc_base
+break
+;
+#IF
+check [202] 1
+#ACT
+goto @NQuest_13
+break
+#IF
+check [201] 1
+#ACT
+goto @NQuest_12
+break
+#IF
+check [199] 1
+#ACT
+goto @NQuest_11
+break
+#ELSEACT
+goto @npc_base
+
+
+[@main_Q3]
+;
+#IF
+check [169] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [159] 1
+#ACT
+goto @NQuest_10
+break
+#IF
+check [158] 1
+#ACT
+goto @NQuest_10
+break
+#IF
+check [157] 1
+#ACT
+goto @NQuest_10
+break
+#IF
+check [156] 1
+#ACT
+goto @NQuest_10
+break
+#IF
+check [155] 1
+#ACT
+goto @NQuest_10
+break
+#IF
+check [152] 1
+#ACT
+goto @NQuest_10
+break
+;
+#IF
+check [168] 1
+#ACT
+goto @npc_base
+break
+#IF
+check [167] 1
+#ACT
+goto @NQuest_8
+break
+#IF
+check [166] 1
+#ACT
+goto @NQuest_8
+break
+;
+#IF
+check [165] 1
+#ACT
+goto @NQuest_8
+break
+;
+#IF
+check [132] 1
+#ACT
+goto @NQuest_7
+break
+;
+#IF
+check [524] 1
+#ACT
+goto @NQuest_6_1
+break
+#IF
+check [523] 1
+#ACT
+goto @NQuest_6_1
+break
+;
+#IF
+check [164] 1
+#ACT
+goto @NQuest_6
+break
+;
+#IF
+check [131] 1
+#ACT
+goto @NQuest_2
+break
+;
+#ELSEACT
+goto @npc_base
+
+
+;----------  
+
+[@NQuest_2]
+;
+#IF
+checkjob warrior
+#ACT
+goto @NQuest_3
+break
+#IF
+checkjob wizard
+#ACT
+goto @NQuest_4
+break
+#IF
+checkjob taoist
+#ACT
+goto @NQuest_5
+break
+#ELSEACT
+goto @NQuest_2
+
+;-----------------------------------------------
+
+[@NQuest_3]
+#CALL [\NQ_BASE\warriorbase.txt] @Junsa_CQ_COMPLETE
+
+[@NQuest_4]
+#CALL [\NQ_BASE\wizardbase.txt] @Sulsa_CQ_COMPLETE
+
+[@NQuest_5]
+#CALL [\NQ_BASE\taoistbase.txt] @Dosa_CQ_COMPLETE
+
+
+[@NQuest_6]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest_6_1
+
+[@NQuest_6_1]
+#CALL [\NQ_BASE\wang.txt] @WANG_START
+
+[@NQuest_7]
+#CALL [\NQ_BASE\wang.txt] @INVITE_2MAN
+
+[@NQuest_8]
+#CALL [\NQ_BASE\wang.txt] @WANG_COMPLETE
+
+
+;-----------------------------------------------
+
+[@NQuest_10]
+#IF
+check [168] 1
+#ACT
+goto @NQuest_10_2
+#ELSEACT
+goto @NQuest_10_1
+
+[@NQuest_10_1]
+#IF
+check [167] 1
+#ACT
+goto @NQuest_8
+break
+#IF
+check [166] 1
+#ACT
+goto @NQuest_8
+break
+#IF
+check [165] 1
+#ACT
+goto @NQuest_8
+
+[@NQuest_10_2]
+#CALL [\NQ_BASE\wang.txt] @WANG_H_COMPLETE
+
+[@NQuest_11]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest_11_1
+
+[@NQuest_11_1]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_START
+
+[@NQuest_12]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_WANG_1
+
+[@NQuest_13]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_WANG_2
+
+[@NQuest_21]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG1
+
+[@NQuest_22]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG2
+
+[@NQuest_23]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG3
+
+[@NQuest_24]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG4
+
+[@NQuest_25]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG5
+
+[@NQuest_26]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG6
+
+[@NQuest_27]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG7
+
+[@NQuest_28]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_WANG8
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@npc_base]
+#IF
+check [302] 1
+#ACT
+goto @npc_base_5
+break
+#IF
+check [301] 1
+#ACT
+goto @npc_base_4
+break
+#IF
+check [213] 1
+#ACT
+goto @npc_base_3
+break
+#IF
+check [169] 1
+#ACT
+goto @npc_base_2
+break
+#IF
+check [168] 1
+#ACT
+goto @npc_base_1
+break
+#ELSEACT
+goto @npc_base_0
+
+
+[@npc_base_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_0
+
+[@npc_base_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_1
+
+[@npc_base_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_2
+
+[@npc_base_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_3
+
+[@npc_base_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_4
+
+[@npc_base_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_Base_5
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 577
+#ACT
+goto @TQuest577_0
+break
+;
+#IF
+CheckDailyQuest 451
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_TQuest
+
+;--------------
+;------------------------
+
+[@TQuest577_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [308] 1
+#ACT
+goto @TQUEST1_6
+break
+;
+
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest577_1
+
+;--------------
+
+[@TQuest577_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @577_CHECK2
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @451_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @451_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon1-0.txt] @NPC_TQuest_1
+
+;--------------------------------

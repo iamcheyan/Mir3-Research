@@ -1,0 +1,95 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon7-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+
+[@main_0]
+#IF
+check [325] 1
+#ACT
+goto @main_0_2
+break
+
+#IF
+check [213] 1
+#ACT
+goto @main_0_1
+break
+
+#IF
+check [212] 1
+#ACT
+goto @NQuest01_4
+break
+
+#IF
+check [210] 1
+#ACT
+goto @NQuest01_3
+break
+
+#IF
+check [202] 1
+#ACT
+goto @NQuest01_2
+break
+
+#IF
+check [201] 1
+#ACT
+goto @NQuest01_1
+break
+
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon7-0.txt] @NPC_Main_0
+
+;--------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon7-0.txt] @NPC_Main_1
+
+;--------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon7-0.txt] @NPC_Main_2
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_SOPAL_1
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_SOPAL_2
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_SOPAL_3
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_SOPAL_4

@@ -1,0 +1,36 @@
+;;º£¥áµÁ
+[@BackLog_BG_M1]
+{
+#IF
+#ACT
+goto @BackLog_BG_M1_0
+[@BackLog_BG_M1_0]
+#IF
+check [219] 1
+#ACT
+goto @main_root
+break
+#IF
+check [214] 1
+#ACT
+goto @main_root
+break
+#IF
+check [213] 1
+#ACT
+goto @BackLog_BG_M1_B0
+break
+#ELSEACT
+goto @main_root
+break
+[@BackLog_BG_M1_B0]
+#IF
+checklevel 16
+#ACT
+set [214] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\BackGround\SnakeVally.txt] @SnakeVally_1
+
+#ELSEACT
+goto @main_root
+}

@@ -1,0 +1,397 @@
+;;海メ盗
+[@Manager_1]
+{
+		{FCOLOR/1}管理员命令语句:{FCOLOR/12}\
+		<$@admin_menu>\ \
+}
+
+[@Manager_2]
+{
+		<$@FlagTest>\ \
+		
+		沙巴克城 攻击行会 : <$CS_SABUK_ATTACKGUILDS>\ \
+		沙巴克城 剩余资金 : <$CS_SABUK_CASTLEGOLD> 金币 \
+		沙巴克城今天收的资金 : <$CS_SABUK_TODAYTAX> 金币 \
+		沙巴克城门的状态 \ 
+		<$@DoorState1>\
+		<$@DoorState2>\
+		<$@DoorState3>\ \
+}
+
+[@Manager_3]
+{
+		<找出沙巴克城的税金。/@@DrawTax> \ \
+		<看功城战的日程。/@view_warschedule>\ \
+		<申请攻城战。/@Propse_CastleWar>\
+}
+
+[@Manager_4]
+{
+		你不是沙巴克城主人行会的楼主啊。。\ \
+		<看攻城战的日程。/@view_warschedule>\
+		<申请攻城战。/@Propse_CastleWar>\
+		<了解有关于攻城战的事。/@requestcastlewar> \
+		<结束/@exit>
+}
+
+[@Manager_5]
+{
+<输入运营者命令语句暗号/@@*admin_passwd>\
+}
+
+[@Manager_6]
+{
+在沙巴克城内 <洒100万金币。/@gold_rain>\
+在沙巴克城内 < 洒药水。/@potion_rain>\
+把沙巴克城地板的 <所有金币都弄掉。/@gold_clear>\
+把沙巴克城地板的 <所有药水都弄掉。/@potion_clear>\
+把沙巴克城地板的 <所有物品都弄掉。/@allitem_clear>\ \
+<换名字/@@ChangeUserName>\
+}
+
+[@Manager_7]
+{
+密码错误。\
+<结束/@exit>
+}
+
+[@Manager_8]
+{
+<$USERNAME> 先生，变更名字成功。\
+}
+
+[@Manager_9]
+{
+变更名字失败。。\
+<重试/@main>
+}
+
+[@Manager_10]
+{
+         请输入提款金额. \ \
+   		<找出沙巴克城的税金。/@@DrawTax> \ \
+}
+
+[@Manager_11]
+{
+		   沙巴克城没有税金，无法提款. \ \
+}
+
+[@Manager_12]
+{
+			输入金额太多不能掉出来。\ \
+			<结束/@exit>
+}
+
+[@Manager_13]
+{
+			只掉出了 <$OUTPUT(d2)>的金额。\ \
+			<结束/@exit>
+}
+
+[@Manager_14]
+{
+在攻城中是不能申请攻城战的。\ \
+<前一步/@main>
+}
+
+[@Manager_15]
+{
+不是楼主的话不能申请攻城战。\ \
+<前一步/@main>
+}
+
+[@Manager_16]
+{
+不能攻击城主人的行会。\ \
+<前一步/@main>
+}
+
+[@Manager_17]
+{
+ 因为没有祖玛头像所以不能申请攻城战。\ \
+<前一步/@main>
+}
+
+[@Manager_18]
+{
+申请了攻城战。\ \
+攻城日程是 {FCOLOR/10}3天后下午8点在{FCOLOR/12} 开始战争。\ \
+<前一步/@main>
+}
+
+[@Manager_19]
+{
+已经申请了所以不能再申请。\ \
+<前一步/@main>
+}
+
+[@Manager_20]
+{
+为了申请攻城战需要祖玛头像。\
+你有那个东西吗？\
+现在申请的话 {FCOLOR/10}3天后下午8点在{FCOLOR/12}开始战争。\ \
+<前一步/@main>
+}
+
+[@Manager_21]
+{
+沙巴克城攻城战的日程是这样的。\
+{FCOLOR/10}<$CS_SABUK_WARDATE>{FCOLOR/12} \ \
+沙漠土城攻城战的日程是这样的。\
+{FCOLOR/10}<$CS_TAOSUNG_WARDATE>{FCOLOR/12} \ \
+<前一步/@main>
+}
+
+[@Manager_22]
+{
+_'<$CS_SABUK_OWNER>' 行会是沙巴克城的主人。\
+}
+
+[@Manager_23]
+{
+（攻城中）
+}
+
+[@Manager_24]
+{
+（不是攻城中）
+}
+
+[@Manager_25]
+{
+正侧 城门
+}
+
+[@Manager_26]
+{
+_（正常）
+}
+
+[@Manager_27]
+{
+_(<没有/@Front_make_door>)
+}
+
+[@Manager_28]
+{
+_(<开启/@Front_Close_Door>)
+}
+
+[@Manager_29]
+{
+_(<关闭/@Front_Open_Door>)
+}
+
+[@Manager_30]
+{
+左侧 城门
+}
+
+[@Manager_31]
+{
+_（正常）
+}
+
+[@Manager_32]
+{
+_(<没有/@Left_make_door>)
+}
+
+[@Manager_33]
+{
+_(<开启/@Left_Close_Door>)
+}
+
+[@Manager_34]
+{
+_(<关闭/@Left_Open_Door>)
+}
+
+[@Manager_35]
+{
+右侧 城门
+}
+
+[@Manager_36]
+{
+_（正常）
+}
+
+[@Manager_37]
+{
+_(<没有/@Right_make_door>)
+}
+
+[@Manager_38]
+{
+_(<开启/@Right_Close_Door>)
+}
+
+[@Manager_39]
+{
+_(<关闭/@Right_Open_Door>)
+}
+
+[@Manager_40]
+{
+制作城门的费用是50万金币。\ \
+<支付50万金币制作正侧城门。/@Front_make_door_comfirm> \
+}
+
+[@Manager_41]
+{
+在攻城战中是不能制作城门的。\ \
+<结束/@exit>
+}
+
+[@Manager_42]
+{
+没有带钱所以不能制作城门。\ \
+<前一步/@main>
+}
+
+[@Manager_43]
+{
+城门制作完毕！！\ \
+<前一步/@main>
+}
+
+[@Manager_44]
+{
+有城门。 \ \
+<前一步/@main>
+}
+
+[@Manager_45]
+{
+制作城门的费用是50万金币。\ \
+<支付50万金币制作左侧城门。/@Left_make_door_comfirm> \
+}
+
+[@Manager_46]
+{
+在攻城战中是不能制作城门的。\ \
+<结束/@exit>
+}
+
+[@Manager_47]
+{
+没有带钱所以不能制作城门。\ \
+<前一步/@main>
+}
+
+[@Manager_48]
+{
+城门制作完毕！！\ \
+<前一步/@main>
+}
+
+[@Manager_49]
+{
+有城门。 \ \
+<前一步/@main>
+}
+
+[@Manager_50]
+{
+制作城门的费用是50万金币。\ \
+<支付50万金币制作左侧城门。/@Right_make_door_comfirm> \
+}
+
+[@Manager_51]
+{
+在攻城战中是不能制作城门的。\ \
+<结束/@exit>
+}
+
+[@Manager_52]
+{
+没有带钱所以不能制作城门。\ \
+<前一步/@main>
+}
+
+[@Manager_53]
+{
+城门制作完毕！！\ \
+<前一步/@main>
+}
+
+[@Manager_54]
+{
+有城门。 \ \
+<前一步/@RightDoor>
+}
+
+[@Manager_55]
+{
+开了沙巴克城门。 \ \
+<前一步/@main>
+}
+
+[@Manager_56]
+{
+没有城门或者城门开着的状态。\ \
+<前一步/@main>
+}
+
+[@Manager_57]
+{
+关了沙巴克城门。\ \
+<前一步/@main>
+}
+
+[@Manager_58]
+{
+没有城门或者城门关闭的状态。\ \
+<前一步/@main>
+}
+
+[@Manager_59]
+{
+开了沙巴克城门。 \ \
+<前一步/@main>
+}
+
+[@Manager_60]
+{
+没有城门或者城门开着的状态。\ \
+<前一步/@main>
+}
+
+[@Manager_61]
+{
+关了沙巴克城门。\ \
+<前一步/@main>
+}
+
+[@Manager_62]
+{
+没有城门或者城门关闭的状态。\ \
+<前一步/@main>
+}
+
+[@Manager_63]
+{
+开了沙巴克城门。 \ \
+<前一步/@main>
+}
+
+[@Manager_64]
+{
+没有城门或者城门开着的状态。\ \
+<前一步/@main>
+}
+
+[@Manager_65]
+{
+关了沙巴克城门。\ \
+<前一步/@main>
+}
+
+[@Manager_66]
+{
+没有城门或者城门关闭的状态。\ \
+<前一步/@main>
+}
+

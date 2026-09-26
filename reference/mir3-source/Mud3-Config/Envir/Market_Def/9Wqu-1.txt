@@ -1,0 +1,266 @@
+;公扁
+%100
+;;------------------------------------------------------------------------------
+;; [308] 坷付侩荤，秦榜捧荤甫 棱绰 涅胶飘 柳青 荤亲
+;; [309] 坷付侩荤，秦榜捧荤甫 棱绊 抄 促澜狼 涅胶飘 荤亲
+;;------------------------------------------------------------------------------
+;措拳， '*' : 措拳 怕弊
+[@main]
+#IF
+random 2
+#ACT
+goto @QUEST
+#ELSEACT
+goto @normal
+
+
+[@QUEST]
+#IF
+check [309] 1
+#ACT
+goto @Q309
+break
+
+
+#IF
+check [308] 1
+#ACT
+goto @Q308
+break
+
+
+#IF
+check [307] 1
+#ACT
+goto @Q307
+#ELSEACT
+goto @normal
+
+
+[@normal]
+沃玛森林有叫做半兽勇士的怪物... \
+这个怪物挺厉害的... \ \ 
+ <关闭/@exit>
+
+
+[@Q307]
+竟然有人认出我来... \
+这到底是怎么回事？ 真奇怪... \ \
+ <询问/@Q307_1>厨师 \
+
+
+[@Q307_1]
+嗯，你认识我吗？是很久以前的事情... \
+我以前在比奇客栈做厨师 .. \
+是啊，是很久以前的事情了，很怀念啊... \ \
+ <请求/@Q307_2>厨师
+
+
+[@Q307_2]
+#IF
+random 2
+#ACT
+goto @Q307_3
+#ELSESAY
+求我？我凭什么答应你？\
+你还是回去吧...\ \
+ <关闭/@exit>
+
+
+[@Q307_3]
+#IF
+random 2
+#SAY 
+你真够厉害，意志也很坚强...  \
+我想求你一件事... \
+最近几天我走很多地方\ 
+发现了一个很神奇的地方...\ \
+ <下一个/@Q307_4> 
+ #ELSESAY
+要我做菜给你，是吗？？ \
+这样我岂不是要去比奇县...\ 
+我不喜欢去比奇... \
+对不起，你还是走吧... \ \
+ <关闭/@exit>
+
+
+[@Q307_4]
+那个地方真是很奇怪\
+我发现有一个怪物，虽然我力量很微弱， \
+但是我试着去打，但是结果是我被打了... \
+还有那个地方神奇得一进去一分钟又回到现实\
+真是个奇怪的地方...\ \
+ <下一个/@Q307_5>
+
+
+[@Q307_5]
+你移动到那个地方，把那个家伙抓住，把它的头盔给我拿来吧 ！\
+我会帮你... \
+把你带到那个地方，祝你好运... \ \
+ <进入/@Q307_6>
+
+
+[@Q307_6]
+#IF
+checkhum Q001 1
+#SAY
+现在有人正受着煎熬，你等一下吧\ \
+<关闭/@exit>
+#ELSEACT
+goto @Q307_6_1
+
+
+[@Q307_6_1]
+#IF
+checkjob warrior
+#ACT
+goto @Q307_6_1_1
+break
+
+
+#IF 
+checkjob wizard
+#ACT
+goto @Q307_6_1_2
+break
+
+
+#IF
+checkjob taoist
+#ACT
+goto @Q307_6_1_3
+break
+
+
+[@Q307_6_1_1]
+#IF
+#ACT
+Monclear Q001
+Param1 Q001
+Param2 10
+Param3 10
+MonGen 骷髅精灵2 1 10
+TimeRecall 1
+map Q001
+SET [308] 1
+
+
+[@Q307_6_1_2]
+#IF
+#ACT
+Monclear Q002
+Param1 Q002
+Param2 10
+Param3 10
+MonGen 半兽勇士2 1 10
+TimeRecall 1
+map Q002
+SET [308] 1
+
+
+[@Q307_6_1_3]
+#IF
+#ACT
+Monclear Q003
+Param1 Q003
+Param2 10
+Param3 10
+MonGen 巨型多角虫2 1 10
+TimeRecall 1
+map Q003
+SET [308] 1
+
+
+[@Q308]
+#IF
+checkitem 精灵头盔 1
+#ACT
+goto @Q308_1
+#ELSEACT
+goto @Q308_2
+
+
+[@Q308_1]
+#IF
+#ACT
+SET [309] 1
+take 精灵头盔 1
+#SAY
+你真是厉害，竟然把那个妖怪抓住了\
+并且还把它的头盔给我拿来.... \
+我欠你太多了！ \
+既然你帮我做了事情，那我也得帮你做事 ... \ 
+你去找一下比奇县的屠夫金氏吧，我已经和他联系好了... \ \
+ <关闭/@exit>
+   
+
+[@Q308_2]
+#IF
+random 5
+#SAY
+你也没能赢过那个妖怪啊？？ \
+那个家伙真够厉害的(果然是这样..)... \
+你想再试一次吗？？ \ \
+ <挑战/@Q308_2_1>\
+ <关闭。/@exit> 
+#ELSESAY
+嗯，我现在比较忙，不能带你去\
+等一下再来吧，那等会儿见吧...\ \
+ <离开/@exit>
+
+
+[@Q308_2_1]
+#IF
+checkhum Q001 1
+#SAY
+现在有人正受着煎熬，你等一下\ \
+ <离开/@exit>
+#ELSEACT
+goto @Q308_2_1_1
+
+
+[@Q308_2_1_1]
+#IF
+checkjob warrior 
+#ACT
+Monclear Q001
+Param1 Q001
+Param2 10
+Param3 10
+MonGen 骷髅精灵2 1 10
+TimeRecall 1
+map Q001
+break
+
+
+#IF 
+checkjob wizard
+#ACT
+Monclear Q002
+Param1 Q002
+Param2 10
+Param3 10
+MonGen 半兽勇士2 1 10
+TimeRecall 1
+map Q002
+break
+
+
+#IF
+checkjob taoist
+#ACT
+Monclear Q003
+Param1 Q003
+Param2 10
+Param3 10
+MonGen 巨型多角虫2 1 10
+TimeRecall 1
+map Q003
+break
+
+
+[@Q309]
+#IF
+#SAY
+快去找比奇县屠夫金氏吧！！\ \
+ <关闭/@exit>

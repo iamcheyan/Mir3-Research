@@ -1,0 +1,195 @@
+;;º£¥áµÁ
+[@Add_CheckFinishCondition]
+{
+#ACT
+  goto @MonkeyIslandRootin
+  
+[@MonkeyIslandRootin]
+begin
+   #IF
+     Equal  N4{Finish} 1      ;; ÀÌº¥Æ®¸¦ ¿î¿µÀÚ°¡ Áß´ÜÀ» ÇßÀ»½Ã
+   #ACT
+     break
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;; ¹®À» ¿­°í ´ÝÀ½ Ã¼Å©
+	#IF
+	  Small  N2{TIME}  30       ;; 30ºÐÀÌ Áö³ª¸é ÀÔÀåÀÌ ºÒ°¡´É ÇÔ
+	#ACT
+	  Mov    N3{OPEN}  1        ;; ¹®À» ¿­¾îµÒ
+	#ELSEACT
+	  Mov    N3{OPEN}  0        ;; ¹®À» ´Ý¾ÆµÒ
+	
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;; ¸Þ¼¼Áö Ã¼Å© ±¸¹®
+	#IF
+	  Equal  N2{TIME}  30       ;; 30ºÐ ÈÄ Âü°¡ ÇÒ¼ö ¾ø´Ù´Â ¸Þ¼¼Áö°¡ µé¾î°¨
+	#ACT
+     LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg1]
+	  LineMsg  "01,Island02"  %A0
+	
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;; 60ºÐÀÌ Áö³­ÈÄ¿¡ ½Î¿ìÁö ¾Ê´Â °æ¿ì Áß¾ÓÀ¸·Î ÆÃ±â°ÔÇÔ(10ºÐ ´ÜÀ§)
+	#IF
+	   Equal N2{TIME}  60
+   #ACT
+		MapTing   Island02    Island02   100  133
+
+	#IF
+	   Equal N2{TIME}  70
+   #ACT
+		MapTing   Island02    Island02   100  133
+
+	#IF
+	   Equal N2{TIME}  80
+   #ACT
+		MapTing   Island02    Island02   100  133
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;; Á¾·á ½ÃÁ¡ Ã¼Å©
+	#IF
+	  Large  N2{TIME}  89       ;; 90ºÐÀÌ Áö³­ÈÄ¿¡´Â ÀÌº¥Æ®°¡ Á¾·áµÊ
+	#ACT
+	  goto @IslandEvent_Fail
+	  break
+
+	#IF
+	  Large  N2{TIME}  30       ;; 30ºÐ ÀÌÈÄ 0¸í ÀÖÀ»½Ã ½ÇÆÐ
+	  !CheckHum  "Island02 100 125 125" 1   
+	#ACT
+	  goto @IslandEvent_Fail
+	  break
+
+	#IF
+	  Equal  N3{OPEN}  0        ;; 30ºÐÀÌ Áö³µÀ»¶§ 5¸í ÀÌÇÏ ÀÏ¶§ ¼º°ø , »ç¶÷¼ö=P9
+	  !CheckHum  "Island02 100 125 125" 6   
+	#ACT
+	  goto @IslandReward
+	  break
+	
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Áß°£ º¸»ó ±¸¹® Ã¼Å©
+	#IF
+	  Equal  N1{EVENT} 1
+	  Large  N8{GOLD}  13000000      ;; µ·ÀÌ ÃæºÐÈ÷ ³²¾ÒÀ»½Ã¿¡
+	  Equal  N2{TIME}  30            ;; 30ºÐÀÌ Áö³µÀ»¶§ °¡ ¶³¾îÁü
+	#ACT
+	  goto @Island_Mid_Reward
+	
+	#IF
+	  Large  N8{GOLD}      11000000   ;; 5ºÐ ¸¶´Ù 100¸¸Àü¾¿ ¶³¾îÁü
+	  !Small  N9{DropGold}  5
+	#ACT
+	  goto @Island_Tick_Reward
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  ¹«ÇÑ ·çÇÁ µ¹¸®´Â ºÎºÐ
+	#IF
+	  Equal  N1{EVENT}  1           ;; ÀÎ¿ø¼ö Ã¼Å© ¹× ½Ã°£ Ã¼Å© ±¸¹®
+	  CheckHum  "Island02 100 125 125"  0
+	#ACT
+      LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg2]
+      LoadValue A1 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg3]
+      LoadValue A2 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg4]
+	   LineMsg "Island02"  %A0
+		LineMsg "Island02"  %A1
+		LineMsg "Island02"  %A2
+		Inc    N2{TIME}     1
+		Inc    N9{DropGold} 1
+		DelayGoto  [Grobal]  60  @MonkeyIslandRootin   ;; ½ÇÁ¦·Î ÇÒ¶§´Â 5-> 60À¸·Î º¯°æ
+	#ELSEACT
+	   LineMsg "Island02" "º¸¹°¼¶¸Ê ¾È¿¡´Â »ç¶÷ÀÌ ¾ø½À´Ï´Ù. ±×·¡¼­ ÁøÇàÀÌ ºÒ°¡´É ÇÕ´Ï´Ù."
+      DelayGoto  [Grobal]  5  @MonkeyIslandRootin   ;; ÀÌºÎºÐÀº º¯°æ ÇÏÁö ¾Ê±â¸¦ ¹Ù¶÷
+end
+
+[@IslandEvent_Fail]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ÀÌº¥Æ® ½ÇÆÐ½Ã
+begin
+	#ACT
+		Mov  N1{EVENT}  0
+		SaveValue "Flag_Def\Event\Island\Gold.txt" "GOLD" "AddGold" %N8
+		MapTing   Island02    01 100 130
+		MonClear  "Island02"  "Ô³ºïÕ½Ê¿"
+		MonClear  "Island02"  "Ô³ºïÕ½½«"
+		MonClear  "Island02"  "Ä§Éñ¹Ö1"
+      LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg5]
+      LoadValue A1 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg6]
+		LineMsg   "Grobal"  %A0
+		LineMsg   "Grobal"  %A1
+      break
+end
+
+[@Island_Tick_Reward]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 5ºÐ ¸¶´Ù ¶³¾îÁö´Â »ó±Ý
+begin
+  #IF
+      Large  N8{GOLD}   5000000
+  #ACT
+      LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg7]
+		LineMsg "Island02" %A0
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,100000"
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,100000"
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,1000000"
+		Dec    N8{GOLD}      1000000
+		Mov    N9{DropGold}  0
+end
+
+[@Island_Mid_Reward]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Áß°£ »ó±Ý
+begin
+	#IF
+		Large  N8{GOLD}   5000000
+	#ACT
+      LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg8]
+		LineMsg "Island02" %A0
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,300000"
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,300000"
+		MonGenP "Island02,100,130,5" ¾Û±¦Ïä4 1 "noitem,½ð±Ò,3000000"
+		Dec    N8{GOLD}     3000000
+
+[@IslandReward]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; º¸¹°¼¶ ÀÌº¥Æ® º¸»ó ±âº»
+begin
+  #ACT
+		Mov  N1{EVENT}  0
+		ChangeMapAttr "Island02" "SAFE"
+		LoadValue A0 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg9]
+		LoadValue A1 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg10]
+		LoadValue A2 [Convert_Def\QuestDiary\Event\Island\Condition.txt] [Event_Island_Condition_EventMsg] [Msg11]
+		LineMsg "Grobal"   %A0
+		LineMsg "Island02" %A1
+		LineMsg "Island02" %A2
+		MonClear "Island02" "Ô³ºïÕ½Ê¿"
+		MonClear "Island02" "Ô³ºïÕ½½«"
+		MonClear "Island02" "Ä§Éñ¹Ö1"
+		MonClear "Island02" "¾Û±¦Ïä4"
+		SendCmd "Island02, 95, 135, 5"  Éú´æÓÎÏ·³¡ÃÀÃ¼  Show
+		MapTing  Island02  Island02  100  130
+      Mov N6{Reward} 1
+      Delaygoto  [Grobal]  1800 @Reward_Time_Check
+		goto @MultIslandReward
+end                
+
+[@Reward_Time_Check]
+begin
+        #IF
+                Equal N6{Reward} 1  ;; ÀÌº¥Æ® Á¾·á ÈÄ, º¸»óÀ» ¸ÔÀ» ÀÏÁ¤ ½Ã°£À» ÁÜ.
+        #ACT
+                Mov N6{Reward}    0
+                Mov N7{Fin_Chk}   1
+end
+[@MultIslandReward]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; º¸¹°¼¶ ÀÌº¥Æ® º¸»ó »óÀÚ Á¨
+begin
+	#IF
+		Large N8{GOLD}   5000000          ;; º¸¹° »óÀÚ¿¡ ±Ý¾×À» 5¹é¸¸ÀüÀ¸·Î Á¦ÇÑ(¸ÖÆ¼·Î »Ñ¸²)
+	#ACT
+		Dec   N8{GOLD}   5000000          ;; »ó±ÝÀ» °¨¼Ò ½ÃÆÀ
+		FormatStr "noitem,½ð±Ò,%s" 5000000
+		MonGenP "Island02,100,130, 8" ¾Û±¦Ïä4 1 %A9
+		goto @MultIslandReward
+	#ELSEACT
+    	LoadValue A0 [Gm_Def\Event\Island\BlanceSetting.txt] [Island_Reword] [Reword1]
+		LoadValue A1 [Gm_Def\Event\Island\BlanceSetting.txt] [Island_Reword] [Reword2]
+		LoadValue A2 [Gm_Def\Event\Island\BlanceSetting.txt] [Island_Reword] [Reword3]
+		FormatStr "noitem,½ð±Ò,%s" %N8
+		MonGenP "Island02,100,130, 8" ¾Û±¦Ïä4 1 %A9
+      FormatStr "noitem,%s,%s," %A0 %A1
+      mov A3 %A9
+      Addstr A3 %A2
+		MonGenP "Island02,100,130, 4" ¾Û±¦Ïä4 1 %A3
+		SaveValue "Flag_Def\Event\Island\Gold.txt" "GOLD" "AddGold" 0
+end
+}

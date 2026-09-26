@@ -1,0 +1,222 @@
+;;海メ盗
+%100
+;armor
++10
++11
+;helmet
++15
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_RedPlayer
+
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_Main_0_0
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour
+青铜头盔         50         1
+魔法头盔         50         1
+道士头盔         50         1
+布衣（男）       50         1
+布衣（女）       50         1
+轻型盔甲（男）   50         1
+轻型盔甲（女）   50         1
+重盔甲（男）     50         1
+重盔甲（女）     50         1
+灵魂战衣（男）   50         1
+灵魂战衣（女）   50         1
+魔法长袍（男）   50         1
+魔法长袍（女）   50         1
+战神盔甲（男）   50         1
+战神盔甲（女）   50         1
+幽灵战衣（男）   50         1
+幽灵战衣（女）   50         1
+恶魔长袍（男）   50         1
+恶魔长袍（女）   50         1
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 498
+#ACT
+goto @TQuest498_0
+break
+;
+#IF
+CheckDailyQuest 475
+#ACT
+goto @TQuest475_0
+break
+;
+#IF
+CheckDailyQuest 311
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 119
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest498_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest498_2
+break
+;
+#ELSEACT
+goto @TQuest498_1
+
+;--------------
+
+[@TQuest498_1]
+#CALL [\QT_TODAY\4thClass.txt] @498_START
+
+[@TQuest498_2]
+#CALL [\QT_TODAY\4thClass.txt] @498_CHECK1
+
+;------------------------
+
+[@TQuest475_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest475_2
+break
+;
+#ELSEACT
+goto @TQuest475_1
+
+;--------------
+
+[@TQuest475_1]
+#CALL [\QT_TODAY\4thClass.txt] @475_START
+
+[@TQuest475_2]
+#CALL [\QT_TODAY\4thClass.txt] @475_CHECK1
+
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @119_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @119_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\03Armor_Mongchon-74.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @311_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @311_CHECK1

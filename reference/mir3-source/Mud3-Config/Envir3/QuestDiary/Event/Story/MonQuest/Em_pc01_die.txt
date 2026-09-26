@@ -1,0 +1,60 @@
+;;海メ盗
+[@pachon_Ending_1]
+#ACT
+Eventmsg Grobal " 呵呵呵呵。。<$USERNAME> ！  怎么有像你这种人。。。霸王教主来临时，你们将会陷入无从逃脱的绝望 " 11
+Delaygoto [Grobal] 7 @pachon_Ending_1_1
+
+[@pachon_Ending_1_1]
+#IF
+checkmonmap 0 1 沃玛教主
+#ELSEACT
+goto @next
+
+[@next]
+#IF
+checkmonmap 0 1 骷髅教主
+#ELSEACT
+Delaygoto [Grobal] 7 @pachon_Ending2
+
+[@pachon_Ending_2]
+#ACT
+Eventmsg Grobal " 哈哈哈哈。。。。。！" 46
+Delaygoto [Grobal] 7 @pachon_Ending_2A
+
+[@pachon_Ending_2A]
+#ACT
+Eventmsg Grobal "嗯。。。沃玛教主已经被 <$USERNAME>杀死了。到底，他是谁呢？。。。" 10151
+Delaygoto [Grobal] 7 @pachon_Ending_2_1
+
+[@pachon_Ending_2_1]
+#IF
+checkmonmap 0 1 霸王守卫
+#ELSEACT
+goto @next1
+[@next1]
+#IF
+checkmonmap 0 1 骷髅教主
+#ELSEACT
+Delaygoto [Grobal] 7 @pachon_Ending2
+
+[@pachon_Ending_3]
+#ACT
+Eventmsg Grobal "<$USERNAME>！等着吧。我会复活的。还有被更大的的恐怖所战战兢兢吧。哈哈哈哈。。。。" 142
+Delaygoto [Grobal] 7 @pachon_Ending_3_1
+
+[@pachon_Ending_3_1]
+#IF
+checkmonmap 0 1 霸王守卫
+#ELSEACT
+Delaygoto [Grobal] 7 @next2
+
+[@next2]
+#IF
+checkmonmap 0 1 沃玛教主
+#ELSEACT
+Delaygoto [Grobal] 7 @pachon_ending2
+
+[@pachon_Ending2]
+#ACT
+SET [790] 0
+EventMsg Grobal " 所有的勇士们，你们辛苦了。大家齐心协力击退了怪物啊。除去这次事态原凶的勇士，请拿好证据去找行政管理员吧。再一次感谢你们辛苦了。" 10431

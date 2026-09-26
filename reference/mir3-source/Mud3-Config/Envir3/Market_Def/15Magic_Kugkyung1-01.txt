@@ -1,0 +1,157 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;-------------------
+
+[@main_0]
+#IF
+checkjob warrior
+#ACT
+BreakTimeRecall 
+goto @yong_main
+#ELSEACT
+BreakTimeRecall 
+goto @yong_other_class
+
+[@yong_other_class]
+#IF
+checkjob wizard
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_Wizard
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_Taoist
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@yong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_Main
+
+[@yong_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_Main_Mugong
+
+
+;------------------------
+
+[@wesu_test_start]
+#IF
+#ACT
+goto @wesu_begin
+break
+[@wesu_begin]
+#CALL [\MU_warrior\wesu.txt] @mugong_wesu
+
+;------------------------
+
+[@yedo_test_start]
+#IF
+check [501] 1
+check [701] 0
+#ACT
+goto @yedo_complete
+break
+#IF
+check [502] 1
+#ACT
+goto @yedo_retry
+break
+#IF
+#ACT
+goto @yedo_begin
+break
+
+[@yedo_begin]
+#CALL [\MU_warrior\wedo.txt] @mugong_yedo
+
+[@yedo_retry]
+#CALL [\MU_warrior\wedo.txt] @mugong_yedo_retry
+
+[@yedo_complete]
+#CALL [\MU_warrior\wedo.txt] @mugong_yedo_complete
+
+;------------------------
+
+[@asword_test_start]
+#IF
+check [504] 1
+check [702] 0
+#ACT
+goto @asword_complete
+break
+#IF
+#ACT
+goto @asword_begin
+
+[@asword_begin]
+#CALL [\MU_warrior\asword.txt] @mugong_asword
+
+[@asword_complete]
+#CALL [\MU_warrior\asword.txt] @mugong_asword_complete
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 572
+#ACT
+goto @TQuest572_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest572_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQUEST1_6
+break
+;
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest572_1
+
+;--------------
+
+[@TQuest572_1]
+;;;;;;#CALL [\QT_TODAY\5thClass.txt] @572_CHECK2
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_def\Market_def\15Magic_Kugkyung1-01.txt] @NPC_TQuest_1
+
+;--------------

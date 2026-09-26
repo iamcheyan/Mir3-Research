@@ -1,0 +1,101 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### E402_001  26,12 ->  E402  63,72    ############
+;#### E402  62,71 ->  E402_001  25,12    ############
+;-----------------------------------------------------
+#IF
+check [248] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [247] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [229] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_3
+
+#ACT
+enter_fail
+break
+
+#IF
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_4
+
+#ACT
+enter_fail
+break
+
+#IF
+check [227] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_5
+
+#ACT
+enter_fail
+set [223] 1
+set [225] 0
+set [226] 1
+set [227] 0
+break
+
+#IF
+check [225] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_6
+
+#ACT
+enter_fail
+set [223] 1
+set [225] 0
+set [226] 1
+set [227] 0
+break
+
+#IF
+check [224] 1
+#ACT
+set [225] 1
+set [224] 0
+break
+;
+#IF
+check [223] 1
+#ACT
+goto @enterh_yk
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_7
+
+#ELSEACT
+enter_fail
+
+;-----------------------------------------------------
+
+[@enterh_yk]
+#IF
+checkhum E402_001 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomConnSujun.txt] @Na_RoomConnSujun_8
+
+#ACT
+enter_fail
+#ELSEACT
+Monclear E402_001
+set [224] 1
+enter_ok

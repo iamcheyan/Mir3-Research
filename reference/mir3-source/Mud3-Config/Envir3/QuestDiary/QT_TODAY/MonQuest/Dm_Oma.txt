@@ -1,0 +1,112 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 440
+#ACT
+goto @oma_T440
+break
+;
+#IF
+CheckDailyQuest 417
+#ACT
+goto @Oma_T417
+break
+;
+
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@Oma_T417]
+#IF
+check [310] 1
+#ACT
+break
+;
+
+#IF
+check [308] 1
+#ACT
+break
+;
+
+#IF
+check [307] 1
+#ACT
+goto @Oma_T417_1
+break
+;
+
+#ELSEACT
+break
+
+[@Oma_T417_1]
+#IF
+checkitem °ëÊÞÀû³Ý 9
+#ACT
+set [308] 1
+give °ëÊÞÀû³Ý 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T417_Say
+
+#ELSEACT
+goto @Oma_T417_2
+
+[@Oma_T417_2]
+#IF
+Random 3
+#ACT
+give °ëÊÞÀû³Ý 1
+
+
+
+[@oma_T440]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+;#IF
+;check [309] 1
+;#ACT
+;break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @oma_T440_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@oma_T440_1]
+#IF
+checkitem °ëÊÞÀû³Ý 9
+#ACT
+give °ëÊÞÀû³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T440_Say_1
+
+#ELSEACT
+goto @oma_T440_2
+
+[@oma_T440_2]
+#IF
+random 3
+#ACT
+give °ëÊÞÀû³Ý 1
+;-----------------------------------------------------

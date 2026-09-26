@@ -1,0 +1,16 @@
+;;º£¥áµÁ
+[@main]
+#IF
+check [720] 1
+#ACT
+break
+#IF
+check [504] 0
+#ACT
+break
+#IF
+#ACT
+goto @next1
+break
+[@next1]
+#CALL [\MU_taoist\soulSkel.txt] @mugong_recallskel_test_skel2

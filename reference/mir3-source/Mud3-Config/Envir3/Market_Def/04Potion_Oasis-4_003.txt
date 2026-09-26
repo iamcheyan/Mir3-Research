@@ -1,0 +1,229 @@
+;;海メ盗
+%100
++0
++3
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_Main
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_Sell
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（中）   1000       1
+魔法药（中）   1000       1
+金创药（大）   1000       1
+魔法药（大）   1000       1
+金创药（特）   1000       1
+魔法药（特）   1000       1
+太阳水          200       1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 550
+#ACT
+goto @TQuest5_0
+break
+;
+#IF
+CheckDailyQuest 549
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 419
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 336
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 226
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @226_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @226_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Oasis-4_003.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @336_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @336_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\4thClass.txt] @419_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\4thClass.txt] @419_CHECK1
+
+;------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @549_START
+
+[@TQuest4_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @549_CHECK1
+
+;------------------------
+
+[@TQuest5_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest5_2
+break
+;
+#ELSEACT
+goto @TQuest5_1
+
+;--------------
+
+[@TQuest5_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @550_START
+
+[@TQuest5_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @550_CHECK1
+
+;------------------------

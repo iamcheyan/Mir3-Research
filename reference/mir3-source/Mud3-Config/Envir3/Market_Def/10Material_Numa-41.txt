@@ -1,0 +1,28 @@
+;;海メ盗
+%100
++52
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Numa-41.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main0
+
+
+[@main0]
+#IF
+#SAY
+如果有蚂蚁卵或骷髅骨之类的材料请卖给我. \
+<[卖材料]/@sell> \
+<[回比齐]/@back0>\
+<[关  闭]/@exit>
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Numa-41.txt] @NPC_Sell
+
+[@back0]
+#ACT
+mapmove 0 400 380

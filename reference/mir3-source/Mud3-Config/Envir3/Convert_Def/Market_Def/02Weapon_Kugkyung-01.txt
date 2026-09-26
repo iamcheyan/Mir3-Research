@@ -1,0 +1,84 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+我不想和你这种坏人做生意。\ \
+ <结束/@exit>
+}
+
+[@NPC_Main_0_0]
+{
+欢迎光临，感谢光临。\ \
+<购买/@buy>武器\
+<出售/@sell>武器\
+<修理/@pre_repair>武器\
+<特殊修理/@Special_Repair(1)>武器\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_0_1]
+{
+欢迎光临，感谢光临。\ \
+<购买/@buy>武器\
+<出售/@sell>武器\
+<修理/@pre_repair>武器\
+<特殊修理/@Special_Repair(1)>武器\
+<递给/@NQuest01_1>{FCOLOR/10}肉汤{FCOLOR/12}\ 
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_0_2]
+{
+欢迎光临，感谢光临。\ \
+<购买/@buy>武器\
+<出售/@sell>武器\
+<修理/@pre_repair>武器\
+<特殊修理/@Special_Repair(1)>武器\
+<谈论/@NQuest01_2>{FCOLOR/10}肉店金老板{FCOLOR/12}\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Buy]
+{
+请选择要购买的武器。\ \
+ <前一步/@main>
+}
+
+[@NPC_Sell]
+{
+请把要出售的武器抬上来。\ \
+ <前一步/@main>
+}
+
+[@NPC_Repair]
+{
+你要修理武器？请把你要修理的东西抬上来。\ \
+ <前一步/@main>
+}
+
+[@NPC_Repair_Complete]
+{
+修得不错，我下次再来。\ \
+ <前一步/@main>
+}
+
+[@NPC_Pre_Repair]
+{
+请把要修理的武器放上去。\ \
+<修理/@repair>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}
+

@@ -1,0 +1,166 @@
+;;º£¥áµÁ
+%100
+;meterial
++52
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_root
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Oasis-4.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Oasis-4.txt] @NPC_Main
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Oasis-4.txt] @NPC_Sell
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Event Block
+;;------------------------------------------------------------------------------
+
+;;[@Event1115]
+;;#CALL [\Event\02_11_15_Event.txt] @change_event
+
+;;[@Event1105]
+;;#CALL [\Event\02_11_05_Event.txt] @Event_main
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+
+[@TQuest]
+#IF
+CheckDailyQuest 453
+#ACT
+goto @TQuest_453
+break
+;
+#IF
+CheckDailyQuest 340
+#ACT
+goto @TQuest1_0
+break
+;
+#IF
+CheckDailyQuest 230
+#ACT
+goto @TQuest2_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Oasis-4.txt] @NPC_TQuest
+
+;------------------------
+[@TQuest_453]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest_453_2
+break
+;
+#ELSEACT
+goto @TQuest_453_1
+
+[@TQuest_453_1]
+#CALL [\QT_TODAY\4thClass.txt] @453_START
+
+[@TQuest_453_2]
+#CALL [\QT_TODAY\4thClass.txt] @453_CHECK1
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @340_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @340_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\10Material_Oasis-4.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\2ndClass.txt] @230_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\2ndClass.txt] @230_CHECK1
+
+;------------------------

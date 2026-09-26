@@ -1,0 +1,171 @@
+;;海メ盗
+[@Siyak_1]
+{
+那，你想做什么药啊？有时侯难免会遇到失败，所以要留意啊。 \ \
+ <金创药（小）/@Make_Potion_HPPotionS>     ,   <魔法药（小）/@Make_Potion_MPPotionS>\
+<金创药（中）/@Make_Potion_HPPotionM>     ,   <魔法药（中）/@Make_Potion_MPPotionM>\
+<金创药（大）/@Make_Potion_HPPotionL>     ,   <魔法药（大）/@Make_Potion_MPPotionL>\
+<金创药（特）/@Make_Potion_HPPotionXL>     ,   <魔法药（特）/@Make_Potion_MPPotionXL>\ \
+<前一步/@make_item_main> \
+<结束/@exit>
+}
+
+[@Siyak_2]
+{
+做的很好啊。。。消磨了烧酒 1瓶，毒蛇胆汁 6个啊。那么想继续做吗 ?\ \
+<继续 制作/@Make_Potion_HPPotionS> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_3]
+{
+要制作金创药（小）的话，需要10个当毒蛇胆汁 6个，烧酒 1瓶啊。\ \
+<结束/@exit>
+}
+
+[@Siyak_4]
+{
+要制作金创药（中）的话，需要10个当烧酒 1瓶，骷髅骨 10个啊。\ \
+<结束/@exit>
+}
+
+[@Siyak_5]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_HPPotionM> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_6]
+{
+做的很好啊。。。消磨了烧酒 1瓶，毒蛇胆汁 10个啊。那么想继续做吗  ?\ \
+ <继续 制作/@Make_Potion_HPPotionM> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_7]
+{
+要制作金创药（大）的话，需要10个当牙齿 3个，烧酒 2瓶，蚂蚁卵 3个啊。\ \
+ <结束/@exit>
+}
+
+[@Siyak_8]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_HPPotionL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_9]
+{
+做的很好啊。。。消磨了牙齿 3个，烧酒 2瓶，蚂蚁卵 3个啊。那么想继续做吗？ \
+<继续 制作/@Make_Potion_HPPotionL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_10]
+{
+要制作金创药（特）的话，需要10个当夜明珠 3个，烧酒 3瓶，神灵雕像 3个，潘夜之泪 4个啊。\ \
+ <结束/@exit>
+}
+
+[@Siyak_11]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_HPPotionXL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_12]
+{
+做的很好啊。。。消磨了夜明珠 3个，烧酒 3瓶，神灵雕像 3个，潘夜之泪 4个啊。那么想继续做吗？?\ \
+<继续 制作/@Make_Potion_HPPotionXL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_13]
+{
+做的很好啊。。。消磨了骷髅骨 3个，烧酒 1瓶啊。那么想继续做吗?\ \
+<继续 制作/@Make_Potion_MPPotionS> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_14]
+{
+要制作魔法药（小）的话，需要10个当骷髅骨 3个，烧酒 1瓶啊。\ \
+<结束/@exit>
+}
+
+[@Siyak_15]
+{
+要制作魔法药（中）的话，需要10个当僵尸骨头 5个，烧酒 1瓶啊。\ \
+<结束/@exit>
+}
+
+[@Siyak_16]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_MPPotionM> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_17]
+{
+做的很好啊。。。消磨了僵尸骨头 5个，烧酒 1瓶啊。那么想继续做吗?\ \
+<继续 制作/@Make_Potion_MPPotionM> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_18]
+{
+要制作魔法药（大）的话，需要10个当号角 3个，烧酒 2瓶，牙齿 3个啊\ \
+ <结束/@exit>
+}
+
+[@Siyak_19]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_MPPotionL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_20]
+{
+做的很好啊。。。消磨了号角 3个，烧酒 2瓶，牙齿 3个啊。那么想继续做吗??\ \
+<继续 制作/@Make_Potion_MPPotionL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_21]
+{
+要制作魔法药（特）的话，需要10个当烧酒 3瓶， 神灵雕像 4个，宝玉 6个啊。\ \
+ <结束/@exit>
+}
+
+[@Siyak_22]
+{
+哎， 失败了。重新试一下看看。\ \
+<继续 制作/@Make_Potion_MPPotionXL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
+
+[@Siyak_23]
+{
+做的很好啊。。。消磨了烧酒 3瓶， 神灵雕像 4个， 宝玉 6个啊。那么想继续做吗?\ \
+<继续 制作/@Make_Potion_MPPotionXL> \
+<前一步/@make_Potion_main> \
+<结束/@exit>
+}
