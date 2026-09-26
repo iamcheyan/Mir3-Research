@@ -276,8 +276,8 @@ E-db	Source/DataBaseServer/DBSvr/netloginserver.h	48	896	pending
 E-db	Source/DataBaseServer/DBSvr/netrungate.cpp	1137	25967	covered	Round 802 分派表 4 条
 E-db	Source/DataBaseServer/DBSvr/netrungate.h	83	1713	pending	
 E-db	Source/DataBaseServer/DBSvr/protocol.h	112	3655	covered	Round 803 opcode 表
-E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	pending	Round 820: 表定义（System.db 上游），未读
-E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	pending	
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	covered	Round 828: 11张表/165字段全提取(MIRDB_FIELDS四元组)+七元素体系+主键；tablesdefine.h待读
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	pending	Round 828: 表定义声明，未读
 E-db	Source/DataBaseServer/DBSvr/Res/resource.h	38	1471	pending	
 E-db	Source/DataBaseServer/Common/endecode.cpp	382	11764	pending	
 E-db	Source/DataBaseServer/Common/endecode.h	87	2085	pending	

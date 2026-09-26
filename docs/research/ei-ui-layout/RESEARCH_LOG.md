@@ -11387,3 +11387,59 @@ AGENTS.md §七.5 记录的「实体坐标 ×48/32 换算成像素」**与源码
 
 **落盘**：`items-systems.md` §11（约 120 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 828 (全量精读续) — 2026-09-26：SQL 表定义（`System.db` 上游）
+
+> `Source/DataBaseServer/DBSvr/tablesdefine.cpp`（595 行）。产物
+> `tools-and-servers.md` §6、`sql-tables.tsv`（165 字段）、
+> `Tools/source-read/extract_sql_tables.py`。
+
+**〔定义格式〕**`MIRDB_FIELDS __XXXFIELDS[] = { { "FLD_NAME", TABLETYPE_XXX,
+is_primary, size }, ... }` + `MIRDB_TABLE __XXXTABLE = { "TBL_XXX",
+sizeof(...)/sizeof(MIRDB_FIELDS), __XXXFIELDS }`。**四元组**：
+字段名 / 类型（`STR`/`INT`/`DAT`）/ **是否主键** / 大小。
+
+**〔11 张表 / 165 字段（完整见 `sql-tables.tsv`）〕**
+| 数组 | SQL 表名 | 字段 | 主键 |
+|---|---|---:|---|
+| `__CHARACTERFIELDS` | `TBL_CHARACTER` | **41** | `FLD_USERID` |
+| `__ABILITYFIELDS` | `TBL_ABILITY` | **33** | — |
+| `__ITEMFIELDS` | `TBL_ITEM` | 24 | **`FLD_TYPE`** |
+| `__SAVEDITEMFIELDS` | `TBL_SAVEDITEM` | 23 | — |
+| `__BONUSABILITYFIELDS` | `TBL_BONUSABILITY` | 10 | — |
+| `__CURRENTABILITYFIELDS` | `TBL_CURRENTABILITY` | 10 | — |
+| `__ITEMGIVEFIELDS` | `TBL_ITEMGIVE` | 9 | **三主键** `SERVER`+`CHARACTER`+`DONE` |
+| `__MAGICFIELDS` | `TBL_MAGIC` | 5 | — |
+| `__CHAR_INFOFIELDS` | `TBL_CHAR_INFO` | 4 | `FLD_CHARACTER` |
+| `__QUESTFIELDS` | `TBL_QUEST` | 3 | — |
+| `__SKILLFIELDS` | `TBL_SKILL` | 3 | — |
+
+**〔关键字段组〕**
+**`TBL_ABILITY`（33 字段）= 角色能力值全集**：基础（`LEVEL`/`AC`/`MAC`/`DC`/`MC`/
+`SC`/`HP`/`MP`/`MAXHP`/`MAXMP`/`EXP`/`MAXEXP`）+ **重量三组**
+（`WEIGHT`/`MAXWEIGHT`、`WEARWEIGHT`/`MAXWEARWEIGHT`、`HANDWEIGHT`/`MAXHANDWEIGHT`）
++ **七元素 ×2 套**（`ATOM` + `FIRE/ICE/LIGHT/WIND/HOLY/DARK/PHANTOM` 各带
+`_MC` 与 `_MAC`，已核实共 **14 个 ATOM 字段**）。
+→ **七元素（火/冰/雷/风/圣/暗/幻）是 Mir3 的属性体系**，`ATOM` 前缀即「元素」。
+
+**`TBL_CHARACTER`（41 字段，最多）** 主键 `FLD_USERID`，含 `FLD_DELETED`
+（软删除）/`FLD_UPDATEDATETIME`/`FLD_DBVERSION`（对应 `TCreature.DBVersion`，
+`server.md` §2.1）/`FLD_MAPNAME`/`CX`/`CY`/`DIR`。
+
+**`TBL_ITEM` 主键是 `FLD_TYPE`**（类型而非唯一 ID）→ 说明是**按类型索引的物品表**
+（可能是模板表而非实例表）。
+
+**`TBL_ITEMGIVE` 三主键**（`SERVER`+`CHARACTER`+`DONE`）→ **跨服发奖表**
+（`SERVER` 字段说明分服共享）。
+
+**`FLD_RESERVED`/`FLD_RESERVED1` 被注释掉**（`:15`）—— 版本演进痕迹。
+
+**〔⚠️ 重要边界〕**`System.db` 是**世界静态数据**（`ItemInfo`/`MonsterInfo`/
+`MagicInfo`/`MapInfo`/`NPCInfo`），而 `tablesdefine.cpp` 定义的是
+**玩家存档表**（`TBL_CHARACTER`/`TBL_ABILITY`/`TBL_SAVEDITEM`…）。
+**两者不是同一批数据** —— 玩家数据在 `Users.db` 一侧。
+→ 本节的表结构对**理解 `Users.db`** 更有价值，对 `System.db` 是间接参考。
+
+**落盘**：`tools-and-servers.md` §6（约 105 行）、`sql-tables.tsv`（165 行）、
+`Tools/source-read/extract_sql_tables.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

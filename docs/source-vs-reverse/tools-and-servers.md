@@ -228,3 +228,96 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 | `mir2packet.cpp` / `endecode.cpp`（C++ 线格式） | 未读 —— 可与 `EDCode.pas` 交叉验证 |
 | `tablesdefine.cpp` 的表定义 | 未读 |
 | `//*` 标记的语义（必填？） | 无接收端可对照 |
+
+---
+
+## 6. SQL 表定义（`tablesdefine.cpp`）—— **`System.db` 的上游**（Round 828）
+
+> `Source/DataBaseServer/DBSvr/tablesdefine.cpp`（595 行）。
+> 机器可读：[`sql-tables.tsv`](sql-tables.tsv)（165 字段）。
+> 提取器：`Tools/source-read/extract_sql_tables.py`。
+
+### 6.1 定义格式
+
+```cpp
+MIRDB_FIELDS __ABILITYFIELDS[] = {
+   { "FLD_CHARACTER", TABLETYPE_STR, true,  20 },   // 名 / 类型 / 是否主键 / 大小
+   { "FLD_LEVEL",     TABLETYPE_INT, false,  4 },
+   ...
+};
+
+MIRDB_TABLE __ABILITYTABLE = { "TBL_ABILITY",
+      sizeof(__ABILITYFIELDS)/sizeof(MIRDB_FIELDS), __ABILITYFIELDS };
+```
+
+**四元组**：字段名 / 类型（`TABLETYPE_STR`/`INT`/`DAT`）/ **是否主键** / 大小。
+表名在 `MIRDB_TABLE` 里绑定到字段数组。
+
+### 6.2 **11 张表 / 165 字段**（完整表见 `sql-tables.tsv`）
+
+| 数组 | SQL 表名 | 字段数 | 主键 |
+|---|---|---:|---|
+| `__CHARACTERFIELDS` | `TBL_CHARACTER` | **41** | `FLD_USERID` |
+| `__ABILITYFIELDS` | `TBL_ABILITY` | **33** | — |
+| `__ITEMFIELDS` | `TBL_ITEM` | 24 | `FLD_TYPE` |
+| `__SAVEDITEMFIELDS` | `TBL_SAVEDITEM` | 23 | — |
+| `__BONUSABILITYFIELDS` | `TBL_BONUSABILITY` | 10 | — |
+| `__CURRENTABILITYFIELDS` | `TBL_CURRENTABILITY` | 10 | — |
+| `__ITEMGIVEFIELDS` | `TBL_ITEMGIVE` | 9 | **三主键**：`FLD_SERVER`+`FLD_CHARACTER`+`FLD_DONE` |
+| `__MAGICFIELDS` | `TBL_MAGIC` | 5 | — |
+| `__CHAR_INFOFIELDS` | `TBL_CHAR_INFO` | 4 | `FLD_CHARACTER` |
+| `__QUESTFIELDS` | `TBL_QUEST` | 3 | — |
+| `__SKILLFIELDS` | `TBL_SKILL` | 3 | — |
+
+### 6.3 关键字段组
+
+**`TBL_ABILITY`（33 字段）** —— **角色能力值全集**：
+基础（`FLD_LEVEL`/`AC`/`MAC`/`DC`/`MC`/`SC`/`HP`/`MP`/`MAXHP`/`MAXMP`/`EXP`/`MAXEXP`）
++ **重量三组**（`WEIGHT`/`MAXWEIGHT`、`WEARWEIGHT`/`MAXWEARWEIGHT`、
+`HANDWEIGHT`/`MAXHANDWEIGHT`）
++ **七元素抗性 ×2 套**（`ATOMFIRE/ICE/LIGHT/WIND/HOLY/DARK/PHANTOM` 各 `_MC` 与 `_MAC`）。
+
+> **七元素**（火/冰/雷/风/圣/暗/幻）是 Mir3 的属性体系 ——
+> **`ATOM` 前缀即「元素」**，`_MC` 与 `_MAC` 是两套（魔攻/魔防？）。
+
+**`TBL_CHARACTER`（41 字段，最多）** —— 角色主表，主键 `FLD_USERID`。
+含 `FLD_DELETED`（软删除标记）/`FLD_UPDATEDATETIME`/`FLD_DBVERSION`
+（对应 `TCreature.DBVersion`，`server.md` §2.1）/`FLD_MAPNAME`/`CX`/`CY`/`DIR`。
+
+**`TBL_ITEM`（24 字段）** 主键 **`FLD_TYPE`** —— 注意主键是**类型**而非唯一 ID，
+说明是**按类型索引的物品表**（可能是模板表而非实例表）。
+
+**`TBL_ITEMGIVE`（9 字段）三主键** `FLD_SERVER`+`FLD_CHARACTER`+`FLD_DONE`
+—— **跨服发奖表**（`SERVER` 字段说明是分服共享的）。
+
+**`FLD_RESERVED`/`FLD_RESERVED1` 被注释掉**（`:15`）—— 版本演进痕迹。
+
+### 6.4 与 `System.db` 的关系
+
+`reference/mir3-source/README.md` §3.7 记录的链路：
+
+```
+GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000
+                                                      ↓
+                                            System.db 的上游
+```
+
+**本节给出的是这条链路的表结构** —— 即 `System.db` 里**玩家相关数据**
+（角色/能力/物品/技能/任务）的**上游 SQL 定义**。
+
+> ⚠️ **注意边界**：`System.db` 是**世界静态数据**（`ItemInfo`/`MonsterInfo`/
+> `MagicInfo`/`MapInfo`/`NPCInfo`），而 `tablesdefine.cpp` 定义的是
+> **玩家存档表**（`TBL_CHARACTER`/`TBL_ABILITY`/`TBL_SAVEDITEM`…）。
+> **两者不是同一批数据** —— 玩家数据在 `Users.db` 一侧。
+> 本节的表结构对**理解 `Users.db`** 更有价值，对 `System.db` 是间接参考。
+
+### 6.5 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `tablesdefine.h`（声明） | 未读 |
+| `TABLETYPE_*` 的完整枚举 | 只见到 `STR`/`INT`/`DAT` |
+| 各表的**完整字段清单与顺序** | 见 `sql-tables.tsv`（已提取） |
+| `TBL_QUEST`（3 字段）与 `QuestInfo` 的关系 | 未核 |
+| `ATOM*_MC` vs `ATOM*_MAC` 的语义差别 | 未追（疑魔攻/魔防） |
+| 这些表与 `Users.db` 的实际对应 | 需读 `Users.db` 侧（超出本 Goal） |
