@@ -471,6 +471,42 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #resp-panel .resp-xy { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
         #resp-panel .resp-empty { color:#6a6a75; }
         #resp-panel::-webkit-scrollbar { width:8px; } #resp-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
+        #unknown-npc-panel, #unknown-monster-panel { position:static; width:300px; max-height:30vh;
+            overflow:auto; flex-shrink:1; background:rgba(10,12,16,.95); border-radius:6px;
+            padding:8px 10px; font-size:12px; color:#c8c8d2; display:none; line-height:1.4; }
+        #unknown-npc-panel { border:1px solid #72d6ff; }
+        #unknown-monster-panel { border:1px solid #ff7caa; }
+        #unknown-npc-panel h4, #unknown-monster-panel h4 { margin:0 0 5px; font-size:13px; }
+        #unknown-npc-panel h4 { color:#72d6ff; } #unknown-monster-panel h4 { color:#ff7caa; }
+        .unknown-filter { width:100%; box-sizing:border-box; margin:3px 0; padding:4px 6px;
+            background:#1b1d24; color:#eee; border:1px solid #424653; border-radius:3px; }
+        .unknown-row { display:flex; gap:5px; align-items:flex-start; padding:4px 2px;
+            border-top:1px solid #252832; cursor:grab; }
+        .unknown-row:hover { background:#252d3a; }
+        .unknown-row.conflict { border-left:3px solid #ff9b6b; }
+        .unknown-row.placed { opacity:.75; border-left:3px dashed #3de88a; }
+        .unknown-row .unknown-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+        .unknown-row .unknown-meta { color:#9ba5b5; font:10px ui-monospace,monospace; white-space:nowrap; }
+        .unknown-row .unknown-reason { display:block; color:#ffb48e; font-size:10px; white-space:normal; }
+        .unknown-row .unknown-source { color:#6a7280; font-size:10px; }
+        #unknown-place-panel { position:fixed; left:50%; bottom:50px; transform:translateX(-50%);
+            width:360px; max-width:calc(100vw - 24px); display:none; z-index:180;
+            background:rgba(15,19,28,.97); border:1px solid #ffd54a; border-radius:7px;
+            padding:10px; color:#e8e8f0; box-shadow:0 8px 28px #000; font-size:12px; }
+        #unknown-place-panel .place-head { color:#ffd54a; font-weight:700; margin-bottom:5px; }
+        #unknown-place-panel .place-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+        #unknown-place-panel input, #unknown-place-panel textarea { width:100%; box-sizing:border-box;
+            background:#20242d; color:#fff; border:1px solid #4b5360; border-radius:3px; padding:4px; }
+        #unknown-place-panel textarea { grid-column:1/-1; resize:vertical; }
+        #unknown-place-panel .place-actions { display:flex; justify-content:flex-end; gap:6px; margin-top:7px; }
+        #unknown-place-panel .place-coord { color:#8cf; font:12px ui-monospace,monospace; }
+        #unknown-ghost { position:absolute; z-index:20; width:42px; height:28px; transform:translate(-50%,-50%);
+            pointer-events:none; border:2px dashed #72d6ff; background:rgba(114,214,255,.22); }
+        #unknown-ghost.monster { border-color:#ff7caa; background:rgba(255,124,170,.22); }
+        #unknown-crosshair { position:absolute; z-index:19; width:48px; height:32px; pointer-events:none;
+            box-sizing:border-box; border:1px solid rgba(255,213,74,.9); background:rgba(255,213,74,.08); }
+        #ent-layer .ent.unknown_npc { opacity:.72; border:1px dashed #72d6ff; }
+        #ent-layer .ent.unknown_npc .ent-label { color:#72d6ff; }
         #info { font-size:12px; color:#aaa; white-space:nowrap; }
         #status { margin-left:auto; font-size:12px; color:#e90; white-space:nowrap; }
         button { font-size:14px; min-width:32px; padding:4px 9px; white-space:nowrap; cursor:pointer; background:#333; color:#eee; border:1px solid #555; border-radius:3px; }
@@ -641,7 +677,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #graph-view svg { display:block; }
         #graph-stats { font-size:12px; color:#8a8a98; margin-bottom:6px; }
         #graph-stats b { color:#e8e8f0; }
-        #graph-stats .g-isl { color:#ff5b5b; } #graph-stats .g-cut { color:#ffd54a; }
         .gnode { cursor:pointer; } .gnode text { font-size:9px; fill:#9a9aa5; paint-order:stroke; stroke:#0b0b0f; stroke-width:2px; }
         #legend-panel .lg-block { display:inline-block; width:14px; height:9px; border-radius:2px; margin-right:6px; vertical-align:middle; }
         /* ---- 移动端共享壳接入（桌面 fine-pointer/宽屏零影响，Goal MAP-P0-01） ---- */
@@ -677,7 +712,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             #cat-panel, #conn-panel, #quest-panel, #legend-panel, #pick-panel, #statusbar {
                 max-width:calc(100vw - 20px); }
             #right-panels { left:8px; right:8px; top:auto; bottom:calc(60px + var(--safe-bottom,0px)); max-height:40dvh; }
-            #npc-panel, #resp-panel { width:auto; }
+            #npc-panel, #resp-panel, #unknown-npc-panel, #unknown-monster-panel { width:auto; max-height:22dvh; }
             #legend-panel{ bottom:calc(60px + var(--safe-bottom,0px)); }
             #pick-panel  { bottom:calc(60px + var(--safe-bottom,0px)); }
             #conn-panel  { top:calc(52px + var(--safe-top,0px)); }
@@ -772,10 +807,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div id="ov-filters">
             <span style="color:#8a8a98;">📋 全库地图总览</span>
             <span class="ov-chip active" data-f="all">全部</span>
-            <span class="ov-chip" data-f="town">城镇</span>
-            <span class="ov-chip" data-f="cave">洞穴</span>
-            <span class="ov-chip" data-f="boss">👑 BOSS</span>
-            <span class="ov-chip" data-f="hasmob">有怪</span>
             <span class="ov-chip active" data-c="lvl">按等级染色</span>
             <span class="ov-chip" data-c="npc">按 NPC 数染色</span>
         </div>
@@ -789,9 +820,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div id="cat-panel"></div>
     <div id="conn-panel"></div>
     <div id="right-panels">
+        <div id="unknown-monster-panel"></div>
+        <div id="unknown-npc-panel"></div>
         <div id="resp-panel"></div>
         <div id="npc-panel"></div>
     </div>
+    <div id="unknown-place-panel"></div>
     <div id="minimap">
         <div class="mm-title">全图</div>
         <div id="mm-box"><img id="mm-img" draggable="false" alt=""><div id="mm-rect" style="display:none"></div></div>
@@ -1309,8 +1343,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         tail + `</div>`;
                 }
             }
-            panel.innerHTML = html;
-            panel.style.display = "block";
             panel.querySelectorAll(".conn-row.link").forEach(row => {
                 row.addEventListener("click", () => {
                     if (row.dataset.lx != null) {
@@ -1335,15 +1367,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         let entCache = {};
         function entColor(kind, name) {
             if (kind === "spawn") return "#ffd54a";
+            if (kind === "unknown_npc") return "#72d6ff";
+            if (kind === "unknown_monster" || kind === "unknown_monster_placement") return "#ff7caa";
             if (kind === "monster") return "#ff6b6b";
             if (kind === "guard") return "#ff9b3d";
             const n = name || "";
-            // merchant / storage / function NPC -> green, else blue
             if (/仓|商|卖|买|功能|保管|商店|铺|店/.test(n)) return "#7CFF7C";
             return "#8cf";
         }
         function entShape(kind) {
-            if (kind === "monster") return "border-radius:2px;";
+            if (kind === "monster" || kind === "unknown_monster" || kind === "unknown_monster_placement") return "border-radius:2px;";
+            if (kind === "unknown_npc") return "border-radius:2px;border:1px dashed #72d6ff;";
             return "border-radius:50%;";
         }
         function drawEntities() {
@@ -1356,20 +1390,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             entLayer.style.top = "0px";
             entLayer.style.width = vp.clientWidth + "px";
             entLayer.style.height = vp.clientHeight + "px";
-            // 内容坐标（cell*48/s）：ent-layer 随 #viewport 内容滚动，减 scrollLeft 会双重偏移
             const vw = vp.clientWidth, vh = vp.clientHeight;
             const sl = vp.scrollLeft, st = vp.scrollTop;
             const hlName = window.__hlName || null;
             entLayer.innerHTML = ents.map(e => {
                 const px = Number(e.x) * 48 / s;
                 const py = Number(e.y) * 32 / s;
-                // wide culling: entities are few, keep visible beyond viewport edges
                 if (px < sl - 200 || py < st - 200 || px > sl + vw + 200 || py > st + vh + 200) return "";
                 const kind = e.kind || "npc";
                 const color = entColor(kind, e.name);
                 const shape = entShape(kind);
                 const label = e.name || "";
-                const d = e.drops ? ` · 掉落 ${e.drops.length} 种` : "";
                 const hlCls = (hlName && e.name === hlName) ? " target" : "";
                 let icon = `<span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
                 if (kind === "npc" && e.img != null) {
@@ -1379,7 +1410,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
                 }
                 if (kind === "guard" && e.lib && e.frame != null) {
-                    // 卫士：帧已按朝向算好（shape*1000 + 10*dir），库由服务端给出
                     icon = `<img class="ent-sprite" src="/sprite?lib=${encodeURIComponent(e.lib)}&frame=${e.frame}" alt="" style="zoom:${1 / s}"` +
                         ` onerror="this.style.display='none';this.nextElementSibling.classList.remove('hide')">` +
                         `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
@@ -1388,6 +1418,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     (e.npc_index != null ? ` data-npc="${e.npc_index}"` : '') +
                     (e.region != null ? ` data-region="${e.region}"` : '') +
                     (e.guard_index != null ? ` data-guard="${e.guard_index}"` : '') +
+                    (e.placement_id ? ` data-placement="${e.placement_id}"` : '') +
                     ` style="left:${px}px;top:${py}px">${icon}<span class="ent-label">${label}</span></div>`;
             }).join("");
         }
@@ -1409,7 +1440,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const d = await res.json();
                 entCache[mi.name] = d.ok ? d.entities : [];
             } catch (e) { entCache[mi.name] = []; }
-            // 首次打开且用户未指定视点时，默认居中到 NPC/出生点质心（城镇区），
+            try {
+                const ur = await fetch("/api/unknown-entities");
+                const ud = await ur.json();
+                window.__unknownDoc = ud.ok ? ud : {unknown_npcs: [], unknown_monsters: [], placements: []};
+                setTimeout(() => { try { renderUnknownPanels(); } catch (e) { console.error("unknown panel render", e); } }, 0);
+                const stem = mi.name.replace(/\\.map$/i, "");
+                const placed = (window.__unknownDoc.placements || [])
+                    .filter(p => p.status === "user-placed" && p.map === stem)
+                    .map(p => ({kind: "unknown_monster_placement", name: `候选怪物 #${p.monster_index}`,
+                        x: p.x, y: p.y, placement_id: p.placement_id, monster_index: p.monster_index,
+                        count: p.count, unknown: true}));
+                entCache[mi.name] = [...(entCache[mi.name] || []), ...placed];
+            } catch (e) {
+                window.__unknownDoc = {unknown_npcs: [], unknown_monsters: [], placements: []};
+            }
             // 而不是地图几何中心（大图中心常是无人区，NPC 标记全在视口外）。
             if (!window.__userAnchor && entCache[mi.name] && entCache[mi.name].length) {
                 let sx = 0, sy = 0, n = 0;
@@ -3433,5 +3478,238 @@ EDIT_UI_JS = r"""
         }
         // ========================== NPC 摆放结束 ==========================
 
-        // ========================== 编辑模式结束 ==========================
+        // ===================== 未知实体人工安置 =====================
+        let unknownDoc = window.__unknownDoc || {unknown_npcs: [], unknown_monsters: [], placements: []};
+        let unknownDrag = null, unknownPending = null, unknownGhost = null, unknownCross = null;
+
+        const unknownEsc = v => String(v == null ? "" : v).replace(/[&<>"]/g, c =>
+            ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+        const unknownStem = () => String(curName || "").replace(/\.map$/i, "");
+        function unknownRows(kind) {
+            const p = kind === "npc" ? document.getElementById("unknown-npc-panel")
+                : document.getElementById("unknown-monster-panel");
+            if (!p) return [];
+            const doc = window.__unknownDoc || unknownDoc;
+            const q = (p.querySelector(".unknown-q")?.value || "").trim().toLowerCase();
+            const st = (p.querySelector(".unknown-status")?.value || "").trim().toLowerCase();
+            const cf = (p.querySelector(".unknown-confidence")?.value || "").trim().toLowerCase();
+            const mp = (p.querySelector(".unknown-map")?.value || "").trim().toLowerCase();
+            const rows = kind === "npc" ? (doc.unknown_npcs || []) : (doc.unknown_monsters || []);
+            return rows.filter(r => {
+                const text = [r.name, r.name_en, r.internal_name, r.website_name, r.reason,
+                    r.status, r.confidence].join(" ").toLowerCase();
+                const maps = [r.current_map, ...(r.current_maps || [])].join(" ").toLowerCase();
+                return (!q || text.includes(q)) && (!st || String(r.status).toLowerCase() === st) &&
+                    (!cf || String(r.confidence).toLowerCase() === cf) && (!mp || maps.includes(mp));
+            });
+        }
+        function unknownSourceName(path) {
+            const s = String(path || "").split(/[\\/]/).pop();
+            return s || "对齐 manifest";
+        }
+        function renderUnknownPanel(kind) {
+            const id = kind === "npc" ? "unknown-npc-panel" : "unknown-monster-panel";
+            const p = document.getElementById(id);
+            const doc = window.__unknownDoc || unknownDoc;
+            const all = kind === "npc" ? (doc.unknown_npcs || []) : (doc.unknown_monsters || []);
+            const rows = unknownRows(kind);
+            const placedCount = all.filter(r => r.status === "user-placed").length;
+            const title = kind === "npc" ? "🧭 待定位 NPC" : "🧭 待定位怪物";
+            const color = kind === "npc" ? "#72d6ff" : "#ff7caa";
+            let h = `<h4>${title} <span style="font-size:10px;color:#9ba5b5">待 ${all.length - placedCount} · 已定位 ${placedCount}</span></h4>`;
+            h += `<input class="unknown-filter unknown-q" placeholder="搜索名称 / 内部名 / 原因…">`;
+            h += `<div style="display:flex;gap:4px"><input class="unknown-filter unknown-status" placeholder="status" style="flex:1">` +
+                `<input class="unknown-filter unknown-confidence" placeholder="confidence" style="flex:1">` +
+                `<input class="unknown-filter unknown-map" placeholder="地图" style="flex:1"></div>`;
+            if (!rows.length) h += `<div style="color:#6a7280;padding:5px 0">无匹配候选</div>`;
+            for (const r of rows.slice(0, 180)) {
+                const idx = kind === "npc" ? r.npc_index : r.monster_index;
+                const name = r.name || r.website_name || r.internal_name || "未命名";
+                const sub = kind === "npc" ? (r.name_en || "") : (r.internal_name || "");
+                const canDrag = kind === "npc" || Number.isInteger(idx);
+                const placed = r.status === "user-placed";
+                const status = placed ? "已人工定位" : (r.status || "unknown");
+                const reason = Array.isArray(r.reason) ? r.reason.join("；") : (r.reason || "");
+                h += `<div class="unknown-row ${r.conflict ? "conflict " : ""}${placed ? "placed" : ""}"` +
+                    ` data-ukind="${kind}" data-uindex="${idx == null ? "" : idx}" draggable="${canDrag}"` +
+                    ` title="${unknownEsc(canDrag ? "拖到地图或点击后在地图点选" : "身份存在冲突，需先确认 Zircon Index")}">` +
+                    `<span style="color:${color};font:10px ui-monospace,monospace">#${idx == null ? "?" : idx}</span>` +
+                    `<span class="unknown-name"><b>${unknownEsc(name)}</b>` +
+                    `<span class="unknown-meta">${unknownEsc(sub)} · ${unknownEsc(status)} · ${unknownEsc(r.confidence || "unknown")}</span>` +
+                    `<span class="unknown-reason">${unknownEsc(reason).slice(0, 120)}</span>` +
+                    `<span class="unknown-source">${unknownEsc(unknownSourceName(r.source_manifest))} · 已有 ${r.current_respawn_count || 0} 点</span></span>` +
+                    (placed ? `<button class="unknown-undo" data-placement="${unknownEsc((r.placement || {}).placement_id || "")}">撤销</button>` : "") +
+                    `</div>`;
+            }
+            p.innerHTML = h;
+            p.style.display = "block";
+            p.querySelectorAll(".unknown-filter").forEach(el => el.addEventListener("input", () => renderUnknownPanel(kind)));
+            p.querySelectorAll(".unknown-row").forEach(row => {
+                const idx = Number(row.dataset.uindex);
+                const item = (kind === "npc" ? unknownDoc.unknown_npcs : unknownDoc.unknown_monsters)
+                    .find(x => (kind === "npc" ? x.npc_index : x.monster_index) === idx);
+                if (!item || (kind === "monster" && !Number.isInteger(item.monster_index))) return;
+                row.addEventListener("dragstart", e => {
+                    unknownDrag = {kind, item};
+                    e.dataTransfer.effectAllowed = "copy";
+                    e.dataTransfer.setData("text/plain", `${kind}:${idx}`);
+                    unknownEnsureGhost(kind);
+                });
+                row.addEventListener("dragend", unknownClearDrag);
+                row.addEventListener("click", () => {
+                    unknownDrag = {kind, item};
+                    unknownShowGhost(kind);
+                    showToast("已选择待定位候选", "现在点击地图格选择目标位置。", 3500);
+                });
+            });
+            p.querySelectorAll(".unknown-undo").forEach(btn => btn.addEventListener("click", async e => {
+                e.stopPropagation();
+                const d = await unknownPost("undo", {placement_id: btn.dataset.placement});
+                if (!d.ok) { showToast("撤销失败", unknownEsc(d.error || "未知错误")); return; }
+                showToast("已撤销", "候选恢复为待定位状态；NPC workspace 已回到旧坐标。");
+                await unknownReload();
+            }));
+        }
+        function renderUnknownPanels() {
+            unknownDoc = window.__unknownDoc || unknownDoc;
+            renderUnknownPanel("npc"); renderUnknownPanel("monster");
+        }
+        async function unknownReload() {
+            try {
+                const d = await (await fetch("/api/unknown-entities", {cache:"no-store"})).json();
+                if (!d.ok) throw new Error(d.error || "unknown API");
+                window.__unknownDoc = unknownDoc = d;
+                const mi = curMap();
+                if (mi) await loadEntities(mi);
+                drawEntities(); renderUnknownPanels();
+            } catch (e) { showToast("未知实体刷新失败", unknownEsc(e.message || e)); }
+        }
+        async function unknownPost(op, payload) {
+            const r = await fetch("/unknown/" + op, {
+                method:"POST", headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(payload || {})
+            });
+            return r.json();
+        }
+        function unknownEnsureGhost(kind) {
+            if (unknownGhost && unknownGhost.isConnected) return;
+            unknownGhost = document.createElement("div");
+            unknownGhost.id = "unknown-ghost";
+            unknownGhost.className = kind === "monster" ? "monster" : "";
+            unknownCross = document.createElement("div");
+            unknownCross.id = "unknown-crosshair";
+            vp.appendChild(unknownCross); vp.appendChild(unknownGhost);
+        }
+        function unknownMoveGhost(e) {
+            if (!unknownDrag || !curMap()) return null;
+            const cell = editScreenToCell(e);
+            const mi = curMap();
+            unknownEnsureGhost(unknownDrag.kind);
+            const s = curScale();
+            const left = cell.x * 48 / s - vp.scrollLeft + 24 / s;
+            const top = cell.y * 32 / s - vp.scrollTop + 16 / s;
+            unknownGhost.style.left = left + "px"; unknownGhost.style.top = top + "px";
+            unknownCross.style.left = (cell.x * 48 / s - vp.scrollLeft) + "px";
+            unknownCross.style.top = (cell.y * 32 / s - vp.scrollTop) + "px";
+            unknownCross.style.width = (48 / s) + "px"; unknownCross.style.height = (32 / s) + "px";
+            unknownGhost.title = `${unknownDrag.kind === "npc" ? "NPC" : "怪物"} · ${cell.x},${cell.y}`;
+            return (cell.x >= 0 && cell.y >= 0 && cell.x < mi.w && cell.y < mi.h) ? cell : null;
+        }
+        function unknownShowGhost(kind) {
+            unknownEnsureGhost(kind);
+            unknownGhost.style.display = "block"; unknownCross.style.display = "block";
+        }
+        function unknownClearDrag() {
+            unknownDrag = null;
+            if (unknownGhost) unknownGhost.remove();
+            if (unknownCross) unknownCross.remove();
+            unknownGhost = unknownCross = null;
+        }
+        function unknownSetPending(cell) {
+            if (!unknownDrag || !cell) return;
+            unknownPending = {kind: unknownDrag.kind, item: unknownDrag.item,
+                map: unknownStem(), x: cell.x, y: cell.y};
+            unknownClearDrag();
+            unknownRenderPending();
+        }
+        function unknownRenderPending() {
+            const p = document.getElementById("unknown-place-panel");
+            if (!p || !unknownPending) return;
+            const {kind, item, map, x, y} = unknownPending;
+            const name = item.name || item.website_name || item.internal_name || "未命名";
+            const conflict = item.conflict ? `<div style="color:#ff9b6b">身份冲突候选：${unknownEsc((item.candidate_indexes || []).join(", "))}</div>` : "";
+            let h = `<div class="place-head">${kind === "npc" ? "确认 NPC 人工定位" : "确认怪物刷新候选"}</div>` +
+                `<div><b>${unknownEsc(name)}</b> · ${unknownEsc(map)} · <span class="place-coord">${x},${y}</span></div>${conflict}` +
+                `<div style="color:#aab2c0;margin:4px 0">保存前服务端会校验地图边界与 flag&amp;3==3 通行格；失败不会从列表移除。</div>`;
+            if (kind === "monster") {
+                h += `<div class="place-grid">` +
+                    `<label>数量<input id="unknown-count" type="number" min="1" max="10000" value="1"></label>` +
+                    `<label>范围<input id="unknown-range" type="number" min="0" max="1000" placeholder="可选"></label>` +
+                    `<label>Delay<input id="unknown-delay" type="number" min="0" max="86400" placeholder="可选"></label>` +
+                    `<label>DropSet<input id="unknown-drop" type="number" min="0" placeholder="可选"></label>` +
+                    `<label><input id="unknown-announce" type="checkbox"> 公告</label>` +
+                    `<textarea id="unknown-source-note" rows="2" placeholder="来源说明（可选）"></textarea></div>`;
+            }
+            h += `<div class="place-actions"><button id="unknown-cancel">取消</button><button id="unknown-save">保存定位</button></div>`;
+            p.innerHTML = h; p.style.display = "block";
+            p.querySelector("#unknown-cancel").onclick = () => { unknownPending = null; p.style.display = "none"; };
+            p.querySelector("#unknown-save").onclick = unknownSavePending;
+        }
+        async function unknownSavePending() {
+            if (!unknownPending) return;
+            const {kind, item, map, x, y} = unknownPending;
+            let d;
+            if (kind === "npc") {
+                d = await unknownPost("npc/place", {npc:item.npc_index, map, x, y,
+                    previous_status:item.previous_status || item.status, operator:"mapedit"});
+            } else {
+                const val = id => {
+                    const v = document.getElementById(id)?.value;
+                    return v === "" || v == null ? null : Number(v);
+                };
+                d = await unknownPost("monster/place", {monster_index:item.monster_index, map, x, y,
+                    count:val("unknown-count") ?? 1, range:val("unknown-range"),
+                    delay:val("unknown-delay"), drop_set:val("unknown-drop"),
+                    announce:!!document.getElementById("unknown-announce")?.checked,
+                    source_note:document.getElementById("unknown-source-note")?.value || "",
+                    operator:"mapedit"});
+            }
+            if (!d.ok) { showToast("保存失败", unknownEsc(d.error || "校验失败")); return; }
+            unknownPending = null;
+            document.getElementById("unknown-place-panel").style.display = "none";
+            showToast("已保存人工安置", kind === "npc" ? "NPC 已写入 workspace NPCInfo + MapRegion。" : "怪物候选已写入独立 staging manifest。");
+            await unknownReload();
+        }
+        vp.addEventListener("dragover", e => {
+            if (!unknownDrag) return;
+            e.preventDefault(); e.dataTransfer.dropEffect = "copy"; unknownMoveGhost(e);
+        });
+        vp.addEventListener("drop", e => {
+            if (!unknownDrag) return;
+            e.preventDefault(); unknownSetPending(unknownMoveGhost(e));
+        });
+        vp.addEventListener("mousemove", e => { if (unknownDrag) unknownMoveGhost(e); });
+        vp.addEventListener("mousedown", e => {
+            if (!unknownDrag || e.button !== 0) return;
+            e.preventDefault(); unknownSetPending(unknownMoveGhost(e));
+        }, true);
+        entLayer.addEventListener("mousedown", e => {
+            const el = e.target.closest(".ent");
+            if (!el || (el.dataset.kind !== "unknown_npc" && el.dataset.kind !== "unknown_monster_placement")) return;
+            const idx = Number(el.dataset.npc || el.dataset.monster);
+            const kind = el.dataset.kind === "unknown_npc" ? "npc" : "monster";
+            const rows = kind === "npc" ? unknownDoc.unknown_npcs : unknownDoc.unknown_monsters;
+            const item = rows.find(r => (kind === "npc" ? r.npc_index : r.monster_index) === idx);
+            if (!item) return;
+            e.stopPropagation(); unknownDrag = {kind, item}; unknownShowGhost(kind);
+            const mv = ev => { if (unknownDrag) unknownMoveGhost(ev); };
+            const up = ev => {
+                document.removeEventListener("mousemove", mv); document.removeEventListener("mouseup", up);
+                unknownSetPending(unknownMoveGhost(ev));
+            };
+            document.addEventListener("mousemove", mv); document.addEventListener("mouseup", up);
+        });
+        renderUnknownPanels();
+        unknownReload();
+        // =================== 未知实体人工安置结束 ===================
 """

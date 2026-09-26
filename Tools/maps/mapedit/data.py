@@ -691,3 +691,228 @@ def load_entities(envir_dir: str) -> list[dict]:
             out.append(mon)
     return out
 
+# ---------------------------------------------------------------------------
+# 未知实体人工安置候选
+#
+# 网站对齐产物是候选来源，不把候选误写成 MonsterInfo/RespawnInfo。这里
+# 只做稳定的读取、去重和当前 workspace JOIN；写入由 npcedit.PlacementStore
+# 负责，独立于 System.db 表。
+
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+DEFAULT_UNKNOWN_SOURCE_DIR = os.path.join(
+    _REPO_ROOT, "docs", "research", "ei-ui-layout", "artifacts",
+    "website-alignment-2026-09-26")
+DEFAULT_UNKNOWN_PLACEMENT_PATH = os.path.join(
+    _REPO_ROOT, "docs", "research", "map-editor-unknown-entities",
+    "UnknownEntityPlacements.json")
+_UNKNOWN_STATUSES = {"pending-review", "needs-evidence", "unknown", "unmatched"}
+_MONSTER_STATUSES = {"pending", "investigate", "unmatched"}
+
+
+def _read_doc(path: str, default):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError, TypeError):
+        return default
+
+
+def _manifest_placements(path: str) -> list[dict]:
+    doc = _read_doc(path, {})
+    rows = doc.get("placements") if isinstance(doc, dict) else doc
+    return [r for r in (rows or []) if isinstance(r, dict)]
+
+
+def _map_stem(value) -> str:
+    value = os.path.basename(str(value or "")).strip()
+    return os.path.splitext(value)[0] if value.lower().endswith(".map") else value
+
+
+def _current_respawn_index(workspace: str) -> tuple[dict[int, int], dict[int, set[str]]]:
+    regions = {r.get("Index"): r for r in _ws_rows(workspace, "MapRegion")}
+    counts: dict[int, int] = {}
+    maps: dict[int, set[str]] = {}
+    for row in _ws_rows(workspace, "RespawnInfo"):
+        monster = (row.get("Monster") or {}).get("Index")
+        if not isinstance(monster, int):
+            continue
+        counts[monster] = counts.get(monster, 0) + 1
+        reg = regions.get((row.get("Region") or {}).get("Index")) or {}
+        stem = _map_stem((reg.get("Map") or {}).get("Name"))
+        if stem:
+            maps.setdefault(monster, set()).add(stem)
+    return counts, maps
+
+
+def _candidate_indexes(row: dict) -> list[int]:
+    values: list[int] = []
+    raw = row.get("zircon_index")
+    try:
+        if str(raw or "").strip():
+            values.append(int(raw))
+    except (TypeError, ValueError):
+        pass
+    candidates = row.get("zircon_candidates")
+    if isinstance(candidates, str):
+        try:
+            candidates = json.loads(candidates)
+        except (ValueError, TypeError):
+            candidates = []
+    for candidate in candidates or []:
+        if not isinstance(candidate, dict):
+            continue
+        try:
+            idx = int(candidate.get("index"))
+        except (TypeError, ValueError):
+            continue
+        if idx not in values:
+            values.append(idx)
+    return values
+
+
+def load_unknown_entities(workspace: str, source_dir: str | None = None,
+                          placement_path: str | None = None,
+                          db_names: dict | None = None) -> dict:
+    """读取网站对齐候选，并按业务身份去重。
+
+    返回 ``unknown_npcs``/``unknown_monsters``/``placed`` 三组稳定 JSON。
+    ``source_dir`` 缺失时仍返回 workspace 中“没有任何刷新点”的怪物，保证
+    编辑器不会因为可选报告未部署而整块消失。
+    """
+    source_dir = source_dir or DEFAULT_UNKNOWN_SOURCE_DIR
+    placement_path = placement_path or DEFAULT_UNKNOWN_PLACEMENT_PATH
+    placements = _manifest_placements(placement_path)
+    active_npcs = {
+        int(r["npc_index"]): r for r in placements
+        if r.get("kind") == "npc-placement" and r.get("status") == "user-placed"
+        and str(r.get("npc_index", "")).isdigit()
+    }
+    active_monsters = {
+        str(r.get("placement_id")): r for r in placements
+        if r.get("kind") == "monster-placement"
+        and r.get("status") == "user-placed" and r.get("placement_id")
+    }
+
+    regions = {r.get("Index"): r for r in _ws_rows(workspace, "MapRegion")}
+    npcs = {r.get("Index"): r for r in _ws_rows(workspace, "NPCInfo")}
+    npc_names = (db_names or {}).get("npcs", {})
+    npc_rows = _read_doc(os.path.join(source_dir, "npc-manifest.json"), [])
+    if isinstance(npc_rows, dict):
+        npc_rows = npc_rows.get("rows") or npc_rows.get("npcs") or []
+    unknown_npcs: list[dict] = []
+    seen_npcs: set[int] = set()
+    for src in npc_rows or []:
+        if not isinstance(src, dict):
+            continue
+        try:
+            idx = int(src.get("npc_index") or src.get("current_npc_index"))
+        except (TypeError, ValueError):
+            continue
+        if idx in seen_npcs or idx not in npcs:
+            continue
+        status = str(src.get("apply_status") or src.get("status") or "unknown")
+        confidence = str(src.get("confidence") or "unknown").lower()
+        ev = src.get("coordinate_evidence") or {}
+        target = ev.get("target_xy") if isinstance(ev, dict) else None
+        target_map = _map_stem(ev.get("target_map")) if isinstance(ev, dict) else ""
+        is_unknown = (status in _UNKNOWN_STATUSES or confidence in {"low", "unknown"}
+                      or not target_map or not isinstance(target, dict))
+        if not is_unknown:
+            continue
+        seen_npcs.add(idx)
+        row = npcs[idx]
+        reg = regions.get((row.get("Region") or {}).get("Index")) or {}
+        pr = reg.get("PointRegion") or {}
+        current_map = _map_stem((reg.get("Map") or {}).get("Name"))
+        current_name = row.get("NPCName") or (row.get("EntryPage") or {}).get("Name") or "未命名"
+        placed = active_npcs.get(idx)
+        unknown_npcs.append({
+            "kind": "npc-candidate", "npc_index": idx,
+            "name": npc_names.get(current_name, current_name) or current_name,
+            "name_en": current_name,
+            "current_map": current_map,
+            "current_xy": {"x": pr.get("CenterX"), "y": pr.get("CenterY")},
+            "target_map": target_map or None, "target_xy": target,
+            "status": "user-placed" if placed else status,
+            "previous_status": status, "confidence": confidence,
+            "reason": src.get("skip_reason") or src.get("reason") or "待人工确认",
+            "image": row.get("Image") or 0, "face": row.get("FaceImage") or 0,
+            "source_manifest": os.path.join(source_dir, "npc-manifest.json"),
+            "placement": placed,
+        })
+    unknown_npcs.sort(key=lambda r: (r["status"] == "user-placed", r["npc_index"]))
+
+    monster_rows = []
+    tsv_path = os.path.join(source_dir, "monster-manifest.tsv")
+    try:
+        import csv
+        with open(tsv_path, encoding="utf-8", newline="") as f:
+            monster_rows = list(csv.DictReader(f, delimiter="\t"))
+    except (OSError, UnicodeError, csv.Error):
+        monster_rows = []
+    monster_counts, monster_maps = _current_respawn_index(workspace)
+    monsters = {r.get("Index"): r for r in _ws_rows(workspace, "MonsterInfo")}
+    monster_names = (db_names or {}).get("monsters", {})
+    unknown_monsters: dict[int | str, dict] = {}
+    for src in monster_rows:
+        status = str(src.get("status") or src.get("apply_status") or "")
+        indexes = _candidate_indexes(src)
+        if status not in _MONSTER_STATUSES:
+            continue
+        idx: int | None = indexes[0] if len(indexes) == 1 else None
+        current = monsters.get(idx) if idx is not None else None
+        if current is not None:
+            internal = current.get("MonsterName") or ""
+            level, boss = current.get("Level"), bool(current.get("IsBoss"))
+        else:
+            internal = src.get("zircon_internal_name") or ""
+            level, boss = None, False
+        key = idx if idx is not None else f"{src.get('website_monster_id')}:{src.get('website_monster_name')}"
+        item = unknown_monsters.setdefault(key, {
+            "kind": "monster-candidate", "monster_index": idx,
+            "internal_name": internal, "website_name": src.get("website_monster_name") or "",
+            "image": src.get("website_image") or None,
+            "resource_evidence": src.get("zircon_image") or None,
+            "level": level, "is_boss": boss, "status": status,
+            "confidence": str(src.get("confidence") or "unknown").lower(),
+            "reason": src.get("skip_reason") or "身份/刷新点待人工确认",
+            "candidate_indexes": indexes,
+            "current_respawn_count": monster_counts.get(idx, 0) if idx is not None else 0,
+            "current_maps": sorted(monster_maps.get(idx, set())) if idx is not None else [],
+            "source_manifest": tsv_path, "conflict": len(indexes) != 1,
+        })
+        if len(indexes) > len(item["candidate_indexes"]):
+            item["candidate_indexes"] = indexes
+    # 身份已知但 workspace 中没有可靠 RespawnInfo 的行也必须可审阅。
+    for idx, row in monsters.items():
+        if idx in (1,):  # Guard is a guard entity, not a monster candidate.
+            continue
+        if monster_counts.get(idx, 0) or idx in {r.get("monster_index") for r in unknown_monsters.values()}:
+            continue
+        unknown_monsters[idx] = {
+            "kind": "monster-candidate", "monster_index": idx,
+            "internal_name": row.get("MonsterName") or "",
+            "website_name": monster_names.get(row.get("MonsterName") or "", ""),
+            "image": None, "resource_evidence": row.get("Image"),
+            "level": row.get("Level"), "is_boss": bool(row.get("IsBoss")),
+            "status": "no-respawn", "confidence": "unknown",
+            "reason": "MonsterInfo 身份存在，但没有可靠 RespawnInfo 刷新点",
+            "candidate_indexes": [idx], "current_respawn_count": 0,
+            "current_maps": [], "source_manifest": "MonsterInfo.json",
+            "conflict": False,
+        }
+    monsters_out = sorted(unknown_monsters.values(),
+                          key=lambda r: (r["monster_index"] is None,
+                                         r.get("website_name") or r.get("internal_name") or ""))
+    placed = [r for r in placements
+              if r.get("status") in {"user-placed", "undone"}]
+    return {
+        "ok": True, "source_dir": source_dir, "placement_manifest": placement_path,
+        "unknown_npcs": unknown_npcs,
+        "unknown_monsters": monsters_out,
+        "placements": placed,
+        "counts": {"unknown_npcs": sum(r["status"] != "user-placed" for r in unknown_npcs),
+                   "placed_npcs": sum(r["status"] == "user-placed" for r in unknown_npcs),
+                   "unknown_monsters": len(monsters_out),
+                   "placements": len(placed)},
+    }

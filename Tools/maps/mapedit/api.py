@@ -41,9 +41,11 @@ _SPRITE_LIB_ALIASES = {
     "animation": "animationsc", "animations": "animationsc",
     "sabak": "sabak",
 }
-from mapedit.data import (MAP_CN, NPC_FUNC_RULES, api_maps_payload,
-                          build_atlas, load_catalog, load_connections,
-                          load_db_names, load_entities, load_workspace_connections,
+from mapedit.data import (DEFAULT_UNKNOWN_PLACEMENT_PATH,
+                          DEFAULT_UNKNOWN_SOURCE_DIR, MAP_CN, NPC_FUNC_RULES,
+                          api_maps_payload, build_atlas, load_catalog,
+                          load_connections, load_db_names, load_entities,
+                          load_unknown_entities, load_workspace_connections,
                           load_workspace_entities, load_workspace_guards,
                           scan_maps, write_map_links_v2)
 from mapedit.frames import FramePool
@@ -81,6 +83,14 @@ TILE_PREWARM = {
 }
 
 _TILE_INTERACTIVE = [0]                       # 在途交互瓦片渲染数
+
+
+def _safe_map_query(value) -> str:
+    """Normalize a map filter without accepting path components."""
+    value = os.path.basename(str(value or "").strip())
+    if value.lower().endswith(".map"):
+        value = value[:-4]
+    return value if value and all(c.isalnum() or c in "._-" for c in value) else ""
 _INTERACTIVE_LOCK = threading.Lock()          # 预渲染让路依据
 
 
@@ -133,12 +143,14 @@ class ViewerHandler(BaseHTTPRequestHandler):
     current_root_path: str = ""
     layout: str = LAYOUT_RECT   # axis-aligned (original Mir3.exe projection); "iso" legacy
     catalog: dict = {}          # map_name -> catalog doc (build_map_catalog.py)
-    entities: list = []         # Mud3 Envir entity data (load_entities)
-    connections: list = []      # exported System.db movement records
-    db_names: dict = {}         # db_names.json: npcs/maps en->zh 显示名
-    atlas: dict = {}            # 地图工坊索引（build_atlas：热力/任务/总览/连通/NPC审计）
-    db_workspace_path: str = ""   # [E2] dbeditor workspace（NPC 摆放写目标）
-    base_entities: list = []      # [E2] 非 workspace 实体（Envir），刷新时保留
+    entities: list = []          # Mud3 Envir entity data (load_entities)
+    connections: list = []       # exported System.db movement records
+    db_names: dict = {}         # db_names.json: npcs/maps/monsters en->zh 显示名
+    atlas: dict = {}             # 地图工坊索引（build_atlas：热力/任务/总览/连通/NPC审计）
+    db_workspace_path: str = ""  # [E2] dbeditor workspace（NPC 摆放写目标）
+    base_entities: list = []     # [E2] 非 workspace 实体（刷新时保留）
+    unknown_source_dir: str = ""  # 网站对齐 manifest（只读候选来源）
+    placement_manifest: str = ""  # 独立人工安置 staging manifest
 
     @classmethod
     def _render_lock(cls, key: tuple):
@@ -284,6 +296,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
         elif self.path.startswith("/npc/"):
             self._handle_npc()
 
+        elif self.path.startswith("/unknown/"):
+            self._handle_unknown()
+
         elif self.path.startswith("/edit/"):
             self._handle_edit()
         else:
@@ -362,7 +377,110 @@ class ViewerHandler(BaseHTTPRequestHandler):
             body = {"ok": False, "error": str(ex)}
         except FileNotFoundError:
             body = {"ok": False, "error": "map_not_found"}
+        self._json_200(json.dumps(body).encode("utf-8"))
+    def _unknown_doc(self):
+        return load_unknown_entities(
+            self.db_workspace_path, self.unknown_source_dir,
+            self.placement_manifest, self.db_names)
+
+    def _placement_store(self):
+        from mapedit.npcedit import PlacementStore
+        return PlacementStore(self.placement_manifest)
+
+    def _unknown_entities_for_map(self, map_name: str) -> list[dict]:
+        """只把有当前坐标的候选加到地图层，绝不复制正式刷新点。"""
+        stem = os.path.splitext(os.path.basename(map_name))[0]
+        doc = self._unknown_doc()
+        out = []
+        active_npcs = {r.get("npc_index") for r in doc.get("placements", [])
+                       if r.get("kind") == "npc-placement"
+                       and r.get("status") == "user-placed"}
+        for row in doc.get("unknown_npcs", []):
+            xy = row.get("current_xy") or {}
+            if row.get("status") == "user-placed" or row.get("npc_index") in active_npcs:
+                continue
+            if row.get("current_map") == stem and xy.get("x") is not None and xy.get("y") is not None:
+                out.append({"kind": "unknown_npc", "name": row.get("name"),
+                            "name_en": row.get("name_en"), "x": xy["x"], "y": xy["y"],
+                            "npc_index": row.get("npc_index"), "status": row.get("status"),
+                            "confidence": row.get("confidence"), "unknown": True})
+        return out
+
+    def _handle_unknown(self):
+        from mapedit import npcedit
+        try:
+            length = int(self.headers.get("Content-Length") or "0")
+            payload = json.loads(self.rfile.read(length) or b"{}")
+        except (ValueError, TypeError):
+            self._json_200(json.dumps({"ok": False, "error": "bad_json"}).encode())
+            return
+        op = self.path.split("?", 1)[0].split("/", 2)[2]
+        try:
+            store = self._placement_store()
+            ed = self._npc_editor()
+            if op == "npc/place":
+                idx = int(payload["npc"])
+                target_map = npcedit._placement_map(payload["map"])
+                x, y = int(payload["x"]), int(payload["y"])
+                before = next((r for r in ed.npc_overview() if r["npc_index"] == idx), None)
+                if before is None:
+                    raise npcedit.NpcEditError(f"NPCInfo#{idx} 不存在")
+                result = ed.move_npc(idx, x, y, target_map, force=False)
+                placement = store.record_npc_move(
+                    idx, {"map": before["map"], "x": before["x"], "y": before["y"]},
+                    {"map": target_map, "x": x, "y": y},
+                    previous_status=str(payload.get("previous_status") or "pending-review"),
+                    operator=payload.get("operator"),
+                    validation={"in_bounds": True, "walkable": True})
+                ed.commit("未知 NPC 人工定位")
+                self.refresh_workspace_entities()
+                body = {"ok": True, "result": result, "placement": placement}
+            elif op == "monster/place":
+                idx = int(payload["monster_index"])
+                target_map = npcedit._placement_map(payload["map"])
+                # 使用同一张地图/坐标校验，默认拒绝阻挡格；不修改 RespawnInfo。
+                ed._map_row(target_map)
+                x, y = int(payload["x"]), int(payload["y"])
+                ed._check_xy(target_map, x, y, require_passable=True)
+                placement = store.upsert_monster(
+                    idx, target_map, x, y, count=payload.get("count", 1),
+                    spawn_range=payload.get("range"),
+                    delay=payload.get("delay"), drop_set=payload.get("drop_set"),
+                    announce=payload.get("announce", False),
+                    source_note=payload.get("source_note", ""),
+                    operator=payload.get("operator", "mapedit"),
+                    validation={"in_bounds": True, "walkable": True},
+                    placement_id=payload.get("placement_id"))
+                body = {"ok": True, "placement": placement}
+            elif op == "undo":
+                placement_id = str(payload.get("placement_id") or "")
+                doc = store.load()
+                row = next((r for r in doc["placements"]
+                            if r.get("placement_id") == placement_id), None)
+                if row is None:
+                    raise npcedit.NpcEditError("placement 不存在")
+                if row.get("kind") == "npc-placement":
+                    history = row.get("history") or []
+                    place = next((h for h in reversed(history) if h.get("action") == "place"), None)
+                    old = (place or {}).get("old") or {}
+                    if not old.get("map"):
+                        raise npcedit.NpcEditError("NPC placement 缺少可撤销的旧坐标")
+                    ed.move_npc(int(row["npc_index"]), int(old["x"]), int(old["y"]),
+                                str(old["map"]), force=False)
+                    ed.commit("撤销未知 NPC 人工定位")
+                    self.refresh_workspace_entities()
+                body = {"ok": True, "placement": store.undo(
+                    placement_id, payload.get("operator", "mapedit"))}
+            else:
+                body = {"ok": False, "error": "unknown_op"}
+            if body.get("ok") and op != "undo":
+                body["manifest"] = self._unknown_doc()
+        except npcedit.NpcEditError as ex:
+            body = {"ok": False, "error": str(ex)}
+        except (KeyError, TypeError, ValueError) as ex:
+            body = {"ok": False, "error": f"参数错误: {ex}"}
         self._json_200(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+
 
     # ------------------------------------------------ E2 NPC 摆放编辑
 
@@ -472,21 +590,18 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if not name or "/" in name or ".." in name:
                 self.send_error(403)
                 return
-            # [E6 P1-1] 共享移动端壳在 Tools/common/webui/（api.py 位于
-            # Tools/maps/mapedit/，需回溯三层；旧代码两层算到
-            # Tools/maps/common/webui 导致移动端壳 CSS/JS 全 404）
             f = _P(__file__).resolve().parent.parent.parent / "common" / "webui" / name
             if not f.is_file():
                 self.send_error(404)
                 return
             ctype = {".css": "text/css; charset=utf-8",
-                     ".js": "application/javascript; charset=utf-8"}.get(f.suffix, "application/octet-stream")
+                     ".js": "application/javascript; charset=utf-8"}.get(
+                         f.suffix, "application/octet-stream")
             body = f.read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", ctype)
             self.send_header("Cache-Control", "no-cache")
             self.send_header("Content-Length", str(len(body)))
-
             self.end_headers()
             self.wfile.write(body)
 
@@ -587,6 +702,10 @@ class ViewerHandler(BaseHTTPRequestHandler):
                         ents.append(e)
             except Exception:
                 pass
+            try:
+                ents.extend(self._unknown_entities_for_map(map_name))
+            except Exception:
+                pass
             body = json.dumps({"ok": True, "count": len(ents), "entities": ents},
                               ensure_ascii=False).encode("utf-8")
             self.send_response(200)
@@ -596,9 +715,36 @@ class ViewerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
 
-        # ------------------------------------------------ 地图工坊端点
-        # 全部优雅降级：atlas 缺失（workspace 表不全）时返回 ok=False + 200，
-        # 前端禁用对应图层并提示，不崩。
+        elif self.path.startswith("/api/unknown-entities"):
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            doc = self._unknown_doc()
+            q = str(qs.get("q", [""])[0]).strip().lower()
+            wanted_status = str(qs.get("status", [""])[0]).strip().lower()
+            wanted_conf = str(qs.get("confidence", [""])[0]).strip().lower()
+            wanted_map = _safe_map_query(qs.get("map", [""])[0])
+
+            def match(row):
+                text = " ".join(str(row.get(k) or "") for k in (
+                    "name", "name_en", "internal_name", "website_name",
+                    "reason", "status", "confidence")).lower()
+                if q and q not in text:
+                    return False
+                if wanted_status and str(row.get("status", "")).lower() != wanted_status:
+                    return False
+                if wanted_conf and str(row.get("confidence", "")).lower() != wanted_conf:
+                    return False
+                if wanted_map and wanted_map not in {
+                    _safe_map_query(row.get("current_map", "")),
+                    _safe_map_query(row.get("map", "")),
+                }:
+                    return False
+                return True
+            doc["unknown_npcs"] = [r for r in doc.get("unknown_npcs", []) if match(r)]
+            doc["unknown_monsters"] = [r for r in doc.get("unknown_monsters", []) if match(r)]
+            doc["placements"] = [r for r in doc.get("placements", []) if match(r)]
+            self._json_200(json.dumps(doc, ensure_ascii=False).encode("utf-8"))
+
         elif self.path.startswith("/api/respawns?"):
             from urllib.parse import parse_qs, urlparse
             qs = parse_qs(urlparse(self.path).query)
@@ -1150,6 +1296,10 @@ def main():
                         help="dbeditor workspace dir (NPCInfo/MapRegion/MovementInfo JSON; default: %(default)s)")
     parser.add_argument("--db-names", default=DEFAULT_DB_NAMES,
                         help="db_names.json (NPC/地图中文名映射; default: %(default)s)")
+    parser.add_argument("--unknown-source-dir", default=DEFAULT_UNKNOWN_SOURCE_DIR,
+                        help="网站对齐 NPC/怪物 manifest 目录")
+    parser.add_argument("--placement-manifest", default=DEFAULT_UNKNOWN_PLACEMENT_PATH,
+                        help="未知实体人工安置 staging manifest（不写 System.db）")
     parser.add_argument("--thumbs-dir", default=THUMBS_DIR,
                         help="Full-map thumbnail dir (shared with WikiServer/thumb_gen)")
     parser.add_argument("--layout", choices=[LAYOUT_RECT, LAYOUT_ISO], default=LAYOUT_RECT,
@@ -1161,6 +1311,8 @@ def main():
     parser.add_argument("--no-prewarm-thumbs", action="store_true",
                         help="Disable background thumbnail prewarm (regression/test runs)")
     args = parser.parse_args()
+    ViewerHandler.unknown_source_dir = os.path.abspath(args.unknown_source_dir)
+    ViewerHandler.placement_manifest = os.path.abspath(args.placement_manifest)
 
     if not args.maps_dir:
         args.maps_dir = os.path.join(args.client_root, "Map")

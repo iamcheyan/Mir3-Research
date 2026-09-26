@@ -23,6 +23,7 @@
 """
 from __future__ import annotations
 
+import copy
 import json
 import os
 import shutil
@@ -507,3 +508,177 @@ def workspace_rollback(workspace: str, table: str | None = None) -> dict:
         ed._touched = set(restored)
         ed.commit(f"回滚工作区至基线：{','.join(restored)}")
     return {"restored": restored}
+
+
+# ---------------------------------------------------------------------------
+# 未知实体人工安置 manifest
+
+_PLACEMENT_LOCK = threading.RLock()
+_MAP_RE = __import__("re").compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
+
+
+def _placement_map(value) -> str:
+    raw = str(value or "").strip()
+    if "/" in raw or "\\" in raw:
+        raise NpcEditError("非法地图名：不允许目录分隔符")
+    value = raw
+    if value.lower().endswith(".map"):
+        value = value[:-4]
+    if not _MAP_RE.fullmatch(value):
+        raise NpcEditError("非法地图名")
+    return value
+
+
+def _json_int(value, name: str, minimum: int, maximum: int) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise NpcEditError(f"{name} 必须是整数")
+    if value < minimum or value > maximum:
+        raise NpcEditError(f"{name} 必须在 {minimum}..{maximum} 范围内")
+    return value
+
+
+class PlacementStore:
+    """独立于 System.db 的未知实体候选存储。
+
+    文件结构固定为 ``{version, placements}``；同一 monster/map/x/y 使用
+    稳定 ID，重复保存只更新字段，不增加重复候选。所有落盘均为临时文件
+    + os.replace，历史保留旧值，undo 只改变 manifest 状态。
+    """
+
+    def __init__(self, path: str):
+        self.path = os.path.abspath(path)
+
+    def load(self) -> dict:
+        try:
+            with open(self.path, encoding="utf-8") as f:
+                doc = json.load(f)
+        except (OSError, ValueError, TypeError):
+            doc = {}
+        rows = doc.get("placements") if isinstance(doc, dict) else []
+        return {"version": int((doc or {}).get("version") or 1),
+                "placements": [r for r in rows or [] if isinstance(r, dict)]}
+
+    def _save(self, doc: dict) -> None:
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+        tmp = self.path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2, sort_keys=True)
+            f.write("\n")
+        os.replace(tmp, self.path)
+
+    @staticmethod
+    def _now() -> str:
+        import datetime
+        return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+    @staticmethod
+    def _operator(value) -> str:
+        value = str(value or "mapedit").strip()
+        return value[:80] or "mapedit"
+
+    def _upsert(self, row: dict) -> dict:
+        with _PLACEMENT_LOCK:
+            doc = self.load()
+            rows = doc["placements"]
+            old = next((r for r in rows if r.get("placement_id") == row["placement_id"]), None)
+            if old:
+                comparable = {k: v for k, v in row.items() if k not in {"history", "updated_at"}}
+                previous = {k: v for k, v in old.items() if k not in {"history", "updated_at"}}
+                if comparable != previous:
+                    old_snapshot = copy.deepcopy({
+                        k: v for k, v in old.items() if k != "history"})
+                    old.setdefault("history", []).append({
+                        "action": "update", "timestamp": self._now(),
+                        "previous": old_snapshot, "operator": row["operator"]})
+                    old.update(row)
+                    old["history"] = old.get("history") or []
+                    row = old
+                else:
+                    row = old
+            else:
+                rows.append(row)
+            self._save(doc)
+            return row
+
+    def record_npc_move(self, npc_index: int, old: dict, new: dict,
+                        previous_status: str = "pending-review",
+                        operator: str = "mapedit", validation: dict | None = None) -> dict:
+        idx = _json_int(npc_index, "npc_index", 1, 2_000_000_000)
+        row = {
+            "placement_id": f"npc:{idx}", "kind": "npc-placement",
+            "npc_index": idx, "map": _placement_map(new["map"]),
+            "x": _json_int(new["x"], "x", 0, 100_000),
+            "y": _json_int(new["y"], "y", 0, 100_000),
+            "status": "user-placed", "source": "website-alignment-manual-placement",
+            "operator": self._operator(operator), "updated_at": self._now(),
+            "validation": validation or {"in_bounds": True, "walkable": True},
+        }
+        with _PLACEMENT_LOCK:
+            doc = self.load()
+            existing = next((r for r in doc["placements"]
+                             if r.get("placement_id") == row["placement_id"]), None)
+            history = (existing or {}).get("history") or []
+            history.append({"action": "place", "timestamp": self._now(),
+                            "old": old, "new": dict(row), "source": row["source"],
+                            "operator": row["operator"],
+                            "validation": row["validation"],
+                            "previous_status": previous_status})
+            row["history"] = history
+            if existing:
+                doc["placements"] = [row if r is existing else r
+                                     for r in doc["placements"]]
+            else:
+                doc["placements"].append(row)
+            self._save(doc)
+            return row
+
+    def upsert_monster(self, monster_index: int, map_stem: str, x: int, y: int,
+                       count: int = 1, spawn_range: int | None = None,
+                       delay: int | None = None, drop_set: int | None = None,
+                       announce: bool = False, source_note: str = "",
+                       operator: str = "mapedit", validation: dict | None = None,
+                       placement_id: str | None = None) -> dict:
+        idx = _json_int(monster_index, "monster_index", 1, 2_000_000_000)
+        stem = _placement_map(map_stem)
+        x, y = _json_int(x, "x", 0, 100_000), _json_int(y, "y", 0, 100_000)
+        count = _json_int(count, "count", 1, 10_000)
+        for value, name, maximum in ((spawn_range, "range", 1000),
+                                     (delay, "delay", 86_400),
+                                     (drop_set, "drop_set", 2_000_000_000)):
+            if value is not None:
+                _json_int(value, name, 0, maximum)
+        if not isinstance(announce, bool):
+            raise NpcEditError("announce 必须是布尔值")
+        stable = f"monster:{idx}:{stem}:{x}:{y}"
+        if placement_id and placement_id != stable:
+            raise NpcEditError("placement_id 与 monster/map/坐标不一致")
+        row = {
+            "placement_id": stable, "kind": "monster-placement",
+            "monster_index": idx, "map": stem, "x": x, "y": y,
+            "count": count, "range": spawn_range, "delay": delay,
+            "drop_set": drop_set, "announce": announce,
+            "status": "user-placed", "source": "website-alignment-manual-placement",
+            "source_note": str(source_note or "")[:500],
+            "operator": self._operator(operator), "updated_at": self._now(),
+            "validation": validation or {"in_bounds": True, "walkable": True},
+        }
+        return self._upsert(row)
+
+    def undo(self, placement_id: str, operator: str = "mapedit") -> dict:
+        placement_id = str(placement_id or "")
+        if not placement_id or len(placement_id) > 200:
+            raise NpcEditError("placement_id 无效")
+        with _PLACEMENT_LOCK:
+            doc = self.load()
+            row = next((r for r in doc["placements"]
+                        if r.get("placement_id") == placement_id), None)
+            if row is None:
+                raise NpcEditError("placement 不存在")
+            snapshot = copy.deepcopy({k: v for k, v in row.items() if k != "history"})
+            row.setdefault("history", []).append({
+                "action": "undo", "timestamp": self._now(),
+                "previous": snapshot, "operator": self._operator(operator)})
+            row["status"] = "undone"
+            row["updated_at"] = self._now()
+            self._save(doc)
+            return row
