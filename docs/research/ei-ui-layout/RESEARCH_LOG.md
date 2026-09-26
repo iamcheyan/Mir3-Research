@@ -10886,3 +10886,82 @@ Dir0→[0,3]、Dir1→[10,13]、…、Dir7→[70,73]（步进 10）。
 **落盘**：`client-rendering.md`（约 200 行）、`actor-frames.tsv`（329 行）、
 `Tools/source-read/extract_actor_frames.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 820 (全量精读 E24-E28) — 2026-09-26：**3 个 opcode 接收端定案** + 工具/登录服/DB服
+
+> `Source/Tools/`、`Source/LoginServer/`、`Source/DataBaseServer/`。
+> 产物 `docs/source-vs-reverse/tools-and-servers.md`、
+> `Tools/source-read/verify_missing_opcodes.py`。
+
+**〔★ E28 定案：3 个 opcode 的接收端确实不在本源码包（穷举验证，非抽样）★〕**
+`CM_ADDNEWUSER`(2002)/`CM_CHANGEPASSWORD`(2003)/`CM_UPDATEUSER`(2004)
+在 GameServer 与登录链路都找不到接收端（`protocol.md` §2 遗留问题）。
+
+**本轮写成可复现工具** `Tools/source-read/verify_missing_opcodes.py`
+（独立实现：枚举全部 C++ `g_cmdList[]` 分派表 + 全部 `case` 标签后判定）：
+
+```
+C++ 分派表数: 5    分派表项唯一常量: 39
+  CM_ADDNEWUSER     分派表=False case=False  ✅ 无接收端
+  CM_CHANGEPASSWORD 分派表=False case=False  ✅ 无接收端
+  CM_UPDATEUSER     分派表=False case=False  ✅ 无接收端
+对照组: CM_IDPASSWORD=True/True  CM_NEWCHR=True/False  CM_QUERYCHR=True/False
+VERIFY PASS（接收端确实缺失）
+```
+
+**全仓 5 个 `g_cmdList[]` 表全部列出**：`LoginGate` 仅 3 条
+（`CM_IDPASSWORD`/`CM_SELECTSERVER`/`CM_PROTOCOL`）、`RunGate` 仅 4 条
+（`CM_QUERYCHR`/`CM_NEWCHR`/`CM_DELCHR`/`CM_SELCHR`）、
+`LoginServer/netgameserver` 7 条 ISM_*、`DataBaseServer/netloginserver` 4 条 ISM_*、
+`DataBaseServer/netgameserver` DB_* 若干。
+**LoginServer 里 `case CM_` 只有 1 处**（`netlogingate.cpp:913`）。
+
+⚠️ **工具的已知局限（如实记录）**：对照组里 `CM_WANTMINIMAP` 显示 False/False，
+但它**确实有接收端**（`ObjBase.pas:25170`）—— 因为 GameServer 的 Pascal 分派是
+`case ... of` 里的 **`常量:` 标签形式**（无重复 `case` 关键字），
+本工具的 `case\s+CONST:` 正则匹配不到。**该局限不影响目标 opcode 的结论**
+（那三个除定义与客户端发送外**全文零出现**）。
+
+**全仓出现位置（仅定义 + 客户端发送，无接收）**：定义 5 处
+（`Grobal2.pas:1663-1665` + 副本 + ImageEditor 副本 + `LoginServer/protocol.h:27-29`
++ `DataBaseServer/Def/Protocol.h:18-20`）；客户端发送 3 处
+（`ClMain.pas:4211/4220/4236`）。
+→ **判定：源码包缺失接收端**，按 Goal 要求**不推测接收端逻辑**。
+
+**〔但发送端 payload 格式已完全解出（留档）〕**
+`SendNewAccount`/`SendUpdateAccount`（`ClMain.pas:4206-4222`）=
+**6bit 编码头 + 两个 `EncodeBuffer` 二进制块**（不是字符串）：
+`EncodeMessage(msg) + EncodeBuffer(@ue, sizeof(TUserEntryInfo))
++ EncodeBuffer(@ua, sizeof(TUserEntryAddInfo))`。
+`TUserEntryInfo`（`Grobal2.pas:712-721`）8 字段：
+`LoginId[10]`/`Password[10]`/`UserName[20]`/`SSNo[14]`（身份证，样例
+`721109-1476110`）/`Phone[14]`/`Quiz[20]`/`Answer[12]`/`EMail[40]`。
+`TUserEntryAddInfo`（`:722-`）5 字段：`Quiz2[20]`/`Answer2[12]`/
+`Birthday[10]`（样例 `1972/11/09`）/`MobilePhone[13]`（样例 `017-6227-1234`）/`Memo1[20]`。
+`SendChgPw`（`:4232-4238`）是**字符串形式**：`id #9 passwd #9 newpasswd`。
+⚠️ `TUserEntryInfo` 里 `UserName`/`SSNo`/`Quiz`/`Answer` 带 `//*` 标记，
+`LoginId`/`Password`/`Phone`/`EMail` 不带 —— **疑似「必填」标记，未验证**
+（无接收端可对照）。
+
+**〔E24/E25 工具链〕**`Tools/MapEdit/`（16,298 行）含 `MapEdit.dpr`/`Wil/WIL.pas`/
+`glight.pas`（光照）/`Tile.pas`/`o_WIL.pas`/`wm*.pas`（**与客户端同源的图库解析**）/
+`ObjEdit.pas`/`DoorDlg.pas`（对应 `Envir.pas` 的 `PTDoorInfo`）。
+→ **MapEdit 是 `.map`/图库的写入端参考实现**（`server.md` §13.2 用的是 `Envir.pas`
+读取端视角）。`Tools/ImageEditor/`（26,733 行 + **62,337 行第三方 `Plug/`**）
+—— `Plug/`（GraphicEx/MyDirect9/pngimage/DelphiZlib）**明确排除**。
+
+**〔E26 登录服/DB 服〕**进程拓扑与类名：LoginServer 入口 `mir2wnd.cpp:420`，
+监听 `CLoginSvr`，出向 `CLoginGate`/`CGameServer`/`CCheckServer`/`CUdpsender`；
+DataBaseServer 入口 `mir2wnd.cpp:411`，监听 `CDBServer`，出向
+`CGameServer`/`CLoginServer`/`CRunGate`。
+网络框架 `_Oranze Library/`：`netiocp.cpp`（**IOCP**）/`netbase.cpp`/
+**`astar.h`（死代码）**/`database.cpp`/`base64.cpp`/`http.cpp`/`pop3.cpp`。
+C++ 线格式：`Common/mir2packet.cpp` + `Common/endecode.cpp`，
+**`endecode.h:38` 有 `void SetPublicKey(WORD pubkey);`** ——
+与 `EDCode.pas` 同签名，**印证公钥协商机制在 C++ 侧同样存在**
+（`wire-format.md` §5 的链路）。DB 层：`sqlhandler.cpp`/`database.cpp`/
+**`tablesdefine.cpp`（表定义 = `System.db` 的上游）**。
+
+**落盘**：`tools-and-servers.md`（约 220 行）、
+`Tools/source-read/verify_missing_opcodes.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

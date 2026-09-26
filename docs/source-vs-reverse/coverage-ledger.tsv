@@ -180,12 +180,12 @@ E-db	Source/DataBaseServer/Def/IocpHelper.cpp	77	1412	pending
 E-db	Source/DataBaseServer/Def/IocpHelper.h	42	691	pending	
 E-db	Source/DataBaseServer/Def/Misc.cpp	182	3877	pending	
 E-db	Source/DataBaseServer/Def/Misc.h	19	507	pending	
-E-db	Source/DataBaseServer/Def/Protocol.h	557	14092	pending	
+E-db	Source/DataBaseServer/Def/Protocol.h	557	14092	covered	Round 820: CM_ADDNEWUSER/CHANGEPASSWORD/UPDATEUSER 定义在此
 E-db	Source/DataBaseServer/Def/RegstryHandler.cpp	82	2118	pending	
 E-db	Source/DataBaseServer/Def/ServerSockHandler.cpp	284	8611	pending	
 E-db	Source/DataBaseServer/Def/ServerSockHandler.h	43	1111	pending	
 E-db	Source/DataBaseServer/Def/StaticArray.h	81	1145	pending	
-E-db	Source/DataBaseServer/Def/database.cpp	469	8411	pending	
+E-db	Source/DataBaseServer/Def/database.cpp	469	8411	pending	Round 820: 数据库定义，未读
 E-db	Source/DataBaseServer/Def/database.h	139	2289	pending	
 E-db	Source/DataBaseServer/Def/list.h	402	6578	pending	
 E-db	Source/DataBaseServer/Def/queue.h	50	689	pending	
@@ -269,21 +269,21 @@ E-db	Source/DataBaseServer/DBSvr/msgfilter.cpp	70	991	pending
 E-db	Source/DataBaseServer/DBSvr/msgfilter.h	28	387	pending	
 E-db	Source/DataBaseServer/DBSvr/netdbserver.cpp	765	17209	pending	
 E-db	Source/DataBaseServer/DBSvr/netdbserver.h	123	2918	pending	
-E-db	Source/DataBaseServer/DBSvr/netgameserver.cpp	2222	58637	pending	
+E-db	Source/DataBaseServer/DBSvr/netgameserver.cpp	2222	58637	partial	Round 820: g_cmdList DB_* 表项
 E-db	Source/DataBaseServer/DBSvr/netgameserver.h	90	3770	pending	
 E-db	Source/DataBaseServer/DBSvr/netloginserver.cpp	220	4363	covered	Round 803 公钥链
 E-db	Source/DataBaseServer/DBSvr/netloginserver.h	48	896	pending	
 E-db	Source/DataBaseServer/DBSvr/netrungate.cpp	1137	25967	covered	Round 802 分派表 4 条
 E-db	Source/DataBaseServer/DBSvr/netrungate.h	83	1713	pending	
 E-db	Source/DataBaseServer/DBSvr/protocol.h	112	3655	covered	Round 803 opcode 表
-E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	pending	
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	pending	Round 820: 表定义（System.db 上游），未读
 E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	pending	
 E-db	Source/DataBaseServer/DBSvr/Res/resource.h	38	1471	pending	
 E-db	Source/DataBaseServer/Common/endecode.cpp	382	11764	pending	
 E-db	Source/DataBaseServer/Common/endecode.h	87	2085	pending	
 E-db	Source/DataBaseServer/Common/mir2packet.cpp	110	2056	pending	
 E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	pending	
-E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	
+E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	Round 820: SQL/ODBC 层，未读
 E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	pending	
 C-common	Source/Common/DES.pas	563	16649	pending	
 C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
@@ -365,9 +365,9 @@ E-login	Source/LoginServer/_Oranze Library/uucp.h	27	450	pending
 E-login	Source/LoginServer/_Oranze Library/vector.h	157	2703	pending	
 E-login	Source/LoginServer/_Oranze Library/vtimage.cpp	963	21754	pending	
 E-login	Source/LoginServer/_Oranze Library/vtimage.h	148	3325	pending	
-E-login	Source/LoginServer/Common/endecode.cpp	382	11764	pending	
+E-login	Source/LoginServer/Common/endecode.cpp	382	11764	pending	Round 820: C++ 线格式（可与 EDCode.pas 交叉验证），未读
 E-login	Source/LoginServer/Common/endecode.h	87	2085	pending	
-E-login	Source/LoginServer/Common/mir2packet.cpp	110	2045	pending	
+E-login	Source/LoginServer/Common/mir2packet.cpp	110	2045	pending	Round 820: C++ 包编解码，未读
 E-login	Source/LoginServer/Common/mir2packet.h	41	713	pending	
 E-login	Source/LoginServer/LoginServer/LoginSvr.sln	21	905	pending	
 E-login	Source/LoginServer/LoginServer/LoginSvr.vcproj	475	12287	pending	
@@ -384,7 +384,7 @@ E-login	Source/LoginServer/LoginServer/netUdpsender.cpp	50	1352	pending
 E-login	Source/LoginServer/LoginServer/netUdpsender.h	40	599	pending	
 E-login	Source/LoginServer/LoginServer/netcheckserver.cpp	97	1845	pending	
 E-login	Source/LoginServer/LoginServer/netcheckserver.h	34	597	pending	
-E-login	Source/LoginServer/LoginServer/netgameserver.cpp	833	20911	pending	
+E-login	Source/LoginServer/LoginServer/netgameserver.cpp	833	20911	covered	Round 820: g_cmdList 7 条 ISM_* 全列
 E-login	Source/LoginServer/LoginServer/netgameserver.h	66	1488	pending	
 E-login	Source/LoginServer/LoginServer/netlogingate.cpp	1217	35818	covered	Round 802 分派表 3 条
 E-login	Source/LoginServer/LoginServer/netlogingate.h	139	2853	pending	
