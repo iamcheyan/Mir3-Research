@@ -275,3 +275,111 @@ sonmg 2005/09/01）、`CmdLoverCharSpaceMove`/`CmdBreakLoverRelation` 配套。
 | `UserSystem.pas`（153 行） | 未读 |
 | `itmunit.pas` 的 8 个 `UpgradeRandom*` 实现 | 只读了签名与 `Desc[]` 映射 |
 | `RealAttackSpeed` 的**实际影响**（攻速如何转成延迟） | 未追到消费点 |
+
+---
+
+## 11. `Guild.pas` 实现精读（Round 827）
+
+> 3,600 行。前序阶段只读了类清单（§2）。本节读常量与数据模型。
+
+### 11.1 常量全表（`:10-27`）
+
+| 常量 | 值 | 语义 |
+|---|---:|---|
+| **`DEFRANK`** | **99** | **行会最低等级** |
+| `GUILDAGIT_DAYUNIT` | 7 | 据点周期（**7 天**） |
+| `GUILDAGIT_SALEWAIT_DAYUNIT` | 1 | 出售等待（**1 天**） |
+| `MAXGUILDAGITCOUNT` | 100 | 最大据点号 |
+| `GABOARD_NOTICE_LINE` | 3 | 公告行数 |
+| `GABOARD_COUNT_PER_PAGE` | 10 | 每页行数 |
+| `GABOARD_MAX_ARTICLE_COUNT` | **73** | **最大文章数**（非整数倍，是硬上限） |
+| `AGITDECOMONFILE` | `'AgitDecoMon.txt'` | **据点装饰清单文件** |
+| `MAXCOUNT_DECOMON_PER_AGIT` | 50 | 每据点最大装饰数 |
+| **`GUILDAGITMAXGOLD`** | **100,000,000** | **据点金额上限（1 亿）** |
+| **`GUILDAGITREGFEE`** | **10,000,000** | **据点注册费（1000 万）** |
+| `GUILDAGITEXTENDFEE` | 1,000,000 | 据点续期费（100 万） |
+| **`GUILDWARTIME`** | **6** | **行会战时间单位**（注释「문파전 시간 단위」） |
+
+> ⚠️ **`AGITDECOMONFILE = 'AgitDecoMon.txt'` 是本源码里唯一提到但
+> `Mud3-Config/` 里没有的配置文件** —— 待核（可能在运行目录）。
+>
+> 这些常量正是 `server.md` §14.1 的 `$` 宏 `$GUILDAGITREGFEE`/
+> `$GUILDAGITEXTENDFEE`/`$GUILDAGITMAXGOLD`/`$GUILDWARFEE`/`$GUILDWARTIME`
+> 的数据源 —— **宏系统与常量的对应关系闭合**。
+
+### 11.2 `TGuild` 数据模型（`:60-118`）
+
+```pascal
+TGuild = class
+   GuildName: string;
+   NoticeList: TStringList;       // 公告
+   KillGuilds: TStringList;       // 敌对行会
+   AllyGuilds: TStringList;       // 同盟行会
+   MemberList: TList;             // list of PTGuildRank
+   MatchPoint: integer;           //문파대전때의 점수（行会战得分）
+   BoStartGuildFight: Boolean;
+   FightMemberList: TStringList;  //문파대전시 우리편 리스트（行会战时我方名单）
+   AllowAllyGuild: Boolean;       //동맹 허용 여부（是否允许同盟）
+end;
+```
+
+**四个字符串列表 + 两个成员列表**：
+`NoticeList`（公告）/`KillGuilds`（敌对）/`AllyGuilds`（同盟）/`FightMemberList`（战时报方）。
+
+### 11.3 职位与行会战机制（注释原文）
+
+| 方法 | 行 | 注释/语义 |
+|---|---|---|
+| `AddGuildMaster` | `:87` | 「처음에 문파 생성될때만 사용」（**仅创建行会时用**） |
+| `DelGuildMaster` | `:88` | 「마지막 문주나가면 문파 깨짐」（**最后一个会长退出则行会解散**） |
+| `BreakGuild` | `:89` | 「강제로 문파가 없어짐. (주의)」（**强制解散，注意**） |
+| **`DeclareGuildWar`** | `:99-100` | 「상대방 문파와 문파쌈을 건다. **3시간동안 유효, 아무때나 할 수 있다.**」 |
+| **`MakeAllyGuild`** | `:104-105` | 「상대방 문파와 동맹을 결성한다. **문주끼리 서로 마주보며 할 수 있다.**」 |
+
+**两个关键业务规则**：
+1. **行会战有效期 3 小时**（`DeclareGuildWar` 注释），且**随时可宣战**。
+2. **同盟需要双方会长面对面**（「문주끼리 서로 마주보며」）——
+   即**有距离/朝向约束**（不是纯命令）。
+
+### 11.4 行会战（TeamFight）方法族（`:111-115`）
+
+`TeamFightStart` / `TeamFightEnd` / `TeamFightAdd(whostr)` /
+`TeamFightWhoWinPoint(whostr, point)` / `TeamFightWhoDead(whostr)`
+
+→ **按玩家名记分**（`MatchPoint`），有死亡记录。
+
+### 11.5 持久化（`:77-82`）
+
+`LoadGuild` / `LoadGuildFile(flname)` / **`BackupGuild(flname)`** /
+`SaveGuild` / `GuildInfoChange` / `CheckSave`
+
+**`CheckSave`（`:484`）+ `guildsavetime`/`dosave` 字段** ——
+**延迟保存机制**（改动标记 `dosave`，定期 `CheckSave` 落盘），
+避免每次改动都写盘。
+
+**`TGuildManager`（`:121-`）**：`GuildList: TList` +
+`LoadGuildList`/`SaveGuildList`/`GetGuild(gname)`/
+**`GetGuildFromMemberName(who)`**（按成员名反查行会）/`AddGuild(gname, mastername)`。
+
+### 11.6 与 EI 证据 / Zircon 的对照
+
+| 项 | 原版反编译 | 源码 | Zircon |
+|---|---|---|---|
+| 行会数据 | 未闭合 | `TGuild` 4 列表 + 2 成员列表 | `GuildInfo` |
+| 行会战 | 未闭合 | 3 小时有效期 + `MatchPoint` | — |
+| 同盟 | 未闭合 | 需双方会长面对面 | — |
+| 据点 | 未闭合 | 7 天周期 / 1000 万注册费 / 1 亿上限 | — |
+| `$` 宏数据源 | — | ✅ 已闭合（§11.1） | — |
+
+**分级**：源码结论均 `secondary-source`。
+
+### 11.7 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `TGuild` 各方法实现主体 | 只读了声明与常量 |
+| `PTGuildRank` 结构（成员记录） | 未读 |
+| `TGuildAgit`（`:139`）实现 | 未读 |
+| `DeclareGuildWar` 的 3 小时判定实现 | 未读（注释已给语义） |
+| `MakeAllyGuild` 的「面对面」判定 | 未读 |
+| `AgitDecoMon.txt` 是否存在 | 未核（`Mud3-Config/` 里没找到） |

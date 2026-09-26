@@ -11334,3 +11334,56 @@ AGENTS.md §七.5 记录的「实体坐标 ×48/32 换算成像素」**与源码
 **落盘**：`client-rendering.md` §8（约 180 行）、`client-render-classes.tsv`（60 行）、
 `Tools/source-read/extract_render_classes.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 827 (全量精读续) — 2026-09-26：Guild.pas 常量与数据模型
+
+> `Source/GameServer/Guild.pas`（3600 行）。产物 `items-systems.md` §11。
+
+**〔常量全表（`:10-27`）〕**`DEFRANK = 99`（**行会最低等级**）、
+`GUILDAGIT_DAYUNIT = 7`（据点周期 7 天）、`GUILDAGIT_SALEWAIT_DAYUNIT = 1`、
+`MAXGUILDAGITCOUNT = 100`、`GABOARD_NOTICE_LINE = 3`、
+`GABOARD_COUNT_PER_PAGE = 10`、**`GABOARD_MAX_ARTICLE_COUNT = 73`**（硬上限，非整数倍）、
+**`AGITDECOMONFILE = 'AgitDecoMon.txt'`**（据点装饰清单）、
+`MAXCOUNT_DECOMON_PER_AGIT = 50`、
+**`GUILDAGITMAXGOLD = 100000000`**（据点金额上限 1 亿）、
+**`GUILDAGITREGFEE = 10000000`**（注册费 1000 万）、
+`GUILDAGITEXTENDFEE = 1000000`（续期费 100 万）、
+**`GUILDWARTIME = 6`**（行会战时间单位）。
+
+⚠️ **`AGITDECOMONFILE = 'AgitDecoMon.txt'` 是本源码提到但 `Mud3-Config/` 里
+没有的配置文件**（已 `find` 核实不存在，但 `ObjBase.pas:12843`
+`GuildAgitMan.AddAgitDecoMon(decoitem)` 等三处引用）—— 待核（可能在运行目录）。
+
+✅ **宏系统与常量的对应关系闭合**：这些常量正是 `server.md` §14.1 的
+`$` 宏 `$GUILDAGITREGFEE`/`$GUILDAGITEXTENDFEE`/`$GUILDAGITMAXGOLD`/
+`$GUILDWARFEE`/`$GUILDWARTIME` 的**数据源**。
+
+**〔`TGuild` 数据模型（`:60-118`）〕**4 个字符串列表 + 2 个成员列表：
+`GuildName` / `NoticeList`（公告）/ `KillGuilds`（敌对）/ `AllyGuilds`（同盟）/
+`MemberList: TList`（list of PTGuildRank）/ `MatchPoint`（行会战得分）/
+`BoStartGuildFight` / `FightMemberList`（战时报方）/ `AllowAllyGuild`。
+
+**〔两个关键业务规则（注释原文）〕**
+①**`DeclareGuildWar`**（`:99-100`）：「상대방 문파와 문파쌈을 건다.
+**3시간동안 유효, 아무때나 할 수 있다.**」→ **行会战有效期 3 小时，随时可宣战**。
+②**`MakeAllyGuild`**（`:104-105`）：「상대방 문파와 동맹을 결성한다.
+**문주끼리 서로 마주보며 할 수 있다.**」→ **同盟需双方会长面对面**
+（有距离/朝向约束，不是纯命令）。
+另：`AddGuildMaster` 注释「처음에 문파 생성될때만 사용」（仅创建时用）；
+`DelGuildMaster` 注释「마지막 문주나가면 문파 깨짐」（最后一个会长退出则解散）；
+`BreakGuild` 注释「강제로 문파가 없어짐. (주의)」（强制解散，注意）。
+
+**〔行会战方法族（`:111-115`）〕**`TeamFightStart`/`End`/`Add(whostr)`/
+`WhoWinPoint(whostr, point)`/`WhoDead(whostr)` → **按玩家名记分**（`MatchPoint`）。
+
+**〔持久化（`:77-82`）〕**`LoadGuild`/`LoadGuildFile`/**`BackupGuild(flname)`**/
+`SaveGuild`/`GuildInfoChange`/**`CheckSave`（`:484`）**+
+`guildsavetime`/`dosave` 字段 → **延迟保存机制**（改动标记 `dosave`，
+定期 `CheckSave` 落盘），避免每次改动都写盘。
+
+**〔`TGuildManager`（`:121-`）〕**`GuildList: TList` + `LoadGuildList`/
+`SaveGuildList`/`GetGuild(gname)`/**`GetGuildFromMemberName(who)`**（按成员名反查）/
+`AddGuild(gname, mastername)`。
+
+**落盘**：`items-systems.md` §11（约 120 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
