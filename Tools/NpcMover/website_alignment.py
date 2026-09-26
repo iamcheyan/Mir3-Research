@@ -15,6 +15,7 @@ import html
 import json
 import re
 import sys
+import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -335,8 +336,69 @@ def load_external_alignment() -> dict[str, Any]:
         "npc_count": len(data.get("npcs", [])),
         "respawn_count": len(data.get("monster_respawns", [])),
         "map_count": len(data.get("maps", [])),
+        "npc_rows": data.get("npcs", []),
+        "respawn_rows": data.get("monster_respawns", []),
         "note": "Canonical NPC/respawn rows remain in the 2026-09-25 offline manifest; this goal does not overwrite them.",
     }
+
+
+def normalize_npcs(rows_in: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    normalized = []
+    for row in rows_in:
+        normalized.append({
+            "npc_index": row.get("current_npc_index"),
+            "current_name": row.get("current_npc_name"),
+            "current_map": row.get("old_map"),
+            "current_xy": row.get("old_xy"),
+            "website_name": row.get("website_name"),
+            "website_page": row.get("website_page"),
+            "website_image_if_any": row.get("website_image"),
+            "matched_identity": row.get("original_identity"),
+            "map_match": row.get("map_relation"),
+            "coordinate_evidence": {
+                "original_map": row.get("original_map"),
+                "original_xy": row.get("original_xy"),
+                "target_map": row.get("hero_kill_map"),
+                "target_xy": row.get("hero_kill_xy"),
+                "topology_anchors": row.get("topology_anchors"),
+                "placement_basis": row.get("auto_placement_basis"),
+                "candidates": row.get("auto_placement_candidates"),
+            },
+            "walkable": row.get("walkable"),
+            "overlap": row.get("overlap_with"),
+            "confidence": row.get("confidence"),
+            "apply_status": row.get("apply_status"),
+            "skip_reason": row.get("skip_reason") or row.get("warnings"),
+            "source_row": row,
+        })
+    return normalized
+
+
+def normalize_respawns(rows_in: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [{
+        "respawn_index": (row.get("old_respawn") or {}).get("index"),
+        "monster_index": row.get("mapped_zircon_monster_index"),
+        "monster_name": row.get("mapped_zircon_monster_name"),
+        "hero_kill": {
+            "map": row.get("hero_kill_map"),
+            "xy": row.get("hero_kill_xy"),
+            "range": row.get("hero_kill_range"),
+            "count": row.get("hero_kill_count"),
+            "interval": row.get("hero_kill_interval"),
+            "monster_name": row.get("hero_kill_monster_name"),
+        },
+        "old_respawn": row.get("old_respawn"),
+        "new_respawn": row.get("new_respawn"),
+        "confidence": row.get("confidence"),
+        "walkable": row.get("walkable"),
+        "hero_kill_walkable": row.get("hero_kill_walkable"),
+        "overlap": row.get("overlap"),
+        "apply_status": row.get("apply_status"),
+        "mapping_method": row.get("mapping_method"),
+        "match_status": row.get("match_status"),
+        "range_note": row.get("range_note"),
+        "source_row": row,
+    } for row in rows_in]
 
 
 def write_tsv(path: Path, rows_out: list[dict[str, Any]]) -> None:
@@ -350,9 +412,43 @@ def write_tsv(path: Path, rows_out: list[dict[str, Any]]) -> None:
             writer.writerow({k: json.dumps(v, ensure_ascii=False, separators=(",", ":")) if isinstance(v, (dict, list)) else v for k, v in row.items()})
 
 
+def git_repo_state(path: Path, remote_ref: str) -> dict[str, Any]:
+    def git(*args: str) -> str:
+        return subprocess.check_output(
+            ["git", "-C", str(path), *args], text=True, stderr=subprocess.DEVNULL
+        ).rstrip("\n")
+
+    try:
+        status = git("status", "--short")
+        return {
+            "path": str(path),
+            "head": git("rev-parse", "HEAD"),
+            "remote": git("rev-parse", remote_ref),
+            "dirty": bool(status),
+            "status_paths": [line[3:] for line in status.splitlines() if len(line) >= 4],
+        }
+    except (OSError, subprocess.CalledProcessError):
+        return {"path": str(path), "error": "git state unavailable"}
+
+
 def build_report(manifest: dict[str, Any], report_path: Path) -> None:
     m = manifest["monster_stats"]; s = manifest["skill_stats"]
     ext = manifest["external_alignment"]; ext_stats = ext.get("stats", {})
+    verification_path = Path(ext["normalized_npc_manifest"]).parent / "verification.json"
+    verification = load(verification_path) if verification_path.exists() else {}
+    normalized_audit = verification.get("normalized_audit", {})
+    research_state = git_repo_state(ROOT, "origin/ei-ui-audit-2026-09-24")
+    zircon_state = git_repo_state(ZIRCON, "origin/ui/legacy-layout-lab")
+    goal_paths = {
+        "Tools/NpcMover/website_alignment.py",
+        "Tools/NpcMover/verify_website_alignment.py",
+        str(report_path.relative_to(ROOT)),
+        str(report_path.parent.relative_to(ROOT)) + "/",
+    }
+    research_unrelated = [
+        path for path in research_state.get("status_paths", [])
+        if not any(path == prefix or path.startswith(prefix) for prefix in goal_paths)
+    ]
     report_path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# NPC + 怪物 + 技能 + 地图网站标准对齐报告（2026-09-26）", "",
@@ -362,6 +458,9 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         f"- Zircon 当前快照：MonsterInfo={manifest['zircon_counts']['monster_info']}，MagicInfo={manifest['zircon_counts']['magic_info']}，NPCInfo={manifest['zircon_counts']['npc_info']}，MapInfo={manifest['zircon_counts']['map_info']}，RespawnInfo={manifest['zircon_counts']['respawn_info']}。",
         f"- 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。",
         "- 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。",
+        f"- Mir3-Research 最终生成时：HEAD={research_state.get('head')}；origin/ei-ui-audit-2026-09-24={research_state.get('remote')}；工作树 dirty={research_state.get('dirty')}。",
+        f"- Zircon 最终生成时：HEAD={zircon_state.get('head')}；origin/ui/legacy-layout-lab={zircon_state.get('remote')}；工作树 dirty={zircon_state.get('dirty')}。",
+        f"- 当前未提交路径保护：Mir3-Research 无关 WIP={json.dumps(research_unrelated, ensure_ascii=False)}；Zircon 无关 WIP={json.dumps(zircon_state.get('status_paths', []), ensure_ascii=False)}；本 Goal 仅提交自身脚本/报告/manifest。",
         "", "## 2. 网站索引和图片证据", "",
         f"- 网站怪物：{m['website_record_count']}；分类数={len(m['website_categories'])}；技能：{s['website_record_count']}。",
         f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}。",
@@ -378,24 +477,25 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "", "## 5. 地图与 NPC", "",
         "- 网站地图共 17 个迷宫区域图 + 世界地图 + 神舰 4 层；没有把它们当成 627 张逐图清单。",
         "- `map_family_manifest.json` 按网站区域名称列出 MapInfo 候选、文件名、描述；具体地图 walkable/尺寸/入口证据复用现有独立 manifest。",
-        f"- NPC 全量和候选位置：复用 `{ext.get('path')}`，行数={ext.get('npc_count')}；NPC 与怪物身份/写入状态分开。",
+        f"- NPC 全量和候选位置：`{ext.get('normalized_npc_manifest')}`，行数={manifest.get('npc_manifest_count')}；保留 current_name/current_map/current_xy、website 证据、map_match、coordinate_evidence、walkable、overlap、confidence、apply_status、skip_reason。",
         f"- NPC 统计：match_method={json.dumps((ext_stats.get('npcs') or {}).get('match_method_counts', {}), ensure_ascii=False)}；map_relation={json.dumps((ext_stats.get('npcs') or {}).get('map_relation_counts', {}), ensure_ascii=False)}；walkable={json.dumps((ext_stats.get('npcs') or {}).get('target_walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('npcs') or {}).get('apply_status_counts', {}), ensure_ascii=False)}；overlap_rows={(ext_stats.get('npcs') or {}).get('overlap_rows')}。",
         "- NPC 没有可靠位置时保持 retain-current，并在既有 manifest 的 candidate/skip_reason 中记录；不删除 NPC。",
         f"- 地图统计：MapInfo={(ext_stats.get('maps') or {}).get('mapinfo_count')}；relation={json.dumps((ext_stats.get('maps') or {}).get('relation_counts', {}), ensure_ascii=False)}；coordinate_reuse={json.dumps((ext_stats.get('maps') or {}).get('coordinate_reuse_counts', {}), ensure_ascii=False)}。",
-        "- NPC 全量字段和候选位置行位于外部机器 manifest；本 Goal 不复制/覆盖其内容。",
+        f"- NPC 原始行与完整候选证据仍可追溯至 `{ext.get('path')}`；本 Goal 不覆盖外部 canonical manifest。",
         "", "## 6. 刷新点 dry-run", "",
         f"- 刷新全量：旧 RespawnInfo={manifest['zircon_counts']['respawn_info']}；Hero-kill parsed={(ext_stats.get('respawns') or {}).get('hero_kill_refresh_count')}；matched={(ext_stats.get('respawns') or {}).get('hero_kill_matched_count')}；YXS-only={(ext_stats.get('respawns') or {}).get('yxs_only_refresh_count')}；Zircon-only={(ext_stats.get('respawns') or {}).get('zircon_only_refresh_count')}；conflict={(ext_stats.get('respawns') or {}).get('refresh_conflict_count')}。",
-        f"- Respawn walkable={json.dumps((ext_stats.get('respawns') or {}).get('walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('respawns') or {}).get('apply_status_counts', {}), ensure_ascii=False)}；旧/新逐行清单仍在外部 manifest。",
+        f"- Respawn 旧/新清单：`{ext.get('normalized_respawn_manifest')}`，行数={manifest.get('respawn_manifest_count')}；walkable={json.dumps((ext_stats.get('respawns') or {}).get('walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('respawns') or {}).get('apply_status_counts', {}), ensure_ascii=False)}。",
         "- Website identity is separate from refresh position: website standard supplies identity/display-name evidence; GB18030 Hero-kill/Mud3 supplies refresh coordinates/count/range.",
         "", "## 7. 独立验证与关键样例", "",
         "- 独立验证脚本：`Tools/NpcMover/verify_website_alignment.py`，不导入生产转换器；检查 JSON 数量、图片文件/尺寸/hash、MonsterLookup/Mon-*.Zl、MIcon、manifest 状态和索引稳定性。",
         "- 关键样例：半兽人、祖玛、祖玛卫士、白野猪、Boss；技能火球术/基本剑术；NPC 至少 3 行；结果见 `verification.json`。",
+        f"- 独立范围审计：NPC/Respawn schema-or-target-coordinate failures={normalized_audit.get('npc_coordinate_or_schema_failures', 'not-run')}/{normalized_audit.get('respawn_coordinate_or_schema_failures', 'not-run')}；旧来源坐标超出 Zircon 目标尺寸={normalized_audit.get('npc_old_coordinates_out_of_target_bounds', 'not-run')}/{normalized_audit.get('respawn_old_coordinates_out_of_target_bounds', 'not-run')}（保留为旧坐标证据，不作为新坐标写入）；NPC/Respawn overlap rows={normalized_audit.get('npc_overlap_rows', 'not-run')}/{normalized_audit.get('respawn_overlap_rows', 'not-run')}。",
         "", "## 8. 写库闸门与未提交文件保护", "",
         "- 7000 当前有监听；未满足停服、用户 dry-run 审核、备份、临时副本 round-trip、双库同步、游戏内验收条件，因此本 Goal 阶段不写真实库。",
         "- Mir3-Research 与 Zircon 的阶段 0 工作树状态保存于 `baseline-repo-state.json`；无关 WIP 保留，不纳入本 Goal 文件。",
         "- 真实库、Users.db、资料站内容均未修改。",
         "", "## 9. 机器可读产物", "",
-        "- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `map-family-manifest.json` / `website-index.json` / `verification.json`。",
+        "- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。",
     ]
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -432,6 +532,10 @@ def main() -> int:
                                  "zircon_mapinfo_candidates": map_family_candidates(area["name"], current_maps),
                                  "coordinate_policy": "independent landmark/walkable verification; no blind reuse"})
     external = load_external_alignment()
+    npc_manifest = normalize_npcs(external.pop("npc_rows", []))
+    respawn_manifest = normalize_respawns(external.pop("respawn_rows", []))
+    external["normalized_npc_manifest"] = str(out / "npc-manifest.json")
+    external["normalized_respawn_manifest"] = str(out / "respawn-manifest.json")
     manifest = {
         "manifest_id": "MIR3-WEBSITE-ALIGNMENT-2026-09-26", "mode": "offline-dry-run", "database_write": False,
         "sources": {"website": str(args.website_root), "website_monsters": str(args.website_root / "data/monsters.json"),
@@ -443,12 +547,16 @@ def main() -> int:
                           "map_region": len(current_regions), "map_info": len(current_maps), "respawn_info": len(current_respawns)},
         "website_counts": {"monsters": len(monsters), "skills": len(skills), "map_groups": len(maps), "map_areas": len(website_index["maps"])},
         "monster_stats": monster_stats, "skill_stats": skill_stats, "monster_identity": monster_manifest,
-        "skills": skill_manifest, "map_families": map_families, "external_alignment": external,
+        "skills": skill_manifest, "map_families": map_families,
+        "npc_manifest_count": len(npc_manifest), "respawn_manifest_count": len(respawn_manifest),
+        "external_alignment": external,
         "business_index_untouched": True, "display_name_changes_only": True,
     }
     (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (out / "website-index.json").write_text(json.dumps(website_index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (out / "map-family-manifest.json").write_text(json.dumps(map_families, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "npc-manifest.json").write_text(json.dumps(npc_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "respawn-manifest.json").write_text(json.dumps(respawn_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_tsv(out / "monster-manifest.tsv", monster_manifest)
     write_tsv(out / "skill-manifest.tsv", skill_manifest)
     build_report(manifest, ROOT / "docs/research/ei-ui-layout/NPC_MONSTER_WEBSITE_ALIGNMENT_REPORT_2026-09-26.md")

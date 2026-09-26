@@ -96,6 +96,102 @@ def resource_header_check(data_root: Path, lookup: dict[str, tuple[int, int]], c
     return {"confirmed_candidates_checked": checked, "resource_failures": missing}
 
 
+def check_normalized_manifests(manifest: dict[str, Any], external: dict[str, Any], errors: list[str]) -> dict[str, Any]:
+    out = Path(manifest["external_alignment"]["normalized_npc_manifest"]).parent
+    npc_path = out / "npc-manifest.json"
+    respawn_path = out / "respawn-manifest.json"
+    npc_rows = load(npc_path) if npc_path.exists() else []
+    respawn_rows = load(respawn_path) if respawn_path.exists() else []
+    dimensions: dict[str, tuple[int, int]] = {}
+    for map_row in external.get("maps", []):
+        size = map_row.get("size", {}).get("zircon") or map_row.get("size", {}).get("hero_kill") or {}
+        if isinstance(size, dict) and size.get("width") and size.get("height"):
+            for key in (map_row.get("original_map"), map_row.get("hero_kill_map")):
+                if key is not None:
+                    dimensions[str(key)] = (int(size["width"]), int(size["height"]))
+            zircon_file = map_row.get("zircon_map_file")
+            if zircon_file:
+                dimensions[Path(str(zircon_file)).stem] = (int(size["width"]), int(size["height"]))
+
+    def valid_xy(value: Any, map_name: Any, check_bounds: bool = True) -> bool:
+        if value is None:
+            return True
+        if not isinstance(value, dict) or not isinstance(value.get("x"), (int, float)) or not isinstance(value.get("y"), (int, float)):
+            return False
+        if value["x"] < 0 or value["y"] < 0:
+            return False
+        bounds = dimensions.get(str(map_name)) if map_name is not None else None
+        return not check_bounds or bounds is None or (value["x"] < bounds[0] and value["y"] < bounds[1])
+
+    npc_required = {"npc_index", "current_name", "current_map", "current_xy", "website_name",
+                    "website_page", "website_image_if_any", "matched_identity", "map_match",
+                    "coordinate_evidence", "walkable", "overlap", "confidence", "apply_status", "skip_reason"}
+    npc_failures = 0
+    npc_old_out_of_range = 0
+    for row in npc_rows:
+        missing = npc_required.difference(row)
+        if missing:
+            npc_failures += 1
+            errors.append(f"normalized NPC {row.get('npc_index')} missing fields: {sorted(missing)}")
+        evidence = row.get("coordinate_evidence") or {}
+        current_xy = row.get("current_xy")
+        target_xy = evidence.get("target_xy")
+        if not valid_xy(current_xy, row.get("current_map"), check_bounds=False):
+            npc_failures += 1
+            errors.append(f"NPC current coordinate malformed: {row.get('npc_index')}")
+        elif not valid_xy(current_xy, row.get("current_map")):
+            npc_old_out_of_range += 1
+        if not valid_xy(target_xy, evidence.get("target_map")):
+            npc_failures += 1
+            errors.append(f"NPC target coordinate out of range or malformed: {row.get('npc_index')}")
+        if not isinstance(row.get("overlap"), list):
+            npc_failures += 1
+            errors.append(f"NPC overlap is not a list: {row.get('npc_index')}")
+
+    respawn_failures = 0
+    respawn_old_out_of_range = 0
+    for row in respawn_rows:
+        old = row.get("old_respawn") or {}
+        new = row.get("new_respawn") or {}
+        old_xy = old.get("xy")
+        if not valid_xy(old_xy, old.get("map"), check_bounds=False):
+            respawn_failures += 1
+            errors.append(f"respawn old coordinate malformed: {row.get('respawn_index')}")
+        elif not valid_xy(old_xy, old.get("map")):
+            respawn_old_out_of_range += 1
+        for value, map_name, label in (
+            (new.get("xy"), new.get("map"), "new"),
+            ((row.get("hero_kill") or {}).get("xy"), (row.get("hero_kill") or {}).get("map"), "hero-kill"),
+        ):
+            if not valid_xy(value, map_name):
+                respawn_failures += 1
+                errors.append(f"respawn coordinate out of range or malformed: {row.get('respawn_index')} {label}")
+        if old and ((old.get("count") is not None and old.get("count") < 0) or
+                    (old.get("delay") is not None and old.get("delay") < 0)):
+            respawn_failures += 1
+            errors.append(f"respawn count/delay invalid: {row.get('respawn_index')}")
+        if not isinstance(row.get("overlap"), list):
+            respawn_failures += 1
+            errors.append(f"respawn overlap is not a list: {row.get('respawn_index')}")
+    if len(npc_rows) != len(external.get("npcs", [])):
+        errors.append("normalized NPC count mismatch")
+    if len(respawn_rows) != len(external.get("monster_respawns", [])):
+        errors.append("normalized respawn count mismatch")
+    return {
+        "npc_records": len(npc_rows),
+        "respawn_records": len(respawn_rows),
+        "npc_coordinate_or_schema_failures": npc_failures,
+        "respawn_coordinate_or_schema_failures": respawn_failures,
+        "npc_old_coordinates_out_of_target_bounds": npc_old_out_of_range,
+        "respawn_old_coordinates_out_of_target_bounds": respawn_old_out_of_range,
+        "map_dimension_keys": len(dimensions),
+        "npc_overlap_rows": sum(1 for row in npc_rows if row.get("overlap")),
+        "respawn_overlap_rows": sum(1 for row in respawn_rows if row.get("overlap")),
+    }
+
+
+
+
 def check_key_samples(manifest: dict[str, Any], external: dict[str, Any], errors: list[str]) -> dict[str, Any]:
     names = {row["website_monster_name"]: row for row in manifest["monster_identity"]}
     required_monsters = ["半兽人", "祖玛教主", "祖玛卫士", "白野猪", "赤月恶魔"]
@@ -186,6 +282,7 @@ def main() -> int:
 
     resource_audit = resource_header_check(args.zircon_root / "Debug/Client/Data", lookup,
                                            [row for row in manifest["monster_identity"] if row.get("status") == "confirmed"], errors)
+    normalized_audit = check_normalized_manifests(manifest, external, errors)
     samples = check_key_samples(manifest, external, errors)
     try:
         with socket.create_connection(("127.0.0.1", 7000), timeout=1):
@@ -206,7 +303,7 @@ def main() -> int:
                              "respawns": len(external.get("monster_respawns", []))},
         "image_audit": {"monsters": monster_image_audit, "skills": skill_image_audit},
         "lookup_count": len(lookup), "monster_statuses": dict(statuses), "skill_statuses": dict(skill_statuses),
-        "resource_audit": resource_audit, "key_samples": samples, "errors": errors,
+        "resource_audit": resource_audit, "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
         "result": "PASS" if not errors else "FAIL",
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
