@@ -153,13 +153,13 @@ TSceneType = (stIntro, stLogin, stSelectCountry, stSelectChr,
 
 | 项 | 说明 |
 |---|---|
-| 40 个窗口逐个（帧号/坐标/控件/事件） | 本阶段只做了清单，未逐窗精读 —— 见阶段 2b |
-| `DWinCtl.pas`（7804 行）通用控件基类 | 未读 —— 见阶段 2c |
-| `uWilFile.pas` 的 57 个资源路径与加载顺序 | 已在 `README.md` D2 做过差集，未读加载逻辑 —— 见阶段 2d |
-| `PlayScn.pas` 的主循环与实体渲染 | 未读 |
-| `Actor.pas`/`AxeMon.pas`/`HerbActor.pas` 的角色/怪物/采集渲染 | 未读 |
-| `magiceff.pas` 魔法特效 | 未读 |
-| `FState.pas`（14853 行，最大客户端文件） | 只读了窗口声明与帧号，主体未读 |
+| 40 个窗口逐个（帧号/坐标/控件/事件） | ✅ **已提取**（`client-windows.md` §8 运行时布局 345 项 + `client-runtime-layout.tsv`） |
+| `DWinCtl.pas`（7804 行）通用控件基类 | ✅ **已读**（`client-controls.md` + `client-internals.md`） |
+| `uWilFile.pas` 的 57 个资源路径与加载顺序 | ✅ **已读**（`client-libraries.md`，含 `.Lib → .wil` 回退规则） |
+| `PlayScn.pas` 的主循环与实体渲染 | ⚠️ 部分（`client-internals.md` §4 结构+调用点，主循环 pending） |
+| `Actor.pas`/`AxeMon.pas`/`HerbActor.pas` | ⚠️ 部分（`Actor.pas` 动作帧表已提取；`AxeMon`/`HerbActor` pending） |
+| `magiceff.pas` 魔法特效 | ⚠️ 仍 pending |
+| `FState.pas`（14853 行） | ⚠️ 部分（窗口声明+帧号+**运行时布局 345 项**已读；其余主体 pending） |
 | 那 10 个共同范围内的帧号是否同图 | 需逐帧像素比对（需原版 WIL + Preview 版 WIL） |
 
 ---

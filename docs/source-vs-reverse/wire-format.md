@@ -254,11 +254,11 @@ GameServer/RunGate ──SM_SEND_PUBLICKEY(536)──→ 客户端  (ClMain.pas:
 | 项 | 说明 |
 |---|---|
 | `enckey.txt` | **已确认线上不走这条路**（见 §5）；`LoadPublicKey` 只服务离线工具。配置清单里的 `enckey.txt` 待查是否为冗余项 |
-| `TMsgHeader` 的实际填充点 | 只读了结构（`Grobal2.pas:9-17`），未读网关侧填充代码 |
+| `TMsgHeader` 的实际填充点 | ⚠️ 仍 pending（只读了结构） |
 | `EncodeBuffer` 的 `BUFFERSIZE` 常量值 | `Common/EDCode.pas` 里未直接 grep 到定义，疑似在 `Hutil32.pas`；影响单包 body 上限 |
 | old version 的启用时点 | 需比对老客户端二进制判断 |
 | `Decrypt` 与 `.dat` 解码研究的交叉 | 种子 `F0 39 AB 8E` / `0x9FDE1A93` 是否与 `WemadeCryptLib.dll` 同族 |
-| `CM_ADDNEWUSER`/`CM_CHANGEPASSWORD`/`CM_UPDATEUSER` 的处理点 | 三个 opcode 在 `LoginServer/protocol.h:27-29` 有定义（2002-2004），但全仓未找到接收端 case；见 `protocol.md` §2 与 `dispatch-coverage.json` |
+| `CM_ADDNEWUSER`/`CM_CHANGEPASSWORD`/`CM_UPDATEUSER` 的处理点 | ✅ **已定案**：接收端**确实缺失**（`tools-and-servers.md` §1，`verify_missing_opcodes.py` 穷举验证 PASS） |
 
 ---
 

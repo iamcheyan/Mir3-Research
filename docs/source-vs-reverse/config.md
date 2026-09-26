@@ -303,10 +303,10 @@ D4303 693
 
 | 项 | 说明 |
 |---|---|
-| `MonGen.txt` 格式（`Envir3` 版） | 未读解析器 |
-| `Merchant.txt` / `Npcs.txt` 格式 | 未读解析器 —— 与 `TNormNpc` 能力标志的映射是重点 |
-| `MakeItem.txt` / `DragonItem.txt` / `DecoItem.txt` | 未读 |
-| `StartPoint.txt` / `SafePoint.txt` | 已看内容（`地图 x y`），未读解析器 |
+| `MonGen.txt` 格式 | ✅ **已读**（§14.2，12 字段） |
+| `Merchant.txt` / `Npcs.txt` 格式 | ✅ **已读**（§14.3/§14.4）+ **能力标志映射已闭合**（§14.8） |
+| `MakeItem.txt` / `DragonItem.txt` / `DecoItem.txt` | ✅ **已读**（§14.7 + §14.12） |
+| `StartPoint.txt` / `SafePoint.txt` | ✅ **已读**（§14.6，4 字段） |
 | `Envir3/QuestDiary/` 脚本语法 | ✅ **已解**（`server.md` §12.9/§13.10） |
 | ~~MonQuest 私有编码~~ | ✅ **已破译**（见 §7） |
 | `Envir/` 为何被抽空 | 未知（是否原作者有意清理？） |

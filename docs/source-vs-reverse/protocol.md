@@ -207,10 +207,10 @@ CM_PROTOCOL    CM_QUERYCHR         CM_SELCHR  CM_SELECTSERVER  CM_UPDATEUSER
 
 | 项 | 说明 |
 |---|---|
-| `TDefaultMessage` 结构与线格式 | 尚未读 `EncodeMessage`/`DecodeString` 实现 |
-| 校验和/防外挂链 | `UsrEngn.pas:3530` 的 `GetPublicKey`/`RandKey` 宏程序检测算法待拆 |
+| `TDefaultMessage` 结构与线格式 | ✅ **已读**（`wire-format.md`，含 `edcode.py` 参考实现 10 项自测） |
+| 校验和/防外挂链 | ✅ **已读**（`wire-format.md` §3，含实测值 `Etc=0xDC52`） |
 | 392 vs 474 的口径 | 需确认 `reference/mir3-source/README.md` 的 392 从哪来 |
-| 服务端分派表完整性 | 本阶段只做了「客户端发 vs GameServer case」差集；`UsrEngn`/`FriendSystem`/`UserMgr` 三处二级分派未合并统计 |
+| 服务端分派表完整性 | ✅ **已完成**（`coverage.py` 分层统计；`tools-and-servers.md` 定案 3 个缺失 opcode） |
 | `0x400`/`0x408` 等修正的逐条原版复核 | §3.1(c) 的批量结论需逐条回到原版证据原文确认后再落盘 |
 | 韩文注释翻译 | 474 条里带注释的尚未系统翻译（本文件只译了涉及的） |
 

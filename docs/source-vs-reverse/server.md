@@ -322,19 +322,20 @@ NPC 类型字段的语义来源：
 
 ---
 
-## 5. 待办
+## 5. 待办（**2026-09-26 全量精读后更新**）
 
-| 项 | 说明 |
+| 项 | 状态 |
 |---|---|
-| `ObjBase.pas` 主体（31,768 行） | 本阶段只读了类声明与字段，方法实现未读 |
-| `ObjNpc.pas` 任务引擎 | 只读了 `TQuestRecord`/`TNormNpc` 结构，`CheckQuestCondition`/`GotoQuest` 实现未读 |
-| `TQuestRequire` 结构 | 未读（任务前置条件的字段定义） |
-| `Magic.pas` 技能计算 | 未读 |
-| `ObjMon*.pas`（8,111 行） | 未读 |
-| 怪物 AI / 寻路 | 未读（`_Oranze Library/astar.h` 有 A* 实现） |
-| `CmdMgr.pas` GM 命令表（629 行） | 未读 —— 可与原版 `@move` 等命令对照 |
-| `svMain.pas` 启动流程与 `EnvirDir` | 部分读过（`:619`），完整启动链未读 |
-| 服务端是否读 `Envir3/` | README 称 grep 命中 0 次；本阶段未独立复验 |
+| `ObjBase.pas` 主体（31,768 行） | ✅ **已读方法实现**（§10：视野/移动/消息族/掉落族/GM 命令表）；物品转换族（`:1802-2722`）与 `TUserHuman` 其余仍 pending |
+| `ObjNpc.pas` 任务引擎 | ✅ **已读**（§12：五层模型/`CheckQuestCondition`/`CheckSayingCondition`/53+75 opcode/`GotoQuest`/`TakeItemFromUser`）；`NpcSay` 族与 `TMerchant` 实现 pending |
+| `TQuestRequire` 结构 | ✅ **已读**（§12.1，`RandomCount`/`CheckIndex`/`CheckValue`，`MAXREQUIRE=10`） |
+| `Magic.pas` 技能计算 | ✅ **已读**（`magic.md`：4 块 26 条分派/三伤害公式/符咒/击退）；55 个 `Mag*` 实现主体 pending |
+| `ObjMon*.pas`（8,111 行） | ✅ **已读类层次与 AI 核心**（`monsters.md`：71 类/`Think`/`AttackTarget`/`Run`）；各构造与 `ObjMon3` 实现 pending |
+| 怪物 AI / 寻路 | ✅ **已定案**：`astar.h` 是**死代码**（无 `#include`），寻路是 `TAnimal.GotoTargetXY` 贪心 8 方向 |
+| `CmdMgr.pas` GM 命令表（629 行） | ✅ **已读**（§11：`TCmdMsg`/`ICommand`/`TCmdMgr`）；**GM 命令 131 条已提取**（`gm-commands.tsv`） |
+| `svMain.pas` 启动流程与 `EnvirDir` | ⚠️ **部分**（`:619` `EnvirDir` 读取点）；完整启动链 pending |
+| 服务端是否读 `Envir3/` | ✅ **已独立复验**：全仓 grep `Envir3` **零命中**（Round 809） |
+| `Envir.pas` 剩余方法 | ✅ **已读**（§13：`CanWalk`/`AddToMap`/门/`MapQuest`/`TEnvirList`）；`GetItemEx`/`MoveToMovingObject`/`DeleteFromMap` pending |
 
 ---
 

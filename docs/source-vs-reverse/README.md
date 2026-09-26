@@ -350,3 +350,69 @@ TMIR3MapCellHeader = 14 B  (block/backAnim/topAnim/topFile/backFile 各 1
 | DFM 字符串属性 | 长度前缀异常（`Caption` 值 `FrmDlg` 读成 `rmDlg`）→ **字符串不可靠，几何整型可靠** |
 | `CM_ADDNEWUSER`(2002)/`CM_CHANGEPASSWORD`(2003)/`CM_UPDATEUSER`(2004) | 接收端 `case` 在本源码包内**确实缺失**，标注待查 |
 | `SM_FRIEND_*` 在客户端的分派点 | 未查（只追了 `CM_` 方向） |
+
+---
+
+## 0.6 全量精读状态（2026-09-26 收尾）
+
+**来源**：`coverage-ledger.tsv`（393 个源码文件逐一登记）。
+**复现**：`python3 Tools/source-read/ledger.py --summary`
+
+| 状态 | 文件数 | 行数 | 占比 |
+|---|---:|---:|---:|
+| `covered`（已精读并写入文档） | 27 | 29,884 | 9.5% |
+| `partial`（读了主要结构/区段） | 21 | 99,738 | 31.6% |
+| `excluded`（第三方，明确排除） | 43 | 60,230 | 19.1% |
+| `pending`（待读） | 302 | 125,472 | 39.8% |
+| **合计** | **393** | **315,324** | 100% |
+
+**已读覆盖**：`covered + partial = 129,622 行（41.1%）`。
+
+### 0.6.1 本轮（Round 810–820）新增的文档
+
+| 文件 | 内容 |
+|---|---|
+| [`magic.md`](magic.md) | 技能系统：4 块 26 条分派、三伤害公式、符咒、击退概率 |
+| [`monsters.md`](monsters.md) | 71 个怪物类、AI 核心（`Think`/`AttackTarget`/`Run`）、A\* 死代码 |
+| [`items-systems.md`](items-systems.md) | 装备升级两公式、**攻速有符号编码**、玩法系统 |
+| [`client-internals.md`](client-internals.md) | 按钮四态、`TDGrid`、**背包几何 6×8@38**、`+6` 偏移 |
+| [`client-rendering.md`](client-rendering.md) | **动作帧公式** `start + Dir*(frame+skip)`、46 表 329 项 |
+| [`tools-and-servers.md`](tools-and-servers.md) | 工具链、登录/DB 服、**3 个缺失 opcode 定案** |
+
+### 0.6.2 本轮新增的机器可读产物
+
+| 文件 | 行数 | 内容 |
+|---|---:|---|
+| [`coverage-ledger.tsv`](coverage-ledger.tsv) | 394 | 393 个源码文件的阅读状态 |
+| [`gm-commands.tsv`](gm-commands.tsv) | 162 | **GM 命令 131 条**（含韩文别名与动作） |
+| [`quest-opcodes.tsv`](quest-opcodes.tsv) | 129 | **任务脚本语言 53 条件 + 75 动作** |
+| [`config-parsers.tsv`](config-parsers.tsv) | 95 | 19 个配置解析器 / 94 字段读取点 |
+| [`magic-dispatch.tsv`](magic-dispatch.tsv) | 27 | 26 条 MagicId 分派（4 个 case 块） |
+| [`monster-classes.tsv`](monster-classes.tsv) | 72 | 71 个怪物类层次 |
+| [`actor-frames.tsv`](actor-frames.tsv) | 330 | **46 个动作表 / 329 项** |
+| [`client-runtime-layout.tsv`](client-runtime-layout.tsv) | 346 | 345 项运行时窗口几何 |
+
+### 0.6.3 本轮新增的工具（`Tools/source-read/`）
+
+`ledger.py`（销账台账）、`extract_gm_commands.py` + `gm_to_markdown.py`、
+`extract_quest_opcodes.py`、`wemade_decrypt.py`、`extract_config_parsers.py`、
+`extract_magic_dispatch.py`、`extract_monster_classes.py`、
+`extract_runtime_layout.py`、`extract_actor_frames.py`、
+`verify_missing_opcodes.py`、`env_compare.py`。
+
+### 0.6.4 本轮的两项**修正**（前序阶段的错误结论）
+
+1. **屏幕基准**：初版称「Preview 是 1024×768+，与原版 800×600 不同」
+   —— **错**。`ClMain.pas:25-26` 明确 `SCREENWIDTH=800`/`SCREENHEIGHT=600`，
+   两版**同为 800×600**。DFM 的 1095×975 只是编辑期画布（`client-windows.md` §8）。
+2. **A\* 寻路**：初版称「`astar.h` 有 A\* 实现」—— **不准确**。
+   `astar.h` **无任何 `#include`**（仅工程文件列出），是**死代码**；
+   实际寻路是贪心 8 方向（`monsters.md` §4）。
+
+### 0.6.5 未破译项已清零
+
+`config.md` §7 曾登记 3 个「未破译的私有编码」任务脚本
+（`Nm_Chiken`/`Nm_Cow`/`Nm_OmaJunsa`）—— **本轮已破译**：
+它们是 **WEMADE 加密**（`EDCode.pas:465-522` 的 `Decrypt`），
+工具 `Tools/source-read/wemade_decrypt.py`。扫描确认 `QuestDiary/` 全树
+443 个文件**只有这 3 个加密**，现已全部可读（`server.md` §13.10）。
