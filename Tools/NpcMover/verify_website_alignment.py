@@ -331,6 +331,7 @@ def main() -> int:
                              "map_families": len(manifest["map_families"]), "npc": len(external.get("npcs", [])),
                              "respawns": len(external.get("monster_respawns", []))},
         "image_audit": {"monsters": monster_image_audit, "skills": skill_image_audit},
+        "lookup_count": len(lookup), "monster_statuses": dict(statuses), "skill_statuses": dict(skill_statuses),
         "resource_audit": resource_audit, "icon_audit": icon_audit, "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
         "result": "PASS" if not errors else "FAIL",
     }
