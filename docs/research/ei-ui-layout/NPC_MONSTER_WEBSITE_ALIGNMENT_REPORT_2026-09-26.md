@@ -93,3 +93,8 @@
 - 独立验证器：`Tools/NpcMover/verify_extension_alignment.py`；验证 items=371、skills=61、missions=24、网站物品图片=361、技能图片=61、未闭合行均有 skip_reason，结果 `PASS`，输出 `extension-verification.json`。
 - 所有扩展产物均 `database_write=false`；当前 7000 仍监听，不能进入真实库阶段。`DECISIONS_PENDING.md` 的审核闸门继续有效。
 - 扩展报告和清单只提交本 Goal 新增脚本/产物；现有用户 WIP、Zircon 未提交 acceptance artifacts、网站未提交路径均保持不变。
+
+## 14. 当前用户闸门决定
+
+- 2026-09-26 用户选择“继续只读审核”，不进入写库阶段。
+- 因此不停止 7000、不执行数据库备份/副本 round-trip/双库同步，不修改 `System.db` 或 `Users.db`；pending/investigate 项保持原状。
