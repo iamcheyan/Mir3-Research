@@ -9885,3 +9885,65 @@ stNewChr, stLoading, stLoginNotice, stPlayGame)`（`IntroScn.pas:19`）。
 
 **落盘**：`docs/source-vs-reverse/client-windows.md`、`Tools/source-read/dfm_parse.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 806 (source deep-read, DWinCtl) — 2026-09-26：控件基类与四级输入优先级
+
+> 证据源 `Source/Client/DWinCtl.pas`（7804 行）。产物 `docs/source-vs-reverse/client-controls.md`。
+
+**〔类层次（17 类）〕**`TDControl`（:69，继承 VCL `TCustomControl`）为基类；
+`TDButton`(:203) ← `TDWindow`(:257) ← `TDModalWindow`(:292)；
+另有 `TDGrid`/`TDCheckBox`/`TDUpDown`/`TDHooKKey`/`TDCustomEdit`（→`TDMemo`/
+`TDImageEdit`/`TDEdit`→`TDComboBox`）/`TDListView`/`TDPopUpMemu`/`TDTreeView`；
+`TDWinManager = class(TComponent)`(:809) 为窗口管理器。
+**关键结构事实：`TDWindow` 继承自 `TDButton` 而不是 `TDControl`** ——
+窗口本身就是一种按钮，有 `FOnClick`。这解释了原版反编译里「窗口类同时有
+vtable 绘制槽和点击处理器」的现象。
+
+**〔全局单例〕**`MouseCaptureControl`/`FocusedControl`/`KeyControl`/
+`ModalDWindowList`/`ModalDWindow`/`PopUpDWindow`/`MouseEntryControl` 等（:842-859）。
+**`GUIFScreenWidth/Height` 默认 800×600**（:858-859），但 `FState.dfm` 根窗体是
+1095×975、窗口 x 最大 1008 → **矛盾，说明 800×600 是残留默认值，运行时被改写**。
+配套被注释掉的 `g_FScreenWidth=800`/`g_FScreenHeight=600`（:16-17）与
+`WINLEFT=60`/`WINTOP=60`（:19-20）同源。
+
+**〔四级输入优先级（本轮最有价值的产出）〕**`TDWinManager` 的每个输入方法
+（MouseMove/MouseDown/MouseUp/KeyPress/KeyDown/KeyUp/MouseWheel/Click/DblClick）
+共用同一骨架（以 MouseMove :2271-2324 为例）：
+```
+1. PopUpDWindow（弹出窗）      —— 可见则独占 exit
+2. ModalDWindowList（模态栈）  —— 栈顶倒序找第一个可见的，独占 exit
+3. ModalDWindow（单个模态窗）  —— 可见则独占 exit
+4. MouseCaptureControl（捕获） —— 有捕获则只发它
+5. DWinList（普通窗口）        —— **正序**遍历，首个返回 True 的 break
+```
+而 `TDControl.MouseMove` 内部的**子控件**遍历是**倒序**（:1520
+`for i := DControls.Count-1 downto 0`）→ **父层正序、子层倒序**。
+含义：`DWinList` 索引小的先命中（索引小 = 更靠前）；同一窗内后添加的子控件先命中。
+
+**〔绘制顺序与输入相反〕**`DirectPaint`(:2691-2738)：先把 `ModalDWindow` 与
+`PopUpDWindow` 临时 `Visible:=False` 藏起来 → 正序画 `DWinList` → 恢复并补画
+Modal → 正序画 `ModalDWindowList` → 最后画 `PopUpDWindow`。
+「先藏后补」保证模态/弹出窗永远在最上层，不依赖 `DWinList` 顺序。
+**静态阅读容易误判成「模态窗被漏画」**，这是本轮记下的一个阅读陷阱。
+
+**〔命中测试两级〕**`InRange`(:1439-1458)：①矩形 `Left/Top/Width/Height`；
+②**像素级** —— 查该控件帧位图 `WLib.Images[FaceIndex]`，该点
+`Pixels[x-Left, y-Top] <= 0`（全透明）则判**不命中**；有 `FOnInRealArea`
+则改走自定义形状。这是原版 `PtInRect` IAT `[0x4762B4]`（只做矩形）的对应物，
+**源码补上了原版静态证据看不到的像素级规则** —— 研究原版不规则控件
+（罗盘按钮、X 关闭钮）时必须考虑。
+
+**〔坐标转换陷阱〕**`LocalX/LocalY`(:1315-1341) 沿 `DParent` 链**逐级减去所有祖先**
+的 Left/Top；而 `TDControl.MouseMove` 递归子控件时减的是**自己**的 Left/Top
+（:1522）。两者混用会算错。
+
+**〔源码补上的业务语义〕**
+- `TClickSound = (csNone, csStone, csGlass, csNorm)`（:38）→ 给原版证据里的
+  「共享音效命令 `0x69`」（F251/F243）补上四个音效名。
+- 编辑框白名单 5 组（:10-14）+ `TDEditClass` 7 态（:39）。
+- 18 种事件回调（:45-67），含 `TOnInRealArea`（自定义命中形状）、
+  `TOnDirectPaint`/`FOnEndDirectPaint`（对应原版窗口 vtable `+0x0c` 绘制槽）。
+- 拼写错误保留原样：`TDPopUpMemu`（Menu）、`SetDKocus`（Focus）。
+
+**落盘**：`docs/source-vs-reverse/client-controls.md`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
