@@ -13,7 +13,7 @@
 1. 82 机器上准备环境（§4 环境引导，一次性）
 2. 按 §5–§8 启动四个 goal（E0/E1/E2/E3），每个 goal 一个 tmux 会话 + omp 会话
 3. 每个 goal 的初始 prompt = 本文档对应章节 + "完整阅读 docs/editor/EDITOR_GOALS_MASTER.md 中你的章节，严格按验收标准执行"
-4. 注册 `scripts/goal_watchdog.sh` GOALS 数组（格式见 §9.1）
+4. 通过私有 `~/.hermes/scripts/mir3-goal-watchdog.sh` 注册 GOALS（格式见 §9.1；运行脚本不进仓库）
 5. 冲突协议：各 goal 只写自己领地文件（§9.2），共享文件小改标 `[shared]`
 
 **全局铁律（违反任何一条 = 工作无效）**：
@@ -525,7 +525,7 @@ Segment 2 — 全分辨率格 (14B/格, 行优先按列: 第 i 格 → x=i//h, y
 
 ## 9. 执行与协作约定
 
-### 9.1 goal 注册（goal_watchdog.sh）
+### 9.1 goal 注册（私有 mir3-goal-watchdog.sh）
 
 GOALS 数组每行：`<session-id>|<session.jsonl 绝对路径>|<tmux 会话名>|<workdir>|<中文标签>`。
 

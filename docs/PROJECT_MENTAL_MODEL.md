@@ -29,7 +29,7 @@
 | 仓库/机器 | 角色 | 关键路径 |
 |---|---|---|
 | `~/development/Zircon`（本机大写/82 小写 zircon） | 游戏本体：Godot 客户端 + ServerCore + LibraryCore | `GodotClient/`、`ServerLibrary/`、`LibraryCore/`、`Debug/{Client,ServerCore}`；原版 `Client/` 只读 |
-| `~/development/Mir3-Research` | 工具+文档+研究：全部 web 工具、goal 体系、逆向研究 | `Tools/`、`docs/`、`scripts/goal_watchdog.sh` |
+| `~/development/Mir3-Research` | 工具+文档+研究：全部 web 工具、goal 任务说明、逆向研究 | `Tools/`、`docs/`；运行时 watchdog 在 `~/.hermes/scripts/` |
 | NAS（本机 `/home/tetsuya/NAS/TMP/`，82 `/data/NAS/TMP/`） | 原版资源：EI 传奇3.0客户端、Mud3 服务端 | `MIR3_EI_ROOT` / `MIR3_MUD3_ROOT` |
 | 82 机器（192.168.3.82，debian） | goal 军团执行机：tmux + omp + cron watchdog | 会话 ed-infra/ed-map/ed-res（E0/E1/E3）|
 
@@ -85,7 +85,7 @@
 ## 七、Goal 军团体系（82 机器）
 
 - 结构：tmux 会话（ed-infra/ed-map/ed-res）+ `omp --auto-approve "$(cat prompt)"` 启动
-  + cron `*/5` 跑 `scripts/goal_watchdog.sh`（HEALTHY/RUNNING/PAUSED/STALLED/DEAD/
+  + cron `*/5` 跑 `~/.hermes/scripts/mir3-goal-watchdog.sh`（HEALTHY/RUNNING/PAUSED/STALLED/DEAD/
   COMPLETED 判定，卡住发「继续」，死了 `omp --resume --auto-approve` 拉起，完成自动
   kill-switch 回收，记 ~/.omp/logs/goal-completed.log）
 - GOALS 数组行格式：`<session-id>|<jsonl绝对路径>|<tmux名>|<workdir>|<中文标签>`

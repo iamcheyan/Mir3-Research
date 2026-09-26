@@ -45,7 +45,7 @@
 | `Tools/common/wilsdk.py` | Python 库 | WIL/WIX 解码库 |
 | `Tools/item_icon_extractor` | C# | `zldecode`：.Zl 逐帧解码成 BMP（BC7 兜底），zlsdk 内部 subprocess 调用 |
 | `Tools/reverse-engineering/` | Python 脚本组 | 原版 EXE/UI/资源证据提取（历史逆向产物，一般不用动） |
-| `scripts/goal_watchdog.sh` | bash+systemd timer | omp goal 会话看门狗（详见 §六） |
+| `~/.hermes/scripts/mir3-goal-watchdog.sh` | bash+cron（私有运行时） | omp goal 会话看门狗（项目仓库不保存运行脚本） |
 
 端口全景（改绑定先 `ss -tlnp` 查占用）：80 svc-dashboard / 7000 游戏服 / 7001 wsgateway /
 8765 wilviewer / 8800 dbviewer / 8810 dbeditor / 8820 uieditor / 8821 webres / 8822 webclient /
@@ -96,9 +96,9 @@
 - zircon 推送远程是 `fork`/origin=iamcheyan/Zircon，upstream=Suprcode/Zircon（合并上游
   逻辑冲突必须先问用户）。
 
-## 六、goal_watchdog 体系（本仓库 scripts/ 是它的家）
+## 六、goal_watchdog 体系（私有运行时，不属于本仓库）
 
-- `scripts/goal_watchdog.sh` 由 **crontab 每 5 分钟**跑一次（`crontab -l` 可见）。
+- `~/.hermes/scripts/mir3-goal-watchdog.sh` 由 **crontab 每 5 分钟**跑一次（`crontab -l` 可见）；脚本和 GOALS 状态不进入本仓库。
 - **GOALS 数组**（脚本 67 行起）每行 5 字段：`goal_id|jsonl路径|tmux会话名|workdir|标签`。
   新开 goal = 加一行 + commit；主动停 goal = kill omp 进程 + `touch ~/.omp/mir3-goal-watchdog.<前8位>.off` + 删数组行（kill 和 off 缺一不可，否则看门狗 5 分钟内复活它）。
 - goal 达到终态（complete/blocked/error）时看门狗**自动** kill 进程+tmux 会话并追加记录到
