@@ -91,12 +91,12 @@ E-tools	Source/Tools/ImageEditor/Common/ZLibEx.pas	726	21853	pending
 E-tools	Source/Tools/ImageEditor/Common/ZLibx.pas	733	21557	pending	
 E-tools	Source/Tools/ImageEditor/Common/bass.pas	1021	52162	pending	
 E-tools	Source/Tools/ImageEditor/Common/mudutil.pas	1009	26358	pending	
-A/C-server	Source/GameServer/Castle.pas	1241	42317	pending	
+A/C-server	Source/GameServer/Castle.pas	1241	42317	partial	Round 813: CASTLEFILENAME/CASTLEATTACERS 定位；其余实现待读
 A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
 A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
 A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
 A/C-server	Source/GameServer/DBSQL.pas	1050	33281	pending	
-A/C-server	Source/GameServer/DragonSystem.pas	604	18322	pending	
+A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 813: DRAGONITEMFILE + DecodeStrInfo 状态机格式；其余实现待读
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
 A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
 A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界模型+.map格式+对象注册+移动门+门+MapQuest+EnvirList
@@ -108,7 +108,7 @@ A/C-server	Source/GameServer/Guild.pas	3600	121469	pending
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
-A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 809/811/812: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest；MonGen/Merchant/Npcs 解析器待读
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809/811/812/813: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest/全部19个配置解析器
 A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
 A/C-server	Source/GameServer/Magic.pas	1756	72544	pending	
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	

@@ -10412,3 +10412,85 @@ AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + S
 **落盘**：`server.md` §13（约 300 行）、`config.md` §7 改为「已破译」、
 `Tools/source-read/wemade_decrypt.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 813 (全量精读 B6-B9) — 2026-09-26：配置解析器全表（19 函数 / 94 字段）
+
+> 解析器集中在 `Source/GameServer/LocalDB.pas`（2649 行）。
+> 产物 `docs/source-vs-reverse/config-parsers.tsv`（19 函数/94 字段读取点）、
+> `Tools/source-read/extract_config_parsers.py`、`config.md` §14。
+
+**〔26 个文件名常量全表（`LocalDB.pas:11-39`）〕**含三个**此前未区分的脚本目录**：
+`Market_Def\`（商店脚本，由 `Merchant.txt` 的 `MarketName` 引用）、
+`Npc_def\`（NPC 对话脚本）、`QuestDiary\`（**任务脚本树 443 个 `.txt`**，
+由 `MapQuest.txt` 的 `qFile` + NPC 脚本引用）。
+另有 `MONBAGDIR = 'MonItems\'`（掉落表目录）。
+
+**〔`MonGen.txt`（`LoadZenLists` :385-458）—— 字段最多（12 个）〕**
+`<地图名> <X> <Y> "<怪物名>" <范围> <数量> <刷怪时间(分)> <小刷率> <TX> <TY> <喊话类型> <喊话内容>`。
+三个关键点：①**刷怪时间单位是分钟**，代码 `× 60 × 1000` 转毫秒（`:427`）
+②有效性校验 `MapName<>''` **且** `MonName<>''` **且** `MonZenTime<>0`，
+且地图必须存在（`:441`）③**末尾追加一条空记录**（`:450-454`，
+注释「마지막은 운영자가 만드는 몬스터...」= 最后一条是运营者创建的怪物）
+—— **给 GM 动态刷怪留的槽位**。
+
+**〔`Merchant.txt`（`LoadMerchants` :891-940）〕**
+`<市场名> <地图> <X> <Y> "<商人名>" <脸型> <外观> <城堡管理>`。
+校验 `marketname`/`map`/`apprstr` 三者非空。**被注释掉的字段**
+（`:931-932`）`StorageItem`/`RepairItem` —— 早期用字段控制仓库/修理，
+后来改成 `Market_Def\` 脚本里的 `@storage`/`@repair` 命令。
+**`ReloadMerchants`（`:942-`）的增量更新模式值得学习**：先把所有现存商人的
+`NpcFace` 置 255（标记待验证）→ 重读文件命中的重置 → 仍为 255 的视为已删除。
+**热重载不重启的经典手法。**
+
+**〔`Npcs.txt`（`LoadNpcs` :1044-）〕**7 字段：
+`"<NPC名>" <种族> <地图> <X> <Y> <脸型> <外观>`。
+**注意第 2 个字段 `racestr` 被读但未见赋值** —— 疑似种族（用于 `TAnimal` 派生）。
+
+**〔`GuardList.txt`（`LoadGuards` :1211-1252）〕**5 字段，
+**分隔符与其他不同**（`:1235-1237`）：`xstr` 用 `[' ', ',']`、
+`ystr` 用 `[' ', ',', ':']`、`dirstr` 用 `[' ', ':']`
+→ **守卫表支持 `X,Y:Dir` 或 `X Y Dir` 两种写法**。
+
+**〔`StartPoint.txt`/`SafePoint.txt`（`:1296-`/`:1327-`）〕**同格式
+`<地图> <X> <Y> [<范围>]`（4 字段，第 4 个可选）。实测 `01 439 304` 等。
+
+**〔`DecoItem.txt`（`:1358-`）与 `MakeItem.txt`（`:1252-`）〕**
+`DecoItem` = `<编号> <名称> <类型> <价格>`，**分隔符含 `-`**
+（`:1374-1377` `[' ', '-', #9]`）→ 支持连字符写法。
+`MakeItem` 用 `ArrestStringEx(str,'[',']')` 取**方括号内的配方名**（`:1275`）
+→ 格式 `[配方名] 物品名`。
+
+**〔`Market_Def\` 脚本命令 → `TNormNpc` 能力标志（闭合「配置→运行时能力」链）〕**
+`@buy`→`CanBuy`、`@sell`→`CanSell`、`@storage`→`CanStorage`、
+`@getback`→`CanGetBack`、`@repair`→`CanRepair`、`@s_repair`→`CanSpecialRepair`、
+`@t_repair`→`CanTotalRepair`、`@makedrug`→`CanMakeDrug`、
+`@upgrade`/`@upgradenow`→`CanUpgrade`、
+`@makeitem`/`@makestuff`/`@makeetc`/`@makefood`/`@makegem`/`@makepotion`→`CanMakeItem`、
+`@market_*`→`CanItemMarket`、`@agit*`→`CanAgitUsage`/`CanAgitManage`、
+`@ga_decoitem_buy`→`CanBuyDecoItem`。
+→ **`ActivateNpcUtilitys(saystr)`（`ObjNpc.pas:136`）就是从脚本字符串识别这些
+`@命令` 来打开对应能力**。完整链：
+`Merchant.txt` → `MarketName` → `Market_Def\<名>.txt` 的 `@命令` →
+`ActivateNpcUtilitys` → `TNormNpc` 能力标志 → NPC 可交易。
+
+**〔`MonItems\` 掉落表（`LoadMonItems` :174-227）〕**按怪物名读
+`MonItems\<怪物名>.txt` 产出 `ilist`。两版同名文件内容不同（已在 `config.md` §1.1 记录）。
+
+**〔两个「不在 LocalDB.pas」的解析器（实测修正）〕**
+先前文档写「`DragonItem.txt`/`Sabuk.txt`/`AttackSabukWall.txt` 解析器未找到」——
+**已定位**：`DragonItem.txt` → **`DragonSystem.pas:13`**（`DRAGONITEMFILE`）；
+`Sabuk.txt` → **`Castle.pas:12/15`**（`CASTLEFILENAME`）；
+`AttackSabukWall.txt` → **`Castle.pas:18`**（`CASTLEATTACERS`）。
+→ **配置解析不集中在 `LocalDB.pas`**，子系统各管自己的配置。
+
+**〔`DragonItem.txt` = 唯一的「状态机式命令流」格式（`DragonSystem.DecodeStrInfo` :195-）〕**
+**不是「一行一记录」**：`!` 前缀是命令（`:228`），
+`!LEVEL <等级>` 切换 `CurrentLevel` 上下文、`!EXP <经验>` 设置该等级掉落经验
+（写入 `FLevelInfo[CurrentLevel-1].DropExp`）。**状态累积 —— 后续数据行归属当前等级，
+不能逐行独立解析**。范围校验 `1..DRAGON_MAX_LEVEL`，越界返回**带行号**的错误串
+（`:239`）。默认值 `CurrentLevel:=1`、`CurrentExp:=10000`（`:215-216`）。
+→ 做解析器时必须与其余「空格分隔一行一记录」格式区别对待。
+
+**落盘**：`config.md` §14（约 200 行）、`config-parsers.tsv`（94 行）、
+`Tools/source-read/extract_config_parsers.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

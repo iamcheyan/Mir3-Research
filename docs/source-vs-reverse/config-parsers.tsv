@@ -1,0 +1,95 @@
+func	file_const	file_name	line	seq	field	reader
+LoadMonItems			197	1	data	GetValidStr3
+LoadMonItems			199	2	data	GetValidStr3
+LoadMonItems			202	3	data	GetValidStrCap
+LoadMonItems			209	4	pmi.Count	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	403	1	pz.MapName	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	405	2	pz.X	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	407	3	pz.Y	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	410	4	pz.MonName	GetValidStrCap
+LoadZenLists	ZENFILE	MonGen.txt	417	5	pz.Area	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	419	6	pz.Count	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	421	7	pz.MonZenTime	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	428	8	pz.SmallZenRate	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	432	9	pz.TX	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	434	10	pz.TY	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	436	11	pz.ZenShoutType	GetValidStr3
+LoadZenLists	ZENFILE	MonGen.txt	438	12	pz.Mons	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	591	1	FrmMain.Caption	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	780	2	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	784	3	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	787	4	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	789	5	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	791	6	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	793	7	data	GetValidStr3
+LoadMapFiles	MAPDEFFILE	MapInfo.txt	795	8	data	GetValidStr3
+LoadAdminFiles	ADMINDEFFILE	AdminList.txt	834	1	temp	GetValidStrCap
+LoadAdminFiles	ADMINDEFFILE	AdminList.txt	838	2	temp	GetValidStrCap
+LoadAdminFiles	ADMINDEFFILE	AdminList.txt	842	3	temp	GetValidStrCap
+LoadChatLogFiles			870	1	temp	GetValidStrCap
+LoadMerchants	MERCHANTFILE	Merchant.txt	906	1	marketname	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	907	2	map	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	908	3	xstr	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	909	4	ystr	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	911	5	seller	GetValidStrCap
+LoadMerchants	MERCHANTFILE	Merchant.txt	917	6	facestr	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	918	7	apprstr	GetValidStr3
+LoadMerchants	MERCHANTFILE	Merchant.txt	919	8	merchant.BoCastleManage	GetValidStr3
+ReloadMerchants			967	1	marketname	GetValidStr3
+ReloadMerchants			968	2	map	GetValidStr3
+ReloadMerchants			969	3	xstr	GetValidStr3
+ReloadMerchants			970	4	ystr	GetValidStr3
+ReloadMerchants			972	5	seller	GetValidStrCap
+ReloadMerchants			978	6	facestr	GetValidStr3
+ReloadMerchants			979	7	apprstr	GetValidStr3
+ReloadMerchants			980	8	merchant.BoGhost	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1061	1	nname	GetValidStrCap
+LoadNpcs	NPCLISTFILE	Npcs.txt	1067	2	racestr	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1068	3	map	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1069	4	xstr	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1070	5	ystr	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1071	6	facestr	GetValidStr3
+LoadNpcs	NPCLISTFILE	Npcs.txt	1072	7	npc.Appearance	GetValidStr3
+ReloadNpcs			1130	1	nname	GetValidStrCap
+ReloadNpcs			1136	2	racestr	GetValidStr3
+ReloadNpcs			1137	3	map	GetValidStr3
+ReloadNpcs			1138	4	xstr	GetValidStr3
+ReloadNpcs			1139	5	ystr	GetValidStr3
+ReloadNpcs			1140	6	facestr	GetValidStr3
+ReloadNpcs			1141	7	npc.BoGhost	GetValidStr3
+LoadGuards	GUARDLISTFILE	GuardList.txt	1228	1	mname	GetValidStrCap
+LoadGuards	GUARDLISTFILE	GuardList.txt	1234	2	map	GetValidStr3
+LoadGuards	GUARDLISTFILE	GuardList.txt	1235	3	xstr	GetValidStr3
+LoadGuards	GUARDLISTFILE	GuardList.txt	1236	4	ystr	GetValidStr3
+LoadGuards	GUARDLISTFILE	GuardList.txt	1237	5	cret.Dir	GetValidStr3
+LoadMakeItemList	MAKEITEMFILE	MakeItem.txt	1280	1	itemname	GetValidStr3
+LoadStartPoints	STARTPOINTFILE	StartPoint.txt	1311	1	smap	GetValidStr3
+LoadStartPoints	STARTPOINTFILE	StartPoint.txt	1312	2	xstr	GetValidStr3
+LoadStartPoints	STARTPOINTFILE	StartPoint.txt	1313	3	ystr	GetValidStr3
+LoadStartPoints	STARTPOINTFILE	StartPoint.txt	1316	4	scopestr	GetValidStr3
+LoadSafePoints	SAFEPOINTFILE	SafePoint.txt	1342	1	smap	GetValidStr3
+LoadSafePoints	SAFEPOINTFILE	SafePoint.txt	1343	2	xstr	GetValidStr3
+LoadSafePoints	SAFEPOINTFILE	SafePoint.txt	1344	3	ystr	GetValidStr3
+LoadSafePoints	SAFEPOINTFILE	SafePoint.txt	1347	4	scopestr	GetValidStr3
+LoadDecoItemList	DECOITEMFILE	DecoItem.txt	1374	1	Num	GetValidStr3
+LoadDecoItemList	DECOITEMFILE	DecoItem.txt	1375	2	Name	GetValidStr3
+LoadDecoItemList	DECOITEMFILE	DecoItem.txt	1376	3	Kind	GetValidStr3
+LoadDecoItemList	DECOITEMFILE	DecoItem.txt	1377	4	Price	GetValidStr3
+LoadMiniMapInfos	MINIMAPFILE	MiniMap.txt	1404	1	smap	GetValidStr3
+LoadMiniMapInfos	MINIMAPFILE	MiniMap.txt	1405	2	idxstr	GetValidStr3
+LoadUnbindItemLists	UNBINDFILE	UnbindList.txt	1432	1	shapestr	GetValidStr3
+LoadUnbindItemLists	UNBINDFILE	UnbindList.txt	1434	2	itmname	GetValidStrCap
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1473	1	mapstr	GetValidStr3
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1474	2	constr1	GetValidStr3
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1475	3	constr2	GetValidStr3
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1477	4	monname	GetValidStrCap
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1483	5	iname	GetValidStrCap
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1489	6	qfile	GetValidStr3
+LoadMapQuestInfos	MAPQUESTFILE	MapQuest.txt	1490	7	gflag	GetValidStr3
+LoadQuestDiary			1609	1	pqdd.SList	GetValidStr3
+LoadMarketDef			2056	1	data	GetValidStr3
+LoadMarketDef			2057	2	defname	GetValidStr3
+LoadMarketDef			2058	3	psayproc.ElseSaying	GetValidStr3
+LoadMarketDef			2367	4	itmname	GetValidStrCap
+LoadMarketDef			2368	5	scount	GetValidStrCap
+LoadMarketDef			2369	6	pp.ZenTime	GetValidStrCap
