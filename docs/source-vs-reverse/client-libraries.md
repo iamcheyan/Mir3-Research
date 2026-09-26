@@ -371,3 +371,144 @@ else                                     // ← 索引未压缩
 | `wmM2Zip.pas`（Mir2 压缩变体） | 未读 |
 | `wmUtil.pas`（4,497 行） | 未读 |
 | 用真实 `.Lib` 文件验证 | **本机无 `.Lib` 文件**（`mir2ei` 与 EI 客户端目录只有 `.wil/.wix`） |
+
+---
+
+## 9. Mir2 压缩格式（`wmM2Zip.pas`）（Round 825）
+
+> `Source/Client/wmM2Zip.pas`（302 行）。
+
+### 9.1 两个结构
+
+```pascal
+TWZIndexHeader = record        // :8-11   索引文件头（.WZX）
+   Title: string[43];          //  44 字节（1 长度前缀 + 43 内容）
+   IndexCount: Integer;        //   4
+end;                           //  合计 48 字节
+
+TWZImageInfo = record          // :14-19  图像头
+   Encode: Byte;               //  1   ← 5 = 16 位色
+   unKnow1: array[0..2] of Byte;  //  3   ← 未使用/未知
+   DXInfo: TDXTextureInfo;     // 13
+   nSize: Integer;             //  4   ← 压缩后大小（0 = 未压缩）
+end;                           //  合计 21 字节
+```
+
+> ⚠️ **与 `.Zl` 的 17 字节、`.Lib` 的 18 字节都不同** ——
+> 这是**第四种**图头大小（**21 字节**）。
+
+### 9.2 索引文件是 **`.WZX`**（`:183`）
+
+```pascal
+FIdxFile := ExtractFilePath(fFileName) + ExtractFileNameOnly(fFileName) + '.WZX';
+```
+
+→ **主文件 + `.WZX` 索引**，命名规则同 `.wil/.wix`（同名不同扩展名）。
+`LoadIndex`（`:273-298`）读 `TWZIndexHeader`（48 字节）+ `IndexCount` 个 int32 偏移，
+上限 `MAXIMAGECOUNT`。
+
+### 9.3 **双路径解码**（`LoadDxImage`，`:189-272`）
+
+**路径 A：`nSize <= 0`（未压缩，2014.09.25 加的兼容分支）**（`:209-233`）
+
+```pascal
+if (imginfo.DXInfo.nWidth <> 0) and (imginfo.DXInfo.nHeight <> 0) then begin
+   GetMem(inBuffer, ReadSize);
+   FFileStream.Read(inBuffer^, ReadSize);
+   MakeDXImageTexture(w, h, WILFMT_A1R5G5B5);
+   CopyImageDataToTexture(inBuffer, ...);
+```
+注释「2014.09.25 …」（韩文，意为「新增未压缩支持」）——
+**这是后期才加的兼容分支**。
+
+**路径 B：`nSize > 0`（ZIP 压缩）**（`:234-270`）
+
+```pascal
+nZipSize := ZIPDecompress(inBuffer, imginfo.nSize, 0, outBuffer);
+if nZipSize = ReadSize then
+   → WILFMT_A1R5G5B5 + CopyImageDataToTexture      // ① 大小吻合 → 16 位
+else
+   → WILFMT_A8R8G8B8 + CopyImageDataToTextureEx    // ② 大小不吻合 → 32 位
+```
+
+**⚠️ 关键设计**：**解压后大小不匹配时，自动改用 32 位色格式路径**
+（`CopyImageDataToTextureEx`）。这是**格式自动探测**：
+- 解压大小 == `WidthBytes(16,w) * h` → 16 位（A1R5G5B5）
+- 否则 → 32 位（A8R8G8B8）
+
+### 9.4 位深由 `Encode` 字段决定（`:201-208`）
+
+```pascal
+Fbo16bit := imginfo.Encode = 5;      // ← Encode = 5 表示 16 位色
+if Fbo16bit then
+   nLen := WidthBytes(16, w)         // 每行 16 位对齐
+else
+   nLen := WidthBytes(8, w);         // 每行 8 位对齐
+ReadSize := nLen * h;
+```
+
+→ **`Encode = 5` 是 16 位色的标记**；其他值走 8 位对齐。
+
+### 9.5 与 `.Zl` 的对比（同为「压缩」但机制不同）
+
+| | `.Zl`（`wmM3Zip.pas`） | Mir2 压缩（`wmM2Zip.pas`） |
+|---|---|---|
+| 索引文件 | 25 B 头（`Title[20]+IndexCount`） | **`.WZX`，48 B 头（`Title[43]+IndexCount`）** |
+| 图头 | **17 B** | **21 B**（多 `Encode`+`unKnow1`） |
+| 压缩 | zlib（`DecompressBuf`） | **zlib（`ZIPDecompress`）** |
+| 未压缩兼容 | 无 | **有**（`nSize <= 0`，2014 年加） |
+| 位深探测 | 固定 A8R8G8B8 | **按解压大小自动选 16/32 位** |
+| 色格式 | `LineR5G6B5_A8R8G8B8` | `LineR5G6B5_A8R8G8B8`（**同名函数，同实现**） |
+
+**注意 `LineR5G6B5_A8R8G8B8` 在三个文件里都有定义**
+（`wmM3Zip.pas`/`wmM2Zip.pas`/`wmUtil.pas`）—— 是**复制粘贴的重复实现**。
+
+---
+
+## 10. `wmUtil.pas`（4,497 行）—— 图像工具库（Round 825）
+
+### 10.1 结构：**4,200 行查表 + 6 个函数**
+
+`interface` 段到 `:4205` 才结束 —— 即**前 4,200 行全是常量查表**。
+
+### 10.2 6 个导出函数（`:4205-4209`）
+
+| 函数 | 用途 |
+|---|---|
+| `Move(Source, var Dest, count)` | 内存移动（**重载/覆盖 RTL 的 `Move`**） |
+| `LineX8_A1R5G5B5(Source, Dest, Count)` | 色格式转换（X8 → A1R5G5B5） |
+| `LineR5G6B5_A1R5G5B5(Source, Dest, Count)` | 色格式转换（R5G6B5 → A1R5G5B5） |
+| `Line32Move(Source, Dest, Count)` | 32 位移动（`Move(..., Count * SizeOf(Longword))`） |
+| **`ZIPCompress(InBuf, InBytes, Level, out OutBuf)`** | zlib 压缩 |
+| **`ZIPDecompress(InBuf, InBytes, OutEstimate, out OutBuf)`** | zlib 解压 |
+
+### 10.3 ZIP 实现（`:4410-4485`）—— 标准 zlib 封装
+
+**`ZIPCompress`**（`:4410-4444`）：
+- 初始缓冲 `((InBytes + InBytes/10 + 12) + 255) and not 255`（**含 10% + 12 余量 + 256 对齐**）
+- `deflateInit_(strm, Level, zlib_version, sizeof(strm))` + `deflate(Z_FINISH)` 循环
+- 缓冲不足时 **`Inc(Result, 256)` + `ReallocMem` 扩容**（每次 256 字节）
+- 结束 `ReallocMem(OutBuf, strm.total_out)` 收缩
+
+**`ZIPDecompress`**（`:4446-4485`）：结构对称，
+`BufInc := (InBytes + 255) and not 255`（**按输入大小估初始输出**），
+`OutEstimate = 0` 时用 `BufInc`，否则用 `OutEstimate`。
+
+**⚠️ 两处异常处理都把错误吞掉**：`except FreeMem(OutBuf); OutBuf := nil; //raise`
+—— **`raise` 被注释掉**，解压失败时**静默返回 nil + Result 保持初值**。
+调用方必须自己检查 `OutBuf <> nil`（`.Zl`/Mir2 的调用处确实都检查了）。
+
+### 10.4 与 `EDCode.pas` 的 `Decrypt` 的关系
+
+**`wmUtil.pas` 的 `ZIPDecompress` 就是 `wmM3Zip`/`wmM2Zip`/`wmMyImage` 都调用的
+那个解压函数** —— 即**三种压缩容器的解压实现是同一份**。
+
+### 10.5 未验证项
+
+| 项 | 原因 |
+|---|---|
+| 前 4,200 行的查表内容 | 未逐表分析（疑为色转换 LUT，与 `BitChange.inc` 同性质） |
+| `Move` 的重载实现（`:4214-4330`） | 未读（117 行，疑为性能优化的汇编/分块拷贝） |
+| `CCheck`/`DCheck`（zlib 错误码转换） | 未读 |
+| `LineX8_A1R5G5B5`/`LineR5G6B5_A1R5G5B5` 实现 | 未读 |
+| 真实 `.WZX` 文件验证 | **本机无 `.WZX`/`.Lib` 文件** |

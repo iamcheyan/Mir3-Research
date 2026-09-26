@@ -11205,3 +11205,56 @@ else                      // 未压缩
 
 **落盘**：`client-libraries.md` §8（约 145 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 825 (全量精读续) — 2026-09-26：Mir2 压缩格式 + `wmUtil` 图像工具库
+
+> `Source/Client/{wmM2Zip,wmUtil}.pas`。产物 `client-libraries.md` §9-10。
+
+**〔Mir2 压缩格式（`wmM2Zip.pas`，302 行）〕**
+①**两个结构**：`TWZIndexHeader`（`:8-11`）= `Title:string[43]`（44 字节）+
+`IndexCount:Integer` = **48 字节**；`TWZImageInfo`（`:14-19`）= `Encode:Byte` +
+`unKnow1[3]` + `DXInfo:TDXTextureInfo`(13) + `nSize:Integer` = **21 字节**。
+⚠️ **与 `.Zl` 的 17 字节、`.Lib` 的 18 字节都不同 —— 这是第四种图头大小**。
+②**索引文件是 `.WZX`**（`:183`：`ExtractFileNameOnly(fFileName) + '.WZX'`），
+命名规则同 `.wil/.wix`。
+③**双路径解码**（`LoadDxImage` `:189-272`）：
+**路径 A `nSize <= 0`**（未压缩，注释「2014.09.25 …」= 后期才加的兼容分支）；
+**路径 B `nSize > 0`**（ZIP）——**解压后大小不匹配时自动改用 32 位色路径**
+（`nZipSize = ReadSize` → `WILFMT_A1R5G5B5`；否则 → `WILFMT_A8R8G8B8` +
+`CopyImageDataToTextureEx`）→ **格式自动探测**。
+④**位深由 `Encode` 字段决定**（`:201`）：**`Encode = 5` 表示 16 位色**
+（`WidthBytes(16,w)`），否则 8 位对齐。
+⑤**与 `.Zl` 的对比**：索引头 25B vs **48B**、图头 17B vs **21B**、
+均有 zlib、但 Mir2 版**多未压缩兼容分支与位深自动探测**。
+注意 `LineR5G6B5_A8R8G8B8` 在 `wmM3Zip`/`wmM2Zip`/`wmUtil` **三处重复定义**。
+
+**〔`wmUtil.pas`（4497 行）—— 4200 行查表 + 6 个函数〕**
+实测前 4200 行里 **4176 行是查表数据**（`interface` 段到 `:4205` 才结束）。
+6 个导出函数：`Move`（**重载覆盖 RTL 的 Move**）、`LineX8_A1R5G5B5`、
+`LineR5G6B5_A1R5G5B5`、`Line32Move`、**`ZIPCompress`**、**`ZIPDecompress`**。
+
+**ZIP 实现（`:4410-4485`）是标准 zlib 封装**：
+`ZIPCompress` 初始缓冲 `((InBytes + InBytes/10 + 12) + 255) and not 255`
+（含 10%+12 余量 + 256 对齐），缓冲不足时 `Inc(Result,256)` + `ReallocMem` 扩容。
+`ZIPDecompress` 结构对称（`BufInc := (InBytes + 255) and not 255`）。
+⚠️ **两处异常处理都把错误吞掉**：`except FreeMem(OutBuf); OutBuf := nil; //raise`
+—— **`raise` 被注释掉**（已核实 `:4442`/`:4483`），
+解压失败时**静默返回 nil**；调用方必须自己检查 `OutBuf <> nil`。
+→ **`wmUtil.ZIPDecompress` 是三种压缩容器（`.Zl`/Mir2/`.Lib`）共用的解压实现**。
+
+**〔四种容器格式现已全部解出〕**
+
+| 格式 | 解析器 | 头部 | 图头 | 压缩 | 加密 |
+|---|---|---:|---:|---|---|
+| `.Lib` | `wmMyImage.pas` | 56 B | 18 B | 索引可选 ZIP | **DES** |
+| `.wil/.wix` | `WIL.pas` | `ILIB v1.0-WEMADE` | 16 B | 无 | 无 |
+| `.Zl` | `wmM3Zip.pas` | 25 B | 17 B | zlib | 无 |
+| **Mir2 压缩** | `wmM2Zip.pas` | **48 B**（`.WZX`） | **21 B** | zlib（+未压缩兼容） | 无 |
+
+**〔未验证〕**`wmUtil` 前 4200 行查表内容（疑为色转换 LUT，与 `BitChange.inc` 同性质）；
+`Move` 重载实现（`:4214-4330`，117 行）；`CCheck`/`DCheck`；
+`LineX8_A1R5G5B5`/`LineR5G6B5_A1R5G5B5` 实现；
+**真实 `.WZX`/`.Lib` 文件验证（本机均无）**。
+
+**落盘**：`client-libraries.md` §9-10（约 140 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

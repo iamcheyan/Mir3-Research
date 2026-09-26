@@ -163,11 +163,11 @@ D-client	Source/Client/cliUtil.pas	1258	42862	pending
 D-client	Source/Client/magiceff.pas	1621	53077	pending	Round 819: 魔法特效，未读
 D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
 D-client	Source/Client/wmM2Def.pas	525	17922	pending	
-D-client	Source/Client/wmM2Zip.pas	302	9989	pending	Round 819: Mir2 压缩变体，未读
+D-client	Source/Client/wmM2Zip.pas	302	9989	covered	Round 825: Mir2压缩格式全解(.WZX索引48B头/21B图头/双路径解码/Encode=5为16位/格式自动探测)
 D-client	Source/Client/wmM3Def.pas	537	16638	pending	
 D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
 D-client	Source/Client/wmMyImage.pas	741	25787	covered	Round 824: .Lib 格式全解(56B头/18B图头/DES加密/lom2com校验/ZIP索引+10个int32头部)；DecryBuffer实现与真实文件验证待做
-D-client	Source/Client/wmUtil.pas	4497	489745	pending	Round 819: 图像/压缩工具库 4497 行，未读
+D-client	Source/Client/wmUtil.pas	4497	489745	partial	Round 825: 4200行查表+6函数+ZIP实现(raise被注释)；查表内容与Move重载待读
 D-client	Source/Client/Light/Light0a.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0c.pas	100	2696	pending	
