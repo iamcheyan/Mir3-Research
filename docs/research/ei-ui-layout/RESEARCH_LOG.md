@@ -9825,3 +9825,63 @@ stNewChr, stLoading, stLoginNotice, stPlayGame)`（`IntroScn.pas:19`）。
 **落盘**：`docs/source-vs-reverse/client.md`、`client-windows.tsv`、
 `Tools/source-read/{extract_client_windows,frame_overlap}.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 805 (source deep-read, client windows) — 2026-09-26：DFM 几何提取与窗口对照
+
+> 证据源 `Source/Client/{FState,ClMain}.dfm`（Delphi 二进制 TPF0）。
+> 自研解析器 `Tools/source-read/dfm_parse.py`。产物 `docs/source-vs-reverse/client-windows.md`。
+
+**〔为什么必须解析 DFM〕**`.pas` 只有 `DBeltWin: TDWindow;` 这类字段声明，
+窗口坐标/尺寸**全在 .dfm**。`FState.dfm` = 114288 B，可打印率 81.6%，
+`file(1)` 误判为 JPEG XL；真实是 TPF0，且**不在偏移 0**
+（前 17 字节是窗体元信息头 `ff 0a 00 'TFRMDLG' 00 '0' 10 5f be 01 00`）。
+
+**〔三个解析陷阱（实测踩过）〕**
+1. **根对象没有 `0x01` 前置标记**（`TPF0 07 'TFrmDlg' 06 'FrmDlg' ...`），
+   只有子对象带。按「所有对象都有 0x01」写会立刻抛错。
+2. **属性区结束后有两个 `0x00`**（`...属性... 00 00 08 'TDWindow' 09 'DStateWin'`）。
+   只跳一个会把第二个当成「本层无子对象」，导致**解析出 0 个子窗口**。
+3. 字符串是 CP949/GB ANSI 且部分长度前缀异常（`Caption` 值 `FrmDlg` 被读成
+   `rmDlg`）→ **字符串属性不可靠，几何整型属性 100% 可靠**；本文只用几何。
+
+**〔解析结果〕**`FState.dfm` 100 项（1 根 + 15 顶层窗口 + 84 按钮等）；
+`ClMain.dfm` 8 项。共 **30 个 TDWindow**。
+
+**〔关键观察一：坐标不是 800×600 布局〕**`DBottom`（主 HUD 底板）在
+**(15,517) 476×121**；`DStateWin` x=627、`DGroupDlg` x=840、`DUserState1` x=846、
+`DMemo` x=820、`DKeySelDlg` y=900 → **x 最大 1008、y 最大 1036**。
+根窗体 `TFrmDlg` 本身是 (329,0) **1095×975**。即 **1024×768 及以上**布局。
+
+**〔关键观察二：窗口被排成网格 = 编辑期布局〕**`DFriendDlg`(15,655) /
+`DMailListDlg`(225,655) / `DMailDlg`(425,655) / `DBlockListDlg`(625,655)
+四窗 y 相同、x 等距 200；下一行 `DCountDlg`(15,780) / `DMakeItemDlg`(236,780) /
+`DItemMarketDlg`(430,780) / `DJangwonListDlg`(631,780) 同样。
+→ **DFM 坐标是开发期摆开编辑的痕迹，不是游戏内实际位置**
+（游戏内由 `.pas` 初始化代码动态定位）。**方法论边界：DFM 坐标只能作「窗口尺寸」
+证据，不能作「游戏内坐标」证据。**
+
+**〔与原版几何对照 —— 无一组吻合〕**原版基准 `window_layout.json`
+（13 条，viewport 800×600，position_basis 注明最终 rect 由构造器 `0x00423B30`
+按 WIL 尺寸 + 锚点/居中分支计算）：
+
+| 功能 | 原版 | 源码 DFM | 判定 |
+|---|---|---|---|
+| 背包 | id0 frame250 284×324 | `DItemBag` 111×144 | ❌ 差 2.5× |
+| 人物状态 | id1 frame200 244×328 | `DStateWin` 201×216 | ❌ |
+| 聊天 | id8 frame350 572×388 | `DChat` 189×100 | ❌ 差 3× |
+| 组队 | id6 frame900 256×244 | `DGroupDlg` 186×116 | ❌ |
+
+结合 Round 804 的帧号结论（91 帧号仅 10 个在原版范围内、与已详查 37 帧零交集），
+确认 **Preview 版与原版 EI 3.0 是两套独立 UI 布局：窗口尺寸、帧号、资源库三者都不通用**。
+**但这不否定原版证据** —— 原版坐标是 `primary-static`（反汇编构造器调用点），
+源码 DFM 是编辑期布局，本就不该相同。源码的价值在**语义命名**而非坐标。
+
+**〔源码补上的语义（原版拿不到）〕装备槽 `DSW*` 族 9 个**：
+`DSWHelmet` 36×36 / `DSWNecklace` 36×36 / `DSWWeapon` **31×51** /
+`DSWDress` **26×141** / `DSWLight` 36×36 / `DSWArmRingR`+`DSWArmRingL` 36×36 /
+`DSWRingR`+`DSWRingL` 36×36。
+武器与衣服是**非方形**（31×51 / 26×141）→ 装备槽不是等距网格，
+与原版证据「8 个装备候选槽 + 3 个非装备记录」的简单描述不完全一致，留待阶段 5 细核。
+
+**落盘**：`docs/source-vs-reverse/client-windows.md`、`Tools/source-read/dfm_parse.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
