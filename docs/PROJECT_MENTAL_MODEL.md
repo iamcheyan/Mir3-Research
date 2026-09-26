@@ -197,3 +197,100 @@ omp 会话即文件，三层保存法：
   三元组自检和失败回滚。
 - webport 仍冻结，只修参考价值 bug；E0/E1/E2/E3/E4 已收口。
 - 待办：Godot 特殊态游戏内实测（死亡/深渊毒触发）可与 E5 web 预览对照。
+
+---
+
+## 十二、Preview 源码精读（2026-09-26，新增大章）
+
+**新增证据源**：`reference/mir3-source/`（Mir3 Preview Version 社区源码，
+Delphi 客户端 + Delphi 游戏逻辑服 + C++ 登录/数据库服，约 20 万行）。
+来源 LOM2 社区 SVN，证据等级 **`secondary-source`**。
+**与既有的 `tensafe/LegendOfMir3_Src`（C++，本地副本已不在）是两份不同的源码。**
+
+### 12.1 一句话结论（最重要）
+
+**Preview 版与原版 EI 3.0 是同引擎的不同构建：协议层通用，资源/布局层全部不通用。**
+
+| 资产 | 可互推？ | 依据 |
+|---|---|---|
+| **协议 opcode** | ✅ **可** | `Grobal2.pas` 是**全链路总表**，客户端与服务端 `uses ..\Common\Grobal2.pas` 共用同一份；EI 证据引用的 28 个出站 opcode 与源码 `CM_` **100% 值命中** |
+| **帧号空间** | ❌ **不可** | 原版 `GameInter` 1103 帧；源码引用 184–1960（91 个唯一帧号），落在原版范围仅 10 个且**与已详查 37 帧交集为空** |
+| **窗口几何** | ❌ **不可** | 原版 800×600；源码根窗体 1095×975。背包 284×324 vs 111×144、聊天 572×388 vs 189×100，**无一组吻合** |
+| **WIL 容器** | ❌ **不可** | 原版 `ILIB v1.0-WEMADE` 签名；源码 25B 头 + 17B 图头。两者不能互相解析 |
+| **配置内容** | ⚠️ 部分 | `Envir/` 被**抽空**（9 个空文件含 NPC/刷怪/守卫/任务表），`Envir3/` 才有内容；**二者合起来才完整** |
+
+### 12.2 已闭合的三条原版悬案（Round 802）
+
+| opcode | 原版（candidate） | 源码真名 |
+|---|---|---|
+| `0x409` | 地图查询 | **`CM_WANTMINIMAP`** ✅ 吻合（3s 冷却 `0xBB8` = 源码 `GetTickCount + 3000`，逐字节一致） |
+| `0x418` | 前进/下一任务记录 | **`CM_FRIEND_EDIT`** ⚠️ 业务名被修正 |
+| `0x419` | 请求任务详情 | **`CM_FRIEND_LIST`** ⚠️ 业务名被修正 |
+
+**决定性反证**：源码客户端有**完整好友系统**（`DFriendDlg`、`SM_FRIEND_INFO=813`），
+但**完全没有任务系统**（`CM_` 全集无任何 Mission/Quest 消息，`FState.pas` 无任务窗）。
+→ 原版任务窗**复用了同一 opcode 空间**，但线上业务名不是「任务详情/放弃」。
+**保留边界**：不主张「任务窗=好友窗」，原版 E8-scan 单调用点定案不变。
+
+**小地图链路端到端闭合**（Round 802 + 809）：
+`Envir/MiniMap.txt`（`<地图名> <小地图号>`）→ `LocalDB.LoadMiniMapInfos`
+→ `TEnvirnoment.MiniMap` → `CM_WANTMINIMAP(0x409)` → `SM_READMINIMAP_OK(710)`
+→ 客户端 `MiniMapIndex := Param - 1`。
+→ 本仓库 `minimap-server-crossref.json` 正是这张交叉表，**现在有了权威格式依据**。
+
+### 12.3 源码补上的、原版反编译拿不到的语义
+
+| 语义 | 位置 |
+|---|---|
+| **四级输入优先级**（PopUp > Modal 栈 > 单个 Modal > Capture > DWinList） | `DWinCtl.pas:2271-2324` |
+| **像素级命中**（透明像素不响应） | `DWinCtl.pas:1439-1458` `InRange` |
+| **`TDWindow` 继承自 `TDButton`**（窗口本身就是按钮） | `DWinCtl.pas:257` |
+| **`TClickSound` 四态**（`csNone/csStone/csGlass/csNorm`）→ 原版 `0x69` 共享音效命令 | `DWinCtl.pas:38` |
+| **装备槽 9 个业务名**（`DSWHelmet`/`DSWNecklace`/`DSWWeapon`/`DSWDress`…） | `FState.dfm` |
+| **`.map` 格式**（28B 头 + `(W·H/4)·3` tile + `W·H·14` cell；`chCellBlock` 语义；门号低 7 位） | `Envir.pas:49-77` + `:393-479` |
+| **`MapInfo.txt` 28 个标志位**（`SAFE`/`DARK`/`FIGHT`/`MINE`/`GUILDAGIT`…，实际用了 12 个） | `LocalDB.pas:593-659` |
+| **NPC 能力标志 15 个**（`CanSell`/`CanBuy`/`CanStorage`/`CanRepair`/`CanMakeItem`…） | `ObjNpc.pas:103-122` |
+| **6bit 线格式 + `Etc` 防外挂校验**（完整可复现实现） | `EDCode.pas:154-435` |
+| **公钥是登录期协商**（不是配置文件） | `IdSrvClient.pas:484-486` / `ClMain.pas:5415` |
+
+### 12.4 三个必须记住的坑（都实测踩过）
+
+1. **`Source/**` 是混合编码**。以 CP949 韩文为主，但**混有 GB18030 中文注释**
+   （`Grobal2.pas:419` `//防御上限` 的 `c9cf` 恰好是合法 CP949 双字节）。
+   整文件一刀切判定必然出错。用 `Tools/source-read/read_src.py`。
+2. **`.pas` 里没有窗口几何**，全在二进制 `.dfm`（且**不在偏移 0**，前 17 字节是元信息头）。
+   解析有三个陷阱：根对象无 `0x01` 标记、属性区后**两个** `0x00`、
+   字符串属性长度前缀异常（**只有几何整型可靠**）。用 `dfm_parse.py`。
+3. **字段名不可望文生义**。`TCreature.HairColorR/G/B` 是**假的颜色字段** ——
+   `HairColorR` 被挪用为位标志，G/B 是空占位（`ObjBase.pas:314-316` 注释明说）。
+
+### 12.5 对既有工作的影响
+
+| 既有产物 | 影响 |
+|---|---|
+| `Tools/questdata` | ⚠️ **任务权威语义源是 `ObjNpc.pas` 的 `TQuestRecord`，不是 `Mission.pas`**（后者 63 行空壳，`Run` 完全空） |
+| `minimap-server-crossref.json` | ✅ 有了权威格式依据（`MiniMap.txt`） |
+| `Tools/maps/map_roundtrip.py` | ✅ **正向验证通过** —— 已正确处理 6/200 个截断 `.map`（C=13） |
+| `Tools/common/wilsdk.py` | ✅ **正向验证通过** —— 真实 EI `.wil` 解析正确（`count=1780` 与文件头自洽） |
+| `Tools/common/zlsdk.py` | ⚠️ **未验证**（本机没有 `.Zl` 文件） |
+| `hud-caption-action-tail-evidence.json` | 业务名可从 candidate 升级为 `CM_WANTMINIMAP`，**但须保留 primary-static 的 opcode/调用点原文** |
+
+### 12.6 产物位置
+
+- **差异总表**：`docs/source-vs-reverse/README.md`（14 个差异域 D0–D13）
+- **分域精读**：`protocol.md` / `wire-format.md` / `client.md` / `client-windows.md` /
+  `client-controls.md` / `client-libraries.md` / `server.md` / `config.md`
+- **机器可读**：`protocol-constants.tsv`（474 行）、`client-windows.tsv`（352 行）、
+  `dispatch-coverage.json`
+- **独立验证**：`verification.md`（含 9 项**明确未验证**的清单）
+- **工具**：`Tools/source-read/`（`read_src` / `dfm_parse` / `edcode` /
+  `extract_protocol_constants` + `verify_protocol_constants` / `coverage` /
+  `extract_client_windows` + `frame_overlap` / `env_compare`）
+- **研究日志**：`docs/research/ei-ui-layout/RESEARCH_LOG.md` Round 802–809
+
+### 12.7 缺口（需要时从原 rar 取回）
+
+`Mir3 Preview Version.rar`（53 MB）**本机已不在**。被排除且对研究有价值的是：
+- `BitChange.inc`（479 KB，A1R5G5B5 色转换 LUT，`WIL.pas:9` 有 `{$INCLUDE}`）
+- `Mir3.exe`、`magic.dat`、`SQL/`（System.db 的上游）
+- 取回方法见 `reference/mir3-source/README.md` §5
