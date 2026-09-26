@@ -1,0 +1,31 @@
+;;베α돝
+[@DoKwan_Teleport]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\DoKwanTele.txt] @DoKwanTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+#IF                                      ;; 공성풀이 아닐시 이동이 가능
+!IsOnCastleWar Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\DoKwanTele.txt] @DoKwanTele_2
+
+#ACT
+break
+
+#IF                                      ;; 공성 준비 시간이 아닐시 이동 가능
+!IsOnReadyCastleWar Sabuk
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\DoKwanTele.txt] @DoKwanTele_3
+
+#ACT
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}

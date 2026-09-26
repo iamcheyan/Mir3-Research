@@ -1,0 +1,62 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 336
+#ACT
+goto @hwagabju_T336
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@hwagabju_T336]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hwagabju_T336_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hwagabju_T336_1]
+#IF
+checkitem »¨É«Ö©Öë¶¾Ò© 9
+#ACT
+give »¨É«Ö©Öë¶¾Ò© 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T336_Say
+
+#ELSEACT
+goto @hwagabju_T336_2
+
+[@hwagabju_T336_2]
+#IF
+random 3
+#ACT
+give »¨É«Ö©Öë¶¾Ò© 1
+;-----------------------------------------------------

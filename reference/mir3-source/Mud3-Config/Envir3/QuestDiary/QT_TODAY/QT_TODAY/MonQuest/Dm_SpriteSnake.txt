@@ -1,0 +1,283 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 542
+#ACT
+goto @stripesnake_T542
+break
+;
+#IF
+CheckDailyQuest 535
+#ACT
+goto @stripesnake_T535
+break
+;
+#IF
+CheckDailyQuest 406
+#ACT
+goto @stripesnake_T406
+break
+;
+#IF
+CheckDailyQuest 328
+#ACT
+goto @stripesnake_T328
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@stripesnake_T328]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+;#IF
+;check [308] 1
+;#ACT
+;break
+
+#IF
+check [307] 1
+#ACT
+goto @stripesnake_T328_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@stripesnake_T328_1]
+#IF
+checkitem »¢ÉßÑª 19
+#ACT
+give »¢ÉßÑª 1
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T328_Say
+
+#ELSEACT
+goto @stripesnake_T328_2
+
+[@stripesnake_T328_2]
+#IF
+random 3
+#ACT
+give »¢ÉßÑª 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@stripesnake_T406]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @stripesnake_T406_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@stripesnake_T406_1]
+#IF
+large S0 20
+#ACT
+goto @stripesnake_T406_5
+#ELSEACT
+goto @stripesnake_T406_2
+;-----------------
+
+[@stripesnake_T406_2]
+#IF
+large S0 2
+#ACT
+goto @stripesnake_T406_3
+#ELSEACT
+mov S0 2
+goto @stripesnake_T406_3
+
+;-----------------
+
+[@stripesnake_T406_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@stripesnake_T406_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T406_Say
+
+#ACT
+set [308] 1
+mov S0 0
+
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@stripesnake_T535]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @stripesnake_T535_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@stripesnake_T535_1]
+#IF
+large S0 5
+#ACT
+goto @stripesnake_T535_5
+#ELSEACT
+goto @stripesnake_T535_2
+;-----------------
+
+[@stripesnake_T535_2]
+#IF
+large S0 2
+#ACT
+goto @stripesnake_T535_3
+#ELSEACT
+mov S0 2
+goto @stripesnake_T535_3
+
+;-----------------
+
+[@stripesnake_T535_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@stripesnake_T535_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T535_Say
+
+#ACT
+set [308] 1
+give »¢ÉßÑÀ³Ý 1
+mov S0 0
+;
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@stripesnake_T542]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+
+#IF
+check [307] 1
+#ACT
+goto @stripesnake_T542_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@stripesnake_T542_1]
+#IF
+large S0 10
+#ACT
+goto @stripesnake_T542_5
+#ELSEACT
+goto @stripesnake_T542_2
+;-----------------
+
+[@stripesnake_T542_2]
+#IF
+large S0 2
+#ACT
+goto @stripesnake_T542_3
+#ELSEACT
+mov S0 2
+goto @stripesnake_T542_3
+
+;-----------------
+
+[@stripesnake_T542_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@stripesnake_T542_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T542_Say
+
+#ACT
+set [308] 1
+mov S0 0
+;
+;-----------------------------------------------------

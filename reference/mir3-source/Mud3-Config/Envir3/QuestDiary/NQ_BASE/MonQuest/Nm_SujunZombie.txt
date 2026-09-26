@@ -1,0 +1,65 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [247] 1
+#ACT
+break
+
+#IF
+check [228] 1
+#ACT
+break
+
+#IF
+check [227] 1
+#ACT
+goto @jombi1
+
+;-----------------------------------------------------
+
+[@jombi1]
+#IF
+large s3 3
+#ACT
+goto @jombi5
+#ELSEACT
+goto @jombi2
+;-----------------
+
+[@jombi2]
+#IF
+large s3 2
+#ACT
+goto @jombi3
+#ELSEACT
+mov s3 2
+goto @jombi3
+
+;-----------------
+
+[@jombi3]
+#IF
+#ACT
+inc s3 1
+
+;----------------------------------------------------------
+
+[@jombi5]
+#IF
+#ACT
+Monclear E402_001
+goto @jombi5_1
+
+[@jombi5_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_SujunZombie.txt] @Nm_SujunZombie_1
+
+#ACT
+Monclear E402_001
+mov s3 0
+set [228] 1
+set [224] 0
+set [225] 0

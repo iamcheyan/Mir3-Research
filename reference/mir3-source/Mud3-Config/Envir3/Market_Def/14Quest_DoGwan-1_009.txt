@@ -1,0 +1,187 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_DoGwan-1_009.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+
+[@main_0]
+#IF
+check [302] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [301] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [300] 1
+#ACT
+goto @NQuest01_15
+break
+#IF
+check [299] 1
+#ACT
+goto @NQuest01_14
+break
+#IF
+check [297] 1
+#ACT
+goto @NQuest01_13
+break
+#IF
+check [296] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [294] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [293] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [292] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [289] 1
+#ACT
+goto @NQuest01_11
+break
+#IF
+check [288] 1
+#ACT
+goto @NQuest01_10
+break
+#IF
+check [287] 1
+#ACT
+goto @NQuest01_9
+break
+#IF
+check [286] 1
+#ACT
+goto @NQuest01_8
+break
+#IF
+check [284] 1
+#ACT
+goto @NQuest01_7
+break
+#IF
+check [283] 1
+#ACT
+goto @NQuest01_6
+break
+#IF
+check [282] 1
+#ACT
+goto @NQuest01_5
+break
+#IF
+check [281] 1
+#ACT
+goto @NQuest01_4
+break
+#IF
+check [280] 1
+#ACT
+goto @NQuest01_3
+break
+#IF
+check [278] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [277] 1
+#ACT
+goto @NQuest01_1
+break
+#ELSEACT
+goto @NQuest01_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_DoGwan-1_009.txt] @NPC_Main_0
+
+;--------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_DoGwan-1_009.txt] @NPC_Main_1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_0]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG0
+
+[@NQuest01_1]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG1
+
+[@NQuest01_2]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG2
+
+[@NQuest01_3]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG3
+
+[@NQuest01_4]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG4
+
+[@NQuest01_5]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG5
+
+[@NQuest01_6]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG6
+
+[@NQuest01_7]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG7
+
+[@NQuest01_8]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG8
+
+[@NQuest01_9]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG9
+
+[@NQuest01_10]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG10
+
+[@NQuest01_11]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG11
+
+[@NQuest01_12]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG12
+
+[@NQuest01_13]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG13
+
+[@NQuest01_14]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG14
+
+[@NQuest01_15]
+#CALL [\NQ_EXTRA\umyun.txt] @UMKING_MUMYUNG15

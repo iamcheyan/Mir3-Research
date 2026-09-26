@@ -1,0 +1,246 @@
+;;海メ盗
+[@UserPlay]
+{
+begin
+   #ACT
+      goto @UserMainRootin
+   
+   [@UserMainRootin]
+   begin
+      #IF
+         !CheckNameList "..\Flag_Def\Event\SaveGodNessName.txt"
+      #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SaveGodness\UserSaveGodNess.txt] @UserSaveGodNess_1
+         <$USERNAME>女神已经给邪恶的首领囚禁在黑暗的深处，她需要你们营救，把她救出，幸运将陪伴在您身边 \ \
+         <请您填写您队伍里所有成员的角色名称./@CombineSaveGodnessEvent> \
+   end
+
+   [@CombineSaveGodnessEvent]
+   begin
+	   #ACT
+	      LoadValue P1 "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [State]
+	      LoadValue P2 "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [GateState]
+	   
+	   #IF
+	      Equal     P1             1   ;; 咯脚 备窍扁 捞亥飘 曼啊 脚没 罐绰 扁埃 老 版快
+	      Equal     P2             0   ;; 巩捞 凯啡阑 版快
+      #ACT
+         SaveLog   "Flag_Def\Event\SaveGodNessName.txt"  %USERNAME   ;; 曼啊磊 疙窜俊 历厘窃
+         SaveValue "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [GateState] 1 ;; 捞亥飘巩阑 摧澜
+         ;; 弊缝盔 涝仿 扁瓷 梅啊
+         ;; 弊缝炉 捞悼
+         Delaygoto [Grobal] 10   @StartSaveGodNessControl1  ;; 角龙利牢 捞亥飘啊 矫累窃
+         Delaygoto [Grobal] 300  @OpenTheGate  ;; 檬扁拳 风凭栏肺 促澜 曼啊磊啊 甸绢啊扁啊 啊瓷窃
+   end
+   
+   [@OpenTheGate]
+   begin
+      #ACT
+         SaveValue "Flag_Def\Event\SaveGodNess\Flag.txt" [GodNess] [GateState] 0 ;; 捞亥飘巩阑 凯绢狄
+   end
+;-------------------------------------------------------------------------------------------------------------
+   [@StartSaveGodNessControl1]
+   begin
+      #ACT      ;; 檬焊粮 胶抛捞瘤(贸澜矫累)
+         MonClear "EVGS01"    ;; 阁胶磐 昏力
+			ClearItemMap "EVGS01,25,25,25"  捣                              ;; 努府绢 何盒
+			ClearItemMap "EVGS01,25,25,25"  眉仿雀汗距(漂)
+			ClearItemMap "EVGS01,25,25,25"  付仿雀汗距(漂)
+         mapting EVGS00 EVGS01 25 25
+			Delaygoto [Grobal]   5         @StartSaveGodNessMainGame_MonZen1  ;; 阁胶磐 哩 何盒
+         Delaygoto [Grobal]   10        @StartSaveGodNessMainGame_Msg1     ;; 皋技瘤 谎妨 林绰 何盒
+         Delaygoto [Grobal]   20        @StartSaveGodNessMainGame_Reword1  ;; 府况靛 何盒
+			Delaygoto [Grobal]   300       @StartSaveGodNessMainGame_Control2 ;; 促澜 窜拌肺 逞绢皑
+   end
+
+   [@StartSaveGodNessMainGame_MonZen1]
+   begin
+      #ACT
+         MonGenP  "EVGS01,25,25,25"         街档尝秦榜      10   "noitem"   ;; 矫访 何盒
+	 MonGenP  "EVGS01,25,25,25"         傈哎            10   "noitem"
+	 MonGenP  "EVGS01,25,25,25"         秦榜            5    "noitem"
+	 MonGenP  "EVGS01,25,25,25"         奴档尝秦榜      5    "noitem"
+	 MonGenP  "EVGS01,25,25,25"         秦榜傈荤        5    "noitem"
+	 MonGenP  "EVGS01,25,25,25"         包冠零          10   "noitem"
+	 
+   end
+
+   [@StartSaveGodNessMainGame_Msg1]
+   begin
+      #ACT
+         EventMsg [EVGS01] "女神已经给邪恶的首领囚禁在黑暗的深处，她需要你们营救，把她救出，幸运将陪伴在您身边."
+   end
+
+   [@StartSaveGodNessMainGame_Reword1]
+   begin
+      #ACT
+         DropItemMap  "EVGS01,25,25,25"  捣              5000  10        ;; 焊惑 何盒
+         DropItemMap  "EVGS01,25,25,25"  眉仿雀汗距(漂)  5     20
+         DropItemMap  "EVGS01,25,25,25"  付仿雀汗距(漂)  5     10
+   end
+
+;-------------------------------------------------------------------------------------------------------------
+   [@StartSaveGodNessMainGame_Control2]
+   begin
+      #IF
+         !CheckMonMap "EVGS01,25,25,25" 0       ;; 傈 胶抛捞瘤啊 努府绢 登绢登菌绰瘤 犬牢
+      #ACT      ;; 吝鞭粮 胶抛捞瘤
+         MapTing  EVGS01   EVGS02  25  25     ;; 粮 捞悼
+         MonClear "EVGS02"    ;; 阁胶磐 昏力
+			ClearItemMap "EVGS02,25,25,25"  捣                              ;; 捣阑 瘤框
+			ClearItemMap "EVGS02,25,25,25"  眉仿雀汗距(漂)
+			ClearItemMap "EVGS02,25,25,25"  付仿雀汗距(漂)
+			Delaygoto [Grobal]   5         @StartSaveGodNessMainGame_MonZen2  ;; 阁胶磐 哩 何盒
+         Delaygoto [Grobal]   10        @StartSaveGodNessMainGame_Msg2     ;; 皋技瘤 谎妨 林绰 何盒
+         Delaygoto [Grobal]   20        @StartSaveGodNessMainGame_Reword2  ;; 府况靛 何盒
+			Delaygoto [Grobal]   600       @StartSaveGodNessMainGame_Control3 ;; 促澜 窜拌肺 逞绢皑
+		#ELSEACT
+		   MapTing  EVGS01   01 100 130     ;; 角菩窃
+	end
+
+	[@StartSaveGodNessMainGame_MonZen2]
+	begin
+	   #ACT
+           MonGenP  "EVGS02,25,25,25"         巨国        15    "noitem"   ;; 矫访 何盒
+           MonGenP  "EVGS02,25,25,25"         瘤匙        15    "noitem"
+	   MonGenP  "EVGS02,25,25,25"         笼霸国饭    10    "noitem"
+	   MonGenP  "EVGS02,25,25,25"         孺摹        10    "noitem"
+	   MonGenP  "EVGS02,25,25,25"         龋立面      10    "noitem"
+	end
+	
+   [@StartSaveGodNessMainGame_Msg2]
+   begin
+      #ACT
+         EventMsg [EVGS02] "女神已经给邪恶的首领囚禁在黑暗的深处，她需要你们营救，把她救出，幸运将陪伴在您身边."
+   end
+
+	[@StartSaveGodNessMainGame_Reword2]
+	begin
+	   #ACT
+         DropItemMap  "EVGS02,25,25,25"  捣              5000  20        ;; 焊惑 何盒
+         DropItemMap  "EVGS02,25,25,25"  眉仿雀汗距(漂)  5     20
+         DropItemMap  "EVGS02,25,25,25"  付仿雀汗距(漂)  5     10
+	end
+
+;-------------------------------------------------------------------------------------------------------------
+   [@StartSaveGodNessMainGame_Control3]
+   begin
+      #IF
+         !CheckMonMap "EVGS02,25,25,25" 0
+      #ACT      ;; 吝鞭粮 胶抛捞瘤
+         MonClear "EVGS03"    ;; 阁胶磐 昏力
+			ClearItemMap "EVGS03,25,25,25"  捣                              ;; 捣阑 瘤框
+			ClearItemMap "EVGS03,25,25,25"  眉仿雀汗距(漂)
+			ClearItemMap "EVGS03,25,25,25"  付仿雀汗距(漂)
+         MapTing  EVGS02   EVGS03  25  25     ;; 粮 捞悼
+			Delaygoto [Grobal]   5         @StartSaveGodNessMainGame_MonZen3  ;; 阁胶磐 哩 何盒
+         Delaygoto [Grobal]   10        @StartSaveGodNessMainGame_Msg3     ;; 皋技瘤 谎妨 林绰 何盒
+         Delaygoto [Grobal]   20        @StartSaveGodNessMainGame_Reword3  ;; 府况靛 何盒
+			Delaygoto [Grobal]   900       @StartSaveGodNessMainGame_Control4   ;; 促澜 窜拌肺 逞绢皑
+		#ELSEACT
+		   MapTing  EVGS02   01 100 130     ;; 角菩窃
+	end
+
+   [@StartSaveGodNessMainGame_MonZen3]
+   begin
+      #ACT
+         MonGenP "EVGS03,25,25,25"         馆具蓖凉        10    "noitem"   ;; 矫访 何盒
+         MonGenP "EVGS03,25,25,25"         馆具葫蓖        5     "noitem"
+	 MonGenP "EVGS03,25,25,25"         馆具款蓖        5     "noitem"
+	 MonGenP "EVGS03,25,25,25"         馆具拳蓖        5     "noitem"
+	 MonGenP "EVGS03,25,25,25"         馆具浅蓖        5     "noitem"
+	 MonGenP "EVGS03,25,25,25"         馆具谅荤        5     "noitem"
+	 MonGenP "EVGS03,25,25,25"         馆具快荤        5     "noitem"
+   end
+
+   [@StartSaveGodNessMainGame_Msg3]
+   begin
+      #ACT
+         EventMsg [EVGS03] "女神已经给邪恶的首领囚禁在黑暗的深处，她需要你们营救，把她救出，幸运将陪伴在您身边."
+   end
+
+   [@StartSaveGodNessMainGame_Next3]
+   begin
+      #ACT
+         DropItemMap  "EVGS03,25,25,25"  捣              5000  30        ;; 焊惑 何盒
+         DropItemMap  "EVGS03,25,25,25"  眉仿雀汗距(漂)  5     20
+         DropItemMap  "EVGS03,25,25,25"  付仿雀汗距(漂)  5     10
+   end
+
+;-------------------------------------------------------------------------------------------------------------
+   [@StartSaveGodNessMainGame_Control4]
+   begin
+      #IF
+         !CheckMonMap "EVGS03,25,25,25" 0
+      #ACT      ;; 吝鞭粮 胶抛捞瘤
+         MapTing  EVGS03   EVGS04  25  25     ;; 粮 捞悼
+         MonClear "EVGS04"    ;; 阁胶磐 昏力
+			ClearItemMap "EVGS04,25,25,25"  捣                              ;; 捣阑 瘤框
+			ClearItemMap "EVGS04,25,25,25"  眉仿雀汗距(漂)
+			ClearItemMap "EVGS04,25,25,25"  付仿雀汗距(漂)
+			Delaygoto [Grobal]   5         @StartSaveGodNessMainGame_MonZen4  ;; 阁胶磐 哩 何盒
+         Delaygoto [Grobal]   10        @StartSaveGodNessMainGame_Msg4     ;; 皋技瘤 谎妨 林绰 何盒
+         Delaygoto [Grobal]   20        @StartSaveGodNessMainGame_Reword4  ;; 府况靛 何盒
+			Delaygoto [Grobal]   1200       @StartSaveGodNessMainGame_Control5 ;; 促澜 窜拌肺 逞绢皑
+		#ELSEACT
+		   MapTing  EVGS03   01 100 130     ;; 角菩窃
+	end
+
+   [@StartSaveGodNessMainGame_MonZen4]
+   begin
+      #ACT
+         MonGenP "EVGS04,25,25,25"         荤快玫空        1     "noitem"   ;; 矫访 何盒
+
+   end
+
+   [@StartSaveGodNessMainGame_Msg4]
+   begin
+      #ACT
+         EventMsg [EVGS04] "女神已经给邪恶的首领囚禁在黑暗的深处，她需要你们营救，把她救出，幸运将陪伴在您身边"
+   end
+   
+   [@StartSaveGodNessMainGame_Reword4]
+   begin
+      #ACT
+         DropItemMap  "EVGS04,25,25,25"  捣              5000  40        ;; 焊惑 何盒
+         DropItemMap  "EVGS04,25,25,25"  眉仿雀汗距(漂)  5     20
+         DropItemMap  "EVGS04,25,25,25"  付仿雀汗距(漂)  5     10
+   end
+
+;-------------------------------------------------------------------------------------------------------------
+   [@StartSaveGodNessMainGame_Control5]
+   begin
+      #IF
+         !CheckMonMap "EVGS04,25,25,25" 0
+      #ACT      ;; 吝鞭粮 胶抛捞瘤
+         MapTing  EVGS04   EVGS05  25  25     ;; 粮 捞悼
+			ClearItemMap "EVGS05,25,25,25"  捣                               ;; 捣阑 瘤框
+			ClearItemMap "EVGS05,25,25,25"  金牛座
+         Delaygoto [Grobal]   10        @StartSaveGodNessMainGame_Msg5      ;; 皋技瘤 谎妨 林绰 何盒
+         Delaygoto [Grobal]   20        @StartSaveGodNessMainGame_Reword5   ;; 府况靛 何盒
+			Delaygoto [Grobal]   240       @StartSaveGodNessMainGame_Ting      ;; 捞亥飘 己傍
+		#ELSEACT
+		   MapTing  EVGS04   01 100 130     ;; 角菩窃
+	end
+
+   [@StartSaveGodNessMainGame_Msg5]
+   begin
+      #ACT
+         EventMsg [EVGS05] "感谢你，我最勇敢的勇士，你的勇气和真情将为您带来一份礼物，我将永远不会忘记你的恩情."
+   end
+
+   [@StartSaveGodNessMainGame_Reword5]
+   begin
+      #ACT      ;; 绊鞭粮 胶抛捞瘤
+         DropItemMap  "EVGS05,25,25,25"  捣              5000  50         ;; 焊惑 何盒
+         DropItemMap  "EVGS05,25,25,25"  金牛座           1     1
+   end
+
+   [@StartSaveGodNessMainGame_Ting]
+   begin
+      #ACT
+         MapTing  EVGS06   01 100 130
+   end
+;-------------------------------------------------------------------------------------------------------------
+end
+}

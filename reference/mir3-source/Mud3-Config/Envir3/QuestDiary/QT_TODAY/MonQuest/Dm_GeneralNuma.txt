@@ -1,0 +1,75 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 229
+#ACT
+goto @numabijang_T229
+break
+;
+#ELSEACT
+break
+
+[@numabijang_T229]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @numabijang_T229_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@numabijang_T229_1]
+#IF
+large S0 60
+#ACT
+goto @numabijang_T229_5
+#ELSEACT
+goto @numabijang_T229_2
+;-----------------
+
+[@numabijang_T229_2]
+#IF
+large S0 2
+#ACT
+goto @numabijang_T229_3
+#ELSEACT
+mov S0 2
+goto @numabijang_T229_3
+
+;-----------------
+
+[@numabijang_T229_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@numabijang_T229_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T229_Say
+
+#ACT
+set [308] 1
+mov S0 0

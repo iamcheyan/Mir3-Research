@@ -1,0 +1,55 @@
+; ===================================
+; Npc Def NPC File : Woomyon_Signpos-11
+; Shop Teleport npc in TaoVillage
+; -----------------------------------
+; Name: SignPost
+; Job: 
+; Map No: 11
+; Pos X 504
+; Pos Y 485
+; File name: *removed*
+; Comment: Shop Teleport npc in TaoVillage
+
+;================================================= =
+;
+
+[@main]
+#SAY
+您好。\
+我的名字是向导。\
+我的职责是引导旅客通过这个区域。\\
+有什么可以帮你们的吗?\ \
+<使用/@main-1> 传送到该村的商店
+
+[@main-1]
+#SAY
+我可以给你一些附近的地方。\ \
+<武器店/@weap>   <衣服店/@cloth>\
+<饰品店/@jewel>   <药物店/@pot>\ 
+<书籍商店/@book>   <小卖部/@ped>\ \
+我会回来的<离开/@exit>
+
+[@book]
+#ACT
+map 1004
+
+[@jewel]
+#ACT
+map 1005
+
+[@cloth]
+#ACT
+map 1003
+
+[@pot]
+#ACT
+map 1006
+
+[@weap]
+#ACT
+map 1007
+
+[@ped]
+#ACT
+map 1007
+

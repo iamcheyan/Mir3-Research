@@ -1,0 +1,409 @@
+;;海メ盗
+%100
+;potion
++0
+;scroll, Spotion, lottery
++3
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_RedPlayer	
+#ELSEACT
+goto @main_root_1
+
+;---------------
+
+[@main_root_1]
+;		oma quest
+;
+#IF
+check [199] 1
+#ACT
+goto @main_0_0
+break
+;             
+#IF
+check [197] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [195] 1
+#ACT
+goto @main_0_0
+break
+;             
+#IF
+check [185] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [184] 1
+#ACT
+goto @main_0_4
+break
+;
+#IF
+check [183] 1
+#ACT
+goto @main_0_3
+break
+;
+#IF
+check [179] 1
+#ACT
+goto @main_0_2
+break
+;
+#IF
+check [178] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Main_0_0
+ 
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Main_0_1
+ 
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Main_0_2
+ 
+;-----------------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Main_0_3
+
+;----------------------------- 
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Main_0_4
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_Sell
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（小）    500        1
+魔法药（小）    500        1
+蜡烛            100        1
+地牢逃脱卷      100        1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\oma.txt] @OMAYONG_START
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\oma.txt] @OKBUN_HELP1
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON_OKBUN
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\oma.txt] @OKBUN_HELP2
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 569
+#ACT
+goto @TQuest569_0
+break
+;
+#IF
+CheckDailyQuest 458
+#ACT
+goto @TQuest6_0
+break
+;
+#IF
+CheckDailyQuest 457
+#ACT
+goto @TQuest5_0
+break
+;
+#IF
+CheckDailyQuest 551
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 517
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 516
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 219
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest569_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest569_2
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest569_2
+break
+;
+
+#ELSEACT
+goto @TQuest569_1
+
+;--------------
+
+[@TQuest569_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @569_START
+
+[@TQuest569_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @569_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @219_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @219_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Wooma-1.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @516_START
+
+[@TQuest2_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @516_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @517_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @517_CHECK1
+
+;------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_1
+break
+;
+#ELSEACT
+goto @TQuest1_6
+
+;--------------
+
+[@TQuest4_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @551_CHECK2
+
+
+;------------------------
+
+[@TQuest5_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [309] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest5_2
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest5_1
+break
+;
+#ELSEACT
+goto @TQuest1_6
+
+
+;--------------
+
+[@TQuest5_1]
+#CALL [\QT_TODAY\4thClass.txt] @457_CHECK2
+
+[@TQuest5_2]
+#CALL [\QT_TODAY\4thClass.txt] @457_CHECK3
+
+;------------------------
+
+[@TQuest6_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest6_2
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest6_2
+break
+;
+#ELSEACT
+goto @TQuest6_1
+
+;--------------
+
+[@TQuest6_1]
+#CALL [\QT_TODAY\4thClass.txt] @458_START
+
+[@TQuest6_2]
+#CALL [\QT_TODAY\4thClass.txt] @458_CHECK1

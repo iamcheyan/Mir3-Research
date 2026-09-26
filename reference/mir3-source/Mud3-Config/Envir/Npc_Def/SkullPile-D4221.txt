@@ -1,0 +1,41 @@
+; ===================================
+; Npc Def NPC File : SkullPile-D4221
+; 
+; -----------------------------------
+; Name: SkullPile
+; Job: 
+; Map No: D4221
+; Pos X 275
+; Pos Y 13
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+[@main]
+#SAY
+(Hmm?! There is a note left in the skeleton pile?)\  \
+<Read/@read>
+
+
+[@read]
+#SAY
+"From another being who endlessly wanders this place,"\
+"Obtain the book and bring it to me."\ \
+(Is this the book?)\ \
+(<I should try it out./@enter>)
+
+
+[@enter]
+#IF
+checkitem ScrollOfSeal 1
+#ACT
+take ScrollOfSeal 1
+mapmove LABY01 
+close
+
+#ELSESAY
+You need to have the ScrollOfSeal to enter!\ \
+<Close/@exit>
+

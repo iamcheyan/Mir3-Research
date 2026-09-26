@@ -1,0 +1,177 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Korean resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+#ifdef _WIN32
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Start Service",              IDM_STARTSERVICE
+        MENUITEM "S&top Service",               IDM_STOPSERVICE
+        MENUITEM SEPARATOR
+        MENUITEM "Reload Setting",              IDM_RELOAD
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "&Option"
+    BEGIN
+        MENUITEM "&Configuration",              IDM_CONFIGURATION
+        MENUITEM SEPARATOR
+        MENUITEM "C&lear Log",                  IDM_CLEARLOG
+        MENUITEM "Clear &Usage Information",    IDM_OPTION_INIT
+        MENUITEM SEPARATOR
+        MENUITEM "&Not In Service Notice",      IDM_NOTINSERVICE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOGEX 0, 0, 341, 171
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Configuration"
+FONT 9, "±¼¸²", 0, 0, 0x1
+BEGIN
+    EDITTEXT        ODBC_DSN,127,7,70,12,ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        ODBC_ID,127,23,70,12,ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        ODBC_PW,127,37,70,12,ES_PASSWORD | ES_AUTOHSCROLL | NOT 
+                    WS_BORDER,WS_EX_CLIENTEDGE
+    EDITTEXT        CS_BPORT,127,61,34,12,ES_AUTOHSCROLL | ES_NUMBER | NOT 
+                    WS_BORDER,WS_EX_CLIENTEDGE
+    EDITTEXT        DS_BPORT,127,85,34,12,ES_AUTOHSCROLL | ES_NUMBER | NOT 
+                    WS_BORDER,WS_EX_CLIENTEDGE
+    EDITTEXT        LG_BPORT,127,109,34,12,ES_AUTOHSCROLL | ES_NUMBER | NOT 
+                    WS_BORDER,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,128,147,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,187,147,50,16
+    CTEXT           "ODBC",IDC_STATIC,7,7,56,12,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "DSN",IDC_STATIC,72,7,45,12,SS_CENTERIMAGE
+    RTEXT           "ID",IDC_STATIC,72,23,45,12,SS_CENTERIMAGE
+    RTEXT           "Password",IDC_STATIC,72,39,45,12,SS_CENTERIMAGE
+    CTEXT           "DB Server",IDC_STATIC,7,85,56,12,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "Binding Port",IDC_STATIC,72,85,45,12,SS_CENTERIMAGE
+    CTEXT           "Login Gate",IDC_STATIC,7,109,56,12,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "Binding Port",IDC_STATIC,72,109,45,12,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,7,133,327,1
+    CTEXT           "Check Server",IDC_STATIC,7,61,56,12,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "Binding Port",IDC_STATIC,72,61,45,12,SS_CENTERIMAGE
+    RTEXT           "DSN for PC",IDC_STATIC,205,7,45,12,SS_CENTERIMAGE
+    RTEXT           "ID for PC",IDC_STATIC,205,23,45,12,SS_CENTERIMAGE
+    RTEXT           "Password",IDC_STATIC,205,39,45,12,SS_CENTERIMAGE
+    EDITTEXT        ODBC_DSN_PC,259,7,70,12,ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        ODBC_ID_PC,259,23,70,12,ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        ODBC_PW_PC,259,37,70,12,ES_PASSWORD | ES_AUTOHSCROLL | 
+                    NOT WS_BORDER,WS_EX_CLIENTEDGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MIR2                ICON    DISCARDABLE     "icon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 334
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 164
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TOOLBAR             BITMAP  DISCARDABLE     "toolbar.bmp"
+#endif    // Korean resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

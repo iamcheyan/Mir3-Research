@@ -1,0 +1,225 @@
+;;베α돝
+[@OX_Quiz_Main]
+{
+#DEFINE             N1{TIME}            N1      ;; 20초 시간을 알려 주는 변수
+#DEFINE             N2{COUNT}           N2      ;; 문제수를 카운트 해주는 변수
+#DEFINE             B1{ANSWER}          B1      ;; 답을 저장 하는 변수
+
+#IF
+IsAdmin                                         ;; 운영자 일 경우만
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Admin_Event_Main
+
+#ELSESAY                                        ;; 사용자가 클릭 했을 경우 
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @user_Event_Main
+
+[@OX_Quiz_Initial]
+#ACT
+SendCmd  "oxmapO, 51, 47, 5"  이벤트도우미  Show  ;; NPC나타남
+SendCmd  "oxmapX, 73, 70, 5"  이벤트도우미  Show  ;; NPC나타남
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro] 0        ;; 이벤트 답을 결정 할수 없음
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Start] 0           ;; 이벤트 시작음 알림
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Gate] 0            ;; 게이트가 열린다.
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [End] 0             ;; 이벤트 끝을 초기화
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem] 0
+
+[@kyokyo]
+#ACT
+SendCmd  "oxmapO, 51, 47, 5"  이벤트도우미  Show  ;; NPC나타남
+SendCmd  "oxmapX, 73, 70, 5"  이벤트도우미  Show  ;; NPC나타남
+
+;----------------------------------------------- 이벤트 시작 루틴
+[@OX_Quiz_Start]
+#ACT
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Start]
+
+#IF
+Equal              P1                   0       ;; 이벤트 시작이 아니면
+#ACT
+close
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [Start_1]
+	LoadValue A1 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [Start_2]
+	LoadValue A2 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [Start_3]
+LineMsg Grobal  "%A0"
+LineMsg Grobal  "%A1"
+LineMsg Grobal  "%A2"
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro] 1        ;; 이벤트 답을 결정 할수 없음
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Start] 1           ;; 이벤트 시작음 알림
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Gate] 1            ;; 게이트가 열린다.
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [End] 0             ;; 이벤트 끝을 초기화
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem] 1         ;; 처음 진입시는 이동이 불가능함
+Mov                N1{TIME}             20      ;; 시간 부분 초기화
+Mov                N2{COUNT}            1       ;; 문제 카운트 초기화
+Delaygoto [Grobal] 300 @OX_Quiz_CloseGate                ;; 5분 동안 문은 열어둠
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Admin_EvStart_Fail
+
+[@OX_Quiz_CloseGate]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [End]
+LineMsg Grobal  "%A0"
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem] 0         ;; 시간이 지난후 이동 가능함
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro] 0        ;; 이벤트 답을 결정 가능
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Gate] 0            ;; 게이트가 닫힌다.
+
+;----------------------------------------------- 이벤트 정답을 맞추는 루틴
+[@Correct()]
+#ACT
+Mov                 B1{ANSWER}          %ARG(1)                            ;; 답을 입력함
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro]
+LoadValue P2 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Start]
+
+#IF
+Equal               P1                  0                                  ;; 문제를 낼수 있는 타임
+Equal               P2                  1                                  ;; 이벤트가 시작이어야만 가능
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @User_Answer
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @User_Answer_Fail
+
+[@Close_Syntex]
+#ACT
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem] 0         ;; 이동이 가능 하게 함
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro] 1        ;; 문제를 더 못내게 함
+close                                                                      ;; 이벤트 창을 닫음
+goto @Answertime
+
+[@AnswerTime]
+#IF
+Equal               N1{TIME}            0         ;; 20초가 경과 되었을시
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Event] [Correct]
+EventMsg  "oxmap,oxmapO,oxmapX"  "%A0"
+goto @ReCorrect                                   ;; 정답 입력 루틴으로 이동
+SendCmd  "oxmapO, 51, 47, 5"  이벤트도우미  Hide  ;; NPC사라짐
+SendCmd  "oxmapX, 73, 70, 5"  이벤트도우미  Hide  ;; NPC사라짐
+#ELSEACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Event] [Time]
+EventMsg "oxmap,oxmapO,oxmapX"   "%A0"
+Dec         N1{TIME}                    1         ;; 시간 틱을 감소 시팀
+Delaygoto [Grobal]   1   @AnswerTime                       ;; 1초마다 계속해서 돌림
+
+[@ReCorrect]
+#IF
+Equal               B1{ANSWER}          "O"
+#ACT
+MapTing   oxmapX    01   439 303                 ;; X 맵에 있는 사람 팅김
+#ELSEACT
+MapTing   oxmapO    01   439 303                 ;; O 맵에 있는 사람 팅김
+
+;----------------------------------------------- 이벤트 문제를 내주는 루틴
+[@OX_Quiz_Problem]
+#ACT
+close
+INC         N2{COUNT}                   1         ;; 문제수 카운트
+Mov         N1{TIME}                    20        ;; 제한 시간으로 초기화 다시
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Event] [Quiz]
+EventMsg "oxmap,oxmapO,oxmapX" "%A0"
+SendCmd  "oxmapO, 51, 47, 5"  이벤트도우미  Show  ;; NPC나타남
+SendCmd  "oxmapX, 73, 70, 5"  이벤트도우미  Show  ;; NPC나타남
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [AdminPro] 0        ;; 문제의 답을 입력 할수 있게 함
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Answer_OX
+
+
+;----------------------------------------------- 이벤트 종료 루틴
+[@OX_Quiz_Quit]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [Ev_End_1]
+	LoadValue A1 "Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz_Ev.txt" [Line] [Ev_End_2]
+LineMsg "oxmap,oxmapO,oxmapX" "%A0"
+LineMsg "oxmap,oxmapO,oxmapX" "%A1"
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Start] 0           ;; 이벤트 다시 시작을 할수 있게 조절
+SaveValue "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [End] 1             ;; 이벤트가 종료 됨
+}
+;-------------------------------------------------------------------------------
+[@OX_Quiz_AnsO]
+{
+#ACT
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [End]             ;; 이벤트가 종료 됨
+
+#IF
+Equal          P1                1   ;; 이벤트가 종료 되었는지 확인 하는 부분
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @User_Gift
+
+#ACT
+give 축복의기름 1                    ;; 상품 지급
+give 강력화기름 1
+Map   0                              ;; 상품을 받으면 팅김
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Answer_Move
+
+[@OX_Quiz_MoveX]
+#ACT
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem]         ;; 벌칙 시간
+
+#IF
+Equal          P1                0   ;; 이동 불가능
+#ACT
+Map            oxmapX                ;; 이동 시킴
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Move_Fail
+
+}
+;-------------------------------------------------------------------------------
+[@OX_Quiz_AnsX]
+{
+#ACT
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [End]             ;; 이벤트가 종료 됨
+
+#IF
+Equal          P1                1   ;; 이벤트가 종료 되었는지 체크 하는 부분
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @User_Gift
+#ACT
+give 축복의기름 1                    ;; 상품 지급
+give 강력화기름 1
+Map   0                              ;; 상품을 받으면 팅김
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Answer_Move_1
+
+
+[@OX_Quiz_MoveO]
+#ACT
+LoadValue P2 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Problem]         ;; 벌칙 시간
+
+#IF
+Equal     P2       0                                                        ;; 이동 불가능
+#ACT
+Map       oxmapO                     ;; 이동 시킴
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Move_Fail
+}
+;-------------------------------------------------------------------------------
+[@OX_Quiz_Input]
+{
+#IF
+checkhum "oxmapO"  100
+checkhum "oxmapX"  100
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @Join_Fail
+
+#ACT
+break
+
+#IF
+#ACT
+LoadValue P1 "Flag_Def\Event\OX_Quiz\Start.txt"  [FLAG] [Gate]
+
+#IF
+Equal      P1      1
+#ACT
+goto @Quiz_Move
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\OX_Quiz\OX_Quiz.txt] @OX_Event_Not_Start
+
+[@Quiz_Move]
+#IF
+random 2
+#ACT
+Map    oxmapO
+#ELSEACT
+Map    oxmapX
+}

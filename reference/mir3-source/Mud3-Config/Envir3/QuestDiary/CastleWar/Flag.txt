@@ -1,0 +1,171 @@
+;;海メ盗
+[@Defence_SubFlag]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_1
+
+}
+
+[@Defence_MainFlag]
+{
+#IF
+IsOnCastleWar SaBuk
+IsAttackGuild SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 205 158 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_2
+
+#ACT
+break
+
+#IF
+IsOnCastleWar SaBuk
+IsDefenseGuild SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 206 158 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_3
+
+#ACT
+break
+
+#IF
+IsOnCastleWar SaBuk
+IsDefenseGuild SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 205 158 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_4
+
+#ACT
+break
+
+#IF
+IsOnCastleWar SaBuk
+IsAttackGuild  SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 205 158 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_5
+
+#ACT
+break
+
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_6
+
+
+[@castlewarmenu_Attack]
+#IF
+IsOnCastleWar SaBuk
+IsAttackGuild  SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 205 158 0
+#ACT
+CAPTURECASTLEFLAG  SABUK
+SENDCMD  "3, 0, 0, 1000" 沙巴克旗帜 "@_Startup"
+linemsg  "3" " 挑战行会 '<$GUILD>' 行会占领了沙巴克城。"
+close
+break
+
+#IF
+IsOnCastleWar SaBuk
+IsAttackGuild  SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 206 158 0
+#ACT
+CAPTURECASTLEFLAG  SABUK
+SENDCMD  "3, 0, 0, 1000" 沙巴克旗帜 "@_Startup"
+linemsg  "3" " 挑战行会 '<$GUILD>' 行会占领了沙巴克城。"
+close
+break
+
+[@castlewarmenu_Defence]
+#IF
+IsOnCastleWar SaBuk
+ISDefenseGUILD  SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 205 158 0
+#ACT
+CAPTURECASTLEFLAG  SABUK
+linemsg  "3" " 防御行会 '<$GUILD>' 行会占领了沙巴克城。"
+close
+break
+
+#IF
+IsOnCastleWar SaBuk
+ISDefenseGUILD  SABUK
+IsGuildMaster
+!IsCastleGuild  SABUK
+CheckPos 3 206 158 0
+#ACT
+CAPTURECASTLEFLAG  SABUK
+linemsg  "3" " 防御行会 '<$GUILD>' 行会占领了沙巴克城。"
+close
+break
+}
+
+;-------------------------------------------------------------------------------
+[@ChangeFlagShape]
+{
+#IF
+checkgold 100000
+#ACT
+take 金币 100000
+movr   D1  16
+movr   D2  16
+movr   D3  16
+goto @ChangeFlagNum
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_7
+
+
+[@ChangeFlagNum]
+#IF
+#SAY
+<1号/@num(1)> , <2号/@num(2)> , <3号/@num(3)>\
+<4号/@num(4)> , <5号/@num(5)> , <6号/@num(6)>\
+<7号/@num(7)> , <8号/@num(8)> , <9号/@num(9)>\
+<10号/@num(10)> , <11号/@num(11)> , <12号/@num(12)>\
+
+[@num()]
+#ACT
+mov  N1  1
+mov  D0  %ARG(1)
+goto @ResultFlag
+
+[@ChangeFlagColor]
+#ACT
+movr   D1  16
+movr   D2  16
+movr   D3  16
+goto @ResultFlag
+
+[@ResultFlag]
+#ACT
+dec    D0
+TestFlag  %D0  %D1  %D2  %D3
+inc    D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_8
+
+
+
+[@ThanksColor]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\Flag.txt] @Flag_9
+
+#ACT
+dec D0
+ApplyFlag  %D0  %D1  %D2  %D3
+inc D0
+}

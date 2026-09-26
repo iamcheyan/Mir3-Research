@@ -1,0 +1,122 @@
+;;海メ盗
+[@MarketShooter]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_1
+
+
+;-------------------------------------------------------------------------------
+
+[@buy_stoneshooter]
+#IF
+!checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_2
+
+#ACT
+break
+
+#IF
+checkgold 100000
+!checkshooter
+!checksavedshooter
+#ACT
+take 金币 100000
+makeshooter 投石车 100
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_3
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_4
+
+
+[@buy_chainshooter]
+#IF
+!checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_5
+
+#ACT
+break
+
+#IF
+checkgold 100000
+!checkshooter
+!checksavedshooter
+#ACT
+take 金币 100000
+makeshooter 弩车 100
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_6
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_7
+
+
+;-------------------------------------------------------------------------------
+
+[@leave_shooter]
+#IF
+checkshooter
+#ACT
+leaveshooter
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_8
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_9
+
+
+[@getback_shooter]
+#IF
+!checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_10
+
+#ACT
+break
+
+#IF
+checkgold 1000
+!checkshooter
+checksavedshooter  1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_11
+
+#ACT
+take 金币 1000
+makeshooter 投石车
+break
+
+#IF
+!checkshooter
+checksavedshooter  2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_12
+
+#ACT
+makeshooter 弩车
+break
+
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_13
+
+
+;-------------------------------------------------------------------------------
+
+[@kill_shooter]
+#IF
+checkshooter
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_14
+
+#ACT
+give 金币 50000
+killshooter
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\CastleWar\ShooterMarket.txt] @ShooterMarket_15
+
+
+;-------------------------------------------------------------------------------
+}

@@ -1,0 +1,59 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [248] 1
+#ACT
+break
+
+#IF
+check [242] 1
+#ACT
+break
+
+#IF
+check [240] 1
+#ACT
+goto @jusulgwi1
+
+;----------------------------------------------------------
+;----------------------------------------------------------
+
+[@jusulgwi1]
+#IF
+large s2 4
+#ELSEACT
+goto @jusulgwi2
+
+;-----------------
+
+[@jusulgwi2]
+#IF
+large s2 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_Jusulgi.txt] @Nm_Jusulgi_1
+
+#ACT
+give À×µç½©Ê¬¹Ç 1
+mov s2 5
+#ELSEACT
+goto @jusulgwi3
+
+[@jusulgwi3]
+#IF
+large s2 2
+#ACT
+goto @jusulgwi4
+#ELSEACT
+mov s2 2
+goto @jusulgwi4
+
+;-----------------
+
+[@jusulgwi4]
+#IF
+#ACT
+inc s2 1
+
+;----------------------------------------------------------

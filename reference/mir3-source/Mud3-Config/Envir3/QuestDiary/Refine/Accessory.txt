@@ -1,0 +1,150 @@
+;;º£¥áµÁ
+[@RefineAccessory]
+{
+
+#Define   D1{PROB}    D1
+#Define   D2{TYPE}    D2
+#Define   D3{ATOM}    D3
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Main
+
+[@@testRefineAccessory]
+begin
+
+  #ACT
+    mov  A0  %INPUTSTR
+
+  #IF
+    Equal  A0  ""
+  #ACT
+    break
+
+  #IF
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Main_1
+end
+
+[@retryRefine]
+begin
+  #ACT
+    goto @@testRefineAccessory
+end
+
+[@doRefineAcc()]
+begin
+
+  #IF
+    not CheckItem        ¸ÖÓñÊ¯    1         ;¸ÖÓñÊ¯ 2°³ ÀÌ»ó
+    or not CheckGold     10000
+  #ACT
+    goto @didnotMatchConditions
+    break
+
+  #IF
+  #ACT
+    ; A0 : Á¦·Ã ¾ÆÀÌÅÛ ÀÌ¸§                       
+    ;                
+    mov     D2{TYPE}    %ARG(1)                 ;0:ÆÄ±«  1:¸¶¹ý  3:¿ø¼Ò
+    mov     D3{ATOM}    %ARG(2)                 ;¿ø¼Ò
+    TestRefineAccessories   %A0   %D2   %D3
+    mov     D1{PROB}    %P9                     ;D1 ¼º°øÈ®·ü
+
+  #IF
+    Small   D1{PROB}    0                       ;D1ÀÌ (-)°ªÀÎ °æ¿ì Á¶°Ç ¿À·ùÀÓ
+  #ACT
+    goto @didnotMatchConditions
+    break
+
+  #IF
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Main_2
+end
+
+[@GetRefineProb]                      ;D1¿¡ °ªÀÌ ÀÖ´Ù.
+begin
+  #IF
+    Small  D1  30
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob
+  #ACT
+    break
+
+  #IF
+    Small  D1  38
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob_1
+  #ACT
+    break
+
+  #IF
+    Small  D1  45
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob_2
+  #ACT
+    break
+
+  #IF
+    Small  D1  55
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob_3
+  #ACT
+    break
+
+  #IF
+    Small  D1  65
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob_4
+  #ACT
+    break
+
+  #IF
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Prob_5
+  #ACT
+    break
+end
+
+[@RefineAccNow]
+begin
+
+  #IF
+    not CheckItem        ¸ÖÓñÊ¯    1         ;¸ÖÓñÊ¯ 2°³ ÀÌ»ó
+    or not CheckGold     10000
+  #ACT
+    break
+
+  #IF
+  #ACT
+    Take      ¸ÖÓñÊ¯    1
+    Take      ½ð±Ò        10000
+    RefineAccessories   %A0   %D2   %D3
+
+  #IF
+    Equal     P9        1                    ;P1=1 ¼º°ø  0:½ÇÆÐ
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Result
+
+  #IF
+    Equal  P9  0
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Result_1
+end
+
+
+
+[@didnotMatchConditions]
+begin
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Fail
+end
+    
+[@askAboutRefineAccessories]
+begin
+
+  #SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\Accessory.txt] @RefineAccessory_Help
+    
+end
+
+}

@@ -1,0 +1,50 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+<结束/@exit>
+}
+
+[@NPC_Main]
+{
+时光飞逝啊，我也有像你一样年轻的时候。
+当我血气方刚的时候，觉得世界上没什么曲折，那时候我觉得只要学到世上所有的武功，就可以练出天下绝功。可是每一项武功都很深奥，不管下多大的工夫也修炼不到头啊。最终，我每一项武功都没能理解其精髓就踏进了江湖。现在在这异地他乡靠教那些年轻人武功来养活自己。如果你在练功的时候遇到什么问题，尽管我也有很多不足的地方，但我还是会给你帮助的。\
+<查看可解释的武功目录/@main_0_1>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+（战士魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<基本剑术/@Go_Mu_Warrior_Noatom_wesu>\ \
+（11 - 20 等级 修炼魔法）\
+<攻杀剑术/@Go_Mu_Warrior_Noatom_wedo> , <刺杀剑术/@Go_Mu_Warrior_Noatom_asword>\ \
+（法师魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<火球术/@Go_Mu_Wizard_fire_bolt> , <霹雳掌/@Go_Mu_Wizard_light_bolt> , <风掌/@Go_Mu_Wizard_wind_jangpung>\ \
+（11 - 20 等级 修炼魔法）\
+<抗拒火环/@Go_Mu_Wizard_fire_strom> , <诱惑之光/@Go_Mu_Wizard_light_shock> , <瞬息移动/@Go_Mu_Wizard_ETC_teleport>\
+<大火球/@Go_Mu_Wizard_fire_Upbolt> , <雷电术/@Go_Mu_Wizard_light_recall> ,
+<击风/@Go_Mu_Wizard_wind_kyoukpung> , <地狱火/@Go_Mu_Wizard_fire_line>\ \
+（道士魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<治愈术/@Go_Mu_Taoist_holy_heal> , <精神力战法/@Go_Mu_Taoist_dark_ilgang>\ \
+（11 - 20 等级 修炼魔法）\
+<施毒术/@Go_Mu_Taoist_dark_amyen> , <灵魂火符/@Go_Mu_Taoist_dark_poksal> , <月魂断玉/@Go_Mu_Taoist_holy_moon>\
+<召唤骷髅/@Go_Mu_Taoist_soul_skel> , <隐身术/@Go_Mu_Taoist_dark_hiden>\ \
+<结束/@exit>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}

@@ -1,0 +1,19 @@
+;;不要删掉此行
+[@UserMT]
+{
+
+#SAY
+#INCLUDE [..\Convert_Def\QuestDiary\Sell\ConsignmentMarket.txt] @Convert_ConsignmentMarket_0
+
+[@buyfromusermarket()]
+#ACT
+SetTypeUserMarket %ARG(1)
+OpenUserMarket
+close
+
+[@checksold]
+#ACT
+CheckSoldItemsUserMarket
+close
+}
+

@@ -1,0 +1,143 @@
+;;海メ盗
+[@RushTest]
+{
+#IF
+hour 22 22
+min  25 29
+#ACT
+goto @RushTest_Game
+break
+
+#IF
+hour 4 4
+min  25 29
+#ACT
+goto @RushTest_Game
+break
+
+#IF
+hour 10 10
+min  25 29
+#ACT
+goto @RushTest_Game
+break
+
+#IF
+hour 16 16
+min  25 29
+#ACT
+goto @RushTest_Game
+break
+
+#ELSESAY
+进入时间: \
+04:25-04:30\
+10:25-10:30\
+16:25-16:30\
+22:25-22:30\
+你错过进入时间了。\ \
+<结束/@exit>
+
+[@RushTest_Game]
+#IF
+checkhum RUSH1 30
+#SAY
+晕，里面已经有30人了，人满了。 \ \
+<结束/@exit>
+#ELSEACT
+map RUSH1
+goto @RushTest_Game_PreCheck
+
+[@RushTest_Game_PreCheck]
+#IF
+equal z11 0
+#ACT
+mov z11 1
+goto @RushTest_Random_Precheck
+
+[@RushTest_Random_Precheck]
+#ACT
+Delaygoto [Grobal] 300 @RushCase
+
+[@RushCase]
+#ACT
+movr d0 13
+
+#IF
+equal d0 0
+#ACT
+goto @RushCase1
+break
+#IF
+equal d0 1
+#ACT
+goto @RushCase1
+break
+#IF
+equal d0 2
+#ACT
+goto @RushCase1
+break
+#IF
+equal d0 3
+#ACT
+goto @RushCase1
+break
+#IF
+equal d0 4
+#ACT
+goto @RushCase1
+break
+
+#IF
+equal d0 5
+#ACT
+goto @RushCase4
+break
+#IF
+equal d0 6
+#ACT
+goto @RushCase4
+break
+#IF
+equal d0 7
+#ACT
+goto @RushCase4
+break
+#IF
+equal d0 8
+#ACT
+goto @RushCase4
+break
+
+#IF
+equal d0 9
+#ACT
+goto @RushCase2
+break
+#IF
+equal d0 10
+#ACT
+goto @RushCase2
+break
+#IF
+equal d0 11
+#ACT
+goto @RushCase2
+break
+
+#IF
+equal d0 12
+#ACT
+goto @RushCase5
+break
+
+[@RushCase1]
+#CALL [\\Event\TestGame\Test_Case1.txt] @RushTest_Game1
+[@RushCase2]
+#CALL [\\Event\TestGame\Test_Case2.txt] @RushTest_Game2
+[@RushCase4]
+#CALL [\\Event\TestGame\Test_Case4.txt] @RushTest_Game4
+[@RushCase5]
+#CALL [\\Event\TestGame\Test_Case5.txt] @RushTest_Game5
+}

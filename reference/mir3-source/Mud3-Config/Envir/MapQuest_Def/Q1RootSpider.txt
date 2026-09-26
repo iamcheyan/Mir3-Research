@@ -1,0 +1,21 @@
+[@main]
+#IF
+check [402] 1
+#ACT
+break
+
+#IF
+random 5
+check [401] 1
+#ACT
+SET [402] 1
+#SAY
+;(폭안거미를 잡았으니..) 파관호 도장께서 모든 비밀을 \
+(As I killed a RootSpider..) \
+Rev.taoist Perry will tell me \
+;말씀해 주시겠지. \ \
+every secret. \ \ 
+#ELSESAY
+;(폭안거미를 잡긴 잡았는데... 기분이 영 찜찜하군..) \ \
+(I killed the RootSpider... \
+but I'm not feeling so good...) \ \

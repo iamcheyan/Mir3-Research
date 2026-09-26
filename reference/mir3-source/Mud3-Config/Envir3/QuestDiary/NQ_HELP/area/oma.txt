@@ -1,0 +1,270 @@
+;;º£¥áµÁ
+[@OMA]
+{
+#IF
+check [199] 1
+#ACT
+goto @OMA_22
+break
+#IF
+check [198] 1
+#ACT
+goto @OMA_21
+break
+#IF
+check [197] 1
+#ACT
+goto @OMA_20
+break
+#IF
+check [195] 1
+#ACT
+goto @OMA_19
+break
+#IF
+check [192] 1
+#ACT
+goto @OMA_18
+break
+#IF
+check [191] 1
+#ACT
+goto @OMA_17
+break
+#IF
+check [196] 1
+#ACT
+goto @OMA_16
+break
+#IF
+check [190] 1
+#ACT
+goto @OMA_15
+break
+#IF
+check [189] 1
+#ACT
+goto @OMA_14
+break
+#IF
+check [188] 1
+#ACT
+goto @OMA_13
+break
+#IF
+check [185] 1
+#ACT
+goto @OMA_12
+break
+#IF
+check [184] 1
+#ACT
+goto @OMA_11
+break
+#IF
+check [183] 1
+#ACT
+goto @OMA_10
+break
+#IF
+check [181] 1
+#ACT
+goto @OMA_9
+break
+#IF
+check [180] 1
+#ACT
+goto @OMA_8
+break
+#IF
+check [179] 1
+#ACT
+goto @OMA_7
+break
+#IF
+check [178] 1
+#ACT
+goto @OMA_6
+break
+#IF
+check [177] 1
+#ACT
+goto @OMA_5
+break
+#IF
+check [176] 1
+#ACT
+goto @OMA_4
+break
+#IF
+check [175] 1
+#ACT
+goto @OMA_3
+break
+#IF
+check [174] 1
+#ACT
+goto @OMA_2
+break
+#IF
+check [173] 1
+#ACT
+goto @OMA_1
+break
+#ELSEACT
+goto @OMA_0
+[@OMA_0]
+#IF
+check [168] 1
+#ACT
+goto @OMA_0_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_1
+
+[@OMA_0_1]
+#IF
+checklevel 11
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_3
+
+[@OMA_1]
+#IF
+check [173] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_4
+
+[@OMA_2]
+#IF
+check [174] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_5
+
+[@OMA_3]
+#IF
+check [175] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_6
+[@OMA_4]
+#IF
+check [176] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_7
+
+[@OMA_5]
+#IF
+check [177] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_8
+
+[@OMA_6]
+#IF
+check [178] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_9
+
+[@OMA_7]
+#IF
+check [179] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_10
+
+[@OMA_8]
+#IF
+check [180] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_11
+
+[@OMA_9]
+#IF
+check [181] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_12
+
+[@OMA_10]
+#IF
+check [183] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_13
+
+[@OMA_11]
+#IF
+check [184] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_14
+
+[@OMA_12]
+#IF
+check [185] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_15
+
+[@OMA_13]
+#IF
+check [188] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_16
+
+[@OMA_14]
+#IF
+check [189] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_17
+
+[@OMA_15]
+#IF
+check [190] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_18
+
+[@OMA_16]
+#IF
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_19
+
+[@OMA_17]
+#IF
+check [191] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_20
+
+[@OMA_18]
+#IF
+check [192] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_21
+
+[@OMA_19]
+#IF
+check [195] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_22
+
+[@OMA_20]
+#IF
+check [198] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_23
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_24
+
+[@OMA_21]
+#IF
+check [197] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_25
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_26
+
+[@OMA_22]
+#IF
+check [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\oma.txt] @oma_27
+
+}

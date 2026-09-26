@@ -1,0 +1,19 @@
+;;海メ盗
+[@MapQuest_Upac_Recall1]
+#IF
+check [516] 1
+#ACT
+break
+
+#IF
+check [515] 1
+#ACT
+goto @MapQuest_Upac_Recall1_1
+break
+
+[@MapQuest_Upac_Recall1_1]
+#IF
+random 50
+#ACT
+give 神圣战甲术 1
+map D400_001

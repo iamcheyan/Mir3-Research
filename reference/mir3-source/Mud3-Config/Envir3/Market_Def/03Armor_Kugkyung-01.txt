@@ -1,0 +1,155 @@
+;;海メ盗
+%100
++10
++11
++15
+
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Main_0_0
+ 
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour
+青铜头盔         50         1
+魔法头盔         50         1
+道士头盔         50         1
+布衣（男）       50         1
+布衣（女）       50         1
+轻型盔甲（男）   50         1
+轻型盔甲（女）   50         1
+重盔甲（男）     50         1
+重盔甲（女）     50         1
+灵魂战衣（男）   50         1
+灵魂战衣（女）   50         1
+魔法长袍（男）   50         1
+魔法长袍（女）   50         1
+战神盔甲（男）   50         1
+战神盔甲（女）   50         1
+幽灵战衣（男）   50         1
+幽灵战衣（女）   50         1
+恶魔长袍（男）   50         1
+恶魔长袍（女）   50         1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@pre_repair]
+#IF
+check [508] 1
+#ACT
+goto @pre_repair_0
+#ELSEACT
+goto @pre_repair_mutebo
+
+;--------
+
+[@pre_repair_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_Pre_Repair
+
+;--------
+
+[@pre_repair_mutebo]
+#IF
+checkmagic 野蛮冲撞
+#ACT
+goto @pre_repair_0
+#ELSEACT
+goto @pre_repair_mutebo_0
+
+[@pre_repair_mutebo_0]
+#IF
+checkjob warrior
+checklevel 27
+#ACT
+goto @pre_repair_mutebo_1
+#ELSEACT
+goto @pre_repair_0
+
+
+[@pre_repair_mutebo_1]
+#CALL [\MU_warrior\mute.txt] @mugong_mute_explan_armor
+
+;-----------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 573
+#ACT
+goto @TQuest573_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest573_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest573_2
+break
+;
+#ELSEACT
+goto @TQuest573_1
+
+;--------------
+
+[@TQuest573_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @573_START
+
+[@TQuest573_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @573_CHECK1
+
+;--------------
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_Kugkyung-01.txt] @NPC_TQuest_1

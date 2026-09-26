@@ -1,0 +1,101 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon2-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon2-0.txt] @NPC_Main
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon2-0.txt] @NPC_Main_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@Go_Mu_Wizard_fire_bolt]
+#CALL [\MU_Total_sell\Wizard\fireBolt.txt] @Mu_Wizard_fire_bolt
+
+[@Go_Mu_Wizard_light_bolt]
+#CALL [\MU_Total_sell\Wizard\lightBolt.txt] @Mu_Wizard_light_bolt
+
+[@Go_Mu_Wizard_wind_jangpung]
+#CALL [\MU_Total_sell\Wizard\windBolt.txt] @Mu_Wizard_wind_jangpung
+
+[@Go_Mu_Wizard_fire_strom]
+#CALL [\MU_Total_sell\Wizard\fireStorm.txt] @Mu_Wizard_fire_storm
+
+[@Go_Mu_Wizard_light_shock]
+#CALL [\MU_Total_sell\Wizard\lightShock.txt] @Mu_Wizard_light_shock
+
+[@Go_Mu_Wizard_fire_line]
+#CALL [\MU_Total_sell\Wizard\fireLine.txt] @Mu_Wizard_fire_line
+
+[@Go_Mu_Wizard_light_recall]
+#CALL [\MU_Total_sell\Wizard\lightRecall.txt] @Mu_Wizard_light_recall
+
+[@Go_Mu_Wizard_wind_kyoukpung]
+#CALL [\MU_Total_sell\Wizard\kyoukpung.txt] @Mu_Wizard_wind_kyoukpung
+
+[@Go_Mu_Wizard_fire_Upbolt]
+#CALL [\MU_Total_sell\Wizard\fireUpbolt.txt] @Mu_Wizard_fire_Upbolt
+
+[@Go_Mu_Wizard_ETC_teleport]
+#CALL [\MU_Total_sell\Wizard\teleport.txt] @Mu_Wizard_ETC_teleport
+
+[@Go_Mu_Wizard_fire_pokyel]
+#CALL [\MU_Total_sell\Wizard\pokyel.txt] @Mu_Wizard_fire_pokyel
+
+[@Go_Mu_Wizard_wind_pungjin]
+#CALL [\MU_Total_sell\Wizard\windLine.txt] @Mu_Wizard_wind_pungjin
+
+[@Go_Mu_Wizard_fire_jiyem]
+#CALL [\MU_Total_sell\Wizard\jiyem.txt] @Mu_Wizard_fire_jiyem
+
+[@Go_Mu_Wizard_fire_shild]
+#CALL [\MU_Total_sell\Wizard\fireShild.txt] @Mu_Wizard_fire_shild
+
+[@Go_Mu_Wizard_light_line]
+#CALL [\MU_Total_sell\Wizard\lightLine.txt] @Mu_Wizard_light_line
+
+[@Go_Mu_Wizard_light_storm]
+#CALL [\MU_Total_sell\Wizard\lightStorm.txt] @Mu_Wizard_light_storm
+
+[@Go_Mu_Wizard_ETC_saja]
+#CALL [\MU_Total_sell\Wizard\saja.txt] @Mu_Wizard_ETC_saja
+
+[@Go_Mu_Wizard_ice_strom]
+#CALL [\MU_Total_sell\Wizard\iceStrom.txt] @Mu_Wizard_ice_strom
+
+[@Go_Mu_Wizard_ehyung]
+#CALL [\MU_Total_sell\Wizard\ehyung.txt] @Mu_Wizard_ehyung
+
+[@Go_Mu_Wizard_bingsa]
+#CALL [\MU_Total_sell\Wizard\iceLine.txt] @Mu_Wizard_bingsa
+
+[@Go_Mu_Wizard_yongsun]
+#CALL [\MU_Total_sell\Wizard\yongsun.txt] @Mu_Wizard_yongsun
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------

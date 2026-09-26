@@ -1,0 +1,120 @@
+; ===================================
+; Npc Def NPC File : Bichon_Signpos-0
+; Shop Teleport npc in 比奇县
+; -----------------------------------
+; Name: SignPost
+; Job: 
+; Map No: 0
+; Pos X 329
+; Pos Y 267
+; File name: *removed*
+; Comment: Shop Teleport npc in 比奇县
+
+;================================================= =
+;
+
+[@main]
+#SAY
+您好。我的名字是向导。\
+我的职责是引导旅客通过这个区域。\
+有什么可以帮你们的吗？\ \
+<使用/@main-1>传送到村商店\
+<交谈./@消息>关于该村消息
+
+
+[@main-1]
+#SAY
+我会引导你到所需位置。\
+我要在那里传送你\?\ \
+<武器店/@go-weap>   <衣服店/@go-cloth>   <客栈/@go-inn>\
+<饰品店/@go-access>   <药物商店/@go-pot>   <比奇皇宫/@go-palace>\
+<书籍商店/@go-book>  <屠夫店/@go-肉>\ \
+<结束谈话/@exit>
+ 
+
+[@消息]
+#SAY
+您想知道些什么?\ \
+<交谈./@消息-merchant>新闻有信誉的商家\
+<交谈./@消息-inn>一个老人叫刘老头在客栈\
+<交谈./@消息-heroes>关于石像的英雄\ \
+<主菜单/@main>
+
+[@消息-merchant]
+#SAY
+听说在比奇的东门走\
+相信商人因为太吵\
+当许多人聚集在酒店的前面。\
+我会指引你?\ \
+<前往/@go-merchant>信任商家    <打听/@消息>其他新闻
+
+[@消息-inn]
+#SAY
+最近一个老人住在比奇客栈。\
+我听说是他要找的人\
+谁愿意来测试自己的能力……\
+你应该拜访他.\ \
+<前往/@go-tavern>比奇客栈.    <打听/@消息>其他新闻
+
+[@消息-heroes]
+#SAY
+啊，还有，这是说，石头的雕像\
+著名的英雄已经建成。\
+你要去看他们\?\ \
+<前往 see/@go-statues>英雄雕像  <打听/@消息>其他新闻
+
+
+[@go-weap]
+#ACT
+map 0103
+
+
+[@go-cloth]
+#ACT
+map 0106
+
+
+[@go-inn]
+#ACT
+map 0125
+
+
+[@go-access]
+#ACT
+map 0105
+
+
+[@go-pot]
+#ACT
+map 0108
+
+
+[@go-palace]
+#ACT
+map 0122
+
+
+[@go-book]
+#ACT
+map 0104
+
+
+[@go-肉]
+#ACT
+map 0102
+
+
+[@go-merchant]
+#ACT
+mapmove 0 263 256
+
+
+[@go-tavern]
+#ACT
+map 0101
+
+
+[@go-statues]
+#ACT
+mapmove 0 351 243
+

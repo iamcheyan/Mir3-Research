@@ -1,0 +1,164 @@
+;;º£¥áµÁ
+[@BAMGOL_START]
+{
+#IF
+#ACT
+goto @BAMGOL_START_0
+
+[@BAMGOL_START_0]
+#IF
+check [215] 0
+check [213] 1
+checklevel 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_2
+
+
+[@BAMGOL_START_1]
+#IF
+check [215] 0
+check [213] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_3
+
+
+[@BAMGOL_START_2_1]
+#IF
+check [213] 1
+check [215] 0
+#ACT
+set [215] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_4
+
+
+[@BAMGOL_START_2_2]
+#IF
+check [213] 1
+check [215] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_5
+
+}
+
+[@BAMGOL_NOPA]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_6
+
+}
+
+[@GIVE_GALL]
+{
+#IF
+check [218] 1
+#ACT
+goto @GIVE_GALL_2
+break
+
+#ELSEACT
+goto @GIVE_GALL_0
+
+[@GIVE_GALL_0]
+#IF
+check [217] 1
+check [219] 0
+checkitem Ç§Äê¶¾Éßµ¨Ö­ 1
+#ACT
+goto @GIVE_GALL_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_7
+
+
+[@GIVE_GALL_1]
+#IF
+checkitem Ç§Äê¶¾Éßµ¨Ö­ 1
+#ACT
+take Ç§Äê¶¾Éßµ¨Ö­ 1
+set [218] 1
+goto @GIVE_GALL_2
+[@GIVE_GALL_2]
+#IF
+check [217] 1
+check [219] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_8
+
+
+[@GIVE_GALL_3]
+#IF
+check [217] 1
+check [219] 0
+#ACT
+give ²¨ÎÆÊÖïí 1
+reset [214] 4
+set [219] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_9
+
+}
+
+[@HELP_POISON]
+{
+#IF
+#ACT
+goto @HELP_POISON_0
+
+[@HELP_POISON_0]
+#IF
+check [215] 1
+check [216] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_10
+
+
+[@HELP_POISON_1]
+#IF
+check [215] 1
+check [216] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_11
+
+
+[@HELP_POISON_2]
+#IF
+check [215] 1
+check [216] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_12
+
+
+[@HELP_POISON_3]
+#IF
+check [215] 1
+check [216] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_13
+
+
+[@HELP_POISON_4]
+#IF
+check [215] 1
+check [216] 0
+#ACT
+set [216] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_14
+
+}
+
+[@SEARCH_GALL]
+{
+#IF
+checkitem Ç§Äê¶¾Éßµ¨Ö­ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_15
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\bamgol.txt] @bamgol_16
+
+}

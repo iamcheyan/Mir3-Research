@@ -1,0 +1,60 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 319
+#ACT
+goto @hegolmujang_319
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@hegolmujang_319]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+goto @hegolmujang_319_2
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hegolmujang_319_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hegolmujang_319_1]
+#IF
+#SAY
+（抓到1名骷髅武将。）\
+#ACT
+set [308] 1
+
+[@hegolmujang_319_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T319_Say
+#ACT
+set [309] 1
+
+;-----------------------------------------------------

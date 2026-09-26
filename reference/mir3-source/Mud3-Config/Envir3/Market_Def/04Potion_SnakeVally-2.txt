@@ -1,0 +1,273 @@
+;;海メ盗
+%100
++0
++3
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+;#CALL [\NQ_BASE\BackGround\SnakeVally.txt] @BackLog_BG_M2
+#CALL [\NQ_BASE\BackGround\SnakeVally.txt] @BackLog_BG_M1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;---------------
+
+[@main_root_1]
+;		bamgol quest
+#IF
+check [219] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [217] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [216] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [215] 1
+#ACT
+goto @main_0_3
+break
+;
+;		yaksa quest
+#IF
+check [168] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [167] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [166] 1
+#ACT
+goto @main_0_0
+break
+#IF
+check [150] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [148] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0_0
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Main_0_0
+
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Main_0_1
+
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Main_0_2
+
+;-----------------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Main_0_3
+
+;-----------------------------
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Main_0_4
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_Sell
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（小）  1000       1
+魔法药（小）  1000       1
+金创药（中）  1000       1
+魔法药（中）  1000       1
+金创药（大）  1000       1
+魔法药（大）  1000       1
+金创药（特）  1000       1
+魔法药（特）  1000       1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\yaksa.txt] @BUY_TOOTH
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\yaksa.txt] @RETURN_BICHUN_TOOTH
+
+[@NQuest02_1]
+#CALL [\NQ_BASE\bamgol.txt] @HELP_POISON
+
+[@NQuest02_2]
+#CALL [\NQ_BASE\bamgol.txt] @SEARCH_GALL
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 496
+#ACT
+goto @TQuest496_0
+break
+;
+#IF
+CheckDailyQuest 466
+#ACT
+goto @TQuest466_0
+break
+;
+#IF
+CheckDailyQuest 408
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest496_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest496_2
+break
+;
+#ELSEACT
+goto @TQuest496_1
+
+;--------------
+
+[@TQuest496_1]
+#CALL [\QT_TODAY\4thClass.txt] @496_START
+
+[@TQuest496_2]
+#CALL [\QT_TODAY\4thClass.txt] @496_CHECK1
+
+;------------------------
+
+[@TQuest466_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest466_2
+break
+;
+#ELSEACT
+goto @TQuest466_1
+
+;--------------
+
+[@TQuest466_1]
+#CALL [\QT_TODAY\4thClass.txt] @466_START
+
+[@TQuest466_2]
+#CALL [\QT_TODAY\4thClass.txt] @466_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @408_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @408_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SnakeVally-2.txt] @NPC_TQuest_1
+
+;----------------------

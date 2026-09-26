@@ -1,0 +1,124 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+我不愿意和你这样丧尽天良的人进行交易。\ \
+<结束/@exit>
+}
+
+[@NPC_Main_0_0]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。\ \
+<购买/@buy>物品\
+;;;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_1]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<传达/@NQuest01_1>{FCOLOR/10}士官 {FCOLOR/12}的话\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_2]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<谈论/@NQuest01_2>武器库的{FCOLOR/10}啊潘{FCOLOR/12}道士\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_3]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<告知/@NQuest01_3>{FCOLOR/10}护身符{FCOLOR/12}送货完毕\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_4]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+<传递/@NQuest01_4>{FCOLOR/10}鸡血{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_5]
+{
+这里是 沙巴克城 {FCOLOR/10}<$CS_SABUK_OWNER>{FCOLOR/12} 行会的领地。\
+这里寄存和出售道馆里使用的东西。你找过{FCOLOR/10}士官{FCOLOR/12}了吗？\ \
+<购买/@buy>物品\
+;;<购买 回城卷/@Buy_PortalScroll>\
+<出售/@sell>物品\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Buy]
+{
+有什么需要的尽管挑。\ \
+<前一步/@main>
+}
+
+[@NPC_Sell]
+{
+请把不用的东西卖给我\
+我给你个合理的价钱。\ \
+<前一步/@main>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}
+
+[@NPC_Goods]
+{
+;ItemName      Volume     Hour
+蜡烛            100         1
+火把            100         1
+亮蜡烛          100         1
+亮火把          100         1
+地牢逃脱卷      1000        1
+随机传送卷      1000        1
+回城卷          100	    1
+修复油          100         1
+护身符（小）    100         1
+护身符（中）    100         1
+护身符（火）    100         1
+护身符（冰）    100         1
+护身符（雷）    100         1
+护身符（风）    100         1
+灵魂护身符（小）100         1
+灵魂护身符（中）100         1
+神圣护身符（小）100         1
+神圣护身符（中）200         1
+}

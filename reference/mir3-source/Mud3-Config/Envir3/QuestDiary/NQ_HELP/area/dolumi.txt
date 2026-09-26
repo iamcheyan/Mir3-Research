@@ -1,0 +1,75 @@
+;;º£¥áµÁ
+[@SUKMO]
+{
+#IF
+check [265] 1
+#ACT
+goto @SUKMO_6
+break
+#IF
+check [264] 1
+#ACT
+goto @SUKMO_5
+break
+#IF
+check [263] 1
+#ACT
+goto @SUKMO_4
+break
+#IF
+check [262] 1
+#ACT
+goto @SUKMO_3
+break
+#IF
+check [260] 1
+#ACT
+goto @SUKMO_2
+break
+#IF
+check [259] 1
+#ACT
+goto @SUKMO_1
+break
+#ELSEACT
+goto @SUKMO_0
+[@SUKMO_0]
+#IF
+checklevel 7
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_2
+
+[@SUKMO_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_3
+
+[@SUKMO_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_4
+
+[@SUKMO_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_5
+
+[@SUKMO_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_6
+
+[@SUKMO_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_7
+
+[@SUKMO_6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\dolumi.txt] @dolumi_8
+
+}

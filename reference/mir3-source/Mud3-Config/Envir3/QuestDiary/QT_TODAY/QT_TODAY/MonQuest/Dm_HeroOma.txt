@@ -1,0 +1,55 @@
+;;베α돝
+[@main]
+;		일일 퀘스트 체크
+#IF
+CheckDailyQuest 469
+#ACT
+goto @Oma_T469
+break
+;
+
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### 비천현 맵 번호 0                    ############
+;#### 오마용사                            ############
+;-----------------------------------------------------
+
+
+
+;-----------------------------------------------------
+[@Oma_T469]
+;		일일 퀘스트 469 번
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @Oma_T469_1
+break
+;
+#ELSEACT
+break
+;
+
+[@Oma_T469_1]
+#IF
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T469_Say

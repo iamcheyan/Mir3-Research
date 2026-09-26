@@ -1,0 +1,135 @@
+;;海メ盗
+[@color]
+{
+#ACT
+mov  P0  %ARG(1)
+
+#IF
+equal P0 1
+checkgold 5000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_1
+
+#ACT
+take 金币 5000
+haircolor 255 255 255
+break
+
+#IF
+equal P0 2
+checkgold 5000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_2
+
+#ACT
+take 金币 5000
+haircolor 60 60 60
+break
+
+#IF
+equal P0 3
+checkgold 5000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_3
+
+#ACT
+take 金币 5000
+haircolor 170 170 170
+break
+
+#IF
+equal P0 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_4
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_5
+
+
+[@randcolor]
+#IF
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_6
+
+#ACT
+take 金币 10000
+hairrndcol
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_7
+
+}
+
+[@Shape]
+{
+#ACT
+mov  P0  %ARG(1)
+
+#IF
+equal P0 0
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_8
+
+#ACT
+take 金币 10000
+hairstyle 0
+break
+
+#IF
+equal P0 1
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_9
+
+#ACT
+take 金币 10000
+hairstyle 1
+break
+
+#IF
+equal P0 2
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_10
+
+#ACT
+take 金币 10000
+hairstyle 2
+break
+
+#IF
+equal P0 3
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_11
+
+#ACT
+take 金币 10000
+hairstyle 3
+break
+
+#IF
+equal P0 4
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_12
+
+#ACT
+take 金币 10000
+hairstyle 4
+break
+
+#IF
+equal P0 5
+checkgold 10000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_13
+
+#ACT
+take 金币 10000
+hairstyle 5
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Hair\Dying.txt] @Dying_14
+
+}

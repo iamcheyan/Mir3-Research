@@ -1,0 +1,129 @@
+;;海メ盗
+[@GmatchMain]
+{
+begin
+	#IF
+		CheckGMETerm
+	#ACT
+		goto @DuringGuildMatchTerm
+		break
+	
+	#IF
+		IsAdmin
+		checklevel 50
+	#SAY
+		(*)管理员命令语句:\\
+		__<开始行会大战（时间制）/@startGuildMatchTimeMatch>\
+		__<查看行会分数/@viewGuildMatchPoint>\
+	#ELSESAY
+		现在是休息时间，请稍后再来。\
+	
+	[@startNewGuildMatch]
+	begin
+		#ACT
+			SetGMEMap       "E602"
+			SetGMEPoint     10000
+			SetGMEPlayTime  50
+			SetGMEPauseTime 10
+			SetGMELimitUser 200
+			SetEventDamage  E602       3        ;3硅 单固瘤
+			StartNewGME
+		#SAY
+			所有行会的分数巳初期化。\
+			现在开始行会大战。\
+   end
+   
+	[@continueGuildMatch]
+	begin
+		#ACT
+			SetGMEMap       "E602"
+			SetGMEPoint     10000
+			SetGMEPlayTime  50
+			SetGMEPauseTime 10
+			SetEventDamage  E602       3       ;3硅 单固瘤
+			SetGMELimitUser 200
+			ContinueGME
+		#SAY
+			继续开始行会大战.\
+   end
+   
+	[@startGuildMatchTimeMatch]
+	begin
+		#ACT
+			SetGMEMap       "E602"
+			SetGMETime      180
+			SetGMEPlayTime  180
+			SetGMEPauseTime 0
+			SetEventDamage  E602       3      ;3硅 单固瘤
+			SetGMELimitUser 200
+			StartNewGME
+			close
+   end
+   
+	[@DuringGuildMatchTerm]
+	begin
+		#IF
+			CheckOpenGME
+		#SAY
+			要参加行会大战吗？在竞技场中任何PK不计PK值（不会红名），不会掉落装备。竞技场最多同时容纳200人。进入竞技场内请勿携带回城卷,随机传送卷和地牢逃脱卷， 违者一律没收！\\ 
+			<参加行会大战/@movetoGuildMatchPlace>\
+			<结束/@exit>
+		#ELSESAY
+			现在是休息时间，请稍后再来。\
+	end
+	
+	[@movetoGuildMatchPlace]
+	begin
+		#IF
+			Checklevel 15
+		#ELSESAY
+			参加行会战，等级不得小于15级。\\
+			<结束/@exit>
+		#ELSEACT
+			break
+	
+		#IF
+			Checkitem 地牢逃脱卷 1
+		#SAY
+			带来地牢逃脱卷了吧？ 说好要没收的。\\
+			<结束/@exit>
+		#ACT
+			take 地牢逃脱卷 100
+			break
+	
+		#IF
+			Checkitem 随机传送卷 1
+		#SAY
+			带来随机传送卷了吧？ 说好要没收的。\\
+			<结束/@exit>
+		#ACT
+			take 随机传送卷 100
+			break
+	
+		#IF
+			Checkitem 回城卷 1
+		#SAY
+			带来回城卷了吧？ 说好要没收的。\\
+			<结束/@exit>
+		#ACT
+			take 回城卷 100
+			break
+	
+		#IF
+			HasGuild
+		#ELSESAY
+			没有加入行会的人，不可以参加行会战的。\ \
+			<结束/@exit>
+		#ELSEACT
+			break
+	
+		#IF
+			CheckEnterGMEMap
+		#ACT
+			MoveToGMEMap
+			close
+		#ELSESAY
+			对不起，人数巳满！\
+	end
+end
+}

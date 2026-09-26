@@ -1,0 +1,694 @@
+;;海メ盗
+[@sinGisun_open]
+{
+
+#IF
+check [313] 1
+check [314] 0
+check [315] 0
+check [316] 0
+check [317] 0
+check [318] 0
+check [319] 0
+checkitem 魔灵牌 1
+#ACT
+goto @SinQuest_Spritstest
+break
+;
+#ELSEACT
+goto @Sin_Boss_Input_0_2
+
+[@Sin_Boss_Input_0_2]
+#IF 
+check [314] 1
+check [315] 0
+checkitem 魔灵牌 1
+#ACT
+goto @SinQuest_Spritstest_retry
+break
+;
+#ELSEACT
+goto @SinQuest_3
+
+[@SinQuest_3]
+#IF 
+check [314] 0
+check [315] 1
+check [316] 0
+checkitem 魔灵牌 1
+#ACT
+goto @SinQuest_Spritstest_Check
+break
+;
+#ELSEACT
+goto @SinQuest_3_1
+
+[@SinQuest_3_1]
+#IF
+check [316] 1
+check [317] 0
+#ACT
+goto @SinQuest_SeeAgain
+break
+;
+#ELSEACT
+goto @SinQuest_5
+
+[@SinQuest_5]
+#IF
+check [317] 1
+check [318] 1
+check [319] 0
+checkitem 遗骸 1
+#ACT
+goto @SinQuest_end
+break
+;
+#ELSEACT
+goto @Sin_Boss_Input
+
+
+[@Sin_Boss_Input]
+#IF
+check [798] 1
+#ACT
+goto @Gain_Singiitem
+break
+
+#IF
+check [798] 0
+checkitem  霸王教主雕像  1
+#ACT
+goto @Gain_Singiitem
+break
+
+#IF
+#ACT
+goto @Sin_Boss_Input_3
+break
+#ELSESAY
+..... \ \
+<结束/@exit>
+
+
+[@Sin_Boss_Input_3]
+#IF
+Checkitem 连环明珠 1  
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_3
+
+#ELSEACT
+goto @Sin_Boss_Input_2_0
+
+[@Sin_Boss_Input_1_0]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_1_0
+
+[@Sin_Boss_Input_1_1]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_1_1
+
+[@Sin_Boss_Input_1_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_1_2
+
+[@Sin_Boss_Input_1_3]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_1_3
+
+[@Sin_Boss_Input_1_4]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_1_4
+
+[@Sin_Boss_Input_2_0]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SIn_Boss_Input_2_0
+
+[@gain_SinGiItem]
+#IF
+checkitem 霸王教主雕像 1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SingiSun.txt] @NPC_Gain_SinGiItem_Noitem
+#ELSEACT
+break
+
+#IF
+check [798] 1
+checkitem 霸王教主雕像 1
+check [320] 1
+check [319] 1
+#ACT
+goto @gain_SinGiItem_AddReward
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SingiSun.txt] @NPC_Gain_SinGiItem
+
+[@gain_SinGiItem_AddReward]
+#IF
+check [798] 1
+checkitem 霸王教主雕像 1
+check [320] 1
+check [319] 1
+checkjob warrior
+#ACT
+set [319] 0
+take 霸王教主雕像 46
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [pachun] [WarriorGive1]
+LoadValue A1 "GM_Def\SinGiSun\Reward.txt" [pachun] [WarriorGive2]
+LoadValue A2 "GM_Def\SinGiSun\Reward.txt" [pachun] [WarriorGive3]
+give %A0 1
+give %A1 1
+give %A2 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SingiSun.txt] @NPC_Gain_SinGiItem
+#ELSEACT
+goto @gain_SinGiItem_AddReward1
+
+[@gain_SinGiItem_AddReward1]
+#IF
+check [798] 1
+checkitem 霸王教主雕像 1
+check [320] 1
+check [319] 1
+checkjob wizard
+#ACT
+set [319] 0
+take 霸王教主雕像 46
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [pachun] [WizardGive1]
+LoadValue A1 "GM_Def\SinGiSun\Reward.txt" [pachun] [WizardGive2]
+LoadValue A2 "GM_Def\SinGiSun\Reward.txt" [pachun] [WizardGive3]
+give %A0 1
+give %A1 1
+give %A2 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SingiSun.txt] @NPC_Gain_SinGiItem
+#ELSEACT
+goto @gain_SinGiItem_AddReward2
+
+[@gain_SinGiItem_AddReward2]
+#IF
+check [798] 1
+checkitem 霸王教主雕像 1
+check [320] 1
+check [319] 1
+checkjob Taoist
+#ACT
+set [319] 0
+take 霸王教主雕像 46
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [pachun] [TaoistGive1]
+LoadValue A1 "GM_Def\SinGiSun\Reward.txt" [pachun] [TaoistGive2]
+LoadValue A2 "GM_Def\SinGiSun\Reward.txt" [pachun] [TaoistGive3]
+give %A0 1
+give %A1 1
+give %A2 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SingiSun.txt] @NPC_Gain_SinGiItem
+
+;;------------------------------------------------------------------------------
+;; [313] With Maryungpai  Talk Hwanmaryung
+;; [314] Challenge Hwanmaryung Test
+;;------------------------------------------------------------------------------
+
+[@SinQuest_Spritstest]
+#IF
+check [313] 1
+check [314] 0
+check [315] 0
+check [316] 0
+check [317] 0
+check [318] 0
+check [319] 0
+checkitem 魔灵牌 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest
+
+[@SinQuest_Spritstest_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_0
+
+[@SinQuest_Spritstest_1]
+#IF
+checkhum D90323 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_1
+
+#ELSEACT
+set [314] 1
+monclear D90323
+Param1 D90323
+Param2 16
+Param3 11
+MonGen 轻甲守卫 2 3
+mapmove D90323 16 11
+
+;;------------------------------------------------------------------------------
+;; Hwanmaryung Test Fail
+;;------------------------------------------------------------------------------
+
+[@SinQuest_Spritstest_retry]
+#IF
+check [314] 1
+check [315] 0
+#SAY 
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_Retry
+
+[@SinQuest_Spritstest_retry1]
+#IF
+checkhum D90323 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_Retry1
+
+#ELSEACT
+monclear D90323
+Param1 D90323
+Param2 16
+Param3 11
+MonGen 轻甲守卫 2 3
+mapmove D90323 16 11
+
+
+;;------------------------------------------------------------------------------
+;; [315] Hwanmaryung Test Check
+;;------------------------------------------------------------------------------
+
+[@SinQuest_Spritstest_Check]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_Check
+
+[@SinGiSun_Spritstest_Check2]
+#IF
+check [314] 0
+check [315] 1
+checkitem 魔灵牌 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_Check2
+
+#ACT
+take 魔灵牌 1
+give 航海日志 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spritstest_Check2_Noitem
+
+[@SinGiSun_Spritstest_Check3]
+#IF
+#ACT
+mapmove 5 216 185
+
+
+
+;;------------------------------------------------------------------------------
+;; [317] Talk with Hwanmaryung 2nd Times
+;;------------------------------------------------------------------------------
+
+[@SinQuest_SeeAgain]
+#IF
+check [316] 1
+check [317] 0
+#ACT
+set [317] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_SeeAgain
+
+;;------------------------------------------------------------------------------
+;; [318]  yugol
+;;------------------------------------------------------------------------------
+
+[@SinQuest_End]
+#IF
+check [317] 1
+check [318] 1
+check [319] 0
+check [320] 0
+checkitem 遗骸 1
+checkjob warrior
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveAccessory] [warriorAccessory]
+set [319] 1
+give %A0 1
+#ELSEACT
+goto @SinQuest_End_2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_End
+
+[@SinQuest_End_2]
+#IF
+checkjob wizard
+check [317] 1
+check [318] 1
+check [319] 0
+check [320] 0
+checkitem 遗骸 1
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveAccessory] [wizardAccessory]
+set [319] 1
+give %A0 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_End_2
+#ELSEACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveAccessory] [taoistAccessory]
+set [319] 1
+give %A0 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_End_2
+}
+
+
+
+;;------------------------------------------------------------------------------
+;; [312] Oasis outside siyak  Singisun Quest Start
+;;------------------------------------------------------------------------------
+
+[@WakeUp_Check1]
+{
+#IF
+check [311] 1
+#ACT
+goto @WakeUp_Check1_1
+#ELSEACT
+goto @main_0_1
+
+[@WakeUp_Check1_1]
+#IF
+#ACT
+set [312] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_WakeUp_Check1_1
+}
+
+;;------------------------------------------------------------------------------
+;; [312] Oasis outside weapon  Singisun Quest Start
+;;------------------------------------------------------------------------------
+
+[@WakeUp_Check2]
+{
+#IF
+check [311] 1
+#ACT
+goto @WakeUp_Check2_1
+#ELSEACT
+goto @main_0_1
+
+[@WakeUp_Check2_1]
+#IF
+#ACT
+set [312] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_WakeUp_Check2
+}
+
+;;------------------------------------------------------------------------------
+;; [313] Oasis inside Astrologist Get Maryungpai (Singisun Quest)\
+;;------------------------------------------------------------------------------
+
+
+[@SinQuest_Start]
+{
+#IF
+check [312] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Start
+
+[@SinQuest_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_2
+
+[@SinQuest_0_3] 
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_3
+
+[@SinQuest_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_4
+
+[@SinQuest_0_5]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_5
+
+[@SinQuest_0_6]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_6
+
+[@SinQuest_0_7]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_7
+
+[@SinQuest_0_8]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_8
+
+[@SinQuest_0_9]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_9
+
+[@SinQuest_0_10]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_0_10
+
+[@SinQuest_1_0]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_0
+
+[@SinQuest_1_1]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_1
+
+[@SinQuest_1_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_2
+
+[@SinQuest_1_3]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_3
+
+[@SinQuest_9_0]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_9_0
+
+[@SinQuest_1_4]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_4
+
+[@SinQuest_1_5]
+#IF
+check [312] 1
+check [313] 0
+#ACT
+give 魔灵牌 1
+set [313] 1
+goto @SinQuest_1_6
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_1_5
+
+[@SinQuest_1_6]
+#IF
+check [312] 1
+check [313] 1
+checkjob warrior
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [BasicGive] [WarriorAccessory]
+give %A0 1
+break
+
+#IF
+check [312] 1
+check [313] 1
+checkjob wizard
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [BasicGive] [WizardAccessory]
+give %A0 1
+break
+
+#IF
+check [312] 1
+check [313] 1
+checkjob taoist
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [BasicGive] [TaoistAccessory]
+give %A0 1
+break
+
+}
+
+[@SinQuest_Spritstest_Check1]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Spiritstest_Check1
+;;----------------------------------------------------------
+
+
+[@SinQuest_failed]
+#IF
+#ACT
+mapmove d903 55 55
+}
+
+;;------------------------------------------------------------------------------
+;; [316] Oasis inside Astrologist  With Hangheilji
+;;------------------------------------------------------------------------------
+
+[@SinQuest_diary_2]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Diary_2
+
+[@SinQuest_diary_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Diary_0_1
+
+[@SinQuest_diary_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Diary_0_2
+
+[@SinQuest_diary_0_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Diary_0_3
+#ACT
+goto @SQ_SemiReward_1
+
+[@SQ_SemiReward_1]
+#IF
+check [315] 1
+check [316] 0
+checkjob warrior
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveweapon] [warriorweapon]
+give %A0 1
+take 航海日志 1
+set [316] 1
+#ELSEACT
+goto @SD_SemiReward_2
+
+[@SD_SemiReward_2]
+#IF
+check [315] 1
+check [316] 0
+checkjob wizard
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveweapon] [wizardweapon]
+give %A0 1
+take 航海日志 1
+set [316] 1
+#ELSEACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [giveweapon] [taoistweapon]
+give %A0 1
+take 航海日志 1
+set [316] 1
+}
+
+
+;;------------------------------------------------------------------------------
+;; [320] Goto Oasis inside Astrologist (Ending)
+;;------------------------------------------------------------------------------
+[@SinQuest_Ending_2]
+{
+#IF
+check [318] 1
+check [319] 1
+check [320] 0
+checkitem 遗骸 1
+#ACT
+set [320] 1
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [Give]
+give %A0 1
+take 遗骸 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Ending_2
+}
+;;------------------------------------------------------------------------------
+;; [321] Singisun Secret Quest
+;;------------------------------------------------------------------------------
+
+
+[@SinQuest_Secret_I]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Secret_I
+
+[@SinQuest_Secret_I_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SinQuest_Secret_I_0
+
+[@SQS_Buy]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy
+
+[@SQS_Buy_1]
+#IF
+checkjob warrior
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [warriorPotion]
+LoadValue P1 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [warriorPotionNumber]
+give %A0 %P1
+set [321] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_1
+
+#ELSEACT
+goto @SQS_Buy_1_1
+
+[@SQS_Buy_1_1]
+#IF
+checkjob wizard
+#ACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [wizardPotion]
+LoadValue P1 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [wizardPotionNumber]
+give %A0 %P1
+set [321] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_1_1
+
+#ELSEACT
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [taoistPotion]
+LoadValue A1 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [taoistPotion1]
+LoadValue P1 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [taoistPotionNumber]
+give %A0 %P1
+give %A1 %P1
+set [321] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_1_2
+
+[@SQS_Teleport]
+#IF
+#ACT
+set [321] 1
+mapmove D903 187 150
+
+
+[@SQS_Buy_2]
+#IF
+checkjob warrior
+#ACT
+set [321] 1
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [warriorPotion2]
+LoadValue P2 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [warriorPotionNumber2]
+give %A0 %P2
+#ELSEACT
+goto @SQS_Buy_2_1 
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_2
+
+[@SQS_Buy_2_1]
+#IF
+checkjob wizard
+#ACT
+set [321] 1
+LoadValue A0 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [wizardPotion2]
+LoadValue P2 "GM_Def\SinGiSun\Reward.txt" [sinQuest] [wizardPotionNumber2]
+give %A0 %P2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_2_1
+#ELSEACT
+set [321] 1
+LoadValue A0 "GM_Def\Reward.txt" [sinQuest] [taoistPotion2]
+LoadValue A1 "GM_Def\Reward.txt" [sinQuest] [taoistPotion3]
+LoadValue P2 "GM_Def\Reward.txt" [sinQuest] [taoistPotionNumber2]
+give %A0 %P2
+give %A1 %P2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\SinGiSun\SinGiSun.txt] @NPC_SQS_Buy_2_2
+}

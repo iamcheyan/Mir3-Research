@@ -1,0 +1,54 @@
+;;베α돝
+%100
+
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\19GM_INN-Z011.txt] @NPC_Main
+
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\19GM_INN-Z011.txt] @NPC_ADmin_Main
+
+;----------------------------------------------------------
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\19GM_INN-Z011.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\19GM_INN-Z011.txt] @NPC_Getback
+
+;----------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\19GM_INN-Z011.txt] @NPC_Admin_Menu
+
+;----------------------------------------------------------
+; Break Event
+;----------------------------------------------------------
+[@BreakEvent]
+#ACT
+	LoadValue A0 "Convert_Def\Market_Def\19GM_INN-Z011.txt" [LineMSG] [MSG01]
+Linemsg Grobal "%A0"
+Cleardelaygoto
+
+;----------------------------------------------------------
+; 72 , 78 Map Event
+;----------------------------------------------------------
+
+[@RushEvent2]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert72
+[@RushEvent7]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert77
+
+;----------------------------------------------------------
+;; 릴레이 이벤트 이벤트
+;----------------------------------------------------------
+[@GEvent_start_01]
+#CALL [Event\Event_Game01\GEventRush1.txt] @GEventRush1_main
+

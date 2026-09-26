@@ -1,0 +1,62 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 118
+#ACT
+goto @chiljumbaksa_T118
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+[@chiljumbaksa_T118]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chiljumbaksa_T118_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+
+[@chiljumbaksa_T118_1]
+#IF
+checkitem 血巨人心脏 299
+#ACT
+give 血巨人心脏 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T118_Say
+
+#ELSEACT
+goto @chiljumbaksa_T118_1_1
+
+[@chiljumbaksa_T118_1_1]
+#IF
+random 3
+#ACT
+give 血巨人心脏 1
+;-----------------------------------------------------

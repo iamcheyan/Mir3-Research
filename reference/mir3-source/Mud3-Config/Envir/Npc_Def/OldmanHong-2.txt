@@ -1,0 +1,57 @@
+; ===================================
+; Npc Def NPC File : OldmanHong-2
+; npc SerpentValley
+; -----------------------------------
+; Name: OldmanHong
+; Job: 
+; Map No: 2
+; Pos X 563 
+; Pos Y 173
+; File name: *removed*
+; Comment: npc in SerpentValley
+
+;================================================= =
+;
+
+[@main]
+#SAY
+Hmm This isn't going to work!\
+Please help me with your power.\
+To tell you the truth,\
+for fortune.\
+There is a serpent sealed in its sleep, in this abandoned mine.\ \
+<What are you exectly talking about.../@next>\
+<You must me out of your mind/@exit>
+
+
+[@next]
+#SAY
+I am doing my best to keep it sealed, but my strength is wearing out,\
+while the serpent is getting stronger every day.\
+Soon, it will wake up and ascend to the ground.\
+For now, I have used my sorcery to create a maze,\
+to keep it from getting away.\
+However, it's only a matter of time untill it breaks the spell.\
+Please go and slay the serpent.\
+<Please show me the way./@next1>\
+<I am not ready for this yet./@exit>
+
+
+[@next1]
+#SAY
+Look for a pile of skeletons in this abandoned mine of Snake Valley.\
+First, I locked all the entrances and exits of the mine,\
+and blocked the hole, which the serpent has dug,\
+with the skeletons scattered around me,\
+since those were the only things I could find at the time.\
+If you can find this pile of skeletons, you can find your way to the serpent.\ \
+<Get me inside the serpent Dungeon./@Dmove>
+
+
+[@Dmove]
+#ACT
+mapmove D421 45 348
+close
+
+
+

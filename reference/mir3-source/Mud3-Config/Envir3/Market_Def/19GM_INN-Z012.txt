@@ -1,0 +1,62 @@
+;;º£¥áµÁ
+%100
+
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z012.txt] @NPC_Main
+
+
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z012.txt] @NPC_Admin_Main
+
+;----------------------------------------------------------
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z012.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z012.txt] @NPC_GetBack
+
+;----------------------------------------------------------
+
+[@admin_menu]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\19GM_INN-Z012.txt] @NPC_Admin_Menu
+
+;----------------------------------------------------------
+; Break Event
+;----------------------------------------------------------
+
+;----------------------------------------------------------
+; 73 , 76 Map Event
+;----------------------------------------------------------
+
+[@RushEvent3]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert73
+[@RushEvent8]
+;;#CALL [\Event\MonRush\Rush1.txt] @RushEventDesert78
+
+;----------------------------------------------------------
+; Mongchon MidBoss Rush Event
+;----------------------------------------------------------
+
+[@Rush]
+;;#CALL [\Event\MonRush\Rush2.txt] @Rushevent
+
+;----------------------------------------------------------
+; Love Story Event
+;----------------------------------------------------------
+[@Love]
+;;#CALL [\Event\Story\Story3.txt] @LoveStory1
+
+;----------------------------------------------------------
+;; MonRush Event
+;----------------------------------------------------------
+[@GEvent_start_0]
+#CALL [Event\Event_Game01\GEventRush0.txt] @GEventRush0_main

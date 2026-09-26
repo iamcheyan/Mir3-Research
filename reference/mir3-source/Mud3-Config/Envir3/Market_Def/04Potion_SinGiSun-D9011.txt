@@ -1,0 +1,23 @@
+;;海メ盗
+%200
++0
++3
+
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SinGiSun-D9011.txt] @NPC_Main
+
+[@Buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SinGiSun-D9011.txt] @NPC_Buy
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（大）    100       1
+魔法药（大）    100       1
+金创药（特）    100       1
+魔法药（特）    100       1
+太阳水          100       1
+强效太阳水      100       1
+万年雪霜        100       1

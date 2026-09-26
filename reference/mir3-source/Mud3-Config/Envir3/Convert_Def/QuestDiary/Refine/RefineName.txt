@@ -1,0 +1,55 @@
+;;海メ盗
+[@RefineName_1]
+{
+炼制武器需要手里拿着武器!!\ \
+<结束/@exit>
+}
+
+[@RefineName_2]
+{
+真想在武器上刻名字吗？ \ \
+<刻/@RefineCorrect> 名字\
+<结束/@exit>
+}
+
+[@RefineName_3]
+{
+钱不够啊。。\ \
+<结束/@exit>
+}
+
+[@RefineName_4]
+{
+炼制武器需要手里拿着武器!!\ \
+<结束/@exit>
+}
+
+[@RefineName_5]
+{
+在武器上刻名字等于是提高剑的名誉。。\
+慎重的考虑一下吧。名字不可以超过汉字6字以上。。\ \
+<在武器上面刻名字。/@@WriteWeaponName>
+}
+
+[@RefineName_6]
+{
+钱不够啊。。\ \
+<结束/@exit>
+}
+
+[@RefineName_7]
+{
+钱不够啊。。\ \
+<结束/@exit>
+}
+
+[@RefineName_8]
+{
+你把武器的名字刻为 <$INPUTSTR> 。\ \
+<结束/@exit>
+}
+
+[@RefineName_9]
+{
+投放武器的名字失败了。 \ \
+}

@@ -1,0 +1,19 @@
+[@main]
+#IF
+check [408] 1
+#ACT
+break
+
+#IF
+check [405] 1
+#ACT
+break
+
+#IF
+check [404] 1
+#ACT
+SET [405] 1
+#ELSESAY
+;(이곳은 왜 갈수가 없지??? ...) \ \
+(Why can't I get in this room??? ...) \ \
+

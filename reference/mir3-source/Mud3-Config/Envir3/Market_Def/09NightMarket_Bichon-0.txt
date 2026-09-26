@@ -1,0 +1,710 @@
+;;º£¥áµÁ
+%100
+;quest item
++58
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;;-------------------------
+;;-------------------------
+
+[@main_root_1]
+;		dolumi quest
+#IF
+check [265] 1
+#ACT
+goto @main_0
+break
+;
+#IF
+check [264] 1
+#ACT
+goto @main_0
+break
+;
+#IF
+check [263] 1
+#ACT
+goto @NQuest01_3
+break
+;
+#IF
+check [262] 1
+#ACT
+goto @NQuest01_2
+break
+;
+#IF
+check [260] 1
+#ACT
+goto @NQuest01_2
+break
+;
+#IF
+check [259] 1
+#ACT
+goto @NQuest01_1
+;
+#ELSEACT
+goto @main_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0]
+#IF
+daytime night
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_Main
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_Main_1
+
+[@prequest]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_PreQuest
+
+
+;--------------------------
+
+[@sellitem_1]
+#IF
+checklevel 33
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_SellItem
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_SellItem_1
+
+;--------------------------
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_Sell
+
+;----------------------------------------------------------
+[@akfudvo]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_akfudvo
+
+[@akfudvo_1]
+#IF
+checkbaggage
+checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_akfudvo_1
+#ACT
+give Ä§ÁéÅÆ 1
+take ½ð±Ò 100000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_akfudvo_Else
+
+[@dbrhf]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_dbrhf
+
+[@dbrhf_1]
+#IF
+checkbaggage
+checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_dbrhf_1
+#ACT
+give ÒÅº¡ 1
+take ½ð±Ò 100000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_dbrhf_Else
+
+[@gkdgodlfwl]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_gkdgodlfwl
+
+[@gkdgodlfwl_1]
+#IF
+checkbaggage
+checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_gkdgodlfwl_1
+#ACT
+give º½º£ÈÕÖ¾ 1
+take ½ð±Ò 100000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_gkdgodlfwl_Else
+
+[@item29]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item29
+
+[@item29_1]
+#IF
+checkbaggage
+checkgold 500
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item29_1
+#ACT
+give Å£Ã« 1
+take ½ð±Ò 500
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item29_Else
+
+[@item30]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item30
+
+[@item30_1]
+#IF
+checkbaggage
+checkgold 500
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item30_1
+#ACT
+give Öñ¹÷ 1
+take ½ð±Ò 500
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item30_Else
+
+[@item1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item1
+
+[@item1_1]
+#IF
+checkbaggage
+checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item1_1
+#ACT
+give ¼¦Ñª 1
+take ½ð±Ò 1000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item1_Else
+
+[@item2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item2
+
+[@item2_1]
+#IF
+checkbaggage
+checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item2_1
+#ACT
+give µÀÁ¦»¤Éí·û 1
+take ½ð±Ò 1000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item2_Else
+
+[@item3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item3
+
+[@item3_1]
+#IF
+checkbaggage
+checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item3_1
+#ACT
+give ÈâÌÀ 1
+take ½ð±Ò 1000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item3_Else
+
+[@item17]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item17
+
+[@item17_1]
+#IF
+checkbaggage
+checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item17_1
+#ACT
+give ¹Å¼® 1
+take ½ð±Ò 1000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item17_Else
+
+[@item5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item5
+
+[@item5_1]
+#IF
+checkbaggage
+checkgold 2000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item5_1
+#ACT
+give ¶¾ÉßÑÀ³Ý 1
+take ½ð±Ò 2000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item5_Else
+
+[@item6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item6
+
+[@item6_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item6_1
+#ACT
+give ½ðÊÏµÄÌú´¸ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item6_Else
+
+[@item14]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item14
+
+[@item14_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item14_1
+#ACT
+give ½ÇµÑ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item14_Else
+
+[@item15]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item15
+
+[@item15_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item15_1
+#ACT
+give °ë¿é²»ËÀÅÆ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item15_Else
+
+[@item16]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item16
+
+[@item16_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item16_1
+#ACT
+give ²»ËÀÅÆ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item16_Else
+
+[@item23]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item23
+
+[@item23_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item23_1
+#ACT
+give Áé»ê»¤ÎÀ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item23_Else
+
+[@item10]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item10
+
+[@item10_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item10_1
+#ACT
+give Ç§Äê¶¾Éßµ¨Ö­ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item10_Else
+
+[@item11]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item11
+
+[@item11_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item11_1
+#ACT
+give À×µç½©Ê¬¹Ç 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item11_Else
+
+[@item12]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item12
+
+[@item12_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item12_1
+#ACT
+give É®ÂÂ½©Ê¬¹Ç 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item12_Else
+
+[@item13]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item13
+
+[@item13_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item13_1
+#ACT
+give »ÙÃð»¤Éí·û 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item13_Else
+
+[@item24]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item24
+
+[@item24_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item24_1
+#ACT
+give ÎÖÂê½ðÅÆ 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item24_Else
+
+[@item25]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item25
+
+[@item25_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item25_1
+#ACT
+give ÎÞÃûÈÕÖ¾ 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item25_Else
+
+[@item26]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item26
+
+[@item26_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item26_1
+#ACT
+give µØÓüÉñÖÓ 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item26_Else
+
+[@item27]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item27
+
+[@item27_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item27_1
+#ACT
+give Áé»êÃ÷Öé 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item27_Else
+
+[@item28]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item28
+
+[@item28_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item28_1
+#ACT
+give ÎÖÂêÉñÌú´¸ 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item28_Else
+
+;------------------------------------------------------------
+
+[@item9]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item9
+
+[@item9_1]
+#IF
+checkbaggage
+checkgold 2000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item9_1
+#ACT
+give ÎÖÂê½Ç 1
+take ½ð±Ò 2000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item9_Else
+
+[@item21]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item21
+
+[@item21_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item21_1
+#ACT
+give ÅµÂêÊ¯ 4
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item21_Else
+
+;---------------------------
+
+[@item22]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item22
+
+[@item22_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item22_1
+#ACT
+give ³ÉÖÂÈÕÖ¾ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item22_Else
+
+[@item7]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item7
+
+[@item7_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item7_1
+#ACT
+give ÁéÖé 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item7_Else
+
+[@item18]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item18
+
+[@item18_1]
+#IF
+checkbaggage
+checkgold 4000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item18_1
+#ACT
+give Æð±¬Ê¯ 1
+take ½ð±Ò 4000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item18_Else
+
+
+;---------------------------
+
+[@item8]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item8
+
+[@item8_1]
+#IF
+checkbaggage
+checkgold 8000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item8_1
+#ACT
+give Æßµã°×Éßµ¨ 1
+take ½ð±Ò 8000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item8_Else
+
+[@item19]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item19
+
+[@item19_1]
+#IF
+checkbaggage
+checkgold 100000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item19_1
+#ACT
+give Ê÷Ö¬ 1
+take ½ð±Ò 100000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item19_Else
+
+[@item20]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item20
+
+[@item20_1]
+#IF
+checkbaggage
+checkgold 500000
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item20_1
+#ACT
+give ÉÁµçÊ¯ 1
+take ½ð±Ò 500000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_item20_Else
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\dolumi.txt] @SOKMO_WONSENG_1
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\dolumi.txt] @SOKMO_WONSENG_2
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\dolumi.txt] @SOKMO_WONSENG_3
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 113
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @113_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @113_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09NightMarket_Bichon-0.txt] @NPC_TQuest_1
+
+;------------------------

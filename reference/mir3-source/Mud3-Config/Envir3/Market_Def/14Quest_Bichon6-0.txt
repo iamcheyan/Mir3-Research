@@ -1,0 +1,399 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;--------------------
+
+[@main_0]
+#IF
+check [248] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [245] 1
+#ACT
+goto @NQuest01_39
+break
+#IF
+check [240] 1
+#ACT
+goto @NQuest01_38
+break
+#IF
+check [239] 1
+#ACT
+goto @NQuest01_37
+break
+#IF
+check [238] 1
+#ACT
+goto @NQuest01_36
+break
+#IF
+check [237] 1
+#ACT
+goto @NQuest01_35
+break
+#IF
+check [247] 1
+#ACT
+goto @NQuest01_34
+break
+#IF
+check [236] 1
+#ACT
+goto @NQuest01_33
+break
+#IF
+check [235] 1
+#ACT
+goto @NQuest01_32
+break
+#IF
+check [234] 1
+#ACT
+goto @NQuest01_31
+break
+#IF
+check [229] 1
+#ACT
+goto @NQuest01_30
+break
+#IF
+check [228] 1
+#ACT
+goto @NQuest01_29
+break
+#IF
+check [223] 1
+#ACT
+goto @NQuest01_28
+break
+#IF
+check [222] 1
+#ACT
+goto @NQuest01_27
+break
+#IF
+check [221] 1
+#ACT
+goto @NQuest01_26
+break
+#IF
+check [213] 1
+#ACT
+goto @NQuest01_25
+break
+#IF
+check [209] 1
+#ACT
+goto @NQuest01_21
+break
+#IF
+check [207] 1
+#ACT
+goto @NQuest01_20
+break
+#IF
+check [199] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [197] 1
+#ACT
+goto @NQuest01_18
+break
+#IF
+check [195] 1
+#ACT
+goto @NQuest01_17
+break
+#IF
+check [192] 1
+#ACT
+goto @NQuest01_16
+break
+#IF
+check [191] 1
+#ACT
+goto @NQuest01_15
+break
+#IF
+check [196] 1
+#ACT
+goto @NQuest01_14
+break
+#IF
+check [190] 1
+#ACT
+goto @NQuest01_13
+break
+#IF
+check [189] 1
+#ACT
+goto @NQuest01_12
+break
+#IF
+check [188] 1
+#ACT
+goto @NQuest01_11
+break
+#IF
+check [185] 1
+#ACT
+goto @NQuest01_10
+break
+#IF
+check [184] 1
+#ACT
+goto @NQuest01_9
+break
+#IF
+check [179] 1
+#ACT
+goto @NQuest01_8_1
+break
+#IF
+check [178] 1
+#ACT
+goto @NQuest01_8
+break
+#IF
+check [177] 1
+#ACT
+goto @NQuest01_7
+break
+#IF
+check [176] 1
+#ACT
+goto @NQuest01_7
+break
+#IF
+check [175] 1
+#ACT
+goto @NQuest01_6
+break
+#IF
+check [174] 1
+#ACT
+goto @NQuest01_5
+break
+#IF
+check [173] 1
+#ACT
+goto @NQuest01_4
+break
+#IF
+check [172] 1
+#ACT
+goto @NQuest01_3_1
+break
+#IF
+check [168] 1
+#ACT
+goto @NQuest01_3
+break
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_Main_0
+
+;--------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_Main_1
+
+;--------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_Main_2
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_3]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_3_1
+
+[@NQuest01_3_1]
+#CALL [\NQ_BASE\oma.txt] @HATU_START
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\oma.txt] @SEARCH_HATUBANG
+
+[@NQuest01_5]
+#CALL [\NQ_BASE\oma.txt] @HELP_HATUBANG1_KWAN
+
+[@NQuest01_6]
+#CALL [\NQ_BASE\oma.txt] @HELP_HATUBANG2_KWAN
+
+[@NQuest01_7]
+#CALL [\NQ_BASE\oma.txt] @HELP_HATUBANG3_KWAN
+
+[@NQuest01_8]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON1_KWAN
+
+[@NQuest01_8_1]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON2_KWAN
+
+[@NQuest01_9]
+#CALL [\NQ_BASE\oma.txt] @HELP_CHOHON3_KWAN
+
+[@NQuest01_10]
+#CALL [\NQ_BASE\oma.txt] @HELP_HATUBANG4_KWAN
+
+[@NQuest01_11]
+#CALL [\NQ_BASE\oma.txt] @GO_UNBAL1_KWAN
+
+[@NQuest01_12]
+#CALL [\NQ_BASE\oma.txt] @GO_UNBAL2_KWAN
+
+[@NQuest01_13]
+#CALL [\NQ_BASE\oma.txt] @HATU_COMPLETE
+
+[@NQuest01_14]
+#CALL [\NQ_BASE\oma.txt] @GO_UNBAL3_KWAN
+
+[@NQuest01_15]
+#CALL [\NQ_BASE\oma.txt] @GO_OMAYONG1_KWAN
+
+[@NQuest01_16]
+#CALL [\NQ_BASE\oma.txt] @GO_OMAYONG2_KWAN
+
+[@NQuest01_17]
+#CALL [\NQ_BASE\oma.txt] @OMAYONG_COMPLETE
+
+[@NQuest01_18]
+#CALL [\NQ_BASE\oma.txt] @OMAYONG_COMPLETE1
+
+[@NQuest01_20]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_KWANRI_1
+
+[@NQuest01_21]
+#CALL [\NQ_BASE\younghon.txt] @ST_HON_KWANRI_2
+
+[@NQuest01_25]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_25_1
+[@NQuest01_25_1]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_START
+
+[@NQuest01_26]
+#CALL [\NQ_BASE\tarak.txt] @GO_HYUNJIN1
+
+[@NQuest01_27]
+#CALL [\NQ_BASE\tarak.txt] @GO_YOUNGYUL1
+
+[@NQuest01_28]
+#CALL [\NQ_BASE\tarak.txt] @GO_YOUNGYUL2
+
+[@NQuest01_29]
+#CALL [\NQ_BASE\tarak.txt] @GO_BICHUNPG1
+
+[@NQuest01_30]
+#CALL [\NQ_BASE\tarak.txt] @GO_BICHUNPG2
+
+[@NQuest01_31]
+#CALL [\NQ_BASE\tarak.txt] @GO_HYUNJIN2
+
+[@NQuest01_32]
+#CALL [\NQ_BASE\tarak.txt] @GO_HYUNJIN3
+
+[@NQuest01_33]
+#CALL [\NQ_BASE\tarak.txt] @BICHUNPG_COMPLETE
+
+[@NQuest01_34]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_KWANRI1
+
+[@NQuest01_35]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_KWANRI2
+
+[@NQuest01_36]
+#CALL [\NQ_BASE\tarak.txt] @GO_HYUNJIN4
+
+[@NQuest01_37]
+#CALL [\NQ_BASE\tarak.txt] @GO_HYUNJIN5
+
+[@NQuest01_38]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_KWANRI3
+
+[@NQuest01_39]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_COMPLETE
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 600
+#ACT
+goto @TQuest600_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_TQuest
+
+;------------------------
+
+
+[@TQuest600_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest600_2
+break
+;
+#ELSEACT
+goto @TQuest600_1
+
+;--------------
+
+[@TQuest600_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @600_START
+
+[@TQuest600_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @600_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Bichon6-0.txt] @NPC_TQuest_1
+
+;---------------------------

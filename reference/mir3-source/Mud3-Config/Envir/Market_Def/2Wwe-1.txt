@@ -1,0 +1,33 @@
+;武器
+%100
++5
++6
+;对话， '*' : 对话tag
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不想和你这样的人打交道！\ \
+ <离开/@exit>\
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+欢迎光临，有什么可以效劳的？\ \
+ <修理/@repair>武器\
+ <特殊修理/@s_repair>武器\
+ <离开/@exit>\
+
+
+[@repair]
+你需要修理什么武器？\ \ \
+ <返回/@main>\
+
+
+[~@repair]
+已经修好了，看起来像新的一样。\ \ \
+ <返回/@main>\
+
+[goods]
+;商品 数量  时间(hour)

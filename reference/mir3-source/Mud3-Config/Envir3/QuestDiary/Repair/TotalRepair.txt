@@ -1,0 +1,85 @@
+;;º£¥áµÁ
+[@SRepairItem]
+{
+#ACT
+mov  P0  %ARG(1)
+GetRepairCost  %P0
+#IF
+small P9  0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @NeedNot_Repair	
+
+#ACT
+break
+
+#IF
+equal P0 1
+#ACT
+goto @SRepair_Weapon
+break
+
+#IF
+CheckGold  %P9
+#ACT
+mov  D0   %P0
+mov  D1   %P9
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @RepairCost
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @No_Money
+
+[@SRepair_Weapon]
+#IF
+checkitemw º××ì³ú 1
+#ACT
+break
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @Repair_Fail
+
+#ELSEACT
+goto @SRepair_Weapon_Check
+
+[@SRepair_Weapon_Check]
+#IF
+checkitemw ·çÖ®º××ì³ú 1
+#ACT
+break
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @Repair_Fail
+
+#ELSEACT
+mov  P0  %ARG(1)
+GetRepairCost  %P0
+
+#IF
+small P9  0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @NeedNot_Repair	
+#ACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @RepairCost
+
+#IF
+mov D0 %P0
+mov D1 %P9
+
+[@SRepairNow]
+#ACT
+;D0  Á¾·ù
+;D1  °¡°Ý
+GetRepairCost  %D0
+
+#IF
+Equal  D1  %P9
+#ACT
+RepairItem  %D0
+take ½ð±Ò  %P9
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Repair\TotalRepair.txt] @Repair_Complete
+
+}

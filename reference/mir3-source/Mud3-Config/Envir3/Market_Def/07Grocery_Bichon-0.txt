@@ -1,0 +1,919 @@
+;;海メ盗
+%100
+;scroll, Spotion, lottery
++3
+;torch
++30
+;poison, charm
++25
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+;
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_M1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_0_0
+
+;---------------
+;---------------
+
+[@main_root_0_0]
+#IF
+check [723] 1
+;		check masshiden complete
+#ACT
+goto @main_root_0_3
+break
+;
+#IF
+check [513] 1
+#ACT
+goto @main_root_0_3
+#ELSEACT
+goto @main_root_0_1
+
+[@main_root_0_1]
+#IF
+checkmagic 集体隐身术
+;		check masshiden
+#ACT
+goto @main_root_0_3
+#ELSEACT
+goto @main_root_0_2
+
+[@main_root_0_2]
+#IF
+checkjob taoist
+checklevel 23
+#ACT
+goto @main_root_1_3
+#ELSEACT
+goto @main_root_0_3
+
+
+;----------------------------------------------------
+;----------------------------------------------------
+;----------------------------------------------------
+
+[@main_root_0_3]
+#IF
+check [271] 1
+#ACT
+goto @main_root_0_5
+break
+;              go wang secret quest
+#IF
+check [266] 1
+#ACT
+goto @main_root_0_4
+;
+#ELSEACT
+goto @main_root_0_5
+;              go wang secret quest
+
+
+[@main_root_0_4]
+#IF
+check [169] 1
+#ACT
+goto @main_root_0_6
+break
+;              go pariche quest
+#IF
+check [155] 1
+#ACT
+goto @main_root_0_8
+break
+;              go wang secret2 - pariche
+#IF
+check [152] 1
+#ACT
+goto @main_root_0_7
+break
+;              go wang secret1 - pariche
+#ELSEACT
+goto @main_root_0_6
+;              go pariche quest
+
+
+
+[@main_root_0_5]
+;		wang secret quest
+#IF
+check [169] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [155] 1
+#ACT
+goto @main_0_2
+break
+;
+#IF
+check [152] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0_0
+;---------------------
+
+
+
+[@main_root_0_6]
+;		pariche quest
+#IF
+check [271] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_0_6
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_0_5
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_0_5
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_0_4
+break
+;
+#IF
+check [266] 1
+#ACT
+goto @main_0_3
+break
+;
+#ELSEACT
+goto @main_0_0
+
+
+
+[@main_root_0_7]
+;		wang secret1 - pariche
+#IF
+check [271] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_0_10
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_0_9
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_0_9
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_0_8
+break
+;
+#IF
+check [266] 1
+#ACT
+goto @main_0_7
+break
+;
+#ELSEACT
+goto @main_0_0
+;---------------------
+
+
+
+[@main_root_0_8]
+;		wang secret2 - pariche
+#IF
+check [271] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_0_14
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_0_13
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_0_13
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_0_12
+break
+;
+#IF
+check [266] 1
+#ACT
+goto @main_0_11
+break
+;
+#ELSEACT
+goto @main_0_0
+;---------------------
+
+
+;---------------------------------------------------
+;---------------------------------------------------
+
+[@main_root_1_3]
+#IF
+check [271] 1
+#ACT
+goto @main_root_1_5
+break
+;              go wang secret quest
+#IF
+check [266] 1
+#ACT
+goto @main_root_1_4
+;
+#ELSEACT
+goto @main_root_1_5
+;              go wang secret quest
+
+
+[@main_root_1_4]
+#IF
+check [169] 1
+#ACT
+goto @main_root_1_6
+break
+;              go pariche quest
+#IF
+check [155] 1
+#ACT
+goto @main_root_1_8
+break
+;              go wang secret2 - pariche
+#IF
+check [152] 1
+#ACT
+goto @main_root_1_7
+break
+;              go wang secret1 - pariche
+#ELSEACT
+goto @main_root_1_6
+;              go pariche quest
+
+
+
+[@main_root_1_5]
+;		wang secret quest
+#IF
+check [169] 1
+#ACT
+goto @main_1_0
+break
+;
+#IF
+check [155] 1
+#ACT
+goto @main_1_2
+break
+;
+#IF
+check [152] 1
+#ACT
+goto @main_1_1
+break
+;
+#ELSEACT
+goto @main_1_0
+;---------------------
+
+
+
+[@main_root_1_6]
+;		pariche quest
+#IF
+check [271] 1
+#ACT
+goto @main_1_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_1_6
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_1_5
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_1_5
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_1_4
+break
+
+;
+#IF
+check [266] 1
+#ACT
+goto @main_1_3
+break
+;
+#ELSEACT
+goto @main_1_0
+
+
+
+[@main_root_1_7]
+;		wang secret1 - pariche
+#IF
+check [271] 1
+#ACT
+goto @main_1_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_1_10
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_1_9
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_1_9
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_1_8
+break
+;
+#IF
+check [266] 1
+#ACT
+goto @main_1_7
+break
+;
+#ELSEACT
+goto @main_1_0
+;---------------------
+
+
+
+[@main_root_1_8]
+;		wang secret2 - pariche
+#IF
+check [271] 1
+#ACT
+goto @main_1_0
+break
+;
+#IF
+check [270] 1
+#ACT
+goto @main_1_14
+break
+;
+#IF
+check [269] 1
+#ACT
+goto @main_1_13
+break
+;
+#IF
+check [268] 1
+#ACT
+goto @main_1_13
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @main_1_12
+break
+;
+#IF
+check [266] 1
+#ACT
+goto @main_1_11
+break
+;
+#ELSEACT
+goto @main_1_0
+;---------------------
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_0
+ 
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_1
+ 
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_2
+ 
+;-----------------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_3
+
+;-----------------------------
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_4
+ 
+;-----------------------------
+
+[@main_0_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_5
+ 
+;-----------------------------
+
+[@main_0_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_6
+
+;-----------------------------
+;-----------------------------
+
+[@main_0_7]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_7
+ 
+
+;-----------------------------
+
+[@main_0_8]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_8
+ 
+;-----------------------------
+
+[@main_0_9]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_9
+ 
+;-----------------------------
+
+[@main_0_10]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_10
+
+;-----------------------------
+;-----------------------------
+
+[@main_0_11]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_11
+
+;-----------------------------
+
+[@main_0_12]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_12
+ 
+;-----------------------------
+
+[@main_0_13]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_13
+ 
+;-----------------------------
+
+[@main_0_14]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_0_14
+
+;----------------------------------------------------
+;----------------------------------------------------
+
+[@main_1_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_0
+
+;-----------------------------
+
+[@main_1_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_1
+ 
+;-----------------------------
+
+[@main_1_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_2
+ 
+;-----------------------------
+
+[@main_1_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_3
+ 
+;-----------------------------
+
+[@main_1_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_4
+ 
+;-----------------------------
+
+[@main_1_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_5
+
+;-----------------------------
+
+[@main_1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_6
+ 
+;-----------------------------
+;-----------------------------
+
+[@main_1_7]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_7
+ 
+;-----------------------------
+
+[@main_1_8]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_8
+ 
+;-----------------------------
+
+[@main_1_9]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_9
+ 
+;-----------------------------
+
+[@main_1_10]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_10
+ 
+;-----------------------------
+;-----------------------------
+
+[@main_1_11]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_11
+ 
+;-----------------------------
+
+[@main_1_12]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_12
+ 
+;-----------------------------
+
+[@main_1_13]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_13
+ 
+;-----------------------------
+
+[@main_1_14]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Main_1_14
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Sell
+
+
+[@questionprize]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_QuestionPrize
+
+[@candle]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Candle
+
+[@teleport]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Teleport
+
+[@teleport2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Teleport2
+
+[@steleport]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_sTeleport
+
+[@repairoil]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_RepairOil
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\wang.txt] @INVITE_JABSANG
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\wang.txt] @JOIN_JABSANG
+
+
+[@NQuest02_1]
+#CALL [\NQ_BASE\pariche.txt] @PARICHE_JABSANG_1
+
+[@NQuest02_2]
+#CALL [\NQ_BASE\pariche.txt] @PARICHE_JABSANG_2
+
+[@NQuest02_3]
+#CALL [\NQ_BASE\pariche.txt] @PARICHE_JABSANG_3
+
+[@NQuest02_4]
+#CALL [\NQ_BASE\pariche.txt] @PARICHE_JABSANG_4
+
+
+[@NQuest03]
+#CALL [\MU_taoist\masshiden.txt] @mugong_masshiding_pre
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 464
+#ACT
+goto @TQuest464_0
+break
+;
+#IF
+CheckDailyQuest 433
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 406
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 323
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 238
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+;------------------------
+
+[@TQuest464_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [308] 1
+#ACT
+goto @TQUEST1_6
+break
+;
+
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest464_1
+
+;--------------
+
+[@TQuest464_1]
+;;#CALL [\QT_TODAY\4thClass.txt] @464_CHECK2
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @238_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @238_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Bichon-0.txt] @NPC_TQuest_1
+
+;-------------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @323_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @323_CHECK1
+
+;-------------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\4thClass.txt] @406_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\4thClass.txt] @406_CHECK1
+
+;-------------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+#CALL [\QT_TODAY\4thClass.txt] @433_START
+
+[@TQuest4_2]
+#CALL [\QT_TODAY\4thClass.txt] @433_CHECK1
+
+
+;-------------------------------------

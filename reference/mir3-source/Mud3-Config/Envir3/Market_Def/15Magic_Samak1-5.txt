@@ -1,0 +1,62 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Samak1-5.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Samak1-5.txt] @NPC_Main
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Samak1-5.txt] @NPC_Main_1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@Go_Mu_Warrior_Noatom_wesu]
+#CALL [\MU_Total_Sell\Warrior\wesu.txt] @Mu_Warrior_Noatom_wesu
+
+[@Go_Mu_Warrior_Noatom_wedo]
+#CALL [\MU_Total_Sell\Warrior\wedo.txt] @Mu_Warrior_Noatom_wedo
+
+[@Go_Mu_Warrior_Noatom_asword]
+#CALL [\MU_Total_Sell\Warrior\asword.txt] @Mu_Warrior_Noatom_asword
+
+[@Go_Mu_Warrior_Noatom_banwel]
+#CALL [\MU_Total_Sell\Warrior\banwel.txt] @Mu_Warrior_Noatom_banwel
+
+[@Go_Mu_Warrior_Noatom_mute]
+#CALL [\MU_Total_Sell\Warrior\mute.txt] @Mu_Warrior_Noatom_mute
+
+[@Go_Mu_Warrior_Noatom_maeng]
+#CALL [\MU_Total_Sell\Warrior\maeng.txt] @Mu_Warrior_Noatom_maeng
+
+[@Go_Mu_Warrior_Noatom_fire]
+#CALL [\MU_Total_Sell\Warrior\fire.txt] @Mu_Warrior_Noatom_fire
+
+[@Go_Mu_Warrior_Noatom_double]
+#CALL [\MU_Total_Sell\Warrior\double.txt] @Mu_Warrior_Noatom_double
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------

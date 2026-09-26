@@ -1,0 +1,280 @@
+;;º£¥áµÁ
+%100
+;scroll, Spotion, lottery
++3
+;torch
++30
+;poison, charm
++25
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+;
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+;---------------
+;---------------
+
+[@main_root_1]
+;		taoistbase quest
+#IF
+check [164] 1
+#ACT
+goto @main_0_0
+break
+;
+;		taoistbase test part DEL
+#IF
+check [105] 1
+#ACT
+goto @main_0_5
+break
+#IF
+check [104] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [163] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [103] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [102] 1
+#ACT
+goto @main_0_1
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_0
+
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_1
+ 
+;-----------------------------
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_2
+ 
+;-----------------------------
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_3
+ 
+;-----------------------------
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_4
+ 
+;-----------------------------
+
+[@main_0_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Main_0_5
+ 
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Sell
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\taoistbase.txt] @Dosa_DQ_START
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\taoistbase.txt] @Dosa_GO_JUNG
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\taoistbase.txt] @Dosa_SEARCH_PI
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\taoistbase.txt] @Dosa_MQ_COMPLETE
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 591
+#ACT
+goto @TQuest591_0
+break
+;
+#IF
+CheckDailyQuest 514
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 513
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 102
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest591_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest591_2
+break
+;
+#ELSEACT
+goto @TQuest591_1
+
+;--------------
+
+[@TQuest591_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @591_START
+
+[@TQuest591_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @591_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @102_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @102_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_DoGwan-1_007.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @513_START
+
+[@TQuest2_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @513_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @514_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @514_CHECK1
+
+;------------------------

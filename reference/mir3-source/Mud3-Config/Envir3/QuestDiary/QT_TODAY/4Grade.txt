@@ -1,0 +1,7454 @@
+;;漆丟聒
+[@401_START]
+{
+#IF
+CheckDailyQuest 401
+#ACT
+goto @401_START_1
+[@401_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Start_1
+
+[@401_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Start_1_1
+
+[@401_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Start_2
+}
+[@401_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Check1
+[@401_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Check1_1
+
+[@401_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [401] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [401] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @401_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Check1_2
+
+[@401_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 100
+inc s0 1
+goto @401_Reward_1
+
+[@401_Reward_1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [401] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [401] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [401] [20_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [401] [20_Type1_1_N]
+
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [401] [80_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [401] [80_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+small s0 20
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+give %A5 %D5
+mov s0 0
+reset [307] 2
+set [310] 1
+;
+#ELSEACT
+take %A0 %D0
+give %A7 %D7
+mov s0 0
+reset [307] 2
+set [310] 1
+;
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_401_Complete
+}
+[@402_START]
+{
+#IF
+CheckDailyQuest 402
+#ACT
+goto @402_START_1
+[@402_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Start_1
+[@402_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Start_1_1
+[@402_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Start_2
+}
+[@402_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Check1
+
+[@402_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Check1_1
+[@402_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material2_Amount]
+	LoadValue A2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material3_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material3_Amount]
+
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+checkitem %A2 %D2
+#ACT
+goto @402_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Check1_2
+
+[@402_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 100
+inc s0 1
+goto @402_Reward
+[@402_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material2_Amount]
+	LoadValue A2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material3_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [402] [Material3_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [30_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [30_Type1_1_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [70_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [70_Type1_1_N]
+	LoadValue A8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [70_Type1_2]
+	LoadValue D8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [402] [70_Type1_2_N]
+
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+checkitem %A2 %D2
+small s0 30
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+take %A1 %D1
+take %A2 %D2
+give %A5 %D5
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+take %A1 %D1
+take %A2 %D2
+give %A7 %D7
+give %A8 %D8
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_402_Complete
+}
+[@403_START]
+{
+#IF
+CheckDailyQuest 403
+#ACT
+goto @403_START_1
+[@403_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Start_1
+
+[@403_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Start_1_1
+
+[@403_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Start_2
+}
+[@403_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Check1
+
+[@403_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Check1_1
+
+[@403_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [403] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [403] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @403_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Check1_2
+
+[@403_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [403] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [403] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [403] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [403] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_403_Complete
+}
+[@404_START]
+{
+#IF
+CheckDailyQuest 404
+#ACT
+goto @404_START_1
+[@404_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Start_1
+
+[@404_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Start_1_1
+
+[@404_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Start_2
+}
+	
+[@404_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Check1
+	
+[@404_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Check1_1
+
+[@404_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @404_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Check1_2
+
+[@404_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [404] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [404] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [404] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_404_Complete
+}
+[@405_START]
+{
+#IF
+CheckDailyQuest 405
+#ACT
+goto @405_START_1
+[@405_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Start_1
+[@405_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Start_1_1
+[@405_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Start_2
+}
+[@405_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Check1
+[@405_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Check1_1
+
+[@405_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [405] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [405] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @405_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_Check1_2
+
+[@405_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [405] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [405] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [405] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [405] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_405_COMPLETE
+}
+	
+[@406_START]
+{
+#IF
+CheckDailyQuest 406
+#ACT
+goto @406_START_1
+
+[@406_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Start_1
+
+[@406_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Start_1_1
+
+[@406_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Start_2
+}
+	
+[@406_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Check1
+
+[@406_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Check1_1
+
+[@406_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @406_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Check1_2
+
+[@406_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [406] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [406] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [406] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [406] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_406_Complete
+}
+	
+[@407_START]
+{
+#IF
+CheckDailyQuest 407
+#ACT
+goto @407_START_1
+
+[@407_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Start_1
+
+[@407_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Start_1_1
+[@407_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Start_2
+}
+[@407_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Check1
+
+[@407_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Check1_1
+
+[@407_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @407_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Check1_2
+
+[@407_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [407] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [407] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_407_Complete
+}
+[@408_START]
+{
+#IF
+CheckDailyQuest 408
+#ACT
+goto @408_START_1
+[@408_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Start_1
+
+[@408_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Start_1_1
+
+[@408_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Start_2
+}
+[@408_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Check1
+
+[@408_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Check1_1
+
+[@408_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @408_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Check1_2
+
+[@408_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @408_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Check1_2
+
+[@408_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [408] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [408] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [408] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [408] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [408] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_408_Complete
+}
+[@409_START]
+{
+#IF
+CheckDailyQuest 409
+#ACT
+goto @409_START_1
+[@409_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Start_1
+[@409_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Start_1_1
+[@409_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Start_2
+}
+[@409_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Check1
+[@409_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Check1_1
+
+[@409_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @409_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Check1_2
+[@409_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [409] [Material1_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [409] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [409] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_409_Complete
+}
+[@410_START]
+{
+#IF
+CheckDailyQuest 410
+#ACT
+goto @410_START_1
+[@410_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Start_1
+[@410_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Start_1_1
+[@410_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Start_2
+}
+[@410_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Check1
+
+[@410_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Check1_1
+
+[@410_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @410_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Check1_2
+
+[@410_CHECK1_3]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [410] [Material1_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [410] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [410] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [410] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [410] [100_Type1_WoMan_N]
+
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+gender man
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Complete
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_410_Complete
+}
+[@411_START]
+{
+#IF
+CheckDailyQuest 411
+#ACT
+goto @411_START_1
+[@411_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Start_1
+
+[@411_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Start_1_1
+
+[@411_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Start_2
+}
+[@411_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Check1
+[@411_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Check1_1
+[@411_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [411] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [411] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @411_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Check1_2
+
+[@411_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [411] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [411] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [411] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [411] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_411_Complete
+}
+
+[@412_START]
+{
+#IF
+CheckDailyQuest 412
+#ACT
+goto @412_START_1
+
+[@412_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Start_1
+
+[@412_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Start_1_1
+[@412_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Start_2
+}
+[@412_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Check1
+[@412_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Check1_1
+[@412_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [412] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [412] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @412_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Check1_2
+[@412_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [412] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [412] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [412] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [412] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [412] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [412] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_412_Complete
+}
+	
+[@413_START]
+{
+#IF
+CheckDailyQuest 413
+#ACT
+goto @413_START_1
+[@413_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Start_1
+[@413_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Start_1_1
+[@413_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Start_2
+}
+[@413_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Check1
+[@413_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Check1_1
+[@413_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkdura %A0 %D1
+#ACT
+goto @413_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Check1_2
+[@413_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [413] [Material1_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [413] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [413] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkdura %A0 %D1
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_413_Complete
+}
+[@414_START]
+{
+#IF
+CheckDailyQuest 414
+#ACT
+goto @414_START_1
+[@414_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Start_1
+
+[@414_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Start_1_1
+
+[@414_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Start_2
+[@414_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Check1
+
+[@414_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Check1_1
+
+[@414_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @414_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Check1_2
+[@414_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [414] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [414] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_414_Complete
+}
+[@415_START]
+{
+#IF
+CheckDailyQuest 415
+#ACT
+goto @415_START_1
+[@415_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Start_1
+[@415_START_1_1]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Start_1_1
+[@415_START_2]
+#IF
+checkgold 5000
+#ACT
+goto @415_CHECK2_1
+#ELSEACT
+set [307] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Start_2
+[@415_CHECK2_1]
+#IF
+check [310] 0
+#ACT
+movr s0 100
+inc s0 1
+goto @415_Reward
+
+[@415_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [415] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [415] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [415] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [415] [10_Type1_1_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [415] [90_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [415] [90_Type1_1_N]
+
+#IF
+small s0 10
+checkgold %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+give %A7 %D7
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Complete
+}
+[@415_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Check1
+[@415_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Check1_1
+[@415_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [415] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [415] [Material1_Amount]
+#IF
+checkgold %D0
+#ACT
+goto @415_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_415_Check1_2
+
+[@415_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+goto @415_Reward
+
+}
+
+[@416_START]
+{
+#IF
+CheckDailyQuest 416
+#ACT
+goto @416_START_1
+[@416_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Start_1
+[@416_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Start_1_1
+[@416_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Start_2
+}
+[@416_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Check1
+[@416_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Check1_1
+[@416_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [416] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [416] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @416_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Check1_2
+[@416_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 1000
+inc s0 1
+goto @416_Rewaard
+[@416_Rewaard]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [416] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [416] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [10_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [10_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [10_Type1_2_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [90_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [90_Type1_1_N]
+	LoadValue A8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [90_Type1_2]
+	LoadValue D8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [41] [90_Type1_2_N]
+
+#IF
+small s0 10
+checkitem %A0 %D0
+check [310] 0
+check [307] 1
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take 螞蟻卵 50
+give %A7 %D7
+give %A8 %D8
+reset [307] 2
+;set [310] 1
+mov s0 0
+;
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_416_Complete
+	
+[@417_START]
+{
+#IF
+CheckDailyQuest 417
+#ACT
+goto @417_START_1
+[@417_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Start_1
+[@417_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Start_1_1
+[@417_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Start_2
+}
+[@417_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Check1
+[@417_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Check1_1
+[@417_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [417] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [417] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @417_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Check1_2
+
+[@417_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 100
+inc s0 1
+goto @417_Reward
+
+[@417_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [417] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [417] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [5_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [5_Type1_1_N]
+
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [95_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [95_Type1_1_N]
+	LoadValue A8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [95_Type1_2]
+	LoadValue D8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [417] [95_Type1_2_N]
+
+#IF
+small s0 5
+checkitem %A0 %D0
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+give %A5 %D5
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+give %A7 %D7
+give %A8 %D8
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_417_Complete
+}
+[@418_START]
+{
+#IF
+CheckDailyQuest 418
+#ACT
+goto @418_START_1
+[@418_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Start_1
+[@418_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Start_1_1
+[@418_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Start_2
+}
+[@418_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Check1
+[@418_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Check1_1
+[@418_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+movr s0 100
+inc s0 1
+goto @418_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Check1_2
+
+[@418_CHECK1_3]
+#IF
+small s0 90
+#ACT
+goto @418_Reward_SEX
+
+#ELSEACT
+goto @418_Reward
+
+[@418_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [10_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+give %A5 %D5
+reset [307] 2
+set [310] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Complete
+
+[@418_Reward_SEX]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [418] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_WoMan_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_Share]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [418] [90_Type1_Share_N]
+#IF
+check [310] 0
+check [307] 1
+gender man
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A7 %D7
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+give %A7 %D7
+reset [307] 2
+set [310] 1
+
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_418_Complete
+
+}
+[@419_START]
+{
+#IF
+CheckDailyQuest 419
+#ACT
+goto @419_START_1
+[@419_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Start_1
+[@419_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Start_1_1
+[@419_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Start_2
+}
+	
+[@419_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Check1
+	
+[@419_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Check1_1
+
+[@419_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @419_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Check1_2
+
+[@419_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [419] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [419] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [419] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [419] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [419] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_419_Complete
+}
+	
+[@420_START]
+{
+#IF
+CheckDailyQuest 420
+#ACT
+goto @420_START_1
+[@420_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Start_1
+[@420_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Start_1_1
+[@420_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Start_2
+}
+[@420_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Check1
+[@420_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Check1_1
+[@420_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @420_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Check1_2
+
+[@420_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [420] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [420] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [420] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [420] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [420] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_420_Complete
+}
+[@421_START]
+{
+#IF
+CheckDailyQuest 421
+#ACT
+goto @421_START_1
+[@421_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Start_1
+[@421_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Start_1_1
+[@421_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Start_2
+}
+[@421_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Check1
+[@421_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Check1_1
+[@421_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @421_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Check1_2
+[@421_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [421] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [421] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [421] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_421_Complete
+}
+[@422_START]
+{
+#IF
+CheckDailyQuest 422
+#ACT
+goto @422_START_1
+[@422_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Start_1
+[@422_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Start_1_1
+[@422_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Start_2
+}
+[@422_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Check1
+[@422_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Check1_1
+[@422_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @422_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Check1_2
+[@422_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [422] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [422] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [422] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_422_Complete
+}
+	
+[@423_START]
+{
+#IF
+CheckDailyQuest 423
+#ACT
+goto @423_START_1
+[@423_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Start_1
+[@423_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Start_1_1
+[@423_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Start_2
+}
+[@423_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Check1
+[@423_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Check1_1
+[@423_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @423_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Check1_2
+[@423_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [423] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [423] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [423] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_423_Complete
+}
+[@424_START]
+{
+#IF
+CheckDailyQuest 424
+#ACT
+goto @424_START_1
+[@424_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Start_1
+[@424_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Start_1_1
+[@424_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Start_2
+}
+[@424_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Check1
+[@424_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Check1_1
+[@424_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @424_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Check1_2
+[@424_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @424_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Check1_2
+
+[@424_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [424] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [424] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [424] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [424] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [424] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_424_Complete
+}
+[@425_START]
+{
+#IF
+CheckDailyQuest 425
+#ACT
+goto @425_START_1
+[@425_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Start_1
+[@425_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Start_1_1
+[@425_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Start_2
+}
+[@425_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Check1
+[@425_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Check1_1
+[@425_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @425_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Check1_2
+
+[@425_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @425_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Check1_2
+
+[@425_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [425] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [425] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [425] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [425] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_425_Complete
+}
+[@426_START]
+{
+#IF
+CheckDailyQuest 426
+#ACT
+goto @426_START_1
+[@426_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Start_1
+[@426_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Start_1_1
+[@426_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Start_2
+}
+[@426_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Check1
+[@426_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Check1_1
+[@426_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @426_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Check1_2
+[@426_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [426] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [426] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [426] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_426_Complete
+}
+[@427_START]
+{
+#IF
+CheckDailyQuest 427
+#ACT
+goto @427_START_1
+[@427_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Start_1
+[@427_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Start_1_1
+[@427_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Start_2
+}
+[@427_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Check1
+
+[@427_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Check1_1
+
+[@427_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Dura]
+
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @427_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Check1_2
+[@427_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @427_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Check1_2
+
+[@427_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [425] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_427_Complete
+}
+[@428_START]
+{
+#IF
+CheckDailyQuest 428
+#ACT
+goto @428_START_1
+[@428_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Start_1
+[@428_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Start_1_1
+[@428_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Start_2
+}
+[@428_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Check1
+[@428_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Check1_1
+[@428_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [428] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [428] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @428_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Check1_2
+[@428_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 100
+inc s0 1
+goto @428_Reward
+[@428_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [428] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [428] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [10_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [10_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [10_Type1_2_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [90_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [90_Type1_1_N]
+	LoadValue A8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [90_Type1_2]
+	LoadValue D8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [428] [90_Type1_2_N]
+
+#IF
+small s0 10
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+give %A7 %D7
+give %A8 %D8
+reset [307] 2
+set [310] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_428_Complete
+}
+[@429_START]
+{
+#IF
+CheckDailyQuest 429
+#ACT
+goto @429_START_1
+[@429_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Start_1
+
+[@429_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Start_1_1
+[@429_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Start_2
+}
+[@429_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Check1
+[@429_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Check1_1
+[@429_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @429_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Check1_2
+[@429_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+#ACT
+movr s0 100
+inc s0 1
+goto @429_Reward
+
+[@429_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [429] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [10_Type1_1_N]
+
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [90_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [90_Type1_1_N]
+	LoadValue A8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [90_Type1_2]
+	LoadValue D8 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [42] [90_Type1_2_N]
+
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+small s0 10
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+reset [307] 2
+set [310] 1
+mov s0 0
+;
+#ELSEACT
+take %A0 %D0
+take %A1 %D1
+give %A7 %D7
+give %A8 %D8
+reset [307] 2
+set [310] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_429_Complete
+}
+[@430_START]
+{
+#IF
+CheckDailyQuest 430
+#ACT
+goto @430_START_1
+[@430_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Start_1
+[@430_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Start_1_1
+[@430_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Start_2
+}
+[@430_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Check1
+[@430_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Check1_1
+[@430_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [430] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [430] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @430_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Check1_2
+[@430_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [430] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [430] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [430] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [430] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_430_Complete
+}
+[@431_START]
+{
+#IF
+CheckDailyQuest 431
+#ACT
+goto @431_START_1
+[@431_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Start_1
+[@431_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Start_1_1
+[@431_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Start_2
+}
+
+[@431_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Check1
+[@431_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Check1_1
+[@431_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @431_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Check1_2
+[@431_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [431] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [431] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [431] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_431_Complete
+}
+	
+[@432_START]
+{
+#IF
+CheckDailyQuest 432
+#ACT
+goto @432_START_1
+	
+[@432_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Start_1
+	
+[@432_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Start_1_1
+[@432_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Start_2
+}
+[@432_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Check1
+[@432_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Check1_1
+[@432_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @432_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Check1_2
+[@432_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [432] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [432] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [432] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_432_Complete
+[@433_START]
+{
+#IF
+CheckDailyQuest 433
+#ACT
+goto @433_START_1
+[@433_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Start_1
+[@433_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Start_1_1
+[@433_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Start_2
+}
+[@433_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Check1
+[@433_CHECK1_1_1]
+#IF
+#SAY
+
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Check1_1
+[@433_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [433] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [433] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [433] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [433] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [433] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [433] [100_Type1_1_N]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @433_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Check1_2
+
+[@433_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_433_Complete
+}
+[@434_START]
+{
+#IF
+CheckDailyQuest 434
+#ACT
+goto @434_START_1
+
+[@434_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Start_1
+[@434_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Start_1_1
+[@434_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Start_2
+}
+[@434_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Check1
+[@434_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Check1_1
+[@434_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @434_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Check1_2
+[@434_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @434_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Check1_2
+[@434_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [434] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [434] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [434] [100_Type1_1_N]
+
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [434] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [434] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_434_Complete
+}
+[@435_START]
+{
+#IF
+CheckDailyQuest 435
+#ACT
+goto @435_START_1
+[@435_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Start_1
+[@435_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Start_1_1
+[@435_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Start_2
+}
+[@435_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Check1
+[@435_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Check1_1
+[@435_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @435_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Check1_2
+[@435_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material2_Amount]
+#IF
+checkitem %A1 %D2
+#ACT
+goto @435_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Check1_2
+[@435_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [435] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [435] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [435] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [435] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [435] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_435_Complete
+}
+
+[@436_START]
+{
+#IF
+CheckDailyQuest 436
+#ACT
+goto @436_START_1
+[@436_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Start_1
+[@436_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Start_1_1
+[@436_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Start_2
+}
+[@436_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Check1
+[@436_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Check1_1
+[@436_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @436_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Check1_2
+[@436_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [436] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [43] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [43] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_436_Complete
+}
+[@437_START]
+{
+#IF
+CheckDailyQuest 437
+#ACT
+goto @437_START_1
+[@437_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Start_1
+[@437_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Start_1_1
+[@437_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Start_1_2
+}
+[@437_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Check1
+[@437_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Check1_1
+[@437_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @437_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Check1_2
+[@437_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Dura]
+#IF
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+goto @437_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Check1_2
+[@437_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material1_Dura]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Name]
+	LoadValue D2 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Amount]
+	LoadValue D3 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [437] [Material2_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [437] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [437] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [437] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [437] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+checkitem %A1 %D2
+checkduraeva %A1 %D3
+#ACT
+take %A0 %D0
+take %A1 %D2
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_437_Complete
+}
+[@438_START]
+{
+#IF
+CheckDailyQuest 438
+#ACT
+goto @438_START_1
+[@438_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Start_1
+[@438_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Start_1_1
+[@438_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Start_1_2
+}
+[@438_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Check1
+[@438_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Check1_1
+[@438_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @438_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Check1_2
+[@438_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [438] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [438] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [438] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_438_Complete
+}
+[@439_START]
+{
+#IF
+CheckDailyQuest 439
+#ACT
+goto @439_START_1
+
+[@439_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Start_1
+[@439_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Start_1_1
+[@439_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Start_2
+}
+[@439_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Check1
+[@439_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Check1_1
+ 
+[@439_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @439_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Check1_2
+
+[@439_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [439] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [439] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [439] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [439] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [439] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_439_Complete
+}
+[@440_START]
+{
+#IF
+CheckDailyQuest 440
+#ACT
+goto @440_START_1
+[@440_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Start_1
+[@440_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Start_1_1
+[@440_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Start_2
+}
+[@440_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Check1
+[@440_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Check1_1
+[@440_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+goto @440_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Check1_2
+[@440_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [440] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [440] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [440] [100_Type1_1_N]
+
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [440] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [440] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkitem %A1 %D1
+#ACT
+take %A0 %D0
+take %A1 %D1
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_440_Complete
+}
+[@441_START]
+{
+#IF
+CheckDailyQuest 441
+#ACT
+goto @441_START_1
+[@441_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Start_1
+[@441_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Start_1_1
+[@441_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Start_2
+}
+[@441_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Check1
+[@441_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Check1_1
+[@441_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Dura]
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @441_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Check1_2
+
+[@441_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [441] [Material1_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [441] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [441] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_441_Complete
+}
+[@442_START]
+{
+#IF
+CheckDailyQuest 442
+#ACT
+goto @442_START_1
+[@442_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Start_1
+
+[@442_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Start_1_1
+[@442_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Start_2
+}
+[@442_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Check1
+
+[@442_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Check1_1
+
+[@442_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [442] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [442] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @442_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Check1_2
+	
+[@442_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [442] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [442] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [442] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [442] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_442_Complete
+}
+	
+[@443_START]
+{
+#IF
+CheckDailyQuest 443
+#ACT
+goto @443_START_1
+[@443_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Start_1
+[@443_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Start_1_1
+
+[@443_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Start_2
+}
+[@443_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Check1
+
+[@443_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Check1_1
+
+[@443_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @443_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Check1_2
+
+[@443_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [443] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [443] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_443_Complete
+}
+
+[@444_START]
+{
+#IF
+CheckDailyQuest 444
+#ACT
+goto @444_START_1
+[@444_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Start_1
+[@444_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Start_1_1
+
+[@444_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Start_2
+}
+[@444_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Check1
+[@444_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Check1_1
+[@444_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [444] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [444] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @444_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Check1_2
+
+[@444_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [444] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [444] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [444] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [444] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [444] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [444] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_444_Complete
+}
+[@445_START]
+{
+#IF
+CheckDailyQuest 445
+#ACT
+goto @445_START_1
+[@445_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Start_1
+[@445_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Start_1_1
+
+[@445_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+give %A0 %D0
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Start_2
+}
+[@445_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Check1
+
+[@445_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Check1_1
+[@445_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @445_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Check1_2
+
+[@445_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [445] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [445] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [445] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [445] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Complete
+}
+	
+;	邊境鄉?尹老人部分
+[@445_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Check2
+
+[@445_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @445_CHECK2_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Check2_1
+[@445_CHECK2_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [445] [Material1_Amount]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_445_Complete
+}
+[@446_START]
+{
+#IF
+CheckDailyQuest 446
+#ACT
+goto @446_START_1
+[@446_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Start_1
+
+[@446_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Start_1_1
+
+[@446_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Start_2
+}
+[@446_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Check1
+
+[@446_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Check1_1
+[@446_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [446] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [446] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @446_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Check1_2
+
+[@446_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [446] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [446] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [446] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [446] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [446] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [446] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_446_Complete
+}
+[@447_START]
+{
+#IF
+CheckDailyQuest 447
+#ACT
+goto @447_START_1
+[@447_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Start_1
+
+[@447_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Start_1_1
+
+[@447_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [447] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [447] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+give %A0 %D0
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Start_2
+
+[@447_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Check1
+
+[@447_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Check1_1
+
+[@447_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @447_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Check1_2
+
+[@447_CHECK1_3]
+#IF
+#ACT
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [447] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [447] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Complete
+}
+	
+;	邊境鄉?部分
+[@447_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Check2
+
+[@447_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [447] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [447] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @447_CHECK2_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Check2_1
+
+[@447_CHECK2_2]
+#IF
+check [310] 0
+check [308] 0
+check [307] 1
+#ACT
+take %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_447_Complete
+}
+[@448_START]
+{
+#IF
+CheckDailyQuest 448
+#ACT
+goto @448_START_1
+[@448_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Start_1
+
+[@448_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Start_1_1
+[@448_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Start_2
+}
+[@448_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Check1
+	
+[@448_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Check1_1
+[@448_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [448] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [448] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @448_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Check1_2
+[@448_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [448] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [448] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [448] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [448] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_448_Complete
+}
+	
+[@449_START]
+{
+#IF
+CheckDailyQuest 449
+#ACT
+goto @449_START_1
+[@449_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Start_1
+[@449_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Start_1_1
+[@449_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Start_2
+}
+[@449_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Check1
+
+[@449_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Check1_1
+[@449_CHECK1_2]
+#IF
+check [308] 1
+#ACT
+goto @449_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Check1_2
+[@449_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [449] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [449] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [449] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [449] [100_Type1_WoMan_N]
+
+#IF
+gender man
+check [308] 1
+check [307] 1
+check [310] 0
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Complete
+#ELSEACT
+give %A6 %D6
+;
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_449_Complete
+}
+[@450_START]
+{
+#IF
+CheckDailyQuest 450
+#ACT
+goto @450_START_1
+[@450_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Start_1
+
+[@450_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Start_1_1
+[@450_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Start_2
+}
+[@450_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Check1
+[@450_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Check1_1
+[@450_CHECK1_2]
+#IF
+check [308] 1
+check [309] 1
+#ACT
+goto @450_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Check1_2
+[@450_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [450] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [450] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_450_Complete
+}
+[@451_START]
+{
+#IF
+CheckDailyQuest 451
+#ACT
+goto @451_START_1
+[@451_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Start_1
+
+[@451_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Start_1_1
+
+[@451_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Start_2
+}
+[@451_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Check1
+[@451_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Check1_1
+
+[@451_CHECK1_2]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+goto @451_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Check1_2
+[@451_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 1
+#ACT
+goto @451_CHECK1_5
+#ELSEACT
+goto @451_CHECK1_4
+[@451_CHECK1_4]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Complete
+
+[@451_CHECK1_5]
+#IF
+#ACT
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type2_1]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type2_1_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type2_2]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [451] [100_Type2_2_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 1
+#ACT
+give %A6 %D6
+give %A7 %D7
+;
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_451_Complete_1
+}
+
+[@452_START]
+{
+#IF
+CheckDailyQuest 452
+#ACT
+goto @452_START_1
+[@452_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Start_1
+[@452_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Start_1_1
+[@452_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Start_2
+}
+[@452_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check1
+
+[@452_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check1_1
+
+[@452_CHECK1_2]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+goto @452_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check1_2
+
+[@452_CHECK1_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+checkgold 5000
+#ACT
+movr s0 100
+inc s0 1
+goto @452_Reward
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check1_3
+
+[@452_Reward]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material2_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [10_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [10_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [10_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [10_Type1_2_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [90_Type1_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [452] [90_Type1_1_N]
+
+#IF
+small s0 10
+checkgold 5000
+#ACT
+take %A1 %D1
+give %A5 %D5
+give %A6 %D6
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Complete
+#ELSEACT
+take %A1 %D1
+give %A7 %D7
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+mov s0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Complete
+}
+[@452_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check2
+[@452_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+checkitem %A0 %D0
+#ACT
+goto @452_CHECK2_2
+#ELSEACT
+goto @452_CHECK2_3
+
+[@452_CHECK2_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [452] [Material2_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A1 %D1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check2_2
+[@452_CHECK2_3]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check2_3
+
+[@452_check2_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_452_Check2_4
+
+}
+	
+[@453_START]
+{
+#IF
+CheckDailyQuest 453
+#ACT
+goto @453_START_1
+
+[@453_START_1]
+#IF
+check [310] 0
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Start_1
+
+[@453_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Start_1_1
+
+[@453_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Start_2
+}
+[@453_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Check1
+
+[@453_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Check1_1
+
+[@453_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [453] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [453] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+goto @453_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Check1_2
+
+[@453_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [453] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [453] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [453] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [453] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_453_Complete
+}
+[@454_START]
+{
+#IF
+CheckDailyQuest 454
+#ACT
+goto @454_START_1
+[@454_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Start_1
+[@454_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Start_1_1
+[@454_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Start_2
+}
+[@454_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Check1
+[@454_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Check1_1
+[@454_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [454] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [454] [Material1_Amount]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+goto @454_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Check1_2
+
+[@454_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [454] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [454] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [454] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [454] [100_Type1_1_N]
+
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [454] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [454] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_454_Complete
+}
+
+[@455_START]
+{
+#IF
+CheckDailyQuest 455
+#ACT
+goto @455_START_1
+
+[@455_START_1]
+#IF
+check [310] 0
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Start_1
+
+[@455_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Start_1_1
+
+[@455_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Start_2
+}
+[@455_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Check1
+
+[@455_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Check1_1
+
+[@455_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Dura]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+goto @455_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Check1_2
+[@455_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [455] [Material1_Dura]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [455] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [455] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_455_Complete
+}
+[@456_START]
+{
+#IF
+CheckDailyQuest 456
+#ACT
+goto @456_START_1
+[@456_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Start_1
+[@456_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Start_1_1
+
+[@456_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Start_2
+}
+[@456_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Check1
+
+[@456_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Check1_1
+
+[@456_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_1]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+checkitem %A0 %D0
+#ACT
+goto @456_CHECK1_2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Check1_2
+
+[@456_CHECK1_2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_10]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_10]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_2
+
+[@456_CHECK1_2_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_9]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_9]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_3
+[@456_CHECK1_2_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_8]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_8]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_4
+	
+[@456_CHECK1_2_4]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_7]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_7]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_5
+	
+[@456_CHECK1_2_5]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_6]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_6]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_6
+[@456_CHECK1_2_6]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_5]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_5]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+;#ELSEACT
+goto @456_CHECK1_2_7
+[@456_CHECK1_2_7]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_4]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_4]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_8
+[@456_CHECK1_2_8]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_3]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_3]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_9
+[@456_CHECK1_2_9]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_2]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_2]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+#ELSEACT
+goto @456_CHECK1_2_10
+[@456_CHECK1_2_10]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [456] [Material1_Amount_1]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [456] [100_Type1_1_N_1]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+Checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+goto @456_CHECK1_3
+;
+[@456_CHECK1_3]
+#IF
+#ACT
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_456_Complete
+}
+[@457_START]
+{
+#IF
+CheckDailyQuest 457
+#ACT
+goto @457_START_1
+
+[@457_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Start_1
+[@457_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Start_1_1
+
+[@457_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Start_2
+}
+[@457_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check1
+[@457_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check1_1
+[@457_CHECK1_2]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 1
+#ACT
+goto @457_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check1_2
+
+[@457_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [457] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [457] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 1
+#ACT
+give %A5 %D5
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Complete
+}
+[@457_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+check [309] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2
+
+[@457_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+checkitem %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2_1_1
+[@457_CHECK2_2]
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2_2
+
+[@457_CHECK2_3]
+#ACT
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2_3
+[@457_check2_4]
+#ACT
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check2_4
+}
+[@457_CHECK3]
+{
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+check [309] 0
+checkitem %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check3_1
+[@457_CHECK3_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material1_Amount]
+	LoadValue A1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material2_Name]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [457] [Material2_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+checkitem %A1 %D1
+checkitem %A0 %D0
+#ACT
+set [309] 1
+take %A0 %D0
+take %A1 %D1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Complete_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check3_2
+[@457_CHECK3_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_457_Check3_2_1
+}
+[@458_START]
+{
+#IF
+CheckDailyQuest 458
+#ACT
+goto @458_START_1
+[@458_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Start_1
+[@458_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Start_1_1
+
+[@458_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [458] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [458] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Start_2
+}
+[@458_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check1
+[@458_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check1_1
+[@458_CHECK1_2]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+goto @458_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check1_2
+[@458_CHECK1_3]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [458] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [458] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+check [308] 1
+#ACT
+give %A5 %D5
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Complete
+}
+[@458_CHECK2]
+{
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check2
+[@458_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [458] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [458] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+check [308] 0
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check2_1_1
+[@458_CHECK2_2]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_458_Check2_2
+}
+[@459_START]
+{
+#IF
+CheckDailyQuest 459
+#ACT
+goto @459_START_1
+[@459_START_1]
+#IF
+check [310] 0
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Start_1
+
+[@459_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Start_1_1
+[@459_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Start_2
+}
+[@459_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Check1
+[@459_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Check1_1
+[@459_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [459] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [459] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+goto @459_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Check1_2
+[@459_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [459] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [459] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [459] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [459] [100_Type1_1_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_459_Complete
+}
+[@460_START]
+{
+#IF
+CheckDailyQuest 460
+#ACT
+goto @460_START_1
+[@460_START_1]
+#IF
+check [310] 0
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Start_1
+[@460_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Start_1_1
+[@460_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Start_2
+}
+[@460_CHECK1]
+{
+#IF
+check [310] 0
+check [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Check1
+[@460_CHECK1_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Check1_1
+[@460_CHECK1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [460] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [460] [Material1_Amount]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+goto @460_CHECK1_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Check1_2
+
+[@460_CHECK1_3]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [460] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [460] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [460] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [460] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [460] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [460] [100_Type1_2_N]
+#IF
+check [310] 0
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+;
+set [309] 0
+set [308] 0
+set [307] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_460_Complete
+}
+	
+[@461_START]
+{
+#IF
+CheckDailyQuest 461
+#ACT
+goto @461_START_1
+[@461_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_461_Start_1
+[@461_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_461_Start_1_1
+[@461_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_461_Start_2
+[@461_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [461] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [461] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [461] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [461] [100_Type1_1_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_461_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_461_Check1_1
+}
+	
+[@462_START]
+{
+#IF
+CheckDailyQuest 462
+#ACT
+goto @462_START_1
+[@462_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_462_Start_1
+[@462_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_462_Start_1_1
+[@462_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_462_Start_2
+
+[@462_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [462] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [462] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [462] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [462] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_462_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_462_CHeck1
+}
+[@463_START]
+{
+#IF
+CheckDailyQuest 463
+#ACT
+goto @463_START_1
+[@463_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_463_Start_1
+[@463_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_463_Start_1_1
+[@463_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_463_Start_2
+[@463_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [463] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [463] [100_Type1_1_N]
+#IF
+check [308] 1
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_463_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_463_Check1
+}
+[@464_START]
+{
+#IF
+CheckDailyQuest 464
+#ACT
+goto @464_START_1
+[@464_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Start_1
+[@464_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Start_1_1
+[@464_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Start_2
+[@464_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [464] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [464] [100_Type1_1_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Check1
+}
+[@464_CHECK2]
+{
+#IF
+CheckDailyQuest 464
+#ACT
+goto @464_CHECK2_1
+[@464_CHECK2_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Check2_1
+
+[@464_CHECK2_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Check2_1_1
+[@464_CHECK2_1_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Check2_1_2
+[@464_End1]
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Amount]
+
+#IF
+#ACT
+give %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Complete_1
+[@464_End2]
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [464] [Material1_Amount]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [464] [100_Type2_1]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [464] [100_Type2_1_N]
+
+#IF
+#ACT
+give %A0 %D0
+give %A6 %D6
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_464_Complete_2
+}
+[@465_START]
+{
+#IF
+CheckDailyQuest 465
+#ACT
+goto @465_START_1
+
+[@465_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_465_Start_1
+[@465_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_465_Start_1_1
+[@465_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_465_Start_2
+[@465_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [465] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [465] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [465] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [465] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_465_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_465_Check1
+}
+[@466_START]
+{
+#IF
+CheckDailyQuest 466
+#ACT
+goto @466_START_1
+[@466_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_466_Start_1
+[@466_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_466_Start_1_1
+[@466_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_466_Start_2
+[@466_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [466] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [466] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [466] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [466] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [466] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [466] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_466_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_466_Check1
+}
+
+[@467_START]
+{
+#IF
+CheckDailyQuest 467
+#ACT
+goto @467_START_1
+[@467_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_467_Start_1
+	
+[@467_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_467_Start_1_1
+	
+[@467_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_467_Start_2
+
+[@467_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [467] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [467] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [467] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [467] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_467_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_467_Check1
+
+[@468_START]
+{
+#IF
+CheckDailyQuest 468
+#ACT
+goto @468_START_1
+[@468_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_468_Start_1
+
+[@468_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_468_Start_1_1
+
+[@468_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_468_Start_2
+
+[@468_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [468] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [468] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [468] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [468] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [468] [100_Type1_1]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [468] [100_Type1_1_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_468_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_468_Check1
+}
+	
+[@469_START]
+{
+#IF
+CheckDailyQuest 469
+#ACT
+goto @469_START_1
+[@469_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_469_Start_1
+
+[@469_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_469_Start_1_1
+[@469_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_469_Start_2
+[@469_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [469] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [469] [100_Type1_1_N]
+#IF
+check [308] 1
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_469_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_469_Check1
+}
+[@470_START]
+{
+#IF
+CheckDailyQuest 470
+#ACT
+goto @470_START_1
+[@470_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_470_Start_1
+[@470_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_470_Start_1_1
+[@470_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_470_Start_2
+[@470_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [470] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [470] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [470] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [470] [100_Type1_1_N]
+#IF
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_470_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_470_Check1
+}
+[@471_START]
+{
+#IF
+CheckDailyQuest 471
+#ACT
+goto @471_START_1
+[@471_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Start_1
+[@471_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Start_1_1
+[@471_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Start_2
+[@471_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [471] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [471] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [307] 0
+set [308] 0
+set [309] 0
+set [310] 1
+reset [307] 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Check1
+
+[@471_CHECK1_1]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Check1_1_Man
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_471_Check1_1_Woman
+}
+[@472_START]
+{
+#IF
+CheckDailyQuest 472
+#ACT
+goto @472_START_1
+[@472_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Start_1
+[@472_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Start_1_1
+[@472_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [472] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [472] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Start_2
+[@472_CHECK1]
+#IF
+check [308] 1
+#ACT
+goto @472_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Check1
+[@472_CHECK1_1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [472] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [472] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [472] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [472] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_472_Check1_1
+}
+[@473_START]
+{
+#IF
+CheckDailyQuest 473
+#ACT
+goto @473_START_1
+[@473_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_473_Start_1
+[@473_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_473_Start_1_1
+[@473_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_473_Start_2
+[@473_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [473] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [473] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [473] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [473] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [473] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [473] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_473_Complete
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_473_Check1
+}
+[@474_START]
+{
+#IF
+CheckDailyQuest 474
+#ACT
+goto @474_START_1
+[@474_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Start_1
+[@474_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Start_1_1
+[@474_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Start_2
+
+[@474_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [474] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [474] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @474_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Check1
+[@474_CHECK1_1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [474] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [474] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [474] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [474] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [474] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [474] [100_Type1_WoMan_N]
+
+#IF
+gender man
+checkitem %A0 %D0
+check [307] 1
+check [310] 0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_474_Complete
+}
+[@475_START]
+{
+#IF
+CheckDailyQuest 475
+#ACT
+goto @475_START_1
+[@475_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_475_Start_1
+[@475_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_475_Start_1_1
+[@475_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_475_Start_2
+[@475_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [475] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [475] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @475_CHECK1_1
+[@475_CHECK1_1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [475] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [475] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [475] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [475] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [475] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [475] [100_Type1_WoMan_N]
+
+#IF
+gender man
+checkitem %A0 %D0
+check [310] 0
+check [307] 1
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_475_Complete
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_475_Complete
+}
+[@476_START]
+{
+#IF
+CheckDailyQuest 476
+#ACT
+goto @476_START_1
+[@476_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Start_1
+[@476_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Start_1_1
+[@476_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Start_2
+[@476_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [476] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [476] [100_Type1_1_N]
+#IF
+check [308] 1
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Check1
+#ELSEACT
+goto @476_CHECK1_1
+
+[@476_CHECK1_1]
+#IF
+check [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Complete_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Check1_1
+}
+[@476_CHECK2]
+{
+#IF
+CheckDailyQuest 476
+#ACT
+goto @476_CHECK2_1
+
+[@476_CHECK2_1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [476] [100_Type2_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [476] [100_Type2_1_N]
+#IF
+check [307] 1
+check [309] 0
+check [308] 0
+check [310] 0
+#ACT
+give %A5 %D5
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Complete_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_476_Check2
+}
+[@477_START]
+{
+#IF
+CheckDailyQuest 477
+#ACT
+goto @477_START_1
+[@477_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Start_1
+[@477_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Start_1_1
+[@477_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Start_2
+[@477_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [477] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [477] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+goto @477_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Check1
+[@477_CHECK1_1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [477] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [477] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [477] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [477] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [477] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [477] [100_Type1_WoMan_N]
+
+#IF
+gender man
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Complete
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_477_Complete
+}
+[@478_START]
+{
+#IF
+CheckDailyQuest 478
+#ACT
+goto @478_START_1
+
+[@478_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Start_1
+[@478_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Start_1_1
+
+[@478_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Start_2
+
+[@478_CHECK_Rose]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Rose
+[@478_CHECK_Flower1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Flower1
+
+[@478_CHECK_Flower2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Flower2
+[@478_CHECK_SunFlower]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_sunFlower
+[@478_CHECK_end]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_478_Complete
+}
+[@479_START]
+{
+#IF
+CheckDailyQuest 479
+#ACT
+goto @479_START_1
+[@479_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_479_Start_1
+[@479_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_479_Start_1_1
+[@479_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_479_Start_2
+[@479_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [479] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [479] [100_Type1_1_N]
+#IF
+check [308] 1
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_479_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_479_Check1
+}
+
+[@480_START]
+{
+#IF
+CheckDailyQuest 480
+#ACT
+goto @480_START_1
+[@480_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_480_Start_1
+[@480_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_480_Start_1_1
+[@480_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_480_Start_2
+[@480_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [480] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [480] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [480] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [480] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [480] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [480] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_480_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_480_Check1
+}
+[@481_START]
+{
+#IF
+CheckDailyQuest 481
+#ACT
+goto @481_START_1
+[@481_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_481_Start_1
+[@481_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_481_Start_1_1
+[@481_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_481_Start_2
+[@481_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [481] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [481] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [481] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [481] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [481] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [481] [100_Type1_2_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_481_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_481_Check1
+}
+[@482_START]
+{
+#IF
+CheckDailyQuest 482
+#ACT
+goto @482_START_1
+[@482_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_482_Start_1
+[@482_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_482_Start_1_1
+[@482_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_482_Start_2
+[@482_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [482] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [482] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [482] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [482] [100_Type1_1_N]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [482] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [482] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_482_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_482_Check1
+}
+[@483_START]
+{
+#IF
+CheckDailyQuest 483
+#ACT
+goto @483_START_1
+[@483_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Start_1
+[@483_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Start_1_1
+
+[@483_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Start_2
+}
+
+[@483_CHECK1]
+{
+#IF
+check [308] 1
+#ACT
+goto @483_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Check1
+[@483_CHECK1_1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type1_2_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type2_1]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [483] [100_Type2_1_N]
+#IF
+check [309] 1
+#ACT
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Complete
+#ELSEACT
+give %A7 %D7
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_483_Complete
+}
+[@484_START]
+{
+#IF
+CheckDailyQuest 484
+#ACT
+goto @484_START_1
+[@484_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Start_1
+[@484_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Start_1_1
+[@484_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Start_2
+[@484_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [484] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [484] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [484] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [484] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [484] [100_Type1_2]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [484] [100_Type1_2_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Check1
+}
+[@484_CHECK2]
+{
+#IF
+CheckDailyQuest 484
+#ACT
+goto @484_CHECK2_1
+[@484_CHECK2_1]
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [484] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [484] [Material1_Amount]
+
+#IF
+#ACT
+give %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_484_Complete_1
+}
+[@485_START]
+{
+#IF
+CheckDailyQuest 485
+#ACT
+goto @485_START_1
+[@485_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_485_Start_1
+[@485_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_485_Start_1_1
+[@485_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_485_Start_2
+[@485_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [485] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [485] [Material1_Amount]
+
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [485] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [485] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [485] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [485] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_485_complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_485_Check1
+}
+[@486_START]
+{
+#IF
+CheckDailyQuest 486
+#ACT
+goto @486_START_1
+[@486_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Start_1
+[@486_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Start_1_1
+[@486_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A0 %D0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Start_2
+[@486_CHECK1]
+#IF
+check [308] 1
+#ACT
+goto @486_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Check1
+[@486_CHECK1_1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [486] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [486] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [486] [100_Type2_1]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [486] [100_Type2_1_N]
+#IF
+check [309] 1
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Complete
+
+#ELSEACT
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Complete
+}
+[@486_CHECK2]
+{
+#IF
+CheckDailyQuest 486
+#ACT
+goto @486_CHECK2_1
+[@486_CHECK2_1]
+#IF
+check [308] 1
+#ACT
+goto @486_CHECK2_1_2
+#ELSEACT
+goto @486_CHECK2_1_1
+[@486_CHECK2_1_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material1_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Check2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Check2_1
+
+[@486_CHECK2_1_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material2_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [486] [Material2_Amount]
+#IF
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Check2_1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_486_Check2_1_2
+
+}
+
+[@487_START]
+{
+#IF
+CheckDailyQuest 487
+#ACT
+goto @487_START_1
+
+[@487_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_487_Start_1
+[@487_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_487_Start_1_1
+
+[@487_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_487_Start_2
+[@487_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [487] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [487] [Material1_Amount]
+	LoadValue D1 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [487] [Material1_Dura]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [487] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [487] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+checkduraeva %A0 %D1
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_487_Check1
+
+[@488_START]
+{
+#IF
+CheckDailyQuest 488
+#ACT
+goto @488_START_1
+[@488_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_488_Start_1
+[@488_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_488_Start_1_1
+[@488_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_488_Start_2
+[@488_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [488] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [488] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [488] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [488] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [488] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [488] [100_Type1_2_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_488_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_488_Check1
+}
+[@489_START]
+{
+#IF
+CheckDailyQuest 489
+#ACT
+goto @489_START_1
+[@489_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_489_Start_1
+[@489_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_489_Start_2
+[@489_CHECK1]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [489] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [489] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [489] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [489] [100_Type1_1_N]
+
+#IF
+checkitem %A0 %D0
+#ACT
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_489_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_489_Check1
+
+[@490_START]
+{
+#IF
+CheckDailyQuest 490
+#ACT
+goto @490_START_1
+[@490_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_490_Start_1
+[@490_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_490_Start_1_1
+[@490_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_490_Start_2
+[@490_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [490] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [490] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [490] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [490] [100_Type1_1_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_490_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_490_Check1
+}
+[@491_START]
+{
+#IF
+CheckDailyQuest 491
+#ACT
+goto @491_START_1
+[@491_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_491_Start_1
+[@491_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_491_Start_1_1
+[@491_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [491] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [491] [Material1_Amount]
+#IF
+check [307] 0
+checkgold %D0
+#ACT
+set [307] 1
+take %A0 %D0
+give  30
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_491_Start_2
+}
+[@492_START]
+{
+#IF
+CheckDailyQuest 492
+#ACT
+goto @492_START_1
+[@492_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_492_Start_1
+[@492_START_2]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [492] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [492] [100_Type1_1_N]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+give %A5 %D5
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_492_Start_2
+}
+[@493_START]
+{
+#IF
+CheckDailyQuest 493
+#ACT
+goto @493_START_1
+[@493_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Start_1
+[@493_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Start_1_1
+[@493_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Start_2
+[@493_CHECK1]
+#IF
+check [308] 1
+#ACT
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Check1
+}
+[@493_CHECK2]
+{
+#IF
+CheckDailyQuest 493
+#ACT
+goto @493_CHECK2_1
+[@493_CHECK2_1]
+#IF
+check [308] 1
+#ACT
+goto @493_CHECK2_2_1
+#ELSEACT
+goto @493_CHECK2_1_1
+[@493_CHECK2_1_1]
+#IF
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Check2
+[@493_CHECK2_1_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Check2_1
+[@493_CHECK2_2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [493] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [493] [Material1_Amount]
+#IF
+check [307] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+set [310] 1
+goto @493_CHECK2_2_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Check2_2
+
+[@493_CHECK2_2_2]
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [493] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [493] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [493] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [493] [100_Type1_WoMan_N]
+
+#IF
+check [307] 1
+check [310] 0
+gender man
+#ACT
+give %A5 %D5
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Complete
+#ELSEACT
+give %A6 %D6
+set [309] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_493_Complete
+}
+[@494_START]
+{
+#IF
+CheckDailyQuest 494
+#ACT
+goto @494_START_1
+[@494_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_494_Start_1
+
+[@494_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_494_Start_1_1
+[@494_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_494_Start_2
+}
+[@495_START]
+{
+#IF
+CheckDailyQuest 495
+#ACT
+goto @495_START_1
+[@495_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_Start_1
+[@495_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_Start_1_1
+[@495_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_Start_2
+[@495_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [495] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [495] [Material1_Amount]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+goto @495_CHECK1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_Check1
+	
+[@495_CHECK1_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [495] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [495] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_Man]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_Man_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_WoMan]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_WoMan_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_Share]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [495] [100_Type1_Share_N]
+#IF
+gender man
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A7 %D7
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_complete
+#ELSEACT
+take %A0 %D0
+give %A6 %D6
+give %A7 %D7
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_495_complete	
+}
+[@496_START]
+{
+#IF
+CheckDailyQuest 496
+#ACT
+goto @496_START_1
+[@496_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_496_Start_1
+[@496_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_496_Start_1_1
+[@496_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_496_Start_2
+[@496_CHECK1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [496] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [496] [Material1_Amount]
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_2_N]
+	LoadValue A7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_3]
+	LoadValue D7 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [496] [100_Type1_3_N]
+#IF
+check [308] 1
+checkitem %A0 %D0
+#ACT
+take %A0 %D0
+give %A5 %D5
+give %A6 %D6
+give %A7 %D7
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_496_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_496_Check1
+}
+[@497_START]
+{
+#IF
+CheckDailyQuest 497
+#ACT
+goto @497_START_1
+[@497_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_497_Start_1
+[@497_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_497_Start_1_1
+[@497_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_497_Start_2
+[@497_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [497] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [497] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [497] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [497] [100_Type1_2_N]
+#IF
+check [308] 1
+#ACT
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_497_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_497_Check1
+}
+[@498_START]
+{
+#IF
+CheckDailyQuest 498
+#ACT
+goto @498_START_1
+[@498_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Start_1
+[@498_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Start_1_1
+[@498_START_2]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Amount]
+#IF
+check [307] 0
+#ACT
+give %A0 %D0
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Start_2
+[@498_CHECK1]
+#IF
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [498] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [498] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [498] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [498] [100_Type1_2_N]
+#IF
+check [310] 0
+check [308] 1
+check [309] 1
+check [307] 1
+#ACT
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Complete
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Check1
+}
+[@498_CHECK2]
+{
+#IF
+CheckDailyQuest 498
+#ACT
+goto @498_CHECK2_1
+
+[@498_CHECK2_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Amount_1]
+#IF
+checkitem %A0 %D0
+check [307] 1
+check [308] 0
+#ACT
+take %A0 %D0
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Check2_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Check2_2
+}
+[@498_CHECK3]
+{
+#IF
+CheckDailyQuest 498
+#ACT
+goto @498_CHECK3_1
+
+[@498_CHECK3_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Name]
+	LoadValue D0 "GM_Def\QuestDiary\QT_TODAY\4Grade_Material.txt" [498] [Material1_Amount_1]
+#IF
+checkitem %A0 %D0
+check [309] 0
+check [307] 1
+#ACT
+take %A0 %D0
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Check3_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_498_Check3_2
+}
+
+[@499_START]
+{
+#IF
+CheckDailyQuest 499
+#ACT
+goto @499_START_1
+[@499_START_1]
+#IF
+check [307] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_499_Start_1
+[@499_START_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_499_Start_1_1
+[@499_START_2]
+#IF
+check [307] 0
+#ACT
+set [307] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_499_Start_2
+[@499_CHECK1]
+#IF
+check [308] 1
+#ACT
+goto @499_CHECK1_1
+[@499_CHECK1_1]
+#IF
+check [309] 1
+#ACT
+	LoadValue A5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [499] [100_Type1_1]
+	LoadValue D5 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [499] [100_Type1_1_N]
+	LoadValue A6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [499] [100_Type1_2]
+	LoadValue D6 "GM_Def\QuestDiary\QT_TODAY\4Grade_Reward.txt" [499] [100_Type1_2_N]
+give %A5 %D5
+give %A6 %D6
+set [307] 0
+set [308] 0
+set [309] 0
+reset [307] 2
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_499_Complete
+#ELSEACT
+take ?幣 5000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\4Grade.txt] @QT_499_Check1
+}

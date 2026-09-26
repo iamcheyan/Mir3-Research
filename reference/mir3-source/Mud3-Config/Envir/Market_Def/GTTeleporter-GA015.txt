@@ -1,0 +1,62 @@
+; ===================================
+; Market Def NPC File : GTTransporter-GA0
+; 
+; -----------------------------------
+; Name: GTTransporter
+; Job: 
+; Map No: GA0
+; Pos X 49
+; Pos Y 58
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+[@main]
+#SAY
+选择你想前往的地方.\ \
+<比奇县/@bichon>   <墨龙城/@castlegi>\
+<般诺村/@prajna>   <盟重县/@mongchon>\
+<日弘门/@taovill>   <时间石头/@tstone>\
+<足球场/@football>\ \
+<不/@exit> move
+
+
+[@bichon]
+#ACT
+mapmove 0 332 268
+close
+
+[@castlegi]
+#ACT
+mapmove 4 245 224
+close
+
+[@prajna]
+#ACT
+mapmove 5 131 342
+close
+
+[@mongchon]
+#ACT
+mapmove 3 330 330
+close
+
+[@taovill]
+#ACT
+mapmove 11 178 326 
+close
+
+[@tstone]
+#ACT
+mapmove 5 343 599
+close
+
+
+[@football]
+#ACT
+mapmove G008 43 43
+close
+
+

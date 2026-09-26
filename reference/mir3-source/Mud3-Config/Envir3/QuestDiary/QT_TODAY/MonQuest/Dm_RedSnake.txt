@@ -1,0 +1,249 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 541
+#ACT
+goto @redsnake_T541
+break
+;
+#IF
+CheckDailyQuest 536
+#ACT
+goto @redsnake_T536
+break
+;
+#IF
+CheckDailyQuest 328
+#ACT
+goto @redsnake_T328
+break
+;
+#IF
+CheckDailyQuest 407
+#ACT
+goto @redsnake_T407
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@redsnake_T407]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+;
+
+#IF
+check [307] 1
+#ACT
+goto @redsnake_T407_1
+
+#ELSEACT
+break
+
+[@redsnake_T407_1]
+#IF
+Equal S0 50
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T407_Say
+
+#ELSEACT
+inc s0 1
+
+;-----------------------------------------------------
+[@redsnake_T328]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+;#IF
+;check [309] 1
+;#ACT
+;break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @redsnake_T328_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@redsnake_T328_1]
+#IF
+checkitem ºìÉßÑª 19
+#ACT
+give ºìÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T328_Say
+
+#ELSEACT
+goto @redsnake_T328_2
+
+[@redsnake_T328_2]
+#IF
+random 3
+#ACT
+give ºìÉßÑª 1
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@redsnake_T536]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @redsnake_T536_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@redsnake_T536_1]
+#IF
+large S0 5
+#ACT
+goto @redsnake_T536_5
+#ELSEACT
+goto @redsnake_T536_2
+;-----------------
+
+[@redsnake_T536_2]
+#IF
+large S0 2
+#ACT
+goto @redsnake_T536_3
+#ELSEACT
+mov S0 2
+goto @redsnake_T536_3
+
+;-----------------
+
+[@redsnake_T536_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@redsnake_T536_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T536_Say
+
+#ACT
+set [308] 1
+give ºìÉßÑª 1
+mov S0 0
+
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@redsnake_T541]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @redsnake_T541_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+
+[@redsnake_T541_1]
+#IF
+large S0 10
+#ACT
+goto @redsnake_T541_5
+#ELSEACT
+goto @redsnake_T541_2
+;-----------------
+
+[@redsnake_T541_2]
+#IF
+large S0 2
+#ACT
+goto @redsnake_T541_3
+#ELSEACT
+mov S0 2
+goto @redsnake_T541_3
+
+;-----------------
+
+[@redsnake_T541_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+
+[@redsnake_T541_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T541_Say
+
+#ACT
+set [308] 1
+mov S0 0
+;
+;-----------------------------------------------------

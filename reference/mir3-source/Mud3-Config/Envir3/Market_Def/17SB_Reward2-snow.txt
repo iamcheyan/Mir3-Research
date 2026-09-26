@@ -1,0 +1,14 @@
+;;º£¥áµÁ
+[@main] 
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17SB_Reward2-snow.txt] @17SB_Reward2-snow_1
+
+
+[@Reward_1]
+#IF
+#ACT
+	LoadValue A0 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Fee] [Name]
+	LoadValue P0 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Reward]
+give %A0 %P0
+mapmove 0 435 377 10
+close

@@ -1,0 +1,54 @@
+;;º£¥áµÁ
+[@PARICHE]
+{
+#IF
+check [271] 1
+#ACT
+goto @PARICHE_4
+break
+#IF
+check [270] 1
+#ACT
+goto @PARICHE_3
+break
+#IF
+check [267] 1
+#ACT
+goto @PARICHE_2
+break
+#IF
+check [266] 1
+#ACT
+goto @PARICHE_1
+break
+#ELSEACT
+goto @PARICHE_0
+[@PARICHE_0]
+#IF
+checklevel 5
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_2
+
+[@PARICHE_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_3
+
+[@PARICHE_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_4
+[@PARICHE_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_5
+
+[@PARICHE_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\pariche.txt] @pariche_6
+
+}

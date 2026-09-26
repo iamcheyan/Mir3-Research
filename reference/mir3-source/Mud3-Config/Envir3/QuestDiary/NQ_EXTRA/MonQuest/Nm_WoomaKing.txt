@@ -1,0 +1,35 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [300] 1
+#ACT
+break
+
+#IF
+check [299] 1
+#ACT
+goto @umgwang1
+
+;----------------------------------------------------------
+
+[@umgwang1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaKing.txt] @Nm_WoomaKing_1
+
+#ACT
+set [300] 1
+
+;----------------------------------------------------------

@@ -1,0 +1,35 @@
+;;∫£•·µ¡
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [288] 1
+#ACT
+break
+
+#IF
+check [287] 1
+#ACT
+goto @umgwisa1
+
+;----------------------------------------------------------
+
+[@umgwisa1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaGisa.txt] @Nm_WoomaGisa_1
+
+#ACT
+give ¡ÈªÍ√˜÷È 1
+set [288] 1
+;----------------------------------------------------------

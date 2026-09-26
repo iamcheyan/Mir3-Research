@@ -1,0 +1,50 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [273] 1
+#ACT
+break
+
+#IF
+check [272] 1
+#ACT
+goto @umgbung1
+
+;----------------------------------------------------------
+
+[@umgbung1]
+#IF
+checklevel 20
+#ACT
+goto @umgbung1_1
+#ELSEACT
+break
+
+[@umgbung1_1]
+#IF
+#ACT
+setopen [1] 1
+goto @umgbung1_2
+
+[@umgbung1_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaGibung.txt] @Nm_WoomaGibung_1
+
+#ACT
+give ÎÖÂê½ðÅÆ 1
+set [273] 1
+
+;----------------------------------------------------------

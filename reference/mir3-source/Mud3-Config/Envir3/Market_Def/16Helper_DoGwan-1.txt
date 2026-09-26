@@ -1,0 +1,10 @@
+;;º£¥áµÁ
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\16Helper_DoGwan-1.txt] @NPC_Main
+
+[@main_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\16Helper_DoGwan-1.txt] @NPC_Main_1

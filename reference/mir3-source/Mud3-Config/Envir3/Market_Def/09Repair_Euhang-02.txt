@@ -1,0 +1,12 @@
+;;º£¥áµÁ
+[@main]
+#IF
+;;DayTime SUNSET
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\09Repair_Euhang-02.txt] @NPC_Main
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\09Repair_Euhang-02.txt] @NPC_Main_else
+
+
+[@SRepairFunc()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem

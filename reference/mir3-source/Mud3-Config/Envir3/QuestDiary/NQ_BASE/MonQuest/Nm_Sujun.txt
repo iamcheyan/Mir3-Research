@@ -1,0 +1,36 @@
+;;海メ盗
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [248] 1
+#ACT
+break
+
+#IF
+check [245] 1
+#ACT
+break
+
+#IF
+check [242] 1
+#ACT
+goto @sujun1
+
+;-----------------------------------------------------
+
+[@sujun1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_Sujun.txt] @Nm_Sujun_1
+
+#ACT
+set [245] 1
+set [244] 0
+set [243] 0
+give 不死牌 1
+give 金币 12000
+take 毁灭护身符 1
+;
+mapmove d422 169 188
+;

@@ -1,0 +1,193 @@
+;;º£¥áµÁ
+%100
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Mongchon-74.txt] @NPC_Main
+ 
+;----------------------------------------------------------
+
+[@StgPassword]
+#CALL [\PassWord\PassWord.txt] @Manage_PassWord
+
+[@PreGetback]
+#CALL [\PassWord\PassWord.txt] @Input_PassWord
+
+[@storage]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Mongchon-74.txt] @NPC_Storage
+
+[@getback]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Mongchon-74.txt] @NPC_Getback
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 498
+#ACT
+goto @TQuest498_0
+break
+;
+#IF
+CheckDailyQuest 493
+#ACT
+goto @TQuest493_0
+break
+;
+#IF
+CheckDailyQuest 473
+#ACT
+goto @TQuest473_0
+break
+;
+#IF
+CheckDailyQuest 312
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Mongchon-74.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest498_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+
+#IF
+check [307] 0
+#ACT
+goto @TQUEST1_6
+
+#ELSEACT
+goto @TQuest498_1
+
+;--------------
+
+[@TQuest498_1]
+#CALL [\QT_TODAY\4thClass.txt] @498_CHECK2
+
+
+;------------------------
+
+[@TQuest493_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest493_2
+break
+;
+#ELSEACT
+goto @TQuest493_1
+
+;--------------
+
+[@TQuest493_1]
+;;#CALL [\QT_TODAY\4thClass.txt] @493_START
+
+[@TQuest493_2]
+;;#CALL [\QT_TODAY\4thClass.txt] @493_CHECK1
+
+;------------------------
+
+[@TQuest473_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest473_2
+break
+;
+#ELSEACT
+goto @TQuest473_1
+
+;--------------
+
+[@TQuest473_1]
+#CALL [\QT_TODAY\4thClass.txt] @473_START
+
+[@TQuest473_2]
+#CALL [\QT_TODAY\4thClass.txt] @473_CHECK1
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @312_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @312_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\06Inn_Mongchon-74.txt] @NPC_TQuest_1
+
+;---------------------

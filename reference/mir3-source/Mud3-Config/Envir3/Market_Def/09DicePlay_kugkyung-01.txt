@@ -1,0 +1,11 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09DicePlay_kugkyung-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+[@main_0]
+#CALL [\Event\DiceGame\Dice.txt] @DiceGame

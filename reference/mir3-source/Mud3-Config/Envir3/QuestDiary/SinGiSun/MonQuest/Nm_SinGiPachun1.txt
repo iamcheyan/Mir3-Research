@@ -1,0 +1,10 @@
+;;º£¥áµÁ
+[@main]
+#IF
+#ACT
+Delaygoto [local] 120 @next
+
+[@next]
+#IF
+#ACT
+mapting D504 D503 54 55

@@ -1,0 +1,145 @@
+;;海メ盗
+[@Rose_System]
+{
+   #IF
+   #ACT
+      loadvalue D0   "GM_Def\QuestDiary\System\RoseSystem.txt" [RoseSystem] [SetPoint]
+      loadvalue A2   "GM_Def\QuestDiary\System\RoseSystem.txt" [RoseSystem] [GiveItemName]
+      loadvalue D4   "GM_Def\QuestDiary\System\RoseSystem.txt" [RoseSystem] [GiveItemmNum]
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_1
+
+[@DB_Connect]
+   #IF
+   #ACT
+      FormatStr "FLD_USERID='%s'" %USERID
+      ReadValueSql  "TBL_RELATPOINT"  %A9  "FLD_USERID,FLD_POINT,FLD_OK"  [@Point_Loading]
+      close
+            
+[@Point_Loading()]
+   #IF
+   #ACT
+      mov       A8   %ARG(1)
+      mov       D1   %ARG(2)
+      mov       D2   %ARG(3)
+      FormatStr "FLD_USERID='%s'" %USERID
+      mov       A0   %A9
+
+   #IF
+      IsAdmin
+   #SAY
+      你好管理员<$OUTPUT(A8)> \
+      <$OUTPUT(D0)> \
+      <$OUTPUT(D1)> \
+      <$OUTPUT(D2)> \\
+
+   #IF
+      !Equal    A8   ""
+      equal     D2   1
+   #ACT
+      UpdateValueSql "TBL_RELATPOINT" %A0 "FLD_OK=0"
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_2
+
+   #IF
+      !Equal    A8   ""
+      equal     D2   2
+   #ACT
+      give      %A2  %D4
+      UpdateValueSql "TBL_RELATPOINT" %A0 "FLD_OK=0"
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_2_except1
+
+   #IF                         
+      !Equal    A8   ""        
+      equal     D2   3         
+   #ACT
+      UpdateValueSql "TBL_RELATPOINT" %A0 "FLD_OK=0"
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_2_except2
+
+   #IF                        
+      !Equal    A8   ""
+      !Equal    D1   %D0
+   #ACT
+      FormatStr "FLD_POINT='%s'" %D0
+      UpdateValueSql "TBL_RELATPOINT" %A0 %A9
+      
+   #IF                        
+      !Equal    D2   0        
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_3
+   #ACT
+      break
+
+   #IF                        
+      Equal  A8   ""          
+   #ACT
+      FormatStr "'%s'" %USERID     
+      mov A1 %A9
+      FormatStr ",%s,%s,%s" %D0 0 1
+      AddStr A1 %A9
+      WriteValueSql  "TBL_RELATPOINT" %A0 "FLD_USERID,FLD_POINT,FLD_CURRENTPOINT,FLD_OK" %A1
+      mov       D3   0        
+      goto @ResultCheck
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_4
+   #ELSEACT
+      UpdateValueSql "TBL_RELATPOINT" %A0 "FLD_OK=1"
+      mov       D3   0        
+      goto @ResultCheck
+      break
+   #ELSESAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_5
+
+[@ResultCheck]
+   #ACT
+      ReadValueSql  "TBL_RELATPOINT"  %A0  "FLD_OK"  [@ResultCheck_Confirm]
+      break
+
+[@ResultCheck_Confirm()]
+   #ACT
+      mov     D2    %ARG(1)    
+
+   #IF
+      Equal   D2     0
+   #ACT
+      break                    
+
+   #IF
+      Equal   D2     2
+   #ACT
+      FormatStr "FLD_USERID='%s'" %USERID
+      UpdateValueSql "TBL_RELATPOINT" %A9 "FLD_OK=0"    
+      give      %A2  %D4       
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_6
+
+   #IF
+      Equal   D2     3
+   #ACT
+      FormatStr "FLD_USERID='%s'" %USERID
+      UpdateValueSql "TBL_RELATPOINT" %A9 "FLD_OK=0" 
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_6_except
+
+   #IF
+      Large   D3     5     
+   #ACT
+      FormatStr "FLD_USERID='%s'" %USERID
+      UpdateValueSql "TBL_RELATPOINT" %A9 "FLD_OK=0"    
+      break
+   #SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\System\RoseSystem.txt] @RoseSystem_Say_7
+
+   #IF
+   #ACT
+      inc     D3     1                     
+      Delaygoto [Grobal] 3 @ResultCheck
+}

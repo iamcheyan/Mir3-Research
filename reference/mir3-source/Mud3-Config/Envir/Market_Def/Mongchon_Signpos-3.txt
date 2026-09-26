@@ -1,0 +1,52 @@
+; ===================================
+; Npc Def NPC File : Mongchon_Signpos-3
+; Shop Teleport npc in 盟重县
+; -----------------------------------
+; Name: SignPost
+; Job: 
+; Map No: 3
+; Pos X 333
+; Pos Y 330
+; File name: *removed*
+; Comment: Shop Teleport npc in 盟重县
+
+;================================================= =
+;
+
+[@main]
+#SAY
+您好。\
+我的名字是向导。\
+我的职责是引导旅客通过这个区域。\
+有什么可以帮你们的吗?\ \
+<使用/@main-1>传送到村商店
+
+[@main-1]
+#SAY
+我可以给你一些附近的地方。\ \
+<武器店/@武器>   <衣服店/@衣服>\
+<书籍商店/@book>   <饰品店/@access>\
+<客栈/@store>\ \
+我会回来的<离开/@exit>
+
+[@武器]
+#ACT
+map 0159
+
+[@衣服]
+#ACT
+map 0149
+
+[@access]
+#ACT
+map 0158
+
+[@store]
+#IF
+#ACT
+map 0145
+
+[@book]
+#IF
+#ACT
+map 0161

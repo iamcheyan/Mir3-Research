@@ -1,0 +1,130 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+
+[@main_0]
+#IF
+checkjob warrior
+#ACT
+goto @main_0_0
+#ELSEACT
+goto @main_cj
+
+[@main_cj]
+#IF
+checkjob wizard
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Main_Wizard
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Main_Taoist
+
+[@eunhang]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Help_Wizard
+
+[@dokwan]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Help_Taoist
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Main
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01]
+#IF
+check [164] 1
+#ACT
+goto @NQuest01_8
+break
+#IF
+check [131] 1
+#ACT
+goto @NQuest01_7
+break
+#IF
+check [105] 1
+#ACT
+goto @NQuest01_3
+break
+#IF
+check [104] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [163] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [103] 1
+#ACT
+goto @NQuest01_2
+break
+#IF
+check [102] 1
+#ACT
+goto @NQuest01_2
+break
+#ELSEACT
+goto @NQuest01_1
+
+
+[@NQuest01_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_1_1
+
+[@NQuest01_1]
+#IF
+#ACT
+setopen [1] 1
+goto @NQuest01_1_1
+[@NQuest01_1_1]
+#CALL [\NQ_BASE\warriorbase.txt] @Junsa_MQ_START
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\warriorbase.txt] @Junsa_GO_BUCHER
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\warriorbase.txt] @Junsa_CQ_START1
+
+[@NQuest01_7]
+#CALL [\NQ_BASE\warriorbase.txt] @Junsa_GO_WANG
+
+;----------------
+
+[@NQuest01_8]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung1-01.txt] @NPC_Nquest
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------

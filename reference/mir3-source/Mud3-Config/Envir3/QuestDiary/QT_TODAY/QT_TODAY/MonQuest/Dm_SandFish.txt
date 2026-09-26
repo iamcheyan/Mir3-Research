@@ -1,0 +1,62 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 339
+#ACT
+goto @sandfish_T339
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@sandfish_T339]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @sandfish_T339_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sandfish_T339_1]
+#IF
+checkitem É³Ä®ÓãÄ§ÑÀ³Ý 19
+#ACT
+give É³Ä®ÓãÄ§ÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T339_Say
+
+#ELSEACT
+goto @sandfish_T339_2
+
+[@sandfish_T339_2]
+#IF
+random 3
+#ACT
+give É³Ä®ÓãÄ§ÑÀ³Ý 1
+;-----------------------------------------------------

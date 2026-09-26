@@ -1,0 +1,650 @@
+;;海メ盗
+%100
+;necklace
++19
++20
++21
+;ring
++22
++23
+;bracelet
++24
++26
+;+3
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+;
+#IF
+#ACT
+goto @main_root
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_0_0
+
+;---------------
+;---------------
+
+
+[@main_root_0_0]
+#IF
+check [169] 1
+#ACT
+goto @main_root_2
+break
+;              go jema quest
+#IF
+check [152] 1
+#ACT
+goto @main_root_0_1
+break
+;
+#ELSEACT
+goto @main_root_2
+;              go jema quest
+
+[@main_root_0_1]
+#IF
+check [258] 1
+#ACT
+goto @main_root_1
+break
+;              go wang secret quest
+#IF
+check [256] 1
+#ACT
+goto @main_root_4
+break
+;              go acce2 - wang secret
+#IF
+check [255] 1
+#ACT
+goto @main_root_3
+break
+;              go acce1 - wang secret
+#ELSEACT
+goto @main_root_1
+;              go wang secret quest
+
+[@main_root_1]
+;		wang secret quest
+#IF
+check [169] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [157] 1
+#ACT
+goto @main_0_5
+break
+#IF
+check [156] 1
+#ACT
+goto @main_0_4
+break
+#IF
+check [155] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [168] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [152] 1
+#ACT
+goto @main_0_1
+break
+;
+#ELSEACT
+goto @main_0_0
+;---------------------
+
+
+[@main_root_2]
+;		jema quest
+#IF
+check [258] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [256] 1
+#ACT
+goto @main_0_7
+break
+#IF
+check [255] 1
+#ACT
+goto @main_0_6
+break
+;
+#ELSEACT
+goto @main_0_0
+
+
+
+[@main_root_3]
+;		acce1 - wang secret
+#IF
+check [169] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [157] 1
+#ACT
+goto @main_0_12
+break
+#IF
+check [156] 1
+#ACT
+goto @main_0_11
+break
+#IF
+check [155] 1
+#ACT
+goto @main_0_10
+break
+#IF
+check [168] 1
+#ACT
+goto @main_0_9
+break
+#IF
+check [152] 1
+#ACT
+goto @main_0_8
+break
+;
+#ELSEACT
+goto @main_0_0
+;---------------------
+
+
+
+[@main_root_4]
+;		acce2 - wang secret
+#IF
+check [169] 1
+#ACT
+goto @main_0_0
+break
+;
+#IF
+check [157] 1
+#ACT
+goto @main_0_17
+break
+#IF
+check [156] 1
+#ACT
+goto @main_0_16
+break
+#IF
+check [155] 1
+#ACT
+goto @main_0_15
+break
+#IF
+check [168] 1
+#ACT
+goto @main_0_14
+break
+#IF
+check [152] 1
+#ACT
+goto @main_0_13
+break
+;
+#ELSEACT
+goto @main_0_0
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_0
+ 
+;-----------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_1
+
+;----------------------------- 
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_2
+ 
+;----------------------------- 
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_3
+
+;-----------------------------
+
+[@main_0_4]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_4
+ 
+;-----------------------------
+
+[@main_0_5]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_5
+
+;-----------------------------
+;-----------------------------
+
+[@main_0_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_6
+
+;-----------------------------
+
+[@main_0_7]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_7
+ 
+;-----------------------------
+;-----------------------------
+;-----------------------------
+
+[@main_0_8]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_8
+
+;----------------------------- 
+
+[@main_0_9]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_9
+ 
+;----------------------------- 
+
+[@main_0_10]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_10
+
+;-----------------------------
+
+[@main_0_11]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_11
+
+;-----------------------------
+
+[@main_0_12]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_12
+
+;-----------------------------
+;-----------------------------
+;-----------------------------
+
+[@main_0_13]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_13
+ 
+;----------------------------- 
+
+[@main_0_14]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_14
+ 
+;----------------------------- 
+
+[@main_0_15]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_15
+
+;-----------------------------
+
+[@main_0_16]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_16
+ 
+;-----------------------------
+
+[@main_0_17]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Main_0_17
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour
+;对奖券	       100     1
+指环           100     1
+牛角戒指       100     1
+蓝色水晶戒指   100     1
+金戒指         100     1
+皮制手套       100     1
+坚固手套       100     1
+金项链         100     1
+传统项链       100     1
+灯笼项链       100     1
+白色虎齿项链   100     1
+铁手镯         100     1
+小手镯         100     1
+银手镯         100     1
+钢手镯         100     1
+大手镯         100     1
+魔法手镯       100     1
+金手镯         100     1
+古铜戒指       100     1
+黑色水晶戒指   100     1
+黑珍珠戒指     100     1
+黑色水晶项链   100     1
+魔鬼项链       100     1
+蓝翡翠项链     100     1
+六绝星环       100     1
+蛇眼戒指       100     1
+魅力戒指       100     1
+火玉戒指       100     1
+黑檀项链       100     1
+琥珀项链       100     1
+放大镜         100     1
+愤怒之钟       100     1
+震天项链        50     1
+五彩项链        50     1
+黑檀手镯       100     1
+思贝儿手镯      50     1
+水晶魔戒       100     1
+珍珠戒指       100     1
+道德戒指       100     1
+天鸣戒指       100     1
+黄色水晶项链   100     1
+松笛           100     1
+凤凰明珠       100     1
+莲花宝镜        50     1
+银镜项链        50     1
+道士手镯       100     1
+三眼手镯       100     1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest01_1]
+#CALL [\NQ_BASE\wang.txt] @GO_WANG_EUNSIL
+
+[@NQuest01_2]
+#CALL [\NQ_BASE\wang.txt] @INVITE_EUNSIL1
+
+[@NQuest01_3]
+#CALL [\NQ_BASE\wang.txt] @INVITE_EUNSIL2
+
+[@NQuest01_4]
+#CALL [\NQ_BASE\wang.txt] @SHOW_BULSA
+
+[@NQuest01_5]
+#CALL [\NQ_BASE\wang.txt] @JOIN_EUNSIL
+
+
+[@NQuest02_1]
+#CALL [\NQ_BASE\jema.txt] @JEMABOOK_EUNSIL1
+
+[@NQuest02_2]
+#CALL [\NQ_BASE\jema.txt] @JEMABOOK_EUNSIL2
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 470
+#ACT
+goto @TQuest470_0
+break
+;
+#IF
+CheckDailyQuest 526
+#ACT
+goto @TQuest5_0
+break
+;
+#IF
+CheckDailyQuest 435
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 325
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 306
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 240
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest470_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest470_2
+break
+;
+#ELSEACT
+goto @TQuest470_1
+
+;--------------
+
+[@TQuest470_1]
+#CALL [\QT_TODAY\4thClass.txt] @470_START
+
+[@TQuest470_2]
+#CALL [\QT_TODAY\4thClass.txt] @470_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @240_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @240_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\08Accessory_Bichon-0.txt] @NPC_TQuest_1
+
+;-------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @306_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @306_CHECK1
+
+;-------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\3rdClass.txt] @325_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\3rdClass.txt] @325_CHECK1
+
+;-------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+#CALL [\QT_TODAY\4thClass.txt] @435_START
+
+[@TQuest4_2]
+#CALL [\QT_TODAY\4thClass.txt] @435_CHECK1
+
+;-------------------------------
+
+[@TQuest5_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest5_1
+break
+;
+#ELSESAY
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+
+;--------------
+
+[@TQuest5_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @526_CHECK2
+
+
+;---------------------------

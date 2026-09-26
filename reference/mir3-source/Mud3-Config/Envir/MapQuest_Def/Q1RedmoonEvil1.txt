@@ -1,0 +1,15 @@
+[@main]
+#IF
+check [410] 1
+#ACT
+break
+
+#IF
+check [409] 1
+#SAY
+;역겨운 냄새가 나는군. 진천자 선배님께서 말씀하신 \
+That's strange. It's just what master \
+Thunderman said to me? \
+;것이 이것인가? \ \
+#ACT
+SET [410] 1

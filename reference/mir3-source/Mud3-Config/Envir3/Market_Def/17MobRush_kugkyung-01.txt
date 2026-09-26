@@ -1,0 +1,73 @@
+;;베α돝
+[@main]
+#IF
+IsAdmin
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17MobRush_kugkyung-01.txt] @Admin_Main
+
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17MobRush_kugkyung-01.txt] @User_Main
+
+;-------------------------------------------------------------------------------
+; OX Event
+;-------------------------------------------------------------------------------
+[@EventOxQuiz]
+#CALL [Event\OX_Quiz\OX_Quiz.txt] @OX_Quiz_Input
+
+;-------------------------------------------------------------------------------
+; 보물섬 이벤트 세팅
+;-------------------------------------------------------------------------------
+[@StartIsland]
+#CALL [\Event\Island\GmStart.txt] @StartGoldenIsland
+[@FinishIsland]
+#CALL [\Event\Island\GmStart.txt] @FinishGoldenIsland
+[@Ch_Map]
+#IF
+IsAdmin
+#ACT
+ChangeMapAttr "Island01" "FIGHT"
+ClearDelayGoto
+goto @GenMonkeys
+goto @CheckFinishCondition
+close
+
+;-------------------------------------------------------------------------------
+;; 보물섬 이벤트
+;-------------------------------------------------------------------------------
+[@TreasureIsland]
+#CALL [\Event\Island\Treasure.txt] @Monkey
+
+;-------------------------------------------------------------------------------
+;; 문파전쟁 게임 이벤트
+;-------------------------------------------------------------------------------
+[@DuringGuildMatchTerm_PreView]
+#CALL [\Event\Guild\GuildEvent.txt] @DuringGuildMatchTerm
+
+[@GuildWarPointCheck]
+#CALL [\Event\Guild\Point.txt] @GuildPoint
+
+;-------------------------------------------------------------------------------
+; 마방진 이벤트건
+;-------------------------------------------------------------------------------
+;[@PlayMabangJin]
+;#SAY
+;	#INCLUDE [..\Convert_Def\Market_Def\17MobRush_kugkyung-01.txt] @MabangJin_Main
+
+;[@TradeTupe]
+;#CALL [\Mabangjin\Mabangjin.txt] @Change
+;
+;[@PlayMabangJinGame]
+;#ACT
+;map B011
+
+;-------------------------------------------------------------------------------
+; 시련의방 이벤트건
+;-------------------------------------------------------------------------------
+[@PlayTestRoom]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\17MobRush_kugkyung-01.txt] @TestRoom_Main
+
+[@TestGame]
+#CALL [\Event\TestGame\Test.txt] @RushTest
+;-------------------------------------------------------------------------------

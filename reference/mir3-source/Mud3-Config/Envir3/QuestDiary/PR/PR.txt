@@ -1,0 +1,230 @@
+;;º£¥áµÁ
+[@NPC_Main]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\PR\PR.txt] @NPC_Say
+
+[@_Startup]
+#IF
+#ACT
+Delaygoto [Grobal] 120 @_Startup
+movr P0 30
+
+#IF
+Equal P0 0
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [00]
+Speak "%A0"
+break
+
+#IF
+Equal P0 1
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [01]
+Speak "%A0"
+break
+
+#IF
+Equal P0 2
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [02]
+Speak "%A0"
+break
+
+#IF
+Equal P0 3
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [03]
+Speak "%A0"
+break
+
+#IF
+Equal P0 4
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [04]
+Speak "%A0"
+break
+
+#IF
+Equal P0 5
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [05]
+Speak "%A0"
+break
+
+#IF
+Equal P0 6
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [06]
+Speak "%A0"
+break
+
+#IF
+Equal P0 7
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [07]
+Speak "%A0"
+break
+
+#IF
+Equal P0 8
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [08]
+Speak "%A0"
+break
+
+#IF
+Equal P0 9
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [09]
+Speak "%A0"
+break
+
+#IF
+Equal P0 10
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [10]
+Speak "%A0"
+break
+
+#IF
+Equal P0 11
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [11]
+Speak "%A0"
+break
+
+#IF
+Equal P0 12
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [12]
+Speak "%A0"
+break
+
+#IF
+Equal P0 13
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [13]
+Speak "%A0"
+break
+
+#IF
+Equal P0 14
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [14]
+Speak "%A0"
+break
+
+#IF
+Equal P0 15
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [15]
+Speak "%A0"
+break
+
+#IF
+Equal P0 16
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [16]
+Speak "%A0"
+break
+
+#IF
+Equal P0 17
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [17]
+Speak "%A0"
+break
+
+#IF
+Equal P0 18
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [18]
+Speak "%A0"
+break
+
+#IF
+Equal P0 19
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [19]
+Speak "%A0"
+break
+
+#IF
+Equal P0 20
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [20]
+Speak "%A0"
+break
+
+#IF
+Equal P0 21
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [21]
+Speak "%A0"
+break
+
+#IF
+Equal P0 22
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [22]
+Speak "%A0"
+break
+
+#IF
+Equal P0 23
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [23]
+Speak "%A0"
+break
+
+#IF
+Equal P0 24
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [24]
+Speak "%A0"
+break
+
+#IF
+Equal P0 25
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [25]
+Speak "%A0"
+break
+
+#IF
+Equal P0 26
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [26]
+Speak "%A0"
+break
+
+#IF
+Equal P0 27
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [27]
+Speak "%A0"
+break
+
+#IF
+Equal P0 28
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [28]
+Speak "%A0"
+break
+
+#IF
+Equal P0 29
+#ACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [29]
+Speak "%A0"
+break
+
+#ELSEACT
+LoadValue A0 "Convert_Def\QuestDiary\PR\PR.txt" [Speak] [29]
+Speak "%A0"
+break
+
+}
+

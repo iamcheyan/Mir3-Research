@@ -1,0 +1,249 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+我和你无话可说。\ \
+ <结束/@exit>
+}
+
+[@NPC_Main_0_0]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_1]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<劝说/@NQuest01_1>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_2]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<劝说/@NQuest01_2>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_3]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<劝说/@NQuest01_3>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_4]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest01_4>{FCOLOR/10}新鲜玩艺儿{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_5]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest01_5>比奇商会\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_6]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_7]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_8]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+<劝说/@NQuest01_1>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_9]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+<劝说/@NQuest01_2>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_10]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+<劝说/@NQuest01_3>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_11]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+<展示/@NQuest01_4>{FCOLOR/10}新鲜玩艺儿{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_12]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<展示/@NQuest02_1>{FCOLOR/10}气霖证书{FCOLOR/12}\
+<谈论/@NQuest01_5>比奇商会\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_13]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+<劝说/@NQuest01_1>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_14]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+<劝说/@NQuest01_2>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_15]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+<劝说/@NQuest01_3>加入{FCOLOR/10}比奇商会{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_16]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+<展示/@NQuest01_4>{FCOLOR/10}新鲜玩艺儿{FCOLOR/12}\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Main_0_17]
+{
+欢迎光临，你需要什么？\ \
+<购买/@buy>饰品\
+<出售/@sell>饰品\
+<修理/@repair>饰品\
+<谈论/@NQuest02_2>{FCOLOR/10}女人{FCOLOR/12}\
+<谈论/@NQuest01_5>比奇商会\
+ <对今日的任务进行了解/@TQuest>\
+ <结束/@exit>
+}
+
+[@NPC_Buy]
+{
+你想买饰品?\ \
+<前一步/@main>
+}
+
+[@NPC_Sell]
+{
+你想出售饰品?\ \
+<前一步/@main>
+}
+
+[@NPC_Repair]
+{
+你想修理饰品?\ \
+<前一步/@main>
+}
+
+[@NPC_Repair_Complete]
+{
+修好了。\ \
+<前一步/@main>
+}
+
+[@NPC_TQuest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_TQuest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}

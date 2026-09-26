@@ -1,0 +1,308 @@
+;;º£¥áµÁ
+[@make_Potion_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_1
+
+
+;------------------------
+
+[@Make_Potion_HPPotionS]
+#IF
+checkitem ÉÕ¾Æ 1
+checkitem ¶¾Éßµ¨Ö­ 6
+#ACT
+take ÉÕ¾Æ 1
+take ¶¾Éßµ¨Ö­ 6
+give Ã¼·ÂÈ¸º¹¾à(¼Ò) 10
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_3
+
+
+;------------------------
+
+[@Make_Potion_HPPotionM]
+#IF
+checkitem ÉÕ¾Æ 1
+checkitem ÷¼÷Ã¹Ç 10
+#ACT
+take ÉÕ¾Æ 1
+take ÷¼÷Ã¹Ç 10
+mov d0 0
+goto @Make_Potion_HPPotionM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_4
+
+
+[@Make_Potion_HPPotionM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_HPPotionM_2
+
+[@Make_Potion_HPPotionM_2]
+#IF
+small d0 91
+#ACT
+goto @Make_Potion_HPPotionM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_5
+
+
+[@Make_Potion_HPPotionM_3]
+#IF
+#ACT
+give ½ð´´Ò©£¨ÖÐ£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_6
+
+
+;------------------------
+
+[@Make_Potion_HPPotionL]
+#IF
+checkitem ÂìÒÏÂÑ 3
+checkitem ÉÕ¾Æ 2
+checkitem ÑÀ³Ý 3
+#ACT
+take ÂìÒÏÂÑ 3
+take ÉÕ¾Æ 2
+take ÑÀ³Ý 3
+mov d0 0
+goto @Make_Potion_HPPotionL_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_7
+
+
+[@Make_Potion_HPPotionL_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_HPPotionL_2
+
+[@Make_Potion_HPPotionL_2]
+#IF
+small d0 86
+#ACT
+goto @Make_Potion_HPPotionL_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_8
+
+
+[@Make_Potion_HPPotionL_3]
+#IF
+#ACT
+give ½ð´´Ò©£¨´ó£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_9
+
+
+;------------------------
+
+[@Make_Potion_HPPotionXL]
+#IF
+checkitem Ò¹Ã÷Öé 3
+checkitem ÉÕ¾Æ 3
+checkitem ÉñÁéµñÏñ 3
+checkitem ÅËÒ¹Ö®Àá 4
+#ACT
+take Ò¹Ã÷Öé 3
+take ÉÕ¾Æ 3
+take ÉñÁéµñÏñ 3
+take ÅËÒ¹Ö®Àá 4
+mov d0 0
+goto @Make_Potion_HPPotionXL_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_10
+
+
+[@Make_Potion_HPPotionXL_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_HPPotionXL_2
+
+[@Make_Potion_HPPotionXL_2]
+#IF
+small d0 81
+#ACT
+goto @Make_Potion_HPPotionXL_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_11
+
+
+[@Make_Potion_HPPotionXL_3]
+#IF
+#ACT
+give ½ð´´Ò©£¨ÌØ£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_12
+
+
+;--------------------------------------------------------
+
+
+[@Make_Potion_MPPotionS]
+#IF
+checkitem ÷¼÷Ã¹Ç 3
+checkitem ÉÕ¾Æ 1
+#ACT
+take ÷¼÷Ã¹Ç 3
+take ÉÕ¾Æ 1
+give Ä§·¨Ò©£¨Ð¡£© 10
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_13
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_14
+
+
+
+;------------------------
+
+
+[@Make_Potion_MPPotionM]
+#IF
+checkitem ½©Ê¬¹ÇÍ· 5
+checkitem ÉÕ¾Æ 1
+#ACT
+take ½©Ê¬¹ÇÍ· 5
+take ÉÕ¾Æ 1
+mov d0 0
+goto @Make_Potion_MPPotionM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_15
+
+
+[@Make_Potion_MPPotionM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_MPPotionM_2
+
+[@Make_Potion_MPPotionM_2]
+#IF
+small d0 91
+#ACT
+goto @Make_Potion_MPPotionM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_16
+
+
+[@Make_Potion_MPPotionM_3]
+#IF
+#ACT
+give Ä§·¨Ò©£¨ÖÐ£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_17
+
+
+;------------------------
+
+[@Make_Potion_MPPotionL]
+#IF
+checkitem ºÅ½Ç 3
+checkitem ÑÀ³Ý 3
+checkitem ÉÕ¾Æ 2
+#ACT
+take ºÅ½Ç 3
+take ÑÀ³Ý 3
+take ÉÕ¾Æ 2
+mov d0 0
+goto @Make_Potion_MPPotionL_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_18
+
+
+[@Make_Potion_MPPotionL_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_MPPotionL_2
+
+[@Make_Potion_MPPotionL_2]
+#IF
+small d0 86
+#ACT
+goto @Make_Potion_MPPotionL_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_19
+
+
+[@Make_Potion_MPPotionL_3]
+#IF
+#ACT
+give Ä§·¨Ò©£¨´ó£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_20
+
+
+;------------------------
+
+[@Make_Potion_MPPotionXL]
+#IF
+checkitem ÉÕ¾Æ 3
+checkitem ÉñÁéµñÏñ 4
+checkitem ±¦Óñ 6
+#ACT
+take ÉÕ¾Æ 3
+take ÉñÁéµñÏñ 4
+take ±¦Óñ 6
+mov d0 0
+goto @Make_Potion_MPPotionXL_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_21
+
+
+[@Make_Potion_MPPotionXL_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Potion_MPPotionXL_2
+
+[@Make_Potion_MPPotionXL_2]
+#IF
+small d0 81
+#ACT
+goto @Make_Potion_MPPotionXL_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_22
+
+
+[@Make_Potion_MPPotionXL_3]
+#IF
+#ACT
+give Ä§·¨Ò©£¨ÌØ£© 10
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Siyak.txt] @Siyak_23
+
+
+;------------------------
+}

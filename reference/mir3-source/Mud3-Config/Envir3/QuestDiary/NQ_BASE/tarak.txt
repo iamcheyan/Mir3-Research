@@ -1,0 +1,816 @@
+;;º£¥áµÁ
+[@TARAK_START]
+{
+#IF
+#ACT
+goto @TARAK_START_0
+
+[@TARAK_START_0]
+#IF
+check [213] 1
+check [221] 0
+checklevel 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_2
+
+
+[@TARAK_START_1]
+#IF
+check [213] 1
+check [221] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_3
+
+
+[@TARAK_START_2]
+#IF
+check [213] 1
+check [221] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_4
+
+
+[@TARAK_START_3]
+#IF
+check [213] 1
+check [221] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_5
+
+
+[@TARAK_START_4]
+#IF
+check [213] 1
+check [221] 0
+#ACT
+set [221] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_6
+
+}
+
+[@GO_HYUNJIN1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_7
+
+}
+
+[@GO_YOUNGYUL1]
+{
+#IF
+#ACT
+goto @GO_YOUNGYUL1_0
+[@GO_YOUNGYUL1_0]
+#IF
+check [223] 0
+check [222] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_8
+
+
+[@GO_YOUNGYUL1_1]
+#IF
+check [223] 0
+check [222] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_9
+
+
+[@GO_YOUNGYUL1_2]
+#IF
+check [223] 0
+check [222] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_10
+
+
+[@GO_YOUNGYUL1_3]
+#IF
+check [223] 0
+check [222] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_11
+
+
+[@GO_YOUNGYUL1_4]
+#IF
+check [223] 0
+check [222] 1
+#ACT
+set [223] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_12
+
+}
+
+[@GO_YOUNGYUL2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_13
+
+}
+
+[@GO_BICHUNPG1]
+{
+#IF
+#ACT
+goto @GO_BICHUNPG1_0
+[@GO_BICHUNPG1_0]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_14
+
+
+[@GO_BICHUNPG1_1]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_15
+
+
+[@GO_BICHUNPG1_2]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_16
+
+
+[@GO_BICHUNPG1_3]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_17
+
+
+[@GO_BICHUNPG1_4]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_18
+
+
+[@GO_BICHUNPG1_5]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_19
+
+
+[@GO_BICHUNPG1_6]
+#IF
+check [229] 0
+check [228] 1
+#ACT
+set [229] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_20
+
+}
+
+[@GO_BICHUNPG2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_21
+
+}
+
+[@GO_HYUNJIN2]
+{
+#IF
+#ACT
+goto @GO_HYUNJIN2_0
+[@GO_HYUNJIN2_0]
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_22
+
+
+[@GO_HYUNJIN2_1]
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_23
+
+
+[@GO_HYUNJIN2_2]
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_24
+
+
+[@GO_HYUNJIN2_3]
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_25
+
+
+[@GO_HYUNJIN2_4]
+#IF
+check [235] 0
+check [234] 1
+#ACT
+set [235] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_26
+
+}
+
+[@GO_HYUNJIN3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_27
+
+}
+
+[@BICHUNPG_COMPLETE]
+{
+#IF
+check [247] 0
+check [236] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_28
+
+
+[@BICHUNPG_COMPLETE_1]
+#IF
+check [247] 0
+check [236] 1
+#ACT
+give ½ð±Ò 10000
+reset [220] 16
+set [247] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_29
+
+}
+
+[@TARAK_KWANRI1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_30
+
+}
+
+[@TARAK_KWANRI2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_31
+
+}
+
+[@GO_HYUNJIN4]
+{
+#IF
+check [239] 0
+check [238] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_32
+
+
+[@GO_HYUNJIN4_1]
+#IF
+check [239] 0
+check [238] 1
+#ACT
+set [239] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_33
+
+}
+
+[@GO_HYUNJIN5]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_34
+
+}
+
+[@TARAK_KWANRI3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_35
+
+}
+
+[@TARAK_COMPLETE]
+{
+#IF
+check [246] 1
+#ACT
+goto @TARAK_COMPLETE_1
+break
+#ELSEACT
+goto @TARAK_COMPLETE_0
+
+[@TARAK_COMPLETE_0]
+#IF
+check [248] 0
+check [245] 1
+#ACT
+goto @TARAK_COMPLETE_0_1
+
+[@TARAK_COMPLETE_0_1]
+#IF
+checkitem ²»ËÀÅÆ 1
+#ACT
+take ²»ËÀÅÆ 1
+set [246] 1
+goto @TARAK_COMPLETE_1
+
+[@TARAK_COMPLETE_1]
+#IF
+check [248] 0
+check [245] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_36
+
+
+[@TARAK_COMPLETE_2]
+#IF
+check [248] 0
+check [245] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_37
+
+[@TARAK_COMPLETE_3]
+#IF
+check [248] 0
+check [245] 1
+#ACT
+give °×»¢½£ 1
+give Õ½ÉñÓÍ 2
+give ½ð±Ò 20000
+mov S1 0
+mov S2 0
+reset [237] 10 
+set [248] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_38
+
+}
+
+[@HELP_SEOJON1_HYUN]
+{
+#IF
+#ACT
+goto @HELP_SEOJON1_HYUN_0
+
+[@HELP_SEOJON1_HYUN_0]
+#IF
+check [222] 0
+check [221] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_39
+
+
+[@HELP_SEOJON1_HYUN_1]
+#IF
+check [222] 0
+check [221] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_40
+
+
+[@HELP_SEOJON1_HYUN_2]
+#IF
+check [222] 0
+check [221] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_41
+
+
+[@HELP_SEOJON1_HYUN_3]
+#IF
+check [222] 0
+check [221] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_42
+
+
+[@HELP_SEOJON1_HYUN_4]
+#IF
+check [222] 0
+check [221] 1
+#ACT
+set [222] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_43
+
+}
+
+[@TARAK_HYUN1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_44
+
+}
+
+[@TARAK_HYUN2]
+{
+#IF
+check [236] 0
+check [235] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_45
+
+
+[@TARAK_HYUN2_1]
+#IF
+check [236] 0
+check [235] 1
+#ACT
+set [236] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_46
+
+}
+
+[@TARAK_HYUN3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_47
+
+}
+
+[@SEARCH_BONE1]
+{
+#IF
+#ACT
+goto @SEARCH_BONE1_0
+
+[@SEARCH_BONE1_0]
+#IF
+check [240] 0
+check [239] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_48
+
+
+[@SEARCH_BONE1_1]
+#IF
+check [240] 0
+check [239] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_49
+
+
+[@SEARCH_BONE1_2]
+#IF
+check [240] 0
+check [239] 1
+#ACT
+mov d8 0
+mov d9 0
+set [240] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_50
+
+}
+
+[@TAKE_BONE1]
+{
+#IF
+check [241] 1
+#ACT
+goto @TAKE_BONE1_1_1
+break
+#ELSEACT
+goto @TAKE_BONE1_0
+
+[@TAKE_BONE1_0]
+#IF
+check [242] 0
+check [240] 1
+#ACT
+goto @TAKE_BONE1_0_1
+
+[@TAKE_BONE1_0_1]
+#IF
+checkitem É®ÂÂ½©Ê¬¹Ç 1
+#ACT
+goto @TAKE_BONE1_0_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_51
+
+
+[@TAKE_BONE1_0_2]
+#IF
+checkitem À×µç½©Ê¬¹Ç 1
+#ACT
+goto @TAKE_BONE1_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_52
+
+
+[@TAKE_BONE1_1]
+#IF
+checkitem É®ÂÂ½©Ê¬¹Ç 1
+checkitem À×µç½©Ê¬¹Ç 1
+#ACT
+take É®ÂÂ½©Ê¬¹Ç 10
+take À×µç½©Ê¬¹Ç 10
+set [241] 1
+goto @TAKE_BONE1_1_1
+
+[@TAKE_BONE1_1_1]
+#IF
+check [242] 0
+check [240] 1
+#ACT
+set [241] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_53
+
+
+[@TAKE_BONE1_2]
+#IF
+random 2
+#ACT
+give »ÙÃð»¤Éí·û 1
+set [242] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_54
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_55
+
+}
+
+[@TARAK_HYUN4]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_56
+
+}
+
+[@TARAK_SEOJUN1]
+{
+#IF
+#ACT
+goto @TARAK_SEOJUN1_0
+
+[@TARAK_SEOJUN1_0]
+#IF
+check [226] 1
+#ACT
+set [224] 0
+goto @TARAK_SEOJUN1_5
+#ELSEACT
+set [224] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_57
+
+
+[@TARAK_SEOJUN1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_58
+
+
+[@TARAK_SEOJUN1_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_59
+
+
+[@TARAK_SEOJUN1_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_60
+
+
+[@TARAK_SEOJUN1_4]
+#IF
+#ACT
+mov S3 0
+set [227] 1
+monclear E402_001
+param1 E402_001
+param2 13
+param3 14
+mongen ½©Ê¬261 5 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_61
+
+
+[@TARAK_SEOJUN1_5]
+#IF
+#ACT
+set [227] 1
+monclear E402_001
+param1 E402_001
+param2 13
+param3 14
+mongen ½©Ê¬261 5 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_62
+
+}
+
+[@TARAK_SEOJUN2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_63
+
+}
+
+[@TARAK_SEOJUN3]
+{
+#IF
+#ACT
+goto @TARAK_SEOJUN3_1
+[@TARAK_SEOJUN3_1]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_64
+
+
+[@TARAK_SEOJUN3_2]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_65
+
+
+[@TARAK_SEOJUN3_3]
+#IF
+check [229] 0
+check [228] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_66
+
+
+[@TARAK_SEOJUN3_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_67
+
+#ACT
+mapmove E402 63 72
+}
+
+[@TARAK_SEOJUN4]
+{
+#IF
+#ACT
+goto @TARAK_SEOJUN4_0
+
+[@TARAK_SEOJUN4_0]
+#IF
+check [230] 1
+#ACT
+goto @TARAK_SEOJUN4_3
+set [231] 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_68
+
+#ELSEACT
+set [231] 0
+
+[@TARAK_SEOJUN4_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_69
+
+
+[@TARAK_SEOJUN4_2]
+#IF
+#ACT
+set [233] 1
+monclear D404_002
+param1 D404_002
+param2 22
+param3 13
+mongen ½©Ê¬Íõ 1 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_70
+
+
+[@TARAK_SEOJUN4_3]
+#IF
+#ACT
+set [233] 1
+monclear D404_002
+param1 D404_002
+param2 22
+param3 13
+mongen ½©Ê¬Íõ 1 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_71
+
+}
+
+[@TARAK_SEOJUN5]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_72
+
+}
+
+[@TARAK_SEOJUN6]
+{
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_73
+
+
+[@TARAK_SEOJUN6_1]
+#IF
+check [235] 0
+check [234] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_74
+
+
+[@TARAK_SEOJUN6_2]
+#IF
+#ACT
+mapmove D404 53 129
+}
+
+[@TARAK_MINER1]
+{
+#IF
+#ACT
+goto @TARAK_MINER1_0
+
+[@TARAK_MINER1_0]
+#IF
+check [237] 0
+check [247] 1
+#ACT
+goto @TARAK_MINER1_0_1
+
+[@TARAK_MINER1_0_1]
+#IF
+check [219] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_75
+
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_76
+
+
+[@TARAK_MINER1_1]
+#IF
+check [237] 0
+check [247] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_77
+
+
+[@TARAK_MINER1_2]
+#IF
+check [237] 0
+check [247] 1
+#ACT
+set [237] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_78
+
+}
+
+[@TARAK_MINER2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\tarak.txt] @tarak_79
+
+}

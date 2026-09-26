@@ -1,0 +1,11 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Mongchon4-74.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+[@main_0]
+#CALL [\MU_taoist\massheal.txt] @mugong_massheal_illtown

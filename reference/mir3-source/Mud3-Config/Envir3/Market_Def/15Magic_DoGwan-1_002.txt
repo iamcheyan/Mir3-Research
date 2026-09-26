@@ -1,0 +1,300 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_root_1
+
+[@main_root_1]
+#IF
+checkjob taoist
+#ACT
+BreakTimeRecall 
+goto @chung_main
+#ELSEACT
+BreakTimeRecall 
+goto @chung_other_class
+
+[@chung_other_class]
+#IF
+checkjob warrior
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_Warrior
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_Wizard
+
+;-----------------------------
+
+[@chung_main]
+#IF
+check [723] 1
+#ACT
+goto @chung_main_0_0
+break
+#IF
+check [514] 1
+#ACT
+goto @chung_main_0_2
+break
+#IF
+check [512] 1
+#ACT
+goto @chung_main_0_1
+#ELSEACT
+goto @chung_main_0_0
+
+
+
+[@chung_main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_0
+
+[@chung_main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_1
+
+[@chung_main_0_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_2
+
+;-----------------------------
+
+[@chung_mugong_main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_Main_Mugong
+
+;-----------------------------
+
+[@heal_test_start]
+#IF
+#ACT
+goto @heal_begin
+[@heal_begin]
+#CALL [\MU_taoist\heal.txt] @mugong_heal
+
+;-----------------------------
+
+[@ilgang_test_start]
+#IF
+check [501] 1
+check [716] 0
+#ACT
+goto @ilgang_complete
+break
+#IF
+#ACT
+goto @ilgang_begin
+
+[@ilgang_begin]
+#CALL [\MU_taoist\ilgang.txt] @mugong_ilgang
+
+[@ilgang_complete]
+#CALL [\MU_taoist\ilgang.txt] @mugong_ilgang_complete
+
+;-----------------------------
+
+[@poison_test_start]
+#IF
+check [503] 1
+check [717] 0
+#ACT
+goto @poison_complete
+break
+#IF
+#ACT
+goto @poison_begin
+
+[@poison_begin]
+#CALL [\MU_taoist\amyen.txt] @mugong_poison
+
+[@poison_complete]
+#CALL [\MU_taoist\amyen.txt] @mugong_poison_complete
+
+;-----------------------------
+
+[@recallskel_test_start]
+#IF
+check [506] 1
+check [720] 0
+#ACT
+goto @recallskel_complete
+break
+#IF
+#ACT
+goto @recallskel_begin
+
+[@recallskel_begin]
+#CALL [\MU_taoist\soulSkel.txt] @mugong_recallskel
+
+[@recallskel_complete]
+#CALL [\MU_taoist\soulSkel.txt] @mugong_recallskel_complete
+
+;-----------------------------
+
+[@hiding_test_start]
+#IF
+check [508] 1
+check [721] 0
+#ACT
+goto @hiding_complete
+break
+#IF
+#ACT
+goto @hiding_begin
+[@hiding_begin]
+#CALL [\MU_taoist\hiden.txt] @mugong_hiding
+
+[@hiding_complete]
+#CALL [\Mu_taoist\hiden.txt] @mugong_hiding_complete
+
+;-----------------------------
+
+[@masshiding_test_start]
+#IF
+check [514] 1
+check [723] 0
+#ACT
+goto @masshiding_complete
+break
+#IF
+#ACT
+goto @masshiding_begin
+
+[@masshiding_begin]
+#CALL [\MU_taoist\masshiden.txt] @mugong_masshiding
+
+[@masshiding_complete]
+#CALL [\MU_taoist\masshiden.txt] @mugong_masshiding_complete
+
+;-----------------------------
+
+[@hangma_test_start]
+#IF
+check [510] 1
+check [722] 0
+#ACT
+goto @hangma_ring
+break
+#IF
+#ACT
+goto @hangma_begin
+
+[@hangma_begin]
+#CALL [\MU_taoist\hangma.txt] @mugong_hangma
+
+[@hangma_ring]
+#CALL [\MU_taoist\hangma.txt] @mugong_hangma_getring
+
+;-----------------------------
+
+[@Upac_test_start]
+#IF
+check [516] 1
+check [725] 0
+#ACT
+goto @Upac_test
+break
+#IF
+#ACT
+goto @Upac_begin
+
+[@Upac_begin]
+#CALL [\MU_taoist\deaji.txt] @mugong_Upac
+
+[@Upac_test]
+#CALL [\Mu_taoist\deaji.txt] @mugong_Upac_test
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 594
+#ACT
+goto @TQuest594_0
+break
+;
+#IF
+CheckDailyQuest 452
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_TQuest
+
+
+;------------------------
+
+[@TQuest594_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest594_2
+break
+;
+#ELSEACT
+goto @TQuest594_1
+
+;--------------
+
+[@TQuest594_1]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @594_START
+
+[@TQuest594_2]
+;;;;#CALL [\QT_TODAY\5thClass.txt] @594_CHECK1
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_1
+break
+;
+#ELSEACT
+goto @TQuest1_6
+;
+;--------------
+[@TQuest1_1]
+;;#CALL [\QT_TODAY\4thClass.txt] @452_CHECK2
+
+;----------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_DoGwan-1_002.txt] @NPC_TQuest_1
+
+;------------------------

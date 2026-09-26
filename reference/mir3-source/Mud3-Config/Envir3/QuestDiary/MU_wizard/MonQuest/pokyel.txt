@@ -1,0 +1,47 @@
+;;海メ盗
+[@main]
+#IF
+check [764] 1
+#ACT
+break
+;
+#IF
+check [527] 1
+#ACT
+break
+;
+#IF
+check [526] 1
+#ACT
+goto @main-1
+break
+
+[@main-1]
+#IF
+large S3 4
+#ACT
+goto @main-1_6
+#ELSEACT
+goto @main-1_2
+
+[@main-1_2]
+#IF
+large S3 2
+#ACT
+goto @main-1_4
+#ELSEACT
+mov S3 2
+goto @main-1_4
+
+[@main-1_4]
+#IF
+#ACT
+inc S3 1
+
+[@main-1_6]
+#IF
+#ACT
+give 七点白蛇胆 1
+SET [527] 1
+#SAY
+(把'七点白蛇胆汁'带给霹雳尊者，这样就可以修炼魔法了....)\

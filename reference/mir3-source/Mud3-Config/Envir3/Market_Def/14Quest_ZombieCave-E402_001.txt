@@ -1,0 +1,81 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+check [234] 1
+#ACT
+goto @NQuest02_6
+break
+#IF
+check [233] 1
+#ACT
+goto @NQuest02_5
+break
+#IF
+check [232] 1
+#ACT
+goto @NQuest02_4
+break
+#IF
+check [231] 1
+#ACT
+goto @NQuest02_4
+break
+#IF
+check [229] 1
+#ACT
+goto @NQuest02_4
+break
+#IF
+check [228] 1
+#ACT
+goto @NQuest02_3
+break
+#IF
+check [227] 1
+#ACT
+goto @NQuest02_2
+break
+#IF
+check [225] 1
+#ACT
+goto @NQuest02_1
+break
+#IF
+check [224] 1
+#ACT
+goto @NQuest02_1
+break
+#IF
+check [223] 1
+#ACT
+goto @NQuest02_1
+break
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_ZombieCave-E402_001.txt] @NPC_Main_Else
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest02_1]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN1
+
+[@NQuest02_2]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN2
+
+[@NQuest02_3]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN3
+
+[@NQuest02_4]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN4
+
+[@NQuest02_5]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN5
+
+[@NQuest02_6]
+#CALL [\NQ_BASE\tarak.txt] @TARAK_SEOJUN6

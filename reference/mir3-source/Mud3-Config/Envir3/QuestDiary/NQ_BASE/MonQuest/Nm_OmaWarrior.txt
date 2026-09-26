@@ -1,0 +1,32 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [188] 1
+#ACT
+break
+
+#IF
+check [185] 1
+#ACT
+goto @yongsa1
+
+;-----------------------------------------------------
+[@yongsa1]
+#IF
+check [186] 1
+checkitem ½ÇµÑ 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_OmaWarrior.txt] @Nm_OmaWarrior_1
+
+#ACT
+set [188] 1
+set [186] 0
+set [187] 0
+take ½ÇµÑ 1
+give °ë¿é²»ËÀÅÆ 1
+give ½ð±Ò 5000
+mapmove d001 303 70 
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_OmaWarrior.txt] @Nm_OmaWarrior_2

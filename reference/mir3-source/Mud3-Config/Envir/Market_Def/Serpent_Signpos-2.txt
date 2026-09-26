@@ -1,0 +1,38 @@
+; ===================================
+; Npc Def NPC File : Serpent_Signpos-2
+; Shop Teleport npc in SerpentValley
+; -----------------------------------
+; Name: SignPost
+; Job: 
+; Map No: 2
+; Pos X 504
+; Pos Y 485
+; File name: *removed*
+; Comment: Shop Teleport npc in SerpentValley
+
+;================================================= =
+;
+
+[@main]
+#SAY
+您好。\
+我的助手。\
+我的职责是引导旅客通过这个区域。\
+有什么可以帮你们的吗?\ \
+<使用/@main-1>传送到村商店
+
+[@main-1]
+#SAY
+我会引导您所需的商店。\
+我要在那里传送你？\ \
+<武器店/@武器>   <药物店/@reagent>\ \
+我会回来的<离开/@exit>
+
+[@reagent]
+#ACT
+map 0117
+
+[@武器]
+#ACT
+map 0120
+

@@ -1,0 +1,22 @@
+;;º£¥áµÁ
+[@main]
+#IF
+check [751] 1
+#ACT
+break
+#IF
+check [515] 1
+#ACT
+break
+#IF
+check [504] 0
+#ACT
+break
+#IF
+check [504] 1
+#ACT
+goto @move_next_2to3R
+break
+
+[@move_next_2to3R]
+#CALL [\MU_wizard\teleport.txt] @MapQuest_move_2to3R

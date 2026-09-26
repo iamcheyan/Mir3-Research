@@ -1,0 +1,32 @@
+;;º£¥áµÁ
+%200
++10
++11
++15
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_0_0
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_SukGak-D71651.txt] @NPC_RedPlayer
+
+;----------------------------------------------------------
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_SukGak-D71651.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\03Armor_SukGak-D71651.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour

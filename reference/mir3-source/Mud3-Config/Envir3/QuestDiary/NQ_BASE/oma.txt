@@ -1,0 +1,796 @@
+;;º£¥áµÁ
+[@HATU_START]
+{
+#IF
+check [172] 1
+#ACT
+goto @HATU_START_6
+break
+#ELSEACT
+goto @HATU_START_0
+
+[@HATU_START_0]
+#IF
+check [173] 0
+check [168] 1
+checklevel 11
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_2
+
+
+[@HATU_START_1]
+#IF
+check [173] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_3
+
+
+[@HATU_START_2]
+#IF
+check [173] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_4
+
+
+[@HATU_START_3]
+#IF
+check [173] 0
+check [168] 1
+#ACT
+set [172] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_5
+
+
+[@HATU_START_4]
+#IF
+check [173] 0
+check [168] 1
+#ACT
+set [172] 0
+set [173] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_6
+
+
+[@HATU_START_6]
+#IF
+check [173] 0
+check [168] 1
+#ACT
+set [172] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_7
+
+
+[@HATU_START_7]
+#IF
+check [173] 0
+check [168] 1
+#ACT
+set [172] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_8
+
+
+[@HATU_START_8]
+#IF
+check [173] 0
+check [168] 1
+#ACT
+set [172] 0
+set [173] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_9
+
+}
+
+[@SEARCH_HATUBANG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_10
+
+}
+
+[@HELP_HATUBANG1_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_11
+
+}
+
+[@HELP_HATUBANG2_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_12
+
+}
+
+[@HELP_HATUBANG3_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_13
+
+}
+
+[@HELP_CHOHON1_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_14
+
+}
+
+[@HELP_CHOHON2_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_15
+
+}
+
+[@HELP_CHOHON3_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_16
+
+}
+
+[@HELP_HATUBANG4_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_17
+
+}
+
+[@GO_UNBAL1_KWAN]
+{
+#IF
+check [189] 0
+check [188] 1
+checkitem °ë¿é²»ËÀÅÆ 1
+#ACT
+take °ë¿é²»ËÀÅÆ 1
+goto @GO_UNBAL1_KWAN_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_18
+
+
+[@GO_UNBAL1_KWAN_1]
+#IF
+check [189] 0
+check [188] 1
+#ACT
+set [189] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_19
+
+}
+
+[@GO_UNBAL2_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_20
+
+}
+
+[@HATU_COMPLETE]
+{
+#IF
+#ACT
+goto @HATU_COMPLETE_0
+
+[@HATU_COMPLETE_0]
+#IF
+check [196] 0
+check [190] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_21
+
+
+[@HATU_COMPLETE_1]
+#IF
+check [196] 0
+check [190] 1
+#ACT
+give »Ø³Ç¾í 6
+reset [171] 19
+set [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_22
+
+}
+
+[@GO_UNBAL3_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_23
+
+}
+
+[@GO_OMAYONG1_KWAN]
+{
+#IF
+check [192] 0
+check [191] 1
+#ACT
+set [192] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_24
+
+}
+
+[@GO_OMAYONG2_KWAN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_25
+
+}
+
+[@OMAYONG_COMPLETE]
+{
+#IF
+check [199] 0
+check [197] 0
+check [195] 1
+checkitem ²»ËÀÅÆ 1
+#ACT
+goto @OMAYONG_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_26
+
+
+[@OMAYONG_COMPLETE_1]
+#IF
+check [198] 1
+#ACT
+goto @OMAYONG_COMPLETE_2
+#ELSEACT
+goto @OMAYONG_COMPLETE_3
+
+[@OMAYONG_COMPLETE_2]
+#IF
+check [199] 0
+check [197] 0
+check [195] 1
+checkitem ²»ËÀÅÆ 1
+#ACT
+take ²»ËÀÅÆ 1
+give ½ð±Ò 30000
+mov S1 0
+mov S2 0
+reset [191] 4
+set [197] 1
+set [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_27
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_28
+
+
+[@OMAYONG_COMPLETE_3]
+#IF
+check [197] 0
+check [195] 1
+checkitem ²»ËÀÅÆ 1
+#ACT
+take ²»ËÀÅÆ 1
+give ½ð±Ò 30000
+set [197] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_29
+
+}
+
+[@OMAYONG_COMPLETE1]
+{
+#IF
+check [199] 0
+check [198] 1
+#ACT
+mov S1 0
+mov S2 0
+reset [191] 4
+set [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_30
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_31
+
+}
+
+[@OMAYONG_START]
+{
+#IF
+check [179] 0
+check [178] 1
+#ACT
+goto @OMAYONG_START_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_32
+
+
+[@OMAYONG_START_1]
+#IF
+check [179] 0
+check [178] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_33
+
+
+[@OMAYONG_START_3]
+#IF
+check [179] 0
+check [178] 1
+#ACT
+set [179] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_34
+
+}
+
+[@OKBUN_HELP1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_35
+
+}
+
+[@HELP_CHOHON_OKBUN]
+{
+#IF
+#ACT
+goto @HELP_CHOHON_OKBUN1
+[@HELP_CHOHON_OKBUN1]
+#IF
+check [184] 0
+check [183] 1
+#ACT
+set [184] 1
+mov S1 0
+mov S2 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_36
+
+}
+
+[@OKBUN_HELP2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_37
+
+}
+
+[@SEARCH_HAMMER1]
+{
+#IF
+check [180] 0
+check [179] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_38
+
+
+[@SEARCH_HAMMER1_1]
+#IF
+check [180] 0
+check [179] 1
+#ACT
+mov d8 0
+set [180] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_39
+
+}
+
+[@SEARCH_HAMMER2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_40
+
+}
+
+[@GIVE_HAMMER]
+{
+#IF
+check [182] 1
+#ACT
+goto @GIVE_HAMMER_1
+break
+#ELSEACT
+goto @GIVE_HAMMER_0
+
+[@GIVE_HAMMER_0]
+#IF
+check [183] 0
+check [181] 1
+checkitem ÍõÌú½³µÄÌú´¸ 1
+#ACT
+take ÍõÌú½³µÄÌú´¸ 1
+goto @GIVE_HAMMER_1
+set [182] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_41
+
+
+[@GIVE_HAMMER_1]
+#IF
+check [183] 0
+check [181] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_42
+
+
+[@GIVE_HAMMER_2]
+#IF
+check [183] 0
+check [181] 1
+#ACT
+give ÇàÍ­¸« 1
+set [182] 0
+set [183] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_43
+
+}
+
+[@JAYOUN_START]
+{
+#IF
+check [175] 0
+check [174] 1
+#ACT
+goto @JAYOUN_START_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_44
+
+
+[@JAYOUN_START_1]
+#IF
+check [175] 0
+check [174] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_45
+
+
+[@JAYOUN_START_3]
+#IF
+check [175] 0
+check [174] 1
+#ACT
+set [175] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_46
+
+}
+
+[@SEARCH_UNBAL_JISUN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_47
+
+}
+
+[@SEARCH_GADEUNG_JISUN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_48
+
+}
+
+[@MEET_GADEUNG_JISUN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_49
+
+}
+
+[@RETURN_UNBAL_JISUN]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_50
+
+}
+
+[@JAYOUN_COMPLETE]
+{
+#IF
+#ACT
+goto @JAYOUN_COMPLETE_0
+
+[@JAYOUN_COMPLETE_0]
+#IF
+check [199] 0
+check [198] 0
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_51
+
+
+[@JAYOUN_COMPLETE_1]
+#IF
+check [199] 0
+check [198] 0
+check [196] 1
+#ACT
+give ÀËÓêµ¶ 1
+give Ç¿Ð§Ì«ÑôË® 5
+goto @JAYOUN_COMPLETE_2
+
+[@JAYOUN_COMPLETE_2]
+#IF
+check [197] 1
+#ACT
+goto @JAYOUN_COMPLETE_3
+#ELSEACT
+goto @JAYOUN_COMPLETE_4
+
+[@JAYOUN_COMPLETE_3]
+#IF
+check [199] 0
+check [198] 0
+check [196] 1
+#ACT
+mov S1 0
+mov S2 0
+reset [191] 4
+set [198] 1
+set [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_52
+
+
+[@JAYOUN_COMPLETE_4]
+#IF
+check [198] 0
+check [196] 1
+#ACT
+set [198] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_53
+
+}
+
+[@JAYOUN_COMPLETE1]
+{
+#IF
+check [199] 0
+check [197] 1
+#ACT
+mov S1 0
+mov S2 0
+reset [191] 4
+set [199] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_54
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_55
+
+}
+
+[@SEARCH_GADEUNG1_UNBAL]
+{
+#IF
+#ACT
+goto @SEARCH_GADEUNG1_UNBAL_0
+
+[@SEARCH_GADEUNG1_UNBAL_0]
+#IF
+check [176] 0
+check [175] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_56
+
+
+[@SEARCH_GADEUNG1_UNBAL_3]
+#IF
+check [176] 0
+check [175] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_57
+
+
+[@SEARCH_GADEUNG1_UNBAL_4]
+#IF
+check [176] 0
+check [175] 1
+#ACT
+set [176] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_58
+
+}
+
+[@SEARCH_GADEUNG2_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_59
+
+}
+
+[@HELP_CHOHON1_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_60
+
+
+[@HELP_CHOHON1_UNBAL_1]
+#IF
+check [178] 0
+check [177] 1
+#ACT
+set [178] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_61
+
+}
+
+[@HELP_CHOHON2_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_62
+
+}
+
+[@HELP_CHOHON3_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_63
+
+}
+
+[@HELP_CHOHON4_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_64
+
+}
+
+[@HELP_BULSA1_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_65
+
+}
+
+[@RETURN_BICHUN1_UNBAL]
+{
+#IF
+check [190] 0
+check [189] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_66
+
+
+[@RETURN_BICHUN1_UNBAL_1]
+#IF
+check [190] 0
+check [189] 1
+#ACT
+set [177] 0
+set [190] 1 
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_67
+
+}
+
+[@RETURN_BICHUN2_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_68
+
+}
+
+[@HELP_BULSA2_UNBAL]
+{
+#IF
+#ACT
+goto @HELP_BULSA2_UNBAL_0
+[@HELP_BULSA2_UNBAL_0]
+#IF
+check [191] 0
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_69
+
+
+[@HELP_BULSA2_UNBAL_1]
+#IF
+check [191] 0
+check [196] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_70
+
+
+[@HELP_BULSA2_UNBAL_2]
+#IF
+check [191] 0
+check [196] 1
+#ACT
+give °ë¿é²»ËÀÅÆ 1
+set [191] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_71
+
+}
+
+[@HELP_BULSA3_UNBAL]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_72
+
+}
+
+[@GADEUNG1]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_73
+
+}
+
+[@MEET_GADEUNG]
+{
+#IF
+check [177] 0
+check [176] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_74
+
+
+[@MEET_GADEUNG_1]
+#IF
+check [177] 0
+check [176] 1
+#ACT
+map E002_001
+set [175] 0
+set [177] 1
+}
+
+[@GADEUNG2]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_75
+
+}
+
+[@GADEUNG3]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\oma.txt] @oma_76
+
+}

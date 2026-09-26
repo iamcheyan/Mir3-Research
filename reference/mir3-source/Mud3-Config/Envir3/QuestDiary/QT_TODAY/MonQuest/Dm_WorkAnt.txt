@@ -1,0 +1,62 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 448
+#ACT
+goto @workant_T448
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@workant_T448]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @workant_T448_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@workant_T448_1]
+#IF
+checkitem 劳动蚂蚁卵 2
+#ACT
+give 劳动蚂蚁卵 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T448_Say
+
+#ELSEACT
+goto @workant_T448_2
+
+[@workant_T448_2]
+#IF
+random 3
+#ACT
+give 劳动蚂蚁卵 1
+;-----------------------------------------------------

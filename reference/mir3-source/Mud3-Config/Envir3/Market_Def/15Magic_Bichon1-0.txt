@@ -1,0 +1,59 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon1-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon1-0.txt] @NPC_Main_0
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Bichon1-0.txt] @NPC_Main_0_1
+
+[@Go_Mu_Warrior_Noatom_wesu]
+#CALL [\MU_Total_Sell\Warrior\wesu.txt] @Mu_Warrior_Noatom_wesu
+
+[@Go_Mu_Warrior_Noatom_wedo]
+#CALL [\MU_Total_Sell\Warrior\wedo.txt] @Mu_Warrior_Noatom_wedo
+
+[@Go_Mu_Warrior_Noatom_asword]
+#CALL [\MU_Total_Sell\Warrior\asword.txt] @Mu_Warrior_Noatom_asword
+
+[@Go_Mu_Warrior_Noatom_banwel]
+#CALL [\MU_Total_Sell\Warrior\banwel.txt] @Mu_Warrior_Noatom_banwel
+
+[@Go_Mu_Warrior_Noatom_mute]
+#CALL [\MU_Total_Sell\Warrior\mute.txt] @Mu_Warrior_Noatom_mute
+
+[@Go_Mu_Warrior_Noatom_maeng]
+#CALL [\MU_Total_Sell\Warrior\maeng.txt] @Mu_Warrior_Noatom_maeng
+
+[@Go_Mu_Warrior_Noatom_fire]
+#CALL [\MU_Total_Sell\Warrior\fire.txt] @Mu_Warrior_Noatom_fire
+
+[@Go_Mu_Warrior_Noatom_double]
+#CALL [\MU_Total_Sell\Warrior\double.txt] @Mu_Warrior_Noatom_double
+
+[@Go_Mu_Warrior_Noatom_shifang]
+#CALL [\MU_Total_Sell\Warrior\shifang.txt] @Mu_Warrior_Noatom_shifang
+
+[@Go_Mu_Warrior_Noatom_poxue]
+#CALL [\MU_Total_Sell\Warrior\poxue.txt] @Mu_Warrior_Noatom_poxue
+
+[@Go_Mu_Warrior_Noatom_douzhuan]
+#CALL [\MU_Total_Sell\Warrior\douzhuan.txt] @Mu_Warrior_Noatom_douzhuan
+
+[@Go_Mu_Warrior_Noatom_tiebu]
+#CALL [\MU_Total_Sell\Warrior\tiebu.txt] @Mu_Warrior_Noatom_tiebu
+
+[@Go_Mu_Warrior_Noatom_qiankun]
+#CALL [\MU_Total_Sell\Warrior\qiankun.txt] @Mu_Warrior_Noatom_qiankun
+
+

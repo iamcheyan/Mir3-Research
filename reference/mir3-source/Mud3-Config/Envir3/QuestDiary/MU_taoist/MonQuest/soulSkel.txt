@@ -1,0 +1,36 @@
+;;º£¥áµÁ
+[@mugong_recallskel_test_mainskel_win]
+#IF
+check [506] 1
+#ACT
+break
+
+#IF
+check [505] 0
+#ACT
+break
+
+#IF
+check [504] 0
+#ACT
+break
+
+#IF
+check [504] 1
+check [505] 1
+check [506] 0
+#ACT
+goto @mugong_recallskel_test_mainskel_win1
+
+[@mugong_recallskel_test_mainskel_win1]
+#IF
+#ACT
+Monclear 1_014
+set [506] 1
+goto @mugong_recallskel_test_mainskel_win2
+
+[@mugong_recallskel_test_mainskel_win2]
+#IF
+#ACT
+map  1_013
+break

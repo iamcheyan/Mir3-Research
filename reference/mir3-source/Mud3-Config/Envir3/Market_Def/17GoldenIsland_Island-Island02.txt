@@ -1,0 +1,10 @@
+;;海メ盗
+[@main]
+#SAY
+不错嘛，成为生存游戏中的大赢家。\ \
+<离开生存游戏场地/@ExitIsland>\
+
+[@ExitIsland]
+#ACT
+MapMove 01 424 313 3
+close

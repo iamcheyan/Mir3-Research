@@ -1,0 +1,33 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [247] 1
+#ACT
+break
+
+#IF
+check [234] 1
+#ACT
+break
+
+#IF
+check [233] 1
+#ACT
+goto @siwang1
+
+
+;-----------------------------------------------------
+
+[@siwang1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_SujunSiwang.txt] @Nm_SujunSiwang_1
+
+#ACT
+set [234] 1
+set [231] 0
+set [232] 0
+give ½ð±Ò 9000
+mapmove d404 52 130

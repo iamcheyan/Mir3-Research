@@ -1,0 +1,303 @@
+;;º£¥áµÁ
+[@PkCount]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_1
+
+ 
+[@point]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_2
+
+
+[@point1]
+#IF
+checkgold 1000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_3
+
+#ACT
+take ½ð±Ò 1000
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_4
+
+
+[@point1_1]
+#IF
+checkpkpoint 20
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_5
+
+#ACT
+break
+
+#IF
+checkpkpoint 18
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_6
+
+#ACT
+break
+
+#IF
+checkpkpoint 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_7
+
+#ACT
+break
+
+#IF
+checkpkpoint 14
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_8
+
+#ACT
+break
+
+#IF
+checkpkpoint 12
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_9
+
+#ACT
+break
+
+#IF
+checkpkpoint 10
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_10
+
+#ACT
+break
+
+#IF
+checkpkpoint 8
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_11
+
+#ACT
+break
+
+#IF
+checkpkpoint 6
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_12
+
+#ACT
+break
+
+#IF
+checkpkpoint 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_13
+
+#ACT
+break
+
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_14
+
+#ACT
+break
+
+#IF
+checkpkpoint 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_15
+
+#ACT
+break
+}
+
+[@PkTime]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_16
+
+
+
+[@point1]
+#IF
+checkgold 500
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_17
+
+#ACT
+take ½ð±Ò 500
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_18
+
+
+[@point1_1]
+#IF
+checkpkpoint 20
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_19
+
+#ACT
+break
+
+#IF
+checkpkpoint 19
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_20
+
+#ACT
+break
+
+#IF
+checkpkpoint 18
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_21
+
+#ACT
+break
+
+#IF
+checkpkpoint 17
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_22
+
+#ACT
+break
+
+#IF
+checkpkpoint 16
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_23
+
+#ACT
+break
+
+#IF
+checkpkpoint 15
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_24
+
+#ACT
+break
+
+#IF
+checkpkpoint 14
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_25
+
+#ACT
+break
+
+#IF
+checkpkpoint 13
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_26
+
+#ACT
+break
+
+#IF
+checkpkpoint 12
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_27
+
+#ACT
+break
+
+#IF
+checkpkpoint 11
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_28
+
+#ACT
+break
+
+#IF
+checkpkpoint 10
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_29
+
+#ACT
+break
+
+#IF
+checkpkpoint 9
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_30
+
+#ACT
+break
+
+#IF
+checkpkpoint 8
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_31
+
+#ACT
+break
+
+#IF
+checkpkpoint 7
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_32
+
+#ACT
+break
+
+
+#IF
+checkpkpoint 6
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_33
+
+#ACT
+break
+
+#IF
+checkpkpoint 5
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_34
+
+#ACT
+break
+
+#IF
+checkpkpoint 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_35
+
+#ACT
+break
+
+#IF
+checkpkpoint 3
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_36
+
+#ACT
+break
+
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_37
+
+#ACT
+break
+
+#IF
+checkpkpoint 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_38
+
+#ACT
+break
+
+#IF
+checkpkpoint 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Lucky\PkPoint.txt] @PkPoint_39
+
+#ACT
+break
+}

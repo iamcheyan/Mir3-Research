@@ -1,0 +1,31 @@
+;;海メ盗
+%100
++0
++3
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SabukWar-3.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+[@main_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SabukWar-3.txt] @NPC_Main
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_SabukWar-3.txt] @NPC_Buy
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（中）  1000       1
+魔法药（中）  1000       1
+金创药（大）  1000       1
+魔法药（大）  1000       1
+金创药（特）  1000       1
+魔法药（特）  1000       1

@@ -1,0 +1,28 @@
+;;海メ盗
+[@Bonus_1]
+{
+给你加上特别的咒文。。。了解一下你想要的咒文吧。。\
+还有加一次咒文的话就不可以再次加上去，只有你升了级以后才可以。。。。\ \
+<体力/@ChangeType(HP)> , <魔力/@ChangeType(MP)> \
+<破坏/@ChangeType(DC)> , <自然界魔法/@ChangeType(MC)> , <灵魂界魔法/@ChangeType(SC)> \
+<防御/@ChangeType(AC)> , <魔法防御/@ChangeType(MAC)>\
+<元素（火,氷,雷,风,神圣,暗黑,幻影）/@ChangeType(ATOM)>\ \
+<结束/@exit> 
+}
+
+[@Bonus_2]
+{
+像你这样无能的人我没话好说了。。\ \
+<结束/@exit>
+}
+
+[@Bonus_3]
+{
+像你这样无能的人我没话好说了。。\ \
+<结束/@exit>
+}
+
+[@Bonus_4]
+{
+在提高能力上失败了！！\ \
+}

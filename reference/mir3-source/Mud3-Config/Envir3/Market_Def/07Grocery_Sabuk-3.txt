@@ -1,0 +1,73 @@
+;;º£¥áµÁ
+%100
++30
++3
++25
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;------------------------------------------------------------------------------
+;; Check In Battle -> Npc auto Dialog In Battle 
+;;------------------------------------------------------------------------------
+
+[@_Startup]
+#IF
+IsOnCastleWar SaBuk
+#ACT
+goto @CastleWarOn
+Delaygoto [Grobal] 20 @_Startup
+#ELSEACT
+Delaygoto [Grobal] 60 @_Startup
+
+[@CastleWarOn]
+#CALL [\CastleWar\Speak.txt] @CastleWarSpeak
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0]
+#IF
+IsOnCastleWar SaBuk
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_Main_0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_Main_1
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_Sell
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_Sabuk-3.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------

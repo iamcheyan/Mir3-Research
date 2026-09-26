@@ -1,0 +1,147 @@
+;;海メ盗
+[@make_Drug_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_1
+
+
+;------------------------
+
+[@Make_Drug_GDrug]
+#IF
+checkitem 食人树的果实 3
+checkitem 毒蜘蛛牙齿 2
+checkitem 食人树叶 6
+#ACT
+take 食人树的果实 3
+take 毒蜘蛛牙齿 2
+take 食人树叶 6
+goto @Make_Drug_GDrug_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_2
+
+
+[@Make_Drug_GDrug_3]
+#IF
+#ACT
+give 灰色药粉（小） 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_3
+
+
+;------------------------
+
+[@Make_Drug_GDrugM]
+#IF
+checkitem 食人树的果实 4
+checkitem 毒蜘蛛牙齿 6
+checkitem 食人树叶 6
+#ACT
+take 食人树的果实 4
+take 毒蜘蛛牙齿 6
+take 食人树叶 6
+mov d0 0
+goto @Make_Drug_GDrugM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_4
+
+
+[@Make_Drug_GDrugM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Drug_GDrugM_2
+
+[@Make_Drug_GDrugM_2]
+#IF
+small d0 91
+#ACT
+goto @Make_Drug_GDrugM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_5
+
+
+[@Make_Drug_GDrugM_3]
+#IF
+#ACT
+give 灰色药粉（中） 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_6
+
+
+
+;--------------------------------------------------------
+
+[@Make_Drug_YDrug]
+#IF
+checkitem 蛆卵 2
+checkitem 蝎子的尾巴 2
+checkitem 食人树叶 2 
+#ACT
+take 蛆卵 2
+take 蝎子的尾巴 2
+take 食人树叶 2 
+goto @Make_Drug_YDrug_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_7
+
+
+[@Make_Drug_YDrug_3]
+#IF
+#ACT
+give 黄色药粉（小） 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_8
+
+
+;------------------------
+
+[@Make_Drug_YDrugM]
+#IF
+checkitem 蛆卵 2
+checkitem 蝎子的尾巴 5
+checkitem 食人树叶 6
+#ACT
+take 蛆卵 2
+take 蝎子的尾巴 5
+take 食人树叶 6
+mov d0 0
+goto @Make_Drug_YDrugM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_9
+
+
+[@Make_Drug_YDrugM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Drug_YDrugM_2
+
+[@Make_Drug_YDrugM_2]
+#IF
+small d0 91
+#ACT
+goto @Make_Drug_YDrugM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_10
+
+
+[@Make_Drug_YDrugM_3]
+#IF
+#ACT
+give 黄色药粉（中） 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Dok.txt] @Dok_11
+
+
+;------------------------
+
+}

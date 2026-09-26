@@ -1,0 +1,98 @@
+;;º£¥áµÁ
+%100
++5
++6
++43
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+;;------------------------------------------------------------------------------
+;; Check In Battle -> Npc auto Dialog In Battle 
+;;------------------------------------------------------------------------------
+
+[@_Startup]
+#IF
+IsOnCastleWar SaBuk
+#ACT
+goto @CastleWarOn
+Delaygoto [Grobal] 20 @_Startup
+#ELSEACT
+Delaygoto [Grobal] 60 @_Startup
+
+[@CastleWarOn]
+#CALL [\CastleWar\Speak.txt] @CastleWarSpeak
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+IsOnCastleWar SaBuk
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Main_0_0
+
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Main_0_1
+
+;----------------------------------------------------------
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\02Weapon_Sabuk-3.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour
+Ä¾½£            100        1
+Ø°Ê×            100        1
+ÇàÍ­½£          100        1
+Ìú½£            100        1
+ÎÚÄ¾½£          100        1
+¶Ì½£            100        1
+ÇàÍ­¸«          100        1
+°Ë»Ä            100        1
+Áè·ç            100        1
+Õ¶Âíµ¶          100        1
+ÐÞÂÞ            100        1
+º£»ê            100        1
+°ëÔÂ            100        1
+ÙÈÔÂ            100        1
+º£»ê            100        1
+ºÚÌú            100        1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------

@@ -1,0 +1,91 @@
+;;베α돝
+[@Join_Mir]
+{
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [mir]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [check]
+#IF
+Small P0 75
+Large P1 45
+#ACT
+	LoadValue A0 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Snow] [Name]
+	LoadValue P8 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Snow] [Amount]
+Give %A0 %P8
+KillSlave
+	LoadValue A1 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Fee] [Name]
+	LoadValue P7 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Fee] [Amount]
+Take %A1 %P7
+	LoadValue P6 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold]
+Inc P6 50000
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold] %P6
+Mapmove snow 41 29 5  ;;  미르팀 측으로 이동
+Inc P0 1
+Dec P1 1
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [mir] %P0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [check] %P1
+break
+
+#IF
+Small P0 75
+equal P1 45
+;;전설팀과의 인원차이가 5명이상일때
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SnowBattle\arrange.txt] @arrange_1
+
+#ACT
+break
+
+;; 미르팀이 50명이 넘었을경우 
+#ELSEACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SnowBattle\arrange.txt] @arrange_2
+
+}
+
+[@Join_Legend]
+{
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [legend]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [check]
+#IF
+Small P0 75
+Small P1 55
+#ACT
+	LoadValue A0 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Snow] [Name]
+	LoadValue P8 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Snow] [Amount]
+Give %A0 %P8
+KillSlave
+	LoadValue A1 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Fee] [Name]
+	LoadValue P7 "GM_Def\Event\SnowBattle\SnowBattle.txt" [Fee] [Amount]
+Take %A1 %P7
+	LoadValue P6 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold]
+Inc P6 50000
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold] %P6
+
+Mapmove snow 18 29 5  ;;  전설팀 측으로 이동
+Inc P0 1
+Inc P1 1
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [legend] %P0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [check] %P1
+break
+
+#IF
+Small P0 75
+equal P1 55
+;;미르팀과의 인원차이가 5명이상일때
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SnowBattle\arrange.txt] @arrange_3
+
+#ACT
+break
+
+;; 미르팀이 50명이 넘었을경우 
+#ELSEACT
+break
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\SnowBattle\arrange.txt] @arrange_4
+
+}

@@ -1,0 +1,118 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung2-01.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+;;-------------------------
+;;-------------------------
+
+[@main_0]
+#IF
+check [325] 1
+#ACT
+goto @main_0_3
+break
+#IF
+check [304] 1
+#ACT
+goto @main_0_2
+break
+#IF
+check [199] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [198] 1
+#ACT
+goto @NQuest_8
+break
+#IF
+check [196] 1
+#ACT
+goto @NQuest_7
+break
+#IF
+check [189] 1
+#ACT
+goto @NQuest_6
+break
+#IF
+check [177] 1
+#ACT
+goto @NQuest_5
+break
+#IF
+check [176] 1
+#ACT
+goto @NQuest_4
+break
+#IF
+check [175] 1
+#ACT
+goto @NQuest_3
+break
+#IF
+check [174] 1
+#ACT
+goto @NQuest_2
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung2-01.txt] @NPC_Main_0
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung2-01.txt] @NPC_Main_1
+
+[@main_0_2]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung2-01.txt] @NPC_Main_2
+
+[@main_0_3]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\14Quest_Kugkyung2-01.txt] @NPC_Main_3
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@NQuest_2]
+#CALL [\NQ_BASE\oma.txt] @JAYOUN_START
+
+[@NQuest_3]
+#CALL [\NQ_BASE\oma.txt] @SEARCH_UNBAL_JISUN
+
+[@NQuest_4]
+#CALL [\NQ_BASE\oma.txt] @SEARCH_GADEUNG_JISUN
+
+[@NQuest_5]
+#CALL [\NQ_BASE\oma.txt] @MEET_GADEUNG_JISUN
+
+[@NQuest_6]
+#CALL [\NQ_BASE\oma.txt] @RETURN_UNBAL_JISUN
+
+[@NQuest_7]
+#CALL [\NQ_BASE\oma.txt] @JAYOUN_COMPLETE
+
+[@NQuest_8]
+#CALL [\NQ_BASE\oma.txt] @JAYOUN_COMPLETE1

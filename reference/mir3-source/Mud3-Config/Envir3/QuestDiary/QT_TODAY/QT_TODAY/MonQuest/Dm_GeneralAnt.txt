@@ -1,0 +1,72 @@
+;;º£¥áµÁ
+[@main]
+#IF
+CheckDailyQuest 494
+#ACT
+goto @Jang_T494
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+
+[@Jang_T494]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @Jang_T494_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@Jang_T494_1]
+#IF
+#ACT
+movr s0 100
+inc s0 1
+goto @Jang_T494_1_1
+
+[@Jang_T494_1_1]
+#IF
+check [307] 1
+check [310] 0
+check [308] 0
+small s0 10
+#ACT
+LoadValue A0 "GM_Def\QT_TODAY\400Reward.txt" [494] [Reward_Race_10]
+LoadValue P0 "GM_Def\QT_TODAY\400Reward.txt" [494] [Reward_Amount_10]
+give %A0 %P0
+Mov S0 0
+set [308] 1
+set [310] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T494_Say
+#ELSEACT
+LoadValue A0 "GM_Def\QT_TODAY\400Reward.txt" [494] [Reward_Race_90]
+LoadValue P0 "GM_Def\QT_TODAY\400Reward.txt" [494] [Reward_Amount_90]
+give %A0 %P0
+Mov S0 0
+set [308] 1
+set [310] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T494_Say
+;

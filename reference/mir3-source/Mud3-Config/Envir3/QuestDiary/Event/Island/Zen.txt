@@ -1,0 +1,76 @@
+;;海メ盗
+[@Add_GetMonkeys]
+{
+#ACT
+  goto @MonZenRootin
+  
+[@MonZenRootin]
+begin
+	#IF
+		Equal  N1{EVENT}  0
+	#ACT
+		break
+	
+	;; 阁胶磐 哩 窍绰 何盒
+	#IF
+		!CheckMonMap "Island02,100,100,100" 50  猿猴战将
+	#ACT
+		MonGenP  "Island02,100,130,20" 猿猴战将 30 "noitem"
+		MonGenP  "Island02,100,130,60" 猿猴战将 30 "noitem"
+		ChangeMonLevel "Island02" 猿猴战将 99
+	
+	#IF
+		!CheckMonMap "Island02,100,100,100" 50  魔神怪1
+	#ACT
+		MonGenP  "Island02,100,130,20" 魔神怪1 30 "noitem"
+		MonGenP  "Island02,100,130,60" 魔神怪1 30 "noitem"
+		ChangeMonLevel "Island02" 魔神怪1 99
+	
+	#IF
+		!CheckMonMap "Island02,100,100,100" 50  猿猴战士
+	#ACT
+		MonGenP  "Island02,100,130,60" 猿猴战士 20 "noitem"
+		MonGenP  "Island02,166,144,10" 猿猴战士 10 "noitem"
+		MonGenP  "Island02,34,189,10" 猿猴战士 10 "noitem"
+		ChangeMonLevel "Island02" 猿猴战士 99
+	
+	#IF
+		Equal  N5{AI}  2
+	#ACT
+		ApplyMonMission "Island02,100,100,100,9999"  "猿猴战将,魔神怪1"  ""
+		ApplyMonMission "Island02,100,100,100,9999"  "猿猴战将,魔神怪1"  "Island,100,130"
+	
+	#IF
+		Equal  N5{AI}  3
+	#ACT
+		ApplyMonMission "Island02,100,100,100,9999"  "猿猴战将,魔神怪1"  ""
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战将,魔神怪1"  "Island, 55,111"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战将,魔神怪1"  "Island, 72, 97"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,100, 90"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,119,105"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,141,128"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,165,144"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,134,180"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island,111,188"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island, 93,186"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island, 70,128"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island, 40,193"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island, 48,169"
+		ApplyMonMission "Island02, 95,135,20,8"  "猿猴战士,猿猴战将"  "Island, 60,126"
+	
+	#IF
+		Equal  N5{AI} 8
+	#ACT
+		Mov    N5{AI} 0
+		MonClear "Island02" "猿猴战士"
+		MonClear "Island02" "猿猴战将"
+		MonClear "Island02" "魔神怪1"
+		goto  @MonZenRootin
+		break
+	
+	#IF
+	#ACT
+		Inc   N5{AI}  1
+		DelayGoto  [Grobal]  60  @MonZenRootin
+end
+}

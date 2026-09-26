@@ -1,0 +1,312 @@
+;;º£¥áµÁ
+[@main]
+;
+#IF
+CheckDailyQuest 466
+#ACT
+goto @Chiljum_T466
+break
+;
+#IF
+CheckDailyQuest 468
+#ACT
+goto @Chiljum_T468
+break
+;
+#IF
+CheckDailyQuest 496
+#ACT
+goto @Chiljum_T496
+break
+;
+#IF
+CheckDailyQuest 463
+#ACT
+goto @Chiljum_T463
+break
+;
+#IF
+CheckDailyQuest 233
+#ACT
+goto @chiljumbaksa_T233
+break
+;
+#IF
+CheckDailyQuest 116
+#ACT
+goto @chiljumbaksa_T116
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@Chiljum_T466]
+;		ÀÏÀÏ Äù½ºÆ® 466 ¹ø
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @Chiljum_T466_1
+break
+;
+#ELSEACT
+break
+;
+
+[@Chiljum_T466_1]
+#IF
+#ACT
+give Æßµã°×Éßµ¨Ö­ 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T466_Say
+
+
+
+;-----------------------------------------------------
+[@Chiljum_T468]
+;		ÀÏÀÏ Äù½ºÆ® 468 ¹ø
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @Chiljum_T468_1
+break
+;
+#ELSEACT
+break
+;
+
+[@Chiljum_T468_1]
+#IF
+#ACT
+give Æßµã°×ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T468_Say
+
+
+
+;-----------------------------------------------------
+[@Chiljum_T496]
+;		ÀÏÀÏ Äù½ºÆ® 496 ¹ø
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @Chiljum_T496_1
+break
+;
+#ELSEACT
+break
+;
+
+[@Chiljum_T496_1]
+#IF
+#ACT
+give Æßµã°×ÉßÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T496_Say
+
+
+
+;-----------------------------------------------------
+[@Chiljum_T463]
+;		ÀÏÀÏ Äù½ºÆ® 463 ¹ø
+#IF
+check [310] 1
+#ACT
+break
+;
+#IF
+check [309] 1
+#ACT
+break
+;
+#IF
+check [308] 1
+#ACT
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @Chiljum_T463_1
+break
+;
+#ELSEACT
+break
+;
+
+[@Chiljum_T463_1]
+#IF
+#ACT
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T463_Say
+
+;-----------------------------------------------------
+[@chiljumbaksa_T233]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+goto @chiljumbaksa_T233_2
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chiljumbaksa_T233_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@chiljumbaksa_T233_1]
+#IF
+checkitem Æßµã°×ÉßÑª 4
+#ACT
+goto @chiljumbaksa_T233_1_1
+
+#ELSEACT
+give Æßµã°×ÉßÑª 1
+
+[@chiljumbaksa_T233_1_1]
+#IF
+random 3
+#ACT
+give Æßµã°×ÉßÑª 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T233_Say
+
+;-----------
+
+[@chiljumbaksa_T233_2]
+#IF
+checkitem Æßµã°×ÉßÑÀ³Ý 1
+#ACT
+goto @chiljumbaksa_T233_2_1
+
+#ELSEACT
+give Æßµã°×ÉßÑÀ³Ý 1
+
+[@chiljumbaksa_T233_2_1]
+#IF
+random 3
+#ACT
+give Æßµã°×ÉßÑÀ³Ý 1
+set [309] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T233_Say_1
+
+;-----------------------------------------------------
+
+
+;-----------------------------------------------------
+[@chiljumbaksa_T116]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @chiljumbaksa_T116_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+
+[@chiljumbaksa_T116_1]
+#IF
+checkitem Æßµã°×ÉßÑÀ³Ý 49
+#ACT
+give Æßµã°×ÉßÑÀ³Ý 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T116_Say
+
+#ELSEACT
+goto @chiljumbaksa_T116_2
+
+[@chiljumbaksa_T116_2]
+#IF
+random 3
+#ACT
+give Æßµã°×ÉßÑÀ³Ý 1
+
+;-----------------------------------------------------

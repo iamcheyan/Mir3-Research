@@ -1,0 +1,193 @@
+; ===================================
+; Npc Def NPC File : Bichon_Transporter2-0
+; 回城卷 npc in 比奇县
+; -----------------------------------
+; Name: 杰森
+; Job: 
+; Map No: 0
+; Pos X 
+; Pos Y 
+; File name: *removed*
+; Comment: 回城卷 npc in 比奇县
+
+;================================================= =
+;
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会传送你这样的人!\ \
+<好的/@exit>
+#ELSEACT
+goto @main-1
+
+[@main-1]
+#IF
+CHECKLEVEL 50
+#ACT
+goto @level50check
+break
+#ELSEACT
+goto @main-2
+break
+
+[@level50check]
+#IF
+CHECK [193] 1
+#ACT
+goto @main-2
+break
+
+#IF
+CHECK [192] 1
+#ACT
+goto @level50next3
+break
+
+#IF
+CHECK [191] 1
+#ACT
+goto @level50next3
+break
+
+#IF
+CHECK [190] 1
+#ACT
+goto @level50next2
+break
+
+#ELSEACT
+goto @level50next
+break
+
+[@level50next]
+#SAY
+哇，伟大的英雄来了。”
+你知道海伦和谁生活在盟重县\
+有没有机会？\
+她的厨艺这么好的屠夫基姆\
+比奇县不顾一切的想知道她的技能.\ \
+<她是淑女/@level50next1>穿着红色的礼服?
+
+[@level50next1]
+#SAY
+正确的！\
+我听说她丈夫把衣服给她作为礼物。\
+事实上…已经20年以来\
+她的丈夫消失了。在当时，这是相当\
+大新闻，因为新婚的丈夫已经消失的\
+突然无影无踪。\
+这谈话传片整个大陆。\\
+<也许我应该找海伦/@level50next2>
+
+[@level50next2]
+#ACT
+SET [190] 1
+#SAY
+如果你有机会去盟重县，\
+给海伦我诚挚的问候\.\ \ \
+<我该去见她./@exit>
+
+[@level50next3]
+#ACT
+SET [192] 1
+#SAY
+海伦问起我吗？真的。我知道她已经变成了一个老太太。\
+但我有秘密对她的感情……\
+我仍然可以看到她甜蜜的微笑…要不是因为“人”……\ \
+哼！！无论如何，屠夫基姆似乎是工作在\
+这些天。你为什么不给她一次\?\ \
+<我应该去看看/@exit>
+
+[@main-2]
+你好，我是杰森，流浪的战士。\
+我的人和货物运输到其他地方\
+快速和安全。只需支付费用\
+我会陪你到任何地方。\
+你怎么说\?\ \
+ <使用服务/@tele>\
+ <下次再使用/@exit>
+
+[@tele]
+ 现在，你想去的地方?\ \
+
+ <边界村(500 金币)/@move1>\
+ <银杏树谷(500 金币)/@move2>\
+ <毒蛇山谷(500 金币)/@move3>\
+ <日弘门(1000 金币)/@move4>\
+ <墨龙城(1000 金币)/@move5>\
+ <盟重县(1000 金币)/@move6>\
+ <下次再使用/@exit>
+
+[@move1]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 0 289 617
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move2]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 0 635 613
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move3]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 2 500 485
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move4]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 11 164 337
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move5]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 4 264 257
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move6]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 3 361 342
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>

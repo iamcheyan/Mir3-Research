@@ -1,0 +1,119 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+check [302] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [301] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [284] 1
+#ACT
+goto @main_0_1
+break
+#IF
+check [283] 1
+#ACT
+goto @NQuest01_0
+break
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Dialog Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_Main_0
+
+;-------------------------------------------------
+
+[@main_0_1]
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_Main_1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;--------- L1-> R2 -> L2 -----------------
+
+[@NQuest01_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_0
+
+[@NQuest01_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1
+
+[@NQuest01_1_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_0
+
+[@NQuest01_1_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_1
+
+[@NQuest01_1_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_2
+
+[@NQuest01_1_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_3
+
+[@NQuest01_1_4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_4
+
+[@NQuest01_1_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_5
+
+[@NQuest01_1_6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_6
+
+[@NQuest01_1_7]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_7
+
+[@NQuest01_1_8]
+#IF
+checkhum D022_001 5
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_8
+#ELSESAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_8_Else
+#ELSEACT
+mapmove D022_001 63 68
+
+[@NQuest01_1_9]
+#IF
+#SAY
+	#INCLUDE [..\Convert_def\Market_Def\14Quest_WoomaPalace-D022.txt] @NPC_NQuest_1_9
+#ACT
+map 1

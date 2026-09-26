@@ -1,0 +1,2695 @@
+;;海メ盗
+[@pachon01_1]
+{
+#IF
+Check [790] 0
+Checklevel 50
+#ACT
+set [790] 1
+Eventmsg Grobal " 可怜的人们，你们听着。我将亲自出马让你们感觉到你们有多么的懦弱啊。" 121
+Delaygoto [Grobal] 7 @pachon_next1
+#ELSESAY
+活动正在进行中。\ \
+<结束/@exit>
+
+[@pachon_next1]
+#ACT
+Eventmsg Grobal "怎么大地这样震动啊？" 10141
+Delaygoto [Grobal] 7 @pachon_next1_1
+
+[@pachon_next1_1]
+#ACT
+Eventmsg Grobal "哇！人类也有会使用广播的人，真是太有意识了。。" 121
+Delaygoto [Grobal] 7 @pachon_next1_2
+
+[@pachon_next1_2]
+#ACT
+Eventmsg Grobal "那你是谁啊？" 10141
+Delaygoto [Grobal] 7 @pachon_next1_3
+
+[@pachon_next1_3]
+#ACT
+Eventmsg Grobal " 哈哈哈。。我是你们的死神啊。我是想把那些为了生活而煎熬的人带到舒服的地域而来的。" 121
+Delaygoto [Grobal] 7 @pachon_next1_4
+
+[@pachon_next1_4]
+#ACT
+Eventmsg grobal "。。。。胡说什么" 10151
+Delaygoto [Grobal] 7 @pachon_next1_5
+
+[@pachon_next1_5]
+#ACT
+Eventmsg Grobal "不好了。大王！！！" 11
+Delaygoto [Grobal] 7 @pachon_next1_6
+
+[@pachon_next1_6]
+#ACT
+Eventmsg Grobal "什么事情？" 121
+Delaygoto [Grobal] 7 @pachon_next1_7
+
+[@pachon_next1_7]
+#ACT
+Eventmsg Grobal "说在我们的战舰上发现了那个家伙啦。" 11
+Delaygoto [Grobal] 7 @pachon_next1_8
+
+[@pachon_next1_8]
+#ACT
+Eventmsg Grobal " 我的敌人。。。终于出现了。我去看吧。这地方就交给你了。。" 121
+Delaygoto [Grobal] 7 @pachon_next1_9
+
+[@pachon_next1_9]
+#ACT
+Eventmsg Grobal " 今天算你走运。。下次可没有这样的幸运了。。人类啊。。。" 121
+Delaygoto [Grobal] 7 @pachon_next1_10
+
+[@pachon_next1_10]
+#ACT
+Eventmsg Grobal " 现在传达能听见我的声音的各族属的领导者，在以霸王教主的名下跟我一起歼灭人类的都来加入吧。" 11
+Delaygoto [Grobal] 7 @pachon_next1_11
+
+[@pachon_next1_11]
+#ACT
+Eventmsg Grobal "。。。" 46
+Delaygoto [Grobal] 7 @pachon_next1_12
+
+[@pachon_next1_12]
+#ACT
+Eventmsg Grobal "。。。这些垃圾一定要除掉。" 142
+Delaygoto [Grobal] 7 @pachon_next1_13
+
+[@pachon_next1_13]
+#ACT
+Eventmsg Grobal "他们想要的是什么？" 10141
+Delaygoto [Grobal] 7 @pachon_next1_14
+
+[@pachon_next1_14]
+#ACT
+Eventmsg Grobal "魔物只能适合地域。没有对话的。" 10151
+Delaygoto [Grobal] 7 @pachon_next1_15
+
+[@pachon_next1_15]
+#ACT
+Eventmsg Grobal "哈哈哈 你们这些白天的螥蝇。" 11
+Delaygoto [Grobal] 7 @pachon_next2_1
+
+[@pachon_next2_1]
+#ACT
+Eventmsg Grobal "这是由你们的邪念而做成的。恐惧吧。还有去死吧。" 11
+Delaygoto [Grobal] 7 @pachon_next02
+
+[@pachon_next02]
+#ACT
+Eventmsg Grobal "不好了！不好了！在比奇县外围出现了许多僵尸。请卫士们死守住北东门，南西门，南东门！" 10431
+Delaygoto [Grobal] 15 @pachon_next2_2
+
+
+[@pachon_next2_2]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+Delaygoto [Grobal] 120 @pachon_next2_3
+
+[@pachon_next2_3]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Clearmission
+Eventmsg Grobal "糟了。得赶紧召集人马了。。现在能听到我的话的人请集合到比奇县吧。我将给除去魔物原凶的人致以丰厚的谢礼。" 10081
+Delaygoto [Grobal] 7 @pachon_next2_4_1
+
+[@pachon_next2_4_1]
+#ACT
+Eventmsg Grobal "现在比奇县正被来路不明的魔物所攻击着。所以外围的战士们往比奇县移动时要格外的注意啊。" 10431
+Delaygoto [Grobal] 120 @pachon_next2_4
+
+[@pachon_next2_4]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 沃玛战士  10 25
+Mongen 沃玛战将  10 25 
+Mongen 沃玛勇士  10 25
+Mongen 火焰沃玛  10 25
+Clearmission
+Eventmsg Grobal "不。。不好了。连沃玛神殿的 怪物都。。照这样下去比奇县将会被那些魔物所占领的。。。" 10431
+Delaygoto [Grobal] 180 @pachon_next2_5
+
+[@pachon_next2_5]
+#ACT
+Eventmsg Grobal " 又大又烂的家伙。这次事情成功的话，霸王教主将会给你更大的力量的。" 11
+Delaygoto [Grobal] 7 @pachon_next2_6
+
+[@pachon_next2_6]
+#ACT
+Eventmsg Grobal "呵。。。呵。。。呵。。。" 54
+Delaygoto [Grobal] 7 @pachon_next2_7
+
+[@pachon_next2_7]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 僵尸1  10 25
+Mongen 僵尸2  10 25 
+Mongen 僵尸3  10 25
+Mongen 僵尸4  10 25 
+Mongen 僵尸5  10 25
+Mongen 尸王   1  25
+Clearmission
+Eventmsg Grobal "出现多数 僵尸和尸王！啊~难道就这样把比奇县让给死掉的人吗？" 10432
+Delaygoto [Grobal] 180 @pachon_next2_8
+
+[@pachon_next2_8]
+#ACT
+Eventmsg Grobal "哈哈哈。像小孩在戏耍吗。给你看我的军队吧。" 142
+Delaygoto [Grobal] 7 @pachon_next2_9
+
+[@pachon_next2_9]
+#ACT
+Eventmsg Grobal "哈哈。" 11
+Delaygoto [Grobal] 7 @pachon_next2_10
+
+[@pachon_next2_10]
+#ACT
+Eventmsg Grobal "你们这些骷髅，听从骷髅教主的命令都起来吧。" 142
+Delaygoto [Grobal] 7 @pachon_next2_11
+
+[@pachon_next2_11]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 骷髅        10 25
+Mongen 掷斧骷髅    10 25 
+Mongen 骷髅战士    10 25
+Mongen 骷髅战将    10 25 
+Mongen 骷髅精灵    1  25
+Clearmission
+Eventmsg Grobal "骷髅士兵闯进来了！" 10431
+Delaygoto [Grobal] 10 @pachon_next2_111
+
+[@pachon_next2_111]
+#ACT
+Eventmsg Grobal "哦~神灵啊。。你想放弃我们这么多年来辛苦创建起来的家园吗？。。" 10432
+Delaygoto [Grobal] 180 @pachon_next2_12
+
+[@pachon_next2_12]
+#ACT
+Eventmsg Grobal "哈哈哈。只有数字多吗。" 11
+Delaygoto [Grobal] 7 @pachon_next2_13
+
+[@pachon_next2_13]
+#ACT
+Eventmsg Grobal "这不是结束。我还没用我的力气的十分之一哟。" 142
+Delaygoto [Grobal] 7 @pachon_next2_14
+
+[@pachon_next2_14]
+#ACT
+Eventmsg Grobal "沃玛教主，逃掉了？" 11
+Delaygoto [Grobal] 7 @pachon_next2_15
+
+[@pachon_next2_15]
+#ACT
+Eventmsg Grobal "。。。" 46
+Delaygoto [Grobal] 7 @pachon_next2_16
+
+[@pachon_next2_16]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 粪虫        15 25
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛  15 25
+Clearmission
+Eventmsg Grobal "以我们的力量再也抵抗不了了。。如果分散在世界各地的勇士们都到比奇县来助阵还差不多。。。" 10432
+Delaygoto [Grobal] 180 @pachon_next2_17
+
+[@pachon_next2_17]
+#ACT
+Eventmsg Grobal "懦弱的跟人类没什么区别。" 11
+Delaygoto [Grobal] 7 @pachon_next2_18
+
+[@pachon_next2_18]
+#ACT
+Eventmsg Grobal "。。。" 46
+Delaygoto [Grobal] 7 @pachon_next2_19
+
+[@pachon_next2_19]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 沃玛战士    15 25
+Mongen 沃玛战将    15 25 
+Mongen 沃玛勇士    15 25
+Mongen 火焰沃玛    15 25 
+Mongen 沃玛卫士    1 25
+Clearmission
+Eventmsg Grobal "沃玛卫士带着军队出现了！到底他后面的是什么东西呢。。想都让人害怕。" 10431
+Delaygoto [Grobal] 240 @pachon_next2_20
+
+[@pachon_next2_20]
+#ACT
+Eventmsg Grobal "只有死路一条吗？。。" 10432
+Delaygoto [Grobal] 7 @pachon_next2_21
+
+[@pachon_next2_21]
+#ACT
+Eventmsg Grobal "呵呵呵呵。你们这些寄生虫！ 看你们逃样吧。" 11
+Delaygoto [Grobal] 7 @pachon_next2_22
+
+[@pachon_next2_22]
+#ACT
+Eventmsg Grobal "卫士们！从黑暗中出来消灭所有存活的东西吧。" 142
+Delaygoto [Grobal] 7 @pachon_next2_23
+
+[@pachon_next2_23]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 骷髅弓箭手  20 25
+Mongen 骷髅士兵    20 25 
+Mongen 骷髅武士    20 25
+Mongen 骷髅武将    20 25
+Clearmission
+Eventmsg Grobal "哎！敌人太多了。" 10081
+Delaygoto [Grobal] 240 @pachon_next2_24
+
+[@pachon_next2_24]
+#ACT
+Eventmsg Grobal "此时此刻乃是比奇县最危机的时候。。。" 10141
+Delaygoto [Grobal] 7 @pachon_next2_25
+
+[@pachon_next2_25]
+#ACT
+Eventmsg Grobal "就只会有邪念的鬼怪啊。我将一个个把你杀掉。" 10151
+Delaygoto [Grobal] 7 @pachon_next2_26
+
+[@pachon_next2_26]
+#ACT
+Eventmsg Grobal "骨鬼将展现你的能力吧。" 142
+Delaygoto [Grobal] 7 @pachon_next2_27
+
+[@pachon_next2_27]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 骷髅弓箭手  12 25
+Mongen 骷髅士兵    12 25 
+Mongen 骷髅武士    12 25
+Mongen 骷髅武将    12 25
+Mongen 骨鬼将      1  25
+Clearmission
+Delaygoto [Grobal] 300 @pachon_next2_28
+
+[@pachon_next2_28]
+#ACT
+Eventmsg Grobal "嗯。到了一往打进的时候了。" 11
+Delaygoto [Grobal] 7 @pachon_next2_29
+
+[@pachon_next2_29]
+#ACT
+Eventmsg Grobal "能挡住我的军队吗。。呵呵呵呵 " 11
+Delaygoto [Grobal] 7 @pachon_next2_30
+
+[@pachon_next2_30]
+#ACT
+Eventmsg Grobal "。。。" 46
+Delaygoto [Grobal] 7 @pachon_next2_31
+
+[@pachon_next2_31]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 海神将领  1  25
+Mongen 轻甲守卫  1  25
+Mongen 神舰守卫  1  25
+Mongen 恶形鬼    1  25
+Mongen 红衣法师  1  25
+Clearmission
+Eventmsg Grobal "看看异界的力量吧！" 11
+Delaygoto [Grobal] 420 @pachon_next2_321
+
+[@pachon_next2_321]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 529 
+param3 341
+SetMission
+Param1 0
+Param2 559
+Param3 311
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 492 
+param3 305
+SetMission
+Param1 0
+Param2 522
+Param3 275
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 545 
+param3 358
+SetMission
+Param1 0
+Param2 575
+Param3 328
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 470 
+param3 284
+SetMission
+Param1 0
+Param2 500
+Param3 254
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+;
+param1 0
+param2 391 
+param3 449
+SetMission
+Param1 0
+Param2 350
+Param3 500
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 373 
+param3 430
+SetMission
+Param1 0
+Param2 343
+Param3 460
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 409 
+param3 465
+SetMission
+Param1 0
+Param2 379
+Param3 495
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 354 
+param3 411
+SetMission
+Param1 0
+Param2 324
+Param3 441
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 427 
+param3 484
+SetMission
+Param1 0
+Param2 397
+Param3 514
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+;
+param1 0
+param2 505 
+param3 450
+SetMission
+Param1 0
+Param2 530
+Param3 470
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 488 
+param3 468
+SetMission
+Param1 0
+Param2 518
+Param3 498
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 523 
+param3 432
+SetMission
+Param1 0
+Param2 553
+Param3 462
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 470 
+param3 490
+SetMission
+Param1 0
+Param2 500
+Param3 520
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+
+param1 0
+param2 540 
+param3 420
+SetMission
+Param1 0
+Param2 570
+Param3 450
+Mongen 海神将领  2  25
+Mongen 轻甲守卫  2  25
+Mongen 神舰守卫  2  25
+Mongen 恶形鬼    2  25
+Mongen 红衣法师  2  25
+Clearmission
+Eventmsg Grobal "霸王教主的部下们！ 异空间的门大大的敞开着。快到这里来处理掉所谓的那些寄生虫吧。" 11
+Delaygoto [Grobal] 480 @pachon_next2_32
+
+
+[@pachon_next2_32]
+#ACT
+Eventmsg Grobal "没时间了。你们的命也到此为止了。" 11
+Delaygoto [Grobal] 7 @pachon_next2_33
+
+[@pachon_next2_33]
+#ACT
+Eventmsg Grobal "。。。" 46
+Delaygoto [Grobal] 7 @pachon_next2_34
+
+[@pachon_next2_34]
+#ACT
+Eventmsg Grobal "逗留在人世间有多长时间啊。。。" 142
+Delaygoto [Grobal] 7 @pachon_next2_35
+
+[@pachon_next2_35]
+#ACT
+;
+param1 0
+param2 513 
+param3 327
+SetMission
+Param1 0
+Param2 543
+Param3 297
+Mongen 沃玛卫士  10 25
+Mongen 沃玛教主  1  25 
+Clearmission
+
+;
+Param1 0
+Param2 391
+Param3 449
+Setmission
+Param1 0
+Param2 350
+Param3 500
+Mongen 红衣法师  10 25
+Mongen 霸王守卫  1  25 
+Clearmission
+
+;
+Param1 0
+Param2 505
+Param3 450
+Setmission
+Param1 0
+Param2 550
+Param3 510
+Mongen 骨鬼将    10 25
+Mongen 骷髅教主  1  25 
+Clearmission
+Eventmsg Grobal "消失吧。人类啊！" 11
+Delaygoto [Grobal] 600 @pachon_last1
+
+[@pachon_last1]
+#IF
+checkmonmap 0 1 霸王守卫
+#ACT
+goto @pachon_last2
+break
+
+#IF
+checkmonmap 0 1 沃玛教主
+#ACT
+goto @pachon_last2
+break
+
+#IF
+checkmonmap 0 1 骷髅教主
+#ACT
+goto @pachon_last2
+break
+
+[@pachon_last2]
+#ACT
+monclear 0 
+Eventmsg Grobal "愚蠢的。。。" 99
+Delaygoto [Grobal] 7 @pachon_last2_2
+
+[@pachon_last2_2]
+#ACT
+Eventmsg Grobal "不能把我的世界交给异界的东西。" 99
+Delaygoto [Grobal] 7 @pachon_last2_3
+
+[@pachon_last2_3]
+#ACT
+Eventmsg Grobal "什么？你干什么？赶妨碍我们的事情。" 11
+Delaygoto [Grobal] 7 @pachon_last2_4
+
+[@pachon_last2_4]
+#ACT
+Eventmsg Grobal "全部 消失了吗。。？" 10141
+Delaygoto [Grobal] 7 @pachon_last2_5
+
+[@pachon_last2_5]
+#ACT
+Eventmsg Grobal "不要以为我帮了你。只不过你要明白这里的领导人只有一个。。。" 99
+Delaygoto [Grobal] 7 @pachon_last2_6
+
+[@pachon_last2_7]
+#ACT
+Eventmsg Grobal "潘夜牛魔王。。他有那么厉害吗。幸亏损失不太严重，不过潘夜牛魔王攻击过来的话。。。" 10141
+Delaygoto [Grobal] 7 @pachon_last1_7
+
+[@pachon_last2_7]
+#ACT
+set [790] 0
+}

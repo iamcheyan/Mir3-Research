@@ -1,0 +1,28 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+<结束/@exit>
+}
+
+[@NPC_Main]
+{
+很高兴见到这样英姿飒爽的勇士，本教头是奉比奇朝廷的命令来这里帮助那些穿越沙漠的勇士修炼武功的。原本武林有一条不成文的规定，就是朝廷不干涉像你这样的江湖武士的活动，但在这种危急的时候谁还管那么多呢？啊，废话说多了。你新拿到的武功书里有什么看不懂的地方都可以问我，不过要支付一些费用才行。\
+<查看可解释的武功目录/@main_0_1>\
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+（战士魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<基本剑术/@Go_Mu_Warrior_Noatom_wesu>\ \
+（11 - 20 等级 修炼魔法）\
+<攻杀剑术/@Go_Mu_Warrior_Noatom_wedo> , <刺杀剑术/@Go_Mu_Warrior_Noatom_asword>\ \
+（21 - 30 等级 修炼魔法）\
+<半月弯刀/@Go_Mu_Warrior_Noatom_banwel> , <野蛮冲撞/@Go_Mu_Warrior_Noatom_mute>\ \
+（31 - 40 等级 修炼魔法）\
+<烈火剑法/@Go_Mu_Warrior_Noatom_fire> , <翔空剑法/@Go_Mu_Warrior_Noatom_maeng> , <莲月剑法/@Go_Mu_Warrior_Noatom_double>\ \
+<结束/@exit>
+}
+

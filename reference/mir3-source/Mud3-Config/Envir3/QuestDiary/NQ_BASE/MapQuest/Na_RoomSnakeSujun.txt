@@ -1,0 +1,111 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+;#### D422_002  31,8  ->  D422  168,189  ############
+;#### D422  167,190 ->  D422_002  30,9   ############
+;-----------------------------------------------------
+#IF
+check [248] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_1
+
+#ACT
+enter_fail
+break
+
+#IF
+check [245] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_2
+
+#ACT
+enter_fail
+break
+
+#IF
+check [244] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_3
+
+#ACT
+set [243] 0
+set [244] 0
+enter_fail
+break
+
+#IF
+check [243] 1
+#ACT
+set [244] 1
+set [243] 0
+enter_fail
+break
+
+#IF
+check [242] 1
+#ACT
+goto @enterh_bgp
+break
+;
+#IF
+check [238] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_4
+
+#ACT
+enter_fail
+break
+;
+#IF
+check [237] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_5
+
+#ACT
+enter_fail
+set [238] 1
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_6
+
+#ELSEACT
+enter_fail
+
+;-----------------------------------------------------
+
+[@enterh_bgp]
+#IF
+checkhum D422_002 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_7
+
+#ACT
+enter_fail
+#ELSEACT
+goto @enterh_bgp_1
+
+[@enterh_bgp_1]
+#IF
+checkitem »ÙÃð»¤Éí·û 1
+#ACT
+goto @enterh_bgp_2
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_8
+
+#ELSEACT
+enter_fail
+
+[@enterh_bgp_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MapQuest\Na_RoomSnakeSujun.txt] @Na_RoomSnakeSujun_9
+
+#ACT
+enter_ok
+monclear D422_002
+param1 D422_002
+param2 13
+param3 20
+mongen Êð¼ý 1 1
+set [243] 1

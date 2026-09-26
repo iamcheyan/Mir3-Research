@@ -1,0 +1,149 @@
+;;º£¥áµÁ
+%100
+;scroll, Spotion, lottery
++3
+;torch
++30
+;poison, charm
++25
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+#CALL [\NQ_BASE\BackGround\SnakeVally.txt] @BackLog_BG_M1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_Main
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_Buy
+
+[@Buy_PortalScroll]
+#Call [System\ItemSell.txt] @ItemSell_Control
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_Sell
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_Goods
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 464
+#ACT
+goto @TQuest464_0
+break
+;
+#IF
+CheckDailyQuest 409
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_TQuest
+
+;------------------------
+
+;------------------------
+
+[@TQuest464_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest464_2
+break
+;
+#ELSEACT
+goto @TQuest464_1
+
+;--------------
+
+[@TQuest464_1]
+;;#CALL [\QT_TODAY\4thClass.txt] @464_START
+
+[@TQuest464_2]
+;;#CALL [\QT_TODAY\4thClass.txt] @464_CHECK1
+
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @409_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @409_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\07Grocery_SnakeVally-2.txt] @NPC_TQuest_1
+
+;----------------------

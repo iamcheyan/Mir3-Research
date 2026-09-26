@@ -1,0 +1,465 @@
+;;º£¥áµÁ
+[@Game]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_1
+
+
+[@Game_dicestart]
+#IF
+checkitem ³ïÂë 2
+#ACT
+take ³ïÂë 2
+movr d0 6
+movr d1 6
+movr d2 6
+movr d3 6
+inc d0 1
+inc d1 1
+inc d2 1
+inc d3 1
+playdice 4 @Game_next
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_2
+
+#ELSEACT
+map B011
+
+[@Game_next]
+#IF
+equal d0 3
+equal d1 4
+equal d2 5
+equal d3 6
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_3
+
+#ACT
+give ³ïÂë 40
+break
+
+#IF
+equal d0 2
+equal d1 3
+equal d2 4
+equal d3 5
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_4
+
+#ACT
+give ³ïÂë 35
+break
+
+#IF
+equal d0 1
+equal d1 2
+equal d2 3
+equal d3 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_5
+
+#ACT
+give ³ïÂë 35
+break
+
+#IF
+equal d0 6
+equal d1 6
+equal d2 6
+equal d3 6
+#ACT
+goto @4dice1
+break
+
+#IF
+equal d0 5
+equal d1 5
+equal d2 5
+equal d3 5
+#ACT
+goto @4dice2
+break
+
+#IF
+equal d0 4
+equal d1 4
+equal d2 4
+equal d3 4
+#ACT
+goto @4dice3
+break
+
+#IF
+equal d0 3
+equal d1 3
+equal d2 3
+equal d3 3
+#ACT
+goto @4dice4
+break
+
+#IF
+equal d0 2
+equal d1 2
+equal d2 2
+equal d3 2
+#ACT
+goto @4dice5
+break
+
+#IF
+equal d0 1
+equal d1 1
+equal d2 1
+equal d3 1
+#ACT
+goto @4dice6
+break
+
+#IF
+equal d0 6
+equal d1 6
+equal d2 6
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 5
+equal d1 5
+equal d2 5
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 4
+equal d1 4
+equal d2 4
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 3
+equal d1 3
+equal d2 3
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 2
+equal d1 2
+equal d2 2
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 1
+equal d1 1
+equal d2 1
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 6
+equal d2 6
+equal d3 6
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 5
+equal d2 5
+equal d3 5
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 4
+equal d2 4
+equal d3 4
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 3
+equal d2 3
+equal d3 3
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 2
+equal d2 2
+equal d3 2
+#ACT
+goto @3dice
+break
+
+#IF
+equal d1 1
+equal d2 1
+equal d3 1
+#ACT
+goto @3dice
+break
+
+#IF
+equal d0 6
+equal d1 6
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d0 5
+equal d1 5
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d0 4
+equal d1 4
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d0 3
+equal d1 3
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d0 2
+equal d1 2
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d0 1
+equal d1 1
+#ACT
+goto @2dice1
+break
+
+#IF
+equal d1 6
+equal d2 6
+#ACT
+goto @2dice
+break
+
+#IF
+equal d1 5
+equal d2 5
+#ACT
+goto @2dice
+break
+
+#IF
+equal d1 4
+equal d2 4
+#ACT
+goto @2dice
+break
+
+#IF
+equal d1 3
+equal d2 3
+#ACT
+goto @2dice
+break
+
+#IF
+equal d1 2
+equal d2 2
+#ACT
+goto @2dice
+break
+
+#IF
+equal d1 1
+equal d2 1
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 6
+equal d3 6
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 5
+equal d3 5
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 4
+equal d3 4
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 3
+equal d3 3
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 2
+equal d3 2
+#ACT
+goto @2dice
+break
+
+#IF
+equal d2 1
+equal d3 1
+#ACT
+goto @2dice
+break
+#ELSEACT
+goto @normal
+
+[@4dice1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_6
+
+#ACT
+give ³ïÂë 30
+
+[@4dice2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_7
+
+#ACT
+give ³ïÂë 28
+
+[@4dice3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_8
+
+#ACT
+give ³ïÂë 26
+
+[@4dice4]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_9
+
+#ACT
+give ³ïÂë 24
+
+[@4dice5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_10
+
+#ACT
+give ³ïÂë 22
+
+[@4dice6]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_11
+
+#ACT
+give ³ïÂë 20
+
+[@3dice]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_12
+
+#ACT
+give ³ïÂë 10
+
+[@2dice1]
+#IF
+equal d2 1
+equal d3 1
+#ACT
+goto @2pair
+break
+
+#IF
+equal d2 2
+equal d3 2
+#ACT
+goto @2pair
+break
+
+#IF
+equal d2 3
+equal d3 3
+#ACT
+goto @2pair
+break
+
+#IF
+equal d2 4
+equal d3 4
+#ACT
+goto @2pair
+break
+
+#IF
+equal d2 5
+equal d3 5
+#ACT
+goto @2pair
+break
+
+#IF
+equal d2 6
+equal d3 6
+#ACT
+goto @2pair
+break
+#ELSEACT
+goto @2dice
+
+[@2pair]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_13
+
+#ACT
+give ³ïÂë 8
+
+[@2dice]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_14
+
+#ACT
+give ³ïÂë 1
+
+[@normal]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Mabangjin\Game.txt] @Game_15
+
+}

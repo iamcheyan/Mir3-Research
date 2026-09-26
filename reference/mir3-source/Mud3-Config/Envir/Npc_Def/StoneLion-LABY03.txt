@@ -1,0 +1,29 @@
+; ===================================
+; Npc Def NPC File : StoneLion1-LABY03
+; 
+; -----------------------------------
+; Name: StoneLion
+; Job: 
+; Map No: LABY03
+; Pos X 76
+; Pos Y 792
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+[@main]
+A stone statue in such place.. very suspicious.\ \ 
+(Behind the statue, I see a dark space.)\ \ 
+<Move the statue and enter./@tele>\ 
+<Leave./@exit> 
+
+[@tele]
+#ACT
+mapmove LABY04
+break
+
+
+
+

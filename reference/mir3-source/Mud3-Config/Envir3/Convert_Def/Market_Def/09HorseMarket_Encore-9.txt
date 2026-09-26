@@ -1,0 +1,38 @@
+;;海メ盗
+[@NPC_Main]
+{
+我对贵重物品没兴趣。。那 要看我带着的物品吗？\ \
+<购入/@BuyHorseWhite> {FCOLOR/10}名品{FCOLOR/12}白马 （2000万金币,需要等级40）\
+<结束/@exit>
+}
+
+[@NPC_Main_NoMoney]
+{
+我跟穷人不说话！\ \
+<结束/@exit>
+}
+
+[@NPC_Main_NoLv]
+{
+想骑白马需要等级是40以上。。 等练到40级再来吧。。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseWhite_nOmONEY]
+{
+白马的价格是2000万金币。。。你连钱也没有就想购买白马吗？\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseWhite_Fail]
+{
+你已经有了马。。我不能把这个{FCOLOR/10}名品{FCOLOR/12}白马给已有马的人。。\ \
+<结束/@exit>
+}
+
+[@NPC_BuyHorseWhite_Complete]
+{
+名品白马在这里。。。虽然贵，不过这个{FCOLOR/10}名品{FCOLOR/12}白马是物有所值。。。\ \
+<结束/@exit>
+}
+

@@ -1,0 +1,258 @@
+;;º£¥áµÁ
+[@YAKSA_START]
+{
+#IF
+check [147] 1
+#ACT
+goto @YAKSA_START_3
+#ELSEACT
+goto @YAKSA_START_0
+
+[@YAKSA_START_0]
+#IF
+check [148] 0
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_1
+
+
+[@YAKSA_START_1]
+#IF
+check [148] 0
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_2
+
+
+[@YAKSA_START_2]
+#IF
+check [148] 0
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_3
+
+
+[@YAKSA_START_3]
+#IF
+check [148] 0
+check [132] 1
+#ACT
+set [147] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_4
+
+
+[@YAKSA_START_4_1]
+#IF
+check [148] 0
+check [132] 1
+#ACT
+set [147] 0
+set [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_5
+
+
+[@YAKSA_START_4_2]
+#IF
+check [148] 0
+check [132] 1
+#ACT
+set [147] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_6
+
+}
+
+[@SEARCH_TOOTH]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_7
+
+
+[@SEARCH_TOOTH_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_8
+
+}
+
+[@GIVE_TOOTH]
+{
+#IF
+check [151] 1
+#ACT
+goto @GIVE_TOOTH_1
+break
+#ELSEACT
+goto @GIVE_TOOTH_0
+
+[@GIVE_TOOTH_0]
+#IF
+check [166] 0
+check [167] 0
+check [150] 1
+checkitem ¶¾ÉßÑÀ³Ý 1
+#ACT
+take ¶¾ÉßÑÀ³Ý 1
+set [151] 1
+goto @GIVE_TOOTH_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_9
+
+
+[@GIVE_TOOTH_1]
+#IF
+check [166] 0
+check [167] 0
+check [150] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_10
+
+
+[@GIVE_TOOTH_3]
+#IF
+checkjob warrior
+#ACT
+goto @GIVE_TOOTH_4_1
+#ELSEACT
+goto @GIVE_TOOTH_4_2
+
+[@GIVE_TOOTH_4_1]
+#IF
+check [166] 0
+check [167] 0
+check [150] 1
+#ACT
+give ½ð´´Ò©£¨ÌØ£© 8
+goto @GIVE_TOOTH_5
+
+[@GIVE_TOOTH_4_2]
+#IF
+check [166] 0
+check [167] 0
+check [150] 1
+#ACT
+give Ä§·¨Ò©£¨ÌØ£© 8
+goto @GIVE_TOOTH_5
+
+[@GIVE_TOOTH_5]
+#IF
+check [149] 1
+#ACT
+reset [147] 4
+set [167] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_11
+
+#ELSEACT
+reset [147] 4
+set [166] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_12
+
+}
+
+[@YAKSA_COMPLETE]
+{
+#IF
+check [166] 1
+#ACT
+goto @YAKSA_COMPLETE_1
+#ELSEACT
+goto @YAKSA_COMPLETE_2
+
+[@YAKSA_COMPLETE_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_13
+
+
+[@YAKSA_COMPLETE_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_14
+
+}
+
+[@BUY_TOOTH]
+{
+#IF
+#ACT
+goto @BUY_TOOTH_0
+
+[@BUY_TOOTH_0]
+#IF
+check [150] 0
+check [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_15
+
+
+[@BUY_TOOTH_1]
+#IF
+check [150] 0
+check [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_16
+
+
+[@BUY_TOOTH_2]
+#IF
+check [150] 0
+check [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_17
+
+
+[@BUY_TOOTH_3]
+#IF
+checkgold 1000
+#ACT
+take ½ð±Ò 1000
+give ¶¾ÉßÑÀ³Ý 1
+set [149] 1
+set [150] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_18
+
+#ELSEACT
+give ¶¾ÉßÑÀ³Ý 1
+set [150] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_19
+
+
+[@BUY_TOOTH_7]
+#IF
+check [150] 0
+check [148] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_20
+
+[@BUY_TOOTH_8]
+#IF
+checkgold 100
+#ACT
+take ½ð±Ò 100
+give ¶¾ÉßÑÀ³Ý 1
+set [150] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_21
+
+#ELSEACT
+give ¶¾ÉßÑÀ³Ý 1
+set [150] 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_22
+
+}
+
+[@RETURN_BICHUN_TOOTH]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\yaksa.txt] @yaksa_23
+
+}

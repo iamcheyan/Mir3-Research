@@ -1,0 +1,69 @@
+;;海メ盗
+[@RefineName]
+{
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_1
+#ELSEACT
+break
+
+#IF
+!checkweaponlevel 10
+#SAY
+_你武器的等级不够，继续努力啊。。。\\
+<[关闭]/@exit>
+#ACT
+break
+
+#IF
+checkweaponlevel 10
+checkgold 1000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_3
+
+
+[@RefineCorrect]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_4
+
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 10
+checkgold 1000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_5
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_6
+
+
+[@@WriteWeaponName]
+#IF
+checkgold 1000000
+#ACT
+take 金币 1000000
+WriteWeaponName @CheckWeaponName
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_7
+
+
+[@CheckWeaponName]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_8
+
+
+[@CheckWeaponName~]
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\RefineName.txt] @RefineName_9
+
+#ACT
+give 金币 1000000
+}

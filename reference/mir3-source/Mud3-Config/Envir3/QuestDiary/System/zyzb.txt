@@ -1,0 +1,240 @@
+;;海メ盗
+[@zbzy_main]
+{
+#SAY
+    {FCOLOR/10}转移需要2W金币，选择你要转移装备类别，输入装备名称，我们帮你检查一下，只开放部分高级装备转移，装备按位置要求放好后，先小退一下（重要）：{FCOLOR/12}\\
+    <头盔/@@chkput(4)>  <项链/@@chkput(3)>\
+    <衣服/@@chkput(0)>  <武器/@@chkput(1)>\
+    <手镯、手套(左)/@@chkput(5)>\
+    <戒指(左)/@@chkput(7)>\\
+    <[返 回]/@main>\
+    <[关 闭]/@exit>
+
+[@@chkput()]
+#IF
+#ACT
+     Mov   D0   %ARG(1)
+     Mov   A0   %INPUTSTR
+     LoadValue B9 "QuestDiary\System\Transfer.ini" [ItemIdx] [%A0]
+     mov  P8   %B9
+
+#IF
+      Equal  P8  0
+#SAY
+     _对不起，此装备[<$OUTPUT(A0)>]未开放转移服务！！！\\
+     _<[返 回]/@main>\
+     _<[关 闭]/@exit>
+#ACT
+     break
+
+#IF
+     !checkgold 20000
+#SAY
+     _你的金币不够2W，请凑齐了再来。~~~\\
+     _<[返 回]/@main>\
+     _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      !CheckItemw   %A0
+#SAY
+      _你没佩戴该装备。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+     
+#IF
+#ACT
+      FormatStr "FLD_CHARACTER='%s' AND FLD_TYPE='%s'" %USERNAME %D0
+      ReadValueSql  "TBL_ITEM"  %A9 "FLD_CHARACTER,FLD_TYPE,FLD_INDEX"  [@zychk1]
+      close
+
+[@zychk1()]
+#ACT
+      mov   A6   %ARG(1)
+      mov   B0   %ARG(3)
+
+#IF
+      Equal A6 ""
+#SAY
+      _指定位置无装备，如果刚佩带上去的话，要等5分钟或小退一下。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      !Equal  B9  %B0
+#SAY
+     _对不起，转移不能进行，如果刚佩带上去的话，要等5分钟或小退一下。\\
+     _<[返 回]/@main>\
+     _<[关 闭]/@exit>
+#ACT
+     break
+
+#IF
+#ACT
+      mov  D7  20041108
+#SAY
+      _你输入的是<$OUTPUT(A0)>，正确的话，输入转向的角色名，{FCOLOR/10}必须转给处于下线状态的角色，不然物品会丢失。{FCOLOR/12}\\
+      _<输入角色名/@@charname>\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+
+
+[@@charname]
+#IF
+      !CheckItemw   %A0
+      !Equal D7 20041108
+#SAY
+      _你没佩戴该装备。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+#ACT
+      Mov   A1   %INPUTSTR
+
+#IF
+      Equal A1 %USERNAME
+#SAY
+      _不能转移给自己。\\
+      _<输入角色名/@@charname>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      Equal A1 ""
+#SAY
+      _请输入角色名，不能为空，{FCOLOR/10}必须转给处于下线状态的角色，不然物品会丢失。{FCOLOR/12}。\\
+      _<输入角色名/@@charname>\\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A1
+      ReadValueSql  "TBL_CHARACTER"  %A9 "FLD_CHARACTER"  [@zysql_m]
+      close
+
+[@zysql_m()]
+#ACT
+      mov   A2   %ARG(1)
+#IF
+      Equal   A2  ""
+#SAY
+      _找不到输入的角色。\\
+      _<输入角色名/@@charname>\\
+      _<[关 闭]/@exit>
+#ACT
+     break
+#ELSESAY
+     正在进行中。。。请稍后\\
+#ELSEACT
+     Delaygoto [local] 1 @zysql_n
+
+[@zysql_n]
+#IF
+      CheckItemw   %A0
+      Equal D7 20041108
+#ACT
+      FormatStr "FLD_CHARACTER='%s' AND FLD_TYPE='%s'" %A1 %D0
+      ReadValueSql  "TBL_ITEM"  %A9 "FLD_CHARACTER,FLD_TYPE,FLD_NAMEPREFIX"  [@zysql_0]
+      close
+#ELSESAY
+      _你没佩戴该装备。\\
+      _<[关 闭]/@exit>
+
+[@zysql_0()]
+#IF
+#ACT
+      mov       A2   %ARG(1)
+      mov       D1   %ARG(2)
+      mov       A3   %ARG(3)
+      mov       A8   %A9
+
+#IF
+      Equal  A3  "结婚戒指"
+#SAY
+      _{FCOLOR/1}对方有结婚戒指不可以转移。{FCOLOR/12}\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      !Equal A2 ""
+#ACT
+      UpdateValueSql "TBL_ITEM" %A8 "FLD_TYPE=77"
+
+#IF
+#SAY
+      正在进行中。。。请稍后\\
+#ACT
+      Delaygoto [local] 1 @zhuanyi111
+
+[@zhuanyi111]
+#IF
+      CheckItemw   %A0
+      Equal D7 20041108
+#ACT
+      FormatStr "FLD_CHARACTER='%s' AND FLD_TYPE='%s'" %USERNAME %D0
+      ReadValueSql  "TBL_ITEM"  %A9 "FLD_CHARACTER,FLD_TYPE,FLD_NAMEPREFIX,FLD_INDEX"  [@zysql_1]
+#ELSESAY
+      _你没佩戴该装备。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+
+[@zysql_1()]
+#IF
+#ACT
+      mov       A4   %ARG(1)
+      mov       D3   %ARG(2)
+      mov       A5   %ARG(3)
+      mov       D4   %ARG(4)
+      mov       A8   %A9
+
+#IF
+      Equal  A5  "结婚戒指"
+#SAY
+      _{FCOLOR/1}结婚戒指不可以转移。{FCOLOR/12}\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ACT
+      break
+
+#IF
+      !Equal  P8  %D4
+#SAY
+     _对不起，转移不能进行，如果刚佩带上去的话，要等5分钟或小退一下。\\
+     _<[返 回]/@main>\
+     _<[关 闭]/@exit>
+#ACT
+     break
+
+#IF
+      !Equal    A4   ""
+      CheckItemw   %A0
+      Equal D7 20041108
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %A1
+      UpdateValueSql "TBL_ITEM" %A8 %A9
+      mov  D7  0
+      Take 金币 20000
+      Takew %A0
+      Takew %A0
+#SAY
+      _装备顺利转移给了<$OUTPUT(A1)> 。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+#ELSESAY
+      _你使用了非法手段。\\
+      _<[返 回]/@main>\
+      _<[关 闭]/@exit>
+}

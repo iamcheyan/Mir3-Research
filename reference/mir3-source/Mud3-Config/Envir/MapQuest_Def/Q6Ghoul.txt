@@ -1,0 +1,14 @@
+[@main]
+#IF
+check [778] 1
+#ACT
+break
+
+#IF
+random 5
+check [770] 1
+#ACT
+SET [778] 1
+give ScrollOfSeal 1
+#SAY
+WoW this is the scroll I need...\ \

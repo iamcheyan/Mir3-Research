@@ -1,0 +1,13 @@
+;;º£¥áµÁ
+[@MapQuest_massheal_cave_mon1]
+#IF
+#ACT
+goto @MapQuest_massheal_cave_mon1_1
+
+[@MapQuest_massheal_cave_mon1_1]
+#IF
+#ACT
+Param1 1_023
+Param2 22
+Param3 22
+MonGen òÚò¼61  2 1

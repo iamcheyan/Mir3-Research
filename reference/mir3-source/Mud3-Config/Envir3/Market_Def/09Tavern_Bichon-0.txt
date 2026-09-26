@@ -1,0 +1,178 @@
+;;今メ義
+%100
+;potion
++0
+;poison meterial
++42
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Background Dialog Block
+;;------------------------------------------------------------------------------
+;
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+;#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_WM1
+#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_M1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_Main
+
+
+;----------------------------------------------------------
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_Buy
+
+[Goods]
+#SAY
+;ItemName      Volume     Hour
+付焼            200        1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 490
+#ACT
+goto @TQuest490_0
+break
+;
+#IF
+CheckDailyQuest 546
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 307
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest490_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest490_2
+break
+;
+#ELSEACT
+goto @TQuest490_1
+
+;--------------
+
+[@TQuest490_1]
+#CALL [\QT_TODAY\4thClass.txt] @490_START
+
+[@TQuest490_2]
+#CALL [\QT_TODAY\4thClass.txt] @490_CHECK1
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @307_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @307_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_TQuest_1
+
+;-------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [308] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_1
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09Tavern_Bichon-0.txt] @NPC_TQuest
+
+;--------------
+
+[@TQuest2_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @546_CHECK2
+
+;---------------------------

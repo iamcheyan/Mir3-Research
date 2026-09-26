@@ -1,0 +1,216 @@
+;;º£¥áµÁ
+%100
+;weapon
++5
++6
+;mineral
++43
+
+
+[@main]
+;;------
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Main_0_0
+
+;----------------------------------------------------------
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Repair_Complete
+
+;-----------------------
+
+[@remove_sword]
+#IF
+checkitemw ¹¥É±Ìú½£ 1
+#ACT
+takew ¹¥É±Ìú½£ 1
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Remove_Sword
+#ELSEACT
+goto @remove_sword_1
+
+
+[@remove_sword_1]
+#IF
+checkitemw ìÍ»ð½£ 1
+#ACT
+takew ¹¥É±Ìú½£ 1
+takew ìÍ»ð½£ 1
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Remove_Sword_1
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_Remove_Sword_Else
+
+;-----------------------
+
+[Goods]
+;ItemName      Volume     Hour
+Ä¾½£            100        1
+Ø°Ê×            100        1
+ÇàÍ­½£          100        1
+Ìú½£            100        1
+ÎÚÄ¾½£          100        1
+¶Ì½£            100        1
+ÇàÍ­¸«          100        1
+°Ë»Ä            100        1
+Áè·ç            100        1
+Õ¶Âíµ¶          100        1
+ÐÞÂÞ            100        1
+º£»ê            100        1
+°ëÔÂ            100        1
+ÙÈÔÂ            100        1
+º£»ê            100        1
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 315
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 232
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 115
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\1stClass.txt] @115_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\1stClass.txt] @115_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\02Weapon_Samak1-5_002.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\2ndClass.txt] @232_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\2ndClass.txt] @232_CHECK1
+
+;------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+#CALL [\QT_TODAY\3rdClass.txt] @315_START
+
+[@TQuest3_2]
+#CALL [\QT_TODAY\3rdClass.txt] @315_CHECK1
+
+;------------------------

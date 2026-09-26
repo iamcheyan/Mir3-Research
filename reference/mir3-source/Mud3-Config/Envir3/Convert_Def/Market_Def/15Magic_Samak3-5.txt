@@ -1,0 +1,41 @@
+;;海メ盗
+[@NPC_RedPlayer]
+{
+跟你这种人我无话可说。\ \
+<结束/@exit>
+}
+
+[@NPC_Main]
+{
+欢迎光临。我也是道馆弟子，不过和那些男修炼者一起修炼，我觉得很不方便，所以经常来到外地，帮助那些在修炼中遇到困难的人。如果你在修炼中有什么解决不了的问题，来找我就行了。你只需要支付适当的费用我就给你解释武功秘籍。\
+<看可以分析的武功目录。/@main_0_1>\
+<对今日的任务进行了解/@TQuest>\
+<结束/@exit>
+}
+
+[@NPC_Main_1]
+{
+（道士魔法）\ \
+（1 - 10 等级 修炼魔法）\
+<治愈术/@Go_Mu_Taoist_holy_heal> , <精神力战法/@Go_Mu_Taoist_dark_ilgang>\ \
+（11 - 20 等级 修炼魔法）\
+<施毒术/@Go_Mu_Taoist_dark_amyen> , <灵魂火符/@Go_Mu_Taoist_dark_poksal> , <月魂断玉/@Go_Mu_Taoist_holy_moon> , <召唤骷髅/@Go_Mu_Taoist_soul_skel> ,\
+<隐身术/@Go_Mu_Taoist_dark_hiden>\ \
+（21 - 30 等级 修炼魔法）\
+<幽灵盾/@Go_Mu_Taoist_dark_hangma> , <集体隐身术/@Go_Mu_Taoist_dark_masshiden> , <月魂灵波/@Go_Mu_Taoist_holy_Upmoon> , <神圣战甲术/@Go_Mu_Taoist_dark_deaji> , <困魔咒/@Go_Mu_Taoist_dark_holy> , <空拳刀法/@Go_Mu_Taoist_dark_musang> , <强魔震法/@Go_Mu_Taoist_dark_kangma> , <召唤神兽/@Go_Mu_Taoist_soul_sinsu>\ \
+（31 - 40 等级 修炼魔法）\
+<群体治愈术/@Go_Mu_Taoist_holy_massheal> , <超强召唤骷髅/@Go_Mu_Taoist_jinsoul_skel> , <猛虎强势/@Go_Mu_Taoist_mengho> , <回生术/@Go_Mu_Taoist_soseng>\ \
+<结束/@exit>
+}
+
+[@NPC_Tquest]
+{
+今天没事情可拜托你了。\ \
+ <结束/@exit>
+}
+
+[@NPC_Tquest_1]
+{
+今天不再有事情拜托你来做了。\ \
+ <结束/@exit>
+}

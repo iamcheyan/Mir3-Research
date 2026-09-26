@@ -1,0 +1,40 @@
+;;∫£•·µ¡
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [302] 1
+#ACT
+break
+#IF
+check [301] 1
+#ACT
+break
+
+#IF
+check [297] 1
+#ACT
+break
+
+#IF
+check [296] 1
+#ACT
+goto @udoin1
+
+
+;-----------------------------------------------------
+
+[@udoin1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_EXTRA\MonQuest\Nm_WoomaUdoin.txt] @Nm_WoomaUdoin_1
+
+#ACT
+give ¡ÈªÍ√˜÷È 1
+give Œ÷¬Í…ÒÃ˙¥∏ 1
+set [297] 1
+;
+set [291] 0
+set [290] 0
+;
+set [295] 0

@@ -1,0 +1,44 @@
+;;海メ盗
+[@startNewGuildMatch]
+{
+#ACT
+SetGMEMap     "E602"
+SetGMEPoint    10000
+SetGMEPlayTime  30
+SetGMEPauseTime 10
+SetGMELimitUser 100
+SetEventDamage  E602  3        ;3硅 单固瘤
+StartNewGME
+#SAY
+所有行会的分数巳初期化.\
+新开始行会大战.\
+}
+
+[@continueGuildMatch]
+{
+#ACT
+SetGMEMap      "E602"
+SetGMEPoint    10000
+SetGMEPlayTime  30
+SetGMEPauseTime 10
+SetGMELimitUser 100
+SetEventDamage  E602  3        ;3硅 单固瘤
+ContinueGME
+#SAY
+继续开始行会大战.\
+}
+
+[@startNewGuildMatch_TIME]
+{
+#ACT
+SetGMEMap     "E602"
+SetGMETime      60
+SetGMEPlayTime  60
+SetGMEPauseTime 10
+SetGMELimitUser 100
+SetEventDamage  E602  2.5   ;2.5硅 单固瘤
+StartNewGME
+#SAY
+所有行会的分数巳初期化.\
+新开始行会大战.\
+}

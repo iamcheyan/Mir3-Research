@@ -1,0 +1,40 @@
+;;º£¥áµÁ
+%100
++5
++6
++43
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Main
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Repair_Complete
+
+
+[Goods]
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Numa-41.txt] @NPC_Repair_Goods

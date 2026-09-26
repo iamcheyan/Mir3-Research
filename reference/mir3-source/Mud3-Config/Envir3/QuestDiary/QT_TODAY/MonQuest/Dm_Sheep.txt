@@ -1,0 +1,150 @@
+;;º£¥áµÁ
+[@main]
+#IF
+CheckDailyQuest 497
+#ACT
+goto @Sheep_T497
+break
+;
+
+;
+#IF
+CheckDailyQuest 547
+#ACT
+goto @sheep_T547
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+[@Sheep_T497]
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @Sheep_T497_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@Sheep_T497_1]
+#IF
+large s0 70
+#ACT
+goto @Sheep_T497_5
+#ELSEACT
+goto @Sheep_T497_2
+;-----------------
+
+[@Sheep_T497_2]
+#IF
+large s0 2
+#ACT
+goto @Sheep_T497_3
+#ELSEACT
+mov s0 2
+goto @Sheep_T497_3
+
+;-----------------
+
+[@Sheep_T497_3]
+#IF
+#ACT
+inc s0 1
+
+;-----------------------------------
+
+[@Sheep_T497_5]
+#IF
+#ACT
+set [308] 1
+mov s0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T497_Say
+
+;-----------------------------------------------------
+[@sheep_T547]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @sheep_T547_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@sheep_T547_1]
+#IF
+large S0 4
+#ACT
+goto @sheep_T547_5
+#ELSEACT
+goto @sheep_T547_2
+;-----------------
+
+[@sheep_T547_2]
+#IF
+large S0 2
+#ACT
+goto @sheep_T547_3
+#ELSEACT
+mov S0 2
+goto @sheep_T547_3
+
+;-----------------
+
+[@sheep_T547_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@sheep_T547_5]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T547_Say
+
+#ACT
+set [308] 1
+give Å¨ÑÌºÚÌ´ÏîÁ´ 1
+mov S0 0
+
+;-----------------------------------------------------

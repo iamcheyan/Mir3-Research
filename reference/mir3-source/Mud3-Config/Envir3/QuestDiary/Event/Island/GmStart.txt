@@ -1,0 +1,90 @@
+;;º£¥áµÁ
+[@StartGoldenIsland]
+{
+;ÀÌº¥Æ®½ÃÀÛ, ¿î¿µÀÚ°¡ ½ÃÀÛÇÔ.
+#Define  N1{EVENT}    N1                             ;N1   0:ÀÌº¥Æ®Áß¾Æ´Ô, 1:ÀÌº¥Æ®Áß
+#Define  N2{TIME}     N2                             ;N2   ½Ã°£
+#Define  N3{OPEN}     N3                             ;N3   0:ÀÌº¥Æ®¸Ê ´ÝÈû, 1:ÀÌº¥Æ®¸Ê ¿­¸²
+#Define  N4{FINISH}   N4
+#Define  N8{GOLD}     N8                             ;N8   »ó±Ý
+#Define  N5{AI}       N5
+#Define  N9{DropGold} N9                             ;N9   Áß°£»ó±Ý
+
+#ACT
+  LoadValue P1 "Flag_Def\Event\Island\Gold.txt" "GOLD" "AddGold"
+
+#IF
+  Small P1 1000000   ;; ÃÊ±â ±Ý¾× 100¸¸À¸·Î
+#ACT
+  Mov  N8{GOLD}      1000000   ;; ÃÊ±â ±Ý¾× 100¸¸À¸·Î
+#ELSEACT
+  Mov  N8{GOLD}      %P1
+
+#IF
+  !Equal N1{EVENT}  1
+#SAY
+   #INCLUDE [..\Convert_Def\QuestDiary\Event\Island\Gmstart.txt] @Event_Island_Gmstart_Say_1
+#ACT
+	mov  N1{EVENT}    1                                    ; º¸¹°¼¶ ÀÌº¥Æ® ½ÃÀÛ
+	mov  N2{TIME}     0                                    ; º¸¹°¼¶ ½Ã°£À» ÃÊ±âÈ­ ÇÔ
+	mov  N3{OPEN}     1                                    ; º¸¹°¼¶ ÀÔ±¸¸¦ ¿­¾îÁÜ
+	mov  N5{AI}       0                                    ; º¸¹°¼¶ ¸ó½ºÅÍ AI ¼¼ÆÃ
+   Mov  N4{FINISH}   0                                    ; ¿î¿µÀÚ°¡ Áß°£¿¡ Áß´ÜÀ» ÇßÀ» °æ¿ì
+	mov  N9{DropGold} 0                                    ; º¸¹°¼¶ Áß°£ µ· ¼¼ÆÃ
+   goto @GMSettingStartIsland
+#ELSESAY
+   #INCLUDE [..\Convert_Def\QuestDiary\Event\Island\Gmstart.txt] @Event_Island_Gmstart_Say_2
+
+[@GMSettingStartIsland]
+#IF
+#ACT
+	MonClear "Island02" "Ô³ºïÕ½Ê¿"                           ; ¸ðµç ¸ó½ºÅÍ »èÁ¦
+	MonClear "Island02" "Ô³ºïÕ½½«"
+	MonClear "Island02" "Ä§Éñ¹Ö1"
+	MonClear "Island02" "¾Û±¦Ïä4"
+	ResetMapAttr "Island02"                                ; ÀÌº¥Æ®¸Ê ¼Ó¼º(SetEventMap)±îÁö ÃÊ±âÈ­µÊ
+	ClearItemMap "Island02, 100, 100, 9999" ½ð±Ò
+	SetEventDamage Island02  5                             ; 5¹è µ¥¹ÌÁö
+	SetEventMap  "Island02"                                ; new cmd ÀÌº¥Æ®¸ÊÀ¸·Î ¸¸µë (ResetEventMap)
+	ChangeMapAttr  "Island02" "NOCHAT"                     ; Ã¤ÆÃÀ» ÇÒ¼ö ¾ø°Ô ¼¼ÆÃ
+	SendCmd  "Island02, 95, 135, 5"  Éú´æÓÎÏ·³¡ÃÀÃ¼  Hide
+	LoadValue A0 [Convert_Def\QuestDiary\Event\Island\GmStart.txt] [Event_Island_GmStart_EventMsg] [Msg1]
+	LineMsg  "Grobal"  %A0
+	goto @GenMonkeys                                       ; ¸ó½ºÅÍ Á¨ °ü¸® ºÎºÐ
+	goto @CheckFinishCondition                             ; º¸¹°¼¶ ÀÌº¥Æ® ÀüÃ¼ °ü¸® ºÎºÐ
+
+;; ¸ó½ºÅÍ Á¨ ÄÁÆ®·Ñ ÇÏ´Â ºÎºÐ
+[@GenMonkeys]
+#CALL [Event\Island\Zen.txt] @Add_GetMonkeys
+
+;; º¸¹°¼¶ ¹æÀÇ »óÈ²À» È®ÀÎ ÇÏ´Â ºÎºÐ
+[@CheckFinishCondition]
+#CALL [Event\Island\Condition.txt] @Add_CheckFinishCondition
+}
+
+;; ¿î¿µÀÚ Á¤Áö ÀÌº¥Æ® ¸í·É¾î
+[@FinishGoldenIsland]
+{
+begin
+	#SAY
+      #INCLUDE [..\Convert_Def\QuestDiary\Event\Island\Gmstart.txt] @Event_Island_Gmstart_Say_3
+end
+
+[@FinishConFirm]
+begin
+  #ACT
+		MonClear "Island02" "Ô³ºïÕ½Ê¿"                           ; ¸ðµç ¸ó½ºÅÍ »èÁ¦
+		MonClear "Island02" "Ô³ºïÕ½½«"
+		MonClear "Island02" "Ä§Éñ¹Ö1"
+		MonClear "Island02" "¾Û±¦Ïä4"
+   	LoadValue A0 [Convert_Def\QuestDiary\Event\Island\GmStart.txt] [Event_Island_GmStart_EventMsg] [Msg2]
+   	LoadValue A1 [Convert_Def\QuestDiary\Event\Island\GmStart.txt] [Event_Island_GmStart_EventMsg] [Msg3]
+		LineMsg  "Grobal"  %A0
+		LineMsg  "Grobal"  %A1
+		SaveValue "Flag_Def\Event\Island\Gold.txt" "GOLD" "AddGold" %N8       ;; ÁßÁö ÀÌ¿ù ±Ý¾×À» ÀúÀå
+		MapTing Island02 01 424 313                                           ;; ¸ðµç »ç¶÷À» ÆÃ±è
+		Mov  N1{EVENT}  0
+      Mov  N4{FINISH} 1                                    ; ¿î¿µÀÚ°¡ Áß°£¿¡ Áß´ÜÀ» ÇßÀ» °æ¿ì
+		close
+end
+}

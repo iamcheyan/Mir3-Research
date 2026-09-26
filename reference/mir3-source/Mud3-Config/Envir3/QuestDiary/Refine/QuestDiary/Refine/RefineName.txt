@@ -1,0 +1,62 @@
+;;海メ盗
+[@RefineName]
+{
+#IF
+checkweaponlevel 1
+#ELSESAY
+炼制武器需要手里拿着武器!!\ \
+<结束/@exit>
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 10
+checkgold 1000000
+#SAY
+真想在武器上刻名字吗？ \ \
+<刻/@RefineCorrect> 名字\
+<结束/@exit>
+#ELSESAY
+钱不够啊。。\ \
+<结束/@exit>
+
+[@RefineCorrect]
+#IF
+checkweaponlevel 1
+#ELSESAY
+炼制武器需要手里拿着武器!!\ \
+<结束/@exit>
+#ELSEACT
+break
+
+#IF
+checkweaponlevel 10
+checkgold 1000000
+#SAY
+在武器上刻名字等于是提高剑的名誉。。\
+慎重的考虑一下吧。名字不可以超过汉字6字以上。。\ \
+<在武器上面刻名字。/@@WriteWeaponName>
+#ELSESAY
+钱不够啊。。\ \
+<结束/@exit>
+
+[@@WriteWeaponName]
+#IF
+checkgold 1000000
+#ACT
+WriteWeaponName @CheckWeaponName
+#ELSESAY
+钱不够啊。。\ \
+<结束/@exit>
+
+[@CheckWeaponName]
+#ACT
+take 金币 1000000
+#SAY
+你把武器的名字刻为 <$INPUTSTR> 。\ \
+<结束/@exit>
+
+[@CheckWeaponName~]
+#SAY
+投放武器的名字失败了。 \ \
+}

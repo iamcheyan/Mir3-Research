@@ -1,0 +1,43 @@
+;;海メ盗
+%100
++0
++3
+
+[@main]
+#IF
+#ACT
+goto @main_Call_BG
+
+[@main_Call_BG]
+#CALL [\NQ_BASE\BackGround\bichun.txt] @BackLog_BC_M1
+
+[@main_root]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Bichon2-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Bichon2-0.txt] @NPC_Main_0_0
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Bichon2-0.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04Potion_Bichon2-0.txt] @NPC_Sell
+
+[Goods]
+;ItemName      Volume     Hour
+金创药（小）   1000       1
+魔法药（小）   1000       1
+金创药（中）   1000       1
+魔法药（中）   1000       1
+金创药（大）   1000       1
+魔法药（大）   1000       1
+金创药（特）   1000       1
+魔法药（特）   1000       1

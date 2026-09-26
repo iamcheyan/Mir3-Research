@@ -1,0 +1,212 @@
+;;海メ盗
+[@cungold_1]
+{
+#say
+     _请选择要存的金币数量。\\
+     _<[ 10万 ]/@put(100000)> <[ 30万 ]/@put(300000)> <[ 50万 ]/@put(500000)> <[ 80万 ]/@put(800000)>\
+     _<[ 100万 ]/@put(1000000)> <[ 300万 ]/@put(3000000)> <[ 500万 ]/@put(5000000)> <[ 800万 ]/@put(8000000)>\\
+     _<[ 返 回 ]/@main>\
+     _<[ 关 闭 ]/@exit>
+
+[@put()]
+#ACT
+     mov    A1   %ARG(1)
+
+#IF
+     Equal  A1   100000
+     checkgold   100000
+#ACT
+     take 金币 100000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   300000
+     checkgold   300000
+#ACT
+     take 金币 300000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   500000
+     checkgold   500000
+#ACT
+     take 金币 500000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   800000
+     checkgold   800000
+#ACT
+     take 金币 800000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   1000000
+     checkgold   1000000
+#ACT
+     take 金币 1000000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   3000000
+     checkgold   3000000
+#ACT
+     take 金币 3000000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   5000000
+     checkgold   5000000
+#ACT
+     take 金币 5000000
+     set [1308] 1
+     goto @pa2004
+     break
+
+#IF
+     Equal  A1   8000000
+     checkgold   8000000
+#ACT
+     take 金币 8000000
+     set [1308] 1
+     goto @pa2004
+#ELSESAY
+     _错误发生，你没有相应的金币。\\
+     _<[ 返 回 ]/@main>\
+     _<[ 关 闭 ]/@exit>
+
+
+[@pa2004]
+#IF
+      check [1308] 1
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_STOREGOLD"  [@PM1]
+      close
+#ELSESAY
+      _错误发生，你用外挂了吗？\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+            
+[@PM1()]
+#IF
+      check [1308] 1
+#ACT
+      mov       A8   %ARG(1)
+      mov       D1   %ARG(2)
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      mov       A0   %A9
+#ELSESAY
+      _错误发生，你用外挂了吗？\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+
+#IF
+      !Equal    A8   ""
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      inc D1 %A1
+      FormatStr "FLD_STOREGOLD='%s'" %D1
+      UpdateValueSql "TBL_CHARACTER" %A0 %A9
+      set [1308] 0
+#SAY
+      _<$USERNAME>：存入<$OUTPUT(A1)>金币成功~~~\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+#ELSESAY
+      _错误发生，你用外挂了吗？\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+
+[@qugold_1]
+#say
+     _请选择要取的金币数量。\\
+     _<[ 10万 ]/@qu(100000)> <[ 30万 ]/@qu(300000)> <[ 50万 ]/@qu(500000)> <[ 80万 ]/@qu(800000)>\
+     _<[ 100万 ]/@qu(1000000)> <[ 300万 ]/@qu(3000000)> <[ 500万 ]/@qu(5000000)> <[ 800万 ]/@qu(8000000)>\\
+     _<[ 返 回 ]/@main>\
+     _<[ 关 闭 ]/@exit>
+
+[@qu()]
+#ACT
+      mov    A1   %ARG(1)
+      set [1308] 1
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_STOREGOLD"  [@PM2]
+      close
+            
+[@PM2()]
+#IF
+      check [1308] 1
+#ACT
+      mov       A8   %ARG(1)
+      mov       D1   %ARG(2)
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      mov       A0   %A9
+#ELSESAY
+      _错误发生，你用外挂了吗？\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+
+#IF
+      !Equal    A8   ""
+      large     D1   %A1
+#SAY
+      _<$USERNAME>：取出<$OUTPUT(A1)>金币成功~~~\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      dec D1 %A1
+      FormatStr "FLD_STOREGOLD='%s'" %D1
+      give 金币 %A1
+      UpdateValueSql "TBL_CHARACTER" %A0 %A9
+      set [1308] 0
+      break
+#IF   
+      !Equal    A8   ""
+      Equal     D1   %A1
+#SAY
+      _<$USERNAME>：取出<$OUTPUT(A1)>金币成功~~~\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      mov D1 0
+      FormatStr "FLD_STOREGOLD='%s'" %D1
+      give 金币 %A1
+      UpdateValueSql "TBL_CHARACTER" %A0 %A9
+      set [1308] 0
+#ELSESAY
+      _错误发生，你的仓库没有这么多金币了？\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+
+[@chakan]
+#ACT
+      FormatStr "FLD_CHARACTER='%s'" %USERNAME
+      ReadValueSql  "TBL_CHARACTER"  %A9  "FLD_CHARACTER,FLD_STOREGOLD"  [@PM3]
+      close 
+[@PM3()]
+#ACT
+      mov       A8   %ARG(1)
+      mov       D1   %ARG(2)
+
+#IF
+      !Equal      A8    ""
+#SAY
+      _你的仓库目前有<$OUTPUT(D1)>金币。。。\\
+      _<[ 返 回 ]/@main>\
+      _<[ 关 闭 ]/@exit>
+}

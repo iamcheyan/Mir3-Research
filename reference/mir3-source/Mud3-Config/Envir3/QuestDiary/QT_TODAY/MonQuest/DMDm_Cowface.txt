@@ -1,0 +1,81 @@
+;;海メ盗
+[@main]
+;
+#IF
+CheckDailyQuest 449
+#ACT
+goto @umyungwi_T449
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@umyungwi_T449]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @umyungwi_T449_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+
+[@umyungwi_T449_1]
+#IF
+large S0 10
+#ACT
+goto @umyungwi_T449_5
+#ELSEACT
+goto @umyungwi_T449_2
+;-----------------
+
+[@umyungwi_T449_2]
+#IF
+large S0 2
+#ACT
+goto @umyungwi_T449_3
+#ELSEACT
+mov S0 2
+goto @umyungwi_T449_3
+
+;-----------------
+
+[@umyungwi_T449_3]
+#IF
+#ACT
+inc S0 1
+
+;-----------------------------------
+
+[@umyungwi_T449_5]
+#IF
+#SAY
+（抓到了10名沃玛战士。）\
+#ACT
+set [308] 1
+mov S0 0
+
+;-----------------------------------------------------

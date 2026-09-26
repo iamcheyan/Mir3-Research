@@ -1,0 +1,20 @@
+;dialogue, '*' : dialogue tag
+[@main]
+How can I help you?\ \
+
+<Ask about Sabuk conquest war/@aboutwar>
+
+[@aboutwar]
+You want to know when the wall conquest war is scheduled?\ \
+The next war will take place at <$CASTLEWARDATE>,\\
+\
+8 PM European Time.\
+\
+
+<See list of scheduled conquests/@listwar>\
+<Back/@main>
+
+
+[@listwar]
+<$CASTLEWARDATE>\
+<Back/@aboutwar>\

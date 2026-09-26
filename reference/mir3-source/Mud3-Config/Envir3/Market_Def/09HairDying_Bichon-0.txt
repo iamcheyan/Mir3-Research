@@ -1,0 +1,98 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_Main
+
+;-------------------------------------------------------------------------------
+
+[@ChangeHairColor]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_changeHairColor
+
+[@HairColor()]
+#CALL [\Hair\Dying.txt] @Color
+
+;-------------------------------------------------------------------------------
+
+[@ChangeHairShape]
+#IF
+gender  man
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_changeHairShape_Man
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_changeHairShape_WoMan
+
+[@HairShape()]
+#CALL [\Hair\Dying.txt] @Shape
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 308
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\3rdClass.txt] @308_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\3rdClass.txt] @308_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09HairDying_Bichon-0.txt] @NPC_TQuest_1
+
+;------------------------

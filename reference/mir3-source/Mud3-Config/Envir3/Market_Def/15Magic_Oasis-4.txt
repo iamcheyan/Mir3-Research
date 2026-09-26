@@ -1,0 +1,201 @@
+;;º£¥áµÁ
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Oasis-4.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Oasis-4.txt] @NPC_Main
+
+[@main_0_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Oasis-4.txt] @NPC_Main_1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+[@Go_Mu_Warrior_Noatom_banwel]
+#CALL [\MU_Total_Sell\Warrior\banwel.txt] @Mu_Warrior_Noatom_banwel
+
+[@Go_Mu_Warrior_Noatom_mute]
+#CALL [\MU_Total_Sell\Warrior\mute.txt] @Mu_Warrior_Noatom_mute
+
+[@Go_Mu_Warrior_Noatom_maeng]
+#CALL [\MU_Total_Sell\Warrior\maeng.txt] @Mu_Warrior_Noatom_maeng
+
+[@Go_Mu_Warrior_Noatom_fire]
+#CALL [\MU_Total_Sell\Warrior\fire.txt] @Mu_Warrior_Noatom_fire
+
+[@Go_Mu_Warrior_Noatom_double]
+#CALL [\MU_Total_Sell\Warrior\double.txt] @Mu_Warrior_Noatom_double
+
+
+[@Go_Mu_Wizard_fire_pokyel]
+#CALL [\MU_Total_sell\Wizard\pokyel.txt] @Mu_Wizard_fire_pokyel
+
+[@Go_Mu_Wizard_wind_pungjin]
+#CALL [\MU_Total_sell\Wizard\windLine.txt] @Mu_Wizard_wind_pungjin
+
+[@Go_Mu_Wizard_fire_jiyem]
+#CALL [\MU_Total_sell\Wizard\jiyem.txt] @Mu_Wizard_fire_jiyem
+
+[@Go_Mu_Wizard_fire_shild]
+#CALL [\MU_Total_sell\Wizard\fireShild.txt] @Mu_Wizard_fire_shild
+
+[@Go_Mu_Wizard_light_line]
+#CALL [\MU_Total_sell\Wizard\lightLine.txt] @Mu_Wizard_light_line
+
+[@Go_Mu_Wizard_light_storm]
+#CALL [\MU_Total_sell\Wizard\lightStorm.txt] @Mu_Wizard_light_storm
+
+[@Go_Mu_Wizard_ETC_saja]
+#CALL [\MU_Total_sell\Wizard\saja.txt] @Mu_Wizard_ETC_saja
+
+[@Go_Mu_Wizard_ice_strom]
+#CALL [\MU_Total_sell\Wizard\iceStrom.txt] @Mu_Wizard_ice_strom
+
+[@Go_Mu_Wizard_ehyung]
+#CALL [\MU_Total_sell\Wizard\ehyung.txt] @Mu_Wizard_ehyung
+
+[@Go_Mu_Wizard_bingsa]
+#CALL [\MU_Total_sell\Wizard\iceLine.txt] @Mu_Wizard_bingsa
+
+[@Go_Mu_Wizard_yongsun]
+#CALL [\MU_Total_sell\Wizard\yongsun.txt] @Mu_Wizard_yongsun
+
+
+[@Go_Mu_Taoist_dark_hangma]
+#CALL [\MU_Total_sell\Taoist\hangma.txt] @Mu_Taoist_dark_hangma
+
+[@Go_Mu_Taoist_dark_masshiden]
+#CALL [\MU_Total_sell\Taoist\masshiden.txt] @Mu_Taoist_dark_masshiden
+
+[@Go_Mu_Taoist_dark_deaji]
+#CALL [\MU_Total_sell\Taoist\deaji.txt] @Mu_Taoist_dark_deaji
+
+[@Go_Mu_Taoist_dark_holy]
+#CALL [\MU_Total_sell\Taoist\holy.txt] @Mu_Taoist_dark_holy
+
+[@Go_Mu_Taoist_holy_Upmoon]
+#CALL [\MU_Total_sell\Taoist\Upmoon.txt] @Mu_Taoist_holy_Upmoon
+
+[@Go_Mu_Taoist_dark_musang]
+#CALL [\MU_Total_sell\Taoist\musang.txt] @Mu_Taoist_dark_musang
+
+[@Go_Mu_Taoist_holy_massheal]
+#CALL [\MU_Total_sell\Taoist\massheal.txt] @Mu_Taoist_holy_massheal
+
+[@Go_Mu_Taoist_dark_kangma]
+#CALL [\MU_Total_sell\Taoist\kangma.txt] @Mu_Taoist_dark_kangma
+
+[@Go_Mu_Taoist_soul_sinsu]
+#CALL [\MU_Total_sell\Taoist\sinsu.txt] @Mu_Taoist_soul_sinsu
+
+[@Go_Mu_Taoist_jinsoul_skel]
+#CALL [\MU_Total_sell\Taoist\jinsoulSkel.txt] @Mu_Taoist_jinsoul_skel
+
+[@Go_Mu_Taoist_mengho]
+#CALL [\MU_Total_sell\Taoist\mengho.txt] @Mu_Taoist_mengho
+
+[@Go_Mu_Taoist_soseng]
+#CALL [\MU_Total_sell\Taoist\soseng.txt] @Mu_Taoist_soseng
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 314
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 237
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Oasis-4.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\2ndClass.txt] @237_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\2ndClass.txt] @237_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\15Magic_Oasis-4.txt] @NPC_TQuest_1
+
+;------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\3rdClass.txt] @314_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\3rdClass.txt] @314_CHECK1
+
+;------------------------

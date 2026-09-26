@@ -1,0 +1,116 @@
+;武器
+%100
++10
++11
+;对话， '*' : 对话tag
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不想和你这样的人打交道！\ \
+ <离开/@exit>\
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+欢迎光临，我有什么可以帮助你的？\ \
+ <购买/@buy>衣服\
+ <出售/@sell>衣服\
+ <修补/@repair>衣服\
+ <离开/@exit>\
+
+
+[@Tmove]
+#IF
+random 8
+#ACT
+mapmove 3 320 303
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 320 304
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 321 304
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 321 303
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 310 293
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 310 294
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 311 294
+break
+
+
+#IF
+random 8
+#ACT
+mapmove 3 311 293
+break
+#ELSEACT
+goto @Tmove
+
+
+[@buy]
+看看你需要些什么？\ \ \
+ <返回/@main>\
+
+
+[@sell]
+让我看看你要出售的衣服，我估个价。\
+如果你不需要它们了，就请卖给我吧。\ \
+ <返回/@main>\
+
+
+[@repair]
+你的衣服看上去很旧了，在这里修补一下？\ \ \
+ <返回/@main>
+
+
+[~@repair]
+这个看上去已经补好了。\ \ \
+ <返回/@main>\
+
+
+[goods]
+;项目 (can be Zen)     Amount  hour
+布衣(男)		100	1	
+布衣(女)		100	1
+轻型盔甲(男)		100	1
+轻型盔甲(女)		100	1
+重盔甲(男)		100	1
+重盔甲(女)		100	1
+灵魂战衣(男)		100	1
+灵魂战衣(女)		100	1
+魔法长袍(男)		100	1
+魔法长袍(女)		100	1
+

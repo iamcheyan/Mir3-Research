@@ -1,0 +1,11 @@
+;;09Repair_Euhang-02.txt
+[@main]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\Market_def\09Repair_Kugkyung-01.txt] @NPC_Main
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_def\09Repair_Kugkyung-01.txt] @NPC_Main_else
+
+
+[@SRepairFunc()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem

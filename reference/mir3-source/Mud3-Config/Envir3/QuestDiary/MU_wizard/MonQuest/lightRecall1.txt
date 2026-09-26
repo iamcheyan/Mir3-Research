@@ -1,0 +1,34 @@
+;;海メ盗
+[@MapQuest_lightstick_mon1]
+#IF
+check [753] 1
+#ACT
+break
+;
+#IF
+check [519] 1
+#ACT
+break
+;
+#IF
+check [518] 0
+#ACT
+break
+;
+#IF
+#ACT
+goto @MapQuest_lightstick_mon1_1
+
+[@MapQuest_lightstick_mon1_1]
+#IF
+#ACT
+Monclear 02_006
+set [519] 1
+goto @MapQuest_lightstick_mon3
+#SAY
+(嘿，终于通过了学习雷电术的测试。。。)\
+
+[@MapQuest_lightstick_mon3]
+#IF
+#ACT
+mapmove   02  266  146

@@ -1,0 +1,77 @@
+;武器
+%100
++0
++42
+;对话， '*' : 对话tag
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不想和你这样的人打交道！\ \
+ <离开/@exit>\
+#ELSEACT
+goto @main-1
+
+
+[@main-1]
+欢迎光临，有什么可以帮助你的？\ \
+ <购买/@buy>药品 \
+ <出售/@sell>药品 \
+ <离开/@exit>\
+
+
+[@Tmove]
+#IF
+random 4
+#ACT
+mapmove 2 505 497
+break
+
+
+#IF
+random 4
+#ACT
+mapmove 2 505 498
+break
+
+
+#IF
+random 4
+#ACT
+mapmove 2 504 499
+break
+
+
+#IF
+random 4
+#ACT
+mapmove 2 505 499
+break
+#ELSEACT
+goto @Tmove
+
+
+[@buy]
+你需要哪些物品？\ \ \
+ <返回/@main>\
+
+
+[@sell]
+让我看看你要出售的物品，我会给你个好价钱。 \ \ \
+ <返回/@main>\
+
+
+[goods]
+;items(cab be Zen)      pieces      hour
+金创药(小量) 200 1	
+魔法药(小量) 200 1
+金创药(中量) 200 1
+魔法药(中量) 200 1
+强效金创药   200 1
+强效魔法药   200 1
+超级金创药		200	1
+超级魔法药		200	1
+金创药(中)包		200	1
+魔法药(中)包 		200	1
+金创药(小)包		200	1
+魔法药(小)包		200	1

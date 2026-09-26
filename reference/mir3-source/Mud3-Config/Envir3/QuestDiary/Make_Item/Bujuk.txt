@@ -1,0 +1,360 @@
+;;º£¥áµÁ
+[@make_Charm_main]
+{
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_1
+
+
+;------------------------
+
+[@Make_Charm_BCharm]
+#IF
+checkitem ÷¼÷Ã¹Ç 3
+checkitem ¼¦Ñª 3
+#ACT
+take ÷¼÷Ã¹Ç 3
+take ¼¦Ñª 3
+mov d0 0
+goto @Make_Charm_BCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_2
+
+
+[@Make_Charm_BCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_BCharm_2
+
+[@Make_Charm_BCharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_BCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_3
+
+
+[@Make_Charm_BCharm_3]
+#IF
+#ACT
+give »¤Éí·û£¨Ð¡£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_4
+
+
+;------------------------
+
+[@Make_Charm_HCharm]
+#IF
+checkitem ½©Ê¬¹ÇÍ· 2
+checkitem ¼¦Ñª 5
+#ACT
+take ½©Ê¬¹ÇÍ· 2
+take ¼¦Ñª 5
+mov d0 0
+goto @Make_Charm_HCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_5
+
+
+[@Make_Charm_HCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_HCharm_2
+
+[@Make_Charm_HCharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_HCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_6
+
+
+[@Make_Charm_HCharm_3]
+#IF
+#ACT
+give ÉñÊ¥»¤Éí·û£¨Ð¡£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_7
+
+
+;------------------------
+
+[@Make_Charm_FCharm]
+#IF
+checkitem ÷¼÷Ã¹Ç 4
+checkitem Ð«×ÓµÄÎ²°Í 1
+checkitem ¼¦Ñª 4
+#ACT
+take ÷¼÷Ã¹Ç 4
+take Ð«×ÓµÄÎ²°Í 1
+take ¼¦Ñª 4
+mov d0 0
+goto @Make_Charm_FCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_8
+
+
+[@Make_Charm_FCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_FCharm_2
+
+[@Make_Charm_FCharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_FCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_9
+
+
+[@Make_Charm_FCharm_3]
+#IF
+#ACT
+give »¤Éí·û£¨»ð£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_10
+
+
+;------------------------
+
+[@Make_Charm_ICharm]
+#IF
+checkitem ¶¾Éßµ¨Ö­ 8
+checkitem ¼¦Ñª 4
+checkitem ¶¾Ö©ÖëÑÀ³Ý 2
+#ACT
+take ¶¾Éßµ¨Ö­ 8
+take ¼¦Ñª 4
+take ¶¾Ö©ÖëÑÀ³Ý 2
+mov d0 0 goto @Make_Charm_ICharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_11
+
+
+[@Make_Charm_ICharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_ICharm_2
+
+[@Make_Charm_ICharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_ICharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_12
+
+
+[@Make_Charm_ICharm_3]
+#IF
+#ACT
+give »¤Éí·û£¨±ù£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_13
+
+
+;------------------------
+
+[@Make_Charm_LCharm]
+#IF
+checkitem ½©Ê¬¹ÇÍ· 2
+checkitem Ê³ÈËÊ÷Ò¶ 2
+checkitem ¼¦Ñª 4
+#ACT
+take ½©Ê¬¹ÇÍ· 2
+take Ê³ÈËÊ÷Ò¶ 2
+take ¼¦Ñª 4
+mov d0 0
+goto @Make_Charm_LCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_14
+
+
+[@Make_Charm_LCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_LCharm_2
+
+[@Make_Charm_LCharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_LCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_15
+
+
+[@Make_Charm_LCharm_3]
+#IF
+#ACT
+give »¤Éí·û£¨À×£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_16
+
+
+;------------------------
+
+[@Make_Charm_WCharm]
+#IF
+checkitem ÷¼÷Ã¹Ç 3
+checkitem Ê³ÈËÊ÷µÄ¹ûÊµ 1
+checkitem ¼¦Ñª 4
+#ACT
+take ÷¼÷Ã¹Ç 3
+take Ê³ÈËÊ÷µÄ¹ûÊµ 1
+take ¼¦Ñª 4
+mov d0 0
+goto @Make_Charm_WCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_17
+
+
+[@Make_Charm_WCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_WCharm_2
+
+[@Make_Charm_WCharm_2]
+#IF
+small d0 96
+#ACT
+goto @Make_Charm_WCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_18
+
+
+[@Make_Charm_WCharm_3]
+#IF
+#ACT
+give »¤Éí·û£¨·ç£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_19
+
+
+;------------------------
+
+[@Make_Charm_RCharm]
+#IF
+checkitem Ò¹Ã÷Öé 10
+checkitem ÉñÁéµñÏñ 5
+checkitem ÅËÒ¹Ö®Àá 3
+checkitem ¼¦Ñª 2
+#ACT
+take Ò¹Ã÷Öé 10
+take ÉñÁéµñÏñ 5
+take ÅËÒ¹Ö®Àá 3
+take ¼¦Ñª 2
+mov d0 0
+goto @Make_Charm_RCharm_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_20
+
+
+[@Make_Charm_RCharm_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_RCharm_2
+
+[@Make_Charm_RCharm_2]
+#IF
+small d0 81
+#ACT
+goto @Make_Charm_RCharm_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_21
+
+
+[@Make_Charm_RCharm_3]
+#IF
+#ACT
+give Áé»ê»¤Éí·û£¨Ð¡£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_22
+
+
+;------------------------
+
+[@Make_Charm_RCharmM]
+#IF
+checkitem Ò¹Ã÷Öé 30
+checkitem ÉñÁéµñÏñ 15
+checkitem ÅËÒ¹Ö®Àá 9
+checkitem ¼¦Ñª 6
+#ACT
+take Ò¹Ã÷Öé 30
+take ÉñÁéµñÏñ 15
+take ÅËÒ¹Ö®Àá 9
+take ¼¦Ñª 6
+mov d0 0
+goto @Make_Charm_RCharmM_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_23
+
+
+[@Make_Charm_RCharmM_1]
+#IF
+#ACT
+movr d0 100
+inc d0 1
+goto @Make_Charm_RCharmM_2
+
+[@Make_Charm_RCharmM_2]
+#IF
+small d0 61
+#ACT
+goto @Make_Charm_RCharmM_3
+#ELSEACT
+mov d0 0
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_24
+
+
+[@Make_Charm_RCharmM_3]
+#IF
+#ACT
+give Áé»ê»¤Éí·û£¨ÖÐ£© 1
+mov d0 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Make_Item\Bujuk.txt] @Bujuk_25
+
+
+;------------------------
+}

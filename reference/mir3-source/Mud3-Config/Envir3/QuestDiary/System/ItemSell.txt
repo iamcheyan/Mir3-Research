@@ -1,0 +1,60 @@
+;;º£¥áµÁ
+[@ItemSell_Control]
+{
+#ACT
+   goto @ItemLimit
+
+[@ItemLimit]
+#IF
+#ACT
+   LoadValue A0 "GM_Def\QuestDiary\System\ItemSell.txt" [ItemLimit] [Name]
+   LoadValue A1 "GM_Def\QuestDiary\System\ItemSell.txt" [ItemCost] [Name]
+   FormatStr "FLD_NAME='%s'" %A0
+   ReadValueSql  "TBL_ItemLimit"  %A9  "FLD_NAME,FLD_MAXCOUNT,FLD_CURRENTCOUNT,FLD_PRICE"  [@ItemLimit_Check]
+
+[@ItemLimit_Check()]
+#IF
+#ACT
+   mov    A0      %ARG(1)
+   mov    D0      %ARG(2)
+   mov    D1      %ARG(3)
+   mov    D2      %ARG(4)
+
+#IF
+   Equal  A0      ""
+#ACT
+   break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\System\ItemSell.txt] @NPC_Noitems
+
+#IF
+   Equal D0       0
+#ACT
+   break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\System\ItemSell.txt] @NPC_SoldOut
+
+#IF
+   Small D0       %D1
+#ACT
+   break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\System\ItemSell.txt] @NPC_SoldOut_1
+
+#IF
+   checkgold      %D2
+#ACT
+   inc   D1       1
+   FormatStr "FLD_NAME='%s'" %A0
+   mov   A8       %A9
+   FormatStr "FLD_CURRENTCOUNT=%s" %D1
+   UpdateValueSql "TBL_ItemLimit" %A8 %A9
+   Take  %A1       %D2
+   give  %A0      1
+   break
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\System\ItemSell.txt] @NPC_Buy_ScrollPortal
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\System\ItemSell.txt] @NPC_NotEnoughGold
+
+}

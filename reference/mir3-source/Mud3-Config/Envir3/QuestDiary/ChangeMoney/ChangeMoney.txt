@@ -1,0 +1,202 @@
+;;海メ盗
+[@Change]
+{
+begin
+	#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_1
+
+	
+	[@gold100]
+	begin
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_2
+
+	end
+
+	[@gold500]
+   begin
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_3
+
+	end
+	[@gold1000]
+	begin
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_4
+
+   end
+	[@Change5Set]
+	begin
+		#IF
+			checkitem 金条 5
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_5
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_6
+
+	end
+
+	[@Change5Set_1]
+	begin
+		#IF
+			checkitem 金条 5
+			checkgold 12000
+		#ACT
+			take 金条 5
+			take 金币 12000
+			give 金条包 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_7
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_8
+
+	end
+
+	[@Reverse5Set]
+	begin
+		#IF
+			checkitem 金条包 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_9
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_10
+
+	end
+
+	[@Reverse5Set_1]
+	begin
+		#IF
+			checkbaggage
+			checkitem 金条包 1
+			checkgold 12000
+		#ACT
+			take 金条包 1
+			take 金币 12000
+			give 金条 5
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_11
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_12
+
+	end
+
+	[@Change10Set]
+	begin
+		#IF
+			checkitem 金条包 2
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_13
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_14
+
+	end
+
+	[@Change10Set_1]
+	begin
+		#IF
+			checkitem 金条包 2
+			checkgold 10000
+		#ACT
+			take 金条包 2
+			take 金币 10000
+			give 金盒 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_15
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_16
+
+	end
+
+	[@Reverse10Set]
+	begin
+		#IF
+			checkitem 金盒 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_17
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_18
+
+	end
+
+	[@Reverse10Set_1]
+	begin
+		#IF
+			checkbaggage
+			checkitem 金盒 1
+			checkgold 10000
+		#ACT
+			take 金盒 1
+			take 金币 10000
+			give 金条包 2
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_19
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_20
+
+	end
+
+	[@Change1]
+	begin
+		#IF
+			checkgold 1000000
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_21
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_22
+
+	end
+
+	[@Change1_1]
+	begin
+		#IF
+			checkbaggage
+			checkgold 1002000
+		#ACT
+			take 金币 1002000
+			give 金条 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_23
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_24
+
+	end
+
+	[@Reverse1]
+   begin
+		#IF
+			checkitem 金条 1
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_25
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_26
+
+	end
+
+	[@Reverse1_1]
+	begin
+		#IF
+			checkitem 金条 1
+			!CheckGold 99000000
+		#ACT
+			take 金条 1
+			give 金币 998000
+		#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_27
+
+		#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\ChangeMoney\ChangeMoney.txt] @ChangeMoney_28
+
+	end
+end
+}

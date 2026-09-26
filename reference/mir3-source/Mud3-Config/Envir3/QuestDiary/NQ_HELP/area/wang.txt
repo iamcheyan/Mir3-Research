@@ -1,0 +1,61 @@
+;;º£¥áµÁ
+[@WANG]
+{
+#IF
+check [168] 1
+#ACT
+goto @WANG_2
+break
+#IF
+check [132] 1
+#ACT
+goto @WANG_1
+break
+#ELSEACT
+goto @WANG_0
+[@WANG_0]
+#IF
+check [164] 1
+#ACT
+goto @WANG_0_2
+#ELSEACT
+goto @WANG_0_1
+[@WANG_0_1]
+#IF
+checkjob warrior
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_1
+
+#ELSEACT
+goto @WANG_0_1_1
+[@WANG_0_1_1]
+#IF
+checkjob wizard
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_2
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_3
+
+[@WANG_0_2]
+#IF
+checklevel 9
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_4
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_5
+
+[@WANG_1]
+#IF
+check [132] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_6
+
+[@WANG_2]
+#IF
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_HELP\area\wang.txt] @wang_7
+
+}

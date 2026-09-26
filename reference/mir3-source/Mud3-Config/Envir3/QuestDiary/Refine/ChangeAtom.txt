@@ -1,0 +1,171 @@
+;;海メ盗
+[@ChangeAtom]
+{
+#IF
+!HasWeaponAtom
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_1
+
+#ACT
+break
+
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_2
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_3
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_4
+
+[@ChangeAtom_Next]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_5
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_6
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_7
+
+
+[@ChangeAtom_Fire]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_8
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 1
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_9
+
+
+[@ChangeAtom_Ice]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_10
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 2
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_11
+
+
+[@ChangeAtom_Light]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_12
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 3
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_13
+
+
+[@ChangeAtom_Wind]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_14
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 4
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_15
+
+
+[@ChangeAtom_Holy]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_16
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 5
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_17
+
+
+[@ChangeAtom_Dark]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_18
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 6
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_19
+
+
+[@ChangeAtom_Pantom]
+#IF
+checkweaponlevel 1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_20
+
+#ELSEACT
+break
+
+#IF
+checkgold 2000000
+#ACT
+ChangeWeaponAtom 7
+take 金币 2000000
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Refine\ChangeAtom.txt] @ChangeAtom_21
+
+}

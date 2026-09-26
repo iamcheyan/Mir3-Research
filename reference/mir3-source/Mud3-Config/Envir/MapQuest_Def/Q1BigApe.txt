@@ -1,0 +1,33 @@
+[@main]
+#IF
+check [405] 1
+#ACT
+break
+
+#IF
+check [404] 1
+#ACT
+goto @next
+break
+
+#IF
+random 5
+check [403] 1
+#ACT
+SET [404] 1
+give JadeCristal 1
+#SAY
+;(흠.. 이게 파관호 도장께서 말한 옥환석이군.. \ 
+Hum.. this is the JadeCristal \
+Rev.taoist Perry was talking about \ 
+;이것이 있으면 결계가 처 있는 방을 갈수 있겠군..) \ \
+(With this JadeCristal I can get in the room on \
+which a taoistic defensive power was set up.) \ \
+
+[@next]
+#IF
+random 5
+#SAY
+;도대체 결계가 쳐 있는 방이 어디지?? \ \
+Where is the room on which the \
+taoistic defensive power was set up?? \ \

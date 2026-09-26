@@ -1,0 +1,316 @@
+;;º£¥áµÁ
+[@Guyonggap_start]
+{
+#IF
+check [162] 1
+#ACT
+goto @Guyonggap_start_16
+break
+#IF
+check [161] 1
+#ACT
+goto @Guyonggap_start_8
+break
+#ELSEACT
+goto @Guyonggap_start_0
+[@Guyonggap_start_0]
+#IF
+check [152] 1
+#ACT
+goto @Guyonggap_start_2
+#ELSEACT
+goto @Guyonggap_start_10
+
+[@Guyonggap_start_2]
+#IF
+checklevel 11
+#ACT
+goto @Guyonggap_start_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_1
+
+
+[@Guyonggap_start_3]
+#IF
+checkitemw ÇáÐÍ¿ø¼×£¨ÄÐ£©
+#ACT
+goto @Guyonggap_start_6
+#ELSEACT
+goto @Guyonggap_start_3_1
+
+[@Guyonggap_start_3_1]
+#IF
+checkitemw ÇáÐÍ¿ø¼×£¨Å®£©
+#ACT
+goto @Guyonggap_start_6
+#ELSEACT
+goto @Guyonggap_start_4
+
+[@Guyonggap_start_4]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_2
+
+
+[@Guyonggap_start_5_1]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_3
+
+
+[@Guyonggap_start_5_2]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_4
+
+
+[@Guyonggap_start_6]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_5
+
+
+[@Guyonggap_start_7]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#ACT
+set [161] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_6
+
+
+[@Guyonggap_start_8]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#ACT
+set [161] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_7
+
+
+[@Guyonggap_start_9]
+#IF
+check [160] 0
+check [168] 1
+check [152] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_8
+
+
+[@Guyonggap_start_10]
+#IF
+checklevel 11
+#ACT
+goto @Guyonggap_start_11
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_9
+
+
+[@Guyonggap_start_11]
+#IF
+checkitemw ÇáÐÍ¿ø¼×£¨ÄÐ£©
+#ACT
+goto @Guyonggap_start_14
+#ELSEACT
+goto @Guyonggap_start_11_1
+
+[@Guyonggap_start_11_1]
+#IF
+checkitemw ÇáÐÍ¿ø¼×£¨Å®£©
+#ACT
+goto @Guyonggap_start_14
+#ELSEACT
+goto @Guyonggap_start_12
+
+[@Guyonggap_start_12]
+#IF
+check [160] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_10
+
+
+[@Guyonggap_start_13_1]
+#IF
+check [160] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_11
+
+
+[@Guyonggap_start_13_2]
+#IF
+check [160] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_12
+
+
+[@Guyonggap_start_14]
+#IF
+check [160] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_13
+
+
+[@Guyonggap_start_15]
+#IF
+check [160] 0
+check [168] 1
+#ACT
+set [162] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_14
+
+
+[@Guyonggap_start_16]
+#IF
+check [160] 0
+check [168] 1
+#ACT
+set [162] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_15
+
+
+[@Guyonggap_start_17]
+#IF
+check [160] 0
+check [168] 1
+#ACT
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_16
+
+
+[@Guyonggap_start_18]
+#IF
+check [160] 0
+check [168] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_17
+
+[@Guyonggap_start_19_1]
+#IF
+check [160] 0
+check [168] 1
+#ACT
+reset [161] 1
+set [160] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_18
+
+
+[@Guyonggap_start_20]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_19
+
+
+[@Guyonggap_start_19_2]
+#IF
+check [160] 0
+check [168] 1
+#ACT
+reset [161] 1
+set [160] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_20
+
+}
+
+[@give_iron]
+{
+#IF
+check [160] 1
+check [170] 0
+checkitem Ìú¿ó 5
+checkduraeva Ìú¿ó 13
+#ACT
+goto @give_iron_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_21
+
+
+[@give_iron_0]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_22
+
+
+[@give_iron_1]
+#IF
+gender man
+#ACT
+goto @give_iron_2_1
+#ELSEACT
+goto @give_iron_2_2
+
+[@give_iron_2_1]
+#IF
+checkitem Ìú¿ó 5
+checkduraeva Ìú¿ó 13
+#ACT
+take Ìú¿ó 5
+give ÄÍ¾ÃÇáÐÍ¿ø¼×£¨ÄÐ£© 1
+goto @give_iron_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_23
+
+
+[@give_iron_2_2]
+#IF
+checkitem Ìú¿ó 5
+checkduraeva Ìú¿ó 13
+#ACT
+take Ìú¿ó 5
+give ÄÍ¾ÃÇáÐÍ¿ø¼×£¨Å®£© 1
+goto @give_iron_3
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_24
+
+
+[@give_iron_3]
+#IF
+check [160] 1
+check [170] 0
+#ACT
+reset [160] 2
+SET [170] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_25
+
+}
+
+[@Guyonggap_complete]
+{
+#IF
+check [152] 1
+#ACT
+goto @Guyonggap_complete_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_26
+
+
+[@Guyonggap_complete_1]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\kyunggap.txt] @kyunggap_27
+
+}

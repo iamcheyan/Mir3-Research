@@ -1,0 +1,30 @@
+;;海メ盗
+[@MapQuest_ilgang_mon2]
+#IF
+check [716] 1
+#ACT
+break
+
+#IF
+check [501] 1
+#ACT
+break
+
+#IF
+check [500] 0
+#ACT
+break
+
+#IF
+#ACT
+goto @MapQuest_ilgang_mon2_1
+
+[@MapQuest_ilgang_mon2_1]
+#IF
+#ACT
+Param1 1_012
+Param2 9
+Param3 12
+MonGen 半兽人61  2  1
+#SAY
+(这么大的事情。半兽人没有了，还要再出现的...)

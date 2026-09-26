@@ -1,0 +1,19 @@
+;;海メ盗
+[@SabukTele_1]
+{
+你不是参加沙巴克攻城战的行会成员。\ \
+<结束/@exit>
+}
+
+[@SabukTele_2]
+{
+你不是参加沙巴克攻城战的行会成员。\ \
+<结束/@exit>
+}
+
+[@SabukTele_3]
+{
+六面神石 \ \
+<移动至道馆村所需金钱 : 500 钱/@TelePortRootin(DoGwan,500,Center)> \
+<移动至毒蛇山村所需金钱 : 500 钱/@TelePortRootin(SnakeVally,500,North)> \
+}

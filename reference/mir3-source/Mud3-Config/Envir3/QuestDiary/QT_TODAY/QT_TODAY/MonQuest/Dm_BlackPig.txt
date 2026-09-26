@@ -1,0 +1,116 @@
+;;∫£•·µ¡
+[@main]
+;
+#IF
+CheckDailyQuest 206
+#ACT
+goto @hkdon_T206
+break
+;
+#IF
+CheckDailyQuest 204
+#ACT
+goto @hkdon_T204
+break
+;
+#ELSEACT
+break
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@hkdon_T206]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hkdon_T206_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hkdon_T206_1]
+#IF
+checkitem ∫⁄“∞÷Ì—¿≥› 99
+#ACT
+give ∫⁄“∞÷Ì—¿≥› 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T206_Say
+
+#ELSEACT
+goto @hkdon_T206_2
+
+[@hkdon_T206_2]
+#IF
+random 3
+#ACT
+give ∫⁄“∞÷Ì—¿≥› 1
+;-----------------------------------------------------
+
+;-----------------------------------------------------
+[@hkdon_T204]
+;
+#IF
+check [310] 1
+#ACT
+break
+
+#IF
+check [309] 1
+#ACT
+break
+
+#IF
+check [308] 1
+#ACT
+break
+
+#IF
+check [307] 1
+#ACT
+goto @hkdon_T204_1
+break
+
+#ELSEACT
+break
+
+;--------------------------------------
+
+[@hkdon_T204_1]
+#IF
+checkitem ∫⁄“∞÷Ì—¿≥› 19
+#ACT
+give ∫⁄“∞÷Ì—¿≥› 1
+set [308] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\QT_TODAY\MonQuest\MonQuestSay.txt] @T204_Say
+
+#ELSEACT
+goto @hkdon_T204_2
+
+[@hkdon_T204_2]
+#IF
+random 3
+#ACT
+give ∫⁄“∞÷Ì—¿≥› 1
+;-----------------------------------------------------

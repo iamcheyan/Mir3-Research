@@ -1,0 +1,27 @@
+;;海メ盗
+[@MapQuest_hangma_getitem]
+
+#IF
+check [722] 1
+#ACT
+break
+
+#IF
+check [510] 1
+#ACT
+break
+
+#IF
+check [509] 1
+#ACT
+goto @MapQuest_hangma_getitem_1
+break
+
+[@MapQuest_hangma_getitem_1]
+#IF
+random 10
+#ACT
+give 灵珠 1
+SET [510] 1
+#SAY
+(你现在去找清明子，把灵珠带给他，就可以修炼'幽灵盾'...)\

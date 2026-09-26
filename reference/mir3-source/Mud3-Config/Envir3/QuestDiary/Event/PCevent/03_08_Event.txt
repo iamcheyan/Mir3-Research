@@ -1,0 +1,62 @@
+;;海メ盗
+[@point200]
+{
+#SAY
+我这里发放200点点卡的礼品。礼品清单是“祝福油1瓶、攻击神水（大）1瓶、自然神水（大）1瓶、疾风神水（大）1瓶、灵魂神水（大）1瓶”。为了保证您获得的礼品不会掉到地上，请保证您身上有 {FCOLOR/10}5格空间{FCOLOR/12}，同时 {FCOLOR/10}除了您现有的负重外，还能拿37以上重量的物品。{FCOLOR/12}如果您已经确认，请点“下一步”领取。\\
+<下一步/@check_200>\
+<取消/@exit>
+
+[@check_200]
+#IF
+checknamelist "\event\point200.txt"
+#ACT
+give 祝福油 1
+give 攻击神水（大） 1
+give 自然神水（大） 1
+give 疾风神水（大） 1
+give 灵魂神水（大） 1
+delnamelist "\event\point200.txt"
+#SAY
+恭喜您，您获得了一份礼品！祝您游戏愉快！如果您还有礼品可领，请再次和我说话。\
+<取消/@exit>
+#ELSESAY
+抱歉，您目前不能领取礼品，获得领取资格的方式，请查阅官方网站 http://www.mir3.com.cn。\\
+<取消/@exit>
+}
+
+
+
+[@point720]
+{
+#SAY
+我这里发放720点点卡的礼品。礼品清单是“祝福油3瓶、攻击神水（特）2瓶、自然神水（特）2瓶、疾风神水（特）2瓶、灵魂神水（特）2瓶”。为了保证您获得的礼品不会掉到地上，请保证您身上有{FCOLOR/10}5格空间{FCOLOR/12}，同时{FCOLOR/10}除了您现有的负重外，还能拿115以上重量的物品。{FCOLOR/12} \
+如果您是{FCOLOR/1}法师{FCOLOR/12}，需要{FCOLOR/10}18级{FCOLOR/12}以上，并且{FCOLOR/11}全身不带任何东西{FCOLOR/12}；\
+如果您是{FCOLOR/1}道士{FCOLOR/12}，需要{FCOLOR/10}17级{FCOLOR/12}以上，并且{FCOLOR/11}全身不带任何东西{FCOLOR/12}；\
+如果您是{FCOLOR/1}战士{FCOLOR/12}，需要{FCOLOR/10}14级{FCOLOR/12}以上，并且{FCOLOR/11}全身不带任何东西。{FCOLOR/12}\
+如果您已经确认，请点“下一步”领取。\
+<下一步/@point720_1>\
+<取消/@exit>
+
+[@point720_1]
+#SAY
+您确认您可以拿下这些礼品吗？\ \
+<确认/@check_720>\
+<取消/@exit>
+
+[@check_720]
+#IF
+checknamelist "\event\point720.txt"
+#ACT
+give 祝福油 3
+give 攻击神水（特） 2
+give 自然神水（特） 2
+give 疾风神水（特） 2
+give 灵魂神水（特） 2
+delnamelist "\event\point720.txt"
+#SAY
+恭喜您，您获得了一份礼品！祝您游戏愉快！如果您还有礼品可领，请再次和我说话。
+<取消/@exit>
+#ELSESAY
+抱歉，您目前不能领取礼品，获得领取资格的方式，请查阅官方网站 http://www.mir3.com.cn。\\
+<取消/@exit>
+}

@@ -1,0 +1,251 @@
+;;º£¥áµÁ
+%100
+;weapon
++5
++6
+;mineral
++43
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_RedPlayer
+
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_Main_0_0
+
+;----------------------------------------------------------
+
+[@Special_Repair()]
+#CALL [\Repair\TotalRepair.txt] @SRepairItem
+
+[@buy]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_Buy
+
+[@sell]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_Sell
+
+[@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_Repair
+
+[~@repair]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_Repair_Complete
+
+[Goods]
+;ItemName      Volume     Hour
+Ä¾½£            100        1
+Ø°Ê×            100        1
+ÇàÍ­½£          100        1
+Ìú½£            100        1
+ÎÚÄ¾½£          100        1
+¶Ì½£            100        1
+ÇàÍ­¸«          100        1
+°Ë»Ä            100        1
+Áè·ç            100        1
+Õ¶Âíµ¶          100        1
+ÐÞÂÞ            100        1
+º£»ê            100        1
+°ëÔÂ            100        1
+ÙÈÔÂ            100        1
+º£»ê            100        1
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 499
+#ACT
+goto @TQuest499_0
+break
+;
+#IF
+CheckDailyQuest 472
+#ACT
+goto @TQuest472_0
+break
+;
+#IF
+CheckDailyQuest 538
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 537
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 413
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest499_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest499_2
+break
+;
+#ELSEACT
+goto @TQuest499_1
+
+;--------------
+
+[@TQuest499_1]
+#CALL [\QT_TODAY\4thClass.txt] @499_START
+
+[@TQuest499_2]
+#CALL [\QT_TODAY\4thClass.txt] @499_CHECK1
+
+;--------------
+
+[@TQuest472_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest472_2
+break
+;
+#ELSEACT
+goto @TQuest472_1
+
+;--------------
+
+[@TQuest472_1]
+#CALL [\QT_TODAY\4thClass.txt] @472_START
+
+[@TQuest472_2]
+#CALL [\QT_TODAY\4thClass.txt] @472_CHECK1
+;------------------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @413_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @413_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\02Weapon_Mongchon-74.txt] @NPC_TQuest_1
+
+;------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @537_START
+
+[@TQuest2_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @537_CHECK1
+
+;------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @538_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @538_CHECK1
+
+;------------------------------

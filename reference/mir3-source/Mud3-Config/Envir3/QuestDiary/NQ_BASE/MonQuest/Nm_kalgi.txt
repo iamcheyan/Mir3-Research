@@ -1,0 +1,56 @@
+;;º£¥áµÁ
+[@main]
+;-----------------------------------------------------
+;-----------------------------------------------------
+#IF
+check [271] 1
+#ACT
+break
+;
+#IF
+check [268] 1
+#ACT
+break
+;
+#IF
+check [267] 1
+#ACT
+goto @galkwui1
+
+
+;----------------------------------------------------------
+
+[@galkwui1]
+#IF
+large s2 3
+#ACT
+goto @galkwui9
+#ELSEACT
+goto @galkwui2
+
+
+[@galkwui2]
+#IF
+large s2 2
+#ACT
+goto @galkwui3
+#ELSEACT
+mov s2 2
+goto @galkwui3
+
+[@galkwui3]
+#IF
+#ACT
+inc s2 1
+
+;-----------------------------------------------------
+
+[@galkwui9]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\MonQuest\Nm_kalgi.txt] @Nm_kalgi_1
+
+#ACT
+give Öñ¹÷ 1
+set [268] 1
+mov s2 0

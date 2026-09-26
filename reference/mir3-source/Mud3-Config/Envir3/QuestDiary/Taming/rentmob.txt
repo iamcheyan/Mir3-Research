@@ -1,0 +1,439 @@
+;;海メ盗
+;-------------------------------------------------------------------------------------------
+[@Event_taming]
+{
+#DEFINE    N1{RENTHOUR}       N1
+#DEFINE    N2{RENTFARE}       N2
+
+#SAY
+	你好啊.. 我会赋予你一种特殊的魔法。 \
+	你问是什么魔法？用我这种魔法你可以驯服那些从前无法征服的怪物，把它们收为你的部下，听你的指挥。怎么样，有兴趣吗？？ \ \
+	<租1个小时的怪物。/@1Hour_Taming> \
+	<租2个小时的怪物。/@2Hour_Taming> \
+	<租3个小时的怪物。/@3Hour_Taming> \
+	<随机租1个小时的怪物。[30,000金币]./@Taming_rand(1,30000)> \
+	<随机租2个小时的怪物。[60,000金币]./@Taming_rand(2,60000)> \
+	<随机租3个小时的怪物。[150,000金币]./@Taming_rand(3,150000)> \\
+        <[ 返 回 ]/@main>\
+	<[ 关 闭 ]/@exit>
+
+;-------------------------------------------------------------------------------
+[@1Hour_Taming]
+begin
+	#IF
+   	        checklevel 41
+	#SAY
+                这里是你可以租用的怪物。。\ \
+		<血金刚[16000金币]/@Taming(血金刚,1,16000)> , <赤血恶魔[16000金币]/@Taming(赤血恶魔,1,16000)> , <灰血恶魔[16000金币]/@Taming(灰血恶魔,1,16000)> , <潘夜战士[16000金币]/@Taming(潘夜战士,1,16000)> \ \
+	#IF
+		checklevel 31
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<骷髅士兵[8000金币]/@Taming(骷髅士兵,1,8000)> , <骷髅弓箭手[8000金币]/@Taming(骷髅弓箭手,1,8000)> , <骷髅武士[8000金币]/@Taming(骷髅武士,1,8000)> , <骷髅武将[8000金币]/@Taming(骷髅武将,1,8000)> \ \
+	#IF
+		checklevel 21
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<红野猪[4000金币]/@Taming(红野猪,1,4000)> , <黑野猪[4000金币]/@Taming(黑野猪,1,4000)> , <蝎蛇[4000金币]/@Taming(蝎蛇,1,4000)> \ \
+	#IF
+		checklevel 11
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<沃玛勇士[2000金币]/@Taming(沃玛勇士,1,2000)> , <沃玛战将[2000金币]/@Taming(沃玛战将,1,2000)> \ \
+	#IF
+		checklevel 1
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<掷斧骷髅[1000金币]/@Taming(掷斧骷髅,1,1000)> , <骷髅战将[1000金币]/@Taming(骷髅战将,1,1000)> \ \
+                <[ 返 回 ]/@main>\
+	        <[ 关 闭 ]/@exit>
+end
+
+;-------------------------------------------------------------------------------
+[@2Hour_Taming]
+begin
+	#IF
+		checklevel 41
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<血金刚[34000金币]/@Taming(血金刚,2,34000)> , <赤血恶魔[34000金币]/@Taming(赤血恶魔,2,34000)> , <灰血恶魔[34000金币]/@Taming(灰血恶魔,2,34000)> , <潘夜战士[34000金币]/@Taming(潘夜战士,2,34000)> \ \
+	#IF
+		checklevel 31
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<骷髅士兵[16000金币]/@Taming(骷髅士兵,2,16000)> , <骷髅弓箭手[16000金币]/@Taming(骷髅弓箭手,2,16000)> , <骷髅武士[16000金币]/@Taming(骷髅武士,2,16000)> , <骷髅武将[16000金币]/@Taming(骷髅武将,2,16000)> \ \
+	#IF
+		checklevel 21
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<红野猪[8000金币]/@Taming(红野猪,2,8000)> , <黑野猪[8000金币]/@Taming(黑野猪,2,8000)> , <蝎蛇[8000金币]/@Taming(蝎蛇,2,8000)> \ \
+	#IF
+		checklevel 11
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<沃玛勇士[4000金币]/@Taming(沃玛勇士,2,4000)> , <沃玛战将[4000金币]/@Taming(沃玛战将,2,4000)> \ \
+	#IF
+		checklevel 1
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<掷斧骷髅[2000金币]/@Taming(掷斧骷髅,2,2000)> , <骷髅战将[2000金币]/@Taming(骷髅战将,2,2000)> \ \
+                <[ 返 回 ]/@main>\
+	        <[ 关 闭 ]/@exit>
+end
+
+;-------------------------------------------------------------------------------
+[@3Hour_Taming]
+begin
+	#IF
+		checklevel 41
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<血金刚[80000金币]/@Taming(血金刚,3,80000)> , <赤血恶魔[80000金币]/@Taming(赤血恶魔,3,80000)> , <灰血恶魔[80000金币]/@Taming(灰血恶魔,3,80000)> , <潘夜战士[80000金币]/@Taming(潘夜战士,3,80000)> \ \
+	#IF
+		checklevel 31
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<骷髅士兵[40000金币]/@Taming(骷髅士兵,3,40000)> , <骷髅弓箭手[40000金币]/@Taming(骷髅弓箭手,3,40000)> , <骷髅武士[40000金币]/@Taming(骷髅武士,3,40000)> , <骷髅武将[40000金币]/@Taming(骷髅武将,3,40000)> \ \
+	#IF
+		checklevel 21
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<红野猪[20000金币]/@Taming(红野猪,3,20000)> , <黑野猪[20000金币]/@Taming(黑野猪,3,20000)> , <蝎蛇[20000金币]/@Taming(蝎蛇,3,20000)> \ \
+	#IF
+		checklevel 11
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<沃玛勇士[10000金币]/@Taming(沃玛勇士,3,10000)> , <沃玛战将[10000金币]/@Taming(沃玛战将,3,10000)> \ \
+	#IF
+		checklevel 1
+	#SAY
+		这里是你可以租用的怪物。。\ \
+		<掷斧骷髅[5000金币]/@Taming(掷斧骷髅,3,5000)> , <骷髅战将[5000金币]/@Taming(骷髅战将,3,5000)> \ \
+                <[ 返 回 ]/@main>\
+	        <[ 关 闭 ]/@exit>
+end
+
+
+;-------------------------------------------------------------------------------
+[@Taming()]
+begin
+	#ACT
+	  Mov        A1       %ARG(1)
+	  Mov        N3       %ARG(2)
+	  Mov        N4       %ARG(3)
+
+  #IF
+    checkgold  %N4
+    checkmonRecall
+  #ACT
+    take       金币     %N3
+    MonRecall  %A1      %N3        0
+  #SAY
+		已成功完成租用。。 \ \
+      <[ 关 闭 ]/@exit>
+  #ELSESAY
+		您已经租用了怪物，或者金币不够，麻烦确认一下。。 \ \
+		<[ 关 闭 ]/@exit>
+end
+
+;-------------------------------------------------------------------------------
+[@Taming_rand()]
+begin
+	#ACT
+	  Mov N1{RENTHOUR} %ARG(1)
+	  Mov N2{RENTFARE} %ARG(2)
+
+	#IF
+		!checkgold %N2{RENTFARE}
+        #SAY
+      		你的金币不够，麻烦确认一下。。\\
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+        #ACT
+                break
+        #IF
+		checkmonrecall
+	#ACT
+		movr s0 25
+	#ELSESAY
+		您已经租用了怪物，麻烦确认一下。。\\
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+        #ELSEACT
+                break
+
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 0
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 掷斧骷髅       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 1
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 骷髅战将       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 2
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 沃玛勇士       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 3
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 沃玛战将       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 4
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 红野猪         %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 5
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 黑野猪         %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 6
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 蝎蛇           %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 7
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 骷髅士兵       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 8
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 骷髅弓箭手     %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 9
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 骷髅武士       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 10
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 骷髅武将       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 11
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 血金刚         %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 12
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 赤血恶魔       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 13
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 灰血恶魔       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 14
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 潘夜战士       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 15
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 柴三郎         %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 16
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 玲花           %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 17
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 护卫武士       %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 18
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 潘夜右护卫     %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		equal s0 19
+		checkmonrecall
+#SAY
+		已成功完成租用。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take      金币           %N2{RENTFARE}
+		monrecall 潘夜左护卫     %N1{RENTHOUR}   0
+		break
+
+#IF
+		checkgold   %N2{RENTFARE}
+		Large s0 19
+		checkmonrecall
+#SAY
+		这次没召唤到怪物，损失金币1000。。 \ \
+                <[ 返 回 ]/@main>\
+		<[ 关 闭 ]/@exit>
+#ACT
+		take 金币 1000
+		break
+
+end
+}

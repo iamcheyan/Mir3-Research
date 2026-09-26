@@ -1,0 +1,441 @@
+;;베α돝
+[@SBMain]
+{
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_1]
+	Eventmsg Grobal "%A0" 10004
+
+DelayGoto [Grobal] 12 @Event_Start_3
+
+[@Event_Start_3]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_2]
+	Eventmsg Grobal "%A0" 10004
+
+DelayGoto [Grobal] 12 @Event_Start_4
+
+[@Event_Start_4]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_3]
+	Eventmsg Grobal "%A0" 10004
+
+DelayGoto [Grobal] 12 @Event_Start_5
+
+[@Event_Start_5]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_4]
+	Eventmsg Grobal "%A0" 10004
+
+DelayGoto [Grobal] 180 @Event_Start_6 
+
+[@Event_Start_6]
+begin
+#ACT
+;-----------------------참가신청을 막음
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [join] 1
+
+;-----------------------GM_Def의 제한시간을 플래그에 저장
+loadValue P0 "GM_Def\Event\SnowBattle\GM.txt" [EventTime] [TimeSet]
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Event_Timer] [Time] %P0
+
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_1]
+	Eventmsg "snow" "%A0" 10004
+delaygoto [grobal] 12 @Event_Start_7
+
+[@Event_Start_7]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_2]
+	Eventmsg "snow" "%A0" 10004
+
+delaygoto [grobal] 12 @Event_Start_8
+
+[@Event_Start_8]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_3]
+	Eventmsg "snow" "%A0" 10004
+
+delaygoto [grobal] 12 @Event_Start_9
+
+[@Event_Start_9]
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_4]
+	Eventmsg "snow" "%A0" 10004
+
+delaygoto [grobal] 12 @Event_Start_10
+
+[@Event_Start_10]
+#ACT
+ChangeMapAttr  "snow" "SNOWFIGHT"
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_5]
+	Eventmsg "snow" "%A0" 10004
+
+goto @MapSpell
+delaygoto [grobal] 12 @SBevent_Loop
+
+[@MapSpell]
+;----------------------맵스펠 무한루프 불러오는부분
+#CALL [\\Event\SnowBattle\MapSpell.txt] @MapSpellMasic
+
+
+;---------------------시간제한 루프 시작부분
+[@SBevent_Loop]
+;----------------------눈사람 젠시키는 구문
+#ACT
+loadValue P0 "GM_Def\Event\SnowBattle\GM.txt" [SnowManGen] [Stock]
+LoadValue P1 "Flag_Def\event\SnowBattle\Flag.txt" [Event_Timer] [Time]
+
+#IF
+!CheckMonMap "Snow,43,29,5" %P0 
+#ACT
+MonGenP "Snow,43,29,4" 汽훙 %P0
+;ApplyMonEx "Snow,43,29,10" 汽훙 [Monsterside]
+;ApplyMonEx "Snow,43,29,10" 汽훙 [Runaway]
+
+#IF
+!CheckMonMap "Snow,16,29,5" %P0 
+#ACT
+MonGenP "Snow,16,29,4" 汽훙 %P0 
+;ApplyMonEx "Snow,16,29,10" 汽훙 [Monsterside]
+;ApplyMonEx "Snow,16,29,10" 汽훙 [Runaway]
+
+;----------------120초 남앗을때 서든데스스펠 발동
+#IF
+Equal P1 120
+#ACT
+Goto @SuddenDeathSpell
+
+#IF
+#ACT
+goto @Hum_Check_Mir
+break
+
+[@SuddenDeathSpell]
+#CALL [\\Event\SnowBattle\MapSpell.txt] @SuddenDeathSpell_1
+
+[@Hum_Check_Mir]
+;---------------각팀의 남은 인원수를 체크하여 저장함
+#IF
+checkHum "Snow,50,29,21"
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Mir] %P9
+goto @Hum_Check_Legend
+
+[@Hum_Check_Legend]
+#IF
+checkHum "Snow,9,29,21"
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Legend] %P9
+goto @Live_Msg
+
+
+[@Live_Msg]
+;;------------------이벤트 생중계 1분마다 나오는구문
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [Live_Msg] [open] 
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [Event_Timer] [Time]
+
+#IF
+Equal P0 1
+#ACT
+goto @Live_Msg_1
+break
+
+#ELSEACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Live_Msg] [open] 1
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [LineMSG] [Line_1]
+	Linemsg "snow" "%A0"
+
+goto @LoopCheck
+break
+
+[@Live_Msg_1]
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [Event_Timer] [Time]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Mir]
+loadValue P2 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Legend]
+
+#IF
+Large P1 %P2
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Live_Msg] [open] 0
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_5]
+	Eventmsg Grobal "%A0" 
+
+goto @LoopCheck
+break
+
+#IF
+Small P1 %P2
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Live_Msg] [open] 0
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_6]
+	Eventmsg Grobal "%A0" 
+
+goto @LoopCheck
+break
+
+#IF
+Equal P1 %P2
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Live_Msg] [open] 0
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_7]
+	Eventmsg Grobal "%A0" 
+
+goto @LoopCheck
+break
+
+#ELSEACT
+goto @LoopCheck
+break
+
+[@LoopCheck]
+;-------------------시간제한루프 체크구문----------------------------------------
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [start]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Mirwin]
+loadValue P2 "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Legendwin]
+loadValue P3 "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [Finish]
+loadValue P4 "Flag_Def\Event\SnowBattle\Flag.txt" [Event_Timer] [Time]
+loadValue P5 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Mir]
+loadValue P6 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Legend]
+;-------------------이벤트 제한시간 설정------------------------------------------
+#IF
+Equal P4 0
+#ACT
+Goto @TimeOver
+break
+
+;-------------------미르진영에 인원이 전멸되면 전설팀승리 체크-----------
+#IF
+Equal P0 1
+Equal P1 0
+Equal P2 0
+!checkhum "Snow,50,29,21" 1 
+checkhum "Snow,9,29,21" 1
+#ACT
+goto @Legendwin_check
+break
+;------------------전설진영이 전멸되면 미르팀승리체크
+#IF
+Equal P0 1
+Equal P1 0
+Equal P2 0
+!checkhum "Snow,9,29,21" 1 
+checkhum "Snow,50,29,21" 1
+#ACT
+goto @Mirwin_check
+break
+;---------------양진영에 살아남은 사람이 한명도 없을때 중지
+#IF
+Equal P0 1
+Equal P5 0
+Equal P6 0
+
+#ACT
+goto @AutoStop
+break
+
+#IF
+Equal P3 0
+#ACT
+Dec P4 30
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Event_Timer] [Time] %P4
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [LineMSG] [Line_2]
+	Linemsg "z010" "%A0"
+
+delaygoto [grobal] 30 @SBevent_Loop
+break
+;-----------------------시간제한 루프구문
+#ELSEACT
+break
+
+
+[@TimeOver]
+;---------------------시간 초과후 결과처리
+#ACT
+ResetMapAttr "snow"
+SetAreaAttr  "snow, 28, 29, 50"  "NoRevival"
+ChangeMapAttr  "snow" "NoSpell"
+Monclear snow
+goto @TimeOver_Hum_Check_Mir
+
+[@TimeOver_Hum_Check_Mir]
+;---------------각팀의 남은 인원수를 체크하여 저장함
+#IF
+checkHum "Snow,50,29,21"
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Mir] %P9
+goto @TimeOver_Hum_Check_Legend
+
+[@TimeOver_Hum_Check_Legend]
+#IF
+checkHum "Snow,9,29,21"
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Legend] %P9
+goto @TimeOver_judge
+
+[@TimeOver_judge]
+#ACT
+loadValue P0 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Mir]
+loadValue P1 "Flag_Def\Event\SnowBattle\Flag.txt" [Hum_Check] [Legend]
+
+#IF
+Large P0 %P1
+#ACT
+goto @Mirwin_check
+break
+
+#IF
+Small P0 %P1
+#ACT
+goto @Legendwin_check
+break
+
+#IF
+Equal P0 %P1
+#ACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Snow_10]
+	EventMSG Grobal "%A0" 10004
+ChangeMapAttr  "snow" "SNOWFIGHT"
+goto @SuddenDeathSpell
+Delaygoto [Grobal] 60 @TimeOver
+break
+
+#ELSEACT
+break
+
+[@AutoStop]
+;-----------------무한루프 자동종료---------------------------------------
+#ACT
+ResetMapAttr "snow"
+SetAreaAttr  "snow, 28, 29, 50"  "NoRevival"
+ChangeMapAttr  "snow" "NoSpell"
+Monclear snow
+
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [join] 0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [mir] 0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [legend] 0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [user_count] [check] 50
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Mirwin] 0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Legendwin] 0
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [Finish] 1
+;------------------이벤트맵,엔피씨의클리어
+
+
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [Grobal_8]
+	Eventmsg Grobal "%A0" 10004
+DelayGoto [Grobal] 30 @MapTing
+break
+
+;-------------------------------------------------------------------------------------------------------
+
+[@Mirwin_check]
+#ACT
+ResetMapAttr "snow"
+SetAreaAttr  "snow, 28, 29, 50"  "NoRevival"
+ChangeMapAttr  "snow" "NoSpell"
+Monclear snow
+
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Mirwin] 1
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_6]
+	Eventmsg "snow" "%A0" 10004
+goto @MirWin_Gold_Check
+break
+
+[@MirWin_Gold_Check]
+#IF
+checkHum "Snow,50,29,21"
+#ACT
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [PersonNum] %P9
+Delaygoto [Grobal] 3 @MirWin_Gold_Check_1
+
+[@MirWin_Gold_Check_1]
+#IF
+#ACT
+	LoadValue P0 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [PersonNum]
+	LoadValue P1 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold]
+Div P1 P0
+Mov B0 %P9
+Delaygoto [Grobal] 3 @MirWin_Gold_Check_2
+
+[@MirWin_Gold_Check_2]
+#IF
+#ACT
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Reward] %B0
+DelayGoto [Grobal] 12 @Mirwin
+
+[@Mirwin]
+#ACT
+;---------------------- 이벤트 구동플레그 초기화 ----------------------
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [Finish] 1
+;---------------------- 미르측에 엔피씨불러옴 -------------------------
+Mapmover "snow,9,29,21" "0,435,377,16"
+SendCmd  "snow, 39, 29, 3"  눈펜뚠랙쉽NPC Show
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_7]
+	Eventmsg "snow" "%A0" 10004
+
+DelayGoto [Grobal] 120 @MapTing
+break
+
+;--------------------------------------------------------------------------------------------------------
+
+[@Legendwin_check]
+#ACT
+ResetMapAttr "snow"
+SetAreaAttr  "snow, 28, 29, 50"  "NoRevival"
+ChangeMapAttr  "snow" "NoSpell"
+Monclear snow
+
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [wincheck] [Legendwin] 1
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_8]
+	Eventmsg "snow" "%A0" 10004
+
+goto @LegendWin_Gold_Check
+break
+
+[@LegendWin_Gold_Check]
+#IF
+checkHum "Snow,9,29,21"
+#ACT
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [PersonNum] %P9
+Delaygoto [Grobal] 3 @LegendWin_Gold_Check_1
+
+[@LegendWin_Gold_Check_1]
+#IF
+#ACT
+	LoadValue P0 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [PersonNum]
+	LoadValue P1 "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Gold]
+Div P1 P0
+Mov B0 %P9
+Delaygoto [Grobal] 3 @LegendWin_Gold_Check_2
+
+[@LegendWin_Gold_Check_2]
+#IF
+#ACT
+	SaveValue "Flag_Def\Event\SnowBattle\Gold.txt" [Gold] [Reward] %B0
+DelayGoto [Grobal] 12 @Legendwin
+
+[@Legendwin]
+#ACT
+;----------------------이벤트 구동플레그 초기화 ---------------------
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [Finish] 1
+;--------------------- 전설측에 엔피씨불러옴 ------------------------
+Mapmover "snow,50,29,21" "0,435,377,16"
+SendCmd  "snow, 22, 29, 3"  눈綱뚠랙쉽NPC Show
+	LoadValue A0 "Convert_Def\QuestDiary\Event\SnowBattle\SnowBattle.txt" [EventMSG] [snow_9]
+	Eventmsg "snow" "%A0" 10004
+
+DelayGoto [Grobal] 120 @MapTing
+break
+;-----------------------------------------------------------------------------------------------------
+[@MapTing]
+#ACT
+SaveValue "Flag_Def\Event\SnowBattle\Flag.txt" [event_main] [start] 0
+loadValue A0 "GM_Def\Event\SnowBattle\GM.txt" [Reward] [Item]
+ClearItemMap "snow, 30, 29, 100" %A0
+Mapting snow 0 435 377
+break
+
+}
+
+;----------------------------------------------------------------------------

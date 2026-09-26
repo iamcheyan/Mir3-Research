@@ -1,0 +1,30 @@
+; ===================================
+; Market Def NPC File : Stairs-GA2
+; 
+; -----------------------------------
+; Name: Stairs
+; Job: 
+; Map No: GA2
+; Pos X 12
+; Pos Y 38
+; File name: *removed*
+; Comment: 
+
+;================================================= =
+;
+
+[@main]
+<传送/@move3nd> to the 3rd floor.\ \
+<传送/@move1st> to the 1st floor.\  \
+<取消/@exit>
+
+
+[@move3nd]
+#ACT
+mapmove GA36 8 31
+close
+
+[@move1st]
+#ACT
+mapmove GA16 18 42
+close

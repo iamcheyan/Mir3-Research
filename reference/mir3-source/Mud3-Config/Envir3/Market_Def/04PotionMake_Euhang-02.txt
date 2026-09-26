@@ -1,0 +1,181 @@
+;;º£¥áµÁ
+%100
++0
++42
+
+
+[@main]
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Quest Separate Block
+;;------------------------------------------------------------------------------
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Euhang-02.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Npc Menu Block
+;;------------------------------------------------------------------------------
+
+[@main_0_0]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Euhang-02.txt] @NPC_Main
+ 
+;---------------------------------------------------------- 
+
+
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Area Quest Block
+;;------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 525
+#ACT
+goto @TQuest4_0
+break
+;
+#IF
+CheckDailyQuest 502
+#ACT
+goto @TQuest3_0
+break
+;
+#IF
+CheckDailyQuest 445
+#ACT
+goto @TQuest2_0
+break
+;
+#IF
+CheckDailyQuest 422
+#ACT
+goto @TQuest1_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Euhang-02.txt] @NPC_TQuest
+
+;--------------
+
+[@TQuest1_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest1_2
+break
+;
+#ELSEACT
+goto @TQuest1_1
+
+;--------------
+
+[@TQuest1_1]
+#CALL [\QT_TODAY\4thClass.txt] @422_START
+
+[@TQuest1_2]
+#CALL [\QT_TODAY\4thClass.txt] @422_CHECK1
+
+;--------------
+
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\04PotionMake_Euhang-02.txt] @NPC_TQuest_1
+
+;----------------------------------
+
+[@TQuest2_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest2_2
+break
+;
+#ELSEACT
+goto @TQuest2_1
+
+;--------------
+
+[@TQuest2_1]
+#CALL [\QT_TODAY\4thClass.txt] @445_START
+
+[@TQuest2_2]
+#CALL [\QT_TODAY\4thClass.txt] @445_CHECK1
+
+;------------------------------
+
+[@TQuest3_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest3_2
+break
+;
+#ELSEACT
+goto @TQuest3_1
+
+;--------------
+
+[@TQuest3_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @502_START
+
+[@TQuest3_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @502_CHECK1
+
+;----------------------------------
+
+[@TQuest4_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest4_2
+break
+;
+#ELSEACT
+goto @TQuest4_1
+
+;--------------
+
+[@TQuest4_1]
+;;#CALL [\QT_TODAY\5thClass.txt] @525_START
+
+[@TQuest4_2]
+;;#CALL [\QT_TODAY\5thClass.txt] @525_CHECK1
+
+;----------------------------------

@@ -1,0 +1,39 @@
+;;海メ盗
+[@MapQuest_massheal_cave_complete]
+#IF
+check [730] 1
+#ACT
+break
+#IF
+check [526] 1
+#ACT
+break
+#IF
+check [524] 0
+#ACT
+break
+#IF
+check [523] 0
+#ACT
+break
+#IF
+check [523] 1
+check [524] 1
+check [730] 0
+#ACT
+goto @MapQuest_massheal_cave_complete_1
+
+[@MapQuest_massheal_cave_complete_1]
+#IF
+check [526] 0
+#ACT
+give 群体治愈术（秘籍）   1
+set [526] 1
+goto @MapQuest_massheal_cave_complete_3
+#SAY
+(几乎都处理哟...) \
+
+[@MapQuest_massheal_cave_complete_3]
+#IF
+#ACT
+mapmove D6004  42  264

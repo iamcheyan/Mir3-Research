@@ -1,0 +1,31 @@
+;;º£¥áµÁ
+[@GEventgrobal_Msg01]
+{
+#ACT
+	  LoadValue P1 "Flag_Def\Event\Event_Game\GEvent_01.txt" [00] [Open]
+	  LoadValue P2 "Flag_Def\Event\Event_Game\GEvent_01.txt" [01] [Open]
+	  LoadValue P3 "Flag_Def\Event\Event_Game\GEvent_01.txt" [0] [Open]
+#IF
+	Equal   P1     1
+	Equal   P2     1
+	Equal   P3     1
+#ACT
+	goto @Msg01_go
+	break
+
+
+#ELSEACT
+	LoadValue A0 "Convert_Def\QuestDiary\Event\Event_Game01\GEvent_Msg01_MSG.txt" [LineMSG] [MSG01] 
+linemsg "%A0"
+break
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Event_Game01\GEvent_Msg01.txt] @NPC_NotReady
+
+[@Msg01_go]
+#ACT
+SaveValue "Flag_Def\Event\Event_Game\GEvent_01.txt" [OneDay] [Eventgen] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Event\Event_Game01\GEvent_Msg01.txt] @NPC_Start_Rush
+
+
+}

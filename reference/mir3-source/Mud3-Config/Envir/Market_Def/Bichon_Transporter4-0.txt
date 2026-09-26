@@ -1,0 +1,138 @@
+; ===================================
+; Npc Def NPC File : Bichon_Transporter4-0
+; 回城卷 npc in 比奇县
+; -----------------------------------
+; Name: Kyle
+; Job: 
+; Map No: 0
+; Pos X 
+; Pos Y 
+; File name: *removed*
+; Comment: 回城卷 npc in 比奇县
+
+;================================================= =
+;
+
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+我不会传送你这样的人!\ \
+<好的/@exit>
+#ELSEACT
+goto @main-1
+
+[@main-1]
+#IF
+CHECKLEVEL 50
+#ACT
+goto @level50check
+break
+#ELSEACT
+goto @main-2
+
+[@level50check]
+#IF
+CHECK [190] 1
+#ACT
+goto @main-2
+break
+#ELSESAY
+哇，一个强大的英雄来了。杰森说，有一天\
+一个强大的英雄如自己必显露自己。\ \
+杰森会很高兴见到你，去发现他在\
+“比奇县”（296,220）。告诉他凯尔送你。\ \
+<我要做的/@exit>\
+<使用服务/@tele>
+
+[@main-2]
+你好，我是凯尔，流浪的战士。\
+我的人和货物运输到其他地方\
+快速和安全。只需支付费用\
+我会陪你到任何地方。\
+你怎么说?\ \
+ <使用服务/@tele>\
+ <下次再使用/@exit>
+
+[@tele]
+ 现在，你想去的地方?\ \
+ 
+ <边界村(500 金币)/@move1>\
+ <银杏树谷(500 金币)/@move2>\
+ <毒蛇山谷(500 金币)/@move3>\
+ <日弘门(1000 金币)/@move4>\
+ <墨龙城(1000 金币)/@move5>\
+ <盟重县(1000 金币)/@move6>\
+ <下次再使用/@exit>
+
+[@move1]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 0 289 617
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move2]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 0 635 613
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move3]
+#IF
+checkgold 500
+#ACT
+take 金币 500
+mapmove 2 500 485
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move4]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 11 164 337
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move5]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 4 264 257
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>
+
+[@move6]
+#IF
+checkgold 1000
+#ACT
+take 金币 1000
+mapmove 3 361 342
+break
+#ELSESAY
+你没有足够的金币来利用我的服务！\
+走了，别再浪费我的时间！\ \
+<离开/@exit>

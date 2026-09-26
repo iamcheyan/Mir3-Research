@@ -1,0 +1,59 @@
+;;º£¥áµÁ
+[@main]
+#IF
+checkpkpoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09ChangeMoney_Bichon-0.txt] @NPC_RedPlayer
+#ELSEACT
+goto @main_0_0
+
+[@main_0_0]
+#CALL [\ChangeMoney\ChangeMoney.txt] @Change
+
+;;------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;; Daily Quest Block
+;;------------------------------------------------------------------------------
+
+[@TQuest]
+#IF
+CheckDailyQuest 486
+#ACT
+goto @TQuest486_0
+break
+;
+#ELSESAY
+	#INCLUDE [..\Convert_Def\Market_Def\09ChangeMoney_Bichon-0.txt] @NPC_TQuest
+
+;------------------------
+
+[@TQuest486_0]
+#IF
+check [310] 1
+#ACT
+goto @TQuest1_6
+break
+;
+#IF
+check [307] 1
+#ACT
+goto @TQuest486_2
+break
+;
+#ELSEACT
+goto @TQuest486_1
+
+;--------------
+
+[@TQuest486_1]
+;;#CALL [\QT_TODAY\4thClass.txt] @486_START
+
+[@TQuest486_2]
+;;#CALL [\QT_TODAY\4thClass.txt] @486_CHECK1
+
+;--------------
+[@TQuest1_6]
+#SAY
+	#INCLUDE [..\Convert_Def\Market_Def\09ChangeMoney_Bichon-0.txt] @NPC_TQuest_1
+
+;--------------

@@ -1,0 +1,364 @@
+;;∫£•·µ¡
+[@Junsa_MQ_START]
+{
+#IF
+#ACT
+goto @Junsa_MQ_START_0
+
+[@Junsa_MQ_START_0]
+#IF
+check [102] 0
+checklevel 6
+#ACT
+goto @Junsa_MQ_START_6
+#ELSEACT
+goto @Junsa_MQ_START_1
+
+[@Junsa_MQ_START_1]
+#IF
+check [102] 0
+checklevel 4
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_1
+
+#ELSEACT
+goto @Junsa_MQ_START_2
+
+[@Junsa_MQ_START_2]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_2
+
+
+[@Junsa_MQ_START_3_1]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_3
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_4
+
+
+[@Junsa_MQ_START_3_2]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_5
+
+
+[@Junsa_MQ_START_3_3]
+#IF
+check [102] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_6
+
+
+[@Junsa_MQ_START_4]
+#IF
+check [102] 0
+#ACT
+set [102] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_7
+
+
+[@Junsa_MQ_START_6]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_8
+
+
+[@Junsa_MQ_START_7_1]
+#IF
+gender man
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_9
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_10
+
+
+[@Junsa_MQ_START_7_2]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_11
+
+
+[@Junsa_MQ_START_7_3]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_12
+
+
+[@Junsa_MQ_START_8]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_13
+
+
+[@Junsa_MQ_START_9]
+#IF
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_14
+
+
+[@Junsa_MQ_START_10]
+#IF
+check [131] 0
+#ACT
+give π≈ºÆ 1
+give ª˘±æΩ£ ı 1
+reset [102] 28
+set [131] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_15
+
+}
+
+[@Junsa_GO_BUCHER]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_16
+
+}
+
+[@Junsa_CQ_START1]
+{
+#IF
+#ACT
+goto @Junsa_CQ_START1_0
+[@Junsa_CQ_START1_0]
+#IF
+check [105] 1
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_17
+
+
+[@Junsa_CQ_START1_3]
+#IF
+check [105] 1
+check [131] 0
+checklevel 6
+#ACT
+goto @Junsa_CQ_START1_4
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_18
+
+
+[@Junsa_CQ_START1_4]
+#IF
+check [105] 1
+check [131] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_19
+
+
+[@Junsa_CQ_START1_5]
+#IF
+check [105] 1
+check [131] 0
+#ACT
+give π≈ºÆ 1
+give ª˘±æΩ£ ı 1
+reset [102] 28
+set [131] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_20
+
+}
+
+[@Junsa_GO_WANG]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_21
+
+}
+
+[@Junsa_DQ_START]
+{
+#IF
+#ACT
+goto @Junsa_DQ_START_1
+[@Junsa_DQ_START_1]
+#IF
+check [102] 1
+check [103] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_22
+
+
+[@Junsa_DQ_START_2]
+#IF
+check [102] 1
+check [103] 0
+#ACT
+give »‚Ã¿ 1
+set [103] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_23
+
+}
+
+[@Junsa_GO_DUKSU]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_24
+
+}
+
+[@Junsa_SEARCH_GOGI]
+{
+#IF
+#ACT
+goto @Junsa_SEARCH_GOGI_1
+
+[@Junsa_SEARCH_GOGI_1]
+#IF
+check [163] 1
+check [104] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_25
+
+
+[@Junsa_SEARCH_GOGI_2_1]
+#IF
+check [163] 1
+check [104] 0
+#ACT
+set [104] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_26
+
+
+[@Junsa_SEARCH_GOGI_2_2]
+#IF
+check [163] 1
+check [104] 0
+#ACT
+set [104] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_27
+
+}
+
+[@Junsa_MQ_COMPLETE]
+{
+#IF
+#ACT
+goto @Junsa_MQ_COMPLETE_1
+[@Junsa_MQ_COMPLETE_1]
+#IF
+check [104] 1
+check [105] 0
+check [106] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_28
+
+
+[@Junsa_MQ_COMPLETE_4]
+#IF
+checkdura ≈£»‚ 10
+#ACT
+take ≈£»‚ 1
+give Ω±“ 1000
+set [105] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_29
+
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_30
+
+}
+
+[@Junsa_TAKE_GOGIGUK]
+{
+#IF
+#ACT
+goto @Junsa_TAKE_GOGIGUK_0
+
+[@Junsa_TAKE_GOGIGUK_0]
+#IF
+checkitem »‚Ã¿ 1
+#ACT
+goto @Junsa_TAKE_GOGIGUK_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_31
+
+
+[@Junsa_TAKE_GOGIGUK_1]
+#IF
+check [103] 1
+check [163] 0
+#ACT
+take »‚Ã¿ 1
+give ÿ∞ ◊ 1
+set [103] 0
+set [163] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_32
+
+}
+
+[@Junsa_RETURN_KIM]
+{
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_33
+
+}
+
+[@Junsa_CQ_COMPLETE]
+{
+#IF
+check [131] 1
+check [164] 0
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_34
+
+
+[@Junsa_CQ_COMPLETE_0]
+#IF
+checkitem π≈ºÆ 1
+#ACT
+takecheckitem
+give Ω±“ 1000
+give «‡Õ≠Õ∑ø¯ 1
+goto @Junsa_CQ_COMPLETE_1
+#ELSESAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_35
+
+
+[@Junsa_CQ_COMPLETE_1]
+#IF
+check [131] 1
+check [164] 0
+#ACT
+reset [102] 29
+set [164] 1
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_36
+
+
+[@Junsa_CQ_COMPLETE_2]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_37
+
+
+[@Junsa_CQ_COMPLETE_3]
+#IF
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\NQ_BASE\warriorbase.txt] @warriorbase_38
+
+}

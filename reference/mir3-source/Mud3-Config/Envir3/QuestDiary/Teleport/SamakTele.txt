@@ -1,0 +1,32 @@
+;;베α돝
+[@Samak_Teleport_East]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SamakTele.txt] @SamakTele_1
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
+
+;-------------------------------------------------------------------------------
+
+[@Samak_Teleport_West]
+{
+#IF
+!CheckPkPoint 2
+#SAY
+	#INCLUDE [..\Convert_Def\QuestDiary\Teleport\SamakTele.txt] @SamakTele_2
+
+#ELSEACT
+mapmove 81 125 274                                    ;; 빨갱이 이동
+break
+
+[@TelePortRootin()]
+#CALL [Teleport\MoveRootin.txt] @TelePortMove         ;; 이동 루틴
+}
