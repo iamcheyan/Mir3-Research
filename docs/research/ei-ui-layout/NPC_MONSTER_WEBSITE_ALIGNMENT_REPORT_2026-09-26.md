@@ -75,6 +75,7 @@
 - `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。
 - 生产应用证据：`production-apply-evidence-20260926.json`（备份、临时副本 round-trip、真实应用统计、双库 SHA-256）。
 - 游戏验收日志：`official-client-smoke-20260926.log`、`isolated-map610-npc-smoke-20260926.log`、`isolated-map5-respawn-smoke-20260926.log`。
+- 真实库目标字段核对：`final-production-targets-20260926.json`（SystemDbProbe 当前导出，NPC/Respawn 区域中心、Monster Index、Delay/Count 与批准计划一致）。
 - 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`、`item-known-contact-sheet.png`、`white-boar-resource-contact-sheet.png`、`resource-alias-candidate-contact-sheet.png`。
 
 ## 10. 物品扩展审计（只读）

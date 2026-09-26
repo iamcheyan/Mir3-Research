@@ -1,0 +1,27 @@
+{
+  "system_db": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db",
+  "version": "2026.09.26.2",
+  "sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+  "counts": {"NPCInfo": 294, "MapInfo": 627, "MapRegion": 5010, "MonsterInfo": 434, "RespawnInfo": 2475},
+  "approved_npc": {
+    "NPCInfo.Index": 142,
+    "MapRegion.Index": 1752,
+    "map_index": 610,
+    "map_file": "01",
+    "center": [425, 274],
+    "region_type": "Npc"
+  },
+  "approved_respawn": {
+    "RespawnInfo.Index": 7236,
+    "monster_index": 479,
+    "monster_name": "Zuan Ka Tree",
+    "MapRegion.Index": 5314,
+    "map_index": 5,
+    "map_file": "1",
+    "center": [379, 125],
+    "delay": 60,
+    "count": 1,
+    "region_type": "Spawn"
+  },
+  "verification_command": "dotnet run --project Tools/SystemDbProbe --no-build -- /home/tetsuya/development/zircon/Debug/ServerCore/Database --json /tmp/final-system-export"
+}
