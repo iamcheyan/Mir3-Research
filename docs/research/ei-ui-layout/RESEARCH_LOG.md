@@ -10619,3 +10619,72 @@ AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + S
 **落盘**：`monsters.md`（约 220 行）、`monster-classes.tsv`（71 行）、
 `Tools/source-read/extract_monster_classes.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 816 (全量精读 C13-C15) — 2026-09-26：物品升级/攻速编码 + 玩法系统
+
+> `itmunit.pas`(897) + `Guild.pas`(3600) + `Castle.pas`(1241) + `TagSystem.pas`(1678) +
+> `Relationship.pas`(471) + `Event.pas`(323) + `DragonSystem.pas`(604)。
+> 产物 `docs/source-vs-reverse/items-systems.md`。
+
+**〔装备升级成功率：两个公式〕**
+①`GetUpgrade(count, ran)`（`:44-53`）—— **连乘式**：
+`for i:=0 to count-1 do if Random(ran)=0 then Inc(Result) else break;`
+即连续成功 `count` 次概率 `(1/ran)^count`，`Result` 是**实际连成次数**。
+②`GetUpgrade2(x, a)`（`:55-90`）—— **分段概率曲线**：
+`i > x div 2` 用低概率公式、否则用高概率公式，返回 `i div 3`。
+**函数内有两段被注释掉的旧公式**（`:61-62`、`:77-89`，用
+`Sqrt(10000 - Power(x+a,2))` —— 常量 10000 暗示**假设 x+a ≤ 100**）
+→ **升级概率公式被改过至少两版**。
+
+**〔攻速模型：有符号/无符号编码（最易搞错）〕**
+`RealAttackSpeed(wAtkSpd: WORD): integer`（`:858-864`）：
+`wAtkSpd <= 10` → `-wAtkSpd`；否则 `wAtkSpd - 10`。
+`NaturalAttackSpeed(iAtkSpd: integer): WORD`（`:867-873`）为其逆。
+**编码方案**（注释「-10~15」）：存储 `0`→真实 `0`；`1..10`→`-1..-10`；
+`11..25`→`1..15`。即 **`10` 是零点**，`0..10` 负值、`11..25` 正值。
+⚠️ **`0` 与 `10` 都映射到「0 攻速」—— 有损映射**。
+
+**实测消费点（证明该编码真实生效）**：
+`itmunit.pas:592` `std.MAC := MAKEWORD(LOBYTE(std.MAC),
+GetAttackSpeed(HIBYTE(std.MAC), ui.Desc[6]))`；
+`ObjBase.pas:9344` `aabil.HitSpeed + RealAttackSpeed(HIBYTE(std.MAC))`；
+`ObjBase.pas:20520`（**带 `_MAX(0,·)` 钳制**）；
+`ObjBase.pas:21228-21229`（base + upgrade 分开算）。
+→ **`HIBYTE(std.MAC)` = 物品基础攻速**、**`Desc[6]` = 用户升级攻速**。
+⚠️ **做攻速工具时的硬约束**：这些字段**无符号存储但有符号语义**，
+必须先 `RealAttackSpeed` 再比较/相加。
+
+**〔装备属性叠加〕**`GetUpgradeStdItem(ui, std)`（`:28`）把 `TUserItem.Desc[]`
+叠加到 `TStdItem` —— **「基础物品 + 升级加成」的合成点**。
+关键注释（`:93`）：**`Desc` 的升级映射 `0:DC 1:MC 2:SC`**（破坏/魔法/道术）；
+`Desc[5]` = 需求、`Desc[6]` = 攻速、`Desc[12]` = 敏捷。
+
+**〔玩法系统类清单〕**
+`Guild.pas` 6 类（`TGuild`/`TGuildManager`/`TGuildAgit`+3）；
+`Castle.pas` 1 类（`TUserCastle`，配置 `Sabuk.txt`/`AttackSabukWall.txt`）；
+`TagSystem.pas` 2 类（**都继承 `ICommand`**）；
+`Relationship.pas` 2 类；`Event.pas` 6 类；`DragonSystem.pas` 1 类。
+
+**〔攻城费用常量（含旧值注释 = 版本演进痕迹）〕**（`ObjNpc.pas:14-17`）
+`CASTLEMAINDOORREPAREGOLD=1500000`（原 2000000）、
+`CASTLECOREWALLREPAREGOLD=400000`（原 500000）、
+`CASTLEARCHEREMPLOYFEE=250000`（原 300000）、
+`CASTLEGUARDEMPLOYFEE=250000`（原 300000）→ **费用被下调过**。
+
+**〔事件类型常量（`Grobal2.pas:2387-2395`）〕**`ET_DIGOUTZOMBI=1`/`ET_MINE=2`/
+`ET_PILESTONES=3`/`ET_HOLYCURTAIN=4`/`ET_FIRE=5`/`ET_SCULPEICE=6`/
+`ET_HEARTPALP=7`/`ET_JUMAPEICE=9` → **序号跳过 8，不要假设连续编号**。
+`ET_DIGOUTZOMBI` 与 `Envir.pas:4172` 的 `NeedHole` 地图联动
+（`EventMan.FindEvent(..., ET_DIGOUTZOMBI)`）—— **「洞」机制的实现**。
+
+**⚠️ `ET_` 前缀被复用于多个命名空间（新发现的常量索引陷阱）**：
+除事件类型外还有——拍卖行消息 `ET_LIST=1068/828/11015`、`ET_SELL=1069`、
+`ET_BUY=1070`、`ET_CANCEL=1071`、`ET_GETPAY=1072`、`ET_CLOSE=1073`、`ET_RESULT=829/11016`；
+拍卖分类 `ET_TYPE_ALL=0` … `ET_TYPE_ETC=15`、`ET_TYPE_SET=100`、
+`ET_TYPE_MINE=200`、`ET_TYPE_OTHER=300`；拍卖状态 `ET_MODE_*`；
+拍卖结果码 `ET_CHECKTYPE_*`；DB 侧 `ET_DBSELLTYPE_*`。
+→ **`ET_` 不是「事件类型」专属前缀**，按前缀判断语义会出错。
+另：`ET_TYPE_*`（更细）与 `USERMARKET_TYPE_*`（7 类）**是两套并存的分类**。
+
+**落盘**：`items-systems.md`（约 200 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
