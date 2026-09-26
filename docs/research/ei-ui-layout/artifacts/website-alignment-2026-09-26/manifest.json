@@ -30,10 +30,10 @@
   "monster_stats": {
     "website_record_count": 154,
     "confirmed_count": 67,
-    "investigate_count": 12,
-    "pending_count": 75,
+    "investigate_count": 29,
+    "pending_count": 58,
     "unmatched_count": 0,
-    "candidate_conflict_count": 9,
+    "candidate_conflict_count": 17,
     "source_exact_count": 127,
     "legacy_exact_count": 127,
     "website_categories": {
@@ -1129,7 +1129,7 @@
       "zircon_internal_name": null,
       "zircon_image": null,
       "candidate_count": 0,
-      "resource_alias": "SkyStinger",
+      "resource_alias": null,
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -1424,11 +1424,99 @@
         "format": "GIF"
       },
       "source_description": "与多钩猫类似，它一般生活在荒野中，在邪恶和未知的力量驱使下变大。它偷窃人们的耙子做武器。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": null,
+          "internal_name": null,
+          "image": "RakingCat",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-28",
+            "library_number": 28,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-28.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 80,
+                "height": 56,
+                "offsetX": -4,
+                "offsetY": -35
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 80,
+                "height": 56,
+                "offsetX": -4,
+                "offsetY": -35
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 80,
+                "height": 56,
+                "offsetX": -4,
+                "offsetY": -35
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 80,
+                "height": 56,
+                "offsetX": -4,
+                "offsetY": -35
+              },
+              {
+                "draw_frame": 10,
+                "index": 6010,
+                "width": 68,
+                "height": 54,
+                "offsetX": 14,
+                "offsetY": -33
+              },
+              {
+                "draw_frame": 11,
+                "index": 6011,
+                "width": 68,
+                "height": 54,
+                "offsetX": 14,
+                "offsetY": -33
+              },
+              {
+                "draw_frame": 12,
+                "index": 6012,
+                "width": 68,
+                "height": 54,
+                "offsetX": 14,
+                "offsetY": -33
+              },
+              {
+                "draw_frame": 13,
+                "index": 6013,
+                "width": 68,
+                "height": 54,
+                "offsetX": 14,
+                "offsetY": -33
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": null,
+          "is_boss": null,
+          "candidate_source": "resource-alias-only"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
+      "candidate_count": 1,
       "resource_alias": "RakingCat",
       "source_identity_evidence": {
         "source_exact": [
@@ -1497,7 +1585,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -1507,9 +1595,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -3334,11 +3422,99 @@
         "format": "JPEG"
       },
       "source_description": "在毒蛇谷很少见的大蛇，小BOSS级的。看到它运气已经是很不错了哦。是毒蛇谷的BOSS。 生命：400,所在地图:毒蛇山谷,沙巴克周围",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": null,
+          "internal_name": null,
+          "image": "RedSnake",
+          "race": null,
+          "shape": 4,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-6",
+            "library_number": 6,
+            "shape": 4,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-6.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 4000,
+                "width": 56,
+                "height": 80,
+                "offsetX": -2,
+                "offsetY": -26
+              },
+              {
+                "draw_frame": 1,
+                "index": 4001,
+                "width": 56,
+                "height": 82,
+                "offsetX": -2,
+                "offsetY": -27
+              },
+              {
+                "draw_frame": 2,
+                "index": 4002,
+                "width": 56,
+                "height": 80,
+                "offsetX": -2,
+                "offsetY": -27
+              },
+              {
+                "draw_frame": 3,
+                "index": 4003,
+                "width": 56,
+                "height": 78,
+                "offsetX": -2,
+                "offsetY": -25
+              },
+              {
+                "draw_frame": 10,
+                "index": 4010,
+                "width": 84,
+                "height": 68,
+                "offsetX": -31,
+                "offsetY": -19
+              },
+              {
+                "draw_frame": 11,
+                "index": 4011,
+                "width": 80,
+                "height": 70,
+                "offsetX": -31,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 12,
+                "index": 4012,
+                "width": 80,
+                "height": 72,
+                "offsetX": -31,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 13,
+                "index": 4013,
+                "width": 80,
+                "height": 68,
+                "offsetX": -30,
+                "offsetY": -20
+              }
+            ],
+            "body_frame_formula": "draw_frame + 4*1000"
+          },
+          "level": null,
+          "is_boss": null,
+          "candidate_source": "resource-alias-only"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
+      "candidate_count": 1,
       "resource_alias": "RedSnake",
       "source_identity_evidence": {
         "source_exact": [
@@ -3382,7 +3558,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -3392,9 +3568,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -3415,11 +3591,99 @@
         "format": "JPEG"
       },
       "source_description": "在毒蛇谷很少见的大蛇，做任务常要找它 生命：80,所在地图:毒蛇山谷",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": null,
+          "internal_name": null,
+          "image": "RedSnake",
+          "race": null,
+          "shape": 4,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-6",
+            "library_number": 6,
+            "shape": 4,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-6.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 4000,
+                "width": 56,
+                "height": 80,
+                "offsetX": -2,
+                "offsetY": -26
+              },
+              {
+                "draw_frame": 1,
+                "index": 4001,
+                "width": 56,
+                "height": 82,
+                "offsetX": -2,
+                "offsetY": -27
+              },
+              {
+                "draw_frame": 2,
+                "index": 4002,
+                "width": 56,
+                "height": 80,
+                "offsetX": -2,
+                "offsetY": -27
+              },
+              {
+                "draw_frame": 3,
+                "index": 4003,
+                "width": 56,
+                "height": 78,
+                "offsetX": -2,
+                "offsetY": -25
+              },
+              {
+                "draw_frame": 10,
+                "index": 4010,
+                "width": 84,
+                "height": 68,
+                "offsetX": -31,
+                "offsetY": -19
+              },
+              {
+                "draw_frame": 11,
+                "index": 4011,
+                "width": 80,
+                "height": 70,
+                "offsetX": -31,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 12,
+                "index": 4012,
+                "width": 80,
+                "height": 72,
+                "offsetX": -31,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 13,
+                "index": 4013,
+                "width": 80,
+                "height": 68,
+                "offsetX": -30,
+                "offsetY": -20
+              }
+            ],
+            "body_frame_formula": "draw_frame + 4*1000"
+          },
+          "level": null,
+          "is_boss": null,
+          "candidate_source": "resource-alias-only"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
+      "candidate_count": 1,
       "resource_alias": "RedSnake",
       "source_identity_evidence": {
         "source_exact": [
@@ -3488,7 +3752,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -3498,9 +3762,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -3715,11 +3979,99 @@
         "format": "GIF"
       },
       "source_description": "一种出现在空中的掠夺者。这种鸟飞翔在空中，猛地俯冲向它的猎物。它有力的翅膀、钢铁般的爪子、敏锐的视觉和强大的力量，使之能猎取大的羊。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": null,
+          "internal_name": null,
+          "image": "SkyStinger",
+          "race": null,
+          "shape": 9,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-6",
+            "library_number": 6,
+            "shape": 9,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-6.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 9000,
+                "width": 136,
+                "height": 80,
+                "offsetX": -41,
+                "offsetY": -210
+              },
+              {
+                "draw_frame": 1,
+                "index": 9001,
+                "width": 132,
+                "height": 64,
+                "offsetX": -39,
+                "offsetY": -203
+              },
+              {
+                "draw_frame": 2,
+                "index": 9002,
+                "width": 128,
+                "height": 66,
+                "offsetX": -35,
+                "offsetY": -201
+              },
+              {
+                "draw_frame": 3,
+                "index": 9003,
+                "width": 128,
+                "height": 72,
+                "offsetX": -36,
+                "offsetY": -203
+              },
+              {
+                "draw_frame": 10,
+                "index": 9010,
+                "width": 120,
+                "height": 88,
+                "offsetX": -31,
+                "offsetY": -223
+              },
+              {
+                "draw_frame": 11,
+                "index": 9011,
+                "width": 112,
+                "height": 86,
+                "offsetX": -22,
+                "offsetY": -216
+              },
+              {
+                "draw_frame": 12,
+                "index": 9012,
+                "width": 104,
+                "height": 72,
+                "offsetX": -14,
+                "offsetY": -195
+              },
+              {
+                "draw_frame": 13,
+                "index": 9013,
+                "width": 108,
+                "height": 74,
+                "offsetX": -16,
+                "offsetY": -204
+              }
+            ],
+            "body_frame_formula": "draw_frame + 9*1000"
+          },
+          "level": null,
+          "is_boss": null,
+          "candidate_source": "resource-alias-only"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
+      "candidate_count": 1,
       "resource_alias": "SkyStinger",
       "source_identity_evidence": {
         "source_exact": [
@@ -3788,7 +4140,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -3798,9 +4150,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -6213,12 +6565,100 @@
         "format": "GIF"
       },
       "source_description": "也出现在地牢里，并可以肯定是半兽勇士死去后的重生，有着恶魔般的红色外表。不象其它骷髅类，它们行动迅速。不是重复简单模式的攻击，而是用一种叫做\"Bigacha\"的武器，同时进行进攻和防御的组合式的复杂攻击。这是一种可怕的怪物，具有强大的能量、敏捷的动作和致命的破坏力量。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 30,
+          "internal_name": "Skeleton Lord",
+          "image": "SkeletonLord",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-4",
+            "library_number": 4,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-4.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 64,
+                "height": 112,
+                "offsetX": -8,
+                "offsetY": -68
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 64,
+                "height": 108,
+                "offsetX": -7,
+                "offsetY": -68
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 64,
+                "height": 110,
+                "offsetX": -6,
+                "offsetY": -68
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 64,
+                "height": 110,
+                "offsetX": -7,
+                "offsetY": -68
+              },
+              {
+                "draw_frame": 10,
+                "index": 6010,
+                "width": 96,
+                "height": 108,
+                "offsetX": -31,
+                "offsetY": -65
+              },
+              {
+                "draw_frame": 11,
+                "index": 6011,
+                "width": 96,
+                "height": 108,
+                "offsetX": -30,
+                "offsetY": -65
+              },
+              {
+                "draw_frame": 12,
+                "index": 6012,
+                "width": 96,
+                "height": 110,
+                "offsetX": -29,
+                "offsetY": -65
+              },
+              {
+                "draw_frame": 13,
+                "index": 6013,
+                "width": 96,
+                "height": 108,
+                "offsetX": -30,
+                "offsetY": -65
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 250,
+          "is_boss": true,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "SkeletonLord",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -6332,7 +6772,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -6342,9 +6782,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "candidate is a current MonsterInfo row; resource and attributes retained for review",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -6365,12 +6805,187 @@
         "format": "GIF"
       },
       "source_description": "生活在银杏村周围废矿里的奇怪的虫子。它的样子像是把青蛙和蜘蛛糅合在了一起了。不要小看它长的小，它会在瞬间靠近你，用锋利的牙齿，给你致命伤。而且他的分泌液含有很强的毒性，一不小心就会中毒。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 72,
+          "internal_name": "Dark Arachnid",
+          "image": "DarkArachnid",
+          "race": null,
+          "shape": 2,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-12",
+            "library_number": 12,
+            "shape": 2,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-12.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 2000,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -32
+              },
+              {
+                "draw_frame": 1,
+                "index": 2001,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 2,
+                "index": 2002,
+                "width": 72,
+                "height": 80,
+                "offsetX": -12,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 3,
+                "index": 2003,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 10,
+                "index": 2010,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 11,
+                "index": 2011,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 12,
+                "index": 2012,
+                "width": 96,
+                "height": 82,
+                "offsetX": -28,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 13,
+                "index": 2013,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              }
+            ],
+            "body_frame_formula": "draw_frame + 2*1000"
+          },
+          "level": 35,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 73,
+          "internal_name": "Arachnid Broodmother",
+          "image": "DarkArachnid",
+          "race": null,
+          "shape": 2,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-12",
+            "library_number": 12,
+            "shape": 2,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-12.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 2000,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -32
+              },
+              {
+                "draw_frame": 1,
+                "index": 2001,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 2,
+                "index": 2002,
+                "width": 72,
+                "height": 80,
+                "offsetX": -12,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 3,
+                "index": 2003,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 10,
+                "index": 2010,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 11,
+                "index": 2011,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 12,
+                "index": 2012,
+                "width": 96,
+                "height": 82,
+                "offsetX": -28,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 13,
+                "index": 2013,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              }
+            ],
+            "body_frame_formula": "draw_frame + 2*1000"
+          },
+          "level": 250,
+          "is_boss": true,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 2,
+      "resource_alias": "DarkArachnid",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -6438,7 +7053,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -6448,9 +7063,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -6887,12 +7502,187 @@
         "format": "GIF"
       },
       "source_description": "小boss 暴钱,神水,祝福油",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 72,
+          "internal_name": "Dark Arachnid",
+          "image": "DarkArachnid",
+          "race": null,
+          "shape": 2,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-12",
+            "library_number": 12,
+            "shape": 2,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-12.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 2000,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -32
+              },
+              {
+                "draw_frame": 1,
+                "index": 2001,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 2,
+                "index": 2002,
+                "width": 72,
+                "height": 80,
+                "offsetX": -12,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 3,
+                "index": 2003,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 10,
+                "index": 2010,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 11,
+                "index": 2011,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 12,
+                "index": 2012,
+                "width": 96,
+                "height": 82,
+                "offsetX": -28,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 13,
+                "index": 2013,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              }
+            ],
+            "body_frame_formula": "draw_frame + 2*1000"
+          },
+          "level": 35,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 73,
+          "internal_name": "Arachnid Broodmother",
+          "image": "DarkArachnid",
+          "race": null,
+          "shape": 2,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-12",
+            "library_number": 12,
+            "shape": 2,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-12.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 2000,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -32
+              },
+              {
+                "draw_frame": 1,
+                "index": 2001,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 2,
+                "index": 2002,
+                "width": 72,
+                "height": 80,
+                "offsetX": -12,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 3,
+                "index": 2003,
+                "width": 76,
+                "height": 80,
+                "offsetX": -13,
+                "offsetY": -31
+              },
+              {
+                "draw_frame": 10,
+                "index": 2010,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 11,
+                "index": 2011,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 12,
+                "index": 2012,
+                "width": 96,
+                "height": 82,
+                "offsetX": -28,
+                "offsetY": -34
+              },
+              {
+                "draw_frame": 13,
+                "index": 2013,
+                "width": 92,
+                "height": 82,
+                "offsetX": -27,
+                "offsetY": -34
+              }
+            ],
+            "body_frame_formula": "draw_frame + 2*1000"
+          },
+          "level": 250,
+          "is_boss": true,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 2,
+      "resource_alias": "DarkArachnid",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -6935,7 +7725,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -6945,9 +7735,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -8309,12 +9099,187 @@
         "format": "GIF"
       },
       "source_description": "平时隐藏起来，一旦行人经过附近，就立刻现身攻击。因为它的身体是沙子组成的， 所以在沙漠里它出现或消失都很隐蔽。. 级别高的沙鬼遇到危险时，会变成沙粒散落，待体力恢复后又会重新聚集身体。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 93,
+          "internal_name": "Stone Golem",
+          "image": "StoneGolem",
+          "race": null,
+          "shape": 4,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-1",
+            "library_number": 1,
+            "shape": 4,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-1.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 4000,
+                "width": 76,
+                "height": 90,
+                "offsetX": -11,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 1,
+                "index": 4001,
+                "width": 72,
+                "height": 90,
+                "offsetX": -10,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 2,
+                "index": 4002,
+                "width": 72,
+                "height": 90,
+                "offsetX": -9,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 3,
+                "index": 4003,
+                "width": 72,
+                "height": 90,
+                "offsetX": -10,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 10,
+                "index": 4010,
+                "width": 64,
+                "height": 96,
+                "offsetX": -6,
+                "offsetY": -65
+              },
+              {
+                "draw_frame": 11,
+                "index": 4011,
+                "width": 64,
+                "height": 94,
+                "offsetX": -5,
+                "offsetY": -64
+              },
+              {
+                "draw_frame": 12,
+                "index": 4012,
+                "width": 64,
+                "height": 94,
+                "offsetX": -4,
+                "offsetY": -63
+              },
+              {
+                "draw_frame": 13,
+                "index": 4013,
+                "width": 64,
+                "height": 94,
+                "offsetX": -5,
+                "offsetY": -64
+              }
+            ],
+            "body_frame_formula": "draw_frame + 4*1000"
+          },
+          "level": 35,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 389,
+          "internal_name": "Fierce Stone Man",
+          "image": "StoneGolem",
+          "race": null,
+          "shape": 4,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-1",
+            "library_number": 1,
+            "shape": 4,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-1.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 4000,
+                "width": 76,
+                "height": 90,
+                "offsetX": -11,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 1,
+                "index": 4001,
+                "width": 72,
+                "height": 90,
+                "offsetX": -10,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 2,
+                "index": 4002,
+                "width": 72,
+                "height": 90,
+                "offsetX": -9,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 3,
+                "index": 4003,
+                "width": 72,
+                "height": 90,
+                "offsetX": -10,
+                "offsetY": -66
+              },
+              {
+                "draw_frame": 10,
+                "index": 4010,
+                "width": 64,
+                "height": 96,
+                "offsetX": -6,
+                "offsetY": -65
+              },
+              {
+                "draw_frame": 11,
+                "index": 4011,
+                "width": 64,
+                "height": 94,
+                "offsetX": -5,
+                "offsetY": -64
+              },
+              {
+                "draw_frame": 12,
+                "index": 4012,
+                "width": 64,
+                "height": 94,
+                "offsetX": -4,
+                "offsetY": -63
+              },
+              {
+                "draw_frame": 13,
+                "index": 4013,
+                "width": 64,
+                "height": 94,
+                "offsetX": -5,
+                "offsetY": -64
+              }
+            ],
+            "body_frame_formula": "draw_frame + 4*1000"
+          },
+          "level": 105,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 2,
+      "resource_alias": "StoneGolem",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -8382,7 +9347,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -8392,9 +9357,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -8415,12 +9380,100 @@
         "format": "GIF"
       },
       "source_description": "由石头垒成的巨大怪物。 坚硬的石头身体使他具有超强的攻击力和防御力。 主要现身在戈壁上，有时也会在沙漠深处出现。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 291,
+          "internal_name": "Crystal Golem",
+          "image": "CrystalGolem",
+          "race": null,
+          "shape": 0,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-40",
+            "library_number": 40,
+            "shape": 0,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-40.Zl",
+            "library_count": 19132,
+            "nonblank_probe_frames_0_99": 68,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 0,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -58
+              },
+              {
+                "draw_frame": 1,
+                "index": 1,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 2,
+                "index": 2,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 3,
+                "index": 3,
+                "width": 96,
+                "height": 82,
+                "offsetX": -23,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 4,
+                "index": 4,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 5,
+                "index": 5,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 6,
+                "index": 6,
+                "width": 96,
+                "height": 84,
+                "offsetX": -23,
+                "offsetY": -58
+              },
+              {
+                "draw_frame": 10,
+                "index": 10,
+                "width": 72,
+                "height": 90,
+                "offsetX": -14,
+                "offsetY": -59
+              }
+            ],
+            "body_frame_formula": "draw_frame + 0*1000"
+          },
+          "level": 85,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "CrystalGolem",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -8488,7 +9541,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -8498,9 +9551,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "candidate is a current MonsterInfo row; resource and attributes retained for review",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -8521,12 +9574,100 @@
         "format": "GIF"
       },
       "source_description": "与沙漠中的仙人掌长得一摸一样，故敌人往往意识不到危险。但敌人靠近时，它会射出带刺的果实发动攻击。它本身并不能移动， 所以只要远离就可以避开它的攻击",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 95,
+          "internal_name": "Cursed Cactus",
+          "image": "CursedCactus",
+          "race": null,
+          "shape": 5,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-10",
+            "library_number": 10,
+            "shape": 5,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-10.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 8,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 5000,
+                "width": 48,
+                "height": 88,
+                "offsetX": -3,
+                "offsetY": -59
+              },
+              {
+                "draw_frame": 10,
+                "index": 5010,
+                "width": 40,
+                "height": 90,
+                "offsetX": 4,
+                "offsetY": -61
+              },
+              {
+                "draw_frame": 20,
+                "index": 5020,
+                "width": 40,
+                "height": 84,
+                "offsetX": 2,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 30,
+                "index": 5030,
+                "width": 48,
+                "height": 88,
+                "offsetX": -3,
+                "offsetY": -59
+              },
+              {
+                "draw_frame": 40,
+                "index": 5040,
+                "width": 40,
+                "height": 90,
+                "offsetX": 4,
+                "offsetY": -61
+              },
+              {
+                "draw_frame": 50,
+                "index": 5050,
+                "width": 48,
+                "height": 88,
+                "offsetX": -3,
+                "offsetY": -59
+              },
+              {
+                "draw_frame": 60,
+                "index": 5060,
+                "width": 48,
+                "height": 88,
+                "offsetX": -3,
+                "offsetY": -59
+              },
+              {
+                "draw_frame": 70,
+                "index": 5070,
+                "width": 40,
+                "height": 90,
+                "offsetX": 4,
+                "offsetY": -61
+              }
+            ],
+            "body_frame_formula": "draw_frame + 5*1000"
+          },
+          "level": 35,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "CursedCactus",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -8617,7 +9758,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -8627,9 +9768,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "candidate is a current MonsterInfo row; resource and attributes retained for review",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -8650,12 +9791,274 @@
         "format": "GIF"
       },
       "source_description": "身长3米（人类身高才1.7米），利用牙齿和尾巴来攻击敌人。锐利的牙齿，尾巴上的针能增强进攻时的威力",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 102,
+          "internal_name": "Giant Lizard",
+          "image": "GiantLizard",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-20",
+            "library_number": 20,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-20.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 120,
+                "height": 108,
+                "offsetX": -34,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 124,
+                "height": 110,
+                "offsetX": -37,
+                "offsetY": -88
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 128,
+                "height": 110,
+                "offsetX": -39,
+                "offsetY": -89
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 124,
+                "height": 108,
+                "offsetX": -37,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 10,
+                "index": 6010,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -80
+              },
+              {
+                "draw_frame": 11,
+                "index": 6011,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -82
+              },
+              {
+                "draw_frame": 12,
+                "index": 6012,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -83
+              },
+              {
+                "draw_frame": 13,
+                "index": 6013,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -81
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 68,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 379,
+          "internal_name": "Ice Soul General",
+          "image": "GiantLizard",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-20",
+            "library_number": 20,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-20.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 120,
+                "height": 108,
+                "offsetX": -34,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 124,
+                "height": 110,
+                "offsetX": -37,
+                "offsetY": -88
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 128,
+                "height": 110,
+                "offsetX": -39,
+                "offsetY": -89
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 124,
+                "height": 108,
+                "offsetX": -37,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 10,
+                "index": 6010,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -80
+              },
+              {
+                "draw_frame": 11,
+                "index": 6011,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -82
+              },
+              {
+                "draw_frame": 12,
+                "index": 6012,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -83
+              },
+              {
+                "draw_frame": 13,
+                "index": 6013,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -81
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 75,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 485,
+          "internal_name": "Ice Plain Warrior",
+          "image": "GiantLizard",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-20",
+            "library_number": 20,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-20.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 120,
+                "height": 108,
+                "offsetX": -34,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 124,
+                "height": 110,
+                "offsetX": -37,
+                "offsetY": -88
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 128,
+                "height": 110,
+                "offsetX": -39,
+                "offsetY": -89
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 124,
+                "height": 108,
+                "offsetX": -37,
+                "offsetY": -87
+              },
+              {
+                "draw_frame": 10,
+                "index": 6010,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -80
+              },
+              {
+                "draw_frame": 11,
+                "index": 6011,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -82
+              },
+              {
+                "draw_frame": 12,
+                "index": 6012,
+                "width": 100,
+                "height": 110,
+                "offsetX": -2,
+                "offsetY": -83
+              },
+              {
+                "draw_frame": 13,
+                "index": 6013,
+                "width": 100,
+                "height": 108,
+                "offsetX": -1,
+                "offsetY": -81
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 75,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 3,
+      "resource_alias": "GiantLizard",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -8723,7 +10126,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -8733,9 +10136,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -8756,12 +10159,100 @@
         "format": "GIF"
       },
       "source_description": "它们是在黑暗长夜里游荡在沙漠深处的冤魂。碰到行人时，它们会把行人杀死并夺取其肉体。 夜行鬼掌握了一种恶毒的诅咒，受到这种诅咒的人会防御力下降，而且暂时丧失奔跑能力",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": null,
+          "internal_name": null,
+          "image": "Phantom",
+          "race": null,
+          "shape": 8,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-2",
+            "library_number": 2,
+            "shape": 8,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-2.Zl",
+            "library_count": 9990,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 8000,
+                "width": 36,
+                "height": 74,
+                "offsetX": 6,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 1,
+                "index": 8001,
+                "width": 36,
+                "height": 72,
+                "offsetX": 7,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 2,
+                "index": 8002,
+                "width": 36,
+                "height": 72,
+                "offsetX": 7,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 3,
+                "index": 8003,
+                "width": 36,
+                "height": 74,
+                "offsetX": 7,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 10,
+                "index": 8010,
+                "width": 40,
+                "height": 76,
+                "offsetX": 7,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 11,
+                "index": 8011,
+                "width": 40,
+                "height": 76,
+                "offsetX": 7,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 12,
+                "index": 8012,
+                "width": 40,
+                "height": 76,
+                "offsetX": 7,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 13,
+                "index": 8013,
+                "width": 40,
+                "height": 76,
+                "offsetX": 7,
+                "offsetY": -56
+              }
+            ],
+            "body_frame_formula": "draw_frame + 8*1000"
+          },
+          "level": null,
+          "is_boss": null,
+          "candidate_source": "resource-alias-only"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "Phantom",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -8829,7 +10320,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -8839,9 +10330,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -10933,12 +12424,187 @@
         "format": "GIF"
       },
       "source_description": "对这种怪物的起源，有两种说法。第一种说法是生活在茂密森林中的大象被震天魔神选中，催化为怪。还有人说密林中的土壤已经被邪恶力量魔化，大象长期食用生长在这一片土壤的植物，魔力渐渐渗透，形体也慢慢变化，最终成怪。到底哪一种说法属实无从考证。 神形巨大的巨象兽力大无比，可以一口气连根拔起大树。如果与这种怪物遭遇，可以切身体会到它的强大。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 85,
+          "internal_name": "Evil Elephant",
+          "image": "EvilElephant",
+          "race": null,
+          "shape": 8,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-16",
+            "library_number": 16,
+            "shape": 8,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-16.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 8000,
+                "width": 48,
+                "height": 110,
+                "offsetX": 2,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 1,
+                "index": 8001,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 2,
+                "index": 8002,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 3,
+                "index": 8003,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 10,
+                "index": 8010,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 11,
+                "index": 8011,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 12,
+                "index": 8012,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 13,
+                "index": 8013,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              }
+            ],
+            "body_frame_formula": "draw_frame + 8*1000"
+          },
+          "level": 47,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 273,
+          "internal_name": "Wild Elephant",
+          "image": "EvilElephant",
+          "race": null,
+          "shape": 8,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-16",
+            "library_number": 16,
+            "shape": 8,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-16.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 8000,
+                "width": 48,
+                "height": 110,
+                "offsetX": 2,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 1,
+                "index": 8001,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 2,
+                "index": 8002,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 3,
+                "index": 8003,
+                "width": 52,
+                "height": 110,
+                "offsetX": 1,
+                "offsetY": -67
+              },
+              {
+                "draw_frame": 10,
+                "index": 8010,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 11,
+                "index": 8011,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 12,
+                "index": 8012,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 13,
+                "index": 8013,
+                "width": 100,
+                "height": 102,
+                "offsetX": -15,
+                "offsetY": -60
+              }
+            ],
+            "body_frame_formula": "draw_frame + 8*1000"
+          },
+          "level": 60,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 2,
+      "resource_alias": "EvilElephant",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -11006,7 +12672,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -11016,9 +12682,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -12641,12 +14307,274 @@
         "format": "GIF"
       },
       "source_description": "它们居住在洞穴深处，尽管没有很强的力量，但快速的行动和攻击却能使你防不胜防。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 51,
+          "internal_name": "Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 30,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 183,
+          "internal_name": "Millipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 80,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 381,
+          "internal_name": "Fierce Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 105,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 3,
+      "resource_alias": "Centipede",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -12737,7 +14665,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -12747,9 +14675,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -12874,12 +14802,274 @@
         "format": "GIF"
       },
       "source_description": "它们居住在洞穴深处，尽管没有很强的力量，但快速的行动和攻击却能使你防不胜防，尤其是对法师。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 51,
+          "internal_name": "Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 30,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 183,
+          "internal_name": "Millipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 80,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 381,
+          "internal_name": "Fierce Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 105,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 3,
+      "resource_alias": "Centipede",
       "source_identity_evidence": {
         "source_exact": [],
         "source_variant_family": [],
@@ -12897,7 +15087,7 @@
         "closure": "not-closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -12907,9 +15097,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -12930,12 +15120,274 @@
         "format": "GIF"
       },
       "source_description": "它们居住在洞穴深处，尽管没有很强的力量，但快速的行动和攻击却能使你防不胜防，尤其是对战士。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 51,
+          "internal_name": "Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 30,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 183,
+          "internal_name": "Millipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 80,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        },
+        {
+          "index": 381,
+          "internal_name": "Fierce Centipede",
+          "image": "Centipede",
+          "race": null,
+          "shape": 6,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 6,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 100,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 6000,
+                "width": 60,
+                "height": 101,
+                "offsetX": -16,
+                "offsetY": -17
+              },
+              {
+                "draw_frame": 1,
+                "index": 6001,
+                "width": 60,
+                "height": 104,
+                "offsetX": -13,
+                "offsetY": -22
+              },
+              {
+                "draw_frame": 2,
+                "index": 6002,
+                "width": 52,
+                "height": 114,
+                "offsetX": -8,
+                "offsetY": -30
+              },
+              {
+                "draw_frame": 3,
+                "index": 6003,
+                "width": 56,
+                "height": 106,
+                "offsetX": -11,
+                "offsetY": -23
+              },
+              {
+                "draw_frame": 4,
+                "index": 6004,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 5,
+                "index": 6005,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 6,
+                "index": 6006,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              {
+                "draw_frame": 7,
+                "index": 6007,
+                "width": 4,
+                "height": 1,
+                "offsetX": 0,
+                "offsetY": 0
+              }
+            ],
+            "body_frame_formula": "draw_frame + 6*1000"
+          },
+          "level": 105,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 3,
+      "resource_alias": "Centipede",
       "source_identity_evidence": {
         "source_exact": [],
         "source_variant_family": [
@@ -12978,7 +15430,7 @@
         "closure": "not-closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -12988,9 +15440,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "multiple candidates or duplicate website identity; no automatic choice",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -13285,12 +15737,100 @@
         "format": "GIF"
       },
       "source_description": "绿色的大昆虫。背上长着坚硬的长刺。防御力弱，但长刺的威力是不能忽视的。据说完全发育后会变成大蝴蝶",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 52,
+          "internal_name": "Butterfly Worm",
+          "image": "ButterflyWorm",
+          "race": null,
+          "shape": 2,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-8",
+            "library_number": 8,
+            "shape": 2,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-8.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 2000,
+                "width": 28,
+                "height": 108,
+                "offsetX": 10,
+                "offsetY": -51
+              },
+              {
+                "draw_frame": 1,
+                "index": 2001,
+                "width": 28,
+                "height": 110,
+                "offsetX": 12,
+                "offsetY": -48
+              },
+              {
+                "draw_frame": 2,
+                "index": 2002,
+                "width": 24,
+                "height": 110,
+                "offsetX": 12,
+                "offsetY": -48
+              },
+              {
+                "draw_frame": 3,
+                "index": 2003,
+                "width": 24,
+                "height": 104,
+                "offsetX": 11,
+                "offsetY": -46
+              },
+              {
+                "draw_frame": 10,
+                "index": 2010,
+                "width": 72,
+                "height": 98,
+                "offsetX": -26,
+                "offsetY": -50
+              },
+              {
+                "draw_frame": 11,
+                "index": 2011,
+                "width": 76,
+                "height": 96,
+                "offsetX": -27,
+                "offsetY": -45
+              },
+              {
+                "draw_frame": 12,
+                "index": 2012,
+                "width": 72,
+                "height": 96,
+                "offsetX": -27,
+                "offsetY": -45
+              },
+              {
+                "draw_frame": 13,
+                "index": 2013,
+                "width": 68,
+                "height": 92,
+                "offsetX": -26,
+                "offsetY": -44
+              }
+            ],
+            "body_frame_formula": "draw_frame + 2*1000"
+          },
+          "level": 30,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "ButterflyWorm",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -13381,7 +15921,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -13391,9 +15931,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "candidate is a current MonsterInfo row; resource and attributes retained for review",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },

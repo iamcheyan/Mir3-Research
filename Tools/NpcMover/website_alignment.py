@@ -67,12 +67,19 @@ WEBSITE_MONSTER_TO_INDEXES: dict[str, list[int]] = {
 # Resource-only aliases are retained as investigation candidates when no DB row
 # currently exposes the corresponding MonsterImage.  They are not DB mappings.
 WEBSITE_RESOURCE_ALIASES: dict[str, str] = {
-    "蛤蟆": "SkyStinger", "钉耙猫": "RakingCat", "七点白蛇": "RedSnake",
-    "千年毒蛇": "RedSnake", "猎鹰": "SkyStinger", "多角虫": "ShellNipper",
-    "巨型多角虫": "ShellNipper", "角蝇，蝙蝠": "CaveBat",
+    "钉耙猫": "RakingCat", "七点白蛇": "RedSnake", "千年毒蛇": "RedSnake",
+    "猎鹰": "SkyStinger", "多角虫": "ShellNipper", "巨型多角虫": "ShellNipper",
+    "角蝇，蝙蝠": "CaveBat",
+    # These are visual/resource candidates only.  They never create a DB
+    # mapping and remain investigate until a current MonsterInfo identity
+    # closes the name, stats, and gameplay references.
+    "骷髅精灵": "SkeletonLord", "蜘蛛娃": "DarkArachnid", "红甲虫": "DarkArachnid",
+    "沙鬼": "StoneGolem", "沙漠石人": "CrystalGolem", "沙漠树魔": "CursedCactus",
+    "沙漠蜥蜴": "GiantLizard", "夜行鬼": "Phantom", "巨象兽": "EvilElephant",
+    "蜈蚣": "Centipede", "洞穴蜈蚣": "Centipede", "邪恶蜈蚣": "Centipede",
+    "蝴蝶虫": "ButterflyWorm",
     # White Boar has no closed name/index identity in the current export, but
     # the website sprite is a visual candidate for the current TuskLord image.
-    # Keep it investigative; this is not a DB mapping.
     "白野猪": "TuskLord",
 }
 
@@ -257,12 +264,14 @@ def build_monsters(
         current_candidates = [by_index.get(index) for index in candidates if by_index.get(index)]
         resource_alias = WEBSITE_RESOURCE_ALIASES.get(name)
         resource_rows = [row for row in current if row.get("Image") == resource_alias] if resource_alias else []
+        resource_lookup = lookup.get(resource_alias) if resource_alias else None
+        resource_only = bool(resource_lookup and not resource_rows)
         source_evidence = source_identity_evidence(name, source_records, legacy_catalog)
         if len(candidates) == 1 and current_candidates and len(resource_rows) <= 1:
             status = "confirmed"
             confidence = "high" if name in {"鸡", "猪", "牛", "羊", "鹿", "稻草人", "森林雪人", "半兽战士", "红野猪", "黑野猪", "楔蛾", "沃玛教主", "祖玛教主", "潘夜战士"} else "medium"
             method = "explicit-identity-plus-MonsterLookup-probe"
-        elif candidates or resource_rows:
+        elif candidates or resource_rows or resource_only:
             status, confidence, method = "investigate", "medium", "identity/resource-candidate-conflict"
         else:
             status, confidence, method = "pending", "pending", "source-and-resource-investigation-no-closed-candidate"
@@ -275,7 +284,23 @@ def build_monsters(
                 "level": row.get("Level"), "is_boss": row.get("IsBoss"),
                 "candidate_source": "explicit-index" if row in current_candidates else "resource-alias",
             })
+        if resource_only:
+            evidence.append({
+                "index": None, "internal_name": None, "image": resource_alias,
+                "race": None, "shape": resource_lookup.get("shape"),
+                "resource": resource_probe(lookup, resource_alias, data_root),
+                "level": None, "is_boss": None, "candidate_source": "resource-alias-only",
+            })
         candidate_indexes = candidates or [r["Index"] for r in resource_rows]
+        candidate_count = len({int(index) for index in candidates + [int(r["Index"]) for r in resource_rows]})
+        if resource_only:
+            candidate_count += 1
+        if status == "confirmed":
+            skip_reason = None
+        elif resource_only:
+            skip_reason = "resource-only MonsterLookup candidate; no current MonsterInfo row; retain current"
+        else:
+            skip_reason = candidate_reason(name, candidate_indexes, by_index)
         rows_out.append({
             "website_monster_id": item["id"], "website_monster_name": name,
             "website_category": item["category"], "website_image": item["image"],
@@ -284,12 +309,10 @@ def build_monsters(
             "zircon_index": candidates[0] if len(candidates) == 1 and current_candidates else None,
             "zircon_internal_name": current_candidates[0].get("MonsterName") if len(current_candidates) == 1 and current_candidates else None,
             "zircon_image": current_candidates[0].get("Image") if len(current_candidates) == 1 and current_candidates else None,
-            "candidate_count": len({int(index) for index in candidates + [int(r["Index"]) for r in resource_rows]}),
-            "resource_alias": resource_alias,
+            "candidate_count": candidate_count, "resource_alias": resource_alias,
             "source_identity_evidence": source_evidence,
             "match_method": method, "match_evidence": source_evidence["attempted_paths"],
-            "confidence": confidence, "status": status,
-            "skip_reason": None if status == "confirmed" else candidate_reason(name, candidate_indexes, by_index),
+            "confidence": confidence, "status": status, "skip_reason": skip_reason,
             "business_index_untouched": True, "apply_status": "display-name-plan-only" if status == "confirmed" else "retain-current",
         })
     stats = {

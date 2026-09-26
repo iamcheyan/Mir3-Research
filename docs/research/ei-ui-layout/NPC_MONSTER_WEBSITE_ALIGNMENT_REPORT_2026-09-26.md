@@ -8,7 +8,7 @@
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
 - 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
-- Mir3-Research 最终生成时：HEAD=f83613377ce73343ea3c248c7e2e25fd9a6a6ece；origin/ei-ui-audit-2026-09-24=6b626be129e5fbb08fa8088bdb2fdd4264568cef；工作树 dirty=True。
+- Mir3-Research 最终生成时：HEAD=f81709d5a5d4f2f529e88e27fa3f5b7749066ae6；origin/ei-ui-audit-2026-09-24=f81709d5a5d4f2f529e88e27fa3f5b7749066ae6；工作树 dirty=True。
 - Zircon 最终生成时：HEAD=7d7943f79965690adc7c41fc9e35737dd22d8fa7；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；origin/main=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；工作树 dirty=False；未提交路径=[]；本 Goal 未修改。
 - 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/map_links_v2.json"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
@@ -16,7 +16,7 @@
 ## 2. 网站索引和图片证据
 
 - 网站怪物：154；分类数=21；技能：61。
-- 怪物状态：confirmed=67，investigate=12，pending=75，unmatched=0；未闭合行逐项 source exact=127、legacy exact=127。
+- 怪物状态：confirmed=67，investigate=29，pending=58，unmatched=0；独立验证审计 87 条未闭合行，其中 source exact=69、legacy exact=69。
 - 技能状态：confirmed=59，investigate=2，pending=0；MIcon header present=59。
 - 每条网站记录保留页面路径、原始图片路径、sha256、字节数、尺寸、来源描述；重复图片组见 `website-index.json`。
 
@@ -27,6 +27,7 @@
 - `pending` 不是“网站没有对应”。每个未闭合行同时保存 Hero-kill exact/后缀族、Legacy Atlas exact/后缀族、MonsterInfo/资源别名、MonsterLookup/Mon-*.Zl、0/1-based frame probe 和重复图冲突审计；未闭合只表示当前证据仍不足以安全选 Index。
 - 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。
 - 白野猪当前新增可复现资源候选：网站 `images/mob/pic/40.gif` 与 Zircon `MonsterInfo.Index=128 / Tusk Lord / MonsterImage=TuskLord / MonsterLookup shape=8 / Mon-8.Zl`；该证据仅提升为 `investigate`，不产生 Index 或显示名写入计划。对照图见 `white-boar-resource-contact-sheet.png`。
+- 当前保留 21 条资源别名候选（其中 5 条只有 MonsterLookup/Mon-*.Zl 资源候选、没有当前 MonsterInfo 行）；候选统一保持 `investigate`，不创建 Index。对照图见 `resource-alias-candidate-contact-sheet.png`；资源候选不是身份确认。
 
 ## 4. 技能
 
