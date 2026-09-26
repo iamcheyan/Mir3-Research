@@ -121,7 +121,7 @@ A/C-server	Source/GameServer/ObjGuard.pas	101	2367	partial	Round 815: TSuperGuar
 A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次+TMonster AI核心(Think/AttackTarget/Run)+TATMonster；71类构造与ObjMon2/3待读
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
-A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	partial	Round 811: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53条件+75动作opcode/GotoQuest/TakeItemFromUser；NpcSay族与TMerchant实现待读
+A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏；TMerchant实现待读
 A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 816: 2类清单；实现待读
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
@@ -289,7 +289,7 @@ C-common	Source/Common/DES.pas	563	16649	pending
 C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
 C-common	Source/Common/GList.pas	547	14813	pending	
 C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
-C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803 协议总表 474 常量
+C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803/820: 474 常量 + QI_/QA_ opcode 表 + ET_ 命名空间
 C-common	Source/Common/HUtil32.pas	2214	60031	pending	
 C-common	Source/Common/HashTable.pas	319	7049	pending	
 C-common	Source/Common/MfdbDef.pas	1192	38265	pending	

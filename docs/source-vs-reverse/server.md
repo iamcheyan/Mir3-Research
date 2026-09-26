@@ -1421,3 +1421,148 @@ python3 Tools/source-read/wemade_decrypt.py --scan Envir3/QuestDiary
 > **对 `Tools/questdata` 的价值**：现在 `Envir3/QuestDiary/` 的 **443 个脚本
 > 全部可读**（440 明文 + 3 解密），结合 §12 的 opcode 表，
 > **可以完整解析整个任务脚本树**。
+
+---
+
+## 14. NPC 对话宏系统（Round 821）
+
+> 证据源：`Source/GameServer/ObjNpc.pas` 的 `CheckNpcSayCommand`（`:476-620`）。
+> 机器可读：[`npc-say-macros.tsv`](npc-say-macros.tsv)（28 个 `$` 宏）、
+> [`quest-macros-coverage.tsv`](quest-macros-coverage.tsv)（脚本↔源码交叉）。
+> 提取器：`Tools/source-read/extract_npc_macros.py`、
+> `verify_quest_macros.py`。
+
+### 14.1 `$` 宏机制（`CheckNpcSayCommand`，`:476-620`）
+
+```pascal
+procedure TNormNpc.CheckNpcSayCommand (hum: TUserHuman; var source: string; tag: string);
+begin
+   if tag = '$OWNERGUILD' then begin
+      data := UserCastle.OwnerGuildName;
+      if data = '' then data := 'GameManagerconsultation';
+      source := ChangeNpcSayTag (source, '<$OWNERGUILD>', data);
+   end;
+   if tag = '$USERNAME' then
+      source := ChangeNpcSayTag (source, '<$USERNAME>', hum.UserName);
+   ...
+```
+
+**机制**：脚本里的 `<$NAME>` 占位符在**运行时**被替换为实际值。
+`ChangeNpcSayTag(src, orgstr, chstr)`（`:462-474`）是纯字符串替换
+（`pos` + `Copy` 拼接）。
+
+**实测提取出 28 个 `$` 宏**（完整表见 `npc-say-macros.tsv`）：
+
+| 组 | 宏 |
+|---|---|
+| 行会/攻城 | `$OWNERGUILD` `$LORD` `$GUILDWARFEE` `$GUILDWARTIME` `$CASTLEWARDATE` `$LISTOFWAR` `$CASTLEGOLD` `$TODAYINCOME` `$CASTLEDOORSTATE` `$REPAIRDOORGOLD` `$REPAIRWALLGOLD` `$GUARDFEE` `$ARCHERFEE` `$GUARDRULE` |
+| 据点 | `$GUILDAGITREGFEE` `$GUILDAGITEXTENDFEE` `$GUILDAGITMAXGOLD` `$AGITGUILDNAME` `$AGITGUILDMASTER` |
+| 玩家 | `$USERNAME` `$PKTIME` `$SAVEITEM` `$REMAINSAVEITEM` `$MAXSAVEITEM` `$USERWEAPON` |
+| 商店 | `$PRICERATE` `$UPGRADEWEAPONFEE` |
+| 其他 | `$MEMORIALCOUNT` |
+
+**注意 `$CASTLEWARDATE`/`$LISTOFWAR` 有硬编码兜底文案**（`:508-515`、`:524-526`），
+且分 KOREA/非 KOREA 两版 —— 注释「가까운 시일 안에는 공성전이 없다네」
+（近期没有攻城战）。
+
+**`NpcSay`（`:456-460`）**：
+
+```pascal
+str := ReplaceChar (str, '\', char($a));        // '\' → 换行
+target.SendMsg (self, RM_MERCHANTSAY, 0, 0, 0, 0, UserName + '/' + str);
+```
+
+注释「점차 안 쓰임... 하드코딩 하지 않는 것이 좋음」
+（**逐渐不用了…最好不要硬编码**）—— 作者自己标注这是**遗留 API**。
+消息体格式 `NPC名 + '/' + 文本`，`RM_MERCHANTSAY` 是渲染层消息。
+
+### 14.2 ★ **重大发现：脚本用了 43 个宏，源码只实现 1 个** ★
+
+用 `verify_quest_macros.py` 交叉验证 `Envir3/QuestDiary/`（440 个可读文件）
+与整个 `Source/` 树：
+
+```
+扫描 QuestDiary 文件: 440
+脚本用到的宏（去重）: 43
+源码里出现的宏（去重）: 62（其中绝大多数是 C++ 类型名/格式符的误报）
+
+脚本用了但源码里找不到的宏: 42
+  {}FCOLOR          1257 次
+  {}NPCIMG           373 次
+  {}RENTFARE          44 次
+  {}FARE              27 次
+  {}DESTINATION       26 次
+  ...（共 42 个）
+
+脚本用了且源码里有的宏:
+  $USERNAME           13 次   GameServer/ObjNpc.pas:531   ← 只有这一个
+```
+
+#### 14.2.1 两套宏风格
+
+| 风格 | 例子 | 脚本用量 | 源码实现 |
+|---|---|---|---|
+| `<$NAME>` | `<$USERNAME>` | 少（4 种） | ✅ 28 个（`CheckNpcSayCommand`） |
+| **`{NAME}`** | `{FCOLOR/10}`、`{NPCIMG/5}` | **多（39 种，`FCOLOR` 1257 次）** | ❌ **零实现** |
+
+#### 14.2.2 高频 `{}` 宏（实测）
+
+| 宏 | 次数 | 推断语义 |
+|---|---:|---|
+| `{FCOLOR/N}` | 1257 | **字体颜色**（N = 颜色索引） |
+| `{NPCIMG/N}` | 373 | **NPC 头像/图片**（N = 图号） |
+| `{RENTFARE}` | 44 | 租金 |
+| `{FARE}` | 27 | 车费 |
+| `{DESTINATION}` / `{POSITION}` | 26 / 26 | 目的地 / 位置 |
+| `{WEDDING}` / `{WEDDING_TUDI}` | 24 / 22 | 婚礼 |
+| `{TIME}` / `{RENTHOUR}` | 23 / 22 | 时间 / 租时 |
+| `{GOLD}` | 15 | 金币 |
+| `{EVENT}` | 14 | 事件 |
+| `{SHIFUNAME}` / `{SHIFU}` | 10 / 8 | 师父（师徒系统） |
+| `{TUDINAME}` / `{TUDI}` / `{TRY_TUDI}` / `{START_TUDI}` / `{TIME_TUDI}` / `{INPUTTUDINAME}` | 6-9 | 徒弟（师徒系统） |
+| `{MAN}` / `{MANNAME}` / `{GIRL}` / `{GIRLNAME}` / `{INPUTGIRLNAME}` | 4-6 | 男/女（**结婚系统**） |
+| `{TRY}` / `{FINISH}` / `{START}` / `{WAITOUT}` / `{WAITINGTIMEOUT}` / `{OPEN}` / `{AI}` | 5-9 | 状态标记 |
+| `{ANSWER}` / `{COUNT}` / `{PROB}` / `{TYPE}` / `{ATOM}` | 2-3 | 问答/计数/概率 |
+| `{USERCOUNT}` / `{USERNANE}` | 1 / 1 | 用户数（**注意 `USERNANE` 是拼写错误**） |
+
+**`$` 风格里脚本用了但源码没有的 3 个**：
+`$GUILD`（4 次，`CastleWar/Flag.txt`：「挑战行会 '<$GUILD>' 行会占领了沙巴克城。」）、
+`$INPUTSTR`（1 次，`Refine/...`：刻武器名）、
+`$CS_SABUK_OWNER`（1 次，沙巴克城主名）。
+
+#### 14.2.3 结论与边界
+
+1. **`{NAME}` 宏在整份源码里零实现** —— 它们应由**另一个（更新的）服务端构建**
+   处理，本版源码不含。
+2. **`$GUILD`/`$INPUTSTR`/`$CS_SABUK_OWNER` 同样零实现**。
+3. → **本版源码的宏系统是不完整的**（只覆盖 `$` 风格 28 个，
+   而脚本实际用到 43 个）。
+4. ⚠️ **`verify_quest_macros.py` 的误报**：源码侧「62 个宏」绝大多数是
+   **C++ 类型名**（`{_D3DVIEWPORT9}`、`{_D3DMATRIX}` 等来自
+   `Plug/MyDirect9/`）与 **Delphi 格式符**（`{%X}`、`{%S}` 等来自
+   `Format()` 调用）—— **不是对话宏**。判据应以**脚本侧 43 个**为准。
+
+> **对 `Tools/questdata` 的价值**：做 QuestDiary 脚本解析器时，
+> **必须能识别 `{}` 与 `<$>` 两种宏并原样保留**（因为 42 个宏的语义
+> 在本源码里查不到），**不能假设宏可解析**。
+
+### 14.3 与 EI 证据 / Zircon 的对照
+
+| 项 | 原版反编译 | 源码 | Zircon |
+|---|---|---|---|
+| 对话宏 | 未闭合 | `$` 风格 28 个实现 | `NPCPage` 文本处理 |
+| `{}` 风格宏 | 未闭合 | **零实现**（在别的构建里） | — |
+| `RM_MERCHANTSAY` | 未闭合 | `NpcSay` 用此消息 | — |
+
+**分级**：源码结论均 `secondary-source`；脚本侧统计为 `primary-config`
+（直接读真实配置文件）。
+
+### 14.4 未验证项
+
+| 项 | 原因 |
+|---|---|
+| 42 个未实现宏的**语义** | 源码里零实现，**不能猜** |
+| `{FCOLOR/N}` 的 N 值范围与调色板 | 同上 |
+| `{NPCIMG/N}` 与 `NPCFace` 字段的关系 | 同上（可能相关但无代码证据） |
+| `$GUILD`/`$INPUTSTR`/`$CS_SABUK_OWNER` 的处理位置 | 全仓零命中 |
+| `RM_MERCHANTSAY` 的客户端处理 | 未读客户端对应分支 |

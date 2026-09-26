@@ -10965,3 +10965,65 @@ C++ 线格式：`Common/mir2packet.cpp` + `Common/endecode.cpp`，
 **落盘**：`tools-and-servers.md`（约 220 行）、
 `Tools/source-read/verify_missing_opcodes.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 821 (全量精读续) — 2026-09-26：NPC 对话宏系统 + **脚本宏覆盖率交叉验证**
+
+> `ObjNpc.pas` 的 `CheckNpcSayCommand`（`:476-620`）。
+> 产物 `server.md` §14、`npc-say-macros.tsv`（28 个 `$` 宏）、
+> `quest-macros-coverage.tsv`（脚本↔源码交叉）、
+> `Tools/source-read/{extract_npc_macros,verify_quest_macros}.py`。
+
+**〔`$` 宏机制〕**`CheckNpcSayCommand(hum, var source, tag)`（`:476-620`）：
+脚本里的 `<$NAME>` 占位符在**运行时**被替换为实际值；
+`ChangeNpcSayTag(src, orgstr, chstr)`（`:462-474`）是纯字符串替换
+（`pos` + `Copy` 拼接）。**实测提取 28 个 `$` 宏**（完整表 `npc-say-macros.tsv`）：
+行会/攻城 14 个（`$OWNERGUILD`/`$LORD`/`$GUILDWARFEE`/`$GUILDWARTIME`/
+`$CASTLEWARDATE`/`$LISTOFWAR`/`$CASTLEGOLD`/`$TODAYINCOME`/`$CASTLEDOORSTATE`/
+`$REPAIRDOORGOLD`/`$REPAIRWALLGOLD`/`$GUARDFEE`/`$ARCHERFEE`/`$GUARDRULE`）、
+据点 5 个、玩家 6 个、商店 2 个、其他 1 个。
+`$CASTLEWARDATE`/`$LISTOFWAR` 有**硬编码兜底文案**且分 KOREA/非 KOREA 两版。
+`NpcSay`（`:456-460`）注释「점차 안 쓰임... 하드코딩 하지 않는 것이 좋음」
+（**逐渐不用了…最好不要硬编码**）—— 作者自标为**遗留 API**。
+
+**〔★ 重大发现：脚本用了 43 个宏，源码只实现 1 个 ★〕**
+`verify_quest_macros.py` 交叉验证 `Envir3/QuestDiary/`（440 个可读文件）
+与整个 `Source/` 树：
+
+```
+扫描 QuestDiary 文件: 440     脚本用到的宏（去重）: 43
+脚本用了但源码里找不到的宏: 42
+  {}FCOLOR 1257 次 / {}NPCIMG 373 次 / {}RENTFARE 44 / {}FARE 27 /
+  {}DESTINATION 26 / {}POSITION 26 / {}WEDDING 24 / {}TIME 23 ...
+脚本用了且源码里有的宏: $USERNAME 13 次 (ObjNpc.pas:531)   ← 只有这一个
+```
+
+**两套宏风格**：`<$NAME>`（源码实现 28 个）与 **`{NAME}`**
+（脚本用量大得多，`{FCOLOR}` 就 1257 次，但**源码零实现**）。
+
+**高频 `{}` 宏语义推断**：`{FCOLOR/N}`=字体颜色、`{NPCIMG/N}`=NPC 头像、
+`{RENTFARE}`=租金、`{FARE}`=车费、`{DESTINATION}`/`{POSITION}`=目的地/位置、
+`{WEDDING*}`+`{MAN}`/`{GIRL}`/`{TUDINAME}`/`{SHIFUNAME}`=结婚与师徒系统、
+`{TRY}`/`{FINISH}`/`{START}`/`{WAITOUT}`=状态标记。
+注意 **`{USERNANE}` 是拼写错误**（应为 USERNAME）。
+
+**`$` 风格里脚本用了但源码没有的 3 个**：`$GUILD`（4 次，
+`CastleWar/Flag.txt`「挑战行会 '<$GUILD>' 行会占领了沙巴克城。」）、
+`$INPUTSTR`（1 次，刻武器名）、`$CS_SABUK_OWNER`（1 次，沙巴克城主名）。
+
+**结论与边界**：
+①**`{NAME}` 宏在整份源码里零实现** —— 应由**另一个（更新的）服务端构建**
+处理，本版源码不含 ②`$GUILD`/`$INPUTSTR`/`$CS_SABUK_OWNER` 同样零实现
+③**本版源码的宏系统是不完整的**（只覆盖 `$` 风格 28 个，脚本实际用到 43 个）。
+⚠️ **`verify_quest_macros.py` 的误报（如实记录）**：源码侧「62 个宏」绝大多数是
+**C++ 类型名**（`{_D3DVIEWPORT9}`/`{_D3DMATRIX}` 等来自 `Plug/MyDirect9/`）
+与 **Delphi 格式符**（`{%X}`/`{%S}` 等来自 `Format()` 调用）—— **不是对话宏**。
+判据应以**脚本侧 43 个**为准。
+
+**对 `Tools/questdata` 的价值**：做 QuestDiary 脚本解析器时，
+**必须能识别 `{}` 与 `<$>` 两种宏并原样保留**（42 个宏的语义在本源码里查不到），
+**不能假设宏可解析**。
+
+**落盘**：`server.md` §14（约 145 行）、`npc-say-macros.tsv`（28 行）、
+`quest-macros-coverage.tsv`（43 行）、
+`Tools/source-read/{extract_npc_macros,verify_quest_macros}.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
