@@ -10494,3 +10494,62 @@ AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + S
 **落盘**：`config.md` §14（约 200 行）、`config-parsers.tsv`（94 行）、
 `Tools/source-read/extract_config_parsers.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 814 (全量精读 C10) — 2026-09-26：技能系统与伤害模型
+
+> `Source/GameServer/Magic.pas`（1756 行）。产物 `docs/source-vs-reverse/magic.md`、
+> `magic-dispatch.tsv`、`Tools/source-read/extract_magic_dispatch.py`。
+
+**〔结构〕**`TMagicManager`（`:12`）全局单例，**55 个 `Mag*` 方法**，
+`SpellNow`（`:891`）是唯一入口。
+
+**〔伤害模型 —— 三个公式，别混〕**
+1. `GetRPow`（`:892-898`）：**16 位 word 打包 `[min,max]` 区间**
+   （高字节 max、低字节 min），返回区间内随机值。本源码常用的「打包区间」手法。
+2. `GetPower`（`:899-903`）：`Round(pw/(MaxTrainLevel+1)*(Level+1)) + DefMinPower..DefMaxPower 随机`，
+   注释「수련 0 단계에서는 1/4의 파워임」（修炼 0 级是 1/4 威力）。
+3. `GetPower13`（`:904-912`）：把 `pw` 拆成 `1/3 固定 + 2/3 缩放`，
+   注释「수련 0 단계에도 1/3의 파워가 남」（0 级保留 1/3 威力）→ **部分技能 0 级不该完全无威力**。
+4. `MPow`（`:64-67`）：用 **`MinPower`/`MaxPower`**（注意 `GetPower` 用的是
+   `DefMinPower`/`DefMaxPower` —— **两套字段**）。
+
+**〔符咒（부적）机制〕**`CanUseBujuk`（`:913-939`）返回码表示用哪个槽：
+`1` = `U_BUJUK`（符咒栏）、`2` = `U_ARMRINGL`（左臂环，**符咒可戴臂环位**）、`0` = 无。
+条件是 `StdMode=25` 且 `Shape=5` 且 **`Dura/100 >= count-1`**
+—— **符咒「数量」用 `Dura` 表示**（与 `TakeItemFromUser` 的堆叠物品同手法）。
+`UseBujuk`（`:940-`）在 `Dura < 100` 时清零并 `SendDelItem` + 提示「符咒用完了」。
+`U_BUJUK` 是 2003/03/15 为 COPARK 扩展的装备位。
+
+**〔技能分派表 —— 4 个 case 块 / 26 个 MagicId（重要修正）〕**
+`Magic.pas` 里**有 4 处** `case pum.pDef.MagicId of`（不是 1 处）：
+`blk1 @1008`（20 条，`SpellNow` 主分派）/ `blk2 @1349`（2 条）/
+`blk3 @1397`（3 条：`폭살계`13/`항마진법`14/`저주술`46 —— **领域型技能**）/
+`blk4 @1584`（1 条：`신수소환`30 —— **神兽召唤**）。
+`blk1` 的 20 个：화염장(1)/회복술(2)/금강화염장(5)/암연술(6)/화염풍(8,`MagPushAround`)/
+염사장(9)/뢰인장(10)/강격(11)/뢰혼격(20,`MagLightingShock`)/
+아공행법(21,`MagLightingSpaceMove`)/지염술(22,`MagMakeFireCross`)/
+폭열파(23,`MagBigExplosion`)/뢰설화(24,`MagElecBlizzard`)/대회복술(29,`MagBigHealing`)/
+주술의막(31,`MagBubbleDefenceUp`)/사자윤회(32,`MagTurnUndead`)/
+빙설풍(33,复用`MagBigExplosion`)/멸천화(35)/기공파(37,注释「도사 밀기 무공」= 道士推击武功)/
+화룡기염(45,`MagDragonFire`)。
+
+**⚠️ 修正记录**：先前版本的提取器只抓第一个 `case` 块，且把**嵌套的
+`case pstd.Shape of`**（毒粉形状分派，`:1247`）里的
+`1: //회색독가루: 중독`、`2: //황색독가루: 방어력감소` 误当成 MagicId 条目，
+导致出现「重复的 MagicId 1、2」。**已修正**：提取器现在跟踪嵌套 `case`
+并只采集本层标签（26 条，无重复）。
+
+**〔`IsSwordSkill`（`:55-62`）—— 武功 vs 魔法的权威分类〕**
+`case mid of 3,4,7,12,25,26,27,34,38: Result := TRUE;`（9 个，2003/03/15 新增武功）。
+→ 可用于校验 `ClientData/magic-effects.json` 的分类。
+
+**〔击退机制 `MagPushAround`（`:70-95`）完整概率模型〕**
+- 范围：`abs(dx)<=1 and abs(dy)<=1`（**相邻 1 格**）
+- 前置：`user.Abil.Level > cret.Abil.Level`（**必须等级更高**）且 `not cret.StickMode`
+- **概率** = `(6 + pushlevel*3 + 等级差) / 20` → 基础 30%，每级修炼 +15%，**等级差每级 +5%**
+- **距离** = `1 + max(0, pushlevel-1) + Random(2)` → 1..3 格
+- `pushlevel = 0..3`；`PushedCount` 累加（**可作反外挂统计**：推人次数异常 = 可疑）
+
+**落盘**：`magic.md`（236 行）、`magic-dispatch.tsv`（26 行）、
+`Tools/source-read/extract_magic_dispatch.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
