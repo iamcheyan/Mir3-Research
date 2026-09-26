@@ -11258,3 +11258,79 @@ else                      // 未压缩
 
 **落盘**：`client-libraries.md` §9-10（约 140 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 826 (全量精读续) — 2026-09-26：客户端渲染类层次 + 特效运行时 + **UNITX/UNITY 核实**
+
+> `Source/Client/{AxeMon,HerbActor,magiceff}.pas`。产物
+> `client-rendering.md` §8、`client-render-classes.tsv`（60 类）、
+> `Tools/source-read/extract_render_classes.py`。
+
+**〔三文件 60 个类〕**`AxeMon.pas`（4217 行）**35 类** = 客户端怪物渲染；
+`HerbActor.pas`（993 行）**10 类** = 采集物/特殊对象；
+`magiceff.pas`（1621 行）**15 类** = 魔法特效。
+继承深度 1 层 19 / 2 层 29 / 3 层 6 / 4 层 1 / **5 层 4** / **6 层 1**（最深）。
+
+**〔`AxeMon.pas` 是客户端怪物渲染（不是服务端）〕**
+⚠️ 与 `GameServer/ObjAxeMon.pas` 是**不同文件**。两个顶层基类：
+**`TSkeletonOma : TActor`**（`:65`，派生最多）与 `TGasKuDeGi : TActor`（`:121`）。
+主要派生：`TDualAxeOma`（注释「두번찍지는 놈」= 两连击的家伙）、
+`TCatMon` → `TArcherMon`/`TScorpionMon`、`THuSuABi`、
+`TZombiDigOut`（破土僵尸）/`TZombiZilkin`/`TWhiteSkeleton`。
+→ **与 `monsters.md` §1 的服务端 71 类对照：两边类名与层次完全不同**
+（客户端 `TSkeletonOma`/`TCatMon` vs 服务端 `TMonster`/`TATMonster`）——
+各自独立实现，只共享 `Race`/`Appearance` 数值约定。
+
+**〔`HerbActor.pas`〕**顶层基类都继承 `TActor`：`TKillingHerb`（`:19`，
+**可采集物基类**）、`TBeeQueen`、**`TCastleDoor`**（城门）、
+**`TWallStructure`**（城墙）、`TSoccerBall`。
+`TKillingHerb` 派生：`TMineMon`（矿）/`TCentipedeKingMon`/`TBigHeartMon`/
+`TSpiderHouseMon`/**`TDragonBody`**（注释「화룡몸 FireDragon」）。
+→ **`TCastleDoor`/`TWallStructure` 是「攻城」的客户端表现**，
+与 `Castle.pas` 的费用常量（`items-systems.md` §3）配套。
+
+**〔`TMagicEff` 基类（`:118-165`）—— 双坐标系〕**
+**屏幕坐标** `px`/`py`/`FlyX`/`FlyY`/`OldFlyX`/`OldFlyY` 与
+**地图坐标** `RX`/`RY`（注释「맵의 좌표로 환산한 좌표」）并存；
+目标也有**双份**（`TargetX`/`TargetY` 屏幕 vs `TargetRx`/`TargetRy` 地图）。
+插值用 **`FlyXf`/`FlyYf: Real`**（浮点位置）。
+**`Dir16`/`OldDir16` 是 16 方向** —— 与角色的 8 方向不同，**特效用更细的 16 方向**。
+`ExCase` 注释「0: 일반, 1,2..:예외사항」（0 普通、1,2..例外）。
+
+**〔`Run`（`:820-827`）—— 10 秒硬超时〕**
+```pascal
+if GetTickCount - starttime > 10000 then   // ← 注释：//2000 then
+   Result := FALSE
+```
+**注释 `//2000 then` 说明超时曾被设为 2 秒、后改 10 秒**。
+→ 特效最长存活 10 秒，超时自动销毁。
+
+**〔`DrawEff`（`:829-865`）—— 飞行 vs 爆炸〕**
+触发条件：距发射点 >15 像素**或** `FixedEffect`。
+`img := EffectBase + FLYBASE + Dir16 * 10` ——
+**飞行特效每方向占 10 帧**（与角色动作的 `frame+skip` 不同，固定 10）。
+`ExCase = 1` 是 **FireDragon 特例**（直接用 `EffectBase`）。
+**飞行类减 `shx`/`shy`（跟随施法者），爆炸类不减**
+→ **飞行特效跟随施法者滚动，爆炸特效固定在世界坐标**。
+
+**〔`GetFlyXY`（`:807-818`）—— 速度按 ms 归一化〕**
+`stepx := Round((firedisX/900) * ms)` —— **`/900` 是归一化除数**，
+即 **900ms 走完全程**（飞行特效标准时长 0.9 秒）。
+
+**〔15 个特效类〕**`TMagicEff` 直接派生 12 个（`TFlyingAxe`/`TFlyingBug`/
+`TCharEffect`/`TMapEffect`/`TLightingEffect`/`TFireGunEffect`/`TThuderEffect`/
+`TThuderEffectEx`/`TLightingThunder`/`TExploBujaukEffect`/`TBujaukGroundEffect`/
+`TNormalDrawEffect`）；`TFlyingAxe` → **`TFlyingArrow`（箭）/`TFlyingFireBall`（火球）**；
+`TMapEffect` → `TScrollHideEffect`。**`TFlyingAxe` 是飞行物的实用基类**。
+
+**〔★ 核实 `UNITX = 48` / `UNITY = 32`（`Grobal2.pas:1214-1215`）★〕**
+这是**等距瓦片的屏幕尺寸**。**直接确认了本仓库 mapviewer 的坐标换算依据** ——
+AGENTS.md §七.5 记录的「实体坐标 ×48/32 换算成像素」**与源码常量完全一致**：
+`屏幕X = 地图X * 48`、`屏幕Y = 地图Y * 32`。
+`magiceff.pas:838` 的 `shx := (Myself.RX*UNITX + Myself.ShiftX) - FireMyselfX`
+印证该用法。
+→ **这是原版等距瓦片尺寸的权威常量**，可用于校验
+`Tools/maps/mapviewer.py` 与 webport 的坐标换算（**后续工作**）。
+
+**落盘**：`client-rendering.md` §8（约 180 行）、`client-render-classes.tsv`（60 行）、
+`Tools/source-read/extract_render_classes.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

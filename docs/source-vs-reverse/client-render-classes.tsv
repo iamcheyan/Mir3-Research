@@ -1,0 +1,61 @@
+file	cls	parent	depth	line	comment
+AxeMon.pas	TSkeletonOma	TActor	1	65	
+AxeMon.pas	TDualAxeOma	TSkeletonOma	2	81	도끼던지는 몹
+AxeMon.pas	TCatMon	TSkeletonOma	2	87	
+AxeMon.pas	TArcherMon	TCatMon	3	93	
+AxeMon.pas	TScorpionMon	TCatMon	3	98	
+AxeMon.pas	THuSuABi	TSkeletonOma	2	102	
+AxeMon.pas	TZombiDigOut	TSkeletonOma	2	107	
+AxeMon.pas	TZombiZilkin	TSkeletonOma	2	112	
+AxeMon.pas	TWhiteSkeleton	TSkeletonOma	2	116	
+AxeMon.pas	TGasKuDeGi	TActor	1	121	
+AxeMon.pas	TFireCowFaceMon	TGasKuDeGi	2	137	
+AxeMon.pas	TCowFaceKing	TGasKuDeGi	2	142	
+AxeMon.pas	TZombiLighting	TGasKuDeGi	2	147	
+AxeMon.pas	TSuperiorGuard	TGasKuDeGi	2	152	멋진 경비병
+AxeMon.pas	TExplosionSpider	TGasKuDeGi	2	156	폭주
+AxeMon.pas	TFlyingSpider	TSkeletonOma	2	162	비독거미
+AxeMon.pas	TSculptureMon	TSkeletonOma	2	167	
+AxeMon.pas	TSculptureKingMon	TSculptureMon	3	179	
+AxeMon.pas	TSmallElfMonster	TSkeletonOma	2	183	
+AxeMon.pas	TWarriorElfMonster	TSkeletonOma	2	187	
+AxeMon.pas	TElectronicScolpionMon	TGasKuDeGi	2	194	뢰혈사(흑사왕)
+AxeMon.pas	TBossPigMon	TGasKuDeGi	2	200	왕돈
+AxeMon.pas	TKingOfSculpureKingMon	TGasKuDeGi	2	205	주마본완(왕중왕)
+AxeMon.pas	TSkeletonKingMon	TGasKuDeGi	2	212	해골반왕
+AxeMon.pas	TSamuraiMon	TGasKuDeGi	2	218	낭인귀
+AxeMon.pas	TSkeletonSoldierMon	TGasKuDeGi	2	221	해골무장,해골무사,해골병졸
+AxeMon.pas	TSkeletonArcherMon	TArcherMon	4	224	해골궁수
+AxeMon.pas	TBanyaGuardMon	TSkeletonArcherMon	5	237	반야우사,반야좌사,사우천왕
+AxeMon.pas	TStoneMonster	TSkeletonArcherMon	5	249	
+AxeMon.pas	TPBOMA1Mon	TCatMon	3	259	
+AxeMon.pas	TPBOMA6Mon	TCatMon	3	263	
+AxeMon.pas	TAngel	TBanyaGuardMon	6	268	
+AxeMon.pas	TFireDragon	TSkeletonArcherMon	5	276	
+AxeMon.pas	TDragonStatue	TSkeletonArcherMon	5	290	용석상
+AxeMon.pas	TJumaThunderMon	TSculptureMon	3	301	주마격뢰장
+HerbActor.pas	TKillingHerb	TActor	1	19	
+HerbActor.pas	TMineMon	TKillingHerb	2	28	
+HerbActor.pas	TBeeQueen	TActor	1	38	
+HerbActor.pas	TCentipedeKingMon	TKillingHerb	2	45	
+HerbActor.pas	TBigHeartMon	TKillingHerb	2	58	
+HerbActor.pas	TSpiderHouseMon	TKillingHerb	2	64	
+HerbActor.pas	TCastleDoor	TActor	1	70	
+HerbActor.pas	TWallStructure	TActor	1	87	
+HerbActor.pas	TSoccerBall	TActor	1	103	
+HerbActor.pas	TDragonBody	TKillingHerb	2	108	화룡몸 FireDragon
+magiceff.pas	TFlyingAxe	TMagicEff	1	167	
+magiceff.pas	TFlyingBug	TMagicEff	1	175	
+magiceff.pas	TFlyingArrow	TFlyingAxe	2	183	
+magiceff.pas	TFlyingFireBall	TFlyingAxe	2	189	
+magiceff.pas	TCharEffect	TMagicEff	1	195	
+magiceff.pas	TMapEffect	TMagicEff	1	202	
+magiceff.pas	TScrollHideEffect	TMapEffect	2	210	
+magiceff.pas	TLightingEffect	TMagicEff	1	216	
+magiceff.pas	TFireGunEffect	TMagicEff	1	228	
+magiceff.pas	TThuderEffect	TMagicEff	1	238	
+magiceff.pas	TThuderEffectEx	TMagicEff	1	245	
+magiceff.pas	TLightingThunder	TMagicEff	1	251	
+magiceff.pas	TExploBujaukEffect	TMagicEff	1	257	
+magiceff.pas	TBujaukGroundEffect	TMagicEff	1	264	
+magiceff.pas	TNormalDrawEffect	TMagicEff	1	274	
