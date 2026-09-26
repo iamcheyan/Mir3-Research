@@ -78,6 +78,36 @@ WEBSITE_RESOURCE_ALIASES: dict[str, str] = {
     "沙漠蜥蜴": "GiantLizard", "夜行鬼": "Phantom", "巨象兽": "EvilElephant",
     "蜈蚣": "Centipede", "洞穴蜈蚣": "Centipede", "邪恶蜈蚣": "Centipede",
     "蝴蝶虫": "ButterflyWorm",
+    # Pending website identities: candidates below are deliberately resource
+    # aliases, not MonsterInfo index assignments.  They force a second-stage
+    # identity review while preserving the no-fuzzy/no-write invariant.
+    "胞眼虫": "ArachnidGazer", "多脚虫": "SpikedBeetle",
+    "浪子人鬼": "OYoungBeast", "腐蚀人鬼": "RottingGhoul",
+    "沙漠鱼魔": "ZumaGuardian", "沙漠风魔": "DustDevil",
+    "月魔蜘蛛": "VenomousArachnid", "独眼蜘蛛": "SpiderBat",
+    "天狼蜘蛛": "VenomSpider", "幻影蜘蛛": "Phantom",
+    "爆裂蜘蛛": "SpittingSpider", "黑角蜘蛛": "DarkArachnid",
+    "花色蜘蛛": "GangSpider", "八脚首领(小BOSS)": "DarkArachnid",
+    "猿猴战士": "WildMonkey", "猿猴战将": "WildMonkey",
+    "劳动蚂蚁": "AntSoldier", "蚂蚁战士": "ArmoredAnt",
+    "爆毒蚂蚁": "AntNeedler", "盔甲蚂蚁": "ArmoredAnt",
+    "蚂蚁道士": "AntHealer", "蚂蚁将军": "ArmoredAnt",
+    "跳跳蜂": "WaspHatchling", "沃毒蜈蚣": "Centipede",
+    "钳虫": "SpikedBeetle", "白眼钳虫": "SpikedBeetle",
+    "沃角钳虫": "SpikedBeetle", "青铜钳虫": "SpikedBeetle",
+    "黑色恶蛆": "MutantMaggot", "白月黑色恶蛆": "MutantMaggot",
+    "金刚黑色恶蛆": "MutantMaggot", "沃毒黑色恶蛆": "MutantMaggot",
+    "邪恶钳虫": "SpikedBeetle", "邪恶毒蛇": "RedSnake",
+    "潘夜风魔": "FierceWindDemon", "潘夜火魔": "FlameMob",
+    "潘夜冰魔": "IceMob", "潘夜左护卫": "LightArmedSoldier",
+    "潘夜右护卫": "LightArmedSoldier", "潘夜鬼将": "PachonTheChaosBringer",
+    "震天魔神": "Monkey", "地牢女神": "DungeonGoddess1",
+    "魔神怪1": "SamaCursedSlave", "魔神怪2": "SamaCursedBladesman",
+    "疯狂魔神盗1": "SamaCursedBladesman", "触龙神": "Centipede",
+    "赤黄猪王": "BlackBoar", "怒龙神": "TigerSnake",
+    "潘夜云魔": "SamaWindGuardian", "恶性怪": "MutantLizard",
+    "犬猴魔": "OYoungBeast", "霸王守卫": "InfernalSoldier",
+    "武力神将": "NumaRoyalGuard", "震天首将": "Monkey",
     # White Boar has no closed name/index identity in the current export, but
     # the website sprite is a visual candidate for the current TuskLord image.
     "白野猪": "TuskLord",
@@ -482,10 +512,17 @@ def write_tsv(path: Path, rows_out: list[dict[str, Any]]) -> None:
         return
     keys = list(rows_out[0])
     with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=keys, delimiter="\t", extrasaction="ignore")
+        writer = csv.DictWriter(
+            fh, fieldnames=keys, delimiter="\t", extrasaction="ignore", lineterminator="\n"
+        )
         writer.writeheader()
         for row in rows_out:
-            writer.writerow({k: json.dumps(v, ensure_ascii=False, separators=(",", ":")) if isinstance(v, (dict, list)) else v for k, v in row.items()})
+            writer.writerow({
+                k: json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+                if isinstance(v, (dict, list))
+                else v.rstrip() if isinstance(v, str) else v
+                for k, v in row.items()
+            })
 
 
 def git_repo_state(path: Path, remote_ref: str) -> dict[str, Any]:
@@ -509,6 +546,11 @@ def git_repo_state(path: Path, remote_ref: str) -> dict[str, Any]:
 
 def build_report(manifest: dict[str, Any], report_path: Path) -> None:
     m = manifest["monster_stats"]; s = manifest["skill_stats"]
+    pending_rows = [row for row in manifest.get("monster_identity", []) if row.get("status") == "pending"]
+    pending_summary = "；".join(
+        f"{row.get('website_monster_id')} {row.get('website_monster_name')}: {row.get('skip_reason')}"
+        for row in pending_rows
+    ) or "none"
     white_boar = next((row for row in manifest.get("monster_identity", []) if row.get("website_monster_name") == "白野猪"), {})
     white_candidate = (white_boar.get("zircon_candidates") or [{}])[0]
     ext = manifest["external_alignment"]; ext_stats = ext.get("stats", {})
@@ -562,6 +604,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "- `pending` 不是“网站没有对应”。每个未闭合行同时保存 Hero-kill exact/后缀族、Legacy Atlas exact/后缀族、MonsterInfo/资源别名、MonsterLookup/Mon-*.Zl、0/1-based frame probe 和重复图冲突审计；未闭合只表示当前证据仍不足以安全选 Index。",
         "- 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。",
         f"- 白野猪当前新增可复现资源候选：网站 `images/mob/pic/40.gif` 与 Zircon `MonsterInfo.Index={white_candidate.get('index')} / {white_candidate.get('internal_name')} / MonsterImage={white_candidate.get('image')} / MonsterLookup shape={white_candidate.get('shape')} / Mon-{(white_candidate.get('resource') or {}).get('library_number')}.Zl`；该证据仅提升为 `investigate`，不产生 Index 或显示名写入计划。对照图见 `white-boar-resource-contact-sheet.png`。",
+        f"- 剩余 pending 逐项原因：{pending_summary}；这些行已完成规定路径审计，保持 retain-current，不产生 Index 或显示名写入。",
         f"- 当前保留 {resource_alias_count} 条资源别名候选（其中 {resource_only_count} 条只有 MonsterLookup/Mon-*.Zl 资源候选、没有当前 MonsterInfo 行）；候选统一保持 `investigate`，不创建 Index。对照图见 `resource-alias-candidate-contact-sheet.png`；资源候选不是身份确认。",
         "", "## 4. 技能", "",
         "- 61 条技能逐条由网站名称/职业/描述、Legacy Atlas 技能交叉目录、MagicInfo、MIcon.Zl header 复核。",
