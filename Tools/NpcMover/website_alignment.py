@@ -518,6 +518,12 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
     verification_path = Path(ext["normalized_npc_manifest"]).parent / "verification.json"
     verification = load(verification_path) if verification_path.exists() else {}
     normalized_audit = verification.get("normalized_audit", {})
+    investigation_audit = verification.get("investigation_audit", {})
+    resource_alias_count = sum(bool(row.get("resource_alias")) for row in manifest.get("monster_identity", []))
+    resource_only_count = sum(
+        any(candidate.get("candidate_source") == "resource-alias-only" for candidate in row.get("zircon_candidates", []))
+        for row in manifest.get("monster_identity", [])
+    )
     research_state = git_repo_state(ROOT, "origin/ei-ui-audit-2026-09-24")
     zircon_state = git_repo_state(ZIRCON, "origin/ui/legacy-layout-lab")
     website_state = git_repo_state(WEBSITE, "origin/main")
@@ -547,7 +553,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         f"- 当前未提交路径保护：Mir3-Research 无关 WIP={json.dumps(research_unrelated, ensure_ascii=False)}；Zircon 无关 WIP={json.dumps(zircon_state.get('status_paths', []), ensure_ascii=False)}；本 Goal 仅提交自身脚本/报告/manifest。",
         "", "## 2. 网站索引和图片证据", "",
         f"- 网站怪物：{m['website_record_count']}；分类数={len(m['website_categories'])}；技能：{s['website_record_count']}。",
-        f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}；未闭合行逐项 source exact={m.get('source_exact_count')}、legacy exact={m.get('legacy_exact_count')}。",
+        f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}；独立验证审计 {investigation_audit.get('audited_unclosed_rows', 'not-run')} 条未闭合行，其中 source exact={investigation_audit.get('source_exact_rows', 'not-run')}、legacy exact={investigation_audit.get('legacy_exact_rows', 'not-run')}。",
         f"- 技能状态：confirmed={s['confirmed_count']}，investigate={s['investigate_count']}，pending={s['pending_count']}；MIcon header present={s['icon_present_count']}。",
         "- 每条网站记录保留页面路径、原始图片路径、sha256、字节数、尺寸、来源描述；重复图片组见 `website-index.json`。",
         "", "## 3. 怪物全量匹配", "",
@@ -556,6 +562,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "- `pending` 不是“网站没有对应”。每个未闭合行同时保存 Hero-kill exact/后缀族、Legacy Atlas exact/后缀族、MonsterInfo/资源别名、MonsterLookup/Mon-*.Zl、0/1-based frame probe 和重复图冲突审计；未闭合只表示当前证据仍不足以安全选 Index。",
         "- 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。",
         f"- 白野猪当前新增可复现资源候选：网站 `images/mob/pic/40.gif` 与 Zircon `MonsterInfo.Index={white_candidate.get('index')} / {white_candidate.get('internal_name')} / MonsterImage={white_candidate.get('image')} / MonsterLookup shape={white_candidate.get('shape')} / Mon-{(white_candidate.get('resource') or {}).get('library_number')}.Zl`；该证据仅提升为 `investigate`，不产生 Index 或显示名写入计划。对照图见 `white-boar-resource-contact-sheet.png`。",
+        f"- 当前保留 {resource_alias_count} 条资源别名候选（其中 {resource_only_count} 条只有 MonsterLookup/Mon-*.Zl 资源候选、没有当前 MonsterInfo 行）；候选统一保持 `investigate`，不创建 Index。对照图见 `resource-alias-candidate-contact-sheet.png`；资源候选不是身份确认。",
         "", "## 4. 技能", "",
         "- 61 条技能逐条由网站名称/职业/描述、Legacy Atlas 技能交叉目录、MagicInfo、MIcon.Zl header 复核。",
         "- `catalog-skills.html` 的 old-only 行（例如凝血离魂、移花接玉）保持 investigate/pending；不把“无直接对应”当成最终结论，不改施法逻辑。",
@@ -582,7 +589,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "- 真实库、Users.db、资料站内容均未修改。",
         "", "## 9. 机器可读产物", "",
         "- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。",
-        "- 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`、`item-known-contact-sheet.png`、`white-boar-resource-contact-sheet.png`。",
+        "- 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`、`item-known-contact-sheet.png`、`white-boar-resource-contact-sheet.png`、`resource-alias-candidate-contact-sheet.png`。",
         "", "## 10. 物品扩展审计（只读）", "",
         f"- 网站 `data/items.json`：{(extension.get('item_stats') or {}).get('website_record_count', 'not-run')} 条，12 类；网站图片存在={(extension.get('item_stats') or {}).get('image_present_count', 'not-run')}/{(extension.get('item_stats') or {}).get('website_record_count', 'not-run')}。逐条字段、图片路径、sha256、尺寸和当前候选保存在 `extension-manifest.json` 与 `item-manifest.json`。",
         "- 当前 Zircon ItemInfo=1078。按 db_names.json 中文名和分类唯一闭合到当前 ItemInfo 的只有 47 条；另有 266 条可在旧版 stditem.json 通过中文名称找到，但尚未安全闭合到 Zircon ItemInfo.Index；58 条连旧版名称也未唯一闭合。扩展清单没有猜测 Index。",
