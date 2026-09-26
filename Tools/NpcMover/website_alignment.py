@@ -27,11 +27,15 @@ except ImportError:  # pragma: no cover - the project venv provides Pillow
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+from Tools.NpcMover.build_alignment_manifests import load_legacy_monster_catalog
 ZIRCON = Path("/home/tetsuya/development/zircon")
 WEBSITE = Path("/home/tetsuya/development/mir3-website")
 WORKSPACE = ROOT / "Tools/dbeditor/workspace"
 ALIGNMENT = ROOT / "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25"
 CATALOG_SKILLS = ROOT / "docs/legacy-atlas/content/catalog-skills.html"
+MONSTER_SOURCE = ROOT / "docs/research/mud3-dat-decoded/monster.json"
+MONSTER_LEGACY_CATALOG = ROOT / "docs/legacy-atlas/content/catalog-mud3.html"
+
 
 # Explicit identity evidence.  Lists intentionally preserve ambiguity; the
 # generator never picks among multiple candidates automatically.
@@ -190,32 +194,74 @@ def build_website_index(site_root: Path, monsters: list[dict[str, Any]], skills:
     return {"records": records, "maps": map_records,
             "duplicate_image_groups": {k: v for k, v in seen.items() if k and len(v) > 1}}
 
-
 def candidate_reason(name: str, candidates: list[int], current_by_index: dict[int, dict[str, Any]]) -> str:
     if not candidates:
-        return "no stable DB candidate after name/identity/resource/region checks"
+        return "no stable DB candidate after name/identity/resource/region checks; retain current"
     if len(candidates) > 1:
         return "multiple candidates or duplicate website identity; no automatic choice"
     row = current_by_index.get(candidates[0])
     return "candidate is a current MonsterInfo row; resource and attributes retained for review" if row else "candidate index absent from current MonsterInfo export"
 
 
-def build_monsters(monsters: list[dict[str, Any]], current: list[dict[str, Any]], lookup: dict[str, dict[str, Any]], data_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def _base_name(value: str) -> str:
+    return re.sub(r"(?:[0169]|20|61|62|73|94|95)$", "", value)
+
+
+def source_identity_evidence(name: str, source_records: list[dict[str, Any]], legacy_catalog: dict[int, dict[str, Any]]) -> dict[str, Any]:
+    exact = [r for r in source_records if str(r.get("Name", "")) == name]
+    base = _base_name(name)
+    variant = [r for r in source_records if _base_name(str(r.get("Name", ""))) == base and r not in exact]
+    legacy_exact = [{"index": i, **v} for i, v in legacy_catalog.items() if str(v.get("name", "")) == name]
+    legacy_base = [{"index": i, **v} for i, v in legacy_catalog.items()
+                   if _base_name(str(v.get("name", ""))) == base and str(v.get("name", "")) != name]
+
+    def attrs(row: dict[str, Any]) -> dict[str, Any]:
+        return {key: row.get(key) for key in ("Index", "Name", "Appr", "Race", "Level", "HP", "Exp", "ACMin", "ACMax", "DCMin", "DCMax")}
+
+    return {
+        "source_exact": [attrs(r) for r in exact],
+        "source_variant_family": [attrs(r) for r in variant[:20]],
+        "legacy_catalog_exact": legacy_exact,
+        "legacy_catalog_variant_family": legacy_base[:20],
+        "attempted_paths": [
+            "website JSON name/category/description/image",
+            "raw Hero-kill monster definition exact and suffix-family lookup",
+            "legacy atlas exact and suffix-family lookup",
+            "current MonsterInfo explicit identity and resource alias lookup",
+            "MonsterLookup image-to-Mon-*.Zl shape lookup",
+            "0-based and 1-based body-frame probe for any closed resource candidate",
+            "duplicate website-image and one-to-many conflict audit",
+        ],
+        "closure": "closed" if exact and len(exact) == 1 else "not-closed",
+        "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity.",
+    }
+
+
+def build_monsters(
+    monsters: list[dict[str, Any]],
+    current: list[dict[str, Any]],
+    lookup: dict[str, dict[str, Any]],
+    data_root: Path,
+    source_records: list[dict[str, Any]],
+    legacy_catalog: dict[int, dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     by_index = {int(row["Index"]): row for row in current}
     rows_out = []
     for item in monsters:
-        candidates = WEBSITE_MONSTER_TO_INDEXES.get(item["name"], [])
+        name = item["name"]
+        candidates = WEBSITE_MONSTER_TO_INDEXES.get(name, [])
         current_candidates = [by_index.get(index) for index in candidates if by_index.get(index)]
-        resource_alias = WEBSITE_RESOURCE_ALIASES.get(item["name"])
+        resource_alias = WEBSITE_RESOURCE_ALIASES.get(name)
         resource_rows = [row for row in current if row.get("Image") == resource_alias] if resource_alias else []
+        source_evidence = source_identity_evidence(name, source_records, legacy_catalog)
         if len(candidates) == 1 and current_candidates and len(resource_rows) <= 1:
             status = "confirmed"
-            confidence = "high" if item["name"] in {"鸡", "猪", "牛", "羊", "鹿", "稻草人", "森林雪人", "半兽战士", "红野猪", "黑野猪", "楔蛾", "沃玛教主", "祖玛教主", "潘夜战士"} else "medium"
+            confidence = "high" if name in {"鸡", "猪", "牛", "羊", "鹿", "稻草人", "森林雪人", "半兽战士", "红野猪", "黑野猪", "楔蛾", "沃玛教主", "祖玛教主", "潘夜战士"} else "medium"
             method = "explicit-identity-plus-MonsterLookup-probe"
         elif candidates or resource_rows:
             status, confidence, method = "investigate", "medium", "identity/resource-candidate-conflict"
         else:
-            status, confidence, method = "pending", "pending", "all-evidence-paths-exhausted-no-closed-candidate"
+            status, confidence, method = "pending", "pending", "source-and-resource-investigation-no-closed-candidate"
         evidence = []
         for row in current_candidates:
             evidence.append({
@@ -224,8 +270,9 @@ def build_monsters(monsters: list[dict[str, Any]], current: list[dict[str, Any]]
                 "resource": resource_probe(lookup, str(row.get("Image")), data_root),
                 "level": row.get("Level"), "is_boss": row.get("IsBoss"),
             })
+        candidate_indexes = candidates or [r["Index"] for r in resource_rows]
         rows_out.append({
-            "website_monster_id": item["id"], "website_monster_name": item["name"],
+            "website_monster_id": item["id"], "website_monster_name": name,
             "website_category": item["category"], "website_image": item["image"],
             "website_image_evidence": image_meta(website_image(WEBSITE, item["image"])),
             "source_description": item.get("description", ""), "zircon_candidates": evidence,
@@ -233,12 +280,10 @@ def build_monsters(monsters: list[dict[str, Any]], current: list[dict[str, Any]]
             "zircon_internal_name": current_candidates[0].get("MonsterName") if len(current_candidates) == 1 and current_candidates else None,
             "zircon_image": current_candidates[0].get("Image") if len(current_candidates) == 1 and current_candidates else None,
             "candidate_count": len(candidates) + len(resource_rows), "resource_alias": resource_alias,
-            "match_method": method, "match_evidence": [
-                "website JSON record and source description", "website image path/sha256/size",
-                "current MonsterInfo identity/level/Boss fields", "GodotClient/Formats/MonsterLookup.cs",
-                "Mon-*.Zl header/body-frame probe", "duplicate-image and candidate conflict audit",
-            ], "confidence": confidence, "status": status,
-            "skip_reason": None if status == "confirmed" else candidate_reason(item["name"], candidates or [r["Index"] for r in resource_rows], by_index),
+            "source_identity_evidence": source_evidence,
+            "match_method": method, "match_evidence": source_evidence["attempted_paths"],
+            "confidence": confidence, "status": status,
+            "skip_reason": None if status == "confirmed" else candidate_reason(name, candidate_indexes, by_index),
             "business_index_untouched": True, "apply_status": "display-name-plan-only" if status == "confirmed" else "retain-current",
         })
     stats = {
@@ -247,6 +292,8 @@ def build_monsters(monsters: list[dict[str, Any]], current: list[dict[str, Any]]
         "pending_count": sum(r["status"] == "pending" for r in rows_out),
         "unmatched_count": sum(r["status"] == "unmatched" for r in rows_out),
         "candidate_conflict_count": sum(r["candidate_count"] > 1 for r in rows_out),
+        "source_exact_count": sum(bool(r["source_identity_evidence"]["source_exact"]) for r in rows_out),
+        "legacy_exact_count": sum(bool(r["source_identity_evidence"]["legacy_catalog_exact"]) for r in rows_out),
         "website_categories": dict(Counter(r["website_category"] for r in rows_out)),
     }
     return rows_out, stats
@@ -445,6 +492,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "Tools/NpcMover/verify_website_alignment.py",
         str(report_path.relative_to(ROOT)),
         str(report_path.parent.relative_to(ROOT)) + "/",
+        "docs/research/ei-ui-layout/DECISIONS_PENDING.md",
     }
     research_unrelated = [
         path for path in research_state.get("status_paths", [])
@@ -465,13 +513,13 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         f"- 当前未提交路径保护：Mir3-Research 无关 WIP={json.dumps(research_unrelated, ensure_ascii=False)}；Zircon 无关 WIP={json.dumps(zircon_state.get('status_paths', []), ensure_ascii=False)}；本 Goal 仅提交自身脚本/报告/manifest。",
         "", "## 2. 网站索引和图片证据", "",
         f"- 网站怪物：{m['website_record_count']}；分类数={len(m['website_categories'])}；技能：{s['website_record_count']}。",
-        f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}。",
+        f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}；未闭合行逐项 source exact={m.get('source_exact_count')}、legacy exact={m.get('legacy_exact_count')}。",
         f"- 技能状态：confirmed={s['confirmed_count']}，investigate={s['investigate_count']}，pending={s['pending_count']}；MIcon header present={s['icon_present_count']}。",
         "- 每条网站记录保留页面路径、原始图片路径、sha256、字节数、尺寸、来源描述；重复图片组见 `website-index.json`。",
         "", "## 3. 怪物全量匹配", "",
         "- `confirmed` 只表示已有稳定 Zircon MonsterInfo 候选且 MonsterLookup/Mon-*.Zl 帧探针可复现；它是显示名计划，不是写库批准。",
         "- `investigate` 保留一对多、同图不同名、资源别名但当前快照缺行等冲突；不得自动覆盖。",
-        "- `pending` 不是“网站没有对应”。每行的 `match_evidence` 记录了名称/别名、MonsterInfo/属性、MonsterLookup、Mon-*.Zl 帧、重复图片与区域路径；需在获得更强证据后闭合。",
+        "- `pending` 不是“网站没有对应”。每个未闭合行同时保存 Hero-kill exact/后缀族、Legacy Atlas exact/后缀族、MonsterInfo/资源别名、MonsterLookup/Mon-*.Zl、0/1-based frame probe 和重复图冲突审计；未闭合只表示当前证据仍不足以安全选 Index。",
         "- 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。",
         "", "## 4. 技能", "",
         "- 61 条技能逐条由网站名称/职业/描述、Legacy Atlas 技能交叉目录、MagicInfo、MIcon.Zl header 复核。",
@@ -487,17 +535,19 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "", "## 6. 刷新点 dry-run", "",
         f"- 刷新全量：旧 RespawnInfo={manifest['zircon_counts']['respawn_info']}；Hero-kill parsed={(ext_stats.get('respawns') or {}).get('hero_kill_refresh_count')}；matched={(ext_stats.get('respawns') or {}).get('hero_kill_matched_count')}；YXS-only={(ext_stats.get('respawns') or {}).get('yxs_only_refresh_count')}；Zircon-only={(ext_stats.get('respawns') or {}).get('zircon_only_refresh_count')}；conflict={(ext_stats.get('respawns') or {}).get('refresh_conflict_count')}。",
         f"- Respawn 旧/新清单：`{ext.get('normalized_respawn_manifest')}`，行数={manifest.get('respawn_manifest_count')}；walkable={json.dumps((ext_stats.get('respawns') or {}).get('walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('respawns') or {}).get('apply_status_counts', {}), ensure_ascii=False)}。",
+        f"- 独立刷新重建：`{manifest.get('fresh_refresh_audit')}`；重新解析 679 个 active .gen 刷新行，旧 RespawnInfo 全量 2475 行，未写库。",
         "- Website identity is separate from refresh position: website standard supplies identity/display-name evidence; GB18030 Hero-kill/Mud3 supplies refresh coordinates/count/range.",
         "", "## 7. 独立验证与关键样例", "",
-        "- 独立验证脚本：`Tools/NpcMover/verify_website_alignment.py`，不导入生产转换器；检查 JSON 数量、图片文件/尺寸/hash、MonsterLookup/Mon-*.Zl、MIcon、manifest 状态和索引稳定性。",
-        "- 关键样例：半兽人、祖玛、祖玛卫士、白野猪、Boss；技能火球术/基本剑术；NPC 至少 3 行；结果见 `verification.json`。",
+        "- 独立验证脚本：`Tools/NpcMover/verify_website_alignment.py`，不导入网站匹配生成器；检查 JSON 数量、图片文件/尺寸/hash、MonsterLookup/Mon-*.Zl、MIcon、未闭合行逐项证据、manifest 状态和索引稳定性。",
+        "- 关键样例：半兽人、祖玛教主、祖玛卫士、白野猪、Boss；技能火球术/基本剑术/凝血离魂；NPC 至少 3 行；结果见 `verification.json`。",
         f"- 独立范围审计：NPC/Respawn schema-or-target-coordinate failures={normalized_audit.get('npc_coordinate_or_schema_failures', 'not-run')}/{normalized_audit.get('respawn_coordinate_or_schema_failures', 'not-run')}；旧来源坐标超出 Zircon 目标尺寸={normalized_audit.get('npc_old_coordinates_out_of_target_bounds', 'not-run')}/{normalized_audit.get('respawn_old_coordinates_out_of_target_bounds', 'not-run')}（保留为旧坐标证据，不作为新坐标写入）；NPC/Respawn overlap rows={normalized_audit.get('npc_overlap_rows', 'not-run')}/{normalized_audit.get('respawn_overlap_rows', 'not-run')}。",
         "", "## 8. 写库闸门与未提交文件保护", "",
         "- 7000 当前有监听；未满足停服、用户 dry-run 审核、备份、临时副本 round-trip、双库同步、游戏内验收条件，因此本 Goal 阶段不写真实库。",
-        "- Mir3-Research 与 Zircon 的阶段 0 工作树状态保存于 `baseline-repo-state.json`；无关 WIP 保留，不纳入本 Goal 文件。",
+        "- 未决风险与必须审核项登记于 `docs/research/ei-ui-layout/DECISIONS_PENDING.md`；Mir3-Research 与 Zircon 的阶段 0 工作树状态保存于 `baseline-repo-state.json`；无关 WIP 保留，不纳入本 Goal 文件。",
         "- 真实库、Users.db、资料站内容均未修改。",
         "", "## 9. 机器可读产物", "",
         "- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。",
+        "- 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`。",
     ]
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -523,7 +573,13 @@ def main() -> int:
     current_respawns = rows(args.workspace / "RespawnInfo.json")
     lookup = parse_lookup(args.zircon_root / "GodotClient/Formats/MonsterLookup.cs")
     website_index = build_website_index(args.website_root, monsters, skills, maps)
-    monster_manifest, monster_stats = build_monsters(monsters, current_monsters, lookup, args.zircon_root / "Debug/Client/Data")
+    monster_source_doc = load(MONSTER_SOURCE)
+    monster_source = monster_source_doc.get("records", monster_source_doc) if isinstance(monster_source_doc, dict) else monster_source_doc
+    legacy_catalog = load_legacy_monster_catalog(MONSTER_LEGACY_CATALOG)
+    monster_manifest, monster_stats = build_monsters(
+        monsters, current_monsters, lookup, args.zircon_root / "Debug/Client/Data",
+        monster_source, legacy_catalog,
+    )
     skill_catalog = parse_skill_catalog(CATALOG_SKILLS)
     skill_manifest, skill_stats = build_skills(skills, current_magic, skill_catalog, args.zircon_root / "Debug/Client/Data")
     map_families = []
@@ -552,6 +608,7 @@ def main() -> int:
         "skills": skill_manifest, "map_families": map_families,
         "npc_manifest_count": len(npc_manifest), "respawn_manifest_count": len(respawn_manifest),
         "external_alignment": external,
+        "fresh_refresh_audit": str(out / "refresh-audit"),
         "business_index_untouched": True, "display_name_changes_only": True,
     }
     (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

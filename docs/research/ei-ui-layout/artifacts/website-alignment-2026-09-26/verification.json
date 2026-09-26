@@ -97,6 +97,21 @@
     "confirmed": 59,
     "investigate": 2
   },
+  "investigation_audit": {
+    "audited_unclosed_rows": 87,
+    "rows_with_missing_investigation_evidence": 0,
+    "source_exact_rows": 69,
+    "legacy_exact_rows": 69,
+    "required_paths": [
+      "0-based and 1-based body-frame probe for any closed resource candidate",
+      "MonsterLookup image-to-Mon-*.Zl shape lookup",
+      "current MonsterInfo explicit identity and resource alias lookup",
+      "duplicate website-image and one-to-many conflict audit",
+      "legacy atlas exact and suffix-family lookup",
+      "raw Hero-kill monster definition exact and suffix-family lookup",
+      "website JSON name/category/description/image"
+    ]
+  },
   "resource_audit": {
     "confirmed_candidates_checked": 67,
     "resource_failures": 0

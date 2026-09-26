@@ -219,6 +219,47 @@ def magic_icon_check(data_root: Path, skills: list[dict[str, Any]], errors: list
 
 
 
+def check_monster_investigation(manifest: dict[str, Any], errors: list[str]) -> dict[str, Any]:
+    required_paths = {
+        "website JSON name/category/description/image",
+        "raw Hero-kill monster definition exact and suffix-family lookup",
+        "legacy atlas exact and suffix-family lookup",
+        "current MonsterInfo explicit identity and resource alias lookup",
+        "MonsterLookup image-to-Mon-*.Zl shape lookup",
+        "0-based and 1-based body-frame probe for any closed resource candidate",
+        "duplicate website-image and one-to-many conflict audit",
+    }
+    audited = 0
+    missing = 0
+    source_exact = 0
+    legacy_exact = 0
+    for row in manifest["monster_identity"]:
+        if row.get("status") not in {"investigate", "pending", "unmatched"}:
+            continue
+        audited += 1
+        evidence = row.get("source_identity_evidence") or {}
+        paths = set(evidence.get("attempted_paths") or [])
+        absent = sorted(required_paths - paths)
+        if absent:
+            missing += 1
+            errors.append(f"monster investigation paths missing: {row.get('website_monster_name')} -> {absent}")
+        if not (row.get("website_image_evidence") or {}).get("present"):
+            missing += 1
+            errors.append(f"monster investigation image missing: {row.get('website_monster_name')}")
+        if evidence.get("closure") not in {"closed", "not-closed"}:
+            missing += 1
+            errors.append(f"monster investigation closure missing: {row.get('website_monster_name')}")
+        source_exact += bool(evidence.get("source_exact"))
+        legacy_exact += bool(evidence.get("legacy_catalog_exact"))
+    return {
+        "audited_unclosed_rows": audited,
+        "rows_with_missing_investigation_evidence": missing,
+        "source_exact_rows": source_exact,
+        "legacy_exact_rows": legacy_exact,
+        "required_paths": sorted(required_paths),
+    }
+
+
 
 def check_key_samples(manifest: dict[str, Any], external: dict[str, Any], errors: list[str]) -> dict[str, Any]:
     names = {row["website_monster_name"]: row for row in manifest["monster_identity"]}
@@ -308,6 +349,7 @@ def main() -> int:
         if row.get("status") in {"investigate", "pending", "unmatched"} and not row.get("skip_reason"):
             errors.append(f"unclosed skill row has no skip_reason: {row.get('website_skill_name')}")
 
+    investigation_audit = check_monster_investigation(manifest, errors)
     resource_audit = resource_header_check(args.zircon_root / "Debug/Client/Data", lookup,
                                            [row for row in manifest["monster_identity"] if row.get("status") == "confirmed"], errors)
     icon_audit = magic_icon_check(args.zircon_root / "Debug/Client/Data", manifest["skills"], errors)
@@ -332,7 +374,8 @@ def main() -> int:
                              "respawns": len(external.get("monster_respawns", []))},
         "image_audit": {"monsters": monster_image_audit, "skills": skill_image_audit},
         "lookup_count": len(lookup), "monster_statuses": dict(statuses), "skill_statuses": dict(skill_statuses),
-        "resource_audit": resource_audit, "icon_audit": icon_audit, "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
+        "investigation_audit": investigation_audit, "resource_audit": resource_audit, "icon_audit": icon_audit,
+        "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
         "result": "PASS" if not errors else "FAIL",
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
