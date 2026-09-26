@@ -11078,3 +11078,57 @@ if (abs(user.CX - cret.CX) >= 2) or (abs(user.CY - cret.CY) >= 2) then
 **落盘**：`magic.md` §8（约 100 行）、`magic-implementations.tsv`（16 行）、
 `Tools/source-read/extract_magic_impl.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 823 (全量精读续) — 2026-09-26：PlayScn 五层渲染管线 + 光照系统
+
+> `Source/Client/PlayScn.pas`（3043 行）。产物 `client-internals.md` §7。
+
+**〔五层 Surface 架构〕**`BackgroundSurface`(:1388) 背景 →
+**`PlaySurface`(:836) 主游戏层**（最大，约 495 行：地形/物件/角色/掉落物/特效）→
+`LightSurface`(:1331) 光照 → `WeatherSurface`(:1422) 天气（每 100ms 换帧）→
+`MagicSurface`(:1457) 魔法特效（带 `ScreenBright` 调色）。
+
+**`PlaySurface` 的绘制要素**（从 `:845-861` 变量声明即可读出）：
+`nObjFileIdx`/`nImgIdx`/`bObjAni`（物件文件/图/动画）、`pd: PTDropItem`（掉落物）、
+`evn: TClEvent`（客户端事件）、`actor: TActor`（角色）、`meff: TMagicEff`（魔法特效）、
+`blend`/`movetick`/`bBlend`（混合与节拍）、`cLightSizeType`/`cLightColorType`（光照）、
+`drawingbottomline`（绘制底线，初始 `g_FScreenHeight`）。
+内嵌 `CheckOverlappedObject(myrc, obrc)`（`:837-844`）= 矩形重叠判定，用于遮挡排序。
+**视野雾逻辑**（`:868-875`）：`if NoDarkness or (Myself.Death) then ViewFog := FALSE`
+→ **死亡时自动取消视野雾**。
+
+**〔光照系统〕**
+①**`LightSizes` 6 档表**（`:42-49`）：`34496/161280/327360/405920/542976/713632`
+（递增），配套 `LightMask0..N` 二维 `shortint` 衰减掩码（3×3、5×5…，中心 3/4、
+边缘 0）。
+②**`LightMap[i,j]`** 是**屏幕格**（`LMX × LMY`），每格含
+`light`/`shiftx`/`shifty`/`cLightColorType`。
+③**`AddLight`（`:1712-1728`）**：`LightMap[lx,ly].light < light` 才接受
+（**只接受更强的光**）。
+④**`AddMapLight`（`:1730-1751`）**：条件不同 —— `<=` 而非 `<`，
+且 `or (light = 256)`（**256 是特殊值**），额外记录 `cLightColorType`。
+⑤**地图光照来源**（`:1187-1191`）：
+`cLightSizeType := (Map.MArrOb[i,j].wLigntNEvent and $C000) shr 14`
+→ **光照类型编码在物件字段 `wLigntNEvent` 的高 2 位**（取值 0-3）。
+
+**〔⚠️ 重大陷阱：`ApplyLightMap` 整个函数是空转〕**（`:1753-1783`）
+逐行核实：函数体完整（循环遍历 `LightMap`、计算 `lxx`/`lyy` 屏幕坐标），
+但**唯一的绘制调用 `FogCopy(...)` 与 `inc(lcount)` 全被 `//` 注释**
+（`:1769-1780`）。`DrawLightEffect`（`:1785-`）同样整段注释。
+→ **光照数据被计算和存储，但不由这两个函数绘制**；实际绘制疑在
+`LightSurface`（`:1331`）。**`ApplyLightMap` 名字像主入口，实际是空转** ——
+这是读代码时的重大陷阱。
+
+**〔其他关键方法〕**`Lost`(:464)/`Recovered`(:484) = **DirectX 设备丢失/恢复**
+（切全屏/最小化必需）；`SetAniTileFrame`(:504) 动画瓦片；
+`DrawObjOneCellTile`/`DrawObjTile`(:771/:831) 物件瓦片；
+`UpdateBright`/`CheckOverLight`(:1608/:1653) 亮度/过曝；
+`CleanObjects`(:1493) 清理对象。
+
+**〔对本仓库的意义〕**`docs/` 里有既有的 Godot 光照研究
+（`RENDERING_REGRESSION_LIGHT_LAYER_*`、`GODOT_WEATHER_DAYLIGHT_GUIDE.md`）。
+**本节的 `LightSizes` 6 档表与 `LightMask` 掩码是原版光照的权威参数**，
+可用于校验 Godot 侧实现 —— **标注为后续工作**。
+
+**落盘**：`client-internals.md` §7（约 145 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
