@@ -11443,3 +11443,76 @@ sizeof(...)/sizeof(MIRDB_FIELDS), __XXXFIELDS }`。**四元组**：
 **落盘**：`tools-and-servers.md` §6（约 105 行）、`sql-tables.tsv`（165 行）、
 `Tools/source-read/extract_sql_tables.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 829 (全量精读续) — 2026-09-26：Castle / TagSystem / Relationship / Event
+
+> 四文件共 3,713 行。产物 `items-systems.md` §12–15。
+
+**〔`Castle.pas`（1241 行）= 沙巴克攻城系统〕**
+常量：`CASTLEFILENAME='Sabuk.txt'`（**文件名用 Sabuk 拼音非 Castle**）、
+`CASTLENAMEDEF='SabukWall'`、**`CASTLEATTACERS='AttackSabukWall.txt'`**（原文拼写
+少一个 K）、**`CASTLEMAXGOLD=100000000`**（金库上限 1 亿）、
+**`TODAYGOLD=5000000`**（**当日税收上限 500 万**）、`COREDOORX/Y=631/274`、
+`MAXARCHER=12`、`MAXGUARD=4`。`CASTLECOREMAP`/`CASTLEBASEMAP` 被注释掉(`:21-22`)。
+
+**税收（`PayTax` `:790-829`）**：**⏱ 带日期改动记录「2003/07/15 사북 세금 상향
+조절 0.05 -> 0.10」→ 税率 5% 上调到 10%**（代码 `Round(goodsprice*0.1)`；
+同行残留注释「5%로 조정」是过时残留，以代码为准）。
+**双重封顶**：①`TodayIncome+tax <= TODAYGOLD`(500万)，超限则截断、已满则 0；
+②`int64(TotalGold)+tax <= CASTLEMAXGOLD`(1亿)，超限**直接置上限**。
+**每 10 分钟自动存档**(`:813`) + `AddUserLog('23'...)` 审计日志。
+
+**攻城时序（`Run` `:517-620`，每 10 秒一次）**：**每日 20:00 检查**
+（`ahour := 20`「오후8시」）、`BoCastleWarChecked` **一天只检查一次**
+（`:554` 注释「한번만 검사함」）、**攻城持续 3 小时**(`:615`)、
+**结束前 10 分钟警告**（`BoCastleWarTimeOut10min`）。
+**战场 = 距中心 ±100 格矩形**（`IsCastleWarArea` `:1084`），
+中心 `CastleStartX/Y=644/290`、`CastleMap='3'`(`:141-143`)。
+**`CorePEnvir`/`BasementEnvir`（内城/地下室）判定被注释掉**(`:1087-1089`) —— 只保留主地图。
+`StartCastleWar`(`:1061`)：取中心 100 格内玩家调 `UserNameChanged`（原 `ChangeNameColor`）
+→ **开战即刷新名字颜色**（敌我识别）。
+
+**布防**：`MainDoor` + `LeftWall`/`CenterWall`/`RightWall` + `Guards[0..3]` +
+`Archers[0..11]`，`TDefenseUnit` 含 `BoDoorOpen`/`HP`/`UnitObj`。
+**攻方申请与实战分离**：`AttackerList`（申请）vs `RushGuildList`（实战）；
+`ProposeCastleWar`/`GetNextWarDateTimeStr`/`GetListOfWars` → **申请制**。
+金库操作返回码(`:832-835`)：`-1` 非城主 / `-2` 钱不够 / `-3` 超重 / `1` 成功。
+**⚠️ 多服共享**(`:135-136`)：「사북성의 저장은 사북성이 있는 서버에서만 저장되고
+다른 서버에서는 읽기만 한다」→ **城堡存档只在拥有城堡的服务器写，其他服务器只读**。
+依赖 `Guild`：`IsOurCastle`/`IsRushCastleGuild`/`IsRushAllyCastleGuild` →
+**行会同盟直接决定攻城敌我**。
+> 对照 §11：行会战（`GUILDWARTIME=6`）与城堡战（**3 小时**）是**两套独立机制**。
+
+**〔`TagSystem.pas`（1678 行）= 游戏内邮件（쪽지/便条）系统〕**
+**不是「标签系统」** —— 韩文 쪽지 = 便条/短信。
+常量：**`MAX_TAG_COUNT=30`**（最多便条）、**`MAX_TAG_PAGE_COUNT=10`**（每页）、
+**`MAX_REJECTER_COUNT=20`**（最多拒收人数）。
+`TTagInfo`：`FSender`/`FSendDate`（**同时是主键**，`GenerateSendDate` 生成）/
+`FMsg`/`FState`/`FDBSaved`/`FClient`。
+**`FState` 四态**(`:22` 注释原文)：`읽지않음(0)` 未读 / `읽음(1)` 已读 /
+**`삭제불가(2)` 不可删除** / `삭제됨(3)` 已删除
+→ 存在**系统发的、玩家不能删的便条**。
+**双持久化标记** `FDBSaved`（DB）+ `FClient`（客户端）→ 两条投递路径独立跟踪。
+`TTagMgr` 的**四个握手标志位**：`FIsTagListSendAble`（备好否）/`FWantTagListFlag`
+（客户端想拉）/`FWantTagListPage`（要第几页）/`FClientGetList`（已持有）
++ 拒收列表两个 → **典型分页拉取协议**。`FNotReadCount` 用于 UI 红点。
+**存储退化**：`FItems := TList.Create; //TElHashList.Create;`(`:307-308`)
+→ **哈希表被换成线性 TList**。
+
+**〔`Relationship.pas`（471 行）= 恋人/关系系统〕**
+**`MAX_LOVERCOUNT = 1`**(`:9`) → **每人最多 1 个恋人**。
+`TRelationShipInfo`：`Ownner`（原文**双 n**）/`Name`/**`State`(BYTE)**/
+`Level`(BYTE)/**`Sex`(BYTE)**/`Date`/`ServerDate`/`MapInfo`。
+**字段用 BYTE 而非 Integer**（与 `TTagInfo` 不同）→ 面向紧凑序列化。
+**`MapInfo` 记录注册时地图** → 关系可能**绑定地点**。
+
+**〔`Event.pas`（323 行）= 地图限时事件基类〕**
+`TEvent`：`EventType`/`EventParam`（**整数对描述事件**，便于配置驱动）/
+`OpenStartTime`（열린시간）/`ContinueTime`（존재时长）/`CloseTime`/`Closed`/
+`Damage`/**`OwnCret: TCreature`**（归属者）/`FVisible`（맵에 보인다）/`Active`。
+方法 `AddToMap`(**virtual**)/`Run`(**dynamic**)/`Close` → **虚表与动态分派混用**。
+**`ContinueTime`+`CloseTime` 双时间戳** → 限时事件（限时宝箱/传送门）。
+**`OwnCret`+`Damage`** → 归属/伤害累计机制。
+
+**落盘**：`items-systems.md` §12–15（约 210 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

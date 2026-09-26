@@ -383,3 +383,214 @@ end;
 | `DeclareGuildWar` 的 3 小时判定实现 | 未读（注释已给语义） |
 | `MakeAllyGuild` 的「面对面」判定 | 未读 |
 | `AgitDecoMon.txt` 是否存在 | 未核（`Mud3-Config/` 里没找到） |
+
+---
+
+## 12. `Castle.pas` —— 沙巴克（사북성）攻城系统（Round 829）
+
+> 1,241 行。机器可读见 §12.6。
+
+### 12.1 常量（`:10-26`）
+
+| 常量 | 值 | 语义 |
+|---|---|---|
+| **`CASTLEFILENAME`** | `'Sabuk.txt'` | **城堡存档**（注意文件名是 **Sabuk** 拼音，非 `Castle`） |
+| `CASTLENAMEDEF` | `'SabukWall'`（非韩国版）/ `'哥굇냘'`（韩国版） | 城堡默认名 |
+| **`CASTLEATTACERS`** | `'AttackSabukWall.txt'` | **攻方列表存档**（注意原文拼写 `ATTACERS`，少一个 `K`） |
+| **`CASTLEMAXGOLD`** | **100,000,000** | 城堡金库上限（1 亿） |
+| **`TODAYGOLD`** | **5,000,000** | **当日税收上限（500 万）** |
+| `COREDOORX` / `COREDOORY` | 631 / 274 | 内城核心坐标 |
+| `MAXARCHER` | 12 | 弓箭手上限 |
+| `MAXGUARD` | 4 | 卫兵上限 |
+
+**`Sabuk`（沙巴克）** 是 Mir 系列传统攻城城的名字 —— 本源码沿用 Mir2 命名。
+`CASTLECOREMAP`/`CASTLEBASEMAP` **被注释掉**（`:21-22`），改用 `COREDOORX/Y`。
+
+### 12.2 **税收规则（`PayTax` `:790-829`）**
+
+```pascal
+// 2003/07/15 사북 세금 상향 조절 0.05 -> 0.10
+tax := Round (goodsprice * 0.1);  //세금은 5%로 조정   0.05
+```
+
+**⏱ 带日期的改动记录**：**2003/07/15 把税率从 5% 上调到 10%**。
+（注释里「세금은 5%로 조정」是**过时残留**，与代码 `* 0.1` 矛盾 —— 以代码为准。）
+
+**双重封顶**：
+1. `TodayIncome + tax <= TODAYGOLD`（当日 500 万）；超限则 `tax` 被截断到剩余额度，
+   已满则为 0。
+2. `int64(TotalGold) + tax <= CASTLEMAXGOLD`（1 亿）；超限则**直接置为上限**。
+
+**每 10 分钟自动存档**（`:813`）并写 `AddUserLog('23'...)` 审计日志
+（`'autosave'`/`'Autosaving'` 随 `KOREA` 条件切换）。
+
+### 12.3 **攻城战时序（`Run` `:517-620`，每 10 秒一次）**
+
+| 项 | 值 | 出处 |
+|---|---|---|
+| **每日检查时刻** | **20:00**（`ahour := 20`「오후8시」） | `:547`,`:553` |
+| 检查标志 | `BoCastleWarChecked`（**一天只检查一次** `:554` 注释「한번만 검사함」） | `:543`,`:554` |
+| **攻城持续** | **3 小时** | `:615` |
+| **结束前警告** | **10 分钟**（`BoCastleWarTimeOut10min`） | `:615-618` |
+| 战场判定范围 | `abs(CastleStartX-x) < 100` 且 `abs(CastleStartY-y) < 100` | `:1084` |
+| 战场中心 | `CastleStartX=644`, `CastleStartY=290`, `CastleMap='3'` | `:141-143` |
+
+**`IsCastleWarArea`（`:1080-1090`）**：**距中心 ±100 格的矩形**即战场。
+**`CorePEnvir`/`BasementEnvir`（内城/地下室）的判定被注释掉**（`:1087-1089`）——
+**只保留了城堡主地图**。
+
+**`StartCastleWar`（`:1061-1074`）**：取中心 100 格内所有玩家调 `UserNameChanged`
+（注释掉的 `ChangeNameColor`）→ **开战即刷新名字颜色**（敌我识别）。
+
+### 12.4 防御单位与攻守模型（`:29-80`）
+
+```pascal
+TDefenseUnit = record
+   X, Y: integer;  UnitName: string;
+   BoDoorOpen: Boolean;   //TCastleDoor 인 경우
+   HP: integer;
+   UnitObj: TCreature;    //TWallStructure or TSolder
+end;
+```
+
+**固定布防**：`MainDoor`（城门）+ `LeftWall`/`CenterWall`/`RightWall`（三面墙）
++ `Guards[0..3]`（4 卫兵）+ `Archers[0..11]`（12 弓箭手）。
+
+**攻方模型**：`AttackerList`（**申请攻城的行会**）/ `RushGuildList`（**正在攻城的行会**）
+—— **申请与实战分离**。
+`ProposeCastleWar`/`IsAttackGuild`/`GetNextWarDateTimeStr`/`GetListOfWars`
+→ **申请制**，有「下一次攻城时间」与列表查询。
+
+**金库操作**（`:105-106`）返回码注释（`:832-835`）：
+`-1` 非城主 / `-2` 钱不够 / `-3` 携带超重 / `1` 成功。
+
+**⚠️ 多服共享注释（`:135-136`）**：
+「사북성의 저장은 사북성이 있는 서버에서만 저장되고 다른 서버에서는 읽기만 한다.」
+→ **城堡存档只在拥有城堡的服务器写，其他服务器只读** —— **跨服只读同步**。
+
+### 12.5 与 `Guild.pas` 的关系
+
+`Castle` **依赖** `Guild`（`uses ... Guild, ...` `:8`）：`OwnerGuild: TGuild`、
+`IsOurCastle(g: TGuild)`、`IsRushCastleGuild(aguild)`、
+`IsRushAllyCastleGuild(aguild)` → **行会同盟关系直接决定攻城中的敌我**。
+
+> 对照 §11：行会战（`GUILDWARTIME = 6`）与城堡战（**3 小时**）是**两套独立机制**，
+> 时间单位不同。
+
+### 12.6 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `SaveToFile`/`LoadFromFile`（`Sabuk.txt` 格式） | 未读 |
+| `AttackerList` 存档格式 | 未读 |
+| `CheckCastleWarWinCondition`（胜负判定） | 未读 |
+| `ChangeCastleOwner`/`FinishCastleWar` 实现 | 未读 |
+| `RepairCastleDoor`/`RepairCoreCastleWall` | 未读 |
+| 韩国版城堡名 `'哥굇냘'` 的编码 | 疑混入 GB18030 |
+
+---
+
+## 13. `TagSystem.pas` —— 游戏内**邮件（쪽지）系统**（Round 829）
+
+> 1,678 行。**这不是「标签系统」而是「短信/便条系统」** —— 韩文 쪽지 = 便条/短信。
+
+### 13.1 常量（`:9-13`）
+
+| 常量 | 值 | 语义 |
+|---|---:|---|
+| **`MAX_TAG_COUNT`** | **30** | **最多便条数**（「최대 쪽지 개수」） |
+| **`MAX_TAG_PAGE_COUNT`** | **10** | **每页便条数**（「페이지당 쪽지 개수」） |
+| **`MAX_REJECTER_COUNT`** | **20** | **最多拒收人数**（「최대 거부자 수」） |
+
+### 13.2 `TTagInfo`（`:17-41`）—— 单条便条
+
+`FSender`（전송자 发件人）/ `FSendDate`（전송날짜，**同时是主键**，
+`GenerateSendDate` 生成）/ `FMsg`（전송 내용）/ `FState` / `FDBSaved` / `FClient`。
+
+**`FState` 四态（注释原文 `:22`）**：
+`읽지않음(0)` 未读 / `읽음(1)` 已读 / **`삭제불가(2)` 不可删除** / `삭제됨(3)` 已删除。
+
+→ **状态 2「不可删除」** —— 说明存在**系统发的、玩家不能删的便条**（如 GM 通知/系统公告）。
+
+**双持久化标记**：`FDBSaved`（DB 存否）+ `FClient`（已发客户端否）——
+**DB 与客户端两条投递路径独立跟踪**。
+
+### 13.3 `TTagMgr`（`:45-`）—— 管理器
+
+**四个「握手」标志位**（客户端拉取模式）：
+
+| 标志 | 语义 |
+|---|---|
+| `FIsTagListSendAble` | 便条列表**是否已备好**可发 |
+| `FWantTagListFlag` | **客户端想拉列表** |
+| `FWantTagListPage` | 客户端要**第几页** |
+| `FClientGetList` | 客户端**已持有**列表 |
+| `FIsRejectListSendAble` | 拒收列表备好否 |
+| `FWantRejectListFlag` | 客户端想拉拒收列表 |
+
+→ **典型的分页拉取协议**（服务端标记就绪 → 客户端请求页 → 服务端发页）。
+
+**方法**：`OnUserOpen`/`OnUserClose`、`GenerateSendDate`（生成便条号）、
+`GetTagCount`、`IsTagAddAble`、`Find(SendDate)`、`Add`/`Delete`/`SetInfo`/
+`RemoveInfo(Date)`、`FNotReadCount`（未读数，用于 UI 红点）。
+
+**存储**：`FItems: TList`（注释显示**原为 `TElHashList`**）/ `FRejecter: TStringList`。
+→ **哈希表被换成线性 TList**（`:47-48` 注释 `//TElHashList`），
+与 `Guild.pas` 用 `TStringList` 同类的**简化痕迹**。
+
+### 13.4 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `Add`/`Delete`/`SetInfo` 实现主体 | 只读声明与常量 |
+| 便条是否跨服/离线投递 | 未读 |
+| `GenerateSendDate` 的编号算法 | 未读 |
+| 与 DB 的读写路径 | 未读 |
+
+---
+
+## 14. `Relationship.pas` —— 恋人/关系系统（Round 829）
+
+> 471 行。**`MAX_LOVERCOUNT = 1`（`:9`）** —— **每人最多 1 个恋人**。
+
+**`TRelationShipInfo`（`:12-41`）**：`Ownner`（소유자 拥有者）/
+`Name`（등록자 登记者）/ **`State`(BYTE) 注册状态** / `Level`(BYTE) 等级 /
+**`Sex`(BYTE) 性别** / `Date`（등록날짜）/ `ServerDate`（서버날짜）/
+`MapInfo`（맵정보）。
+
+**⚠️ 字段用 `BYTE` 而非 `integer`** —— 与 `TTagInfo` 的 `Integer` 不同，
+说明这套结构**面向紧凑序列化**（可能是 SQL 表列类型驱动）。
+
+**`MapInfo` 字段**：记录**注册时的地图信息** —— 关系可能**绑定地点**。
+
+**未验证**：`Ownner` 的拼写（原文**双 n**，非 `Owner`）；`State` 取值；
+`GetNowDate` 格式；关系是否双向；471 行里的其余类。
+
+---
+
+## 15. `Event.pas` —— 地图事件基类（Round 829）
+
+> 323 行。**`TEvent`（`:11-38`）是地图上「限时出现物」的基类**。
+
+**字段**：`Check` / `PEnvir` / `X,Y` / **`EventType`** / **`EventParam`** /
+`OpenStartTime`（열린시간 开启时刻）/ **`ContinueTime`**（열여있을 시간 存在时长）/
+`CloseTime` / `Closed` / `Damage` / **`OwnCret: TCreature`**（归属者）/
+`runstart` / `runtick` / `IsAddToMap` / `FVisible`（맵에 보인다）/ `Active`。
+
+**方法**：`AddToMap`（**`virtual`**）/ `Run`（**`dynamic`**）/ `Close`。
+→ **`virtual` + `dynamic` 混用**：`AddToMap` 用静态虚表，`Run` 用动态分派。
+
+**`ContinueTime` + `CloseTime` 双时间戳** → **限时事件**（如限时宝箱/传送门）。
+
+**`OwnCret`（归属者）+ `Damage`** → **归属/伤害累计机制**（如事件怪被谁打死的）。
+
+**`EventType`/`EventParam` 整数对** → **事件由整数类型 + 参数描述**，
+便于从脚本/配置驱动。
+
+### 15.1 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `EventType` 取值表 | 未读 |
+| 派生类（是否有 `TEvent` 子类） | 未在 `Event.pas` 内见到 `class(TEvent)` |
+| `Run` 的 `dynamic` 重载点 | 未读 |

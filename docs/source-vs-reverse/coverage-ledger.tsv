@@ -91,7 +91,7 @@ E-tools	Source/Tools/ImageEditor/Common/ZLibEx.pas	726	21853	pending
 E-tools	Source/Tools/ImageEditor/Common/ZLibx.pas	733	21557	pending	
 E-tools	Source/Tools/ImageEditor/Common/bass.pas	1021	52162	pending	
 E-tools	Source/Tools/ImageEditor/Common/mudutil.pas	1009	26358	pending	
-A/C-server	Source/GameServer/Castle.pas	1241	42317	partial	Round 816: TUserCastle+配置文件+攻城费用常量；实现待读
+A/C-server	Source/GameServer/Castle.pas	1241	42317	partial	Round 829: 常量+税率10%(2003/07/15上调)+双重封顶+攻城时序(每日20:00检查/3小时/提前10分警告)+战场±100格+布防+跨服只读；实现主体待读
 A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
 A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
 A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
@@ -100,7 +100,7 @@ A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 816: Decod
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
 A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
 A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界模型+.map格式+对象注册+移动门+门+MapQuest+EnvirList
-A/C-server	Source/GameServer/Event.pas	323	7629	partial	Round 816: 6类+ET_事件类型常量；实现待读
+A/C-server	Source/GameServer/Event.pas	323	7629	partial	Round 829: 地图限时事件基类 EventType/EventParam+ContinueTime+OwnCret；EventType取值表待读
 A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
 A/C-server	Source/GameServer/FriendSystem.pas	988	32581	covered	Round 802 好友系统
 A/C-server	Source/GameServer/FrnEngn.pas	457	12405	pending	
@@ -122,13 +122,13 @@ A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
 A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏；TMerchant实现待读
-A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 816: 2类清单；实现待读
+A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 829: 恋人系统 MAX_LOVERCOUNT=1+TRelationShipInfo(BYTE字段)；其余类待读
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
 A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	pending	
 A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	pending	
 A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	pending	
-A/C-server	Source/GameServer/TagSystem.pas	1678	54596	partial	Round 816: 2类(继承ICommand)清单；实现待读
+A/C-server	Source/GameServer/TagSystem.pas	1678	54596	partial	Round 829: 邮件(쪽지)系统 常量30/10/20+TTagInfo四态+双持久化标记+分页握手协议；实现主体待读
 A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSystem 二次分派
 A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	pending	
 A/C-server	Source/GameServer/UserSystem.pas	153	4879	pending	
