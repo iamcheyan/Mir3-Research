@@ -9775,3 +9775,53 @@ LoginServer ─ISM_SEND_PUBLICKEY(118)→ DataBaseServer (netloginserver.cpp:21�
 **落盘**：`docs/source-vs-reverse/wire-format.md`、`Tools/source-read/edcode.py`、
 `Tools/source-read/coverage.py`、`docs/source-vs-reverse/dispatch-coverage.json`。
 未改任何原版证据文件、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 804 (source deep-read, client skeleton) — 2026-09-26：客户端骨架与帧号空间实测
+
+> 证据源 `reference/mir3-source/Source/Client/`（63,357 行）。
+> 产物 `docs/source-vs-reverse/client.md`、`client-windows.tsv`（352 条）、
+> `Tools/source-read/extract_client_windows.py`、`frame_overlap.py`。
+
+**〔入口〕**`Mir3.dpr:11-34`：`TFrmMain` 为主窗体；`Grobal2` 与 `HUtil32` 经
+`..\Common\` 引用 —— **客户端与服务端共用同一份协议单元**，这解释了
+`protocol-constants.tsv` 的 474 条常量对两端都成立。客户端目录下**无独立
+EDCode.pas**，`uses EdCode` 解析到 `Source/Common/EDCode.pas`（含 `Decrypt` 那份）。
+
+**〔场景状态机〕**`TSceneType = (stIntro, stLogin, stSelectCountry, stSelectChr,
+stNewChr, stLoading, stLoginNotice, stPlayGame)`（`IntroScn.pas:19`）。
+`DrawScrn.pas:115-129` 的 `ChangeScene` 先 `CloseScene` 再切再 `OpenScene`。
+**`stSelectCountry` 与 `stNewChr` 是空实现（`;`）** —— 留了槽位没接场景类，
+建号流程走选角场景内对话框。
+
+**〔窗口清单〕**352 条字段声明（`TDButton` 302 / `TDWindow` 40 / `TDGrid` 4 /
+`TList` 2 / `TClientItem` 2 / `TDrawScreen` 1 / D3D 适配器 1）。
+40 个窗口分：主HUD(小地图) / 角色(师徒) / 社交(好友·黑名单·组队·行会) /
+邮件公告(邮件·公告板·掌院目录) / 交易(交换·远程交换·拍卖·出售·商人) /
+物品(制作·装饰) / 系统(按键·消息·计数·菜单·选服)。
+**无任务窗**；多出邮件/师徒/黑名单/公告板/装饰/制作等现代扩展窗（差异见 D3）。
+
+**〔帧号空间 —— 本轮最重要发现〕**实测源码引用 **91 个唯一帧号**，范围 **184–1960**：
+
+| 项 | 值 |
+|---|---|
+| 落在原版范围内（0–1102） | **10**：`184,188,202,372,373,556,564,566,568,570` |
+| 超出原版范围 | **81**（1160–1672 连续族 + 1960） |
+| 这 10 个 ∩ 原版已详查 37 帧 | **0（空集）** |
+
+原版基准：`gameinter-frame-metadata.json` 的 `library_count: 1103`
+（有效索引 0..1102，来源 `/data/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil`）。
+
+**结论（加强既有纪律）**：两套 `GameInter` 是**不同构建**，帧号语义**无法互推** ——
+即使数值落在共同范围（那 10 个），也没有一个与原版已详查帧重合，
+连「同号同图」的最小假设都无证据支持。因此既有纪律「>1102 标 Preview 专属」
+**不够**：**≤1102 的同样不能直接当原版帧用**，必须逐帧像素比对。
+
+**〔高帧号族结构〕**1160-1207 连续族 / 1210-1251 消息·腰带·弹窗族
+（`DMsgDlg` 1240/1241/1245、`DBeltWin` 1210/1211）/ 1280-1371 技能状态族 /
+1450-1484 / 1620-1672 邮件备忘录族 / 1960 最大帧号（`DMailListDlg` 与 `DMemo` 共用）。
+`FState.pas:1402/2872/2901` 的 `d := g_WGameInter.Images[1240]` 是**先取图判空的
+降级探测**，研究时不要当成独立帧引用。
+
+**落盘**：`docs/source-vs-reverse/client.md`、`client-windows.tsv`、
+`Tools/source-read/{extract_client_windows,frame_overlap}.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
