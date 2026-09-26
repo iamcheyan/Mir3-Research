@@ -96,7 +96,8 @@
       "respawn": "pass; TestHero placed at approved RespawnInfo target 7236 (MapInfo.Index=5, FileName=1, (379,125)); StartGame delivered MonsterIndex=479, matching RespawnInfo 7236.Monster",
       "visual_limit": "headless renderer provided no screenshot pixels and NPC.Zl/Mon_3 were unavailable in the runtime, so sprite-pixel assertions were not claimed"
     },
-    "users_db_mutated": false,
+    "users_db_application_write": false,
+    "users_db_runtime_note": "NpcMover and isolated smoke did not open production Users.db; the official client smoke used a production login without issuing account or character mutation commands. Normal server session persistence, if any, is outside the approved System.db application scope.",
     "evidence": [
       "artifacts/website-alignment-2026-09-26/official-client-smoke-20260926.log",
       "artifacts/website-alignment-2026-09-26/isolated-map610-npc-smoke-20260926.log",

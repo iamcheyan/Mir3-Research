@@ -7,7 +7,7 @@
 - 标准资料站：`/home/tetsuya/development/mir3-website`（`data/monsters.json`=154，`data/skills.json`=61，地图区域图=22）。
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：应用前已停止并验证端口释放；副本验证通过后写入真实双库，随后已重启服务端。
-- 数据库写入：生产应用仅写入 approved-offline-plan 的 NPCInfo.Region/RespawnInfo.Region 及批准的 RespawnInfo.Count/Delay；MonsterInfo/MagicInfo 业务字段未写入，Users.db 未触碰。
+- 数据库写入：生产应用仅写入 approved-offline-plan 的 NPCInfo.Region/RespawnInfo.Region 及批准的 RespawnInfo.Count/Delay；MonsterInfo/MagicInfo 业务字段未写入，NpcMover 未打开或写入 Users.db。
 - Mir3-Research 当前应用证据提交：HEAD=ab76400d9d83e6386bce2cb5c2505ae68d387338；origin/ei-ui-audit-2026-09-24=874c089e8c3bcc743b311560af5328a422985724；工作树仍含无关 WIP。
 - Zircon 最终生成时：HEAD=7d7943f79965690adc7c41fc9e35737dd22d8fa7；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；origin/main=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；工作树 dirty=False；未提交路径=[]；本 Goal 未修改。
