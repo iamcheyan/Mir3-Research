@@ -1,0 +1,335 @@
+{
+  "generated_at": "2026-09-26T08:26:18.180662+00:00",
+  "data_version": "MIR3-ALIGNMENT-BROWSER-2026.09.26",
+  "source_hashes": {
+    "alignment_manifest": "55c3663e72c1c7e69939f452701e23b76468b288b65202743e8c5595636218ac",
+    "production_evidence": "9bdbe3a75b7c5c8d9831a141599836accbb04a2b71f93812b375cef3155e555c",
+    "final_targets": "24225ffe16d2b0208ee1b8e93a798dcf9ee065f94d2c553bfdaeff74124abe07",
+    "website_index": "d454e73608783afb9df686c338e4f429fcd83f787dc9a8131f5b491c95af68fe",
+    "approved_offline_plan": "a68450609d82554891b2fd93c146eaa08c75e89c0a8317cef08ce23da5fbe005",
+    "workspace_ItemInfo": "5e871babba87232edb29ce53c1db3d1b765e3ea19cba31746431403a8e2ae1d2",
+    "workspace_MonsterInfo": "ed84588ffff45a1b9d9b85c7b886a3d469429356799f6a57ac142cf276aba09f",
+    "workspace_MagicInfo": "63cd1086e38b4384ed411f5c70c3bcc770b293ad89bfe94bb907f32f7a68bff9",
+    "workspace_NPCInfo": "09e19595b102f7ff0ba859f76964b7a812bd9acce7ae1871ee473d278f2b0e88",
+    "workspace_MapInfo": "f5d1077f3106c6a24203b996fbcad9b532f75f4c1ca9d82afb81cc95db6ab81c",
+    "workspace_MapRegion": "a598c92f73c0cb4ac2342f8cdb761c4525362e49c7e128b8e6e397aeecc37ee2",
+    "workspace_RespawnInfo": "40e656ec41f009cf4af4b5ae306399063a948cb10589ab1948cdd71459e6fe95",
+    "workspace_QuestInfo": "f9094da2c3b47cb65aed1378c52f5b55c0921ad6ef6f0d8e308a788d0a451bab",
+    "workspace_DropInfo": "bde9158c3dbb93637c25f4f7c4034d48b7945288ee5d53c6820ddb970d0b5ed3",
+    "workspace_ItemInfoStat": "2fbcd3a2cf8360c958b076dca9e5dda252adba7f139cb1bf0998a28f575c490f",
+    "workspace_MonsterInfoStat": "9dfcc55f5889615d9b143f509a9a76aa7292dce53edd641093d3f39b4804ed12",
+    "website_items": "682d8eaf98cb2e9806416d0cd8b60c1a4ae1e3648164156b75154d7c6290c159",
+    "website_monsters": "bc84872907981f6567cf30d4aa5c3839ac9ec3e7c79f8f7b27530b4d4ed7ba99",
+    "website_skills": "8bd461409a1c9cb67a444a672f3cf0811ede6401bc24c311e87a16fd6a1919d4",
+    "website_missions": "6aa03bb8e4f447655c8fa9e9a3babdbf4d2a5387fc82900ebd70c027d4258af8",
+    "website_maps": "a7c142eaff5eace41a1b92028845f81f40eabb9507176435effc5ad63b0e6e0b"
+  },
+  "counts": {
+    "workspace": {
+      "ItemInfo": 1078,
+      "MonsterInfo": 434,
+      "MagicInfo": 174,
+      "NPCInfo": 294,
+      "MapInfo": 627,
+      "MapRegion": 5009,
+      "RespawnInfo": 2475,
+      "QuestInfo": 38,
+      "DropInfo": 10382,
+      "ItemInfoStat": 3196,
+      "MonsterInfoStat": 4117
+    },
+    "website": {
+      "items": 371,
+      "monsters": 154,
+      "skills": 61,
+      "missions": 24,
+      "maps": 3
+    },
+    "status": {
+      "confirmed": 126,
+      "pending": 48,
+      "investigate": 91,
+      "retain-current": 2007,
+      "confirmed-name": 47,
+      "legacy-source-only": 266,
+      "pending-legacy-name": 58,
+      "variant": 100,
+      "exact": 92,
+      "replacement": 19,
+      "position-applied": 73,
+      "renamed": 6,
+      "zircon-only": 2058,
+      "conflict": 89,
+      "matched": 310,
+      "production-applied": 18
+    },
+    "summary_status": {
+      "confirmed": 126,
+      "investigate": 91,
+      "pending": 48,
+      "unmatched": 0,
+      "retain-current": 2007
+    }
+  },
+  "production": {
+    "approved_npc": 73,
+    "approved_respawn": 18,
+    "monster_info_changed": 0,
+    "magic_info_changed": 0,
+    "users_db_written": false,
+    "server_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "client_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "server_client_sha_equal": true,
+    "backup_paths": [
+      "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/npc-monster-align-20260926-154039/System.db",
+      "/home/tetsuya/development/zircon/Debug/Client/Backup/npc-monster-align-20260926-154039/System.db"
+    ],
+    "last_verified": "2026-09-26T15:40:39+09:00",
+    "game_acceptance": {
+      "status": "pass-official-client-and-isolated-target-map-smoke",
+      "server_restart": "pass; production zircon-core restarted after the isolated run and is listening on 127.0.0.1:7000",
+      "web_services": "wsgateway and webport were restarted for the earlier browser probe, then stopped",
+      "official_client_smoke": "pass; Godot client connected to the production server, received GoodVersion, LoginResult.Success, SelectScene, StartGame.Success, and entered GameScene on map index 9",
+      "isolated_target_map_smoke": {
+        "runtime": "/tmp/mir3-game-smoke-610",
+        "system_db": "copied current production System.db; no production database writes",
+        "users_db": "copied and discarded temporary Users.db; production Users.db untouched",
+        "npc": "pass; TestHero placed at approved target MapInfo.Index=610, FileName=01, (425,274); StartGame delivered 6 ObjectNPC packets to GameScene",
+        "respawn": "pass; TestHero placed at approved RespawnInfo target 7236 (MapInfo.Index=5, FileName=1, (379,125)); StartGame delivered MonsterIndex=479, matching RespawnInfo 7236.Monster",
+        "visual_limit": "headless renderer provided no screenshot pixels and NPC.Zl/Mon_3 were unavailable in the runtime, so sprite-pixel assertions were not claimed"
+      },
+      "users_db_application_write": false,
+      "users_db_runtime_note": "NpcMover and isolated smoke did not open production Users.db; the official client smoke used a production login without issuing account or character mutation commands. Normal server session persistence, if any, is outside the approved System.db application scope.",
+      "evidence": [
+        "artifacts/website-alignment-2026-09-26/official-client-smoke-20260926.log",
+        "artifacts/website-alignment-2026-09-26/isolated-map610-npc-smoke-20260926.log",
+        "artifacts/website-alignment-2026-09-26/isolated-map5-respawn-smoke-20260926.log",
+        "artifacts/website-alignment-2026-09-26/final-production-targets-20260926.json",
+        "artifacts/website-alignment-2026-09-26/production-login-disconnect-20260926.webp",
+        "artifacts/website-alignment-2026-09-26/post-restart-wsgateway.log",
+        "artifacts/website-alignment-2026-09-26/post-restart-zircon-core.log"
+      ],
+      "remaining_next": "none for approved database application; production browser login disconnect remains a webport-only issue"
+    }
+  },
+  "final_targets": {
+    "system_db": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db",
+    "version": "2026.09.26.2",
+    "sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "counts": {
+      "NPCInfo": 294,
+      "MapInfo": 627,
+      "MapRegion": 5010,
+      "MonsterInfo": 434,
+      "RespawnInfo": 2475
+    },
+    "approved_npc": {
+      "NPCInfo.Index": 142,
+      "MapRegion.Index": 1752,
+      "map_index": 610,
+      "map_file": "01",
+      "center": [
+        425,
+        274
+      ],
+      "region_type": "Npc"
+    },
+    "approved_respawn": {
+      "RespawnInfo.Index": 7236,
+      "monster_index": 479,
+      "monster_name": "Zuan Ka Tree",
+      "MapRegion.Index": 5314,
+      "map_index": 5,
+      "map_file": "1",
+      "center": [
+        379,
+        125
+      ],
+      "delay": 60,
+      "count": 1,
+      "region_type": "Spawn"
+    },
+    "verification_command": "dotnet run --project Tools/SystemDbProbe --no-build -- /home/tetsuya/development/zircon/Debug/ServerCore/Database --json /tmp/final-system-export"
+  },
+  "verification": {
+    "verifier": "independent-website-alignment-v1",
+    "database_write": false,
+    "server_gate": {
+      "port": 7000,
+      "listening": true,
+      "write_allowed": false
+    },
+    "source_counts": {
+      "monsters": 154,
+      "skills": 61,
+      "map_groups": 3,
+      "map_areas": 22
+    },
+    "manifest_counts": {
+      "monsters": 154,
+      "skills": 61,
+      "map_families": 22,
+      "npc": 294,
+      "respawns": 2475
+    },
+    "image_audit": {
+      "monsters": {
+        "records": 154,
+        "missing_or_decode_error": 0,
+        "invalid_dimensions": 0,
+        "duplicate_groups": {
+          "081c2c720f788edf4876a2790b3c0d794b6ab648f83c6cf56635c0383688b599": [
+            "mob-16",
+            "mob-17"
+          ],
+          "04982aa4af41d3ef996d0030d98d82196a727b61c9694a8be9f16d3ab88128da": [
+            "mob-34",
+            "mob-39"
+          ],
+          "e7b7818f3e5460e7372249144075bb21a42023128855999c19df3fc3d66ebbdb": [
+            "mob-57",
+            "mob-58"
+          ],
+          "b2b623b1868fe60b284842cc1dd3bc4aac93eb35b7e206bfbf4b213803bcc22e": [
+            "mob-64",
+            "mob-66"
+          ],
+          "1f36728faf08ca8a2179a169b1aeb884e819d644d240940a4e30ed096e35d0cc": [
+            "mob-70",
+            "mob-72"
+          ],
+          "daa191bd62b8814c0fed02e0b1814496aaa6b2bfc69cfc774c8f42d641e714b0": [
+            "mob-74",
+            "mob-75"
+          ],
+          "77aa3dc27df9eee7973a5264cdd073e81a515c3e9b975889375c2e250e244c76": [
+            "mob-80",
+            "mob-82"
+          ],
+          "c49df58670755cde13ec58878ae977b1f0a97ff54e0cd6c5bc70a359d88e54f1": [
+            "mob-119",
+            "mob-120"
+          ],
+          "49d4c4ea3fc6bb3b7d63117d651a66503e1104865199b8682ef252bddc0205e1": [
+            "mob-125",
+            "mob-126"
+          ],
+          "1b613b35e12e6e50823c78316626cd1c6a28b7c2e0abbf4ce334992d326c96cc": [
+            "mob-128",
+            "mob-135"
+          ],
+          "7e8d8cafe9191804039353f65fc5f805dec499fea1742fcdf03d79a3ce495e82": [
+            "mob-149",
+            "mob-152"
+          ]
+        }
+      },
+      "skills": {
+        "records": 61,
+        "missing_or_decode_error": 0,
+        "invalid_dimensions": 0,
+        "duplicate_groups": {
+          "0d1d5a3464211ac252a472cd6550daf21ef588c4615d548da9b188d713c3041e": [
+            "skill-战士-乾坤大挪移",
+            "skill-战士-斗转星移"
+          ],
+          "210f38277f179e39e7b7758daac0da5bee218d3160c8c2db92fc5c1322597fd6": [
+            "skill-道士-召唤骷髅",
+            "skill-道士-超强召唤骷髅"
+          ]
+        }
+      }
+    },
+    "lookup_count": 332,
+    "monster_statuses": {
+      "confirmed": 67,
+      "pending": 1,
+      "investigate": 86
+    },
+    "skill_statuses": {
+      "confirmed": 59,
+      "investigate": 2
+    },
+    "investigation_audit": {
+      "audited_unclosed_rows": 87,
+      "rows_with_missing_investigation_evidence": 0,
+      "source_exact_rows": 69,
+      "legacy_exact_rows": 69,
+      "legacy_resource_probe_statuses": {
+        "blank-or-missing-frame": 14,
+        "present": 32,
+        "not-applicable": 18,
+        "library-missing": 23
+      },
+      "required_paths": [
+        "0-based and 1-based body-frame probe for any closed resource candidate",
+        "MonsterLookup image-to-Mon-*.Zl shape lookup",
+        "canonical legacy Mon-*.wil Appr/frame header probe",
+        "current MonsterInfo explicit identity and resource alias lookup",
+        "duplicate website-image and one-to-many conflict audit",
+        "legacy atlas exact and suffix-family lookup",
+        "raw Hero-kill monster definition exact and suffix-family lookup",
+        "website JSON name/category/description/image"
+      ]
+    },
+    "resource_audit": {
+      "confirmed_candidates_checked": 68,
+      "resource_failures": 0
+    },
+    "icon_audit": {
+      "confirmed_skills_checked": 59,
+      "icon_failures": 0
+    },
+    "normalized_audit": {
+      "npc_records": 294,
+      "respawn_records": 2475,
+      "npc_coordinate_or_schema_failures": 0,
+      "respawn_coordinate_or_schema_failures": 0,
+      "npc_old_coordinates_out_of_target_bounds": 2,
+      "respawn_old_coordinates_out_of_target_bounds": 4,
+      "map_dimension_keys": 631,
+      "npc_overlap_rows": 0,
+      "respawn_overlap_rows": 0
+    },
+    "key_samples": {
+      "monsters": {
+        "半兽人": "confirmed",
+        "祖玛教主": "confirmed",
+        "祖玛卫士": "investigate",
+        "白野猪": "investigate",
+        "赤月恶魔": "confirmed"
+      },
+      "skills": {
+        "基本剑术": "confirmed",
+        "火球术": "confirmed",
+        "凝血离魂": "investigate"
+      },
+      "npcs": [
+        {
+          "index": 13,
+          "name": "Mr. Kang",
+          "missing": []
+        },
+        {
+          "index": 14,
+          "name": "Isaac",
+          "missing": []
+        },
+        {
+          "index": 15,
+          "name": "David",
+          "missing": []
+        }
+      ]
+    },
+    "errors": [],
+    "result": "PASS"
+  },
+  "notes": [
+    "网站 61 技能不是 Zircon 174 条技能全量。",
+    "网站 154 怪物不是 Zircon 434 条全量。",
+    "网站 371 物品不是 Zircon 1078 条全量。",
+    "网站地图为 3 组/22 区域图，不是 627 张逐图 MapInfo。",
+    "Users.db 未写入。"
+  ]
+}

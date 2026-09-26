@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zircon ↔ mir2ei / 数据对照台</title>
+  <meta name="description" content="Zircon 当前数据与 mir2ei、原版资料站、mir3-website 标准数据的证据对照浏览器">
+  <link rel="stylesheet" href="style.css?v=20260926.2">
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="回到总览">
+      <span class="brand-mark">M3</span>
+      <span><b>数据对照台</b><small>ZIRCON ↔ MIR2EI / EVIDENCE LEDGER</small></span>
+    </a>
+    <div class="build-stamp" id="build-stamp">载入数据中…</div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" id="overview">
+      <div class="hero-copy">
+        <p class="eyebrow">研究结论入口 · 2026.09.26</p>
+        <h1>当前世界，<em>哪一套</em><br>数据正在运行？</h1>
+        <p class="lede">把 Zircon 的实际工作区与网站、原版资源、Legacy Atlas 和生产应用证据放在同一张可追溯桌面上。名称只是线索，结论必须有证据。</p>
+        <div class="hero-notes">
+          <span><i class="dot dot-left"></i>左栏：当前 Zircon</span>
+          <span><i class="dot dot-right"></i>右栏：标准 / 原版证据</span>
+          <span><i class="dot dot-caution"></i>状态：不替证据猜索引</span>
+        </div>
+      </div>
+      <div class="hero-schematic" aria-label="证据流示意图">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="node node-z"><strong>Z</strong><span>workspace</span></div>
+        <div class="node node-e"><strong>EI</strong><span>legacy / web</span></div>
+        <div class="node node-c"><strong>≡</strong><span>decision</span></div>
+        <div class="connector connector-a"></div><div class="connector connector-b"></div>
+        <p>identity ≠ display name<br>evidence → decision → apply</p>
+      </div>
+    </section>
+
+    <section class="metric-strip" id="metrics" aria-label="核心统计"></section>
+
+    <section class="production-banner" id="production-banner"></section>
+
+    <nav class="section-nav" aria-label="数据分类导航">
+      <div class="nav-scroll" id="section-nav"></div>
+      <div class="view-tools">
+        <label class="search-box"><span>⌕</span><input id="global-search" type="search" placeholder="搜索名称、Index、地图、证据…" autocomplete="off"></label>
+        <button class="tool-button" id="clear-filters" type="button">清除筛选</button>
+      </div>
+    </nav>
+
+    <section class="workspace-panel" id="browser-panel">
+      <div class="panel-head">
+        <div><p class="eyebrow" id="section-eyebrow">SECTION / OVERVIEW</p><h2 id="section-title">总览</h2></div>
+        <div class="panel-count" id="panel-count">—</div>
+      </div>
+      <div class="filter-row" id="filter-row"></div>
+      <div class="ledger" id="ledger"></div>
+      <div class="pager" id="pager"></div>
+    </section>
+
+    <section class="decision-log" id="decisions">
+      <div class="panel-head"><div><p class="eyebrow">FINAL DECISION / DECISION LOG</p><h2>结论与下一步</h2></div></div>
+      <div class="decision-grid" id="decision-grid"></div>
+    </section>
+  </main>
+
+  <aside class="detail-drawer" id="detail-drawer" aria-hidden="true">
+    <div class="drawer-scrim" id="drawer-scrim"></div>
+    <div class="drawer-sheet">
+      <div class="drawer-head"><div><p class="eyebrow" id="drawer-kind">DETAIL</p><h2 id="drawer-title">记录详情</h2></div><button class="close-button" id="drawer-close" type="button" aria-label="关闭详情">×</button></div>
+      <div class="drawer-body" id="drawer-body"></div>
+    </div>
+  </aside>
+  <noscript><div class="noscript">此页面需要启用 JavaScript 才能按需读取静态 JSON。</div></noscript>
+  <script src="app.js?v=20260926.2"></script>
+</body>
+</html>
