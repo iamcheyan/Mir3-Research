@@ -10174,3 +10174,81 @@ LocalDB.LoadMiniMapInfos 读 MiniMap.txt → MiniMapList[地图名→小地图�
 
 **落盘**：`docs/source-vs-reverse/config.md`、`Tools/source-read/env_compare.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 810 (全量精读 A1) — 2026-09-26：ObjBase 方法实现 / 视野算法 / GM 命令表
+
+> 全量收尾 Goal 首轮。新增台账 `docs/source-vs-reverse/coverage-ledger.tsv`
+> + `Tools/source-read/ledger.py`（与磁盘对账，防漏读）。
+
+**〔台账基线〕**源码文件 **393 个 / 315,324 行**：
+`covered 26 文件/34,903 行`、`excluded 43 文件/60,230 行`（`Tools/ImageEditor/Plug/`
+第三方组件）、`partial 6 文件/72,135 行`、`pending 318 文件/148,056 行`。
+
+**〔`SearchViewRange`（ObjBase.pas:3567-3890）—— 服务端最热循环〕**
+- 边界钳制（`:3597-3607`）+ **标记-清除模式**（`:3631-3635` 先把所有
+  `VisibleItems`/`VisibleEvents`/`VisibleActors` 的 `Check` 置 0，扫完清理未复见的）。
+- 双层循环遍历矩形 `for i := stx to enx do for j := sty to eny do` +
+  `GetMapXY(i, j, pm)`。⚠️ **循环变量名反直觉**：外层 `i`=X、内层 `j`=Y，
+  而 `Envir.LoadMap:419` 用 `C := X * MapHeight`（**列优先**）。两处索引约定必须分清。
+- **超时常量**：生物残影 **10 分钟**（`:3667`，注释「2003/01/22 由 5 分改 10 分，
+  防 NPC 闪烁」）；物品 **1 小时**（`:3715`）；**行会据点装饰物品不参与清理**（`:3720`）。
+- **可见性过滤（`:3687-3703`）最易读错**：`and` 优先级高于 `or`，
+  最后一个 `and (not hmcheck)` **只作用于 `(cret.RaceServer = RC_USERHUMAN)` 一项**，
+  不是整个 or 链 —— 原作者的缩进（注释行插在 or 链中间）会误导读者。
+- **语义**：怪物之间**默认互不可见**（性能优化，`RaceServer < RC_ANIMAL` 门），
+  玩家永远互相可见。
+- **被禁用的视野扩展优化**：`:3612-3629` 整块被 `{ }` 注释
+  （原设计「每 10 次搜索做 1 次全屏扩展」+ `RefObjCount` 计数，2004/04/21 未启用）。
+- **防御性编程**：`:3653-3661` `try/except` 包住对象形状读取，**访问违例对象直接从
+  `ObjList` 删除**并记 `DELOBJ-WRONG MEMORY:<地图>,<X>,<Y>`（2003-09-15 加）。
+- **`down` 变量**：全程 `down := N` 做阶段标记，异常处理器打印它定位崩溃点。
+  **`down` 的赋值不代表逻辑分支** —— 读代码时的陷阱。
+
+**〔`Walk`（:4105-4215）—— 移动与过门〕**
+流程：取当前格 → 遍历 `ObjList` 找 `OS_GATEOBJECT`(pgate)/`OS_EVENTOBJECT`(event)，
+`OS_MAPEVENT`/`OS_DOOR`/`OS_ROON` 是**空分支**（`{???}` 未实现）→
+事件命中发 `RM_MAGSTRUCK_MINE` → 有门则（仅玩家可过，NPC 不出门）检查
+`AroundDoorOpened` + `NeedHole` 特殊地图需 `EventMan.FindEvent(ET_DIGOUTZOMBI)` →
+同服 `EnterAnotherMap`，**跨服**设置 7 个字段：
+`SpaceMoved`/`ChangeMapName`/`ChangeCX`/`ChangeCY`/`BoChangeServer`/
+`ChangeToServerNumber`/`EmergencyClose`+`SoftClosed`（**不使认证过期**）/`FAlreadyDisapper`。
+距上次掉落 >1000ms 才允许跨服（`:4180`）。用 `goto needholefinish`（Delphi label）
+跳过整个过门逻辑。
+
+**〔怪物 AI（TAnimal，:17202-17424）〕**
+- `Struck`（`:17255`）：被打时 `StruckTime := GetTickCount`；**目标切换条件**
+  `(TargetCret = nil) or (not TargetInAttackRange) or (Random(6) = 0)`（1/6 概率换目标）。
+  **动物肉品质随受伤下降**：`MeatQuality := MeatQuality - Random(300)`（`:17266`）。
+  **受击后攻击延迟**：`HitTime := HitTime + (150 - _MIN(130, Abil.Level * 4))`（`:17270`）。
+- `GetNearMonster`（`:17281`）：**曼哈顿距离** `abs(CX-cret.CX)+abs(CY-cret.CY)`
+  取最近，初值 `dis := 999`。
+- **`GotoTargetXY`（`:17351`）是贪心 8 方向，不是 A\***：按目标象限选方向 →
+  `WalkTo(wantdir, FALSE)` → 若位置未变（前方阻塞）则左右试转，
+  **最多 7 次**（`for i:=1 to 7`，`:17397`）。
+- `Wondering`（`:17411`）：`Random(20) = 0` 才动（**5% 概率**），
+  其中 `Random(4) = 1` 转向否则按当前方向走。
+- **⚠️ 关键结论**：`_Oranze Library/astar.h` **未被 GameServer 任何文件引用**
+  （grep `astar`/`AStar` 零命中）；`FindPathRate`/`FindPathTime` 字段存在但
+  **唯一的使用点在 `:17358` 被注释掉**。→ **服务端怪物寻路是贪心转向，
+  不是 A\***。这修正了 `reference/mir3-source/README.md` §3.4
+  把 `astar.h` 列为游戏逻辑的暗示。
+
+**〔GM 命令表（ObjBase.pas:23291-24440）—— 完整提取〕**
+分派是**长 `CompareText` 链**而非查表；每条命令可有多别名（英文 + 韩文），
+`CompareText` 大小写不敏感，`exit` 提前返回（**顺序敏感**）。
+实测 **161 个分派块 / 131 个英文命令 / 90 个韩文别名**。
+机器可读 [`gm-commands.tsv`](gm-commands.tsv)（含动作列，由块内 `Cmd*` 调用或
+`SysMsg`/`Bo*` 内联动作归属）。
+样例：`PositionMove`/`PMove`/`자유이동` → `CmdFreeSpaceMove`；
+`RecallMap`/`맵소환` → `CmdRecallMap`；`Goto`/`출두` → `CmdCharSpaceMove`。
+**这是原版 `@move` 类命令的完整权威表**，可用于对照 Zircon 的 GM 命令实现。
+
+**〔`CmdMgr.pas`（629 行）〕**`TCmdMsg` 记录 + `ICommand` 接口 + `TCmdMgr` 类；
+`TSendTarget = (stClient, stInterServer, stOtherServer, stDbServer, stFunc)`；
+发送族 `SendToClient`/`SendToInterServer`/`SendToOtherServer`/`SendToDbServer`。
+DB 缓冲区 `FDBBuffer`/`FDBBufferBack`/`FDBList` + `DivideBuffer`/`PatchDBBuffer`。
+
+**落盘**：`docs/source-vs-reverse/server.md`（§10-11 新增约 250 行）、
+`gm-commands.tsv`（161 行）、`coverage-ledger.tsv`、
+`Tools/source-read/{ledger,extract_gm_commands,gm_to_markdown}.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

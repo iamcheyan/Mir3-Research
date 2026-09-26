@@ -1,0 +1,394 @@
+area	rel_path	lines	bytes	status	note
+E-tools	Source/Tools/MapEdit/About.pas	33	503	pending	
+E-tools	Source/Tools/MapEdit/DoorDlg.pas	52	1114	pending	
+E-tools	Source/Tools/MapEdit/EdMain.pas	3283	105534	pending	
+E-tools	Source/Tools/MapEdit/FObj.pas	114	2612	pending	
+E-tools	Source/Tools/MapEdit/FScrlXY.pas	47	761	pending	
+E-tools	Source/Tools/MapEdit/HUtil32.pas	2682	63476	pending	
+E-tools	Source/Tools/MapEdit/ImgMan.pas	550	15852	pending	
+E-tools	Source/Tools/MapEdit/MapEdit.dpr	43	1489	pending	
+E-tools	Source/Tools/MapEdit/MapSize.pas	52	954	pending	
+E-tools	Source/Tools/MapEdit/MoveObj.pas	96	2045	pending	
+E-tools	Source/Tools/MapEdit/ObjEdit.pas	1018	26715	pending	
+E-tools	Source/Tools/MapEdit/ObjSet.pas	484	12562	pending	
+E-tools	Source/Tools/MapEdit/SmTile.pas	155	4251	pending	
+E-tools	Source/Tools/MapEdit/Tile.pas	163	4500	pending	
+E-tools	Source/Tools/MapEdit/glight.pas	42	761	pending	
+E-tools	Source/Tools/MapEdit/mpalett.pas	160	3972	pending	
+E-tools	Source/Tools/MapEdit/o_WIL.pas	661	19961	pending	
+E-tools	Source/Tools/MapEdit/segunit.pas	245	5841	pending	
+E-tools	Source/Tools/MapEdit/Wil/WIL.pas	551	15597	pending	
+E-tools	Source/Tools/MapEdit/Wil/wmM3Def.pas	457	14519	pending	
+E-tools	Source/Tools/MapEdit/Wil/wmM3Zip.pas	217	6608	pending	
+E-tools	Source/Tools/MapEdit/Wil/wmMyImage.pas	739	25737	pending	
+E-tools	Source/Tools/MapEdit/Wil/wmUtil.pas	4497	489745	pending	
+E-tools	Source/Tools/ImageEditor/DES.pas	563	16633	pending	
+E-tools	Source/Tools/ImageEditor/DLLFile.pas	4977	519550	pending	
+E-tools	Source/Tools/ImageEditor/DLLLoader.pas	1134	36886	pending	
+E-tools	Source/Tools/ImageEditor/DropGroupPas.pas	114	2662	pending	
+E-tools	Source/Tools/ImageEditor/FrmAdd.pas	1149	41794	pending	
+E-tools	Source/Tools/ImageEditor/FrmAlpha.pas	420	12856	pending	
+E-tools	Source/Tools/ImageEditor/FrmDel.pas	111	3208	pending	
+E-tools	Source/Tools/ImageEditor/FrmMain.pas	1285	43419	pending	
+E-tools	Source/Tools/ImageEditor/FrmOut.pas	325	10788	pending	
+E-tools	Source/Tools/ImageEditor/HUtil32.pas	2682	63476	pending	
+E-tools	Source/Tools/ImageEditor/ImageEditor.dpr	26	710	pending	
+E-tools	Source/Tools/ImageEditor/MyCommon.pas	526	19429	pending	
+E-tools	Source/Tools/ImageEditor/MyD3DX9.pas	11277	453687	pending	
+E-tools	Source/Tools/ImageEditor/WIL.pas	523	14765	pending	
+E-tools	Source/Tools/ImageEditor/ZShare.pas	442	12158	pending	
+E-tools	Source/Tools/ImageEditor/wmM3Def.pas	460	14541	pending	
+E-tools	Source/Tools/ImageEditor/wmMyImage.pas	745	25784	pending	
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDXBase.pas	975	27989	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDXTypes.pas	174	6517	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDXWave.pas	727	16812	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDirect3D9.pas	5615	239409	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDirectInput.pas	6529	326870	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/MyDirectSound.pas	2224	95990	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/TDX9Canvas.pas	1768	54342	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/TDX9Devices.pas	553	16124	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/TDX9Fonts.pas	261	7457	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/TDX9Textures.pas	1400	38804	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/MyDirect9/include/MyD3DX9.pas	11277	453687	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/pngimage/pngextra.pas	322	9124	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/pngimage/pngimage.pas	5301	170045	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/pngimage/pnglang.pas	301	18490	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/pngimage/pnglib.pas	1080	35122	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/ZLibEx.pas	2234	74685	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/ZLibExApi.pas	338	13725	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/ZLibExGZ.pas	1260	37729	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/adler32.c	179	5147	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/compress.c	80	2529	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/crc32.c	425	13599	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/crc32.h	441	31003	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/deflate.c	1967	71476	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/deflate.h	346	12774	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/infback.c	640	22709	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inffast.c	340	13455	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inffast.h	11	438	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inffixed.h	94	6426	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inflate.c	1512	53512	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inflate.h	122	6521	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inftrees.c	306	13028	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/inftrees.h	62	2990	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/trees.c	1226	44255	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/trees.h	128	8600	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/zconf.h	511	15508	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/zlib.h	1768	87883	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/zutil.c	324	7414	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/DelphiZlib/zlib/zutil.h	253	6766	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/GraphicEx/GraphicCompression.pas	949	26749	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/GraphicEx/GraphicEx.pas	4950	170566	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/GraphicEx/Image32.pas	719	20670	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/GraphicEx/MaskFont.pas	467	12508	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Plug/GraphicEx/Trace.pas	71	1617	excluded	第三方组件（GraphicEx/MyDirect9/pngimage/DelphiZlib）
+E-tools	Source/Tools/ImageEditor/Common/DES.pas	563	16633	pending	
+E-tools	Source/Tools/ImageEditor/Common/EDCode.pas	464	15569	pending	
+E-tools	Source/Tools/ImageEditor/Common/Grobal2.pas	2663	97849	covered	Round 803 三表 diff
+E-tools	Source/Tools/ImageEditor/Common/HUtil32.pas	2216	60035	pending	
+E-tools	Source/Tools/ImageEditor/Common/MfdbDef.pas	1192	38265	pending	
+E-tools	Source/Tools/ImageEditor/Common/ZLibEx.pas	726	21853	pending	
+E-tools	Source/Tools/ImageEditor/Common/ZLibx.pas	733	21557	pending	
+E-tools	Source/Tools/ImageEditor/Common/bass.pas	1021	52162	pending	
+E-tools	Source/Tools/ImageEditor/Common/mudutil.pas	1009	26358	pending	
+A/C-server	Source/GameServer/Castle.pas	1241	42317	pending	
+A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
+A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
+A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
+A/C-server	Source/GameServer/DBSQL.pas	1050	33281	pending	
+A/C-server	Source/GameServer/DragonSystem.pas	604	18322	pending	
+A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
+A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
+A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808 世界模型 + .map 格式
+A/C-server	Source/GameServer/Event.pas	323	7629	pending	
+A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
+A/C-server	Source/GameServer/FriendSystem.pas	988	32581	covered	Round 802 好友系统
+A/C-server	Source/GameServer/FrnEngn.pas	457	12405	pending	
+A/C-server	Source/GameServer/Guild.pas	3600	121469	pending	
+A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
+A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
+A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809 MapInfo/MiniMap 解析器
+A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
+A/C-server	Source/GameServer/Magic.pas	1756	72544	pending	
+A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
+A/C-server	Source/GameServer/MasSock.pas	110	2682	pending	
+A/C-server	Source/GameServer/Mission.pas	63	1192	covered	Round 808 确认为空壳
+A/C-server	Source/GameServer/NoticeM.pas	114	2861	pending	
+A/C-server	Source/GameServer/ObjAxeMon.pas	190	5583	pending	
+A/C-server	Source/GameServer/ObjBase.pas	31768	1187647	partial	Round 810: SearchViewRange/Walk/消息族/掉落族/GM命令表；物品转换族(1802-2722)与TUserHuman其余待读
+A/C-server	Source/GameServer/ObjGuard.pas	101	2367	pending	
+A/C-server	Source/GameServer/ObjMon.pas	3097	101650	pending	
+A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	pending	
+A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	pending	
+A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 808 TQuestRecord/TNormNpc 结构
+A/C-server	Source/GameServer/Relationship.pas	471	11946	pending	
+A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
+A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
+A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	pending	
+A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	pending	
+A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	pending	
+A/C-server	Source/GameServer/TagSystem.pas	1678	54596	pending	
+A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSystem 二次分派
+A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	pending	
+A/C-server	Source/GameServer/UserSystem.pas	153	4879	pending	
+A/C-server	Source/GameServer/UsrEngn.pas	3696	122341	covered	Round 803 校验和 + 好友透传
+A/C-server	Source/GameServer/crc_32.pas	54	972	pending	
+A/C-server	Source/GameServer/itmunit.pas	897	29538	pending	
+A/C-server	Source/GameServer/svMain.pas	1880	60780	covered	Round 808 EnvirDir 读取点
+D-client	Source/Client/Actor.pas	4743	194647	partial	g_WGameInter 引用（渲染待读）
+D-client	Source/Client/AxeMon.pas	4217	150653	pending	
+D-client	Source/Client/CMsg.pas	110	2183	pending	
+D-client	Source/Client/ClFunc.pas	1032	28948	pending	
+D-client	Source/Client/ClMain.pas	9924	322121	partial	SendWantMiniMap/PublicKey/窗口清单（主体待读）
+D-client	Source/Client/DWinCtl.pas	7804	226540	partial	类层次+输入优先级+InRange（按钮内部待读）
+D-client	Source/Client/DrawHint.pas	441	15405	pending	
+D-client	Source/Client/DrawScrn.pas	550	17810	covered	Round 804 场景切换
+D-client	Source/Client/FState.pas	14853	531645	partial	窗口声明+帧号（主体实现待读）
+D-client	Source/Client/HerbActor.pas	993	30165	pending	
+D-client	Source/Client/IntroScn.pas	1776	55353	covered	Round 804 TSceneType
+D-client	Source/Client/Logo.pas	105	2921	pending	
+D-client	Source/Client/MShare.pas	32	775	pending	
+D-client	Source/Client/MaketSystem.pas	310	7373	pending	
+D-client	Source/Client/MapUnit.pas	354	9441	pending	
+D-client	Source/Client/Mir3.dpr	45	1084	covered	Round 804 入口
+D-client	Source/Client/Mpeg.pas	170	4370	pending	
+D-client	Source/Client/PlayScn.pas	3043	105146	partial	小地图重取调用点（主循环待读）
+D-client	Source/Client/Relationship.pas	452	11667	pending	
+D-client	Source/Client/SingleInstance.pas	67	1545	pending	
+D-client	Source/Client/SoundUtil.pas	735	19504	pending	
+D-client	Source/Client/WIL.pas	749	21533	covered	Round 807 图库格式
+D-client	Source/Client/clEvent.pas	218	5444	pending	
+D-client	Source/Client/cliUtil.pas	1258	42862	pending	
+D-client	Source/Client/magiceff.pas	1621	53077	pending	
+D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
+D-client	Source/Client/wmM2Def.pas	525	17922	pending	
+D-client	Source/Client/wmM2Zip.pas	302	9989	pending	
+D-client	Source/Client/wmM3Def.pas	537	16638	pending	
+D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
+D-client	Source/Client/wmMyImage.pas	741	25787	pending	
+D-client	Source/Client/wmUtil.pas	4497	489745	pending	
+D-client	Source/Client/Light/Light0a.pas	100	2696	pending	
+D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
+D-client	Source/Client/Light/Light0c.pas	100	2696	pending	
+D-client	Source/Client/Light/Light0d.pas	100	2696	pending	
+E-db	Source/DataBaseServer/Def/DynamicArray.cpp	76	1238	pending	
+E-db	Source/DataBaseServer/Def/DynamicArray.h	158	3149	pending	
+E-db	Source/DataBaseServer/Def/EnDecode.cpp	207	4527	pending	
+E-db	Source/DataBaseServer/Def/EnDecode.h	71	2755	pending	
+E-db	Source/DataBaseServer/Def/IocpHelper.cpp	77	1412	pending	
+E-db	Source/DataBaseServer/Def/IocpHelper.h	42	691	pending	
+E-db	Source/DataBaseServer/Def/Misc.cpp	182	3877	pending	
+E-db	Source/DataBaseServer/Def/Misc.h	19	507	pending	
+E-db	Source/DataBaseServer/Def/Protocol.h	557	14092	pending	
+E-db	Source/DataBaseServer/Def/RegstryHandler.cpp	82	2118	pending	
+E-db	Source/DataBaseServer/Def/ServerSockHandler.cpp	284	8611	pending	
+E-db	Source/DataBaseServer/Def/ServerSockHandler.h	43	1111	pending	
+E-db	Source/DataBaseServer/Def/StaticArray.h	81	1145	pending	
+E-db	Source/DataBaseServer/Def/database.cpp	469	8411	pending	
+E-db	Source/DataBaseServer/Def/database.h	139	2289	pending	
+E-db	Source/DataBaseServer/Def/list.h	402	6578	pending	
+E-db	Source/DataBaseServer/Def/queue.h	50	689	pending	
+E-db	Source/DataBaseServer/Def/syncobj.cpp	28	390	pending	
+E-db	Source/DataBaseServer/Def/syncobj.h	33	442	pending	
+E-db	Source/DataBaseServer/_Oranze Library/astar.h	426	8521	pending	
+E-db	Source/DataBaseServer/_Oranze Library/base64.cpp	131	2624	pending	
+E-db	Source/DataBaseServer/_Oranze Library/base64.h	35	647	pending	
+E-db	Source/DataBaseServer/_Oranze Library/bstree.h	478	9355	pending	
+E-db	Source/DataBaseServer/_Oranze Library/codebase.cpp	302	4471	pending	
+E-db	Source/DataBaseServer/_Oranze Library/codebase.h	121	2211	pending	
+E-db	Source/DataBaseServer/_Oranze Library/database.cpp	508	9146	pending	
+E-db	Source/DataBaseServer/_Oranze Library/database.h	143	2411	pending	
+E-db	Source/DataBaseServer/_Oranze Library/datatype.h	13	191	pending	
+E-db	Source/DataBaseServer/_Oranze Library/datelog.cpp	91	1615	pending	
+E-db	Source/DataBaseServer/_Oranze Library/datelog.h	37	510	pending	
+E-db	Source/DataBaseServer/_Oranze Library/error.cpp	35	449	pending	
+E-db	Source/DataBaseServer/_Oranze Library/error.h	32	347	pending	
+E-db	Source/DataBaseServer/_Oranze Library/file.cpp	92	1160	pending	
+E-db	Source/DataBaseServer/_Oranze Library/file.h	35	596	pending	
+E-db	Source/DataBaseServer/_Oranze Library/fsa.h	141	2269	pending	
+E-db	Source/DataBaseServer/_Oranze Library/http.cpp	960	20626	pending	
+E-db	Source/DataBaseServer/_Oranze Library/http.h	182	4353	pending	
+E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.cpp	82	1768	pending	
+E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.h	24	403	pending	
+E-db	Source/DataBaseServer/_Oranze Library/indexmap.h	107	1920	pending	
+E-db	Source/DataBaseServer/_Oranze Library/list.h	423	6980	pending	
+E-db	Source/DataBaseServer/_Oranze Library/mail.cpp	172	2783	pending	
+E-db	Source/DataBaseServer/_Oranze Library/mail.h	77	1351	pending	
+E-db	Source/DataBaseServer/_Oranze Library/map.h	236	4512	pending	
+E-db	Source/DataBaseServer/_Oranze Library/mime.cpp	626	12444	pending	
+E-db	Source/DataBaseServer/_Oranze Library/mime.h	131	2543	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netbase.cpp	180	3661	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netbase.h	64	1311	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netiocp.cpp	1045	22074	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netiocp.h	208	4942	pending	
+E-db	Source/DataBaseServer/_Oranze Library/nettcp.cpp	331	6567	pending	
+E-db	Source/DataBaseServer/_Oranze Library/nettcp.h	101	2307	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netudp.cpp	629	13868	pending	
+E-db	Source/DataBaseServer/_Oranze Library/netudp.h	190	4597	pending	
+E-db	Source/DataBaseServer/_Oranze Library/pop3.cpp	309	6571	pending	
+E-db	Source/DataBaseServer/_Oranze Library/pop3.h	81	1501	pending	
+E-db	Source/DataBaseServer/_Oranze Library/pqueue.h	210	3954	pending	
+E-db	Source/DataBaseServer/_Oranze Library/prime.cpp	37	475	pending	
+E-db	Source/DataBaseServer/_Oranze Library/prime.h	25	327	pending	
+E-db	Source/DataBaseServer/_Oranze Library/queue.h	50	689	pending	
+E-db	Source/DataBaseServer/_Oranze Library/quotedpr.cpp	150	2889	pending	
+E-db	Source/DataBaseServer/_Oranze Library/quotedpr.h	29	557	pending	
+E-db	Source/DataBaseServer/_Oranze Library/registry.cpp	92	1731	pending	
+E-db	Source/DataBaseServer/_Oranze Library/registry.h	44	635	pending	
+E-db	Source/DataBaseServer/_Oranze Library/script.cpp	144	2576	pending	
+E-db	Source/DataBaseServer/_Oranze Library/script.h	64	1095	pending	
+E-db	Source/DataBaseServer/_Oranze Library/slist.h	23	263	pending	
+E-db	Source/DataBaseServer/_Oranze Library/squeue.h	23	269	pending	
+E-db	Source/DataBaseServer/_Oranze Library/stack.h	50	663	pending	
+E-db	Source/DataBaseServer/_Oranze Library/streambf.h	114	1918	pending	
+E-db	Source/DataBaseServer/_Oranze Library/stringex.cpp	405	5916	pending	
+E-db	Source/DataBaseServer/_Oranze Library/stringex.h	71	1503	pending	
+E-db	Source/DataBaseServer/_Oranze Library/syncobj.cpp	56	773	pending	
+E-db	Source/DataBaseServer/_Oranze Library/syncobj.h	42	591	pending	
+E-db	Source/DataBaseServer/_Oranze Library/url.cpp	184	3621	pending	
+E-db	Source/DataBaseServer/_Oranze Library/url.h	44	703	pending	
+E-db	Source/DataBaseServer/_Oranze Library/util.cpp	63	988	pending	
+E-db	Source/DataBaseServer/_Oranze Library/util.h	43	719	pending	
+E-db	Source/DataBaseServer/_Oranze Library/uucp.cpp	108	1940	pending	
+E-db	Source/DataBaseServer/_Oranze Library/uucp.h	27	450	pending	
+E-db	Source/DataBaseServer/_Oranze Library/vector.h	157	2703	pending	
+E-db	Source/DataBaseServer/_Oranze Library/vtimage.cpp	963	21754	pending	
+E-db	Source/DataBaseServer/_Oranze Library/vtimage.h	148	3325	pending	
+E-db	Source/DataBaseServer/DBSvr/DBSvr.sln	21	899	pending	
+E-db	Source/DataBaseServer/DBSvr/DBSvr.vcproj	531	13738	pending	
+E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.cpp	164	4145	pending	
+E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.h	48	833	pending	
+E-db	Source/DataBaseServer/DBSvr/dlgcfg.cpp	216	7336	pending	
+E-db	Source/DataBaseServer/DBSvr/dlgcfg.h	57	950	pending	
+E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.cpp	177	2958	pending	
+E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.h	42	700	pending	
+E-db	Source/DataBaseServer/DBSvr/mir2wnd.cpp	428	9597	pending	
+E-db	Source/DataBaseServer/DBSvr/mir2wnd.h	89	1842	pending	
+E-db	Source/DataBaseServer/DBSvr/msgfilter.cpp	70	991	pending	
+E-db	Source/DataBaseServer/DBSvr/msgfilter.h	28	387	pending	
+E-db	Source/DataBaseServer/DBSvr/netdbserver.cpp	765	17209	pending	
+E-db	Source/DataBaseServer/DBSvr/netdbserver.h	123	2918	pending	
+E-db	Source/DataBaseServer/DBSvr/netgameserver.cpp	2222	58637	pending	
+E-db	Source/DataBaseServer/DBSvr/netgameserver.h	90	3770	pending	
+E-db	Source/DataBaseServer/DBSvr/netloginserver.cpp	220	4363	covered	Round 803 公钥链
+E-db	Source/DataBaseServer/DBSvr/netloginserver.h	48	896	pending	
+E-db	Source/DataBaseServer/DBSvr/netrungate.cpp	1137	25967	covered	Round 802 分派表 4 条
+E-db	Source/DataBaseServer/DBSvr/netrungate.h	83	1713	pending	
+E-db	Source/DataBaseServer/DBSvr/protocol.h	112	3655	covered	Round 803 opcode 表
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	pending	
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	pending	
+E-db	Source/DataBaseServer/DBSvr/Res/resource.h	38	1471	pending	
+E-db	Source/DataBaseServer/Common/endecode.cpp	382	11764	pending	
+E-db	Source/DataBaseServer/Common/endecode.h	87	2085	pending	
+E-db	Source/DataBaseServer/Common/mir2packet.cpp	110	2056	pending	
+E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	pending	
+E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	
+E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	pending	
+C-common	Source/Common/DES.pas	563	16649	pending	
+C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式全读
+C-common	Source/Common/GList.pas	547	14813	pending	
+C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
+C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803 协议总表 474 常量
+C-common	Source/Common/HUtil32.pas	2214	60031	pending	
+C-common	Source/Common/HashTable.pas	319	7049	pending	
+C-common	Source/Common/MfdbDef.pas	1192	38265	pending	
+C-common	Source/Common/Scanf.pas	256	6006	pending	
+C-common	Source/Common/SscanfUtil.pas	256	6011	pending	
+C-common	Source/Common/ZLibEx.pas	726	21853	pending	
+C-common	Source/Common/ZLibx.pas	733	21557	pending	
+C-common	Source/Common/bass.pas	1021	52162	pending	
+C-common	Source/Common/mudutil.pas	1009	26358	pending	
+E-login	Source/LoginServer/_Oranze Library/_Oranze Library.sln	21	919	pending	
+E-login	Source/LoginServer/_Oranze Library/_Oranze Library.vcproj	651	15488	pending	
+E-login	Source/LoginServer/_Oranze Library/astar.h	426	8521	pending	
+E-login	Source/LoginServer/_Oranze Library/base64.cpp	131	2624	pending	
+E-login	Source/LoginServer/_Oranze Library/base64.h	35	647	pending	
+E-login	Source/LoginServer/_Oranze Library/bstree.h	478	9355	pending	
+E-login	Source/LoginServer/_Oranze Library/codebase.cpp	302	4471	pending	
+E-login	Source/LoginServer/_Oranze Library/codebase.h	121	2211	pending	
+E-login	Source/LoginServer/_Oranze Library/database.cpp	508	9146	pending	
+E-login	Source/LoginServer/_Oranze Library/database.h	143	2411	pending	
+E-login	Source/LoginServer/_Oranze Library/datatype.h	13	191	pending	
+E-login	Source/LoginServer/_Oranze Library/datelog.cpp	91	1615	pending	
+E-login	Source/LoginServer/_Oranze Library/datelog.h	37	510	pending	
+E-login	Source/LoginServer/_Oranze Library/error.cpp	35	449	pending	
+E-login	Source/LoginServer/_Oranze Library/error.h	32	347	pending	
+E-login	Source/LoginServer/_Oranze Library/file.cpp	92	1160	pending	
+E-login	Source/LoginServer/_Oranze Library/file.h	35	596	pending	
+E-login	Source/LoginServer/_Oranze Library/fsa.h	141	2269	pending	
+E-login	Source/LoginServer/_Oranze Library/http.cpp	960	20626	pending	
+E-login	Source/LoginServer/_Oranze Library/http.h	182	4353	pending	
+E-login	Source/LoginServer/_Oranze Library/imsgfmt.cpp	82	1768	pending	
+E-login	Source/LoginServer/_Oranze Library/imsgfmt.h	24	403	pending	
+E-login	Source/LoginServer/_Oranze Library/indexmap.h	107	1920	pending	
+E-login	Source/LoginServer/_Oranze Library/list.h	423	6980	pending	
+E-login	Source/LoginServer/_Oranze Library/mail.cpp	172	2783	pending	
+E-login	Source/LoginServer/_Oranze Library/mail.h	77	1351	pending	
+E-login	Source/LoginServer/_Oranze Library/map.h	236	4512	pending	
+E-login	Source/LoginServer/_Oranze Library/mime.cpp	626	12444	pending	
+E-login	Source/LoginServer/_Oranze Library/mime.h	131	2543	pending	
+E-login	Source/LoginServer/_Oranze Library/netbase.cpp	180	3661	pending	
+E-login	Source/LoginServer/_Oranze Library/netbase.h	64	1311	pending	
+E-login	Source/LoginServer/_Oranze Library/netiocp.cpp	1045	22074	pending	
+E-login	Source/LoginServer/_Oranze Library/netiocp.h	208	4942	pending	
+E-login	Source/LoginServer/_Oranze Library/nettcp.cpp	331	6567	pending	
+E-login	Source/LoginServer/_Oranze Library/nettcp.h	101	2307	pending	
+E-login	Source/LoginServer/_Oranze Library/netudp.cpp	629	13868	pending	
+E-login	Source/LoginServer/_Oranze Library/netudp.h	190	4597	pending	
+E-login	Source/LoginServer/_Oranze Library/pop3.cpp	309	6571	pending	
+E-login	Source/LoginServer/_Oranze Library/pop3.h	81	1501	pending	
+E-login	Source/LoginServer/_Oranze Library/pqueue.h	210	3954	pending	
+E-login	Source/LoginServer/_Oranze Library/prime.cpp	37	483	pending	
+E-login	Source/LoginServer/_Oranze Library/prime.h	25	327	pending	
+E-login	Source/LoginServer/_Oranze Library/queue.h	50	689	pending	
+E-login	Source/LoginServer/_Oranze Library/quotedpr.cpp	150	2889	pending	
+E-login	Source/LoginServer/_Oranze Library/quotedpr.h	29	557	pending	
+E-login	Source/LoginServer/_Oranze Library/registry.cpp	92	1731	pending	
+E-login	Source/LoginServer/_Oranze Library/registry.h	44	635	pending	
+E-login	Source/LoginServer/_Oranze Library/script.cpp	144	2576	pending	
+E-login	Source/LoginServer/_Oranze Library/script.h	64	1095	pending	
+E-login	Source/LoginServer/_Oranze Library/slist.h	23	263	pending	
+E-login	Source/LoginServer/_Oranze Library/squeue.h	23	269	pending	
+E-login	Source/LoginServer/_Oranze Library/stack.h	50	663	pending	
+E-login	Source/LoginServer/_Oranze Library/streambf.h	114	1918	pending	
+E-login	Source/LoginServer/_Oranze Library/stringex.cpp	405	5916	pending	
+E-login	Source/LoginServer/_Oranze Library/stringex.h	71	1503	pending	
+E-login	Source/LoginServer/_Oranze Library/syncobj.cpp	56	773	pending	
+E-login	Source/LoginServer/_Oranze Library/syncobj.h	42	591	pending	
+E-login	Source/LoginServer/_Oranze Library/url.cpp	184	3621	pending	
+E-login	Source/LoginServer/_Oranze Library/url.h	44	703	pending	
+E-login	Source/LoginServer/_Oranze Library/util.cpp	63	988	pending	
+E-login	Source/LoginServer/_Oranze Library/util.h	43	719	pending	
+E-login	Source/LoginServer/_Oranze Library/uucp.cpp	108	1940	pending	
+E-login	Source/LoginServer/_Oranze Library/uucp.h	27	450	pending	
+E-login	Source/LoginServer/_Oranze Library/vector.h	157	2703	pending	
+E-login	Source/LoginServer/_Oranze Library/vtimage.cpp	963	21754	pending	
+E-login	Source/LoginServer/_Oranze Library/vtimage.h	148	3325	pending	
+E-login	Source/LoginServer/Common/endecode.cpp	382	11764	pending	
+E-login	Source/LoginServer/Common/endecode.h	87	2085	pending	
+E-login	Source/LoginServer/Common/mir2packet.cpp	110	2045	pending	
+E-login	Source/LoginServer/Common/mir2packet.h	41	713	pending	
+E-login	Source/LoginServer/LoginServer/LoginSvr.sln	21	905	pending	
+E-login	Source/LoginServer/LoginServer/LoginSvr.vcproj	475	12287	pending	
+E-login	Source/LoginServer/LoginServer/dbtable.h	33	336	pending	
+E-login	Source/LoginServer/LoginServer/dlgcfg.cpp	208	6210	pending	
+E-login	Source/LoginServer/LoginServer/dlgcfg.h	54	952	pending	
+E-login	Source/LoginServer/LoginServer/loginsvrwnd.cpp	565	11452	pending	
+E-login	Source/LoginServer/LoginServer/loginsvrwnd.h	57	1280	pending	
+E-login	Source/LoginServer/LoginServer/mir2dbhandler.cpp	109	1635	pending	
+E-login	Source/LoginServer/LoginServer/mir2dbhandler.h	36	563	pending	
+E-login	Source/LoginServer/LoginServer/mir2wnd.cpp	437	9876	pending	
+E-login	Source/LoginServer/LoginServer/mir2wnd.h	91	1944	pending	
+E-login	Source/LoginServer/LoginServer/netUdpsender.cpp	50	1352	pending	
+E-login	Source/LoginServer/LoginServer/netUdpsender.h	40	599	pending	
+E-login	Source/LoginServer/LoginServer/netcheckserver.cpp	97	1845	pending	
+E-login	Source/LoginServer/LoginServer/netcheckserver.h	34	597	pending	
+E-login	Source/LoginServer/LoginServer/netgameserver.cpp	833	20911	pending	
+E-login	Source/LoginServer/LoginServer/netgameserver.h	66	1488	pending	
+E-login	Source/LoginServer/LoginServer/netlogingate.cpp	1217	35818	covered	Round 802 分派表 3 条
+E-login	Source/LoginServer/LoginServer/netlogingate.h	139	2853	pending	
+E-login	Source/LoginServer/LoginServer/netloginsvr.cpp	1150	29216	pending	
+E-login	Source/LoginServer/LoginServer/netloginsvr.h	147	3339	pending	
+E-login	Source/LoginServer/LoginServer/protocol.h	42	1066	covered	Round 803 opcode 表
+E-login	Source/LoginServer/LoginServer/Res/resource.h	41	1614	pending	

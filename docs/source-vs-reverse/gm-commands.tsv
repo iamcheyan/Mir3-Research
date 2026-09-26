@@ -1,0 +1,162 @@
+line	english	korean_aliases	handler
+23291	admins		SysMsg
+23298		귓속말거부 / 귀엣말거부	BoHearWhisper / SysMsg
+23304		귓속말허용 / 귀엣말허용	BoHearWhisper / SysMsg / BlockWhisper
+23309		차단	BlockWhisper / BoHearCry
+23315		외치기거부 / 외치기차단	BoHearCry / SysMsg / BoExchangeAvailable
+23321		교환거부	BoExchangeAvailable / SysMsg
+23327		문파가입	SysMsg
+23333		동맹허용	SysMsg
+23341		동맹	
+23347		동맹파기	
+23353		문파탈퇴	BoHearGuildMsg / SysMsg
+23357		문파전음차단 / 문파전음거부	BoHearGuildMsg / SysMsg
+23370		추방	SysMsg
+23385		내공	BoHighLevelEffect / SysMsg
+23400		일지	CmdSendTestQuestDiary
+23405		공격방식	SysMsg
+23417		휴식	BoSlaveRelax / SysMsg
+23433	gsa		SendMsg / SysMsg / BoReadySuperAdminPassword
+23448		사북성문	CmdOpenCloseUserCastleMainDoor
+23460		이동	SendRefMsg / SysMsg
+23479		탐색	SysMsg
+23496		천지합일거부 / 천지합일허용	BoEnableRecall / SysMsg / BoEnableAgitRecall
+23502		소환거부 / 소환허용	BoEnableAgitRecall / SysMsg / BoCGHIEnable
+23508		천지합일	
+23536		부활	
+23564	MeetCouple	만남	
+23610	HappyBirthDay	생일축하	SendRefMsg
+23647	ReloadLineNotice	줄공지적용	SysMsg
+23653	Move	이동	CmdFreeSpaceMove
+23660	PositionMove / PMove	자유이동	CmdFreeSpaceMove
+23665	Stealth	스텔스	CmdStealth
+23670	Info	렙	CmdSendUserLevelInfos
+23674	MobLevel	몹레벨	CmdSendMonsterLevelInfos
+23678	KingMob	왕몹	CmdSendKingMonsterInfos
+23682	MobCount	몹수	SysMsg
+23689	Human		SysMsg
+23693	Map	맵	CmdKickUser
+23697	Kick		CmdKickUser
+23701	Ting	팅	CmdTingUser
+23705	SuperTing	왕팅	CmdTingRangeUser
+23709	Shutup	채금	CmdAddShutUpList
+23713	ReleaseShutup	채금해제	CmdDelShutUpList
+23717	ShutupList	채금자	CmdSendShutUpList
+23722	ReloadChatLog	채팅로그재적용	CmdAddChatLogList
+23729	AddChatLog	채팅로그추가	CmdAddChatLogList
+23733	ReleaseChatLog	채팅로그삭제	CmdDelChatLogList
+23737	ChatLogList	채팅로그자	CmdSendChatLogList
+23742	GameMaster	운영자	BoSysopMode / SysMsg / BoSuperviserMode
+23748	Observer / Ob	감시자	BoSuperviserMode / SysMsg
+23754	Superman	무적	SysMsg
+23760	Level	레벨조정	SysMsg
+23765	SabukWallGold		CmdRecallMan
+23769	Recall	소환	CmdRecallMan
+23774	RecallMap	맵소환	CmdRecallMap
+23778	flag		SysMsg
+23789	showopen		SysMsg
+23800	showunit		SysMsg
+23813	addfriend	친구등록	SendMsg
+23821	CharMove	캐릭터이동	CmdCharMove
+23826	Goto	출두	CmdCharSpaceMove
+23832	ContestPoint		CmdGetGuildMatchPoint
+23836	StartContest		CmdStartGuildMatch
+23840	EndContest		CmdEndGuildMatch
+23844	Announcement		CmdAnnounceGuildMembersMatchPoint
+23849	whoare	누구	CmdViewAllCharacterList
+23852	safezone	안전	SysMsg
+23860	CMDTEST		
+23871	PKpoint		CmdSendPKPoint
+23875	ChangeJob		CmdChangeJob
+23881	ChangeGender		CmdChangeSex
+23886	LuckyPoint		SysMsg / BodyLuck / BodyLuckLevel
+23896	attack		CmdCallMakeMonster
+23903	Mob		CmdCallMakeMonster
+23907	RecallMob		CmdCallMakeSlaveMonster
+23911		복권	SysMsg
+23923	ReloadGuild		CmdReloadGuild
+23927	ReadAbuseInformation		SysMsg
+23932	Backstep		CmdRushAttack
+23936		무태보	CmdRushAttack
+23940	FreePenalty		CmdDeletePKPoint
+23944	IncPkPoint		BodyLuck
+23948	ChangeLuck		BodyLuck / SendMsg
+23953	Hunger		SendMsg
+23963	Training		CmdMakeFullSkill
+23967	DeleteSkill		CmdEraseMagic
+23971	NameColor		CmdMissionSetting
+23976	Mission		CmdMissionSetting
+23979	MobPlace		CmdCallMakeMonsterXY
+23983	Transparency / tp		BoHumHideMode
+23991	DeleteItem		CmdEraseItem
+23995	Level0		
+24000		퀘스트초기화	
+24004	setflag		SetQuestMark / SysMsg
+24017	setopen		SetQuestOpenIndexMark / SysMsg
+24030	setunit		SetQuestFinIndexMark / SysMsg
+24043	Reconnection		CmdReconnection
+24048	Wallconquestwarmode		BoCastleWarMode / SysMsg
+24056	DisableFilter		BoEnableAbusiveFilter / SysMsg
+24098	OXQuizRoom		CmdTestTimeDebug
+24104	TESTTIME		CmdTestTimeDebug
+24112		외치기범위	CmdSetCryWide
+24120	AgitReg	장원대여	CmdGuildAgitRegistration
+24124	AgitMove	장원이동	CmdGuildAgitAutoMove
+24128	AgitDel	장원반환	CmdGuildAgitDelete
+24132	AgitExtend	장원연장	CmdGuildAgitExtendTime
+24136	AgitRemain	장원기간	CmdGuildAgitRemainTime
+24140	AgitRecall	문원소환	CmdGuildAgitRecall
+24147	AgitSale	장원판매	CmdGuildAgitSale
+24151	AgitSaleCancel	장원판매취소	CmdGuildAgitSaleCancel
+24155	AgitBuy	장원구입	CmdGuildAgitBuy
+24159	AgitTrade	장원거래	CmdTryGuildAgitTrade
+24165	GaBoardList	게시판목록	CmdGaBoardList
+24169	GaBoardRead	게시판읽기	
+24173	GaBoardAdd	게시판쓰기	
+24178	GaBoardDel	게시판삭제	
+24182	GaBoardEdit	게시판수정	
+24186	GTBoardInit	게시판초기화	
+24197	Make		CmdMakeItem
+24201	DelGold		CmdDeleteUserGold
+24205	AddGold		CmdAddUserGold
+24216		무기제련	CmdRefineWeapon
+24222	ReloadAdmin		SendInterMsg / SysMsg
+24228	MarketOpen		SendInterMsg / SysMsg
+24234	MarketClose		CmdReloadNpc
+24240	ReloadNpc		CmdReloadNpc
+24245	ReloadMonItems		SysMsg
+24250	ReloadDiary		CmdManLevelChange
+24255	AdjustLevel		CmdManLevelChange
+24259	AdjustExp		CmdManExpChange
+24263	AddGuild		CmdCreateGuild
+24267	DelGuild		CmdDeleteGuild
+24271	ChangeSabukLord		CmdChangeUserCastleOwner
+24275	ForcedWallconquestWar		BoCastleUnderAttack
+24285	AddToItemEvent		SysMsg
+24293	AddToItemEventAsPieces		SysMsg
+24301	ItemEventList		SysMsg
+24308	StartingGiftNo		SysMsg
+24313	DeleteAllItemEven		SysMsg / BoUniqueItemEvent
+24318	StartItemEvent		BoUniqueItemEvent / SysMsg
+24324	ItemEventTerm		SysMsg
+24329	AdjustTestLevel		CmdMakeOtherChangeSkillLevel
+24334	OPTraining		CmdMakeOtherChangeSkillLevel
+24338	OPDeleteSkill		CmdThisManEraseMagic
+24341	ChangeWeaponDura		SendMsg
+24351	Upgrade		CmdUpgradeItem
+24355		모든보옥	CmdMakeAllJewelryItem
+24359		모든신주	CmdMakeAllJewelryItem
+24363	ReloadMakeItemList		SendInterMsg / SysMsg
+24372		글자색	CmdLetterColor
+24377	Alive		
+24382		스핵체크	SysMsg / MainOutMessage
+24392	AgitDecoMonCount	꾸미기개수	CmdAgitDecoMonCount
+24396	AgitDecoMonCountHere	상현개수	CmdAgitDecoMonCountHere
+24400	FamePoint	명성치	CmdAdjustFamePoint
+24404	FameName	명성	CmdGetFameName
+24409	UserMarketDebug		CmdUserMarketDebug
+24415		연인해제	CmdBreakLoverRelation
+24423	ReloadGuildAll		CmdReloadGuildAll
+24428	ReloadGuildAgit		CmdReloadGuildAgit
+24433	OneKill		CmdOneKillMob
+24437	MonClear	몬클리어	CmdMonClear

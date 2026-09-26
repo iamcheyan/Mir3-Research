@@ -358,3 +358,447 @@ for p in ('/home/tetsuya/mir2ei/Map/0.map','/home/tetsuya/mir2ei/Map/0_002.map')
     print(p.split('/')[-1], m.w, m.h, m.n, m.n_records)
 "
 ```
+
+---
+
+## 10. `ObjBase.pas` 方法实现精读（Round 810）
+
+> 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
+> 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
+
+### 10.1 实现段结构（1,418 – 31,768 行）
+
+`TCreature` 的方法实现从 `:1422` `Create` 起，覆盖：对象生命周期、物品操作、
+消息发送族、视野、状态、移动、掉落。**`TAnimal`/`TUserHuman` 的实现散在其后**。
+
+### 10.2 `SearchViewRange`（`:3567-3890`）—— 视野算法核心
+
+**这是服务端最热的循环**，直接决定「谁看得见谁」。
+
+**入口与边界钳制**（`:3597-3607`）：
+
+```pascal
+stx := CX-ViewRange;  enx := CX+ViewRange;
+sty := CY-ViewRange;  eny := CY+ViewRange;
+if(stx < 0) then stx := 0;
+if(enx > PEnvir.MapWidth-1)  then enx := PEnvir.MapWidth-1;
+if(sty < 0) then sty := 0;
+if(eny > PEnvir.MapHeight-1) then eny := PEnvir.MapHeight-1;
+```
+
+**标记-清除模式**（`:3631-3635`）：先把所有 `VisibleItems`/`VisibleEvents`/
+`VisibleActors` 的 `Check` 置 0，扫完再清理 `Check` 仍为 0 的（本帧未复见 = 已离开视野）。
+
+**双层循环遍历矩形**（`:3642-3643`）：`for i := stx to enx do for j := sty to eny do`
+→ `PEnvir.GetMapXY(i, j, pm)` → 遍历该格的 `pm.ObjList`。
+
+**⚠️ 循环变量名反直觉**：外层是 `i`（对应 **X**），内层是 `j`（对应 **Y**），
+但坐标访问是 `GetMapXY(i, j, pm)`。且 `Envir.pas:419` 的 `LoadMap` 用的是
+`C := X * MapHeight`（**列优先**）。两处索引约定必须分清。
+
+**三类对象的处理分支**：
+
+| 对象形状 | 常量 | 处理 |
+|---|---|---|
+| 生物 | `OS_MOVINGOBJECT` | 残影超时删除（**10 分钟**，`:3667` 注释「2003/01/22 时间 5 分改 10 分，防 NPC 闪烁」）→ 可见性过滤 → `UpdateVisibleGay(cret)` |
+| 物品 | `OS_ITEMOBJECT` | 超时删除（**1 小时**，`:3715`）→ `UpdateVisibleItems(i, j, pmapitem)` |
+| 装饰物品 | `STDMODE_OF_DECOITEM` + `SHAPE_OF_DECOITEM` | **不参与 1 小时清理**（`:3720`，行会据点装饰保留） |
+
+**可见性过滤规则**（`:3687-3703`）—— 最复杂的一段：
+
+```pascal
+if (cret <> nil) and
+   (not cret.BoGhost) and          // 不是鬼魂
+   (not cret.HideMode) and         // 不是隐身
+   (not cret.BoSuperviserMode)     // 不是管理员模式
+then begin
+   if (RaceServer < RC_ANIMAL) or   // 自己不是怪物
+      (Master <> nil) or            // 或有主人
+      (BoCrazyMode) or              // 或狂暴
+      (BoGoodCrazyMode) or          // 或善狂暴
+      (WantRefMsg) or               // 或需要消息
+      ((cret.Master <> nil) and (abs(cret.CX-CX) <= 3) and (abs(cret.CY-CY) <= 3)) or  // 有主怪物近距离
+      (cret.RaceServer = RC_USERHUMAN)  // 或对方是玩家
+      and (not hmcheck)
+   then UpdateVisibleGay (cret);
+```
+
+**语义**：怪物之间**默认不互相可见**（性能优化）—— 只有当「自己不是怪物」
+或满足若干例外条件时才建立可见关系。**玩家永远互相可见**
+（`cret.RaceServer = RC_USERHUMAN`）。
+
+**⚠️ 运算符优先级陷阱**：`and` 比 `or` 优先级高，所以最后一个 `and (not hmcheck)`
+**只作用于 `(cret.RaceServer = RC_USERHUMAN)` 这一项**，不是整个 or 链。
+原作者的缩进（`:3701` 的注释行插在 or 链中间）会让读者误以为它作用于全部。
+**这是本文件最容易读错的一段。**
+
+**被禁用的视野扩展优化**（`:3612-3629` 整块被 `{ }` 注释）：
+原设计「每 10 次搜索做 1 次全屏扩展」+ `RefObjCount` 计数，
+**已停用**（2004/04/21 的改动，最终未启用）。
+
+**防御性编程**：`:3653-3661` 用 `try/except` 包住对象形状读取，
+**访问违例的对象直接从 `ObjList` 删除**并记日志
+`DELOBJ-WRONG MEMORY:<地图>,<X>,<Y>`。这是 2003-09-15 加的（注释 `PDS`）。
+
+**`down` 变量**：全程用 `down := N` 做**阶段标记**，异常处理器打印
+`down` 值来定位崩溃点（`:3637` `'ObjBase SearchViewRange 0'`）。
+这是一个原始但有效的调试手法 —— 读代码时 `down` 的赋值**不代表逻辑分支**。
+
+### 10.3 `Walk`（`:4105-4215`）—— 移动与过门
+
+**流程**：
+
+```
+1. 取当前格 GetMapXY(CX, CY, pm)
+2. 遍历该格 ObjList，找:
+     OS_GATEOBJECT → pgate（传送门）
+     OS_EVENTOBJECT 且 OwnCret <> nil → event（事件，如地雷）
+     OS_MAPEVENT / OS_DOOR / OS_ROON → 空分支（{???} 注释，未实现）
+3. 若有 event 且 event.OwnCret.IsProperTarget(self)
+     → SendMsg(event.OwnCret, RM_MAGSTRUCK_MINE, 0, event.Damage, 0, 0, '')
+4. 若有 pgate:
+     仅玩家可过（NPC 不出门，:4168 注释「npc 는 문밖으로 안 나감」）
+     AroundDoorOpened(CX, CY) 检查门是否开
+       特殊地图 NeedHole（如食尸鬼房）需 EventMan.FindEvent(ET_DIGOUTZOMBI) 存在
+     同服务器 → EnterAnotherMap(目标环境, EnterX, EnterY)
+     跨服务器 → Disappear(1) 成功后设置
+        ChangeMapName/ChangeCX/ChangeCY/BoChangeServer/ChangeToServerNumber
+        EmergencyClose := TRUE; SoftClosed := TRUE（不使认证过期）
+     距上次掉落 >1000ms 才允许（:4180，防跨服刷屏）
+5. 无门 → SendRefMsg(msg, Dir, CX, CY, 0, '') 广播移动
+```
+
+**`goto needholefinish`**（`:4173`/`:4203`）：Delphi 的 `label`/`goto` 用法 ——
+条件不满足时**跳过整个过门逻辑**，落到 `needholefinish` 标签，
+再走 `end; //문이 잠김 Result=true 정상`（门锁着时 Result 保持 true = 正常）。
+
+**跨服移动的完整字段集**（`:4184-4194`）—— 这是服务端分线/分服的实现：
+
+| 字段 | 用途 |
+|---|---|
+| `SpaceMoved := TRUE` | 标记已跨空间 |
+| `ChangeMapName` / `ChangeCX` / `ChangeCY` | 目标位置 |
+| `BoChangeServer := TRUE` | 换服标志 |
+| `ChangeToServerNumber` | 目标服号 |
+| `EmergencyClose := TRUE` | 强制断开 |
+| `SoftClosed := TRUE` | **但不使认证过期**（可重连） |
+| `FAlreadyDisapper := TRUE` | 已消失标志 |
+
+### 10.4 消息发送族（`:3034-3200`）—— 5 个变体的区别
+
+| 方法 | 行 | 语义 |
+|---|---|---|
+| `SendFastMsg` | `:3034` | 快速发送（不排队） |
+| `SendMsg` | `:3064` | 普通发送 |
+| `SendDelayMsg` | `:3095` | 延迟发送（`delay` ms） |
+| `UpdateDelayMsg` | `:3126` | 更新式延迟（**替换**同 Ident 的待发消息） |
+| `UpdateDelayMsgCheckParam1` | `:3151` | 同上，但比对 `Param1` 决定是否替换 |
+| `UpdateMsg` | `:3176` | 立即更新式 |
+| `SendRefMsg` | `:3363` | **广播给视野内所有实体** |
+
+**`SendRefMsg`**（`:3363`）是视野系统的出口 —— `SearchViewRange` 建立的
+`VisibleActors` 列表在这里被用来分发消息。
+
+### 10.5 掉落族（`:4432-4760`）
+
+| 方法 | 行 | 语义 |
+|---|---|---|
+| `TakeCretBagItems(target)` | `:4432` | 从对方尸体取全部物品 |
+| `ScatterBagItems(itemownership)` | `:4509` | 散落背包物品 |
+| `DropEventItems` | `:4688` | 掉落事件物品（注释：**加载时不存在、后加进来的才掉**） |
+| `ScatterGolds(itemownership)` | `:4727` | 散落金币 |
+| `DropUseItems(itemownership; DieFromMob)` | `:4760` | 按**耐久度**掉落（`DieFromMob` 区分是否被怪杀死） |
+
+**`itemownership`** 参数贯穿全部掉落函数 —— 即**掉落物归属**（防抢怪），
+与 §10.2 的 `pmapitem.Ownership`/`Droper` + `ANTI_MUKJA_DELAY` 配套
+（「먹자 보호」= 防抢食保护）。
+
+### 10.6 物品等级/职业转换（`:1802-2722`）—— 一大块业务逻辑
+
+| 方法 | 行范围 | 语义 |
+|---|---|---|
+| `ChangeItemWithLevel(citem, lv)` | `:1802-2019` | 按等级换装（**217 行**） |
+| `ChangeItemByJob(citem, lv)` | `:2020-2269` | 按职业换装（**250 行**） |
+| `BanjjakChangeItemByJob(citem, lv)` | `:2270-2722` | 「半自动」职业换装（**453 行**） |
+
+`BanjjakChangeItemByJob` 是**本文件最长的单个函数之一**（453 行）——
+「반짝」（Banjjak）疑为某种装备转换机制。**未细读，标注 pending。**
+
+### 10.7 与原版 / Zircon 的对照
+
+| 项 | 原版反编译 | 源码 | Zircon |
+|---|---|---|---|
+| 视野搜索 | `SearchViewRange`（有调用点证据） | `:3567-3890` 完整实现 | `ServerLibrary/Envir/` 有对应 |
+| 视野半径 | 未闭合 | `ViewRange` 字段 + 边界钳制 | — |
+| 残影超时 | 未闭合 | **10 分钟**（`:3667`） | — |
+| 掉落物超时 | 未闭合 | **1 小时**（`:3715`） | — |
+| 防抢食保护 | 未闭合 | `ANTI_MUKJA_DELAY` + `Ownership`/`Droper` | — |
+| 跨服移动字段集 | 未闭合 | 7 个字段（`:4184-4194`） | — |
+| 怪物互不可见优化 | 未闭合 | `RaceServer < RC_ANIMAL` 门（`:3694`） | — |
+
+**分级**：以上源码结论均 `secondary-source`；原版无对应证据的标 `source-only`。
+
+### 10.8 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `BanjjakChangeItemByJob`（453 行） | 未细读 |
+| `ChangeItemWithLevel`/`ChangeItemByJob`（467 行合计） | 只读了签名与规模 |
+| `TakeCretBagItems`/`ScatterBagItems` 等掉落族实现 | 只读了签名与注释 |
+| `RC_ANIMAL`/`RC_USERHUMAN`/`OS_*` 常量值 | 未查定义（疑在 `M2Share.pas`） |
+| `ANTI_MUKJA_DELAY` 具体值 | 未查 |
+| `TAnimal`/`TUserHuman` 的实现段（`TCreature` 之后） | 未读 —— 见 §11 |
+
+---
+
+## 11. GM 命令表（Round 810，**完整提取**）
+
+> 位置：`ObjBase.pas:23291-24440`（`TUserHuman` 的聊天命令分派链）。
+> 机器可读：[`gm-commands.tsv`](gm-commands.tsv)（161 个分派块）。
+> 提取器：`Tools/source-read/extract_gm_commands.py` + `gm_to_markdown.py`。
+
+### 11.1 分派机制
+
+GM 命令**不是查表**，而是一条**长 `CompareText` 链**（`ObjBase.pas:23291` 起）：
+
+```pascal
+if (CompareText(cmd, 'PositionMove') = 0) or (CompareText(cmd, 'PMove') = 0)
+   or (CompareText(cmd, '자유이동') = 0) then begin
+   CmdFreeSpaceMove (param1, param2, param3);
+   exit;
+end;
+```
+
+**三个关键点**：
+
+1. **每条命令可有多别名** —— 英文（`PositionMove`/`PMove`）+ 韩文（`자유이동`），
+   用 `or` 串联。实测 **131 个英文命令 + 90 个韩文别名**。
+2. **`CompareText` 大小写不敏感**。
+3. **`exit` 提前返回** —— 顺序敏感，先匹配的先执行。
+
+**命令来自聊天输入**：`cmd` 是聊天文本去掉前导符后的第一个 token，
+`param1`/`param2`/`param3` 是后续 token。**与 `@move` 这类原版命令同源。**
+
+### 11.2 命令分组统计
+
+
+## 移动/传送（13）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23460 | — | 이동 | SendRefMsg / SysMsg |
+| 23502 | — | 소환거부 / 소환허용 | BoEnableAgitRecall / SysMsg / BoCGHIEnable |
+| 23653 | Move | 이동 | CmdFreeSpaceMove |
+| 23660 | PositionMove / PMove | 자유이동 | CmdFreeSpaceMove |
+| 23693 | Map | 맵 | CmdKickUser |
+| 23769 | Recall | 소환 | CmdRecallMan |
+| 23774 | RecallMap | 맵소환 | CmdRecallMap |
+| 23821 | CharMove | 캐릭터이동 | CmdCharMove |
+| 23826 | Goto | 출두 | CmdCharSpaceMove |
+| 23907 | RecallMob | — | CmdCallMakeSlaveMonster |
+| 23932 | Backstep | — | CmdRushAttack |
+| 24124 | AgitMove | 장원이동 | CmdGuildAgitAutoMove |
+| 24140 | AgitRecall | 문원소환 | CmdGuildAgitRecall |
+
+## 刷怪/清理（7）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23479 | — | 탐색 | SysMsg |
+| 23674 | MobLevel | 몹레벨 | CmdSendMonsterLevelInfos |
+| 23678 | KingMob | 왕몹 | CmdSendKingMonsterInfos |
+| 23682 | MobCount | 몹수 | SysMsg |
+| 23903 | Mob | — | CmdCallMakeMonster |
+| 23979 | MobPlace | — | CmdCallMakeMonsterXY |
+| 24437 | MonClear | 몬클리어 | CmdMonClear |
+
+## 等级/经验/点数（17）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23385 | — | 내공 | BoHighLevelEffect / SysMsg |
+| 23670 | Info | 렙 | CmdSendUserLevelInfos |
+| 23742 | GameMaster | 운영자 | BoSysopMode / SysMsg / BoSuperviserMode |
+| 23760 | Level | 레벨조정 | SysMsg |
+| 23832 | ContestPoint | — | CmdGetGuildMatchPoint |
+| 23871 | PKpoint | — | CmdSendPKPoint |
+| 23886 | LuckyPoint | — | SysMsg / BodyLuck / BodyLuckLevel |
+| 23944 | IncPkPoint | — | BodyLuck |
+| 23953 | Hunger | — | SendMsg |
+| 23963 | Training | — | CmdMakeFullSkill |
+| 23995 | Level0 | — | — |
+| 24255 | AdjustLevel | — | CmdManLevelChange |
+| 24259 | AdjustExp | — | CmdManExpChange |
+| 24329 | AdjustTestLevel | — | CmdMakeOtherChangeSkillLevel |
+| 24334 | OPTraining | — | CmdMakeOtherChangeSkillLevel |
+| 24400 | FamePoint | 명성치 | CmdAdjustFamePoint |
+| 24404 | FameName | 명성 | CmdGetFameName |
+
+## 物品/装备（17）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23911 | — | 복권 | SysMsg |
+| 23991 | DeleteItem | — | CmdEraseItem |
+| 24197 | Make | — | CmdMakeItem |
+| 24216 | — | 무기제련 | CmdRefineWeapon |
+| 24245 | ReloadMonItems | — | SysMsg |
+| 24285 | AddToItemEvent | — | SysMsg |
+| 24293 | AddToItemEventAsPieces | — | SysMsg |
+| 24301 | ItemEventList | — | SysMsg |
+| 24308 | StartingGiftNo | — | SysMsg |
+| 24313 | DeleteAllItemEven | — | SysMsg / BoUniqueItemEvent |
+| 24318 | StartItemEvent | — | BoUniqueItemEvent / SysMsg |
+| 24324 | ItemEventTerm | — | SysMsg |
+| 24341 | ChangeWeaponDura | — | SendMsg |
+| 24351 | Upgrade | — | CmdUpgradeItem |
+| 24355 | — | 모든보옥 | CmdMakeAllJewelryItem |
+| 24359 | — | 모든신주 | CmdMakeAllJewelryItem |
+| 24363 | ReloadMakeItemList | — | SendInterMsg / SysMsg |
+
+## 金币（3）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23765 | SabukWallGold | — | CmdRecallMan |
+| 24201 | DelGold | — | CmdDeleteUserGold |
+| 24205 | AddGold | — | CmdAddUserGold |
+
+## 行会/攻城（25）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23327 | — | 문파가입 | SysMsg |
+| 23333 | — | 동맹허용 | SysMsg |
+| 23341 | — | 동맹 | — |
+| 23347 | — | 동맹파기 | — |
+| 23353 | — | 문파탈퇴 | BoHearGuildMsg / SysMsg |
+| 23357 | — | 문파전음차단 / 문파전음거부 | BoHearGuildMsg / SysMsg |
+| 23448 | — | 사북성문 | CmdOpenCloseUserCastleMainDoor |
+| 23923 | ReloadGuild | — | CmdReloadGuild |
+| 24048 | Wallconquestwarmode | — | BoCastleWarMode / SysMsg |
+| 24120 | AgitReg | 장원대여 | CmdGuildAgitRegistration |
+| 24128 | AgitDel | 장원반환 | CmdGuildAgitDelete |
+| 24132 | AgitExtend | 장원연장 | CmdGuildAgitExtendTime |
+| 24136 | AgitRemain | 장원기간 | CmdGuildAgitRemainTime |
+| 24147 | AgitSale | 장원판매 | CmdGuildAgitSale |
+| 24151 | AgitSaleCancel | 장원판매취소 | CmdGuildAgitSaleCancel |
+| 24155 | AgitBuy | 장원구입 | CmdGuildAgitBuy |
+| 24159 | AgitTrade | 장원거래 | CmdTryGuildAgitTrade |
+| 24263 | AddGuild | — | CmdCreateGuild |
+| 24267 | DelGuild | — | CmdDeleteGuild |
+| 24271 | ChangeSabukLord | — | CmdChangeUserCastleOwner |
+| 24275 | ForcedWallconquestWar | — | BoCastleUnderAttack |
+| 24392 | AgitDecoMonCount | 꾸미기개수 | CmdAgitDecoMonCount |
+| 24396 | AgitDecoMonCountHere | 상현개수 | CmdAgitDecoMonCountHere |
+| 24423 | ReloadGuildAll | — | CmdReloadGuildAll |
+| 24428 | ReloadGuildAgit | — | CmdReloadGuildAgit |
+
+## 聊天/禁言（15）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23298 | — | 귓속말거부 / 귀엣말거부 | BoHearWhisper / SysMsg |
+| 23304 | — | 귓속말허용 / 귀엣말허용 | BoHearWhisper / SysMsg / BlockWhisper |
+| 23309 | — | 차단 | BlockWhisper / BoHearCry |
+| 23315 | — | 외치기거부 / 외치기차단 | BoHearCry / SysMsg / BoExchangeAvailable |
+| 23321 | — | 교환거부 | BoExchangeAvailable / SysMsg |
+| 23647 | ReloadLineNotice | 줄공지적용 | SysMsg |
+| 23709 | Shutup | 채금 | CmdAddShutUpList |
+| 23713 | ReleaseShutup | 채금해제 | CmdDelShutUpList |
+| 23717 | ShutupList | 채금자 | CmdSendShutUpList |
+| 23722 | ReloadChatLog | 채팅로그재적용 | CmdAddChatLogList |
+| 23729 | AddChatLog | 채팅로그추가 | CmdAddChatLogList |
+| 23733 | ReleaseChatLog | 채팅로그삭제 | CmdDelChatLogList |
+| 23737 | ChatLogList | 채팅로그자 | CmdSendChatLogList |
+| 23927 | ReadAbuseInformation | — | SysMsg |
+| 24112 | — | 외치기범위 | CmdSetCryWide |
+
+## 状态/外观（13）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23536 | — | 부활 | — |
+| 23564 | MeetCouple | 만남 | — |
+| 23610 | HappyBirthDay | 생일축하 | SendRefMsg |
+| 23665 | Stealth | 스텔스 | CmdStealth |
+| 23748 | Observer / Ob | 감시자 | BoSuperviserMode / SysMsg |
+| 23754 | Superman | 무적 | SysMsg |
+| 23875 | ChangeJob | — | CmdChangeJob |
+| 23881 | ChangeGender | — | CmdChangeSex |
+| 23971 | NameColor | — | CmdMissionSetting |
+| 23983 | Transparency / tp | — | BoHumHideMode |
+| 24372 | — | 글자색 | CmdLetterColor |
+| 24377 | Alive | — | — |
+| 24415 | — | 연인해제 | CmdBreakLoverRelation |
+
+## 任务（4）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23400 | — | 일지 | CmdSendTestQuestDiary |
+| 23976 | Mission | — | CmdMissionSetting |
+| 24000 | — | 퀘스트초기화 | — |
+| 24250 | ReloadDiary | — | CmdManLevelChange |
+
+## GM/管理（19）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23291 | admins | — | SysMsg |
+| 23370 | — | 추방 | SysMsg |
+| 23417 | — | 휴식 | BoSlaveRelax / SysMsg |
+| 23433 | gsa | — | SendMsg / SysMsg / BoReadySuperAdminPassword |
+| 23697 | Kick | — | CmdKickUser |
+| 23701 | Ting | 팅 | CmdTingUser |
+| 23705 | SuperTing | 왕팅 | CmdTingRangeUser |
+| 23778 | flag | — | SysMsg |
+| 23789 | showopen | — | SysMsg |
+| 23800 | showunit | — | SysMsg |
+| 23813 | addfriend | 친구등록 | SendMsg |
+| 23849 | whoare | 누구 | CmdViewAllCharacterList |
+| 23852 | safezone | 안전 | SysMsg |
+| 23896 | attack | — | CmdCallMakeMonster |
+| 24004 | setflag | — | SetQuestMark / SysMsg |
+| 24017 | setopen | — | SetQuestOpenIndexMark / SysMsg |
+| 24030 | setunit | — | SetQuestFinIndexMark / SysMsg |
+| 24222 | ReloadAdmin | — | SendInterMsg / SysMsg |
+| 24240 | ReloadNpc | — | CmdReloadNpc |
+
+## 测试/调试（4）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23860 | CMDTEST | — | — |
+| 24056 | DisableFilter | — | BoEnableAbusiveFilter / SysMsg |
+| 24104 | TESTTIME | — | CmdTestTimeDebug |
+| 24409 | UserMarketDebug | — | CmdUserMarketDebug |
+
+## 其他（24）
+
+| 行 | 英文命令 | 韩文别名 | 动作 |
+|---|---|---|---|
+| 23405 | — | 공격방식 | SysMsg |
+| 23496 | — | 천지합일거부 / 천지합일허용 | BoEnableRecall / SysMsg / BoEnableAgitRecall |
+| 23508 | — | 천지합일 | — |
+| 23689 | Human | — | SysMsg |
+| 23836 | StartContest | — | CmdStartGuildMatch |
+| 23840 | EndContest | — | CmdEndGuildMatch |
+| 23844 | Announcement | — | CmdAnnounceGuildMembersMatchPoint |
+| 23936 | — | 무태보 | CmdRushAttack |
+| 23940 | FreePenalty | — | CmdDeletePKPoint |
+| 23948 | ChangeLuck | — | BodyLuck / SendMsg |
+| 23967 | DeleteSkill | — | CmdEraseMagic |
+| 24043 | Reconnection | — | CmdReconnection |
+| 24098 | OXQuizRoom | — | CmdTestTimeDebug |
+| 24165 | GaBoardList | 게시판목록 | CmdGaBoardList |
+| 24169 | GaBoardRead | 게시판읽기 | — |
+| 24173 | GaBoardAdd | 게시판쓰기 | — |
+| 24178 | GaBoardDel | 게시판삭제 | — |
+| 24182 | GaBoardEdit | 게시판수정 | — |
+| 24186 | GTBoardInit | 게시판초기화 | — |
+| 24228 | MarketOpen | — | SendInterMsg / SysMsg |
+| 24234 | MarketClose | — | CmdReloadNpc |
+| 24338 | OPDeleteSkill | — | CmdThisManEraseMagic |
+| 24382 | — | 스핵체크 | SysMsg / MainOutMessage |
+| 24433 | OneKill | — | CmdOneKillMob |
