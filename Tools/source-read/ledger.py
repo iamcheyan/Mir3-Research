@@ -124,6 +124,11 @@ def main() -> int:
             r["note"] = ""
             unregistered.append(r["rel_path"])
 
+    # 合并：把本次新识别的状态写回 STATUS，避免下次运行丢失
+    for r in found:
+        if r["rel_path"] not in STATUS:
+            STATUS[r["rel_path"]] = (r["status"], r["note"])
+
     # 统计
     by_status: dict[str, list] = {}
     for r in found:

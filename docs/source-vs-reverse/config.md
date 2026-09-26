@@ -271,15 +271,31 @@ D4303 693
 
 ---
 
-## 7. 未破译项
+## 7. ~~未破译项~~ → **已破译（2026-09-26 更新）**
 
 `Envir3/QuestDiary/NQ_BASE/MonQuest/` 的 3 个 `.txt`
 （`Nm_Chiken.txt`/`Nm_Cow.txt`/`Nm_OmaJunsa.txt`，342–881 B）
-**非 GB18030/cp949 文本**，`iconv` 在首字节即失败；字节呈
-`… 72 6c 6e 6c 6a 6c … 0e 0c 0a 0c 0e 0c …` 的**定长对模式**
-（每对低字节低位恒为 `0xC`），疑 Mir3 MonQuest 私有编码。
+**曾**被登记为「非 GB18030/cp949 的私有编码，未破译」。
 
-**本轮未破译，保持未解状态**（不猜测）。
+**现已破译：它们是 WEMADE 加密**（`Source/Common/EDCode.pas:465-522`
+的 `Decrypt` 算法），**已全部成功解密为合法 GB18030 任务脚本**。
+
+| 项 | 内容 |
+|---|---|
+| 识别线索 | 文件头 `f0 39 aa c0 …` 与 `EDCode.Decrypt` 的硬编码种子 `F0 39 AB 8E` **前 2 字节相同** |
+| 长度验证 | `ProcLen` 按**大端**解释 = `334`，恰等于文件大小 342 − 8 ✅ |
+| 算法 | 头 8 字节（种子 XOR 长度 + 校验和）+ 正文 **4 轮递增 CRC XOR** |
+| ⚠️ 坑 1 | `ProcLen` 是**大端**（源码 `MakeLong`/`MakeWord` 嵌套写法易误判为小端） |
+| ⚠️ 坑 2 | **校验和字段不可信** —— 3 个文件的 `data[4..7]` 与源码公式算出的都不匹配，但正文仍能正确解密。实用结论：**跳过校验、只做 XOR** |
+| 扫描结果 | `QuestDiary/` 全树 443 个文件中**只有这 3 个**是加密的，全部已破译 |
+| 工具 | `Tools/source-read/wemade_decrypt.py`（`--scan` 可扫目录） |
+
+**三处独立证据交叉一致**：源码 opcode 表（`server.md` §12）↔ 明文脚本（§12.9）↔
+解密脚本。解密出的内容含 `[@main]`/`#IF`/`#ACT`/`check [164] 1`/
+`goto @dark`/`random 2`/`give 鸡血` —— 完全符合 §12 解出的语法。
+
+→ **`Envir3/QuestDiary/` 的 443 个脚本现已全部可读**（440 明文 + 3 解密）。
+详见 `server.md` §13.10。
 
 ---
 
@@ -291,9 +307,10 @@ D4303 693
 | `Merchant.txt` / `Npcs.txt` 格式 | 未读解析器 —— 与 `TNormNpc` 能力标志的映射是重点 |
 | `MakeItem.txt` / `DragonItem.txt` / `DecoItem.txt` | 未读 |
 | `StartPoint.txt` / `SafePoint.txt` | 已看内容（`地图 x y`），未读解析器 |
-| `Envir3/QuestDiary/` 脚本语法 | 未读 —— 与 `ObjNpc.pas` 的 `CheckNpcSayCommand` 对照 |
-| MonQuest 私有编码 | 未破译 |
+| `Envir3/QuestDiary/` 脚本语法 | ✅ **已解**（`server.md` §12.9/§13.10） |
+| ~~MonQuest 私有编码~~ | ✅ **已破译**（见 §7） |
 | `Envir/` 为何被抽空 | 未知（是否原作者有意清理？） |
+
 
 ---
 

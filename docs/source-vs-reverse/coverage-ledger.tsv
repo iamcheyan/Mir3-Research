@@ -99,7 +99,7 @@ A/C-server	Source/GameServer/DBSQL.pas	1050	33281	pending
 A/C-server	Source/GameServer/DragonSystem.pas	604	18322	pending	
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
 A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
-A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808 世界模型 + .map 格式
+A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界模型+.map格式+对象注册+移动门+门+MapQuest+EnvirList
 A/C-server	Source/GameServer/Event.pas	323	7629	pending	
 A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
 A/C-server	Source/GameServer/FriendSystem.pas	988	32581	covered	Round 802 好友系统
@@ -108,7 +108,7 @@ A/C-server	Source/GameServer/Guild.pas	3600	121469	pending
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
-A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 809 MapInfo/MiniMap + Round 811 脚本关键字映射116条
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 809/811/812: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest；MonGen/Merchant/Npcs 解析器待读
 A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
 A/C-server	Source/GameServer/Magic.pas	1756	72544	pending	
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
@@ -286,7 +286,7 @@ E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	pending
 E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	
 E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	pending	
 C-common	Source/Common/DES.pas	563	16649	pending	
-C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式全读
+C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
 C-common	Source/Common/GList.pas	547	14813	pending	
 C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
 C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803 协议总表 474 常量

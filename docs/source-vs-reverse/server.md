@@ -1062,3 +1062,361 @@ checklevel 27                       ← 对应 QI_CHECKLEVEL
 > （116 条，`quest-opcodes.tsv` 的 `keyword` 列），可以写一个
 > **QuestDiary 脚本解析器**，与 `System.db` 的 `QuestInfo` 做双向对照 ——
 > 这是本仓库此前没有的能力。
+
+---
+
+## 13. `Envir.pas` 剩余方法精读（Round 812）
+
+> 1,540 行。前序阶段读了 `TEnvirnoment` 字段表（§3.1）与 `.map` 格式（§3.2-3.3）。
+> 本节读对象注册、移动门、门、地图任务。
+
+### 13.1 移动属性常量（`Grobal2.pas:2090-2092`）
+
+```pascal
+MP_CANMOVE  = 0;    // 可走
+MP_WALL     = 1;    // 墙
+MP_HIGHWALL = 2;    // 高墙（不可走且不可飞）
+```
+
+**与 `.map` 的 `chCellBlock` 映射**（`Envir.pas:429-436`）：
+
+| `chCellBlock` | `MoveAttr` | 语义 |
+|---|---|---|
+| `3` | `0` (MP_CANMOVE) | **可走** |
+| `0`, `252` | `1` (MP_WALL) | 墙 |
+| `1`, `2`, `254` | `2` (MP_HIGHWALL) | 高墙 |
+
+> ⚠️ **注意映射是「反」的**：`.map` 里的 `3` 才是可走。
+> 这与直觉（0 = 空 = 可走）相反，是**做地图工具时最容易搞错的一点**。
+
+### 13.2 `CanWalk`（`:754-787`）—— 移动门
+
+```pascal
+if (pm.MoveAttr = MP_CANMOVE) then begin
+   Result := TRUE;
+   if not allowdup then
+      for i := 0 to pm.ObjList.Count-1 do
+         if Shape = OS_MOVINGOBJECT then begin
+            cret := TCreature(...);
+            if (not cret.BoGhost) and
+               (cret.HoldPlace) and          // 자리 차지（占位）
+               (not cret.Death) and
+               (not cret.HideMode) and       // 隐身
+               (not cret.BoSuperviserMode)   // 管理员模式
+            then begin Result := FALSE; break; end;
+         end;
+end;
+```
+
+**`HoldPlace`（占位）** 是关键字段 —— 只有标记占位的生物才阻挡移动。
+**鬼魂 / 死亡 / 隐身 / 管理员模式都不阻挡**。
+
+**`allowdup`** 参数：`TRUE` 时忽略占位（允许重叠）——
+`WalkTo`/`RunTo` 调用时传 `FALSE`，某些 NPC 移动传 `TRUE`。
+
+**`CanFireFly`（`:789-803`）**：只检查 `MP_HIGHWALL` ——
+**飞行单位可过墙（`MP_WALL`）但不可过高墙**。
+
+### 13.3 `AddToMap`（`:967-1052`）—— 对象注册与堆叠规则
+
+**金币堆叠**（`:988-1008`）：找同格已有的 `OS_ITEMOBJECT` 且 `Name = NAME_OF_GOLD`，
+`cnt := pmitem.Count + PTMapItem(obj).Count`，若 `cnt <= BAGGOLD` 则**合并**
+（更新 `Count`/`Looks`/`AniCount`/`Reserved`，重置 `ATime`），返回已有对象指针。
+
+**装饰物品（상현주머니）不堆叠**（`:1011-1021`）：`STDMODE_OF_DECOITEM` +
+`SHAPE_OF_DECOITEM` 时，同格**已有 1 个就拒绝**。
+
+**普通物品最多 5 个/格**（`:1029`）：`ItemObjCount >= 5` 则 `Result := nil`。
+
+**`TAThing` 包装**（`:1040-1045`）：
+```pascal
+New(pthing);
+pthing.Shape := objtype;      // OS_MOVINGOBJECT / OS_ITEMOBJECT / ...
+pthing.AObject := obj;        // 指向真实对象
+pthing.ATime := GetTickCount; // 加入地图的时间（用于超时清理）
+pm.ObjList.Add(pthing);
+```
+
+→ **`PTAThing` 是「地图格上的对象条目」**，`Shape` 区分类型、
+`AObject` 指向真实对象、`ATime` 供 `SearchViewRange` 的超时清理用。
+**这解释了 §10.2 里「残影 10 分钟 / 物品 1 小时」是怎么实现的** ——
+就是 `ATime` 与 `GetTickCount` 的差值。
+
+### 13.4 门（`:1184-1257`）
+
+| 方法 | 行 | 语义 |
+|---|---|---|
+| `VerifyMapTime` | `:1184` | 校验地图时间 |
+| `ApplyDoors` | `:1212` | 应用门状态 |
+| `FindDoor(x, y)` | `:1226` | 按坐标找门 |
+| `AroundDoorOpened(x, y)` | `:1239` | **检查周围门是否开启**（`Walk` 里用） |
+
+门的核心结构 `PTDoorInfo` / `PTDoorCore`（`LoadMap:448-468` 创建）：
+`DoorOpenState` / `Lock` / `LockKey`（注释「비밀 번호가 없음」= 无密码时 0）/
+`OpenTime`。**同门合并规则**：坐标差 ≤10 且 `DoorNumber` 相同 → 共享 `pCore`。
+
+### 13.5 `MapQuest` 机制（`:1258-1358`）—— **`MapInfo.txt` 与任务引擎的桥**
+
+**`AddMapQuest(set1, val1, monname, itemname, qfile, enablegroup)`（`:1258`）**：
+
+```pascal
+new(mqi);
+mqi.SetNumber := set1;
+if val1 > 1 then val1 := 1;       // 值被钳制到 0/1
+mqi.Value := val1;
+if monname = '*' then monname := '';
+if itemname = '*' then itemname := '';
+if qfile = '*' then qfile := '';
+mqi.EnableGroup := enablegroup;
+
+npc := TMerchant.Create;           // ← 创建一个「隐形商人」作为任务载体
+npc.MapName := '0';
+npc.CX := 0;  npc.CY := 0;
+npc.UserName := qfile;             // ← 脚本文件名当 NPC 名
+npc.NpcFace := 0;  npc.Appearance := 0;
+npc.DefineDirectory := MAPQUESTDIR;
+npc.BoInvisible := TRUE;           // ← 不可见
+npc.BoUseMapFileName := FALSE;
+UserEngine.NpcList.Add(npc);
+mqi.QuestNpc := npc;
+MapQuestList.Add(mqi);
+```
+
+**这是本文件最关键的一段** —— 它解释了 `MapInfo.txt` 的
+`CHECKQUEST(<npc>)` 标志（`config.md` §3.2）如何工作：
+
+1. 地图任务被建模为一个**不可见的 `TMerchant` NPC**（`BoInvisible := TRUE`，
+   `MapName := '0'` 不在任何真实地图上）。
+2. `qfile`（脚本文件名）被存进 `npc.UserName`。
+3. `SetNumber`/`Value` 是**进入条件**（对应 `MapInfo.txt` 的
+   `NEEDSET_ON`/`NEEDSET_OFF`）。
+4. `MonName`/`ItemName` 是**触发条件**（杀某怪 / 交某物）。
+5. `EnableGroup` 允许组队共享。
+
+**`GetMapQuest(who, monname, itemname, groupcall)`（`:1302`）**：
+遍历 `MapQuestList` 匹配怪物名/物品名，返回对应的任务 NPC。
+
+**`HasMapQuest`（`:1296`）**：`MapQuestList.Count > 0`。
+
+> **对本仓库的意义**：`Tools/questdata` 与 dbeditor 的 `MapRegion`/`QuestInfo`
+> 此前不知道「地图任务 = 隐形 NPC」这个建模。**`MAPQUESTDIR` 常量**指向
+> 脚本目录，`MapInfo.txt` 的 `CHECKQUEST(名字)` 里的「名字」就是
+> **脚本文件名（无扩展名）**。这给了「地图 ↔ 任务」的完整链接路径。
+
+### 13.6 `TEnvirList`（`:1359-1540`）—— 地图集合管理
+
+| 方法 | 行 | 语义 |
+|---|---|---|
+| `InitEnvirnoments` | `:1369` | 初始化全部地图 |
+| `AddEnvir(mapname, title, serverindex, needlevel, ...)` | `:1383` | **新增地图**（参数与 `MapInfo.txt` 行对应） |
+| `AddGate(map, x, y, entermap, enterx, entery)` | `:1457` | **新增传送门**（参数与 `MapInfo.txt` 的 `NORECONNECT`/门定义对应） |
+| `GetEnvir(mapname)` | `:1484` | 按名取地图 |
+| `ServerGetEnvir(server, mapname)` | `:1502` | 按服号+名取地图 |
+| `GetServer(mapname)` | `:1521` | 按地图名取服号 |
+
+**`AddEnvir` 的参数列表与 `MapInfo.txt` 行格式一一对应**：
+`[地图名 标题 服务器号] 标志...` → `AddEnvir(mapname, title, serverindex, needlevel, ...)`。
+
+### 13.7 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `GetItemEx` / `GetDupCount` / `MoveToMovingObject` 实现 | 未读 |
+| `AddToMapMineEvnet` / `AddToMapTreasure` | 未读（矿区/宝箱专用注册） |
+| `DeleteFromMap` | 未读 |
+| `ApplyDoors` / `VerifyMapTime` 的门时间逻辑 | 未读 |
+| `GetGuildAgitRealMapName` | 未读 |
+| `MAPQUESTDIR` 常量值 | 未查 |
+| `BAGGOLD` / `STDMODE_OF_DECOITEM` / `SHAPE_OF_DECOITEM` 值 | 未查 |
+| `CanFly` / `CanSafeWalk` 的完整分支 | 只读了 `CanFireFly` |
+
+### 13.8 `MapQuest.txt` 格式完整解出（**本轮最重要产出**）
+
+**解析器**：`LocalDB.pas:1454-1517`，`MAPQUESTFILE = 'MapQuest.txt'`（`:34`）。
+
+**格式**（源码逐字段验证）：
+
+```
+<地图名>  [<SetNumber>]  <Value>  [<Situation>]  <怪物名>  <物品名>  <qFile>  [<qPosition>]  [GROUP]
+```
+
+| 字段 | 源码变量 | 解析方式 | 语义 |
+|---|---|---|---|
+| 地图名 | `mapstr` | `GetValidStr3` | 所属地图（`GetEnvir` 查表，**不存在则报错**） |
+| 条件1 | `constr1` | `ArrestStringEx('[',']')` → `set1` | **`SetNumber`**（对应 `NEEDSET_ON/OFF` 的变量号） |
+| 条件2 | `constr2` | `Str_ToInt` → `val1` | **`Value`**（钳制到 0/1，见 §13.5） |
+| 情况 | `monname` 前 | `GetValidStrCap` | **`Situation`**：`[Enter]`/`[Leave]`/`[Die]`/`[GetItem]`/`[MonGen]`/`[MonDie]` |
+| 怪物名 | `monname` | `GetValidStrCap`（支持 `"引号"`） | 触发怪物（`*` = 任意） |
+| 物品名 | `iname` | `GetValidStrCap`（支持 `"引号"`） | 触发物品（`*` = 任意） |
+| 脚本 | `qfile` | `GetValidStr3` | **脚本相对路径**（如 `NQ_BASE\MonQuest\Nm_Chiken`） |
+| 位置 | — | （源码未单独取，在 `qPosition` 列） | 对话入口标题（实测都是 `[@main]`） |
+| 组队 | `gflag` | `CompareLStr(gflag, 'GROUP', 2)` | `GROUP` 前缀 = 组队共享 |
+
+**校验**（`:1491`）：`mapstr`、`monname`、`qfile` **三者都非空**才处理，否则
+`Result := -i`（**负值 = 第 i 行出错**，`break` 终止加载）。
+
+**`Situation` 六种取值**（来自文件头注释，`MapQuest.txt` 自带文档）：
+
+| Situation | 触发时机 |
+|---|---|
+| `[Enter]` | 进入地图 |
+| `[Leave]` | 离开地图 |
+| `[Die]` | 死亡 |
+| `[GetItem]` | 获得物品 |
+| `[MonGen]` | 怪物生成 |
+| `[MonDie]` | 怪物死亡 |
+
+**实测数据**（`Envir3/MapQuest.txt`，共 100+ 条）：
+
+```
+1        [104]    1   [MonDie]  鸡          *   [NQ_BASE\MonQuest\Nm_Chiken]   [@main]
+0        [267]    1   [MonDie]  钉耙猫      *   [NQ_BASE\MonQuest\Nm_kalgi]    [@main]
+D001_001 [185]    1   [MonDie]  半兽勇士61  *   [NQ_BASE\MonQuest\Nm_OmaWarrior] [@main]
+01_001   [0]      0   [Enter]    *           *   [NQ_BASE\MapQuest\Na_JiSun]     [@main]
+```
+
+→ **两种典型模式**：
+- **`[MonDie]` + 怪物名**：杀指定怪触发任务（如杀 鸡 → `Nm_Chiken`）
+- **`[Enter]` + `*`**：进图即触发（如进 `01_001` → `Na_JiSun`）
+
+**脚本文件位置（实测修正）**：`qFile` 是**相对路径**，实测其解析目标是
+`Envir3/QuestDiary/` **而非** `MapQuest_def/`：
+
+| 证据 | 内容 |
+|---|---|
+| `MapQuest.txt` 引用的 `qFile` | `NQ_BASE\MonQuest\Nm_Chiken`、`MU_taoist\MonQuest\holy1`、`Event\SnowBattle\Monquest\SnowMan` |
+| 实际存在的文件 | `Envir3/QuestDiary/NQ_BASE/MonQuest/Nm_Chiken.txt` ✅ |
+| `Envir/MapQuest_Def/` 内容 | 只有 10 个 `Q1*/Q6*` 文件，**与 `MapQuest.txt` 的引用不匹配** |
+
+→ **`DefineDirectory := MAPQUESTDIR`（`'MapQuest_def\'`）是代码里的默认值，
+但实际脚本走 `QuestDiary/` 树**。`MapQuest_def/` 的 10 个 `Q1*/Q6*` 文件
+是另一套（早期/备用）地图任务，当前 `MapQuest.txt` 未引用它们。
+
+> ⚠️ **这修正了 §13.5 的表述**：`MapQuest_def\` 常量存在但**不是实际脚本目录**；
+> 地图任务脚本与 NPC 对话脚本**共用 `QuestDiary/` 树**（只是子目录不同：
+> `MonQuest/` 用于 `[MonDie]` 触发，`MapQuest/` 用于 `[Enter]` 触发）。
+
+**这解释了 §6 的「未破译项」**：`Envir3/QuestDiary/NQ_BASE/MonQuest/` 的
+3 个私有编码 `.txt`（`Nm_Chiken`/`Nm_Cow`/`Nm_OmaJunsa`）——
+**它们正是 `MapQuest.txt` 里 `[MonDie]` 条目引用的脚本**。
+该目录另有可正常读取的 `Nm_1000Doksa.txt`/`Nm_Bubgi.txt`/`Nm_kalgi.txt` 等，
+→ **同一目录下「部分文件正常、3 个文件私有编码」**，说明不是目录级问题，
+而是**这 3 个文件本身被特殊处理**（可能是某种加密/压缩变体）。
+这个对比显著缩小了破译范围。
+
+### 13.9 `LoadStartupQuest`（`:1519-...`）—— 启动任务
+
+```pascal
+if not DirectoryExists(EnvirDir + StartupDir) then CreateDir(EnvirDir + StartupDir);
+if FileExists(EnvirDir + StartupDir + STARTUPQUESTFILE + '.txt') then begin
+   npc := TMerchant.Create;
+   npc.MapName := '0';        // ← 同样用隐形 NPC 建模
+   ...
+```
+
+**与 `MapQuest` 同一套机制**（隐形 `TMerchant` + `MapName := '0'`），
+对应 `config.md` 里 `Envir/StartUp/StartupQuest.txt`（**该文件在 `Envir/` 里是空的**，
+见 `config.md` §1.1）。
+
+### 13.10 【破译】WEMADE 加密的 3 个任务脚本（**本轮重大突破**）
+
+**此前状态**：`config.md` §7 把 `Envir3/QuestDiary/NQ_BASE/MonQuest/` 的
+`Nm_Chiken.txt`/`Nm_Cow.txt`/`Nm_OmaJunsa.txt` 登记为「**未破译的私有编码**」
+（「非 GB18030/cp949，字节呈定长对模式」）。
+
+**本轮已破译**：它们是 **WEMADE 加密** —— 即 `Source/Common/EDCode.pas:465-522`
+的 `Decrypt(FName)` 函数所用的同一套算法。
+
+#### 13.10.1 破译线索链（过程记录）
+
+1. 文件头 8 字节 = `f0 39 aa c0 5b 93 4a 8d`。
+2. **`EDCode.Decrypt` 的硬编码种子是 `CrypToSeed = F0 39 AB 8E`**
+   （`:485-488`）—— **前 2 字节 `f0 39` 完全相同**。
+3. 按源码 `ProcLen = seed[i] ^ data[i]` 计算，**大端解释得 `334`，
+   恰好等于文件大小 342 − 8** ✅ —— 长度字段验证通过。
+4. 校验和按源码公式算**不匹配**（`0x9FAEAD34` vs 存储 `0x8D4A935B`），
+   但**跳过校验、直接做 4 轮递增 CRC XOR 后，正文完美解密**为合法 GB18030 任务脚本。
+
+#### 13.10.2 算法（`EDCode.pas:465-522` 逐字）
+
+```
+CrypToSeed     = F0 39 AB 8E
+CrypToSeedLong = 0x9FDE1A93
+
+ProcLen = big-endian( seed[i] ^ data[i] for i in 0..3 )
+          ⚠️ 实测是大端。源码用 MakeLong(MakeWord(b3^d3, b2^d2),
+             MakeWord(b1^d1, b0^d0)) 的嵌套写法，容易误判为小端。
+
+校验和 = sum( (data[8+i] + 1) * i ) ^ CrypToSeedLong   ，与 data[4..7] 比对
+
+解密 = for j in 0..3:
+          crc = data[3 - j]              # 依次取第 4/3/2/1 字节
+          for i in 0..ProcLen-1:
+              data[8+i] ^= crc & 0xFF
+              crc += 1
+```
+
+#### 13.10.3 两个必须记住的坑
+
+1. **`ProcLen` 是大端**。源码的 `MakeLong`/`MakeWord` 嵌套写法
+   （`MakeLong(MakeWord(a,b), MakeWord(c,d))`）读起来像小端，
+   实际按大端解释才得到「文件大小 − 8」这个合理值。
+   **判据**：`ProcLen == len(data) - 8`。
+2. **校验和字段不可信**。实测 3 个文件的 `data[4..7]` 与源码公式算出的值
+   **都不匹配**，但正文仍能正确解密。推测该校验和字段被另一种方式写坏/加密，
+   或这份源码的校验公式与加密时用的版本不同。
+   → **实用结论：跳过校验和验证，只做 4 轮 XOR。**
+
+#### 13.10.4 解密结果
+
+```
+[@main]
+;-----------------------------------------------------
+#IF
+check [164] 1
+#ACT
+break
+#IF
+check [104] 1
+#ACT
+goto @dark
+[@dark]
+#IF
+random 2
+#ACT
+give 鸡血
+```
+
+**完全符合 §12.9 解出的脚本语法**（`[@标题]` / `#IF` / `#ACT` /
+`check [n] v` / `goto @x` / `random n` / `give 物品名`）。
+→ **三处独立证据交叉一致**：源码 opcode 表 ↔ 明文脚本 ↔ 解密脚本。
+
+#### 13.10.5 扫描结论
+
+`Tools/source-read/wemade_decrypt.py --scan Envir3/QuestDiary`：
+
+```
+扫描 443 个文件，识别出 3 个 WEMADE 加密文件
+✅ NQ_BASE/MonQuest/Nm_Chiken.txt  (342B)
+✅ NQ_BASE/MonQuest/Nm_Cow.txt     (822B)
+✅ NQ_BASE/MonQuest/Nm_OmaJunsa.txt(881B)
+```
+
+→ **整个 `QuestDiary/` 树只有这 3 个加密文件**，全部已破译。
+**「未破译项」从 `config.md` §7 移除。**
+
+#### 13.10.6 工具
+
+`Tools/source-read/wemade_decrypt.py`：
+
+```bash
+# 解密单文件
+python3 Tools/source-read/wemade_decrypt.py <file> [--out X] [--strict]
+
+# 扫描目录，找出所有 WEMADE 加密文件
+python3 Tools/source-read/wemade_decrypt.py --scan Envir3/QuestDiary
+```
+
+> **对 `Tools/questdata` 的价值**：现在 `Envir3/QuestDiary/` 的 **443 个脚本
+> 全部可读**（440 明文 + 3 解密），结合 §12 的 opcode 表，
+> **可以完整解析整个任务脚本树**。

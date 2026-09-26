@@ -10337,3 +10337,78 @@ AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + S
 **落盘**：`server.md` §12（约 190 行）、`quest-opcodes.tsv`（128 行）、
 `Tools/source-read/extract_quest_opcodes.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 812 (全量精读 A4/A5) — 2026-09-26：Envir 剩余方法 + MapQuest 格式 + **破译 WEMADE 加密**
+
+**〔移动属性映射（最易搞错的一点）〕**`MP_CANMOVE=0`/`MP_WALL=1`/`MP_HIGHWALL=2`
+（`Grobal2.pas:2090-2092`）。`.map` 的 `chCellBlock` → `MoveAttr` 映射是**反的**：
+`chCellBlock = 3` → **可走**；`0, 252` → 墙；`1, 2, 254` → 高墙（`Envir.pas:429-436`）。
+与直觉（0 = 空 = 可走）相反。
+
+**〔`CanWalk`（`:754-787`）〕**`MP_CANMOVE` 才可能返回 TRUE；`not allowdup` 时遍历
+`ObjList`，只有 `HoldPlace`（占位）且非鬼魂/非死亡/非隐身/非管理员模式的生物阻挡。
+**`CanFireFly`（`:789-803`）只检查 `MP_HIGHWALL`** → 飞行单位可过墙不可过高墙。
+
+**〔`AddToMap`（`:967-1052`）—— 对象注册与堆叠规则〕**
+金币堆叠（`cnt <= BAGGOLD` 则合并，更新 `Count`/`Looks`/`AniCount`/`Reserved`，
+重置 `ATime`）；装饰物品（`STDMODE_OF_DECOITEM`+`SHAPE_OF_DECOITEM`）**同格最多 1 个**；
+普通物品**同格最多 5 个**。`PTAThing` 是「地图格上的对象条目」
+（`Shape` 类型 / `AObject` 真实对象 / **`ATime` 供超时清理**）——
+**这解释了 §10.2 的「残影 10 分钟 / 物品 1 小时」如何实现**。
+
+**〔`MapQuest` 机制（`:1258-1358`）—— `MapInfo.txt` 与任务引擎的桥〕**
+`AddMapQuest` 创建**不可见 `TMerchant`**（`BoInvisible := TRUE`、`MapName := '0'`）
+作为任务载体，`qfile` 存进 `npc.UserName`；`val1` **钳制到 0/1**；
+`MonName`/`ItemName` 是触发条件；`EnableGroup` 允许组队共享。
+`MapInfo.txt` 的 `CHECKQUEST(<npc>)` 就是这样工作的。
+
+**〔`MapQuest.txt` 格式完整解出（本轮重要产出）〕**解析器 `LocalDB.pas:1454-1517`：
+
+```
+<地图名>  [<SetNumber>]  <Value>  [<Situation>]  <怪物名>  <物品名>  <qFile>  [<qPosition>]  [GROUP]
+```
+
+`Situation` 六种（**文件头注释自带文档**）：`[Enter]`/`[Leave]`/`[Die]`/
+`[GetItem]`/`[MonGen]`/`[MonDie]`。校验：`mapstr`/`monname`/`qfile` 三者非空，
+否则 `Result := -i`（**负值 = 第 i 行出错**）。
+实测两种典型模式：`[MonDie]` + 怪物名（杀怪触发）、`[Enter]` + `*`（进图触发）。
+**实测修正**：`qFile` 路径实际解析到 **`Envir3/QuestDiary/`** 而非代码默认的
+`MapQuest_def\`（`MapQuest_def/` 只有 10 个 `Q1*/Q6*` 文件，与引用不匹配）。
+
+**〔★ 重大突破：破译 WEMADE 加密的 3 个任务脚本 ★〕**
+
+此前 `config.md` §7 把 `Envir3/QuestDiary/NQ_BASE/MonQuest/` 的
+`Nm_Chiken.txt`/`Nm_Cow.txt`/`Nm_OmaJunsa.txt` 登记为「未破译的私有编码」。
+**本轮已破译**——它们是 **WEMADE 加密**（`EDCode.pas:465-522` 的 `Decrypt`）。
+
+线索链：①文件头 `f0 39 aa c0 …` 与 `EDCode.Decrypt` 的硬编码种子
+`CrypToSeed = F0 39 AB 8E`（`:485-488`）**前 2 字节相同**
+②按源码 `ProcLen = seed[i] ^ data[i]` 计算，**大端**解释得 `334`
+**恰等于文件大小 342 − 8** ✅ ③校验和按源码公式**不匹配**，
+但**跳过校验直接做 4 轮递增 CRC XOR，正文完美解密**为合法 GB18030。
+
+算法：头 8 字节（种子 XOR 长度 + 校验和）+ 正文
+`for j in 0..3: crc = data[3-j]; for i: data[8+i] ^= crc++;`。
+
+**两个坑**：①`ProcLen` 是**大端**（源码 `MakeLong(MakeWord(a,b), MakeWord(c,d))`
+嵌套写法易误判为小端；判据 `ProcLen == len(data) - 8`）
+②**校验和字段不可信**——3 个文件的 `data[4..7]` 与源码公式算出的都不匹配，
+但正文仍能正确解密 → **实用结论：跳过校验、只做 XOR**。
+
+解密结果含 `[@main]`/`#IF`/`#ACT`/`check [164] 1`/`goto @dark`/
+`random 2`/`give 鸡血` —— **完全符合 Round 811 解出的脚本语法**。
+**三处独立证据交叉一致**：源码 opcode 表 ↔ 明文脚本 ↔ 解密脚本。
+
+扫描 `QuestDiary/` 全树 443 个文件，**只有这 3 个是加密的，全部已破译**。
+→ **`Envir3/QuestDiary/` 的 443 个脚本现已全部可读**（440 明文 + 3 解密）。
+
+**工具**：`Tools/source-read/wemade_decrypt.py`
+（`<file>` 解密单文件；`--scan <dir>` 扫描目录找加密文件；`--strict` 强制校验和）。
+
+**〔`TEnvirList`（`:1359-1540`）〕**`AddEnvir` 的参数列表与 `MapInfo.txt` 行格式
+一一对应；`AddGate(map,x,y,entermap,enterx,entery)` 对应传送门定义；
+`GetEnvir`/`ServerGetEnvir`/`GetServer` 三查询。
+
+**落盘**：`server.md` §13（约 300 行）、`config.md` §7 改为「已破译」、
+`Tools/source-read/wemade_decrypt.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
