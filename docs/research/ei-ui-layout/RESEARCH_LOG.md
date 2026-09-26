@@ -11516,3 +11516,68 @@ sizeof(...)/sizeof(MIRDB_FIELDS), __XXXFIELDS }`。**四元组**：
 
 **落盘**：`items-systems.md` §12–15（约 210 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 830 (全量精读续) — 2026-09-26：`ObjBase.pas` 全量 API 地图
+
+> **31,768 行 —— 全仓最大文件**。接口段 `:305-1411`（`implementation` 从 `:1411`）。
+> 产物 `server.md` §16、`objbase-methods.tsv`（526 方法）、
+> `Tools/source-read/extract_objbase_api.py`。
+
+**〔3 类 / 526 方法〕**
+| 类 | 行 | 方法 | 可见性 |
+|---|---:|---:|---|
+| `TCreature` | `:305` | **244**（114 proc/128 func） | public 243 / private 1 |
+| `TAnimal` | `:944` | 12 | public 12 |
+| `TUserHuman` | `:966` | **270**（230 proc/38 func） | **private 94** / public 176 |
+
+**✅ 修正前序判断**：`TAnimal` **不是薄中间层，而是「怪物 AI 层」** ——
+`RunMsg`/`Run`/`GetNearMonster`/`MonsterNormalAttack`/`MonsterDetecterAttack`/
+`SetTargetXY`/`GotoTargetXY`/`Wondering`（游荡）/`Attack`/`Struck`/`LoseTarget`。
+→ **`TCreature` → `TAnimal`（怪物行为）→ `TUserHuman`（玩家）**，
+**玩家继承自怪物类**（复用 `RunMsg`/`Attack`/`Struck` 骨架再覆盖）。
+方法少是因为**怪物 AI 主体在 `ObjMon2.pas`/`ObjMon`**。
+
+字段规模：`TCreature` 约 **290** 字段、`TUserHuman` 约 **88** 字段。
+可见性差异有意义：`TCreature` 几乎全 public（243/244），
+`TUserHuman` 有 **94 个 private** → **玩家对象封装更严**。
+
+**〔`TCreature` 方法族〕** 消息（`SendMsg`/`SendFastMsg`/`SendDelayMsg`/
+`SendRefMsg`）、视野（`SearchViewRange`/**`GetObliqueMapCreatures`** 斜向/
+`UpdateVisibleGay`）、移动（`Walk`/`Run`/`Turn`/`RunTo`/`WalkTo`/`SpaceMove`/
+`RandomSpaceMove(InRange)`）、战斗（`Die`/`Alive`/`SetLastHiter`/`AddPkHiter`/
+`CheckTimeOutPkHiterList`/**`IsGoodKilling`**/**五种命中形状** `SetAllowLongHit`/
+`Wide`/`Fire`/`Cross`/`Twin`）、死亡掉落（`ScatterBagItems`/`DropEventItems`/
+`ScatterGolds`/`TakeCretBagItems`/`ApplyMeatQuality`）、特殊状态（`MakeGhost`/
+`MakeHolySeize`/**`MakeCrazyMode`**/**`MakeGoodCrazyMode`**/`BreakCrazyMode`）、
+装备维护（`MakeWeaponGoodLock`/`RepaireWeaponNormaly`/`Perfect`）、
+`SetBoInFreePKArea`（**自由 PK 区**）。
+
+**〔`TUserHuman` 方法族 —— 按协议前缀〕**
+`ServerGet*` = **处理客户端请求**（约 20 个域）：
+移动（`TurnXY`/`WalkXY`/`RunXY`/`HitXY`/`SpellXY`/`SitdownXY`）、
+挖矿（`DigUpMine`/`GetRandomMineral`/**`GetRandomMineral3`**/`GetRandomGems`）、
+商店、制作（`IsReservedMakingSlave`/`RmMakeSlaveProc`）、组队、交易（`Deal*`）、
+行会（`Guild*` 全套）、据点（`GuildAgit*`/`CmdBuyDecoItem`）、
+据点公告板（`GaBoard*`）、关系/恋人（`Relation*`/`ServerGetLoverLogout`）、
+耳语（`Whisper`/**`LoverWhisper`**/`BlockWhisper`）、玩家市场（约 25 方法）、
+升级鉴定（`CmdUpgradeItem`/**`CalcUpgradeProbability`**/`CheckSeedItem`/
+`CheckJewelryItem`）、任务（**只有 `DoStartupQuestNow`**/`CmdSendTestQuestDiary`）、
+登录存档（`ReadySave`/`SendLogon`/**`CheckHomePos`**/`SetExpiredTime`）。
+
+**〔六个关键发现〕**
+① **玩家市场是独立子系统**（约 25 方法），有 **两套前缀**
+（`ServerGetMarket*` + `Require*UserMarket`）。
+② **`LoverWhisper`（恋人耳语）是独立信道**，各有 `Re` 回复版本
+→ **恋人关系解锁专用私聊**（对照 §14 `Relationship.pas`）。
+③ `BlockWhisper`/`IsBlockWhisper` —— **可屏蔽他人私聊**。
+④ `GetRandomMineral` vs **`GetRandomMineral3`** —— 数字后缀暗示版本迭代。
+⑤ `CalcUpgradeProbability` + `SumOfOptions`/`GetTotalValueOfOption`
+→ **升级成功率受附加属性影响**。
+⑥ **任务入口只有 `DoStartupQuestNow` 一个** —— 与既有结论一致
+（`Mission.pas` 是 63 行 stub，真逻辑在 `ObjNpc.pas` 的 `TQuestRecord`）。
+⑦ 三套「文档/公告」并存：`RunNotice`/`GetGetNotices`/`SendLoginNotice`
+vs `GaBoard*`（据点公告板）vs `TagSystem`（便条，§13）。
+
+**落盘**：`server.md` §16（约 150 行）、`objbase-methods.tsv`（526 行）、
+`Tools/source-read/extract_objbase_api.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

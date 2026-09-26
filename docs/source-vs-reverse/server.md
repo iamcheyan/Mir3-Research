@@ -1566,3 +1566,119 @@ target.SendMsg (self, RM_MERCHANTSAY, 0, 0, 0, 0, UserName + '/' + str);
 | `{NPCIMG/N}` 与 `NPCFace` 字段的关系 | 同上（可能相关但无代码证据） |
 | `$GUILD`/`$INPUTSTR`/`$CS_SABUK_OWNER` 的处理位置 | 全仓零命中 |
 | `RM_MERCHANTSAY` 的客户端处理 | 未读客户端对应分支 |
+
+---
+
+## 16. `ObjBase.pas` 全量 API 地图（Round 830）
+
+> **31,768 行 —— 全仓最大文件**。接口段 `:305-1411` 声明了
+> **3 类 / 526 方法**；`implementation` 从 `:1411` 起。
+> 机器可读：[`objbase-methods.tsv`](objbase-methods.tsv)。
+> 提取器：`Tools/source-read/extract_objbase_api.py`。
+
+### 16.1 三个类
+
+| 类 | 行 | 方法 | 过程/函数 | 可见性 |
+|---|---:|---:|---|---|
+| **`TCreature`** | `:305` | **244** | 114 proc / 128 func | public 243 / private 1 |
+| **`TAnimal`** | `:944` | 12 | 10 proc / 1 func | public 12 |
+| **`TUserHuman`** | `:966` | **270** | 230 proc / 38 func | **private 94** / public 176 |
+
+**`TAnimal` 只有 12 个方法** —— 但**不是薄中间层，而是「怪物 AI 层」**：
+`RunMsg`/`Run`/`GetNearMonster`/`MonsterNormalAttack`/`MonsterDetecterAttack`/
+`SetTargetXY`/`GotoTargetXY`/`Wondering`（游荡）/`Attack`/`Struck`/`LoseTarget`。
+
+→ **`TCreature` → `TAnimal`（怪物行为）→ `TUserHuman`（玩家）** 三级继承。
+玩家**继承自怪物类**（复用 `RunMsg`/`Attack`/`Struck` 骨架，再覆盖）。
+「`TAnimal` 方法少」是因为**怪物 AI 主体在 `ObjMon2.pas`/`ObjMon`**，
+`ObjBase.pas` 只放基类骨架。
+
+**字段规模**：`TCreature` 约 **290** 字段、`TUserHuman` 约 **88** 字段。
+
+**可见性差异有意义**：`TCreature` 几乎全 public（243/244），
+`TUserHuman` 有 **94 个 private** —— **玩家对象封装更严**（防外部误改）。
+
+### 16.2 `TCreature` 方法族（244 个）
+
+| 族 | 代表方法 |
+|---|---|
+| **消息** | `SendMsg`/`SendFastMsg`/`SendDelayMsg`/`UpdateDelayMsg`/`UpdateMsg`/`GetMsg`/`SendRefMsg` |
+| **视野** | `SearchViewRange`/`GetMapCreatures`/**`GetObliqueMapCreatures`**（斜向）/`UpdateVisibleGay`/`UpdateVisibleItems`/`UpdateVisibleEvents` |
+| **移动** | `Walk`/`Run`/`Turn`/**`RunTo`**/**`WalkTo`**/`SpaceMove`/`RandomSpaceMove(InRange)`/`EnterAnotherMap`/`UserSpaceMove` |
+| **战斗** | `Die`/`Alive`/`SetLastHiter`/`AddPkHiter`/`CheckTimeOutPkHiterList`/`ClearPkHiterList`/**`IsGoodKilling`**/**`SetAllowLongHit`**/**`SetAllowWideHit`**/**`SetAllowFireHit`**/**`SetAllowCrossHit`**/**`SetAllowTwinHit`**/`GetNextHitTime`/`GetNextWalkTime` |
+| **状态** | `Feature`/`GetRelFeature`/`GetCharStatus`/`InitValues`/`Initialize`/`Finalize`/`GetMasterRace` |
+| **死亡掉落** | `ScatterBagItems`/`DropEventItems`/`ScatterGolds`/`TakeCretBagItems`/`DropUseItems`/`ApplyMeatQuality` |
+| **特殊状态** | `MakeGhost`/`MakeHolySeize`/`BreakHolySeize`/**`MakeCrazyMode`**/**`MakeGoodCrazyMode`**/`BreakCrazyMode`/`UseLamp` |
+| **装备维护** | `MakeWeaponGoodLock`/`RepaireWeaponNormaly`/`RepaireWeaponPerfect`/`RepairItemNormaly` |
+| **移动障碍** | `SetBoInFreePKArea`（**自由 PK 区**标记） |
+
+**五种命中形状**（`SetAllowLongHit`/`Wide`/`Fire`/`Cross`/`Twin`）——
+**攻击判定按形状而非单格**，与 `magic.md` §8 的 AoE 骨架对应。
+
+**两种疯狂模式**：`MakeCrazyMode`（普通）vs **`MakeGoodCrazyMode`**（「善」疯狂）
+—— 可能是**只打怪不打人**的变体。
+
+### 16.3 `TUserHuman` 方法族（270 个）—— 按协议前缀
+
+**`ServerGet*` = 处理客户端请求**（`ServerGet` 而非 `ClientGet`，
+命名是「服务端获取（客户端要的）」）：
+
+| 域 | 方法 |
+|---|---|
+| **移动** | `TurnXY`/`WalkXY`/`RunXY`/`HitXY`/`SpellXY`/`SitdownXY` |
+| **挖矿** | `DigUpMine`/**`GetRandomMineral`**/**`GetRandomMineral3`**/**`GetRandomGems`** |
+| **物品** | `ServerGetTakeOnItem`/`TakeOffItem`/`EatItem`/`Butch`/`AddToBagItem`/`DeleteFromBagItem`/`IsFullBagCount` |
+| **背包/仓库** | `ServerSendStorageItemList`/`ServerGetUserStorageItem`/`ServerGetTakeBackStorageItem` |
+| **商店** | `ServerGetMerchantDlgSelect`/`QuerySellPrice`/`QueryRepairPrice`/`ServerGetUserSellItem`/`ServerGetUserRepairItem`/`ServerGetUserMenuBuy` |
+| **制作** | `ServerGetMakeDrug`/`ServerGetMakeItemSel`/`ServerGetMakeItem`/**`IsReservedMakingSlave`**/`RmMakeSlaveProc` |
+| **组队** | `ServerGetCreateGroup(Request)`/`ServerGetAddGroupMember(Request)`/`ServerGetDelGroupMember`/`RefreshGroupMembers` |
+| **交易** | `ServerGetDealTry`/`DealAddItem`/`DealDelItem`/`DealChangeGold`/`DealEnd`/`ServerGetDealCancel`/`StartDeal`/`BrokeDeal`/`ResetDeal`/`AddDealCounterItem` |
+| **行会** | `ServerGetOpenGuildDlg`/`GuildHome`/`GuildMemberList`/`GuildAddMember`/`GuildDelMember`/`GuildUpdateNotice`/`GuildUpdateRanks`/`GuildMakeAlly`/`GuildBreakAlly`/`SendChangeGuildName`/`GuildSecession` |
+| **据点** | `ServerGetGuildAgitList`/`GuildAgitTag`/`ExecuteGuildAgitTrade`/`CmdBuyDecoItem`/`SendDecoItemList` |
+| **据点公告板** | `ServerGetGaBoardList`/`Read`/`Add`/`Del`/`CmdGaBoardList`/`CmdGaBoardDelAll`/`CmdReloadGaBoardList` |
+| **关系（恋人）** | `ServerGetRelationOptionChange`/`Request`/`Delete`/`ServerSetRelationDBWantList`/`Add`/`Edit`/`Delete`/`GetList`/**`ServerGetLoverLogout`**/`RelationShipDeleteOther` |
+| **耳语** | `Whisper`/**`LoverWhisper`**/`WhisperRe`/`LoverWhisperRe`/**`BlockWhisper`**/**`IsBlockWhisper`** |
+| **玩家市场** | `ServerGetMarketList`/`Sell`/`Buy`/`Cancel`/`GetPay`/`Close` + `Require*UserMarket` 族 + `SellUserMarket`/`BuyUserMarket`/`CancelUserMarket`/`GetPayUserMarket`/`GetMarketData`/`IsEnableUseMarket` |
+| **升级/鉴定** | `CmdUpgradeItem`/**`CalcUpgradeProbability`**/`DoUpgradeItem`/`CmdMakeAllJewelryItem`/**`CheckSeedItem`**/**`CheckJewelryItem`**/`SumOfOptions`/`GetTotalValueOfOption`/`UserUnifyItem` |
+| **任务** | **`DoStartupQuestNow`**/`CmdSendTestQuestDiary`/`Operate`/`RunNotice`/`GetGetNotices`/`SendLoginNotice`/`ServerGetNoticeOk` |
+| **登录/存档** | `ReadySave`/`SendLogon`/`SendAreaState`/`GetStartX`/`GetStartY`/**`CheckHomePos`**/`RequireLoadRefresh`/`SetExpiredTime`/`CheckExpiredTime` |
+| **杂项** | `GetQueryUserName`/`ServerGetQueryUserState`/`ServerGetAdjustBonus`/`ServerSendAdjustBonus`/**`CmdLetterColor`**/`SendMyMagics`/`GetMagic`/`GetFameName`/`BindPotionUnit`/**`CmdSendTestQuestDiary`** |
+
+### 16.4 关键发现
+
+**① 玩家市场是独立子系统**（约 25 个方法）——
+`ServerGetMarket*`（列表/卖/买/取消/取款/关闭）+ `Require*UserMarket`
+（**两套前缀**）+ `GetMarketName`/`GetMarketData`/`IsEnableUseMarket`。
+
+**② `LoverWhisper`（恋人耳语）是独立信道** ——
+`Whisper` / `LoverWhisper` 各有 `Re`（回复）版本 →
+**恋人关系解锁专用私聊**（对照 §14 `Relationship.pas`）。
+
+**③ 屏蔽耳语**：`BlockWhisper`/`IsBlockWhisper` —— **可屏蔽他人私聊**。
+
+**④ `GetRandomMineral` / `GetRandomMineral3`** ——
+**数字后缀 `3`** 暗示版本迭代（`Mineral3` 可能是 Mir3 专用矿），
+配合 `GetRandomGems`（宝石）与 `DigUpMine`。
+
+**⑤ 升级有概率计算**：`CalcUpgradeProbability` + `SumOfOptions`/
+`GetTotalValueOfOption` → **升级成功率受附加属性影响**。
+
+**⑥ 任务入口只有 `DoStartupQuestNow` 一个** ——
+与既有结论一致（`Mission.pas` 是 63 行 stub，真逻辑在 `ObjNpc.pas` 的
+`TQuestRecord`）；`CmdSendTestQuestDiary` 是**测试用**命令。
+
+**⑦ 三套「文档/公告」并存**：`RunNotice`/`GetGetNotices`/`SendLoginNotice`
+（登录公告）vs `GaBoard*`（据点公告板）vs `TagSystem`（便条，§13）。
+
+### 16.5 未验证项
+
+| 项 | 原因 |
+|---|---|
+| 526 方法的**实现主体**（`:1411-31768`，约 30,357 行） | **仅读了接口段**；实现是后续重点 |
+| `TCreature` 的 290 字段明细 | 未逐字段读 |
+| `TAnimal` 各方法的实现（游荡/索敌算法） | 未读（疑在 `ObjMon2.pas`） |
+| `ServerGet*` 的 opcode 映射 | 需与 `Grobal2.pas` 对照（部分已在 `verification.md`） |
+| `GetRandomMineral3` 的 `3` 语义 | 未追 |
+| `MakeGoodCrazyMode` vs `MakeCrazyMode` | 未读实现 |
+| `CalcUpgradeProbability` 的公式 | 未读实现 |
+| `TUserHuman` 94 个 private 方法名 | 未展开 |
