@@ -10749,3 +10749,78 @@ SCREENHEIGHT = 600;
 **落盘**：`client-windows.md` §8（约 80 行）、`client-runtime-layout.tsv`（345 行）、
 `Tools/source-read/extract_runtime_layout.py`、`README.md`/`client.md` 修正。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 818 (全量精读 D17/D18) — 2026-09-26：按钮四态/格子控件/背包几何/主循环
+
+> `Source/Client/DWinCtl.pas`（7804 行）+ `PlayScn.pas`（3043 行）。
+> 产物 `docs/source-vs-reverse/client-internals.md`。
+
+**〔`TDButton` 四态渲染（`:1841-1890`）〕**按状态取 `FaceIndex + N`：
+常态 `+0`/`FDFColor`、**悬停 `+1`/`FDFMoveColor`**、**按下 `+2`/`FDFDownColor`**、
+**禁用 `+3`/`FDFEnabledColor`**。文字居中绘制。
+`SetImgIndex`（`:1722-1730`）直接 `FaceIndex := index`，
+**不做帧对齐/取整** —— 「一个按钮占 4 个连续帧」的约束**由资源制作者保证**，
+代码不校验。
+
+**〔★ 实测修正：主 HUD 按钮帧间距是 2 不是 4 ★〕**
+`FState.pas:2212-2267` 的帧号：`DBotTrade 1170 / DBotMiniMap 1172 /
+DBotSkillBar 1174 / DBotExit 1176 / DBotLogout 1178 / DBotGroup 1180 /
+DBotGuild 1182 / DMyMagic 1184 / DOption 1188` —— **帧间距 2**。
+若真是 4 帧制，`1172` 会与 `1170` 的按下态**冲突**。
+→ **这批按钮实际只用 2 个状态帧（常态/悬停）**；`+2`/`+3` 分支取到的帧
+属于「下一个按钮的常态/悬停」。即**代码支持 4 帧制，但资源只提供 2 帧**。
+`DOption` 与 `DMyMagic` 之间有 `1186` 空缺，进一步说明帧号是人工分配的。
+
+⚠️ **与原版对照的关键**：原版 `secondary-source-catalog.md` 记录的帧对
+（`80/81`、`82/83`、`84/85`…**步长也是 2**）与源码这批按钮**步长一致**
+→ **两版都采用「2 帧/按钮」的资源布局**。做帧对照的正确假设是 2 帧/按钮。
+
+**例外**：`DBotGroupDirectPaint`（`FState.pas:5302`）覆盖默认绘制 ——
+`FOnDirectPaint` 分支（`:1847-1848`）**优先于**帧号逻辑。
+**有自定义绘制的按钮不走 `FaceIndex + N` 规则**。
+
+**〔`TDButton` 按下/抬起状态机（`:1892-1926`）〕**
+`MouseDown` 时 `Downed := TRUE` + `SetDCapture(self)`；
+`MouseUp` 时 `ReleaseDCapture`，**只有 `Downed and InRange(X,Y)` 才触发
+`FOnClickSound` → `FOnClick`**（拖出范围再抬起不触发）。
+`Background` 属性的按钮不参与按下/点击。
+
+**〔`TDGrid` 格子控件（`:1930-2039`）〕**
+默认 `ColCount=8 / RowCount=5 / ColWidth=36 / RowHeight=32`。
+`GetColRow`（`:1946-1960`）：`acol := nX div (FColWidth + FColoffset)` ——
+**`Coloffset` 是格子间的间隙**（分母是「格子+间隙」的步进），
+且有**双重检查**确保落在格子内而非间隙。
+拖拽语义：**只有抬起格 == 按下格才触发 `FOnGridSelect`**（拖拽跨格取消）；
+`FOnGridMouseMove` 在移动时持续触发。
+绘制**只委托给 `FOnGridPaint` 回调**，`TDGrid` 自己不画 —— 极简数据驱动设计。
+
+**〔★ 背包格子几何（DFM 属性 + 运行时尺寸精确吻合）★〕**
+实测 `FState.dfm` 的 `TDGrid` 属性（**代码里从不设置这些属性**，
+`grep '\.ColWidth\s*:='` 零命中 —— 全来自 DFM）：
+
+| 控件 | ColCount | RowCount | ColWidth | RowHeight |
+|---|---:|---:|---:|---:|
+| **`DItemGrid`（背包）** | **6** | **8** | **38** | **38** |
+| `DDRGrid`（交易对方） | 5 | 2 | 36 | 32 |
+| `DDGrid`（交易己方） | 5 | 2 | 36 | 32 |
+| `DMakeitemGrid`（制作） | 6 | 1 | 36 | 32 |
+
+**与运行时几何的精确吻合（验证通过）**：`FState.pas:2122-2125` 设
+`DItemGrid` 为 `(133,81) 228×304`，而 **`6×38 = 228`** ✅、**`8×38 = 304`** ✅
+—— **完全自洽**。
+
+**与原版对照**：列数 **6 vs 6 一致** ✅；但行数 **8 vs 6**、
+格子 **38px vs 36px**、总槽 **48 vs 36**（源码多 12 格）。
+→ **两版背包同构但不同规模**。
+
+**〔背包索引的 `+6` 偏移（易错点）〕**
+`FState.pas:6294/6321/6436/6516` 四处都有
+`idx := ACol + ARow * DItemGrid.ColCount + 6{벨트공간}`，
+**注释 `{벨트공간}` = 「腰带空间」**。完整槽位映射：
+`0..5` = **腰带 6 格**（`DBelt1..DBelt6`）；`6..53` = **背包 48 格**。
+→ **做背包/物品索引换算必须加 `+6`**，否则整体错位 6 格。
+
+**〔`PlayScn.pas`（3043 行）〕**本阶段只读了结构与调用点（完整主循环标注 pending）。
+
+**落盘**：`client-internals.md`（约 220 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
