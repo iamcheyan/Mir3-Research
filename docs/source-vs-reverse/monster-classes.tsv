@@ -1,0 +1,72 @@
+file	cls	parent	depth	line	comment
+ObjMon.pas	TMonster	TAnimal	1	12	
+ObjMon.pas	TChickenDeer	TMonster	2	29	
+ObjMon.pas	TATMonster	TMonster	2	36	
+ObjMon.pas	TSlowATMonster	TATMonster	3	45	
+ObjMon.pas	TScorpion	TATMonster	3	50	
+ObjMon.pas	TSpitSpider	TATMonster	3	56	
+ObjMon.pas	THighRiskSpider	TSpitSpider	4	65	
+ObjMon.pas	TBigPoisionSpider	TSpitSpider	4	70	
+ObjMon.pas	TGasAttackMonster	TATMonster	3	75	
+ObjMon.pas	TCowMonster	TATMonster	3	83	
+ObjMon.pas	TMagCowMonster	TATMonster	3	88	
+ObjMon.pas	TCowKingMonster	TAtMonster	1	96	
+ObjMon.pas	TLightingZombi	TMonster	2	113	도망가지 않고 공격함,
+ObjMon.pas	TDigOutZombi	TMonster	2	122	
+ObjMon.pas	TZilKinZombi	TATMonster	3	130	
+ObjMon.pas	TWhiteSkeleton	TATMonster	3	141	
+ObjMon.pas	TScultureMonster	TMonster	2	153	
+ObjMon.pas	TScultureKingMonster	TMonster	2	162	
+ObjMon.pas	TGasMothMonster	TGasAttackMonster	4	176	
+ObjMon.pas	TGasDungMonster	TGasAttackMonster	4	183	
+ObjMon.pas	TElfMonster	TMonster	2	188	
+ObjMon.pas	TElfWarriorMonster	TSpitSpider	4	199	
+ObjMon.pas	TCriticalMonster	TATMonster	3	211	/강력한 크리티컬을 가하는 몬스터
+ObjMon.pas	TDoubleCriticalMonster	TATMonster	3	218	/강력한 두칸 크리티컬을 가하는 몬스터
+ObjMon.pas	TSkeletonKingMonster	TScultureKingMonster	3	227	
+ObjMon.pas	TSkeletonSoldier	TATMonster	3	240	
+ObjMon.pas	TDeadCowKingMonster	TSkeletonKingMonster	4	249	
+ObjMon.pas	TBanyaGuardMonster	TSkeletonKingMonster	4	257	
+ObjMon.pas	TStoneMonster	TMonster	2	266	
+ObjMon.pas	TPBKingMonster	TDeadCowKingMonster	5	272	
+ObjMon.pas	TGoldenImugi	TATMonster	3	281	
+ObjMon.pas	TPhisicalFarAttackMonster	TSkeletonKingMonster	4	308	
+ObjMon2.pas	TStickMonster	TAnimal	1	14	
+ObjMon2.pas	TBeeQueen	TAnimal	1	31	비막원충, 비막충
+ObjMon2.pas	TCentipedeKingMonster	TStickMonster	2	44	
+ObjMon2.pas	TBigHeartMonster	TAnimal	1	56	적월마, 심장몬스터
+ObjMon2.pas	TBamTreeMonster	TAnimal	1	65	
+ObjMon2.pas	TMonsterBox	TBamTreeMonster	2	73	
+ObjMon2.pas	TSpiderHouseMonster	TAnimal	1	79	폭안거미, 폭주
+ObjMon2.pas	TExplosionSpider	TMonster	2	91	
+ObjMon2.pas	TGuardUnit	TAnimal	1	103	
+ObjMon2.pas	TArcherGuard	TGuardUnit	2	110	
+ObjMon2.pas	TArcherMaster	TATMonster	3	118	궁수호위병
+ObjMon2.pas	TArcherPolice	TArcherGuard	3	127	
+ObjMon2.pas	TCastleDoor	TGuardUnit	2	133	
+ObjMon2.pas	TWallStructure	TGuardUnit	2	147	
+ObjMon2.pas	TSoccerBall	TAnimal	1	159	
+ObjMon2.pas	TMineMonster	TAnimal	1	167	
+ObjMon2.pas	TStickBlockMonster	TStickMonster	2	184	
+ObjMon3.pas	TCloneMon	TATMonster	3	12	
+ObjMon3.pas	TAngelMon	TATMonster	3	31	
+ObjMon3.pas	TDragon	TATMonster	3	48	
+ObjMon3.pas	TDragonBody	TATMonster	3	66	
+ObjMon3.pas	TDragonStatue	TATMonster	3	82	
+ObjMon3.pas	TEyeProg	TATMonster	3	97	
+ObjMon3.pas	TStoneSpider	TATMonster	3	105	
+ObjMon3.pas	TGhostTiger	TMonster	2	113	
+ObjMon3.pas	TJumaThunder	TScultureMonster	3	128	
+ObjMon3.pas	TSuperOma	TATMonster	3	137	
+ObjMon3.pas	TTogetherOma	TATMonster	3	151	
+ObjMon3.pas	TFoxWarrior	TATMonster	3	167	
+ObjMon3.pas	TFoxWizard	TATMonster	3	183	
+ObjMon3.pas	TFoxTaoist	TATMonster	3	197	
+ObjMon3.pas	TPushedMon	TATMonster	3	211	
+ObjMon3.pas	TFoxPillar	TATMonster	3	226	
+ObjMon3.pas	TFoxBead	TATMonster	3	239	
+ObjMon3.pas	TBossTurtle	TATMonster	3	259	
+ObjAxeMon.pas	TDualAxeMonster	TMonster	2	12	
+ObjAxeMon.pas	TThornDarkMonster	TDualAxeMonster	3	26	
+ObjAxeMon.pas	TArcherMonster	TDualAxeMonster	3	31	
+ObjGuard.pas	TSuperGuard	TNormNpc	1	12	

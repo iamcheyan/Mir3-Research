@@ -115,12 +115,12 @@ A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending
 A/C-server	Source/GameServer/MasSock.pas	110	2682	pending	
 A/C-server	Source/GameServer/Mission.pas	63	1192	covered	Round 808 确认为空壳
 A/C-server	Source/GameServer/NoticeM.pas	114	2861	pending	
-A/C-server	Source/GameServer/ObjAxeMon.pas	190	5583	pending	
+A/C-server	Source/GameServer/ObjAxeMon.pas	190	5583	partial	Round 815: 类层次(3类)
 A/C-server	Source/GameServer/ObjBase.pas	31768	1187647	partial	Round 810: SearchViewRange/Walk/消息族/掉落族/GM命令表；物品转换族(1802-2722)与TUserHuman其余待读
-A/C-server	Source/GameServer/ObjGuard.pas	101	2367	pending	
-A/C-server	Source/GameServer/ObjMon.pas	3097	101650	pending	
-A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	pending	
-A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	pending	
+A/C-server	Source/GameServer/ObjGuard.pas	101	2367	partial	Round 815: TSuperGuard : TNormNpc 定位
+A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次+TMonster AI核心(Think/AttackTarget/Run)+TATMonster；71类构造与ObjMon2/3待读
+A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
+A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
 A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	partial	Round 811: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53条件+75动作opcode/GotoQuest/TakeItemFromUser；NpcSay族与TMerchant实现待读
 A/C-server	Source/GameServer/Relationship.pas	471	11946	pending	
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	

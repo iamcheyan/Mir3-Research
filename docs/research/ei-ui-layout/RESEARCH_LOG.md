@@ -10553,3 +10553,69 @@ AvailableCommands)，外面再包 `TQuestRecord`(BoRequire + QuestRequireArr + S
 **落盘**：`magic.md`（236 行）、`magic-dispatch.tsv`（26 行）、
 `Tools/source-read/extract_magic_dispatch.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 815 (全量精读 C11/C12) — 2026-09-26：怪物类层次与 AI 核心
+
+> `Source/GameServer/{ObjMon,ObjMon2,ObjMon3,ObjAxeMon,ObjGuard}.pas`（约 8300 行）。
+> 产物 `docs/source-vs-reverse/monsters.md`、`monster-classes.tsv`（71 类）、
+> `Tools/source-read/extract_monster_classes.py`。
+
+**〔类层次：71 个类，最深 5 层〕**`ObjMon.pas` 32 / `ObjMon2.pas` 17 /
+`ObjMon3.pas` 18 / `ObjAxeMon.pas` 3 / `ObjGuard.pas` 1。
+继承深度：1 层 11 / 2 层 17 / **3 层 34** / 4 层 8 / 5 层 1。
+
+**顶层基类 10 个**（`parent` 不在表内）：`TMonster : TAnimal`（绝大多数怪的基类）、
+`TStickMonster`/`TBeeQueen`/`TBigHeartMonster`/`TBamTreeMonster`/
+`TSpiderHouseMonster`/`TGuardUnit`/`TSoccerBall`/`TMineMonster`（均 `: TAnimal`）、
+**`TSuperGuard : TNormNpc`**（`ObjGuard.pas:12`）。
+
+⚠️ **`TGuardUnit`（`: TAnimal`，`ObjMon2.pas:103`，下有 `TArcherGuard`）与
+`TSuperGuard`（`: TNormNpc`，`ObjGuard.pas:12`）是两个不同的守卫体系**
+—— 做 NPC/怪物分类时**不能只看名字**。
+
+**主要派生分支**：`TATMonster`（`:36`，远程攻击基类）下有 `TSpitSpider` 族
+（最多派生：`THighRiskSpider`/`TBigPoisionSpider`/`TElfWarriorMonster`）、
+`TGasAttackMonster` 族、`TCriticalMonster` 族；
+`TScultureKingMonster` → `TSkeletonKingMonster` → `TDeadCowKingMonster` → `TPBKingMonster`
+（**唯一 5 层链**）。
+
+⚠️ **`TCowKingMonster : TAtMonster`（`ObjMon.pas:96`）大小写不一致** ——
+`TAtMonster`（1 次）vs `TATMonster`（17 次）。Delphi 标识符**大小写不敏感**，
+是同一个类，只是**同一代码库里两种拼写并存**。
+
+**〔`TMonster.Think`（`:382-408`）—— 3 秒节流的位置去重〕**
+①`GetTickCount - ThinkTime > 3000` → **3 秒才想一次**（不是每帧）
+②`PEnvir.GetDupCount(CX,CY) >= 2` 触发 `DupMode`（**防怪物堆叠**）
+③`DupMode and not BoDontMove` 时 `WalkTo(Random(8), FALSE)` 随机试走，
+**位置变了才解除**（`BoDontMove` 的固定怪如石像/植物不避让）
+④`not IsProperTarget(TargetCret)` 则清空目标。
+
+**〔`TMonster.AttackTarget`（`:410-433`）〕**
+①**攻速门** `GetCurrentTime - HitTime > GetNextHitTime`
+②目标跨地图则 `LoseTarget`（**自动放弃**）
+③攻击时 `BreakHolySeize`（**打破圣缚**）
+④⚠️ 注释明确警告 **`LoseTarget` 会把 `TargetCret` 置 nil**
+（原文「<!!주의> TargetCret := nil로 바뀜」）—— 调用后不能再用该指针。
+
+**〔`TMonster.Run`（`:435-`）—— AI 主循环与节奏参数〕**
+状态字段全景：`HideMode`/`BoStoneMode`（都不行动）、
+**`BoWalkWaitMode`/`WalkWaitTime`/`WalkWaitCurTime`/`WalkCurStep`/`WalkStep`**
+（**「走 N 步停一会儿」的节奏控制**）、`BoRunAwayMode`、`NoAttackMode`、
+`Master`/`ForceMoveToMaster`（攻击中主人强制召唤则回主人身后）、`BoDontMove`。
+→ **`WalkStep`/`WalkWaitTime` 是「怪物节奏」的两个核心参数**，
+解释了不同怪物移动观感的差异。
+
+**〔`TATMonster.Run`（`:751`）〕**注释「가장 가까운 놈에게 공격한다.」
+（**向最近的家伙攻击**）—— 远程怪主动找最近目标，与近战怪「等目标进范围」不同。
+
+**〔A* 死代码（本轮再次确认并修正措辞）〕**`_Oranze Library/astar.h`
+**未被任何源码引用**：`grep -rl 'include.*astar\|"astar.h"'` **零命中**；
+仅在**工程文件**里被列出（`LoginServer/_Oranze Library.vcproj:540`、
+`DataBaseServer/_Oranze Library.dsp:184`）—— 即**编译进项目但代码从未使用**。
+`GameServer/ObjBase.pas` 里唯一命中是**误报**（`HasTargetedCount` 的韩文注释
+恰好含 `astar` 子串）。→ **A* 在这份源码里是死代码**；
+怪物寻路是 `TAnimal.GotoTargetXY` 的贪心 8 方向。
+
+**落盘**：`monsters.md`（约 220 行）、`monster-classes.tsv`（71 行）、
+`Tools/source-read/extract_monster_classes.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
