@@ -9706,3 +9706,72 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 **落盘**：本 Finding + `docs/source-vs-reverse/` 差异文档（本轮新建目录）。
 未修改任何原版证据文件、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 803 (source deep-read, wire format) — 2026-09-26：6bit 线格式 + 防外挂校验 + 公钥协商链
+
+> 证据源 `reference/mir3-source/Source/Common/EDCode.pas`（539 行）+ `Grobal2.pas` 包头。
+> 参考实现 `Tools/source-read/edcode.py`（10 项自测全绿）。证据等级 `secondary-source`。
+> 详见 `docs/source-vs-reverse/wire-format.md`。
+
+**〔包头〕**`TDefaultMessage`（`Grobal2.pas:20-28`）固定 **16 字节**：
+`Recog:integer(4) Ident:word(2) Param:word(2) Tag:word(2) Series:word(2) Etc:word(2) Etc2:word(2)`，
+源码注释逐字段标了字节数，与参考实现一致。`TMsgHeader`（`:9-17`）是网关↔服务端**内部**头，
+不发给客户端；其 `Code` 注释写 `$aa55aa55` 但实际未赋值。
+
+**〔6bit 编码〕**`Encode6BitBuf`/`Decode6BitBuf`（`EDCode.pas:154-211`/`:213-274`）：
+每字节两次 XOR 后按 6bit 分组 + `0x3C` 变可打印字符。四个关键细节：
+1. `HIBYTE(key) + LOBYTE(key)` 是**加法不是 XOR**（`:177`/`:247`）；默认 key `$6501`
+   → `0x65+0x01 = 0x66`。误当 XOR 会算成 `0x64`，编解码仍自洽但与真实端**完全不通**。
+2. 编码用输入下标 `i`，解码用输出下标 `bufpos`（截断时两者分叉）。
+3. 字符不在 `[0x3C, 0x3C+64]` 内 → `bufpos := 0; break`，**整包作废**（天然完整性检查）。
+4. **256 字节置换表 `cTable_src`/`dTable_src`（`:39-111`）已全部被注释禁用**
+   （`:172`/`:252-253`，标注 `// added by sonmg`）—— 当前版本**无置换**，
+   按「有表=有置换」推断会做出错误实现。
+
+**〔防外挂校验 Etc〕**两套机制，勿混：
+- `MakeDefaultMsg`（`Grobal2.pas:2840-2851`）用 `hid` 掩码生成 `Etc`/`Etc2`；
+  `hid` 有**默认参数 200**（`:2798`），实测 `hid=200` → `Etc=0xD2` `Etc2=0x41`。
+- `EncodeMessage`（`EDCode.pas:417-435`）随后**整体覆写** `Etc`：
+  低字节 `RandKey ^ 8`、高字节 `(校验和 ^ key ^ RandKey) & 0xFF`，
+  其中 `校验和 = ((Recog and $57CD) + (Ident or $48) + (Param or $30) + (Tag and $2D) + Series) ^ key`。
+  注意 **`Ident or $48`** —— 低 3 位被强制置位，是作者埋的「盐」。
+- 实测（key=0x6501, RandKey=0x5A, Recog=12345, Ident=1033, Param=1, Tag=2, Series=3）：
+  校验和 `0x7187` → 高字节 `0xDC`，低字节 `0x52` → `Etc = 0xDC52`。
+- `:425` 注释里的 **old version** 无 `RandKey`（整 16 位即校验和）—— 可解释早期抓包
+  中「高字节一致、低字节恒 0」的现象。
+- 服务端 `UsrEngn.pas:3530` 从低字节**反解 RandKey** 再验高字节，失败即
+  `EmergencyClose := TRUE` 强制断线 + `MacroProgram(2)` 日志。
+  **但 RandKey 随包明文传输、key 登录期明文协商 → 这不是密码学防护**，
+  只拦改包工具误用与非本客户端。
+
+**〔公钥协商 —— 修正先前认知〕**公钥**不是**来自 `enckey.txt` 配置文件，而是登录期动态协商：
+
+```
+LoginServer ─ISM_SEND_PUBLICKEY(118)→ DataBaseServer (netloginserver.cpp:21→:131 SetPublicKey)
+            ─ISM_SEND_PUBLICKEY→ GameServer (IdSrvClient.pas:263→:484 SetPublicKey
+                                              →:486 SendPublicKeyToAllGate)
+            ─SM_SEND_PUBLICKEY(536)→ 客户端 (ClMain.pas:5413→:5415 SetPublicKey(msg.Param xor msg.Tag))
+```
+
+客户端拿到的是 `Param xor Tag`（又一次简单混淆）。`IdSrvClient.pas:487` 会在服务端启动时
+**打印公钥明文**（`'GetRecvPublicKey : ' + IntToStr(...)`）。`EDCode.pas:117` 的
+`g_EndeKey = $6501` 只是编译期默认值；`LoadPublicKey(fname)`（`:125-140` 读文本首行）
+是离线工具旁路，非线上流程。
+
+**〔登录链路 opcode —— 实测修正〕**`LoginServer/protocol.h` 与 `Grobal2.pas` 的
+`CM_QUERYCHR`(100)/`CM_NEWCHR`(101)/`CM_DELCHR`(102)/`CM_SELCHR`(103)/
+`CM_SELECTSERVER`(104)/`CM_PROTOCOL`(2000)/`CM_IDPASSWORD`(2001)/
+`CM_ADDNEWUSER`(2002)/`CM_CHANGEPASSWORD`(2003)/`CM_UPDATEUSER`(2004)
+**10 条数值全部相同** —— 是**一套**全链路总表，不是两套命名空间。
+（本轮曾一度误判账号族为 1101/1103/1105/1106，实为把 `SM_` 段值误当 `CM_` 段，已修正。）
+那 3 个「客户端发但两层都无 case」的 opcode 即账号段 2002-2004，
+其接收端 `case` 在本源码包内**确实缺失**，标注待查。
+
+**〔三份 EDCode 副本〕**`diff -w -B` 实测：非空白差异 106 行，**唯一实质差异**是
+`Common/` 那份多出 `TCrypToSeed` + `Decrypt(FName)`（`.dat` 文件加解密，
+魔数 `F0 39 AB 8E` / `0x9FDE1A93`）。**线格式相关函数三份完全一致**，
+参考实现可共用。
+
+**落盘**：`docs/source-vs-reverse/wire-format.md`、`Tools/source-read/edcode.py`、
+`Tools/source-read/coverage.py`、`docs/source-vs-reverse/dispatch-coverage.json`。
+未改任何原版证据文件、未改代码、未碰数据库；`database_write=false` 维持。
