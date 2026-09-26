@@ -439,6 +439,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
     normalized_audit = verification.get("normalized_audit", {})
     research_state = git_repo_state(ROOT, "origin/ei-ui-audit-2026-09-24")
     zircon_state = git_repo_state(ZIRCON, "origin/ui/legacy-layout-lab")
+    website_state = git_repo_state(WEBSITE, "origin/main")
     goal_paths = {
         "Tools/NpcMover/website_alignment.py",
         "Tools/NpcMover/verify_website_alignment.py",
@@ -460,6 +461,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "- 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。",
         f"- Mir3-Research 最终生成时：HEAD={research_state.get('head')}；origin/ei-ui-audit-2026-09-24={research_state.get('remote')}；工作树 dirty={research_state.get('dirty')}。",
         f"- Zircon 最终生成时：HEAD={zircon_state.get('head')}；origin/ui/legacy-layout-lab={zircon_state.get('remote')}；工作树 dirty={zircon_state.get('dirty')}。",
+        f"- mir3-website 只读证据 checkout：HEAD={website_state.get('head')}；origin/main={website_state.get('remote')}；工作树 dirty={website_state.get('dirty')}；未提交路径={json.dumps(website_state.get('status_paths', []), ensure_ascii=False)}；本 Goal 未修改。",
         f"- 当前未提交路径保护：Mir3-Research 无关 WIP={json.dumps(research_unrelated, ensure_ascii=False)}；Zircon 无关 WIP={json.dumps(zircon_state.get('status_paths', []), ensure_ascii=False)}；本 Goal 仅提交自身脚本/报告/manifest。",
         "", "## 2. 网站索引和图片证据", "",
         f"- 网站怪物：{m['website_record_count']}；分类数={len(m['website_categories'])}；技能：{s['website_record_count']}。",
