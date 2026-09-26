@@ -136,8 +136,8 @@ A/C-server	Source/GameServer/UsrEngn.pas	3696	122341	covered	Round 803 校验和
 A/C-server	Source/GameServer/crc_32.pas	54	972	pending	
 A/C-server	Source/GameServer/itmunit.pas	897	29538	partial	Round 816: 升级两公式/攻速有符号编码/Desc映射/GetUpgradeStdItem；8个UpgradeRandom*实现待读
 A/C-server	Source/GameServer/svMain.pas	1880	60780	covered	Round 808 EnvirDir 读取点
-D-client	Source/Client/Actor.pas	4743	194647	partial	g_WGameInter 引用（渲染待读）
-D-client	Source/Client/AxeMon.pas	4217	150653	pending	
+D-client	Source/Client/Actor.pas	4743	194647	partial	Round 819: 动作帧公式+46表329项+HA全表+CurrentAction映射+Shift重复定义查明；Run/ReadyAction/THumActor实现待读
+D-client	Source/Client/AxeMon.pas	4217	150653	pending	Round 819: 确认是客户端怪物渲染（与GameServer/ObjAxeMon.pas不同文件），未读
 D-client	Source/Client/CMsg.pas	110	2183	pending	
 D-client	Source/Client/ClFunc.pas	1032	28948	pending	
 D-client	Source/Client/ClMain.pas	9924	322121	partial	Round 817: SCREENWIDTH/HEIGHT 常量+SendWantMiniMap/PublicKey；主体待读
@@ -145,7 +145,7 @@ D-client	Source/Client/DWinCtl.pas	7804	226540	partial	Round 806/818: 类层次+
 D-client	Source/Client/DrawHint.pas	441	15405	pending	
 D-client	Source/Client/DrawScrn.pas	550	17810	covered	Round 804 场景切换
 D-client	Source/Client/FState.pas	14853	531645	partial	Round 817: TFrmDlg.Initialize 运行时布局(345项)+窗口声明+帧号；其余主体待读
-D-client	Source/Client/HerbActor.pas	993	30165	pending	
+D-client	Source/Client/HerbActor.pas	993	30165	pending	Round 819: 采集对象，未读
 D-client	Source/Client/IntroScn.pas	1776	55353	covered	Round 804 TSceneType
 D-client	Source/Client/Logo.pas	105	2921	pending	
 D-client	Source/Client/MShare.pas	32	775	pending	
@@ -160,14 +160,14 @@ D-client	Source/Client/SoundUtil.pas	735	19504	pending
 D-client	Source/Client/WIL.pas	749	21533	covered	Round 807 图库格式
 D-client	Source/Client/clEvent.pas	218	5444	pending	
 D-client	Source/Client/cliUtil.pas	1258	42862	pending	
-D-client	Source/Client/magiceff.pas	1621	53077	pending	
+D-client	Source/Client/magiceff.pas	1621	53077	pending	Round 819: 魔法特效，未读
 D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
 D-client	Source/Client/wmM2Def.pas	525	17922	pending	
-D-client	Source/Client/wmM2Zip.pas	302	9989	pending	
+D-client	Source/Client/wmM2Zip.pas	302	9989	pending	Round 819: Mir2 压缩变体，未读
 D-client	Source/Client/wmM3Def.pas	537	16638	pending	
 D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
-D-client	Source/Client/wmMyImage.pas	741	25787	pending	
-D-client	Source/Client/wmUtil.pas	4497	489745	pending	
+D-client	Source/Client/wmMyImage.pas	741	25787	pending	Round 819: .Lib 格式解析器（Preview 优先加载的格式），未读
+D-client	Source/Client/wmUtil.pas	4497	489745	pending	Round 819: 图像/压缩工具库 4497 行，未读
 D-client	Source/Client/Light/Light0a.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0c.pas	100	2696	pending	

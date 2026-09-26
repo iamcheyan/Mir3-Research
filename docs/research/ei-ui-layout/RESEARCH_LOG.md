@@ -10824,3 +10824,65 @@ DBotGuild 1182 / DMyMagic 1184 / DOption 1188` —— **帧间距 2**。
 
 **落盘**：`client-internals.md`（约 220 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 819 (全量精读 D19-D23) — 2026-09-26：动作帧表与渲染公式
+
+> `Source/Client/{Actor,AxeMon,HerbActor,magiceff}.pas` + `wm*.pas`。
+> 产物 `docs/source-vs-reverse/client-rendering.md`、`actor-frames.tsv`（46 表/329 项）、
+> `Tools/source-read/extract_actor_frames.py`。
+
+**〔★ 动作帧计算公式（整个客户端渲染的基石）★〕**
+`TActor.CalcActorFrame`（`Actor.pas:1481-1569`）：
+```pascal
+startframe := pm.ActXxx.start + Dir * (pm.ActXxx.frame + pm.ActXxx.skip);
+endframe   := startframe + pm.ActXxx.frame - 1;
+frametime  := pm.ActXxx.ftime;
+```
+`TActionInfo` 五字段：`start`（起始帧）/`frame`（帧数）/
+**`skip`（方向间隔帧数）**/`ftime`（每帧毫秒）/`usetick`（移动节拍）。
+**`skip` 的含义**：一个动作在资源库里按 **8 个方向**排列，
+每方向占 `frame + skip` 帧（方向帧之间有空隙），
+`Dir * (frame + skip)` 就是「跳到第 Dir 个方向」的偏移。
+**实例验证**（`HA.ActStand`：start=0/frame=4/skip=6）：
+Dir0→[0,3]、Dir1→[10,13]、…、Dir7→[70,73]（步进 10）。
+
+**〔动作表结构〕**`TMonsterAction`（`:61-70`）7 个 `TActionInfo`：
+`ActStand`/`ActWalk`/`ActAttack`/`ActCritical`/`ActStruck`/`ActDie`/`ActDeath`
+（注释标了 1/8/6/6/3/4）。
+实测 **46 个表 / 329 项**：`HA`（人物，14 项）+ `MA9`…`MA62`（45 个怪物表）。
+大部分 7 项，`MA19`/`MA57` 是 9-15 项（有额外动作）。
+`MA9` 注释「축구공」（足球）= `TSoccerBall` 用。
+
+**〔`CurrentAction` 映射（`:1493-1568`）〕**
+`SM_TURN`→`ActStand`（转向=播站立帧）；
+`SM_WALK`/`SM_RUSH`/`SM_RUSHKUNG`/`SM_BACKSTEP`→`ActWalk`（**4 消息共用**）；
+`SM_HIT`→`ActAttack`；`SM_STRUCK`→`ActStruck`；
+**`SM_DEATH`→`ActDie` 且 `startframe := endframe`（倒放！）**；
+`SM_NOWDEATH`→`ActDie` 正放；`SM_SKELETON`→`ActDeath`。
+`SM_BACKSTEP` 用 `Shift(GetBack(Dir), ...)` —— **方向反转**。
+
+**〔人物动作表 `HA`（`:73-89`，14 项）〕**
+`ActStand`(0,4,6,200) / `ActWalk`(1680,6,4,90) / `ActRun`(1760,6,4,120) /
+`ActRushLeft`(128,3,5,120) / `ActRushRight`(131,3,5,120) /
+`ActWarMode`(560,3,7,200) / **`ActHit`(720,6,4,85)** /
+`ActHeavyHit`(800,6,4,85) / `ActBigHit`(880,6,4,85) /
+`ActFireHitReady`(192,6,4,**70**) / `ActSpell`(240,5,5,**75**) /
+`ActSitdown`(640,2,8,**400** 最慢) / `ActStruck`(1200,3,7,100) /
+`ActDie`(1520,10,**0**,120)。
+⚠️ **`ActHit` 有两个定义**：`:80` 的 `start=200,frame=5,skip=3,ftime=140`
+**被注释掉**，`:81` 的 `start=720` 生效 → **攻击动作被改过**。
+`ActDie` 的 **`skip=0`** = 死亡动画**只有 1 个方向**。
+（提取器已修：排除整行注释与行尾注释后的伪项，初版曾把注释掉的 `ActHit` 也收进来。）
+
+**〔`Shift` 重复定义已查明〕**`:1910` 是**生效版本**；`:2093` 的第二个定义
+**被 `{ }` 块注释掉**（`:2092` 是 `{`）→ **只有一个 Shift 生效，不是重载**。
+**读代码陷阱**：同文件里有被大括号注释掉的重复函数，静态 grep 会看到两个。
+
+**〔未读项（标注 pending）〕**`magiceff.pas`（魔法特效）、
+`AxeMon.pas`（**客户端**怪物渲染，注意与 `GameServer/ObjAxeMon.pas` 是不同文件）、
+`HerbActor.pas`（采集对象）、`wmM2Zip.pas`/`wmMyImage.pas`（`.Lib` 解析器）/`wmUtil.pas`（4497 行）。
+**`wmMyImage.pas` 尤其重要** —— 它解析 Preview 版**优先加载**的 `.Lib` 格式。
+
+**落盘**：`client-rendering.md`（约 200 行）、`actor-frames.tsv`（329 行）、
+`Tools/source-read/extract_actor_frames.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
