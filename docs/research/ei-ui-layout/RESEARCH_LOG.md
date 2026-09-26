@@ -10002,3 +10002,85 @@ words=152 bytes=304；`header(2)` = 32×32 offset(-3,-18)。
 
 **落盘**：`docs/source-vs-reverse/client-libraries.md`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 808 (source deep-read, 服务端) — 2026-09-26：对象模型 / .map 格式 / 任务引擎真相
+
+> 证据源 `Source/GameServer/`（79,769 行）。产物 `docs/source-vs-reverse/server.md`。
+
+**〔对象模型只有三层〕**`ObjBase.pas`：`TCreature`(:305) ← `TAnimal`(:944) ←
+`TUserHuman`(:966)。怪物类不在 ObjBase，而在 `ObjMon.pas`/`ObjMon2.pas`/
+`ObjMon3.pas`（合计 8111 行），按怪物组拆分而非继承深度。
+
+**〔`TCreature` 字段陷阱〕**
+- `Job: byte; //0:전사(战士) 1:술사(法师) 2:도사(道士)`（:317）—— 三职业与原版一致。
+- **`HairColorR/G/B` 是假的颜色字段**（:314-316）：
+  `HairColorR` 注释「머리색깔이 아님. 각종 Bit Flag로 사용」（不是头发颜色，
+  用作各种 Bit Flag，sonmg 2005/03/17），G/B 注释 `Empty`。
+  **按名字理解会完全错** —— 这是做字段映射最容易踩的坑。
+- `HitDouble: byte; //10 = +100%  25는 +250%`（:374）→ 1 单位 = 10%。
+- `RedPoisonLevel` 红毒强度 0~256；`PoisonLevel` 0..3。
+- 持久化任务状态：`QuestIndexOpenStates`/`QuestIndexFinStates`（位图）+
+  `QuestStates`（:353-355）。
+- `UserName: string[14]` → 角色名上限 14 字节。
+
+**〔`.map` 文件格式（本轮最有价值的产出）〕**结构定义在 `Envir.pas:49-77`：
+- `TMIR3MapHeader` = 28 字节（`bhDesc[20]` + `bhAttribut/bhWidth/bhHeight` 各 2
+  + `bhEventFileIdx/bhFogColor` 各 1）
+- `TMIR3MapTileHeader` = 3 字节（`thTileTextureFile` 1 + `thTileTextureID` 2）
+- `TMIR3MapCellHeader` = **14 字节**（block/backAnim/topAnim/topFile/backFile 各 1
+  + backImg/topImg 各 2 + doorIndex 1 + doorOffset 2 + light 2）
+- `LoadMap`（:393-479）流程：读 28B 头 → `FileSeek((W*H div 4)*3, 1)`
+  **跳过** tile 区（每格 3 字节、四分之一分辨率）→ 读 W*H*14 单元格。
+- `chCellBlock` 语义：`3`→不可走；`0,252`→可走；`1,2,254`→不可走且不可飞。
+- `chCellDoorIndex & $80` 非零即有门，`nDoor := chCellDoorIndex and $7F`
+  （**低 7 位是门号、高位是标志**）；坐标差 ≤10 且门号相同则共享 `pCore`。
+- **文件大小公式**：`28 + (W*H/4)*3 + W*H*14`。
+
+**〔实测验证（决定性）〕**
+
+| 文件 | 尺寸 | 实测 | 公式 | 结果 |
+|---|---|---|---|---|
+| `0_000.map` | 70×70 | 72303 | 28+3675+68600 = 72303 | ✅ 精确吻合 |
+| `D614.map` | 100×100 | 137528 | 147528 | ❌ 差 10000 |
+| `0.map` | 800×800 | 448028 | — | ✅ 完整 |
+
+差异原因**已查明**：`D614.map`/`0_002.map` 等 6 个文件的**单元格区被截断**
+（实际每格 13 字节）。用本仓库 `Tools/maps/map_roundtrip.py` 独立解析器验证：
+`0.map` → `800×800 n=640000 n_records=640000`（完整）；
+`0_002.map` → `20×20 n=400 n_records=371`（**缺 29 格**）。
+200 个抽样文件里 194 个 C=14（完整）、6 个 C=13（截断）。
+→ **源码的 14 字节定义是权威结构**，截断是**数据文件缺陷**而非格式变体；
+**仓库既有 `map_roundtrip.py` 已正确处理**（按 `(len-28-seg1)//14` 算实际记录数，
+而非按 W×H 硬算）。
+
+**〔`Mission.pas` 是空壳（重要发现）〕**只有 63 行，`TMission.Run` **完全空**，
+`LoadMissionFile` 把文件读进来**直接丢弃**并无条件 `Result := TRUE`。
+→ **任务逻辑不在 `Mission.pas`**。真现在 **`ObjNpc.pas`**：
+`CheckQuestCondition(pq: PTQuestRecord)`(:757)、`GotoQuest(num)`(:1409)，
+记录结构 `TQuestRecord`(:83-88) = `BoRequire` + `LocalNumber` +
+`QuestRequireArr[0..MAXREQUIRE-1]` + `SayingList`。
+NPC 的 `Sayings: TList`(:96) 就是 **`PTQuestRecord` 列表** ——
+即**「NPC 对话」与「任务」在数据模型上是同一个东西**（每条对话记录带可选前置条件）。
+→ **对 `Tools/questdata` 的意义**：任务权威语义源是 `ObjNpc.pas`，
+**不是** `Mission.pas`；阶段 5 差异对照应以此为准。
+
+**〔`TNormNpc`/`TMerchant` 能力标志 = 原版 NPC 功能的权威枚举〕**
+`TNormNpc`(:103-122) 用 Boolean 标志描述 NPC 能力：`CanSell`/`CanBuy`/
+`CanStorage`/`CanGetBack`/`CanRepair`/`CanSpecialRepair`/`CanTotalRepair`/
+`CanMakeDrug`/`CanUpgrade`/`CanMakeItem`/`CanItemMarket`/`CanAgitUsage`/
+`CanAgitManage`/`CanBuyDecoItem`/`CanDoingEtc`。
+这正是 `Mud3-Config/Envir/Merchant.txt` 等配置里 NPC 类型字段的语义来源。
+`TMerchant`(:150-) 额外：`MarketName`/`MarketType`/
+`PriceRate: integer; //물가, 100:보통, 100보다 크면 비싸다`/`NoSeal`/
+`BoCastleManage`/`BoHiddenNpc`/`CreateIndex`（负载均衡用）。
+关键方法 `ActivateNpcUtilitys(saystr)`(:136) = 从 NPC 脚本字符串**激活功能**
+（配置文本 → 运行时能力的转换点）；`CheckNpcSayCommand`(:143) 解析对话内命令。
+
+**〔`TEnvirnoment` 地图级规则开关〕**`Envir.pas:148-227` 给出 `MapInfo.txt`
+里那串标志位的含义：`MiniMap`（= `CM_WANTMINIMAP` 回包内容）/`NeedLevel`/
+`Darkness`/`Dawn`/`DayLight`/`LawFull`/`FightZone`~`Fight4Zone`/`QuizZone`/
+`NoRecall`/`NoTeleportMove`/`NoDrug`/`NoChat`/`NoGroup`/`NoThrowItem`/`NoDropItem`/
+`MapQuest`（非 nil 则进图前先过任务）/`MapQuestParams[0..9]`（地图局部变量 ×10）。
+
+**落盘**：`docs/source-vs-reverse/server.md`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
