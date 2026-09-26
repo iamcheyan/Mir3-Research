@@ -39,6 +39,7 @@ static class Program
 
         if (cmd == "list") { List(rest); return; }
         if (cmd == "boost") { Boost(rest); return; }
+        if (cmd == "setexp") { SetExp(rest); return; }
         if (cmd == "equip") { Equip(rest); return; }
         if (cmd == "lighten") { Lighten(rest); return; }
         if (cmd == "items") { ListItems(rest); return; }
@@ -53,6 +54,7 @@ static class Program
         Console.WriteLine("用法:");
         Console.WriteLine("  CharacterEditor list  <db-root> [账号邮箱] [角色名]");
         Console.WriteLine("  CharacterEditor boost <db-root> --char <角色名> [--level N] [--gold N] [--class 职业]");
+        Console.WriteLine("  CharacterEditor setexp <db-root> --char <角色名> [--value N | --percent P]   (设经验, 用于 UI 验收)");
         Console.WriteLine("                        [--magic 名字] [--weapon 名字] [--amulet-count N] [--no-items] [--no-magics]");
         Console.WriteLine("  CharacterEditor equip <db-root> --char <角色名> --slot <槽名> --item <物品名子串>");
         Console.WriteLine("  CharacterEditor lighten <db-root> --char <角色名>  (轻装并缩减背包重物堆叠)");
@@ -62,8 +64,7 @@ static class Program
 
     static void Open()
     {
-        Session = new Session(SessionMode.Users, Root);
-        Session.Initialize(
+        Session = new Session(SessionMode.Users, Root);        Session.Initialize(
             typeof(ItemInfo).Assembly,         // LibraryCore (SystemModels)
             typeof(AccountInfo).Assembly);     // ServerLibrary (DBModels)
         Console.WriteLine($"数据库: {Session.SystemPath}  /  {Session.UsersPath}");
@@ -93,6 +94,44 @@ static class Program
     {
         if (slot < 0 || slot > 21) return $"Slot{slot}";
         return ((EquipmentSlot)slot).ToString();
+    }
+
+    // ---------- setexp ----------
+
+    /// <summary>
+    /// setexp &lt;db-root&gt; --char &lt;角色名&gt; [--value N | --percent P]
+    /// 直接设置角色经验，用于 UI 验收（例如让经验条显示可见比例）。
+    /// 本级上限取 Globals.ExperienceList[Level]，与 PlayerObject.MaxExperience 同一来源。
+    /// 注意：修改前请先停服务端，改完再启动。
+    /// </summary>
+    static void SetExp(string[] args)
+    {
+        string charName = null;
+        decimal? abs = null;
+        double? pct = null;
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "--char" && i + 1 < args.Length) charName = args[++i];
+            else if (args[i] == "--value" && i + 1 < args.Length) abs = decimal.Parse(args[++i]);
+            else if (args[i] == "--percent" && i + 1 < args.Length) pct = double.Parse(args[++i]);
+        }
+        if (string.IsNullOrWhiteSpace(charName)) { Console.WriteLine("setexp 需要 --char <角色名>"); return; }
+
+        Open();
+        var ch = Session.GetCollection<CharacterInfo>().Binding
+            .FirstOrDefault(c => string.Equals(c.CharacterName, charName, StringComparison.OrdinalIgnoreCase));
+        if (ch == null) { Console.WriteLine($"未找到角色: {charName}"); return; }
+
+        decimal max = ch.Level < Globals.ExperienceList.Count ? Globals.ExperienceList[ch.Level] : 0;
+        double before = max > 0 ? (double)(ch.Experience / max) * 100 : 0;
+        Console.WriteLine($"角色 {ch.CharacterName}: 等级={ch.Level} 经验={ch.Experience} 本级上限={max} ({before:F2}%)");
+
+        decimal target = abs ?? (max > 0 ? max * (decimal)((pct ?? 50) / 100.0) : 0);
+        ch.Experience = target;
+        Session.Save(true);
+
+        double after = max > 0 ? (double)(ch.Experience / max) * 100 : 0;
+        Console.WriteLine($"已设置经验 = {ch.Experience} ({after:F2}% 于本级上限)");
     }
 
     // ---------- list ----------
