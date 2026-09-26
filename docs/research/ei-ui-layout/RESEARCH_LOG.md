@@ -11132,3 +11132,76 @@ if (abs(user.CX - cret.CX) >= 2) or (abs(user.CY - cret.CY) >= 2) then
 
 **落盘**：`client-internals.md` §7（约 145 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 824 (全量精读续) — 2026-09-26：`.Lib` 格式（Preview 优先加载的容器）
+
+> `Source/Client/wmMyImage.pas`（741 行）。产物 `client-libraries.md` §8。
+
+**〔三个格式常量（`:7-10`）〕**`HEADERNAME = 'Mir3 Library'`（Title 字段内容）、
+**`CHECKENSTR = 'lom2com'`**（加密校验串）、`MYFILEEXT = '.Lib'`。
+> **`lom2com`** 与 `reference/mir3-source/README.md` §1 记录的 SVN 出处
+> `code.lom2.com/svn/Mir2` **同源** —— 这是 **LOM2 社区自己加的格式**。
+
+**〔`TWMImageHeader` = 56 字节（`:13-25`）〕**逐字段偏移：
+`Title[16]`@0 / `sEnStr[7]`@16 / `nVer`@23（**`nVer = 1` 表示启用加密**，`:232`）/
+`ImageCount2`@24（加密时的图像数） / `IndexOffset1`@28 / `IndexOffset2`@32 /
+`OffsetSize`@36（**>0 表示索引被 ZIP 压缩**） / `ImageCount`@40 /
+`UpDateTime`@44（`TDateTime` = Double，8 字节） / `IndexOffset`@52。
+
+**〔`TWMImageInfo` = 18 字节（`:27-31`）〕**
+`DXInfo: TDXTextureInfo`（13 字节：`nWidth/nHeight/px/py` 各 2 + `bShadow` 1 +
+`shShadowPX/shShadowPY` 各 2） + `btImageFormat`（1，`TWILColorFormat`） +
+`nDataSize`（4）。
+⚠️ **与 `.Zl`（`wmM3Zip.pas`）的 17 字节图头不同** —— 别混用。
+
+**〔★ 加密机制（`:232-238`）—— DES 而非 WEMADE ★〕**
+```pascal
+FboEncryVer := FHeader.nVer = 1;                    // 版本 1 = 加密版
+FCanEncry := FboEncryVer and (FPassword <> '');     // 还需提供密码
+if FCanEncry then begin
+   DecryBuffer(FPassword, @FHeader.sEnStr[0], @sEnStr[0], 8, 8);
+   if sEnStr <> CHECKENSTR then                     // 校验解密结果
+      FCanEncry := False;                           // 密码错 → 静默降级
+end;
+```
+**三要点**：①加密由 `nVer = 1` 标记且**必须有 `FPassword`**
+②**校验方式是解密 `sEnStr`（7 字节）后比对 `'lom2com'`**
+③**密码错误则静默降级为不加密读取**。
+`DecryBuffer` 来自 **`DES` 单元**（已确认：`DES.pas:18/369`，563 行）——
+**是 DES 加密**。
+> ⚠️ **与 WEMADE 加密是两套不同机制**：`.Lib` = **DES**（`DecryBuffer` +
+> `lom2com` 校验）；QuestDiary 文本 = **WEMADE**（`EDCode.Decrypt` +
+> `F0 39 AB 8E` 种子，Round 812）。
+
+**〔索引区读取（`LoadIndex`，`:246-295`）〕**
+```
+Seek(FHeader.IndexOffset)
+if OffsetSize > 0 then    // 索引被压缩
+   ZIPDecompress(...) → 校验解压大小 == ImageCountSize + 10*4
+   Move(OffsetBuffer[10*SizeOf(Integer)], ...)   // 跳过 10 个 int32 的头部
+else                      // 未压缩
+   Read(OffsetBuffer, ImageCountSize)
+```
+**两个关键点**：①**索引区可选 ZIP 压缩**（`OffsetSize > 0` 标记）
+②**压缩时解压结果前有 10 个 int32（40 字节）头部需跳过**，
+且解压大小必须**恰好 = `ImageCountSize + 40`**，否则判无效。
+防御性检查：`OffsetSize > 50 MB` 直接放弃（`:258`）。
+
+**〔格式谱系更新（四种容器全不同）〕**
+
+| 格式 | 解析器 | 头部 | 图头 | 压缩 | 加密 |
+|---|---|---:|---:|---|---|
+| **`.Lib`** | `wmMyImage.pas` | **56 B**（`Mir3 Library`） | **18 B** | 索引可选 ZIP | **DES** |
+| `.wil/.wix` | `WIL.pas` | `ILIB v1.0-WEMADE` | 16 B | 无 | 无 |
+| `.Zl` | `wmM3Zip.pas` | 25 B 索引头 | **17 B** | zlib | 无 |
+| Mir2 压缩 | `wmM2Zip.pas` | 未读 | 未读 | 未读 | 未读 |
+
+→ **做解码器必须先识别容器类型，不能假设统一格式**。
+
+**〔未验证〕**`DecryBuffer` 的 DES 具体实现（在未读的 `DES.pas`）；
+`FPassword` 来源；`{$IFDEF WORKFILE}` 的加密写出；
+`IndexOffset1`/`IndexOffset2` 用途；`wmM2Zip.pas`/`wmUtil.pas`；
+**用真实 `.Lib` 文件验证 —— 本机无 `.Lib` 文件**（只有 `.wil/.wix`）。
+
+**落盘**：`client-libraries.md` §8（约 145 行）。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

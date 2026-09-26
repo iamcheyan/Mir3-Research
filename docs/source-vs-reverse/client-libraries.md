@@ -255,3 +255,119 @@ lib = wilsdk.WilLibrary('/home/tetsuya/mir2ei/Data/MagicEx.wil')
 print('count', lib.count); print(lib.header(0)); print(lib.header(2))
 "
 ```
+
+---
+
+## 8. `.Lib` 格式（`wmMyImage.pas`）—— **Preview 优先加载的格式**（Round 824）
+
+> `Source/Client/wmMyImage.pas`（741 行）。
+> **这是 `uWilFile.pas` 优先加载、失败才回退 `.wil` 的那个格式**
+> （§1 已记录 `WILType in [t_wmMyImage]` 的回退条件）。
+
+### 8.1 三个格式常量（`:7-10`）
+
+```pascal
+HEADERNAME = 'Mir3 Library';   // ← Title 字段的内容（16 字节）
+CHECKENSTR = 'lom2com';        // ← 加密校验串
+MYFILEEXT  = '.Lib';           // ← 扩展名
+```
+
+> **`lom2com`** 与 `reference/mir3-source/README.md` §1 记录的
+> SVN 出处 `code.lom2.com/svn/Mir2` **同源** —— 这是 LOM2 社区自己加的格式。
+
+### 8.2 `TWMImageHeader` = **56 字节**（`:13-25`）
+
+| 字段 | 偏移 | 大小 | 说明 |
+|---|---:|---:|---|
+| `Title` | 0 | 16 | 应为 `'Mir3 Library'` |
+| `sEnStr` | 16 | **7** | 加密校验区（加密时存 `lom2com` 的密文） |
+| `nVer` | 23 | 1 | **版本；`nVer = 1` 表示启用加密**（`:232`） |
+| `ImageCount2` | 24 | 4 | 加密时的图像数（`:261` 用它覆盖 `ImageCount`） |
+| `IndexOffset1` | 28 | 4 | — |
+| `IndexOffset2` | 32 | 4 | — |
+| `OffsetSize` | 36 | 4 | 索引区压缩后大小（`> 0` 表示索引被 ZIP 压缩） |
+| `ImageCount` | 40 | 4 | 图像数 |
+| `UpDateTime` | 44 | 8 | `TDateTime`（Double） |
+| `IndexOffset` | 52 | 4 | 索引区偏移 |
+| **合计** | | **56** | |
+
+### 8.3 `TWMImageInfo` = **18 字节**（`:27-31`）
+
+| 字段 | 大小 | 说明 |
+|---|---:|---|
+| `DXInfo: TDXTextureInfo` | **13** | `nWidth(2) nHeight(2) px(2) py(2) bShadow(1) shShadowPX(2) shShadowPY(2)` |
+| `btImageFormat: TWILColorFormat` | 1 | 色格式（4 种，见 §1） |
+| `nDataSize: Integer` | 4 | 数据大小 |
+| **合计** | **18** | |
+
+> ⚠️ **与 `.Zl`（`wmM3Zip.pas`）的 `TWMImageInfo` 是 17 字节不同**
+> （§2.2 记录的是 17 字节）—— **两个格式的图头不一样，别混用**。
+
+### 8.4 加密机制（`:232-238`）
+
+```pascal
+FboEncryVer := FHeader.nVer = 1;                    // 版本 1 = 加密版
+FCanEncry := FboEncryVer and (FPassword <> '');     // 还需提供密码
+if FCanEncry then begin
+   DecryBuffer(FPassword, @FHeader.sEnStr[0], @sEnStr[0], 8, 8);
+   if sEnStr <> CHECKENSTR then                     // 校验解密结果
+      FCanEncry := False;
+end;
+```
+
+**三重要点**：
+1. **加密由 `nVer = 1` 标记**，且**必须有 `FPassword`**（密码来自外部）。
+2. **校验方式是解密 `sEnStr`（7 字节）后比对 `'lom2com'`** ——
+   **密码错误则 `FCanEncry := False`，静默降级为不加密读取**。
+3. `DecryBuffer` 来自 `DES` 单元（`:5` `uses ... DES`）——
+   **是 DES 加密**，不是 `EDCode.pas` 的 WEMADE 算法。
+
+> ⚠️ **与 WEMADE 加密（`server.md` §13.10）是两套不同机制**：
+> - **`.Lib` 加密** = **DES**（`DecryBuffer` + `lom2com` 校验）
+> - **QuestDiary 文本加密** = **WEMADE**（`EDCode.Decrypt` + `F0 39 AB 8E` 种子）
+
+### 8.5 索引区读取（`LoadIndex`，`:246-295`）
+
+```
+Seek(FHeader.IndexOffset)
+if FHeader.OffsetSize > 0 then          // ← 索引被压缩
+   Read(pvalue, OffsetSize)
+   OffsetSize := ZIPDecompress(pvalue, OffsetSize, ImageCountSize, OffsetBuffer)
+   if OffsetSize = ImageCountSize + 10*4 then       // ← 校验解压大小
+      Move(OffsetBuffer[10*SizeOf(Integer)], FIndexList.List^, ImageCountSize)
+      //                  ↑ 跳过 10 个 int32 的头部
+else                                     // ← 索引未压缩
+   Read(OffsetBuffer, ImageCountSize)
+   Move(OffsetBuffer^, FIndexList.List^, ImageCountSize)
+```
+
+**两个关键点**：
+1. **索引区可选 ZIP 压缩**（由 `OffsetSize > 0` 标记）。
+2. **压缩时解压结果前有 10 个 int32 的头部**（40 字节）需跳过 ——
+   且解压大小必须**恰好等于 `ImageCountSize + 40`**，否则判为无效。
+
+**防御性检查**：`OffsetSize > 1024*1024*50`（50 MB）直接放弃（`:258`）。
+
+### 8.6 与其他格式的关系（更新 §1 的格式谱系）
+
+| 格式 | 解析器 | 头部 | 图头 | 压缩 | 加密 |
+|---|---|---:|---:|---|---|
+| **`.Lib`** | `wmMyImage.pas` | **56 B**（`Mir3 Library`） | **18 B** | 索引可选 ZIP | **DES**（`nVer=1`） |
+| `.wil/.wix` | `WIL.pas`（`t_wmM3Def`） | 实测 `ILIB v1.0-WEMADE` | 16 B | 无 | 无 |
+| `.Zl` | `wmM3Zip.pas`（`t_wmM3Zip`） | 25 B 索引头 | **17 B** | zlib | 无 |
+| Mir2 压缩 | `wmM2Zip.pas` | 未读 | 未读 | 未读 | 未读 |
+
+→ **三种容器的头部/图头/压缩/加密全都不同** ——
+**做解码器时必须先识别容器类型，不能假设统一格式**。
+
+### 8.7 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `DecryBuffer` 的 DES 具体实现 | 在 `DES` 单元（未读） |
+| `FPassword` 的来源 | 未追（`uWilFile.pas` 有 `AWMImages.Password`） |
+| `FormatHeader`/`FormatImageInfo`/`FormatDataBuffer` 的加密写出 | `{$IFDEF WORKFILE}` 条件编译，客户端不启用 |
+| `IndexOffset1`/`IndexOffset2` 的用途 | 未追（只读了 `IndexOffset`） |
+| `wmM2Zip.pas`（Mir2 压缩变体） | 未读 |
+| `wmUtil.pas`（4,497 行） | 未读 |
+| 用真实 `.Lib` 文件验证 | **本机无 `.Lib` 文件**（`mir2ei` 与 EI 客户端目录只有 `.wil/.wix`） |

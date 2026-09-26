@@ -166,7 +166,7 @@ D-client	Source/Client/wmM2Def.pas	525	17922	pending
 D-client	Source/Client/wmM2Zip.pas	302	9989	pending	Round 819: Mir2 压缩变体，未读
 D-client	Source/Client/wmM3Def.pas	537	16638	pending	
 D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
-D-client	Source/Client/wmMyImage.pas	741	25787	pending	Round 819: .Lib 格式解析器（Preview 优先加载的格式），未读
+D-client	Source/Client/wmMyImage.pas	741	25787	covered	Round 824: .Lib 格式全解(56B头/18B图头/DES加密/lom2com校验/ZIP索引+10个int32头部)；DecryBuffer实现与真实文件验证待做
 D-client	Source/Client/wmUtil.pas	4497	489745	pending	Round 819: 图像/压缩工具库 4497 行，未读
 D-client	Source/Client/Light/Light0a.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
@@ -285,7 +285,7 @@ E-db	Source/DataBaseServer/Common/mir2packet.cpp	110	2056	pending
 E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	pending	
 E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	Round 820: SQL/ODBC 层，未读
 E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	pending	
-C-common	Source/Common/DES.pas	563	16649	pending	
+C-common	Source/Common/DES.pas	563	16649	partial	Round 824: DecryBuffer 定位（.Lib 加密用）；实现主体待读
 C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
 C-common	Source/Common/GList.pas	547	14813	pending	
 C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
