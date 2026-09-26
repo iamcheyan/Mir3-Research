@@ -3,6 +3,8 @@
 
   const SECTIONS = [
     { id: 'overview', label: '总览', eyebrow: 'SECTION / OVERVIEW' },
+    { id: 'differences', label: '差异清单', eyebrow: 'DIRECTION / DIFFERENCES' },
+    { id: 'all', label: '全站记录', eyebrow: 'LEDGER / ALL RECORDS' },
     { id: 'monsters', label: '怪物', eyebrow: 'ENTITY / MONSTERS' },
     { id: 'npcs', label: 'NPC', eyebrow: 'ENTITY / NPC' },
     { id: 'items', label: '物品', eyebrow: 'ENTITY / ITEMS' },
@@ -13,42 +15,54 @@
     { id: 'decisions', label: '结论', eyebrow: 'FINAL / DECISIONS' }
   ];
   const DATA_FILES = ['monsters', 'npcs', 'items', 'skills', 'maps', 'respawns', 'quests'];
-  const state = { meta: null, data: {}, section: 'overview', query: '', status: '', source: '', different: false, pending: false, page: 1, pageSize: 36 };
-  const $ = (id) => document.getElementById(id);
-
-  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
-  const jsonText = (value) => {
-    try { return JSON.stringify(value, null, 2); } catch { return String(value); }
+  const ENTITY_LABELS = { monster: '怪物', npc: 'NPC', item: '物品', skill: '技能', map: '地图', respawn: '刷新', quest: '任务' };
+  const STATUS_LABELS = {
+    'mir2ei-only': 'mir2ei 有 / Zircon 没有',
+    'zircon-only': 'Zircon 有 / mir2ei 没有',
+    both: '双方都有',
+    'both-different': '双方都有但不同',
+    resolved: '已解决',
+    conflict: '身份/资源冲突',
+    'pending-evidence': '待证据',
+    partial: '部分不同',
+    'production-applied': '已应用',
+    'retain-current': '保留当前 Zircon'
   };
+  const STATUS_TITLES = {
+    'mir2ei-only': 'mir2ei 有，Zircon 当前没有安全对应项',
+    'zircon-only': 'Zircon 有，mir2ei 当前没有对应标准记录',
+    conflict: '双方有候选，但身份或资源冲突',
+    'pending-evidence': '证据不足，暂不覆盖当前 Zircon',
+    resolved: '身份和结论已闭合',
+    partial: '双方身份已确认，但名称/图片/地图/刷新仍不同',
+    'production-applied': '已应用到生产双库',
+    'retain-current': '有证据但按当前决定保留 Zircon'
+  };
+  const DIMENSION_LABELS = { identity: '身份', display_name: '名称', image: '图片', stats: '属性', map: '地图', coordinate: '坐标', respawn: '刷新', drops: '掉落', quest_links: '任务关联' };
+  const state = { meta: null, data: {}, section: 'overview', query: '', status: '', direction: '', page: 1, pageSize: 30 };
+  const $ = (id) => document.getElementById(id);
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const jsonText = (value) => { try { return JSON.stringify(value, null, 2); } catch { return String(value); } };
   const safeImage = (path) => typeof path === 'string' && path.startsWith('data/images/') ? path : '';
-  const sourceLabel = (source) => source?.source_type || 'source';
   const statusClass = (status) => String(status || 'pending').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
-  const statusText = (status) => ({ confirmed: 'confirmed', investigate: 'investigate', pending: 'pending', 'retain-current': 'retain-current', 'position-applied': '已应用', applied: '已应用', 'production-applied': '已应用', conflict: 'conflict', 'zircon-only': 'Zircon-only', 'yxs-only': 'YXS-only', exact: 'exact', variant: 'variant', renamed: 'renamed', replacement: 'replacement', matched: 'matched', 'display-name-only': 'display-name-only', 'resource-candidate': 'resource candidate', 'classic-name-only': 'classic-name-only', 'icon-conflict': 'icon-conflict', 'legacy-only': 'legacy-only', 'no-safe-index': 'no-safe-index' }[status] || status || 'pending');
+  const sourceLabel = (source) => source?.source_type || 'source';
+  const present = (value) => value ? String(value).slice(0, 14) + (String(value).length > 14 ? '…' : '') : '—';
   const valueText = (value) => {
     if (value === null || value === undefined || value === '') return '—';
-    if (typeof value === 'boolean') return value ? 'true' : 'false';
+    if (typeof value === 'boolean') return value ? '是' : '否';
     if (Array.isArray(value)) return value.length ? value.map(valueText).join(' · ') : '[]';
-    if (typeof value === 'object') return Object.entries(value).slice(0, 5).map(([k, v]) => `${k}: ${valueText(v)}`).join(' / ') || '{}';
+    if (typeof value === 'object') return Object.entries(value).slice(0, 4).map(([key, item]) => `${key}: ${valueText(item)}`).join(' / ') || '{}';
     return String(value);
   };
-  const pick = (record) => {
-    const left = record.left || {};
-    const right = record.right || {};
-    return left.MonsterName || left.NPCName || left.ItemName || left.Name || left.Description || right.standard_name || right.title || right.area || record.id;
-  };
+  const pick = (record) => record.zircon?.name || record.mir2ei?.name || record.id;
   const subtitle = (record) => {
-    const left = record.left || {};
-    const right = record.right || {};
-    const index = left.Index ?? right.website_id ?? record.id;
-    const identity = left._Identity || left.FileName || right.category || right.group || '';
-    return `#${index ?? '—'}${identity ? ` · ${identity}` : ''}`;
+    const z = record.zircon || {}; const m = record.mir2ei || {};
+    return `${record.entity_type ? ENTITY_LABELS[record.entity_type] : record.kind} · ${z.index ?? m.id ?? record.id}`;
   };
-  const fieldsFor = (obj, preferred) => {
-    if (!obj) return [];
-    const keys = preferred.filter((key) => Object.prototype.hasOwnProperty.call(obj, key));
-    return keys.map((key) => [key, obj[key]]);
-  };
-  const imageFor = (obj) => safeImage(obj?.image) || safeImage(obj?.Image) || safeImage(obj?.website_image);
+  const allRecords = () => DATA_FILES.flatMap((name) => state.data[name] || []);
+  const sectionRecords = () => state.section === 'all' ? allRecords() : (state.data[state.section] || []);
+  const dimensionSummary = (record) => Object.entries(record.dimensions || {}).filter(([, value]) => value === 'different' || value === 'unknown').map(([key, value]) => `${DIMENSION_LABELS[key] || key}${value === 'unknown' ? '?' : ''}`).slice(0, 5).join(' · ') || '无已知差异';
+  const sourcePath = (record) => (record.evidence || []).map((item) => item.source_path || '').join(' ');
 
   function renderNav() {
     $('section-nav').innerHTML = SECTIONS.map((section) => `<button class="nav-button ${state.section === section.id ? 'active' : ''}" data-section="${section.id}" type="button">${esc(section.label)}</button>`).join('');
@@ -56,142 +70,174 @@
   }
 
   function selectSection(section) {
-    state.section = section; state.page = 1; renderNav(); renderSection();
+    state.section = section; state.page = 1; state.status = ''; state.direction = ''; renderNav(); renderSection();
     if (section !== 'overview' && section !== 'decisions') window.scrollTo({ top: document.querySelector('.workspace-panel').offsetTop - 82, behavior: 'smooth' });
     if (section === 'decisions') window.scrollTo({ top: $('decisions').offsetTop - 82, behavior: 'smooth' });
     history.replaceState(null, '', `#${section}`);
   }
 
+  function coverageFor(kind) {
+    return state.meta?.counts?.coverage?.[kind] || {};
+  }
+  function totalFor(kind) { return coverageFor(kind).total || state.data[`${kind}s`]?.length || 0; }
+
   function renderMetrics() {
-    const c = state.meta.counts;
+    const workspace = state.meta.counts.workspace || {}; const website = state.meta.counts.website || {};
     const metrics = [
-      ['434', 'Zircon 怪物', 'MonsterInfo'], ['1,078', 'Zircon 物品', 'ItemInfo'], ['174', 'Zircon 技能', 'MagicInfo'], ['294', 'Zircon NPC', 'NPCInfo'], ['627', 'Zircon 地图', 'MapInfo'], ['2,475', 'Zircon 刷新', 'RespawnInfo'],
-      ['154', 'website 怪物', 'mir3-website'], ['371', 'website 物品', 'mir3-website'], ['61', 'website 技能', 'mir3-website'], ['24', 'website 任务组', 'mir3-website']
+      [workspace.MonsterInfo, 'Zircon 怪物', 'MonsterInfo'], [workspace.ItemInfo, 'Zircon 物品', 'ItemInfo'], [workspace.MagicInfo, 'Zircon 技能', 'MagicInfo'], [workspace.NPCInfo, 'Zircon NPC', 'NPCInfo'], [workspace.MapInfo, 'Zircon 地图', 'MapInfo'], [workspace.RespawnInfo, 'Zircon 刷新', 'RespawnInfo'],
+      [website.monsters, 'website 怪物', 'mir3-website'], [website.items, 'website 物品', 'mir3-website'], [website.skills, 'website 技能', 'mir3-website'], [website.missions, 'website 任务组', 'mir3-website']
     ];
-    $('metrics').innerHTML = metrics.map(([number, label, source]) => `<div class="metric"><strong>${number}</strong><span>${esc(label)}</span><small>${esc(source)}</small></div>`).join('');
+    $('metrics').innerHTML = metrics.map(([number, label, source]) => `<div class="metric"><strong>${Number(number || 0).toLocaleString('zh-CN')}</strong><span>${esc(label)}</span><small>${esc(source)}</small></div>`).join('');
   }
 
   function renderProduction() {
-    const p = state.meta.production || {};
-    const status = p.server_client_sha_equal ? '双库一致' : '需检查';
-    $('production-banner').innerHTML = `<div class="production-lead"><span class="status-dot applied"></span><div><b>生产应用已闭合</b><span>NPC 73 · RespawnInfo 18 · MonsterInfo 0 · MagicInfo 0</span></div></div><div class="production-meta"><span>System.db <code>${esc(p.server_sha256 || '—')}</code></span><span>${esc(status)}</span><span>Users.db 写入：<b>${p.users_db_written ? '是' : '否'}</b></span><span>验证：${esc(p.last_verified || '—')}</span></div>`;
+    const p = state.meta.production || {}; const status = p.server_client_sha_equal ? '双库一致' : '需检查';
+    $('production-banner').innerHTML = `<div class="production-lead"><span class="status-dot production-applied"></span><div><b>生产应用已闭合</b><span>NPC 73 · RespawnInfo 18 · MonsterInfo 0 · MagicInfo 0</span></div></div><div class="production-meta"><span>System.db <code>${esc(present(p.server_sha256))}</code></span><span>${esc(status)}</span><span>Users.db 写入：<b>${p.users_db_written ? '是' : '否'}</b></span><span>验证：${esc(p.last_verified || '—')}</span></div>`;
+  }
+
+  function statusCards() {
+    const status = state.meta.counts.status || {}; const coverage = state.meta.counts.coverage || {};
+    const cards = [['mir2ei-only', 'mir2ei-only'], ['zircon-only', 'zircon-only'], ['resolved', 'both-resolved'], ['conflict', 'both-conflict'], ['pending-evidence', 'pending-evidence'], ['partial', 'partial'], ['production-applied', 'production-applied'], ['retain-current', 'retain-current']];
+    return cards.map(([key, label]) => {
+      const count = ['mir2ei-only', 'zircon-only'].includes(key) ? Object.values(coverage).reduce((sum, values) => sum + (values[key] || 0), 0) : (status[key] || 0);
+      const byKind = Object.entries(coverage).map(([kind, values]) => `${ENTITY_LABELS[kind]} ${values[key] || 0}`).join(' · ');
+      return `<button class="status-summary status-summary-large" data-status="${key}" type="button"><span class="status-card-top"><i class="status-dot ${statusClass(key)}"></i>${esc(label)}</span><b>${count}</b><span>${esc(STATUS_TITLES[key])}</span><small>${esc(byKind)}</small></button>`;
+    }).join('');
   }
 
   function renderOverview() {
-    $('section-eyebrow').textContent = 'SECTION / OVERVIEW'; $('section-title').textContent = '总览'; $('panel-count').textContent = '证据面板'; $('filter-row').innerHTML = '';
-    const statuses = state.meta.counts.status || {};
-    const statusRows = Object.entries(statuses).sort((a, b) => b[1] - a[1]).map(([key, count]) => `<button class="status-summary" data-status="${esc(key)}" type="button"><span class="status-dot ${statusClass(key)}"></span><b>${count}</b><span>${esc(statusText(key))}</span></button>`).join('');
-    const c = state.meta.counts;
-    $('ledger').innerHTML = `<div class="overview-grid"><article class="overview-card wide"><p class="eyebrow">COVERAGE / DO NOT COLLAPSE</p><h3>网站目录是标准线索，不是 Zircon 全量</h3><div class="compare-bars"><div><span>技能</span><b>61</b><i style="width:35%"></i><small>vs Zircon 174</small></div><div><span>怪物</span><b>154</b><i style="width:35%"></i><small>vs Zircon 434</small></div><div><span>物品</span><b>371</b><i style="width:35%"></i><small>vs Zircon 1,078</small></div></div><p class="muted">具体业务 Index 只有在 manifest / 资源 / 任务 / 位置等证据闭合时才升级；没有直接对应就显示无直接对应。</p></article><article class="overview-card"><p class="eyebrow">DECISION STATES</p><div class="status-cloud">${statusRows}</div></article><article class="overview-card wide"><p class="eyebrow">SOURCE CHAIN</p><div class="source-chain"><span>workspace JSON</span><b>→</b><span>alignment manifest</span><b>→</b><span>legacy / website evidence</span><b>→</b><span>production apply</span></div><p class="muted">生成时间 ${esc(state.meta.generated_at)} · 数据版本 ${esc(state.meta.data_version)}</p></article><article class="overview-card"><p class="eyebrow">DB / PRODUCTION</p><dl class="compact-list"><div><dt>server</dt><dd>${esc(present(state.meta.production?.server_sha256))}</dd></div><div><dt>client</dt><dd>${esc(present(state.meta.production?.client_sha256))}</dd></div><div><dt>backup</dt><dd>双库已备份</dd></div><div><dt>Users.db</dt><dd>未写入</dd></div></dl></article></div>`;
-    const summary = state.meta.counts.summary_status || {};
-    document.querySelector('.overview-card:nth-child(2)')?.insertAdjacentHTML('afterbegin', `<div class="summary-banner"><b>${summary.confirmed ?? 0}</b> confirmed <b>${summary.investigate ?? 0}</b> investigate <b>${summary.pending ?? 0}</b> pending <b>${summary.unmatched ?? 0}</b> unmatched <b>${summary['retain-current'] ?? 0}</b> retain-current</div>`);
+    $('section-eyebrow').textContent = 'SECTION / OVERVIEW'; $('section-title').textContent = '总览'; $('panel-count').textContent = '双向结论面板'; $('filter-row').innerHTML = '';
+    const coverage = state.meta.counts.coverage || {}; const p = state.meta.production || {};
+    $('ledger').innerHTML = `<div class="overview-grid"><article class="overview-card wide"><p class="eyebrow">BIDIRECTIONAL CONCLUSION / CLICK TO FILTER</p><h3>差异不再折叠成一个 pending</h3><div class="status-cloud status-cloud-wide">${statusCards()}</div><p class="muted">mir2ei-only 与 Zircon-only 只在 manifest / candidate / Index 证据允许时生成；网站目录规模差不会直接臆造匹配。点击任一状态进入全站记录。</p></article><article class="overview-card wide"><p class="eyebrow">DIRECTION COVERAGE / ALL RECORDS</p><div class="coverage-table"><div class="coverage-head"><b>分类</b><b>mir2ei-only</b><b>Zircon-only</b><b>双方都有</b><b>记录</b></div>${Object.entries(coverage).map(([kind, values]) => `<div><span>${ENTITY_LABELS[kind]}</span><b>${values['mir2ei-only'] || 0}</b><b>${values['zircon-only'] || 0}</b><b>${values.both || 0}</b><b>${values.total || 0}</b></div>`).join('')}</div><p class="muted">地图来自 22 个 map family 区域图；任务来自 24 条 mission cross-reference。其余未逐项覆盖的范围明确保留为 Zircon-only 或 mir2ei-only，不以总量差替代证据。</p></article><article class="overview-card"><p class="eyebrow">SOURCE CHAIN</p><div class="source-chain"><span>workspace JSON</span><b>→</b><span>alignment manifest</span><b>→</b><span>legacy / website evidence</span><b>→</b><span>production apply</span></div><p class="muted">生成时间 ${esc(state.meta.generated_at)} · 数据版本 ${esc(state.meta.data_version)}</p></article><article class="overview-card"><p class="eyebrow">DB / PRODUCTION</p><dl class="compact-list"><div><dt>server</dt><dd>${esc(present(p.server_sha256))}</dd></div><div><dt>client</dt><dd>${esc(present(p.client_sha256))}</dd></div><div><dt>双库</dt><dd>${p.server_client_sha_equal ? 'SHA 一致' : '需检查'}</dd></div><div><dt>Users.db</dt><dd>未写入</dd></div></dl></article></div>`;
+    document.querySelectorAll('[data-status]').forEach((button) => button.addEventListener('click', () => { selectSection('all'); state.status = button.dataset.status; renderSection(); }));
   }
-  const present = (value) => value ? String(value).slice(0, 12) + '…' : '—';
+  function statusMatches(record, filter) {
+    if (!filter) return true;
+    if (filter === 'both-different') return ['conflict', 'partial'].includes(record.conclusion?.status);
+    return record.conclusion?.status === filter;
+  }
 
-  function activeRecords() {
-    const records = state.data[state.section] || [];
-    const query = state.query.trim().toLowerCase();
+  function filteredRecords(records, forcedDirection = '') {
+    const query = state.query.trim().toLowerCase(); const direction = forcedDirection || state.direction;
     return records.filter((record) => {
-      const blob = JSON.stringify(record).toLowerCase();
-      const status = record.conclusion?.status || '';
-      const sourceBlob = (record.evidence || []).map(sourceLabel).join(' ').toLowerCase();
-      if (query && !blob.includes(query)) return false;
-      if (state.status && status !== state.status) return false;
-      if (state.source && !sourceBlob.includes(state.source.toLowerCase())) return false;
-      if (state.different && ['confirmed', 'matched', 'same', 'exact'].includes(status)) return false;
-      if (state.pending && !['pending', 'investigate', 'conflict', 'retain-current', 'zircon-only', 'yxs-only'].includes(status)) return false;
+      if (query && !JSON.stringify(record).toLowerCase().includes(query)) return false;
+      if (state.status && !statusMatches(record, state.status)) return false;
+      if (direction && record.direction !== direction) return false;
       return true;
     });
   }
 
-  function renderFilters(records) {
-    const counts = new Map();
-    records.forEach((record) => counts.set(record.conclusion?.status || 'pending', (counts.get(record.conclusion?.status || 'pending') || 0) + 1));
-    const pills = [['', '全部', records.length], ...Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([key, count]) => [key, statusText(key), count])];
-    $('filter-row').innerHTML = `<span class="filter-caption">FILTER</span>${pills.map(([key, label, count]) => `<button class="filter-pill ${state.status === key ? 'active' : ''}" type="button" data-filter-status="${esc(key)}"><span class="status-dot ${statusClass(key)}"></span>${esc(label)} <b>${count}</b></button>`).join('')}<button class="filter-pill ${state.different ? 'active' : ''}" type="button" data-toggle="different">只看差异</button><button class="filter-pill ${state.pending ? 'active' : ''}" type="button" data-toggle="pending">只看未决</button>`;
+  function renderFilters(records, difference = false) {
+    const counts = {}; records.forEach((record) => { const key = record.conclusion?.status || 'pending-evidence'; counts[key] = (counts[key] || 0) + 1; if (['conflict', 'partial'].includes(key)) counts['both-different'] = (counts['both-different'] || 0) + 1; });
+    const filterKeys = ['resolved', 'mir2ei-only', 'zircon-only', 'both-different', 'pending-evidence', 'production-applied', 'retain-current', 'conflict', 'partial'];
+    const statusButtons = filterKeys.map((key) => `<button class="filter-pill ${state.status === key ? 'active' : ''}" type="button" data-filter-status="${key}"><span class="status-dot ${statusClass(key)}"></span>${esc(STATUS_LABELS[key])}<b>${counts[key] || 0}</b></button>`).join('');
+    const directionButtons = difference ? `<button class="filter-pill ${state.direction === 'mir2ei-only' ? 'active' : ''}" type="button" data-direction="mir2ei-only">mir2ei-only</button><button class="filter-pill ${state.direction === 'zircon-only' ? 'active' : ''}" type="button" data-direction="zircon-only">zircon-only</button>` : '';
+    $('filter-row').innerHTML = `<span class="filter-caption">FILTER</span><button class="filter-pill ${!state.status ? 'active' : ''}" type="button" data-filter-status="">全部 <b>${records.length}</b></button>${statusButtons}${directionButtons}`;
     $('filter-row').querySelectorAll('[data-filter-status]').forEach((button) => button.addEventListener('click', () => { state.status = button.dataset.filterStatus; state.page = 1; renderSection(); }));
-    $('filter-row').querySelectorAll('[data-toggle]').forEach((button) => button.addEventListener('click', () => { state[button.dataset.toggle] = !state[button.dataset.toggle]; state.page = 1; renderSection(); }));
+    $('filter-row').querySelectorAll('[data-direction]').forEach((button) => button.addEventListener('click', () => { state.direction = state.direction === button.dataset.direction ? '' : button.dataset.direction; state.page = 1; renderSection(); }));
   }
 
-  function fieldTable(obj, preferred) {
-    const fields = fieldsFor(obj, preferred);
-    if (!fields.length) return '<p class="empty">无直接对应</p>';
+  function sideFields(side) {
+    if (!side?.exists) return '<p class="empty">无可靠对应实体</p>';
+    const fields = [['名称', side.name], ['Index / ID', side.index ?? side.id], ['source', (side.source || []).map(sourceLabel).join(' · ')]];
     return `<dl class="field-table">${fields.map(([key, value]) => `<div><dt>${esc(key)}</dt><dd>${esc(valueText(value))}</dd></div>`).join('')}</dl>`;
   }
-
-  function evidenceStrip(record) {
-    return `<div class="evidence-strip">${(record.evidence || []).slice(0, 4).map((item) => `<span title="${esc(item.source_path || '')}"><b>${esc(sourceLabel(item))}</b><small>${esc(item.source_id || item.page || 'record')}</small></span>`).join('')}</div>`;
-  }
-
-  function sideCard(label, obj, side, preferred) {
-    const image = imageFor(obj);
-    return `<article class="side-card ${side}"><div class="side-label"><span class="side-rule"></span>${esc(label)}</div>${image ? `<img class="record-image" src="${esc(image)}" alt="" loading="lazy">` : ''}${fieldTable(obj, preferred)}</article>`;
+  function imageFor(record, side) { return safeImage(side === 'zircon' ? record.left?.Image : record.right?.image) || safeImage(side === 'mir2ei' ? record.right?.website_image : ''); }
+  function sideCard(record, side, label) {
+    const entity = side === 'zircon' ? record.zircon : record.mir2ei; const image = imageFor(record, side);
+    return `<article class="side-card ${side === 'zircon' ? 'left-side' : 'right-side'}"><div class="side-label"><span class="side-rule"></span>${esc(label)}</div>${image ? `<img class="record-image" src="${esc(image)}" alt="" loading="lazy">` : ''}${sideFields(entity)}</article>`;
   }
 
   function recordRow(record) {
-    const status = record.conclusion?.status || 'pending';
-    const left = record.left;
-    const right = record.right;
-    const leftPreferred = ['Index', '_Identity', 'MonsterName', 'NPCName', 'ItemName', 'Name', 'Image', 'Shape', 'Level', 'IsBoss', 'Class', 'Map', 'Region', 'CenterX', 'CenterY', 'Count', 'Delay', 'DropSet', 'Description'];
-    const rightPreferred = ['standard_name', 'title', 'area', 'category', 'class', 'description', 'map_match', 'match_status', 'confidence', 'apply_status', 'direct_correspondence'];
-    return `<article class="record-row" data-record-id="${esc(record.id)}"><button class="record-main" type="button" aria-label="打开 ${esc(pick(record))} 详情"><div class="record-heading"><div><h3>${esc(pick(record))}</h3><p>${esc(subtitle(record))}</p></div><span class="status-chip ${statusClass(status)}"><i class="status-dot ${statusClass(status)}"></i>${esc(statusText(status))}</span></div><div class="comparison-grid">${sideCard('ZIRCON / CURRENT', left, 'left-side', leftPreferred)}<div class="versus" aria-hidden="true">↔</div>${sideCard('MIR2EI / EVIDENCE', right, 'right-side', rightPreferred)}</div>${evidenceStrip(record)}<div class="conclusion-line"><b>${esc(record.conclusion?.title || statusText(status))}</b><span>${esc(record.conclusion?.rationale || '证据保留在详情中')}</span></div></button></article>`;
+    const status = record.conclusion?.status || 'pending-evidence';
+    return `<article class="record-row" data-record-id="${esc(record.id)}"><button class="record-main" type="button" aria-label="打开 ${esc(pick(record))} 详情"><div class="record-heading"><div><h3>${esc(pick(record))}</h3><p>${esc(subtitle(record))}</p></div><span class="status-chip ${statusClass(status)}"><i class="status-dot ${statusClass(status)}"></i>${esc(STATUS_LABELS[status] || status)}</span></div><div class="record-summary"><span class="direction-label ${statusClass(record.direction)}">${esc(record.direction)}</span><span>Zircon：${esc(record.zircon?.name || '—')} / ${esc(record.zircon?.index ?? '—')}</span><span>mir2ei：${esc(record.mir2ei?.name || '—')} / ${esc(record.mir2ei?.id || '—')}</span><span>当前使用：${esc(record.current_usage || '—')}</span></div><div class="comparison-grid">${sideCard(record, 'zircon', 'ZIRCON / CURRENT')}<div class="versus" aria-hidden="true">↔</div>${sideCard(record, 'mir2ei', 'MIR2EI / EVIDENCE')}</div><div class="record-meta-grid"><span><b>差异维度</b>${esc(dimensionSummary(record))}</span><span><b>原因</b>${esc(record.reason || '—')}</span><span><b>下一步</b>${esc(record.next_action || '—')}</span></div><div class="evidence-strip">${(record.evidence || []).slice(0, 3).map((item) => `<span title="${esc(item.source_path || '')}"><b>${esc(sourceLabel(item))}</b><small>${esc(item.source_id || item.page || 'record')}</small></span>`).join('')}</div></button></article>`;
   }
 
   function renderPager(total) {
     const pages = Math.max(1, Math.ceil(total / state.pageSize)); state.page = Math.min(state.page, pages);
-    const buttons = [Math.max(1, state.page - 2), Math.max(1, state.page - 1), state.page, Math.min(pages, state.page + 1), Math.min(pages, state.page + 2)].filter((page, index, arr) => arr.indexOf(page) === index && page >= 1 && page <= pages);
+    const buttons = [state.page - 1, state.page, state.page + 1].filter((page) => page >= 1 && page <= pages);
     $('pager').innerHTML = `<button class="pager-button" type="button" data-page="${state.page - 1}" ${state.page <= 1 ? 'disabled' : ''}>上一页</button>${buttons.map((page) => `<button class="pager-button ${page === state.page ? 'active' : ''}" type="button" data-page="${page}">${page}</button>`).join('')}<button class="pager-button" type="button" data-page="${state.page + 1}" ${state.page >= pages ? 'disabled' : ''}>下一页</button><span>共 ${total} 条 · ${pages} 页</span>`;
     $('pager').querySelectorAll('[data-page]').forEach((button) => button.addEventListener('click', () => { state.page = Number(button.dataset.page); renderSection(); }));
   }
 
-  function renderSection() {
-    if (!state.meta) return;
-    if (state.section === 'overview') { renderOverview(); return; }
-    if (state.section === 'decisions') { renderDecisions(); return; }
-    const section = SECTIONS.find((item) => item.id === state.section);
-    const all = state.data[state.section] || []; const filtered = activeRecords();
-    $('section-eyebrow').textContent = section.eyebrow; $('section-title').textContent = section.label; $('panel-count').textContent = `${filtered.length} / ${all.length} 条`;
-    renderFilters(all);
-    const start = (state.page - 1) * state.pageSize; const page = filtered.slice(start, start + state.pageSize);
+  function renderRecordList(records, title, eyebrow, difference = false) {
+    $('section-eyebrow').textContent = eyebrow; $('section-title').textContent = title; $('panel-count').textContent = `${records.length} 条记录`;
+    renderFilters(records, difference);
+    const filtered = filteredRecords(records); const start = (state.page - 1) * state.pageSize; const page = filtered.slice(start, start + state.pageSize);
     $('ledger').innerHTML = page.length ? page.map(recordRow).join('') : '<div class="empty-state"><b>没有符合条件的记录</b><span>清除搜索或筛选，保留原始数据范围。</span></div>';
     renderPager(filtered.length);
     $('ledger').querySelectorAll('.record-main').forEach((button, index) => button.addEventListener('click', () => openDetail(page[index])));
   }
 
+  function renderDifferences() {
+    const records = filteredRecords(allRecords()); $('section-eyebrow').textContent = 'DIRECTION / DIFFERENCES'; $('section-title').textContent = '差异清单'; $('panel-count').textContent = `${records.length} 条双向差异记录`;
+    renderFilters(allRecords(), true);
+    const groups = ['monster', 'npc', 'item', 'skill', 'map', 'respawn', 'quest'];
+    const region = (direction, title) => {
+      const selected = records.filter((record) => record.direction === direction); const byKind = groups.map((kind) => [kind, selected.filter((record) => record.entity_type === kind)]).filter(([, items]) => items.length);
+      return `<section class="diff-zone"><div class="diff-zone-head"><div><p class="eyebrow">${direction.toUpperCase()}</p><h3>${title}</h3></div><b>${selected.length}</b></div>${byKind.map(([kind, items]) => `<div class="diff-group"><h4>${ENTITY_LABELS[kind]} <span>${items.length}</span></h4>${items.slice(0, 80).map(recordRow).join('')}${items.length > 80 ? `<p class="muted">当前分类显示前 80 条；使用搜索缩小范围。</p>` : ''}</div>`).join('') || '<div class="empty-state"><b>当前过滤没有记录</b></div>'}</section>`;
+    };
+    $('ledger').innerHTML = `<div class="difference-toolbar"><p class="muted">两个区域按实体分类分组。导出按钮只导出当前搜索、状态与方向过滤后的 JSON。</p><button class="tool-button export-button" id="export-differences" type="button">导出当前过滤 JSON</button></div>${region('mir2ei-only', 'mir2ei 有 / Zircon 没有')}${region('zircon-only', 'Zircon 有 / mir2ei 没有')}`;
+    $('pager').innerHTML = '';
+    $('ledger').querySelectorAll('.record-main').forEach((button) => button.addEventListener('click', () => { const record = allRecords().find((item) => item.id === button.closest('.record-row')?.dataset.recordId); openDetail(record); }));
+    $('export-differences').addEventListener('click', () => { const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'alignment-differences-filtered.json'; anchor.click(); URL.revokeObjectURL(url); });
+  }
+
   function renderDecisions() {
     $('section-eyebrow').textContent = 'FINAL / DECISIONS'; $('section-title').textContent = '结论与下一步'; $('panel-count').textContent = '按实体保留'; $('filter-row').innerHTML = '';
     const p = state.meta.production || {};
-    $('ledger').innerHTML = `<div class="decision-grid large"><article class="decision-card applied-card"><span class="status-chip position-applied">已应用</span><h3>NPC 坐标与 18 条刷新目标已写入 System.db</h3><p>本次应用只触及批准的 NPC 73 条与 RespawnInfo 18 条。MonsterInfo / MagicInfo 业务字段均为 0 变更。</p><dl class="compact-list"><div><dt>server/client</dt><dd>${esc(present(p.server_sha256))} / ${esc(present(p.client_sha256))}</dd></div><div><dt>round-trip</dt><dd>PASS · unapproved changes 0</dd></div><div><dt>Users.db</dt><dd>未写入</dd></div></dl></article><article class="decision-card"><span class="status-chip retain-current">retain-current</span><h3>当前数据不能被网站目录覆盖</h3><p>网站 61 技能、154 怪物、371 物品与 Zircon 全量的规模不同。无直接对应时保留当前 Index，不猜创建、删除或索引迁移。</p></article><article class="decision-card"><span class="status-chip investigate">investigate</span><h3>人工决定仍集中在证据未闭合处</h3><p>优先查看 conflict、investigate、pending、Zircon-only 与 YXS-only。每条记录详情含来源路径、source_id、原始 manifest 摘要和当前字段。</p></article></div>`;
+    $('ledger').innerHTML = `<div class="decision-grid large"><article class="decision-card applied-card"><span class="status-chip production-applied">已应用</span><h3>NPC 坐标与 18 条刷新目标已写入 System.db</h3><p>本次应用只触及批准的 NPC 73 条与 RespawnInfo 18 条。MonsterInfo / MagicInfo 业务字段均为 0 变更。</p><dl class="compact-list"><div><dt>server/client</dt><dd>${esc(present(p.server_sha256))} / ${esc(present(p.client_sha256))}</dd></div><div><dt>round-trip</dt><dd>PASS · unapproved changes 0</dd></div><div><dt>Users.db</dt><dd>未写入</dd></div></dl></article><article class="decision-card"><span class="status-chip retain-current">保留当前 Zircon</span><h3>当前数据不能被网站目录覆盖</h3><p>网站 61 技能、154 怪物、371 物品与 Zircon 全量的规模不同。无安全对应时显示 Zircon-only，不把它误报为已解决。</p></article><article class="decision-card"><span class="status-chip pending-evidence">待证据</span><h3>人工决定仍集中在证据未闭合处</h3><p>优先查看 conflict、pending-evidence、mir2ei-only 与 Zircon-only。每条详情都保留两侧真实字段、维度矩阵、来源路径与下一步。</p></article></div>`;
     $('pager').innerHTML = '';
   }
 
-  function detailSection(title, content) { return `<section class="drawer-section"><p class="eyebrow">${esc(title)}</p>${content}</section>`; }
-  function objectDetails(obj) {
-    if (!obj) return '<p class="empty">无直接对应</p>';
-    return `<pre class="json-block">${esc(jsonText(obj))}</pre>`;
+  function renderSection() {
+    if (!state.meta) return;
+    if (state.section === 'overview') return renderOverview();
+    if (state.section === 'differences') return renderDifferences();
+    if (state.section === 'decisions') return renderDecisions();
+    const section = SECTIONS.find((item) => item.id === state.section); const all = sectionRecords(); renderRecordList(all, section.label, section.eyebrow);
   }
+
+  function objectDetails(obj) { return obj ? `<pre class="json-block">${esc(jsonText(obj))}</pre>` : '<p class="empty">无可靠对应实体</p>'; }
+  function dimensionTable(record) { return `<div class="dimension-matrix">${Object.entries(record.dimensions || {}).map(([key, value]) => `<div><span>${esc(DIMENSION_LABELS[key] || key)}</span><b class="dimension-${value}">${esc(value)}</b></div>`).join('')}</div>`; }
   function openDetail(record) {
     if (!record) return;
-    const status = record.conclusion?.status || 'pending'; const left = record.left; const right = record.right;
-    $('drawer-kind').textContent = `${record.kind.toUpperCase()} / ${statusText(status)}`; $('drawer-title').textContent = pick(record);
-    $('drawer-body').innerHTML = `${detailSection('CONCLUSION', `<div class="drawer-conclusion"><span class="status-chip ${statusClass(status)}"><i class="status-dot ${statusClass(status)}"></i>${esc(statusText(status))}</span><h3>${esc(record.conclusion?.title || 'pending')}</h3><p>${esc(record.conclusion?.rationale || '')}</p><dl class="compact-list"><div><dt>当前实际使用</dt><dd>${esc(record.conclusion?.current_actual || '—')}</dd></div><div><dt>建议标准</dt><dd>${esc(record.conclusion?.proposed_standard || '—')}</dd></div><div><dt>应用状态</dt><dd>${esc(record.conclusion?.applied || '—')}</dd></div></dl></div>`)}${detailSection('ZIRCON / CURRENT', objectDetails(left))}${detailSection('MIR2EI / EVIDENCE', objectDetails(right))}${detailSection('SOURCES', `<div class="source-list">${(record.evidence || []).map((item) => `<div><b>${esc(sourceLabel(item))}</b><span>${esc(item.source_path || '—')}</span><small>${esc(item.source_id || item.page || '—')}</small></div>`).join('')}</div>`)}${detailSection('RAW MANIFEST / LINKED FIELDS', objectDetails(record.raw))}`;
+    const status = record.conclusion?.status || 'pending-evidence'; $('drawer-kind').textContent = `${String(record.entity_type || record.kind).toUpperCase()} / ${esc(record.direction)}`; $('drawer-title').textContent = pick(record);
+    $('drawer-body').innerHTML = `<section class="drawer-section"><p class="eyebrow">CONCLUSION / FINAL DECISION</p><div class="drawer-conclusion"><span class="status-chip ${statusClass(status)}"><i class="status-dot ${statusClass(status)}"></i>${esc(STATUS_TITLES[status] || status)}</span><p>${esc(record.reason || '')}</p><dl class="compact-list"><div><dt>方向</dt><dd>${esc(record.direction)}</dd></div><div><dt>当前实际使用</dt><dd>${esc(record.current_usage || '—')}</dd></div><div><dt>下一步</dt><dd>${esc(record.next_action || '—')}</dd></div></dl></div></section><section class="drawer-section"><div class="drawer-columns"><div><p class="eyebrow">ZIRCON / CURRENT</p>${objectDetails(record.left)}</div><div><p class="eyebrow">MIR2EI / WEBSITE / EVIDENCE</p>${objectDetails(record.right)}</div></div></section><section class="drawer-section"><p class="eyebrow">DIMENSION MATRIX / 维度差异</p>${dimensionTable(record)}</section><section class="drawer-section"><p class="eyebrow">EVIDENCE PATH / 证据路径</p><div class="source-list">${(record.evidence || []).map((item) => `<div><b>${esc(sourceLabel(item))}</b><span>${esc(item.source_path || '—')}</span><small>${esc(item.source_id || item.page || '—')}</small></div>`).join('')}</div></section><section class="drawer-section"><p class="eyebrow">NORMALIZED RECORD / UNIFIED FIELDS</p>${objectDetails({ entity_type: record.entity_type, zircon: record.zircon, mir2ei: record.mir2ei, direction: record.direction, conclusion: record.conclusion, dimensions: record.dimensions, current_usage: record.current_usage, next_action: record.next_action })}</section><section class="drawer-section"><p class="eyebrow">RAW MANIFEST / LINKED FIELDS</p>${objectDetails(record.raw)}</section>`;
     $('detail-drawer').classList.add('open'); $('detail-drawer').setAttribute('aria-hidden', 'false'); document.body.classList.add('drawer-open');
   }
   function closeDetail() { $('detail-drawer').classList.remove('open'); $('detail-drawer').setAttribute('aria-hidden', 'true'); document.body.classList.remove('drawer-open'); }
 
+  async function loadJson(path) {
+    let lastError;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const response = await fetch(path, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`${path} HTTP ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        lastError = error;
+        if (error?.name !== 'AbortError' || attempt === 1) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 180));
+      }
+    }
+    throw lastError;
+  }
+
   async function init() {
     try {
-      const responses = await Promise.all([fetch('data/meta.json'), ...DATA_FILES.map((file) => fetch(`data/${file}.json`))]);
-      if (responses.some((response) => !response.ok)) throw new Error('静态数据文件未能加载');
-      state.meta = await responses[0].json();
-      for (let i = 0; i < DATA_FILES.length; i += 1) state.data[DATA_FILES[i]] = await responses[i + 1].json();
+      const payloads = await Promise.all(['data/meta.json', ...DATA_FILES.map((file) => `data/${file}.json`)].map(loadJson));
+      state.meta = payloads[0]; for (let i = 0; i < DATA_FILES.length; i += 1) state.data[DATA_FILES[i]] = payloads[i + 1];
       $('build-stamp').textContent = `BUILD ${state.meta.generated_at.replace('T', ' · ').replace(/:\d{2}(?:\.\d+)?\+00:00$/, 'Z')}`;
       renderMetrics(); renderProduction(); renderNav(); renderSection();
       $('global-search').addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderSection(); });
-      $('clear-filters').addEventListener('click', () => { state.query = ''; state.status = ''; state.source = ''; state.different = false; state.pending = false; $('global-search').value = ''; state.page = 1; renderSection(); });
+      $('clear-filters').addEventListener('click', () => { state.query = ''; state.status = ''; state.direction = ''; $('global-search').value = ''; state.page = 1; renderSection(); });
       $('drawer-close').addEventListener('click', closeDetail); $('drawer-scrim').addEventListener('click', closeDetail); document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeDetail(); });
       const hash = window.location.hash.slice(1); if (SECTIONS.some((item) => item.id === hash)) selectSection(hash);
-    } catch (error) { $('ledger').innerHTML = `<div class="empty-state error"><b>数据加载失败</b><span>${esc(error.message)}</span></div>`; console.error(error); }
+    } catch (error) {
+      if (error?.name === 'AbortError') return;
+      $('ledger').innerHTML = `<div class="empty-state error"><b>数据加载失败</b><span>${esc(error.message)}</span></div>`; console.error(error);
+    }
   }
   init();
 })();

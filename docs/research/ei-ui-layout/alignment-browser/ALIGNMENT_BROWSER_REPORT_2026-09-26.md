@@ -1,20 +1,100 @@
-# Zircon ↔ mir2ei 全量数据对照网页报告
+# Zircon ↔ mir2ei 双向差异对照网页报告
 
-生成时间：2026-09-26 08:26:18 UTC（本机记录 2026-09-26）  
-数据版本：`MIR3-ALIGNMENT-BROWSER-2026.09.26`  
+生成时间：2026-09-26 09:19 UTC
 入口：`docs/research/ei-ui-layout/alignment-browser/index.html`
+数据版本：`MIR3-ALIGNMENT-BROWSER-2026.09.26`
 
-## 交付物
+## 本次结论
 
-- `build_alignment_browser.py`：Python 标准库生成器；读取 workspace、website、alignment manifest、批准应用计划，输出静态 JSON 和证据图片副本。
-- `index.html`：零依赖入口。
-- `app.js`：按分类加载 JSON；分页、全局搜索、状态筛选、差异/未决筛选、左右对照、详情抽屉、证据来源展开。
-- `style.css`：桌面 1280/1920 与手机 390 宽度响应式布局；手机改为上下对照；不使用原生 select/confirm/prompt。
-- `data/*.json`：按怪物、NPC、物品、技能、地图、刷新、任务分组；记录保留 `left`、`right`、`conclusion`、`evidence`、`raw`。
-- `data/images/website/`：390 个已知 website 图片的静态副本；生成器仅从 `/home/tetsuya/development/mir3-website` 复制，页面只接受 `data/images/` 路径。
-- `ALIGNMENT_BROWSER_DESKTOP_1280x800.png`、`ALIGNMENT_BROWSER_DESKTOP_1920x800.png`、`ALIGNMENT_BROWSER_MOBILE_390x844.png`：浏览器验收截图。
+网页不再把所有未解决项折叠为 `pending`。生成器为每条记录写入统一字段：
 
-## 数据数量
+- `entity_type`
+- `zircon.exists / index / name / fields / source`
+- `mir2ei.exists / id / name / fields / source`
+- `direction`: `both`、`mir2ei-only`、`zircon-only`
+- `conclusion`: `resolved`、`partial`、`conflict`、`pending-evidence`、`retain-current`、`production-applied`，以及方向性结论
+- `dimensions`: 身份、名称、图片、属性、地图、坐标、刷新、掉落、任务关联
+- `reason`、`evidence`、`current_usage`、`next_action`
+
+结论文案固定为：
+
+| 结论 | 页面文案 |
+|---|---|
+| `mir2ei-only` | mir2ei 有，Zircon 当前没有安全对应项 |
+| `zircon-only` | Zircon 有，mir2ei 当前没有对应标准记录 |
+| `conflict` | 双方有候选，但身份或资源冲突 |
+| `pending-evidence` | 证据不足，暂不覆盖当前 Zircon |
+| `resolved` | 身份和结论已闭合 |
+| `partial` | 双方身份已确认，但名称/图片/地图/刷新仍不同 |
+| `production-applied` | 已应用到生产双库 |
+| `retain-current` | 有证据但按当前决定保留 Zircon |
+
+`retain-current` 只允许在双方实体都存在、且有明确保留当前 Zircon 的证据时出现。单纯没有资料站逐项对应的记录统一显示为 `zircon-only`，不会再把“资料范围外”误报为已确认保留。
+
+## 双向方向数量
+
+所有生成记录逐条计数；每类均断言 `mir2ei-only + zircon-only + both = total`，重复使用同一 Zircon Index 的候选全部保留并升级为 `conflict`，不静默覆盖。
+
+| 分类 | mir2ei-only | zircon-only | 双方都有 | 记录总数 |
+|---|---:|---:|---:|---:|
+| 怪物 | 87 | 373 | 67 | 527 |
+| NPC | 0 | 106 | 188 | 294 |
+| 物品 | 324 | 1,031 | 47 | 1,402 |
+| 技能 | 2 | 115 | 59 | 176 |
+| 地图 | 0 | 450 | 22 | 472 |
+| 刷新 | 0 | 2,058 | 417 | 2,475 |
+| 任务 | 62 | 0 | 0 | 62 |
+| **合计** | **475** | **4,133** | **800** | **5,408** |
+
+方向数量只覆盖当前 manifest / candidate / Index 能表达的记录范围，不把 website 数量与 Zircon 表行数做差后臆造实体匹配。
+
+## 结论数量
+
+| 结论 | 数量 |
+|---|---:|
+| `mir2ei-only` | 475 |
+| `zircon-only` | 4,133 |
+| `resolved` | 546 |
+| `conflict` | 116 |
+| `partial` | 47 |
+| `pending-evidence` | 0 |
+| `production-applied` | 91 |
+| `retain-current` | 0 |
+
+本轮输入范围中没有单独满足 `pending-evidence` 或 `retain-current` 的双方候选记录；这两个筛选项仍保留在页面和数据模型中，后续新增证据不会退回旧的 `pending` 总类。`production-applied=91` 包含批准的 NPC 73 条与 RespawnInfo 18 条。
+
+## 分类别结论抽样
+
+- **怪物 resolved**：`website:mob-0`，Zircon `Index=8 / Chicken`，mir2ei 标准名 `鸡`；来源为 `monster-manifest.tsv`、workspace `MonsterInfo.json` 与 website monsters 数据。
+- **怪物 mir2ei-only**：怪物 manifest 中没有可靠 Zircon Index 的 87 条，页面显示“mir2ei 有，Zircon 当前没有安全对应项”，不会按名称猜索引。
+- **怪物 conflict**：同一 Zircon Index 被多个 manifest 候选使用或原始 manifest 标为冲突的 12 条，全部保留为独立记录。
+- **NPC partial / production-applied**：NPC manifest 的地图、身份、坐标证据分维度显示；73 条批准计划进入 `production-applied`，其余身份或位置差异不会被生产状态掩盖。
+- **物品 mir2ei-only**：371 条 website item manifest 中 324 条没有安全 Zircon Index；Zircon 1,031 条没有资料站逐项对应，显示为 `zircon-only`。
+- **技能 resolved**：59 条 manifest 候选闭合；另外 2 条资料站记录和 115 条 Zircon 技能保持方向性记录，不用 61 vs 174 的数量差匹配。
+- **地图 partial / conflict**：22 个 website map family 区域图映射到候选 MapInfo；网站地图图不是 627 张逐图 MapInfo，因此未匹配的 450 条保留为 `zircon-only`。
+- **刷新 conflict / production-applied**：RespawnInfo 2,475 条逐项保留；89 条原始 conflict，18 条批准应用，2,058 条仅有当前 Zircon 刷新记录。
+- **任务 mir2ei-only**：当前 24 条 website mission cross-reference 展开为 62 条记录；没有安全 QuestInfo 名称闭合的记录不会伪装成 resolved。Zircon QuestInfo 的 38 条当前记录仍逐项保留在同一记录清单中；任务来源是 mission cross-reference，不是 website 总条数差值。
+
+## 页面行为
+
+- 总览新增 8 张双向结论卡：`mir2ei-only`、`zircon-only`、`both-resolved`、`both-conflict`、`pending-evidence`、`partial`、`production-applied`、`retain-current`；卡片可进入全站过滤。
+- “差异清单”入口分成 `mir2ei 有 / Zircon 没有` 与 `Zircon 有 / mir2ei 没有` 两个大区，按怪物、NPC、物品、技能、地图、刷新、任务分组，支持搜索与当前过滤 JSON 导出。
+- 每个实体分类拥有统一结论筛选：全部、已解决、mir2ei-only、Zircon-only、双方都有但不同、待证据、已应用、保留当前 Zircon。
+- 列表行显示方向、结论、两侧名称/Index/ID、当前使用名、差异维度、原因、下一步。
+- 详情抽屉左右并排显示 Zircon 与 mir2ei/website 真实字段；下方显示维度矩阵、证据路径、规范化记录和 raw manifest。
+
+## Scope 限制
+
+1. website 怪物 154 条不是 Zircon 434 条 MonsterInfo 全量；本页只把 monster manifest 中有证据的 154 条逐条展开。
+2. website 技能 61 条不是 Zircon 174 条 MagicInfo 全量；技能仅按 `skill-manifest.tsv` 的 Index / catalog / icon 证据闭合。
+3. website 物品 371 条不是 Zircon 1,078 条 ItemInfo 全量；只有 `item-manifest.json` candidate 允许的 Index 才进入双方候选。
+4. 资料站地图是 3 组 / 22 个 map family 区域图，不是 627 张 MapInfo 逐图清单；地图 `zircon_mapinfo_candidates` 仅表示候选范围。
+5. 任务记录来自 24 条 mission cross-reference 及当前 QuestInfo 名称命中；网页步骤噪声或没有安全命中时必须保持方向性结论。
+6. `mir2ei-only` 表示当前资料范围有记录且没有安全 Zircon 对应项，不表示 Zircon 世界一定缺少同一业务实体；`zircon-only` 表示当前 Zircon 有记录且当前资料范围没有对应标准记录，不表示资料站全网不存在它。
+7. 图片、属性、地图、坐标、刷新、掉落和任务关联只有在来源字段足够时才升级为 `same` / `different`；否则显示 `unknown` 或 `not-available`。
+8. 生产应用仍只认 approved offline plan、双库 round-trip、备份和游戏 smoke 证据；页面不会因为候选名称相似而写库。
+
+## 输入规模
 
 ### Zircon workspace
 
@@ -32,7 +112,7 @@
 | ItemInfoStat | 3,196 |
 | MonsterInfoStat | 4,117 |
 
-### mir3-website
+### website / 资料站
 
 | 数据 | 条数 |
 |---|---:|
@@ -43,130 +123,12 @@
 | map groups | 3 |
 | map family areas | 22 |
 
-### 网页记录（包含 website 对照记录与 Zircon-only 记录）
+## 生成与验证
 
-| 分类 | 记录数 |
-|---|---:|
-| monsters | 527 |
-| npcs | 294 |
-| items | 1,402 |
-| skills | 176 |
-| maps | 472 |
-| respawns | 2,475 |
-| quests | 62 |
-
-技能页面单独核对：website 61 条，Zircon 174 条；manifest 直接闭合 `confirmed=59`，`investigate=2`。  
-网页不把 61 条当作 Zircon 技能全量。怪物、物品同理：website 154 vs Zircon 434，website 371 vs Zircon 1,078。
-
-## 状态统计
-汇总状态明确值：`confirmed=126`、`investigate=91`、`pending=48`、`unmatched=0`（alignment manifest）、`retain-current=2,007`。`unmatched=0` 是 manifest 的未匹配统计；没有 website 对应的 Zircon-only 记录仍按 retain-current/Zircon-only 展示，不会隐藏。
-
-生成数据中的状态计数：
-
-| 状态 | 数量 |
-|---|---:|
-| confirmed | 126 |
-| investigate | 91 |
-| pending | 48 |
-| retain-current | 2,007 |
-| confirmed-name | 47 |
-| legacy-source-only | 266 |
-| pending-legacy-name | 58 |
-| variant | 100 |
-| exact | 92 |
-| replacement | 19 |
-| renamed | 6 |
-| position-applied | 73 |
-| production-applied | 18 |
-| zircon-only | 2,058 |
-| conflict | 89 |
-| matched | 310 |
-
-NPC 记录中 `position-applied=73`，刷新记录中 `production-applied=18`；两者都从 `approved-offline-plan.json` 的具体 Index 生成，不由页面文案猜测。未批准记录仍显示 pending/candidate/conflict/Zircon-only/YXS-only。
-
-## 生产应用状态
-
-来源：`production-apply-evidence-20260926.json`、`final-production-targets-20260926.json`、官方客户端 smoke 日志。
-
-- approved NPC：73；approved RespawnInfo：18。
-- `MonsterInfo` 业务字段变更：0。
-- `MagicInfo` 业务字段变更：0。
-- 服务端与客户端 System.db SHA-256：
-  `b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`。
-- 双库 SHA 相同：是。
-- 生产备份：
-  - `/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/npc-monster-align-20260926-154039/System.db`
-  - `/home/tetsuya/development/zircon/Debug/Client/Backup/npc-monster-align-20260926-154039/System.db`
-- round-trip：PASS；unapproved changes=0；target mismatches=0。
-- `Users.db` 写入：否；应用范围只打开 System.db。
-- 官方客户端 smoke：PASS；收到 GoodVersion、LoginResult.Success、SelectScene、StartGame.Success 并进入 GameScene。
-- isolated map smoke：NPC 目标与 Respawn 目标均 PASS；headless runtime 没有 sprite 像素，因此未宣称像素级断言。
-
-## 来源与证据策略
-
-每条记录都有 `source_type`、`source_path`、`source_id`（必要时 `page`/`image`）。右栏无直接对应时输出 `direct_correspondence=false` 和“无直接对应”，不会用同名强行闭合。
-
-使用的输入层：
-
-1. `Tools/dbeditor/workspace/*.json`：当前 Zircon 数据。
-2. `/home/tetsuya/development/mir3-website/data/*.json`：website 的中文名、分类、技能/物品/怪物/任务/地图区域。
-3. `docs/research/ei-ui-layout/artifacts/website-alignment-2026-09-26/`：逐条 monster/skill/item/NPC/respawn/map/mission manifest、图片证据、production evidence、verification。
-4. `docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/approved-offline-plan.json`：73 NPC 与 18 Respawn 的批准 Index/目标坐标。
-5. `docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/` 与 refresh-audit：NPC/怪物/刷怪位置、YXS-only/Zircon-only/conflict 证据。
-6. Legacy Atlas / `mir2ei` 证据只作为来源层显示；没有结构化业务字段时不造记录。
-
-## 输入 SHA-256
-
-生成器把下列哈希写入 `data/meta.json`：
-
-| 输入 | SHA-256 |
-|---|---|
-| alignment manifest | `55c3663e72c1c7e69939f452701e23b76468b288b65202743e8c5595636218ac` |
-| production evidence | `9bdbe3a75b7c5c8d9831a141599836accbb04a2b71f93812b375cef3155e555c` |
-| final production targets | `24225ffe16d2b0208ee1b8e93a798dcf9ee065f94d2c553bfdaeff74124abe07` |
-| approved offline plan | `a68450609d82554891b2fd93c146eaa08c75e89c0a8317cef08ce23da5fbe005` |
-| workspace ItemInfo | `5e871babba87232edb29ce53c1db3d1b765e3ea19cba31746431403a8e2ae1d2` |
-| workspace MonsterInfo | `ed84588ffff45a1b9d9b85c7b886a3d469429356799f6a57ac142cf276aba09f` |
-| workspace MagicInfo | `63cd1086e38b4384ed411f5c70c3bcc770b293ad89bfe94bb907f32f7a68bff9` |
-| workspace NPCInfo | `09e19595b102f7ff0ba859f76964b7a812bd9acce7ae1871ee473d278f2b0e88` |
-| workspace MapInfo | `f5d1077f3106c6a24203b996fbcad9b532f75f4c1ca9d82afb81cc95db6ab81c` |
-| workspace MapRegion | `a598c92f73c0cb4ac2342f8cdb761c4525362e49c7e128b8e6e397aeecc37ee2` |
-| workspace RespawnInfo | `40e656ec41f009cf4af4b5ae306399063a948cb10589ab1948cdd71459e6fe95` |
-| workspace QuestInfo | `f9094da2c3b47cb65aed1378c52f5b55c0921ad6ef6f0d8e308a788d0a451bab` |
-| workspace ItemInfoStat | `2fbcd3a2cf8360c958b076dca9e5dda252adba7f139cb1bf0998a28f575c490f` |
-| workspace MonsterInfoStat | `9dfcc55f5889615d9b143f509a9a76aa7292dce53edd641093d3f39b4804ed12` |
-| website items | `682d8eaf98cb2e9806416d0cd8b60c1a4ae1e3648164156b75154d7c6290c159` |
-| website monsters | `bc84872907981f6567cf30d4aa5c3839ac9ec3e7c79f8f7b27530b4d4ed7ba99` |
-| website skills | `8bd461409a1c9cb67a444a672f3cf0811ede6401bc24c311e87a16fd6a1919d4` |
-| website missions | `6aa03bb8e4f447655c8fa9e9a3babdbf4d2a5387fc82900ebd70c027d4258af8` |
-| website maps | `a7c142eaff5eace41a1b92028845f81f40eabb9507176435effc5ad63b0e6e0b` |
-
-完整哈希字典见 `data/meta.json`。
-
-## 浏览器验证
-
-静态服务：`python3 -m http.server 8911 --bind 127.0.0.1`。  
-入口响应：HTTP 200（浏览器成功加载 `index.html` 与全部 `data/*.json`）。
-
-已执行：
-
-- Python `py_compile`：PASS。
-- 生成器重跑：PASS；真实行数与 workspace/website 输入一致。
-- Node `--check app.js`：PASS。
-- Chromium console/pageerror：0；初始页、分类切换、搜索、筛选、详情抽屉、结论页均无错误。
-- 桌面 1280×800：`scrollWidth=1280`，`clientWidth=1280`，无横向溢出。
-- 桌面 1920×800：`scrollWidth=1920`，`clientWidth=1920`，无横向溢出。
-- 手机 390×844：`scrollWidth=390`，`clientWidth=390`，无横向溢出。
-- 分类实际打开：怪物、NPC、物品、技能、地图、刷新、任务；每类分页首屏 36 条。
-- 详情实际打开：怪物 Chicken；抽屉包含 ZIRCON / CURRENT、MIR2EI / EVIDENCE、SOURCES、RAW MANIFEST。
-- 搜索抽查：输入 `Chicken` 得到 1 条；confirmed 筛选显示 `67 / 527`。
-- 技能抽查：生成数据 176 条（Zircon 全量 + website 对照），`confirmed=59`、`investigate=2`。
-- NPC/刷新生产应用抽查：`73 / 18` 与批准计划一致。
-- 随机实体抽查：`website:mob-0` 为 Zircon `Index=8 / Chicken`，右侧 `鸡`，状态 `confirmed`；来源指向 monster-manifest.tsv。
-
-## 未决项
-
-- `investigate`、`pending`、`conflict`、`legacy-source-only`、`pending-legacy-name`、`Zircon-only`、`YXS-only` 仍在网页中可筛选，未被标成完成。
-- website 目录覆盖的是标准资料/区域图，不是 Zircon 627 张 MapInfo、434 条 MonsterInfo、1,078 条 ItemInfo 或 174 条 MagicInfo 的替代全集。
-- 官方客户端 smoke 的 headless runtime 没有 NPC.Zl/Mon_3 像素资源，报告只认网络/实体包/进入地图链路，不认 sprite-pixel 断言。
-- production browser login disconnect 是 webport-only 既有问题，不属于本次 System.db 应用成功范围。
+- 生成器：`/home/tetsuya/mir3-venv/bin/python docs/research/ei-ui-layout/alignment-browser/build_alignment_browser.py`，成功重建 `data/*.json` 与图片副本；每类方向完整性断言通过。
+- `python3 -m py_compile docs/research/ei-ui-layout/alignment-browser/build_alignment_browser.py`：通过。
+- `node --check docs/research/ei-ui-layout/alignment-browser/app.js`：通过。
+- `favicon.svg` HTTP 200；`meta.json` 与 7 个分类 JSON HTTP 200。
+- `app.js` 使用 `cache: no-store` 加载静态 JSON，`AbortError` 单次重试且不会作为页面致命 console 错误；`index.html`、`style.css`、`app.js` cache-bust 版本为 `20260926.3`。
+- 静态页面不引入 npm / build system；服务绑定 8890，仅读静态文件。
+- 本报告和数据只修改 `docs/research/ei-ui-layout/alignment-browser/`；不写 System.db、Users.db、workspace、Zircon、mir3-website 或 mapedit。

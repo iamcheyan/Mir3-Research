@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T08:26:18.180662+00:00",
+  "generated_at": "2026-09-26T09:19:29.065998+00:00",
   "data_version": "MIR3-ALIGNMENT-BROWSER-2026.09.26",
   "source_hashes": {
     "alignment_manifest": "55c3663e72c1c7e69939f452701e23b76468b288b65202743e8c5595636218ac",
@@ -46,29 +46,81 @@
       "maps": 3
     },
     "status": {
-      "confirmed": 126,
-      "pending": 48,
-      "investigate": 91,
-      "retain-current": 2007,
-      "confirmed-name": 47,
-      "legacy-source-only": 266,
-      "pending-legacy-name": 58,
-      "variant": 100,
-      "exact": 92,
-      "replacement": 19,
-      "position-applied": 73,
-      "renamed": 6,
-      "zircon-only": 2058,
-      "conflict": 89,
-      "matched": 310,
-      "production-applied": 18
+      "resolved": 546,
+      "conflict": 116,
+      "partial": 47,
+      "production-applied": 91
+    },
+    "coverage": {
+      "monster": {
+        "resolved": 55,
+        "mir2ei-only": 87,
+        "conflict": 12,
+        "zircon-only": 373,
+        "both": 67,
+        "total": 527
+      },
+      "npc": {
+        "partial": 31,
+        "zircon-only": 106,
+        "resolved": 75,
+        "conflict": 9,
+        "production-applied": 73,
+        "both": 188,
+        "total": 294
+      },
+      "item": {
+        "resolved": 47,
+        "mir2ei-only": 324,
+        "zircon-only": 1031,
+        "both": 47,
+        "total": 1402
+      },
+      "skill": {
+        "resolved": 59,
+        "mir2ei-only": 2,
+        "zircon-only": 115,
+        "both": 59,
+        "total": 176
+      },
+      "map": {
+        "conflict": 6,
+        "partial": 16,
+        "zircon-only": 450,
+        "both": 22,
+        "total": 472
+      },
+      "respawn": {
+        "zircon-only": 2058,
+        "conflict": 89,
+        "resolved": 310,
+        "production-applied": 18,
+        "both": 417,
+        "total": 2475
+      },
+      "quest": {
+        "mir2ei-only": 62,
+        "total": 62
+      }
     },
     "summary_status": {
-      "confirmed": 126,
-      "investigate": 91,
-      "pending": 48,
-      "unmatched": 0,
-      "retain-current": 2007
+      "mir2ei-only": 0,
+      "zircon-only": 0,
+      "conflict": 116,
+      "pending-evidence": 0,
+      "resolved": 546,
+      "partial": 47,
+      "production-applied": 91,
+      "retain-current": 0
+    },
+    "source_record_totals": {
+      "monsters": 527,
+      "npcs": 294,
+      "items": 1402,
+      "skills": 176,
+      "maps": 472,
+      "respawns": 2475,
+      "quests": 62
     }
   },
   "production": {

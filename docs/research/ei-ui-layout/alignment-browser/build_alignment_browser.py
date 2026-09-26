@@ -143,6 +143,196 @@ def conclusion(status: str, title: str, rationale: str, current: str | None = No
         "proposed_standard": proposed,
         "applied": applied,
     }
+ENTITY_TYPES = ("monster", "npc", "item", "skill", "map", "respawn", "quest")
+DIMENSION_NAMES = ("identity", "display_name", "image", "stats", "map", "coordinate", "respawn", "drops", "quest_links")
+CANONICAL_TITLES = {
+    "mir2ei-only": "mir2ei 有，Zircon 当前没有安全对应项",
+    "zircon-only": "Zircon 有，mir2ei 当前没有对应标准记录",
+    "conflict": "双方有候选，但身份或资源冲突",
+    "pending-evidence": "证据不足，暂不覆盖当前 Zircon",
+    "resolved": "身份和结论已闭合",
+    "partial": "双方身份已确认，但名称/图片/地图/刷新仍不同",
+    "production-applied": "已应用到生产双库",
+    "retain-current": "有证据但按当前决定保留 Zircon",
+}
+
+
+def _left_name(kind: str, value: dict[str, Any] | None) -> str | None:
+    if not value:
+        return None
+    if kind == "quest":
+        matches = value.get("matches") or []
+        return ", ".join(str(row.get("QuestName", "")) for row in matches if row.get("QuestName")) or None
+    return next((value.get(key) for key in ("MonsterName", "NPCName", "ItemName", "Name", "Description", "_Identity") if value.get(key)), None)
+
+
+def _right_name(kind: str, value: dict[str, Any] | None) -> str | None:
+    if not value:
+        return None
+    return next((value.get(key) for key in ("standard_name", "title", "website_name", "area", "map_family", "group") if value.get(key) and value.get(key) != "无直接对应"), None)
+
+
+def _has_mir2ei_evidence(kind: str, value: dict[str, Any] | None) -> bool:
+    if not value:
+        return False
+    if kind == "npc":
+        return bool(value.get("website_page") or value.get("website_image") or value.get("matched_identity") or _right_name(kind, value))
+    if kind == "respawn":
+        return value.get("match_status") in {"matched", "conflict"} or value.get("apply_status") == "production-applied"
+    return bool(_right_name(kind, value) or value.get("website_id") or value.get("website_skill_id") or value.get("website_group"))
+
+
+def _has_zircon_entity(kind: str, value: dict[str, Any] | None) -> bool:
+    if not value:
+        return False
+    if kind == "quest":
+        return bool(value.get("matches"))
+    return value.get("Index") is not None
+
+
+def _side_source(value: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if not value:
+        return []
+    item = value.get("source")
+    if isinstance(item, dict):
+        return [item]
+    return []
+
+
+def _canonical_side(kind: str, value: dict[str, Any] | None, exists: bool, side: str, record_id: str, evidence: list[dict[str, Any]]) -> dict[str, Any]:
+    if not exists:
+        return {"exists": False, "index": None, "id": None, "name": None, "fields": {}, "source": []}
+    value = value or {}
+    if side == "zircon":
+        matches = value.get("matches") or []
+        index = value.get("Index") if value.get("Index") is not None else (matches[0].get("Index") if len(matches) == 1 else None)
+        name = _left_name(kind, value)
+    else:
+        index = None
+        name = _right_name(kind, value)
+    source_items = _side_source(value) or [item for item in evidence if item.get("source_type") not in {"zircon-workspace"}]
+    return {
+        "exists": True,
+        "index": index,
+        "id": record_id if side == "mir2ei" and index is None else (value.get("website_id") or value.get("website_skill_id") or value.get("website_group") or record_id if side == "mir2ei" else None),
+        "name": name,
+        "fields": raw_summary(value, 4000),
+        "source": source_items,
+    }
+
+
+def _dimension_value(name: str, kind: str, record: dict[str, Any], zircon: dict[str, Any], mir2ei: dict[str, Any], legacy_status: str, duplicate: bool) -> str:
+    if not zircon["exists"] or not mir2ei["exists"]:
+        return "unknown"
+    if name == "identity":
+        if duplicate or legacy_status in {"conflict", "replacement", "icon-conflict"}:
+            return "different"
+        if legacy_status in {"confirmed", "confirmed-name", "exact", "matched", "position-applied", "production-applied"}:
+            return "same"
+        return "unknown"
+    if name == "display_name":
+        left = (zircon.get("name") or "").strip().casefold()
+        right = (mir2ei.get("name") or "").strip().casefold()
+        return "same" if left and right and left == right else ("different" if left and right else "unknown")
+    if name == "image":
+        left = (record.get("left") or {}).get("Image") or (record.get("left") or {}).get("image") or (record.get("right") or {}).get("image") or (record.get("right") or {}).get("website_image")
+        right = (record.get("right") or {}).get("image") or (record.get("right") or {}).get("website_image")
+        return "same" if left and right and str(left) == str(right) else ("different" if left or right else "not-available")
+    if name == "map":
+        right = record.get("right") or {}
+        if kind == "npc":
+            match = right.get("map_match")
+            return "same" if match in {"exact", "same"} else ("different" if match in {"different", "conflict"} else "unknown")
+        if kind == "map":
+            return "same" if zircon.get("index") in ((record.get("right") or {}).get("candidates") or []) else "unknown"
+        if kind == "respawn":
+            return "same" if legacy_status in {"matched", "production-applied"} else ("different" if legacy_status == "conflict" else "unknown")
+    if name == "coordinate" and kind in {"npc", "respawn"}:
+        return "same" if legacy_status in {"position-applied", "production-applied"} else ("different" if legacy_status == "conflict" else "unknown")
+    if name == "respawn" and kind == "respawn":
+        return "same" if legacy_status in {"matched", "production-applied"} else ("different" if legacy_status == "conflict" else "unknown")
+    return "unknown"
+
+
+def normalize_records(payloads: dict[str, list[dict[str, Any]]]) -> dict[str, dict[str, int]]:
+    duplicate_keys: dict[str, Counter[Any]] = {}
+    for kind, records in payloads.items():
+        keys = []
+        for item in records:
+            left = item.get("left") or {}
+            if _has_zircon_entity(kind.rstrip("s"), left):
+                keys.append(left.get("Index") or ((left.get("matches") or [{}])[0].get("Index") if len(left.get("matches") or []) == 1 else None))
+        duplicate_keys[kind] = Counter(key for key in keys if key is not None)
+    coverage: dict[str, dict[str, int]] = {}
+    for kind_plural, records in payloads.items():
+        kind = kind_plural.rstrip("s")
+        counts = Counter()
+        direction_counts = Counter()
+        for item in records:
+            left = item.get("left") or {}
+            right = item.get("right") or {}
+            z_exists = _has_zircon_entity(kind, left)
+            m_exists = _has_mir2ei_evidence(kind, right)
+            direction = "both" if z_exists and m_exists else ("zircon-only" if z_exists else "mir2ei-only")
+            legacy_status = item.get("conclusion", {}).get("status", "pending")
+            z_index = left.get("Index") or ((left.get("matches") or [{}])[0].get("Index") if len(left.get("matches") or []) == 1 else None)
+            duplicate = z_index is not None and duplicate_keys[kind_plural][z_index] > 1
+            if direction == "both":
+                if duplicate or legacy_status in {"conflict", "replacement", "icon-conflict"}:
+                    status = "conflict"
+                elif legacy_status in {"position-applied", "production-applied"}:
+                    status = "production-applied"
+                elif legacy_status in {"confirmed", "confirmed-name", "exact", "matched"}:
+                    status = "resolved"
+                elif legacy_status in {"variant", "renamed"}:
+                    status = "partial"
+                elif legacy_status == "retain-current":
+                    status = "retain-current"
+                else:
+                    status = "pending-evidence"
+            else:
+                status = direction
+            zircon = _canonical_side(kind, left, z_exists, "zircon", item["id"], item.get("evidence", []))
+            mir2ei = _canonical_side(kind, right, m_exists, "mir2ei", item["id"], item.get("evidence", []))
+            dimensions = {name: _dimension_value(name, kind, item, zircon, mir2ei, legacy_status, duplicate) for name in DIMENSION_NAMES}
+            current = zircon.get("name") if zircon["exists"] else None
+            next_action = {
+                "mir2ei-only": "补齐 Zircon 安全 Index 与业务关联",
+                "zircon-only": "补充 mir2ei/资料站逐项证据，不按数量差猜测",
+                "conflict": "人工复核身份、资源与业务关系，禁止静默覆盖",
+                "pending-evidence": "补充 manifest、资源、地图或业务证据",
+                "resolved": "保持证据链，进入回归检查",
+                "partial": "逐维度决定名称、图片、地图、坐标或刷新值",
+                "production-applied": "保留双库 round-trip 与游戏内验收记录",
+                "retain-current": "继续使用当前 Zircon 值，等待更强证据",
+            }[status]
+            item["entity_type"] = kind
+            item["zircon"] = zircon
+            item["mir2ei"] = mir2ei
+            item["direction"] = direction
+            item["conclusion"] = {
+                **item.get("conclusion", {}),
+                "legacy_status": legacy_status,
+                "status": status,
+                "title": CANONICAL_TITLES[status],
+                "rationale": CANONICAL_TITLES[status] + "。原始状态=" + legacy_status + "；来源范围按 manifest 保留。",
+                "current_actual": current,
+                "current_usage": current or "无当前 Zircon 实体",
+                "next_action": next_action,
+            }
+            item["dimensions"] = dimensions
+            item["reason"] = item["conclusion"]["rationale"]
+            item["evidence"] = item.get("evidence", [])
+            item["current_usage"] = current or "无当前 Zircon 实体"
+            item["next_action"] = next_action
+            direction_counts[direction] += 1
+            counts[status] += 1
+        for direction, count in direction_counts.items():
+            counts[direction] = count
+        counts["total"] = len(records)
+        assert direction_counts["mir2ei-only"] + direction_counts["zircon-only"] + direction_counts["both"] == counts["total"], f"{kind}: direction coverage lost"
+        coverage[kind] = dict(counts)
+    return coverage
 
 
 def build_monsters(ws: dict[str, list[dict[str, Any]]], metadata: dict[str, Any]) -> list[dict[str, Any]]:
@@ -306,7 +496,7 @@ def build_quests(ws: dict[str, list[dict[str, Any]]], website_missions: list[dic
     return out
 
 
-def build_meta(ws: dict[str, list[dict[str, Any]]], website: dict[str, list[dict[str, Any]]], counts: dict[str, int]) -> dict[str, Any]:
+def build_meta(ws: dict[str, list[dict[str, Any]]], website: dict[str, list[dict[str, Any]]], counts: dict[str, Any], coverage: dict[str, dict[str, int]]) -> dict[str, Any]:
     production = load_json(ARTIFACT / "production-apply-evidence-20260926.json", {})
     target = load_json(ARTIFACT / "final-production-targets-20260926.json", {})
     verification = load_json(ARTIFACT / "verification.json", {})
@@ -318,11 +508,11 @@ def build_meta(ws: dict[str, list[dict[str, Any]]], website: dict[str, list[dict
         source_files[f"website_{name}"] = WEBSITE_DATA / f"{name}.json"
     hashes = {name: sha256(path) for name, path in source_files.items() if path.exists()}
     statuses = Counter()
-    for kind in ["monsters", "skills", "items", "npcs", "maps", "respawns", "quests"]:
-        data = counts.get(kind + "_records", [])
-        for item in data: statuses[item.get("conclusion", {}).get("status", "unknown")] += 1
-    return {"generated_at": datetime.now(timezone.utc).isoformat(), "data_version": "MIR3-ALIGNMENT-BROWSER-2026.09.26", "source_hashes": hashes, "counts": {"workspace": {name: len(value) for name, value in ws.items()}, "website": {name: len(value) for name, value in website.items()}, "status": dict(statuses)}, "production": {"approved_npc": 73, "approved_respawn": 18, "monster_info_changed": 0, "magic_info_changed": 0, "users_db_written": production.get("production_apply", {}).get("users_db_written", False), "server_sha256": production.get("production_apply", {}).get("server_sha256"), "client_sha256": production.get("production_apply", {}).get("client_sha256"), "server_client_sha_equal": production.get("production_apply", {}).get("server_client_sha_equal"), "backup_paths": [production.get("production_apply", {}).get("server_backup_created_by_npcmover"), production.get("production_apply", {}).get("client_backup_created_by_npcmover")], "last_verified": production.get("recorded_at"), "game_acceptance": production.get("game_acceptance")}, "final_targets": target, "verification": verification, "notes": ["网站 61 技能不是 Zircon 174 条技能全量。", "网站 154 怪物不是 Zircon 434 条全量。", "网站 371 物品不是 Zircon 1078 条全量。", "网站地图为 3 组/22 区域图，不是 627 张逐图 MapInfo。", "Users.db 未写入。"]}
-
+    for kind in ENTITY_TYPES:
+        for status, count in coverage.get(kind, {}).items():
+            if status not in {"mir2ei-only", "zircon-only", "both", "total"}:
+                statuses[status] += count
+    return {"generated_at": datetime.now(timezone.utc).isoformat(), "data_version": "MIR3-ALIGNMENT-BROWSER-2026.09.26", "source_hashes": hashes, "counts": {"workspace": {name: len(value) for name, value in ws.items()}, "website": {name: len(value) for name, value in website.items()}, "status": dict(statuses), "coverage": coverage}, "production": {"approved_npc": 73, "approved_respawn": 18, "monster_info_changed": 0, "magic_info_changed": 0, "users_db_written": production.get("production_apply", {}).get("users_db_written", False), "server_sha256": production.get("production_apply", {}).get("server_sha256"), "client_sha256": production.get("production_apply", {}).get("client_sha256"), "server_client_sha_equal": production.get("production_apply", {}).get("server_client_sha_equal"), "backup_paths": [production.get("production_apply", {}).get("server_backup_created_by_npcmover"), production.get("production_apply", {}).get("client_backup_created_by_npcmover")], "last_verified": production.get("recorded_at"), "game_acceptance": production.get("game_acceptance")}, "final_targets": target, "verification": verification, "notes": ["网站 61 技能不是 Zircon 174 条技能全量。", "网站 154 怪物不是 Zircon 434 条全量。", "网站 371 物品不是 Zircon 1078 条全量。", "网站地图为 3 组/22 区域图，不是 627 张逐图 MapInfo。", "Users.db 未写入。"]}
 
 def main() -> None:
     OUTPUT_DATA.mkdir(parents=True, exist_ok=True)
@@ -338,24 +528,18 @@ def main() -> None:
     maps = build_maps(ws, website["maps"])
     quests = build_quests(ws, website["missions"])
     payloads = {"monsters": monsters, "npcs": npcs, "items": items, "skills": skills, "maps": maps, "respawns": respawns, "quests": quests}
+    coverage = normalize_records(payloads)
     counts: dict[str, Any] = {"workspace": {name: len(value) for name, value in ws.items()}, "website": {name: len(value) for name, value in website.items()}}
     counts.update({f"{name}_records": value for name, value in payloads.items()})
-    meta = build_meta(ws, website, counts)
-    summary_source = load_json(ARTIFACT / "manifest.json", {})
-    status_counts = meta["counts"]["status"]
-    meta["counts"]["summary_status"] = {
-        "confirmed": status_counts.get("confirmed", 0),
-        "investigate": status_counts.get("investigate", 0),
-        "pending": status_counts.get("pending", 0),
-        "unmatched": summary_source.get("monster_stats", {}).get("unmatched_count", 0),
-        "retain-current": status_counts.get("retain-current", 0),
-    }
+    meta = build_meta(ws, website, counts, coverage)
+    meta["counts"]["summary_status"] = {key: meta["counts"]["status"].get(key, 0) for key in CANONICAL_TITLES}
+    meta["counts"]["source_record_totals"] = {kind: len(records) for kind, records in payloads.items()}
     counts.pop("monsters_records", None); counts.pop("npcs_records", None); counts.pop("items_records", None); counts.pop("skills_records", None); counts.pop("maps_records", None); counts.pop("respawns_records", None); counts.pop("quests_records", None)
     meta["counts"] = {**meta["counts"], **counts}
     (OUTPUT_DATA / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     for name, value in payloads.items():
         (OUTPUT_DATA / f"{name}.json").write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"generated_at": meta["generated_at"], "workspace": counts["workspace"], "website": counts["website"], "records": {k: len(v) for k, v in payloads.items()}, "status": meta["counts"]["status"]}, ensure_ascii=False, indent=2))
+    print(json.dumps({"generated_at": meta["generated_at"], "workspace": counts["workspace"], "website": counts["website"], "records": {k: len(v) for k, v in payloads.items()}, "coverage": coverage, "status": meta["counts"]["status"]}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
