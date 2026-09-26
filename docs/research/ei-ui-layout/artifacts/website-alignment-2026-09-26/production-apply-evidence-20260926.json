@@ -1,0 +1,100 @@
+{
+  "evidence_id": "MIR3-WEBSITE-ALIGNMENT-PRODUCTION-APPLY-2026-09-26",
+  "recorded_at": "2026-09-26T15:40:39+09:00",
+  "approval": {
+    "approved_by_user": true,
+    "plan": "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/approved-offline-plan.json",
+    "plan_mode": "approved-offline-plan",
+    "plan_database_write_flag": false,
+    "pending_investigate_conflict_policy": "retain-current; no create/delete/index guess",
+    "website_mob_6_frog": "retain-current"
+  },
+  "stopped_before_write": {
+    "services": [
+      {"name": "zircon-core", "port": 7000, "pid": 2777737},
+      {"name": "wsgateway", "port": 7001, "pid": 2785258},
+      {"name": "webclient", "port": 8822, "pid": 2558509},
+      {"name": "webport", "port": 8823, "pid": 2558571}
+    ],
+    "verification": "ports 7000, 7001, 8822, 8823 not listening after stop"
+  },
+  "pre_apply_backup": {
+    "stamp": "20260926-153649",
+    "server_source": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db",
+    "server_backup": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/System/website-alignment-20260926-153649/System.db",
+    "client_source": "/home/tetsuya/development/zircon/Debug/Client/Data/System.db",
+    "client_backup": "/home/tetsuya/development/zircon/Debug/Client/Backup/website-alignment-20260926-153649/System.db",
+    "sha256": "6d98a120a5970d4b4420f65a39b4eece43d3882ba864d2522c15349bb99e7ef2",
+    "size_bytes": 11776722
+  },
+  "temporary_copy": {
+    "root": "/tmp/mir3-alignment-apply.1h2xIV",
+    "approved_npc": 73,
+    "approved_respawn": 18,
+    "new_map_regions": 0,
+    "tool_round_trip": "pass",
+    "server_client_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "independent_round_trip": {
+      "result": "PASS",
+      "source_npc_rows": 294,
+      "roundtrip_npc_rows": 294,
+      "source_respawn_rows": 2475,
+      "roundtrip_respawn_rows": 2475,
+      "unapproved_changes": 0,
+      "target_mismatches": 0
+    }
+  },
+  "production_apply": {
+    "server_backup_created_by_npcmover": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/npc-monster-align-20260926-154039/System.db",
+    "client_backup_created_by_npcmover": "/home/tetsuya/development/zircon/Debug/Client/Backup/npc-monster-align-20260926-154039/System.db",
+    "approved_npc_applied": 73,
+    "approved_respawn_applied": 18,
+    "new_map_regions": 0,
+    "monster_info_business_fields_changed": 0,
+    "magic_info_business_fields_changed": 0,
+    "pending_investigate_conflict_rows_applied": 0,
+    "users_db_written": false,
+    "tool_round_trip": "pass",
+    "independent_round_trip": {
+      "result": "PASS",
+      "current_npc_rows": 294,
+      "current_respawn_rows": 2475,
+      "unapproved_changes": 0,
+      "target_mismatches": 0
+    },
+    "server_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "client_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "server_client_sha_equal": true,
+    "decision_summary": {
+      "approved_npc": 73,
+      "approved_respawn": 18,
+      "retained": 2060,
+      "rejected_or_evidence": 618
+    }
+  },
+  "post_apply_snapshot": {
+    "user_supplied_backup_dir": "/home/tetsuya/.local/state/mir3-systemdb-backups/20260926-154701",
+    "sha256sums": "/home/tetsuya/.local/state/mir3-systemdb-backups/20260926-154701/SHA256SUMS",
+    "server_backup_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "client_backup_sha256": "b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9",
+    "snapshot_matches_current_production_dual_db": true
+  },
+  "users_db": {
+    "path": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Users.db",
+    "write_scope": "excluded; NpcMover approved mode opens System.db only"
+  },
+  "game_acceptance": {
+    "status": "partial-smoke-blocked-at-login",
+    "server_restart": "pass; zircon-core listening on 127.0.0.1:7000 after restart",
+    "web_services": "wsgateway and webport restarted",
+    "login_attempt": "webport test@test.com/test123 reached GoodVersion db=2026.09.26.2, then client disconnected before LoginResult/SelectScene",
+    "scene_reached": false,
+    "map_npc_respawn_smoke": "not-executed because login did not reach GameScene",
+    "evidence": [
+      "artifacts/website-alignment-2026-09-26/production-login-disconnect-20260926.webp",
+      "artifacts/website-alignment-2026-09-26/post-restart-wsgateway.log",
+      "artifacts/website-alignment-2026-09-26/post-restart-zircon-core.log"
+    ],
+    "required_next": ["diagnose webport login disconnect", "rerun login", "reach GameScene", "verify approved NPC and RespawnInfo targets in game"]
+  }
+}

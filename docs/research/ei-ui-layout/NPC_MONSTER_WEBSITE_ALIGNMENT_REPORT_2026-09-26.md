@@ -1,13 +1,13 @@
 # NPC + 怪物 + 技能 + 地图网站标准对齐报告（2026-09-26）
 
-> 本报告是只读 dry-run 证据。未写入真实 System.db；网站 checkout 未修改。
+> 第 1–7 节保存原始只读 dry-run 证据；第 8 节追加并记录了用户批准后的实际应用、备份、临时副本 round-trip、双库 SHA 和验收结果。网站 checkout 未修改。
 
 ## 1. 来源与硬闸门
 
 - 标准资料站：`/home/tetsuya/development/mir3-website`（`data/monsters.json`=154，`data/skills.json`=61，地图区域图=22）。
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
-- 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
-- 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
+- 7000 检查：应用前已停止并验证端口释放；副本验证通过后写入真实双库，随后已重启服务端。
+- 数据库写入：生产应用仅写入 approved-offline-plan 的 NPCInfo.Region/RespawnInfo.Region 及批准的 RespawnInfo.Count/Delay；MonsterInfo/MagicInfo 业务字段未写入，Users.db 未触碰。
 - Mir3-Research 最终生成时：HEAD=6b5492659d1bf0987bbe7b680e6a1ec69155c25c；origin/ei-ui-audit-2026-09-24=5f467a4b51f3f65badb1ed9de757b61018eccc5a；工作树 dirty=True。
 - Zircon 最终生成时：HEAD=7d7943f79965690adc7c41fc9e35737dd22d8fa7；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；origin/main=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；工作树 dirty=False；未提交路径=[]；本 Goal 未修改。
@@ -59,15 +59,21 @@
 - 关键样例：半兽人、祖玛教主、祖玛卫士、白野猪、Boss；技能火球术/基本剑术/凝血离魂；NPC 至少 3 行；结果见 `verification.json`。
 - 独立范围审计：NPC/Respawn schema-or-target-coordinate failures=0/0；旧来源坐标超出 Zircon 目标尺寸=2/4（保留为旧坐标证据，不作为新坐标写入）；NPC/Respawn overlap rows=0/0。
 
-## 8. 写库闸门与未提交文件保护
+## 8. 写库闸门、实际应用与未提交文件保护
 
-- 7000 当前有监听；未满足停服、用户 dry-run 审核、备份、临时副本 round-trip、双库同步、游戏内验收条件，因此本 Goal 阶段不写真实库。
-- 未决风险与必须审核项登记于 `docs/research/ei-ui-layout/DECISIONS_PENDING.md`；Mir3-Research 与 Zircon 的阶段 0 工作树状态保存于 `baseline-repo-state.json`；无关 WIP 保留，不纳入本 Goal 文件。
-- 真实库、Users.db、资料站内容均未修改。
+- 用户已明确批准 dry-run 进入真实应用；本次只应用 `approved-offline-plan.json` 中的 approved 清单：NPC=73、RespawnInfo=18。网站怪物 `confirmed`/技能证据仍是显示名证据，不在本次 approved position plan 中写入；MonsterInfo/MagicInfo 业务字段修改数=0。
+- 应用前已停止 `zircon-core`(7000)、`wsgateway`(7001)、`webclient`(8822)、`webport`(8823)，并确认这些端口均不再监听。
+- 原始双库备份：服务端=`/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/System/website-alignment-20260926-153649/System.db`；客户端=`/home/tetsuya/development/zircon/Debug/Client/Backup/website-alignment-20260926-153649/System.db`；原始双库 SHA-256 均为 `6d98a120a5970d4b4420f65a39b4eece43d3882ba864d2522c15349bb99e7ef2`。
+- 临时副本先应用并 round-trip：NPC=73、RespawnInfo=18、新建 MapRegion=0；工具 round-trip 通过，独立 round-trip `PASS`，NPC 行数=294→294、RespawnInfo 行数=2475→2475、未批准变更=0、目标不匹配=0；临时双库 SHA-256=`b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`。
+- 副本通过后写入真实双库：NPC=73、RespawnInfo=18、新建 MapRegion=0；服务端和客户端均为 SHA-256=`b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`，双库一致；真实库工具 round-trip 与独立 round-trip 均通过，未批准变更=0、目标不匹配=0。
+- NpcMover 应用期间未打开或写入 `Users.db`；pending、investigate、冲突项（含网站 `mob-6 蛤蟆`）应用数=0，均 retain-current；完整机器证据见 `artifacts/website-alignment-2026-09-26/production-apply-evidence-20260926.json`。
+- 用户后续快照备份：`/home/tetsuya/.local/state/mir3-systemdb-backups/20260926-154701/`，`SHA256SUMS` 记录服务端、客户端及两份备份均为 `b6aaa4bf2912a8fcd66664981a28d556aa6e2256ce2c40ad307b3d6913b03bb9`，与当前真实双库一致。
+- 已重启 `zircon-core` 并确认 7000 监听；wsgateway/webport 也已重启。webport 登录 smoke 收到 `GoodVersion db=2026.09.26.2` 后在 `LoginResult`/`SelectScene` 前断开，未进入 GameScene，因此地图/NPC/刷新点游戏内 smoke 尚未执行；截图和日志见 `production-login-disconnect-20260926.webp`、`post-restart-wsgateway.log`、`post-restart-zircon-core.log`。Mir3-Research 与 Zircon 的无关 WIP 保留，不纳入本 Goal 文件。
 
 ## 9. 机器可读产物
 
 - `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。
+- 生产应用证据：`production-apply-evidence-20260926.json`（备份、临时副本 round-trip、真实应用统计、双库 SHA-256）。
 - 图片证据：`known-contact-sheet.png`、`website-monster-contact-sheet.png`、`website-unclosed-contact-sheet.png`、`item-known-contact-sheet.png`、`white-boar-resource-contact-sheet.png`、`resource-alias-candidate-contact-sheet.png`。
 
 ## 10. 物品扩展审计（只读）
@@ -93,10 +99,10 @@
 ## 13. 扩展验证与决策
 
 - 生成器：`Tools/NpcMover/website_extension_alignment.py`；独立验证器：`Tools/NpcMover/verify_extension_alignment.py`；输出 `extension-verification.json`，结果=PASS。
-- 所有扩展产物均 `database_write=false`；当前 7000 仍监听，不能进入真实库阶段。`DECISIONS_PENDING.md` 的审核闸门继续有效。
+- 扩展产物本身仍标记 `database_write=false`，因为扩展技能/物品/任务/生态清单未作为本次 approved position plan 写入；生产应用统计、双库 SHA 和验收状态见第 8 节。
 - 扩展报告和清单只提交本 Goal 新增脚本/产物；现有用户 WIP、Zircon 未提交 acceptance artifacts、网站未提交路径均保持不变。
 
 ## 14. 当前用户闸门决定
 
-- 2026-09-26 用户选择“继续只读审核”，不进入写库阶段。
-- 因此不停止 7000、不执行数据库备份/副本 round-trip/双库同步，不修改 `System.db` 或 `Users.db`；pending/investigate 项保持原状。
+- 2026-09-26 用户已批准从 dry-run 进入真实应用阶段；本次只应用 approved NPC/RespawnInfo 清单，pending/investigate/冲突项保持原状。
+- 已完成停服、原始双库备份、临时副本 apply、工具与独立 round-trip、真实双库同步及重启；游戏内 smoke 目前阻塞在 webport 登录连接断开，未宣称地图/NPC/刷新点游戏内通过。

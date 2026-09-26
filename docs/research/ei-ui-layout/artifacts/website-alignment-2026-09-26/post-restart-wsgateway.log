@@ -1,0 +1,40 @@
+  File "/usr/lib/python3/dist-packages/websockets/streams.py", line 46, in read_line
+    raise EOFError(f"stream ends after {p} bytes, before end of line")
+EOFError: stream ends after 0 bytes, before end of line
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/websockets/server.py", line 545, in parse
+    request = yield from Request.parse(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.reader.read_line,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3/dist-packages/websockets/http11.py", line 140, in parse
+    raise EOFError("connection closed while reading HTTP request line") from exc
+EOFError: connection closed while reading HTTP request line
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/websockets/asyncio/server.py", line 356, in conn_handler
+    await connection.handshake(
+    ...<3 lines>...
+    )
+  File "/usr/lib/python3/dist-packages/websockets/asyncio/server.py", line 207, in handshake
+    raise self.protocol.handshake_exc
+websockets.exceptions.InvalidMessage: did not receive a valid HTTP request
+2026-09-26 15:48:11,695 [INFO] connection open
+2026-09-26 15:48:11,698 [INFO] WS connected: ('127.0.0.1', 50078)
+2026-09-26 15:48:14,375 [INFO] relay closed: ('127.0.0.1', 50078)
+2026-09-26 15:48:53,778 [INFO] connection open
+2026-09-26 15:48:53,778 [INFO] WS connected: ('127.0.0.1', 39878)
+2026-09-26 15:48:56,348 [INFO] relay closed: ('127.0.0.1', 39878)
+2026-09-26 15:49:12,154 [INFO] connection open
+2026-09-26 15:49:12,154 [INFO] WS connected: ('127.0.0.1', 34500)
+2026-09-26 15:49:14,673 [INFO] relay closed: ('127.0.0.1', 34500)
+2026-09-26 15:49:29,857 [INFO] connection open
+2026-09-26 15:49:29,858 [INFO] WS connected: ('127.0.0.1', 58326)
+2026-09-26 15:49:32,455 [INFO] relay closed: ('127.0.0.1', 58326)
