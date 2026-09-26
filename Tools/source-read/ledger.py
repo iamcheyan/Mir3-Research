@@ -35,6 +35,35 @@ EXCLUDE_PREFIXES = (
 # 状态表：rel_path -> (status, note)
 STATUS: dict[str, tuple[str, str]] = {}
 
+# 载入时的原始快照（用于防降级守卫）
+_ORIG_STATUS: dict[str, tuple[str, str]] = {}
+
+
+def _git_head_status() -> dict[str, tuple[str, str]]:
+    """读 git HEAD 版本的台账状态，作为防降级基线。
+
+    文件在工作区被改坏时，载入值不可信；git HEAD 是最后一个已提交的好状态。
+    非 git 环境或路径未跟踪时返回空 dict（守卫静默跳过）。
+    """
+    import subprocess
+
+    rel = os.path.relpath(OUT, REPO)
+    try:
+        out = subprocess.run(
+            ["git", "-C", REPO, "show", f"HEAD:{rel}"],
+            capture_output=True, text=True, timeout=20,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return {}
+    if out.returncode != 0:
+        return {}
+    res: dict[str, tuple[str, str]] = {}
+    for line in out.stdout.splitlines()[1:]:
+        parts = line.split("\t")
+        if len(parts) >= 5:
+            res[parts[1]] = (parts[4], parts[5] if len(parts) > 5 else "")
+    return res
+
 
 def _load_status():
     """状态表以 TSV 持久化，便于跨轮次累积。"""
@@ -76,9 +105,13 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="只报告未登记文件")
     ap.add_argument("--summary", action="store_true", help="只打印统计")
+    ap.add_argument("--allow-downgrade", action="store_true",
+                    help="允许把 covered 降级（默认拒绝，防误抹）")
     args = ap.parse_args()
 
     _load_status()
+    _ORIG_STATUS.clear()
+    _ORIG_STATUS.update(STATUS)
 
     found = []
     for root, dirs, files in os.walk(SRC):
@@ -113,6 +146,7 @@ def main() -> int:
 
     # 套用状态表
     unregistered = []
+    downgraded: list[str] = []
     for r in found:
         if r["status"] == "excluded":
             continue
@@ -128,6 +162,23 @@ def main() -> int:
     for r in found:
         if r["rel_path"] not in STATUS:
             STATUS[r["rel_path"]] = (r["status"], r["note"])
+
+    # 防降级守卫：covered 是最高状态，绝不允许被 covered->partial/pending 的
+    # 编辑意外抹掉（2026-09-26 真实踩过：改 note 时把 LocalDB.pas / ObjNpc.pas
+    # 从 covered 降成 partial，covered 行数 42730 -> 33672）。
+    # 判据取 **git HEAD 版本**（不是本次载入值），否则文件已被改坏时无从察觉。
+    # 需要真正降级时，显式传 --allow-downgrade。
+    if not args.allow_downgrade:
+        baseline = _git_head_status()
+        for r in found:
+            old = baseline.get(r["rel_path"])
+            if old and old[0] == "covered" and r["status"] != "covered":
+                r["status"], r["note"] = old
+                downgraded.append(r["rel_path"])
+
+    # 写回 STATUS（含守卫修正后的值）
+    for r in found:
+        STATUS[r["rel_path"]] = (r["status"], r["note"])
 
     # 统计
     by_status: dict[str, list] = {}
@@ -156,6 +207,12 @@ def main() -> int:
             print(f"  {u}")
         if len(unregistered) > 40:
             print(f"  ... 另有 {len(unregistered)-40} 个")
+
+    if downgraded:
+        print(f"\n⚠️ 阻止了 {len(downgraded)} 个文件的 covered 降级（已保留原状态）:")
+        for d in downgraded:
+            print(f"  {d}")
+        print("  确实要降级请加 --allow-downgrade")
 
     if not args.summary:
         _save(found)

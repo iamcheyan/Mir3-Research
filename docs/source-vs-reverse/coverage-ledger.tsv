@@ -108,7 +108,7 @@ A/C-server	Source/GameServer/Guild.pas	3600	121469	partial	Round 827: 常量全�
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
-A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 833: DecodeConditionStr/DecodeActionStr 128条脚本命令全提取(53条件+75动作，无重复值/大量空缺)；LoadMarketDef其余部分待读
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809/811/812/813: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest/全部19个配置解析器 + Round 833: DecodeConditionStr/DecodeActionStr 128条脚本命令全表(53条件+75动作，无重复值/大量空缺)
 A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
 A/C-server	Source/GameServer/Magic.pas	1756	72544	covered	Round 814/822: 4块26条分派/三伤害公式/符咒/击退/AoE骨架/亡灵特攻/距离衰减；其余39个Mag*待读
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
@@ -116,12 +116,12 @@ A/C-server	Source/GameServer/MasSock.pas	110	2682	pending
 A/C-server	Source/GameServer/Mission.pas	63	1192	covered	Round 808 确认为空壳
 A/C-server	Source/GameServer/NoticeM.pas	114	2861	pending	
 A/C-server	Source/GameServer/ObjAxeMon.pas	190	5583	partial	Round 815: 类层次(3类)
-A/C-server	Source/GameServer/ObjBase.pas	31768	1187647	partial	Round 830-832: 接口段3类526方法全提取 + TAnimal怪物AI + TUserHuman内部机制 + 物品升级概率系统(11档概率表/StdMode值表/幸运修正公式/两临时值未回退)；其余实现待读
+A/C-server	Source/GameServer/ObjBase.pas	31768	1187647	partial	Round 830-832: 接口段3类526方法全提取 + TAnimal怪物AI + TUserHuman内部机制 + 物品升级概率系统(11档概率表/StdMode值表/幸运修正公式/两临时值未回退)；实现主体(1411-31768 约30357行)待读
 A/C-server	Source/GameServer/ObjGuard.pas	101	2367	partial	Round 815: TSuperGuard : TNormNpc 定位
 A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次+TMonster AI核心(Think/AttackTarget/Run)+TATMonster；71类构造与ObjMon2/3待读
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
-A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	partial	Round 833: 任务数据结构四级嵌套(TQuestRecord/SayingRecord/SayingProcedure)+四段式脚本(#IF/#SAY/#ACT/#ELSE)+AvailableCommands自动扫@链接+脚本文件NPC名-地图名；解析实现待读
+A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏 + Round 833: 四级嵌套数据结构/四段式脚本/AvailableCommands自动扫@链接/脚本文件NPC名-地图名
 A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 829: 恋人系统 MAX_LOVERCOUNT=1+TRelationShipInfo(BYTE字段)；其余类待读
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
