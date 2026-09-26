@@ -11027,3 +11027,54 @@ C++ 线格式：`Common/mir2packet.cpp` + `Common/endecode.cpp`，
 `quest-macros-coverage.tsv`（43 行）、
 `Tools/source-read/{extract_npc_macros,verify_quest_macros}.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 822 (全量精读续) — 2026-09-26：Mag* 实现特征（AoE 骨架/亡灵特攻/距离衰减）
+
+> `Magic.pas` 的 16 个 `Mag*` 实现。产物 `magic.md` §8、
+> `magic-implementations.tsv`（16 行）、`Tools/source-read/extract_magic_impl.py`。
+
+**〔AoE 统一骨架（9/16 是 AoE）〕**
+```pascal
+rlist := TList.Create;
+user.GetMapCreatures (user.PEnvir, X, Y, WIDE, rlist);   // 取范围内实体
+for i := 0 to rlist.Count-1 do
+   if user.IsProperTarget (cret) then begin
+      user.SelectTarget (cret);
+      cret.SendMsg (user, RM_MAGSTRUCK, 0, PWR, 0, 0, '');  // 造成伤害
+```
+**`wide` 是 AoE 半径**；**伤害经 `RM_MAGSTRUCK` 消息发送，不直接改 HP**
+—— 即**伤害计算在接收方**。
+
+**〔实测参数（16 个）〕**`MagDragonFire`(变量) / `MagElecBlizzard`(**2**) /
+`MagBigExplosion`(变量) / `MagBigHealing`(1) / `MagMakeHolyCurtain`(1) /
+`MagMakeGroupTransparent`(1) / `MagMakePrivateTransparent`(**9**) /
+`MagMakePrivateClean`(**0**) / `MagWindCut`(1) / `MagPushAround`(—) /
+`MagLightingShock`(—) / `MagTurnUndead`(—) / `MagLightingSpaceMove`(—) /
+`MagPullMon`(—) / `MagBlindEye`(—) / `MagMakeFireCross`(—)。
+
+**〔★ 亡灵特攻机制（`LA_UNDEAD`）★〕**`MagElecBlizzard`（`:424-426`）逐字：
+```pascal
+if cret.LifeAttrib <> LA_UNDEAD then  //언데드 계열 몬스터에게 공격력이 있음
+   acpwr := pwr div 10
+else acpwr := pwr;
+```
+注释「언데드 계열 몬스터에게 공격력이 있음」= **对亡灵系怪物有攻击力**。
+即**雷系法术对非亡灵只造成 1/10 伤害，对亡灵全额**。
+`LifeAttrib`（`Grobal2.pas:2347-2348`）：`LA_CREATURE=0`、**`LA_UNDEAD=1`**。
+`MagTurnUndead`（狮子轮回）是**只对亡灵**的技能。
+
+**〔★ 距离衰减（`MagDragonFire`）★〕**`:116-120`：
+```pascal
+if (abs(user.CX - cret.CX) >= 2) or (abs(user.CY - cret.CY) >= 2) then
+   realpwr := (pwr * 8) div 10     // 距离 >=2 格：伤害 ×0.8
+```
+注释「화룡기염 무공수정」（火龙气焰武功修正）——
+**只有这一个技能实测有距离衰减**。
+
+**〔未验证〕**`MagMakeFireCross`/`MagPullMon`/`MagBlindEye`/`MagWindCut` 完整实现；
+`RM_MAGSTRUCK` 的客户端伤害处理；`wide` 与「格数」的换算（`GetMapCreatures` 的
+`area` 语义未核）；其余 39 个 `Mag*`（共 55 个，本次只提取有独立实现的 16 个）。
+
+**落盘**：`magic.md` §8（约 100 行）、`magic-implementations.tsv`（16 行）、
+`Tools/source-read/extract_magic_impl.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

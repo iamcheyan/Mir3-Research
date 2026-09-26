@@ -234,3 +234,104 @@ end;
 | `Magic.exp` 的解析（源码侧） | 未读 |
 | 各技能的**冷却/延迟**机制 | 未读 |
 | `MagCanHitTarget` / `MagPassThroughMagic` | 未读 |
+
+---
+
+## 8. `Mag*` 实现特征（Round 822）
+
+> 机器可读：[`magic-implementations.tsv`](magic-implementations.tsv)（16 个函数）。
+> 提取器：`Tools/source-read/extract_magic_impl.py`。
+
+### 8.1 共同模式（**AoE 技能的统一骨架**）
+
+实测 16 个 `Mag*` 中 **9 个是 AoE**，骨架完全一致：
+
+```pascal
+rlist := TList.Create;
+user.GetMapCreatures (user.PEnvir, X, Y, WIDE, rlist);   // ← 取范围内实体
+for i := 0 to rlist.Count-1 do begin
+   cret := TCreature (rlist[i]);
+   if user.IsProperTarget (cret) then begin
+      user.SelectTarget (cret);                          // 选中（部分技能有）
+      cret.SendMsg (user, RM_MAGSTRUCK, 0, PWR, 0, 0, '');  // ← 造成伤害
+      Result := TRUE;
+   end;
+end;
+rlist.Free;
+```
+
+**`wide` 是 AoE 半径**（传给 `GetMapCreatures`）。**伤害通过
+`RM_MAGSTRUCK` 消息发送**，不直接改 HP —— 即**伤害计算在接收方**。
+
+### 8.2 各技能实测参数
+
+| 函数 | `wide` | 特殊条件 |
+|---|---|---|
+| `MagDragonFire`（火龙气焰） | **变量** | 距离 ≥2 时 **伤害 ×0.8** |
+| `MagElecBlizzard`（雷雪华） | `2` | **非亡灵只受 1/10 伤害** |
+| `MagBigExplosion`（爆热波） | **变量** | 无 |
+| `MagBigHealing`（大恢复术） | `1` | 治疗 |
+| `MagMakeHolyCurtain`（圣幕） | `1` | 概率 |
+| `MagMakeGroupTransparent`（群体隐身） | `1` | 无 |
+| `MagMakePrivateTransparent`（自身隐身） | `9` | 概率 |
+| `MagMakePrivateClean`（净化） | `0` | 概率 |
+| `MagWindCut`（风刃） | `1` | 方向/概率/鬼魂/技能等级 |
+| `MagPushAround`（击退） | — | 方向/粘住状态/概率（见 §5） |
+| `MagLightingShock`（雷魂击） | — | 概率 + **非亡灵 1/10** |
+| `MagTurnUndead`（狮子轮回） | — | **只对亡灵** + 概率 |
+| `MagLightingSpaceMove`（亚空行法） | — | 概率（瞬移） |
+| `MagPullMon`（拉怪） | — | 方向/粘住/概率 |
+| `MagBlindEye`（致盲） | — | 概率 |
+| `MagMakeFireCross`（地炎术） | — | 无（特殊实现） |
+
+### 8.3 **两个关键机制**
+
+#### 8.3.1 亡灵特攻（`LA_UNDEAD`）
+
+`MagElecBlizzard`（`:424-426`）**逐字**：
+
+```pascal
+if cret.LifeAttrib <> LA_UNDEAD then  //언데드 계열 몬스터에게 공격력이 있음
+   acpwr := pwr div 10
+else acpwr := pwr;
+```
+
+**注释「언데드 계열 몬스터에게 공격력이 있음」= 对亡灵系怪物有攻击力**。
+即**雷系法术对非亡灵只造成 1/10 伤害，对亡灵全额**。
+
+`LifeAttrib` 常量（`Grobal2.pas:2347-2348`）：`LA_CREATURE = 0`、**`LA_UNDEAD = 1`**。
+`MagTurnUndead`（狮子轮回）是**只对亡灵**的技能（驱邪/超度）。
+
+#### 8.3.2 距离衰减（`MagDragonFire`）
+
+`:116-120`：
+
+```pascal
+if (abs(user.CX - cret.CX) >= 2) or (abs(user.CY - cret.CY) >= 2) then
+   realpwr := (pwr * 8) div 10     // ← 距离 ≥2 格：伤害 ×0.8
+else
+   realpwr := pwr;
+```
+
+注释「화룡기염 무공수정」（火龙气焰武功修正）——
+**只有这一个技能实测有距离衰减**。
+
+### 8.4 与 EI 证据 / Zircon 的对照
+
+| 项 | 原版反编译 | 源码 | Zircon |
+|---|---|---|---|
+| AoE 骨架 | 未闭合 | `GetMapCreatures` + `RM_MAGSTRUCK` | `ClientData/magic-effects.json` |
+| 亡灵特攻 | 未闭合 | `LA_UNDEAD` 判定 | — |
+| 距离衰减 | 未闭合 | `MagDragonFire` ×0.8 | — |
+| AoE 半径 | 未闭合 | 各技能 `wide` 值（1/2/9/变量） | — |
+
+**分级**：源码结论均 `secondary-source`。
+
+### 8.5 未验证项（本节）
+
+| 项 | 原因 |
+|---|---|
+| `MagMakeFireCross` / `MagPullMon` / `MagBlindEye` / `MagWindCut` 的完整实现 | 只提取了 `wide` 与关键词 |
+| `RM_MAGSTRUCK` 在客户端的伤害处理 | 未读客户端对应分支 |
+| `wide` 与「格数」的换算关系 | `GetMapCreatures(env, x, y, area, rlist)` 的 `area` 语义未核 |
+| 其余 39 个 `Mag*`（共 55 个） | 本次只提取了 16 个（有独立实现的） |
