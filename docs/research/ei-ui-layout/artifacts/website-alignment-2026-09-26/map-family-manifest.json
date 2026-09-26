@@ -1,0 +1,1502 @@
+[
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "东部石矿",
+    "image": "../images/map/mgmap/sk.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sk.jpg",
+      "bytes": 144308,
+      "sha256": "73ce7dec705f6e79d0bb48308d6e87cde65bbba432f104a9dfbd65bc65484dee",
+      "width": 700,
+      "height": 2200,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 715,
+        "file": "B115_001",
+        "description": "矿石空间"
+      },
+      {
+        "index": 827,
+        "file": "D1411",
+        "description": "北部石矿1层"
+      },
+      {
+        "index": 828,
+        "file": "D1412",
+        "description": "北部石矿2层"
+      },
+      {
+        "index": 829,
+        "file": "D1413",
+        "description": "北部石矿3层"
+      },
+      {
+        "index": 830,
+        "file": "D1414",
+        "description": "北部石矿4层"
+      },
+      {
+        "index": 831,
+        "file": "D1415",
+        "description": "北部石矿5层"
+      },
+      {
+        "index": 832,
+        "file": "D1421",
+        "description": "西部石矿1层"
+      },
+      {
+        "index": 833,
+        "file": "D1422",
+        "description": "西部石矿2层"
+      },
+      {
+        "index": 834,
+        "file": "D1423",
+        "description": "西部石矿3层"
+      },
+      {
+        "index": 835,
+        "file": "D1424",
+        "description": "西部石矿4层"
+      },
+      {
+        "index": 836,
+        "file": "D1425",
+        "description": "西部石矿5层"
+      },
+      {
+        "index": 844,
+        "file": "D404_002",
+        "description": "废矿矿山地下2层"
+      },
+      {
+        "index": 845,
+        "file": "D405",
+        "description": "矿石储藏所"
+      },
+      {
+        "index": 856,
+        "file": "D421",
+        "description": "矿山1层"
+      },
+      {
+        "index": 858,
+        "file": "D422",
+        "description": "矿山2层"
+      },
+      {
+        "index": 860,
+        "file": "D422_002",
+        "description": "矿山2层"
+      },
+      {
+        "index": 862,
+        "file": "D431",
+        "description": "北部矿山入口"
+      },
+      {
+        "index": 864,
+        "file": "D432",
+        "description": "北部矿山东面洞穴"
+      },
+      {
+        "index": 871,
+        "file": "D435",
+        "description": "北部矿石储藏所"
+      },
+      {
+        "index": 881,
+        "file": "D451",
+        "description": "南部矿山1层"
+      },
+      {
+        "index": 883,
+        "file": "D452",
+        "description": "南部矿山2层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "天然洞穴、半兽人洞穴和废矿",
+    "image": "../images/map/mgmap/tr.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/tr.jpg",
+      "bytes": 315727,
+      "sha256": "78c9c0e8d616653b112ea3307859238452a89133b9480b44ff40b77a86047a65",
+      "width": 2380,
+      "height": 2356,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 753,
+        "file": "D001_001",
+        "description": "半兽勇士洞"
+      },
+      {
+        "index": 755,
+        "file": "D011",
+        "description": "天然洞穴1层"
+      },
+      {
+        "index": 756,
+        "file": "D012",
+        "description": "天然洞穴2层"
+      },
+      {
+        "index": 757,
+        "file": "D012_001",
+        "description": "天然洞穴2层"
+      },
+      {
+        "index": 816,
+        "file": "D1302",
+        "description": "东部银杏废矿2层"
+      },
+      {
+        "index": 817,
+        "file": "D1311",
+        "description": "北部银杏废矿1层"
+      },
+      {
+        "index": 818,
+        "file": "D1312",
+        "description": "北部银杏废矿2层"
+      },
+      {
+        "index": 819,
+        "file": "D1313",
+        "description": "北部银杏废矿3层"
+      },
+      {
+        "index": 820,
+        "file": "D1314",
+        "description": "北部银杏废矿4层"
+      },
+      {
+        "index": 821,
+        "file": "D1315",
+        "description": "北部银杏废矿5层"
+      },
+      {
+        "index": 822,
+        "file": "D1321",
+        "description": "西部银杏废矿1层"
+      },
+      {
+        "index": 823,
+        "file": "D1322",
+        "description": "西部银杏废矿2层"
+      },
+      {
+        "index": 824,
+        "file": "D1323",
+        "description": "西部银杏废矿3层"
+      },
+      {
+        "index": 825,
+        "file": "D1324",
+        "description": "西部银杏废矿4层"
+      },
+      {
+        "index": 826,
+        "file": "D1325",
+        "description": "西部银杏废矿5层"
+      },
+      {
+        "index": 844,
+        "file": "D404_002",
+        "description": "废矿矿山地下2层"
+      },
+      {
+        "index": 847,
+        "file": "D406",
+        "description": "废矿南部洞穴"
+      },
+      {
+        "index": 873,
+        "file": "D436",
+        "description": "北部废矿南面洞穴"
+      },
+      {
+        "index": 1062,
+        "file": "E002",
+        "description": "半兽天然洞穴"
+      },
+      {
+        "index": 1063,
+        "file": "E002_001",
+        "description": "半兽天然洞穴"
+      },
+      {
+        "index": 1071,
+        "file": "E603",
+        "description": "废矿秘密通路"
+      },
+      {
+        "index": 1072,
+        "file": "E604",
+        "description": "废矿秘密通路"
+      },
+      {
+        "index": 1073,
+        "file": "E605",
+        "description": "废矿秘密通路"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "银杏废矿",
+    "image": "../images/map/mgmap/yx.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/yx.jpg",
+      "bytes": 140541,
+      "sha256": "b16744b5ecef0d07d095fefc070b05134287706a26bcfaa1df442bf77d7c949f",
+      "width": 644,
+      "height": 2200,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 816,
+        "file": "D1302",
+        "description": "东部银杏废矿2层"
+      },
+      {
+        "index": 817,
+        "file": "D1311",
+        "description": "北部银杏废矿1层"
+      },
+      {
+        "index": 818,
+        "file": "D1312",
+        "description": "北部银杏废矿2层"
+      },
+      {
+        "index": 819,
+        "file": "D1313",
+        "description": "北部银杏废矿3层"
+      },
+      {
+        "index": 820,
+        "file": "D1314",
+        "description": "北部银杏废矿4层"
+      },
+      {
+        "index": 821,
+        "file": "D1315",
+        "description": "北部银杏废矿5层"
+      },
+      {
+        "index": 822,
+        "file": "D1321",
+        "description": "西部银杏废矿1层"
+      },
+      {
+        "index": 823,
+        "file": "D1322",
+        "description": "西部银杏废矿2层"
+      },
+      {
+        "index": 824,
+        "file": "D1323",
+        "description": "西部银杏废矿3层"
+      },
+      {
+        "index": 825,
+        "file": "D1324",
+        "description": "西部银杏废矿4层"
+      },
+      {
+        "index": 826,
+        "file": "D1325",
+        "description": "西部银杏废矿5层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "虫峡谷",
+    "image": "../images/map/mgmap/cx.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/cx.jpg",
+      "bytes": 92452,
+      "sha256": "1b54afa54ea2c7c34649afdf2610ee7339de0770cf30f4ca4910b43a2a31e18c",
+      "width": 681,
+      "height": 1425,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 920,
+        "file": "d6021",
+        "description": "虫峡谷1层"
+      },
+      {
+        "index": 921,
+        "file": "d6022",
+        "description": "虫峡谷2层"
+      },
+      {
+        "index": 922,
+        "file": "D6023",
+        "description": "虫峡谷3层"
+      },
+      {
+        "index": 923,
+        "file": "d6024",
+        "description": "虫峡谷4层"
+      },
+      {
+        "index": 924,
+        "file": "D6025",
+        "description": "虫峡谷5层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "绝命谷和万年谷",
+    "image": "../images/map/mgmap/jm.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/jm.jpg",
+      "bytes": 228530,
+      "sha256": "46f0e9c34b5cd4c6c56ea47f279a43eb7f072ef0542dcbc431e8837574ad539d",
+      "width": 1402,
+      "height": 1716,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 904,
+        "file": "d60011",
+        "description": "绝命谷1层南部"
+      },
+      {
+        "index": 905,
+        "file": "d60012",
+        "description": "绝命谷1层西部"
+      },
+      {
+        "index": 906,
+        "file": "d60013",
+        "description": "绝命谷1层北部"
+      },
+      {
+        "index": 907,
+        "file": "d60021",
+        "description": "绝命谷2层西部"
+      },
+      {
+        "index": 908,
+        "file": "d60022",
+        "description": "绝命谷2层北部"
+      },
+      {
+        "index": 910,
+        "file": "d6004",
+        "description": "绝命谷3层"
+      },
+      {
+        "index": 911,
+        "file": "d6011",
+        "description": "万年谷"
+      },
+      {
+        "index": 913,
+        "file": "D60131",
+        "description": "万年谷中部"
+      },
+      {
+        "index": 914,
+        "file": "D60132",
+        "description": "万年谷南部"
+      },
+      {
+        "index": 915,
+        "file": "D60133",
+        "description": "万年谷西部"
+      },
+      {
+        "index": 916,
+        "file": "D60134",
+        "description": "万年谷北部"
+      },
+      {
+        "index": 917,
+        "file": "D60135",
+        "description": "万年谷东部"
+      },
+      {
+        "index": 919,
+        "file": "d6015",
+        "description": "生死关"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "矿山",
+    "image": "../images/map/mgmap/k.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/k.jpg",
+      "bytes": 102785,
+      "sha256": "5edc921a0a396ad1a8af6d3cba15c80ee62617a8ddad070d5cbd436480cf4851",
+      "width": 1392,
+      "height": 758,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 715,
+        "file": "B115_001",
+        "description": "矿石空间"
+      },
+      {
+        "index": 844,
+        "file": "D404_002",
+        "description": "废矿矿山地下2层"
+      },
+      {
+        "index": 845,
+        "file": "D405",
+        "description": "矿石储藏所"
+      },
+      {
+        "index": 856,
+        "file": "D421",
+        "description": "矿山1层"
+      },
+      {
+        "index": 858,
+        "file": "D422",
+        "description": "矿山2层"
+      },
+      {
+        "index": 860,
+        "file": "D422_002",
+        "description": "矿山2层"
+      },
+      {
+        "index": 862,
+        "file": "D431",
+        "description": "北部矿山入口"
+      },
+      {
+        "index": 864,
+        "file": "D432",
+        "description": "北部矿山东面洞穴"
+      },
+      {
+        "index": 871,
+        "file": "D435",
+        "description": "北部矿石储藏所"
+      },
+      {
+        "index": 881,
+        "file": "D451",
+        "description": "南部矿山1层"
+      },
+      {
+        "index": 883,
+        "file": "D452",
+        "description": "南部矿山2层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "赤月山谷1",
+    "image": "../images/map/mgmap/c1.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/c1.jpg",
+      "bytes": 154388,
+      "sha256": "026452c75126fc704591748418c9457c8e1cd7c3d5f4cbc9fa3926cebde469d9",
+      "width": 1040,
+      "height": 1800,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 787,
+        "file": "D1021",
+        "description": "赤月山谷1层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "赤月山谷2",
+    "image": "../images/map/mgmap/c2.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/c2.jpg",
+      "bytes": 140057,
+      "sha256": "b12a3831d24691d508a358e41f534038123149f668c47d3c0960f25302f143af",
+      "width": 976,
+      "height": 1720,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 788,
+        "file": "D1022",
+        "description": "赤月山谷2层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "赤月山谷3",
+    "image": "../images/map/mgmap/c3.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/c3.jpg",
+      "bytes": 155796,
+      "sha256": "2a63f1ff603afe5f0cc1779aa23d1efed8046f9d08746a9a3acd1e036a390339",
+      "width": 1012,
+      "height": 1772,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 781,
+        "file": "D10131",
+        "description": "赤月山谷3层"
+      },
+      {
+        "index": 782,
+        "file": "D10132",
+        "description": "赤月山谷3层"
+      },
+      {
+        "index": 789,
+        "file": "D10231",
+        "description": "赤月山谷3层"
+      },
+      {
+        "index": 790,
+        "file": "D10232",
+        "description": "赤月山谷3层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "石阁阵",
+    "image": "../images/map/mgmap/sg.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sg.jpg",
+      "bytes": 204555,
+      "sha256": "2732764672bfe9d75a096c9a83daad6743cdcf8ebc91c67df78589e8a14532c6",
+      "width": 816,
+      "height": 2802,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 687,
+        "file": "75",
+        "description": "石阁庙"
+      },
+      {
+        "index": 939,
+        "file": "d7101",
+        "description": "石阁入口"
+      },
+      {
+        "index": 940,
+        "file": "d7102",
+        "description": "石阁入口"
+      },
+      {
+        "index": 941,
+        "file": "d711",
+        "description": "石阁1层"
+      },
+      {
+        "index": 942,
+        "file": "d712",
+        "description": "石阁2层"
+      },
+      {
+        "index": 943,
+        "file": "d713",
+        "description": "石阁3层"
+      },
+      {
+        "index": 944,
+        "file": "d714",
+        "description": "石阁4层"
+      },
+      {
+        "index": 945,
+        "file": "D715",
+        "description": "石阁5层"
+      },
+      {
+        "index": 946,
+        "file": "D716",
+        "description": "石阁6层"
+      },
+      {
+        "index": 976,
+        "file": "D717",
+        "description": "石阁7层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "沃玛神殿地图",
+    "image": "../images/map/mgmap/wm.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/wm.jpg",
+      "bytes": 290777,
+      "sha256": "1ec5eae74dbdc0e055bff783dda9d886735691f1a029c87b8e7f8f2d52dc99a1",
+      "width": 2324,
+      "height": 1700,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 758,
+        "file": "D021",
+        "description": "沃玛神殿入口"
+      },
+      {
+        "index": 759,
+        "file": "D022",
+        "description": "沃玛神殿1层"
+      },
+      {
+        "index": 760,
+        "file": "D022_001",
+        "description": "沃玛神殿1层"
+      },
+      {
+        "index": 761,
+        "file": "D023",
+        "description": "沃玛神殿2层"
+      },
+      {
+        "index": 762,
+        "file": "D023_001",
+        "description": "沃玛神殿师徒关"
+      },
+      {
+        "index": 763,
+        "file": "D023_002",
+        "description": "沃玛神殿师徒关"
+      },
+      {
+        "index": 764,
+        "file": "D024",
+        "description": "沃玛神殿"
+      },
+      {
+        "index": 765,
+        "file": "D032",
+        "description": "沃玛神殿1层"
+      },
+      {
+        "index": 766,
+        "file": "D033",
+        "description": "沃玛神殿2层"
+      },
+      {
+        "index": 767,
+        "file": "D042",
+        "description": "沃玛神殿1层"
+      },
+      {
+        "index": 768,
+        "file": "D043",
+        "description": "沃玛神殿2层"
+      },
+      {
+        "index": 769,
+        "file": "D052",
+        "description": "沃玛神殿1层"
+      },
+      {
+        "index": 770,
+        "file": "D053",
+        "description": "沃玛神殿2层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "祖玛神殿",
+    "image": "../images/map/mgmap/mz.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/mz.jpg",
+      "bytes": 150752,
+      "sha256": "e44e356e4ff50fdac7911c65b030d7f79e37564ebbd833c556c0f8f0f25013e8",
+      "width": 980,
+      "height": 2256,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 612,
+        "file": "0157",
+        "description": "祖玛神殿大厅"
+      },
+      {
+        "index": 662,
+        "file": "31",
+        "description": "祖玛神殿"
+      },
+      {
+        "index": 885,
+        "file": "D505",
+        "description": "祖玛神殿5层"
+      },
+      {
+        "index": 895,
+        "file": "D5071",
+        "description": "祖玛神殿7层大厅"
+      },
+      {
+        "index": 896,
+        "file": "D5072",
+        "description": "祖玛神殿7层"
+      },
+      {
+        "index": 897,
+        "file": "D5073",
+        "description": "祖玛神殿7层"
+      },
+      {
+        "index": 898,
+        "file": "D5074",
+        "description": "祖玛神殿7层"
+      },
+      {
+        "index": 899,
+        "file": "d511",
+        "description": "祖玛神殿"
+      },
+      {
+        "index": 900,
+        "file": "d512",
+        "description": "祖玛神殿"
+      },
+      {
+        "index": 901,
+        "file": "d513",
+        "description": "祖玛神殿"
+      },
+      {
+        "index": 902,
+        "file": "d514",
+        "description": "祖玛神殿"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "蚂蚁洞穴",
+    "image": "../images/map/mgmap/my.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/my.jpg",
+      "bytes": 143596,
+      "sha256": "e8bd0db16ea45c60b8a0ae0aa80b463bc7ace81816248e2c93ea529c8d573fc1",
+      "width": 1746,
+      "height": 684,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 977,
+        "file": "D8001",
+        "description": "南部蚂蚁洞4层"
+      },
+      {
+        "index": 978,
+        "file": "D8002",
+        "description": "南部蚂蚁洞1层"
+      },
+      {
+        "index": 979,
+        "file": "D8003",
+        "description": "南部蚂蚁洞2层"
+      },
+      {
+        "index": 980,
+        "file": "D8004",
+        "description": "南部蚂蚁洞3层"
+      },
+      {
+        "index": 981,
+        "file": "D8021",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 982,
+        "file": "d8022",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 983,
+        "file": "D8031",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 984,
+        "file": "D8032",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 985,
+        "file": "d8033",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 986,
+        "file": "D8041",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 988,
+        "file": "D806",
+        "description": "南部蚂蚁洞穴3层2"
+      },
+      {
+        "index": 989,
+        "file": "D8061",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 990,
+        "file": "d8062",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 991,
+        "file": "d807",
+        "description": "南部蚂蚁洞穴3层3"
+      },
+      {
+        "index": 992,
+        "file": "d8071",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 993,
+        "file": "d8072",
+        "description": "南部蚂蚁洞穴"
+      },
+      {
+        "index": 994,
+        "file": "d808",
+        "description": "南部蚂蚁洞穴3层4"
+      },
+      {
+        "index": 995,
+        "file": "D8101",
+        "description": "北部蚂蚁洞穴1层4"
+      },
+      {
+        "index": 996,
+        "file": "D8102",
+        "description": "北部蚂蚁洞穴1层1"
+      },
+      {
+        "index": 997,
+        "file": "D8103",
+        "description": "北部蚂蚁洞穴1层2"
+      },
+      {
+        "index": 998,
+        "file": "D8104",
+        "description": "北部蚂蚁洞穴1层3"
+      },
+      {
+        "index": 1018,
+        "file": "D8201",
+        "description": "东部蚂蚁洞穴1层4"
+      },
+      {
+        "index": 1019,
+        "file": "D8202",
+        "description": "东部蚂蚁洞穴1层1"
+      },
+      {
+        "index": 1020,
+        "file": "D8203",
+        "description": "东部蚂蚁洞穴1层2"
+      },
+      {
+        "index": 1021,
+        "file": "D8204",
+        "description": "东部蚂蚁洞穴1层3"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "潘夜神殿",
+    "image": "../images/map/mgmap/py.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/py.jpg",
+      "bytes": 384008,
+      "sha256": "d31adb8ef92dc92117d5b63f525cae51eeccd058ae320633153a89fa290cf1df",
+      "width": 1968,
+      "height": 2148,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 797,
+        "file": "D11031",
+        "description": "潘夜神殿3层西部"
+      },
+      {
+        "index": 798,
+        "file": "D11032",
+        "description": "潘夜神殿3层东部"
+      },
+      {
+        "index": 799,
+        "file": "D1110",
+        "description": "潘夜神殿大厅"
+      },
+      {
+        "index": 800,
+        "file": "D1111",
+        "description": "潘夜神殿4层"
+      },
+      {
+        "index": 801,
+        "file": "D1112",
+        "description": "潘夜神殿5层"
+      },
+      {
+        "index": 802,
+        "file": "D1113",
+        "description": "潘夜神殿6层"
+      },
+      {
+        "index": 803,
+        "file": "D11141",
+        "description": "潘夜神殿7层西部"
+      },
+      {
+        "index": 804,
+        "file": "D11142",
+        "description": "潘夜神殿7层东部"
+      },
+      {
+        "index": 805,
+        "file": "D1115",
+        "description": "潘夜神殿8层"
+      },
+      {
+        "index": 806,
+        "file": "D1116",
+        "description": "潘夜神殿"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "潘夜石窟",
+    "image": "../images/map/mgmap/pys.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/pys.jpg",
+      "bytes": 122878,
+      "sha256": "af58eadf49f2f114816e7c12100336351c1d458cc32359999531b0724c5f7e4e",
+      "width": 720,
+      "height": 1770,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 810,
+        "file": "D1211",
+        "description": "潘夜石窟1层"
+      },
+      {
+        "index": 811,
+        "file": "D12121",
+        "description": "潘夜石窟2层西部"
+      },
+      {
+        "index": 813,
+        "file": "D1213",
+        "description": "潘夜石窟3层"
+      },
+      {
+        "index": 814,
+        "file": "D1214",
+        "description": "潘夜石窟4层"
+      },
+      {
+        "index": 815,
+        "file": "D1215",
+        "description": "潘夜石窟5层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "真天宫和黑度宫",
+    "image": "../images/map/mgmap/zh.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/zh.jpg",
+      "bytes": 470512,
+      "sha256": "6739ab5f96d7a0210637acb7775a7bfceae8e35dbede3b7edbed858b5137f823",
+      "width": 4515,
+      "height": 1320,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 1099,
+        "file": "d15023",
+        "description": "真天宫1层"
+      },
+      {
+        "index": 1100,
+        "file": "d15033",
+        "description": "真天宫2层"
+      },
+      {
+        "index": 1101,
+        "file": "d15054",
+        "description": "真天宫3层"
+      },
+      {
+        "index": 1102,
+        "file": "d1506",
+        "description": "真天宫"
+      },
+      {
+        "index": 1103,
+        "file": "d1510",
+        "description": "黑度宫1层"
+      },
+      {
+        "index": 1104,
+        "file": "d15111",
+        "description": "黑度宫2层"
+      },
+      {
+        "index": 1105,
+        "file": "d1512",
+        "description": "黑度宫3层"
+      },
+      {
+        "index": 1106,
+        "file": "d1513",
+        "description": "黑度宫4层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-maze",
+    "website_title": "迷宫地图",
+    "website_area": "罪孽洞穴",
+    "image": "../images/map/mgmap/zn.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/zn.jpg",
+      "bytes": 94738,
+      "sha256": "d2bf104d06e76614ec7acdf9dc98c9e698c3175dc3ac01e599133121fd5ed5d2",
+      "width": 939,
+      "height": 948,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 807,
+        "file": "D1201",
+        "description": "罪孽洞穴1层"
+      },
+      {
+        "index": 808,
+        "file": "D1202",
+        "description": "罪孽洞穴2层"
+      },
+      {
+        "index": 809,
+        "file": "D1204",
+        "description": "罪孽洞穴4层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-world",
+    "website_title": "世界地图",
+    "website_area": "世界地图",
+    "image": "../images/map/pic/mainmap.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/pic/mainmap.jpg",
+      "bytes": 182837,
+      "sha256": "d37ea8a8a730bc0ced5afca724c363036f19eb446933427878e94a6eb7a92dc8",
+      "width": 577,
+      "height": 488,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 610,
+        "file": "01",
+        "description": "边境城市"
+      },
+      {
+        "index": 611,
+        "file": "0150",
+        "description": "沙巴克城堡"
+      },
+      {
+        "index": 630,
+        "file": "0_003",
+        "description": "比奇县"
+      },
+      {
+        "index": 663,
+        "file": "41",
+        "description": "诺玛沙漠"
+      },
+      {
+        "index": 664,
+        "file": "42",
+        "description": "沙漠"
+      },
+      {
+        "index": 665,
+        "file": "43",
+        "description": "沙漠"
+      },
+      {
+        "index": 666,
+        "file": "44",
+        "description": "沙漠"
+      },
+      {
+        "index": 682,
+        "file": "6",
+        "description": "沙漠"
+      },
+      {
+        "index": 683,
+        "file": "71",
+        "description": "沙漠"
+      },
+      {
+        "index": 684,
+        "file": "72",
+        "description": "沙漠"
+      },
+      {
+        "index": 685,
+        "file": "73",
+        "description": "沙漠"
+      },
+      {
+        "index": 686,
+        "file": "74",
+        "description": "盟重县"
+      },
+      {
+        "index": 688,
+        "file": "76",
+        "description": "沙漠"
+      },
+      {
+        "index": 689,
+        "file": "77",
+        "description": "沙漠"
+      },
+      {
+        "index": 690,
+        "file": "78",
+        "description": "沙漠"
+      },
+      {
+        "index": 1111,
+        "file": "d2001",
+        "description": "西沙漠1层"
+      },
+      {
+        "index": 1112,
+        "file": "d20023",
+        "description": "西沙漠2层"
+      },
+      {
+        "index": 1115,
+        "file": "82",
+        "description": "冰原雪城"
+      },
+      {
+        "index": 1121,
+        "file": "d2107",
+        "description": "天空之城"
+      },
+      {
+        "index": 1149,
+        "file": "14",
+        "description": "月河城"
+      },
+      {
+        "index": 1156,
+        "file": "TNakwon_001",
+        "description": "幽暗森林"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-sj",
+    "website_title": "神舰地图",
+    "website_area": "[神舰3楼地图]",
+    "image": "../images/map/mgmap/sj04.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sj04.jpg",
+      "bytes": 5492,
+      "sha256": "cf2e30d4c5bfedf1a88472ada8608996495a2782c13d4aee10625995d95da762",
+      "width": 400,
+      "height": 300,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 1041,
+        "file": "D900",
+        "description": "神舰入口"
+      },
+      {
+        "index": 1042,
+        "file": "D9021",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1048,
+        "file": "D9022",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1107,
+        "file": "d903",
+        "description": "神舰地下1层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-sj",
+    "website_title": "神舰地图",
+    "website_area": "[神舰2楼A地图]",
+    "image": "../images/map/mgmap/sj03.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sj03.jpg",
+      "bytes": 5633,
+      "sha256": "a73ca4ca3f61803ff18808d7bebe5aa08e3e84da8cdd5035f7a1831f0ce514f4",
+      "width": 400,
+      "height": 300,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 1041,
+        "file": "D900",
+        "description": "神舰入口"
+      },
+      {
+        "index": 1042,
+        "file": "D9021",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1048,
+        "file": "D9022",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1107,
+        "file": "d903",
+        "description": "神舰地下1层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-sj",
+    "website_title": "神舰地图",
+    "website_area": "[神舰2楼B地图]",
+    "image": "../images/map/mgmap/sj02.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sj02.jpg",
+      "bytes": 5755,
+      "sha256": "ab076cef57c0a07c20f6415ac34cdb306a7121a1acf17b3ac88a6f7e6b91c84f",
+      "width": 400,
+      "height": 300,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 1041,
+        "file": "D900",
+        "description": "神舰入口"
+      },
+      {
+        "index": 1042,
+        "file": "D9021",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1048,
+        "file": "D9022",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1107,
+        "file": "d903",
+        "description": "神舰地下1层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  },
+  {
+    "website_group": "map-sj",
+    "website_title": "神舰地图",
+    "website_area": "[神舰1楼地图]",
+    "image": "../images/map/mgmap/sj01.jpg",
+    "image_evidence": {
+      "present": true,
+      "path": "/home/tetsuya/development/mir3-website/images/map/mgmap/sj01.jpg",
+      "bytes": 6133,
+      "sha256": "dd707928c808f9feb6c4a94d9f242a4c90fac2a0a735a585a8c623f3134e57c1",
+      "width": 400,
+      "height": 300,
+      "mode": "RGB",
+      "frames": 1,
+      "format": "JPEG"
+    },
+    "zircon_mapinfo_candidates": [
+      {
+        "index": 1041,
+        "file": "D900",
+        "description": "神舰入口"
+      },
+      {
+        "index": 1042,
+        "file": "D9021",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1048,
+        "file": "D9022",
+        "description": "神舰地下2层"
+      },
+      {
+        "index": 1107,
+        "file": "d903",
+        "description": "神舰地下1层"
+      }
+    ],
+    "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
+  }
+]

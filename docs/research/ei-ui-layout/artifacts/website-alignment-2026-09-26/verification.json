@@ -1,0 +1,137 @@
+{
+  "verifier": "independent-website-alignment-v1",
+  "database_write": false,
+  "server_gate": {
+    "port": 7000,
+    "listening": true,
+    "write_allowed": false
+  },
+  "source_counts": {
+    "monsters": 154,
+    "skills": 61,
+    "map_groups": 3,
+    "map_areas": 22
+  },
+  "manifest_counts": {
+    "monsters": 154,
+    "skills": 61,
+    "map_families": 22,
+    "npc": 294,
+    "respawns": 2475
+  },
+  "image_audit": {
+    "monsters": {
+      "records": 154,
+      "missing_or_decode_error": 0,
+      "invalid_dimensions": 0,
+      "duplicate_groups": {
+        "081c2c720f788edf4876a2790b3c0d794b6ab648f83c6cf56635c0383688b599": [
+          "mob-16",
+          "mob-17"
+        ],
+        "04982aa4af41d3ef996d0030d98d82196a727b61c9694a8be9f16d3ab88128da": [
+          "mob-34",
+          "mob-39"
+        ],
+        "e7b7818f3e5460e7372249144075bb21a42023128855999c19df3fc3d66ebbdb": [
+          "mob-57",
+          "mob-58"
+        ],
+        "b2b623b1868fe60b284842cc1dd3bc4aac93eb35b7e206bfbf4b213803bcc22e": [
+          "mob-64",
+          "mob-66"
+        ],
+        "1f36728faf08ca8a2179a169b1aeb884e819d644d240940a4e30ed096e35d0cc": [
+          "mob-70",
+          "mob-72"
+        ],
+        "daa191bd62b8814c0fed02e0b1814496aaa6b2bfc69cfc774c8f42d641e714b0": [
+          "mob-74",
+          "mob-75"
+        ],
+        "77aa3dc27df9eee7973a5264cdd073e81a515c3e9b975889375c2e250e244c76": [
+          "mob-80",
+          "mob-82"
+        ],
+        "c49df58670755cde13ec58878ae977b1f0a97ff54e0cd6c5bc70a359d88e54f1": [
+          "mob-119",
+          "mob-120"
+        ],
+        "49d4c4ea3fc6bb3b7d63117d651a66503e1104865199b8682ef252bddc0205e1": [
+          "mob-125",
+          "mob-126"
+        ],
+        "1b613b35e12e6e50823c78316626cd1c6a28b7c2e0abbf4ce334992d326c96cc": [
+          "mob-128",
+          "mob-135"
+        ],
+        "7e8d8cafe9191804039353f65fc5f805dec499fea1742fcdf03d79a3ce495e82": [
+          "mob-149",
+          "mob-152"
+        ]
+      }
+    },
+    "skills": {
+      "records": 61,
+      "missing_or_decode_error": 0,
+      "invalid_dimensions": 0,
+      "duplicate_groups": {
+        "0d1d5a3464211ac252a472cd6550daf21ef588c4615d548da9b188d713c3041e": [
+          "skill-战士-乾坤大挪移",
+          "skill-战士-斗转星移"
+        ],
+        "210f38277f179e39e7b7758daac0da5bee218d3160c8c2db92fc5c1322597fd6": [
+          "skill-道士-召唤骷髅",
+          "skill-道士-超强召唤骷髅"
+        ]
+      }
+    }
+  },
+  "lookup_count": 332,
+  "monster_statuses": {
+    "confirmed": 67,
+    "pending": 76,
+    "investigate": 11
+  },
+  "skill_statuses": {
+    "confirmed": 59,
+    "investigate": 2
+  },
+  "resource_audit": {
+    "confirmed_candidates_checked": 67,
+    "resource_failures": 0
+  },
+  "key_samples": {
+    "monsters": {
+      "半兽人": "confirmed",
+      "祖玛教主": "confirmed",
+      "祖玛卫士": "investigate",
+      "白野猪": "pending",
+      "赤月恶魔": "confirmed"
+    },
+    "skills": {
+      "基本剑术": "confirmed",
+      "火球术": "confirmed",
+      "凝血离魂": "investigate"
+    },
+    "npcs": [
+      {
+        "index": 13,
+        "name": "Mr. Kang",
+        "missing": []
+      },
+      {
+        "index": 14,
+        "name": "Isaac",
+        "missing": []
+      },
+      {
+        "index": 15,
+        "name": "David",
+        "missing": []
+      }
+    ]
+  },
+  "errors": [],
+  "result": "PASS"
+}

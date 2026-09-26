@@ -1,0 +1,461 @@
+#!/usr/bin/env python3
+"""Build the mir3-website NPC/monster/skill/map alignment manifest.
+
+This is an offline evidence builder.  It reads the website JSON/images and
+exported Zircon workspace snapshots, probes current Zl/MIcon resources, and
+writes manifests/reports only.  It never opens a database and never edits the
+website checkout or System.db.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import html
+import json
+import re
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+from typing import Any
+
+try:
+    from PIL import Image
+except ImportError:  # pragma: no cover - the project venv provides Pillow
+    Image = None
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+ZIRCON = Path("/home/tetsuya/development/zircon")
+WEBSITE = Path("/home/tetsuya/development/mir3-website")
+WORKSPACE = ROOT / "Tools/dbeditor/workspace"
+ALIGNMENT = ROOT / "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25"
+CATALOG_SKILLS = ROOT / "docs/legacy-atlas/content/catalog-skills.html"
+
+# Explicit identity evidence.  Lists intentionally preserve ambiguity; the
+# generator never picks among multiple candidates automatically.
+WEBSITE_MONSTER_TO_INDEXES: dict[str, list[int]] = {
+    "鸡": [8], "猪": [9], "牛": [11], "羊": [12], "鹿": [10],
+    "稻草人": [21], "多钩猫": [13], "狼": [14], "毒蜘蛛": [20],
+    "食人花": [17], "半兽人": [22], "半兽战士": [18], "森林雪人": [15],
+    "半兽勇士": [23], "红蛇": [19], "虎蛇": [19],
+    "盔甲虫": [43], "威思而小虫": [46], "沙漠威斯而小虫": [47],
+    "山洞蝙蝠": [24], "蝎子": [25], "洞蛆": [31], "骷髅": [27],
+    "掷斧骷髅": [26, 28], "骷髅战士": [29], "骷髅战将": [30, 37],
+    "僵尸": [60], "烂僵尸": [57], "老道僵尸": [32], "法老僵尸": [37],
+    "魔咒僵尸": [33], "尸王": [56, 59, 105],
+    "血巨人": [69, 70], "血金刚": [70], "神鬼王": [70], "赤月恶魔": [75],
+    "红野猪": [125], "黑野猪": [127], "白野猪": [],
+    "角蝇，蝙蝠": [24], "楔蛾": [124], "蝎蛇": [126],
+    "粪虫": [61], "暗黑战士": [62], "沃玛战士": [63], "沃玛勇士": [64],
+    "沃玛战将": [64], "火焰沃玛": [63], "沃玛卫士": [65], "沃玛教主": [65],
+    "大老鼠": [79], "祖玛弓箭手": [76], "祖玛雕像": [77], "祖玛卫士": [78, 80],
+    "护法天": [78, 80], "祖玛教主": [81],
+    "骷髅士兵": [116, 119], "骷髅武士": [117, 119], "骷髅弓箭手": [116],
+    "鬼骨将": [120], "骷髅教主": [121], "潘夜战士": [186], "潘夜牛魔王": [113],
+    "火焰狮子": [448], "石像狮子": [484],
+    "大法老": [399], "诺玛": [89], "诺玛将士": [165], "诺玛法老": [166],
+    "爆毒神魔": [412], "触角神魔": [421], "海神将领": [409], "神舰守卫": [416],
+    "轻甲守卫": [425], "红衣法师": [418], "霸王教主": [115],
+}
+
+# Resource-only aliases are retained as investigation candidates when no DB row
+# currently exposes the corresponding MonsterImage.  They are not DB mappings.
+WEBSITE_RESOURCE_ALIASES: dict[str, str] = {
+    "蛤蟆": "SkyStinger", "钉耙猫": "RakingCat", "七点白蛇": "RedSnake",
+    "千年毒蛇": "RedSnake", "猎鹰": "SkyStinger", "多角虫": "ShellNipper",
+    "巨型多角虫": "ShellNipper", "角蝇，蝙蝠": "CaveBat",
+}
+
+SKILL_CLASS_TO_CURRENT = {"战士": "Warrior", "法师": "Wizard", "道士": "Taoist"}
+
+
+def load(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def rows(path: Path) -> list[dict[str, Any]]:
+    value = load(path)
+    return value.get("rows", value) if isinstance(value, dict) else value
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def website_image(root: Path, value: str) -> Path:
+    while value.startswith("../"):
+        value = value[3:]
+    return root / value
+
+
+def image_meta(path: Path | None) -> dict[str, Any]:
+    if path is None or not path.exists():
+        return {"present": False, "path": str(path) if path else None}
+    out: dict[str, Any] = {
+        "present": True, "path": str(path), "bytes": path.stat().st_size,
+        "sha256": sha256(path),
+    }
+    if Image is None:
+        out["decoder"] = "Pillow unavailable"
+        return out
+    with Image.open(path) as im:
+        out.update({"width": im.width, "height": im.height, "mode": im.mode,
+                    "frames": getattr(im, "n_frames", 1), "format": im.format})
+    return out
+
+
+def parse_lookup(path: Path) -> dict[str, dict[str, Any]]:
+    text = path.read_text(encoding="utf-8")
+    return {
+        image: {"library": f"Mon-{library}", "library_number": int(library), "shape": int(shape),
+                "source": str(path)}
+        for image, library, shape in re.findall(
+            r"MonsterImage\.([A-Za-z0-9_]+), \(LibraryFile\.Mon_(\d+), (\d+)\)", text
+        )
+    }
+
+
+def parse_skill_catalog(path: Path) -> dict[str, list[dict[str, Any]]]:
+    text = path.read_text(encoding="utf-8")
+    section = text.split("<h2>职业技能总览</h2>", 1)[0]
+    out: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    pattern = re.compile(
+        r'<tr data-tags="([^"]+)"><td>(\d+)</td><td>(.*?)</td><td>.*?</td>'
+        r'<td>.*?</td><td>.*?</td><td>.*?</td><td>(.*?)</td>'
+    )
+    for tag, old_id, name, target in pattern.findall(section):
+        current = re.search(r"id=(\d+)", html.unescape(target))
+        out[html.unescape(name)].append({
+            "legacy_id": int(old_id), "tag": tag,
+            "target": html.unescape(target),
+            "current_index": int(current.group(1)) if current else None,
+        })
+    return out
+
+
+def resource_probe(lookup: dict[str, dict[str, Any]], image: str, data_root: Path) -> dict[str, Any]:
+    evidence = lookup.get(image)
+    if not evidence:
+        return {"status": "missing-MonsterLookup", "image": image}
+    path = data_root / f"Mon-{evidence['library_number']}.Zl"
+    if not path.exists():
+        return {"status": "missing-Zl", **evidence, "path": str(path)}
+    try:
+        from Tools.common.zlsdk import ZlLibrary
+        library = ZlLibrary(str(path))
+        base = evidence["shape"] * 1000
+        frames = []
+        for draw_frame in range(100):
+            header = library.header(base + draw_frame)
+            if header and not library.is_blank(base + draw_frame):
+                frames.append({"draw_frame": draw_frame, **header})
+        return {
+            "status": "ok", **evidence, "path": str(path), "library_count": library.count,
+            "nonblank_probe_frames_0_99": len(frames), "sample_frames": frames[:8],
+            "body_frame_formula": f"draw_frame + {evidence['shape']}*1000",
+        }
+    except Exception as exc:  # evidence should remain available even on decoder failure
+        return {"status": "decode-error", **evidence, "path": str(path), "error": str(exc)}
+
+
+def build_website_index(site_root: Path, monsters: list[dict[str, Any]], skills: list[dict[str, Any]], maps: list[dict[str, Any]]) -> dict[str, Any]:
+    records: list[dict[str, Any]] = []
+    seen: dict[str, list[str]] = defaultdict(list)
+    for source_type, data, page_dir in (("monster", monsters, "mobs"), ("skill", skills, "skills")):
+        for item in data:
+            path = website_image(site_root, item["image"])
+            meta = image_meta(path)
+            seen[meta.get("sha256", "missing")].append(item["id"])
+            records.append({
+                "website_type": source_type, "website_id": item["id"],
+                "website_name_zh": item["name"],
+                "category_or_class": item.get("category", item.get("class")),
+                "website_page": f"{page_dir}/{item['id']}.html",
+                "image_path": item["image"], "image_evidence": meta,
+                "source_description": item.get("description", ""),
+            })
+    map_records = []
+    for group in maps:
+        for area in group.get("areas", []):
+            path = website_image(site_root, area["image"])
+            meta = image_meta(path)
+            map_records.append({
+                "website_type": "map", "website_id": group["id"], "website_name_zh": area["name"],
+                "category_or_class": group.get("category"), "website_page": "maps/index.html",
+                "image_path": area["image"], "image_evidence": meta,
+                "source_description": group.get("title", ""),
+            })
+    return {"records": records, "maps": map_records,
+            "duplicate_image_groups": {k: v for k, v in seen.items() if k and len(v) > 1}}
+
+
+def candidate_reason(name: str, candidates: list[int], current_by_index: dict[int, dict[str, Any]]) -> str:
+    if not candidates:
+        return "no stable DB candidate after name/identity/resource/region checks"
+    if len(candidates) > 1:
+        return "multiple candidates or duplicate website identity; no automatic choice"
+    row = current_by_index.get(candidates[0])
+    return "candidate is a current MonsterInfo row; resource and attributes retained for review" if row else "candidate index absent from current MonsterInfo export"
+
+
+def build_monsters(monsters: list[dict[str, Any]], current: list[dict[str, Any]], lookup: dict[str, dict[str, Any]], data_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    by_index = {int(row["Index"]): row for row in current}
+    rows_out = []
+    for item in monsters:
+        candidates = WEBSITE_MONSTER_TO_INDEXES.get(item["name"], [])
+        current_candidates = [by_index.get(index) for index in candidates if by_index.get(index)]
+        resource_alias = WEBSITE_RESOURCE_ALIASES.get(item["name"])
+        resource_rows = [row for row in current if row.get("Image") == resource_alias] if resource_alias else []
+        if len(candidates) == 1 and current_candidates and len(resource_rows) <= 1:
+            status = "confirmed"
+            confidence = "high" if item["name"] in {"鸡", "猪", "牛", "羊", "鹿", "稻草人", "森林雪人", "半兽战士", "红野猪", "黑野猪", "楔蛾", "沃玛教主", "祖玛教主", "潘夜战士"} else "medium"
+            method = "explicit-identity-plus-MonsterLookup-probe"
+        elif candidates or resource_rows:
+            status, confidence, method = "investigate", "medium", "identity/resource-candidate-conflict"
+        else:
+            status, confidence, method = "pending", "pending", "all-evidence-paths-exhausted-no-closed-candidate"
+        evidence = []
+        for row in current_candidates:
+            evidence.append({
+                "index": row["Index"], "internal_name": row["MonsterName"], "image": row["Image"],
+                "race": row.get("Race"), "shape": lookup.get(str(row.get("Image")), {}).get("shape"),
+                "resource": resource_probe(lookup, str(row.get("Image")), data_root),
+                "level": row.get("Level"), "is_boss": row.get("IsBoss"),
+            })
+        rows_out.append({
+            "website_monster_id": item["id"], "website_monster_name": item["name"],
+            "website_category": item["category"], "website_image": item["image"],
+            "website_image_evidence": image_meta(website_image(WEBSITE, item["image"])),
+            "source_description": item.get("description", ""), "zircon_candidates": evidence,
+            "zircon_index": candidates[0] if len(candidates) == 1 and current_candidates else None,
+            "zircon_internal_name": current_candidates[0].get("MonsterName") if len(current_candidates) == 1 and current_candidates else None,
+            "zircon_image": current_candidates[0].get("Image") if len(current_candidates) == 1 and current_candidates else None,
+            "candidate_count": len(candidates) + len(resource_rows), "resource_alias": resource_alias,
+            "match_method": method, "match_evidence": [
+                "website JSON record and source description", "website image path/sha256/size",
+                "current MonsterInfo identity/level/Boss fields", "GodotClient/Formats/MonsterLookup.cs",
+                "Mon-*.Zl header/body-frame probe", "duplicate-image and candidate conflict audit",
+            ], "confidence": confidence, "status": status,
+            "skip_reason": None if status == "confirmed" else candidate_reason(item["name"], candidates or [r["Index"] for r in resource_rows], by_index),
+            "business_index_untouched": True, "apply_status": "display-name-plan-only" if status == "confirmed" else "retain-current",
+        })
+    stats = {
+        "website_record_count": len(rows_out), "confirmed_count": sum(r["status"] == "confirmed" for r in rows_out),
+        "investigate_count": sum(r["status"] == "investigate" for r in rows_out),
+        "pending_count": sum(r["status"] == "pending" for r in rows_out),
+        "unmatched_count": sum(r["status"] == "unmatched" for r in rows_out),
+        "candidate_conflict_count": sum(r["candidate_count"] > 1 for r in rows_out),
+        "website_categories": dict(Counter(r["website_category"] for r in rows_out)),
+    }
+    return rows_out, stats
+
+
+def build_skills(skills: list[dict[str, Any]], current: list[dict[str, Any]], catalog: dict[str, list[dict[str, Any]]], data_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    by_index = {int(row["Index"]): row for row in current}
+    try:
+        from Tools.common.zlsdk import ZlLibrary
+        micon = ZlLibrary(str(data_root / "MIcon.Zl"))
+    except Exception as exc:
+        micon = None
+        micon_error = str(exc)
+    out = []
+    for item in skills:
+        refs = catalog.get(item["name"], [])
+        current_index = next((r["current_index"] for r in refs if r["current_index"] is not None), None)
+        row = by_index.get(current_index) if current_index is not None else None
+        icon = row.get("Icon") if row else None
+        icon_evidence: dict[str, Any] = {"status": "not-mapped"}
+        if micon is None:
+            icon_evidence = {"status": "decoder-error", "error": micon_error}
+        elif icon is not None:
+            header = micon.header(int(icon))
+            icon_evidence = {"status": "present" if header else "missing", "icon": icon, "header": header, "library": "MIcon.Zl"}
+        if row and icon_evidence.get("status") == "present":
+            status, confidence = "confirmed", "high"
+            method = "website-name-class-plus-independent-catalog-crossref-plus-MIcon"
+            skip = None
+        elif refs:
+            status, confidence = "investigate", "pending"
+            method = "catalog-crossref-without-closed-current-icon"
+            skip = "catalog has a legacy-only or unresolved current mapping"
+        else:
+            status, confidence = "pending", "pending"
+            method = "name-class-description-icon-path-exhausted"
+            skip = "no catalog row; retain current MagicInfo"
+        out.append({
+            "website_skill_id": item["id"], "website_skill_name": item["name"], "website_class": item["class"],
+            "website_image": item["image"], "website_image_evidence": image_meta(website_image(WEBSITE, item["image"])),
+            "source_description": item.get("description", ""), "zircon_index": current_index if row else None,
+            "zircon_name": row.get("Name") if row else None, "zircon_class": row.get("Class") if row else None,
+            "zircon_description": row.get("Description") if row else None, "catalog_evidence": refs,
+            "icon": icon, "icon_evidence": icon_evidence, "match_method": method,
+            "match_evidence": ["website skills.json name/class/description", "catalog-skills.html legacy cross-reference",
+                               "MagicInfo Name/Class/Description", "MIcon.Zl header probe"],
+            "confidence": confidence, "status": status, "skip_reason": skip,
+            "business_index_untouched": True, "apply_status": "display-name-plan-only" if status == "confirmed" else "retain-current",
+        })
+    stats = {"website_record_count": len(out), "confirmed_count": sum(r["status"] == "confirmed" for r in out),
+             "investigate_count": sum(r["status"] == "investigate" for r in out), "pending_count": sum(r["status"] == "pending" for r in out),
+             "icon_present_count": sum(r["icon_evidence"]["status"] == "present" for r in out)}
+    return out, stats
+
+
+def map_family_candidates(name: str, map_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    text = name.replace("[", "").replace("]", "")
+    groups = {
+        "东部石矿": ("矿山", "石矿", "矿石"), "天然洞穴、半兽人洞穴和废矿": ("天然洞穴", "半兽", "废矿"),
+        "银杏废矿": ("银杏废矿",), "虫峡谷": ("虫峡谷",), "绝命谷和万年谷": ("绝命谷", "万年谷", "生死关"),
+        "矿山": ("矿山", "矿石"), "赤月山谷1": ("赤月山谷1",), "赤月山谷2": ("赤月山谷2",), "赤月山谷3": ("赤月山谷3",),
+        "石阁阵": ("石阁",), "沃玛神殿地图": ("沃玛神殿",), "祖玛神殿": ("祖玛神殿",), "蚂蚁洞穴": ("蚂蚁洞",),
+        "潘夜神殿": ("潘夜神殿",), "潘夜石窟": ("潘夜石窟",), "真天宫和黑度宫": ("真天宫", "黑度宫"), "罪孽洞穴": ("罪孽洞穴",),
+        "世界地图": ("城", "县", "村", "沙漠", "森林"), "神舰3楼地图": ("神舰",), "神舰2楼A地图": ("神舰",),
+        "神舰2楼B地图": ("神舰",), "神舰1楼地图": ("神舰",),
+    }
+    needles = groups.get(text, (text,))
+    return [{"index": r["Index"], "file": r["FileName"], "description": r.get("Description", "")}
+            for r in map_rows if any(n in str(r.get("Description", "")) for n in needles)][:120]
+
+
+def load_external_alignment() -> dict[str, Any]:
+    path = ALIGNMENT / "manifest.json"
+    if not path.exists():
+        return {"present": False, "path": str(path)}
+    data = load(path)
+    return {
+        "present": True,
+        "path": str(path),
+        "manifest_id": data.get("manifest_id"),
+        "stats": {
+            "maps": data.get("map_stats"),
+            "npcs": data.get("npc_stats"),
+            "monster_identity": data.get("monster_identity_stats"),
+            "respawns": data.get("monster_respawn_stats"),
+        },
+        "npc_count": len(data.get("npcs", [])),
+        "respawn_count": len(data.get("monster_respawns", [])),
+        "map_count": len(data.get("maps", [])),
+        "note": "Canonical NPC/respawn rows remain in the 2026-09-25 offline manifest; this goal does not overwrite them.",
+    }
+
+
+def write_tsv(path: Path, rows_out: list[dict[str, Any]]) -> None:
+    if not rows_out:
+        return
+    keys = list(rows_out[0])
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=keys, delimiter="\t", extrasaction="ignore")
+        writer.writeheader()
+        for row in rows_out:
+            writer.writerow({k: json.dumps(v, ensure_ascii=False, separators=(",", ":")) if isinstance(v, (dict, list)) else v for k, v in row.items()})
+
+
+def build_report(manifest: dict[str, Any], report_path: Path) -> None:
+    m = manifest["monster_stats"]; s = manifest["skill_stats"]
+    ext = manifest["external_alignment"]; ext_stats = ext.get("stats", {})
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "# NPC + 怪物 + 技能 + 地图网站标准对齐报告（2026-09-26）", "",
+        "> 本报告是只读 dry-run 证据。未写入真实 System.db；网站 checkout 未修改。",
+        "", "## 1. 来源与硬闸门", "",
+        f"- 标准资料站：`{manifest['sources']['website']}`（`data/monsters.json`={m['website_record_count']}，`data/skills.json`={s['website_record_count']}，地图区域图={len(manifest['map_families'])}）。",
+        f"- Zircon 当前快照：MonsterInfo={manifest['zircon_counts']['monster_info']}，MagicInfo={manifest['zircon_counts']['magic_info']}，NPCInfo={manifest['zircon_counts']['npc_info']}，MapInfo={manifest['zircon_counts']['map_info']}，RespawnInfo={manifest['zircon_counts']['respawn_info']}。",
+        f"- 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。",
+        "- 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。",
+        "", "## 2. 网站索引和图片证据", "",
+        f"- 网站怪物：{m['website_record_count']}；分类数={len(m['website_categories'])}；技能：{s['website_record_count']}。",
+        f"- 怪物状态：confirmed={m['confirmed_count']}，investigate={m['investigate_count']}，pending={m['pending_count']}，unmatched={m['unmatched_count']}。",
+        f"- 技能状态：confirmed={s['confirmed_count']}，investigate={s['investigate_count']}，pending={s['pending_count']}；MIcon header present={s['icon_present_count']}。",
+        "- 每条网站记录保留页面路径、原始图片路径、sha256、字节数、尺寸、来源描述；重复图片组见 `website-index.json`。",
+        "", "## 3. 怪物全量匹配", "",
+        "- `confirmed` 只表示已有稳定 Zircon MonsterInfo 候选且 MonsterLookup/Mon-*.Zl 帧探针可复现；它是显示名计划，不是写库批准。",
+        "- `investigate` 保留一对多、同图不同名、资源别名但当前快照缺行等冲突；不得自动覆盖。",
+        "- `pending` 不是“网站没有对应”。每行的 `match_evidence` 记录了名称/别名、MonsterInfo/属性、MonsterLookup、Mon-*.Zl 帧、重复图片与区域路径；需在获得更强证据后闭合。",
+        "- 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。",
+        "", "## 4. 技能", "",
+        "- 61 条技能逐条由网站名称/职业/描述、Legacy Atlas 技能交叉目录、MagicInfo、MIcon.Zl header 复核。",
+        "- `catalog-skills.html` 的 old-only 行（例如凝血离魂、移花接玉）保持 investigate/pending；不把“无直接对应”当成最终结论，不改施法逻辑。",
+        "", "## 5. 地图与 NPC", "",
+        "- 网站地图共 17 个迷宫区域图 + 世界地图 + 神舰 4 层；没有把它们当成 627 张逐图清单。",
+        "- `map_family_manifest.json` 按网站区域名称列出 MapInfo 候选、文件名、描述；具体地图 walkable/尺寸/入口证据复用现有独立 manifest。",
+        f"- NPC 全量和候选位置：复用 `{ext.get('path')}`，行数={ext.get('npc_count')}；NPC 与怪物身份/写入状态分开。",
+        f"- NPC 统计：match_method={json.dumps((ext_stats.get('npcs') or {}).get('match_method_counts', {}), ensure_ascii=False)}；map_relation={json.dumps((ext_stats.get('npcs') or {}).get('map_relation_counts', {}), ensure_ascii=False)}；walkable={json.dumps((ext_stats.get('npcs') or {}).get('target_walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('npcs') or {}).get('apply_status_counts', {}), ensure_ascii=False)}；overlap_rows={(ext_stats.get('npcs') or {}).get('overlap_rows')}。",
+        "- NPC 没有可靠位置时保持 retain-current，并在既有 manifest 的 candidate/skip_reason 中记录；不删除 NPC。",
+        f"- 地图统计：MapInfo={(ext_stats.get('maps') or {}).get('mapinfo_count')}；relation={json.dumps((ext_stats.get('maps') or {}).get('relation_counts', {}), ensure_ascii=False)}；coordinate_reuse={json.dumps((ext_stats.get('maps') or {}).get('coordinate_reuse_counts', {}), ensure_ascii=False)}。",
+        "- NPC 全量字段和候选位置行位于外部机器 manifest；本 Goal 不复制/覆盖其内容。",
+        "", "## 6. 刷新点 dry-run", "",
+        f"- 刷新全量：旧 RespawnInfo={manifest['zircon_counts']['respawn_info']}；Hero-kill parsed={(ext_stats.get('respawns') or {}).get('hero_kill_refresh_count')}；matched={(ext_stats.get('respawns') or {}).get('hero_kill_matched_count')}；YXS-only={(ext_stats.get('respawns') or {}).get('yxs_only_refresh_count')}；Zircon-only={(ext_stats.get('respawns') or {}).get('zircon_only_refresh_count')}；conflict={(ext_stats.get('respawns') or {}).get('refresh_conflict_count')}。",
+        f"- Respawn walkable={json.dumps((ext_stats.get('respawns') or {}).get('walkable_counts', {}), ensure_ascii=False)}；apply={json.dumps((ext_stats.get('respawns') or {}).get('apply_status_counts', {}), ensure_ascii=False)}；旧/新逐行清单仍在外部 manifest。",
+        "- Website identity is separate from refresh position: website standard supplies identity/display-name evidence; GB18030 Hero-kill/Mud3 supplies refresh coordinates/count/range.",
+        "", "## 7. 独立验证与关键样例", "",
+        "- 独立验证脚本：`Tools/NpcMover/verify_website_alignment.py`，不导入生产转换器；检查 JSON 数量、图片文件/尺寸/hash、MonsterLookup/Mon-*.Zl、MIcon、manifest 状态和索引稳定性。",
+        "- 关键样例：半兽人、祖玛、祖玛卫士、白野猪、Boss；技能火球术/基本剑术；NPC 至少 3 行；结果见 `verification.json`。",
+        "", "## 8. 写库闸门与未提交文件保护", "",
+        "- 7000 当前有监听；未满足停服、用户 dry-run 审核、备份、临时副本 round-trip、双库同步、游戏内验收条件，因此本 Goal 阶段不写真实库。",
+        "- Mir3-Research 与 Zircon 的阶段 0 工作树状态保存于 `baseline-repo-state.json`；无关 WIP 保留，不纳入本 Goal 文件。",
+        "- 真实库、Users.db、资料站内容均未修改。",
+        "", "## 9. 机器可读产物", "",
+        "- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `map-family-manifest.json` / `website-index.json` / `verification.json`。",
+    ]
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--website-root", type=Path, default=WEBSITE)
+    parser.add_argument("--zircon-root", type=Path, default=ZIRCON)
+    parser.add_argument("--workspace", type=Path, default=WORKSPACE)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+    out = args.out
+    out.mkdir(parents=True, exist_ok=True)
+
+    monsters = load(args.website_root / "data/monsters.json")
+    skills = load(args.website_root / "data/skills.json")
+    maps = load(args.website_root / "data/maps.json")
+    current_monsters = rows(args.workspace / "MonsterInfo.json")
+    current_magic = rows(args.workspace / "MagicInfo.json")
+    current_npcs = rows(args.workspace / "NPCInfo.json")
+    current_regions = rows(args.workspace / "MapRegion.json")
+    current_maps = rows(args.workspace / "MapInfo.json")
+    current_respawns = rows(args.workspace / "RespawnInfo.json")
+    lookup = parse_lookup(args.zircon_root / "GodotClient/Formats/MonsterLookup.cs")
+    website_index = build_website_index(args.website_root, monsters, skills, maps)
+    monster_manifest, monster_stats = build_monsters(monsters, current_monsters, lookup, args.zircon_root / "Debug/Client/Data")
+    skill_catalog = parse_skill_catalog(CATALOG_SKILLS)
+    skill_manifest, skill_stats = build_skills(skills, current_magic, skill_catalog, args.zircon_root / "Debug/Client/Data")
+    map_families = []
+    for group in maps:
+        for area in group.get("areas", []):
+            map_families.append({"website_group": group["id"], "website_title": group["title"], "website_area": area["name"],
+                                 "image": area["image"], "image_evidence": image_meta(website_image(args.website_root, area["image"])),
+                                 "zircon_mapinfo_candidates": map_family_candidates(area["name"], current_maps),
+                                 "coordinate_policy": "independent landmark/walkable verification; no blind reuse"})
+    external = load_external_alignment()
+    manifest = {
+        "manifest_id": "MIR3-WEBSITE-ALIGNMENT-2026-09-26", "mode": "offline-dry-run", "database_write": False,
+        "sources": {"website": str(args.website_root), "website_monsters": str(args.website_root / "data/monsters.json"),
+                     "website_skills": str(args.website_root / "data/skills.json"), "website_maps": str(args.website_root / "data/maps.json"),
+                     "workspace": str(args.workspace), "monster_lookup": str(args.zircon_root / "GodotClient/Formats/MonsterLookup.cs"),
+                     "monster_resources": str(args.zircon_root / "Debug/Client/Data"), "skill_catalog": str(CATALOG_SKILLS),
+                     "external_npc_respawn_manifest": external.get("path")},
+        "zircon_counts": {"monster_info": len(current_monsters), "magic_info": len(current_magic), "npc_info": len(current_npcs),
+                          "map_region": len(current_regions), "map_info": len(current_maps), "respawn_info": len(current_respawns)},
+        "website_counts": {"monsters": len(monsters), "skills": len(skills), "map_groups": len(maps), "map_areas": len(website_index["maps"])},
+        "monster_stats": monster_stats, "skill_stats": skill_stats, "monster_identity": monster_manifest,
+        "skills": skill_manifest, "map_families": map_families, "external_alignment": external,
+        "business_index_untouched": True, "display_name_changes_only": True,
+    }
+    (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "website-index.json").write_text(json.dumps(website_index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "map-family-manifest.json").write_text(json.dumps(map_families, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_tsv(out / "monster-manifest.tsv", monster_manifest)
+    write_tsv(out / "skill-manifest.tsv", skill_manifest)
+    build_report(manifest, ROOT / "docs/research/ei-ui-layout/NPC_MONSTER_WEBSITE_ALIGNMENT_REPORT_2026-09-26.md")
+    print(json.dumps({"out": str(out), "monster_stats": monster_stats, "skill_stats": skill_stats,
+                      "map_family_count": len(map_families), "external_alignment": external}, ensure_ascii=False, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,57 @@
+{
+  "captured_at": "2026-09-26",
+  "research_repo": {
+    "path": "/home/tetsuya/development/Mir3-Research",
+    "branch": "ei-ui-audit-2026-09-24",
+    "head_at_capture": "9380f69f22cce3659f1823c443f0766e7b95fb2c",
+    "origin_branch_sha_at_capture": "9380f69f22cce3659f1823c443f0766e7b95fb2c",
+    "working_tree_unrelated_or_preexisting": [
+      "Tools/NpcMover/write_alignment_reports.py",
+      "Tools/SystemDbProbe/Program.cs",
+      "Tools/maps/mapedit/map_links_v2.json",
+      "docs/research/ei-ui-layout/NPC_MONSTER_ALL_MAPS_ALIGNMENT_REPORT_2026-09-25.md",
+      "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/npc-merchant-approval-evidence.json",
+      "Tools/wsgateway/wsgateway.log"
+    ],
+    "working_tree_goal_file": "Tools/NpcMover/website_alignment.py"
+  },
+  "zircon_repo": {
+    "path": "/home/tetsuya/development/zircon",
+    "branch": "ui/legacy-layout-lab",
+    "head_at_capture": "4bd89e84a88de64feb78443bedfeea106fdcc86b",
+    "origin_branch_sha_at_capture": "22cf7a1b18e61a743a705a97ac715a32f64d7bc5",
+    "working_tree_unrelated_or_preexisting": [
+      ".artifacts/npc-f1100-acceptance-2026-09-25/",
+      ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png",
+      ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"
+    ]
+  },
+  "service_gate": {
+    "port_7000": "LISTEN 127.0.0.1:7000 dotnet pid 2692119",
+    "port_7001": "LISTEN 0.0.0.0:7001 python pid 2557774",
+    "database_write_allowed": false,
+    "reason": "server is running; this goal is read-only until final manifest review"
+  },
+  "workspace_counts": {
+    "MonsterInfo": 434,
+    "MonsterInfoStat": 4117,
+    "RespawnInfo": 2475,
+    "NPCInfo": 294,
+    "MapRegion": 5009,
+    "MapInfo": 627,
+    "MagicInfo": 174
+  },
+  "source_counts": {
+    "website_monsters": 154,
+    "website_skills": 61,
+    "website_map_groups": 3,
+    "website_map_areas": 22
+  },
+  "notes": [
+    "Mir3-Research HEAD changed from the first status probe while this goal was running; no reset or cleanup was performed. Current HEAD and current working tree are recorded above.",
+    "All pre-existing WIP is retained and excluded from goal artifacts unless explicitly referenced."
+  ]
+}
