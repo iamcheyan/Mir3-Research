@@ -189,6 +189,34 @@ def check_normalized_manifests(manifest: dict[str, Any], external: dict[str, Any
         "respawn_overlap_rows": sum(1 for row in respawn_rows if row.get("overlap")),
     }
 
+def magic_icon_check(data_root: Path, skills: list[dict[str, Any]], errors: list[str]) -> dict[str, Any]:
+    from Tools.common.zlsdk import ZlLibrary
+
+    path = data_root / "MIcon.Zl"
+    checked = 0
+    failures = 0
+    try:
+        library = ZlLibrary(str(path))
+    except Exception as exc:
+        confirmed_count = sum(1 for row in skills if row.get("status") == "confirmed")
+        errors.append(f"MIcon.Zl open error: {exc}")
+        return {"confirmed_skills_checked": 0, "icon_failures": confirmed_count}
+    for row in skills:
+        if row.get("status") != "confirmed":
+            continue
+        icon = row.get("icon")
+        try:
+            header = library.header(int(icon))
+            if header is None or header.get("width", 0) <= 0 or header.get("height", 0) <= 0:
+                failures += 1
+                errors.append(f"missing MIcon frame: {row.get('website_skill_name')} icon={icon}")
+            checked += 1
+        except Exception as exc:
+            failures += 1
+            errors.append(f"MIcon probe error {row.get('website_skill_name')} icon={icon}: {exc}")
+    return {"confirmed_skills_checked": checked, "icon_failures": failures}
+
+
 
 
 
@@ -282,6 +310,7 @@ def main() -> int:
 
     resource_audit = resource_header_check(args.zircon_root / "Debug/Client/Data", lookup,
                                            [row for row in manifest["monster_identity"] if row.get("status") == "confirmed"], errors)
+    icon_audit = magic_icon_check(args.zircon_root / "Debug/Client/Data", manifest["skills"], errors)
     normalized_audit = check_normalized_manifests(manifest, external, errors)
     samples = check_key_samples(manifest, external, errors)
     try:
@@ -302,8 +331,7 @@ def main() -> int:
                              "map_families": len(manifest["map_families"]), "npc": len(external.get("npcs", [])),
                              "respawns": len(external.get("monster_respawns", []))},
         "image_audit": {"monsters": monster_image_audit, "skills": skill_image_audit},
-        "lookup_count": len(lookup), "monster_statuses": dict(statuses), "skill_statuses": dict(skill_statuses),
-        "resource_audit": resource_audit, "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
+        "resource_audit": resource_audit, "icon_audit": icon_audit, "normalized_audit": normalized_audit, "key_samples": samples, "errors": errors,
         "result": "PASS" if not errors else "FAIL",
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

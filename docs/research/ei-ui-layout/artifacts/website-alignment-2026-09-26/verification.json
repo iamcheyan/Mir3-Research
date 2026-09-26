@@ -87,19 +87,13 @@
       }
     }
   },
-  "lookup_count": 332,
-  "monster_statuses": {
-    "confirmed": 67,
-    "pending": 76,
-    "investigate": 11
-  },
-  "skill_statuses": {
-    "confirmed": 59,
-    "investigate": 2
-  },
   "resource_audit": {
     "confirmed_candidates_checked": 67,
     "resource_failures": 0
+  },
+  "icon_audit": {
+    "confirmed_skills_checked": 59,
+    "icon_failures": 0
   },
   "normalized_audit": {
     "npc_records": 294,
