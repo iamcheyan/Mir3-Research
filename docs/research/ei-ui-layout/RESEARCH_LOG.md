@@ -10688,3 +10688,64 @@ GetAttackSpeed(HIBYTE(std.MAC), ui.Desc[6]))`；
 
 **落盘**：`items-systems.md`（约 200 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 817 (全量精读 D16) — 2026-09-26：**修正屏幕基准结论** + 运行时布局提取
+
+> `Source/Client/FState.pas` 的 `TFrmDlg.Initialize`（`:1384-2936`，1552 行）+
+> `ClMain.pas` 常量。产物 `client-runtime-layout.tsv`（345 项）、
+> `Tools/source-read/extract_runtime_layout.py`。
+
+**〔★ 修正前序阶段的错误结论 ★〕**`client-windows.md` §2.1 曾据 `FState.dfm`
+根窗体 `(329,0) 1095×975` 断言「Preview 版是 1024×768+ 布局、不是原版的 800×600」。
+**该结论已作废。**
+
+决定性证据：`ClMain.pas:25-26`
+```pascal
+SCREENWIDTH  = 800;
+SCREENHEIGHT = 600;
+```
+`FState.pas:1394-1395`（`TFrmDlg.Initialize`）：
+`DBackground.Width := SCREENWIDTH; DBackground.Height := SCREENHEIGHT;`
+`cliUtil.pas:14-17` 另有 `DEFSCREENWIDTH=640/DEFSCREENHEIGHT=480`（登录选角）与
+`PLAYSCREENWIDTH=800/PLAYSCREENHEIGHT=600`（游戏内）。
+
+→ **两版同为 800×600 基准**。DFM 的 1095×975 是**编辑期画布**，
+`TFrmDlg.Initialize`（1552 行）会用运行时几何**覆盖全部 DFM 坐标**。
+**前序阶段用 DFM 对照原版几何是无效的。**
+
+**〔运行时布局提取（345 项）〕**`TFrmDlg.Initialize` 是真正的运行时布局代码。
+定位模式五种：
+①`(SCREENWIDTH - d.Width) div 2` 水平居中（主 HUD/消息框）
+②`(SCREENHEIGHT - d.Height)` 底部对齐（主 HUD 贴底）
+③`(SCREENWIDTH - d.Width)` 右对齐（小地图）
+④`518 - (d.Width - 283) div 2` **以设计基准尺寸为锚点做相对偏移**（背包 283/466）
+⑤`DBottom.Top - 19` **相对其他窗口定位**（聊天窗贴主 HUD 上方 19px）
+
+实例：`DBackground`(0,0) / `DBottom` 居中贴底 帧1160 / `DBeltWin`(0,140) 帧83 /
+`DChat`(178, `DBottom.Top-19`) 帧1161 / `DMiniMapDlg` 右对齐(0) 帧1481 /
+`DMagicWnd`(0,0) 帧1620 / `DItemBag`(`518-(d.Width-283) div 2`, `0-(d.Height-466) div 2`) 帧1220 /
+`DStateWin`(`0-(d.Width-328) div 2`, `0-(d.Height-466) div 2`) 帧1280。
+
+**`d` 变量 = `g_WGameInter.Images[N]`** → `d.Width`/`d.Height` 来自实际帧尺寸
+—— **布局是数据驱动的，换一套 WIL 就换一套布局**。
+
+**〔修正后的正确表述〕**
+| 项 | 修正前 | 修正后 |
+|---|---|---|
+| 客户端屏幕基准 | 1095×975（DFM 画布） | **800×600**（`ClMain.pas:25-26`） |
+| 与原版 800×600 的关系 | 「不通用」 | ✅ **相同基准** |
+| DFM 坐标性质 | 游戏内位置 | **编辑期画布**（运行时被 Initialize 覆盖） |
+
+**「帧号空间不通用」仍然成立**（91 帧 vs 原版 1103 帧，交集仅 10 且零重合）——
+只有「屏幕基准不同」这一条是错的。
+
+**已同步修正**：`README.md` D0（改为「协议与屏幕基准相同，但帧号与资源容器不通用」）
+与屏幕基准行、`client.md` §2.1、`client-windows.md` §2.1（加修正提示）+ 新增 §8。
+
+**〔新发现的后续工作〕**`Initialize` 的 345 项运行时几何是**与原版
+`window_layout.json` 逐窗对照的正确基准**（前序用 DFM 对照无效）。
+**标注为后续工作。**
+
+**落盘**：`client-windows.md` §8（约 80 行）、`client-runtime-layout.tsv`（345 行）、
+`Tools/source-read/extract_runtime_layout.py`、`README.md`/`client.md` 修正。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

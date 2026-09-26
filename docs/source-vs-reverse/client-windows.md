@@ -75,7 +75,14 @@
 | `DJangwonListDlg` | (631, 780) | 120×111 | 掌院目录 |
 | `DDealJangwon` | (461, 251) | 122×32 | 掌院交易 |
 
-### 2.1 关键观察：坐标**不是 800×600 布局**
+### 2.1 关键观察：DFM 坐标**不是**运行时布局
+
+> ⚠️ **【2026-09-26 修正】** 本节初版曾据根窗体 1095×975 断言
+> 「Preview 版是 1024×768+ 布局，不是原版的 800×600」。**该结论已作废** ——
+> `ClMain.pas:25-26` 明确 `SCREENWIDTH = 800; SCREENHEIGHT = 600;`，
+> 且 `TFrmDlg.Initialize`（1,552 行）会用运行时几何**覆盖全部 DFM 坐标**。
+> **正确结论见 §8**：两版**同为 800×600 基准**。
+> 本节以下内容仍然有效（DFM 是编辑期画布），只是**不能据此推断运行时布局**。
 
 `DBottom`（主 HUD 底板）在 **(15, 517)**，尺寸 **476×121**。
 `DStateWin` 在 **x=627**，`DGroupDlg` 在 **x=840**，`DUserState1` 在 **x=846**，
@@ -217,3 +224,87 @@ python3 Tools/source-read/dfm_parse.py json reference/mir3-source/Source/Client/
 # 与原版对照
 python3 -c "import json;d=json.load(open('docs/research/ei-ui-layout/window_layout.json'));print(d['viewport'], len(d['records']))"
 ```
+
+---
+
+## 8. 【重要修正】运行时布局：客户端确实是 **800×600**（Round 817）
+
+**前序阶段的错误**：`client-windows.md` §2.1 曾据 `FState.dfm` 的根窗体
+`(329,0) 1095×975` 与窗口 x 最大 1008 断言「Preview 版是 1024×768+ 布局、
+不是原版的 800×600」。**这个结论是错的** —— 那是 **DFM 编辑期画布**，不是运行时。
+
+### 8.1 决定性证据
+
+`ClMain.pas:25-26`：
+
+```pascal
+SCREENWIDTH  = 800;
+SCREENHEIGHT = 600;
+```
+
+`FState.pas:1394-1395`（`TFrmDlg.Initialize`）：
+
+```pascal
+DBackground.Width  := SCREENWIDTH;
+DBackground.Height := SCREENHEIGHT;
+```
+
+**`TFrmDlg.Initialize`（`:1384-2936`，1,552 行）是真正的运行时布局代码** ——
+它给每个窗口设 `Left`/`Top`/`SetImgIndex`。**DFM 坐标在这里被全部覆盖。**
+
+`cliUtil.pas:14-17` 另有屏幕常量：
+```pascal
+DEFSCREENWIDTH  = 640;   PLAYSCREENWIDTH  = 800;
+DEFSCREENHEIGHT = 480;   PLAYSCREENHEIGHT = 600;
+```
+即**登录/选角可能用 640×480，游戏内用 800×600**。
+
+### 8.2 运行时布局实例（`client-runtime-layout.tsv`，345 项）
+
+| 窗口 | Left | Top | 帧 |
+|---|---|---|---|
+| `DBackground` | `0` | `0` | — |
+| `DBottom`（主 HUD） | `(SCREENWIDTH - d.Width) div 2` | `(SCREENHEIGHT - d.Height)` | 1160 |
+| `DBeltWin`（腰带） | `0` | `140` | 83 |
+| `DChat` | `178` | **`DBottom.Top - 19`** | 1161 |
+| `DMiniMapDlg` | `(SCREENWIDTH - d.Width)` | `0` | 1481 |
+| `DMagicWnd`（技能栏） | `0` | `0` | 1620 |
+| `DItemBag` | `518 - (d.Width - 283) div 2` | `0 - (d.Height - 466) div 2` | 1220 |
+| `DStateWin` | `0 - (d.Width - 328) div 2` | `0 - (d.Height - 466) div 2` | 1280 |
+
+**定位模式**：
+1. **`(SCREENWIDTH - d.Width) div 2`** = 水平居中（主 HUD、消息框）
+2. **`(SCREENHEIGHT - d.Height)`** = 底部对齐（主 HUD 贴底）
+3. **`(SCREENWIDTH - d.Width)`** = 右对齐（小地图）
+4. **`518 - (d.Width - 283) div 2`** = **以某个参考尺寸为锚点做相对偏移**
+   （背包 283/466 是设计基准尺寸）
+5. **`DBottom.Top - 19`** = **相对其他窗口定位**（聊天窗贴主 HUD 上方 19px）
+
+**`d` 变量** = `g_WGameInter.Images[N]`（帧位图），
+即 **`d.Width`/`d.Height` 来自实际帧尺寸** —— 布局是**数据驱动的**，
+换一套 WIL 就换一套布局。
+
+### 8.3 修正后的结论
+
+| 项 | 修正前 | **修正后** |
+|---|---|---|
+| 客户端屏幕基准 | 1095×975（DFM 画布） | **800×600**（`ClMain.pas:25-26`） |
+| 与原版 800×600 的关系 | 「不通用」 | ✅ **相同基准** |
+| DFM 坐标性质 | 游戏内位置 | **编辑期画布**（运行时被 `Initialize` 覆盖） |
+
+> ⚠️ **这修正了 `client-windows.md` §2.1/§3.1 与 `README.md` D8 的结论**。
+> **「窗口尺寸不通用」仍然成立**（原版背包 284×324 vs 源码 111×144 是 DFM 值，
+> 运行时值需从 `Initialize` 重算），但**「屏幕基准不同」是错的**。
+>
+> **正确表述**：两版**同为 800×600 基准**，但**帧号空间仍不通用**
+> （`client.md` §4 的 91 帧 vs 原版 1103 帧，交集仅 10 且零重合）。
+
+### 8.4 待办（新发现的工作）
+
+`TFrmDlg.Initialize` 的 1,552 行**给出了每个窗口的真实运行时几何**，
+是**原版对照的正确基准**（而非 DFM）。完整 345 项见
+[`client-runtime-layout.tsv`](client-runtime-layout.tsv)。
+
+**下一步可做**：把 `Initialize` 的运行时几何与原版
+`window_layout.json` 的 13 条记录**逐窗对照** —— 这才是有效的几何对照
+（前序阶段用 DFM 对照是无效的）。**标注为后续工作。**

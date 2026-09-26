@@ -1,0 +1,346 @@
+dlg	left_expr	top_expr	img_index	lib	src_line
+DAdjustAbilClose	316	1	64	g_WProgUse	2824
+DAdjustAbilOk	220	298	62	g_WProgUse	2827
+DAdjustAbility			226	g_WProgUse	2823
+DArmringLUS1	336	265			2061
+DArmringRUS1	133	265			2057
+DBLAdd	92+105	260	554	g_WProgUse	2897
+DBLDel	92+140	260	556	g_WProgUse	2898
+DBLPgDn	275	175	372	g_WProgUse	2896
+DBLPgUp	275	116	373	g_WProgUse	2895
+DBackground	0	0			1392
+DBelt1	5	19			1482
+DBelt2	5	56			1487
+DBelt3	5	92			1492
+DBelt4	5	128			1497
+DBelt5	5	165			1502
+DBelt6	5	200			1507
+DBeltUS1	294	373			2089
+DBeltWin	0	140	83	g_WProgUse	1472
+DBlockListClose	270	5	86	g_WProgUse	2894
+DBlockListDlg	512	265	536	g_WProgUse	2890
+DBootsUS1	133	345			2093
+DBotBelt	148	2	1205	g_WGameInter	2247
+DBotExit	8	72	1176	g_WGameInter	2264
+DBotFriend	181	184	531	g_WProgUse	2257
+DBotGroup	706	8	1180	g_WGameInter	2225
+DBotGuild	674	11	1182	g_WGameInter	2222
+DBotLogout	109	72	1178	g_WGameInter	2267
+DBotMaster	603	85	529	g_WProgUse	2260
+DBotMemo	742	61	1190	g_WGameInter	2240
+DBotMiniMap	638	40	1172	g_WGameInter	2212
+DBotPlusAbil	219 + 30*4	104	140	g_WProgUse	2253
+DBotSkillBar	638	75	1174	g_WGameInter	2218
+DBotTrade	638	5	1170	g_WGameInter	2215
+DBottom	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height)	1160	g_WGameInter	2205
+DBujukUS1	254	373			2085
+DChFriend	104	303	432	g_WProgUse	2106
+DChGroup	71	303	431	g_WProgUse	2103
+DChMemo	137	303	433	g_WProgUse	2109
+DCharmUS1	334	373			2097
+DChat	178	DBottom.Top - 19	1161	g_WGameInter	2274
+DChatMode	441	24	1168	g_WGameInter	2280
+DChatScrlChat	441	70	1207	g_WGameInter	2284
+DChatSet1	8	276	1330	g_WGameInter	2288
+DChatSet2	8 + 40	276	1333	g_WGameInter	2291
+DChatSet3	7 + 40 * 2	275	1335	g_WGameInter	2294
+DChatSet4	7 + 40 * 3	275	1337	g_WGameInter	2297
+DChatSet5	7 + 40 * 4	275	1338	g_WGameInter	2300
+DChatSet6	7 + 40 * 5	275	1340	g_WGameInter	2303
+DChatSet7	7 + 40 * 6	275	1342	g_WGameInter	2306
+DCloseBag	356	445	1222	g_WGameInter	2126
+DCloseBelt	1	239	85	g_WProgUse	1478
+DCloseMagic	392	434	1221	g_WGameInter	2161
+DCloseState	380	36	1221	g_WGameInter	1950
+DCloseUS1	367	397	1176	g_WGameInter	2046
+DCountDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	660	g_WProgUse	1424
+DCountDlgCancel			652	g_WProgUse	1430
+DCountDlgClose			86	g_WProgUse	1431
+DCountDlgMax			654	g_WProgUse	1428
+DCountDlgOk			650	g_WProgUse	1429
+DCreateChr	0	0	73	g_WProgUse	1901
+DDGold	14	125	28	g_WProgUse	2733
+DDGrid	29	38			2723
+DDRGold	14	125	28	g_WProgUse	2747
+DDRGrid	29	38			2743
+DDealClose	212	16	86	g_WProgUse	2730
+DDealDlg	SCREENWIDTH - d.Width	0	389	g_WProgUse	2719
+DDealJangwon	398	138	683	g_WProgUse	2754
+DDealOk	158	105	391	g_WProgUse	2727
+DDealRemoteDlg	DDealDlg.Left - d.Width	0	390	g_WProgUse	2739
+DDressUS1	118 + 58 + 65	52 + 160			2077
+DDropViewOff	208	165	1294	g_WProgUse	2684
+DDropViewOn	166	165	1292	g_WProgUse	2681
+DEffectOff	208	121	1294	g_WProgUse	2672
+DEffectOn	166	121	1292	g_WProgUse	2669
+DFrdAdd	92	260	554	g_WProgUse	2865
+DFrdBlackList	147	60	573	g_WProgUse	2864
+DFrdClose	270	5	86	g_WProgUse	2860
+DFrdDel	92+35	260	556	g_WProgUse	2866
+DFrdFriend	27	60	540	g_WProgUse	2863
+DFrdMail	92+105	260	560	g_WProgUse	2868
+DFrdMemo	92+70	260	558	g_WProgUse	2867
+DFrdPgDn	275	175	372	g_WProgUse	2862
+DFrdPgUp	275	116	373	g_WProgUse	2861
+DFrdWhisper	92+140	260	562	g_WProgUse	2869
+DFriendDlg	0	0	536	g_WProgUse	2856
+DGABoardCancel	253	213	652	g_WProgUse	2516
+DGABoardClose	324	5	86	g_WProgUse	2520
+DGABoardDel	29	213	697	g_WProgUse	2503
+DGABoardDlg	0	145	689	g_WProgUse	2498
+DGABoardListClose	432	5	86	g_WProgUse	2490
+DGABoardListDlg	0	48	688	g_WProgUse	2465
+DGABoardListNext	266	321	387	g_WProgUse	2483
+DGABoardListPrev	163	321	388	g_WProgUse	2480
+DGABoardListRefresh	213	320	665	g_WProgUse	2486
+DGABoardMemo	95	213	666	g_WProgUse	2506
+DGABoardNotice	357	286	695	g_WProgUse	2476
+DGABoardOk	217	286	650	g_WProgUse	2470
+DGABoardOk2	187	213	650	g_WProgUse	2513
+DGABoardReply	121	213	699	g_WProgUse	2510
+DGABoardWrite	287	286	693	g_WProgUse	2473
+DGADecorateBuy	219	325	678	g_WProgUse	2422
+DGADecorateCancel	219	348	652	g_WProgUse	2425
+DGADecorateClose	607	5	86	g_WProgUse	2428
+DGADecorateDlg	0	20	702	g_WProgUse	2410
+DGADecorateListNext	358	382	387	g_WProgUse	2418
+DGADecorateListPrev	255	382	388	g_WProgUse	2415
+DGDAddMem	243	411	1310	g_WGameInter	2779
+DGDAlly	400	405	184	g_WGameInter	2791
+DGDBreakAlly	703	418	1323	g_WGameInter	2794
+DGDCancelWar	517	426	188	g_WGameInter	2800
+DGDChat	353	418	1304	g_WGameInter	2776
+DGDClose	760	431	1222	g_WGameInter	2767
+DGDDelMem	553	418	1313	g_WGameInter	2782
+DGDDown	607	274	372	g_WGameInter	2807
+DGDEditGrade	653	418	1320	g_WGameInter	2788
+DGDEditNotice	503	418	1310	g_WGameInter	2785
+DGDHome	234	409	1301	g_WGameInter	2770
+DGDList	303	418	1304	g_WGameInter	2773
+DGDUp	607	215	373	g_WGameInter	2804
+DGDWar	517	405	202	g_WGameInter	2797
+DGEClose	766	214	1222	g_WGameInter	2816
+DGEOk	681	16	1327	g_WGameInter	2813
+DGold	131	412			2134
+DGroupDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	1360	g_WGameInter	2696
+DGrpAddMem	226	198	1365	g_WGameInter	2709
+DGrpAllowGroup	150	52	1371	g_WGameInter	2703
+DGrpCreate	166	198	1362	g_WGameInter	2706
+DGrpDelMem	286	198	1368	g_WGameInter	2712
+DGrpDlgClose	343	206	1221	g_WGameInter	2700
+DGuildDlg	0	0	1300	g_WGameInter	2763
+DGuildEditNotice			1326	g_WGameInter	2812
+DHeartImg			604	g_WProgUse	2036
+DHeartImgUS			604	g_WProgUse	2101
+DHelmetUS1	110 + 77	52 + 41			2053
+DItemBag	518 - (d.Width - 283) div 2	0 - (d.Height - 466) div 2	1220	g_WGameInter	2118
+DItemBuy	346	353	678	g_WProgUse	2381
+DItemCancel	415	353	652	g_WProgUse	2387
+DItemFind	180	353	676	g_WProgUse	2390
+DItemGrid	133	81			2122
+DItemListNext	301	389	387	g_WProgUse	2374
+DItemListPrev	198	389	388	g_WProgUse	2371
+DItemListRefresh	248	388	665	g_WProgUse	2377
+DItemMarketClose	491	5	86	g_WProgUse	2402
+DItemMarketDlg	0	90	670	g_WProgUse	2366
+DItemSellCancel	346	353	650	g_WProgUse	2384
+DJangListNext	317	213	387	g_WProgUse	2445
+DJangListPrev	214	213	388	g_WProgUse	2442
+DJangMemo	264	211	666	g_WProgUse	2448
+DJangwonClose	534	5	86	g_WProgUse	2457
+DJangwonListDlg	0	175	680	g_WProgUse	2437
+DKeySelDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	360	g_WProgUse	2555
+DKsConF1	37+15	117	729	g_WProgUse	2601
+DKsConF10	322	116	755	g_WProgUse	2629
+DKsConF11	354	116	757	g_WProgUse	2632
+DKsConF12	386	116	759	g_WProgUse	2635
+DKsConF2	69+15	117	731	g_WProgUse	2604
+DKsConF3	101+15	117	733	g_WProgUse	2607
+DKsConF4	133+15	117	735	g_WProgUse	2610
+DKsConF5	170+15	117	737	g_WProgUse	2613
+DKsConF6	202+15	117	739	g_WProgUse	2616
+DKsConF7	234+15	117	741	g_WProgUse	2619
+DKsConF8	266+15	117	743	g_WProgUse	2622
+DKsConF9	290	116	753	g_WProgUse	2626
+DKsF1	37+15	80	713	g_WProgUse	2562
+DKsF10	322	79	731	g_WProgUse	2590
+DKsF11	353	79	733	g_WProgUse	2593
+DKsF12	386	79	735	g_WProgUse	2596
+DKsF2	69+15	80	715	g_WProgUse	2565
+DKsF3	101+15	80	717	g_WProgUse	2568
+DKsF4	133+15	80	719	g_WProgUse	2571
+DKsF5	170+15	80	721	g_WProgUse	2574
+DKsF6	202+15	80	723	g_WProgUse	2577
+DKsF7	234+15	80	725	g_WProgUse	2580
+DKsF8	266+15	80	727	g_WProgUse	2583
+DKsF9	289	79	729	g_WProgUse	2587
+DKsIcon	51	36			2560
+DKsNone	324	84	748	g_WProgUse	2640
+DKsOk	324	121	651	g_WProgUse	2643
+DLightUS1	214 {179}	373 {287}			2081
+DLogIn	(640 - d.Width) div 2	420 - d.Height	1	g_WInterface1c	1541
+DLoginChgPw	280	10	14	g_WInterface1c	1552
+DLoginClose	440	10	16	g_WInterface1c	1555
+DLoginNew	140	10	12	g_WInterface1c	1549
+DLoginOk	460	65	10	g_WInterface1c	1546
+DLover1	41	161	600	g_WProgUse	2920
+DLover2	41+37	161	598	g_WProgUse	2921
+DLover3	41+37*2	161	594	g_WProgUse	2922
+DMGold	465	226	29	g_WProgUse	2398
+DMLBlock	92+140	260	570	g_WGameInter	2885
+DMLDel	92+70	260	556	g_WGameInter	2883
+DMLLock	92+105	260	568	g_WGameInter	2884
+DMLRead	92+35	260	566	g_WGameInter	2882
+DMLReply	92	260	564	g_WGameInter	2881
+DMagicType0	121	42	1640	g_WGameInter	2164
+DMagicType1	155	42	1642	g_WGameInter	2167
+DMagicType2	189	42	1644	g_WGameInter	2170
+DMagicType3	223	42	1646	g_WGameInter	2173
+DMagicType4	257	42	1648	g_WGameInter	2176
+DMagicType5	291	42	1650	g_WGameInter	2179
+DMagicType6	325	42	1652	g_WGameInter	2182
+DMagicType7	359	42	1654	g_WGameInter	2185
+DMagicWnd	0	0	1620	g_WGameInter	2154
+DMagicWndScrollBar	322+76	113	1672	g_WGameInter	2158
+DMailListClose	270	5	1221	g_WGameInter	2878
+DMailListDlg	512	0	1960	g_WGameInter	2874
+DMailListPgDn	275	175	372	g_WGameInter	2880
+DMailListPgUp	275	116	373	g_WGameInter	2879
+DMainOption	(SCREENWIDTH - d.Width) div 2	125	1290	g_WGameInter	2652
+DMainOptionClose	274	5	1221	g_WGameInter	2687
+DMakeItemDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	661	g_WProgUse	1437
+DMakeItemDlgCancel	138	126	652	g_WProgUse	1450
+DMakeItemDlgClose	242	5	86	g_WProgUse	1462
+DMakeItemDlgOk	66	126	650	g_WProgUse	1456
+DMakeitemGrid	29	28			1442
+DMarketMemo	316	353	666	g_WProgUse	2393
+DMaster1	145	381	590	g_WProgUse	2923
+DMaster2	145+37	381	596	g_WProgUse	2924
+DMaster3	145+37*2	381	592	g_WProgUse	2925
+DMasterClose	300	5	86	g_WProgUse	2919
+DMasterDlg	0	0	583	g_WProgUse	2915
+DMemo	290	0	1960	g_WGameInter	2903
+DMemoB1	63	146	544	g_WProgUse	2908
+DMemoB2	134	146	538	g_WProgUse	2909
+DMemoClose	208	5	86	g_WProgUse	2907
+DMenuBuy	210	187	386	g_WProgUse	2354
+DMenuClose	305	5	86	g_WProgUse	2357
+DMenuDlg	138	163	385	g_WProgUse	2344
+DMenuNext	134	191	387	g_WProgUse	2351
+DMenuPrev	75	191	388	g_WProgUse	2348
+DMerchantDlg	0	0	384	g_WProgUse	2331
+DMerchantDlgClose	409	5	86	g_WProgUse	2335
+DMiniMapBlend	90	109	1482	g_WGameInter	2322
+DMiniMapDlg	(SCREENWIDTH - d.Width)	0	1481	g_WGameInter	2315
+DMiniMapShow	110	109	1484	g_WGameInter	2319
+DMinusAC	227	160	228	g_WProgUse	2844
+DMinusDC	227	101	228	g_WProgUse	2841
+DMinusHP	227	201	228	g_WProgUse	2846
+DMinusHit	227	240	228	g_WProgUse	2848
+DMinusMAC	227	181	228	g_WProgUse	2845
+DMinusMC	227	121	228	g_WProgUse	2842
+DMinusMP	227	220	228	g_WProgUse	2847
+DMinusSC	227	140	228	g_WProgUse	2843
+DMinusSpeed	227	261	228	g_WProgUse	2849
+DMsgDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	1240	g_WGameInter	1404
+DMsgDlgCancel		190	1245	g_WGameInter	1412
+DMsgDlgNo		190	1245	g_WGameInter	1410
+DMsgDlgOk		190	1241	g_WGameInter	1408
+DMsgDlgYes		190	1241	g_WGameInter	1409
+DMyBag	682	33	1194	g_WGameInter	2231
+DMyMagic	739	33	1184	g_WGameInter	2234
+DMyState	711	31	1196	g_WGameInter	2228
+DNecklaceUS1	336 {259}	174 {110}			2049
+DNextState	5	197	372	g_WProgUse	2031
+DOption	706	72	1188	g_WGameInter	2237
+DPlusAC	217	160	227	g_WProgUse	2834
+DPlusDC	217	101	227	g_WProgUse	2831
+DPlusHP	217	201	227	g_WProgUse	2836
+DPlusHit	217	240	227	g_WProgUse	2838
+DPlusMAC	217	181	227	g_WProgUse	2835
+DPlusMC	217	121	227	g_WProgUse	2832
+DPlusMP	217	220	227	g_WProgUse	2837
+DPlusSC	217	140	227	g_WProgUse	2833
+DPlusSpeed	217	261	227	g_WProgUse	2839
+DPrevState	5	138	373	g_WProgUse	2030
+DRepairItem	254	183	26	g_WProgUse	2141
+DRingLUS1	336	305			2069
+DRingRUS1	133	305			2065
+DSServer1	25	dsrvtop + 0 * dsrvheight	2	g_WProgUse2	1649
+DSServer10	195	dsrvtop + 1 * dsrvheight	2	g_WProgUse2	1733
+DSServer11	195	dsrvtop + 2 * dsrvheight	2	g_WProgUse2	1737
+DSServer12	195	dsrvtop + 3 * dsrvheight	2	g_WProgUse2	1741
+DSServer13	195	dsrvtop + 4 * dsrvheight	2	g_WProgUse2	1745
+DSServer14	195	dsrvtop + 5 * dsrvheight	2	g_WProgUse2	1749
+DSServer15	195	dsrvtop + 6 * dsrvheight	2	g_WProgUse2	1753
+DSServer16	195	dsrvtop + 7 * dsrvheight	2	g_WProgUse2	1757
+DSServer17	365	dsrvtop + 0 * dsrvheight	2	g_WProgUse2	1841
+DSServer18	365	dsrvtop + 1 * dsrvheight	2	g_WProgUse2	1845
+DSServer19	365	dsrvtop + 2 * dsrvheight	2	g_WProgUse2	1849
+DSServer2	25	dsrvtop + 1 * dsrvheight	2	g_WProgUse2	1653
+DSServer20	365	dsrvtop + 3 * dsrvheight	2	g_WProgUse2	1853
+DSServer21	365	dsrvtop + 4 * dsrvheight	2	g_WProgUse2	1857
+DSServer22	365	dsrvtop + 5 * dsrvheight	2	g_WProgUse2	1861
+DSServer23	365	dsrvtop + 6 * dsrvheight	2	g_WProgUse2	1865
+DSServer24	365	dsrvtop + 7 * dsrvheight	2	g_WProgUse2	1869
+DSServer3	25	dsrvtop + 2 * dsrvheight	2	g_WProgUse2	1657
+DSServer4	25	dsrvtop + 3 * dsrvheight	2	g_WProgUse2	1661
+DSServer5	25	dsrvtop + 4 * dsrvheight	2	g_WProgUse2	1665
+DSServer6	25	dsrvtop + 5 * dsrvheight	2	g_WProgUse2	1669
+DSServer7	25	dsrvtop + 6 * dsrvheight	2	g_WProgUse2	1673
+DSServer8	25	dsrvtop + 7 * dsrvheight	2	g_WProgUse2	1677
+DSServer9	195	dsrvtop + 0 * dsrvheight	2	g_WProgUse2	1729
+DSSrvClose	100	481	41	g_WProgUse	1645
+DSWArmRingL	101	177			1967
+DSWArmRingR	259	177			1963
+DSWBelt	225	287			1997
+DSWBoots	101	257			2002
+DSWBujuk	186	287			1992
+DSWCharm	265	287			2007
+DSWDress	118 + 58	52 + 80			1983
+DSWHelmet	110 + 77	52 + 41			1958
+DSWLight	145	287			1987
+DSWNecklace	259	110			1954
+DSWRingL	259	217			1975
+DSWRingR	101	217			1971
+DSWWeapon	98 + 22	52 + 28			1979
+DSelServerDlg	(SCREENWIDTH - d.Width) div 2	(SCREENHEIGHT - d.Height) div 2	5	g_WProgUse2	1629
+DSelectChr	0	0			1877
+DSellDlg	328	163	392	g_WProgUse	2529
+DSellDlgBtnHold	114	43	404	g_WProgUse	2536
+DSellDlgClose	147	16	86	g_WProgUse	2542
+DSellDlgOk	114	72	393	g_WProgUse	2533
+DSellDlgSpot	27	60			2545
+DSellDlgStHold	94	43	403	g_WProgUse	2539
+DShowMap	337	36	1232	g_WGameInter	2130
+DSkillBarOff	208	99	1294	g_WProgUse	2666
+DSkillBarOn	166	99	1292	g_WProgUse	2663
+DSkillMode1	166	77	1292	g_WProgUse	2657
+DSkillMode2	208	77	1294	g_WProgUse	2660
+DSoundOff	208	143	1294	g_WProgUse	2678
+DSoundOn	166	143	1292	g_WProgUse	2675
+DStMag1	38 + 8-2	80 + 7			2012
+DStMag2	38 + 8-2	80 + 44			2014
+DStMag3	38 + 8-2	80 + 81			2016
+DStMag4	38 + 8-2	80 + 118			2018
+DStMag5	38 + 8-2	80 + 156			2020
+DStPageDown	217	178	396	g_WProgUse	2024
+DStPageUp	217	144	398	g_WProgUse	2023
+DStateWin	0 - (d.Width - 328) div 2	0 - (d.Height - 466) div 2	1280	g_WGameInter	1946
+DTurnBelt	20	239	84	g_WProgUse	1475
+DUserState1	SCREENWIDTH - 398	-81	1288	g_WGameInter	2042
+DWeaponUS1	185	160			2073
+DccClose	491	444	88	g_WInterface1c	1915
+DccFemale	454	297	59	g_WProgUse	1907
+DccLeftHair	76	308	79	g_WProgUse	1908
+DccMale	407	297	58	g_WProgUse	1906
+DccMonk	332+20	422	97	g_WInterface1c	1922
+DccOk	450	444	85	g_WInterface1c	1914
+DccReserved	502	408			1929
+DccRightHair	170	308	80	g_WProgUse	1909
+DccWarrior	260+6	422	91	g_WInterface1c	1920
+DccWizzard	296+13	422	94	g_WInterface1c	1921
+DscEraseChr	79	243	54	g_WInterface1c	1884
+DscExit	28	438	58	g_WInterface1c	1886
+DscNewChr	440	93	52	g_WInterface1c	1883
+DscStart	259	49	56	g_WInterface1c	1885
