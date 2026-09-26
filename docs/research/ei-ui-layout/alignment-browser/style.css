@@ -97,3 +97,38 @@ button { color: inherit; }
 .drawer-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; } .drawer-columns > div { min-width: 0; } .dimension-matrix { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; } .dimension-matrix div { padding: 8px; border: 1px solid var(--line); background: rgba(255,253,247,.62); } .dimension-matrix span, .dimension-matrix b { display: block; } .dimension-matrix span { color: var(--ink-soft); font-size: 10px; } .dimension-matrix b { margin-top: 3px; font: 10px var(--mono); } .dimension-same { color: var(--good); } .dimension-different { color: var(--bad); } .dimension-unknown { color: var(--caution); } .dimension-not-available { color: var(--ink-soft); }
 @media (max-width: 980px) { .status-cloud-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); } .record-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } .record-meta-grid { grid-template-columns: 1fr; } }
 @media (max-width: 620px) { .status-cloud-wide { grid-template-columns: 1fr; } .record-summary { grid-template-columns: 1fr; } .record-meta-grid { gap: 6px; } .comparison-grid { grid-template-columns: 1fr; padding: 0 12px; } .versus { min-height: 28px; border-top: 0; border-left: 1px solid var(--line); } .side-card { padding-left: 10px; } .difference-toolbar { align-items: stretch; flex-direction: column; } .diff-zone { padding: 12px; } .drawer-columns { grid-template-columns: 1fr; } .dimension-matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---- 2026-09-26 网络检索闭合审计 ---- */
+.status-dot.both-resolved { background: var(--good); }
+.status-dot.both-resolved-by-web-alias { background: #2f8f7a; }
+.status-dot.pending-web-evidence { background: var(--caution); }
+.status-dot.mir2ei-only-after-web-audit { background: var(--bad); }
+.status-dot.zircon-only-after-web-audit { background: var(--ink-soft); }
+.status-dot.source-unreachable { background: #8a6bbf; }
+.audit-badge { justify-self: end; padding: 3px 7px; border: 1px solid var(--line); color: var(--ink-soft); font: 9px var(--mono); white-space: nowrap; }
+.audit-badge.closed { border-color: #2f8f7a; color: #2f8f7a; }
+.audit-badge.needs-review { border-color: var(--caution); color: #9a6a1c; }
+.audit-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 10px 18px; border-top: 1px dashed var(--line); color: var(--ink-soft); font-size: 10px; }
+.audit-strip span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audit-strip b { display: block; margin-bottom: 2px; color: var(--ink); font: 9px var(--mono); }
+.audit-strip a { color: var(--right); }
+.audit-timeline { display: grid; gap: 10px; }
+.audit-timeline > div { position: relative; padding: 10px 12px 10px 40px; border: 1px solid var(--line); background: rgba(255,253,247,.62); }
+.audit-timeline b { display: block; font-size: 12px; }
+.audit-timeline p { margin: 3px 0 0; color: var(--ink-soft); font-size: 11px; overflow-wrap: anywhere; }
+.timeline-step { position: absolute; top: 10px; left: 12px; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--right); color: #fff; font: 10px var(--mono); }
+.chain-list, .query-list { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 11px; }
+.chain-list li, .query-list li { padding: 3px 0; overflow-wrap: anywhere; }
+.limit-list { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 11px; line-height: 1.6; }
+.limit-list code { font: 10px var(--mono); }
+@media (max-width: 980px) { .audit-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .audit-strip { grid-template-columns: 1fr; } }
+.coverage-table.audit-table > div { grid-template-columns: minmax(64px, 1fr) repeat(7, minmax(58px, .78fr)); }
+@media (max-width: 980px) { .coverage-table.audit-table > div { grid-template-columns: minmax(56px, 1fr) repeat(7, minmax(52px, .78fr)); font-size: 9px; } }
+/* 移动端宽度收敛：审计新增区块不得撑破 390px 视口 */
+.overview-card, .overview-card.wide, .status-summary-large, .diff-zone, .record-row, .ledger, .workspace-panel { min-width: 0; }
+.audit-strip > span, .record-summary > span, .record-meta-grid span { min-width: 0; }
+.coverage-table { max-width: 100%; }
+@media (max-width: 620px) { .coverage-table.audit-table > div { grid-template-columns: minmax(48px, 1fr) repeat(7, minmax(44px, .7fr)); font-size: 8px; gap: 5px; } .audit-timeline > div { padding-left: 36px; } }
+html { overflow-x: hidden; }
+.topbar { width: 100%; max-width: 100%; }

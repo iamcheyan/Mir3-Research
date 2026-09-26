@@ -1,0 +1,326 @@
+{
+  "verified_at": "2026-09-26T20:35+09:00",
+  "checks_total": 58,
+  "checks_failed": 0,
+  "failures": [],
+  "checks": [
+    {
+      "check": "monsters: row count preserved",
+      "ok": true,
+      "detail": "527 vs expected 527"
+    },
+    {
+      "check": "monsters: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "monsters: no duplicate record id",
+      "ok": true,
+      "detail": "527 ids / 527 unique"
+    },
+    {
+      "check": "npcs: row count preserved",
+      "ok": true,
+      "detail": "294 vs expected 294"
+    },
+    {
+      "check": "npcs: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "npcs: no duplicate record id",
+      "ok": true,
+      "detail": "294 ids / 294 unique"
+    },
+    {
+      "check": "items: row count preserved",
+      "ok": true,
+      "detail": "1402 vs expected 1402"
+    },
+    {
+      "check": "items: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "items: no duplicate record id",
+      "ok": true,
+      "detail": "1402 ids / 1402 unique"
+    },
+    {
+      "check": "skills: row count preserved",
+      "ok": true,
+      "detail": "176 vs expected 176"
+    },
+    {
+      "check": "skills: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "skills: no duplicate record id",
+      "ok": true,
+      "detail": "176 ids / 176 unique"
+    },
+    {
+      "check": "maps: row count preserved",
+      "ok": true,
+      "detail": "472 vs expected 472"
+    },
+    {
+      "check": "maps: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "maps: no duplicate record id",
+      "ok": true,
+      "detail": "472 ids / 472 unique"
+    },
+    {
+      "check": "respawns: row count preserved",
+      "ok": true,
+      "detail": "2475 vs expected 2475"
+    },
+    {
+      "check": "respawns: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "respawns: no duplicate record id",
+      "ok": true,
+      "detail": "2475 ids / 2475 unique"
+    },
+    {
+      "check": "quests: row count preserved",
+      "ok": true,
+      "detail": "62 vs expected 62"
+    },
+    {
+      "check": "quests: every record carries audit layer",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "check": "quests: no duplicate record id",
+      "ok": true,
+      "detail": "62 ids / 62 unique"
+    },
+    {
+      "check": "total records",
+      "ok": true,
+      "detail": "5408 vs expected 5408"
+    },
+    {
+      "check": "monsters: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 144, 'mir2ei-only': 84, 'zircon-only': 299} total=527"
+    },
+    {
+      "check": "npcs: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 217, 'zircon-only': 77} total=294"
+    },
+    {
+      "check": "items: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 410, 'mir2ei-only': 174, 'zircon-only': 818} total=1402"
+    },
+    {
+      "check": "skills: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 78, 'mir2ei-only': 1, 'zircon-only': 97} total=176"
+    },
+    {
+      "check": "maps: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 299, 'zircon-only': 173} total=472"
+    },
+    {
+      "check": "respawns: direction sums to total",
+      "ok": true,
+      "detail": "{'both': 1589, 'zircon-only': 886} total=2475"
+    },
+    {
+      "check": "quests: direction sums to total",
+      "ok": true,
+      "detail": "{'mir2ei-only': 62} total=62"
+    },
+    {
+      "check": "monsters: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "monsters: status sums to total",
+      "ok": true,
+      "detail": "527 vs 527"
+    },
+    {
+      "check": "monsters: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "npcs: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "npcs: status sums to total",
+      "ok": true,
+      "detail": "294 vs 294"
+    },
+    {
+      "check": "npcs: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "items: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "items: status sums to total",
+      "ok": true,
+      "detail": "1402 vs 1402"
+    },
+    {
+      "check": "items: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "skills: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "skills: status sums to total",
+      "ok": true,
+      "detail": "176 vs 176"
+    },
+    {
+      "check": "skills: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "maps: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "maps: status sums to total",
+      "ok": true,
+      "detail": "472 vs 472"
+    },
+    {
+      "check": "maps: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "respawns: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "respawns: status sums to total",
+      "ok": true,
+      "detail": "2475 vs 2475"
+    },
+    {
+      "check": "respawns: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "quests: statuses inside new taxonomy",
+      "ok": true,
+      "detail": "unexpected=[]"
+    },
+    {
+      "check": "quests: status sums to total",
+      "ok": true,
+      "detail": "62 vs 62"
+    },
+    {
+      "check": "quests: no legacy terminal status left",
+      "ok": true,
+      "detail": "stale=[]"
+    },
+    {
+      "check": "every record has web_search_status + search_queries",
+      "ok": true,
+      "detail": "missing=[] (0)"
+    },
+    {
+      "check": "every web-alias closure has URL + local evidence + alias chain",
+      "ok": true,
+      "detail": "broken=[] (0)"
+    },
+    {
+      "check": "external URLs traceable to registry or archive",
+      "ok": true,
+      "detail": "unknown=[]"
+    },
+    {
+      "check": "direction changes are explained by evidence",
+      "ok": true,
+      "detail": "unexplained=[] (0)"
+    },
+    {
+      "check": "production-applied count unchanged",
+      "ok": true,
+      "detail": "91 vs 91"
+    },
+    {
+      "check": "workspace MonsterInfo still 434 rows",
+      "ok": true,
+      "detail": "434"
+    },
+    {
+      "check": "no database write in this audit",
+      "ok": true,
+      "detail": "本次审计未调用 DBImporter/sync.sh，未触碰 System.db/Users.db"
+    },
+    {
+      "check": "monster manifest rows still 154",
+      "ok": true,
+      "detail": "154"
+    }
+  ],
+  "totals": {
+    "monsters": 527,
+    "npcs": 294,
+    "items": 1402,
+    "skills": 176,
+    "maps": 472,
+    "respawns": 2475,
+    "quests": 62
+  },
+  "grand_total": 5408,
+  "status_totals": {
+    "both-resolved-by-web-alias": 1924,
+    "pending-web-evidence": 2907,
+    "conflict": 116,
+    "both-resolved": 323,
+    "partial": 47,
+    "production-applied": 91
+  },
+  "direction_totals": {
+    "both": 2737,
+    "mir2ei-only": 321,
+    "zircon-only": 2350
+  },
+  "direction_before_totals": {
+    "both": 800,
+    "mir2ei-only": 475,
+    "zircon-only": 4133
+  }
+}

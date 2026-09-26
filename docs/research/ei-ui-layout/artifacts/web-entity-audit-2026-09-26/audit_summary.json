@@ -1,0 +1,214 @@
+{
+  "generated_at": "2026-09-26T14:10:43.336555+00:00",
+  "data_version": "MIR3-WEB-ENTITY-AUDIT-2026.09.26",
+  "goal": "mir2ei ↔ Zircon 全量实体映射 · 网络检索闭合审计",
+  "source_totals": {
+    "monsters": 527,
+    "npcs": 294,
+    "items": 1402,
+    "skills": 176,
+    "maps": 472,
+    "respawns": 2475,
+    "quests": 62
+  },
+  "coverage": {
+    "monster": {
+      "total": 527,
+      "direction": {
+        "both": 144,
+        "mir2ei-only": 84,
+        "zircon-only": 299
+      },
+      "direction_before_audit": {
+        "both": 67,
+        "mir2ei-only": 87,
+        "zircon-only": 373
+      },
+      "status": {
+        "both-resolved-by-web-alias": 124,
+        "pending-web-evidence": 388,
+        "conflict": 12,
+        "both-resolved": 3
+      },
+      "previous_status": {
+        "both-resolved-by-web-alias": 121,
+        "pending-web-evidence": 388,
+        "conflict": 12,
+        "both-resolved": 6
+      },
+      "review_required": 400,
+      "web_alias_closed": 124,
+      "with_external_source": 473
+    },
+    "npc": {
+      "total": 294,
+      "direction": {
+        "both": 217,
+        "zircon-only": 77
+      },
+      "direction_before_audit": {
+        "both": 188,
+        "zircon-only": 106
+      },
+      "status": {
+        "partial": 31,
+        "both-resolved-by-web-alias": 53,
+        "pending-web-evidence": 77,
+        "conflict": 9,
+        "both-resolved": 51,
+        "production-applied": 73
+      },
+      "previous_status": {
+        "partial": 31,
+        "both-resolved-by-web-alias": 53,
+        "pending-web-evidence": 77,
+        "conflict": 9,
+        "both-resolved": 51,
+        "production-applied": 73
+      },
+      "review_required": 117,
+      "web_alias_closed": 53,
+      "with_external_source": 87
+    },
+    "item": {
+      "total": 1402,
+      "direction": {
+        "both": 410,
+        "mir2ei-only": 174,
+        "zircon-only": 818
+      },
+      "direction_before_audit": {
+        "both": 47,
+        "mir2ei-only": 324,
+        "zircon-only": 1031
+      },
+      "status": {
+        "both-resolved-by-web-alias": 410,
+        "pending-web-evidence": 992
+      },
+      "previous_status": {
+        "both-resolved-by-web-alias": 410,
+        "pending-web-evidence": 992
+      },
+      "review_required": 992,
+      "web_alias_closed": 410,
+      "with_external_source": 1397
+    },
+    "skill": {
+      "total": 176,
+      "direction": {
+        "both": 78,
+        "mir2ei-only": 1,
+        "zircon-only": 97
+      },
+      "direction_before_audit": {
+        "both": 59,
+        "mir2ei-only": 2,
+        "zircon-only": 115
+      },
+      "status": {
+        "both-resolved-by-web-alias": 78,
+        "pending-web-evidence": 98
+      },
+      "previous_status": {
+        "both-resolved-by-web-alias": 78,
+        "pending-web-evidence": 98
+      },
+      "review_required": 98,
+      "web_alias_closed": 78,
+      "with_external_source": 176
+    },
+    "map": {
+      "total": 472,
+      "direction": {
+        "both": 299,
+        "zircon-only": 173
+      },
+      "direction_before_audit": {
+        "both": 22,
+        "zircon-only": 450
+      },
+      "status": {
+        "conflict": 6,
+        "partial": 16,
+        "both-resolved-by-web-alias": 46,
+        "pending-web-evidence": 404
+      },
+      "previous_status": {
+        "conflict": 6,
+        "partial": 16,
+        "both-resolved-by-web-alias": 46,
+        "pending-web-evidence": 404
+      },
+      "review_required": 426,
+      "web_alias_closed": 46,
+      "with_external_source": 194
+    },
+    "respawn": {
+      "total": 2475,
+      "direction": {
+        "both": 1589,
+        "zircon-only": 886
+      },
+      "direction_before_audit": {
+        "zircon-only": 2058,
+        "both": 417
+      },
+      "status": {
+        "both-resolved-by-web-alias": 1213,
+        "pending-web-evidence": 886,
+        "conflict": 89,
+        "both-resolved": 269,
+        "production-applied": 18
+      },
+      "previous_status": {
+        "both-resolved-by-web-alias": 1213,
+        "pending-web-evidence": 886,
+        "conflict": 89,
+        "both-resolved": 269,
+        "production-applied": 18
+      },
+      "review_required": 2188,
+      "web_alias_closed": 1213,
+      "with_external_source": 1216
+    },
+    "quest": {
+      "total": 62,
+      "direction": {
+        "mir2ei-only": 62
+      },
+      "direction_before_audit": {
+        "mir2ei-only": 62
+      },
+      "status": {
+        "pending-web-evidence": 62
+      },
+      "previous_status": {
+        "pending-web-evidence": 62
+      },
+      "review_required": 62,
+      "web_alias_closed": 0,
+      "with_external_source": 1
+    }
+  },
+  "alias_index": {
+    "zh2en_edges": 2449,
+    "zh_keys": 2385,
+    "en_keys": 2155,
+    "provenance_edges": {
+      "mir2ei-wiki-json": 2009,
+      "ver:mud3": 401,
+      "ver:zircon": 309,
+      "ver:ei": 143,
+      "ver:mei": 155,
+      "github-suprcode-chinese-messages": 23,
+      "local-candidate:db_names": 2105
+    },
+    "attested_zh_names": 2067,
+    "wemade_en_names": 499,
+    "legacy_zh_names": 1602,
+    "sina_names": 386
+  },
+  "external_source_count": 19,
+  "search_query_count": 13
+}

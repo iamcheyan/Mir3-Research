@@ -211,15 +211,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "初级任务（战士）",
       "applied": null,
       "legacy_status": "investigate",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -672,7 +674,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "初级任务（战士）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-chuji-战士",
+          "detail": "初级任务（战士）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -880,15 +914,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "初级任务（法师）",
       "applied": null,
       "legacy_status": "investigate",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -1329,7 +1365,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "初级任务（法师）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-chuji-法师",
+          "detail": "初级任务（法师）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -1531,15 +1599,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "初级任务（道士）",
       "applied": null,
       "legacy_status": "investigate",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -1968,7 +2038,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=investigate；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "初级任务（道士）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-chuji-道士",
+          "detail": "初级任务（道士）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -2031,15 +2133,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "王大人",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -2190,7 +2294,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "王大人"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-王大人",
+          "detail": "王大人"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -2270,15 +2406,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "比奇省",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -2463,7 +2601,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "比奇省"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-比奇省",
+          "detail": "比奇省"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -2533,15 +2703,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=['local-candidate:db_names']。",
       "current_actual": null,
       "proposed_standard": "药剂师",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -2706,7 +2878,40 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "药剂师",
+        "EN=04PotionMake_Euhang(Zircon 无同名实体)"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-药剂师",
+          "detail": "药剂师"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -2770,15 +2975,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "轻型盔甲",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -2931,7 +3138,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "轻型盔甲"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-轻型盔甲",
+          "detail": "轻型盔甲"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -3101,15 +3340,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "半兽人",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -3474,7 +3715,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "半兽人"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-半兽人",
+          "detail": "半兽人"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -3591,15 +3864,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "被盗灵魂",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -3858,7 +4133,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "被盗灵魂"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-被盗灵魂",
+          "detail": "被盗灵魂"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -3930,15 +4237,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "七点毒蛇",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -4107,7 +4416,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "七点毒蛇"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-七点毒蛇",
+          "detail": "七点毒蛇"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -4261,15 +4602,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "堕落道士",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -4602,7 +4945,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "堕落道士"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-堕落道士",
+          "detail": "堕落道士"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -4713,15 +5088,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=['legacy-chinese-attestation', 'mir2ei-wiki-json']。",
       "current_actual": null,
       "proposed_standard": "沃玛教主",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -4968,7 +5345,65 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-rule-search",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [
+        {
+          "source_id": "mir2ei-wiki-json",
+          "url": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
+          "title": "EI 传奇3.0 百科 · 机器可读数据集 (wiki_data_v2.json)",
+          "accessed_at": "2026-09-26T19:00+09:00",
+          "excerpt": "monsters 534 (name/zh/ver/img/spawns/drops) · items 2203 · skills 218 · npcs 125 · maps 244 · terminology 1701 · mud3{spawns 293,merchants 318,guards 117,mapinfo 365}",
+          "note": "zh->en 别名: 沃玛教主 → Uma King"
+        },
+        {
+          "source_id": "mir2ei-wiki-json",
+          "url": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
+          "title": "EI 传奇3.0 百科 · 机器可读数据集 (wiki_data_v2.json)",
+          "accessed_at": "2026-09-26T19:00+09:00",
+          "excerpt": "monsters 534 (name/zh/ver/img/spawns/drops) · items 2203 · skills 218 · npcs 125 · maps 244 · terminology 1701 · mud3{spawns 293,merchants 318,guards 117,mapinfo 365}",
+          "note": "mir2ei/老版清单含: 沃玛教主"
+        }
+      ],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "沃玛教主",
+        "EN=Uma King(Zircon 无同名实体)"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-zhongji-沃玛教主",
+          "detail": "沃玛教主"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "medium",
+      "review_required": true,
+      "extended_mir2ei_attestation": [
+        {
+          "zh": "沃玛教主",
+          "provenance": [
+            "legacy-chinese-attestation"
+          ],
+          "match": "exact"
+        }
+      ]
+    }
   },
   {
     "kind": "quest",
@@ -5025,15 +5460,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "战士技能学习任务",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -5172,7 +5609,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "战士技能学习任务"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-skill-战士",
+          "detail": "战士技能学习任务"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -5260,15 +5729,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "道士技能学习任务",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -5469,7 +5940,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "道士技能学习任务"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-skill-道士",
+          "detail": "道士技能学习任务"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -5542,15 +6045,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "法师技能学习任务",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -5721,7 +6226,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "法师技能学习任务"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-skill-法师",
+          "detail": "法师技能学习任务"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -5923,15 +6460,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（比奇）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -6360,7 +6899,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（比奇）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-比奇",
+          "detail": "万事通随机任务（比奇）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -6507,15 +7078,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（银杏）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -6834,7 +7407,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（银杏）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-银杏",
+          "detail": "万事通随机任务（银杏）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -6909,15 +7514,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（边境）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -7092,7 +7699,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（边境）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-边境",
+          "detail": "万事通随机任务（边境）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -7239,15 +7878,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（道馆）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -7566,7 +8207,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（道馆）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-道馆",
+          "detail": "万事通随机任务（道馆）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -7679,15 +8352,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（毒蛇）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -7938,7 +8613,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（毒蛇）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-毒蛇",
+          "detail": "万事通随机任务（毒蛇）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -8049,15 +8756,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（盟重）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -8304,7 +9013,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（盟重）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-盟重",
+          "detail": "万事通随机任务（盟重）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -8444,15 +9185,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（绿洲）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -8757,7 +9500,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（绿洲）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-绿洲",
+          "detail": "万事通随机任务（绿洲）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -8866,15 +9641,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（沙漠土城）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -9117,7 +9894,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（沙漠土城）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-沙漠土城",
+          "detail": "万事通随机任务（沙漠土城）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -9340,15 +10149,17 @@
       }
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": "万事通随机任务（出材料地点）",
       "applied": null,
       "legacy_status": "pending",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -9819,7 +10630,39 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=pending；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [
+        "万事通随机任务（出材料地点）"
+      ],
+      "local_evidence": [
+        {
+          "kind": "mir2ei-side",
+          "ref": "mission-wanshitong-出材料地点",
+          "detail": "万事通随机任务（出材料地点）"
+        }
+      ],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -9874,15 +10717,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -9970,7 +10815,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10025,15 +10894,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10121,7 +10992,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10176,15 +11071,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10272,7 +11169,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10321,15 +11242,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10411,7 +11334,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10460,15 +11407,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10550,7 +11499,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10605,15 +11578,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10701,7 +11676,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10756,15 +11755,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -10852,7 +11853,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -10919,15 +11944,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11027,7 +12054,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11086,15 +12137,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11186,7 +12239,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11245,15 +12322,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11345,7 +12424,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11404,15 +12507,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11504,7 +12609,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11559,15 +12688,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11655,7 +12786,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11706,15 +12861,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11798,7 +12955,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -11853,15 +13034,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -11949,7 +13132,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12000,15 +13207,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12092,7 +13301,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12143,15 +13376,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12235,7 +13470,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12286,15 +13545,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12378,7 +13639,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12433,15 +13718,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12529,7 +13816,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12580,15 +13891,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12672,7 +13985,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12723,15 +14060,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12815,7 +14154,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -12866,15 +14229,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -12958,7 +14323,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13013,15 +14402,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13109,7 +14500,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13164,15 +14579,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13260,7 +14677,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13315,15 +14756,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13411,7 +14854,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13462,15 +14929,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13554,7 +15023,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13605,15 +15098,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13697,7 +15192,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13748,15 +15267,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13840,7 +15361,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -13899,15 +15444,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -13999,7 +15546,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14058,15 +15629,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14158,7 +15731,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14217,15 +15814,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14317,7 +15916,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14372,15 +15995,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14468,7 +16093,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14523,15 +16172,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14619,7 +16270,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14674,15 +16349,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14770,7 +16447,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14825,15 +16526,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -14921,7 +16624,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -14984,15 +16711,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -15088,7 +16817,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -15151,15 +16904,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -15255,7 +17010,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -15318,15 +17097,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -15422,7 +17203,31 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   },
   {
     "kind": "quest",
@@ -15485,15 +17290,17 @@
       "label": "无直接对应"
     },
     "conclusion": {
-      "status": "mir2ei-only",
-      "title": "mir2ei 有，Zircon 当前没有安全对应项",
-      "rationale": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
+      "status": "pending-web-evidence",
+      "title": "有网络候选或资料缺口，需更多版本/资源证据，未定终态",
+      "rationale": "有网络候选或资料缺口，需更多版本/资源证据，未定终态。新方向=mir2ei-only；原状态=pending-web-evidence；网络审计证据=无外部别名命中。",
       "current_actual": null,
       "proposed_standard": null,
       "applied": "not-applied",
       "legacy_status": "retain-current",
       "current_usage": "无当前 Zircon 实体",
-      "next_action": "补齐 Zircon 安全 Index 与业务关联"
+      "next_action": "补齐外部别名、版本或资源证据后重跑本审计",
+      "previous_status": "pending-web-evidence",
+      "previous_direction": "mir2ei-only"
     },
     "evidence": [
       {
@@ -15589,6 +17396,30 @@
     },
     "reason": "mir2ei 有，Zircon 当前没有安全对应项。原始状态=retain-current；来源范围按 manifest 保留。",
     "current_usage": "无当前 Zircon 实体",
-    "next_action": "补齐 Zircon 安全 Index 与业务关联"
+    "next_action": "补齐 Zircon 安全 Index 与业务关联",
+    "direction_before_audit": "mir2ei-only",
+    "web_audit": {
+      "web_search_status": "family-search-no-result",
+      "search_queries": [
+        "site:lomcn.net Mir3 Zircon monster list",
+        "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+        "传奇3 冰宫 冰原 怪物 名称 列表",
+        "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+        "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+        "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+        "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+        "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文"
+      ],
+      "external_sources": [],
+      "source_commit_or_version": "7d7943f7 (iamcheyan/Zircon fork, 本地 Zircon 工作树) · Suprcode/Zircon@master · wiki_data_v2.json generated_at=2026-08-11T09:04:42+00:00 (script ver_tags.py) · LOMCN Wiki Monster_Database, last modified 2024-11-11",
+      "alias_chain": [],
+      "local_evidence": [],
+      "excluded_candidates": [],
+      "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
+      "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
+      "confidence": "low",
+      "review_required": true,
+      "extended_mir2ei_attestation": []
+    }
   }
 ]

@@ -1,0 +1,98 @@
+[
+  {
+    "q": "传奇3 Zircon 服务端 怪物 英文名 中文名 对照 MonsterInfo",
+    "outcome": "确认中文圈存在 Zircon 引擎私服生态；GM 命令以中文名操作怪物，说明中文名与 Zircon 数据是同一实体集",
+    "sources": [
+      "https://blog.csdn.net/weixin_35828992/article/details/119695349"
+    ]
+  },
+  {
+    "q": "传奇3 怪物 名称 中英文对照 Zuma Oma Claw Cat 英文名",
+    "outcome": "命中 17173/新浪/百度百科 传奇3 怪物条目，确认 多钩猫/钉耙猫 等中文名与描述可用于语义映射",
+    "sources": [
+      "https://baike.baidu.com/item/%E4%BC%A0%E5%A5%873/3071381",
+      "https://games.sina.com.cn/zhqu/mir3/2/gwzl/"
+    ]
+  },
+  {
+    "q": "site:lomcn.net Mir3 Zircon monster list",
+    "outcome": "定位 LOMCN Mir3 怪物数据库（531 行英文名）与 Zircon 开源板块",
+    "sources": [
+      "https://www.lomcn.net/wiki/index.php/Monster_Database",
+      "https://www.lomcn.net/forum/forums/zircon-mir3-files-open-source.735/"
+    ]
+  },
+  {
+    "q": "传奇3 钉耙猫 多钩猫 怪物 英文名 Raking Cat",
+    "outcome": "确认 多钩猫(钩/hook) 与 钉耙猫(耙/rake) 是两个独立怪物，语义直译对应 HookingCat / RakingCat",
+    "sources": [
+      "https://baike.baidu.com/item/%E5%A4%9A%E9%92%A9%E7%8C%AB/5630779",
+      "https://baike.baidu.com/item/%E9%92%89%E8%80%99%E7%8C%AB/5630928"
+    ]
+  },
+  {
+    "q": "传奇3 冰宫 冰原 怪物 名称 列表",
+    "outcome": "命中冰原/冰宫版本怪物中文名（狼人/雪猪/幽灵骑士/冰魄鬼女/冰魂武将等），确认 Zircon Ice Plain/Ice Palace 系怪物属 1.45 后期内容",
+    "sources": [
+      "https://mir3.17173.com/content/2025-04-02/20250402115532979.shtml",
+      "http://qh773.com/a/youxiziliao/zhongjiziliao/2017/0505/321.html"
+    ]
+  },
+  {
+    "q": "传奇3 怪物 白野猪 祖玛弓箭手 潘夜 英文名 WhiteBoar ZumaArcher Banya",
+    "outcome": "命中怪物分布表（潘夜石窟=骷髅系 / 石阁庙=野猪系 / 沃玛神殿=沃玛系），建立 中文族名 ↔ Wemade 英文族名 的对应",
+    "sources": [
+      "http://qh773.com/a/youxiziliao/zhongjiziliao/2017/0505/321.html"
+    ]
+  },
+  {
+    "q": "传奇3 怪物 英文名对照表 Wooma WhiteBoar RedMoonEvil 沃玛 白野猪 赤月恶魔",
+    "outcome": "命中新浪 2003 老版怪物全量排名表，作为老版中文名独立佐证清单",
+    "sources": [
+      "https://games.sina.com.cn/z/mir3/2003-06-18/13374.shtml"
+    ]
+  },
+  {
+    "q": "Legend of Mir 3 monster names list Wooma Zuma Banya Numa Chiwoo",
+    "outcome": "确认 Mir3 英文名体系（Wooma/Zuma/Banya/Numa/Chiwoo）在英文社区资料中的使用",
+    "sources": [
+      "https://www.lomcn.net/forum/threads/legend-of-mir-3-go.114531/"
+    ]
+  },
+  {
+    "q": "传奇3 蚂蚁洞 钳虫 蜈蚣 蜘蛛 怪物 名称 英文",
+    "outcome": "命中蚂蚁洞/蜈蚣洞怪物中文清单，作为中文侧独立佐证",
+    "sources": [
+      "https://mir3.17173.com/content/2012-10-14/20121014234729325.shtml",
+      "https://games.sina.com.cn/z/mir3/2003-06-16/12957.shtml"
+    ]
+  },
+  {
+    "q": "\"WhiteBoar\" OR \"RedMoonEvil\" OR \"WoomaTaurus\" Mir3 传奇3 白野猪 赤月恶魔 沃玛教主",
+    "outcome": "无结果 —— 中英混排检索在通用引擎不可得，记为 excluded_candidates 依据（不可据此判为独有）",
+    "sources": []
+  },
+  {
+    "q": "传奇3 Zircon 汉化 怪物名称 对照 MonsterInfo 中文",
+    "outcome": "确认中文圈 Zircon 私服以中文名操作怪物（@mob 怪物中文名），但未发现公开的完整中英对照表",
+    "sources": [
+      "https://blog.csdn.net/weixin_35828992/article/details/119695349",
+      "http://www.zircon.vip/Home/StrategyDetail?view=2"
+    ]
+  },
+  {
+    "q": "传奇3 技能 英文名 Dragon Rise 翔空剑法 Blade Storm 十方斩 对照",
+    "outcome": "命中 17173 技能页与光通 1.45 技能攻略，佐证技能中文名；英文名由 Zircon 官方 ChineseMessages.cs 提供",
+    "sources": [
+      "https://mir3.17173.com/skill/skill.htm",
+      "https://zhuanlan.zhihu.com/p/649403177"
+    ]
+  },
+  {
+    "q": "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
+    "outcome": "命中官方地图清单（边境村落/银杏村落/比奇县/盟重县/潘夜岛/诺玛遗址/沙巴克），用于地图中文名佐证",
+    "sources": [
+      "http://mir3.youxi.com/211371965/211372894/211372898.html"
+    ]
+  }
+]
