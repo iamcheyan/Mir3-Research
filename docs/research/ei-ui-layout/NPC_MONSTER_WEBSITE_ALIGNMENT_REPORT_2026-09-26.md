@@ -8,6 +8,9 @@
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
 - 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
+- Mir3-Research 最终生成时：HEAD=34266327df62ca090c771e7a4d25049e0719f3db；origin/ei-ui-audit-2026-09-24=9380f69f22cce3659f1823c443f0766e7b95fb2c；工作树 dirty=True。
+- Zircon 最终生成时：HEAD=4bd89e84a88de64feb78443bedfeea106fdcc86b；origin/ui/legacy-layout-lab=22cf7a1b18e61a743a705a97ac715a32f64d7bc5；工作树 dirty=True。
+- 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/map_links_v2.json", "Tools/wsgateway/wsgateway.log"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
 
 ## 2. 网站索引和图片证据
 
@@ -32,22 +35,23 @@
 
 - 网站地图共 17 个迷宫区域图 + 世界地图 + 神舰 4 层；没有把它们当成 627 张逐图清单。
 - `map_family_manifest.json` 按网站区域名称列出 MapInfo 候选、文件名、描述；具体地图 walkable/尺寸/入口证据复用现有独立 manifest。
-- NPC 全量和候选位置：复用 `/home/tetsuya/development/Mir3-Research/docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json`，行数=294；NPC 与怪物身份/写入状态分开。
+- NPC 全量和候选位置：`docs/research/ei-ui-layout/artifacts/website-alignment-2026-09-26/npc-manifest.json`，行数=294；保留 current_name/current_map/current_xy、website 证据、map_match、coordinate_evidence、walkable、overlap、confidence、apply_status、skip_reason。
 - NPC 统计：match_method={"semantic-audit": 58, "pending": 36, "exact-script-name": 96, "exact-script-name-map": 34, "hero-kill-extra": 70}；map_relation={"variant": 78, "exact": 165, "replacement": 19, "renamed": 6, "pending": 26}；walkable={"pass": 223, "fail": 71}；apply={"pending-review": 190, "dry-run": 104}；overlap_rows=0。
 - NPC 没有可靠位置时保持 retain-current，并在既有 manifest 的 candidate/skip_reason 中记录；不删除 NPC。
 - 地图统计：MapInfo=627；relation={"variant": 12, "exact": 526, "replacement": 6, "renamed": 12, "pending": 71}；coordinate_reuse={"blocked": 89, "allowed-after-point-check": 538}。
-- NPC 全量字段和候选位置行位于外部机器 manifest；本 Goal 不复制/覆盖其内容。
+- NPC 原始行与完整候选证据仍可追溯至 `/home/tetsuya/development/Mir3-Research/docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json`；本 Goal 不覆盖外部 canonical manifest。
 
 ## 6. 刷新点 dry-run
 
 - 刷新全量：旧 RespawnInfo=2475；Hero-kill parsed=679；matched=328；YXS-only=307；Zircon-only=2058；conflict=44。
-- Respawn walkable={"fail": 917, "pass": 1510, "pending": 48}；apply={"blocked": 2147, "pending-review": 328}；旧/新逐行清单仍在外部 manifest。
+- Respawn 旧/新清单：`docs/research/ei-ui-layout/artifacts/website-alignment-2026-09-26/respawn-manifest.json`，行数=2475；walkable={"fail": 917, "pass": 1510, "pending": 48}；apply={"blocked": 2147, "pending-review": 328}。
 - Website identity is separate from refresh position: website standard supplies identity/display-name evidence; GB18030 Hero-kill/Mud3 supplies refresh coordinates/count/range.
 
 ## 7. 独立验证与关键样例
 
 - 独立验证脚本：`Tools/NpcMover/verify_website_alignment.py`，不导入生产转换器；检查 JSON 数量、图片文件/尺寸/hash、MonsterLookup/Mon-*.Zl、MIcon、manifest 状态和索引稳定性。
 - 关键样例：半兽人、祖玛、祖玛卫士、白野猪、Boss；技能火球术/基本剑术；NPC 至少 3 行；结果见 `verification.json`。
+- 独立范围审计：NPC/Respawn schema-or-target-coordinate failures=0/0；旧来源坐标超出 Zircon 目标尺寸=2/4（保留为旧坐标证据，不作为新坐标写入）；NPC/Respawn overlap rows=0/0。
 
 ## 8. 写库闸门与未提交文件保护
 
@@ -57,4 +61,4 @@
 
 ## 9. 机器可读产物
 
-- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `map-family-manifest.json` / `website-index.json` / `verification.json`。
+- `manifest.json` / `monster-manifest.tsv` / `skill-manifest.tsv` / `npc-manifest.json` / `respawn-manifest.json` / `map-family-manifest.json` / `website-index.json` / `verification.json`。

@@ -18048,6 +18048,8 @@
       "coordinate_policy": "independent landmark/walkable verification; no blind reuse"
     }
   ],
+  "npc_manifest_count": 294,
+  "respawn_manifest_count": 2475,
   "external_alignment": {
     "present": true,
     "path": "/home/tetsuya/development/Mir3-Research/docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/manifest.json",
@@ -18147,7 +18149,9 @@
     "npc_count": 294,
     "respawn_count": 2475,
     "map_count": 627,
-    "note": "Canonical NPC/respawn rows remain in the 2026-09-25 offline manifest; this goal does not overwrite them."
+    "note": "Canonical NPC/respawn rows remain in the 2026-09-25 offline manifest; this goal does not overwrite them.",
+    "normalized_npc_manifest": "docs/research/ei-ui-layout/artifacts/website-alignment-2026-09-26/npc-manifest.json",
+    "normalized_respawn_manifest": "docs/research/ei-ui-layout/artifacts/website-alignment-2026-09-26/respawn-manifest.json"
   },
   "business_index_untouched": true,
   "display_name_changes_only": true

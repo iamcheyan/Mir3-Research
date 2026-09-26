@@ -101,6 +101,17 @@
     "confirmed_candidates_checked": 67,
     "resource_failures": 0
   },
+  "normalized_audit": {
+    "npc_records": 294,
+    "respawn_records": 2475,
+    "npc_coordinate_or_schema_failures": 0,
+    "respawn_coordinate_or_schema_failures": 0,
+    "npc_old_coordinates_out_of_target_bounds": 2,
+    "respawn_old_coordinates_out_of_target_bounds": 4,
+    "map_dimension_keys": 631,
+    "npc_overlap_rows": 0,
+    "respawn_overlap_rows": 0
+  },
   "key_samples": {
     "monsters": {
       "半兽人": "confirmed",
