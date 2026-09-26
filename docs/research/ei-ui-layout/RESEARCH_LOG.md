@@ -10084,3 +10084,93 @@ NPC 的 `Sayings: TList`(:96) 就是 **`PTQuestRecord` 列表** ——
 
 **落盘**：`docs/source-vs-reverse/server.md`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 809 (source deep-read, 配置) — 2026-09-26：Envir 被抽空 / MapInfo 格式 / 小地图链闭合
+
+> 证据源 `Mud3-Config/`（2193 文件）+ `Source/GameServer/{LocalDB,svMain}.pas`。
+> 产物 `docs/source-vs-reverse/config.md`、`Tools/source-read/env_compare.py`。
+
+**〔`Envir/` 是一个被抽空的骨架（严重发现）〕**
+
+| | `Envir/` | `Envir3/` |
+|---|---:|---:|
+| 文件数 | 391 | 1802 |
+| 总字节 | 850307 | 5279416 |
+| **空文件** | **9** | 3 |
+
+`Envir/` 的 9 个空文件：`Castle/AttackSabukWall.txt`、`GenMsg.txt`、
+`GuardList.txt`、`MapQuest.txt`、`Market_Def/Light-D2083.txt`、`MerChant.txt`、
+`MonGen.txt`、`Npcs.txt`、`StartUp/StartupQuest.txt`。
+**而 `Envir3/` 里同名文件是有内容的**：`guardlist.txt` 0→4703、
+`mapquest.txt` 0→59726、`merchant.txt` 0→41074、`mongen.txt` 0→1915。
+
+→ `Envir/` 的地图表（`Mapinfo.txt` 110 KB）与商店脚本（`Market_Def/`）完整，
+但**NPC 列表、刷怪表、守卫表、地图任务表全被清空**。
+⚠️ README §4 称「`Envir/` 才是源码真正读的那套」—— 这在**代码层面正确**
+（`EnvirDir` 默认 `.\Envir\`），但**数据层面 `Envir/` 是空的**。
+研究 NPC/刷怪/任务的**实际内容必须用 `Envir3/`**，同时清楚「本版源码不读它」
+这个矛盾。二者合起来才是一份完整配置。
+另：`Envir/Mapinfo.txt`(110269) 与 `Envir/1MapInfo.txt`(99820) 内容不同，
+`Envir3/MapInfo.txt`(80340) 又不同 —— 三份并存。
+
+**〔源码实际读取的 19 个配置（逐条 grep 验证）〕**`AdminList`(3次) `MapInfo`(1)
+`MiniMap`(2) `MonGen`(2) `Merchant`(1，首字母大写 M) `Npcs`(1) `GuardList`(1)
+`MapQuest`(2) `MakeItem`(2) `DecoItem`(2) `DragonItem`(1) `GenMsg`(2)
+`UnbindList`(2) `StartPoint`(2) `SafePoint`(2) `StartupQuest`(1)
+`AttackSabukWall`(1) `Sabuk`(2) `enckey`(1)。
+
+**〔`MapInfo.txt` 格式（权威解析器已定位）〕**`LocalDB.pas:529` 起，
+`MAPDEFFILE='MapInfo.txt'`(:13)。行格式 `[<地图名> <中文标题> <服务器号>] <标志...>`，
+解析流程 `:542-556`：`ArrestStringEx(str,'[',']',map)` → `GetValidStrCap` 取地图名 →
+`GetValidStr3` 取服务器号 → `Str_ToInt`。
+**完整标志位表 28 个（`:593-659`）**：`SAFE`(law)/`DARK`/`DAWN`/`FIGHT`/`FIGHT2`/
+`FIGHT3`(可复活3次)/`FIGHT4`/`DAY`(sunny)/`QUIZ`/`NORECONNECT(<地图>)`(空则 Result:=-11)/
+`CHECKQUEST(<npc>)`(只能一个条件)/`NEEDSET_ON(<num>)`/`NEEDSET_OFF(<num>)`/`NEEDHOLE`/
+`NORECALL`/`NORANDOMMOVE`/`NOESCAPEMOVE`/`NOTELEPORTMOVE`/`NODRUG`/`MINE`/`MINE2`/`MINE3`/
+`NOPOSITIONMOVE`/`THUNDER`(autoattack=1)/`FIRE`(=2)/`NOMAPXY`(=3)/`GUILDAGIT(<num>)`/
+`NOCHAT`/`NOGROUP`/`NOTHROWITEM`/`NODROPITEM`。
+**实测使用频率**：`DARK` 436 / `NORECALL` 162 / `NORECONNECT` 143 / `DAY` 102 /
+`NOPOSITIONMOVE` 95 / `NORANDOMMOVE` 94 / `FIGHT` 57 / `SAFE` 34 / `MINE` 18 /
+`NEEDHOLE` 16 / `MINE2` 3 / `NODRUG` 1。
+→ 源码支持 28 个，实际配置**只用了 12 个**。
+
+**〔`MiniMap.txt` —— 端到端闭合 `CM_WANTMINIMAP`〕**解析器 `LocalDB.pas:1389-1415`，
+`MINIMAPFILE='MiniMap.txt'`(:32)。格式 `<地图名> <小地图号>`，`;` 开头是注释，
+`index > 0` 才入 `MiniMapList`。实测内容 `D4301 691 / D4302 692 / ...`（首行 `;;海メ盗`）。
+**完整链路**：
+```
+LocalDB.LoadMiniMapInfos 读 MiniMap.txt → MiniMapList[地图名→小地图号]
+  → TEnvirnoment.MiniMap（Envir.pas:155）
+客户端点击 → CM_WANTMINIMAP(0x409) → SM_READMINIMAP_OK(710) Param=PEnvir.MiniMap
+  → ClientGetReadMiniMap → MiniMapIndex := Param - 1; DMiniMapDlg.Visible := True
+```
+这是 Round 802 的 `0x409` 结论的**完整数据侧补充**：小地图号数据源是
+`MiniMap.txt`，`-1` 偏移已确认。本仓库 `minimap-server-crossref.json` 正是这张
+交叉表，现在有了权威格式解析依据。
+
+**〔`enckey.txt` 确认未被使用（闭合 Round 803 的疑问）〕**
+`svMain.pas:1273` 整行**被注释掉**：`// if LoadPublicKey( EnvirDir + 'enckey.txt' ) then`。
+→ 直接证实 Round 803 的结论：公钥**不是**从配置读取，而是登录期动态协商。
+→ README §4 把 `enckey.txt` 列入「源码实际按名读取的配置」**不准确** ——
+代码里存在但被禁用。
+
+**〔`Envir3/` 结构〕**`QuestDiary/`（任务脚本树，最大 `QT_TODAY/4Grade.txt` 188KB）、
+`Mon_Def/`（69 `.gen`）、`Market_Def/`、`MonItems/`、`Convert_Def/`（1791 个，
+多数仅 Envir3 有）、`Flag_Def/`、`GM_Def/`。
+⚠️ `Envir3/QuestDiary/QT_TODAY/QT_TODAY/` 存在**嵌套同名目录**
+（`4thClass.txt` 两层各一份，171184 vs 171253 字节，**内容略有不同**）——
+配置树有**版本叠加**痕迹，取用时要确认是哪一层。
+
+**〔任务三要素（与 `Tools/questdata` 的关系）〕**
+①结构 `ObjNpc.pas` 的 `TQuestRecord`/`TQuestRequire`
+②内容 `Envir3/QuestDiary/` 脚本树
+③入口 `MapInfo.txt` 的 `CHECKQUEST(<npc>)` + `MapQuest.txt`。
+本仓库 `Tools/questdata` 目前主要基于 `System.db` 的 `QuestInfo`，
+源码这三要素可作为**独立交叉验证源**。
+
+**〔未破译（保持未解）〕**`Envir3/QuestDiary/NQ_BASE/MonQuest/` 的 3 个 `.txt`
+（342–881 B）非 GB18030/cp949，`iconv` 首字节即失败，字节呈定长对模式
+（每对低字节低位恒 `0xC`），疑 Mir3 MonQuest 私有编码。**本轮未破译，不猜测。**
+
+**落盘**：`docs/source-vs-reverse/config.md`、`Tools/source-read/env_compare.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
