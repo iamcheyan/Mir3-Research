@@ -9621,3 +9621,88 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔消息与输入〕**重新聚焦后提交 `FINAL_AUDIT_R` 和 `FINAL_TWO` 两条普通消息；日志显示两次 `[ChatInput] focus/submit`，`[LegacyChat] hudMessages` 从 3 增长到 5，第二条为 `type=Normal`，证明输入清空后可再次聚焦提交，消息不会被下一帧清空。
 - **〔F350入口〕**当前运行点击 F102/F103 位置 `(830,664)` 打开 F350，日志为 `LegacyOpen requested=chat`、`size=(572,388)`；点击关闭控件 `(770,560)` 返回，完整视口截图保留 HUD 消息。证据归档于 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-final-audit-*.png` 与 `chat-hud-final-audit.log`。
 - **〔工作树与远端〕**Zircon 当前分支和远端 SHA 在终局审计后保持一致；Research 分支仅有既有 `Tools/wsgateway/wsgateway.log` 未跟踪，未修改。 
+
+## Round 802 (source cross-reference) — 2026-09-26：Preview 源码入库后闭合 0x409 / 0x418 / 0x419 三条悬案
+
+> 证据源切换：本轮首次使用 `reference/mir3-source/`（Mir3 Preview Version 社区源码，
+> Delphi 客户端 + Delphi 游戏逻辑服 + C++ 登录/数据库服，commit `6b626be1` 收录）。
+> 证据等级 **`secondary-source`**，**不能**替代 `Mir3.exe` 的 `primary-static`；本轮只做
+> 「原版静态结论 ↔ 社区源码命名」的一致性交叉，不修改任何原版证据。
+
+**〔方法〕**`reference/mir3-source/Source/Common/Grobal2.pas`（2862 行，392 个
+`CM_*`/`SM_*`）为协议总表；`Client/`（Delphi 63k 行）为发送端；`GameServer/`（Delphi 80k 行）
+为接收端。注意：`Source/**` 注释为 **CP949**，`grep`/`rg` 对中文/韩文关键字失效（本轮
+协议常量与标识符为 ASCII，不受影响）；读注释需 `iconv -f cp949 -t utf-8 -c`。
+
+### A. `0x409` = `CM_WANTMINIMAP`（地图查询）—— 闭合
+
+- **协议总表**：`Common/Grobal2.pas:1732` `CM_WANTMINIMAP = 1033`（`1033 = 0x409`），
+  服务端应答 `:1540` `SM_READMINIMAP_OK = 710`、`:1541` `SM_READMINIMAP_FAIL = 711`。
+- **客户端发送**：`Client/ClMain.pas:4676` `TFrmMain.SendWantMiniMap` 构造
+  `MakeDefaultMsg(CM_WANTMINIMAP,0,0,0,0)` 后 `SendSocket(EncodeMessage(msg))`；调用点
+  `Client/FState.pas:7748`（HUD 小地图按钮 `TFrmDlg.DBotMiniMapClick`）与
+  `Client/PlayScn.pas:2927/2930`（切图后重取）。
+- **服务端处理**：`GameServer/ObjBase.pas:25170` `CM_WANTMINIMAP: ServerGetWantMiniMap;`
+  → `:28529` `TUserHuman.ServerGetWantMiniMap`：`mini := PEnvir.MiniMap`，`mini > 0` 时回
+  `SM_READMINIMAP_OK`（`Param = mini`），否则回 `SM_READMINIMAP_FAIL`。
+- **客户端接收**：`Client/ClMain.pas:6942/6948` → `ClientGetReadMiniMap(msg.Param)`
+  （`:8660`：`mapindex >= 1` 时 `BoDrawMiniMap := True`、`MiniMapIndex := mapindex - 1`、
+  `DMiniMapDlg.Visible := True`）。
+- **与 F321 的对照（高度吻合）**：F321 记「`0x42C259` 小地图 cap1：`GetTickCount` 3s 冷却
+  （`[0x6210]` 上次, `0xBB8`）→ `[0x6518]==0 ? 0x451770` = **msg 0x409 地图查询** :
+  `[0x6518]=0`」。源码侧 `FState.pas:7743-7750` 为
+  `if GetTickCount > querymsgtime then begin querymsgtime := GetTickCount + 3000;
+  FrmMain.SendWantMiniMap; BoWantMiniMap := TRUE; end;` —— **3s 冷却常量 3000 与 `0xBB8`
+  逐字节一致**；`querymsgtime` 即 `[0x6210]`，`BoWantMiniMap` 即 `[0x6518]`。
+  由此 **F321 的 `[+0x6210]` 写点闭合**：写点 = 客户端点击处理器自身，不是服务端回包。
+- **业务名升级**：`0x409` 从「地图查询（candidate）」升为 **`CM_WANTMINIMAP`
+  请求当前地图的小地图索引**（链 `secondary-source`；原版 `primary-static` 的 opcode/调用点
+  不变）。同时确认 **`0x409` 与背包无关**：F514 把「库存 0x409」与「背包」并置，实为
+  `0x451CC0` 库存字符串解析器（`0x451BB0` 分派 0x406/0x407/0x408/0x409 属**交易金币**族），
+  与 `CM_WANTMINIMAP` 是同 opcode 在不同 UI 上下文的两处引用，需在证据里分开标注。
+
+### B. `0x418` / `0x419` 的业务名 —— 原版悬案闭合为「不是任务协议」
+
+- **协议总表**：`:1748` `CM_FRIEND_EDIT = 1048`（`0x418`，「好友说明变更」）、
+  `:1749` `CM_FRIEND_LIST = 1049`（`0x419`，「好友列表请求」）。
+- **客户端发送**：`Client/ClMain.pas:9385` `SendUpdateFriend` →
+  `MakeDefaultMsg(CM_FRIEND_EDIT,...) + EncodeString(data)`；
+  `:5556` 登录进入游戏成功后 `SendClientMessage(CM_FRIEND_LIST,0,0,0,0)`。
+- **服务端接收**：`GameServer/ObjBase.pas` 主分派**没有** 1048/1049 的 `case`；命中
+  `else hum.SendMsg(hum, pmsg.Ident, ...)` 兜底回环（`GameServer/UsrEngn.pas:3546-3547`
+  把 `CM_FRIEND_EDIT/CM_FRIEND_LIST` 列在**同一 begin 块**，块内一律
+  `UserMgrEngine.ExternSendMsg(stInterServer, ...)` 转发到 FriendSystem，`pmsg.Ident` 原样保留）。
+- **FriendSystem 分派**：`GameServer/FriendSystem.pas:482/483`
+  `CM_FRIEND_EDIT: OnCmdCMEdit` / `CM_FRIEND_LIST: OnCmdCMList`；
+  `OnCmdCMEdit`（`:595`）：`Desc := GetValidStr3(Cmd.body, Friend, ['/'])` → `SetDesc` →
+  `OnSendInfoToClient` + `OnCmdDBEdit`；
+  `OnCmdCMList`（`:501`）：`FWantListFlag := true`，`FIsListSendAble` 时 `OnSendListToClient`。
+- **服务端回包**：`SM_FRIEND_INFO = 813`（`:1588`，`FriendName + '/' + Desc`，
+  `GameServer/FriendSystem.pas:378`）；登录时列表经 DB 回包 `DBR_FRIEND_LIST = 1203`
+  （`:2177`）→ `OnCmdDBRList`（`:886`）→ `OnSendListToClient`（`:443`）逐条发 `SM_FRIEND_INFO`。
+  `SM_FRIEND_DELETE = 812`、`SM_FRIEND_RESULT = 814`。
+- **决定性反证（`0x419` ≠ 任务详情）**：本源码客户端有**完整好友系统**（`DFriendDlg`、
+  `DMailDlg`、`DJangwonListDlg`、`DTagSystem`）与对应 CM_ 常量；**任务系统则完全没有**——
+  客户端全部 `SendClientMessage`/`MakeDefaultMsg` 的 CM_ 全集（见本轮附注）里**没有任何
+  Mission/Quest 消息**，`FState.pas` 的窗口清单也没有任务窗。而 `CM_FRIEND_EDIT/CM_FRIEND_LIST`
+  恰好就是原版任务窗实测发出的 **`0x418`（1 参数）/ `0x419`（2 参数）**。
+  → 结论：**原版 `Mir3.exe` 的任务窗复用了同一 opcode 空间，但 EI 3.0 线上这两个 opcode 的
+  业务名不是「任务详情/放弃」，而是 `CM_FRIEND_EDIT` / `CM_FRIEND_LIST`**；F251 的
+  candidate 业务名「前进/下一任务记录」「请求任务详情」应标记为**被本轮修正**。
+- **保留边界（重要）**：本轮**不主张**「任务窗 = 好友窗」。EI 3.0 的 `Mir3.exe` 里
+  `0x451A10`(0x418) / `0x451A40`(0x419) 的**唯一调用点**仍是任务窗选中记录 / 子记录
+  （F321 的 E8-scan 单调用点定案不变）；本源码的同 opcode 调用点是好友窗。
+  两者是**同一 opcode 的不同 UI 宿主**，不能互相替换，也不能据此改写原版几何证据。
+  需要运行时抓包（`Mir3.exe` 发 0x418/0x419 时服务端如何应答）才能最终判定 EI 3.0 线语义。
+
+### C. 本轮附注：源码侧的旁证
+
+- `0x418`/`0x419` 的「1 参数 / 2 参数」形态与源码不符：源码 `CM_FRIEND_EDIT` 带
+  **字符串 body**（`Desc/Friend`），`CM_FRIEND_LIST` **无 body**。原版实测 `0x418` 带 1 个
+  dword、`0x419` 带 2 个 dword → 说明**原版 EI 3.0 与 Preview 源码在同 opcode 上的参数布局
+  已经分叉**，这正是「同谱系不同构建」的直接证据，记入差异文档。
+- `SendWantMiniMap` 的小地图索引来自**服务端** `PEnvir.MiniMap`，客户端不做地图→小地图号
+  映射；这解释了 `minimap-server-crossref.json` 为何必须走服务端交叉表。
+
+**落盘**：本 Finding + `docs/source-vs-reverse/` 差异文档（本轮新建目录）。
+未修改任何原版证据文件、未改代码、未碰数据库；`database_write=false` 维持。
