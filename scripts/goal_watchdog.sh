@@ -65,6 +65,7 @@ PAUSED_NUDGE_SECONDS=${PAUSED_NUDGE_SECONDS:-20}  # goal_status==paused 且转�
 # 新增 goal: 复制一行,填新会话 ID / jsonl 路径 / tmux 会话名 / 工作目录。
 # STATE_FILE 建议 ~/.omp/goal-watchdog.<GOAL_ID 前8位>.state
 GOALS=(
+  "01a0dc2c-6040-7000-97b0-1aa1d8051a68|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-09-26T05-24-50-880Z_01a0dc2c-6040-7000-97b0-1aa1d8051a68.jsonl|mapedit-unknown-entities-20260926|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.01a0dc2c.state"
   "01a0dbde-ced5-7000-9a6e-440f6a82d507|/home/tetsuya/.omp/agent/sessions/-development-Mir3-Research/2026-09-26T04-00-07-381Z_01a0dbde-ced5-7000-9a6e-440f6a82d507.jsonl|npc-monster-website-align-20260926b|/home/tetsuya/development/Mir3-Research|/home/tetsuya/.omp/goal-watchdog.01a0dbde.state"
   "01a0d940-8559-7000-8259-ee6989a4b214|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-09-25T15-47-59-449Z_01a0d940-8559-7000-8259-ee6989a4b214.jsonl|npc-f1100-omp-luna-20260925|/home/tetsuya/development/zircon|/home/tetsuya/.omp/goal-watchdog.01a0d940.state"
   "01a0d6c8-f86d-7000-b39a-ddc15acd6a47|/home/tetsuya/.omp/agent/sessions/-development-zircon/2026-09-25T04-18-10-157Z_01a0d6c8-f86d-7000-b39a-ddc15acd6a47.jsonl|legacy-character-status-panel-20260925-resume2|/home/tetsuya/development/zircon|/home/tetsuya/.omp/goal-watchdog.01a0d6c8.state"
