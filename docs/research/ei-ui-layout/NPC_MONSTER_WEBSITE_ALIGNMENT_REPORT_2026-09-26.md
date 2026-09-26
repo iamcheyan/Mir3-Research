@@ -16,7 +16,7 @@
 ## 2. 网站索引和图片证据
 
 - 网站怪物：154；分类数=21；技能：61。
-- 怪物状态：confirmed=67，investigate=11，pending=76，unmatched=0；未闭合行逐项 source exact=127、legacy exact=127。
+- 怪物状态：confirmed=67，investigate=11，pending=76，unmatched=0；全量身份证据计数 source exact=127、legacy exact=127；独立验证器对 87 条未闭合行重新核对，source exact=69、legacy exact=69，且缺失调查路径=0。
 - 技能状态：confirmed=59，investigate=2，pending=0；MIcon header present=59。
 - 每条网站记录保留页面路径、原始图片路径、sha256、字节数、尺寸、来源描述；重复图片组见 `website-index.json`。
 
