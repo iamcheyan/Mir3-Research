@@ -117,8 +117,8 @@ GET /api/respawns?map=02.map → HTTP 200, 3304 bytes
   - `Tools/maps/mapedit/templates.py`
   - `Tools/maps/mapedit/tests/test_unknown_entities.py`
   - 本报告目录及证据截图
-- 本次 Goal commit：`234ef4b5`（`地图编辑器支持未知实体人工安置`）。
-- commit 完整 SHA：`234ef4b5c8db7661868aa5f4cb7c8328de2acdc8`。
+- 本次 Goal implementation commit：`3aacc8a2`（`地图编辑器支持未知实体人工安置`）。
+- implementation commit 完整 SHA：`3aacc8a25f793e087b09a9fed06efe6162884ff6`。
 - `origin/ei-ui-audit-2026-09-24`：`5f467a4b51f3f65badb1ed9de757b61018eccc5a`。
 - commit 仅包含本 Goal allowlist；其它会话 WIP 未暂存、未重写。
 
