@@ -30,10 +30,10 @@
   "monster_stats": {
     "website_record_count": 154,
     "confirmed_count": 67,
-    "investigate_count": 11,
-    "pending_count": 76,
+    "investigate_count": 12,
+    "pending_count": 75,
     "unmatched_count": 0,
-    "candidate_conflict_count": 10,
+    "candidate_conflict_count": 9,
     "source_exact_count": 127,
     "legacy_exact_count": 127,
     "website_categories": {
@@ -170,7 +170,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 5,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 8,
@@ -338,7 +339,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 6,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 9,
@@ -506,7 +508,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 8,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 11,
@@ -674,7 +677,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 9,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 12,
@@ -842,7 +846,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 7,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 10,
@@ -1010,7 +1015,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 10,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 21,
@@ -1309,7 +1315,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 10,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 13,
@@ -1608,7 +1615,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 15,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 14,
@@ -1776,7 +1784,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 10,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 20,
@@ -1937,7 +1946,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 10,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 17,
@@ -2130,7 +2140,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 13,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 22,
@@ -2369,7 +2380,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 13,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 18,
@@ -2608,7 +2620,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 13,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 15,
@@ -2801,7 +2814,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 23,
@@ -3017,7 +3031,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 15,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 19,
@@ -3210,7 +3225,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 15,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 19,
@@ -3590,7 +3606,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 13,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 43,
@@ -3889,7 +3906,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 20,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 46,
@@ -4057,7 +4075,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 20,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 47,
@@ -4115,7 +4134,95 @@
         "format": "GIF"
       },
       "source_description": "一种生活在牧场的飞行昆虫，它用长在前额的坚硬的角攻击你。一般的攻击是不能杀死它们的，因为它们身上有层硬壳。不过，你能够从硬壳与硬壳间的裂缝或空隙很容易地杀掉它们。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 44,
+          "internal_name": "Corpse Devourer",
+          "image": "ShellNipper",
+          "race": null,
+          "shape": 0,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 0,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 0,
+                "width": 64,
+                "height": 90,
+                "offsetX": -6,
+                "offsetY": -48
+              },
+              {
+                "draw_frame": 1,
+                "index": 1,
+                "width": 60,
+                "height": 88,
+                "offsetX": -5,
+                "offsetY": -46
+              },
+              {
+                "draw_frame": 2,
+                "index": 2,
+                "width": 64,
+                "height": 86,
+                "offsetX": -7,
+                "offsetY": -44
+              },
+              {
+                "draw_frame": 3,
+                "index": 3,
+                "width": 68,
+                "height": 88,
+                "offsetX": -9,
+                "offsetY": -46
+              },
+              {
+                "draw_frame": 10,
+                "index": 10,
+                "width": 80,
+                "height": 78,
+                "offsetX": -14,
+                "offsetY": -43
+              },
+              {
+                "draw_frame": 11,
+                "index": 11,
+                "width": 80,
+                "height": 76,
+                "offsetX": -14,
+                "offsetY": -40
+              },
+              {
+                "draw_frame": 12,
+                "index": 12,
+                "width": 80,
+                "height": 76,
+                "offsetX": -14,
+                "offsetY": -40
+              },
+              {
+                "draw_frame": 13,
+                "index": 13,
+                "width": 84,
+                "height": 80,
+                "offsetX": -14,
+                "offsetY": -44
+              }
+            ],
+            "body_frame_formula": "draw_frame + 0*1000"
+          },
+          "level": 16,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
@@ -4221,7 +4328,95 @@
         "format": "GIF"
       },
       "source_description": "多角虫变异后变得更大，全身长满锋利的角。发现敌人时，它会竖起角来用头猛撞上去。当心！它厚厚的坚固的外壳相当难以击破，一般攻击反而会损坏武器。 生命：200 经验值：400 所在地图: 盟重",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 44,
+          "internal_name": "Corpse Devourer",
+          "image": "ShellNipper",
+          "race": null,
+          "shape": 0,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-7",
+            "library_number": 7,
+            "shape": 0,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-7.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 0,
+                "width": 64,
+                "height": 90,
+                "offsetX": -6,
+                "offsetY": -48
+              },
+              {
+                "draw_frame": 1,
+                "index": 1,
+                "width": 60,
+                "height": 88,
+                "offsetX": -5,
+                "offsetY": -46
+              },
+              {
+                "draw_frame": 2,
+                "index": 2,
+                "width": 64,
+                "height": 86,
+                "offsetX": -7,
+                "offsetY": -44
+              },
+              {
+                "draw_frame": 3,
+                "index": 3,
+                "width": 68,
+                "height": 88,
+                "offsetX": -9,
+                "offsetY": -46
+              },
+              {
+                "draw_frame": 10,
+                "index": 10,
+                "width": 80,
+                "height": 78,
+                "offsetX": -14,
+                "offsetY": -43
+              },
+              {
+                "draw_frame": 11,
+                "index": 11,
+                "width": 80,
+                "height": 76,
+                "offsetX": -14,
+                "offsetY": -40
+              },
+              {
+                "draw_frame": 12,
+                "index": 12,
+                "width": 80,
+                "height": 76,
+                "offsetX": -14,
+                "offsetY": -40
+              },
+              {
+                "draw_frame": 13,
+                "index": 13,
+                "width": 84,
+                "height": 80,
+                "offsetX": -14,
+                "offsetY": -44
+              }
+            ],
+            "body_frame_formula": "draw_frame + 0*1000"
+          },
+          "level": 16,
+          "is_boss": false,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
@@ -4387,7 +4582,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 24,
@@ -4603,7 +4799,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 25,
@@ -4796,7 +4993,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 20,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 31,
@@ -4989,7 +5187,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 27,
@@ -5228,7 +5427,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 28,
@@ -5314,7 +5514,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -5553,7 +5754,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 29,
@@ -5769,7 +5971,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 37,
@@ -5855,7 +6058,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -6849,7 +7053,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 60,
@@ -7040,7 +7245,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 25,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 57,
@@ -7183,7 +7389,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 20,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 32,
@@ -7351,7 +7558,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 37,
@@ -7494,7 +7702,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 20,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 33,
@@ -7605,7 +7814,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 59,
@@ -7691,7 +7901,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 105,
@@ -7777,7 +7988,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 250,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -8922,7 +9134,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 89,
@@ -9136,7 +9349,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 72,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 165,
@@ -9352,7 +9566,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 72,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 166,
@@ -9512,7 +9727,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 50,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 399,
@@ -10989,7 +11205,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 40,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 70,
@@ -11075,7 +11292,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 40,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -11268,7 +11486,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 40,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 70,
@@ -11461,7 +11680,8 @@
             "body_frame_formula": "draw_frame + 8*1000"
           },
           "level": 40,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 70,
@@ -11597,7 +11817,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 75,
@@ -13924,7 +14145,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 30,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 125,
@@ -14117,7 +14339,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 30,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 127,
@@ -14225,12 +14448,100 @@
         "format": "GIF"
       },
       "source_description": "它们是红色野猪的领头者，不知道它们已活了多久。由于更长的寿命，他们的皮肤变白，而且比红色野猪更大的体形和更强的破坏力。此外，它们的行动速度可以和黑色野猪相比。",
-      "zircon_candidates": [],
+      "zircon_candidates": [
+        {
+          "index": 128,
+          "internal_name": "Tusk Lord",
+          "image": "TuskLord",
+          "race": null,
+          "shape": 8,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-8",
+            "library_number": 8,
+            "shape": 8,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-8.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 8000,
+                "width": 92,
+                "height": 80,
+                "offsetX": -8,
+                "offsetY": -54
+              },
+              {
+                "draw_frame": 1,
+                "index": 8001,
+                "width": 88,
+                "height": 76,
+                "offsetX": -12,
+                "offsetY": -50
+              },
+              {
+                "draw_frame": 2,
+                "index": 8002,
+                "width": 100,
+                "height": 74,
+                "offsetX": -16,
+                "offsetY": -47
+              },
+              {
+                "draw_frame": 3,
+                "index": 8003,
+                "width": 100,
+                "height": 76,
+                "offsetX": -12,
+                "offsetY": -51
+              },
+              {
+                "draw_frame": 10,
+                "index": 8010,
+                "width": 92,
+                "height": 92,
+                "offsetX": -9,
+                "offsetY": -53
+              },
+              {
+                "draw_frame": 11,
+                "index": 8011,
+                "width": 84,
+                "height": 88,
+                "offsetX": -12,
+                "offsetY": -54
+              },
+              {
+                "draw_frame": 12,
+                "index": 8012,
+                "width": 88,
+                "height": 94,
+                "offsetX": -15,
+                "offsetY": -52
+              },
+              {
+                "draw_frame": 13,
+                "index": 8013,
+                "width": 96,
+                "height": 92,
+                "offsetX": -12,
+                "offsetY": -53
+              }
+            ],
+            "body_frame_formula": "draw_frame + 8*1000"
+          },
+          "level": 250,
+          "is_boss": true,
+          "candidate_source": "resource-alias"
+        }
+      ],
       "zircon_index": null,
       "zircon_internal_name": null,
       "zircon_image": null,
-      "candidate_count": 0,
-      "resource_alias": null,
+      "candidate_count": 1,
+      "resource_alias": "TuskLord",
       "source_identity_evidence": {
         "source_exact": [
           {
@@ -14273,7 +14584,7 @@
         "closure": "closed",
         "frame_offset_note": "Legacy Appr identifies the source WIL family; it is not treated as a Zircon Zl shape without a closed MonsterImage identity."
       },
-      "match_method": "source-and-resource-investigation-no-closed-candidate",
+      "match_method": "identity/resource-candidate-conflict",
       "match_evidence": [
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
@@ -14283,9 +14594,9 @@
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit"
       ],
-      "confidence": "pending",
-      "status": "pending",
-      "skip_reason": "no stable DB candidate after name/identity/resource/region checks; retain current",
+      "confidence": "medium",
+      "status": "investigate",
+      "skip_reason": "candidate is a current MonsterInfo row; resource and attributes retained for review",
       "business_index_untouched": true,
       "apply_status": "retain-current"
     },
@@ -14391,13 +14702,101 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 18,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
+        },
+        {
+          "index": 24,
+          "internal_name": "Cave Bat",
+          "image": "CaveBat",
+          "race": null,
+          "shape": 9,
+          "resource": {
+            "status": "ok",
+            "library": "Mon-3",
+            "library_number": 3,
+            "shape": 9,
+            "source": "/home/tetsuya/development/zircon/GodotClient/Formats/MonsterLookup.cs",
+            "path": "/home/tetsuya/development/zircon/Debug/Client/Data/Mon-3.Zl",
+            "library_count": 10000,
+            "nonblank_probe_frames_0_99": 44,
+            "sample_frames": [
+              {
+                "draw_frame": 0,
+                "index": 9000,
+                "width": 60,
+                "height": 26,
+                "offsetX": -2,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 1,
+                "index": 9001,
+                "width": 28,
+                "height": 24,
+                "offsetX": 13,
+                "offsetY": -58
+              },
+              {
+                "draw_frame": 2,
+                "index": 9002,
+                "width": 64,
+                "height": 24,
+                "offsetX": -8,
+                "offsetY": -56
+              },
+              {
+                "draw_frame": 3,
+                "index": 9003,
+                "width": 32,
+                "height": 36,
+                "offsetX": 7,
+                "offsetY": -57
+              },
+              {
+                "draw_frame": 10,
+                "index": 9010,
+                "width": 48,
+                "height": 40,
+                "offsetX": 11,
+                "offsetY": -58
+              },
+              {
+                "draw_frame": 11,
+                "index": 9011,
+                "width": 40,
+                "height": 28,
+                "offsetX": -1,
+                "offsetY": -59
+              },
+              {
+                "draw_frame": 12,
+                "index": 9012,
+                "width": 52,
+                "height": 32,
+                "offsetX": -3,
+                "offsetY": -60
+              },
+              {
+                "draw_frame": 13,
+                "index": 9013,
+                "width": 32,
+                "height": 40,
+                "offsetX": 11,
+                "offsetY": -54
+              }
+            ],
+            "body_frame_formula": "draw_frame + 9*1000"
+          },
+          "level": 18,
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 24,
       "zircon_internal_name": "Cave Bat",
       "zircon_image": "CaveBat",
-      "candidate_count": 2,
+      "candidate_count": 1,
       "resource_alias": "CaveBat",
       "source_identity_evidence": {
         "source_exact": [],
@@ -14534,7 +14933,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 30,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 124,
@@ -14702,7 +15102,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 30,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 126,
@@ -14976,7 +15377,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 25,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 61,
@@ -15144,7 +15546,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 25,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 62,
@@ -15360,7 +15763,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 25,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 63,
@@ -15576,7 +15980,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 64,
@@ -15792,7 +16197,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 64,
@@ -16031,7 +16437,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 25,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 63,
@@ -16270,7 +16677,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 65,
@@ -16438,7 +16846,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 65,
@@ -16631,7 +17040,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 79,
@@ -16824,7 +17234,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 76,
@@ -17017,7 +17428,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 77,
@@ -17210,7 +17622,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 80,
@@ -17296,7 +17709,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -17489,7 +17903,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 80,
@@ -17575,7 +17990,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -17743,7 +18159,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 81,
@@ -17936,7 +18353,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 119,
@@ -18022,7 +18440,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -18215,7 +18634,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 119,
@@ -18301,7 +18721,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -18494,7 +18915,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 116,
@@ -18687,7 +19109,8 @@
             "body_frame_formula": "draw_frame + 3*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         },
         {
           "index": 119,
@@ -18773,7 +19196,8 @@
             "body_frame_formula": "draw_frame + 2*1000"
           },
           "level": 35,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": null,
@@ -18966,7 +19390,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 120,
@@ -19109,7 +19534,8 @@
             "body_frame_formula": "draw_frame + 1*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 121,
@@ -19277,7 +19703,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 80,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 186,
@@ -20233,7 +20660,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 45,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 113,
@@ -20401,7 +20829,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 421,
@@ -20569,7 +20998,8 @@
             "body_frame_formula": "draw_frame + 4*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 412,
@@ -20793,7 +21223,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 409,
@@ -21042,7 +21473,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 416,
@@ -21178,7 +21610,8 @@
             "body_frame_formula": "draw_frame + 7*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 425,
@@ -21346,7 +21779,8 @@
             "body_frame_formula": "draw_frame + 6*1000"
           },
           "level": 100,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 418,
@@ -21620,7 +22054,8 @@
             "body_frame_formula": "draw_frame + 9*1000"
           },
           "level": 250,
-          "is_boss": true
+          "is_boss": true,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 115,
@@ -21788,7 +22223,8 @@
             "body_frame_formula": "draw_frame + 5*1000"
           },
           "level": 55,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 448,
@@ -21981,7 +22417,8 @@
             "body_frame_formula": "draw_frame + 0*1000"
           },
           "level": 55,
-          "is_boss": false
+          "is_boss": false,
+          "candidate_source": "explicit-index"
         }
       ],
       "zircon_index": 484,
