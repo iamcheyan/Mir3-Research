@@ -33,3 +33,6 @@ ServerLibrary
 # 手工备份文件不进 git
 *.bak
 *.bak-*
+
+# Fresh 编辑器本地窗口状态（本地产物，不进 git）
+/.fresh/
