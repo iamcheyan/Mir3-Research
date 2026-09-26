@@ -1848,3 +1848,183 @@ end;
 | `TNakedAbility` 结构字段 | 未读 |
 | `GetFameName` 的称号分级表 | 未读 |
 | `RunNextTick`/`SearchRate`/`ViewRange` 是否被运行时覆盖 | 未读 |
+
+---
+
+## 18. **NPC 脚本语言全表**（`LocalDB.pas` 解析器 + `Grobal2.pas` 常量）（Round 833）
+
+> 解析器：`LocalDB.pas` 的 `DecodeConditionStr`（`:1742`）/ `DecodeActionStr`（`:1859`）；
+> 常量：`Grobal2.pas:2445-2599`。
+> 机器可读：[`npc-script-commands.tsv`](npc-script-commands.tsv)（128 行）。
+> 提取器：`Tools/source-read/extract_npc_script.py`。
+
+### 18.1 **128 条命令**（53 条件 + 75 动作）
+
+| | 数量 | 值域 | 重复值 | 空缺值 |
+|---|---:|---|---|---|
+| **`QI_*`（条件）** | **53** | **1..154** | **无** | **101 个** |
+| **`QA_*`（动作）** | **75** | **1..133** | **无** | **59 个** |
+
+**⚠️ 关键观察**：
+1. **无重复值** —— 与协议 opcode（§`verification.md`，474 常量有 31 个跨前缀重复）
+   **形成鲜明对比** → **脚本命令空间是干净的**。
+2. **大量空缺值** —— `QI_` 在 1..154 里只用了 53 个（**空缺 101 个**），
+   `QA_` 在 1..133 里只用了 75 个（**空缺 59 个**）。
+   → **ID 空间预留了 2-3 倍，实际命令数远少于设计容量**，
+   说明有**被删除或从未发布的命令**。
+
+### 18.2 条件命令（53 个）
+
+**基础判定**：`CHECK`（含 `[101]` 形式）/ `RANDOM` / `RANDOMEX` /
+`GENDER` / `DAYTIME` / `DAYOFWEEK` / `HOUR` / `MIN`
+
+**角色属性**：`CHECKLEVEL` / `CHECKJOB` / `CHECKGOLD` / `CHECKPKPOINT` /
+`CHECKLUCKYPOINT` / `CHECKWEAPONBADLUCK` / `CHECKPREMIUMGRADE` /
+`CHECKFAMEGRADE` / `CHECKFAMEPOINT` / `CHECKFAMEBASEPOINT` / `CHECKDONATION`
+
+**物品**：`CHECKITEM` / `CHECKITEMW` / `CHECKITEMWVALUE` / `ISTAKEITEM` /
+`CHECKDURA` / `CHECKDURAEVA` / `CHECKGRADEITEM` / `CHECKBAGREMAIN` /
+`CHECKBAGGAGE`
+
+**地图/怪物**：`CHECKMONMAP` / **`CHECKMONMAPNORECALL`** / `CHECKMONAREA` /
+`CHECKCHILDMOB` / `CHECKHUM` / `CHECKUNIT`
+
+**名单**：`CHECKNAMELIST` / **`CHECK_DELETE_NAMELIST`** / **`CHECK_DELETE_IDLIST`**
+
+**组队/行会**：`ISGROUPOWNER` / **`CHECKGROUPJOBBALANCE`**（队伍职业平衡）/
+`ISGUILDMASTER`
+
+**任务**：`CHECKDAILYQUEST` / `IFGETDAILYQUEST`
+
+**关系（恋人）**：`CHECKLOVERFLAG` / `CHECKLOVERRANGE` / `CHECKLOVERDAY` /
+**`CHECKRANGEONELOVER`**
+
+**比较**：`EQUAL` / `EQUALVAR` / `LARGE` / `SMALL`
+
+**其他**：`CHECKOPEN` / `ISEXPUSER` / `EVENTCHECK`
+
+**✅ 两种书写形式（非笔误）**：`CHECKLOVERFLAG` 有**两条** `if` 分支 ——
+`:1760` 是**带参数形式**（解析 `[xxx]`，非法则 `ident := 0`），
+`:1822` 是**裸形式**（`then ident := QI_CHECKLOVERFLAG;`）。
+→ **同一个关键字支持「带参数」与「不带参数」两种写法**，后者是简写。
+> 而 §14 已确认 `{NAME}` 类宏 42/43 未实现 —— **脚本命令与文本宏是两套东西**：
+> **命令有 128 个真实现，宏几乎全无**。
+
+### 18.3 动作命令（75 个）
+
+**变量**：`SET` / `RESET` / `MOV` / `INC` / `DEC` / `SUM` / **`MOVR`**（随机移动？）
+
+**物品**：`TAKE` / `GIVE` / `TAKEW` / `TAKECHECKITEM` / `TAKEGRADEITEM` /
+**`UNIFYITEM`**（统一物品）
+
+**传送**：`MAPMOVE` / `MAP` / `MOVEALLMAP` / `MOVEALLMAPGROUP` /
+`EXCHANGEMAP` / `RECALLMAP` / `RECALLMAPGROUP` / `GOTO`
+
+**定时召回**：`TIMERECALL` / **`TIMERECALLGROUP`** / `BREAKTIMERECALL`
+
+**怪物**：`MONGEN` / **`MONGENAROUND`** / `MONCLEAR` / **`RECALLMOB`**
+
+**批量**：`ADDBATCH` / `BATCHDELAY` / `BATCHMOVE` / `ADDNAMELIST` / `DELNAMELIST`
+
+**赌博/随机**：`PLAYDICE`（掷骰）/ **`PLAYROCK`**（猜拳？）/ `RANDOMSETDAILYQUEST`
+
+**任务**：`SETDAILYQUEST` / `GOQUEST` / `ENDQUEST`
+
+**PK/武器**：`INCPKPOINT` / `DECPKPOINT` / `WEAPONUPGRADE` / `DECWEAPONBADLUCK` /
+`DECDONATION` / `USEFAMEPOINT`
+
+**恋人**：`SETLOVERFLAG`（**出现两次**）/ `MOVETOLOVER` / `BREAKLOVER` / `GIVETOLOVER`
+
+**纪念**：`INCMEMORIALCOUNT` / `DECMEMORIALCOUNT` / `SAVEMEMORIALCOUNT`
+
+**增益**：**`INSTANTPOWERUP`** / **`INSTANTEXPDOUBLE`** / `HEALING` / `GIVEEXP`
+
+**地图/单位**：`SETALLINMAP` / `SETUNIT` / `RESETUNIT` / `SETOPEN`
+
+**界面/音效**：`CLOSE` / `CLOSENOINVEN` / `SOUND` / `SOUNDALL` / `SHOWEFFECT`
+
+**其他**：`KICK` / `CHANGEGENDER` / `GUILDSECESSION` / `PARAM1`~`PARAM4`
+
+**✅ 同理 `SETLOVERFLAG`**：`:1878` 带参数形式 + `:1976` 裸形式
+（`then ident := QA_SETLOVERFLAG;`）—— 同样是**双写法**。
+
+**⚠️ 常量已定义、解析器未实现**：`Grobal2.pas` 有
+**`QA_MISSION = 132`**（注释「맵에 설치」= 地图上设置）/ **`QA_MOBPLACE = 133`**
+（注释「맵에 배치」= 地图上放置），
+但**解析器里搜不到 `MISSION`/`MOBPLACE` 关键字**（已核实为空）
+→ **两条命令的常量已分配，脚本解析器不支持**。
+
+### 18.4 脚本结构（`ObjNpc.pas` 四级嵌套）
+
+```
+TQuestRecord                     ← 一个 NPC 的对话段
+├── BoRequire: Boolean           ← 요구조건이 있는지 (无则走默认对话)
+├── LocalNumber: integer
+├── QuestRequireArr[0..MAXREQUIRE-1]  ← MAXREQUIRE = 10 (ObjNpc.pas:20)
+└── SayingList: TList            ← list of PTSayingRecord
+    └── TSayingRecord
+        ├── Title: string
+        └── Procs: TList         ← list of PTSayingProcedure
+            └── TSayingProcedure
+                ├── ConditionList: TList   ← PTQuestConditionInfo
+                ├── ActionList: TList      ← PTQuestActionInfo（#ACT）
+                ├── Saying: string
+                ├── ElseActionList: TList  ← #ELSEACT
+                ├── ElseSaying: string     ← #ELSESAY
+                └── AvailableCommands: TStringList
+```
+
+**`TQuestConditionInfo`**（`:58-64`）：
+`IfIdent: integer` / `IfParam: string` / `IfParamVal: integer` /
+`IfTag: string` / `IfTagVal: integer`
+→ **每个条件最多 2 个参数（各带字符串+整数双表示）**。
+
+**`TQuestActionInfo`**（`:47-55`）：
+`ActIdent` / `ActParam` / `ActParamVal` / `ActTag` / `ActTagVal` /
+**`ActExtra`** / **`ActExtraVal`**
+→ **动作比条件多一组参数（3 组 vs 2 组）**。
+
+**四段式脚本**：`#IF`（条件）→ `#SAY`（说）→ `#ACT`（做）→
+**`#ELSEACT`/`#ELSESAY`**（否则分支）—— **条件不满足时走 else 分支**，
+这是**完整的 if-else 结构**。
+
+**`AvailableCommands`**（`:73`）：由 `AddAvailableCommands`（`:1713-1727`）
+用 `ArrestStringEx(str, '@', '>', capture)` **从说辞里扫出所有 `@xxx>` 命令**
+→ **NPC 对话里的 `@链接` 是自动提取的**，用于生成菜单。
+
+**⚠️ 内存管理注释**（`ObjNpc.pas:351`）：
+「PTQuestRecord 는 반드시 Free하지 않음 (원에 해제함)」
+（**PTQuestRecord 故意不 Free，统一释放**）—— 配合 `ClearNpcInfos`（`:2604`）
+四级嵌套全 `Dispose`。
+
+**脚本文件命名**（`ObjNpc.pas:2639-2649`）：
+```pascal
+if BoUseMapFileName then
+   FrmDB.LoadNpcDef (self, DefineDirectory, UserName + '-' + MapName)
+else
+   FrmDB.LoadNpcDef (self, DefineDirectory, UserName);
+```
+**`BoUseMapFileName`（`:99` 注释「파일이름에 '-D001'처럼 맵이름이 따라 붙는지」）**
+→ **同一个 NPC 可为每张地图配不同脚本**（`NPC名-地图名`）。
+
+### 18.5 与 EI 证据 / Zircon 的对照
+
+| 项 | 原版反编译 | 源码 | 说明 |
+|---|---|---|---|
+| 脚本命令数 | 未闭合 | **128**（53+75） | **首个完整清单** |
+| 命令 ID 空间 | — | QI 1..154 / QA 1..133 | **无重复，大量空缺** |
+| 脚本结构 | 未闭合 | **四级嵌套 + 四段式** | if-else 完整 |
+| 文本宏 | `{NAME}` 42/43 未实现 | 命令 128 个真实现 | **两套机制，勿混** |
+| `@链接` 菜单 | 未闭合 | `AddAvailableCommands` 自动扫 | — |
+
+### 18.6 未验证项
+
+| 项 | 原因 |
+|---|---|
+| `QI_*`/`QA_*` 各值的**具体语义** | 只提取了值与注释（部分注释为韩文） |
+| `QA_MISSION`/`QA_MOBPLACE` 是否真的无解析 | 未逐条核对解析器（已见常量存在） |
+| `QA_MISSION`/`QA_MOBPLACE` 的实现位置 | 解析器无关键字；疑在别处或废弃 |
+| `MOVR` / `PLAYROCK` 的语义 | 未读实现 |
+| `MAXREQUIRE = 10` 之外的任务上限 | 未读 |
+| `CheckQuestCondition`（`:757`）的求值实现 | 未读 |
+| 脚本文件的**实际目录与文件名格式** | 未核（`NPCDEFDIR` 常量未追） |

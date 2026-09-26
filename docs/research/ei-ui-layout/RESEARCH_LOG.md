@@ -11718,3 +11718,84 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 
 **落盘**：`items-systems.md` §16（约 140 行）。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 833 (全量精读续) — 2026-09-26：**NPC 脚本语言全表**
+
+> 解析器 `LocalDB.pas` 的 `DecodeConditionStr`(`:1742`)/`DecodeActionStr`(`:1859`)；
+> 常量 `Grobal2.pas:2445-2599`。产物 `server.md` §18、
+> `npc-script-commands.tsv`（128 行）、`Tools/source-read/extract_npc_script.py`。
+
+**〔128 条命令（53 条件 + 75 动作）—— 首个完整清单〕**
+| | 数量 | 值域 | 重复值 | 空缺值 |
+|---|---:|---|---|---|
+| **`QI_*`（条件）** | **53** | **1..154** | **无** | **101 个** |
+| **`QA_*`（动作）** | **75** | **1..133** | **无** | **59 个** |
+
+**⚠️ 两个关键观察**：
+① **无重复值** —— 与协议 opcode（474 常量有 31 个跨前缀重复）**形成鲜明对比**
+→ **脚本命令空间是干净的**。
+② **大量空缺值**（QI 空缺 101/154、QA 空缺 59/133）
+→ **ID 空间预留 2-3 倍，实际命令远少于设计容量**，说明有**被删除或从未发布的命令**。
+
+**〔条件命令要点〕** 基础判定（`CHECK`/`RANDOM`/`RANDOMEX`/`GENDER`/`DAYTIME`/
+`DAYOFWEEK`/`HOUR`/`MIN`）、角色属性（`CHECKLEVEL`/`CHECKJOB`/`CHECKGOLD`/
+`CHECKPKPOINT`/`CHECKLUCKYPOINT`/`CHECKWEAPONBADLUCK`/`CHECKPREMIUMGRADE`/
+`CHECKFAME*`/`CHECKDONATION`）、物品（`CHECKITEM`/`CHECKITEMW`/`CHECKITEMWVALUE`/
+`ISTAKEITEM`/`CHECKDURA`/`CHECKDURAEVA`/`CHECKGRADEITEM`/`CHECKBAGREMAIN`）、
+地图/怪物（`CHECKMONMAP`/**`CHECKMONMAPNORECALL`**/`CHECKMONAREA`/`CHECKCHILDMOB`/
+`CHECKHUM`/`CHECKUNIT`）、名单（`CHECKNAMELIST`/**`CHECK_DELETE_NAMELIST`**/
+**`CHECK_DELETE_IDLIST`**）、组队行会（`ISGROUPOWNER`/**`CHECKGROUPJOBBALANCE`**/
+`ISGUILDMaster`）、任务（`CHECKDAILYQUEST`/`IFGETDAILYQUEST`）、
+恋人（`CHECKLOVERFLAG`/`CHECKLOVERRANGE`/`CHECKLOVERDAY`/**`CHECKRANGEONELOVER`**）、
+比较（`EQUAL`/`EQUALVAR`/`LARGE`/`SMALL`）、`CHECKOPEN`/`ISEXPUSER`/`EVENTCHECK`。
+
+**〔动作命令要点〕** 变量（`SET`/`RESET`/`MOV`/`INC`/`DEC`/`SUM`/**`MOVR`**）、
+物品（`TAKE`/`GIVE`/`TAKEW`/`TAKECHECKITEM`/`TAKEGRADEITEM`/**`UNIFYITEM`**）、
+传送（`MAPMOVE`/`MAP`/`MOVEALLMAP(GROUP)`/`EXCHANGEMAP`/`RECALLMAP(GROUP)`/`GOTO`）、
+定时召回（`TIMERECALL`/**`TIMERECALLGROUP`**/`BREAKTIMERECALL`）、
+怪物（`MONGEN`/**`MONGENAROUND`**/`MONCLEAR`/**`RECALLMOB`**）、
+批量（`ADDBATCH`/`BATCHDELAY`/`BATCHMOVE`/`ADDNAMELIST`/`DELNAMELIST`）、
+赌博（`PLAYDICE` 掷骰/**`PLAYROCK`**/`RANDOMSETDAILYQUEST`）、
+任务（`SETDAILYQUEST`/`GOQUEST`/`ENDQUEST`）、PK/武器（`INCPKPOINT`/`DECPKPOINT`/
+`WEAPONUPGRADE`/`DECWEAPONBADLUCK`/`DECDONATION`/`USEFAMEPOINT`）、
+恋人（`SETLOVERFLAG`/`MOVETOLOVER`/`BREAKLOVER`/`GIVETOLOVER`）、
+纪念（`INCMEMORIALCOUNT`/`DECMEMORIALCOUNT`/`SAVEMEMORIALCOUNT`）、
+增益（**`INSTANTPOWERUP`**/**`INSTANTEXPDOUBLE`**/`HEALING`/`GIVEEXP`）、
+地图单位（`SETALLINMAP`/`SETUNIT`/`RESETUNIT`/`SETOPEN`）、
+界面音效（`CLOSE`/`CLOSENOINVEN`/`SOUND`/`SOUNDALL`/`SHOWEFFECT`）、
+其他（`KICK`/`CHANGEGENDER`/`GUILDSECESSION`/`PARAM1`~`PARAM4`）。
+
+**✅ 纠正「重复关键字是笔误」的初判**：`CHECKLOVERFLAG`（`:1760`+`:1822`）与
+`SETLOVERFLAG`（`:1878`+`:1976`）各有**两条 if 分支**，分别是
+**带参数形式**（解析 `[xxx]`）与**裸形式**（`then ident := QI_xxx;`）
+→ **同一关键字支持两种写法，裸形式是简写，非笔误**。
+
+**⚠️ 常量已定义、解析器未实现**：`Grobal2.pas` 有 **`QA_MISSION = 132`** /
+**`QA_MOBPLACE = 133`**，但解析器里搜不到 `MISSION`/`MOBPLACE` 关键字（已核实为空）。
+
+**〔脚本结构（`ObjNpc.pas` 四级嵌套）〕**
+`TQuestRecord`（`BoRequire`/`LocalNumber`/`QuestRequireArr[0..MAXREQUIRE-1]`/
+`SayingList`）→ `TSayingRecord`（`Title`/`Procs`）→ `TSayingProcedure`
+（`ConditionList`/`ActionList`/`Saying`/**`ElseActionList`**/**`ElseSaying`**/
+`AvailableCommands`）。
+**`TQuestConditionInfo`**：`IfIdent`/`IfParam`/`IfParamVal`/`IfTag`/`IfTagVal`
+（**2 组参数**）；**`TQuestActionInfo`** 多一组 `ActExtra`/`ActExtraVal`
+（**3 组参数**）。
+**四段式脚本**：`#IF` → `#SAY` → `#ACT` → **`#ELSEACT`/`#ELSESAY`**
+→ **完整 if-else 结构**。
+**`AvailableCommands`** 由 `AddAvailableCommands`(`:1713-1727`) 用
+`ArrestStringEx(str,'@','>',capture)` **从说辞里自动扫出所有 `@xxx>` 命令**
+→ **NPC 对话里的 `@链接` 是自动提取生成菜单的**。
+**`MAXREQUIRE = 10`**（`ObjNpc.pas:20`）。
+**⚠️ 内存管理注释**（`:351`）：「PTQuestRecord 는 반드시 Free하지 않음
+(원에 해제함)」（**故意不 Free，统一释放**），配合 `ClearNpcInfos`(`:2604`)
+四级嵌套全 `Dispose`。
+**脚本文件命名**（`:2639-2649`）：`BoUseMapFileName` 为真时用
+**`NPC名-地图名`** → **同一 NPC 可为每张地图配不同脚本**。
+
+**〔与 §14 宏系统的关系〕****脚本命令与文本宏是两套东西**：
+**命令 128 个有真实现，而 `{NAME}` 类宏 42/43 未实现**。
+
+**落盘**：`server.md` §18（约 165 行）、`npc-script-commands.tsv`（128 行）、
+`Tools/source-read/extract_npc_script.py`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。

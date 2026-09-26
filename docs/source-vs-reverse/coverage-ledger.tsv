@@ -108,7 +108,7 @@ A/C-server	Source/GameServer/Guild.pas	3600	121469	partial	Round 827: 常量全�
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
-A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809/811/812/813: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest/全部19个配置解析器
+A/C-server	Source/GameServer/LocalDB.pas	2649	98927	partial	Round 833: DecodeConditionStr/DecodeActionStr 128条脚本命令全提取(53条件+75动作，无重复值/大量空缺)；LoadMarketDef其余部分待读
 A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
 A/C-server	Source/GameServer/Magic.pas	1756	72544	covered	Round 814/822: 4块26条分派/三伤害公式/符咒/击退/AoE骨架/亡灵特攻/距离衰减；其余39个Mag*待读
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
@@ -121,7 +121,7 @@ A/C-server	Source/GameServer/ObjGuard.pas	101	2367	partial	Round 815: TSuperGuar
 A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次+TMonster AI核心(Think/AttackTarget/Run)+TATMonster；71类构造与ObjMon2/3待读
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
-A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏；TMerchant实现待读
+A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	partial	Round 833: 任务数据结构四级嵌套(TQuestRecord/SayingRecord/SayingProcedure)+四段式脚本(#IF/#SAY/#ACT/#ELSE)+AvailableCommands自动扫@链接+脚本文件NPC名-地图名；解析实现待读
 A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 829: 恋人系统 MAX_LOVERCOUNT=1+TRelationShipInfo(BYTE字段)；其余类待读
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	

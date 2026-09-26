@@ -1,0 +1,129 @@
+kind	ident	value	comment	src_line
+condition	QI_CHECK	1	101이상	2445
+condition	QI_RANDOM	2		2446
+condition	QI_GENDER	3	MAN or WOMAN	2447
+condition	QI_DAYTIME	4	SUNRAISE DAY SUNSET NIGHT	2448
+condition	QI_CHECKOPENUNIT	5	유닛체크	2449
+condition	QI_CHECKUNIT	6	유닛체크	2450
+condition	QI_CHECKLEVEL	7		2451
+condition	QI_CHECKJOB	8	Warrior, Wizard, Taoist	2452
+condition	QI_CHECKITEM	20		2453
+condition	QI_CHECKITEMW	21		2454
+condition	QI_CHECKGOLD	22		2455
+condition	QI_ISTAKEITEM	23	방금전에 받은 아이템이 무엇인지 검사	2456
+condition	QI_CHECKDURA	24	아이템의 아이템의 평균 내구(dura / 1000) 검사	2457
+condition	QI_CHECKDURAEVA	25		2459
+condition	QI_DAYOFWEEK	26	요일 검사	2460
+condition	QI_TIMEHOUR	27	시간단위 검사(0..23)	2461
+condition	QI_TIMEMIN	28	분 검사	2462
+condition	QI_CHECKPKPOINT	29		2463
+condition	QI_CHECKLUCKYPOINT	30		2464
+condition	QI_CHECKMON_MAP	31	현재 맵에 몹이 있는지	2465
+condition	QI_CHECKMON_AREA	32	특정 지역에 몹이 있는지	2466
+condition	QI_CHECKHUM	33		2467
+condition	QI_CHECKBAGGAGE	34	사용자에게 줄 수 있는지?	2468
+condition	QI_CHECKNAMELIST	35		2470
+condition	QI_CHECKANDDELETENAMELIST	36		2471
+condition	QI_CHECKANDDELETEIDLIST	37		2472
+condition	QI_IFGETDAILYQUEST	40	오늘 퀘스트를 받았는지 검사, 유효기간 검사 포함	2474
+condition	QI_CHECKDAILYQUEST	41	특정 번호의 퀘스트를 수행중인지 검사, 유효기간 검사 포함	2475
+condition	QI_RANDOMEX	42	파라메타  5 100   5%임...	2476
+condition	QI_CHECKMON_NORECALLMOB_MAP	43	현재 맵에 있는 몹 수(소환몹 제외)	2478
+condition	QI_CHECKBAGREMAIN	44	유저 가방의 공간이 N개 남아 있는지	2479
+condition	QI_CHECKGRADEITEM	50		2481
+condition	QI_EQUALVAR	51	EQUALV D1 P1  //D1이 P1과 같은지	2483
+condition	QI_EQUAL	135	EQUAL P1 10   //P1이 10인지	2485
+condition	QI_LARGE	136	LARGE P1 10   //P1이 10보다 큰지	2486
+condition	QI_SMALL	137	SMALL P1 10   //P1이 10보다 작은지 검사	2487
+condition	QI_ISGROUPOWNER	138	그룹 소유주인지 아닌지 검사	2489
+condition	QI_ISEXPUSER	139	체험판 사용자인지 검사	2490
+condition	QI_CHECKLOVERFLAG	140	연인의 플래그가 TRUE인지 검사(연인정보를 찾을 수 없으면 FALSE 리턴)	2491
+condition	QI_CHECKLOVERRANGE	141	연인이 일정 범위 안에 있는지	2492
+condition	QI_CHECKLOVERDAY	142	연인과의 교제일이 일정일 이상 되는지	2493
+condition	QI_CHECKFAMEGRADE	143	명성 등급이 N 이상 되는지 체크	2495
+condition	QI_CHECKFAMEPOINT	144	명성 FameCur 포인트가 N 이상 되는지 체크	2496
+condition	QI_CHECKFAMEBASEPOINT	145	명성 FameBase 포인트가 N 이상 되는지 체크	2497
+condition	QI_CHECKDONATION	146	현재 기부금 잔액 체크	2499
+condition	QI_ISGUILDMASTER	147	Guildmaster인지 체크	2500
+condition	QI_CHECKWEAPONBADLUCK	148	무기의 저주 체크	2501
+condition	QI_CHECKPREMIUMGRADE	149	프리미엄 등급 체크	2502
+condition	QI_CHECKCHILDMOB	150	소환중인 몬스터 이름으로 체크(CHECKRECALLMOB)	2503
+condition	QI_CHECKGROUPJOBBALANCE	151	그룹에 전사, 술사, 도사 수가 같은지 체크	2505
+condition	QI_CHECKRANGEONELOVER	152	범위내에 연인인 사람이 있는지 체크	2506
+condition	QI_EVENTCHECK	153	ComeBack2005 이벤트 체크	2508
+condition	QI_CHECKITEMWVALUE	154	착용중인 고통 아이템 기수치 체크	2509
+action	QA_SET	1	101이상	2513
+action	QA_TAKE	2	아이템을 받다	2514
+action	QA_GIVE	3		2515
+action	QA_TAKEW	4	착용하고 있는 아이템을 받다	2516
+action	QA_CLOSE	5	대화창을 닫음	2517
+action	QA_RESET	6		2518
+action	QA_OPENUNIT	7		2519
+action	QA_SETUNIT	8	유닛셋  1..100	2520
+action	QA_RESETUNIT	9	유닛리셋   1..100	2521
+action	QA_BREAK	10		2522
+action	QA_TIMERECALL	11	지정된 시간이 지나면 현재 장소로 소환 된다.	2523
+action	QA_PARAM1	12		2524
+action	QA_PARAM2	13		2525
+action	QA_PARAM3	14		2526
+action	QA_PARAM4	15		2527
+action	QA_MAPMOVE	20		2528
+action	QA_MAPRANDOM	21		2529
+action	QA_TAKECHECKITEM	22	CHECK항목에서 검사된 아이템을 받는다.	2530
+action	QA_MONGEN	23	몬스터를 젠시킴	2531
+action	QA_MONCLEAR	24	몬스터를 모두 제거 시킨다	2532
+action	QA_MOV	25		2533
+action	QA_INC	26		2534
+action	QA_DEC	27		2535
+action	QA_SUM	28	SUM P1 P2 //P9 = P1 + P2	2536
+action	QA_BREAKTIMERECALL	29		2537
+action	QA_TIMERECALLGROUP	30	지정된 시간이 지나면 그룹 전체가 현재 장소로 소환 된다.	2538
+action	QA_CLOSENOINVEN	31	대화창을 닫음(인벤창은 건드리지 않음)	2539
+action	QA_MOVRANDOM	50	MOVR	2541
+action	QA_EXCHANGEMAP	51	EXCHANGEMAP R001  //R001에 있는 한 사람과 자리를 바꾼다.	2542
+action	QA_RECALLMAP	52	RECALLMAP R001  //R001에 있는 사람들을 모두 소환 한다.	2543
+action	QA_ADDBATCH	53		2544
+action	QA_BATCHDELAY	54		2545
+action	QA_BATCHMOVE	55		2546
+action	QA_PLAYDICE	56	PLAYDICE 2 @diceresult //2개의 주사위를 굴린다. 그후 @diceresult 세션으로 간다	2547
+action	QA_ADDNAMELIST	57		2549
+action	QA_DELETENAMELIST	58		2550
+action	QA_PLAYROCK	59	PLAYDICE 2 @diceresult //2개의 주사위를 굴린다. 그후 @diceresult 세션으로 간다	2551
+action	QA_RANDOMSETDAILYQUEST	60	파라메터,  최소, 최대  예) 401 450  401에서 450번까지 랜덤으로 설정	2553
+action	QA_SETDAILYQUEST	61		2554
+action	QA_GIVEEXP	63	경험치 주기(이벤트 종료후 기능 삭제)	2556
+action	QA_TAKEGRADEITEM	70		2558
+action	QA_GOTOQUEST	100		2560
+action	QA_ENDQUEST	101		2561
+action	QA_GOTO	102		2562
+action	QA_SOUND	103		2563
+action	QA_CHANGEGENDER	104		2564
+action	QA_KICK	105		2565
+action	QA_MOVEALLMAP	106	현재 맵 유저들을 모두 특정 맵으로 이동시킴.	2566
+action	QA_MOVEALLMAPGROUP	107	그룹 멤버들 중에 현재 맵에 있는 멤버들만 특정 맵으로 이동시킴.	2567
+action	QA_RECALLMAPGROUP	108	그룹 멤버들 중에 특정 맵에 있는 멤버들만 현재 맵으로 이동시킴.	2568
+action	QA_WEAPONUPGRADE	109	들고 있는 무기에 옵션을 붙인다.	2569
+action	QA_SETALLINMAP	110	현재 맵에 있는 모든 유저들의 플래그를 SET한다.	2570
+action	QA_INCPKPOINT	111	PK Point를 증가시킨다.	2571
+action	QA_DECPKPOINT	112	PK Point를 감소시킨다.	2572
+action	QA_MOVETOLOVER	113	연인앞으로 이동한다.	2574
+action	QA_BREAKLOVER	114	연인관계를 일방적으로 해제시킨다.	2575
+action	QA_SOUNDALL	115	주변사람에게 사운드를 들려줌	2576
+action	QA_USEFAMEPOINT	116	자신의 명성치 사용	2578
+action	QA_DECWEAPONBADLUCK	117	저주가 붙은 무기의 저주를 1 감소 시킨다.	2579
+action	QA_DECDONATION	118	기부금 잔액을 감소 시킨다.	2581
+action	QA_SHOWEFFECT	119	장원이펙트를 보여준다.	2582
+action	QA_MONGENAROUND	120	캐릭의 주위에 몬스터를 젠 시킨다.	2583
+action	QA_RECALLMOB	121	부하 몬스터 소환	2584
+action	QA_SETLOVERFLAG	122	연인의 플래그를 SET한다.	2586
+action	QA_GUILDSECESSION	123	문파탈퇴	2587
+action	QA_GIVETOLOVER	124	연인에게 아이템 주기	2588
+action	QA_INCMEMORIALCOUNT	125	NPC별 카운트 증가	2589
+action	QA_DECMEMORIALCOUNT	126	NPC별 카운트 감소	2590
+action	QA_SAVEMEMORIALCOUNT	127	NPC별 카운트 파일 저장	2591
+action	QA_INSTANTPOWERUP	128	순간 능력치 상승	2593
+action	QA_INSTANTEXPDOUBLE	129	순간 경험치 2배	2594
+action	QA_HEALING	130	힐링	2595
+action	QA_UNIFYITEM	131	아이템을 합친다	2596
+action	QA_MISSION	132	미션 설정	2598
+action	QA_MOBPLACE	133	미션몹 배치	2599
