@@ -102,9 +102,16 @@
     "rows_with_missing_investigation_evidence": 0,
     "source_exact_rows": 69,
     "legacy_exact_rows": 69,
+    "legacy_resource_probe_statuses": {
+      "blank-or-missing-frame": 14,
+      "present": 32,
+      "not-applicable": 18,
+      "library-missing": 23
+    },
     "required_paths": [
       "0-based and 1-based body-frame probe for any closed resource candidate",
       "MonsterLookup image-to-Mon-*.Zl shape lookup",
+      "canonical legacy Mon-*.wil Appr/frame header probe",
       "current MonsterInfo explicit identity and resource alias lookup",
       "duplicate website-image and one-to-many conflict audit",
       "legacy atlas exact and suffix-family lookup",

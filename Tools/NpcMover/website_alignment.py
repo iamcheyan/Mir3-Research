@@ -17,6 +17,7 @@ import re
 import sys
 import subprocess
 from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -35,7 +36,7 @@ ALIGNMENT = ROOT / "docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2
 CATALOG_SKILLS = ROOT / "docs/legacy-atlas/content/catalog-skills.html"
 MONSTER_SOURCE = ROOT / "docs/research/mud3-dat-decoded/monster.json"
 MONSTER_LEGACY_CATALOG = ROOT / "docs/legacy-atlas/content/catalog-mud3.html"
-
+LEGACY_DATA = Path("/home/tetsuya/mir2ei/Data")
 
 # Explicit identity evidence.  Lists intentionally preserve ambiguity; the
 # generator never picks among multiple candidates automatically.
@@ -248,6 +249,50 @@ def _base_name(value: str) -> str:
     return re.sub(r"(?:[0169]|20|61|62|73|94|95)$", "", value)
 
 
+@lru_cache(maxsize=64)
+def legacy_wil_probe(appr: int) -> dict[str, Any]:
+    """Probe the canonical legacy WIL frame implied by a source Appr value."""
+    library_number = appr // 10
+    frame = (appr % 10) * 1000 + 40
+    path = LEGACY_DATA / f"Mon-{library_number}.wil"
+    result: dict[str, Any] = {
+        "appr": appr,
+        "library": f"Mon-{library_number}.wil",
+        "frame": frame,
+        "path": str(path),
+    }
+    if not path.exists():
+        result["status"] = "library-missing"
+        return result
+    try:
+        from Tools.common.wilsdk import WilLibrary
+        library = WilLibrary(str(path))
+        try:
+            header = library.header(frame)
+            result["status"] = "present" if header else "blank-or-missing-frame"
+            result["header"] = header
+        finally:
+            library.close()
+    except Exception as exc:  # retain evidence even if optional decoder fails
+        result["status"] = "probe-error"
+        result["error"] = str(exc)
+    return result
+
+
+def legacy_resource_evidence(exact: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if not exact:
+        return [{"status": "not-applicable", "reason": "no exact Hero-kill source row with Appr"}]
+    probes: list[dict[str, Any]] = []
+    seen: set[int] = set()
+    for row in exact:
+        appr = row.get("Appr")
+        if not isinstance(appr, int) or appr in seen:
+            continue
+        seen.add(appr)
+        probes.append(legacy_wil_probe(appr))
+    return probes
+
+
 def source_identity_evidence(name: str, source_records: list[dict[str, Any]], legacy_catalog: dict[int, dict[str, Any]]) -> dict[str, Any]:
     exact = [r for r in source_records if str(r.get("Name", "")) == name]
     base = _base_name(name)
@@ -264,10 +309,12 @@ def source_identity_evidence(name: str, source_records: list[dict[str, Any]], le
         "source_variant_family": [attrs(r) for r in variant[:20]],
         "legacy_catalog_exact": legacy_exact,
         "legacy_catalog_variant_family": legacy_base[:20],
+        "legacy_resource_probe": legacy_resource_evidence(exact),
         "attempted_paths": [
             "website JSON name/category/description/image",
             "raw Hero-kill monster definition exact and suffix-family lookup",
             "legacy atlas exact and suffix-family lookup",
+            "canonical legacy Mon-*.wil Appr/frame header probe",
             "current MonsterInfo explicit identity and resource alias lookup",
             "MonsterLookup image-to-Mon-*.Zl shape lookup",
             "0-based and 1-based body-frame probe for any closed resource candidate",
@@ -551,6 +598,14 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         f"{row.get('website_monster_id')} {row.get('website_monster_name')}: {row.get('skip_reason')}"
         for row in pending_rows
     ) or "none"
+    pending_resource_probe = "；".join(
+        f"{row.get('website_monster_id')} "
+        + ", ".join(
+            f"{probe.get('library')} frame {probe.get('frame')}={probe.get('status')}"
+            for probe in row.get("source_identity_evidence", {}).get("legacy_resource_probe", [])
+        )
+        for row in pending_rows
+    ) or "none"
     white_boar = next((row for row in manifest.get("monster_identity", []) if row.get("website_monster_name") == "白野猪"), {})
     white_candidate = (white_boar.get("zircon_candidates") or [{}])[0]
     ext = manifest["external_alignment"]; ext_stats = ext.get("stats", {})
@@ -605,6 +660,7 @@ def build_report(manifest: dict[str, Any], report_path: Path) -> None:
         "- 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。",
         f"- 白野猪当前新增可复现资源候选：网站 `images/mob/pic/40.gif` 与 Zircon `MonsterInfo.Index={white_candidate.get('index')} / {white_candidate.get('internal_name')} / MonsterImage={white_candidate.get('image')} / MonsterLookup shape={white_candidate.get('shape')} / Mon-{(white_candidate.get('resource') or {}).get('library_number')}.Zl`；该证据仅提升为 `investigate`，不产生 Index 或显示名写入计划。对照图见 `white-boar-resource-contact-sheet.png`。",
         f"- 剩余 pending 逐项原因：{pending_summary}；这些行已完成规定路径审计，保持 retain-current，不产生 Index 或显示名写入。",
+        f"- pending 的旧版资源帧探针：{pending_resource_probe}；`blank-or-missing-frame` 仅表示该 Appr/frame 在本地旧版 WIL 没有可解帧，不能当作网站缺失结论。",
         f"- 当前保留 {resource_alias_count} 条资源别名候选（其中 {resource_only_count} 条只有 MonsterLookup/Mon-*.Zl 资源候选、没有当前 MonsterInfo 行）；候选统一保持 `investigate`，不创建 Index。对照图见 `resource-alias-candidate-contact-sheet.png`；资源候选不是身份确认。",
         "", "## 4. 技能", "",
         "- 61 条技能逐条由网站名称/职业/描述、Legacy Atlas 技能交叉目录、MagicInfo、MIcon.Zl header 复核。",

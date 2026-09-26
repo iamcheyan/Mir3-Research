@@ -8,10 +8,10 @@
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
 - 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
-- Mir3-Research 最终生成时：HEAD=63f625a368637dabfef32ab38a1f803e1bccae9e；origin/ei-ui-audit-2026-09-24=5f467a4b51f3f65badb1ed9de757b61018eccc5a；工作树 dirty=True。
+- Mir3-Research 最终生成时：HEAD=6b5492659d1bf0987bbe7b680e6a1ec69155c25c；origin/ei-ui-audit-2026-09-24=5f467a4b51f3f65badb1ed9de757b61018eccc5a；工作树 dirty=True。
 - Zircon 最终生成时：HEAD=7d7943f79965690adc7c41fc9e35737dd22d8fa7；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；origin/main=02fdb6cd16c8009cf10f3aae6a21327b765a64bd；工作树 dirty=False；未提交路径=[]；本 Goal 未修改。
-- 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/api.py", "Tools/maps/mapedit/data.py", "Tools/maps/mapedit/map_links_v2.json", "Tools/maps/mapedit/npcedit.py", "Tools/maps/mapedit/templates.py", "Tools/maps/mapedit/tests/", "docs/research/map-editor-unknown-entities/"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
+- 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/map_links_v2.json", "Tools/source-read/coverage.py", "Tools/source-read/edcode.py", "docs/research/map-editor-unknown-entities/UnknownEntityPlacements.json", "docs/source-vs-reverse/wire-format.md"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
 
 ## 2. 网站索引和图片证据
 
@@ -28,6 +28,7 @@
 - 白野猪、半兽人、祖玛卫士、Boss/变体等高风险样例均保留候选与冲突，不模糊改索引。
 - 白野猪当前新增可复现资源候选：网站 `images/mob/pic/40.gif` 与 Zircon `MonsterInfo.Index=128 / Tusk Lord / MonsterImage=TuskLord / MonsterLookup shape=8 / Mon-8.Zl`；该证据仅提升为 `investigate`，不产生 Index 或显示名写入计划。对照图见 `white-boar-resource-contact-sheet.png`。
 - 剩余 pending 逐项原因：mob-6 蛤蟆: no stable DB candidate after name/identity/resource/region checks; retain current；这些行已完成规定路径审计，保持 retain-current，不产生 Index 或显示名写入。
+- pending 的旧版资源帧探针：mob-6 Mon-8.wil frame 3040=blank-or-missing-frame；`blank-or-missing-frame` 仅表示该 Appr/frame 在本地旧版 WIL 没有可解帧，不能当作网站缺失结论。
 - 当前保留 78 条资源别名候选（其中 7 条只有 MonsterLookup/Mon-*.Zl 资源候选、没有当前 MonsterInfo 行）；候选统一保持 `investigate`，不创建 Index。对照图见 `resource-alias-candidate-contact-sheet.png`；资源候选不是身份确认。
 
 ## 4. 技能

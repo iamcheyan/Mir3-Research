@@ -224,11 +224,13 @@ def check_monster_investigation(manifest: dict[str, Any], errors: list[str]) -> 
         "website JSON name/category/description/image",
         "raw Hero-kill monster definition exact and suffix-family lookup",
         "legacy atlas exact and suffix-family lookup",
+        "canonical legacy Mon-*.wil Appr/frame header probe",
         "current MonsterInfo explicit identity and resource alias lookup",
         "MonsterLookup image-to-Mon-*.Zl shape lookup",
         "0-based and 1-based body-frame probe for any closed resource candidate",
         "duplicate website-image and one-to-many conflict audit",
     }
+    probe_statuses: Counter[str] = Counter()
     audited = 0
     missing = 0
     source_exact = 0
@@ -243,6 +245,12 @@ def check_monster_investigation(manifest: dict[str, Any], errors: list[str]) -> 
         if absent:
             missing += 1
             errors.append(f"monster investigation paths missing: {row.get('website_monster_name')} -> {absent}")
+        probes = evidence.get("legacy_resource_probe") or []
+        if not probes:
+            missing += 1
+            errors.append(f"legacy resource probe missing: {row.get('website_monster_name')}")
+        for probe in probes:
+            probe_statuses[str(probe.get("status", "missing"))] += 1
         if not (row.get("website_image_evidence") or {}).get("present"):
             missing += 1
             errors.append(f"monster investigation image missing: {row.get('website_monster_name')}")
@@ -256,6 +264,7 @@ def check_monster_investigation(manifest: dict[str, Any], errors: list[str]) -> 
         "rows_with_missing_investigation_evidence": missing,
         "source_exact_rows": source_exact,
         "legacy_exact_rows": legacy_exact,
+        "legacy_resource_probe_statuses": dict(probe_statuses),
         "required_paths": sorted(required_paths),
     }
 
