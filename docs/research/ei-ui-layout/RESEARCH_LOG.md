@@ -9947,3 +9947,58 @@ Modal → 正序画 `ModalDWindowList` → 最后画 `PopUpDWindow`。
 
 **落盘**：`docs/source-vs-reverse/client-controls.md`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 807 (source deep-read, 图库) — 2026-09-26：WIL/Zl 加载链与真实资源交叉验证
+
+> 证据源 `Source/Client/{WIL,uWilFile,wmM3Zip}.pas`；对照 `Tools/common/{wilsdk,zlsdk}.py`。
+> 产物 `docs/source-vs-reverse/client-libraries.md`。
+
+**〔9 种图库格式〕**`WIL.pas:39` `TWILType = (t_wmM2Def, t_wmM2Def16, t_wmM2wis,
+t_wmMyImage, t_wmM3Def, t_wmWoool, t_wm521g, t_wmM2Zip, t_wmM3Zip)`。
+`uWilFile.pas:189-201` 给出**精确回退规则**：客户端优先加载 `.Lib`，失败且
+`WILType in [t_wmMyImage]` 时 `ChangeFileExt('.wil')` 并换成 `t_wmM3Def` 重建。
+→ **`.Lib` = `t_wmMyImage`（自研），`.wil` = `t_wmM3Def`**；原版 EI 用 `.wil/.wix`。
+
+**〔`.Zl`/压缩容器结构〕**`wmM3Zip.pas`：
+- `TWMIndexHeader`（:28-32）= `Title:string[20] + IndexCount:int32` = **25 字节**
+- `LoadIndex`（:189-214）= 25 字节头 + N 个 int32 偏移；上限 `MAXIMAGECOUNT=10000000`
+- `TWMImageInfo`（:16-25）= 17 字节（`nWidth/nHeight/Px/Py/ShadowPX/ShadowPY` 各 2
+  + `Shadow` 1 + `CompressedLen` 4）
+- 尺寸守卫 `MAXIMAGESIZE=4096` / `MINIMAGESIZE=1`；每行 `WidthBytes(16, w)`
+- **阅读陷阱**：`:156-160` 两次 `Read` 都写同一 `inBuffer^`
+  （`Read(inBuffer,6)` 后紧跟 `Read(inBuffer, CompressedLen-6)`），
+  前 6 字节被**覆盖丢弃** —— 做解码器时必须保留该偏移，否则解压数据错位。
+- 色转换 `LineR5G6B5_A8R8G8B8`（:54-64）= R5G6B5→A8R8G8B8 直接位扩展，无抖动。
+- `WIL.pas:9` 有 `{$INCLUDE BitChange.inc}` —— 即 README §5.1 排除的 479 KB
+  A1R5G5B5 转换 LUT，**未入库**，逐像素精确对照时需取回。
+
+**〔实测真实资源 —— 本轮最重要的正向验证〕**
+`.wix` = **纯偏移表**（不是「索引+数据」）：`MagicEx.wix` 7144 B =
+20 字节全 0 头 + 1781 × int32，偏移值最大 27,652,185 **超出 .wix 自身大小**
+→ 指向同名 `.wil`（27,652,718 B），915/1781 个偏移落在其范围内。
+`.wil` 头实测：`01 00` + `'ILIB v1.0-WEMADE'` 签名 + `@24 int16 = 1780`（图像数）。
+
+**用本仓库 `wilsdk.py` 交叉验证 → 通过**：
+`lib.count = 1780`（与文件头自洽）；`header(0)` = 16×16 offset(4,-14) shadow(7,-44)
+words=152 bytes=304；`header(2)` = 32×32 offset(-3,-18)。
+**仓库既有工具链在真实 EI 资源上无误** —— 这是本阶段最有价值的结论。
+
+**〔源码格式 vs 真实格式 = 两套不同变体〕**
+
+| | `wmM3Zip.pas` | 真实 `MagicEx.wil/.wix` |
+|---|---|---|
+| 索引头 | `Title[20]+IndexCount` = 25 B | 20 B 全 0 + 偏移表 |
+| 图像数位置 | 索引文件 @21 | `.wil` @24（int16） |
+| 图像头 | 17 B（含 CompressedLen） | `wilsdk` 解析为 16 B 项 |
+| 压缩 | zlib | `wilsdk` 正常读出 |
+| 签名 | 无 | `ILIB v1.0-WEMADE` |
+
+→ 两者**不能互相解析**。再次印证贯穿本 Goal 的结论：Preview 版与原版是
+**同引擎不同构建**，资源容器/帧号/UI 布局三者都不通用。
+**原版资源仍以 `wilsdk.py`/`zlsdk.py` 为唯一权威解析器**，源码只用于理解设计意图。
+
+**〔未能验证项〕**本机**没有 `.Zl` 文件**（`mir2ei` 与 EI 客户端目录均无），
+`zlsdk.py` 对真实 `.Zl` 的验证**未做** —— 标注为缺口，不假装已验。
+
+**落盘**：`docs/source-vs-reverse/client-libraries.md`。
+未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
