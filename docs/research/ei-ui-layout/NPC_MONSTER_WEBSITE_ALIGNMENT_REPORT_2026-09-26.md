@@ -8,8 +8,8 @@
 - Zircon 当前快照：MonsterInfo=434，MagicInfo=174，NPCInfo=294，MapInfo=627，RespawnInfo=2475。
 - 7000 检查：运行时由阶段 0 记录为监听；因此本报告只读，写库闸门未开启。
 - 数据库写入：`database_write=false`；没有删除、创建或重排 MonsterInfo/NPCInfo/MagicInfo/MapInfo。
-- Mir3-Research 最终生成时：HEAD=9bf19caff2c41c79acd05f09696c75cb95cd0823；origin/ei-ui-audit-2026-09-24=9380f69f22cce3659f1823c443f0766e7b95fb2c；工作树 dirty=True。
-- Zircon 最终生成时：HEAD=4bd89e84a88de64feb78443bedfeea106fdcc86b；origin/ui/legacy-layout-lab=22cf7a1b18e61a743a705a97ac715a32f64d7bc5；工作树 dirty=True。
+- Mir3-Research 最终生成时：HEAD=0f3b0e61c30733c8cc4a9ee2e8a20e22b7e10a48；origin/ei-ui-audit-2026-09-24=9380f69f22cce3659f1823c443f0766e7b95fb2c；工作树 dirty=True。
+- Zircon 最终生成时：HEAD=16240b373f9a36fc5371533b2686ef3a40a37801；origin/ui/legacy-layout-lab=16240b373f9a36fc5371533b2686ef3a40a37801；工作树 dirty=True。
 - mir3-website 只读证据 checkout：HEAD=e15e3126827c3fbb2166d0aa03e5becc2a6c6751；origin/main=e15e3126827c3fbb2166d0aa03e5becc2a6c6751；工作树 dirty=True；未提交路径=["static/css/style.css", "templates/base.html", ".cloudflare/"]；本 Goal 未修改。
 - 当前未提交路径保护：Mir3-Research 无关 WIP=["Tools/NpcMover/write_alignment_reports.py", "Tools/SystemDbProbe/Program.cs", "Tools/maps/mapedit/map_links_v2.json", "Tools/wsgateway/wsgateway.log"]；Zircon 无关 WIP=[".artifacts/npc-f1100-acceptance-2026-09-25/", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-character-button.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-final.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open-q.png", ".artifacts/ui-acceptance-2026-09-24/status-badge-guard-open.png", ".artifacts/ui-acceptance-2026-09-24/status-no-highlight-current.png"]；本 Goal 仅提交自身脚本/报告/manifest。
 
