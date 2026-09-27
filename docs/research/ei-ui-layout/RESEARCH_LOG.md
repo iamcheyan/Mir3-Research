@@ -12035,3 +12035,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔物品与其它 helpers〕** `IsTakeOnAvailable` 按 wear slot 与 `StdMode` 组合检查，caller 在 `ObjBase`；`ObjNpc` 调用 upgrade/cheap-item 与 `GetMakeItemCondition`，后者返回 `MakeItemList` 中已有的 `TStringList` 对象。`GetTurnDir` 有 `ObjBase` caller；source grep 没有找到 `GetHpMpRate`、`IsDCItem`、`GetStrGoldStr` 的外部调用点。README D5、`tools-and-servers.md` §15 与 ledger 第 112 行记录 source-only 版本边界。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 将 771 行 `M2Share.pas` 从 pending 登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 251/97481，partial 17/90886，excluded 43/60230，pending 82/66727。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未比较 EI primary-static/Zircon，也未运行 Preview Windows server。
+
+## Round 848 — 2026-09-27：GameServer `FSrvValue` runtime settings dialog
+
+**〔范围〕** 经 `Tools/source-read/read_src.py show` 全读 `GameServer/FSrvValue.pas`（1–93），并读取其 textual `FSrvValue.dfm`（1–215）。`dfm_parse.py tree` 因输入首字节为 `object FrmServer...`、缺少其要求的 `TPF0` 标记而不能解析；保留表单原文读取，不把二进制 parser 失败当作源码缺失。调用链另外读 `svMain.pas` 的启动 INI 读取（582–592）、设置面板保存（1815–1836），以及 `RunSock.pas` 的 send coalescing / receive-check / gate-load（448–468、600–620、952–978、1000–1036、1148–1158）。
+
+**〔控件与更新〕** 对话框显示六种 timeout、`SENDBLOCK`/`SENDCHECKBLOCK`/`SENDAVAILABLEBLOCK`、`GATELOAD` 与 hack/admission 两个诊断开关。OK 时六种 timeout 按 `_MIN(150, value)` 写回，三个 send 值按 `_MAX(10, value)` 写回，`GATELOAD` 不额外夹限；DFM 的 SpinEdit `MinValue=0`、`MaxValue=0` 是序列化属性，不等同于 Pascal 赋值处的额外限制。
+
+**〔配置持久化与消费〕** `svMain` 启动从 `.\Setup\!Setup.txt` 读取 `AvailableBlock`，但 `Panel1DblClick` 的 OK 保存列表漏掉该键，因此本次面板修改只留在进程内存、重启后被配置/default 覆盖。`SENDBLOCK` 活跃地合并相邻小包，旧的分块发送实现已注释；当 `GateSyncMode=0` 且 `sendlen + SendDataCount >= SENDCHECKBLOCK` 时，若无已缓存字节且单个 packet 已达阈值，该 packet 被删/释放；否则发送 `GM_RECEIVE_OK` 并进入 sync mode。`SENDAVAILABLEBLOCK` 只出现在注释掉的 threshold 分支。`GATELOAD` 每 100 ms 对有发送缓冲的 gate 按计数发送 `GM_TEST`；`SendGateLoadTest` 声明 header length 80，并把未见初始化的局部 `TDefaultMessage` 拷入 packet，可能带入未确定内容，此风险仅为静态推论。
+
+**〔primary/source 对照〕** **Primary:** 本轮未确认此运维面板的 EI primary-static 对照件；**Source:** Preview `FSrvValue`、`svMain` 与 `RunSock`；**Difference:** `AvailableBlock` 可从 Setup 读取并在面板修改，但保存 handler 不写回，且 `RunSock` 中对应阈值分支已注释；**Conclusion:** 仅为 Preview server runtime configuration 证据，不表示 EI UI 等价或 MirDB schema 映射。
+
+**〔未验证〕** `BoViewHackCode` 有 `ObjBase` 活跃消费者；`BoViewAdmissionFail` 在所检 GameServer 源码中除注释外无消费者。`DecLimitTime` 出现在面板及启动/保存配置路径，但没有找到运行时读取点。未运行 Windows GameServer，也未比较 Zircon。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 104 行将 93 行 `FSrvValue.pas` 登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 252/97574，partial 17/90886，excluded 43/60230，pending 81/66634。四个指定文档路径 `git diff --check` 通过。无 Windows/GameServer 运行验证。
