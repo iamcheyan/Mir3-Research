@@ -11885,3 +11885,19 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔覆盖与边界〕** Round 835 + Round 836 将 LoginServer/Common、LoginServer/LoginServer、LoginServer/_Oranze Library 的 ledger 所有 93 行全部置为 `covered`（本轮处理 90 条 pending，另保留此前 3 条 covered 的历史轮次）。`_Oranze Library` 的 66 条、合计 12,816 行由本轮逐文件全读。没有用此覆盖 DataBaseServer 同名实现，也没有把库文件清单等同于登录认证调用图；DataBaseServer 仍在待读。未运行 Win32 工程，未启动服务/连接数据库/写 System.db、Users.db 或 CodeBase 文件。当前 ledger：393 文件/315324 行，covered 128/67329，partial 18/93108，excluded 43/60230，pending 204/94657。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失验证、台账统计、28 个 Python 文件语法）；本轮三个指定文件 `git diff --check` 通过。Win32/网络/数据库行为未运行。
+
+## Round 837 — 2026-09-27：DataBaseServer 主链全读与 SQL 字段抽取纠错
+
+**〔范围〕** 通过 `Tools/source-read/read_src.py` 完整读取 DataBaseServer 的服务主链、项目配置、公共协议/SQL helper、表模型及 `Def/` 文件；各文件完整行范围记录于 `coverage-ledger.tsv` 175–287。93 个此前 pending 文件转为 covered：`_Oranze Library/` 64 个、`DBSvr/` 19 个、`Common/` 6 个、`Def/database.cpp/.h` 与 `Def/EnDecode.cpp/.h` 4 个；另将 `netgameserver.cpp` 1 个 partial 文件补读为 covered。`DBSvr/` 全部 24 个 ledger 文件均作完整覆盖复核；仍有 14 个 `Def/` 文件待读，其他目录 pending 不受本轮影响。
+
+**〔工程边界与启动〕** `DBSvr.vcproj` 为 VS 7.10 Win32 app，链接 `_Oranze Library.lib`，编译 `Common/endecode.cpp`、`mir2packet.cpp`、`sqlhandler.cpp` 及部分 `_Oranze Library` 源。`Def/database.cpp` 和 `Def/EnDecode.cpp` 不在项目文件列表中；服务实际使用链接库 ODBC 与 `Common/endecode`，不应用同名独立 `Def/` API 替代。`CDBServer::Startup` 读取配置、禁用词/服务器/地图配置，建立 ODBC pools，连接 LoginServer 并接受 GameServer/RunGate；timer 发送公钥请求及每 10 秒在线数。LoginServer 重连时请求标志未复位是静态发现，未验证重连运行结果。
+
+**〔RunGate 与角色生命周期〕** LoginServer 成功认证后登记 admission `{ID, cert, paymode}`；RunGate 的四个处理 opcode 覆盖查角色、创建、软删除、选择。查角按 account ID 过滤；创建进行名称/禁用词/职业/外观/性别检查及重名查询，但角色行和 quest 行的 SQL 结果会产生不一致成功响应。软删除 SQL 条件只有角色名，没有 account ID；选角按角色名与 account ID 查询。多服端点的地址与端口分别随机选择，源码允许两次选择不一致。以上只记源代码路径，不推断 exploit 或线上影响。
+
+**〔GameServer 数据路径〕** GameServer 帧以 `#...!` 拆分并验证由 certification 派生的 trailer。加载读取角色、magic、quest、bag、saved item；账号 ODBC 上 `TBL_ITEMGIVE` 有离线金币补发路径，使用前未见 pool 指针检查。保存假定正文 9324 字节，更新角色和附属数据；事务结束参数固定为 commit，部分 helper 忽略查询结果，最终响应未由 DB 写入结果统一控制。Friend/tag/relationship 也通过 stored procedure 字符串处理，多个写分支响应仍为 false，未读计数存在无行时读取未初始化变量的路径。SQL UPDATE builder 在 DAT 缓冲、逗号计数和 DBL where 格式上有静态缺陷；本轮未访问 ODBC/SQL Server，也未执行任何写入。
+
+**〔模型、配置与共享代码差异〕** `tablesdefine.h` 定义 packed 玩家记录及 bag/magic/saved-item 固定数组；未知 bag 类型顺序分配 slot 未见上限检查，Prefix 数据不持久化。`CMsgFilter` 把无长度限制的 `%s` 读入 12 字节 token；配置窗口将 ODBC 凭证明文保存到 `DBSvr.ini`，默认值包含 `sa`。DataBaseServer `_Oranze Library/` 的 64 个 ledger 文件中 63 个与 LoginServer 副本 SHA-256 相同，`prime.cpp` 仅 `sqrt` 参数显式 `double` 转换不同。`Common/endecode.cpp/.h` 字节一致；`Common/mir2packet.cpp` 的三处 `Attach` 路径没有 LoginServer 副本中的 IOCP 最大包长 guard。文件级证据和精确行数见台账。
+
+**〔SQL 抽取纠错〕** Round 837 全读 `tablesdefine.cpp/.h` 后发现 `extract_sql_tables.py` 对数组声明同一行的首字段执行 `continue`，漏掉 11 个活动首字段；原解析还把 `//` 注释内的字段记入结果，并将 `fIsKey` 标签误称为数据库 primary key。新增标准库回归测试先观察到首字段缺失，再修复为同一行继续解析、剥离行注释、输出 `key_flag` 列并说明它仅是生成器谓词。测试 `python3 -m unittest discover -s Tools/source-read -p 'test_extract_sql_tables.py' -v` 两项通过；重生成 `sql-tables.tsv` 得 11 组、175 个活动描述符，移除误收的 `FLD_RESERVED1`，恢复 11 个首字段。当前 README 与 `tools-and-servers.md` 已澄清 SQL player-record schema 不等于 EI `System.db`/`Users.db` 映射；`FINAL_REPORT.md` 保留为其标注日期的历史快照，不把旧数字伪装成当前抽取结果。
+
+**〔验证与安全边界〕** `python3 -m unittest discover -s Tools/source-read -p 'test_extract_sql_tables.py' -v`：2 项通过。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 222/87113，partial 17/90886，excluded 43/60230，pending 111/77095。只静读源码、比较副本 SHA-256、执行测试并生成 TSV；没有 Windows 构建、服务启动、ODBC 连接、数据库读写、EI primary-static 或 Zircon 行为推断；不把源码异常称为动态复现。

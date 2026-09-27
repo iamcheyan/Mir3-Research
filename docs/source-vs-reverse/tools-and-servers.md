@@ -194,12 +194,13 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 
 | 文件 | 说明 |
 |---|---|
-| `DataBaseServer/Common/sqlhandler.cpp` | SQL/ODBC 层 |
-| `DataBaseServer/Def/database.cpp` | 数据库定义 |
-| `DBSvr/tablesdefine.cpp` | **表定义**（`System.db` 的上游） |
+| `DataBaseServer/Common/sqlhandler.cpp` | SQL statement generation from `MIRDB_FIELDS` descriptors; raw string-based SQL construction |
+| `DataBaseServer/DBSvr/tablesdefine.cpp` + `tablesdefine.h` | legacy SQL Server player-record field metadata and packed `FDBRecord` wire model |
+| `DataBaseServer/DBSvr/DBSvr.vcproj` | DB server links `_Oranze Library.lib`; standalone `Def/database.cpp` is not listed in this app project |
 
-**`System.db` 上游链**（`README.md` §3.7 已记录）：
+**Player-record SQL path**（`README.md` §3.7）：
 `GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000`。
+These source tables do not establish a direct mapping to the repository's binary MirDB `System.db` or `Users.db`.
 
 ---
 
@@ -210,7 +211,7 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 | 账号注册协议 | 未闭合 | **定义+发送端有，接收端缺失** | — |
 | 登录分派表 | 未闭合 | LoginGate 3 条 / RunGate 4 条 | — |
 | 网络框架 | 未闭合 | IOCP（`netiocp.cpp`） | .NET async |
-| 表定义 | 未闭合 | `tablesdefine.cpp` | `System.db` 模型类 |
+| 表定义 | 未闭合 | `tablesdefine.cpp`：legacy SQL Server player-record fields; not binary `.db` schema | Zircon MirDB persistence models; field-level mapping not established |
 | `.map` 写入端 | 未闭合 | `Tools/MapEdit/` | `mapedit`（本仓库） |
 
 **分级**：源码结论均 `secondary-source`。
@@ -223,25 +224,25 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 |---|---|
 | `Tools/MapEdit/` 各文件实现主体 | 只读了文件清单与职责 |
 | `Tools/ImageEditor/` 顶层非第三方实现 | 只读了文件清单 |
-| LoginServer（全量） | ✅ Round 835 应用层/线格式 + Round 836 `_Oranze Library`；本轮闭合 90 个此前 pending 条目，旧 covered 行保留 |
-| DataBaseServer 服务实现 | pending；仅已有 `netloginserver/netrungate` 分派与 `tablesdefine.cpp` 表字段证据，业务主体及 DB 侧便条语义仍待读 |
-| LoginServer/Common C++ 线格式 | ✅ Round 835 全读 `endecode.cpp/.h` 与 `mir2packet.cpp/.h`；DataBaseServer 副本待读核对 |
-| `DataBaseServer/Common/sqlhandler.cpp/.h`、`tablesdefine.h` | 未读；`tablesdefine.cpp` 已于 Round 828 提取并覆盖，见 §6 |
+| DataBaseServer `DBSvr/` app and SQL path | ✅ Round 837 full-read listener, LoginServer/RunGate/GameServer handlers, save/load/create/select/delete, table mapper, SQL generator, config/UI; residual standalone `Def/` support files remain pending |
+| DataBaseServer `_Oranze Library` copy | ✅ Round 837: all 64 ledgered files matched against LoginServer copies by SHA-256; 63 byte-identical to Round 836 full reads, `prime.cpp` read separately (explicit `double` cast difference) |
+| DataBaseServer/Common C++ wire helpers | ✅ `endecode.cpp/.h` hash-identical to Round 835 LoginServer copies; `mir2packet.h` identical; DB `mir2packet.cpp` full-read and size guards absent |
+| DataBaseServer `Common/sqlhandler.cpp/.h`, `DBSvr/tablesdefine.h` | ✅ Round 837 full read; corrected 11-table extraction has 175 active field descriptors; `fIsKey` is a generator flag, not verified SQL constraint |
 | `//*` 标记的语义（必填？） | 无接收端可对照 |
 
 ---
 
-## 6. SQL 表定义（`tablesdefine.cpp`）—— **`System.db` 的上游**（Round 828）
+## 6. SQL field metadata (`tablesdefine.cpp`) — legacy player-record schema (Round 828 / corrected Round 837)
 
 > `Source/DataBaseServer/DBSvr/tablesdefine.cpp`（595 行）。
-> 机器可读：[`sql-tables.tsv`](sql-tables.tsv)（165 字段）。
-> 提取器：`Tools/source-read/extract_sql_tables.py`。
+> 机器可读：[`sql-tables.tsv`](sql-tables.tsv)（11 arrays / 175 active descriptors; `//` comments excluded）。
+> 提取器：`Tools/source-read/extract_sql_tables.py`；Round 837 fix preserves the first field on an array-declaration line.
 
 ### 6.1 定义格式
 
 ```cpp
 MIRDB_FIELDS __ABILITYFIELDS[] = {
-   { "FLD_CHARACTER", TABLETYPE_STR, true,  20 },   // 名 / 类型 / 是否主键 / 大小
+   { "FLD_CHARACTER", TABLETYPE_STR, true,  20 },   // name / type / fIsKey / byte width
    { "FLD_LEVEL",     TABLETYPE_INT, false,  4 },
    ...
 };
@@ -250,24 +251,24 @@ MIRDB_TABLE __ABILITYTABLE = { "TBL_ABILITY",
       sizeof(__ABILITYFIELDS)/sizeof(MIRDB_FIELDS), __ABILITYFIELDS };
 ```
 
-**四元组**：字段名 / 类型（`TABLETYPE_STR`/`INT`/`DAT`）/ **是否主键** / 大小。
-表名在 `MIRDB_TABLE` 里绑定到字段数组。
+**四元组**：字段名 / 类型（`TABLETYPE_STR`/`INT`/`DAT`/`DBL`）/ `fIsKey` 生成器标志 / 字段宽度。
+`fIsKey` 控制生成 SQL 的键谓词；不证明 SQL Server 实际索引/约束。表名在 `MIRDB_TABLE` 绑定。
 
-### 6.2 **11 张表 / 165 字段**（完整表见 `sql-tables.tsv`）
+### 6.2 **11 张表数组 / 175 字段描述**（完整源码顺序见 `sql-tables.tsv`）
 
-| 数组 | SQL 表名 | 字段数 | 主键 |
+| 数组 | SQL 表名 | 字段数 | `fIsKey` 字段 |
 |---|---|---:|---|
-| `__CHARACTERFIELDS` | `TBL_CHARACTER` | **41** | `FLD_USERID` |
-| `__ABILITYFIELDS` | `TBL_ABILITY` | **33** | — |
-| `__ITEMFIELDS` | `TBL_ITEM` | 24 | `FLD_TYPE` |
-| `__SAVEDITEMFIELDS` | `TBL_SAVEDITEM` | 23 | — |
-| `__BONUSABILITYFIELDS` | `TBL_BONUSABILITY` | 10 | — |
-| `__CURRENTABILITYFIELDS` | `TBL_CURRENTABILITY` | 10 | — |
-| `__ITEMGIVEFIELDS` | `TBL_ITEMGIVE` | 9 | **三主键**：`FLD_SERVER`+`FLD_CHARACTER`+`FLD_DONE` |
-| `__MAGICFIELDS` | `TBL_MAGIC` | 5 | — |
-| `__CHAR_INFOFIELDS` | `TBL_CHAR_INFO` | 4 | `FLD_CHARACTER` |
-| `__QUESTFIELDS` | `TBL_QUEST` | 3 | — |
-| `__SKILLFIELDS` | `TBL_SKILL` | 3 | — |
+| `__CHAR_INFOFIELDS` | `TBL_CHAR_INFO` | 5 | `FLD_LOGINID`, `FLD_CHARACTER` |
+| `__ABILITYFIELDS` | `TBL_ABILITY` | 33 | `FLD_CHARACTER` |
+| `__BONUSABILITYFIELDS` | `TBL_BONUSABILITY` | 11 | `FLD_CHARACTER` |
+| `__CHARACTERFIELDS` | `TBL_CHARACTER` | **42** | `FLD_CHARACTER`, `FLD_USERID` |
+| `__CURRENTABILITYFIELDS` | `TBL_CURRENTABILITY` | 11 | `FLD_CHARACTER` |
+| `__ITEMFIELDS` | `TBL_ITEM` | **25** | `FLD_CHARACTER`, `FLD_TYPE` |
+| `__MAGICFIELDS` | `TBL_MAGIC` | 6 | `FLD_CHARACTER` |
+| `__QUESTFIELDS` | `TBL_QUEST` | 4 | `FLD_CHARACTER` |
+| `__SAVEDITEMFIELDS` | `TBL_SAVEDITEM` | 24 | `FLD_CHARACTER` |
+| `__SKILLFIELDS` | `TBL_SKILL` | 4 | `FLD_CHARACTER` |
+| `__ITEMGIVEFIELDS` | `TBL_ITEMGIVE` | 10 | `FLD_GAMETYPE`, `FLD_SERVER`, `FLD_CHARACTER`, `FLD_DONE` |
 
 ### 6.3 关键字段组
 
@@ -280,47 +281,33 @@ MIRDB_TABLE __ABILITYTABLE = { "TBL_ABILITY",
 > **七元素**（火/冰/雷/风/圣/暗/幻）是 Mir3 的属性体系 ——
 > **`ATOM` 前缀即「元素」**，`_MC` 与 `_MAC` 是两套（魔攻/魔防？）。
 
-**`TBL_CHARACTER`（41 字段，最多）** —— 角色主表，主键 `FLD_USERID`。
-含 `FLD_DELETED`（软删除标记）/`FLD_UPDATEDATETIME`/`FLD_DBVERSION`
-（对应 `TCreature.DBVersion`，`server.md` §2.1）/`FLD_MAPNAME`/`CX`/`CY`/`DIR`。
+**`TBL_CHARACTER`（42 descriptors）** —— 角色主记录字段；builder marks both `FLD_CHARACTER` and `FLD_USERID` as keys. Contains `FLD_DELETED` soft-delete flag, update date, DB version, map/coordinates, stats and state fields.
 
-**`TBL_ITEM`（24 字段）** 主键 **`FLD_TYPE`** —— 注意主键是**类型**而非唯一 ID，
-说明是**按类型索引的物品表**（可能是模板表而非实例表）。
+**`TBL_ITEM`（25 descriptors）** builder keys are `FLD_CHARACTER` + `FLD_TYPE`; source does not justify interpreting type as a standalone unique key or template table.
 
-**`TBL_ITEMGIVE`（9 字段）三主键** `FLD_SERVER`+`FLD_CHARACTER`+`FLD_DONE`
-—— **跨服发奖表**（`SERVER` 字段说明是分服共享的）。
+**`TBL_ITEMGIVE`（10 descriptors）** marks four keys: `FLD_GAMETYPE` + `FLD_SERVER` + `FLD_CHARACTER` + `FLD_DONE`.
 
-**`FLD_RESERVED`/`FLD_RESERVED1` 被注释掉**（`:15`）—— 版本演进痕迹。
+`FLD_RESERVED1` in `__ABILITYFIELDS` is commented out; `FLD_RESERVED` in `__BONUSABILITYFIELDS` is active.
 
-### 6.4 与 `System.db` 的关系
+### 6.4 与仓库 MirDB `.db` 文件的边界
 
-`reference/mir3-source/README.md` §3.7 记录的链路：
+`README.md` §3.7 与 `CDBServer` source show the legacy network/ODBC chain:
 
 ```
 GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000
-                                                      ↓
-                                            System.db 的上游
 ```
 
-**本节给出的是这条链路的表结构** —— 即 `System.db` 里**玩家相关数据**
-（角色/能力/物品/技能/任务）的**上游 SQL 定义**。
-
-> ⚠️ **注意边界**：`System.db` 是**世界静态数据**（`ItemInfo`/`MonsterInfo`/
-> `MagicInfo`/`MapInfo`/`NPCInfo`），而 `tablesdefine.cpp` 定义的是
-> **玩家存档表**（`TBL_CHARACTER`/`TBL_ABILITY`/`TBL_SAVEDITEM`…）。
-> **两者不是同一批数据** —— 玩家数据在 `Users.db` 一侧。
-> 本节的表结构对**理解 `Users.db`** 更有价值，对 `System.db` 是间接参考。
+`tablesdefine.cpp` describes SQL Server record fields used by this C++ server family. It does **not** prove that these SQL tables are the repository's binary MirDB `System.db` or `Users.db` files. `System.db` contains static world data; the binary `.db` files are separate storage formats. Any mapping to `Users.db` requires independent evidence.
 
 ### 6.5 未验证项
 
 | 项 | 原因 |
 |---|---|
-| `tablesdefine.h`（声明） | 未读 |
-| `TABLETYPE_*` 的完整枚举 | 只见到 `STR`/`INT`/`DAT` |
-| 各表的**完整字段清单与顺序** | 见 `sql-tables.tsv`（已提取） |
-| `TBL_QUEST`（3 字段）与 `QuestInfo` 的关系 | 未核 |
-| `ATOM*_MC` vs `ATOM*_MAC` 的语义差别 | 未追（疑魔攻/魔防） |
-| 这些表与 `Users.db` 的实际对应 | 需读 `Users.db` 侧（超出本 Goal） |
+| `TBL_QUEST` four-field SQL record and runtime `QuestInfo` relation | table/packing code read; end-to-end SQL data mapping not established |
+| `ATOM*_MC` vs `ATOM*_MAC` semantics | field names and conversion code read; meaning not established |
+| `fIsKey` versus actual SQL Server primary keys/indexes | source flag only; no SQL Server schema/runtime inspection |
+| legacy SQL records versus repository `Users.db` | no verified migration or one-to-one mapping |
+| EI primary-static / Zircon persistence correspondence | not established by this source read |
 
 ## 7. LoginServer 业务实现（Round 835–836）
 
@@ -370,3 +357,17 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - 容器以指针所有权 API 为主：`CList` 双向链表，`CQueue/CStack` 派生其尾/头操作，`CIndexMap` 并行维护 hash 与遍历 list；`CMap` 各桶再用 BST。静态检查发现 `IHT_UNTOUCH` 分支把 `m_nRealSize` 设成 flag 值 1 而非 `nDemandSize`；`CFixedSizeAllocator::Init` 分配数组后未设置 `m_nCapacity`，`ConstructFreeList(0,m_nCapacity)` 得到空区间。两者属于源码缺陷，不是运行实测。
 - HTTP/URL、Base64、quoted-printable、UUDecode、MIME/POP3、脚本/注册表/日期日志是同一库的工具表面；本轮并未证明它们都从登录主流程调用。`CMimeDecoder` 对传入响应按 C 字符串查找边界；非 NUL 缓冲的完整性依赖调用方。`CVtImage` 包装 Victor 库的 BIF/BMP/GIF/JPG/PCX/PNG/TGA 打开/保存和编辑；`RealizePalette` 方法体调用同名方法，源码上形成自递归；选区 `Rotate` 分支若底层旋转失败仍落到 `return true`。这些路径均未在 Windows 上运行。
 - 本轮不构建 Win32 库、不启动登录服、不连接 ODBC、不调用 CodeBase，也不执行任一数据库变更 UI；保留 EI primary-static 与 Zircon 认证行为的对照边界。
+
+## 8. DataBaseServer 实现（Round 837）
+
+- `DBSvr.vcproj` 是 VS 7.10 Win32 应用：编译 `DBSvr/` 处理器及 `Common/endecode.cpp`、`mir2packet.cpp`、`sqlhandler.cpp`，并编译 `_Oranze Library/netiocp.cpp`；通过 `_Oranze Library.lib` 链接。`Def/database.cpp` 和 `Def/EnDecode.cpp` 不在该项目文件列表中：实际服务 ODBC 路径来自链接库中的 ODBC wrapper，线格式实现来自 `Common/endecode.cpp`，不能把同名 `Def/` API 当作当前服务实现。
+- `CDBServer::Startup` 读取配置、`badid.txt`、`!serverinfo.txt` 和 `MapInfo.txt`，建 ODBC pools，连接 LoginServer，并分别接受 GameServer 与 RunGate。timer 首次请求 LoginServer 公钥并每 10 秒报在线数；LoginServer 重连后 `bRequestPublicKey` 未复位，源码不保证会再次请求公钥。
+- LoginServer 成功认证时向 DataBaseServer 添加 `{ID, cert, paymode}` admission；RunGate 只接受 admission 中 ID 与 cert 均匹配的用户，随后可查询角色、创建、软删除或选择角色。字符查询按 account ID 过滤未删除记录；创建会校验名字长度/字符、禁用词、发型/职业/性别并查重。角色表插入与 quest 行插入的结果处理不一致：quest 成功可将响应置成功，即便角色插入未返回行；反之角色行成功、quest 行失败时，响应仍可保留成功值。
+- 角色软删除的 SQL 条件只有 `FLD_CHARACTER`，不含 account ID；处理器检查 admission，但源码路径没有显式校验该角色属于当前 account。此为静态边界，不据此声称存在可利用漏洞。选角查询同时按角色名和 account ID 过滤；多 endpoint 时地址与端口由两个独立随机选择调用取得，存在组合不一致的源码可能。
+- GameServer 收包按 `#...!` 拆帧，解出命令和正文，并以 certification 派生的六个编码字节校验 trailer；分派包括角色加载/保存和 friend/tag/relationship 操作。加载从 `TBL_CHARACTER` 取记录，再访问 magic、quest、bag、saved-item 等数据；账号库 `TBL_ITEMGIVE` 的离线金币补发路径会标记记录完成后加金币，路径未检查账号 ODBC pool 指针。能力表加载仍为注释代码。
+- 保存路径要求解码记录正文为硬编码 9324 字节，开启事务并更新 character、magic、items、quest；但 `fCommit` 与 `EndTran(true)` 的结果没有共同控制最终成功响应，且部分 helper 忽略查询返回值并直接报告成功。好友/标签/关系处理器还构造 stored-procedure SQL 字符串；多个更新分支的成功响应被注释而 `returnvalue` 留为 false，`OnTagNotReadCount` 在无行时可能读取未初始化计数。均为源代码读数，未对 SQL Server 运行或写库。
+- `sqlhandler.cpp` 的 `_makesql` UPDATE 生成器把 DAT 赋值写到 where 缓冲、用错误计数器生成赋值分隔符，DBL where 格式用 `%d` 接收 double；`_makesqlparam` 的 UPDATE 逗号计数和 DAT 缓冲也有相似缺陷。这里构造的是原始 SQL 字符串，不是绑定参数。`tablesdefine.cpp` 的 `fIsKey` 是 SQL 生成器内部查询条件标志，不能据此断言 SQL Server 物理主键。
+- `tablesdefine.h` 是 `#pragma pack(1)` 玩家记录模型；表数组上限包括 46 个 bag item、25 个 magic、100 个 saved item。`_setrecordTBagItem` 遇到未知类型时顺序分配 bag slot 而无可见上限检查；Prefix 字段在 load/save 中显式清零而不持久化。SQL 表字段抽取器在 Round 837 修复：数组声明同一行的首个字段现在计入，`//` 后注释字段不再计入；回归测试覆盖首字段与注释字段。修正结果为 11 组、175 个活动字段描述符，不是旧报告记录的 165。
+- DataBaseServer `_Oranze Library/` 64 个文件中，63 个与 Round 836 已全读的 LoginServer 副本 SHA-256 完全一致；`prime.cpp` 全读后仅见 `sqrt` 实参显式 `double` 转换差异。`Common/endecode.cpp/.h` 与 LoginServer 版本字节一致；DataBaseServer `Common/mir2packet.cpp` 的三处 `Attach` 路径缺少 LoginServer 版本的 `MIR2PACKET_MAXSIZE` 防护。细目见 coverage ledger 与 `sql-tables.tsv`。
+- `CMsgFilter` 将 `%s` 读入固定 12 字节 token，且目标为 1024 项数组；源码未见逐 token 长度或项目数上限检查。配置对话框把 ODBC 用户/密码明文写入 `DBSvr.ini`，默认值含 `sa`。`CDBSvrOdbcPool` 默认按 CPU 数×8 建连接，分配在线性临界区内轮询；耗尽返回 null，重建失败会留下不可用 slot。
+- 以上是 C++ 服务源码和项目文件证据，不是 EI `System.db` / `Users.db` 的生成链证据，也不推出 Zircon 运行语义。本轮未执行 Win32 构建、服务启动、ODBC/SQL 查询或数据库写入；不把源码可见缺陷描述为已运行验证的故障。

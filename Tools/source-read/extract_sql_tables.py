@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""提取 SQL 表定义（DataBaseServer/DBSvr/tablesdefine.cpp）。
+"""提取 DataBaseServer/DBSvr/tablesdefine.cpp 的 SQL 字段元数据。
 
-**这是 `System.db` 的上游 SQL 表结构**。
-格式：`MIRDB_FIELDS __XXXFIELDS[] = { { "FLD_NAME", TABLETYPE_XXX, is_primary, size }, ... };`
+此表描述源码声明的 SQL Server 字段，不等同于 System.db/Users.db 文件结构。
+`MIRDB_FIELDS` 中的 `fIsKey` 是查询/更新生成器的键字段标志，不代表已验证数据库约束。
 
 产出 docs/source-vs-reverse/sql-tables.tsv
-列: array  table_hint  field  type  primary  size  src_line
+列: array  table_hint  field  type  key_flag  size  src_line
 """
 from __future__ import annotations
 
@@ -52,17 +52,18 @@ def main() -> int:
     rows = []
     cur_arr = ""
     for i, line in enumerate(lines, 1):
-        ma = RE_ARRAY.search(line)
+        # First field often shares the array declaration line; ignore // comments.
+        code_line = line.split("//", 1)[0]
+        ma = RE_ARRAY.search(code_line)
         if ma:
             cur_arr = ma.group(1)
-            continue
-        for m in RE_FIELD.finditer(line):
+        for m in RE_FIELD.finditer(code_line):
             rows.append({
                 "array": cur_arr or "(未归属)",
                 "table_hint": "",
                 "field": m.group(1),
                 "type": m.group(2),
-                "primary": m.group(3),
+                "key_flag": m.group(3),
                 "size": m.group(4),
                 "src_line": i,
             })
@@ -73,26 +74,26 @@ def main() -> int:
     for r in rows:
         r["table_hint"] = tbl_map.get(r["array"], "")
 
-    from collections import Counter, OrderedDict
+    from collections import OrderedDict
     by: dict[str, list] = OrderedDict()
     for r in rows:
         by.setdefault(r["array"], []).append(r)
 
     print(f"字段数组: {len(by)}   字段总数: {len(rows)}")
     print()
-    print("%-26s %-16s %4s  %s" % ("数组", "表名", "字段", "主键字段"))
+    print("%-26s %-16s %4s  %s" % ("数组", "表名", "字段", "键字段(fIsKey)"))
     for arr, items in by.items():
-        pk = [x["field"] for x in items if x["primary"] == "true"]
+        key_fields = [x["field"] for x in items if x["key_flag"] == "true"]
         print("%-26s %-16s %4d  %s" % (arr, tbl_map.get(arr, "—"), len(items),
-                                       ", ".join(pk)))
+                                       ", ".join(key_fields)))
 
     if args.stdout:
-        cols = ["array", "table_hint", "field", "type", "primary", "size", "src_line"]
+        cols = ["array", "table_hint", "field", "type", "key_flag", "size", "src_line"]
         for r in rows:
             print("\t".join(str(r[c]) for c in cols))
         return 0
 
-    cols = ["array", "table_hint", "field", "type", "primary", "size", "src_line"]
+    cols = ["array", "table_hint", "field", "type", "key_flag", "size", "src_line"]
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\t".join(cols) + "\n")
         for r in rows:

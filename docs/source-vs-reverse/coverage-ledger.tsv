@@ -174,8 +174,8 @@ D-client	Source/Client/Light/Light0c.pas	100	2696	pending
 D-client	Source/Client/Light/Light0d.pas	100	2696	pending	
 E-db	Source/DataBaseServer/Def/DynamicArray.cpp	76	1238	pending	
 E-db	Source/DataBaseServer/Def/DynamicArray.h	158	3149	pending	
-E-db	Source/DataBaseServer/Def/EnDecode.cpp	207	4527	pending	
-E-db	Source/DataBaseServer/Def/EnDecode.h	71	2755	pending	
+E-db	Source/DataBaseServer/Def/EnDecode.cpp	207	4527	covered	Round 837 full 1–207: standalone ANSI/Unicode 6bit codec; DBSvr.vcproj does not compile this file (app compiles Common/endecode.cpp)
+E-db	Source/DataBaseServer/Def/EnDecode.h	71	2755	covered	Round 837 full 1–71: standalone codec declarations; distinct from active Common/endecode.h
 E-db	Source/DataBaseServer/Def/IocpHelper.cpp	77	1412	pending	
 E-db	Source/DataBaseServer/Def/IocpHelper.h	42	691	pending	
 E-db	Source/DataBaseServer/Def/Misc.cpp	182	3877	pending	
@@ -185,106 +185,106 @@ E-db	Source/DataBaseServer/Def/RegstryHandler.cpp	82	2118	pending
 E-db	Source/DataBaseServer/Def/ServerSockHandler.cpp	284	8611	pending	
 E-db	Source/DataBaseServer/Def/ServerSockHandler.h	43	1111	pending	
 E-db	Source/DataBaseServer/Def/StaticArray.h	81	1145	pending	
-E-db	Source/DataBaseServer/Def/database.cpp	469	8411	pending	Round 820: 数据库定义，未读
-E-db	Source/DataBaseServer/Def/database.h	139	2289	pending	
+E-db	Source/DataBaseServer/Def/database.cpp	469	8411	covered	Round 837 full 1–469: standalone ODBC wrapper; not listed in DBSvr.vcproj, which resolves database.h from linked _Oranze Library
+E-db	Source/DataBaseServer/Def/database.h	139	2289	covered	Round 837 full 1–139: standalone CDatabase/CConnection/CRecordset API; not the linked DBSvr ODBC implementation
 E-db	Source/DataBaseServer/Def/list.h	402	6578	pending	
 E-db	Source/DataBaseServer/Def/queue.h	50	689	pending	
 E-db	Source/DataBaseServer/Def/syncobj.cpp	28	390	pending	
 E-db	Source/DataBaseServer/Def/syncobj.h	33	442	pending	
-E-db	Source/DataBaseServer/_Oranze Library/astar.h	426	8521	pending	
-E-db	Source/DataBaseServer/_Oranze Library/base64.cpp	131	2624	pending	
-E-db	Source/DataBaseServer/_Oranze Library/base64.h	35	647	pending	
-E-db	Source/DataBaseServer/_Oranze Library/bstree.h	478	9355	pending	
-E-db	Source/DataBaseServer/_Oranze Library/codebase.cpp	302	4471	pending	
-E-db	Source/DataBaseServer/_Oranze Library/codebase.h	121	2211	pending	
-E-db	Source/DataBaseServer/_Oranze Library/database.cpp	508	9146	pending	
-E-db	Source/DataBaseServer/_Oranze Library/database.h	143	2411	pending	
-E-db	Source/DataBaseServer/_Oranze Library/datatype.h	13	191	pending	
-E-db	Source/DataBaseServer/_Oranze Library/datelog.cpp	91	1615	pending	
-E-db	Source/DataBaseServer/_Oranze Library/datelog.h	37	510	pending	
-E-db	Source/DataBaseServer/_Oranze Library/error.cpp	35	449	pending	
-E-db	Source/DataBaseServer/_Oranze Library/error.h	32	347	pending	
-E-db	Source/DataBaseServer/_Oranze Library/file.cpp	92	1160	pending	
-E-db	Source/DataBaseServer/_Oranze Library/file.h	35	596	pending	
-E-db	Source/DataBaseServer/_Oranze Library/fsa.h	141	2269	pending	
-E-db	Source/DataBaseServer/_Oranze Library/http.cpp	960	20626	pending	
-E-db	Source/DataBaseServer/_Oranze Library/http.h	182	4353	pending	
-E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.cpp	82	1768	pending	
-E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.h	24	403	pending	
-E-db	Source/DataBaseServer/_Oranze Library/indexmap.h	107	1920	pending	
-E-db	Source/DataBaseServer/_Oranze Library/list.h	423	6980	pending	
-E-db	Source/DataBaseServer/_Oranze Library/mail.cpp	172	2783	pending	
-E-db	Source/DataBaseServer/_Oranze Library/mail.h	77	1351	pending	
-E-db	Source/DataBaseServer/_Oranze Library/map.h	236	4512	pending	
-E-db	Source/DataBaseServer/_Oranze Library/mime.cpp	626	12444	pending	
-E-db	Source/DataBaseServer/_Oranze Library/mime.h	131	2543	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netbase.cpp	180	3661	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netbase.h	64	1311	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netiocp.cpp	1045	22074	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netiocp.h	208	4942	pending	
-E-db	Source/DataBaseServer/_Oranze Library/nettcp.cpp	331	6567	pending	
-E-db	Source/DataBaseServer/_Oranze Library/nettcp.h	101	2307	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netudp.cpp	629	13868	pending	
-E-db	Source/DataBaseServer/_Oranze Library/netudp.h	190	4597	pending	
-E-db	Source/DataBaseServer/_Oranze Library/pop3.cpp	309	6571	pending	
-E-db	Source/DataBaseServer/_Oranze Library/pop3.h	81	1501	pending	
-E-db	Source/DataBaseServer/_Oranze Library/pqueue.h	210	3954	pending	
-E-db	Source/DataBaseServer/_Oranze Library/prime.cpp	37	475	pending	
-E-db	Source/DataBaseServer/_Oranze Library/prime.h	25	327	pending	
-E-db	Source/DataBaseServer/_Oranze Library/queue.h	50	689	pending	
-E-db	Source/DataBaseServer/_Oranze Library/quotedpr.cpp	150	2889	pending	
-E-db	Source/DataBaseServer/_Oranze Library/quotedpr.h	29	557	pending	
-E-db	Source/DataBaseServer/_Oranze Library/registry.cpp	92	1731	pending	
-E-db	Source/DataBaseServer/_Oranze Library/registry.h	44	635	pending	
-E-db	Source/DataBaseServer/_Oranze Library/script.cpp	144	2576	pending	
-E-db	Source/DataBaseServer/_Oranze Library/script.h	64	1095	pending	
-E-db	Source/DataBaseServer/_Oranze Library/slist.h	23	263	pending	
-E-db	Source/DataBaseServer/_Oranze Library/squeue.h	23	269	pending	
-E-db	Source/DataBaseServer/_Oranze Library/stack.h	50	663	pending	
-E-db	Source/DataBaseServer/_Oranze Library/streambf.h	114	1918	pending	
-E-db	Source/DataBaseServer/_Oranze Library/stringex.cpp	405	5916	pending	
-E-db	Source/DataBaseServer/_Oranze Library/stringex.h	71	1503	pending	
-E-db	Source/DataBaseServer/_Oranze Library/syncobj.cpp	56	773	pending	
-E-db	Source/DataBaseServer/_Oranze Library/syncobj.h	42	591	pending	
-E-db	Source/DataBaseServer/_Oranze Library/url.cpp	184	3621	pending	
-E-db	Source/DataBaseServer/_Oranze Library/url.h	44	703	pending	
-E-db	Source/DataBaseServer/_Oranze Library/util.cpp	63	988	pending	
-E-db	Source/DataBaseServer/_Oranze Library/util.h	43	719	pending	
-E-db	Source/DataBaseServer/_Oranze Library/uucp.cpp	108	1940	pending	
-E-db	Source/DataBaseServer/_Oranze Library/uucp.h	27	450	pending	
-E-db	Source/DataBaseServer/_Oranze Library/vector.h	157	2703	pending	
-E-db	Source/DataBaseServer/_Oranze Library/vtimage.cpp	963	21754	pending	
-E-db	Source/DataBaseServer/_Oranze Library/vtimage.h	148	3325	pending	
-E-db	Source/DataBaseServer/DBSvr/DBSvr.sln	21	899	pending	
-E-db	Source/DataBaseServer/DBSvr/DBSvr.vcproj	531	13738	pending	
-E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.cpp	164	4145	pending	
-E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.h	48	833	pending	
-E-db	Source/DataBaseServer/DBSvr/dlgcfg.cpp	216	7336	pending	
-E-db	Source/DataBaseServer/DBSvr/dlgcfg.h	57	950	pending	
-E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.cpp	177	2958	pending	
-E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.h	42	700	pending	
-E-db	Source/DataBaseServer/DBSvr/mir2wnd.cpp	428	9597	pending	
-E-db	Source/DataBaseServer/DBSvr/mir2wnd.h	89	1842	pending	
-E-db	Source/DataBaseServer/DBSvr/msgfilter.cpp	70	991	pending	
-E-db	Source/DataBaseServer/DBSvr/msgfilter.h	28	387	pending	
-E-db	Source/DataBaseServer/DBSvr/netdbserver.cpp	765	17209	pending	
-E-db	Source/DataBaseServer/DBSvr/netdbserver.h	123	2918	pending	
-E-db	Source/DataBaseServer/DBSvr/netgameserver.cpp	2222	58637	partial	Round 820: g_cmdList DB_* 表项
-E-db	Source/DataBaseServer/DBSvr/netgameserver.h	90	3770	pending	
-E-db	Source/DataBaseServer/DBSvr/netloginserver.cpp	220	4363	covered	Round 803 公钥链
-E-db	Source/DataBaseServer/DBSvr/netloginserver.h	48	896	pending	
-E-db	Source/DataBaseServer/DBSvr/netrungate.cpp	1137	25967	covered	Round 802 分派表 4 条
-E-db	Source/DataBaseServer/DBSvr/netrungate.h	83	1713	pending	
-E-db	Source/DataBaseServer/DBSvr/protocol.h	112	3655	covered	Round 803 opcode 表
-E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	covered	Round 828: 11张表/165字段全提取(MIRDB_FIELDS四元组)+七元素体系+主键；tablesdefine.h待读
-E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	pending	Round 828: 表定义声明，未读
-E-db	Source/DataBaseServer/DBSvr/Res/resource.h	38	1471	pending	
-E-db	Source/DataBaseServer/Common/endecode.cpp	382	11764	pending	
-E-db	Source/DataBaseServer/Common/endecode.h	87	2085	pending	
-E-db	Source/DataBaseServer/Common/mir2packet.cpp	110	2056	pending	
-E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	pending	
-E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	pending	Round 820: SQL/ODBC 层，未读
-E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	pending	
+E-db	Source/DataBaseServer/_Oranze Library/astar.h	426	8521	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/astar.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/base64.cpp	131	2624	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/base64.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/base64.h	35	647	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/base64.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/bstree.h	478	9355	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/bstree.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/codebase.cpp	302	4471	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/codebase.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/codebase.h	121	2211	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/codebase.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/database.cpp	508	9146	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/database.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/database.h	143	2411	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/database.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/datatype.h	13	191	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/datatype.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/datelog.cpp	91	1615	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/datelog.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/datelog.h	37	510	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/datelog.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/error.cpp	35	449	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/error.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/error.h	32	347	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/error.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/file.cpp	92	1160	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/file.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/file.h	35	596	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/file.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/fsa.h	141	2269	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/fsa.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/http.cpp	960	20626	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/http.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/http.h	182	4353	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/http.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.cpp	82	1768	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/imsgfmt.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/imsgfmt.h	24	403	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/imsgfmt.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/indexmap.h	107	1920	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/indexmap.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/list.h	423	6980	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/list.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/mail.cpp	172	2783	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/mail.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/mail.h	77	1351	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/mail.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/map.h	236	4512	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/map.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/mime.cpp	626	12444	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/mime.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/mime.h	131	2543	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/mime.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netbase.cpp	180	3661	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netbase.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netbase.h	64	1311	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netbase.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netiocp.cpp	1045	22074	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netiocp.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netiocp.h	208	4942	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netiocp.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/nettcp.cpp	331	6567	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/nettcp.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/nettcp.h	101	2307	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/nettcp.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netudp.cpp	629	13868	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netudp.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/netudp.h	190	4597	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/netudp.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/pop3.cpp	309	6571	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/pop3.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/pop3.h	81	1501	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/pop3.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/pqueue.h	210	3954	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/pqueue.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/prime.cpp	37	475	covered	Round 837 full 1–37; only code difference from LoginServer copy is explicit double cast in sqrt argument
+E-db	Source/DataBaseServer/_Oranze Library/prime.h	25	327	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/prime.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/queue.h	50	689	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/queue.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/quotedpr.cpp	150	2889	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/quotedpr.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/quotedpr.h	29	557	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/quotedpr.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/registry.cpp	92	1731	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/registry.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/registry.h	44	635	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/registry.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/script.cpp	144	2576	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/script.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/script.h	64	1095	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/script.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/slist.h	23	263	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/slist.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/squeue.h	23	269	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/squeue.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/stack.h	50	663	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/stack.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/streambf.h	114	1918	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/streambf.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/stringex.cpp	405	5916	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/stringex.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/stringex.h	71	1503	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/stringex.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/syncobj.cpp	56	773	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/syncobj.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/syncobj.h	42	591	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/syncobj.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/url.cpp	184	3621	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/url.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/url.h	44	703	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/url.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/util.cpp	63	988	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/util.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/util.h	43	719	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/util.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/uucp.cpp	108	1940	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/uucp.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/uucp.h	27	450	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/uucp.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/vector.h	157	2703	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/vector.h; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/vtimage.cpp	963	21754	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/vtimage.cpp; full source read Round 836
+E-db	Source/DataBaseServer/_Oranze Library/vtimage.h	148	3325	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/vtimage.h; full source read Round 836
+E-db	Source/DataBaseServer/DBSvr/DBSvr.sln	21	899	covered	Round 837 full 1–21: VS solution Debug/Release Win32
+E-db	Source/DataBaseServer/DBSvr/DBSvr.vcproj	531	13738	covered	Round 837 full 1–531: VS 7.10 Win32 app; compiles Common SQL/wire and selected IOCP source, links _Oranze Library.lib
+E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.cpp	164	4145	covered	Round 837 full 1–164: config load/autostart, service UI lifecycle, CDBServer/pool accessors
+E-db	Source/DataBaseServer/DBSvr/dbsvrwnd.h	48	833	covered	Round 837 full 1–48: CDBSvrWnd state/API and UI log colors
+E-db	Source/DataBaseServer/DBSvr/dlgcfg.cpp	216	7336	covered	Round 837 full 1–216: DBSvr.ini load/write (including plaintext ODBC credentials), defaults and port keys
+E-db	Source/DataBaseServer/DBSvr/dlgcfg.h	57	950	covered	Round 837 full 1–57: SCFG and configuration-dialog interface
+E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.cpp	177	2958	covered	Round 837 full 1–177: CPU×8 ODBC pool, round-robin allocation, reconnect lifecycle
+E-db	Source/DataBaseServer/DBSvr/mir2dbhandler.h	42	700	covered	Round 837 full 1–42: connection-slot and pool state/API
+E-db	Source/DataBaseServer/DBSvr/mir2wnd.cpp	428	9597	covered	Round 837 full 1–428: Win32 message loop, log/list view, window dispatch
+E-db	Source/DataBaseServer/DBSvr/mir2wnd.h	89	1842	covered	Round 837 full 1–89: base window and virtual lifecycle API
+E-db	Source/DataBaseServer/DBSvr/msgfilter.cpp	70	991	covered	Round 837 full 1–70: badid.txt loader and character replacement filter
+E-db	Source/DataBaseServer/DBSvr/msgfilter.h	28	387	covered	Round 837 full 1–28: 1024-entry fixed filter storage
+E-db	Source/DataBaseServer/DBSvr/netdbserver.cpp	765	17209	covered	Round 837 full 1–765: startup, ODBC pools, LoginServer reconnect, GS/RunGate accept, admission/map routing
+E-db	Source/DataBaseServer/DBSvr/netdbserver.h	123	2918	covered	Round 837 full 1–123: CDBServer topology, timer/config/list state/API
+E-db	Source/DataBaseServer/DBSvr/netgameserver.cpp	2222	58637	covered	Round 837 full 1–2222: DB_* dispatch, record load/save, friend/tag/relationship stored procedures, ODBC/SQL write paths
+E-db	Source/DataBaseServer/DBSvr/netgameserver.h	90	3770	covered	Round 837 full 1–90: CGameServer handler and save/load helper API
+E-db	Source/DataBaseServer/DBSvr/netloginserver.cpp	220	4363	covered	Round 837 full 1–220: ISM admission, user count, public key and reconnect-facing handlers
+E-db	Source/DataBaseServer/DBSvr/netloginserver.h	48	896	covered	Round 837 full 1–48: LoginServer wire API
+E-db	Source/DataBaseServer/DBSvr/netrungate.cpp	1137	25967	covered	Round 837 full 1–1137: character query/create/soft-delete/select, gate relay parsing and responses
+E-db	Source/DataBaseServer/DBSvr/netrungate.h	83	1713	covered	Round 837 full 1–83: gate-user session flags and handler API
+E-db	Source/DataBaseServer/DBSvr/protocol.h	112	3655	covered	Round 837 full 1–112: Login/GS/RunGate packet IDs and packed session structures
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.cpp	595	25983	covered	Round 837 full 1–595: 11 arrays/175 active field descriptors; extraction fixed for inline first fields and excludes // comments
+E-db	Source/DataBaseServer/DBSvr/tablesdefine.h	412	9155	covered	Round 837 full 1–412: packed FDBRecord/player structs, sizes, table and conversion API
+E-db	Source/DataBaseServer/DBSvr/Res/resource.h	38	1471	covered	Round 837 full 1–38: configuration controls and service command IDs
+E-db	Source/DataBaseServer/Common/endecode.cpp	382	11764	covered	Round 837 SHA-256 identical to LoginServer/Common/endecode.cpp; full source read Round 835
+E-db	Source/DataBaseServer/Common/endecode.h	87	2085	covered	Round 837 SHA-256 identical to LoginServer/Common/endecode.h; full source read Round 835
+E-db	Source/DataBaseServer/Common/mir2packet.cpp	110	2056	covered	Round 837 full 1–110: unlike LoginServer copy, maximum-size guards are commented/absent in all three Attach paths
+E-db	Source/DataBaseServer/Common/mir2packet.h	41	713	covered	Round 837 SHA-256 identical to LoginServer/Common/mir2packet.h; full source read Round 835
+E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	covered	Round 837 full 1–444: SQL generation from raw strings/packed fields; UPDATE builders omit assignment commas and mishandle DAT buffer
+E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	covered	Round 837 full 1–38: SQL/table types STR/INT/DAT/DBL and fIsKey/field-size contracts
 C-common	Source/Common/DES.pas	563	16649	partial	Round 824: DecryBuffer 定位（.Lib 加密用）；实现主体待读
 C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
 C-common	Source/Common/GList.pas	547	14813	pending	

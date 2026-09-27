@@ -170,7 +170,7 @@
 | 客户端→RunGate | `GatePort = 7200` → GameServer `5000` | **新增** |
 | GameServer→DataBaseServer | `GS_BPORT = 6000` | **新增** |
 | DataBaseServer→LoginServer | `LS_CPORT = 5600` | **新增** |
-| DataBaseServer→SQL Server 2000 | ODBC | 与本仓库「`System.db` 上游是 SQL 库」结论一致 |
+| DataBaseServer→SQL Server 2000 | ODBC | SQL Server record path; not proof that binary `System.db` is generated from or backed by this connection |
 
 > ⚠️ 被排除的 `LoginSvr.ini` / `DBSvr.ini` 含 `ODBC_ID=sa` / `ODBC_PW=sa`
 > （SQL Server 2000 默认口令）。**禁止**复制进仓库。
@@ -180,15 +180,15 @@ Zircon 的对应关系；不改变现有结论，属**补充**。
 
 ---
 
-## D5. 数据表/配置（System.db 上游）
+## D5. SQL records and text configuration are separate evidence tracks
 
 | | |
 |---|---|
-| 原版 | `System.db` = .NET BinaryFormatter；上游 SQL Server 2000（`Mud3 Preview/SQL/`，687 MB，已排除） |
-| 源码 | 服务端按名读取：`MapInfo.txt` `MonGen.txt` `Merchant.txt` `Npcs.txt` `GuardList.txt` `AdminList.txt` `MiniMap.txt` `StartPoint.txt` `SafePoint.txt` `MakeItem.txt` `DecoItem.txt` `DragonItem.txt` `GenMsg.txt` `MapQuest.txt` `UnbindList.txt` `StartupQuest.txt` `AttackSabukWall.txt` `Sabuk.txt` `enckey.txt`；`svMain.pas:619` `EnvirDir := ini.ReadString('Share','EnvirDir','.\Envir\')` |
+| 原版 | `System.db` = .NET BinaryFormatter. An excluded `Mud3 Preview/SQL/` dump (687 MB) exists, but this source read does not establish that it is `System.db`'s upstream |
+| 源码 | `DataBaseServer/DBSvr/tablesdefine.cpp` declares SQL Server player-record tables; GameServer→DataBaseServer→ODBC is separate from `System.db`/`Users.db` MirDB files. Server text configuration is read by name: `MapInfo.txt` `MonGen.txt` `Merchant.txt` `Npcs.txt` `GuardList.txt` `AdminList.txt` `MiniMap.txt` `StartPoint.txt` `SafePoint.txt` `MakeItem.txt` `DecoItem.txt` `DragonItem.txt` `GenMsg.txt` `MapQuest.txt` `UnbindList.txt` `StartupQuest.txt` `AttackSabukWall.txt` `Sabuk.txt` `enckey.txt`; `svMain.pas:619` sets `EnvirDir := ini.ReadString('Share','EnvirDir','.\Envir\')` |
 | 差异 | 源码只读 `Mud3-Config/Envir/`（Mir2 风格 391 txt）；`Mud3-Config/Envir3/`（1729 txt + 69 `.gen`）在整个包内 grep 命中 **0 次** → **本版源码不读 Envir3** |
-| 结论 | `Envir3/` 属另一/更新构建，只能当**独立参考资料**（含 `QuestDiary/` 任务脚本树、`Mon_Def/*.gen` 刷怪定义） |
-| 处理 | 本仓库 `Tools/questdata`、dbeditor workspace 与 `Envir3/` 的对照**必须标注**「源码不读它」这一前提 |
+| 结论 | `Envir3/` 属另一/更新构建，只能当**独立参考资料**（含 `QuestDiary/` 任务脚本树、`Mon_Def/*.gen` 刷怪定义）；DataBaseServer 的 SQL player-record schema is not a verified mapping to the EI `.db` files |
+| 处理 | 本仓库 `Tools/questdata`、dbeditor workspace 与 `Envir3/` 的对照**必须标注**「源码不读它」这一前提；`tablesdefine.cpp` 只按 legacy SQL schema 记录 |
 
 ---
 
