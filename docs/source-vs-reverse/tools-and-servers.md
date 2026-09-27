@@ -154,6 +154,7 @@ SendSocket(EncodeMessage(msg)
 | 顶层 `.pas` | **非第三方部分**（图库读写、调色板、Alpha 处理等） |
 | `Common/Grobal2.pas`（2,663 行） | 协议表第三份副本（`protocol.md` §1.1 已 diff） |
 | `Common/EDCode.pas` | This ImageEditor copy declares unit `EDcode` and its 6-bit message/string/buffer APIs, but no ImageEditor DPR or `uses` caller was found. The GameServer project explicitly maps `EDcode` to the separate `Source/Common/EDCode.pas`; `Source/GameServer/EDCode.pas` is another same-named copy. Keep these paths distinct |
+| `Common/HUtil32.pas` | 2,216-line helper copy for parsing, numeric/date/file/pointer utilities, bitmap/GDI operations and legacy high-byte text transforms. It declares the same `HUtil32` unit name as the ImageEditor root copy but has a different interface. Common `EDCode`/`MfdbDef`/`mudutil` import it; ImageEditor forms use unqualified `HUtil32`, and the DPR contains no explicit Common path binding; build/search-path resolution is unverified |
 | `Common/DES.pas` | 独立的 `DES` 单元，含置换/S 盒表、16 轮核心及字符串/十六进制/缓冲区包装。ImageEditor 源码未找到对此路径的显式引用；`wmMyImage.pas` 使用未限定的 `DES`，而根目录 `DES.pas` 也声明同名单元。编译器单位解析未验证；与 MapEdit.dpr 显式选择的 `Source/Common/DES.pas` 保持区分 |
 | **`Plug/`（62,337 行）** | ⚠️ **第三方组件，明确排除** |
 
