@@ -12145,3 +12145,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔DFM/primary/source 边界〕** `dfm_parse.py tree` 对 `reference/mir3-source/Source/Tools/ImageEditor/FrmMain.dfm` 因其为 text DFM（首字节为 `object FormMain:`，不是 `TPF0`）而拒绝解析；source-reader 搜索确认 DFM 第 16 行绑定 `OnCreate = FormCreate`。这建立静态事件绑定，但不证明方法已在运行时调用。**Primary:** 未比较 EI 版本资源、系统 helper 或 UI。**Source:** Preview `MyCommon`、`FrmMain` method body 与文本 DFM 绑定。**Difference:** unit import/static event binding 不证明系统 helpers 被实际调用。**Conclusion:** 只记录静态实现，不推断硬件/进程/版本 resource 的实际访问，不外推 EI 行为。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 36 行将 `MyCommon.pas` 的 526 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 264/110886，partial 17/90886，excluded 43/60230，pending 69/53322。四个授权文档路径的 `git diff --check` 通过。未运行 ImageEditor、进程枚举或硬件查询。
+
+## Round 856 — 2026-09-27：ImageEditor MyD3DX9 Direct3DX bindings 与 export caller
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/ImageEditor/MyD3DX9.pas`（1–11277，CP949），并在 `Source` 内搜索 unit import、D3DX API 名和调用链。全文件前半的 `interface` 为 Pascal 导入声明/类型定义，行 10416 起是本地 helper implementation；没有编译 ImageEditor 或调用 D3DX runtime。
+
+**〔来源/ABI〕** 文件自述从 `D3DX9.par` 生成/适配，列出 D3DX9 header family 与 v1.32（2006-10-29）。它依赖 `MyDirect3D9`、`MyDXTypes`、`Windows`、`ActiveX`、`SysUtils` 和 `include\DirectX.inc`；`.dproj` 配置 `DCC32`，unit/include search path 同时列出项目根和 `Plug\MyDirect9`。外部 API 声明使用 `stdcall`，COM interface 从 `IUnknown` 派生。math/core/shader/effect/mesh/shapes/texture/animation alias 在当前源配置都指向 `d3dx9_31.dll`（debug alias 同名；`D3DX_SDK_VERSION=31`，`D3DX_VERSION=$0902`）；独立 DLL define 被注释且在 alias 定义前执行 `UNDEF`。实现段只实现 Pascal-side 数学/值 helper 与 DDS skip-level/TX version token 等少量包装，并不实现导入的 D3DX runtime API。
+
+**〔实际调用边界〕** source-reader 在 root unit 外找到 `FrmAdd.pas`、`FrmOut.pas` 两个 import。`FrmAdd` 中 `D3DXCreateTextureFromFile` 示例是注释；唯一找到的实际外部 API caller 是 `FrmOut.SaveTextureToFile`，按 BMP/PNG/TGA/DDS 分支调用 ANSI `D3DXSaveTextureToFile`，palette 传 nil，忽略 HRESULT（FrmOut.pas:299–322）。alpha export 的正常纹理路径与创建空纹理的 fallback 都调用该过程（183–202）。`Plug\MyDirect9\include\MyD3DX9.pas` 是 ledger 单列的 excluded package copy，本轮只将 root unit 标记 covered；项目 search path 同时包含 root/package 目录，因此没有 Delphi build 时不确认实际 unit resolution。
+
+**〔primary/source 边界〕** **Primary:** 未比较 EI 原版 graphics binding、DLL 或渲染。**Source:** Preview ImageEditor D3DX9 declarations、local helpers、`.dproj` 设置与文本 callsites。**Difference:** 声明/import 与静态调用不能证明 unit 成功编译链接、`d3dx9_31.dll` 存在或图片实际写出。**Conclusion:** 仅记源码配置和引用边界；不外推 EI 等价性、runtime 或 ABI 兼容结果。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 37 行将 root `MyD3DX9.pas` 的 11277 行登记为 covered，package-path 副本仍独立 excluded。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 265/122163，partial 17/90886，excluded 43/60230，pending 68/42045。四个授权文档路径的 `git diff --check` 通过；staged additions（21 行）对 PEM private-key、AWS/GitHub token、credential-assignment、email patterns 扫描为 0 hits，人工复核未见其他敏感数据。未运行 Delphi 编译、ImageEditor 或 D3DX DLL。
