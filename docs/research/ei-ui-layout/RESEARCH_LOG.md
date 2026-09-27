@@ -12021,3 +12021,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔运行边界〕** `HasServerHeavyLoad` 只按 SavePlayers 数量 ≥1000 返回；`UsrEngn` 用它推迟建号/角色恢复和周期保存。`IsFinished` 只检保存队列，svMain 在 real-user count 为 0 时用它触发关闭，未包含 ready/change/DB-data 队列。均为静态路径；未运行 Windows、多服或 DB server。RunDB character-record transport 不等于 EI MirDB 文件。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 106 行登记 `FrnEngn.pas` 全读；README D5 与 `tools-and-servers.md` §14 记录队列关系、DB 边界与失败放弃分支。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 250/96710，partial 17/90886，excluded 43/60230，pending 83/67498。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 Windows GameServer/DB server。
+
+## Round 847 — 2026-09-27：GameServer `M2Share` 共享规则与坐标 helper
+
+**〔范围〕** 经 `Tools/source-read/read_src.py show` 全读 `GameServer/M2Share.pas`（1–771），并对 helper/constant 名在 `Source/GameServer` 范围 grep。已跟读 `ObjBase` 的 `CrossMap` 判定、`ObjMon`/`ObjMon3` 的 `SpitMap` 攻击循环，以及 `Magic`/`ObjBase` 的方向/位移函数调用；这些片段不登记为全文件覆盖。
+
+**〔共享数据与成长〕** `M2Share` 定义 `TSaveRcd`、带固定字符串字段的 `TReadyUserInfo`/`TChangeUserInfo`、`TUserOpenInfo` 等跨引擎 records；`TSaveRcd` 内同时放 `FDBRecord` 和 user/save 状态。`MAXLEVEL=101`、`MAXKINGLEVEL=61`、`ADJ_LEVEL=20`；101 档 `NEEDEXPS` 末值为 2,140,000,000。`GetBonusPoint` 的三个 job 分支只在 level>20 生效，分别按 `20+(lv div 10)*5`、`27+(lv div 10)*8`、`28+(lv div 10)*9` 计算；`GetLevelBonusSum` 累计逐级值。均是当前 Preview server source 的数值，不以此覆盖 EI 客户端/资源证据。
+
+**〔方向、距离与攻击 mask〕** `SpitMap`/`CrossMap` 均是 8×5×5 mask；怪物 caller 以中心坐标加 `(-2..2)` 遍历 SpitMap，`ObjBase` 用 `CrossMap[targdir, targetY-selfY+2, targetX-selfX+2]` 判攻击范围。`GetNextPosition` 只按 map 尺寸投影端点、不检查地形可走性；端点未变化时才返回 false。`GetNextDirectionNew` 与旧版只在一处纵向对齐下界比较上由 `>` 改为 `>=`，搜索到的调用分布是 Magic 使用 New、ObjBase 仍使用旧函数。
+
+**〔静态坐标缺陷〕** `GetFrontPosition` 与 `GetBackPosition` 对角 up-right/down-left 的 bounds predicate 和实际 ±X/±Y 更新不匹配；front 的两个分支都错用 X 边界方向，back 的两个分支对 X/Y 条件都错向或错轴。两函数在没有移动（如边界条件不成立）时仍无条件返回 TRUE；部分方向组合可不移动或越界。仅从源代码推导，未在地图/服务器运行验证。
+
+**〔物品与其它 helpers〕** `IsTakeOnAvailable` 按 wear slot 与 `StdMode` 组合检查，caller 在 `ObjBase`；`ObjNpc` 调用 upgrade/cheap-item 与 `GetMakeItemCondition`，后者返回 `MakeItemList` 中已有的 `TStringList` 对象。`GetTurnDir` 有 `ObjBase` caller；source grep 没有找到 `GetHpMpRate`、`IsDCItem`、`GetStrGoldStr` 的外部调用点。README D5、`tools-and-servers.md` §15 与 ledger 第 112 行记录 source-only 版本边界。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 将 771 行 `M2Share.pas` 从 pending 登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 251/97481，partial 17/90886，excluded 43/60230，pending 82/66727。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未比较 EI primary-static/Zircon，也未运行 Preview Windows server。

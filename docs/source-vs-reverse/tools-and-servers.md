@@ -428,3 +428,12 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `ChangeUserInfos` 经队列加载记录（传 `"1"` 作 uid/address、certify=1），仅在 `0 < Gold + ChangeGold < MAXGOLD` 时改金币并保存；成功才通知 `UserEngine.ChangeAndSaveOk`。`ObjBase` 的金币增减命令在目标不属于当前/其它服时走此路径。
 - `CmdMgr` 把编码后的用户消息入 `fDBDatas`；处理端通过 `RunDB.SendNonBlockDatas` → `SendRDBSocket(0, data)` 送 DB socket。`CmdMgr` 中旧的直接发送/等待循环是注释代码。`HasServerHeavyLoad` 仅检查保存队列数量达到 1000，影响 `UsrEngn` 的角色上线与周期保存；`IsFinished` 仅检查保存队列为空，并被关服 timer 使用。
 - 静态读数；未在 Windows GameServer/DB server 中运行。此队列和 RunDB character-record socket 不证明 EI MirDB `.db` 的格式或来源。
+
+## 15. GameServer `M2Share` shared records and rule helpers（Round 847）
+
+- Shared records include `TSaveRcd` (`FDBRecord` plus user/save bookkeeping), bounded `TReadyUserInfo` and `TChangeUserInfo`, and `TUserOpenInfo`; these are GameServer memory/queue contracts, not EI persistence declarations.
+- `MAXLEVEL=101`, `MAXKINGLEVEL=61`, `ADJ_LEVEL=20`; `NEEDEXPS[1..101]` ends at 2,140,000,000. `GetBonusPoint` returns 0 through level 20, then uses per-job step formulas; `ObjBase`/`UsrEngn` consume the progression values.
+- `SpitMap` and `CrossMap` are 8-direction × 5 × 5 byte masks; `ObjMon`/`ObjMon3` index `SpitMap` around creature center, while `ObjBase` uses `CrossMap` for target range. `GetNextPosition` computes a bounded endpoint only (no walkability test) and returns false only when the endpoint did not move.
+- Static coordinate defect: `GetFrontPosition` and `GetBackPosition` return true unconditionally. Their diagonal up-right/down-left branches use edge predicates inconsistent with the signed coordinate updates; the front helper can step beyond the x bound, while the back helper has mismatched x/y edge tests. No map/runtime reproduction was performed. `GetNextDirectionNew` changes one old `>` comparison to `>=`; callsites include `Magic` (new) and `ObjBase` (old).
+- Item helpers map wear slots to `StdMode` values (`IsTakeOnAvailable` in `ObjBase`; upgrade/cheap-item predicates and make-item lookup in `ObjNpc`). `GetMakeItemCondition` returns the stored `TStringList` from `MakeItemList`; source search found no callsites for `GetHpMpRate`, `IsDCItem`, or `GetStrGoldStr`.
+- These are Preview server-source constants and helpers only; no EI primary-static or Zircon behavior was compared, and nothing here establishes an EI database schema.

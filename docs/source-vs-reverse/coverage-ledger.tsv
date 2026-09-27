@@ -109,7 +109,7 @@ A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥�
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	covered	Round 841 full 1–279: parenthesized interserver TCP client, buffered ISM dispatch, master address/port and 20s reconnect trigger
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	covered	Round 841 full 1–927: index-0 relay/handler and .shr character-shift handoff; additive checksum and unchecked file I/O are static-only findings
 A/C-server	Source/GameServer/LocalDB.pas	2649	98927	covered	Round 809/811/812/813: MapInfo/MiniMap/脚本关键字/MapQuest/StartupQuest/全部19个配置解析器 + Round 833: DecodeConditionStr/DecodeActionStr 128条脚本命令全表(53条件+75动作，无重复值/大量空缺)
-A/C-server	Source/GameServer/M2Share.pas	771	22107	pending	
+A/C-server	Source/GameServer/M2Share.pas	771	22107	covered	Round 847 full 1–771; shared record types, progression/bonus constants, masks, movement/equipment/economy helpers and callsites; diagonal bounds defects are static-only
 A/C-server	Source/GameServer/Magic.pas	1756	72544	covered	Round 814/822: 4块26条分派/三伤害公式/符咒/击退/AoE骨架/亡灵特攻/距离衰减；其余39个Mag*待读
 A/C-server	Source/GameServer/MaketSystem.pas	325	7870	pending	
 A/C-server	Source/GameServer/MasSock.pas	110	2682	pending	
