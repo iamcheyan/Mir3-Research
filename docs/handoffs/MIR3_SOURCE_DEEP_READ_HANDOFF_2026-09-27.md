@@ -502,7 +502,7 @@ python3 Tools/source-read/verify_all.py
 | 项 | 值 |
 |---|---|
 | 交接文档路径 | `docs/handoffs/MIR3_SOURCE_DEEP_READ_HANDOFF_2026-09-27.md` |
-| **交接提交 SHA** | **`f0397cca`**（权威值以 `git rev-parse HEAD` 为准；本提交曾 amend 回填本表一次，见下表说明） |
+| **交接提交 SHA** | 以 `git rev-parse HEAD` 与远端分支查询的当前 SHA 为准（提交后不在此文件重复写入自身 SHA，避免回填造成哈希漂移） |
 | **远端 SHA** | 与本地 HEAD 一致（用 `git ls-remote origin refs/heads/ei-ui-audit-2026-09-24` 核对） |
 | 远端分支 | `origin/ei-ui-audit-2026-09-24` |
 | push 前远端 SHA | `bae6ba68877577445dcf8f2c25db09900b363fef` |
