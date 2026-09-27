@@ -11997,3 +11997,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔使用边界与落盘〕** 全源码 grep 未发现 `TElHashList.Create` 的非注释外部调用；FriendSystem/TagSystem/UserMgr 仅保留注释提及并实际构造 `TList`/`TStringList`。README D5 新增 helper 与 EI MirDB 的证据边界，`tools-and-servers.md` §13 记录公式、hash-only collision 和 duplicate cleanup 行为；ledger 第 101/136 行将两个文件登记 covered。未据此断言部署服务确实使用该 helper，也未建立 EI `.db` checksum/schema 映射。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 248/95756，partial 17/90886，excluded 43/60230，pending 85/68452。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。无 Delphi/Windows 构建或运行验证。
+
+## Round 845 — 2026-09-27：GameServer MD5 hash 支持
+
+**〔范围〕** 经 `Tools/source-read/read_src.py show` 全读 `GameServer/CryptMd5.pas`（1–497），并 grep 全源码 `TCrMD5`/`MD5_Hash` 调用。相关直接调用只出现在 `ElHashList.pas` 的 MD5 插入/查找分支；该容器目前没有 source-tree 内非注释构造点。调用片段不登记为 CryptMd5 的额外覆盖。
+
+**〔实现与输入〕** `TCrMD5` 提供 `SourceFile`、`SourceByteArray`、`SourceString` 三类输入；标准 64-byte block 变换写在 Pascal 中，bit rotate `ROL` 使用 Intel inline assembly。字符串路径按 `Length(FInputString)` 分配/`StrPCopy` 后送入 byte worker，未见显式字符编码转换。文件路径逐块读取 4,096 bytes；byte worker 的 scratch buffer 固定为 4,160 bytes，却先按 `FSourceLength` `Move` 输入并追加 padding/bit length，没有可见长度界限检查；过长输入可越界。源码声明此实现仅面向 Intel，notes 也明确 little-endian 限制。
+
+**〔边界〕** `ElHashList` 的 MD5 mode 存/比对四个 DWORD digest，但该模式仍只在源内 helper class 路径观察到；没有据此推断实际服务输入、密码存储或 MirDB checksum。未运行 Delphi/Windows 编译，未验证跨平台输出。
+
+**〔覆盖〕** `coverage-ledger.tsv` 第 97 行把 `CryptMd5.pas` 全读登记为 covered；与 Round 844 的 `ElHashList`/`crc_32` 一起覆盖 MD5/quick/CRC hash-list 代码依赖。README D5 与 `tools-and-servers.md` §13 延伸该 helper 的 legacy-use 与 EI DB 边界。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 249/96253，partial 17/90886，excluded 43/60230，pending 84/67955。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。无 Delphi/Windows 构建或运行验证。

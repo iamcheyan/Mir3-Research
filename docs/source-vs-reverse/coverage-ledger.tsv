@@ -94,7 +94,7 @@ E-tools	Source/Tools/ImageEditor/Common/mudutil.pas	1009	26358	pending
 A/C-server	Source/GameServer/Castle.pas	1241	42317	covered	Round 829 partial timing notes; Round 834 full 1–1241 and callers: hour-20 check (not exact 20:00), 3h war, owner/win/finish/repair paths; actual repair threshold 1min vs stale comments; EI/Zircon boundaries in items-systems §17.2
 A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
 A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
-A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
+A/C-server	Source/GameServer/CryptMd5.pas	497	18297	covered	Round 845 full 1–497; SourceString/ByteArray/File modes, 64-byte MD5 block transform, fixed-buffer input bound, only direct caller ElHashList
 A/C-server	Source/GameServer/DBSQL.pas	1050	33281	covered	Round 839 full 1–1050: ADO SQL sidecar for user market/guild board; direct/stored-procedure SQL construction, not character-record mapper
 A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 816: DecodeStrInfo状态机格式；其余实现待读
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
