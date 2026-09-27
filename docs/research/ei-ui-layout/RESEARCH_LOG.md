@@ -12263,3 +12263,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview MapEdit 静态源码、资源 reader view 和可见调用链；未比较 EI object palette，没有 Delphi build，也未在运行 UI 中选择 40–69 项目或检查 map output。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 5 行将 `FObj.pas` 114 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 273/127815，partial 17/90886，excluded 43/60230，pending 60/36393。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 865 — 2026-09-28：MapEdit scroll-offset dialog
+
+**〔范围与资源〕** 经 source-reader 全读 `Source/Tools/MapEdit/FScrlXY.pas`（1–47，CP949），并读 25 行 mixed `FScrlXY.dfm`、`MapEdit.dpr`、`EdMain.dfm` 菜单绑定及 `EdMain.MapScroll1Click` 与临时 undo snapshot helpers。DPR include 并 auto-create `TFrmScrollMap`；DFM reader view 显示两个 edit 和 `Button1Click`，`dfm_parse.py tree` 在 EOF 抛 `IndexError`，caption/geometry 未恢复。
+
+**〔输入与调用〕** `Execute` 清空 `EdX/EdY` 后调用 `ShowModal`，返回后不检查 modal result，而用 `StrToIntDef(text, 0)` 写回两个引用参数；`Button1Click` 只调用 `Close`。空串/不可解析内容成为 0。MapScroll 菜单绑定 `MapScroll1Click`；该 handler 在 dialog 前 `CopyTempBegin`，返回后用两个 offset 变换 `MapData`，再 `CopyTempEnd` 并 refresh；handler 无 modal-result gate，也未设置 `Edited`。
+
+**〔零值路径〕** X 仅当 `0 < xs < MAXX`、Y 仅当 `0 < ys < MAXY` 才走正值分支；0 落到 alternate loop，分别将全零 `nilmap` 写到最后一列 `MapData[MAXX-1, k]` 和最后一行 `MapData[k, MAXY-1]`。因此空/非法输入转成零后，静态 caller path 不是 no-op；未运行 UI/map mutation/undo。
+
+**〔primary/source 边界〕** 仅记录 Preview MapEdit 静态源码和 mixed resource reader view；未做 Delphi build、dialog runtime、map mutation/undo runtime 或 EI 等价比较。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 6 行登记 `FScrlXY.pas` 47 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 274/127862，partial 17/90886，excluded 43/60230，pending 59/36346。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
