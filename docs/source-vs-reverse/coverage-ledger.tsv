@@ -158,7 +158,7 @@ D-client	Source/Client/Relationship.pas	452	11667	covered	Round 904: relation ma
 D-client	Source/Client/SingleInstance.pas	67	1545	covered	Round 905: DPR-mapped but unreferenced mutex helper; error/result, discarded handle and release ownership defects
 D-client	Source/Client/SoundUtil.pas	735	19504	covered	Round 906: dual SoundManager-effect/BASS-music paths and callers, thread lifecycle, option mismatch, unchecked .wwl file reads
 D-client	Source/Client/WIL.pas	749	21533	covered	Round 807 图库格式
-D-client	Source/Client/clEvent.pas	218	5444	pending	
+D-client	Source/Client/clEvent.pas	218	5444	covered	Round 907: SM_SHOWEVENT field mapping, local/server callers, six event render cases, manager lifecycle, stale fire light and distance cleanup
 D-client	Source/Client/cliUtil.pas	1258	42862	pending	
 D-client	Source/Client/magiceff.pas	1621	53077	partial	Round 826: 15 类 + TMagicEff基类(Run 10s超时/DrawEff飞行vs爆炸/Dir16*10/GetFlyXY 900ms)；其余12类实现待读
 D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
