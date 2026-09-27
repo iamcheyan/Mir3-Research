@@ -33,7 +33,7 @@ E-tools	Source/Tools/ImageEditor/FrmMain.pas	1285	43419	covered	Round 849 full 1
 E-tools	Source/Tools/ImageEditor/FrmOut.pas	325	10788	covered	Round 849 full 1–325; indexed image export and coordinate sidecar; Out_Clear recursively deletes chosen directory before index-range validation; static-only
 E-tools	Source/Tools/ImageEditor/HUtil32.pas	2682	63476	covered	Round 854 full 1–2682 (CP949); traced root-level unit callsites in FrmAdd, FrmMain, FrmAlpha, WIL, wmM3Def, wmMyImage, and FrmOut; token/file-name, zero-fill and bitmap-mask contracts; static defects in uncalled helpers; Common/HUtil32 kept separate; unit resolution not build-verified
 E-tools	Source/Tools/ImageEditor/ImageEditor.dpr	26	710	covered	Round 849 full 1–26; application startup and main/add/delete/export/conversion form creation order
-E-tools	Source/Tools/ImageEditor/MyCommon.pas	526	19429	pending	
+E-tools	Source/Tools/ImageEditor/MyCommon.pas	526	19429	covered	Round 855 full 1–526 (CP949); FrmMain.FormCreate calls GetFileVersion for ParamStr(0) then appends sVersion, result ignored; FrmMain.dfm:16 binds OnCreate; ZShare holds version record; other date/process/CPUID/IDE/version-resource helpers have no external caller found; runtime not verified
 E-tools	Source/Tools/ImageEditor/MyD3DX9.pas	11277	453687	pending	
 E-tools	Source/Tools/ImageEditor/WIL.pas	523	14765	pending	
 E-tools	Source/Tools/ImageEditor/ZShare.pas	442	12158	pending	
