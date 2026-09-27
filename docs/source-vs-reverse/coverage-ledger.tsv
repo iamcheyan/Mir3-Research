@@ -152,7 +152,7 @@ D-client	Source/Client/MShare.pas	32	775	covered	Round 900: interface-only image
 D-client	Source/Client/MaketSystem.pas	310	7373	covered	Round 901: SM_MARKET_LIST cache and UI calls traced; empty APIs, unchecked rows, page-count overrun, TList leaks
 D-client	Source/Client/MapUnit.pas	354	9441	covered	Round 902: TMap current-window loader, renderer/collision/door callers; segmented/CanFly stubs and unchecked arrays
 D-client	Source/Client/Mir3.dpr	45	1084	covered	Round 804 入口
-D-client	Source/Client/Mpeg.pas	170	4370	pending	
+D-client	Source/Client/Mpeg.pas	170	4370	covered	Round 903: DirectShow wrapper callers traced; COM/play error paths and missing Video cleanup
 D-client	Source/Client/PlayScn.pas	3043	105146	covered	Round 804/818/823: 场景状态机+小地图调用点+五层Surface+光照系统(LightSizes/LightMask/AddLight/ApplyLightMap空转)；PlaySurface主体495行待读
 D-client	Source/Client/Relationship.pas	452	11667	pending	
 D-client	Source/Client/SingleInstance.pas	67	1545	pending	
