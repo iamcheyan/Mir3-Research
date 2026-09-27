@@ -130,7 +130,8 @@ SendSocket(EncodeMessage(msg)
 | `glight.pas` | MapEdit's modal per-cell light-value dialog; `EdMain` routes light-brush clicks to the map `Light` field |
 | `Tile.pas` / `SmTile.pas` | 瓦片 |
 | `o_WIL.pas` | Legacy duplicate `unit WIL`/`TWMImages` component; not selected by `MapEdit.dpr` (which binds `Wil/WIL.pas`), and no `o_WIL` caller found |
-| `wmM3Def.pas` / `wmM3Zip.pas` / `wmMyImage.pas` / `wmUtil.pas` | **图库解析（与客户端同源）** |
+| `wmM3Def.pas` | M3Def reader selected by EdMain's failed-MyImage `.Lib` → sibling `.wil` fallback; decodes WIX-indexed image rows to bitmaps and has an ARGB texture-conversion override with no MapEdit caller found |
+| `wmM3Zip.pas` / `wmMyImage.pas` / `wmUtil.pas` | Other image-format readers/helpers |
 | `ObjEdit.pas` / `ObjSet.pas` / `FObj.pas` | 地图对象编辑 |
 | `DoorDlg.pas` | 门编辑（对应 `Envir.pas` 的 `PTDoorInfo`） |
 | `MapSize.pas` | 地图尺寸 |
